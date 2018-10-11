@@ -1,0 +1,73 @@
+\subsubsection{FA 6.6 - 2 Ableitung der Cosinusfunktion - MC - BIFIE}
+
+\begin{beispiel}[FA 6.6]{1} %PUNKTE DES BEISPIELS
+				Gegeben ist die Funktion $f$ mit $f(x)=\cos (x)$.
+
+Kreuze von den gegebenen Graphen von Ableitungsfunktionen $f'$ denjenigen an, der zur Funktion $f$ gehört!
+
+\multiplechoice[6]{  %Anzahl der Antwortmoeglichkeiten, Standard: 5
+				L1={\resizebox{0.7\linewidth}{!}{\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-0.9267087200010348,-1.506049799210546)(9.755428270191501,1.4373654977675405)
+\multips(0,-1)(0,1.0){3}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(-0.9267087200010348,0)(9.755428270191501,0)}
+\multips(0,0)(1.5707963267948966,0){7}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,-1.506049799210546)(0,1.4373654977675405)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=y,Dx=3.141592653589793,Dy=1.,ticksize=-2pt 0,subticks=2]{->}(0,0)(-0.9267087200010348,-1.506049799210546)(9.755428270191501,1.4373654977675405)[x,140] [f'(x),-40]
+\psplot[linewidth=1.2pt,plotpoints=200]{-0.9267087200010348}{9.755428270191501}{SIN(x)}
+\rput[tl](2.945445536137288,-0.098454536219808224){$\pi$}
+\rput[tl](6.316724117352246,-0.05805205142579145){$2\pi$}
+\end{pspicture*}}},   %1. Antwortmoeglichkeit 
+				L2={\resizebox{0.7\linewidth}{!}{\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-0.9267087200010348,-1.506049799210546)(9.755428270191501,1.4373654977675405)
+\multips(0,-1)(0,1.0){3}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(-0.9267087200010348,0)(9.755428270191501,0)}
+\multips(0,0)(1.5707963267948966,0){7}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,-1.506049799210546)(0,1.4373654977675405)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=y,Dx=3.141592653589793,Dy=1.,ticksize=-2pt 0,subticks=2]{->}(0,0)(-0.9267087200010348,-1.506049799210546)(9.755428270191501,1.4373654977675405)[x,140] [f'(x),-40]
+\psplot[linewidth=1.2pt,plotpoints=200]{-0.9267087200010348}{9.755428270191501}{COS(x)}
+\rput[tl](2.945445536137288,-0.098454536219808224){$\pi$}
+\rput[tl](6.316724117352246,-0.05805205142579145){$2\pi$}
+\end{pspicture*}}},   %2. Antwortmoeglichkeit
+				L3={\resizebox{0.7\linewidth}{!}{\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-0.9267087200010348,-1.506049799210546)(9.755428270191501,1.4373654977675405)
+\multips(0,-1)(0,1.0){3}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(-0.9267087200010348,0)(9.755428270191501,0)}
+\multips(0,0)(1.5707963267948966,0){7}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,-1.506049799210546)(0,1.4373654977675405)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=y,Dx=3.141592653589793,Dy=1.,ticksize=-2pt 0,subticks=2]{->}(0,0)(-0.9267087200010348,-1.506049799210546)(9.755428270191501,1.4373654977675405)[x,140] [f'(x),-40]
+\psplot[linewidth=1.2pt,plotpoints=200]{-0.9267087200010348}{9.755428270191501}{SIN(2*x)}
+\rput[tl](2.945445536137288,-0.098454536219808224){$\pi$}
+\rput[tl](6.316724117352246,-0.05805205142579145){$2\pi$}
+\end{pspicture*}}},   %3. Antwortmoeglichkeit
+				L4={\resizebox{0.7\linewidth}{!}{\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-0.9267087200010348,-1.506049799210546)(9.755428270191501,1.4373654977675405)
+\multips(0,-1)(0,1.0){3}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(-0.9267087200010348,0)(9.755428270191501,0)}
+\multips(0,0)(1.5707963267948966,0){7}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,-1.506049799210546)(0,1.4373654977675405)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=y,Dx=3.141592653589793,Dy=1.,ticksize=-2pt 0,subticks=2]{->}(0,0)(-0.9267087200010348,-1.506049799210546)(9.755428270191501,1.4373654977675405)[x,140] [f'(x),-40]
+\psplot[linewidth=1.2pt,plotpoints=200]{-0.9267087200010348}{9.755428270191501}{-SIN(x)}
+\rput[tl](2.945445536137288,-0.098454536219808224){$\pi$}
+\rput[tl](6.316724117352246,-0.05805205142579145){$2\pi$}
+\end{pspicture*}}},   %4. Antwortmoeglichkeit
+				L5={\resizebox{0.7\linewidth}{!}{\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-0.9267087200010348,-1.506049799210546)(9.755428270191501,1.4373654977675405)
+\multips(0,-1)(0,1.0){3}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(-0.9267087200010348,0)(9.755428270191501,0)}
+\multips(0,0)(1.5707963267948966,0){7}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,-1.506049799210546)(0,1.4373654977675405)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=y,Dx=3.141592653589793,Dy=1.,ticksize=-2pt 0,subticks=2]{->}(0,0)(-0.9267087200010348,-1.506049799210546)(9.755428270191501,1.4373654977675405)[x,140] [f'(x),-40]
+\psplot[linewidth=1.2pt,plotpoints=200]{-0.9267087200010348}{9.755428270191501}{-COS(x)}
+\rput[tl](2.945445536137288,-0.098454536219808224){$\pi$}
+\rput[tl](6.316724117352246,-0.05805205142579145){$2\pi$}
+\end{pspicture*}}},	 %5. Antwortmoeglichkeit
+				L6={\resizebox{0.7\linewidth}{!}{\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-0.9267087200010348,-1.506049799210546)(9.755428270191501,1.4373654977675405)
+\multips(0,-1)(0,1.0){3}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(-0.9267087200010348,0)(9.755428270191501,0)}
+\multips(0,0)(1.5707963267948966,0){7}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,-1.506049799210546)(0,1.4373654977675405)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=y,Dx=3.141592653589793,Dy=1.,ticksize=-2pt 0,subticks=2]{->}(0,0)(-0.9267087200010348,-1.506049799210546)(9.755428270191501,1.4373654977675405)[x,140] [f'(x),-40]
+\psplot[linewidth=1.2pt,plotpoints=200]{-0.9267087200010348}{9.755428270191501}{COS(2*x)}
+\rput[tl](2.945445536137288,-0.098454536219808224){$\pi$}
+\rput[tl](6.316724117352246,-0.05805205142579145){$2\pi$}
+\end{pspicture*}}},	 %6. Antwortmoeglichkeit
+				L7={},	 %7. Antwortmoeglichkeit
+				L8={},	 %8. Antwortmoeglichkeit
+				L9={},	 %9. Antwortmoeglichkeit
+				%% LOESUNG: %%
+				A1=4,  % 1. Antwort
+				A2=0,	 % 2. Antwort
+				A3=0,  % 3. Antwort
+				A4=0,  % 4. Antwort
+				A5=0,  % 5. Antwort
+				}
+\end{beispiel}

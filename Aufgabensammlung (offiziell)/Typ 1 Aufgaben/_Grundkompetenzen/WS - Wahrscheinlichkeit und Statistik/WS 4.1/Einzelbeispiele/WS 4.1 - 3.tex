@@ -1,0 +1,106 @@
+\section{WS 4.1 - 3 Konfidenzintervall - ZO - BIFIE}
+
+\begin{beispiel}[WS 4.1]{1} %PUNKTE DES BEISPIELS
+				Von einer Stichprobe sind jeweils der Stichprobenumfang $n$ und die relative Häufigkeit $h$ eines beobachteten Merkmals gegeben.\\
+
+Ordne jeder Stichprobe das richtige Konfidenzintervall für das vorgegebene Konfidenzniveau $\gamma$ (Sicherheitsniveau) zu.
+
+\zuordnen[-0.25]{
+				R1={$n=1000$\\
+				$h=0,3$\\
+				$\gamma=0,60$},				% Response 1
+				R2={$n=1000$\\
+				$h=0,3$\\
+				$\gamma=0,95$},				% Response 2
+				R3={$n=500$\\
+				$h=0,3$\\
+				$\gamma=0,99$},				% Response 3
+				R4={$n=1000$\\
+				$h=0,4$\\
+				$\gamma=0,50$},				% Response 4
+				%% Moegliche Zuordnungen: %%
+				A={\resizebox{1\linewidth}{!}{\newrgbcolor{xdxdff}{0.49019607843137253 0.49019607843137253 1.}
+\psset{xunit=170cm,yunit=200.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(0.2615709134762348,-0.015717804382268188)(0.3367945217056885,0.010739597017025867)
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=false,Dx=0.02,Dy=0.01,ticksize=-2pt 0,subticks=2]{}(0,0)(0.2615709134762348,-0.015717804382268188)(0.3367945217056885,0.010739597017025867)[,140] [f(x),-40]
+\psline[linewidth=2.pt,linecolor=blue](0.29,-0.007)(0.31,-0.007)
+\psline[linewidth=1.6pt,linestyle=dashed,dash=1pt 1pt,linecolor=blue](0.3,0.)(0.2999319567167593,-0.008205208923209382)
+\rput[tl](0.2948371306613717,-0.008443061557797619){$\blue{h=0,3}$}
+\rput[tl](0.3107210001281488,-0.006592132241797623){$\blue{p_{2}=0,31}$}
+\rput[tl](0.2791061525165874,-0.006592132241797623){$\blue{p_{1}=0,29}$}
+\begin{scriptsize}
+\psdots[dotstyle=*,linecolor=xdxdff](0.3,0.)
+\end{scriptsize}
+\end{pspicture*}}}, 				%Moeglichkeit A  
+				B={\resizebox{1\linewidth}{!}{\newrgbcolor{xdxdff}{0.49019607843137253 0.49019607843137253 1.}
+\psset{xunit=170.0cm,yunit=200.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(0.31113073931801926,-0.013540240481091722)(0.3979324343702644,0.008562033115849401)
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=false,Dx=0.02,Dy=0.01,ticksize=-2pt 0,subticks=2]{}(0,0)(0.30113073931801926,-0.013540240481091722)(0.3979324343702644,0.008562033115849401)[,140] [f(x),-40]
+\psline[linewidth=2.pt,linecolor=blue](0.32,-0.007)(0.38,-0.007)
+\psline[linewidth=1.6pt,linestyle=dashed,dash=1pt 1pt,linecolor=blue](0.35,0.)(0.35,-0.00821)
+\rput[tl](0.3453358477397101,-0.00887452533091735){$\blue{h=0,35}$}
+\rput[tl](0.3748497823022211,-0.00880988863191527){$\blue{p_{2}=0,38}$}
+\rput[tl](0.315925869723084,-0.008918766826974093){$\blue{p_{1}=0,29}$}
+\begin{scriptsize}
+\psdots[dotstyle=*,linecolor=xdxdff](0.35,0.)
+\end{scriptsize}
+\end{pspicture*}}}, 				%Moeglichkeit B  
+				C={\resizebox{1\linewidth}{!}{\newrgbcolor{xdxdff}{0.49019607843137253 0.49019607843137253 1.}
+\psset{xunit=170.0cm,yunit=200.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(0.3489321955435089,-0.013757996871209372)(0.4551743035807253,0.008344276725731755)
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=false,Dx=0.02,Dy=0.01,ticksize=-2pt 0,subticks=2]{}(0,0)(0.3489321955435089,-0.013757996871209372)(0.4551743035807253,0.008344276725731755)[,140] [f(x),-40]
+\psline[linewidth=2.pt,linecolor=blue](0.36,-0.007)(0.44,-0.007)
+\psline[linewidth=1.6pt,linestyle=dashed,dash=1pt 1pt,linecolor=blue](0.4,0.)(0.4,-0.00821)
+\rput[tl](0.39403639091614945,-0.008560817947915268){$\blue{h=0,40}$}
+\rput[tl](0.4338959124082504,-0.008589792387444682){$\blue{p_{2}=0,44}$}
+\rput[tl](0.3559780868227823,-0.008563157802268212){$\blue{p_{1}=0,36}$}
+\begin{scriptsize}
+\psdots[dotstyle=*,linecolor=xdxdff](0.4,0.)
+\end{scriptsize}
+\end{pspicture*}}}, 				%Moeglichkeit C  
+				D={\resizebox{1\linewidth}{!}{\newrgbcolor{xdxdff}{0.49019607843137253 0.49019607843137253 1.}
+\psset{xunit=170.0cm,yunit=200.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(0.24239039185597472,-0.015935560772385834)(0.3571738259272123,0.006166712824555286)
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=false,Dx=0.02,Dy=0.01,ticksize=-2pt 0,subticks=2]{}(0,0)(0.24239039185597472,-0.015935560772385834)(0.3571738259272123,0.006166712824555286)[,140] [f(x),-40]
+\psline[linewidth=2.pt,linecolor=blue](0.25,-0.007)(0.35,-0.007)
+\psline[linewidth=1.6pt,linestyle=dashed,dash=1pt 1pt,linecolor=blue](0.3,0.)(0.3,-0.00821)
+\rput[tl](0.29393804371042087,-0.0085){$\blue{h=0,30}$}
+\rput[tl](0.3429382825371763,-0.0085){$\blue{p_{2}=0,35}$}
+\rput[tl](0.24388887010755747,-0.0085){$\blue{p_{1}=0,25}$}
+\begin{scriptsize}
+\psdots[dotstyle=*,linecolor=xdxdff](0.3,0.)
+\end{scriptsize}
+\end{pspicture*}}}, 				%Moeglichkeit D  
+				E={\resizebox{1\linewidth}{!}{\newrgbcolor{xdxdff}{0.49019607843137253 0.49019607843137253 1.}
+\psset{xunit=170.0cm,yunit=200.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(0.250632022239676,-0.015391169797091717)(0.34938173901897684,0.0067111037998494015)
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=false,Dx=0.02,Dy=0.01,ticksize=-2pt 0,subticks=2]{}(0,0)(0.250632022239676,-0.015391169797091717)(0.34938173901897684,0.0067111037998494015)[,140] [f(x),-40]
+\psline[linewidth=2.pt,linecolor=blue](0.27,-0.007)(0.33,-0.007)
+\psline[linewidth=1.6pt,linestyle=dashed,dash=1pt 1pt,linecolor=blue](0.3,0.)(0.3,-0.00821)
+\rput[tl](0.29393804371041643,-0.0085){$\blue{h=0,30}$}
+\rput[tl](0.3245070000427038,-0.0085){$\blue{p_{2}=0,33}$}
+\rput[tl](0.26351893520328734,-0.0085){$\blue{p_{1}=0,27}$}
+\begin{scriptsize}
+\psdots[dotstyle=*,linecolor=xdxdff](0.3,0.)
+\end{scriptsize}
+\end{pspicture*}}}, 				%Moeglichkeit E  
+				F={\resizebox{1\linewidth}{!}{\newrgbcolor{xdxdff}{0.49019607843137253 0.49019607843137253 1.}
+\psset{xunit=170.0cm,yunit=200.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(0.3502808259699229,-0.016697708137797595)(0.4490305427492227,0.005404565459143523)
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=false,Dx=0.02,Dy=0.01,ticksize=-2pt 0,subticks=2]{}(0,0)(0.3502808259699229,-0.016697708137797595)(0.4490305427492227,0.005404565459143523)[,140] [f(x),-40]
+\psline[linewidth=2.pt,linecolor=blue](0.39,-0.007)(0.41,-0.007)
+\psline[linewidth=1.6pt,linestyle=dashed,dash=1pt 1pt,linecolor=blue](0.4,0.)(0.4,-0.00821)
+\rput[tl](0.39373669526582117,-0.009838381849091731){$\blue{h=0,30}$}
+\rput[tl](0.4055746734533245,-0.008498670582503504){$\blue{p_{2}=0,33}$}
+\rput[tl](0.38174886925315954,-0.008498670582503504){$\blue{p_{1}=0,27}$}
+\begin{scriptsize}
+\psdots[dotstyle=*,linecolor=xdxdff](0.4,0.)
+\end{scriptsize}
+\end{pspicture*}}}, 				%Moeglichkeit F  
+				%% LOESUNG: %%
+				A1={A},				% 1. richtige Zuordnung
+				A2={E},				% 2. richtige Zuordnung
+				A3={D},				% 3. richtige Zuordnung
+				A4={F},				% 4. richtige Zuordnung
+				}
+\end{beispiel}	

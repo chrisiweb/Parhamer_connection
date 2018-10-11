@@ -1,0 +1,107 @@
+\section{74 - MAT - AG 2.1, AN 2.1, AN 3.3, FA 1.2, FA 1.5, FA 1.7 - Aufnahme einer Substanz ins Blut - BIFIE Aufgabensammlung}
+
+\begin{langesbeispiel} \item[0] %PUNKTE DES BEISPIELS
+	
+Wenn bei einer medizinischen Behandlung eine Substanz verabreicht wird, kann die Konzentration der Substanz im Blut (kurz: Blutkonzentration) in Abhängigkeit von der Zeit $t$ in manchen Fällen durch eine sogenannte Bateman-Funktion $c(t)=d\cdot(e^{-a\cdot t}-e^{-b\cdot t})$ mit den personenbezogenen Parametern $a,b,d>0, a<b$ modelliert werden. Die Zeit $t$ wird in Stunden gemessen, $t=0$ entspricht dem Zeitpunkt der Verabreichung der Substanz.\leer
+
+Die Bioverfügbarkeit $f$ gibt den Anteil der verabreichten Substanz an, der unverändert in den Blutkreislauf gelangt. Bei einer intravenösen Verabreichung (d.h. einer direkten Verabreichung in eine Vene) beträgt der Wert der Bioverfügbarkeit 1.\leer
+
+Das Verteilungsvolumen $V$ beschreibt, in welchem Ausmaß sich die Substanz aus dem Blut in das Gewebe verteilt.\leer
+
+Der Parameter $d$ ist direkt proportional zur verabreichten Dosis $D$ und zur Bioverfügbarkeit $f$, außerdem ist $d$ indirekt proportional zum Verteilungsvolumen $V$.\leer
+
+Die Nachstehende Abbildung zeigt exemplarisch den zeitlichen Verlauf der Blutkonzentration in Nanogramm pro Milliliter (ng/ml) für den Fall der Einnahme einer bestimmten Dosis der Substanz Lysergsäurediethylamid und kann mit der Bateman-Funktion $c_1$ mit den Parametern $d=19,5, a=0,4$ und $b=1,3$ beschrieben werden.\leer
+
+Der Graph der Bateman-Funktion weist für große Zeiten $t$ einen asymptotischen Verlauf gegen die Zeitachse auf.
+
+\begin{center}
+\resizebox{0.5\linewidth}{!}{\psset{xunit=1.0cm,yunit=0.5cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=4pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-0.5097864597270574,-1.5)(8.993877976986889,9.416)
+\multips(0,0)(0,2.0){6}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,0)(8.993877976986889,0)}
+\multips(0,0)(1.0,0){10}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,0)(0,9.416)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=1.,Dy=2.,ticksize=-2pt 0,subticks=2]{->}(0,0)(0.,0.)(8.993877976986889,9.416)
+\psplot[linewidth=1.2pt,plotpoints=200]{0}{8.993877976986889}{19.5*(2.718281828459045^(-0.4*x)-2.718281828459045^(-1.3*x))}
+\begin{scriptsize}
+\rput[tl](3.7937597002943524,4.928){$c_1$}
+\rput[tl](0.1585672999732374,8.888){Blutkonzentration $c_1(t)$ (in ng/ml)}
+\rput[tl](7,-1){Zeit $t$ (in h)}
+\end{scriptsize}
+\end{pspicture*}}
+\end{center}
+
+\subsection{Aufgabenstellung:}
+\begin{enumerate}
+	\item Gib eine Gleichung an, mit der der Zeitpunkt der maximalen Blutkonzentration für die in der Einleitung beschriebene Bateman-Funktion $c_1$ berechnet werden kann, und ermittle diesen Zeitpunkt!\leer
+	
+	Begründe allgemein, warum der Wert des Parameters $d$ in der Bateman-Funktion $c$ nur die Größe der maximalen Blutkonzentration beeinflusst, aber nicht den Zeitpunkt, zu dem diese erreicht wird!\leer
+	
+	\item Die Werte der Parameter $a,b$ und $d$ der Bateman-Funktion variieren von Patient zu Patient. Es wird im Folgenden angenommen, dass der Wert des Parameters $d$ für drei untersuchte Patienten $P_1, P_2, P_3$ identisch ist.\leer
+	
+	Für den Patienten $P_1$ gelten die Parameter aus der Einleitung. Bei Patient $P_2$ ist der Wert des Parameters $a$ etwas größer als bei Patient $P_1$.
+	
+	Beschreibe, wie sich der Graph der Bateman-Funktion verändert, wenn der Wert des Parameters $a$ erhöht wird, der Parameter $b$ unverändert bleibt und $a<b$ gilt!
+	
+	Interpretiere diese Veränderung im gegebenen Kontext.\leer
+	
+	Patient $P_3$ erreicht (bei gleicher verabreichter Dosis) die maximale Blutkonzentration zeitgleich mit Patient $P_1$, die maximale Blutkonzentration von Patient $P_3$ ist aber größer.
+	
+	Ermittle, wie sich die Werte von $a$ und $b$ bei der Bateman-Funktion für Patient $P_3$ von jenen von Patient $P_1$ unterscheiden!\leer
+	
+	\item Kreuze diejenige Formel an, die den Zusammenhang zwischen dem Parameter $d$ der Bateman-Funktion und den in der Einleitung beschriebenen Größen $V,D$ und $f$ korrekt beschreibt! Der Parameter $\lambda$ ist dabei ein allgemeiner Proportionalitätsfaktor.
+	
+	\multiplechoice[6]{  %Anzahl der Antwortmoeglichkeiten, Standard: 5
+					L1={$d=\lambda\cdot\frac{D}{V\cdot f}$},   %1. Antwortmoeglichkeit 
+					L2={$d=\lambda\cdot\frac{D\cdot V}{f}$},   %2. Antwortmoeglichkeit
+					L3={$d=\lambda\cdot\frac{V\cdot f}{D}$},   %3. Antwortmoeglichkeit
+					L4={$d=\lambda\cdot\frac{D\cdot f}{V}$},   %4. Antwortmoeglichkeit
+					L5={$d=\lambda\cdot\frac{V}{D\cdot f}$},	 %5. Antwortmoeglichkeit
+					L6={$d=\lambda\cdot\frac{f}{V\cdot D}$},	 %6. Antwortmoeglichkeit
+					L7={},	 %7. Antwortmoeglichkeit
+					L8={},	 %8. Antwortmoeglichkeit
+					L9={},	 %9. Antwortmoeglichkeit
+					%% LOESUNG: %%
+					A1=4,  % 1. Antwort
+					A2=0,	 % 2. Antwort
+					A3=0,  % 3. Antwort
+					A4=0,  % 4. Antwort
+					A5=0,  % 5. Antwort
+					}
+					
+Bei einem konstanten Wert des Parameters $d$ und der Bioverfügbarkeit $f$ kann man die verabreichte Dosis $D(V)$ als Funktion $D$ in Abhängigkeit vom Verteilungsvolumen $V$ auffassen. Beziehe dich auf die von dir angekreuzte Formel und gib für die Parameterwerte der in der Einleitung dargestellten Bateman-Funktion und für den Fall einer intrevenösen Verabreichung die Funktionsgleichung $D(V)$ an! Gib weiters an, um welchen Funktionstyp es sich bei $D$ handelt!
+\end{enumerate}
+
+\antwort{
+\begin{enumerate}
+	\item \subsection{Lösungserwartung:} 
+
+$c_1(t)=19,5\cdot(e^{-0,4\cdot t}-e^{-1,3\cdot t})$
+
+$c_1'(t)=19,5\cdot (-0,4\cdot e^{-0,4\cdot t}+1,3\cdot e^{-1,3\cdot t})=0$
+
+$t\approx 1,31$\, Stunden
+
+$c_1''(1,31)\approx -4,15<0$\leer
+
+Mögliche Begründungen:
+
+Für die Berechnung des Zeitpunkts der (lokalen) maximalen Blutkonzentration muss die Gleichung $c'(t)=0$ nach $t$ gelöst werden. Der Parameter $d$ fällt bei dieser Berechnung weg und beeinflusst somit nur die Höhe der maximalen Blutkonzentration zum ermittelten Zeitpunkt.
+
+oder:
+
+$c'(t)=d\cdot (-a\cdot e^{-a\cdot t}+b\cdot e^{-b\cdot t})=0 \Rightarrow t=\frac{\ln(a)-\ln(b)}{a-b} \Rightarrow$ Der Parameter $d$ tritt in dieser Formel nicht auf. Der Zeitpunkt der maximalen Blutkonzentration $t$ ist somit von $d$ unabhängig.
+	
+	\item \subsection{Lösungserwartung:}
+	
+	Bei einer Erhöhung des Wertes von $a$ verschiebt sich das lokale Maximum der Funktion bei einem niedrigeren Funktionswert "`nach link"'. Das bedeutet, dass die maximale Blutkonzentration früher erreicht wird und geringer ist.\leer
+	
+	Der Patient $P_3$ ist (bei der Bateman-Funktion) der Wert von $a$ kleiner und der Wert von $b$ größer als bei (der Bateman-Funktion von) Patient $P_1$.
+
+\item \subsection{Lösungserwartung:}
+	
+	Multiple Choice - siehe oben.\leer
+	
+	Die Funktionsgleichung lautet $D(V)=\frac{19,5}{\lambda}\cdot V$.
+	
+	Es handelt sich um eine lineare Funktion.
+\end{enumerate}}
+		\end{langesbeispiel}

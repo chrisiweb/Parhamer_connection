@@ -1,0 +1,80 @@
+\section{84 - K5 - TR - AG 4.1, AG-L 4.3, AG-L 4.4 - Flugzeuge - ChriGrü}
+
+\begin{langesbeispiel} \item[0] %PUNKTE DES BEISPIELS
+\begin{enumerate}
+
+\item Der Start eines Flugzeugs, bis es seine Reiseflughöhe von 10.000 m erreicht, dauert etwa 10 Minuten. Wie groß ist der durchschnittliche Steigungswinkel des Flugzeugs, bei einer anfänglichen Durchschnittsgeschwindigkeit von 550 km/h?
+
+\leer \antwort{$sin^{-1}(\frac{10}{91,6})=6,2$°}
+\leer
+
+
+\item Zwei Flugzeuge starten um 8.00 Uhr gleichzeitig in verschiedene Richtungen. Flugzeug $F_1$ fliegt den Kurs N 33° O mit durchschnittlich 800 km/h, Flugzeug $F_2$ den Kurs N 20° W mit 770 km/h. Wie weit sind die beiden Flugzeuge um 8.30 Uhr voneinander entfernt? 
+
+				\newrgbcolor{qqwuqq}{0. 0.39215686274509803 0.}
+\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-2.3195041322314025,-0.4895867768595013)(4.9697520661157055,4.683966942148762)
+\psaxes[linewidth=1.4pt,labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=none,Dx=1.,Dy=1.,ticksize=-2pt 0,subticks=2]{->}(0,0)(-2.3195041322314025,-0.4895867768595013)(4.9697520661157055,4.683966942148762)[O,140] [N,-40]
+\psline[linewidth=2.pt](0.,0.)(2.7383471074380177,3.840991735537187)
+\psline[linewidth=2.pt](0.,0.)(-1.8401652892561955,3.0971900826446257)
+\pscustom[linewidth=2.pt,linecolor=qqwuqq,fillcolor=qqwuqq,fillstyle=solid,opacity=0.1]{
+\parametricplot{1.5707963267948966}{2.10689604655636}{0.743801652892562*cos(t)+0.|0.743801652892562*sin(t)+0.}
+\lineto(0.,0.)\closepath}
+\pscustom[linewidth=2.pt,linecolor=qqwuqq,fillcolor=qqwuqq,fillstyle=solid,opacity=0.1]{
+\parametricplot{0.951447040568098}{1.5707963267948966}{0.6611570247933884*cos(t)+0.|0.6611570247933884*sin(t)+0.}
+\lineto(0.,0.)\closepath}
+\begin{scriptsize}
+\psdots[dotsize=4pt 0,dotstyle=*,linecolor=darkgray](0.,0.)
+\rput[bl](0.11024793388430014,-0.3512396694214848){\black{Flughafen}}
+\psdots[dotsize=9pt 0,dotstyle=+](2.7383471074380177,3.840991735537187)
+\rput[bl](3.11024793388430014,-0.512396694214848){\black{Abbildung 1}}
+\psdots[dotsize=9pt 0,dotstyle=+](2.7383471074380177,3.840991735537187)
+\rput[bl](2.804462809917358,4.1385123966942166){$F_1$}
+\psdots[dotsize=9pt 0,dotstyle=+](-1.8401652892561955,3.0971900826446257)
+\rput[bl](-1.7740495867768569,3.394710743801655){$F_2$}
+\end{scriptsize}
+\end{pspicture*}
+
+\leer
+\antwort{ca. 350 km}
+
+	\item Legt man über die Abbildung 1 (siehe oben) ein Koordinatensystem, würde der Flughafen dem Punkt (0/0) entsprechen. Bei welchen kartesischen Koordinaten wäre das Flugzeug $F_2$ nach einer Stunde?
+	
+	\leer 	
+	\antwort{$F_2$=(-263,36;723,56)}
+ \leer 
+
+	\item \meinlr[0.2]{Um 10.00 Uhr muss das Flugzeug $F_1$ eine Gewitterfront umfliegen. Dazu ändert es den Kurs um 46° (siehe Abbildung 2), bleibt aber auf gleicher Höhe, und fliegt bis 10.30 Uhr bis zum Punkt U. Dort ändert es wieder seinen Kurs um 88° und fliegt, bis es um 11.00 Uhr zum Punkt V gelangt um auf seinen ursprünglichen Kurs zurückzukommen. Wie viel weiter war der Umweg als der direkte Kurs (bei der aus (b) angenommen Geschwindigkeit)? }{
+	\resizebox{1.2\linewidth}{!}{
+		
+	\newrgbcolor{qqwuqq}{0. 0.39215686274509803 0.}
+\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(2.325123966942134,2.948429752066114)(7.465619834710703,10.83272727272727)
+\psline[linewidth=2.pt](2.7383471074380177,3.840991735537187)(7.135041322314049,5.411239669421487)
+\psline[linewidth=2.pt](7.135041322314049,5.411239669421487)(5.5813223140495785,9.708760330578508)
+\psline[linewidth=2.pt,linestyle=dashed,dash=4pt 4pt](2.335493780793768,3.0095212067074826)(2.7383471074380177,3.840991735537187)
+\psline[linewidth=2.pt,linestyle=dashed,dash=4pt 4pt](5.5813223140495785,9.708760330578508)(6.022889754034378,10.620134988686674)
+\pscustom[linewidth=2.pt,linecolor=qqwuqq,fillcolor=qqwuqq,fillstyle=solid,opacity=0.1]{
+\parametricplot{1.9177131915888375}{3.4846165940104976}{0.7438016528925582*cos(t)+7.135041322314049|0.7438016528925582*sin(t)+5.411239669421487}
+\lineto(7.135041322314049,5.411239669421487)\closepath}
+\psline[linewidth=2.pt,linestyle=dashed,dash=4pt 4pt](2.7383471074380177,3.840991735537187)(3.0800873103804483,4.546327619517206)
+\pscustom[linewidth=2.pt,linecolor=qqwuqq,fillcolor=qqwuqq,fillstyle=solid,opacity=0.1]{
+\parametricplot{0.34302394042070405}{1.1196197265603827}{0.8264462809917312*cos(t)+2.7383471074380177|0.8264462809917312*sin(t)+3.840991735537187}
+\lineto(2.7383471074380177,3.840991735537187)\closepath}
+\begin{scriptsize}
+\psdots[dotsize=9pt 0,dotstyle=+](2.7383471074380177,3.840991735537187)
+\rput[bl](2.4462809917338,4.138512396694213){$F_1$}
+\psdots[dotstyle=triangle*,dotangle=180](7.135041322314049,5.411239669421487)
+\rput[bl](7.201157024793348,5.576528925619833){$U$}
+\psdots[dotsize=9pt 0,dotstyle=+](5.5813223140495785,9.708760330578508)
+\rput[bl](5.201157024793348,3.576528925619833){Abbildung 2}
+\rput[bl](5.217685950413193,9.9897520661157){$V$}
+\rput[bl](6.54,5.493884297520659){\qqwuqq{$88$°}}
+\rput[bl](2.9854049586776842,4.1036363636363616){\qqwuqq{$46$°}}
+\end{scriptsize}
+\end{pspicture*}}}
+
+\antwort{$\overline{AF_1}$=555,72 km; Umweg = 244,28 km}
+
+\end{enumerate}
+\end{langesbeispiel}

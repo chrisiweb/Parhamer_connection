@@ -1,0 +1,21 @@
+\section{WS 4.1 - 12 - MAT - Sicherheit eines Konfidenzintervalls - OA - Matura 2016/17 2. NT}
+
+\begin{beispiel}[WS 4.1]{1} %PUNKTE DES BEISPIELS
+Die Abfüllanlagen eines Betriebes müssen in bestimmten Zeitabständen überprüft und eventuell neu eingestellt werden.
+
+Nach der Einstellung einer Abfüllanlage sind von 1\,000 überprüften Packungen 30 nicht ordnungsgemäß befüllt. Für den unbekannten relativen Anteil $p$ der nicht ordnungsgemäß befüllten Packungen wird vom Betrieb das symmetrische Konfidenzintervall $[0,02; 0,04]$ angegeben.
+
+Ermittle unter Verwendung einer die Binomialverteilung approximierenden Normalverteilung die Sicherheit dieses Konfidenzintervalls!\leer
+
+\antwort{Mögliche Vorgehensweise:
+
+$n=1\,000$, $h=\frac{30}{1\,000}=0,03$ Intervallbreite des Konfidenzintervalls\,=\,0,02
+
+aus $z\cdot\sqrt{\frac{h\cdot(1-h)}{n}}=0,01$ folgt: $z\approx 1,85$ mit $\Phi(1,85)\approx 0,9678$
+
+$\Rightarrow \gamma=2\cdot\Phi(1,85)-1\approx 0,9356$
+
+Somit liegt die Sicherheit dieses Konfidenzintervalls bei ca. 93,56\,\%.
+
+Toleranzintervall: $[93\,\%;\,94\,\%]$}
+\end{beispiel}

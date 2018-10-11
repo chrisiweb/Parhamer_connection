@@ -1,0 +1,90 @@
+\section{25 - MAT - AN 4.3, AN 1.3, AN 3.3, FA 2.3, AG 2.3, AN 4.3 - Bewegung eines Fahrzeugs - BIFIE Aufgabensammlung}
+
+\begin{langesbeispiel} \item[0] %PUNKTE DES BEISPIELS
+				Im Folgenden wird die Bewegung eines Fahrzeugs beschrieben:
+				
+In den ersten fünf Sekunden seiner Bewegung fährt es mit einer Momentangeschwindigkeit
+(in m/s), die durch die Funktion $v$ mit $v(t)=-0,8t²+8t$ (mit $t$ in Sekunden) modelliert werden
+kann. In den folgenden drei Sekunden sinkt seine Geschwindigkeit.\\
+Ab der achten Sekunde bewegt es sich mit einer konstanten Geschwindigkeit von 15\,m/s.
+Nach zehn Sekunden Fahrzeit erkennt der Lenker ein Hindernis in 90 m Entfernung und reagiert eine Sekunde später. Zu diesem Zeitpunkt beginnt er gleichmäßig zu bremsen und schafft
+es, rechtzeitig beim Hindernis anzuhalten.
+
+\subsection{Aufgabenstellung:}
+\begin{enumerate}
+	\item Interpretiere den Ausdruck $\int^5_0{v(t)}\,dt$ im Hinblick auf die Bewegung des Fahrzeugs!
+	
+	Gib die Bedeutung des Ausdrucks $\dfrac{\int^5_0{v(t)dt}-\int^2_0{v(t)dt}}{3}$ im vorliegenden Kontext an!
+	
+	\item Interpretiere den Wert $v'(3)$ im Zusammenhang mit der Bewegung des Fahrzeugs! Die Ableitungsfunktion $v'$ ist eine lineare Funktion.
+	
+	Bestimme ihren Anstieg und gib dessen Bedeutung im Hinblick auf die Bewegung des Fahrzeugs in den ersten fünf Sekunden an!
+	
+	\item Ermittle, nach wie vielen Sekunden das Fahrzeug eine Momentangeschwindigkeit von 20\,m/s erreicht!
+	
+	Beschreibe (verbal und/oder mithilfe einer Skizze) den Geschwindigkeitsverlauf in den ersten fünf Sekunden!
+	
+	\item Der Anhalteweg setzt sich aus dem Reaktionsweg und dem Bremsweg zusammen. Be-
+rechnen Sie die Zeit, die vom Einsetzen der Bremswirkung elf Sekunden nach Beginn der
+Bewegung bis zum Stillstand des Fahrzeugs verstreicht!
+
+Stellen Sie den Geschwindigkeitsverlauf ab dem Zeitpunkt $t=10$ in der angegebenen Ab-
+bildung graphisch dar und kennzeichnen Sie den Anhalteweg!\leer
+
+\begin{center}
+	\resizebox{1\linewidth}{!}{\psset{xunit=0.5cm,yunit=0.2cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-1.201022408958831,-2.7014408142981874)(22.75521309768611,29.51944091763475)
+\multips(0,0)(0,5.0){7}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,0)(22.75521309768611,0)}
+\multips(0,0)(1.0,0){24}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,0)(0,29.51944091763475)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=1.,Dy=5.,ticksize=-2pt 0]{->}(0,0)(0.,0.)(22.75521309768611,29.51944091763475)
+\antwort{\pspolygon[fillcolor=black,fillstyle=solid,opacity=0.100](10.,0.)(10.,15.)(11.,15.)(21.,0.)}
+\begin{scriptsize}
+\rput[tl](0.30848745021420937,28.184321508853){$v(t)$ in m/s}
+\rput[tl](21.117469166325495,1.6390368208288186){$t$ in s}
+\end{scriptsize}
+\end{pspicture*}}
+\end{center}
+						\end{enumerate}\leer
+				
+\antwort{\subsection{Lösungserwartung:}
+\begin{enumerate}
+	\item Das Integral $\int^5_0{v(t)}dt$ gibt die Länge des Weges in Metern an, den das Fahrzeug in den ersten fünf Sekunden seiner Bewegung zurücklegt.
+	
+	Anmerkung: Die Antwort muss die Einheit m und das Zeitintervall beinhalten.
+	
+	Der Ausdruck $\dfrac{\int^5_0{v(t)dt}-\int^2_0{v(t)dt}}{3}$ gibt die durchschnittliche Geschwindigkeit in m/s des Fahrzeugs im Zeitintervall $[2;5]$ an.
+	
+Anmerkung: Äquivalente Formulierungen sind zu akzeptieren.
+	
+	\item $v(t)=-0,8t²+8t$\\
+	$v'(t)=-1,6t+8$\\
+	$v'(3)=3,2$
+	
+	Die Beschleunigung 3 Sekunden nach dem Beginn der Bewegung beträgt 3,2\,m/$\text{s}²$.
+	
+Anmerkung: Der Zeitpunkt und der Begriff "`Beschleunigung"' müssen angegeben werden.
+
+Die Beschleunigung nimmt pro Sekunde um 1,6\,m/$\text{s}²$ ab.
+
+Anmerkung: Die Einheit m/$\text{s}²$ muss angegeben werden.
+
+\item $v(t)=-0,8t²+8t=20$\\
+$-0,8t²+8t-20=0$ \hspace*{1cm} $t_1=t_2=5$
+
+Die Geschwindigkeit steigt im gegebenen Zeitintervall an und erreicht nach 5 Sekunden ihr Maximum von 20 m/s.
+
+Skizzen von Parabeln, die diese Aussage belegen, und äquivalente Formulierungen sind ebenfalls
+als richtig zu werten.
+
+Anmerkung: Die Beantwortung der ersten Frage kann auch auf anderem Wege erfolgen. Somit
+kann daraus auch umgekehrt auf die Anzahl der Lösungen der quadratischen Gleichung, ohne diese zu lösen, geschlossen werden.
+
+\item $A=90=15\cdot 1+\frac{15\cdot t}{2}$
+
+Der Bremsweg wird in 10 Sekunden zurückgelegt.
+
+Graphik: siehe oben
+
+Auch andere Lösungswege (z.B. mit Formeln aus der Physik) sind zu akzeptieren.
+			\end{enumerate}}
+		\end{langesbeispiel}

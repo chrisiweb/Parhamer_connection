@@ -1,0 +1,202 @@
+\section{50 - MAT - AG 2.1, AN 1.3, AN 2.1, FA 2.2, FA 1.5 - Mehrkampf - Matura 2014/15 1. Nebentermin}
+
+\begin{langesbeispiel} \item[0] %PUNKTE DES BEISPIELS
+				
+				Für die beiden Leichtathletikwettbewerbe \textit{Zehnkampf der Männer} und \textit{Siebenkampf der Frauen} gibt es eine international gültige Punktewertung für Großveranstaltungen (Weltmeisterschaften, Olympische Spiele). Die Einzelbewerbe werden nach den unten angeführten Formeln bepunktet. Die Summe der Punkte der Einzelbewerbe ergibt die Gesamtpunkteanzahl, die ein Sportler bzw. eine Sportlerin beim Zehn- bzw. Siebenkampf erreicht.\leer
+				
+				Für die Errechnung der Punkte $P$ bei \underline{Laufwettberwerben} gilt:
+				
+				$P=a\cdot (b-M)^c$ für $M<b$, sonst $P=0$.\leer
+				
+				Für die Errechnung der Punkte $P$ bei \underline{Sprung- und Wurfwettbewerben} gilt:
+				
+				$P=a\cdot (M-b)^c$ für $M>b$, sonst $P=0$.\leer
+				
+				In beiden Formeln beschreibt $M$ die erzielte Leistung. Dabei werden Läufe in Sekunden, Sprünge in Zentimetern und Würfe in Metern gemessen. Die Parameter $a, b$ und $c$ sind vorgegebene Konstanten für die jeweiligen Sportarten. Die errechneten Punkte $P$ werden im Allgemeinen auf zwei Dezimalstellen gerundet.
+
+Aus den beiden folgenden Tabellen kann man die Werte der Parameter $a, b$ und $c$ entnehmen:
+
+Tabelle 1: Zehnkamp der Männer
+
+\begin{center}
+	\begin{tabular}{|l|l|c|c|c|}\cline{3-5}
+		\multicolumn{1}{c}{}&\multicolumn{1}{c}{}&\multicolumn{3}{|c|}{Parameter}\\ \cline{3-5}
+		\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&a&b&c\\ \hline
+		\multirow{11}{0.4cm}{$\rotatebox{90}{\text{Disziplin}}$}&100m&25,4347&18&1,81\\ \cline{2-5}
+		&400m&1,53775&82&1,81\\ \cline{2-5}
+		&1\,500m&0,03768&480&1,85\\ \cline{2-5}
+		&110m Hürden&5,74352&28,5&1,92\\ \cline{2-5}
+		&Weitsprung&0,14354&220&1,4\\ \cline{2-5}
+		&Hochsprung&0,8465&75&1,42\\ \cline{2-5}
+		&Stabhochsprung&0,2797&100&1,35\\ \cline{2-5}
+		&Kugelstoß&51,39&1,5&1,05\\ \cline{2-5}
+		&Diskurswurf&12,91&4&1,1\\ \cline{2-5}
+		&Speerwurf&10,14&7&1,08\\ \hline
+	\end{tabular}
+\end{center}
+
+Tabelle 1: Siebenkampf der Frauen
+
+\begin{center}
+	\begin{tabular}{|l|l|c|c|c|}\cline{3-5}
+		\multicolumn{1}{c}{}&\multicolumn{1}{c}{}&\multicolumn{3}{|c|}{Parameter}\\ \cline{3-5}
+		\multicolumn{1}{c}{}&\multicolumn{1}{c|}{}&a&b&c\\ \hline
+		\multirow{7}{0.4cm}{$\rotatebox{90}{\text{Disziplin}}$}&200m&4,99087&42,5&1,81\\ \cline{2-5}
+		&800m&0,11193&254&1,88\\ \cline{2-5}
+		&100\,m Hürden&9,23076&26,7&1,835\\ \cline{2-5}
+		&Weitsprung&0,188807&210&1,41\\ \cline{2-5}
+		&Hochsprung&1,84523&75&1,348\\ \cline{2-5}
+		&Kugelstoß&56,0211&1,5&1,05\\ \cline{2-5}
+		&Speerwurf&15,9803&3,8&1,04\\ \hline
+	\end{tabular}
+\end{center}
+
+\begin{scriptsize}Datenquelle: https://de.wikipedia.org/wiki/Punktewertung\_(Leichtathletik) [26.06.2015]\end{scriptsize}
+
+\subsection{Aufgabenstellung:}
+\begin{enumerate}
+	\item Am 1. Mai 1976 gelang dem US-Amerikaner Mac Wilkins der erste Diskuswurf über 70\,m. Wilkins erreichte eine Wurfweite von 70,24\,m, also $M=70,24$.
+	
+	\fbox{A} Berechne sein Punkteergebnis im Diskurswurf!
+	
+	Gib eine Bedeutung des Parameters $b$ der Punkteformel im Hinblick auf die erzielte Punktezahl für den Diskuswurf der Herren an!
+	
+\item Die Bulgarin Stefka Kostadinows übersprang am 30. August 1987 in Rom eine Höhe von 2,09\,m und hät seitdem den Hochsprung-Weltrekord. Die Funktion $P:M\mapsto P(M)$ beschreibt die Abhängigkeit der Punktezahl $P(M)$ von der Leistung $M$ bei Hochsprungleistungen.
+
+Berechne die Steigung der Tangente an die Funktion P bei dieser Weltrekordhöhe im Hochsprung! 
+ 
+Interpretiere den Wert der Steigung im gegebenen Kontext!
+
+\item Die folgende Grafik zeigt den funktionalen Zusammenhang $P_1(M)$ für den 100-m-Lauf beim Zehnkampf der Männer: 
+
+\begin{center}
+	\resizebox{0.6\linewidth}{!}{\psset{xunit=0.5cm,yunit=0.005cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=4pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-2.406315789473698,-244.5384615385219)(22.236140350877314,1790.0215384619548)
+\multips(0,0)(0,200.0){11}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,0)(22.236140350877314,0)}
+\multips(0,0)(2.0,0){13}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,0)(0,1790.0215384619548)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=2.,Dy=200.,ticksize=-2pt 0,subticks=2]{->}(0,0)(0.,0.)(22.236140350877314,1790.0215384619548)
+\psplot[linewidth=1.2pt,plotpoints=200]{-2.406315789473698}{18}{14.07*x^2-530.69*x+4993.59}
+\rput[tl](18.626666666666768,-97.8153846154106){$M$ in Sek.}
+\rput[tl](12.4,710){B=(12\,|\,651,45)}
+\rput[tl](9.6,1430){A=(9\,|\,1357,08)}
+\rput[tl](0.4,1657.9707692311547){$P_1(M)$}
+\rput[tl](13.4,220){$P_1$}
+\begin{scriptsize}
+\psdots[dotstyle=*](12.,651.45)
+\psdots[dotstyle=*](9.,1357.08)
+\end{scriptsize}
+\end{pspicture*}}
+\end{center}
+
+
+Näher den Graphen $P_1$ durch eine lineare Funktion an, deren Graph durch die Punkte $A$ und $B$ geht! Gib eine Gleichung dieser Näherungsfunktion an! 
+ 
+Gib an, wie viele Sekunden die Laufzeit  bei dieser Näherung betragen dürfte, um Punkte zu erhalten!  
+
+\item Die folgende Grafik zeigt den funktionalen Zusammenhang $P_2(M)$ für den 800-m-Lauf beim Siebenkampf der Frauen:
+
+\begin{center}
+	\resizebox{0.6\linewidth}{!}{\psset{xunit=0.02cm,yunit=0.002cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=4pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-40.95846153845711,-425.95936507939666)(379.796643356601,4418.090158730473)
+\multips(0,0)(0,500.0){10}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,0)(379.796643356601,0)}
+\multips(0,0)(50.0,0){9}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,0)(0,4418.090158730473)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=50.,Dy=500.,ticksize=-2pt 0,subticks=2]{->}(0,0)(0.,0.)(379.796643356601,4418.090158730473)
+\psplot[linewidth=1.2pt,plotpoints=200]{0}{241}{0.05317*x^2-28.4332*x+3761.99}
+\rput[tl](210,400){C=(200|202,23)}
+\rput[tl](160,880){B=(150|693,38)}
+\rput[tl](110,1634){A=(100|1450,39)}
+\rput[tl](40,3199){$P_2$}
+\begin{scriptsize}
+\rput[tl](5,4200){$P_2(M)$}
+\rput[tl](300,-270){M in Sek.}
+\psdots[dotstyle=*](100.,1450.39)
+\psdots[dotstyle=*](150.,693.38)
+\psdots[dotstyle=*](200.,202.23)
+\end{scriptsize}
+\end{pspicture*}}
+\end{center}
+
+
+ Berechne die mittlere Änderungsrate von $P_2$ sowohl zwischen den Stellen $M = 100$ und $M = 150$ als auch zwischen den Stellen $M = 150$ und $M = 200$ in Punkten pro Sekunde!
+ 
+Begründe anhand der Grafik, warum sich eine Änderung der Leistung bei besserer Leistung stärker auf die Punktezahl auswirkt als bei schwächerer Leistung!
+						\end{enumerate}\leer
+				
+\antwort{
+\begin{enumerate}
+	\item \subsection{Lösungserwartung:} 
+	
+	$P=12,91\cdot (70,24-4)^{1,1}\approx 1\,300,64$\leer
+	
+	Eine mögliche Interpretation bon $b$:
+	
+	$b$ beschreibt die (Mindest-)Leistung (Wurfweite), die übertroffen werden muss, um Punkte zu erhalten.
+		
+	\subsection{Lösungsschlüssel:}
+	\begin{itemize}
+		\item Ein Ausgleichspunkt für die richtige Lösung.  
+		
+		Toleranzintervall: $[1\,300; 1\,301]$ 
+		\item  Ein Punkt für eine (sinngemäß) korrekte Interpretation. Andere korrekte Interpretationen sind ebenfalls als richtig zu werten.
+	\end{itemize}
+	
+	\item \subsection{Lösungserwartung:}
+			
+		$P(M)=1,84523\cdot (M-75)^{1,348}$
+		
+		$P'(M)=2,48737004\cdot (M-75)^{0,348}$
+		
+		$P'(209)\approx 13,68$\leer
+		
+		Der Wert der Steigung dieser Tangente gibt näherungsweise an, um wie viel sich die Punktezahl bei dieser Leistung pro Zentimeter Sprunghöhenänderung verändert.
+
+	\subsection{Lösungsschlüssel:}
+	
+\begin{itemize}
+	\item  Ein Punkt für die richtige Lösung.  
+	
+	Toleranzintervall: $[13; 14]$ 
+	
+	Die Aufgabe ist auch dann als richtig gelöst zu werten, wenn bei korrektem Ansatz das Ergebnis aufgrund eines Rechenfehlers nicht richtig ist. 
+	\item Ein Punkt für eine (sinngemäß) korrekte Interpretation. Andere korrekte Interpretationen sind ebenfalls als richtig zu werten.
+\end{itemize}
+
+\item \subsection{Lösungserwartung:}
+
+	$P_{1,\text{linear}}(M)=-235,21\cdot M+3\,473,97$
+	
+	$P_{1,\text{linear}}(M)=0 \Rightarrow M\approx 14,77$\leer
+	
+	Um Punkte zu erhalten, dürfte die Laufzeit maximal 14,77 s betragen.
+	\subsection{Lösungsschlüssel:}
+	
+\begin{itemize}
+	\item Ein Punkt für eine korrekte Funktionsgleichung. Äquivalente Funktionsgleichungen sind ebenfalls als richtig zu werten. 
+	
+	Toleranzintervall für $k: [-236; -235]$ 
+	
+	Toleranzintervall für $d: [3\,473; 3\,474] $
+	\item Ein Punkt für die richtige Lösung, wobei die Einheit nicht angegeben werden muss.  
+	
+	Toleranzintervall: $[14,7\,s; 15\,s]$
+
+\end{itemize}
+
+\item \subsection{Lösungserwartung:}
+
+	mittlere Änderungsrate zwischen $M=100$ und $M=150:-15,14$ Punkte pro Sekunde 
+	
+	mittlere Änderungsrate zwischen $M=150$ und $M=200:-9,82$ Punkte pro Sekunde
+ 
+Da die Funktion linksgekrümmt ist, sind die Änderungsraten bei kürzeren Laufzeiten (betragsmäßig) größer als bei längeren Laufzeiten.
+	\subsection{Lösungsschlüssel:}
+	
+\begin{itemize}
+	\item   Ein Punkt für die korrekte Angabe beider Werte.  
+	
+	Toleranzintervalle: $[-16;-14]$ und $[-10;-9]$
+	\item Ein Punkt für eine (sinngemäß) korrekte Begründung. Andere korrekte Begründungen sind ebenfalls als richtig zu werten.
+
+\end{itemize}
+\end{enumerate}}
+		\end{langesbeispiel}

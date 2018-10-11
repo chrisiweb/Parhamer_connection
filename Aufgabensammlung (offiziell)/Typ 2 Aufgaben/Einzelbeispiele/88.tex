@@ -1,0 +1,155 @@
+\section{88 - MAT - AG 2.1, AG 4.1, AN 1.3, AN 2.1, AN 3.3 - Ansteigende Straße - Matura 2016/17 2. NT}
+
+\begin{langesbeispiel} \item[0] %PUNKTE DES BEISPIELS
+Ein Auto legt auf einem ansteigenden, kurvenfreien Straßenabschnitt in einem bestimmten Zeitintervall den Weg zwischen den Punkten $A$ und $B$ zurück. Der Höhenverlauf dieses Straßenabschnitts zwischen $A$ und $B$ bezogen auf das Niveau des Punktes $A$ wird durch den Graphen einer
+Polynomfunktion $h$ in Abhängigkeit von $x$ modelliert. Dabei ist $x$ die waagrechte Entfernung des (punktförmig modellierten) Autos vom Ausgangspunkt $A$ und $h(x)$ die jeweilige Höhe der Position des Autos über dem Niveau des Punktes $A$ ($h(x)$ in m, $x$ in m). In diesem Modell haben die Punkte
+$A$ und $B$ die Koordinaten $A = (0|0)$ und $B = (60|10)$.
+
+\begin{center}
+\resizebox{0.9\linewidth}{!}{
+\newrgbcolor{qqwuqq}{0. 0.39215686274509803 0.}
+\psset{xunit=0.2cm,yunit=0.3cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-7.9696919352131665,-2.474219379779093)(69.08039190510043,12.795706326755795)
+\multips(0,0)(0,10.0){2}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(-8,0)(69.08039190510043,0)}
+\multips(-5,0)(5.0,0){16}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,0)(0,12.795706326755795)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=5.,Dy=10.,ticksize=-2pt 0,subticks=2]{->}(0,0)(-7.9696919352131665,-2.474219379779093)(69.08039190510043,12.795706326755795)[x in m,140] [h(x) in m,-40]
+\psplot[linewidth=.8pt,plotpoints=200]{0}{60}{1.0/64800.0*(-x^(3.0)+120.0*x^(2.0)+7200.0*x)}
+\rput[tl](22.149886293273056,5.3){$h$}
+\begin{scriptsize}
+\psdots[dotsize=4pt 0,dotstyle=*,linecolor=black](0.,0.)
+\rput[bl](0.57586281798525,0.5377384430695321){$A$}
+\psdots[dotsize=4pt 0,dotstyle=*,linecolor=black](60.,10.)
+\rput[bl](60.53483715190201,10.554249342310307){$B$}
+\end{scriptsize}
+\end{pspicture*}}	
+\end{center}
+
+Eine Gleichung der Funktion $h$ lautet:
+
+\[h(x)=\frac{1}{64\,800}\cdot(-x^3+120\cdot x^2+7\,200\cdot x) \qquad \text{für } x\in [0; 60] \]
+
+\subsection{Aufgabenstellung:}
+
+\begin{enumerate}
+	\item Gib den Wert des Differenzenquotienten der Funktion $h$ im Intervall $[0; 60]$ an und interpretiere diesen Wert im gegebenen Kontext! \leer
+	
+Eine Person behauptet: "`Wenn ein (beliebiger) ansteigender Straßenabschnitt durch eine Polynomfunktion dritten Grades modelliert werden kann, deren Wendestelle im betreffenden
+Abschnitt liegt, so handelt es sich bei dieser Wendestelle um diejenige Stelle, an der die Straße am steilsten verläuft."'\leer
+
+Gib an, ob diese Behauptung mit Sicherheit zutrifft, und begründe deine Entscheidung!
+
+\item Ein Neubau der Straße ist geplant, wobei die Straße zwischen $A$ und $B$ nach dem Neubau
+eine konstante Steigung aufweisen soll.\leer
+
+ \fbox{A} Bestimme eine Gleichung der Funktion $h_1$, die den Verlauf der neuen Straße zwischen $A$ und $B$ beschreibt, wobei $h_1(x)$ wieder die Höhe (in m) der Position des Autos über
+dem Niveau des Punktes $A$ ist!\leer
+
+Berechne denjenigen Winkel $\alpha$, unter dem die neu gebaute Straße (bezüglich der Horizontalen) ansteigt!
+
+\item Bei einer Fahrt ins Gebirge entsteht ein unangenehmer Druck auf das Trommelfell, den viele Menschen als ein "`Verschlagen"' der Ohren beschreiben. Man kann annehmen, dass bei einer Person im Auto dieses unangenehme Druckgefühl auftritt, wenn die momentane Änderungsrate der Höhe einen Wert von 4\,m/s überschreitet. \leer
+
+Die Funktion $g$ mit $g(t)=\frac{1}{5}\cdot t^2+ t$ modelliert die Position des Autos über dem Niveau von $A$ während der Fahrt von $A = (0|0)$ nach $B = (60|10)$ in Abhängigkeit von der Zeit. Dabei beschreibt $g(t)$, in welcher Höhe sich das Auto zum Zeitpunkt $t$ befindet ($g(t)$ in Metern; $t$ in Sekunden gemessen ab dem Zeitpunkt, in dem sich das Auto im Punkt $A$ befindet).\leer
+
+Berechne, wie viele Sekunden die Fahrt von $A$ nach $B$ dauert!
+Gib an, ob die momentane Änderungsrate der Höhe während dieser Zeitspanne einen Wert von 4\,m/s überschreitet, und begründe deine Entscheidung!
+\end{enumerate}
+
+\antwort{\begin{enumerate}
+	\item \subsubsection{Lösungserwartung:}
+	
+	$\frac{h(60)-h(0)}{60-0}=\frac{10-0}{60}=\frac{1}{6}=0,1\dot{6}\approx 0,17$
+	
+	\subsubsection{Mögliche Interpretation:}
+	
+	Die Straße steigt von $A$ nach $B$ pro Meter in waagrechter Richtung im Mittel um ca. 17\,cm in senkrechter Richtung an.\leer
+	
+Die Behauptung trifft nicht zu.
+
+\subsubsection{Mögliche Begründung:}
+Die Wendestelle einer Funktion 3. Grades kann auch derjenigen Stelle entsprechen, an der der Anstieg minimal ist.
+
+\begin{center}
+\resizebox{0.7\linewidth}{!}{
+\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-0.5597505478996176,-0.34457176544976925)(6.389289121119028,3.3)
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=none,Dx=1.,Dy=1.,ticksize=0pt 0,subticks=2]{->}(0,0)(-0.5597505478996176,-0.34457176544976925)(6.389289121119028,3.0036018932592126)[x,140] [\text{f(x),g(x)},-40]
+\psplot[linewidth=1.2pt,plotpoints=200, linecolor=red]{0.3}{1.8}{COS(1.5*x-PI)+1.0}
+\psplot[linewidth=1.2pt,linestyle=dashed,dash=3pt 3pt,plotpoints=200, linecolor=red]{-0.5597505478996176}{2.5}{COS(1.5*x-PI)+1.0}
+\psplot[linewidth=1.2pt,plotpoints=200, linecolor=red]{3.1}{4.5}{(x-4.0)^(3.0)+0.2*x+0.2}
+\psplot[linewidth=1.2pt,linestyle=dashed,dash=3pt 3pt,plotpoints=200, linecolor=red]{-0.5597505478996176}{6.389289121119028}{(x-4.0)^(3.0)+0.2*x+0.2}
+\begin{scriptsize}
+\rput[tl](1.4996921176459084,2.232890220877145){$f$}
+\rput[tl](4.380384925893638,1.7401401352558232){$g$}
+\psdots[dotsize=4pt 0,dotstyle=*](1.05,1.0042036608246887)
+\rput[bl](1.1332882078249251,0.8304476694933828){$W_f$}
+\psdots[dotsize=4pt 0,dotstyle=*](3.9759794581635988,0.9951820321060361)
+\rput[bl](3.988711780912587,0.6){$W_g$}
+\end{scriptsize}
+\end{pspicture*}}
+\end{center}
+\color[rgb]{1,0,0}
+$W_f$\ldots Wendepunkt der Funktion $f$, in dem die Steigung der Tangente Maximal ist
+
+$W_g$\ldots Wendepunkt der Funktion $g$, in dem die Steigung der Tangente minimal ist.
+
+oder:
+
+$f(x)=x^3$\ldots Die Funktion $f$ hat eine Wendestelle, an der die Steigung der Tangente minimal ist.
+
+\subsubsection{Lösungsschlüssel:}
+
+\begin{itemize}
+	\item[-]  Ein Punkt für die richtige Lösung und eine korrekte Interpretation. Andere Schreibweisen der
+Lösung sind ebenfalls als richtig zu werten.
+
+Toleranzintervall: $[0,16; 0,17]$ bzw. $[16\,\%; 17\,\%]$.
+
+\item[-] Ein Punkt für die richtige Entscheidung und eine korrekte Begründung. Andere korrekte
+Begründungen sind ebenfalls als richtig zu werten.
+\end{itemize}
+
+\item \subsubsection{Lösungserwartung:}
+
+$h_1(x)=\frac{1}{6}\cdot x$
+
+$\tan(\alpha)=\frac{1}{6} \Rightarrow \alpha \approx 9,5^\circ$
+
+\subsubsection{Lösungsschlüssel:}
+
+\begin{itemize}
+	\item[-] Ein Ausgleichspunkt für eine korrekte Gleichung. Äquivalente Gleichungen sind als richtig zu
+werten.
+Toleranzintervall für den Wert der Steigung der linearen Funktion $h_1: [0,16; 0,17]$
+\item[-] Ein Punkt für die richtige Lösung, wobei die Einheit "`Grad"' nicht angeführt sein muss.
+Toleranzintervall: $[9^\circ; 10^\circ]$
+
+Eine korrekte Angabe der Lösung in einer anderen Einheit ist ebenfalls als richtig zu werten.
+\end{itemize}
+
+\item \subsubsection{Lösungserwartung:}
+
+$g(t)=10 \Leftrightarrow t^2+5\cdot t-50=0 \Rightarrow t_1=5, (t_2=-10)$
+
+Die Fahrt von $A$ nach $B$ dauert 5 Sekunden.\leer
+
+Die maximale momentane Änderungsrate der Höhe im Zeitintervall $[0\,\text{s}; 5\,\text{s}]$ beträgt 3\,m/s,
+also überschreitet die momentane Änderungsrate der Höhe während dieser Zeitspanne einen
+Wert von 4\,m/s nicht.
+
+Mögliche Begründung:
+
+$g'(t)=0,4\cdot t +1$
+
+Die momentane Änderungsrate der Höhe ist im Intervall $[0\,\text{s};5\,\text{s}]$ streng monoton steigend, also liegt ihr maximaler Wert an der Stelle $t=5$.
+
+$g'(5)=3$
+
+\subsubsection{Lösungsschlüssel:}
+
+\begin{itemize}
+	\item[-] Ein Punkt für die richtige Lösung, wobei die Einheit "`s"' nicht angeführt sein muss.
+	\item[-] Ein Punkt für die richtige Entscheidung und eine korrekte Begründung. Andere korrekte Begründungen sind ebenfalls als richtig zu werten.
+\end{itemize}
+
+\end{enumerate}}				
+\end{langesbeispiel}

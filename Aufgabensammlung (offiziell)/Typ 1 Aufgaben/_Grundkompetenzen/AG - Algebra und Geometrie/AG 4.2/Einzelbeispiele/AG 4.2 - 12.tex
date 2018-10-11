@@ -1,0 +1,46 @@
+\section{AG 4.2 - 12 Sinus und Cosinus - OA - Matura 17/18}
+
+\begin{beispiel}[AG 4.2]{1} %PUNKTE DES BEISPIELS
+Die nachstehende Abbildung zeigt einen Kreis mit dem Mittelpunkt $O$ und dem Radius 1. Die Punkte $A=(1\mid 0)$ und $P$ liegen auf der Kreislinie. Der eingezeichnete Winkel $\alpha$ wird vom Schenkel $OA$ zum Schenkel $OP$ gegen den Uhrzeigersinn gemessen.
+
+\begin{center}
+	\resizebox{0.5\linewidth}{!}{\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-4.96,-5.12)(5.8,5.48)
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=none,Dx=1.,Dy=1.,ticksize=0pt 0,subticks=0]{->}(0,0)(-4.96,-5.12)(5.8,5.48)[x,140] [y,-40]
+\pscircle[linewidth=2.pt](0.,0.){4.}
+\psline[linewidth=2.pt](0.,0.)(4.,0.)
+\psline[linewidth=2.pt](0.,0.)(-2.6549948621764563,2.9918225685719766)
+\rput[tl](-0.35,4.5){1}
+\rput[tl](4.2,-0.2){1}
+\rput[tl](-4.5,-0.2){-1}
+\rput[tl](0.2,-4.15){-1}
+\rput[tl](-0.28,-0.12){0}
+\rput[tl](4.15,0.4){A}
+\rput[tl](-2.95,3.5){P}
+\rput[bl](0.2,0.34){$\alpha$}
+\begin{scriptsize}
+\psdots[dotsize=6pt 0,dotstyle=*](0.,0.)
+\psdots[dotsize=6pt 0,dotstyle=*](4.,0.)
+\psdots[dotsize=6pt 0,dotstyle=*](-2.6549948621764563,2.9918225685719766)
+\end{scriptsize}
+\pscustom[linewidth=2.pt,linecolor=black,fillcolor=black,fillstyle=solid,opacity=0.2]{
+\parametricplot{0.0}{2.296615960957178}{1.*cos(t)+0.|1.*sin(t)+0.}
+\lineto(0,0)\closepath}
+
+\antwort{
+\parametricplot{-0.0}{1.5707963267948966}{0.6*cos(t)+-2.6549948621764563|0.6*sin(t)+0.}
+\psellipse*[linewidth=2.pt](-2.405427762934145,0.249567099242311)(0.05,0.05)
+\psline[linewidth=2.pt,linestyle=dashed,dash=2pt 2pt](-2.6549948621764563,-2.9918225685719766)(-2.6549948621764563,2.9918225685719766)
+\begin{scriptsize}
+\psdots[dotsize=6pt 0,dotstyle=*](-2.6549948621764563,-2.9918225685719766)
+\rput[tl](-2.9,-3.18){Q}
+\end{scriptsize}}
+\end{pspicture*}}
+\end{center}
+
+Ein Punkt $Q$ auf der Kreislinie soll in analoger Weise einen Winkel $\beta$ festlegen, für den folgende Beziehungen gelten:
+
+$\sin(\beta)=-\sin(\alpha)$ und $\cos(\beta)=\cos(\alpha)$
+
+Zeichne in der oben stehenden Abbildung den Punkt $Q$ ein!
+\end{beispiel}

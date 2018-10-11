@@ -1,0 +1,33 @@
+\section{AG 4.2 - 11 - MAT - Winkel im Einheitskreis - OA - Matura 2016/17 2. NT}
+
+\begin{beispiel}[AG 4.2]{1} %PUNKTE DES BEISPIELS
+In der nachstehenden Grafik ist ein Winkel $\alpha$ im Einheitskreis dargestellt. \leer
+
+Zeichne in der Grafik denjenigen Winkel $\beta$ aus dem Intervall $[0^\circ; 360^\circ]$ mit $\beta \neq \alpha$ ein, für den $\cos(\beta)=\cos(\alpha)$ gilt!
+
+\begin{center}
+\resizebox{0.6\linewidth}{!}{
+\newrgbcolor{qqwuqq}{0. 0.39215686274509803 0.}
+\psset{xunit=8.0cm,yunit=8.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-1.0944764443095287,-1.0673926369686)(1.1129793488358206,1.1353863430556763)
+\psaxes[labelFontSize=\scriptstyle,labels=none,xAxis=true,yAxis=true,Dx=1.,Dy=1.,ticksize=-2pt 0,subticks=2]{->}(0,0)(-1.0944764443095287,-1.0673926369686)(1.1129793488358206,1.1353863430556763)[x,140] [y,-40]
+\pscircle[linewidth=2.pt](0.,0.){8.}
+\antwort{\pscustom[linewidth=2.pt,linecolor=red,fillcolor=red,fillstyle=solid,opacity=0.1]{
+\parametricplot{0.0}{2.4958208303518914}{0.23384065605353277*cos(t)+0.|0.23384065605353277*sin(t)+0.}
+\lineto(0.,0.)\closepath}}
+\psline[linewidth=0.8pt](0.,0.)(-0.7986355100472928,-0.6018150231520483)
+\pscustom[linewidth=2.pt,linecolor=qqwuqq,fillcolor=qqwuqq,fillstyle=solid,opacity=0.1]{
+\parametricplot{0.0}{3.787364476827695}{0.14030439363211966*cos(t)+0.|0.14030439363211966*sin(t)+0.}
+\lineto(0.,0.)\closepath}
+\rput[tl](-0.95,-0.043170563454127495){-1}
+\rput[tl](0.95,-0.043170563454127495){1}
+\rput[tl](0.02,0.96){1}
+\rput[tl](0.02,-0.94){-1}
+\antwort{\psline[linewidth=0.8pt](-0.7986355100472929,0.6018150231520482)(0.,0.)
+\rput[bl](-0.24797326939574013,0.2561454762943941){\red{$\beta = 143^\circ$}}}
+\rput[bl](0.01860507850528722,0.03633525960407356){\qqwuqq{$\alpha$}}
+\end{pspicture*}}
+\end{center}
+
+\antwort{Toleranzintervall $[140^\circ; 146^\circ]$}
+\end{beispiel}

@@ -1,0 +1,100 @@
+\section{90 - MAT - AN 1.1, AN 3.3, AN 3.2, FA 2.1, FA 2.2, FA 5.3 - Hopfen - Matura 2017/18}
+
+\begin{langesbeispiel} \item[8] %PUNKTE DES BEISPIELS
+			Hopfen ist eine schnell wachsende Kletterpflanze. Die Modellfunktion $h:\mathbb{R}^+_0\rightarrow\mathbb{R}^+$ mit $h(t)=\dfrac{a}{1+b\cdot e^{k\cdot t}}$ mit $a,b\in\mathbb{R}^+, k\in\mathbb{R}^-$ gibt näherungsweise die Pflanzenhöhe einer bestimmten Hopfensorte zum Zeitpunkt $t$ an, wobei $h(t)$ in Metern und $t$ in Wochen angegeben wird.
+			
+			In der nachstehenden Tabelle sind die gemessenen Höhen einer Hopfenpflanze ab Anfang April $(t=0)$ zusammengefasst.
+			
+			\begin{center}
+				\begin{tabular}{|l|c|c|c|c|c|c|c|}\hline
+				\cellcolor[gray]{0.9}{Zeit (in Wochen)}&0&2&4&6&8&10&12\\ \hline
+				\cellcolor[gray]{0.9}{Höhe (in m)}&0,6&1,2&2,3&4,2&5,9&7,0&7,6\\ \hline
+				\end{tabular}
+			\end{center}
+			
+Anhand dieser Messwerte wurden für die Modellfunktion $h$ die Parameterwerte $a=8, b=15$ und $k=-0,46$ ermittelt.
+
+\subsection{Aufgabenstellung:}
+\begin{enumerate}
+	\item \fbox{A} Gib unter Verwendung der Modellfunktion $h$ einen Ausdruck an, mit dem berechnet werden kann, um wie viele Meter die Hopfenpflanze im Zeitintervall $[0;t_1]$ gewachsen ist!
+	
+	Berechne unter Verwendung der Modellfunktion $h$ mithilfe deines Ausdrucks, wie viele Meter die Pflanze in den ersten 10 Wochen gewachsen ist und gib die prozentuelle Abweichung vom tatsächlichen gemessenen Wert an!
+	
+	\item Wird das Wachstum der Pflanze mithilfe der Funktion $h$ modelliert, gibt es einen Zeitpunkt $t_2$, zu dem sie am schnellsten wächst. Gib eine Gleichung an, mit der dieser Zeitpunkt berechnet werden kann, und ermittle diesen Zeitpunkt!
+	
+	Berechne die zugehörige maximale Wachstumsgeschwindigkeit und skizziere im nachstehenden Koordinatensystem unter Berücksichtigung des von dir ermittelten Maximums den Verlauf des Graphen derjenigen Funktion $g$, die basierend auf der Modellfunktion $h$ die Wachstumsgeschwindigkeit der Hopfenplfanze in Abhängigkeit von $t$ beschreibt!	
+	
+		\begin{center}
+		\resizebox{0.8\linewidth}{!}{\psset{xunit=1.0cm,yunit=1.8cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-0.6,-0.5215426113581649)(12.94,3.544361011883063)
+\multips(0,0)(0,1.0){5}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=darkgray]{c-c}(0,0)(12.94,0)}
+\multips(0,0)(1.0,0){14}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=darkgray]{c-c}(0,0)(0,3.544361011883063)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=1.,Dy=1.,ticksize=-2pt 0,subticks=2]{->}(0,0)(0.,0.)(12.94,3.544361011883063)
+\antwort{\psplot[linewidth=2.pt,plotpoints=200]{0}{12.940000000000005}{276.0*2.718281828459045^(-23.0/50.0*x)/(1125.0*(2.718281828459045^(-23.0/50.0*x))^(2.0)+150.0*2.718281828459045^(-23.0/50.0*x)+5.0)}}
+\rput[tl](10.64,-0.33){$t$ in Wochen}
+\rput[tl](0.26,3.2995552963475965){$g(t)$ in Metern pro Woche}
+\end{pspicture*}}
+	\end{center}
+	
+\item Ermittle eine lineare Funktion $h_1$, deren Werte bei $t=0$ und $t=12$ mit den gemessenen Höhen aus der angegebenen Tabelle übereinstimmen, und interpretiere die Steigung dieser linearen Funktion im gegebenen Kontext!
+
+$h_1(t)=$\,\antwort[\rule{3cm}{0.3pt}]{$0,58\dot{3}\cdot t+0,6$}
+	
+Begründe anhand des Verlaufs der Graphen von $h$ und $h_1$, warum es mindestens zwei Zeitpunkte gibt, in denen die Wachstumsgeschwindigkeit der Pflanze denselben Wert hat wie die Steigung von $h_1$!
+
+\item Für größer werdende $t$ nähert sich $h(t)$ einem Wert an, der als $h_{\text{max}}$ bezeichnet wird. Weise anhand der gegebenen Funktionsgleichung der Modellfunktion $h$ rechnerisch nach, dass der Parameter $k$ (mit $k<0$) keinen Einfluss auf $h_{\text{max}}$ hat, und gib $h_{\text{max}}$ an!
+
+Günstige Witterungsverhältnisse können dazu führen, dass die Hopfenpflanze schneller und höher wächst, d.h., dass sie sich früher einem größeren Wert von $h_{\text{max}}$ annähert. Gib für ein derartiges Pflanzenwachstum an, wie $a$ und $k$ verändert werden müssen!
+
+	\end{enumerate}
+	
+	\antwort{
+\begin{enumerate}
+	\item \subsection{Lösungserwartung:} 
+
+Mögliche Ausdruck: $h(t_1)-h(0)$
+
+$h(10)-h(0)=6,45$
+
+Die Pflanze ist in den ersten 10 Wochen um ca. 6,45\,m gewachsen.\\
+Die mit der Modellfunktion $h$ berechnete Zunahme der Höhe der Pflanze im Zeitintervall $[0;10]$ ist um ca. 0,8\,\%größer als die in diesem Zeitintervall tatsächlich beobachtete Zunahme (6,4\,m)
+
+Toleranzintervall: $[6,4\,m;6,5\,m]$
+
+\item \subsection{Lösungserwartung:} 
+
+Mögliche Gleichung:
+$h''(t)=0\Rightarrow t_2$
+
+$t_2\approx 5,9$ Wochen Toleranzintervall: [5,4 Wochen; 6,3 Wochen]
+
+$h'(t)\approx 0,92$
+
+Die maximale Wachstumsgeschwindigkeit beträgt ca. 0,92 Meter pro Woche. Toleranzintervall: [0,90 Meter pro Woche; 1 Meter pro Woche]
+
+Graph: siehe oben!
+
+\item \subsection{Lösungserwartung:}
+
+$h_1$: siehe oben
+
+Mögliche Intepretation:
+
+Die Pflanze wächst in den ersten 12 Wochen durchschnittlich um ca. 58\,cm pro Woche. Toleranzintervall: $[0,58; 0,59]$
+
+Mögliche Begründung:
+
+Die Steigung von $h$ ist anfangs kleiner als jene von $h_1$, dann größer und dann wieder kleiner. Es gibt daher mindestens zwei Zeitpunkte, in denen sie gleich ist.
+
+\item \subsection{Lösungserwartung:}
+
+Möglicher Nachweis:
+
+Für alle $k<0$ gilt: $\lim\limits_{t \rightarrow \infty}{h(t)=\frac{a}{1+b\cdot 0}=a}$, also ist $h_{\text{max}}$ unabhängig von $k$.
+
+$h_{\text{max}}=a$\leer
+
+Für das beschriebene Pflanzenwachstum muss $a$ vergrößert werden und $k$ verkleinert werden.
+\end{enumerate}}
+	
+	\end{langesbeispiel}

@@ -1,0 +1,40 @@
+\section{AN 3.3 - 23 Graph einer Ableitungsfunktion - MC - Matura 2014/15 - Haupttermin}
+
+\begin{beispiel}[AN 3.3]{1} %PUNKTE DES BEISPIELS
+Die nachstehende Abbildung zeigt den Graphen der Ableitungsfunktion $f'$ mit $f'(x)=\frac{1}{4}\cdot x^2 - \frac{1}{2}\cdot x -2$ einer Polynomfunktion $f$.\leer
+
+\begin{center}
+\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-4.32,-4.32)(5.52,4.48)
+\multips(0,-4)(0,1.0){9}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(-4.32,0)(5.52,0)}
+\multips(-4,0)(1.0,0){10}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,-4.32)(0,4.48)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=1.,Dy=1.,ticksize=-2pt 0,subticks=2]{->}(0,0)(-4.32,-4.32)(5.52,4.48)[$x$,140] [$f'(x)$,-40]
+\psplot[linewidth=1.2pt,plotpoints=200]{-4.32}{5.519999999999995}{1.0/4.0*x^(2.0)-1.0/2.0*x-2.0}
+\rput[tl](3.5,-0.9){$f'$}
+\end{pspicture*}
+\end{center}
+
+\leer
+
+Welche der folgenden Aussagen über die Funktion $f$ sind richtig? \\
+Kreuze die beiden zutreffenden Aussagen an.
+
+\multiplechoice[5]{  %Anzahl der Antwortmoeglichkeiten, Standard: 5
+				L1={Die Funktion $f$ hat im Intervall $[-4; 5]$ zwei lokale Extremstellen. },   %1. Antwortmoeglichkeit 
+				L2={Die Funktion $f$ ist im Intervall $[1; 2]$ monoton steigend.},   %2. Antwortmoeglichkeit
+				L3={Die Funktion $f$ ist im Intervall $[-4; -2]$ monoton fallend. },   %3. Antwortmoeglichkeit
+				L4={Die Funktion $f$ ist im Intervall $[-4; 0]$ linksgekrümmt \\
+(d.h. $f''(x) > 0$ für alle $x \in [-4; 0]$).},   %4. Antwortmoeglichkeit
+				L5={Die Funktion $f$ hat an der Stelle $x = 1$ eine Wendestelle. },	 %5. Antwortmoeglichkeit
+				L6={},	 %6. Antwortmoeglichkeit
+				L7={},	 %7. Antwortmoeglichkeit
+				L8={},	 %8. Antwortmoeglichkeit
+				L9={},	 %9. Antwortmoeglichkeit
+				%% LOESUNG: %%
+				A1=1,  % 1. Antwort
+				A2=5,	 % 2. Antwort
+				A3=0,  % 3. Antwort
+				A4=0,  % 4. Antwort
+				A5=0,  % 5. Antwort
+				}
+\end{beispiel}

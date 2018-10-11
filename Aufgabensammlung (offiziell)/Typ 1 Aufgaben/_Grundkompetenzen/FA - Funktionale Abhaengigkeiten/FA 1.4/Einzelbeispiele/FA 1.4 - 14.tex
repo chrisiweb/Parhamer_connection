@@ -1,0 +1,23 @@
+\section{FA 1.4 - 13 Nullstellen - OA - CW}
+
+\begin{beispiel}[FA 1.4]{2} %PUNKTE DES BEISPIELS
+Gegeben ist der Graph der reellen Funktion $R$.
+
+\begin{center}
+\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-6.84,-3.56)(4.22,3.88)
+\multips(0,-3)(0,1.0){8}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(-6.84,0)(4.22,0)}
+\multips(-6,0)(1.0,0){12}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,-3.56)(0,3.88)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=1.,Dy=1.,ticksize=-2pt 0,subticks=2]{->}(0,0)(-6.84,-3.56)(4.22,3.88)[$m$,140] [$R(m)$,-40]
+\psplot[linewidth=0.8pt,plotpoints=200]{-6.840000000000003}{4.220000000000002}{-0.026785714285714284*x^(4.0)-0.13392857142857142*x^(3.0)+0.32142857142857145*x^(2.0)+0.9642857142857143*x}
+\begin{scriptsize}
+\rput[bl](-6.28,-3.46){$R$}
+\end{scriptsize}
+\end{pspicture*}
+\end{center}
+
+Bestimme alle Argumente $m$ mit \mbox{$R(m)=0$}.\leer
+
+\antwort{$m=-6, m=-2, m=0, m=3$}	
+			
+\end{beispiel}

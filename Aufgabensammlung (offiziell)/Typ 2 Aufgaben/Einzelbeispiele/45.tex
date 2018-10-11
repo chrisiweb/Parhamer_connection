@@ -1,0 +1,77 @@
+\section{45 - MAT - AN 3.3, AN 1.3, AN 1.2 - 200-m-Lauf - Matura 2014/15 Haupttermin}
+
+\begin{langesbeispiel} \item[0] %PUNKTE DES BEISPIELS
+				 In der Leichtathletik gibt es für Läufer/innen spezielle Trainingsmethoden. Dazu werden Trainingspläne erstellt. Es ist dabei sinnvoll, bei Trainingsläufen Teilzeiten zu stoppen, um Stärken und Schwächen der Läuferin/des Läufers zu analysieren.
+				
+				Zur Erstellung eines Trainingsplans für eine Läuferin wurden die Teilzeiten während eines Trainingslaufs gestoppt. Für die 200 Meter lange Laufstrecke wurden bei diesem Trainingslauf 26,04 Sekunden gemessen. Im nachstehenden Diagramm ist der zurückgelegte Weg $s(t)$ in Abhängigkeit von der Zeit $t$ für diesen Trainingslauf mithilfe einer Polynomfunktion $s$ vom Grad 3 modellhaft dargestellt. 
+				
+Für die Funktion s gilt die Gleichung $s(t)=-\frac{7}{450}t^3+0,7t²$ ($s(t)$ in Metern, $t$ in Sekunden).
+
+\begin{center}
+	\resizebox{1\linewidth}{!}{\psset{xunit=0.5cm,yunit=0.03cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=4pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-1.3003333333333276,-15.000024096443592)(27.03033333333324,215.60051951932385)
+\multips(0,0)(0,20.0){12}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,0)(27.03033333333324,0)}
+\multips(0,0)(2.0,0){15}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,0)(0,215.60051951932385)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=2.,Dy=20.,ticksize=-2pt 0,subticks=2]{->}(0,0)(0.,0.)(27.03033333333324,215.60051951932385)
+\psplot[linewidth=1.2pt,plotpoints=200]{0}{26}{(-7)/450*x^(3)+0.7*x^(2)}
+\rput[tl](13.88866666666662,110.800266988595){s}
+\rput[tl](0.525666666666666,207.20049927831124){$s(t)$ in m}
+\rput[tl](23.508666666666578,13.600023132585848){$t$ in s}
+\end{pspicture*}}
+\end{center}
+
+\subsection{Aufgabenstellung:}
+\begin{enumerate}
+	\item Berechne die Wendestelle der Funktion $s$!
+	
+	Interpretiere die Bedeutung der Wendestelle in Bezug auf die Geschwindigkeit der Läuferin!
+
+\item \fbox{A} Bestimme die mittlere Geschwindigkeit der Läuferin für die 200 Meter lange Laufstrecke in Metern pro Sekunde!
+
+Der Mittelwertsatz der Differenzialrechnung besagt, dass unter bestimmten Voraussetzungen in einem Intervall $[a;b]$ für eine Funktion $f$ mindestens ein $x_0\in(a;b)$ existiert, sodass $f'(x_0)=\frac{f(b)-f(a)}{b-a}$ gilt. Interpretiere diese Aussage im vorliegenden Kontext für die Funktion $s$ im Zeitintervall $[0;26,04]$!
+						\end{enumerate}\leer
+				
+\antwort{
+\begin{enumerate}
+	\item \subsection{Lösungserwartung:} 
+	
+		$s''(t)=-\frac{7}{75}\cdot t+1,4$
+		
+		$s'''(t)=-\frac{7}{75}$
+		
+		$s''(t)=0 \Leftrightarrow t=15$
+		
+		$s'''(15)=-\frac{7}{75}\neq 0$
+		
+		Mögliche Interpretation:
+		
+		Nach ca. 15 Sekunden erreicht die Läuferin ihre Höchstgeschwindigkeit.
+		
+		oder:
+		
+		Bis zum Zeitpunkt $t=15$ Sekunden nimmt die Geschwindigkeit der Läuferin zu.
+	 	
+	\subsection{Lösungsschlüssel:}
+	\begin{itemize}
+		\item  Ein Punkt für die richtige Lösung, wobei der Nachweis, dass bei $t = 15$ eine Wendestelle vorliegt (z. B. durch $s'''(15)\neq 0$), nicht angeführt werden muss. Toleranzintervall für $t: [14; 16]$ 
+		
+		Die Aufgabe ist auch dann als richtig gelöst zu werten, wenn bei korrektem Ansatz das Ergebnis aufgrund eines Rechenfehlers nicht richtig ist. 
+		\item  Ein Punkt für eine (sinngemäß) korrekte Interpretation.
+	\end{itemize}
+	
+	\item \subsection{Lösungserwartung:}
+			
+		$\frac{200}{26,04}\approx 7,68$
+		
+		Die mittlere Geschwindigkeit beträgt ca. $7,68\,m/s$.
+		
+		Es gibt mindestens einen Zeitpunkt, für den die Momentangeschwindigkeit der Läuferin gleich der mittleren Geschwindigkeit für die gesamte Laufstrecke ist.		
+	\subsection{Lösungsschlüssel:}
+	
+\begin{itemize}
+	\item   Ein Ausgleichspunkt für die richtige Lösung, wobei die Einheit nicht angeführt werden muss. Toleranzintervall: $[7,6; 7,7]$.
+	\item Ein Punkt für eine (sinngemäß) korrekte Interpretation.
+\end{itemize}
+
+\end{enumerate}}
+		\end{langesbeispiel}

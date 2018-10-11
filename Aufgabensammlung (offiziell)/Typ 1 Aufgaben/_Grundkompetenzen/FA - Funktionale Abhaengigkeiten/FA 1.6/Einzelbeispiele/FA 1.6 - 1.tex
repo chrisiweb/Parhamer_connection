@@ -1,0 +1,46 @@
+\section{FA 1.6 - 1 Schnittpunkte - MC - BIFIE}
+
+\begin{beispiel}[FA 1.6]{1} %PUNKTE DES BEISPIELS
+In der nachstehenden Abbildung sind die Graphen zweier Funktionen mit den Gleichungen $f_1(x)=\frac{a}{x} ~,a>1$ und $f_2=\frac{a}{x^2} ~,a>1$ dargestellt.
+
+\begin{center}
+\newrgbcolor{wwwwww}{0.4 0.4 0.4}
+\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-3.600230956701424,-3.9393641070667043)(4.726618633579011,3.9890716272194457)
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=none,Dx=1.,Dy=1.,ticksize=0pt 0,subticks=0]{->}(0,0)(-3.600230956701424,-3.9393641070667043)(4.726618633579011,3.9890716272194457)
+\psplot[linewidth=1.2pt,plotpoints=200]{-3.600230956701424}{-0.0000001}{1.0/x}
+\psplot[linewidth=1.2pt,plotpoints=200]{0.0000001}{4.726618633579011}{1.0/x}
+\psplot[linewidth=1.2pt,linestyle=dashed,dash=5pt 5pt,linecolor=wwwwww,plotpoints=200]{-3.600230956701424}{4.726618633579011}{1.0/x^(2.0)}
+\rput[tl](-0.014506252752911581,2.8735128304354647){$f_1$}
+\rput[tl](-1.209747820735749,-1.2500705791053217){$f_1$}
+\rput[tl](0.7624007664359328,2.3555748176429026){$f_2$}
+\rput[tl](-1.3691133631334607,1.8376368048503398){$f_2$}
+\begin{scriptsize}
+\psdots[dotsize=3pt 0,dotstyle=*,linecolor=darkgray](1.,1.)
+\rput[bl](1.2006560080296398,1.060729785661496){\darkgray{$S$}}
+\end{scriptsize}
+\end{pspicture*}
+\end{center}
+
+Welcher der unten angegebenen Punkte gibt die Koordinaten des Schnittpunktes korrekt an? \\
+Kreuze den zutreffenden Punkt an!
+
+\multiplechoice[6]{  %Anzahl der Antwortmoeglichkeiten, Standard: 5
+				L1={$S=(1|1)$},   %1. Antwortmoeglichkeit 
+				L2={$S=(a|1)$},   %2. Antwortmoeglichkeit
+				L3={$S=(1|a)$},   %3. Antwortmoeglichkeit
+				L4={$S=(a|a)$},   %4. Antwortmoeglichkeit
+				L5={$S=(0|a)$},	 %5. Antwortmoeglichkeit
+				L6={$S=\left(1|\frac{1}{a}\right)$},	 %6. Antwortmoeglichkeit
+				L7={},	 %7. Antwortmoeglichkeit
+				L8={},	 %8. Antwortmoeglichkeit
+				L9={},	 %9. Antwortmoeglichkeit
+				%% LOESUNG: %%
+				A1=3,  % 1. Antwort
+				A2=0,	 % 2. Antwort
+				A3=0,  % 3. Antwort
+				A4=0,  % 4. Antwort
+				A5=0,  % 5. Antwort
+				}
+
+\end{beispiel}

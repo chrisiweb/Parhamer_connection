@@ -1,0 +1,89 @@
+\section{93 - FA 4.3, AN 3.3, AN 3.2, AG 2.3 - Quadratische Funktion - Matura - 1. NT 2017/18}
+
+\begin{langesbeispiel} \item[1] %PUNKTE DES BEISPIELS
+Der Graph einer Polynomfunktion $f$ zweiten Grades schneidet die positive senkrechte Achse im Punkt $A=(0\mid y_A)$ und hat mit der positiven $x$-Achse den Punkt $B=(x_B\mid 0)$ gemeinsam, wobei $B$ ein Extrempunkt von $f$ ist.\\
+Die Funktion $f$ ist von der Form $f(x)=\frac{1}{4}\cdot x^2+b\cdot x+c$ mit $b,c\in\mathbb{R}$.
+
+\subsection{Aufgabenstellung:}
+\begin{enumerate}
+	\item \fbox{A} Gib an, ob $c$ größer als null, gleich null oder kleiner als null sein muss, und begründe deine Entscheidung!
+	
+	Gib an, ob $b$ größer als null, gleich null oder kleiner als null sein muss, und begründe deine Entscheidung!
+	
+	\item Gegeben ist folgende Aussage: "`Der Punkt $B$ ist ein Schnittpunkt der Graphen der Funktion $f$ und ihre Ableitungsfunktion $f'$."' Gib an, ob diese Aussage wahr oder falsch ist, und begründe deine Entscheidung!
+	
+	Es gibt für alle Werte von $b$ genau eine Stelle $x_t$ mit folgender Eigenschaft: An der Stelle $x_t$ haben $f$ und $f'$ die gleiche Steigung. Gib diese Stelle $x_t$ in Abhängigkeit von $b$ an!
+	
+	\item Gib an, welcher Zusammenhang zwischen $b$ und $c$ bestehen muss, damit die Extremstelle $x_B$ von $f$ auch Nullstelle von $f$ ist!
+	
+	Gib die Koeffizienten $b$ und $c$ der Funktion $f$ in Abhängigkeit von $x_B$ an!		
+\end{enumerate}
+
+\antwort{
+\begin{enumerate}
+	\item \subsection{Lösungserwartung:}
+	
+$c>0$
+
+Mögliche Begründung:\\
+Der Punkt $A=(0\mid y_A)$ liegt auf der positiven senkrechten Achse, daher ist $y_A=f(0)>0$.\\
+Da $c=f(0)$ ist, muss $c>0$ sein.
+
+oder:\\
+Der Parameter $c$ legt fest, in welchem Punkt der Graph von $f$ die senkrechte Achse schneidet.\\
+Da dieser Schnittpunkt auf der positiven senkrechten Achse liegt, muss $c>0$ gelten.
+
+$b<0$
+
+Mögliche Begründung:\\
+Der Punkt $B$ ist ein Extrempunkt von $f$. Da $B$ auf der positiven $x$-Achse liegt, muss seine $x$-Koordinate $x_B$ positiv sein. Die Extremstelle $x_E=x_B$ der Funktion $f$ ergibt sich aus dem Ansatz:\\
+$f'(x_E)=0 \Leftrightarrow x_E=-2\cdot b$.\\
+Wegen $x_E=-2\cdot b>0$ muss $b<0$ gelten.
+
+oder:\\
+Da aus $f'(x)=\frac{1}{2}\cdot x+b$ folgt, dass $f'(0)=b$ ist, und da $f$ für $(-\infty;x_E)$ mit $x_E>0$ streng monoton fallend ist, folgt $f'(0)<0$ und somit gilt: $f'(0)=b<0$.
+
+oder:\\
+Angenommen, es würde $b\geq 0$ gelten. Wegen $c>0$ ergibt sich: $\frac{1}{4}\cdot x^2+c>0$ für alle $x\in\mathbb{R}$.
+
+Somit würde für alle $x>0$ auch $\frac{1}{4}\cdot x^2+b\cdot x+c>0$ gelten. Dies stellt aber einen Widerspruch dazu dar, dass ein Berührpunkt mit der positiven $x$-Achse existiert. Folglich muss $b<0$ gelten.
+
+\subsection{Lösungsschlüssel:}
+- Ein Ausgleichspunkt für die Angabe von $c>0$ und eine korrekte Begründung.\\
+- Ein Punkt für die Angabe von $b<0$ und eine korrekte Begründung. Andere korrekte Begründungen sind ebenfalls als richtig zu werten.
+
+\item \subsection{Lösungserwartung:}
+
+Die Aussage ist wahr.
+
+Mögliche Begründung:\\
+Da $B=(x_B\mid 0)$ ein Extrempunkt von $f$ ist, gilt $f'(x_B)=0$. Weil auch $f(x_B)=0$ ist, ist der Punkt $B$ ein Schnittpunkt der Graphen von $f$ und $f'$.
+
+oder:\\
+An einer Stelle, wo die Funktion $f$ eine Extremstelle hat, weist $f'$ eine Nullstelle auf. Da die Extremstelle von $f$ im gegebenen Fall eine Nullstelle ist, haben $f$ und $f'$ die gleiche Nullstelle und somit im Punkt $B$ einen Schnittpunkt.
+
+Mögliche Vorgehensweise:\\
+$f'(x)=\frac{1}{2}\cdot x+b \Rightarrow$ Die Steigung der Ableitungsfunktion $f'$ ist $\frac{1}{2}$.\\
+$f'(x_t)=\frac{1}{2}\cdot x_t+b=\frac{1}{2} \Rightarrow x_t=1-2\cdot b$
+
+\subsection{Lösungsschlüssel:}
+- Ein Punkt für die Angabe, dass die Aussage wahr ist, und eine korrekte Begründung.\\
+- Ein Punkt für die richtige Lösung. Äquivalente Ausdrücke sind als richtig zu werten.
+
+\item \subsection{Lösungserwartung:}
+
+Mögliche Vorgehensweise:\\
+Wenn die Extremstelle von $f$ auch Nullstelle von $f$ ist, hat die Gleichung $\frac{1}{4}\cdot x^2+b\cdot x+c=0$ genau eine Lösung.
+
+$x_{1,2}=\dfrac{-b\pm\sqrt{b^2-4\cdot 0,25\cdot c}}{0,5} \Rightarrow c=b^2$
+
+Mögliche Vorgehensweise:\\
+$f'(x_B)=\frac{1}{2}\cdot x_B+b=0 \Rightarrow b=\frac{-x_B}{2}$\\
+Aus $c=b^2$ folgt: $c=\frac{x_B^2}{4}$.
+
+\subsection{Lösungsschlüssel:}
+- Ein Punkt für einen korrekten Zusammenhang zwischen $b$ und $c$. Andere korrekte Zusammenhänge sind ebenfalls als richtig zu werten.\\
+- Ein Punkt für die korrekte Angabe der Koeffizienten $b$ und $c$ in Abhängigkeit von $x_B$.
+
+\end{enumerate}}
+\end{langesbeispiel}

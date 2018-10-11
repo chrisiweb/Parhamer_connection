@@ -1,0 +1,41 @@
+\section{AN 3.2 - 10 Eigenschaften der Ableitungsfunktion einer Polynomfunktion 3.Grades - OA - Matura 2014/15 - Nebentermin 2}
+
+\begin{beispiel}[AN 3.2]{1} %PUNKTE DES BEISPIELS
+				Die nachstehende Abbildung zeigt den Graphen einer Polynomfunktion $f$ dritten Grades. Die Koordinaten der hervorgehobenen Punkte des Graphen der Funktion sind ganzzahlig.
+				\begin{center}
+					\resizebox{0.6\linewidth}{!}{\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-3.3,-1.6)(3.8,5.7)
+\multips(0,-1)(0,1.0){8}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(-3.3,0)(3.8,0)}
+\multips(-3,0)(1.0,0){8}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,-1.6)(0,5.7)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=1.,Dy=1.,ticksize=-2pt 0,subticks=2]{->}(0,0)(-3.3,-1.6)(3.8,5.7)[x,140] [f(x),-40]
+\psplot[linewidth=1.2pt,plotpoints=200]{-3.300000000000001}{3.8000000000000016}{x^(3.0)-3.0*x^(2.0)+4.0}
+\begin{scriptsize}
+\psdots[dotsize=3pt 0,dotstyle=*](-1.,0.)
+\psdots[dotsize=3pt 0,dotstyle=*](0.,4.)
+\psdots[dotsize=3pt 0,dotstyle=*](1.,2.)
+\psdots[dotsize=3pt 0,dotstyle=*](2.,0.)
+\rput[bl](-1.28,-0.04){$f$}
+\end{scriptsize}
+\end{pspicture*}}
+				\end{center}
+				
+				Welche der folgenden Aussagen treffen auf die Ableitungsfunktion $f'$ der Funktion $f$ zu? Kreuze die beiden zutreffenden Aussagen an.
+				
+				\multiplechoice[5]{  %Anzahl der Antwortmoeglichkeiten, Standard: 5
+								L1={Die Funktionswerte der Funktion $f'$ sind im Intervall $(0;2)$ negativ.},   %1. Antwortmoeglichkeit 
+								L2={Die Funktion $f'$ ist im Intervall $(-1;0)$ streng monoton steigend.},   %2. Antwortmoeglichkeit
+								L3={Die Funktion $f'$ hat an der Stelle $x=2$ eine Wendestelle.},   %3. Antwortmoeglichkeit
+								L4={Die Funktion $f'$ hat an der Stelle $x=1$ ein lokales Maximum.},   %4. Antwortmoeglichkeit
+								L5={Die Funktion $f'$ hat an der Stelle $x=0$ eine Nullstelle.},	 %5. Antwortmoeglichkeit
+								L6={},	 %6. Antwortmoeglichkeit
+								L7={},	 %7. Antwortmoeglichkeit
+								L8={},	 %8. Antwortmoeglichkeit
+								L9={},	 %9. Antwortmoeglichkeit
+								%% LOESUNG: %%
+								A1=1,  % 1. Antwort
+								A2=5,	 % 2. Antwort
+								A3=0,  % 3. Antwort
+								A4=0,  % 4. Antwort
+								A5=0,  % 5. Antwort
+								}
+\end{beispiel}

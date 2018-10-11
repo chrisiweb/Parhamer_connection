@@ -1,0 +1,51 @@
+\section{WS 3.4 - 4 - MAT - Rosenstöcke - OA - Matura 2016/17 2. NT}
+
+
+\begin{langesbeispiel} \item[0] %PUNKTE DES BEISPIELS
+Ein bestimmter Prozentsatz der Stöcke einer Rosensorte bringt gelbe Blüten hervor.
+
+In einem Beet wird eine gewisse Anzahl an Rosenstöcken dieser Sorte gepflanzt. Die Zufallsvariable $X$ ist binomialverteilt und gibt die Anzahl der gelbblühenden Rosenstöcke an. Dabei beträgt der Erwartungswert für die Anzahl $X$ der gelbblühenden Rosenstöcke 32, und die Standardabweichung hat den Wert 4.
+
+Es wird folgender Vergleich angestellt:
+"`Die Wahrscheinlichkeit, dass sich in diesem Beet mindestens 28 und höchstens 36 gelbblühende Rosenstöcke befinden, ist größer als die Wahrscheinlichkeit, dass mehr als 32 gelbblühende Rosenstöcke vorhanden sind."'
+
+Gib an, ob dieser Vergleich zutrifft, und begründe deine Entscheidung!\leer
+
+\antwort{Der Vergleich trifft zu.\leer
+
+Mögliche Begründung:
+
+Erwartungswert: $\mu=32$, Standardabweichung: $\sigma=0,4$ unter Einbeziehung der Wahrscheinlichkeiten für $\sigma$-Umgebungen (bei Approximation durch die normalverteilte Zufallsvariable $Y$):
+
+$P(28\leq X\leq 36)\approx P(\mu-\sigma\leq Y\leq \mu+\sigma)\approx 0,683$
+
+$P(X>32)\approx P(Y>\mu)=0,5$ $\Rightarrow$ $P(28\leq X\leq 36)>P(X>32)$\leer
+
+Weitere Begründungsvarianten:
+
+$n$ ... Anzahl der Rosenstöcke
+$p$ ... Wahrscheinlichkeit für einen gelbblühenden Rosenstock
+
+$\mu=32=n\cdot p, \sigma^2=16=n\cdot p\cdot (1-p)\Rightarrow n=64,\, p=0,5$
+
+\begin{itemize}
+	\item mittels Binomialverteilung:
+	
+	$P(28\leq X\leq 36)\approx 0,7396$
+	
+	$P(X>32)\approx 0,4503$ $\Rightarrow$ $P(28\leq X\leq 36)>P(X>32)$
+	
+	\item mittels Approximation mit Stetigkeitskorrektur durch die normalverteilte Zufallsvariable $Y$:
+	
+	$P(28\leq X\leq 36)\approx P(27,5\leq Y\leq 36,5)\approx 0,7394$
+	
+	$P(X>32)\approx P(Y>32,5)\approx 0,4503$ $\Rightarrow$ $P(28\leq X\leq 36)>P(X>32)$
+	
+	\item mittels Approximation ohne Stetigkeitskorrektur durch die normalverteilte Zufallsvariable $Y$:
+	
+	$P(28\leq X\leq 36)\approx P(28\leq Y\leq 36)\approx 0,6827$
+	
+	$P(X>32)\approx P(Y>32)\approx 0,5$ $\Rightarrow$ $P(28\leq X\leq 36)>P(X>32)$
+\end{itemize}
+}
+\end{langesbeispiel}

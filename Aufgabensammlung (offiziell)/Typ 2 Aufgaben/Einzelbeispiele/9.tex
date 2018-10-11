@@ -1,0 +1,80 @@
+\section{09 - MAT - AG 2.3, FA 1.4, FA 1.6, FA 1.7, FA 2.3 - Gewinnfunktion - BIFIE Aufgabensammlung}
+
+\begin{langesbeispiel} \item[0] %PUNKTE DES BEISPIELS
+				In einem Unternehmen werden die Entwicklungen der Kosten $K$ und des Erlöses $E$ in Geldeinheiten $(GE)$ bei variabler Menge $x$ in Mengeneinheiten (ME) beobachtet. Als Modellfunktionen werden die Erlösfunktion $E$ mit \mbox{$E(x)=-0,05\cdot x²+1,5\cdot x$} und eine Kostenfunktion $K$ mit $K(x)=0,3\cdot x+5,4$ angewendet. Alle produzierten Mengeneinheiten werden vom Unternehmen abgesetzt.
+				
+\subsection{Aufgabenstellung:}
+\begin{enumerate}
+	\item Berechne die Koordinaten der Schnittpunkte der Funktionsgraphen von $E$ und $K$! Beschreibe, welche Informationen die Koordinaten dieser Schnittpunkte für den Gewinn des Unternehmens liefern!
+	
+	\item Zeichne den Graphen der Gewinnfunktion $G$ in die untenstehende Abbildung ein! Markiere in der Abbildung den Gewinn im Erlösmaximum!
+	\leer
+	
+	\psset{xunit=0.3cm,yunit=0.6cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-3.6642696629213383,-6.136216216216208)(41.063370786516806,13.667027027027025)
+\multips(0,-6)(0,1.0){40}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,0)(51.063370786516806,0)}
+\multips(0,0)(5.0,0){21}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,-6)(0,13.667027027027025)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=5.,Dy=1.,ticksize=-2pt 0,subticks=2]{->}(0,0)(-3.6642696629213383,-6.136216216216208)(51.063370786516806,13.667027027027025)
+\begin{scriptsize}
+\rput[tl](0.6501123595505673,13.39081081081081){Geldeinheiten (GE)}
+\rput[tl](30.38741573033705,0.774054054054059){Mengeneinheiten (ME)}
+\end{scriptsize}
+\psplot[linewidth=2.pt,linestyle=dashed,dash=3pt 3pt,plotpoints=200]{-0}{30}{-0.05*x^(2.0)+1.5*x}
+\rput[tl](23.404044943820207,8.94864864864865){E}
+\psplot[linewidth=2.pt,,plotpoints=200]{0}{30}{0.3*x+5.4}
+\rput[tl](23.285842696629196,12.016756756756756){K}
+\antwort{\psplot[linewidth=2.pt,,plotpoints=200]{0}{22}{-0.05*x^(2.0)+1.2*x-5.4}
+\rput[tl](16.439550561797738,1.6502702702702747){G}}
+\end{pspicture*}
+
+\item Berechne den zu erwartenden Gewinn, wenn 13 Mengeneinheiten produziert und abgesetzt werden!
+
+Bei der gegebenen Kostenfunktion $K$ gibt der Wert 5,4 die Fixkosten an. Im folgenden werden Aussagen getroffen, die ausschließlich die Änderungen der Fixkosten in Betracht ziehen. Kreuze die für den gegebenen Sachverhalt zutreffende(n) Aussage(n) an!
+\leer
+
+\multiplechoice[5]{  %Anzahl der Antwortmoeglichkeiten, Standard: 5
+				L1={Eine Senkung der Fixkosten bewirkt eine breitere Gewinnzone, d.h., der Abstand zwischen den beiden Nullstellen der Gewinnfunktion wird größer.},   %1. Antwortmoeglichkeit 
+				L2={Eine Veränderung der Fixkosten hat keine Auswirkung auf diejenigen Stückzahl, bei der der höchste Gewinn erzielt wird.},   %2. Antwortmoeglichkeit
+				L3={Eine Erhöhung der Fixkosten steigert die Höhe des maximalen Gewinns.},   %3. Antwortmoeglichkeit
+				L4={Eine Veränderung der Fixkosten hat keine Auswirkung auf die Höhe des maximalen Gewinns.},   %4. Antwortmoeglichkeit
+				L5={Eine Senkung der Fixkosten führt zu einer Erhöhung des Gewinns.},	 %5. Antwortmoeglichkeit
+				L6={},	 %6. Antwortmoeglichkeit
+				L7={},	 %7. Antwortmoeglichkeit
+				L8={},	 %8. Antwortmoeglichkeit
+				L9={},	 %9. Antwortmoeglichkeit
+				%% LOESUNG: %%
+				A1=1,  % 1. Antwort
+				A2=2,	 % 2. Antwort
+				A3=5,  % 3. Antwort
+				A4=0,  % 4. Antwort
+				A5=0,  % 5. Antwort
+				}
+	
+				\end{enumerate}
+\antwort{\subsection{Lösungserwartung:}
+\begin{enumerate}
+	\item $-0,05\cdot x²+1,5\cdot x=0,3\cdot x+5,4$
+	
+	$-0,05\cdot x²+1,2\cdot x-5,4=0$
+	
+	Die Lösung der quadratischen Gleichung führt zu den Lösungen $x_1=6$ und $x_2=18 \rightarrow S_1\,(6/7,2)$ und $S_2\,(18/10,8)$.
+	
+	Reflexion beispielsweise: 
+	
+	Für die Mengen $x_1$ und $x_2$ sind Erlös und Kosten jeweils gleich groß, der Gewinn ist daher null.
+	
+	Für die Stückzahlen $x_1$ und $x_2$ wird kein Gewinn erzielt.
+	
+	Für den Stückzahlbereich $(x_1;x_2)$ wird ein Gewinn erzielt.
+	
+	\item Eine der möglichen Markierungen für den Gewinn reicht in der Lösung aus. Lösungsvorschlag siehe Grafik oben.
+	
+	$G(x)$ einzeichnen, Markierung des Gewinns
+	
+	\item $G(x)=-0,05\cdot x²+1,2\cdot x-5,4$
+	
+	$G(13)=1,75$ GE (Geldeinheiten)
+	
+	Lösungen Multiple Choice: siehe oben
+	\end{enumerate}}
+\end{langesbeispiel}

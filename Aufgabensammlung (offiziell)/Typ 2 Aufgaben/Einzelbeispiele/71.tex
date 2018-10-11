@@ -1,0 +1,125 @@
+\section{71 - MAT - FA 1.4, FA 1.5 - Muskelkraft - Matura 2016/17 Haupttermin}
+
+\begin{langesbeispiel} \item[0] %PUNKTE DES BEISPIELS
+	
+Muskeln werden in ihrer Funktion of mit (metallischen) Federn verglichen. Im Gegensatz zur Federkraft hängt die Muskelkraft auch von der Geschwindigkeit ab, mit der ein Muskel kontrahiert (d.h. aktiv verkürzt bzw. angespannt) wird.\leer
+
+Diese Beziehung kann modellhaft durch die Formel $F=\frac{c}{v+b}-a$ beschrieben werden.\leer
+
+Dabei beschreibt F den unter idealen Bedingungen möglichen Betrag (in Newton) der Muskelkraft bei vorgegebener Kontraktionsgeschwindigkeit $v$ (in Metern pro Sekunde). Die Parameter $a$ (in N), $b$ (in m/s) und $c$ (in Watt) sind positive reelle Größen, die die Eigenschaften eines Muskels beschreiben.
+
+Die oben angeführte Formel kann als Funktionsgleichung einer Funktion $F$ aufgefasst werden, durch die die Kraft $F(v)$ in Abhängigkeit von der Geschwindigkeit $v$ der Muskelkontraktion beschrieben wird. Die Werte von $a, b$ und $c$ sind dabei für einen bestimmten Muskel konstant.
+
+Der Graph der Funktion $F$ ist nachstehend abgebildet.
+
+\begin{center}
+\psset{xunit=2.0cm,yunit=0.002cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=4pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-0.8,-247.35960062529472)(3.1275726070277994,3349.4818664314475)
+\multips(0,0)(0,500.0){8}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,0)(3.1275726070277994,0)}
+\multips(0,0)(0.5,0){7}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,0)(0,3349.4818664314475)}
+\begin{scriptsize}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=0.5,Dy=500.,ticksize=-2pt 0,subticks=2]{->}(0,0)(0.,0.)(3.1275726070277994,3349.4818664314475)[$v$ in m/s,140] [$F(v)$ in N,-40]
+\rput[tl](0.45,1413.999044666503){$F$}
+\end{scriptsize}
+\psplot[linewidth=1.2pt,plotpoints=200]{0}{2.6}{1500/(x+0.45)-500}
+\end{pspicture*}
+\end{center}
+
+
+\subsection{Aufgabenstellung:}
+\begin{enumerate}
+	\item Gib mithilfe der Grafik den Wert $F(0)$ und dessen Bedeutung im gegebenen Kontext an!\leer
+	
+	Gib an, ob durch die Funktion $F$ eine indirekte Proportionalität zwischen $F$ und $v$ beschrieben wird, und begründe deine Entscheidung!
+	
+	\item Für die Leistung, die ein Muskel aufbringen kann, gilt die Formel $P=F\cdot v$.\leer
+	
+	Diese Formel kann bei konstanter Kraft $F$ als Funktion $P$ aufgefasst werden, durch die die Leistung $P(v)$ in Abhängigkeit von der Geschwindigkeit $v$ der Muskelkontraktion beschrieben wird ($P(v)$ in W, $v$ in m/s, und $F$ in N).
+	
+	In der nachstehenden Abbildung sind für einen bestimmten Muskel die Graphen der Funktion $P$ und der Funktion $F$ jeweils in Abhängigkeit von der Geschwindigkeit $v$ der Muskelkontraktion dargestellt.
+	
+	\begin{center}
+		\resizebox{0.8\linewidth}{!}{
+\psset{xunit=4.0cm,yunit=0.008cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=4pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-0.25,-83.57086769371405)(3.225304946195222,1170.685426243125)
+\multips(0,0)(0,250.0){6}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,0)(3.225304946195222,0)}
+\multips(0,0)(0.25,0){14}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,0)(0,1170.685426243125)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=0.25,Dy=250.,ticksize=-2pt 0,subticks=2]{->}(0,0)(0.,0.)(3.225304946195222,1170.685426243125)
+\psplot[linewidth=1.2pt,plotpoints=200]{0}{2.56}{1350/(x+0.36)-460}
+\psplot[linewidth=1.2pt,plotpoints=200]{0}{2.57}{(1350/(x+0.36)-460)*x}
+\rput[tl](0.45,976.870987886439){F}
+\rput[tl](0.13597591920870677,218.22590060455406){P}
+\begin{scriptsize}
+\rput[tl](2.75,50){$v$ in m/s}
+\rput[tl](0.05,1100){$F(v)$ in N}
+\rput[tl](0.05,1050){$P(v)$ in W}
+\end{scriptsize}
+\end{pspicture*}}
+	\end{center}
+	
+	\fbox{A} Ermittle mithilfe der Grafik näherungsweise den Wert derjenigen Kraft (in N), die zu einer maximalen Leistung dieses Muskels führt!\leer
+	
+	Ermittle mithilfe der Grafik näherungsweise den Wert der Geschwindigkeit $v_1$ der Muskelkontraktion, für den $P'(v_1)=0$ gilt!	
+\end{enumerate}
+
+\antwort{
+\begin{enumerate}
+	\item \subsection{Lösungserwartung:} 
+
+$F(0)\approx 2\,900$\,N
+
+$F(0)$ gibt den Wert derjenigen Kraft an, die der Muskel bei einer Kontraktionsgeschwindigkeit von  $v=0$  aufbringt.\leer
+
+Zwischen $F$ und $v$ wird keine indirekte Proportionalität beschrieben.
+
+Mögliche Begründung:
+
+Eine Verdoppelung der Kontraktionsgeschwindigkeit $v$ führt nicht zu einer Halbierung der Muskelkraft $F$.
+	\subsection{Lösungsschlüssel:}
+	\begin{itemize}
+		\item Ein Punkt für die richtige Lösung und eine (sinngemäß) korrekte Deutung, wobei die Einheit "`Newton"' nicht angeführt sein muss. 
+		
+		Toleranzintervall: $[2\,750\,\text{N}; 3\,000\,\text{N}]$
+		\item Ein Punkt für die Angabe, dass keine indirekte Proportionalität beschrieben wird, und eine korrekte Begründung.
+	\end{itemize}
+	
+	\item \subsection{Lösungserwartung:}
+			
+	\begin{center}
+		\resizebox{0.8\linewidth}{!}{
+\psset{xunit=4.0cm,yunit=0.008cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=4pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-0.25,-83.57086769371405)(3.225304946195222,1170.685426243125)
+\multips(0,0)(0,250.0){6}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,0)(3.225304946195222,0)}
+\multips(0,0)(0.25,0){14}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,0)(0,1170.685426243125)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=0.25,Dy=250.,ticksize=-2pt 0,subticks=2]{->}(0,0)(0.,0.)(3.225304946195222,1170.685426243125)
+\psplot[linewidth=1.2pt,plotpoints=200]{0}{2.56}{1350/(x+0.36)-460}
+\psplot[linewidth=1.2pt,plotpoints=200]{0}{2.57}{(1350/(x+0.36)-460)*x}
+\rput[tl](0.45,976.870987886439){F}
+\rput[tl](0.13597591920870677,218.22590060455406){P}
+\psline[linewidth=0.8pt](0.7,-235.85364068825302)(0.7,1170.685426243125)
+\psline[linewidth=0.8pt](0.845346307198817,569.509433962264)(-0.11167409790026661,569.509433962264)
+\psdots[dotsize=3pt 0,dotstyle=*](0.7,0.)
+\begin{scriptsize}
+\rput[tl](2.75,50){$v$ in m/s}
+\rput[tl](0.05,1100){$F(v)$ in N}
+\rput[tl](0.05,1050){$P(v)$ in W}
+\end{scriptsize}
+\end{pspicture*}}
+	\end{center}
+	
+	Bei ungefähr $800\,$N erreicht der Musekl seine maximale Leistung.
+	
+	$v_1\approx 0,7\,$m/s
+	\subsection{Lösungsschlüssel:}
+	
+\begin{itemize}
+	\item  Ein Ausgleichspunkt für die richtige Lösung, wobei die Einheit "`Newton"' nicht angeführt sein muss.  
+	
+	Toleranzintervall: $[650\,\text{N}; 950\,\text{N}]$
+	\item  Ein Punkt für die richtige Lösung, wobei die Einheit "`m/s"' nicht angeführt sein muss. 
+	
+	Toleranzintervall: $[0,6\,\text{m/s}; 0,9\,\text{m/s}]$
+\end{itemize}
+
+\end{enumerate}}
+		\end{langesbeispiel}

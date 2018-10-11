@@ -1,0 +1,57 @@
+\section{AN 1.2 - 4 Differenzen- und Differenzialquotient - MC - Matura 2014/15 - Nebentermin 1}
+
+\begin{beispiel}[AN 1.2]{1} %PUNKTE DES BEISPIELS
+Gegeben ist eine Polynomfunktion f zweiten Grades. In der nachstehenden Abbildung sind der Graph dieser Funktion im Intervall $[0; x_3]$ sowie eine Sekante $s$ und eine Tangente $t$ dargestellt. Die Stellen $x_0$ und $x_3$ sind Nullstellen, $x_1$
+ ist eine lokale Extremstelle von $f$. Weiters ist die Tangente $t$ im Punkt $(x_2 |f(x_2))$ parallel zur eingezeichneten Sekante $s$.
+
+\begin{center}
+\resizebox{0.9\linewidth}{!}{
+\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-0.5738651115354646,-0.8005853587974893)(8.67746531387551,5.042360173041005)
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=none,Dx=1.,Dy=1.,ticksize=0,subticks=2]{->}(0,0)(0.,0.)(8.67746531387551,5.042360173041005)[$x$,140] [$f(x)$,-40]
+\psplot[linewidth=1.2pt,plotpoints=200]{0}{8}{-(0.5*x-2.0)^(2.0)+4.0}
+\psplot{3.5}{8.2}{(--32.-4.*x)/4.}
+\psplot{4.5}{7.5}{(--9.-1.*x)/1.}
+\psline(4.721245661652407,3.998474490268255)(5.0627916458073186,4.286092161135549)
+\psline(4.78424677401814,3.927296430766761)(5.125792758173053,4.214914101634055)
+\rput[tl](5.5,4){$t$}
+\rput[tl](4.529695337570394,3.166846792450871){$s$}
+\psline(4.304390182653595,3.38229511199776)(4.645936166808506,3.669912782865054)
+\psline(4.367391295019328,3.311117052496266)(4.708937279174241,3.59873472336356)
+\rput[tl](2.0590671342929996,2.8){$f$}
+\psline[linestyle=dashed,dash=5pt 5pt](4.,4.)(4.,0.)
+\psline[linestyle=dashed,dash=5pt 5pt](6.,3.)(6.,0.)
+\rput[tl](3.772276472332069,-0.3){$x_1$}
+\rput[tl](5.737958765450581,-0.3){$x_2$}
+\rput[tl](-0.39352728647872043,-0.28){$0=x_0$}
+\rput[tl](7.739708623580441,-0.3){$x_3$}
+\begin{scriptsize}
+\psdots[dotsize=4pt 0,dotstyle=*,linecolor=black](4.,4.)
+\psdots[dotsize=4pt 0,dotstyle=*,linecolor=black](0.,0.)
+\psdots[dotsize=4pt 0,dotstyle=*,linecolor=black](6.,3.)
+\psdots[dotsize=4pt 0,dotstyle=*,linecolor=black](8.,0.)
+\end{scriptsize}
+\end{pspicture*}}
+\end{center}
+
+Welche der folgenden Aussagen sind für die in der Abbildung dargestellte Funktion $f$ richtig? \\
+Kreuze die beiden zutreffenden Aussagen an.
+
+\multiplechoice[5]{  %Anzahl der Antwortmoeglichkeiten, Standard: 5
+				L1={$f'(x_0)=f'(x_3)$},   %1. Antwortmoeglichkeit 
+				L2={$f'(x_1)=0$},   %2. Antwortmoeglichkeit
+				L3={$\dfrac{f(x_3)-f(x_1)}{x_3-x_1}=f'(x_2)$},   %3. Antwortmoeglichkeit
+				L4={$f'(x_0)=0$},   %4. Antwortmoeglichkeit
+				L5={$\dfrac{f(x_1)-f(x_3)}{x_1-x_3}>0$},	 %5. Antwortmoeglichkeit
+				L6={},	 %6. Antwortmoeglichkeit
+				L7={},	 %7. Antwortmoeglichkeit
+				L8={},	 %8. Antwortmoeglichkeit
+				L9={},	 %9. Antwortmoeglichkeit
+				%% LOESUNG: %%
+				A1=2,  % 1. Antwort
+				A2=3,	 % 2. Antwort
+				A3=0,  % 3. Antwort
+				A4=0,  % 4. Antwort
+				A5=0,  % 5. Antwort
+				}
+\end{beispiel}

@@ -1,0 +1,1638 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=latex 2017.8.9)  10 NOV 2017 09:31
+entering extended mode
+**"./FA 1.4 Gesamtdokument.tex"
+("FA 1.4 Gesamtdokument.tex"
+LaTeX2e <2017-04-15>
+Babel <3.10> and hyphenation patterns for 75 language(s) loaded.
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\report.cls"
+Document Class: report 2014/09/29 v1.4h Standard LaTeX document class
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\size12.clo"
+File: size12.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@chapter=\count80
+\c@section=\count81
+\c@subsection=\count82
+\c@subsubsection=\count83
+\c@paragraph=\count84
+\c@subparagraph=\count85
+\c@figure=\count86
+\c@table=\count87
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+) ("C:\Program Files\MiKTeX 2.9\tex\latex\geometry\geometry.sty"
+Package: geometry 2010/09/12 v5.6 Page Geometry
+ ("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\keyval.sty"
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ifpdf.sty"
+Package: ifpdf 2017/03/15 v3.2 Provides the ifpdf switch
+)
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ifvtex.sty"
+Package: ifvtex 2016/05/16 v1.6 Detect VTeX and its facilities (HO)
+Package ifvtex Info: VTeX not detected.
+)
+("C:\Program Files\MiKTeX 2.9\tex\generic\ifxetex\ifxetex.sty"
+Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
+)
+\Gm@cnth=\count88
+\Gm@cntv=\count89
+\c@Gm@tempcnt=\count90
+\Gm@bindingoffset=\dimen103
+\Gm@wd@mp=\dimen104
+\Gm@odd@mp=\dimen105
+\Gm@even@mp=\dimen106
+\Gm@layoutwidth=\dimen107
+\Gm@layoutheight=\dimen108
+\Gm@layouthoffset=\dimen109
+\Gm@layoutvoffset=\dimen110
+\Gm@dimlist=\toks15
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\geometry\geometry.cfg")) ("C:\Program Files\MiKTeX 2.9\tex\latex\lm\lmodern.sty"
+Package: lmodern 2009/10/30 v1.6 Latin Modern Fonts
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/cmr/m/n --> OT1/lmr/m/n on input line 22.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `normal'
+(Font)                  OML/cmm/m/it --> OML/lmm/m/it on input line 23.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
+(Font)                  OMS/cmsy/m/n --> OMS/lmsy/m/n on input line 24.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
+(Font)                  OMX/cmex/m/n --> OMX/lmex/m/n on input line 25.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 26.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
+(Font)                  OML/cmm/b/it --> OML/lmm/b/it on input line 27.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  OMS/cmsy/b/n --> OMS/lmsy/b/n on input line 28.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
+(Font)                  OMX/cmex/m/n --> OMX/lmex/m/n on input line 29.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
+(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 31.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
+(Font)                  OT1/cmss/m/n --> OT1/lmss/m/n on input line 32.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
+(Font)                  OT1/cmr/m/it --> OT1/lmr/m/it on input line 33.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
+(Font)                  OT1/cmtt/m/n --> OT1/lmtt/m/n on input line 34.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 35.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
+(Font)                  OT1/cmss/bx/n --> OT1/lmss/bx/n on input line 36.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/cmr/bx/it --> OT1/lmr/bx/it on input line 37.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
+(Font)                  OT1/cmtt/m/n --> OT1/lmtt/m/n on input line 38.
+) ("C:\Program Files\MiKTeX 2.9\tex\latex\base\fontenc.sty"
+Package: fontenc 2017/04/05 v2.0i Standard LaTeX package
+ ("C:\Program Files\MiKTeX 2.9\tex\latex\base\t1enc.def"
+File: t1enc.def 2017/04/05 v2.0i Standard LaTeX file
+LaTeX Font Info:    Redeclaring font encoding T1 on input line 48.
+))
+("C:\Program Files\MiKTeX 2.9\tex\latex\eurosym\eurosym.sty"
+Package: eurosym 1998/08/06 v1.1 European currency symbol ``Euro''
+\@eurobox=\box26
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\setspace\setspace.sty"
+Package: setspace 2011/12/19 v6.7a set line spacing
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\inputenc.sty"
+Package: inputenc 2015/03/17 v1.2c Input encoding file
+\inpenc@prehook=\toks16
+\inpenc@posthook=\toks17
+ ("C:\Program Files\MiKTeX 2.9\tex\latex\base\latin1.def"
+File: latin1.def 2015/03/17 v1.2c Input encoding file
+))
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\graphicx.sty"
+Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\graphics.sty"
+Package: graphics 2017/04/14 v1.1b Standard LaTeX Graphics (DPC,SPQR)
+ ("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\trig.sty"
+Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
+) ("C:\Program Files\MiKTeX 2.9\tex\latex\graphics-cfg\graphics.cfg"
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: dvips.def on input line 99.
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics-def\dvips.def"
+File: dvips.def 2016/07/10 v3.1a Driver-dependent file (DPC,SPQR)
+))
+\Gin@req@height=\dimen111
+\Gin@req@width=\dimen112
+)
+("C:\Program Files\MiKTeX 2.9\tex\generic\babel\babel.sty"
+Package: babel 2017/05/19 3.10 The Babel package
+
+*************************************
+* Local config file bblopts.cfg used
+*
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\arabi\bblopts.cfg"
+File: bblopts.cfg 2005/09/08 v0.1 add Arabic and Farsi to "declared" options of babel
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\babel-german\ngerman.ldf"
+Language: ngerman 2016/11/02 v2.9 German support for babel (new orthography)
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\babel-german\ngermanb.ldf"
+Language: ngermanb 2016/11/02 v2.9 German support for babel (new orthography)
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\babel\babel.def"
+File: babel.def 2017/05/19 3.10 Babel common definitions
+\babel@savecnt=\count91
+\U@D=\dimen113
+)
+Package babel Info: Making " an active character on input line 125.
+)))
+("C:\Program Files\MiKTeX 2.9\tex\latex\mathematik\mathematik.sty"
+Package: mathematik 2017/04/09 Standard-Schularbeitsformate
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\color.sty"
+Package: color 2016/07/10 v1.1e Standard LaTeX Color (DPC)
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics-cfg\color.cfg"
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package color Info: Driver file: dvips.def on input line 147.
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\dvipsnam.def"
+File: dvipsnam.def 2016/06/17 v3.0m Driver-dependent file (DPC,SPQR)
+))
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\xcolor\xcolor.sty"
+Package: xcolor 2016/05/11 v2.12 LaTeX color extensions (UK)
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics-cfg\color.cfg"
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: dvips.def on input line 225.
+LaTeX Info: Redefining \color on input line 709.
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1348.
+Package xcolor Info: Model `RGB' extended on input line 1364.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1366.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1367.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1368.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1370.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1371.
+) ("C:\Program Files\MiKTeX 2.9\tex\latex\float\float.sty"
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count92
+\float@exts=\toks18
+\float@box=\box27
+\@float@everytoks=\toks19
+\@floatcapt=\box28
+) ("C:\Program Files\MiKTeX 2.9\tex\latex\tools\multicol.sty"
+Package: multicol 2017/04/11 v1.8q multicolumn formatting (FMi)
+\c@tracingmulticols=\count93
+\mult@box=\box29
+\multicol@leftmargin=\dimen114
+\c@unbalance=\count94
+\c@collectmore=\count95
+\doublecol@number=\count96
+\multicoltolerance=\count97
+\multicolpretolerance=\count98
+\full@width=\dimen115
+\page@free=\dimen116
+\premulticols=\dimen117
+\postmulticols=\dimen118
+\multicolsep=\skip43
+\multicolbaselineskip=\skip44
+\partial@page=\box30
+\last@line=\box31
+\maxbalancingoverflow=\dimen119
+\mult@rightbox=\box32
+\mult@grightbox=\box33
+\mult@gfirstbox=\box34
+\mult@firstbox=\box35
+\@tempa=\box36
+\@tempa=\box37
+\@tempa=\box38
+\@tempa=\box39
+\@tempa=\box40
+\@tempa=\box41
+\@tempa=\box42
+\@tempa=\box43
+\@tempa=\box44
+\@tempa=\box45
+\@tempa=\box46
+\@tempa=\box47
+\@tempa=\box48
+\@tempa=\box49
+\@tempa=\box50
+\@tempa=\box51
+\@tempa=\box52
+\c@columnbadness=\count99
+\c@finalcolumnbadness=\count100
+\last@try=\dimen120
+\multicolovershoot=\dimen121
+\multicolundershoot=\dimen122
+\mult@nat@firstbox=\box53
+\colbreak@box=\box54
+\mc@col@check@num=\count101
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\multirow\multirow.sty"
+Package: multirow 2016/11/25 v2.2 Span multiple rows of a table
+\multirow@colwidth=\skip45
+\multirow@cntb=\count102
+\multirow@dima=\skip46
+\bigstrutjot=\dimen123
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\amsmath\amsmath.sty"
+Package: amsmath 2016/11/05 v2.16a AMS math features
+\@mathmargin=\skip47
+
+For additional information on amsmath, use the `?' option.
+("C:\Program Files\MiKTeX 2.9\tex\latex\amsmath\amstext.sty"
+Package: amstext 2000/06/29 v2.01 AMS text
+ ("C:\Program Files\MiKTeX 2.9\tex\latex\amsmath\amsgen.sty"
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks20
+\ex@=\dimen124
+)) ("C:\Program Files\MiKTeX 2.9\tex\latex\amsmath\amsbsy.sty"
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen125
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\amsmath\amsopn.sty"
+Package: amsopn 2016/03/08 v2.02 operator names
+)
+\inf@bad=\count103
+LaTeX Info: Redefining \frac on input line 213.
+\uproot@=\count104
+\leftroot@=\count105
+LaTeX Info: Redefining \overline on input line 375.
+\classnum@=\count106
+\DOTSCASE@=\count107
+LaTeX Info: Redefining \ldots on input line 472.
+LaTeX Info: Redefining \dots on input line 475.
+LaTeX Info: Redefining \cdots on input line 596.
+\Mathstrutbox@=\box55
+\strutbox@=\box56
+\big@size=\dimen126
+LaTeX Font Info:    Redeclaring font encoding OML on input line 712.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 713.
+\macc@depth=\count108
+\c@MaxMatrixCols=\count109
+\dotsspace@=\muskip10
+\c@parentequation=\count110
+\dspbrk@lvl=\count111
+\tag@help=\toks21
+\row@=\count112
+\column@=\count113
+\maxfields@=\count114
+\andhelp@=\toks22
+\eqnshift@=\dimen127
+\alignsep@=\dimen128
+\tagshift@=\dimen129
+\tagwidth@=\dimen130
+\totwidth@=\dimen131
+\lineht@=\dimen132
+\@envbody=\toks23
+\multlinegap=\skip48
+\multlinetaggap=\skip49
+\mathdisplay@stack=\toks24
+LaTeX Info: Redefining \[ on input line 2817.
+LaTeX Info: Redefining \] on input line 2818.
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\amssymb.sty"
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\amsfonts.sty"
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+))
+("C:\Program Files\MiKTeX 2.9\tex\latex\oberdiek\pdflscape.sty"
+Package: pdflscape 2016/05/14 v0.11 Display of landscape pages in PDF (HO)
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\lscape.sty"
+Package: lscape 2000/10/22 v3.01 Landscape Pages (DPC)
+)
+Package pdflscape Info: Auto-detected driver: dvips (dvips) on input line 125.
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\atbegshi.sty"
+Package: atbegshi 2016/06/09 v1.18 At begin shipout hook (HO)
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\infwarerr.sty"
+Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
+)
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ltxcmds.sty"
+Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
+)))
+("C:\Program Files\MiKTeX 2.9\tex\latex\ltxmisc\varwidth.sty"
+Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
+\@vwid@box=\box57
+\sift@deathcycles=\count115
+\@vwid@loff=\dimen133
+\@vwid@roff=\dimen134
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\wasysym\wasysym.sty"
+Package: wasysym 2003/10/30 v2.0 Wasy-2 symbol support package
+\symwasy=\mathgroup6
+LaTeX Font Info:    Overwriting symbol font `wasy' in version `bold'
+(Font)                  U/wasy/m/n --> U/wasy/b/n on input line 90.
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\microtype\microtype.sty"
+Package: microtype 2016/05/14 v2.6a Micro-typographical refinements (RS)
+\MT@toks=\toks25
+\MT@count=\count116
+LaTeX Info: Redefining \textls on input line 774.
+\MT@outer@kern=\dimen135
+LaTeX Info: Redefining \textmicrotypecontext on input line 1310.
+\MT@listname@count=\count117
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\microtype\microtype-pdftex.def"
+File: microtype-pdftex.def 2016/05/14 v2.6a Definitions specific to pdftex (RS)
+LaTeX Info: Redefining \lsstyle on input line 916.
+LaTeX Info: Redefining \lslig on input line 916.
+\MT@outer@space=\skip50
+)
+Package microtype Info: Loading configuration file microtype.cfg.
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\microtype\microtype.cfg"
+File: microtype.cfg 2016/05/14 v2.6a microtype main configuration file (RS)
+))
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\menukeys\menukeys.sty"
+Package: menukeys 2016/08/08 v1.5 -- A package to format menus, paths and shortcuts
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\l3packages\xparse\xparse.sty"
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\l3kernel\expl3.sty"
+Package: expl3 2017/03/18 v7019 L3 programming layer (loader) 
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\l3kernel\expl3-code.tex"
+Package: expl3 2017/03/18 v7019 L3 programming layer (code)
+\c_max_int=\count118
+\l_tmpa_int=\count119
+\l_tmpb_int=\count120
+\g_tmpa_int=\count121
+\g_tmpb_int=\count122
+\g__prg_map_int=\count123
+\c_log_iow=\count124
+\l_iow_line_count_int=\count125
+\l__iow_line_target_int=\count126
+\l__iow_one_indent_int=\count127
+\l__iow_indent_int=\count128
+\c_zero_dim=\dimen136
+\c_max_dim=\dimen137
+\l_tmpa_dim=\dimen138
+\l_tmpb_dim=\dimen139
+\g_tmpa_dim=\dimen140
+\g_tmpb_dim=\dimen141
+\c_zero_skip=\skip51
+\c_max_skip=\skip52
+\l_tmpa_skip=\skip53
+\l_tmpb_skip=\skip54
+\g_tmpa_skip=\skip55
+\g_tmpb_skip=\skip56
+\c_zero_muskip=\muskip11
+\c_max_muskip=\muskip12
+\l_tmpa_muskip=\muskip13
+\l_tmpb_muskip=\muskip14
+\g_tmpa_muskip=\muskip15
+\g_tmpb_muskip=\muskip16
+\l_keys_choice_int=\count129
+\c__fp_leading_shift_int=\count130
+\c__fp_middle_shift_int=\count131
+\c__fp_trailing_shift_int=\count132
+\c__fp_big_leading_shift_int=\count133
+\c__fp_big_middle_shift_int=\count134
+\c__fp_big_trailing_shift_int=\count135
+\c__fp_Bigg_leading_shift_int=\count136
+\c__fp_Bigg_middle_shift_int=\count137
+\c__fp_Bigg_trailing_shift_int=\count138
+\c__fp_rand_size_int=\count139
+\c__fp_rand_four_int=\count140
+\c__fp_rand_eight_int=\count141
+\l__sort_length_int=\count142
+\l__sort_min_int=\count143
+\l__sort_top_int=\count144
+\l__sort_max_int=\count145
+\l__sort_true_max_int=\count146
+\l__sort_block_int=\count147
+\l__sort_begin_int=\count148
+\l__sort_end_int=\count149
+\l__sort_A_int=\count150
+\l__sort_B_int=\count151
+\l__sort_C_int=\count152
+\c_empty_box=\box58
+\l_tmpa_box=\box59
+\l_tmpb_box=\box60
+\g_tmpa_box=\box61
+\g_tmpb_box=\box62
+\l__coffin_internal_box=\box63
+\l__coffin_internal_dim=\dimen142
+\l__coffin_offset_x_dim=\dimen143
+\l__coffin_offset_y_dim=\dimen144
+\l__coffin_x_dim=\dimen145
+\l__coffin_y_dim=\dimen146
+\l__coffin_x_prime_dim=\dimen147
+\l__coffin_y_prime_dim=\dimen148
+\c_empty_coffin=\box64
+\l__coffin_aligned_coffin=\box65
+\l__coffin_aligned_internal_coffin=\box66
+\l_tmpa_coffin=\box67
+\l_tmpb_coffin=\box68
+\l__coffin_display_coffin=\box69
+\l__coffin_display_coord_coffin=\box70
+\l__coffin_display_pole_coffin=\box71
+\l__coffin_display_offset_dim=\dimen149
+\l__coffin_display_x_dim=\dimen150
+\l__coffin_display_y_dim=\dimen151
+\l__box_top_dim=\dimen152
+\l__box_bottom_dim=\dimen153
+\l__box_left_dim=\dimen154
+\l__box_right_dim=\dimen155
+\l__box_top_new_dim=\dimen156
+\l__box_bottom_new_dim=\dimen157
+\l__box_left_new_dim=\dimen158
+\l__box_right_new_dim=\dimen159
+\l__box_internal_box=\box72
+\l__coffin_bounding_shift_dim=\dimen160
+\l__coffin_left_corner_dim=\dimen161
+\l__coffin_right_corner_dim=\dimen162
+\l__coffin_bottom_corner_dim=\dimen163
+\l__coffin_top_corner_dim=\dimen164
+\l__coffin_scaled_total_height_dim=\dimen165
+\l__coffin_scaled_width_dim=\dimen166
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\l3kernel\l3dvips.def"
+File: l3dvips.def 2017/03/18 v7019 L3 Experimental driver: dvips
+))
+Package: xparse 2017/03/18 v7019 L3 Experimental document command parser
+\l__xparse_current_arg_int=\count153
+\g__xparse_grabber_int=\count154
+\l__xparse_m_args_int=\count155
+\l__xparse_mandatory_args_int=\count156
+\l__xparse_v_nesting_int=\count157
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\xstring\xstring.sty"
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\xstring\xstring.tex"
+\@xs@message=\write3
+\integerpart=\count158
+\decimalpart=\count159
+)
+Package: xstring 2013/10/13  v1.7c  String manipulations (C Tellechea)
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\etoolbox\etoolbox.sty"
+Package: etoolbox 2017/01/02 v2.4 e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count160
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf\frontendlayer\tikz.sty"
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf\basiclayer\pgf.sty"
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf\utilities\pgfrcs.sty"
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgfutil-common.tex"
+\pgfutil@everybye=\toks26
+\pgfutil@tempdima=\dimen167
+\pgfutil@tempdimb=\dimen168
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgfutil-common-lists.tex"))
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgfutil-latex.def"
+\pgfutil@abb=\box73
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\ms\everyshi.sty"
+Package: everyshi 2001/05/15 v3.00 EveryShipout Package (MS)
+))
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgfrcs.code.tex"
+Package: pgfrcs 2015/08/07 v3.0.1a (rcs-revision 1.31)
+))
+Package: pgf 2015/08/07 v3.0.1a (rcs-revision 1.15)
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf\basiclayer\pgfcore.sty"
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf\systemlayer\pgfsys.sty"
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\systemlayer\pgfsys.code.tex"
+Package: pgfsys 2014/07/09 v3.0.1a (rcs-revision 1.48)
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgfkeys.code.tex"
+\pgfkeys@pathtoks=\toks27
+\pgfkeys@temptoks=\toks28
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgfkeysfiltered.code.tex"
+\pgfkeys@tmptoks=\toks29
+))
+\pgf@x=\dimen169
+\pgf@y=\dimen170
+\pgf@xa=\dimen171
+\pgf@ya=\dimen172
+\pgf@xb=\dimen173
+\pgf@yb=\dimen174
+\pgf@xc=\dimen175
+\pgf@yc=\dimen176
+\w@pgf@writea=\write4
+\r@pgf@reada=\read1
+\c@pgf@counta=\count161
+\c@pgf@countb=\count162
+\c@pgf@countc=\count163
+\c@pgf@countd=\count164
+\t@pgf@toka=\toks30
+\t@pgf@tokb=\toks31
+\t@pgf@tokc=\toks32
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\systemlayer\pgf.cfg"
+File: pgf.cfg 2008/05/14  (rcs-revision 1.7)
+)
+Driver file for pgf: pgfsys-dvips.def
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\systemlayer\pgfsys-dvips.def"
+File: pgfsys-dvips.def 2014/07/09  (rcs-revision 1.25)
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\systemlayer\pgfsys-common-postscript.def"
+File: pgfsys-common-postscript.def 2008/10/01  (rcs-revision 1.22)
+\pgf@objectcount=\count165
+)))
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\systemlayer\pgfsyssoftpath.code.tex"
+File: pgfsyssoftpath.code.tex 2013/09/09  (rcs-revision 1.9)
+\pgfsyssoftpath@smallbuffer@items=\count166
+\pgfsyssoftpath@bigbuffer@items=\count167
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\systemlayer\pgfsysprotocol.code.tex"
+File: pgfsysprotocol.code.tex 2006/10/16  (rcs-revision 1.4)
+))
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcore.code.tex"
+Package: pgfcore 2010/04/11 v3.0.1a (rcs-revision 1.7)
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmath.code.tex"
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathcalc.code.tex"
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathutil.code.tex")
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathparser.code.tex"
+\pgfmath@dimen=\dimen177
+\pgfmath@count=\count168
+\pgfmath@box=\box74
+\pgfmath@toks=\toks33
+\pgfmath@stack@operand=\toks34
+\pgfmath@stack@operation=\toks35
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathfunctions.code.tex"
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathfunctions.basic.code.tex")
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathfunctions.trigonometric.code.tex")
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathfunctions.random.code.tex")
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathfunctions.comparison.code.tex")
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathfunctions.base.code.tex")
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathfunctions.round.code.tex")
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathfunctions.misc.code.tex")
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathfunctions.integerarithmetics.code.tex")
+)) ("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathfloat.code.tex"
+\c@pgfmathroundto@lastzeros=\count169
+))
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcorepoints.code.tex"
+File: pgfcorepoints.code.tex 2013/10/07  (rcs-revision 1.27)
+\pgf@picminx=\dimen178
+\pgf@picmaxx=\dimen179
+\pgf@picminy=\dimen180
+\pgf@picmaxy=\dimen181
+\pgf@pathminx=\dimen182
+\pgf@pathmaxx=\dimen183
+\pgf@pathminy=\dimen184
+\pgf@pathmaxy=\dimen185
+\pgf@xx=\dimen186
+\pgf@xy=\dimen187
+\pgf@yx=\dimen188
+\pgf@yy=\dimen189
+\pgf@zx=\dimen190
+\pgf@zy=\dimen191
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcorepathconstruct.code.tex"
+File: pgfcorepathconstruct.code.tex 2013/10/07  (rcs-revision 1.29)
+\pgf@path@lastx=\dimen192
+\pgf@path@lasty=\dimen193
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcorepathusage.code.tex"
+File: pgfcorepathusage.code.tex 2014/11/02  (rcs-revision 1.24)
+\pgf@shorten@end@additional=\dimen194
+\pgf@shorten@start@additional=\dimen195
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcorescopes.code.tex"
+File: pgfcorescopes.code.tex 2015/05/08  (rcs-revision 1.46)
+\pgfpic=\box75
+\pgf@hbox=\box76
+\pgf@layerbox@main=\box77
+\pgf@picture@serial@count=\count170
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcoregraphicstate.code.tex"
+File: pgfcoregraphicstate.code.tex 2014/11/02  (rcs-revision 1.12)
+\pgflinewidth=\dimen196
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcoretransformations.code.tex"
+File: pgfcoretransformations.code.tex 2015/08/07  (rcs-revision 1.20)
+\pgf@pt@x=\dimen197
+\pgf@pt@y=\dimen198
+\pgf@pt@temp=\dimen199
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcorequick.code.tex"
+File: pgfcorequick.code.tex 2008/10/09  (rcs-revision 1.3)
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcoreobjects.code.tex"
+File: pgfcoreobjects.code.tex 2006/10/11  (rcs-revision 1.2)
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcorepathprocessing.code.tex"
+File: pgfcorepathprocessing.code.tex 2013/09/09  (rcs-revision 1.9)
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcorearrows.code.tex"
+File: pgfcorearrows.code.tex 2015/05/14  (rcs-revision 1.43)
+\pgfarrowsep=\dimen256
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcoreshade.code.tex"
+File: pgfcoreshade.code.tex 2013/07/15  (rcs-revision 1.15)
+\pgf@max=\dimen257
+\pgf@sys@shading@range@num=\count171
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcoreimage.code.tex"
+File: pgfcoreimage.code.tex 2013/07/15  (rcs-revision 1.18)
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcoreexternal.code.tex"
+File: pgfcoreexternal.code.tex 2014/07/09  (rcs-revision 1.21)
+\pgfexternal@startupbox=\box78
+))
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcorelayers.code.tex"
+File: pgfcorelayers.code.tex 2013/07/18  (rcs-revision 1.7)
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcoretransparency.code.tex"
+File: pgfcoretransparency.code.tex 2013/09/30  (rcs-revision 1.5)
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcorepatterns.code.tex"
+File: pgfcorepatterns.code.tex 2013/11/07  (rcs-revision 1.5)
+)))
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\modules\pgfmoduleshapes.code.tex"
+File: pgfmoduleshapes.code.tex 2014/03/21  (rcs-revision 1.35)
+\pgfnodeparttextbox=\box79
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\modules\pgfmoduleplot.code.tex"
+File: pgfmoduleplot.code.tex 2015/08/03  (rcs-revision 1.13)
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf\compatibility\pgfcomp-version-0-65.sty"
+Package: pgfcomp-version-0-65 2007/07/03 v3.0.1a (rcs-revision 1.7)
+\pgf@nodesepstart=\dimen258
+\pgf@nodesepend=\dimen259
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf\compatibility\pgfcomp-version-1-18.sty"
+Package: pgfcomp-version-1-18 2007/07/23 v3.0.1a (rcs-revision 1.1)
+))
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf\utilities\pgffor.sty"
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf\utilities\pgfkeys.sty"
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgfkeys.code.tex"))
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf\math\pgfmath.sty"
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmath.code.tex"))
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgffor.code.tex"
+Package: pgffor 2013/12/13 v3.0.1a (rcs-revision 1.25)
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmath.code.tex")
+\pgffor@iter=\dimen260
+\pgffor@skip=\dimen261
+\pgffor@stack=\toks36
+\pgffor@toks=\toks37
+))
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\frontendlayer\tikz\tikz.code.tex"
+Package: tikz 2015/08/07 v3.0.1a (rcs-revision 1.151)
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\libraries\pgflibraryplothandlers.code.tex"
+File: pgflibraryplothandlers.code.tex 2013/08/31 v3.0.1a (rcs-revision 1.20)
+\pgf@plot@mark@count=\count172
+\pgfplotmarksize=\dimen262
+)
+\tikz@lastx=\dimen263
+\tikz@lasty=\dimen264
+\tikz@lastxsaved=\dimen265
+\tikz@lastysaved=\dimen266
+\tikzleveldistance=\dimen267
+\tikzsiblingdistance=\dimen268
+\tikz@figbox=\box80
+\tikz@figbox@bg=\box81
+\tikz@tempbox=\box82
+\tikz@tempbox@bg=\box83
+\tikztreelevel=\count173
+\tikznumberofchildren=\count174
+\tikznumberofcurrentchild=\count175
+\tikz@fig@count=\count176
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\modules\pgfmodulematrix.code.tex"
+File: pgfmodulematrix.code.tex 2013/09/17  (rcs-revision 1.8)
+\pgfmatrixcurrentrow=\count177
+\pgfmatrixcurrentcolumn=\count178
+\pgf@matrix@numberofcolumns=\count179
+)
+\tikz@expandcount=\count180
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibrarytopaths.cod
+e.tex"
+File: tikzlibrarytopaths.code.tex 2008/06/17 v3.0.1a (rcs-revision 1.2)
+)))
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibrarycalc.code.t
+ex"
+File: tikzlibrarycalc.code.tex 2013/07/15 v3.0.1a (rcs-revision 1.9)
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibraryshapes.symb
+ols.code.tex"
+File: tikzlibraryshapes.symbols.code.tex 2008/01/09 v3.0.1a (rcs-revision 1.1)
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\libraries\shapes\pgflibraryshapes.symbols.code.tex"
+File: pgflibraryshapes.symbols.code.tex 2013/09/11 v3.0.1a (rcs-revision 1.6)
+))
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibraryshadows.cod
+e.tex"
+File: tikzlibraryshadows.code.tex 2008/01/13 v3.0.1a (rcs-revision 1.3)
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibraryfadings.cod
+e.tex"
+File: tikzlibraryfadings.code.tex 2009/11/15 v3.0.1a (rcs-revision 1.2)
+ ("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\libraries\pgflibraryfadings.code.tex"
+File: pgflibraryfadings.code.tex 2008/02/07 v3.0.1a (rcs-revision 1.3)
+)))
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\adjustbox\adjustbox.sty"
+Package: adjustbox 2012/05/21 v1.0 Adjusting TeX boxes (trim, clip, ...)
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\xkeyval\xkeyval.sty"
+Package: xkeyval 2014/12/03 v2.7a package option processing (HA)
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\xkeyval\xkeyval.tex"
+("C:\Program Files\MiKTeX 2.9\tex\generic\xkeyval\xkvutils.tex"
+\XKV@toks=\toks38
+\XKV@tempa@toks=\toks39
+)
+\XKV@depth=\count181
+File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
+))
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\adjustbox\adjcalc.sty"
+Package: adjcalc 2012/05/16 v1.1 Provides advanced setlength with multiple back-ends (calc, etex, pgfmath)
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\adjustbox\trimclip.sty"
+Package: trimclip 2012/05/16 v1.0 Trim and clip general TeX material
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\collectbox\collectbox.sty"
+Package: collectbox 2012/05/17 v0.4b Collect macro arguments as boxes
+\collectedbox=\box84
+)
+\tc@llx=\dimen269
+\tc@lly=\dimen270
+\tc@urx=\dimen271
+\tc@ury=\dimen272
+Package trimclip Info: Using driver 'tc-dvips.def'.
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\adjustbox\tc-dvips.def"
+File: tc-dvips.def 2012/05/13 v1.0 Clipping driver for dvips
+))
+\adjbox@Width=\dimen273
+\adjbox@Height=\dimen274
+\adjbox@Depth=\dimen275
+\adjbox@Totalheight=\dimen276
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\ifoddpage\ifoddpage.sty"
+Package: ifoddpage 2016/04/23 v1.1 Conditionals for odd/even page detection
+\c@checkoddpage=\count182
+))
+("C:\Program Files\MiKTeX 2.9\tex\latex\ltxmisc\relsize.sty"
+Package: relsize 2003/07/04 ver 3.1
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\catoptions\catoptions.sty"
+\m@one=\count183
+\z@pt=\dimen277
+Package: catoptions 2014/08/29 v0.2.7h Securing catcodes and parsing options (AM)
+\cpt@csvdepth=\count184
+\cpt@optdepth=\count185
+\cpt@cnta=\count186
+\indrisdepth=\count187
+\cpt@foreachdepth=\count188
+\cpt@exprcnt=\count189
+)
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \tw@mk@gobble@args with sig. 'm' on line 50.
+.................................................
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\oberdiek\kvoptions.sty"
+Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\kvsetkeys.sty"
+Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\etexcmds.sty"
+Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ifluatex.sty"
+Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+)))
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \newmenucolortheme with sig. ' m m m m m O{##3} O{##4}
+. O{##5} ' on line 97.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \renewmenucolortheme with sig. ' m m m m m O{##3} O{##4}
+. O{##5} ' on line 100.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \tw@declare@style@simple with sig. 's m O{\tw@default@pre }
+. m O{\tw@default@sep } O{\tw@default@post } m ' on line 170.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \tw@declare@sytle@extra@args with sig. 'O{\tw@default@post
+. } m ' on line 176.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \tw@declare@style with sig. 's m O{\tw@default@pre } m
+. O{\tw@default@sep } m m m ' on line 203.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \newmenustylesimple with sig. 's m' on line 216.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \renewmenustylesimple with sig. 's m' on line 223.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \providemenustylesimple with sig. 's m' on line 237.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \newmenustyle with sig. 's m' on line 251.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \renewmenustyle with sig. 's m' on line 258.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \providemenustyle with sig. 's m' on line 272.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \changemenuelement with sig. 's m m m' on line 310.
+.................................................
+\c@tw@hyphen@char@num=\count190
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \drawtikzfolder with sig. 'O{white} O{black}' on line 566.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \tw@define@menu@macro with sig. 'm O{\tw@default@input@sep
+. } m ' on line 640.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \newmenumacro with sig. 'm O{\tw@default@input@sep } m' on
+. line 650.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \renewmenumacro with sig. 'm O{\tw@default@input@sep } m'
+. on line 654.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \providemenumacro with sig. 'm O{\tw@default@input@sep } m'
+. on line 662.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \tw@make@key@box with sig. 'm m' on line 673.
+.................................................
+.................................................
+. LaTeX info: "xparse/define-command"
+. 
+. Defining command \tw@make@key@macro with sig. 's m' on line 698.
+.................................................
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\pstricks-add\pstricks-add.sty"
+("C:\Program Files\MiKTeX 2.9\tex\latex\pstricks\pstricks.sty"
+Package: pstricks 2017/03/17 v0.63 LaTeX wrapper for `PSTricks' (RN,HV)
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\pstricks\pstricks.tex"
+("C:\Program Files\MiKTeX 2.9\tex\generic\xkeyval\pst-xkey.tex"
+File: pst-xkey.tex 2005/11/25 v1.6 PSTricks specialization of xkeyval (HA)
+)
+("C:\Program Files\MiKTeX 2.9\tex\generic\pstricks\pst-fp.tex" `pst-fp' v0.05, 2010/01/17 (hv)
+\pstFP@xs=\count191
+\pstFP@xia=\count192
+\pstFP@xib=\count193
+\pstFP@xfa=\count194
+\pstFP@xfb=\count195
+\pstFP@rega=\count196
+\pstFP@regb=\count197
+\pstFP@regs=\count198
+\pstFP@times=\count199
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgfkeys.code.tex")
+\psLoopIndex=\count266
+
+`PSTricks' v2.73a  <2017/05/22> (tvz)
+\pst@dima=\dimen278
+\pst@dimb=\dimen279
+\pst@dimc=\dimen280
+\pst@dimd=\dimen281
+\pst@dimg=\dimen282
+\pst@dimh=\dimen283
+\pst@dimm=\dimen284
+\pst@dimn=\dimen285
+\pst@dimo=\dimen286
+\pst@dimp=\dimen287
+\pst@hbox=\box85
+\pst@ibox=\box86
+\pst@boxg=\box87
+\pst@cnta=\count267
+\pst@cntb=\count268
+\pst@cntc=\count269
+\pst@cntd=\count270
+\pst@cntg=\count271
+\pst@cnth=\count272
+\pst@cntm=\count273
+\pst@cntn=\count274
+\pst@cnto=\count275
+\pst@cntp=\count276
+\@zero=\count277
+\pst@toks=\toks40
+("C:\Program Files\MiKTeX 2.9\tex\generic\pstricks\pstricks.con")
+\psunit=\dimen288
+\psxunit=\dimen289
+\psyunit=\dimen290
+\pst@C@@rType=\count278
+\pslinewidth=\dimen291
+\psk@startLW=\dimen292
+\psk@endLW=\dimen293
+\pst@customdefs=\toks41
+\pslinearc=\dimen294
+\pst@symbolStep=\dimen295
+\pst@symbolWidth=\dimen296
+\pst@symbolLinewidth=\dimen297
+\everypsbox=\toks42
+\psframesep=\dimen298
+\pslabelsep=\dimen299
+\sh@wgridXunit=\dimen300
+\sh@wgridYunit=\dimen301
+\pst@shift=\dimen302
+)
+File: pstricks.tex 2017/05/22 v2.73a `PSTricks' (tvz,hv)
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\pstricks\pst-fp.tex")
+File: pst-fp.tex 2017/05/22 v2.73a `PST-fp' (hv)
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\pst-plot\pst-plot.sty"
+Package: pst-plot 2011/06/05 v1.00 LaTeX wrapper for `pst-plot' (HV)
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\xkeyval\pst-xkey.sty"
+Package: pst-xkey 2005/11/25 v1.6 package wrapper for pst-xkey.tex (HA)
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\multido\multido.sty"
+Package: multido 2004/05/17 package wrapper for PSTricks `multido.tex', (HV/RN)
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\multido\multido.tex"  v1.42, 2010/05/14 <tvz>
+\multido@count=\count279
+\multidocount=\count280
+\multido@stuff=\toks43
+)
+File: multido.tex 2010/05/14 v1.42 `multido' (tvz,hv)
+)
+Package: pst-plot 2011/04/13 package wrapper for pst-plot.tex (hv)
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-plot\pst-plot.tex"
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-tools\pst-tools.tex"
+`PST-tools' v0.06, 2017/05/12 (hv))
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pstricks-add\pstricks-add.tex"
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-node\pst-node.tex"  v1.39, 2017/01/20
+\psrow=\count281
+\pscol=\count282
+\psmatrixcnt=\count283
+\psrowsep=\skip57
+\pscolsep=\skip58
+\pst@args=\count284
+\num@pts=\count285
+\pst@argcnt=\count286
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-arrow\pst-arrow.tex"
+`pst-arrow' v0.01, 2016/09/01 (dr,hv)
+\pshooklength=\dimen303
+\pshookwidth=\dimen304
+) ("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-3d\pst-3d.tex" `PST-3d' v1.11, 2010/02/14 (tvz))
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-math\pst-math.tex" `pst-math' v0.63 , (CJ,hv))
+`pstricks-add' v3.83, 2017/05/10 (dr,hv)
+\psparallelogramsep=\dimen305
+\pst@cntC=\count287
+\chart@ColorIndex=\dimen306
+\chart@ColorStep=\dimen307
+\pst@chartHeight=\dimen308
+\pst@chartStackDepth=\dimen309
+\pst@chartStackWidth=\dimen310
+\chart@Toggle=\count288
+\psVectorCtr=\count289
+)  v1.75, 2016/05/18 (tvz,hv)
+\pstRadUnit=\dimen311
+\pstRadUnitInv=\dimen312
+\pst@linecnt=\count290
+\RCD@file=\read2
+\psxlabelsep=\dimen313
+\psylabelsep=\dimen314
+\psk@subticksize=\dimen315
+\pst@xticksizeA=\dimen316
+\pst@xticksizeB=\dimen317
+\pst@xticksizeC=\dimen318
+\pst@yticksizeA=\dimen319
+\pst@yticksizeB=\dimen320
+\pst@yticksizeC=\dimen321
+\@digitcounter=\count291
+\psk@llx=\dimen322
+\psk@lly=\dimen323
+\psk@urx=\dimen324
+\psk@ury=\dimen325
+\pst@xunit=\dimen326
+\pst@yunit=\dimen327
+)
+File: pst-plot.tex 2016/05/18 1.75 `pst-plot' (tvz,hv)
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\pst-node\pst-node.sty"
+Package: pst-node 2012/09/18 v1.01 LaTeX wrapper for `pst-node' (HV)
+Package: pst-node 2010/04/22 package wrapper for pst-node.tex
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-node\pst-node.tex")
+File: pst-node.tex 2016/05/18 1.75 `pst-node' (tvz,hv)
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\pst-3d\pst-3d.sty"
+Package: pst-3d 2009/07/28 package wrapper for pst-3d.tex (hv)
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-3d\pst-3d.tex")
+File: pst-3d.tex 2016/05/18 v1.75 `PST-3d' (hv)
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\pst-math\pst-math.sty"
+Package: pst-math 2014/07/30 package wrapper for PSTricks pst-math.tex
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-math\pst-math.tex")
+File: pst-math.tex 2016/05/18 v1.75 `PST-math' (hv)
+)
+Package: pstricks-add 2010/02/11 v. 0.14 package wrapper for pstricks-add.tex (hv)
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pstricks-add\pstricks-add.tex")
+File: pstricks-add.tex 2016/05/18 v1.75 `PSTricks-add' (hv)
+Package pstricks-add Info: Local config file pstricks-add.cfg used on input line 20.
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\pstricks-add\pstricks-add.cfg"
+File: pstricks-add.cfg 2005/01/10 v0.1 addtional user stuff (hv)
+))
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\fancyhdr\fancyhdr.sty"
+Package: fancyhdr 2016/09/06 3.8 Extensive control of page headers and footers
+\fancy@headwidth=\skip59
+\f@ncyO@elh=\skip60
+\f@ncyO@erh=\skip61
+\f@ncyO@olh=\skip62
+\f@ncyO@orh=\skip63
+\f@ncyO@elf=\skip64
+\f@ncyO@erf=\skip65
+\f@ncyO@olf=\skip66
+\f@ncyO@orf=\skip67
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\trimspaces\trimspaces.sty"
+Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\colortbl\colortbl.sty"
+Package: colortbl 2012/02/13 v1.0a Color table columns (DPC)
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\tools\array.sty"
+Package: array 2016/10/06 v2.4d Tabular extension package (FMi)
+\col@sep=\dimen328
+\extrarowheight=\dimen329
+\NC@list=\toks44
+\extratabsurround=\skip68
+\backup@length=\skip69
+)
+\everycr=\toks45
+\minrowclearance=\skip70
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\chngcntr\chngcntr.sty"
+Package: chngcntr 2009/09/02 v1.0a change counter resetting
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\framed\framed.sty"
+Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
+\OuterFrameSep=\skip71
+\fb@frw=\dimen330
+\fb@frh=\dimen331
+\FrameRule=\dimen332
+\FrameSep=\dimen333
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\tools\tabularx.sty"
+Package: tabularx 2016/02/03 v2.11 `tabularx' package (DPC)
+\TX@col@width=\dimen334
+\TX@old@table=\dimen335
+\TX@old@col=\dimen336
+\TX@target=\dimen337
+\TX@delta=\dimen338
+\TX@cols=\count292
+\TX@ftn=\toks46
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\tabu\tabu.sty"
+Package: tabu 2011/02/26 v2.8 - flexible LaTeX tabulars (FC)
+\c@taburow=\count293
+\tabu@nbcols=\count294
+\tabu@cnt=\count295
+\tabu@Xcol=\count296
+\tabu@alloc=\count297
+\tabu@nested=\count298
+\tabu@target=\dimen339
+\tabu@spreadtarget=\dimen340
+\tabu@naturalX=\dimen341
+\tabucolX=\dimen342
+\tabu@Xsum=\dimen343
+\extrarowdepth=\dimen344
+\abovetabulinesep=\dimen345
+\belowtabulinesep=\dimen346
+\tabustrutrule=\dimen347
+\tabu@thebody=\toks47
+\tabu@footnotes=\toks48
+\tabu@box=\box88
+\tabu@arstrutbox=\box89
+\tabu@hleads=\box90
+\tabu@vleads=\box91
+\tabu@cellskip=\skip72
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\environ\environ.sty"
+Package: environ 2014/05/04 v0.3 A new way to define environments
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\cancel\cancel.sty"
+Package: cancel 2013/04/12 v2.2 Cancel math terms
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\spreadtab\spreadtab.sty"
+Package: spreadtab 2014/11/03 v0.4c Spreadsheet features for table environments
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp.sty"
+Package: fp 1995/04/02
+
+`Fixed Point Package', Version 0.8, April 2, 1995 (C) Michael Mehlich
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\defpattern.sty"
+Package: defpattern 1994/10/12
+\actioncount=\count299
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp-basic.sty"
+Package: fp-basic 1996/05/13
+\FP@xs=\count300
+\FP@xia=\count301
+\FP@xib=\count302
+\FP@xfa=\count303
+\FP@xfb=\count304
+\FP@rega=\count305
+\FP@regb=\count306
+\FP@regs=\count307
+\FP@times=\count308
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp-addons.sty"
+Package: fp-addons 1995/03/15
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp-snap.sty"
+Package: fp-snap 1995/04/05
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp-exp.sty"
+Package: fp-exp 1995/04/03
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp-trigo.sty"
+Package: fp-trigo 1995/04/14
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp-pas.sty"
+Package: fp-pas 1994/08/29
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp-random.sty"
+Package: fp-random 1995/02/23
+\FPseed=\count309
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp-eqn.sty"
+Package: fp-eqn 1995/04/03
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp-upn.sty"
+Package: fp-upn 1996/10/21
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp-eval.sty"
+Package: fp-eval 1995/04/03
+))
+\ST@count=\count310
+\ST@colcount=\count311
+\ST@colcount@i=\count312
+\ST@rowcount=\count313
+\ST@rowcount@i=\count314
+\ST@intpart=\count315
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\tools\hhline.sty"
+Package: hhline 2014/10/28 v2.03 Table rule package (DPC)
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\forloop\forloop.sty"
+Package: forloop 2006/09/18 v3.0 For Loops for LaTeX
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\ifthen.sty"
+Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
+)) ("C:\Program Files\MiKTeX 2.9\tex\latex\tools\longtable.sty"
+Package: longtable 2014/10/28 v4.11 Multi-page Table package (DPC)
+\LTleft=\skip73
+\LTright=\skip74
+\LTpre=\skip75
+\LTpost=\skip76
+\LTchunksize=\count316
+\LTcapwidth=\dimen348
+\LT@head=\box92
+\LT@firsthead=\box93
+\LT@foot=\box94
+\LT@lastfoot=\box95
+\LT@cols=\count317
+\LT@rows=\count318
+\c@LT@tables=\count319
+\c@LT@chunks=\count320
+\LT@p@ftn=\toks49
+) ("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\pgfplots\pgfplots.sty"
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplots.revision.tex")
+Package: pgfplots 2016/08/10 v1.14 Data Visualization (1.14)
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplots.code.tex"
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplotscore.code.tex"
+\t@pgfplots@toka=\toks50
+\t@pgfplots@tokb=\toks51
+\t@pgfplots@tokc=\toks52
+\pgfplots@tmpa=\dimen349
+\c@pgfplots@coordindex=\count321
+\c@pgfplots@scanlineindex=\count322
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\sys\pgfplotssysgeneric.code.tex"))
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\libs\pgfplotslibrary.code.tex")
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\oldpgfcompatib\pgfplotsoldpgfsupp_loader.code.
+tex" ("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\libraries\pgflibraryfpu.code.tex")
+Package pgfplots: loading complementary arithmetics for your pgf version...
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\oldpgfcompatib\pgfplotsoldpgfsupp_pgflibraryfp
+u.code.tex")
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\oldpgfcompatib\pgfplotsoldpgfsupp_pgfmathfloat
+.code.tex"
+\c@pgfmathroundto@lastzeros=\count323
+)) ("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\util\pgfplotsutil.code.tex"
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\liststructure\pgfplotsliststructure.code.tex")
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\liststructure\pgfplotsliststructureext.code.te
+x") ("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\liststructure\pgfplotsarray.code.tex"
+\c@pgfplotsarray@tmp=\count324
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\liststructure\pgfplotsmatrix.code.tex")
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\numtable\pgfplotstableshared.code.tex"
+\c@pgfplotstable@counta=\count325
+\t@pgfplotstable@a=\toks53
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\liststructure\pgfplotsdeque.code.tex")
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\util\pgfplotsbinary.code.tex"
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\util\pgfplotsbinary.data.code.tex"))
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\util\pgfplotsutil.verb.code.tex")
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\libs\pgflibrarypgfplots.surfshading.code.tex"
+\c@pgfplotslibrarysurf@no=\count326
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\sys\pgflibrarypgfplots.surfshading.pgfsys-dvip
+s.def"))) ("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\util\pgfplotscolormap.code.tex"
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\util\pgfplotscolor.code.tex"))
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplotsstackedplots.code.tex")
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplotsplothandlers.code.tex"
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplotsmeshplothandler.code.tex"
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplotsmeshplotimage.code.tex")))
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplots.scaling.code.tex")
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplotscoordprocessing.code.tex")
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplots.errorbars.code.tex")
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplots.markers.code.tex")
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplotsticks.code.tex")
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplots.paths.code.tex")
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibrarydecorations
+.code.tex" ("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\modules\pgfmoduledecorations.code.tex"
+\pgfdecoratedcompleteddistance=\dimen350
+\pgfdecoratedremainingdistance=\dimen351
+\pgfdecoratedinputsegmentcompleteddistance=\dimen352
+\pgfdecoratedinputsegmentremainingdistance=\dimen353
+\pgf@decorate@distancetomove=\dimen354
+\pgf@decorate@repeatstate=\count327
+\pgfdecorationsegmentamplitude=\dimen355
+\pgfdecorationsegmentlength=\dimen356
+)
+\tikz@lib@dec@box=\box96
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibrarydecorations
+.pathmorphing.code.tex"
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\libraries\decorations\pgflibrarydecorations.pathmor
+phing.code.tex"))
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibrarydecorations
+.pathreplacing.code.tex"
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\libraries\decorations\pgflibrarydecorations.pathrep
+lacing.code.tex"))
+\pgfplots@numplots=\count328
+\pgfplots@xmin@reg=\dimen357
+\pgfplots@xmax@reg=\dimen358
+\pgfplots@ymin@reg=\dimen359
+\pgfplots@ymax@reg=\dimen360
+\pgfplots@zmin@reg=\dimen361
+\pgfplots@zmax@reg=\dimen362
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibraryplotmarks.c
+ode.tex"
+File: tikzlibraryplotmarks.code.tex 2008/01/09 v3.0.1a (rcs-revision 1.1)
+ ("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\libraries\pgflibraryplotmarks.code.tex"
+File: pgflibraryplotmarks.code.tex 2015/08/03 v3.0.1a (rcs-revision 1.14)
+))) ("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf-pie\pgf-pie.sty"
+Package: pgf-pie 2011/10/02 v0.2 Some LaTeX macros for pie chart by using PGF/Tikz package.
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\carlisle\scalefnt.sty")
+\pgfpie@angleEnd=\skip77
+\c@pgfpie@explodeLength=\count329
+\c@pgfpie@colorLength=\count330
+\c@pgfpie@sliceLength=\count331
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\pgfplots\pgfplotstable.sty"
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplots.revision.tex")
+Package: pgfplotstable 2016/08/10 v1.14 Table typesetting and Pretty-printing (1.14)
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\numtable\pgfplotstable.code.tex"
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\numtable\pgfplotstable.coltype.code.tex")))
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\pst-coil\pst-coil.sty"
+Package: pst-coil 2010/02/01 package wrapper for pst-coil.tex (hv)
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-coil\pst-coil.tex"  v1.75, 2016/05/18
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-node\pst-node.tex"))
+File: pst-coil.tex 2015/05/13 v1.07 `PST-coil' (tvz,hv)
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\ziffer\ziffer.sty")
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\eso-pic\eso-pic.sty"
+Package: eso-pic 2015/07/21 v2.0g eso-pic (RN)
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\esvect\esvect.sty"
+Package: esvect 
+\symesvector=\mathgroup7
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\phaistos\phaistos.sty"
+File: phaistos.sty 2004/04/23 v1.0 Package `phaistos.sty'
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\substitutefont\substitutefont.sty"
+Package: substitutefont 2012/07/07 v0.1.3 combine font families
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\tools\xspace.sty"
+Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
+)
+\c@punkte=\count332
+\c@Antworten=\count333
+\c@marker=\count334
+\c@A1=\count335
+\c@A2=\count336
+\c@number=\count337
+\c@gap=\count338
+\c@teileins=\count339
+\c@ausgleichspkte=\count340
+\c@teilzwei=\count341
+\c@Zufall=\count342
+\c@antworta=\count343
+\c@antwortb=\count344
+\c@antwortc=\count345
+\c@antwortd=\count346
+\c@antworte=\count347
+\c@antwortf=\count348
+\c@antwortg=\count349
+\c@antworth=\count350
+\c@antworti=\count351
+\c@ct=\count352
+\c@acheck=\count353
+\c@bcheck=\count354
+\c@ccheck=\count355
+\c@dcheck=\count356
+\c@echeck=\count357
+\c@fcheck=\count358
+\c@gcheck=\count359
+\c@hcheck=\count360
+\c@icheck=\count361
+\c@absolutecheck=\count362
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\pst-eucl\pst-eucl.sty"
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\pst-tools\pst-tools.sty"
+Package: pst-tools 2012/01/01 package wrapper for pst-tools.tex (hv)
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-tools\pst-tools.tex")
+File: pst-tools.tex 2015/05/13 v1.07 `PST-tools' (hv)
+)
+Package: pst-eucl 2014/05/17 package wrapper for PSTricks pst-eucl.tex
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-eucl\pst-eucl.tex"
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-arrow\pst-arrow.tex")
+`PST-Euclide v1.56, 2017/04/18 (dr,hv)  This version uses the pst-xkey package for managing parameters
+ Please read the doc, some macros have a new syntax  use option old for upward compatibility
+\psMarkHashLength=\dimen363
+\psMarkHashSep=\dimen364
+)
+File: pst-eucl.tex 2017/04/18 v1.56 `PST-eucl' (dr,hv)
+)
+("FA 1.4 Gesamtdokument.aux")
+\openout1 = `"FA 1.4 Gesamtdokument.aux"'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for LPH/cmr/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Try loading font information for T1+lmr on input line 33.
+ ("C:\Program Files\MiKTeX 2.9\tex\latex\lm\t1lmr.fd"
+File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+*geometry* driver: auto-detecting
+*geometry* detected driver: dvips
+*geometry* verbose mode - [ preamble ] result:
+* driver: dvips
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(51.21495pt, 495.07797pt, 51.21495pt)
+* v-part:(T,H,B)=(85.35826pt, 702.78308pt, 56.9055pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=495.07797pt
+* \textheight=702.78308pt
+* \oddsidemargin=-21.05504pt
+* \evensidemargin=-21.05504pt
+* \topmargin=-23.91173pt
+* \headheight=0.4pt
+* \headsep=25.0pt
+* \topskip=12.0pt
+* \footskip=30.0pt
+* \marginparwidth=35.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+\AtBeginShipoutBox=\box97
+LaTeX Info: Redefining \microtypecontext on input line 33.
+Package microtype Info: Generating DVI output.
+Package microtype Info: Character protrusion enabled (level 2).
+Package microtype Info: Using default protrusion set `alltext'.
+Package microtype Info: No font expansion.
+Package microtype Info: No adjustment of tracking.
+Package microtype Info: No adjustment of interword spacing.
+Package microtype Info: No adjustment of character kerning.
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\microtype\mt-cmr.cfg"
+File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman (RS)
+)
+ABD: EveryShipout initializing macros
+Package pgfplots notification 'compat/show suggested version=true': you might benefit from \pgfplotsset{compat=1.14} (cu
+rrent compat level: 1.12).
+
+("Einzelbeispiele/FA 1.4 - 1.tex"
+LaTeX Font Info:    Try loading font information for OT1+lmr on input line 21.
+ ("C:\Program Files\MiKTeX 2.9\tex\latex\lm\ot1lmr.fd"
+File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+LaTeX Font Info:    Try loading font information for OML+lmm on input line 21.
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\lm\omllmm.fd"
+File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 21.
+ ("C:\Program Files\MiKTeX 2.9\tex\latex\lm\omslmsy.fd"
+File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+LaTeX Font Info:    Try loading font information for OMX+lmex on input line 21.
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\lm\omxlmex.fd"
+File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <12> on input line 21.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <8> on input line 21.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <6> on input line 21.
+LaTeX Font Info:    Try loading font information for U+msa on input line 21.
+ ("C:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\umsa.fd"
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\microtype\mt-msa.cfg"
+File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 21.
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\umsb.fd"
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\microtype\mt-msb.cfg"
+File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
+)
+LaTeX Font Info:    Try loading font information for U+wasy on input line 21.
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\wasysym\uwasy.fd"
+File: uwasy.fd 2003/10/30 v2.0 Wasy-2 symbol font definitions
+)
+LaTeX Font Info:    Try loading font information for U+esvect on input line 21.
+
+("C:\Users\Chris Notebook\AppData\Roaming\MiKTeX\2.9\tex\latex\esvect\uesvect.fd"
+File: uesvect.fd 
+)
+Underfull \hbox (badness 10000) in paragraph at lines 21--21
+[]\T1/lmr/m/n/12 Die Ab-bil-dung zeigt den Gra-phen ei-ner Po-ly-nom-funk-ti-on $\OML/lmm/m/it/12 f$ \T1/lmr/m/n/12 mit
+ []
+
+) ("Einzelbeispiele/FA 1.4 - 2.tex" [1
+
+]) ("Einzelbeispiele/FA 1.4 - 3.tex" [2]) ("Einzelbeispiele/FA 1.4 - 4.tex"
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 25.
+
+[3]) ("Einzelbeispiele/FA 1.4 - 5.tex"
+LaTeX Font Info:    Try loading font information for OMS+lmr on input line 31.
+ ("C:\Program Files\MiKTeX 2.9\tex\latex\lm\omslmr.fd"
+File: omslmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+LaTeX Font Info:    Font shape `OMS/lmr/m/n' in size <14.4> not available
+(Font)              Font shape `OMS/lmsy/m/n' tried instead on input line 31.
+
+New spreadtab: \begin{tabular}{ccc}
+* reading tab: ok
+* computing formulas:
+     cell B1
+     cell B2
+     cell C2
+* building tab: ok
+End of spreadtab: \end{tabular}
+
+[4]) ("Einzelbeispiele/FA 1.4 - 6.tex" [5]) ("Einzelbeispiele/FA 1.4 - 7.tex" [6]) ("Einzelbeispiele/FA 1.4 - 8.tex"
+New spreadtab: \begin{tabular}{cc}
+* reading tab: ok
+* computing formulas:
+     cell A1
+     cell A2
+     cell B2
+* building tab: ok
+End of spreadtab: \end{tabular}
+
+
+Overfull \hbox (47.74454pt too wide) in paragraph at lines 47--47
+[][] 
+ []
+
+[7]) ("Einzelbeispiele/FA 1.4 - 9.tex"
+Underfull \hbox (badness 1033) in paragraph at lines 32--32
+[]\T1/lmr/m/n/12 Anteil der güns-tigs-ten $\OT1/lmr/m/n/12 70%$ \T1/lmr/m/n/12 an ver-kauf-ten Pro-duk-ten am Ge-sam-tum
+-satz:
+ []
+
+
+Underfull \hbox (badness 2418) in paragraph at lines 32--32
+[]\T1/lmr/m/n/12 Anteil der teu-ers-ten $\OT1/lmr/m/n/12 20%$ \T1/lmr/m/n/12 an ver-kauf-ten Pro-duk-ten am Ge-sam-tum-s
+atz:
+ []
+
+[8]) [9] ("Einzelbeispiele/FA 1.4 - 10.tex") ("Einzelbeispiele/FA 1.4 - 11.tex"
+New spreadtab: \begin{tabular}{cc}
+* reading tab: ok
+* computing formulas:
+     cell A1
+     cell A2
+     cell B2
+* building tab: ok
+End of spreadtab: \end{tabular}
+
+[10]) ("Einzelbeispiele/FA 1.4 - 12.tex" [11]) ("Einzelbeispiele/FA 1.4 - 13.tex" [12]) [13] ("FA 1.4 Gesamtdokument.aux
+") ) 
+Here is how much of TeX's memory you used:
+ 53138 strings out of 493324
+ 1069796 string characters out of 3139064
+ 1448818 words of memory out of 3000000
+ 45798 multiletter control sequences out of 15000+200000
+ 46430 words of font info for 54 fonts, out of 3000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 69i,22n,102p,10450b,1699s stack positions out of 5000i,500n,10000p,200000b,50000s
+
+Output written on "FA 1.4 Gesamtdokument.dvi" (13 pages, 391400 bytes).

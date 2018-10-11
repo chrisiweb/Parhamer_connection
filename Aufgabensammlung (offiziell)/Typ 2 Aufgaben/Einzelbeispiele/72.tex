@@ -1,0 +1,160 @@
+\section{72 - MAT - FA 5.1, FA 5.2, FA 2.2, FA 2.1, AN 4.3  - Zerstörung des Tropenwaldes - Matura 2016/17 Haupttermin}
+
+\begin{langesbeispiel} \item[0] %PUNKTE DES BEISPIELS
+	
+Unterschiedliche Studien befassen sich mit der Zerstörung des Tropenwaldes.\leer
+
+1992 wurde von einem Team um den US-amerikanischen Ökonomen Dennis Meadows die Studie Die neuen Grenzen des Wachstums veröffentlicht.\leer
+
+In dieser Studie wird der Tropenwaldbestand der Erde Ende 1990 mit 800 Millionen Hektar beziffert. Im Jahr 1990 wurden etwa 17 Millionen Hektar gerodet. Die nachstehenden drei "`Katastrophenszenarien"' werden in der Studie entworfen:\leer
+
+Szenario 1: Die jährliche relative Abnahme von ca. 2,1\,\% bleibt konstant.
+
+Szenario 2: Die Abholzung von 17 Millionen Hektar jährlich bleibt konstant.
+
+Szenario 3: Der Betrag der Abholzungsrate (in Millionen Hektar pro Jahr) wächst exponentiell.\leer
+
+In der nachstehenden Abbildung 1 sind die Graphen der Funktionen $f_1$ und $f_3$ dargestellt, die den Waldbestand der Tropen entsprechend den oben angeführten Szenarien 1 und 3 beschreiben.\leer
+
+Die nachstehende Abbildung 2 zeigt den Graphen der Ableitungsfunktion $f_3'$ der in der Abbildung 1 dargestellten Funktion $f_3$.
+
+Abbildung 1:\hspace{5.5cm}Abbildung 2:
+
+\meinlr{
+\resizebox{0.8\linewidth}{!}{\psset{xunit=0.1cm,yunit=0.009cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=4pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-11.263902828026307,-88.99016430482861)(77.93050595925556,896.053207650432)
+\multips(0,0)(0,50.0){20}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,0)(77.93050595925556,0)}
+\multips(0,0)(5.0,0){18}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,0)(0,896.053207650432)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=10.,Dy=100.,ticksize=-2pt 0,subticks=2]{->}(0,0)(0.,0.)(77.93050595925556,896.053207650432)
+\psplot[linewidth=1.2pt,plotpoints=200]{0}{77.93050595925556}{800*0.979^x}
+\psplot[linewidth=1.2pt,plotpoints=200]{0}{31.7}{-0.0033*x^3-0.15*x^2-17.1667*x+800}
+\begin{scriptsize}
+\rput[tl](41.28791564556078,382.8531302767943){$f_1$}
+\rput[tl](28.425618637488327,179.8289238432673){$f_3$}
+\rput[tl](30,-55){Jahr $t$ nach 1990}
+\rput[tl](-11,719.3469539027326){\rotatebox{90}{\text{Tropenwaldbestand in Millionen Hektar}}}
+\end{scriptsize}
+\end{pspicture*}}}
+{\resizebox{0.8\linewidth}{!}{\psset{xunit=0.2cm,yunit=0.2cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=4pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-6.470439591961152,-41.295964384025226)(37.35016534777085,2.156724568582003)
+\multips(0,-42)(0,2.0){21}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,0)(37.35016534777085,0)}
+\multips(0,0)(5.0,0){9}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,-41.295964384025226)(0,0)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=10.,Dy=10.,ticksize=-2pt 0,subticks=2]{->}(0,0)(0.,-41.295964384025226)(37.35016534777085,4.156724568582003)
+\psplot[linewidth=1.2pt,plotpoints=200]{0}{32}{-0.0099*x^2-0.3*x-17.1667}
+\begin{scriptsize}
+\rput[tl](17,2){Jahr $t$ nach 1990}
+\rput[tl](-6,-15){$\rotatebox{90}{\text{Millionen Hektar/Jahr}}$}
+\rput[tl](17.414197825738928,-23){$f_3'$}
+\end{scriptsize}
+\end{pspicture*}}}
+
+\subsection{Aufgabenstellung:}
+\begin{enumerate}
+	\item \fbox{A} Ermittle die Funktionsgleichung von $f_1$, wobei die Variable $t$ die nach dem Jahr 1990 vergangene Zeit in Jahren angibt!\leer
+	
+	Berechne, wann gemäß Szenario 1 der Tropenwaldbestand auf weniger als 100 Millionen Hektar gesunken sein wird!\leer
+	
+	\item Gib die Gleichung derjenigen Funktion $f_2$ an, die den Bestand $t$ Jahre nach 1990 unter der Annahme einer konstanten Abnahme von 17 Millionen Hektar pro Jahr modelliert!\leer
+	
+	Gib an, in welchem Jahr entsprechend diesem Modell der Tropenwald von der Erdoberfläche verschwinden würde, und zeichne den Graphen dieser Funktion in der Abbildung 1 ein!\leer
+	
+	\item Geh in den nachstehenden Aufgabenstellungen auf Meadows' Annahme einer exponentiell zunehmenden Abholzungsrate ein und beantworte mithilfe der gegebenen Abbildungen.\leer
+	
+	Gib näherungsweise denjenigen Zeitpunkt $t_1$ an, zu dem die momentane Abholzungsrate auf ca. 24 Millionen Hektar pro Jahr angewachsen ist!\leer
+	
+	Bestimme näherungsweise den Wert des Integrals $\int^{t_1}_0{f'(t)}$d$t$ durch Ablesen aus den Abbildungen und gib seine Bedeutung im Zusammenhang mit der Abholzung der tropischen Wälder an!\leer
+	
+	\item Ein internationales Forscherteam um den Geografen Matthew Hansen von der University of Maryland hat mithilfe von Satellitenfotos die Veränderung des Baumbestands des Tropenwaldes von 2000 bis 2012 ermittelt. Dabei wurde festgestellt, dass in jedem Jahr durchschnittlich um $a$ Millionen Hektar $(a>0)$ mehr abgeholzt wurden als im Jahr davor.\leer
+	
+ Begründe, warum das von Meadows entworfene Szenario 3 am ehesten den Beobachtungen von Matthew Hansen entspricht!\leer
+
+ Das Team von Hansen gibt für $a$ den Wert 0,2101 Millionen Hektar pro Jahr an. Gib an, ob die im Modell von Meadows für den Zeitraum 2000 bis 2012 vorhergesagten Änderungsraten der Abholzungsrate größer oder kleiner als die von Hansen beobachteten sind, und begründe deine Entscheidung! 
+\end{enumerate}
+
+\antwort{
+\begin{enumerate}
+	\item \subsection{Lösungserwartung:} 
+
+$f_1(t)=800\cdot 0,979^t$
+
+$800\cdot 0,979^t<100 \Rightarrow t>97,977$...
+
+Nach Szenario 1 wird der Tropenwaldbestand nach ca. 98 Jahren auf weniger als 100 Millionen Hektar gesunken sein.
+
+	\subsection{Lösungsschlüssel:}
+	\begin{itemize}
+		\item Ein Ausgleichspunkt für eine korrekte Funktionsgleichung. Äquivalente Funktionsgleichungen sind als richtig zu werten.
+		\item Ein Punkt für die richtige Lösung, wobei die Einheit "`Jahre"' nicht angegeben sein muss. 
+		
+		Toleranzintervall: $[93\,\text{Jahre}; 104\,\text{Jahre}]$
+		
+		Die Aufgabe ist auch dann als richtig gelöst zu werten, wenn bei korrektem Ansatz das Ergebnis aufgrund eines Rechenfehlers nicht richtig ist.
+	\end{itemize}
+	
+	\item \subsection{Lösungserwartung:}
+	
+	$f_2(t)=-17\cdot t+800$ $(\text{bzw. }f_2(t)=-17\,000\,000\cdot t+800\,000\,000)$
+			
+	\resizebox{0.5\linewidth}{!}{\psset{xunit=0.1cm,yunit=0.01cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=4pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-11.263902828026307,-88.99016430482861)(77.93050595925556,896.053207650432)
+\multips(0,0)(0,50.0){20}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,0)(77.93050595925556,0)}
+\multips(0,0)(5.0,0){18}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,0)(0,896.053207650432)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=10.,Dy=100.,ticksize=-2pt 0,subticks=2]{->}(0,0)(0.,0.)(77.93050595925556,896.053207650432)
+\psplot[linewidth=1.2pt,plotpoints=200]{0}{77.93050595925556}{800*0.979^x}
+\psplot[linewidth=1.2pt,plotpoints=200]{0}{31.7}{-0.0033*x^3-0.15*x^2-17.1667*x+800}
+\psplot[linewidth=1.2pt,plotpoints=200]{0}{47}{-17*x+800}
+\begin{scriptsize}
+\rput[tl](41.28791564556078,382.8531302767943){$f_1$}
+\rput[tl](36.80106785204713,232.46482921492245){$f_2$}
+\rput[tl](28.425618637488327,179.8289238432673){$f_3$}
+\rput[tl](30,-55){Jahr $t$ nach 1990}
+\rput[tl](-11,719.3469539027326){\rotatebox{90}{\text{Tropenwaldbestand in Millionen Hektar}}}
+\end{scriptsize}
+\end{pspicture*}}
+	
+	Entsprechend diesem Modell würde der Tropenwald im Laufe des Jahres 2037 verschwinden.
+	
+	\subsection{Lösungsschlüssel:}
+	
+\begin{itemize}
+	\item Ein Punkt für eine korrekte Funktionsgleichung.  
+	\item Ein Punkt für die Angabe einer korrekten Jahreszahl sowie eines korrekten Graphen, wobei dieser als Gerade erkennbar sein muss, die durch $(0|800)$ verläuft und deren Schnittpunkt mit der Zeitachse im Toleranzintervall $[45; 50]$ liegt. 
+	
+	Toleranzintervall für das gesuchte Jahr: $[2035; 2040]$
+\end{itemize}
+
+\item \subsection{Lösungserwartung:}
+	
+	$t_1\approx 15$ (also im Jahr 2005)\leer
+	
+	$\int^{t_1}_0{f_3'(t)}$d$t\approx -300$ $(\text{bzw. }-300\,000\,000)$
+	
+	In den 15 Jahren nach 1990 wurden ca. 300 Millionen Hektar Tropenwald gerodet.	
+	\subsection{Lösungsschlüssel:}
+	
+\begin{itemize}
+	\item Ein Punkt für die richtige Lösung. 
+	
+	Toleranzintervall: $[14; 16]$ bzw. $[2004; 2006]$
+	\item Ein Punkt für die richtige Lösung, wobei auch der Betrag der Lösung als richtig zu werten ist, sowie für eine (sinngemäß) korrekte Interpretation. 
+	
+	Toleranzintervall: $[-350; -250]$ (bzw. $[-350 000 000; -250 000 000]$)
+\end{itemize}
+
+\item \subsection{Lösungserwartung:}
+	
+	Eine Übereinstimmung ist am ehesten mit dem Szenario 3 festzustellen, da dieses Modell ebenso von einer jährlich zunehmenden Abholzungsrate ausgeht.
+	
+Das Modell von Meadows sagt für diesen Zeitraum eine deutlich größere Änderung der Abholzungsrate voraus.
+
+Mögliche Begründung: Der Betrag der Steigung der Funktion $f_3'$ ist im Zeitraum 2000 bis 2012 deutlich größer als 0,2101.
+
+	\subsection{Lösungsschlüssel:}
+	
+\begin{itemize}
+	\item Ein Punkt für eine (sinngemäß) korrekte Begründung. 
+	\item Ein Punkt für eine richtige Entscheidung und eine korrekte Begründung.
+\end{itemize}
+
+\end{enumerate}}
+		\end{langesbeispiel}

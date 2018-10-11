@@ -1,0 +1,73 @@
+\section{18 - MAT - AN 1.3, FA 1.7, FA 5.3 - Wiener U-Bahn - BIFIE Aufgabensammlung}
+
+\begin{langesbeispiel} \item[0] %PUNKTE DES BEISPIELS
+				Die Wiener U-Bahn-Linie U2 verkehrt	zwischen den Stationen \textit{Karlsplatz} und \textit{Aspernstraße}. Die Gesamtstrecke der U2 beträgt 12,531\,km (Stand 2012).
+							
+Zwischen den beiden Stationen \textit{Donaumarina} und \textit{Donaustadtbrücke} fährt die U-Bahn nahezu geradlinig und benötigt für diese 855 m lange Strecke ca. eine Minute.
+
+Betrachtet man die Geschwindigkeit eines Zuges zwischen diesen beiden Stationen, so lässt sie sich näherungsweise durch drei Funktionen beschreiben. Diese Funktionen sind im nachstehenden Zeit-Geschwindigkeits-Diagramm dargestellt. Die Zeit $t$ ist in Sekunden, die Geschwindigkeit $v$ in m/s angegeben.
+
+\begin{center}
+\begin{tabular}{ll}
+$v_1(t)=0,08t²$&$[0;15)$\\
+$v_2(t)=18$&$[15;50)$\\
+$v_3(t)=-0,14(t-50)²+18$&$[50;61,34]$\\
+\end{tabular}
+\end{center}
+
+\begin{center}
+	\resizebox{0.8\linewidth}{!}{\psset{xunit=0.2cm,yunit=0.2cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-3.2693103448275864,-7.143563636363628)(67.2141379310345,28.489667132867076)
+\multips(0,-5)(0,5.0){8}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=darkgray]{c-c}(-5,0)(67.2141379310345,0)}
+\multips(0,0)(5.0,0){15}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=darkgray]{c-c}(0,-7.143563636363628)(0,28.489667132867076)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=10.,Dy=10.,ticksize=-2pt 0,subticks=2]{->}(0,0)(-3.2693103448275864,-7.143563636363628)(67.2141379310345,28.489667132867076)
+\psplot[linewidth=1.6pt,plotpoints=200]{0}{15}{0.08*x^(2.0)}
+\psplot[linewidth=1.6pt,plotpoints=200]{15}{50}{18.0}
+\psplot[linewidth=1.6pt,plotpoints=200]{50}{61.34}{-0.14*(x-50.0)^(2.0)+18.0}
+\begin{scriptsize}
+\rput[tl](0.9827586206896562,26.821728671328618){v in m/s}
+\rput[tl](63.250344827586225,1.484990209790201){t in s}
+\rput[tl](11.916551724137936,10.06652867132865){$v_1$}
+\rput[tl](27.93655172413794,16.889913286713252){$v_2$}
+\rput[tl](57.49379310344829,12.79588251748249){$v_3$}
+\end{scriptsize}
+\end{pspicture*}}
+\end{center}
+
+\subsection{Aufgabenstellung:}
+\begin{enumerate}
+	\item Berechne die Länge desjenigen Weges, den die U-Bahn im Zeitintervall $[15;50]$ zurückgelegt!
+	
+	Um den Bremsvorgang zu modellieren, wurde die Funktion $v_3(t)=-0,14(t-50)²+18$ verwendet.
+	
+	Erläutere, in welcher Weise eine Veränderung des Parameters von $-0,14$ auf $-0,2$ den Bremsvorgang beeinflusst!
+	
+	\item Berechne die mittlere Beschleunigung des Zuges vom Anfahren bis zum Erreichen der Höchstgeschwindigkeit.
+	
+	Erkläre, wieso der Verlauf des Graphen des $v-t$-Diagramms im Intervall $[14;16]$ nicht exakt der Realität entsprechen kann!
+						
+						\end{enumerate}\leer
+				
+\antwort{\subsection{Lösungserwartung:}
+\begin{enumerate}
+	\item $18\cdot (50-15)=630$ - Der Weg ist 630\,m lang.
+	
+	Eine Veränderung des Parameters von $-0,14$ auf $-0,2$ würde bedeuten, dass der Zug "`stärker"' (d.h. mit einer größeren negativen Beschleunigung) bremst und daher rascher zum Stillstand kommt. Auch der Bremsweg verkürzt sich.
+	
+	\item Mittlere Beschleunigung: $\overline{a_1}(0;15)=\frac{v_1(15)-v_1(0)}{15-0}=\frac{18}{15}=1,2\,m/s²$
+	
+	Bei diesem Geschwindigkeitsverlauf würden die Fahrgäste einen zu starken Ruck bei 15\,s verspüren. Um diesen Ruck zu vermeiden, müsste in Wirklichkeit die Geschwindigkeitsfunktion ihre Steigung allmählich ändern, sodass kein Knick (wie jetzt) entsteht. Der Knick des Funktionsgraphen würde einen plötzlichen Sprung der Beschleunigung und somit einen für die Fahrgäste unangenehmen Ruck bedeuten. (Adäquate Erklärungen sind als richtig zu werten.)	
+		\end{enumerate}
+		
+		\subsection{Lösungsschlüssel:}
+\begin{enumerate}
+	\item - 1 Grundkompetenzpunkt für die Berechnung der Weglänge
+	
+	- 1 Reflexionspunkt für die Erläuterung. Äquivalente Antworten sind ebenfalls zu werten, sofern sie klar formuliert sind und sinngemäß eines der folgenden Schlüsselwörter enthalten: \textit{kürzerer Bremsweg, schnellerer Stillstand, stärkere negative Beschleunigung, stärkere Bremsung}.
+	
+	\item -1 Grundkompetenzpunkt für die Berechnung der mittleren Beschleunigung
+	
+	-1 Reflexionspunkt für die Erklärung. Äquivalente Antworten sind ebenfalls zu werten, sofern sie klar formuliert sind und sinngemäß eines der folgenden Schlüsselwörter enthalten: \textit{plötzlicher Ruck, unstetige Änderung der Steigung, ruckartige Beschleunigungsveränderung}.
+			\end{enumerate}
+		}
+		\end{langesbeispiel}

@@ -1,0 +1,82 @@
+\section{10 - MAT - AN 1.2, AN 1.3, FA 1.5, FA 5.1, FA 5.3 - Baumwachstum - BIFIE Aufgabensammlung}
+
+\begin{langesbeispiel} \item[0] %PUNKTE DES BEISPIELS
+				An einem gefällten Baum kann anhand der Jahresringe der jeweilige Umfang des Baumstamms zu einem bestimmten Baumalter ermittelt werden. Die Untersuchung eines Baumes ergab folgende Zusammenhänge zwischen Alter und Umfang:\leer
+				
+				\begin{tabular}{|l|c|c|c|c|c|c|c|c|}\hline
+				Alter $t$ (in Jahren)&25&50&75&100&125&150&175&200\\ \hline
+				Umfang $u$ (in Metern)&0,462&1,256&2,465&3,370&3,761&3,895&3,934&3,950\\ \hline				
+				\end{tabular}\leer
+				
+				Der Zusammenhang zwischen Alter und Umfang kann durch eine Wachstumsfunktion $u$ beschrieben werden, wobei der Wert $u(t)$ den Umfang zum Zeitpunkt $t$ angibt.
+				
+				In der nachstehenden Graphik sind die gemessenen Werte und der Graph der Wachstumsfunktion $u$ veranschaulicht.\leer
+				
+				\psset{xunit=0.06cm,yunit=2.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-14.67098559637483,-0.2288481488902294)(217.3773296649945,4.3033504752999825)
+\multips(0,0)(0,0.25){19}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,0)(217.3773296649945,0)}
+\multips(0,0)(25.0,0){10}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,0)(0,4.3033504752999825)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=25.,Dy=0.25,ticksize=-2pt 0,subticks=2]{->}(0,0)(-17.67098559637483,-0.1888481488902294)(217.3773296649945,4.3033504752999825)
+\psplot[linewidth=1.6pt,plotpoints=200]{0}{217.3773296649945}{3.9492122403178858/(1.0+26.648008639299004*EXP(-0.050467291467754964*x))}
+\rput[tl](9.198595241948542,3.9636122798815623){u(t)}
+\rput[tl](184.6981097264931,0.2912041675014983){t}
+\rput[tl](80.12460592328863,3.1628008192524293){u}
+\begin{scriptsize}
+\psdots[dotsize=4pt 0,dotstyle=*](25.,0.462)
+\psdots[dotsize=4pt 0,dotstyle=*](50.,1.256)
+\psdots[dotsize=4pt 0,dotstyle=*](75.,2.465)
+\psdots[dotsize=4pt 0,dotstyle=*](100.,3.37)
+\psdots[dotsize=4pt 0,dotstyle=*](125.,3.761)
+\psdots[dotsize=4pt 0,dotstyle=*](150.,3.895)
+\psdots[dotsize=4pt 0,dotstyle=*](175.,3.934)
+\psdots[dotsize=4pt 0,dotstyle=*](200.,3.95)
+\end{scriptsize}
+\end{pspicture*}
+				
+\subsection{Aufgabenstellung:}
+\begin{enumerate}
+	\item Innerhalb der ersten 50 Jahre wird eine exponentielle Zunahme des Umfangs angenommen. Ermitteln Sie aus den Werten der Tabelle für 25 und 50 Jahre eine Wachstumsfunktion für diesen Zeitraum! 
+	
+Begründe mittels einer Rechnung, warum dieses Modell für die darauffolgenden 
+25 Jahre nicht mehr gilt.
+	
+	\item Berechne den Differenzenquotienten im Zeitintervall von 75 bis 100 Jahren! Gib an, was dieser Wert über das Wachstum des Baumes aussagt!
+	
+	Erläutere, was die 1. Ableitungsfunktion $u'$ im gegebenen Zusammenhang beschreibt!
+	
+	\item Schätze mithilfe der Grafik denjenigen Zeitpunkt ab, zu dem der Umfang des Baumes am schnellsten zugenommen hat! Gib den Namen des charakteristischen Punktes des Graphen der Funktion an, der diesen Zeitpunkt bestimmt!
+	
+	Beschreibe, wie dieser Zeitpunkt rechnerisch ermittelt werden kann, wenn die Wachstumsfunktion $u$ bekannt ist!
+	
+	\item Die beiden Wachstumsfunktionen $f$ und $g$ mit $f(t)=a\cdot q^t$ und $g(t)=b\cdot e^{k\cdot t}$ beschreiben denselben Wachstumsprozess, sodass $f(t)=g(t)$ für alle $t$ gelten muss. Gib die Zusammenhänge zwischen den Parametern $a$ und $b$ beziehungsweise $q$ und $k$ jeweils in Form einer Gleichung an!
+	
+	Gib an, welche Werte die Parameter $q$ und $k$ annehmen können, wenn die Funktionen $f$ und $g$ im Zusammenhang mit einer exponentiellen Abnahme verwendet werden!
+				\end{enumerate}
+				
+\antwort{\subsection{Lösungserwartung:}
+\begin{enumerate}
+	\item $f(t)=a\cdot q^t \rightarrow 1,256=a\cdot q^{50}$ bzw. $0,462=a\cdot q^{25}$
+	
+	$\rightarrow$ (Division) $2,71861=q^{25} \rightarrow q\approx 1,0408 \rightarrow a=\frac{0,462}{q^{25}} \rightarrow a\approx 0,17$
+	
+	$\rightarrow$ (näherungsweise) $f(t)=0,17\cdot 1,0408^t$ bzw. $f(t)=0,17\cdot e^{0,04\cdot t}$ da $\ln(1,0408)\approx 0,04$
+	
+	Begründung dafür, dass das Modell für die nächsten 25 Jahre nicht passend ist: Nach dem Modell gilt $f(75)=0,17\cdot 1,0408^{75}\approx 3,412$. Dieser Wert weicht signifikant vom gemessen Wert ab und spricht daher gegen eine Verwendung des exponentiellen Modells in den nächsten 25 Jahren.
+	
+	\item Differenzenquotient: $\frac{3,370-2,465}{100-75}\approx 0,036$
+	
+	Die durchschnittliche Zunahme zwischen 75 und 100 Jahren beträgt 3,6 cm pro Jahr. 
+	
+	Die 1. Ableitungsfunktion gibt die momentane Wachstumsrate an.
+	
+	\item Der charakteristische Punkt ist der Wendepunkt. Die Wendestelle der Funktion bestimmt den Zeitpunkt für das maximale jährliche Wachstum des Baumumfangs. Am schnellsten nimmt der Baum bei etwa 65 Jahren an Umfang zu (Lösungsintervall $[55;75]$).
+	
+	Die Nullstelle der 2. Ableitungsfunktion bestimmt in diesem Fall denjenigen Zeitpunkt, zu dem der Baumumfang am schnellsten zunimmt.
+	
+	\item $f(0)=a$ und $g(0)=b$, daraus folgt: $a$ und $b$ sind gleich.
+	
+	Da $q^t=e^{k\cdot t}$ gilt, folgt $\ln(q)=k$ bzw. $q=e^k$.
+	
+	Bei einer Zerfallsfunktion muss $0<q<1$ bzw. $k<0$ gelten.
+	\end{enumerate}}
+\end{langesbeispiel}

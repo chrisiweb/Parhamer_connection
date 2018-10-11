@@ -1,0 +1,65 @@
+\section{AG 4.1 - 5 Raumdiagonale beim Würfel - OA - BIFIE}
+
+\begin{beispiel}[AG 4.1]{1} %PUNKTE DES BEISPIELS
+Gegeben ist ein Würfel mit der Seitenlänge $a$.
+
+\newrgbcolor{qqwuqq}{0. 0.39215686274509803 0.}
+\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-3.442667648179331,-2.663386548875926)(10.0015331121835,7.809927889616527)
+\psline[linewidth=1.2pt](-2.,-2.)(5.,-2.)
+\psline[linewidth=1.2pt](5.,-2.)(5.,5.)
+\psline[linewidth=1.2pt](5.,5.)(-2.,5.)
+\psline[linewidth=1.2pt](-2.,5.)(-2.,-2.)
+\psline[linewidth=1.6pt](2.,7.)(-2.,5.)
+\psline[linewidth=1.6pt](5.,5.)(9.,7.)
+\psline[linewidth=1.6pt](2.,7.)(9.,7.)
+\psline[linewidth=1.6pt](5.,-2.)(9.,0.)
+\psline[linewidth=1.6pt](9.,0.)(9.,7.)
+\psline[linewidth=1.6pt,linestyle=dashed,dash=2pt 2pt](2.,0.)(9.,0.)
+\psline[linewidth=1.6pt,linestyle=dashed,dash=2pt 2pt](2.,7.)(2.,0.)
+\psline[linewidth=1.6pt,linestyle=dashed,dash=2pt 2pt](-2.,-2.)(2.,0.)
+\psline[linewidth=1.6pt](-2.,-2.)(9.,7.)
+\psline[linewidth=1.6pt](-2.,-2.)(9.,0.)
+\pscustom[linecolor=qqwuqq,fillcolor=qqwuqq,fillstyle=solid,opacity=0.1]{
+\parametricplot{1.5707963267948966}{3.141592653589793}{0.5640923395956432*cos(t)+9.|0.5640923395956432*sin(t)+0.}
+\lineto(9.,0.)\closepath}
+\psellipse*[linecolor=qqwuqq,fillcolor=qqwuqq,fillstyle=solid,opacity=1](8.765368518503845,0.2346314814961554)(0.037606155973042885,0.037606155973042885)
+\pscustom[linecolor=qqwuqq,fillcolor=qqwuqq,fillstyle=solid,opacity=0.1]{
+\parametricplot{1.5707963267948966}{3.3214461533822712}{0.5640923395956432*cos(t)+9.|0.5640923395956432*sin(t)+0.}
+\lineto(9.,0.)\closepath}
+\pscustom[linecolor=qqwuqq,fillcolor=qqwuqq,fillstyle=solid,opacity=0.1]{
+\parametricplot{0.17985349979247828}{0.6857295109062862}{1.6922770187869296*cos(t)+-2.|1.6922770187869296*sin(t)+-2.}
+\lineto(-2.,-2.)\closepath}
+\begin{scriptsize}
+\psdots[dotsize=3pt 0,dotstyle=*](-2.,-2.)
+\rput[bl](-2.145255267109351,-2.4377496130376684){$A$}
+\psdots[dotsize=3pt 0,dotstyle=*](5.,-2.)
+\rput[bl](4.999914367768797,-2.4001434570646256){$B$}
+\rput[bl](1.4461326283162441,-2.343734223105061){$a$}
+\psdots[dotsize=3pt 0,dotstyle=*](5.,5.)
+\rput[bl](5.075126679714883,5.1210877375439585){$F$}
+\psdots[dotsize=3pt 0,dotstyle=*](-2.,5.)
+\rput[bl](-2.3708922029476085,5.008269269624829){$E$}
+\psdots[dotsize=3pt 0,dotstyle=*](2.,7.)
+\rput[bl](2.0666342018714516,7.114214004115233){$H$}
+\psdots[dotsize=3pt 0,dotstyle=*](9.,7.)
+\rput[bl](9.155394602790036,7.07660784814219){$G$}
+\psdots[dotsize=3pt 0,dotstyle=*](9.,0.)
+\rput[bl](9.193000758763079,-0.18138025465509333){$C$}
+\rput[bl](7.1246621802457195,-1.2531556998868165){a}
+\rput[bl](9.287016148695686,3.5040230307031126){a}
+\psdots[dotsize=3pt 0,dotstyle=*](2.,0.)
+\rput[bl](1.615360330194937,0.11946899312925002){$D$}
+\rput[bl](3.6836989087122958,2.1878075716466108){$d_2$}
+\rput[bl](3.946942000523596,-1.2907618558598595){$d_1$}
+\rput[bl](-0.7162213401337217,-1.5728080256576813){\qqwuqq{$\varphi$}}
+\end{scriptsize}
+\end{pspicture*}
+
+Berechne die Größe des Winkels $\varphi$ zwischen einer Raumdiagonalen und einer Seitenflächendiagonalen eines Würfels!
+\leer
+
+\antwort{$tan(\varphi)=\dfrac{a}{d_{1}}=\dfrac{a}{a\sqrt{2}}=\dfrac{\sqrt{2}}{2}\rightarrow\varphi\approx35^\circ$
+
+Lösungsintervall: $[35^\circ; 36^\circ]$}
+\end{beispiel}

@@ -1,0 +1,95 @@
+\section{67 - MAT - AN 1.1, FA 5.2 - Ebola - Matura 2015/16 2. Nebentermin}
+
+\begin{langesbeispiel} \item[0] %PUNKTE DES BEISPIELS
+	
+ Ebola ist eine durch Viren ausgelöste, ansteckende Krankheit. Die Ebola-Epidemie, die 2014 in mehreren Ländern Westafrikas ausbrach, gilt nach der Weltgesundheitsorganisation WHO als die bisher schwerste Ebola-Epidemie. Der Verlauf der Epidemie wurde von der WHO genau beobachtet und dokumentiert.
+
+In der nachstehenden Tabelle ist ein Auszug der Dokumentation der WHO für die Staaten Guinea, Liberia und Sierra Leone für drei Tage im September 2014 dargestellt. Angeführt ist jeweils die Gesamtanzahl der Erkrankten.
+
+\begin{center}
+	\begin{tabular}{|l|c|c|c|}\hline
+	\cellcolor[gray]{0.9}Datum&6. September&13. September&20. September\\ \hline
+	\cellcolor[gray]{0.9}Gesamtzahl der Erkrankten&4\,269&4\,963&5\,843\\ \hline	
+	\end{tabular}
+\end{center}
+\begin{scriptsize}Datenquelle: http://www.who.int/csr/disease/ebola/situation-reports/en/ [20.09.2014].\end{scriptsize}
+
+\subsection{Aufgabenstellung:}
+\begin{enumerate}
+	\item Gib die Bedeutung der Ausdrücke $4\,963-4\,269$ und $\frac{4\,963-4\,269}{4\,269}$ im gegebenen Kontext an!
+	
+Mithilfe dieser Ausdrücke kann auf Basis der Anzahl der Erkrankungen vom 6. September 2014 und vom 13. September 2014 die Anzahl der Erkrankungen vom 20. September 2014 vorhergesagt werden, wenn man ein lineares oder ein exponentielles Wachstumsmodell zugrunde legt. 
+
+ Ermittle die Werte beider Wachstumsmodelle für den 20. September 2014, vergleiche sie mit den tatsächlichen Daten und gib an, welches der beiden Modelle zur Modellierung der Anzahl der Erkrankungen im betrachteten Zeitraum eher angemessen ist!
+	
+	\item  Mitte September 2014 zitierte die New York Times die Behauptung von Wissenschaftlern, die Epidemie könne 12 bis 18 Monate dauern; es könne allein bis Mitte Oktober 2014 bereits 20\,000 Infektionsfälle geben.
+	
+	\begin{scriptsize}\begin{singlespace}Datenquelle: http://www.nytimes.com/2014/09/13/world/africa/us-scientists-see-long-fight-against-ebola.html [29.06.2016].\end{singlespace}\end{scriptsize}
+	
+	Die zeitliche Entwicklung der Anzahl von Erkrankungsfällen bei einer Epidemie kann für einen beschränkten Zeitraum durch eine Exponentialfunktion beschrieben werden. Auf Basis der Anzahl der Erkrankten vom 6. September 2014 und vom 20. September 2014 soll die Anzahl der Erkrankungsfälle in Form einer Exponentialfunktion $f$ mit $f(t)=a\cdot b^t$ modelliert werden. 
+	
+	Die Zeit $t$ wird dabei in Tagen ab dem 6. September 2014 gemessen, der Zeitpunkt $t=0$ entspricht dem 6. September 2014
+	
+	\fbox{A} Gib den Wert von $b$ an!
+	
+	Ermittle, wie viele Tage nach dem 6. September 2014 die Anzahl der Erkrankten gemäß der Modellfunktion die Zahl 20\,000 überschreitet, und vergleiche dein Resultat mit der Aussage der Wissenschaftler!  
+	
+\end{enumerate}
+\antwort{
+\begin{enumerate}
+	\item \subsection{Lösungserwartung:} 
+
+$4\,963-4\,269$ gibt die absolute Zunahme der Erkrankungen in dieser Woche an.
+
+$\frac{4\,963-4\,269}{4\,269}$ gibt die relative Zunahme der Erkrankungen in dieser Woche an.\leer
+
+prognostizierte Erkrankungen für den 20. September 2014:
+
+lineares Modell: $4\,963+(4\,963-4\,269)=5\,657$
+
+exponentielles Modell: $4\,963\cdot \left(\frac{4\,963-4\,269}{4\,269}+1\right)\approx 5\,770$\leer
+
+Das exponentielle Modell ist eher angemessen, da es näher beim tatsächlichen Wert von 5\,843 Erkrankungen liegt.
+
+ 
+	\subsection{Lösungsschlüssel:}
+	\begin{itemize}
+		\item Ein Punkt für eine (sinngemäß) korrekte Deutung beider Ausdrücke.
+		\item Ein Punkt für die Angabe der beiden korrekten Werte und die Angabe der entsprechenden angemessenen Modellierung. 
+		
+		Toleranzintervall für den exponentiellen Wert: $[5\,450; 5\,960]$
+
+	\end{itemize}
+	
+	\item \subsection{Lösungserwartung:}
+			
+Mögliche Vorgehensweise:
+
+$f(0)=4\,269$
+
+$f(14)=5\,843=4\,269\cdot b^{14}$
+
+$b=\sqrt[14]{\frac{5\,843}{4\,269}}\approx 1,0227$\leer
+
+$t=\dfrac{\ln\left(\frac{20\,000}{4\,269}\right)}{\ln(1,0227)}\approx 68,80$, also am 69. Tag nach dem 6. September 2014. Dieser Zeitpunkt ist Mitte November.
+
+Die Aussage der Wissenschaftler, es könne bis Mitte Oktober 2014 bereits 20\,000 Erkrankungsfälle geben, erscheint daher (nach vorliegendem Modell) nicht gerechtfertigt.
+
+	
+	\subsection{Lösungsschlüssel:}
+	
+\begin{itemize}
+	\item Ein Ausgleichspunkt für die richtige Lösung. 
+	
+	Toleranzintervall: $[1,02; 1,03]$  
+	
+	Die Aufgabe ist auch dann als richtig gelöst zu werten, wenn bei korrektem Ansatz das Ergebnis aufgrund eines Rechenfehlers nicht richtig ist. 
+	\item  Ein Punkt für die richtige Lösung und einen (sinngemäß) korrekten Vergleich. 
+	
+	Toleranzintervall: $[68; 70]$ 
+	
+	Die Aufgabe ist auch dann als richtig gelöst zu werten, wenn bei korrektem Ansatz das Ergebnis aufgrund eines Rechenfehlers nicht richtig ist.  
+\end{itemize}
+
+\end{enumerate}}
+		\end{langesbeispiel}

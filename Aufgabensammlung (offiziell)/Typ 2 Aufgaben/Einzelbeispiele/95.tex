@@ -1,0 +1,134 @@
+\section{95 - FA 5.2, AN 3.3, WS 1.1 - Lachsbestand - Matura - 1. NT 2017/18}
+
+\begin{langesbeispiel} \item[1] %PUNKTE DES BEISPIELS
+Der kanadische Wissenschaftler W. E. Ricker untersuchte die Nachkommenanzahl von Fischen in Flüssen Nordamerikas in Abhängigkeit von der Anzahl der Fische der Elterngeneration. Er veröffentlichte 1954 das nach ihm benannte Ricker-Modell.\\
+Der zu erwartende Bestand $R(n)$ einer Nachfolgegeneration kann näherungsweise anhand der sogenannten Reproduktionsfunktion $R$ mit $R(n)=a\cdot n\cdot e^{-b\cdot n}$ mit $a, b\in\mathbb{R}^+$ aus dem Bestand $n$ der jeweiligen Elterngeneration ermittelt werden.\\
+Lachse kehren spätestens vier Jahre nach dem Schlüpfen aus dem Meer an ihren "`Geburtsort"' zurück, um dort zu laichen, d.h., die Fischeier abzulegen. Nach dem Laichen stirbt der Großteil der Lachse.\\
+Ricker untersuchte unter anderem die Rotlachspopulation im Skeena River in Kanada. Die nachstehende Tabelle gibt die dortigen Lachsbestände in den Jahren von 1908 bis 1923 an, wobei die angeführten Bestände Mittelwerte der beobachteten Bestände jeweils vier aufeinanderfolgender Jahre sind.
+\begin{center}
+	\begin{tabular}{|l|C{5cm}|}\hline
+	\cellcolor[gray]{0.9}Zeitraum&\cellcolor[gray]{0.9}beobachteter Lachsbestand (in tausend Lachsen)\\ \hline
+	01.01.1908 - 31.12.1911&1\,098\\ \hline
+	01.01.1912 - 31.12.1915&740\\ \hline
+	01.01.1916 - 31.12.1919&714\\ \hline
+	01.01.1920 - 31.12.1923&615\\ \hline
+	\end{tabular}
+\end{center}
+\begin{tiny}Datenquelle: http://jmahaffy.sdsu.edu/courses/s00/math121/lectures/product\_rule/product.html [01.02.2018] (adaptiert).\end{tiny}
+
+Anhand dieser Daten für den Lachsbestand im Skeena River wurden für die Reproduktionsfunktion $R$ die Parameterwerte $a=1,535$ und $b=0,000783$ ermittelt ($R(n)$ und $n$ in tausend Lachsen).
+
+
+\subsection{Aufgabenstellung:}
+\begin{enumerate}
+	\item Ermittle für die Lachspopulation im Skeena River für $n>0$ mithilfe der Reproduktionsfunktion die Lösung $n_0$ der Gleichung $R(n)=n$ in tausend Lachsen!
+	
+	\fbox{A} Interpretiere $n_0$ im gegebenen Kontext!
+		
+	\item Bestimme die Koordinaten des Extrempunkts $E=(n_E\mid R(n_E))$ der Repduktionsfunktion $R$ in Abhängigkeit von $a$ und $b$ und zeige, dass $n_E$ für alle $a, b\in\mathbb{R}^+$ eine Stelle eines lokalen Maximums ist!
+	
+	Gib an, für welche Werte des Parameters $a$ der Bestand $R(n_E)$ der Nachfolgegeneration stets größer als der vorherige Bestand $n_E$ ist!
+	
+	\item Stelle die Daten der obigen Tabelle der beobachteten Lachbestände (in tausend Lachsen) durch ein Histogramm dar, wobei die absoluten Häufigkeiten als Flächeninhalte von Rechtecken abgebildet werden sollen!
+	
+	\begin{center}
+		\antwort[\resizebox{1\linewidth}{!}{\psset{xunit=1.3cm,yunit=0.035cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-0.5562189054726357,-29.791999999999618)(10.5,323.0079999999964)
+\multips(0,0)(0,10.0){36}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=darkgray]{c-c}(0,0)(10.5,0)}
+\multips(0,0)(1.0,0){10}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=darkgray]{c-c}(0,0)(0,323.0079999999964)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=y,Dx=1.,Dy=50.,ticksize=-2pt 0,ysubticks=5]{->}(0,0)(0.,0.)(10.5,323.0079999999964)[Zeit in Jahren,140] [,-40]
+\begin{scriptsize}
+\rput[tl](-0.465671641791044,-9.4){01.01.1908}
+\rput[tl](1.500497512437807,-9.4){01.01.1912}
+\rput[tl](3.5184079601989966,-9.4){01.01.1916}
+\rput[tl](5.4587064676616786,-9.4){01.01.1920}
+\rput[tl](7.476616915422868,-9.4){01.01.1924}
+\end{scriptsize}
+\end{pspicture*}}]{\resizebox{1\linewidth}{!}{\psset{xunit=1.3cm,yunit=0.035cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-0.5562189054726357,-29.791999999999618)(10.5,323.0079999999964)
+\multips(0,0)(0,10.0){36}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=darkgray]{c-c}(0,0)(10.5,0)}
+\multips(0,0)(1.0,0){10}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=darkgray]{c-c}(0,0)(0,323.0079999999964)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=y,Dx=1.,Dy=50.,ticksize=-2pt 0,ysubticks=5]{->}(0,0)(0.,0.)(10.5,323.0079999999964)[Zeit in Jahren,140] [,-40]
+\pspolygon[linewidth=2.pt,fillcolor=black,fillstyle=solid,opacity=0.7](0.,0.)(0.,274.5)(2.,274.5)(2.,0.)
+\pspolygon[linewidth=2.pt,fillcolor=black,fillstyle=solid,opacity=0.7](2.,0.)(2.,185.)(4.,185.)(4.,0.)
+\pspolygon[linewidth=2.pt,fillcolor=black,fillstyle=solid,opacity=0.7](4.,0.)(4.,178.5)(6.,178.5)(6.,0.)
+\pspolygon[linewidth=2.pt,fillcolor=black,fillstyle=solid,opacity=0.7](6.,0.)(6.,153.75)(8.,153.75)(8.,0.)
+\begin{scriptsize}
+\rput[tl](-0.465671641791044,-9.4){01.01.1908}
+\rput[tl](1.500497512437807,-9.4){01.01.1912}
+\rput[tl](3.5184079601989966,-9.4){01.01.1916}
+\rput[tl](5.4587064676616786,-9.4){01.01.1920}
+\rput[tl](7.476616915422868,-9.4){01.01.1924}
+\end{scriptsize}
+\psline[linewidth=2.pt](0.,0.)(0.,274.5)
+\psline[linewidth=2.pt](0.,274.5)(2.,274.5)
+\psline[linewidth=2.pt](2.,274.5)(2.,0.)
+\psline[linewidth=2.pt](2.,0.)(0.,0.)
+\psline[linewidth=2.pt](2.,185.)(4.,185.)
+\psline[linewidth=2.pt](4.,185.)(4.,0.)
+\psline[linewidth=2.pt](4.,0.)(2.,0.)
+\psline[linewidth=2.pt](4.,178.5)(6.,178.5)
+\psline[linewidth=2.pt](6.,178.5)(6.,0.)
+\psline[linewidth=2.pt](6.,0.)(4.,0.)
+\psline[linewidth=2.pt](6.,153.75)(8.,153.75)
+\psline[linewidth=2.pt](8.,153.75)(8.,0.)
+\psline[linewidth=2.pt](8.,0.)(6.,0.)
+\end{pspicture*}}}
+	\end{center}
+	
+	Das von Ricker entwickelte Modell zählt zu den Standardmodellen zur Beschreibung von Populationsentwicklungen. Dennoch können die mithilfe der Reproduktionsfunktion berechneten Werte mehr oder weniger stark von den beobachteten Werten abweichen.
+	
+	Nimm den beobachteten durchschnittlichen Lachsbestand von 1\,098 (im Zeitraum von 1908 bis 1911) als Ausgangswert, berechne damit für die jeweils vierjährigen Zeiträume von 1912 bis 1923 die laut Reproduktionsfunktion zu erwartenden durchschnittlichen Lachsbestände im Skeena River und trage die Werte in die nachstehende Tabelle ein!
+	
+	\begin{center}
+		\begin{tabular}{|l|C{5cm}|}\hline
+	\cellcolor[gray]{0.9}Zeitraum&\cellcolor[gray]{0.9}berechneter Lachsbestand (in tausend Lachsen)\\ \hline
+	01.01.1912 - 31.12.1915&\antwort{713}\\ \hline
+	01.01.1916 - 31.12.1919&\antwort{626}\\ \hline
+	01.01.1920 - 31.12.1923&\antwort{589}\\ \hline
+	\end{tabular}
+	\end{center}
+\end{enumerate}
+
+\antwort{
+\begin{enumerate}
+	\item \subsection{Lösungserwartung:}
+	
+$n_0\approx 547$
+
+Mögliche Interpretation:\\
+Im gegebenen Kontext gibt $n_0$ denjenigen Lachsbestand an, bei dem die Anzahl der Lachse der Nachfolgegeneration unverändert bleibt.
+
+\subsection{Lösungsschlüssel:}
+
+- Ein Punkt für die richtige Lösung.\\
+Toleranzintervall für den Lachsbestand: $[547;548]$\\
+- Ein Ausgleichspunkt für eine korrekte Interpretation.
+
+\item \subsection{Lösungserwartung:}
+
+Mögliche Vorgehensweise:\\
+$R'(n)=0 \Rightarrow n_E=\frac{1}{b}$\\
+$R\left(\frac{1}{b}\right)=\frac{a}{b\cdot e}$\\
+$\Rightarrow E=\left(\frac{1}{b}\big|\frac{a}{b\cdot e}\right)$
+
+Möglicher Nachweis:\\
+$R''\left(\frac{1}{b}\right)=-\frac{a\cdot b}{e}<0$ für alle $a, b\in\mathbb{R}^+ \Rightarrow$ Maximumstelle\\
+$\frac{a}{b\cdot e}>\frac{1}{b} \Rightarrow a>e$
+
+\subsection{Lösungsschlüssel:}
+- Ein Punkt für die Angabe der richtigen Koordinaten von $E$ und einen korrekten Nachweis.\\
+- Ein Punkt für die richtige Lösung.
+
+\item \subsection{Lösungserwartung:}
+
+Siehe oben!
+
+
+\subsection{Lösungsschlüssel:}
+- Ein Punkt für ein korrektes Histogramm.\\
+- Ein Punkt für die Angabe der richtigen Werte in der Tabelle.
+
+
+\end{enumerate}}
+\end{langesbeispiel}

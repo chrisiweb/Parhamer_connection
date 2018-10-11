@@ -1,0 +1,84 @@
+\section{85 - MAT - AN 1.2, FA 2.2, AG 2.3, FA 4.2, FA 4.3 - Funktion - Matura 2016/17 2. NT}
+
+\begin{langesbeispiel} \item[3] %PUNKTE DES BEISPIELS
+						Gegeben ist eine quadratische Funktion $f$ mit $f(x)=a\cdot x^2+b\cdot x+c$ mit den Koeffizienten $a,b,c\in\mathbb{R}$.
+
+				\subsection{Aufgabenstellung:}
+\begin{enumerate}
+	\item Bestimme die Koordinaten desjenigen Punktes $P$ des Graphen einer solchen Funktion $f$, in dem der Anstieg der Tangente an den Graphen der Funktion $f$ den Wert $b$ hat, und gib weiter eine (allgemeine) Gleichung dieser Tangente $f$ an!
+	
+	Der Graph einer solchen Funktion $f$ verläuft durch den Punkt $A=(-1|20)$ und hat im Punkt $P$ eine Tangente $t$ mit $t(x)=9\cdot x+4$. Gib für diese Funktion $f$ die Werte von $a,b$ und $c$ an! 
+	
+	\item Gib $a$ in Abhängigkeit von $b$ und $c$ so an, dass die Funktion $f$ genau eine Nullstelle hat!
+	
+	Skizziere im nachstehenden Koordinatensystem einen möglichen Graphen einer solchen Funktion $f$ mit genau einer Nullstelle und $a>0, b>0, c>0$!
+	
+	\begin{center}
+		\resizebox{0.8\linewidth}{!}{\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-5.9,-5.22)(5.76,5.86)
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=none,Dx=1.,Dy=1.,ticksize=0pt 0,subticks=2]{->}(0,0)(-5.9,-5.22)(5.76,5.86)[x,140] [f(x),-40]
+\antwort{\psplot[linewidth=2.pt,plotpoints=200]{-5.900000000000002}{5.7600000000000025}{(x+2.0)^(2.0)}
+\rput[tl](-3.66,3.74){f}}
+\end{pspicture*}}
+	\end{center}
+	
+	\item \fbox{A} Gib für $a=16$ und $c=9$ sowohl die Stelle des lokalen Extremums der Funktion $f$ als auch zu den zugehörigen Funktionswert in Abhängigkeit von $b$ an!
+	
+	Zeig, dass dieser Extrempunkt unabhängig von der Wahl von $b$ auf dem Graphen der Funktion $g$ mit $g(x)=9-16\cdot x^2$ liegt!
+						\end{enumerate}\leer
+				
+\antwort{
+\begin{enumerate}
+	\item \subsection{Lösungserwartung:}
+	Mögliche Vorgehensweise:
+	
+	$f'(x)=2\cdot a\cdot x+b$
+	
+	$f'(0)=b$, $x_P=0$, $f(x_P)=x$ $\Rightarrow$ $P=(0|c)$
+	
+	Steigung der Tangente: $b$, Abschnitt auf der senkrechten Achse: $c$
+	
+	$\Rightarrow t(x)=b\cdot x+c$
+	
+	$b=9$ und $c=4$, $f(-1)=a-9+4=20 \Rightarrow a=25$
+	
+	$\Rightarrow a=25, b=9, c=4$
+	
+	\subsection{Lösungsschlüssel:}
+	
+	- Ein Punkt für die Angabe der richtigen Koordinaten von $P$ und einer korrekten Gleichung von $t$. Äquivalente Gleichungen sind als richtig zu wertden.
+	
+	- Ein Punkt für die Angabe der richtigen Werte von $a,b$ und $c$.
+	
+	\item \subsection{Lösungserwartung:}
+	
+	Mögliche Vorgehensweise:
+	
+	$b^2-4\cdot a\cdot c=0$ $\Rightarrow$ $a=\frac{b^2}{4\cdot c}$
+	
+	Mögliche Skizze: siehe oben
+	
+	\subsection{Lösungsschlüssel:}
+	
+	- Ein Punkt für die richtige Lösung.
+	
+	- Ein Punkt für eine korrekte Skizze, wobei der Scheitel erkennbar auf der negativen x-Achse liegen und die Parabel nach oben geöffner sein muss.
+	
+	\item \subsection{Lösungserwartung:}
+	
+	$f(x)=16\cdot x^2+b\cdot x+9$, $f'(x)=32\cdot x+b=0$
+	
+	$\Rightarrow$ Stelle des loaklen Extremumgs: $x_E=-\frac{b}{32}$
+	
+	Funktionswert an der Stelle $x_E:f\left(-\frac{b}{32}\right)=9-\frac{b^2}{64}$
+	
+	$g\left(-\frac{b}{32}\right)=9-16\cdot\frac{b^2}{32^2}=9-\frac{b^2}{64}$, dieser Ausdruck stimmt mit dem Funktionswert an der Stelle des lokalen Extremums der Funktion $f$ überein.
+	
+	\subsection{Lösungsschlüssel:}
+	
+	- Ein Ausgleichspunkt für die Angabe der beiden korrekten Werte.
+	
+	- Ein Punkt für einen korrekten Nachweis. Andere korrekte Nachweise sind ebenfalls als richtig zu werten.
+		\end{enumerate}}		
+	
+		\end{langesbeispiel}

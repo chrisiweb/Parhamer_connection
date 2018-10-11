@@ -1,0 +1,42 @@
+\section{FA 1.3 - 3 Bewegung - OA - Matura 2014/15 - Nebentermin 1}
+
+\begin{beispiel}[FA 1.3]{1} %PUNKTE DES BEISPIELS
+Ein Körper wird entlang einer Geraden bewegt. Die Entfernungen des Körpers (in Metern) vom Ausgangspunkt seiner Bewegung nach $t$ Sekunden sind in der nachstehenden Tabelle angeführt.
+
+\begin{longtable}{|C{3cm}|C{3cm}|} \hline
+\cellcolor{gray!25} Zeit \mbox{(in Sekunden)} & \cellcolor{gray!25} zurückgelegter Weg (in Metern) \\ \hline
+0 & 0 \\ \hline
+3 &20 \\ \hline
+6 & 50 \\ \hline
+10 & 70 \\ \hline
+\end{longtable}
+\end{beispiel}
+
+Der Bewegungsablauf des Körpers weist folgende Eigenschaften auf:
+\begin{itemize}
+	\item (positive) Beschleunigung im Zeitintervall $[0; 3)$ aus dem Stillstand bei $t = 0$
+	\item konstante Geschwindigkeit im Zeitintervall $[3; 6]$
+	\item Bremsen (negative Beschleunigung) im Zeitintervall $(6; 10]$ bis zum Stillstand bei $t = 10$
+\end{itemize}
+
+Zeichne den Graphen einer möglichen Zeit-Weg-Funktion $s$, die den beschriebenen Sachverhalt modelliert, in das nachstehende Koordinatensystem.\leer
+
+\begin{center}
+\resizebox{0.5\linewidth}{!}{
+\psset{xunit=1.0cm,yunit=0.1cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-0.6320523706032068,-5.528466745829767)(10.662987464116053,77.14245973403784)
+\multips(0,0)(0,10.0){9}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=black]{c-c}(0,0)(10.662987464116053,0)}
+\multips(0,0)(1.0,0){12}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=black]{c-c}(0,0)(0,77.14245973403784)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=1.,Dy=10.,ticksize=-2pt 0,subticks=2]{->}(0,0)(0.,0.)(10.662987464116053,77.14245973403784)[t,140] [s(t),-40]
+\antwort{\psplot[linewidth=1.2pt,plotpoints=200, linecolor=red]{0}{10}{0.006105006105006105*x^(4.0)-0.24297924297924298*x^(3.0)+2.357753357753358*x^(2.0)+1.6153846153846154*x}
+\rput[tl](4.5,43){\red{$s$}}}
+\end{pspicture*}}
+\end{center}
+\antwort{Lösungsschlüssel:
+
+Ein Punkt für eine korrekte Skizze, wobei folgende Aspekte erkennbar sein müssen:
+\begin{itemize}
+	\item der Graph verläuft durch die in der Tabelle angegebenen Punkte
+	\item $s'(0) = s'(10)=0$
+	\item linksgekrümmt in $[0; 3)$, rechtsgekrümmt in $(6; 10]$ und linearer Verlauf in $[3; 6]$
+\end{itemize}}

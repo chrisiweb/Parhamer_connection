@@ -1,0 +1,100 @@
+ \documentclass[a4paper,12pt]{report}
+
+\usepackage{geometry}
+\geometry{a4paper,left=18mm,right=18mm, top=3cm, bottom=2cm} 
+
+
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage{eurosym}
+\usepackage{setspace}
+\usepackage[latin1]{inputenc}
+\usepackage{graphicx}
+\usepackage[ngerman]{babel}
+\usepackage{mathematik}
+%\usepackage{ziffer}
+%\usepackage{pst-eucl}
+
+
+\pagestyle{plain} %PAGESTYLE: empty, plain, fancy
+\onehalfspacing %Zeilenabstand
+\setcounter{secnumdepth}{-1} % keine Nummerierung der Überschriften
+\setcounter{Antworten}{1}
+
+%
+%
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DOKUMENT - ANFANG 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%
+%
+\begin{document}
+
+\foreach \i in {1,...,2000} {%
+    \edef\FileName{"../BSW - Beschreibende Statistik und Wahrscheinlichkeit/Einzelbeispiele/K6 - BSW - "\i}%     The % here are necessary to eliminate any
+    \IfFileExists{\FileName}{%  spurious spaces that may get inserted
+       \input{\FileName}%       at these points
+
+\hrule  \leer
+ 
+		}
+}
+
+%\hline \hline
+	\foreach \i in {1,...,2000} {%
+    \edef\FileName{"../FO - Folgen/Einzelbeispiele/K6 - FO - "\i}%     The % here are necessary to eliminate any
+    \IfFileExists{\FileName}{%  spurious spaces that may get inserted
+       \input{\FileName}%       at these points
+
+\hrule  \leer
+ 
+		}
+}
+
+
+\foreach \i in {1,...,2000} {%
+    \edef\FileName{"../PWLU - Potenzen, Wurzeln, Logarithmen und Ungleichungen/Einzelbeispiele/K6 - PWLU - "\i}%     The % here are necessary to eliminate any
+    \IfFileExists{\FileName}{%  spurious spaces that may get inserted
+       \input{\FileName}%       at these points
+
+\hrule  \leer
+ 
+		}
+}
+
+\foreach \i in {1,...,2000} {%
+    \edef\FileName{"../RE - Reihen/K6 - RE - "\i}%     The % here are necessary to eliminate any
+    \IfFileExists{\FileName}{%  spurious spaces that may get inserted
+       \input{\FileName}%       at these points
+
+\hrule  \leer
+ 
+		}
+}
+
+
+	\foreach \i in {1,...,2000} {%
+    \edef\FileName{"../RF - Reelle Funktionen/Einzelbeispiele/K6 - RF - "\i}%     The % here are necessary to eliminate any
+    \IfFileExists{\FileName}{%  spurious spaces that may get inserted
+       \input{\FileName}%       at these points
+
+\hrule  \leer
+ 
+		}
+}
+
+	\foreach \i in {1,...,2000} {%
+    \edef\FileName{"../VAG3 - Vektoren und analytische Geometrie in R3 und Rn/Einzelbeispiele/K6 - VAG3 - "\i}%     The % here are necessary to eliminate any
+    \IfFileExists{\FileName}{%  spurious spaces that may get inserted
+       \input{\FileName}%       at these points
+
+\hrule  \leer
+ 
+		}
+}
+\end{document}
+
