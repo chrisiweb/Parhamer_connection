@@ -1,0 +1,8 @@
+*.aux
+# *.bbl What is that?
+# *.blg What is that
+*.dvi
+*.log
+*.pdf
+*.ps
+*.synctex
