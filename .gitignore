@@ -1,6 +1,6 @@
 *.aux
-# *.bbl What is that?
-# *.blg What is that
+*.bbl
+*.blg
 *.dvi
 *.log
 *.pdf
