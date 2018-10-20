@@ -7,7 +7,7 @@ Es besteht aus einem UI in TKinter, dass eine Ordnerhierachie durchsucht.
 Die Ordner enthalten mathematische Aufgaben, welche in LaTeX geschrieben wurden.
 So können leicht Tests oder Schularbeiten erstellt werden.
 
-Das Programm funktioniert mit dem Projekt LaTeX_Mathe (auf C-Tan und GitHub zu finden).
+Das Programm funktioniert mit dem Projekt LaTeX_Mathe (auf C-Tan zu finden).
 
 ### Maintainers and Contributes
 Maintainer:
