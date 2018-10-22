@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import sys
 import os 
 import os.path
@@ -348,12 +351,20 @@ def confirm_save():
 					# print(themen_auswahl)
 					gk_path_temp=os.path.join(os.path.dirname('__file__'),'Typ 1 Aufgaben','_Grundkompetenzen',themen_auswahl,set_gk_auswahl[0],'Einzelbeispiele')	
 					# print(gk_path_temp)
-					for all in os.listdir(gk_path_temp):
-						if all.endswith('.tex'):
-							x, y=all.split(' -')
-							# print(x,y)
-							file_integer, file_extension=y.split('.tex')
-							file_list_integer_temp.append(int(file_integer))				
+					while True:
+						try:
+							for all in os.listdir(gk_path_temp):
+								if all.endswith('.tex'):
+									x, y=all.split(' -')
+									# print(x,y)
+									file_integer, file_extension=y.split('.tex')
+									file_list_integer_temp.append(int(file_integer))				
+							break
+						except FileNotFoundError:
+							print("Couldn't find the directory structure")
+							print("gk_path_temp: ", gk_path_temp) 
+							os.mkdir(gk_path_tmp) # Error: gk_path_tmp not found
+							pass
 
 				if file_list_integer_temp==[]:
 					max_integer_file_list=1000
