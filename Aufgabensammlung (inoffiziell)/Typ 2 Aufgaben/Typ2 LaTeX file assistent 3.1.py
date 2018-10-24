@@ -186,7 +186,7 @@ class hoverover(Frame):
 		explanation.configure(text=self.gk_explanation,bg='lightsteelblue')
 
 	def on_leave(self, enter):
-		explanation.configure(text="",bg='SystemMenu')	
+		explanation.configure(text="",bg='lightsteelblue')	
 		
 
 def atoi(text):
