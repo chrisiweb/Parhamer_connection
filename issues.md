@@ -1,10 +1,10 @@
 # Issues
 
 ## General
-- Eename files/directories with special Symbols (whitespaces, dots,...)
+- #8: Rename files/directories with special Symbols (whitespaces, dots,...)
 
 ## LaTeX File Creator 1.2.py
-- Can't save, when Folder doesn't exist
+- #4: Can't save, when Folder doesn't exist
 ```
 Exception in Tkinter callback
 Traceback (most recent call last):
@@ -15,10 +15,10 @@ Traceback (most recent call last):
 FileNotFoundError: [Errno 2] No such file or directory: 'Typ 1 Aufgaben/_Grundkompetenzen/AG - Algebra und Geometrie/AG-L 5.3/Einzelbeispiele'
 ```
 
-- move dictionaries in config-file
+- #5: move dictionaries in config-file
 
 ## Typ1 LaTeX file assistent 4.0.py
-- Searching doesn't work
+- #6: Searching doesn't work
 ```
 Exception in Tkinter callback
 Traceback (most recent call last):
@@ -32,7 +32,7 @@ UnicodeDecodeError: 'utf-8' codec can't decode byte 0xc4 in position 32: invalid
 ```
 
 ## Typ2 LaTeX file assistent 3.1.py
-- Searching doesn't work
+- #7: Searching doesn't work
 ```
 Exception in Tkinter callback
 Traceback (most recent call last):
