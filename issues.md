@@ -1,9 +1,9 @@
 # Issues
 
 ## General
-- Files/Directories with special Symbols (whitespaces, dots,...)
+- Eename files/directories with special Symbols (whitespaces, dots,...)
 
-## "LaTeX File Creator 1.2.py"
+## LaTeX File Creator 1.2.py
 - Can't save, when Folder doesn't exist
 ```
 Exception in Tkinter callback
@@ -18,7 +18,7 @@ FileNotFoundError: [Errno 2] No such file or directory: 'Typ 1 Aufgaben/_Grundko
 - move dictionaries in config-file
 
 ## Typ1 LaTeX file assistent 4.0.py
-- searching doesn't work
+- Searching doesn't work
 ```
 Exception in Tkinter callback
 Traceback (most recent call last):
@@ -32,7 +32,7 @@ UnicodeDecodeError: 'utf-8' codec can't decode byte 0xc4 in position 32: invalid
 ```
 
 ## Typ2 LaTeX file assistent 3.1.py
-- searching doesn't work
+- Searching doesn't work
 ```
 Exception in Tkinter callback
 Traceback (most recent call last):
