@@ -38,9 +38,9 @@ Exception in Tkinter callback
 Traceback (most recent call last):
   File "/usr/lib/python3.5/tkinter/__init__.py", line 1562, in __call__
     return self.func(*args)
-  File "Aufgabensammlung (inoffiziell)/Typ 1 Aufgaben/Typ1 LaTeX file assistent 4.0.py", line 297, in control_cb
+  File "Typ2 LaTeX file assistent 3.1.py", line 247, in control_cb
     for i, line in enumerate(file):
   File "/usr/lib/python3.5/codecs.py", line 321, in decode
     (result, consumed) = self._buffer_decode(data, self.errors, final)
-UnicodeDecodeError: 'utf-8' codec can't decode byte 0xc4 in position 32: invalid continuation byte
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xfc in position 223: invalid start byte
 ```
