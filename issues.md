@@ -44,3 +44,4 @@ Traceback (most recent call last):
     (result, consumed) = self._buffer_decode(data, self.errors, final)
 UnicodeDecodeError: 'utf-8' codec can't decode byte 0xfc in position 223: invalid start byte
 ```
+0xfc seems to be a ü

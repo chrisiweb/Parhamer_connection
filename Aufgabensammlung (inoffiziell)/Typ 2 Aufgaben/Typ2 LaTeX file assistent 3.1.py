@@ -243,7 +243,8 @@ def control_cb():
 		for all in files:
 			if all.endswith('.tex') or all.endswith('.ltx'):
 				if not ('Gesamtdokument' in all) and not ('Teildokument' in all):
-					file=open(os.path.join(root,all))
+					file=open(os.path.join(root,all), 'rb')
+					#import pdb; pdb.set_trace()
 					for i, line in enumerate(file):
 						if not line == "\n":
 							beispieldaten_dateipfad[os.path.join(all)]=line
