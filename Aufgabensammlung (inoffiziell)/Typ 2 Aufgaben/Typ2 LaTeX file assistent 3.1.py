@@ -4,6 +4,7 @@
 import sys
 import os 
 import os.path
+import subprocess
 import tkinter
 from tkinter import *
 
@@ -446,8 +447,12 @@ def control_cb():
 	else:
 		print("Insgesamt wurde(n) " + str(len(gesammeltedateien)) + " Beispiel(e) gefunden. Entsprechende LaTeX-Datei wird ausgegeben...")
 		hauptfenster.destroy()
-		import pdb; pdb.set_trace()
-		os.system(filename_teildokument)
+		if sys.platform.startswith('linux'):
+		    subprocess.run(['xdg-open', filename_teildokument])
+		elif sys.platform.startswith('darwin'):
+		    subprocess.run(['open', filename_teildokument])
+		else:
+		    os.system(filename_teildokument)
 		sys.exit(0)
 		
 		
