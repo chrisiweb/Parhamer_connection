@@ -4,6 +4,7 @@
 import sys
 import os 
 import os.path
+import subprocess
 import tkinter
 from tkinter import *
 
@@ -243,7 +244,7 @@ def control_cb():
 		for all in files:
 			if all.endswith('.tex') or all.endswith('.ltx'):
 				if not ('Gesamtdokument' in all) and not ('Teildokument' in all):
-					file=open(os.path.join(root,all))
+					file=open(os.path.join(root,all), 'r', encoding='ISO-8859-1')
 					for i, line in enumerate(file):
 						if not line == "\n":
 							beispieldaten_dateipfad[os.path.join(all)]=line
@@ -256,7 +257,7 @@ def control_cb():
 			while_cnt=0
 			if all.endswith('.tex') or all.endswith('.ltx'):
 				if not ('Gesamtdokument' in all) and not ('Teildokument' in all):
-					file=open(os.path.join(root,all))
+					file=open(os.path.join(root,all), encoding='ISO-8859-1')
 					dirname, filename= os.path.split(root)
 					dirname=root
 					while filename != 'Aufgabensammlung (offiziell)':
@@ -299,7 +300,7 @@ def control_cb():
 	
 	
 	filename_teildokument = os.path.join(os.path.dirname('__file__'),'Teildokument','Teildokument.tex')
-	file=open(filename_teildokument,"w")
+	file=open(filename_teildokument,"w", encoding='ISO-8859-1')
 	file.write("\documentclass[a4paper,12pt]{report}\n\n"
 	"\\usepackage{geometry}\n"	
 	"\geometry{a4paper,left=18mm,right=18mm, top=3cm, bottom=2cm}\n\n" 
@@ -418,7 +419,7 @@ def control_cb():
 			for key, value in beispieldaten_dateipfad.items():
 				key=key.replace('\\','/')
 				if dateien in value:
-					file=open(filename_teildokument,"a")
+					file=open(filename_teildokument,"a", encoding='ISO-8859-1')
 					if 'Aufgabensammlung (offiziell)' in key:
 						file.write('\input{"../../../'+key+'"}%\n'
 						'\hrule  \leer\n\n')
@@ -427,7 +428,7 @@ def control_cb():
 						'\hrule  \leer\n\n')
 					file.close()
 		loop_dateien +=1
-	file=open(filename_teildokument,"a")
+	file=open(filename_teildokument,"a", encoding='ISO-8859-1')
 	file.write('\shorthandoff{"}\n'
 	"\end{document}")
 	file.close()	
@@ -446,7 +447,12 @@ def control_cb():
 	else:
 		print("Insgesamt wurde(n) " + str(len(gesammeltedateien)) + " Beispiel(e) gefunden. Entsprechende LaTeX-Datei wird ausgegeben...")
 		hauptfenster.destroy()
-		os.system(filename_teildokument)
+		if sys.platform.startswith('linux'):
+		    subprocess.run(['xdg-open', filename_teildokument])
+		elif sys.platform.startswith('darwin'):
+		    subprocess.run(['open', filename_teildokument])
+		else:
+		    os.system(filename_teildokument)
 		sys.exit(0)
 		
 		
