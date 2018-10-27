@@ -12,17 +12,26 @@ from tkinter import *
 
 
 hauptfenster = Tk()
-hauptfenster.title('LaTeX file assistent')
+hauptfenster.title('Typ 2 LaTeX file assistent')
 #hauptfenster.wm_iconbitmap('latex.ico')
 
 hauptfenster.geometry('+50+50')
 
+HUGE_FONT=('Calibri',15)
+LARGE_FONT=('Calibri',12)
+STANDARD_FONT =('Calibri', 10)
+SMALL_FONT =('Calibri',8)
+
+#############################################
+################ FARBEN TABELLE ##############
+BG_KLASSE='#e6f3ff'
+# '#ecffe6'						
 
 
 ag_kb=["ag11","ag12","agL13","agL14","agL15",
 "ag21","ag22","ag23","ag24","ag25","agL26","agL27","agL28",
 "ag31","ag32","ag33","ag34","ag35","agL36","agL37","agL38","agL39",
-"ag41","ag42","agL43","agL43",
+"ag41","ag42","agL43","agL44",
 "agL51","agL52","agL53"]
 ag_kb_beschreibung={
 "ag11":'Wissen über die Zahlenmengen N, Z, Q, R, C verständig einsetzen können',
@@ -171,23 +180,62 @@ themen_klasse_7={'DR':'Differentialrechnung','DWV':'Diskrete Wahrscheinlichkeits
 themen_klasse_8={'DDG':'Differenzen- und Differential-\ngleichungen; Grundlagen\nder Systemdynamik','IR':'Integralrechnung',
 'SWS':'Stetgie Wahrscheinlichkeits-\nverteilungen; Beurteilende\nStatistik'}
 
+
+
+#########################################################################
+############  Skript zu Erstellung der LaTeX Datei ######################
+#########################################################################
+container=Frame(hauptfenster)
+container.grid()
+container.grid_rowconfigure(0, weight=1)
+container.grid_columnconfigure(0, weight=1)
+
+frame_klassen=Frame(hauptfenster, bg=BG_KLASSE)
+frame_klassen.grid(row=1,column=0, sticky=N+S)
+# frame_k5= Frame(frame_klassen)
+# frame_k5.grid(row=0, column=0, sticky=N)
+# frame_k6= Frame(frame_klassen)
+# frame_k6.grid(row=1, column=0, sticky=N)		
+# frame_k7= Frame(frame_klassen)
+# frame_k7.grid(row=0, column=1, sticky=N)
+# frame_k8= Frame(frame_klassen)
+# frame_k8.grid(row=1, column=1, sticky=N)
+frame_gk = Frame(hauptfenster)
+frame_gk.grid(row=1,column=1,sticky=N+W)	
+frame_AG= Frame(frame_gk,bd=2, relief=RIDGE)
+frame_AG.grid(row=0, column=0, sticky=W)
+frame_AN= Frame(frame_gk,bd=2, relief=RIDGE)
+frame_AN.grid(row=0, column=1, sticky=W)
+frame_FA= Frame(frame_gk,bd=2, relief=RIDGE)
+frame_FA.grid(row=0, column=2, sticky=W)
+frame_WS= Frame(frame_gk,bd=2, relief=RIDGE)
+frame_WS.grid(row=0, column=3, sticky=W)
+frame_infobox = Frame(hauptfenster)
+frame_infobox.grid(row=2, column=1, columnspan=4, sticky=N+E+W)
+frame_zusatz = Frame(hauptfenster, bd=5, relief=RIDGE)
+frame_zusatz.grid(row=2, column=0,rowspan=2,sticky=E+W)
+frame_suche =Frame(hauptfenster)
+frame_suche.grid(sticky=W+S,row=3, column=1)
+
 class hoverover(Frame):
-	def __init__(self,gk_name, gk_explanation, gk_variable):
+	def __init__(self,frame, gk_name, gk_explanation, gk_variable):
 		Frame.__init__(self)
 		self.gk_explanation=gk_explanation
 		if "L" in gk_name:
-			self.l1 = Checkbutton(self, text=gk_name, variable=gk_variable)
-		else:	
-			self.l1 = Checkbutton(self, text=gk_name, variable=gk_variable, bg="powderblue")
-		self.l1.grid()
+			cb_phantom=Label(frame,text=" ",width=10).grid(row=r, column=c, pady=5,padx=5, sticky=W)																			   
+			self.l1 = Checkbutton(frame, text=gk_name, variable=gk_variable)
+		else:	   
+			cb_phantom=Label(frame,text=" ",width=10).grid(row=r, column=c, pady=5,padx=5, sticky=W)																				 
+			self.l1 = Checkbutton(frame, text=gk_name, variable=gk_variable, bg="powderblue")
+		self.l1.grid(row=r, column=c, pady=5,padx=3, sticky=W)
 		self.l1.bind("<Enter>",self.on_enter)
 		self.l1.bind("<Leave>", self.on_leave)
 		
 	def on_enter(self,event):
-		explanation.configure(text=self.gk_explanation,bg='lightsteelblue')
+		explanation.configure(text=self.gk_explanation,font=STANDARD_FONT,bg='powderblue',relief=RAISED)
 
 	def on_leave(self, enter):
-		explanation.configure(text="",bg='lightsteelblue')	
+		explanation.configure(text="",bg='whitesmoke', relief=FLAT)	
 		
 
 def atoi(text):
@@ -528,7 +576,7 @@ def select_all_klasse8():
 
 ######## Schulstufen & Themenbereiche #######
 
-r=5
+r=0
 c=0
 
 for x in range(5,9):
@@ -540,159 +588,168 @@ for x in range(5,9):
 	if x==8:
 		r+=2
 	beschriftung = 'label_K%s'%x
-	beschriftung =  Button(hauptfenster, text= "%s. KLASSE"%x, command=eval('select_all_klasse%s'%x)).grid(column=c, row=r,columnspan=1)
-	# beschriftung =  Label(hauptfenster, text= "%s. KLASSE"%x, relief=GROOVE).grid(column=c, row=r,columnspan=1)
+	beschriftung =  Button(frame_klassen, text= "%s. KLASSE"%x,font=STANDARD_FONT, command=eval('select_all_klasse%s'%x)).grid(column=c, row=r)
+	
 	r+=1
 	for all in eval('themen_klasse_%s'%x):
 		y='K%s_'%x+all
 		vars()[y]=IntVar()
 		name = eval('themen_klasse_%s[all]'%x) + ' ('+all+')'
-		cb_temporary= Checkbutton(hauptfenster, text= name,font=("", 7),justify=(LEFT), variable=vars()[y]).grid(column=c, row=r,sticky=W)
+		cb_temporary= Checkbutton(frame_klassen, text= name,font=SMALL_FONT,justify=(LEFT), variable=vars()[y], bg=BG_KLASSE).grid(column=c, row=r,sticky=W)
 		r+=1
 
 ## Matura ##
 r+=2
 
 MAT=IntVar()
-cb_MAT =  Checkbutton(hauptfenster, text= "MATURA",relief=GROOVE,font=("",15, 'bold'), variable=MAT).grid(column=c, row=r,sticky=W, columnspan=1)
+cb_MAT =  Checkbutton(frame_klassen, text= "MATURA",relief=GROOVE,font=("",15, 'bold'), variable=MAT).grid(column=c, row=r,sticky=W, columnspan=1)
 
 
-#######  Rahmen #########
-frame = Frame(hauptfenster, bd=5, relief=RIDGE)
-frame.grid(row=19, column=10, columnspan=6, sticky=W)
 ##################### Suche nach Klassen #######################
-
+r=0
 c=0
-r+=1
-Aufgabenformate_header = Label(frame, text="Klassen:", font=("",11, 'bold')).grid(column=c, row=r, sticky=W, columnspan=2)
+Aufgabenformate_header = Label(frame_zusatz, text="Klassen:", font=("",11, 'bold')).grid(column=c, row=r, sticky=W, columnspan=2)
 r+=1
 for x in range(5,9):
 	y='K%s'%x
 	vars()[y]=IntVar()
-	cb_suche_klasse=Checkbutton(frame, text= "%s. KLASSE"%x, variable=vars()[y]).grid(column=c, row=r,sticky=W, columnspan=2)
-	if x!=8:
-		c+=2
+	cb_suche_klasse=Checkbutton(frame_zusatz, text= "%s. KLASSE"%x, variable=vars()[y]).grid(column=c, row=r,sticky=W)
+	c+=1
+	# if c==1:
+		# r+=1
+		# c=0
+	# else:
+		# c+=1
+	# if x!=8:
+		# c+=2
 		
 ########## ... ALGEBRA UND GEOMETRIE ###############
-r=5
-c=10
+# r=5
+# c=10
 py=5
+c=0
+r=0  
 ag_cb_all=[]
 ag_all=IntVar()
-Button(hauptfenster, text='Algebra und Geometrie:', command=ag_select_all).grid(column=c, row=r,sticky=W, columnspan=2)
+Button(frame_AG, text='Algebra und Geometrie:', command=ag_select_all).grid(column=c, row=r,sticky=W, columnspan=2)
 
 r+=1
 for all in ag_kb:
 	vars()[all]=IntVar()
-	hoverover(AG_BB[ag_kb.index(all)], ag_kb_beschreibung[all], vars()[all]).grid(column=c, row=r, pady=py, sticky=W)
+	hoverover(frame_AG,AG_BB[ag_kb.index(all)], ag_kb_beschreibung[all], vars()[all])
+	#.grid(column=c, row=r, pady=py, sticky=W)
 	# cb_ag = Checkbutton(hauptfenster, text=AG_BB[ag_kb.index(all)], variable = vars()[all])
 	# cb_ag.grid(column=c, row=r, pady=py, sticky=W)
 	ag_cb_all.append(vars()[all])
 	r+=1
-	if r>15:
-		r-=10
+	if r>11:
+		r-=11
 		c+=1
 
 
 				
 ################# ... ANALYSIS ###############
-c+=1
-space = Label(hauptfenster, text="",width=2)
-space.grid(column=c, row=5, sticky=E)
-c+=1
+# c+=1
+# space = Label(hauptfenster, text="",width=2)
+# space.grid(column=c, row=5, sticky=E)
+# c+=1
 
-r=5
+r=0
+c=0
 an_cb_all=[]
 an_all=IntVar()
-Button(hauptfenster, text='Analysis:', command=an_select_all).grid(column=c, row=r,sticky=W, columnspan=2)	
+Button(frame_AN, text='Analysis:', command=an_select_all).grid(column=c, row=r,sticky=W, columnspan=2)	
 r+=1
 for all in an_kb:
 	vars()[all]=IntVar()
-	hoverover(AN_BB[an_kb.index(all)], an_kb_beschreibung[all], vars()[all]).grid(column=c, row=r, pady=py, sticky=W)
+	hoverover(frame_AN, AN_BB[an_kb.index(all)], an_kb_beschreibung[all], vars()[all]).grid(column=c, row=r, pady=py, sticky=W)
 	# cb_an = Checkbutton(hauptfenster, text=AN_BB[an_kb.index(all)], variable = vars()[all])
 	# cb_an.grid(column=c, row=r, pady=py, sticky=W)
 	an_cb_all.append(vars()[all])
 	r+=1
-	if r>12:
-		r-=7
+	if r>11:
+		r-=11
 		c+=1
 		
-c+=1
-space = Label(hauptfenster, text="",width=2)
-space.grid(column=c, row=5, sticky=E)
-c+=1	
+# c+=1
+# space = Label(hauptfenster, text="",width=2)
+# space.grid(column=c, row=5, sticky=E)
+# c+=1	
 
 ############ ... FUNKTIONALE ABHÄNGIGKEITEN ###############################	
-r=5
+r=0
+c=0
 fa_cb_all=[]
 fa_all=IntVar()
-Button(hauptfenster, text='Funktionale Abhängigkeiten:', command=fa_select_all).grid(column=c, row=r,sticky=W, columnspan=5)		
+Button(frame_FA, text='Funktionale Abhängigkeiten:', command=fa_select_all).grid(column=c, row=r,sticky=W, columnspan=5)		
 r+=1
 for all in fa_kb:
 	vars()[all]=IntVar()
-	hoverover(FA_BB[fa_kb.index(all)], fa_kb_beschreibung[all], vars()[all]).grid(column=c, row=r, pady=py, sticky=W)
+	hoverover(frame_FA, FA_BB[fa_kb.index(all)], fa_kb_beschreibung[all], vars()[all])
 	# cb_fa = Checkbutton(hauptfenster, text=FA_BB[fa_kb.index(all)], variable = vars()[all])
 	# cb_fa.grid(column=c, row=r, pady=py, sticky=W)
 	fa_cb_all.append(vars()[all])
 	r+=1
-	if r>15:
-		r-=10
+	if r>11:
+		r-=11
 		c+=1
 
-c+=1
-space = Label(hauptfenster, text="", width=2)
-space.grid(column=c, row=5, sticky=E)
+# c+=1
+# space = Label(hauptfenster, text="", width=2)
+# space.grid(column=c, row=5, sticky=E)
 c+=1
 
 ################## 	 ... WAHRSCHEINLICHKEIT UND STATISTIK ########################
-r=5
+r=0
+c=0
 ws_cb_all=[]
 ws_all=IntVar()
-Button(hauptfenster, text='Wahrscheinlichkeit und Statistik:', command=ws_select_all,width=29).grid(column=c, row=r,sticky=W, columnspan=2)	
+Button(frame_WS, text='Wahrscheinlichkeit und Statistik:', command=ws_select_all).grid(column=c, row=r,sticky=W, columnspan=2)	
 r+=1
 for all in ws_kb:
 	vars()[all]=IntVar()
-	hoverover(WS_BB[ws_kb.index(all)], ws_kb_beschreibung[all], vars()[all]).grid(column=c, row=r, pady=py, sticky=W)
+	hoverover(frame_WS, WS_BB[ws_kb.index(all)], ws_kb_beschreibung[all], vars()[all])
 	# cb_ws = Checkbutton(hauptfenster, text=WS_BB[ws_kb.index(all)], variable = vars()[all])
 	# cb_ws.grid(column=c, row=r, pady=py, sticky=W)
 	ws_cb_all.append(vars()[all])
 	r+=1
-	if r>14:
-		r-=9
+	if r>11:
+		r-=11
 		c+=1	
 
-c+=1
-space = Label(hauptfenster, text="",width=2)
-space.grid(column=c, row=5, sticky=E)
-c+=1
+# c+=1
+# space = Label(hauptfenster, text="",width=2)
+# space.grid(column=c, row=5, sticky=E)
+# c+=1
 
 
 ##########################################################################################
 
-UND='ausschließlich diese Suchkriterien enthalten.'
-ODER='unter anderem diese Suchkriterien enthalten.'
+UND='Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten.'
+ODER='Alle Dateien ausgeben, die unter anderem diese Suchkriterien enthalten.'
 suchtyp_var = StringVar()
-label_suchtyp= Label(hauptfenster, text="Alle Dateien ausgeben, die")
+# label_suchtyp= Label(hauptfenster, text="Alle Dateien ausgeben, die")
 suchtyp = OptionMenu(hauptfenster,suchtyp_var,ODER,UND)
+suchtyp.config(width=70)				
 suchtyp_var.set(ODER)
-label_suchtyp.grid(row=0, column=10, columnspan=2)
-suchtyp.grid(row=0, column=12, columnspan=6,sticky=W)
+# label_suchtyp.grid(row=0, column=10, columnspan=2)
+suchtyp.grid(row=0, column=1, columnspan=2,sticky=W)
 
-explanation = Label(hauptfenster,text="",width=118,height=2)	
-explanation.grid(row=16,column=10, columnspan=30,sticky=W)
+explanation = Label(frame_infobox,text="",width=138,height=4)	
+explanation.grid(row=0,column=0 ,sticky=W)
 
 
 space= Label(hauptfenster, text="").grid(row=1,column=0,columnspan=10)
 
-label_suchbegriffe = Label(hauptfenster, text="Titelsuche:")
-entry_suchbegriffe = Entry(hauptfenster, width=80)
-label_suchbegriffe.grid(row=17, column=10, columnspan=5, sticky=W)
-entry_suchbegriffe.grid(row=18, column=10, columnspan=10,  sticky=W)	
+label_suchbegriffe = Label(frame_suche, text="Titelsuche:", font=LARGE_FONT)
+entry_suchbegriffe = Entry(frame_suche, width=50, font=LARGE_FONT)
+label_suchbegriffe.grid(row=0, column=0, sticky=N+W)
+entry_suchbegriffe.grid(row=0, column=1, sticky=N+W)	
 	
-login = Button(hauptfenster, text="Suche",font=("",13), command=control_cb, width=20,height = 3)
+button_suche = Button(hauptfenster, text="Suche starten!",font=HUGE_FONT,width=20,height=2,bd=5, command=control_cb)
 # login.pack(padx=5, pady=10, side=RIGHT)
 
-login.grid(column=20,row=17, columnspan=2, rowspan=3)
+button_suche.grid(column=1,row=3, sticky=E+S)
 hauptfenster.mainloop()
 
 
