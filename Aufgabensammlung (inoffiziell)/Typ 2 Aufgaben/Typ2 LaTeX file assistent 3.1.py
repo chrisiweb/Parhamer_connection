@@ -235,7 +235,7 @@ class hoverover(Frame):
 		explanation.configure(text=self.gk_explanation,font=STANDARD_FONT,bg='powderblue',relief=RAISED)
 
 	def on_leave(self, enter):
-		explanation.configure(text="",bg='whitesmoke', relief=FLAT)	
+		explanation.configure(text="",bg='powderblue', relief=FLAT)	
 		
 
 def atoi(text):
