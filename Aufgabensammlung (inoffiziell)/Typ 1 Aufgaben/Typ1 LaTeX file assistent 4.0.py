@@ -355,7 +355,10 @@ def control_cb():
 
 	
 	filename_teildokument = os.path.join(os.path.dirname('__file__'),'Teildokument','Teildokument.tex')
-	file=open(filename_teildokument,"w", encoding='ISO-8859-1')
+	try:
+	    file=open(filename_teildokument,"w", encoding='ISO-8859-1')
+	except FileNotFoundError:
+		os.makedirs(filename_teildokument) # If dir is not found make it recursivly
 	file.write("\documentclass[a4paper,12pt]{report}\n\n"
 	"\\usepackage{geometry}\n"	
 	"\geometry{a4paper,left=18mm,right=18mm, top=3cm, bottom=2cm}\n\n" 
