@@ -555,8 +555,12 @@ def control_cb():
 	else:
 		print("Insgesamt wurde(n) " + str(len(gesammeltedateien)) + " Beispiel(e) gefunden. Entsprechende LaTeX-Datei wird ausgegeben...")
 		hauptfenster.destroy()
-		#subprocess.call(['open', filename_teildokument])
-		os.system(filename_teildokument)
+		if sys.platform.startswith('linux'):
+		    subprocess.run(['xdg-open', filename_teildokument])
+		elif sys.platform.startswith('darwin'):
+		    subprocess.run(['open', filename_teildokument])
+		else:
+		    os.system(filename_teildokument)
 		sys.exit(0)
 		
 		
