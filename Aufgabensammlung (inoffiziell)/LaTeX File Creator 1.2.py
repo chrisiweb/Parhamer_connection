@@ -361,9 +361,7 @@ def confirm_save():
 									file_list_integer_temp.append(int(file_integer))				
 							break
 						except FileNotFoundError:
-							print("Couldn't find the directory structure")
-							print("gk_path_temp: ", gk_path_temp) 
-							os.mkdir(gk_path_tmp) # Error: gk_path_tmp not found
+							os.makedirs(gk_path_temp) # If dir is not found make it recursivly
 							pass
 
 				if file_list_integer_temp==[]:
