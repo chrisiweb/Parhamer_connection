@@ -274,7 +274,7 @@ def refresh():
 		for all in files:
 			if all.endswith('.tex') or all.endswith('.ltx'):
 				if not ('Gesamtdokument' in all) and not ('Teildokument' in all):
-					file=open(os.path.join(root,all))
+					file=open(os.path.join(root,all), encoding='ISO-8859-1')
 					for i, line in enumerate(file):
 						if not line == "\n":			
 							beispieldaten_dateipfad[os.path.join(root,all)]=line
@@ -288,7 +288,7 @@ def refresh():
 			while_cnt=0
 			if all.endswith('.tex') or all.endswith('.ltx'):
 				if not ('Gesamtdokument' in all) and not ('Teildokument' in all):
-					file=open(os.path.join(root,all))
+					file=open(os.path.join(root,all), encoding='ISO-8859-1')
 					dirname, filename= os.path.split(root)
 					dirname=root
 					while filename != 'Aufgabensammlung (offiziell)':
