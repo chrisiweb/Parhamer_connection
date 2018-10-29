@@ -4,6 +4,8 @@
 import sys
 import os 
 import os.path
+import datetime
+import json			   	   
 import subprocess
 import tkinter
 from tkinter import *
@@ -189,6 +191,8 @@ container.grid_columnconfigure(0, weight=1)
 
 frame_klassen=Frame(hauptfenster, bg=BG_KLASSE)
 frame_klassen.grid(row=1,column=0, sticky=N+S)
+frame_refresh_ddb=Frame(hauptfenster)
+frame_refresh_ddb.grid(row=0,column=0)									 								  
 # frame_k5= Frame(frame_klassen)
 # frame_k5.grid(row=0, column=0, sticky=N)
 # frame_k6= Frame(frame_klassen)
@@ -214,7 +218,11 @@ frame_zusatz.grid(row=2, column=0,rowspan=2,sticky=E+W)
 frame_suche =Frame(hauptfenster)
 frame_suche.grid(sticky=W+S,row=3, column=1)
 
+def modification_date(filename):
+    t = os.path.getmtime(filename)
+    return datetime.datetime.fromtimestamp(t)
 
+latest_update=''								
 class hoverover(Frame):
 	def __init__(self,frame, gk_name, gk_explanation, gk_variable):
 		Frame.__init__(self)
@@ -250,7 +258,61 @@ def natural_keys(text):
     return [ atoi(c) for c in re.split('(\d+)', text) ]	
 
 
+def refresh():
+	# if os.path.isfile('log_file'):
+		# log_file_update=modification_date('log_file').strftime('%m')
+		# print(log_file_update)
+	# else:
+	# 	log_file_update=''
+		
+	beispieldaten_dateipfad = {}
+	beispieldaten = []
+	
+	# log_file=os.path.join(os.path.dirname('__file__'),'Teildokument','log_file')
+	# if log_file_update>datetime.date.today().strftime('%m'):
+	for root, dirs, files in os.walk('.'):
+		for all in files:
+			if all.endswith('.tex') or all.endswith('.ltx'):
+				if not ('Gesamtdokument' in all) and not ('Teildokument' in all):
+					file=open(os.path.join(root,all))
+					for i, line in enumerate(file):
+						if not line == "\n":			
+							beispieldaten_dateipfad[os.path.join(root,all)]=line
+							beispieldaten.append(line)
+							break
+					file.close()
 
+	filename= 0
+	for root, dirs, files in os.walk(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))),"Aufgabensammlung (offiziell)\Typ 1 Aufgaben")):
+		for all in files:
+			while_cnt=0
+			if all.endswith('.tex') or all.endswith('.ltx'):
+				if not ('Gesamtdokument' in all) and not ('Teildokument' in all):
+					file=open(os.path.join(root,all))
+					dirname, filename= os.path.split(root)
+					dirname=root
+					while filename != 'Aufgabensammlung (offiziell)':
+						dirname, filename= os.path.split(dirname)
+						if while_cnt==0:
+							rel_path=filename
+							while_cnt +=1
+						else:		
+							rel_path=os.path.join(filename,rel_path)
+						os.path.dirname(dirname)
+					for i, line in enumerate(file):
+						if not line == "\n":			
+							beispieldaten_dateipfad[os.path.join(rel_path,all)]=line
+							beispieldaten.append(line)
+							break
+					file.close()
+		# print(beispieldaten_dateipfad)
+		# print(beispieldaten)
+		
+	log_file=os.path.join(os.path.dirname('__file__'),'Teildokument','log_file')
+	with open(log_file, 'w') as f:
+		json.dump(beispieldaten_dateipfad, f)
+	
+	label_update.config(text='Last Update: '+modification_date(log_file).strftime('%d.%m.%y - %H:%M'))			  
 def control_cb():
 	suchbegriffe = []
 
@@ -285,48 +347,10 @@ def control_cb():
 			suchbegriffe.append(WS_BB[ws_kb.index(all)])			
 
 
-	
-	
-	beispieldaten_dateipfad = {}
-	beispieldaten = []
-	for root, dirs, files in os.walk('.'):
-		for all in files:
-			if all.endswith('.tex') or all.endswith('.ltx'):
-				if not ('Gesamtdokument' in all) and not ('Teildokument' in all):
-					file=open(os.path.join(root,all), encoding='ISO-8859-1')
-					for i, line in enumerate(file):
-						if not line == "\n":			
-							beispieldaten_dateipfad[os.path.join(root,all)]=line
-							beispieldaten.append(line)
-							break
-					file.close()
+	with open(log_file) as f:
+		beispieldaten_dateipfad = json.load(f)
+		beispieldaten=list(beispieldaten_dateipfad.values())						  
 
-	filename= 0
-	for root, dirs, files in os.walk(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))),"Aufgabensammlung (offiziell)\Typ 1 Aufgaben")):
-		for all in files:
-			while_cnt=0
-			if all.endswith('.tex') or all.endswith('.ltx'):
-				if not ('Gesamtdokument' in all) and not ('Teildokument' in all):
-					file=open(os.path.join(root,all), encoding='ISO-8859-1')
-					dirname, filename= os.path.split(root)
-					dirname=root
-					while filename != 'Aufgabensammlung (offiziell)':
-						dirname, filename= os.path.split(dirname)
-						if while_cnt==0:
-							rel_path=filename
-							while_cnt +=1
-						else:		
-							rel_path=os.path.join(filename,rel_path)
-						os.path.dirname(dirname)
-					for i, line in enumerate(file):
-						if not line == "\n":			
-							beispieldaten_dateipfad[os.path.join(rel_path,all)]=line
-							beispieldaten.append(line)
-							break
-					file.close()
-	#print(beispieldaten_dateipfad)
-	# print(beispieldaten)
-		
  #############  Erstellung der Kompetenzbereiche pro Beispiel
 	liste_kompetenzbereiche ={}
 	gkliste = []
@@ -811,6 +835,14 @@ suchtyp.grid(row=0, column=1,columnspan=2, sticky=W)
 explanation = Label(frame_infobox,text="",width=138,height=4)	
 explanation.grid(row=0,column=0,sticky=W)
 
+button_refresh_ddb=Button(frame_refresh_ddb, text='Refresh Database', command=refresh)
+button_refresh_ddb.grid(row=0, column=0, sticky=W)
+try:
+	log_file=os.path.join(os.path.dirname('__file__'),'Teildokument','log_file')
+	label_update=Label(frame_refresh_ddb, text='Last Update: '+modification_date(log_file).strftime('%d.%m.%y - %H:%M'))
+except FileNotFoundError:
+	label_update=Label(frame_refresh_ddb, text='Last Update: ---')
+label_update.grid(row=0, column=1, sticky=E)																					  
 
 # space= Label(hauptfenster, text="").grid(row=1,column=0,columnspan=10)
 label_suchbegriffe = Label(frame_suche, text="Titelsuche: ", font=LARGE_FONT)
