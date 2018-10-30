@@ -1,0 +1,33 @@
+\section{AN 3.3 - 10 Lokales Maximum - LT - BIFIE}
+
+\begin{beispiel}[AN 3.3]{1} %PUNKTE DES BEISPIELS
+				Gegeben ist die Polynomfunktion $f$.
+				\leer
+				
+				\begin{center}
+					\resizebox{0.8\linewidth}{!}{\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-0.7814904010589985,-0.8498957516596629)(9.230315974383739,4.975155230416111)
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=none,Dx=1.,Dy=1.,ticksize=-2pt 0,subticks=2]{->}(0,0)(-0.7814904010589985,-0.8498957516596629)(9.230315974383739,4.975155230416111)[x,140] [f(x),-40]
+\psplot[linewidth=1.2pt,plotpoints=200]{-0.7814904010589985}{9.230315974383739}{-0.08682831909928161*x^(3.0)+0.9239298007232759*x^(2.0)-2.084425983432184*x+2.0}
+\psline[linewidth=1.6pt,linestyle=dashed,dash=2pt 2pt](5.6868,0.)(5.6868,4.0574)
+\rput[tl](5.604828514185536,-0.07625616810272419){$x_1$}
+\begin{scriptsize}
+\rput[bl](-0.32640829308432856,2.9879633589267196){$f$}
+\end{scriptsize}
+\end{pspicture*}}
+				\end{center}
+				\leer
+				
+				\lueckentext{
+								text={Wenn \gap ist und \gap ist, besitzt die gegebene Funktion $f$ an der Stelle $x_1$ ein lokales Maximum.}, 	%Lueckentext Luecke=\gap
+								L1={$f'(x_1)<0$}, 		%1.Moeglichkeit links  
+								L2={$f'(x_1)=0$}, 		%2.Moeglichkeit links
+								L3={$f'(x_1)>0$}, 		%3.Moeglichkeit links
+								R1={$f''(x_1)<0$}, 		%1.Moeglichkeit rechts 
+								R2={$f''(x_1)=0$}, 		%2.Moeglichkeit rechts
+								R3={$f''(x_1)>0$}, 		%3.Moeglichkeit rechts
+								%% LOESUNG: %%
+								A1=2,   % Antwort links
+								A2=1		% Antwort rechts 
+								}
+\end{beispiel}

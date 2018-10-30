@@ -1,0 +1,46 @@
+\section{AG 3.3 - 7 Rechteck - MC - BIFIE}
+
+\begin{beispiel}[AG 3.3]{1} %PUNKTE DES BEISPIELS
+Abgebildet ist das Rechteck $RSTU$.
+\begin{center}
+\newrgbcolor{cqcqcq}{0.7529411764705882 0.7529411764705882 0.7529411764705882}
+\newrgbcolor{sqsqsq}{0.12549019607843137 0.12549019607843137 0.12549019607843137}
+\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-4.3,-0.1)(3.28,6.3)
+\multips(0,0)(0,1.0){7}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(-4.3,0)(3.28,0)}
+\multips(-4,0)(1.0,0){8}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,-0.1)(0,6.3)}
+\psline[linecolor=sqsqsq](-2.,5.)(-3.,3.)
+\psline[linecolor=sqsqsq](-3.,3.)(1.,1.)
+\psline[linecolor=sqsqsq](-2.,5.)(2.,3.)
+\psline[linecolor=sqsqsq](2.,3.)(1.,1.)
+\begin{scriptsize}
+\psdots[dotsize=3pt 0,dotstyle=*](-2.,5.)
+\rput[bl](-1.92,5.12){U}
+\psdots[dotsize=3pt 0,dotstyle=*](-3.,3.)
+\rput[bl](-3.28,2.58){R}
+\psdots[dotsize=3pt 0,dotstyle=*](1.,1.)
+\rput[bl](0.68,0.54){S}
+\psdots[dotsize=3pt 0,dotstyle=*](2.,3.)
+\rput[bl](2.08,3.12){T}
+\end{scriptsize}
+\end{pspicture*}
+\end{center}
+Kreuze die beiden zutreffenden Aussagen an!
+\multiplechoice[5]{  %Anzahl der Antwortmoeglichkeiten, Standard: 5
+				L1={$\vek{ST}=-\vek{RU}$},   %1. Antwortmoeglichkeit 
+				L2={$\vek{SR}\parallel\vek{UT}$},   %2. Antwortmoeglichkeit
+				L3={$\vek{RS}+\vek{ST}=\vek{TR}$},   %3. Antwortmoeglichkeit
+				L4={$U=T+\vek{SR}$},   %4. Antwortmoeglichkeit
+				L5={$\vek{RT}\cdot\vek{SU}=0$},	 %5. Antwortmoeglichkeit
+				L6={},	 %6. Antwortmoeglichkeit
+				L7={},	 %7. Antwortmoeglichkeit
+				L8={},	 %8. Antwortmoeglichkeit
+				L9={},	 %9. Antwortmoeglichkeit
+				%% LOESUNG: %%
+				A1=2,  % 1. Antwort
+				A2=4,	 % 2. Antwort
+				A3=0,  % 3. Antwort
+				A4=0,  % 4. Antwort
+				A5=0,  % 5. Antwort
+				}
+\end{beispiel}

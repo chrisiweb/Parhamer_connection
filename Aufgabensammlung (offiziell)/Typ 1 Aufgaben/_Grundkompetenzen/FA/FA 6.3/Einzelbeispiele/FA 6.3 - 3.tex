@@ -1,0 +1,26 @@
+\section{FA 6.3 - 3 Variation einer trigonometrischen Funktion - OA - BIFIE}
+
+\begin{beispiel}[FA 6.3]{1} %PUNKTE DES BEISPIELS
+				Gegeben ist der Graph der Funktion $f(x)=\sin(x)$.
+\leer
+
+\resizebox{0.8\linewidth}{!}{\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-0.2569031409586207,-2.556374312422746)(6.862369312477791,3.1795094092000302)
+\multips(0,-2)(0,1.0){6}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(-0.2569031409586207,0)(6.862369312477791,0)}
+\multips(0,0)(1.5707963267948966,0){5}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,-2.556374312422746)(0,3.1795094092000302)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=y,Dx=3.141592653589793,Dy=2.,ticksize=-2pt 0,subticks=2]{->}(0,0)(-0.2569031409586207,-2.556374312422746)(6.862369312477791,3.1795094092000302)[x,100] [y,-40]
+\psplot[linewidth=1.2pt,plotpoints=200]{-0.2569031409586207}{6.862369312477791}{SIN(x)}
+\rput[tl](2.942374850462187,-0.09293520922364845){$\pi$}
+\rput[tl](6.30864812165496,-0.13151738672335322){$2\pi$}
+\rput[tl](-3.1397690233378097,0.15723883838982305){$-\pi$}
+\rput[tl](-6.215997861242432,0.1186566608901183){$-2\pi$}
+\antwort{\psplot[linewidth=1.2pt,linestyle=dashed,dash=2pt 2pt,linecolor=red,plotpoints=200]{-0.2569031409586207}{6.862369312477791}{SIN(2.0*x)}
+}
+\begin{scriptsize}
+\rput[bl](0.059508968082997625,0.5301998875536359){f(x)}
+\end{scriptsize}
+\end{pspicture*}}
+\leer
+
+Zeichne in die gegebene Abbildung den Graphen der Funktion $g(x)=\sin(2x)$ ein!
+\end{beispiel}

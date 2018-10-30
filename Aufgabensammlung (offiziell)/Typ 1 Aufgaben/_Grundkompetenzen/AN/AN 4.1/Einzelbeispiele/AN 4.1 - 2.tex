@@ -1,0 +1,36 @@
+\section{AN 4.1 - 2 Untersumme - OA - BIFIE}
+
+\begin{beispiel}[AN 4.1]{1} %PUNKTE DES BEISPIELS
+				Der Graph der in der nachstehenden Abbildung dargestellten Funktion $f$ schließt mit der x-Achse im 1. Quadranten ein Flächenstück.
+				\leer
+				
+				\begin{center}
+					\resizebox{0.8\linewidth}{!}{\newrgbcolor{zzttqq}{0.6 0.2 0.}
+\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-0.8565431527821796,-0.6652223037879087)(6.668102607961151,6.110898485991421)
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=none,Dx=1.,Dy=1.,ticksize=-2pt 0,subticks=2]{->}(0,0)(-0.8565431527821796,-0.6652223037879087)(6.668102607961151,6.110898485991421)[x,140] [f(x),-40]
+\psframe[linecolor=zzttqq,fillcolor=zzttqq,fillstyle=solid,opacity=0.1](0.,0)(1.,4.83114310604067)
+\psframe[linecolor=zzttqq,fillcolor=zzttqq,fillstyle=solid,opacity=0.1](1.,0)(2.,4.246714676700214)
+\psframe[linecolor=zzttqq,fillcolor=zzttqq,fillstyle=solid,opacity=0.1](2.,0)(3.,3.2467146981074553)
+\psframe[linecolor=zzttqq,fillcolor=zzttqq,fillstyle=solid,opacity=0.1](3.,0)(4.,1.8311432987641076)
+\psplot[linewidth=1.2pt,plotpoints=200]{-0.8565431527821796}{6.668102607961151}{-0.207785768444865*x^(2.0)+0.03892884222432488*x+5.0}
+\rput[tl](0.8965811213177064,-0.11367758834075398){$x_1$}
+\rput[tl](1.9011804244535961,-0.13337561389243807){$x_2$}
+\rput[tl](2.8663836764861177,-0.13337561389243807){$x_3$}
+\rput[tl](3.870982979622007,-0.07428153723738579){$x_4$}
+\rput[tl](4.79679018055116,-0.17277166499580626){a}
+\begin{scriptsize}
+\rput[bl](-0.3640925139900768,5.2244873361656365){$f$}
+\end{scriptsize}
+\end{pspicture*}}
+				\end{center}
+				
+				Der Inhalt a dieses Flächenstücks kann mit dem Ausdruck \mbox{$f(x_1)\cdot\Delta x+f(x_2)\cdot\Delta x+f(x_3)\cdot \Delta x+ f(x_4)\cdot \Delta x$}
+				
+				näherungsweise berechnet werden.
+				
+				Gib die geometrische Bedeutung der Variablen $\Delta x$ an und beschreibe den Einfluss der Anzahl der Teilintervalle $[x_i;x_{i+1}]$ von $[0;a]$ auf die Genauigkeit des Näherungswertes für den Flächeninhalt A!
+				\leer
+				
+				\antwort{$\Delta x$ ist die Breite (bzw. Länge) der dargestellten Rechtecke. Je größer die Anzahl der Teilintervalle von $[0;a]$ ist, desto genauer ist der Näherungswert.}
+\end{beispiel}

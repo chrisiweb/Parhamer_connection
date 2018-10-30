@@ -1,0 +1,35 @@
+\section{FA 6.3 - 8 Sinusfunktion - LT - Matura 2013/14 Haupttermin}
+
+\begin{beispiel}[FA 6.3]{1} %PUNKTE DES BEISPIELS
+			Im untenstehenden Diagramm sind die Graphen zweier Funktionen $f$ und $g$ dargestellt.
+			
+			\winkelfunktion\psset{xunit=1.5cm,yunit=1.0cm,trigLabels,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+			\begin{pspicture*}(-2.25,-2.5)(7,2.5)
+			\multips(0,-4)(0,1.0){10}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=black!60]{c-c}(-10,0)(10,0)}
+			\multips(-8,0)(1,0){30}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=black!60]{c-c}(0,-5)(0,5)}
+			\psaxes[labelFontSize=\scriptstyle,trigLabelBase=2,xAxis=true,yAxis=true,Dx=1,Dy=1.,ticksize=-2pt 0,subticks=2]{->}(0,0)(-10,-2.5)(7,2.5)[$x$,140] [\mbox{$f(x),g(x)$},-40]
+			\psplot[xunit=0.63661977cm,linestyle=dashed,linewidth=1.2pt,plotpoints=200]{-10}{20}{SIN(x*1.33)}
+			\psplot[xunit=0.63661977cm,linewidth=1.2pt,plotpoints=200]{-10}{20}{2*SIN(x/1.5)}
+			\begin{scriptsize}
+			\rput[bl](-1.5882409839303135,-1.9){$f$}
+			\rput[bl](-1.2,0.8){$g$}
+			\end{scriptsize}
+			\end{pspicture*}\leer
+			
+			Die Funktion $f$ hat die Funktionsgleichung $f(x)=a\cdot sin(b\cdot x)$ mit den reellen Parametern $a$ und $b$. Wenn diese Parameter in entsprechender Weise verändert werden, erhält man die Funktion $g$.
+			
+			Wie müssen die Parameter $a$ und $b$ verändert werden, um aus $f$ die Funktion $g$ zu erhalten?
+			
+			\lueckentext{
+							text={Um den Graphen von $g$ zu erhalten, muss $a$ \gap und $b$ \gap.}, 	%Lueckentext Luecke=\gap
+							L1={verdoppelt werden}, 		%1.Moeglichkeit links  
+							L2={halbiert werden}, 		%2.Moeglichkeit links
+							L3={gleich bleiben}, 		%3.Moeglichkeit links
+							R1={verdoppelt werden}, 		%1.Moeglichkeit rechts 
+							R2={halbiert werden}, 		%2.Moeglichkeit rechts
+							R3={gleich bleiben}, 		%3.Moeglichkeit rechts
+							%% LOESUNG: %%
+							A1=2,   % Antwort links
+							A2=1		% Antwort rechts 
+							}
+\end{beispiel}

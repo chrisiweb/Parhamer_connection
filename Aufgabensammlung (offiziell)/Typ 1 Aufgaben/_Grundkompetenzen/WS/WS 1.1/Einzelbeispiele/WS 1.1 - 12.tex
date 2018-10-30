@@ -1,0 +1,210 @@
+\section{WS 1.1 - 12 Wanderungsbilanz für Österreich - MC - Matura 2016/17 - Haupttermin}
+
+\begin{langesbeispiel} \item[1] %PUNKTE DES BEISPIELS
+Die Differenz aus der Anzahl der in einem bestimmten Zeitraum in ein Land zugewanderten
+Personen und der Anzahl der in diesem Zeitraum aus diesem Land abgewanderten Personen
+bezeichnet man als Wanderungsbilanz. 
+
+In der nachstehenden Grafik ist die jährliche Wanderungsbilanz für Österreich in den Jahren von
+1961 bis 2012 dargestellt.
+				
+\begin{figure}[ht]
+\centering
+\footnotesize
+\begin{tikzpicture}
+\pgfplotstableread{
+First
+-2000
+1500
+5000
+4000
+10100
+19000
+21000
+-6000
+5000
+10000
+32000
+35000
+34000
+-18000
+-24000
+8000
+12000
+-9000
+-1000
+10000
+29500
+-23000
+-1500
+3000
+5000
+5500
+2000
+13000
+45000
+59000
+77000
+72000
+33000
+3000
+2000
+4000
+1000
+8000
+20000
+17000
+32000
+32500
+40000
+51000
+45000
+24000
+25000
+24000
+17000
+21000
+30500
+44000
+}\dataabsolutzahlen
+
+
+%\pgfplotstableread{
+%
+%First Second Third Fourth
+%69.8	25.3	0.0	4.9
+%66.5	32.2	0.0	1.2
+%27.8	64.5	0.8	6.9
+%7.3	75.1	2.0	15.5
+%15.9	34.7	1.6	47.8
+%22.9	39.2	1.6	36.3
+%}\dataprozent
+
+%\pgfplotsset{minor grid style={dashed}}
+\begin{axis}
+[
+ybar,
+title=Wanderungsbilanz 1961-2012,
+xmin=-0.5,
+xmax=51.5,
+%axis lines=left,
+%legend entries={naiv, informiert, nicht codierbar, keine Aussage}, 
+%reverse legend,
+bar width=7pt,
+height=7.9cm, 
+width=0.95\linewidth,
+scaled ticks = false,
+minor x grid style={dashed},
+%point meta=rawy,
+%enlarge x limits=auto,
+%xlabel={Something in \%},
+%ylabel={Years},
+xtick={-0.5,4.5,...,61.5},
+minor xtick={0.5,1.5,2.5,...,60.5},
+xtick pos=left,
+xticklabels={1961,1966,...,2006},
+extra x tick labels={2012},
+extra x ticks={50.5},
+xticklabel style={font=\scriptsize,  xshift=4pt,
+%minor x tick num={0}, 
+%text width=2cm, 
+align=center},
+%/pgfplots/every y tick scale label/.style={yshift=1cm},
+%visualization depends on=value\coordindex \as\INDEX,
+%absolute values/.style={
+   %nodes near coords={\pgfplotstablegetelem{\INDEX}{#1}\of\dataabsolutzahlen\pgfmathprintnumber\pgfplotsretval},
+%},
+%legend style={draw=none, at={(1,1)},xshift=0.5cm,yshift=-2.5cm, anchor=north west,nodes=right}, 
+%axis on top,
+major y grid style={color=black},
+minor y grid style={color=black},
+ymajorgrids,
+yminorgrids, minor tick num=1,
+%xmajorgrids,
+xminorgrids,
+ytick={-40000,-20000,0,20000,40000,60000,80000},
+yticklabels={-40\,000,-20\,000,0,20\,000,40\,000,60\,000,80\,000},
+%yticklabel=\pgfmathprintnumber{\tick}\,$\%$,
+ymin=-40000,
+ymax=80000
+]
+%fill=blue1
+\addplot +[
+%ybar stacked,
+%absolute values=First,
+style={black!60, text=black},
+] 
+table
+[y=First, x expr=\coordindex] {\dataabsolutzahlen};
+
+%\foreach \x in {0.5, 1.5,59.5}
+	%\draw[color=black!60, dashed] (\x ,0) -- (\x ,-40000);
+
+%\draw[color=black!60, dashed] (0.5,0) -- (0.5,-40000);
+%\addlegendentry{informiert}
+%\addplot +[
+%%ybar stacked,
+%absolute values=Second,
+%style={black!60, text=black},
+%] table [y=Second, x expr=\coordindex] {\dataprozent};
+%%\addlegendentry{naiv}
+%\addplot +[
+%%ybar stacked,
+%absolute values=Third,
+%style={black!40, text=black},
+%] table [y=Third, x expr=\coordindex] {\dataprozent};
+%%\addlegendentry{nicht codierbar}
+%\addplot +[
+%style={black, text=black},
+%] coordinates{(1,1000)};
+%%\addlegendentry{keine Aussage}
+%\begin{scope}
+%\draw ({rel axis cs:0,0}|-{axis cs:0,1}) -- ({rel axis cs:1,0}|-{axis cs:0,1});
+%\end{scope}
+\fill [black] (-0.5,-40000) rectangle (0.5,-38000);
+\fill [black] (4.5,-40000) rectangle (5.5,-38000);
+\fill [black] (9.5,-40000) rectangle (10.5,-38000);
+\fill [black] (14.5,-40000) rectangle (15.5,-38000);
+\fill [black] (19.5,-40000) rectangle (20.5,-38000);
+\fill [black] (24.5,-40000) rectangle (25.5,-38000);
+\fill [black] (29.5,-40000) rectangle (30.5,-38000);
+\fill [black] (34.5,-40000) rectangle (35.5,-38000);
+\fill [black] (39.5,-40000) rectangle (40.5,-38000);
+\fill [black] (44.5,-40000) rectangle (45.5,-38000);
+\fill [black] (50.5,-40000) rectangle (51.5,-38000);
+\end{axis}
+\end{tikzpicture}
+\begin{flushright}
+\tiny Quelle: STATISTIK AUSTRIA, Errechnete Wanderungsbilanz 1961-1995; Wanderungsstatistik 1996-2012; 2007-2011: revidierte Daten.
+Wanderungsbilanz: Zuzüge aus dem Ausland minus Wegzüge in das Ausland (adaptiert). \normalsize
+\end{flushright}
+\end{figure} \vspace{-0.5cm}
+
+Kreuze die beiden Aussagen an, die eine korrekte Interpretation der Grafik darstellen!
+
+\multiplechoice[5]{  %Anzahl der Antwortmoeglichkeiten, Standard: 5
+				L1={Aus dem angegebenen Wert für das Jahr 2003 kann man ablesen, dass in diesem
+Jahr um ca. 40\,000 Personen mehr zugewandert als abgewandert sind. },   %1. Antwortmoeglichkeit 
+				L2={Der Zuwachs der Wanderungsbilanz vom Jahr 2003 auf das Jahr 2004 beträgt
+ca. 50\,\%.},   %2. Antwortmoeglichkeit
+				L3={Im Zeitraum 1961 bis 2012 gibt es acht Jahre, in denen die Anzahl der Zuwanderungen
+geringer als die Anzahl der Abwanderungen war.},   %3. Antwortmoeglichkeit
+				L4={Im Zeitraum 1961 bis 2012 gibt es drei Jahre, in denen die Anzahl der Zuwanderungen
+gleich der Anzahl der Abwanderungen war.},   %4. Antwortmoeglichkeit
+				L5={Die Wanderungsbilanz des Jahres 1981 ist annähernd doppelt so groß wie die
+des Jahres 1970.},	 %5. Antwortmoeglichkeit
+				L6={},	 %6. Antwortmoeglichkeit
+				L7={},	 %7. Antwortmoeglichkeit
+				L8={},	 %8. Antwortmoeglichkeit
+				L9={},	 %9. Antwortmoeglichkeit
+				%% LOESUNG: %%
+				A1=1,  % 1. Antwort
+				A2=3,	 % 2. Antwort
+				A3=0,  % 3. Antwort
+				A4=0,  % 4. Antwort
+				A5=0,  % 5. Antwort
+				}
+
+
+\end{langesbeispiel}
+\newpage

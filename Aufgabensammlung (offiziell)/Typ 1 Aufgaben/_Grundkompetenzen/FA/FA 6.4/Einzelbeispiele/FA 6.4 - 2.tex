@@ -1,0 +1,38 @@
+\section{FA 6.4 - 2 Periodizität - OA - BIFIE}
+
+\begin{beispiel}[FA 6.4]{1} %PUNKTE DES BEISPIELS
+				Die nachstehende Abbildung zeigt die Graphen $f_1,f_2$ und $f_3$ von Funktionen der Form $f(x)=\sin(b\cdot x)$.
+
+$f_1(x)=\sin(x)$, $f_2(x)=\sin(2x)$, $f_3(x)=\sin\left(\dfrac{x}{2}\right)$
+\leer
+
+\resizebox{1\linewidth}{!}{\winkelfunktion\psset{xunit=1.0cm,yunit=1.0cm,trigLabels,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-2.6878444479288832,-2.0827743166790045)(5.376070775940966,2.288913012818873)
+\multips(0,-4)(0,1.0){10}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(-10,0)(10,0)}
+\multips(-2,0)(1,0){12}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,-5)(0,5)}
+\psaxes[labelFontSize=\scriptstyle,trigLabelBase=2,xAxis=true,yAxis=true,Dx=1,Dy=1.,ticksize=-2pt 0,subticks=2]{->}(0,0)(-2.6878444479288832,-3.0827743166790045)(5.376070775940966,2.228913012818873)[x,140] [y,-40]
+\psplot[xunit=0.63661977cm,linewidth=1.2pt,plotpoints=200]{-10}{20}{SIN(x)}
+\psplot[xunit=0.63661977cm,linestyle=dashed,linewidth=1.2pt,plotpoints=200]{-10}{20}{SIN(0.5*x)}
+\psplot[xunit=0.63661977cm,linestyle=dotted,linewidth=1.2pt,plotpoints=200]{-10}{20}{SIN(2*x)}
+\begin{scriptsize}
+\rput[bl](-2.0882409839303135,-1.2899119647047494){\tiny{$f_3$}}
+\rput[bl](-1.2882409839303135,0.9899119647047494){\tiny{$f_2$}}
+\rput[bl](-2.5882409839303135,0.8899119647047494){\tiny{$f_1$}}
+\end{scriptsize}
+\end{pspicture*}}
+\leer
+
+Bestimme die der Funktion entsprechende primitive (kleinste) Periode p!
+\leer
+
+$p_1=\rule{5cm}{0.3pt}$
+\leer
+
+$p_2=\rule{5cm}{0.3pt}$
+\leer
+
+$p_3=\rule{5cm}{0.3pt}$
+\leer
+
+\antwort{$p_1=2\pi$, $p_2=\pi$, $p_3=4\pi$}
+\end{beispiel}

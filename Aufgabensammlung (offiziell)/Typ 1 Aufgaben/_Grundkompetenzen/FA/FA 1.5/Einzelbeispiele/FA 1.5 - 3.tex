@@ -1,0 +1,40 @@
+\section{FA 1.5 - 3 Polynomfunktion 4. Grades - MC - BIFIE}
+
+\begin{beispiel}[FA 1.5]{1} %PUNKTE DES BEISPIELS
+Die nachstehende Abbildung zeigt den Graphen einer Polynomfunktion $f$, die vom Grad 4 ist.
+
+\begin{center}
+\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-3.74,-1.5)(3.66,4.64)
+\multips(0,-1)(0,1.0){7}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(-3.74,0)(3.66,0)}
+\multips(-3,0)(1.0,0){8}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,-1.5)(0,4.64)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=1.,Dy=1.,ticksize=-2pt 0,subticks=2]{->}(0,0)(-3.74,-1.5)(3.66,4.64)[x,140] [f(x),-40]
+\psplot[linewidth=0.4pt,plotpoints=200]{-3.7400000000000007}{3.660000000000002}{-0.26041666666666674*x^(4.0)-1.5945921863897833E-17*x^(3.0)+2.041666666666667*x^(2.0)+6.378368745559133E-17*x}
+\rput[tl](-1.36,3.86){$f$}
+\end{pspicture*}
+\end{center}
+
+Kreuze die beiden für die Funktion $f$ zutreffenden Aussagen an!
+
+\multiplechoice[5]{  %Anzahl der Antwortmoeglichkeiten, Standard: 5
+				L1={Die Funktion besitzt drei Wendepunkte.},   %1. Antwortmoeglichkeit 
+				L2={Die Funktion ist symmetrisch bezüglich
+der $y$-Achse.},   %2. Antwortmoeglichkeit
+				L3={Die Funktion ist streng monoton steigend
+für $x \in [0;4]$.},   %3. Antwortmoeglichkeit
+				L4={Die Funktion besitzt einen Wendepunkt,
+der gleichzeitig auch Tiefpunkt ist.},   %4. Antwortmoeglichkeit
+				L5={Die Funktion hat drei Nullstellen.},	 %5. Antwortmoeglichkeit
+				L6={},	 %6. Antwortmoeglichkeit
+				L7={},	 %7. Antwortmoeglichkeit
+				L8={},	 %8. Antwortmoeglichkeit
+				L9={},	 %9. Antwortmoeglichkeit
+				%% LOESUNG: %%
+				A1=2,  % 1. Antwort
+				A2=5,	 % 2. Antwort
+				A3=0,  % 3. Antwort
+				A4=0,  % 4. Antwort
+				A5=0,  % 5. Antwort
+				}
+
+\end{beispiel}

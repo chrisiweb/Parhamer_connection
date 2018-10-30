@@ -1,0 +1,55 @@
+\section{FA 1.4 - 12 Daten aus einem Diagramm ablesen - MC - Matura 2015/16 - Nebentermin 1}
+
+\begin{beispiel}[FA 1.4]{1} %PUNKTE DES BEISPIELS
+Ein Motorradfahrer fährt dieselbe Strecke (560\,km) wie ein Autofahrer. Die beiden Bewegungen
+werden im nachstehenden Zeit-Weg-Diagramm modellhaft als geradlinig angenommen. Die hervorgehobenen Punkte haben ganzzahlige Koordinaten.
+
+
+\begin{center}
+\resizebox{0.6\linewidth}{!}{
+\psset{xunit=1.0cm,yunit=0.0125cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-0.7519676589560922,-40.88824686745553)(8.357221866731292,676.2566939222467)
+\multips(0,0)(0,80.0){9}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=black!60]{c-c}(0,0)(8.357221866731292,0)}
+\multips(0,0)(1.0,0){10}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=black!60]{c-c}(0,0)(0,676.2566939222467)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=1.,Dy=80.,ticksize=-3pt 0,subticks=2]{->}(0,0)(0.,0.)(8.357221866731292,676.2566939222467)[Zeit in h,140] [Weg in km,-40]
+\psplot[linestyle=dashed,dash=7pt 7pt]{0}{7}{(-0.--240.*x)/3.}
+\psplot{3}{7.67}{(-720.--240.*x)/2.}
+\rput[tl](5.5502151540443245,282.1891709024507){Motorrad}
+\rput[tl](3.2,367.6670527339506){Auto}
+\begin{scriptsize}
+\psdots[dotsize=4pt 0,dotstyle=*](0.,0.)
+\psdots[dotsize=4pt 0,dotstyle=*](3.,240.)
+\psdots[dotsize=4pt 0,dotstyle=*](5.,400.)
+\psdots[dotsize=4pt 0,dotstyle=*](7.,560.)
+\psdots[dotsize=4pt 0,dotstyle=*](3.,0.)
+\psdots[dotsize=4pt 0,dotstyle=*](5.,240.)
+\psdots[dotsize=4pt 0,dotstyle=*](7.,480.)
+\end{scriptsize}
+\end{pspicture*}}
+\end{center}
+
+Kreuze die beiden Aussagen an, die eine korrekte Interpretation des Diagramms darstellen.
+
+\multiplechoice[5]{  %Anzahl der Antwortmoeglichkeiten, Standard: 5
+				L1={Der Motorradfahrer fährt drei Stunden nach der Abfahrt
+des Autofahrers los.},   %1. Antwortmoeglichkeit 
+				L2={Das Motorrad hat eine Durchschnittsgeschwindigkeit
+von 100\,km/h.},   %2. Antwortmoeglichkeit
+				L3={Wenn der Autofahrer sein Ziel erreicht, ist das Motorrad
+davon noch 120\,km entfernt.},   %3. Antwortmoeglichkeit
+				L4={Die Durchschnittsgeschwindigkeit des Autos ist um
+40\,km/h niedriger als jene des Motorrads.},   %4. Antwortmoeglichkeit
+				L5={Die Gesamtfahrzeit des Motorradfahrers ist für diese
+Strecke größer als jene des Autofahrers.},	 %5. Antwortmoeglichkeit
+				L6={},	 %6. Antwortmoeglichkeit
+				L7={},	 %7. Antwortmoeglichkeit
+				L8={},	 %8. Antwortmoeglichkeit
+				L9={},	 %9. Antwortmoeglichkeit
+				%% LOESUNG: %%
+				A1=1,  % 1. Antwort
+				A2=4,	 % 2. Antwort
+				A3=0,  % 3. Antwort
+				A4=0,  % 4. Antwort
+				A5=0,  % 5. Antwort
+				}
+\end{beispiel}

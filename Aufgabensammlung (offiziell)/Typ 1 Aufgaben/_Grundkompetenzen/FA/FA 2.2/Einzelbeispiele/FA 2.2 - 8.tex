@@ -1,0 +1,47 @@
+\section{FA 2.2 - 8 Radfahrer - MC - Matura 17/18}
+
+\begin{beispiel}[FA 2.2]{1} %PUNKTE DES BEISPIELS
+Zwei Radfahrer $A$ und $B$ fahren mit Elektrofahrrädern vom gleichen Startpunkt aus mit jeweils konstanter Geschwindigkeit auf einer geradlinigen Straße in dieselbe Richtung.
+
+In der nachstehenden Abbildung sind die Graphen der Funktionen $s_A$ und $s_B$ dargestellt, die den von den Radfahrern zurückgelegt Weg in Abhängigkeit von der Fahrzeit beschreiben. Die Markierten Punkte haben die Koordinaten $(0\mid 0), (2\mid 0)$ bzw. $(8\mid 2\,400)$.
+
+\begin{center}
+	\resizebox{0.6\linewidth}{!}{\psset{xunit=1.0cm,yunit=0.0025cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-1.08,-289.5620280474871)(11.78,3928.391513844178)
+\multips(0,0)(0,400.0){11}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=darkgray]{c-c}(0,0)(11.78,0)}
+\multips(0,0)(1.0,0){13}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=darkgray]{c-c}(0,0)(0,3928.391513844178)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=1.,Dy=400.,ticksize=-2pt 0,subticks=2]{->}(0,0)(0.,0.)(11.78,3928.391513844178)
+\rput[tl](0.3,3745.0022294141063){$s$ in Metern}
+\rput[tl](9.2,221.9975548363996){$t$ in Minuten}
+\psplot[linewidth=2.pt]{0.}{11.78}{(-0.--2400.*x)/8.}
+\psplot[linewidth=2.pt]{2.}{11.78}{(-4800.--2400.*x)/6.}
+\rput[tl](3.56,1438.158072635827){$s_A$}
+\rput[tl](5.3,1264.4208558073374){$s_B$}
+\begin{scriptsize}
+\psdots[dotstyle=*](8.,2400.)
+\psdots[dotstyle=*](0.,0.)
+\psdots[dotstyle=*](2.,0.)
+\end{scriptsize}
+\end{pspicture*}}
+\end{center}
+
+Kreuze die beiden Aussagen an, die der obigen Abbildung entnommen werden können!
+
+\multiplechoice[5]{  %Anzahl der Antwortmoeglichkeiten, Standard: 5
+				L1={Der Radfahrer $B$ startet zwei Minuten später als der Radfahrer $A$.},   %1. Antwortmoeglichkeit 
+				L2={Die Geschwindigkeit des Radfahrers $A$ beträgt 200 Meter pro Minute.},   %2. Antwortmoeglichkeit
+				L3={Der Radfahrer $B$ holt den Radfahrer $A$ nach einer Fahrstrecke von 2,4 Kilometern ein.},   %3. Antwortmoeglichkeit
+				L4={Acht Minuten nach dem Start von Radfahrer $B$ sind die beiden Radfahrer gleich weit vom Startpunkt entfernt.},   %4. Antwortmoeglichkeit
+				L5={Vier Minuten nach der Abfahrt des Radfahrers $A$ sind die beiden Radfahrer 200 Meter voneinander entfernt.},	 %5. Antwortmoeglichkeit
+				L6={},	 %6. Antwortmoeglichkeit
+				L7={},	 %7. Antwortmoeglichkeit
+				L8={},	 %8. Antwortmoeglichkeit
+				L9={},	 %9. Antwortmoeglichkeit
+				%% LOESUNG: %%
+				A1=1,  % 1. Antwort
+				A2=3,	 % 2. Antwort
+				A3=0,  % 3. Antwort
+				A4=0,  % 4. Antwort
+				A5=0,  % 5. Antwort
+				}
+\end{beispiel}

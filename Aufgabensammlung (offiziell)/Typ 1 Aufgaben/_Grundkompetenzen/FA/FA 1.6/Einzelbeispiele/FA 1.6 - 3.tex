@@ -1,0 +1,41 @@
+\section{FA 1.6 - 3 Kosten, Erlös und Gewinn - OA - Matura 2015/16 - Haupttermin}
+
+\begin{beispiel}[FA 1.6]{1} %PUNKTE DES BEISPIELS
+Die Funktion $E$ beschreibt den Erlös (in \euro) beim Absatz von $x$ Mengeneinheiten eines Produkts. Die Funktion $G$ beschreibt den dabei erzielten Gewinn in \euro. Dieser ist definiert als Differenz "`Erlös - Kosten"'.\leer
+
+Ergänze die nachstehende Abbildung durch den Graphen der zugehörigen Kostenfunktion $K$!
+Nehmen Sie dabei $K$ als linear an! (Die Lösung der Aufgabe beruht auf der Annahme, dass alle
+produzierten Mengeneinheiten des Produkts verkauft werden.)
+\leer
+
+
+\begin{center}
+\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-0.78,-2.3)(11.98,8.62)
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=none,Dx=1.,Dy=1.,ticksize=0pt 0,subticks=0]{->}(0,0)(-0.78,-2.3)(11.98,8.62)
+\psplot[plotpoints=200]{0}{11.979999999999976}{-0.05333333333333334*x^(2.0)+0.6933333333333334*x-1.6}
+\psplot[linewidth=1.2pt,plotpoints=200]{0}{11.979999999999976}{-0.05707476384525304*x^(2.0)+1.2870410129151044*x}
+\antwort{\psline[linewidth=2.pt,linestyle=dashed,dash=5pt 5pt,linecolor=red](2.981292969413772,3.32975967117698)(3.,0.)
+\psline[linewidth=2.pt,linestyle=dashed,dash=5pt 5pt,linecolor=red](9.98,7.16)(10.,0.)
+\psplot[linewidth=2.pt,linecolor=red]{0}{11.98}{(--11.88494385734365--3.8302403288230202*x)/6.998707030586228}}
+\rput[tl](5.96,6.58){$E$}
+\antwort{\rput[tl](10.68,8.46){$\red{K}$}}
+\rput[tl](6.36,1.26){$G$}
+\rput[bl](0.2,8){$E(x), G(x), K(x)$}
+\rput[bl](11.5,0.2){$x$}
+\antwort{
+\psdots[dotstyle=*,linecolor=red](3.,0.)
+\rput[bl](2.92,-0.64){\red{$X_1$}}
+\psdots[dotstyle=*,linecolor=red](10.,0.)
+\rput[bl](9.96,-0.58){\red{$X_2$}}
+\psdots[dotstyle=*,linecolor=red](9.98,7.16)
+\psdots[dotstyle=*,linecolor=red](2.981292969413772,3.32975967117698)}
+\end{pspicture*}
+\end{center}
+
+\antwort{Lösungsschlüssel:\\
+
+Ein Punkt ist genau dann zu geben, wenn der Graph einer linearen Kostenfunktion skizziert wurde
+und dieser den Graphen der Erlösfunktion $E$ an den Stellen $x_1$ und $x_2$ schneidet.}
+
+\end{beispiel}
