@@ -313,7 +313,12 @@ def refresh():
 		json.dump(beispieldaten_dateipfad, f)
 	
 	label_update.config(text='Last Update: '+modification_date(log_file).strftime('%d.%m.%y - %H:%M'))			  
+
+
+	
 def control_cb():
+	if not os.path.isfile(os.path.join('Teildokument','log_file')):
+		refresh()
 	suchbegriffe = []
 
 	##### Suche der Schulstufe 
