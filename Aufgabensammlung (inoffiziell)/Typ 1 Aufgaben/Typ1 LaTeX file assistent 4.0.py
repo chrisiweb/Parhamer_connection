@@ -487,6 +487,17 @@ def control_cb():
 
 	
 	##############################
+	if not dict_gesammeltedateien:
+		def okbutton():
+			nebenfenster.destroy()
+		nebenfenster = Tk()
+		nebenfenster.title('Warnung')
+		nebenfenster.geometry('400x200+500+200')
+		Label(nebenfenster, text="Kein Suchergebnis gefunden. \n\n Das LaTeX Dokument ist leer!", font=("", 12), pady=50).pack()
+		Button(nebenfenster, text='OK', width=15, command=okbutton).pack()
+		print('Keine LaTeX-Datei ausgeben!')
+		return
+		
 	beispieldaten.sort(key=natural_keys)
 	loop_dateien=1
 	check=0
@@ -515,28 +526,15 @@ def control_cb():
 	file.close()
 	
 
-	if not gesammeltedateien:
-		def okbutton():
-			nebenfenster.destroy()
-		nebenfenster = Tk()
-		nebenfenster.title('Warnung')
-		nebenfenster.geometry('400x200+500+200')
-		Label(nebenfenster, text="Kein Suchergebnis gefunden. \n\n Das LaTeX Dokument ist leer!", font=("", 12), pady=50).pack()
-		Button(nebenfenster, text='OK', width=15, command=okbutton).pack()
-		print('Keine LaTeX-Datei ausgeben!')
-		
-		
-	
+	print("Insgesamt wurde(n) " + str(len(dict_gesammeltedateien)) + " Beispiel(e) gefunden. Entsprechende LaTeX-Datei wird ausgegeben...")
+	hauptfenster.destroy()
+	if sys.platform.startswith('linux'):
+		subprocess.run(['xdg-open', filename_teildokument])
+	elif sys.platform.startswith('darwin'):
+		subprocess.run(['open', filename_teildokument])
 	else:
-		print("Insgesamt wurde(n) " + str(len(gesammeltedateien)) + " Beispiel(e) gefunden. Entsprechende LaTeX-Datei wird ausgegeben...")
-		hauptfenster.destroy()
-		if sys.platform.startswith('linux'):
-		    subprocess.run(['xdg-open', filename_teildokument])
-		elif sys.platform.startswith('darwin'):
-		    subprocess.run(['open', filename_teildokument])
-		else:
-		    os.system(filename_teildokument)
-		sys.exit(0)
+		os.system(filename_teildokument)
+	sys.exit(0)
 		
 		
 		
