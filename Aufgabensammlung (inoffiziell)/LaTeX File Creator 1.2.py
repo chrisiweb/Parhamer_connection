@@ -42,7 +42,7 @@ frame_eingabe.grid(row=0, column=2, sticky=N+W)
 
 
 dict_aufgabenformat={'Multiple Choice':'MC', 'Zuordnungsformat':'ZO', 'Lückentext':'LT', 'Offenes Antwortformat':'OA'}	
-dict_themen={'AG':'AG - Algebra und Geometrie', 'AN':'AN - Analysis', 'FA':'FA - Funktionale Abhaengigkeiten', 'WS':'WS - Wahrscheinlichkeit und Statistik'}
+sub_folder_themen=['AG', 'AN', 'FA', 'WS']
 ag_kb=["ag11","ag12","agL13","agL14","agL15",
 "ag21","ag22","ag23","ag24","ag25","agL26","agL27","agL28",
 "ag31","ag32","ag33","ag34","ag35","agL36","agL37","agL38","agL39",
@@ -344,9 +344,9 @@ def confirm_save():
 
 				else:
 					path_folder='_Grundkompetenzen'
-					for all in dict_themen:
+					for all in sub_folder_themen:
 						if all in set_gk_auswahl[0]:
-							themen_auswahl=dict_themen[all]
+							themen_auswahl=all
 					# print(path_folder)		
 					# print(themen_auswahl)
 					gk_path_temp=os.path.join(os.path.dirname('__file__'),'Typ 1 Aufgaben','_Grundkompetenzen',themen_auswahl,set_gk_auswahl[0],'Einzelbeispiele')	
