@@ -165,9 +165,9 @@ ws_kb_beschreibung={
 "wsL42":'Einfache Anteilstests durchführen können und ihr Ergebnis erläutern können'}
 WS_BB=["WS 1.1","WS 1.2","WS 1.3","WS 1.4","WS 2.1","WS 2.2","WS 2.3","WS 2.4","WS-L 2.5","WS-L 2.6",
 "WS 3.1","WS 3.2","WS 3.3","WS 3.4","WS-L 3.5","WS 4.1","WS-L 4.2"]
-Klassen=["K5","K6","K7","K8"]
 AF_BB=["MC","ZO","LT","OA"]
 aufgaben_formate={"mc":'Multiple Choice',"zo":'Zuordnen',"lt":'Lückentext',"oa":'Offenes Antwortformat'}
+Klassen=["K5","K6","K7","K8"]
 themen_klasse_5={'FU':'Funktionen', 'GL':'Gleichungen und\nGleichungssysteme',
 'MZR':'Mengen, Zahlen,\nRechengesetze','TR':'Trigonometrie',
 'VAG2':'Vektoren und analytische\nGeometrie'}
@@ -227,7 +227,6 @@ class hoverover(Frame):
 	def __init__(self,frame, gk_name, gk_explanation, gk_variable):
 		Frame.__init__(self)
 		self.gk_explanation=gk_explanation
-		#self.gk_name =gk_name
 		if "L" in gk_name:
 			cb_phantom=Label(frame,text=" ",width=10).grid(row=r, column=c, pady=5,padx=5, sticky=W)
 			self.l1 = Checkbutton(frame, text=gk_name, variable=gk_variable)
@@ -241,9 +240,6 @@ class hoverover(Frame):
 		self.l1.bind("<Leave>", self.on_leave)
 		
 	def on_enter(self,event):
-		# if "L" in self.gk_name:
-			# explanation.configure(text=self.gk_explanation,relief=RAISED)
-		# else:
 		explanation.configure(text=self.gk_explanation,font=STANDARD_FONT,bg='powderblue',relief=RAISED)
 
 	def on_leave(self, enter):
@@ -259,17 +255,10 @@ def natural_keys(text):
 
 
 def refresh():
-	# if os.path.isfile('log_file'):
-		# log_file_update=modification_date('log_file').strftime('%m')
-		# print(log_file_update)
-	# else:
-	# 	log_file_update=''
-		
 	beispieldaten_dateipfad = {}
 	beispieldaten = []
 	
-	# log_file=os.path.join(os.path.dirname('__file__'),'Teildokument','log_file')
-	# if log_file_update>datetime.date.today().strftime('%m'):
+
 	for root, dirs, files in os.walk('.'):
 		for all in files:
 			if all.endswith('.tex') or all.endswith('.ltx'):
@@ -277,7 +266,7 @@ def refresh():
 					file=open(os.path.join(root,all), encoding='ISO-8859-1')
 					for i, line in enumerate(file):
 						if not line == "\n":			
-							beispieldaten_dateipfad[os.path.join(root,all)]=line
+							beispieldaten_dateipfad[line]=os.path.join(root,all)
 							beispieldaten.append(line)
 							break
 					file.close()
@@ -301,7 +290,7 @@ def refresh():
 						os.path.dirname(dirname)
 					for i, line in enumerate(file):
 						if not line == "\n":			
-							beispieldaten_dateipfad[os.path.join(rel_path,all)]=line
+							beispieldaten_dateipfad[line]=os.path.join(rel_path,all)
 							beispieldaten.append(line)
 							break
 					file.close()
@@ -354,33 +343,7 @@ def control_cb():
 
 	with open(log_file) as f:
 		beispieldaten_dateipfad = json.load(f)
-		beispieldaten=list(beispieldaten_dateipfad.values())						  
-
- #############  Erstellung der Kompetenzbereiche pro Beispiel
-	liste_kompetenzbereiche ={}
-	gkliste = []
-	r=1
-	for all in beispieldaten:
-		gkliste = []
-		for gkbereich in AG_BB:
-			if gkbereich in all:
-				gkliste.append(gkbereich)
-		for gkbereich in AN_BB:
-			if gkbereich in all:
-				gkliste.append(gkbereich)
-		for gkbereich in FA_BB:
-			if gkbereich in all:
-				gkliste.append(gkbereich)
-		for gkbereich in WS_BB:
-			if gkbereich in all:
-				gkliste.append(gkbereich)
-		for klasse in Klassen:
-			if klasse in all:
-				gkliste.append(klasse)
-		liste_kompetenzbereiche.update({r:gkliste})
-		r+=1
-		
-	#print(liste_kompetenzbereiche)
+		beispieldaten=list(beispieldaten_dateipfad.keys())						  
 
 	
 	filename_teildokument = os.path.join(os.path.dirname('__file__'),'Teildokument','Teildokument.tex')
@@ -415,6 +378,29 @@ def control_cb():
 	
 	
 	if suchtyp_var.get() == UND:
+	 #############  Erstellung der Kompetenzbereiche pro Beispiel
+		liste_kompetenzbereiche ={}
+		r=1
+		for all in beispieldaten:
+			gkliste = []
+			for gkbereich in AG_BB:
+				if gkbereich in all:
+					gkliste.append(gkbereich)
+			for gkbereich in AN_BB:
+				if gkbereich in all:
+					gkliste.append(gkbereich)
+			for gkbereich in FA_BB:
+				if gkbereich in all:
+					gkliste.append(gkbereich)
+			for gkbereich in WS_BB:
+				if gkbereich in all:
+					gkliste.append(gkbereich)
+			for klasse in Klassen:
+				if klasse in all:
+					gkliste.append(klasse)
+			liste_kompetenzbereiche.update({r:gkliste})
+			r+=1
+
 		gesammeltedateien=[]
 		for r in range(1,len(liste_kompetenzbereiche)+1):
 			if liste_kompetenzbereiche[r]==[]:
@@ -439,108 +425,67 @@ def control_cb():
 					
 			
 	if suchtyp_var.get() == ODER:
-		loop_suchbegriffe=0
-		#### SUCHBEGRIFFE	
-		# if not len(entry_suchbegriffe.get()) ==0:
-			# suchbegriffe.append(entry_suchbegriffe.get())		
+	
 		gesammeltedateien=[]
-		for loop_suchbegriffe in suchbegriffe:  ## Zusammenstellung aller Dateien, die der Suche entsprechen
-			loop_ergebnis=0
-			while loop_ergebnis <= len(beispieldaten)-1: 
-				if loop_suchbegriffe in beispieldaten[loop_ergebnis]:
-					if beispieldaten[loop_ergebnis] not in gesammeltedateien:
-						gesammeltedateien.append(beispieldaten[loop_ergebnis])
-				loop_ergebnis +=1
+		for all in suchbegriffe:
+			for element in list(beispieldaten_dateipfad.keys())[:]:
+				if all in element:
+					gesammeltedateien.append(element)
+
+		gesammeltedateien=sorted(gesammeltedateien)
+
+		
 		if not len(entry_suchbegriffe.get()) ==0:
 			suchbegriffe.append(entry_suchbegriffe.get())
-			for all in beispieldaten:
+			for all in list(beispieldaten_dateipfad.keys())[:]:
 				if entry_suchbegriffe.get().lower() in all.lower():
 					if all not in gesammeltedateien:
 						gesammeltedateien.append(all)
 
-		
-		gesammeltedateien=sorted(gesammeltedateien)
-	loop_dateien=1
+	dict_gesammeltedateien={}
+	for all in gesammeltedateien:
+		dict_gesammeltedateien[all]=beispieldaten_dateipfad[all]
 
+	# print(dict_gesammeltedateien)
+
+	
 ###############################################	
-#### Auswahl der gesuchten Antwoertformate ####
+#### Auswahl der gesuchten Antwortformate ####
 ###############################################
 
-	listen={}
-	check_number=1
-	if suchbegriffe==[]:
-		if af_MC.get() or af_ZO.get() or af_LT.get() or af_OA.get():
-			for all_formats in AF_BB:
-				gesammeltedateien_temporary=beispieldaten[:]
-				x="af_"+all_formats+".get()"
-				if eval(x):
-					for all in gesammeltedateien_temporary[:]:
-						if all_formats not in all: 
-							gesammeltedateien_temporary.remove(all)
-					listen[check_number]=gesammeltedateien_temporary
-				else:
-					listen[check_number]=[]
-				check_number+=1
-			gesammeltedateien = listen[1]+listen[2]+listen[3]+listen[4]	
-	
 	if af_MC.get() or af_ZO.get() or af_LT.get() or af_OA.get():
+		if suchbegriffe==[]:
+			dict_gesammeltedateien=beispieldaten_dateipfad
 		for all_formats in AF_BB:
-			gesammeltedateien_temporary=gesammeltedateien[:]
 			x="af_"+all_formats+".get()"
+			if not eval(x):
+				for all in list(dict_gesammeltedateien):
+					if all_formats in all:
+						del dict_gesammeltedateien[all]
 			if eval(x):
-				for all in gesammeltedateien_temporary[:]:
-					if all_formats not in all: 
-						gesammeltedateien_temporary.remove(all)
-				suchbegriffe.append(all_formats)		
-				listen[check_number]=gesammeltedateien_temporary
-			else:
-				listen[check_number]=[]
-			check_number+=1
-		gesammeltedateien = listen[1]+listen[2]+listen[3]+listen[4]
+				suchbegriffe.append(all_formats)
+
+
 
 ###############################################	
 #### Auswahl der gesuchten Klassen #########
 ###############################################
-	
-	listen={}
-	check_number=1
-	if suchbegriffe==[]:
-		if K5.get() or K6.get() or K7.get() or K8.get():
-			for all_formats in Klassen:
-				gesammeltedateien_temporary=beispieldaten[:]
-				x=all_formats+".get()"
-				if eval(x):
-					for all in gesammeltedateien_temporary[:]:
-						if all_formats not in all: 
-							gesammeltedateien_temporary.remove(all)
-					listen[check_number]=gesammeltedateien_temporary
-				else:
-					listen[check_number]=[]
-				check_number+=1
-			gesammeltedateien = listen[1]+listen[2]+listen[3]+listen[4]
-	
+	selected_klassen=[]
 	if K5.get() or K6.get() or K7.get() or K8.get():
-		for all_formats in Klassen:
-			gesammeltedateien_temporary=gesammeltedateien[:]
+		if suchbegriffe==[]:
+			dict_gesammeltedateien=beispieldaten_dateipfad
+		for all_formats in list(Klassen):
 			x=all_formats+".get()"
 			if eval(x):
-				for all in gesammeltedateien_temporary[:]:
-					if all_formats not in all: 
-						gesammeltedateien_temporary.remove(all)
-				suchbegriffe.append(all_formats)		
-				listen[check_number]=gesammeltedateien_temporary
-			else:
-				listen[check_number]=[]
-			check_number+=1
-		gesammeltedateien = listen[1]+listen[2]+listen[3]+listen[4]
+				selected_klassen.append(all_formats)
+				suchbegriffe.append(all_formats)
+		for all in list(dict_gesammeltedateien):
+			if not any(all_formats in all for all_formats in selected_klassen):
+				del dict_gesammeltedateien[all]
 
-		
-	print(suchbegriffe)
+	
 
-	# print (listen)
-	# print(gesammeltedateien)
-
-
+	
 	##############################
 	beispieldaten.sort(key=natural_keys)
 	loop_dateien=1
@@ -554,24 +499,22 @@ def control_cb():
 			file.write(all + ', ')
 	file.write('\\normalsize \n \n')
 	file.close()
-	for dateien in beispieldaten: ## Erstellung der .tex Datei 
-		if dateien in gesammeltedateien:
-			for key, value in beispieldaten_dateipfad.items():
-				key=key.replace('\\','/')
-				if dateien in value: 
-					file=open(filename_teildokument,"a", encoding='ISO-8859-1')
-					if 'Aufgabensammlung (offiziell)' in key:
-						file.write('\input{"../../../'+key+'"}%\n'
-						'\hrule  \leer\n\n')
-					else:
-						file.write('\input{".'+key+'"}%\n'
-						'\hrule  \leer\n\n')
-					file.close()
-		loop_dateien +=1
-	file=open(filename_teildokument,"a", encoding='ISO-8859-1')
+
+	
+	for key, value in dict_gesammeltedateien.items():
+		value=value.replace('\\','/') 
+		file=open(filename_teildokument,"a", encoding='ISO-8859-1')
+		if 'Aufgabensammlung (offiziell)' in value:
+			file.write('\input{"../../../'+value+'"}%\n'
+			'\hrule  \leer\n\n')
+		else:
+			file.write('\input{".'+value+'"}%\n'
+			'\hrule  \leer\n\n')
 	file.write('\shorthandoff{"}\n'
 	"\end{document}")
-	file.close()	
+	file.close()
+	
+
 	if not gesammeltedateien:
 		def okbutton():
 			nebenfenster.destroy()
