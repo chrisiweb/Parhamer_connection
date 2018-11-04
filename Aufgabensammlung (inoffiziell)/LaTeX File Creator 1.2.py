@@ -173,10 +173,10 @@ themen_klasse_5={'FU':'Funktionen', 'GL':'Gleichungen und Gleichungssysteme',
 themen_klasse_6={'BSW':'Beschreibende Statistik und Wahrscheinlichkeit','FO':'Folgen',
 'PWLU':'Potenzen, Wurzeln, Logarithmen und Ungleichungen','RE':'Reihen',
 'RF':'Reelle Funktionen','VAG3':'Vektoren und analytische Geometrie in R3 und Rn'}
-themen_klasse_7={'DR':'Differentialrechnung','DWV':'Diskrete Wahrscheinlichkeitsverteilungen',
-'KKK':'Kreise, Kugeln, Kegelschnittslinien und andere Kurven','KZ':'Komplexe Zahlen'}
-themen_klasse_8={'DDG':'Differenzen- und Differentialgleichungen; Grundlagen der Systemdynamik','IR':'Integralrechnung',
-'SWS':'Stetige Wahrscheinlichkeitsverteilungen; Beurteilende Statistik'}
+themen_klasse_7={'DR':'Differentialrechnung','DWV':'Diskrete Wahrscheinlichkeits-\nverteilungen',
+'KKK':'Kreise, Kugeln, Kegelschnittslinien\nund andere Kurven','KZ':'Komplexe Zahlen','WM':'Wirtschaftsmathematik'}
+themen_klasse_8={'DDG':'Differenzen- und Differential-\ngleichungen; Grundlagen\nder Systemdynamik','IR':'Integralrechnung',
+'SWS':'Stetgie Wahrscheinlichkeits-\nverteilungen; Beurteilende\nStatistik','WM':'Wirtschaftsmathematik'}
 
 
 Klasse5_BB=['FU', 'GL','MZR','TR','VAG2']

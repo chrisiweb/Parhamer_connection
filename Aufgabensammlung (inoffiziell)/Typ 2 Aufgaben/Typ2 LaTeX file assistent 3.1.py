@@ -176,9 +176,9 @@ themen_klasse_6={'BSW':'Beschreibende Statistik\nund Wahrscheinlichkeit','FO':'F
 'PWLU':'Potenzen, Wurzeln, Logarithmen\nund Ungleichungen','RE':'Reihen',
 'RF':'Reelle Funktionen','VAG3':'Vektoren und analytische\nGeometrie in R3 und Rn'}
 themen_klasse_7={'DR':'Differentialrechnung','DWV':'Diskrete Wahrscheinlichkeits-\nverteilungen',
-'KKK':'Kreise, Kugeln, Kegelschnittslinien\nund andere Kurven','KZ':'Komplexe Zahlen'}
+'KKK':'Kreise, Kugeln, Kegelschnittslinien\nund andere Kurven','KZ':'Komplexe Zahlen','WM':'Wirtschaftsmathematik'}
 themen_klasse_8={'DDG':'Differenzen- und Differential-\ngleichungen; Grundlagen\nder Systemdynamik','IR':'Integralrechnung',
-'SWS':'Stetgie Wahrscheinlichkeits-\nverteilungen; Beurteilende\nStatistik'}
+'SWS':'Stetgie Wahrscheinlichkeits-\nverteilungen; Beurteilende\nStatistik','WM':'Wirtschaftsmathematik'}
 
 
 
