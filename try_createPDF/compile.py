@@ -14,12 +14,11 @@ import os, subprocess
 
 ##### WORKING EXAMPLE !!!! #####
 
-subprocess.Popen('cd Teildokument & latex --synctex=-1 test_1.tex & dvips test_1.dvi & ps2pdf test_1.ps',shell=True).wait()
-subprocess.Popen('cd Teildokument & test_1.pdf', shell=True).poll()
+subprocess.Popen('cd Teildokument & latex --synctex=-1 Teildokument.tex & dvips Teildokument.dvi & ps2pdf Teildokument.ps',shell=True).wait()
+subprocess.Popen('cd Teildokument & Teildokument.pdf', shell=True).poll()
 
-
-os.unlink('Teildokument/test_1.aux')
-os.unlink('Teildokument/test_1.log')
-os.unlink('Teildokument/test_1.dvi')
-os.unlink('Teildokument/test_1.ps')
+os.unlink('Teildokument/Teildokument.aux')
+os.unlink('Teildokument/Teildokument.log')
+os.unlink('Teildokument/Teildokument.dvi')
+os.unlink('Teildokument/Teildokument.ps')
 
