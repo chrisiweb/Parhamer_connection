@@ -253,6 +253,14 @@ def atoi(text):
 def natural_keys(text):
     return [ atoi(c) for c in re.split('(\d+)', text) ]	
 
+def create_pdf():
+	subprocess.Popen('cd Teildokument & latex --synctex=-1 Teildokument.tex & dvips Teildokument.dvi & ps2pdf Teildokument.ps',shell=True).wait()
+	subprocess.Popen('cd Teildokument & Teildokument.pdf', shell=True).poll()
+	os.unlink('Teildokument/Teildokument.aux')
+	os.unlink('Teildokument/Teildokument.log')
+	os.unlink('Teildokument/Teildokument.dvi')
+	os.unlink('Teildokument/Teildokument.ps')
+
 
 def refresh():
 	beispieldaten_dateipfad = {}
@@ -525,15 +533,15 @@ def control_cb():
 	"\end{document}")
 	file.close()
 	
-
-	print("Insgesamt wurde(n) " + str(len(dict_gesammeltedateien)) + " Beispiel(e) gefunden. Entsprechende LaTeX-Datei wird ausgegeben...")
 	hauptfenster.destroy()
-	if sys.platform.startswith('linux'):
-		subprocess.run(['xdg-open', filename_teildokument])
-	elif sys.platform.startswith('darwin'):
-		subprocess.run(['open', filename_teildokument])
-	else:
-		os.system(filename_teildokument)
+	create_pdf()
+	print("Insgesamt wurde(n) " + str(len(dict_gesammeltedateien)) + " Beispiel(e) gefunden. Entsprechende LaTeX-Datei wird ausgegeben...")
+	# if sys.platform.startswith('linux'):
+		# subprocess.run(['xdg-open', filename_teildokument])
+	# elif sys.platform.startswith('darwin'):
+		# subprocess.run(['open', filename_teildokument])
+	# else:
+		# os.system(filename_teildokument)
 	sys.exit(0)
 		
 		

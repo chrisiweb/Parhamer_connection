@@ -12,13 +12,26 @@ import os, subprocess
 # os.unlink('test.aux')
 # print(r'C:\\Users\\Christoph\\Dropbox\\Python\\test.tex')
 
+def create_pdf():
+	subprocess.Popen('cd Teildokument & latex --synctex=-1 Teildokument.tex & dvips Teildokument.dvi & ps2pdf Teildokument.ps',shell=True).wait()
+	subprocess.Popen('cd Teildokument & Teildokument.pdf', shell=True).poll()
+	os.unlink('Teildokument/Teildokument.aux')
+	os.unlink('Teildokument/Teildokument.log')
+	os.unlink('Teildokument/Teildokument.dvi')
+	os.unlink('Teildokument/Teildokument.ps')
+
+
+create_pdf()	
+	
+# return
 ##### WORKING EXAMPLE !!!! #####
 
-subprocess.Popen('cd Teildokument & latex --synctex=-1 Teildokument.tex & dvips Teildokument.dvi & ps2pdf Teildokument.ps',shell=True).wait()
-subprocess.Popen('cd Teildokument & Teildokument.pdf', shell=True).poll()
 
-os.unlink('Teildokument/Teildokument.aux')
-os.unlink('Teildokument/Teildokument.log')
-os.unlink('Teildokument/Teildokument.dvi')
-os.unlink('Teildokument/Teildokument.ps')
+# subprocess.Popen('cd Teildokument & latex --synctex=-1 Teildokument.tex & dvips Teildokument.dvi & ps2pdf Teildokument.ps',shell=True).wait()
+# subprocess.Popen('cd Teildokument & Teildokument.pdf', shell=True).poll()
+
+# os.unlink('Teildokument/Teildokument.aux')
+# os.unlink('Teildokument/Teildokument.log')
+# os.unlink('Teildokument/Teildokument.dvi')
+# os.unlink('Teildokument/Teildokument.ps')
 
