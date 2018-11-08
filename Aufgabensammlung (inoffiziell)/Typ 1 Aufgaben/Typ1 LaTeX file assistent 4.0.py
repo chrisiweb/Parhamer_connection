@@ -355,7 +355,7 @@ def control_cb():
 		beispieldaten=list(beispieldaten_dateipfad.keys())						  
 
 	
-	filename_teildokument = os.path.join(os.path.dirname('__file__'),'Teildokument','Teildokument.tex')
+	filename_teildokument = os.path.join(os.path.dirname(__file__),'Teildokument','Teildokument.tex')
 	try:
 	    file=open(filename_teildokument,"w", encoding='ISO-8859-1')
 	except FileNotFoundError:
@@ -793,7 +793,7 @@ explanation.grid(row=0,column=0,sticky=W)
 button_refresh_ddb=Button(frame_refresh_ddb, text='Refresh Database', command=refresh)
 button_refresh_ddb.grid(row=0, column=0, sticky=W)
 try:
-	log_file=os.path.join(os.path.dirname('__file__'),'Teildokument','log_file')
+	log_file=os.path.join(os.path.dirname(__file__),'Teildokument','log_file')
 	label_update=Label(frame_refresh_ddb, text='Last Update: '+modification_date(log_file).strftime('%d.%m.%y - %H:%M'))
 except FileNotFoundError:
 	label_update=Label(frame_refresh_ddb, text='Last Update: ---')
