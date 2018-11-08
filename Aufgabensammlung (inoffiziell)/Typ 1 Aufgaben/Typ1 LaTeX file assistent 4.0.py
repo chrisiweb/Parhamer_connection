@@ -259,7 +259,13 @@ def create_pdf():
 	subprocess.Popen('latex --synctex=-1 Teildokument.tex',cwd=working_path,shell=True).wait()
 	subprocess.Popen('dvips Teildokument.dvi',cwd=working_path,shell=True).wait()
 	subprocess.Popen('ps2pdf Teildokument.ps',cwd=working_path,shell=True).wait()
-	subprocess.Popen('Teildokument.pdf',cwd=working_path).poll()
+	if sys.platform.startswith('linux'):
+		 subprocess.run(['xdg-open', "Teildokument.pdf"],cwd=working_path)
+	elif sys.platform.startswith('darwin'):
+		 subprocess.run(['xdg-open', "Teildokument.pdf"],cwd=working_path)
+	else:
+		# os.system(filename_teildokument)
+		subprocess.Popen('Teildokument.pdf',cwd=working_path).poll()
 	os.unlink('Teildokument/Teildokument.aux')
 	os.unlink('Teildokument/Teildokument.log')
 	os.unlink('Teildokument/Teildokument.dvi')
