@@ -305,8 +305,9 @@ def refresh():
 		# print(beispieldaten_dateipfad)
 		# print(beispieldaten)
 		
-	log_file=os.path.join(os.path.dirname('__file__'),'Teildokument','log_file')
-	with open(log_file, 'w') as f:
+	log_file=os.path.join(os.path.dirname(__file__),'Teildokument','log_file')
+	print("pathname: ",os.path.dirname(__file__))
+	with open(log_file, 'w', encoding='ISO-8859-1') as f:
 		json.dump(beispieldaten_dateipfad, f)
 	
 	label_update.config(text='Last Update: '+modification_date(log_file).strftime('%d.%m.%y - %H:%M'))			  
