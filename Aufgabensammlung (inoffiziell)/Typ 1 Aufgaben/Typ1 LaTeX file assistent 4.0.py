@@ -254,8 +254,12 @@ def natural_keys(text):
     return [ atoi(c) for c in re.split('(\d+)', text) ]	
 
 def create_pdf():
-	subprocess.Popen('cd Teildokument & latex --synctex=-1 Teildokument.tex & dvips Teildokument.dvi & ps2pdf Teildokument.ps',shell=True).wait()
-	subprocess.Popen('cd Teildokument & Teildokument.pdf', shell=True).poll()
+	working_path = os.path.join(os.path.dirname(__file__),'Teildokument')
+	print("Working path: ",working_path)
+	subprocess.Popen('latex --synctex=-1 Teildokument.tex',cwd=working_path,shell=True).wait()
+	subprocess.Popen('dvips Teildokument.dvi',cwd=working_path,shell=True).wait()
+	subprocess.Popen('ps2pdf Teildokument.ps',cwd=working_path,shell=True).wait()
+	subprocess.Popen('Teildokument.pdf',cwd=working_path).poll()
 	os.unlink('Teildokument/Teildokument.aux')
 	os.unlink('Teildokument/Teildokument.log')
 	os.unlink('Teildokument/Teildokument.dvi')
@@ -306,7 +310,6 @@ def refresh():
 		# print(beispieldaten)
 		
 	log_file=os.path.join(os.path.dirname(__file__),'Teildokument','log_file')
-	print("pathname: ",os.path.dirname(__file__))
 	with open(log_file, 'w', encoding='ISO-8859-1') as f:
 		json.dump(beispieldaten_dateipfad, f)
 	
