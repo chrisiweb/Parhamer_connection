@@ -274,7 +274,7 @@ def refresh():
 		for all in files:
 			if all.endswith('.tex') or all.endswith('.ltx'):
 				if not ('Gesamtdokument' in all) and not ('Teildokument' in all):
-					file=open(os.path.join(root,all))
+					file=open(os.path.join(root,all), encoding='ISO-8859-1')
 					for i, line in enumerate(file):
 						if not line == "\n":			
 							beispieldaten_dateipfad[os.path.join(root,all)]=line
@@ -309,7 +309,7 @@ def refresh():
 		# print(beispieldaten)
 		
 	log_file=os.path.join(os.path.dirname('__file__'),'Teildokument','log_file')
-	with open(log_file, 'w') as f:
+	with open(log_file, 'w', encoding='ISO-8859-1') as f:
 		json.dump(beispieldaten_dateipfad, f)
 	
 	label_update.config(text='Last Update: '+modification_date(log_file).strftime('%d.%m.%y - %H:%M'))			  
