@@ -373,7 +373,7 @@ def control_cb():
 	"\\usepackage[latin1]{inputenc}\n"
 	"\\usepackage{graphicx}\n"
 	"\\usepackage[ngerman]{babel}\n"
-	"\\usepackage[solution_on]{mathematik} % solution_on/off\n"
+	"\\usepackage[solution_on]{srdp-mathematik} % solution_on/off\n"
 	"\setcounter{Zufall}{0}\n\n\n"
 	"\pagestyle{empty} %PAGESTYLE: empty, plain, fancy\n"
 	"\onehalfspacing %Zeilenabstand\n"
