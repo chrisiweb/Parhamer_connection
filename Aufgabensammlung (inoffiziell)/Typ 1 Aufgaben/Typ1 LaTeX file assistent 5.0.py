@@ -178,7 +178,7 @@ themen_klasse_6={'BSW':'Beschreibende Statistik\nund Wahrscheinlichkeit','FO':'F
 'PWLU':'Potenzen, Wurzeln, Logarithmen\nund Ungleichungen','RE':'Reihen',
 'RF':'Reelle Funktionen','VAG3':'Vektoren und analytische\nGeometrie in R3 und Rn'}
 themen_klasse_7={'DR':'Differentialrechnung','DWV':'Diskrete Wahrscheinlichkeits-\nverteilungen',
-'KKK':'Kreise, Kugeln, Kegelschnittslinien\nund andere Kurven','KZ':'Komplexe Zahlen','WM':'Wirtschaftsmathematik'}
+'KKK':'Kreise, Kugeln, Kegelschnittslinien\nund andere Kurven','KZ':'Komplexe Zahlen','WM':'Wirtschaftsmathematik','GHG':'Gleichungen höheren Grades als 2'}
 themen_klasse_8={'DDG':'Differenzen- und Differential-\ngleichungen; Grundlagen\nder Systemdynamik','IR':'Integralrechnung',
 'SWS':'Stetgie Wahrscheinlichkeits-\nverteilungen; Beurteilende\nStatistik','WM':'Wirtschaftsmathematik'}
 
@@ -255,11 +255,10 @@ def atoi(text):
 
 def natural_keys(text):
     return [ atoi(c) for c in re.split('(\d+)', text) ]	
-data_folder=Path('Teildokument')
-log_file= data_folder / 'log_file'
+# data_folder=Path('Teildokument')
+# log_file= data_folder / 'log_file'
 def create_pdf():
-	x=data_folder
-	subprocess.Popen('cd %s & latex --synctex=-1 Teildokument.tex & dvips Teildokument.dvi & ps2pdf Teildokument.ps'%x,shell=True).wait()
+	subprocess.Popen('cd Teildokument & latex --synctex=-1 Teildokument.tex & dvips Teildokument.dvi & ps2pdf Teildokument.ps'%x,shell=True).wait()
 	subprocess.Popen('cd Teildokument & Teildokument.pdf', shell=True).poll()
 	os.unlink('Teildokument/Teildokument.aux')
 	os.unlink('Teildokument/Teildokument.log')
@@ -309,15 +308,18 @@ def refresh():
 					file.close()
 		# print(beispieldaten_dateipfad)
 		# print(beispieldaten)
-	# with open(log_file, 'w') as f:
-		# json.dump(beispieldaten_dateipfad, f)
-	# print(log_file)		
-	# log_file=os.path.join(os.path.dirname('__file__'),'Teildokument','log_file')
+	data_folder=Path('Teildokument')
+	log_file= data_folder / 'log_file'
+
+																			   
 	with open(log_file, 'w') as f:
 		json.dump(beispieldaten_dateipfad, f,ensure_ascii=False)
-	# print(log_file.read_text())
-	label_update.config(text='Last Update: '+modification_date(log_file).strftime('%d.%m.%y - %H:%M'))			  
-
+	# print(log_file)		
+	# log_file=os.path.join(os.path.dirname('__file__'),'Teildokument','log_file')
+	# with open(log_file, 'w') as f:
+		# json.dump(beispieldaten_dateipfad, f)
+	print(log_file.read_text())
+	label_update.config(text='Last Update: '+modification_date(log_file).strftime('%d.%m.%y - %H:%M'))	
 
 	
 def control_cb():
@@ -376,7 +378,7 @@ def control_cb():
 	"\\usepackage[latin1]{inputenc}\n"
 	"\\usepackage{graphicx}\n"
 	"\\usepackage[ngerman]{babel}\n"
-	"\\usepackage[solution_on]{mathematik} % solution_on/off\n"
+	"\\usepackage[solution_on]{srdp-mathematik} % solution_on/off\n"
 	"\setcounter{Zufall}{0}\n\n\n"
 	"\pagestyle{empty} %PAGESTYLE: empty, plain, fancy\n"
 	"\onehalfspacing %Zeilenabstand\n"
@@ -447,7 +449,7 @@ def control_cb():
 				if all in element:
 					gesammeltedateien.append(element)
 
-		gesammeltedateien=sorted(gesammeltedateien)
+		gesammeltedateien.sort(key=natural_keys)
 
 		
 		if not len(entry_suchbegriffe.get()) ==0:
