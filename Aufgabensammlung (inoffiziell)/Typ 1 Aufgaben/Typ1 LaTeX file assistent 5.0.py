@@ -221,6 +221,7 @@ frame_zusatz.grid(row=2, column=0,rowspan=2,sticky=E+W)
 frame_suche =Frame(hauptfenster)
 frame_suche.grid(sticky=W+S,row=3, column=1)
 
+
 def modification_date(filename):
     t = os.path.getmtime(filename)
     return datetime.datetime.fromtimestamp(t)
@@ -258,7 +259,7 @@ def natural_keys(text):
 # data_folder=Path('Teildokument')
 # log_file= data_folder / 'log_file'
 def create_pdf():
-	subprocess.Popen('cd Teildokument & latex --synctex=-1 Teildokument.tex & dvips Teildokument.dvi & ps2pdf Teildokument.ps'%x,shell=True).wait()
+	subprocess.Popen('cd Teildokument & latex --synctex=-1 Teildokument.tex & dvips Teildokument.dvi & ps2pdf Teildokument.ps',shell=True).wait()
 	subprocess.Popen('cd Teildokument & Teildokument.pdf', shell=True).poll()
 	os.unlink('Teildokument/Teildokument.aux')
 	os.unlink('Teildokument/Teildokument.log')
@@ -363,6 +364,7 @@ def control_cb():
 		beispieldaten=list(beispieldaten_dateipfad.keys())						  
 
 	
+
 	filename_teildokument = os.path.join(os.path.dirname('__file__'),'Teildokument','Teildokument.tex')
 	try:
 	    file=open(filename_teildokument,"w", encoding='ISO-8859-1')
@@ -377,9 +379,12 @@ def control_cb():
 	"\\usepackage{setspace}\n"
 	"\\usepackage[latin1]{inputenc}\n"
 	"\\usepackage{graphicx}\n"
-	"\\usepackage[ngerman]{babel}\n"
-	"\\usepackage[solution_on]{srdp-mathematik} % solution_on/off\n"
-	"\setcounter{Zufall}{0}\n\n\n"
+	"\\usepackage[ngerman]{babel}\n")
+	if solution_var.get():
+		file.write('\\usepackage[solution_on]{srdp-mathematik} % solution_on/off\n')
+	else:
+		file.write('\\usepackage[solution_off]{srdp-mathematik} % solution_on/off\n')
+	file.write("\setcounter{Zufall}{0}\n\n\n"
 	"\pagestyle{empty} %PAGESTYLE: empty, plain, fancy\n"
 	"\onehalfspacing %Zeilenabstand\n"
 	"\setcounter{secnumdepth}{-1} % keine Nummerierung der Ueberschriften\n\n\n\n"
@@ -829,7 +834,10 @@ label_update.grid(row=0, column=1, sticky=E)
 label_suchbegriffe = Label(frame_suche, text="Titelsuche: ", font=LARGE_FONT)
 entry_suchbegriffe = Entry(frame_suche, width=50, font=LARGE_FONT)
 label_suchbegriffe.grid(row=0, column=0, sticky=N+W)
-entry_suchbegriffe.grid(row=0, column=1,sticky=E+W)	
+entry_suchbegriffe.grid(row=0, column=1,sticky=E+W)
+solution_var=IntVar()
+cb_solution=Checkbutton(frame_suche, text='Lösung', variable=solution_var, font=HUGE_FONT)
+cb_solution.grid(row=0, column=2,padx=170)	
 	
 	
 button_suche = Button(hauptfenster, text="Suche starten!",font=HUGE_FONT,width=20,height=2,bd=5, command=control_cb)
