@@ -8,7 +8,7 @@ import os
 import os.path
 from pathlib import Path
 import datetime
-import json			   	   
+import json				   
 import subprocess
 import tkinter
 from tkinter import *
@@ -195,7 +195,7 @@ container.grid_columnconfigure(0, weight=1)
 frame_klassen=Frame(hauptfenster, bg=BG_KLASSE)
 frame_klassen.grid(row=1,column=0, sticky=N+S)
 frame_refresh_ddb=Frame(hauptfenster)
-frame_refresh_ddb.grid(row=0,column=0)									 								  
+frame_refresh_ddb.grid(row=0,column=0)																	  
 # frame_k5= Frame(frame_klassen)
 # frame_k5.grid(row=0, column=0, sticky=N)
 # frame_k6= Frame(frame_klassen)
@@ -259,8 +259,16 @@ def natural_keys(text):
 # data_folder=Path('Teildokument')
 # log_file= data_folder / 'log_file'
 def create_pdf():
-	subprocess.Popen('cd Teildokument & latex --synctex=-1 Teildokument.tex & dvips Teildokument.dvi & ps2pdf -dNOSAFER Teildokument.ps',shell=True).wait()
-	subprocess.Popen('cd Teildokument & Teildokument.pdf', shell=True).poll()
+	if sys.platform.startswith('linux'):
+		subprocess.Popen('cd Teildokument ; latex --synctex=-1 Teildokument.tex ; dvips Teildokument.dvi ; ps2pdf -dNOSAFER Teildokument.ps',shell=True).wait()
+		subprocess.run(['xdg-open', 'Teildokument/Teildokument.pdf'])
+	elif sys.platform.startswith('darwin'):
+		subprocess.Popen('cd Teildokument ; latex --synctex=-1 Teildokument.tex ; dvips Teildokument.dvi ; ps2pdf -dNOSAFER Teildokument.ps',shell=True).wait()
+		subprocess.run(['xdg-open', 'Teildokument/Teildokument.pdf'])
+	else:
+		subprocess.Popen('cd Teildokument & latex --synctex=-1 Teildokument.tex & dvips Teildokument.dvi & ps2pdf -dNOSAFER Teildokument.ps',shell=True).wait()
+		subprocess.Popen('cd Teildokument & Teildokument.pdf', shell=True).poll()
+	
 	os.unlink('Teildokument/Teildokument.aux')
 	os.unlink('Teildokument/Teildokument.log')
 	os.unlink('Teildokument/Teildokument.dvi')
@@ -310,13 +318,11 @@ def refresh():
 		# print(beispieldaten_dateipfad)
 		# print(beispieldaten)
 	data_folder=Path('Teildokument')
-	log_file= data_folder / 'log_file'
-
-																			   
-	with open(log_file, 'w') as f:
+	log_file=os.path.join(os.path.dirname('__file__'),'Teildokument','log_file')
+	#log_file= data_folder / 'log_file'# Works in Windows, doesn't work in linux
+	
+	with open(log_file, 'w+') as f:
 		json.dump(beispieldaten_dateipfad, f,ensure_ascii=False)
-	# print(log_file)		
-	# log_file=os.path.join(os.path.dirname('__file__'),'Teildokument','log_file')
 	# with open(log_file, 'w') as f:
 		# json.dump(beispieldaten_dateipfad, f)
 	# print(log_file.read_text())
@@ -398,7 +404,7 @@ def control_cb():
 	
 
 	if suchtyp_var.get() == UND:
-	 #############  Erstellung der Kompetenzbereiche pro Beispiel
+	 #############	Erstellung der Kompetenzbereiche pro Beispiel
 		liste_kompetenzbereiche ={}
 		r=1
 		for all in beispieldaten:
@@ -664,7 +670,7 @@ for x in range(5,9):
 	if x==8:
 		r+=2
 	beschriftung = 'label_K%s'%x
-	beschriftung =  Button(frame_klassen, text= "%s. KLASSE"%x,font=STANDARD_FONT ,command=eval('select_all_klasse%s'%x)).grid(column=c, row=r)
+	beschriftung =	Button(frame_klassen, text= "%s. KLASSE"%x,font=STANDARD_FONT ,command=eval('select_all_klasse%s'%x)).grid(column=c, row=r)
 	r+=1
 	for all in eval('themen_klasse_%s'%x):
 		y='K%s_'%x+all
@@ -741,7 +747,7 @@ for all in ag_kb:
 				
 ################# ... ANALYSIS ###############
 # c+=1
-# space = Label(hauptfenster, text="          ")
+# space = Label(hauptfenster, text="	      ")
 # space.grid(column=c, row=5, sticky=E)
 # c+=1
 
@@ -762,7 +768,7 @@ for all in an_kb:
 		c+=1
 		
 # c+=1
-# space = Label(hauptfenster, text="          ")
+# space = Label(hauptfenster, text="	      ")
 # space.grid(column=c, row=5, sticky=E)
 # c+=1	
 
@@ -784,11 +790,11 @@ for all in fa_kb:
 		c+=1
 
 # c+=1		
-# space = Label(hauptfenster, text="         ")
+# space = Label(hauptfenster, text="	     ")
 # space.grid(column=c, row=5, sticky=E)
 c+=1
 
-################## 	 ... WAHRSCHEINLICHKEIT UND STATISTIK ########################
+##################	 ... WAHRSCHEINLICHKEIT UND STATISTIK ########################
 r=0
 c=0
 ws_cb_all=[]
@@ -805,7 +811,7 @@ for all in ws_kb:
 		c+=1	
 
 # c+=1
-# space = Label(hauptfenster, text="          ")
+# space = Label(hauptfenster, text="	      ")
 # space.grid(column=c, row=5, sticky=E)
 
 
