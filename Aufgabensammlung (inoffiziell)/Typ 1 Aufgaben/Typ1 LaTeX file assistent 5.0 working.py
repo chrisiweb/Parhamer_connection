@@ -6,6 +6,7 @@ import threading
 import sys
 import os 
 import os.path
+from pathlib import Path
 import datetime
 import json			   	   
 import subprocess
@@ -177,7 +178,7 @@ themen_klasse_6={'BSW':'Beschreibende Statistik\nund Wahrscheinlichkeit','FO':'F
 'PWLU':'Potenzen, Wurzeln, Logarithmen\nund Ungleichungen','RE':'Reihen',
 'RF':'Reelle Funktionen','VAG3':'Vektoren und analytische\nGeometrie in R3 und Rn'}
 themen_klasse_7={'DR':'Differentialrechnung','DWV':'Diskrete Wahrscheinlichkeits-\nverteilungen',
-'KKK':'Kreise, Kugeln, Kegelschnittslinien\nund andere Kurven','KZ':'Komplexe Zahlen','WM':'Wirtschaftsmathematik'}
+'KKK':'Kreise, Kugeln, Kegelschnittslinien\nund andere Kurven','KZ':'Komplexe Zahlen','WM':'Wirtschaftsmathematik','GHG':'Gleichungen höheren Grades als 2'}
 themen_klasse_8={'DDG':'Differenzen- und Differential-\ngleichungen; Grundlagen\nder Systemdynamik','IR':'Integralrechnung',
 'SWS':'Stetgie Wahrscheinlichkeits-\nverteilungen; Beurteilende\nStatistik','WM':'Wirtschaftsmathematik'}
 
@@ -220,6 +221,7 @@ frame_zusatz.grid(row=2, column=0,rowspan=2,sticky=E+W)
 frame_suche =Frame(hauptfenster)
 frame_suche.grid(sticky=W+S,row=3, column=1)
 
+
 def modification_date(filename):
     t = os.path.getmtime(filename)
     return datetime.datetime.fromtimestamp(t)
@@ -254,9 +256,10 @@ def atoi(text):
 
 def natural_keys(text):
     return [ atoi(c) for c in re.split('(\d+)', text) ]	
-
+# data_folder=Path('Teildokument')
+# log_file= data_folder / 'log_file'
 def create_pdf():
-	subprocess.Popen('cd Teildokument & latex --synctex=-1 Teildokument.tex & dvips Teildokument.dvi & ps2pdf Teildokument.ps',shell=True).wait()
+	subprocess.Popen('cd Teildokument & latex --synctex=-1 Teildokument.tex & dvips Teildokument.dvi & ps2pdf -dNOSAFER Teildokument.ps',shell=True).wait()
 	subprocess.Popen('cd Teildokument & Teildokument.pdf', shell=True).poll()
 	os.unlink('Teildokument/Teildokument.aux')
 	os.unlink('Teildokument/Teildokument.log')
@@ -306,13 +309,18 @@ def refresh():
 					file.close()
 		# print(beispieldaten_dateipfad)
 		# print(beispieldaten)
-		
-	log_file=os.path.join(os.path.dirname('__file__'),'Teildokument','log_file')
-	with open(log_file, 'w') as f:
-		json.dump(beispieldaten_dateipfad, f)
-	
-	label_update.config(text='Last Update: '+modification_date(log_file).strftime('%d.%m.%y - %H:%M'))			  
+	data_folder=Path('Teildokument')
+	log_file= data_folder / 'log_file'
 
+																			   
+	with open(log_file, 'w') as f:
+		json.dump(beispieldaten_dateipfad, f,ensure_ascii=False)
+	# print(log_file)		
+	# log_file=os.path.join(os.path.dirname('__file__'),'Teildokument','log_file')
+	# with open(log_file, 'w') as f:
+		# json.dump(beispieldaten_dateipfad, f)
+	# print(log_file.read_text())
+	label_update.config(text='Last Update: '+modification_date(log_file).strftime('%d.%m.%y - %H:%M'))	
 
 	
 def control_cb():
@@ -356,6 +364,7 @@ def control_cb():
 		beispieldaten=list(beispieldaten_dateipfad.keys())						  
 
 	
+
 	filename_teildokument = os.path.join(os.path.dirname('__file__'),'Teildokument','Teildokument.tex')
 	try:
 	    file=open(filename_teildokument,"w", encoding='ISO-8859-1')
@@ -363,16 +372,17 @@ def control_cb():
 		os.makedirs(filename_teildokument) # If dir is not found make it recursivly
 	file.write("\documentclass[a4paper,12pt]{report}\n\n"
 	"\\usepackage{geometry}\n"	
-	"\geometry{a4paper,left=18mm,right=18mm, top=3cm, bottom=2cm}\n\n" 
+	"\geometry{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}\n\n" 
 	"\\usepackage{lmodern}\n"
 	"\\usepackage[T1]{fontenc}\n"
 	"\\usepackage{eurosym}\n"
-	"\\usepackage{setspace}\n"
 	"\\usepackage[latin1]{inputenc}\n"
-	"\\usepackage{graphicx}\n"
-	"\\usepackage[ngerman]{babel}\n"
-	"\\usepackage[solution_on]{mathematik} % solution_on/off\n"
-	"\setcounter{Zufall}{0}\n\n\n"
+	"\\usepackage[ngerman]{babel}\n")
+	if solution_var.get():
+		file.write('\\usepackage[solution_on]{srdp-mathematik} % solution_on/off\n')
+	else:
+		file.write('\\usepackage[solution_off]{srdp-mathematik} % solution_on/off\n')
+	file.write("\setcounter{Zufall}{0}\n\n\n"
 	"\pagestyle{empty} %PAGESTYLE: empty, plain, fancy\n"
 	"\onehalfspacing %Zeilenabstand\n"
 	"\setcounter{secnumdepth}{-1} % keine Nummerierung der Ueberschriften\n\n\n\n"
@@ -386,7 +396,7 @@ def control_cb():
 	'\shorthandoff{"}\n')
 	file.close()
 	
-	
+
 	if suchtyp_var.get() == UND:
 	 #############  Erstellung der Kompetenzbereiche pro Beispiel
 		liste_kompetenzbereiche ={}
@@ -411,6 +421,7 @@ def control_cb():
 			liste_kompetenzbereiche.update({r:gkliste})
 			r+=1
 
+		
 		gesammeltedateien=[]
 		for r in range(1,len(liste_kompetenzbereiche)+1):
 			if liste_kompetenzbereiche[r]==[]:
@@ -420,18 +431,16 @@ def control_cb():
 				if r in liste_kompetenzbereiche.keys():
 					if all not in liste_kompetenzbereiche[r]:
 						del liste_kompetenzbereiche[r]
-		# print(liste_kompetenzbereiche)
-		
-		
+	
 		
 		for key in liste_kompetenzbereiche.keys():
 			gesammeltedateien.append(beispieldaten[key-1])
-		
 		
 		for all in gesammeltedateien[:]:
 			if not len(entry_suchbegriffe.get()) ==0:
 				if entry_suchbegriffe.get().lower() not in all.lower():
 					gesammeltedateien.remove(all)
+
 					
 			
 	if suchtyp_var.get() == ODER:
@@ -442,15 +451,20 @@ def control_cb():
 				if all in element:
 					gesammeltedateien.append(element)
 
-		gesammeltedateien=sorted(gesammeltedateien)
-
+		gesammeltedateien.sort(key=natural_keys)
 		
-		if not len(entry_suchbegriffe.get()) ==0:
-			suchbegriffe.append(entry_suchbegriffe.get())
-			for all in list(beispieldaten_dateipfad.keys())[:]:
-				if entry_suchbegriffe.get().lower() in all.lower():
-					if all not in gesammeltedateien:
-						gesammeltedateien.append(all)
+
+		for all in gesammeltedateien[:]:
+			if not len(entry_suchbegriffe.get()) ==0:
+				if entry_suchbegriffe.get().lower() not in all.lower():
+					gesammeltedateien.remove(all)
+
+		# if not len(entry_suchbegriffe.get()) ==0:
+			# suchbegriffe.append(entry_suchbegriffe.get())
+			# for all in list(beispieldaten_dateipfad.keys())[:]:
+				# if entry_suchbegriffe.get().lower() in all.lower():
+					# if all not in gesammeltedateien:
+						# gesammeltedateien.append(all)
 
 	dict_gesammeltedateien={}
 	for all in gesammeltedateien:
@@ -548,8 +562,10 @@ def control_cb():
 			window_loading.destroy()
 		hauptfenster.destroy()
 		threading.Thread(target=start_loading_bar).start()
-
-	label_output=Label(window_loading, text='Insgesamt wurde(n) '+ str(len(dict_gesammeltedateien)) + ' Beispiel(e) gefunden.\n', font=LARGE_FONT).grid(row=0,column=0)	
+	if len(dict_gesammeltedateien)==1:
+		label_output=Label(window_loading, text='Insgesamt wurde '+ str(len(dict_gesammeltedateien)) + ' Beispiel gefunden.\n', font=LARGE_FONT).grid(row=0,column=0)	
+	else:
+		label_output=Label(window_loading, text='Insgesamt wurden '+ str(len(dict_gesammeltedateien)) + ' Beispiele gefunden.\n', font=LARGE_FONT).grid(row=0,column=0)		
 	label_loading = Label(window_loading , text='Lade PDF Datei...', font=LARGE_FONT).grid(row=1,column=0)
 	progress = Progressbar(window_loading , orient=HORIZONTAL,length=250,  mode='indeterminate')
 	loading_bar()
@@ -822,7 +838,10 @@ label_update.grid(row=0, column=1, sticky=E)
 label_suchbegriffe = Label(frame_suche, text="Titelsuche: ", font=LARGE_FONT)
 entry_suchbegriffe = Entry(frame_suche, width=50, font=LARGE_FONT)
 label_suchbegriffe.grid(row=0, column=0, sticky=N+W)
-entry_suchbegriffe.grid(row=0, column=1,sticky=E+W)	
+entry_suchbegriffe.grid(row=0, column=1,sticky=E+W)
+solution_var=IntVar()
+cb_solution=Checkbutton(frame_suche, text='Lösung', variable=solution_var, font=HUGE_FONT)
+cb_solution.grid(row=0, column=2,padx=170)	
 	
 	
 button_suche = Button(hauptfenster, text="Suche starten!",font=HUGE_FONT,width=20,height=2,bd=5, command=control_cb)

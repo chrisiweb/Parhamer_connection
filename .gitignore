@@ -6,6 +6,7 @@
 *.pdf
 *.ps
 *.synctex
+Teildokument/*
 Teildokument.tex
 Teildokument.blg
 log_file

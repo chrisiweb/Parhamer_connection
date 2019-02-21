@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 import sys
 import os 
 import os.path
@@ -17,10 +14,8 @@ hauptfenster = Tk()
 hauptfenster.title('LaTeX File Creator')
 # hauptfenster.wm_iconbitmap('latex.ico')
 
-hauptfenster.geometry('800x750+50+30')
+hauptfenster.geometry('800x725+10+10')
 
-# warning =Tk()
-# warning.geometry('+100+100')
 
 frame_gk= Frame(hauptfenster)
 frame_gk.grid(row=0, column=0)
@@ -42,7 +37,7 @@ frame_eingabe.grid(row=0, column=2, sticky=N+W)
 
 
 dict_aufgabenformat={'Multiple Choice':'MC', 'Zuordnungsformat':'ZO', 'Lückentext':'LT', 'Offenes Antwortformat':'OA'}	
-sub_folder_themen=['AG', 'AN', 'FA', 'WS']
+dict_themen={'AG':'AG - Algebra und Geometrie', 'AN':'AN - Analysis', 'FA':'FA - Funktionale Abhaengigkeiten', 'WS':'WS - Wahrscheinlichkeit und Statistik'}
 ag_kb=["ag11","ag12","agL13","agL14","agL15",
 "ag21","ag22","ag23","ag24","ag25","agL26","agL27","agL28",
 "ag31","ag32","ag33","ag34","ag35","agL36","agL37","agL38","agL39",
@@ -173,10 +168,10 @@ themen_klasse_5={'FU':'Funktionen', 'GL':'Gleichungen und Gleichungssysteme',
 themen_klasse_6={'BSW':'Beschreibende Statistik und Wahrscheinlichkeit','FO':'Folgen',
 'PWLU':'Potenzen, Wurzeln, Logarithmen und Ungleichungen','RE':'Reihen',
 'RF':'Reelle Funktionen','VAG3':'Vektoren und analytische Geometrie in R3 und Rn'}
-themen_klasse_7={'DR':'Differentialrechnung','DWV':'Diskrete Wahrscheinlichkeits-\nverteilungen',
-'KKK':'Kreise, Kugeln, Kegelschnittslinien\nund andere Kurven','KZ':'Komplexe Zahlen','WM':'Wirtschaftsmathematik'}
-themen_klasse_8={'DDG':'Differenzen- und Differential-\ngleichungen; Grundlagen\nder Systemdynamik','IR':'Integralrechnung',
-'SWS':'Stetgie Wahrscheinlichkeits-\nverteilungen; Beurteilende\nStatistik','WM':'Wirtschaftsmathematik'}
+themen_klasse_7={'DR':'Differentialrechnung','DWV':'Diskrete Wahrscheinlichkeitsverteilungen',
+'KKK':'Kreise, Kugeln, Kegelschnittslinien und andere Kurven','KZ':'Komplexe Zahlen','WM':'Wirtschaftsmathematik','GHG':'Gleichungen höheren Grades als 2'}
+themen_klasse_8={'DDG':'Differenzen- und Differentialgleichungen; Grundlagen der Systemdynamik','IR':'Integralrechnung',
+'SWS':'Stetgie Wahrscheinlichkeitsverteilungen; Beurteilende Statistik','WM':'Wirtschaftsmathematik'}
 
 
 Klasse5_BB=['FU', 'GL','MZR','TR','VAG2']
@@ -206,9 +201,12 @@ def selected_gk_dropdown(value):
 				except KeyError or TclError:
 					break
 	global liste_gk
-	liste_gk = Listbox(frame_gk, height=44, width=13, font=("", 8))
+	if value=='FA':
+		liste_gk = Listbox(frame_gk, width=17, font=("", 7))
+	else:
+		liste_gk = Listbox(frame_gk,width=14, font=("", 8))
 	liste_gk.bind('<<ListboxSelect>>',CurSelect)
-	liste_gk.grid(columnspan=2,row=1, sticky=W)
+	liste_gk.grid(columnspan=2,row=1, sticky=N+S)
 	if value=='5. Klasse':
 		gk_set=themen_klasse_5
 	elif value=='6. Klasse':
@@ -253,13 +251,66 @@ def delete_gk():
 
 
 
+def reset_entry():
+	global image_path_set, counter_images, dict_button_images, dict_label_images
+	selected_gk.set('AG')
+	selected_typ.set('Typ 1')
+	selected_af.set('bitte auswählen')
+	### GK-LISTE zurücksetzen
+	liste_gk.delete(0,'end')
+	for item in AG_BB:
+		liste_gk.insert('end', item)
+	##############
+	var_cb_klasse_5.set(0)
+	var_cb_klasse_6.set(0)
+	var_cb_klasse_7.set(0)
+	var_cb_klasse_8.set(0)
+	titel_eingabe.delete(0,'end')
+	punkte_eingabe.delete(0,'end')
+	punkte_eingabe.insert(END, 1)
+	textBox.delete('1.0','end')
+	set_gk_auswahl.clear()
+	liste_gk_auswahl.delete(0,'end')
+	quelle_eingabe.delete(0,'end')
+	for i in range(counter_images):
+		dict_button_images[i].destroy()
+		dict_label_images[i].destroy()
+	counter_images=0
+	# picture.destroy()
+	# button_cancel.destroy()
+	window_height=725
+	hauptfenster.geometry("%dx%d" % (800,window_height))
+	image_path_set=[]
+	dict_button_images={}
+	dict_label_images={}
+
+	
+def warning_window(warning_text):
+	warning =Tk()
+	warning.title('Warnung')
+	warning.geometry('+150+150')
+	def cmd_ok():
+		warning.destroy()
+	warning_gk_auswahl= Label(warning, text=warning_text, width=50, height=3).grid()
+	quit_button = Button(warning, text='OK', command=cmd_ok, width=10).grid(sticky=N, pady=10)		
+	
 def confirm_save():
 ######################################################################################
 # Typ 1 - Speichern #######################
-######################################################################################
+######################################################################################	
+	
 	set_gk_auswahl_temp= set_gk_auswahl[:]
-	global image_path_set	
+	
 	textBox_Entry=str(textBox.get("1.0","end-1c"))
+	
+	if textBox_Entry.count('\includegraphics')>len(image_path_set):
+		warning_window('Es sind zu wenige Bilder angehängt! (' + str(len(image_path_set))+'/'+str(textBox_Entry.count('\includegraphics'))+')')
+		return
+	if textBox_Entry.count('\includegraphics')<len(image_path_set):
+		warning_window('Zu viele Bilder angehängt (' + str(len(image_path_set))+'/'+str(textBox_Entry.count('\includegraphics'))+')')
+		return
+	
+
 	for all in image_path_set:
 		head, tail=os.path.split(all)
 		x = '{'+tail+'}'
@@ -282,20 +333,10 @@ def confirm_save():
 		
 			if not set_gk_auswahl_temp:
 				set_gk_auswahl_temp=set_gk_zusatz_info[:]
-				# for all in set_gk_zusatz_info:
-					# set_gk_auswahl.append(all)
-		# print(set_gk_auswahl)
-		# print(set_gk_auswahl_temp)
-		# print(set_gk_zusatz_info)
+
 
 		if len(set_gk_auswahl_temp)>1:
-			warning =Tk()
-			warning.title('Warnung')
-			warning.geometry('+150+150')
-			def cmd_ok():
-				warning.destroy()
-			warning_gk_auswahl= Label(warning, text='Es wurden zu viele Grundkompetenzen zugewiesen', width=50, height=5).grid()
-			quit_button = Button(warning, text='OK', command=cmd_ok, width=10).grid(sticky=N)		
+			warning_window('Es wurden zu viele Grundkompetenzen zugewiesen')
 		else:
 			set_gk_auswahl_klasse=[]
 			if var_cb_klasse_5.get():
@@ -313,12 +354,7 @@ def confirm_save():
 				global image_path_set
 				# print(image_path_set)
 				set_gk_auswahl=set_gk_auswahl_temp[:]
-				copy_image_path_typ_1=os.path.join(os.path.dirname('__file__'),'Typ 1 Aufgaben','Bilder')
-				for all in image_path_set:
-					image_path_temp=all
-					head, tail=os.path.split(image_path_temp)
-					copy_image_file_typ_1_temp=os.path.join(copy_image_path_typ_1,tail)
-					shutil.copy(image_path_temp,copy_image_file_typ_1_temp)
+
 				# print(set_gk_auswahl)
 				if set_gk_auswahl[0] in themen_klasse_5 or set_gk_auswahl[0] in themen_klasse_6 or set_gk_auswahl[0] in themen_klasse_7 or set_gk_auswahl[0] in themen_klasse_8:
 					if set_gk_auswahl[0] in themen_klasse_5:
@@ -344,33 +380,39 @@ def confirm_save():
 
 				else:
 					path_folder='_Grundkompetenzen'
-					for all in sub_folder_themen:
+					for all in dict_themen:
 						if all in set_gk_auswahl[0]:
-							themen_auswahl=all
+							themen_auswahl=dict_themen[all]
 					# print(path_folder)		
 					# print(themen_auswahl)
 					gk_path_temp=os.path.join(os.path.dirname('__file__'),'Typ 1 Aufgaben','_Grundkompetenzen',themen_auswahl,set_gk_auswahl[0],'Einzelbeispiele')	
 					# print(gk_path_temp)
-					while True:
-						try:
-							for all in os.listdir(gk_path_temp):
-								if all.endswith('.tex'):
-									x, y=all.split(' -')
-									# print(x,y)
-									file_integer, file_extension=y.split('.tex')
-									file_list_integer_temp.append(int(file_integer))				
-							break
-						except FileNotFoundError:
-							os.makedirs(gk_path_temp) # If dir is not found make it recursivly
-							pass
+					for all in os.listdir(gk_path_temp):
+						if all.endswith('.tex'):
+							x, y=all.split(' -')
+							# print(x,y)
+							file_integer, file_extension=y.split('.tex')
+							file_list_integer_temp.append(int(file_integer))				
 
 				if file_list_integer_temp==[]:
 					max_integer_file_list=1000
 				else:
 					max_integer_file_list= max(file_list_integer_temp)
 
-
-
+				copy_image_path_typ_1=os.path.join(os.path.dirname('__file__'),'Typ 1 Aufgaben','Bilder')
+				for all in image_path_set:
+					image_path_temp=all
+					head, tail=os.path.split(image_path_temp)
+					copy_image_file_typ_1_temp=os.path.join(copy_image_path_typ_1,tail)
+					shutil.copy(image_path_temp,copy_image_file_typ_1_temp)
+					os.rename(copy_image_file_typ_1_temp,'Typ 1 Aufgaben/Bilder/'+set_gk_auswahl[0][:2]+set_gk_auswahl[0][3]+set_gk_auswahl[0][5]+'_'+str(max_integer_file_list+1)+'_'+tail)
+				textBox_Entry=str(textBox.get("1.0","end-1c"))
+				for all in image_path_set:
+					head, tail=os.path.split(all)
+					x = '{'+tail+'}'
+					name, ext =os.path.splitext(tail)
+					if x in textBox_Entry:
+						textBox_Entry=str(textBox_Entry).replace(tail,'{../Bilder/'+set_gk_auswahl[0][:2]+set_gk_auswahl[0][3]+set_gk_auswahl[0][5]+'_'+str(max_integer_file_list+1)+'_'+name+'}'+ext)
 				# print(max_integer_file_list+1)	
 				eingabe_beispiel=textBox_Entry
 				# ,'Typ 1 Aufgaben','_Matura',
@@ -430,7 +472,7 @@ def confirm_save():
 							set_gk_zusatz_info_joined=', '.join(set_gk_zusatz_info)
 							file.write("\section{"+set_gk_auswahl[0]+" - "+str(max_integer_file_list+1) +" - "+ set_gk_auswahl_klasse[0] +" - "+set_gk_zusatz_info_joined+' - '+titel_eingabe.get()+" - "+aufgabenformat_chosen+" - "+quelle_eingabe.get()+"}\n\n"
 							"\\begin{beispiel}["+set_gk_auswahl[0]+' - '+set_gk_auswahl_klasse[0]+"]{"+punkte_eingabe.get()+"}\n"+eingabe_beispiel+
-							"\n\\end{beispiel}")							
+							"\n\\end{beispiel}")
 					else:
 						file.write("\section{"+set_gk_auswahl[0]+" - "+str(max_integer_file_list+1) +' - '+set_gk_auswahl_klasse[0]+' - '+titel_eingabe.get()+" - "+aufgabenformat_chosen+" - "+quelle_eingabe.get()+"}\n\n"
 						"\\begin{beispiel}["+set_gk_auswahl[0]+' - '+set_gk_auswahl_klasse[0]+"]{"+punkte_eingabe.get()+"}\n"+eingabe_beispiel+
@@ -440,25 +482,15 @@ def confirm_save():
 				window_finish.title('Bestätigung')
 				window_finish.geometry('+150+150')
 				def cmd_save_ok():
-					global set_gk_auswahl
+					global set_gk_auswahl, picture, button_cancel
 					global aufgabenformat_chosen
 					del aufgabenformat_chosen
 					window_finish.destroy()
-					selected_gk.set('AG')
-					selected_typ.set('Typ 1')
-					selected_af.set('bitte auswählen')
-					var_cb_klasse_5.set(0)
-					var_cb_klasse_6.set(0)
-					var_cb_klasse_7.set(0)
-					var_cb_klasse_8.set(0)
-					titel_eingabe.delete(0,'end')
-					punkte_eingabe.delete(0,'end')
-					punkte_eingabe.insert(END, 1)
-					textBox.delete('1.0','end')
-					set_gk_auswahl.clear()
-					liste_gk_auswahl.delete(0,'end')
-					quelle_eingabe.delete(0,'end')
-				gespeichert = Label(window_finish, text= 'Das Typ1-Beispiel "'+titel_eingabe.get()+'" wurde gespeichert!', width=50, height=5).grid()	
+					reset_entry()
+
+				label_save_1= Label(window_finish, text= 'Das Typ1-Beispiel mit dem Titel', height=2, width=40).grid()
+				label_save_2=Label(window_finish, text='"'+titel_eingabe.get()+'"', height=2).grid()
+				label_save_3=Label(window_finish, text='wurde gespeichert.', height=2).grid()	
 				button_ok = Button (window_finish, text= 'OK', width=10, command=cmd_save_ok).grid()
 				window_confirm.destroy()
 
@@ -466,36 +498,25 @@ def confirm_save():
 			try:
 				aufgabenformat_chosen
 			except NameError:
-				warning =Tk()
-				warning.title('Warnung')
-				warning.geometry('+150+150')
-				def cmd_ok():
-					warning.destroy()
-				warning_gk_auswahl= Label(warning, text='Es wurde kein Aufgabenformat ausgewählt', width=50, height=5).grid()
-				quit_button = Button(warning, text='OK', command=cmd_ok, width=10).grid(sticky=N)
+				warning_window('Es wurde kein Aufgabenformat ausgewählt!')
+
 			else:
 				if not set_gk_auswahl:
-					warning =Tk()
-					warning.title('Warnung')
-					warning.geometry('+150+150')
-					def cmd_ok():
-						warning.destroy()
-					warning_gk_auswahl= Label(warning, text='Es wurde keine Grundkompetenz zugewiesen', width=50, height=5).grid()
-					quit_button = Button(warning, text='OK', command=cmd_ok, width=10).grid(sticky=N)
+					warning_window('Es wurde keine Grundkompetenz zugewiesen!')
 				else: 
 					window_confirm =Tk()
 					window_confirm.title('Bestätigung')
 					window_confirm.geometry('+150+150')
 					label_confirm=Label(window_confirm, text='Sind Sie sicher, dass Sie das folgende Beispiel speichern wollen?', height=4, width=60).grid(columnspan=2)
-					label_aufgabe_typ=Label(window_confirm, text='Aufgabentyp: '+selected_typ.get(), bg="powderblue").grid(sticky=W,columnspan=2)
-					label_confirm_titel=Label(window_confirm, text='Titel: '+titel_eingabe.get(), bg="powderblue").grid(sticky=W,columnspan=2)
-					label_confirm_af=Label(window_confirm, text='Aufgabenformat: '+aufgabenformat_chosen_lang, bg="powderblue").grid(sticky=W,columnspan=2)
-					label_confirm_gk=Label(window_confirm, text='Grundkompetenz(en): '+set_gk_auswahl[0], bg="powderblue").grid(sticky=W,columnspan=2)
-					label_confirm_quelle=Label(window_confirm, text='Quelle: '+quelle_eingabe.get(), bg="powderblue").grid(sticky=W,columnspan=2)
+					label_aufgabe_typ=Label(window_confirm, text='Aufgabentyp: '+selected_typ.get(), bg="powderblue").grid(sticky=W,columnspan=2, padx=10)
+					label_confirm_titel=Label(window_confirm, text='Titel: '+titel_eingabe.get(), bg="powderblue").grid(sticky=W,columnspan=2, padx=10)
+					label_confirm_af=Label(window_confirm, text='Aufgabenformat: '+aufgabenformat_chosen_lang, bg="powderblue").grid(sticky=W,columnspan=2, padx=10)
+					label_confirm_gk=Label(window_confirm, text='Grundkompetenz: '+set_gk_auswahl[0], bg="powderblue").grid(sticky=W,columnspan=2, padx=10)
+					label_confirm_quelle=Label(window_confirm, text='Quelle: '+quelle_eingabe.get(), bg="powderblue").grid(sticky=W,columnspan=2, padx=10)
 					def cancel():
 						window_confirm.destroy()
-					button_save_file = Button (window_confirm, text='Speichern', command=save_file_typ1).grid(row=6, column=0, sticky=E)	
-					button_cancel = Button(window_confirm, text='Abbrechen', command=cancel).grid(row=6, column=1, sticky=W)
+					button_save_file = Button (window_confirm, text='Speichern', command=save_file_typ1).grid(row=6, column=0, sticky=E, pady=10)	
+					button_cancel = Button(window_confirm, text='Abbrechen', command=cancel).grid(row=6, column=1, sticky=W, pady=10)
 				
 ######################################################################################
 # Typ 2 - Speichern #######################
@@ -533,7 +554,21 @@ def confirm_save():
 			else:
 				max_integer_file_list= max(file_list_integer_temp)
 			# print(max_integer_file_list+1)	
-			
+
+			copy_image_path_typ_2=os.path.join(os.path.dirname('__file__'),'Typ 2 Aufgaben','Bilder')
+			for all in image_path_set:
+				image_path_temp=all
+				head, tail=os.path.split(image_path_temp)
+				copy_image_file_typ_2_temp=os.path.join(copy_image_path_typ_2,tail)
+				shutil.copy(image_path_temp,copy_image_file_typ_2_temp)
+				os.rename(copy_image_file_typ_2_temp,'Typ 2 Aufgaben/Bilder/'+str(max_integer_file_list+1)+'_'+tail)
+			textBox_Entry=str(textBox.get("1.0","end-1c"))
+			for all in image_path_set:
+				head, tail=os.path.split(all)
+				x = '{'+tail+'}'
+				name, ext =os.path.splitext(tail)
+				if x in textBox_Entry:
+					textBox_Entry=str(textBox_Entry).replace(tail,'{../Bilder/'+str(max_integer_file_list+1)+'_'+name+'}'+ext)
 			eingabe_beispiel=textBox_Entry
 			# ,'Typ 1 Aufgaben','_Matura',
 			list_schulstufe=[]
@@ -589,35 +624,19 @@ def confirm_save():
 			window_finish.title('Bestätigung')
 			window_finish.geometry('+150+150')
 			def cmd_save_ok():
-				global set_gk_auswahl
+				global set_gk_auswahl, picture, button_cancel
 				window_finish.destroy()
-				selected_gk.set('AG')
-				selected_typ.set('Typ 1')
-				selected_af.set('bitte auswählen')
-				var_cb_klasse_5.set(0)
-				var_cb_klasse_6.set(0)
-				var_cb_klasse_7.set(0)
-				var_cb_klasse_8.set(0)
-				titel_eingabe.delete(0,'end')
-				punkte_eingabe.delete(0,'end')
-				punkte_eingabe.insert(END, 1)
-				textBox.delete('1.0','end')
-				set_gk_auswahl.clear()
-				liste_gk_auswahl.delete(0,'end')
-				quelle_eingabe.delete(0,'end')
-			gespeichert = Label(window_finish, text= 'Das Typ2-Beispiel "'+titel_eingabe.get()+'" wurde gespeichert!', width=50, height=5).grid()	
+				reset_entry()
+
+			label_save_1= Label(window_finish, text= 'Das Typ2-Beispiel mit dem Titel', height=2, width=40).grid()
+			label_save_2=Label(window_finish, text='"'+titel_eingabe.get()+'"', height=2).grid()
+			label_save_3=Label(window_finish, text='wurde gespeichert.', height=2).grid()
 			button_ok = Button (window_finish, text= 'OK', width=10, command=cmd_save_ok).grid()
 			window_confirm.destroy()
 			# print('Das Typ2-Beispiel "'+titel_eingabe.get()+'" wurde gespeichert!')
 
 		if not set_gk_auswahl:
-			warning =Tk()
-			warning.title('Warnung')
-			warning.geometry('+150+150')
-			def cmd_ok():
-				warning.destroy()
-			warning_gk_auswahl= Label(warning, text='Es wurde keine Grundkompetenz zugewiesen', width=50, height=5).grid()
-			quit_button = Button(warning, text='OK', command=cmd_ok, width=10).grid(sticky=N)
+			warning_window('Es wurde keine Grundkompetenz zugewiesen')
 		else: 
 			window_confirm =Tk()
 			window_confirm.title('Bestätigung')
@@ -688,35 +707,28 @@ def CurSelect(evt):
 			except KeyError:
 				break
 #AG_BB[liste_gk.get(liste_gk.curselection())]	
-liste_gk = Listbox(frame_gk,height=44, width=13, font=("", 8)) #, selectmode='multiple', 
+liste_gk = Listbox(frame_gk, width=14, height=42, font=("", 8)) #, selectmode='multiple', 
 liste_gk.bind('<<ListboxSelect>>',CurSelect)
 for item in AG_BB:
 	liste_gk.insert('end', item)
-liste_gk.grid(columnspan=2, row=1, sticky=W)
+liste_gk.grid(columnspan=2, row=1, sticky=N+S)
 
 
 
 def menu_typ_auswahl(value):
-	global aufgabenformat_eingabe
+	global aufgabenformat_eingabe, aufgabenformat_inactive
+	aufgabenformat_inactive.grid(row=3, column=2, sticky='ew')
 	if value=='Typ 1':
 		selected_af.set('bitte auswählen')
+		aufgabenformat_eingabe=OptionMenu(frame_eingabe, selected_af, *af_liste, command=cmd_aufgabenformat)
+		aufgabenformat_eingabe.config(width=1)
+		aufgabenformat_eingabe.grid(row=3, column=2, sticky='ew')
 		
-		
-		# selected_af=StringVar()
-		# aufgabenformat_eingabe=OptionMenu(frame_eingabe, selected_af, *af_liste,command=cmd_aufgabenformat)
-		# aufgabenformat_eingabe.config(width=1)
-		# aufgabenformat_eingabe.grid(row=3, column=2, sticky='ew')
-		# return selected_af
-	
 	if value=='Typ 2':
-		selected_af.set('keine Auswahl nötig')
-		# aufgabenformat_eingabe=OptionMenu(frame_eingabe, selected_af, 'keine Auswahl nötig')
-		# aufgabenformat_eingabe.config(width=1)
-		# aufgabenformat_eingabe.grid(row=3, column=2, sticky='ew')
-		# aufgabenformat_eingabe.destroy()
-		# aufgabenformat_inactive = Label(frame_eingabe, text='keine Auswahl nötig', width=3, height=1)
-		# aufgabenformat_inactive.grid(row=3, column=2, sticky='ew')
-		# selected_af_typ.set('keine Auswahl nötig')
+		aufgabenformat_eingabe.grid_forget()
+		aufgabenformat_inactive.config(text='keine Auswahl nötig')
+		aufgabenformat_inactive.grid(row=3, column=2, sticky='ew')
+
 
 
 
@@ -758,6 +770,8 @@ punkte_eingabe.insert(END, 1)
 aufgabenformat_label=Label(frame_eingabe, text="Aufgabenformat:").grid(row=3, column=1, sticky=E)
 
 check_af=0
+aufgabenformat_inactive=Label(frame_eingabe, text='',height=2, width=7)
+aufgabenformat_inactive.grid(row=3, column=2)
 af_liste=['Multiple Choice', 'Zuordnungsformat', 'Lückentext', 'Offenes Antwortformat']
 selected_af=StringVar()
 selected_af.set('bitte auswählen')
@@ -768,7 +782,7 @@ eingabe_label = Label(frame_eingabe, text='Eingabe des Beispiels:')
 eingabe_label.grid(sticky=W,row=4, columnspan=2)
 eingabe_label_info = Label(frame_eingabe, text='INFO: Eingabe des Aufgabentextes zwischen \\begin{beispiel} ... \end{beispiel}',relief=GROOVE)
 eingabe_label_info.grid(sticky=E,row=4,column=1, columnspan=2)
-textBox=ScrolledText.ScrolledText(frame_eingabe, height=27, width=80)
+textBox=ScrolledText.ScrolledText(frame_eingabe, height=24, width=80)
 textBox.grid(columnspan=3)
 quelle_eingabe_label= Label(frame_eingabe, text='Quelle').grid(sticky=W)
 quelle_eingabe=Entry(frame_eingabe, width=107)
@@ -778,27 +792,32 @@ quelle_eingabe.grid(sticky=W, columnspan=3)
 
 ############## BILDER einfügen ############
 
-# global window_height
-window_height=750
+global window_height
+window_height=725
 image_path_set=[]
+dict_button_images={}
+dict_label_images={}
+counter_images=0
 def select_image():
-	global image_path_set
-	global window_height
-	global var_row
-	try:
-		picture.destroy()
-		button_cancel.destroy()
-	except UnboundLocalError:
-		pass
-	def picture_cancel():
+	global image_path_set, window_height, var_row,button_cancel, counter_images
+
+	def picture_cancel(*args):
 		global window_height
-		picture.destroy()
-		button_cancel.destroy()
+		# print(dict_button_images)
+		# print(dict_label_images)
+		# print(counter_images_temp)
+		dict_button_images[counter_images_temp].destroy()
+		dict_label_images[counter_images_temp].destroy()
+		# del dict_button_images[counter_images]
+		# del dict_label_images[counter_images]
+
 		window_height=window_height-25
 		hauptfenster.geometry("%dx%d" % (800,window_height))
+		# print(filename)
 		image_path_set.remove(filename)
 		# print(image_path_set)
-		# picture_delete()
+
+		
 	if 'var_row' in globals():
 		pass
 	else:
@@ -815,12 +834,17 @@ def select_image():
 		hauptfenster.geometry("%dx%d" % (800,window_height))
 		image_path_set.append(filename)
 		head,tail=os.path.split(filename)
-		picture=Label(hauptfenster, text=tail)
-		picture.grid(row=var_row, column=0, columnspan=3, sticky=W)
-		button_cancel= Button(hauptfenster, text='x', command=picture_cancel, bg='indianred')
-		button_cancel.grid(row=var_row, column=2)
-	# print(image_path_set)
+		counter_images_temp=counter_images
+		vars()['cancel_button_images_%s'%counter_images_temp]=Button(hauptfenster, text='x', command=lambda: picture_cancel(counter_images), bg='indianred')
+		vars()['cancel_button_images_%s'%counter_images_temp].grid(row=var_row, column=2)
+		vars()['label_images_%s'%counter_images_temp]=Label(hauptfenster, text=tail)
+		vars()['label_images_%s'%counter_images_temp].grid(row=var_row, column=0, columnspan=3, sticky=W)
 		
+		dict_button_images[counter_images_temp]=vars()['cancel_button_images_%s'%counter_images_temp]
+		dict_label_images[counter_images_temp]=vars()['label_images_%s'%counter_images_temp]
+		counter_images+=1
+	
+	
 
 
 label_image= Label(hauptfenster, text='Bild hinzufügen').grid(column=0,row=1,sticky=N+W)

@@ -1,25 +1,27 @@
-\section{AG 2.1 - 1 Aequivalenz von Formeln - MC - BIFIE}
+\section{AG 2.1 - 1 Äquivalenz von Formeln - MC - BIFIE}
 
 \begin{beispiel}[AG 2.1]{1} %PUNKTE DES BEISPIELS
 Die nachstehende Abbildung zeigt ein Trapez. 
 
 \begin{center}
-\definecolor{zzttqq}{rgb}{0.266666666667,0.266666666667,0.266666666667}
-\begin{tikzpicture}[line cap=round,line join=round,x=1.0cm,y=1.0cm]
-\clip(1.45375609756,2.52351219512) rectangle (7.22936585366,6.54302439024);
-\fill[color=zzttqq,fill=zzttqq,fill opacity=0.1] (2.,6.) -- (4.,6.) -- (7.,3.) -- (2.,3.) -- cycle;
-\draw [shift={(2.,3.)},fill=black,fill opacity=0.1] (0,0) -- (0.:0.585365853659) arc (0.:90.:0.585365853659) -- cycle;
-\draw [color=zzttqq] (2.,6.)-- (4.,6.);
-\draw [color=zzttqq] (4.,6.)-- (7.,3.);
-\draw [color=zzttqq] (7.,3.)-- (2.,3.);
-\draw [color=zzttqq] (2.,3.)-- (2.,6.);
-\fill[fill=black,fill opacity=1] (2.24348009682,3.24348009682) circle (0.019512195122);
+\newrgbcolor{qqwuqq}{0. 0.39215686274509803 0.}
+\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(0.26,0.4)(7.44,5.28)
+\pspolygon[linewidth=1.2pt,fillcolor=black,fillstyle=solid,opacity=0.1](1.,1.)(7.,1.)(3.5,4.5)(1.,4.5)
+\psline[linewidth=1.2pt](1.,1.)(7.,1.)
+\psline[linewidth=1.2pt](7.,1.)(3.5,4.5)
+\psline[linewidth=1.2pt](3.5,4.5)(1.,4.5)
+\psline[linewidth=1.2pt](1.,4.5)(1.,1.)
+\pscustom[linewidth=0.4pt,linecolor=qqwuqq,fillcolor=qqwuqq,fillstyle=solid,opacity=0.1]{
+\parametricplot{0.0}{1.5707963267948966}{0.6*cos(t)+1.|0.6*sin(t)+1.}
+\lineto(1.,1.)\closepath}
+\psellipse*[linewidth=0.4pt,linecolor=qqwuqq,fillcolor=qqwuqq,fillstyle=solid,opacity=1](1.2495670992423111,1.2495670992423111)(0.02,0.02)
 \begin{scriptsize}
-\draw[color=zzttqq] (2.9952195122,6.2) node {$c$};
-\draw[color=zzttqq] (4.18546341463,2.8) node {$a$};
-\draw[color=zzttqq] (1.844,4.59180487805) node {$b$};
+\rput[bl](3.8,0.74){$a$}
+\rput[bl](2.26,4.72){$c$}
+\rput[bl](0.66,2.76){$b$}
 \end{scriptsize}
-\end{tikzpicture}
+\end{pspicture*}
 \end{center}
 
 Mit welchen der nachstehenden Formeln kann man die Fläche dieses Trapezes berechnen?
