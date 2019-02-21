@@ -259,7 +259,6 @@ def natural_keys(text):
 # data_folder=Path('Teildokument')
 # log_file= data_folder / 'log_file'
 def create_pdf():
-<<<<<<< HEAD:Aufgabensammlung (inoffiziell)/Typ 1 Aufgaben/Typ1 LaTeX file assistent 5.0 working.py
 	subprocess.Popen('cd Teildokument ; latex --synctex=-1 Teildokument.tex ; dvips Teildokument.dvi ; ps2pdf -dNOSAFER Teildokument.ps',shell=True).wait()
 	print('done 1')
 	if sys.platform.startswith('linux'):
@@ -268,10 +267,6 @@ def create_pdf():
 		subprocess.run(['xdg-open', 'Teildokument/Teildokument.pdf'])
 	else:
 	    subprocess.Popen('cd Teildokument ; Teildokument.pdf', shell=True).poll()
-=======
-	subprocess.Popen('cd Teildokument & latex --synctex=-1 Teildokument.tex & dvips Teildokument.dvi & ps2pdf -dNOSAFER Teildokument.ps',shell=True).wait()
-	subprocess.Popen('cd Teildokument & Teildokument.pdf', shell=True).poll()
->>>>>>> upstream/createPDFviaPY:Aufgabensammlung (inoffiziell)/Typ 1 Aufgaben/Typ1 LaTeX file assistent 5.0 working.py
 	os.unlink('Teildokument/Teildokument.aux')
 	os.unlink('Teildokument/Teildokument.log')
 	os.unlink('Teildokument/Teildokument.dvi')
@@ -321,20 +316,10 @@ def refresh():
 		# print(beispieldaten_dateipfad)
 		# print(beispieldaten)
 	data_folder=Path('Teildokument')
-<<<<<<< HEAD:Aufgabensammlung (inoffiziell)/Typ 1 Aufgaben/Typ1 LaTeX file assistent 5.0 working.py
 	log_file=os.path.join(os.path.dirname('__file__'),'Teildokument','log_file')
+	# log_file= data_folder / 'log_file' Works in Windows, doesn't work in linux
 	with open(log_file, 'w+') as f:
 		json.dump(beispieldaten_dateipfad, f,ensure_ascii=False)
-	# print(log_file)		
-=======
-	log_file= data_folder / 'log_file'
-
-																			   
-	with open(log_file, 'w') as f:
-		json.dump(beispieldaten_dateipfad, f,ensure_ascii=False)
-	# print(log_file)		
-	# log_file=os.path.join(os.path.dirname('__file__'),'Teildokument','log_file')
->>>>>>> upstream/createPDFviaPY:Aufgabensammlung (inoffiziell)/Typ 1 Aufgaben/Typ1 LaTeX file assistent 5.0 working.py
 	# with open(log_file, 'w') as f:
 		# json.dump(beispieldaten_dateipfad, f)
 	# print(log_file.read_text())
