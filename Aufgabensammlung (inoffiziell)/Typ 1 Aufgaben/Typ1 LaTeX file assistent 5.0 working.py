@@ -259,8 +259,14 @@ def natural_keys(text):
 # data_folder=Path('Teildokument')
 # log_file= data_folder / 'log_file'
 def create_pdf():
-	subprocess.Popen('cd Teildokument & latex --synctex=-1 Teildokument.tex & dvips Teildokument.dvi & ps2pdf -dNOSAFER Teildokument.ps',shell=True).wait()
-	subprocess.Popen('cd Teildokument & Teildokument.pdf', shell=True).poll()
+	subprocess.Popen('cd Teildokument ; latex --synctex=-1 Teildokument.tex ; dvips Teildokument.dvi ; ps2pdf -dNOSAFER Teildokument.ps',shell=True).wait()
+	print('done 1')
+	if sys.platform.startswith('linux'):
+		subprocess.run(['xdg-open', 'Teildokument/Teildokument.pdf'])
+	elif sys.platform.startswith('darwin'):
+		subprocess.run(['xdg-open', 'Teildokument/Teildokument.pdf'])
+	else:
+	    subprocess.Popen('cd Teildokument ; Teildokument.pdf', shell=True).poll()
 	os.unlink('Teildokument/Teildokument.aux')
 	os.unlink('Teildokument/Teildokument.log')
 	os.unlink('Teildokument/Teildokument.dvi')
