@@ -320,6 +320,7 @@ def refresh():
 	data_folder=Path('Teildokument')
 	log_file=os.path.join(os.path.dirname('__file__'),'Teildokument','log_file')
 	#log_file= data_folder / 'log_file'# Works in Windows, doesn't work in linux
+	
 	with open(log_file, 'w+') as f:
 		json.dump(beispieldaten_dateipfad, f,ensure_ascii=False)
 	# with open(log_file, 'w') as f:
