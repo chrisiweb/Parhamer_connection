@@ -396,7 +396,7 @@ def control_cb():
 	'\shorthandoff{"}\n')
 	file.close()
 	
-	
+
 	if suchtyp_var.get() == UND:
 	 #############  Erstellung der Kompetenzbereiche pro Beispiel
 		liste_kompetenzbereiche ={}
@@ -421,6 +421,7 @@ def control_cb():
 			liste_kompetenzbereiche.update({r:gkliste})
 			r+=1
 
+		
 		gesammeltedateien=[]
 		for r in range(1,len(liste_kompetenzbereiche)+1):
 			if liste_kompetenzbereiche[r]==[]:
@@ -430,18 +431,16 @@ def control_cb():
 				if r in liste_kompetenzbereiche.keys():
 					if all not in liste_kompetenzbereiche[r]:
 						del liste_kompetenzbereiche[r]
-		# print(liste_kompetenzbereiche)
-		
-		
+	
 		
 		for key in liste_kompetenzbereiche.keys():
 			gesammeltedateien.append(beispieldaten[key-1])
-		
 		
 		for all in gesammeltedateien[:]:
 			if not len(entry_suchbegriffe.get()) ==0:
 				if entry_suchbegriffe.get().lower() not in all.lower():
 					gesammeltedateien.remove(all)
+
 					
 			
 	if suchtyp_var.get() == ODER:
@@ -453,14 +452,19 @@ def control_cb():
 					gesammeltedateien.append(element)
 
 		gesammeltedateien.sort(key=natural_keys)
-
 		
-		if not len(entry_suchbegriffe.get()) ==0:
-			suchbegriffe.append(entry_suchbegriffe.get())
-			for all in list(beispieldaten_dateipfad.keys())[:]:
-				if entry_suchbegriffe.get().lower() in all.lower():
-					if all not in gesammeltedateien:
-						gesammeltedateien.append(all)
+
+		for all in gesammeltedateien[:]:
+			if not len(entry_suchbegriffe.get()) ==0:
+				if entry_suchbegriffe.get().lower() not in all.lower():
+					gesammeltedateien.remove(all)
+
+		# if not len(entry_suchbegriffe.get()) ==0:
+			# suchbegriffe.append(entry_suchbegriffe.get())
+			# for all in list(beispieldaten_dateipfad.keys())[:]:
+				# if entry_suchbegriffe.get().lower() in all.lower():
+					# if all not in gesammeltedateien:
+						# gesammeltedateien.append(all)
 
 	dict_gesammeltedateien={}
 	for all in gesammeltedateien:
@@ -558,8 +562,10 @@ def control_cb():
 			window_loading.destroy()
 		hauptfenster.destroy()
 		threading.Thread(target=start_loading_bar).start()
-
-	label_output=Label(window_loading, text='Insgesamt wurde(n) '+ str(len(dict_gesammeltedateien)) + ' Beispiel(e) gefunden.\n', font=LARGE_FONT).grid(row=0,column=0)	
+	if len(dict_gesammeltedateien)==1:
+		label_output=Label(window_loading, text='Insgesamt wurde '+ str(len(dict_gesammeltedateien)) + ' Beispiel gefunden.\n', font=LARGE_FONT).grid(row=0,column=0)	
+	else:
+		label_output=Label(window_loading, text='Insgesamt wurden '+ str(len(dict_gesammeltedateien)) + ' Beispiele gefunden.\n', font=LARGE_FONT).grid(row=0,column=0)		
 	label_loading = Label(window_loading , text='Lade PDF Datei...', font=LARGE_FONT).grid(row=1,column=0)
 	progress = Progressbar(window_loading , orient=HORIZONTAL,length=250,  mode='indeterminate')
 	loading_bar()
