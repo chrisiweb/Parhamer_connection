@@ -269,14 +269,10 @@ def create_pdf():
 		subprocess.Popen('cd Teildokument & latex --synctex=-1 Teildokument.tex & dvips Teildokument.dvi & ps2pdf -dNOSAFER Teildokument.ps',shell=True).wait()
 		subprocess.Popen('cd Teildokument & Teildokument.pdf', shell=True).poll()
 	
-	os.unlink('Teildokument/Teildokument.aux')
-	os.unlink('Teildokument/Teildokument.dvi')
-	os.unlink('Teildokument/Teildokument.log')
-	os.unlink('Teildokument/Teildokument.pdf')
-	os.unlink('Teildokument/Teildokument.ps')
-	os.unlink('Teildokument/Teildokument.synctex')
-	os.unlink('Teildokument/Teildokument.tex')
-
+	cleanupsuffix=['aux', 'dvi', 'log', 'ps']
+	for suffixes in cleanupsuffix:
+	    filepath='Teildokument/Teildokument.' + suffixes
+	    os.unlink(filepath)
 
 def refresh():
 	beispieldaten_dateipfad = {}
