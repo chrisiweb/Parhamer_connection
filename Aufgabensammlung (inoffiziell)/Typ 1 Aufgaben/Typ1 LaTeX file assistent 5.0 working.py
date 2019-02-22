@@ -270,9 +270,12 @@ def create_pdf():
 		subprocess.Popen('cd Teildokument & Teildokument.pdf', shell=True).poll()
 	
 	os.unlink('Teildokument/Teildokument.aux')
-	os.unlink('Teildokument/Teildokument.log')
 	os.unlink('Teildokument/Teildokument.dvi')
+	os.unlink('Teildokument/Teildokument.log')
+	os.unlink('Teildokument/Teildokument.pdf')
 	os.unlink('Teildokument/Teildokument.ps')
+	os.unlink('Teildokument/Teildokument.synctex')
+	os.unlink('Teildokument/Teildokument.tex')
 
 
 def refresh():
