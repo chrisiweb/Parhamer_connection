@@ -21,179 +21,32 @@ import datetime
 import json
 import subprocess
 import re
+import yaml
 
-dict_gk={"ag11":'AG 1.1',"ag12":'AG 1.2',"ag13":'AG-L 1.3',"ag14":"AG-L 1.4",
-"ag15":"AG-L 1.5","ag21":"AG 2.1","ag22":"AG 2.2","ag23":"AG 2.3","ag24":"AG 2.4",
-"ag25":"AG 2.5","ag26":"AG-L 2.6","ag27":"AG-L 2.7","ag28":"AG-L 2.8",
-"ag31":"AG 3.1","ag32":"AG 3.2","ag33":"AG 3.3","ag34":"AG 3.4","ag35":"AG 3.5",
-"ag36":"AG-L 3.6","ag37":"AG-L 3.7","ag38":"AG-L 3.8","ag39":"AG-L 3.9",
-"ag41":"AG 4.1","ag42":"AG 4.2","ag43":"AG-L 4.3","ag44":"AG-L 4.4",
-"ag51":"AG-L 5.1","ag52":"AG-L 5.2","ag53":"AG-L 5.3",
-"an11":"AN 1.1","an12":"AN 1.2","an13":"AN 1.3","an14":"AN 1.4","an15":"AN-L 1.5",
-"an21":"AN 2.1","an22":"AN-L 2.2","an31":"AN 3.1","an32":"AN 3.2","an33":"AN 3.3",
-"an34":"AN-L 3.4","an41":"AN 4.1","an42":"AN 4.2","an43":"AN 4.3",
-"fa11":"FA 1.1","fa12":"FA 1.2","fa13":"FA 1.3","fa14":"FA 1.4","fa15":"FA 1.5",
-"fa16":"FA 1.6","fa17":"FA 1.7","fa18":"FA 1.8","fa19":"FA 1.9",
-"fa21":"FA 2.1","fa22":"FA 2.2","fa23":"FA 2.3","fa24":"FA 2.4","fa25":"FA 2.5",
-"fa26":"FA 2.6", "fa31":"FA 3.1","fa32":"FA 3.2","fa33":"FA 3.3","fa34":"FA 3.4",
-"fa41":"FA 4.1","fa42":"FA 4.2","fa43":"FA 4.3","fa44":"FA 4.4",
-"fa51":"FA 5.1","fa52":"FA 5.2","fa53":"FA 5.3","fa54":"FA 5.4","fa55":"FA 5.5",
-"fa56":"FA 5.6","fa61":"FA 6.1","fa62":"FA 6.2","fa63":"FA 6.3","fa64":"FA 6.4",
-"fa65":"FA 6.5","fa66":"FA 6.6",
-"fa71":"FA-L 7.1","fa72":"FA-L 7.2","fa73":"FA-L 7.3","fa74":"FA-L 7.4",
-"fa81":"FA-L 8.1","fa82":"FA-L 8.2","fa83":"FA-L 8.3","fa84":"FA-L 8.4",
-"ws11":"WS 1.1","ws12":"WS 1.2","ws13":"WS 1.3","ws14":"WS 1.4","ws21":"WS 2.1",
-"ws22":"WS 2.2","ws23":"WS 2.3","ws24":"WS 2.4","ws25":"WS-L 2.5","ws26":"WS-L 2.6",
-"ws31":"WS 3.1","ws32":"WS 3.2","ws33":"WS 3.3","ws34":"WS 3.4","ws35":"WS-L 3.5",
-"ws41":"WS 4.1","ws42":"WS-L 4.2"}
+# Load Config-file
+config1 = yaml.safe_load(open("config1.yml")) # for a lack of better name
 
-
-ag_kb_beschreibung={
-"ag11":'Wissen über die Zahlenmengen N, Z, Q, R, C verständig einsetzen können',
-"ag12":'Wissen über algebraische Begriffe angemessen einsetzen können: \n Variable, Terme, Formeln, (Un-)Gleichungen, Gleichungssysteme;\nÄquivalenz, Umformungen, Lösbarkeit',
-"ag13":'Mit Aussagen und Mengen umgehen können',
-"ag14":'Zahlen in einem nichtdekadischen Zahlensystem darstellen können',
-"ag15":'Komplexe Zahlen in der Gauß’schen Zahlenebene\ndarstellen und mit komplexen Zahlen rechnen können.',
-"ag21":'Einfache Terme und Formeln aufstellen, umformen und\nim Kontext deuten können',
-"ag22":'Lineare Gleichungen aufstellen, interpretieren, umformen/lösen und\ndie Lösung im Kontext deuten können',
-"ag23":'Quadratische Gleichungen in einer Variablen umformen/lösen,\nüber Lösungsfälle Bescheid wissen, Lösungen und Lösungsfälle\n(auch geometrisch) deuten können',
-"ag24":'Lineare Ungleichungen aufstellen, interpretieren, umformen/lösen,\nLösungen (auch geometrisch) deuten können',
-"ag25":'Lineare Gleichungssysteme in zwei Variablen aufstellen,\ninterpretieren, umformen/lösen, über Lösungsfälle Bescheid wissen,\nLösungen und Lösungsfälle (auch geometrisch) deuten können',
-"ag26":'Den Satz von Vieta kennen und anwenden können',
-"ag27":'Lineare Gleichungssysteme in drei Variablen lösen können',
-"ag28":'Den Fundamentalsatz der Algebra kennen und seine Bedeutung bei der Zahlenbereichserweiterung von R auf C erläutern können',
-"ag31":'Vektoren als Zahlentupel verständig einsetzen und im Kontext deuten können',
-"ag32":'Vektoren geometrisch (als Punkte bzw. Pfeile) deuten und verständig einsetzen können',
-"ag33":'Definition der Rechenoperationen mit Vektoren (Addition, Multiplikation mit einem Skalar, Skalarmultiplikation) kennen,\n Rechenoperationen verständig einsetzen und (auch geometrisch) deuten können',
-"ag34":'Geraden durch (Parameter-)Gleichungen in R2 und R3 angeben können; Geradengleichungen interpretieren können;\n Lagebeziehungen (zwischen Geraden und zwischen Punkt und Gerade) analysieren, Schnittpunkte ermitteln können',
-"ag35":'Normalvektoren in R2 aufstellen, verständig einsetzen und interpretieren können',
-"ag36":'Die geometrische Bedeutung des Skalarprodukts kennen und den Winkel zwischen zwei Vektoren ermitteln können',
-"ag37":'Einheitsvektoren ermitteln, verständig einsetzen und interpretieren können',
-"ag38":'Definition des vektoriellen Produkts und seine geometrische Bedeutung kennen',
-"ag39":'Wissen, wodurch Ebenen festgelegt sind; Ebenen in Parameter- und Normalvektordarstellung aufstellen können',
-"ag41":'Definitionen von Sinus, Cosinus, Tangens im rechtwinkligen Dreieck kennen und zur Auflösung rechtwinkliger Dreiecke einsetzen können',
-"ag42":'Definitionen von Sinus, Cosinus für Winkel größer als 90° kennen und einsetzen können',
-"ag43":'Einfache Berechnungen an allgemeinen Dreiecken, an Figuren und Körpern (auch mittels Sinus- und Cosinussatz) durchführen können',
-"ag44":'Polarkoordinaten kennen und einsetzen können',
-"ag51":'Kegelschnitte in der Ebene durch Gleichungen beschreiben können; aus einer Kreisgleichung Mittelpunkt und Radius bestimmen können',
-"ag52":'Die gegenseitige Lage von Kegelschnitt und Gerade ermitteln können',
-"ag53":'Kugeln durch Gleichungen beschreiben können',}
-AG_BB=["AG 1.1","AG 1.2","AG-L 1.3","AG-L 1.4","AG-L 1.5",
-"AG 2.1","AG 2.2","AG 2.3","AG 2.4","AG 2.5","AG-L 2.6","AG-L 2.7","AG-L 2.8",
-"AG 3.1","AG 3.2","AG 3.3","AG 3.4","AG 3.5","AG-L 3.6","AG-L 3.7","AG-L 3.8","AG-L 3.9",
-"AG 4.1","AG 4.2","AG-L 4.3","AG-L 4.4",
-"AG-L 5.1","AG-L 5.2","AG-L 5.3"]
-an_kb=["an11","an12","an13","an14","anL15","an21","anL22","an31","an32","an33","anL34","an41","an42","an43"]
-an_kb_beschreibung={"an11":'Absolute und relative (prozentuelle) Änderungsmaße unterscheiden und angemessen verwenden können',
-"an12":'Den Zusammenhang Differenzenquotient (mittlere Änderungsrate) – Differentialquotient („momentane“ Änderungsrate) auf der Grundlage \n eines intuitiven Grenzwertbegriffes kennen und damit (verbal und auch in formaler Schreibweise) auch kontextbezogen anwenden können',
-"an13":'Den Differenzen- und Differentialquotienten in verschiedenen Kontexten deuten und \n entsprechende Sachverhalte durch den Differenzen- bzw. Differentialquotienten beschreiben können',
-"an14":'Das systemdynamische Verhalten von Größen durch Differenzengleichungen beschreiben bzw. diese im Kontext deuten können',
-"an15":"Einfache Differentialgleichungen, insbesondere f'(x)= k*f(x), lösen können",
-"an21":'Einfache Regeln des Differenzierens kennen und anwenden können: Potenzregel, Summenregel, Regeln für k*f(x)′ und f(k*x)′',
-"an22":'Kettenregel kennen und anwenden können',
-"an31":'Den Begriff Ableitungsfunktion/Stammfunktion kennen und zur Beschreibung von Funktionen einsetzen können',
-"an32":'Den Zusammenhang zwischen Funktion und Ableitungsfunktion (bzw. Funktion und Stammfunktion)\n in deren grafischer Darstellung erkennen und beschreiben können',
-"an33":'Eigenschaften von Funktionen mithilfe der Ableitung(sfunktion) beschreiben können:\n Monotonie, lokale Extrema, Links- und Rechtskrümmung, Wendestellen',
-"an34":'Zielfunktionen in einer Variablen für Optimierungsaufgaben (Extremwertaufgaben) aufstellen und globale Extremstellen ermitteln können',
-"an41":'Den Begriff des bestimmten Integrals als Grenzwert einer Summe von Produkten deuten und beschreiben können',
-"an42":'Einfache Regeln des Integrierens kennen und anwenden können: Potenzregel, Summenregel, ∫k*f(x)dx, ∫f(k*x)dx;\n bestimmte Integrale von Polynomfunktionen ermitteln können',
-"an43":'Das bestimmte Integral in verschiedenen Kontexten deuten und entsprechende Sachverhalte durch Integrale beschreiben können'}
-AN_BB=["AN 1.1","AN 1.2","AN 1.3","AN 1.4","AN-L 1.5","AN 2.1","AN-L 2.2",
-"AN 3.1","AN 3.2","AN 3.3","AN-L 3.4",
-"AN 4.1","AN 4.2","AN 4.3"]
-# fa_kb=["fa11","fa12","fa13","fa14","fa15","fa16","fa17","fa18","fa19",
-# "fa21","fa22","fa23","fa24","fa25","fa26",
-# "fa31","fa32","fa33","fa34",
-# "fa41","fa42","fa43","fa44",
-# "fa51","fa52","fa53","fa54","fa55","fa56",
-# "fa61","fa62","fa63","fa64","fa65","fa66",
-# "fa71","fa72","fa73","fa74",
-# "fa81","fa82","fa83","fa84"]
-fa_kb_beschreibung={
-"fa11":'Für gegebene Zusammenhänge entscheiden können, ob man sie als Funktionen betrachten kann ',
-"fa12":'Formeln als Darstellung von Funktionen interpretieren und den Funktionstyp zuordnen können',
-"fa13":'Zwischen tabellarischen und grafischen Darstellungen funktionaler Zusammenhänge wechseln können',
-"fa14":'Aus Tabellen, Graphen und Gleichungen von Funktionen Werte(paare) ermitteln und im Kontext deuten können',
-"fa15":'Eigenschaften von Funktionen erkennen, benennen, im Kontext deuten und zum Erstellen von Funktionsgraphen einsetzen können:\n Monotonie, Monotoniewechsel (lokale Extrema), Wendepunkte, Periodizität, Achsensymmetrie, asymptotisches Verhalten, Schnittpunkte mit den Achsen',
-"fa16":'Schnittpunkte zweier Funktionsgraphen grafisch und rechnerisch ermitteln und im Kontext interpretieren können',
-"fa17":'Funktionen als mathematische Modelle verstehen und damit verständig arbeiten können',
-"fa18":'Durch Gleichungen (Formeln) gegebene Funktionen mit mehreren Veränderlichen im Kontext deuten können, Funktionswerte ermitteln können',
-"fa19":'Einen Überblick über die wichtigsten (unten angeführten) Typen mathematischer Funktionen geben, ihre Eigenschaften vergleichen können',
-"fa21":'Verbal, tabellarisch, grafisch oder durch eine Gleichung (Formel) gegebene lineare Zusammenhänge als lineare Funktionen erkennen\n bzw. betrachten können; zwischen diesen Darstellungsformen wechseln können',
-"fa22":'Aus Tabellen, Graphen und Gleichungen linearer Funktionen Werte(paare) sowie die Parameter k und d ermitteln und im Kontext deuten können',
-"fa23":'Die Wirkung der Parameter k und d kennen und die Parameter in unterschiedlichen Kontexten deuten können',
-"fa24":'Charakteristische Eigenschaften von lineare Funktionen kennen und im Kontext deuten können',
-"fa25":'Die Angemessenheit einer Beschreibung mittels linearer Funktion bewerten können',
-"fa26":'Direkte Proportionalität als lineare Funktion vom Typ f(x) = k*x beschreiben können',
-"fa31":'Verbal, tabellarisch, grafisch oder durch eine Gleichung (Formel) gegebene Zusammenhänge dieser Art als entsprechende Potenzfunktionen erkennen\n bzw. betrachten können; zwischen diesen Darstellungsformen wechseln können',
-"fa32":'Aus Tabellen, Graphen und Gleichungen von Potenzfunktionen Werte(paare) sowie die Parameter a und b ermitteln und im Kontext deuten können',
-"fa33":'Die Wirkung der Parameter a und b bei Potenzfunktionen kennen und die Parameter im Kontext deuten können',
-"fa34":'Indirekte Proportionalität als Potenzfunktion vom Typ f(x)=a/x beschreiben können',
-"fa41":'Typische Verläufe von Graphen in Abhängigkeit vom Grad der Polynomfunktion (er)kennen',
-"fa42":'Zwischen tabellarischen und grafischen Darstellungen von Zusammenhängen dieser Art wechseln können',
-"fa43":'Aus Tabellen, Graphen und Gleichungen von Polynomfunktionen Funktionswerte, aus Tabellen und Graphen\n sowie aus einer quadratischen Funktionsgleichung Argumentwerte ermitteln können',
-"fa44":'Den Zusammenhang zwischen dem Grad der Polynomfunktion und der Anzahl der Null-, Extrem- und Wendestellen wissen',
-"fa51":'Verbal, tabellarisch, grafisch oder durch eine Gleichung (Formel) gegebene exponentielle Zusammenhänge als Exponentialfunktion erkennen\n bzw. betrachten können; zwischen diesen Darstellungsformen wechseln können',
-"fa52":'Aus Tabellen, Graphen und Gleichungen von Exponentialfunktionen Werte(paare) ermitteln und im Kontext deuten können',
-"fa53":'Die Wirkung der Parameter a und b (bzw. e^λ) kennen und die Parameter in unterschiedlichen Kontexten deuten können',
-"fa54":'Charakteristische Eigenschaften von Exponentialfunktionen kennen und im Kontext deuten können',
-"fa55":'Die Begriffe „Halbwertszeit“ und „Verdoppelungszeit“ kennen, die entsprechenden Werte berechnen und im Kontext deuten können',
-"fa56":'Die Angemessenheit einer Beschreibung mittels Exponentialfunktion bewerten können',
-"fa61":'Grafisch oder durch eine Gleichung (Formel) gegebene Zusammenhänge der Art f(x) = a*sin(b*x) als Allgemeine Sinusfunktion erkennen\n bzw. betrachten können; zwischen diesen Darstellungsformen wechseln können',
-"fa62":'Aus Graphen und Gleichungen von Allgemeinen Sinusfunktionen Werte(paare) ermitteln und im Kontext deuten können',
-"fa63":'Die Wirkung der Parameter a und b bei Winkelfunktionen kennen und die Parameter im Kontext deuten können',
-"fa64":'Periodizität als charakteristische Eigenschaft kennen und im Kontext deuten können',
-"fa65":'Wissen, dass cos(x)=sin(x+π/2)',
-"fa66":'Wissen, dass gilt: sin(x)′=cos(x) und cos(x)′=-sin(x)',
-"fa71":'Zahlenfolgen (insbesondere arithmetische und geometrische Folgen) durch explizite und\nrekursive Bildungsgesetze beschreiben und graphisch darstellen können',
-"fa72":'Zahlenfolgen als Funktionen über N bzw. N* auffassen können, insbesondere arithmetische Folgen als lineare Funktionen und\n geometrische Folgen als Exponentialfunktionen',
-"fa73":'Definitionen monotoner und beschränkter Folgen kennen und anwenden können',
-"fa74":'Grenzwerte von einfachen Folgen ermitteln können',
-"fa81":'Endliche arithmetische und geometrische Reihen kennen und ihre Summen berechnen können',
-"fa82":'Den Begriff der Summe einer unendlichen Reihe definieren können',
-"fa83":'Summen konvergenter geometrischer Reihen berechnen können',
-"fa84":'Folgen und Reihen zur Beschreibung diskreter Prozesse in anwendungsorientierten Bereichen einsetzen können',}
-FA_BB=["FA 1.1","FA 1.2","FA 1.3","FA 1.4","FA 1.5","FA 1.6","FA 1.7","FA 1.8","FA 1.9",
-"FA 2.1","FA 2.2","FA 2.3","FA 2.4","FA 2.5","FA 2.6",
-"FA 3.1","FA 3.2","FA 3.3","FA 3.4",
-"FA 4.1","FA 4.2","FA 4.3","FA 4.4",
-"FA 5.1","FA 5.2","FA 5.3","FA 5.4","FA 5.5","FA 5.6",
-"FA 6.1","FA 6.2","FA 6.3","FA 6.4","FA 6.5","FA 6.6",
-"FA-L 7.1","FA-L 7.2","FA-L 7.3","FA-L 7.4","FA-L 8.1","FA-L 8.2","FA-L 8.3","FA-L 8.4"]
-# ws_kb=["ws11","ws12","ws13","ws14","ws21","ws22","ws23","ws24","wsL25","wsL26","ws31","ws32","ws33","ws34","wsL35","ws41","wsL42"]
-ws_kb_beschreibung={
-"ws11":'Werte aus tabellarischen und elementaren grafischen Darstellungen ablesen\n(bzw. zusammengesetzte Werte ermitteln) und im jeweiligen Kontext\nangemessen interpretieren können',
-"ws12":'Tabellen und einfache statistische Grafiken erstellen, zwischen Darstellungsformen wechseln können',
-"ws13":'Statistische Kennzahlen (absolute und relative Häufigkeiten; arithmetisches Mittel, Median, Modus; Quartile; Spannweite, empirische Varianz/\nStandardabweichung) im jeweiligen Kontext interpretieren können; die angeführten Kennzahlen für einfache Datensätze ermitteln können',
-"ws14":'Definition und wichtige Eigenschaften des arithmetischen Mittels und des Medians angeben und nutzen,\n Quartile ermitteln und interpretieren können, die Entscheidung für die Verwendung einer bestimmten Kennzahl begründen können',
-"ws21":'Grundraum und Ereignisse in angemessenen Situationen verbal bzw. formal angeben können',
-"ws22":'Relative Häufigkeit als Schätzwert von Wahrscheinlichkeit verwenden und anwenden können',
-"ws23":'Wahrscheinlichkeit unter der Verwendung der Laplace-Annahme (Laplace Wahrscheinlichkeit) berechnen und interpretieren können,\n Additionsregel und Multiplikationsregel anwenden und interpretieren können',
-"ws24":'Binomialkoeffizient berechnen und interpretieren können',
-"ws25":'Bedingte Wahrscheinlichkeiten kennen, berechnen und interpretieren können',
-"ws26":'Entscheiden können, ob ein Ereignis von einem anderen\nEreignis abhängt oder von diesem unabhängig ist',
-"ws31":'Die Begriffe Zufallsvariable, (Wahrscheinlichkeits-)Verteilung,\nErwartungswert und Standardabweichung verständig deuten und einsetzen können',
-"ws32":'Binomialverteilung als Modell einer diskreten Verteilung kennen –\nErwartungswert & Varianz/Standardabweichung binomialverteilter Zufallsgrößen\nermitteln können, Wahrsch.vert. binomialverteilter Zufallsgrößen angeben können,\nArbeiten mit der Binomialverteilung in anwendungsorientierten Bereichen',
-"ws33":'Situationen erkennen und beschreiben können,\nin denen mit Binomialverteilung modelliert werden kann',
-"ws34":'Normalapproximation der Binomialverteilung interpretieren und anwenden können',
-"ws35":'Mit der Normalverteilung, auch in anwendungsorientierten Bereichen, arbeiten können',
-"ws41":'Konfidenzintervalle als Schätzung für eine Wahrscheinlichkeit oder\neinen unbekannten Anteil p interpretieren (frequentistische Deutung) und verwenden\nkönnen, Berechnungen auf Basis der Binomialverteilung oder einer durch die\nNormalverteilung approximierten Binomialverteilung durchführen können',
-"ws42":'Einfache Anteilstests durchführen können und ihr Ergebnis erläutern können'}
-WS_BB=["WS 1.1","WS 1.2","WS 1.3","WS 1.4","WS 2.1","WS 2.2","WS 2.3","WS 2.4","WS-L 2.5","WS-L 2.6",
-"WS 3.1","WS 3.2","WS 3.3","WS 3.4","WS-L 3.5","WS 4.1","WS-L 4.2"]
-set_af=["mc","zo","lt","oa"]
-aufgaben_formate={"mc":'Multiple Choice',"zo":'Zuordnen',"lt":'Lückentext',"oa":'Offenes Antwortformat'}
-Klassen=["k5","k6","k7","k8"]
-themen_klasse_5={'fu':'Funktionen', 'gl':'Gleichungen und\nGleichungssysteme',
-'mzr':'Mengen, Zahlen,\nRechengesetze','tr':'Trigonometrie',
-'vag2':'Vektoren und analytische\nGeometrie'}
-themen_klasse_6={'bsw':'Beschreibende Statistik\nund Wahrscheinlichkeit','fo':'Folgen',
-'pwlu':'Potenzen, Wurzeln, Logarithmen\nund Ungleichungen','re':'Reihen',
-'rf':'Reelle Funktionen','vag3':'Vektoren und analytische\nGeometrie in R3 und Rn'}
-themen_klasse_7={'dr':'Differentialrechnung','dwv':'Diskrete Wahrscheinlichkeits-\nverteilungen',
-'kkk':'Kreise, Kugeln, Kegelschnittslinien\nund andere Kurven','kz':'Komplexe Zahlen','wm':'Wirtschaftsmathematik','ghg':'Gleichungen höheren Grades als 2'}
-themen_klasse_8={'ddg':'Differenzen- und Differential-\ngleichungen; Grundlagen\nder Systemdynamik','ir':'Integralrechnung',
-'sws':'Stetgie Wahrscheinlichkeits-\nverteilungen; Beurteilende\nStatistik','wm':'Wirtschaftsmathematik'}
+ag_kb = config1['ag_kb']
+ag_kb_beschreibung = config1['ag_kb_beschreibung_qt']
+AG_BB = config1['AG_BB']
+an_kb = config1['an_kb']
+an_kb_beschreibung = config1['an_kb_beschreibung_qt']
+AN_BB = config1['AN_BB']
+fa_kb = config1['fa_kb']
+fa_kb_beschreibung = config1['fa_kb_beschreibung_qt']
+FA_BB = config1['FA_BB']
+ws_kb = config1['ws_kb']
+ws_kb_beschreibung = config1['ws_kb_beschreibung_qt']
+WS_BB = config1['WS_BB']
+AF_BB = config1['AF_BB']
+aufgaben_formate = config1['aufgaben_formate']
+Klassen = config1['Klassen']
+themen_klasse_5 = config1['themen_klasse_5']
+themen_klasse_6 = config1['themen_klasse_6']
+themen_klasse_7 = config1['themen_klasse_7']
+themen_klasse_8 = config1['themen_klasse_8']
+dict_gk = config1['dict_gk']
+set_af = config1['set_af']
 
 try:
 	_fromUtf8 = QtCore.QString.fromUtf8
