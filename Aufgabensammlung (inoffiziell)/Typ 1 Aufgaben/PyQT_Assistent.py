@@ -833,7 +833,7 @@ class Ui_MainWindow(object):
 		self.gridLayout_9.addWidget(self.cb_ws26, 0, 1, 1, 1)
 		self.tab_widget_gk.addTab(self.tab_ws, _fromUtf8(""))
 		self.gridLayout_11.addWidget(self.tab_widget_gk, 0, 0, 1, 1)
-		self.gridLayout.addWidget(self.groupBox_5, 1, 2, 1, 1)
+		self.gridLayout.addWidget(self.groupBox_5, 1, 2, 2, 1)
 		MainWindow.setCentralWidget(self.centralwidget)
 		self.statusbar = QtGui.QStatusBar(MainWindow)
 		self.statusbar.setObjectName(_fromUtf8("statusbar"))
