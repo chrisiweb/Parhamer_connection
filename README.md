@@ -1,4 +1,8 @@
 # Parhamer_connection
+## Dependencies
+- Python3
+- PyQt4
+- PyYaml
 
 ## German Version
 
