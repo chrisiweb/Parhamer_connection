@@ -1464,6 +1464,7 @@ class Ui_MainWindow(object):
 			#msg.setDetailedText("The details are as follows:")
 			msg.setStandardButtons(QtGui.QMessageBox.Ok)
 			retval = msg.exec_()
+			return
 
 
 
