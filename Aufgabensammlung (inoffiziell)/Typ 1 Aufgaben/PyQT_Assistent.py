@@ -25,7 +25,7 @@ import yaml
 
 # Load Config-file
 
-config1 = yaml.safe_load(open("config1.yml", encoding='utf8')) # for a lack of better name
+config1 = yaml.safe_load(open("./Config/config1.yml", encoding='utf8')) # for a lack of better name
 
 ag_kb = config1['ag_kb']
 ag_kb_beschreibung = config1['ag_kb_beschreibung_qt']
