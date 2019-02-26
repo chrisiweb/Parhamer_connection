@@ -118,6 +118,7 @@ class Ui_MainWindow(object):
 		MainWindow.setMaximumSize(QtCore.QSize(1078, 16777215))
 		MainWindow.setLayoutDirection(QtCore.Qt.LeftToRight)
 		MainWindow.setStyleSheet(_fromUtf8(""))
+		#MainWindow.setWindowIcon(QtGui.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
 		self.centralwidget = QtGui.QWidget(MainWindow)
 		self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
 		self.gridLayout = QtGui.QGridLayout(self.centralwidget)
@@ -701,6 +702,7 @@ class Ui_MainWindow(object):
 
 		self.retranslateUi(MainWindow)
 		self.tabWidget.setCurrentIndex(0)
+		
 															   
 		self.tab_widget_gk.setCurrentIndex(0)
 		QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -758,7 +760,7 @@ class Ui_MainWindow(object):
 		############################################################################################
 		##############################################################################################
 	def retranslateUi(self, MainWindow):
-		MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow", None))
+		MainWindow.setWindowTitle(_translate("LaTeX File Assistent", "LaTeX File Assistent", None))
 		self.groupBox.setTitle(_translate("MainWindow", "Gesuchte Aufgabenformate:", None))
 		self.cb_af_zo.setText(_translate("MainWindow", "Zuordnungsformat (ZO)", None))
 		self.cb_af_mc.setText(_translate("MainWindow", "Multiplechoice (MC)", None))
@@ -1159,6 +1161,8 @@ class Ui_MainWindow(object):
 		return datetime.datetime.fromtimestamp(t)	
 		
 	def refresh_ddb(self):
+		self.btn_refreshddb.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+		#self.btn_refreshddb.setMouseTracking(True)
 		beispieldaten_dateipfad = {}
 		beispieldaten = []
 
@@ -1207,6 +1211,7 @@ class Ui_MainWindow(object):
 			json.dump(beispieldaten_dateipfad, f,ensure_ascii=False)
 
 		self.label_update.setText(_translate("MainWindow", 'Last Update: ' + self.modification_date(log_file).strftime('%d.%m.%y - %H:%M'), None))
+		self.btn_refreshddb.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
 
 		
 		
@@ -1222,7 +1227,7 @@ class Ui_MainWindow(object):
 
 	def create_pdf(self):
 		if sys.platform.startswith('linux'):
-			subprocess.Popen('cd Teildokument ; latex --synctex=-1 Teildokument.tex ; dvips Teildokument.dvi ; ps2pdf -dNOSAFER Teildokument.ps',shell=True).wait()
+			subprocess.Popen('cd Teildokument ; latex --synctex=-1 Teildokument.tex ; dvips Teildokument.dvi ; ps2pdf -dNOSAFER Teildokument.ps ',shell=True).wait()
 			subprocess.run(['xdg-open', 'Teildokument/Teildokument.pdf'])
 		elif sys.platform.startswith('darwin'):
 			subprocess.Popen('cd Teildokument ; latex --synctex=-1 Teildokument.tex ; dvips Teildokument.dvi ; ps2pdf -dNOSAFER Teildokument.ps',shell=True).wait()
@@ -1230,7 +1235,7 @@ class Ui_MainWindow(object):
 		else:
 			subprocess.Popen('cd Teildokument & latex --synctex=-1 Teildokument.tex& dvips Teildokument.dvi & ps2pdf -dNOSAFER Teildokument.ps',shell=True).wait()
 			subprocess.Popen('cd Teildokument & Teildokument.pdf', shell=True).poll()
-		
+		## -interaction=nonstopmode -halt-on-error Don't stop when error occurs, while compiling
 		os.unlink('Teildokument/Teildokument.aux')
 		os.unlink('Teildokument/Teildokument.log')
 		os.unlink('Teildokument/Teildokument.dvi')
@@ -1238,7 +1243,7 @@ class Ui_MainWindow(object):
 	
 	def PrepareTeXforPDF(self):
 
-
+		self.btn_suche.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 		# r=0
 		# while r <100:
 		# 	Ui_Dialog.progressBar.setValue(r)
@@ -1458,13 +1463,15 @@ class Ui_MainWindow(object):
 		##############################
 		if not dict_gesammeltedateien:
 			msg = QtGui.QMessageBox()
-			msg.setIcon(QtGui.QMessageBox.Information)
+			msg.setIcon(QtGui.QMessageBox.Warning)
+			#msg.setWindowIcon(QtGui.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
 			msg.setText("Es wurden keine passenden Beispiele gefunden!")
-			msg.setInformativeText('Es wird keine Datei ausgegben.')
-			msg.setWindowTitle("Information")
+			msg.setInformativeText('Es wird keine Datei ausgegeben.')
+			msg.setWindowTitle("Warnung")
 			#msg.setDetailedText("The details are as follows:")
 			msg.setStandardButtons(QtGui.QMessageBox.Ok)
 			retval = msg.exec_()
+			self.btn_suche.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
 			return
 
 
@@ -1498,8 +1505,28 @@ class Ui_MainWindow(object):
 
 		file.close()
 
-		MainWindow.close()
-		self.create_pdf()
+
+		msg = QtGui.QMessageBox()
+		msg.setIcon(QtGui.QMessageBox.Question)
+		#msg.setWindowIcon(QtGui.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
+		msg.setText('Insgesamt wurden '+ str(len(dict_gesammeltedateien)) + ' Beispiel gefunden.\n ')
+		msg.setInformativeText('Soll die PDF Datei erstellt werden?')
+		msg.setWindowTitle("Datei ausgeben?")
+		msg.setStandardButtons(QtGui.QMessageBox.Yes|QtGui.QMessageBox.No)
+		buttonY = msg.button(QtGui.QMessageBox.Yes)
+		buttonY.setText('Ja')
+		buttonN = msg.button(QtGui.QMessageBox.No)
+		buttonN.setText('Nein')
+		ret=msg.exec_()
+		
+		if ret==QtGui.QMessageBox.Yes:
+			MainWindow.close()
+			self.create_pdf()
+			sys.exit(0)
+		self.btn_suche.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
+		
+		
+		
 		##################################################
 		################################################
 		###### Windows Loading Bar ######################
@@ -1510,40 +1537,7 @@ class Ui_MainWindow(object):
 		# ui.setupUi(LoadingWindow)
 		# LoadingWindow.exec()
 		
-		sys.exit(0)
-		
-		# print('done')
-		# return	
 
-		# window_loading = Tk()
-		# window_loading.title('Lade...')
-		# window_loading.geometry('+300+200')
-		# def loading_bar():
-		# 	def start_loading_bar():
-		# 		progress.grid(row=2,column=0)
-		# 		progress.start()
-		# 		create_pdf()
-		# 		progress.stop()
-		# 		window_loading.destroy()
-		# 	hauptfenster.destroy()
-		# 	threading.Thread(target=start_loading_bar).start()
-		# if len(dict_gesammeltedateien)==1:
-		# 	label_output=Label(window_loading, text='Insgesamt wurde '+ str(len(dict_gesammeltedateien)) + ' Beispiel gefunden.\n', font=LARGE_FONT).grid(row=0,column=0)	
-		# else:
-		# 	label_output=Label(window_loading, text='Insgesamt wurden '+ str(len(dict_gesammeltedateien)) + ' Beispiele gefunden.\n', font=LARGE_FONT).grid(row=0,column=0)		
-		# label_loading = Label(window_loading , text='Lade PDF Datei...', font=LARGE_FONT).grid(row=1,column=0)
-		# progress = Progressbar(window_loading , orient=HORIZONTAL,length=250,  mode='indeterminate')
-		# loading_bar()
-		# window_loading.mainloop()	
-		
-		# print("Insgesamt wurde(n) " + str(len(dict_gesammeltedateien)) + " Beispiel(e) gefunden. Entsprechende LaTeX-Datei wird ausgegeben...", font=STANDARD_FONT)
-		# if sys.platform.startswith('linux'):
-		# 	subprocess.run(['xdg-open', filename_teildokument])
-		# elif sys.platform.startswith('darwin'):
-		# 	subprocess.run(['open', filename_teildokument])
-		# else:
-		# 	os.system(filename_teildokument)
-		# sys.exit(0)
 	
 if __name__ == "__main__":
 	import sys
