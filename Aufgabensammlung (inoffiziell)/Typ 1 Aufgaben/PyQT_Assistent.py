@@ -972,8 +972,8 @@ class Ui_MainWindow(object):
 		self.label_gk_ws.setText(_translate("MainWindow", "", None))
 		self.actionExit.setText(_translate("MainWindow", "Exit", None))
 		self.actionE.setText(_translate("MainWindow", "Exit", None))
-		
-	
+		self.btn_suche.setShortcut(_translate("MainWindow", "Return", None))
+		self.btn_refreshddb.setShortcut(_translate("MainWindow", "F5", None))
 	############################################################################
 	############################################################################
 	############### Buttons Check_ALL ######################################
