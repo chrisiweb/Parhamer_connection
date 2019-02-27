@@ -1395,8 +1395,6 @@ class Ui_MainWindow(object):
 						gesammeltedateien.append(element)
 			
 		
-			gesammeltedateien.sort(key=self.natural_keys)
-			
 
 
 			# if not len(entry_suchbegriffe.get()) ==0:
@@ -1405,6 +1403,10 @@ class Ui_MainWindow(object):
 					# if entry_suchbegriffe.get().lower() in all.lower():
 						# if all not in gesammeltedateien:
 							# gesammeltedateien.append(all)
+		if len(gesammeltedateien)==0:
+			gesammeltedateien=list(beispieldaten_dateipfad.keys())
+
+		gesammeltedateien.sort(key=self.natural_keys)
 
 		for all in gesammeltedateien[:]:
 			if not len(self.entry_suchbegriffe.text()) ==0:
@@ -1447,7 +1449,7 @@ class Ui_MainWindow(object):
 			if suchbegriffe==[]:
 				dict_gesammeltedateien=beispieldaten_dateipfad
 			for all_formats in list(Klassen):
-				x=eval('self.cb_'+all_formats)
+				x=eval('self.cb_'+all_formats.lower())
 				if x.isChecked()==True:
 					selected_klassen.append(all_formats)
 					suchbegriffe.append(all_formats.upper())
