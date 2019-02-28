@@ -799,15 +799,7 @@ class Ui_MainWindow(object):
 	def PrepareTeXforPDF(self):
 
 		self.btn_suche.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-		# r=0
-		# while r <100:
-		# 	Ui_Dialog.progressBar.setValue(r)
-		# 	r+=0.0001
 
-		# window=Ui_Dialog()
-		# window.show()
-		# print('done')
-		# return
 		if not os.path.isfile(os.path.join('Teildokument','log_file')):
 			self.refresh_ddb()
 		suchbegriffe = []
@@ -897,49 +889,17 @@ class Ui_MainWindow(object):
 
 					
 		if self.menu_searchtype.currentText()=='Alle Dateien ausgeben, die alle Suchkriterien enthalten':
-			liste_kompetenzbereiche ={}
-			r=1
-			for all in beispieldaten:
-				gkliste = []
-				for gkbereich in AG_BB:
-					if gkbereich in all:
-						gkliste.append(gkbereich)
-				for gkbereich in AN_BB:
-					if gkbereich in all:
-						gkliste.append(gkbereich)
-				for gkbereich in FA_BB:
-					if gkbereich in all:
-						gkliste.append(gkbereich)
-				for gkbereich in WS_BB:
-					if gkbereich in all:
-						gkliste.append(gkbereich)
-				for klasse in Klassen:
-					if klasse in all:
-						gkliste.append(klasse)
-				liste_kompetenzbereiche.update({r:gkliste})
-				r+=1
-
 			gesammeltedateien=[]
+
+			gesammeltedateien=list(beispieldaten_dateipfad.keys())
+			for item in suchbegriffe:
+				for all in gesammeltedateien[:]:
+					if item not in all:
+						gesammeltedateien.remove(all)
 			
-			# for r in range(1,len(liste_kompetenzbereiche)+1):
-				# if liste_kompetenzbereiche[r]==[]:
-					# del liste_kompetenzbereiche[r]
-			for r in range(1,len(liste_kompetenzbereiche)+1):
-				for all in suchbegriffe:
-					if r in liste_kompetenzbereiche.keys():
-						if all not in liste_kompetenzbereiche[r]:
-							del liste_kompetenzbereiche[r]
-
-
-			for key in liste_kompetenzbereiche.keys():
-				gesammeltedateien.append(beispieldaten[key-1])
-			
-				
-			# for all in gesammeltedateien[:]:
-				# if not len(self.entry_suchbegriffe.text()) ==0:
-					# if self.entry_suchbegriffe.text().lower() not in all.lower():
-						# gesammeltedateien.remove(all)
-
+			dict_gesammeltedateien={}
+			for all in gesammeltedateien:
+				dict_gesammeltedateien[all]=beispieldaten_dateipfad[all]
 					
 		if self.menu_searchtype.currentText()=='Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten':
 		
@@ -952,18 +912,13 @@ class Ui_MainWindow(object):
 		
 	
 
-
-			# if not len(entry_suchbegriffe.get()) ==0:
-				# suchbegriffe.append(entry_suchbegriffe.get())
-				# for all in list(beispieldaten_dateipfad.keys())[:]:
-					# if entry_suchbegriffe.get().lower() in all.lower():
-						# if all not in gesammeltedateien:
-							# gesammeltedateien.append(all)
-
-		if len(gesammeltedateien)==0:
+		if len(gesammeltedateien)==0 and len(suchbegriffe)==0:
 			gesammeltedateien=list(beispieldaten_dateipfad.keys())
 
 		gesammeltedateien.sort(key=self.natural_keys)
+
+		if not len(self.entry_suchbegriffe.text())==0:
+			suchbegriffe.append(self.entry_suchbegriffe.text())
 
 		for all in gesammeltedateien[:]:
 			if not len(self.entry_suchbegriffe.text()) ==0:
@@ -1064,7 +1019,7 @@ class Ui_MainWindow(object):
 
 		file.close()
 
-
+		
 		msg = QtGui.QMessageBox()
 		msg.setIcon(QtGui.QMessageBox.Question)
 		#msg.setWindowIcon(QtGui.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
