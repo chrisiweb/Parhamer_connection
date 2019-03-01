@@ -225,19 +225,6 @@ ws_beschreibung:
     "ws41": "Konfidenzintervalle als Schätzung für eine Wahrscheinlichkeit oder einen\nunbekannten Anteil p interpretieren (frequentistische Deutung) und verwenden\nkönnen, Berechnungen auf Basis der Binomialverteilung oder einer durch die\nNormalverteilung approximierten Binomialverteilung durchführen können"
     "ws42": "Einfache Anteilstests durchführen können\nund ihr Ergebnis erläutern können"
 
-
-aufgaben_formate: 
-    "mc": "Multiple Choice"
-    "zo": "Zuordnen"
-    "lt": "Lückentext"
-    "oa": "Offenes Antwortformat"
-
-Klassen: 
-    "k5": "5. Klasse"
-    "k6": "6. Klasse"
-    "k7": "7. Klasse"
-    "k8": "8. Klasse"
-
 k5_beschreibung: 
     "fu": "Funktionen"
     "gl": "Gleichungen und\nGleichungssysteme"

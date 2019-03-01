@@ -21,12 +21,13 @@ ag_beschreibung = config1['ag_beschreibung']
 an_beschreibung = config1['an_beschreibung']
 fa_beschreibung = config1['fa_beschreibung']
 ws_beschreibung = config1['ws_beschreibung']
-aufgaben_formate = config1['aufgaben_formate']
-Klassen = config1['Klassen']
+
+
 k5_beschreibung = config1['k5_beschreibung']
 k6_beschreibung = config1['k6_beschreibung']
 k7_beschreibung = config1['k7_beschreibung']
 k8_beschreibung = config1['k8_beschreibung']
+
 dict_gk = config1['dict_gk']
 set_af = config1['set_af']
 
