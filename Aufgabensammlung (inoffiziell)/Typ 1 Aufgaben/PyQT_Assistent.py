@@ -177,107 +177,6 @@ class Ui_MainWindow(object):
 		self.tabWidget.setStyleSheet(_fromUtf8("background-color: rgb(229, 246, 255);"))
 		self.tabWidget.setMovable(False)
 		self.tabWidget.setObjectName(_fromUtf8("tabWidget"))
-		self.tab_k5 = QtGui.QWidget()
-		self.tab_k5.setObjectName(_fromUtf8("tab_k5"))
-		self.gridLayout_3 = QtGui.QGridLayout(self.tab_k5)
-		self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
-		self.cb_k5_fu = QtGui.QCheckBox(self.tab_k5)
-		self.cb_k5_fu.setObjectName(_fromUtf8("cb_k5_fu"))
-		self.gridLayout_3.addWidget(self.cb_k5_fu, 0, 0, 1, 1)
-		self.cb_k5_gl = QtGui.QCheckBox(self.tab_k5)
-		self.cb_k5_gl.setStyleSheet(_fromUtf8(""))
-		self.cb_k5_gl.setObjectName(_fromUtf8("cb_k5_gl"))
-		self.gridLayout_3.addWidget(self.cb_k5_gl, 1, 0, 1, 1)
-		self.cb_k5_mzr = QtGui.QCheckBox(self.tab_k5)
-		self.cb_k5_mzr.setObjectName(_fromUtf8("cb_k5_mzr"))
-		self.gridLayout_3.addWidget(self.cb_k5_mzr, 2, 0, 1, 1)
-		self.cb_k5_tr = QtGui.QCheckBox(self.tab_k5)
-		self.cb_k5_tr.setObjectName(_fromUtf8("cb_k5_tr"))
-		self.gridLayout_3.addWidget(self.cb_k5_tr, 3, 0, 1, 1)
-		self.cb_k5_vag2 = QtGui.QCheckBox(self.tab_k5)
-		self.cb_k5_vag2.setObjectName(_fromUtf8("cb_k5_vag2"))
-		self.gridLayout_3.addWidget(self.cb_k5_vag2, 4, 0, 1, 1)
-		self.btn_K5 = QtGui.QPushButton(self.tab_k5)
-		self.btn_K5.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))
-		self.btn_K5.setObjectName(_fromUtf8("btn_K5"))
-		self.gridLayout_3.addWidget(self.btn_K5, 5, 0, 1, 1, QtCore.Qt.AlignRight)
-		self.tabWidget.addTab(self.tab_k5, _fromUtf8(""))
-		self.tab_k6 = QtGui.QWidget()
-		self.tab_k6.setObjectName(_fromUtf8("tab_k6"))
-		self.gridLayout_6 = QtGui.QGridLayout(self.tab_k6)
-		self.gridLayout_6.setObjectName(_fromUtf8("gridLayout_6"))
-		self.cb_k6_pwlu = QtGui.QCheckBox(self.tab_k6)
-		self.cb_k6_pwlu.setObjectName(_fromUtf8("cb_k6_pwlu"))
-		self.gridLayout_6.addWidget(self.cb_k6_pwlu, 2, 0, 1, 1)
-		self.cb_k6_fo = QtGui.QCheckBox(self.tab_k6)
-		self.cb_k6_fo.setObjectName(_fromUtf8("cb_k6_fo"))
-		self.gridLayout_6.addWidget(self.cb_k6_fo, 1, 0, 1, 1)
-		self.cb_k6_rf = QtGui.QCheckBox(self.tab_k6)
-		self.cb_k6_rf.setObjectName(_fromUtf8("cb_k6_rf"))
-		self.gridLayout_6.addWidget(self.cb_k6_rf, 4, 0, 1, 1)
-		self.cb_k6_vag3 = QtGui.QCheckBox(self.tab_k6)
-		self.cb_k6_vag3.setObjectName(_fromUtf8("cb_k6_vag3"))
-		self.gridLayout_6.addWidget(self.cb_k6_vag3, 10, 0, 1, 1)
-		self.btn_K6 = QtGui.QPushButton(self.tab_k6)
-		self.btn_K6.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))
-		self.btn_K6.setObjectName(_fromUtf8("btn_K6"))
-		self.gridLayout_6.addWidget(self.btn_K6, 12, 0, 1, 3, QtCore.Qt.AlignRight)
-		self.cb_k6_re = QtGui.QCheckBox(self.tab_k6)
-		self.cb_k6_re.setObjectName(_fromUtf8("cb_k6_re"))
-		self.gridLayout_6.addWidget(self.cb_k6_re, 3, 0, 1, 1)
-		self.cb_k6_bsw = QtGui.QCheckBox(self.tab_k6)
-		self.cb_k6_bsw.setObjectName(_fromUtf8("cb_k6_bsw"))
-		self.gridLayout_6.addWidget(self.cb_k6_bsw, 0, 0, 1, 1)
-		self.tabWidget.addTab(self.tab_k6, _fromUtf8(""))
-		self.tab_k7 = QtGui.QWidget()
-		self.tab_k7.setObjectName(_fromUtf8("tab_k7"))
-		self.gridLayout_7 = QtGui.QGridLayout(self.tab_k7)
-		self.gridLayout_7.setObjectName(_fromUtf8("gridLayout_7"))
-		self.cb_k7_kkk = QtGui.QCheckBox(self.tab_k7)
-		self.cb_k7_kkk.setObjectName(_fromUtf8("cb_k7_kkk"))
-		self.gridLayout_7.addWidget(self.cb_k7_kkk, 3, 0, 1, 1)
-		self.cb_k7_dr = QtGui.QCheckBox(self.tab_k7)
-		self.cb_k7_dr.setObjectName(_fromUtf8("cb_k7_dr"))
-		self.gridLayout_7.addWidget(self.cb_k7_dr, 0, 0, 1, 1)
-		self.cb_k7_dwv = QtGui.QCheckBox(self.tab_k7)
-		self.cb_k7_dwv.setObjectName(_fromUtf8("cb_k7_dwv"))
-		self.gridLayout_7.addWidget(self.cb_k7_dwv, 1, 0, 1, 1)
-		self.cb_k7_kz = QtGui.QCheckBox(self.tab_k7)
-		self.cb_k7_kz.setObjectName(_fromUtf8("cb_k7_kz"))
-		self.gridLayout_7.addWidget(self.cb_k7_kz, 4, 0, 1, 1)
-		self.cb_k7_wm = QtGui.QCheckBox(self.tab_k7)
-		self.cb_k7_wm.setObjectName(_fromUtf8("cb_k7_wm"))
-		self.gridLayout_7.addWidget(self.cb_k7_wm, 5, 0, 1, 1)
-		self.btn_K7 = QtGui.QPushButton(self.tab_k7)
-		self.btn_K7.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))
-		self.btn_K7.setObjectName(_fromUtf8("btn_K7"))
-		self.gridLayout_7.addWidget(self.btn_K7, 7, 0, 1, 1, QtCore.Qt.AlignRight)
-		self.cb_k7_ghg = QtGui.QCheckBox(self.tab_k7)
-		self.cb_k7_ghg.setObjectName(_fromUtf8("cb_k7_ghg"))
-		self.gridLayout_7.addWidget(self.cb_k7_ghg, 2, 0, 1, 1)
-		self.tabWidget.addTab(self.tab_k7, _fromUtf8(""))
-		self.tab_k8 = QtGui.QWidget()
-		self.tab_k8.setObjectName(_fromUtf8("tab_k8"))
-		self.gridLayout_8 = QtGui.QGridLayout(self.tab_k8)
-		self.gridLayout_8.setObjectName(_fromUtf8("gridLayout_8"))
-		self.cb_k8_ir = QtGui.QCheckBox(self.tab_k8)
-		self.cb_k8_ir.setObjectName(_fromUtf8("cb_k8_ir"))
-		self.gridLayout_8.addWidget(self.cb_k8_ir, 1, 0, 1, 1)
-		self.cb_k8_ddg = QtGui.QCheckBox(self.tab_k8)
-		self.cb_k8_ddg.setObjectName(_fromUtf8("cb_k8_ddg"))
-		self.gridLayout_8.addWidget(self.cb_k8_ddg, 0, 0, 1, 1)
-		self.cb_k8_sws = QtGui.QCheckBox(self.tab_k8)
-		self.cb_k8_sws.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
-		self.cb_k8_sws.setObjectName(_fromUtf8("cb_k8_sws"))
-		self.gridLayout_8.addWidget(self.cb_k8_sws, 2, 0, 1, 1)
-		self.cb_k8_wm = QtGui.QCheckBox(self.tab_k8)
-		self.cb_k8_wm.setObjectName(_fromUtf8("cb_k8_wm"))
-		self.gridLayout_8.addWidget(self.cb_k8_wm, 3, 0, 1, 1)
-		self.btn_K8 = QtGui.QPushButton(self.tab_k8)
-		self.btn_K8.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))
-		self.btn_K8.setObjectName(_fromUtf8("btn_K8"))
-		self.gridLayout_8.addWidget(self.btn_K8, 4, 0, 1, 1, QtCore.Qt.AlignRight)
-		self.tabWidget.addTab(self.tab_k8, _fromUtf8(""))
 		self.verticalLayout.addWidget(self.tabWidget)
 		self.gridLayout.addWidget(self.groupBox_4, 1, 0, 2, 1)
 		self.groupBox_5 = QtGui.QGroupBox(self.centralwidget)													  
@@ -337,7 +236,37 @@ class Ui_MainWindow(object):
 		self.tab_widget_gk.addTab(self.tab_ws, _fromUtf8(""))
 		self.create_checkbox_gk('ws',ws_beschreibung)
 
-		#########
+		######### Klassenthemen
+		### K5
+		self.tab_k5 = QtGui.QWidget()
+		self.tab_k5.setObjectName(_fromUtf8("tab_k5"))
+		self.gridLayout_k5 = QtGui.QGridLayout(self.tab_k5)
+		self.gridLayout_k5.setObjectName(_fromUtf8("gridLayout_k5"))
+		self.tabWidget.addTab(self.tab_k5, _fromUtf8(""))
+		self.create_checkbox_klasse('k5',k5_beschreibung)
+		### K6
+		self.tab_k6 = QtGui.QWidget()
+		self.tab_k6.setObjectName(_fromUtf8("tab_k6"))
+		self.gridLayout_k6 = QtGui.QGridLayout(self.tab_k6)
+		self.gridLayout_k6.setObjectName(_fromUtf8("gridLayout_k6"))
+		self.tabWidget.addTab(self.tab_k6, _fromUtf8(""))
+		self.create_checkbox_klasse('k6',k6_beschreibung)
+		### K7
+		self.tab_k7 = QtGui.QWidget()
+		self.tab_k7.setObjectName(_fromUtf8("tab_k7"))
+		self.gridLayout_k7 = QtGui.QGridLayout(self.tab_k7)
+		self.gridLayout_k7.setObjectName(_fromUtf8("gridLayout_k7"))
+		self.create_checkbox_klasse('k7',k7_beschreibung)
+		self.tabWidget.addTab(self.tab_k7, _fromUtf8(""))
+		### K8
+		self.tab_k8 = QtGui.QWidget()
+		self.tab_k8.setObjectName(_fromUtf8("tab_k8"))
+		self.gridLayout_k8 = QtGui.QGridLayout(self.tab_k8)
+		self.gridLayout_k8.setObjectName(_fromUtf8("gridLayout_k8"))
+		self.tabWidget.addTab(self.tab_k8, _fromUtf8(""))
+		self.create_checkbox_klasse('k8',k8_beschreibung)
+		
+		########
 		self.gridLayout_11.addWidget(self.tab_widget_gk, 0, 0, 1, 1)
 		self.gridLayout.addWidget(self.groupBox_5, 1, 2, 2, 1)
 		MainWindow.setCentralWidget(self.centralwidget)
@@ -363,10 +292,10 @@ class Ui_MainWindow(object):
 		############## Commands ####################################################
 		############################################################################
 		self.btn_refreshddb.clicked.connect(self.refresh_ddb)
-		self.btn_K5.clicked.connect(self.btn_K5_pressed)
-		self.btn_K6.clicked.connect(self.btn_K6_pressed)
-		self.btn_K7.clicked.connect(self.btn_K7_pressed)
-		self.btn_K8.clicked.connect(self.btn_K8_pressed)
+		self.btn_k5.clicked.connect(self.btn_k5_pressed)
+		self.btn_k6.clicked.connect(self.btn_k6_pressed)
+		self.btn_k7.clicked.connect(self.btn_k7_pressed)
+		self.btn_k8.clicked.connect(self.btn_k8_pressed)
 		self.btn_ag_all.clicked.connect(self.btn_ag_all_pressed)
 		self.btn_an_all.clicked.connect(self.btn_an_all_pressed)
 		self.btn_fa_all.clicked.connect(self.btn_fa_all_pressed)
@@ -391,22 +320,12 @@ class Ui_MainWindow(object):
 			x=eval('self.cb_'+all)
 			x.stateChanged.connect(self.cb_ws_checked)
 		
-		for all in k5_beschreibung:
-			x=eval('self.cb_k5_'+all)
-			x.stateChanged.connect(self.cb_rest_checked)
+		for g in range(5,9):
+			for all in eval('k%s_beschreibung'%g):
+				x=eval('self.cb_k%s_'%g+all)
+				x.stateChanged.connect(self.cb_rest_checked)
+
 		
-		for all in k6_beschreibung:
-			x=eval('self.cb_k6_'+all)
-			x.stateChanged.connect(self.cb_rest_checked)
-
-		for all in k7_beschreibung:
-			x=eval('self.cb_k7_'+all)
-			x.stateChanged.connect(self.cb_rest_checked)
-
-		for all in k8_beschreibung:
-			x=eval('self.cb_k8_'+all)
-			x.stateChanged.connect(self.cb_rest_checked)
-			
 		
 		############################################################################################
 		##############################################################################################
@@ -440,13 +359,13 @@ class Ui_MainWindow(object):
 		self.name_checkbox_klassen(7)
 		self.name_checkbox_klassen(8)																					 
 
-		self.btn_K5.setText(_translate("MainWindow", "alle auswählen", None))
+		self.btn_k5.setText(_translate("MainWindow", "alle auswählen", None))
 		self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_k5), _translate("MainWindow", "5. Klasse", None))
-		self.btn_K6.setText(_translate("MainWindow", "alle auswählen", None))
+		self.btn_k6.setText(_translate("MainWindow", "alle auswählen", None))
 		self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_k6), _translate("MainWindow", "6. Klasse", None))
-		self.btn_K7.setText(_translate("MainWindow", "alle auswählen", None))
+		self.btn_k7.setText(_translate("MainWindow", "alle auswählen", None))
 		self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_k7), _translate("MainWindow", "7. Klasse", None))
-		self.btn_K8.setText(_translate("MainWindow", "alle auswählen", None))
+		self.btn_k8.setText(_translate("MainWindow", "alle auswählen", None))
 		self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_k8), _translate("MainWindow", "8. Klasse", None))
 		self.groupBox_5.setTitle(_translate("MainWindow", "Grundkompetenzen", None))
 		self.btn_suche.setShortcut(_translate("MainWindow", "Return", None))
@@ -520,6 +439,28 @@ class Ui_MainWindow(object):
 			else:
 				row+=1
 
+	def create_checkbox_klasse(self,klasse,chosen_dict):
+		row=0
+		column=0
+		max_row=9
+
+		for all in chosen_dict:
+			exec('self.cb_'+klasse+'_'+all+'= QtGui.QCheckBox(self.tab_'+klasse+')')	
+			exec('self.cb_'+klasse+'_'+all+'.setObjectName(_fromUtf8("cb_'+klasse+'_'+all+'"))')
+			grid=eval('self.gridLayout_'+klasse)
+			x=eval('self.cb_'+klasse+'_'+all)
+			grid.addWidget(x, row,column, 1, 1)	
+
+			if row>max_row:
+				row=0
+				column+=1
+			else:
+				row+=1
+
+			exec('self.btn_'+klasse+'= QtGui.QPushButton(self.tab_'+klasse+')')
+			exec('self.btn_%s.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))'%klasse)
+			exec('self.btn_'+klasse+'.setObjectName(_fromUtf8("btn_'+klasse+'"))')
+			exec('self.gridLayout_'+klasse+'.addWidget(self.btn_'+klasse+', max_row, column+1, 1, 1, QtCore.Qt.AlignRight)')
 
 
 	def name_checkbox_gk(self, chosen_dict):
@@ -533,7 +474,7 @@ class Ui_MainWindow(object):
 			x=eval('self.cb_k'+str(klasse)+'_'+all)
 			x.setText(_translate("MainWindow", chosen_dict[all], None))		
 
-	def btn_K5_pressed(self):
+	def btn_k5_pressed(self):
 		if self.cb_k5_fu.isChecked()==False:
 			for all in k5_beschreibung:
 				x=eval('self.cb_k5_'+all)
@@ -543,7 +484,7 @@ class Ui_MainWindow(object):
 				x=eval('self.cb_k5_'+all)
 				x.setChecked(False)
 
-	def btn_K6_pressed(self):
+	def btn_k6_pressed(self):
 		if self.cb_k6_bsw.isChecked()==False:
 			for all in k6_beschreibung:
 				x=eval('self.cb_k6_'+all)
@@ -553,7 +494,7 @@ class Ui_MainWindow(object):
 				x=eval('self.cb_k6_'+all)
 				x.setChecked(False)
 
-	def btn_K7_pressed(self):
+	def btn_k7_pressed(self):
 		if self.cb_k7_dr.isChecked()==False:
 			for all in k7_beschreibung:
 				x=eval('self.cb_k7_'+all)
@@ -563,7 +504,7 @@ class Ui_MainWindow(object):
 				x=eval('self.cb_k7_'+all)
 				x.setChecked(False)
 
-	def btn_K8_pressed(self):
+	def btn_k8_pressed(self):
 		if self.cb_k8_ddg.isChecked()==False:
 			for all in k8_beschreibung:
 				x=eval('self.cb_k8_'+all)
