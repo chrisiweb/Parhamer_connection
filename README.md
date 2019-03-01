@@ -7,22 +7,15 @@
 ## German Version
 
 Parhamer_connection ist ein Programm, das in Python geschrieben wurde.
-Es besteht aus einem UI in QT4, dass eine Ordnerhierachie durchsucht.
+Es besteht aus einem UI in TKinter, dass eine Ordnerhierachie durchsucht.
 Die Ordner enthalten mathematische Aufgaben, welche in LaTeX geschrieben wurden.
 So können leicht Tests oder Schularbeiten erstellt werden.
 
-Das Programm funktioniert mit dem Latex-Projekt srdp-mathematik (auf C-Tan zu finden).
-Link: [https://ctan.org/pkg/srdp-mathematik](https://ctan.org/pkg/srdp-mathematik)
+Das Programm funktioniert mit dem Projekt srdp-mathematik (auf C-Tan zu finden).
 
-### Screenshot
-![Screenshot: Typ2](./artwork/typ2.png)
-
-### Maintainers and Contributers
+### Maintainers and Contributes
 Maintainer:
 - chrisiweb
-
-Contributers:
-- dfessor
 
 ## English Version
 
