@@ -40,7 +40,6 @@ def config_loader(pathToFile):
     config1 = yaml.safe_load(open(pathToFile, encoding='utf8'))
 
     global dict_aufgabenformat
-    global dict_aufgabenformat
     global dict_themen
     global ag_kb
     global AG_BB
@@ -61,6 +60,7 @@ def config_loader(pathToFile):
     global Klasse7_BB
     global Klasse8_BB
 
+    dict_aufgabenformat = config1['dict_aufgabenformat']
     dict_themen = config1['dict_themen']
     ag_kb = config1['ag_kb']
     AG_BB = config1['AG_BB']
