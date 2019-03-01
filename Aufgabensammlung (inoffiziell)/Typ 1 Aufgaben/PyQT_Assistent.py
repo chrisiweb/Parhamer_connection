@@ -144,6 +144,7 @@ class Ui_MainWindow(object):
 		self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
 		self.cb_solution = QtGui.QCheckBox(self.centralwidget)
 		self.cb_solution.setObjectName(_fromUtf8("cb_solution"))
+		self.cb_solution.setChecked(True)
 		self.horizontalLayout_2.addWidget(self.cb_solution, QtCore.Qt.AlignLeft)
 		self.btn_suche = QtGui.QPushButton(self.centralwidget)
 		self.btn_suche.setEnabled(True)
