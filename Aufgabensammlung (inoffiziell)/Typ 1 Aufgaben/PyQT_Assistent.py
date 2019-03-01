@@ -18,14 +18,9 @@ import yaml
 config1 = yaml.safe_load(open("./Config/config1.yml", encoding='utf8')) # for a lack of better name
 
 ag_beschreibung = config1['ag_beschreibung']
-AG_BB = config1['AG_BB']
 an_beschreibung = config1['an_beschreibung']
-AN_BB = config1['AN_BB']
 fa_beschreibung = config1['fa_beschreibung']
-FA_BB = config1['FA_BB']
 ws_beschreibung = config1['ws_beschreibung']
-WS_BB = config1['WS_BB']
-AF_BB = config1['AF_BB']
 aufgaben_formate = config1['aufgaben_formate']
 Klassen = config1['Klassen']
 k5_beschreibung = config1['k5_beschreibung']
