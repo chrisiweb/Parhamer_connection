@@ -1,15 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'test_2.ui'
-#
-# Created by: PyQt4 UI code generator 4.11.4
-#
-# WARNING! All changes made in this file will be lost!
-
-########
-### QMessageBox (little info  window)
-### QShortcut (key)
-
 from PyQt4 import QtCore, QtGui
 import time
 import threading
@@ -27,25 +17,21 @@ import yaml
 
 config1 = yaml.safe_load(open("./Config/config1.yml", encoding='utf8')) # for a lack of better name
 
-ag_kb = config1['ag_kb']
-ag_kb_beschreibung = config1['ag_kb_beschreibung_qt']
+ag_beschreibung = config1['ag_beschreibung']
 AG_BB = config1['AG_BB']
-an_kb = config1['an_kb']
-an_kb_beschreibung = config1['an_kb_beschreibung_qt']
+an_beschreibung = config1['an_beschreibung']
 AN_BB = config1['AN_BB']
-fa_kb = config1['fa_kb']
-fa_kb_beschreibung = config1['fa_kb_beschreibung_qt']
+fa_beschreibung = config1['fa_beschreibung']
 FA_BB = config1['FA_BB']
-ws_kb = config1['ws_kb']
-ws_kb_beschreibung = config1['ws_kb_beschreibung_qt']
+ws_beschreibung = config1['ws_beschreibung']
 WS_BB = config1['WS_BB']
 AF_BB = config1['AF_BB']
 aufgaben_formate = config1['aufgaben_formate']
 Klassen = config1['Klassen']
-themen_klasse_5 = config1['themen_klasse_5']
-themen_klasse_6 = config1['themen_klasse_6']
-themen_klasse_7 = config1['themen_klasse_7']
-themen_klasse_8 = config1['themen_klasse_8']
+k5_beschreibung = config1['k5_beschreibung']
+k6_beschreibung = config1['k6_beschreibung']
+k7_beschreibung = config1['k7_beschreibung']
+k8_beschreibung = config1['k8_beschreibung']
 dict_gk = config1['dict_gk']
 set_af = config1['set_af']
 
@@ -68,7 +54,7 @@ except AttributeError:
 class Ui_MainWindow(object):
 	def setupUi(self, MainWindow):
 		MainWindow.setObjectName(_fromUtf8("MainWindow"))
-		MainWindow.resize(1078, 735)
+		MainWindow.resize(1000, 600)
 		MainWindow.setMaximumSize(QtCore.QSize(1078, 16777215))
 		MainWindow.setLayoutDirection(QtCore.Qt.LeftToRight)
 		MainWindow.setStyleSheet(_fromUtf8(""))
@@ -80,51 +66,51 @@ class Ui_MainWindow(object):
 		self.groupBox = QtGui.QGroupBox(self.centralwidget)
 		self.groupBox.setMaximumSize(QtCore.QSize(367, 16777215))
 		self.groupBox.setObjectName(_fromUtf8("groupBox"))
-		self.gridLayout_13 = QtGui.QGridLayout(self.groupBox)
-		self.gridLayout_13.setObjectName(_fromUtf8("gridLayout_13"))
+		self.gridLayout_af = QtGui.QGridLayout(self.groupBox)
+		self.gridLayout_af.setObjectName(_fromUtf8("gridLayout_af"))
 		self.cb_af_zo = QtGui.QCheckBox(self.groupBox)
 		self.cb_af_zo.setObjectName(_fromUtf8("cb_af_zo"))
-		self.gridLayout_13.addWidget(self.cb_af_zo, 0, 2, 1, 1)
+		self.gridLayout_af.addWidget(self.cb_af_zo, 0, 2, 1, 1)
 		self.cb_af_mc = QtGui.QCheckBox(self.groupBox)
 		self.cb_af_mc.setObjectName(_fromUtf8("cb_af_mc"))
-		self.gridLayout_13.addWidget(self.cb_af_mc, 0, 0, 1, 2)
+		self.gridLayout_af.addWidget(self.cb_af_mc, 0, 0, 1, 2)
 		self.cb_af_oa = QtGui.QCheckBox(self.groupBox)
 		self.cb_af_oa.setObjectName(_fromUtf8("cb_af_oa"))
-		self.gridLayout_13.addWidget(self.cb_af_oa, 1, 2, 1, 1)
+		self.gridLayout_af.addWidget(self.cb_af_oa, 1, 2, 1, 1)
 		self.cb_af_lt = QtGui.QCheckBox(self.groupBox)
 		self.cb_af_lt.setObjectName(_fromUtf8("cb_af_lt"))
-		self.gridLayout_13.addWidget(self.cb_af_lt, 1, 0, 1, 1)
-		self.gridLayout.addWidget(self.groupBox, 3, 0, 1, 1)
-		self.groupBox_2 = QtGui.QGroupBox(self.centralwidget)
-		self.groupBox_2.setObjectName(_fromUtf8("groupBox_2"))
-		self.verticalLayout_2 = QtGui.QVBoxLayout(self.groupBox_2)
+		self.gridLayout_af.addWidget(self.cb_af_lt, 1, 0, 1, 1)
+		self.gridLayout.addWidget(self.groupBox, 4, 0, 2, 1)
+		self.groupBox_ausgew_gk = QtGui.QGroupBox(self.centralwidget)
+		self.groupBox_ausgew_gk.setObjectName(_fromUtf8("groupBox_ausgew_gk"))
+		self.verticalLayout_2 = QtGui.QVBoxLayout(self.groupBox_ausgew_gk)
 		self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
-		self.label_gk_ag = QtGui.QLabel(self.groupBox_2)
+		self.label_gk_ag = QtGui.QLabel(self.groupBox_ausgew_gk)
 		self.label_gk_ag.setObjectName(_fromUtf8("label_gk_ag"))
 		self.verticalLayout_2.addWidget(self.label_gk_ag)
-		self.label_gk_an = QtGui.QLabel(self.groupBox_2)
+		self.label_gk_an = QtGui.QLabel(self.groupBox_ausgew_gk)
 		self.label_gk_an.setObjectName(_fromUtf8("label_gk_an"))
 		self.verticalLayout_2.addWidget(self.label_gk_an)
-		self.label_gk_fa = QtGui.QLabel(self.groupBox_2)
+		self.label_gk_fa = QtGui.QLabel(self.groupBox_ausgew_gk)
 		self.label_gk_fa.setObjectName(_fromUtf8("label_gk_fa"))
 		self.verticalLayout_2.addWidget(self.label_gk_fa)
-		self.label_gk_ws = QtGui.QLabel(self.groupBox_2)
+		self.label_gk_ws = QtGui.QLabel(self.groupBox_ausgew_gk)
 		self.label_gk_ws.setObjectName(_fromUtf8("label_gk_ws"))
 		self.verticalLayout_2.addWidget(self.label_gk_ws)
-		self.label_gk_rest = QtGui.QLabel(self.groupBox_2)
+		self.label_gk_rest = QtGui.QLabel(self.groupBox_ausgew_gk)
 		self.label_gk_rest.setWordWrap(False)
 		self.label_gk_rest.setObjectName(_fromUtf8("label_gk_rest"))
 		self.verticalLayout_2.addWidget(self.label_gk_rest)
-		self.gridLayout.addWidget(self.groupBox_2, 3, 2, 1, 1)
-		self.groupBox_3 = QtGui.QGroupBox(self.centralwidget)
-		self.groupBox_3.setObjectName(_fromUtf8("groupBox_3"))
-		self.gridLayout_10 = QtGui.QGridLayout(self.groupBox_3)
+		self.gridLayout.addWidget(self.groupBox_ausgew_gk, 3, 2, 1, 1)
+		self.groupBox_titelsuche = QtGui.QGroupBox(self.centralwidget)
+		self.groupBox_titelsuche.setObjectName(_fromUtf8("groupBox_titelsuche"))
+		self.gridLayout_10 = QtGui.QGridLayout(self.groupBox_titelsuche)
 		self.gridLayout_10.setObjectName(_fromUtf8("gridLayout_10"))
-		self.entry_suchbegriffe = QtGui.QLineEdit(self.groupBox_3)
+		self.entry_suchbegriffe = QtGui.QLineEdit(self.groupBox_titelsuche)
 									 
 		self.entry_suchbegriffe.setObjectName(_fromUtf8("entry_suchbegriffe"))
 		self.gridLayout_10.addWidget(self.entry_suchbegriffe, 0, 0, 1, 1)
-		self.gridLayout.addWidget(self.groupBox_3, 4, 2, 1, 1)
+		self.gridLayout.addWidget(self.groupBox_titelsuche, 4, 2, 1, 1)
 		self.groupBox_klassen = QtGui.QGroupBox(self.centralwidget)
 		self.groupBox_klassen.setMaximumSize(QtCore.QSize(367, 16777215))
 		self.groupBox_klassen.setObjectName(_fromUtf8("groupBox_klassen"))
@@ -143,11 +129,15 @@ class Ui_MainWindow(object):
 		self.cb_k8 = QtGui.QCheckBox(self.groupBox_klassen)
 		self.cb_k8.setObjectName(_fromUtf8("cb_k8"))
 		self.gridLayout_14.addWidget(self.cb_k8, 1, 1, 1, 1)
-		self.gridLayout.addWidget(self.groupBox_klassen, 4, 0, 2, 1)
+		self.cb_mat = QtGui.QCheckBox(self.groupBox_klassen)
+		self.cb_mat.setObjectName(_fromUtf8("cb_mat"))
+		self.gridLayout_14.addWidget(self.cb_mat, 0, 2, 1, 1)
+		self.gridLayout.addWidget(self.groupBox_klassen, 3, 0, 1, 1)
 		self.horizontalLayout_2 = QtGui.QHBoxLayout()
 		self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
 		self.cb_solution = QtGui.QCheckBox(self.centralwidget)
 		self.cb_solution.setObjectName(_fromUtf8("cb_solution"))
+		self.cb_solution.setChecked(True)
 		self.horizontalLayout_2.addWidget(self.cb_solution, QtCore.Qt.AlignLeft)
 		self.btn_suche = QtGui.QPushButton(self.centralwidget)
 		self.btn_suche.setEnabled(True)
@@ -171,123 +161,22 @@ class Ui_MainWindow(object):
 		self.menu_searchtype.addItem(_fromUtf8(""))
 		self.menu_searchtype.addItem(_fromUtf8(""))
 		self.gridLayout.addWidget(self.menu_searchtype, 0, 2, 1, 1)
-		self.groupBox_4 = QtGui.QGroupBox(self.centralwidget)
-		self.groupBox_4.setMaximumSize(QtCore.QSize(367, 16777215))
-		self.groupBox_4.setObjectName(_fromUtf8("groupBox_4"))
-		self.verticalLayout = QtGui.QVBoxLayout(self.groupBox_4)
+		self.groupBox_themen_klasse = QtGui.QGroupBox(self.centralwidget)
+		self.groupBox_themen_klasse.setMaximumSize(QtCore.QSize(367, 16777215))
+		self.groupBox_themen_klasse.setObjectName(_fromUtf8("groupBox_themen_klasse"))
+		self.verticalLayout = QtGui.QVBoxLayout(self.groupBox_themen_klasse)
 		self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-		self.tabWidget = QtGui.QTabWidget(self.groupBox_4)
+		self.tabWidget = QtGui.QTabWidget(self.groupBox_themen_klasse)
 		self.tabWidget.setStyleSheet(_fromUtf8("background-color: rgb(229, 246, 255);"))
 		self.tabWidget.setMovable(False)
 		self.tabWidget.setObjectName(_fromUtf8("tabWidget"))
-		self.tab_k5 = QtGui.QWidget()
-		self.tab_k5.setObjectName(_fromUtf8("tab_k5"))
-		self.gridLayout_3 = QtGui.QGridLayout(self.tab_k5)
-		self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
-		self.cb_k5_fu = QtGui.QCheckBox(self.tab_k5)
-		self.cb_k5_fu.setObjectName(_fromUtf8("cb_k5_fu"))
-		self.gridLayout_3.addWidget(self.cb_k5_fu, 0, 0, 1, 1)
-		self.cb_k5_gl = QtGui.QCheckBox(self.tab_k5)
-		self.cb_k5_gl.setStyleSheet(_fromUtf8(""))
-		self.cb_k5_gl.setObjectName(_fromUtf8("cb_k5_gl"))
-		self.gridLayout_3.addWidget(self.cb_k5_gl, 1, 0, 1, 1)
-		self.cb_k5_mzr = QtGui.QCheckBox(self.tab_k5)
-		self.cb_k5_mzr.setObjectName(_fromUtf8("cb_k5_mzr"))
-		self.gridLayout_3.addWidget(self.cb_k5_mzr, 2, 0, 1, 1)
-		self.cb_k5_tr = QtGui.QCheckBox(self.tab_k5)
-		self.cb_k5_tr.setObjectName(_fromUtf8("cb_k5_tr"))
-		self.gridLayout_3.addWidget(self.cb_k5_tr, 3, 0, 1, 1)
-		self.cb_k5_vag2 = QtGui.QCheckBox(self.tab_k5)
-		self.cb_k5_vag2.setObjectName(_fromUtf8("cb_k5_vag2"))
-		self.gridLayout_3.addWidget(self.cb_k5_vag2, 4, 0, 1, 1)
-		self.btn_K5 = QtGui.QPushButton(self.tab_k5)
-		self.btn_K5.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))
-		self.btn_K5.setObjectName(_fromUtf8("btn_K5"))
-		self.gridLayout_3.addWidget(self.btn_K5, 5, 0, 1, 1, QtCore.Qt.AlignRight)
-		self.tabWidget.addTab(self.tab_k5, _fromUtf8(""))
-		self.tab_k6 = QtGui.QWidget()
-		self.tab_k6.setObjectName(_fromUtf8("tab_k6"))
-		self.gridLayout_6 = QtGui.QGridLayout(self.tab_k6)
-		self.gridLayout_6.setObjectName(_fromUtf8("gridLayout_6"))
-		self.cb_k6_pwlu = QtGui.QCheckBox(self.tab_k6)
-		self.cb_k6_pwlu.setObjectName(_fromUtf8("cb_k6_pwlu"))
-		self.gridLayout_6.addWidget(self.cb_k6_pwlu, 2, 0, 1, 1)
-		self.cb_k6_fo = QtGui.QCheckBox(self.tab_k6)
-		self.cb_k6_fo.setObjectName(_fromUtf8("cb_k6_fo"))
-		self.gridLayout_6.addWidget(self.cb_k6_fo, 1, 0, 1, 1)
-		self.cb_k6_rf = QtGui.QCheckBox(self.tab_k6)
-		self.cb_k6_rf.setObjectName(_fromUtf8("cb_k6_rf"))
-		self.gridLayout_6.addWidget(self.cb_k6_rf, 4, 0, 1, 1)
-		self.cb_k6_vag3 = QtGui.QCheckBox(self.tab_k6)
-		self.cb_k6_vag3.setObjectName(_fromUtf8("cb_k6_vag3"))
-		self.gridLayout_6.addWidget(self.cb_k6_vag3, 10, 0, 1, 1)
-		self.btn_K6 = QtGui.QPushButton(self.tab_k6)
-		self.btn_K6.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))
-		self.btn_K6.setObjectName(_fromUtf8("btn_K6"))
-		self.gridLayout_6.addWidget(self.btn_K6, 12, 0, 1, 3, QtCore.Qt.AlignRight)
-		self.cb_k6_re = QtGui.QCheckBox(self.tab_k6)
-		self.cb_k6_re.setObjectName(_fromUtf8("cb_k6_re"))
-		self.gridLayout_6.addWidget(self.cb_k6_re, 3, 0, 1, 1)
-		self.cb_k6_bsw = QtGui.QCheckBox(self.tab_k6)
-		self.cb_k6_bsw.setObjectName(_fromUtf8("cb_k6_bsw"))
-		self.gridLayout_6.addWidget(self.cb_k6_bsw, 0, 0, 1, 1)
-		self.tabWidget.addTab(self.tab_k6, _fromUtf8(""))
-		self.tab_k7 = QtGui.QWidget()
-		self.tab_k7.setObjectName(_fromUtf8("tab_k7"))
-		self.gridLayout_7 = QtGui.QGridLayout(self.tab_k7)
-		self.gridLayout_7.setObjectName(_fromUtf8("gridLayout_7"))
-		self.cb_k7_kkk = QtGui.QCheckBox(self.tab_k7)
-		self.cb_k7_kkk.setObjectName(_fromUtf8("cb_k7_kkk"))
-		self.gridLayout_7.addWidget(self.cb_k7_kkk, 3, 0, 1, 1)
-		self.cb_k7_dr = QtGui.QCheckBox(self.tab_k7)
-		self.cb_k7_dr.setObjectName(_fromUtf8("cb_k7_dr"))
-		self.gridLayout_7.addWidget(self.cb_k7_dr, 0, 0, 1, 1)
-		self.cb_k7_dwv = QtGui.QCheckBox(self.tab_k7)
-		self.cb_k7_dwv.setObjectName(_fromUtf8("cb_k7_dwv"))
-		self.gridLayout_7.addWidget(self.cb_k7_dwv, 1, 0, 1, 1)
-		self.cb_k7_kz = QtGui.QCheckBox(self.tab_k7)
-		self.cb_k7_kz.setObjectName(_fromUtf8("cb_k7_kz"))
-		self.gridLayout_7.addWidget(self.cb_k7_kz, 4, 0, 1, 1)
-		self.cb_k7_wm = QtGui.QCheckBox(self.tab_k7)
-		self.cb_k7_wm.setObjectName(_fromUtf8("cb_k7_wm"))
-		self.gridLayout_7.addWidget(self.cb_k7_wm, 5, 0, 1, 1)
-		self.btn_K7 = QtGui.QPushButton(self.tab_k7)
-		self.btn_K7.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))
-		self.btn_K7.setObjectName(_fromUtf8("btn_K7"))
-		self.gridLayout_7.addWidget(self.btn_K7, 7, 0, 1, 1, QtCore.Qt.AlignRight)
-		self.cb_k7_ghg = QtGui.QCheckBox(self.tab_k7)
-		self.cb_k7_ghg.setObjectName(_fromUtf8("cb_k7_ghg"))
-		self.gridLayout_7.addWidget(self.cb_k7_ghg, 2, 0, 1, 1)
-		self.tabWidget.addTab(self.tab_k7, _fromUtf8(""))
-		self.tab_k8 = QtGui.QWidget()
-		self.tab_k8.setObjectName(_fromUtf8("tab_k8"))
-		self.gridLayout_8 = QtGui.QGridLayout(self.tab_k8)
-		self.gridLayout_8.setObjectName(_fromUtf8("gridLayout_8"))
-		self.cb_k8_ir = QtGui.QCheckBox(self.tab_k8)
-		self.cb_k8_ir.setObjectName(_fromUtf8("cb_k8_ir"))
-		self.gridLayout_8.addWidget(self.cb_k8_ir, 1, 0, 1, 1)
-		self.cb_k8_ddg = QtGui.QCheckBox(self.tab_k8)
-		self.cb_k8_ddg.setObjectName(_fromUtf8("cb_k8_ddg"))
-		self.gridLayout_8.addWidget(self.cb_k8_ddg, 0, 0, 1, 1)
-		self.cb_k8_sws = QtGui.QCheckBox(self.tab_k8)
-		self.cb_k8_sws.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
-		self.cb_k8_sws.setObjectName(_fromUtf8("cb_k8_sws"))
-		self.gridLayout_8.addWidget(self.cb_k8_sws, 2, 0, 1, 1)
-		self.cb_k8_wm = QtGui.QCheckBox(self.tab_k8)
-		self.cb_k8_wm.setObjectName(_fromUtf8("cb_k8_wm"))
-		self.gridLayout_8.addWidget(self.cb_k8_wm, 3, 0, 1, 1)
-		self.btn_K8 = QtGui.QPushButton(self.tab_k8)
-		self.btn_K8.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))
-		self.btn_K8.setObjectName(_fromUtf8("btn_K8"))
-		self.gridLayout_8.addWidget(self.btn_K8, 4, 0, 1, 1, QtCore.Qt.AlignRight)
-		self.tabWidget.addTab(self.tab_k8, _fromUtf8(""))
 		self.verticalLayout.addWidget(self.tabWidget)
-		self.gridLayout.addWidget(self.groupBox_4, 1, 0, 2, 1)
-		self.groupBox_5 = QtGui.QGroupBox(self.centralwidget)													  
-		self.groupBox_5.setObjectName(_fromUtf8("groupBox_5"))
-		self.gridLayout_11 = QtGui.QGridLayout(self.groupBox_5)
+		self.gridLayout.addWidget(self.groupBox_themen_klasse, 1, 0, 2, 1)
+		self.groupBox_gk = QtGui.QGroupBox(self.centralwidget)													  
+		self.groupBox_gk.setObjectName(_fromUtf8("groupBox_gk"))
+		self.gridLayout_11 = QtGui.QGridLayout(self.groupBox_gk)
 		self.gridLayout_11.setObjectName(_fromUtf8("gridLayout_11"))
-		self.tab_widget_gk = QtGui.QTabWidget(self.groupBox_5)
+		self.tab_widget_gk = QtGui.QTabWidget(self.groupBox_gk)
 		self.tab_widget_gk.setMaximumSize(QtCore.QSize(650, 16777215))
 		self.tab_widget_gk.setStyleSheet(_fromUtf8("background-color: rgb(217, 255, 215);"))
 		self.tab_widget_gk.setObjectName(_fromUtf8("tab_widget_gk"))
@@ -302,7 +191,7 @@ class Ui_MainWindow(object):
 		self.btn_ag_all.setObjectName(_fromUtf8("btn_ag_all"))
 		self.gridLayout_ag.addWidget(self.btn_ag_all, 10, 2, 1, 1)
 		self.tab_widget_gk.addTab(self.tab_ag, _fromUtf8(""))
-		self.create_checkbox_gk('ag', ag_kb_beschreibung)
+		self.create_checkbox_gk('ag', ag_beschreibung)
 
 		### AN ###
 		self.tab_an = QtGui.QWidget()
@@ -314,7 +203,7 @@ class Ui_MainWindow(object):
 		self.btn_an_all.setObjectName(_fromUtf8("btn_an_all"))
 		self.gridLayout_an.addWidget(self.btn_an_all, 10, 3, 1, 1)
 		self.tab_widget_gk.addTab(self.tab_an, _fromUtf8(""))
-		self.create_checkbox_gk('an', an_kb_beschreibung)
+		self.create_checkbox_gk('an', an_beschreibung)
 
 		### FA ###
 		self.tab_fa = QtGui.QWidget()
@@ -326,7 +215,7 @@ class Ui_MainWindow(object):
 		self.btn_fa_all.setObjectName(_fromUtf8("btn_fa_all"))
 		self.gridLayout_fa.addWidget(self.btn_fa_all, 10, 3, 1, 1)
 		self.tab_widget_gk.addTab(self.tab_fa, _fromUtf8(""))
-		self.create_checkbox_gk('fa',fa_kb_beschreibung)
+		self.create_checkbox_gk('fa',fa_beschreibung)
 
 		### WS ###
 		self.tab_ws = QtGui.QWidget()
@@ -338,11 +227,41 @@ class Ui_MainWindow(object):
 		self.btn_ws_all.setObjectName(_fromUtf8("btn_ws_all"))
 		self.gridLayout_ws.addWidget(self.btn_ws_all, 10, 2, 1, 1)
 		self.tab_widget_gk.addTab(self.tab_ws, _fromUtf8(""))
-		self.create_checkbox_gk('ws',ws_kb_beschreibung)
+		self.create_checkbox_gk('ws',ws_beschreibung)
 
-		#########
+		######### Klassenthemen
+		### K5
+		self.tab_k5 = QtGui.QWidget()
+		self.tab_k5.setObjectName(_fromUtf8("tab_k5"))
+		self.gridLayout_k5 = QtGui.QGridLayout(self.tab_k5)
+		self.gridLayout_k5.setObjectName(_fromUtf8("gridLayout_k5"))
+		self.tabWidget.addTab(self.tab_k5, _fromUtf8(""))
+		self.create_checkbox_klasse('k5',k5_beschreibung)
+		### K6
+		self.tab_k6 = QtGui.QWidget()
+		self.tab_k6.setObjectName(_fromUtf8("tab_k6"))
+		self.gridLayout_k6 = QtGui.QGridLayout(self.tab_k6)
+		self.gridLayout_k6.setObjectName(_fromUtf8("gridLayout_k6"))
+		self.tabWidget.addTab(self.tab_k6, _fromUtf8(""))
+		self.create_checkbox_klasse('k6',k6_beschreibung)
+		### K7
+		self.tab_k7 = QtGui.QWidget()
+		self.tab_k7.setObjectName(_fromUtf8("tab_k7"))
+		self.gridLayout_k7 = QtGui.QGridLayout(self.tab_k7)
+		self.gridLayout_k7.setObjectName(_fromUtf8("gridLayout_k7"))
+		self.create_checkbox_klasse('k7',k7_beschreibung)
+		self.tabWidget.addTab(self.tab_k7, _fromUtf8(""))
+		### K8
+		self.tab_k8 = QtGui.QWidget()
+		self.tab_k8.setObjectName(_fromUtf8("tab_k8"))
+		self.gridLayout_k8 = QtGui.QGridLayout(self.tab_k8)
+		self.gridLayout_k8.setObjectName(_fromUtf8("gridLayout_k8"))
+		self.tabWidget.addTab(self.tab_k8, _fromUtf8(""))
+		self.create_checkbox_klasse('k8',k8_beschreibung)
+		
+		########
 		self.gridLayout_11.addWidget(self.tab_widget_gk, 0, 0, 1, 1)
-		self.gridLayout.addWidget(self.groupBox_5, 1, 2, 2, 1)
+		self.gridLayout.addWidget(self.groupBox_gk, 1, 2, 2, 1)
 		MainWindow.setCentralWidget(self.centralwidget)
 		self.statusbar = QtGui.QStatusBar(MainWindow)
 		self.statusbar.setObjectName(_fromUtf8("statusbar"))
@@ -366,10 +285,10 @@ class Ui_MainWindow(object):
 		############## Commands ####################################################
 		############################################################################
 		self.btn_refreshddb.clicked.connect(self.refresh_ddb)
-		self.btn_K5.clicked.connect(self.btn_K5_pressed)
-		self.btn_K6.clicked.connect(self.btn_K6_pressed)
-		self.btn_K7.clicked.connect(self.btn_K7_pressed)
-		self.btn_K8.clicked.connect(self.btn_K8_pressed)
+		self.btn_k5.clicked.connect(self.btn_k5_pressed)
+		self.btn_k6.clicked.connect(self.btn_k6_pressed)
+		self.btn_k7.clicked.connect(self.btn_k7_pressed)
+		self.btn_k8.clicked.connect(self.btn_k8_pressed)
 		self.btn_ag_all.clicked.connect(self.btn_ag_all_pressed)
 		self.btn_an_all.clicked.connect(self.btn_an_all_pressed)
 		self.btn_fa_all.clicked.connect(self.btn_fa_all_pressed)
@@ -378,38 +297,28 @@ class Ui_MainWindow(object):
 		
 		
 		
-		for all in ag_kb_beschreibung:
+		for all in ag_beschreibung:
 			x=eval('self.cb_'+all)
 			x.stateChanged.connect(self.cb_ag_checked)
 		
-		for all in an_kb_beschreibung:
+		for all in an_beschreibung:
 			x=eval('self.cb_'+all)
 			x.stateChanged.connect(self.cb_an_checked)
 			
-		for all in fa_kb_beschreibung:
+		for all in fa_beschreibung:
 			x=eval('self.cb_'+all)
 			x.stateChanged.connect(self.cb_fa_checked)
 			
-		for all in ws_kb_beschreibung:
+		for all in ws_beschreibung:
 			x=eval('self.cb_'+all)
 			x.stateChanged.connect(self.cb_ws_checked)
 		
-		for all in themen_klasse_5:
-			x=eval('self.cb_k5_'+all)
-			x.stateChanged.connect(self.cb_rest_checked)
+		for g in range(5,9):
+			for all in eval('k%s_beschreibung'%g):
+				x=eval('self.cb_k%s_'%g+all)
+				x.stateChanged.connect(self.cb_rest_checked)
+
 		
-		for all in themen_klasse_6:
-			x=eval('self.cb_k6_'+all)
-			x.stateChanged.connect(self.cb_rest_checked)
-
-		for all in themen_klasse_7:
-			x=eval('self.cb_k7_'+all)
-			x.stateChanged.connect(self.cb_rest_checked)
-
-		for all in themen_klasse_8:
-			x=eval('self.cb_k8_'+all)
-			x.stateChanged.connect(self.cb_rest_checked)
-			
 		
 		############################################################################################
 		##############################################################################################
@@ -420,13 +329,14 @@ class Ui_MainWindow(object):
 		self.cb_af_mc.setText(_translate("MainWindow", "Multiplechoice (MC)", None))
 		self.cb_af_oa.setText(_translate("MainWindow", "Offenes Antwortformat (OA)", None))
 		self.cb_af_lt.setText(_translate("MainWindow", "Lückentext (LT)", None))
-		self.groupBox_2.setTitle(_translate("MainWindow", "Ausgewählte Grundkompetenzen", None))
-		self.groupBox_3.setTitle(_translate("MainWindow", "Titelsuche:", None))
+		self.groupBox_ausgew_gk.setTitle(_translate("MainWindow", "Ausgewählte Grundkompetenzen", None))
+		self.groupBox_titelsuche.setTitle(_translate("MainWindow", "Titelsuche:", None))
 		self.groupBox_klassen.setTitle(_translate("MainWindow", "Klassen", None))
 		self.cb_k7.setText(_translate("MainWindow", "7. Klasse", None))
 		self.cb_k5.setText(_translate("MainWindow", "5. Klasse", None))
 		self.cb_k6.setText(_translate("MainWindow", "6. Klasse", None))
 		self.cb_k8.setText(_translate("MainWindow", "8. Klasse", None))
+		self.cb_mat.setText(_translate("MainWindow", "Matura", None))
 		self.cb_solution.setText(_translate("MainWindow", "Lösungen anzeigen", None))
 		try:
 			log_file=os.path.join(os.path.dirname('__file__'),'Teildokument','log_file')
@@ -437,46 +347,46 @@ class Ui_MainWindow(object):
 		self.btn_refreshddb.setText(_translate("MainWindow", "Refresh Database", None))
 		self.menu_searchtype.setItemText(0, _translate("MainWindow", "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten", None))
 		self.menu_searchtype.setItemText(1, _translate("MainWindow", "Alle Dateien ausgeben, die alle Suchkriterien enthalten", None))
-		self.groupBox_4.setTitle(_translate("MainWindow", "Themen Schulstufe", None))
+		self.groupBox_themen_klasse.setTitle(_translate("MainWindow", "Themen Schulstufe", None))
 		self.name_checkbox_klassen(5)
 		self.name_checkbox_klassen(6)
 		self.name_checkbox_klassen(7)
 		self.name_checkbox_klassen(8)																					 
 
-		self.btn_K5.setText(_translate("MainWindow", "alle auswählen", None))
+		self.btn_k5.setText(_translate("MainWindow", "alle auswählen", None))
 		self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_k5), _translate("MainWindow", "5. Klasse", None))
-		self.btn_K6.setText(_translate("MainWindow", "alle auswählen", None))
+		self.btn_k6.setText(_translate("MainWindow", "alle auswählen", None))
 		self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_k6), _translate("MainWindow", "6. Klasse", None))
-		self.btn_K7.setText(_translate("MainWindow", "alle auswählen", None))
+		self.btn_k7.setText(_translate("MainWindow", "alle auswählen", None))
 		self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_k7), _translate("MainWindow", "7. Klasse", None))
-		self.btn_K8.setText(_translate("MainWindow", "alle auswählen", None))
+		self.btn_k8.setText(_translate("MainWindow", "alle auswählen", None))
 		self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_k8), _translate("MainWindow", "8. Klasse", None))
-		self.groupBox_5.setTitle(_translate("MainWindow", "Grundkompetenzen", None))
+		self.groupBox_gk.setTitle(_translate("MainWindow", "Grundkompetenzen", None))
 		self.btn_suche.setShortcut(_translate("MainWindow", "Return", None))
 		self.btn_refreshddb.setShortcut(_translate("MainWindow", "F5", None))
 		
 ############# Infos for GKs
-		for all in ag_kb_beschreibung:
+		for all in ag_beschreibung:
 			x=eval('self.cb_'+all)
-			x.setToolTip(ag_kb_beschreibung[all])
+			x.setToolTip(ag_beschreibung[all])
 			
-		for all in an_kb_beschreibung:
+		for all in an_beschreibung:
 			x=eval('self.cb_'+all)
-			x.setToolTip(an_kb_beschreibung[all])
+			x.setToolTip(an_beschreibung[all])
 
-		for all in fa_kb_beschreibung:
+		for all in fa_beschreibung:
 			x=eval('self.cb_'+all)
-			x.setToolTip(fa_kb_beschreibung[all])
+			x.setToolTip(fa_beschreibung[all])
 			
-		for all in ws_kb_beschreibung:
+		for all in ws_beschreibung:
 			x=eval('self.cb_'+all)
-			x.setToolTip(ws_kb_beschreibung[all])
+			x.setToolTip(ws_beschreibung[all])
 			
 #########################################
-		self.name_checkbox_gk(ag_kb_beschreibung)
-		self.name_checkbox_gk(an_kb_beschreibung)
-		self.name_checkbox_gk(fa_kb_beschreibung)
-		self.name_checkbox_gk(ws_kb_beschreibung)
+		self.name_checkbox_gk(ag_beschreibung)
+		self.name_checkbox_gk(an_beschreibung)
+		self.name_checkbox_gk(fa_beschreibung)
+		self.name_checkbox_gk(ws_beschreibung)
 
 		self.btn_ag_all.setText(_translate("MainWindow", "alle auswählen", None))
 		self.tab_widget_gk.setTabText(self.tab_widget_gk.indexOf(self.tab_ag), _translate("MainWindow", "Algebra und Geometrie", None))
@@ -523,6 +433,28 @@ class Ui_MainWindow(object):
 			else:
 				row+=1
 
+	def create_checkbox_klasse(self,klasse,chosen_dict):
+		row=0
+		column=0
+		max_row=9
+
+		for all in chosen_dict:
+			exec('self.cb_'+klasse+'_'+all+'= QtGui.QCheckBox(self.tab_'+klasse+')')	
+			exec('self.cb_'+klasse+'_'+all+'.setObjectName(_fromUtf8("cb_'+klasse+'_'+all+'"))')
+			grid=eval('self.gridLayout_'+klasse)
+			x=eval('self.cb_'+klasse+'_'+all)
+			grid.addWidget(x, row,column, 1, 1)	
+
+			if row>max_row:
+				row=0
+				column+=1
+			else:
+				row+=1
+
+			exec('self.btn_'+klasse+'= QtGui.QPushButton(self.tab_'+klasse+')')
+			exec('self.btn_%s.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))'%klasse)
+			exec('self.btn_'+klasse+'.setObjectName(_fromUtf8("btn_'+klasse+'"))')
+			exec('self.gridLayout_'+klasse+'.addWidget(self.btn_'+klasse+', max_row, column+1, 1, 1, QtCore.Qt.AlignRight)')
 
 
 	def name_checkbox_gk(self, chosen_dict):
@@ -531,94 +463,94 @@ class Ui_MainWindow(object):
 			x.setText(_translate("MainWindow", dict_gk[all], None))
 
 	def name_checkbox_klassen(self, klasse):
-		chosen_dict=eval('themen_klasse_'+str(klasse))
+		chosen_dict=eval('k'+str(klasse)+'_beschreibung')
 		for all in chosen_dict:
 			x=eval('self.cb_k'+str(klasse)+'_'+all)
 			x.setText(_translate("MainWindow", chosen_dict[all], None))		
 
-	def btn_K5_pressed(self):
+	def btn_k5_pressed(self):
 		if self.cb_k5_fu.isChecked()==False:
-			for all in themen_klasse_5:
+			for all in k5_beschreibung:
 				x=eval('self.cb_k5_'+all)
 				x.setChecked(True)
 		elif self.cb_k5_fu.isChecked()==True:
-			for all in themen_klasse_5:
+			for all in k5_beschreibung:
 				x=eval('self.cb_k5_'+all)
 				x.setChecked(False)
 
-	def btn_K6_pressed(self):
+	def btn_k6_pressed(self):
 		if self.cb_k6_bsw.isChecked()==False:
-			for all in themen_klasse_6:
+			for all in k6_beschreibung:
 				x=eval('self.cb_k6_'+all)
 				x.setChecked(True)
 		elif self.cb_k6_bsw.isChecked()==True:
-			for all in themen_klasse_6:
+			for all in k6_beschreibung:
 				x=eval('self.cb_k6_'+all)
 				x.setChecked(False)
 
-	def btn_K7_pressed(self):
+	def btn_k7_pressed(self):
 		if self.cb_k7_dr.isChecked()==False:
-			for all in themen_klasse_7:
+			for all in k7_beschreibung:
 				x=eval('self.cb_k7_'+all)
 				x.setChecked(True)
 		elif self.cb_k7_dr.isChecked()==True:
-			for all in themen_klasse_7:
+			for all in k7_beschreibung:
 				x=eval('self.cb_k7_'+all)
 				x.setChecked(False)
 
-	def btn_K8_pressed(self):
+	def btn_k8_pressed(self):
 		if self.cb_k8_ddg.isChecked()==False:
-			for all in themen_klasse_8:
+			for all in k8_beschreibung:
 				x=eval('self.cb_k8_'+all)
 				x.setChecked(True)
 		elif self.cb_k8_ddg.isChecked()==True:
-			for all in themen_klasse_8:
+			for all in k8_beschreibung:
 				x=eval('self.cb_k8_'+all)
 				x.setChecked(False)
 				
 	def btn_ag_all_pressed(self):
 		if self.cb_ag11.isChecked()==False:
-			for all in ag_kb_beschreibung:
+			for all in ag_beschreibung:
 				x=eval('self.cb_'+all)
 				x.setChecked(True)
 		elif self.cb_ag11.isChecked()==True:
-			for all in ag_kb_beschreibung:
+			for all in ag_beschreibung:
 				x=eval('self.cb_'+all)
 				x.setChecked(False)
 				
 	def btn_an_all_pressed(self):
 		if self.cb_an11.isChecked()==False:
-			for all in an_kb_beschreibung:
+			for all in an_beschreibung:
 				x=eval('self.cb_'+all)
 				x.setChecked(True)
 		elif self.cb_an11.isChecked()==True:
-			for all in an_kb_beschreibung:
+			for all in an_beschreibung:
 				x=eval('self.cb_'+all)
 				x.setChecked(False)
 
 	def btn_fa_all_pressed(self):
 		if self.cb_fa11.isChecked()==False:
-			for all in fa_kb_beschreibung:
+			for all in fa_beschreibung:
 				x=eval('self.cb_'+all)
 				x.setChecked(True)
 		elif self.cb_fa11.isChecked()==True:
-			for all in fa_kb_beschreibung:
+			for all in fa_beschreibung:
 				x=eval('self.cb_'+all)
 				x.setChecked(False)	
 				
 	def btn_ws_all_pressed(self):
 		if self.cb_ws11.isChecked()==False:
-			for all in ws_kb_beschreibung:
+			for all in ws_beschreibung:
 				x=eval('self.cb_'+all)
 				x.setChecked(True)
 		elif self.cb_ws11.isChecked()==True:
-			for all in ws_kb_beschreibung:
+			for all in ws_beschreibung:
 				x=eval('self.cb_'+all)
 				x.setChecked(False)	
 				
 	def cb_ag_checked(self):
 		set_chosen_gk=set([])
-		for all in ag_kb_beschreibung:
+		for all in ag_beschreibung:
 			x=eval('self.cb_'+all)
 			if x.isChecked()==True:
 				set_chosen_gk.add(x.text())
@@ -634,7 +566,7 @@ class Ui_MainWindow(object):
 
 	def cb_an_checked(self):
 		set_chosen_gk=set([])
-		for all in an_kb_beschreibung:
+		for all in an_beschreibung:
 			x=eval('self.cb_'+all)
 			if x.isChecked()==True:
 				set_chosen_gk.add(x.text())
@@ -649,7 +581,7 @@ class Ui_MainWindow(object):
 
 	def cb_fa_checked(self):
 		set_chosen_gk=set([])
-		for all in fa_kb_beschreibung:
+		for all in fa_beschreibung:
 			x=eval('self.cb_'+all)
 			if x.isChecked()==True:
 				set_chosen_gk.add(x.text())
@@ -664,7 +596,7 @@ class Ui_MainWindow(object):
 		
 	def cb_ws_checked(self):
 		set_chosen_gk=set([])
-		for all in ws_kb_beschreibung:
+		for all in ws_beschreibung:
 			x=eval('self.cb_'+all)
 			if x.isChecked()==True:
 				set_chosen_gk.add(x.text())
@@ -679,19 +611,19 @@ class Ui_MainWindow(object):
 	
 	def cb_rest_checked(self):
 		set_chosen_gk=set([])
-		for all in themen_klasse_5:
+		for all in k5_beschreibung:
 			x=eval('self.cb_k5_'+all)
 			if x.isChecked()==True:
 				set_chosen_gk.add(all.upper()+'(5)')
-		for all in themen_klasse_6:
+		for all in k6_beschreibung:
 			x=eval('self.cb_k6_'+all)
 			if x.isChecked()==True:
 				set_chosen_gk.add(all.upper() + '(6)')
-		for all in themen_klasse_7:
+		for all in k7_beschreibung:
 			x=eval('self.cb_k7_'+all)
 			if x.isChecked()==True:
 				set_chosen_gk.add(all.upper() + '(7)')
-		for all in themen_klasse_8:
+		for all in k8_beschreibung:
 			x=eval('self.cb_k8_'+all)
 			if x.isChecked()==True:
 				set_chosen_gk.add(all.upper() + '(8)')		
@@ -799,15 +731,7 @@ class Ui_MainWindow(object):
 	def PrepareTeXforPDF(self):
 
 		self.btn_suche.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-		# r=0
-		# while r <100:
-		# 	Ui_Dialog.progressBar.setValue(r)
-		# 	r+=0.0001
 
-		# window=Ui_Dialog()
-		# window.show()
-		# print('done')
-		# return
 		if not os.path.isfile(os.path.join('Teildokument','log_file')):
 			self.refresh_ddb()
 		suchbegriffe = []
@@ -815,24 +739,24 @@ class Ui_MainWindow(object):
 
 					
 		#### ALGEBRA UND GEOMETRIE
-		for all in ag_kb_beschreibung:
+		for all in ag_beschreibung:
 			x=eval('self.cb_'+all)
 			if x.isChecked()==True:
 				suchbegriffe.append(all)
 				
 		#### ANALYSIS
-		for all in an_kb_beschreibung:
+		for all in an_beschreibung:
 			x=eval('self.cb_'+all)
 			if x.isChecked()==True:
 				suchbegriffe.append(all)
 		
 		#### FUNKTIONALE ABHÄNGIGKEITEN	
-		for all in fa_kb_beschreibung:
+		for all in fa_beschreibung:
 			x=eval('self.cb_'+all)
 			if x.isChecked()==True:
 				suchbegriffe.append(all)		
 		#### WAHRSCHEINLICHKEIT UND STATISTIK
-		for all in ws_kb_beschreibung:
+		for all in ws_beschreibung:
 			x=eval('self.cb_'+all)
 			if x.isChecked()==True:
 				suchbegriffe.append(all)
@@ -844,7 +768,7 @@ class Ui_MainWindow(object):
 
 		#### Suche der Schulstufe 
 		for y in range(5,9):
-			themen_klasse=eval('themen_klasse_%s'%y)
+			themen_klasse=eval('k%s_beschreibung'%y)
 			for all in themen_klasse:
 				x=eval('self.cb_k%s_'%y+all)
 				grade='K'+str(y)
@@ -897,49 +821,17 @@ class Ui_MainWindow(object):
 
 					
 		if self.menu_searchtype.currentText()=='Alle Dateien ausgeben, die alle Suchkriterien enthalten':
-			liste_kompetenzbereiche ={}
-			r=1
-			for all in beispieldaten:
-				gkliste = []
-				for gkbereich in AG_BB:
-					if gkbereich in all:
-						gkliste.append(gkbereich)
-				for gkbereich in AN_BB:
-					if gkbereich in all:
-						gkliste.append(gkbereich)
-				for gkbereich in FA_BB:
-					if gkbereich in all:
-						gkliste.append(gkbereich)
-				for gkbereich in WS_BB:
-					if gkbereich in all:
-						gkliste.append(gkbereich)
-				for klasse in Klassen:
-					if klasse in all:
-						gkliste.append(klasse)
-				liste_kompetenzbereiche.update({r:gkliste})
-				r+=1
-
 			gesammeltedateien=[]
+
+			gesammeltedateien=list(beispieldaten_dateipfad.keys())
+			for item in suchbegriffe:
+				for all in gesammeltedateien[:]:
+					if item not in all:
+						gesammeltedateien.remove(all)
 			
-			# for r in range(1,len(liste_kompetenzbereiche)+1):
-				# if liste_kompetenzbereiche[r]==[]:
-					# del liste_kompetenzbereiche[r]
-			for r in range(1,len(liste_kompetenzbereiche)+1):
-				for all in suchbegriffe:
-					if r in liste_kompetenzbereiche.keys():
-						if all not in liste_kompetenzbereiche[r]:
-							del liste_kompetenzbereiche[r]
-
-
-			for key in liste_kompetenzbereiche.keys():
-				gesammeltedateien.append(beispieldaten[key-1])
-			
-				
-			# for all in gesammeltedateien[:]:
-				# if not len(self.entry_suchbegriffe.text()) ==0:
-					# if self.entry_suchbegriffe.text().lower() not in all.lower():
-						# gesammeltedateien.remove(all)
-
+			dict_gesammeltedateien={}
+			for all in gesammeltedateien:
+				dict_gesammeltedateien[all]=beispieldaten_dateipfad[all]
 					
 		if self.menu_searchtype.currentText()=='Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten':
 		
@@ -952,18 +844,13 @@ class Ui_MainWindow(object):
 		
 	
 
-
-			# if not len(entry_suchbegriffe.get()) ==0:
-				# suchbegriffe.append(entry_suchbegriffe.get())
-				# for all in list(beispieldaten_dateipfad.keys())[:]:
-					# if entry_suchbegriffe.get().lower() in all.lower():
-						# if all not in gesammeltedateien:
-							# gesammeltedateien.append(all)
-
-		if len(gesammeltedateien)==0:
+		if len(gesammeltedateien)==0 and len(suchbegriffe)==0:
 			gesammeltedateien=list(beispieldaten_dateipfad.keys())
 
 		gesammeltedateien.sort(key=self.natural_keys)
+
+		if not len(self.entry_suchbegriffe.text())==0:
+			suchbegriffe.append(self.entry_suchbegriffe.text())
 
 		for all in gesammeltedateien[:]:
 			if not len(self.entry_suchbegriffe.text()) ==0:
@@ -1005,10 +892,10 @@ class Ui_MainWindow(object):
 		if self.cb_k5.isChecked() or self.cb_k6.isChecked() or self.cb_k7.isChecked() or self.cb_k8.isChecked()==True:
 			if suchbegriffe==[]:
 				dict_gesammeltedateien=beispieldaten_dateipfad
-			for all_formats in list(Klassen):
-				x=eval('self.cb_'+all_formats.lower())
+			for all_formats in list(Klassen.keys()):
+				x=eval('self.cb_'+all_formats)
 				if x.isChecked()==True:
-					selected_klassen.append(all_formats)
+					selected_klassen.append(all_formats.upper())
 					suchbegriffe.append(all_formats.upper())
 
 
@@ -1064,7 +951,7 @@ class Ui_MainWindow(object):
 
 		file.close()
 
-
+		
 		msg = QtGui.QMessageBox()
 		msg.setIcon(QtGui.QMessageBox.Question)
 		#msg.setWindowIcon(QtGui.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
