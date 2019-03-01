@@ -1,15 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'test_2.ui'
-#
-# Created by: PyQt4 UI code generator 4.11.4
-#
-# WARNING! All changes made in this file will be lost!
-
-########
-### QMessageBox (little info  window)
-### QShortcut (key)
-
 from PyQt4 import QtCore, QtGui
 import time
 import threading
@@ -90,7 +80,7 @@ class Ui_MainWindow(object):
 		self.cb_af_lt = QtGui.QCheckBox(self.groupBox)
 		self.cb_af_lt.setObjectName(_fromUtf8("cb_af_lt"))
 		self.gridLayout_af.addWidget(self.cb_af_lt, 1, 0, 1, 1)
-		self.gridLayout.addWidget(self.groupBox, 3, 0, 1, 1)
+		self.gridLayout.addWidget(self.groupBox, 4, 0, 2, 1)
 		self.groupBox_ausgew_gk = QtGui.QGroupBox(self.centralwidget)
 		self.groupBox_ausgew_gk.setObjectName(_fromUtf8("groupBox_ausgew_gk"))
 		self.verticalLayout_2 = QtGui.QVBoxLayout(self.groupBox_ausgew_gk)
@@ -139,7 +129,10 @@ class Ui_MainWindow(object):
 		self.cb_k8 = QtGui.QCheckBox(self.groupBox_klassen)
 		self.cb_k8.setObjectName(_fromUtf8("cb_k8"))
 		self.gridLayout_14.addWidget(self.cb_k8, 1, 1, 1, 1)
-		self.gridLayout.addWidget(self.groupBox_klassen, 4, 0, 2, 1)
+		self.cb_mat = QtGui.QCheckBox(self.groupBox_klassen)
+		self.cb_mat.setObjectName(_fromUtf8("cb_mat"))
+		self.gridLayout_14.addWidget(self.cb_mat, 0, 2, 1, 1)
+		self.gridLayout.addWidget(self.groupBox_klassen, 3, 0, 1, 1)
 		self.horizontalLayout_2 = QtGui.QHBoxLayout()
 		self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
 		self.cb_solution = QtGui.QCheckBox(self.centralwidget)
@@ -343,6 +336,7 @@ class Ui_MainWindow(object):
 		self.cb_k5.setText(_translate("MainWindow", "5. Klasse", None))
 		self.cb_k6.setText(_translate("MainWindow", "6. Klasse", None))
 		self.cb_k8.setText(_translate("MainWindow", "8. Klasse", None))
+		self.cb_mat.setText(_translate("MainWindow", "Matura", None))
 		self.cb_solution.setText(_translate("MainWindow", "Lösungen anzeigen", None))
 		try:
 			log_file=os.path.join(os.path.dirname('__file__'),'Teildokument','log_file')
