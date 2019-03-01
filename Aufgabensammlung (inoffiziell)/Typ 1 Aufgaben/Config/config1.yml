@@ -1,5 +1,4 @@
 ---
-
 ag_beschreibung: # for PyQT
     "ag11": "Wissen über die Zahlenmengen N, Z, Q, R, C verständig einsetzen können"
     "ag12": "Wissen über algebraische Begriffe angemessen einsetzen können:\nVariable, Terme, Formeln, (Un-)Gleichungen, Gleichungssysteme;\nÄquivalenz, Umformungen, Lösbarkeit"
@@ -93,21 +92,6 @@ AG_BB:
     - "AG-L 5.2"
     - "AG-L 5.3"
 
-an_kb: 
-    - "an11"
-    - "an12"
-    - "an13"
-    - "an14"
-    - "anL15"
-    - "an21"
-    - "anL22"
-    - "an31"
-    - "an32"
-    - "an33"
-    - "anL34"
-    - "an41"
-    - "an42"
-    - "an43"
 
 an_beschreibung: # Only PyQt
     "an11": "Absolute und relative (prozentuelle) Änderungsmaße\nunterscheiden und angemessen verwenden können"
@@ -293,24 +277,6 @@ FA_BB:
     - "FA-L 8.3"
     - "FA-L 8.4"
 
-ws_kb: 
-    - "ws11"
-    - "ws12"
-    - "ws13"
-    - "ws14"
-    - "ws21"
-    - "ws22"
-    - "ws23"
-    - "ws24"
-    - "wsL25"
-    - "wsL26"
-    - "ws31"
-    - "ws32"
-    - "ws33"
-    - "ws34"
-    - "wsL35"
-    - "ws41"
-    - "wsL42"
 
 ws_kb_beschreibung: 
     "ws11": "Werte aus tabellarischen und elementaren grafischen Darstellungen ablesen (bzw. zusammengesetzte Werte ermitteln)\n und im jeweiligen Kontext angemessen interpretieren können"
