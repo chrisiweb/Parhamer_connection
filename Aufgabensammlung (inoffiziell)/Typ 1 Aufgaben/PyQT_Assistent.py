@@ -27,25 +27,21 @@ import yaml
 
 config1 = yaml.safe_load(open("./Config/config1.yml", encoding='utf8')) # for a lack of better name
 
-ag_kb = config1['ag_kb']
-ag_kb_beschreibung = config1['ag_kb_beschreibung_qt']
+ag_beschreibung = config1['ag_beschreibung']
 AG_BB = config1['AG_BB']
-an_kb = config1['an_kb']
-an_kb_beschreibung = config1['an_kb_beschreibung_qt']
+an_beschreibung = config1['an_beschreibung']
 AN_BB = config1['AN_BB']
-fa_kb = config1['fa_kb']
-fa_kb_beschreibung = config1['fa_kb_beschreibung_qt']
+fa_beschreibung = config1['fa_beschreibung']
 FA_BB = config1['FA_BB']
-ws_kb = config1['ws_kb']
-ws_kb_beschreibung = config1['ws_kb_beschreibung_qt']
+ws_beschreibung = config1['ws_beschreibung']
 WS_BB = config1['WS_BB']
 AF_BB = config1['AF_BB']
 aufgaben_formate = config1['aufgaben_formate']
 Klassen = config1['Klassen']
-themen_klasse_5 = config1['themen_klasse_5']
-themen_klasse_6 = config1['themen_klasse_6']
-themen_klasse_7 = config1['themen_klasse_7']
-themen_klasse_8 = config1['themen_klasse_8']
+k5_beschreibung = config1['k5_beschreibung']
+k6_beschreibung = config1['k6_beschreibung']
+k7_beschreibung = config1['k7_beschreibung']
+k8_beschreibung = config1['k8_beschreibung']
 dict_gk = config1['dict_gk']
 set_af = config1['set_af']
 
@@ -68,7 +64,7 @@ except AttributeError:
 class Ui_MainWindow(object):
 	def setupUi(self, MainWindow):
 		MainWindow.setObjectName(_fromUtf8("MainWindow"))
-		MainWindow.resize(1078, 735)
+		MainWindow.resize(1000, 600)
 		MainWindow.setMaximumSize(QtCore.QSize(1078, 16777215))
 		MainWindow.setLayoutDirection(QtCore.Qt.LeftToRight)
 		MainWindow.setStyleSheet(_fromUtf8(""))
@@ -302,7 +298,7 @@ class Ui_MainWindow(object):
 		self.btn_ag_all.setObjectName(_fromUtf8("btn_ag_all"))
 		self.gridLayout_ag.addWidget(self.btn_ag_all, 10, 2, 1, 1)
 		self.tab_widget_gk.addTab(self.tab_ag, _fromUtf8(""))
-		self.create_checkbox_gk('ag', ag_kb_beschreibung)
+		self.create_checkbox_gk('ag', ag_beschreibung)
 
 		### AN ###
 		self.tab_an = QtGui.QWidget()
@@ -314,7 +310,7 @@ class Ui_MainWindow(object):
 		self.btn_an_all.setObjectName(_fromUtf8("btn_an_all"))
 		self.gridLayout_an.addWidget(self.btn_an_all, 10, 3, 1, 1)
 		self.tab_widget_gk.addTab(self.tab_an, _fromUtf8(""))
-		self.create_checkbox_gk('an', an_kb_beschreibung)
+		self.create_checkbox_gk('an', an_beschreibung)
 
 		### FA ###
 		self.tab_fa = QtGui.QWidget()
@@ -326,7 +322,7 @@ class Ui_MainWindow(object):
 		self.btn_fa_all.setObjectName(_fromUtf8("btn_fa_all"))
 		self.gridLayout_fa.addWidget(self.btn_fa_all, 10, 3, 1, 1)
 		self.tab_widget_gk.addTab(self.tab_fa, _fromUtf8(""))
-		self.create_checkbox_gk('fa',fa_kb_beschreibung)
+		self.create_checkbox_gk('fa',fa_beschreibung)
 
 		### WS ###
 		self.tab_ws = QtGui.QWidget()
@@ -338,7 +334,7 @@ class Ui_MainWindow(object):
 		self.btn_ws_all.setObjectName(_fromUtf8("btn_ws_all"))
 		self.gridLayout_ws.addWidget(self.btn_ws_all, 10, 2, 1, 1)
 		self.tab_widget_gk.addTab(self.tab_ws, _fromUtf8(""))
-		self.create_checkbox_gk('ws',ws_kb_beschreibung)
+		self.create_checkbox_gk('ws',ws_beschreibung)
 
 		#########
 		self.gridLayout_11.addWidget(self.tab_widget_gk, 0, 0, 1, 1)
@@ -378,35 +374,35 @@ class Ui_MainWindow(object):
 		
 		
 		
-		for all in ag_kb_beschreibung:
+		for all in ag_beschreibung:
 			x=eval('self.cb_'+all)
 			x.stateChanged.connect(self.cb_ag_checked)
 		
-		for all in an_kb_beschreibung:
+		for all in an_beschreibung:
 			x=eval('self.cb_'+all)
 			x.stateChanged.connect(self.cb_an_checked)
 			
-		for all in fa_kb_beschreibung:
+		for all in fa_beschreibung:
 			x=eval('self.cb_'+all)
 			x.stateChanged.connect(self.cb_fa_checked)
 			
-		for all in ws_kb_beschreibung:
+		for all in ws_beschreibung:
 			x=eval('self.cb_'+all)
 			x.stateChanged.connect(self.cb_ws_checked)
 		
-		for all in themen_klasse_5:
+		for all in k5_beschreibung:
 			x=eval('self.cb_k5_'+all)
 			x.stateChanged.connect(self.cb_rest_checked)
 		
-		for all in themen_klasse_6:
+		for all in k6_beschreibung:
 			x=eval('self.cb_k6_'+all)
 			x.stateChanged.connect(self.cb_rest_checked)
 
-		for all in themen_klasse_7:
+		for all in k7_beschreibung:
 			x=eval('self.cb_k7_'+all)
 			x.stateChanged.connect(self.cb_rest_checked)
 
-		for all in themen_klasse_8:
+		for all in k8_beschreibung:
 			x=eval('self.cb_k8_'+all)
 			x.stateChanged.connect(self.cb_rest_checked)
 			
@@ -456,27 +452,27 @@ class Ui_MainWindow(object):
 		self.btn_refreshddb.setShortcut(_translate("MainWindow", "F5", None))
 		
 ############# Infos for GKs
-		for all in ag_kb_beschreibung:
+		for all in ag_beschreibung:
 			x=eval('self.cb_'+all)
-			x.setToolTip(ag_kb_beschreibung[all])
+			x.setToolTip(ag_beschreibung[all])
 			
-		for all in an_kb_beschreibung:
+		for all in an_beschreibung:
 			x=eval('self.cb_'+all)
-			x.setToolTip(an_kb_beschreibung[all])
+			x.setToolTip(an_beschreibung[all])
 
-		for all in fa_kb_beschreibung:
+		for all in fa_beschreibung:
 			x=eval('self.cb_'+all)
-			x.setToolTip(fa_kb_beschreibung[all])
+			x.setToolTip(fa_beschreibung[all])
 			
-		for all in ws_kb_beschreibung:
+		for all in ws_beschreibung:
 			x=eval('self.cb_'+all)
-			x.setToolTip(ws_kb_beschreibung[all])
+			x.setToolTip(ws_beschreibung[all])
 			
 #########################################
-		self.name_checkbox_gk(ag_kb_beschreibung)
-		self.name_checkbox_gk(an_kb_beschreibung)
-		self.name_checkbox_gk(fa_kb_beschreibung)
-		self.name_checkbox_gk(ws_kb_beschreibung)
+		self.name_checkbox_gk(ag_beschreibung)
+		self.name_checkbox_gk(an_beschreibung)
+		self.name_checkbox_gk(fa_beschreibung)
+		self.name_checkbox_gk(ws_beschreibung)
 
 		self.btn_ag_all.setText(_translate("MainWindow", "alle auswählen", None))
 		self.tab_widget_gk.setTabText(self.tab_widget_gk.indexOf(self.tab_ag), _translate("MainWindow", "Algebra und Geometrie", None))
@@ -531,94 +527,94 @@ class Ui_MainWindow(object):
 			x.setText(_translate("MainWindow", dict_gk[all], None))
 
 	def name_checkbox_klassen(self, klasse):
-		chosen_dict=eval('themen_klasse_'+str(klasse))
+		chosen_dict=eval('k'+str(klasse)+'_beschreibung')
 		for all in chosen_dict:
 			x=eval('self.cb_k'+str(klasse)+'_'+all)
 			x.setText(_translate("MainWindow", chosen_dict[all], None))		
 
 	def btn_K5_pressed(self):
 		if self.cb_k5_fu.isChecked()==False:
-			for all in themen_klasse_5:
+			for all in k5_beschreibung:
 				x=eval('self.cb_k5_'+all)
 				x.setChecked(True)
 		elif self.cb_k5_fu.isChecked()==True:
-			for all in themen_klasse_5:
+			for all in k5_beschreibung:
 				x=eval('self.cb_k5_'+all)
 				x.setChecked(False)
 
 	def btn_K6_pressed(self):
 		if self.cb_k6_bsw.isChecked()==False:
-			for all in themen_klasse_6:
+			for all in k6_beschreibung:
 				x=eval('self.cb_k6_'+all)
 				x.setChecked(True)
 		elif self.cb_k6_bsw.isChecked()==True:
-			for all in themen_klasse_6:
+			for all in k6_beschreibung:
 				x=eval('self.cb_k6_'+all)
 				x.setChecked(False)
 
 	def btn_K7_pressed(self):
 		if self.cb_k7_dr.isChecked()==False:
-			for all in themen_klasse_7:
+			for all in k7_beschreibung:
 				x=eval('self.cb_k7_'+all)
 				x.setChecked(True)
 		elif self.cb_k7_dr.isChecked()==True:
-			for all in themen_klasse_7:
+			for all in k7_beschreibung:
 				x=eval('self.cb_k7_'+all)
 				x.setChecked(False)
 
 	def btn_K8_pressed(self):
 		if self.cb_k8_ddg.isChecked()==False:
-			for all in themen_klasse_8:
+			for all in k8_beschreibung:
 				x=eval('self.cb_k8_'+all)
 				x.setChecked(True)
 		elif self.cb_k8_ddg.isChecked()==True:
-			for all in themen_klasse_8:
+			for all in k8_beschreibung:
 				x=eval('self.cb_k8_'+all)
 				x.setChecked(False)
 				
 	def btn_ag_all_pressed(self):
 		if self.cb_ag11.isChecked()==False:
-			for all in ag_kb_beschreibung:
+			for all in ag_beschreibung:
 				x=eval('self.cb_'+all)
 				x.setChecked(True)
 		elif self.cb_ag11.isChecked()==True:
-			for all in ag_kb_beschreibung:
+			for all in ag_beschreibung:
 				x=eval('self.cb_'+all)
 				x.setChecked(False)
 				
 	def btn_an_all_pressed(self):
 		if self.cb_an11.isChecked()==False:
-			for all in an_kb_beschreibung:
+			for all in an_beschreibung:
 				x=eval('self.cb_'+all)
 				x.setChecked(True)
 		elif self.cb_an11.isChecked()==True:
-			for all in an_kb_beschreibung:
+			for all in an_beschreibung:
 				x=eval('self.cb_'+all)
 				x.setChecked(False)
 
 	def btn_fa_all_pressed(self):
 		if self.cb_fa11.isChecked()==False:
-			for all in fa_kb_beschreibung:
+			for all in fa_beschreibung:
 				x=eval('self.cb_'+all)
 				x.setChecked(True)
 		elif self.cb_fa11.isChecked()==True:
-			for all in fa_kb_beschreibung:
+			for all in fa_beschreibung:
 				x=eval('self.cb_'+all)
 				x.setChecked(False)	
 				
 	def btn_ws_all_pressed(self):
 		if self.cb_ws11.isChecked()==False:
-			for all in ws_kb_beschreibung:
+			for all in ws_beschreibung:
 				x=eval('self.cb_'+all)
 				x.setChecked(True)
 		elif self.cb_ws11.isChecked()==True:
-			for all in ws_kb_beschreibung:
+			for all in ws_beschreibung:
 				x=eval('self.cb_'+all)
 				x.setChecked(False)	
 				
 	def cb_ag_checked(self):
 		set_chosen_gk=set([])
-		for all in ag_kb_beschreibung:
+		for all in ag_beschreibung:
 			x=eval('self.cb_'+all)
 			if x.isChecked()==True:
 				set_chosen_gk.add(x.text())
@@ -634,7 +630,7 @@ class Ui_MainWindow(object):
 
 	def cb_an_checked(self):
 		set_chosen_gk=set([])
-		for all in an_kb_beschreibung:
+		for all in an_beschreibung:
 			x=eval('self.cb_'+all)
 			if x.isChecked()==True:
 				set_chosen_gk.add(x.text())
@@ -649,7 +645,7 @@ class Ui_MainWindow(object):
 
 	def cb_fa_checked(self):
 		set_chosen_gk=set([])
-		for all in fa_kb_beschreibung:
+		for all in fa_beschreibung:
 			x=eval('self.cb_'+all)
 			if x.isChecked()==True:
 				set_chosen_gk.add(x.text())
@@ -664,7 +660,7 @@ class Ui_MainWindow(object):
 		
 	def cb_ws_checked(self):
 		set_chosen_gk=set([])
-		for all in ws_kb_beschreibung:
+		for all in ws_beschreibung:
 			x=eval('self.cb_'+all)
 			if x.isChecked()==True:
 				set_chosen_gk.add(x.text())
@@ -679,19 +675,19 @@ class Ui_MainWindow(object):
 	
 	def cb_rest_checked(self):
 		set_chosen_gk=set([])
-		for all in themen_klasse_5:
+		for all in k5_beschreibung:
 			x=eval('self.cb_k5_'+all)
 			if x.isChecked()==True:
 				set_chosen_gk.add(all.upper()+'(5)')
-		for all in themen_klasse_6:
+		for all in k6_beschreibung:
 			x=eval('self.cb_k6_'+all)
 			if x.isChecked()==True:
 				set_chosen_gk.add(all.upper() + '(6)')
-		for all in themen_klasse_7:
+		for all in k7_beschreibung:
 			x=eval('self.cb_k7_'+all)
 			if x.isChecked()==True:
 				set_chosen_gk.add(all.upper() + '(7)')
-		for all in themen_klasse_8:
+		for all in k8_beschreibung:
 			x=eval('self.cb_k8_'+all)
 			if x.isChecked()==True:
 				set_chosen_gk.add(all.upper() + '(8)')		
@@ -807,24 +803,24 @@ class Ui_MainWindow(object):
 
 					
 		#### ALGEBRA UND GEOMETRIE
-		for all in ag_kb_beschreibung:
+		for all in ag_beschreibung:
 			x=eval('self.cb_'+all)
 			if x.isChecked()==True:
 				suchbegriffe.append(all)
 				
 		#### ANALYSIS
-		for all in an_kb_beschreibung:
+		for all in an_beschreibung:
 			x=eval('self.cb_'+all)
 			if x.isChecked()==True:
 				suchbegriffe.append(all)
 		
 		#### FUNKTIONALE ABHÄNGIGKEITEN	
-		for all in fa_kb_beschreibung:
+		for all in fa_beschreibung:
 			x=eval('self.cb_'+all)
 			if x.isChecked()==True:
 				suchbegriffe.append(all)		
 		#### WAHRSCHEINLICHKEIT UND STATISTIK
-		for all in ws_kb_beschreibung:
+		for all in ws_beschreibung:
 			x=eval('self.cb_'+all)
 			if x.isChecked()==True:
 				suchbegriffe.append(all)
@@ -836,7 +832,7 @@ class Ui_MainWindow(object):
 
 		#### Suche der Schulstufe 
 		for y in range(5,9):
-			themen_klasse=eval('themen_klasse_%s'%y)
+			themen_klasse=eval('k%s_beschreibung'%y)
 			for all in themen_klasse:
 				x=eval('self.cb_k%s_'%y+all)
 				grade='K'+str(y)
@@ -960,10 +956,10 @@ class Ui_MainWindow(object):
 		if self.cb_k5.isChecked() or self.cb_k6.isChecked() or self.cb_k7.isChecked() or self.cb_k8.isChecked()==True:
 			if suchbegriffe==[]:
 				dict_gesammeltedateien=beispieldaten_dateipfad
-			for all_formats in list(Klassen):
-				x=eval('self.cb_'+all_formats.lower())
+			for all_formats in list(Klassen.keys()):
+				x=eval('self.cb_'+all_formats)
 				if x.isChecked()==True:
-					selected_klassen.append(all_formats)
+					selected_klassen.append(all_formats.upper())
 					suchbegriffe.append(all_formats.upper())
 
 

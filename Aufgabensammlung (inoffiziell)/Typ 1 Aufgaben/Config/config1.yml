@@ -30,7 +30,7 @@ ag_kb:
     - "agL52"
     - "agL53"
 
-ag_kb_beschreibung_qt: # for PyQT
+ag_beschreibung: # for PyQT
     "ag11": "Wissen über die Zahlenmengen N, Z, Q, R, C verständig einsetzen können"
     "ag12": "Wissen über algebraische Begriffe angemessen einsetzen können:\nVariable, Terme, Formeln, (Un-)Gleichungen, Gleichungssysteme;\nÄquivalenz, Umformungen, Lösbarkeit"
     "ag13": "Mit Aussagen und Mengen umgehen können"
@@ -139,21 +139,21 @@ an_kb:
     - "an42"
     - "an43"
 
-an_kb_beschreibung_qt: # Only PyQt
-        "an11": "Absolute und relative (prozentuelle) Änderungsmaße\nunterscheiden und angemessen verwenden können"
-        "an12": "Den Zusammenhang Differenzenquotient (mittlere Änderungsrate –\nDifferentialquotient („momentane“ Änderungsrate) auf der Grundlage\neines intuitiven Grenzwertbegriffes kennen und damit (verbal und\nauch in formaler Schreibweise) auch kontextbezogen anwenden\nkönnen"
-        "an13": "Den Differenzen- und Differentialquotienten in verschiedenen\nKontexten deuten und entsprechende Sachverhalte durch den\nDifferenzen- bzw. Differentialquotienten beschreiben können"
-        "an14": "Das systemdynamische Verhalten von Größen durch Differenzen-\ngleichungen beschreiben bzw. diese im Kontext deuten können"
-        "an15": "Einfache Differentialgleichungen, insbesondere f'(x)= k*f(x),\nlösen können"
-        "an21": "Einfache Regeln des Differenzierens kennen und anwenden können:\nPotenzregel, Summenregel, Regeln für k*f(x)' und f(k*x)'"
-        "an22": "Kettenregel kennen und anwenden können"
-        "an31": "Den Begriff Ableitungsfunktion/Stammfunktion kennen und\nzur Beschreibung von Funktionen einsetzen können"
-        "an32": "Den Zusammenhang zwischen Funktion und Ableitungsfunktion\n(bzw. Funktion und Stammfunktion) in deren grafischer Darstellung\nerkennen und beschreiben können"
-        "an33": "Eigenschaften von Funktionen mithilfe der Ableitung(sfunktion)\nbeschreiben können: Monotonie, lokale Extrema, Links- und\nRechtskrümmung, Wendestellen"
-        "an34": "Zielfunktionen in einer Variablen für Optimierungsaufgaben\n(Extremwertaufgaben) aufstellen und globale Extremstellen ermitteln\nkönnen"
-        "an41": "Den Begriff des bestimmten Integrals als Grenzwert einer Summe\nvon Produkten deuten und beschreiben können"
-        "an42": "Einfache Regeln des Integrierens kennen und anwenden können:\nPotenzregel, Summenregel, ∫k*f(x)dx, ∫f(k*x)dx; bestimmte Integrale\nvon Polynomfunktionen ermitteln können"
-        "an43": "Das bestimmte Integral in verschiedenen Kontexten deuten und\nentsprechende Sachverhalte durch Integrale beschreiben können"
+an_beschreibung: # Only PyQt
+    "an11": "Absolute und relative (prozentuelle) Änderungsmaße\nunterscheiden und angemessen verwenden können"
+    "an12": "Den Zusammenhang Differenzenquotient (mittlere Änderungsrate –\nDifferentialquotient („momentane“ Änderungsrate) auf der Grundlage\neines intuitiven Grenzwertbegriffes kennen und damit (verbal und\nauch in formaler Schreibweise) auch kontextbezogen anwenden\nkönnen"
+    "an13": "Den Differenzen- und Differentialquotienten in verschiedenen\nKontexten deuten und entsprechende Sachverhalte durch den\nDifferenzen- bzw. Differentialquotienten beschreiben können"
+    "an14": "Das systemdynamische Verhalten von Größen durch Differenzen-\ngleichungen beschreiben bzw. diese im Kontext deuten können"
+    "an15": "Einfache Differentialgleichungen, insbesondere f'(x)= k*f(x),\nlösen können"
+    "an21": "Einfache Regeln des Differenzierens kennen und anwenden können:\nPotenzregel, Summenregel, Regeln für k*f(x)' und f(k*x)'"
+    "an22": "Kettenregel kennen und anwenden können"
+    "an31": "Den Begriff Ableitungsfunktion/Stammfunktion kennen und\nzur Beschreibung von Funktionen einsetzen können"
+    "an32": "Den Zusammenhang zwischen Funktion und Ableitungsfunktion\n(bzw. Funktion und Stammfunktion) in deren grafischer Darstellung\nerkennen und beschreiben können"
+    "an33": "Eigenschaften von Funktionen mithilfe der Ableitung(sfunktion)\nbeschreiben können: Monotonie, lokale Extrema, Links- und\nRechtskrümmung, Wendestellen"
+    "an34": "Zielfunktionen in einer Variablen für Optimierungsaufgaben\n(Extremwertaufgaben) aufstellen und globale Extremstellen ermitteln\nkönnen"
+    "an41": "Den Begriff des bestimmten Integrals als Grenzwert einer Summe\nvon Produkten deuten und beschreiben können"
+    "an42": "Einfache Regeln des Integrierens kennen und anwenden können:\nPotenzregel, Summenregel, ∫k*f(x)dx, ∫f(k*x)dx; bestimmte Integrale\nvon Polynomfunktionen ermitteln können"
+    "an43": "Das bestimmte Integral in verschiedenen Kontexten deuten und\nentsprechende Sachverhalte durch Integrale beschreiben können"
 
 
 an_kb_beschreibung: 
@@ -233,7 +233,7 @@ fa_kb: # isn"t used in PyQT
     - "faL83"
     - "faL84"
 
-fa_kb_beschreibung_qt: 
+fa_beschreibung: 
     "fa11": "Für gegebene Zusammenhänge entscheiden können,\nob man sie als Funktionen betrachten kann "
     "fa12": "Formeln als Darstellung von Funktionen interpretieren\nund den Funktionstyp zuordnen können"
     "fa13": "Zwischen tabellarischen und grafischen Darstellungen\nfunktionaler Zusammenhänge wechseln können"
@@ -406,7 +406,7 @@ ws_kb_beschreibung:
     "ws41": "Konfidenzintervalle als Schätzung für eine Wahrscheinlichkeit oder einen unbekannten Anteil p interpretieren (frequentistische Deutung) und verwenden\n können, Berechnungen auf Basis der Binomialverteilung oder einer durch die Normalverteilung approximierten Binomialverteilung durchführen können"
     "wsL42": "Einfache Anteilstests durchführen können und ihr Ergebnis erläutern können"
 
-ws_kb_beschreibung_qt:
+ws_beschreibung:
     "ws11": "Werte aus tabellarischen und elementaren grafischen Darstellungen ablesen\n(bzw. zusammengesetzte Werte ermitteln) und im jeweiligen Kontext\nangemessen interpretieren können"
     "ws12": "Tabellen und einfache statistische Grafiken erstellen,\nzwischen Darstellungsformen wechseln können"
     "ws13": "Statistische Kennzahlen (absolute und relative Häufigkeiten;\narithmetisches Mittel, Median, Modus; Quartile; Spannweite, empirische\nVarianz/Standardabweichung) im jeweiligen Kontext interpretieren können;\ndie angeführten Kennzahlen für einfache Datensätze ermitteln können"
@@ -458,19 +458,19 @@ aufgaben_formate:
     "oa": "Offenes Antwortformat"
 
 Klassen: 
-    - "K5"
-    - "K6"
-    - "K7"
-    - "K8"
+    "k5": "5. Klasse"
+    "k6": "6. Klasse"
+    "k7": "7. Klasse"
+    "k8": "8. Klasse"
 
-themen_klasse_5: 
+k5_beschreibung: 
     "fu": "Funktionen"
     "gl": "Gleichungen und\nGleichungssysteme"
     "mzr": "Mengen, Zahlen,\nRechengesetze"
     "tr": "Trigonometrie"
     "vag2": "Vektoren und analytische\nGeometrie"
 
-themen_klasse_6: 
+k6_beschreibung: 
     "bsw": "Beschreibende Statistik\nund Wahrscheinlichkeit"
     "fo": "Folgen"
     "pwlu": "Potenzen, Wurzeln, Logarithmen\nund Ungleichungen"
@@ -478,7 +478,7 @@ themen_klasse_6:
     "rf": "Reelle Funktionen"
     "vag3": "Vektoren und analytische\nGeometrie in R3 und Rn"
 
-themen_klasse_7: 
+k7_beschreibung: 
     "dr": "Differentialrechnung"
     "dwv": "Diskrete Wahrscheinlichkeits-\nverteilungen"
     "kkk": "Kreise, Kugeln, Kegelschnittslinien\nund andere Kurven"
@@ -486,7 +486,7 @@ themen_klasse_7:
     "wm": "Wirtschaftsmathematik"
     "ghg": "Gleichungen höheren Grades als 2"
 
-themen_klasse_8: 
+k8_beschreibung: 
     "ddg": "Differenzen- und Differential-\ngleichungen; Grundlagen\nder Systemdynamik"
     "ir": "Integralrechnung"
     "sws": "Stetgie Wahrscheinlichkeits-\nverteilungen; Beurteilende\nStatistik"
