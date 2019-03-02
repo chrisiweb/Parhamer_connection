@@ -15,36 +15,25 @@ import yaml
 
 # Load Config-file
 
-def config_loader(pathToFile):
+def config_loader(pathToFile,parameter):
     config1 = yaml.safe_load(open(pathToFile, encoding='utf8'))
+    return config1[parameter]
 
+config_file = './Config/config1.yml'
 
-    global ag_beschreibung 
-    global an_beschreibung 
-    global fa_beschreibung 
-    global ws_beschreibung 
+ag_beschreibung = config_loader(config_file,'ag_beschreibung')
+an_beschreibung = config_loader(config_file,'an_beschreibung')
+fa_beschreibung = config_loader(config_file,'fa_beschreibung')
+ws_beschreibung = config_loader(config_file,'ws_beschreibung')
 
-    global k5_beschreibung 
-    global k6_beschreibung 
-    global k7_beschreibung 
-    global k8_beschreibung 
+k5_beschreibung = config_loader(config_file,'k5_beschreibung')
+k6_beschreibung = config_loader(config_file,'k6_beschreibung')
+k7_beschreibung = config_loader(config_file,'k7_beschreibung')
+k8_beschreibung = config_loader(config_file,'k8_beschreibung')
 
-    global dict_gk 
-    global set_af 
-    ag_beschreibung = config1['ag_beschreibung']
-    an_beschreibung = config1['an_beschreibung']
-    fa_beschreibung = config1['fa_beschreibung']
-    ws_beschreibung = config1['ws_beschreibung']
+dict_gk = config_loader(config_file,'dict_gk')
+set_af = config_loader(config_file,'set_af')
 
-    k5_beschreibung = config1['k5_beschreibung']
-    k6_beschreibung = config1['k6_beschreibung']
-    k7_beschreibung = config1['k7_beschreibung']
-    k8_beschreibung = config1['k8_beschreibung']
-
-    dict_gk = config1['dict_gk']
-    set_af = config1['set_af']
-
-config_loader('./Config/config1.yml')
 
 try:
 	_fromUtf8 = QtCore.QString.fromUtf8
