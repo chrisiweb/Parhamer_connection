@@ -823,17 +823,20 @@ class Ui_MainWindow(object):
 					
 		if self.menu_searchtype.currentText()=='Alle Dateien ausgeben, die alle Suchkriterien enthalten':
 			gesammeltedateien=[]
+			if suchbegriffe==[]:
+				pass
+			else:
+				gesammeltedateien=list(beispieldaten_dateipfad.keys())
+				
+				for item in suchbegriffe:
+					for all in gesammeltedateien[:]:
+						if item not in all:
+							gesammeltedateien.remove(all)
 
-			gesammeltedateien=list(beispieldaten_dateipfad.keys())
-			for item in suchbegriffe:
-				for all in gesammeltedateien[:]:
-					if item not in all:
-						gesammeltedateien.remove(all)
-			
-			dict_gesammeltedateien={}
-			for all in gesammeltedateien:
-				dict_gesammeltedateien[all]=beispieldaten_dateipfad[all]
-					
+				dict_gesammeltedateien={}
+				for all in gesammeltedateien:
+					dict_gesammeltedateien[all]=beispieldaten_dateipfad[all]
+
 		if self.menu_searchtype.currentText()=='Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten':
 		
 			gesammeltedateien=[]
@@ -845,21 +848,26 @@ class Ui_MainWindow(object):
 		
 	
 
-		if len(gesammeltedateien)==0 and len(suchbegriffe)==0:
-			gesammeltedateien=list(beispieldaten_dateipfad.keys())
+		# if len(gesammeltedateien)==0 and len(suchbegriffe)!=0:
+		# 	gesammeltedateien=list(beispieldaten_dateipfad.keys())
 
-		gesammeltedateien.sort(key=self.natural_keys)
+		
 
+		if not len(self.entry_suchbegriffe.text()) ==0:
+			if self.menu_searchtype.currentText()=='Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten':
+				if len(gesammeltedateien)==0 and len(suchbegriffe)!=0:
+					gesammeltedateien=list(beispieldaten_dateipfad.keys())				
+			for all in gesammeltedateien[:]:			
+				if self.entry_suchbegriffe.text().lower() not in all.lower():
+						gesammeltedateien.remove(all)
+		
 		if not len(self.entry_suchbegriffe.text())==0:
 			suchbegriffe.append(self.entry_suchbegriffe.text())
 
-		for all in gesammeltedateien[:]:
-			if not len(self.entry_suchbegriffe.text()) ==0:
-				if self.entry_suchbegriffe.text().lower() not in all.lower():
-					gesammeltedateien.remove(all)
-		
+		gesammeltedateien.sort(key=self.natural_keys)
 
 		dict_gesammeltedateien={}
+
 		for all in gesammeltedateien:
 			dict_gesammeltedateien[all]=beispieldaten_dateipfad[all]
 	
