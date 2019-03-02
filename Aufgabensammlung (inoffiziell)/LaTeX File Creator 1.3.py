@@ -35,56 +35,32 @@ frame_gk_auswahl.grid(row=0, column=2, sticky=S+W)
 frame_eingabe = Frame(hauptfenster, bd=2)
 frame_eingabe.grid(row=0, column=2, sticky=N+W)
 
-
-def config_loader(pathToFile):
+def config_loader(pathToFile,parameter):
     config1 = yaml.safe_load(open(pathToFile, encoding='utf8'))
+    return config1[parameter]
 
-    global dict_aufgabenformat
-    global dict_themen
-    global ag_kb
-    global AG_BB
-    global an_kb
-    global AN_BB
-    global fa_kb
-    global FA_BB
-    global ws_kb
-    global WS_BB
-    global Klassen
-    global AF_BB
-    global themen_klasse_5
-    global themen_klasse_6
-    global themen_klasse_7
-    global themen_klasse_8
-    global Klasse5_BB
-    global Klasse6_BB
-    global Klasse7_BB
-    global Klasse8_BB
+config_file = 'config_creator.yml'
 
-    dict_aufgabenformat = config1['dict_aufgabenformat']
-    dict_themen = config1['dict_themen']
-    ag_kb = config1['ag_kb']
-    AG_BB = config1['AG_BB']
-    an_kb = config1['an_kb']
-    AN_BB = config1['AN_BB']
-    fa_kb = config1['fa_kb']
-    FA_BB = config1['FA_BB']
-    ws_kb = config1['ws_kb']
-    WS_BB = config1['WS_BB']
-    Klassen = config1['Klassen']
-    AF_BB = config1['AF_BB']
-    themen_klasse_5 = config1['themen_klasse_5']
-    themen_klasse_6 = config1['themen_klasse_6']
-    themen_klasse_7 = config1['themen_klasse_7']
-    themen_klasse_8 = config1['themen_klasse_8']
-    Klasse5_BB = config1['Klasse5_BB']
-    Klasse6_BB = config1['Klasse6_BB']
-    Klasse7_BB = config1['Klasse7_BB']
-    Klasse8_BB = config1['Klasse8_BB']
-
-
-config_loader('config_creator.yml')
-
-
+dict_aufgabenformat = config_loader(config_file,'dict_aufgabenformat')
+dict_themen = config_loader(config_file,'dict_themen')
+ag_kb = config_loader(config_file,'ag_kb')
+AG_BB = config_loader(config_file,'AG_BB')
+an_kb = config_loader(config_file,'an_kb')
+AN_BB = config_loader(config_file,'AN_BB')
+fa_kb = config_loader(config_file,'fa_kb')
+FA_BB = config_loader(config_file,'FA_BB')
+ws_kb = config_loader(config_file,'ws_kb')
+WS_BB = config_loader(config_file,'WS_BB')
+Klassen = config_loader(config_file,'Klassen')
+AF_BB = config_loader(config_file,'AF_BB')
+themen_klasse_5 = config_loader(config_file,'themen_klasse_5')
+themen_klasse_6 = config_loader(config_file,'themen_klasse_6')
+themen_klasse_7 = config_loader(config_file,'themen_klasse_7')
+themen_klasse_8 = config_loader(config_file,'themen_klasse_8')
+Klasse5_BB = config_loader(config_file,'Klasse5_BB')
+Klasse6_BB = config_loader(config_file,'Klasse6_BB')
+Klasse7_BB = config_loader(config_file,'Klasse7_BB')
+Klasse8_BB = config_loader(config_file,'Klasse8_BB')
 
 
 set_gk_auswahl=[]
