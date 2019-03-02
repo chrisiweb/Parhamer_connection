@@ -386,4 +386,10 @@ set_af: # Only used in PyQT
         - "zo"
         - "lt"
         - "oa"
+
+Klassen: 
+        "k5": "5. Klasse"
+        "k6": "6. Klasse"
+        "k7": "7. Klasse"
+        "k8": "8. Klasse"
 ...

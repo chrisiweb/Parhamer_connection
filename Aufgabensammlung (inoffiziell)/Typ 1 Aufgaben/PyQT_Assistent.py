@@ -33,6 +33,7 @@ k8_beschreibung = config_loader(config_file,'k8_beschreibung')
 
 dict_gk = config_loader(config_file,'dict_gk')
 set_af = config_loader(config_file,'set_af')
+Klassen = config_loader(config_file,'Klassen')
 
 
 try:
