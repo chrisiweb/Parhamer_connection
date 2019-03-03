@@ -56,7 +56,7 @@ except AttributeError:
 class Ui_MainWindow(object):
 	def setupUi(self, MainWindow):
 		MainWindow.setObjectName(_fromUtf8("MainWindow"))
-		MainWindow.resize(1000, 632)
+		MainWindow.resize(950, 632)
 		MainWindow.setMaximumSize(QtCore.QSize(1078, 16777215))
 		MainWindow.setLayoutDirection(QtCore.Qt.LeftToRight)
 		MainWindow.setStyleSheet(_fromUtf8(""))
@@ -169,7 +169,7 @@ class Ui_MainWindow(object):
 		self.label_update = QtGui.QLabel(self.centralwidget)
 		self.label_update.setObjectName(_fromUtf8("label_update"))
 		self.horizontalLayout.addWidget(self.label_update)
-		#self.label_update.setAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
+		#self.label_update.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
 		self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
 		self.horizontalLayout_combobox = QtGui.QHBoxLayout()
 		self.horizontalLayout_combobox.setObjectName(_fromUtf8("horizontalLayout_combobox"))
@@ -221,6 +221,18 @@ class Ui_MainWindow(object):
 		self.tab_widget_gk.addTab(self.tab_ag, _fromUtf8(""))
 		self.create_checkbox_gk('ag', ag_beschreibung)
 
+		### FA ###
+		self.tab_fa = QtGui.QWidget()
+		self.tab_fa.setObjectName(_fromUtf8("tab_fa"))
+		self.gridLayout_fa = QtGui.QGridLayout(self.tab_fa)
+		self.gridLayout_fa.setObjectName(_fromUtf8("gridLayout_fa"))
+		self.btn_fa_all = QtGui.QPushButton(self.tab_fa)
+		self.btn_fa_all.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))
+		self.btn_fa_all.setObjectName(_fromUtf8("btn_fa_all"))
+		self.gridLayout_fa.addWidget(self.btn_fa_all, 10, 3, 1, 1)
+		self.tab_widget_gk.addTab(self.tab_fa, _fromUtf8(""))
+		self.create_checkbox_gk('fa',fa_beschreibung)
+
 		### AN ###
 		self.tab_an = QtGui.QWidget()
 		self.tab_an.setObjectName(_fromUtf8("tab_an"))
@@ -233,17 +245,6 @@ class Ui_MainWindow(object):
 		self.tab_widget_gk.addTab(self.tab_an, _fromUtf8(""))
 		self.create_checkbox_gk('an', an_beschreibung)
 
-		### FA ###
-		self.tab_fa = QtGui.QWidget()
-		self.tab_fa.setObjectName(_fromUtf8("tab_fa"))
-		self.gridLayout_fa = QtGui.QGridLayout(self.tab_fa)
-		self.gridLayout_fa.setObjectName(_fromUtf8("gridLayout_fa"))
-		self.btn_fa_all = QtGui.QPushButton(self.tab_fa)
-		self.btn_fa_all.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))
-		self.btn_fa_all.setObjectName(_fromUtf8("btn_fa_all"))
-		self.gridLayout_fa.addWidget(self.btn_fa_all, 10, 3, 1, 1)
-		self.tab_widget_gk.addTab(self.tab_fa, _fromUtf8(""))
-		self.create_checkbox_gk('fa',fa_beschreibung)
 
 		### WS ###
 		self.tab_ws = QtGui.QWidget()
@@ -381,7 +382,7 @@ class Ui_MainWindow(object):
 			self.label_update.setText(_translate("MainWindow", 'Letztes Update: ' + self.modification_date(log_file).strftime('%d.%m.%y - %H:%M'), None))
 		except FileNotFoundError:
 			self.label_update.setText(_translate("MainWindow", "Letztes Update: ---", None))
-		self.btn_suche.setText(_translate("MainWindow", "Suche starten!", None))
+		self.btn_suche.setText(_translate("MainWindow", "Suche starten", None))
 
 
 		#self.btn_refreshddb.setText(_translate("MainWindow", "Refresh Database", None))
@@ -861,6 +862,7 @@ class Ui_MainWindow(object):
 		return [ self.atoi(c) for c in re.split('(\d+)', text) ]
 
 	def create_pdf(self):
+
 		chosen_aufgabenformat=self.label_aufgabentyp.text()[-1]
 
 		if sys.platform.startswith('linux'):
@@ -879,15 +881,19 @@ class Ui_MainWindow(object):
 		os.unlink('Typ %s Aufgaben/Teildokument/Teildokument.ps'%chosen_aufgabenformat)
 	
 	def PrepareTeXforPDF(self):
-		QtGui.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 		chosen_aufgabenformat='Typ %s Aufgaben'%self.label_aufgabentyp.text()[-1]
 
-		### typ1 ###
-		# if not os.path.isfile(os.path.join('Typ 1 Aufgaben','Teildokument','log_file')):
-		####
+		QtGui.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 		
 		if not os.path.isfile(os.path.join(chosen_aufgabenformat,'Teildokument','log_file')):
 			self.refresh_ddb()
+		else: ##  Automatic update once per month
+			log_file=os.path.join(os.path.dirname('__file__'),chosen_aufgabenformat,'Teildokument','log_file')
+			month_update_log_file=self.modification_date(log_file).strftime('%m')
+			month_today=datetime.date.today().strftime('%m')
+			if month_today!= month_update_log_file:
+				self.refresh_ddb()
+
 		suchbegriffe = []
 		
 
