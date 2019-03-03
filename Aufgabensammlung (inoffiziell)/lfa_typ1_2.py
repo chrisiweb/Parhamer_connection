@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
+#### LaTeX File Assistent v.1.0 ####
 
 from PyQt4 import QtCore, QtGui
 import time
@@ -808,7 +809,9 @@ class Ui_MainWindow(object):
 		#for root, dirs, files in os.walk(os.path.join(os.path.dirname(os.path.dirname(__file__)),"Aufgabensammlung (offiziell)\Typ 1 Aufgaben")):
 		#####
 		
-		for root, dirs, files in os.walk(os.path.join(os.path.dirname(os.path.dirname(__file__)),"Aufgabensammlung (offiziell)",chosen_aufgabenformat)):
+		# print(os.path.join(os.path.dirname(os.path.dirname(__file__)),"Aufgabensammlung (offiziell)",chosen_aufgabenformat))
+		# print(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"Aufgabensammlung (offiziell)",chosen_aufgabenformat))
+		for root, dirs, files in os.walk(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"Aufgabensammlung (offiziell)",chosen_aufgabenformat)):
 			for all in files:
 				while_cnt=0
 				if all.endswith('.tex') or all.endswith('.ltx'):
@@ -825,11 +828,12 @@ class Ui_MainWindow(object):
 								rel_path=os.path.join(filename,rel_path)
 							os.path.dirname(dirname)
 						for i, line in enumerate(file):
-							if not line == "\n":			
+							if not line == "\n":		
 								beispieldaten_dateipfad[line]=os.path.join(rel_path,all)
 								beispieldaten.append(line)
 								break
 						file.close()
+		
 		#print(beispieldaten_dateipfad)
 			# print(beispieldaten)
 
