@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 from PyQt4 import QtCore, QtGui
@@ -860,7 +861,7 @@ class Ui_MainWindow(object):
 
 		if sys.platform.startswith('linux'):
 			subprocess.Popen('cd "Typ %s Aufgaben/Teildokument" ; latex --synctex=-1 Teildokument.tex ; dvips Teildokument.dvi ; ps2pdf -dNOSAFER Teildokument.ps'%chosen_aufgabenformat,shell=True).wait()
-			subprocess.run(['xdg-open', '"Typ %s Aufgaben/Teildokument/Teildokument.pdf"'%chosen_aufgabenformat])
+			subprocess.run(['xdg-open', "Typ %s Aufgaben/Teildokument/Teildokument.pdf"%chosen_aufgabenformat])
 		elif sys.platform.startswith('darwin'):
 			subprocess.Popen('cd "Typ %s Aufgaben/Teildokument" ; latex --synctex=-1 Teildokument.tex ; dvips Teildokument.dvi ; ps2pdf -dNOSAFER Teildokument.ps'%chosen_aufgabenformat,shell=True).wait()
 			subprocess.run(['xdg-open', '"Typ %s Aufgaben/Teildokument/Teildokument.pdf"'%chosen_aufgabenformat])
