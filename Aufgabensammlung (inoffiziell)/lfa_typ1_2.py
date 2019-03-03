@@ -168,7 +168,7 @@ class Ui_MainWindow(object):
 		self.label_update = QtGui.QLabel(self.centralwidget)
 		self.label_update.setObjectName(_fromUtf8("label_update"))
 		self.horizontalLayout.addWidget(self.label_update)
-		self.label_update.setAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
+		#self.label_update.setAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
 		self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
 		self.horizontalLayout_combobox = QtGui.QHBoxLayout()
 		self.horizontalLayout_combobox.setObjectName(_fromUtf8("horizontalLayout_combobox"))
