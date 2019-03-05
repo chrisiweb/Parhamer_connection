@@ -842,8 +842,13 @@ class Ui_MainWindow(object):
 
 		log_file=os.path.join(os.path.dirname('__file__'),chosen_aufgabenformat,'Teildokument','log_file')
 		
-		with open(log_file, 'w+') as f:
-			json.dump(beispieldaten_dateipfad, f,ensure_ascii=False)
+		try:
+			with open(log_file, 'w+') as f:
+				json.dump(beispieldaten_dateipfad, f,ensure_ascii=False)
+		except FileNotFoundError:
+			os.makedirs(os.path.join(os.path.dirname('__file__'),chosen_aufgabenformat,'Teildokument'))
+			with open(log_file, 'w+') as f:
+				json.dump(beispieldaten_dateipfad, f,ensure_ascii=False)		
 
 		self.label_update.setText(_translate("MainWindow", 'Last Update: ' + self.modification_date(log_file).strftime('%d.%m.%y - %H:%M'), None))
 		QtGui.QApplication.restoreOverrideCursor()
