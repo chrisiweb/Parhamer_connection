@@ -845,7 +845,14 @@ class Ui_MainWindow(object):
 								break
 						file.close()
 		
+		temp_dict_beispieldaten={}
+		temp_list=list(beispieldaten_dateipfad.keys())
+		temp_list.sort(key=self.natural_keys)
+		for all in temp_list:
+			temp_dict_beispieldaten.update({all:beispieldaten_dateipfad[all]})
 
+		beispieldaten_dateipfad=temp_dict_beispieldaten
+		
 		log_file=os.path.join(os.path.dirname('__file__'),'Teildokument','log_file_%s'%self.label_aufgabentyp.text()[-1])
 		
 		try:
@@ -1053,6 +1060,7 @@ class Ui_MainWindow(object):
 			
 
 		if not len(self.entry_suchbegriffe.text()) ==0:
+			suchbegriffe.append(self.entry_suchbegriffe.text())
 			if self.menu_searchtype.currentText()=='Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten' or chosen_aufgabenformat=='Typ1Aufgaben':
 				if len(gesammeltedateien)==0 and len(suchbegriffe)!=0:
 					gesammeltedateien=list(beispieldaten_dateipfad.keys())				
