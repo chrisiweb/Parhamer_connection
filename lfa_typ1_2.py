@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-
+#### Version number ###
+__version__='v1.0'
+####################
 
 from PyQt4 import QtCore, QtGui
 import time
@@ -12,11 +14,12 @@ from pathlib import Path
 import datetime
 import json
 import subprocess
+import shutil
 import re
 import yaml
 
-# Load Config-file
 
+# Load Config-file
 def config_loader(pathToFile,parameter):
     config1 = yaml.safe_load(open(pathToFile, encoding='utf8'))
     return config1[parameter]
@@ -37,6 +40,9 @@ dict_gk = config_loader(config_file,'dict_gk')
 set_af = config_loader(config_file,'set_af')
 Klassen = config_loader(config_file,'Klassen')
 
+
+
+
 try:
 	_fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -55,6 +61,7 @@ except AttributeError:
 
 class Ui_MainWindow(object):
 	def setupUi(self, MainWindow):
+		self.check_for_update()	
 		MainWindow.setObjectName(_fromUtf8("MainWindow"))
 		MainWindow.resize(950, 632)
 		MainWindow.setMaximumSize(QtCore.QSize(1078, 16777215))
@@ -355,8 +362,7 @@ class Ui_MainWindow(object):
 				x=eval('self.cb_k%s_'%g+all)
 				x.stateChanged.connect(self.cb_rest_checked)
 
-		
-		
+	
 		############################################################################################
 		##############################################################################################
 	def retranslateUi(self, MainWindow):
@@ -494,13 +500,71 @@ class Ui_MainWindow(object):
 		self.label_gk_fa.setText(_translate("MainWindow", "", None))
 		self.label_gk_ws.setText(_translate("MainWindow", "", None))
 		self.actionExit.setText(_translate("MainWindow", "Exit", None))
-
+		
 	# def change_to_full_gk_name(self,chosen_dict):
 	# 	x=' '
 	# 	for all in chosen_dict:
 	# 		if all[-1]=='L':
 	# 			x='-L '
 	# 		print(all[:2].upper()+x+all[2]+'.'+all[3])
+
+	#######################
+	#### Check for Updates
+	##########################
+
+	def check_for_update(self):
+		f=open('_database/_config/update/__version__.txt','r')
+		if __version__ != f.read():
+			msg = QtGui.QMessageBox()
+			msg.setIcon(QtGui.QMessageBox.Question)
+			#msg.setWindowIcon(QtGui.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
+			msg.setText('Es ist ein neues Update vorhanden.')
+			msg.setInformativeText('Möchten Sie das neue Update installieren?')
+			msg.setWindowTitle("Update vorhanden")
+			msg.setStandardButtons(QtGui.QMessageBox.Yes|QtGui.QMessageBox.No)
+			buttonY = msg.button(QtGui.QMessageBox.Yes)
+			buttonY.setText('Ja')
+			buttonN = msg.button(QtGui.QMessageBox.No)
+			buttonN.setText('Nein')
+			ret=msg.exec_()
+#### not able to save over running exe. Need of little extra Program
+			if ret==QtGui.QMessageBox.Yes:
+				opened_file=os.path.basename(sys.argv[0])
+				name, extension=os.path.splitext(opened_file)
+				if extension=='.py':
+					filename_update=os.path.join(os.path.dirname('__file__'),'_database','_config','update','update.py')
+				elif extension=='.exe':
+					filename_update=os.path.join(os.path.dirname('__file__'),'_database','_config','update','update.exe')
+				os.startfile(filename_update)
+				sys.exit(0)
+				#try:
+
+				# 	update_filepath=os.path.join(os.path.dirname('__file__'),'_database','_config','update','LaTex File Assistent.exe')
+				# 	print(update_filepath)
+				# 	shutil.copyfile(update_filepath, 'LaTex File Assistent_2.exe')
+				# 	MainWindow.close()
+				# 	msg = QtGui.QMessageBox()
+				# 	msg.setIcon(QtGui.QMessageBox.Information)
+				# 	#msg.setWindowIcon(QtGui.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
+				# 	msg.setText("Das Update wurde erfolgreich durchgeführt.")
+				# 	msg.setInformativeText('Das Programm muss nun neu gestartet werden.')
+				# 	msg.setWindowTitle("Update erfolgreich")
+				# 	#msg.setDetailedText("The details are as follows:")
+				# 	msg.setStandardButtons(QtGui.QMessageBox.Ok)
+				# 	retval = msg.exec_()
+				# 	sys.exit(0)						
+				# except FileNotFoundError:
+				# 	msg = QtGui.QMessageBox()
+				# 	msg.setIcon(QtGui.QMessageBox.Warning)
+				# 	#msg.setWindowIcon(QtGui.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
+				# 	msg.setText("Das Update konnte nicht installiert werden.")
+				# 	msg.setInformativeText('Bitte informieren Sie den Systemadministrator.')
+				# 	msg.setWindowTitle("Keine Datei gefunden")
+				# 	msg.setDetailedText("Details:\nEs konnte keine passende Datei gefunden werden!")
+				# 	msg.setStandardButtons(QtGui.QMessageBox.Ok)
+				# 	retval = msg.exec_()
+					#return
+
 
 	############################################################################
 	############################################################################
@@ -546,7 +610,7 @@ class Ui_MainWindow(object):
 		msg = QtGui.QMessageBox()
 		msg.setIcon(QtGui.QMessageBox.Information)
 		#msg.setWindowIcon(QtGui.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
-		msg.setText("LaTeX File Assistent v1.0\n\nAuthor: Christoph Weberndorfer\nLicense: GNU General Public License v3.0")
+		msg.setText("LaTeX File Assistent %s\n\nAuthor: Christoph Weberndorfer\nLicense: GNU General Public License v3.0"%__version__)
 		msg.setInformativeText("Last Update: 03/19")
 		msg.setWindowTitle("Über LaTeX File Assitent")
 		#msg.setDetailedText("The details are as follows:")
