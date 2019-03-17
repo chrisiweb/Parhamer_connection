@@ -88,7 +88,12 @@ class Ui_MainWindow(object):
             self.progressBar.setProperty("value", counter_progressbar)
             counter_progressbar+=0.00005
         #shutil.copyfile(newapp_path, "LaTeX File Assistent%s"%extension)
-        subprocess.call('copy "{0}" "LaTeX File Assistent{1}"'.format(newapp_path, extension),shell=True)
+        if sys.platform.startswith('linux'):
+            subprocess.call('cp "{0}" "LaTeX File Assistent{1}"'.format(newapp_path, extension),shell=True)
+        elif sys.platform.startswith('darwin'):
+            subprocess.call('cp "{0}" "LaTeX File Assistent{1}"'.format(newapp_path, extension),shell=True)
+        else:
+            subprocess.call('copy "{0}" "LaTeX File Assistent{1}"'.format(newapp_path, extension),shell=True)
         while counter_progressbar<100:
             self.progressBar.setProperty("value", counter_progressbar)
             counter_progressbar+=0.0001
@@ -98,7 +103,13 @@ class Ui_MainWindow(object):
         self.pushButton.show()
     
     def ok_button(self):
-        os.startfile(self.mainfile_path)
+        if sys.platform.startswith('linux'):
+            print(self.mainfile_path)
+            os.system(self.mainfile_path)
+        elif sys.platform.startswith('darwin'):
+            os.system(self.mainfile_path)
+        else:
+            os.startfile(self.mainfile_path)
         sys.exit(0)
   
  
