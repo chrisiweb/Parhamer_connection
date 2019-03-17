@@ -82,7 +82,7 @@ class Ui_MainWindow(object):
       
         updatefile_path=os.path.join(os.path.dirname('__file__'),'_database','_config','update','update%s'%extension)
         newapp_path=os.path.join(os.path.dirname('__file__'),'_database','_config','update','LaTeX_File_Assistent%s'%extension)
-        self.mainfile_path=os.path.join(os.path.dirname('__file__'),'"LaTeX_File_Assistent%s"'%extension)
+        self.mainfile_path=os.path.join(os.path.dirname('__file__'),'LaTeX_File_Assistent%s'%extension)
 
         while counter_progressbar<43:
             self.progressBar.setProperty("value", counter_progressbar)
@@ -105,9 +105,9 @@ class Ui_MainWindow(object):
     def ok_button(self):
         if sys.platform.startswith('linux'):
             print(self.mainfile_path)
-            os.system(self.mainfile_path)
+            subprocess.run("python3 " + self.mainfile_path, shell=True)
         elif sys.platform.startswith('darwin'):
-            os.system(self.mainfile_path)
+            subprocess.run("python3 " + self.mainfile_path, shell=True)
         else:
             os.startfile(self.mainfile_path)
         sys.exit(0)
