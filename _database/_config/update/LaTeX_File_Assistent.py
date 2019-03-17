@@ -63,7 +63,7 @@ class Ui_MainWindow(object):
 	def setupUi(self, MainWindow):
 		self.check_for_update()	
 		MainWindow.setObjectName(_fromUtf8("MainWindow"))
-		MainWindow.resize(950, 632)
+		MainWindow.resize(950, 583)
 		MainWindow.setMaximumSize(QtCore.QSize(1078, 16777215))
 		MainWindow.setLayoutDirection(QtCore.Qt.LeftToRight)
 		MainWindow.setStyleSheet(_fromUtf8(""))
@@ -113,18 +113,19 @@ class Ui_MainWindow(object):
 		self.groupBox_ausgew_gk.setObjectName(_fromUtf8("groupBox_ausgew_gk"))
 		self.verticalLayout_2 = QtGui.QVBoxLayout(self.groupBox_ausgew_gk)
 		self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
-		self.label_gk_ag = QtGui.QLabel(self.groupBox_ausgew_gk)
-		self.label_gk_ag.setObjectName(_fromUtf8("label_gk_ag"))
-		self.verticalLayout_2.addWidget(self.label_gk_ag)
-		self.label_gk_an = QtGui.QLabel(self.groupBox_ausgew_gk)
-		self.label_gk_an.setObjectName(_fromUtf8("label_gk_an"))
-		self.verticalLayout_2.addWidget(self.label_gk_an)
-		self.label_gk_fa = QtGui.QLabel(self.groupBox_ausgew_gk)
-		self.label_gk_fa.setObjectName(_fromUtf8("label_gk_fa"))
-		self.verticalLayout_2.addWidget(self.label_gk_fa)
-		self.label_gk_ws = QtGui.QLabel(self.groupBox_ausgew_gk)
-		self.label_gk_ws.setObjectName(_fromUtf8("label_gk_ws"))
-		self.verticalLayout_2.addWidget(self.label_gk_ws)
+		self.label_gk = QtGui.QLabel(self.groupBox_ausgew_gk)
+		self.label_gk.setWordWrap(True)
+		self.label_gk.setObjectName(_fromUtf8("label_gk"))
+		self.verticalLayout_2.addWidget(self.label_gk)
+		# self.label_gk_an = QtGui.QLabel(self.groupBox_ausgew_gk)
+		# self.label_gk_an.setObjectName(_fromUtf8("label_gk_an"))
+		# self.verticalLayout_2.addWidget(self.label_gk_an)
+		# self.label_gk_fa = QtGui.QLabel(self.groupBox_ausgew_gk)
+		# self.label_gk_fa.setObjectName(_fromUtf8("label_gk_fa"))
+		# self.verticalLayout_2.addWidget(self.label_gk_fa)
+		# self.label_gk_ws = QtGui.QLabel(self.groupBox_ausgew_gk)
+		# self.label_gk_ws.setObjectName(_fromUtf8("label_gk_ws"))
+		# self.verticalLayout_2.addWidget(self.label_gk_ws)
 		self.label_gk_rest = QtGui.QLabel(self.groupBox_ausgew_gk)
 		self.label_gk_rest.setWordWrap(False)
 		self.label_gk_rest.setObjectName(_fromUtf8("label_gk_rest"))
@@ -231,6 +232,8 @@ class Ui_MainWindow(object):
 		self.btn_ag_all.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))
 		self.btn_ag_all.setObjectName(_fromUtf8("btn_ag_all"))
 		self.gridLayout_ag.addWidget(self.btn_ag_all, 10, 2, 1, 1)
+		self.btn_ag_all.setMinimumSize(QtCore.QSize(76,23))
+		self.btn_ag_all.setMaximumSize(QtCore.QSize(76,23))
 		self.tab_widget_gk.addTab(self.tab_ag, _fromUtf8(""))
 		self.create_checkbox_gk('ag', ag_beschreibung)
 
@@ -243,6 +246,8 @@ class Ui_MainWindow(object):
 		self.btn_fa_all.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))
 		self.btn_fa_all.setObjectName(_fromUtf8("btn_fa_all"))
 		self.gridLayout_fa.addWidget(self.btn_fa_all, 10, 3, 1, 1)
+		self.btn_fa_all.setMinimumSize(QtCore.QSize(76,23))
+		self.btn_fa_all.setMaximumSize(QtCore.QSize(76,23))
 		self.tab_widget_gk.addTab(self.tab_fa, _fromUtf8(""))
 		self.create_checkbox_gk('fa',fa_beschreibung)
 
@@ -255,6 +260,8 @@ class Ui_MainWindow(object):
 		self.btn_an_all.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))
 		self.btn_an_all.setObjectName(_fromUtf8("btn_an_all"))
 		self.gridLayout_an.addWidget(self.btn_an_all, 10, 3, 1, 1)
+		self.btn_an_all.setMinimumSize(QtCore.QSize(76,23))
+		self.btn_an_all.setMaximumSize(QtCore.QSize(76,23))
 		self.tab_widget_gk.addTab(self.tab_an, _fromUtf8(""))
 		self.create_checkbox_gk('an', an_beschreibung)
 
@@ -268,6 +275,8 @@ class Ui_MainWindow(object):
 		self.btn_ws_all.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))
 		self.btn_ws_all.setObjectName(_fromUtf8("btn_ws_all"))
 		self.gridLayout_ws.addWidget(self.btn_ws_all, 10, 2, 1, 1)
+		self.btn_ws_all.setMinimumSize(QtCore.QSize(76,23))
+		self.btn_ws_all.setMaximumSize(QtCore.QSize(76,23))
 		self.tab_widget_gk.addTab(self.tab_ws, _fromUtf8(""))
 		self.create_checkbox_gk('ws',ws_beschreibung)
 
@@ -343,19 +352,21 @@ class Ui_MainWindow(object):
 		
 		for all in ag_beschreibung:
 			x=eval('self.cb_'+all)
-			x.stateChanged.connect(self.cb_ag_checked)
+			x.stateChanged.connect(self.cb_checked)
+
+		for all in fa_beschreibung:
+			x=eval('self.cb_'+all)
+			x.stateChanged.connect(self.cb_checked)			
 		
 		for all in an_beschreibung:
 			x=eval('self.cb_'+all)
-			x.stateChanged.connect(self.cb_an_checked)
+			x.stateChanged.connect(self.cb_checked)
 			
-		for all in fa_beschreibung:
-			x=eval('self.cb_'+all)
-			x.stateChanged.connect(self.cb_fa_checked)
+
 			
 		for all in ws_beschreibung:
 			x=eval('self.cb_'+all)
-			x.stateChanged.connect(self.cb_ws_checked)
+			x.stateChanged.connect(self.cb_checked)
 		
 		for g in range(5,9):
 			for all in eval('k%s_beschreibung'%g):
@@ -495,10 +506,10 @@ class Ui_MainWindow(object):
 		self.tab_widget_gk.setTabText(self.tab_widget_gk.indexOf(self.tab_ws), _translate("MainWindow", "Wahrscheinlichkeit und Statistik", None))		
 		self.actionNew.setText(_translate("MainWindow", "Reset", None))
 		self.label_gk_rest.setText(_translate("MainWindow", "", None))
-		self.label_gk_ag.setText(_translate("MainWindow", "", None))
-		self.label_gk_an.setText(_translate("MainWindow", "", None))
-		self.label_gk_fa.setText(_translate("MainWindow", "", None))
-		self.label_gk_ws.setText(_translate("MainWindow", "", None))
+		self.label_gk.setText(_translate("MainWindow", "", None))
+		# self.label_gk_an.setText(_translate("MainWindow", "", None))
+		# self.label_gk_fa.setText(_translate("MainWindow", "", None))
+		# self.label_gk_ws.setText(_translate("MainWindow", "", None))
 		self.actionExit.setText(_translate("MainWindow", "Exit", None))
 		
 	# def change_to_full_gk_name(self,chosen_dict):
@@ -527,7 +538,8 @@ class Ui_MainWindow(object):
 			buttonN = msg.button(QtGui.QMessageBox.No)
 			buttonN.setText('Nein')
 			ret=msg.exec_()
-#### not able to save over running exe. Need of little extra Program
+
+
 			if ret==QtGui.QMessageBox.Yes:
 				opened_file=os.path.basename(sys.argv[0])
 				name, extension=os.path.splitext(opened_file)
@@ -535,40 +547,9 @@ class Ui_MainWindow(object):
 					filename_update=os.path.join(os.path.dirname('__file__'),'_database','_config','update','update.py')
 				elif extension=='.exe':
 					filename_update=os.path.join(os.path.dirname('__file__'),'_database','_config','update','update.exe')
-				if sys.platform.startswith('linux'):
-				    os.system(filename_update)
-				elif sys.platform.startswith('darwin'):
-				    os.system(filename_update)
-				else:
-				    os.startfile(filename_update)
+				os.startfile(filename_update)
 				sys.exit(0)
-				#try:
 
-				# 	update_filepath=os.path.join(os.path.dirname('__file__'),'_database','_config','update','LaTex File Assistent.exe')
-				# 	print(update_filepath)
-				# 	shutil.copyfile(update_filepath, 'LaTex File Assistent_2.exe')
-				# 	MainWindow.close()
-				# 	msg = QtGui.QMessageBox()
-				# 	msg.setIcon(QtGui.QMessageBox.Information)
-				# 	#msg.setWindowIcon(QtGui.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
-				# 	msg.setText("Das Update wurde erfolgreich durchgeführt.")
-				# 	msg.setInformativeText('Das Programm muss nun neu gestartet werden.')
-				# 	msg.setWindowTitle("Update erfolgreich")
-				# 	#msg.setDetailedText("The details are as follows:")
-				# 	msg.setStandardButtons(QtGui.QMessageBox.Ok)
-				# 	retval = msg.exec_()
-				# 	sys.exit(0)						
-				# except FileNotFoundError:
-				# 	msg = QtGui.QMessageBox()
-				# 	msg.setIcon(QtGui.QMessageBox.Warning)
-				# 	#msg.setWindowIcon(QtGui.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
-				# 	msg.setText("Das Update konnte nicht installiert werden.")
-				# 	msg.setInformativeText('Bitte informieren Sie den Systemadministrator.')
-				# 	msg.setWindowTitle("Keine Datei gefunden")
-				# 	msg.setDetailedText("Details:\nEs konnte keine passende Datei gefunden werden!")
-				# 	msg.setStandardButtons(QtGui.QMessageBox.Ok)
-				# 	retval = msg.exec_()
-					#return
 
 
 	############################################################################
@@ -775,68 +756,63 @@ class Ui_MainWindow(object):
 		elif self.cb_ws11.isChecked()==True:
 			for all in ws_beschreibung:
 				x=eval('self.cb_'+all)
-				x.setChecked(False)	
+				x.setChecked(False)
+
+	# def cb_checked(self):
+	# 	set_chosen_gk=set([])
+
 				
-	def cb_ag_checked(self):
-		set_chosen_gk=set([])
-		for all in ag_beschreibung:
-			x=eval('self.cb_'+all)
-			if x.isChecked()==True:
-				set_chosen_gk.add(x.text())
+	def cb_checked(self):
+		chosen_gk=[]
 
-		if len(set_chosen_gk)>7:
-			x= ', '.join(list(sorted(set_chosen_gk))[:7])
-			x=x+', ...'
-		else:
-			x= ', '.join(sorted(set_chosen_gk))
-		if len(set_chosen_gk)>0:
-			x='AG: '+x
-		self.label_gk_ag.setText(_translate("MainWindow", str(x), None))
+		list_gk=['ag','fa','an','ws']
 
-	def cb_an_checked(self):
-		set_chosen_gk=set([])
-		for all in an_beschreibung:
-			x=eval('self.cb_'+all)
-			if x.isChecked()==True:
-				set_chosen_gk.add(x.text())
-		if len(set_chosen_gk)>6:
-			x= ', '.join(list(sorted(set_chosen_gk))[:6])
-			x=x+', ...'
-		else:
-			x= ', '.join(sorted(set_chosen_gk))
-		if len(set_chosen_gk)>0:
-			x='AN: '+x
-		self.label_gk_an.setText(_translate("MainWindow", str(x), None))
+		for thema in list_gk:
+			exec('set_chosen_gk_%s=set([])'%thema)
+			for all in eval('%s_beschreibung'%thema):
+				x=eval('self.cb_'+all)
+				if x.isChecked()==True:
+					eval('set_chosen_gk_%s.add(x.text())'%thema)
+			eval('chosen_gk.extend(sorted(set_chosen_gk_%s))'%thema)
 
-	def cb_fa_checked(self):
-		set_chosen_gk=set([])
-		for all in fa_beschreibung:
-			x=eval('self.cb_'+all)
-			if x.isChecked()==True:
-				set_chosen_gk.add(x.text())
-		if len(set_chosen_gk)>6:
-			x= ', '.join(list(sorted(set_chosen_gk))[:6])
-			x=x+', ...'
+		if len(chosen_gk)>35:	
+			x=', '.join(chosen_gk[:35])
+			x=x + ', ...'
 		else:
-			x= ', '.join(sorted(set_chosen_gk))
-		if len(set_chosen_gk)>0:
-			x='FA: '+x
-		self.label_gk_fa.setText(_translate("MainWindow", str(x), None))
+			x=', '.join(chosen_gk)
+
+		self.label_gk.setText(_translate("MainWindow", str(x), None))
+
+		# set_chosen_gk_ag=set([])
+		# for all in ag_beschreibung:
+		# 	x=eval('self.cb_'+all)
+		# 	if x.isChecked()==True:
+		# 		set_chosen_gk_ag.add(x.text())
+		# chosen_gk.extend(sorted(set_chosen_gk_ag))
+
+		# set_chosen_gk_fa=set([])
+		# for all in fa_beschreibung:
+		# 	x=eval('self.cb_'+all)
+		# 	if x.isChecked()==True:
+		# 		set_chosen_gk_fa.add(x.text())
+		# chosen_gk.extend(sorted(set_chosen_gk_fa))		
 		
-	def cb_ws_checked(self):
-		set_chosen_gk=set([])
-		for all in ws_beschreibung:
-			x=eval('self.cb_'+all)
-			if x.isChecked()==True:
-				set_chosen_gk.add(x.text())
-		if len(set_chosen_gk)>6:
-			x= ', '.join(list(sorted(set_chosen_gk))[:6])
-			x=x+', ...'
-		else:
-			x= ', '.join(sorted(set_chosen_gk))
-		if len(set_chosen_gk)>0:
-			x='WS: '+x
-		self.label_gk_ws.setText(_translate("MainWindow", str(x), None))
+		# set_chosen_gk_an=set([])
+		# for all in an_beschreibung:
+		# 	x=eval('self.cb_'+all)
+		# 	if x.isChecked()==True:
+		# 		set_chosen_gk_an.add(x.text())
+		# chosen_gk.extend(sorted(set_chosen_gk_an))
+
+		# set_chosen_gk_ws=set([])
+		# for all in ws_beschreibung:
+		# 	x=eval('self.cb_'+all)
+		# 	if x.isChecked()==True:
+		# 		set_chosen_gk_ws.add(x.text())
+		# chosen_gk.extend(sorted(set_chosen_gk_ws))
+
+
+
 	
 	def cb_rest_checked(self):
 		set_chosen_gk=set([])
