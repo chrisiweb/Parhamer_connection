@@ -81,19 +81,19 @@ class Ui_MainWindow(object):
         name, extension=os.path.splitext(opened_file)
       
         updatefile_path=os.path.join(os.path.dirname('__file__'),'_database','_config','update','update%s'%extension)
-        newapp_path=os.path.join(os.path.dirname('__file__'),'_database','_config','update','LaTeX File Assistent%s'%extension)
-        self.mainfile_path=os.path.join(os.path.dirname('__file__'),'LaTeX File Assistent%s'%extension)
+        newapp_path=os.path.join(os.path.dirname('__file__'),'_database','_config','update','LaTeX_File_Assistent%s'%extension)
+        self.mainfile_path=os.path.join(os.path.dirname('__file__'),'"LaTeX_File_Assistent%s"'%extension)
 
         while counter_progressbar<43:
             self.progressBar.setProperty("value", counter_progressbar)
             counter_progressbar+=0.00005
         #shutil.copyfile(newapp_path, "LaTeX File Assistent%s"%extension)
         if sys.platform.startswith('linux'):
-            subprocess.call('cp "{0}" "LaTeX File Assistent{1}"'.format(newapp_path, extension),shell=True)
+            subprocess.call('cp "{0}" "LaTeX_File_Assistent{1}"'.format(newapp_path, extension),shell=True)
         elif sys.platform.startswith('darwin'):
-            subprocess.call('cp "{0}" "LaTeX File Assistent{1}"'.format(newapp_path, extension),shell=True)
+            subprocess.call('cp "{0}" "LaTeX_File_Assistent{1}"'.format(newapp_path, extension),shell=True)
         else:
-            subprocess.call('copy "{0}" "LaTeX File Assistent{1}"'.format(newapp_path, extension),shell=True)
+            subprocess.call('copy "{0}" "LaTeX_File_Assistent{1}"'.format(newapp_path, extension),shell=True)
         while counter_progressbar<100:
             self.progressBar.setProperty("value", counter_progressbar)
             counter_progressbar+=0.0001
