@@ -535,7 +535,12 @@ class Ui_MainWindow(object):
 					filename_update=os.path.join(os.path.dirname('__file__'),'_database','_config','update','update.py')
 				elif extension=='.exe':
 					filename_update=os.path.join(os.path.dirname('__file__'),'_database','_config','update','update.exe')
-				os.startfile(filename_update)
+				if sys.platform.startswith('linux'):
+				    os.system(filename_update)
+				elif sys.platform.startswith('darwin'):
+				    os.system(filename_update)
+				else:
+				    os.startfile(filename_update)
 				sys.exit(0)
 				#try:
 
