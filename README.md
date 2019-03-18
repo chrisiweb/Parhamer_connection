@@ -16,7 +16,6 @@ Latex File Assistent (AKA Parhamer_connection) ist ein Programm, dass Ihnen erla
 Die Aufgaben sind getrennt nach Typ1 und Typ2 in Schulstufen und Kompetenzen sortiert.
 Es besteht auch die Möglichkeit eigene Aufgaben zu erstellen und dem Pool zuzuführen.
 
-
 ### Installation
 Um das Programm nutzen zu können benötigen Sie folgende Programme:
 
@@ -24,7 +23,7 @@ Um das Programm nutzen zu können benötigen Sie folgende Programme:
 - PyQT4
 - PyYaml
 - Latex
-- Latex packet: ![srdp-mathematik](https://ctan.org/pkg/srdp-mathematik)
+- Latex packet: <https://ctan.org/pkg/srdp-mathematik>
 
 ### Maintainers and Contributes
 Maintainer:
