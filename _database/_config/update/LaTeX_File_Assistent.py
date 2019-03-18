@@ -232,8 +232,8 @@ class Ui_MainWindow(object):
 		self.btn_ag_all.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))
 		self.btn_ag_all.setObjectName(_fromUtf8("btn_ag_all"))
 		self.gridLayout_ag.addWidget(self.btn_ag_all, 10, 2, 1, 1)
-		self.btn_ag_all.setMinimumSize(QtCore.QSize(76,23))
-		self.btn_ag_all.setMaximumSize(QtCore.QSize(76,23))
+		self.btn_ag_all.setMinimumSize(QtCore.QSize(100,0))
+		self.btn_ag_all.setMaximumSize(QtCore.QSize(100,16777215))
 		self.tab_widget_gk.addTab(self.tab_ag, _fromUtf8(""))
 		self.create_checkbox_gk('ag', ag_beschreibung)
 
@@ -246,8 +246,8 @@ class Ui_MainWindow(object):
 		self.btn_fa_all.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))
 		self.btn_fa_all.setObjectName(_fromUtf8("btn_fa_all"))
 		self.gridLayout_fa.addWidget(self.btn_fa_all, 10, 3, 1, 1)
-		self.btn_fa_all.setMinimumSize(QtCore.QSize(76,23))
-		self.btn_fa_all.setMaximumSize(QtCore.QSize(76,23))
+		self.btn_fa_all.setMinimumSize(QtCore.QSize(100,0))
+		self.btn_fa_all.setMaximumSize(QtCore.QSize(100,16777215))
 		self.tab_widget_gk.addTab(self.tab_fa, _fromUtf8(""))
 		self.create_checkbox_gk('fa',fa_beschreibung)
 
@@ -260,8 +260,8 @@ class Ui_MainWindow(object):
 		self.btn_an_all.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))
 		self.btn_an_all.setObjectName(_fromUtf8("btn_an_all"))
 		self.gridLayout_an.addWidget(self.btn_an_all, 10, 3, 1, 1)
-		self.btn_an_all.setMinimumSize(QtCore.QSize(76,23))
-		self.btn_an_all.setMaximumSize(QtCore.QSize(76,23))
+		self.btn_an_all.setMinimumSize(QtCore.QSize(100,0))
+		self.btn_an_all.setMaximumSize(QtCore.QSize(100,16777215))
 		self.tab_widget_gk.addTab(self.tab_an, _fromUtf8(""))
 		self.create_checkbox_gk('an', an_beschreibung)
 
@@ -275,8 +275,8 @@ class Ui_MainWindow(object):
 		self.btn_ws_all.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))
 		self.btn_ws_all.setObjectName(_fromUtf8("btn_ws_all"))
 		self.gridLayout_ws.addWidget(self.btn_ws_all, 10, 2, 1, 1)
-		self.btn_ws_all.setMinimumSize(QtCore.QSize(76,23))
-		self.btn_ws_all.setMaximumSize(QtCore.QSize(76,23))
+		self.btn_ws_all.setMinimumSize(QtCore.QSize(100,0))
+		self.btn_ws_all.setMaximumSize(QtCore.QSize(100,16777215))
 		self.tab_widget_gk.addTab(self.tab_ws, _fromUtf8(""))
 		self.create_checkbox_gk('ws',ws_beschreibung)
 
@@ -547,7 +547,12 @@ class Ui_MainWindow(object):
 					filename_update=os.path.join(os.path.dirname('__file__'),'_database','_config','update','update.py')
 				elif extension=='.exe':
 					filename_update=os.path.join(os.path.dirname('__file__'),'_database','_config','update','update.exe')
-				os.startfile(filename_update)
+				if sys.platform.startswith('linux'):
+				    os.system(filename_update)
+				elif sys.platform.startswith('darwin'):
+				    os.system(filename_update)
+				else:
+				    os.startfile(filename_update)										
 				sys.exit(0)
 
 
