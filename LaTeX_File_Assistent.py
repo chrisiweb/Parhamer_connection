@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__='v1.1'
+__version__='v1.2'
 ####################
 
 from PyQt4 import QtCore, QtGui
@@ -525,7 +525,7 @@ class Ui_MainWindow(object):
 
 	def check_for_update(self):
 		f=open('_database/_config/update/__version__.txt','r')
-		if __version__ != f.read():
+		if __version__ not in f.read():
 			msg = QtGui.QMessageBox()
 			msg.setIcon(QtGui.QMessageBox.Question)
 			#msg.setWindowIcon(QtGui.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
