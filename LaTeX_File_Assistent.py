@@ -1,11 +1,10 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__='v1.1'
+__version__='v1.2'
 ####################
 
-from PyQt5 import QtCore, QtWidgets, QtGui
-from PyQt5.QtWidgets import QMainWindow, QApplication
+from PyQt4 import QtCore, QtGui
 import time
 import threading
 import sys
@@ -51,12 +50,12 @@ except AttributeError:
 		return s
 
 try:
-	_encoding = QtWidgets.QApplication.UnicodeUTF8
+	_encoding = QtGui.QApplication.UnicodeUTF8
 	def _translate(context, text, disambig):
-		return QtWidgets.QApplication.translate(context, text, disambig, _encoding)
+		return QtGui.QApplication.translate(context, text, disambig, _encoding)
 except AttributeError:
 	def _translate(context, text, disambig):
-		return QtWidgets.QApplication.translate(context, text, disambig)
+		return QtGui.QApplication.translate(context, text, disambig)
 
 
 
@@ -68,37 +67,37 @@ class Ui_MainWindow(object):
 		MainWindow.setMaximumSize(QtCore.QSize(1078, 16777215))
 		MainWindow.setLayoutDirection(QtCore.Qt.LeftToRight)
 		MainWindow.setStyleSheet(_fromUtf8(""))
-		#MainWindow.setWindowIcon(QtWidgets.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
-		self.centralwidget = QtWidgets.QWidget(MainWindow)
+		#MainWindow.setWindowIcon(QtGui.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
+		self.centralwidget = QtGui.QWidget(MainWindow)
 		self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
-		self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
+		self.gridLayout = QtGui.QGridLayout(self.centralwidget)
 		self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-		self.statusbar = QtWidgets.QStatusBar(MainWindow)
+		self.statusbar = QtGui.QStatusBar(MainWindow)
 		self.statusbar.setObjectName(_fromUtf8("statusbar"))
 		MainWindow.setStatusBar(self.statusbar)
-		self.menuBar = QtWidgets.QMenuBar(MainWindow)
+		self.menuBar = QtGui.QMenuBar(MainWindow)
 		self.menuBar.setGeometry(QtCore.QRect(0, 0, 378, 21))
 		self.menuBar.setObjectName(_fromUtf8("menuBar"))
-		self.menuDateityp = QtWidgets.QMenu(self.menuBar)
+		self.menuDateityp = QtGui.QMenu(self.menuBar)
 		self.menuDateityp.setObjectName(_fromUtf8("menuDateityp"))
-		self.menuDatei = QtWidgets.QMenu(self.menuBar)
+		self.menuDatei = QtGui.QMenu(self.menuBar)
 		self.menuDatei.setObjectName(_fromUtf8("menuDatei"))
-		self.menuHelp = QtWidgets.QMenu(self.menuBar)
+		self.menuHelp = QtGui.QMenu(self.menuBar)
 		self.menuHelp.setObjectName(_fromUtf8("menuHelp"))
 		MainWindow.setMenuBar(self.menuBar)
-		self.actionNew = QtWidgets.QAction(MainWindow)
+		self.actionNew = QtGui.QAction(MainWindow)
 		self.actionNew.setObjectName(_fromUtf8("actionNew"))
-		self.actionAufgaben_Typ1 = QtWidgets.QAction(MainWindow)
+		self.actionAufgaben_Typ1 = QtGui.QAction(MainWindow)
 		self.actionAufgaben_Typ1.setObjectName(_fromUtf8("actionAufgaben_Typ1"))
-		self.actionAufgaben_Typ2 = QtWidgets.QAction(MainWindow)
+		self.actionAufgaben_Typ2 = QtGui.QAction(MainWindow)
 		self.actionAufgaben_Typ2.setObjectName(_fromUtf8("actionAufgaben_Typ2"))
-		self.actionRefresh_Database = QtWidgets.QAction(MainWindow)
+		self.actionRefresh_Database = QtGui.QAction(MainWindow)
 		self.actionRefresh_Database.setObjectName(_fromUtf8("actionRefresh_Database"))
-		self.actionsuchfenster_reset = QtWidgets.QAction(MainWindow)
+		self.actionsuchfenster_reset = QtGui.QAction(MainWindow)
 		self.actionsuchfenster_reset.setObjectName(_fromUtf8("actionsuchfenster_reset"))
-		self.actionInfo = QtWidgets.QAction(MainWindow)
+		self.actionInfo = QtGui.QAction(MainWindow)
 		self.actionInfo.setObjectName(_fromUtf8("actionInfo"))
-		self.actionExit = QtWidgets.QAction(MainWindow)
+		self.actionExit = QtGui.QAction(MainWindow)
 		self.actionExit.setObjectName(_fromUtf8("actionExit"))
 		self.menuDateityp.addAction(self.actionAufgaben_Typ1)
 		self.menuDateityp.addAction(self.actionAufgaben_Typ2)
@@ -110,93 +109,93 @@ class Ui_MainWindow(object):
 		self.menuBar.addAction(self.menuDatei.menuAction())
 		self.menuBar.addAction(self.menuDateityp.menuAction())
 		self.menuBar.addAction(self.menuHelp.menuAction())
-		self.groupBox_ausgew_gk = QtWidgets.QGroupBox(self.centralwidget)
+		self.groupBox_ausgew_gk = QtGui.QGroupBox(self.centralwidget)
 		self.groupBox_ausgew_gk.setObjectName(_fromUtf8("groupBox_ausgew_gk"))
-		self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.groupBox_ausgew_gk)
+		self.verticalLayout_2 = QtGui.QVBoxLayout(self.groupBox_ausgew_gk)
 		self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
-		self.label_gk = QtWidgets.QLabel(self.groupBox_ausgew_gk)
+		self.label_gk = QtGui.QLabel(self.groupBox_ausgew_gk)
 		self.label_gk.setWordWrap(True)
 		self.label_gk.setObjectName(_fromUtf8("label_gk"))
 		self.verticalLayout_2.addWidget(self.label_gk)
-		# self.label_gk_an = QtWidgets.QLabel(self.groupBox_ausgew_gk)
+		# self.label_gk_an = QtGui.QLabel(self.groupBox_ausgew_gk)
 		# self.label_gk_an.setObjectName(_fromUtf8("label_gk_an"))
 		# self.verticalLayout_2.addWidget(self.label_gk_an)
-		# self.label_gk_fa = QtWidgets.QLabel(self.groupBox_ausgew_gk)
+		# self.label_gk_fa = QtGui.QLabel(self.groupBox_ausgew_gk)
 		# self.label_gk_fa.setObjectName(_fromUtf8("label_gk_fa"))
 		# self.verticalLayout_2.addWidget(self.label_gk_fa)
-		# self.label_gk_ws = QtWidgets.QLabel(self.groupBox_ausgew_gk)
+		# self.label_gk_ws = QtGui.QLabel(self.groupBox_ausgew_gk)
 		# self.label_gk_ws.setObjectName(_fromUtf8("label_gk_ws"))
 		# self.verticalLayout_2.addWidget(self.label_gk_ws)
-		self.label_gk_rest = QtWidgets.QLabel(self.groupBox_ausgew_gk)
+		self.label_gk_rest = QtGui.QLabel(self.groupBox_ausgew_gk)
 		self.label_gk_rest.setWordWrap(False)
 		self.label_gk_rest.setObjectName(_fromUtf8("label_gk_rest"))
 		self.verticalLayout_2.addWidget(self.label_gk_rest)
 		self.gridLayout.addWidget(self.groupBox_ausgew_gk, 3, 3, 1, 1)
-		self.groupBox_titelsuche = QtWidgets.QGroupBox(self.centralwidget)
+		self.groupBox_titelsuche = QtGui.QGroupBox(self.centralwidget)
 		self.groupBox_titelsuche.setObjectName(_fromUtf8("groupBox_titelsuche"))
-		self.gridLayout_10 = QtWidgets.QGridLayout(self.groupBox_titelsuche)
+		self.gridLayout_10 = QtGui.QGridLayout(self.groupBox_titelsuche)
 		self.gridLayout_10.setObjectName(_fromUtf8("gridLayout_10"))
-		self.entry_suchbegriffe = QtWidgets.QLineEdit(self.groupBox_titelsuche)
+		self.entry_suchbegriffe = QtGui.QLineEdit(self.groupBox_titelsuche)
 									 
 		self.entry_suchbegriffe.setObjectName(_fromUtf8("entry_suchbegriffe"))
 		self.gridLayout_10.addWidget(self.entry_suchbegriffe, 0, 0, 1, 1)
 		self.gridLayout.addWidget(self.groupBox_titelsuche, 4, 3, 1, 1)
-		self.groupBox_klassen = QtWidgets.QGroupBox(self.centralwidget)
+		self.groupBox_klassen = QtGui.QGroupBox(self.centralwidget)
 		self.groupBox_klassen.setMaximumSize(QtCore.QSize(367, 16777215))
 		self.groupBox_klassen.setObjectName(_fromUtf8("groupBox_klassen"))
-		self.gridLayout_14 = QtWidgets.QGridLayout(self.groupBox_klassen)
+		self.gridLayout_14 = QtGui.QGridLayout(self.groupBox_klassen)
 		self.gridLayout_14.setObjectName(_fromUtf8("gridLayout_14"))
-		self.cb_k5 = QtWidgets.QCheckBox(self.groupBox_klassen)
+		self.cb_k5 = QtGui.QCheckBox(self.groupBox_klassen)
 											  
 		self.cb_k5.setObjectName(_fromUtf8("cb_k5"))
 		self.gridLayout_14.addWidget(self.cb_k5, 0, 0, 1, 1)
-		self.cb_k7 = QtWidgets.QCheckBox(self.groupBox_klassen)
+		self.cb_k7 = QtGui.QCheckBox(self.groupBox_klassen)
 		self.cb_k7.setObjectName(_fromUtf8("cb_k7"))
 		self.gridLayout_14.addWidget(self.cb_k7, 0, 1, 1, 1)
-		self.cb_k6 = QtWidgets.QCheckBox(self.groupBox_klassen)
+		self.cb_k6 = QtGui.QCheckBox(self.groupBox_klassen)
 		self.cb_k6.setObjectName(_fromUtf8("cb_k6"))
 		self.gridLayout_14.addWidget(self.cb_k6, 1, 0, 1, 1)
-		self.cb_k8 = QtWidgets.QCheckBox(self.groupBox_klassen)
+		self.cb_k8 = QtGui.QCheckBox(self.groupBox_klassen)
 		self.cb_k8.setObjectName(_fromUtf8("cb_k8"))
 		self.gridLayout_14.addWidget(self.cb_k8, 1, 1, 1, 1)
-		self.cb_mat = QtWidgets.QCheckBox(self.groupBox_klassen)
+		self.cb_mat = QtGui.QCheckBox(self.groupBox_klassen)
 		self.cb_mat.setObjectName(_fromUtf8("cb_mat"))
 		self.gridLayout_14.addWidget(self.cb_mat, 0, 2, 1, 1)
 		self.gridLayout.addWidget(self.groupBox_klassen, 3, 0, 1, 1)
-		self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
+		self.horizontalLayout_2 = QtGui.QHBoxLayout()
 		self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
-		self.cb_solution = QtWidgets.QCheckBox(self.centralwidget)
+		self.cb_solution = QtGui.QCheckBox(self.centralwidget)
 		self.cb_solution.setObjectName(_fromUtf8("cb_solution"))
 		self.cb_solution.setChecked(True)
 		self.horizontalLayout_2.addWidget(self.cb_solution, QtCore.Qt.AlignLeft)
-		self.btn_suche = QtWidgets.QPushButton(self.centralwidget)
+		self.btn_suche = QtGui.QPushButton(self.centralwidget)
 		self.btn_suche.setEnabled(True)
 		self.btn_suche.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
 		self.btn_suche.setAcceptDrops(False)
 		self.btn_suche.setObjectName(_fromUtf8("btn_suche"))
 		self.horizontalLayout_2.addWidget(self.btn_suche)
 		self.gridLayout.addLayout(self.horizontalLayout_2, 5, 3, 1, 1)
-		self.horizontalLayout = QtWidgets.QHBoxLayout()
+		self.horizontalLayout = QtGui.QHBoxLayout()
 		self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
-		# self.btn_refreshddb = QtWidgets.QPushButton(self.centralwidget)
+		# self.btn_refreshddb = QtGui.QPushButton(self.centralwidget)
 		# self.btn_refreshddb.setObjectName(_fromUtf8("btn_refreshddb"))
 		# self.horizontalLayout.addWidget(self.btn_refreshddb)
-		self.label_update = QtWidgets.QLabel(self.centralwidget)
+		self.label_update = QtGui.QLabel(self.centralwidget)
 		self.label_update.setObjectName(_fromUtf8("label_update"))
 		self.horizontalLayout.addWidget(self.label_update)
 		#self.label_update.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
 		self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
-		self.horizontalLayout_combobox = QtWidgets.QHBoxLayout()
+		self.horizontalLayout_combobox = QtGui.QHBoxLayout()
 		self.horizontalLayout_combobox.setObjectName(_fromUtf8("horizontalLayout_combobox"))
-		self.label_aufgabentyp = QtWidgets.QLabel(self.centralwidget)
+		self.label_aufgabentyp = QtGui.QLabel(self.centralwidget)
 		self.label_aufgabentyp.setObjectName(_fromUtf8("label_aufgabentyp"))
 		self.horizontalLayout_combobox.addWidget(self.label_aufgabentyp)
-		# self.menu_aufgabentyp = QtWidgets.QComboBox(self.centralwidget)
+		# self.menu_aufgabentyp = QtGui.QComboBox(self.centralwidget)
 		# self.menu_aufgabentyp.setObjectName(_fromUtf8("menu_aufgabentyp"))
 		# self.menu_aufgabentyp.addItem(_fromUtf8(""))
 		# self.menu_aufgabentyp.addItem(_fromUtf8(""))
 		# self.horizontalLayout_combobox.addWidget(self.menu_aufgabentyp)
-		self.menu_searchtype = QtWidgets.QComboBox(self.centralwidget)
+		self.menu_searchtype = QtGui.QComboBox(self.centralwidget)
 		self.menu_searchtype.setEnabled(True)
 		self.menu_searchtype.setObjectName(_fromUtf8("menu_searchtype"))
 		self.menu_searchtype.addItem(_fromUtf8(""))
@@ -204,32 +203,32 @@ class Ui_MainWindow(object):
 		self.horizontalLayout_combobox.addWidget(self.menu_searchtype)
 		self.gridLayout.addLayout(self.horizontalLayout_combobox, 0, 3, 1, 1)
 		self.menu_searchtype.hide()
-		self.groupBox_themen_klasse = QtWidgets.QGroupBox(self.centralwidget)
+		self.groupBox_themen_klasse = QtGui.QGroupBox(self.centralwidget)
 		self.groupBox_themen_klasse.setMaximumSize(QtCore.QSize(367, 16777215))
 		self.groupBox_themen_klasse.setObjectName(_fromUtf8("groupBox_themen_klasse"))
-		self.verticalLayout = QtWidgets.QVBoxLayout(self.groupBox_themen_klasse)
+		self.verticalLayout = QtGui.QVBoxLayout(self.groupBox_themen_klasse)
 		self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-		self.tabWidget = QtWidgets.QTabWidget(self.groupBox_themen_klasse)
+		self.tabWidget = QtGui.QTabWidget(self.groupBox_themen_klasse)
 		self.tabWidget.setStyleSheet(_fromUtf8("background-color: rgb(229, 246, 255);"))
 		self.tabWidget.setMovable(False)
 		self.tabWidget.setObjectName(_fromUtf8("tabWidget"))
 		self.verticalLayout.addWidget(self.tabWidget)
 		self.gridLayout.addWidget(self.groupBox_themen_klasse, 1, 0, 2, 1)
-		self.groupBox_gk = QtWidgets.QGroupBox(self.centralwidget)													  
+		self.groupBox_gk = QtGui.QGroupBox(self.centralwidget)													  
 		self.groupBox_gk.setObjectName(_fromUtf8("groupBox_gk"))
-		self.gridLayout_11 = QtWidgets.QGridLayout(self.groupBox_gk)
+		self.gridLayout_11 = QtGui.QGridLayout(self.groupBox_gk)
 		self.gridLayout_11.setObjectName(_fromUtf8("gridLayout_11"))
-		self.tab_widget_gk = QtWidgets.QTabWidget(self.groupBox_gk)
+		self.tab_widget_gk = QtGui.QTabWidget(self.groupBox_gk)
 		self.tab_widget_gk.setMaximumSize(QtCore.QSize(650, 16777215))
 		self.tab_widget_gk.setStyleSheet(_fromUtf8("background-color: rgb(217, 255, 215);"))
 		self.tab_widget_gk.setObjectName(_fromUtf8("tab_widget_gk"))
 
 		#### AG #####
-		self.tab_ag = QtWidgets.QWidget()
+		self.tab_ag = QtGui.QWidget()
 		self.tab_ag.setObjectName(_fromUtf8("tab_ag"))
-		self.gridLayout_ag = QtWidgets.QGridLayout(self.tab_ag)
+		self.gridLayout_ag = QtGui.QGridLayout(self.tab_ag)
 		self.gridLayout_ag.setObjectName(_fromUtf8("gridLayout_ag"))
-		self.btn_ag_all = QtWidgets.QPushButton(self.tab_ag)
+		self.btn_ag_all = QtGui.QPushButton(self.tab_ag)
 		self.btn_ag_all.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))
 		self.btn_ag_all.setObjectName(_fromUtf8("btn_ag_all"))
 		self.gridLayout_ag.addWidget(self.btn_ag_all, 10, 2, 1, 1)
@@ -239,11 +238,11 @@ class Ui_MainWindow(object):
 		self.create_checkbox_gk('ag', ag_beschreibung)
 
 		### FA ###
-		self.tab_fa = QtWidgets.QWidget()
+		self.tab_fa = QtGui.QWidget()
 		self.tab_fa.setObjectName(_fromUtf8("tab_fa"))
-		self.gridLayout_fa = QtWidgets.QGridLayout(self.tab_fa)
+		self.gridLayout_fa = QtGui.QGridLayout(self.tab_fa)
 		self.gridLayout_fa.setObjectName(_fromUtf8("gridLayout_fa"))
-		self.btn_fa_all = QtWidgets.QPushButton(self.tab_fa)
+		self.btn_fa_all = QtGui.QPushButton(self.tab_fa)
 		self.btn_fa_all.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))
 		self.btn_fa_all.setObjectName(_fromUtf8("btn_fa_all"))
 		self.gridLayout_fa.addWidget(self.btn_fa_all, 10, 3, 1, 1)
@@ -253,11 +252,11 @@ class Ui_MainWindow(object):
 		self.create_checkbox_gk('fa',fa_beschreibung)
 
 		### AN ###
-		self.tab_an = QtWidgets.QWidget()
+		self.tab_an = QtGui.QWidget()
 		self.tab_an.setObjectName(_fromUtf8("tab_an"))
-		self.gridLayout_an = QtWidgets.QGridLayout(self.tab_an)
+		self.gridLayout_an = QtGui.QGridLayout(self.tab_an)
 		self.gridLayout_an.setObjectName(_fromUtf8("gridLayout_an"))
-		self.btn_an_all = QtWidgets.QPushButton(self.tab_an)
+		self.btn_an_all = QtGui.QPushButton(self.tab_an)
 		self.btn_an_all.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))
 		self.btn_an_all.setObjectName(_fromUtf8("btn_an_all"))
 		self.gridLayout_an.addWidget(self.btn_an_all, 10, 3, 1, 1)
@@ -268,11 +267,11 @@ class Ui_MainWindow(object):
 
 
 		### WS ###
-		self.tab_ws = QtWidgets.QWidget()
+		self.tab_ws = QtGui.QWidget()
 		self.tab_ws.setObjectName(_fromUtf8("tab_ws"))
-		self.gridLayout_ws = QtWidgets.QGridLayout(self.tab_ws)
+		self.gridLayout_ws = QtGui.QGridLayout(self.tab_ws)
 		self.gridLayout_ws.setObjectName(_fromUtf8("gridLayout_ws"))
-		self.btn_ws_all = QtWidgets.QPushButton(self.tab_ws)
+		self.btn_ws_all = QtGui.QPushButton(self.tab_ws)
 		self.btn_ws_all.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))
 		self.btn_ws_all.setObjectName(_fromUtf8("btn_ws_all"))
 		self.gridLayout_ws.addWidget(self.btn_ws_all, 10, 2, 1, 1)
@@ -283,30 +282,30 @@ class Ui_MainWindow(object):
 
 		######### Klassenthemen
 		### K5
-		self.tab_k5 = QtWidgets.QWidget()
+		self.tab_k5 = QtGui.QWidget()
 		self.tab_k5.setObjectName(_fromUtf8("tab_k5"))
-		self.gridLayout_k5 = QtWidgets.QGridLayout(self.tab_k5)
+		self.gridLayout_k5 = QtGui.QGridLayout(self.tab_k5)
 		self.gridLayout_k5.setObjectName(_fromUtf8("gridLayout_k5"))
 		self.tabWidget.addTab(self.tab_k5, _fromUtf8(""))
 		self.create_checkbox_klasse('k5',k5_beschreibung)
 		### K6
-		self.tab_k6 = QtWidgets.QWidget()
+		self.tab_k6 = QtGui.QWidget()
 		self.tab_k6.setObjectName(_fromUtf8("tab_k6"))
-		self.gridLayout_k6 = QtWidgets.QGridLayout(self.tab_k6)
+		self.gridLayout_k6 = QtGui.QGridLayout(self.tab_k6)
 		self.gridLayout_k6.setObjectName(_fromUtf8("gridLayout_k6"))
 		self.tabWidget.addTab(self.tab_k6, _fromUtf8(""))
 		self.create_checkbox_klasse('k6',k6_beschreibung)
 		### K7
-		self.tab_k7 = QtWidgets.QWidget()
+		self.tab_k7 = QtGui.QWidget()
 		self.tab_k7.setObjectName(_fromUtf8("tab_k7"))
-		self.gridLayout_k7 = QtWidgets.QGridLayout(self.tab_k7)
+		self.gridLayout_k7 = QtGui.QGridLayout(self.tab_k7)
 		self.gridLayout_k7.setObjectName(_fromUtf8("gridLayout_k7"))
 		self.create_checkbox_klasse('k7',k7_beschreibung)
 		self.tabWidget.addTab(self.tab_k7, _fromUtf8(""))
 		### K8
-		self.tab_k8 = QtWidgets.QWidget()
+		self.tab_k8 = QtGui.QWidget()
 		self.tab_k8.setObjectName(_fromUtf8("tab_k8"))
-		self.gridLayout_k8 = QtWidgets.QGridLayout(self.tab_k8)
+		self.gridLayout_k8 = QtGui.QGridLayout(self.tab_k8)
 		self.gridLayout_k8.setObjectName(_fromUtf8("gridLayout_k8"))
 		self.tabWidget.addTab(self.tab_k8, _fromUtf8(""))
 		self.create_checkbox_klasse('k8',k8_beschreibung)
@@ -315,10 +314,10 @@ class Ui_MainWindow(object):
 		self.gridLayout_11.addWidget(self.tab_widget_gk, 0, 0, 1, 1)
 		self.gridLayout.addWidget(self.groupBox_gk, 1, 3, 2, 1)
 		MainWindow.setCentralWidget(self.centralwidget)
-		self.statusbar = QtWidgets.QStatusBar(MainWindow)
+		self.statusbar = QtGui.QStatusBar(MainWindow)
 		self.statusbar.setObjectName(_fromUtf8("statusbar"))
 		MainWindow.setStatusBar(self.statusbar)
-		self.actionNew = QtWidgets.QAction(MainWindow)
+		self.actionNew = QtGui.QAction(MainWindow)
 		self.actionNew.setObjectName(_fromUtf8("actionNew"))
 
 		self.retranslateUi(MainWindow)
@@ -417,21 +416,21 @@ class Ui_MainWindow(object):
 		self.menu_searchtype.setItemText(0, _translate("MainWindow", "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten", None))
 
 		##### ONLY NEEDED for Typ1 #####
-		self.groupBox_af = QtWidgets.QGroupBox(self.centralwidget)
+		self.groupBox_af = QtGui.QGroupBox(self.centralwidget)
 		self.groupBox_af.setMaximumSize(QtCore.QSize(367, 16777215))
 		self.groupBox_af.setObjectName(_fromUtf8("groupBox_af"))
-		self.gridLayout_af = QtWidgets.QGridLayout(self.groupBox_af)
+		self.gridLayout_af = QtGui.QGridLayout(self.groupBox_af)
 		self.gridLayout_af.setObjectName(_fromUtf8("gridLayout_af"))
-		self.cb_af_zo = QtWidgets.QCheckBox(self.groupBox_af)
+		self.cb_af_zo = QtGui.QCheckBox(self.groupBox_af)
 		self.cb_af_zo.setObjectName(_fromUtf8("cb_af_zo"))
 		self.gridLayout_af.addWidget(self.cb_af_zo, 0, 2, 1, 1)
-		self.cb_af_mc = QtWidgets.QCheckBox(self.groupBox_af)
+		self.cb_af_mc = QtGui.QCheckBox(self.groupBox_af)
 		self.cb_af_mc.setObjectName(_fromUtf8("cb_af_mc"))
 		self.gridLayout_af.addWidget(self.cb_af_mc, 0, 0, 1, 2)
-		self.cb_af_oa = QtWidgets.QCheckBox(self.groupBox_af)
+		self.cb_af_oa = QtGui.QCheckBox(self.groupBox_af)
 		self.cb_af_oa.setObjectName(_fromUtf8("cb_af_oa"))
 		self.gridLayout_af.addWidget(self.cb_af_oa, 1, 2, 1, 1)
-		self.cb_af_lt = QtWidgets.QCheckBox(self.groupBox_af)
+		self.cb_af_lt = QtGui.QCheckBox(self.groupBox_af)
 		self.cb_af_lt.setObjectName(_fromUtf8("cb_af_lt"))
 		self.gridLayout_af.addWidget(self.cb_af_lt, 1, 0, 1, 1)
 		self.gridLayout.addWidget(self.groupBox_af, 4, 0, 2, 1)
@@ -527,21 +526,21 @@ class Ui_MainWindow(object):
 	def check_for_update(self):
 		f=open('_database/_config/update/__version__.txt','r')
 		if __version__ != f.read():
-			msg = QtWidgets.QMessageBox()
-			msg.setIcon(QtWidgets.QMessageBox.Question)
-			#msg.setWindowIcon(QtWidgets.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
+			msg = QtGui.QMessageBox()
+			msg.setIcon(QtGui.QMessageBox.Question)
+			#msg.setWindowIcon(QtGui.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
 			msg.setText('Es ist ein neues Update vorhanden.')
 			msg.setInformativeText('Möchten Sie das neue Update installieren?')
 			msg.setWindowTitle("Update vorhanden")
-			msg.setStandardButtons(QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
-			buttonY = msg.button(QtWidgets.QMessageBox.Yes)
+			msg.setStandardButtons(QtGui.QMessageBox.Yes|QtGui.QMessageBox.No)
+			buttonY = msg.button(QtGui.QMessageBox.Yes)
 			buttonY.setText('Ja')
-			buttonN = msg.button(QtWidgets.QMessageBox.No)
+			buttonN = msg.button(QtGui.QMessageBox.No)
 			buttonN.setText('Nein')
 			ret=msg.exec_()
 
 
-			if ret==QtWidgets.QMessageBox.Yes:
+			if ret==QtGui.QMessageBox.Yes:
 				opened_file=os.path.basename(sys.argv[0])
 				name, extension=os.path.splitext(opened_file)
 				if extension=='.py':
@@ -598,15 +597,15 @@ class Ui_MainWindow(object):
 		sys.exit(0)
 
 	def show_info(self):
-		QtWidgets.QApplication.restoreOverrideCursor()
-		msg = QtWidgets.QMessageBox()
-		msg.setIcon(QtWidgets.QMessageBox.Information)
-		#msg.setWindowIcon(QtWidgets.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
+		QtGui.QApplication.restoreOverrideCursor()
+		msg = QtGui.QMessageBox()
+		msg.setIcon(QtGui.QMessageBox.Information)
+		#msg.setWindowIcon(QtGui.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
 		msg.setText("LaTeX File Assistent %s\n\nAuthor: Christoph Weberndorfer\nLicense: GNU General Public License v3.0"%__version__)
 		msg.setInformativeText("Last Update: 03/19")
 		msg.setWindowTitle("Über LaTeX File Assitent")
 		#msg.setDetailedText("The details are as follows:")
-		msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+		msg.setStandardButtons(QtGui.QMessageBox.Ok)
 		retval = msg.exec_()
 	
 	def get_logfile(self):
@@ -637,7 +636,7 @@ class Ui_MainWindow(object):
 		column=0
 		max_row=9
 		for all in chosen_dict:
-			exec('self.cb_'+all+'=QtWidgets.QCheckBox(self.tab_'+gk_type+')')
+			exec('self.cb_'+all+'=QtGui.QCheckBox(self.tab_'+gk_type+')')
 			exec('self.cb_'+all+'.setObjectName(_fromUtf8("cb_'+all+'"))')
 			x=eval('self.cb_'+all)
 			grid=eval('self.gridLayout_'+gk_type)
@@ -655,7 +654,7 @@ class Ui_MainWindow(object):
 		max_row=9
 
 		for all in chosen_dict:
-			exec('self.cb_'+klasse+'_'+all+'= QtWidgets.QCheckBox(self.tab_'+klasse+')')	
+			exec('self.cb_'+klasse+'_'+all+'= QtGui.QCheckBox(self.tab_'+klasse+')')	
 			exec('self.cb_'+klasse+'_'+all+'.setObjectName(_fromUtf8("cb_'+klasse+'_'+all+'"))')
 			grid=eval('self.gridLayout_'+klasse)
 			x=eval('self.cb_'+klasse+'_'+all)
@@ -667,7 +666,7 @@ class Ui_MainWindow(object):
 			else:
 				row+=1
 
-			exec('self.btn_'+klasse+'= QtWidgets.QPushButton(self.tab_'+klasse+')')
+			exec('self.btn_'+klasse+'= QtGui.QPushButton(self.tab_'+klasse+')')
 			exec('self.btn_%s.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))'%klasse)
 			exec('self.btn_'+klasse+'.setObjectName(_fromUtf8("btn_'+klasse+'"))')
 			exec('self.gridLayout_'+klasse+'.addWidget(self.btn_'+klasse+', max_row, column+1, 1, 1, QtCore.Qt.AlignRight)')
@@ -859,7 +858,7 @@ class Ui_MainWindow(object):
 		return datetime.datetime.fromtimestamp(t)	
 		
 	def refresh_ddb(self):
-		QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+		QtGui.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 		beispieldaten_dateipfad = {}
 		beispieldaten = []
 		chosen_aufgabenformat='Typ%sAufgaben'%self.label_aufgabentyp.text()[-1]
@@ -915,7 +914,7 @@ class Ui_MainWindow(object):
 				json.dump(beispieldaten_dateipfad, f,ensure_ascii=False)		
 
 		self.label_update.setText(_translate("MainWindow", 'Last Update: ' + self.modification_date(log_file).strftime('%d.%m.%y - %H:%M'), None))
-		QtWidgets.QApplication.restoreOverrideCursor()
+		QtGui.QApplication.restoreOverrideCursor()
 
 
 		
@@ -952,7 +951,7 @@ class Ui_MainWindow(object):
 	def PrepareTeXforPDF(self):
 		chosen_aufgabenformat='Typ%sAufgaben'%self.label_aufgabentyp.text()[-1]
 
-		QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+		QtGui.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 		
 		if not os.path.isfile(os.path.join('Teildokument','log_file_%s'%self.label_aufgabentyp.text()[-1])):
 			self.refresh_ddb()
@@ -1184,15 +1183,15 @@ class Ui_MainWindow(object):
 
 		##############################
 		if not dict_gesammeltedateien:
-			QtWidgets.QApplication.restoreOverrideCursor()
-			msg = QtWidgets.QMessageBox()
-			msg.setIcon(QtWidgets.QMessageBox.Warning)
-			#msg.setWindowIcon(QtWidgets.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
+			QtGui.QApplication.restoreOverrideCursor()
+			msg = QtGui.QMessageBox()
+			msg.setIcon(QtGui.QMessageBox.Warning)
+			#msg.setWindowIcon(QtGui.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
 			msg.setText("Es wurden keine passenden Beispiele gefunden!")
 			msg.setInformativeText('Es wird keine Datei ausgegeben.')
 			msg.setWindowTitle("Warnung")
 			#msg.setDetailedText("The details are as follows:")
-			msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+			msg.setStandardButtons(QtGui.QMessageBox.Ok)
 			retval = msg.exec_()
 			return
 
@@ -1235,21 +1234,21 @@ class Ui_MainWindow(object):
 		file.close()
 		
 
-		QtWidgets.QApplication.restoreOverrideCursor()
-		msg = QtWidgets.QMessageBox()
-		msg.setIcon(QtWidgets.QMessageBox.Question)
-		#msg.setWindowIcon(QtWidgets.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
+		QtGui.QApplication.restoreOverrideCursor()
+		msg = QtGui.QMessageBox()
+		msg.setIcon(QtGui.QMessageBox.Question)
+		#msg.setWindowIcon(QtGui.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
 		msg.setText('Insgesamt wurden '+ str(len(dict_gesammeltedateien)) + ' Beispiel gefunden.\n ')
 		msg.setInformativeText('Soll die PDF Datei erstellt werden?')
 		msg.setWindowTitle("Datei ausgeben?")
-		msg.setStandardButtons(QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
-		buttonY = msg.button(QtWidgets.QMessageBox.Yes)
+		msg.setStandardButtons(QtGui.QMessageBox.Yes|QtGui.QMessageBox.No)
+		buttonY = msg.button(QtGui.QMessageBox.Yes)
 		buttonY.setText('Ja')
-		buttonN = msg.button(QtWidgets.QMessageBox.No)
+		buttonN = msg.button(QtGui.QMessageBox.No)
 		buttonN.setText('Nein')
 		ret=msg.exec_()
 		
-		if ret==QtWidgets.QMessageBox.Yes:
+		if ret==QtGui.QMessageBox.Yes:
 			MainWindow.close()
 			self.create_pdf()
 			sys.exit(0)
@@ -1262,7 +1261,7 @@ class Ui_MainWindow(object):
 		###### Windows Loading Bar ######################
 		###############################################
 
-		# LoadingWindow = QtWidgets.QDialog()
+		# LoadingWindow = QtGui.QDialog()
 		# ui = Ui_Dialog()
 		# ui.setupUi(LoadingWindow)
 		# LoadingWindow.exec()
@@ -1271,13 +1270,10 @@ class Ui_MainWindow(object):
 	
 if __name__ == "__main__":
 	import sys
-	app = QApplication(sys.argv)
-	MainWindow = QMainWindow()
-
+	app = QtGui.QApplication(sys.argv)
+	MainWindow = QtGui.QMainWindow()
 	ui = Ui_MainWindow()
 	ui.setupUi(MainWindow)
-
 	MainWindow.show()
 	sys.exit(app.exec_())
-
 
