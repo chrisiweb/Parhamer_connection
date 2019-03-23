@@ -19,7 +19,7 @@ import shutil
 import re
 import yaml
 
-
+print('Loading...')
 # Load Config-file
 def config_loader(pathToFile,parameter):
     config1 = yaml.safe_load(open(pathToFile, encoding='utf8'))
@@ -38,7 +38,7 @@ k7_beschreibung = config_loader(config_file,'k7_beschreibung')
 k8_beschreibung = config_loader(config_file,'k8_beschreibung')
 
 dict_gk = config_loader(config_file,'dict_gk')
-set_af = config_loader(config_file,'set_af')
+dict_aufgabenformate = config_loader(config_file,'dict_aufgabenformate')
 Klassen = config_loader(config_file,'Klassen')
 
 
@@ -68,7 +68,7 @@ class Ui_MainWindow(object):
 		MainWindow.setMaximumSize(QtCore.QSize(1078, 16777215))
 		MainWindow.setLayoutDirection(QtCore.Qt.LeftToRight)
 		MainWindow.setStyleSheet(_fromUtf8(""))
-		#MainWindow.setWindowIcon(QtWidgets.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
+		#MainWindow.setWindowIcon(QtGui.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
 		self.centralwidget = QtWidgets.QWidget(MainWindow)
 		self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
 		self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
@@ -513,6 +513,7 @@ class Ui_MainWindow(object):
 		# self.label_gk_ws.setText(_translate("MainWindow", "", None))
 		self.actionExit.setText(_translate("MainWindow", "Exit", None))
 		
+		print('Done')
 	# def change_to_full_gk_name(self,chosen_dict):
 	# 	x=' '
 	# 	for all in chosen_dict:
@@ -529,7 +530,7 @@ class Ui_MainWindow(object):
 		if __version__ not in f.read():
 			msg = QtWidgets.QMessageBox()
 			msg.setIcon(QtWidgets.QMessageBox.Question)
-			#msg.setWindowIcon(QtWidgets.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
+			#msg.setWindowIcon(QtGui.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
 			msg.setText('Es ist ein neues Update vorhanden.')
 			msg.setInformativeText('Möchten Sie das neue Update installieren?')
 			msg.setWindowTitle("Update vorhanden")
@@ -585,7 +586,7 @@ class Ui_MainWindow(object):
 		for all in Klassen:
 			x=eval('self.cb_'+all)
 			x.setChecked(False)
-		for all in set_af:
+		for all in list(dict_aufgabenformate.keys()):
 			x=eval('self.cb_af_'+all)
 			x.setChecked(False)
 		self.entry_suchbegriffe.setText('')	
@@ -601,10 +602,10 @@ class Ui_MainWindow(object):
 		QtWidgets.QApplication.restoreOverrideCursor()
 		msg = QtWidgets.QMessageBox()
 		msg.setIcon(QtWidgets.QMessageBox.Information)
-		#msg.setWindowIcon(QtWidgets.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
+		#msg.setWindowIcon(QtGui.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
 		msg.setText("LaTeX File Assistent %s\n\nAuthor: Christoph Weberndorfer\nLicense: GNU General Public License v3.0"%__version__)
 		msg.setInformativeText("Last Update: 03/19")
-		msg.setWindowTitle("Über LaTeX File Assitent")
+		msg.setWindowTitle("Über LaTeX File Assistent")
 		#msg.setDetailedText("The details are as follows:")
 		msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
 		retval = msg.exec_()
@@ -1148,7 +1149,7 @@ class Ui_MainWindow(object):
 			if self.cb_af_mc.isChecked() or self.cb_af_lt.isChecked() or self.cb_af_zo.isChecked() or self.cb_af_oa.isChecked()==True:
 				if suchbegriffe==[]:
 					dict_gesammeltedateien=beispieldaten_dateipfad
-				for all_formats in set_af:
+				for all_formats in list(dict_aufgabenformate.keys()):
 					x=eval('self.cb_af_'+all_formats)
 					if x.isChecked()==False:
 						for all in list(dict_gesammeltedateien):
@@ -1187,7 +1188,7 @@ class Ui_MainWindow(object):
 			QtWidgets.QApplication.restoreOverrideCursor()
 			msg = QtWidgets.QMessageBox()
 			msg.setIcon(QtWidgets.QMessageBox.Warning)
-			#msg.setWindowIcon(QtWidgets.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
+			#msg.setWindowIcon(QtGui.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
 			msg.setText("Es wurden keine passenden Beispiele gefunden!")
 			msg.setInformativeText('Es wird keine Datei ausgegeben.')
 			msg.setWindowTitle("Warnung")
@@ -1238,7 +1239,7 @@ class Ui_MainWindow(object):
 		QtWidgets.QApplication.restoreOverrideCursor()
 		msg = QtWidgets.QMessageBox()
 		msg.setIcon(QtWidgets.QMessageBox.Question)
-		#msg.setWindowIcon(QtWidgets.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
+		#msg.setWindowIcon(QtGui.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
 		msg.setText('Insgesamt wurden '+ str(len(dict_gesammeltedateien)) + ' Beispiel gefunden.\n ')
 		msg.setInformativeText('Soll die PDF Datei erstellt werden?')
 		msg.setWindowTitle("Datei ausgeben?")

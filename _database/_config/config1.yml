@@ -381,11 +381,12 @@ dict_gk:
     
     "ws41": "WS 4.1"
     "ws42": "WS-L 4.2"
-set_af: # Only used in PyQT
-        - "mc"
-        - "zo"
-        - "lt"
-        - "oa"
+    
+dict_aufgabenformate: # Only used in PyQT
+        "lt": "Lückentext"
+        "mc": "Mutiple Choice"
+        "oa": "Offenes Antwortformat"
+        "zo": "Zuordnungsformat"
 
 Klassen: 
         "k5": "5. Klasse"
