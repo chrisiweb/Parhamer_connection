@@ -1,0 +1,44 @@
+\section{K8 - SWS - 1032 - Hypothesentest - MC - Dimensionen Mathematik 8 - Schularbeiten-Trainer}
+
+\begin{beispiel}[K8 - SWS]{1}
+Gegeben ist eine Hypothese über den Anteil $p_D$ defekter Stücke im Rahmen einer Qualitätskontrolle. Die Entscheidung wird auf Grundlage der Anzahl $x_D$ defekter Stücke in einer Stichprobe der Größe $n=500$ getroffen. Die Abbildung rechts veranschaulicht den Sachverhalt.
+\begin{center}
+	\resizebox{0.7\linewidth}{!}{\psset{xunit=0.3cm,yunit=40.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-5.124536377415292,-0.016584656222773393)(44.88330461032693,0.12062308384664601)
+\psaxes[comma,labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=y,Dx=10.,Dy=0.05,ticksize=-2pt 0,subticks=0]{->}(0,0)(-5.124536377415292,-0.016584656222773393)(44.88330461032693,0.12062308384664601)[x,140] [f(x),-40]
+
+\pscustom[linewidth=0.8pt,fillcolor=black,fillstyle=solid,opacity=0.4]{\psplot{28.}{50.}{EXP((-(x-20.0)^(2.0))/(4.381780460041329^(2.0)*2.0))/(abs(4.381780460041329)*sqrt(3.141592653589793*2.0))}\lineto(50.,0)\lineto(28.,0)\closepath}
+\psplot[linewidth=1.2pt,plotpoints=200]{-5.124536377415292}{44.88330461032693}{EXP((-(x-20.0)^(2.0))/(4.381780460041329^(2.0)*2.0))/(abs(4.381780460041329)*sqrt(3.141592653589793*2.0))}
+\psline[linewidth=2.pt,linestyle=dotted](20.,0.)(20.11638810217973,0.09101359044245902)
+\rput[tl](18.931368173560234,-0.005491264472479928){20}
+\rput[tl](27.22650767389662,-0.004323539025080613){28}
+\psline[linewidth=2.pt](29.12253955968781,0.006769852725212887)(31.374077424064826,0.03713071435759505)
+\rput[tl](25.80448375955324,0.06398839964777926){Annahmebereich für}
+\rput[tl](25.330475788105446,0.05231114517378612){die Arbeitshypothese}
+\begin{scriptsize}
+\rput[bl](299.4255852777921,0.009689166343711156){\blue{$b = 0$}}
+\rput[bl](4.1186190658166835,0.005602127277813556){$f$}
+\end{scriptsize}
+\end{pspicture*}}
+\end{center}
+
+Kreuze die beiden zutreffenden Aussagen an.
+
+\multiplechoice[5]{  %Anzahl der Antwortmoeglichkeiten, Standard: 5
+				L1={Es handelt sich um einen zweiseitigen Anteilstest.},   %1. Antwortmoeglichkeit 
+				L2={Die Nullhypothese lautet: $p_D=0,02$.},   %2. Antwortmoeglichkeit
+				L3={Im Falle, dass $x_D=30$ gilt, entscheidet man sich für die Arbeitshypothese.},   %3. Antwortmoeglichkeit
+				L4={Für den Fall, dass $x_D=27$ gilt, kann die Richtigkeit der Nullhypothese als bewiesen angesehen werden.},   %4. Antwortmoeglichkeit
+				L5={Die Alternativhypothese lautet $p_D>0,04$.},	 %5. Antwortmoeglichkeit
+				L6={},	 %6. Antwortmoeglichkeit
+				L7={},	 %7. Antwortmoeglichkeit
+				L8={},	 %8. Antwortmoeglichkeit
+				L9={},	 %9. Antwortmoeglichkeit
+				%% LOESUNG: %%
+				A1=3,  % 1. Antwort
+				A2=5,	 % 2. Antwort
+				A3=0,  % 3. Antwort
+				A4=0,  % 4. Antwort
+				A5=0,  % 5. Antwort
+				}
+\end{beispiel}

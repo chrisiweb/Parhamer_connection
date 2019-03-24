@@ -1,0 +1,28 @@
+\section{K8 - SWS - 1004 - Erwartungswert und Standardabweichung ablesen - OA - Dimensionen Mathematik 8 - Schularbeiten-Trainer}
+
+\begin{beispiel}[K8 - SWS]{1}
+Die Variable $X$ ist normalverteilt mit dem Erwartungswert $\mu$ und der Standardabweichung $\sigma$. Die Abbildung zeigt den Graphen der zugehörigen Dichtefunktion $f$. Der Extrem- und ein Wendepunkt von $f$ sind gekennzeichnet.
+
+\begin{center}
+	\resizebox{0.5\linewidth}{!}{\newrgbcolor{rctzbb}{0.10980392156862745 0.2235294117647059 0.7333333333333333}
+\psset{xunit=0.5cm,yunit=20.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-2.2,-0.025314525860255038)(15.647815464815409,0.24766662424403552)
+\multips(0,0)(0,0.05){6}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=darkgray]{c-c}(-2.2,0)(15.647815464815409,0)}
+\multips(-3,0)(1.0,0){19}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=darkgray]{c-c}(0,-0.025314525860255038)(0,0.24766662424403552)}
+\psaxes[comma,labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=1.,Dy=0.05,ticksize=-2pt 0,subticks=2]{->}(0,0)(-2.2,-0.025314525860255038)(15.647815464815409,0.24766662424403552)[x,140] [f(x),-40]
+\psplot[linewidth=1.6pt,linecolor=rctzbb,plotpoints=200]{-1.0426182588284363}{15.647815464815409}{EXP((-(x-6.0)^(2.0))/(2.0^(2.0)*2.0))/(abs(2.0)*sqrt(3.141592653589793*2.0))}
+\rput[tl](6.141524952653045,0.2293617657822318){$E=(6\mid f(6))$}
+\rput[tl](8.149214806366725,0.14500024417565802){$W=(8\mid f(8))$}
+\begin{scriptsize}
+\psdots[dotsize=4pt 0,dotstyle=*,linecolor=darkgray](6.,0.19947114020071635)
+\psdots[dotsize=4pt 0,dotstyle=*,linecolor=darkgray](8.,0.12098536225957168)
+\end{scriptsize}
+\end{pspicture*}}
+\end{center}
+
+Lies aus der Abbildung die Werte für $\mu$ und $\sigma$ ab.
+
+\antwort{$\mu=6$ und $\sigma=2$
+
+Hochpunkt: $E=(\mu\mid f(\mu))$, Wendepunkt $W_{1,2}=(\mu\pm\sigma\mid f(\mu\pm\sigma))$}
+\end{beispiel}

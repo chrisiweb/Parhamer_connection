@@ -1,0 +1,21 @@
+\section{K8 - SWS - 1009 - Kennzeichne den Wert - OA - Dimensionen Mathematik 8 - Schularbeiten-Trainer}
+
+\begin{beispiel}[K8 - SWS]{1}
+Die Variable $Z$ ist standardnormalverteilt. Die Verteilungsfunktion von $Z$ wird mit $\Phi$ bezeichnet. Die Abbildung zeigt den Graphen der Dichtefunktion $\varphi$ von $Z$.
+\begin{center}
+	\resizebox{0.5\linewidth}{!}{\psset{xunit=1.0cm,yunit=10.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-3.4589426321709786,-0.05359072172702472)(3.4251968503937005,0.4756086164922251)
+\multips(0,0)(0,0.05){11}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(-3.4589426321709786,0)(3.4251968503937005,0)}
+\multips(-3,0)(0.5,0){14}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,-0.05359072172702472)(0,0.4756086164922251)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=1.,Dy=0.1,ticksize=-2pt 0,subticks=2]{->}(0,0)(-3.4589426321709786,-0.05359072172702472)(3.4251968503937005,0.4756086164922251)[$Z$,140] [$\varphi(Z)$,-40]
+\antwort{\pscustom[linewidth=0.8pt,fillcolor=black,fillstyle=solid,opacity=0.5]{\psplot{-4.83127109111361}{1.5}{EXP((-(x-0.0)^(2.0))/(1.0^(2.0)*2.0))/(abs(1.0)*sqrt(3.141592653589793*2.0))}\lineto(1.5,0)\lineto(-4.83127109111361,0)\closepath}}
+\psplot[linewidth=1.6pt,plotpoints=200]{-3.4589426321709786}{3.4251968503937005}{EXP((-(x-0.0)^(2.0))/(1.0^(2.0)*2.0))/(abs(1.0)*sqrt(3.141592653589793*2.0))}
+\begin{scriptsize}
+\psdots[dotsize=4pt 0,dotstyle=triangle*](-10.,0.)
+\psdots[dotsize=4pt 0,dotstyle=triangle*](-4.83127109111361,0.)
+\end{scriptsize}
+\end{pspicture*}}
+\end{center}
+
+Kennzeichne den Wert $\Phi(1,5)$ in der Abbildung.
+\end{beispiel}

@@ -1,0 +1,46 @@
+\section{K8 - SWS - 1005 - Welche Fläche ist gesucht - MC - Dimensionen Mathematik 8 - Schularbeiten-Trainer}
+
+\begin{beispiel}[K8 - SWS]{1}
+Eine Zufallsvariable $X$ ist normalverteilt mit $\mu=5$ und $\sigma=2$. Die Abbildung zeigt den Graphen der Dichtefunktion $f$ von $X$. Extrem- und Wendepunkte von $f$ sind in der Grafik eingezeichnet, ebenso eine Fläche der Größe A.
+
+\begin{center}
+	\resizebox{0.5\linewidth}{!}{\psset{xunit=0.5cm,yunit=20.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-1.0426182588284363,-0.025314525860255038)(12.79350940772849,0.24766662424403552)
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=none,Dx=1.,Dy=0.05,ticksize=0pt 0,subticks=2]{->}(0,0)(-1.0426182588284363,-0.025314525860255038)(12.79350940772849,0.24766662424403552)[x,140] [f(x),-40]
+\pscustom[linewidth=0.8pt,fillcolor=black,fillstyle=solid,opacity=0.3]{\psplot{8}{12.}{2.718281828459045^((-(x-5.0)^(2.0))/8.0)/(abs(2.0)*sqrt(PI*2.0))}\lineto(12.,0)\lineto(8,0)\closepath}
+\psplot[linewidth=1.6pt,plotpoints=200]{-1.0426182588284363}{12.79350940772849}{2.718281828459045^((-(x-5.0)^(2.0))/8.0)/(abs(2.0)*sqrt(PI*2.0))}
+\rput[tl](5.077207439840973,0.22){$E$}
+\rput[tl](1.6,0.1258995223024715){$W_1$}
+\rput[tl](7.302598602993486,0.1258995223024715){$W_2$}
+\psline[linewidth=1.pt](8.8748858378295,0.019253825177180158)(9.431233628617628,0.03596695681621835)
+\rput[tl](9.527989766145998,0.055){$A$}
+\psline[linewidth=2.pt,linestyle=dotted](5.,0.19947114020071635)(5.,0.)
+\rput[tl](1,0.05825113233493595){$f$}
+\begin{scriptsize}
+\psdots[dotsize=4pt 0,dotstyle=*,linecolor=darkgray](5.,0.19947114020071635)
+\psdots[dotsize=4pt 0,dotstyle=*,linecolor=darkgray](7.1,0.11494107034211655)
+\psdots[dotsize=4pt 0,dotstyle=*,linecolor=darkgray](2.9,0.11494107034211654)
+\end{scriptsize}
+\end{pspicture*}}
+\end{center}
+
+Kreuze die zutreffende Aussage an.
+
+\multiplechoice[6]{  %Anzahl der Antwortmoeglichkeiten, Standard: 5
+				L1={$A=P(X>5)$},   %1. Antwortmoeglichkeit 
+				L2={$A=P(X>6)$},   %2. Antwortmoeglichkeit
+				L3={$A=P(X>7)$},   %3. Antwortmoeglichkeit
+				L4={$A=P(X>8)$},   %4. Antwortmoeglichkeit
+				L5={$A=P(X>9)$},	 %5. Antwortmoeglichkeit
+				L6={$A=P(X>10)$},	 %6. Antwortmoeglichkeit
+				L7={},	 %7. Antwortmoeglichkeit
+				L8={},	 %8. Antwortmoeglichkeit
+				L9={},	 %9. Antwortmoeglichkeit
+				%% LOESUNG: %%
+				A1=4,  % 1. Antwort
+				A2=0,	 % 2. Antwort
+				A3=0,  % 3. Antwort
+				A4=0,  % 4. Antwort
+				A5=0,  % 5. Antwort
+				}
+\end{beispiel}

@@ -1,0 +1,22 @@
+\section{K8 - DDG - 1009 - Schwimmbecken - OA - Dimensionen Mathematik 8 - Schularbeiten-Trainer}
+
+\begin{beispiel}[K8 - DDG]{1}
+Modellhaft kann angenommen werden, dass sich die in einem undichten Schwimmbecken enthaltene Wassermenge pro Sekunde um $2\,\%$ verringert.\\
+Andererseits werden während eines konkreten Füllprozesses pro Sekunde 3 Liter Wasser in das Schwimmbecken eingefüllt. Die Funktion $V$ beschreibt die zum Zeitpunkt $t$ enthaltene Wassermenge.
+
+Gib eine Differentialgleichung für die Funktion $V$ an.
+
+\antwort{$V(0)=V_0$\\
+$V(1)=0,98\cdot V_0+3$\\
+$V(2)=0,98\cdot V(1)+3=0,98\cdot(0,98\cdot V_0+3)+3=0,98^2\cdot V_0+0,98\cdot 3+3$\\
+$V(3)=0,98\cdot V(2)+3=0,98\cdot(0,98^2\cdot V_0+0,98\cdot 3+3)+3=0,98^3\cdot V_0+0,98^2\cdot 3+0,98\cdot 3+3$\\
+$...$\\
+$V(t)=0,98^t\cdot V_0+0,98^{t-1}\cdot 3+0,98^{t-2}\cdot 3+...+0,98\cdot 3+3=$\\
+$=0,98^t\cdot V_0+3\cdot(0,98^{t-1}+0,98^{t-2}+...+0,98+1)=$\\
+$=0,98^t\cdot V_0+3\cdot\frac{1-0,98^t}{1-0,98}=0,98^t\cdot V_0+150\cdot(1-0,98^t)=$\\
+$=0,98^t\cdot V_0+150-0,98^t\cdot 150=0,98^t\cdot(V_0-150)+150$\\
+$V(t)=0,98^t\cdot(V_0-150)+150$\\
+$V'(t)=0,98^t\cdot(V_0-150)\cdot\ln(0,98)=[V(t)-150]\cdot\ln(0,98)$
+
+Differentialgleichung: $V'(t)=[V(t)-150]\cdot\ln(0,98)$}
+\end{beispiel}
