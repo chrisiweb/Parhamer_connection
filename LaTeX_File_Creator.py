@@ -730,18 +730,14 @@ class Ui_MainWindow(object):
 		else:
 			return		
 
-		###########################################
-
-
-
 		####### CHECK INCL. & ATTACHED IMAGE RATIO ####
 
-		# if textBox_Entry.count('\includegraphics')>len(dict_picture_path):
-		# 	self.warning_window('Es sind zu wenige Bilder angehängt (' + str(len(dict_picture_path))+'/'+str(textBox_Entry.count('\includegraphics'))+').')
-		# 	return
-		# if textBox_Entry.count('\includegraphics')<len(dict_picture_path):
-		# 	self.warning_window('Es sind zu viele Bilder angehängt (' + str(len(dict_picture_path))+'/'+str(textBox_Entry.count('\includegraphics'))+').')
-		# 	return
+		if textBox_Entry.count('\includegraphics')>len(dict_picture_path):
+			self.warning_window('Es sind zu wenige Bilder angehängt (' + str(len(dict_picture_path))+'/'+str(textBox_Entry.count('\includegraphics'))+').')
+			return
+		if textBox_Entry.count('\includegraphics')<len(dict_picture_path):
+			self.warning_window('Es sind zu viele Bilder angehängt (' + str(len(dict_picture_path))+'/'+str(textBox_Entry.count('\includegraphics'))+').')
+			return
 
 
 
