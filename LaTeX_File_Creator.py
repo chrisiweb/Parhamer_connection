@@ -21,7 +21,7 @@ import functools
 import yaml ##pyyaml
 from PIL import Image ## pillow
 
-
+print('Loading...')
 def config_loader(pathToFile,parameter):
     config1 = yaml.safe_load(open(pathToFile, encoding='utf8'))
     return config1[parameter]
@@ -443,7 +443,7 @@ class Ui_MainWindow(object):
 			x=eval('self.cb_'+all)
 			x.setToolTip(ws_beschreibung[all])
 
-
+		print('Done')
 	def create_checkbox_gk(self,gk_type,chosen_dict):
 		row=0
 		column=0
@@ -518,8 +518,8 @@ class Ui_MainWindow(object):
 
 		x= ', '.join(sorted(set_chosen_gk_label))
 		self.label_ausgew_gk.setText(_translate("MainWindow", str(x), None))
-		print(set_chosen_gk)
-		print(set_chosen_gk_label)
+		# print(set_chosen_gk)
+		# print(set_chosen_gk_label)
 
 	def chosen_aufgabenformat(self):
 		if self.comboBox_aufgabentyp.currentText()=='Typ 1':
@@ -675,14 +675,25 @@ class Ui_MainWindow(object):
 				return
 
 		textBox_Entry=self.plainTextEdit.toPlainText()
-		list_chosen_gk=list(set_chosen_gk)			
+		list_chosen_gk=list(set_chosen_gk)
+
+
+		####### CHECK INCL. & ATTACHED IMAGE RATIO ####
+
+		if textBox_Entry.count('\includegraphics')>len(dict_picture_path):
+			self.warning_window('Es sind zu wenige Bilder angehängt (' + str(len(dict_picture_path))+'/'+str(textBox_Entry.count('\includegraphics'))+').')
+			return
+		if textBox_Entry.count('\includegraphics')<len(dict_picture_path):
+			self.warning_window('Es sind zu viele Bilder angehängt (' + str(len(dict_picture_path))+'/'+str(textBox_Entry.count('\includegraphics'))+').')
+			return
+
 		###############################	
 
 
 		QtWidgets.QApplication.restoreOverrideCursor()
 		msg = QtWidgets.QMessageBox()
 		msg.setIcon(QtWidgets.QMessageBox.Question)
-		msg.setWindowTitle("Aufgabe speichern?")
+		msg.setWindowTitle("Aufgabe speichern")
 		#msg.setWindowIcon(QtWidgets.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
 
 		if len(list_chosen_gk)>1:
@@ -710,7 +721,7 @@ class Ui_MainWindow(object):
 		else:
 			aufgabenformat=''
 		msg.setText(
-		'Sind Sie sicher, dass Sie die folgenden Aufgabe speichern wollen?\n\n'
+		'Sind Sie sicher, dass Sie die folgendene Aufgabe speichern wollen?\n\n'
 		'Aufgabentyp: {0}\n'
 		'Titel: {1}\n{2}'
 		'Grundkompetenz: {3}\n'
@@ -730,20 +741,10 @@ class Ui_MainWindow(object):
 		else:
 			return		
 
-		####### CHECK INCL. & ATTACHED IMAGE RATIO ####
-
-		if textBox_Entry.count('\includegraphics')>len(dict_picture_path):
-			self.warning_window('Es sind zu wenige Bilder angehängt (' + str(len(dict_picture_path))+'/'+str(textBox_Entry.count('\includegraphics'))+').')
-			return
-		if textBox_Entry.count('\includegraphics')<len(dict_picture_path):
-			self.warning_window('Es sind zu viele Bilder angehängt (' + str(len(dict_picture_path))+'/'+str(textBox_Entry.count('\includegraphics'))+').')
-			return
-
-
 
 		##### GET MAX FILENUMBER IN DIR #####
 		if self.comboBox_aufgabentyp.currentText()=='Typ 1':
-			print(set_chosen_gk)
+			# print(set_chosen_gk)
 			if list_chosen_gk[0] in {**k5_beschreibung,**k6_beschreibung,**k7_beschreibung,**k8_beschreibung}: ## merged dictionaries
 				if list_chosen_gk[0] in k5_beschreibung:
 					path_folder='5.Klasse'
@@ -827,8 +828,8 @@ class Ui_MainWindow(object):
 				file.close()
 
 			else:
-				print(list_chosen_gk[0][:2].upper(),dict_gk[list_chosen_gk[0]])
-				print(self.comboBox_klassen.currentText())
+				# print(list_chosen_gk[0][:2].upper(),dict_gk[list_chosen_gk[0]])
+				# print(self.comboBox_klassen.currentText())
 
 				file_name=os.path.join(gk_path_temp,dict_gk[list_chosen_gk[0]]+' - '+str(max_integer_file+1)+'.tex')
 				
@@ -855,7 +856,7 @@ class Ui_MainWindow(object):
 			themen_klasse_auswahl=[]
 			gk_auswahl=[]
 
-			print(list_chosen_gk)
+			# print(list_chosen_gk)
 			for all in list_chosen_gk:
 				if all in {**k5_beschreibung,**k6_beschreibung,**k7_beschreibung,**k8_beschreibung}:
 					themen_klasse_auswahl.append(all.upper())
@@ -864,8 +865,8 @@ class Ui_MainWindow(object):
 
 			gk_auswahl_joined=', '.join(sorted(gk_auswahl))
 			themen_klasse_auswahl_joined=', '.join(sorted(themen_klasse_auswahl)) 			 
-			print(gk_auswahl)
-			print(themen_klasse_auswahl)
+			# print(gk_auswahl)
+			# print(themen_klasse_auswahl)
 
 
 			file_name=os.path.join(os.path.dirname('__file__'),'_database','Typ2Aufgaben','Einzelbeispiele',str(max_integer_file+1)+'.tex')
@@ -934,7 +935,7 @@ class Ui_MainWindow(object):
 		msg.setIcon(QtWidgets.QMessageBox.Information)
 		msg.setWindowTitle("Aufgabe erfolgreich gespeichert")
 		#msg.setWindowIcon(QtWidgets.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
-		msg.setText('Die Typ{0}-Aufgabe mit dem Titel\n"{1}"\nwurde gespeichert.'.format(chosen_typ, self.lineEdit_titel.text()))
+		msg.setText('Die Typ{0}-Aufgabe mit dem Titel\n\n"{1}"\n\nwurde gespeichert.'.format(chosen_typ, self.lineEdit_titel.text()))
 		msg.setDetailedText('Details\n'
 		'Grundkompetenz(en): {0}\n'
 		'Punkte: {1}\n'
