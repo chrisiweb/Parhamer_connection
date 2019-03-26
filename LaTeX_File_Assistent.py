@@ -940,7 +940,7 @@ class Ui_MainWindow(object):
 			subprocess.run(['xdg-open', "Teildokument/Teildokument_%s.pdf"%chosen_aufgabenformat])
 		elif sys.platform.startswith('darwin'):
 			subprocess.Popen('cd "Teildokument" ; latex --synctex=-1 Teildokument_{0}.tex ; dvips Teildokument_{0}.dvi ; ps2pdf -dNOSAFER Teildokument_{0}.ps'.format(chosen_aufgabenformat),shell=True).wait()
-			subprocess.run(['xdg-open', '"Teildokument/Teildokument_%s.pdf"'%chosen_aufgabenformat])
+			subprocess.run(['open', '"Teildokument/Teildokument_%s.pdf"'%chosen_aufgabenformat])
 		else:
 			subprocess.Popen('cd "Teildokument" & latex --synctex=-1 Teildokument_{0}.tex& dvips Teildokument_{0}.dvi & ps2pdf -dNOSAFER Teildokument_{0}.ps'.format(chosen_aufgabenformat),shell=True).wait()
 			subprocess.Popen('cd "Teildokument" & Teildokument_{0}.pdf'.format(chosen_aufgabenformat), shell=True).poll()
