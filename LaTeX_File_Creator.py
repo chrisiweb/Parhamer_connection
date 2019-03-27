@@ -61,6 +61,7 @@ set_chosen_gk=set([])
 class Ui_MainWindow(object):
 	global dict_picture_path, set_chosen_gk
 	def setupUi(self, MainWindow):
+		self.check_for_update()
 		MainWindow.setObjectName(_fromUtf8("MainWindow"))
 		MainWindow.setMaximumSize(QtCore.QSize(1078, 16777215))
 		MainWindow.setLayoutDirection(QtCore.Qt.LeftToRight)
@@ -444,6 +445,43 @@ class Ui_MainWindow(object):
 			x.setToolTip(ws_beschreibung[all])
 
 		print('Done')
+
+	#######################
+	#### Check for Updates
+	##########################
+
+	def check_for_update(self):
+		f=open('_database/_config/update/__version__creator.txt','r')
+		if __version__ not in f.read():
+			msg = QtWidgets.QMessageBox()
+			msg.setIcon(QtWidgets.QMessageBox.Question)
+			#msg.setWindowIcon(QtGui.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
+			msg.setText('Es ist ein neues Update vorhanden.')
+			msg.setInformativeText('Möchten Sie das neue Update installieren?')
+			msg.setWindowTitle("Neues Update verfügbar")
+			msg.setStandardButtons(QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
+			buttonY = msg.button(QtWidgets.QMessageBox.Yes)
+			buttonY.setText('Ja')
+			buttonN = msg.button(QtWidgets.QMessageBox.No)
+			buttonN.setText('Nein')
+			ret=msg.exec_()
+
+
+			if ret==QtWidgets.QMessageBox.Yes:
+				opened_file=os.path.basename(sys.argv[0])
+				name, extension=os.path.splitext(opened_file)
+				if extension=='.py':
+					filename_update=os.path.join(os.path.dirname('__file__'),'_database','_config','update','update_creator.py')
+				elif extension=='.exe':
+					filename_update=os.path.join(os.path.dirname('__file__'),'_database','_config','update','update_creator.exe')
+				if sys.platform.startswith('linux'):
+				    os.system(filename_update)
+				elif sys.platform.startswith('darwin'):
+				    os.system(filename_update)
+				else:
+				    os.startfile(filename_update)										
+				sys.exit(0)
+
 	def create_checkbox_gk(self,gk_type,chosen_dict):
 		row=0
 		column=0
@@ -954,4 +992,5 @@ if __name__ == "__main__":
 	ui.setupUi(MainWindow)
 	MainWindow.show()
 	sys.exit(app.exec_())
+
 
