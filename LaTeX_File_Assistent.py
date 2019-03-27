@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__='v1.2'
+__version__='v1.3'
 ####################
 
 from PyQt5 import QtCore, QtWidgets, QtGui
