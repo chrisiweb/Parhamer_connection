@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__='v1.2'
+__version__='v1.3'
 ####################
 
 from PyQt5 import QtCore, QtWidgets, QtGui
@@ -1240,7 +1240,7 @@ class Ui_MainWindow(object):
 		msg = QtWidgets.QMessageBox()
 		msg.setIcon(QtWidgets.QMessageBox.Question)
 		#msg.setWindowIcon(QtGui.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
-		msg.setText('Insgesamt wurden '+ str(len(dict_gesammeltedateien)) + ' Beispiel gefunden.\n ')
+		msg.setText('Insgesamt wurden '+ str(len(dict_gesammeltedateien)) + ' Beispiele gefunden.\n ')
 		msg.setInformativeText('Soll die PDF Datei erstellt werden?')
 		msg.setWindowTitle("Datei ausgeben?")
 		msg.setStandardButtons(QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)

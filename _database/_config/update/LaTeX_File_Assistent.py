@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__='v1.2'
+__version__='v1.3'
 ####################
 
 from PyQt5 import QtCore, QtWidgets, QtGui
@@ -940,7 +940,7 @@ class Ui_MainWindow(object):
 			subprocess.run(['xdg-open', "Teildokument/Teildokument_%s.pdf"%chosen_aufgabenformat])
 		elif sys.platform.startswith('darwin'):
 			subprocess.Popen('cd "Teildokument" ; latex --synctex=-1 Teildokument_{0}.tex ; dvips Teildokument_{0}.dvi ; ps2pdf -dNOSAFER Teildokument_{0}.ps'.format(chosen_aufgabenformat),shell=True).wait()
-			subprocess.run(['xdg-open', '"Teildokument/Teildokument_%s.pdf"'%chosen_aufgabenformat])
+			subprocess.run(['open', '"Teildokument/Teildokument_%s.pdf"'%chosen_aufgabenformat])
 		else:
 			subprocess.Popen('cd "Teildokument" & latex --synctex=-1 Teildokument_{0}.tex& dvips Teildokument_{0}.dvi & ps2pdf -dNOSAFER Teildokument_{0}.ps'.format(chosen_aufgabenformat),shell=True).wait()
 			subprocess.Popen('cd "Teildokument" & Teildokument_{0}.pdf'.format(chosen_aufgabenformat), shell=True).poll()
@@ -1240,7 +1240,7 @@ class Ui_MainWindow(object):
 		msg = QtWidgets.QMessageBox()
 		msg.setIcon(QtWidgets.QMessageBox.Question)
 		#msg.setWindowIcon(QtGui.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
-		msg.setText('Insgesamt wurden '+ str(len(dict_gesammeltedateien)) + ' Beispiel gefunden.\n ')
+		msg.setText('Insgesamt wurden '+ str(len(dict_gesammeltedateien)) + ' Beispiele gefunden.\n ')
 		msg.setInformativeText('Soll die PDF Datei erstellt werden?')
 		msg.setWindowTitle("Datei ausgeben?")
 		msg.setStandardButtons(QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
