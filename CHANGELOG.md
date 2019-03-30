@@ -1,3 +1,11 @@
+## v1.4
+30.03.2019
+- Created one file (Fusion of File_Assistent and File_Creator)
+
+## v1.3.
+28.03.2019
+- adapted Assistent to changed config1
+
 ## v1.2. 
 20.03.2019
 - Switch to PyQt5

@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__='v1.3'
+__version__='v1.4'
+__lastupdate__='04/19'
 ####################
 
 from PyQt5 import QtCore, QtWidgets, QtGui
@@ -17,9 +18,13 @@ import json
 import subprocess
 import shutil
 import re
+import functools
 import yaml
+from PIL import Image ## pillow
+
 
 print('Loading...')
+
 # Load Config-file
 def config_loader(pathToFile,parameter):
     config1 = yaml.safe_load(open(pathToFile, encoding='utf8'))
@@ -59,13 +64,23 @@ except AttributeError:
 		return QtWidgets.QApplication.translate(context, text, disambig)
 
 
+widgets_search=['actionRefresh_Database','menuDateityp','menuNeu','menuHelp','label_update','label_aufgabentyp','groupBox_ausgew_gk','groupBox_af',
+'groupBox_gk','groupBox_klassen','groupBox_themen_klasse','groupBox_titelsuche','cb_solution','btn_suche'] #'centralwidget'
 
+widgets_create=['menuBild_einf_gen','menuSuche','menuHelp','groupBox_aufgabentyp','groupBox_ausgew_gk_cr','groupBox_bilder',
+'groupBox_2', 'groupBox_grundkompetenzen_cr', 'groupBox_punkte','groupBox_klassen_cr','groupBox_aufgabenformat','groupBox_beispieleingabe',
+'groupBox_quelle','pushButton_save'] 
+
+dict_picture_path={}
+set_chosen_gk=set([])
 class Ui_MainWindow(object):
+	global dict_picture_path, set_chosen_gk
 	def setupUi(self, MainWindow):
 		self.check_for_update()	
 		MainWindow.setObjectName(_fromUtf8("MainWindow"))
-		MainWindow.resize(950, 583)
-		MainWindow.setMaximumSize(QtCore.QSize(1078, 16777215))
+		MainWindow.resize(1000, 500)
+		MainWindow.move(30,30)
+		# MainWindow.setMaximumSize(QtCore.QSize(1078, 16777215))
 		MainWindow.setLayoutDirection(QtCore.Qt.LeftToRight)
 		MainWindow.setStyleSheet(_fromUtf8(""))
 		#MainWindow.setWindowIcon(QtGui.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
@@ -73,21 +88,33 @@ class Ui_MainWindow(object):
 		self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
 		self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
 		self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
+		#######################################################
+		############ Menu Bar ###################
 		self.statusbar = QtWidgets.QStatusBar(MainWindow)
 		self.statusbar.setObjectName(_fromUtf8("statusbar"))
 		MainWindow.setStatusBar(self.statusbar)
 		self.menuBar = QtWidgets.QMenuBar(MainWindow)
-		self.menuBar.setGeometry(QtCore.QRect(0, 0, 378, 21))
+		self.menuBar.setGeometry(QtCore.QRect(0, 0, 950, 21))
 		self.menuBar.setObjectName(_fromUtf8("menuBar"))
 		self.menuDateityp = QtWidgets.QMenu(self.menuBar)
 		self.menuDateityp.setObjectName(_fromUtf8("menuDateityp"))
 		self.menuDatei = QtWidgets.QMenu(self.menuBar)
 		self.menuDatei.setObjectName(_fromUtf8("menuDatei"))
+		self.menuNeu = QtWidgets.QMenu(self.menuBar)
+		self.menuNeu.setObjectName(_fromUtf8("menuNeu"))
+		self.menuSuche = QtWidgets.QMenu(self.menuBar)
+		self.menuSuche.setObjectName(_fromUtf8("menuSuche"))
 		self.menuHelp = QtWidgets.QMenu(self.menuBar)
 		self.menuHelp.setObjectName(_fromUtf8("menuHelp"))
+		self.menuBild_einf_gen = QtWidgets.QMenu(self.menuBar)
+		self.menuBild_einf_gen.setObjectName(_fromUtf8("menuBild_einf_gen"))
+		self.actionBild_einf_gen = QtWidgets.QAction(MainWindow)
+		self.actionBild_einf_gen.setObjectName(_fromUtf8("actionBild_einf_gen"))
+		self.actionBild_konvertieren_jpg_eps = QtWidgets.QAction(MainWindow)
+		self.actionBild_konvertieren_jpg_eps.setObjectName(_fromUtf8("actionBild_konvertieren_jpg_eps"))
 		MainWindow.setMenuBar(self.menuBar)
-		self.actionNew = QtWidgets.QAction(MainWindow)
-		self.actionNew.setObjectName(_fromUtf8("actionNew"))
+		self.actionReset = QtWidgets.QAction(MainWindow)
+		self.actionReset.setObjectName(_fromUtf8("actionReset"))
 		self.actionAufgaben_Typ1 = QtWidgets.QAction(MainWindow)
 		self.actionAufgaben_Typ1.setObjectName(_fromUtf8("actionAufgaben_Typ1"))
 		self.actionAufgaben_Typ2 = QtWidgets.QAction(MainWindow)
@@ -96,6 +123,10 @@ class Ui_MainWindow(object):
 		self.actionRefresh_Database.setObjectName(_fromUtf8("actionRefresh_Database"))
 		self.actionsuchfenster_reset = QtWidgets.QAction(MainWindow)
 		self.actionsuchfenster_reset.setObjectName(_fromUtf8("actionsuchfenster_reset"))
+		self.actionNeu = QtWidgets.QAction(MainWindow)
+		self.actionNeu.setObjectName(_fromUtf8("actionNeu"))
+		self.actionSuche = QtWidgets.QAction(MainWindow)
+		self.actionSuche.setObjectName(_fromUtf8("actionSuche"))		
 		self.actionInfo = QtWidgets.QAction(MainWindow)
 		self.actionInfo.setObjectName(_fromUtf8("actionInfo"))
 		self.actionExit = QtWidgets.QAction(MainWindow)
@@ -107,8 +138,14 @@ class Ui_MainWindow(object):
 		self.menuDatei.addAction(self.actionsuchfenster_reset)
 		self.menuDatei.addSeparator()
 		self.menuDatei.addAction(self.actionExit)
+		self.menuNeu.addAction(self.actionNeu)
+		self.menuSuche.addAction(self.actionSuche)
 		self.menuBar.addAction(self.menuDatei.menuAction())
 		self.menuBar.addAction(self.menuDateityp.menuAction())
+		self.menuBar.addAction(self.menuNeu.menuAction())
+		self.menuBild_einf_gen.addAction(self.actionBild_einf_gen)
+		self.menuBild_einf_gen.addSeparator()
+		self.menuBild_einf_gen.addAction(self.actionBild_konvertieren_jpg_eps)
 		self.menuBar.addAction(self.menuHelp.menuAction())
 		self.groupBox_ausgew_gk = QtWidgets.QGroupBox(self.centralwidget)
 		self.groupBox_ausgew_gk.setObjectName(_fromUtf8("groupBox_ausgew_gk"))
@@ -118,15 +155,6 @@ class Ui_MainWindow(object):
 		self.label_gk.setWordWrap(True)
 		self.label_gk.setObjectName(_fromUtf8("label_gk"))
 		self.verticalLayout_2.addWidget(self.label_gk)
-		# self.label_gk_an = QtWidgets.QLabel(self.groupBox_ausgew_gk)
-		# self.label_gk_an.setObjectName(_fromUtf8("label_gk_an"))
-		# self.verticalLayout_2.addWidget(self.label_gk_an)
-		# self.label_gk_fa = QtWidgets.QLabel(self.groupBox_ausgew_gk)
-		# self.label_gk_fa.setObjectName(_fromUtf8("label_gk_fa"))
-		# self.verticalLayout_2.addWidget(self.label_gk_fa)
-		# self.label_gk_ws = QtWidgets.QLabel(self.groupBox_ausgew_gk)
-		# self.label_gk_ws.setObjectName(_fromUtf8("label_gk_ws"))
-		# self.verticalLayout_2.addWidget(self.label_gk_ws)
 		self.label_gk_rest = QtWidgets.QLabel(self.groupBox_ausgew_gk)
 		self.label_gk_rest.setWordWrap(False)
 		self.label_gk_rest.setObjectName(_fromUtf8("label_gk_rest"))
@@ -191,11 +219,6 @@ class Ui_MainWindow(object):
 		self.label_aufgabentyp = QtWidgets.QLabel(self.centralwidget)
 		self.label_aufgabentyp.setObjectName(_fromUtf8("label_aufgabentyp"))
 		self.horizontalLayout_combobox.addWidget(self.label_aufgabentyp)
-		# self.menu_aufgabentyp = QtWidgets.QComboBox(self.centralwidget)
-		# self.menu_aufgabentyp.setObjectName(_fromUtf8("menu_aufgabentyp"))
-		# self.menu_aufgabentyp.addItem(_fromUtf8(""))
-		# self.menu_aufgabentyp.addItem(_fromUtf8(""))
-		# self.horizontalLayout_combobox.addWidget(self.menu_aufgabentyp)
 		self.menu_searchtype = QtWidgets.QComboBox(self.centralwidget)
 		self.menu_searchtype.setEnabled(True)
 		self.menu_searchtype.setObjectName(_fromUtf8("menu_searchtype"))
@@ -220,9 +243,10 @@ class Ui_MainWindow(object):
 		self.gridLayout_11 = QtWidgets.QGridLayout(self.groupBox_gk)
 		self.gridLayout_11.setObjectName(_fromUtf8("gridLayout_11"))
 		self.tab_widget_gk = QtWidgets.QTabWidget(self.groupBox_gk)
-		self.tab_widget_gk.setMaximumSize(QtCore.QSize(650, 16777215))
+		#self.tab_widget_gk.setMaximumSize(QtCore.QSize(650, 16777215))
 		self.tab_widget_gk.setStyleSheet(_fromUtf8("background-color: rgb(217, 255, 215);"))
 		self.tab_widget_gk.setObjectName(_fromUtf8("tab_widget_gk"))
+
 
 		#### AG #####
 		self.tab_ag = QtWidgets.QWidget()
@@ -311,21 +335,295 @@ class Ui_MainWindow(object):
 		self.tabWidget.addTab(self.tab_k8, _fromUtf8(""))
 		self.create_checkbox_klasse('k8',k8_beschreibung)
 		
-		########
+		##############################################################
+		#####################CREATOR #########################################
+		##########################################################################
+
+
+		self.groupBox_aufgabentyp = QtWidgets.QGroupBox(self.centralwidget)
+		self.groupBox_aufgabentyp.setObjectName(_fromUtf8("groupBox_aufgabentyp"))
+		self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBox_aufgabentyp)
+		self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
+		self.comboBox_aufgabentyp = QtWidgets.QComboBox(self.groupBox_aufgabentyp)
+		self.comboBox_aufgabentyp.setObjectName(_fromUtf8("comboBox_aufgabentyp"))
+		self.comboBox_aufgabentyp.addItem(_fromUtf8(""))
+		self.comboBox_aufgabentyp.addItem(_fromUtf8(""))
+		self.gridLayout_3.addWidget(self.comboBox_aufgabentyp, 0, 0, 1, 1)
+		self.gridLayout.addWidget(self.groupBox_aufgabentyp, 1, 2, 1, 1)
+		self.groupBox_aufgabentyp.setTitle(_translate("MainWindow", "Aufgabentyp", None))
+		self.comboBox_aufgabentyp.setItemText(0, _translate("MainWindow", "Typ 1", None))
+		self.comboBox_aufgabentyp.setItemText(1, _translate("MainWindow", "Typ 2", None))
+		self.groupBox_aufgabentyp.hide()
+
+
+		self.groupBox_grundkompetenzen_cr = QtWidgets.QGroupBox(self.centralwidget)
+		# self.groupBox_grundkompetenzen_cr.setMaximumSize(QtCore.QSize(350, 16777215))
+		self.groupBox_grundkompetenzen_cr.setObjectName(_fromUtf8("groupBox_grundkompetenzen_cr"))
+		self.gridLayout_11_cr = QtWidgets.QGridLayout(self.groupBox_grundkompetenzen_cr)
+		self.gridLayout_11_cr.setObjectName(_fromUtf8("gridLayout_11_cr"))
+		self.tab_widget_gk_cr = QtWidgets.QTabWidget(self.groupBox_grundkompetenzen_cr)
+		self.tab_widget_gk_cr.setStyleSheet(_fromUtf8("background-color: rgb(217, 255, 215);"))
+		self.tab_widget_gk_cr.setObjectName(_fromUtf8("tab_widget_gk_cr"))
+		self.gridLayout_11_cr.addWidget(self.tab_widget_gk_cr, 0, 0, 1, 1)
+		self.gridLayout.addWidget(self.groupBox_grundkompetenzen_cr, 1, 0, 5, 1)
+		self.groupBox_grundkompetenzen_cr.setTitle(_translate("MainWindow", "Grundkompetenzen", None))
+		self.groupBox_grundkompetenzen_cr.hide()
+
+		self.groupBox_ausgew_gk_cr = QtWidgets.QGroupBox(self.centralwidget)
+		self.groupBox_ausgew_gk_cr.setMinimumSize(QtCore.QSize(350, 0))
+		self.groupBox_ausgew_gk_cr.setObjectName(_fromUtf8("groupBox_ausgew_gk_cr"))
+		self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.groupBox_ausgew_gk_cr)
+		self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
+		self.label_ausgew_gk = QtWidgets.QLabel(self.groupBox_ausgew_gk_cr)
+		self.label_ausgew_gk.setWordWrap(True)
+		self.label_ausgew_gk.setObjectName(_fromUtf8("label_ausgew_gk"))
+		self.verticalLayout_2.addWidget(self.label_ausgew_gk)
+		self.gridLayout.addWidget(self.groupBox_ausgew_gk_cr, 6, 0, 1, 1)
+		self.groupBox_ausgew_gk_cr.setTitle(_translate("MainWindow", "Ausgewählte Grundkompetenzen", None))
+		self.label_ausgew_gk.setText(_translate("MainWindow", "-", None))
+		self.groupBox_ausgew_gk_cr.hide()
+
+		self.groupBox_bilder = QtWidgets.QGroupBox(self.centralwidget)
+		self.groupBox_bilder.setMaximumSize(QtCore.QSize(16777215, 120))
+		self.groupBox_bilder.setObjectName(_fromUtf8("groupBox_bilder"))
+		self.gridLayout_13 = QtWidgets.QGridLayout(self.groupBox_bilder)
+		self.gridLayout_13.setObjectName(_fromUtf8("gridLayout_13"))
+		self.scrollArea = QtWidgets.QScrollArea(self.groupBox_bilder)
+		self.scrollArea.setWidgetResizable(True)
+		self.scrollArea.setObjectName(_fromUtf8("scrollArea"))
+		self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
+		self.scrollAreaWidgetContents_bilder = QtWidgets.QWidget()
+		self.scrollAreaWidgetContents_bilder.setGeometry(QtCore.QRect(0, 0, 320, 40))
+		self.scrollAreaWidgetContents_bilder.setObjectName(_fromUtf8("scrollAreaWidgetContents_bilder"))
+		self.verticalLayout = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_bilder)
+		self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
+		self.scrollArea.setWidget(self.scrollAreaWidgetContents_bilder)
+		self.gridLayout_13.addWidget(self.scrollArea, 1, 0, 1, 1)
+		self.groupBox_bilder.setTitle(_translate("MainWindow", "Bilder (klicken, um Bilder zu entfernen)", None))
+
+		self.label_bild_leer= QtWidgets.QLabel(self.scrollAreaWidgetContents_bilder)
+		self.label_bild_leer.setObjectName(_fromUtf8("label_bild_leer"))
+		self.verticalLayout.addWidget(self.label_bild_leer)
+		self.label_bild_leer.setText(_translate("MainWindow", "-", None))
+		self.gridLayout.addWidget(self.groupBox_bilder, 7, 0, 1, 1)
+		self.groupBox_bilder.hide()
+
+		self.groupBox_2 = QtWidgets.QGroupBox(self.centralwidget)
+		self.groupBox_2.setObjectName(_fromUtf8("groupBox_2"))
+		self.gridLayout_14 = QtWidgets.QGridLayout(self.groupBox_2)
+		self.gridLayout_14.setObjectName(_fromUtf8("gridLayout_14"))
+		self.lineEdit_titel = QtWidgets.QLineEdit(self.groupBox_2)
+		self.lineEdit_titel.setObjectName(_fromUtf8("lineEdit_titel"))
+		self.gridLayout_14.addWidget(self.lineEdit_titel, 0, 0, 1, 1)
+		self.gridLayout.addWidget(self.groupBox_2, 2, 2, 1, 4)
+		self.groupBox_2.setTitle(_translate("MainWindow", "Titel", None))
+		self.groupBox_2.hide()
+
+		self.groupBox_beispieleingabe = QtWidgets.QGroupBox(self.centralwidget)
+		self.groupBox_beispieleingabe.setObjectName(_fromUtf8("groupBox_beispieleingabe"))
+		self.gridLayout_10 = QtWidgets.QGridLayout(self.groupBox_beispieleingabe)
+		self.gridLayout_10.setObjectName(_fromUtf8("gridLayout_10"))
+		self.label = QtWidgets.QLabel(self.groupBox_beispieleingabe)
+		self.label.setStyleSheet(_fromUtf8("background-color: rgb(255, 178, 178);"))
+		self.label.setWordWrap(True)
+		self.label.setObjectName(_fromUtf8("label"))
+		self.gridLayout_10.addWidget(self.label, 0, 0, 1, 1)
+		self.plainTextEdit = QtWidgets.QPlainTextEdit(self.groupBox_beispieleingabe)
+		self.plainTextEdit.setObjectName(_fromUtf8("plainTextEdit"))
+		self.gridLayout_10.addWidget(self.plainTextEdit, 1, 0, 1, 1)
+		self.gridLayout.addWidget(self.groupBox_beispieleingabe, 3, 2, 4, 4)
+		self.groupBox_beispieleingabe.setTitle(_translate("MainWindow", "Beispieleingabe", None))
+		self.label.setText(_translate("MainWindow", "Info: Eingabe des Aufgabentextes zwischen \\begin{beispiel} ... \\end{beispiel}", None))
+		self.groupBox_beispieleingabe.hide()
+
+		#### CREATE CHECKBOXES ####
+		##### AG #####
+		self.tab_ag_cr = QtWidgets.QWidget()
+		self.tab_ag_cr.setObjectName(_fromUtf8("tab_ag_cr"))
+		self.gridLayout_ag_cr = QtWidgets.QGridLayout(self.tab_ag_cr)
+		self.gridLayout_ag_cr.setObjectName(_fromUtf8("gridLayout_ag_cr"))
+		self.tab_widget_gk_cr.addTab(self.tab_ag_cr, _fromUtf8(""))
+		self.create_checkbox_gk('ag_cr', ag_beschreibung)
+		self.tab_widget_gk_cr.setTabText(self.tab_widget_gk_cr.indexOf(self.tab_ag_cr), _translate("MainWindow", "Algebra und Geometrie", None))
+
+
+		# # #### FA ####
+		self.tab_fa_cr = QtWidgets.QWidget()
+		self.tab_fa_cr.setObjectName(_fromUtf8("tab_fa_cr"))
+		self.gridLayout_fa_cr = QtWidgets.QGridLayout(self.tab_fa_cr)
+		self.gridLayout_fa_cr.setObjectName(_fromUtf8("gridLayout_fa_cr"))
+		self.tab_widget_gk_cr.addTab(self.tab_fa_cr, _fromUtf8(""))
+		self.create_checkbox_gk('fa_cr', fa_beschreibung)
+		self.tab_widget_gk_cr.setTabText(self.tab_widget_gk_cr.indexOf(self.tab_fa_cr), _translate("MainWindow", "Funktionale Abhängigkeiten", None))
+
+		# ##### AN ####
+		self.tab_an_cr = QtWidgets.QWidget()
+		self.tab_an_cr.setObjectName(_fromUtf8("tab_an_cr"))
+		self.gridLayout_an_cr = QtWidgets.QGridLayout(self.tab_an_cr)
+		self.gridLayout_an_cr.setObjectName(_fromUtf8("gridLayout_an_cr"))
+		self.tab_widget_gk_cr.addTab(self.tab_an_cr, _fromUtf8(""))
+		self.create_checkbox_gk('an_cr', an_beschreibung)
+		self.tab_widget_gk_cr.setTabText(self.tab_widget_gk_cr.indexOf(self.tab_an_cr), _translate("MainWindow", "Analysis", None))
+
+		# ### WS ####
+		self.tab_ws_cr = QtWidgets.QWidget()
+		self.tab_ws_cr.setObjectName(_fromUtf8("tab_ws_cr"))
+		self.gridLayout_ws_cr = QtWidgets.QGridLayout(self.tab_ws_cr)
+		self.gridLayout_ws_cr.setObjectName(_fromUtf8("gridLayout_ws_cr"))
+		self.tab_widget_gk_cr.addTab(self.tab_ws_cr, _fromUtf8(""))
+		self.create_checkbox_gk('ws_cr', ws_beschreibung)
+		self.tab_widget_gk_cr.setTabText(self.tab_widget_gk_cr.indexOf(self.tab_ws_cr), _translate("MainWindow", "Wahrscheinlichkeit und Statistik", None))
+
+		# ### 5. Klasse ###
+		self.tab_k5_cr = QtWidgets.QWidget()
+		self.tab_k5_cr.setObjectName(_fromUtf8("tab_k5_cr"))
+		self.gridLayout_k5_cr = QtWidgets.QGridLayout(self.tab_k5_cr)
+		self.gridLayout_k5_cr.setObjectName(_fromUtf8("gridLayout_k5_cr"))
+		self.tab_widget_gk_cr.addTab(self.tab_k5_cr, _fromUtf8(""))
+		self.create_checkbox_klasse('k5_cr',k5_beschreibung)
+		self.tab_widget_gk_cr.setTabText(self.tab_widget_gk_cr.indexOf(self.tab_k5_cr), _translate("MainWindow", "5. Klasse", None))
+
+		# ### 6. Klasse ###
+		self.tab_k6_cr = QtWidgets.QWidget()
+		self.tab_k6_cr.setObjectName(_fromUtf8("tab_k6_cr"))
+		self.gridLayout_k6_cr = QtWidgets.QGridLayout(self.tab_k6_cr)
+		self.gridLayout_k6_cr.setObjectName(_fromUtf8("gridLayout_k6_cr"))
+		self.tab_widget_gk_cr.addTab(self.tab_k6_cr, _fromUtf8(""))
+		self.create_checkbox_klasse('k6_cr',k6_beschreibung)
+		self.tab_widget_gk_cr.setTabText(self.tab_widget_gk_cr.indexOf(self.tab_k6_cr), _translate("MainWindow", "6. Klasse", None))
+
+		# ### 7. Klasse ###
+		self.tab_k7_cr = QtWidgets.QWidget()
+		self.tab_k7_cr.setObjectName(_fromUtf8("tab_k7_cr"))
+		self.gridLayout_k7_cr = QtWidgets.QGridLayout(self.tab_k7_cr)
+		self.gridLayout_k7_cr.setObjectName(_fromUtf8("gridLayout_k7_cr"))
+		self.tab_widget_gk_cr.addTab(self.tab_k7_cr, _fromUtf8(""))
+		self.create_checkbox_klasse('k7_cr',k7_beschreibung)
+		self.tab_widget_gk_cr.setTabText(self.tab_widget_gk_cr.indexOf(self.tab_k7_cr), _translate("MainWindow", "7. Klasse", None))
+
+		# ### 8. Klasse ###
+		self.tab_k8_cr = QtWidgets.QWidget()
+		self.tab_k8_cr.setObjectName(_fromUtf8("tab_k8_cr"))
+		self.gridLayout_k8_cr = QtWidgets.QGridLayout(self.tab_k8_cr)
+		self.gridLayout_k8_cr.setObjectName(_fromUtf8("gridLayout_k8_cr"))
+		self.tab_widget_gk_cr.addTab(self.tab_k8_cr, _fromUtf8(""))
+		self.create_checkbox_klasse('k8_cr',k8_beschreibung)
+		self.tab_widget_gk_cr.setTabText(self.tab_widget_gk_cr.indexOf(self.tab_k8_cr), _translate("MainWindow", "8. Klasse", None))
+
+		
+		
+		self.groupBox_punkte = QtWidgets.QGroupBox(self.centralwidget)
+		self.groupBox_punkte.setObjectName(_fromUtf8("groupBox_punkte"))
+		self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_punkte)
+		self.gridLayout_6.setObjectName(_fromUtf8("gridLayout_6"))
+		self.spinBox_punkte = QtWidgets.QSpinBox(self.groupBox_punkte)
+		self.spinBox_punkte.setProperty("value", 1)
+		self.spinBox_punkte.setObjectName(_fromUtf8("spinBox_punkte"))
+		self.gridLayout_6.addWidget(self.spinBox_punkte, 0, 0, 1, 1)
+		self.gridLayout.addWidget(self.groupBox_punkte, 1, 3, 1, 1)
+		self.groupBox_punkte.setTitle(_translate("MainWindow", "Punkte", None))
+		self.groupBox_punkte.hide()
+
+
+		self.groupBox_aufgabenformat = QtWidgets.QGroupBox(self.centralwidget)
+		self.groupBox_aufgabenformat.setObjectName(_fromUtf8("groupBox_aufgabenformat"))
+		self.gridLayout_7 = QtWidgets.QGridLayout(self.groupBox_aufgabenformat)
+		self.gridLayout_7.setObjectName(_fromUtf8("gridLayout_7"))
+		self.comboBox_af = QtWidgets.QComboBox(self.groupBox_aufgabenformat)
+		self.comboBox_af.setObjectName(_fromUtf8("comboBox_af"))
+		self.comboBox_af.addItem(_fromUtf8(""))
+		self.comboBox_af.addItem(_fromUtf8(""))
+		self.comboBox_af.addItem(_fromUtf8(""))
+		self.comboBox_af.addItem(_fromUtf8(""))
+		self.comboBox_af.addItem(_fromUtf8(""))
+		self.gridLayout_7.addWidget(self.comboBox_af, 0, 0, 1, 1)
+		self.gridLayout.addWidget(self.groupBox_aufgabenformat, 1, 4, 1, 1)
+		self.groupBox_aufgabenformat.setTitle(_translate("MainWindow", "Aufgabenformat", None))
+		self.comboBox_af.setItemText(0, _translate("MainWindow", "bitte auswählen", None))
+		i=1
+		for all in dict_aufgabenformate:
+			self.comboBox_af.setItemText(i, _translate("MainWindow", dict_aufgabenformate[all], None))
+			i+=1
+		self.groupBox_aufgabenformat.hide()
+		self.label_keine_auswahl = QtWidgets.QLabel(self.groupBox_aufgabenformat)
+		self.label_keine_auswahl.setObjectName(_fromUtf8("label_keine_auswahl"))
+		self.label_keine_auswahl.setMinimumSize(QtCore.QSize(139,0))
+		self.gridLayout_7.addWidget(self.label_keine_auswahl)
+		self.label_keine_auswahl.setText(_translate("MainWindow", "keine Auswahl nötig", None))
+		self.label_keine_auswahl.hide()
+
+
+
+		self.groupBox_klassen_cr = QtWidgets.QGroupBox(self.centralwidget)
+		self.groupBox_klassen_cr.setObjectName(_fromUtf8("groupBox_klassen_cr"))
+		self.gridLayout_8 = QtWidgets.QGridLayout(self.groupBox_klassen_cr)
+		self.gridLayout_8.setObjectName(_fromUtf8("gridLayout_8"))
+		self.comboBox_klassen_cr = QtWidgets.QComboBox(self.groupBox_klassen_cr)
+		self.comboBox_klassen_cr.setObjectName(_fromUtf8("comboBox_klassen_cr"))
+		self.comboBox_klassen_cr.addItem(_fromUtf8(""))
+		self.comboBox_klassen_cr.addItem(_fromUtf8(""))
+		self.comboBox_klassen_cr.addItem(_fromUtf8(""))
+		self.comboBox_klassen_cr.addItem(_fromUtf8(""))
+		self.comboBox_klassen_cr.addItem(_fromUtf8(""))
+		self.comboBox_klassen_cr.addItem(_fromUtf8(""))
+		self.gridLayout_8.addWidget(self.comboBox_klassen_cr, 0, 0, 1, 1)
+		self.gridLayout.addWidget(self.groupBox_klassen_cr, 1, 5, 1, 1)
+		self.groupBox_klassen_cr.setTitle(_translate("MainWindow", "Klasse", None))
+		self.comboBox_klassen_cr.setItemText(0, _translate("MainWindow", "-", None))
+		self.comboBox_klassen_cr.setItemText(1, _translate("MainWindow", "5. Klasse", None))
+		self.comboBox_klassen_cr.setItemText(2, _translate("MainWindow", "6. Klasse", None))
+		self.comboBox_klassen_cr.setItemText(3, _translate("MainWindow", "7. Klasse", None))
+		self.comboBox_klassen_cr.setItemText(4, _translate("MainWindow", "8. Klasse", None))
+		self.comboBox_klassen_cr.setItemText(5, _translate("MainWindow", "Matura", None))
+		self.groupBox_klassen_cr.hide()
+
+		self.groupBox_quelle = QtWidgets.QGroupBox(self.centralwidget)
+		self.groupBox_quelle.setObjectName(_fromUtf8("groupBox_quelle"))
+		self.groupBox_quelle.setMaximumSize(QtCore.QSize(16777215, 120))
+		self.gridLayout_18 = QtWidgets.QGridLayout(self.groupBox_quelle)
+		self.gridLayout_18.setObjectName(_fromUtf8("gridLayout_18"))
+		self.lineEdit_quelle = QtWidgets.QLineEdit(self.groupBox_quelle)
+		self.lineEdit_quelle.setObjectName(_fromUtf8("lineEdit_quelle"))
+		self.gridLayout_18.addWidget(self.lineEdit_quelle, 0, 0, 1, 1)
+		self.gridLayout.addWidget(self.groupBox_quelle, 7, 2, 1, 4)
+		self.groupBox_quelle.setTitle(_translate("MainWindow", "Quelle oder Autor (Vorname Nachname) - Eingabe: VorNac", None))
+		self.groupBox_quelle.hide()
+
+		self.pushButton_save = QtWidgets.QPushButton(self.centralwidget)
+		self.pushButton_save.setObjectName(_fromUtf8("pushButton_save"))
+		self.gridLayout.addWidget(self.pushButton_save, 8, 5, 1, 1)
+		self.pushButton_save.setText(_translate("MainWindow", "Speichern", None))
+		self.pushButton_save.setShortcut(_translate("MainWindow", "Return", None))
+		self.pushButton_save.hide()
+
+		self.tab_widget_gk.setCurrentIndex(0)
+		QtCore.QMetaObject.connectSlotsByName(MainWindow)
+		MainWindow.setTabOrder(self.comboBox_aufgabentyp, self.spinBox_punkte)
+		MainWindow.setTabOrder(self.spinBox_punkte, self.comboBox_af)
+		MainWindow.setTabOrder(self.comboBox_af, self.comboBox_klassen_cr)
+		MainWindow.setTabOrder(self.comboBox_klassen_cr, self.lineEdit_titel)
+		MainWindow.setTabOrder(self.lineEdit_titel, self.plainTextEdit)
+		MainWindow.setTabOrder(self.plainTextEdit, self.lineEdit_quelle)
+		MainWindow.setTabOrder(self.lineEdit_quelle, self.pushButton_save)
+		####################################################
+		#####################################################
+		####################################################
+		#####################################################
+
 		self.gridLayout_11.addWidget(self.tab_widget_gk, 0, 0, 1, 1)
 		self.gridLayout.addWidget(self.groupBox_gk, 1, 3, 2, 1)
 		MainWindow.setCentralWidget(self.centralwidget)
 		self.statusbar = QtWidgets.QStatusBar(MainWindow)
 		self.statusbar.setObjectName(_fromUtf8("statusbar"))
 		MainWindow.setStatusBar(self.statusbar)
-		self.actionNew = QtWidgets.QAction(MainWindow)
-		self.actionNew.setObjectName(_fromUtf8("actionNew"))
+		self.actionReset = QtWidgets.QAction(MainWindow)
+		self.actionReset.setObjectName(_fromUtf8("actionReset"))
 
 		self.retranslateUi(MainWindow)
 		self.tabWidget.setCurrentIndex(0)
 		
 															   
-		self.tab_widget_gk.setCurrentIndex(0)
+		self.tab_widget_gk_cr.setCurrentIndex(0)
 		QtCore.QMetaObject.connectSlotsByName(MainWindow)
 		
 		
@@ -349,8 +647,13 @@ class Ui_MainWindow(object):
 		self.actionAufgaben_Typ1.triggered.connect(self.chosen_aufgabenformat_typ1)
 		self.actionAufgaben_Typ2.triggered.connect(self.chosen_aufgabenformat_typ2)
 		self.actionInfo.triggered.connect(self.show_info)
-		
-		
+		self.actionNeu.triggered.connect(self.neue_aufgabe_erstellen)
+		self.actionSuche.triggered.connect(self.aufgaben_suchen)
+		self.actionBild_einf_gen.triggered.connect(self.add_picture)
+		self.actionBild_konvertieren_jpg_eps.triggered.connect(self.convert_jpgtoeps)
+		self.comboBox_aufgabentyp.currentIndexChanged.connect(self.chosen_aufgabenformat_cr)
+		self.pushButton_save.clicked.connect(self.save_file)
+
 		for all in ag_beschreibung:
 			x=eval('self.cb_'+all)
 			x.stateChanged.connect(self.cb_checked)
@@ -374,15 +677,27 @@ class Ui_MainWindow(object):
 				x=eval('self.cb_k%s_'%g+all)
 				x.stateChanged.connect(self.cb_rest_checked)
 
-	
+		for all in {**ag_beschreibung,**fa_beschreibung,**an_beschreibung,**ws_beschreibung}:
+			x=eval('self.cb_'+all+'_cr')
+			x.stateChanged.connect(lambda: self.gk_checked_cr('gk'))
+
+		for g in range(5,9):
+			for all in eval('k%s_beschreibung'%g):
+				x=eval('self.cb_k%s_cr_'%g+all+'_cr')
+				x.stateChanged.connect(lambda: self.gk_checked_cr('klasse'))
 		############################################################################################
 		##############################################################################################
 	def retranslateUi(self, MainWindow):
 		MainWindow.setWindowTitle(_translate("LaTeX File Assistent", "LaTeX File Assistent", None))
 		self.menuDateityp.setTitle(_translate("MainWindow", "Aufgabentyp", None))
 		self.menuDatei.setTitle(_translate("MainWindow", "Datei", None))
+		self.menuNeu.setTitle(_translate("MainWindow", "Neue Aufgabe", None))
+		self.menuSuche.setTitle(_translate("MainWindow", "Aufgabensuche", None))
+		self.menuBild_einf_gen.setTitle(_translate("MainWindow", "Bild einfügen", None))
+		self.actionBild_einf_gen.setText(_translate("MainWindow", "Durchsuchen...", None))
+		self.actionBild_konvertieren_jpg_eps.setText(_translate("MainWindow", "Bild konvertieren (jpg zu eps)", None))		
 		self.menuHelp.setTitle(_translate("MainWindow", "?", None))
-		self.actionNew.setText(_translate("MainWindow", "Reset", None))
+		self.actionReset.setText(_translate("MainWindow", "Reset", None))
 		self.actionAufgaben_Typ1.setText(_translate("MainWindow", "Typ 1 Aufgaben", None))
 		self.actionAufgaben_Typ1.setShortcut('Ctrl+1')
 		self.actionAufgaben_Typ2.setText(_translate("MainWindow", "Typ 2 Aufgaben", None))
@@ -390,6 +705,10 @@ class Ui_MainWindow(object):
 		self.actionInfo.setText(_translate("MainWindow", "Info", None))
 		self.actionsuchfenster_reset.setText(_translate("MainWindow", "Reset", None))
 		self.actionsuchfenster_reset.setShortcut("F4")
+		self.actionNeu.setText(_translate("MainWindow", "Neue Aufgabe erstellen...", None))
+		self.actionNeu.setShortcut("F2")
+		self.actionSuche.setText(_translate("MainWindow", "Aufgaben suchen...", None))
+		self.actionSuche.setShortcut("F3")
 		self.actionExit.setText(_translate("MainWindow", "Exit", None))
 		self.actionRefresh_Database.setText(_translate("MainWindow", "Refresh Database", None))
 		self.actionRefresh_Database.setShortcut("F5")
@@ -455,10 +774,10 @@ class Ui_MainWindow(object):
 		######
 		
 		self.groupBox_themen_klasse.setTitle(_translate("MainWindow", "Themen Schulstufe", None))
-		self.name_checkbox_klassen(5)
-		self.name_checkbox_klassen(6)
-		self.name_checkbox_klassen(7)
-		self.name_checkbox_klassen(8)																					 
+		# self.name_checkbox_klassen(5)
+		# self.name_checkbox_klassen(6)
+		# self.name_checkbox_klassen(7)
+		# self.name_checkbox_klassen(8)																					 
 
 		self.btn_k5.setText(_translate("MainWindow", "alle auswählen", None))
 		self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_k5), _translate("MainWindow", "5. Klasse", None))
@@ -472,28 +791,36 @@ class Ui_MainWindow(object):
 		self.btn_suche.setShortcut(_translate("MainWindow", "Return", None))
 		#self.btn_refreshddb.setShortcut(_translate("MainWindow", "F5", None))
 		
-############# Infos for GKs
-		for all in ag_beschreibung:
-			x=eval('self.cb_'+all)
-			x.setToolTip(ag_beschreibung[all])
-			
-		for all in an_beschreibung:
-			x=eval('self.cb_'+all)
-			x.setToolTip(an_beschreibung[all])
 
-		for all in fa_beschreibung:
-			x=eval('self.cb_'+all)
-			x.setToolTip(fa_beschreibung[all])
+
+############# Infos for GKs
+		self.create_Tooltip(ag_beschreibung)
+		self.create_Tooltip(fa_beschreibung)
+		self.create_Tooltip(an_beschreibung)
+		self.create_Tooltip(ws_beschreibung)
+		# # for all in ag_beschreibung:
+		# # 	x=eval('self.cb_'+all)
+		# # 	x.setToolTip(ag_beschreibung[all])
+		# # 	y=eval('self.cb_'+all+'_cr')
+		# # 	y.setToolTip(ag_beschreibung[all])
 			
-		for all in ws_beschreibung:
-			x=eval('self.cb_'+all)
-			x.setToolTip(ws_beschreibung[all])
+		# for all in an_beschreibung:
+		# 	x=eval('self.cb_'+all)
+		# 	x.setToolTip(an_beschreibung[all])
+
+		# for all in fa_beschreibung:
+		# 	x=eval('self.cb_'+all)
+		# 	x.setToolTip(fa_beschreibung[all])
+			
+		# for all in ws_beschreibung:
+		# 	x=eval('self.cb_'+all)
+		# 	x.setToolTip(ws_beschreibung[all])
 			
 #########################################
-		self.name_checkbox_gk(ag_beschreibung)
-		self.name_checkbox_gk(an_beschreibung)
-		self.name_checkbox_gk(fa_beschreibung)
-		self.name_checkbox_gk(ws_beschreibung)
+		# self.name_checkbox_gk(ag_beschreibung)
+		# self.name_checkbox_gk(an_beschreibung)
+		# self.name_checkbox_gk(fa_beschreibung)
+		# self.name_checkbox_gk(ws_beschreibung)
 
 		self.btn_ag_all.setText(_translate("MainWindow", "alle auswählen", None))
 		self.tab_widget_gk.setTabText(self.tab_widget_gk.indexOf(self.tab_ag), _translate("MainWindow", "Algebra und Geometrie", None))
@@ -505,7 +832,7 @@ class Ui_MainWindow(object):
 		self.tab_widget_gk.setTabText(self.tab_widget_gk.indexOf(self.tab_fa), _translate("MainWindow", "Funktionale Abhängigkeiten", None))		
 		self.btn_ws_all.setText(_translate("MainWindow", "alle auswählen", None))
 		self.tab_widget_gk.setTabText(self.tab_widget_gk.indexOf(self.tab_ws), _translate("MainWindow", "Wahrscheinlichkeit und Statistik", None))		
-		self.actionNew.setText(_translate("MainWindow", "Reset", None))
+		self.actionReset.setText(_translate("MainWindow", "Reset", None))
 		self.label_gk_rest.setText(_translate("MainWindow", "", None))
 		self.label_gk.setText(_translate("MainWindow", "", None))
 		# self.label_gk_an.setText(_translate("MainWindow", "", None))
@@ -559,30 +886,42 @@ class Ui_MainWindow(object):
 
 
 
-	############################################################################
-	############################################################################
-	############### Buttons Check_ALL ######################################
-	############################################################################
-	############################################################################
+	def create_Tooltip(self,chosen_dict):
+		for all in chosen_dict:
+			x=eval('self.cb_'+all)
+			x.setToolTip(chosen_dict[all])
+			y=eval('self.cb_'+all+'_cr')
+			y.setToolTip(chosen_dict[all])
 
 	def suchfenster_reset(self):
+		global dict_picture_path
 		for all in ag_beschreibung:
 			x=eval('self.cb_'+all)
 			x.setChecked(False)
+			y=eval('self.cb_'+all+'_cr')
+			y.setChecked(False)
 		for all in an_beschreibung:
 			x=eval('self.cb_'+all)
 			x.setChecked(False)
+			y=eval('self.cb_'+all+'_cr')
+			y.setChecked(False)
 		for all in fa_beschreibung:
 			x=eval('self.cb_'+all)
 			x.setChecked(False)
+			y=eval('self.cb_'+all+'_cr')
+			y.setChecked(False)
 		for all in ws_beschreibung:
 			x=eval('self.cb_'+all)
 			x.setChecked(False)
+			y=eval('self.cb_'+all+'_cr')
+			y.setChecked(False)
 		for r in range(5,9):
 			dict_klasse=eval('k'+str(r)+'_beschreibung')	
 			for all in dict_klasse:
 				x=eval('self.cb_k'+str(r)+'_'+all)
 				x.setChecked(False)
+				y=eval('self.cb_k'+str(r)+'_cr_'+all+'_cr')
+				y.setChecked(False)
 		for all in Klassen:
 			x=eval('self.cb_'+all)
 			x.setChecked(False)
@@ -591,6 +930,21 @@ class Ui_MainWindow(object):
 			x.setChecked(False)
 		self.entry_suchbegriffe.setText('')	
 		self.cb_solution.setChecked(True)	
+		self.spinBox_punkte.setProperty("value", 1)
+		self.comboBox_aufgabentyp.setCurrentIndex(0)
+		self.comboBox_af.setCurrentIndex(0)
+		self.comboBox_klassen_cr.setCurrentIndex(0)
+		self.label_ausgew_gk.setText(_translate("MainWindow", "-", None))
+		self.label_bild_leer.show()
+
+		for i in range(len(dict_picture_path)):
+			x=eval('self.label_bild_'+str(i))
+			x.hide()
+		dict_picture_path={}			
+	
+		self.lineEdit_titel.setText(_translate("MainWindow", "", None))
+		self.lineEdit_quelle.setText(_translate("MainWindow", "", None))
+		self.plainTextEdit.setPlainText(_translate("MainWindow", "", None))
 
 
 
@@ -604,7 +958,7 @@ class Ui_MainWindow(object):
 		msg.setIcon(QtWidgets.QMessageBox.Information)
 		#msg.setWindowIcon(QtGui.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
 		msg.setText("LaTeX File Assistent %s\n\nAuthor: Christoph Weberndorfer\nLicense: GNU General Public License v3.0"%__version__)
-		msg.setInformativeText("Last Update: 03/19")
+		msg.setInformativeText("Last Update: "+__lastupdate__+'\n\nIcon made by\nhttps://www.freepik.com/ from\nwww.flaticon.com ')
 		msg.setWindowTitle("Über LaTeX File Assistent")
 		#msg.setDetailedText("The details are as follows:")
 		msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
@@ -634,13 +988,23 @@ class Ui_MainWindow(object):
 		self.get_logfile()
 
 	def create_checkbox_gk(self,gk_type,chosen_dict):
+		
 		row=0
 		column=0
-		max_row=9
+		if 'cr' in gk_type:
+			max_row=8
+		else:
+			max_row=9
 		for all in chosen_dict:
-			exec('self.cb_'+all+'=QtWidgets.QCheckBox(self.tab_'+gk_type+')')
-			exec('self.cb_'+all+'.setObjectName(_fromUtf8("cb_'+all+'"))')
-			x=eval('self.cb_'+all)
+			if 'cr' in gk_type:
+				cb_name=str(all+'_cr')
+			else:
+				cb_name=all
+			#print('self.cb_'+cb_name+'=QtWidgets.QCheckBox(self.tab_'+gk_type+')')
+			exec('self.cb_'+cb_name+'=QtWidgets.QCheckBox(self.tab_'+gk_type+')')
+			exec('self.cb_'+cb_name+'.setObjectName(_fromUtf8("cb_'+cb_name+'"))')
+			x=eval('self.cb_'+cb_name)
+			x.setText(_translate("MainWindow", dict_gk[all], None))
 			grid=eval('self.gridLayout_'+gk_type)
 			grid.addWidget(x, row,column, 1, 1)
 
@@ -650,16 +1014,24 @@ class Ui_MainWindow(object):
 			else:
 				row+=1
 
+
 	def create_checkbox_klasse(self,klasse,chosen_dict):
 		row=0
 		column=0
 		max_row=9
 
 		for all in chosen_dict:
-			exec('self.cb_'+klasse+'_'+all+'= QtWidgets.QCheckBox(self.tab_'+klasse+')')	
-			exec('self.cb_'+klasse+'_'+all+'.setObjectName(_fromUtf8("cb_'+klasse+'_'+all+'"))')
+			if 'cr' in klasse:
+				cb_name=str(all+'_cr')
+				cb_label=chosen_dict[all].replace('\n', ' ')
+			else:
+				cb_name=all
+				cb_label=chosen_dict[all]
+			exec('self.cb_'+klasse+'_'+cb_name+'= QtWidgets.QCheckBox(self.tab_'+klasse+')')	
+			exec('self.cb_'+klasse+'_'+cb_name+'.setObjectName(_fromUtf8("cb_'+klasse+'_'+cb_name+'"))')
 			grid=eval('self.gridLayout_'+klasse)
-			x=eval('self.cb_'+klasse+'_'+all)
+			x=eval('self.cb_'+klasse+'_'+cb_name)	
+			x.setText(_translate("MainWindow", cb_label, None))
 			grid.addWidget(x, row,column, 1, 1)	
 
 			if row>max_row:
@@ -668,22 +1040,25 @@ class Ui_MainWindow(object):
 			else:
 				row+=1
 
-			exec('self.btn_'+klasse+'= QtWidgets.QPushButton(self.tab_'+klasse+')')
-			exec('self.btn_%s.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))'%klasse)
-			exec('self.btn_'+klasse+'.setObjectName(_fromUtf8("btn_'+klasse+'"))')
-			exec('self.gridLayout_'+klasse+'.addWidget(self.btn_'+klasse+', max_row, column+1, 1, 1, QtCore.Qt.AlignRight)')
+			if 'cr' in klasse:
+				pass
+			else:
+				exec('self.btn_'+klasse+'= QtWidgets.QPushButton(self.tab_'+klasse+')')
+				exec('self.btn_%s.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))'%klasse)
+				exec('self.btn_'+klasse+'.setObjectName(_fromUtf8("btn_'+klasse+'"))')
+				exec('self.gridLayout_'+klasse+'.addWidget(self.btn_'+klasse+', max_row, column+1, 1, 1, QtCore.Qt.AlignRight)')
 
 
-	def name_checkbox_gk(self, chosen_dict):
-		for all in chosen_dict:
-			x=eval('self.cb_'+all)
-			x.setText(_translate("MainWindow", dict_gk[all], None))
+	# def name_checkbox_gk(self, chosen_dict):
+	# 	for all in chosen_dict:
+	# 		x=eval('self.cb_'+all)
+	# 		x.setText(_translate("MainWindow", dict_gk[all], None))
 
-	def name_checkbox_klassen(self, klasse):
-		chosen_dict=eval('k'+str(klasse)+'_beschreibung')
-		for all in chosen_dict:
-			x=eval('self.cb_k'+str(klasse)+'_'+all)
-			x.setText(_translate("MainWindow", chosen_dict[all], None))		
+	# def name_checkbox_klassen(self, klasse):
+	# 	chosen_dict=eval('k'+str(klasse)+'_beschreibung')
+	# 	for all in chosen_dict:
+	# 		x=eval('self.cb_k'+str(klasse)+'_'+all)
+	# 		x.setText(_translate("MainWindow", chosen_dict[all], None))		
 
 	def btn_k5_pressed(self):
 		if self.cb_k5_fu.isChecked()==False:
@@ -1121,8 +1496,8 @@ class Ui_MainWindow(object):
 						gesammeltedateien.remove(all)
 		
 
-		if not len(self.entry_suchbegriffe.text())==0:
-			suchbegriffe.append(self.entry_suchbegriffe.text())
+		# if not len(self.entry_suchbegriffe.text())==0:
+		# 	suchbegriffe.append(self.entry_suchbegriffe.text())
 
 		gesammeltedateien.sort(key=self.natural_keys)
 														
@@ -1257,18 +1632,467 @@ class Ui_MainWindow(object):
 		
 		
 		
-		
-		##################################################
-		################################################
-		###### Windows Loading Bar ######################
-		###############################################
+	
 
-		# LoadingWindow = QtWidgets.QDialog()
-		# ui = Ui_Dialog()
-		# ui.setupUi(LoadingWindow)
-		# LoadingWindow.exec()
+#################################################################
+###############################################################
+################### Befehle Creator ###########################
+#############################################################
+
+
+	def add_picture(self):
+			try:
+				last_path=list(dict_picture_path.values())[-1]		
+			except IndexError:
+				last_path='C:\\'
+			list_filename = QtWidgets.QFileDialog.getOpenFileNames(None, 'Select a folder:', last_path,  'Grafiken (*.eps)')
+			i=len(dict_picture_path)
+
+			self.label_bild_leer.hide()
+			for all in list_filename[0]:
+				head,tail=os.path.split(all)
+				if tail in dict_picture_path.keys():
+					pass
+				else:
+					head,tail=os.path.split(all)
+					dict_picture_path[tail]=all
+					x='self.label_bild_'+str(i)
+					exec('%s= QtWidgets.QLabel(self.scrollAreaWidgetContents_bilder)'%x)
+					eval(x).setObjectName(_fromUtf8("label_bild_%s"%i))
+					# eval(x).setFrameShape(QtWidgets.QFrame.StyledPanel)
+					eval(x).mousePressEvent = functools.partial(self.del_picture, name_of_image=x)
+					self.verticalLayout.addWidget(eval(x))	
+					eval(x).setText(_translate("MainWindow",tail, None))
+					i+=1
+
+
+	def del_picture(self, event, name_of_image=None):
+		del dict_picture_path[eval(name_of_image).text()]
+		eval(name_of_image).hide()
+		if len(dict_picture_path)==0:
+			self.label_bild_leer.show()
+
+
+	def convert_jpgtoeps(self):
+			msg = QtWidgets.QMessageBox()
+			# msg.setIcon(QtWidgets.QMessageBox.Question)
+			#msg.setWindowIcon(QtWidgets.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
+			msg.setText('Wählen Sie alle Grafiken, die Sie konvertieren möchten.')
+			#msg.setInformativeText('Möchten Sie das neue Update installieren?')
+			msg.setWindowTitle("jpg2eps")
+			msg.setStandardButtons(QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
+			button_durchsuchen = msg.button(QtWidgets.QMessageBox.Yes)
+			button_durchsuchen.setText('Durchsuchen...')
+			buttonN = msg.button(QtWidgets.QMessageBox.No)
+			buttonN.setText('Abbrechen')
+			ret=msg.exec_()	
+
+			if ret==QtWidgets.QMessageBox.Yes:
+				#filename =  filedialog.askopenfilenames(initialdir = last_path,title = "Durchsuchen...",filetypes = (('JPG-Dateien','*.jpg'),("Alle Dateien","*.*")))
+				filename = QtWidgets.QFileDialog.getOpenFileNames(None, 'Select a folder:', 'C:\\',  'Bilder (*.jpg)')
+				if filename[0]!=[]:
+					for all in filename:
+						output=all.replace('jpg','eps')
+						img=Image.open(all)
+						img.save(output)
+
+					msg = QtWidgets.QMessageBox()
+					msg.setIcon(QtWidgets.QMessageBox.Information)
+					if len(filename)==1:
+						msg.setText('Es wurde '+str(len(filename))+' Datei erfolgreich konvertiert.')
+					else:
+						msg.setText('Es wurden '+str(len(filename))+' Dateien erfolgreich konvertiert.')	
+
+					msg.setWindowTitle("jpg2eps")
+					msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+					ret=msg.exec_()	
+					return
+
+	def chosen_aufgabenformat_cr(self):
+		if self.comboBox_aufgabentyp.currentText()=='Typ 1':
+			self.label_keine_auswahl.hide()
+			self.comboBox_af.show()
+		if self.comboBox_aufgabentyp.currentText()=='Typ 2':
+			self.label_keine_auswahl.show()
+			self.comboBox_af.hide()
+
+	def gk_checked_cr(self, thema):
+		global set_chosen_gk
+		set_chosen_gk=set([])
+		set_chosen_gk_label=set([])
+		for all in {**ag_beschreibung,**fa_beschreibung,**an_beschreibung,**ws_beschreibung}: ## merged dictionionaries
+			x=eval('self.cb_'+all+'_cr')
+			if x.isChecked()==True:
+				set_chosen_gk.add(all)
+				set_chosen_gk_label.add(x.text())
+		for all in k5_beschreibung:
+			x=eval('self.cb_k5_cr_'+all+'_cr')
+			if x.isChecked()==True:
+				set_chosen_gk.add(all)
+				set_chosen_gk_label.add(all.upper()+'(5)')
+		for all in k6_beschreibung:
+			x=eval('self.cb_k6_cr_'+all+'_cr')
+			if x.isChecked()==True:
+				set_chosen_gk.add(all)
+				set_chosen_gk_label.add(all.upper() + '(6)')
+		for all in k7_beschreibung:
+			x=eval('self.cb_k7_cr_'+all+'_cr')
+			if x.isChecked()==True:
+				set_chosen_gk.add(all)
+				set_chosen_gk_label.add(all.upper() + '(7)')
+		for all in k8_beschreibung:
+			x=eval('self.cb_k8_cr_'+all+'_cr')
+			if x.isChecked()==True:
+				set_chosen_gk.add(all)
+				set_chosen_gk_label.add(all.upper() + '(8)')		
+
+		x= ', '.join(sorted(set_chosen_gk_label))
+		self.label_ausgew_gk.setText(_translate("MainWindow", str(x), None))
+
+
+	def warning_window(self, text):
+		QtWidgets.QApplication.restoreOverrideCursor()
+		msg = QtWidgets.QMessageBox()
+		msg.setWindowTitle("Warnung")
+		msg.setIcon(QtWidgets.QMessageBox.Warning)
+		#msg.setWindowIcon(QtWidgets.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
+		msg.setText(text)
+		msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+		retval = msg.exec_()
+
+
+	def save_file(self):
+		########################### WARNINGS ##### 
+		######################################
+
+		if set_chosen_gk==set([]):
+			self.warning_window('Es wurden keine Grundkompetenzen zugewiesen.')
+			return
 		
 
+
+		if self.comboBox_aufgabentyp.currentText()=='Typ 1':
+			if self.comboBox_af.currentText()=='bitte auswählen':
+				self.warning_window('Es wurde kein Aufgabenformat ausgewählt.')
+				return
+
+			if len(set_chosen_gk)>1:
+				self.warning_window('Es wurden zu viele Grundkompetenzen zugewiesen.')
+				return
+
+		textBox_Entry=self.plainTextEdit.toPlainText()
+		list_chosen_gk=list(set_chosen_gk)
+
+
+		####### CHECK INCL. & ATTACHED IMAGE RATIO ####
+
+		if textBox_Entry.count('\includegraphics')>len(dict_picture_path):
+			self.warning_window('Es sind zu wenige Bilder angehängt (' + str(len(dict_picture_path))+'/'+str(textBox_Entry.count('\includegraphics'))+').')
+			return
+		if textBox_Entry.count('\includegraphics')<len(dict_picture_path):
+			self.warning_window('Es sind zu viele Bilder angehängt (' + str(len(dict_picture_path))+'/'+str(textBox_Entry.count('\includegraphics'))+').')
+			return
+
+		###############################	
+
+
+		QtWidgets.QApplication.restoreOverrideCursor()
+		msg = QtWidgets.QMessageBox()
+		msg.setIcon(QtWidgets.QMessageBox.Question)
+		msg.setWindowTitle("Aufgabe speichern")
+		#msg.setWindowIcon(QtWidgets.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
+
+		if len(list_chosen_gk)>1:
+			temp_list_chosen_gk=[]
+			for all in list_chosen_gk:
+				if all in {**k5_beschreibung,**k6_beschreibung,**k7_beschreibung,**k8_beschreibung}:
+					temp_list_chosen_gk.append(all.upper())	
+				else:	
+					temp_list_chosen_gk.append(dict_gk[all])
+			# print(temp_list_chosen_gk)
+			gk= ', '.join(sorted(temp_list_chosen_gk))
+		else:
+			if list_chosen_gk[0] in {**k5_beschreibung,**k6_beschreibung,**k7_beschreibung,**k8_beschreibung}:
+				gk=list_chosen_gk[0].upper()
+			else:
+				gk=dict_gk[list_chosen_gk[0]]	
+
+		if dict_picture_path!={}:
+			bilder= ', '.join(dict_picture_path)
+		else:
+			bilder='-'
+
+		if self.comboBox_aufgabentyp.currentText()=='Typ 1':
+			aufgabenformat='Aufgabenformat: %s\n'%self.comboBox_af.currentText()
+		else:
+			aufgabenformat=''
+		msg.setText(
+		'Sind Sie sicher, dass Sie die folgendene Aufgabe speichern wollen?\n\n'
+		'Aufgabentyp: {0}\n'
+		'Titel: {1}\n{2}'
+		'Grundkompetenz: {3}\n'
+		'Quelle: {4}\n'
+		'Bilder: {5}'.format(self.comboBox_aufgabentyp.currentText(),
+		self.lineEdit_titel.text(),aufgabenformat,gk,self.lineEdit_quelle.text(),bilder))
+		# msg.setInformativeText('Soll die PDF Datei erstellt werden?')
+		msg.setStandardButtons(QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
+		buttonY = msg.button(QtWidgets.QMessageBox.Yes)
+		buttonY.setText('Speichern')
+		buttonN = msg.button(QtWidgets.QMessageBox.No)
+		buttonN.setText('Abbrechen')
+		ret=msg.exec_()
+		
+		if ret==QtWidgets.QMessageBox.Yes:
+			pass
+		else:
+			return		
+
+
+		##### GET MAX FILENUMBER IN DIR #####
+		if self.comboBox_aufgabentyp.currentText()=='Typ 1':
+			# print(set_chosen_gk)
+			if list_chosen_gk[0] in {**k5_beschreibung,**k6_beschreibung,**k7_beschreibung,**k8_beschreibung}: ## merged dictionaries
+				if list_chosen_gk[0] in k5_beschreibung:
+					path_folder='5.Klasse'
+				elif list_chosen_gk[0] in k6_beschreibung:
+					path_folder='6.Klasse'
+				elif list_chosen_gk[0] in k7_beschreibung:
+					path_folder='7.Klasse'
+				elif list_chosen_gk[0] in k8_beschreibung:
+					path_folder='8.Klasse'
+				gk_path_temp=os.path.join(os.path.dirname('__file__'),'_database','Typ1Aufgaben',path_folder,list_chosen_gk[0],'Einzelbeispiele')
+				z=list_chosen_gk[0].upper()+' - '
+			else:
+				path_folder='_Grundkompetenzen'
+				gk_path_temp=os.path.join(os.path.dirname('__file__'),'_database','Typ1Aufgaben',path_folder,dict_gk[list_chosen_gk[0]][:2],dict_gk[list_chosen_gk[0]],'Einzelbeispiele')
+				z=dict_gk[list_chosen_gk[0]]+' - '
+	
+				
+			max_integer_file=0
+			for all in os.listdir(gk_path_temp):
+				if all.endswith('.tex'):
+					x,y=all.split(z)
+					file_integer, file_extension=y.split('.tex')
+					if int(file_integer)>max_integer_file:
+						max_integer_file=int(file_integer)
+
+	
+
+		if self.comboBox_aufgabentyp.currentText()=='Typ 2':
+			gk_path_temp=os.path.join(os.path.dirname('__file__'),'_database','Typ2Aufgaben','Einzelbeispiele')
+			max_integer_file=0
+			for all in os.listdir(gk_path_temp):
+		
+				if all.endswith('.tex'):
+					file_integer, file_extension=all.split('.tex')
+					if int(file_integer)>max_integer_file:
+						max_integer_file=int(file_integer)
+		
+
+		for all in dict_picture_path:
+			head, tail=os.path.split(all)
+			x = '{'+tail+'}'
+			name, ext =os.path.splitext(tail)
+			if x in textBox_Entry and self.comboBox_aufgabentyp.currentText()=='Typ 1':
+				textBox_Entry=str(textBox_Entry).replace(tail,'../_database/Bilder/'+list_chosen_gk[0].upper()+'_'+str(max_integer_file+1)+'_'+tail)
+			if x in textBox_Entry and self.comboBox_aufgabentyp.currentText()=='Typ 2':
+				textBox_Entry=str(textBox_Entry).replace(tail,'../_database/Bilder/'+str(max_integer_file+1)+'_'+tail)
+		
+
+		copy_image_path=os.path.join(os.path.dirname('__file__'),'_database','Bilder')
+		for all in list(dict_picture_path.values()):
+			image_path_temp=all
+			head, tail=os.path.split(image_path_temp)
+			copy_image_file_temp=os.path.join(copy_image_path,tail)
+			shutil.copy(image_path_temp,copy_image_file_temp)
+			if self.comboBox_aufgabentyp.currentText()=='Typ 1':
+				x=os.rename(copy_image_file_temp,'_database/Bilder/'+list_chosen_gk[0].upper()+'_'+str(max_integer_file+1)+'_'+tail)
+			if self.comboBox_aufgabentyp.currentText()=='Typ 2':
+				x=os.rename(copy_image_file_temp,'_database/Bilder/'+str(max_integer_file+1)+'_'+tail)		
+
+
+
+		if self.comboBox_aufgabentyp.currentText()=='Typ 1':
+			if list_chosen_gk[0] in {**k5_beschreibung,**k6_beschreibung,**k7_beschreibung,**k8_beschreibung}: ## merged dictionaries
+				if list_chosen_gk[0] in k5_beschreibung:
+					file_name_klasse='K5'
+				elif list_chosen_gk[0] in k6_beschreibung:
+					file_name_klasse='K6'
+				elif list_chosen_gk[0] in k7_beschreibung:
+					file_name_klasse='K7'
+				elif list_chosen_gk[0] in k8_beschreibung:
+					file_name_klasse='K8'				
+				file_name=os.path.join(gk_path_temp,file_name_klasse+' - '+list_chosen_gk[0].upper()+' - '+str(max_integer_file+1)+'.tex')
+				
+				chosen_af=list(dict_aufgabenformate.keys())[list(dict_aufgabenformate.values()).index(self.comboBox_af.currentText())].upper()
+
+				#print('\section{'+file_name_klasse+' - '+list_chosen_gk[0].upper()+" - "+str(max_integer_file+1) +" - " + self.lineEdit_titel.text()+" - "+chosen_af+' - '+self.lineEdit_quelle.text())
+				file=open(file_name,"w")
+				file.write('\section{'+file_name_klasse+' - '+list_chosen_gk[0].upper()+" - "+str(max_integer_file+1) +" - " + self.lineEdit_titel.text()+" - "+chosen_af+' - '+self.lineEdit_quelle.text()+"}\n\n"
+				"\\begin{beispiel}["+file_name_klasse+' - '+list_chosen_gk[0].upper()+"]{"+str(self.spinBox_punkte.value())+"}\n"+textBox_Entry+
+				"\n\\end{beispiel}")
+				file.close()
+
+			else:
+				# print(list_chosen_gk[0][:2].upper(),dict_gk[list_chosen_gk[0]])
+				# print(self.comboBox_klassen.currentText())
+
+				file_name=os.path.join(gk_path_temp,dict_gk[list_chosen_gk[0]]+' - '+str(max_integer_file+1)+'.tex')
+				
+				file=open(file_name,"w")					
+				if self.comboBox_klassen_cr.currentText()=='-':
+					chosen_af=list(dict_aufgabenformate.keys())[list(dict_aufgabenformate.values()).index(self.comboBox_af.currentText())].upper()
+					file.write("\section{"+dict_gk[list_chosen_gk[0]]+" - "+str(max_integer_file+1) +" - "+self.lineEdit_titel.text()+" - "+chosen_af+" - "+self.lineEdit_quelle.text()+"}\n\n"
+					"\\begin{beispiel}["+dict_gk[list_chosen_gk[0]]+"]{"+str(self.spinBox_punkte.value())+"}\n"+textBox_Entry+
+					"\n\\end{beispiel}")
+				else:
+					try:
+						klasse='K'+re.search(r'\d+',self.comboBox_klassen_cr.currentText()).group() ### get selected grade
+					except AttributeError:
+						klasse='MAT'			
+					chosen_af=list(dict_aufgabenformate.keys())[list(dict_aufgabenformate.values()).index(self.comboBox_af.currentText())].upper()
+					file.write("\section{"+dict_gk[list_chosen_gk[0]]+" - "+str(max_integer_file+1) +' - '+ klasse +" - "+self.lineEdit_titel.text()+" - "+chosen_af+" - "+self.lineEdit_quelle.text()+"}\n\n"
+					"\\begin{beispiel}["+dict_gk[list_chosen_gk[0]]+"]{"+str(self.spinBox_punkte.value())+"}\n"+textBox_Entry+
+					"\n\\end{beispiel}")		
+				file.close()			
+
+
+
+		if self.comboBox_aufgabentyp.currentText()=='Typ 2':
+			themen_klasse_auswahl=[]
+			gk_auswahl=[]
+
+			# print(list_chosen_gk)
+			for all in list_chosen_gk:
+				if all in {**k5_beschreibung,**k6_beschreibung,**k7_beschreibung,**k8_beschreibung}:
+					themen_klasse_auswahl.append(all.upper())
+				else:
+					gk_auswahl.append(dict_gk[all])
+
+			gk_auswahl_joined=', '.join(sorted(gk_auswahl))
+			themen_klasse_auswahl_joined=', '.join(sorted(themen_klasse_auswahl)) 			 
+			# print(gk_auswahl)
+			# print(themen_klasse_auswahl)
+
+
+			file_name=os.path.join(os.path.dirname('__file__'),'_database','Typ2Aufgaben','Einzelbeispiele',str(max_integer_file+1)+'.tex')
+			file=open(file_name,"w")
+			klasse=''
+			themen_klasse=''
+			gk=''
+
+			if self.comboBox_klassen_cr.currentText()=='-':
+				pass	
+			else:	
+				try:
+					klasse='K'+re.search(r'\d+',self.comboBox_klassen_cr.currentText()).group()+' - ' ### get selected grade
+				except AttributeError:
+					klasse='MAT - '
+
+			if themen_klasse_auswahl==[]:
+				gk=gk_auswahl_joined+' - '
+
+			else: #elif gk_auswahl==[]
+				themen_klasse=themen_klasse_auswahl_joined+' - '
+				x=9
+				for all in themen_klasse_auswahl:
+					if all.lower() in k5_beschreibung:
+						if x>5:
+							x=5
+					elif all.lower() in k6_beschreibung:
+						if x>6:
+							x=6
+					elif all.lower() in k7_beschreibung:
+						if x>7:
+							x=7
+					elif all.lower() in k8_beschreibung:
+						if x>8:
+							x=8
+				if x<9 and klasse=='':
+					klasse='K%s - '%x
+
+				if gk_auswahl !=[]:
+					gk=gk_auswahl_joined+' - '
+
+			file.write("\section{"+str(max_integer_file+1)+' - '+klasse + themen_klasse + gk +self.lineEdit_titel.text()+" - "+self.lineEdit_quelle.text()+"}\n\n"
+			"\\begin{langesbeispiel} \item["+str(self.spinBox_punkte.value())+"] %PUNKTE DES BEISPIELS\n"+textBox_Entry+
+			"\n\\end{langesbeispiel}")			
+
+			file.close()
+
+
+
+
+		if dict_picture_path!={}:
+			x= ', '.join(dict_picture_path)
+		else:
+			x='-'
+
+
+		chosen_typ=self.comboBox_aufgabentyp.currentText()[-1]
+		if chosen_typ=='1':
+			chosen_gk = dict_gk[list_chosen_gk[0]]
+		if chosen_typ=='2':
+			chosen_gk= ', '.join(sorted(gk_auswahl+themen_klasse_auswahl))
+
+
+		QtWidgets.QApplication.restoreOverrideCursor()
+		msg = QtWidgets.QMessageBox()
+		msg.setIcon(QtWidgets.QMessageBox.Information)
+		msg.setWindowTitle("Aufgabe erfolgreich gespeichert")
+		#msg.setWindowIcon(QtWidgets.QIcon(r'C:\Users\Christoph\Desktop\lupe.png'))
+		msg.setText('Die Typ{0}-Aufgabe mit dem Titel\n\n"{1}"\n\nwurde gespeichert.'.format(chosen_typ, self.lineEdit_titel.text()))
+		msg.setDetailedText('Details\n'
+		'Grundkompetenz(en): {0}\n'
+		'Punkte: {1}\n'
+		'Klasse: {2}\n'
+		'Bilder: {3}'.format(chosen_gk, self.spinBox_punkte.value(), self.comboBox_klassen_cr.currentText(), x))
+		msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+		retval = msg.exec_()
+		self.suchfenster_reset()
+
+
+##################################################################
+##################################################################
+
+	def aufgaben_suchen(self):
+		MainWindow.setWindowTitle(_translate("LaTeX File Assistent", "LaTeX File Assistent", None))
+		for all in widgets_create:
+			if 'action' in all:
+				exec('self.%s.setVisible(False)'%all)
+			elif 'menu' in all:
+				exec('self.menuBar.removeAction(self.%s.menuAction())'%all)	
+			else:
+				exec('self.%s.hide()'%all)
+
+		for all in widgets_search:
+			if 'action' in all:
+				exec('self.%s.setVisible(True)'%all)
+			elif 'menu' in all:
+				exec('self.menuBar.addAction(self.%s.menuAction())'%all)	
+			else:
+				exec('self.%s.show()'%all)
+
+	def neue_aufgabe_erstellen(self):
+		MainWindow.setWindowTitle(_translate("LaTeX File Creator", "LaTeX File Creator", None))
+		MainWindow.setMenuBar(self.menuBar)
+		for all in widgets_search:
+			if 'action' in all:
+				exec('self.%s.setVisible(False)'%all)
+			elif 'menu' in all:
+				exec('self.menuBar.removeAction(self.%s.menuAction())'%all)	
+			else:
+				exec('self.%s.hide()'%all)
+
+		for all in widgets_create:
+			if 'action' in all:
+				exec('self.%s.setVisible(True)'%all)
+			elif 'menu' in all:
+				exec('self.menuBar.addAction(self.%s.menuAction())'%all)	
+			else:
+				exec('self.%s.show()'%all)
+		
+		
 	
 if __name__ == "__main__":
 	import sys
