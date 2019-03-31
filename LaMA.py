@@ -1678,7 +1678,7 @@ class Ui_MainWindow(object):
 	def convert_jpgtoeps(self):
 			msg = QtWidgets.QMessageBox()
 			# msg.setIcon(QtWidgets.QMessageBox.Question)
-			msg.setWindowIcon(QtWidgets.QIcon(logo_path))
+			msg.setWindowIcon(QtGui.QIcon(logo_path))
 			msg.setText('Wählen Sie alle Grafiken, die Sie konvertieren möchten.')
 			#msg.setInformativeText('Möchten Sie das neue Update installieren?')
 			msg.setWindowTitle("jpg2eps")
@@ -1757,7 +1757,7 @@ class Ui_MainWindow(object):
 		msg = QtWidgets.QMessageBox()
 		msg.setWindowTitle("Warnung")
 		msg.setIcon(QtWidgets.QMessageBox.Warning)
-		msg.setWindowIcon(QtWidgets.QIcon(logo_path))
+		msg.setWindowIcon(QtGui.QIcon(logo_path))
 		msg.setText(text)
 		msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
 		retval = msg.exec_()
@@ -1802,7 +1802,8 @@ class Ui_MainWindow(object):
 		msg = QtWidgets.QMessageBox()
 		msg.setIcon(QtWidgets.QMessageBox.Question)
 		msg.setWindowTitle("Aufgabe speichern")
-		msg.setWindowIcon(QtWidgets.QIcon(logo_path))
+		msg.setWindowIcon(QtGui.QIcon(logo_path))
+
 
 		if len(list_chosen_gk)>1:
 			temp_list_chosen_gk=[]
@@ -1917,7 +1918,7 @@ class Ui_MainWindow(object):
 					msg = QtWidgets.QMessageBox()
 					msg.setWindowTitle("Fehlermeldung")
 					msg.setIcon(QtWidgets.QMessageBox.Critical)
-					msg.setWindowIcon(QtWidgets.QIcon(logo_path))
+					msg.setWindowIcon(QtGui.QIcon(logo_path))
 					msg.setText('Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und\nmuss zuerst für Sie freigegeben werden.')
 					msg.setInformativeText('Derzeit können keine neuen Aufgaben eingegeben werden.')
 					msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
@@ -1949,7 +1950,20 @@ class Ui_MainWindow(object):
 				chosen_af=list(dict_aufgabenformate.keys())[list(dict_aufgabenformate.values()).index(self.comboBox_af.currentText())].upper()
 
 				#print('\section{'+file_name_klasse+' - '+list_chosen_gk[0].upper()+" - "+str(max_integer_file+1) +" - " + self.lineEdit_titel.text()+" - "+chosen_af+' - '+self.lineEdit_quelle.text())
-				file=open(file_name,"w")
+				try:
+					file=open(file_name,"w")
+				except FileNotFoundError:
+					msg = QtWidgets.QMessageBox()
+					msg.setWindowTitle("Fehlermeldung")
+					msg.setIcon(QtWidgets.QMessageBox.Critical)
+					msg.setWindowIcon(QtGui.QIcon(logo_path))
+					msg.setText('Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und\nmuss zuerst für Sie freigegeben werden.')
+					msg.setInformativeText('Derzeit können keine neuen Aufgaben eingegeben werden.')
+					msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+					retval = msg.exec_()
+					return	
+				
+				
 				file.write('\section{'+file_name_klasse+' - '+list_chosen_gk[0].upper()+" - "+str(max_integer_file+1) +" - " + self.lineEdit_titel.text()+" - "+chosen_af+' - '+self.lineEdit_quelle.text()+"}\n\n"
 				"\\begin{beispiel}["+file_name_klasse+' - '+list_chosen_gk[0].upper()+"]{"+str(self.spinBox_punkte.value())+"}\n"+textBox_Entry+
 				"\n\\end{beispiel}")
@@ -1961,7 +1975,19 @@ class Ui_MainWindow(object):
 
 				file_name=os.path.join(gk_path_temp,dict_gk[list_chosen_gk[0]]+' - '+str(max_integer_file+1)+'.tex')
 				
-				file=open(file_name,"w")					
+				try:
+					file=open(file_name,"w")
+				except FileNotFoundError:
+					msg = QtWidgets.QMessageBox()
+					msg.setWindowTitle("Fehlermeldung")
+					msg.setIcon(QtWidgets.QMessageBox.Critical)
+					msg.setWindowIcon(QtGui.QIcon(logo_path))
+					msg.setText('Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und\nmuss zuerst für Sie freigegeben werden.')
+					msg.setInformativeText('Derzeit können keine neuen Aufgaben eingegeben werden.')
+					msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+					retval = msg.exec_()
+					return
+
 				if self.comboBox_klassen_cr.currentText()=='-':
 					chosen_af=list(dict_aufgabenformate.keys())[list(dict_aufgabenformate.values()).index(self.comboBox_af.currentText())].upper()
 					file.write("\section{"+dict_gk[list_chosen_gk[0]]+" - "+str(max_integer_file+1) +" - "+self.lineEdit_titel.text()+" - "+chosen_af+" - "+self.lineEdit_quelle.text()+"}\n\n"
@@ -1993,12 +2019,24 @@ class Ui_MainWindow(object):
 
 			gk_auswahl_joined=', '.join(sorted(gk_auswahl))
 			themen_klasse_auswahl_joined=', '.join(sorted(themen_klasse_auswahl)) 			 
-			# print(gk_auswahl)
-			# print(themen_klasse_auswahl)
+
+
 
 			#file_name=os.path.join(os.path.dirname('__file__'),'_database','Typ2Aufgaben','Einzelbeispiele',str(max_integer_file+1)+'.tex') ### direct save
 			file_name=os.path.join(os.path.dirname('__file__'),'Beispieleinreichung',str(max_integer_file+1)+'.tex') ### not direct save
-			file=open(file_name,"w")
+			try:
+				file=open(file_name,"w")
+			except FileNotFoundError:
+				msg = QtWidgets.QMessageBox()
+				msg.setWindowTitle("Fehlermeldung")
+				msg.setIcon(QtWidgets.QMessageBox.Critical)
+				msg.setWindowIcon(QtGui.QIcon(logo_path))
+				msg.setText('Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und\nmuss zuerst für Sie freigegeben werden.')
+				msg.setInformativeText('Derzeit können keine neuen Aufgaben eingegeben werden.')
+				msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+				retval = msg.exec_()
+				return
+
 			klasse=''
 			themen_klasse=''
 			gk=''
@@ -2062,7 +2100,7 @@ class Ui_MainWindow(object):
 		msg = QtWidgets.QMessageBox()
 		msg.setIcon(QtWidgets.QMessageBox.Information)
 		msg.setWindowTitle("Aufgabe erfolgreich gespeichert")
-		msg.setWindowIcon(QtWidgets.QIcon(logo_path))
+		msg.setWindowIcon(QtGui.QIcon(logo_path))
 		msg.setText('Die Typ{0}-Aufgabe mit dem Titel\n\n"{1}"\n\nwurde gespeichert.'.format(chosen_typ, self.lineEdit_titel.text()))
 		msg.setDetailedText('Details\n'
 		'Grundkompetenz(en): {0}\n'
