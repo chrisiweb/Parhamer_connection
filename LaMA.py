@@ -23,6 +23,7 @@ import yaml
 from PIL import Image ## pillow
 
 
+path_programm=os.path.dirname(sys.argv[0])
 print('Loading...')
 
 # Load Config-file
@@ -30,7 +31,7 @@ def config_loader(pathToFile,parameter):
     config1 = yaml.safe_load(open(pathToFile, encoding='utf8'))
     return config1[parameter]
 
-config_file = './_database/_config/config1.yml'
+config_file = os.path.join(path_programm,'_database','_config','config1.yml')
 
 ag_beschreibung = config_loader(config_file,'ag_beschreibung')
 an_beschreibung = config_loader(config_file,'an_beschreibung')
@@ -63,7 +64,7 @@ except AttributeError:
 	def _translate(context, text, disambig):
 		return QtWidgets.QApplication.translate(context, text, disambig)
 
-logo_path=os.path.join(os.path.dirname('__file__'),'_database','_config','magnifier.png')
+logo_path=os.path.join(path_programm,'_database','_config','magnifier.png')
 
 
 widgets_search=['actionRefresh_Database','menuDateityp','menuNeu','menuHelp','label_update','combobox_searchtype','label_aufgabentyp','groupBox_ausgew_gk','groupBox_af',
@@ -725,7 +726,7 @@ class Ui_MainWindow(object):
 		self.cb_mat.setText(_translate("MainWindow", "Matura", None))
 		self.cb_solution.setText(_translate("MainWindow", "Lösungen anzeigen", None))
 		try:
-			log_file=os.path.join(os.path.dirname('__file__'),'Teildokument','log_file_1')
+			log_file=os.path.join(path_programm,'Teildokument','log_file_1')
 			self.label_update.setText(_translate("MainWindow", 'Letztes Update: ' + self.modification_date(log_file).strftime('%d.%m.%y - %H:%M'), None))
 		except FileNotFoundError:
 			self.label_update.setText(_translate("MainWindow", "Letztes Update: ---", None))
@@ -855,7 +856,7 @@ class Ui_MainWindow(object):
 	##########################
 
 	def check_for_update(self):
-		f=open('_database/_config/update/__version__.txt','r')
+		f=open('%s/_database/_config/update/__version__.txt'%path_programm,'r')
 		if __version__ not in f.read():
 			msg = QtWidgets.QMessageBox()
 			msg.setIcon(QtWidgets.QMessageBox.Question)
@@ -875,9 +876,9 @@ class Ui_MainWindow(object):
 				opened_file=os.path.basename(sys.argv[0])
 				name, extension=os.path.splitext(opened_file)
 				if extension=='.py':
-					filename_update=os.path.join(os.path.dirname('__file__'),'_database','_config','update','update.py')
+					filename_update=os.path.join(path_programm,'_database','_config','update','update.py')
 				elif extension=='.exe':
-					filename_update=os.path.join(os.path.dirname('__file__'),'_database','_config','update','update.exe')
+					filename_update=os.path.join(path_programm,'_database','_config','update','update.exe')
 				if sys.platform.startswith('linux'):
 				    os.system(filename_update)
 				elif sys.platform.startswith('darwin'):
@@ -969,7 +970,7 @@ class Ui_MainWindow(object):
 	def get_logfile(self):
 		try:
 			x='log_file_%s'%self.label_aufgabentyp.text()[-1]
-			log_file=os.path.join(os.path.dirname('__file__'),'Teildokument',x)
+			log_file=os.path.join(path_programm,'Teildokument',x)
 			self.label_update.setText(_translate("MainWindow", 'Letztes Update: ' + self.modification_date(log_file).strftime('%d.%m.%y - %H:%M'), None))
 		except FileNotFoundError:
 			self.label_update.setText(_translate("MainWindow", "Letztes Update: ---", None))
@@ -1246,7 +1247,7 @@ class Ui_MainWindow(object):
 		##### Suche offizielle Beispiele ####################
 		##################################################
 
-		for root, dirs, files in os.walk(os.path.join('.','_database', chosen_aufgabenformat)):
+		for root, dirs, files in os.walk(os.path.join(path_programm,'_database', chosen_aufgabenformat)):
 			for all in files:
 				if all.endswith('.tex') or all.endswith('.ltx'):
 					if not ('Gesamtdokument' in all) and not ('Teildokument' in all):
@@ -1262,7 +1263,7 @@ class Ui_MainWindow(object):
 		#### Suche inoffizielle Beispiele ######
 		#############################################
 
-		for root, dirs, files in os.walk(os.path.join('.','_database_inoffiziell', chosen_aufgabenformat)):
+		for root, dirs, files in os.walk(os.path.join(path_programm,'_database_inoffiziell', chosen_aufgabenformat)):
 			for all in files:
 				if all.endswith('.tex') or all.endswith('.ltx'):
 					if not ('Gesamtdokument' in all) and not ('Teildokument' in all):
@@ -1282,13 +1283,13 @@ class Ui_MainWindow(object):
 
 		beispieldaten_dateipfad=temp_dict_beispieldaten
 		
-		log_file=os.path.join(os.path.dirname('__file__'),'Teildokument','log_file_%s'%self.label_aufgabentyp.text()[-1])
+		log_file=os.path.join(path_programm,'Teildokument','log_file_%s'%self.label_aufgabentyp.text()[-1])
 		
 		try:
 			with open(log_file, 'w+') as f:
 				json.dump(beispieldaten_dateipfad, f,ensure_ascii=False)
 		except FileNotFoundError:
-			os.makedirs(os.path.join(os.path.dirname('__file__'),'Teildokument'))
+			os.makedirs(os.path.join(path_programm,'Teildokument'))
 			with open(log_file, 'w+') as f:
 				json.dump(beispieldaten_dateipfad, f,ensure_ascii=False)		
 
@@ -1313,29 +1314,29 @@ class Ui_MainWindow(object):
 		chosen_aufgabenformat=self.label_aufgabentyp.text()[-1]
 
 		if sys.platform.startswith('linux'):
-			subprocess.Popen('cd "Teildokument" ; latex --synctex=-1 Teildokument_{0}.tex ; dvips Teildokument_{0}.dvi ; ps2pdf -dNOSAFER Teildokument_{0}.ps'.format(chosen_aufgabenformat),shell=True).wait()
-			subprocess.run(['xdg-open', "Teildokument/Teildokument_%s.pdf"%chosen_aufgabenformat])
+			subprocess.Popen('cd "Teildokument" ; latex --synctex=-1 Teildokument_{1}.tex ; dvips Teildokument_{1}.dvi ; ps2pdf -dNOSAFER Teildokument_{1}.ps'.format(path_programm, chosen_aufgabenformat),shell=True).wait()
+			subprocess.run(['xdg-open', "{0}/Teildokument/Teildokument_{1}.pdf".format(path_programm, chosen_aufgabenformat)])
 		elif sys.platform.startswith('darwin'):
-			subprocess.Popen('cd "Teildokument" ; latex --synctex=-1 Teildokument_{0}.tex ; dvips Teildokument_{0}.dvi ; ps2pdf -dNOSAFER Teildokument_{0}.ps'.format(chosen_aufgabenformat),shell=True).wait()
-			subprocess.run(['open', '"Teildokument/Teildokument_%s.pdf"'%chosen_aufgabenformat])
+			subprocess.Popen('cd "Teildokument" ; latex --synctex=-1 Teildokument_{1}.tex ; dvips Teildokument_{1}.dvi ; ps2pdf -dNOSAFER Teildokument_{1}.ps'.format(path_programm, chosen_aufgabenformat),shell=True).wait()
+			subprocess.run(['open', '"{0}/Teildokument/Teildokument_{1}.pdf"'.format(path_programm, chosen_aufgabenformat)])
 		else:
-			subprocess.Popen('cd "Teildokument" & latex --synctex=-1 Teildokument_{0}.tex& dvips Teildokument_{0}.dvi & ps2pdf -dNOSAFER Teildokument_{0}.ps'.format(chosen_aufgabenformat),shell=True).wait()
-			subprocess.Popen('cd "Teildokument" & Teildokument_{0}.pdf'.format(chosen_aufgabenformat), shell=True).poll()
+			subprocess.Popen('cd "{0}/Teildokument" & latex --synctex=-1 Teildokument_{1}.tex& dvips Teildokument_{1}.dvi & ps2pdf -dNOSAFER Teildokument_{1}.ps'.format(path_programm, chosen_aufgabenformat),shell=True).wait()
+			subprocess.Popen('cd "{0}/Teildokument" & Teildokument_{1}.pdf'.format(path_programm, chosen_aufgabenformat), shell=True).poll()
 		## -interaction=nonstopmode -halt-on-error Don't stop when error occurs, while compiling
-		os.unlink('Teildokument/Teildokument_%s.aux'%chosen_aufgabenformat)
-		os.unlink('Teildokument/Teildokument_%s.log'%chosen_aufgabenformat)
-		os.unlink('Teildokument/Teildokument_%s.dvi'%chosen_aufgabenformat)
-		os.unlink('Teildokument/Teildokument_%s.ps'%chosen_aufgabenformat)
+		os.unlink('{0}/Teildokument/Teildokument_{1}.aux'.format(path_programm, chosen_aufgabenformat))
+		os.unlink('{0}/Teildokument/Teildokument_{1}.log'.format(path_programm, chosen_aufgabenformat))
+		os.unlink('{0}/Teildokument/Teildokument_{1}.dvi'.format(path_programm, chosen_aufgabenformat))
+		os.unlink('{0}/Teildokument/Teildokument_{1}.ps'.format(path_programm, chosen_aufgabenformat))
 	
 	def PrepareTeXforPDF(self):
 		chosen_aufgabenformat='Typ%sAufgaben'%self.label_aufgabentyp.text()[-1]
 
 		QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 		
-		if not os.path.isfile(os.path.join('Teildokument','log_file_%s'%self.label_aufgabentyp.text()[-1])):
+		if not os.path.isfile(os.path.join(path_programm,'Teildokument','log_file_%s'%self.label_aufgabentyp.text()[-1])):
 			self.refresh_ddb()
 		else: ##  Automatic update once per month
-			log_file=os.path.join(os.path.dirname('__file__'),'Teildokument','log_file_%s'%self.label_aufgabentyp.text()[-1])
+			log_file=os.path.join(path_programm,'Teildokument','log_file_%s'%self.label_aufgabentyp.text()[-1])
 			month_update_log_file=self.modification_date(log_file).strftime('%m')
 			month_today=datetime.date.today().strftime('%m')
 			if month_today!= month_update_log_file:
@@ -1385,10 +1386,10 @@ class Ui_MainWindow(object):
 					suchbegriffe.append(all.upper())
 					
 		#### typ1 ###
-		# log_file=os.path.join(os.path.dirname('__file__'),'Typ 2 Aufgaben','Teildokument','log_file')
+		# log_file=os.path.join(path_programm,'Typ 2 Aufgaben','Teildokument','log_file')
 		######
 
-		log_file=os.path.join(os.path.dirname('__file__'),'Teildokument','log_file_%s'%self.label_aufgabentyp.text()[-1])
+		log_file=os.path.join(path_programm,'Teildokument','log_file_%s'%self.label_aufgabentyp.text()[-1])
 
 		with open(log_file) as f:
 			beispieldaten_dateipfad = json.load(f)
@@ -1397,10 +1398,10 @@ class Ui_MainWindow(object):
 		
 
 		#### typ1 ###
-		# filename_teildokument = os.path.join(os.path.dirname('__file__'),'Typ 2 Aufgaben','Teildokument','Teildokument.tex')
+		# filename_teildokument = os.path.join(path_programm,'Typ 2 Aufgaben','Teildokument','Teildokument.tex')
 		#####
 
-		filename_teildokument = os.path.join(os.path.dirname('__file__'),'Teildokument','Teildokument_%s.tex'%self.label_aufgabentyp.text()[-1])
+		filename_teildokument = os.path.join(path_programm,'Teildokument','Teildokument_%s.tex'%self.label_aufgabentyp.text()[-1])
 		try:
 			file=open(filename_teildokument,"w", encoding='ISO-8859-1')
 		except FileNotFoundError:
@@ -1594,10 +1595,10 @@ class Ui_MainWindow(object):
 			### newpage only with typ2 !!
 
 			if chosen_aufgabenformat=='Typ1Aufgaben':
-				file.write('\input{".'+value+'"}%\n'
+				file.write('\input{"'+value+'"}%\n'
 				'\hrule  \leer\n\n')
 			elif chosen_aufgabenformat=='Typ2Aufgaben':
-				file.write('\input{".'+value+'"}%\n'
+				file.write('\input{"'+value+'"}%\n'
 				'\\newpage \n')
 			# else:
 			# 	if chosen_aufgabenformat=='Typ 1 Aufgaben':
@@ -1863,11 +1864,11 @@ class Ui_MainWindow(object):
 					path_folder='7.Klasse'
 				elif list_chosen_gk[0] in k8_beschreibung:
 					path_folder='8.Klasse'
-				gk_path_temp=os.path.join(os.path.dirname('__file__'),'_database','Typ1Aufgaben',path_folder,list_chosen_gk[0],'Einzelbeispiele')
+				gk_path_temp=os.path.join(path_programm,'_database','Typ1Aufgaben',path_folder,list_chosen_gk[0],'Einzelbeispiele')
 				z=list_chosen_gk[0].upper()+' - '
 			else:
 				path_folder='_Grundkompetenzen'
-				gk_path_temp=os.path.join(os.path.dirname('__file__'),'_database','Typ1Aufgaben',path_folder,dict_gk[list_chosen_gk[0]][:2],dict_gk[list_chosen_gk[0]],'Einzelbeispiele')
+				gk_path_temp=os.path.join(path_programm,'_database','Typ1Aufgaben',path_folder,dict_gk[list_chosen_gk[0]][:2],dict_gk[list_chosen_gk[0]],'Einzelbeispiele')
 				z=dict_gk[list_chosen_gk[0]]+' - '
 	
 				
@@ -1882,7 +1883,7 @@ class Ui_MainWindow(object):
 	
 
 		if self.comboBox_aufgabentyp.currentText()=='Typ 2':
-			gk_path_temp=os.path.join(os.path.dirname('__file__'),'_database','Typ2Aufgaben','Einzelbeispiele')
+			gk_path_temp=os.path.join(path_programm,'_database','Typ2Aufgaben','Einzelbeispiele')
 			max_integer_file=0
 			for all in os.listdir(gk_path_temp):
 		
@@ -1902,8 +1903,8 @@ class Ui_MainWindow(object):
 				textBox_Entry=str(textBox_Entry).replace(tail,'../_database/Bilder/'+str(max_integer_file+1)+'_'+tail)
 		
 
-		#copy_image_path=os.path.join(os.path.dirname('__file__'),'_database','Bilder') ### direct save
-		copy_image_path=os.path.join(os.path.dirname('__file__'),'Beispieleinreichung','Bilder') ### indirect save
+		#copy_image_path=os.path.join(path_programm,'_database','Bilder') ### direct save
+		copy_image_path=os.path.join(path_programm,'Beispieleinreichung','Bilder') ### indirect save
 		for all in list(dict_picture_path.values()):
 			image_path_temp=all
 			head, tail=os.path.split(image_path_temp)
@@ -1927,15 +1928,15 @@ class Ui_MainWindow(object):
 
 			if self.comboBox_aufgabentyp.currentText()=='Typ 1':
 				# x=os.rename(copy_image_file_temp,'_database/Bilder/'+list_chosen_gk[0].upper()+'_'+str(max_integer_file+1)+'_'+tail) ### direct save
-				x=os.rename(copy_image_file_temp,'Beispieleinreichung/Bilder/'+list_chosen_gk[0].upper()+'_'+str(max_integer_file+1)+'_'+tail) ### indirect
+				x=os.rename(copy_image_file_temp,'%s/Beispieleinreichung/Bilder/'% path_programm +list_chosen_gk[0].upper()+'_'+str(max_integer_file+1)+'_'+tail) ### indirect
 			if self.comboBox_aufgabentyp.currentText()=='Typ 2':
 				#x=os.rename(copy_image_file_temp,'_database/Bilder/'+str(max_integer_file+1)+'_'+tail) ### direct save
-				x=os.rename(copy_image_file_temp,'Beispieleinreichung/Bilder/'+str(max_integer_file+1)+'_'+tail) ### indirect save		
+				x=os.rename(copy_image_file_temp,'%s/Beispieleinreichung/Bilder/'%path_programm +str(max_integer_file+1)+'_'+tail) ### indirect save		
 
 
 
 		if self.comboBox_aufgabentyp.currentText()=='Typ 1':
-			gk_path_temp=os.path.join(os.path.dirname('__file__'),'Beispieleinreichung') ## not direct save (path changed - comment/uncomment)
+			gk_path_temp=os.path.join(path_programm,'Beispieleinreichung') ## not direct save (path changed - comment/uncomment)
 			if list_chosen_gk[0] in {**k5_beschreibung,**k6_beschreibung,**k7_beschreibung,**k8_beschreibung}: ## merged dictionaries
 				if list_chosen_gk[0] in k5_beschreibung:
 					file_name_klasse='K5'
@@ -2022,8 +2023,8 @@ class Ui_MainWindow(object):
 
 
 
-			#file_name=os.path.join(os.path.dirname('__file__'),'_database','Typ2Aufgaben','Einzelbeispiele',str(max_integer_file+1)+'.tex') ### direct save
-			file_name=os.path.join(os.path.dirname('__file__'),'Beispieleinreichung',str(max_integer_file+1)+'.tex') ### not direct save
+			#file_name=os.path.join(path_programm,'_database','Typ2Aufgaben','Einzelbeispiele',str(max_integer_file+1)+'.tex') ### direct save
+			file_name=os.path.join(path_programm,'Beispieleinreichung',str(max_integer_file+1)+'.tex') ### not direct save
 			try:
 				file=open(file_name,"w")
 			except FileNotFoundError:
