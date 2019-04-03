@@ -905,10 +905,12 @@ class Ui_MainWindow(object):
 		    if ret==QtWidgets.QMessageBox.Yes:
 			    opened_file=os.path.basename(sys.argv[0])
 			    name, extension=os.path.splitext(opened_file)
-			    if extension=='.py':
-				    filename_update=os.path.join(path_programm,'_database','_config','update','update.py')
-			    elif extension=='.exe':
-				    filename_update=os.path.join(path_programm,'_database','_config','update','update.exe')
+
+			    filename_update=os.path.join(path_programm,'_database','_config','update','update%s'%extension)
+			    #if extension=='.py':
+			#	    filename_update=os.path.join(path_programm,'_database','_config','update','update.py')
+			 #   elif extension=='.exe':
+			#	    filename_update=os.path.join(path_programm,'_database','_config','update','update.exe')
 			    if sys.platform.startswith('linux'):
 				    os.system(filename_update)
 			    elif sys.platform.startswith('darwin'):

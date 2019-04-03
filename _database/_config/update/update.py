@@ -8,7 +8,8 @@ import subprocess
 
 path_programm=os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(sys.argv[0]))))
 
-# print(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(sys.argv[0])))))
+#print(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(sys.argv[0])))))
+
 
 if sys.platform.startswith('linux') or sys.platform.startswith('darwin'):
     if path_programm is '':
@@ -65,7 +66,8 @@ if sys.platform.startswith('linux'):
     #print(mainfile_path)
     subprocess.run("python3 " + mainfile_path, shell=True)
 elif sys.platform.startswith('darwin'):
-    subprocess.run("python3 " + mainfile_path, shell=True)
+    os.system(mainfile_path)
+    #subprocess.run("python3 " + mainfile_path, shell=True)
 else:
     os.startfile(mainfile_path)
  
