@@ -14,8 +14,8 @@ opened_file=os.path.basename(sys.argv[0])
 name, extension=os.path.splitext(opened_file)
 
 updatefile_path=os.path.join(os.path.dirname('__file__'),'_database','_config','update','update%s'%extension)
-newapp_path=os.path.join(os.path.dirname('__file__'),'_database','_config','update','LaTeX_File_Assistent%s'%extension)
-mainfile_path=os.path.join(os.path.dirname('__file__'),'LaTeX_File_Assistent%s'%extension)
+newapp_path=os.path.join(os.path.dirname('__file__'),'_database','_config','update','LaMA%s'%extension)
+mainfile_path=os.path.join(os.path.dirname('__file__'),'LaMA%s'%extension)
 
 def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█'):
     percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
@@ -34,11 +34,11 @@ printProgressBar(0, l, prefix = 'Installation:', length = 50)
 for i, item in enumerate(items):
     if i==50:
         if sys.platform.startswith('linux'):
-            p=subprocess.Popen('cp "{0}" "LaTeX_File_Assistent{1}"'.format(newapp_path, extension), stdout=subprocess.PIPE,shell=True)
+            p=subprocess.Popen('cp "{0}" "LaMA{1}"'.format(newapp_path, extension), stdout=subprocess.PIPE,shell=True)
         elif sys.platform.startswith('darwin'):
-            p=subprocess.Popen('cp "{0}" "LaTeX_File_Assistent{1}"'.format(newapp_path, extension), stdout=subprocess.PIPE,shell=True)
+            p=subprocess.Popen('cp "{0}" "LaMA{1}"'.format(newapp_path, extension), stdout=subprocess.PIPE,shell=True)
         else:
-            p=subprocess.Popen('copy "{0}" "LaTeX_File_Assistent{1}"'.format(newapp_path, extension), stdout=subprocess.PIPE,shell=True)
+            p=subprocess.Popen('copy "{0}" "LaMA{1}"'.format(newapp_path, extension), stdout=subprocess.PIPE,shell=True)
 
         (output, err) = p.communicate()
         p_status=p.wait()
@@ -50,6 +50,7 @@ for i, item in enumerate(items):
 if p_status==0:
     print('\nProgramm wurde erfolgreich aktualisiert. Drücken Sie "Enter", um fortzufahren...')
 else:
+    print(newapp_path)
     print('\nProgramm konnte nicht aktualisiert werden. Bitte versuchen Sie es später erneut.\nFehler: "%s"\n\nDrücken Sie "Enter", um mit der älteren Version fortzufahren...'%str(output)[2:-5]) 
     
 input()
