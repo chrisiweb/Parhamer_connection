@@ -1,3 +1,7 @@
+## v1.5 (dev)
+- rename to LaMA (LaTeX Mathematics Assistent)
+- programm creates directories as needed
+
 ## v1.4
 30.03.2019
 - Created one file (Fusion of File_Assistent and File_Creator)
