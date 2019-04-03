@@ -6,16 +6,22 @@ import sys
 from time import sleep
 import subprocess
 
+path_programm=os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(sys.argv[0]))))
 
+# print(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(sys.argv[0])))))
+
+if sys.platform.startswith('linux') or sys.platform.startswith('darwin'):
+    if path_programm is '':
+        path_programm = "."
 
 print('Programm wird aktualisiert...')
 
 opened_file=os.path.basename(sys.argv[0])
 name, extension=os.path.splitext(opened_file)
 
-updatefile_path=os.path.join(os.path.dirname('__file__'),'_database','_config','update','update%s'%extension)
-newapp_path=os.path.join(os.path.dirname('__file__'),'_database','_config','update','LaMA%s'%extension)
-mainfile_path=os.path.join(os.path.dirname('__file__'),'LaMA%s'%extension)
+updatefile_path=os.path.join(path_programm,'_database','_config','update','update%s'%extension)
+newapp_path=os.path.join(path_programm,'_database','_config','update','LaMA%s'%extension)
+mainfile_path=os.path.join(path_programm,'LaMA%s'%extension)
 
 def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█'):
     percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
