@@ -1914,7 +1914,10 @@ class Ui_MainWindow(object):
 					if int(file_integer)>max_integer_file:
 						max_integer_file=int(file_integer)
 
-	
+
+
+
+
 
 		if self.comboBox_aufgabentyp.currentText()=='Typ 2':
 			gk_path_temp=os.path.join(path_programm,'_database','Typ2Aufgaben','Einzelbeispiele')
@@ -1926,6 +1929,44 @@ class Ui_MainWindow(object):
 					if int(file_integer)>max_integer_file:
 						max_integer_file=int(file_integer)
 		
+
+		####### Checks files in 'Beispieleinreichung' #####
+		##################################################
+
+
+		try:
+			path_saved_files=os.path.join(path_programm,'Beispieleinreichung')
+			z=dict_gk[list_chosen_gk[0]]+' - '
+			if self.comboBox_aufgabentyp.currentText()=='Typ 1':
+				for all in os.listdir(path_saved_files):
+					if all.endswith('.tex'):
+						if dict_gk[list_chosen_gk[0]] in all:
+							x,y=all.split(z)
+							file_integer, file_extension=y.split('.tex')
+							if int(file_integer)>max_integer_file:
+								max_integer_file=int(file_integer)
+							print(file_integer)
+
+			if self.comboBox_aufgabentyp.currentText()=='Typ 2':
+				for all in os.listdir(path_saved_files): 	
+					if all.endswith('.tex'):
+						if '-' in all:
+							pass
+						else:
+							file_integer, file_extension=all.split('.tex')
+							if int(file_integer)>max_integer_file:
+								max_integer_file=int(file_integer)
+		except FileNotFoundError:
+			msg = QtWidgets.QMessageBox()
+			msg.setWindowTitle("Fehlermeldung")
+			msg.setIcon(QtWidgets.QMessageBox.Critical)
+			msg.setWindowIcon(QtGui.QIcon(logo_path))
+			msg.setText('Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und\nmuss zuerst für Sie freigegeben werden.')
+			msg.setInformativeText('Derzeit können keine neuen Aufgaben eingegeben werden.')
+			msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+			retval = msg.exec_()
+			return		
+		############################################################################
 
 		for all in dict_picture_path:
 			head, tail=os.path.split(all)
