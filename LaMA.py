@@ -25,7 +25,7 @@ from PIL import Image ## pillow
 
 path_programm=os.path.dirname(sys.argv[0])
 
-if sys.platform.startswith('linux'):
+if sys.platform.startswith('linux') or sys.platform.startswith('darwin'):
     if path_programm is '':
         path_programm = "."
 
@@ -1344,10 +1344,10 @@ class Ui_MainWindow(object):
 		chosen_aufgabenformat=self.label_aufgabentyp.text()[-1]
 
 		if sys.platform.startswith('linux'):
-			subprocess.Popen('cd "Teildokument" ; latex --synctex=-1 Teildokument_{1}.tex ; dvips Teildokument_{1}.dvi ; ps2pdf -dNOSAFER Teildokument_{1}.ps'.format(path_programm, chosen_aufgabenformat),shell=True).wait()
+			subprocess.Popen('cd "{0}/Teildokument" ; latex --synctex=-1 Teildokument_{1}.tex ; dvips Teildokument_{1}.dvi ; ps2pdf -dNOSAFER Teildokument_{1}.ps'.format(path_programm, chosen_aufgabenformat),shell=True).wait()
 			subprocess.run(['xdg-open', "{0}/Teildokument/Teildokument_{1}.pdf".format(path_programm, chosen_aufgabenformat)])
 		elif sys.platform.startswith('darwin'):
-			subprocess.Popen('cd "Teildokument" ; latex --synctex=-1 Teildokument_{1}.tex ; dvips Teildokument_{1}.dvi ; ps2pdf -dNOSAFER Teildokument_{1}.ps'.format(path_programm, chosen_aufgabenformat),shell=True).wait()
+			subprocess.Popen('cd "{0}/Teildokument" ; latex --synctex=-1 Teildokument_{1}.tex ; dvips Teildokument_{1}.dvi ; ps2pdf -dNOSAFER Teildokument_{1}.ps'.format(path_programm, chosen_aufgabenformat),shell=True).wait()
 			subprocess.run(['open', '"{0}/Teildokument/Teildokument_{1}.pdf"'.format(path_programm, chosen_aufgabenformat)])
 		else:
 			subprocess.Popen('cd "{0}/Teildokument" & latex --synctex=-1 Teildokument_{1}.tex& dvips Teildokument_{1}.dvi & ps2pdf -dNOSAFER Teildokument_{1}.ps'.format(path_programm, chosen_aufgabenformat),shell=True).wait()
