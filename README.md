@@ -1,4 +1,4 @@
-# Latex File Assistent (AKA Parhamer_connection)
+# LaMA -- LaTeX Mathematics Assistent (AKA Parhamer_connection)
 ## Dependencies
 - Python3
 - PyQt5
@@ -12,7 +12,7 @@
 ## German Version
 ### Beschreibung
 
-Latex File Assistent (AKA Parhamer_connection) ist ein Programm, dass Ihnen erlaubt aus einem Pool von Aufgaben eine Schularbeit zusammenzustellen.
+LaMA ist ein Programm, dass Ihnen erlaubt aus einem Pool von Aufgaben eine Schularbeit zusammenzustellen.
 Die Aufgaben sind getrennt nach Typ1 und Typ2 in Schulstufen und Kompetenzen sortiert.
 Es besteht auch die Möglichkeit eigene Aufgaben zu erstellen und dem Pool zuzuführen.
 
@@ -26,7 +26,7 @@ Contributes:
 
 ## English Version
 
-Latex File Assistant (AKA Parhamer_connection) is a program that lets you create and choose mathematical problems for your class.
+LaMA is a program that lets you create and choose mathematical problems for your class.
 The problems are organized in competences and levels you can choose from.
 
 <!--

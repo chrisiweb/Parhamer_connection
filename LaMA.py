@@ -24,11 +24,30 @@ from PIL import Image ## pillow
 
 
 path_programm=os.path.dirname(sys.argv[0])
+
+if sys.platform.startswith('linux'):
+    if path_programm is '':
+        path_programm = "."
+
 print('Loading...')
 
 # Load Config-file
 def config_loader(pathToFile,parameter):
-    config1 = yaml.safe_load(open(pathToFile, encoding='utf8'))
+    for i in range(5):
+        try:
+            config1 = yaml.safe_load(open(pathToFile, encoding='utf8'))
+            break
+        except FileNotFoundError:
+            print("File not Found!")
+            if sys.platform.startswith('linux'):
+                    root = "."
+            else:
+                    root = ""
+            config_path = os.path.join('.','_database','_config')
+            if not os.path.exists(config_path):
+                print("No worries, we'll create the structure for you.")
+                os.makedirs(config_path)
+            input("Please place your your config file in '{}' and hit enter. {} tries left!".format(config_path, 5-i))
     return config1[parameter]
 
 config_file = os.path.join(path_programm,'_database','_config','config1.yml')
@@ -856,36 +875,47 @@ class Ui_MainWindow(object):
 	##########################
 
 	def check_for_update(self):
-		f=open('%s/_database/_config/update/__version__.txt'%path_programm,'r')
+		for i in range(5):
+			try:
+				version_path = os.path.join(path_programm,'_database','_config','update')
+				version_file = os.path.join(version_path,'__version__.txt')
+				f=open(version_file,'r')
+				break
+			except FileNotFoundError:
+				input("Please place your your config file in '{}' and hit enter. {} tries left!".format(version_path, 5-i))
+			if i == 4:
+			    print("No version set. Skipping version check!")
+			    return False
+
 		if __version__ not in f.read():
-			msg = QtWidgets.QMessageBox()
-			msg.setIcon(QtWidgets.QMessageBox.Question)
-			msg.setWindowIcon(QtGui.QIcon(logo_path))
-			msg.setText('Es ist ein neues Update vorhanden.')
-			msg.setInformativeText('Möchten Sie das neue Update installieren?')
-			msg.setWindowTitle("Update vorhanden")
-			msg.setStandardButtons(QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
-			buttonY = msg.button(QtWidgets.QMessageBox.Yes)
-			buttonY.setText('Ja')
-			buttonN = msg.button(QtWidgets.QMessageBox.No)
-			buttonN.setText('Nein')
-			ret=msg.exec_()
+		    msg = QtWidgets.QMessageBox()
+		    msg.setIcon(QtWidgets.QMessageBox.Question)
+		    msg.setWindowIcon(QtGui.QIcon(logo_path))
+		    msg.setText('Es ist ein neues Update vorhanden.')
+		    msg.setInformativeText('Möchten Sie das neue Update installieren?')
+		    msg.setWindowTitle("Update vorhanden")
+		    msg.setStandardButtons(QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
+		    buttonY = msg.button(QtWidgets.QMessageBox.Yes)
+		    buttonY.setText('Ja')
+		    buttonN = msg.button(QtWidgets.QMessageBox.No)
+		    buttonN.setText('Nein')
+		    ret=msg.exec_()
 
 
-			if ret==QtWidgets.QMessageBox.Yes:
-				opened_file=os.path.basename(sys.argv[0])
-				name, extension=os.path.splitext(opened_file)
-				if extension=='.py':
-					filename_update=os.path.join(path_programm,'_database','_config','update','update.py')
-				elif extension=='.exe':
-					filename_update=os.path.join(path_programm,'_database','_config','update','update.exe')
-				if sys.platform.startswith('linux'):
+		    if ret==QtWidgets.QMessageBox.Yes:
+			    opened_file=os.path.basename(sys.argv[0])
+			    name, extension=os.path.splitext(opened_file)
+			    if extension=='.py':
+				    filename_update=os.path.join(path_programm,'_database','_config','update','update.py')
+			    elif extension=='.exe':
+				    filename_update=os.path.join(path_programm,'_database','_config','update','update.exe')
+			    if sys.platform.startswith('linux'):
 				    os.system(filename_update)
-				elif sys.platform.startswith('darwin'):
+			    elif sys.platform.startswith('darwin'):
 				    os.system(filename_update)
-				else:
+			    else:
 				    os.startfile(filename_update)										
-				sys.exit(0)
+			    sys.exit(0)
 
 
 
@@ -1873,6 +1903,10 @@ class Ui_MainWindow(object):
 	
 				
 			max_integer_file=0
+	    
+			if not os.path.exists(gk_path_temp):
+				print("Creating {} for you.".format(gk_path_temp))
+				os.makedirs(gk_path_temp)
 			for all in os.listdir(gk_path_temp):
 				if all.endswith('.tex'):
 					x,y=all.split(z)
