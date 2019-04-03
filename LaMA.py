@@ -24,6 +24,11 @@ from PIL import Image ## pillow
 
 
 path_programm=os.path.dirname(sys.argv[0])
+
+if sys.platform.startswith('linux'):
+    if path_programm is '':
+        path_programm = "."
+
 print('Loading...')
 
 # Load Config-file
