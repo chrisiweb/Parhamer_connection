@@ -1903,6 +1903,10 @@ class Ui_MainWindow(object):
 	
 				
 			max_integer_file=0
+	    
+			if not os.path.exists(gk_path_temp):
+				print("Creating {} for you.".format(gk_path_temp))
+				os.makedirs(gk_path_temp)
 			for all in os.listdir(gk_path_temp):
 				if all.endswith('.tex'):
 					x,y=all.split(z)
