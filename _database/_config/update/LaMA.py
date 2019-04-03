@@ -366,15 +366,15 @@ class Ui_MainWindow(object):
 		self.groupBox_aufgabentyp.setObjectName(_fromUtf8("groupBox_aufgabentyp"))
 		self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBox_aufgabentyp)
 		self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
-		self.comboBox_aufgabentyp = QtWidgets.QComboBox(self.groupBox_aufgabentyp)
-		self.comboBox_aufgabentyp.setObjectName(_fromUtf8("comboBox_aufgabentyp"))
-		self.comboBox_aufgabentyp.addItem(_fromUtf8(""))
-		self.comboBox_aufgabentyp.addItem(_fromUtf8(""))
-		self.gridLayout_3.addWidget(self.comboBox_aufgabentyp, 0, 0, 1, 1)
+		self.comboBox_aufgabentyp_cr = QtWidgets.QComboBox(self.groupBox_aufgabentyp)
+		self.comboBox_aufgabentyp_cr.setObjectName(_fromUtf8("comboBox_aufgabentyp_cr"))
+		self.comboBox_aufgabentyp_cr.addItem(_fromUtf8(""))
+		self.comboBox_aufgabentyp_cr.addItem(_fromUtf8(""))
+		self.gridLayout_3.addWidget(self.comboBox_aufgabentyp_cr, 0, 0, 1, 1)
 		self.gridLayout.addWidget(self.groupBox_aufgabentyp, 1, 2, 1, 1)
 		self.groupBox_aufgabentyp.setTitle(_translate("MainWindow", "Aufgabentyp", None))
-		self.comboBox_aufgabentyp.setItemText(0, _translate("MainWindow", "Typ 1", None))
-		self.comboBox_aufgabentyp.setItemText(1, _translate("MainWindow", "Typ 2", None))
+		self.comboBox_aufgabentyp_cr.setItemText(0, _translate("MainWindow", "Typ 1", None))
+		self.comboBox_aufgabentyp_cr.setItemText(1, _translate("MainWindow", "Typ 2", None))
 		self.groupBox_aufgabentyp.hide()
 
 
@@ -620,7 +620,7 @@ class Ui_MainWindow(object):
 
 		self.tab_widget_gk.setCurrentIndex(0)
 		QtCore.QMetaObject.connectSlotsByName(MainWindow)
-		MainWindow.setTabOrder(self.comboBox_aufgabentyp, self.spinBox_punkte)
+		MainWindow.setTabOrder(self.comboBox_aufgabentyp_cr, self.spinBox_punkte)
 		MainWindow.setTabOrder(self.spinBox_punkte, self.comboBox_af)
 		MainWindow.setTabOrder(self.comboBox_af, self.comboBox_klassen_cr)
 		MainWindow.setTabOrder(self.comboBox_klassen_cr, self.lineEdit_titel)
@@ -673,7 +673,7 @@ class Ui_MainWindow(object):
 		self.actionSuche.triggered.connect(self.aufgaben_suchen)
 		self.actionBild_einf_gen.triggered.connect(self.add_picture)
 		self.actionBild_konvertieren_jpg_eps.triggered.connect(self.convert_jpgtoeps)
-		self.comboBox_aufgabentyp.currentIndexChanged.connect(self.chosen_aufgabenformat_cr)
+		self.comboBox_aufgabentyp_cr.currentIndexChanged.connect(self.chosen_aufgabenformat_cr)
 		self.pushButton_save.clicked.connect(self.save_file)
 
 		for all in ag_beschreibung:
@@ -964,7 +964,8 @@ class Ui_MainWindow(object):
 		self.entry_suchbegriffe.setText('')	
 		self.cb_solution.setChecked(True)	
 		self.spinBox_punkte.setProperty("value", 1)
-		self.comboBox_aufgabentyp.setCurrentIndex(0)
+		# self.comboBox_aufgabentyp.setCurrentIndex(0)
+		self.comboBox_aufgabentyp_cr.setCurrentIndex(0)
 		self.comboBox_af.setCurrentIndex(0)
 		self.comboBox_klassen_cr.setCurrentIndex(0)
 		self.label_ausgew_gk.setText(_translate("MainWindow", "-", None))
@@ -1742,10 +1743,10 @@ class Ui_MainWindow(object):
 					return
 
 	def chosen_aufgabenformat_cr(self):
-		if self.comboBox_aufgabentyp.currentText()=='Typ 1':
+		if self.comboBox_aufgabentyp_cr.currentText()=='Typ 1':
 			self.label_keine_auswahl.hide()
 			self.comboBox_af.show()
-		if self.comboBox_aufgabentyp.currentText()=='Typ 2':
+		if self.comboBox_aufgabentyp_cr.currentText()=='Typ 2':
 			self.label_keine_auswahl.show()
 			self.comboBox_af.hide()
 
@@ -1804,7 +1805,7 @@ class Ui_MainWindow(object):
 		
 
 
-		if self.comboBox_aufgabentyp.currentText()=='Typ 1':
+		if self.comboBox_aufgabentyp_cr.currentText()=='Typ 1':
 			if self.comboBox_af.currentText()=='bitte auswählen':
 				self.warning_window('Es wurde kein Aufgabenformat ausgewählt.')
 				return
@@ -1856,7 +1857,7 @@ class Ui_MainWindow(object):
 		else:
 			bilder='-'
 
-		if self.comboBox_aufgabentyp.currentText()=='Typ 1':
+		if self.comboBox_aufgabentyp_cr.currentText()=='Typ 1':
 			aufgabenformat='Aufgabenformat: %s\n'%self.comboBox_af.currentText()
 		else:
 			aufgabenformat=''
@@ -1866,7 +1867,7 @@ class Ui_MainWindow(object):
 		'Titel: {1}\n{2}'
 		'Grundkompetenz: {3}\n'
 		'Quelle: {4}\n'
-		'Bilder: {5}'.format(self.comboBox_aufgabentyp.currentText(),
+		'Bilder: {5}'.format(self.comboBox_aufgabentyp_cr.currentText(),
 		self.lineEdit_titel.text(),aufgabenformat,gk,self.lineEdit_quelle.text(),bilder))
 		# msg.setInformativeText('Soll die PDF Datei erstellt werden?')
 		msg.setStandardButtons(QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
@@ -1883,7 +1884,7 @@ class Ui_MainWindow(object):
 
 
 		##### GET MAX FILENUMBER IN DIR #####
-		if self.comboBox_aufgabentyp.currentText()=='Typ 1':
+		if self.comboBox_aufgabentyp_cr.currentText()=='Typ 1':
 			# print(set_chosen_gk)
 			if list_chosen_gk[0] in {**k5_beschreibung,**k6_beschreibung,**k7_beschreibung,**k8_beschreibung}: ## merged dictionaries
 				if list_chosen_gk[0] in k5_beschreibung:
@@ -1919,7 +1920,7 @@ class Ui_MainWindow(object):
 
 
 
-		if self.comboBox_aufgabentyp.currentText()=='Typ 2':
+		if self.comboBox_aufgabentyp_cr.currentText()=='Typ 2':
 			gk_path_temp=os.path.join(path_programm,'_database','Typ2Aufgaben','Einzelbeispiele')
 			max_integer_file=0
 			for all in os.listdir(gk_path_temp):
@@ -1937,7 +1938,7 @@ class Ui_MainWindow(object):
 		try:
 			path_saved_files=os.path.join(path_programm,'Beispieleinreichung')
 			z=dict_gk[list_chosen_gk[0]]+' - '
-			if self.comboBox_aufgabentyp.currentText()=='Typ 1':
+			if self.comboBox_aufgabentyp_cr.currentText()=='Typ 1':
 				for all in os.listdir(path_saved_files):
 					if all.endswith('.tex'):
 						if dict_gk[list_chosen_gk[0]] in all:
@@ -1947,7 +1948,7 @@ class Ui_MainWindow(object):
 								max_integer_file=int(file_integer)
 							print(file_integer)
 
-			if self.comboBox_aufgabentyp.currentText()=='Typ 2':
+			if self.comboBox_aufgabentyp_cr.currentText()=='Typ 2':
 				for all in os.listdir(path_saved_files): 	
 					if all.endswith('.tex'):
 						if '-' in all:
@@ -1972,9 +1973,9 @@ class Ui_MainWindow(object):
 			head, tail=os.path.split(all)
 			x = '{'+tail+'}'
 			name, ext =os.path.splitext(tail)
-			if x in textBox_Entry and self.comboBox_aufgabentyp.currentText()=='Typ 1':
+			if x in textBox_Entry and self.comboBox_aufgabentyp_cr.currentText()=='Typ 1':
 				textBox_Entry=str(textBox_Entry).replace(tail,'../_database/Bilder/'+list_chosen_gk[0].upper()+'_'+str(max_integer_file+1)+'_'+tail)
-			if x in textBox_Entry and self.comboBox_aufgabentyp.currentText()=='Typ 2':
+			if x in textBox_Entry and self.comboBox_aufgabentyp_cr.currentText()=='Typ 2':
 				textBox_Entry=str(textBox_Entry).replace(tail,'../_database/Bilder/'+str(max_integer_file+1)+'_'+tail)
 		
 
@@ -2001,16 +2002,16 @@ class Ui_MainWindow(object):
 					retval = msg.exec_()
 					return	
 
-			if self.comboBox_aufgabentyp.currentText()=='Typ 1':
+			if self.comboBox_aufgabentyp_cr.currentText()=='Typ 1':
 				# x=os.rename(copy_image_file_temp,'_database/Bilder/'+list_chosen_gk[0].upper()+'_'+str(max_integer_file+1)+'_'+tail) ### direct save
 				x=os.rename(copy_image_file_temp,'%s/Beispieleinreichung/Bilder/'% path_programm +list_chosen_gk[0].upper()+'_'+str(max_integer_file+1)+'_'+tail) ### indirect
-			if self.comboBox_aufgabentyp.currentText()=='Typ 2':
+			if self.comboBox_aufgabentyp_cr.currentText()=='Typ 2':
 				#x=os.rename(copy_image_file_temp,'_database/Bilder/'+str(max_integer_file+1)+'_'+tail) ### direct save
 				x=os.rename(copy_image_file_temp,'%s/Beispieleinreichung/Bilder/'%path_programm +str(max_integer_file+1)+'_'+tail) ### indirect save		
 
 
 
-		if self.comboBox_aufgabentyp.currentText()=='Typ 1':
+		if self.comboBox_aufgabentyp_cr.currentText()=='Typ 1':
 			gk_path_temp=os.path.join(path_programm,'Beispieleinreichung') ## not direct save (path changed - comment/uncomment)
 			if list_chosen_gk[0] in {**k5_beschreibung,**k6_beschreibung,**k7_beschreibung,**k8_beschreibung}: ## merged dictionaries
 				if list_chosen_gk[0] in k5_beschreibung:
@@ -2082,7 +2083,7 @@ class Ui_MainWindow(object):
 
 
 
-		if self.comboBox_aufgabentyp.currentText()=='Typ 2':
+		if self.comboBox_aufgabentyp_cr.currentText()=='Typ 2':
 			themen_klasse_auswahl=[]
 			gk_auswahl=[]
 
@@ -2165,7 +2166,7 @@ class Ui_MainWindow(object):
 			x='-'
 
 
-		chosen_typ=self.comboBox_aufgabentyp.currentText()[-1]
+		chosen_typ=self.comboBox_aufgabentyp_cr.currentText()[-1]
 		if chosen_typ=='1':
 			chosen_gk = dict_gk[list_chosen_gk[0]]
 		if chosen_typ=='2':
@@ -2207,14 +2208,16 @@ class Ui_MainWindow(object):
 				exec('self.menuBar.addAction(self.%s.menuAction())'%all)	
 			else:
 				if all == 'combobox_searchtype':
-					if self.comboBox_aufgabentyp.currentText()=='Typ 2':
+					if self.label_aufgabentyp.text()[-1]=='2':
 						exec('self.%s.show()'%all)
 				else:
 					exec('self.%s.show()'%all)
 
+
 	def neue_aufgabe_erstellen(self):
 		MainWindow.setMenuBar(self.menuBar)
-		for all in widgets_search:
+
+		for all in widgets_search:		
 			if 'action' in all:
 				exec('self.%s.setVisible(False)'%all)
 			elif 'menu' in all:
@@ -2229,7 +2232,7 @@ class Ui_MainWindow(object):
 				exec('self.menuBar.addAction(self.%s.menuAction())'%all)	
 			else:
 				exec('self.%s.show()'%all)
-		
+
 		
 	
 if __name__ == "__main__":
