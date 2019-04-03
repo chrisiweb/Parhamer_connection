@@ -33,7 +33,22 @@ print('Loading...')
 
 # Load Config-file
 def config_loader(pathToFile,parameter):
-    config1 = yaml.safe_load(open(pathToFile, encoding='utf8'))
+    for i in range(5):
+        try:
+            config1 = yaml.safe_load(open(pathToFile, encoding='utf8'))
+            break
+        except FileNotFoundError:
+            print("File not Found!")
+            if sys.platform.startswith('linux'):
+                    root = "."
+            else:
+                    root = ""
+            config_path = os.path.join('.','_database','_config')
+            if not os.path.exists(config_path):
+                print("No worries, we'll create the structure for you.")
+                os.makedirs(config_path)
+            input("Please place your your config-file in '{}' and hit enter. {} tries left!".format(config_path, 5-i))
+    print("Config-file still not found. Deal with the consequenses!")
     return config1[parameter]
 
 config_file = os.path.join(path_programm,'_database','_config','config1.yml')
