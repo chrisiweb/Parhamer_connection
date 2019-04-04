@@ -1351,7 +1351,7 @@ class Ui_MainWindow(object):
 			subprocess.run(['xdg-open', "{0}/Teildokument/Teildokument_{1}.pdf".format(path_programm, chosen_aufgabenformat)])
 		elif sys.platform.startswith('darwin'):
 			subprocess.Popen('cd "{0}/Teildokument" ; latex --synctex=-1 Teildokument_{1}.tex ; dvips Teildokument_{1}.dvi ; ps2pdf -dNOSAFER Teildokument_{1}.ps'.format(path_programm, chosen_aufgabenformat),shell=True).wait()
-			subprocess.run(['open', '"{0}/Teildokument/Teildokument_{1}.pdf"'.format(path_programm, chosen_aufgabenformat)])
+			subprocess.run(['open', "{0}/Teildokument/Teildokument_{1}.pdf".format(path_programm, chosen_aufgabenformat)])
 		else:
 			subprocess.Popen('cd "{0}/Teildokument" & latex --synctex=-1 Teildokument_{1}.tex& dvips Teildokument_{1}.dvi & ps2pdf -dNOSAFER Teildokument_{1}.ps'.format(path_programm, chosen_aufgabenformat),shell=True).wait()
 			subprocess.Popen('cd "{0}/Teildokument" & Teildokument_{1}.pdf'.format(path_programm, chosen_aufgabenformat), shell=True).poll()
@@ -1727,17 +1727,17 @@ class Ui_MainWindow(object):
 				#filename =  filedialog.askopenfilenames(initialdir = last_path,title = "Durchsuchen...",filetypes = (('JPG-Dateien','*.jpg'),("Alle Dateien","*.*")))
 				filename = QtWidgets.QFileDialog.getOpenFileNames(None, 'Select a folder:', 'C:\\',  'Bilder (*.jpg)')
 				if filename[0]!=[]:
-					for all in filename:
+					for all in filename[0]:
 						output=all.replace('jpg','eps')
 						img=Image.open(all)
 						img.save(output)
 
 					msg = QtWidgets.QMessageBox()
 					msg.setIcon(QtWidgets.QMessageBox.Information)
-					if len(filename)==1:
-						msg.setText('Es wurde '+str(len(filename))+' Datei erfolgreich konvertiert.')
+					if len(filename[0])==1:
+						msg.setText('Es wurde '+str(len(filename[0]))+' Datei erfolgreich konvertiert.')
 					else:
-						msg.setText('Es wurden '+str(len(filename))+' Dateien erfolgreich konvertiert.')	
+						msg.setText('Es wurden '+str(len(filename[0]))+' Dateien erfolgreich konvertiert.')	
 
 					msg.setWindowTitle("jpg2eps")
 					msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
