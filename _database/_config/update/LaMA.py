@@ -724,7 +724,7 @@ class Ui_MainWindow(object):
 		self.actionAufgaben_Typ1.setShortcut('Ctrl+1')
 		self.actionAufgaben_Typ2.setText(_translate("MainWindow", "Typ 2 Aufgaben", None))
 		self.actionAufgaben_Typ2.setShortcut('Ctrl+2')
-		self.actionInfo.setText(_translate("MainWindow", "Info", None))
+		self.actionInfo.setText(_translate("MainWindow", "Über LaMA", None))
 		self.actionsuchfenster_reset.setText(_translate("MainWindow", "Reset", None))
 		self.actionsuchfenster_reset.setShortcut("F4")
 		self.actionNeu.setText(_translate("MainWindow", "Neue Aufgabe erstellen...", None))
@@ -977,8 +977,10 @@ class Ui_MainWindow(object):
 			x=eval('self.label_bild_'+str(i))
 			x.hide()
 		dict_picture_path={}			
-	
-		self.lineEdit_titel.setText(_translate("MainWindow", "", None))
+		if self.lineEdit_titel.text().startswith('###'):
+			self.lineEdit_titel.setText(_translate("MainWindow", "###", None))
+		else:
+			self.lineEdit_titel.setText(_translate("MainWindow", "", None))
 		self.lineEdit_quelle.setText(_translate("MainWindow", "", None))
 		self.plainTextEdit.setPlainText(_translate("MainWindow", "", None))
 
@@ -990,11 +992,22 @@ class Ui_MainWindow(object):
 
 	def show_info(self):
 		QtWidgets.QApplication.restoreOverrideCursor()
+		
 		msg = QtWidgets.QMessageBox()
-		msg.setIcon(QtWidgets.QMessageBox.Information)
+
+		#msg.setIcon(QtWidgets.QMessageBox.Information)
+		pixmap = QtGui.QPixmap(logo_path)
+
+
+		#pixmap.scaled(1,1, QtCore.Qt.KeepAspectRatio)
+		#pixmap.resize(20,20)
+		msg.setIconPixmap(pixmap)
 		msg.setWindowIcon(QtGui.QIcon(logo_path))
-		msg.setText("LaMA - LaTeX Mathematik Assistent %s\n\nAuthor: Christoph Weberndorfer\n\nLicense: GNU General Public License v3.0"%__version__)
-		msg.setInformativeText("Last Update: "+__lastupdate__+'\n\nIcon made by\nhttps://www.freepik.com/ from\nwww.flaticon.com ')
+		msg.setText("LaMA - LaTeX Mathematik Assistent %s  \n\n"
+		"License: GNU General Public License v3.0  \n"	
+		"Author: Christoph Weberndorfer  \n\n"
+		"Credits: Matthias Konzett, David Fischer   "%__version__)
+		msg.setInformativeText("Logo & Icon: Lisa Schultz")
 		msg.setWindowTitle("Über LaMA - LaTeX Mathematik Assistent")
 		#msg.setDetailedText("The details are as follows:")
 		msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
@@ -1015,7 +1028,6 @@ class Ui_MainWindow(object):
 		self.get_logfile()
 	
 		
-		#self.gridLayout.addWidget(self.groupBox, 4, 0, 2, 1)
 	
 	def chosen_aufgabenformat_typ2(self):
 		self.label_aufgabentyp.setText(_translate("MainWindow", "Aufgabentyp: Typ 2", None))
@@ -1659,6 +1671,7 @@ class Ui_MainWindow(object):
 		buttonY.setText('Ja')
 		buttonN = msg.button(QtWidgets.QMessageBox.No)
 		buttonN.setText('Nein')
+		msg.setDefaultButton(QtWidgets.QMessageBox.Yes)
 		ret=msg.exec_()
 		
 		if ret==QtWidgets.QMessageBox.Yes:
@@ -1798,14 +1811,14 @@ class Ui_MainWindow(object):
 
 
 	def save_file(self):
+		self.creator_mode='user'
 		########################### WARNINGS ##### 
 		######################################
-
+		
 		if set_chosen_gk==set([]):
 			self.warning_window('Es wurden keine Grundkompetenzen zugewiesen.')
 			return
 		
-
 
 		if self.comboBox_aufgabentyp_cr.currentText()=='Typ 1':
 			if self.comboBox_af.currentText()=='bitte auswählen':
@@ -1830,14 +1843,23 @@ class Ui_MainWindow(object):
 			return
 
 		###############################	
+		###### Check if Admin Mode is activated ####
 
+		if self.lineEdit_titel.text().startswith('###'):
+			try:
+				x,y = self.lineEdit_titel.text().split('### ')
+			except ValueError:
+				x,y = self.lineEdit_titel.text().split('###')
+			self.creator_mode='admin'
+			edit_titel=y
+		else:
+			edit_titel=self.lineEdit_titel.text()	
+		################################################
 
 		QtWidgets.QApplication.restoreOverrideCursor()
 		msg = QtWidgets.QMessageBox()
 		msg.setIcon(QtWidgets.QMessageBox.Question)
-		msg.setWindowTitle("Aufgabe speichern")
 		msg.setWindowIcon(QtGui.QIcon(logo_path))
-
 
 		if len(list_chosen_gk)>1:
 			temp_list_chosen_gk=[]
@@ -1851,6 +1873,7 @@ class Ui_MainWindow(object):
 		else:
 			if list_chosen_gk[0] in {**k5_beschreibung,**k6_beschreibung,**k7_beschreibung,**k8_beschreibung}:
 				gk=list_chosen_gk[0].upper()
+
 			else:
 				gk=dict_gk[list_chosen_gk[0]]	
 
@@ -1859,30 +1882,74 @@ class Ui_MainWindow(object):
 		else:
 			bilder='-'
 
-		if self.comboBox_aufgabentyp_cr.currentText()=='Typ 1':
-			aufgabenformat='Aufgabenformat: %s\n'%self.comboBox_af.currentText()
-		else:
-			aufgabenformat=''
-		msg.setText(
-		'Sind Sie sicher, dass Sie die folgendene Aufgabe speichern wollen?\n\n'
-		'Aufgabentyp: {0}\n'
-		'Titel: {1}\n{2}'
-		'Grundkompetenz: {3}\n'
-		'Quelle: {4}\n'
-		'Bilder: {5}'.format(self.comboBox_aufgabentyp_cr.currentText(),
-		self.lineEdit_titel.text(),aufgabenformat,gk,self.lineEdit_quelle.text(),bilder))
-		# msg.setInformativeText('Soll die PDF Datei erstellt werden?')
-		msg.setStandardButtons(QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
-		buttonY = msg.button(QtWidgets.QMessageBox.Yes)
-		buttonY.setText('Speichern')
-		buttonN = msg.button(QtWidgets.QMessageBox.No)
-		buttonN.setText('Abbrechen')
-		ret=msg.exec_()
+		if self.creator_mode=='user':
+			if self.comboBox_aufgabentyp_cr.currentText()=='Typ 1':
+				aufgabenformat='Aufgabenformat: %s\n'%self.comboBox_af.currentText()
+			else:
+				aufgabenformat=''
+			msg.setWindowTitle("Aufgabe speichern")
+			msg.setText(
+			'Sind Sie sicher, dass Sie die folgendene Aufgabe speichern wollen?\n\n'
+			'Aufgabentyp: {0}\n'
+			'Titel: {1}\n{2}'
+			'Grundkompetenz: {3}\n'
+			'Quelle: {4}\n'
+			'Bilder: {5}\n'.format(self.comboBox_aufgabentyp_cr.currentText(),
+			edit_titel,aufgabenformat,gk,self.lineEdit_quelle.text(),bilder))
+			# msg.setInformativeText('Soll die PDF Datei erstellt werden?')
+			self.cb_confirm= QtWidgets.QCheckBox("Hiermit bestätige ich, dass ich die eingegebene Aufgabe eigenständig\nund unter Berücksichtigung des Urheberrechtsgesetzes verfasst habe.")									  
+			self.cb_confirm.setObjectName(_fromUtf8("cb_confirm"))
+			msg.setCheckBox(self.cb_confirm)
+			msg.setStandardButtons(QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
+			buttonY = msg.button(QtWidgets.QMessageBox.Yes)
+			buttonY.setText('Speichern')
+			msg.setDefaultButton(QtWidgets.QMessageBox.Yes)
+			buttonN = msg.button(QtWidgets.QMessageBox.No)
+			buttonN.setText('Abbrechen')
+			ret=msg.exec_()
+
 		
-		if ret==QtWidgets.QMessageBox.Yes:
-			pass
-		else:
-			return		
+			if ret==QtWidgets.QMessageBox.Yes:
+				while self.cb_confirm.isChecked()==False:
+					if ret==QtWidgets.QMessageBox.No:
+						return
+					else:
+						self.warning_window('Bitte bestätigen Sie die Eigenständigkeitserklärung.')	
+						ret=msg.exec_()
+			else:
+				return		
+		
+		if self.creator_mode=='admin':
+			if self.comboBox_aufgabentyp_cr.currentText()=='Typ 1':
+				aufgabenformat='Aufgabenformat: %s\n'%self.comboBox_af.currentText()
+			else:
+				aufgabenformat=''
+			msg.setWindowTitle("Admin Modus - Aufgabe speichern")
+			msg.setText(
+			'Sind Sie sicher, dass Sie die folgendene Aufgabe speichern wollen?\n\n'
+			'Aufgabentyp: {0}\n'
+			'Titel: {1}\n{2}'
+			'Grundkompetenz: {3}\n'
+			'Quelle: {4}\n'
+			'Bilder: {5}\n'.format(self.comboBox_aufgabentyp_cr.currentText(),
+			edit_titel,aufgabenformat,gk,self.lineEdit_quelle.text(),bilder))
+			self.cb_save=QtWidgets.QCheckBox("inoffizielle Aufgabe")
+			self.cb_save.setObjectName(_fromUtf8("cb_save"))
+			self.cb_save.setChecked(True)
+			msg.setCheckBox(self.cb_save)
+			
+			msg.setStandardButtons(QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
+			buttonY = msg.button(QtWidgets.QMessageBox.Yes)
+			buttonY.setText('Speichern')
+			msg.setDefaultButton(QtWidgets.QMessageBox.Yes)
+			buttonN = msg.button(QtWidgets.QMessageBox.No)
+			buttonN.setText('Abbrechen')
+			ret=msg.exec_()
+
+			if ret==QtWidgets.QMessageBox.Yes:
+				pass
+			else:
+				return			
 
 
 		##### GET MAX FILENUMBER IN DIR #####
@@ -1897,15 +1964,27 @@ class Ui_MainWindow(object):
 					path_folder='7.Klasse'
 				elif list_chosen_gk[0] in k8_beschreibung:
 					path_folder='8.Klasse'
-				gk_path_temp=os.path.join(path_programm,'_database','Typ1Aufgaben',path_folder,list_chosen_gk[0],'Einzelbeispiele')
+				
+				if self.creator_mode=='admin' and self.cb_save.isChecked()==True:
+					gk_path_temp=os.path.join(path_programm,'_database_inoffiziell','Typ1Aufgaben',path_folder,list_chosen_gk[0],'Einzelbeispiele')
+				else:
+					gk_path_temp=os.path.join(path_programm,'_database','Typ1Aufgaben',path_folder,list_chosen_gk[0],'Einzelbeispiele')
+
+
+				
 				z=list_chosen_gk[0].upper()+' - '
 			else:
 				path_folder='_Grundkompetenzen'
-				gk_path_temp=os.path.join(path_programm,'_database','Typ1Aufgaben',path_folder,dict_gk[list_chosen_gk[0]][:2],dict_gk[list_chosen_gk[0]],'Einzelbeispiele')
+				if self.creator_mode=='admin' and self.cb_save.isChecked()==True:
+					gk_path_temp=os.path.join(path_programm,'_database_inoffiziell','Typ1Aufgaben',path_folder,dict_gk[list_chosen_gk[0]][:2],dict_gk[list_chosen_gk[0]],'Einzelbeispiele')
+				else:
+					gk_path_temp=os.path.join(path_programm,'_database','Typ1Aufgaben',path_folder,dict_gk[list_chosen_gk[0]][:2],dict_gk[list_chosen_gk[0]],'Einzelbeispiele')
 				z=dict_gk[list_chosen_gk[0]]+' - '
-	
-				
-			max_integer_file=0
+
+			if self.creator_mode=='admin' and self.cb_save.isChecked()==True:
+				max_integer_file=1000
+			else:
+				max_integer_file=0
 	    
 			if not os.path.exists(gk_path_temp):
 				print("Creating {} for you.".format(gk_path_temp))
@@ -1919,11 +1998,11 @@ class Ui_MainWindow(object):
 
 
 
-
-
-
 		if self.comboBox_aufgabentyp_cr.currentText()=='Typ 2':
-			gk_path_temp=os.path.join(path_programm,'_database','Typ2Aufgaben','Einzelbeispiele')
+			if self.creator_mode=='admin' and self.cb_save.isChecked()==True:
+				gk_path_temp=os.path.join(path_programm,'_database_inoffiziell','Typ2Aufgaben','Einzelbeispiele')
+			else:
+				gk_path_temp=os.path.join(path_programm,'_database','Typ2Aufgaben','Einzelbeispiele')
 			max_integer_file=0
 			for all in os.listdir(gk_path_temp):
 		
@@ -1937,52 +2016,79 @@ class Ui_MainWindow(object):
 		##################################################
 
 
-		try:
-			path_saved_files=os.path.join(path_programm,'Beispieleinreichung')
-			z=dict_gk[list_chosen_gk[0]]+' - '
-			if self.comboBox_aufgabentyp_cr.currentText()=='Typ 1':
-				for all in os.listdir(path_saved_files):
-					if all.endswith('.tex'):
-						if dict_gk[list_chosen_gk[0]] in all:
-							x,y=all.split(z)
-							file_integer, file_extension=y.split('.tex')
-							if int(file_integer)>max_integer_file:
-								max_integer_file=int(file_integer)
-							print(file_integer)
+		if self.creator_mode=='admin':
+			pass
+		else:
+			try:
+				path_saved_files=os.path.join(path_programm,'Beispieleinreichung')
+				if list_chosen_gk[0] in {**k5_beschreibung,**k6_beschreibung,**k7_beschreibung,**k8_beschreibung}: ## merged dictionaries
+					if list_chosen_gk[0] in k5_beschreibung:
+						file_name_klasse='K5'
+					elif list_chosen_gk[0] in k6_beschreibung:
+						file_name_klasse='K6'
+					elif list_chosen_gk[0] in k7_beschreibung:
+						file_name_klasse='K7'
+					elif list_chosen_gk[0] in k8_beschreibung:
+						file_name_klasse='K8'				
+					z=file_name_klasse+' - '+list_chosen_gk[0].upper()+' - '			
 
-			if self.comboBox_aufgabentyp_cr.currentText()=='Typ 2':
-				for all in os.listdir(path_saved_files): 	
-					if all.endswith('.tex'):
-						if '-' in all:
-							pass
-						else:
-							file_integer, file_extension=all.split('.tex')
-							if int(file_integer)>max_integer_file:
-								max_integer_file=int(file_integer)
-		except FileNotFoundError:
-			msg = QtWidgets.QMessageBox()
-			msg.setWindowTitle("Fehlermeldung")
-			msg.setIcon(QtWidgets.QMessageBox.Critical)
-			msg.setWindowIcon(QtGui.QIcon(logo_path))
-			msg.setText('Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und\nmuss zuerst für Sie freigegeben werden.')
-			msg.setInformativeText('Derzeit können keine neuen Aufgaben eingegeben werden.')
-			msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
-			retval = msg.exec_()
-			return		
+				else:
+					z=dict_gk[list_chosen_gk[0]]+' - '
+				if self.comboBox_aufgabentyp_cr.currentText()=='Typ 1':
+					for all in os.listdir(path_saved_files):
+						if all.endswith('.tex'):
+							if z in all:
+								x,y=all.split(z)
+								file_integer, file_extension=y.split('.tex')
+								if int(file_integer)>max_integer_file:
+									max_integer_file=int(file_integer)
+
+				if self.comboBox_aufgabentyp_cr.currentText()=='Typ 2':
+					for all in os.listdir(path_saved_files): 	
+						if all.endswith('.tex'):
+							if '-' in all:
+								pass
+							else:
+								file_integer, file_extension=all.split('.tex')
+								if int(file_integer)>max_integer_file:
+									max_integer_file=int(file_integer)
+			except FileNotFoundError:
+				msg = QtWidgets.QMessageBox()
+				msg.setWindowTitle("Fehlermeldung")
+				msg.setIcon(QtWidgets.QMessageBox.Critical)
+				msg.setWindowIcon(QtGui.QIcon(logo_path))
+				msg.setText('Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und\nmuss zuerst für Sie freigegeben werden.')
+				msg.setInformativeText('Derzeit können keine neuen Aufgaben eingegeben werden.')
+				msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+				retval = msg.exec_()
+				return		
 		############################################################################
 
 		for all in dict_picture_path:
 			head, tail=os.path.split(all)
 			x = '{'+tail+'}'
 			name, ext =os.path.splitext(tail)
-			if x in textBox_Entry and self.comboBox_aufgabentyp_cr.currentText()=='Typ 1':
-				textBox_Entry=str(textBox_Entry).replace(tail,'../_database/Bilder/'+list_chosen_gk[0].upper()+'_'+str(max_integer_file+1)+'_'+tail)
-			if x in textBox_Entry and self.comboBox_aufgabentyp_cr.currentText()=='Typ 2':
-				textBox_Entry=str(textBox_Entry).replace(tail,'../_database/Bilder/'+str(max_integer_file+1)+'_'+tail)
+			if self.creator_mode=='admin' and self.cb_save.isChecked()==True:
+				if x in textBox_Entry and self.comboBox_aufgabentyp_cr.currentText()=='Typ 1':
+					textBox_Entry=str(textBox_Entry).replace(tail,'../_database_inoffiziell/Bilder/'+list_chosen_gk[0].upper()+'_'+str(max_integer_file+1)+'_'+tail)
+				if x in textBox_Entry and self.comboBox_aufgabentyp_cr.currentText()=='Typ 2':
+					textBox_Entry=str(textBox_Entry).replace(tail,'../_database_inoffiziell/Bilder/'+str(max_integer_file+1)+'_'+tail)
+			else:
+				if x in textBox_Entry and self.comboBox_aufgabentyp_cr.currentText()=='Typ 1':
+					textBox_Entry=str(textBox_Entry).replace(tail,'../_database/Bilder/'+list_chosen_gk[0].upper()+'_'+str(max_integer_file+1)+'_'+tail)
+				if x in textBox_Entry and self.comboBox_aufgabentyp_cr.currentText()=='Typ 2':
+					textBox_Entry=str(textBox_Entry).replace(tail,'../_database/Bilder/'+str(max_integer_file+1)+'_'+tail)
 		
 
 		#copy_image_path=os.path.join(path_programm,'_database','Bilder') ### direct save
-		copy_image_path=os.path.join(path_programm,'Beispieleinreichung','Bilder') ### indirect save
+		if self.creator_mode=='admin':
+			if self.cb_save.isChecked()==False:
+				copy_image_path=os.path.join(path_programm,'_database','Bilder') ### direct save
+			if self.cb_save.isChecked()==True:
+				copy_image_path=os.path.join(path_programm,'_database_inoffiziell','Bilder') ### direct save
+		else:	
+			copy_image_path=os.path.join(path_programm,'Beispieleinreichung','Bilder') ### indirect save
+
 		for all in list(dict_picture_path.values()):
 			image_path_temp=all
 			head, tail=os.path.split(image_path_temp)
@@ -2005,16 +2111,30 @@ class Ui_MainWindow(object):
 					return	
 
 			if self.comboBox_aufgabentyp_cr.currentText()=='Typ 1':
-				# x=os.rename(copy_image_file_temp,'_database/Bilder/'+list_chosen_gk[0].upper()+'_'+str(max_integer_file+1)+'_'+tail) ### direct save
-				x=os.rename(copy_image_file_temp,'%s/Beispieleinreichung/Bilder/'% path_programm +list_chosen_gk[0].upper()+'_'+str(max_integer_file+1)+'_'+tail) ### indirect
+				if self.creator_mode=='admin':
+					if self.cb_save.isChecked()==False:
+						x=os.rename(copy_image_file_temp,'%s/_database/Bilder/'% path_programm +list_chosen_gk[0].upper()+'_'+str(max_integer_file+1)+'_'+tail) ### direct save
+					if self.cb_save.isChecked()==True:
+						x=os.rename(copy_image_file_temp,'%s/_database_inoffiziell/Bilder/'% path_programm +list_chosen_gk[0].upper()+'_'+str(max_integer_file+1)+'_'+tail) ### direct save
+				else:
+					x=os.rename(copy_image_file_temp,'%s/Beispieleinreichung/Bilder/'% path_programm +list_chosen_gk[0].upper()+'_'+str(max_integer_file+1)+'_'+tail) ### indirect
 			if self.comboBox_aufgabentyp_cr.currentText()=='Typ 2':
-				#x=os.rename(copy_image_file_temp,'_database/Bilder/'+str(max_integer_file+1)+'_'+tail) ### direct save
-				x=os.rename(copy_image_file_temp,'%s/Beispieleinreichung/Bilder/'%path_programm +str(max_integer_file+1)+'_'+tail) ### indirect save		
+				if self.creator_mode=='admin':
+					if self.cb_save.isChecked()==False:
+						x=os.rename(copy_image_file_temp,'%s/_database/Bilder/'% path_programm +str(max_integer_file+1)+'_'+tail) ### direct save
+					if self.cb_save.isChecked()==True:
+						x=os.rename(copy_image_file_temp,'%s/_database_inoffiziell/Bilder/'% path_programm +str(max_integer_file+1)+'_'+tail) ### direct save
+				else:
+					x=os.rename(copy_image_file_temp,'%s/Beispieleinreichung/Bilder/'%path_programm +str(max_integer_file+1)+'_'+tail) ### indirect save		
 
 
 
 		if self.comboBox_aufgabentyp_cr.currentText()=='Typ 1':
-			gk_path_temp=os.path.join(path_programm,'Beispieleinreichung') ## not direct save (path changed - comment/uncomment)
+			if self.creator_mode=='admin':
+				pass
+			else:
+				gk_path_temp=os.path.join(path_programm,'Beispieleinreichung') ## not direct save (path changed - comment/uncomment)
+
 			if list_chosen_gk[0] in {**k5_beschreibung,**k6_beschreibung,**k7_beschreibung,**k8_beschreibung}: ## merged dictionaries
 				if list_chosen_gk[0] in k5_beschreibung:
 					file_name_klasse='K5'
@@ -2043,15 +2163,12 @@ class Ui_MainWindow(object):
 					return	
 				
 				
-				file.write('\section{'+file_name_klasse+' - '+list_chosen_gk[0].upper()+" - "+str(max_integer_file+1) +" - " + self.lineEdit_titel.text()+" - "+chosen_af+' - '+self.lineEdit_quelle.text()+"}\n\n"
+				file.write('\section{'+file_name_klasse+' - '+list_chosen_gk[0].upper()+" - "+str(max_integer_file+1) +" - " + edit_titel+" - "+chosen_af+' - '+self.lineEdit_quelle.text()+"}\n\n"
 				"\\begin{beispiel}["+file_name_klasse+' - '+list_chosen_gk[0].upper()+"]{"+str(self.spinBox_punkte.value())+"}\n"+textBox_Entry+
 				"\n\\end{beispiel}")
 				file.close()
 
 			else:
-				# print(list_chosen_gk[0][:2].upper(),dict_gk[list_chosen_gk[0]])
-				# print(self.comboBox_klassen.currentText())
-
 				file_name=os.path.join(gk_path_temp,dict_gk[list_chosen_gk[0]]+' - '+str(max_integer_file+1)+'.tex')
 				
 				try:
@@ -2069,7 +2186,7 @@ class Ui_MainWindow(object):
 
 				if self.comboBox_klassen_cr.currentText()=='-':
 					chosen_af=list(dict_aufgabenformate.keys())[list(dict_aufgabenformate.values()).index(self.comboBox_af.currentText())].upper()
-					file.write("\section{"+dict_gk[list_chosen_gk[0]]+" - "+str(max_integer_file+1) +" - "+self.lineEdit_titel.text()+" - "+chosen_af+" - "+self.lineEdit_quelle.text()+"}\n\n"
+					file.write("\section{"+dict_gk[list_chosen_gk[0]]+" - "+str(max_integer_file+1) +" - "+edit_titel+" - "+chosen_af+" - "+self.lineEdit_quelle.text()+"}\n\n"
 					"\\begin{beispiel}["+dict_gk[list_chosen_gk[0]]+"]{"+str(self.spinBox_punkte.value())+"}\n"+textBox_Entry+
 					"\n\\end{beispiel}")
 				else:
@@ -2078,7 +2195,7 @@ class Ui_MainWindow(object):
 					except AttributeError:
 						klasse='MAT'			
 					chosen_af=list(dict_aufgabenformate.keys())[list(dict_aufgabenformate.values()).index(self.comboBox_af.currentText())].upper()
-					file.write("\section{"+dict_gk[list_chosen_gk[0]]+" - "+str(max_integer_file+1) +' - '+ klasse +" - "+self.lineEdit_titel.text()+" - "+chosen_af+" - "+self.lineEdit_quelle.text()+"}\n\n"
+					file.write("\section{"+dict_gk[list_chosen_gk[0]]+" - "+str(max_integer_file+1) +' - '+ klasse +" - "+edit_titel+" - "+chosen_af+" - "+self.lineEdit_quelle.text()+"}\n\n"
 					"\\begin{beispiel}["+dict_gk[list_chosen_gk[0]]+"]{"+str(self.spinBox_punkte.value())+"}\n"+textBox_Entry+
 					"\n\\end{beispiel}")		
 				file.close()			
@@ -2100,9 +2217,14 @@ class Ui_MainWindow(object):
 			themen_klasse_auswahl_joined=', '.join(sorted(themen_klasse_auswahl)) 			 
 
 
+			if self.creator_mode=='admin':
+				if self.cb_save.isChecked()==False:
+					file_name=os.path.join(path_programm,'_database','Typ2Aufgaben','Einzelbeispiele',str(max_integer_file+1)+'.tex') ### direct save
+				if self.cb_save.isChecked()==True:
+					file_name=os.path.join(path_programm,'_database_inoffiziell','Typ2Aufgaben','Einzelbeispiele',str(max_integer_file+1)+'.tex') ### direct save
+			else:
+				file_name=os.path.join(path_programm,'Beispieleinreichung',str(max_integer_file+1)+'.tex') ### not direct save
 
-			#file_name=os.path.join(path_programm,'_database','Typ2Aufgaben','Einzelbeispiele',str(max_integer_file+1)+'.tex') ### direct save
-			file_name=os.path.join(path_programm,'Beispieleinreichung',str(max_integer_file+1)+'.tex') ### not direct save
 			try:
 				file=open(file_name,"w")
 			except FileNotFoundError:
@@ -2153,7 +2275,7 @@ class Ui_MainWindow(object):
 				if gk_auswahl !=[]:
 					gk=gk_auswahl_joined+' - '
 
-			file.write("\section{"+str(max_integer_file+1)+' - '+klasse + themen_klasse + gk +self.lineEdit_titel.text()+" - "+self.lineEdit_quelle.text()+"}\n\n"
+			file.write("\section{"+str(max_integer_file+1)+' - '+klasse + themen_klasse + gk +edit_titel+" - "+self.lineEdit_quelle.text()+"}\n\n"
 			"\\begin{langesbeispiel} \item["+str(self.spinBox_punkte.value())+"] %PUNKTE DES BEISPIELS\n"+textBox_Entry+
 			"\n\\end{langesbeispiel}")			
 
@@ -2170,22 +2292,40 @@ class Ui_MainWindow(object):
 
 		chosen_typ=self.comboBox_aufgabentyp_cr.currentText()[-1]
 		if chosen_typ=='1':
-			chosen_gk = dict_gk[list_chosen_gk[0]]
+			if list_chosen_gk[0] in {**k5_beschreibung,**k6_beschreibung,**k7_beschreibung,**k8_beschreibung}: ## merged dictionaries
+				if list_chosen_gk[0] in k5_beschreibung:
+					file_name_klasse='K5'
+				elif list_chosen_gk[0] in k6_beschreibung:
+					file_name_klasse='K6'
+				elif list_chosen_gk[0] in k7_beschreibung:
+					file_name_klasse='K7'
+				elif list_chosen_gk[0] in k8_beschreibung:
+					file_name_klasse='K8'				
+				chosen_gk=file_name_klasse+' - '+list_chosen_gk[0].upper()
+			else:
+				chosen_gk = dict_gk[list_chosen_gk[0]]
 		if chosen_typ=='2':
 			chosen_gk= ', '.join(sorted(gk_auswahl+themen_klasse_auswahl))
 
+		if self.creator_mode=='admin':
+			if self.cb_save.isChecked()==False:
+				zusatz_info=' (offiziell)'
+			if self.cb_save.isChecked()==True:
+				zusatz_info=' (inoffiziell)'
+		else:
+			zusatz_info=''
 
 		QtWidgets.QApplication.restoreOverrideCursor()
 		msg = QtWidgets.QMessageBox()
 		msg.setIcon(QtWidgets.QMessageBox.Information)
-		msg.setWindowTitle("Aufgabe erfolgreich gespeichert")
+		msg.setWindowTitle("Admin Modus - Aufgabe erfolgreich gespeichert")
 		msg.setWindowIcon(QtGui.QIcon(logo_path))
-		msg.setText('Die Typ{0}-Aufgabe mit dem Titel\n\n"{1}"\n\nwurde gespeichert.'.format(chosen_typ, self.lineEdit_titel.text()))
-		msg.setDetailedText('Details\n'
-		'Grundkompetenz(en): {0}\n'
-		'Punkte: {1}\n'
-		'Klasse: {2}\n'
-		'Bilder: {3}'.format(chosen_gk, self.spinBox_punkte.value(), self.comboBox_klassen_cr.currentText(), x))
+		msg.setText('Die Typ{0}-Aufgabe mit dem Titel\n\n"{1}"\n\nwurde gespeichert.'.format(chosen_typ, edit_titel))
+		msg.setDetailedText('Details{0}\n'
+		'Grundkompetenz(en): {1}\n'
+		'Punkte: {2}\n'
+		'Klasse: {3}\n'
+		'Bilder: {4}'.format(zusatz_info,chosen_gk, self.spinBox_punkte.value(), self.comboBox_klassen_cr.currentText(), x))
 		msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
 		retval = msg.exec_()
 		self.suchfenster_reset()
