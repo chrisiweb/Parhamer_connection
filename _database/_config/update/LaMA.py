@@ -1367,14 +1367,6 @@ class Ui_MainWindow(object):
 			subprocess.run(['open', "{0}/Teildokument/Teildokument_{1}.pdf".format(path_programm, chosen_aufgabenformat)])
 		else:
 			subprocess.Popen('cd "{0}/Teildokument" & latex --synctex=-1 Teildokument_{1}.tex& dvips Teildokument_{1}.dvi & ps2pdf -dNOSAFER Teildokument_{1}.ps'.format(path_programm, chosen_aufgabenformat),shell=True).wait()
-			
-			# p= subprocess.Popen('cd "{0}/Teildokument" & latex --synctex=-1 -interaction=nonstopmode Teildokument_{1}.tex& dvips Teildokument_{1}.dvi & ps2pdf -dNOSAFER Teildokument_{1}.ps'.format(path_programm, chosen_aufgabenformat), stdout=subprocess.PIPE,shell=True)
-			# (output, err) = p.communicate()
-			# p_status=p.wait()
-			# print(p_status)
-			# print(err)
-			# subprocess.Popen('cd "{0}/Teildokument" & Teildokument_{1}.pdf'.format(path_programm, chosen_aufgabenformat), shell=True).poll()
-			
 			subprocess.Popen('cd "{0}/Teildokument" & Teildokument_{1}.pdf'.format(path_programm, chosen_aufgabenformat), shell=True).poll()
 		## -interaction=nonstopmode -halt-on-error Don't stop when error occurs, while compiling
 		os.unlink('{0}/Teildokument/Teildokument_{1}.aux'.format(path_programm, chosen_aufgabenformat))
@@ -1451,18 +1443,9 @@ class Ui_MainWindow(object):
 			beispieldaten=list(beispieldaten_dateipfad.keys())					  
 		
 
-		######### new tabu.sty not working ### 
-		######################################################
-		########### work around ####################
-		#########################################
-
-		path_tabu_pkg=os.path.join(path_programm,'_database','_config','tabu.sty')	
-		copy_path_tabu_pkg=os.path.join(path_programm,'Teildokument','tabu.sty')
-		if os.path.isfile(copy_path_tabu_pkg):
-			pass
-		else:
-			shutil.copy(path_tabu_pkg,copy_path_tabu_pkg)
-
+		#### typ1 ###
+		# filename_teildokument = os.path.join(path_programm,'Typ 2 Aufgaben','Teildokument','Teildokument.tex')
+		#####
 
 		filename_teildokument = os.path.join(path_programm,'Teildokument','Teildokument_%s.tex'%self.label_aufgabentyp.text()[-1])
 		try:

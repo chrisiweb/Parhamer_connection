@@ -1,0 +1,63 @@
+\section{FA 1.5 - 21 - MAT - Eigenschaften von Funktionsgraphen - ZO - Matura 2. NT 2017/18}
+
+\begin{beispiel}[FA 1.5]{1}
+Nachstehend sind Eigenschaften von Funktionen angeführt sowie charakteristische Ausschnitte
+von Funktionsgraphen abgebildet.
+
+Ordne den vier Eigenschaften jeweils den passenden Graphen (aus A bis F) zu!
+
+\zuordnen{
+				R1={Die Funktion ist auf ihrem
+gesamten Definitionsbereich
+monoton steigend.},				% Response 1
+				R2={Die Funktion ist auf ihrem gesamten Definitionsbereich negativ
+gekrümmt (rechtsgekrümmt).},				% Response 2
+				R3={Die Funktion ist auf dem Intervall
+$(-\infty; 0)$ positiv gekrümmt (linksgekrümmt).},				% Response 3
+				R4={Die Funktion ist auf dem Intervall
+$(-\infty; 0)$ monoton fallend.},				% Response 4
+				%% Moegliche Zuordnungen: %%
+				A={\resizebox{1\linewidth}{!}{\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-3.7,-1)(3.7,3.7)
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=none,Dx=1.,Dy=1.,ticksize=0pt 0,subticks=2]{->}(0,0)(-3.7,-3.7)(3.7,3.7)[x,140] [$f_1(x)$,-40]
+\psplot[linewidth=0.8pt,plotpoints=200]{-3.7}{3.7}{1.0/(0.8*x)^(2.0)}
+\rput[bl](2,1.5){$f_1$}
+\end{pspicture*}}}, 				%Moeglichkeit A  
+				B={\resizebox{1\linewidth}{!}{\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-3.7,-2.5)(3.7,3)
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=none,Dx=1.,Dy=1.,ticksize=0pt 0,subticks=2]{->}(0,0)(-3.7,-3)(3.7,3)[x,140] [$f_2(x)$,-40]
+\psplot[linewidth=0.8pt,plotpoints=200]{-3.7}{3.7}{1.0/x}
+\rput[bl](2,0.8){$f_2$}
+\end{pspicture*}}}, 				%Moeglichkeit B  
+				C={\resizebox{1\linewidth}{!}{\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-3.7,-1.5)(3.7,3)
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=none,Dx=1.,Dy=1.,ticksize=0pt 0,subticks=2]{->}(0,0)(-3.7,-3)(3.7,3)[x,140] [$f_3(x)$,-40]
+\psplot[linewidth=0.8pt,plotpoints=200]{-3.7}{3.7}{-0.016196514837819188*x^(4.0)+0.16760697032436161*x^(3.0)+0.14576863354037267*x^(2.0)-1.5084627329192546*x}
+\rput[bl](2.5,0.3){$f_3$}
+\end{pspicture*}}}, 				%Moeglichkeit C  
+				D={\resizebox{1\linewidth}{!}{\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-3.7,-1.5)(3.7,1.5)
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=none,Dx=1.,Dy=1.,ticksize=0pt 0,subticks=2]{->}(0,0)(-3.7,-1.5)(3.7,1.5)[x,140] [$f_4(x)$,-40]
+\psplot[linewidth=0.8pt,plotpoints=200]{-3.7}{3.7}{SIN(2*x)}
+\rput[bl](2.7,0.3){$f_4$}
+\end{pspicture*}}}, 				%Moeglichkeit D  
+				E={\resizebox{1\linewidth}{!}{\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-3.7,-2)(3.7,3)
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=none,Dx=1.,Dy=1.,ticksize=0pt 0,subticks=2]{->}(0,0)(-3.7,-3)(3.7,3)[x,140] [$f_5(x)$,-40]
+\psplot[linewidth=0.8pt,plotpoints=200]{-3.7}{3.7}{-x^2+2.3}
+\rput[bl](1.3,1.5){$f_5$}
+\end{pspicture*}}}, 				%Moeglichkeit E  
+				F={\resizebox{1\linewidth}{!}{\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-3.7,-2)(3.7,3)
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=none,Dx=1.,Dy=1.,ticksize=0pt 0,subticks=2]{->}(0,0)(-3.7,-3)(3.7,3)[x,140] [$f_6(x)$,-40]
+\psplot[linewidth=0.8pt,plotpoints=200]{-3.7}{3.7}{x^3}
+\rput[bl](1.5,1.5){$f_6$}
+\end{pspicture*}}}, 				%Moeglichkeit F  
+				%% LOESUNG: %%
+				A1={F},				% 1. richtige Zuordnung
+				A2={E},				% 2. richtige Zuordnung
+				A3={A},				% 3. richtige Zuordnung
+				A4={B},				% 4. richtige Zuordnung
+				}
+				
+\end{beispiel}

@@ -1,0 +1,96 @@
+\section{98 - AN 3.3, AN 4.3, FA 1.4 - Polynomfunktion dritten Grades - Matura 2. NT - 2017/18}
+
+\begin{langesbeispiel} \item[8] %PUNKTE DES BEISPIELS
+Gegeben ist eine Polynomfunktion dritten Grades $f_t$ mit $f_t(x)=\frac{1}{t}\cdot x^3-2\cdot x^2+t\cdot x$. Für den Parameter $t$ gilt: $t\in\mathbb{R}$ und $t\neq 0$.
+
+\subsection{Aufgabenstellung:}
+\begin{enumerate}
+	\item \fbox{A} Gib die lokalen Extremstellen von $f_t$ in Abhängigkeit von $t$ an!
+	
+	An der Stelle $x=t$ gelten für die Funktion $f_t$ die Gleichungen $f_t(t)=0$, $f'_t(t)=0$ und $f''_t(t)=2$.\\
+	Beschreibe den Verlauf des Graphen von $f_t$ bei $x=t$!
+	
+	\item Gib diejenige Stelle $x_0$ in Abhängigkeit von $t$ an, an der sich das Krümmungsverhalten von $f_t$ ändert!
+	
+	Weise rechnerisch nach, dass das Krümmungsverhalten des Graphen von $f_t$ an der Stelle $x=0$ unabhängig von der Wahl des Parameters $t$ ist!
+	
+	\item Die Funktion $A$ beschreibt in Abhängigkeit von $t$ mit $t>0$ den Flächeninhalt derjenigen Fläche, die vom Graphen der Funktion $f_t$ und von der $x$-Achse im Intervall $[0;t]$ begrenzt wird.\\
+	Die Funktion $A\!:\mathbb{R}^+\rightarrow\mathbb{R}^+_0, t\rightarrow A(t)$, ist eine Polynomfunktion.
+	
+	Gib den Funktionsterm und den Grad von $A$ an!
+	
+	Gib das Verhältnis $A(t):A(2\cdot t)$ an!
+	
+	\item Zeige rechnerisch, dass $f_{-1}(x)=f_1(-x)$ für alle $x\in\mathbb{R}$ gilt!
+	
+	Erläutere, wie der Graph der Funktion $f_{-1}$ aus dem Graphen der Funktion $f_1$ hervorgeht!
+\end{enumerate}
+
+\antwort{
+\begin{enumerate}
+\item \subsection{Lösungserwartung:}
+
+Mögliche Vorgehensweise:\\
+$f_t'(x)=\frac{3}{t}\cdot x^2-4\cdot x+t$
+
+$3\cdot x^2-4\cdot t\cdot x+t^2=0 \Rightarrow x_1=\frac{t}{3}; x_2=t$
+
+Mögliche Beschreibung:\\
+An der Stelle $x=t$ hat $f_t$ eine Nullstelle und ein lokales Minimum.
+
+\subsection{Lösungsschlüssel:}
+\begin{itemize}
+\item Ein Ausgleichspunkt für die Angabe der beiden richtigen Werte.
+\item Ein Punkt für eine korrekte Beschreibung.
+\end{itemize}
+
+\item \subsection{Lösungserwartung:}
+
+Mögliche Vorgehensweise:\\
+$f_t''(x)=\frac{6}{t}\cdot x-4$\\
+$f_t''(x)=0 \Rightarrow x_0=\frac{2}{3}\cdot t$
+
+Mögliche Vorgehensweise:\\
+$f_t''(0)=\frac{6}{t}\cdot 0-4=-4$
+
+Die zweite Ableitungsfunktion hat an der Stelle $x=0$ den Wert $-4$ und ist somit unabhängig vom Parameter $t$.
+
+\subsection{Lösungsschlüssel:}
+\begin{itemize}
+\item Ein Punkt für die richtige Lösung.
+\item Ein Punkt für einen korrekten rechnerischen Nachweis.
+\end{itemize}
+
+\item \subsection{Lösungserwartung:}
+
+Mögliche Vorgehensweise:\\
+$A(t)=\displaystyle\int^t_0f_t(x)\,\text{d}x=\frac{t^3}{4}-\frac{2\cdot t^3}{3}+\frac{t^3}{2}=\frac{t^3}{12}$
+
+Die Funktion $A$ ist eine Funktion dritten Grades.
+
+$A(t):A(2\cdot t)=1:8$
+
+\subsection{Lösungsschlüssel:}
+\begin{itemize}
+\item Ein Punkt für einen richtigen Funktionsterm und die Angabe des richtigen Grades von $A$.\\
+Äquivalente Terme sind als richtig zu werten.
+\item Ein Punkt für ein richtiges Verhältnis.
+\end{itemize}
+
+\item \subsection{Lösungserwartung:}
+
+Mögliche Vorgehensweise:\\
+$f_{-1}(x)=-x^3-2\cdot x^2-x$\\
+$f_1(-x)=(-x)^3-2\cdot (-x)^2+(-x)=-x^3-2\cdot x^2-x \Rightarrow f_{-1}(x)=f_1(-x)$
+
+Mögliche Erläuterung:\\
+Wird der Graph der Funktion $f_1$ an der senkrechten Achse gespiegelt, so erhält man den Graphen der Funktion $f_{-1}$.
+
+\subsection{Lösungsschlüssel:}
+\begin{itemize}
+\item Ein Punkt für einen korrekten rechnerischen Nachweis.
+\item Ein Punkt für einen korrekte Erläuterung
+\end{itemize}
+
+\end{enumerate}}
+\end{langesbeispiel}

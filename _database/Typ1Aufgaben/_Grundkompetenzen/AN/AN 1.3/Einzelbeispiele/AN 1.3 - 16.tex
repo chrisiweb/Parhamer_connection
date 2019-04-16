@@ -1,0 +1,46 @@
+\section{AN 1.3 - 16 - MAT - Veränderung eines Flüssigkeitsvolumens - MC - Matura 2. NT 2017/18}
+
+\begin{beispiel}[AN 1.3]{1}
+Das in einem Gefäß enthaltene Flüssigkeitsvolumen $V$ ändert sich im Laufe der Zeit $t$ im Zeitintervall $[t_0; t_4]$.\leer
+
+Die nachstehende Abbildung zeigt den Graphen der Funktion $V'$, die die momentane Änderungsrate des im Gefäß enthaltenen Flüssigkeitsvolumens in diesem Zeitintervall angibt. 
+
+\begin{center}
+\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-0.54,-0.82)(7.84,5.96)
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=none,Dx=1.,Dy=1.,ticksize=0pt 0,subticks=0]{->}(0,0)(-.15,-0.15)(7.84,5.96)[t,140] [$V'(t)$,-40]
+\psplot[linewidth=0.8pt,plotpoints=200]{0}{7}{0.10801731601731601*x^(3.0)-1.2012987012987013*x^(2.0)+3.4705281385281386*x+2.0}
+\psline[linewidth=0.8pt,linestyle=dashed,dash=5pt 5pt](2.,5.)(2.,0.)
+\psline[linewidth=0.8pt,linestyle=dashed,dash=5pt 5pt](5.5,2.72)(5.5,0.)
+\psline[linewidth=0.8pt,linestyle=dashed,dash=5pt 5pt](7.,4.48)(7.,0.)
+\psline[linewidth=0.8pt,linestyle=dashed,dash=5pt 5pt](3.8,3.7683798441558434)(3.8,0.)
+\rput[tl](1.78,-0.2){$t_1$}
+\rput[tl](-0.1,-0.2){$t_0$}
+\rput[tl](3.58,-0.2){$t_2$}
+\rput[tl](5.22,-0.2){$t_3$}
+\rput[tl](6.76,-0.2){$t_4$}
+\rput[tl](-0.4,0.2){$0$}
+\rput[tl](3.72,4.86){$V'$}
+\end{pspicture*}
+\end{center}
+
+Kreuze die beiden zutreffenden Aussagen an!
+
+\multiplechoice[5]{  %Anzahl der Antwortmoeglichkeiten, Standard: 5
+				L1={Das Flüssigkeitsvolumen im Gefäß nimmt im Zeitintervall $[t_1; t_3]$ ab.},   %1. Antwortmoeglichkeit 
+				L2={Das Flüssigkeitsvolumen im Gefäß ist zum Zeitpunkt $t_2$ kleiner als zum Zeitpunkt $t_3$.},   %2. Antwortmoeglichkeit
+				L3={Das Flüssigkeitsvolumen im Gefäß weist zum Zeitpunkt $t_3$ die niedrigste momentane Änderungsrate auf.},   %3. Antwortmoeglichkeit
+				L4={Das Flüssigkeitsvolumen im Gefäß ist zum Zeitpunkt $t_4$ am größten.},   %4. Antwortmoeglichkeit
+				L5={Das Flüssigkeitsvolumen im Gefäß ist zu den Zeitpunkten $t_2$ und $t_4$ gleich groß.},	 %5. Antwortmoeglichkeit
+				L6={},	 %6. Antwortmoeglichkeit
+				L7={},	 %7. Antwortmoeglichkeit
+				L8={},	 %8. Antwortmoeglichkeit
+				L9={},	 %9. Antwortmoeglichkeit
+				%% LOESUNG: %%
+				A1=2,  % 1. Antwort
+				A2=4,	 % 2. Antwort
+				A3=0,  % 3. Antwort
+				A4=0,  % 4. Antwort
+				A5=0,  % 5. Antwort
+				}
+\end{beispiel}

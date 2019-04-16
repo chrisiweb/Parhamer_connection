@@ -5,10 +5,10 @@
 				\begin{center}
 					\resizebox{0.8\linewidth}{!}{\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
 \begin{pspicture*}(-1.7761488644641417,-2.938334224369601)(11.80860741102746,8.927101335005048)
-\multips(0,-2)(0,1.0){12}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(-1.7761488644641417,0)(11.80860741102746,0)}
-\multips(-1,0)(1.0,0){14}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,-2.938334224369601)(0,8.927101335005048)}
+\pscustom[fillcolor=black!30,fillstyle=solid,opacity=0.1]{\psplot{1.}{8.}{-0.09690716815660791*x^(3.0)+0.9628860178792948*x^(2.0)-0.5917508854812766*x-2.2742279642414105}\lineto(8.,5.)\psplot{8.}{1.}{0.2*x^(3.0)-2.6*x^(2.0)+9.8*x-9.4}\lineto(1.,-2.)\closepath}
+\multips(0,-2)(0,1.0){12}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=darkgray]{c-c}(-1.7761488644641417,0)(11.80860741102746,0)}
+\multips(-1,0)(1.0,0){14}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=darkgray]{c-c}(0,-2.938334224369601)(0,8.927101335005048)}
 \psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=1.,Dy=1.,ticksize=-2pt 0,subticks=2]{->}(0,0)(-1.7761488644641417,-2.938334224369601)(11.80860741102746,8.927101335005048)[x,140] [y,-40]
-\pscustom[fillcolor=black,fillstyle=solid,opacity=0.1]{\psplot{1.}{8.}{-0.09690716815660791*x^(3.0)+0.9628860178792948*x^(2.0)-0.5917508854812766*x-2.2742279642414105}\lineto(8.,5.)\psplot{8.}{1.}{0.2*x^(3.0)-2.6*x^(2.0)+9.8*x-9.4}\lineto(1.,-2.)\closepath}
 \psplot[linewidth=1.2pt,plotpoints=200]{-1.7761488644641417}{11.80860741102746}{-0.09690716815660791*x^(3.0)+0.9628860178792948*x^(2.0)-0.5917508854812766*x-2.2742279642414105}
 \psplot[linewidth=1.2pt,plotpoints=200]{-1.7761488644641417}{11.80860741102746}{0.2*x^(3.0)-2.6*x^(2.0)+9.8*x-9.4}
 \rput[tl](4.464348549589812,6.613447531835393){g}

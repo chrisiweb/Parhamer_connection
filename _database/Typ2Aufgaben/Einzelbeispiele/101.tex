@@ -1,0 +1,108 @@
+\section{101 - WS 2.2, FA 2.3, FA 2.2, WS 4.1 - Wahlhochrechnung - Matura 2. NT - 2017/18}
+
+\begin{langesbeispiel} \item[6] %PUNKTE DES BEISPIELS
+Es gibt unterschiedliche mathematische Methoden, um auf das Wahlverhalten von Wählerinnen und Wählern bei bevorstehenden Wahlen zu schließen. Eine gängige Methode ist die Erhebung und Auswertung der Daten einer Stichprobe. In einem anderen Verfahren werden sogenannte Regressionsgeraden ermittelt, mit deren Hilfe eine relativ genaue Hochrechnung möglich ist. Zur Bestimmung dieser Regressionsgeraden benötigt man die Ergebnisse einer sogenannten Vergleichswahl, die idealerweise zeitnah erfolgte.
+
+Die 4\,150 Wahlberechtigten eines bestimmten Ortes mit fünf Wahlbezirken konnten sich bei einer Bürgermeisterwahl zwischen den Kandidaten $A$ und $B$ entscheiden. Alle Wahlberechtigten gaben ihre Stimme ab und es gab keine ungültigen Stimmen. Nach der Auszählung der Stimmen von vier der fünf Wahlbezirke liegt folgendes Zwischenergebnis vor:
+
+Tabelle 1: Bürgermeisterwahl
+
+\resizebox{1\linewidth}{!}{\begin{tabular}{|c|c|c|c|c|c|}
+\multicolumn{1}{c|}{\phantom{t}}&\cellcolor[gray]{0.9}1. Wahlbezirk&\cellcolor[gray]{0.9}2. Wahlbezirk&\cellcolor[gray]{0.9}3. Wahlbezirk&\cellcolor[gray]{0.9}4. Wahlbezirk&\cellcolor[gray]{0.9}5. Wahlbezirk \\ \hline
+\cellcolor[gray]{0.9}Kandidat $A$&443&400&462&343&nicht gezählt\\ \hline
+\cellcolor[gray]{0.9}Kandidat $B$&332&499&466&227&nicht gezählt\\ \hline
+\cellcolor[gray]{0.9}Wahlberechtigte&775&899&928&570&978\\ \hline
+\end{tabular}}
+
+Der relative Stimmenanteil für Kandidat $A$ für die ersten vier Wahlbezirke bei dieser Bürgermeisterwahl wird mit $h$ bezeichnet.
+
+\subsection{Aufgabenstellung:}
+\begin{enumerate}
+	\item \fbox{A} Gib an, wie viele Stimmen für Kandidat $A$ im 5. Wahlbezirk zu erwarten sind, wenn man $h$ als Schätzwert für den relativen Stimmenanteil für diesen Kandidaten in diesem Wahlbezirk verwendet!
+	
+	Im 4. Wahlbezirk weicht das Ergebnis für Kandidat $A$ am stärksten von $h$ ab.\\
+	Gib diese Abweichung in Prozentpunkten an!
+	
+	\item Die nachstehende Tabelle zeigt das Ergebnis einer Vergleichswahl.
+	
+	Tabelle 2: Vergleichswahl
+	
+	\resizebox{1\linewidth}{!}{\begin{tabular}{|c|c|c|c|c|c|c|}
+\multicolumn{1}{c|}{\phantom{t}}&\cellcolor[gray]{0.9}1. Wahlbezirk&\cellcolor[gray]{0.9}2. Wahlbezirk&\cellcolor[gray]{0.9}3. Wahlbezirk&\cellcolor[gray]{0.9}4. Wahlbezirk&\cellcolor[gray]{0.9}5. Wahlbezirk&\cellcolor[gray]{0.9} gesamt \\ \hline
+\cellcolor[gray]{0.9}Kandidat $A$&390&416&409&383&478&2\,076\\ \hline
+\cellcolor[gray]{0.9}Kandidat $B$&385&483&519&187&500&2\,074\\ \hline
+\cellcolor[gray]{0.9}Wahlberechtigte&775&899&928&570&978&4\,150\\ \hline
+\end{tabular}}
+
+Die Variable $x$ sei die Anzahl der Stimmen für Kandidat $A$ bei der Vergleichswahl, die Variable $y$ die Anzahl der Stimmen für Kandidat $A$ bei der Bürgermeisterwahl. Damit erhält man für den Kandidaten $A$ für die Ergebnisse aus dem 1., 2., 3. und 4. Wahlbezirk vier Punkte in einem kartesischen Koordinatensystem.
+
+Die Regressionsgerade $g$: $y=1,5462\cdot x-205,71$ verläuft nun durch diese "Punktewolke" so, dass ein linearer Zusammenhang zwischen den beiden Variablen $x$ und $y$ gut beschrieben wird.
+
+Berechne mithilfe der Regressionsgeraden $g$ die erwartete Anzahl an Stimmen bei der Bürgermeisterwahl für den Kandidaten $A$ im 5. Wahlbezirk!
+
+Interpretiere den Wert der Steigung der Regressionsgeraden $g$ im gegebenen Kontext!
+
+\item Bei einer österreichweiten Wahl kann ein Kandidat $C$ gewählt werden. Aus einer vorhergehenden Wahl ist bekannt, dass der Stimmenanteil $h$ für Kandidat $A$ bei der Bürgermeisterwahl in den Wahlbezirk 1 bis 4 repräsentativ für den Stimmenanteil für Kandidat $C$ bei der österreichweiten Wahl ist.\\
+Ermittle anhand des Stimmenanteils $h$ ein symmetrisches 95\,\%-Konfidenzintervall für den unbekannten Stimmenanteil für Kandidat $C$!
+
+Nach Auszählung aller Stimmen bei der österreichweiten Wahl hat der Kandidat $C$ 62\,\%
+ der Stimmen erhalten. Damit liegt dieser Stimmenanteil außerhalb des davor ermittelten symmetrischen 95\,\%-Konfidenzintervalls.
+ 
+ Hätte man als Konfidenzniveau 90\,\% gewählt, so hätte man ein Konfidenzintervall mit einer anderen Breite erhalten.\\
+ Gib an, ob der tatsächliche Stimmenanteil für Kandidat $C$ in diesem Konfidenzintervall enthalten wäre, und begründe deine Entscheidung!
+ 
+ \end{enumerate}
+
+\antwort{
+\begin{enumerate}
+\item \subsection{Lösungserwartung:}
+
+$\frac{1\,648}{3\,172}\approx 0,52$
+
+Für Kandidat $A$ sind ca. 52\,\% von 987 Stimmen, also ca. 509 Stimmen, zu erwarten.
+
+relativer Stimmenanteil für Kandidat $A$ im 4. Wahlbezirk: $\frac{343}{570}\approx 0,6$
+
+Der relative Stimmenanteil weicht im 4. Wahlbezirk um ca. 8 Prozentpunkte von $h$ ab.
+
+\subsection{Lösungsschlüssel:}
+\begin{itemize}
+\item Ein Ausgleichspunkt für die richtige Lösung.\\
+Toleranzintervall: $[500;510]$
+\item Ein Punkt für die richtige Lösung.\\
+Toleranzintervall: $[8;9]$
+\end{itemize}
+
+\item \subsection{Lösungserwartung:}
+
+$1,5462\cdot 478-205,71\approx 533$
+
+Bei der Hochrechnung mithilfe der Regressionsgeraden $g$ erhält Kandidat $A$ im 5. Wahlbezirk ca. 533 Stimmen bei der Bürgermeisterwahl.
+
+Mögliche Interpretation:\\
+Der Wert der Steigung von $g$ gib an, dass Kandidat $A$ pro zusätzlicher Stimme bei der Vergleichswahl ca. 1,55 Stimmen mehr bei der Bürgermeisterwahl erwarten kann.
+
+\subsection{Lösungsschlüssel:}
+\begin{itemize}
+\item Ein Punkt für die richtige Lösung.\\
+Toleranzintervall: $[530\text{ Stimmen}; 540\text{ Stimmen}]$
+\item Ein Punkt für eine korrekte Interpretation.
+\end{itemize}
+
+\item \subsection{Lösungserwartung:}
+
+$0,52\pm1,96\cdot\sqrt{\frac{0,52\cdot 0,48}{3\,172}}\approx 0,52\pm 0,017 \Rightarrow [0,503; 0,537]$
+
+Ein symmetrisches 90\,\%-Konfidenzintervall hat bei gleicher Stichprobengröße sowie gleichem Stichprobenanteil und der Verwendung derselben Berechnungsmethode eine geringere Breite als das symmetrische 95\,\%-Konfidenzintervall, daher wäre das Ergebnis auch nicht im symmetrischen 90\,\%-Konfidenzintervall enthalten.
+
+\subsection{Lösungsschlüssel:}
+\begin{itemize}
+\item Ein Punkt für ein richtiges Intervall. Andere Schreibweisen des Ergebnisses sind ebenfalls als richtig zu werten.\\
+Toleranzintervall für den unteren Wert: $[0,500; 0,503]$\\
+Toleranzintervall für den oberen Wert: $[0,536; 0,540]$\\
+Die Aufgabe ist auch dann als richtig gelöst zu werten, wenn bei korrektem Ansatz das Ergebnis aufgrund eines Rechenfehler nicht richtig ist.
+\item Ein Punkt für eine richtige Entscheidung und eine (sinngemäß) korrekte Begründung.
+\end{itemize}
+
+\end{enumerate}}
+\end{langesbeispiel}
