@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__='v1.4'
+__version__='v1.5'
 __lastupdate__='04/19'
 ####################
 
@@ -39,7 +39,7 @@ def config_loader(pathToFile,parameter):
             break
         except FileNotFoundError:
             print("File not Found!")
-            if sys.platform.startswith('linux'):
+            if sys.platform.startswith('linux') or sys.platform.startswith('darwin'):
                     root = "."
             else:
                     root = ""
@@ -83,7 +83,8 @@ except AttributeError:
 	def _translate(context, text, disambig):
 		return QtWidgets.QApplication.translate(context, text, disambig)
 
-logo_path=os.path.join(path_programm,'_database','_config','magnifier.png')
+logo_path=os.path.join(path_programm,'_database','_config','icon','LaMa_icon_logo.png')
+
 
 
 widgets_search=['actionRefresh_Database','menuDateityp','menuNeu','menuHelp','label_update','combobox_searchtype','label_aufgabentyp','groupBox_ausgew_gk','groupBox_af',
@@ -1004,8 +1005,8 @@ class Ui_MainWindow(object):
 		msg.setIconPixmap(pixmap)
 		msg.setWindowIcon(QtGui.QIcon(logo_path))
 		msg.setText("LaMA - LaTeX Mathematik Assistent %s  \n\n"
-		"License: GNU General Public License v3.0  \n"	
-		"Author: Christoph Weberndorfer  \n\n"
+		"Author: Christoph Weberndorfer  \n"
+		"License: GNU General Public License v3.0  \n\n"	
 		"Credits: Matthias Konzett, David Fischer   "%__version__)
 		msg.setInformativeText("Logo & Icon: Lisa Schultz")
 		msg.setWindowTitle("Über LaMA - LaTeX Mathematik Assistent")
@@ -1366,6 +1367,14 @@ class Ui_MainWindow(object):
 			subprocess.run(['open', "{0}/Teildokument/Teildokument_{1}.pdf".format(path_programm, chosen_aufgabenformat)])
 		else:
 			subprocess.Popen('cd "{0}/Teildokument" & latex --synctex=-1 Teildokument_{1}.tex& dvips Teildokument_{1}.dvi & ps2pdf -dNOSAFER Teildokument_{1}.ps'.format(path_programm, chosen_aufgabenformat),shell=True).wait()
+			
+			# p= subprocess.Popen('cd "{0}/Teildokument" & latex --synctex=-1 -interaction=nonstopmode Teildokument_{1}.tex& dvips Teildokument_{1}.dvi & ps2pdf -dNOSAFER Teildokument_{1}.ps'.format(path_programm, chosen_aufgabenformat), stdout=subprocess.PIPE,shell=True)
+			# (output, err) = p.communicate()
+			# p_status=p.wait()
+			# print(p_status)
+			# print(err)
+			# subprocess.Popen('cd "{0}/Teildokument" & Teildokument_{1}.pdf'.format(path_programm, chosen_aufgabenformat), shell=True).poll()
+			
 			subprocess.Popen('cd "{0}/Teildokument" & Teildokument_{1}.pdf'.format(path_programm, chosen_aufgabenformat), shell=True).poll()
 		## -interaction=nonstopmode -halt-on-error Don't stop when error occurs, while compiling
 		os.unlink('{0}/Teildokument/Teildokument_{1}.aux'.format(path_programm, chosen_aufgabenformat))
@@ -1442,9 +1451,18 @@ class Ui_MainWindow(object):
 			beispieldaten=list(beispieldaten_dateipfad.keys())					  
 		
 
-		#### typ1 ###
-		# filename_teildokument = os.path.join(path_programm,'Typ 2 Aufgaben','Teildokument','Teildokument.tex')
-		#####
+		######### new tabu.sty not working ### 
+		######################################################
+		########### work around ####################
+		#########################################
+
+		path_tabu_pkg=os.path.join(path_programm,'_database','_config','tabu.sty')	
+		copy_path_tabu_pkg=os.path.join(path_programm,'Teildokument','tabu.sty')
+		if os.path.isfile(copy_path_tabu_pkg):
+			pass
+		else:
+			shutil.copy(path_tabu_pkg,copy_path_tabu_pkg)
+
 
 		filename_teildokument = os.path.join(path_programm,'Teildokument','Teildokument_%s.tex'%self.label_aufgabentyp.text()[-1])
 		try:
@@ -1694,7 +1712,7 @@ class Ui_MainWindow(object):
 				last_path=list(dict_picture_path.values())[-1]		
 			except IndexError:
 				last_path='C:\\'
-			list_filename = QtWidgets.QFileDialog.getOpenFileNames(None, 'Select a folder:', last_path,  'Grafiken (*.eps)')
+			list_filename = QtWidgets.QFileDialog.getOpenFileNames(None, 'Grafiken wählen', last_path,  'Grafiken (*.eps)')
 			i=len(dict_picture_path)
 
 			self.label_bild_leer.hide()

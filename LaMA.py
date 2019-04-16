@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__='v1.4'
+__version__='v1.5'
 __lastupdate__='04/19'
 ####################
 
@@ -39,7 +39,7 @@ def config_loader(pathToFile,parameter):
             break
         except FileNotFoundError:
             print("File not Found!")
-            if sys.platform.startswith('linux'):
+            if sys.platform.startswith('linux') or sys.platform.startswith('darwin'):
                     root = "."
             else:
                     root = ""
@@ -83,7 +83,8 @@ except AttributeError:
 	def _translate(context, text, disambig):
 		return QtWidgets.QApplication.translate(context, text, disambig)
 
-logo_path=os.path.join(path_programm,'_database','_config','magnifier.png')
+logo_path=os.path.join(path_programm,'_database','_config','icon','LaMa_icon_logo.png')
+
 
 
 widgets_search=['actionRefresh_Database','menuDateityp','menuNeu','menuHelp','label_update','combobox_searchtype','label_aufgabentyp','groupBox_ausgew_gk','groupBox_af',
@@ -1004,8 +1005,8 @@ class Ui_MainWindow(object):
 		msg.setIconPixmap(pixmap)
 		msg.setWindowIcon(QtGui.QIcon(logo_path))
 		msg.setText("LaMA - LaTeX Mathematik Assistent %s  \n\n"
-		"License: GNU General Public License v3.0  \n"	
-		"Author: Christoph Weberndorfer  \n\n"
+		"Author: Christoph Weberndorfer  \n"
+		"License: GNU General Public License v3.0  \n\n"	
 		"Credits: Matthias Konzett, David Fischer   "%__version__)
 		msg.setInformativeText("Logo & Icon: Lisa Schultz")
 		msg.setWindowTitle("Über LaMA - LaTeX Mathematik Assistent")
@@ -1296,7 +1297,7 @@ class Ui_MainWindow(object):
 			for all in files:
 				if all.endswith('.tex') or all.endswith('.ltx'):
 					if not ('Gesamtdokument' in all) and not ('Teildokument' in all):
-						file=open(os.path.join(root,all), encoding='ISO-8859-1')
+						file=open(os.path.join(root,all), encoding='utf-8')
 						for i, line in enumerate(file):
 							if not line == "\n":			
 								beispieldaten_dateipfad[line]=os.path.join(root,all)
@@ -1312,7 +1313,7 @@ class Ui_MainWindow(object):
 			for all in files:
 				if all.endswith('.tex') or all.endswith('.ltx'):
 					if not ('Gesamtdokument' in all) and not ('Teildokument' in all):
-						file=open(os.path.join(root,all), encoding='ISO-8859-1')
+						file=open(os.path.join(root,all), encoding='utf-8')
 						for i, line in enumerate(file):
 							if not line == "\n":			
 								beispieldaten_dateipfad[line]=os.path.join(root,all)
@@ -1331,11 +1332,11 @@ class Ui_MainWindow(object):
 		log_file=os.path.join(path_programm,'Teildokument','log_file_%s'%self.label_aufgabentyp.text()[-1])
 		
 		try:
-			with open(log_file, 'w+') as f:
+			with open(log_file, 'w+',encoding='utf-8') as f:
 				json.dump(beispieldaten_dateipfad, f,ensure_ascii=False)
 		except FileNotFoundError:
 			os.makedirs(os.path.join(path_programm,'Teildokument'))
-			with open(log_file, 'w+') as f:
+			with open(log_file, 'w+',encoding='utf-8') as f:
 				json.dump(beispieldaten_dateipfad, f,ensure_ascii=False)		
 
 		self.label_update.setText(_translate("MainWindow", 'Last Update: ' + self.modification_date(log_file).strftime('%d.%m.%y - %H:%M'), None))
@@ -1366,6 +1367,14 @@ class Ui_MainWindow(object):
 			subprocess.run(['open', "{0}/Teildokument/Teildokument_{1}.pdf".format(path_programm, chosen_aufgabenformat)])
 		else:
 			subprocess.Popen('cd "{0}/Teildokument" & latex --synctex=-1 Teildokument_{1}.tex& dvips Teildokument_{1}.dvi & ps2pdf -dNOSAFER Teildokument_{1}.ps'.format(path_programm, chosen_aufgabenformat),shell=True).wait()
+			
+			# p= subprocess.Popen('cd "{0}/Teildokument" & latex --synctex=-1 -interaction=nonstopmode Teildokument_{1}.tex& dvips Teildokument_{1}.dvi & ps2pdf -dNOSAFER Teildokument_{1}.ps'.format(path_programm, chosen_aufgabenformat), stdout=subprocess.PIPE,shell=True)
+			# (output, err) = p.communicate()
+			# p_status=p.wait()
+			# print(p_status)
+			# print(err)
+			# subprocess.Popen('cd "{0}/Teildokument" & Teildokument_{1}.pdf'.format(path_programm, chosen_aufgabenformat), shell=True).poll()
+			
 			subprocess.Popen('cd "{0}/Teildokument" & Teildokument_{1}.pdf'.format(path_programm, chosen_aufgabenformat), shell=True).poll()
 		## -interaction=nonstopmode -halt-on-error Don't stop when error occurs, while compiling
 		os.unlink('{0}/Teildokument/Teildokument_{1}.aux'.format(path_programm, chosen_aufgabenformat))
@@ -1436,19 +1445,28 @@ class Ui_MainWindow(object):
 
 		log_file=os.path.join(path_programm,'Teildokument','log_file_%s'%self.label_aufgabentyp.text()[-1])
 
-		with open(log_file) as f:
+		with open(log_file, encoding='utf-8') as f:
 			beispieldaten_dateipfad = json.load(f)
 			#beispieldaten_dateipfad=eval(beispieldaten_dateipfad)
 			beispieldaten=list(beispieldaten_dateipfad.keys())					  
 		
 
-		#### typ1 ###
-		# filename_teildokument = os.path.join(path_programm,'Typ 2 Aufgaben','Teildokument','Teildokument.tex')
-		#####
+		######### new tabu.sty not working ### 
+		######################################################
+		########### work around ####################
+		#########################################
+
+		path_tabu_pkg=os.path.join(path_programm,'_database','_config','tabu.sty')	
+		copy_path_tabu_pkg=os.path.join(path_programm,'Teildokument','tabu.sty')
+		if os.path.isfile(copy_path_tabu_pkg):
+			pass
+		else:
+			shutil.copy(path_tabu_pkg,copy_path_tabu_pkg)
+
 
 		filename_teildokument = os.path.join(path_programm,'Teildokument','Teildokument_%s.tex'%self.label_aufgabentyp.text()[-1])
 		try:
-			file=open(filename_teildokument,"w", encoding='ISO-8859-1')
+			file=open(filename_teildokument,"w", encoding='utf-8')
 		except FileNotFoundError:
 			os.makedirs(filename_teildokument) # If dir is not found make it recursivly
 		file.write("\documentclass[a4paper,12pt]{report}\n\n"
@@ -1457,7 +1475,7 @@ class Ui_MainWindow(object):
 		"\\usepackage{lmodern}\n"
 		"\\usepackage[T1]{fontenc}\n"
 		"\\usepackage{eurosym}\n"
-		"\\usepackage[latin1]{inputenc}\n"
+		"\\usepackage[utf8]{inputenc}\n"
 		"\\usepackage[ngerman]{babel}\n")
 		if self.cb_solution.isChecked()==True:
 			file.write('\\usepackage[solution_on]{srdp-mathematik} % solution_on/off\n')
@@ -1624,7 +1642,7 @@ class Ui_MainWindow(object):
 
 
 		beispieldaten.sort(key=self.natural_keys)
-		file=open(filename_teildokument,"a", encoding='ISO-8859-1')
+		file=open(filename_teildokument,"a", encoding='utf-8')
 		file.write('\n \\scriptsize Suchbegriffe: ')
 		for all in suchbegriffe:
 			if all == suchbegriffe[-1]:
@@ -1636,7 +1654,7 @@ class Ui_MainWindow(object):
 
 		for key, value in dict_gesammeltedateien.items():
 			value=value.replace('\\','/') 
-			file=open(filename_teildokument,"a", encoding='ISO-8859-1')
+			file=open(filename_teildokument,"a", encoding='utf-8')
 			### newpage only with typ2 !!
 
 			if chosen_aufgabenformat=='Typ1Aufgaben':
@@ -1675,9 +1693,10 @@ class Ui_MainWindow(object):
 		ret=msg.exec_()
 		
 		if ret==QtWidgets.QMessageBox.Yes:
-			MainWindow.close()
+			MainWindow.hide()
 			self.create_pdf()
-			sys.exit(0)
+			MainWindow.show()
+			# sys.exit(0)
 		
 		
 		
@@ -1694,7 +1713,7 @@ class Ui_MainWindow(object):
 				last_path=list(dict_picture_path.values())[-1]		
 			except IndexError:
 				last_path='C:\\'
-			list_filename = QtWidgets.QFileDialog.getOpenFileNames(None, 'Select a folder:', last_path,  'Grafiken (*.eps)')
+			list_filename = QtWidgets.QFileDialog.getOpenFileNames(None, 'Grafiken wählen', last_path,  'Grafiken (*.eps)')
 			i=len(dict_picture_path)
 
 			self.label_bild_leer.hide()
@@ -2150,7 +2169,7 @@ class Ui_MainWindow(object):
 
 				#print('\section{'+file_name_klasse+' - '+list_chosen_gk[0].upper()+" - "+str(max_integer_file+1) +" - " + self.lineEdit_titel.text()+" - "+chosen_af+' - '+self.lineEdit_quelle.text())
 				try:
-					file=open(file_name,"w")
+					file=open(file_name,"w",encoding='utf-8')
 				except FileNotFoundError:
 					msg = QtWidgets.QMessageBox()
 					msg.setWindowTitle("Fehlermeldung")
@@ -2172,7 +2191,7 @@ class Ui_MainWindow(object):
 				file_name=os.path.join(gk_path_temp,dict_gk[list_chosen_gk[0]]+' - '+str(max_integer_file+1)+'.tex')
 				
 				try:
-					file=open(file_name,"w")
+					file=open(file_name,"w",encoding='utf-8')
 				except FileNotFoundError:
 					msg = QtWidgets.QMessageBox()
 					msg.setWindowTitle("Fehlermeldung")
@@ -2226,7 +2245,7 @@ class Ui_MainWindow(object):
 				file_name=os.path.join(path_programm,'Beispieleinreichung',str(max_integer_file+1)+'.tex') ### not direct save
 
 			try:
-				file=open(file_name,"w")
+				file=open(file_name,"w",encoding='utf-8')
 			except FileNotFoundError:
 				msg = QtWidgets.QMessageBox()
 				msg.setWindowTitle("Fehlermeldung")
