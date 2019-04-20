@@ -1658,10 +1658,10 @@ class Ui_MainWindow(object):
 			### newpage only with typ2 !!
 
 			if chosen_aufgabenformat=='Typ1Aufgaben':
-				file.write('\input{"'+value+'"}%\n'
+				file.write('\input{".'+value+'"}%\n'
 				'\hrule  \leer\n\n')
 			elif chosen_aufgabenformat=='Typ2Aufgaben':
-				file.write('\input{"'+value+'"}%\n'
+				file.write('\input{".'+value+'"}%\n'
 				'\\newpage \n')
 			# else:
 			# 	if chosen_aufgabenformat=='Typ 1 Aufgaben':
