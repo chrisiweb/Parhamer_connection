@@ -23,11 +23,13 @@ import yaml
 from PIL import Image ## pillow
 
 
-path_programm=os.path.dirname(sys.argv[0])
-
 if sys.platform.startswith('linux') or sys.platform.startswith('darwin'):
-    if path_programm is '':
-        path_programm = "."
+    workdir= os.path.dirname(os.path.realpath(__file__))
+    path_programm = os.path.join(workdir)
+else:
+    path_programm=os.path.dirname(sys.argv[0])
+print("Path Programm: ",path_programm)
+
 
 print('Loading...')
 
@@ -1360,6 +1362,8 @@ class Ui_MainWindow(object):
 		chosen_aufgabenformat=self.label_aufgabentyp.text()[-1]
 
 		if sys.platform.startswith('linux'):
+			print("THIS IS THE IMPORTANT PART")
+			print(path_programm)
 			subprocess.Popen('cd "{0}/Teildokument" ; latex --synctex=-1 Teildokument_{1}.tex ; dvips Teildokument_{1}.dvi ; ps2pdf -dNOSAFER Teildokument_{1}.ps'.format(path_programm, chosen_aufgabenformat),shell=True).wait()
 			subprocess.run(['xdg-open', "{0}/Teildokument/Teildokument_{1}.pdf".format(path_programm, chosen_aufgabenformat)])
 		elif sys.platform.startswith('darwin'):
@@ -1658,10 +1662,10 @@ class Ui_MainWindow(object):
 			### newpage only with typ2 !!
 
 			if chosen_aufgabenformat=='Typ1Aufgaben':
-				file.write('\input{".'+value+'"}%\n'
+				file.write('\input{"'+value+'"}%\n'
 				'\hrule  \leer\n\n')
 			elif chosen_aufgabenformat=='Typ2Aufgaben':
-				file.write('\input{".'+value+'"}%\n'
+				file.write('\input{"'+value+'"}%\n'
 				'\\newpage \n')
 			# else:
 			# 	if chosen_aufgabenformat=='Typ 1 Aufgaben':
