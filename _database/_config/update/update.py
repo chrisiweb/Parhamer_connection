@@ -5,6 +5,7 @@ import os
 import sys
 from time import sleep
 import subprocess
+import shutil
 
 path_programm=os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(sys.argv[0]))))
 
@@ -18,6 +19,19 @@ if sys.platform.startswith('linux') or sys.platform.startswith('darwin'):
 print('Programm wird aktualisiert...')
 
 opened_file=os.path.basename(sys.argv[0])
+
+### Delete Teildokument Folder to force update of log_files ###
+dir_teildokument=os.path.join(path_programm,'Teildokument')
+if os.path.isdir(dir_teildokument):
+    try:
+        shutil.rmtree(dir_teildokument)
+    except PermissionError:
+        print('Das Update kann nicht durchgeführt werden, da der Ordner Teildokument von einem anderen Prozess verwendet wird.')
+        input()
+        quit()
+else:
+    pass
+
 name, extension=os.path.splitext(opened_file)
 
 updatefile_path=os.path.join(path_programm,'_database','_config','update','update%s'%extension)
