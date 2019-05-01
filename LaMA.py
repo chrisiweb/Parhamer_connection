@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__='v1.5'
+__version__='v1.6'
 __lastupdate__='04/19'
 ####################
 
@@ -23,11 +23,16 @@ import yaml
 from PIL import Image ## pillow
 
 
-path_programm=os.path.dirname(sys.argv[0])
+if sys.platform.startswith('linux'):
+	workdir= os.path.dirname(os.path.realpath(__file__))
+	path_programm = os.path.join(workdir)
 
-if sys.platform.startswith('linux') or sys.platform.startswith('darwin'):
-    if path_programm is '':
-        path_programm = "."
+else:
+	path_programm=os.path.dirname(sys.argv[0])
+	if sys.platform.startswith('darwin'):
+		if path_programm is '':
+			path_programm = "."
+
 
 print('Loading...')
 
@@ -1008,7 +1013,8 @@ class Ui_MainWindow(object):
 		"Author: Christoph Weberndorfer  \n"
 		"License: GNU General Public License v3.0  \n\n"	
 		"Credits: Matthias Konzett, David Fischer   "%__version__)
-		msg.setInformativeText("Logo & Icon: Lisa Schultz")
+		msg.setInformativeText("Logo & Icon: Lisa Schultz \n\n\n"
+		"Kontakt: lama.helpme@gmail.com")
 		msg.setWindowTitle("Über LaMA - LaTeX Mathematik Assistent")
 		#msg.setDetailedText("The details are as follows:")
 		msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
