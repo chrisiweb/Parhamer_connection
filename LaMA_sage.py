@@ -2039,7 +2039,10 @@ class Ui_MainWindow(object):
 			subprocess.Popen('cd "{0}" & latex --synctex=-1 "{1}.tex"& dvips "{1}.dvi" & ps2pdf -dNOSAFER "{1}.ps"'.format(save_file, dateiname),shell=True).wait()
 
 		if dateiname=='Schularbeit_Vorschau' or dateiname.startswith('Teildokument'):
-			subprocess.Popen('cd "{0}" &"{1}" "{2}.pdf"'.format(save_file, sumatrapdf ,dateiname), shell=True).poll()
+			if sys.platform.startswith('linux'):
+				subprocess.Popen('cd "{0}" & xdg-open "{1}.pdf"'.format(save_file, dateiname), shell=True).poll()
+			else:
+				subprocess.Popen('cd "{0}" &"{1}" "{2}.pdf"'.format(save_file, sumatrapdf ,dateiname), shell=True).poll()
 			# if dateiname.startswith('Teildokument'):
 			# 	MainWindow.setGeometry(old_geometry)
 			# 	MainWindow.show()
@@ -3943,7 +3946,7 @@ class Ui_MainWindow(object):
 
 				
 				dirname=os.path.dirname(self.chosen_path_schularbeit_erstellen[0])
-				filename=os.path.basename(self.chosen_path_schularbeit_erstellen[0])
+				filename=os.path.basename(self.chosen_path_schularbeit_erstellen[0])+".tex"
 				for character in dict_umlaute.keys():
 					if character in filename:
 						filename= filename.replace(character, dict_umlaute[character])
