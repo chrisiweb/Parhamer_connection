@@ -3573,7 +3573,7 @@ class Ui_MainWindow(object):
 			list_input[1]=abstand
 			gesamtpunkte+=punkte
 
-		gesamtpunkte+=self.num_ausgleichspkt_gesamt
+		#gesamtpunkte+=self.num_ausgleichspkt_gesamt
 			#ausgleich_pkt = eval('self.ausgleich_pkt_{}'.format(bsp_string))
 			
 			# ausgleich_pkt.setText(_translate("MainWindow", '(AP: {})'.format(len(list_sage_ausgleichspunkte_chosen)),None))
