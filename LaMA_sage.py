@@ -25,6 +25,7 @@ import yaml
 from PIL import Image ## pillow
 
 
+
 if sys.platform.startswith('linux'):
 	workdir= os.path.dirname(os.path.realpath(__file__))
 	path_programm = os.path.join(workdir)
@@ -117,7 +118,9 @@ class SpinBox_noWheel(QtWidgets.QSpinBox):
 
 class Ui_Dialog_titlepage(object):
 	def setupUi(self, Dialog, dict_titlepage):
-		self.dict_titlepage = dict_titlepage
+		# self.dict_titlepage = dict_titlepage
+		# print(self.dict_titlepage)
+
 		# self.ausgleichspunkte_split_text=ausgleichspunkte_split_text
 		self.Dialog=Dialog
 		self.Dialog.setObjectName("Dialog")
@@ -134,40 +137,58 @@ class Ui_Dialog_titlepage(object):
 		self.label_titlepage.setObjectName(_fromUtf8("label_titlepage"))
 		self.label_titlepage.setText(_translate("MainWindow", "Wählen Sie die gewünschten Punkte für das Titelblatt aus:\n", None))
 		self.verticalLayout_titlepage.addWidget(self.label_titlepage)
-		self.cb_titlepage_title= QtWidgets.QCheckBox("Titel")									  
-		self.cb_titlepage_title.setObjectName(_fromUtf8("cb_titlepage_titel"))
-		self.verticalLayout_titlepage.addWidget(self.cb_titlepage_title)
-		self.cb_titlepage_title.setChecked(self.dict_titlepage['titel'])
+
+		self.cb_titlepage_logo= QtWidgets.QCheckBox("Logo")
+		if dict_titlepage['logo_path']!=False:
+			logo_name=os.path.basename(dict_titlepage['logo_path']) 
+			self.cb_titlepage_logo.setText('Logo ({})'.format(logo_name))									  
+		self.cb_titlepage_logo.setObjectName(_fromUtf8("cb_titlepage_logo"))
+		self.verticalLayout_titlepage.addWidget(self.cb_titlepage_logo)
+		self.cb_titlepage_logo.setChecked(dict_titlepage['logo'])
+
+		self.btn_titlepage_logo_path= QtWidgets.QPushButton()									  
+		self.btn_titlepage_logo_path.setObjectName(_fromUtf8("btn_titlepage_logo_path"))
+		self.verticalLayout_titlepage.addWidget(self.btn_titlepage_logo_path)
+		self.btn_titlepage_logo_path.setText("Durchsuchen")
+		self.btn_titlepage_logo_path.setMaximumWidth(130)
+		self.btn_titlepage_logo_path.clicked.connect(partial(self.btn_titlepage_logo_path_pressed, dict_titlepage))
+		# self.btn_suche = QtWidgets.QPushButton(self.centralwidget)
+		# self.btn_suche.setEnabled(True)
+		# self.btn_suche.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
+		# self.btn_suche.setAcceptDrops(False)
+		# self.btn_suche.setObjectName(_fromUtf8("btn_suche"))
+		# self.horizontalLayout_2.addWidget(self.btn_suche)
+
+
+		self.cb_titlepage_titel= QtWidgets.QCheckBox("Titel")									  
+		self.cb_titlepage_titel.setObjectName(_fromUtf8("cb_titlepage_titel"))
+		self.verticalLayout_titlepage.addWidget(self.cb_titlepage_titel)
+		self.cb_titlepage_titel.setChecked(dict_titlepage['titel'])
 
 		self.cb_titlepage_datum= QtWidgets.QCheckBox("Datum")									  
 		self.cb_titlepage_datum.setObjectName(_fromUtf8("cb_titlepage_datum"))
 		self.verticalLayout_titlepage.addWidget(self.cb_titlepage_datum)
-		self.cb_titlepage_datum.setChecked(self.dict_titlepage['datum'])
+		self.cb_titlepage_datum.setChecked(dict_titlepage['datum'])
 
 		self.cb_titlepage_klasse= QtWidgets.QCheckBox("Klasse")									  
 		self.cb_titlepage_klasse.setObjectName(_fromUtf8("cb_titlepage_klasse"))
 		self.verticalLayout_titlepage.addWidget(self.cb_titlepage_klasse)
-		self.cb_titlepage_klasse.setChecked(self.dict_titlepage['klasse'])
+		self.cb_titlepage_klasse.setChecked(dict_titlepage['klasse'])
 
 		self.cb_titlepage_name= QtWidgets.QCheckBox("Name")									  
 		self.cb_titlepage_name.setObjectName(_fromUtf8("cb_titlepage_name"))
 		self.verticalLayout_titlepage.addWidget(self.cb_titlepage_name)
-		self.cb_titlepage_name.setChecked(self.dict_titlepage['name'])
+		self.cb_titlepage_name.setChecked(dict_titlepage['name'])
 
 		self.cb_titlepage_note= QtWidgets.QCheckBox("Note")									  
 		self.cb_titlepage_note.setObjectName(_fromUtf8("cb_titlepage_note"))
 		self.verticalLayout_titlepage.addWidget(self.cb_titlepage_note)
-		self.cb_titlepage_note.setChecked(self.dict_titlepage['note'])
+		self.cb_titlepage_note.setChecked(dict_titlepage['note'])
 
 		self.cb_titlepage_unterschrift= QtWidgets.QCheckBox("Unterschrift")									  
 		self.cb_titlepage_unterschrift.setObjectName(_fromUtf8("cb_titlepage_unterschrift"))
 		self.verticalLayout_titlepage.addWidget(self.cb_titlepage_unterschrift)
-		self.cb_titlepage_unterschrift.setChecked(self.dict_titlepage['unterschrift'])
-
-		self.cb_titlepage_punkte= QtWidgets.QCheckBox("Punkte")									  
-		self.cb_titlepage_punkte.setObjectName(_fromUtf8("cb_titlepage_punkte"))
-		self.verticalLayout_titlepage.addWidget(self.cb_titlepage_punkte)
-		self.cb_titlepage_punkte.setChecked(self.dict_titlepage['punkte'])
+		self.cb_titlepage_unterschrift.setChecked(dict_titlepage['unterschrift'])
 
 
 		self.buttonBox_titlepage = QtWidgets.QDialogButtonBox(self.Dialog)
@@ -179,18 +200,66 @@ class Ui_Dialog_titlepage(object):
 		buttonX = self.buttonBox_titlepage.button(QtWidgets.QDialogButtonBox.Cancel)
 		buttonX.setText('Standard wiederherstellen')
 		self.buttonBox_titlepage.setObjectName("buttonBox")
-		self.buttonBox_titlepage.rejected.connect(self.set_default_titlepage)
-		self.buttonBox_titlepage.accepted.connect(self.save_titlepage)
+		self.buttonBox_titlepage.rejected.connect(partial(self.set_default_titlepage, dict_titlepage))
+		self.buttonBox_titlepage.accepted.connect(partial(self.save_titlepage, dict_titlepage))
 		# self.retranslateUi(self.Dialog)
 
 		self.verticalLayout_titlepage.addWidget(self.buttonBox_titlepage)
 
-		
-	def save_titlepage(self):
-		print('save')
+		return dict_titlepage
 
-	def set_default_titlepage(self):
-		print('default')
+	def btn_titlepage_logo_path_pressed(self,dict_titlepage):
+		logo_titlepage_path = QtWidgets.QFileDialog.getOpenFileNames(None, 'Grafiken wählen', path_programm , 'Grafiken (*.eps)')
+		if logo_titlepage_path[0]==[]:
+			return
+
+		logo_name=os.path.basename(logo_titlepage_path[0][0])
+		#print(logo_name)	
+		self.cb_titlepage_logo.setText('Logo ({})'.format(logo_name))
+		dict_titlepage['logo_path']=logo_titlepage_path[0][0]
+		copy_logo_titlepage_path=os.path.join(path_programm,'Teildokument',logo_name)
+		shutil.copy(logo_titlepage_path[0][0],copy_logo_titlepage_path)
+
+		#print('browse')
+		#print(dict_titlepage)
+		return dict_titlepage
+		
+	def save_titlepage(self,dict_titlepage):
+		for all in dict_titlepage.keys():
+			if all=='logo_path':
+				if self.cb_titlepage_logo.isChecked() and dict_titlepage[all]==False:
+					msg = QtWidgets.QMessageBox()
+					msg.setIcon(QtWidgets.QMessageBox.Warning)
+					msg.setWindowIcon(QtGui.QIcon(logo_path))
+					msg.setText('Es wurde kein Logo ausgewählt')
+					msg.setInformativeText('Bitte geben Sie den Dateipfad des Logos an oder wählen Sie das Logo ab.')
+					msg.setWindowTitle("Kein Logo ausgewählt")
+					msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+					msg.exec_()
+					return
+				continue
+
+			checkbox=eval('self.cb_titlepage_{}'.format(all))
+			if checkbox.isChecked():
+				dict_titlepage[all]=True
+			else: 
+				dict_titlepage[all]=False
+
+		self.Dialog.reject()
+		return dict_titlepage
+
+
+	def set_default_titlepage(self, dict_titlepage):
+		dict_titlepage={'logo':False,'logo_path': False,'titel':True, 'datum':True, 'klasse':True, 'name':True, 'note':False,'unterschrift':False}
+		for all in dict_titlepage.keys():
+			if all=='logo_path':
+				continue
+			checkbox=eval('self.cb_titlepage_{}'.format(all))
+			checkbox.setChecked(dict_titlepage[all])
+
+
+
+		return dict_titlepage
 
 #### Dialog Window - Ausgleichspunkte
 class Ui_Dialog_typ2(object):
@@ -311,10 +380,11 @@ class Ui_Dialog_typ2(object):
  
 #### Dialog Window - Schularbeit erstellen 
 class Ui_Dialog(object):
-	def setupUi(self, Dialog, dict_list_input_examples, beispieldaten_dateipfad_1,beispieldaten_dateipfad_2):
+	def setupUi(self, Dialog, dict_list_input_examples, beispieldaten_dateipfad_1,beispieldaten_dateipfad_2, dict_titlepage):
 		self.dict_list_input_examples=dict_list_input_examples
 		self.beispieldaten_dateipfad_1=beispieldaten_dateipfad_1
 		self.beispieldaten_dateipfad_2=beispieldaten_dateipfad_2
+		self.dict_titlepage=dict_titlepage
 		self.data_gesamt=self.dict_list_input_examples['data_gesamt']
 		#print(self.data_gesamt)
 		self.Dialog=Dialog
@@ -463,14 +533,20 @@ class Ui_MainWindow(object):
 		self.suche_already_opened_2=False
 		self.vorschau_already_opened=False
 		self.dict_sage_ausgleichspunkte_chosen={}
-		self.dict_titlepage={'titel':True, 'datum':True, 'klasse':True, 'name':True, 'unterschrift':False, 'note':False, 'punkte':False}
+		titlepage_save=os.path.join(path_programm,'Teildokument','titlepage_save')
+		if os.path.isfile(titlepage_save):
+			with open(titlepage_save,encoding='utf8') as f:
+				self.dict_titlepage = json.load(f)
+		else:
+			self.dict_titlepage={'logo': False, 'logo_path': False,'titel':True, 'datum':True, 'klasse':True, 'name':True,'note':False, 'unterschrift':False}
+
 		app.aboutToQuit.connect(self.close_app)
 		
 
-	def open_subwindow(self, dict_list_input_examples,beispieldaten_dateipfad_1, beispieldaten_dateipfad_2): #, dict_gesammeltedateien
+	def open_subwindow(self, dict_list_input_examples,beispieldaten_dateipfad_1, beispieldaten_dateipfad_2, dict_titlepage): #, dict_gesammeltedateien
 		self.Dialog = QtWidgets.QDialog(None, QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint)
 		self.ui = Ui_Dialog()
-		self.ui.setupUi(self.Dialog, dict_list_input_examples, beispieldaten_dateipfad_1, beispieldaten_dateipfad_2)	#, dict_gesammeltedateien
+		self.ui.setupUi(self.Dialog, dict_list_input_examples, beispieldaten_dateipfad_1, beispieldaten_dateipfad_2, dict_titlepage)	#, dict_gesammeltedateien
 		self.Dialog.show()
 		self.Dialog.exec_()
 		#print(dict_gesammeltedateien)
@@ -2514,33 +2590,37 @@ class Ui_MainWindow(object):
 
 
 	def add_picture(self):
-			try:
-				last_path=list(dict_picture_path.values())[-1]		
-			except IndexError:
-				last_path='C:\\'
-			list_filename = QtWidgets.QFileDialog.getOpenFileNames(None, 'Grafiken wählen', last_path,	'Grafiken (*.eps)')
-			i=len(dict_picture_path)
-			#print(list_filename)
-			self.label_bild_leer.hide()
-			for all in list_filename[0]:
-				head,tail=os.path.split(all)
-				#print(head,tail)
-				#print(dict_picture_path.keys())
-				if tail in dict_picture_path.keys():
-					pass
-				else:
-					head,tail=os.path.split(all)
-					dict_picture_path[tail]=all
-					x='self.label_bild_'+str(i)
-					#print(dict_picture_path)
-					#print(head,tail)
-					exec('%s= QtWidgets.QLabel(self.scrollAreaWidgetContents_bilder)'%x)
-					eval(x).setObjectName(_fromUtf8("label_bild_%s"%i))
+		try:
+			self.saved_file_path	
+		except AttributeError:
+			self.saved_file_path=path_programm
+		list_filename = QtWidgets.QFileDialog.getOpenFileNames(None, 'Grafiken wählen', self.saved_file_path, 'Grafiken (*.eps)')
+		if list_filename[0]=='':
+			return	
+		self.saved_file_path=list_filename
 
-					eval(x).mousePressEvent = functools.partial(self.del_picture, name_of_image=x)
-					self.verticalLayout.addWidget(eval(x))	
-					eval(x).setText(_translate("MainWindow",tail, None))
-					i+=1
+		i=len(dict_picture_path)
+		
+		self.label_bild_leer.hide()
+		for all in list_filename[0]:
+			head,tail=os.path.split(all)
+			#print(head,tail)
+			#print(dict_picture_path.keys())
+			if tail in dict_picture_path.keys():
+				pass
+			else:
+				head,tail=os.path.split(all)
+				dict_picture_path[tail]=all
+				x='self.label_bild_'+str(i)
+				#print(dict_picture_path)
+				#print(head,tail)
+				exec('%s= QtWidgets.QLabel(self.scrollAreaWidgetContents_bilder)'%x)
+				eval(x).setObjectName(_fromUtf8("label_bild_%s"%i))
+
+				eval(x).mousePressEvent = functools.partial(self.del_picture, name_of_image=x)
+				self.verticalLayout.addWidget(eval(x))	
+				eval(x).setText(_translate("MainWindow",tail, None))
+				i+=1
 
 
 	def del_picture(self, event, name_of_image=None):
@@ -2566,8 +2646,14 @@ class Ui_MainWindow(object):
 
 			if ret==QtWidgets.QMessageBox.Yes:
 				#filename =	 filedialog.askopenfilenames(initialdir = last_path,title = "Durchsuchen...",filetypes = (('JPG-Dateien','*.jpg'),("Alle Dateien","*.*")))
-				filename = QtWidgets.QFileDialog.getOpenFileNames(None, 'Select a folder:', 'C:\\',	 'Bilder (*.jpg)')
+				try:
+					self.saved_file_path	
+				except AttributeError:
+					self.saved_file_path=path_programm				
+				
+				filename = QtWidgets.QFileDialog.getOpenFileNames(None, 'Select a folder:', self.saved_file_path, 'Bilder (*.jpg)')
 				if filename[0]!=[]:
+					self.saved_file_path=filename[0]
 					for all in filename[0]:
 						output=all.replace('jpg','eps')
 						img=Image.open(all)
@@ -3166,11 +3252,18 @@ class Ui_MainWindow(object):
 
 	def sage_load(self):
 		global list_sage_examples
-		
-		path_backup_file = QtWidgets.QFileDialog.getOpenFileName(None, 'Öffnen', path_programm, 'LaMA Datei (*.lama);; Alle Dateien (*.*)')
+		try:
+			self.saved_file_path	
+		except AttributeError:
+			self.saved_file_path=path_programm	
+
+		path_backup_file = QtWidgets.QFileDialog.getOpenFileName(None, 'Öffnen', self.saved_file_path, 'LaMA Datei (*.lama);; Alle Dateien (*.*)')
 		if path_backup_file[0]=='':
 			return
-		
+		self.saved_file_path=path_backup_file[0]
+
+		QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+
 		for example in list_sage_examples:
 			self.btn_delete_pressed(example, True)
 
@@ -3181,9 +3274,6 @@ class Ui_MainWindow(object):
 		list_sage_examples=self.dict_list_input_examples['list_examples']
 
 
-		# print(self.beispieldaten_dateipfad_1)
-		# # print(self.beispieldaten_dateipfad_2)
-		# print(list_sage_examples)
 		for all in list_sage_examples:
 			if any(all in s for s in self.beispieldaten_dateipfad_1.values()):
 				pass
@@ -3194,9 +3284,6 @@ class Ui_MainWindow(object):
 					self.warning_window('Das Beispiel "{}" konnte nicht in der Datenbank gefunden werden. \n\n\n (Tipp: Refresh Database)'.format(all))
 					return	
 
-		# for all in self.beispieldaten_dateipfad_1.values():
-		# 	print(os.path.basename(all))
-		#return
 		for all in list_sage_examples:
 			if re.search('[A-Z]',all)==None:
 				bsp_string=all
@@ -3235,11 +3322,20 @@ class Ui_MainWindow(object):
 		self.spinBox_4.setValue(self.dict_list_input_examples['data_gesamt']['Notenschluessel'][2])
 		self.spinBox_5.setValue(self.dict_list_input_examples['data_gesamt']['Notenschluessel'][3])
 
+		QtWidgets.QApplication.restoreOverrideCursor()
+
+
+
 
 	def sage_save(self, path_file): #path_file
+		try:
+			self.saved_file_path	
+		except AttributeError:
+			self.saved_file_path=path_programm
+		
 
 		if path_file=='':
-			path_backup_file = QtWidgets.QFileDialog.getSaveFileName(None, 'Speichern unter', path_programm, 'LaMA Datei (*.lama);; Alle Dateien (*.*)')
+			path_backup_file = QtWidgets.QFileDialog.getSaveFileName(None, 'Speichern unter', self.saved_file_path, 'LaMA Datei (*.lama);; Alle Dateien (*.*)')
 			if path_backup_file[0]=='':
 				return
 			self.save_dict_examples_data()
@@ -3251,7 +3347,7 @@ class Ui_MainWindow(object):
 			save_file=path_file
 
 
-
+		self.saved_file_path = save_file
 
 
 		with open(save_file, 'w+', encoding='utf8') as saved_file:
@@ -3266,6 +3362,19 @@ class Ui_MainWindow(object):
 		self.ui.setupUi(self.Dialog, dict_titlepage)
 		self.Dialog.show()
 		self.Dialog.exec_()
+		self.dict_titlepage=dict_titlepage
+
+		titlepage_save=os.path.join(path_programm,'Teildokument','titlepage_save')
+
+		try:
+			with open(titlepage_save, 'w+',encoding='utf8') as f:
+				json.dump(self.dict_titlepage, f,ensure_ascii=False)
+		except FileNotFoundError:
+			os.makedirs(os.path.join(path_programm,'Teildokument'))
+			with open(titlepage_save, 'w+',encoding='utf8') as f:
+				json.dump(self.dict_titlepage, f,ensure_ascii=False)
+
+		#print(self.dict_titlepage)
 
 		# QtWidgets.QApplication.restoreOverrideCursor()
 		# msg = QtWidgets.QMessageBox()
@@ -4088,12 +4197,16 @@ class Ui_MainWindow(object):
 		if ausgabetyp=='schularbeit':
 			dict_umlaute={'Ä':'AE','ä':'ae','Ö':'OE','ö':'oe', 'Ü':'ue', 'ü':'ue','ß':'ss'}
 			if index==0:
-				self.chosen_path_schularbeit_erstellen= QtWidgets.QFileDialog.getSaveFileName(None, 'Speicherort wählen', path_programm, 'TeX Dateien (*.tex);; Alle Dateien (*.*)')
+				try:
+					self.saved_file_path	
+				except AttributeError:
+					self.saved_file_path=path_programm				
+				self.chosen_path_schularbeit_erstellen= QtWidgets.QFileDialog.getSaveFileName(None, 'Speicherort wählen', self.saved_file_path, 'TeX Dateien (*.tex);; Alle Dateien (*.*)')
 				
 				if self.chosen_path_schularbeit_erstellen[0]=='':
 					QtWidgets.QApplication.restoreOverrideCursor()
 					return		
-
+				self.saved_file_path = self.chosen_path_schularbeit_erstellen[0]
 				#print(self.chosen_path_schularbeit_erstellen[0])
 
 				
@@ -4164,42 +4277,104 @@ class Ui_MainWindow(object):
 		"%\n"
 		"\\begin{document}\n"
 		"\\begin{titlepage}\n")
+		#print(self.dict_titlepage)
 
-		if self.dict_list_input_examples['data_gesamt']['Beurteilung']=='ns':
-			space=3
-		if self.dict_list_input_examples['data_gesamt']['Beurteilung']=='br':
-			space=0
+		vorschau.write("\\flushright\n")
+		if self.dict_titlepage['logo']==True:
+			logo_name=os.path.basename(self.dict_titlepage['logo_path'])
+			logo_titlepage_path=os.path.join(path_programm,'Teildokument',logo_name)
+			if os.path.isfile(logo_titlepage_path):
+				vorschau.write('\\begin{{minipage}}[t]{{0.4\\textwidth}} \\vspace{{0pt}} \\includegraphics[width=1\\textwidth]{{{0}}}\\end{{minipage}} \\\ \\vfil \n'.format(logo_name))
+			else:
+				msg = QtWidgets.QMessageBox()
+				msg.setIcon(QtWidgets.QMessageBox.Warning)
+				msg.setWindowIcon(QtGui.QIcon(logo_path))
+				msg.setText('Das Logo konnte nicht gefunden werden.')
+				msg.setInformativeText('Bitte suchen Sie ein Logo unter: \n\nTitelblatt anpassen - Durchsuchen')
+				msg.setWindowTitle("Kein Logo ausgewählt")
+				msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+				msg.exec_()
 
-		vorschau.write("\\vspace*{%icm}\n"%space)
-		if self.dict_list_input_examples['data_gesamt']['Wiederholung']==True:
-			wdh= 'Wiederholung\\\ '
+				vorschau.write("~\\vfil \n")
+			
 		else:
-			wdh=''
-		vorschau.write("\\flushright\n"
-		"\\Huge\n \\textsc{{{0}{1}. Mathematikschularbeit}} \\\ \n".format(wdh, self.dict_list_input_examples['data_gesamt']['#']))
-		vorschau.write("\\textsc{\Large am %s}\\\ [1cm]\n" %datum)
+			vorschau.write("~\\vfil \n")
+		if self.dict_titlepage['titel']==True:
+			vorschau.write("\\textsc{{\\Huge {0}. Mathematikschularbeit}} \\\ \n".format(self.dict_list_input_examples['data_gesamt']['#']))
+			if self.dict_list_input_examples['data_gesamt']['Wiederholung']==True:
+				vorschau.write("[0.5cm]"
+				"\\textsc{\Huge Wiederholung} \\\ \n")
+			vorschau.write("[1cm] \n")
+		if self.dict_titlepage['datum']==True:
+			vorschau.write("\\textsc{{\Large am {0}}}\\\ [1cm] \n".format(datum))
+		if self.dict_titlepage['klasse']==True:
+			vorschau.write("\\textsc{{\Large Klasse {0}}} \\\ [1cm] \n".format(self.dict_list_input_examples['data_gesamt']['Klasse']))
 		if ausgabetyp=='vorschau':
 			gruppe='A'
 		if ausgabetyp=='schularbeit':
 			gruppe=dict_gruppen[int(index/2)]
-		vorschau.write("\\textsc{{\Large Klasse {0}}} \\\ [1cm]\n".format(self.dict_list_input_examples['data_gesamt']['Klasse']))
 		if ausgabetyp=='schularbeit' and maximum>2:	
-			vorschau.write("\\textsc{{\Large Gruppe {0}}} \\\ [1cm]\n".format(gruppe))
-		else:
-			vorschau.write("\\vphantom{\\textsc{\Large Gruppe}}\n")
-		
-		vorschau.write("\\Large\n"
-		"Name: \\rule{8cm}{0.4pt} \\\ \\vfill\n"
-		"\\Large\n")
+			vorschau.write("\\textsc{{\\Large Gruppe {0}}} \\\ [1cm]\n".format(gruppe))
+		# else:
+		# 	vorschau.write("\\vphantom{\\textsc{\\Large Gruppe}}\\\ [1cm] \n")
+		#vorschau.write("[1cm]")		
+		if self.dict_titlepage['name']==True: 		
+			vorschau.write("\\Large Name: \\rule{8cm}{0.4pt} \\\ \n")
+		vorschau.write("\\vfil\\vfil\\vfil \n")
+		if self.dict_titlepage['note']==True:
+			vorschau.write("\\Large Note: \\rule{8cm}{0.4pt} \\\ [1cm]\n")
+		if self.dict_titlepage['unterschrift']==True:
+			vorschau.write("\\Large Unterschrift: \\rule{8cm}{0.4pt} \\\ \n")
+
+
 		if self.dict_list_input_examples['data_gesamt']['Beurteilung']=='br':
-			vorschau.write("\\flushleft \\normalsize\n"
-			"\\beurteilungsraster{{0.875}}{{0.708}}{{0.5}}{{1/3}}{{ % Prozentschluessel\n"
+			vorschau.write("\\newpage \n"
+			"\\flushleft \\normalsize\n"
+			"\\beurteilungsraster{{0.85}}{{0.68}}{{0.5}}{{1/3}}{{ % Prozentschluessel\n"
 			"T1={{{0}}}, % Punkte im Teil 1\n"	
 			"AP={{{1}}}, % Ausgleichspunkte aus Teil 2\n"  
 			"T2={{{2}}}, % Punkte im Teil 2\n"
-			"}}".format(self.dict_list_input_examples['data_gesamt']['punkte_1'], self.dict_list_input_examples['data_gesamt']['ausgleichspunkte'], self.dict_list_input_examples['data_gesamt']['punkte_2']))
-		vorschau.write("\end{titlepage}\n\n")
+			"}} \\newpage".format(self.dict_list_input_examples['data_gesamt']['punkte_1'], self.dict_list_input_examples['data_gesamt']['ausgleichspunkte'], self.dict_list_input_examples['data_gesamt']['punkte_2']))
+
+
+		vorschau.write("\\end{titlepage}\n\n")
 		vorschau.close()	
+
+
+		# if self.dict_list_input_examples['data_gesamt']['Beurteilung']=='br':
+		# 	space=0
+
+		# vorschau.write("\\vspace*{%icm}\n"%space)
+		# if self.dict_list_input_examples['data_gesamt']['Wiederholung']==True:
+		# 	wdh= 'Wiederholung\\\ '
+		# else:
+		# 	wdh=''
+		# vorschau.write("\\flushright\n"
+		# "\\Huge\n \\textsc{{{0}{1}. Mathematikschularbeit}} \\\ \n".format(wdh, self.dict_list_input_examples['data_gesamt']['#']))
+		# vorschau.write("\\textsc{\Large am %s}\\\ [1cm]\n" %datum)
+		# if ausgabetyp=='vorschau':
+		# 	gruppe='A'
+		# if ausgabetyp=='schularbeit':
+		# 	gruppe=dict_gruppen[int(index/2)]
+		# vorschau.write("\\textsc{{\Large Klasse {0}}} \\\ [1cm]\n".format(self.dict_list_input_examples['data_gesamt']['Klasse']))
+		# if ausgabetyp=='schularbeit' and maximum>2:	
+		# 	vorschau.write("\\textsc{{\Large Gruppe {0}}} \\\ [1cm]\n".format(gruppe))
+		# else:
+		# 	vorschau.write("\\vphantom{\\textsc{\Large Gruppe}}\n")
+		
+		# vorschau.write("\\Large\n"
+		# "Name: \\rule{8cm}{0.4pt} \\\ \\vfill\n"
+		# "\\Large\n")
+		# if self.dict_list_input_examples['data_gesamt']['Beurteilung']=='br':
+		# 	vorschau.write("\\flushleft \\normalsize\n"
+		# 	"\\beurteilungsraster{{0.875}}{{0.708}}{{0.5}}{{1/3}}{{ % Prozentschluessel\n"
+		# 	"T1={{{0}}}, % Punkte im Teil 1\n"	
+		# 	"AP={{{1}}}, % Ausgleichspunkte aus Teil 2\n"  
+		# 	"T2={{{2}}}, % Punkte im Teil 2\n"
+		# 	"}}".format(self.dict_list_input_examples['data_gesamt']['punkte_1'], self.dict_list_input_examples['data_gesamt']['ausgleichspunkte'], self.dict_list_input_examples['data_gesamt']['punkte_2']))
+
+
+
 
 		vorschau=open(filename_vorschau,"a",encoding='utf8')
 		# for key, value in dict_gesammeltedateien.items():
@@ -4242,6 +4417,21 @@ class Ui_MainWindow(object):
 			if ausgabetyp=='schularbeit':
 				#print(self.dict_list_input_examples['data_gesamt']['copy_images'])
 				if index==0:
+					if self.dict_titlepage['logo']==True:
+						logo_name=os.path.basename(self.dict_titlepage['logo_path'])
+						logo_titlepage_path=os.path.join(path_programm,'Teildokument',logo_name)
+						if os.path.isfile(logo_titlepage_path):
+							shutil.copy(logo_titlepage_path,os.path.join(os.path.dirname(self.chosen_path_schularbeit_erstellen[0]), logo_name)) 
+						else:
+							msg = QtWidgets.QMessageBox()
+							msg.setIcon(QtWidgets.QMessageBox.Warning)
+							msg.setWindowIcon(QtGui.QIcon(logo_path))
+							msg.setText('Das Logo konnte nicht gefunden werden.')
+							msg.setInformativeText('Bitte suchen Sie ein Logo unter: \n\nTitelblatt anpassen - Durchsuchen')
+							msg.setWindowTitle("Kein Logo ausgewählt")
+							msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+							msg.exec_()
+
 					if self.dict_list_input_examples['data_gesamt']['copy_images']==[]:
 						pass
 					else:
@@ -4361,7 +4551,7 @@ class Ui_MainWindow(object):
 
 	def pushButton_erstellen_pressed(self):
 		self.save_dict_examples_data()
-		self.open_subwindow(self.dict_list_input_examples, self.beispieldaten_dateipfad_1 ,self.beispieldaten_dateipfad_2)
+		self.open_subwindow(self.dict_list_input_examples, self.beispieldaten_dateipfad_1 ,self.beispieldaten_dateipfad_2, self.dict_titlepage)
 
 
 	def aufgaben_suchen(self):
