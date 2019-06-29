@@ -152,12 +152,7 @@ class Ui_Dialog_titlepage(object):
 		self.btn_titlepage_logo_path.setText("Durchsuchen")
 		self.btn_titlepage_logo_path.setMaximumWidth(130)
 		self.btn_titlepage_logo_path.clicked.connect(partial(self.btn_titlepage_logo_path_pressed, dict_titlepage))
-		# self.btn_suche = QtWidgets.QPushButton(self.centralwidget)
-		# self.btn_suche.setEnabled(True)
-		# self.btn_suche.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
-		# self.btn_suche.setAcceptDrops(False)
-		# self.btn_suche.setObjectName(_fromUtf8("btn_suche"))
-		# self.horizontalLayout_2.addWidget(self.btn_suche)
+
 
 
 		self.cb_titlepage_titel= QtWidgets.QCheckBox("Titel")									  
@@ -264,6 +259,7 @@ class Ui_Dialog_titlepage(object):
 #### Dialog Window - Ausgleichspunkte
 class Ui_Dialog_typ2(object):
 	def setupUi(self, Dialog, ausgleichspunkte_split_text,list_sage_ausgleichspunkte_chosen):
+		print(list_sage_ausgleichspunkte_chosen)
 		self.ausgleichspunkte_split_text=ausgleichspunkte_split_text
 		self.Dialog=Dialog
 		self.Dialog.setObjectName("Dialog")
@@ -381,6 +377,8 @@ class Ui_Dialog_typ2(object):
 #### Dialog Window - Schularbeit erstellen 
 class Ui_Dialog(object):
 	def setupUi(self, Dialog, dict_list_input_examples, beispieldaten_dateipfad_1,beispieldaten_dateipfad_2, dict_titlepage):
+		print(dict_list_input_examples)
+		#print( beispieldaten_dateipfad_1)
 		self.dict_list_input_examples=dict_list_input_examples
 		self.beispieldaten_dateipfad_1=beispieldaten_dateipfad_1
 		self.beispieldaten_dateipfad_2=beispieldaten_dateipfad_2
@@ -521,9 +519,14 @@ class Ui_Dialog(object):
 			
 		# Ui_MainWindow.pushButton_vorschau_pressed(self, 'schularbeit',index)
 		MainWindow.show()
-		#subprocess.Popen('explorer "C:\temp"')
+		print(os.path.dirname(self.saved_file_path))
+		file_path = os.path.dirname(self.saved_file_path).replace('/','\\')
+		print(file_path)	
+		# .replace('\n', ' ')
+		subprocess.Popen('explorer "{}"'.format(file_path))
+		# subprocess.Popen('explorer "C:\Users\Christoph\Desktop"')
 
-
+	
 
 
 class Ui_MainWindow(object):
@@ -1163,11 +1166,26 @@ class Ui_MainWindow(object):
 		self.groupBox_sage.setTitle(_translate("MainWindow", "Schularbeitserstellung", None))
 		
 		
-		self.checkBox_wiederholung = QtWidgets.QCheckBox(self.groupBox_sage)
-		self.checkBox_wiederholung.setObjectName("checkBox_wiederholung")
-		self.checkBox_wiederholung.setFocusPolicy(QtCore.Qt.ClickFocus)
-		self.gridLayout_5.addWidget(self.checkBox_wiederholung, 2, 4, 1, 2)
-		self.checkBox_wiederholung.setText(_translate("MainWindow", "Wiederholung", None))
+		# self.checkBox_wiederholung = QtWidgets.QCheckBox(self.groupBox_sage)
+		# self.checkBox_wiederholung.setObjectName("checkBox_wiederholung")
+		# self.checkBox_wiederholung.setFocusPolicy(QtCore.Qt.ClickFocus)
+		# self.gridLayout_5.addWidget(self.checkBox_wiederholung, 2, 4, 1, 2)
+		# self.checkBox_wiederholung.setText(_translate("MainWindow", "Wiederholung", None))
+
+		self.comboBox_pruefungstyp = QtWidgets.QComboBox(self.groupBox_sage)
+		self.comboBox_pruefungstyp.setObjectName("comboBox_pruefungstyp")
+		self.comboBox_pruefungstyp.addItem("")
+		self.comboBox_pruefungstyp.addItem("")
+		self.comboBox_pruefungstyp.addItem("")
+		self.comboBox_pruefungstyp.addItem("")
+		self.comboBox_pruefungstyp.setItemText(0, _translate("MainWindow", "Schularbeit",None))
+		self.comboBox_pruefungstyp.setItemText(1, _translate("MainWindow", "Wiederholungsschularbeit",None))
+		self.comboBox_pruefungstyp.setItemText(2, _translate("MainWindow", "Grundkompetenzcheck",None))
+		self.comboBox_pruefungstyp.setItemText(3, _translate("MainWindow", "Wiederholungsprüfung",None))
+		self.comboBox_pruefungstyp.setFocusPolicy(QtCore.Qt.ClickFocus)
+		self.gridLayout_5.addWidget(self.comboBox_pruefungstyp, 2, 4, 1, 2)
+		#self.verticalLayout_sage.addWidget(self.comboBox_pruefungstyp)
+
 		
 
 		self.radioButton_notenschl = QtWidgets.QRadioButton(self.groupBox_sage)
@@ -3291,15 +3309,14 @@ class Ui_MainWindow(object):
 				bsp_string=all.replace(' ','').replace('.','').replace('-','_')			
 			# print(bsp_string)
 			exec('self.list_input_{0}=self.dict_list_input_examples["self.list_input_{0}"]'.format(bsp_string))		
-		
-
 		self.spinBox_nummer.setValue(self.dict_list_input_examples['data_gesamt']['#'])
 		self.lineEdit_klasse.setText(self.dict_list_input_examples['data_gesamt']['Klasse'])
+		
+		index = self.comboBox_pruefungstyp.findText(self.dict_list_input_examples['data_gesamt']['Prüfungstyp'], QtCore.Qt.MatchFixedString)
+		if index >=0:
+			self.comboBox_pruefungstyp.setCurrentIndex(index)
 
-		if self.dict_list_input_examples['data_gesamt']['Wiederholung']==True:
-			self.checkBox_wiederholung.setChecked(True)
-		if self.dict_list_input_examples['data_gesamt']['Wiederholung']==False:
-			self.checkBox_wiederholung.setChecked(False)
+
 
 		if self.dict_list_input_examples['data_gesamt']['Beurteilung']=='ns':
 			self.radioButton_notenschl.setChecked(True)
@@ -3538,7 +3555,8 @@ class Ui_MainWindow(object):
 				if name == os.path.basename(path):
 					selected_path=path
 			try:
-				del self.dict_sage_ausgleichspunkte_chosen[selected_path]
+				#del self.dict_sage_ausgleichspunkte_chosen[selected_path]
+				del self.dict_sage_ausgleichspunkte_chosen[aufgabe]
 			except KeyError:
 				pass
 	
@@ -3554,6 +3572,10 @@ class Ui_MainWindow(object):
 			self.adapt_label_gesamtbeispiele()
 			self.sage_aufgabe_create(False)
 
+		### reset Ausgleichspunkte
+		#del self.dict_sage_ausgleichspunkte_chosen[aufgabe]
+		# print(self.dict_sage_ausgleichspunkte_chosen)
+		# print(aufgabe)
 
 	def punkte_changed(self):
 		gesamtpunkte=0
@@ -3932,7 +3954,7 @@ class Ui_MainWindow(object):
 		ausgleichspunkte_split_text=ausgleichspunkte_split_text[:index_end]
 		# for all in self.dict_sage_ausgleichspunkte_chosen[selected_typ2_path]:
 		# 	print(all)
-
+		print(self.dict_sage_ausgleichspunkte_chosen)
 		if bsp_name in self.dict_sage_ausgleichspunkte_chosen.keys():
 			# print(self.dict_sage_ausgleichspunkte_chosen[selected_typ2_path])
 			# return
@@ -4130,10 +4152,10 @@ class Ui_MainWindow(object):
 			beurteilung='br'
 		else:
 			beurteilung='ns'
-		if self.checkBox_wiederholung.isChecked():
-			wdh=True
-		else:
-			wdh=False
+
+		print(self.comboBox_pruefungstyp.currentIndex())
+		print(self.comboBox_pruefungstyp.currentText())
+
 		try:
 			self.num_ausgleichspkt_gesamt
 			self.list_copy_images
@@ -4142,7 +4164,7 @@ class Ui_MainWindow(object):
 			self.list_copy_images=[]
 
 
-		dict_data_gesamt={'#': self.spinBox_nummer.value(),'Wiederholung': wdh,
+		dict_data_gesamt={'#': self.spinBox_nummer.value(),'Prüfungstyp': self.comboBox_pruefungstyp.currentText(),
 		"Datum": [self.dateEdit.date().year(),self.dateEdit.date().month(), self.dateEdit.date().day()], #.toPyDate()
 		"Klasse": self.lineEdit_klasse.text(),"Beurteilung": beurteilung,
 		"Notenschluessel": [self.spinBox_2.value(),self.spinBox_3.value(),self.spinBox_4.value(),self.spinBox_5.value()],
@@ -4153,7 +4175,7 @@ class Ui_MainWindow(object):
 		self.dict_list_input_examples['data_gesamt']=dict_data_gesamt
 		### end ###
 		
-		#print(self.dict_list_input_examples)
+		print(self.dict_list_input_examples)
 
 	def pushButton_vorschau_pressed(self, ausgabetyp, index, maximum):
 		if ausgabetyp=='vorschau':
@@ -4187,7 +4209,7 @@ class Ui_MainWindow(object):
 	
 		# print(str(self.spinBox_nummer.value()) +str(self.dateEdit.date().day()) +'. '+dict_months[self.dateEdit.date().month()]+' '+ str(self.dateEdit.date().year()))
 		raw_date=self.dict_list_input_examples['data_gesamt']['Datum']
-
+		datum_kurz=str(raw_date[2])+'. '+str(raw_date[1])+'. '+str(raw_date[0])
 		datum=str(raw_date[2]) +'. '+dict_months[raw_date[1]]+' '+ str(raw_date[0])
 		wochentag=dict_wochentag[datetime.datetime(raw_date[0],raw_date[1],raw_date[2]).weekday()]
 		datum= wochentag + ', ' + datum
@@ -4275,69 +4297,81 @@ class Ui_MainWindow(object):
 		"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"
 		"%\n"
 		"%\n"
-		"\\begin{document}\n"
-		"\\begin{titlepage}\n")
+		"\\begin{document}\n")
 		#print(self.dict_titlepage)
 
-		vorschau.write("\\flushright\n")
-		if self.dict_titlepage['logo']==True:
-			logo_name=os.path.basename(self.dict_titlepage['logo_path'])
-			logo_titlepage_path=os.path.join(path_programm,'Teildokument',logo_name)
-			if os.path.isfile(logo_titlepage_path):
-				vorschau.write('\\begin{{minipage}}[t]{{0.4\\textwidth}} \\vspace{{0pt}} \\includegraphics[width=1\\textwidth]{{{0}}}\\end{{minipage}} \\\ \\vfil \n'.format(logo_name))
-			else:
-				msg = QtWidgets.QMessageBox()
-				msg.setIcon(QtWidgets.QMessageBox.Warning)
-				msg.setWindowIcon(QtGui.QIcon(logo_path))
-				msg.setText('Das Logo konnte nicht gefunden werden.')
-				msg.setInformativeText('Bitte suchen Sie ein Logo unter: \n\nTitelblatt anpassen - Durchsuchen')
-				msg.setWindowTitle("Kein Logo ausgewählt")
-				msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
-				msg.exec_()
-
-				vorschau.write("~\\vfil \n")
-			
-		else:
-			vorschau.write("~\\vfil \n")
-		if self.dict_titlepage['titel']==True:
-			vorschau.write("\\textsc{{\\Huge {0}. Mathematikschularbeit}} \\\ \n".format(self.dict_list_input_examples['data_gesamt']['#']))
-			if self.dict_list_input_examples['data_gesamt']['Wiederholung']==True:
-				vorschau.write("[0.5cm]"
-				"\\textsc{\Huge Wiederholung} \\\ \n")
-			vorschau.write("[1cm] \n")
-		if self.dict_titlepage['datum']==True:
-			vorschau.write("\\textsc{{\Large am {0}}}\\\ [1cm] \n".format(datum))
-		if self.dict_titlepage['klasse']==True:
-			vorschau.write("\\textsc{{\Large Klasse {0}}} \\\ [1cm] \n".format(self.dict_list_input_examples['data_gesamt']['Klasse']))
-		if ausgabetyp=='vorschau':
-			gruppe='A'
+		# if ausgabetyp=='vorschau':
+		# 	gruppe='A'
 		if ausgabetyp=='schularbeit':
 			gruppe=dict_gruppen[int(index/2)]
-		if ausgabetyp=='schularbeit' and maximum>2:	
-			vorschau.write("\\textsc{{\\Large Gruppe {0}}} \\\ [1cm]\n".format(gruppe))
-		# else:
-		# 	vorschau.write("\\vphantom{\\textsc{\\Large Gruppe}}\\\ [1cm] \n")
-		#vorschau.write("[1cm]")		
-		if self.dict_titlepage['name']==True: 		
-			vorschau.write("\\Large Name: \\rule{8cm}{0.4pt} \\\ \n")
-		vorschau.write("\\vfil\\vfil\\vfil \n")
-		if self.dict_titlepage['note']==True:
-			vorschau.write("\\Large Note: \\rule{8cm}{0.4pt} \\\ [1cm]\n")
-		if self.dict_titlepage['unterschrift']==True:
-			vorschau.write("\\Large Unterschrift: \\rule{8cm}{0.4pt} \\\ \n")
+
+		if self.dict_list_input_examples['data_gesamt']['Prüfungstyp']=='Grundkompetenzcheck':
+			if ausgabetyp=='schularbeit' and maximum>2:	
+				vorschau.write('\\textsc{{Grundkompetenzcheck -- {0}}} \\hfill \\textsc{{Name:}} \\rule{{8cm}}{{0.4pt}} \\normalsize \\\ \\vspace{{\\baselineskip}} \n\n'.format(gruppe))
+			else:
+				vorschau.write('\\textsc{Grundkompetenzcheck} \\hfill \\textsc{Name:} \\rule{8cm}{0.4pt} \\normalsize \\\ \\vspace{\\baselineskip} \n\n')
+		else:
+			vorschau.write("\\begin{titlepage}\n"
+			"\\flushright\n")		
+			if self.dict_titlepage['logo']==True:
+				logo_name=os.path.basename(self.dict_titlepage['logo_path'])
+				logo_titlepage_path=os.path.join(path_programm,'Teildokument',logo_name)
+				if os.path.isfile(logo_titlepage_path):
+					vorschau.write('\\begin{{minipage}}[t]{{0.4\\textwidth}} \\vspace{{0pt}} \\includegraphics[width=1\\textwidth]{{{0}}}\\end{{minipage}} \\\ \\vfil \n'.format(logo_name))
+				else:
+					msg = QtWidgets.QMessageBox()
+					msg.setIcon(QtWidgets.QMessageBox.Warning)
+					msg.setWindowIcon(QtGui.QIcon(logo_path))
+					msg.setText('Das Logo konnte nicht gefunden werden.')
+					msg.setInformativeText('Bitte suchen Sie ein Logo unter: \n\nTitelblatt anpassen - Durchsuchen')
+					msg.setWindowTitle("Kein Logo ausgewählt")
+					msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+					msg.exec_()
+
+					vorschau.write("~\\vfil \n")
+				
+			else:
+				vorschau.write("~\\vfil \n")
+			if self.dict_titlepage['titel']==True:
+				if self.dict_list_input_examples['data_gesamt']['Prüfungstyp']=='Wiederholungsprüfung':
+					vorschau.write("\\textsc{{\\Huge Wiederholungsprüfung}} \\\ \n")
+				else:
+					vorschau.write("\\textsc{{\\Huge {0}. Mathematikschularbeit}} \\\ \n".format(self.dict_list_input_examples['data_gesamt']['#']))
+					if self.dict_list_input_examples['data_gesamt']['Prüfungstyp']=='Wiederholungsschularbeit':
+						vorschau.write("[0.5cm]"
+						"\\textsc{\Huge Wiederholung} \\\ \n")
+					vorschau.write("[1cm] \n")
+			if self.dict_titlepage['datum']==True:
+				vorschau.write("\\textsc{{\Large am {0}}}\\\ [1cm] \n".format(datum))
+			if self.dict_titlepage['klasse']==True:
+				vorschau.write("\\textsc{{\Large Klasse {0}}} \\\ [1cm] \n".format(self.dict_list_input_examples['data_gesamt']['Klasse']))
 
 
-		if self.dict_list_input_examples['data_gesamt']['Beurteilung']=='br':
-			vorschau.write("\\newpage \n"
-			"\\flushleft \\normalsize\n"
-			"\\beurteilungsraster{{0.85}}{{0.68}}{{0.5}}{{1/3}}{{ % Prozentschluessel\n"
-			"T1={{{0}}}, % Punkte im Teil 1\n"	
-			"AP={{{1}}}, % Ausgleichspunkte aus Teil 2\n"  
-			"T2={{{2}}}, % Punkte im Teil 2\n"
-			"}} \\newpage".format(self.dict_list_input_examples['data_gesamt']['punkte_1'], self.dict_list_input_examples['data_gesamt']['ausgleichspunkte'], self.dict_list_input_examples['data_gesamt']['punkte_2']))
+			if ausgabetyp=='schularbeit' and maximum>2:	
+				vorschau.write("\\textsc{{\\Large Gruppe {0}}} \\\ [1cm]\n".format(gruppe))
+			# else:
+			# 	vorschau.write("\\vphantom{\\textsc{\\Large Gruppe}}\\\ [1cm] \n")
+			#vorschau.write("[1cm]")		
+			if self.dict_titlepage['name']==True: 		
+				vorschau.write("\\Large Name: \\rule{8cm}{0.4pt} \\\ \n")
+			vorschau.write("\\vfil\\vfil\\vfil \n")
+			if self.dict_titlepage['note']==True:
+				vorschau.write("\\Large Note: \\rule{8cm}{0.4pt} \\\ [1cm]\n")
+			if self.dict_titlepage['unterschrift']==True:
+				vorschau.write("\\Large Unterschrift: \\rule{8cm}{0.4pt} \\\ \n")
 
 
-		vorschau.write("\\end{titlepage}\n\n")
+			if self.dict_list_input_examples['data_gesamt']['Beurteilung']=='br':
+				vorschau.write("\\newpage \n"
+				"\\flushleft \\normalsize\n"
+				"\\beurteilungsraster{{0.85}}{{0.68}}{{0.5}}{{1/3}}{{ % Prozentschluessel\n"
+				"T1={{{0}}}, % Punkte im Teil 1\n"	
+				"AP={{{1}}}, % Ausgleichspunkte aus Teil 2\n"  
+				"T2={{{2}}}, % Punkte im Teil 2\n"
+				"}} \\newpage".format(self.dict_list_input_examples['data_gesamt']['punkte_1'], self.dict_list_input_examples['data_gesamt']['ausgleichspunkte'], self.dict_list_input_examples['data_gesamt']['punkte_2']))
+
+
+			vorschau.write("\\end{titlepage}\n\n")
 		vorschau.close()	
 
 
@@ -4479,14 +4513,17 @@ class Ui_MainWindow(object):
 			except ValueError:
 				gk=''
 
-			if control_counter==0 and typ==1:
-				header='\\subsubsection{Typ 1 Aufgaben}\n\n'
-				control_counter+=1
-			elif control_counter==1 and typ==2:
-				header='\\subsubsection{Typ 2 Aufgaben}\n\n'
-				control_counter+=1
-			else:
+			if self.dict_list_input_examples['data_gesamt']['Prüfungstyp']=='Grundkompetenzcheck':
 				header=''
+			else:
+				if control_counter==0 and typ==1:
+					header='\\subsubsection{Typ 1 Aufgaben}\n\n'
+					control_counter+=1
+				elif control_counter==1 and typ==2:
+					header='\\subsubsection{Typ 2 Aufgaben}\n\n'
+					control_counter+=1
+				else:
+					header=''
 
 			if beispiel_typ=='beispiel':
 				if gk=='':					
@@ -4504,9 +4541,10 @@ class Ui_MainWindow(object):
 				vorschau.write("\\vspace{"+str(spinBox_abstand)+"cm} \n\n")
 		
 			
-		if self.dict_list_input_examples['data_gesamt']['Beurteilung']=='ns':
-			notenschluessel=self.dict_list_input_examples['data_gesamt']['Notenschluessel']	
-			vorschau.write("\n\n\\notenschluessel{{{0}}}{{{1}}}{{{2}}}{{{3}}}".format(notenschluessel[0]/100,notenschluessel[1]/100,notenschluessel[2]/100,notenschluessel[3]/100))
+		if self.dict_list_input_examples['data_gesamt']['Prüfungstyp']!='Grundkompetenzcheck':
+			if self.dict_list_input_examples['data_gesamt']['Beurteilung']=='ns':
+				notenschluessel=self.dict_list_input_examples['data_gesamt']['Notenschluessel']	
+				vorschau.write("\n\n\\notenschluessel{{{0}}}{{{1}}}{{{2}}}{{{3}}}".format(notenschluessel[0]/100,notenschluessel[1]/100,notenschluessel[2]/100,notenschluessel[3]/100))
 		vorschau.write("\n\n\end{document}")
 		vorschau.close()	
 
