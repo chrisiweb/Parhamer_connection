@@ -99,10 +99,10 @@ widgets_search=['actionReset','menuDateityp','menuSage','menuNeu','menuHelp','la
 
 widgets_create=['actionReset','menuBild_einf_gen','menuSuche','menuSage','menuHelp','groupBox_aufgabentyp','groupBox_ausgew_gk_cr','groupBox_bilder',
 'groupBox_2', 'groupBox_grundkompetenzen_cr', 'groupBox_punkte','groupBox_klassen_cr','groupBox_aufgabenformat','groupBox_beispieleingabe',
-'groupBox_quelle','pushButton_save'] 
+'groupBox_quelle','pushButton_save'] #'actionRefresh_Database'
 
 
-widgets_sage=['actionLoad','actionSave','actionRefresh_Database','menuSuche','menuNeu','menuHelp','comboBox_at_sage','groupBox_alle_aufgaben','groupBox_sage'] #,'comboBox_at_sage','groupBox_sage','groupBox_notenschl'
+widgets_sage=['actionLoad','actionSave','menuSuche','menuNeu','menuHelp','comboBox_at_sage','groupBox_alle_aufgaben','groupBox_sage'] #,'comboBox_at_sage','groupBox_sage','groupBox_notenschl','actionRefresh_Database'
 
 dict_picture_path={}
 set_chosen_gk=set([])
@@ -376,14 +376,15 @@ class Ui_Dialog_typ2(object):
  
 #### Dialog Window - Schularbeit erstellen 
 class Ui_Dialog(object):
-	def setupUi(self, Dialog, dict_list_input_examples, beispieldaten_dateipfad_1,beispieldaten_dateipfad_2, dict_titlepage):
-		print(dict_list_input_examples)
+	def setupUi(self, Dialog, dict_list_input_examples, beispieldaten_dateipfad_1,beispieldaten_dateipfad_2, dict_titlepage, saved_file_path):
+		#print(dict_list_input_examples)
 		#print( beispieldaten_dateipfad_1)
 		self.dict_list_input_examples=dict_list_input_examples
 		self.beispieldaten_dateipfad_1=beispieldaten_dateipfad_1
 		self.beispieldaten_dateipfad_2=beispieldaten_dateipfad_2
 		self.dict_titlepage=dict_titlepage
 		self.data_gesamt=self.dict_list_input_examples['data_gesamt']
+		self.saved_file_path = saved_file_path
 		#print(self.data_gesamt)
 		self.Dialog=Dialog
 		Dialog.setObjectName("Dialog")
@@ -486,7 +487,10 @@ class Ui_Dialog(object):
 		self.radioButton_sw_ns.setText(_translate("Dialog", "Notenschlüssel"))
 		self.pushButton_sw_save.setText(_translate("Dialog", "Speichern"))
 		self.pushButton_sw_back.setText(_translate("Dialog", "Zurück "))
-		self.groupBox_sw_data.setTitle(_translate("Dialog", "%i. Schularbeit"%self.data_gesamt['#']))
+		if self.data_gesamt['Pruefungstyp']=='Schularbeit':
+			self.groupBox_sw_data.setTitle(_translate("Dialog", "%i. Schularbeit"%self.data_gesamt['#']))
+		else:
+			self.groupBox_sw_data.setTitle(_translate("Dialog", self.data_gesamt['Pruefungstyp']))
 		self.label_sw_num_ges.setText(_translate("Dialog", "Aufgaben gesamt:"))
 		self.label_sw_num_1.setText(_translate("Dialog", "Typ1 Aufgaben:"))
 		self.label_sw_num_2.setText(_translate("Dialog", "Typ2 Aufgaben:"))
@@ -499,7 +503,7 @@ class Ui_Dialog(object):
 		self.label_sw_num_1_int.setText(_translate("Dialog", "%i"%self.data_gesamt['num_1']))
 		self.label_sw_pkt_1_int.setText(_translate("Dialog", "{0} (+{1} AP)".format(self.data_gesamt['punkte_1'], self.data_gesamt['ausgleichspunkte'])))
 		self.label_sw_pkt_2_int.setText(_translate("Dialog", "%i"%self.data_gesamt['punkte_2']))
-		self.label_sw_pkt_ges_int.setText(_translate("Dialog", "%s"%str(self.data_gesamt['punkte_1']+self.data_gesamt['punkte_2']+self.data_gesamt['ausgleichspunkte'])))
+		self.label_sw_pkt_ges_int.setText(_translate("Dialog", "%s"%str(self.data_gesamt['punkte_1']+self.data_gesamt['punkte_2']))) #+self.data_gesamt['ausgleichspunkte']
 		self.label_sw_klasse.setText(_translate("Dialog", "Klasse: %s"%self.data_gesamt['Klasse']))
 		self.groupBox_sw_gruppen.setTitle(_translate("Dialog", "Anzahl der Gruppen"))
 		self.radioButton_sw_br.setText(_translate("Dialog", "Beurteilungsraster"))
@@ -519,9 +523,9 @@ class Ui_Dialog(object):
 			
 		# Ui_MainWindow.pushButton_vorschau_pressed(self, 'schularbeit',index)
 		MainWindow.show()
-		print(os.path.dirname(self.saved_file_path))
+		#print(os.path.dirname(self.saved_file_path))
 		file_path = os.path.dirname(self.saved_file_path).replace('/','\\')
-		print(file_path)	
+		#print(file_path)	
 		# .replace('\n', ' ')
 		subprocess.Popen('explorer "{}"'.format(file_path))
 		# subprocess.Popen('explorer "C:\Users\Christoph\Desktop"')
@@ -546,10 +550,10 @@ class Ui_MainWindow(object):
 		app.aboutToQuit.connect(self.close_app)
 		
 
-	def open_subwindow(self, dict_list_input_examples,beispieldaten_dateipfad_1, beispieldaten_dateipfad_2, dict_titlepage): #, dict_gesammeltedateien
+	def open_subwindow(self, dict_list_input_examples,beispieldaten_dateipfad_1, beispieldaten_dateipfad_2, dict_titlepage, saved_file_path): #, dict_gesammeltedateien
 		self.Dialog = QtWidgets.QDialog(None, QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint)
 		self.ui = Ui_Dialog()
-		self.ui.setupUi(self.Dialog, dict_list_input_examples, beispieldaten_dateipfad_1, beispieldaten_dateipfad_2, dict_titlepage)	#, dict_gesammeltedateien
+		self.ui.setupUi(self.Dialog, dict_list_input_examples, beispieldaten_dateipfad_1, beispieldaten_dateipfad_2, dict_titlepage, saved_file_path)	#, dict_gesammeltedateien
 		self.Dialog.show()
 		self.Dialog.exec_()
 		#print(dict_gesammeltedateien)
@@ -925,7 +929,7 @@ class Ui_MainWindow(object):
 		self.plainTextEdit.setObjectName(_fromUtf8("plainTextEdit"))
 		self.gridLayout_10.addWidget(self.plainTextEdit, 1, 0, 1, 1)
 		self.gridLayout.addWidget(self.groupBox_beispieleingabe, 3, 2, 4, 4)
-		self.groupBox_beispieleingabe.setTitle(_translate("MainWindow", "Beispieleingabe", None))
+		self.groupBox_beispieleingabe.setTitle(_translate("MainWindow", "Aufgabeneingabe", None))
 		self.label.setText(_translate("MainWindow", "Info: Eingabe des Aufgabentextes zwischen \\begin{beispiel} ... \\end{beispiel}", None))
 		self.groupBox_beispieleingabe.hide()
 
@@ -2129,6 +2133,14 @@ class Ui_MainWindow(object):
 		return datetime.datetime.fromtimestamp(t)	
 		
 	def refresh_ddb(self):
+		msg = QtWidgets.QMessageBox()
+		msg.setWindowIcon(QtGui.QIcon(logo_path))
+		msg.setWindowTitle("Refresh Database...")
+		msg.setStandardButtons(QtWidgets.QMessageBox.NoButton)
+		msg.setText('Datenbank wird aktualisiert. Bitte warten...')
+
+		msg.show()
+		QApplication.processEvents()
 		QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 		for selected_aufgabentyp in [1,2]:
 			beispieldaten_dateipfad = {}
@@ -2186,7 +2198,7 @@ class Ui_MainWindow(object):
 
 			self.label_update.setText(_translate("MainWindow", 'Last Update: ' + self.modification_date(log_file).strftime('%d.%m.%y - %H:%M'), None))
 		QtWidgets.QApplication.restoreOverrideCursor()
-
+		msg.close()
 
 		
 		
@@ -2529,7 +2541,7 @@ class Ui_MainWindow(object):
 			msg = QtWidgets.QMessageBox()
 			msg.setIcon(QtWidgets.QMessageBox.Warning)
 			msg.setWindowIcon(QtGui.QIcon(logo_path))
-			msg.setText("Es wurden keine passenden Beispiele gefunden!")
+			msg.setText("Es wurden keine passenden Aufgaben gefunden!")
 			msg.setInformativeText('Es wird keine Datei ausgegeben.')
 			msg.setWindowTitle("Warnung")
 			#msg.setDetailedText("The details are as follows:")
@@ -2580,7 +2592,7 @@ class Ui_MainWindow(object):
 		msg = QtWidgets.QMessageBox()
 		msg.setIcon(QtWidgets.QMessageBox.Question)
 		msg.setWindowIcon(QtGui.QIcon(logo_path))
-		msg.setText('Insgesamt wurden '+ str(len(dict_gesammeltedateien)) + ' Beispiele gefunden.\n ')
+		msg.setText('Insgesamt wurden '+ str(len(dict_gesammeltedateien)) + ' Aufgaben gefunden.\n ')
 		msg.setInformativeText('Soll die PDF Datei erstellt werden?')
 		msg.setWindowTitle("Datei ausgeben?")
 		msg.setStandardButtons(QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
@@ -2592,9 +2604,14 @@ class Ui_MainWindow(object):
 		ret=msg.exec_()
 		
 		if ret==QtWidgets.QMessageBox.Yes:
-			#MainWindow.lower()
+			# geometry=MainWindow.geometry()
+			# print(geometry)
+			# MainWindow.hide()
 			self.create_pdf('Teildokument',0,0)
-			#MainWindow.raise_()
+			# MainWindow.show()
+			# MainWindow.move(geometry.x(),geometry.y())
+			# MainWindow.resize(geometry.width(), geometry.height())
+
 			#sys.exit(0)
 		
 		
@@ -2665,11 +2682,11 @@ class Ui_MainWindow(object):
 			if ret==QtWidgets.QMessageBox.Yes:
 				#filename =	 filedialog.askopenfilenames(initialdir = last_path,title = "Durchsuchen...",filetypes = (('JPG-Dateien','*.jpg'),("Alle Dateien","*.*")))
 				try:
-					self.saved_file_path	
+					os.path.dirname(self.saved_file_path)	
 				except AttributeError:
 					self.saved_file_path=path_programm				
 				
-				filename = QtWidgets.QFileDialog.getOpenFileNames(None, 'Select a folder:', self.saved_file_path, 'Bilder (*.jpg)')
+				filename = QtWidgets.QFileDialog.getOpenFileNames(None, 'Select a folder:', os.path.dirname(self.saved_file_path), 'Bilder (*.jpg)')
 				if filename[0]!=[]:
 					self.saved_file_path=filename[0]
 					for all in filename[0]:
@@ -3271,11 +3288,11 @@ class Ui_MainWindow(object):
 	def sage_load(self):
 		global list_sage_examples
 		try:
-			self.saved_file_path	
+			os.path.dirname(self.saved_file_path)	
 		except AttributeError:
 			self.saved_file_path=path_programm	
 
-		path_backup_file = QtWidgets.QFileDialog.getOpenFileName(None, 'Öffnen', self.saved_file_path, 'LaMA Datei (*.lama);; Alle Dateien (*.*)')
+		path_backup_file = QtWidgets.QFileDialog.getOpenFileName(None, 'Öffnen', os.path.dirname(self.saved_file_path), 'LaMA Datei (*.lama);; Alle Dateien (*.*)')
 		if path_backup_file[0]=='':
 			return
 		self.saved_file_path=path_backup_file[0]
@@ -3312,7 +3329,10 @@ class Ui_MainWindow(object):
 		self.spinBox_nummer.setValue(self.dict_list_input_examples['data_gesamt']['#'])
 		self.lineEdit_klasse.setText(self.dict_list_input_examples['data_gesamt']['Klasse'])
 		
-		index = self.comboBox_pruefungstyp.findText(self.dict_list_input_examples['data_gesamt']['Prüfungstyp'], QtCore.Qt.MatchFixedString)
+		try:
+			index = self.comboBox_pruefungstyp.findText(self.dict_list_input_examples['data_gesamt']['Pruefungstyp'], QtCore.Qt.MatchFixedString)
+		except KeyError:
+			index=0
 		if index >=0:
 			self.comboBox_pruefungstyp.setCurrentIndex(index)
 
@@ -3652,13 +3672,14 @@ class Ui_MainWindow(object):
 				list_input[1]=space_value.value()	
 			except AttributeError:
 				if typ==1:
-					exec('self.list_input_{0}=[{1},0,""]'.format(bsp_string, self.spinBox_default_pkt.value()))
+					exec('self.list_input_{0}=[{1},0,"",""]'.format(bsp_string, self.spinBox_default_pkt.value()))
 				if typ==2:
 					exec('self.list_input_{}=[0,0,"",""]'.format(bsp_string))
 				list_input =eval('self.list_input_{}'.format(bsp_string))
 			#print(list_input)
 
 	def sage_aufgabe_create(self, file_loaded):
+		QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 		self.num_ausgleichspkt_gesamt=0	
 		r=0
 		scrollBar_position=self.scrollArea_chosen.verticalScrollBar().value()
@@ -3674,8 +3695,7 @@ class Ui_MainWindow(object):
 			except AttributeError:
 				pass
 
-		# print(file_loaded)
-		# return
+
 		if file_loaded==False:
 			self.update_lists_examples()
 	
@@ -3691,7 +3711,9 @@ class Ui_MainWindow(object):
 				filename = os.path.basename(self.beispieldaten_dateipfad_1[all])	
 				if name==filename:
 					x=all.split(' - ')
+					#print(x[-2])
 					list_input[2]=x[-3]
+					list_input[3]=x[-2]
 
 			for all in self.beispieldaten_dateipfad_2:
 				filename = os.path.basename(self.beispieldaten_dateipfad_2[all])	
@@ -3712,7 +3734,8 @@ class Ui_MainWindow(object):
 		
 		
 		for all in list_sage_examples:
-			#print(self.dict_list_input_examples)
+			# print(all)
+			# print(self.dict_list_input_examples)
 			if re.search('[A-Z]',all)==None:
 				bsp_string=all
 				typ=2
@@ -3740,7 +3763,17 @@ class Ui_MainWindow(object):
 			label_aufgabe.setWordWrap(True)
 			label_aufgabe.setObjectName("label_aufgabe_{}".format(bsp_string))
 			self.gridLayout_gB.addWidget(label_aufgabe, 0, 0, 1, 1)
-			label_aufgabe.setText(_translate("MainWindow", "{}".format(all),None))
+			
+			if typ==1:
+				try:
+					aufgabenformat= "("+dict_aufgabenformate[list_input[3].lower()]+")"
+				except KeyError:
+					aufgabenformat=""
+				
+				label_aufgabe.setText(_translate("MainWindow", "{0} {1}".format(all, aufgabenformat),None))
+			if typ==2:
+				label_aufgabe.setText(_translate("MainWindow", "{0}".format(all),None))
+
 
 			exec('self.label_title_{} = QtWidgets.QLabel(x)'.format(bsp_string))
 			label_title=eval('self.label_title_{}'.format(bsp_string))		
@@ -3847,11 +3880,7 @@ class Ui_MainWindow(object):
 			f=open(selected_path,'r', encoding='utf8')
 			content=f.read()
 			f.close()
-			# except UnboundLocalError:
-			# 	x.hide()
-			# 	self.warning_window('Das Beispiel "{}" konnte in der Datenbank nicht gefunden werden. \n\n Tipp: Datenbank aktualisieren'.format(name))
-			# 	return
-				
+	
 
 
 			if "\\includegraphics" in content:
@@ -3902,16 +3931,12 @@ class Ui_MainWindow(object):
 		
 		self.punkte_changed()
 		self.beurteilungsraster_changed()
-
+		QtWidgets.QApplication.restoreOverrideCursor()
 			
 
 	def pushButton_ausgleich_pressed(self, bsp_name, selected_typ2_path, content):
-		#print(os.path.basename(selected_typ2_path))
-		# f=open(selected_typ2_path,'r', encoding='utf8')
-		# content=f.read()
-		# f.close()
-		# print(content)
-		# return
+
+
 		x=re.split('Aufgabenstellung:}|subsection{Lösungserwartung:}',content)
 		
 		str_file=x[1].replace('\t','')
@@ -3954,7 +3979,7 @@ class Ui_MainWindow(object):
 		ausgleichspunkte_split_text=ausgleichspunkte_split_text[:index_end]
 		# for all in self.dict_sage_ausgleichspunkte_chosen[selected_typ2_path]:
 		# 	print(all)
-		print(self.dict_sage_ausgleichspunkte_chosen)
+		#print(self.dict_sage_ausgleichspunkte_chosen)
 		if bsp_name in self.dict_sage_ausgleichspunkte_chosen.keys():
 			# print(self.dict_sage_ausgleichspunkte_chosen[selected_typ2_path])
 			# return
@@ -4153,8 +4178,8 @@ class Ui_MainWindow(object):
 		else:
 			beurteilung='ns'
 
-		print(self.comboBox_pruefungstyp.currentIndex())
-		print(self.comboBox_pruefungstyp.currentText())
+		# print(self.comboBox_pruefungstyp.currentIndex())
+		# print(self.comboBox_pruefungstyp.currentText())
 
 		try:
 			self.num_ausgleichspkt_gesamt
@@ -4164,7 +4189,7 @@ class Ui_MainWindow(object):
 			self.list_copy_images=[]
 
 
-		dict_data_gesamt={'#': self.spinBox_nummer.value(),'Prüfungstyp': self.comboBox_pruefungstyp.currentText(),
+		dict_data_gesamt={'#': self.spinBox_nummer.value(),'Pruefungstyp': self.comboBox_pruefungstyp.currentText(),
 		"Datum": [self.dateEdit.date().year(),self.dateEdit.date().month(), self.dateEdit.date().day()], #.toPyDate()
 		"Klasse": self.lineEdit_klasse.text(),"Beurteilung": beurteilung,
 		"Notenschluessel": [self.spinBox_2.value(),self.spinBox_3.value(),self.spinBox_4.value(),self.spinBox_5.value()],
@@ -4175,7 +4200,7 @@ class Ui_MainWindow(object):
 		self.dict_list_input_examples['data_gesamt']=dict_data_gesamt
 		### end ###
 		
-		print(self.dict_list_input_examples)
+		#print(self.dict_list_input_examples)
 
 	def pushButton_vorschau_pressed(self, ausgabetyp, index, maximum):
 		if ausgabetyp=='vorschau':
@@ -4219,11 +4244,10 @@ class Ui_MainWindow(object):
 		if ausgabetyp=='schularbeit':
 			dict_umlaute={'Ä':'AE','ä':'ae','Ö':'OE','ö':'oe', 'Ü':'ue', 'ü':'ue','ß':'ss'}
 			if index==0:
-				try:
-					self.saved_file_path	
-				except AttributeError:
-					self.saved_file_path=path_programm				
-				self.chosen_path_schularbeit_erstellen= QtWidgets.QFileDialog.getSaveFileName(None, 'Speicherort wählen', self.saved_file_path, 'TeX Dateien (*.tex);; Alle Dateien (*.*)')
+
+				#self.saved_file_path=path_programm				
+				
+				self.chosen_path_schularbeit_erstellen= QtWidgets.QFileDialog.getSaveFileName(None, 'Speicherort wählen', os.path.dirname(self.saved_file_path), 'TeX Dateien (*.tex);; Alle Dateien (*.*)')
 				
 				if self.chosen_path_schularbeit_erstellen[0]=='':
 					QtWidgets.QApplication.restoreOverrideCursor()
@@ -4288,8 +4312,11 @@ class Ui_MainWindow(object):
 			comment=''
 
 		vorschau.write("\setcounter{{Zufall}}{{{0}}}{1}\n\n\n".format(int(index/2),comment))
-		vorschau.write("\pagestyle{empty} %PAGESTYLE: empty, plain, fancy\n"
-		"\onehalfspacing %Zeilenabstand\n"
+		if ausgabetyp=='vorschau' or ausgabetyp=='schularbeit':
+			vorschau.write("\pagestyle{plain} %PAGESTYLE: empty, plain\n")
+		else:
+			vorschau.write("\pagestyle{empty} %PAGESTYLE: empty, plain\n")
+		vorschau.write("\onehalfspacing %Zeilenabstand\n"
 		"\setcounter{secnumdepth}{-1} % keine Nummerierung der Ueberschriften\n\n\n\n"
 		"%\n"
 		"%\n"
@@ -4305,7 +4332,7 @@ class Ui_MainWindow(object):
 		if ausgabetyp=='schularbeit':
 			gruppe=dict_gruppen[int(index/2)]
 
-		if self.dict_list_input_examples['data_gesamt']['Prüfungstyp']=='Grundkompetenzcheck':
+		if self.dict_list_input_examples['data_gesamt']['Pruefungstyp']=='Grundkompetenzcheck':
 			if ausgabetyp=='schularbeit' and maximum>2:	
 				vorschau.write('\\textsc{{Grundkompetenzcheck -- {0}}} \\hfill \\textsc{{Name:}} \\rule{{8cm}}{{0.4pt}} \\normalsize \\\ \\vspace{{\\baselineskip}} \n\n'.format(gruppe))
 			else:
@@ -4333,11 +4360,11 @@ class Ui_MainWindow(object):
 			else:
 				vorschau.write("~\\vfil \n")
 			if self.dict_titlepage['titel']==True:
-				if self.dict_list_input_examples['data_gesamt']['Prüfungstyp']=='Wiederholungsprüfung':
+				if self.dict_list_input_examples['data_gesamt']['Pruefungstyp']=='Wiederholungsprüfung':
 					vorschau.write("\\textsc{{\\Huge Wiederholungsprüfung}} \\\ \n")
 				else:
 					vorschau.write("\\textsc{{\\Huge {0}. Mathematikschularbeit}} \\\ \n".format(self.dict_list_input_examples['data_gesamt']['#']))
-					if self.dict_list_input_examples['data_gesamt']['Prüfungstyp']=='Wiederholungsschularbeit':
+					if self.dict_list_input_examples['data_gesamt']['Pruefungstyp']=='Wiederholungsschularbeit':
 						vorschau.write("[0.5cm]"
 						"\\textsc{\Huge Wiederholung} \\\ \n")
 					vorschau.write("[1cm] \n")
@@ -4513,7 +4540,7 @@ class Ui_MainWindow(object):
 			except ValueError:
 				gk=''
 
-			if self.dict_list_input_examples['data_gesamt']['Prüfungstyp']=='Grundkompetenzcheck':
+			if self.dict_list_input_examples['data_gesamt']['Pruefungstyp']=='Grundkompetenzcheck':
 				header=''
 			else:
 				if control_counter==0 and typ==1:
@@ -4541,7 +4568,7 @@ class Ui_MainWindow(object):
 				vorschau.write("\\vspace{"+str(spinBox_abstand)+"cm} \n\n")
 		
 			
-		if self.dict_list_input_examples['data_gesamt']['Prüfungstyp']!='Grundkompetenzcheck':
+		if self.dict_list_input_examples['data_gesamt']['Pruefungstyp']!='Grundkompetenzcheck':
 			if self.dict_list_input_examples['data_gesamt']['Beurteilung']=='ns':
 				notenschluessel=self.dict_list_input_examples['data_gesamt']['Notenschluessel']	
 				vorschau.write("\n\n\\notenschluessel{{{0}}}{{{1}}}{{{2}}}{{{3}}}".format(notenschluessel[0]/100,notenschluessel[1]/100,notenschluessel[2]/100,notenschluessel[3]/100))
@@ -4589,7 +4616,11 @@ class Ui_MainWindow(object):
 
 	def pushButton_erstellen_pressed(self):
 		self.save_dict_examples_data()
-		self.open_subwindow(self.dict_list_input_examples, self.beispieldaten_dateipfad_1 ,self.beispieldaten_dateipfad_2, self.dict_titlepage)
+		try:
+			self.saved_file_path
+		except AttributeError:
+			self.saved_file_path=path_programm
+		self.open_subwindow(self.dict_list_input_examples, self.beispieldaten_dateipfad_1 ,self.beispieldaten_dateipfad_2, self.dict_titlepage, self.saved_file_path)
 
 
 	def aufgaben_suchen(self):
