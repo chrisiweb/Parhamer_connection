@@ -259,7 +259,7 @@ class Ui_Dialog_titlepage(object):
 #### Dialog Window - Ausgleichspunkte
 class Ui_Dialog_typ2(object):
 	def setupUi(self, Dialog, ausgleichspunkte_split_text,list_sage_ausgleichspunkte_chosen):
-		print(list_sage_ausgleichspunkte_chosen)
+		#print(list_sage_ausgleichspunkte_chosen)
 		self.ausgleichspunkte_split_text=ausgleichspunkte_split_text
 		self.Dialog=Dialog
 		self.Dialog.setObjectName("Dialog")
@@ -1375,16 +1375,18 @@ class Ui_MainWindow(object):
 		self.gridLayout_6.addWidget(self.label_typ1_pkt, 0, 0, 1, 1)
 		# self.label_typ1_pkt.setText(_translate("MainWindow", "Punkte Typ 1: 0",None))
 
+		self.label_typ2_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsra)
+		self.label_typ2_pkt.setObjectName("label_typ2_pkt")
+		self.gridLayout_6.addWidget(self.label_typ2_pkt, 1, 0, 1, 1)
+
 
 		self.label_ausgleich_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsra)
 		self.label_ausgleich_pkt.setObjectName("label_ausgleich_pkt")
-		self.gridLayout_6.addWidget(self.label_ausgleich_pkt, 1, 0, 1, 1)
+		self.gridLayout_6.addWidget(self.label_ausgleich_pkt, 2, 0, 1, 1)
 		# self.label_ausgleich_pkt.setText(_translate("MainWindow", "Ausgleichspunkte: 0",None))
 
 
-		self.label_typ2_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsra)
-		self.label_typ2_pkt.setObjectName("label_typ2_pkt")
-		self.gridLayout_6.addWidget(self.label_typ2_pkt, 2, 0, 1, 1)
+
 		#self.label_typ2_pkt.setText(_translate("MainWindow", "Punkte Typ 2: 0",None))
 
 		self.groupBox_beurteilungsra.setTitle(_translate("MainWindow", "Beurteilungsraster",None))
@@ -2846,7 +2848,8 @@ class Ui_MainWindow(object):
 			'Bilder: {5}\n'.format(self.comboBox_aufgabentyp_cr.currentText(),
 			edit_titel,aufgabenformat,gk,self.lineEdit_quelle.text(),bilder))
 			# msg.setInformativeText('Soll die PDF Datei erstellt werden?')
-			self.cb_confirm= QtWidgets.QCheckBox("Hiermit bestätige ich, dass ich die eingegebene Aufgabe eigenständig\nund unter Berücksichtigung des Urheberrechtsgesetzes verfasst habe.")									  
+			self.cb_confirm= QtWidgets.QCheckBox("Hiermit bestätige ich, dass ich die eingegebene Aufgabe eigenständig\nund unter Berücksichtigung des Urheberrechtsgesetzes verfasst habe.\n"
+			"Ich stelle die eingegebene Aufgabe frei gemäß der Lizenz CC0 1.0 zur Verfügung.\nDie Aufgabe darf daher zu jeder Zeit frei verwendet, kopiert und verändert werden.")									  
 			self.cb_confirm.setObjectName(_fromUtf8("cb_confirm"))
 			msg.setCheckBox(self.cb_confirm)
 			msg.setStandardButtons(QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
@@ -2863,7 +2866,7 @@ class Ui_MainWindow(object):
 					if ret==QtWidgets.QMessageBox.No:
 						return
 					else:
-						self.warning_window('Bitte bestätigen Sie die Eigenständigkeitserklärung.')	
+						self.warning_window('Bitte bestätigen Sie die Eigenständigkeitserklärung und Lizenzvereinbarung.')	
 						ret=msg.exec_()
 			else:
 				return		
@@ -3441,8 +3444,8 @@ class Ui_MainWindow(object):
 			self.gridLayout_5.addWidget(self.groupBox_beurteilungsra, 6, 0, 1, 7)
 			self.save_dict_examples_data()
 			self.label_typ1_pkt.setText(_translate("MainWindow", "Punkte Typ 1: {}".format(self.pkt_typ1),None))
-			self.label_ausgleich_pkt.setText(_translate("MainWindow", "Ausgleichspunkte: {}".format(self.num_ausgleichspkt_gesamt),None))
 			self.label_typ2_pkt.setText(_translate("MainWindow", "Punkte Typ 2: {}".format(self.pkt_typ2),None))
+			self.label_ausgleich_pkt.setText(_translate("MainWindow", "(davon Ausgleichspunkte: {})".format(self.num_ausgleichspkt_gesamt),None))
 			self.groupBox_beurteilungsra.show()
 			
 		if self.radioButton_notenschl.isChecked():
@@ -3789,6 +3792,7 @@ class Ui_MainWindow(object):
 			if typ==1:
 				self.groupBox_pkt.setMaximumSize(QtCore.QSize(80, 16777215))
 			if typ==2:
+				self.groupBox_pkt.setToolTip("Die Punkte stehen für die Gesamtpunkte dieser Aufgabe.\nEs müssen daher auch die Ausgleichspunkte berücksichtigt werden.")
 				self.groupBox_pkt.setMaximumSize(QtCore.QSize(150, 16777215))
 			self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBox_pkt)
 			self.gridLayout_3.setObjectName("gridLayout_3")
@@ -4325,10 +4329,8 @@ class Ui_MainWindow(object):
 		"%\n"
 		"%\n"
 		"\\begin{document}\n")
-		#print(self.dict_titlepage)
 
-		# if ausgabetyp=='vorschau':
-		# 	gruppe='A'
+
 		if ausgabetyp=='schularbeit':
 			gruppe=dict_gruppen[int(index/2)]
 
@@ -4400,41 +4402,6 @@ class Ui_MainWindow(object):
 
 			vorschau.write("\\end{titlepage}\n\n")
 		vorschau.close()	
-
-
-		# if self.dict_list_input_examples['data_gesamt']['Beurteilung']=='br':
-		# 	space=0
-
-		# vorschau.write("\\vspace*{%icm}\n"%space)
-		# if self.dict_list_input_examples['data_gesamt']['Wiederholung']==True:
-		# 	wdh= 'Wiederholung\\\ '
-		# else:
-		# 	wdh=''
-		# vorschau.write("\\flushright\n"
-		# "\\Huge\n \\textsc{{{0}{1}. Mathematikschularbeit}} \\\ \n".format(wdh, self.dict_list_input_examples['data_gesamt']['#']))
-		# vorschau.write("\\textsc{\Large am %s}\\\ [1cm]\n" %datum)
-		# if ausgabetyp=='vorschau':
-		# 	gruppe='A'
-		# if ausgabetyp=='schularbeit':
-		# 	gruppe=dict_gruppen[int(index/2)]
-		# vorschau.write("\\textsc{{\Large Klasse {0}}} \\\ [1cm]\n".format(self.dict_list_input_examples['data_gesamt']['Klasse']))
-		# if ausgabetyp=='schularbeit' and maximum>2:	
-		# 	vorschau.write("\\textsc{{\Large Gruppe {0}}} \\\ [1cm]\n".format(gruppe))
-		# else:
-		# 	vorschau.write("\\vphantom{\\textsc{\Large Gruppe}}\n")
-		
-		# vorschau.write("\\Large\n"
-		# "Name: \\rule{8cm}{0.4pt} \\\ \\vfill\n"
-		# "\\Large\n")
-		# if self.dict_list_input_examples['data_gesamt']['Beurteilung']=='br':
-		# 	vorschau.write("\\flushleft \\normalsize\n"
-		# 	"\\beurteilungsraster{{0.875}}{{0.708}}{{0.5}}{{1/3}}{{ % Prozentschluessel\n"
-		# 	"T1={{{0}}}, % Punkte im Teil 1\n"	
-		# 	"AP={{{1}}}, % Ausgleichspunkte aus Teil 2\n"  
-		# 	"T2={{{2}}}, % Punkte im Teil 2\n"
-		# 	"}}".format(self.dict_list_input_examples['data_gesamt']['punkte_1'], self.dict_list_input_examples['data_gesamt']['ausgleichspunkte'], self.dict_list_input_examples['data_gesamt']['punkte_2']))
-
-
 
 
 		vorschau=open(filename_vorschau,"a",encoding='utf8')
