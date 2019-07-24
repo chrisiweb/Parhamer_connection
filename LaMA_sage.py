@@ -501,8 +501,8 @@ class Ui_Dialog(object):
 		self.label_sw_num_ges_int.setText(_translate("Dialog", "%s"%str(self.data_gesamt['num_1']+self.data_gesamt['num_2'])))
 		self.label_sw_num_2_int.setText(_translate("Dialog", "%i"%self.data_gesamt['num_2']))
 		self.label_sw_num_1_int.setText(_translate("Dialog", "%i"%self.data_gesamt['num_1']))
-		self.label_sw_pkt_1_int.setText(_translate("Dialog", "{0} (+{1} AP)".format(self.data_gesamt['punkte_1'], self.data_gesamt['ausgleichspunkte'])))
-		self.label_sw_pkt_2_int.setText(_translate("Dialog", "%i"%self.data_gesamt['punkte_2']))
+		self.label_sw_pkt_1_int.setText(_translate("Dialog", "{0}".format(self.data_gesamt['punkte_1'])))
+		self.label_sw_pkt_2_int.setText(_translate("Dialog", "{0} (davon {1} AP)".format(self.data_gesamt['punkte_2'], self.data_gesamt['ausgleichspunkte'])))
 		self.label_sw_pkt_ges_int.setText(_translate("Dialog", "%s"%str(self.data_gesamt['punkte_1']+self.data_gesamt['punkte_2']))) #+self.data_gesamt['ausgleichspunkte']
 		self.label_sw_klasse.setText(_translate("Dialog", "Klasse: %s"%self.data_gesamt['Klasse']))
 		self.groupBox_sw_gruppen.setTitle(_translate("Dialog", "Anzahl der Gruppen"))
@@ -930,7 +930,7 @@ class Ui_MainWindow(object):
 		self.gridLayout_10.addWidget(self.plainTextEdit, 1, 0, 1, 1)
 		self.gridLayout.addWidget(self.groupBox_beispieleingabe, 3, 2, 4, 4)
 		self.groupBox_beispieleingabe.setTitle(_translate("MainWindow", "Aufgabeneingabe", None))
-		self.label.setText(_translate("MainWindow", "Info: Eingabe des Aufgabentextes zwischen \\begin{beispiel} ... \\end{beispiel}", None))
+		self.label.setText(_translate("MainWindow", "Info: Eingabe des Aufgabentextes zwischen \\begin{beispiel}...\\end{beispiel}", None))
 		self.groupBox_beispieleingabe.hide()
 
 		#### CREATE CHECKBOXES ####
@@ -2137,7 +2137,7 @@ class Ui_MainWindow(object):
 	def refresh_ddb(self):
 		msg = QtWidgets.QMessageBox()
 		msg.setWindowIcon(QtGui.QIcon(logo_path))
-		msg.setWindowTitle("Refresh Database...")
+		msg.setWindowTitle("Refresh Database")
 		msg.setStandardButtons(QtWidgets.QMessageBox.NoButton)
 		msg.setText('Datenbank wird aktualisiert. Bitte warten...')
 
@@ -2632,9 +2632,9 @@ class Ui_MainWindow(object):
 		except AttributeError:
 			self.saved_file_path=path_programm
 		list_filename = QtWidgets.QFileDialog.getOpenFileNames(None, 'Grafiken wählen', self.saved_file_path, 'Grafiken (*.eps)')
-		if list_filename[0]=='':
+		if list_filename[0]==[]:
 			return	
-		self.saved_file_path=list_filename
+		self.saved_file_path=os.path.dirname(list_filename[0][0])
 
 		i=len(dict_picture_path)
 		
@@ -3080,6 +3080,16 @@ class Ui_MainWindow(object):
 					x=os.rename(copy_image_file_temp,'%s/Beispieleinreichung/Bilder/'%path_programm +str(max_integer_file+1)+'_'+tail) ### indirect save		
 
 
+		if " - " in edit_titel:
+			edit_titel=edit_titel.replace(" - ","-")
+
+
+
+		if " - " in self.lineEdit_quelle.text():
+			quelle=self.lineEdit_quelle.text().replace(" - ","-")
+		else:
+			quelle=self.lineEdit_quelle.text() 
+
 
 		if self.comboBox_aufgabentyp_cr.currentText()=='Typ 1':
 			if self.creator_mode=='admin':
@@ -3115,7 +3125,7 @@ class Ui_MainWindow(object):
 					return	
 				
 				
-				file.write('\section{'+file_name_klasse+' - '+list_chosen_gk[0].upper()+" - "+str(max_integer_file+1) +" - " + edit_titel+" - "+chosen_af+' - '+self.lineEdit_quelle.text()+"}\n\n"
+				file.write('\section{'+file_name_klasse+' - '+list_chosen_gk[0].upper()+" - "+str(max_integer_file+1) +" - " + edit_titel+" - "+chosen_af+' - '+quelle+"}\n\n"
 				"\\begin{beispiel}["+file_name_klasse+' - '+list_chosen_gk[0].upper()+"]{"+str(self.spinBox_punkte.value())+"}\n"+textBox_Entry+
 				"\n\\end{beispiel}")
 				file.close()
@@ -3138,7 +3148,7 @@ class Ui_MainWindow(object):
 
 				if self.comboBox_klassen_cr.currentText()=='-':
 					chosen_af=list(dict_aufgabenformate.keys())[list(dict_aufgabenformate.values()).index(self.comboBox_af.currentText())].upper()
-					file.write("\section{"+dict_gk[list_chosen_gk[0]]+" - "+str(max_integer_file+1) +" - "+edit_titel+" - "+chosen_af+" - "+self.lineEdit_quelle.text()+"}\n\n"
+					file.write("\section{"+dict_gk[list_chosen_gk[0]]+" - "+str(max_integer_file+1) +" - "+edit_titel+" - "+chosen_af+" - "+quelle+"}\n\n"
 					"\\begin{beispiel}["+dict_gk[list_chosen_gk[0]]+"]{"+str(self.spinBox_punkte.value())+"}\n"+textBox_Entry+
 					"\n\\end{beispiel}")
 				else:
@@ -3147,7 +3157,7 @@ class Ui_MainWindow(object):
 					except AttributeError:
 						klasse='MAT'			
 					chosen_af=list(dict_aufgabenformate.keys())[list(dict_aufgabenformate.values()).index(self.comboBox_af.currentText())].upper()
-					file.write("\section{"+dict_gk[list_chosen_gk[0]]+" - "+str(max_integer_file+1) +' - '+ klasse +" - "+edit_titel+" - "+chosen_af+" - "+self.lineEdit_quelle.text()+"}\n\n"
+					file.write("\section{"+dict_gk[list_chosen_gk[0]]+" - "+str(max_integer_file+1) +' - '+ klasse +" - "+edit_titel+" - "+chosen_af+" - "+quelle+"}\n\n"
 					"\\begin{beispiel}["+dict_gk[list_chosen_gk[0]]+"]{"+str(self.spinBox_punkte.value())+"}\n"+textBox_Entry+
 					"\n\\end{beispiel}")		
 				file.close()			
@@ -3227,7 +3237,7 @@ class Ui_MainWindow(object):
 				if gk_auswahl !=[]:
 					gk=gk_auswahl_joined+' - '
 
-			file.write("\section{"+str(max_integer_file+1)+' - '+klasse + themen_klasse + gk +edit_titel+" - "+self.lineEdit_quelle.text()+"}\n\n"
+			file.write("\section{"+str(max_integer_file+1)+' - '+klasse + themen_klasse + gk +edit_titel+" - "+quelle+"}\n\n"
 			"\\begin{langesbeispiel} \item["+str(self.spinBox_punkte.value())+"] %PUNKTE DES BEISPIELS\n"+textBox_Entry+
 			"\n\\end{langesbeispiel}")			
 
@@ -4391,13 +4401,14 @@ class Ui_MainWindow(object):
 
 
 			if self.dict_list_input_examples['data_gesamt']['Beurteilung']=='br':
+				exkl_teil2_pkt= self.dict_list_input_examples['data_gesamt']['punkte_2']-self.dict_list_input_examples['data_gesamt']['ausgleichspunkte']
 				vorschau.write("\\newpage \n"
 				"\\flushleft \\normalsize\n"
 				"\\beurteilungsraster{{0.85}}{{0.68}}{{0.5}}{{1/3}}{{ % Prozentschluessel\n"
 				"T1={{{0}}}, % Punkte im Teil 1\n"	
 				"AP={{{1}}}, % Ausgleichspunkte aus Teil 2\n"  
 				"T2={{{2}}}, % Punkte im Teil 2\n"
-				"}} \\newpage".format(self.dict_list_input_examples['data_gesamt']['punkte_1'], self.dict_list_input_examples['data_gesamt']['ausgleichspunkte'], self.dict_list_input_examples['data_gesamt']['punkte_2']))
+				"}} \\newpage".format(self.dict_list_input_examples['data_gesamt']['punkte_1'], self.dict_list_input_examples['data_gesamt']['ausgleichspunkte'],exkl_teil2_pkt))
 
 
 			vorschau.write("\\end{titlepage}\n\n")
