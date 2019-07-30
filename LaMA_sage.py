@@ -524,11 +524,16 @@ class Ui_Dialog(object):
 		# Ui_MainWindow.pushButton_vorschau_pressed(self, 'schularbeit',index)
 		MainWindow.show()
 		#print(os.path.dirname(self.saved_file_path))
-		file_path = os.path.dirname(self.saved_file_path).replace('/','\\')
-		#print(file_path)	
-		# .replace('\n', ' ')
-		subprocess.Popen('explorer "{}"'.format(file_path))
-		# subprocess.Popen('explorer "C:\Users\Christoph\Desktop"')
+		if sys.platform.startswith('linux') or sys.platform.startswith('darwin'):
+			file_path = os.path.dirname(self.saved_file_path)
+			subprocess.Popen('xdg-open "{}"'.format(file_path),shell=True)
+			#subprocess.run(['xdg-open', "{0}/Teildokument/{1}.pdf".format(path_programm, dateiname)])
+		else:
+			file_path = os.path.dirname(self.saved_file_path).replace('/','\\')
+			#print(file_path)	
+			# .replace('\n', ' ')
+			subprocess.Popen('explorer "{}"'.format(file_path))
+			# subprocess.Popen('explorer "C:\Users\Christoph\Desktop"')
 
 	
 
