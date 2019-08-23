@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #### Version number ###
 __version__='v1.6'
-__lastupdate__='05/19'
+__lastupdate__='08/19'
 ####################
 
 from PyQt5 import QtCore, QtWidgets, QtGui
@@ -23,6 +23,7 @@ import functools
 from functools import partial
 import yaml
 from PIL import Image ## pillow
+import smtplib
 
 
 
@@ -35,6 +36,7 @@ else:
 	if sys.platform.startswith('darwin'):
 		if path_programm is '':
 			path_programm = "."
+
 
 print('Loading...')
 
@@ -94,15 +96,19 @@ logo_path=os.path.join(path_programm,'_database','_config','icon','LaMa_icon_log
 
 
 
-widgets_search=['actionReset','menuDateityp','menuSage','menuNeu','menuHelp','label_update','combobox_searchtype','label_aufgabentyp','groupBox_ausgew_gk','groupBox_af',
+widgets_search=['actionReset','actionLoad','actionSave','menuDateityp','menuSage','menuNeu','menuFeedback','menuHelp','label_update','combobox_searchtype','label_aufgabentyp','groupBox_ausgew_gk','groupBox_af',
 'groupBox_gk','groupBox_klassen','groupBox_themen_klasse','groupBox_titelsuche','cb_solution','btn_suche'] #'actionRefresh_Database'
 
-widgets_create=['actionReset','menuBild_einf_gen','menuSuche','menuSage','menuHelp','groupBox_aufgabentyp','groupBox_ausgew_gk_cr','groupBox_bilder',
+widgets_create=['actionReset','menuBild_einf_gen','menuSuche','menuSage','menuFeedback','menuHelp','groupBox_aufgabentyp','groupBox_ausgew_gk_cr','groupBox_bilder',
 'groupBox_2', 'groupBox_grundkompetenzen_cr', 'groupBox_punkte','groupBox_klassen_cr','groupBox_aufgabenformat','groupBox_beispieleingabe',
 'groupBox_quelle','pushButton_save'] #'actionRefresh_Database'
 
 
-widgets_sage=['actionLoad','actionSave','menuSuche','menuNeu','menuHelp','comboBox_at_sage','groupBox_alle_aufgaben','groupBox_sage'] #,'comboBox_at_sage','groupBox_sage','groupBox_notenschl','actionRefresh_Database'
+widgets_sage=['actionLoad','actionSave','menuSuche','menuNeu','menuFeedback','menuHelp','comboBox_at_sage','groupBox_alle_aufgaben','groupBox_sage'] #,'comboBox_at_sage','groupBox_sage','groupBox_notenschl','actionRefresh_Database'
+
+
+widgets_feedback=['menuSage','menuNeu','menuHelp','comboBox_at_fb','label_example','groupBox_alle_aufgaben_fb', 'groupBox_fehlertyp','groupBox_feedback',  'groupBox_email', 'pushButton_send']
+
 
 dict_picture_path={}
 set_chosen_gk=set([])
@@ -596,6 +602,8 @@ class Ui_MainWindow(object):
 		self.menuSage.setObjectName(_fromUtf8("menuSage"))
 		self.menuSuche = QtWidgets.QMenu(self.menuBar)
 		self.menuSuche.setObjectName(_fromUtf8("menuSuche"))
+		self.menuFeedback = QtWidgets.QMenu(self.menuBar)
+		self.menuFeedback.setObjectName(_fromUtf8("menuFeedback"))
 		self.menuHelp = QtWidgets.QMenu(self.menuBar)
 		self.menuHelp.setObjectName(_fromUtf8("menuHelp"))
 		self.menuBild_einf_gen = QtWidgets.QMenu(self.menuBar)
@@ -609,10 +617,10 @@ class Ui_MainWindow(object):
 		self.actionReset.setObjectName(_fromUtf8("actionReset"))
 		self.actionLoad = QtWidgets.QAction(MainWindow)
 		self.actionLoad.setObjectName(_fromUtf8("actionLoad"))
-		self.actionLoad.setVisible(False)
+		#self.actionLoad.setVisible(False)
 		self.actionSave = QtWidgets.QAction(MainWindow)
 		self.actionSave.setObjectName(_fromUtf8("actionSave"))
-		self.actionSave.setVisible(False)
+		#self.actionSave.setVisible(False)
 		self.actionAufgaben_Typ1 = QtWidgets.QAction(MainWindow)
 		self.actionAufgaben_Typ1.setObjectName(_fromUtf8("actionAufgaben_Typ1"))
 		self.actionAufgaben_Typ2 = QtWidgets.QAction(MainWindow)
@@ -629,8 +637,11 @@ class Ui_MainWindow(object):
 		self.actionInfo.setObjectName(_fromUtf8("actionInfo"))
 		self.actionExit = QtWidgets.QAction(MainWindow)
 		self.actionExit.setObjectName(_fromUtf8("actionExit"))
+		self.actionFeedback = QtWidgets.QAction(MainWindow)
+		self.actionFeedback.setObjectName(_fromUtf8("actionFeedback"))
 		self.menuDateityp.addAction(self.actionAufgaben_Typ1)
 		self.menuDateityp.addAction(self.actionAufgaben_Typ2)
+		self.menuFeedback.addAction(self.actionFeedback)
 		self.menuHelp.addAction(self.actionInfo)
 		self.menuDatei.addAction(self.actionRefresh_Database)
 		self.menuDatei.addAction(self.actionReset)
@@ -645,10 +656,11 @@ class Ui_MainWindow(object):
 		self.menuBar.addAction(self.menuDateityp.menuAction())
 		self.menuBar.addAction(self.menuSage.menuAction())
 		self.menuBar.addAction(self.menuNeu.menuAction())
+		self.menuBar.addAction(self.menuFeedback.menuAction())
+		self.menuBar.addAction(self.menuHelp.menuAction())
 		self.menuBild_einf_gen.addAction(self.actionBild_einf_gen)
 		self.menuBild_einf_gen.addSeparator()
 		self.menuBild_einf_gen.addAction(self.actionBild_konvertieren_jpg_eps)
-		self.menuBar.addAction(self.menuHelp.menuAction())
 		self.groupBox_ausgew_gk = QtWidgets.QGroupBox(self.centralwidget)
 		self.groupBox_ausgew_gk.setObjectName(_fromUtf8("groupBox_ausgew_gk"))
 		self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.groupBox_ausgew_gk)
@@ -1149,17 +1161,17 @@ class Ui_MainWindow(object):
 		self.comboBox_gk.setItemText(6, _translate("MainWindow", "K6",None))
 		self.comboBox_gk.setItemText(7, _translate("MainWindow", "K7",None))
 		self.comboBox_gk.setItemText(8, _translate("MainWindow", "K8",None))
-		self.comboBox_gk.currentIndexChanged.connect(self.comboBox_gk_changed)
+		self.comboBox_gk.currentIndexChanged.connect(partial(self.comboBox_gk_changed,'sage'))
 		self.comboBox_gk.setFocusPolicy(QtCore.Qt.ClickFocus)
 		self.verticalLayout_sage.addWidget(self.comboBox_gk)
 		self.comboBox_gk_num = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
 		self.comboBox_gk_num.setObjectName("comboBox_gk_num")
-		self.comboBox_gk_num.currentIndexChanged.connect(self.comboBox_gk_num_changed)
+		self.comboBox_gk_num.currentIndexChanged.connect(partial(self.comboBox_gk_num_changed, 'sage'))
 		self.comboBox_gk_num.setFocusPolicy(QtCore.Qt.ClickFocus)
 		self.verticalLayout_sage.addWidget(self.comboBox_gk_num)
 		self.lineEdit_number = QtWidgets.QLineEdit(self.groupBox_alle_aufgaben)
 		self.lineEdit_number.setObjectName("lineEdit_number")
-		self.lineEdit_number.textChanged.connect(self.lineEdit_number_changed)
+		self.lineEdit_number.textChanged.connect(partial(self.lineEdit_number_changed, 'sage'))
 		self.verticalLayout_sage.addWidget(self.lineEdit_number)
 		self.listWidget = QtWidgets.QListWidget(self.groupBox_alle_aufgaben)
 		self.listWidget.setObjectName("listWidget")
@@ -1438,6 +1450,139 @@ class Ui_MainWindow(object):
 		self.groupBox_sage.hide()
 
 
+		################################################################
+		################################################################
+		########### FEEDBACK #############################################
+		#######################################################################
+		self.comboBox_at_fb = QtWidgets.QComboBox(self.centralwidget)
+		self.comboBox_at_fb.setObjectName("comboBox_at_fb")
+		self.comboBox_at_fb.addItem("")
+		self.comboBox_at_fb.addItem("")
+		self.comboBox_at_fb.addItem("")
+		self.gridLayout.addWidget(self.comboBox_at_fb, 0, 0, 1, 1)
+		self.comboBox_at_fb.setItemText(0, _translate("MainWindow", "Typ 1", None))
+		self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Typ 2", None))
+		self.comboBox_at_fb.setItemText(2, _translate("MainWindow", "Allgemeine Rückmeldung", None))
+		self.comboBox_at_fb.currentIndexChanged.connect(self.comboBox_at_fb_changed)
+		self.comboBox_at_fb.setFocusPolicy(QtCore.Qt.ClickFocus)
+		self.comboBox_at_fb.hide()
+
+		self.label_example = QtWidgets.QLabel(self.centralwidget)
+		self.label_example.setObjectName(_fromUtf8("label_example"))
+		#self.label_update.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
+		self.label_example.setText(_translate("MainWindow", "Ausgwähltes Beispiel: -", None))
+		self.gridLayout.addWidget(self.label_example, 0, 1, 1, 1)
+		self.label_example.hide()
+
+		self.groupBox_alle_aufgaben_fb = QtWidgets.QGroupBox(self.centralwidget)
+		self.groupBox_alle_aufgaben_fb.setMinimumSize(QtCore.QSize(140, 16777215))
+		self.groupBox_alle_aufgaben_fb.setMaximumSize(QtCore.QSize(180, 16777215))
+		self.groupBox_alle_aufgaben_fb.setObjectName("groupBox_alle_aufgaben_fb")
+		self.verticalLayout_fb = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben_fb)
+		self.verticalLayout_fb.setObjectName("verticalLayout_fb")
+		self.comboBox_fb = QtWidgets.QComboBox(self.groupBox_alle_aufgaben_fb)
+		self.comboBox_fb.setObjectName("comboBox_fb")
+		self.comboBox_fb.addItem("")
+		self.comboBox_fb.addItem("")
+		self.comboBox_fb.addItem("")
+		self.comboBox_fb.addItem("")
+		self.comboBox_fb.addItem("")
+		self.comboBox_fb.addItem("")
+		self.comboBox_fb.addItem("")
+		self.comboBox_fb.addItem("")
+		self.comboBox_fb.addItem("")
+		self.comboBox_fb.setItemText(1, _translate("MainWindow", "AG",None))
+		self.comboBox_fb.setItemText(2, _translate("MainWindow", "FA",None))
+		self.comboBox_fb.setItemText(3, _translate("MainWindow", "AN",None))
+		self.comboBox_fb.setItemText(4, _translate("MainWindow", "WS",None))
+		self.comboBox_fb.setItemText(5, _translate("MainWindow", "K5",None))
+		self.comboBox_fb.setItemText(6, _translate("MainWindow", "K6",None))
+		self.comboBox_fb.setItemText(7, _translate("MainWindow", "K7",None))
+		self.comboBox_fb.setItemText(8, _translate("MainWindow", "K8",None))
+		self.comboBox_fb.currentIndexChanged.connect(partial(self.comboBox_gk_changed,'feedback'))
+		self.comboBox_fb.setFocusPolicy(QtCore.Qt.ClickFocus)
+		self.verticalLayout_fb.addWidget(self.comboBox_fb)
+		self.comboBox_fb_num = QtWidgets.QComboBox(self.groupBox_alle_aufgaben_fb)
+		self.comboBox_fb_num.setObjectName("comboBox_gk_num")
+		self.comboBox_fb_num.currentIndexChanged.connect(partial(self.comboBox_gk_num_changed, 'feedback'))
+		self.comboBox_fb_num.setFocusPolicy(QtCore.Qt.ClickFocus)
+		self.verticalLayout_fb.addWidget(self.comboBox_fb_num)
+		self.lineEdit_number_fb = QtWidgets.QLineEdit(self.groupBox_alle_aufgaben_fb)
+		self.lineEdit_number_fb.setObjectName("lineEdit_number_fb")
+		self.lineEdit_number_fb.textChanged.connect(partial(self.lineEdit_number_changed, 'feedback'))
+		self.verticalLayout_fb.addWidget(self.lineEdit_number_fb)
+		self.listWidget_fb = QtWidgets.QListWidget(self.groupBox_alle_aufgaben)
+		self.listWidget_fb.setObjectName("listWidget")
+		self.verticalLayout_fb.addWidget(self.listWidget_fb)	
+		self.gridLayout.addWidget(self.groupBox_alle_aufgaben_fb, 1, 0, 3, 1)
+		self.groupBox_alle_aufgaben_fb.setTitle(_translate("MainWindow", "Aufgaben",None))
+		self.groupBox_alle_aufgaben_fb.hide()
+
+
+		self.groupBox_fehlertyp = QtWidgets.QGroupBox(self.centralwidget)
+		self.groupBox_fehlertyp.setObjectName("groupBox_fehlertyp")
+		self.gridLayout_fehlertyp = QtWidgets.QGridLayout(self.groupBox_fehlertyp)
+		self.gridLayout_fehlertyp.setObjectName("gridLayout_feedback")
+		self.groupBox_fehlertyp.setTitle(_translate("MainWindow", "Betreff", None))
+
+
+		self.comboBox_fehlertyp = QtWidgets.QComboBox(self.groupBox_fehlertyp)
+		self.comboBox_fehlertyp.setObjectName("comboBox_pruefungstyp")
+		self.comboBox_fehlertyp.addItem("")
+		self.comboBox_fehlertyp.addItem("")
+		self.comboBox_fehlertyp.addItem("")
+		self.comboBox_fehlertyp.addItem("")
+		self.comboBox_fehlertyp.addItem("")
+		self.comboBox_fehlertyp.addItem("")
+		self.comboBox_fehlertyp.addItem("")
+		self.comboBox_fehlertyp.addItem("")
+		self.comboBox_fehlertyp.addItem("")
+		self.comboBox_fehlertyp.setItemText(1, _translate("MainWindow", "Feedback",None))
+		self.comboBox_fehlertyp.setItemText(2, _translate("MainWindow", "Fehler in der Angabe",None))
+		self.comboBox_fehlertyp.setItemText(3, _translate("MainWindow", "Fehler in der Lösung",None))
+		self.comboBox_fehlertyp.setItemText(4, _translate("MainWindow", "Bild wird nicht (richtig) angezeigt",None))
+		self.comboBox_fehlertyp.setItemText(5, _translate("MainWindow", "Grafik ist unleserlich/fehlerhaft",None))
+		self.comboBox_fehlertyp.setItemText(6, _translate("MainWindow", "Beispiel ist doppelt vorhanden",None))
+		self.comboBox_fehlertyp.setItemText(7, _translate("MainWindow", "Falsche Kodierung (Grundkompetenz, Aufgabenformat, ...)",None))
+		self.comboBox_fehlertyp.setItemText(8, _translate("MainWindow", "Sonstiges",None))
+		
+		
+		self.comboBox_fehlertyp.setFocusPolicy(QtCore.Qt.ClickFocus)
+		self.gridLayout_fehlertyp.addWidget(self.comboBox_fehlertyp, 0, 0, 1, 1)
+		self.gridLayout.addWidget(self.groupBox_fehlertyp, 1, 1, 1, 3)
+		self.groupBox_fehlertyp.hide()
+
+
+		self.groupBox_feedback = QtWidgets.QGroupBox(self.centralwidget)
+		self.groupBox_feedback.setObjectName(_fromUtf8("groupBox_feedback"))
+		self.gridLayout_fb = QtWidgets.QGridLayout(self.groupBox_feedback)
+		self.gridLayout_fb.setObjectName(_fromUtf8("gridLayout_fb"))
+		self.plainTextEdit_fb = QtWidgets.QPlainTextEdit(self.groupBox_feedback)
+		self.plainTextEdit_fb.setObjectName(_fromUtf8("plainTextEdit_fb"))
+		self.gridLayout_fb.addWidget(self.plainTextEdit_fb, 0, 0, 1, 1)
+		self.gridLayout.addWidget(self.groupBox_feedback, 2, 1,1, 3)
+		self.groupBox_feedback.setTitle(_translate("MainWindow", "Feedback bzw. Problembeschreibung", None))
+		self.groupBox_feedback.hide()
+
+
+		self.groupBox_email = QtWidgets.QGroupBox(self.centralwidget)
+		self.groupBox_email.setObjectName("groupBox_email")
+		#self.groupBox_klasse.setMaximumSize(QtCore.QSize(200, 16777215))
+		self.verticalLayout_email = QtWidgets.QVBoxLayout(self.groupBox_email)
+		self.verticalLayout_email.setObjectName("verticalLayout_email")
+		self.lineEdit_email = QtWidgets.QLineEdit(self.groupBox_email)
+		self.lineEdit_email.setObjectName("lineEdit_email")
+		self.groupBox_email.setTitle(_translate("MainWindow", "Kontakt (E-Mail) für Nachfragen (optional)", None))
+		self.verticalLayout_email.addWidget(self.lineEdit_email)
+		self.gridLayout.addWidget(self.groupBox_email, 3, 1, 1, 3)
+		self.groupBox_email.hide()
+
+		self.pushButton_send = QtWidgets.QPushButton(self.centralwidget)
+		self.pushButton_send.setObjectName(_fromUtf8("pushButton_send"))
+		self.gridLayout.addWidget(self.pushButton_send, 4, 3, 1, 1,QtCore.Qt.AlignRight)
+		self.pushButton_send.setText(_translate("MainWindow", "Senden", None))
+		self.pushButton_send.clicked.connect(self.pushButton_send_pressed)
+		self.pushButton_send.hide()
 
 		####################################################################
 		#####################################################################
@@ -1476,10 +1621,11 @@ class Ui_MainWindow(object):
 		self.btn_ws_all.clicked.connect(self.btn_ws_all_pressed)
 		self.btn_suche.clicked.connect(self.PrepareTeXforPDF)
 		self.actionExit.triggered.connect(self.close_app)
+		self.actionFeedback.triggered.connect(self.send_feedback)
 		self.actionRefresh_Database.triggered.connect(self.refresh_ddb) #self.label_aufgabentyp.text()[-1]
 		self.actionReset.triggered.connect(self.suchfenster_reset)
 		self.actionLoad.triggered.connect(self.sage_load)
-		self.actionSave.triggered.connect(partial(self.sage_save, ''))
+		self.actionSave.triggered.connect(partial(self.sage_save,''))
 		self.actionAufgaben_Typ1.triggered.connect(self.chosen_aufgabenformat_typ1)
 		self.actionAufgaben_Typ2.triggered.connect(self.chosen_aufgabenformat_typ2)
 		self.actionInfo.triggered.connect(self.show_info)
@@ -1536,6 +1682,7 @@ class Ui_MainWindow(object):
 		self.menuSage.setTitle(_translate("MainWindow", "Neue Schularbeit", None))
 		self.menuSuche.setTitle(_translate("MainWindow", "Aufgabensuche", None))
 		self.menuBild_einf_gen.setTitle(_translate("MainWindow", "Bild einfügen", None))
+		self.menuFeedback.setTitle(_translate("MainWindow", 'Feedback && Fehler', None))
 		self.actionBild_einf_gen.setText(_translate("MainWindow", "Durchsuchen...", None))
 		self.actionBild_konvertieren_jpg_eps.setText(_translate("MainWindow", "Bild konvertieren (jpg zu eps)", None))		
 		self.menuHelp.setTitle(_translate("MainWindow", "?", None))
@@ -1545,6 +1692,7 @@ class Ui_MainWindow(object):
 		self.actionLoad.setShortcut('Ctrl+O')
 		self.actionSave.setText(_translate("MainWindow", "Speichern", None))
 		self.actionSave.setShortcut('Ctrl+S')
+		self.actionFeedback.setText(_translate("MainWindow", "Feedback oder Fehler senden ...", None))
 		self.actionAufgaben_Typ1.setText(_translate("MainWindow", "Typ 1 Aufgaben", None))
 		self.actionAufgaben_Typ1.setShortcut('Ctrl+1')
 		self.actionAufgaben_Typ2.setText(_translate("MainWindow", "Typ 2 Aufgaben", None))
@@ -1831,8 +1979,7 @@ class Ui_MainWindow(object):
 		msg.setIcon(QtWidgets.QMessageBox.Question)
 		msg.setWindowIcon(QtGui.QIcon(logo_path))
 		msg.setText('Möchten Sie vor dem Schließen speichern?')
-		# msg.setInformativeText('Möchten Sie das neue Update installieren?')
-		msg.setWindowTitle("Schularbeit speichern?")
+		msg.setWindowTitle("Schularbeit schon gespeichert?")
 		msg.setStandardButtons(QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
 		buttonY = msg.button(QtWidgets.QMessageBox.Yes)
 		buttonY.setText('Ja')
@@ -2755,13 +2902,14 @@ class Ui_MainWindow(object):
 		self.label_ausgew_gk.setText(_translate("MainWindow", str(x), None))
 
 
-	def warning_window(self, text):
+	def warning_window(self, text, detailed_text=''):
 		QtWidgets.QApplication.restoreOverrideCursor()
 		msg = QtWidgets.QMessageBox()
 		msg.setWindowTitle("Warnung")
 		msg.setIcon(QtWidgets.QMessageBox.Warning)
 		msg.setWindowIcon(QtGui.QIcon(logo_path))
 		msg.setText(text)
+		msg.setInformativeText(detailed_text)
 		msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
 		retval = msg.exec_()
 
@@ -3315,6 +3463,7 @@ class Ui_MainWindow(object):
 			return
 		self.saved_file_path=path_backup_file[0]
 
+		self.neue_schularbeit_erstellen()
 		QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
 		for example in list_sage_examples:
@@ -3401,7 +3550,7 @@ class Ui_MainWindow(object):
 			path_file=name+'_autosave.lama'
 			save_file=path_file
 
-
+		self.neue_schularbeit_erstellen()
 		self.saved_file_path = save_file
 
 
@@ -4061,38 +4210,98 @@ class Ui_MainWindow(object):
 			self.comboBox_gk.addItem("-")
 			self.comboBox_gk_num.clear()
 			self.comboBox_gk_num.addItem("-")
-		self.adapt_choosing_list()
+		self.adapt_choosing_list('sage')
 
-	def comboBox_gk_changed(self):
-		self.adapt_choosing_list()
-		self.comboBox_gk_num.clear()
-		self.comboBox_gk_num.addItem("")
-		self.lineEdit_number.clear()
-		list_klassen=['k5', 'k6', 'k7', 'k8']
-		if self.comboBox_gk.currentText().lower() in list_klassen:
-			x=eval('%s_beschreibung'%self.comboBox_gk.currentText().lower())
-			for all in x.keys():
-				self.comboBox_gk_num.addItem(all.upper())
-		else:
-			for all in dict_gk.keys():
-				if all.startswith(self.comboBox_gk.currentText().lower()):
-					self.comboBox_gk_num.addItem(dict_gk[all][-3:])
+	def comboBox_at_fb_changed(self):
+		self.label_example.setText(_translate("MainWindow", "Ausgwähltes Beispiel: -", None))
+		if self.comboBox_at_fb.currentText()[-1]=='1':
+			#print(self.comboBox_at_fb.currentText())
+			self.comboBox_fb.clear()
+			self.lineEdit_number_fb.clear()
+			self.comboBox_fb.addItem("")
+			self.comboBox_fb.addItem("")
+			self.comboBox_fb.addItem("")
+			self.comboBox_fb.addItem("")
+			self.comboBox_fb.addItem("")
+			self.comboBox_fb.addItem("")
+			self.comboBox_fb.addItem("")
+			self.comboBox_fb.addItem("")
+			self.comboBox_fb.addItem("")
+			self.comboBox_fb.setItemText(1, _translate("MainWindow", "AG",None))
+			self.comboBox_fb.setItemText(2, _translate("MainWindow", "FA",None))
+			self.comboBox_fb.setItemText(3, _translate("MainWindow", "AN",None))
+			self.comboBox_fb.setItemText(4, _translate("MainWindow", "WS",None))
+			self.comboBox_fb.setItemText(5, _translate("MainWindow", "K5",None))
+			self.comboBox_fb.setItemText(6, _translate("MainWindow", "K6",None))
+			self.comboBox_fb.setItemText(7, _translate("MainWindow", "K7",None))
+			self.comboBox_fb.setItemText(8, _translate("MainWindow", "K8",None))
+			self.comboBox_fb_num.clear()
 
-	def comboBox_gk_num_changed(self):
-		self.adapt_choosing_list()
+		if self.comboBox_at_fb.currentText()[-1]=='2':
+			self.comboBox_fb.clear()
+			self.comboBox_fb.addItem("-")
+			self.comboBox_fb_num.clear()
+			self.comboBox_fb_num.addItem("-")
+		self.adapt_choosing_list('feedback')
 
-	def lineEdit_number_changed(self):
-		self.adapt_choosing_list()
+	def comboBox_gk_changed(self, list_mode):
+		self.adapt_choosing_list(list_mode)
+		if list_mode=='sage':
+			self.comboBox_gk_num.clear()
+			self.comboBox_gk_num.addItem("")
+			self.lineEdit_number.clear()
+			list_klassen=['k5', 'k6', 'k7', 'k8']
+			if self.comboBox_gk.currentText().lower() in list_klassen:
+				x=eval('%s_beschreibung'%self.comboBox_gk.currentText().lower())
+				for all in x.keys():
+					self.comboBox_gk_num.addItem(all.upper())
+			else:
+				for all in dict_gk.keys():
+					if all.startswith(self.comboBox_gk.currentText().lower()):
+						self.comboBox_gk_num.addItem(dict_gk[all][-3:])
+		if list_mode=='feedback':
+			self.comboBox_fb_num.clear()
+			self.comboBox_fb_num.addItem("")
+			self.lineEdit_number_fb.clear()
+			list_klassen=['k5', 'k6', 'k7', 'k8']
+			if self.comboBox_fb.currentText().lower() in list_klassen:
+				x=eval('%s_beschreibung'%self.comboBox_fb.currentText().lower())
+				for all in x.keys():
+					self.comboBox_fb_num.addItem(all.upper())
+			else:
+				for all in dict_gk.keys():
+					if all.startswith(self.comboBox_fb.currentText().lower()):
+						self.comboBox_fb_num.addItem(dict_gk[all][-3:])			
+
+	def comboBox_gk_num_changed(self, list_mode):
+		self.adapt_choosing_list(list_mode)
+
+	def lineEdit_number_changed(self, list_mode):
+		self.adapt_choosing_list(list_mode)
 	
 	
 	def nummer_clicked(self, item):
 		self.sage_aufgabe_add(int(self.comboBox_at_sage.currentText()[-1]),item.text())
 
+	def nummer_clicked_fb(self, item):
+		#print(item.text())
+		self.label_example.setText(_translate("MainWindow", "Ausgwähltes Beispiel: {}".format(item.text()), None))
 
+	def adapt_choosing_list(self, list_mode):
+		if list_mode=='sage':
+			listWidget=self.listWidget
+		if list_mode=='feedback':
+			listWidget=self.listWidget_fb
 
-	def adapt_choosing_list(self):
-		self.listWidget.clear()
-
+			if self.comboBox_at_fb.currentText()=='Allgemeine Rückmeldung':
+				self.comboBox_fb.clear()
+				self.comboBox_fb_num.clear()
+				self.lineEdit_number_fb.clear()
+				listWidget.clear()
+				return
+			
+		listWidget.clear()
+ 
 		log_file_1=os.path.join(path_programm,'Teildokument','log_file_1')
 		try:
 			with open(log_file_1, encoding='utf8') as f:
@@ -4125,31 +4334,46 @@ class Ui_MainWindow(object):
 		# print(list(beispieldaten_dateipfad.keys())[0].split(' '))
 
 		list_beispieldaten=[]
-		beispieldaten_dateipfad=eval('beispieldaten_dateipfad_%s'%self.comboBox_at_sage.currentText()[-1])
-		for all in beispieldaten_dateipfad.values():
-			filename_all=os.path.basename(all)
-			name, extension=os.path.splitext(filename_all)
-			if self.comboBox_at_sage.currentText()[-1]=='2':
-				if name.startswith(self.lineEdit_number.text()):
-					list_beispieldaten.append(name)
-			else:	
-				if name.startswith(self.comboBox_gk.currentText()) and self.comboBox_gk_num.currentText() in name:
-					#print(name)
-					number=name.split(' - ')
-					#print(number)
-					if self.lineEdit_number.text()=='' or number[1]==self.lineEdit_number.text():
+		if list_mode=='sage':
+			beispieldaten_dateipfad=eval('beispieldaten_dateipfad_%s'%self.comboBox_at_sage.currentText()[-1])
+			for all in beispieldaten_dateipfad.values():
+				filename_all=os.path.basename(all)
+				name, extension=os.path.splitext(filename_all)
+				if self.comboBox_at_sage.currentText()[-1]=='2':
+					if name.startswith(self.lineEdit_number.text()):
 						list_beispieldaten.append(name)
-					#and self.lineEdit_number.text().lower() in name.lower()
-					
+				else:	
+					if name.startswith(self.comboBox_gk.currentText()) and self.comboBox_gk_num.currentText() in name:
+						#print(name)
+						number=name.split(' - ')
+						#print(number)
+						if self.lineEdit_number.text()=='' or number[1]==self.lineEdit_number.text():
+							list_beispieldaten.append(name)
+						#and self.lineEdit_number.text().lower() in name.lower()
+		if list_mode=='feedback':
+			beispieldaten_dateipfad=eval('beispieldaten_dateipfad_%s'%self.comboBox_at_fb.currentText()[-1])
+			for all in beispieldaten_dateipfad.values():
+				filename_all=os.path.basename(all)
+				name, extension=os.path.splitext(filename_all)
+				if self.comboBox_at_fb.currentText()[-1]=='2':
+					if name.startswith(self.lineEdit_number_fb.text()):
+						list_beispieldaten.append(name)
+				else:	
+					if name.startswith(self.comboBox_fb.currentText()) and self.comboBox_fb_num.currentText() in name:
+						#print(name)
+						number=name.split(' - ')
+						#print(number)
+						if self.lineEdit_number_fb.text()=='' or number[1]==self.lineEdit_number_fb.text():
+							list_beispieldaten.append(name)
+						#and self.lineEdit_number.text().lower() in name.lower()						
 					
 		
 		#print(list_beispieldaten)
 		list_beispieldaten = sorted(list_beispieldaten, key=natural_keys)
 
 		for all in list_beispieldaten:
-			# print(all)
-			self.listWidget.addItem(all)
-			self.listWidget.setFocusPolicy(QtCore.Qt.ClickFocus)
+			listWidget.addItem(all)
+			listWidget.setFocusPolicy(QtCore.Qt.ClickFocus)
 
 
 
@@ -4486,7 +4710,7 @@ class Ui_MainWindow(object):
 							elif os.path.isfile(os.path.join(path_programm, '_database_inoffiziell', 'Bilder', image)):		
 								shutil.copy(os.path.join(path_programm, '_database_inoffiziell', 'Bilder', image),os.path.join(os.path.dirname(self.chosen_path_schularbeit_erstellen[0]), image))
 							
-							# else:
+							# else:							
 							# 	print('no file found')
 							# 	return
 
@@ -4593,6 +4817,67 @@ class Ui_MainWindow(object):
 		QtWidgets.QApplication.restoreOverrideCursor()
 		
 		# sys.exit[0]
+
+#######################################################################
+########################################################################
+
+
+	def pushButton_send_pressed(self):
+		gmail_user = 'lamabugfix@gmail.com'
+		gmail_password = 'abcd&1234'
+
+		if self.comboBox_at_fb.currentText()=='Allgemeine Rückmeldung':
+			example='Allgemeiner Bug Report'
+			if self.plainTextEdit_fb.toPlainText()=='':
+				self.warning_window('Bitte geben Sie ein Feedback oder beschreiben das Problem im Textfeld.')
+				return
+		else:
+			rest, example=self.label_example.text().split(': ')
+			if example=='-':
+				self.warning_window('Bitte wählen Sie die Aufgabe aus, zu der Sie eine Rückmeldung geben möchten.')
+				return
+
+		fehler=self.comboBox_fehlertyp.currentText()
+		if fehler=='':
+			self.warning_window('Bitte wählen Sie einen Betreff aus.')
+			return			
+		if fehler=='Sonstiges':
+			self.warning_window('Bitte geben Sie nähere Informationen im Textfeld an.')
+			return
+
+		if self.plainTextEdit_fb.toPlainText()=='':
+			description='keine Angabe'
+		else:
+			description=self.plainTextEdit_fb.toPlainText()
+		if self.lineEdit_email.text()=='':
+			contact='keine Angabe'
+		else:
+			contact=self.lineEdit_email.text() 
+
+
+
+		content='Subject: {0}: {1}\n\nProblembeschreibung:\n\n{2}\n\n\nKontakt: {3}'.format(example,fehler, description, contact)
+
+		try:
+			server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+			server.ehlo()
+			server.login(gmail_user, gmail_password)
+			server.sendmail('lamabugfix@gmail.com', 'lama.helpme@gmail.com', content.encode("utf8"))
+			server.close()
+			
+			msg = QtWidgets.QMessageBox()
+			msg.setIcon(QtWidgets.QMessageBox.Warning)
+			msg.setWindowIcon(QtGui.QIcon(logo_path))
+			msg.setWindowTitle("Meldung gesendet")
+			msg.setText('Das Feedback bzw. die Fehlermeldung wurde erfolgreich gesendet!\n')
+			msg.setInformativeText('Vielen Dank für die Mithilfe LaMA zu verbessern.')
+			msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+			msg.exec_()
+			return
+		except:
+			self.warning_window('Die Meldung konnte leider nicht gesendet werden!', 'Überprüfen Sie Ihre Internetverbindung oder versuchen Sie es später erneut.')
+
+
 #######################################################################
 ##########################################################################
 ############################################################################
@@ -4607,7 +4892,7 @@ class Ui_MainWindow(object):
 
 
 	def aufgaben_suchen(self):
-		lists_delete=widgets_create+widgets_sage
+		lists_delete=widgets_create+widgets_sage+widgets_feedback
 		for all in lists_delete:
 			if 'action' in all:
 				exec('self.%s.setVisible(False)'%all)
@@ -4631,7 +4916,7 @@ class Ui_MainWindow(object):
 
 	def neue_aufgabe_erstellen(self):
 		MainWindow.setMenuBar(self.menuBar)
-		lists_delete=widgets_search+widgets_sage
+		lists_delete=widgets_search+widgets_sage+widgets_feedback
 		for all in lists_delete:		
 			if 'action' in all:
 				exec('self.%s.setVisible(False)'%all)
@@ -4650,7 +4935,7 @@ class Ui_MainWindow(object):
 
 	def neue_schularbeit_erstellen(self):
 		MainWindow.setMenuBar(self.menuBar)
-		lists_delete=widgets_search+widgets_create
+		lists_delete=widgets_search+widgets_create+widgets_feedback
 		#self.menuBar.removeAction(self.menuDatei.menuAction())
 		
 		# self.menuBar.addAction(self.menuDatei.menuAction())
@@ -4673,8 +4958,10 @@ class Ui_MainWindow(object):
 		MainWindow.setTabOrder(self.spinBox_nummer, self.dateEdit)
 		MainWindow.setTabOrder(self.dateEdit, self.lineEdit_klasse)
 
+		# self.gridLayout.removeWidget(self.groupBox_alle_aufgaben)
+		# self.gridLayout.addWidget(self.groupBox_alle_aufgaben, 2, 0, 7, 1)
 
-		self.adapt_choosing_list()
+		self.adapt_choosing_list('sage')
 		self.listWidget.itemClicked.connect(self.nummer_clicked)
 		#print(self.listWidget.currentRow())
 		
@@ -4686,8 +4973,35 @@ class Ui_MainWindow(object):
 		# self.listWidget.addItem(item)
 		# self.listWidget.itemClicked.connect(self.nummer_clicked)
 	
+	def send_feedback(self):
+		# for i in reversed(range(self.gridLayout.count())):
+		# 	try:
+		# 		self.gridLayout.itemAt(i).widget().close()
+		# 	except AttributeError:
+		# 		print(self.gridLayout.itemAt(i).widget())
 
+		MainWindow.setMenuBar(self.menuBar)
+		lists_delete=widgets_search+widgets_sage+widgets_create
+		for all in lists_delete:		
+			if 'action' in all:
+				exec('self.%s.setVisible(False)'%all)
+			elif 'menu' in all:
+				exec('self.menuBar.removeAction(self.%s.menuAction())'%all)	
+			else:
+				exec('self.%s.hide()'%all)
 
+		for all in widgets_feedback:
+			if 'action' in all:
+				exec('self.%s.setVisible(True)'%all)
+			elif 'menu' in all:
+				exec('self.menuBar.addAction(self.%s.menuAction())'%all)	
+			else:
+				exec('self.%s.show()'%all)
+
+		# self.gridLayout.removeWidget(self.groupBox_alle_aufgaben)
+		# self.gridLayout.addWidget(self.groupBox_alle_aufgaben, 1, 0, 3, 1)
+		self.adapt_choosing_list('feedback')
+		self.listWidget_fb.itemClicked.connect(self.nummer_clicked_fb)
 
 if __name__ == "__main__":
 	import sys
