@@ -2943,8 +2943,7 @@ class Ui_MainWindow(object):
 
 		if self.plainTextEdit.toPlainText()=='':
 			self.warning_window('Bitte geben Sie den LaTeX-Quelltext der Aufgabe im Bereich "Aufgabeneingabe" ein.')
-			return
-			
+			return	
 		if self.lineEdit_quelle.text()=='':
 			self.warning_window('Bitte geben Sie die Quelle an.')
 			return
@@ -4233,9 +4232,14 @@ class Ui_MainWindow(object):
 		self.adapt_choosing_list('sage')
 
 	def comboBox_at_fb_changed(self):
+		QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 		self.label_example.setText(_translate("MainWindow", "Ausgewählte Aufgabe: -", None))
+
+		if self.comboBox_at_fb.currentText()=='Allgemeine Rückmeldung':
+			self.groupBox_alle_aufgaben_fb.setEnabled(False)
+		else:
+			self.groupBox_alle_aufgaben_fb.setEnabled(True)		
 		if self.comboBox_at_fb.currentText()[-1]=='1':
-			#print(self.comboBox_at_fb.currentText())
 			self.comboBox_fb.clear()
 			self.lineEdit_number_fb.clear()
 			self.comboBox_fb.addItem("")
@@ -4263,6 +4267,7 @@ class Ui_MainWindow(object):
 			self.comboBox_fb_num.clear()
 			self.comboBox_fb_num.addItem("-")
 		self.adapt_choosing_list('feedback')
+		QtWidgets.QApplication.restoreOverrideCursor()
 
 	def comboBox_gk_changed(self, list_mode):
 		self.adapt_choosing_list(list_mode)
@@ -4909,6 +4914,7 @@ class Ui_MainWindow(object):
 			self.comboBox_at_fb.setCurrentIndex(0)
 			self.comboBox_fb.setCurrentIndex(0)
 			self.comboBox_fb_num.setCurrentIndex(0)
+			self.lineEdit_number_fb.setText(_translate("MainWindow", "", None))
 			self.lineEdit_email.setText(_translate("MainWindow", "", None))
 			QtWidgets.QApplication.restoreOverrideCursor()
 
