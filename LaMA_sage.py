@@ -26,6 +26,10 @@ from PIL import Image ## pillow
 import smtplib
 
 
+try:
+	loaded_lama_file_path=sys.argv[1]
+except IndexError:
+	loaded_lama_file_path=''
 
 if sys.platform.startswith('linux'):
 	workdir= os.path.dirname(os.path.realpath(__file__))
@@ -547,9 +551,6 @@ class Ui_Dialog(object):
 class Ui_MainWindow(object):
 	global dict_picture_path, set_chosen_gk, list_sage_examples
 	def __init__(self):
-		self.suche_already_opened_1=False
-		self.suche_already_opened_2=False
-		self.vorschau_already_opened=False
 		self.dict_sage_ausgleichspunkte_chosen={}
 		titlepage_save=os.path.join(path_programm,'Teildokument','titlepage_save')
 		if os.path.isfile(titlepage_save):
@@ -645,6 +646,7 @@ class Ui_MainWindow(object):
 		self.menuHelp.addAction(self.actionInfo)
 		self.menuDatei.addAction(self.actionRefresh_Database)
 		self.menuDatei.addAction(self.actionReset)
+		self.menuDatei.addSeparator()
 		self.menuDatei.addAction(self.actionLoad)
 		self.menuDatei.addAction(self.actionSave)
 		self.menuDatei.addSeparator()
@@ -1470,7 +1472,7 @@ class Ui_MainWindow(object):
 		self.label_example = QtWidgets.QLabel(self.centralwidget)
 		self.label_example.setObjectName(_fromUtf8("label_example"))
 		#self.label_update.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
-		self.label_example.setText(_translate("MainWindow", "Ausgwähltes Beispiel: -", None))
+		self.label_example.setText(_translate("MainWindow", "Ausgewählte Aufgabe: -", None))
 		self.gridLayout.addWidget(self.label_example, 0, 1, 1, 1)
 		self.label_example.hide()
 
@@ -1542,7 +1544,7 @@ class Ui_MainWindow(object):
 		self.comboBox_fehlertyp.setItemText(3, _translate("MainWindow", "Fehler in der Lösung",None))
 		self.comboBox_fehlertyp.setItemText(4, _translate("MainWindow", "Bild wird nicht (richtig) angezeigt",None))
 		self.comboBox_fehlertyp.setItemText(5, _translate("MainWindow", "Grafik ist unleserlich/fehlerhaft",None))
-		self.comboBox_fehlertyp.setItemText(6, _translate("MainWindow", "Beispiel ist doppelt vorhanden",None))
+		self.comboBox_fehlertyp.setItemText(6, _translate("MainWindow", "Aufgabe ist doppelt vorhanden",None))
 		self.comboBox_fehlertyp.setItemText(7, _translate("MainWindow", "Falsche Kodierung (Grundkompetenz, Aufgabenformat, ...)",None))
 		self.comboBox_fehlertyp.setItemText(8, _translate("MainWindow", "Sonstiges",None))
 		
@@ -1572,7 +1574,7 @@ class Ui_MainWindow(object):
 		self.verticalLayout_email.setObjectName("verticalLayout_email")
 		self.lineEdit_email = QtWidgets.QLineEdit(self.groupBox_email)
 		self.lineEdit_email.setObjectName("lineEdit_email")
-		self.groupBox_email.setTitle(_translate("MainWindow", "Kontakt (E-Mail) für Nachfragen (optional)", None))
+		self.groupBox_email.setTitle(_translate("MainWindow", "E-Mail Adresse für Nachfragen (optional)", None))
 		self.verticalLayout_email.addWidget(self.lineEdit_email)
 		self.gridLayout.addWidget(self.groupBox_email, 3, 1, 1, 3)
 		self.groupBox_email.hide()
@@ -1624,7 +1626,7 @@ class Ui_MainWindow(object):
 		self.actionFeedback.triggered.connect(self.send_feedback)
 		self.actionRefresh_Database.triggered.connect(self.refresh_ddb) #self.label_aufgabentyp.text()[-1]
 		self.actionReset.triggered.connect(self.suchfenster_reset)
-		self.actionLoad.triggered.connect(self.sage_load)
+		self.actionLoad.triggered.connect(partial(self.sage_load, False))
 		self.actionSave.triggered.connect(partial(self.sage_save,''))
 		self.actionAufgaben_Typ1.triggered.connect(self.chosen_aufgabenformat_typ1)
 		self.actionAufgaben_Typ2.triggered.connect(self.chosen_aufgabenformat_typ2)
@@ -1670,7 +1672,9 @@ class Ui_MainWindow(object):
 				x=eval('self.cb_k%s_cr_'%g+all+'_cr')
 				x.stateChanged.connect(lambda: self.gk_checked_cr('klasse'))
 
-		
+		if loaded_lama_file_path!='':
+			self.sage_load(True)
+
 		############################################################################################
 		##############################################################################################
 
@@ -1855,7 +1859,7 @@ class Ui_MainWindow(object):
 				f=open(version_file,'r')
 				break
 			except FileNotFoundError:
-				input("Please place your your config file in '{}' and hit enter. {} tries left!".format(version_path, 5-i))
+				input("Please place your config file in '{}' and hit enter. {} tries left!".format(version_path, 5-i))
 			if i == 4:
 				print("No version set. Skipping version check!")
 				return False
@@ -2933,6 +2937,18 @@ class Ui_MainWindow(object):
 				self.warning_window('Es wurden zu viele Grundkompetenzen zugewiesen.')
 				return
 
+		if self.lineEdit_titel.text()=='':
+			self.warning_window('Bitte geben Sie einen Titel ein.')
+			return
+
+		if self.plainTextEdit.toPlainText()=='':
+			self.warning_window('Bitte geben Sie den LaTeX-Quelltext der Aufgabe im Bereich "Aufgabeneingabe" ein.')
+			return
+			
+		if self.lineEdit_quelle.text()=='':
+			self.warning_window('Bitte geben Sie die Quelle an.')
+			return
+
 		textBox_Entry=self.plainTextEdit.toPlainText()
 		list_chosen_gk=list(set_chosen_gk)
 
@@ -3451,17 +3467,21 @@ class Ui_MainWindow(object):
 
 
 
-	def sage_load(self):
+	def sage_load(self, external_file_loaded):
 		global list_sage_examples
-		try:
-			os.path.dirname(self.saved_file_path)	
-		except AttributeError:
-			self.saved_file_path=path_programm	
+		if external_file_loaded==False:
+			try:
+				os.path.dirname(self.saved_file_path)	
+			except AttributeError:
+				self.saved_file_path=path_programm	
 
-		path_backup_file = QtWidgets.QFileDialog.getOpenFileName(None, 'Öffnen', os.path.dirname(self.saved_file_path), 'LaMA Datei (*.lama);; Alle Dateien (*.*)')
-		if path_backup_file[0]=='':
-			return
-		self.saved_file_path=path_backup_file[0]
+			path_backup_file = QtWidgets.QFileDialog.getOpenFileName(None, 'Öffnen', os.path.dirname(self.saved_file_path), 'LaMA Datei (*.lama);; Alle Dateien (*.*)')
+			if path_backup_file[0]=='':
+				return
+			self.saved_file_path=path_backup_file[0]
+
+		if external_file_loaded==True:
+			self.saved_file_path=loaded_lama_file_path
 
 		self.neue_schularbeit_erstellen()
 		QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
@@ -3469,7 +3489,7 @@ class Ui_MainWindow(object):
 		for example in list_sage_examples:
 			self.btn_delete_pressed(example, True)
 
-		with open(path_backup_file[0], 'r', encoding='utf8') as loaded_file:
+		with open(self.saved_file_path, 'r', encoding='utf8') as loaded_file:
 			self.dict_list_input_examples=json.load(loaded_file)
 
 
@@ -3483,7 +3503,7 @@ class Ui_MainWindow(object):
 				if any(all in s for s in self.beispieldaten_dateipfad_2.values()):
 					pass
 				else:	
-					self.warning_window('Das Beispiel "{}" konnte nicht in der Datenbank gefunden werden. \n\n\n (Tipp: Refresh Database)'.format(all))
+					self.warning_window('Die Aufgabe "{}" konnte nicht in der Datenbank gefunden werden. \n\n\n (Tipp: Refresh Database)'.format(all))
 					return	
 
 		for all in list_sage_examples:
@@ -4213,7 +4233,7 @@ class Ui_MainWindow(object):
 		self.adapt_choosing_list('sage')
 
 	def comboBox_at_fb_changed(self):
-		self.label_example.setText(_translate("MainWindow", "Ausgwähltes Beispiel: -", None))
+		self.label_example.setText(_translate("MainWindow", "Ausgewählte Aufgabe: -", None))
 		if self.comboBox_at_fb.currentText()[-1]=='1':
 			#print(self.comboBox_at_fb.currentText())
 			self.comboBox_fb.clear()
@@ -4285,7 +4305,7 @@ class Ui_MainWindow(object):
 
 	def nummer_clicked_fb(self, item):
 		#print(item.text())
-		self.label_example.setText(_translate("MainWindow", "Ausgwähltes Beispiel: {}".format(item.text()), None))
+		self.label_example.setText(_translate("MainWindow", "Ausgewählte Aufgabe: {}".format(item.text()), None))
 
 	def adapt_choosing_list(self, list_mode):
 		if list_mode=='sage':
@@ -4829,21 +4849,22 @@ class Ui_MainWindow(object):
 		if self.comboBox_at_fb.currentText()=='Allgemeine Rückmeldung':
 			example='Allgemeiner Bug Report'
 			if self.plainTextEdit_fb.toPlainText()=='':
-				self.warning_window('Bitte geben Sie ein Feedback oder beschreiben das Problem im Textfeld.')
+				self.warning_window('Bitte geben Sie ein Feedback oder beschreiben Sie das Problem im Textfeld.')
 				return
 		else:
 			rest, example=self.label_example.text().split(': ')
 			if example=='-':
-				self.warning_window('Bitte wählen Sie die Aufgabe aus, zu der Sie eine Rückmeldung geben möchten.')
+				self.warning_window('Bitte wählen Sie die Aufgabe, zu der Sie eine Rückmeldung geben möchten oder wählen Sie "Allgemeine Rückmeldung" aus.')
 				return
 
 		fehler=self.comboBox_fehlertyp.currentText()
 		if fehler=='':
 			self.warning_window('Bitte wählen Sie einen Betreff aus.')
 			return			
-		if fehler=='Sonstiges':
-			self.warning_window('Bitte geben Sie nähere Informationen im Textfeld an.')
-			return
+		if fehler=='Sonstiges' or fehler=='Feedback':
+			if self.plainTextEdit_fb.toPlainText()=='':
+				self.warning_window('Bitte geben Sie nähere Informationen im Textfeld an.')
+				return
 
 		if self.plainTextEdit_fb.toPlainText()=='':
 			description='keine Angabe'
@@ -4858,13 +4879,19 @@ class Ui_MainWindow(object):
 
 		content='Subject: {0}: {1}\n\nProblembeschreibung:\n\n{2}\n\n\nKontakt: {3}'.format(example,fehler, description, contact)
 
+		
 		try:
+			QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+
 			server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
 			server.ehlo()
 			server.login(gmail_user, gmail_password)
 			server.sendmail('lamabugfix@gmail.com', 'lama.helpme@gmail.com', content.encode("utf8"))
 			server.close()
-			
+
+
+			QtWidgets.QApplication.restoreOverrideCursor()
+
 			msg = QtWidgets.QMessageBox()
 			msg.setIcon(QtWidgets.QMessageBox.Warning)
 			msg.setWindowIcon(QtGui.QIcon(logo_path))
@@ -4873,8 +4900,22 @@ class Ui_MainWindow(object):
 			msg.setInformativeText('Vielen Dank für die Mithilfe LaMA zu verbessern.')
 			msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
 			msg.exec_()
+
+			QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+			self.plainTextEdit_fb.setPlainText(_translate("MainWindow", "", None))
+			self.comboBox_at_fb.setCurrentIndex(0)	
+			self.label_example.setText(_translate("MainWindow", "Ausgewählte Aufgabe: -", None))
+			self.comboBox_fehlertyp.setCurrentIndex(0)
+			self.comboBox_at_fb.setCurrentIndex(0)
+			self.comboBox_fb.setCurrentIndex(0)
+			self.comboBox_fb_num.setCurrentIndex(0)
+			self.lineEdit_email.setText(_translate("MainWindow", "", None))
+			QtWidgets.QApplication.restoreOverrideCursor()
+
 			return
 		except:
+			msg.close()
+			QtWidgets.QApplication.restoreOverrideCursor()
 			self.warning_window('Die Meldung konnte leider nicht gesendet werden!', 'Überprüfen Sie Ihre Internetverbindung oder versuchen Sie es später erneut.')
 
 
@@ -4964,21 +5005,8 @@ class Ui_MainWindow(object):
 		self.adapt_choosing_list('sage')
 		self.listWidget.itemClicked.connect(self.nummer_clicked)
 		#print(self.listWidget.currentRow())
-		
-		
-		#print(beispieldaten_dateipfad)
-		# item = QtWidgets.QListWidgetItem('test')
-		# self.listWidget.addItem(item)
-		# item = QtWidgets.QListWidgetItem('test2')
-		# self.listWidget.addItem(item)
-		# self.listWidget.itemClicked.connect(self.nummer_clicked)
 	
 	def send_feedback(self):
-		# for i in reversed(range(self.gridLayout.count())):
-		# 	try:
-		# 		self.gridLayout.itemAt(i).widget().close()
-		# 	except AttributeError:
-		# 		print(self.gridLayout.itemAt(i).widget())
 
 		MainWindow.setMenuBar(self.menuBar)
 		lists_delete=widgets_search+widgets_sage+widgets_create
@@ -4998,8 +5026,6 @@ class Ui_MainWindow(object):
 			else:
 				exec('self.%s.show()'%all)
 
-		# self.gridLayout.removeWidget(self.groupBox_alle_aufgaben)
-		# self.gridLayout.addWidget(self.groupBox_alle_aufgaben, 1, 0, 3, 1)
 		self.adapt_choosing_list('feedback')
 		self.listWidget_fb.itemClicked.connect(self.nummer_clicked_fb)
 
