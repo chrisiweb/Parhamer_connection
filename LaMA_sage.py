@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__='v1.6'
+__version__='v1.7'
 __lastupdate__='08/19'
 ####################
 
@@ -294,7 +294,7 @@ class Ui_Dialog_typ2(object):
 		self.gridLayout.addWidget(self.label_einleitung, 0, 1, 1, 3, QtCore.Qt.AlignTop)
 		row=1
 		cb_counter=0
-		#print(self.ausgleichspunkte_split_text)
+
 		for all in self.ausgleichspunkte_split_text:
 			cb_counter=self.create_checkbox_ausgleich(all,row, cb_counter, list_sage_ausgleichspunkte_chosen)
 			row+=1
@@ -4123,12 +4123,11 @@ class Ui_MainWindow(object):
 			
 
 	def pushButton_ausgleich_pressed(self, bsp_name, selected_typ2_path, content):
-
-
-		x=re.split('Aufgabenstellung:}|subsection{Lösungserwartung:}',content)
 		
+		x=re.split('Aufgabenstellung:}|Lösungserwartung:}',content)
 		str_file=x[1].replace('\t','')
 		ausgleichspunkte_split_text=re.split("\n\n|\n\t", str_file)
+
 		temp_list=[]
 		for all in ausgleichspunkte_split_text:		
 			x=ausgleichspunkte_split_text[ausgleichspunkte_split_text.index(all)].split('\item ')
@@ -4146,9 +4145,12 @@ class Ui_MainWindow(object):
 			z= all.replace('\t','')
 			z=z.replace('\\leer','')		 
 			x=[line for line in z.split('\n') if line.strip() != ''] # delete all empty lines	 
-			for item in x[:]:	   
+			for item in x[:]:  
 				if 'begin{' in item or 'end{' in item:
-					x.remove(item)
+					if 'tabular' in item or 'tabu' in item:
+						pass
+					else:
+						x.remove(item)
 			y='\n'.join(x)
 			ausgleichspunkte_split_text[ausgleichspunkte_split_text.index(all)]=y
 
@@ -4158,13 +4160,22 @@ class Ui_MainWindow(object):
 				ausgleichspunkte_split_text.remove(all)
 		
 
-
+		#print(ausgleichspunkte_split_text)
 		for all in reversed(ausgleichspunkte_split_text): 
 			if '\\antwort{' in all: 
 				index_end=ausgleichspunkte_split_text.index(all)
 				break			
 		
-		ausgleichspunkte_split_text=ausgleichspunkte_split_text[:index_end]
+		try:
+			ausgleichspunkte_split_text=ausgleichspunkte_split_text[:index_end]
+		except UnboundLocalError:
+			self.warning_window('Es ist ein Fehler bei der Auswahl der Ausgleichspunkte von Beispiel {} aufgetreten! (Das Beispiel kann dennoch verwendet und individuell in der TeX-Datei bearbeitet werden.)\n'.format(bsp_name), 
+			'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team.')
+			return
+
+
+
+
 		# for all in self.dict_sage_ausgleichspunkte_chosen[selected_typ2_path]:
 		# 	print(all)
 		#print(self.dict_sage_ausgleichspunkte_chosen)
