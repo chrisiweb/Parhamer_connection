@@ -2007,9 +2007,7 @@ class Ui_MainWindow(object):
 		pixmap = QtGui.QPixmap(logo_path)
 
 
-		#pixmap.scaled(1,1, QtCore.Qt.KeepAspectRatio)
-		#pixmap.resize(20,20)
-		msg.setIconPixmap(pixmap)
+		msg.setIconPixmap(pixmap.scaled(110, 110, QtCore.Qt.KeepAspectRatio))
 		msg.setWindowIcon(QtGui.QIcon(logo_path))
 		msg.setText("LaMA - LaTeX Mathematik Assistent %s  \n\n"
 		"Author: Christoph Weberndorfer	 \n"
@@ -3568,8 +3566,11 @@ class Ui_MainWindow(object):
 			name, extension=os.path.splitext(path_file)
 			path_file=name+'_autosave.lama'
 			save_file=path_file
-
-		self.neue_schularbeit_erstellen()
+		try:
+			self.neue_schularbeit_erstellen()
+		except AttributeError:
+			pass
+			
 		self.saved_file_path = save_file
 
 
