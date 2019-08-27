@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__='v1.6'
-__lastupdate__='04/19'
+__version__='v1.7.1'
+__lastupdate__='08/19'
 ####################
 
 from PyQt5 import QtCore, QtWidgets, QtGui
@@ -10,18 +10,26 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 import time
 import threading
 import sys
-import os 
+import os
 import os.path
 from pathlib import Path
 import datetime
+from datetime import date
 import json
 import subprocess
 import shutil
 import re
 import functools
+from functools import partial
 import yaml
 from PIL import Image ## pillow
+import smtplib
 
+
+try:
+	loaded_lama_file_path=sys.argv[1]
+except IndexError:
+	loaded_lama_file_path=''
 
 if sys.platform.startswith('linux'):
 	workdir= os.path.dirname(os.path.realpath(__file__))
@@ -38,22 +46,22 @@ print('Loading...')
 
 # Load Config-file
 def config_loader(pathToFile,parameter):
-    for i in range(5):
-        try:
-            config1 = yaml.safe_load(open(pathToFile, encoding='utf8'))
-            break
-        except FileNotFoundError:
-            print("File not Found!")
-            if sys.platform.startswith('linux') or sys.platform.startswith('darwin'):
-                    root = "."
-            else:
-                    root = ""
-            config_path = os.path.join('.','_database','_config')
-            if not os.path.exists(config_path):
-                print("No worries, we'll create the structure for you.")
-                os.makedirs(config_path)
-            input("Please place your your config file in '{}' and hit enter. {} tries left!".format(config_path, 5-i))
-    return config1[parameter]
+	for i in range(5):
+		try:
+			config1 = yaml.safe_load(open(pathToFile, encoding='utf8'))
+			break
+		except FileNotFoundError:
+			print("File not Found!")
+			if sys.platform.startswith('linux') or sys.platform.startswith('darwin'):
+					root = "."
+			else:
+					root = ""
+			config_path = os.path.join('.','_database','_config')
+			if not os.path.exists(config_path):
+				print("No worries, we'll create the structure for you.")
+				os.makedirs(config_path)
+			input("Please place your your config file in '{}' and hit enter. {} tries left!".format(config_path, 5-i))
+	return config1[parameter]
 
 config_file = os.path.join(path_programm,'_database','_config','config1.yml')
 
@@ -92,21 +100,480 @@ logo_path=os.path.join(path_programm,'_database','_config','icon','LaMa_icon_log
 
 
 
-widgets_search=['actionRefresh_Database','menuDateityp','menuNeu','menuHelp','label_update','combobox_searchtype','label_aufgabentyp','groupBox_ausgew_gk','groupBox_af',
-'groupBox_gk','groupBox_klassen','groupBox_themen_klasse','groupBox_titelsuche','cb_solution','btn_suche'] #'centralwidget'
+widgets_search=['actionReset','actionLoad','actionSave','menuDateityp','menuSage','menuNeu','menuFeedback','menuHelp','label_update','combobox_searchtype','label_aufgabentyp','groupBox_ausgew_gk','groupBox_af',
+'groupBox_gk','groupBox_klassen','groupBox_themen_klasse','groupBox_titelsuche','cb_solution','btn_suche'] #'actionRefresh_Database'
 
-widgets_create=['menuBild_einf_gen','menuSuche','menuHelp','groupBox_aufgabentyp','groupBox_ausgew_gk_cr','groupBox_bilder',
+widgets_create=['actionReset','menuBild_einf_gen','menuSuche','menuSage','menuFeedback','menuHelp','groupBox_aufgabentyp','groupBox_ausgew_gk_cr','groupBox_bilder',
 'groupBox_2', 'groupBox_grundkompetenzen_cr', 'groupBox_punkte','groupBox_klassen_cr','groupBox_aufgabenformat','groupBox_beispieleingabe',
-'groupBox_quelle','pushButton_save'] 
+'groupBox_quelle','pushButton_save'] #'actionRefresh_Database'
+
+
+widgets_sage=['actionLoad','actionSave','menuSuche','menuNeu','menuFeedback','menuHelp','comboBox_at_sage','groupBox_alle_aufgaben','groupBox_sage'] #,'comboBox_at_sage','groupBox_sage','groupBox_notenschl','actionRefresh_Database'
+
+
+widgets_feedback=['menuSage','menuNeu','menuHelp','comboBox_at_fb','label_example','groupBox_alle_aufgaben_fb', 'groupBox_fehlertyp','groupBox_feedback',  'groupBox_email', 'pushButton_send']
+
 
 dict_picture_path={}
 set_chosen_gk=set([])
+list_sage_examples=[]
+
+
+
+class SpinBox_noWheel(QtWidgets.QSpinBox):
+	def wheelEvent(self, event):
+		event.ignore()
+
+#### Dialogue Window -- Titelblatt anpassen
+
+class Ui_Dialog_titlepage(object):
+	def setupUi(self, Dialog, dict_titlepage):
+		# self.dict_titlepage = dict_titlepage
+		# print(self.dict_titlepage)
+
+		# self.ausgleichspunkte_split_text=ausgleichspunkte_split_text
+		self.Dialog=Dialog
+		self.Dialog.setObjectName("Dialog")
+		Dialog.setWindowTitle(_translate("Titelplatt anpassen", "Titelplatt anpassen", None))
+		# self.Dialog.resize(600, 400)
+		# self.Dialog.setWindowIcon(QtGui.QIcon(logo_path))		
+		# Dialog.setObjectName("Dialog")
+		# Dialog.resize(468, 208)
+		Dialog.setWindowIcon(QtGui.QIcon(logo_path))
+		self.verticalLayout_titlepage = QtWidgets.QVBoxLayout(Dialog)
+		self.verticalLayout_titlepage.setObjectName("verticalLayout_titlepage")
+		self.label_titlepage = QtWidgets.QLabel()
+		# # self.label_gk.setWordWrap(True)
+		self.label_titlepage.setObjectName(_fromUtf8("label_titlepage"))
+		self.label_titlepage.setText(_translate("MainWindow", "Wählen Sie die gewünschten Punkte für das Titelblatt aus:\n", None))
+		self.verticalLayout_titlepage.addWidget(self.label_titlepage)
+
+		self.cb_titlepage_logo= QtWidgets.QCheckBox("Logo")
+		if dict_titlepage['logo_path']!=False:
+			logo_name=os.path.basename(dict_titlepage['logo_path']) 
+			self.cb_titlepage_logo.setText('Logo ({})'.format(logo_name))									  
+		self.cb_titlepage_logo.setObjectName(_fromUtf8("cb_titlepage_logo"))
+		self.verticalLayout_titlepage.addWidget(self.cb_titlepage_logo)
+		self.cb_titlepage_logo.setChecked(dict_titlepage['logo'])
+
+		self.btn_titlepage_logo_path= QtWidgets.QPushButton()									  
+		self.btn_titlepage_logo_path.setObjectName(_fromUtf8("btn_titlepage_logo_path"))
+		self.verticalLayout_titlepage.addWidget(self.btn_titlepage_logo_path)
+		self.btn_titlepage_logo_path.setText("Durchsuchen")
+		self.btn_titlepage_logo_path.setMaximumWidth(130)
+		self.btn_titlepage_logo_path.clicked.connect(partial(self.btn_titlepage_logo_path_pressed, dict_titlepage))
+
+
+
+		self.cb_titlepage_titel= QtWidgets.QCheckBox("Titel")									  
+		self.cb_titlepage_titel.setObjectName(_fromUtf8("cb_titlepage_titel"))
+		self.verticalLayout_titlepage.addWidget(self.cb_titlepage_titel)
+		self.cb_titlepage_titel.setChecked(dict_titlepage['titel'])
+
+		self.cb_titlepage_datum= QtWidgets.QCheckBox("Datum")									  
+		self.cb_titlepage_datum.setObjectName(_fromUtf8("cb_titlepage_datum"))
+		self.verticalLayout_titlepage.addWidget(self.cb_titlepage_datum)
+		self.cb_titlepage_datum.setChecked(dict_titlepage['datum'])
+
+		self.cb_titlepage_klasse= QtWidgets.QCheckBox("Klasse")									  
+		self.cb_titlepage_klasse.setObjectName(_fromUtf8("cb_titlepage_klasse"))
+		self.verticalLayout_titlepage.addWidget(self.cb_titlepage_klasse)
+		self.cb_titlepage_klasse.setChecked(dict_titlepage['klasse'])
+
+		self.cb_titlepage_name= QtWidgets.QCheckBox("Name")									  
+		self.cb_titlepage_name.setObjectName(_fromUtf8("cb_titlepage_name"))
+		self.verticalLayout_titlepage.addWidget(self.cb_titlepage_name)
+		self.cb_titlepage_name.setChecked(dict_titlepage['name'])
+
+		self.cb_titlepage_note= QtWidgets.QCheckBox("Note")									  
+		self.cb_titlepage_note.setObjectName(_fromUtf8("cb_titlepage_note"))
+		self.verticalLayout_titlepage.addWidget(self.cb_titlepage_note)
+		self.cb_titlepage_note.setChecked(dict_titlepage['note'])
+
+		self.cb_titlepage_unterschrift= QtWidgets.QCheckBox("Unterschrift")									  
+		self.cb_titlepage_unterschrift.setObjectName(_fromUtf8("cb_titlepage_unterschrift"))
+		self.verticalLayout_titlepage.addWidget(self.cb_titlepage_unterschrift)
+		self.cb_titlepage_unterschrift.setChecked(dict_titlepage['unterschrift'])
+
+
+		self.buttonBox_titlepage = QtWidgets.QDialogButtonBox(self.Dialog)
+		self.buttonBox_titlepage = QtWidgets.QDialogButtonBox(self.Dialog)
+		self.buttonBox_titlepage.setStandardButtons(QtWidgets.QDialogButtonBox.Ok|QtWidgets.QDialogButtonBox.Cancel)
+		
+		# buttonS = self.buttonBox_titlepage.button(QtWidgets.QDialogButtonBox.Save)
+		# buttonS.setText('Speichern')
+		buttonX = self.buttonBox_titlepage.button(QtWidgets.QDialogButtonBox.Cancel)
+		buttonX.setText('Standard wiederherstellen')
+		self.buttonBox_titlepage.setObjectName("buttonBox")
+		self.buttonBox_titlepage.rejected.connect(partial(self.set_default_titlepage, dict_titlepage))
+		self.buttonBox_titlepage.accepted.connect(partial(self.save_titlepage, dict_titlepage))
+		# self.retranslateUi(self.Dialog)
+
+		self.verticalLayout_titlepage.addWidget(self.buttonBox_titlepage)
+
+		return dict_titlepage
+
+	def btn_titlepage_logo_path_pressed(self,dict_titlepage):
+		logo_titlepage_path = QtWidgets.QFileDialog.getOpenFileNames(None, 'Grafiken wählen', path_programm , 'Grafiken (*.eps)')
+		if logo_titlepage_path[0]==[]:
+			return
+
+		logo_name=os.path.basename(logo_titlepage_path[0][0])
+		#print(logo_name)	
+		self.cb_titlepage_logo.setText('Logo ({})'.format(logo_name))
+		dict_titlepage['logo_path']="{}".format(logo_titlepage_path[0][0])
+		copy_logo_titlepage_path=os.path.join(path_programm,'Teildokument',logo_name)
+		shutil.copy(logo_titlepage_path[0][0],copy_logo_titlepage_path)
+
+		return dict_titlepage
+		
+	def save_titlepage(self,dict_titlepage):
+		for all in dict_titlepage.keys():
+			if all=='logo_path':
+				if self.cb_titlepage_logo.isChecked() and dict_titlepage[all]==False:
+					msg = QtWidgets.QMessageBox()
+					msg.setIcon(QtWidgets.QMessageBox.Warning)
+					msg.setWindowIcon(QtGui.QIcon(logo_path))
+					msg.setText('Es wurde kein Logo ausgewählt')
+					msg.setInformativeText('Bitte geben Sie den Dateipfad des Logos an oder wählen Sie das Logo ab.')
+					msg.setWindowTitle("Kein Logo ausgewählt")
+					msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+					msg.exec_()
+					return
+				continue
+
+			checkbox=eval('self.cb_titlepage_{}'.format(all))
+			if checkbox.isChecked():
+				dict_titlepage[all]=True
+			else: 
+				dict_titlepage[all]=False
+
+		self.Dialog.reject()
+		return dict_titlepage
+
+
+	def set_default_titlepage(self, dict_titlepage):
+		dict_titlepage={'logo':False,'logo_path': False,'titel':True, 'datum':True, 'klasse':True, 'name':True, 'note':False,'unterschrift':False}
+		for all in dict_titlepage.keys():
+			if all=='logo_path':
+				continue
+			checkbox=eval('self.cb_titlepage_{}'.format(all))
+			checkbox.setChecked(dict_titlepage[all])
+
+
+
+		return dict_titlepage
+
+#### Dialog Window - Ausgleichspunkte
+class Ui_Dialog_typ2(object):
+	def setupUi(self, Dialog, ausgleichspunkte_split_text,list_sage_ausgleichspunkte_chosen):
+		#print(list_sage_ausgleichspunkte_chosen)
+		self.ausgleichspunkte_split_text=ausgleichspunkte_split_text
+		self.Dialog=Dialog
+		self.Dialog.setObjectName("Dialog")
+		self.Dialog.resize(600, 400)
+		self.Dialog.setWindowIcon(QtGui.QIcon(logo_path))
+		self.gridLayout_2 = QtWidgets.QGridLayout(Dialog)
+		self.gridLayout_2.setObjectName("gridLayout_2")
+		self.scrollArea = QtWidgets.QScrollArea(Dialog)
+		self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
+		self.scrollArea.setWidgetResizable(True)
+		self.scrollArea.setObjectName("scrollArea")
+		self.scrollAreaWidgetContents = QtWidgets.QWidget()
+		self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 600, 500))
+		self.scrollArea.setFrameShape(QtWidgets.QFrame.StyledPanel)
+		self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
+		self.gridLayout = QtWidgets.QGridLayout(self.scrollAreaWidgetContents)
+		self.gridLayout.setObjectName("gridLayout")
+		self.label_einleitung = QtWidgets.QLabel(self.scrollAreaWidgetContents)
+		self.label_einleitung.setWordWrap(True)
+		self.label_einleitung.setObjectName("label_einleitung")
+		self.label_einleitung.setText("[...] EINFÜHRUNGSTEXT [...] \n\nAufgabenstellung:\n")
+		self.gridLayout.addWidget(self.label_einleitung, 0, 1, 1, 3, QtCore.Qt.AlignTop)
+		row=1
+		cb_counter=0
+
+		for all in self.ausgleichspunkte_split_text:
+			cb_counter=self.create_checkbox_ausgleich(all,row, cb_counter, list_sage_ausgleichspunkte_chosen)
+			row+=1
+	
+			
+		self.label_solution = QtWidgets.QLabel(self.scrollAreaWidgetContents)
+		self.label_solution.setWordWrap(True)
+		self.label_solution.setObjectName("label_solution")
+		self.label_solution.setText("\nLösungserwartung:\n[...]")
+		self.gridLayout.addWidget(self.label_solution, row, 1, 1, 3, QtCore.Qt.AlignTop)
+		row+=1
+		self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+		self.gridLayout_2.addWidget(self.scrollArea, 0, 0, 1, 1)
+		self.buttonBox = QtWidgets.QDialogButtonBox(self.Dialog)
+		self.buttonBox = QtWidgets.QDialogButtonBox(self.Dialog)
+		self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Ok|QtWidgets.QDialogButtonBox.Cancel)
+		
+
+		buttonX = self.buttonBox.button(QtWidgets.QDialogButtonBox.Cancel)
+		buttonX.setText('Abbrechen')
+		self.buttonBox.setObjectName("buttonBox")
+		self.buttonBox.rejected.connect(self.Dialog.reject)
+		self.gridLayout_2.addWidget(self.buttonBox, 1, 0, 1, 1)
+		self.buttonBox.accepted.connect(partial(self.pushButton_OK_pressed, list_sage_ausgleichspunkte_chosen))
+		self.retranslateUi(self.Dialog)
+		QtCore.QMetaObject.connectSlotsByName(self.Dialog)
+		
+		#return list_sage_ausgleichspunkte_chosen
+		
+
+	def retranslateUi(self, Dialog):
+		_translate = QtCore.QCoreApplication.translate
+		Dialog.setWindowTitle(_translate("Ausgleichspunkte anpassen", "Ausgleichspunkte anpassen"))
+
+	def create_checkbox_ausgleich(self, linetext, row, cb_counter, list_sage_ausgleichspunkte_chosen):
+		counter=row-1
+		if 'GRAFIK' in linetext:
+			pass
+		else:
+			exec('self.checkBox_{} = QtWidgets.QCheckBox(self.scrollAreaWidgetContents)'.format(counter))
+			checkBox=eval('self.checkBox_{}'.format(counter))
+			checkBox.setMaximumSize(QtCore.QSize(20, 16777215))
+			#self.checkBox.setText("")
+			checkBox.setObjectName("checkBox_{}".format(counter))
+			self.gridLayout.addWidget(checkBox, row, 0, 1, 1, QtCore.Qt.AlignTop)
+			cb_counter+=1
+
+		exec('self.label_{} = QtWidgets.QLabel(self.scrollAreaWidgetContents)'.format(counter))
+		label=eval('self.label_{}'.format(counter))
+		label.setWordWrap(True)
+		label.setObjectName("label_{}".format(counter))
+		if '\\fbox{A}' in linetext:
+			linetext=linetext.replace('\\fbox{A}','')
+		if linetext in list_sage_ausgleichspunkte_chosen:
+			checkBox.setChecked(True)
+	
+
+
+		label.setText(linetext)
+		self.gridLayout.addWidget(label, row, 1, 1, 2, QtCore.Qt.AlignTop)
+		return cb_counter
+
+	def pushButton_OK_pressed(self, list_sage_ausgleichspunkte_chosen):
+		#print(len(self.ausgleichspunkte_split_text))
+		for i in range(0,len(self.ausgleichspunkte_split_text)):
+			try:
+				checkBox=eval('self.checkBox_{}'.format(i))
+				if eval('self.label_{}'.format(i)).text() in list_sage_ausgleichspunkte_chosen:
+					if checkBox.isChecked()==False:
+						list_sage_ausgleichspunkte_chosen.remove(eval('self.label_{}'.format(i)).text())
+				else:
+					if checkBox.isChecked()==True:
+						list_sage_ausgleichspunkte_chosen.append(eval('self.label_{}'.format(i)).text())
+
+			except AttributeError:
+				pass
+
+		#print(list_sage_ausgleichspunkte_chosen)
+
+
+
+
+		self.Dialog.reject()
+		# print(list_sage_ausgleichspunkte_chosen)
+		#self.list_sage_ausgleichspunkte_chosen=list_sage_ausgleichspunkte_chosen
+		return list_sage_ausgleichspunkte_chosen
+
+		
+ 
+#### Dialog Window - Schularbeit erstellen 
+class Ui_Dialog(object):
+	def setupUi(self, Dialog, dict_list_input_examples, beispieldaten_dateipfad_1,beispieldaten_dateipfad_2, dict_titlepage, saved_file_path):
+		#print(dict_list_input_examples)
+		#print( beispieldaten_dateipfad_1)
+		self.dict_list_input_examples=dict_list_input_examples
+		self.beispieldaten_dateipfad_1=beispieldaten_dateipfad_1
+		self.beispieldaten_dateipfad_2=beispieldaten_dateipfad_2
+		self.dict_titlepage=dict_titlepage
+		self.data_gesamt=self.dict_list_input_examples['data_gesamt']
+		self.saved_file_path = saved_file_path
+		#print(self.data_gesamt)
+		self.Dialog=Dialog
+		Dialog.setObjectName("Dialog")
+		Dialog.resize(468, 208)
+		Dialog.setWindowIcon(QtGui.QIcon(logo_path))
+		self.gridLayout = QtWidgets.QGridLayout(Dialog)
+		self.gridLayout.setObjectName("gridLayout")
+		self.pushButton_sw_save = QtWidgets.QPushButton(Dialog)
+		self.pushButton_sw_save.setObjectName("pushButton_sw_save")
+		self.pushButton_sw_save.clicked.connect(self.pushButton_sw_save_pressed)
+		self.gridLayout.addWidget(self.pushButton_sw_save, 5, 3, 1, 1)
+		self.pushButton_sw_back = QtWidgets.QPushButton(Dialog)
+		self.pushButton_sw_back.setObjectName("pushButton_sw_back")
+		self.pushButton_sw_back.clicked.connect(self.pushButton_sw_back_pressed)
+		self.gridLayout.addWidget(self.pushButton_sw_back, 4, 3, 1, 1)
+		self.groupBox_sw_data = QtWidgets.QGroupBox(Dialog)
+		self.groupBox_sw_data.setObjectName("groupBox_sw_data")
+		self.gridLayout_2 = QtWidgets.QGridLayout(self.groupBox_sw_data)
+		self.gridLayout_2.setObjectName("gridLayout_2")
+		self.label_sw_num_ges = QtWidgets.QLabel(self.groupBox_sw_data)
+		self.label_sw_num_ges.setObjectName("label_sw_num_ges")
+		self.gridLayout_2.addWidget(self.label_sw_num_ges, 6, 0, 1, 1)
+		self.label_sw_num_1 = QtWidgets.QLabel(self.groupBox_sw_data)
+		self.label_sw_num_1.setLayoutDirection(QtCore.Qt.LeftToRight)
+		self.label_sw_num_1.setObjectName("label_sw_num_1")
+		self.gridLayout_2.addWidget(self.label_sw_num_1, 3, 0, 1, 1, QtCore.Qt.AlignLeft)
+		self.label_sw_num_2 = QtWidgets.QLabel(self.groupBox_sw_data)
+		self.label_sw_num_2.setObjectName("label_sw_num_2")
+		self.gridLayout_2.addWidget(self.label_sw_num_2, 4, 0, 1, 1, QtCore.Qt.AlignLeft)
+		self.label_sw_pkt_ges = QtWidgets.QLabel(self.groupBox_sw_data)
+		self.label_sw_pkt_ges.setObjectName("label_sw_pkt_ges")
+		self.gridLayout_2.addWidget(self.label_sw_pkt_ges, 6, 3, 1, 1)
+		self.label_sw_pkt_2 = QtWidgets.QLabel(self.groupBox_sw_data)
+		self.label_sw_pkt_2.setObjectName("label_sw_pkt_2")
+		self.gridLayout_2.addWidget(self.label_sw_pkt_2, 4, 3, 1, 1)
+		self.label_sw_pkt_1 = QtWidgets.QLabel(self.groupBox_sw_data)
+		self.label_sw_pkt_1.setObjectName("label_sw_pkt_1")
+		self.gridLayout_2.addWidget(self.label_sw_pkt_1, 3, 3, 1, 1)
+		self.label_sw_date = QtWidgets.QLabel(self.groupBox_sw_data)
+		self.label_sw_date.setObjectName("label_sw_date")
+		self.gridLayout_2.addWidget(self.label_sw_date, 1, 0, 1, 1)
+		self.label_sw_num_ges_int = QtWidgets.QLabel(self.groupBox_sw_data)
+		self.label_sw_num_ges_int.setObjectName("label_sw_num_ges_int")
+		self.gridLayout_2.addWidget(self.label_sw_num_ges_int, 6, 1, 1, 1)
+		self.label_sw_num_2_int = QtWidgets.QLabel(self.groupBox_sw_data)
+		self.label_sw_num_2_int.setObjectName("label_sw_num_2_int")
+		self.gridLayout_2.addWidget(self.label_sw_num_2_int, 4, 1, 1, 1)
+		self.label_sw_num_1_int = QtWidgets.QLabel(self.groupBox_sw_data)
+		self.label_sw_num_1_int.setObjectName("label_sw_num_1_int")
+		self.gridLayout_2.addWidget(self.label_sw_num_1_int, 3, 1, 1, 1)
+		self.label_sw_pkt_1_int = QtWidgets.QLabel(self.groupBox_sw_data)
+		self.label_sw_pkt_1_int.setObjectName("label_sw_pkt_1_int")
+		self.gridLayout_2.addWidget(self.label_sw_pkt_1_int, 3, 4, 1, 1)
+		self.label_sw_pkt_2_int = QtWidgets.QLabel(self.groupBox_sw_data)
+		self.label_sw_pkt_2_int.setObjectName("label_sw_pkt_2_int")
+		self.gridLayout_2.addWidget(self.label_sw_pkt_2_int, 4, 4, 1, 1)
+		self.line = QtWidgets.QFrame(self.groupBox_sw_data)
+		self.line.setFrameShape(QtWidgets.QFrame.HLine)
+		self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
+		self.line.setObjectName("line")
+		self.gridLayout_2.addWidget(self.line, 5, 0, 1, 5)
+		self.label_sw_pkt_ges_int = QtWidgets.QLabel(self.groupBox_sw_data)
+		self.label_sw_pkt_ges_int.setObjectName("label_sw_pkt_ges_int")
+		self.gridLayout_2.addWidget(self.label_sw_pkt_ges_int, 6, 4, 1, 1)
+		self.label_sw_klasse = QtWidgets.QLabel(self.groupBox_sw_data)
+		self.label_sw_klasse.setObjectName("label_sw_klasse")
+		self.gridLayout_2.addWidget(self.label_sw_klasse, 1, 3, 1, 1)
+		self.gridLayout.addWidget(self.groupBox_sw_data, 1, 0, 5, 3)
+		self.groupBox_sw_gruppen = QtWidgets.QGroupBox(Dialog)
+		self.groupBox_sw_gruppen.setObjectName("groupBox_sw_gruppen")
+		self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBox_sw_gruppen)
+		self.gridLayout_3.setObjectName("gridLayout_3")
+		self.spinBox_sw_gruppen = QtWidgets.QSpinBox(self.groupBox_sw_gruppen)
+		self.spinBox_sw_gruppen.setMinimum(1)
+		self.spinBox_sw_gruppen.setMaximum(5)
+		self.spinBox_sw_gruppen.setObjectName("spinBox_sw_gruppen")
+		self.gridLayout_3.addWidget(self.spinBox_sw_gruppen, 0, 0, 1, 1)
+		self.gridLayout.addWidget(self.groupBox_sw_gruppen, 3, 3, 1, 1)
+		self.radioButton_sw_br = QtWidgets.QRadioButton(Dialog)
+		self.radioButton_sw_br.setEnabled(False)
+		self.radioButton_sw_br.setObjectName("radioButton_sw_br")
+		self.gridLayout.addWidget(self.radioButton_sw_br, 2, 3, 1, 1)
+		self.radioButton_sw_ns = QtWidgets.QRadioButton(Dialog)
+		self.radioButton_sw_ns.setEnabled(False)
+		self.radioButton_sw_ns.setObjectName("radioButton_sw_ns")
+		self.gridLayout.addWidget(self.radioButton_sw_ns, 1, 3, 1, 1)
+		if self.data_gesamt['Beurteilung']=='ns':
+			self.radioButton_sw_ns.setChecked(True)
+		if self.data_gesamt['Beurteilung']=='br':
+			self.radioButton_sw_br.setChecked(True)		
+
+
+		self.retranslateUi(Dialog)
+		QtCore.QMetaObject.connectSlotsByName(Dialog)
+
+	def retranslateUi(self, Dialog):
+		datum=str(self.data_gesamt['Datum'][2]) +'.'+str(self.data_gesamt['Datum'][1])+'.'+str(self.data_gesamt['Datum'][0])
+		_translate = QtCore.QCoreApplication.translate
+		Dialog.setWindowTitle(_translate("Schularbeit erstellen", "Schularbeit erstellen"))
+		self.radioButton_sw_ns.setText(_translate("Dialog", "Notenschlüssel"))
+		self.pushButton_sw_save.setText(_translate("Dialog", "Speichern"))
+		self.pushButton_sw_back.setText(_translate("Dialog", "Zurück "))
+		if self.data_gesamt['Pruefungstyp']=='Schularbeit':
+			self.groupBox_sw_data.setTitle(_translate("Dialog", "%i. Schularbeit"%self.data_gesamt['#']))
+		else:
+			self.groupBox_sw_data.setTitle(_translate("Dialog", self.data_gesamt['Pruefungstyp']))
+		self.label_sw_num_ges.setText(_translate("Dialog", "Aufgaben gesamt:"))
+		self.label_sw_num_1.setText(_translate("Dialog", "Typ1 Aufgaben:"))
+		self.label_sw_num_2.setText(_translate("Dialog", "Typ2 Aufgaben:"))
+		self.label_sw_pkt_ges.setText(_translate("Dialog", "Gesamtpunkte:"))
+		self.label_sw_pkt_2.setText(_translate("Dialog", "Punkte Typ2:"))
+		self.label_sw_pkt_1.setText(_translate("Dialog", "Punkte Typ1:"))
+		self.label_sw_date.setText(_translate("Dialog", "Datum: %s"%datum))
+		self.label_sw_num_ges_int.setText(_translate("Dialog", "%s"%str(self.data_gesamt['num_1']+self.data_gesamt['num_2'])))
+		self.label_sw_num_2_int.setText(_translate("Dialog", "%i"%self.data_gesamt['num_2']))
+		self.label_sw_num_1_int.setText(_translate("Dialog", "%i"%self.data_gesamt['num_1']))
+		self.label_sw_pkt_1_int.setText(_translate("Dialog", "{0}".format(self.data_gesamt['punkte_1'])))
+		self.label_sw_pkt_2_int.setText(_translate("Dialog", "{0} (davon {1} AP)".format(self.data_gesamt['punkte_2'], self.data_gesamt['ausgleichspunkte'])))
+		self.label_sw_pkt_ges_int.setText(_translate("Dialog", "%s"%str(self.data_gesamt['punkte_1']+self.data_gesamt['punkte_2']))) #+self.data_gesamt['ausgleichspunkte']
+		self.label_sw_klasse.setText(_translate("Dialog", "Klasse: %s"%self.data_gesamt['Klasse']))
+		self.groupBox_sw_gruppen.setTitle(_translate("Dialog", "Anzahl der Gruppen"))
+		self.radioButton_sw_br.setText(_translate("Dialog", "Beurteilungsraster"))
+
+	def pushButton_sw_back_pressed(self):
+		self.Dialog.reject()
+
+	def pushButton_sw_save_pressed(self):
+		self.Dialog.reject()
+		# print(self.spinBox_sw_gruppen.value())
+		# return
+		MainWindow.hide()
+		# index=0
+		for index in range(self.spinBox_sw_gruppen.value()*2):
+			Ui_MainWindow.pushButton_vorschau_pressed(self, 'schularbeit',index, self.spinBox_sw_gruppen.value()*2)
+			# index+=1
+			
+		# Ui_MainWindow.pushButton_vorschau_pressed(self, 'schularbeit',index)
+		MainWindow.show()
+		#print(os.path.dirname(self.saved_file_path))
+		if sys.platform.startswith('linux') or sys.platform.startswith('darwin'):
+			file_path = os.path.dirname(self.saved_file_path)
+			subprocess.Popen('xdg-open "{}"'.format(file_path),shell=True)
+			#subprocess.run(['xdg-open', "{0}/Teildokument/{1}.pdf".format(path_programm, dateiname)])
+		else:
+			file_path = os.path.dirname(self.saved_file_path).replace('/','\\')
+			#print(file_path)	
+			# .replace('\n', ' ')
+			subprocess.Popen('explorer "{}"'.format(file_path))
+			# subprocess.Popen('explorer "C:\Users\Christoph\Desktop"')
+
+	
+
+
 class Ui_MainWindow(object):
-	global dict_picture_path, set_chosen_gk
+	global dict_picture_path, set_chosen_gk, list_sage_examples
+	def __init__(self):
+		self.dict_sage_ausgleichspunkte_chosen={}
+		titlepage_save=os.path.join(path_programm,'Teildokument','titlepage_save')
+		if os.path.isfile(titlepage_save):
+			with open(titlepage_save,encoding='utf8') as f:
+				self.dict_titlepage = json.load(f)
+		else:
+			self.dict_titlepage={'logo': False, 'logo_path': False,'titel':True, 'datum':True, 'klasse':True, 'name':True,'note':False, 'unterschrift':False}
+
+		app.aboutToQuit.connect(self.close_app)
+		
+
+	def open_subwindow(self, dict_list_input_examples,beispieldaten_dateipfad_1, beispieldaten_dateipfad_2, dict_titlepage, saved_file_path): #, dict_gesammeltedateien
+		self.Dialog = QtWidgets.QDialog(None, QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint)
+		self.ui = Ui_Dialog()
+		self.ui.setupUi(self.Dialog, dict_list_input_examples, beispieldaten_dateipfad_1, beispieldaten_dateipfad_2, dict_titlepage, saved_file_path)	#, dict_gesammeltedateien
+		self.Dialog.show()
+		self.Dialog.exec_()
+		#print(dict_gesammeltedateien)
+		#self.Dialog.show()	
+
 	def setupUi(self, MainWindow):
+
 		self.check_for_update()	
 		MainWindow.setObjectName(_fromUtf8("MainWindow"))
-		MainWindow.resize(1000, 500)
+		MainWindow.resize(900, 500)
 		MainWindow.move(30,30)
 		# MainWindow.setMaximumSize(QtCore.QSize(1078, 16777215))
 		MainWindow.setLayoutDirection(QtCore.Qt.LeftToRight)
@@ -130,8 +597,12 @@ class Ui_MainWindow(object):
 		self.menuDatei.setObjectName(_fromUtf8("menuDatei"))
 		self.menuNeu = QtWidgets.QMenu(self.menuBar)
 		self.menuNeu.setObjectName(_fromUtf8("menuNeu"))
+		self.menuSage = QtWidgets.QMenu(self.menuBar)
+		self.menuSage.setObjectName(_fromUtf8("menuSage"))
 		self.menuSuche = QtWidgets.QMenu(self.menuBar)
 		self.menuSuche.setObjectName(_fromUtf8("menuSuche"))
+		self.menuFeedback = QtWidgets.QMenu(self.menuBar)
+		self.menuFeedback.setObjectName(_fromUtf8("menuFeedback"))
 		self.menuHelp = QtWidgets.QMenu(self.menuBar)
 		self.menuHelp.setObjectName(_fromUtf8("menuHelp"))
 		self.menuBild_einf_gen = QtWidgets.QMenu(self.menuBar)
@@ -143,38 +614,53 @@ class Ui_MainWindow(object):
 		MainWindow.setMenuBar(self.menuBar)
 		self.actionReset = QtWidgets.QAction(MainWindow)
 		self.actionReset.setObjectName(_fromUtf8("actionReset"))
+		self.actionLoad = QtWidgets.QAction(MainWindow)
+		self.actionLoad.setObjectName(_fromUtf8("actionLoad"))
+		#self.actionLoad.setVisible(False)
+		self.actionSave = QtWidgets.QAction(MainWindow)
+		self.actionSave.setObjectName(_fromUtf8("actionSave"))
+		#self.actionSave.setVisible(False)
 		self.actionAufgaben_Typ1 = QtWidgets.QAction(MainWindow)
 		self.actionAufgaben_Typ1.setObjectName(_fromUtf8("actionAufgaben_Typ1"))
 		self.actionAufgaben_Typ2 = QtWidgets.QAction(MainWindow)
 		self.actionAufgaben_Typ2.setObjectName(_fromUtf8("actionAufgaben_Typ2"))
 		self.actionRefresh_Database = QtWidgets.QAction(MainWindow)
 		self.actionRefresh_Database.setObjectName(_fromUtf8("actionRefresh_Database"))
-		self.actionsuchfenster_reset = QtWidgets.QAction(MainWindow)
-		self.actionsuchfenster_reset.setObjectName(_fromUtf8("actionsuchfenster_reset"))
 		self.actionNeu = QtWidgets.QAction(MainWindow)
 		self.actionNeu.setObjectName(_fromUtf8("actionNeu"))
+		self.actionSage = QtWidgets.QAction(MainWindow)
+		self.actionSage.setObjectName(_fromUtf8("actionSage"))
 		self.actionSuche = QtWidgets.QAction(MainWindow)
 		self.actionSuche.setObjectName(_fromUtf8("actionSuche"))		
 		self.actionInfo = QtWidgets.QAction(MainWindow)
 		self.actionInfo.setObjectName(_fromUtf8("actionInfo"))
 		self.actionExit = QtWidgets.QAction(MainWindow)
 		self.actionExit.setObjectName(_fromUtf8("actionExit"))
+		self.actionFeedback = QtWidgets.QAction(MainWindow)
+		self.actionFeedback.setObjectName(_fromUtf8("actionFeedback"))
 		self.menuDateityp.addAction(self.actionAufgaben_Typ1)
 		self.menuDateityp.addAction(self.actionAufgaben_Typ2)
+		self.menuFeedback.addAction(self.actionFeedback)
 		self.menuHelp.addAction(self.actionInfo)
 		self.menuDatei.addAction(self.actionRefresh_Database)
-		self.menuDatei.addAction(self.actionsuchfenster_reset)
+		self.menuDatei.addAction(self.actionReset)
+		self.menuDatei.addSeparator()
+		self.menuDatei.addAction(self.actionLoad)
+		self.menuDatei.addAction(self.actionSave)
 		self.menuDatei.addSeparator()
 		self.menuDatei.addAction(self.actionExit)
+		self.menuSage.addAction(self.actionSage)
 		self.menuNeu.addAction(self.actionNeu)
 		self.menuSuche.addAction(self.actionSuche)
 		self.menuBar.addAction(self.menuDatei.menuAction())
 		self.menuBar.addAction(self.menuDateityp.menuAction())
+		self.menuBar.addAction(self.menuSage.menuAction())
 		self.menuBar.addAction(self.menuNeu.menuAction())
+		self.menuBar.addAction(self.menuFeedback.menuAction())
+		self.menuBar.addAction(self.menuHelp.menuAction())
 		self.menuBild_einf_gen.addAction(self.actionBild_einf_gen)
 		self.menuBild_einf_gen.addSeparator()
 		self.menuBild_einf_gen.addAction(self.actionBild_konvertieren_jpg_eps)
-		self.menuBar.addAction(self.menuHelp.menuAction())
 		self.groupBox_ausgew_gk = QtWidgets.QGroupBox(self.centralwidget)
 		self.groupBox_ausgew_gk.setObjectName(_fromUtf8("groupBox_ausgew_gk"))
 		self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.groupBox_ausgew_gk)
@@ -460,8 +946,8 @@ class Ui_MainWindow(object):
 		self.plainTextEdit.setObjectName(_fromUtf8("plainTextEdit"))
 		self.gridLayout_10.addWidget(self.plainTextEdit, 1, 0, 1, 1)
 		self.gridLayout.addWidget(self.groupBox_beispieleingabe, 3, 2, 4, 4)
-		self.groupBox_beispieleingabe.setTitle(_translate("MainWindow", "Beispieleingabe", None))
-		self.label.setText(_translate("MainWindow", "Info: Eingabe des Aufgabentextes zwischen \\begin{beispiel} ... \\end{beispiel}", None))
+		self.groupBox_beispieleingabe.setTitle(_translate("MainWindow", "Aufgabeneingabe", None))
+		self.label.setText(_translate("MainWindow", "Info: Eingabe des Aufgabentextes zwischen \\begin{beispiel}...\\end{beispiel}", None))
 		self.groupBox_beispieleingabe.hide()
 
 		#### CREATE CHECKBOXES ####
@@ -635,8 +1121,473 @@ class Ui_MainWindow(object):
 		MainWindow.setTabOrder(self.lineEdit_quelle, self.pushButton_save)
 		####################################################
 		#####################################################
-		####################################################
+		################# LaMA SAGE ####################
 		#####################################################
+
+		
+		self.comboBox_at_sage = QtWidgets.QComboBox(self.centralwidget)
+		self.comboBox_at_sage.setObjectName("comboBox_at_sage")
+		self.comboBox_at_sage.addItem("")
+		self.comboBox_at_sage.addItem("")
+		self.gridLayout.addWidget(self.comboBox_at_sage, 1, 0, 1, 1)
+		self.comboBox_at_sage.setItemText(0, _translate("MainWindow", "Typ 1", None))
+		self.comboBox_at_sage.setItemText(1, _translate("MainWindow", "Typ 2", None))
+		self.comboBox_at_sage.currentIndexChanged.connect(self.comboBox_at_sage_changed)
+		self.comboBox_at_sage.setFocusPolicy(QtCore.Qt.ClickFocus)
+		self.comboBox_at_sage.hide()
+
+		self.groupBox_alle_aufgaben = QtWidgets.QGroupBox(self.centralwidget)
+		self.groupBox_alle_aufgaben.setMinimumSize(QtCore.QSize(140, 16777215))
+		self.groupBox_alle_aufgaben.setMaximumSize(QtCore.QSize(180, 16777215))
+		self.groupBox_alle_aufgaben.setObjectName("groupBox_alle_aufgaben")
+		self.verticalLayout_sage = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben)
+		self.verticalLayout_sage.setObjectName("verticalLayout_sage")
+		self.comboBox_gk = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
+		self.comboBox_gk.setObjectName("comboBox_gk")
+		self.comboBox_gk.addItem("")
+		self.comboBox_gk.addItem("")
+		self.comboBox_gk.addItem("")
+		self.comboBox_gk.addItem("")
+		self.comboBox_gk.addItem("")
+		self.comboBox_gk.addItem("")
+		self.comboBox_gk.addItem("")
+		self.comboBox_gk.addItem("")
+		self.comboBox_gk.addItem("")
+		self.comboBox_gk.setItemText(1, _translate("MainWindow", "AG",None))
+		self.comboBox_gk.setItemText(2, _translate("MainWindow", "FA",None))
+		self.comboBox_gk.setItemText(3, _translate("MainWindow", "AN",None))
+		self.comboBox_gk.setItemText(4, _translate("MainWindow", "WS",None))
+		self.comboBox_gk.setItemText(5, _translate("MainWindow", "K5",None))
+		self.comboBox_gk.setItemText(6, _translate("MainWindow", "K6",None))
+		self.comboBox_gk.setItemText(7, _translate("MainWindow", "K7",None))
+		self.comboBox_gk.setItemText(8, _translate("MainWindow", "K8",None))
+		self.comboBox_gk.currentIndexChanged.connect(partial(self.comboBox_gk_changed,'sage'))
+		self.comboBox_gk.setFocusPolicy(QtCore.Qt.ClickFocus)
+		self.verticalLayout_sage.addWidget(self.comboBox_gk)
+		self.comboBox_gk_num = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
+		self.comboBox_gk_num.setObjectName("comboBox_gk_num")
+		self.comboBox_gk_num.currentIndexChanged.connect(partial(self.comboBox_gk_num_changed, 'sage'))
+		self.comboBox_gk_num.setFocusPolicy(QtCore.Qt.ClickFocus)
+		self.verticalLayout_sage.addWidget(self.comboBox_gk_num)
+		self.lineEdit_number = QtWidgets.QLineEdit(self.groupBox_alle_aufgaben)
+		self.lineEdit_number.setObjectName("lineEdit_number")
+		self.lineEdit_number.textChanged.connect(partial(self.lineEdit_number_changed, 'sage'))
+		self.verticalLayout_sage.addWidget(self.lineEdit_number)
+		self.listWidget = QtWidgets.QListWidget(self.groupBox_alle_aufgaben)
+		self.listWidget.setObjectName("listWidget")
+		self.verticalLayout_sage.addWidget(self.listWidget)	
+		self.gridLayout.addWidget(self.groupBox_alle_aufgaben, 2, 0, 7, 1)
+		self.groupBox_alle_aufgaben.setTitle(_translate("MainWindow", "Aufgaben",None))
+		self.groupBox_alle_aufgaben.hide()
+
+		self.groupBox_sage = QtWidgets.QGroupBox(self.centralwidget)
+		self.groupBox_sage.setObjectName("groupBox_sage")
+		self.gridLayout_5 = QtWidgets.QGridLayout(self.groupBox_sage)
+		self.gridLayout_5.setObjectName("gridLayout_5")
+		self.groupBox_sage.setTitle(_translate("MainWindow", "Schularbeitserstellung", None))
+		
+		
+		# self.checkBox_wiederholung = QtWidgets.QCheckBox(self.groupBox_sage)
+		# self.checkBox_wiederholung.setObjectName("checkBox_wiederholung")
+		# self.checkBox_wiederholung.setFocusPolicy(QtCore.Qt.ClickFocus)
+		# self.gridLayout_5.addWidget(self.checkBox_wiederholung, 2, 4, 1, 2)
+		# self.checkBox_wiederholung.setText(_translate("MainWindow", "Wiederholung", None))
+
+		self.comboBox_pruefungstyp = QtWidgets.QComboBox(self.groupBox_sage)
+		self.comboBox_pruefungstyp.setObjectName("comboBox_pruefungstyp")
+		self.comboBox_pruefungstyp.addItem("")
+		self.comboBox_pruefungstyp.addItem("")
+		self.comboBox_pruefungstyp.addItem("")
+		self.comboBox_pruefungstyp.addItem("")
+		self.comboBox_pruefungstyp.setItemText(0, _translate("MainWindow", "Schularbeit",None))
+		self.comboBox_pruefungstyp.setItemText(1, _translate("MainWindow", "Wiederholungsschularbeit",None))
+		self.comboBox_pruefungstyp.setItemText(2, _translate("MainWindow", "Grundkompetenzcheck",None))
+		self.comboBox_pruefungstyp.setItemText(3, _translate("MainWindow", "Wiederholungsprüfung",None))
+		self.comboBox_pruefungstyp.setFocusPolicy(QtCore.Qt.ClickFocus)
+		self.gridLayout_5.addWidget(self.comboBox_pruefungstyp, 2, 4, 1, 2)
+		#self.verticalLayout_sage.addWidget(self.comboBox_pruefungstyp)
+
+		
+
+		self.radioButton_notenschl = QtWidgets.QRadioButton(self.groupBox_sage)
+		self.radioButton_notenschl.setChecked(True)
+		self.radioButton_notenschl.setObjectName("radioButton_notenschl")
+		self.radioButton_notenschl.setFocusPolicy(QtCore.Qt.ClickFocus)
+		self.radioButton_notenschl.toggled.connect(self.beurteilungsraster_changed)
+		self.gridLayout_5.addWidget(self.radioButton_notenschl, 3, 4, 1, 2)
+		self.radioButton_beurteilungsraster = QtWidgets.QRadioButton(self.groupBox_sage)
+		self.radioButton_beurteilungsraster.setObjectName("radioButton_beurteilungsraster")
+		self.radioButton_beurteilungsraster.setFocusPolicy(QtCore.Qt.ClickFocus)
+		self.radioButton_beurteilungsraster.toggled.connect(self.beurteilungsraster_changed)
+		self.gridLayout_5.addWidget(self.radioButton_beurteilungsraster, 4, 4, 1, 2)
+
+		self.pushButton_titlepage = QtWidgets.QPushButton(self.groupBox_sage)
+		self.pushButton_titlepage.setObjectName(_fromUtf8("pushButton_titlepage"))
+		self.pushButton_titlepage.setText(_translate("MainWindow", "Titelblatt anpassen", None))
+		self.gridLayout_5.addWidget(self.pushButton_titlepage, 4, 6, 1, 1)
+		
+
+		self.groupBox_default_pkt = QtWidgets.QGroupBox(self.groupBox_sage)
+		self.groupBox_default_pkt.setObjectName("groupBox_default_pkt")
+		self.groupBox_default_pkt.setMaximumSize(QtCore.QSize(120, 16777215))
+		self.verticalLayout_default_pkt = QtWidgets.QVBoxLayout(self.groupBox_default_pkt)
+		self.verticalLayout_default_pkt.setObjectName("verticalLayout_default_pkt")
+		self.spinBox_default_pkt = SpinBox_noWheel(self.groupBox_default_pkt)
+		self.spinBox_default_pkt.setValue(1)
+		self.spinBox_default_pkt.setObjectName("spinBox_default_pkt")
+		self.verticalLayout_default_pkt.addWidget(self.spinBox_default_pkt)
+		self.spinBox_default_pkt.valueChanged.connect(self.update_default_pkt)
+		self.gridLayout_5.addWidget(self.groupBox_default_pkt, 2, 3, 3, 1)
+
+
+		self.groupBox_klasse = QtWidgets.QGroupBox(self.groupBox_sage)
+		self.groupBox_klasse.setObjectName("groupBox_klasse")
+		#self.groupBox_klasse.setMaximumSize(QtCore.QSize(200, 16777215))
+		self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.groupBox_klasse)
+		self.verticalLayout_4.setObjectName("verticalLayout_4")
+		self.lineEdit_klasse = QtWidgets.QLineEdit(self.groupBox_klasse)
+		self.lineEdit_klasse.setObjectName("lineEdit_klasse")
+		self.verticalLayout_4.addWidget(self.lineEdit_klasse)
+		self.gridLayout_5.addWidget(self.groupBox_klasse, 2, 2, 3, 1)
+		self.groupBox_klasse.setMaximumSize(QtCore.QSize(90, 16777215))
+		self.groupBox_datum = QtWidgets.QGroupBox(self.groupBox_sage)
+		self.groupBox_datum.setObjectName("groupBox_datum")
+		self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.groupBox_datum)
+		self.verticalLayout_5.setObjectName("verticalLayout_5")
+		self.dateEdit = QtWidgets.QDateEdit(self.groupBox_datum)
+		self.dateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
+		self.dateEdit.setObjectName("dateEdit")
+		self.verticalLayout_5.addWidget(self.dateEdit)
+		self.gridLayout_5.addWidget(self.groupBox_datum, 2, 1, 3, 1)
+		self.groupBox_datum.setMaximumSize(QtCore.QSize(140, 16777215))
+		self.groupBox_nummer = QtWidgets.QGroupBox(self.groupBox_sage)
+		self.groupBox_nummer.setObjectName("groupBox_nummer")
+		self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.groupBox_nummer)
+		self.verticalLayout_6.setObjectName("verticalLayout_6")
+		self.spinBox_nummer = QtWidgets.QSpinBox(self.groupBox_nummer)
+		self.spinBox_nummer.setValue(1)
+		self.spinBox_nummer.setObjectName("spinBox_nummer")
+		self.groupBox_nummer.setMaximumSize(QtCore.QSize(90, 16777215))
+		self.radioButton_notenschl.setText(_translate("MainWindow", "Notenschlüssel",None))
+		self.radioButton_beurteilungsraster.setText(_translate("MainWindow", "Beurteilungsraster",None))
+		self.groupBox_klasse.setTitle(_translate("MainWindow", "Klasse",None))
+		self.groupBox_datum.setTitle(_translate("MainWindow", "Datum",None))
+		self.groupBox_nummer.setTitle(_translate("MainWindow", "Nummer",None))
+		self.groupBox_default_pkt.setTitle(_translate("MainWindow", "Typ1 Standard",None))
+		self.verticalLayout_6.addWidget(self.spinBox_nummer)
+		self.gridLayout_5.addWidget(self.groupBox_nummer, 2, 0, 3, 1)
+		self.horizontalspacer = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+		self.gridLayout_5.addItem(self.horizontalspacer, 2, 4, 3, 1)
+		# self.pushButton_vorschau = QtWidgets.QPushButton(self.groupBox_sage)
+		# self.pushButton_vorschau.setMaximumSize(QtCore.QSize(77, 16777215))
+		# self.pushButton_vorschau.setObjectName("pushButton_vorschau")
+		# self.gridLayout_5.addWidget(self.pushButton_vorschau, 7, 3, 1, 1, QtCore.Qt.AlignRight)	
+
+
+		self.scrollArea_chosen = QtWidgets.QScrollArea(self.groupBox_sage)
+		self.scrollArea_chosen.setFrameShape(QtWidgets.QFrame.StyledPanel)
+		self.scrollArea_chosen.setWidgetResizable(True)
+		self.scrollArea_chosen.setObjectName("scrollArea_chosen")
+		self.scrollArea_chosen.setFocusPolicy(QtCore.Qt.ClickFocus)
+		self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
+		self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 389, 323))
+		self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
+		self.scrollAreaWidgetContents_2.setFocusPolicy(QtCore.Qt.ClickFocus)
+		self.gridLayout_8 = QtWidgets.QGridLayout(self.scrollAreaWidgetContents_2)
+		self.gridLayout_8.setObjectName("gridLayout_8")
+		self.scrollArea_chosen.setWidget(self.scrollAreaWidgetContents_2)
+		self.gridLayout_5.addWidget(self.scrollArea_chosen, 5, 0, 1, 7)
+		
+
+		# self.line_seperator = QtWidgets.QFrame(self.scrollAreaWidgetContents_2)
+		# self.line_seperator.setFrameShape(QtWidgets.QFrame.HLine)
+		# self.line_seperator.setFrameShadow(QtWidgets.QFrame.Raised)
+		# self.line_seperator.setObjectName("line_seperator")
+		# self.line_seperator.setFocusPolicy(QtCore.Qt.NoFocus)
+		# self.line_seperator.setLineWidth(3)
+		# self.line_seperator.hide()
+
+
+		self.groupBox_notenschl = QtWidgets.QGroupBox(self.groupBox_sage)
+		self.groupBox_notenschl.setObjectName("groupBox_notenschl")
+		self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_notenschl)
+		self.gridLayout_6.setObjectName("gridLayout_6")
+		self.spinBox_3 = SpinBox_noWheel(self.groupBox_notenschl)
+		self.spinBox_3.setMaximumSize(QtCore.QSize(55, 20))
+		self.spinBox_3.setProperty("value", 80)
+		self.spinBox_3.setObjectName("spinBox_3")
+		self.spinBox_3.valueChanged.connect(self.punkte_changed)
+		self.spinBox_3.setFocusPolicy(QtCore.Qt.ClickFocus)
+		self.gridLayout_6.addWidget(self.spinBox_3, 0, 4, 1, 1)
+		self.label_sg_pkt = QtWidgets.QLabel(self.groupBox_notenschl)
+		self.label_sg_pkt.setObjectName("label_sg_pkt")
+		self.gridLayout_6.addWidget(self.label_sg_pkt, 0, 2, 1, 1)
+		self.label_g_pkt = QtWidgets.QLabel(self.groupBox_notenschl)
+		self.label_g_pkt.setObjectName("label_g_pkt")
+		self.gridLayout_6.addWidget(self.label_g_pkt, 0, 5, 1, 1)
+		self.label_g = QtWidgets.QLabel(self.groupBox_notenschl)
+		self.label_g.setMaximumSize(QtCore.QSize(54, 20))
+		self.label_g.setObjectName("label_g")
+		self.gridLayout_6.addWidget(self.label_g, 0, 3, 1, 1)
+		self.label_sg = QtWidgets.QLabel(self.groupBox_notenschl)
+		self.label_sg.setMaximumSize(QtCore.QSize(64, 20))
+		self.label_sg.setObjectName("label_sg")
+		self.gridLayout_6.addWidget(self.label_sg, 0, 0, 1, 1)
+		self.spinBox_2=SpinBox_noWheel(self.groupBox_notenschl)
+		self.spinBox_2.setMaximumSize(QtCore.QSize(55, 20))
+		self.spinBox_2.setProperty("value", 91)
+		self.spinBox_2.setObjectName("spinBox_2")
+		self.spinBox_2.valueChanged.connect(self.punkte_changed)
+		self.spinBox_2.setFocusPolicy(QtCore.Qt.ClickFocus)
+		self.gridLayout_6.addWidget(self.spinBox_2, 0, 1, 1, 1)
+		self.label_b = QtWidgets.QLabel(self.groupBox_notenschl)
+		self.label_b.setMaximumSize(QtCore.QSize(80, 20))
+		self.label_b.setObjectName("label_b")
+		self.gridLayout_6.addWidget(self.label_b, 1, 0, 1, 1)
+		self.spinBox_4 = SpinBox_noWheel(self.groupBox_notenschl)
+		self.spinBox_4.setMaximumSize(QtCore.QSize(55, 20))
+		self.spinBox_4.setProperty("value", 64)
+		self.spinBox_4.setObjectName("spinBox_4")
+		self.spinBox_4.valueChanged.connect(self.punkte_changed)
+		self.spinBox_4.setFocusPolicy(QtCore.Qt.ClickFocus)
+		self.gridLayout_6.addWidget(self.spinBox_4, 1, 1, 1, 1)
+		self.label_b_pkt = QtWidgets.QLabel(self.groupBox_notenschl)
+		self.label_b_pkt.setObjectName("label_b_pkt")
+		self.gridLayout_6.addWidget(self.label_b_pkt, 1, 2, 1, 1)
+		self.label_g_2 = QtWidgets.QLabel(self.groupBox_notenschl)
+		self.label_g_2.setMaximumSize(QtCore.QSize(80, 20))
+		self.label_g_2.setObjectName("label_g_2")
+		self.gridLayout_6.addWidget(self.label_g_2, 1, 3, 1, 1)
+		self.label_g_pkt_2 = QtWidgets.QLabel(self.groupBox_notenschl)
+		self.label_g_pkt_2.setObjectName("label_g_pkt_2")
+		self.gridLayout_6.addWidget(self.label_g_pkt_2, 1, 5, 1, 1)
+		self.spinBox_5 = SpinBox_noWheel(self.groupBox_notenschl)
+		self.spinBox_5.setMaximumSize(QtCore.QSize(55, 20))
+		self.spinBox_5.setProperty("value", 50)
+		self.spinBox_5.setObjectName("spinBox_5")
+		self.spinBox_5.valueChanged.connect(self.punkte_changed)
+		self.spinBox_5.setFocusPolicy(QtCore.Qt.ClickFocus)
+		self.gridLayout_6.addWidget(self.spinBox_5, 1, 4, 1, 1)
+		self.gridLayout_5.addWidget(self.groupBox_notenschl, 6, 0, 1, 7)
+		self.groupBox_notenschl.setTitle(_translate("MainWindow", "Notenschlüssel",None))
+		self.label_sg_pkt.setText(_translate("MainWindow", "% (ab 0)",None))
+		self.label_g_pkt.setText(_translate("MainWindow", "% (ab 0)",None))
+		self.label_g.setText(_translate("MainWindow", "Gut:",None))
+		self.label_sg.setText(_translate("MainWindow", "Sehr Gut:",None))
+		self.label_b.setText(_translate("MainWindow", "Befriedigend:",None))
+		self.label_b_pkt.setText(_translate("MainWindow", "% (ab 0)",None))
+		self.label_g_2.setText(_translate("MainWindow", "Genügend:",None))
+		self.label_g_pkt_2.setText(_translate("MainWindow", "% (ab 0)",None))
+
+
+		### Groupbox Beurteilungsraster #####
+
+		self.groupBox_beurteilungsra = QtWidgets.QGroupBox(self.groupBox_sage)
+		self.groupBox_beurteilungsra.setObjectName("groupBox_beurteilungsra")
+		self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_beurteilungsra)
+		self.gridLayout_6.setObjectName("gridLayout_6")
+
+		self.label_typ1_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsra)
+		self.label_typ1_pkt.setObjectName("label_typ1_pkt")
+		self.gridLayout_6.addWidget(self.label_typ1_pkt, 0, 0, 1, 1)
+		# self.label_typ1_pkt.setText(_translate("MainWindow", "Punkte Typ 1: 0",None))
+
+		self.label_typ2_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsra)
+		self.label_typ2_pkt.setObjectName("label_typ2_pkt")
+		self.gridLayout_6.addWidget(self.label_typ2_pkt, 1, 0, 1, 1)
+
+
+		self.label_ausgleich_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsra)
+		self.label_ausgleich_pkt.setObjectName("label_ausgleich_pkt")
+		self.gridLayout_6.addWidget(self.label_ausgleich_pkt, 2, 0, 1, 1)
+		# self.label_ausgleich_pkt.setText(_translate("MainWindow", "Ausgleichspunkte: 0",None))
+
+
+
+		#self.label_typ2_pkt.setText(_translate("MainWindow", "Punkte Typ 2: 0",None))
+
+		self.groupBox_beurteilungsra.setTitle(_translate("MainWindow", "Beurteilungsraster",None))
+		self.groupBox_beurteilungsra.hide()
+
+
+		### Zusammenfassung d. SA ###
+
+		self.label_gesamtbeispiele = QtWidgets.QLabel(self.groupBox_sage)
+		self.gridLayout_5.addWidget(self.label_gesamtbeispiele, 7, 0, 1, 3)
+		self.label_gesamtbeispiele.setObjectName("label_gesamtbeispiele")
+		self.label_gesamtbeispiele.setText(_translate("MainWindow", "Anzahl der Aufgaben: 0 (Typ1: 0 / Typ2: 0)	 ", None))
+
+
+		self.label_gesamtpunkte = QtWidgets.QLabel(self.groupBox_sage)
+		self.gridLayout_5.addWidget(self.label_gesamtpunkte, 8, 0, 1, 1)
+		self.label_gesamtpunkte.setObjectName("label_gesamtpunkte")
+		self.label_gesamtpunkte.setText(_translate("MainWindow", "Gesamtpunkte: 0", None))
+
+		self.cb_solution_sage = QtWidgets.QCheckBox(self.centralwidget)
+		self.cb_solution_sage.setObjectName(_fromUtf8("cb_solution"))
+		self.cb_solution_sage.setText(_translate("MainWindow", "Lösungen anzeigen", None))
+		self.cb_solution_sage.setChecked(True)
+		self.cb_solution_sage.setFocusPolicy(QtCore.Qt.ClickFocus)
+		self.gridLayout_5.addWidget(self.cb_solution_sage, 7, 4, 2, 1 ,QtCore.Qt.AlignRight)
+
+		self.pushButton_vorschau = QtWidgets.QPushButton(self.groupBox_sage)
+		self.pushButton_vorschau.setMaximumSize(QtCore.QSize(90, 16777215))
+		self.pushButton_vorschau.setObjectName("pushButton_vorschau")
+		self.pushButton_vorschau.setText(_translate("MainWindow", "Vorschau", None))
+		self.pushButton_vorschau.setShortcut(_translate("MainWindow", "Return",None))
+		self.gridLayout_5.addWidget(self.pushButton_vorschau, 7, 5, 1, 2, QtCore.Qt.AlignRight)
+		self.pushButton_vorschau.clicked.connect(partial(self.pushButton_vorschau_pressed, 'vorschau',0,0))
+		self.pushButton_vorschau.setFocusPolicy(QtCore.Qt.ClickFocus)
+		self.gridLayout.addWidget(self.groupBox_sage, 1, 2, 8, 3)
+
+		self.pushButton_erstellen = QtWidgets.QPushButton(self.groupBox_sage)
+		self.pushButton_erstellen.setMaximumSize(QtCore.QSize(90, 16777215))
+		self.pushButton_erstellen.setObjectName("pushButton_erstellen")
+		self.pushButton_erstellen.setText(_translate("MainWindow", "Erstellen", None))
+		self.pushButton_erstellen.setFocusPolicy(QtCore.Qt.ClickFocus)
+		self.pushButton_erstellen.clicked.connect(self.pushButton_erstellen_pressed)
+		self.gridLayout_5.addWidget(self.pushButton_erstellen, 8, 5, 1, 2, QtCore.Qt.AlignRight)
+		self.groupBox_sage.hide()
+
+
+		################################################################
+		################################################################
+		########### FEEDBACK #############################################
+		#######################################################################
+		self.comboBox_at_fb = QtWidgets.QComboBox(self.centralwidget)
+		self.comboBox_at_fb.setObjectName("comboBox_at_fb")
+		self.comboBox_at_fb.addItem("")
+		self.comboBox_at_fb.addItem("")
+		self.comboBox_at_fb.addItem("")
+		self.gridLayout.addWidget(self.comboBox_at_fb, 0, 0, 1, 1)
+		self.comboBox_at_fb.setItemText(0, _translate("MainWindow", "Typ 1", None))
+		self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Typ 2", None))
+		self.comboBox_at_fb.setItemText(2, _translate("MainWindow", "Allgemeine Rückmeldung", None))
+		self.comboBox_at_fb.currentIndexChanged.connect(self.comboBox_at_fb_changed)
+		self.comboBox_at_fb.setFocusPolicy(QtCore.Qt.ClickFocus)
+		self.comboBox_at_fb.hide()
+
+		self.label_example = QtWidgets.QLabel(self.centralwidget)
+		self.label_example.setObjectName(_fromUtf8("label_example"))
+		#self.label_update.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
+		self.label_example.setText(_translate("MainWindow", "Ausgewählte Aufgabe: -", None))
+		self.gridLayout.addWidget(self.label_example, 0, 1, 1, 1)
+		self.label_example.hide()
+
+		self.groupBox_alle_aufgaben_fb = QtWidgets.QGroupBox(self.centralwidget)
+		self.groupBox_alle_aufgaben_fb.setMinimumSize(QtCore.QSize(140, 16777215))
+		self.groupBox_alle_aufgaben_fb.setMaximumSize(QtCore.QSize(180, 16777215))
+		self.groupBox_alle_aufgaben_fb.setObjectName("groupBox_alle_aufgaben_fb")
+		self.verticalLayout_fb = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben_fb)
+		self.verticalLayout_fb.setObjectName("verticalLayout_fb")
+		self.comboBox_fb = QtWidgets.QComboBox(self.groupBox_alle_aufgaben_fb)
+		self.comboBox_fb.setObjectName("comboBox_fb")
+		self.comboBox_fb.addItem("")
+		self.comboBox_fb.addItem("")
+		self.comboBox_fb.addItem("")
+		self.comboBox_fb.addItem("")
+		self.comboBox_fb.addItem("")
+		self.comboBox_fb.addItem("")
+		self.comboBox_fb.addItem("")
+		self.comboBox_fb.addItem("")
+		self.comboBox_fb.addItem("")
+		self.comboBox_fb.setItemText(1, _translate("MainWindow", "AG",None))
+		self.comboBox_fb.setItemText(2, _translate("MainWindow", "FA",None))
+		self.comboBox_fb.setItemText(3, _translate("MainWindow", "AN",None))
+		self.comboBox_fb.setItemText(4, _translate("MainWindow", "WS",None))
+		self.comboBox_fb.setItemText(5, _translate("MainWindow", "K5",None))
+		self.comboBox_fb.setItemText(6, _translate("MainWindow", "K6",None))
+		self.comboBox_fb.setItemText(7, _translate("MainWindow", "K7",None))
+		self.comboBox_fb.setItemText(8, _translate("MainWindow", "K8",None))
+		self.comboBox_fb.currentIndexChanged.connect(partial(self.comboBox_gk_changed,'feedback'))
+		self.comboBox_fb.setFocusPolicy(QtCore.Qt.ClickFocus)
+		self.verticalLayout_fb.addWidget(self.comboBox_fb)
+		self.comboBox_fb_num = QtWidgets.QComboBox(self.groupBox_alle_aufgaben_fb)
+		self.comboBox_fb_num.setObjectName("comboBox_gk_num")
+		self.comboBox_fb_num.currentIndexChanged.connect(partial(self.comboBox_gk_num_changed, 'feedback'))
+		self.comboBox_fb_num.setFocusPolicy(QtCore.Qt.ClickFocus)
+		self.verticalLayout_fb.addWidget(self.comboBox_fb_num)
+		self.lineEdit_number_fb = QtWidgets.QLineEdit(self.groupBox_alle_aufgaben_fb)
+		self.lineEdit_number_fb.setObjectName("lineEdit_number_fb")
+		self.lineEdit_number_fb.textChanged.connect(partial(self.lineEdit_number_changed, 'feedback'))
+		self.verticalLayout_fb.addWidget(self.lineEdit_number_fb)
+		self.listWidget_fb = QtWidgets.QListWidget(self.groupBox_alle_aufgaben)
+		self.listWidget_fb.setObjectName("listWidget")
+		self.verticalLayout_fb.addWidget(self.listWidget_fb)	
+		self.gridLayout.addWidget(self.groupBox_alle_aufgaben_fb, 1, 0, 3, 1)
+		self.groupBox_alle_aufgaben_fb.setTitle(_translate("MainWindow", "Aufgaben",None))
+		self.groupBox_alle_aufgaben_fb.hide()
+
+
+		self.groupBox_fehlertyp = QtWidgets.QGroupBox(self.centralwidget)
+		self.groupBox_fehlertyp.setObjectName("groupBox_fehlertyp")
+		self.gridLayout_fehlertyp = QtWidgets.QGridLayout(self.groupBox_fehlertyp)
+		self.gridLayout_fehlertyp.setObjectName("gridLayout_feedback")
+		self.groupBox_fehlertyp.setTitle(_translate("MainWindow", "Betreff", None))
+
+
+		self.comboBox_fehlertyp = QtWidgets.QComboBox(self.groupBox_fehlertyp)
+		self.comboBox_fehlertyp.setObjectName("comboBox_pruefungstyp")
+		self.comboBox_fehlertyp.addItem("")
+		self.comboBox_fehlertyp.addItem("")
+		self.comboBox_fehlertyp.addItem("")
+		self.comboBox_fehlertyp.addItem("")
+		self.comboBox_fehlertyp.addItem("")
+		self.comboBox_fehlertyp.addItem("")
+		self.comboBox_fehlertyp.addItem("")
+		self.comboBox_fehlertyp.addItem("")
+		self.comboBox_fehlertyp.addItem("")
+		self.comboBox_fehlertyp.setItemText(1, _translate("MainWindow", "Feedback",None))
+		self.comboBox_fehlertyp.setItemText(2, _translate("MainWindow", "Fehler in der Angabe",None))
+		self.comboBox_fehlertyp.setItemText(3, _translate("MainWindow", "Fehler in der Lösung",None))
+		self.comboBox_fehlertyp.setItemText(4, _translate("MainWindow", "Bild wird nicht (richtig) angezeigt",None))
+		self.comboBox_fehlertyp.setItemText(5, _translate("MainWindow", "Grafik ist unleserlich/fehlerhaft",None))
+		self.comboBox_fehlertyp.setItemText(6, _translate("MainWindow", "Aufgabe ist doppelt vorhanden",None))
+		self.comboBox_fehlertyp.setItemText(7, _translate("MainWindow", "Falsche Kodierung (Grundkompetenz, Aufgabenformat, ...)",None))
+		self.comboBox_fehlertyp.setItemText(8, _translate("MainWindow", "Sonstiges",None))
+		
+		
+		self.comboBox_fehlertyp.setFocusPolicy(QtCore.Qt.ClickFocus)
+		self.gridLayout_fehlertyp.addWidget(self.comboBox_fehlertyp, 0, 0, 1, 1)
+		self.gridLayout.addWidget(self.groupBox_fehlertyp, 1, 1, 1, 3)
+		self.groupBox_fehlertyp.hide()
+
+
+		self.groupBox_feedback = QtWidgets.QGroupBox(self.centralwidget)
+		self.groupBox_feedback.setObjectName(_fromUtf8("groupBox_feedback"))
+		self.gridLayout_fb = QtWidgets.QGridLayout(self.groupBox_feedback)
+		self.gridLayout_fb.setObjectName(_fromUtf8("gridLayout_fb"))
+		self.plainTextEdit_fb = QtWidgets.QPlainTextEdit(self.groupBox_feedback)
+		self.plainTextEdit_fb.setObjectName(_fromUtf8("plainTextEdit_fb"))
+		self.gridLayout_fb.addWidget(self.plainTextEdit_fb, 0, 0, 1, 1)
+		self.gridLayout.addWidget(self.groupBox_feedback, 2, 1,1, 3)
+		self.groupBox_feedback.setTitle(_translate("MainWindow", "Feedback bzw. Problembeschreibung", None))
+		self.groupBox_feedback.hide()
+
+
+		self.groupBox_email = QtWidgets.QGroupBox(self.centralwidget)
+		self.groupBox_email.setObjectName("groupBox_email")
+		#self.groupBox_klasse.setMaximumSize(QtCore.QSize(200, 16777215))
+		self.verticalLayout_email = QtWidgets.QVBoxLayout(self.groupBox_email)
+		self.verticalLayout_email.setObjectName("verticalLayout_email")
+		self.lineEdit_email = QtWidgets.QLineEdit(self.groupBox_email)
+		self.lineEdit_email.setObjectName("lineEdit_email")
+		self.groupBox_email.setTitle(_translate("MainWindow", "E-Mail Adresse für Nachfragen (optional)", None))
+		self.verticalLayout_email.addWidget(self.lineEdit_email)
+		self.gridLayout.addWidget(self.groupBox_email, 3, 1, 1, 3)
+		self.groupBox_email.hide()
+
+		self.pushButton_send = QtWidgets.QPushButton(self.centralwidget)
+		self.pushButton_send.setObjectName(_fromUtf8("pushButton_send"))
+		self.gridLayout.addWidget(self.pushButton_send, 4, 3, 1, 1,QtCore.Qt.AlignRight)
+		self.pushButton_send.setText(_translate("MainWindow", "Senden", None))
+		self.pushButton_send.clicked.connect(self.pushButton_send_pressed)
+		self.pushButton_send.hide()
+
+		####################################################################
+		#####################################################################
+		######################################################################
+		#####################################################################
 
 		self.gridLayout_11.addWidget(self.tab_widget_gk, 0, 0, 1, 1)
 		self.gridLayout.addWidget(self.groupBox_gk, 1, 3, 2, 1)
@@ -644,8 +1595,8 @@ class Ui_MainWindow(object):
 		self.statusbar = QtWidgets.QStatusBar(MainWindow)
 		self.statusbar.setObjectName(_fromUtf8("statusbar"))
 		MainWindow.setStatusBar(self.statusbar)
-		self.actionReset = QtWidgets.QAction(MainWindow)
-		self.actionReset.setObjectName(_fromUtf8("actionReset"))
+		# self.actionReset = QtWidgets.QAction(MainWindow)
+		# self.actionReset.setObjectName(_fromUtf8("actionReset"))
 
 		self.retranslateUi(MainWindow)
 		self.tabWidget.setCurrentIndex(0)
@@ -670,17 +1621,22 @@ class Ui_MainWindow(object):
 		self.btn_ws_all.clicked.connect(self.btn_ws_all_pressed)
 		self.btn_suche.clicked.connect(self.PrepareTeXforPDF)
 		self.actionExit.triggered.connect(self.close_app)
-		self.actionRefresh_Database.triggered.connect(self.refresh_ddb)
-		self.actionsuchfenster_reset.triggered.connect(self.suchfenster_reset)
+		self.actionFeedback.triggered.connect(self.send_feedback)
+		self.actionRefresh_Database.triggered.connect(self.refresh_ddb) #self.label_aufgabentyp.text()[-1]
+		self.actionReset.triggered.connect(self.suchfenster_reset)
+		self.actionLoad.triggered.connect(partial(self.sage_load, False))
+		self.actionSave.triggered.connect(partial(self.sage_save,''))
 		self.actionAufgaben_Typ1.triggered.connect(self.chosen_aufgabenformat_typ1)
 		self.actionAufgaben_Typ2.triggered.connect(self.chosen_aufgabenformat_typ2)
 		self.actionInfo.triggered.connect(self.show_info)
 		self.actionNeu.triggered.connect(self.neue_aufgabe_erstellen)
+		self.actionSage.triggered.connect(self.neue_schularbeit_erstellen)
 		self.actionSuche.triggered.connect(self.aufgaben_suchen)
 		self.actionBild_einf_gen.triggered.connect(self.add_picture)
 		self.actionBild_konvertieren_jpg_eps.triggered.connect(self.convert_jpgtoeps)
 		self.comboBox_aufgabentyp_cr.currentIndexChanged.connect(self.chosen_aufgabenformat_cr)
 		self.pushButton_save.clicked.connect(self.save_file)
+		self.pushButton_titlepage.clicked.connect(partial(self.titlepage_clicked, self.dict_titlepage))
 
 		for all in ag_beschreibung:
 			x=eval('self.cb_'+all)
@@ -713,30 +1669,43 @@ class Ui_MainWindow(object):
 			for all in eval('k%s_beschreibung'%g):
 				x=eval('self.cb_k%s_cr_'%g+all+'_cr')
 				x.stateChanged.connect(lambda: self.gk_checked_cr('klasse'))
+
+		if loaded_lama_file_path!='':
+			self.sage_load(True)
+
 		############################################################################################
 		##############################################################################################
+
 	def retranslateUi(self, MainWindow):
 		MainWindow.setWindowTitle(_translate("LaMA - LaTeX Mathematik Assistent", "LaMA - LaTeX Mathematik Assistent", None))
 		self.menuDateityp.setTitle(_translate("MainWindow", "Aufgabentyp", None))
 		self.menuDatei.setTitle(_translate("MainWindow", "Datei", None))
 		self.menuNeu.setTitle(_translate("MainWindow", "Neue Aufgabe", None))
+		self.menuSage.setTitle(_translate("MainWindow", "Neue Schularbeit", None))
 		self.menuSuche.setTitle(_translate("MainWindow", "Aufgabensuche", None))
 		self.menuBild_einf_gen.setTitle(_translate("MainWindow", "Bild einfügen", None))
+		self.menuFeedback.setTitle(_translate("MainWindow", 'Feedback && Fehler', None))
 		self.actionBild_einf_gen.setText(_translate("MainWindow", "Durchsuchen...", None))
 		self.actionBild_konvertieren_jpg_eps.setText(_translate("MainWindow", "Bild konvertieren (jpg zu eps)", None))		
 		self.menuHelp.setTitle(_translate("MainWindow", "?", None))
 		self.actionReset.setText(_translate("MainWindow", "Reset", None))
+		self.actionReset.setShortcut("F4")
+		self.actionLoad.setText(_translate("MainWindow", "Öffnen", None))
+		self.actionLoad.setShortcut('Ctrl+O')
+		self.actionSave.setText(_translate("MainWindow", "Speichern", None))
+		self.actionSave.setShortcut('Ctrl+S')
+		self.actionFeedback.setText(_translate("MainWindow", "Feedback oder Fehler senden ...", None))
 		self.actionAufgaben_Typ1.setText(_translate("MainWindow", "Typ 1 Aufgaben", None))
 		self.actionAufgaben_Typ1.setShortcut('Ctrl+1')
 		self.actionAufgaben_Typ2.setText(_translate("MainWindow", "Typ 2 Aufgaben", None))
 		self.actionAufgaben_Typ2.setShortcut('Ctrl+2')
 		self.actionInfo.setText(_translate("MainWindow", "Über LaMA", None))
-		self.actionsuchfenster_reset.setText(_translate("MainWindow", "Reset", None))
-		self.actionsuchfenster_reset.setShortcut("F4")
 		self.actionNeu.setText(_translate("MainWindow", "Neue Aufgabe erstellen...", None))
-		self.actionNeu.setShortcut("F2")
+		self.actionNeu.setShortcut("F3")
+		self.actionSage.setText(_translate("MainWindow", "Neue Schularbeit erstellen...", None))
+		self.actionSage.setShortcut("F2")
 		self.actionSuche.setText(_translate("MainWindow", "Aufgaben suchen...", None))
-		self.actionSuche.setShortcut("F3")
+		self.actionSuche.setShortcut("F1")
 		self.actionExit.setText(_translate("MainWindow", "Exit", None))
 		self.actionRefresh_Database.setText(_translate("MainWindow", "Refresh Database", None))
 		self.actionRefresh_Database.setShortcut("F5")
@@ -827,22 +1796,22 @@ class Ui_MainWindow(object):
 		self.create_Tooltip(an_beschreibung)
 		self.create_Tooltip(ws_beschreibung)
 		# # for all in ag_beschreibung:
-		# # 	x=eval('self.cb_'+all)
-		# # 	x.setToolTip(ag_beschreibung[all])
-		# # 	y=eval('self.cb_'+all+'_cr')
-		# # 	y.setToolTip(ag_beschreibung[all])
+		# #		x=eval('self.cb_'+all)
+		# #		x.setToolTip(ag_beschreibung[all])
+		# #		y=eval('self.cb_'+all+'_cr')
+		# #		y.setToolTip(ag_beschreibung[all])
 			
 		# for all in an_beschreibung:
-		# 	x=eval('self.cb_'+all)
-		# 	x.setToolTip(an_beschreibung[all])
+		#	x=eval('self.cb_'+all)
+		#	x.setToolTip(an_beschreibung[all])
 
 		# for all in fa_beschreibung:
-		# 	x=eval('self.cb_'+all)
-		# 	x.setToolTip(fa_beschreibung[all])
+		#	x=eval('self.cb_'+all)
+		#	x.setToolTip(fa_beschreibung[all])
 			
 		# for all in ws_beschreibung:
-		# 	x=eval('self.cb_'+all)
-		# 	x.setToolTip(ws_beschreibung[all])
+		#	x=eval('self.cb_'+all)
+		#	x.setToolTip(ws_beschreibung[all])
 			
 #########################################
 		# self.name_checkbox_gk(ag_beschreibung)
@@ -867,14 +1836,14 @@ class Ui_MainWindow(object):
 		# self.label_gk_fa.setText(_translate("MainWindow", "", None))
 		# self.label_gk_ws.setText(_translate("MainWindow", "", None))
 		self.actionExit.setText(_translate("MainWindow", "Exit", None))
-		
+
 		print('Done')
 	# def change_to_full_gk_name(self,chosen_dict):
-	# 	x=' '
-	# 	for all in chosen_dict:
-	# 		if all[-1]=='L':
-	# 			x='-L '
-	# 		print(all[:2].upper()+x+all[2]+'.'+all[3])
+	#	x=' '
+	#	for all in chosen_dict:
+	#		if all[-1]=='L':
+	#			x='-L '
+	#		print(all[:2].upper()+x+all[2]+'.'+all[3])
 
 	#######################
 	#### Check for Updates
@@ -888,42 +1857,42 @@ class Ui_MainWindow(object):
 				f=open(version_file,'r')
 				break
 			except FileNotFoundError:
-				input("Please place your your config file in '{}' and hit enter. {} tries left!".format(version_path, 5-i))
+				input("Please place your config file in '{}' and hit enter. {} tries left!".format(version_path, 5-i))
 			if i == 4:
-			    print("No version set. Skipping version check!")
-			    return False
+				print("No version set. Skipping version check!")
+				return False
 
 		if __version__ not in f.read():
-		    msg = QtWidgets.QMessageBox()
-		    msg.setIcon(QtWidgets.QMessageBox.Question)
-		    msg.setWindowIcon(QtGui.QIcon(logo_path))
-		    msg.setText('Es ist ein neues Update vorhanden.')
-		    msg.setInformativeText('Möchten Sie das neue Update installieren?')
-		    msg.setWindowTitle("Update vorhanden")
-		    msg.setStandardButtons(QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
-		    buttonY = msg.button(QtWidgets.QMessageBox.Yes)
-		    buttonY.setText('Ja')
-		    buttonN = msg.button(QtWidgets.QMessageBox.No)
-		    buttonN.setText('Nein')
-		    ret=msg.exec_()
+			msg = QtWidgets.QMessageBox()
+			msg.setIcon(QtWidgets.QMessageBox.Question)
+			msg.setWindowIcon(QtGui.QIcon(logo_path))
+			msg.setText('Es ist ein neues Update vorhanden.')
+			msg.setInformativeText('Möchten Sie das neue Update installieren?')
+			msg.setWindowTitle("Update vorhanden")
+			msg.setStandardButtons(QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
+			buttonY = msg.button(QtWidgets.QMessageBox.Yes)
+			buttonY.setText('Ja')
+			buttonN = msg.button(QtWidgets.QMessageBox.No)
+			buttonN.setText('Nein')
+			ret=msg.exec_()
 
 
-		    if ret==QtWidgets.QMessageBox.Yes:
-			    opened_file=os.path.basename(sys.argv[0])
-			    name, extension=os.path.splitext(opened_file)
+			if ret==QtWidgets.QMessageBox.Yes:
+				opened_file=os.path.basename(sys.argv[0])
+				name, extension=os.path.splitext(opened_file)
 
-			    filename_update=os.path.join(path_programm,'_database','_config','update','update%s'%extension)
-			    #if extension=='.py':
-			#	    filename_update=os.path.join(path_programm,'_database','_config','update','update.py')
-			 #   elif extension=='.exe':
-			#	    filename_update=os.path.join(path_programm,'_database','_config','update','update.exe')
-			    if sys.platform.startswith('linux'):
-				    os.system(filename_update)
-			    elif sys.platform.startswith('darwin'):
-				    os.system(filename_update)
-			    else:
-				    os.startfile(filename_update)										
-			    sys.exit(0)
+				filename_update=os.path.join(path_programm,'_database','_config','update','update%s'%extension)
+				#if extension=='.py':
+			#		filename_update=os.path.join(path_programm,'_database','_config','update','update.py')
+			 #	 elif extension=='.exe':
+			#		filename_update=os.path.join(path_programm,'_database','_config','update','update.exe')
+				if sys.platform.startswith('linux'):
+					os.system(filename_update)
+				elif sys.platform.startswith('darwin'):
+					os.system(filename_update)
+				else:
+					os.startfile(filename_update)										
+				sys.exit(0)
 
 
 
@@ -991,10 +1960,41 @@ class Ui_MainWindow(object):
 		self.plainTextEdit.setPlainText(_translate("MainWindow", "", None))
 
 
+	# def suchfenster_reset_sage(self):
+	# 	global list_sage_examples
+	# 	#print(self.dict_list_input_examples)
+		
+	# 	print('reset')
+
+		# list_sage_examples=[]
+		# self.dict_list_input_examples={}
+		# self.sage_aufgabe_create(True)
 
 
 	def close_app(self):
-		sys.exit(0)
+		try:
+			self.dict_list_input_examples
+		except AttributeError:
+			sys.exit(0)
+		
+		msg = QtWidgets.QMessageBox()
+		msg.setIcon(QtWidgets.QMessageBox.Question)
+		msg.setWindowIcon(QtGui.QIcon(logo_path))
+		msg.setText('Möchten Sie vor dem Schließen speichern?')
+		msg.setWindowTitle("Schularbeit schon gespeichert?")
+		msg.setStandardButtons(QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
+		buttonY = msg.button(QtWidgets.QMessageBox.Yes)
+		buttonY.setText('Ja')
+		buttonN = msg.button(QtWidgets.QMessageBox.No)
+		buttonN.setText('Nein')
+		ret=msg.exec_()
+
+		
+		if ret==QtWidgets.QMessageBox.Yes:							
+			self.sage_save('')
+			pass
+		else:
+			sys.exit(0)
 
 	def show_info(self):
 		QtWidgets.QApplication.restoreOverrideCursor()
@@ -1005,20 +2005,17 @@ class Ui_MainWindow(object):
 		pixmap = QtGui.QPixmap(logo_path)
 
 
-		#pixmap.scaled(1,1, QtCore.Qt.KeepAspectRatio)
-		#pixmap.resize(20,20)
-		msg.setIconPixmap(pixmap)
+		msg.setIconPixmap(pixmap.scaled(110, 110, QtCore.Qt.KeepAspectRatio))
 		msg.setWindowIcon(QtGui.QIcon(logo_path))
 		msg.setText("LaMA - LaTeX Mathematik Assistent %s  \n\n"
-		"Author: Christoph Weberndorfer  \n"
+		"Author: Christoph Weberndorfer	 \n"
 		"License: GNU General Public License v3.0  \n\n"	
-		"Credits: Matthias Konzett, David Fischer   "%__version__)
-		msg.setInformativeText("Logo & Icon: Lisa Schultz \n\n\n"
-		"Kontakt: lama.helpme@gmail.com")
+		"Credits: Matthias Konzett, David Fischer	"%__version__)
+		msg.setInformativeText("Logo & Icon: Lisa Schultz")
 		msg.setWindowTitle("Über LaMA - LaTeX Mathematik Assistent")
 		#msg.setDetailedText("The details are as follows:")
 		msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
-		retval = msg.exec_()
+		msg.exec_()
 	
 	def get_logfile(self):
 		try:
@@ -1105,15 +2102,15 @@ class Ui_MainWindow(object):
 
 
 	# def name_checkbox_gk(self, chosen_dict):
-	# 	for all in chosen_dict:
-	# 		x=eval('self.cb_'+all)
-	# 		x.setText(_translate("MainWindow", dict_gk[all], None))
+	#	for all in chosen_dict:
+	#		x=eval('self.cb_'+all)
+	#		x.setText(_translate("MainWindow", dict_gk[all], None))
 
 	# def name_checkbox_klassen(self, klasse):
-	# 	chosen_dict=eval('k'+str(klasse)+'_beschreibung')
-	# 	for all in chosen_dict:
-	# 		x=eval('self.cb_k'+str(klasse)+'_'+all)
-	# 		x.setText(_translate("MainWindow", chosen_dict[all], None))		
+	#	chosen_dict=eval('k'+str(klasse)+'_beschreibung')
+	#	for all in chosen_dict:
+	#		x=eval('self.cb_k'+str(klasse)+'_'+all)
+	#		x.setText(_translate("MainWindow", chosen_dict[all], None))		
 
 	def btn_k5_pressed(self):
 		if self.cb_k5_fu.isChecked()==False:
@@ -1196,7 +2193,7 @@ class Ui_MainWindow(object):
 				x.setChecked(False)
 
 	# def cb_checked(self):
-	# 	set_chosen_gk=set([])
+	#	set_chosen_gk=set([])
 
 				
 	def cb_checked(self):
@@ -1222,30 +2219,30 @@ class Ui_MainWindow(object):
 
 		# set_chosen_gk_ag=set([])
 		# for all in ag_beschreibung:
-		# 	x=eval('self.cb_'+all)
-		# 	if x.isChecked()==True:
-		# 		set_chosen_gk_ag.add(x.text())
+		#	x=eval('self.cb_'+all)
+		#	if x.isChecked()==True:
+		#		set_chosen_gk_ag.add(x.text())
 		# chosen_gk.extend(sorted(set_chosen_gk_ag))
 
 		# set_chosen_gk_fa=set([])
 		# for all in fa_beschreibung:
-		# 	x=eval('self.cb_'+all)
-		# 	if x.isChecked()==True:
-		# 		set_chosen_gk_fa.add(x.text())
+		#	x=eval('self.cb_'+all)
+		#	if x.isChecked()==True:
+		#		set_chosen_gk_fa.add(x.text())
 		# chosen_gk.extend(sorted(set_chosen_gk_fa))		
 		
 		# set_chosen_gk_an=set([])
 		# for all in an_beschreibung:
-		# 	x=eval('self.cb_'+all)
-		# 	if x.isChecked()==True:
-		# 		set_chosen_gk_an.add(x.text())
+		#	x=eval('self.cb_'+all)
+		#	if x.isChecked()==True:
+		#		set_chosen_gk_an.add(x.text())
 		# chosen_gk.extend(sorted(set_chosen_gk_an))
 
 		# set_chosen_gk_ws=set([])
 		# for all in ws_beschreibung:
-		# 	x=eval('self.cb_'+all)
-		# 	if x.isChecked()==True:
-		# 		set_chosen_gk_ws.add(x.text())
+		#	x=eval('self.cb_'+all)
+		#	if x.isChecked()==True:
+		#		set_chosen_gk_ws.add(x.text())
 		# chosen_gk.extend(sorted(set_chosen_gk_ws))
 
 
@@ -1290,64 +2287,72 @@ class Ui_MainWindow(object):
 		return datetime.datetime.fromtimestamp(t)	
 		
 	def refresh_ddb(self):
+		msg = QtWidgets.QMessageBox()
+		msg.setWindowIcon(QtGui.QIcon(logo_path))
+		msg.setWindowTitle("Refresh Database")
+		msg.setStandardButtons(QtWidgets.QMessageBox.NoButton)
+		msg.setText('Datenbank wird aktualisiert. Bitte warten...')
+
+		msg.show()
+		QApplication.processEvents()
 		QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-		beispieldaten_dateipfad = {}
-		beispieldaten = []
-		chosen_aufgabenformat='Typ%sAufgaben'%self.label_aufgabentyp.text()[-1]
-		filename= 0
-		########################################################
-		##### Suche offizielle Beispiele ####################
-		##################################################
+		for selected_aufgabentyp in [1,2]:
+			beispieldaten_dateipfad = {}
+			beispieldaten = []
+			chosen_aufgabenformat='Typ%sAufgaben'%selected_aufgabentyp
+			########################################################
+			##### Suche offizielle Beispiele ####################
+			##################################################
 
-		for root, dirs, files in os.walk(os.path.join(path_programm,'_database', chosen_aufgabenformat)):
-			for all in files:
-				if all.endswith('.tex') or all.endswith('.ltx'):
-					if not ('Gesamtdokument' in all) and not ('Teildokument' in all):
-						file=open(os.path.join(root,all), encoding='utf-8')
-						for i, line in enumerate(file):
-							if not line == "\n":			
-								beispieldaten_dateipfad[line]=os.path.join(root,all)
-								beispieldaten.append(line)
-								break
-						file.close()
+			for root, dirs, files in os.walk(os.path.join(path_programm,'_database', chosen_aufgabenformat)):
+				for all in files:
+					if all.endswith('.tex') or all.endswith('.ltx'):
+						if not ('Gesamtdokument' in all) and not ('Teildokument' in all):
+							file=open(os.path.join(root,all), encoding='utf8')
+							for i, line in enumerate(file):
+								if not line == "\n":			
+									beispieldaten_dateipfad[line]=os.path.join(root,all)
+									beispieldaten.append(line)
+									break
+							file.close()
 
-		################################################
-		#### Suche inoffizielle Beispiele ######
-		#############################################
+			################################################
+			#### Suche inoffizielle Beispiele ######
+			#############################################
 
-		for root, dirs, files in os.walk(os.path.join(path_programm,'_database_inoffiziell', chosen_aufgabenformat)):
-			for all in files:
-				if all.endswith('.tex') or all.endswith('.ltx'):
-					if not ('Gesamtdokument' in all) and not ('Teildokument' in all):
-						file=open(os.path.join(root,all), encoding='utf-8')
-						for i, line in enumerate(file):
-							if not line == "\n":			
-								beispieldaten_dateipfad[line]=os.path.join(root,all)
-								beispieldaten.append(line)
-								break
-						file.close()
-		
-		temp_dict_beispieldaten={}
-		temp_list=list(beispieldaten_dateipfad.keys())
-		temp_list.sort(key=self.natural_keys)
-		for all in temp_list:
-			temp_dict_beispieldaten.update({all:beispieldaten_dateipfad[all]})
+			for root, dirs, files in os.walk(os.path.join(path_programm,'_database_inoffiziell', chosen_aufgabenformat)):
+				for all in files:
+					if all.endswith('.tex') or all.endswith('.ltx'):
+						if not ('Gesamtdokument' in all) and not ('Teildokument' in all):
+							file=open(os.path.join(root,all),encoding='utf8')
+							for i, line in enumerate(file):
+								if not line == "\n":			
+									beispieldaten_dateipfad[line]=os.path.join(root,all)
+									beispieldaten.append(line)
+									break
+							file.close()
+			
+			temp_dict_beispieldaten={}
+			temp_list=list(beispieldaten_dateipfad.keys())
+			temp_list.sort(key=self.natural_keys)
+			for all in temp_list:
+				temp_dict_beispieldaten.update({all:beispieldaten_dateipfad[all]})
 
-		beispieldaten_dateipfad=temp_dict_beispieldaten
-		
-		log_file=os.path.join(path_programm,'Teildokument','log_file_%s'%self.label_aufgabentyp.text()[-1])
-		
-		try:
-			with open(log_file, 'w+',encoding='utf-8') as f:
-				json.dump(beispieldaten_dateipfad, f,ensure_ascii=False)
-		except FileNotFoundError:
-			os.makedirs(os.path.join(path_programm,'Teildokument'))
-			with open(log_file, 'w+',encoding='utf-8') as f:
-				json.dump(beispieldaten_dateipfad, f,ensure_ascii=False)		
+			beispieldaten_dateipfad=temp_dict_beispieldaten
+			
+			log_file=os.path.join(path_programm,'Teildokument','log_file_%s'%selected_aufgabentyp)
+			
+			try:
+				with open(log_file, 'w+',encoding='utf8') as f:
+					json.dump(beispieldaten_dateipfad, f,ensure_ascii=False)
+			except FileNotFoundError:
+				os.makedirs(os.path.join(path_programm,'Teildokument'))
+				with open(log_file, 'w+',encoding='utf8') as f:
+					json.dump(beispieldaten_dateipfad, f,ensure_ascii=False)		
 
-		self.label_update.setText(_translate("MainWindow", 'Last Update: ' + self.modification_date(log_file).strftime('%d.%m.%y - %H:%M'), None))
+			self.label_update.setText(_translate("MainWindow", 'Last Update: ' + self.modification_date(log_file).strftime('%d.%m.%y - %H:%M'), None))
 		QtWidgets.QApplication.restoreOverrideCursor()
-
+		msg.close()
 
 		
 		
@@ -1355,52 +2360,105 @@ class Ui_MainWindow(object):
 	############################################################################
 	########################### CREATE PDF ####################################		
 	############################################################################
+
 	def atoi(self,text):
 		return int(text) if text.isdigit() else text	
 	
 	def natural_keys(self,text):
 		return [ self.atoi(c) for c in re.split('(\d+)', text) ]
 
-	def create_pdf(self):
-
-		chosen_aufgabenformat=self.label_aufgabentyp.text()[-1]
-
-		if sys.platform.startswith('linux'):
-			subprocess.Popen('cd "{0}/Teildokument" ; latex --synctex=-1 Teildokument_{1}.tex ; dvips Teildokument_{1}.dvi ; ps2pdf -dNOSAFER Teildokument_{1}.ps'.format(path_programm, chosen_aufgabenformat),shell=True).wait()
-			subprocess.run(['xdg-open', "{0}/Teildokument/Teildokument_{1}.pdf".format(path_programm, chosen_aufgabenformat)])
-		elif sys.platform.startswith('darwin'):
-			subprocess.Popen('cd "{0}/Teildokument" ; latex --synctex=-1 Teildokument_{1}.tex ; dvips Teildokument_{1}.dvi ; ps2pdf -dNOSAFER Teildokument_{1}.ps'.format(path_programm, chosen_aufgabenformat),shell=True).wait()
-			subprocess.run(['open', "{0}/Teildokument/Teildokument_{1}.pdf".format(path_programm, chosen_aufgabenformat)])
+	def create_pdf(self, path_file, index, maximum):
+		msg = QtWidgets.QMessageBox()
+		msg.setWindowIcon(QtGui.QIcon(logo_path))
+		msg.setWindowTitle("Lade...")
+		msg.setStandardButtons(QtWidgets.QMessageBox.NoButton)
+		if path_file=='Teildokument' or path_file=='Schularbeit_Vorschau':
+			rest=''
 		else:
-			subprocess.Popen('cd "{0}/Teildokument" & latex --synctex=-1 Teildokument_{1}.tex& dvips Teildokument_{1}.dvi & ps2pdf -dNOSAFER Teildokument_{1}.ps'.format(path_programm, chosen_aufgabenformat),shell=True).wait()
+			rest=' ({0}|{1})'.format(index+1, maximum)
+		msg.setText('Die PDF Datei wird erstellt...'+rest)
+
+		msg.show()
+		QApplication.processEvents()
+		QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+		if path_file=='Teildokument':
+			dateiname=path_file+'_'+self.label_aufgabentyp.text()[-1]
+
+			# save_file=os.path.join(path_programm, 'Teildokument')
+			#print(dateiname)
+		# elif dateiname=='Schularbeit_Vorschau':
+		# 	save_file=os.path.join(path_programm, 'Teildokument')
+
+		else:
+			head,tail=os.path.split(path_file)
+			save_file=head
+			dateiname=tail
+
+		#chosen_aufgabenformat=self.label_aufgabentyp.text()[-1]
+
+
+		if dateiname=='Schularbeit_Vorschau' or dateiname.startswith('Teildokument'):
+			if sys.platform.startswith('linux'):
+				subprocess.Popen('cd "{0}/Teildokument" ; latex --synctex=-1 {1}.tex ; dvips {1}.dvi ; ps2pdf -dNOSAFER {1}.ps'.format(path_programm, dateiname),shell=True).wait()
+				subprocess.run(['xdg-open', "{0}/Teildokument/{1}.pdf".format(path_programm, dateiname)])
+			elif sys.platform.startswith('darwin'):
+				subprocess.Popen('cd "{0}/Teildokument" ; latex --synctex=-1 {1}.tex ; dvips {1}.dvi ; ps2pdf -dNOSAFER {1}.ps'.format(path_programm, dateiname),shell=True).wait()
+				subprocess.run(['open', "{0}/Teildokument/{1}.pdf".format(path_programm, dateiname)])
+			else:
+				if os.path.isfile(os.path.join("C:\\","Program Files","SumatraPDF","SumatraPDF.exe")):
+					sumatrapdf=os.path.join("C:\\","Program Files","SumatraPDF","SumatraPDF.exe")
+				elif os.path.isfile(os.path.join("C:\\","Program Files (x86)","SumatraPDF","SumatraPDF.exe")):	
+					sumatrapdf=os.path.join("C:\\","Program Files (x86)","SumatraPDF","SumatraPDF.exe")
+				else:
+					sumatrapdf=''			
 			
-			# p= subprocess.Popen('cd "{0}/Teildokument" & latex --synctex=-1 -interaction=nonstopmode Teildokument_{1}.tex& dvips Teildokument_{1}.dvi & ps2pdf -dNOSAFER Teildokument_{1}.ps'.format(path_programm, chosen_aufgabenformat), stdout=subprocess.PIPE,shell=True)
-			# (output, err) = p.communicate()
-			# p_status=p.wait()
-			# print(p_status)
-			# print(err)
-			# subprocess.Popen('cd "{0}/Teildokument" & Teildokument_{1}.pdf'.format(path_programm, chosen_aufgabenformat), shell=True).poll()
-			
-			subprocess.Popen('cd "{0}/Teildokument" & Teildokument_{1}.pdf'.format(path_programm, chosen_aufgabenformat), shell=True).poll()
-		## -interaction=nonstopmode -halt-on-error Don't stop when error occurs, while compiling
-		os.unlink('{0}/Teildokument/Teildokument_{1}.aux'.format(path_programm, chosen_aufgabenformat))
-		os.unlink('{0}/Teildokument/Teildokument_{1}.log'.format(path_programm, chosen_aufgabenformat))
-		os.unlink('{0}/Teildokument/Teildokument_{1}.dvi'.format(path_programm, chosen_aufgabenformat))
-		os.unlink('{0}/Teildokument/Teildokument_{1}.ps'.format(path_programm, chosen_aufgabenformat))
-	
+
+				subprocess.Popen('cd "{0}/Teildokument" & latex --synctex=-1 "{1}.tex"& dvips "{1}.dvi" & ps2pdf -dNOSAFER "{1}.ps"'.format(path_programm, dateiname),shell=True).wait()	
+				subprocess.Popen('cd "{0}/Teildokument" &"{1}" "{2}.pdf"'.format(path_programm,sumatrapdf ,dateiname), shell=True).poll()
+
+
+			os.unlink('{0}/Teildokument/{1}.aux'.format(path_programm, dateiname))
+			os.unlink('{0}/Teildokument/{1}.log'.format(path_programm, dateiname))
+			os.unlink('{0}/Teildokument/{1}.dvi'.format(path_programm, dateiname))
+			os.unlink('{0}/Teildokument/{1}.ps'.format(path_programm, dateiname))
+
+
+
+		else:
+			if sys.platform.startswith('linux'):
+				subprocess.Popen('cd "{0}" ; latex --synctex=-1 {1}.tex ; dvips {1}.dvi ; ps2pdf -dNOSAFER {1}.ps'.format(save_file, dateiname),shell=True).wait()
+			elif sys.platform.startswith('darwin'):
+				subprocess.Popen('cd "{0}" ; latex --synctex=-1 {1}.tex ; dvips {1}.dvi ; ps2pdf -dNOSAFER {1}.ps'.format(save_file, dateiname),shell=True).wait()		
+			else:
+				subprocess.Popen('cd "{0}" & latex --synctex=-1 "{1}.tex"& dvips "{1}.dvi" & ps2pdf -dNOSAFER "{1}.ps"'.format(save_file, dateiname),cwd=os.path.splitdrive(path_file)[0],shell=True).wait()
+
+
+
+			os.unlink('{0}/{1}.aux'.format(save_file, dateiname))
+			os.unlink('{0}/{1}.log'.format(save_file, dateiname))
+			os.unlink('{0}/{1}.dvi'.format(save_file, dateiname))
+			os.unlink('{0}/{1}.ps'.format(save_file, dateiname))
+			os.unlink('{0}/{1}.synctex'.format(save_file, dateiname))
+
+
+		msg.close()
+
+		QtWidgets.QApplication.restoreOverrideCursor()
+
+
 	def PrepareTeXforPDF(self):
 		chosen_aufgabenformat='Typ%sAufgaben'%self.label_aufgabentyp.text()[-1]
 
 		QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 		
 		if not os.path.isfile(os.path.join(path_programm,'Teildokument','log_file_%s'%self.label_aufgabentyp.text()[-1])):
-			self.refresh_ddb()
+			self.refresh_ddb() #self.label_aufgabentyp.text()[-1]
 		else: ##  Automatic update once per month
 			log_file=os.path.join(path_programm,'Teildokument','log_file_%s'%self.label_aufgabentyp.text()[-1])
 			month_update_log_file=self.modification_date(log_file).strftime('%m')
 			month_today=datetime.date.today().strftime('%m')
 			if month_today!= month_update_log_file:
-				self.refresh_ddb()
+				self.refresh_ddb() #self.label_aufgabentyp.text()[-1]
 
 		suchbegriffe = []
 		
@@ -1451,7 +2509,7 @@ class Ui_MainWindow(object):
 
 		log_file=os.path.join(path_programm,'Teildokument','log_file_%s'%self.label_aufgabentyp.text()[-1])
 
-		with open(log_file, encoding='utf-8') as f:
+		with open(log_file,encoding='utf8') as f:
 			beispieldaten_dateipfad = json.load(f)
 			#beispieldaten_dateipfad=eval(beispieldaten_dateipfad)
 			beispieldaten=list(beispieldaten_dateipfad.keys())					  
@@ -1469,10 +2527,11 @@ class Ui_MainWindow(object):
 		else:
 			shutil.copy(path_tabu_pkg,copy_path_tabu_pkg)
 
+		########################################################
 
 		filename_teildokument = os.path.join(path_programm,'Teildokument','Teildokument_%s.tex'%self.label_aufgabentyp.text()[-1])
 		try:
-			file=open(filename_teildokument,"w", encoding='utf-8')
+			file=open(filename_teildokument,"w", encoding='utf8')
 		except FileNotFoundError:
 			os.makedirs(filename_teildokument) # If dir is not found make it recursivly
 		file.write("\documentclass[a4paper,12pt]{report}\n\n"
@@ -1504,7 +2563,7 @@ class Ui_MainWindow(object):
 
 		
 		#### Typ1 ####			
-	# 	if self.combobox_searchtype.currentText()=='Alle Dateien ausgeben, die alle Suchkriterien enthalten':
+	#	if self.combobox_searchtype.currentText()=='Alle Dateien ausgeben, die alle Suchkriterien enthalten':
 		#######
 		if self.combobox_searchtype.currentText()=='Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten' and chosen_aufgabenformat=='Typ2Aufgaben':
 			liste_kompetenzbereiche ={}
@@ -1532,22 +2591,22 @@ class Ui_MainWindow(object):
 					gesammeltedateien.append(list(beispieldaten_dateipfad.keys())[r-1])
 			#return
 			# for all in gesammeltedateien:	
-			# 	if entry_suchbegriffe.get().lower() in all.lower():
-			# 		gesammeltedateien_temporary.append(all)
+			#	if entry_suchbegriffe.get().lower() in all.lower():
+			#		gesammeltedateien_temporary.append(all)
 			gesammeltedateien=sorted(gesammeltedateien)
 
 			# print(liste_kompetenzbereiche)
 			# print(gesammeltedateien)
 			# return
-	# 		gesammeltedateien=list(beispieldaten_dateipfad.keys())
-	# 		for item in suchbegriffe:
-	# 			for all in gesammeltedateien[:]:
-	# 				if item not in all:
-	# 					gesammeltedateien.remove(all)
+	#		gesammeltedateien=list(beispieldaten_dateipfad.keys())
+	#		for item in suchbegriffe:
+	#			for all in gesammeltedateien[:]:
+	#				if item not in all:
+	#					gesammeltedateien.remove(all)
 			
-	# 		dict_gesammeltedateien={}
-	# 		for all in gesammeltedateien:
-	# 			dict_gesammeltedateien[all]=beispieldaten_dateipfdad[all]
+	#		dict_gesammeltedateien={}
+	#		for all in gesammeltedateien:
+	#			dict_gesammeltedateien[all]=beispieldaten_dateipfdad[all]
 
 					
 		if self.combobox_searchtype.currentText()=='Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten' or chosen_aufgabenformat=='Typ1Aufgaben':
@@ -1569,7 +2628,7 @@ class Ui_MainWindow(object):
 		
 
 		# if not len(self.entry_suchbegriffe.text())==0:
-		# 	suchbegriffe.append(self.entry_suchbegriffe.text())
+		#	suchbegriffe.append(self.entry_suchbegriffe.text())
 
 		gesammeltedateien.sort(key=self.natural_keys)
 														
@@ -1636,7 +2695,7 @@ class Ui_MainWindow(object):
 			msg = QtWidgets.QMessageBox()
 			msg.setIcon(QtWidgets.QMessageBox.Warning)
 			msg.setWindowIcon(QtGui.QIcon(logo_path))
-			msg.setText("Es wurden keine passenden Beispiele gefunden!")
+			msg.setText("Es wurden keine passenden Aufgaben gefunden!")
 			msg.setInformativeText('Es wird keine Datei ausgegeben.')
 			msg.setWindowTitle("Warnung")
 			#msg.setDetailedText("The details are as follows:")
@@ -1648,7 +2707,7 @@ class Ui_MainWindow(object):
 
 
 		beispieldaten.sort(key=self.natural_keys)
-		file=open(filename_teildokument,"a", encoding='utf-8')
+		file=open(filename_teildokument,"a", encoding='utf8')
 		file.write('\n \\scriptsize Suchbegriffe: ')
 		for all in suchbegriffe:
 			if all == suchbegriffe[-1]:
@@ -1660,22 +2719,22 @@ class Ui_MainWindow(object):
 
 		for key, value in dict_gesammeltedateien.items():
 			value=value.replace('\\','/') 
-			file=open(filename_teildokument,"a", encoding='utf-8')
+			file=open(filename_teildokument,"a", encoding='utf8')
 			### newpage only with typ2 !!
 
 			if chosen_aufgabenformat=='Typ1Aufgaben':
 				file.write('\input{"'+value+'"}%\n'
-				'\hrule  \leer\n\n')
+				'\hrule	 \leer\n\n')
 			elif chosen_aufgabenformat=='Typ2Aufgaben':
 				file.write('\input{"'+value+'"}%\n'
 				'\\newpage \n')
 			# else:
-			# 	if chosen_aufgabenformat=='Typ 1 Aufgaben':
-			# 		file.write('\input{".'+value+'"}%\n'
-			# 		'\hrule  \leer\n\n')
-			# 	elif chosen_aufgabenformat=='Typ 2 Aufgaben':		
-			# 		file.write('\input{".'+value+'"}%\n'
-			# 		'\\newpage \n')
+			#	if chosen_aufgabenformat=='Typ 1 Aufgaben':
+			#		file.write('\input{".'+value+'"}%\n'
+			#		'\hrule	 \leer\n\n')
+			#	elif chosen_aufgabenformat=='Typ 2 Aufgaben':		
+			#		file.write('\input{".'+value+'"}%\n'
+			#		'\\newpage \n')
 
 		file.write('\shorthandoff{"}\n'
 		"\end{document}")
@@ -1687,7 +2746,7 @@ class Ui_MainWindow(object):
 		msg = QtWidgets.QMessageBox()
 		msg.setIcon(QtWidgets.QMessageBox.Question)
 		msg.setWindowIcon(QtGui.QIcon(logo_path))
-		msg.setText('Insgesamt wurden '+ str(len(dict_gesammeltedateien)) + ' Beispiele gefunden.\n ')
+		msg.setText('Insgesamt wurden '+ str(len(dict_gesammeltedateien)) + ' Aufgaben gefunden.\n ')
 		msg.setInformativeText('Soll die PDF Datei erstellt werden?')
 		msg.setWindowTitle("Datei ausgeben?")
 		msg.setStandardButtons(QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
@@ -1699,10 +2758,15 @@ class Ui_MainWindow(object):
 		ret=msg.exec_()
 		
 		if ret==QtWidgets.QMessageBox.Yes:
-			MainWindow.hide()
-			self.create_pdf()
-			MainWindow.show()
-			# sys.exit(0)
+			# geometry=MainWindow.geometry()
+			# print(geometry)
+			# MainWindow.hide()
+			self.create_pdf('Teildokument',0,0)
+			# MainWindow.show()
+			# MainWindow.move(geometry.x(),geometry.y())
+			# MainWindow.resize(geometry.width(), geometry.height())
+
+			#sys.exit(0)
 		
 		
 		
@@ -1715,29 +2779,37 @@ class Ui_MainWindow(object):
 
 
 	def add_picture(self):
-			try:
-				last_path=list(dict_picture_path.values())[-1]		
-			except IndexError:
-				last_path='C:\\'
-			list_filename = QtWidgets.QFileDialog.getOpenFileNames(None, 'Grafiken wählen', last_path,  'Grafiken (*.eps)')
-			i=len(dict_picture_path)
+		try:
+			self.saved_file_path	
+		except AttributeError:
+			self.saved_file_path=path_programm
+		list_filename = QtWidgets.QFileDialog.getOpenFileNames(None, 'Grafiken wählen', self.saved_file_path, 'Grafiken (*.eps)')
+		if list_filename[0]==[]:
+			return	
+		self.saved_file_path=os.path.dirname(list_filename[0][0])
 
-			self.label_bild_leer.hide()
-			for all in list_filename[0]:
+		i=len(dict_picture_path)
+		
+		self.label_bild_leer.hide()
+		for all in list_filename[0]:
+			head,tail=os.path.split(all)
+			#print(head,tail)
+			#print(dict_picture_path.keys())
+			if tail in dict_picture_path.keys():
+				pass
+			else:
 				head,tail=os.path.split(all)
-				if tail in dict_picture_path.keys():
-					pass
-				else:
-					head,tail=os.path.split(all)
-					dict_picture_path[tail]=all
-					x='self.label_bild_'+str(i)
-					exec('%s= QtWidgets.QLabel(self.scrollAreaWidgetContents_bilder)'%x)
-					eval(x).setObjectName(_fromUtf8("label_bild_%s"%i))
-					# eval(x).setFrameShape(QtWidgets.QFrame.StyledPanel)
-					eval(x).mousePressEvent = functools.partial(self.del_picture, name_of_image=x)
-					self.verticalLayout.addWidget(eval(x))	
-					eval(x).setText(_translate("MainWindow",tail, None))
-					i+=1
+				dict_picture_path[tail]=all
+				x='self.label_bild_'+str(i)
+				#print(dict_picture_path)
+				#print(head,tail)
+				exec('%s= QtWidgets.QLabel(self.scrollAreaWidgetContents_bilder)'%x)
+				eval(x).setObjectName(_fromUtf8("label_bild_%s"%i))
+
+				eval(x).mousePressEvent = functools.partial(self.del_picture, name_of_image=x)
+				self.verticalLayout.addWidget(eval(x))	
+				eval(x).setText(_translate("MainWindow",tail, None))
+				i+=1
 
 
 	def del_picture(self, event, name_of_image=None):
@@ -1762,9 +2834,15 @@ class Ui_MainWindow(object):
 			ret=msg.exec_()	
 
 			if ret==QtWidgets.QMessageBox.Yes:
-				#filename =  filedialog.askopenfilenames(initialdir = last_path,title = "Durchsuchen...",filetypes = (('JPG-Dateien','*.jpg'),("Alle Dateien","*.*")))
-				filename = QtWidgets.QFileDialog.getOpenFileNames(None, 'Select a folder:', 'C:\\',  'Bilder (*.jpg)')
+				#filename =	 filedialog.askopenfilenames(initialdir = last_path,title = "Durchsuchen...",filetypes = (('JPG-Dateien','*.jpg'),("Alle Dateien","*.*")))
+				try:
+					os.path.dirname(self.saved_file_path)	
+				except AttributeError:
+					self.saved_file_path=path_programm				
+				
+				filename = QtWidgets.QFileDialog.getOpenFileNames(None, 'Select a folder:', os.path.dirname(self.saved_file_path), 'Bilder (*.jpg)')
 				if filename[0]!=[]:
+					self.saved_file_path=filename[0]
 					for all in filename[0]:
 						output=all.replace('jpg','eps')
 						img=Image.open(all)
@@ -1824,13 +2902,14 @@ class Ui_MainWindow(object):
 		self.label_ausgew_gk.setText(_translate("MainWindow", str(x), None))
 
 
-	def warning_window(self, text):
+	def warning_window(self, text, detailed_text=''):
 		QtWidgets.QApplication.restoreOverrideCursor()
 		msg = QtWidgets.QMessageBox()
 		msg.setWindowTitle("Warnung")
 		msg.setIcon(QtWidgets.QMessageBox.Warning)
 		msg.setWindowIcon(QtGui.QIcon(logo_path))
 		msg.setText(text)
+		msg.setInformativeText(detailed_text)
 		msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
 		retval = msg.exec_()
 
@@ -1853,6 +2932,17 @@ class Ui_MainWindow(object):
 			if len(set_chosen_gk)>1:
 				self.warning_window('Es wurden zu viele Grundkompetenzen zugewiesen.')
 				return
+
+		if self.lineEdit_titel.text()=='':
+			self.warning_window('Bitte geben Sie einen Titel ein.')
+			return
+
+		if self.plainTextEdit.toPlainText()=='':
+			self.warning_window('Bitte geben Sie den LaTeX-Quelltext der Aufgabe im Bereich "Aufgabeneingabe" ein.')
+			return	
+		if self.lineEdit_quelle.text()=='':
+			self.warning_window('Bitte geben Sie die Quelle an.')
+			return
 
 		textBox_Entry=self.plainTextEdit.toPlainText()
 		list_chosen_gk=list(set_chosen_gk)
@@ -1922,7 +3012,8 @@ class Ui_MainWindow(object):
 			'Bilder: {5}\n'.format(self.comboBox_aufgabentyp_cr.currentText(),
 			edit_titel,aufgabenformat,gk,self.lineEdit_quelle.text(),bilder))
 			# msg.setInformativeText('Soll die PDF Datei erstellt werden?')
-			self.cb_confirm= QtWidgets.QCheckBox("Hiermit bestätige ich, dass ich die eingegebene Aufgabe eigenständig\nund unter Berücksichtigung des Urheberrechtsgesetzes verfasst habe.")									  
+			self.cb_confirm= QtWidgets.QCheckBox("Hiermit bestätige ich, dass ich die eingegebene Aufgabe eigenständig\nund unter Berücksichtigung des Urheberrechtsgesetzes verfasst habe.\n"
+			"Ich stelle die eingegebene Aufgabe frei gemäß der Lizenz CC0 1.0 zur Verfügung.\nDie Aufgabe darf daher zu jeder Zeit frei verwendet, kopiert und verändert werden.")									  
 			self.cb_confirm.setObjectName(_fromUtf8("cb_confirm"))
 			msg.setCheckBox(self.cb_confirm)
 			msg.setStandardButtons(QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
@@ -1939,7 +3030,7 @@ class Ui_MainWindow(object):
 					if ret==QtWidgets.QMessageBox.No:
 						return
 					else:
-						self.warning_window('Bitte bestätigen Sie die Eigenständigkeitserklärung.')	
+						self.warning_window('Bitte bestätigen Sie die Eigenständigkeitserklärung und Lizenzvereinbarung.')	
 						ret=msg.exec_()
 			else:
 				return		
@@ -2010,7 +3101,7 @@ class Ui_MainWindow(object):
 				max_integer_file=1000
 			else:
 				max_integer_file=0
-	    
+		
 			if not os.path.exists(gk_path_temp):
 				print("Creating {} for you.".format(gk_path_temp))
 				os.makedirs(gk_path_temp)
@@ -2069,7 +3160,7 @@ class Ui_MainWindow(object):
 									max_integer_file=int(file_integer)
 
 				if self.comboBox_aufgabentyp_cr.currentText()=='Typ 2':
-					for all in os.listdir(path_saved_files): 	
+					for all in os.listdir(path_saved_files):	
 						if all.endswith('.tex'):
 							if '-' in all:
 								pass
@@ -2153,6 +3244,16 @@ class Ui_MainWindow(object):
 					x=os.rename(copy_image_file_temp,'%s/Beispieleinreichung/Bilder/'%path_programm +str(max_integer_file+1)+'_'+tail) ### indirect save		
 
 
+		if " - " in edit_titel:
+			edit_titel=edit_titel.replace(" - ","-")
+
+
+
+		if " - " in self.lineEdit_quelle.text():
+			quelle=self.lineEdit_quelle.text().replace(" - ","-")
+		else:
+			quelle=self.lineEdit_quelle.text() 
+
 
 		if self.comboBox_aufgabentyp_cr.currentText()=='Typ 1':
 			if self.creator_mode=='admin':
@@ -2175,7 +3276,7 @@ class Ui_MainWindow(object):
 
 				#print('\section{'+file_name_klasse+' - '+list_chosen_gk[0].upper()+" - "+str(max_integer_file+1) +" - " + self.lineEdit_titel.text()+" - "+chosen_af+' - '+self.lineEdit_quelle.text())
 				try:
-					file=open(file_name,"w",encoding='utf-8')
+					file=open(file_name,"w",encoding='utf8')
 				except FileNotFoundError:
 					msg = QtWidgets.QMessageBox()
 					msg.setWindowTitle("Fehlermeldung")
@@ -2188,7 +3289,7 @@ class Ui_MainWindow(object):
 					return	
 				
 				
-				file.write('\section{'+file_name_klasse+' - '+list_chosen_gk[0].upper()+" - "+str(max_integer_file+1) +" - " + edit_titel+" - "+chosen_af+' - '+self.lineEdit_quelle.text()+"}\n\n"
+				file.write('\section{'+file_name_klasse+' - '+list_chosen_gk[0].upper()+" - "+str(max_integer_file+1) +" - " + edit_titel+" - "+chosen_af+' - '+quelle+"}\n\n"
 				"\\begin{beispiel}["+file_name_klasse+' - '+list_chosen_gk[0].upper()+"]{"+str(self.spinBox_punkte.value())+"}\n"+textBox_Entry+
 				"\n\\end{beispiel}")
 				file.close()
@@ -2197,7 +3298,7 @@ class Ui_MainWindow(object):
 				file_name=os.path.join(gk_path_temp,dict_gk[list_chosen_gk[0]]+' - '+str(max_integer_file+1)+'.tex')
 				
 				try:
-					file=open(file_name,"w",encoding='utf-8')
+					file=open(file_name,"w",encoding='utf8')
 				except FileNotFoundError:
 					msg = QtWidgets.QMessageBox()
 					msg.setWindowTitle("Fehlermeldung")
@@ -2211,7 +3312,7 @@ class Ui_MainWindow(object):
 
 				if self.comboBox_klassen_cr.currentText()=='-':
 					chosen_af=list(dict_aufgabenformate.keys())[list(dict_aufgabenformate.values()).index(self.comboBox_af.currentText())].upper()
-					file.write("\section{"+dict_gk[list_chosen_gk[0]]+" - "+str(max_integer_file+1) +" - "+edit_titel+" - "+chosen_af+" - "+self.lineEdit_quelle.text()+"}\n\n"
+					file.write("\section{"+dict_gk[list_chosen_gk[0]]+" - "+str(max_integer_file+1) +" - "+edit_titel+" - "+chosen_af+" - "+quelle+"}\n\n"
 					"\\begin{beispiel}["+dict_gk[list_chosen_gk[0]]+"]{"+str(self.spinBox_punkte.value())+"}\n"+textBox_Entry+
 					"\n\\end{beispiel}")
 				else:
@@ -2220,7 +3321,7 @@ class Ui_MainWindow(object):
 					except AttributeError:
 						klasse='MAT'			
 					chosen_af=list(dict_aufgabenformate.keys())[list(dict_aufgabenformate.values()).index(self.comboBox_af.currentText())].upper()
-					file.write("\section{"+dict_gk[list_chosen_gk[0]]+" - "+str(max_integer_file+1) +' - '+ klasse +" - "+edit_titel+" - "+chosen_af+" - "+self.lineEdit_quelle.text()+"}\n\n"
+					file.write("\section{"+dict_gk[list_chosen_gk[0]]+" - "+str(max_integer_file+1) +' - '+ klasse +" - "+edit_titel+" - "+chosen_af+" - "+quelle+"}\n\n"
 					"\\begin{beispiel}["+dict_gk[list_chosen_gk[0]]+"]{"+str(self.spinBox_punkte.value())+"}\n"+textBox_Entry+
 					"\n\\end{beispiel}")		
 				file.close()			
@@ -2239,7 +3340,7 @@ class Ui_MainWindow(object):
 					gk_auswahl.append(dict_gk[all])
 
 			gk_auswahl_joined=', '.join(sorted(gk_auswahl))
-			themen_klasse_auswahl_joined=', '.join(sorted(themen_klasse_auswahl)) 			 
+			themen_klasse_auswahl_joined=', '.join(sorted(themen_klasse_auswahl))			 
 
 
 			if self.creator_mode=='admin':
@@ -2251,7 +3352,7 @@ class Ui_MainWindow(object):
 				file_name=os.path.join(path_programm,'Beispieleinreichung',str(max_integer_file+1)+'.tex') ### not direct save
 
 			try:
-				file=open(file_name,"w",encoding='utf-8')
+				file=open(file_name,"w",encoding='utf8')
 			except FileNotFoundError:
 				msg = QtWidgets.QMessageBox()
 				msg.setWindowTitle("Fehlermeldung")
@@ -2300,7 +3401,7 @@ class Ui_MainWindow(object):
 				if gk_auswahl !=[]:
 					gk=gk_auswahl_joined+' - '
 
-			file.write("\section{"+str(max_integer_file+1)+' - '+klasse + themen_klasse + gk +edit_titel+" - "+self.lineEdit_quelle.text()+"}\n\n"
+			file.write("\section{"+str(max_integer_file+1)+' - '+klasse + themen_klasse + gk +edit_titel+" - "+quelle+"}\n\n"
 			"\\begin{langesbeispiel} \item["+str(self.spinBox_punkte.value())+"] %PUNKTE DES BEISPIELS\n"+textBox_Entry+
 			"\n\\end{langesbeispiel}")			
 
@@ -2357,10 +3458,1502 @@ class Ui_MainWindow(object):
 
 
 ##################################################################
-##################################################################
+################## Befehle LAMA SAGE################################
+
+
+
+	def sage_load(self, external_file_loaded):
+		global list_sage_examples
+		if external_file_loaded==False:
+			try:
+				os.path.dirname(self.saved_file_path)	
+			except AttributeError:
+				self.saved_file_path=path_programm	
+
+			path_backup_file = QtWidgets.QFileDialog.getOpenFileName(None, 'Öffnen', os.path.dirname(self.saved_file_path), 'LaMA Datei (*.lama);; Alle Dateien (*.*)')
+			if path_backup_file[0]=='':
+				return
+			self.saved_file_path=path_backup_file[0]
+
+		if external_file_loaded==True:
+			self.saved_file_path=loaded_lama_file_path
+
+		self.neue_schularbeit_erstellen()
+		QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+
+		for example in list_sage_examples:
+			self.btn_delete_pressed(example, True)
+
+		with open(self.saved_file_path, 'r', encoding='utf8') as loaded_file:
+			self.dict_list_input_examples=json.load(loaded_file)
+
+
+		list_sage_examples=self.dict_list_input_examples['list_examples']
+
+
+		for all in list_sage_examples:
+			if any(all in s for s in self.beispieldaten_dateipfad_1.values()):
+				pass
+			else:
+				if any(all in s for s in self.beispieldaten_dateipfad_2.values()):
+					pass
+				else:	
+					self.warning_window('Die Aufgabe "{}" konnte nicht in der Datenbank gefunden werden. \n\n\n (Tipp: Refresh Database)'.format(all))
+					return	
+
+		for all in list_sage_examples:
+			if re.search('[A-Z]',all)==None:
+				bsp_string=all
+			else:
+				bsp_string=all.replace(' ','').replace('.','').replace('-','_')			
+			# print(bsp_string)
+			exec('self.list_input_{0}=self.dict_list_input_examples["self.list_input_{0}"]'.format(bsp_string))		
+		self.spinBox_nummer.setValue(self.dict_list_input_examples['data_gesamt']['#'])
+		self.lineEdit_klasse.setText(self.dict_list_input_examples['data_gesamt']['Klasse'])
+		
+		try:
+			index = self.comboBox_pruefungstyp.findText(self.dict_list_input_examples['data_gesamt']['Pruefungstyp'], QtCore.Qt.MatchFixedString)
+		except KeyError:
+			index=0
+		if index >=0:
+			self.comboBox_pruefungstyp.setCurrentIndex(index)
+
+
+
+		if self.dict_list_input_examples['data_gesamt']['Beurteilung']=='ns':
+			self.radioButton_notenschl.setChecked(True)
+			self.radioButton_beurteilungsraster.setChecked(False)
+		if self.dict_list_input_examples['data_gesamt']['Beurteilung']=='br':
+			self.radioButton_notenschl.setChecked(False)
+			self.radioButton_beurteilungsraster.setChecked(True)
+				
+		year=self.dict_list_input_examples['data_gesamt']['Datum'][0]
+		month=self.dict_list_input_examples['data_gesamt']['Datum'][1]
+		day=self.dict_list_input_examples['data_gesamt']['Datum'][2]
+		self.dateEdit.setDate(QtCore.QDate(year,month,day))
+
+		self.dict_sage_ausgleichspunkte_chosen=self.dict_list_input_examples['dict_ausgleichspunkte']
+
+		self.sage_aufgabe_create(True)
+		self.spinBox_default_pkt.setValue(self.dict_list_input_examples['data_gesamt']['Typ1 Standard'])
+		self.spinBox_2.setValue(self.dict_list_input_examples['data_gesamt']['Notenschluessel'][0])
+		self.spinBox_3.setValue(self.dict_list_input_examples['data_gesamt']['Notenschluessel'][1])
+		self.spinBox_4.setValue(self.dict_list_input_examples['data_gesamt']['Notenschluessel'][2])
+		self.spinBox_5.setValue(self.dict_list_input_examples['data_gesamt']['Notenschluessel'][3])
+
+		QtWidgets.QApplication.restoreOverrideCursor()
+
+
+
+
+	def sage_save(self, path_file): #path_file
+		try:
+			self.saved_file_path	
+		except AttributeError:
+			self.saved_file_path=path_programm
+		
+
+		if path_file=='':
+			path_backup_file = QtWidgets.QFileDialog.getSaveFileName(None, 'Speichern unter', self.saved_file_path, 'LaMA Datei (*.lama);; Alle Dateien (*.*)')
+			if path_backup_file[0]=='':
+				return
+			self.save_dict_examples_data()
+			save_file=path_backup_file[0]
+
+		else:
+			name, extension=os.path.splitext(path_file)
+			path_file=name+'_autosave.lama'
+			save_file=path_file
+		try:
+			self.neue_schularbeit_erstellen()
+		except AttributeError:
+			pass
+			
+		self.saved_file_path = save_file
+
+
+		with open(save_file, 'w+', encoding='utf8') as saved_file:
+			json.dump(self.dict_list_input_examples, saved_file,ensure_ascii=False)	
+
+
+
+	def titlepage_clicked(self, dict_titlepage):
+		
+		self.Dialog = QtWidgets.QDialog(None, QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint)
+		self.ui = Ui_Dialog_titlepage()
+		self.ui.setupUi(self.Dialog, dict_titlepage)
+		self.Dialog.show()
+		self.Dialog.exec_()
+		self.dict_titlepage=dict_titlepage
+
+		titlepage_save=os.path.join(path_programm,'Teildokument','titlepage_save')
+
+		try:
+			with open(titlepage_save, 'w+',encoding='utf8') as f:
+				json.dump(self.dict_titlepage, f,ensure_ascii=False)
+		except FileNotFoundError:
+			os.makedirs(os.path.join(path_programm,'Teildokument'))
+			with open(titlepage_save, 'w+',encoding='utf8') as f:
+				json.dump(self.dict_titlepage, f,ensure_ascii=False)
+
+		#print(self.dict_titlepage)
+
+		# QtWidgets.QApplication.restoreOverrideCursor()
+		# msg = QtWidgets.QMessageBox()
+		# msg.setIcon(QtWidgets.QMessageBox.Question)
+		# msg.setWindowIcon(QtGui.QIcon(logo_path))
+		# msg.setWindowTitle("Titelblatt anpassen")
+		# msg.setText('Wählen Sie die gewünschten Punkte für das Titelblatt aus:')
+		# self.cb_titlepage_title= QtWidgets.QCheckBox("Titel")									  
+		# self.cb_titlepage_title.setObjectName(_fromUtf8("cb_titlepage_titel"))
+		# msg.setCheckBox(self.cb_titlepage_title)
+		# self.cb_titlepage_datum= QtWidgets.QCheckBox("Datum")									  
+		# self.cb_titlepage_datum.setObjectName(_fromUtf8("cb_titlepage_datum"))
+		# msg.setCheckBox(self.cb_titlepage_datum)
+
+
+		# msg.setStandardButtons(QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
+		# buttonY = msg.button(QtWidgets.QMessageBox.Yes)
+		# buttonY.setText('Speichern')
+		# msg.setDefaultButton(QtWidgets.QMessageBox.Yes)
+		# buttonN = msg.button(QtWidgets.QMessageBox.No)
+		# buttonN.setText('Standard wieder herstellen')
+		# msg.exec_()
+
+	def beurteilungsraster_changed(self):
+		if self.radioButton_beurteilungsraster.isChecked():
+			self.groupBox_notenschl.hide()
+			self.gridLayout_5.addWidget(self.groupBox_beurteilungsra, 6, 0, 1, 7)
+			self.save_dict_examples_data()
+			self.label_typ1_pkt.setText(_translate("MainWindow", "Punkte Typ 1: {}".format(self.pkt_typ1),None))
+			self.label_typ2_pkt.setText(_translate("MainWindow", "Punkte Typ 2: {}".format(self.pkt_typ2),None))
+			self.label_ausgleich_pkt.setText(_translate("MainWindow", "(davon Ausgleichspunkte: {})".format(self.num_ausgleichspkt_gesamt),None))
+			self.groupBox_beurteilungsra.show()
+			
+		if self.radioButton_notenschl.isChecked():
+			self.gridLayout_5.removeWidget(self.groupBox_beurteilungsra)
+			self.groupBox_beurteilungsra.hide()
+			self.groupBox_notenschl.show()
+
+		
+
+	def sage_aufgabe_add(self,typ, aufgabe):
+		# print(aufgabe)
+		list_sage_examples_typ1=[]
+		list_sage_examples_typ2=[]
+
+		for all in list_sage_examples:
+			if re.search('[A-Z]',all)==None:
+				list_sage_examples_typ2.append(all)
+			else:
+				list_sage_examples_typ1.append(all)
+		
+		if aufgabe not in list_sage_examples:
+			if typ==1:
+				list_sage_examples_typ1.append(aufgabe)
+			if typ==2:
+				list_sage_examples_typ2.append(aufgabe)
+
+		list_sage_examples.clear()
+		list_sage_examples.extend(list_sage_examples_typ1)
+		list_sage_examples.extend(list_sage_examples_typ2)
+		num_typ1=len(list_sage_examples_typ1)
+		num_typ2=len(list_sage_examples_typ2)
+		num_total=len(list_sage_examples)
+		self.label_gesamtbeispiele.setText(_translate("MainWindow", "Anzahl der Aufgaben: {0} (Typ1: {1} / Typ2: {2})  ".format(num_total, num_typ1, num_typ2), None))	
+		self.sage_aufgabe_create(False)
+
+
+	def adapt_label_gesamtbeispiele(self):
+		list_sage_examples_typ1=[]
+		list_sage_examples_typ2=[]
+		
+		for all in list_sage_examples:
+			if re.search('[A-Z]',all)==None:
+				list_sage_examples_typ2.append(all)
+			else:
+				list_sage_examples_typ1.append(all)
+
+		list_sage_examples.clear()
+		list_sage_examples.extend(list_sage_examples_typ1)
+		list_sage_examples.extend(list_sage_examples_typ2)
+		num_typ1=len(list_sage_examples_typ1)
+		num_typ2=len(list_sage_examples_typ2)
+		num_total=len(list_sage_examples)
+		self.label_gesamtbeispiele.setText(_translate("MainWindow", "Anzahl der Aufgaben: {0} (Typ1: {1} / Typ2: {2})  ".format(num_total, num_typ1, num_typ2), None))
+
+	def btn_up_pressed(self, aufgabe):
+		self.update_lists_examples()
+
+		if re.search('[A-Z]',aufgabe)==None:
+			bsp_string=aufgabe
+			typ=2
+		else:
+			bsp_string=aufgabe.replace(' ','').replace('.','').replace('-','_')
+			typ=1
+
+
+		list_input=eval('self.list_input_{}'.format(bsp_string))
+		sb_value= eval('self.spinBox_pkt_{}'.format(bsp_string))
+		list_input[0]=sb_value.value()
+
+		space_value= eval('self.spinBox_abstand_{}'.format(bsp_string))
+		list_input[1]=space_value.value()
+
+		# if position!=0:
+		a,b=list_sage_examples.index(aufgabe), list_sage_examples.index(aufgabe)-1
+		list_sage_examples[a], list_sage_examples[b]=list_sage_examples[b], list_sage_examples[a]
+
+		self.sage_aufgabe_create(False)
+
+
+	def btn_down_pressed(self, aufgabe):
+		self.update_lists_examples()
+
+		if re.search('[A-Z]',aufgabe)==None:
+			bsp_string=aufgabe
+			typ=2
+		else:
+			bsp_string=aufgabe.replace(' ','').replace('.','').replace('-','_')
+
+			typ=1
+
+				
+		#number=list_sage_examples.index(aufgabe)
+		list_input=eval('self.list_input_{}'.format(bsp_string))
+		sb_value= eval('self.spinBox_pkt_{}'.format(bsp_string))
+		# print(list_input)
+		# print(sb_value.value())
+		list_input[0]=sb_value.value()
+		
+		space_value= eval('self.spinBox_abstand_{}'.format(bsp_string))
+		list_input[1]=space_value.value()
+
+		#if (typ==1 and position!=len(list_sage_examples_typ1)-1) or (typ==2 and position!=len(list_sage_examples_typ2)-1):	
+		a,b=list_sage_examples.index(aufgabe), list_sage_examples.index(aufgabe)+1
+		list_sage_examples[a], list_sage_examples[b]=list_sage_examples[b], list_sage_examples[a]
+		self.sage_aufgabe_create(False)
+
+
+	def btn_delete_pressed(self, aufgabe, file_loaded):
+		if re.search('[A-Z]',aufgabe)==None:
+			bsp_string=aufgabe
+			typ=2
+		else:
+			bsp_string=aufgabe.replace(' ','').replace('.','').replace('-','_')
+			typ=1
+		
+		exec('self.groupBox_bsp_{}.setParent(None)'.format(bsp_string))	
+		list_input=eval('self.list_input_{}'.format(bsp_string))
+		spinBox_pkt = eval('self.spinBox_pkt_{}'.format(bsp_string))
+		if typ==1:
+			list_input[0]=self.spinBox_default_pkt.value()
+			spinBox_pkt.setValue(self.spinBox_default_pkt.value())
+		if typ==2:
+			list_input[0]=0
+			list_input[3]=''
+			ausgleich_pkt = eval('self.ausgleich_pkt_{}'.format(bsp_string))
+			self.num_ausgleichspkt_gesamt-=int(ausgleich_pkt.text()[-2])
+			spinBox_pkt.setValue(0)
+			name=aufgabe+'.tex'
+			for path in self.beispieldaten_dateipfad_2.values():
+				if name == os.path.basename(path):
+					selected_path=path
+			try:
+				#del self.dict_sage_ausgleichspunkte_chosen[selected_path]
+				del self.dict_sage_ausgleichspunkte_chosen[aufgabe]
+			except KeyError:
+				pass
+	
+		
+		list_input[1]=0
+
+		spinBox_abstand = eval('self.spinBox_abstand_{}'.format(bsp_string))
+		spinBox_abstand.setValue(0)
+
+
+		if file_loaded==False:
+			list_sage_examples.remove(aufgabe)
+			self.adapt_label_gesamtbeispiele()
+			self.sage_aufgabe_create(False)
+
+		### reset Ausgleichspunkte
+		#del self.dict_sage_ausgleichspunkte_chosen[aufgabe]
+		# print(self.dict_sage_ausgleichspunkte_chosen)
+		# print(aufgabe)
+
+	def punkte_changed(self):
+		gesamtpunkte=0
+
+		for all in list_sage_examples:
+			if re.search('[A-Z]',all)==None:
+				bsp_string=all
+			else:
+				bsp_string=all.replace(' ','').replace('.','').replace('-','_')
+
+			spinBox_pkt=eval('self.spinBox_pkt_{}'.format(bsp_string))
+			punkte=spinBox_pkt.value()
+			spinBox_abstand=eval('self.spinBox_abstand_{}'.format(bsp_string))
+			abstand=spinBox_abstand.value()
+			list_input=eval('self.list_input_{}'.format(bsp_string))
+			list_input[0]=punkte
+			list_input[1]=abstand
+			gesamtpunkte+=punkte
+
+		#gesamtpunkte+=self.num_ausgleichspkt_gesamt
+			#ausgleich_pkt = eval('self.ausgleich_pkt_{}'.format(bsp_string))
+			
+			# ausgleich_pkt.setText(_translate("MainWindow", '(AP: {})'.format(len(list_sage_ausgleichspunkte_chosen)),None))
+		
+		list_punkte=[]	
+		for g in range(2,6):
+			r=0
+			x=eval('self.spinBox_{}.value()'.format(g))
+			if gesamtpunkte*x/100 == int(gesamtpunkte*x/100): 
+				list_punkte.append(int(gesamtpunkte*(x/100)))
+			else:
+				list_punkte.append(int(gesamtpunkte*(x/100))+1)
+			r+=1
+
+
+	
+		self.label_sg_pkt.setText(_translate("MainWindow", "% (ab {})".format(list_punkte[0]),None))
+		self.label_g_pkt.setText(_translate("MainWindow",  "% (ab {})".format(list_punkte[1]),None))
+		self.label_b_pkt.setText(_translate("MainWindow",  "% (ab {})".format(list_punkte[2]),None))
+		self.label_g_pkt_2.setText(_translate("MainWindow",	 "% (ab {})".format(list_punkte[3]),None))
+		#self.label_ng_pkt.setText(_translate("MainWindow",	 "% (<{})".format(pkt_ge),None))
+
+		self.label_gesamtpunkte.setText(_translate("MainWindow", "Gesamtpunkte: %i"%gesamtpunkte, None))
+		self.beurteilungsraster_changed()
+
+	def update_default_pkt(self):
+		for all in list_sage_examples:
+			if re.search('[A-Z]',all)==None:
+				pass	
+				# ausgleich_pkt = eval('self.ausgleich_pkt_{}'.format(all))
+				# ausgleich_pkt.setText(_translate("MainWindow", '(AP: {})'.format(len(list_sage_ausgleichspunkte_chosen)*self.spinBox_default_pkt.value()),None)) 
+			else:
+				bsp_string=all.replace(' ','').replace('.','').replace('-','_')
+				sb_value=eval('self.spinBox_pkt_{}'.format(bsp_string))
+				sb_value.setValue(self.spinBox_default_pkt.value())
+				self.beurteilungsraster_changed()		
+
+
+	def update_lists_examples(self):
+		for all in list_sage_examples:
+			if re.search('[A-Z]',all)==None:
+				bsp_string=all
+				typ=2
+			else:
+				bsp_string=all.replace(' ','').replace('.','').replace('-','_')
+				typ=1
+			#print(typ)
+			
+			try:
+				list_input=eval('self.list_input_{}'.format(bsp_string))
+				sb_value= eval('self.spinBox_pkt_{}'.format(bsp_string))
+				list_input[0]=sb_value.value()
+				space_value=eval('self.spinBox_abstand_{}'.format(bsp_string))
+				list_input[1]=space_value.value()	
+			except AttributeError:
+				if typ==1:
+					exec('self.list_input_{0}=[{1},0,"",""]'.format(bsp_string, self.spinBox_default_pkt.value()))
+				if typ==2:
+					exec('self.list_input_{}=[0,0,"",""]'.format(bsp_string))
+				list_input =eval('self.list_input_{}'.format(bsp_string))
+			#print(list_input)
+
+	def sage_aufgabe_create(self, file_loaded):
+		QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+		self.num_ausgleichspkt_gesamt=0	
+		r=0
+		scrollBar_position=self.scrollArea_chosen.verticalScrollBar().value()
+
+		for all in list_sage_examples:	
+			if re.search('[A-Z]',all)==None:
+				bsp_string=all
+			else:
+				bsp_string=all.replace(' ','').replace('.','').replace('-','_')
+			
+			try:
+				exec('self.groupBox_bsp_{}.setParent(None)'.format(bsp_string))
+			except AttributeError:
+				pass
+
+
+		if file_loaded==False:
+			self.update_lists_examples()
+	
+
+		for example in list_sage_examples:
+			if re.search('[A-Z]',example)==None:
+				bsp_string=example
+			else:
+				bsp_string=example.replace(' ','').replace('.','').replace('-','_')
+			list_input=eval('self.list_input_{}'.format(bsp_string))
+			name=example+'.tex'
+			for all in self.beispieldaten_dateipfad_1:
+				filename = os.path.basename(self.beispieldaten_dateipfad_1[all])	
+				if name==filename:
+					x=all.split(' - ')
+					#print(x[-2])
+					list_input[2]=x[-3]
+					list_input[3]=x[-2]
+
+			for all in self.beispieldaten_dateipfad_2:
+				filename = os.path.basename(self.beispieldaten_dateipfad_2[all])	
+				if name==filename:
+					x=all.split(' - ')
+					list_input[2]=x[-2]
+
+		if file_loaded==False:
+			self.list_copy_images=[]
+			self.save_dict_examples_data()
+		if file_loaded==True:
+			try:
+				self.list_copy_images		
+			except AttributeError:
+				self.list_copy_images=[]
+		counter=0
+		num_of_example=1
+		
+		
+		for all in list_sage_examples:
+			# print(all)
+			# print(self.dict_list_input_examples)
+			if re.search('[A-Z]',all)==None:
+				bsp_string=all
+				typ=2
+			else:
+				bsp_string=all.replace(' ','').replace('.','').replace('-','_')
+				typ=1
+			#print(typ)
+			list_input=eval('self.list_input_{}'.format(bsp_string))
+			# print(list_input)
+			exec('self.groupBox_bsp_{} = QtWidgets.QGroupBox(self.scrollAreaWidgetContents_2)'.format(bsp_string))	
+			x=eval('self.groupBox_bsp_{}'.format(bsp_string))
+			x.setMaximumSize(QtCore.QSize(16777215, 120))
+			x.setObjectName("groupBox_bsp_{}".format(bsp_string))
+			if (list_sage_examples.index(all)%2)==0 and typ==1:
+				x.setStyleSheet(_fromUtf8("background-color: rgb(255, 255, 255);"))
+			if typ==2:
+				x.setStyleSheet(_fromUtf8("background-color: rgb(255, 212, 212);"))
+			x.setTitle(_translate("MainWindow", "{0}. Aufgabe (Typ{1})".format(str(num_of_example), str(typ)), None))
+			self.gridLayout_gB = QtWidgets.QGridLayout(x)
+			self.gridLayout_gB.setObjectName("gridLayout_gB")
+			self.gridLayout_8.addWidget(x, 0, 0, 1, 2, QtCore.Qt.AlignTop)
+
+			exec('self.label_aufgabe_{} = QtWidgets.QLabel(x)'.format(bsp_string))
+			label_aufgabe=eval('self.label_aufgabe_{}'.format(bsp_string))		
+			label_aufgabe.setWordWrap(True)
+			label_aufgabe.setObjectName("label_aufgabe_{}".format(bsp_string))
+			self.gridLayout_gB.addWidget(label_aufgabe, 0, 0, 1, 1)
+			
+			if typ==1:
+				try:
+					aufgabenformat= "("+dict_aufgabenformate[list_input[3].lower()]+")"
+				except KeyError:
+					aufgabenformat=""
+				
+				label_aufgabe.setText(_translate("MainWindow", "{0} {1}".format(all, aufgabenformat),None))
+			if typ==2:
+				label_aufgabe.setText(_translate("MainWindow", "{0}".format(all),None))
+
+
+			exec('self.label_title_{} = QtWidgets.QLabel(x)'.format(bsp_string))
+			label_title=eval('self.label_title_{}'.format(bsp_string))		
+			label_title.setWordWrap(True)
+			label_title.setObjectName("label_title_{}".format(bsp_string))
+			self.gridLayout_gB.addWidget(label_title, 1, 0, 1, 1)
+			label_title.setText(_translate("MainWindow", 'Titel: {}'.format(list_input[2]),None)) #list_titles[i-1]
+
+			self.groupBox_pkt = QtWidgets.QGroupBox(x)
+			#self.groupBox_pkt.setMaximumSize(QtCore.QSize(83, 53))
+			self.groupBox_pkt.setObjectName("groupBox_pkt")
+			self.groupBox_pkt.setTitle(_translate("MainWindow", "Punkte",None))
+			if typ==1:
+				self.groupBox_pkt.setMaximumSize(QtCore.QSize(80, 16777215))
+			if typ==2:
+				self.groupBox_pkt.setToolTip("Die Punkte stehen für die Gesamtpunkte dieser Aufgabe.\nEs müssen daher auch die Ausgleichspunkte berücksichtigt werden.")
+				self.groupBox_pkt.setMaximumSize(QtCore.QSize(150, 16777215))
+			self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBox_pkt)
+			self.gridLayout_3.setObjectName("gridLayout_3")
+			self.gridLayout_gB.addWidget(self.groupBox_pkt, 0, 1, 2, 1)
+
+			exec('self.spinBox_pkt_{} = SpinBox_noWheel(self.groupBox_pkt)'.format(bsp_string))
+			spinBox_pkt = eval('self.spinBox_pkt_{}'.format(bsp_string))
+			spinBox_pkt.setObjectName("spinBox_pkt_{}".format(bsp_string))
+			spinBox_pkt.setValue(eval('self.list_input_{}'.format(bsp_string))[0])
+			spinBox_pkt.valueChanged.connect(self.punkte_changed)
+			self.gridLayout_3.addWidget(spinBox_pkt, 0, 0, 1, 1)
+	
+			
+
+			self.pushButton_up = QtWidgets.QPushButton(x)
+			self.pushButton_up.setObjectName("pushButton_up")
+			self.pushButton_up.setMaximumSize(QtCore.QSize(30, 30))
+			self.pushButton_up.setFocusPolicy(QtCore.Qt.ClickFocus)
+			self.gridLayout_gB.addWidget(self.pushButton_up, 0, 3, 2, 1)
+			self.pushButton_up.setStyleSheet(_fromUtf8("background-color: light gray"))
+			self.pushButton_up.setIcon(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.SP_ArrowUp))
+			if num_of_example==1:
+				self.pushButton_up.setEnabled(False)
+			if typ==2 and counter==0:
+				self.pushButton_up.setEnabled(False)
+				counter+=1
+			self.pushButton_up.clicked.connect(partial(self.btn_up_pressed,all))
+
+			self.pushButton_down = QtWidgets.QPushButton(x)
+			self.pushButton_down.setObjectName("pushButton_down")
+			self.pushButton_down.setStyleSheet(_fromUtf8("background-color: light gray"))
+			self.pushButton_down.setMaximumSize(QtCore.QSize(30, 30))
+			self.pushButton_down.setFocusPolicy(QtCore.Qt.ClickFocus)
+			self.gridLayout_gB.addWidget(self.pushButton_down, 0, 4, 2, 1)
+			self.pushButton_down.setIcon(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.SP_ArrowDown))
+			if num_of_example==len(list_sage_examples):
+				self.pushButton_down.setEnabled(False)
+			if typ==1 and self.dict_list_input_examples['data_gesamt']['num_1']==num_of_example:
+				self.pushButton_down.setEnabled(False)
+			self.pushButton_down.clicked.connect(partial(self.btn_down_pressed,all))
+
+			self.pushButton_delete = QtWidgets.QPushButton(x)
+			self.pushButton_delete.setObjectName("pushButton_delete")
+			self.pushButton_delete.setStyleSheet(_fromUtf8("background-color: light gray"))
+			#self.pushButton_delete.setStyleSheet(_fromUtf8("background-color: rgb(255, 153, 153);"))
+			self.pushButton_delete.setMaximumSize(QtCore.QSize(30, 30))
+			self.pushButton_delete.setFocusPolicy(QtCore.Qt.ClickFocus)
+			self.gridLayout_gB.addWidget(self.pushButton_delete, 0, 5, 2, 1)
+			self.pushButton_delete.setIcon(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.SP_TitleBarCloseButton))
+			self.pushButton_delete.clicked.connect(partial(self.btn_delete_pressed, all, False))
+			
+			self.groupBox_abstand = QtWidgets.QGroupBox(x)
+			self.groupBox_abstand.setObjectName("groupBox_abstand")
+			self.groupBox_abstand.setTitle(_translate("MainWindow", "Abstand (cm)",None))
+			self.groupBox_abstand.setMaximumSize(QtCore.QSize(100, 16777215))
+			self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.groupBox_abstand)
+			#self.groupBox_abstand.setMaximumSize(QtCore.QSize(180, 152))
+			if typ==2:
+				self.groupBox_abstand.hide()
+			self.verticalLayout_3.setObjectName("verticalLayout_3")
+
+
+			exec('self.spinBox_abstand_{} = SpinBox_noWheel(self.groupBox_abstand)'.format(bsp_string))
+			spinBox_abstand = eval('self.spinBox_abstand_{}'.format(bsp_string))
+			spinBox_abstand.setObjectName("spinBox_abstand_{}".format(bsp_string))	
+			spinBox_abstand.setValue(eval('self.list_input_{}'.format(bsp_string))[1])
+			spinBox_abstand.valueChanged.connect(self.punkte_changed)
+			self.verticalLayout_3.addWidget(spinBox_abstand)
+			self.gridLayout_gB.addWidget(self.groupBox_abstand, 0, 2, 2, 1)
+
+			self.pushButton_ausgleich = QtWidgets.QPushButton(x)
+			self.pushButton_ausgleich.setObjectName("pushButton_ausgleich")
+			self.pushButton_ausgleich.setStyleSheet(_fromUtf8("background-color: light gray"))
+			#self.pushButton_delete.setStyleSheet(_fromUtf8("background-color: rgb(255, 153, 153);"))
+			self.pushButton_ausgleich.setMaximumSize(QtCore.QSize(220, 30))
+			self.pushButton_ausgleich.setText("Ausgleichspunkte anpassen...")
+			self.pushButton_ausgleich.setFocusPolicy(QtCore.Qt.ClickFocus)
+
+			if typ==1:
+				list_path=self.beispieldaten_dateipfad_1.values()
+			if typ==2:
+				list_path=self.beispieldaten_dateipfad_2.values()
+			name=all+'.tex'
+			for path in list_path:
+				if name == os.path.basename(path):
+					selected_path=path
+
+
+			f=open(selected_path,'r', encoding='utf8')
+			content=f.read()
+			f.close()
+	
+
+
+			if "\\includegraphics" in content:
+				matches=re.findall('/Bilder/(.+.eps)}',content)
+				for image in matches:
+					self.list_copy_images.append(image)
+				# print(matches)
+				# print(self.list_copy_images)
+			if typ==2:
+				try:
+					num_ausgleichspkt=int(list_input[3])
+				except ValueError:
+					num_ausgleichspkt=content.count("\\fbox{A}")
+
+
+				exec('self.ausgleich_pkt_{} = QtWidgets.QLabel(self.groupBox_pkt)'.format(bsp_string))
+				ausgleich_pkt = eval('self.ausgleich_pkt_{}'.format(bsp_string))
+				ausgleich_pkt.setObjectName("ausgleich_pkt_{}".format(bsp_string))
+				self.gridLayout_3.addWidget(ausgleich_pkt, 0, 1, 1, 1)
+				list_input[3]=num_ausgleichspkt
+				ausgleich_pkt.setText(_translate("MainWindow", '(AP: {})'.format(num_ausgleichspkt),None)) ##*self.spinBox_default_pkt.value())
+				self.num_ausgleichspkt_gesamt+=num_ausgleichspkt
+				list_input[3]=num_ausgleichspkt
+				self.pushButton_ausgleich.clicked.connect(partial(self.pushButton_ausgleich_pressed,all, selected_path, content))
+
+			self.gridLayout_gB.addWidget(self.pushButton_ausgleich, 0, 2, 2, 1)
+			if typ==1:
+				self.pushButton_ausgleich.hide()
+
+			MainWindow.setTabOrder(spinBox_pkt, spinBox_abstand)
+			
+			try:
+				self.gridLayout_8.removeItem(self.spacerItem)
+			except AttributeError:
+				pass
+			
+			self.gridLayout_8.addWidget(x, r, 0, 1, 2,QtCore.Qt.AlignTop)
+
+			self.spacerItem = QtWidgets.QSpacerItem(20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+			self.gridLayout_8.addItem(self.spacerItem, r+1, 0, 1, 2)
+
+			r+=2
+
+			#print(list_input)
+			num_of_example+=1
+			self.scrollArea_chosen.verticalScrollBar().setValue(scrollBar_position)
+		# self.sum_up_ausgleich()
+		
+		self.punkte_changed()
+		self.beurteilungsraster_changed()
+		QtWidgets.QApplication.restoreOverrideCursor()
+			
+
+	def pushButton_ausgleich_pressed(self, bsp_name, selected_typ2_path, content):
+		
+		x=re.split('Aufgabenstellung:}|Lösungserwartung:}',content)
+		str_file=x[1].replace('\t','')
+		ausgleichspunkte_split_text=re.split("\n\n|\n\t", str_file)
+
+		temp_list=[]
+		for all in ausgleichspunkte_split_text:		
+			x=ausgleichspunkte_split_text[ausgleichspunkte_split_text.index(all)].split('\item ')
+			for item in x:
+				temp_list.append(item)	  
+		ausgleichspunkte_split_text= temp_list
+		# print(ausgleichspunkte_split_text)
+		for all in ausgleichspunkte_split_text:
+			if "\\begin{pspicture*}" in all:
+				ausgleichspunkte_split_text[ausgleichspunkte_split_text.index(all)]='[...] GRAFIK [...]'
+
+		# print(ausgleichspunkte_split_text)
+		# return
+		for all in ausgleichspunkte_split_text:
+			z= all.replace('\t','')
+			z=z.replace('\\leer','')		 
+			x=[line for line in z.split('\n') if line.strip() != ''] # delete all empty lines	 
+			for item in x[:]:  
+				if 'begin{' in item or 'end{' in item:
+					if 'tabular' in item or 'tabu' in item:
+						pass
+					else:
+						x.remove(item)
+			y='\n'.join(x)
+			ausgleichspunkte_split_text[ausgleichspunkte_split_text.index(all)]=y
+
+		
+		for all in ausgleichspunkte_split_text[:]:
+			if all =='':
+				ausgleichspunkte_split_text.remove(all)
+		
+
+		#print(ausgleichspunkte_split_text)
+		for all in reversed(ausgleichspunkte_split_text): 
+			if '\\antwort{' in all: 
+				index_end=ausgleichspunkte_split_text.index(all)
+				break			
+		
+		try:
+			ausgleichspunkte_split_text=ausgleichspunkte_split_text[:index_end]
+		except UnboundLocalError:
+			self.warning_window('Es ist ein Fehler bei der Auswahl der Ausgleichspunkte von Beispiel {} aufgetreten! (Das Beispiel kann dennoch verwendet und individuell in der TeX-Datei bearbeitet werden.)\n'.format(bsp_name), 
+			'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team.')
+			return
+
+
+
+
+		# for all in self.dict_sage_ausgleichspunkte_chosen[selected_typ2_path]:
+		# 	print(all)
+		#print(self.dict_sage_ausgleichspunkte_chosen)
+		if bsp_name in self.dict_sage_ausgleichspunkte_chosen.keys():
+			# print(self.dict_sage_ausgleichspunkte_chosen[selected_typ2_path])
+			# return
+			list_sage_ausgleichspunkte_chosen = self.dict_sage_ausgleichspunkte_chosen[bsp_name]
+		else:
+			list_sage_ausgleichspunkte_chosen = []
+			#print(ausgleichspunkte_split_text)
+			for all in ausgleichspunkte_split_text:
+				if '\\fbox{A}' in all:
+					x=all.replace('\\fbox{A}','')
+					list_sage_ausgleichspunkte_chosen.append(x)
+					
+
+
+		self.Dialog = QtWidgets.QDialog(None, QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint)
+		self.ui = Ui_Dialog_typ2()
+		self.ui.setupUi(self.Dialog, ausgleichspunkte_split_text, list_sage_ausgleichspunkte_chosen)
+		self.Dialog.show()
+		self.Dialog.exec_()
+		#print(list_sage_ausgleichspunkte_chosen)
+		self.dict_sage_ausgleichspunkte_chosen[bsp_name]=list_sage_ausgleichspunkte_chosen
+
+
+		if re.search('[A-Z]',bsp_name)==None:
+			bsp_string=bsp_name
+		else:
+			bsp_string=bsp_name.replace(' ','').replace('.','').replace('-','_')	
+		list_input=eval('self.list_input_{}'.format(bsp_string))
+		list_input[3]=len(list_sage_ausgleichspunkte_chosen)
+
+		#print(self.dict_sage_ausgleichspunkte_chosen)
+		self.sage_aufgabe_create(False)
+			
+
+	def comboBox_at_sage_changed(self):
+		if self.comboBox_at_sage.currentText()[-1]=='1':
+			self.comboBox_gk.clear()
+			self.lineEdit_number.clear()
+			self.comboBox_gk.addItem("")
+			self.comboBox_gk.addItem("")
+			self.comboBox_gk.addItem("")
+			self.comboBox_gk.addItem("")
+			self.comboBox_gk.addItem("")
+			self.comboBox_gk.addItem("")
+			self.comboBox_gk.addItem("")
+			self.comboBox_gk.addItem("")
+			self.comboBox_gk.addItem("")
+			self.comboBox_gk.setItemText(1, _translate("MainWindow", "AG",None))
+			self.comboBox_gk.setItemText(2, _translate("MainWindow", "FA",None))
+			self.comboBox_gk.setItemText(3, _translate("MainWindow", "AN",None))
+			self.comboBox_gk.setItemText(4, _translate("MainWindow", "WS",None))
+			self.comboBox_gk.setItemText(5, _translate("MainWindow", "K5",None))
+			self.comboBox_gk.setItemText(6, _translate("MainWindow", "K6",None))
+			self.comboBox_gk.setItemText(7, _translate("MainWindow", "K7",None))
+			self.comboBox_gk.setItemText(8, _translate("MainWindow", "K8",None))
+			self.comboBox_gk_num.clear()
+
+		if self.comboBox_at_sage.currentText()[-1]=='2':
+			self.comboBox_gk.clear()
+			self.comboBox_gk.addItem("-")
+			self.comboBox_gk_num.clear()
+			self.comboBox_gk_num.addItem("-")
+		self.adapt_choosing_list('sage')
+
+	def comboBox_at_fb_changed(self):
+		QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+		self.label_example.setText(_translate("MainWindow", "Ausgewählte Aufgabe: -", None))
+
+		if self.comboBox_at_fb.currentText()=='Allgemeine Rückmeldung':
+			self.groupBox_alle_aufgaben_fb.setEnabled(False)
+		else:
+			self.groupBox_alle_aufgaben_fb.setEnabled(True)		
+		if self.comboBox_at_fb.currentText()[-1]=='1':
+			self.comboBox_fb.clear()
+			self.lineEdit_number_fb.clear()
+			self.comboBox_fb.addItem("")
+			self.comboBox_fb.addItem("")
+			self.comboBox_fb.addItem("")
+			self.comboBox_fb.addItem("")
+			self.comboBox_fb.addItem("")
+			self.comboBox_fb.addItem("")
+			self.comboBox_fb.addItem("")
+			self.comboBox_fb.addItem("")
+			self.comboBox_fb.addItem("")
+			self.comboBox_fb.setItemText(1, _translate("MainWindow", "AG",None))
+			self.comboBox_fb.setItemText(2, _translate("MainWindow", "FA",None))
+			self.comboBox_fb.setItemText(3, _translate("MainWindow", "AN",None))
+			self.comboBox_fb.setItemText(4, _translate("MainWindow", "WS",None))
+			self.comboBox_fb.setItemText(5, _translate("MainWindow", "K5",None))
+			self.comboBox_fb.setItemText(6, _translate("MainWindow", "K6",None))
+			self.comboBox_fb.setItemText(7, _translate("MainWindow", "K7",None))
+			self.comboBox_fb.setItemText(8, _translate("MainWindow", "K8",None))
+			self.comboBox_fb_num.clear()
+
+		if self.comboBox_at_fb.currentText()[-1]=='2':
+			self.comboBox_fb.clear()
+			self.comboBox_fb.addItem("-")
+			self.comboBox_fb_num.clear()
+			self.comboBox_fb_num.addItem("-")
+		self.adapt_choosing_list('feedback')
+		QtWidgets.QApplication.restoreOverrideCursor()
+
+	def comboBox_gk_changed(self, list_mode):
+		self.adapt_choosing_list(list_mode)
+		if list_mode=='sage':
+			self.comboBox_gk_num.clear()
+			self.comboBox_gk_num.addItem("")
+			self.lineEdit_number.clear()
+			list_klassen=['k5', 'k6', 'k7', 'k8']
+			if self.comboBox_gk.currentText().lower() in list_klassen:
+				x=eval('%s_beschreibung'%self.comboBox_gk.currentText().lower())
+				for all in x.keys():
+					self.comboBox_gk_num.addItem(all.upper())
+			else:
+				for all in dict_gk.keys():
+					if all.startswith(self.comboBox_gk.currentText().lower()):
+						self.comboBox_gk_num.addItem(dict_gk[all][-3:])
+		if list_mode=='feedback':
+			self.comboBox_fb_num.clear()
+			self.comboBox_fb_num.addItem("")
+			self.lineEdit_number_fb.clear()
+			list_klassen=['k5', 'k6', 'k7', 'k8']
+			if self.comboBox_fb.currentText().lower() in list_klassen:
+				x=eval('%s_beschreibung'%self.comboBox_fb.currentText().lower())
+				for all in x.keys():
+					self.comboBox_fb_num.addItem(all.upper())
+			else:
+				for all in dict_gk.keys():
+					if all.startswith(self.comboBox_fb.currentText().lower()):
+						self.comboBox_fb_num.addItem(dict_gk[all][-3:])			
+
+	def comboBox_gk_num_changed(self, list_mode):
+		self.adapt_choosing_list(list_mode)
+
+	def lineEdit_number_changed(self, list_mode):
+		self.adapt_choosing_list(list_mode)
+	
+	
+	def nummer_clicked(self, item):
+		self.sage_aufgabe_add(int(self.comboBox_at_sage.currentText()[-1]),item.text())
+
+	def nummer_clicked_fb(self, item):
+		#print(item.text())
+		self.label_example.setText(_translate("MainWindow", "Ausgewählte Aufgabe: {}".format(item.text()), None))
+
+	def adapt_choosing_list(self, list_mode):
+		if list_mode=='sage':
+			listWidget=self.listWidget
+		if list_mode=='feedback':
+			listWidget=self.listWidget_fb
+
+			if self.comboBox_at_fb.currentText()=='Allgemeine Rückmeldung':
+				self.comboBox_fb.clear()
+				self.comboBox_fb_num.clear()
+				self.lineEdit_number_fb.clear()
+				listWidget.clear()
+				return
+			
+		listWidget.clear()
+ 
+		log_file_1=os.path.join(path_programm,'Teildokument','log_file_1')
+		try:
+			with open(log_file_1, encoding='utf8') as f:
+				beispieldaten_dateipfad_1 = json.load(f)
+		except FileNotFoundError:
+			self.refresh_ddb() #1
+			with open(log_file_1, encoding='utf8') as f:
+				beispieldaten_dateipfad_1 = json.load(f)
+
+		self.beispieldaten_dateipfad_1=beispieldaten_dateipfad_1
+
+		log_file_2=os.path.join(path_programm,'Teildokument','log_file_2')
+		try:
+			with open(log_file_2, encoding='utf8') as f:
+				beispieldaten_dateipfad_2 = json.load(f)
+		except FileNotFoundError:
+			self.refresh_ddb() #2
+			with open(log_file_2, encoding='utf8') as f:
+				beispieldaten_dateipfad_2 = json.load(f)
+
+		self.beispieldaten_dateipfad_2=beispieldaten_dateipfad_2
+
+		def atoi(text):
+			return int(text) if text.isdigit() else text
+		
+		def natural_keys(text):
+			return [ atoi(c) for c in re.split('(\d+)', text) ]
+		
+		# print(list(beispieldaten_dateipfad.keys())[0])
+		# print(list(beispieldaten_dateipfad.keys())[0].split(' '))
+
+		list_beispieldaten=[]
+		if list_mode=='sage':
+			beispieldaten_dateipfad=eval('beispieldaten_dateipfad_%s'%self.comboBox_at_sage.currentText()[-1])
+			for all in beispieldaten_dateipfad.values():
+				filename_all=os.path.basename(all)
+				name, extension=os.path.splitext(filename_all)
+				if self.comboBox_at_sage.currentText()[-1]=='2':
+					if name.startswith(self.lineEdit_number.text()):
+						list_beispieldaten.append(name)
+				else:	
+					if name.startswith(self.comboBox_gk.currentText()) and self.comboBox_gk_num.currentText() in name:
+						#print(name)
+						number=name.split(' - ')
+						#print(number)
+						if self.lineEdit_number.text()=='' or number[1]==self.lineEdit_number.text():
+							list_beispieldaten.append(name)
+						#and self.lineEdit_number.text().lower() in name.lower()
+		if list_mode=='feedback':
+			beispieldaten_dateipfad=eval('beispieldaten_dateipfad_%s'%self.comboBox_at_fb.currentText()[-1])
+			for all in beispieldaten_dateipfad.values():
+				filename_all=os.path.basename(all)
+				name, extension=os.path.splitext(filename_all)
+				if self.comboBox_at_fb.currentText()[-1]=='2':
+					if name.startswith(self.lineEdit_number_fb.text()):
+						list_beispieldaten.append(name)
+				else:	
+					if name.startswith(self.comboBox_fb.currentText()) and self.comboBox_fb_num.currentText() in name:
+						#print(name)
+						number=name.split(' - ')
+						#print(number)
+						if self.lineEdit_number_fb.text()=='' or number[1]==self.lineEdit_number_fb.text():
+							list_beispieldaten.append(name)
+						#and self.lineEdit_number.text().lower() in name.lower()						
+					
+		
+		#print(list_beispieldaten)
+		list_beispieldaten = sorted(list_beispieldaten, key=natural_keys)
+
+		for all in list_beispieldaten:
+			listWidget.addItem(all)
+			listWidget.setFocusPolicy(QtCore.Qt.ClickFocus)
+
+
+
+
+
+	def save_dict_examples_data(self):
+		self.dict_list_input_examples={}
+		num_typ1=0
+		num_typ2=0
+		self.pkt_typ1=0
+		self.pkt_typ2=0
+
+		self.dict_list_input_examples['list_examples']=list_sage_examples
+
+		### include data for single examples ###
+		for all in list_sage_examples:
+			if re.search('[A-Z]',all)==None:
+				bsp_string=all
+				typ=2
+			else:
+				bsp_string=all.replace(' ','').replace('.','').replace('-','_')
+				typ=1
+			list_input=eval('self.list_input_{}'.format(bsp_string))
+			self.dict_list_input_examples['self.list_input_{}'.format(bsp_string)]=list_input
+
+			if typ==1:
+				self.pkt_typ1+=list_input[0]
+				num_typ1+=1
+			if typ==2:
+				self.pkt_typ2+=list_input[0]
+				num_typ2+=1
+		### end ###
+
+
+		### include dictionary of changed 'ausgleichspunkte' ###
+		self.dict_list_input_examples['dict_ausgleichspunkte']=self.dict_sage_ausgleichspunkte_chosen
+
+		### end ###
+
+
+
+		### include basic data of test ###
+		if self.radioButton_beurteilungsraster.isChecked():
+			beurteilung='br'
+		else:
+			beurteilung='ns'
+
+		# print(self.comboBox_pruefungstyp.currentIndex())
+		# print(self.comboBox_pruefungstyp.currentText())
+
+		try:
+			self.num_ausgleichspkt_gesamt
+			self.list_copy_images
+		except AttributeError:
+			self.num_ausgleichspkt_gesamt=0
+			self.list_copy_images=[]
+
+
+		dict_data_gesamt={'#': self.spinBox_nummer.value(),'Pruefungstyp': self.comboBox_pruefungstyp.currentText(),
+		"Datum": [self.dateEdit.date().year(),self.dateEdit.date().month(), self.dateEdit.date().day()], #.toPyDate()
+		"Klasse": self.lineEdit_klasse.text(),"Beurteilung": beurteilung,
+		"Notenschluessel": [self.spinBox_2.value(),self.spinBox_3.value(),self.spinBox_4.value(),self.spinBox_5.value()],
+		"Typ1 Standard":self.spinBox_default_pkt.value(),
+		'num_1': num_typ1,'punkte_1':self.pkt_typ1, 'num_2':num_typ2,'punkte_2': self.pkt_typ2, 'ausgleichspunkte': self.num_ausgleichspkt_gesamt,
+		'copy_images' : self.list_copy_images}
+
+		self.dict_list_input_examples['data_gesamt']=dict_data_gesamt
+		### end ###
+		
+		#print(self.dict_list_input_examples)
+
+	def pushButton_vorschau_pressed(self, ausgabetyp, index, maximum):
+		if ausgabetyp=='vorschau':
+			self.save_dict_examples_data()
+
+		# print(self.dict_list_input_examples['data_gesamt']['Datum'])
+		# return
+
+		QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+
+		dict_gesammeltedateien={}
+
+		for all in self.beispieldaten_dateipfad_1.values():
+			filename_all=os.path.basename(all)
+			name, extension=os.path.splitext(filename_all)
+			for files in list_sage_examples:
+				if files == name:
+					dict_gesammeltedateien[name]=all
+
+		for all in self.beispieldaten_dateipfad_2.values():
+			filename_all=os.path.basename(all)
+			name, extension=os.path.splitext(filename_all)
+			for files in list_sage_examples:
+				if files == name:
+					dict_gesammeltedateien[name]=all
+
+	
+		dict_months={1:'Jänner', 2: 'Februar', 3: 'März', 4: 'April', 5: 'Mai', 6:'Juni', 7:'Juli', 8: 'August',
+		9: 'September', 10: 'Oktober', 11: 'November', 12:'Dezember'}
+		dict_wochentag={0:'Montag', 1:'Dienstag', 2:'Mittwoch', 3:'Donnerstag', 4: 'Freitag', 5:'Samstag', 6:'Sonntag'}
+	
+		# print(str(self.spinBox_nummer.value()) +str(self.dateEdit.date().day()) +'. '+dict_months[self.dateEdit.date().month()]+' '+ str(self.dateEdit.date().year()))
+		raw_date=self.dict_list_input_examples['data_gesamt']['Datum']
+		datum_kurz=str(raw_date[2])+'. '+str(raw_date[1])+'. '+str(raw_date[0])
+		datum=str(raw_date[2]) +'. '+dict_months[raw_date[1]]+' '+ str(raw_date[0])
+		wochentag=dict_wochentag[datetime.datetime(raw_date[0],raw_date[1],raw_date[2]).weekday()]
+		datum= wochentag + ', ' + datum
+
+		if ausgabetyp=='vorschau':
+			filename_vorschau=os.path.join(path_programm,'Teildokument','Schularbeit_Vorschau.tex')
+		if ausgabetyp=='schularbeit':
+			dict_umlaute={'Ä':'AE','ä':'ae','Ö':'OE','ö':'oe', 'Ü':'ue', 'ü':'ue','ß':'ss'}
+			if index==0:
+
+				#self.saved_file_path=path_programm				
+				
+				self.chosen_path_schularbeit_erstellen= QtWidgets.QFileDialog.getSaveFileName(None, 'Speicherort wählen', os.path.dirname(self.saved_file_path), 'TeX Dateien (*.tex);; Alle Dateien (*.*)')
+				
+				if self.chosen_path_schularbeit_erstellen[0]=='':
+					QtWidgets.QApplication.restoreOverrideCursor()
+					return		
+				self.saved_file_path = self.chosen_path_schularbeit_erstellen[0]
+				#print(self.chosen_path_schularbeit_erstellen[0])
+
+				
+				dirname=os.path.dirname(self.chosen_path_schularbeit_erstellen[0])
+				filename=os.path.basename(self.chosen_path_schularbeit_erstellen[0])
+				if sys.platform.startswith('linux') or sys.platform.startswith('darwin'):			
+					filename=filename+".tex"
+				
+				for character in dict_umlaute.keys():
+					if character in filename:
+						filename= filename.replace(character, dict_umlaute[character])
+				filename_vorschau=os.path.join(dirname, filename)
+				
+				Ui_MainWindow.sage_save(self, filename_vorschau) #
+
+			else:
+				dirname=os.path.dirname(self.chosen_path_schularbeit_erstellen[0])
+				filename=os.path.basename(self.chosen_path_schularbeit_erstellen[0])
+				for character in dict_umlaute.keys():
+					if character in filename:
+						filename= filename.replace(character, dict_umlaute[character])
+				filename_vorschau=os.path.join(dirname, filename)
+
+
+				# filename_vorschau=self.chosen_path_schularbeit_erstellen[0]
+
+			
+		dict_gruppen={0:'A', 1:'B', 2:'C', 3:'D', 4:'E', 5:'F'}
+
+
+		if filename_vorschau=='':
+			QtWidgets.QApplication.restoreOverrideCursor()
+			return
+
+		vorschau=open(filename_vorschau,"w+",encoding='utf8')
+
+		vorschau.write("\documentclass[a4paper,12pt]{report}\n\n"
+		"\\usepackage{geometry}\n"	
+		"\geometry{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}\n\n" 
+		"\\usepackage{lmodern}\n"
+		"\\usepackage[T1]{fontenc}\n"
+		"\\usepackage[utf8]{inputenc}\n"
+		"\\usepackage[ngerman]{babel}\n")
+		if ausgabetyp=='vorschau':
+			if self.cb_solution_sage.isChecked()==True:
+				vorschau.write('\\usepackage[solution_on]{srdp-mathematik} % solution_on/off\n')
+			else:
+				vorschau.write('\\usepackage[solution_off]{srdp-mathematik} % solution_on/off\n')
+		if ausgabetyp=='schularbeit':
+			if index%2==0:
+				vorschau.write('\\usepackage[solution_on]{srdp-mathematik} % solution_on/off\n')
+			if index%2==1:
+				vorschau.write('\\usepackage[solution_off]{srdp-mathematik} % solution_on/off\n')
+		if maximum>2:
+			comment=' %Gruppen: 0=A, 1=B, 2=C, ...'
+		else:
+			comment=''
+
+		vorschau.write("\setcounter{{Zufall}}{{{0}}}{1}\n\n\n".format(int(index/2),comment))
+		if ausgabetyp=='vorschau' or ausgabetyp=='schularbeit':
+			vorschau.write("\pagestyle{plain} %PAGESTYLE: empty, plain\n")
+		else:
+			vorschau.write("\pagestyle{empty} %PAGESTYLE: empty, plain\n")
+		vorschau.write("\onehalfspacing %Zeilenabstand\n"
+		"\setcounter{secnumdepth}{-1} % keine Nummerierung der Ueberschriften\n\n\n\n"
+		"%\n"
+		"%\n"
+		"%%%%%%%%%%%%%%%%%% DOKUMENT - ANFANG %%%%%%%%%%%%%%%%%%%"
+		"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"
+		"%\n"
+		"%\n"
+		"\\begin{document}\n")
+
+
+		if ausgabetyp=='schularbeit':
+			gruppe=dict_gruppen[int(index/2)]
+
+		if self.dict_list_input_examples['data_gesamt']['Pruefungstyp']=='Grundkompetenzcheck':
+			if ausgabetyp=='schularbeit' and maximum>2:	
+				vorschau.write('\\textsc{{Grundkompetenzcheck -- {0}}} \\hfill \\textsc{{Name:}} \\rule{{8cm}}{{0.4pt}} \\normalsize \\\ \\vspace{{\\baselineskip}} \n\n'.format(gruppe))
+			else:
+				vorschau.write('\\textsc{Grundkompetenzcheck} \\hfill \\textsc{Name:} \\rule{8cm}{0.4pt} \\normalsize \\\ \\vspace{\\baselineskip} \n\n')
+		else:
+			vorschau.write("\\begin{titlepage}\n"
+			"\\flushright\n")		
+			if self.dict_titlepage['logo']==True:
+				logo_name=os.path.basename(self.dict_titlepage['logo_path'])
+				logo_titlepage_path=os.path.join(path_programm,'Teildokument',logo_name)
+				if os.path.isfile(logo_titlepage_path):
+					vorschau.write('\\begin{{minipage}}[t]{{0.4\\textwidth}} \\vspace{{0pt}} \\includegraphics[width=1\\textwidth]{{{0}}}\\end{{minipage}} \\\ \\vfil \n'.format(logo_name))
+				else:
+					msg = QtWidgets.QMessageBox()
+					msg.setIcon(QtWidgets.QMessageBox.Warning)
+					msg.setWindowIcon(QtGui.QIcon(logo_path))
+					msg.setText('Das Logo konnte nicht gefunden werden.')
+					msg.setInformativeText('Bitte suchen Sie ein Logo unter: \n\nTitelblatt anpassen - Durchsuchen')
+					msg.setWindowTitle("Kein Logo ausgewählt")
+					msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+					msg.exec_()
+
+					vorschau.write("~\\vfil \n")
+				
+			else:
+				vorschau.write("~\\vfil \n")
+			if self.dict_titlepage['titel']==True:
+				if self.dict_list_input_examples['data_gesamt']['Pruefungstyp']=='Wiederholungsprüfung':
+					vorschau.write("\\textsc{{\\Huge Wiederholungsprüfung}} \\\ \n")
+				else:
+					vorschau.write("\\textsc{{\\Huge {0}. Mathematikschularbeit}} \\\ \n".format(self.dict_list_input_examples['data_gesamt']['#']))
+					if self.dict_list_input_examples['data_gesamt']['Pruefungstyp']=='Wiederholungsschularbeit':
+						vorschau.write("[0.5cm]"
+						"\\textsc{\Huge Wiederholung} \\\ \n")
+					vorschau.write("[1cm] \n")
+			if self.dict_titlepage['datum']==True:
+				vorschau.write("\\textsc{{\Large am {0}}}\\\ [1cm] \n".format(datum))
+			if self.dict_titlepage['klasse']==True:
+				vorschau.write("\\textsc{{\Large Klasse {0}}} \\\ [1cm] \n".format(self.dict_list_input_examples['data_gesamt']['Klasse']))
+
+
+			if ausgabetyp=='schularbeit' and maximum>2:	
+				vorschau.write("\\textsc{{\\Large Gruppe {0}}} \\\ [1cm]\n".format(gruppe))
+			# else:
+			# 	vorschau.write("\\vphantom{\\textsc{\\Large Gruppe}}\\\ [1cm] \n")
+			#vorschau.write("[1cm]")		
+			if self.dict_titlepage['name']==True: 		
+				vorschau.write("\\Large Name: \\rule{8cm}{0.4pt} \\\ \n")
+			vorschau.write("\\vfil\\vfil\\vfil \n")
+			if self.dict_titlepage['note']==True:
+				vorschau.write("\\Large Note: \\rule{8cm}{0.4pt} \\\ [1cm]\n")
+			if self.dict_titlepage['unterschrift']==True:
+				vorschau.write("\\Large Unterschrift: \\rule{8cm}{0.4pt} \\\ \n")
+
+
+			if self.dict_list_input_examples['data_gesamt']['Beurteilung']=='br':
+				exkl_teil2_pkt= self.dict_list_input_examples['data_gesamt']['punkte_2']-self.dict_list_input_examples['data_gesamt']['ausgleichspunkte']
+				vorschau.write("\\newpage \n"
+				"\\flushleft \\normalsize\n"
+				"\\beurteilungsraster{{0.85}}{{0.68}}{{0.5}}{{1/3}}{{ % Prozentschluessel\n"
+				"T1={{{0}}}, % Punkte im Teil 1\n"	
+				"AP={{{1}}}, % Ausgleichspunkte aus Teil 2\n"  
+				"T2={{{2}}}, % Punkte im Teil 2\n"
+				"}} \\newpage".format(self.dict_list_input_examples['data_gesamt']['punkte_1'], self.dict_list_input_examples['data_gesamt']['ausgleichspunkte'],exkl_teil2_pkt))
+
+
+			vorschau.write("\\end{titlepage}\n\n")
+		vorschau.close()	
+
+
+		vorschau=open(filename_vorschau,"a",encoding='utf8')
+		# for key, value in dict_gesammeltedateien.items():
+		list_chosen_examples=[]
+		# print(self.dict_list_input_examples)
+		control_counter=0
+		#print(list_sage_examples)
+		for all in list_sage_examples:
+			if re.search('[A-Z]',all)==None:
+				bsp_string=all
+				typ=2
+			else:
+				bsp_string=all.replace(' ','').replace('.','').replace('-','_')
+				typ=1
+			list_input='self.list_input_{}'.format(bsp_string)
+			spinBox_abstand=self.dict_list_input_examples[list_input][1]
+			spinBox_pkt=self.dict_list_input_examples[list_input][0]
+			f=open(dict_gesammeltedateien[all],'r',encoding='utf8')
+			content=f.readlines()
+			f.close()
+
+			#print(content)
+
+			#print(self.dict_list_input_examples['dict_ausgleichspunkte'].keys())
+			
+
+			##### adapt content for  creation ###
+
+			if all in self.dict_list_input_examples['dict_ausgleichspunkte'].keys():
+				content=[line.replace('\\fbox{A}','') for line in content]
+				for ausgleichspunkte in self.dict_list_input_examples['dict_ausgleichspunkte'][all]:
+					content=[line.replace(ausgleichspunkte.partition('\n')[0],'\\fbox{A} '+ausgleichspunkte.partition('\n')[0]) for line in content]
+			### end ###				
+
+			#print(self.dict_list_input_examples['data_gesamt']['copy_images'])
+			
+			
+			
+
+			if ausgabetyp=='schularbeit':
+				#print(self.dict_list_input_examples['data_gesamt']['copy_images'])
+				if index==0:
+					if self.dict_titlepage['logo']==True:
+						logo_name=os.path.basename(self.dict_titlepage['logo_path'])
+						logo_titlepage_path=os.path.join(path_programm,'Teildokument',logo_name)
+						if os.path.isfile(logo_titlepage_path):
+							shutil.copy(logo_titlepage_path,os.path.join(os.path.dirname(self.chosen_path_schularbeit_erstellen[0]), logo_name)) 
+						else:
+							msg = QtWidgets.QMessageBox()
+							msg.setIcon(QtWidgets.QMessageBox.Warning)
+							msg.setWindowIcon(QtGui.QIcon(logo_path))
+							msg.setText('Das Logo konnte nicht gefunden werden.')
+							msg.setInformativeText('Bitte suchen Sie ein Logo unter: \n\nTitelblatt anpassen - Durchsuchen')
+							msg.setWindowTitle("Kein Logo ausgewählt")
+							msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+							msg.exec_()
+
+					if self.dict_list_input_examples['data_gesamt']['copy_images']==[]:
+						pass
+					else:
+						for image in self.dict_list_input_examples['data_gesamt']['copy_images']:
+							if os.path.isfile(os.path.join(path_programm, '_database', 'Bilder', image)):
+								shutil.copy(os.path.join(path_programm, '_database', 'Bilder', image),os.path.join(os.path.dirname(self.chosen_path_schularbeit_erstellen[0]), image))
+							
+							elif os.path.isfile(os.path.join(path_programm, '_database_inoffiziell', 'Bilder', image)):		
+								shutil.copy(os.path.join(path_programm, '_database_inoffiziell', 'Bilder', image),os.path.join(os.path.dirname(self.chosen_path_schularbeit_erstellen[0]), image))
+							
+							# else:							
+							# 	print('no file found')
+							# 	return
+
+				for image in self.dict_list_input_examples['data_gesamt']['copy_images']:
+					content=[line.replace('../_database/Bilder/','') for line in content]
+					content=[line.replace('../_database_inoffiziell/Bilder/','') for line in content]
+
+
+			for line in content:
+				if "begin{beispiel}" in line:
+					beginning=line
+					start=content.index(line)+1
+					beispiel_typ='beispiel'
+				if "begin{langesbeispiel}" in line:
+					beginning=line
+					start=content.index(line)+1
+					beispiel_typ='langesbeispiel'
+
+				if "end{beispiel}" in line or "end{langesbeispiel}" in line:
+					ending=line
+					end=content.index(line)
+			content=content[start:end]
+			joined_content="".join(content)
+			sub_list=[]
+			sub_list.append(beginning)
+			sub_list.append(joined_content)
+			sub_list.append(ending)
+			list_chosen_examples.append(sub_list)
+
+			example=list_chosen_examples[list_sage_examples.index(all)]
+			try:
+				x,y=example[0].split('[')
+				gk,z=y.split(']')
+			except ValueError:
+				gk=''
+
+			if self.dict_list_input_examples['data_gesamt']['Pruefungstyp']=='Grundkompetenzcheck':
+				header=''
+			else:
+				if control_counter==0 and typ==1:
+					header='\\subsubsection{Typ 1 Aufgaben}\n\n'
+					control_counter+=1
+				elif control_counter==1 and typ==2:
+					header='\\subsubsection{Typ 2 Aufgaben}\n\n'
+					control_counter+=1
+				else:
+					header=''
+
+			if beispiel_typ=='beispiel':
+				if gk=='':					
+					vorschau.write("%s\\begin{beispiel}{"%header+str(spinBox_pkt)+"}\n"+example[1]+"\n"+example[2]+"\n\n")
+
+				else:
+					vorschau.write("%s\\begin{beispiel}["%header+gk+"]{"+str(spinBox_pkt)+"}\n"+example[1]+"\n"+example[2]+"\n\n")
+
+
+			
+			if beispiel_typ=='langesbeispiel':
+				vorschau.write("\\newpage\n\n%s\\begin{langesbeispiel} \item["%header+str(spinBox_pkt)+"]\n"+example[1]+"\n"+example[2]+"\n\n")
+
+			if spinBox_abstand !=0:
+				vorschau.write("\\vspace{"+str(spinBox_abstand)+"cm} \n\n")
+		
+			
+		if self.dict_list_input_examples['data_gesamt']['Pruefungstyp']!='Grundkompetenzcheck':
+			if self.dict_list_input_examples['data_gesamt']['Beurteilung']=='ns':
+				notenschluessel=self.dict_list_input_examples['data_gesamt']['Notenschluessel']	
+				vorschau.write("\n\n\\notenschluessel{{{0}}}{{{1}}}{{{2}}}{{{3}}}".format(notenschluessel[0]/100,notenschluessel[1]/100,notenschluessel[2]/100,notenschluessel[3]/100))
+		vorschau.write("\n\n\end{document}")
+		vorschau.close()	
+
+		#MainWindow.hide()
+		#msg.setIcon(QtWidgets.QMessageBox.Question)
+		#msg.setInformativeText('Möchten Sie das neue Update installieren?')
+
+		if ausgabetyp=='vorschau':
+			self.create_pdf('Schularbeit_Vorschau', 0,0)
+
+		if ausgabetyp=='schularbeit':
+			name, extension=os.path.splitext(filename_vorschau)
+
+			Ui_MainWindow.create_pdf(self, name, index, maximum)
+
+
+			if maximum>2:
+				if index%2==0:
+					shutil.move(name+'.pdf', name+'_{}_Loesung.pdf'.format(dict_gruppen[int(index/2)]))
+				else:
+					shutil.move(name+'.pdf', name+'_{}.pdf'.format(dict_gruppen[int(index/2)]))
+			else:
+				if index%2==0:
+					shutil.move(name+'.pdf', name+'_Loesung.pdf')
+			
+		
+			if index==maximum-1:
+				with open(filename_vorschau,"r",encoding='utf8') as vorschau:
+					text=vorschau.read()
+
+				text=re.sub(r'setcounter{Zufall}{.}','setcounter{Zufall}{0}', text)
+				text=re.sub(r'Large Gruppe .','Large Gruppe A', text)
+				
+				with open(filename_vorschau,"w",encoding='utf8') as vorschau:
+					vorschau.write(text)
+
+		
+		#MainWindow.show()
+		QtWidgets.QApplication.restoreOverrideCursor()
+		
+		# sys.exit[0]
+
+#######################################################################
+########################################################################
+
+
+	def pushButton_send_pressed(self):
+		gmail_user = 'lamabugfix@gmail.com'
+		gmail_password = 'abcd&1234'
+
+		if self.comboBox_at_fb.currentText()=='Allgemeine Rückmeldung':
+			example='Allgemeiner Bug Report'
+			if self.plainTextEdit_fb.toPlainText()=='':
+				self.warning_window('Bitte geben Sie ein Feedback oder beschreiben Sie das Problem im Textfeld.')
+				return
+		else:
+			rest, example=self.label_example.text().split(': ')
+			if example=='-':
+				self.warning_window('Bitte wählen Sie die Aufgabe, zu der Sie eine Rückmeldung geben möchten oder wählen Sie "Allgemeine Rückmeldung" aus.')
+				return
+
+		fehler=self.comboBox_fehlertyp.currentText()
+		if fehler=='':
+			self.warning_window('Bitte wählen Sie einen Betreff aus.')
+			return			
+		if fehler=='Sonstiges' or fehler=='Feedback':
+			if self.plainTextEdit_fb.toPlainText()=='':
+				self.warning_window('Bitte geben Sie nähere Informationen im Textfeld an.')
+				return
+
+		if self.plainTextEdit_fb.toPlainText()=='':
+			description='keine Angabe'
+		else:
+			description=self.plainTextEdit_fb.toPlainText()
+		if self.lineEdit_email.text()=='':
+			contact='keine Angabe'
+		else:
+			contact=self.lineEdit_email.text() 
+
+
+
+		content='Subject: {0}: {1}\n\nProblembeschreibung:\n\n{2}\n\n\nKontakt: {3}'.format(example,fehler, description, contact)
+
+		
+		try:
+			QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+
+			server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+			server.ehlo()
+			server.login(gmail_user, gmail_password)
+			server.sendmail('lamabugfix@gmail.com', 'lama.helpme@gmail.com', content.encode("utf8"))
+			server.close()
+
+
+			QtWidgets.QApplication.restoreOverrideCursor()
+
+			msg = QtWidgets.QMessageBox()
+			msg.setIcon(QtWidgets.QMessageBox.Warning)
+			msg.setWindowIcon(QtGui.QIcon(logo_path))
+			msg.setWindowTitle("Meldung gesendet")
+			msg.setText('Das Feedback bzw. die Fehlermeldung wurde erfolgreich gesendet!\n')
+			msg.setInformativeText('Vielen Dank für die Mithilfe LaMA zu verbessern.')
+			msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+			msg.exec_()
+
+			QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+			self.plainTextEdit_fb.setPlainText(_translate("MainWindow", "", None))
+			self.comboBox_at_fb.setCurrentIndex(0)	
+			self.label_example.setText(_translate("MainWindow", "Ausgewählte Aufgabe: -", None))
+			self.comboBox_fehlertyp.setCurrentIndex(0)
+			self.comboBox_at_fb.setCurrentIndex(0)
+			self.comboBox_fb.setCurrentIndex(0)
+			self.comboBox_fb_num.setCurrentIndex(0)
+			self.lineEdit_number_fb.setText(_translate("MainWindow", "", None))
+			self.lineEdit_email.setText(_translate("MainWindow", "", None))
+			QtWidgets.QApplication.restoreOverrideCursor()
+
+			return
+		except:
+			msg.close()
+			QtWidgets.QApplication.restoreOverrideCursor()
+			self.warning_window('Die Meldung konnte leider nicht gesendet werden!', 'Überprüfen Sie Ihre Internetverbindung oder versuchen Sie es später erneut.')
+
+
+#######################################################################
+##########################################################################
+############################################################################
+
+	def pushButton_erstellen_pressed(self):
+		self.save_dict_examples_data()
+		try:
+			self.saved_file_path
+		except AttributeError:
+			self.saved_file_path=path_programm
+		self.open_subwindow(self.dict_list_input_examples, self.beispieldaten_dateipfad_1 ,self.beispieldaten_dateipfad_2, self.dict_titlepage, self.saved_file_path)
+
 
 	def aufgaben_suchen(self):
-		for all in widgets_create:
+		lists_delete=widgets_create+widgets_sage+widgets_feedback
+		for all in lists_delete:
 			if 'action' in all:
 				exec('self.%s.setVisible(False)'%all)
 			elif 'menu' in all:
@@ -2383,8 +4976,8 @@ class Ui_MainWindow(object):
 
 	def neue_aufgabe_erstellen(self):
 		MainWindow.setMenuBar(self.menuBar)
-
-		for all in widgets_search:		
+		lists_delete=widgets_search+widgets_sage+widgets_feedback
+		for all in lists_delete:		
 			if 'action' in all:
 				exec('self.%s.setVisible(False)'%all)
 			elif 'menu' in all:
@@ -2400,8 +4993,61 @@ class Ui_MainWindow(object):
 			else:
 				exec('self.%s.show()'%all)
 
+	def neue_schularbeit_erstellen(self):
+		MainWindow.setMenuBar(self.menuBar)
+		lists_delete=widgets_search+widgets_create+widgets_feedback
+		#self.menuBar.removeAction(self.menuDatei.menuAction())
 		
+		# self.menuBar.addAction(self.menuDatei.menuAction())
+		for all in lists_delete:		
+			if 'action' in all:
+				exec('self.%s.setVisible(False)'%all)
+			elif 'menu' in all:
+				exec('self.menuBar.removeAction(self.%s.menuAction())'%all)	
+			else:
+				exec('self.%s.hide()'%all)
+
+		for all in widgets_sage:
+			if 'action' in all:
+				exec('self.%s.setVisible(True)'%all)
+			elif 'menu' in all:
+				exec('self.menuBar.addAction(self.%s.menuAction())'%all)	
+			else:
+				exec('self.%s.show()'%all)
+		
+		MainWindow.setTabOrder(self.spinBox_nummer, self.dateEdit)
+		MainWindow.setTabOrder(self.dateEdit, self.lineEdit_klasse)
+
+		# self.gridLayout.removeWidget(self.groupBox_alle_aufgaben)
+		# self.gridLayout.addWidget(self.groupBox_alle_aufgaben, 2, 0, 7, 1)
+
+		self.adapt_choosing_list('sage')
+		self.listWidget.itemClicked.connect(self.nummer_clicked)
+		#print(self.listWidget.currentRow())
 	
+	def send_feedback(self):
+
+		MainWindow.setMenuBar(self.menuBar)
+		lists_delete=widgets_search+widgets_sage+widgets_create
+		for all in lists_delete:		
+			if 'action' in all:
+				exec('self.%s.setVisible(False)'%all)
+			elif 'menu' in all:
+				exec('self.menuBar.removeAction(self.%s.menuAction())'%all)	
+			else:
+				exec('self.%s.hide()'%all)
+
+		for all in widgets_feedback:
+			if 'action' in all:
+				exec('self.%s.setVisible(True)'%all)
+			elif 'menu' in all:
+				exec('self.menuBar.addAction(self.%s.menuAction())'%all)	
+			else:
+				exec('self.%s.show()'%all)
+
+		self.adapt_choosing_list('feedback')
+		self.listWidget_fb.itemClicked.connect(self.nummer_clicked_fb)
+
 if __name__ == "__main__":
 	import sys
 	app = QApplication(sys.argv)

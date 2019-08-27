@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__='v1.7'
+__version__='v1.7.1'
 __lastupdate__='08/19'
 ####################
 
@@ -221,12 +221,10 @@ class Ui_Dialog_titlepage(object):
 		logo_name=os.path.basename(logo_titlepage_path[0][0])
 		#print(logo_name)	
 		self.cb_titlepage_logo.setText('Logo ({})'.format(logo_name))
-		dict_titlepage['logo_path']=logo_titlepage_path[0][0]
+		dict_titlepage['logo_path']="{}".format(logo_titlepage_path[0][0])
 		copy_logo_titlepage_path=os.path.join(path_programm,'Teildokument',logo_name)
 		shutil.copy(logo_titlepage_path[0][0],copy_logo_titlepage_path)
 
-		#print('browse')
-		#print(dict_titlepage)
 		return dict_titlepage
 		
 	def save_titlepage(self,dict_titlepage):
@@ -2369,12 +2367,12 @@ class Ui_MainWindow(object):
 	def natural_keys(self,text):
 		return [ self.atoi(c) for c in re.split('(\d+)', text) ]
 
-	def create_pdf(self, dateiname, index, maximum):
+	def create_pdf(self, path_file, index, maximum):
 		msg = QtWidgets.QMessageBox()
 		msg.setWindowIcon(QtGui.QIcon(logo_path))
 		msg.setWindowTitle("Lade...")
 		msg.setStandardButtons(QtWidgets.QMessageBox.NoButton)
-		if dateiname=='Teildokument' or dateiname=='Schularbeit_Vorschau':
+		if path_file=='Teildokument' or path_file=='Schularbeit_Vorschau':
 			rest=''
 		else:
 			rest=' ({0}|{1})'.format(index+1, maximum)
@@ -2383,8 +2381,8 @@ class Ui_MainWindow(object):
 		msg.show()
 		QApplication.processEvents()
 		QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-		if dateiname=='Teildokument':
-			dateiname=dateiname+'_'+self.label_aufgabentyp.text()[-1]
+		if path_file=='Teildokument':
+			dateiname=path_file+'_'+self.label_aufgabentyp.text()[-1]
 
 			# save_file=os.path.join(path_programm, 'Teildokument')
 			#print(dateiname)
@@ -2392,7 +2390,7 @@ class Ui_MainWindow(object):
 		# 	save_file=os.path.join(path_programm, 'Teildokument')
 
 		else:
-			head,tail=os.path.split(dateiname)
+			head,tail=os.path.split(path_file)
 			save_file=head
 			dateiname=tail
 
@@ -2414,7 +2412,7 @@ class Ui_MainWindow(object):
 				else:
 					sumatrapdf=''			
 			
-			
+
 				subprocess.Popen('cd "{0}/Teildokument" & latex --synctex=-1 "{1}.tex"& dvips "{1}.dvi" & ps2pdf -dNOSAFER "{1}.ps"'.format(path_programm, dateiname),shell=True).wait()	
 				subprocess.Popen('cd "{0}/Teildokument" &"{1}" "{2}.pdf"'.format(path_programm,sumatrapdf ,dateiname), shell=True).poll()
 
@@ -2432,7 +2430,7 @@ class Ui_MainWindow(object):
 			elif sys.platform.startswith('darwin'):
 				subprocess.Popen('cd "{0}" ; latex --synctex=-1 {1}.tex ; dvips {1}.dvi ; ps2pdf -dNOSAFER {1}.ps'.format(save_file, dateiname),shell=True).wait()		
 			else:
-				subprocess.Popen('cd "{0}" & latex --synctex=-1 "{1}.tex"& dvips "{1}.dvi" & ps2pdf -dNOSAFER "{1}.ps"'.format(save_file, dateiname),shell=True).wait()
+				subprocess.Popen('cd "{0}" & latex --synctex=-1 "{1}.tex"& dvips "{1}.dvi" & ps2pdf -dNOSAFER "{1}.ps"'.format(save_file, dateiname),cwd=os.path.splitdrive(path_file)[0],shell=True).wait()
 
 
 
@@ -4828,7 +4826,10 @@ class Ui_MainWindow(object):
 
 		if ausgabetyp=='schularbeit':
 			name, extension=os.path.splitext(filename_vorschau)
+
 			Ui_MainWindow.create_pdf(self, name, index, maximum)
+
+
 			if maximum>2:
 				if index%2==0:
 					shutil.move(name+'.pdf', name+'_{}_Loesung.pdf'.format(dict_gruppen[int(index/2)]))
