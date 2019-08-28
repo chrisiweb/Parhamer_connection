@@ -2412,9 +2412,9 @@ class Ui_MainWindow(object):
 				else:
 					sumatrapdf=''			
 			
-
-				subprocess.Popen('cd "{0}/Teildokument" & latex --synctex=-1 "{1}.tex"& dvips "{1}.dvi" & ps2pdf -dNOSAFER "{1}.ps"'.format(path_programm, dateiname),shell=True).wait()	
-				subprocess.Popen('cd "{0}/Teildokument" &"{1}" "{2}.pdf"'.format(path_programm,sumatrapdf ,dateiname), shell=True).poll()
+				print(os.path.splitdrive(path_programm)[0])
+				subprocess.Popen('cd "{0}/Teildokument" & latex --synctex=-1 "{1}.tex"& dvips "{1}.dvi" & ps2pdf -dNOSAFER "{1}.ps"'.format(path_programm, dateiname),cwd=os.path.splitdrive(path_programm)[0],shell=True).wait()	
+				subprocess.Popen('cd "{0}/Teildokument" &"{1}" "{2}.pdf"'.format(path_programm,sumatrapdf ,dateiname),cwd=os.path.splitdrive(path_programm)[0], shell=True).poll()
 
 
 			os.unlink('{0}/Teildokument/{1}.aux'.format(path_programm, dateiname))
