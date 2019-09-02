@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__='v1.7.1'
+__version__= 'vs1.7.1'
 __lastupdate__='08/19'
 ####################
 
@@ -1862,7 +1862,11 @@ class Ui_MainWindow(object):
 				print("No version set. Skipping version check!")
 				return False
 
-		if __version__ not in f.read():
+		update_check=[]
+		update_check.append(f.read().replace(' ','').replace('\n',''))
+		update_check.append(__version__)
+
+		if update_check[0] != update_check[1]:
 			msg = QtWidgets.QMessageBox()
 			msg.setIcon(QtWidgets.QMessageBox.Question)
 			msg.setWindowIcon(QtGui.QIcon(logo_path))
