@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__= 'vs1.7.1'
-__lastupdate__='08/19'
+__version__= 'v1.8.1'
+__lastupdate__='10/19'
 ####################
 
 from PyQt5 import QtCore, QtWidgets, QtGui
@@ -24,7 +24,6 @@ from functools import partial
 import yaml
 from PIL import Image ## pillow
 import smtplib
-
 
 try:
 	loaded_lama_file_path=sys.argv[1]
@@ -111,7 +110,7 @@ widgets_create=['actionReset','menuBild_einf_gen','menuSuche','menuSage','menuFe
 widgets_sage=['actionLoad','actionSave','menuSuche','menuNeu','menuFeedback','menuHelp','comboBox_at_sage','groupBox_alle_aufgaben','groupBox_sage'] #,'comboBox_at_sage','groupBox_sage','groupBox_notenschl','actionRefresh_Database'
 
 
-widgets_feedback=['menuSage','menuNeu','menuHelp','comboBox_at_fb','label_example','groupBox_alle_aufgaben_fb', 'groupBox_fehlertyp','groupBox_feedback',  'groupBox_email', 'pushButton_send']
+widgets_feedback=['menuSuche','menuSage','menuNeu','menuHelp','comboBox_at_fb','label_example','groupBox_alle_aufgaben_fb', 'groupBox_fehlertyp','groupBox_feedback',  'groupBox_email', 'pushButton_send']
 
 
 dict_picture_path={}
@@ -1762,7 +1761,7 @@ class Ui_MainWindow(object):
 		self.groupBox_af = QtWidgets.QGroupBox(self.centralwidget)
 		self.groupBox_af.setMaximumSize(QtCore.QSize(375, 16777215))
 		self.groupBox_af.setObjectName(_fromUtf8("groupBox_af"))
-		self.groupBox_af.setMaximumHeight(70)
+		self.groupBox_af.setMaximumHeight(80)
 		self.gridLayout_af = QtWidgets.QGridLayout(self.groupBox_af)
 		self.gridLayout_af.setObjectName(_fromUtf8("gridLayout_af"))
 		self.cb_af_zo = QtWidgets.QCheckBox(self.groupBox_af)
@@ -2459,9 +2458,12 @@ class Ui_MainWindow(object):
 				else:
 					sumatrapdf=''			
 			
-				print(os.path.splitdrive(path_programm)[0])
+				#print(os.path.splitdrive(path_programm)[0])
 				subprocess.Popen('cd "{0}/Teildokument" & latex --synctex=-1 "{1}.tex"& dvips "{1}.dvi" & ps2pdf -dNOSAFER "{1}.ps"'.format(path_programm, dateiname),cwd=os.path.splitdrive(path_programm)[0],shell=True).wait()	
-				subprocess.Popen('cd "{0}/Teildokument" &"{1}" "{2}.pdf"'.format(path_programm,sumatrapdf ,dateiname),cwd=os.path.splitdrive(path_programm)[0], shell=True).poll()
+				if sumatrapdf !='':
+					subprocess.Popen('cd "{0}/Teildokument" &"{1}" "{2}.pdf"'.format(path_programm,sumatrapdf ,dateiname),cwd=os.path.splitdrive(path_programm)[0], shell=True).poll()
+				else:
+					subprocess.Popen('cd "{0}/Teildokument" &"{1}.pdf"'.format(path_programm,dateiname),cwd=os.path.splitdrive(path_programm)[0], shell=True).poll()	
 
 
 			os.unlink('{0}/Teildokument/{1}.aux'.format(path_programm, dateiname))
@@ -2893,12 +2895,12 @@ class Ui_MainWindow(object):
 					for all in filename[0]:
 						#print(all)
 						name,ext= os.path.splitext(all)
-						if ext=='.jpg':
+						if ext.lower()=='.jpg' or ext.lower()=='.jpeg':
 							output=str(name)+'.eps'
 							# output=all.replace('jpg','eps')
 							img=Image.open(str(all))
 							img.save(output)
-						elif ext=='.png':
+						elif ext.lower()=='.png':
 							output=str(name)+'.eps'
 							img=Image.open(str(all))
 							img=img.convert('RGB')
@@ -2908,6 +2910,7 @@ class Ui_MainWindow(object):
 							return
 					msg = QtWidgets.QMessageBox()
 					msg.setIcon(QtWidgets.QMessageBox.Information)
+					msg.setWindowIcon(QtGui.QIcon(logo_path))
 					if len(filename[0])==1:
 						msg.setText('Es wurde '+str(len(filename[0]))+' Datei erfolgreich konvertiert.')
 					else:

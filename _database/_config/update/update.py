@@ -24,13 +24,20 @@ opened_file=os.path.basename(sys.argv[0])
 dir_teildokument=os.path.join(path_programm,'Teildokument')
 if os.path.isdir(dir_teildokument):
     try:
-        shutil.rmtree(dir_teildokument)
+        for files in os.listdir(dir_teildokument):
+            file_path=os.path.join(dir_teildokument, files)
+            if files.startswith('log_file_') or  files.startswith('Schularbeit_Vorschau') or files.startswith('Teildokument_'):
+                if os.path.splitext(files)[1] != ".pdf":
+               
+                    os.unlink(file_path)
     except PermissionError:
         print('Das Update kann nicht durchgeführt werden, da der Ordner Teildokument von einem anderen Prozess verwendet wird.')
         input()
         quit()
 else:
     pass
+
+
 
 name, extension=os.path.splitext(opened_file)
 
@@ -71,7 +78,7 @@ for i, item in enumerate(items):
 if p_status==0:
     print('\nProgramm wurde erfolgreich aktualisiert. Drücken Sie "Enter", um fortzufahren...')
 else:
-    print(newapp_path)
+    #print(newapp_path)
     print('\nProgramm konnte nicht aktualisiert werden. Bitte versuchen Sie es später erneut.\nFehler: "%s"\n\nDrücken Sie "Enter", um mit der älteren Version fortzufahren...'%str(output)[2:-5]) 
     
 input()
