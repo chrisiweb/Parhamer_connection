@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__= 'v1.8.1'
+__version__= 'v1.8.2'
 __lastupdate__='10/19'
 ####################
 
@@ -531,9 +531,12 @@ class Ui_Dialog(object):
 		# Ui_MainWindow.pushButton_vorschau_pressed(self, 'schularbeit',index)
 		MainWindow.show()
 		#print(os.path.dirname(self.saved_file_path))
-		if sys.platform.startswith('linux') or sys.platform.startswith('darwin'):
+		if sys.platform.startswith('linux'):
 			file_path = os.path.dirname(self.saved_file_path)
 			subprocess.Popen('xdg-open "{}"'.format(file_path),shell=True)
+		elif sys.platform.startswith('darwin'):
+                        file_path = os.path.dirname(self.saved_file_path)
+                        subprocess.Popen('open "{}"'.format(file_path),shell=True)
 			#subprocess.run(['xdg-open', "{0}/Teildokument/{1}.pdf".format(path_programm, dateiname)])
 		else:
 			file_path = os.path.dirname(self.saved_file_path).replace('/','\\')
@@ -678,7 +681,7 @@ class Ui_MainWindow(object):
 		self.gridLayout.addWidget(self.groupBox_ausgew_gk, 3, 3, 1, 1)
 		self.groupBox_titelsuche = QtWidgets.QGroupBox(self.centralwidget)
 		self.groupBox_titelsuche.setObjectName(_fromUtf8("groupBox_titelsuche"))
-		self.groupBox_titelsuche.setMaximumHeight(60)
+		self.groupBox_titelsuche.setMaximumHeight(65)
 		self.gridLayout_10 = QtWidgets.QGridLayout(self.groupBox_titelsuche)
 		self.gridLayout_10.setObjectName(_fromUtf8("gridLayout_10"))
 		self.entry_suchbegriffe = QtWidgets.QLineEdit(self.groupBox_titelsuche)
@@ -2442,7 +2445,6 @@ class Ui_MainWindow(object):
 
 		#chosen_aufgabenformat=self.label_aufgabentyp.text()[-1]
 
-
 		if dateiname=='Schularbeit_Vorschau' or dateiname.startswith('Teildokument'):
 			if sys.platform.startswith('linux'):
 				subprocess.Popen('cd "{0}/Teildokument" ; latex --synctex=-1 {1}.tex ; dvips {1}.dvi ; ps2pdf -dNOSAFER {1}.ps'.format(path_programm, dateiname),shell=True).wait()
@@ -2477,7 +2479,8 @@ class Ui_MainWindow(object):
 			if sys.platform.startswith('linux'):
 				subprocess.Popen('cd "{0}" ; latex --synctex=-1 {1}.tex ; dvips {1}.dvi ; ps2pdf -dNOSAFER {1}.ps'.format(save_file, dateiname),shell=True).wait()
 			elif sys.platform.startswith('darwin'):
-				subprocess.Popen('cd "{0}" ; latex --synctex=-1 {1}.tex ; dvips {1}.dvi ; ps2pdf -dNOSAFER {1}.ps'.format(save_file, dateiname),shell=True).wait()		
+                                #print(dateiname)
+				subprocess.Popen('cd "{0}" ; latex --synctex=-1 "{1}.tex" ; dvips "{1}.dvi" ; ps2pdf -dNOSAFER "{1}.ps"'.format(save_file, dateiname),shell=True).wait()		
 			else:
 				subprocess.Popen('cd "{0}" & latex --synctex=-1 "{1}.tex"& dvips "{1}.dvi" & ps2pdf -dNOSAFER "{1}.ps"'.format(save_file, dateiname),cwd=os.path.splitdrive(path_file)[0],shell=True).wait()
 
@@ -4597,7 +4600,7 @@ class Ui_MainWindow(object):
 				
 				dirname=os.path.dirname(self.chosen_path_schularbeit_erstellen[0])
 				filename=os.path.basename(self.chosen_path_schularbeit_erstellen[0])
-				if sys.platform.startswith('linux') or sys.platform.startswith('darwin'):			
+				if sys.platform.startswith('linux'):			
 					filename=filename+".tex"
 				
 				for character in dict_umlaute.keys():

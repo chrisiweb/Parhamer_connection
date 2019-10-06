@@ -1,0 +1,11 @@
+v1.8.1
+
+- Bug Fix: No PDF output when SumatraPDF is not installed
+
+v1.8.2
+
+- Bug Fix:
+  - Tests cannot be created on macOS, when there are spaces in the filename
+  - MacOS raises error when folder is opened after creating a test
+
+		
