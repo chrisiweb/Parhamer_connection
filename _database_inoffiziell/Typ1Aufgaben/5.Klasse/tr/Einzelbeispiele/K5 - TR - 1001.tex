@@ -1,0 +1,42 @@
+\section{AG 4.1 - K5 - TR - 1001 Cheopspyramide - OA - Thema Mathematik Schularbeiten 5. Klasse}
+
+\begin{beispiel}[K5 - TR]{1} %PUNKTE DES BEISPIELS
+Die Cheopspyramide ist eine quadratische Pyramide mit einer Höhe von 147\,m und einer Seitenlänge von 230\,m. \leer
+
+Berechne den Winkel, den eine Seitenfläche mit der Grundfläche einschließt!
+
+\antwort{
+\meinlr{\resizebox{0.8\linewidth}{!}{\newrgbcolor{zzttqq}{0.6 0.2 0.}
+\newrgbcolor{qqwuqq}{0. 0.39215686274509803 0.}
+\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-0.32,-2.76)(3.26,1.54)
+\pspolygon[linecolor=zzttqq,fillcolor=zzttqq,fillstyle=solid,opacity=0.1](1.5,1.)(1.5,-1.5)(2.5,-1.5)
+\psline(1.5,1.)(3.,-1.)
+\psline(1.5,1.)(2.,-2.)
+\psline(1.5,1.)(0.,-2.)
+\psline[linestyle=dashed,dash=2pt 2pt](1.5,1.)(1.,-1.)
+\psline(1.5,1.)(1.5,-1.5)
+\psline(1.5,-1.5)(2.5,-1.5)
+\psline(2.5,-1.5)(1.5,1.)
+\psline[linecolor=zzttqq](1.5,1.)(1.5,-1.5)
+\psline[linecolor=zzttqq](1.5,-1.5)(2.5,-1.5)
+\psline[linecolor=zzttqq](2.5,-1.5)(1.5,1.)
+\psline(0.,-2.)(2.,-2.)
+\psline(2.,-2.)(3.,-1.)
+\psline[linestyle=dashed,dash=2pt 2pt](3.,-1.)(1.,-1.)
+\psline[linestyle=dashed,dash=2pt 2pt](1.,-1.)(0.,-2.)
+\pscustom[linecolor=qqwuqq,fillcolor=qqwuqq,fillstyle=solid,opacity=0.1]{
+\parametricplot{1.9513027039072617}{3.141592653589793}{0.6*cos(t)+2.5|0.6*sin(t)+-1.5}
+\lineto(2.5,-1.5)\closepath}
+\pscustom[linecolor=qqwuqq,fillcolor=qqwuqq,fillstyle=solid,opacity=0.1]{
+\parametricplot{0.0}{1.5707963267948966}{0.4*cos(t)+1.5|0.4*sin(t)+-1.5}
+\lineto(1.5,-1.5)\closepath}
+\psellipse*[linecolor=qqwuqq,fillcolor=qqwuqq,fillstyle=solid,opacity=1](1.6663780661615406,-1.3336219338384594)(0.04,0.04)
+\begin{scriptsize}
+\rput[bl](2.2,-1.44){\qqwuqq{$\varphi$}}
+\rput[tl](1.52,-1.6){115 m}
+\rput[tl](0.78,-0.44){147 m}
+\rput[tl](0.76,-2.12){230 m}
+\end{scriptsize}
+\end{pspicture*}}}{$\tan\varphi=\frac{147}{115} \Rightarrow \varphi\approx 52^\circ$}}
+\end{beispiel}

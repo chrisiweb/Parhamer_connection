@@ -227,31 +227,31 @@ ws_beschreibung:
 
 k5_beschreibung: 
     "fu": "Funktionen"
-    "gl": "Gleichungen und\nGleichungssysteme"
-    "mzr": "Mengen, Zahlen,\nRechengesetze"
+    "gl": "Gleichungen und Gleichungssysteme"
+    "mzr": "Mengen, Zahlen, Rechengesetze"
     "tr": "Trigonometrie"
-    "vag2": "Vektoren und analytische\nGeometrie"
+    "vag2": "Vektoren und analytische Geometrie"
 
 k6_beschreibung: 
-    "bsw": "Beschreibende Statistik\nund Wahrscheinlichkeit"
+    "bsw": "Beschreibende Statistik und Wahrscheinlichkeit"
     "fo": "Folgen"
-    "pwlu": "Potenzen, Wurzeln, Logarithmen\nund Ungleichungen"
+    "pwlu": "Potenzen, Wurzeln, Logarithmen und Ungleichungen"
     "re": "Reihen"
     "rf": "Reelle Funktionen"
-    "vag3": "Vektoren und analytische\nGeometrie in R3 und Rn"
+    "vag3": "Vektoren und analytische Geometrie in R3 und Rn"
 
 k7_beschreibung: 
     "dr": "Differentialrechnung"
-    "dwv": "Diskrete Wahrscheinlichkeits-\nverteilungen"
-    "kkk": "Kreise, Kugeln, Kegelschnittslinien\nund andere Kurven"
+    "dwv": "Diskrete Wahrscheinlichkeitsverteilungen"
+    "kkk": "Kreise, Kugeln, Kegelschnittslinien und andere Kurven"
     "kz": "Komplexe Zahlen"
     "wm": "Wirtschaftsmathematik"
     "ghg": "Gleichungen höheren Grades als 2"
 
 k8_beschreibung: 
-    "ddg": "Differenzen- und Differential-\ngleichungen; Grundlagen\nder Systemdynamik"
+    "ddg": "Differenzen- und Differentialgleichungen; Grundlagen der Systemdynamik"
     "ir": "Integralrechnung"
-    "sws": "Stetgie Wahrscheinlichkeits-\nverteilungen; Beurteilende\nStatistik"
+    "sws": "Stetgie Wahrscheinlichkeitsverteilungen; Beurteilende Statistik"
     "wm": "Wirtschaftsmathematik"
 
 dict_gk:
