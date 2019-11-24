@@ -23,7 +23,7 @@
 
 - Bug Fix: No PDF output when SumatraPDF is not installed
 
-## v1.5 (dev)
+## v1.5
 - rename to LaMA (LaTeX Mathematics Assistent)
 - programm creates directories as needed
 
