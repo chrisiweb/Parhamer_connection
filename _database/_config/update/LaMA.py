@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__= 'v1.8.2'
-__lastupdate__='10/19'
+__version__= 'v1.8.5'
+__lastupdate__='11/19'
 ####################
 
 from PyQt5 import QtCore, QtWidgets, QtGui
@@ -24,6 +24,8 @@ from functools import partial
 import yaml
 from PIL import Image ## pillow
 import smtplib
+#import ctypes
+
 
 try:
 	loaded_lama_file_path=sys.argv[1]
@@ -107,7 +109,7 @@ widgets_create=['actionReset','menuBild_einf_gen','menuSuche','menuSage','menuFe
 'groupBox_quelle','pushButton_save'] #'actionRefresh_Database'
 
 
-widgets_sage=['actionLoad','actionSave','menuSuche','menuNeu','menuFeedback','menuHelp','comboBox_at_sage','groupBox_alle_aufgaben','groupBox_sage'] #,'comboBox_at_sage','groupBox_sage','groupBox_notenschl','actionRefresh_Database'
+widgets_sage=['actionLoad','actionSave','actionReset_sage','menuSuche','menuNeu','menuFeedback','menuHelp','comboBox_at_sage','groupBox_alle_aufgaben','groupBox_sage'] #,'comboBox_at_sage','groupBox_sage','groupBox_notenschl','actionRefresh_Database'
 
 
 widgets_feedback=['menuSuche','menuSage','menuNeu','menuHelp','comboBox_at_fb','label_example','groupBox_alle_aufgaben_fb', 'groupBox_fehlertyp','groupBox_feedback',  'groupBox_email', 'pushButton_send']
@@ -384,8 +386,6 @@ class Ui_Dialog_typ2(object):
 #### Dialog Window - Schularbeit erstellen 
 class Ui_Dialog(object):
 	def setupUi(self, Dialog, dict_list_input_examples, beispieldaten_dateipfad_1,beispieldaten_dateipfad_2, dict_titlepage, saved_file_path):
-		#print(dict_list_input_examples)
-		#print( beispieldaten_dateipfad_1)
 		self.dict_list_input_examples=dict_list_input_examples
 		self.beispieldaten_dateipfad_1=beispieldaten_dateipfad_1
 		self.beispieldaten_dateipfad_2=beispieldaten_dateipfad_2
@@ -468,6 +468,8 @@ class Ui_Dialog(object):
 		self.spinBox_sw_gruppen.setMinimum(1)
 		self.spinBox_sw_gruppen.setMaximum(5)
 		self.spinBox_sw_gruppen.setObjectName("spinBox_sw_gruppen")
+		if self.data_gesamt['Pruefungstyp']=='Übungsblatt':
+			self.groupBox_sw_gruppen.setEnabled(False)
 		self.gridLayout_3.addWidget(self.spinBox_sw_gruppen, 0, 0, 1, 1)
 		self.gridLayout.addWidget(self.groupBox_sw_gruppen, 3, 3, 1, 1)
 		self.radioButton_sw_br = QtWidgets.QRadioButton(Dialog)
@@ -482,6 +484,23 @@ class Ui_Dialog(object):
 			self.radioButton_sw_ns.setChecked(True)
 		if self.data_gesamt['Beurteilung']=='br':
 			self.radioButton_sw_br.setChecked(True)		
+		self.cb_create_tex = QtWidgets.QCheckBox(Dialog)										  
+		self.cb_create_tex.setObjectName(_fromUtf8("cb_create_tex"))
+		self.cb_create_tex.setText('.tex')
+		self.cb_create_tex.setChecked(True)
+		self.cb_create_tex.setEnabled(False)
+		self.gridLayout.addWidget(self.cb_create_tex, 6, 0, 1, 1)
+		self.cb_create_pdf = QtWidgets.QCheckBox(Dialog)										  
+		self.cb_create_pdf.setObjectName(_fromUtf8("cb_create_pdf"))
+		self.cb_create_pdf.setText('.pdf')
+		self.cb_create_pdf.setChecked(True)
+		self.cb_create_pdf.toggled.connect(self.cb_create_pdf_checked)
+		self.gridLayout.addWidget(self.cb_create_pdf, 6, 1, 1, 1)
+		self.cb_create_lama = QtWidgets.QCheckBox(Dialog)										  
+		self.cb_create_lama.setObjectName(_fromUtf8("cb_create_lama"))
+		self.cb_create_lama.setText('Autosave (.lama)')
+		self.cb_create_lama.setChecked(True)
+		self.gridLayout.addWidget(self.cb_create_lama, 6, 2, 1, 1)
 
 
 		self.retranslateUi(Dialog)
@@ -490,7 +509,7 @@ class Ui_Dialog(object):
 	def retranslateUi(self, Dialog):
 		datum=str(self.data_gesamt['Datum'][2]) +'.'+str(self.data_gesamt['Datum'][1])+'.'+str(self.data_gesamt['Datum'][0])
 		_translate = QtCore.QCoreApplication.translate
-		Dialog.setWindowTitle(_translate("Schularbeit erstellen", "Schularbeit erstellen"))
+		Dialog.setWindowTitle(_translate("Erstellen", "Erstellen"))
 		self.radioButton_sw_ns.setText(_translate("Dialog", "Notenschlüssel"))
 		self.pushButton_sw_save.setText(_translate("Dialog", "Speichern"))
 		self.pushButton_sw_back.setText(_translate("Dialog", "Zurück "))
@@ -515,28 +534,38 @@ class Ui_Dialog(object):
 		self.groupBox_sw_gruppen.setTitle(_translate("Dialog", "Anzahl der Gruppen"))
 		self.radioButton_sw_br.setText(_translate("Dialog", "Beurteilungsraster"))
 
+	def cb_create_pdf_checked(self):
+		if self.cb_create_pdf.isChecked()==True and self.data_gesamt['Pruefungstyp']!='Übungsblatt':
+			self.groupBox_sw_gruppen.setEnabled(True)
+		else:
+			self.groupBox_sw_gruppen.setEnabled(False)
 	def pushButton_sw_back_pressed(self):
 		self.Dialog.reject()
 
 	def pushButton_sw_save_pressed(self):
 		self.Dialog.reject()
-		# print(self.spinBox_sw_gruppen.value())
-		# return
 		MainWindow.hide()
-		# index=0
+
+		if self.cb_create_pdf.isChecked():
+			pdf=True
+		else:
+			pdf=False
+		
+		if self.cb_create_lama.isChecked():
+			lama=True
+		else:
+			lama=False
 		for index in range(self.spinBox_sw_gruppen.value()*2):
-			Ui_MainWindow.pushButton_vorschau_pressed(self, 'schularbeit',index, self.spinBox_sw_gruppen.value()*2)
-			# index+=1
-			
-		# Ui_MainWindow.pushButton_vorschau_pressed(self, 'schularbeit',index)
+			Ui_MainWindow.pushButton_vorschau_pressed(self, 'schularbeit',index, self.spinBox_sw_gruppen.value()*2, pdf, lama)
+
 		MainWindow.show()
-		#print(os.path.dirname(self.saved_file_path))
+
 		if sys.platform.startswith('linux'):
 			file_path = os.path.dirname(self.saved_file_path)
 			subprocess.Popen('xdg-open "{}"'.format(file_path),shell=True)
 		elif sys.platform.startswith('darwin'):
-                        file_path = os.path.dirname(self.saved_file_path)
-                        subprocess.Popen('open "{}"'.format(file_path),shell=True)
+						file_path = os.path.dirname(self.saved_file_path)
+						subprocess.Popen('open "{}"'.format(file_path),shell=True)
 			#subprocess.run(['xdg-open', "{0}/Teildokument/{1}.pdf".format(path_programm, dateiname)])
 		else:
 			file_path = os.path.dirname(self.saved_file_path).replace('/','\\')
@@ -568,15 +597,14 @@ class Ui_MainWindow(object):
 		self.ui.setupUi(self.Dialog, dict_list_input_examples, beispieldaten_dateipfad_1, beispieldaten_dateipfad_2, dict_titlepage, saved_file_path)	#, dict_gesammeltedateien
 		self.Dialog.show()
 		self.Dialog.exec_()
-		#print(dict_gesammeltedateien)
-		#self.Dialog.show()	
+
 
 	def setupUi(self, MainWindow):
 
 		self.check_for_update()	
 		MainWindow.setObjectName(_fromUtf8("MainWindow"))
-		MainWindow.resize(900, 500)
-		MainWindow.move(30,30)
+		#MainWindow.resize(900, 500)
+		#MainWindow.move(30,30)
 		# MainWindow.setMaximumSize(QtCore.QSize(1078, 16777215))
 		MainWindow.setLayoutDirection(QtCore.Qt.LeftToRight)
 		MainWindow.setStyleSheet(_fromUtf8(""))
@@ -616,6 +644,8 @@ class Ui_MainWindow(object):
 		MainWindow.setMenuBar(self.menuBar)
 		self.actionReset = QtWidgets.QAction(MainWindow)
 		self.actionReset.setObjectName(_fromUtf8("actionReset"))
+		self.actionReset_sage = QtWidgets.QAction(MainWindow)
+		self.actionReset_sage.setObjectName(_fromUtf8("actionReset_sage"))
 		self.actionLoad = QtWidgets.QAction(MainWindow)
 		self.actionLoad.setObjectName(_fromUtf8("actionLoad"))
 		#self.actionLoad.setVisible(False)
@@ -646,6 +676,8 @@ class Ui_MainWindow(object):
 		self.menuHelp.addAction(self.actionInfo)
 		self.menuDatei.addAction(self.actionRefresh_Database)
 		self.menuDatei.addAction(self.actionReset)
+		self.menuDatei.addAction(self.actionReset_sage)
+		self.actionReset_sage.setVisible(False)
 		self.menuDatei.addSeparator()
 		self.menuDatei.addAction(self.actionLoad)
 		self.menuDatei.addAction(self.actionSave)
@@ -667,21 +699,36 @@ class Ui_MainWindow(object):
 		# self.menuBild_einf_gen.addAction(self.actionBild_konvertieren_jpg_eps)
 		self.groupBox_ausgew_gk = QtWidgets.QGroupBox(self.centralwidget)
 		self.groupBox_ausgew_gk.setObjectName(_fromUtf8("groupBox_ausgew_gk"))
-		self.groupBox_ausgew_gk.setMaximumHeight(100)
+		self.groupBox_ausgew_gk.setMaximumHeight(110)
 		self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.groupBox_ausgew_gk)
 		self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
-		self.label_gk = QtWidgets.QLabel(self.groupBox_ausgew_gk)
+
+		self.scrollArea_ausgew_gk = QtWidgets.QScrollArea(self.groupBox_ausgew_gk)
+		self.scrollArea_ausgew_gk.setWidgetResizable(True)
+		self.scrollArea_ausgew_gk.setObjectName("scrollArea_ausgew_gk")
+		self.scrollAreaWidgetContents_ausgew_gk = QtWidgets.QWidget()
+		self.scrollAreaWidgetContents_ausgew_gk.setObjectName("scrollAreaWidgetContents_ausgew_gk")
+		self.verticalLayout_scrollA_ausgew_gk= QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_ausgew_gk)
+		self.verticalLayout_scrollA_ausgew_gk.setObjectName("verticalLayout_scrollA_ausgew_gk")
+
+		self.label_gk = QtWidgets.QLabel(self.scrollArea_ausgew_gk)
 		self.label_gk.setWordWrap(True)
 		self.label_gk.setObjectName(_fromUtf8("label_gk"))
-		self.verticalLayout_2.addWidget(self.label_gk)
-		self.label_gk_rest = QtWidgets.QLabel(self.groupBox_ausgew_gk)
+		self.verticalLayout_scrollA_ausgew_gk.addWidget(self.label_gk)
+		self.label_gk_rest = QtWidgets.QLabel(self.scrollArea_ausgew_gk)
 		self.label_gk_rest.setWordWrap(False)
 		self.label_gk_rest.setObjectName(_fromUtf8("label_gk_rest"))
-		self.verticalLayout_2.addWidget(self.label_gk_rest)
+		self.verticalLayout_scrollA_ausgew_gk.addWidget(self.label_gk_rest)
+		self.scrollArea_ausgew_gk.setFrameShape(QtWidgets.QFrame.NoFrame)
+		self.scrollArea_ausgew_gk.setWidget(self.scrollAreaWidgetContents_ausgew_gk)
+		self.verticalLayout_2.addWidget(self.scrollArea_ausgew_gk)
 		self.gridLayout.addWidget(self.groupBox_ausgew_gk, 3, 3, 1, 1)
+
+		
 		self.groupBox_titelsuche = QtWidgets.QGroupBox(self.centralwidget)
 		self.groupBox_titelsuche.setObjectName(_fromUtf8("groupBox_titelsuche"))
-		self.groupBox_titelsuche.setMaximumHeight(65)
+
+		#self.groupBox_titelsuche.setMaximumHeight(65)
 		self.gridLayout_10 = QtWidgets.QGridLayout(self.groupBox_titelsuche)
 		self.gridLayout_10.setObjectName(_fromUtf8("gridLayout_10"))
 		self.entry_suchbegriffe = QtWidgets.QLineEdit(self.groupBox_titelsuche)
@@ -690,13 +737,12 @@ class Ui_MainWindow(object):
 		self.gridLayout_10.addWidget(self.entry_suchbegriffe, 0, 0, 1, 1)
 		self.gridLayout.addWidget(self.groupBox_titelsuche, 4, 3, 1, 1)
 		self.groupBox_klassen = QtWidgets.QGroupBox(self.centralwidget)
-		self.groupBox_klassen.setMaximumSize(QtCore.QSize(367, 16777215))
+		#self.groupBox_klassen.setMaximumSize(QtCore.QSize(367, 16777215))
 		self.groupBox_klassen.setObjectName(_fromUtf8("groupBox_klassen"))
-		self.groupBox_klassen.setMaximumHeight(100)
+		#self.groupBox_klassen.setMaximumHeight(100)
 		self.gridLayout_14 = QtWidgets.QGridLayout(self.groupBox_klassen)
 		self.gridLayout_14.setObjectName(_fromUtf8("gridLayout_14"))
-		self.cb_k5 = QtWidgets.QCheckBox(self.groupBox_klassen)
-											  
+		self.cb_k5 = QtWidgets.QCheckBox(self.groupBox_klassen)										  
 		self.cb_k5.setObjectName(_fromUtf8("cb_k5"))
 		self.gridLayout_14.addWidget(self.cb_k5, 0, 0, 1, 1)
 		self.cb_k7 = QtWidgets.QCheckBox(self.groupBox_klassen)
@@ -732,7 +778,7 @@ class Ui_MainWindow(object):
 		# self.horizontalLayout.addWidget(self.btn_refreshddb)
 		self.label_update = QtWidgets.QLabel(self.centralwidget)
 		self.label_update.setObjectName(_fromUtf8("label_update"))
-		self.label_update.setMaximumHeight(12)
+		self.label_update.setMaximumHeight(18)
 		self.horizontalLayout.addWidget(self.label_update)
 		#self.label_update.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
 		self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
@@ -777,42 +823,76 @@ class Ui_MainWindow(object):
 		self.tab_ag.setObjectName(_fromUtf8("tab_ag"))
 		self.gridLayout_ag = QtWidgets.QGridLayout(self.tab_ag)
 		self.gridLayout_ag.setObjectName(_fromUtf8("gridLayout_ag"))
-		self.btn_ag_all = QtWidgets.QPushButton(self.tab_ag)
+		self.scrollArea_ag = QtWidgets.QScrollArea(self.tab_ag)
+		self.scrollArea_ag.setWidgetResizable(True)
+		self.scrollArea_ag.setObjectName("scrollArea_ag")
+		self.scrollAreaWidgetContents_ag = QtWidgets.QWidget()
+		self.scrollAreaWidgetContents_ag.setGeometry(QtCore.QRect(0, 0, 641, 252))
+		self.scrollAreaWidgetContents_ag.setObjectName("scrollAreaWidgetContents_ag")
+		self.gridLayout_scrollA_ag = QtWidgets.QGridLayout(self.scrollAreaWidgetContents_ag)
+		self.gridLayout_scrollA_ag.setObjectName("gridLayout_scrollA_ag")
+		self.btn_ag_all = QtWidgets.QPushButton(self.scrollArea_ag)
 		self.btn_ag_all.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))
 		self.btn_ag_all.setObjectName(_fromUtf8("btn_ag_all"))
-		self.gridLayout_ag.addWidget(self.btn_ag_all, 10, 4, 1, 1)
+		self.gridLayout_scrollA_ag.addWidget(self.btn_ag_all, 10, 4, 1, 1, QtCore.Qt.AlignRight)
 		self.btn_ag_all.setMinimumSize(QtCore.QSize(100,22))
-		self.btn_ag_all.setMaximumSize(QtCore.QSize(100,22))
+		#self.btn_ag_all.setMaximumSize(QtCore.QSize(100,22))
 		self.tab_widget_gk.addTab(self.tab_ag, _fromUtf8(""))
 		self.create_checkbox_gk('ag', ag_beschreibung)
+		self.scrollArea_ag.setFrameShape(QtWidgets.QFrame.NoFrame)
+		self.scrollArea_ag.setWidget(self.scrollAreaWidgetContents_ag)
+		self.gridLayout_ag.addWidget(self.scrollArea_ag, 1, 0, 7, 1)
+		#
 
 		### FA ###
 		self.tab_fa = QtWidgets.QWidget()
 		self.tab_fa.setObjectName(_fromUtf8("tab_fa"))
 		self.gridLayout_fa = QtWidgets.QGridLayout(self.tab_fa)
 		self.gridLayout_fa.setObjectName(_fromUtf8("gridLayout_fa"))
-		self.btn_fa_all = QtWidgets.QPushButton(self.tab_fa)
+		self.scrollArea_fa = QtWidgets.QScrollArea(self.tab_fa)
+		self.scrollArea_fa.setWidgetResizable(True)
+		self.scrollArea_fa.setObjectName("scrollArea_fa")
+		self.scrollAreaWidgetContents_fa = QtWidgets.QWidget()
+		#self.scrollAreaWidgetContents_ag.setGeometry(QtCore.QRect(0, 0, 641, 252))
+		self.scrollAreaWidgetContents_fa.setObjectName("scrollAreaWidgetContents_fa")
+		self.gridLayout_scrollA_fa = QtWidgets.QGridLayout(self.scrollAreaWidgetContents_fa)
+		self.gridLayout_scrollA_fa.setObjectName("gridLayout_scrollA_fa")
+		self.btn_fa_all = QtWidgets.QPushButton(self.scrollArea_fa)
 		self.btn_fa_all.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))
 		self.btn_fa_all.setObjectName(_fromUtf8("btn_fa_all"))
-		self.gridLayout_fa.addWidget(self.btn_fa_all, 10, 6, 1, 1)
+		self.gridLayout_scrollA_fa.addWidget(self.btn_fa_all, 10, 6, 1, 1, QtCore.Qt.AlignRight)
 		self.btn_fa_all.setMinimumSize(QtCore.QSize(100,22))
-		self.btn_fa_all.setMaximumSize(QtCore.QSize(100,22))
+		#self.btn_fa_all.setMaximumSize(QtCore.QSize(100,22))
 		self.tab_widget_gk.addTab(self.tab_fa, _fromUtf8(""))
 		self.create_checkbox_gk('fa',fa_beschreibung)
+		self.scrollArea_fa.setFrameShape(QtWidgets.QFrame.NoFrame)
+		self.scrollArea_fa.setWidget(self.scrollAreaWidgetContents_fa)
+		self.gridLayout_fa.addWidget(self.scrollArea_fa, 1, 0, 7, 1)
 
 		### AN ###
 		self.tab_an = QtWidgets.QWidget()
 		self.tab_an.setObjectName(_fromUtf8("tab_an"))
 		self.gridLayout_an = QtWidgets.QGridLayout(self.tab_an)
 		self.gridLayout_an.setObjectName(_fromUtf8("gridLayout_an"))
-		self.btn_an_all = QtWidgets.QPushButton(self.tab_an)
+		self.scrollArea_an = QtWidgets.QScrollArea(self.tab_an)
+		self.scrollArea_an.setWidgetResizable(True)
+		self.scrollArea_an.setObjectName("scrollArea_an")
+		self.scrollAreaWidgetContents_an = QtWidgets.QWidget()
+		#self.scrollAreaWidgetContents_ag.setGeometry(QtCore.QRect(0, 0, 641, 252))
+		self.scrollAreaWidgetContents_an.setObjectName("scrollAreaWidgetContents_an")
+		self.gridLayout_scrollA_an = QtWidgets.QGridLayout(self.scrollAreaWidgetContents_an)
+		self.gridLayout_scrollA_an.setObjectName("gridLayout_scrollA_an")
+		self.btn_an_all = QtWidgets.QPushButton(self.scrollArea_an)
 		self.btn_an_all.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))
 		self.btn_an_all.setObjectName(_fromUtf8("btn_an_all"))
-		self.gridLayout_an.addWidget(self.btn_an_all, 10, 2, 1, 1)
+		self.gridLayout_scrollA_an.addWidget(self.btn_an_all, 10, 2, 1, 1, QtCore.Qt.AlignRight)
 		self.btn_an_all.setMinimumSize(QtCore.QSize(100,22))
-		self.btn_an_all.setMaximumSize(QtCore.QSize(100,22))
+		#self.btn_an_all.setMaximumSize(QtCore.QSize(100,22))
 		self.tab_widget_gk.addTab(self.tab_an, _fromUtf8(""))
 		self.create_checkbox_gk('an', an_beschreibung)
+		self.scrollArea_an.setFrameShape(QtWidgets.QFrame.NoFrame)
+		self.scrollArea_an.setWidget(self.scrollAreaWidgetContents_an)
+		self.gridLayout_an.addWidget(self.scrollArea_an, 1, 0, 7, 1)
 
 
 		### WS ###
@@ -820,15 +900,25 @@ class Ui_MainWindow(object):
 		self.tab_ws.setObjectName(_fromUtf8("tab_ws"))
 		self.gridLayout_ws = QtWidgets.QGridLayout(self.tab_ws)
 		self.gridLayout_ws.setObjectName(_fromUtf8("gridLayout_ws"))
+		self.scrollArea_ws = QtWidgets.QScrollArea(self.tab_ws)
+		self.scrollArea_ws.setWidgetResizable(True)
+		self.scrollArea_ws.setObjectName("scrollArea_ws")
+		self.scrollAreaWidgetContents_ws = QtWidgets.QWidget()
+		#self.scrollAreaWidgetContents_ag.setGeometry(QtCore.QRect(0, 0, 641, 252))
+		self.scrollAreaWidgetContents_ws.setObjectName("scrollAreaWidgetContents_ws")
+		self.gridLayout_scrollA_ws = QtWidgets.QGridLayout(self.scrollAreaWidgetContents_ws)
+		self.gridLayout_scrollA_ws.setObjectName("gridLayout_scrollA_ws")
 		self.btn_ws_all = QtWidgets.QPushButton(self.tab_ws)
 		self.btn_ws_all.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))
 		self.btn_ws_all.setObjectName(_fromUtf8("btn_ws_all"))
-		self.gridLayout_ws.addWidget(self.btn_ws_all, 10, 2, 1, 1)
+		self.gridLayout_scrollA_ws.addWidget(self.btn_ws_all, 10, 2, 1, 1, QtCore.Qt.AlignRight)
 		self.btn_ws_all.setMinimumSize(QtCore.QSize(100,22))
-		self.btn_ws_all.setMaximumSize(QtCore.QSize(100,22))
+		#self.btn_ws_all.setMaximumSize(QtCore.QSize(100,22))
 		self.tab_widget_gk.addTab(self.tab_ws, _fromUtf8(""))
 		self.create_checkbox_gk('ws',ws_beschreibung)
-
+		self.scrollArea_ws.setFrameShape(QtWidgets.QFrame.NoFrame)
+		self.scrollArea_ws.setWidget(self.scrollAreaWidgetContents_ws)
+		self.gridLayout_ws.addWidget(self.scrollArea_ws, 1, 0, 7, 1)
 		######### Klassenthemen
 		### K5
 		self.tab_k5 = QtWidgets.QWidget()
@@ -934,9 +1024,19 @@ class Ui_MainWindow(object):
 		self.gridLayout_ag_cr = QtWidgets.QGridLayout(self.tab_ag_cr)
 		self.gridLayout_ag_cr.setObjectName(_fromUtf8("gridLayout_ag_cr"))
 		self.tab_widget_gk_cr.addTab(self.tab_ag_cr, _fromUtf8(""))
+		self.scrollArea_ag_cr = QtWidgets.QScrollArea(self.tab_ag_cr)
+		self.scrollArea_ag_cr.setWidgetResizable(True)
+		self.scrollArea_ag_cr.setObjectName("scrollArea_ag_cr")
+		self.scrollAreaWidgetContents_ag_cr = QtWidgets.QWidget()
+		#self.scrollAreaWidgetContents_ag.setGeometry(QtCore.QRect(0, 0, 641, 252))
+		self.scrollAreaWidgetContents_ag_cr.setObjectName("scrollAreaWidgetContents_ag_cr")
+		self.gridLayout_scrollA_ag_cr = QtWidgets.QGridLayout(self.scrollAreaWidgetContents_ag_cr)
+		self.gridLayout_scrollA_ag_cr.setObjectName("gridLayout_scrollA_ag_cr")
 		self.create_checkbox_gk('ag_cr', ag_beschreibung)
 		self.tab_widget_gk_cr.setTabText(self.tab_widget_gk_cr.indexOf(self.tab_ag_cr), _translate("MainWindow", "Algebra und Geometrie", None))
-
+		self.scrollArea_ag_cr.setFrameShape(QtWidgets.QFrame.NoFrame)
+		self.scrollArea_ag_cr.setWidget(self.scrollAreaWidgetContents_ag_cr)
+		self.gridLayout_ag_cr.addWidget(self.scrollArea_ag_cr, 1, 0, 7, 1)
 
 		# # #### FA ####
 		self.tab_fa_cr = QtWidgets.QWidget()
@@ -944,27 +1044,57 @@ class Ui_MainWindow(object):
 		self.gridLayout_fa_cr = QtWidgets.QGridLayout(self.tab_fa_cr)
 		self.gridLayout_fa_cr.setObjectName(_fromUtf8("gridLayout_fa_cr"))
 		self.tab_widget_gk_cr.addTab(self.tab_fa_cr, _fromUtf8(""))
+		self.scrollArea_fa_cr = QtWidgets.QScrollArea(self.tab_fa_cr)
+		self.scrollArea_fa_cr.setWidgetResizable(True)
+		self.scrollArea_fa_cr.setObjectName("scrollArea_fa_cr")
+		self.scrollAreaWidgetContents_fa_cr = QtWidgets.QWidget()
+		#self.scrollAreaWidgetContents_fa.setGeometry(QtCore.QRect(0, 0, 641, 252))
+		self.scrollAreaWidgetContents_fa_cr.setObjectName("scrollAreaWidgetContents_fa_cr")
+		self.gridLayout_scrollA_fa_cr = QtWidgets.QGridLayout(self.scrollAreaWidgetContents_fa_cr)
+		self.gridLayout_scrollA_fa_cr.setObjectName("gridLayout_scrollA_fa_cr")
 		self.create_checkbox_gk('fa_cr', fa_beschreibung)
 		self.tab_widget_gk_cr.setTabText(self.tab_widget_gk_cr.indexOf(self.tab_fa_cr), _translate("MainWindow", "Funktionale Abhängigkeiten", None))
-
+		self.scrollArea_fa_cr.setFrameShape(QtWidgets.QFrame.NoFrame)
+		self.scrollArea_fa_cr.setWidget(self.scrollAreaWidgetContents_fa_cr)
+		self.gridLayout_fa_cr.addWidget(self.scrollArea_fa_cr, 1, 0, 7, 1)
 		# ##### AN ####
 		self.tab_an_cr = QtWidgets.QWidget()
 		self.tab_an_cr.setObjectName(_fromUtf8("tab_an_cr"))
 		self.gridLayout_an_cr = QtWidgets.QGridLayout(self.tab_an_cr)
 		self.gridLayout_an_cr.setObjectName(_fromUtf8("gridLayout_an_cr"))
 		self.tab_widget_gk_cr.addTab(self.tab_an_cr, _fromUtf8(""))
+		self.scrollArea_an_cr = QtWidgets.QScrollArea(self.tab_an_cr)
+		self.scrollArea_an_cr.setWidgetResizable(True)
+		self.scrollArea_an_cr.setObjectName("scrollArea_an_cr")
+		self.scrollAreaWidgetContents_an_cr = QtWidgets.QWidget()
+		#self.scrollAreaWidgetContents_an.setGeometry(QtCore.QRect(0, 0, 641, 252))
+		self.scrollAreaWidgetContents_an_cr.setObjectName("scrollAreaWidgetContents_an_cr")
+		self.gridLayout_scrollA_an_cr = QtWidgets.QGridLayout(self.scrollAreaWidgetContents_an_cr)
+		self.gridLayout_scrollA_an_cr.setObjectName("gridLayout_scrollA_an_cr")
 		self.create_checkbox_gk('an_cr', an_beschreibung)
 		self.tab_widget_gk_cr.setTabText(self.tab_widget_gk_cr.indexOf(self.tab_an_cr), _translate("MainWindow", "Analysis", None))
-
+		self.scrollArea_an_cr.setFrameShape(QtWidgets.QFrame.NoFrame)
+		self.scrollArea_an_cr.setWidget(self.scrollAreaWidgetContents_an_cr)
+		self.gridLayout_an_cr.addWidget(self.scrollArea_an_cr, 1, 0, 7, 1)
 		# ### WS ####
 		self.tab_ws_cr = QtWidgets.QWidget()
 		self.tab_ws_cr.setObjectName(_fromUtf8("tab_ws_cr"))
 		self.gridLayout_ws_cr = QtWidgets.QGridLayout(self.tab_ws_cr)
 		self.gridLayout_ws_cr.setObjectName(_fromUtf8("gridLayout_ws_cr"))
 		self.tab_widget_gk_cr.addTab(self.tab_ws_cr, _fromUtf8(""))
+		self.scrollArea_ws_cr = QtWidgets.QScrollArea(self.tab_ws_cr)
+		self.scrollArea_ws_cr.setWidgetResizable(True)
+		self.scrollArea_ws_cr.setObjectName("scrollArea_ws_cr")
+		self.scrollAreaWidgetContents_ws_cr = QtWidgets.QWidget()
+		#self.scrollAreaWidgetContents_fa.setGeometry(QtCore.QRect(0, 0, 641, 252))
+		self.scrollAreaWidgetContents_ws_cr.setObjectName("scrollAreaWidgetContents_ws_cr")
+		self.gridLayout_scrollA_ws_cr = QtWidgets.QGridLayout(self.scrollAreaWidgetContents_ws_cr)
+		self.gridLayout_scrollA_ws_cr.setObjectName("gridLayout_scrollA_ws_cr")
 		self.create_checkbox_gk('ws_cr', ws_beschreibung)
 		self.tab_widget_gk_cr.setTabText(self.tab_widget_gk_cr.indexOf(self.tab_ws_cr), _translate("MainWindow", "Wahrscheinlichkeit und Statistik", None))
-
+		self.scrollArea_ws_cr.setFrameShape(QtWidgets.QFrame.NoFrame)
+		self.scrollArea_ws_cr.setWidget(self.scrollAreaWidgetContents_ws_cr)
+		self.gridLayout_ws_cr.addWidget(self.scrollArea_ws_cr, 1, 0, 7, 1)
 		# ### 5. Klasse ###
 		self.tab_k5_cr = QtWidgets.QWidget()
 		self.tab_k5_cr.setObjectName(_fromUtf8("tab_k5_cr"))
@@ -1226,13 +1356,18 @@ class Ui_MainWindow(object):
 		self.comboBox_pruefungstyp.addItem("")
 		self.comboBox_pruefungstyp.addItem("")
 		self.comboBox_pruefungstyp.addItem("")
+		self.comboBox_pruefungstyp.addItem("")
+		self.comboBox_pruefungstyp.addItem("")
 		self.comboBox_pruefungstyp.setItemText(0, _translate("MainWindow", "Schularbeit",None))
-		self.comboBox_pruefungstyp.setItemText(1, _translate("MainWindow", "Wiederholungsschularbeit",None))
-		self.comboBox_pruefungstyp.setItemText(2, _translate("MainWindow", "Grundkompetenzcheck",None))
+		self.comboBox_pruefungstyp.setItemText(1, _translate("MainWindow", "Nachschularbeit",None))
+		self.comboBox_pruefungstyp.setItemText(2, _translate("MainWindow", "Wiederholungsschularbeit",None))	
 		self.comboBox_pruefungstyp.setItemText(3, _translate("MainWindow", "Wiederholungsprüfung",None))
+		self.comboBox_pruefungstyp.setItemText(4, _translate("MainWindow", "Grundkompetenzcheck",None))
+		self.comboBox_pruefungstyp.setItemText(5, _translate("MainWindow", "Übungsblatt",None))
 		self.comboBox_pruefungstyp.setFocusPolicy(QtCore.Qt.ClickFocus)
 		self.comboBox_pruefungstyp.setMinimumContentsLength(1)
 		self.gridLayout_5.addWidget(self.comboBox_pruefungstyp, 2, 4, 1, 2)
+		self.comboBox_pruefungstyp.currentIndexChanged.connect(self.comboBox_pruefungstyp_changed)
 		#self.verticalLayout_sage.addWidget(self.comboBox_pruefungstyp)
 
 		
@@ -1257,7 +1392,7 @@ class Ui_MainWindow(object):
 
 		self.groupBox_default_pkt = QtWidgets.QGroupBox(self.groupBox_sage)
 		self.groupBox_default_pkt.setObjectName("groupBox_default_pkt")
-		self.groupBox_default_pkt.setMaximumSize(QtCore.QSize(120, 16777215))
+		#self.groupBox_default_pkt.setMaximumSize(QtCore.QSize(120, 16777215))
 		self.verticalLayout_default_pkt = QtWidgets.QVBoxLayout(self.groupBox_default_pkt)
 		self.verticalLayout_default_pkt.setObjectName("verticalLayout_default_pkt")
 		self.spinBox_default_pkt = SpinBox_noWheel(self.groupBox_default_pkt)
@@ -1277,7 +1412,7 @@ class Ui_MainWindow(object):
 		self.lineEdit_klasse.setObjectName("lineEdit_klasse")
 		self.verticalLayout_4.addWidget(self.lineEdit_klasse)
 		self.gridLayout_5.addWidget(self.groupBox_klasse, 2, 2, 3, 1)
-		self.groupBox_klasse.setMaximumSize(QtCore.QSize(90, 16777215))
+		#self.groupBox_klasse.setMaximumSize(QtCore.QSize(90, 16777215))
 		self.groupBox_datum = QtWidgets.QGroupBox(self.groupBox_sage)
 		self.groupBox_datum.setObjectName("groupBox_datum")
 		self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.groupBox_datum)
@@ -1287,7 +1422,7 @@ class Ui_MainWindow(object):
 		self.dateEdit.setObjectName("dateEdit")
 		self.verticalLayout_5.addWidget(self.dateEdit)
 		self.gridLayout_5.addWidget(self.groupBox_datum, 2, 1, 3, 1)
-		self.groupBox_datum.setMaximumSize(QtCore.QSize(140, 16777215))
+		#self.groupBox_datum.setMaximumSize(QtCore.QSize(140, 16777215))
 		self.groupBox_nummer = QtWidgets.QGroupBox(self.groupBox_sage)
 		self.groupBox_nummer.setObjectName("groupBox_nummer")
 		self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.groupBox_nummer)
@@ -1295,7 +1430,7 @@ class Ui_MainWindow(object):
 		self.spinBox_nummer = QtWidgets.QSpinBox(self.groupBox_nummer)
 		self.spinBox_nummer.setValue(1)
 		self.spinBox_nummer.setObjectName("spinBox_nummer")
-		self.groupBox_nummer.setMaximumSize(QtCore.QSize(90, 16777215))
+		#self.groupBox_nummer.setMaximumSize(QtCore.QSize(90, 16777215))
 		self.radioButton_notenschl.setText(_translate("MainWindow", "Notenschlüssel",None))
 		self.radioButton_beurteilungsraster.setText(_translate("MainWindow", "Beurteilungsraster",None))
 		self.groupBox_klasse.setTitle(_translate("MainWindow", "Klasse",None))
@@ -1652,6 +1787,7 @@ class Ui_MainWindow(object):
 		self.actionFeedback.triggered.connect(self.send_feedback)
 		self.actionRefresh_Database.triggered.connect(self.refresh_ddb) #self.label_aufgabentyp.text()[-1]
 		self.actionReset.triggered.connect(self.suchfenster_reset)
+		self.actionReset_sage.triggered.connect(self.reset_sage)
 		self.actionLoad.triggered.connect(partial(self.sage_load, False))
 		self.actionSave.triggered.connect(partial(self.sage_save,''))
 		self.actionAufgaben_Typ1.triggered.connect(self.chosen_aufgabenformat_typ1)
@@ -1717,6 +1853,7 @@ class Ui_MainWindow(object):
 		self.actionBild_konvertieren_jpg_eps.setText(_translate("MainWindow", "Grafik konvertieren (jpg/png zu eps)", None))		
 		self.menuHelp.setTitle(_translate("MainWindow", "?", None))
 		self.actionReset.setText(_translate("MainWindow", "Reset", None))
+		self.actionReset_sage.setText(_translate("MainWindow", "Reset Schularbeit", None))
 		self.actionReset.setShortcut("F4")
 		self.actionLoad.setText(_translate("MainWindow", "Öffnen", None))
 		self.actionLoad.setShortcut('Ctrl+O')
@@ -1764,7 +1901,7 @@ class Ui_MainWindow(object):
 		self.groupBox_af = QtWidgets.QGroupBox(self.centralwidget)
 		self.groupBox_af.setMaximumSize(QtCore.QSize(375, 16777215))
 		self.groupBox_af.setObjectName(_fromUtf8("groupBox_af"))
-		self.groupBox_af.setMaximumHeight(80)
+		#self.groupBox_af.setMaximumHeight(80)
 		self.gridLayout_af = QtWidgets.QGridLayout(self.groupBox_af)
 		self.gridLayout_af.setObjectName(_fromUtf8("gridLayout_af"))
 		self.cb_af_zo = QtWidgets.QCheckBox(self.groupBox_af)
@@ -1780,6 +1917,7 @@ class Ui_MainWindow(object):
 		self.cb_af_lt.setObjectName(_fromUtf8("cb_af_lt"))
 		self.gridLayout_af.addWidget(self.cb_af_lt, 1, 0, 1, 1)
 		self.gridLayout.addWidget(self.groupBox_af, 4, 0, 1, 1)
+
 			# #################
 
 			# ##### ONLY NEEDED for Typ1 #####
@@ -1824,29 +1962,7 @@ class Ui_MainWindow(object):
 		self.create_Tooltip(fa_beschreibung)
 		self.create_Tooltip(an_beschreibung)
 		self.create_Tooltip(ws_beschreibung)
-		# # for all in ag_beschreibung:
-		# #		x=eval('self.cb_'+all)
-		# #		x.setToolTip(ag_beschreibung[all])
-		# #		y=eval('self.cb_'+all+'_cr')
-		# #		y.setToolTip(ag_beschreibung[all])
-			
-		# for all in an_beschreibung:
-		#	x=eval('self.cb_'+all)
-		#	x.setToolTip(an_beschreibung[all])
-
-		# for all in fa_beschreibung:
-		#	x=eval('self.cb_'+all)
-		#	x.setToolTip(fa_beschreibung[all])
-			
-		# for all in ws_beschreibung:
-		#	x=eval('self.cb_'+all)
-		#	x.setToolTip(ws_beschreibung[all])
-			
-#########################################
-		# self.name_checkbox_gk(ag_beschreibung)
-		# self.name_checkbox_gk(an_beschreibung)
-		# self.name_checkbox_gk(fa_beschreibung)
-		# self.name_checkbox_gk(ws_beschreibung)
+#############################################
 
 		self.btn_ag_all.setText(_translate("MainWindow", "alle auswählen", None))
 		self.tab_widget_gk.setTabText(self.tab_widget_gk.indexOf(self.tab_ag), _translate("MainWindow", "Algebra und Geometrie", None))
@@ -1861,18 +1977,10 @@ class Ui_MainWindow(object):
 		self.actionReset.setText(_translate("MainWindow", "Reset", None))
 		self.label_gk_rest.setText(_translate("MainWindow", "", None))
 		self.label_gk.setText(_translate("MainWindow", "", None))
-		# self.label_gk_an.setText(_translate("MainWindow", "", None))
-		# self.label_gk_fa.setText(_translate("MainWindow", "", None))
-		# self.label_gk_ws.setText(_translate("MainWindow", "", None))
 		self.actionExit.setText(_translate("MainWindow", "Exit", None))
 
 		print('Done')
-	# def change_to_full_gk_name(self,chosen_dict):
-	#	x=' '
-	#	for all in chosen_dict:
-	#		if all[-1]=='L':
-	#			x='-L '
-	#		print(all[:2].upper()+x+all[2]+'.'+all[3])
+
 
 	#######################
 	#### Check for Updates
@@ -1915,17 +2023,23 @@ class Ui_MainWindow(object):
 				name, extension=os.path.splitext(opened_file)
 
 				filename_update=os.path.join(path_programm,'_database','_config','update','update%s'%extension)
-				#if extension=='.py':
-			#		filename_update=os.path.join(path_programm,'_database','_config','update','update.py')
-			 #	 elif extension=='.exe':
-			#		filename_update=os.path.join(path_programm,'_database','_config','update','update.exe')
-				if sys.platform.startswith('linux'):
-					os.system(filename_update)
-				elif sys.platform.startswith('darwin'):
-					os.system(filename_update)
-				else:
-					os.startfile(filename_update)										
-				sys.exit(0)
+
+				try:
+					if sys.platform.startswith('linux'):
+						os.system(filename_update)
+					elif sys.platform.startswith('darwin'):
+						os.system('chmod 777 {}'.format(filename_update))
+						os.system(filename_update)
+					else:
+						os.startfile(filename_update)
+					sys.exit(0)
+				except Exception as e:
+					self.warning_window('Das neue Update von LaMA konnte leider nicht installiert werden! Bitte versuchen Sie es später erneut oder melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler".',
+					'Fehler:\n"{}"'.format(e))
+
+					
+														
+				
 
 
 
@@ -1935,6 +2049,7 @@ class Ui_MainWindow(object):
 			x.setToolTip(chosen_dict[all])
 			y=eval('self.cb_'+all+'_cr')
 			y.setToolTip(chosen_dict[all])
+
 
 	def suchfenster_reset(self):
 		global dict_picture_path
@@ -1974,7 +2089,6 @@ class Ui_MainWindow(object):
 		self.entry_suchbegriffe.setText('')	
 		self.cb_solution.setChecked(True)	
 		self.spinBox_punkte.setProperty("value", 1)
-		# self.comboBox_aufgabentyp.setCurrentIndex(0)
 		self.comboBox_aufgabentyp_cr.setCurrentIndex(0)
 		self.comboBox_af.setCurrentIndex(0)
 		self.comboBox_klassen_cr.setCurrentIndex(0)
@@ -1992,16 +2106,63 @@ class Ui_MainWindow(object):
 		self.lineEdit_quelle.setText(_translate("MainWindow", "", None))
 		self.plainTextEdit.setPlainText(_translate("MainWindow", "", None))
 
+	def reset_sage(self):
+		global list_sage_examples
+		try:
+			self.dict_list_input_examples
 
-	# def suchfenster_reset_sage(self):
-	# 	global list_sage_examples
-	# 	#print(self.dict_list_input_examples)
+			msg = QtWidgets.QMessageBox()
+			msg.setIcon(QtWidgets.QMessageBox.Question)
+			msg.setWindowIcon(QtGui.QIcon(logo_path))
+			msg.setWindowTitle("Schularbeit löschen?")
+			msg.setText('Sind Sie sicher, dass Sie das Fenster zurücksetzen wollen und die erstellte Schularbeit löschen möchten?')
+			msg.setStandardButtons(QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
+			buttonY = msg.button(QtWidgets.QMessageBox.Yes)
+			buttonY.setText('Ja')
+			buttonN = msg.button(QtWidgets.QMessageBox.No)
+			buttonN.setText('Nein')
+			ret=msg.exec_()
+			
+			if ret==QtWidgets.QMessageBox.Yes:							
+				self.spinBox_nummer.setValue(1)
+				self.dateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
+				self.comboBox_pruefungstyp.setCurrentIndex(0)
+				self.lineEdit_klasse.setText('')
+				self.spinBox_default_pkt.setValue(1)
+				self.radioButton_notenschl.setChecked(True)
+				self.spinBox_2.setProperty("value", 91)
+				self.spinBox_3.setProperty("value", 80)
+				self.spinBox_4.setProperty("value", 64)
+				self.spinBox_5.setProperty("value", 50)
+				self.comboBox_at_sage.setCurrentIndex(0)
+				self.comboBox_gk.setCurrentIndex(0)
+				self.comboBox_gk_num.setCurrentIndex(0)
+				self.lineEdit_number.setText('')
+				self.dict_list_input_examples={"list_examples": [],
+				"dict_ausgleichspunkte": {},
+				"data_gesamt": {'#': self.spinBox_nummer.value(),'Pruefungstyp': self.comboBox_pruefungstyp.currentText(),
+				"Datum": [self.dateEdit.date().year(),self.dateEdit.date().month(), self.dateEdit.date().day()], #.toPyDate()
+				"Klasse": '',"Beurteilung": 'ns',
+				"Notenschluessel": [self.spinBox_2.value(),self.spinBox_3.value(),self.spinBox_4.value(),self.spinBox_5.value()],
+				"Typ1 Standard":self.spinBox_default_pkt.value(),
+				'num_1': 0,'punkte_1':0, 'num_2':0,'punkte_2': 0, 'ausgleichspunkte': 0,
+				'copy_images' : []}}
+				for all in list_sage_examples:	
+					if re.search('[A-Z]',all)==None:
+						bsp_string=all
+					else:
+						bsp_string=all.replace(' ','').replace('.','').replace('-','_')
+					
+					try:
+						exec('self.groupBox_bsp_{}.setParent(None)'.format(bsp_string))
+					except AttributeError:
+						pass
+				list_sage_examples=[]
+				self.sage_aufgabe_create(False)
 		
-	# 	print('reset')
+		except AttributeError:
+			pass
 
-		# list_sage_examples=[]
-		# self.dict_list_input_examples={}
-		# self.sage_aufgabe_create(True)
 
 
 	def close_app(self):
@@ -2041,9 +2202,9 @@ class Ui_MainWindow(object):
 		msg.setIconPixmap(pixmap.scaled(110, 110, QtCore.Qt.KeepAspectRatio))
 		msg.setWindowIcon(QtGui.QIcon(logo_path))
 		msg.setText("LaMA - LaTeX Mathematik Assistent %s  \n\n"
-		"Author: Christoph Weberndorfer	 \n"
+		"Authors: Christoph Weberndorfer, Matthias Konzett\n\n"
 		"License: GNU General Public License v3.0  \n\n"	
-		"Credits: Matthias Konzett, David Fischer	"%__version__)
+		"Credits: David Fischer	"%__version__)
 		msg.setInformativeText("Logo & Icon: Lisa Schultz")
 		msg.setWindowTitle("Über LaMA - LaTeX Mathematik Assistent")
 		#msg.setDetailedText("The details are as follows:")
@@ -2085,12 +2246,11 @@ class Ui_MainWindow(object):
 				cb_name=str(all+'_cr')
 			else:
 				cb_name=all
-
-			exec('self.cb_'+cb_name+'=QtWidgets.QCheckBox(self.tab_'+gk_type+')')
+			exec('self.cb_'+cb_name+'=QtWidgets.QCheckBox(self.scrollAreaWidgetContents_'+gk_type+')')
 			exec('self.cb_'+cb_name+'.setObjectName(_fromUtf8("cb_'+cb_name+'"))')
 			x=eval('self.cb_'+cb_name)
 			x.setText(_translate("MainWindow", dict_gk[all], None))
-			grid=eval('self.gridLayout_'+gk_type)
+			grid=eval('self.gridLayout_scrollA_'+gk_type)
 			grid.addWidget(x, row,column, 1, 1)
 
 			if row>max_row:
@@ -2126,13 +2286,28 @@ class Ui_MainWindow(object):
 			exec('self.cb_'+klasse+'_'+cb_name+'= QtWidgets.QCheckBox(self.tab_'+klasse+')')	
 			exec('self.cb_'+klasse+'_'+cb_name+'.setObjectName(_fromUtf8("cb_'+klasse+'_'+cb_name+'"))')
 			grid=eval('self.gridLayout_'+klasse)
-			x=eval('self.cb_'+klasse+'_'+cb_name)	
-			x.setText(_translate("MainWindow", cb_label, None))
-			grid.addWidget(x, row,column, 1, 1)	
+			x=eval('self.cb_'+klasse+'_'+cb_name)
+			#x.setMaximumWidth(25)
+			x.setMaximumSize(QtCore.QSize(20,22))
+			exec('self.cb_label_'+klasse+'_'+cb_name+'= QtWidgets.QLabel(self.tab_'+klasse+')')
+			exec('self.cb_label_'+klasse+'_'+cb_name+'.setObjectName(_fromUtf8("cb_label_'+klasse+'_'+cb_name+'"))')
+			x_label=eval('self.cb_label_'+klasse+'_'+cb_name)
+			x_label.setWordWrap(True)
+			x_label.setText(_translate("MainWindow",cb_label, None))
+
+			#self.label = QtWidgets.QLabel(self.groupBox_beispieleingabe)
+			#label_aufgabe=eval('self.label_aufgabe_{}'.format(bsp_string))		
+			#x_label.setWordWrap(True)
+			#label_aufgabe.setObjectName("label_aufgabe_{}".format(bsp_string))
+			#self.gridLayout_gB.addWidget(label_aufgabe, 0, 0, 1, 1)
+
+			#x.setText(_translate("MainWindow", cb_label, None))
+			grid.addWidget(x, row,column, 1, 1)
+			grid.addWidget(x_label, row,column+1, 1, 1)	
 
 			if row>max_row:
 				row=0
-				column+=1
+				column+=2
 			else:
 				row+=1
 
@@ -2144,22 +2319,10 @@ class Ui_MainWindow(object):
 				exec('self.btn_'+klasse+'.setObjectName(_fromUtf8("btn_'+klasse+'"))')
 				x_all=eval('self.btn_'+klasse)
 				x_all.setMinimumSize(QtCore.QSize(100,22))
-				x_all.setMaximumSize(QtCore.QSize(100,22))
+				#x_all.setMaximumSize(QtCore.QSize(100,22))
 				exec('self.gridLayout_'+klasse+'.addWidget(self.btn_'+klasse+', max_row, column+1, 1, 1, QtCore.Qt.AlignRight)')
 		
 
-
-
-	# def name_checkbox_gk(self, chosen_dict):
-	#	for all in chosen_dict:
-	#		x=eval('self.cb_'+all)
-	#		x.setText(_translate("MainWindow", dict_gk[all], None))
-
-	# def name_checkbox_klassen(self, klasse):
-	#	chosen_dict=eval('k'+str(klasse)+'_beschreibung')
-	#	for all in chosen_dict:
-	#		x=eval('self.cb_k'+str(klasse)+'_'+all)
-	#		x.setText(_translate("MainWindow", chosen_dict[all], None))		
 
 	def btn_k5_pressed(self):
 		if self.cb_k5_fu.isChecked()==False:
@@ -2258,45 +2421,25 @@ class Ui_MainWindow(object):
 					eval('set_chosen_gk_%s.add(x.text())'%thema)
 			eval('chosen_gk.extend(sorted(set_chosen_gk_%s))'%thema)
 
-		if len(chosen_gk)>35:	
-			x=', '.join(chosen_gk[:35])
-			x=x + ', ...'
-		else:
-			x=', '.join(chosen_gk)
+		x=', '.join(chosen_gk)
 
 		self.label_gk.setText(_translate("MainWindow", str(x), None))
 
-		# set_chosen_gk_ag=set([])
-		# for all in ag_beschreibung:
-		#	x=eval('self.cb_'+all)
-		#	if x.isChecked()==True:
-		#		set_chosen_gk_ag.add(x.text())
-		# chosen_gk.extend(sorted(set_chosen_gk_ag))
-
-		# set_chosen_gk_fa=set([])
-		# for all in fa_beschreibung:
-		#	x=eval('self.cb_'+all)
-		#	if x.isChecked()==True:
-		#		set_chosen_gk_fa.add(x.text())
-		# chosen_gk.extend(sorted(set_chosen_gk_fa))		
-		
-		# set_chosen_gk_an=set([])
-		# for all in an_beschreibung:
-		#	x=eval('self.cb_'+all)
-		#	if x.isChecked()==True:
-		#		set_chosen_gk_an.add(x.text())
-		# chosen_gk.extend(sorted(set_chosen_gk_an))
-
-		# set_chosen_gk_ws=set([])
-		# for all in ws_beschreibung:
-		#	x=eval('self.cb_'+all)
-		#	if x.isChecked()==True:
-		#		set_chosen_gk_ws.add(x.text())
-		# chosen_gk.extend(sorted(set_chosen_gk_ws))
 
 
-
-	
+	def comboBox_pruefungstyp_changed(self):
+		if self.comboBox_pruefungstyp.currentText()=='Grundkompetenzcheck' or self.comboBox_pruefungstyp.currentText()=='Übungsblatt':
+			self.radioButton_beurteilungsraster.setEnabled(False)
+			self.radioButton_notenschl.setEnabled(False)
+			self.groupBox_notenschl.setEnabled(False)
+			self.groupBox_beurteilungsra.setEnabled(False)
+			self.pushButton_titlepage.setEnabled(False)									 
+		else:
+			self.radioButton_beurteilungsraster.setEnabled(True)
+			self.radioButton_notenschl.setEnabled(True)
+			self.groupBox_notenschl.setEnabled(True)
+			self.groupBox_beurteilungsra.setEnabled(True)			
+			self.pushButton_titlepage.setEnabled(True)									  
 	def cb_rest_checked(self):
 		set_chosen_gk=set([])
 		for all in k5_beschreibung:
@@ -2436,7 +2579,7 @@ class Ui_MainWindow(object):
 			# save_file=os.path.join(path_programm, 'Teildokument')
 			#print(dateiname)
 		# elif dateiname=='Schularbeit_Vorschau':
-		# 	save_file=os.path.join(path_programm, 'Teildokument')
+		#	save_file=os.path.join(path_programm, 'Teildokument')
 
 		else:
 			head,tail=os.path.split(path_file)
@@ -2479,7 +2622,7 @@ class Ui_MainWindow(object):
 			if sys.platform.startswith('linux'):
 				subprocess.Popen('cd "{0}" ; latex --synctex=-1 {1}.tex ; dvips {1}.dvi ; ps2pdf -dNOSAFER {1}.ps'.format(save_file, dateiname),shell=True).wait()
 			elif sys.platform.startswith('darwin'):
-                                #print(dateiname)
+								#print(dateiname)
 				subprocess.Popen('cd "{0}" ; latex --synctex=-1 "{1}.tex" ; dvips "{1}.dvi" ; ps2pdf -dNOSAFER "{1}.ps"'.format(save_file, dateiname),shell=True).wait()		
 			else:
 				subprocess.Popen('cd "{0}" & latex --synctex=-1 "{1}.tex"& dvips "{1}.dvi" & ps2pdf -dNOSAFER "{1}.ps"'.format(save_file, dateiname),cwd=os.path.splitdrive(path_file)[0],shell=True).wait()
@@ -3947,7 +4090,7 @@ class Ui_MainWindow(object):
 
 		if file_loaded==False:
 			self.update_lists_examples()
-	
+
 
 		for example in list_sage_examples:
 			if re.search('[A-Z]',example)==None:
@@ -4094,6 +4237,7 @@ class Ui_MainWindow(object):
 			self.groupBox_abstand.setObjectName("groupBox_abstand")
 			self.groupBox_abstand.setTitle(_translate("MainWindow", "Abstand (cm)",None))
 			self.groupBox_abstand.setMaximumSize(QtCore.QSize(100, 16777215))
+			self.groupBox_abstand.setToolTip('Neue Seite: Abstand=99')
 			self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.groupBox_abstand)
 			#self.groupBox_abstand.setMaximumSize(QtCore.QSize(180, 152))
 			if typ==2:
@@ -4239,7 +4383,7 @@ class Ui_MainWindow(object):
 
 
 		# for all in self.dict_sage_ausgleichspunkte_chosen[selected_typ2_path]:
-		# 	print(all)
+		#	print(all)
 		#print(self.dict_sage_ausgleichspunkte_chosen)
 		if bsp_name in self.dict_sage_ausgleichspunkte_chosen.keys():
 			# print(self.dict_sage_ausgleichspunkte_chosen[selected_typ2_path])
@@ -4544,7 +4688,7 @@ class Ui_MainWindow(object):
 		
 		#print(self.dict_list_input_examples)
 
-	def pushButton_vorschau_pressed(self, ausgabetyp, index, maximum):
+	def pushButton_vorschau_pressed(self, ausgabetyp, index, maximum,pdf=True,lama=True):
 		if ausgabetyp=='vorschau':
 			self.save_dict_examples_data()
 
@@ -4608,7 +4752,8 @@ class Ui_MainWindow(object):
 						filename= filename.replace(character, dict_umlaute[character])
 				filename_vorschau=os.path.join(dirname, filename)
 				
-				Ui_MainWindow.sage_save(self, filename_vorschau) #
+				if lama==True:
+					Ui_MainWindow.sage_save(self, filename_vorschau) #
 
 			else:
 				dirname=os.path.dirname(self.chosen_path_schularbeit_erstellen[0])
@@ -4677,6 +4822,8 @@ class Ui_MainWindow(object):
 				vorschau.write('\\textsc{{Grundkompetenzcheck -- {0}}} \\hfill \\textsc{{Name:}} \\rule{{8cm}}{{0.4pt}} \\normalsize \\\ \\vspace{{\\baselineskip}} \n\n'.format(gruppe))
 			else:
 				vorschau.write('\\textsc{Grundkompetenzcheck} \\hfill \\textsc{Name:} \\rule{8cm}{0.4pt} \\normalsize \\\ \\vspace{\\baselineskip} \n\n')
+		elif self.dict_list_input_examples['data_gesamt']['Pruefungstyp']=='Übungsblatt':
+			vorschau.write('\\subsection{Übungsblatt}')
 		else:
 			vorschau.write("\\begin{titlepage}\n"
 			"\\flushright\n")		
@@ -4706,8 +4853,11 @@ class Ui_MainWindow(object):
 					vorschau.write("\\textsc{{\\Huge {0}. Mathematikschularbeit}} \\\ \n".format(self.dict_list_input_examples['data_gesamt']['#']))
 					if self.dict_list_input_examples['data_gesamt']['Pruefungstyp']=='Wiederholungsschularbeit':
 						vorschau.write("[0.5cm]"
-						"\\textsc{\Huge Wiederholung} \\\ \n")
-					vorschau.write("[1cm] \n")
+						"\\textsc{\Large Wiederholung} \\\ \n")
+					if self.dict_list_input_examples['data_gesamt']['Pruefungstyp']=='Nachschularbeit':
+						vorschau.write("[0.5cm]"
+						"\\textsc{\Large Nachschularbeit} \\\ \n")
+					vorschau.write("[2cm] \n")
 			if self.dict_titlepage['datum']==True:
 				vorschau.write("\\textsc{{\Large am {0}}}\\\ [1cm] \n".format(datum))
 			if self.dict_titlepage['klasse']==True:
@@ -4717,9 +4867,9 @@ class Ui_MainWindow(object):
 			if ausgabetyp=='schularbeit' and maximum>2:	
 				vorschau.write("\\textsc{{\\Large Gruppe {0}}} \\\ [1cm]\n".format(gruppe))
 			# else:
-			# 	vorschau.write("\\vphantom{\\textsc{\\Large Gruppe}}\\\ [1cm] \n")
+			#	vorschau.write("\\vphantom{\\textsc{\\Large Gruppe}}\\\ [1cm] \n")
 			#vorschau.write("[1cm]")		
-			if self.dict_titlepage['name']==True: 		
+			if self.dict_titlepage['name']==True:		
 				vorschau.write("\\Large Name: \\rule{8cm}{0.4pt} \\\ \n")
 			vorschau.write("\\vfil\\vfil\\vfil \n")
 			if self.dict_titlepage['note']==True:
@@ -4732,6 +4882,7 @@ class Ui_MainWindow(object):
 				exkl_teil2_pkt= self.dict_list_input_examples['data_gesamt']['punkte_2']-self.dict_list_input_examples['data_gesamt']['ausgleichspunkte']
 				vorschau.write("\\newpage \n"
 				"\\flushleft \\normalsize\n"
+				"\\thispagestyle{{empty}}\n"
 				"\\beurteilungsraster{{0.85}}{{0.68}}{{0.5}}{{1/3}}{{ % Prozentschluessel\n"
 				"T1={{{0}}}, % Punkte im Teil 1\n"	
 				"AP={{{1}}}, % Ausgleichspunkte aus Teil 2\n"  
@@ -4768,7 +4919,7 @@ class Ui_MainWindow(object):
 			#print(self.dict_list_input_examples['dict_ausgleichspunkte'].keys())
 			
 
-			##### adapt content for  creation ###
+			##### adapt content for	 creation ###
 
 			if all in self.dict_list_input_examples['dict_ausgleichspunkte'].keys():
 				content=[line.replace('\\fbox{A}','') for line in content]
@@ -4810,8 +4961,8 @@ class Ui_MainWindow(object):
 								shutil.copy(os.path.join(path_programm, '_database_inoffiziell', 'Bilder', image),os.path.join(os.path.dirname(self.chosen_path_schularbeit_erstellen[0]), image))
 							
 							# else:							
-							# 	print('no file found')
-							# 	return
+							#	print('no file found')
+							#	return
 
 				for image in self.dict_list_input_examples['data_gesamt']['copy_images']:
 					content=[line.replace('../_database/Bilder/','') for line in content]
@@ -4846,7 +4997,7 @@ class Ui_MainWindow(object):
 			except ValueError:
 				gk=''
 
-			if self.dict_list_input_examples['data_gesamt']['Pruefungstyp']=='Grundkompetenzcheck':
+			if self.dict_list_input_examples['data_gesamt']['Pruefungstyp']=='Grundkompetenzcheck' or self.dict_list_input_examples['data_gesamt']['Pruefungstyp']=='Übungsblatt':
 				header=''
 			else:
 				if control_counter==0 and typ==1:
@@ -4871,10 +5022,13 @@ class Ui_MainWindow(object):
 				vorschau.write("\\newpage\n\n%s\\begin{langesbeispiel} \item["%header+str(spinBox_pkt)+"]\n"+example[1]+"\n"+example[2]+"\n\n")
 
 			if spinBox_abstand !=0:
-				vorschau.write("\\vspace{"+str(spinBox_abstand)+"cm} \n\n")
+				if spinBox_abstand==99:
+					vorschau.write("\\newpage \n\n")
+				else:	
+					vorschau.write("\\vspace{"+str(spinBox_abstand)+"cm} \n\n")
 		
 			
-		if self.dict_list_input_examples['data_gesamt']['Pruefungstyp']!='Grundkompetenzcheck':
+		if self.dict_list_input_examples['data_gesamt']['Pruefungstyp']!='Grundkompetenzcheck' and self.dict_list_input_examples['data_gesamt']['Pruefungstyp']!='Übungsblatt':
 			if self.dict_list_input_examples['data_gesamt']['Beurteilung']=='ns':
 				notenschluessel=self.dict_list_input_examples['data_gesamt']['Notenschluessel']	
 				vorschau.write("\n\n\\notenschluessel{{{0}}}{{{1}}}{{{2}}}{{{3}}}".format(notenschluessel[0]/100,notenschluessel[1]/100,notenschluessel[2]/100,notenschluessel[3]/100))
@@ -4891,28 +5045,29 @@ class Ui_MainWindow(object):
 		if ausgabetyp=='schularbeit':
 			name, extension=os.path.splitext(filename_vorschau)
 
-			Ui_MainWindow.create_pdf(self, name, index, maximum)
+			if pdf==True:
+				Ui_MainWindow.create_pdf(self, name, index, maximum)
 
 
-			if maximum>2:
-				if index%2==0:
-					shutil.move(name+'.pdf', name+'_{}_Loesung.pdf'.format(dict_gruppen[int(index/2)]))
+				if maximum>2:
+					if index%2==0:
+						shutil.move(name+'.pdf', name+'_{}_Loesung.pdf'.format(dict_gruppen[int(index/2)]))
+					else:
+						shutil.move(name+'.pdf', name+'_{}.pdf'.format(dict_gruppen[int(index/2)]))
 				else:
-					shutil.move(name+'.pdf', name+'_{}.pdf'.format(dict_gruppen[int(index/2)]))
-			else:
-				if index%2==0:
-					shutil.move(name+'.pdf', name+'_Loesung.pdf')
-			
-		
-			if index==maximum-1:
-				with open(filename_vorschau,"r",encoding='utf8') as vorschau:
-					text=vorschau.read()
-
-				text=re.sub(r'setcounter{Zufall}{.}','setcounter{Zufall}{0}', text)
-				text=re.sub(r'Large Gruppe .','Large Gruppe A', text)
+					if index%2==0:
+						shutil.move(name+'.pdf', name+'_Loesung.pdf')
 				
-				with open(filename_vorschau,"w",encoding='utf8') as vorschau:
-					vorschau.write(text)
+			
+				if index==maximum-1:
+					with open(filename_vorschau,"r",encoding='utf8') as vorschau:
+						text=vorschau.read()
+
+					text=re.sub(r'setcounter{Zufall}{.}','setcounter{Zufall}{0}', text)
+					text=re.sub(r'Large Gruppe .','Large Gruppe A', text)
+					
+					with open(filename_vorschau,"w",encoding='utf8') as vorschau:
+						vorschau.write(text)
 
 		
 		#MainWindow.show()
@@ -4925,9 +5080,6 @@ class Ui_MainWindow(object):
 
 
 	def pushButton_send_pressed(self):
-		gmail_user = 'lamabugfix@gmail.com'
-		gmail_password = 'abcd&1234'
-
 		if self.comboBox_at_fb.currentText()=='Allgemeine Rückmeldung':
 			example='Allgemeiner Bug Report'
 			if self.plainTextEdit_fb.toPlainText()=='':
@@ -4961,10 +5113,28 @@ class Ui_MainWindow(object):
 
 		content='Subject: {0}: {1}\n\nProblembeschreibung:\n\n{2}\n\n\nKontakt: {3}'.format(example,fehler, description, contact)
 
-		
+		gmail_user = 'lamabugfix@gmail.com'
+		try:
+			fbpassword_path = os.path.join(path_programm,'_database','_config')
+			fbpassword_file = os.path.join(fbpassword_path,'fbpassword.txt')
+			f=open(fbpassword_file,'r')
+			fbpassword_check=[]
+			fbpassword_check.append(f.read().replace(' ','').replace('\n',''))
+			gmail_password = fbpassword_check[0]
+		except FileNotFoundError:
+			pw_msg = QtWidgets.QInputDialog(None, QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint)
+			pw_msg.setInputMode(QtWidgets.QInputDialog.TextInput)
+			pw_msg.setWindowTitle("Passworteingabe nötig")
+			pw_msg.setLabelText("Passwort:")
+			pw_msg.setCancelButtonText("Abbrechen")
+			pw_msg.setWindowIcon(QtGui.QIcon(logo_path))
+			if pw_msg.exec_() == QtWidgets.QDialog.Accepted:
+				gmail_password=pw_msg.textValue()
+			else:
+				return
+			
 		try:
 			QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-
 			server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
 			server.ehlo()
 			server.login(gmail_user, gmail_password)
@@ -4997,9 +5167,12 @@ class Ui_MainWindow(object):
 
 			return
 		except:
-			msg.close()
 			QtWidgets.QApplication.restoreOverrideCursor()
-			self.warning_window('Die Meldung konnte leider nicht gesendet werden!', 'Überprüfen Sie Ihre Internetverbindung oder versuchen Sie es später erneut.')
+
+			if 'smtplib.SMTPAuthenticationError' in str(sys.exc_info()[0]):
+				self.warning_window('Das eingebene Passwort ist nicht korrekt!', 'Bitte kontaktieren Sie den Support für nähere Informationen:\n\nlama.helpme@gmail.com')
+			else:
+				self.warning_window('Die Meldung konnte leider nicht gesendet werden!', 'Überprüfen Sie Ihre Internetverbindung oder versuchen Sie es später erneut.')
 
 
 #######################################################################
@@ -5116,11 +5289,18 @@ if __name__ == "__main__":
 	import sys
 	app = QApplication(sys.argv)
 	MainWindow = QMainWindow()
+	screen_resolution = app.desktop().screenGeometry()
+	screen_width, screen_height = screen_resolution.width(), screen_resolution.height()
+		
+	MainWindow.setGeometry(30,30,screen_width*0.5,screen_height*0.8)
+	MainWindow.move(30,30)
 
 	ui = Ui_MainWindow()
 	ui.setupUi(MainWindow)
 
+
 	MainWindow.show()
+
 	sys.exit(app.exec_())
 
 

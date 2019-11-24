@@ -8,7 +8,7 @@ import subprocess
 import shutil
 
 path_programm=os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(sys.argv[0]))))
-print(path_programm)
+#print(path_programm)
 #print(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(sys.argv[0])))))
 
 
@@ -44,8 +44,8 @@ name, extension=os.path.splitext(opened_file)
 updatefile_path=os.path.join(path_programm,'_database','_config','update','update%s'%extension)
 newapp_path=os.path.join(path_programm,'_database','_config','update','LaMA%s'%extension)
 mainfile_path=os.path.join(path_programm,'LaMA%s'%extension)
-print(newapp_path)
-print(mainfile_path)
+# print(newapp_path)
+# print(mainfile_path)
 def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█'):
     percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
     filledLength = int(length * iteration // total)
