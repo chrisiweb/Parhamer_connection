@@ -134,8 +134,10 @@ class Ui_Dialog_titlepage(object):
 		self.Dialog=Dialog
 		self.Dialog.setObjectName("Dialog")
 		Dialog.setWindowTitle(_translate("Titelplatt anpassen", "Titelplatt anpassen", None))
-
-
+		# self.Dialog.resize(600, 400)
+		# self.Dialog.setWindowIcon(QtGui.QIcon(logo_path))		
+		# Dialog.setObjectName("Dialog")
+		# Dialog.resize(468, 208)
 		Dialog.setWindowIcon(QtGui.QIcon(logo_path))
 		self.verticalLayout_titlepage = QtWidgets.QVBoxLayout(Dialog)
 		self.verticalLayout_titlepage.setObjectName("verticalLayout_titlepage")
