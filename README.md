@@ -3,11 +3,11 @@
 - Python3
 - PyQt5
 - PyYaml
-- Latex
-- Latex-package: srdp-mathematik <https://ctan.org/pkg/srdp-mathematik>
+- LaTeX
+- LaTeX-package: srdp-mathematik <https://ctan.org/pkg/srdp-mathematik>
 
 ## Screenshots
-![Latex File Assistent](./artwork/program1.png)
+![LaTeX File Assistent](./artwork/program1.png)
 
 ## German Version
 ### Beschreibung
