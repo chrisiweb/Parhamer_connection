@@ -2560,19 +2560,22 @@ class Ui_MainWindow(object):
 		return [ self.atoi(c) for c in re.split('(\d+)', text) ]
 
 	def create_pdf(self, path_file, index, maximum):
-		msg = QtWidgets.QMessageBox()
-		msg.setWindowIcon(QtGui.QIcon(logo_path))
-		msg.setWindowTitle("Lade...")
-		msg.setStandardButtons(QtWidgets.QMessageBox.NoButton)
-		if path_file=='Teildokument' or path_file=='Schularbeit_Vorschau':
-			rest=''
+		if sys.platform.startswith('linux'):
+			MainWindow.hide()
 		else:
-			rest=' ({0}|{1})'.format(index+1, maximum)
-		msg.setText('Die PDF Datei wird erstellt...'+rest)
+			msg = QtWidgets.QMessageBox()
+			msg.setWindowIcon(QtGui.QIcon(logo_path))
+			msg.setWindowTitle("Lade...")
+			msg.setStandardButtons(QtWidgets.QMessageBox.NoButton)
+			if path_file=='Teildokument' or path_file=='Schularbeit_Vorschau':
+				rest=''
+			else:
+				rest=' ({0}|{1})'.format(index+1, maximum)
+			msg.setText('Die PDF Datei wird erstellt...'+rest)
 
-		msg.show()
-		QApplication.processEvents()
-		QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+			msg.show()
+			QApplication.processEvents()
+			QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 		if path_file=='Teildokument':
 			dateiname=path_file+'_'+self.label_aufgabentyp.text()[-1]
 
@@ -2635,8 +2638,10 @@ class Ui_MainWindow(object):
 			os.unlink('{0}/{1}.ps'.format(save_file, dateiname))
 			os.unlink('{0}/{1}.synctex'.format(save_file, dateiname))
 
-
-		msg.close()
+		if sys.platform.startswith('linux'):
+			MainWindow.hide()
+		else:
+			msg.close()
 
 		QtWidgets.QApplication.restoreOverrideCursor()
 
