@@ -3823,7 +3823,10 @@ class Ui_MainWindow(object):
 		msg.setIcon(QtWidgets.QMessageBox.Information)
 		msg.setWindowTitle("Admin Modus - Aufgabe erfolgreich gespeichert")
 		msg.setWindowIcon(QtGui.QIcon(logo_path))
-		msg.setText('Die Typ{0}-Aufgabe mit dem Titel\n\n"{1}"\n\nwurde gespeichert.'.format(chosen_typ, edit_titel))
+		if local_save==True:
+			msg.setText('Die Typ{0}-Aufgabe mit dem Titel\n\n"{1}"\n\nwurde lokal auf ihrem System gespeichert.'.format(chosen_typ, edit_titel))
+		else:
+			msg.setText('Die Typ{0}-Aufgabe mit dem Titel\n\n"{1}"\n\nwurde gespeichert.'.format(chosen_typ, edit_titel))
 		msg.setDetailedText('Details{0}\n'
 		'Grundkompetenz(en): {1}\n'
 		'Punkte: {2}\n'
