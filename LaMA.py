@@ -2596,7 +2596,7 @@ class Ui_MainWindow(object):
 				subprocess.Popen('cd "{0}/Teildokument" ; latex --synctex=-1 {1}.tex ; dvips {1}.dvi ; ps2pdf -dNOSAFER {1}.ps'.format(path_programm, dateiname),shell=True).wait()
 				subprocess.run(['xdg-open', "{0}/Teildokument/{1}.pdf".format(path_programm, dateiname)])
 			elif sys.platform.startswith('darwin'):
-				subprocess.Popen('cd "{0}/Teildokument" ; latex --synctex=-1 {1}.tex ; dvips {1}.dvi ; ps2pdf -dNOSAFER {1}.ps'.format(path_programm, dateiname),shell=True).wait()
+				subprocess.Popen('cd "{0}/Teildokument" ; latex --synctex=-1 {1}.tex ; dvips {1}.dvi ; ps2pdf -dNOSAFER {1}.ps'.format(path_programm, dateiname),shell=True).wait()	
 				subprocess.run(['open', "{0}/Teildokument/{1}.pdf".format(path_programm, dateiname)])
 			else:
 				if os.path.isfile(os.path.join("C:\\","Program Files","SumatraPDF","SumatraPDF.exe")):
@@ -2639,7 +2639,7 @@ class Ui_MainWindow(object):
 			os.unlink('{0}/{1}.synctex'.format(save_file, dateiname))
 
 		if sys.platform.startswith('linux'):
-			MainWindow.hide()
+			MainWindow.show()
 		else:
 			msg.close()
 
