@@ -5158,23 +5158,12 @@ class Ui_MainWindow(object):
         if self.comboBox_at_sage.currentText()[-1] == "1":
             self.comboBox_gk.clear()
             self.lineEdit_number.clear()
-            self.comboBox_gk.addItem("")
-            self.comboBox_gk.addItem("")
-            self.comboBox_gk.addItem("")
-            self.comboBox_gk.addItem("")
-            self.comboBox_gk.addItem("")
-            self.comboBox_gk.addItem("")
-            self.comboBox_gk.addItem("")
-            self.comboBox_gk.addItem("")
-            self.comboBox_gk.addItem("")
-            self.comboBox_gk.setItemText(1, _translate("MainWindow", "AG", None))
-            self.comboBox_gk.setItemText(2, _translate("MainWindow", "FA", None))
-            self.comboBox_gk.setItemText(3, _translate("MainWindow", "AN", None))
-            self.comboBox_gk.setItemText(4, _translate("MainWindow", "WS", None))
-            self.comboBox_gk.setItemText(5, _translate("MainWindow", "K5", None))
-            self.comboBox_gk.setItemText(6, _translate("MainWindow", "K6", None))
-            self.comboBox_gk.setItemText(7, _translate("MainWindow", "K7", None))
-            self.comboBox_gk.setItemText(8, _translate("MainWindow", "K8", None))
+            list_comboBox_gk=["","AG","FA","AN","WS","K5","K6","K7","K8"]
+            index=0
+            for all in list_comboBox_gk:
+                self.comboBox_gk.addItem("")
+                self.comboBox_gk.setItemText(index, _translate("MainWindow", all, None))
+                index+=1
             self.comboBox_gk_num.clear()
 
         if self.comboBox_at_sage.currentText()[-1] == "2":
@@ -5197,23 +5186,12 @@ class Ui_MainWindow(object):
         if self.comboBox_at_fb.currentText()[-1] == "1":
             self.comboBox_fb.clear()
             self.lineEdit_number_fb.clear()
-            self.comboBox_fb.addItem("")
-            self.comboBox_fb.addItem("")
-            self.comboBox_fb.addItem("")
-            self.comboBox_fb.addItem("")
-            self.comboBox_fb.addItem("")
-            self.comboBox_fb.addItem("")
-            self.comboBox_fb.addItem("")
-            self.comboBox_fb.addItem("")
-            self.comboBox_fb.addItem("")
-            self.comboBox_fb.setItemText(1, _translate("MainWindow", "AG", None))
-            self.comboBox_fb.setItemText(2, _translate("MainWindow", "FA", None))
-            self.comboBox_fb.setItemText(3, _translate("MainWindow", "AN", None))
-            self.comboBox_fb.setItemText(4, _translate("MainWindow", "WS", None))
-            self.comboBox_fb.setItemText(5, _translate("MainWindow", "K5", None))
-            self.comboBox_fb.setItemText(6, _translate("MainWindow", "K6", None))
-            self.comboBox_fb.setItemText(7, _translate("MainWindow", "K7", None))
-            self.comboBox_fb.setItemText(8, _translate("MainWindow", "K8", None))
+            list_comboBox_gk=["","AG","FA","AN","WS","K5","K6","K7","K8"]
+            index=0
+            for all in list_comboBox_gk:
+                self.comboBox_gk.addItem("")
+                self.comboBox_gk.setItemText(index, _translate("MainWindow", all, None))
+                index+=1
             self.comboBox_fb_num.clear()
 
         if self.comboBox_at_fb.currentText()[-1] == "2":
