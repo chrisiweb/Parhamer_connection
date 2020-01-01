@@ -171,3 +171,141 @@ class Ui_Dialog_titlepage(object):
             checkbox.setChecked(dict_titlepage[all])
 
         return dict_titlepage
+
+
+class Ui_Dialog_ausgleichspunkte(object):
+    def setupUi(
+        self, Dialog, ausgleichspunkte_split_text, list_sage_ausgleichspunkte_chosen
+    ):
+        # print(list_sage_ausgleichspunkte_chosen)
+        self.ausgleichspunkte_split_text = ausgleichspunkte_split_text
+        self.Dialog = Dialog
+        self.Dialog.setObjectName("Dialog")
+        self.Dialog.resize(600, 400)
+        self.Dialog.setWindowIcon(QtGui.QIcon(logo_path))
+        self.gridLayout_2 = QtWidgets.QGridLayout(Dialog)
+        self.gridLayout_2.setObjectName("gridLayout_2")
+        self.scrollArea = QtWidgets.QScrollArea(Dialog)
+        self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollArea.setObjectName("scrollArea")
+        self.scrollAreaWidgetContents = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 600, 500))
+        self.scrollArea.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
+        self.gridLayout = QtWidgets.QGridLayout(self.scrollAreaWidgetContents)
+        self.gridLayout.setObjectName("gridLayout")
+        self.label_einleitung = QtWidgets.QLabel(self.scrollAreaWidgetContents)
+        self.label_einleitung.setWordWrap(True)
+        self.label_einleitung.setObjectName("label_einleitung")
+        self.label_einleitung.setText(
+            "[...] EINFÜHRUNGSTEXT [...] \n\nAufgabenstellung:\n"
+        )
+        self.gridLayout.addWidget(self.label_einleitung, 0, 1, 1, 3, QtCore.Qt.AlignTop)
+        row = 1
+        cb_counter = 0
+
+        for all in self.ausgleichspunkte_split_text:
+            cb_counter = self.create_checkbox_ausgleich(
+                all, row, cb_counter, list_sage_ausgleichspunkte_chosen
+            )
+            row += 1
+
+        self.label_solution = QtWidgets.QLabel(self.scrollAreaWidgetContents)
+        self.label_solution.setWordWrap(True)
+        self.label_solution.setObjectName("label_solution")
+        self.label_solution.setText("\nLösungserwartung:\n[...]")
+        self.gridLayout.addWidget(self.label_solution, row, 1, 1, 3, QtCore.Qt.AlignTop)
+        row += 1
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+        self.gridLayout_2.addWidget(self.scrollArea, 0, 0, 1, 1)
+        self.buttonBox = QtWidgets.QDialogButtonBox(self.Dialog)
+        self.buttonBox = QtWidgets.QDialogButtonBox(self.Dialog)
+        self.buttonBox.setStandardButtons(
+            QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel
+        )
+
+        buttonX = self.buttonBox.button(QtWidgets.QDialogButtonBox.Cancel)
+        buttonX.setText("Abbrechen")
+        self.buttonBox.setObjectName("buttonBox")
+        self.buttonBox.rejected.connect(self.Dialog.reject)
+        self.gridLayout_2.addWidget(self.buttonBox, 1, 0, 1, 1)
+        self.buttonBox.accepted.connect(
+            partial(self.pushButton_OK_pressed, list_sage_ausgleichspunkte_chosen)
+        )
+        self.retranslateUi(self.Dialog)
+        QtCore.QMetaObject.connectSlotsByName(self.Dialog)
+
+        # return list_sage_ausgleichspunkte_chosen
+
+    def retranslateUi(self, Dialog):
+        _translate = QtCore.QCoreApplication.translate
+        Dialog.setWindowTitle(
+            _translate("Ausgleichspunkte anpassen", "Ausgleichspunkte anpassen")
+        )
+
+    def create_checkbox_ausgleich(
+        self, linetext, row, cb_counter, list_sage_ausgleichspunkte_chosen
+    ):
+        counter = row - 1
+        if "GRAFIK" in linetext:
+            pass
+        else:
+            exec(
+                "self.checkBox_{} = QtWidgets.QCheckBox(self.scrollAreaWidgetContents)".format(
+                    counter
+                )
+            )
+            checkBox = eval("self.checkBox_{}".format(counter))
+            checkBox.setMaximumSize(QtCore.QSize(20, 16777215))
+            # self.checkBox.setText("")
+            checkBox.setObjectName("checkBox_{}".format(counter))
+            self.gridLayout.addWidget(checkBox, row, 0, 1, 1, QtCore.Qt.AlignTop)
+            cb_counter += 1
+
+        exec(
+            "self.label_{} = QtWidgets.QLabel(self.scrollAreaWidgetContents)".format(
+                counter
+            )
+        )
+        label = eval("self.label_{}".format(counter))
+        label.setWordWrap(True)
+        label.setObjectName("label_{}".format(counter))
+        if "\\fbox{A}" in linetext:
+            linetext = linetext.replace("\\fbox{A}", "")
+        if linetext in list_sage_ausgleichspunkte_chosen:
+            checkBox.setChecked(True)
+
+        label.setText(linetext)
+        self.gridLayout.addWidget(label, row, 1, 1, 2, QtCore.Qt.AlignTop)
+        return cb_counter
+
+    def pushButton_OK_pressed(self, list_sage_ausgleichspunkte_chosen):
+        # print(len(self.ausgleichspunkte_split_text))
+        for i in range(0, len(self.ausgleichspunkte_split_text)):
+            try:
+                checkBox = eval("self.checkBox_{}".format(i))
+                if (
+                    eval("self.label_{}".format(i)).text()
+                    in list_sage_ausgleichspunkte_chosen
+                ):
+                    if checkBox.isChecked() == False:
+                        list_sage_ausgleichspunkte_chosen.remove(
+                            eval("self.label_{}".format(i)).text()
+                        )
+                else:
+                    if checkBox.isChecked() == True:
+                        list_sage_ausgleichspunkte_chosen.append(
+                            eval("self.label_{}".format(i)).text()
+                        )
+
+            except AttributeError:
+                pass
+
+        # print(list_sage_ausgleichspunkte_chosen)
+
+        self.Dialog.reject()
+        # print(list_sage_ausgleichspunkte_chosen)
+        # self.list_sage_ausgleichspunkte_chosen=list_sage_ausgleichspunkte_chosen
+        return list_sage_ausgleichspunkte_chosen
+

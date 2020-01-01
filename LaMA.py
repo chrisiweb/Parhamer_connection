@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #### Version number ###
 __version__ = "v1.8.5"
-__lastupdate__ = "11/19"
+__lastupdate__ = "01/20"
 ####################
 
 from PyQt5 import QtCore, QtWidgets, QtGui
@@ -11,7 +11,8 @@ import time
 import threading
 import sys
 import os
-import os.path
+
+# import os.path
 from pathlib import Path
 import datetime
 from datetime import date
@@ -25,16 +26,20 @@ import yaml
 from PIL import Image  ## pillow
 import smtplib
 from config import config_loader, path_programm, logo_path
-from subwindows import Ui_Dialog_titlepage
+from list_of_widgets import (
+    widgets_search,
+    widgets_create,
+    widgets_sage,
+    widgets_feedback,
+)
+from subwindows import Ui_Dialog_titlepage, Ui_Dialog_ausgleichspunkte
 from translate import _fromUtf8, _translate
-
+from sort_items import natural_keys
 
 try:
     loaded_lama_file_path = sys.argv[1]
 except IndexError:
     loaded_lama_file_path = ""
-
-
 
 
 print("Loading...")
@@ -58,78 +63,6 @@ dict_aufgabenformate = config_loader(config_file, "dict_aufgabenformate")
 Klassen = config_loader(config_file, "Klassen")
 
 
-widgets_search = [
-    "actionReset",
-    "actionLoad",
-    "actionSave",
-    "menuDateityp",
-    "menuSage",
-    "menuNeu",
-    "menuFeedback",
-    "menuHelp",
-    "label_update",
-    "combobox_searchtype",
-    "label_aufgabentyp",
-    "groupBox_ausgew_gk",
-    "groupBox_af",
-    "groupBox_gk",
-    "groupBox_klassen",
-    "groupBox_themen_klasse",
-    "groupBox_titelsuche",
-    "cb_solution",
-    "btn_suche",
-]  #'actionRefresh_Database'
-
-widgets_create = [
-    "actionReset",
-    "menuBild_einf_gen",
-    "menuSuche",
-    "menuSage",
-    "menuFeedback",
-    "menuHelp",
-    "groupBox_aufgabentyp",
-    "groupBox_ausgew_gk_cr",
-    "groupBox_bilder",
-    "groupBox_titel_cr",
-    "groupBox_grundkompetenzen_cr",
-    "groupBox_punkte",
-    "groupBox_klassen_cr",
-    "groupBox_aufgabenformat",
-    "groupBox_beispieleingabe",
-    "groupBox_quelle",
-    "pushButton_save",
-]  #'actionRefresh_Database'
-
-
-widgets_sage = [
-    "actionLoad",
-    "actionSave",
-    "actionReset_sage",
-    "menuSuche",
-    "menuNeu",
-    "menuFeedback",
-    "menuHelp",
-    "comboBox_at_sage",
-    "groupBox_alle_aufgaben",
-    "groupBox_sage",
-]  # ,'comboBox_at_sage','groupBox_sage','groupBox_notenschl','actionRefresh_Database'
-
-
-widgets_feedback = [
-    "menuSuche",
-    "menuSage",
-    "menuNeu",
-    "menuHelp",
-    "comboBox_at_fb",
-    "label_example",
-    "groupBox_alle_aufgaben_fb",
-    "groupBox_fehlertyp",
-    "groupBox_feedback",
-    "groupBox_email",
-    "pushButton_send",
-]
-
-
 dict_picture_path = {}
 set_chosen_gk = set([])
 list_sage_examples = []
@@ -143,147 +76,12 @@ class SpinBox_noWheel(QtWidgets.QSpinBox):
 #### Dialogue Window -- Titelblatt anpassen
 ### imported from subwindows
 
-
 #### Dialog Window - Ausgleichspunkte
-class Ui_Dialog_typ2(object):
-    def setupUi(
-        self, Dialog, ausgleichspunkte_split_text, list_sage_ausgleichspunkte_chosen
-    ):
-        # print(list_sage_ausgleichspunkte_chosen)
-        self.ausgleichspunkte_split_text = ausgleichspunkte_split_text
-        self.Dialog = Dialog
-        self.Dialog.setObjectName("Dialog")
-        self.Dialog.resize(600, 400)
-        self.Dialog.setWindowIcon(QtGui.QIcon(logo_path))
-        self.gridLayout_2 = QtWidgets.QGridLayout(Dialog)
-        self.gridLayout_2.setObjectName("gridLayout_2")
-        self.scrollArea = QtWidgets.QScrollArea(Dialog)
-        self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.scrollArea.setWidgetResizable(True)
-        self.scrollArea.setObjectName("scrollArea")
-        self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 600, 500))
-        self.scrollArea.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
-        self.gridLayout = QtWidgets.QGridLayout(self.scrollAreaWidgetContents)
-        self.gridLayout.setObjectName("gridLayout")
-        self.label_einleitung = QtWidgets.QLabel(self.scrollAreaWidgetContents)
-        self.label_einleitung.setWordWrap(True)
-        self.label_einleitung.setObjectName("label_einleitung")
-        self.label_einleitung.setText(
-            "[...] EINFÜHRUNGSTEXT [...] \n\nAufgabenstellung:\n"
-        )
-        self.gridLayout.addWidget(self.label_einleitung, 0, 1, 1, 3, QtCore.Qt.AlignTop)
-        row = 1
-        cb_counter = 0
-
-        for all in self.ausgleichspunkte_split_text:
-            cb_counter = self.create_checkbox_ausgleich(
-                all, row, cb_counter, list_sage_ausgleichspunkte_chosen
-            )
-            row += 1
-
-        self.label_solution = QtWidgets.QLabel(self.scrollAreaWidgetContents)
-        self.label_solution.setWordWrap(True)
-        self.label_solution.setObjectName("label_solution")
-        self.label_solution.setText("\nLösungserwartung:\n[...]")
-        self.gridLayout.addWidget(self.label_solution, row, 1, 1, 3, QtCore.Qt.AlignTop)
-        row += 1
-        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-        self.gridLayout_2.addWidget(self.scrollArea, 0, 0, 1, 1)
-        self.buttonBox = QtWidgets.QDialogButtonBox(self.Dialog)
-        self.buttonBox = QtWidgets.QDialogButtonBox(self.Dialog)
-        self.buttonBox.setStandardButtons(
-            QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel
-        )
-
-        buttonX = self.buttonBox.button(QtWidgets.QDialogButtonBox.Cancel)
-        buttonX.setText("Abbrechen")
-        self.buttonBox.setObjectName("buttonBox")
-        self.buttonBox.rejected.connect(self.Dialog.reject)
-        self.gridLayout_2.addWidget(self.buttonBox, 1, 0, 1, 1)
-        self.buttonBox.accepted.connect(
-            partial(self.pushButton_OK_pressed, list_sage_ausgleichspunkte_chosen)
-        )
-        self.retranslateUi(self.Dialog)
-        QtCore.QMetaObject.connectSlotsByName(self.Dialog)
-
-        # return list_sage_ausgleichspunkte_chosen
-
-    def retranslateUi(self, Dialog):
-        _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(
-            _translate("Ausgleichspunkte anpassen", "Ausgleichspunkte anpassen")
-        )
-
-    def create_checkbox_ausgleich(
-        self, linetext, row, cb_counter, list_sage_ausgleichspunkte_chosen
-    ):
-        counter = row - 1
-        if "GRAFIK" in linetext:
-            pass
-        else:
-            exec(
-                "self.checkBox_{} = QtWidgets.QCheckBox(self.scrollAreaWidgetContents)".format(
-                    counter
-                )
-            )
-            checkBox = eval("self.checkBox_{}".format(counter))
-            checkBox.setMaximumSize(QtCore.QSize(20, 16777215))
-            # self.checkBox.setText("")
-            checkBox.setObjectName("checkBox_{}".format(counter))
-            self.gridLayout.addWidget(checkBox, row, 0, 1, 1, QtCore.Qt.AlignTop)
-            cb_counter += 1
-
-        exec(
-            "self.label_{} = QtWidgets.QLabel(self.scrollAreaWidgetContents)".format(
-                counter
-            )
-        )
-        label = eval("self.label_{}".format(counter))
-        label.setWordWrap(True)
-        label.setObjectName("label_{}".format(counter))
-        if "\\fbox{A}" in linetext:
-            linetext = linetext.replace("\\fbox{A}", "")
-        if linetext in list_sage_ausgleichspunkte_chosen:
-            checkBox.setChecked(True)
-
-        label.setText(linetext)
-        self.gridLayout.addWidget(label, row, 1, 1, 2, QtCore.Qt.AlignTop)
-        return cb_counter
-
-    def pushButton_OK_pressed(self, list_sage_ausgleichspunkte_chosen):
-        # print(len(self.ausgleichspunkte_split_text))
-        for i in range(0, len(self.ausgleichspunkte_split_text)):
-            try:
-                checkBox = eval("self.checkBox_{}".format(i))
-                if (
-                    eval("self.label_{}".format(i)).text()
-                    in list_sage_ausgleichspunkte_chosen
-                ):
-                    if checkBox.isChecked() == False:
-                        list_sage_ausgleichspunkte_chosen.remove(
-                            eval("self.label_{}".format(i)).text()
-                        )
-                else:
-                    if checkBox.isChecked() == True:
-                        list_sage_ausgleichspunkte_chosen.append(
-                            eval("self.label_{}".format(i)).text()
-                        )
-
-            except AttributeError:
-                pass
-
-        # print(list_sage_ausgleichspunkte_chosen)
-
-        self.Dialog.reject()
-        # print(list_sage_ausgleichspunkte_chosen)
-        # self.list_sage_ausgleichspunkte_chosen=list_sage_ausgleichspunkte_chosen
-        return list_sage_ausgleichspunkte_chosen
+### imported from subwindows
 
 
 #### Dialog Window - Schularbeit erstellen
-class Ui_Dialog(object):
+class Ui_Dialog_erstellen(object):
     def setupUi(
         self,
         Dialog,
@@ -568,7 +366,7 @@ class Ui_MainWindow(object):
             | QtCore.Qt.WindowTitleHint
             | QtCore.Qt.WindowCloseButtonHint,
         )
-        self.ui = Ui_Dialog()
+        self.ui = Ui_Dialog_erstellen()
         self.ui.setupUi(
             self.Dialog,
             dict_list_input_examples,
@@ -2902,7 +2700,7 @@ class Ui_MainWindow(object):
 
             temp_dict_beispieldaten = {}
             temp_list = list(beispieldaten_dateipfad.keys())
-            temp_list.sort(key=self.natural_keys)
+            temp_list.sort(key=natural_keys)
             for all in temp_list:
                 temp_dict_beispieldaten.update({all: beispieldaten_dateipfad[all]})
 
@@ -2935,12 +2733,6 @@ class Ui_MainWindow(object):
     ############################################################################
     ########################### CREATE PDF ####################################
     ############################################################################
-
-    def atoi(self, text):
-        return int(text) if text.isdigit() else text
-
-    def natural_keys(self, text):
-        return [self.atoi(c) for c in re.split("(\d+)", text)]
 
     def create_pdf(self, path_file, index, maximum):
         if sys.platform.startswith("linux"):
@@ -3304,7 +3096,7 @@ class Ui_MainWindow(object):
         # if not len(self.entry_suchbegriffe.text())==0:
         # 	suchbegriffe.append(self.entry_suchbegriffe.text())
 
-        gesammeltedateien.sort(key=self.natural_keys)
+        gesammeltedateien.sort(key=natural_keys)
 
         dict_gesammeltedateien = {}
 
@@ -3381,7 +3173,7 @@ class Ui_MainWindow(object):
             retval = msg.exec_()
             return
 
-        beispieldaten.sort(key=self.natural_keys)
+        beispieldaten.sort(key=natural_keys)
         file = open(filename_teildokument, "a", encoding="utf8")
         file.write("\n \\scriptsize Suchbegriffe: ")
         for all in suchbegriffe:
@@ -5341,7 +5133,7 @@ class Ui_MainWindow(object):
             | QtCore.Qt.WindowTitleHint
             | QtCore.Qt.WindowCloseButtonHint,
         )
-        self.ui = Ui_Dialog_typ2()
+        self.ui = Ui_Dialog_ausgleichspunkte()
         self.ui.setupUi(
             self.Dialog, ausgleichspunkte_split_text, list_sage_ausgleichspunkte_chosen
         )
@@ -5514,15 +5306,6 @@ class Ui_MainWindow(object):
                 beispieldaten_dateipfad_2 = json.load(f)
 
         self.beispieldaten_dateipfad_2 = beispieldaten_dateipfad_2
-
-        def atoi(text):
-            return int(text) if text.isdigit() else text
-
-        def natural_keys(text):
-            return [atoi(c) for c in re.split("(\d+)", text)]
-
-        # print(list(beispieldaten_dateipfad.keys())[0])
-        # print(list(beispieldaten_dateipfad.keys())[0].split(' '))
 
         list_beispieldaten = []
         if list_mode == "sage":
