@@ -25,7 +25,7 @@ jobs:
       run: |  
         pyinstaller -F LaMA.py
     - name: Upload
-    - uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v1
       with:
         name: my-artifact
         path: try_createPDF/LaMA.exe
