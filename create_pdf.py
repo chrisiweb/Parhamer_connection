@@ -5,6 +5,7 @@ from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from config import logo_path, path_programm
 
+
 def create_pdf(path_file, index, maximum, typ=0):
     if sys.platform.startswith("linux"):
         pass
@@ -21,9 +22,7 @@ def create_pdf(path_file, index, maximum, typ=0):
 
         msg.show()
         QApplication.processEvents()
-        QtWidgets.QApplication.setOverrideCursor(
-            QtGui.QCursor(QtCore.Qt.WaitCursor)
-        )
+        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
     if path_file == "Teildokument":
         dateiname = path_file + "_" + typ
 
@@ -61,16 +60,11 @@ def create_pdf(path_file, index, maximum, typ=0):
                 shell=True,
             ).wait()
             subprocess.run(
-                [
-                    "open",
-                    "{0}/Teildokument/{1}.pdf".format(path_programm, dateiname),
-                ]
+                ["open", "{0}/Teildokument/{1}.pdf".format(path_programm, dateiname),]
             )
         else:
             if os.path.isfile(
-                os.path.join(
-                    "C:\\", "Program Files", "SumatraPDF", "SumatraPDF.exe"
-                )
+                os.path.join("C:\\", "Program Files", "SumatraPDF", "SumatraPDF.exe")
             ):
                 sumatrapdf = os.path.join(
                     "C:\\", "Program Files", "SumatraPDF", "SumatraPDF.exe"
@@ -104,9 +98,7 @@ def create_pdf(path_file, index, maximum, typ=0):
                 ).poll()
             else:
                 subprocess.Popen(
-                    'cd "{0}/Teildokument" &"{1}.pdf"'.format(
-                        path_programm, dateiname
-                    ),
+                    'cd "{0}/Teildokument" &"{1}.pdf"'.format(path_programm, dateiname),
                     cwd=os.path.splitdrive(path_programm)[0],
                     shell=True,
                 ).poll()
