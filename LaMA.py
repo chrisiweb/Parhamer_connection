@@ -2060,9 +2060,7 @@ class Ui_MainWindow(object):
                 )
 
                 try:
-                    if sys.platform.startswith("linux"):
-                        os.system(filename_update)
-                    elif sys.platform.startswith("darwin"):
+                    if sys.platform.startswith("linux") or sys.platform.startswith("darwin"):
                         os.system("chmod 777 {}".format(filename_update))
                         os.system(filename_update)
                     else:
