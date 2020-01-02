@@ -1240,30 +1240,20 @@ class Ui_MainWindow(object):
 
         self.comboBox_pruefungstyp = QtWidgets.QComboBox(self.groupBox_sage)
         self.comboBox_pruefungstyp.setObjectName("comboBox_pruefungstyp")
-        self.comboBox_pruefungstyp.addItem("")
-        self.comboBox_pruefungstyp.addItem("")
-        self.comboBox_pruefungstyp.addItem("")
-        self.comboBox_pruefungstyp.addItem("")
-        self.comboBox_pruefungstyp.addItem("")
-        self.comboBox_pruefungstyp.addItem("")
-        self.comboBox_pruefungstyp.setItemText(
-            0, _translate("MainWindow", "Schularbeit", None)
-        )
-        self.comboBox_pruefungstyp.setItemText(
-            1, _translate("MainWindow", "Nachschularbeit", None)
-        )
-        self.comboBox_pruefungstyp.setItemText(
-            2, _translate("MainWindow", "Wiederholungsschularbeit", None)
-        )
-        self.comboBox_pruefungstyp.setItemText(
-            3, _translate("MainWindow", "Wiederholungsprüfung", None)
-        )
-        self.comboBox_pruefungstyp.setItemText(
-            4, _translate("MainWindow", "Grundkompetenzcheck", None)
-        )
-        self.comboBox_pruefungstyp.setItemText(
-            5, _translate("MainWindow", "Übungsblatt", None)
-        )
+        list_comboBox_pruefungstyp = [
+            "Schularbeit",
+            "Nachschularbeit",
+            "Wiederholungsschularbeit",
+            "Grundkompetenzcheck",
+            "Übungsblatt",
+        ]
+        index = 0
+        for all in list_comboBox_pruefungstyp:
+            self.comboBox_pruefungstyp.addItem("")
+            self.comboBox_pruefungstyp.setItemText(
+                index, _translate("MainWindow", all, None)
+            )
+            index += 1
         self.comboBox_pruefungstyp.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.comboBox_pruefungstyp.setMinimumContentsLength(1)
         self.gridLayout_5.addWidget(self.comboBox_pruefungstyp, 2, 4, 1, 2)
@@ -1573,9 +1563,9 @@ class Ui_MainWindow(object):
         self.verticalLayout_fb.setObjectName("verticalLayout_fb")
         self.comboBox_fb = QtWidgets.QComboBox(self.groupBox_alle_aufgaben_fb)
         self.comboBox_fb.setObjectName("comboBox_fb")
-        list_comboBox_gk = ["", "AG", "FA", "AN", "WS", "K5", "K6", "K7", "K8"]
+        list_comboBox_fb = ["", "AG", "FA", "AN", "WS", "K5", "K6", "K7", "K8"]
         index = 0
-        for all in list_comboBox_gk:
+        for all in list_comboBox_fb:
             self.comboBox_fb.addItem("")
             self.comboBox_fb.setItemText(index, _translate("MainWindow", all, None))
             index += 1
