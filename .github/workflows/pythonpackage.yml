@@ -23,4 +23,8 @@ jobs:
         pip install pyinstaller
     - name: Build with pyinstaller
       run: |  
-        pyinstaller LaMA.py
+        pyinstaller -F LaMA.py
+    - name: Cleanup artifacts
+      run: |
+        mkdir artifacts
+        mv dist/*.exe artifacts
