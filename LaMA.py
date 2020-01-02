@@ -1186,7 +1186,7 @@ class Ui_MainWindow(object):
         self.comboBox_at_sage.hide()
 
         self.groupBox_alle_aufgaben = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBox_alle_aufgaben.setMinimumSize(QtCore.QSize(140, 16777215))
+        #self.groupBox_alle_aufgaben.setMinimumSize(QtCore.QSize(140, 16777215))
         self.groupBox_alle_aufgaben.setMaximumSize(QtCore.QSize(180, 16777215))
         self.groupBox_alle_aufgaben.setObjectName("groupBox_alle_aufgaben")
         self.verticalLayout_sage = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben)
