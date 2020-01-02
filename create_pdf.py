@@ -5,10 +5,9 @@ from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from config import logo_path, path_programm
 
-def create_pdf(self, path_file, index, maximum):
+def create_pdf(path_file, index, maximum, typ=0):
     if sys.platform.startswith("linux"):
         pass
-        #MainWindow.hide()
     else:
         msg = QtWidgets.QMessageBox()
         msg.setWindowIcon(QtGui.QIcon(logo_path))
@@ -26,7 +25,7 @@ def create_pdf(self, path_file, index, maximum):
             QtGui.QCursor(QtCore.Qt.WaitCursor)
         )
     if path_file == "Teildokument":
-        dateiname = path_file + "_" + self.label_aufgabentyp.text()[-1]
+        dateiname = path_file + "_" + typ
 
         # save_file=os.path.join(path_programm, 'Teildokument')
         # print(dateiname)
@@ -150,7 +149,6 @@ def create_pdf(self, path_file, index, maximum):
 
     if sys.platform.startswith("linux"):
         pass
-        # MainWindow.show()
     else:
         msg.close()
 

@@ -35,6 +35,7 @@ from list_of_widgets import (
 from subwindows import Ui_Dialog_titlepage, Ui_Dialog_ausgleichspunkte
 from translate import _fromUtf8, _translate
 from sort_items import natural_keys
+from create_pdf import create_pdf
 
 try:
     loaded_lama_file_path = sys.argv[1]
@@ -2734,154 +2735,7 @@ class Ui_MainWindow(object):
     ########################### CREATE PDF ####################################
     ############################################################################
 
-    def create_pdf(self, path_file, index, maximum):
-        if sys.platform.startswith("linux"):
-            MainWindow.hide()
-        else:
-            msg = QtWidgets.QMessageBox()
-            msg.setWindowIcon(QtGui.QIcon(logo_path))
-            msg.setWindowTitle("Lade...")
-            msg.setStandardButtons(QtWidgets.QMessageBox.NoButton)
-            if path_file == "Teildokument" or path_file == "Schularbeit_Vorschau":
-                rest = ""
-            else:
-                rest = " ({0}|{1})".format(index + 1, maximum)
-            msg.setText("Die PDF Datei wird erstellt..." + rest)
 
-            msg.show()
-            QApplication.processEvents()
-            QtWidgets.QApplication.setOverrideCursor(
-                QtGui.QCursor(QtCore.Qt.WaitCursor)
-            )
-        if path_file == "Teildokument":
-            dateiname = path_file + "_" + self.label_aufgabentyp.text()[-1]
-
-            # save_file=os.path.join(path_programm, 'Teildokument')
-            # print(dateiname)
-        # elif dateiname=='Schularbeit_Vorschau':
-        # 	save_file=os.path.join(path_programm, 'Teildokument')
-
-        else:
-            head, tail = os.path.split(path_file)
-            save_file = head
-            dateiname = tail
-
-        # chosen_aufgabenformat=self.label_aufgabentyp.text()[-1]
-
-        if dateiname == "Schularbeit_Vorschau" or dateiname.startswith("Teildokument"):
-            if sys.platform.startswith("linux"):
-                subprocess.Popen(
-                    'cd "{0}/Teildokument" ; latex --synctex=-1 {1}.tex ; dvips {1}.dvi ; ps2pdf -dNOSAFER {1}.ps'.format(
-                        path_programm, dateiname
-                    ),
-                    shell=True,
-                ).wait()
-                subprocess.run(
-                    [
-                        "xdg-open",
-                        "{0}/Teildokument/{1}.pdf".format(path_programm, dateiname),
-                    ]
-                )
-            elif sys.platform.startswith("darwin"):
-                subprocess.Popen(
-                    'cd "{0}/Teildokument" ; latex --synctex=-1 {1}.tex ; dvips {1}.dvi ; ps2pdf -dNOSAFER {1}.ps'.format(
-                        path_programm, dateiname
-                    ),
-                    shell=True,
-                ).wait()
-                subprocess.run(
-                    [
-                        "open",
-                        "{0}/Teildokument/{1}.pdf".format(path_programm, dateiname),
-                    ]
-                )
-            else:
-                if os.path.isfile(
-                    os.path.join(
-                        "C:\\", "Program Files", "SumatraPDF", "SumatraPDF.exe"
-                    )
-                ):
-                    sumatrapdf = os.path.join(
-                        "C:\\", "Program Files", "SumatraPDF", "SumatraPDF.exe"
-                    )
-                elif os.path.isfile(
-                    os.path.join(
-                        "C:\\", "Program Files (x86)", "SumatraPDF", "SumatraPDF.exe"
-                    )
-                ):
-                    sumatrapdf = os.path.join(
-                        "C:\\", "Program Files (x86)", "SumatraPDF", "SumatraPDF.exe"
-                    )
-                else:
-                    sumatrapdf = ""
-
-                # print(os.path.splitdrive(path_programm)[0])
-                subprocess.Popen(
-                    'cd "{0}/Teildokument" & latex --synctex=-1 "{1}.tex"& dvips "{1}.dvi" & ps2pdf -dNOSAFER "{1}.ps"'.format(
-                        path_programm, dateiname
-                    ),
-                    cwd=os.path.splitdrive(path_programm)[0],
-                    shell=True,
-                ).wait()
-                if sumatrapdf != "":
-                    subprocess.Popen(
-                        'cd "{0}/Teildokument" &"{1}" "{2}.pdf"'.format(
-                            path_programm, sumatrapdf, dateiname
-                        ),
-                        cwd=os.path.splitdrive(path_programm)[0],
-                        shell=True,
-                    ).poll()
-                else:
-                    subprocess.Popen(
-                        'cd "{0}/Teildokument" &"{1}.pdf"'.format(
-                            path_programm, dateiname
-                        ),
-                        cwd=os.path.splitdrive(path_programm)[0],
-                        shell=True,
-                    ).poll()
-
-            os.unlink("{0}/Teildokument/{1}.aux".format(path_programm, dateiname))
-            os.unlink("{0}/Teildokument/{1}.log".format(path_programm, dateiname))
-            os.unlink("{0}/Teildokument/{1}.dvi".format(path_programm, dateiname))
-            os.unlink("{0}/Teildokument/{1}.ps".format(path_programm, dateiname))
-
-        else:
-            if sys.platform.startswith("linux"):
-                subprocess.Popen(
-                    'cd "{0}" ; latex --synctex=-1 {1}.tex ; dvips {1}.dvi ; ps2pdf -dNOSAFER {1}.ps'.format(
-                        save_file, dateiname
-                    ),
-                    shell=True,
-                ).wait()
-            elif sys.platform.startswith("darwin"):
-                # print(dateiname)
-                subprocess.Popen(
-                    'cd "{0}" ; latex --synctex=-1 "{1}.tex" ; dvips "{1}.dvi" ; ps2pdf -dNOSAFER "{1}.ps"'.format(
-                        save_file, dateiname
-                    ),
-                    shell=True,
-                ).wait()
-            else:
-                subprocess.Popen(
-                    'cd "{0}" & latex --synctex=-1 "{1}.tex"& dvips "{1}.dvi" & ps2pdf -dNOSAFER "{1}.ps"'.format(
-                        save_file, dateiname
-                    ),
-                    cwd=os.path.splitdrive(path_file)[0],
-                    shell=True,
-                ).wait()
-
-            os.unlink("{0}/{1}.aux".format(save_file, dateiname))
-            os.unlink("{0}/{1}.log".format(save_file, dateiname))
-            os.unlink("{0}/{1}.dvi".format(save_file, dateiname))
-            os.unlink("{0}/{1}.ps".format(save_file, dateiname))
-            os.unlink("{0}/{1}.synctex".format(save_file, dateiname))
-
-        if sys.platform.startswith("linux"):
-            MainWindow.show()
-        else:
-            msg.close()
-
-        QtWidgets.QApplication.restoreOverrideCursor()
 
     def PrepareTeXforPDF(self):
         chosen_aufgabenformat = "Typ%sAufgaben" % self.label_aufgabentyp.text()[-1]
@@ -3227,7 +3081,12 @@ class Ui_MainWindow(object):
             # geometry=MainWindow.geometry()
             # print(geometry)
             # MainWindow.hide()
-            self.create_pdf("Teildokument", 0, 0)
+            typ=self.label_aufgabentyp.text()[-1]
+            if sys.platform.startswith("linux"):
+                MainWindow.hide()
+            create_pdf("Teildokument", 0, 0, typ)
+            if sys.platform.startswith("linux"):
+                MainWindow.show()
             # MainWindow.show()
             # MainWindow.move(geometry.x(),geometry.y())
             # MainWindow.resize(geometry.width(), geometry.height())
@@ -5976,13 +5835,20 @@ class Ui_MainWindow(object):
         # msg.setInformativeText('Möchten Sie das neue Update installieren?')
 
         if ausgabetyp == "vorschau":
-            self.create_pdf("Schularbeit_Vorschau", 0, 0)
-
+            if sys.platform.startswith("linux"):
+                MainWindow.hide()
+            create_pdf("Schularbeit_Vorschau", 0, 0)
+            if sys.platform.startswith("linux"):
+                MainWindow.show()
         if ausgabetyp == "schularbeit":
             name, extension = os.path.splitext(filename_vorschau)
 
             if pdf == True:
-                Ui_MainWindow.create_pdf(self, name, index, maximum)
+                if sys.platform.startswith("linux"):
+                    MainWindow.hide()
+                create_pdf(name, index, maximum)
+                if sys.platform.startswith("linux"):
+                    MainWindow.show()
 
                 if maximum > 2:
                     if index % 2 == 0:
