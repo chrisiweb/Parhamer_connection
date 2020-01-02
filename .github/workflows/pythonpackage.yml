@@ -28,4 +28,4 @@ jobs:
     - uses: actions/upload-artifact@v1
       with:
         name: my-artifact
-        path: binaryfiles_test
+        path: try_createPDF
