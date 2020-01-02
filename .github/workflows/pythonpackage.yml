@@ -24,3 +24,7 @@ jobs:
     - name: build with pyinstaller
       run: |  
         pyinstaller -F LaMA.py
+
+    - uses: actions/upload-artifact@v1
+      with:
+        name: my-artifact
