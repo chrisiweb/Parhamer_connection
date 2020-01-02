@@ -1186,30 +1186,19 @@ class Ui_MainWindow(object):
         self.comboBox_at_sage.hide()
 
         self.groupBox_alle_aufgaben = QtWidgets.QGroupBox(self.centralwidget)
-        #self.groupBox_alle_aufgaben.setMinimumSize(QtCore.QSize(140, 16777215))
+        # self.groupBox_alle_aufgaben.setMinimumSize(QtCore.QSize(140, 16777215))
         self.groupBox_alle_aufgaben.setMaximumSize(QtCore.QSize(180, 16777215))
         self.groupBox_alle_aufgaben.setObjectName("groupBox_alle_aufgaben")
         self.verticalLayout_sage = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben)
         self.verticalLayout_sage.setObjectName("verticalLayout_sage")
         self.comboBox_gk = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
         self.comboBox_gk.setObjectName("comboBox_gk")
-        self.comboBox_gk.addItem("")
-        self.comboBox_gk.addItem("")
-        self.comboBox_gk.addItem("")
-        self.comboBox_gk.addItem("")
-        self.comboBox_gk.addItem("")
-        self.comboBox_gk.addItem("")
-        self.comboBox_gk.addItem("")
-        self.comboBox_gk.addItem("")
-        self.comboBox_gk.addItem("")
-        self.comboBox_gk.setItemText(1, _translate("MainWindow", "AG", None))
-        self.comboBox_gk.setItemText(2, _translate("MainWindow", "FA", None))
-        self.comboBox_gk.setItemText(3, _translate("MainWindow", "AN", None))
-        self.comboBox_gk.setItemText(4, _translate("MainWindow", "WS", None))
-        self.comboBox_gk.setItemText(5, _translate("MainWindow", "K5", None))
-        self.comboBox_gk.setItemText(6, _translate("MainWindow", "K6", None))
-        self.comboBox_gk.setItemText(7, _translate("MainWindow", "K7", None))
-        self.comboBox_gk.setItemText(8, _translate("MainWindow", "K8", None))
+        list_comboBox_gk = ["", "AG", "FA", "AN", "WS", "K5", "K6", "K7", "K8"]
+        index = 0
+        for all in list_comboBox_gk:
+            self.comboBox_gk.addItem("")
+            self.comboBox_gk.setItemText(index, _translate("MainWindow", all, None))
+            index += 1
         self.comboBox_gk.currentIndexChanged.connect(
             partial(self.comboBox_gk_changed, "sage")
         )
@@ -1584,23 +1573,12 @@ class Ui_MainWindow(object):
         self.verticalLayout_fb.setObjectName("verticalLayout_fb")
         self.comboBox_fb = QtWidgets.QComboBox(self.groupBox_alle_aufgaben_fb)
         self.comboBox_fb.setObjectName("comboBox_fb")
-        self.comboBox_fb.addItem("")
-        self.comboBox_fb.addItem("")
-        self.comboBox_fb.addItem("")
-        self.comboBox_fb.addItem("")
-        self.comboBox_fb.addItem("")
-        self.comboBox_fb.addItem("")
-        self.comboBox_fb.addItem("")
-        self.comboBox_fb.addItem("")
-        self.comboBox_fb.addItem("")
-        self.comboBox_fb.setItemText(1, _translate("MainWindow", "AG", None))
-        self.comboBox_fb.setItemText(2, _translate("MainWindow", "FA", None))
-        self.comboBox_fb.setItemText(3, _translate("MainWindow", "AN", None))
-        self.comboBox_fb.setItemText(4, _translate("MainWindow", "WS", None))
-        self.comboBox_fb.setItemText(5, _translate("MainWindow", "K5", None))
-        self.comboBox_fb.setItemText(6, _translate("MainWindow", "K6", None))
-        self.comboBox_fb.setItemText(7, _translate("MainWindow", "K7", None))
-        self.comboBox_fb.setItemText(8, _translate("MainWindow", "K8", None))
+        list_comboBox_gk = ["", "AG", "FA", "AN", "WS", "K5", "K6", "K7", "K8"]
+        index = 0
+        for all in list_comboBox_gk:
+            self.comboBox_fb.addItem("")
+            self.comboBox_fb.setItemText(index, _translate("MainWindow", all, None))
+            index += 1
         self.comboBox_fb.currentIndexChanged.connect(
             partial(self.comboBox_gk_changed, "feedback")
         )
@@ -2735,8 +2713,6 @@ class Ui_MainWindow(object):
     ########################### CREATE PDF ####################################
     ############################################################################
 
-
-
     def PrepareTeXforPDF(self):
         chosen_aufgabenformat = "Typ%sAufgaben" % self.label_aufgabentyp.text()[-1]
 
@@ -3081,7 +3057,7 @@ class Ui_MainWindow(object):
             # geometry=MainWindow.geometry()
             # print(geometry)
             # MainWindow.hide()
-            typ=self.label_aufgabentyp.text()[-1]
+            typ = self.label_aufgabentyp.text()[-1]
             if sys.platform.startswith("linux"):
                 MainWindow.hide()
             create_pdf("Teildokument", 0, 0, typ)
@@ -5017,12 +4993,12 @@ class Ui_MainWindow(object):
         if self.comboBox_at_sage.currentText()[-1] == "1":
             self.comboBox_gk.clear()
             self.lineEdit_number.clear()
-            list_comboBox_gk=["","AG","FA","AN","WS","K5","K6","K7","K8"]
-            index=0
+            list_comboBox_gk = ["", "AG", "FA", "AN", "WS", "K5", "K6", "K7", "K8"]
+            index = 0
             for all in list_comboBox_gk:
                 self.comboBox_gk.addItem("")
                 self.comboBox_gk.setItemText(index, _translate("MainWindow", all, None))
-                index+=1
+                index += 1
             self.comboBox_gk_num.clear()
 
         if self.comboBox_at_sage.currentText()[-1] == "2":
@@ -5045,12 +5021,12 @@ class Ui_MainWindow(object):
         if self.comboBox_at_fb.currentText()[-1] == "1":
             self.comboBox_fb.clear()
             self.lineEdit_number_fb.clear()
-            list_comboBox_gk=["","AG","FA","AN","WS","K5","K6","K7","K8"]
-            index=0
+            list_comboBox_gk = ["", "AG", "FA", "AN", "WS", "K5", "K6", "K7", "K8"]
+            index = 0
             for all in list_comboBox_gk:
                 self.comboBox_gk.addItem("")
                 self.comboBox_gk.setItemText(index, _translate("MainWindow", all, None))
-                index+=1
+                index += 1
             self.comboBox_fb_num.clear()
 
         if self.comboBox_at_fb.currentText()[-1] == "2":
