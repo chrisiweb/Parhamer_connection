@@ -8,7 +8,7 @@
 - LaTeX-package: srdp-mathematik <https://ctan.org/pkg/srdp-mathematik>
 
 ## Screenshots
-![LaTeX File Assistent](./artwork/program1.png)
+![LaTeX File Assistent](./artwork/lama_suche.jpg)
 
 ## German Version
 ### Beschreibung
