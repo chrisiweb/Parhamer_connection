@@ -45,7 +45,7 @@ except IndexError:
 
 print("Loading...")
 
-print(workdir)
+
 print(path_programm)
 print(os.path.dirname(sys.argv[0]))
 
