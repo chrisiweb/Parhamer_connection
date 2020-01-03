@@ -5,9 +5,7 @@ from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from config import logo_path, path_programm
 
-if sys.platform.startswith("linux"):
-    workdir = os.path.dirname(os.path.realpath(__file__))
-    path_programm = os.path.join(workdir)
+
 def create_pdf(path_file, index, maximum, typ=0):
     if sys.platform.startswith("linux"):
         pass
@@ -48,12 +46,12 @@ def create_pdf(path_file, index, maximum, typ=0):
                 ),
                 shell=True,
             ).wait()
-            subprocess.run(
-                [
-                    "xdg-open",
-                    "{0}/Teildokument/{1}.pdf".format(path_programm, dateiname),
-                ]
-            )
+            # subprocess.run(
+            #     [
+            #         "xdg-open",
+            #         "{0}/Teildokument/{1}.pdf".format(path_programm, dateiname),
+            #     ]
+            # )
         elif sys.platform.startswith("darwin"):
             subprocess.Popen(
                 'cd "{0}/Teildokument" ; latex --synctex=-1 {1}.tex ; dvips {1}.dvi ; ps2pdf -dNOSAFER {1}.ps'.format(
