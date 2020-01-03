@@ -46,7 +46,7 @@ def create_pdf(path_file, index, maximum, typ=0):
                 ),
                 shell=True,
             ).wait()
-            subprocess.Popen(['chmod 777 "{0}/Teildokument/{1}.pdf"'.format(path_programm, dateiname)],shell=True)
+            os.system('chmod 777 "{0}/Teildokument/{1}.pdf"'.format(path_programm, dateiname))
             subprocess.Popen(["{0}/Teildokument/{1}.pdf".format(path_programm, dateiname)],shell=True)
             # subprocess.run(
             #     [
