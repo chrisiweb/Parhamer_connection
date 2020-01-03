@@ -27,7 +27,7 @@ Contributes:
 
 LaMA is a program that lets you create and choose mathematical problems for your class.
 The problems are organized in competences and levels you can choose from.
-Further infos: lama.schule.at
+Further infos: [lama.schule](https://mylama.github.io/lama/)
 
 ## Screenshots
 ![LaTeX File Assistent](artwork/lama_suche.JPG)
