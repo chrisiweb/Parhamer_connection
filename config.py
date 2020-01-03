@@ -19,7 +19,7 @@ def config_loader(pathToFile, parameter):
                 print("No worries, we'll create the structure for you.")
                 os.makedirs(config_path)
             input(
-                "Please place your your config file in '{}' and hit enter. {} tries left!".format(
+                "Please place your config file in '{}' and hit enter. {} tries left!".format(
                     config_path, 5 - i
                 )
             )
