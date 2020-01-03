@@ -26,15 +26,15 @@ def config_loader(pathToFile, parameter):
     return config1[parameter]
 
 
-if sys.platform.startswith("linux"):
-    workdir = os.path.dirname(os.path.realpath(__file__))
-    path_programm = os.path.join(workdir)
+# if sys.platform.startswith("linux"):
+#     workdir = os.path.dirname(os.path.realpath(__file__))
+#     path_programm = os.path.join(workdir)
 
-else:
-    path_programm = os.path.dirname(sys.argv[0])
-    if sys.platform.startswith("darwin"):
-        if path_programm is "":
-            path_programm = "."
+# else:
+path_programm = os.path.dirname(sys.argv[0])
+if sys.platform.startswith("darwin"):
+    if path_programm is "":
+        path_programm = "."
 
 logo_path = os.path.join(
     path_programm, "_database", "_config", "icon", "LaMa_icon_logo.png"
