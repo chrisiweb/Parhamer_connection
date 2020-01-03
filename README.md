@@ -3,6 +3,7 @@
 - Python3
 - PyQt5
 - PyYaml
+- Pillow
 - LaTeX
 - LaTeX-package: srdp-mathematik <https://ctan.org/pkg/srdp-mathematik>
 
