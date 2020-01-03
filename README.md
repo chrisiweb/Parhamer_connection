@@ -13,7 +13,7 @@
 LaMA ist ein Programm, dass Ihnen erlaubt aus einem Pool von Aufgaben eine Schularbeit zusammenzustellen.
 Die Aufgaben sind getrennt nach Typ1 und Typ2 in Schulstufen und Kompetenzen sortiert.
 Es besteht auch die Möglichkeit eigene Aufgaben zu erstellen und dem Pool zuzuführen.
-Nähere Infos unter: lama.schule.at
+Nähere Infos unter: <lama.schule>
 
 
 ### Maintainers and Contributes
