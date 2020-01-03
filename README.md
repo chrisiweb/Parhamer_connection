@@ -7,9 +7,6 @@
 - LaTeX
 - LaTeX-package: srdp-mathematik <https://ctan.org/pkg/srdp-mathematik>
 
-## Screenshots
-![LaTeX File Assistent](artwork/lama_suche.JPG)
-
 ## German Version
 ### Beschreibung
 
@@ -29,6 +26,12 @@ Contributes:
 
 LaMA is a program that lets you create and choose mathematical problems for your class.
 The problems are organized in competences and levels you can choose from.
+
+## Screenshots
+![LaTeX File Assistent](artwork/lama_suche.JPG)
+![LaTeX File Assistent](artwork/lama_sage.JPG)
+![LaTeX File Assistent](artwork/lama_neu.JPG)
+![LaTeX File Assistent](artwork/lama_feedback.JPG)
 
 <!--
 ## To Do
