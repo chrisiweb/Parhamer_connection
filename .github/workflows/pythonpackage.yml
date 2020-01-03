@@ -26,14 +26,19 @@ jobs:
         pip install pyyaml
         pip install pillow
     - name: Build with pyinstaller
+      if: matrix.os != 'windows-latest'
+      run: |  
+        pyinstaller -F -i icon_lama.icns LaMA.py        
+    - name: Build with pyinstaller Windows
+      if: matrix.os == 'windows-latest'
       run: |  
         pyinstaller -F -i icon_lama.ico LaMA.py
     - name: Cleanup artifacts
       if: matrix.os != 'windows-latest'
       run: |
         mkdir artifacts
-        mv dist/ artifacts
-    - name: Cleanup artifacts Win
+        mv dist/* artifacts
+    - name: Cleanup artifacts Windows
       if: matrix.os == 'windows-latest'
       run: |
         mkdir artifacts
