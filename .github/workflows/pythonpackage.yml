@@ -27,12 +27,12 @@ jobs:
         pip install pillow
     - name: Build with pyinstaller
       run: |  
-        pyinstaller -F LaMA.py
+        pyinstaller -F -i icon_lama.ico LaMA.py
     - name: Cleanup artifacts
       if: matrix.os != 'windows-latest'
       run: |
         mkdir artifacts
-        mv "dist/(*.exe,*.deb,*.AppImage,*.dmg)" artifacts || true
+        mv dist/ artifacts
     - name: Cleanup artifacts Win
       if: matrix.os == 'windows-latest'
       run: |
