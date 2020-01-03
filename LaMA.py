@@ -25,7 +25,7 @@ from functools import partial
 import yaml
 from PIL import Image  ## pillow
 import smtplib
-from config import config_loader, path_programm, workdir, logo_path
+from config import config_loader, path_programm, logo_path
 from list_of_widgets import (
     widgets_search,
     widgets_create,
