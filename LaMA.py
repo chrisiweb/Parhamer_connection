@@ -157,6 +157,7 @@ widgets_create = [
 widgets_sage = [
     "actionLoad",
     "actionSave",
+    "actionReset_sage",    
     "menuSuche",
     "menuNeu",
     "menuFeedback",
