@@ -562,6 +562,7 @@ def create_pdf(path_file, index, maximum, typ=0):
                 ),
                 shell=True,
             ).wait()
+            print("{0}/Teildokument/{1}.pdf".format(path_programm, dateiname))
             subprocess.run(
                 [
                     "xdg-open",
