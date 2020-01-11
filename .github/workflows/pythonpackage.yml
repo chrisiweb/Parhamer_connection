@@ -10,7 +10,7 @@ jobs:
       max-parallel: 4
       matrix:
         python-version: [3.7]
-        os: [ubuntu-latest, windows-latest, macOS-latest] #ubuntu-latest, windows-latest, macOS-latest
+        os: [ubuntu-latest] #ubuntu-latest, windows-latest, macOS-latest
 
     steps:
     - uses: actions/checkout@v1
@@ -46,7 +46,7 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v1
       with:
-        name: Binary Files #${{matrix.os}}
+        name: ${{matrix.os}}
         path: artifacts
     - name: Release
       uses: softprops/action-gh-release@v1
