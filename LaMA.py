@@ -47,6 +47,10 @@ except IndexError:
 print("Loading...")
 
 print(sys.argv[0])
+workdir = os.path.dirname(os.path.realpath(__file__))
+programmdir = os.path.join(workdir)
+print(workdir)
+print(programmdir)
 try: 
     print(sys.argv[1])
 except IndexError:
@@ -80,7 +84,7 @@ def config_loader(pathToFile, parameter):
 
 # if sys.platform.startswith("linux"):
 #     workdir = os.path.dirname(os.path.realpath(__file__))
-#     path_programm = os.path.join(workdir)
+#     programmdir = os.path.join(workdir)
 
 # else:
 path_programm = os.path.dirname(sys.argv[0])
