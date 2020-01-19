@@ -46,7 +46,8 @@ except IndexError:
 
 print("Loading...")
 
-
+print(sys.argv[0])
+print(sys.argv[1])
 # print(path_programm)
 # print(os.path.dirname(sys.argv[0]))
 
@@ -563,7 +564,7 @@ def create_pdf(path_file, index, maximum, typ=0):
                 shell=True,
             ).wait()
             subprocess.run(
-                [
+                [   "sudo",
                     "xdg-open",
                     "{0}/Teildokument/{1}.pdf".format(path_programm, dateiname),
                 ]
