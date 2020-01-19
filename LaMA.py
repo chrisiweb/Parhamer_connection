@@ -570,7 +570,8 @@ def create_pdf(path_file, index, maximum, typ=0):
                 ),
                 shell=True,
             ).wait()
-            subprocess.Popen('cd "{0}/Teildokument" ; xdg-open "{1}.pdf"'.format(path_programm, dateiname),shell=True)
+            subprocess.Popen('cd "{0}/Teildokument" ; okular "{1}.pdf"'.format(path_programm, dateiname),shell=True)
+            #subprocess.Popen('cd "{0}/Teildokument" ; xdg-open "{1}.pdf"'.format(path_programm, dateiname),shell=True)
             # subprocess.run(
             #     [   "sudo",
             #         "xdg-open",
