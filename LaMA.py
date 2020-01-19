@@ -47,7 +47,10 @@ except IndexError:
 print("Loading...")
 
 print(sys.argv[0])
-print(sys.argv[1])
+try: 
+    print(sys.argv[1])
+except IndexError:
+    print("No sys.argv[1]")
 # print(path_programm)
 # print(os.path.dirname(sys.argv[0]))
 
