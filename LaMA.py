@@ -4831,6 +4831,9 @@ class Ui_MainWindow(object):
                 + str(self.spinBox_punkte.value())
                 + "] %PUNKTE DES BEISPIELS\n"
                 + textBox_Entry
+                + "\n\n\\antwort{GK: "
+                + gk_auswahl_joined
+                + "}"
                 + "\n\\end{langesbeispiel}"
             )
 
