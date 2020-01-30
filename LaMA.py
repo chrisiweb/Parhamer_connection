@@ -572,12 +572,14 @@ def create_pdf(path_file, index, maximum, typ=0):
             ).wait()
             #subprocess.Popen('cd "{0}/Teildokument" ; okular "{1}.pdf"'.format(path_programm, dateiname),shell=True)
             #subprocess.Popen('cd "{0}/Teildokument" ; chmod 777 "{1}.pdf" ; xdg-open "{1}.pdf"'.format(path_programm, dateiname),shell=True)
+            #subprocess.Popen('sudo xdg-open "{0}/Teildokument/{1}.pdf"'.format(path_programm, dateiname), shell=True)
             subprocess.run(
                 [   "sudo",
                     "xdg-open",
                     "{0}/Teildokument/{1}.pdf".format(path_programm, dateiname),
                 ]
             )
+            #MainWindow.show()
         elif sys.platform.startswith("darwin"):
             subprocess.Popen(
                 'cd "{0}/Teildokument" ; latex --synctex=-1 {1}.tex ; dvips {1}.dvi ; ps2pdf -dNOSAFER {1}.ps'.format(
