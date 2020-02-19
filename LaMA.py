@@ -5451,7 +5451,7 @@ class Ui_MainWindow(object):
                 )
             )
             x = eval("self.groupBox_bsp_{}".format(bsp_string))
-            x.setMaximumSize(QtCore.QSize(16777215, 120))
+            #x.setMaximumSize(QtCore.QSize(16777215, 120))
             x.setObjectName("groupBox_bsp_{}".format(bsp_string))
             if (list_sage_examples.index(all) % 2) == 0 and typ == 1:
                 x.setStyleSheet(_fromUtf8("background-color: rgb(255, 255, 255);"))
