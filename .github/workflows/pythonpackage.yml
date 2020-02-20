@@ -51,10 +51,11 @@ jobs:
     - name: Release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
+      if: matrix.os == 'ubuntu-latest'
       with:
-        if: matrix.os == 'ubuntu-latest'
         files: "artifacts/LaMA.sh"
-        if: matrix.os != 'ubuntu-latest'
+      if: matrix.os != 'ubuntu-latest'
+      with:
         files: "artifacts/**"
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
