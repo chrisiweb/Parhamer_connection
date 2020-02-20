@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__ = "v1.8.5"
-__lastupdate__ = "01/20"
+__version__ = "v1.8.6"
+__lastupdate__ = "02/20"
 ####################
 
 from PyQt5 import QtCore, QtWidgets, QtGui
