@@ -1,5 +1,6 @@
 v1.8.6
   - Bug fix: Edit maximum size for SAGE widgets for small screens
+
 v1.8.5
   - Bug Fix: Update did not work, when permission of update is not changed manually
   - Spacing when creating a test: 99cm= \newpage  
@@ -8,8 +9,8 @@ v1.8.5
 v1.8.4
 
   - added ScrollArea for "Grundkompetenzen" for small screens
-  - "�bungsblatt" and "Nachschularbeit" can be created
-  - "�bungsblatt" & "Grundkompetenzcheck" disables Option "Notenschl�ssel/Beurteilungsraster"
+  - "Uebungsblatt" and "Nachschularbeit" can be created
+  - "Uebungsblatt" & "Grundkompetenzcheck" disables Option "Notenschl�ssel/Beurteilungsraster"
   - "Schularbeit" can be reseted
   - Creation of .pdf and/or .lama can be skipped, when creating a test
 
