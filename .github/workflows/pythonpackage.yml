@@ -53,7 +53,7 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       with:
         if: matrix.os == 'ubuntu-latest'
-        files: "artifacts/**.sh"
+        files: "artifacts/LaMA.sh"
         if: matrix.os != 'ubuntu-latest'
         files: "artifacts/**"
       env:
