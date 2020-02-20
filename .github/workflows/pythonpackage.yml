@@ -52,6 +52,9 @@ jobs:
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
       with:
+        if: matrix.os == 'ubuntu-latest'
+        files: "artifacts/**.sh"
+        if: matrix.os != 'ubuntu-latest'
         files: "artifacts/**"
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
