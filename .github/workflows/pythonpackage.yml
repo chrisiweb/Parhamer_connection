@@ -46,7 +46,7 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v1
       with:
-        name: ${{matrix.os}}
+        name: ${{binaries_latest}}
         path: artifacts
     - name: Release
       uses: softprops/action-gh-release@v1
