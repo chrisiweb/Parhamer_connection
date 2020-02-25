@@ -1,0 +1,535 @@
+---
+
+dict_aufgabenformate:
+    "lt": "Lückentext"
+    "mc": "Mutiple Choice"
+    "oa": "Offenes Antwortformat"
+    "rf": "Richtig/Falsch-Format"
+    "ta": "Textaufgaben"
+    "zo": "Zuordnungsformat"
+    "ko": "Konstruktion"
+
+
+list_klassen:
+    - 'k1'
+    - 'k2'
+    - 'k3'
+    - 'k4'
+
+
+
+
+dict_k1:
+    "BZ":
+        - "as"
+        - "ef"
+        - "ek"
+        - "md"
+    "DZ":
+        - "as"
+        - "di"
+        - "ef"
+        - "ma"
+        - "mu"
+        - "vg"
+    "EG":
+        - "bqw"
+        - "glkf"
+    "GG":
+        - "am"
+        - "ew"
+        - "lg"
+        - "mzw"
+        - "syf"
+        - "ssg"
+    "GU":
+        - "gl"
+        - "ug"
+    "KR":
+        - "gb"
+        - "lbkg"
+        - "lbkk" 
+    "MZ":
+        - "mast"
+        - "zm"
+    "NZ":
+        - "azs"
+        - "dzs"
+        - "odz"
+        - "rvz"
+    "QW":
+        - "no"
+        - "ri"
+        - "sch"
+    "RNZ":
+        - "as"
+        - "di"
+        - "mu"
+        - "vg"
+    "RQ":
+        - "eko"
+        - "fl"
+        - "um"
+    "ST":
+        - "mw"
+        - "tgd"
+    "ZM":
+        - "zma"
+        - "zz"       
+
+
+dict_k1_name:
+    "BZ" : "Bruchzahlen"
+    "DZ" : "Dezimalzahlen"
+    "EG" : "Einführung in der Geometrie"
+    "GG" : "Geometrische Grundbegriffe"
+    "GU" : "Gleichungen und Ungleichungen"
+    "KR" : "Kreis"
+    "MZ" : "Maßstaebliches Zeichnen"
+    "NZ" : "Natürliche Zahlen"
+    "QW" : "Quader und Würfel"
+    "RNZ" : "Rechnen mit natürlichen Zahlen"
+    "RQ" : "Rechteck und Quadrat"
+    "ST" : "Statisitk"
+    "ZM" : "Zeitmessung"
+
+
+dict_k2:
+    "TBK":
+        - "tut"
+        - "pz"
+        - "ggt"
+        - "kgv"     
+
+    "BZ":
+        - "ef"
+        - "ek"
+        - "md"
+        - "as"
+        - "vg"
+    
+    "GL":
+        - "gl"
+        - "ug"
+
+    "DIP":
+        - 'dg'
+        - 'ig'
+        - 'vv'
+    "PR":
+        - 'gbd'
+        - 'pa'
+        - 'ps'
+        - 'gdw'
+    "ST":
+        - 'stb'
+        - 'egd'
+        - 'igd'
+    "EGG":
+        - 'wm'
+        - 'uew'
+        - 'pnw'
+        - 'ks'
+        - 'sy'
+        - 'ss'
+        - 'ws'
+    "DR":
+        - 'gbb'
+        - 'ed'
+        - 'wd'
+    "DRK":
+        - 'sss'
+        - 'wsw'
+        - 'sws'
+        - 'ssw'
+    "DRE":
+        - 'ukm'
+        - 'ikm'
+        - 'sp'
+        - 'hsp'
+        - 'eg'     
+    "DRB":
+        - 'gc'
+        - 'gs'
+        - 'rw'
+    "VE":
+        - 'pg'
+        - 'rh'
+        - 'tr'
+        - 'dt'
+        - 'av'
+        - 'ave'
+        - 'rve'
+    "PRI":
+        - 'ebf'
+        - 'sf'
+        - 'no'
+        - 'ri'
+
+dict_k2_name:
+    'TBK' : 'Teilbarkeit natürlicher Zahlen'
+    'BZ' : 'Bruchzahlen'
+    'GL' : 'Gleichungen'
+    'DIP' : 'Direkte und indirekte Proportionalität'
+    'PR' : 'Prozentrechnung'
+    'ST' : 'Statisitk' 
+    'EGG' : 'Erweiterung der geometrischen Grundbegriffe'
+    'DR' : 'Dreiecke'
+    'DRK' : 'Dreieckskonstruktionen'
+    'DRE' : 'Besondere Eigenschaften des Dreiecks'
+    'DRB' : 'Besondere Dreiecke'
+    'VE' : 'Vierecke und regelmäßige Vielecke'
+    'PRI' : 'Prisma'   
+
+
+dict_k3:
+    "GZ":
+        - 'ef'
+        - 'as'
+        - 'md'
+        - 'vg'
+
+    "RZ":
+        - 'ef'
+        - 'as'
+        - 'md'
+        - 'vg'
+
+    "KS":
+        - 'enk'
+        
+    "TE":
+        - 'ef'
+        - 'fg'
+        - 'as'
+        - 'po'
+        - 'mu'
+        - 'bf'
+        - 'hh'
+        - 'gkd'
+    
+    "GL":
+        - 'lgl'
+        - 'uf'    
+    "VP":
+        - 'vgz'
+        - 'vgl'
+        - 'dipg'
+
+    "PZ":
+        - 'pr'
+        - 'jz'
+        - 'kest'
+        - 'zzr'
+        - 'wz'
+
+    "ST":
+        - 'stb'
+        - 'kt'
+        - 'ke'
+        - 'hg'
+        - 'pw'
+        
+    "FL":
+        - 'pg'
+        - 'dr'
+        - 'drq'
+        - 'tr'
+        - 'avv' 
+        
+    "AE":
+        - 'af'
+        - 'sts'
+        - 'lf'
+        - 'paa'
+    
+    "LP":
+        - 'sdp'
+        - 'qw'
+        - 'rq'
+        - 'gd'
+
+    "PR":
+        - 'es'
+        - 'dsf'
+        - 'rd'
+        - 'ov'
+        - 'mad'               
+
+    "PY":
+        - 'eda'
+        - 'ov'        
+
+
+dict_k3_name:
+    'GZ' : 'Ganze Zahlen'
+    'RZ' : 'Rationale Zaheln'
+    'KS' : 'Koordinatensystem'
+    'TE' : 'Terme'
+    'GL' : 'Gleichungen'
+    'VP' : 'Verhältnisse und Proportionen'
+    'PZ' : 'Prozentrechnung und Zinseszinsrechnung'
+    'ST' : 'Statisitk'
+    'FL' : 'Flächeninhalte'
+    'AE' : 'Ähnlichkeiten'
+    'LP' : 'Lehrsatz des Pythagoras'
+    'PR' : 'Prisma'
+    'PY' : 'Pyramide'
+
+
+dict_k4:
+    "RE":
+        - 'qw'
+        - 'rqw'
+        - 'dqw'
+        - 'kw'
+    "TE":
+        - 'rte'
+        - 'hzt'
+    "BTE":
+        - 'ef'
+        - 'kub'
+        - 'asg'
+        - 'asu'
+        - 'mdb'
+        - 'dit'
+    "GL":
+        - 'lgm1'
+        - 'lug'
+        - 'fa' 
+    "GSY":
+        - 'lgm2'
+        - 'glv'
+        - 'rlv'
+    "FU":
+        - 'zo'
+        - 'glf'
+        - 'gqf'
+        - 'grf'
+        - 'hlf'
+        - 'ilf'
+        - 'ce'        
+    "NAT":
+        - 'ph'
+        - 'ba'
+        - 'ch'
+        - 'te'
+    "ST":
+        - 'stb'
+        - 'go'
+        - 'gw'
+        - 'mm'
+        - 'gwk'
+        - 'mem'
+        - 'qqb'
+        - 'st'                        
+    "LP":
+        - 'sdp'
+        - 'kh'
+        - 'bw'
+        - 'arq'
+        - 'adr'
+        - 'arp'
+        - 'atr'
+        - 'ade'
+        - 'apr'
+        - 'apy'    
+    "BKR":    
+        - 'pi'
+        - 'lkb'
+        - 'fk'
+        - 'fks'
+        - 'kr'
+    "ZKK":
+        - 'dz'
+        - 'dk'
+        - 'ku'
+
+
+dict_k4_name:
+    'RE' : 'Reelle Zahlen'
+    'TE' : 'Terme'
+    'BTE' : 'Bruchterme'
+    'GL' : 'Gleichungen und Ungleichungen'
+    'GSY' : 'Lineare Gleichungssysteme mit zwei Variablen'
+    'FU' : 'Funktionen'
+    'NAT' : 'Anwendungen in Naturwissenschaft und Technik'
+    'ST' : 'Statisitk'
+    'LP' : 'Lehrsatz des Pythagoras'
+    'BKR' : 'Berechnungen am Kreis'
+    'ZKK' : 'Zylinder, Kegel, Kugel' 
+
+
+
+dict_unterkapitel:
+    "ade" : "Anwendung im Deltoid"
+    "adr" : "Anwendung im Dreieck"
+    "af" : "Ähnliche Figuren"
+    "am" : "Abstand messen"
+    "apr" : "Anwendung im Prisma"
+    "apy" : "Anwendung in einer Pyramide"
+    "arp" : "Anwendung im Rhombus und Parallelogramm"
+    "arq" : "Anwendung im Rechteck und Quadrat"
+    "as" : "Addieren und Subtrahieren"
+    "atr" : "Anwendung im Trapez"
+    "asg" : "Addieren und Subtrahieren mit gleichen Nenner"
+    "asu" : "Addieren und Subtrahieren mit unterschiedlichen Nenner"
+    "av" : "Allgemeines Viereck"
+    "ave" : "Allgemeines Vieleck"
+    "avv" : "Allgemeines Viereck und Vieleck"
+    "azs" : "Andere Zahlensysteme"
+    "ba" : "Bewegungsaufgaben"
+    "bf" : "Binomische Formeln"
+    "bqw" : "Bezeichnung bei Quader und Würfel"
+    "bw" : "Beweise von Satz des Pythagoras"
+    "ce" : "Charakteristische Eigenschaften linearer Funktionen"
+    "ch" : "Mischaufgaben und chemische Reaktionen"
+    "dg" : "Direkt proportionale Größen"
+    "di" : "Dividieren"
+    "dipg" : "Direkt und indirekt proportionale Größen"
+    "dk" : "Drehkegel"
+    "dit" : "Dividieren durch Terme"
+    "dqw" : "Graphische Darstellung von Quadratwurzeln"
+    "dr" : "Dreieck"
+    "drq" : "Deltoid, Rhombus, Quadrat"
+    "dsf" : "Darstellen und Auswerten von Schnittfiguren"
+    "dt" : "Deltoid"
+    "dz" : "Drehzylinder"
+    "dzs" : "Dekadisches Zahlensystem"
+    "ebf" : "Eigenschaften und besondere Formen"
+    "ed" : "Einteilung der Dreiecke"
+    "eda" : "Eigenschaften und Darstellung"
+    "ef" : "Einführung"
+    "eg" : "Eulersche Gerade"
+    "egd" : "Erstellen von graphischen Darstellungen"
+    "ek" : "Erweitern und Kürzen"
+    "eko" : "Eigenschaften und Konstruktion"
+    "es" : "Eigenschaften, Schrägriss"
+    "ew" : "Einführung: Winkel"
+    "enk" : "Erweiterung durch negative Koordinaten"
+    "fa" : "Fehlerabschätzung"
+    "fg" : "Aufstellen von Formeln und Gleichungen"
+    "fk" : "Flächeninhalt eines Kreises"
+    "fks" : "Flächeninhalt eines Kreissektors"
+    "fl" : "Flächeninhalt und Flächenmaße"
+    "gb" : "Grundbegriffe"
+    "gbb" : "Grundbegriffe und Bezeichnungen"
+    "gbd" : "Grundbegriffe und Darstellung"
+    "gc" : "Gleichschenkliges Dreieck"
+    "gd" : "Anwendung im gleichschenkligen Dreieck"
+    "gdw" : "Berechnen des Grundwerts"
+    "ggt" : "Größter gemeinsamer Teiler"
+    "gkd" : "Gleitkommadarstellung"
+    "gl" : "Gleichungen"
+    "glf" : "Gleichungen und Graphen linearer Funktionen"
+    "glkf" : "Gegenseitige Lage von Kanten und Flächen"
+    "glv" : "Graphisches Lösungsverfahren"
+    "go" : "Gewöhnliches arithmetisches Mittel"
+    "gw" : "Gewichtetest arithmetisches Mittel"
+    "gqf" : "Gleichungen und Graphen quadratischer Funktionen"
+    "grf" : "Gleichungen und Graphen rationaler Funktionen"
+    "gs" : "Gleichseitiges Dreieck"
+    "gwk" : "Gewichtetes arithmetisches Mittel und Klasseneinteilungen"
+    "hg" : "Histogramme"
+    "hh" : "Herausheben"
+    "hlf" : "Homogene lineare Funktionen"
+    "hsp" : "Höhenschnittpunkt"
+    "hzt" : "Herausheben und Zerlegen von Termen"
+    "ig" : "Indirekt proportionale Größen"
+    "igd" : "Interpretieren von graphischen Darstellungen"
+    "ikm" : "Inkreismittelpunkt"
+    "ilf" : "Inhomogene lineare Funktionen"
+    "jz" : "Jahreszinsen"
+    "ke" : "Klasseneinteilung"
+    "kest" : "Kapitalertragsteuer"
+    "kgv" : "Kleinstes gemeinsames Vielfaches"
+    "kh" : "Kathetensatz und Höhensatz"
+    "kr" : "Flächeninhalt und Umfang eines Kreisrings"
+    "ks" : "Koordinatensystem"
+    "kt" : "Kreuztabellen"
+    "ku" : "Kugel"
+    "kub" : "Kürzen von Bruchtermen"
+    "kw" : "Kubikwurzeln"
+    "lbkg" : "Lagebeziehungen von Kreis und Gerade"
+    "lbkk" : "Lagebeziehungen von zwei Kreisen"
+    "lf" : "Längen und Flächenbeziehungen bei ähnlichen Figuren"
+    "lg" : "Lage von Geraden"
+    "lgl" : "Lösen von Gleichungen"
+    "lgm1" : "Lineare Gleichungen mit einer Variablen"
+    "lgm2" : "Eine lineare Gleichung mit zwei Variablen"
+    "lkb" : "Länge des Kreisbogens"
+    "lug" : "Lösen von Ungleichungen"
+    "ma" : "Massangaben – Geld, Laengen, Masse, usw."
+    "mad" : "Masse und Dichte"
+    "mast" : "Maßstab"
+    "md" : "Multiplizieren und Dividieren"
+    "mdb" : "Multiplizieren und Dividieren mit Bruchtermen"
+    "mem" : "Median und Modus"
+    "mm" : "Mittelwerte von Mittelwerten"
+    "mu" : "Multiplizieren"
+    "mw" : "Mittelwert"
+    "mzw" : "Messen und Zeichnen von Winkeln"
+    "no" : "Netz und Oberfläche"
+    "ov" : "Oberfläche und Volumen"
+    "odz" : "Ordnung der natürlichen Zahlen"
+    "pa" : "Berechnen des Prozentanteils"
+    "paa" : "Praktische Anwendungen der Ähnlichkeiten"
+    "pg" : "Parallelogramm"
+    "ph" : "Anwendungen in der Physik"
+    "pi" : "Umfang des Kreises - Die Zahl pi"
+    "po" : "Rechnen mit Potenzen"
+    "pr" : "Prozentrechnung"
+    "ps" : "Berechnen des Prozentsatzes"
+    "pw" : "Punktwolkendiagramme"
+    "pz" : "Primzahlen"
+    "qqb" : "Quartile, Quantile und Boxplots"
+    "rte" : "Rechnen mit Termen"
+    "rh" : "Rhombus"
+    "ri" : "Rauminhalt"
+    "rlv" : "Rechnerisches Lösungsverfahren"
+    "pnw" : "Parallel und Normalwinkel"
+    "qw" : "Quadratwurzeln"
+    "rd" : "Raumdiagonale"
+    "rq" : "Anwendung im Rechteck und Quadrat"
+    "rqw" : "Rechnen mit Quadratwurzeln"
+    "rve" : "Regelmäßiges Vieleck"
+    "rvz" : "Runden von Zahlen"
+    "rw" : "Rechtwinkliges Dreieck (Satz von Thales, Fläche, ...)"
+    "sch" : "Schrägriss"
+    "sdp" : "Satz des Pythagoras im rechtwinkligen Dreieck"
+    "sf" : "Schnittfläche"
+    "st" : "Streuungsmaße"
+    "sp" : "Schwerpunkt"
+    "ss" : "Streckensymmetrale"
+    "ssg" : "Strecke, Strahl, Gerade"
+    "sss" : "Seiten-Seiten-Seiten-Satz"
+    "ssw" : "Seiten-Seiten-Winkel-Satz"
+    "stb" : "Statistische Berechnungen"
+    "sts" : "Strahlensatz"
+    "sws" : "Seiten-Winkel-Seiten-Satz"
+    "sy" : "Symmetrie"
+    "syf" : "Symmetrische Figuren"
+    "te" : "Anwendungen in der Technik"
+    "tgd" : "Tabellen und graphische Darstellungen"
+    "tut" : "Teiler und Teilbarkeitsregeln"
+    "tr" : "Trapez"
+    "uew" : "Übetragen von Winkeln"
+    "uf" : "Umformen von Formeln"
+    "ug" : "Ungleichungen"
+    "ukm" : "Umkreismittelpunkt"
+    "um" : "Umfang"
+    "vg" : "Verbindung der Grundrechnungsarten"
+    "vgl" : "Verhältnisgleichungen"
+    "vgz" : "Verhältnisse von Größen und Zahlen"
+    "vv" : "Verschiede Verhältnisse"
+    "wd" : "Winkel im Dreieck"
+    "wm" : "Bezeichnungen von Winkeln und Winkelmaße"
+    "ws" : "Winkelsymmetrale"
+    "wsw" : "Winkel-Seiten-Winkel-Satz"
+    "wz" : "Wachstums- und Zerfallsprozesse"
+    "zm" : "Zeichnen im gegebenen Maßstab"
+    "zma" : "Zeitmaße"
+    "zo" : "Zuordnungen, Tabellen und Graphen"
+    "zz" : "Zeitdauer und Zeitpunkt"
+    "zzr" : "Zinseszinsrechnung"
+...
