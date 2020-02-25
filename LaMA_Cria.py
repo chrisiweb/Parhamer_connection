@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #### Version number ###
 __version__='v1.0.1'
-__lastupdate__='09/19'
+__lastupdate__='02/20'
 ####################
 
 from PyQt5 import QtCore, QtWidgets, QtGui
