@@ -1935,7 +1935,7 @@ class Ui_MainWindow(object):
 
         ### Reset Images ###
         for i in range(len(dict_picture_path)):
-            x = eval("self.label_bild_" + str(i) + ".setParent(None)")
+            eval("self.label_bild_" + str(i) + ".setParent(None)")
         dict_picture_path = {}
         self.label_bild_leer.show()
 
