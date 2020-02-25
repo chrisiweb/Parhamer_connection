@@ -54,7 +54,6 @@ if sys.platform.startswith("darwin"):
         path_programm = "."
 
 
-
 config_file = os.path.join(path_programm, "_database", "_config", "config1.yml")
 
 ag_beschreibung = config_loader(config_file, "ag_beschreibung")
@@ -85,8 +84,7 @@ class SpinBox_noWheel(QtWidgets.QSpinBox):
         event.ignore()
 
 
-
-### translate 
+### translate
 
 #### Dialogue Window -- Titelblatt anpassen
 
@@ -95,8 +93,7 @@ class SpinBox_noWheel(QtWidgets.QSpinBox):
 
 ### sort_items
 
-### create_pdf 
-
+### create_pdf
 
 
 #### Dialog Window - Schularbeit erstellen
@@ -4654,7 +4651,7 @@ class Ui_MainWindow(object):
                 )
             )
             x = eval("self.groupBox_bsp_{}".format(bsp_string))
-            #x.setMaximumSize(QtCore.QSize(16777215, 200))
+            # x.setMaximumSize(QtCore.QSize(16777215, 200))
             x.setObjectName("groupBox_bsp_{}".format(bsp_string))
             if (list_sage_examples.index(all) % 2) == 0 and typ == 1:
                 x.setStyleSheet(_fromUtf8("background-color: rgb(255, 255, 255);"))
