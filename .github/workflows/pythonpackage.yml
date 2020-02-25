@@ -28,11 +28,11 @@ jobs:
     - name: Build with pyinstaller
       if: matrix.os != 'windows-latest'
       run: |  
-        pyinstaller -F -i icon_lama.icns LaMA.py        
+        pyinstaller -F LaMA_Cria.py        
     - name: Build with pyinstaller Windows
       if: matrix.os == 'windows-latest'
       run: |  
-        pyinstaller -F -i icon_lama.ico LaMA.py
+        pyinstaller -F -i icon_lama_cria.ico LaMA_Cria.py
     - name: Cleanup artifacts
       if: matrix.os != 'windows-latest'
       run: |
