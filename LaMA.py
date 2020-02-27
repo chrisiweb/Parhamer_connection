@@ -26,17 +26,17 @@ import yaml
 from PIL import Image  ## pillow
 import smtplib
 
-from config import config_loader, path_programm, logo_path
-from list_of_widgets import (
-    widgets_search,
-    widgets_create,
-    widgets_sage,
-    widgets_feedback,
-)
-from subwindows import Ui_Dialog_titlepage, Ui_Dialog_ausgleichspunkte
-from translate import _fromUtf8, _translate
-from sort_items import natural_keys
-from create_pdf import create_pdf
+#from config import config_loader, path_programm, logo_path
+# from list_of_widgets import (
+#     widgets_search,
+#     widgets_create,
+#     widgets_sage,
+#     widgets_feedback,
+# )
+# from subwindows import Ui_Dialog_titlepage, Ui_Dialog_ausgleichspunkte
+# from translate import _fromUtf8, _translate
+# from sort_items import natural_keys
+# from create_pdf import create_pdf
 
 try:
     loaded_lama_file_path = sys.argv[1]
@@ -47,6 +47,43 @@ except IndexError:
 print("Loading...")
 
 ### config_loader, path_programm, logo_path
+def config_loader(pathToFile, parameter):
+    for i in range(5):
+        try:
+            config1 = yaml.safe_load(open(pathToFile, encoding="utf8"))
+            break
+        except FileNotFoundError:
+            print("File not Found!")
+            if sys.platform.startswith("linux") or sys.platform.startswith("darwin"):
+                root = "."
+            else:
+                root = ""
+            config_path = os.path.join(".", "_database", "_config")
+            if not os.path.exists(config_path):
+                print("No worries, we'll create the structure for you.")
+                os.makedirs(config_path)
+            input(
+                "Please place your config file in '{}' and hit enter. {} tries left!".format(
+                    config_path, 5 - i
+                )
+            )
+    return config1[parameter]
+
+
+# if sys.platform.startswith("linux"):
+#     workdir = os.path.dirname(os.path.realpath(__file__))
+#     path_programm = os.path.join(workdir)
+
+# else:
+path_programm = os.path.dirname(sys.argv[0])
+if sys.platform.startswith("darwin"):
+    if path_programm is "":
+        path_programm = "."
+
+logo_path = os.path.join(
+    path_programm, "_database", "_config", "icon", "LaMa_icon_logo.png"
+)
+
 
 
 if sys.platform.startswith("darwin"):
@@ -77,6 +114,77 @@ list_sage_examples = []
 
 
 ### list_of_widgets
+widgets_search = [
+    "actionReset",
+    "actionLoad",
+    "actionSave",
+    "menuDateityp",
+    "menuSage",
+    "menuNeu",
+    "menuFeedback",
+    "menuHelp",
+    "label_update",
+    "combobox_searchtype",
+    "label_aufgabentyp",
+    "groupBox_ausgew_gk",
+    "groupBox_af",
+    "groupBox_gk",
+    "groupBox_klassen",
+    "groupBox_themen_klasse",
+    "groupBox_titelsuche",
+    "cb_solution",
+    "btn_suche",
+]  #'actionRefresh_Database'
+
+widgets_create = [
+    "actionReset",
+    "menuBild_einf_gen",
+    "menuSuche",
+    "menuSage",
+    "menuFeedback",
+    "menuHelp",
+    "groupBox_aufgabentyp",
+    "groupBox_ausgew_gk_cr",
+    "groupBox_bilder",
+    "groupBox_titel_cr",
+    "groupBox_grundkompetenzen_cr",
+    "groupBox_punkte",
+    "groupBox_klassen_cr",
+    "groupBox_aufgabenformat",
+    "groupBox_beispieleingabe",
+    "groupBox_quelle",
+    "pushButton_save",
+]  #'actionRefresh_Database'
+
+
+widgets_sage = [
+    "actionLoad",
+    "actionSave",
+    "actionReset_sage",
+    "menuSuche",
+    "menuNeu",
+    "menuFeedback",
+    "menuHelp",
+    "comboBox_at_sage",
+    "groupBox_alle_aufgaben",
+    "groupBox_sage",
+]  # ,'comboBox_at_sage','groupBox_sage','groupBox_notenschl','actionRefresh_Database'
+
+
+widgets_feedback = [
+    "menuSuche",
+    "menuSage",
+    "menuNeu",
+    "menuHelp",
+    "comboBox_at_fb",
+    "label_example",
+    "groupBox_alle_aufgaben_fb",
+    "groupBox_fehlertyp",
+    "groupBox_feedback",
+    "groupBox_email",
+    "pushButton_send",
+]
+
 
 
 class SpinBox_noWheel(QtWidgets.QSpinBox):
@@ -85,16 +193,479 @@ class SpinBox_noWheel(QtWidgets.QSpinBox):
 
 
 ### translate
+try:
+    _fromUtf8 = QtCore.QString.fromUtf8
+except AttributeError:
+
+    def _fromUtf8(s):
+        return s
+
+
+try:
+    _encoding = QtWidgets.QApplication.UnicodeUTF8
+
+    def _translate(context, text, disambig):
+        return QtWidgets.QApplication.translate(context, text, disambig, _encoding)
+
+
+except AttributeError:
+
+    def _translate(context, text, disambig):
+        return QtWidgets.QApplication.translate(context, text, disambig)
 
 #### Dialogue Window -- Titelblatt anpassen
+class Ui_Dialog_titlepage(object):
+    def setupUi(self, Dialog, dict_titlepage):
+        # self.dict_titlepage = dict_titlepage
+        # print(self.dict_titlepage)
+
+        # self.ausgleichspunkte_split_text=ausgleichspunkte_split_text
+        self.Dialog = Dialog
+        self.Dialog.setObjectName("Dialog")
+        Dialog.setWindowTitle(
+            _translate("Titelplatt anpassen", "Titelplatt anpassen", None)
+        )
+        # self.Dialog.resize(600, 400)
+        # self.Dialog.setWindowIcon(QtGui.QIcon(logo_path))
+        # Dialog.setObjectName("Dialog")
+        # Dialog.resize(468, 208)
+        Dialog.setWindowIcon(QtGui.QIcon(logo_path))
+        self.verticalLayout_titlepage = QtWidgets.QVBoxLayout(Dialog)
+        self.verticalLayout_titlepage.setObjectName("verticalLayout_titlepage")
+        self.label_titlepage = QtWidgets.QLabel()
+        # # self.label_gk.setWordWrap(True)
+        self.label_titlepage.setObjectName(_fromUtf8("label_titlepage"))
+        self.label_titlepage.setText(
+            _translate(
+                "MainWindow",
+                "Wählen Sie die gewünschten Punkte für das Titelblatt aus:\n",
+                None,
+            )
+        )
+        self.verticalLayout_titlepage.addWidget(self.label_titlepage)
+
+        self.cb_titlepage_logo = QtWidgets.QCheckBox("Logo")
+        if dict_titlepage["logo_path"] != False:
+            logo_name = os.path.basename(dict_titlepage["logo_path"])
+            self.cb_titlepage_logo.setText("Logo ({})".format(logo_name))
+        self.cb_titlepage_logo.setObjectName(_fromUtf8("cb_titlepage_logo"))
+        self.verticalLayout_titlepage.addWidget(self.cb_titlepage_logo)
+        self.cb_titlepage_logo.setChecked(dict_titlepage["logo"])
+
+        self.btn_titlepage_logo_path = QtWidgets.QPushButton()
+        self.btn_titlepage_logo_path.setObjectName(_fromUtf8("btn_titlepage_logo_path"))
+        self.verticalLayout_titlepage.addWidget(self.btn_titlepage_logo_path)
+        self.btn_titlepage_logo_path.setText("Durchsuchen")
+        self.btn_titlepage_logo_path.setMaximumWidth(130)
+        self.btn_titlepage_logo_path.clicked.connect(
+            partial(self.btn_titlepage_logo_path_pressed, dict_titlepage)
+        )
+
+        self.cb_titlepage_titel = QtWidgets.QCheckBox("Titel")
+        self.cb_titlepage_titel.setObjectName(_fromUtf8("cb_titlepage_titel"))
+        self.verticalLayout_titlepage.addWidget(self.cb_titlepage_titel)
+        self.cb_titlepage_titel.setChecked(dict_titlepage["titel"])
+
+        self.cb_titlepage_datum = QtWidgets.QCheckBox("Datum")
+        self.cb_titlepage_datum.setObjectName(_fromUtf8("cb_titlepage_datum"))
+        self.verticalLayout_titlepage.addWidget(self.cb_titlepage_datum)
+        self.cb_titlepage_datum.setChecked(dict_titlepage["datum"])
+
+        self.cb_titlepage_klasse = QtWidgets.QCheckBox("Klasse")
+        self.cb_titlepage_klasse.setObjectName(_fromUtf8("cb_titlepage_klasse"))
+        self.verticalLayout_titlepage.addWidget(self.cb_titlepage_klasse)
+        self.cb_titlepage_klasse.setChecked(dict_titlepage["klasse"])
+
+        self.cb_titlepage_name = QtWidgets.QCheckBox("Name")
+        self.cb_titlepage_name.setObjectName(_fromUtf8("cb_titlepage_name"))
+        self.verticalLayout_titlepage.addWidget(self.cb_titlepage_name)
+        self.cb_titlepage_name.setChecked(dict_titlepage["name"])
+
+        self.cb_titlepage_note = QtWidgets.QCheckBox("Note")
+        self.cb_titlepage_note.setObjectName(_fromUtf8("cb_titlepage_note"))
+        self.verticalLayout_titlepage.addWidget(self.cb_titlepage_note)
+        self.cb_titlepage_note.setChecked(dict_titlepage["note"])
+
+        self.cb_titlepage_unterschrift = QtWidgets.QCheckBox("Unterschrift")
+        self.cb_titlepage_unterschrift.setObjectName(
+            _fromUtf8("cb_titlepage_unterschrift")
+        )
+        self.verticalLayout_titlepage.addWidget(self.cb_titlepage_unterschrift)
+        self.cb_titlepage_unterschrift.setChecked(dict_titlepage["unterschrift"])
+
+        self.buttonBox_titlepage = QtWidgets.QDialogButtonBox(self.Dialog)
+        self.buttonBox_titlepage = QtWidgets.QDialogButtonBox(self.Dialog)
+        self.buttonBox_titlepage.setStandardButtons(
+            QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel
+        )
+
+        # buttonS = self.buttonBox_titlepage.button(QtWidgets.QDialogButtonBox.Save)
+        # buttonS.setText('Speichern')
+        buttonX = self.buttonBox_titlepage.button(QtWidgets.QDialogButtonBox.Cancel)
+        buttonX.setText("Standard wiederherstellen")
+        self.buttonBox_titlepage.setObjectName("buttonBox")
+        self.buttonBox_titlepage.rejected.connect(
+            partial(self.set_default_titlepage, dict_titlepage)
+        )
+        self.buttonBox_titlepage.accepted.connect(
+            partial(self.save_titlepage, dict_titlepage)
+        )
+        # self.retranslateUi(self.Dialog)
+
+        self.verticalLayout_titlepage.addWidget(self.buttonBox_titlepage)
+
+        return dict_titlepage
+
+    def btn_titlepage_logo_path_pressed(self, dict_titlepage):
+        logo_titlepage_path = QtWidgets.QFileDialog.getOpenFileNames(
+            None, "Grafiken wählen", path_programm, "Grafiken (*.eps)"
+        )
+        if logo_titlepage_path[0] == []:
+            return
+
+        logo_name = os.path.basename(logo_titlepage_path[0][0])
+        # print(logo_name)
+        self.cb_titlepage_logo.setText("Logo ({})".format(logo_name))
+        dict_titlepage["logo_path"] = "{}".format(logo_titlepage_path[0][0])
+        copy_logo_titlepage_path = os.path.join(
+            path_programm, "Teildokument", logo_name
+        )
+        shutil.copy(logo_titlepage_path[0][0], copy_logo_titlepage_path)
+
+        return dict_titlepage
+
+    def save_titlepage(self, dict_titlepage):
+        for all in dict_titlepage.keys():
+            if all == "logo_path":
+                if self.cb_titlepage_logo.isChecked() and dict_titlepage[all] == False:
+                    msg = QtWidgets.QMessageBox()
+                    msg.setIcon(QtWidgets.QMessageBox.Warning)
+                    msg.setWindowIcon(QtGui.QIcon(logo_path))
+                    msg.setText("Es wurde kein Logo ausgewählt")
+                    msg.setInformativeText(
+                        "Bitte geben Sie den Dateipfad des Logos an oder wählen Sie das Logo ab."
+                    )
+                    msg.setWindowTitle("Kein Logo ausgewählt")
+                    msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+                    msg.exec_()
+                    return
+                continue
+
+            checkbox = eval("self.cb_titlepage_{}".format(all))
+            if checkbox.isChecked():
+                dict_titlepage[all] = True
+            else:
+                dict_titlepage[all] = False
+
+        self.Dialog.reject()
+        return dict_titlepage
+
+    def set_default_titlepage(self, dict_titlepage):
+        dict_titlepage = {
+            "logo": False,
+            "logo_path": False,
+            "titel": True,
+            "datum": True,
+            "klasse": True,
+            "name": True,
+            "note": False,
+            "unterschrift": False,
+        }
+        for all in dict_titlepage.keys():
+            if all == "logo_path":
+                continue
+            checkbox = eval("self.cb_titlepage_{}".format(all))
+            checkbox.setChecked(dict_titlepage[all])
+
+        return dict_titlepage
 
 #### Dialog Window - Ausgleichspunkte
+class Ui_Dialog_ausgleichspunkte(object):
+    def setupUi(
+        self, Dialog, ausgleichspunkte_split_text, list_sage_ausgleichspunkte_chosen
+    ):
+        # print(list_sage_ausgleichspunkte_chosen)
+        self.ausgleichspunkte_split_text = ausgleichspunkte_split_text
+        self.Dialog = Dialog
+        self.Dialog.setObjectName("Dialog")
+        self.Dialog.resize(600, 400)
+        self.Dialog.setWindowIcon(QtGui.QIcon(logo_path))
+        self.gridLayout_2 = QtWidgets.QGridLayout(Dialog)
+        self.gridLayout_2.setObjectName("gridLayout_2")
+        self.scrollArea = QtWidgets.QScrollArea(Dialog)
+        self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollArea.setObjectName("scrollArea")
+        self.scrollAreaWidgetContents = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 600, 500))
+        self.scrollArea.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
+        self.gridLayout = QtWidgets.QGridLayout(self.scrollAreaWidgetContents)
+        self.gridLayout.setObjectName("gridLayout")
+        self.label_einleitung = QtWidgets.QLabel(self.scrollAreaWidgetContents)
+        self.label_einleitung.setWordWrap(True)
+        self.label_einleitung.setObjectName("label_einleitung")
+        self.label_einleitung.setText(
+            "[...] EINFÜHRUNGSTEXT [...] \n\nAufgabenstellung:\n"
+        )
+        self.gridLayout.addWidget(self.label_einleitung, 0, 1, 1, 3, QtCore.Qt.AlignTop)
+        row = 1
+        cb_counter = 0
 
+        for all in self.ausgleichspunkte_split_text:
+            cb_counter = self.create_checkbox_ausgleich(
+                all, row, cb_counter, list_sage_ausgleichspunkte_chosen
+            )
+            row += 1
+
+        self.label_solution = QtWidgets.QLabel(self.scrollAreaWidgetContents)
+        self.label_solution.setWordWrap(True)
+        self.label_solution.setObjectName("label_solution")
+        self.label_solution.setText("\nLösungserwartung:\n[...]")
+        self.gridLayout.addWidget(self.label_solution, row, 1, 1, 3, QtCore.Qt.AlignTop)
+        row += 1
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+        self.gridLayout_2.addWidget(self.scrollArea, 0, 0, 1, 1)
+        self.buttonBox = QtWidgets.QDialogButtonBox(self.Dialog)
+        self.buttonBox = QtWidgets.QDialogButtonBox(self.Dialog)
+        self.buttonBox.setStandardButtons(
+            QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel
+        )
+
+        buttonX = self.buttonBox.button(QtWidgets.QDialogButtonBox.Cancel)
+        buttonX.setText("Abbrechen")
+        self.buttonBox.setObjectName("buttonBox")
+        self.buttonBox.rejected.connect(self.Dialog.reject)
+        self.gridLayout_2.addWidget(self.buttonBox, 1, 0, 1, 1)
+        self.buttonBox.accepted.connect(
+            partial(self.pushButton_OK_pressed, list_sage_ausgleichspunkte_chosen)
+        )
+        self.retranslateUi(self.Dialog)
+        QtCore.QMetaObject.connectSlotsByName(self.Dialog)
+
+        # return list_sage_ausgleichspunkte_chosen
+
+    def retranslateUi(self, Dialog):
+        _translate = QtCore.QCoreApplication.translate
+        Dialog.setWindowTitle(
+            _translate("Ausgleichspunkte anpassen", "Ausgleichspunkte anpassen")
+        )
+
+    def create_checkbox_ausgleich(
+        self, linetext, row, cb_counter, list_sage_ausgleichspunkte_chosen
+    ):
+        counter = row - 1
+        if "GRAFIK" in linetext:
+            pass
+        else:
+            exec(
+                "self.checkBox_{} = QtWidgets.QCheckBox(self.scrollAreaWidgetContents)".format(
+                    counter
+                )
+            )
+            checkBox = eval("self.checkBox_{}".format(counter))
+            checkBox.setMaximumSize(QtCore.QSize(20, 16777215))
+            # self.checkBox.setText("")
+            checkBox.setObjectName("checkBox_{}".format(counter))
+            self.gridLayout.addWidget(checkBox, row, 0, 1, 1, QtCore.Qt.AlignTop)
+            cb_counter += 1
+
+        exec(
+            "self.label_{} = QtWidgets.QLabel(self.scrollAreaWidgetContents)".format(
+                counter
+            )
+        )
+        label = eval("self.label_{}".format(counter))
+        label.setWordWrap(True)
+        label.setObjectName("label_{}".format(counter))
+        if "\\fbox{A}" in linetext:
+            linetext = linetext.replace("\\fbox{A}", "")
+        if linetext in list_sage_ausgleichspunkte_chosen:
+            checkBox.setChecked(True)
+
+        label.setText(linetext)
+        self.gridLayout.addWidget(label, row, 1, 1, 2, QtCore.Qt.AlignTop)
+        return cb_counter
+
+    def pushButton_OK_pressed(self, list_sage_ausgleichspunkte_chosen):
+        # print(len(self.ausgleichspunkte_split_text))
+        for i in range(0, len(self.ausgleichspunkte_split_text)):
+            try:
+                checkBox = eval("self.checkBox_{}".format(i))
+                if (
+                    eval("self.label_{}".format(i)).text()
+                    in list_sage_ausgleichspunkte_chosen
+                ):
+                    if checkBox.isChecked() == False:
+                        list_sage_ausgleichspunkte_chosen.remove(
+                            eval("self.label_{}".format(i)).text()
+                        )
+                else:
+                    if checkBox.isChecked() == True:
+                        list_sage_ausgleichspunkte_chosen.append(
+                            eval("self.label_{}".format(i)).text()
+                        )
+
+            except AttributeError:
+                pass
+
+        # print(list_sage_ausgleichspunkte_chosen)
+
+        self.Dialog.reject()
+        # print(list_sage_ausgleichspunkte_chosen)
+        # self.list_sage_ausgleichspunkte_chosen=list_sage_ausgleichspunkte_chosen
+        return list_sage_ausgleichspunkte_chosen
 
 ### sort_items
+def atoi(text):
+    return int(text) if text.isdigit() else text
+
+
+def natural_keys(text):
+    return [atoi(c) for c in re.split("(\d+)", text)]
 
 ### create_pdf
+def create_pdf(path_file, index, maximum, typ=0):
+    if sys.platform.startswith("linux"):
+        pass
+    else:
+        msg = QtWidgets.QMessageBox()
+        msg.setWindowIcon(QtGui.QIcon(logo_path))
+        msg.setWindowTitle("Lade...")
+        msg.setStandardButtons(QtWidgets.QMessageBox.NoButton)
+        if path_file == "Teildokument" or path_file == "Schularbeit_Vorschau":
+            rest = ""
+        else:
+            rest = " ({0}|{1})".format(index + 1, maximum)
+        msg.setText("Die PDF Datei wird erstellt..." + rest)
 
+        msg.show()
+        QApplication.processEvents()
+        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+    if path_file == "Teildokument":
+        dateiname = path_file + "_" + typ
+
+        # save_file=os.path.join(path_programm, 'Teildokument')
+        # print(dateiname)
+    # elif dateiname=='Schularbeit_Vorschau':
+    # 	save_file=os.path.join(path_programm, 'Teildokument')
+
+    else:
+        head, tail = os.path.split(path_file)
+        save_file = head
+        dateiname = tail
+
+    # chosen_aufgabenformat=self.label_aufgabentyp.text()[-1]
+
+    if dateiname == "Schularbeit_Vorschau" or dateiname.startswith("Teildokument"):
+        if sys.platform.startswith("linux"):
+            subprocess.Popen(
+                'cd "{0}/Teildokument" ; latex --synctex=-1 {1}.tex ; dvips {1}.dvi ; ps2pdf -dNOSAFER {1}.ps'.format(
+                    path_programm, dateiname
+                ),
+                shell=True,
+            ).wait()
+            #subprocess.Popen('cd "{0}/Teildokument" ; okular "{1}.pdf"'.format(path_programm, dateiname),shell=True)
+            #subprocess.Popen('cd "{0}/Teildokument" ; xdg-open "{1}.pdf"'.format(path_programm, dateiname),shell=True)
+            subprocess.run(
+                [   "sudo",
+                    "xdg-open",
+                    "{0}/Teildokument/{1}.pdf".format(path_programm, dateiname),
+                ]
+            )
+        elif sys.platform.startswith("darwin"):
+            subprocess.Popen(
+                'cd "{0}/Teildokument" ; latex --synctex=-1 {1}.tex ; dvips {1}.dvi ; ps2pdf -dNOSAFER {1}.ps'.format(
+                    path_programm, dateiname
+                ),
+                shell=True,
+            ).wait()
+            subprocess.run(
+                ["open", "{0}/Teildokument/{1}.pdf".format(path_programm, dateiname),]
+            )
+        else:
+            if os.path.isfile(
+                os.path.join("C:\\", "Program Files", "SumatraPDF", "SumatraPDF.exe")
+            ):
+                sumatrapdf = os.path.join(
+                    "C:\\", "Program Files", "SumatraPDF", "SumatraPDF.exe"
+                )
+            elif os.path.isfile(
+                os.path.join(
+                    "C:\\", "Program Files (x86)", "SumatraPDF", "SumatraPDF.exe"
+                )
+            ):
+                sumatrapdf = os.path.join(
+                    "C:\\", "Program Files (x86)", "SumatraPDF", "SumatraPDF.exe"
+                )
+            else:
+                sumatrapdf = ""
+
+            # print(os.path.splitdrive(path_programm)[0])
+            subprocess.Popen(
+                'cd "{0}/Teildokument" & latex --synctex=-1 "{1}.tex"& dvips "{1}.dvi" & ps2pdf -dNOSAFER "{1}.ps"'.format(
+                    path_programm, dateiname
+                ),
+                cwd=os.path.splitdrive(path_programm)[0],
+                shell=True,
+            ).wait()
+            if sumatrapdf != "":
+                subprocess.Popen(
+                    'cd "{0}/Teildokument" &"{1}" "{2}.pdf"'.format(
+                        path_programm, sumatrapdf, dateiname
+                    ),
+                    cwd=os.path.splitdrive(path_programm)[0],
+                    shell=True,
+                ).poll()
+            else:
+                subprocess.Popen(
+                    'cd "{0}/Teildokument" &"{1}.pdf"'.format(path_programm, dateiname),
+                    cwd=os.path.splitdrive(path_programm)[0],
+                    shell=True,
+                ).poll()
+
+        os.unlink("{0}/Teildokument/{1}.aux".format(path_programm, dateiname))
+        os.unlink("{0}/Teildokument/{1}.log".format(path_programm, dateiname))
+        os.unlink("{0}/Teildokument/{1}.dvi".format(path_programm, dateiname))
+        os.unlink("{0}/Teildokument/{1}.ps".format(path_programm, dateiname))
+
+    else:
+        if sys.platform.startswith("linux"):
+            subprocess.Popen(
+                'cd "{0}" ; latex --synctex=-1 {1}.tex ; dvips {1}.dvi ; ps2pdf -dNOSAFER {1}.ps'.format(
+                    save_file, dateiname
+                ),
+                shell=True,
+            ).wait()
+        elif sys.platform.startswith("darwin"):
+            # print(dateiname)
+            subprocess.Popen(
+                'cd "{0}" ; latex --synctex=-1 "{1}.tex" ; dvips "{1}.dvi" ; ps2pdf -dNOSAFER "{1}.ps"'.format(
+                    save_file, dateiname
+                ),
+                shell=True,
+            ).wait()
+        else:
+            subprocess.Popen(
+                'cd "{0}" & latex --synctex=-1 "{1}.tex"& dvips "{1}.dvi" & ps2pdf -dNOSAFER "{1}.ps"'.format(
+                    save_file, dateiname
+                ),
+                cwd=os.path.splitdrive(path_file)[0],
+                shell=True,
+            ).wait()
+
+        os.unlink("{0}/{1}.aux".format(save_file, dateiname))
+        os.unlink("{0}/{1}.log".format(save_file, dateiname))
+        os.unlink("{0}/{1}.dvi".format(save_file, dateiname))
+        os.unlink("{0}/{1}.ps".format(save_file, dateiname))
+        os.unlink("{0}/{1}.synctex".format(save_file, dateiname))
+
+    if sys.platform.startswith("linux"):
+        pass
+    else:
+        msg.close()
+
+    QtWidgets.QApplication.restoreOverrideCursor()
 
 #### Dialog Window - Schularbeit erstellen
 class Ui_Dialog_erstellen(object):
