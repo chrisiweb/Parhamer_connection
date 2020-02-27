@@ -63,7 +63,7 @@ printProgressBar(0, l, prefix = 'Installation:', length = 50)
 for i, item in enumerate(items):
     if i==50:
         if sys.platform.startswith('linux'):
-            p=subprocess.Popen('cp "{0}" "LaMA{1}"'.format(newapp_path, extension), stdout=subprocess.PIPE,shell=True)
+            p=subprocess.Popen('cp "{0}" "{1}"'.format(newapp_path, mainfile_path), stdout=subprocess.PIPE,shell=True)
         elif sys.platform.startswith('darwin'):
             
             p=subprocess.Popen('cp "{0}" "{1}"'.format(newapp_path, mainfile_path), stdout=subprocess.PIPE,shell=True)
@@ -86,8 +86,10 @@ else:
 input()
 
 if sys.platform.startswith('linux'):
-    #print(mainfile_path)
-    subprocess.run("python3 " + mainfile_path, shell=True)
+    if extension=='.py':
+        subprocess.run("python3 " + mainfile_path, shell=True)
+    else:
+        subprocess.run(mainfile_path, shell=True)
 elif sys.platform.startswith('darwin'):
     os.system(mainfile_path)
     #subprocess.run("python3 " + mainfile_path, shell=True)

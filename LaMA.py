@@ -2078,8 +2078,11 @@ class Ui_MainWindow(object):
                     if sys.platform.startswith("linux") or sys.platform.startswith(
                         "darwin"
                     ):
-                        os.system("chmod 777 {}".format(filename_update))
-                        os.system(filename_update)
+                        if extension=='.py':
+                            os.system("python3 {}".format(filename_update))  
+                        else:  
+                            os.system("chmod 777 {}".format(filename_update))
+                            os.system(filename_update)
                     else:
                         os.startfile(filename_update)
                     sys.exit(0)
