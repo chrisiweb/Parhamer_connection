@@ -1857,8 +1857,6 @@ class Ui_MainWindow(object):
                             os.system(filename_update)
                     else:
                         os.startfile(filename_update)
-                    else:
-                        os.startfile(filename_update)
                     sys.exit(0)
                 except Exception as e:
                     self.warning_window(
