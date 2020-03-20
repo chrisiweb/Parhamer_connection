@@ -11,7 +11,6 @@ import time
 import threading
 import sys
 import os
-
 # import os.path
 from pathlib import Path
 import datetime
@@ -27,6 +26,7 @@ from PIL import Image  ## pillow
 import smtplib
 
 #from config import config_loader, path_programm, logo_path
+
 # from list_of_widgets import (
 #     widgets_search,
 #     widgets_create,
@@ -45,6 +45,9 @@ except IndexError:
 
 
 print("Loading...")
+
+# print(path_programm)
+# print(os.path.dirname(sys.argv[0]))
 
 ### config_loader, path_programm, logo_path
 def config_loader(pathToFile, parameter):
@@ -84,11 +87,10 @@ logo_path = os.path.join(
     path_programm, "_database", "_config", "icon", "LaMa_icon_logo.png"
 )
 
-
-
 if sys.platform.startswith("darwin"):
     if path_programm is "":
         path_programm = "."
+
 
 
 config_file = os.path.join(path_programm, "_database", "_config", "config1.yml")
@@ -113,6 +115,7 @@ set_chosen_gk = set([])
 list_sage_examples = []
 
 
+
 ### list_of_widgets
 widgets_search = [
     "actionReset",
@@ -133,6 +136,7 @@ widgets_search = [
     "groupBox_themen_klasse",
     "groupBox_titelsuche",
     "cb_solution",
+    "cb_drafts",
     "btn_suche",
 ]  #'actionRefresh_Database'
 
@@ -191,12 +195,10 @@ class SpinBox_noWheel(QtWidgets.QSpinBox):
     def wheelEvent(self, event):
         event.ignore()
 
-
 ### translate
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-
     def _fromUtf8(s):
         return s
 
@@ -207,11 +209,11 @@ try:
     def _translate(context, text, disambig):
         return QtWidgets.QApplication.translate(context, text, disambig, _encoding)
 
-
 except AttributeError:
 
     def _translate(context, text, disambig):
         return QtWidgets.QApplication.translate(context, text, disambig)
+
 
 #### Dialogue Window -- Titelblatt anpassen
 class Ui_Dialog_titlepage(object):
@@ -379,6 +381,7 @@ class Ui_Dialog_titlepage(object):
 
         return dict_titlepage
 
+
 #### Dialog Window - Ausgleichspunkte
 class Ui_Dialog_ausgleichspunkte(object):
     def setupUi(
@@ -524,6 +527,7 @@ def atoi(text):
 def natural_keys(text):
     return [atoi(c) for c in re.split("(\d+)", text)]
 
+
 ### create_pdf
 def create_pdf(path_file, index, maximum, typ=0):
     if sys.platform.startswith("linux"):
@@ -667,7 +671,8 @@ def create_pdf(path_file, index, maximum, typ=0):
 
     QtWidgets.QApplication.restoreOverrideCursor()
 
-#### Dialog Window - Schularbeit erstellen
+
+    #### Dialog Window - Schularbeit erstellen
 class Ui_Dialog_erstellen(object):
     def setupUi(
         self,
@@ -678,6 +683,8 @@ class Ui_Dialog_erstellen(object):
         dict_titlepage,
         saved_file_path,
     ):
+        # print(dict_list_input_examples)
+        # print( beispieldaten_dateipfad_1)
         self.dict_list_input_examples = dict_list_input_examples
         self.beispieldaten_dateipfad_1 = beispieldaten_dateipfad_1
         self.beispieldaten_dateipfad_2 = beispieldaten_dateipfad_2
@@ -907,6 +914,7 @@ class Ui_Dialog_erstellen(object):
         elif sys.platform.startswith("darwin"):
             file_path = os.path.dirname(self.saved_file_path)
             subprocess.Popen('open "{}"'.format(file_path), shell=True)
+
         # subprocess.run(['xdg-open', "{0}/Teildokument/{1}.pdf".format(path_programm, dateiname)])
         else:
             file_path = os.path.dirname(self.saved_file_path).replace("/", "\\")
@@ -1070,7 +1078,6 @@ class Ui_MainWindow(object):
         self.groupBox_ausgew_gk.setMaximumHeight(110)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.groupBox_ausgew_gk)
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
-
         self.scrollArea_ausgew_gk = QtWidgets.QScrollArea(self.groupBox_ausgew_gk)
         self.scrollArea_ausgew_gk.setWidgetResizable(True)
         self.scrollArea_ausgew_gk.setObjectName("scrollArea_ausgew_gk")
@@ -1137,6 +1144,10 @@ class Ui_MainWindow(object):
         self.cb_solution.setObjectName(_fromUtf8("cb_solution"))
         self.cb_solution.setChecked(True)
         self.horizontalLayout_2.addWidget(self.cb_solution, QtCore.Qt.AlignLeft)
+        self.cb_drafts = QtWidgets.QCheckBox(self.centralwidget)
+        self.cb_drafts.setObjectName(_fromUtf8("cb_drafts"))
+        self.horizontalLayout_2.addWidget(self.cb_drafts)
+        self.cb_drafts.toggled.connect(self.cb_drafts_enabled)
         self.btn_suche = QtWidgets.QPushButton(self.centralwidget)
         self.btn_suche.setEnabled(True)
         self.btn_suche.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
@@ -2088,6 +2099,13 @@ class Ui_MainWindow(object):
             self.cb_solution_sage, 7, 4, 2, 1, QtCore.Qt.AlignRight
         )
 
+        self.cb_drafts_sage = QtWidgets.QCheckBox(self.centralwidget)
+        self.cb_drafts_sage.setObjectName(_fromUtf8("cb_drafts_sage"))
+        self.gridLayout_5.addWidget(self.cb_drafts_sage, 8, 4, 2, 1)
+        self.cb_drafts_sage.setText(_translate("MainWindow", "Entwürfe anzeigen", None))
+        # self.horizontalLayout_2.addWidget(self.cb_drafts_sage)
+        self.cb_drafts_sage.toggled.connect(self.cb_drafts_sage_enabled)
+
         self.pushButton_vorschau = QtWidgets.QPushButton(self.groupBox_sage)
         self.pushButton_vorschau.setMaximumSize(QtCore.QSize(90, 16777215))
         self.pushButton_vorschau.setObjectName("pushButton_vorschau")
@@ -2442,6 +2460,8 @@ class Ui_MainWindow(object):
         self.cb_k8.setText(_translate("MainWindow", "8. Klasse", None))
         self.cb_mat.setText(_translate("MainWindow", "Matura", None))
         self.cb_solution.setText(_translate("MainWindow", "Lösungen anzeigen", None))
+        self.cb_drafts.setText(_translate("MainWindow", "Entwürfe anzeigen", None))
+
         try:
             log_file = os.path.join(path_programm, "Teildokument", "log_file_1")
             self.label_update.setText(
@@ -3256,6 +3276,29 @@ class Ui_MainWindow(object):
                                     break
                             file.close()
 
+            ################################################
+            #### Suche lokal gespeicherte Beispiele ######
+            #############################################
+
+            for root, dirs, files in os.walk(
+                os.path.join(path_programm, "Lokaler_Ordner", chosen_aufgabenformat)
+            ):
+                for all in files:
+                    if all.endswith(".tex") or all.endswith(".ltx"):
+                        if not ("Gesamtdokument" in all) and not (
+                            "Teildokument" in all
+                        ):
+                            # print(os.path.join(root,all))
+                            file = open(os.path.join(root, all), encoding="utf8")
+                            for i, line in enumerate(file):
+                                if not line == "\n":
+                                    beispieldaten_dateipfad[line] = os.path.join(
+                                        root, all
+                                    )
+                                    beispieldaten.append(line)
+                                    break
+                            file.close()
+
             temp_dict_beispieldaten = {}
             temp_list = list(beispieldaten_dateipfad.keys())
             temp_list.sort(key=natural_keys)
@@ -3263,6 +3306,8 @@ class Ui_MainWindow(object):
                 temp_dict_beispieldaten.update({all: beispieldaten_dateipfad[all]})
 
             beispieldaten_dateipfad = temp_dict_beispieldaten
+
+            # print(beispieldaten_dateipfad)
 
             log_file = os.path.join(
                 path_programm, "Teildokument", "log_file_%s" % selected_aufgabentyp
@@ -3291,6 +3336,23 @@ class Ui_MainWindow(object):
     ############################################################################
     ########################### CREATE PDF ####################################
     ############################################################################
+
+    def cb_drafts_enabled(self):
+        if self.cb_drafts.isChecked():
+            self.warning_window(
+                "Achtung!\nEntwürfe können Fehler enthalten, die das Programm zum Absturz bringen.",
+                "\nSpeichern Sie gegebenenfalls eine erstellte Schularbeit vor der Suche!",
+                "Here be dragons!",
+            )
+
+    def cb_drafts_sage_enabled(self):
+        if self.cb_drafts_sage.isChecked():
+            self.warning_window(
+                "Achtung!\nEntwürfe können Fehler enthalten, die das Programm zum Absturz bringen.",
+                "\nSpeichern Sie gegebenenfalls eine erstellte Schularbeit vor dem Erstellen!",
+                "Here be dragons!",
+            )
+        self.adapt_choosing_list("sage")
 
     def PrepareTeXforPDF(self):
         chosen_aufgabenformat = "Typ%sAufgaben" % self.label_aufgabentyp.text()[-1]
@@ -3371,6 +3433,55 @@ class Ui_MainWindow(object):
             beispieldaten_dateipfad = json.load(f)
             # beispieldaten_dateipfad=eval(beispieldaten_dateipfad)
             beispieldaten = list(beispieldaten_dateipfad.keys())
+
+
+        if self.cb_drafts.isChecked():
+            # print(beispieldaten_dateipfad)
+            QtWidgets.QApplication.restoreOverrideCursor()
+            drafts_path = os.path.join(path_programm, "Beispieleinreichung")
+            for all in os.listdir(drafts_path):
+                if all.endswith(".tex") or all.endswith(".ltx"):
+                    pattern = re.compile("[A-Z][A-Z]")
+                    if int(self.label_aufgabentyp.text()[-1]) == 1:
+                        if pattern.match(all):
+                            file = open(os.path.join(drafts_path, all), encoding="utf8")
+                            for i, line in enumerate(file):
+                                if not line == "\n":
+                                    # line=line.replace('\section{', 'section{ENTWURF ')
+                                    beispieldaten_dateipfad[
+                                        "ENTWURF " + line
+                                    ] = os.path.join(drafts_path, all)
+                                    beispieldaten.append(line)
+                                    break
+                            file.close()
+                    if int(self.label_aufgabentyp.text()[-1]) == 2:
+                        if not pattern.match(all):
+                            file = open(os.path.join(drafts_path, all), encoding="utf8")
+                            for i, line in enumerate(file):
+                                if not line == "\n":
+                                    # line=line.replace('\section{', 'section{ENTWURF ')
+                                    beispieldaten_dateipfad[
+                                        "ENTWURF " + line
+                                    ] = os.path.join(drafts_path, all)
+                                    beispieldaten.append(line)
+                                    break
+                            file.close()
+
+            # print(beispieldaten_dateipfad)
+            # return
+
+            # for root, dirs, files in os.walk(os.path.join(path_programm,'_database', chosen_aufgabenformat)):
+            # 	for all in files:
+            # 		if all.endswith('.tex') or all.endswith('.ltx'):
+            # 			if not ('Gesamtdokument' in all) and not ('Teildokument' in all):
+            # 				file=open(os.path.join(root,all), encoding='utf8')
+            # 				for i, line in enumerate(file):
+            # 					if not line == "\n":
+            # 						beispieldaten_dateipfad[line]=os.path.join(root,all)
+            # 						beispieldaten.append(line)
+            # 						break
+            # 				file.close()
+
 
         ######### new tabu.sty not working ###
         ######################################################
@@ -3595,12 +3706,19 @@ class Ui_MainWindow(object):
         for key, value in dict_gesammeltedateien.items():
             value = value.replace("\\", "/")
             file = open(filename_teildokument, "a", encoding="utf8")
-            ### newpage only with typ2 !!
 
+            ### newpage only with typ2 !!
             if chosen_aufgabenformat == "Typ1Aufgaben":
-                file.write('\input{"' + value + '"}%\n' "\hrule	 \leer\n\n")
+                if key.startswith("ENTWURF"):
+                    file.write('ENTWURF \input{"' + value + '"}%\n' "\hrule	 \leer\n\n")
+                else:
+                    file.write('\input{"' + value + '"}%\n' "\hrule	 \leer\n\n")
             elif chosen_aufgabenformat == "Typ2Aufgaben":
-                file.write('\input{"' + value + '"}%\n' "\\newpage \n")
+                if key.startswith("ENTWURF"):
+                    file.write('ENTWURF \input{"' + value + '"}%\n' "\\newpage \n")
+                else:
+                    file.write('\input{"' + value + '"}%\n' "\\newpage \n")
+
             # else:
             # 	if chosen_aufgabenformat=='Typ 1 Aufgaben':
             # 		file.write('\input{".'+value+'"}%\n'
@@ -3612,6 +3730,10 @@ class Ui_MainWindow(object):
         file.write('\shorthandoff{"}\n' "\end{document}")
 
         file.close()
+
+        # print(dict_gesammeltedateien)
+        # return
+
 
         QtWidgets.QApplication.restoreOverrideCursor()
         msg = QtWidgets.QMessageBox()
@@ -3810,19 +3932,22 @@ class Ui_MainWindow(object):
         x = ", ".join(sorted(set_chosen_gk_label))
         self.label_ausgew_gk.setText(_translate("MainWindow", str(x), None))
 
-    def warning_window(self, text, detailed_text=""):
+
+    def warning_window(self, text, detailed_text="", titel="Warnung"):
         QtWidgets.QApplication.restoreOverrideCursor()
         msg = QtWidgets.QMessageBox()
-        msg.setWindowTitle("Warnung")
+        msg.setWindowTitle(titel)
         msg.setIcon(QtWidgets.QMessageBox.Warning)
         msg.setWindowIcon(QtGui.QIcon(logo_path))
         msg.setText(text)
         msg.setInformativeText(detailed_text)
         msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
-        retval = msg.exec_()
+        msg.exec_()
 
     def save_file(self):
         self.creator_mode = "user"
+        local_save = False
+
         ########################### WARNINGS #####
         ######################################
 
@@ -3927,6 +4052,7 @@ class Ui_MainWindow(object):
             bilder = "-"
 
         if self.creator_mode == "user":
+            local_save = False
             if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
                 aufgabenformat = "Aufgabenformat: %s\n" % self.comboBox_af.currentText()
             else:
@@ -3954,10 +4080,16 @@ class Ui_MainWindow(object):
             )
             self.cb_confirm.setObjectName(_fromUtf8("cb_confirm"))
             msg.setCheckBox(self.cb_confirm)
-            msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+            msg.setStandardButtons(
+                QtWidgets.QMessageBox.Yes
+                | QtWidgets.QMessageBox.Apply
+                | QtWidgets.QMessageBox.No
+            )
             buttonY = msg.button(QtWidgets.QMessageBox.Yes)
             buttonY.setText("Speichern")
             msg.setDefaultButton(QtWidgets.QMessageBox.Yes)
+            button_personal = msg.button(QtWidgets.QMessageBox.Apply)
+            button_personal.setText("Lokal speichern")
             buttonN = msg.button(QtWidgets.QMessageBox.No)
             buttonN.setText("Abbrechen")
             ret = msg.exec_()
@@ -3971,6 +4103,43 @@ class Ui_MainWindow(object):
                             "Bitte bestätigen Sie die Eigenständigkeitserklärung und Lizenzvereinbarung."
                         )
                         ret = msg.exec_()
+            elif ret == QtWidgets.QMessageBox.Apply:
+                msg_personal = QtWidgets.QMessageBox()
+                msg_personal.setWindowTitle("Aufgabe lokal speichern")
+                msg_personal.setIcon(QtWidgets.QMessageBox.Warning)
+                msg_personal.setWindowIcon(QtGui.QIcon(logo_path))
+                msg_personal.setText(
+                    "Sind Sie sicher, dass Sie diese Aufgabe nur lokal in Ihrer Dropbox speichern wollen?\n"
+                )
+                msg_personal.setInformativeText(
+                    "ACHTUNG: Durch nicht überprüfte Aufgaben können Fehler entstehen, die das Programm zum Absturz bringen!"
+                )
+                msg_personal.setStandardButtons(
+                    QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No
+                )
+                buttonY_personal = msg_personal.button(QtWidgets.QMessageBox.Yes)
+                buttonY_personal.setText("Ja")
+                buttonN_personal = msg_personal.button(QtWidgets.QMessageBox.No)
+                buttonN_personal.setText("Nein")
+                msg_personal.setDefaultButton(QtWidgets.QMessageBox.No)
+                ret_personal = msg_personal.exec_()
+
+                if ret_personal == QtWidgets.QMessageBox.Yes:
+                    print("Das wird gespeichert")
+                    local_save = True
+                    # self.comboBox_aufgabentyp_cr.currentText()=='Typ 1':
+
+                    # 	if os.path
+                    # try:
+                    # 	# with open(titlepage_save, 'w+',encoding='utf8') as f:
+                    # 	#	json.dump(self.dict_titlepage, f,ensure_ascii=False)
+                    # except FileNotFoundError:
+                    # 	os.makedirs(os.path.join(path_programm,'Lokaler Ordner'))
+                    # 	# with open(titlepage_save, 'w+',encoding='utf8') as f:
+                    # 	#	json.dump(self.dict_titlepage, f,ensure_ascii=False)
+                if ret_personal == QtWidgets.QMessageBox.No:
+                    # ret=msg.exec_()
+                    return
             else:
                 return
 
@@ -4040,6 +4209,12 @@ class Ui_MainWindow(object):
                         list_chosen_gk[0],
                         "Einzelbeispiele",
                     )
+
+                elif self.creator_mode == "user" and local_save == True:
+                    gk_path_temp = os.path.join(
+                        path_programm, "Lokaler_Ordner", "Typ1Aufgaben"
+                    )
+
                 else:
                     gk_path_temp = os.path.join(
                         path_programm,
@@ -4050,7 +4225,11 @@ class Ui_MainWindow(object):
                         "Einzelbeispiele",
                     )
 
-                z = list_chosen_gk[0].upper() + " - "
+                if local_save == True:
+                    z = " - "
+                else:
+                    z = list_chosen_gk[0].upper() + " - "
+                    
             else:
                 path_folder = "_Grundkompetenzen"
                 if self.creator_mode == "admin" and self.cb_save.isChecked() == True:
@@ -4063,6 +4242,11 @@ class Ui_MainWindow(object):
                         dict_gk[list_chosen_gk[0]],
                         "Einzelbeispiele",
                     )
+                elif self.creator_mode == "user" and local_save == True:
+                    gk_path_temp = os.path.join(
+                        path_programm, "Lokaler_Ordner", "Typ1Aufgaben"
+                    )
+
                 else:
                     gk_path_temp = os.path.join(
                         path_programm,
@@ -4073,7 +4257,10 @@ class Ui_MainWindow(object):
                         dict_gk[list_chosen_gk[0]],
                         "Einzelbeispiele",
                     )
-                z = dict_gk[list_chosen_gk[0]] + " - "
+                if local_save == True:
+                    z = " - "
+                else:
+                    z = dict_gk[list_chosen_gk[0]] + " - "
 
             if self.creator_mode == "admin" and self.cb_save.isChecked() == True:
                 max_integer_file = 1000
@@ -4090,6 +4277,9 @@ class Ui_MainWindow(object):
                     if int(file_integer) > max_integer_file:
                         max_integer_file = int(file_integer)
 
+            # print(max_integer_file)
+
+
         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
             if self.creator_mode == "admin" and self.cb_save.isChecked() == True:
                 gk_path_temp = os.path.join(
@@ -4098,22 +4288,34 @@ class Ui_MainWindow(object):
                     "Typ2Aufgaben",
                     "Einzelbeispiele",
                 )
+
+            elif self.creator_mode == "user" and local_save == True:
+                gk_path_temp = os.path.join(
+                    path_programm, "Lokaler_Ordner", "Typ2Aufgaben"
+                )
+
             else:
                 gk_path_temp = os.path.join(
                     path_programm, "_database", "Typ2Aufgaben", "Einzelbeispiele"
                 )
             max_integer_file = 0
-            for all in os.listdir(gk_path_temp):
 
+            if not os.path.exists(gk_path_temp):
+                print("Creating {} for you.".format(gk_path_temp))
+                os.makedirs(gk_path_temp)
+            for all in os.listdir(gk_path_temp):
                 if all.endswith(".tex"):
                     file_integer, file_extension = all.split(".tex")
+                    file_integer = file_integer.replace("_L-", "")
+
                     if int(file_integer) > max_integer_file:
                         max_integer_file = int(file_integer)
 
         ####### Checks files in 'Beispieleinreichung' #####
         ##################################################
 
-        if self.creator_mode == "admin":
+
+        if self.creator_mode == "admin" or local_save == True:
             pass
         else:
             try:
@@ -4173,54 +4375,37 @@ class Ui_MainWindow(object):
         for all in dict_picture_path:
             head, tail = os.path.split(all)
             x = "{" + tail + "}"
-            name, ext = os.path.splitext(tail)
+            # name, ext =os.path.splitext(tail)
             if self.creator_mode == "admin" and self.cb_save.isChecked() == True:
-                if (
-                    x in textBox_Entry
-                    and self.comboBox_aufgabentyp_cr.currentText() == "Typ 1"
-                ):
-                    textBox_Entry = str(textBox_Entry).replace(
-                        tail,
-                        "../_database_inoffiziell/Bilder/"
-                        + list_chosen_gk[0].upper()
-                        + "_"
-                        + str(max_integer_file + 1)
-                        + "_"
-                        + tail,
-                    )
-                if (
-                    x in textBox_Entry
-                    and self.comboBox_aufgabentyp_cr.currentText() == "Typ 2"
-                ):
-                    textBox_Entry = str(textBox_Entry).replace(
-                        tail,
-                        "../_database_inoffiziell/Bilder/"
-                        + str(max_integer_file + 1)
-                        + "_"
-                        + tail,
-                    )
+                str_image_path = "../_database_inoffiziell/Bilder/"
+            if self.creator_mode == "admin" and self.cb_save.isChecked() == False:
+                str_image_path = "../_database/Bilder/"
+            if local_save == True:
+                str_image_path = "../Lokaler_Ordner/Bilder/"
             else:
-                if (
-                    x in textBox_Entry
-                    and self.comboBox_aufgabentyp_cr.currentText() == "Typ 1"
-                ):
-                    textBox_Entry = str(textBox_Entry).replace(
-                        tail,
-                        "../_database/Bilder/"
-                        + list_chosen_gk[0].upper()
-                        + "_"
-                        + str(max_integer_file + 1)
-                        + "_"
-                        + tail,
-                    )
-                if (
-                    x in textBox_Entry
-                    and self.comboBox_aufgabentyp_cr.currentText() == "Typ 2"
-                ):
-                    textBox_Entry = str(textBox_Entry).replace(
-                        tail,
-                        "../_database/Bilder/" + str(max_integer_file + 1) + "_" + tail,
-                    )
+                str_image_path = "../Beispieleinreichung/Bilder/"
+
+            if (
+                x in textBox_Entry
+                and self.comboBox_aufgabentyp_cr.currentText() == "Typ 1"
+            ):
+                textBox_Entry = str(textBox_Entry).replace(
+                    tail,
+                    str_image_path
+                    + list_chosen_gk[0].upper()
+                    + "_"
+                    + str(max_integer_file + 1)
+                    + "_"
+                    + tail,
+                )
+            if (
+                x in textBox_Entry
+                and self.comboBox_aufgabentyp_cr.currentText() == "Typ 2"
+            ):
+                textBox_Entry = str(textBox_Entry).replace(
+                    tail, str_image_path + str(max_integer_file + 1) + "_" + tail
+                )
+
 
         # copy_image_path=os.path.join(path_programm,'_database','Bilder') ### direct save
         if self.creator_mode == "admin":
@@ -4232,6 +4417,10 @@ class Ui_MainWindow(object):
                 copy_image_path = os.path.join(
                     path_programm, "_database_inoffiziell", "Bilder"
                 )  ### direct save
+
+        if local_save == True:
+            copy_image_path = os.path.join(path_programm, "Lokaler_Ordner", "Bilder")
+
         else:
             copy_image_path = os.path.join(
                 path_programm, "Beispieleinreichung", "Bilder"
@@ -4285,15 +4474,27 @@ class Ui_MainWindow(object):
                             + tail,
                         )  ### direct save
                 else:
-                    x = os.rename(
-                        copy_image_file_temp,
-                        "%s/Beispieleinreichung/Bilder/" % path_programm
-                        + list_chosen_gk[0].upper()
-                        + "_"
-                        + str(max_integer_file + 1)
-                        + "_"
-                        + tail,
-                    )  ### indirect
+                    if local_save == True:
+                        x = os.rename(
+                            copy_image_file_temp,
+                            "%s/Lokaler_Ordner/Bilder/" % path_programm
+                            + list_chosen_gk[0].upper()
+                            + "_"
+                            + str(max_integer_file + 1)
+                            + "_"
+                            + tail,
+                        )  ### indirect
+                    else:
+                        x = os.rename(
+                            copy_image_file_temp,
+                            "%s/Beispieleinreichung/Bilder/" % path_programm
+                            + list_chosen_gk[0].upper()
+                            + "_"
+                            + str(max_integer_file + 1)
+                            + "_"
+                            + tail,
+                        )  ### indirect
+
             if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
                 if self.creator_mode == "admin":
                     if self.cb_save.isChecked() == False:
@@ -4313,13 +4514,23 @@ class Ui_MainWindow(object):
                             + tail,
                         )  ### direct save
                 else:
-                    x = os.rename(
-                        copy_image_file_temp,
-                        "%s/Beispieleinreichung/Bilder/" % path_programm
-                        + str(max_integer_file + 1)
-                        + "_"
-                        + tail,
-                    )  ### indirect save
+                    if local_save == True:
+                        x = os.rename(
+                            copy_image_file_temp,
+                            "%s/Lokaler_Ordner/Bilder/" % path_programm
+                            + str(max_integer_file + 1)
+                            + "_"
+                            + tail,
+                        )  ### indirect
+                    else:
+                        x = os.rename(
+                            copy_image_file_temp,
+                            "%s/Beispieleinreichung/Bilder/" % path_programm
+                            + str(max_integer_file + 1)
+                            + "_"
+                            + tail,
+                        )  ### indirect save
+
 
         if " - " in edit_titel:
             edit_titel = edit_titel.replace(" - ", "-")
@@ -4329,8 +4540,13 @@ class Ui_MainWindow(object):
         else:
             quelle = self.lineEdit_quelle.text()
 
+        if local_save == True:
+            local = "*Privat* "
+        else:
+            local = ""
         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-            if self.creator_mode == "admin":
+            if self.creator_mode == "admin" or local_save == True:
+
                 pass
             else:
                 gk_path_temp = os.path.join(
@@ -4351,15 +4567,27 @@ class Ui_MainWindow(object):
                     file_name_klasse = "K7"
                 elif list_chosen_gk[0] in k8_beschreibung:
                     file_name_klasse = "K8"
-                file_name = os.path.join(
-                    gk_path_temp,
-                    file_name_klasse
-                    + " - "
-                    + list_chosen_gk[0].upper()
-                    + " - "
-                    + str(max_integer_file + 1)
-                    + ".tex",
-                )
+                if local_save == True:
+                    file_name = os.path.join(
+                        "_L-" + gk_path_temp,
+                        file_name_klasse
+                        + " - "
+                        + list_chosen_gk[0].upper()
+                        + " - "
+                        + str(max_integer_file + 1)
+                        + ".tex",
+                    )
+                else:
+                    file_name = os.path.join(
+                        gk_path_temp,
+                        file_name_klasse
+                        + " - "
+                        + list_chosen_gk[0].upper()
+                        + " - "
+                        + str(max_integer_file + 1)
+                        + ".tex",
+                    )
+
 
                 chosen_af = list(dict_aufgabenformate.keys())[
                     list(dict_aufgabenformate.values()).index(
@@ -4387,6 +4615,7 @@ class Ui_MainWindow(object):
 
                 file.write(
                     "\section{"
+                    + local
                     + file_name_klasse
                     + " - "
                     + list_chosen_gk[0].upper()
@@ -4412,13 +4641,24 @@ class Ui_MainWindow(object):
                 file.close()
 
             else:
-                file_name = os.path.join(
-                    gk_path_temp,
-                    dict_gk[list_chosen_gk[0]]
-                    + " - "
-                    + str(max_integer_file + 1)
-                    + ".tex",
-                )
+                if local_save == True:
+                    file_name = os.path.join(
+                        gk_path_temp,
+                        "_L-"
+                        + dict_gk[list_chosen_gk[0]]
+                        + " - "
+                        + str(max_integer_file + 1)
+                        + ".tex",
+                    )
+                else:
+                    file_name = os.path.join(
+                        gk_path_temp,
+                        dict_gk[list_chosen_gk[0]]
+                        + " - "
+                        + str(max_integer_file + 1)
+                        + ".tex",
+                    )
+
 
                 try:
                     file = open(file_name, "w", encoding="utf8")
@@ -4445,6 +4685,7 @@ class Ui_MainWindow(object):
                     ].upper()
                     file.write(
                         "\section{"
+                        + local
                         + dict_gk[list_chosen_gk[0]]
                         + " - "
                         + str(max_integer_file + 1)
@@ -4480,6 +4721,7 @@ class Ui_MainWindow(object):
                     ].upper()
                     file.write(
                         "\section{"
+                        + local
                         + dict_gk[list_chosen_gk[0]]
                         + " - "
                         + str(max_integer_file + 1)
@@ -4539,11 +4781,20 @@ class Ui_MainWindow(object):
                         str(max_integer_file + 1) + ".tex",
                     )  ### direct save
             else:
-                file_name = os.path.join(
-                    path_programm,
-                    "Beispieleinreichung",
-                    str(max_integer_file + 1) + ".tex",
-                )  ### not direct save
+                if local_save == True:
+                    file_name = os.path.join(
+                        path_programm,
+                        "Lokaler_Ordner",
+                        "Typ2Aufgaben",
+                        "_L-" + str(max_integer_file + 1) + ".tex",
+                    )  ### not direct save
+                else:
+                    file_name = os.path.join(
+                        path_programm,
+                        "Beispieleinreichung",
+                        str(max_integer_file + 1) + ".tex",
+                    )  ### not direct save
+
 
             try:
                 file = open(file_name, "w", encoding="utf8")
@@ -4607,6 +4858,7 @@ class Ui_MainWindow(object):
 
             file.write(
                 "\section{"
+                + local
                 + str(max_integer_file + 1)
                 + " - "
                 + klasse
@@ -4620,6 +4872,9 @@ class Ui_MainWindow(object):
                 + str(self.spinBox_punkte.value())
                 + "] %PUNKTE DES BEISPIELS\n"
                 + textBox_Entry
+                + "\n\n\\antwort{GK: "
+                + gk_auswahl_joined
+                + "}"
                 + "\n\\end{langesbeispiel}"
             )
 
@@ -4654,9 +4909,11 @@ class Ui_MainWindow(object):
 
         if self.creator_mode == "admin":
             if self.cb_save.isChecked() == False:
-                zusatz_info = " (offiziell)"
+                zusatz_info = " (Offiziell)"
             if self.cb_save.isChecked() == True:
-                zusatz_info = " (inoffiziell)"
+                zusatz_info = " (Inoffiziell)"
+        elif local_save == True:
+            zusatz_info = " (Lokaler Ordner)"
         else:
             zusatz_info = ""
 
@@ -4665,11 +4922,19 @@ class Ui_MainWindow(object):
         msg.setIcon(QtWidgets.QMessageBox.Information)
         msg.setWindowTitle("Admin Modus - Aufgabe erfolgreich gespeichert")
         msg.setWindowIcon(QtGui.QIcon(logo_path))
-        msg.setText(
-            'Die Typ{0}-Aufgabe mit dem Titel\n\n"{1}"\n\nwurde gespeichert.'.format(
-                chosen_typ, edit_titel
+        if local_save == True:
+            msg.setText(
+                'Die Typ{0}-Aufgabe mit dem Titel\n\n"{1}"\n\nwurde lokal auf ihrem System gespeichert.'.format(
+                    chosen_typ, edit_titel
+                )
             )
-        )
+        else:
+            msg.setText(
+                'Die Typ{0}-Aufgabe mit dem Titel\n\n"{1}"\n\nwurde gespeichert.'.format(
+                    chosen_typ, edit_titel
+                )
+            )
+
         msg.setDetailedText(
             "Details{0}\n"
             "Grundkompetenz(en): {1}\n"
@@ -5652,7 +5917,10 @@ class Ui_MainWindow(object):
         self.adapt_choosing_list(list_mode)
 
     def nummer_clicked(self, item):
-        self.sage_aufgabe_add(int(self.comboBox_at_sage.currentText()[-1]), item.text())
+        self.sage_aufgabe_add(
+            int(self.comboBox_at_sage.currentText()[-1]), item.text().replace("*E-", "")
+        )
+
 
     def nummer_clicked_fb(self, item):
         # print(item.text())
@@ -5699,6 +5967,37 @@ class Ui_MainWindow(object):
 
         self.beispieldaten_dateipfad_2 = beispieldaten_dateipfad_2
 
+        if self.cb_drafts_sage.isChecked():
+            drafts_path = os.path.join(path_programm, "Beispieleinreichung")
+            for all in os.listdir(drafts_path):
+                if all.endswith(".tex") or all.endswith(".ltx"):
+                    pattern = re.compile("[A-Z][A-Z]")
+                    if int(self.comboBox_at_sage.currentText()[-1]) == 1:
+                        if pattern.match(all):
+                            file = open(os.path.join(drafts_path, all), encoding="utf8")
+                            for i, line in enumerate(file):
+                                if not line == "\n":
+                                    # line=line.replace('\section{', 'section{ENTWURF ')
+                                    self.beispieldaten_dateipfad_1[line] = os.path.join(
+                                        drafts_path, all
+                                    )
+                                    # beispieldaten.append(line)
+                                    break
+                            file.close()
+                    if int(self.comboBox_at_sage.currentText()[-1]) == 2:
+                        if not pattern.match(all):
+                            file = open(os.path.join(drafts_path, all), encoding="utf8")
+                            for i, line in enumerate(file):
+                                if not line == "\n":
+                                    # line=line.replace('\section{', 'section{ENTWURF ')
+                                    self.beispieldaten_dateipfad_2[line] = os.path.join(
+                                        drafts_path, all
+                                    )
+                                    # beispieldaten.append(line)
+                                    break
+                            file.close()
+
+
         list_beispieldaten = []
         if list_mode == "sage":
             beispieldaten_dateipfad = eval(
@@ -5709,20 +6008,39 @@ class Ui_MainWindow(object):
                 name, extension = os.path.splitext(filename_all)
                 if self.comboBox_at_sage.currentText()[-1] == "2":
                     if name.startswith(self.lineEdit_number.text()):
-                        list_beispieldaten.append(name)
+                        if "Beispieleinreichung" in all:
+                            list_beispieldaten.append("*E-" + name)
+                        else:
+                            list_beispieldaten.append(name)
                 else:
                     if (
-                        name.startswith(self.comboBox_gk.currentText())
+                        self.comboBox_gk.currentText() in name
                         and self.comboBox_gk_num.currentText() in name
                     ):
                         # print(name)
-                        number = name.split(" - ")
+                        # number=name.split(' - ')
                         # print(number)
-                        if (
-                            self.lineEdit_number.text() == ""
-                            or number[1] == self.lineEdit_number.text()
-                        ):
-                            list_beispieldaten.append(name)
+                        try:
+                            int(self.lineEdit_number.text())
+                            number = name.split(" - ")
+                            if (
+                                self.lineEdit_number.text() == ""
+                                or number[1] == self.lineEdit_number.text()
+                            ):  # number[1]==self.lineEdit_number.text():
+                                if "Beispieleinreichung" in all:
+                                    list_beispieldaten.append("*E-" + name)
+                                else:
+                                    list_beispieldaten.append(name)
+                        except ValueError:
+                            if (
+                                self.lineEdit_number.text() == ""
+                                or self.lineEdit_number.text().lower() in name.lower()
+                            ):  # number[1]==self.lineEdit_number.text():
+                                if "Beispieleinreichung" in all:
+                                    list_beispieldaten.append("*E-" + name)
+                                else:
+                                    list_beispieldaten.append(name)
+
                         # and self.lineEdit_number.text().lower() in name.lower()
         if list_mode == "feedback":
             beispieldaten_dateipfad = eval(
@@ -5753,8 +6071,12 @@ class Ui_MainWindow(object):
         list_beispieldaten = sorted(list_beispieldaten, key=natural_keys)
 
         for all in list_beispieldaten:
-            listWidget.addItem(all)
-            listWidget.setFocusPolicy(QtCore.Qt.ClickFocus)
+            if list_mode == "feedback" and all.startswith("_L-"):
+                pass
+            else:
+                listWidget.addItem(all)
+                listWidget.setFocusPolicy(QtCore.Qt.ClickFocus)
+
 
     def save_dict_examples_data(self):
         self.dict_list_input_examples = {}
@@ -6213,6 +6535,9 @@ class Ui_MainWindow(object):
                             msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
                             msg.exec_()
 
+                    # print(self.dict_list_input_examples['data_gesamt']['copy_images'])
+                    # return
+
                     if (
                         self.dict_list_input_examples["data_gesamt"]["copy_images"]
                         == []
@@ -6262,6 +6587,29 @@ class Ui_MainWindow(object):
                                     ),
                                 )
 
+                            elif os.path.isfile(
+                                os.path.join(
+                                    path_programm,
+                                    "Beispieleinreichung",
+                                    "Bilder",
+                                    image,
+                                )
+                            ):
+                                shutil.copy(
+                                    os.path.join(
+                                        path_programm,
+                                        "Beispieleinreichung",
+                                        "Bilder",
+                                        image,
+                                    ),
+                                    os.path.join(
+                                        os.path.dirname(
+                                            self.chosen_path_schularbeit_erstellen[0]
+                                        ),
+                                        image,
+                                    ),
+                                )
+
                             # else:
                             # 	print('no file found')
                             # 	return
@@ -6276,6 +6624,11 @@ class Ui_MainWindow(object):
                         line.replace("../_database_inoffiziell/Bilder/", "")
                         for line in content
                     ]
+                    content = [
+                        line.replace("../Beispieleinreichung/Bilder/", "")
+                        for line in content
+                    ]
+
 
             for line in content:
                 if "begin{beispiel}" in line:

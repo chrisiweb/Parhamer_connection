@@ -3,7 +3,7 @@
 #### Version number ###
 __version__ = "v1.8.6"
 __lastupdate__ = "01/20"
-####################
+
 
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QApplication

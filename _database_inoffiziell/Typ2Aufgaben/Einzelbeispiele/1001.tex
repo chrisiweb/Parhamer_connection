@@ -1,0 +1,50 @@
+\section{1001 - K7 - DWV - WS 3.2, WS 3.3, WS 3.1 - Gut Flug - Thema Mathematik Schularbeiten 7. Klasse}
+
+\begin{langesbeispiel} \item[0] %PUNKTE DES BEISPIELS
+	
+Die Fluggesellschaft "`Gut Flug"' hat sich auf Kurzstreckenflüge $(<2000$\,km) spezialisiert. Erfahrungsgemäß wird bei Firma "`Gut Flug"' ein gebuchter Platz nur mit der Wahrscheinlichkeit $92\,\%$ auch tatsächlich belegt.
+
+\subsection{Aufgabenstellung:}
+\begin{enumerate}
+	\item Für einen Kurzstreckenflug von Wien nach Zürich werden 68 Flugtickets verkauft.\leer
+	
+	\fbox{A} Berechne die Wahrscheinlichkeit, dass genau 2 Personen, die ein Flugticket gekauft haben, nicht zu diesem Flug kommen.\leer
+	
+	Begründe warum für diese Berechnung die Binomialverteilung zugrunde gelegt werden kann.\leer
+	
+	\item Berechne Erwartungswert und Standardabweichung der zum Flug kommenden Fluggäste bei diesem ausgebuchten Flug und interpretiere diese Werte im Kontext.\leer
+	
+	\item Die Fluggesellschaft hat diesen Kurzstreckenflug wie üblich überbucht. Dies bedeutet, dass 68 Tickets verkauft wurden, obwohl aber nur 65 Plätze vorhanden sind.\leer
+	
+	Berechne die Wahrscheinlichkeit dafür, dass diese Überbuchung gut geht.
+	
+	\item Wie viele Tickets könnte die Fluglinie maximal verkaufen, damit der zu erwartende Wert der auftauchenden Passagiere die Platzzahl von 65 nicht überschreitet? Was spricht gegen eine Erhöhung der verkauften Tickets auf die Höhe des Erwartungswert?
+\end{enumerate}
+
+\antwort{
+\begin{enumerate}
+	\item \subsection{Lösungserwartung:} 
+
+$P(X=66)\approx 5,94\,\%$\leer
+
+Jede Person, die ein Ticket gekauft hat, kommt mit einer Wahrscheinlichkeit von $92\,\%$ zum Flug und mit einer Wahrscheinlichkeit von $8\,\%$ nicht zum Flug.
+
+	\item \subsection{Lösungserwartung:}
+	
+$\mu=E(X)=62,56; \sigma\approx 2,24$
+
+In etwa $\frac{2}{3}$ der Fälle werden zwischen $\mu-\sigma\approx 60,32$ und $\mu+\sigma\approx 64,80$ Personen zum Flug kommen.
+
+\item \subsection{Lösungserwartung:}
+
+$P(X\leq 65)\approx 91,68\,\%$
+
+	\item \subsection{Lösungserwartung:}
+	
+$n\cdot 0,92=65 \rightarrow n=70,65$
+
+Die Fluglinie könnte bis zu 70 Tickets verkaufen um den Erwartungswert von 65 nicht zu überschreiten.
+
+Dagegen spricht, dass bei einem Erwartungswert von 65 die Wahrscheinlichkeit, dass 66 Leute erscheinen noch immer sehr groß ist und dadurch die Gefahr, dass es zu Überbuchungen kommt deutlich höher ist als wenn man einen niedrigeren Erwartungswert anpeilt.
+\end{enumerate}}
+		\end{langesbeispiel}
