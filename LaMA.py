@@ -3334,6 +3334,8 @@ class Ui_MainWindow(object):
                 )
             )
         QtWidgets.QApplication.restoreOverrideCursor()
+        self.adapt_choosing_list("sage")
+        self.adapt_choosing_list("feedback")
         msg.close()
 
     ############################################################################
