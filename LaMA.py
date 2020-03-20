@@ -1141,6 +1141,9 @@ class Ui_MainWindow(object):
         self.cb_mat = QtWidgets.QCheckBox(self.groupBox_klassen)
         self.cb_mat.setObjectName(_fromUtf8("cb_mat"))
         self.gridLayout_14.addWidget(self.cb_mat, 0, 2, 1, 1)
+        self.cb_univie = QtWidgets.QCheckBox(self.groupBox_klassen)
+        self.cb_univie.setObjectName(_fromUtf8("cb_univie"))
+        self.gridLayout_14.addWidget(self.cb_univie, 1, 2, 1, 1)
         self.gridLayout.addWidget(self.groupBox_klassen, 3, 0, 1, 1)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
@@ -2457,12 +2460,13 @@ class Ui_MainWindow(object):
             _translate("MainWindow", "Ausgewählte Grundkompetenzen", None)
         )
         self.groupBox_titelsuche.setTitle(_translate("MainWindow", "Titelsuche:", None))
-        self.groupBox_klassen.setTitle(_translate("MainWindow", "Klassen", None))
+        self.groupBox_klassen.setTitle(_translate("MainWindow", "Suchfilter", None))
         self.cb_k7.setText(_translate("MainWindow", "7. Klasse", None))
         self.cb_k5.setText(_translate("MainWindow", "5. Klasse", None))
         self.cb_k6.setText(_translate("MainWindow", "6. Klasse", None))
         self.cb_k8.setText(_translate("MainWindow", "8. Klasse", None))
         self.cb_mat.setText(_translate("MainWindow", "Matura", None))
+        self.cb_univie.setText(_translate("MainWindow", "Uni Wien", None))
         self.cb_solution.setText(_translate("MainWindow", "Lösungen anzeigen", None))
         self.cb_drafts.setText(_translate("MainWindow", "Entwürfe anzeigen", None))
 
@@ -3666,15 +3670,18 @@ class Ui_MainWindow(object):
             or self.cb_k7.isChecked()
             or self.cb_k8.isChecked() == True
             or self.cb_mat.isChecked() == True
+            or self.cb_univie.isChecked()
         ):
             if suchbegriffe == []:
                 dict_gesammeltedateien = beispieldaten_dateipfad
             for all_formats in list(Klassen.keys()):
+                # print(all_formats)
                 x = eval("self.cb_" + all_formats)
-                if x.isChecked() == True:
+                if x.isChecked() == True:                    
                     selected_klassen.append(all_formats.upper())
                     suchbegriffe.append(all_formats.upper())
-
+            # print(selected_klassen)
+            # print(suchbegriffe)
             for all in list(dict_gesammeltedateien):
                 if not any(
                     all_formats.upper() in all for all_formats in selected_klassen
