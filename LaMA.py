@@ -4125,7 +4125,6 @@ class Ui_MainWindow(object):
                 ret_personal = msg_personal.exec_()
 
                 if ret_personal == QtWidgets.QMessageBox.Yes:
-                    print("Das wird gespeichert")
                     local_save = True
                     # self.comboBox_aufgabentyp_cr.currentText()=='Typ 1':
 
@@ -4305,7 +4304,7 @@ class Ui_MainWindow(object):
             for all in os.listdir(gk_path_temp):
                 if all.endswith(".tex"):
                     file_integer, file_extension = all.split(".tex")
-                    file_integer = file_integer.replace("_L-", "")
+                    file_integer = file_integer.replace("_L_", "")
 
                     if int(file_integer) > max_integer_file:
                         max_integer_file = int(file_integer)
@@ -4565,7 +4564,7 @@ class Ui_MainWindow(object):
                     file_name_klasse = "K8"
                 if local_save == True:
                     file_name = os.path.join(
-                        "_L-" + gk_path_temp,
+                        "_L_" + gk_path_temp,
                         file_name_klasse
                         + " - "
                         + list_chosen_gk[0].upper()
@@ -4639,7 +4638,7 @@ class Ui_MainWindow(object):
                 if local_save == True:
                     file_name = os.path.join(
                         gk_path_temp,
-                        "_L-"
+                        "_L_"
                         + dict_gk[list_chosen_gk[0]]
                         + " - "
                         + str(max_integer_file + 1)
@@ -4780,7 +4779,7 @@ class Ui_MainWindow(object):
                         path_programm,
                         "Lokaler_Ordner",
                         "Typ2Aufgaben",
-                        "_L-" + str(max_integer_file + 1) + ".tex",
+                        "_L_" + str(max_integer_file + 1) + ".tex",
                     )  ### not direct save
                 else:
                     file_name = os.path.join(
@@ -5223,8 +5222,8 @@ class Ui_MainWindow(object):
 
     def btn_up_pressed(self, aufgabe):
         self.update_lists_examples()
-
-        if re.search("[A-Z]", aufgabe) == None:
+        temp_aufgabe = aufgabe.replace("_L_", "")
+        if re.search("[A-Z]", temp_aufgabe) == None:
             bsp_string = aufgabe
             typ = 2
         else:
@@ -5249,8 +5248,8 @@ class Ui_MainWindow(object):
 
     def btn_down_pressed(self, aufgabe):
         self.update_lists_examples()
-
-        if re.search("[A-Z]", aufgabe) == None:
+        temp_aufgabe = aufgabe.replace("_L_", "")
+        if re.search("[A-Z]", temp_aufgabe) == None:
             bsp_string = aufgabe
             typ = 2
         else:
@@ -5277,7 +5276,8 @@ class Ui_MainWindow(object):
         self.sage_aufgabe_create(False)
 
     def btn_delete_pressed(self, aufgabe, file_loaded):
-        if re.search("[A-Z]", aufgabe) == None:
+        temp_aufgabe = aufgabe.replace("_L_", "")
+        if re.search("[A-Z]", temp_aufgabe) == None:
             bsp_string = aufgabe
             typ = 2
         else:
@@ -5325,7 +5325,8 @@ class Ui_MainWindow(object):
         gesamtpunkte = 0
 
         for all in list_sage_examples:
-            if re.search("[A-Z]", all) == None:
+            temp_all = all.replace("_L_", "")
+            if re.search("[A-Z]", temp_all) == None:
                 bsp_string = all
             else:
                 bsp_string = all.replace(" ", "").replace(".", "").replace("-", "_")
@@ -5387,13 +5388,13 @@ class Ui_MainWindow(object):
 
     def update_lists_examples(self):
         for all in list_sage_examples:
-            if re.search("[A-Z]", all) == None:
+            temp_all = all.replace("_L_", "")
+            if re.search("[A-Z]", temp_all) == None:
                 bsp_string = all
                 typ = 2
             else:
                 bsp_string = all.replace(" ", "").replace(".", "").replace("-", "_")
                 typ = 1
-            # print(typ)
 
             try:
                 list_input = eval("self.list_input_{}".format(bsp_string))
@@ -5434,7 +5435,8 @@ class Ui_MainWindow(object):
             self.update_lists_examples()
 
         for example in list_sage_examples:
-            if re.search("[A-Z]", example) == None:
+            temp_example = example.replace("_L_", "")
+            if re.search("[A-Z]", temp_example) == None:
                 bsp_string = example
             else:
                 bsp_string = example.replace(" ", "").replace(".", "").replace("-", "_")
@@ -5466,17 +5468,15 @@ class Ui_MainWindow(object):
         num_of_example = 1
 
         for all in list_sage_examples:
-            # print(all)
-            # print(self.dict_list_input_examples)
-            if re.search("[A-Z]", all) == None:
+            temp_all = all.replace("_L_", "")
+            print(temp_all)
+            if re.search("[A-Z]", temp_all) == None:
                 bsp_string = all
                 typ = 2
             else:
                 bsp_string = all.replace(" ", "").replace(".", "").replace("-", "_")
                 typ = 1
-            # print(typ)
             list_input = eval("self.list_input_{}".format(bsp_string))
-            # print(list_input)
             exec(
                 "self.groupBox_bsp_{} = QtWidgets.QGroupBox(self.scrollAreaWidgetContents_2)".format(
                     bsp_string
@@ -5648,7 +5648,6 @@ class Ui_MainWindow(object):
             self.pushButton_ausgleich.setMaximumSize(QtCore.QSize(220, 30))
             self.pushButton_ausgleich.setText("Ausgleichspunkte anpassen...")
             self.pushButton_ausgleich.setFocusPolicy(QtCore.Qt.ClickFocus)
-
             if typ == 1:
                 list_path = self.beispieldaten_dateipfad_1.values()
             if typ == 2:
@@ -5815,8 +5814,8 @@ class Ui_MainWindow(object):
         self.dict_sage_ausgleichspunkte_chosen[
             bsp_name
         ] = list_sage_ausgleichspunkte_chosen
-
-        if re.search("[A-Z]", bsp_name) == None:
+        temp_bsp_name = bsp_name.replace("_L_", "")
+        if re.search("[A-Z]", temp_bsp_name) == None:
             bsp_string = bsp_name
         else:
             bsp_string = bsp_name.replace(" ", "").replace(".", "").replace("-", "_")
@@ -6062,7 +6061,7 @@ class Ui_MainWindow(object):
         list_beispieldaten = sorted(list_beispieldaten, key=natural_keys)
 
         for all in list_beispieldaten:
-            if list_mode == "feedback" and all.startswith("_L-"):
+            if list_mode == "feedback" and all.startswith("_L_"):
                 pass
             else:
                 listWidget.addItem(all)
@@ -6079,7 +6078,8 @@ class Ui_MainWindow(object):
 
         ### include data for single examples ###
         for all in list_sage_examples:
-            if re.search("[A-Z]", all) == None:
+            temp_all = all.replace("_L_", "")
+            if re.search("[A-Z]", temp_all) == None:
                 bsp_string = all
                 typ = 2
             else:
@@ -6460,7 +6460,8 @@ class Ui_MainWindow(object):
         control_counter = 0
         # print(list_sage_examples)
         for all in list_sage_examples:
-            if re.search("[A-Z]", all) == None:
+            temp_all = all.replace("_L_", "")
+            if re.search("[A-Z]", temp_all) == None:
                 bsp_string = all
                 typ = 2
             else:
