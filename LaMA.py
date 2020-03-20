@@ -25,7 +25,8 @@ import yaml
 from PIL import Image  ## pillow
 import smtplib
 
-# from config import config_loader, path_programm, logo_path
+#from config import config_loader, path_programm, logo_path
+
 # from list_of_widgets import (
 #     widgets_search,
 #     widgets_create,
@@ -45,11 +46,10 @@ except IndexError:
 
 print("Loading...")
 
-
 # print(path_programm)
 # print(os.path.dirname(sys.argv[0]))
 
-# Load Config-file
+### config_loader, path_programm, logo_path
 def config_loader(pathToFile, parameter):
     for i in range(5):
         try:
@@ -86,7 +86,12 @@ if sys.platform.startswith("darwin"):
 logo_path = os.path.join(
     path_programm, "_database", "_config", "icon", "LaMa_icon_logo.png"
 )
-####
+
+if sys.platform.startswith("darwin"):
+    if path_programm is "":
+        path_programm = "."
+
+
 
 config_file = os.path.join(path_programm, "_database", "_config", "config1.yml")
 
@@ -110,6 +115,8 @@ set_chosen_gk = set([])
 list_sage_examples = []
 
 
+
+### list_of_widgets
 widgets_search = [
     "actionReset",
     "actionLoad",
@@ -157,7 +164,7 @@ widgets_create = [
 widgets_sage = [
     "actionLoad",
     "actionSave",
-    "actionReset_sage",    
+    "actionReset_sage",
     "menuSuche",
     "menuNeu",
     "menuFeedback",
@@ -184,17 +191,14 @@ widgets_feedback = [
 
 
 
-
-
 class SpinBox_noWheel(QtWidgets.QSpinBox):
     def wheelEvent(self, event):
         event.ignore()
 
-
+### translate
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-
     def _fromUtf8(s):
         return s
 
@@ -204,7 +208,6 @@ try:
 
     def _translate(context, text, disambig):
         return QtWidgets.QApplication.translate(context, text, disambig, _encoding)
-
 
 except AttributeError:
 
@@ -516,6 +519,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         # self.list_sage_ausgleichspunkte_chosen=list_sage_ausgleichspunkte_chosen
         return list_sage_ausgleichspunkte_chosen
 
+### sort_items
 def atoi(text):
     return int(text) if text.isdigit() else text
 
@@ -524,6 +528,7 @@ def natural_keys(text):
     return [atoi(c) for c in re.split("(\d+)", text)]
 
 
+### create_pdf
 def create_pdf(path_file, index, maximum, typ=0):
     if sys.platform.startswith("linux"):
         pass
@@ -564,8 +569,10 @@ def create_pdf(path_file, index, maximum, typ=0):
                 ),
                 shell=True,
             ).wait()
+            #subprocess.Popen('cd "{0}/Teildokument" ; okular "{1}.pdf"'.format(path_programm, dateiname),shell=True)
+            #subprocess.Popen('cd "{0}/Teildokument" ; xdg-open "{1}.pdf"'.format(path_programm, dateiname),shell=True)
             subprocess.run(
-                [
+                [   "sudo",
                     "xdg-open",
                     "{0}/Teildokument/{1}.pdf".format(path_programm, dateiname),
                 ]
@@ -665,7 +672,7 @@ def create_pdf(path_file, index, maximum, typ=0):
     QtWidgets.QApplication.restoreOverrideCursor()
 
 
-#### Dialog Window - Schularbeit erstellen
+    #### Dialog Window - Schularbeit erstellen
 class Ui_Dialog_erstellen(object):
     def setupUi(
         self,
@@ -907,7 +914,8 @@ class Ui_Dialog_erstellen(object):
         elif sys.platform.startswith("darwin"):
             file_path = os.path.dirname(self.saved_file_path)
             subprocess.Popen('open "{}"'.format(file_path), shell=True)
-            # subprocess.run(['xdg-open', "{0}/Teildokument/{1}.pdf".format(path_programm, dateiname)])
+
+        # subprocess.run(['xdg-open', "{0}/Teildokument/{1}.pdf".format(path_programm, dateiname)])
         else:
             file_path = os.path.dirname(self.saved_file_path).replace("/", "\\")
             # print(file_path)
@@ -964,8 +972,6 @@ class Ui_MainWindow(object):
         )  # , dict_gesammeltedateien
         self.Dialog.show()
         self.Dialog.exec_()
-        # print(dict_gesammeltedateien)
-        # self.Dialog.show()
 
     def setupUi(self, MainWindow):
 
@@ -1085,6 +1091,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_scrollA_ausgew_gk.setObjectName(
             "verticalLayout_scrollA_ausgew_gk"
         )
+
         self.label_gk = QtWidgets.QLabel(self.scrollArea_ausgew_gk)
         self.label_gk.setWordWrap(True)
         self.label_gk.setObjectName(_fromUtf8("label_gk"))
@@ -1776,7 +1783,7 @@ class Ui_MainWindow(object):
         self.comboBox_at_sage.hide()
 
         self.groupBox_alle_aufgaben = QtWidgets.QGroupBox(self.centralwidget)
-        #self.groupBox_alle_aufgaben.setMinimumSize(QtCore.QSize(140, 16777215))
+        # self.groupBox_alle_aufgaben.setMinimumSize(QtCore.QSize(140, 16777215))
         self.groupBox_alle_aufgaben.setMaximumSize(QtCore.QSize(180, 16777215))
         self.groupBox_alle_aufgaben.setObjectName("groupBox_alle_aufgaben")
         self.verticalLayout_sage = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben)
@@ -2454,6 +2461,7 @@ class Ui_MainWindow(object):
         self.cb_mat.setText(_translate("MainWindow", "Matura", None))
         self.cb_solution.setText(_translate("MainWindow", "Lösungen anzeigen", None))
         self.cb_drafts.setText(_translate("MainWindow", "Entwürfe anzeigen", None))
+
         try:
             log_file = os.path.join(path_programm, "Teildokument", "log_file_1")
             self.label_update.setText(
@@ -2502,6 +2510,7 @@ class Ui_MainWindow(object):
         self.cb_af_lt.setObjectName(_fromUtf8("cb_af_lt"))
         self.gridLayout_af.addWidget(self.cb_af_lt, 1, 0, 1, 1)
         self.gridLayout.addWidget(self.groupBox_af, 4, 0, 1, 1)
+
         # #################
 
         # ##### ONLY NEEDED for Typ1 #####
@@ -2570,6 +2579,7 @@ class Ui_MainWindow(object):
         self.create_Tooltip(an_beschreibung)
         self.create_Tooltip(ws_beschreibung)
         #############################################
+
         self.btn_ag_all.setText(_translate("MainWindow", "alle auswählen", None))
         self.tab_widget_gk.setTabText(
             self.tab_widget_gk.indexOf(self.tab_ag),
@@ -2659,8 +2669,11 @@ class Ui_MainWindow(object):
                     if sys.platform.startswith("linux") or sys.platform.startswith(
                         "darwin"
                     ):
-                        os.system("chmod 777 {}".format(filename_update))
-                        os.system(filename_update)
+                        if extension=='.py':
+                            os.system("python3 {}".format(filename_update))  
+                        else:  
+                            os.system("chmod 777 {}".format(filename_update))
+                            os.system(filename_update)
                     else:
                         os.startfile(filename_update)
                     sys.exit(0)
@@ -3293,7 +3306,9 @@ class Ui_MainWindow(object):
                 temp_dict_beispieldaten.update({all: beispieldaten_dateipfad[all]})
 
             beispieldaten_dateipfad = temp_dict_beispieldaten
+
             # print(beispieldaten_dateipfad)
+
             log_file = os.path.join(
                 path_programm, "Teildokument", "log_file_%s" % selected_aufgabentyp
             )
@@ -3419,6 +3434,7 @@ class Ui_MainWindow(object):
             # beispieldaten_dateipfad=eval(beispieldaten_dateipfad)
             beispieldaten = list(beispieldaten_dateipfad.keys())
 
+
         if self.cb_drafts.isChecked():
             # print(beispieldaten_dateipfad)
             QtWidgets.QApplication.restoreOverrideCursor()
@@ -3465,6 +3481,7 @@ class Ui_MainWindow(object):
             # 						beispieldaten.append(line)
             # 						break
             # 				file.close()
+
 
         ######### new tabu.sty not working ###
         ######################################################
@@ -3701,6 +3718,7 @@ class Ui_MainWindow(object):
                     file.write('ENTWURF \input{"' + value + '"}%\n' "\\newpage \n")
                 else:
                     file.write('\input{"' + value + '"}%\n' "\\newpage \n")
+
             # else:
             # 	if chosen_aufgabenformat=='Typ 1 Aufgaben':
             # 		file.write('\input{".'+value+'"}%\n'
@@ -3712,8 +3730,10 @@ class Ui_MainWindow(object):
         file.write('\shorthandoff{"}\n' "\end{document}")
 
         file.close()
+
         # print(dict_gesammeltedateien)
         # return
+
 
         QtWidgets.QApplication.restoreOverrideCursor()
         msg = QtWidgets.QMessageBox()
@@ -3912,6 +3932,7 @@ class Ui_MainWindow(object):
         x = ", ".join(sorted(set_chosen_gk_label))
         self.label_ausgew_gk.setText(_translate("MainWindow", str(x), None))
 
+
     def warning_window(self, text, detailed_text="", titel="Warnung"):
         QtWidgets.QApplication.restoreOverrideCursor()
         msg = QtWidgets.QMessageBox()
@@ -3926,6 +3947,7 @@ class Ui_MainWindow(object):
     def save_file(self):
         self.creator_mode = "user"
         local_save = False
+
         ########################### WARNINGS #####
         ######################################
 
@@ -4187,10 +4209,12 @@ class Ui_MainWindow(object):
                         list_chosen_gk[0],
                         "Einzelbeispiele",
                     )
+
                 elif self.creator_mode == "user" and local_save == True:
                     gk_path_temp = os.path.join(
                         path_programm, "Lokaler_Ordner", "Typ1Aufgaben"
                     )
+
                 else:
                     gk_path_temp = os.path.join(
                         path_programm,
@@ -4205,6 +4229,7 @@ class Ui_MainWindow(object):
                     z = " - "
                 else:
                     z = list_chosen_gk[0].upper() + " - "
+                    
             else:
                 path_folder = "_Grundkompetenzen"
                 if self.creator_mode == "admin" and self.cb_save.isChecked() == True:
@@ -4221,6 +4246,7 @@ class Ui_MainWindow(object):
                     gk_path_temp = os.path.join(
                         path_programm, "Lokaler_Ordner", "Typ1Aufgaben"
                     )
+
                 else:
                     gk_path_temp = os.path.join(
                         path_programm,
@@ -4231,11 +4257,11 @@ class Ui_MainWindow(object):
                         dict_gk[list_chosen_gk[0]],
                         "Einzelbeispiele",
                     )
-
                 if local_save == True:
                     z = " - "
                 else:
                     z = dict_gk[list_chosen_gk[0]] + " - "
+
             if self.creator_mode == "admin" and self.cb_save.isChecked() == True:
                 max_integer_file = 1000
             else:
@@ -4250,7 +4276,9 @@ class Ui_MainWindow(object):
                     file_integer, file_extension = y.split(".tex")
                     if int(file_integer) > max_integer_file:
                         max_integer_file = int(file_integer)
+
             # print(max_integer_file)
+
 
         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
             if self.creator_mode == "admin" and self.cb_save.isChecked() == True:
@@ -4260,10 +4288,12 @@ class Ui_MainWindow(object):
                     "Typ2Aufgaben",
                     "Einzelbeispiele",
                 )
+
             elif self.creator_mode == "user" and local_save == True:
                 gk_path_temp = os.path.join(
                     path_programm, "Lokaler_Ordner", "Typ2Aufgaben"
                 )
+
             else:
                 gk_path_temp = os.path.join(
                     path_programm, "_database", "Typ2Aufgaben", "Einzelbeispiele"
@@ -4277,11 +4307,13 @@ class Ui_MainWindow(object):
                 if all.endswith(".tex"):
                     file_integer, file_extension = all.split(".tex")
                     file_integer = file_integer.replace("_L-", "")
+
                     if int(file_integer) > max_integer_file:
                         max_integer_file = int(file_integer)
 
         ####### Checks files in 'Beispieleinreichung' #####
         ##################################################
+
 
         if self.creator_mode == "admin" or local_save == True:
             pass
@@ -4374,6 +4406,7 @@ class Ui_MainWindow(object):
                     tail, str_image_path + str(max_integer_file + 1) + "_" + tail
                 )
 
+
         # copy_image_path=os.path.join(path_programm,'_database','Bilder') ### direct save
         if self.creator_mode == "admin":
             if self.cb_save.isChecked() == False:
@@ -4384,8 +4417,10 @@ class Ui_MainWindow(object):
                 copy_image_path = os.path.join(
                     path_programm, "_database_inoffiziell", "Bilder"
                 )  ### direct save
+
         if local_save == True:
             copy_image_path = os.path.join(path_programm, "Lokaler_Ordner", "Bilder")
+
         else:
             copy_image_path = os.path.join(
                 path_programm, "Beispieleinreichung", "Bilder"
@@ -4459,6 +4494,7 @@ class Ui_MainWindow(object):
                             + "_"
                             + tail,
                         )  ### indirect
+
             if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
                 if self.creator_mode == "admin":
                     if self.cb_save.isChecked() == False:
@@ -4495,6 +4531,7 @@ class Ui_MainWindow(object):
                             + tail,
                         )  ### indirect save
 
+
         if " - " in edit_titel:
             edit_titel = edit_titel.replace(" - ", "-")
 
@@ -4509,6 +4546,7 @@ class Ui_MainWindow(object):
             local = ""
         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
             if self.creator_mode == "admin" or local_save == True:
+
                 pass
             else:
                 gk_path_temp = os.path.join(
@@ -4549,6 +4587,7 @@ class Ui_MainWindow(object):
                         + str(max_integer_file + 1)
                         + ".tex",
                     )
+
 
                 chosen_af = list(dict_aufgabenformate.keys())[
                     list(dict_aufgabenformate.values()).index(
@@ -4619,6 +4658,7 @@ class Ui_MainWindow(object):
                         + str(max_integer_file + 1)
                         + ".tex",
                     )
+
 
                 try:
                     file = open(file_name, "w", encoding="utf8")
@@ -4754,6 +4794,7 @@ class Ui_MainWindow(object):
                         "Beispieleinreichung",
                         str(max_integer_file + 1) + ".tex",
                     )  ### not direct save
+
 
             try:
                 file = open(file_name, "w", encoding="utf8")
@@ -4893,6 +4934,7 @@ class Ui_MainWindow(object):
                     chosen_typ, edit_titel
                 )
             )
+
         msg.setDetailedText(
             "Details{0}\n"
             "Grundkompetenz(en): {1}\n"
@@ -5385,13 +5427,10 @@ class Ui_MainWindow(object):
         scrollBar_position = self.scrollArea_chosen.verticalScrollBar().value()
 
         for all in list_sage_examples:
-            #print(all)
             if re.search("[A-Z]", all) == None:
                 bsp_string = all
-                #print(bsp_string)
             else:
                 bsp_string = all.replace(" ", "").replace(".", "").replace("-", "_")
-               #print(bsp_string)
 
             try:
                 exec("self.groupBox_bsp_{}.setParent(None)".format(bsp_string))
@@ -5451,7 +5490,7 @@ class Ui_MainWindow(object):
                 )
             )
             x = eval("self.groupBox_bsp_{}".format(bsp_string))
-            #x.setMaximumSize(QtCore.QSize(16777215, 120))
+            # x.setMaximumSize(QtCore.QSize(16777215, 200))
             x.setObjectName("groupBox_bsp_{}".format(bsp_string))
             if (list_sage_examples.index(all) % 2) == 0 and typ == 1:
                 x.setStyleSheet(_fromUtf8("background-color: rgb(255, 255, 255);"))
@@ -5882,6 +5921,7 @@ class Ui_MainWindow(object):
             int(self.comboBox_at_sage.currentText()[-1]), item.text().replace("*E-", "")
         )
 
+
     def nummer_clicked_fb(self, item):
         # print(item.text())
         self.label_example.setText(
@@ -5957,6 +5997,7 @@ class Ui_MainWindow(object):
                                     break
                             file.close()
 
+
         list_beispieldaten = []
         if list_mode == "sage":
             beispieldaten_dateipfad = eval(
@@ -5999,6 +6040,7 @@ class Ui_MainWindow(object):
                                     list_beispieldaten.append("*E-" + name)
                                 else:
                                     list_beispieldaten.append(name)
+
                         # and self.lineEdit_number.text().lower() in name.lower()
         if list_mode == "feedback":
             beispieldaten_dateipfad = eval(
@@ -6034,6 +6076,7 @@ class Ui_MainWindow(object):
             else:
                 listWidget.addItem(all)
                 listWidget.setFocusPolicy(QtCore.Qt.ClickFocus)
+
 
     def save_dict_examples_data(self):
         self.dict_list_input_examples = {}
@@ -6494,6 +6537,7 @@ class Ui_MainWindow(object):
 
                     # print(self.dict_list_input_examples['data_gesamt']['copy_images'])
                     # return
+
                     if (
                         self.dict_list_input_examples["data_gesamt"]["copy_images"]
                         == []
@@ -6584,6 +6628,7 @@ class Ui_MainWindow(object):
                         line.replace("../Beispieleinreichung/Bilder/", "")
                         for line in content
                     ]
+
 
             for line in content:
                 if "begin{beispiel}" in line:

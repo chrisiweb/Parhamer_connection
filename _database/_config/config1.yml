@@ -239,6 +239,12 @@ k6_beschreibung:
     "re": "Reihen"
     "rf": "Reelle Funktionen"
     "vag3": "Vektoren und analytische Geometrie in R3 und Rn"
+    "mtz": "Matrizen"
+    "pwlu": "Potenzen, Wurzeln, Logarithmen\nund Ungleichungen"
+    "re": "Reihen"
+    "rf": "Reelle Funktionen"
+    "vag3": "Vektoren und analytische\nGeometrie in R3 und Rn"
+
 
 k7_beschreibung: 
     "dr": "Differentialrechnung"

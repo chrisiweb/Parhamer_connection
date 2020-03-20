@@ -1,0 +1,57 @@
+name: Python package
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.7]
+        os: [ubuntu-latest, windows-latest, macOS-latest] #ubuntu-latest, windows-latest, macOS-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller
+        pip install pyqt5
+        pip install pyyaml
+        pip install pillow
+    - name: Build with pyinstaller
+      if: matrix.os != 'windows-latest'
+      run: |  
+        pyinstaller -F -i icon_lama.icns LaMA.py        
+    - name: Build with pyinstaller Windows
+      if: matrix.os == 'windows-latest'
+      run: |  
+        pyinstaller -F -i icon_lama.ico LaMA.py
+    - name: Cleanup artifacts
+      if: matrix.os != 'windows-latest'
+      run: |
+        mkdir artifacts
+        mv dist/* artifacts
+    - name: Cleanup artifacts Windows
+      if: matrix.os == 'windows-latest'
+      run: |
+        mkdir artifacts
+        mv dist/*.exe artifacts
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: lama_${{matrix.os}}
+        path: artifacts
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: "artifacts/**"
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}

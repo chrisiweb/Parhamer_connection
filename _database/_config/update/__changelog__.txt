@@ -1,5 +1,6 @@
-v.1.8.6
-  - Bug Fix: edit maximum size for widgets, for small screens
+v1.8.6
+  - Bug fix: Edit maximum size for SAGE widgets for small screens
+
 
 v1.8.5
   - Bug Fix: Update did not work, when permission of update is not changed manually
@@ -7,24 +8,20 @@ v1.8.5
 
 
 v1.8.4
-
   - added ScrollArea for "Grundkompetenzen" for small screens
-  - "�bungsblatt" and "Nachschularbeit" can be created
-  - "�bungsblatt" & "Grundkompetenzcheck" disables Option "Notenschl�ssel/Beurteilungsraster"
+  - "Uebungsblatt" and "Nachschularbeit" can be created
+  - "Uebungsblatt" & "Grundkompetenzcheck" disables Option "Notenschluessel/Beurteilungsraster"
   - "Schularbeit" can be reseted
   - Creation of .pdf and/or .lama can be skipped, when creating a test
 
 
 v1.8.3
-
   - Password for writing bug report removed from source code
 
 v1.8.2
-
 - Bug Fix:
   - Tests cannot be created on macOS, when there are spaces in the filename
   - MacOS raises error when folder is opened after creating a test
 
 v1.8.1
-
 - Bug Fix: No PDF output when SumatraPDF is not installed	
