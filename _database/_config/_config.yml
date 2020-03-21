@@ -283,6 +283,8 @@ dict_k4:
         - 'rqw'
         - 'dqw'
         - 'kw'
+        - 'zam'
+        - 'pwu'
     "TE":
         - 'rte'
         - 'hzt'
@@ -293,6 +295,7 @@ dict_k4:
         - 'asu'
         - 'mdb'
         - 'dit'
+        - 'bae'
     "GL":
         - 'lgm1'
         - 'lug'
@@ -332,8 +335,10 @@ dict_k4:
         - 'arp'
         - 'atr'
         - 'ade'
+        - 'aav'
         - 'apr'
-        - 'apy'    
+        - 'apy'
+        - 'awe'    
     "BKR":    
         - 'pi'
         - 'lkb'
@@ -362,6 +367,7 @@ dict_k4_name:
 
 
 dict_unterkapitel:
+    "aav" : "Anwendung im allgemeinen Viereck"
     "ade" : "Anwendung im Deltoid"
     "adr" : "Anwendung im Dreieck"
     "af" : "Ähnliche Figuren"
@@ -377,8 +383,10 @@ dict_unterkapitel:
     "av" : "Allgemeines Viereck"
     "ave" : "Allgemeines Vieleck"
     "avv" : "Allgemeines Viereck und Vieleck"
+    "awe" : "Weitere Anwendungsgebiete"
     "azs" : "Andere Zahlensysteme"
     "ba" : "Bewegungsaufgaben"
+    "bae" : "Bruchterme aufstellen und einsetzen"
     "bf" : "Binomische Formeln"
     "bqw" : "Bezeichnung bei Quader und Würfel"
     "bw" : "Beweise von Satz des Pythagoras"
@@ -481,6 +489,7 @@ dict_unterkapitel:
     "pr" : "Prozentrechnung"
     "ps" : "Berechnen des Prozentsatzes"
     "pw" : "Punktwolkendiagramme"
+    "pwu" : "Partielles Wurzelziehen"
     "pz" : "Primzahlen"
     "qqb" : "Quartile, Quantile und Boxplots"
     "rte" : "Rechnen mit Termen"
@@ -527,6 +536,7 @@ dict_unterkapitel:
     "ws" : "Winkelsymmetrale"
     "wsw" : "Winkel-Seiten-Winkel-Satz"
     "wz" : "Wachstums- und Zerfallsprozesse"
+    "zam" : "Zahlenmengen"
     "zm" : "Zeichnen im gegebenen Maßstab"
     "zma" : "Zeitmaße"
     "zo" : "Zuordnungen, Tabellen und Graphen"
