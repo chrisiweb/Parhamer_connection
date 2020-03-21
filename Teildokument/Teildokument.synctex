@@ -4,414 +4,412 @@ Input:2:C:\Program Files\MiKTeX 2.9\tex\latex\base\report.cls
 Input:3:C:\Program Files\MiKTeX 2.9\tex\latex\base\size12.clo
 Input:4:C:\Program Files\MiKTeX 2.9\tex\latex\geometry\geometry.sty
 Input:5:C:\Program Files\MiKTeX 2.9\tex\latex\graphics\keyval.sty
-Input:6:C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ifpdf.sty
-Input:7:C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ifvtex.sty
-Input:8:C:\Program Files\MiKTeX 2.9\tex\generic\ifxetex\ifxetex.sty
-Input:9:C:\Program Files\MiKTeX 2.9\tex\latex\geometry\geometry.cfg
-Input:10:C:\Program Files\MiKTeX 2.9\tex\latex\lm\lmodern.sty
-Input:11:C:\Program Files\MiKTeX 2.9\tex\latex\base\fontenc.sty
-Input:12:C:\Program Files\MiKTeX 2.9\tex\latex\base\t1enc.def
-Input:13:C:\Program Files\MiKTeX 2.9\tex\latex\eurosym\eurosym.sty
-Input:14:C:\Program Files\MiKTeX 2.9\tex\latex\base\inputenc.sty
-Input:15:C:\Program Files\MiKTeX 2.9\tex\generic\babel\babel.sty
-Input:16:C:\Program Files\MiKTeX 2.9\tex\generic\babel\switch.def
-Input:17:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\arabi\bblopts.cfg
-Input:18:C:\Program Files\MiKTeX 2.9\tex\latex\babel-german\ngerman.ldf
-Input:19:C:\Program Files\MiKTeX 2.9\tex\latex\babel-german\ngermanb.ldf
-Input:20:C:\Program Files\MiKTeX 2.9\tex\generic\babel\babel.def
-Input:21:C:\Program Files\MiKTeX 2.9\tex\generic\babel\txtbabel.def
-Input:22:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\srdp-mathematik\srdp-mathematik.sty
-Input:23:C:\Program Files\MiKTeX 2.9\tex\latex\graphics\color.sty
-Input:24:C:\Program Files\MiKTeX 2.9\tex\latex\graphics-cfg\color.cfg
-Input:25:C:\Program Files\MiKTeX 2.9\tex\latex\graphics-def\dvips.def
-Input:26:C:\Program Files\MiKTeX 2.9\tex\latex\graphics\dvipsnam.def
-Input:27:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\xcolor\xcolor.sty
-Input:28:C:\Program Files\MiKTeX 2.9\tex\latex\graphics-cfg\color.cfg
-Input:29:C:\Program Files\MiKTeX 2.9\tex\latex\float\float.sty
-Input:30:C:\Program Files\MiKTeX 2.9\tex\latex\tools\multicol.sty
-Input:31:C:\Program Files\MiKTeX 2.9\tex\latex\multirow\multirow.sty
-Input:32:C:\Program Files\MiKTeX 2.9\tex\latex\amsmath\amsmath.sty
-Input:33:C:\Program Files\MiKTeX 2.9\tex\latex\amsmath\amstext.sty
-Input:34:C:\Program Files\MiKTeX 2.9\tex\latex\amsmath\amsgen.sty
-Input:35:C:\Program Files\MiKTeX 2.9\tex\latex\amsmath\amsbsy.sty
-Input:36:C:\Program Files\MiKTeX 2.9\tex\latex\amsmath\amsopn.sty
-Input:37:C:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\amssymb.sty
-Input:38:C:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\amsfonts.sty
-Input:39:C:\Program Files\MiKTeX 2.9\tex\latex\oberdiek\pdflscape.sty
-Input:40:C:\Program Files\MiKTeX 2.9\tex\latex\graphics\lscape.sty
-Input:41:C:\Program Files\MiKTeX 2.9\tex\latex\graphics\graphics.sty
-Input:42:C:\Program Files\MiKTeX 2.9\tex\latex\graphics\trig.sty
-Input:43:C:\Program Files\MiKTeX 2.9\tex\latex\graphics-cfg\graphics.cfg
-Input:44:C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\atbegshi.sty
-Input:45:C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\infwarerr.sty
-Input:46:C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ltxcmds.sty
-Input:47:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\varwidth\varwidth.sty
-Input:48:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\wasysym\wasysym.sty
-Input:49:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\microtype\microtype.sty
-Input:50:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\microtype\microtype-pdftex.def
-Input:51:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\microtype\microtype.cfg
-Input:52:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pstricks-add\pstricks-add.sty
-Input:53:C:\Program Files\MiKTeX 2.9\tex\latex\pstricks\pstricks.sty
-Input:54:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\iftex\iftex.sty
-Input:55:C:\Program Files\MiKTeX 2.9\tex\latex\tools\shellesc.sty
-Input:56:C:\Program Files\MiKTeX 2.9\tex\generic\xkeyval\pst-xkey.tex
-Input:57:C:\Program Files\MiKTeX 2.9\tex\latex\xkeyval\xkeyval.sty
-Input:58:C:\Program Files\MiKTeX 2.9\tex\generic\xkeyval\xkeyval.tex
-Input:59:C:\Program Files\MiKTeX 2.9\tex\generic\xkeyval\xkvutils.tex
-Input:60:C:\Program Files\MiKTeX 2.9\tex\generic\pstricks\pstricks.tex
-Input:61:C:\Program Files\MiKTeX 2.9\tex\generic\pstricks\pst-fp.tex
-Input:62:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgfutil-common.tex
-Input:63:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgfutil-common-lists.tex
-Input:64:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgfkeys.code.tex
-Input:65:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgfkeysfiltered.code.tex
-Input:66:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgffor.code.tex
-Input:67:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmath.code.tex
-Input:68:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathcalc.code.tex
-Input:69:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathutil.code.tex
-Input:70:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathparser.code.tex
-Input:71:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathfunctions.code.tex
-Input:72:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathfunctions.basic.code.tex
-Input:73:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathfunctions.trigonometric.code.tex
-Input:74:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathfunctions.random.code.tex
-Input:75:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathfunctions.comparison.code.tex
-Input:76:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathfunctions.base.code.tex
-Input:77:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathfunctions.round.code.tex
-Input:78:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathfunctions.misc.code.tex
-Input:79:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathfunctions.integerarithmetics.code.tex
-Input:80:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathfloat.code.tex
-Input:81:C:\Program Files\MiKTeX 2.9\tex\generic\pstricks\pstricks.con
-Input:82:C:\Program Files\MiKTeX 2.9\tex\generic\pstricks\pst-fp.tex
-Input:83:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pst-plot\pst-plot.sty
-Input:84:C:\Program Files\MiKTeX 2.9\tex\latex\xkeyval\pst-xkey.sty
-Input:85:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\multido\multido.sty
-Input:86:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\multido\multido.tex
-Input:87:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-plot\pst-plot.tex
-Input:88:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-tools\pst-tools.tex
-Input:89:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pstricks-add\pstricks-add.tex
-Input:90:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-node\pst-node.tex
-Input:91:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-arrow\pst-arrow.tex
-Input:92:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-3d\pst-3d.tex
-Input:93:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-math\pst-math.tex
-Input:94:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pst-node\pst-node.sty
-Input:95:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-node\pst-node.tex
-Input:96:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pst-3d\pst-3d.sty
-Input:97:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-3d\pst-3d.tex
-Input:98:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pst-math\pst-math.sty
-Input:99:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pst-calculate\pst-calculate.sty
-Input:100:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\l3packages\xparse\xparse.sty
-Input:101:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\l3kernel\expl3.sty
-Input:102:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\l3kernel\expl3-code.tex
-Input:103:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\l3backend\l3backend-dvips.def
-Input:104:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\siunitx\siunitx.sty
-Input:105:C:\Program Files\MiKTeX 2.9\tex\latex\tools\array.sty
-Input:106:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\l3packages\l3keys2e\l3keys2e.sty
-Input:107:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\translator\translator.sty
-Input:108:C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ifluatex.sty
-Input:109:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\xstring\xstring.sty
-Input:110:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\xstring\xstring.tex
-Input:111:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-math\pst-math.tex
-Input:112:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pstricks-add\pstricks-add.tex
-Input:113:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\trimspaces\trimspaces.sty
-Input:114:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\colortbl\colortbl.sty
-Input:115:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\chngcntr\chngcntr.sty
-Input:116:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\framed\framed.sty
-Input:117:C:\Program Files\MiKTeX 2.9\tex\latex\tools\tabularx.sty
-Input:118:c:\Users\Chris\Documents\GitHub\Parhamer_connection\Teildokument\tabu.sty
-Input:119:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\environ\environ.sty
-Input:120:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\cancel\cancel.sty
-Input:121:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\spreadtab\spreadtab.sty
-Input:122:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp.sty
-Input:123:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\defpattern.sty
-Input:124:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp-basic.sty
-Input:125:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp-addons.sty
-Input:126:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp-snap.sty
-Input:127:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp-exp.sty
-Input:128:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp-trigo.sty
-Input:129:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp-pas.sty
-Input:130:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp-random.sty
-Input:131:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp-eqn.sty
-Input:132:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp-upn.sty
-Input:133:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp-eval.sty
-Input:134:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf\utilities\pgfkeys.sty
-Input:135:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgfkeys.code.tex
-Input:136:C:\Program Files\MiKTeX 2.9\tex\latex\tools\hhline.sty
-Input:137:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\forloop\forloop.sty
-Input:138:C:\Program Files\MiKTeX 2.9\tex\latex\base\ifthen.sty
-Input:139:C:\Program Files\MiKTeX 2.9\tex\latex\tools\longtable.sty
-Input:140:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pgfplots\pgfplots.sty
-Input:141:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplots.revision.tex
-Input:142:C:\Program Files\MiKTeX 2.9\tex\latex\graphics\graphicx.sty
-Input:143:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf\frontendlayer\tikz.sty
-Input:144:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf\basiclayer\pgf.sty
-Input:145:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf\utilities\pgfrcs.sty
-Input:146:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgfutil-common.tex
-Input:147:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgfutil-common-lists.tex
-Input:148:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgfutil-latex.def
-Input:149:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\ms\everyshi.sty
-Input:150:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgfrcs.code.tex
-Input:151:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\pgf.revision.tex
-Input:152:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf\basiclayer\pgfcore.sty
-Input:153:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf\systemlayer\pgfsys.sty
-Input:154:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\systemlayer\pgfsys.code.tex
-Input:155:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgfkeys.code.tex
-Input:156:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\systemlayer\pgf.cfg
-Input:157:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\systemlayer\pgfsys-dvips.def
-Input:158:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\systemlayer\pgfsys-common-postscript.def
-Input:159:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\systemlayer\pgfsyssoftpath.code.tex
-Input:160:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\systemlayer\pgfsysprotocol.code.tex
-Input:161:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcore.code.tex
-Input:162:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmath.code.tex
-Input:163:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfint.code.tex
-Input:164:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcorepoints.code.tex
-Input:165:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcorepathconstruct.code.tex
-Input:166:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcorepathusage.code.tex
-Input:167:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcorescopes.code.tex
-Input:168:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcoregraphicstate.code.tex
-Input:169:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcoretransformations.code.tex
-Input:170:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcorequick.code.tex
-Input:171:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcoreobjects.code.tex
-Input:172:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcorepathprocessing.code.tex
-Input:173:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcorearrows.code.tex
-Input:174:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcoreshade.code.tex
-Input:175:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcoreimage.code.tex
-Input:176:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcoreexternal.code.tex
-Input:177:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcorelayers.code.tex
-Input:178:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcoretransparency.code.tex
-Input:179:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcorepatterns.code.tex
-Input:180:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcorerdf.code.tex
-Input:181:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\modules\pgfmoduleshapes.code.tex
-Input:182:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\modules\pgfmoduleplot.code.tex
-Input:183:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf\compatibility\pgfcomp-version-0-65.sty
-Input:184:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf\compatibility\pgfcomp-version-1-18.sty
-Input:185:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf\utilities\pgffor.sty
-Input:186:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf\math\pgfmath.sty
-Input:187:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmath.code.tex
-Input:188:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgffor.code.tex
-Input:189:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmath.code.tex
-Input:190:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\frontendlayer\tikz\tikz.code.tex
-Input:191:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\libraries\pgflibraryplothandlers.code.tex
-Input:192:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\modules\pgfmodulematrix.code.tex
-Input:193:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibrarytopaths.code.tex
-Input:194:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplots.code.tex
-Input:195:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplotscore.code.tex
-Input:196:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\sys\pgfplotssysgeneric.code.tex
-Input:197:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\libs\pgfplotslibrary.code.tex
-Input:198:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\oldpgfcompatib\pgfplotsoldpgfsupp_loader.code.tex
-Input:199:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\libraries\pgflibraryfpu.code.tex
-Input:200:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\util\pgfplotsutil.code.tex
-Input:201:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\liststructure\pgfplotsliststructure.code.tex
-Input:202:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\liststructure\pgfplotsliststructureext.code.tex
-Input:203:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\liststructure\pgfplotsarray.code.tex
-Input:204:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\liststructure\pgfplotsmatrix.code.tex
-Input:205:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\numtable\pgfplotstableshared.code.tex
-Input:206:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\liststructure\pgfplotsdeque.code.tex
-Input:207:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\util\pgfplotsbinary.code.tex
-Input:208:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\util\pgfplotsbinary.data.code.tex
-Input:209:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\util\pgfplotsutil.verb.code.tex
-Input:210:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\libs\pgflibrarypgfplots.surfshading.code.tex
-Input:211:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\sys\pgflibrarypgfplots.surfshading.pgfsys-dvips.def
-Input:212:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\util\pgfplotscolormap.code.tex
-Input:213:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\util\pgfplotscolor.code.tex
-Input:214:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplotsstackedplots.code.tex
-Input:215:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplotsplothandlers.code.tex
-Input:216:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplotsmeshplothandler.code.tex
-Input:217:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplotsmeshplotimage.code.tex
-Input:218:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplots.scaling.code.tex
-Input:219:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplotscoordprocessing.code.tex
-Input:220:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplots.errorbars.code.tex
-Input:221:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplots.markers.code.tex
-Input:222:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplotsticks.code.tex
-Input:223:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplots.paths.code.tex
-Input:224:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibrarydecorations.code.tex
-Input:225:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\modules\pgfmoduledecorations.code.tex
-Input:226:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibrarydecorations.pathmorphing.code.tex
-Input:227:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\libraries\decorations\pgflibrarydecorations.pathmorphing.code.tex
-Input:228:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibrarydecorations.pathreplacing.code.tex
-Input:229:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\libraries\decorations\pgflibrarydecorations.pathreplacing.code.tex
-Input:230:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibraryplotmarks.code.tex
-Input:231:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\libraries\pgflibraryplotmarks.code.tex
-Input:232:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf-pie\pgf-pie.sty
-Input:233:C:\Program Files\MiKTeX 2.9\tex\latex\carlisle\scalefnt.sty
-Input:234:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pgfplots\pgfplotstable.sty
-Input:235:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplots.revision.tex
-Input:236:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\numtable\pgfplotstable.code.tex
-Input:237:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\numtable\pgfplotstable.coltype.code.tex
-Input:238:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pst-coil\pst-coil.sty
-Input:239:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-coil\pst-coil.tex
-Input:240:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-node\pst-node.tex
-Input:241:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\ziffer\ziffer.sty
-Input:242:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\eso-pic\eso-pic.sty
-Input:243:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\esvect\esvect.sty
-Input:244:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\phaistos\phaistos.sty
-Input:245:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\substitutefont\substitutefont.sty
-Input:246:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\setspace\setspace.sty
-Input:247:C:\Program Files\MiKTeX 2.9\tex\latex\tools\enumerate.sty
-Input:248:C:\Program Files\MiKTeX 2.9\tex\latex\tools\xspace.sty
-Input:249:C:\Program Files\MiKTeX 2.9\tex\latex\lm\t1lmr.fd
-Input:250:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\microtype\mt-cmr.cfg
-Input:251:C:\Program Files\MiKTeX 2.9\tex\latex\base\ts1enc.dfu
-Input:252:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\translator\translator-basic-dictionary-English.dict
-Input:253:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\siunitx\siunitx-abbreviations.cfg
-Input:254:C:\Program Files\MiKTeX 2.9\tex\latex\lm\ot1lmr.fd
-Input:255:C:\Program Files\MiKTeX 2.9\tex\latex\lm\omllmm.fd
-Input:256:C:\Program Files\MiKTeX 2.9\tex\latex\lm\omslmsy.fd
-Input:257:C:\Program Files\MiKTeX 2.9\tex\latex\lm\omxlmex.fd
-Input:258:C:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\umsa.fd
-Input:259:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\microtype\mt-msa.cfg
-Input:260:C:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\umsb.fd
-Input:261:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\microtype\mt-msb.cfg
-Input:262:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\wasysym\uwasy.fd
-Input:263:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\esvect\uesvect.fd
-Input:264:C:\Program Files\MiKTeX 2.9\tex\latex\lm\ot1lmss.fd
-Input:265:C:\Program Files\MiKTeX 2.9\tex\latex\lm\ot1lmtt.fd
-Input:266:c:/Users\Chris\Documents\GitHub\Parhamer_connection\_database\k1\Einzelbeispiele\3.tex
-Input:267:c:/Users\Chris\Documents\GitHub\Parhamer_connection\_database\k1\Einzelbeispiele\4.tex
+Input:6:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\iftex\ifvtex.sty
+Input:7:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\iftex\iftex.sty
+Input:8:C:\Program Files\MiKTeX 2.9\tex\latex\geometry\geometry.cfg
+Input:9:C:\Program Files\MiKTeX 2.9\tex\latex\lm\lmodern.sty
+Input:10:C:\Program Files\MiKTeX 2.9\tex\latex\base\fontenc.sty
+Input:11:C:\Program Files\MiKTeX 2.9\tex\latex\lm\t1lmr.fd
+Input:12:C:\Program Files\MiKTeX 2.9\tex\latex\eurosym\eurosym.sty
+Input:13:C:\Program Files\MiKTeX 2.9\tex\latex\base\inputenc.sty
+Input:14:C:\Program Files\MiKTeX 2.9\tex\generic\babel\babel.sty
+Input:15:C:\Program Files\MiKTeX 2.9\tex\generic\babel\switch.def
+Input:16:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\arabi\bblopts.cfg
+Input:17:C:\Program Files\MiKTeX 2.9\tex\latex\babel-german\ngerman.ldf
+Input:18:C:\Program Files\MiKTeX 2.9\tex\latex\babel-german\ngermanb.ldf
+Input:19:C:\Program Files\MiKTeX 2.9\tex\generic\babel\babel.def
+Input:20:C:\Program Files\MiKTeX 2.9\tex\generic\babel\txtbabel.def
+Input:21:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\srdp-mathematik\srdp-mathematik.sty
+Input:22:C:\Program Files\MiKTeX 2.9\tex\latex\graphics\color.sty
+Input:23:C:\Program Files\MiKTeX 2.9\tex\latex\graphics-cfg\color.cfg
+Input:24:C:\Program Files\MiKTeX 2.9\tex\latex\graphics-def\dvips.def
+Input:25:C:\Program Files\MiKTeX 2.9\tex\latex\graphics\dvipsnam.def
+Input:26:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\xcolor\xcolor.sty
+Input:27:C:\Program Files\MiKTeX 2.9\tex\latex\graphics-cfg\color.cfg
+Input:28:C:\Program Files\MiKTeX 2.9\tex\latex\float\float.sty
+Input:29:C:\Program Files\MiKTeX 2.9\tex\latex\tools\multicol.sty
+Input:30:C:\Program Files\MiKTeX 2.9\tex\latex\multirow\multirow.sty
+Input:31:C:\Program Files\MiKTeX 2.9\tex\latex\amsmath\amsmath.sty
+Input:32:C:\Program Files\MiKTeX 2.9\tex\latex\amsmath\amstext.sty
+Input:33:C:\Program Files\MiKTeX 2.9\tex\latex\amsmath\amsgen.sty
+Input:34:C:\Program Files\MiKTeX 2.9\tex\latex\amsmath\amsbsy.sty
+Input:35:C:\Program Files\MiKTeX 2.9\tex\latex\amsmath\amsopn.sty
+Input:36:C:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\amssymb.sty
+Input:37:C:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\amsfonts.sty
+Input:38:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pdflscape\pdflscape.sty
+Input:39:C:\Program Files\MiKTeX 2.9\tex\latex\graphics\lscape.sty
+Input:40:C:\Program Files\MiKTeX 2.9\tex\latex\graphics\graphics.sty
+Input:41:C:\Program Files\MiKTeX 2.9\tex\latex\graphics\trig.sty
+Input:42:C:\Program Files\MiKTeX 2.9\tex\latex\graphics-cfg\graphics.cfg
+Input:43:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\atbegshi\atbegshi.sty
+Input:44:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\infwarerr\infwarerr.sty
+Input:45:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\ltxcmds\ltxcmds.sty
+Input:46:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\varwidth\varwidth.sty
+Input:47:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\wasysym\wasysym.sty
+Input:48:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\microtype\microtype.sty
+Input:49:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\microtype\microtype-pdftex.def
+Input:50:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\microtype\microtype.cfg
+Input:51:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pstricks-add\pstricks-add.sty
+Input:52:C:\Program Files\MiKTeX 2.9\tex\latex\pstricks\pstricks.sty
+Input:53:C:\Program Files\MiKTeX 2.9\tex\latex\tools\shellesc.sty
+Input:54:C:\Program Files\MiKTeX 2.9\tex\generic\xkeyval\pst-xkey.tex
+Input:55:C:\Program Files\MiKTeX 2.9\tex\latex\xkeyval\xkeyval.sty
+Input:56:C:\Program Files\MiKTeX 2.9\tex\generic\xkeyval\xkeyval.tex
+Input:57:C:\Program Files\MiKTeX 2.9\tex\generic\xkeyval\xkvutils.tex
+Input:58:C:\Program Files\MiKTeX 2.9\tex\generic\pstricks\pstricks.tex
+Input:59:C:\Program Files\MiKTeX 2.9\tex\generic\pstricks\pst-fp.tex
+Input:60:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgfutil-common.tex
+Input:61:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgfutil-common-lists.tex
+Input:62:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgfkeys.code.tex
+Input:63:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgfkeysfiltered.code.tex
+Input:64:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgffor.code.tex
+Input:65:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmath.code.tex
+Input:66:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathcalc.code.tex
+Input:67:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathutil.code.tex
+Input:68:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathparser.code.tex
+Input:69:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathfunctions.code.tex
+Input:70:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathfunctions.basic.code.tex
+Input:71:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathfunctions.trigonometric.code.tex
+Input:72:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathfunctions.random.code.tex
+Input:73:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathfunctions.comparison.code.tex
+Input:74:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathfunctions.base.code.tex
+Input:75:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathfunctions.round.code.tex
+Input:76:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathfunctions.misc.code.tex
+Input:77:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathfunctions.integerarithmetics.code.tex
+Input:78:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmathfloat.code.tex
+Input:79:C:\Program Files\MiKTeX 2.9\tex\generic\pstricks\pstricks.con
+Input:80:C:\Program Files\MiKTeX 2.9\tex\generic\pstricks\pst-fp.tex
+Input:81:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pst-plot\pst-plot.sty
+Input:82:C:\Program Files\MiKTeX 2.9\tex\latex\xkeyval\pst-xkey.sty
+Input:83:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\multido\multido.sty
+Input:84:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\multido\multido.tex
+Input:85:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-plot\pst-plot.tex
+Input:86:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-tools\pst-tools.tex
+Input:87:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pstricks-add\pstricks-add.tex
+Input:88:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-node\pst-node.tex
+Input:89:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-arrow\pst-arrow.tex
+Input:90:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-3d\pst-3d.tex
+Input:91:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-math\pst-math.tex
+Input:92:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pst-node\pst-node.sty
+Input:93:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-node\pst-node.tex
+Input:94:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pst-3d\pst-3d.sty
+Input:95:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-3d\pst-3d.tex
+Input:96:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pst-math\pst-math.sty
+Input:97:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pst-calculate\pst-calculate.sty
+Input:98:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\l3packages\xparse\xparse.sty
+Input:99:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\l3kernel\expl3.sty
+Input:100:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\l3backend\l3backend-dvips.def
+Input:101:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\siunitx\siunitx.sty
+Input:102:C:\Program Files\MiKTeX 2.9\tex\latex\tools\array.sty
+Input:103:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\l3packages\l3keys2e\l3keys2e.sty
+Input:104:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\translator\translator.sty
+Input:105:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\iftex\ifluatex.sty
+Input:106:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\xstring\xstring.sty
+Input:107:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\xstring\xstring.tex
+Input:108:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-math\pst-math.tex
+Input:109:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pstricks-add\pstricks-add.tex
+Input:110:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\trimspaces\trimspaces.sty
+Input:111:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\colortbl\colortbl.sty
+Input:112:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\chngcntr\chngcntr.sty
+Input:113:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\framed\framed.sty
+Input:114:C:\Program Files\MiKTeX 2.9\tex\latex\tools\tabularx.sty
+Input:115:c:\Users\Chris\Documents\GitHub\Parhamer_connection\Teildokument\tabu.sty
+Input:116:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\environ\environ.sty
+Input:117:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\cancel\cancel.sty
+Input:118:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\spreadtab\spreadtab.sty
+Input:119:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp.sty
+Input:120:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\defpattern.sty
+Input:121:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp-basic.sty
+Input:122:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp-addons.sty
+Input:123:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp-snap.sty
+Input:124:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp-exp.sty
+Input:125:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp-trigo.sty
+Input:126:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp-pas.sty
+Input:127:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp-random.sty
+Input:128:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp-eqn.sty
+Input:129:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp-upn.sty
+Input:130:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\fp\fp-eval.sty
+Input:131:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf\utilities\pgfkeys.sty
+Input:132:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgfkeys.code.tex
+Input:133:C:\Program Files\MiKTeX 2.9\tex\latex\tools\hhline.sty
+Input:134:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\forloop\forloop.sty
+Input:135:C:\Program Files\MiKTeX 2.9\tex\latex\base\ifthen.sty
+Input:136:C:\Program Files\MiKTeX 2.9\tex\latex\tools\longtable.sty
+Input:137:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pgfplots\pgfplots.sty
+Input:138:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplots.revision.tex
+Input:139:C:\Program Files\MiKTeX 2.9\tex\latex\graphics\graphicx.sty
+Input:140:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf\frontendlayer\tikz.sty
+Input:141:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf\basiclayer\pgf.sty
+Input:142:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf\utilities\pgfrcs.sty
+Input:143:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgfutil-common.tex
+Input:144:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgfutil-common-lists.tex
+Input:145:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgfutil-latex.def
+Input:146:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\ms\everyshi.sty
+Input:147:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgfrcs.code.tex
+Input:148:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\pgf.revision.tex
+Input:149:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf\basiclayer\pgfcore.sty
+Input:150:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf\systemlayer\pgfsys.sty
+Input:151:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\systemlayer\pgfsys.code.tex
+Input:152:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgfkeys.code.tex
+Input:153:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\systemlayer\pgf.cfg
+Input:154:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\systemlayer\pgfsys-dvips.def
+Input:155:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\systemlayer\pgfsys-common-postscript.def
+Input:156:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\systemlayer\pgfsyssoftpath.code.tex
+Input:157:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\systemlayer\pgfsysprotocol.code.tex
+Input:158:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcore.code.tex
+Input:159:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmath.code.tex
+Input:160:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfint.code.tex
+Input:161:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcorepoints.code.tex
+Input:162:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcorepathconstruct.code.tex
+Input:163:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcorepathusage.code.tex
+Input:164:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcorescopes.code.tex
+Input:165:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcoregraphicstate.code.tex
+Input:166:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcoretransformations.code.tex
+Input:167:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcorequick.code.tex
+Input:168:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcoreobjects.code.tex
+Input:169:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcorepathprocessing.code.tex
+Input:170:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcorearrows.code.tex
+Input:171:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcoreshade.code.tex
+Input:172:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcoreimage.code.tex
+Input:173:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcoreexternal.code.tex
+Input:174:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcorelayers.code.tex
+Input:175:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcoretransparency.code.tex
+Input:176:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcorepatterns.code.tex
+Input:177:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\basiclayer\pgfcorerdf.code.tex
+Input:178:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\modules\pgfmoduleshapes.code.tex
+Input:179:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\modules\pgfmoduleplot.code.tex
+Input:180:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf\compatibility\pgfcomp-version-0-65.sty
+Input:181:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf\compatibility\pgfcomp-version-1-18.sty
+Input:182:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf\utilities\pgffor.sty
+Input:183:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf\math\pgfmath.sty
+Input:184:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmath.code.tex
+Input:185:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\utilities\pgffor.code.tex
+Input:186:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\math\pgfmath.code.tex
+Input:187:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\frontendlayer\tikz\tikz.code.tex
+Input:188:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\libraries\pgflibraryplothandlers.code.tex
+Input:189:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\modules\pgfmodulematrix.code.tex
+Input:190:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibrarytopaths.code.tex
+Input:191:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplots.code.tex
+Input:192:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplotscore.code.tex
+Input:193:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\sys\pgfplotssysgeneric.code.tex
+Input:194:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\libs\pgfplotslibrary.code.tex
+Input:195:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\oldpgfcompatib\pgfplotsoldpgfsupp_loader.code.tex
+Input:196:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\libraries\pgflibraryfpu.code.tex
+Input:197:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\util\pgfplotsutil.code.tex
+Input:198:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\liststructure\pgfplotsliststructure.code.tex
+Input:199:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\liststructure\pgfplotsliststructureext.code.tex
+Input:200:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\liststructure\pgfplotsarray.code.tex
+Input:201:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\liststructure\pgfplotsmatrix.code.tex
+Input:202:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\numtable\pgfplotstableshared.code.tex
+Input:203:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\liststructure\pgfplotsdeque.code.tex
+Input:204:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\util\pgfplotsbinary.code.tex
+Input:205:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\util\pgfplotsbinary.data.code.tex
+Input:206:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\util\pgfplotsutil.verb.code.tex
+Input:207:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\libs\pgflibrarypgfplots.surfshading.code.tex
+Input:208:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\sys\pgflibrarypgfplots.surfshading.pgfsys-dvips.def
+Input:209:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\util\pgfplotscolormap.code.tex
+Input:210:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\util\pgfplotscolor.code.tex
+Input:211:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplotsstackedplots.code.tex
+Input:212:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplotsplothandlers.code.tex
+Input:213:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplotsmeshplothandler.code.tex
+Input:214:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplotsmeshplotimage.code.tex
+Input:215:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplots.scaling.code.tex
+Input:216:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplotscoordprocessing.code.tex
+Input:217:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplots.errorbars.code.tex
+Input:218:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplots.markers.code.tex
+Input:219:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplotsticks.code.tex
+Input:220:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplots.paths.code.tex
+Input:221:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibrarydecorations.code.tex
+Input:222:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\modules\pgfmoduledecorations.code.tex
+Input:223:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibrarydecorations.pathmorphing.code.tex
+Input:224:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\libraries\decorations\pgflibrarydecorations.pathmorphing.code.tex
+Input:225:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibrarydecorations.pathreplacing.code.tex
+Input:226:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\libraries\decorations\pgflibrarydecorations.pathreplacing.code.tex
+Input:227:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibraryplotmarks.code.tex
+Input:228:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\libraries\pgflibraryplotmarks.code.tex
+Input:229:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pgf-pie\pgf-pie.sty
+Input:230:C:\Program Files\MiKTeX 2.9\tex\latex\carlisle\scalefnt.sty
+Input:231:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pgfplots\pgfplotstable.sty
+Input:232:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\pgfplots.revision.tex
+Input:233:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\numtable\pgfplotstable.code.tex
+Input:234:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pgfplots\numtable\pgfplotstable.coltype.code.tex
+Input:235:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\pst-coil\pst-coil.sty
+Input:236:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-coil\pst-coil.tex
+Input:237:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\generic\pst-node\pst-node.tex
+Input:238:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\ziffer\ziffer.sty
+Input:239:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\eso-pic\eso-pic.sty
+Input:240:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\esvect\esvect.sty
+Input:241:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\phaistos\phaistos.sty
+Input:242:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\substitutefont\substitutefont.sty
+Input:243:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\setspace\setspace.sty
+Input:244:C:\Program Files\MiKTeX 2.9\tex\latex\tools\enumerate.sty
+Input:245:C:\Program Files\MiKTeX 2.9\tex\latex\tools\xspace.sty
+Input:246:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\microtype\mt-cmr.cfg
+Input:247:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\translator\translator-basic-dictionary-English.dict
+Input:248:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\siunitx\siunitx-abbreviations.cfg
+Input:249:C:\Program Files\MiKTeX 2.9\tex\latex\lm\ot1lmr.fd
+Input:250:C:\Program Files\MiKTeX 2.9\tex\latex\lm\omllmm.fd
+Input:251:C:\Program Files\MiKTeX 2.9\tex\latex\lm\omslmsy.fd
+Input:252:C:\Program Files\MiKTeX 2.9\tex\latex\lm\omxlmex.fd
+Input:253:C:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\umsa.fd
+Input:254:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\microtype\mt-msa.cfg
+Input:255:C:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\umsb.fd
+Input:256:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\microtype\mt-msb.cfg
+Input:257:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\wasysym\uwasy.fd
+Input:258:C:\Users\Chris\AppData\Roaming\MiKTeX\2.9\tex\latex\esvect\uesvect.fd
+Input:259:C:\Program Files\MiKTeX 2.9\tex\latex\lm\ot1lmss.fd
+Input:260:C:\Program Files\MiKTeX 2.9\tex\latex\lm\ot1lmtt.fd
+Input:261:c:/Users\Chris\Documents\GitHub\Parhamer_connection\_database\k1\Einzelbeispiele\6.tex
+Input:262:c:/Users\Chris\Documents\GitHub\Parhamer_connection\_database\k1\Einzelbeispiele\7.tex
+Input:263:c:/Users\Chris\Documents\GitHub\Parhamer_connection\_database\k1\Einzelbeispiele\3.tex
+Input:264:c:/Users\Chris\Documents\GitHub\Parhamer_connection\_database\k1\Einzelbeispiele\5.tex
+Input:265:c:/Users\Chris\Documents\GitHub\Parhamer_connection\_database\k1\Einzelbeispiele\4.tex
 Output:dvi
 Magnification:1000
 Unit:1
 X Offset:4736287
 Y Offset:4736287
 Content:
-!23456
+!23476
 {1
-[1,38:0,48121207:31065567,48121207,0
-(1,38:0,0:0,0,0
-[1,38:-4736287,0:32445430,0,0
-(1,38:-4736287,-4736287:32445430,0,0
-h1,38:-4736287,-4736287:0,0,0
-(1,38:-4736287,-4736287:0,0,0
-(1,38:-4736287,-4736287:0,0,0
-g1,38:-4736287,-4736287
-(1,38:-4736287,-4736287:0,0,55380990
-(1,38:-4736287,50644703:0,55380990,0
-(1,38:-4736287,-4736287:0,0,2797019
-(1,38:-4736287,-4736287:48712251,0,2797019
-(1,38:-4736287,-1939268:48712251,600834,0
-x1,38:-949268,-1939268
-g1,38:-652175,-1939268
-g1,38:-652175,-1939268
-x1,38:3134844,-1939268
-g1,38:3431937,-1939268
-g1,38:3431937,-1939268
-x1,38:7218956,-1939268
-g1,38:7516049,-1939268
-g1,38:7516049,-1939268
-x1,38:11303068,-1939268
-g1,38:11600161,-1939268
-g1,38:11600161,-1939268
-x1,38:15387180,-1939268
-g1,38:15684273,-1939268
-g1,38:15684273,-1939268
-x1,38:19471292,-1939268
-g1,38:19768385,-1939268
-g1,38:19768385,-1939268
-x1,38:23555404,-1939268
-g1,38:23852497,-1939268
-g1,38:23852497,-1939268
-x1,38:27639516,-1939268
-g1,38:27936609,-1939268
-g1,38:27936609,-1939268
-x1,38:31723628,-1939268
-g1,38:32020721,-1939268
-g1,38:32020721,-1939268
-x1,38:35807740,-1939268
-g1,38:36104833,-1939268
-g1,38:36104833,-1939268
-x1,38:39891852,-1939268
-g1,38:40188945,-1939268
-g1,38:40188945,-1939268
-x1,38:43975964,-1939268
+[1,47:0,48121207:31065567,48121207,0
+(1,47:0,0:0,0,0
+[1,47:-4736287,0:32445430,0,0
+(1,47:-4736287,-4736287:32445430,0,0
+h1,47:-4736287,-4736287:0,0,0
+(1,47:-4736287,-4736287:0,0,0
+(1,47:-4736287,-4736287:0,0,0
+g1,47:-4736287,-4736287
+(1,47:-4736287,-4736287:0,0,55380990
+(1,47:-4736287,50644703:0,55380990,0
+(1,47:-4736287,-4736287:0,0,2797019
+(1,47:-4736287,-4736287:48712251,0,2797019
+(1,47:-4736287,-1939268:48712251,600834,0
+x1,47:-949268,-1939268
+g1,47:-652175,-1939268
+g1,47:-652175,-1939268
+x1,47:3134844,-1939268
+g1,47:3431937,-1939268
+g1,47:3431937,-1939268
+x1,47:7218956,-1939268
+g1,47:7516049,-1939268
+g1,47:7516049,-1939268
+x1,47:11303068,-1939268
+g1,47:11600161,-1939268
+g1,47:11600161,-1939268
+x1,47:15387180,-1939268
+g1,47:15684273,-1939268
+g1,47:15684273,-1939268
+x1,47:19471292,-1939268
+g1,47:19768385,-1939268
+g1,47:19768385,-1939268
+x1,47:23555404,-1939268
+g1,47:23852497,-1939268
+g1,47:23852497,-1939268
+x1,47:27639516,-1939268
+g1,47:27936609,-1939268
+g1,47:27936609,-1939268
+x1,47:31723628,-1939268
+g1,47:32020721,-1939268
+g1,47:32020721,-1939268
+x1,47:35807740,-1939268
+g1,47:36104833,-1939268
+g1,47:36104833,-1939268
+x1,47:39891852,-1939268
+g1,47:40188945,-1939268
+g1,47:40188945,-1939268
+x1,47:43975964,-1939268
 )
 )
-k1,38:-4736288,-4736287:-48712252
+k1,47:-4736288,-4736287:-48712252
 )
-(1,38:-4736287,-4736287:0,0,27690495
-(1,38:-4736287,22954208:0,2608049,0
-(1,38:14842851,22954208:1933334,2608049,0
-(1,38:16565930,22954208:256679,3004170,0
-(1,38:16565930,22954208:256679,3004170,0
-(1,38:16565930,22954208:0,3004170,0
-k1,38:6970038,22954208:-9595892
-g1,38:7226717,22954208
-x1,38:26161822,22954208
-k1,38:16565930,22954208:-9595892
+(1,47:-4736287,-4736287:0,0,27690495
+(1,47:-4736287,22954208:0,2608049,0
+(1,47:14842851,22954208:1933334,2608049,0
+(1,47:16565930,22954208:256679,3004170,0
+(1,47:16565930,22954208:256679,3004170,0
+(1,47:16565930,22954208:0,3004170,0
+k1,47:6970038,22954208:-9595892
+g1,47:7226717,22954208
+x1,47:26161822,22954208
+k1,47:16565930,22954208:-9595892
 )
-g1,38:16822609,22954208
-)
-)
-)
-k1,38:-4736287,22954208:-21512472
-)
-g1,38:-4736287,-4736287
-)
-(1,38:-4736287,-4736287:0,0,55380990
-(1,38:-4736287,50644703:0,2092583,0
-(1,38:-4736287,50644703:50731608,2092583,0
-(1,38:-4736287,49152954:50731608,600834,0
-x1,38:-3311116,49152954
-g1,38:-3014023,49152954
-x1,38:772996,49152954
-g1,38:1070089,49152954
-g1,38:1070089,49152954
-x1,38:4857108,49152954
-g1,38:5154201,49152954
-g1,38:5154201,49152954
-x1,38:8941220,49152954
-g1,38:9238313,49152954
-g1,38:9238313,49152954
-x1,38:13025332,49152954
-g1,38:13322425,49152954
-g1,38:13322425,49152954
-x1,38:17109444,49152954
-g1,38:17406537,49152954
-g1,38:17406537,49152954
-x1,38:21193556,49152954
-g1,38:21490649,49152954
-g1,38:21490649,49152954
-x1,38:25277668,49152954
-g1,38:25574761,49152954
-g1,38:25574761,49152954
-x1,38:29361780,49152954
-g1,38:29658873,49152954
-g1,38:29658873,49152954
-x1,38:33445892,49152954
-g1,38:33742985,49152954
-g1,38:33742985,49152954
-x1,38:37530004,49152954
-g1,38:37827097,49152954
-g1,38:37827097,49152954
-x1,38:41614116,49152954
-g1,38:41911209,49152954
-g1,38:41911209,49152954
-x1,38:45698228,49152954
-g1,38:45995321,49152954
-g1,38:45995321,49152954
+g1,47:16822609,22954208
 )
 )
-k1,38:-4736287,50644703:-50731608
 )
-g1,38:-4736287,-4736287
+k1,47:-4736287,22954208:-21512472
 )
-g1,38:-4736287,50644703
+g1,47:-4736287,-4736287
+)
+(1,47:-4736287,-4736287:0,0,55380990
+(1,47:-4736287,50644703:0,2092583,0
+(1,47:-4736287,50644703:50731608,2092583,0
+(1,47:-4736287,49152954:50731608,600834,0
+x1,47:-3311116,49152954
+g1,47:-3014023,49152954
+x1,47:772996,49152954
+g1,47:1070089,49152954
+g1,47:1070089,49152954
+x1,47:4857108,49152954
+g1,47:5154201,49152954
+g1,47:5154201,49152954
+x1,47:8941220,49152954
+g1,47:9238313,49152954
+g1,47:9238313,49152954
+x1,47:13025332,49152954
+g1,47:13322425,49152954
+g1,47:13322425,49152954
+x1,47:17109444,49152954
+g1,47:17406537,49152954
+g1,47:17406537,49152954
+x1,47:21193556,49152954
+g1,47:21490649,49152954
+g1,47:21490649,49152954
+x1,47:25277668,49152954
+g1,47:25574761,49152954
+g1,47:25574761,49152954
+x1,47:29361780,49152954
+g1,47:29658873,49152954
+g1,47:29658873,49152954
+x1,47:33445892,49152954
+g1,47:33742985,49152954
+g1,47:33742985,49152954
+x1,47:37530004,49152954
+g1,47:37827097,49152954
+g1,47:37827097,49152954
+x1,47:41614116,49152954
+g1,47:41911209,49152954
+g1,47:41911209,49152954
+x1,47:45698228,49152954
+g1,47:45995321,49152954
+g1,47:45995321,49152954
 )
 )
-g1,38:-4736287,-4736287
+k1,47:-4736287,50644703:-50731608
+)
+g1,47:-4736287,-4736287
+)
+g1,47:-4736287,50644703
 )
 )
-k1,38:27709143,-4736287:32445430
-g1,38:27709143,-4736287
+g1,47:-4736287,-4736287
 )
-]
 )
-(1,38:0,0:0,0,0
-)
-[1,38:-1379863,48121207:32445430,51552966,0
-[1,38:-1379863,-3405545:32445430,26214,0
-(1,38:-1379863,-3405545:32445430,0,0
-h1,38:-1379863,-3405545:32445430,0,0
+k1,47:27709143,-4736287:32445430
+g1,47:27709143,-4736287
 )
 ]
-[1,38:-1379863,46155127:32445430,47922272,0
+)
+(1,47:0,0:0,0,0
+)
+[1,47:-1379863,48121207:32445430,51552966,0
+[1,47:-1379863,-3405545:32445430,26214,0
+(1,47:-1379863,-3405545:32445430,0,0
+h1,47:-1379863,-3405545:32445430,0,0
+)
+]
+[1,47:-1379863,46155127:32445430,47922272,0
 (1,30:-1379863,-980713:32445430,393216,131072
 h1,29:-1379863,-980713:0,0,0
 x1,29:-513302,-980713
@@ -438,143 +436,304 @@ x1,29:12301763,-980713
 k1,30:31065567,-980713:18828980
 g1,30:31065567,-980713
 )
-(266,1:-1379863,1993657:32445430,774273,220200
-(266,1:-1379863,1993657:0,0,0
-g266,1:-1379863,1993657
+(261,1:-1379863,1993657:32445430,774273,220200
+(261,1:-1379863,1993657:0,0,0
+g261,1:-1379863,1993657
 )
-x266,1:254561,1993657
-g266,1:679234,1993657
-x266,1:1103907,1993657
-g266,1:1528580,1993657
-x266,1:4688571,1993657
-g266,1:5113244,1993657
-x266,1:5537917,1993657
-g266,1:5962590,1993657
-x266,1:6848647,1993657
-x266,1:8321789,1993657
-g266,1:8746462,1993657
-x266,1:9171135,1993657
-g266,1:9595808,1993657
-x266,1:11346971,1993657
-g266,1:11771644,1993657
-x266,1:12196317,1993657
-g266,1:12620990,1993657
-x266,1:16156062,1993657
-k266,1:31065567,1993657:14909505
-g266,1:31065567,1993657
+x261,1:254561,1993657
+g261,1:679234,1993657
+x261,1:1103907,1993657
+g261,1:1528580,1993657
+x261,1:2165589,1993657
+g261,1:2590262,1993657
+x261,1:3014935,1993657
+g261,1:3439608,1993657
+x261,1:6599599,1993657
+g261,1:7024272,1993657
+x261,1:7448945,1993657
+g261,1:7873618,1993657
+x261,1:10544245,1993657
+g261,1:10968918,1993657
+x261,1:11393591,1993657
+g261,1:11818264,1993657
+x261,1:13946914,1993657
+g261,1:14371587,1993657
+x261,1:14796260,1993657
+g261,1:15220933,1993657
+x261,1:18756005,1993657
+k261,1:31065567,1993657:12309562
+g261,1:31065567,1993657
 )
-(266,5:545237,3951729:26627037,541752,179404
-(266,3:545237,3951729:0,538214,179404
-g266,3:545237,3951729
-g266,3:-994843,3951729
-g266,3:-1379863,3951729
-(266,3:-1379863,3951729:1540080,538214,179404
-k266,3:160217,3951729:1540080
-(266,3:160217,3951729:0,495239,0
-k266,3:-438715,3951729:-598932
-x266,3:160217,3951729
+(261,5:545237,3951729:26627037,541752,179404
+(261,3:545237,3951729:0,538214,179404
+g261,3:545237,3951729
+g261,3:-994843,3951729
+g261,3:-1379863,3951729
+(261,3:-1379863,3951729:1540080,538214,179404
+k261,3:160217,3951729:1540080
+(261,3:160217,3951729:0,495239,0
+k261,3:-438715,3951729:-598932
+x261,3:160217,3951729
 )
-(266,3:160217,3951729:0,538214,179404
-(266,3:30680547,3951729:0,538214,179404
-k266,3:28348287,3951729:-2332260
-x266,3:30680547,3951729
+(261,3:160217,3951729:0,538214,179404
+(261,3:30680547,3951729:0,538214,179404
+k261,3:28348287,3951729:-2332260
+x261,3:30680547,3951729
 )
-k266,3:160217,3951729:-30520330
-)
-)
-g266,3:545237,3951729
-)
-x266,3:1101374,3951729
-k266,4:545237,3951729:-64170
-x266,4:1982626,3951729
-k266,5:27172275,3951729:25210440
-g266,5:27172275,3951729
-)
-(267,1:-1379863,8147983:32445430,774273,0
-(267,1:-1379863,8147983:0,0,0
-g267,1:-1379863,8147983
-)
-x267,1:254561,8147983
-g267,1:679234,8147983
-x267,1:1103907,8147983
-g267,1:1528580,8147983
-x267,1:4537340,8147983
-g267,1:4962013,8147983
-x267,1:5386686,8147983
-g267,1:5811359,8147983
-x267,1:6697416,8147983
-x267,1:8170558,8147983
-g267,1:8595231,8147983
-x267,1:9019904,8147983
-g267,1:9444577,8147983
-x267,1:10330634,8147983
-x267,1:11186491,8147983
-g267,1:11611164,8147983
-x267,1:12035837,8147983
-g267,1:12460510,8147983
-x267,1:13346567,8147983
-x267,1:14819709,8147983
-k267,1:31065567,8147983:16280257
-g267,1:31065567,8147983
-)
-(267,5:545237,10106055:26627037,541752,179404
-(267,3:545237,10106055:0,538214,179404
-g267,3:545237,10106055
-g267,3:-994843,10106055
-g267,3:-1379863,10106055
-(267,3:-1379863,10106055:1540080,538214,179404
-k267,3:160217,10106055:1540080
-(267,3:160217,10106055:0,495239,0
-k267,3:-438715,10106055:-598932
-x267,3:160217,10106055
-)
-(267,3:160217,10106055:0,538214,179404
-(267,3:30680547,10106055:0,538214,179404
-k267,3:28348287,10106055:-2332260
-x267,3:30680547,10106055
-)
-k267,3:160217,10106055:-30520330
+k261,3:160217,3951729:-30520330
 )
 )
-g267,3:545237,10106055
+g261,3:545237,3951729
 )
-x267,3:1101374,10106055
-k267,4:545237,10106055:-64170
-x267,4:1982626,10106055
-k267,5:27172275,10106055:25210440
-g267,5:27172275,10106055
+x261,3:2908756,3951729
+k261,4:545237,3951729:21390
+x261,4:3272374,3951729
+k261,5:27172274,3951729:23899900
+g261,5:27172274,3951729
+)
+(262,1:-1379863,8147983:32445430,774273,220200
+(262,1:-1379863,8147983:0,0,0
+g262,1:-1379863,8147983
+)
+x262,1:254561,8147983
+g262,1:679234,8147983
+x262,1:1103907,8147983
+g262,1:1528580,8147983
+x262,1:4688571,8147983
+g262,1:5113244,8147983
+x262,1:5537917,8147983
+g262,1:5962590,8147983
+x262,1:6599599,8147983
+g262,1:7024272,8147983
+x262,1:7448945,8147983
+g262,1:7873618,8147983
+x262,1:10544245,8147983
+g262,1:10968918,8147983
+x262,1:11393591,8147983
+g262,1:11818264,8147983
+x262,1:13946914,8147983
+g262,1:14371587,8147983
+x262,1:14796260,8147983
+g262,1:15220933,8147983
+x262,1:18756005,8147983
+k262,1:31065567,8147983:12309562
+g262,1:31065567,8147983
+)
+(262,5:545237,10106055:26627037,541752,179404
+(262,3:545237,10106055:0,538214,179404
+g262,3:545237,10106055
+g262,3:-994843,10106055
+g262,3:-1379863,10106055
+(262,3:-1379863,10106055:1540080,538214,179404
+k262,3:160217,10106055:1540080
+(262,3:160217,10106055:0,495239,0
+k262,3:-438715,10106055:-598932
+x262,3:160217,10106055
+)
+(262,3:160217,10106055:0,538214,179404
+(262,3:30680547,10106055:0,538214,179404
+k262,3:28348287,10106055:-2332260
+x262,3:30680547,10106055
+)
+k262,3:160217,10106055:-30520330
+)
+)
+g262,3:545237,10106055
+)
+x262,3:2908756,10106055
+k262,4:545237,10106055:21390
+x262,4:3272374,10106055
+k262,5:27172274,10106055:23899900
+g262,5:27172274,10106055
+)
+(263,1:-1379863,14302309:32445430,774273,220200
+(263,1:-1379863,14302309:0,0,0
+g263,1:-1379863,14302309
+)
+x263,1:254561,14302309
+g263,1:679234,14302309
+x263,1:1103907,14302309
+g263,1:1528580,14302309
+x263,1:4688571,14302309
+g263,1:5113244,14302309
+x263,1:5537917,14302309
+g263,1:5962590,14302309
+x263,1:6848647,14302309
+x263,1:8321789,14302309
+g263,1:8746462,14302309
+x263,1:9171135,14302309
+g263,1:9595808,14302309
+x263,1:11346971,14302309
+g263,1:11771644,14302309
+x263,1:12196317,14302309
+g263,1:12620990,14302309
+x263,1:16156062,14302309
+k263,1:31065567,14302309:14909505
+g263,1:31065567,14302309
+)
+(263,5:545237,16260381:26627037,541752,179404
+(263,3:545237,16260381:0,538214,179404
+g263,3:545237,16260381
+g263,3:-994843,16260381
+g263,3:-1379863,16260381
+(263,3:-1379863,16260381:1540080,538214,179404
+k263,3:160217,16260381:1540080
+(263,3:160217,16260381:0,495239,0
+k263,3:-438715,16260381:-598932
+x263,3:160217,16260381
+)
+(263,3:160217,16260381:0,538214,179404
+(263,3:30680547,16260381:0,538214,179404
+k263,3:28348287,16260381:-2332260
+x263,3:30680547,16260381
+)
+k263,3:160217,16260381:-30520330
+)
+)
+g263,3:545237,16260381
+)
+x263,3:1101374,16260381
+k263,4:545237,16260381:-64170
+x263,4:1982626,16260381
+k263,5:27172275,16260381:25210440
+g263,5:27172275,16260381
+)
+(264,1:-1379863,20456635:32445430,774273,220200
+(264,1:-1379863,20456635:0,0,0
+g264,1:-1379863,20456635
+)
+x264,1:254561,20456635
+g264,1:679234,20456635
+x264,1:1103907,20456635
+g264,1:1528580,20456635
+x264,1:4688571,20456635
+g264,1:5113244,20456635
+x264,1:5537917,20456635
+g264,1:5962590,20456635
+x264,1:8633217,20456635
+g264,1:9057890,20456635
+x264,1:9482563,20456635
+g264,1:9907236,20456635
+x264,1:12035886,20456635
+g264,1:12460559,20456635
+x264,1:12885232,20456635
+g264,1:13309905,20456635
+x264,1:16844977,20456635
+k264,1:31065567,20456635:14220590
+g264,1:31065567,20456635
+)
+(264,5:545237,22414707:26627037,541752,179404
+(264,3:545237,22414707:0,538214,179404
+g264,3:545237,22414707
+g264,3:-994843,22414707
+g264,3:-1379863,22414707
+(264,3:-1379863,22414707:1540080,538214,179404
+k264,3:160217,22414707:1540080
+(264,3:160217,22414707:0,495239,0
+k264,3:-438715,22414707:-598932
+x264,3:160217,22414707
+)
+(264,3:160217,22414707:0,538214,179404
+(264,3:30680547,22414707:0,538214,179404
+k264,3:28348287,22414707:-2332260
+x264,3:30680547,22414707
+)
+k264,3:160217,22414707:-30520330
+)
+)
+g264,3:545237,22414707
+)
+x264,3:2908756,22414707
+k264,4:545237,22414707:21390
+x264,4:3272374,22414707
+k264,5:27172274,22414707:23899900
+g264,5:27172274,22414707
+)
+(265,1:-1379863,26610961:32445430,774273,0
+(265,1:-1379863,26610961:0,0,0
+g265,1:-1379863,26610961
+)
+x265,1:254561,26610961
+g265,1:679234,26610961
+x265,1:1103907,26610961
+g265,1:1528580,26610961
+x265,1:4537340,26610961
+g265,1:4962013,26610961
+x265,1:5386686,26610961
+g265,1:5811359,26610961
+x265,1:6697416,26610961
+x265,1:8170558,26610961
+g265,1:8595231,26610961
+x265,1:9019904,26610961
+g265,1:9444577,26610961
+x265,1:10330634,26610961
+x265,1:11186491,26610961
+g265,1:11611164,26610961
+x265,1:12035837,26610961
+g265,1:12460510,26610961
+x265,1:13346567,26610961
+x265,1:14819709,26610961
+k265,1:31065567,26610961:16280257
+g265,1:31065567,26610961
+)
+(265,5:545237,28569033:26627037,541752,179404
+(265,3:545237,28569033:0,538214,179404
+g265,3:545237,28569033
+g265,3:-994843,28569033
+g265,3:-1379863,28569033
+(265,3:-1379863,28569033:1540080,538214,179404
+k265,3:160217,28569033:1540080
+(265,3:160217,28569033:0,495239,0
+k265,3:-438715,28569033:-598932
+x265,3:160217,28569033
+)
+(265,3:160217,28569033:0,538214,179404
+(265,3:30680547,28569033:0,538214,179404
+k265,3:28348287,28569033:-2332260
+x265,3:30680547,28569033
+)
+k265,3:160217,28569033:-30520330
+)
+)
+g265,3:545237,28569033
+)
+x265,3:1101374,28569033
+k265,4:545237,28569033:-64170
+x265,4:1982626,28569033
+k265,5:27172275,28569033:25210440
+g265,5:27172275,28569033
 )
 ]
-(1,38:-1379863,48121207:32445430,0,0
-h1,38:-1379863,48121207:32445430,0,0
+(1,47:-1379863,48121207:32445430,0,0
+h1,47:-1379863,48121207:32445430,0,0
 )
 ]
-(1,38:0,0:0,0,0
-[1,38:-4736287,0:32445430,0,0
-(1,38:-4736287,-4736287:32445430,0,0
-h1,38:-4736287,-4736287:0,0,0
-(1,38:-4736287,-4736287:0,0,0
-(1,38:-4736287,-4736287:0,0,0
-g1,38:-4736287,-4736287
-(1,38:-4736287,-4736287:0,0,55380990
-(1,38:-4736287,50644703:0,0,0
-g1,38:-4736287,50644703
+(1,47:0,0:0,0,0
+[1,47:-4736287,0:32445430,0,0
+(1,47:-4736287,-4736287:32445430,0,0
+h1,47:-4736287,-4736287:0,0,0
+(1,47:-4736287,-4736287:0,0,0
+(1,47:-4736287,-4736287:0,0,0
+g1,47:-4736287,-4736287
+(1,47:-4736287,-4736287:0,0,55380990
+(1,47:-4736287,50644703:0,0,0
+g1,47:-4736287,50644703
 )
 )
-g1,38:-4736287,-4736287
+g1,47:-4736287,-4736287
 )
 )
-k1,38:27709143,-4736287:32445430
-g1,38:27709143,-4736287
-)
-]
+k1,47:27709143,-4736287:32445430
+g1,47:27709143,-4736287
 )
 ]
-!6770
+)
+]
+!10701
 }1
-Input:268:c:\Users\Chris\Documents\GitHub\Parhamer_connection\Teildokument\Teildokument.aux
-!101
+Input:266:c:\Users\Chris\Documents\GitHub\Parhamer_connection\Teildokument\Teildokument.aux
+!102
 Postamble:
-Count:232
+Count:350
 !26
 Post scriptum:

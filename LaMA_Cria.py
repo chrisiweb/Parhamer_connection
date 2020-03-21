@@ -3082,6 +3082,8 @@ class Ui_MainWindow(object):
             + " - "
             + themen_auswahl_joined
             + " - "
+            + str(max_integer_file + 1)
+            + " - "
             + edit_titel
             + " - "
             + chosen_af.upper()
@@ -3752,9 +3754,9 @@ class Ui_MainWindow(object):
 
                     filename = os.path.basename(self.beispieldaten_dateipfad[all])
                     if name == filename:
-                        x = all.split(" - ")
-                        # print(x)
-                        list_input[2] = x[-2]
+                        chosen_section = all.split(" - ")
+                        #print(chosen_section)
+                        list_input[2] = chosen_section[-3]
 
             # print(list_input)
 
