@@ -989,6 +989,10 @@ class Ui_MainWindow(object):
         MainWindow.setWindowIcon(QtGui.QIcon(logo_path))
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
+        # self.warnung = QtWidgets.QLabel(self.centralwidget)
+        # self.warnung.setWordWrap(True)
+        # self.warnung.setObjectName(_fromUtf8("warnung"))
+        # self.warnung.setText(_translate("MainWindow", "Test", None))
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         #######################################################
@@ -1365,6 +1369,16 @@ class Ui_MainWindow(object):
         self.gridLayout_k8.setObjectName(_fromUtf8("gridLayout_k8"))
         self.tabWidget.addTab(self.tab_k8, _fromUtf8(""))
         self.create_checkbox_klasse("k8", k8_beschreibung)
+
+        #### Warnung ### Hinweis ####
+        self.warnung = QtWidgets.QLabel(self.centralwidget)
+        self.warnung.setWordWrap(True)
+        self.warnung.setObjectName(_fromUtf8("warnung"))
+        self.warnung.setStyleSheet(_fromUtf8("background-color: rgb(255, 80, 80);"))
+        self.warnung.setFont(QtGui.QFont('', 11))
+        self.warnung.setText(_translate("MainWindow", "Achtung: Aufgrund neuer hilfreicher Befehle ist es ratsam, ein Update des srdp-mathematik-Pakets so bald wie möglich durchzuführen! Nähere Infos unter lama.schule", None))
+        self.gridLayout.addWidget(self.warnung, 5,0,1,1)
+        ##########################
 
         ##############################################################
         #####################CREATOR #########################################
@@ -3502,6 +3516,15 @@ class Ui_MainWindow(object):
             pass
         else:
             shutil.copy(path_tabu_pkg, copy_path_tabu_pkg)
+
+        ###################################################
+
+        path_srdp_pkg = os.path.join(path_programm, "_database", "_config", "srdp-mathematik.sty")
+        copy_path_srdp_pkg = os.path.join(path_programm, "Teildokument", "srdp-mathematik.sty")
+        if os.path.isfile(copy_path_srdp_pkg):
+            pass
+        else:
+            shutil.copy(path_srdp_pkg, copy_path_srdp_pkg)
 
         ########################################################
 
