@@ -1,0 +1,1097 @@
+% srdp-mathemathik.sty
+%
+% This package provides basic commands for the defined formats of the Austrian sRDP
+% (Stan­dar­d­isierte Reife- und Di­plom­prü­fung) in math­e­mat­ics. 
+% 
+% Author: Christoph Weberndorfer
+% 
+% Released under the LaTeX Project Public License 1.3c
+%
+%
+
+\NeedsTeXFormat{LaTeX2e}[1996/12/26]
+\ProvidesPackage{srdp-mathematik}[2019/07/10 v1.4 Standard-Schularbeitsformate]
+
+
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{amsmath,amssymb, amsfonts}
+\usepackage{pdflscape}
+\usepackage{varwidth}
+\usepackage{wasysym}
+\usepackage{microtype}
+\usepackage{pstricks-add}
+\usepackage{trimspaces}
+\usepackage{colortbl}
+\usepackage{chngcntr} 
+\usepackage{framed}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{tabu}
+\usepackage{environ}
+\usepackage{cancel}
+\usepackage{spreadtab}
+\usepackage{pgfkeys}
+\usepackage{hhline}
+\usepackage{forloop}
+\usepackage{ifthen}
+\usepackage{longtable}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.12}
+\usepackage{pgf-pie}
+\usepackage{pgfplotstable}
+\usepackage{pst-coil}
+\usepackage{ziffer}
+\usepackage{eso-pic}
+\usepackage{esvect}
+\usepackage{phaistos}
+\usepackage{substitutefont}
+\substitutefont{LPH}{\familydefault}{cmr}
+\renewcommand{\vec}[1]{\vv{#1}}
+\usepackage{graphicx}
+\usepackage{setspace}
+%\usepackage{enumerate}
+\usepackage[inline, shortlabels]{enumitem}
+\usepackage{xparse}
+\usepackage{eurosym, xspace}
+\renewcommand*\euro{\officialeuro\xspace}
+\newcommand{\degre}{\ensuremath{^\circ}}
+
+\setlength{\headheight}{0.4pt}
+\setlength\parindent{0pt}
+\newcolumntype{M}{>{\begin{varwidth}{0.8\textwidth}}l<{\end{varwidth}}}
+\newcolumntype{A}{>{\begin{varwidth}{0.73\linewidth}}l<{\end{varwidth}}}
+\newcolumntype{N}{>{\begin{varwidth}{0.59\textwidth}}l<{\end{varwidth}}}
+\newcolumntype{T}{>{\begin{varwidth}{0.91\linewidth}}l<{\end{varwidth}}}
+\newcolumntype{F}{>{\begin{varwidth}{0.8\textwidth}}c<{\end{varwidth}}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}m{#1}}
+
+
+\newcounter{punkte}
+
+%
+%
+%
+%
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%     Grundlagen für die ON/OFF %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%  Antwortfunktion bei Beispielen %%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+\newcounter{Antworten}
+\newcounter{Zufall}
+\newcounter{info}
+\newcounter{marker}
+\DeclareOption{solution_on}{\setcounter{Antworten}{1}}
+\DeclareOption{solution_off}{\setcounter{Antworten}{0}}
+\DeclareOption{info_on}{\setcounter{info}{1}}
+\DeclareOption{info_off}{\setcounter{info}{0}}
+\DeclareOption{random=0}{\setcounter{Zufall}{0}}
+\DeclareOption{random=1}{\setcounter{Zufall}{1}}
+\DeclareOption{random=2}{\setcounter{Zufall}{2}}
+\DeclareOption{random=3}{\setcounter{Zufall}{3}}
+\DeclareOption{random=4}{\setcounter{Zufall}{4}}
+\DeclareOption{random=5}{\setcounter{Zufall}{5}}
+\DeclareOption{random=6}{\setcounter{Zufall}{6}}
+\DeclareOption{random=7}{\setcounter{Zufall}{7}}
+\DeclareOption{random=8}{\setcounter{Zufall}{8}}
+\DeclareOption{random=9}{\setcounter{Zufall}{9}}
+
+\AtBeginDocument{\@ifpackagewith{srdp-mathematik}{solution_on}{
+\AddToShipoutPictureBG{%
+\AtPageUpperLeft{\color{red}\raisebox{-1.5cm}{%
+\textsc{\forloop{marker}{0}{\themarker<11}{L\"osungen \hfill}L\"osungen}%
+}}
+\AtPageCenter{\color{red!25}\rotatebox{35}{\makebox[0pt]{\fontsize{60}{60} \selectfont \textsc{L\"osungen}}
+}}
+\AtPageLowerLeft{\color{red}\raisebox{0.8cm}{%
+\textsc{gen \forloop{marker}{0}{\themarker<12}{L\"osungen \hfill}}%
+}}
+}}{}}
+
+\ProcessOptions\relax
+
+\newcommand{\antwort}[2][]{\ifthenelse{\theAntworten=1}{\color[rgb]{1,0,0}#2\color[rgb]{0,0,0}}{#1}}
+
+\newcommand{\info}[2][]{\ifthenelse{\theinfo=1}{
+\color[rgb]{0,0,1}{#2}\color[rgb]{0,0,0}
+}{#1}}
+
+
+%\NewEnviron{antwort}[1][hallo]{\textcolor{red}{\BODY}}
+%\NewEnviron{antwort}[2][]{\ifthenelse{\theAntworten=1}{\color[rgb]{1,0,0}#1\color[rgb]{0,0,0}}{#2}}
+%\newenvironment{antwort}[2][]{\color[rgb]{1,0,0}{#1}}{\color[rgb]{0,0,0}}
+
+
+
+\newcounter{A1}
+\newcounter{A2}
+
+
+%
+%
+%
+%
+%
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%   MeinLR & MeinLCR %%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% Seitenunterteilungen %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\meinlr}[3][0]{\FPeval{\links}{clip(0.48 + (#1))}\FPeval{\rechts}{clip(0.48 - (#1))}
+
+\begin{minipage}[t]{\links\linewidth}\vspace{0cm}
+#2\end{minipage}\hfill\begin{minipage}[t]{\rechts\linewidth}\vspace{0cm}
+#3\end{minipage}\leer}
+
+
+
+\newcommand{\meinlcr}[3]{\begin{minipage}[t]{0.32\textwidth}\vspace{0cm}
+#1\end{minipage}\hfill\begin{minipage}[t]{0.32\linewidth}\vspace{0cm}
+#2\end{minipage}\hfill\begin{minipage}[t]{0.32\linewidth}\vspace{0cm}
+#3\end{minipage}\leer}
+
+\newcommand{\meinbild}[2]{\begin{minipage}{0.7\textwidth}#1\end{minipage} \hfill
+\begin{minipage}{0.2\textwidth}#2\end{minipage}}
+%
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  ZUSATZPAKETE %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%  	BEISPIEL UMGEBUNG  %%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcounter{number}
+
+\makeatletter
+
+\NewEnviron{beispiel}[2][\unskip]{\begin{minipage}[t]{0.88\textwidth}
+\addtocounter{number}{1}
+\begin{enumerate}[leftmargin=0pt]
+	\item[\thenumber.] \BODY
+\end{enumerate}
+
+
+\end{minipage} 
+\begin{minipage}[t]{0.1\textwidth} \raggedleft \small{\_\_\_/#2}\addtocounter{punkte}{#2}\\
+\antwort{\footnotesize #1 \normalsize}\end{minipage}
+\vspace{\baselineskip}
+
+}
+
+
+
+%
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%% Teil 2 Überschrift %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+\newcommand{\TEILZWEI}{\newpage \ifodd\value{page}\thispagestyle{empty}\hbox{}\newpage\else \fi
+\begin{flushright}
+\small Name: \rule{7cm}{0.4pt} \normalsize
+\end{flushright}
+\section{Teil 2: Vernetzte Grundkompetenzen}}
+%
+%%%%%%%%%%%% WINKELFUNKTION - Geogebra 
+%
+%
+%
+\newcommand{\winkelfunktion}{}
+%
+%
+%
+%%%%%%%%%%%%%%%%% Kreisdiagramm - PGF
+%
+%
+%
+%
+\newcommand{\kreisdiagramm}{}
+%
+%
+%%%%%%%%%%%%%%%%% LANGESBEISPIEL UMGEBUNG
+
+
+
+\newenvironment{langesbeispiel}{%
+\renewcommand{\labelenumi}{(\alph{enumi})}
+\renewcommand{\labelenumii}{(\roman{enumii})}
+      			\list
+        {}
+        {%
+    \leftmargin.0pt   
+    \rightmargin.12\textwidth
+    \def\makelabel##1{\stepcounter{number}%
+    \hss\llap{\thenumber.}%
+    \addtocounter{punkte}{##1}%
+    \rlap{\kern\dimexpr\textwidth-\leftmargin
+    \llap{\small\_\_\_/##1}}}}%
+}
+{\endlist}
+
+\makeatother
+
+\newcommand{\typzwei}{}
+\newcounter{subitemcounter}
+\newcommand{\Subitem}[1]{\stepcounter{subitemcounter}\begin{enumerate}[\thesubitemcounter),leftmargin=*]\itemalt{#1}\end{enumerate}}
+\newcommand{\Aitem}{\item \fbox{A} }
+\newcommand{\ASubitem}[1]{\Subitem{\fbox{A} #1}}
+\NewEnviron{aufgabenstellung}[1]{\let\itemalt\item
+\renewcommand*{\item}{\setcounter{subitemcounter}{0}\itemalt}
+\subsubsection{Aufgabenstellung:}%
+\begin{enumerate}[a),leftmargin=*]
+\item \BODY
+\end{enumerate}%
+\let\item\itemalt}
+
+\NewEnviron{loesung}[1]{\let\itemalt\item
+\renewcommand*{\item}{\setcounter{subitemcounter}{0}\itemalt}
+\antwort{%%
+\begin{enumerate}[a),leftmargin=*]
+\item \BODY
+\end{enumerate}}%
+\let\item\itemalt}
+
+%
+%
+%
+%
+%
+%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Vektorendefinition
+
+\newcommand{\vek}[1]{\overrightarrow{#1}}%
+
+\newcommand{\Vek}[3]{\left(\!\!\begin{array}{c}#1\\#2 
+\ifthenelse{\equal{#3}{}}{}{\\#3}\end{array}\!\!\right)}
+
+\newcommand{\textvek}[3]{\left(\!\begin{smallmatrix}#1\\#2 
+\ifthenelse{\equal{#3}{}}{}{\\#3}\end{smallmatrix}\!\right)}
+%
+%
+%
+%%%%%%%%%%%%%%%%%%%%% LEER BEFEHL
+\newcommand{\leer}[0]{\vspace{\baselineskip}}
+
+\newcommand{\heft}[1]{\leer
+\fbox{\begin{minipage}{0.98\columnwidth}
+#1
+\end{minipage}}\leer
+}
+%
+%
+
+%%%%%%%%%%%%%%%%%%%% INTEGRAL BEFEHL
+%\newcommand{\dx}{\,\text{d}x}
+\newcommand{\dx}[1][x]{\,\text{d}#1}
+\newcommand{\dint}{\displaystyle\int}
+
+
+%%%%%%%%%% HOMEWORK BEFEHL
+
+\newcommand{\hw}[1]{
+\begin{flushright}
+\begin{minipage}{0.2\textwidth}
+\paragraph{H\"U:} #1
+\end{minipage}
+\end{flushright}
+}
+%
+%
+%
+%%%%%%%%%%%% NOTENSCHLUESSEL  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+\newcommand{\notenschluessel}[4]{
+\vfill
+\STautoround{3}\renewcommand{\arraystretch}{0}\tiny
+\begin{spreadtab}[\STsavecell\gutgenau{b2} \STsavecell\befriedigendgenau{c2} \STsavecell\genuegendgenau{d2} \STsavecell\nichtgenuegendgenau{e2} 
+\STsavecell\gut{b3}  \STsavecell\befriedigend{c3} \STsavecell\genuegend{d3} \STsavecell\nichtgenuegend{e3}  
+\STsavecell\gutpluseins{b4} \STsavecell\befriedigendpluseins{c4}  \STsavecell\genuegendpluseins{d4} \STsavecell\nichtgenuegendpluseins{e4} \STsavecell\gutminuseins{b5} \STsavecell\befriedigendminuseins{c5} \STsavecell\genuegendminuseins{d5} \STsavecell\nichtgenuegendminuseins{e5}]{{tabular}{ccccc}}
+ \SThidecol\thepunkte &\SThidecol 1 &\SThidecol2 &\SThidecol 3 &\SThidecol 4 \\ 
+ & a1*#1 &a1*#2 & a1*#3 & a1*#4 \\
+ &trunc(a1*#1,0) & trunc(a1*#2,0) &trunc(a1*#3,0) &trunc(a1*#4,0) \\
+ &b3+1 &c3+1 &d3+1 & e3+1\\
+ &b3-1 &c3-1 &d3-1 & e3-1\\
+\end{spreadtab}
+\footnotesize\renewcommand{\arraystretch}{1}
+\begin{center}
+\begin{tabular}{|C{3cm}C{3cm}C{3cm}C{3cm}C{3cm}|} \hline
+Erreichte Punkte & Prozent & Gesamt & \multicolumn{2}{c|}{Note} \\
+&& \multirow{2}{*}{\thepunkte} && \\  
+&&&& \\ \hline \hline
+\scriptsize{Sehr gut} & \scriptsize{Gut} & \scriptsize{Befriedigend} & \scriptsize{Gen\"ugend} & \scriptsize{Nicht gen\"ugend} \\
+\scriptsize{\thepunkte ~ - \ifdim\gut pt=\gutgenau pt \gut\else\gutpluseins\fi}& \scriptsize{\ifdim\gut pt=\gutgenau pt \gutminuseins\else\gut\fi ~ - \ifdim\befriedigend pt=\befriedigendgenau pt \befriedigend\else\befriedigendpluseins\fi} & \scriptsize{\ifdim\befriedigend pt=\befriedigendgenau pt \befriedigendminuseins\else\befriedigend\fi ~ - \ifdim\genuegend pt=\genuegendgenau pt \genuegend\else\genuegendpluseins\fi} & \scriptsize{\ifdim\genuegend pt=\genuegendgenau pt \genuegendminuseins\else\genuegend\fi ~ - \ifdim\nichtgenuegend pt=\nichtgenuegendgenau pt \nichtgenuegend\else\nichtgenuegendpluseins\fi} & \scriptsize{unter \ifdim\nichtgenuegend pt=\nichtgenuegendgenau pt \nichtgenuegend\else\nichtgenuegendpluseins\fi} \\ \hline
+\end{tabular}
+\end{center}\STautoround{}\normalsize}
+
+\newcommand{\notenschluesselop}[4]{
+\vfill
+\STautoround{3}\renewcommand{\arraystretch}{0}\tiny
+\begin{spreadtab}[\STsavecell\gutgenau{b2} \STsavecell\befriedigendgenau{c2} \STsavecell\genuegendgenau{d2}
+\STsavecell\gut{b3}  \STsavecell\befriedigend{c3} \STsavecell\genuegend{d3} \STsavecell\nichtgenuegend{e3}  
+\STsavecell\gutpluseins{b4} \STsavecell\befriedigendpluseins{c4}  \STsavecell\genuegendpluseins{d4} \STsavecell\gutminuseins{b5} \STsavecell\befriedigendminuseins{c5} \STsavecell\genuegendminuseins{d5}]{{tabular}{ccccc}}
+ \SThidecol \thepunkte &\SThidecol 1 &\SThidecol 2 &\SThidecol 3 &\SThidecol 4 \\ 
+ & a1*#1 &a1*#2 & a1*#3 & a1*#4 \\
+ &trunc(a1*#1,0) & trunc(a1*#2,0) &trunc(a1*#3,0) &trunc(a1*#4,0) \\
+ &b3+1 &c3+1 &d3+1 &\\
+ &b3-1 &c3-1 &d3-1 &\\
+\end{spreadtab}
+\footnotesize\renewcommand{\arraystretch}{1}
+\begin{center}
+\begin{tabular}{|C{3cm}C{3cm}C{3cm}C{3cm}C{3cm}|} \hline
+Erreichte Punkte &Gesamt&\multicolumn{2}{c}{Note}& \\
+&\multirow{2}{*}{\thepunkte} &&& \\  
+&&&& \\ \hline \hline
+\scriptsize{Sehr gut} & \scriptsize{Gut} & \scriptsize{Befriedigend} & \scriptsize{Gen\"ugend} & \scriptsize{Nicht gen\"ugend} \\
+\scriptsize{\thepunkte ~ - \ifdim\gut pt=\gutgenau pt \gut\else\gutpluseins\fi}& \scriptsize{\ifdim\gut pt=\gutgenau pt \gutminuseins\else\gut\fi ~ - \ifdim\befriedigend pt=\befriedigendgenau pt \befriedigend\else\befriedigendpluseins\fi} & \scriptsize{\ifdim\befriedigend pt=\befriedigendgenau pt \befriedigendminuseins\else\befriedigend\fi ~ - \ifdim\genuegend pt=\genuegendgenau pt \genuegend\else\genuegendpluseins\fi} & \scriptsize{\ifdim\genuegend pt=\genuegendgenau pt \genuegendminuseins\else\genuegend\fi ~ - \nichtgenuegend} & \scriptsize{unter \nichtgenuegend} \\ \hline
+\end{tabular}
+\end{center}\STautoround{}\normalsize}
+
+
+
+%
+%%%%%%%%%%%%%%%%%% GAP DEFINITION
+%
+%
+%
+\newcounter{gap}
+\setcounter{gap}{1}
+\newcommand{\gap}{\,\rule{1cm}{0.4pt}{\large\textcircled{\normalsize{\thegap}}}\rule{1cm}{0.4pt} 
+\addtocounter{gap}{1}}
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%%%%%%%%%%%%%%%% DEFINITION DER VARIABLEN
+%
+%
+%
+%
+\makeatletter
+\pgfkeys{/jeroen/entities/.cd,
+title1/.initial=,
+  A/.initial=,
+  B/.initial=,
+	C/.initial=,
+	D/.initial=,
+	E/.initial=,
+	F/.initial=,
+	title2/.initial=,
+	L1/.initial=,
+	L2/.initial=,
+	L3/.initial=,
+	L4/.initial=,
+	L5/.initial=,
+	L6/.initial=,
+	L7/.initial=,
+	L8/.initial=,
+	L9/.initial=,
+	R1/.initial=,
+	R2/.initial=,
+	R3/.initial=,
+	R4/.initial=,
+	text/.initial=,
+	A1/.initial=0,
+	A2/.initial=0,
+	A3/.initial=0,
+	A4/.initial=0,
+	A5/.initial=0,
+	A6/.initial=0,
+	A7/.initial=0,
+	A8/.initial=0,
+	A9/.initial=0,
+	T1/.initial=24,
+	AP/.initial=4,
+	T2/.initial=20,
+	    }
+\def\jeroen@set@keys#1{%%
+  \pgfkeys{/jeroen/entities/.cd,#1}}
+\def\jeroen@get#1{%%
+  \pgfkeysvalueof{/jeroen/entities/#1}}
+
+%
+%
+%
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%% BEURTEILUNGSRASTER %%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%
+\newcounter{teileins}
+\newcounter{ausgleichspkte}		
+\newcounter{teilzwei}	
+\newcommand{\beurteilungsraster}[5]{
+\bgroup
+  \jeroen@set@keys{#5}
+\setcounter{teileins}{\jeroen@get{T1}}
+\setcounter{ausgleichspkte}{\jeroen@get{AP}}
+\setcounter{teilzwei}{\jeroen@get{T2}}
+\STautoround{0}
+\begin{spreadtab}[\STsavecell{\positiv}{b1} \STsavecell{\gesamtpunkte}{c1}]{{tabular}{ccc}}
+ \SThiderow &\theteileins/3*2 & \theteileins+\theausgleichspkte+\theteilzwei \\
+\end{spreadtab}
+
+
+\small
+Die Schularbeit besteht aus Teil 1 (Grundkompetenzen) und Teil 2 (vernetzte und erweiterte Grundkompetenzen). In Teil 1 und Teil 2 sind jeweils \jeroen@get{T1} Punkte zu erreichen. \jeroen@get{AP} Punkte aus Teil 2 k\"onnen zum Ausgleich fehlender Grundkompetenzpunkte aus Teil 1 herangezogen werden. Diese sind in der Angabe mit \fbox{A} gekennzeichnet. 
+
+\tiny
+\STautoround{0}
+\begin{spreadtab}[\STsavecell\brzweigrenze{f1}  \STsavecell\gut{b2} \STsavecell\befriedigend{c2}  \STsavecell{\genuegend}{d2} \STsavecell{\nichtgenuegend}{e2} \STsavecell\brzweibefriedigend{f2} \STsavecell{\gutminuseins}{b3}  \STsavecell{\befriedigendminuseins}{c3} \STsavecell{\genuegendminuseins}{d3} \STsavecell\brzweigrenzeminuseins{e3} \STsavecell\brzweibefriedigendminuseins{f3}]{{tabular}{cccccc}}
+\SThidecol \gesamtpunkte & \SThidecol 1 &\SThidecol 2 & \SThidecol 3 &\SThidecol 4 & \SThidecol \gesamtpunkte*0.75\\ % \SThidecol 
+&a1*#1 &a1*#2 &a1*#3 &a1*#4 & \gesamtpunkte*0.6\\
+& b2-1 &c2-1 &d2-1 & f1-1 & f2-1\\ %\SThiderow
+\end{spreadtab}
+\small
+
+\textbf{Zwei Beurteilungswege}
+
+\begin{enumerate}[1)]
+	\item Wenn mindestens \positiv~Punkte aus Teil 1, allenfalls unter Einbeziehung der Ausgleichspunkte aus \mbox{Teil 2} erreicht werden, gilt folgender Beurteilungsschlüssel:\vspace{0.3cm}
+
+\footnotesize
+\begin{tabular}{C{2.8cm}C{2.8cm}C{2.8cm}C{2.8cm}C{2.8cm}}
+\scriptsize{Sehr gut} & \scriptsize{Gut} & \scriptsize{Befriedigend} & \scriptsize{Gen\"ugend} & \scriptsize{Nicht gen\"ugend} \\
+\scriptsize{\gesamtpunkte ~-~ \gut} & \scriptsize{\gutminuseins,5 ~-~ \befriedigend} & \scriptsize{\befriedigendminuseins,5 ~-~ \genuegend} & \scriptsize{\genuegendminuseins,5 ~-~ \nichtgenuegend} & \scriptsize{unter \nichtgenuegend} \\
+\end{tabular}
+\STautoround{}\vspace{0.3cm}
+
+\small
+\item Wenn weniger als \positiv\ Punkte aus Teil 1, allenfalls unter Einbeziehung der Ausgleichspunkte aus \mbox{Teil 2} erreicht werden, dann kann auf diesem Weg ein \glqq Gen\"ugend\grqq\ oder \glqq Befriedigend\grqq\ erreicht werden: \vspace{0.3cm}
+
+\footnotesize
+\begin{tabular}{C{2.8cm}C{2.8cm}}
+\scriptsize{Befriedigend} & \scriptsize{Gen\"ugend} \\
+\scriptsize{\brzweigrenzeminuseins,5 ~-~ \brzweibefriedigend} & \scriptsize{\brzweibefriedigendminuseins,5 ~-~\genuegend}\\
+\end{tabular}
+\STautoround{} \vspace{0.3cm}
+
+\small
+Ab \brzweigrenze\ erreichten Punkten gilt der unter 1) angeführte Beurteilungsschlüssel.
+
+Die Arbeit wird mit \glqq Nicht genügend\grqq\ beurteilt, wenn im Teil 1 unter Berücksichtigung der \jeroen@get{AP} Ausgleichspunkte aus Teil 2 weniger als \nichtgenuegend\ Punkte und insgesamt weniger als \genuegend\ Punkte erreicht wurden. 
+
+\end{enumerate} \leer
+\vfil
+
+\renewcommand{\arraystretch}{1.5}
+\begin{center}
+\begin{tabular}{p{5cm}p{4cm}l}
+&Punkte&davon erreicht\\ \hline
+Teil 1&\jeroen@get{T1}&\\ \hline
+Teil 2: Ausgleichspunkte  & \jeroen@get{AP} &\\ \hline
+&Zwischensumme &\\ \hline
+Teil 2: sonstige Punkte  &\jeroen@get{T2} &\\ \hline
+& $\Sigma=\gesamtpunkte$ & \\ \hline
+Beurteilungsweg & \fbox{1} oder \fbox{2} \\ \hline
+\end{tabular}
+\vspace{1cm}
+
+Beurteilung: \rule{8cm}{0.4pt}
+\end{center}
+\renewcommand{\arraystretch}{1}
+\egroup
+}
+
+
+%%%%%%%%%%%%%%%%
+
+\makeatletter
+\def\prunelist#1{%
+\expandafter\edef\csname pgfmath@randomlist@#1\endcsname
+        {\the\numexpr\csname pgfmath@randomlist@#1\endcsname-1\relax}
+\count@\pgfmath@randomtemp 
+\loop
+\expandafter\let
+\csname pgfmath@randomlist@#1@\the\count@\expandafter\endcsname
+\csname pgfmath@randomlist@#1@\the\numexpr\count@+1\relax\endcsname
+\ifnum\count@<\csname pgfmath@randomlist@#1\endcsname\relax
+\advance\count@\@ne
+\repeat}
+\def\declarenumlist#1#2#3{%
+\expandafter\edef\csname pgfmath@randomlist@#1\endcsname{#3}%
+\count@\@ne
+\loop
+\expandafter\edef
+\csname pgfmath@randomlist@#1@\the\count@\endcsname
+  {\the\count@}
+\ifnum\count@<#3\relax
+\advance\count@\@ne
+\repeat}
+
+\newcounter{antworta}\newcounter{antwortb}\newcounter{antwortc}\newcounter{antwortd}\newcounter{antworte}\newcounter{antwortf}\newcounter{antwortg}\newcounter{antworth}\newcounter{antworti}
+\pgfmathsetseed{\theZufall}
+
+\newcommand{\Gruppe}{\theZufall}
+
+%
+%%%%%%%      ZUORDNUNGSAUFGABE
+%
+%
+% PROBLEM min vspac 3.11cm sonst leicht nach oben gerutscht. Min Spaltenbreite ?
+\newcommand\zuordnen[2][0]{%%
+\pgfmathsetseed{\theZufall}
+\declarenumlist{group}{1}{4}
+\pgfmathrandomitem\z{group}\setcounter{antworta}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortb}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortc}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortd}{\z}\prunelist{group}
+\begin{spreadtab}[\STsavecell{\links}{a2}\STsavecell{\rechts}{b2}]{{tabular}{cc}}
+\SThidecol 0.45& \SThidecol \\ 
+a1+(#1) & (0.9-a2) \\
+\end{spreadtab}
+\bgroup
+  \jeroen@set@keys{#2}%%
+	\begin{minipage}{0.88\linewidth}
+	\vspace{0.2cm}
+\begin{minipage}[t][][t]{\links\textwidth}  \vspace{0pt} 
+\flushright 
+	\tabulinesep=3mm
+	\begin{tabu}{|>{\vphantom{\"Ag}}M|C{1cm}|p{0.001pt}}\hhline{--}
+	\jeroen@get{R\theantworta}&\cellcolor[gray]{0.9}\antwort{\jeroen@get{A\theantworta}}&\\ \hhline{--}
+	\jeroen@get{R\theantwortb}&\cellcolor[gray]{0.9}\antwort{\jeroen@get{A\theantwortb}}&\\ \hhline{--}
+	\jeroen@get{R\theantwortc}&\cellcolor[gray]{0.9}\antwort{\jeroen@get{A\theantwortc}}&\\ \hhline{--}
+	\jeroen@get{R\theantwortd}&\cellcolor[gray]{0.9}\antwort{\jeroen@get{A\theantwortd}}&\\ \hhline{--}
+	\end{tabu}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[t][][t]{\rechts\textwidth} \vspace{0pt}
+	\flushleft 
+	\tabulinesep=3mm
+	\begin{tabu}{|C{1cm}|>{\vphantom{\"Ag}} M|p{0.01pt}} \hhline{--} 
+	\cellcolor[gray]{0.92}A& \jeroen@get{A}&\\ \hhline{--}
+	\cellcolor[gray]{0.92}B& \jeroen@get{B}&\\ \hhline{--}
+	\cellcolor[gray]{0.92}C& \jeroen@get{C}&\\ \hhline{--}
+	\cellcolor[gray]{0.92}D& \jeroen@get{D}&\\ \hhline{--}
+	\cellcolor[gray]{0.92}E& \jeroen@get{E}&\\ \hhline{--}
+	\cellcolor[gray]{0.92}F& \jeroen@get{F}&\\ \hhline{--}
+	\multicolumn{1}{c}{~}&\multicolumn{1}{c}{\parbox{10pt}{~}}&\\
+	\end{tabu}
+	\end{minipage}
+	\end{minipage}
+	\egroup
+	\leer
+	}
+%
+%
+%
+%
+%%%%%%%%%%% LUECKENTEXT
+%
+%
+%
+%
+%
+\newcommand\lueckentext[2][0]{Erg\"anze die Textl\"ucken im folgenden Satz durch Ankreuzen der jeweils
+richtigen Satzteile so, dass eine korrekte Aussage
+entsteht! \vspace{0.3cm}
+
+\bgroup \jeroen@set@keys{#2}
+\jeroen@get{text}
+\begin{spreadtab}[\STsavecell{\links}{b2}\STsavecell{\rechts}{c2}]{{tabular}{ccc}}
+ \SThidecol&\SThidecol 0.45& \SThidecol \\ 
+&b1+(#1) & (0.9-b2) \\
+\end{spreadtab}\vspace{0.5cm}
+
+\begin{minipage}{1\linewidth}
+\begin{minipage}[t][][b]{\links\linewidth}  \vspace{0pt}
+\flushright
+\tabulinesep=3mm
+\pgfmathsetseed{\theZufall}
+\declarenumlist{group}{1}{3}
+\pgfmathrandomitem\z{group}\setcounter{antworta}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortb}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortc}{\z}\prunelist{group}
+\begin{tabu}{|M|c|}
+\hline
+\multicolumn{2}{|c|}{\large{\textcircled{\normalsize{1}}}} \\\hline
+\jeroen@get{L\theantworta} \vphantom{\"Ag}& \ifthenelse{\theAntworten=1 \AND \jeroen@get{A1}=\theantworta}{\color[rgb]{1,0,0}\XBox \color[rgb]{0,0,0}}{\Square} \\ \hline
+\jeroen@get{L\theantwortb} \vphantom{\"Ag}& \ifthenelse{\theAntworten=1 \AND \jeroen@get{A1}=\theantwortb}{\color[rgb]{1,0,0}\XBox \color[rgb]{0,0,0}}{\Square}  \\\hline
+\jeroen@get{L\theantwortc} \vphantom{\"Ag}& \ifthenelse{\theAntworten=1 \AND \jeroen@get{A1}=\theantwortc}{\color[rgb]{1,0,0}\XBox \color[rgb]{0,0,0}}{\Square}  \\\hline
+\end{tabu}
+\end{minipage}\hfill\begin{minipage}[t][][b]{\rechts\linewidth}\vspace{0pt}
+\flushleft\
+\tabulinesep=3mm
+\declarenumlist{group}{1}{3}
+\pgfmathrandomitem\z{group}\setcounter{antworta}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortb}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortc}{\z}\prunelist{group}
+\begin{tabu}{|M|c|}
+\hline
+\multicolumn{2}{|c|}{\large{\textcircled{\normalsize{2}}}}\\\hline
+\jeroen@get{R\theantworta}\vphantom{\"Ag}& \ifthenelse{\theAntworten=1 \AND \jeroen@get{A2}=\theantworta}{\color[rgb]{1,0,0}\XBox \color[rgb]{0,0,0}}{\Square} \\\hline
+\jeroen@get{R\theantwortb}\vphantom{\"Ag}&\ifthenelse{\theAntworten=1 \AND \jeroen@get{A2}=\theantwortb}{\color[rgb]{1,0,0}\XBox \color[rgb]{0,0,0}}{\Square}\\ \hline
+\jeroen@get{R\theantwortc}\vphantom{\"Ag}&\ifthenelse{\theAntworten=1 \AND \jeroen@get{A2}=\theantwortc}{\color[rgb]{1,0,0}\XBox \color[rgb]{0,0,0}}{\Square}\\ \hline
+\end{tabu}
+\end{minipage}
+\end{minipage}\leer
+
+\setcounter{A1}{\jeroen@get{A1}}
+\setcounter{A2}{\jeroen@get{A2}}
+\setcounter{gap}{1}
+\egroup}
+%
+%
+%
+%
+%
+%%%%%%%%%%%%%%%%LUECKENTEXT (English)
+%
+%
+%
+\newcommand\englueckentext[2][0]{\vspace{0.3cm}
+
+Complete the following sentence by putting a cross next to one of the given possibilities for each gap so that the sentence becomes a correct statement. \vspace{0.3cm} % Fill the blanks in the following to make an accurate mathematical statement! 
+
+\bgroup \jeroen@set@keys{#2}
+\jeroen@get{text}
+\begin{spreadtab}[\STsavecell{\links}{b2}\STsavecell{\rechts}{c2}]{{tabular}{ccc}}
+ \SThidecol&\SThidecol 0.45& \SThidecol \\ 
+ \SThiderow &b1+(#1) & (0.9-b2) \\
+\end{spreadtab}\vspace{0.5cm}
+
+\begin{minipage}{1\linewidth}
+\begin{minipage}[t][][b]{\links\linewidth}  \vspace{0pt}
+\flushright
+\tabulinesep=3mm
+\pgfmathsetseed{\theZufall}
+\declarenumlist{group}{1}{3}
+\pgfmathrandomitem\z{group}\setcounter{antworta}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortb}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortc}{\z}\prunelist{group}
+\begin{tabu}{|M|c|}
+\hline
+\multicolumn{2}{|c|}{\large{\textcircled{\normalsize{1}}}} \\\hline
+\jeroen@get{L\theantworta} \vphantom{\"Ag}& \ifthenelse{\theAntworten=1 \AND \jeroen@get{A1}=\theantworta}{\color[rgb]{1,0,0}\XBox \color[rgb]{0,0,0}}{\Square} \\ \hline
+\jeroen@get{L\theantwortb} \vphantom{\"Ag}& \ifthenelse{\theAntworten=1 \AND \jeroen@get{A1}=\theantwortb}{\color[rgb]{1,0,0}\XBox \color[rgb]{0,0,0}}{\Square}  \\\hline
+\jeroen@get{L\theantwortc} \vphantom{\"Ag}& \ifthenelse{\theAntworten=1 \AND \jeroen@get{A1}=\theantwortc}{\color[rgb]{1,0,0}\XBox \color[rgb]{0,0,0}}{\Square}  \\\hline
+\end{tabu}
+\end{minipage}\hfill\begin{minipage}[t][][b]{\rechts\linewidth}\vspace{0pt}
+\flushleft\
+\tabulinesep=3mm
+\declarenumlist{group}{1}{3}
+\pgfmathrandomitem\z{group}\setcounter{antworta}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortb}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortc}{\z}\prunelist{group}
+\begin{tabu}{|M|c|}
+\hline
+\multicolumn{2}{|c|}{\large{\textcircled{\normalsize{2}}}}\\\hline
+\jeroen@get{R\theantworta}\vphantom{\"Ag}& \ifthenelse{\theAntworten=1 \AND \jeroen@get{A2}=\theantworta}{\color[rgb]{1,0,0}\XBox \color[rgb]{0,0,0}}{\Square} \\\hline
+\jeroen@get{R\theantwortb}\vphantom{\"Ag}&\ifthenelse{\theAntworten=1 \AND \jeroen@get{A2}=\theantwortb}{\color[rgb]{1,0,0}\XBox \color[rgb]{0,0,0}}{\Square}\\ \hline
+\jeroen@get{R\theantwortc}\vphantom{\"Ag}&\ifthenelse{\theAntworten=1 \AND \jeroen@get{A2}=\theantwortc}{\color[rgb]{1,0,0}\XBox \color[rgb]{0,0,0}}{\Square}\\ \hline
+\end{tabu}
+\end{minipage}
+\end{minipage}\leer
+
+\setcounter{A1}{\jeroen@get{A1}}
+\setcounter{A2}{\jeroen@get{A2}}
+\setcounter{gap}{1}
+\egroup}
+
+%
+%
+%
+%
+%%%%%%%%%%%%  MULTIPLECHOICE (beliebige Anzahl von Antwortmoeglichkeiten (max.9))
+%%%%%%%%%%%%%%%%%%%%%%
+\newcounter{ct}
+
+\newcommand\multiplechoice[2][5]{ %Anzahl der Antwortmoeglichkeiten, Standard: 5
+  \bgroup
+  \jeroen@set@keys{#2}%%
+	
+\centering 
+\tabulinesep=3mm
+\pgfmathsetseed{\theZufall}
+\declarenumlist{group}{1}{#1}
+\pgfmathrandomitem\z{group}\setcounter{antworta}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortb}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortc}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortd}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antworte}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortf}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortg}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antworth}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antworti}{\z}\prunelist{group}
+
+\begin{tabu}{|T|c|}
+\hline
+\forloop{ct}{1}{\value{ct}<\numexpr#1}
+{\ifthenelse{\value{ct}=\theantworta}{\jeroen@get{L1}}{\ifthenelse{\value{ct}=\theantwortb}{\jeroen@get{L2}}{\ifthenelse{\value{ct}=\theantwortc}{\jeroen@get{L3}}{\ifthenelse{\value{ct}=\theantwortd}{\jeroen@get{L4}}{\ifthenelse{\value{ct}=\theantworte}{\jeroen@get{L5}}{\ifthenelse{\value{ct}=\theantwortf}{\jeroen@get{L6}}{\ifthenelse{\value{ct}=\theantwortg}{\jeroen@get{L7}}{\ifthenelse{\value{ct}=\theantworth}{\jeroen@get{L8}}{{\jeroen@get{L9}}}}}}}}}}&%
+%
+%
+\ifnum\theAntworten=1
+\ifthenelse{\jeroen@get{A1}=1 \OR \jeroen@get{A2}=1 \OR \jeroen@get{A3}=1\OR \jeroen@get{A4}=1 \OR \jeroen@get{A5}=1 \OR \jeroen@get{A6}=1 \OR \jeroen@get{A7}=1 \OR \jeroen@get{A8}=1 \OR \jeroen@get{A9}=1 \AND \value{ct}=\theantworta}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=2 \OR \jeroen@get{A2}=2 \OR \jeroen@get{A3}=2\OR \jeroen@get{A4}=2\OR \jeroen@get{A5}=2\OR \jeroen@get{A6}=2 \OR \jeroen@get{A7}=2 \OR \jeroen@get{A8}=2 \OR \jeroen@get{A9}=2 \AND \value{ct}=\theantwortb}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=3 \OR \jeroen@get{A2}=3 \OR \jeroen@get{A3}=3\OR \jeroen@get{A4}=3\OR \jeroen@get{A5}=3 \OR \jeroen@get{A6}=3 \OR \jeroen@get{A7}=3 \OR \jeroen@get{A8}=3 \OR \jeroen@get{A9}=3 \AND \value{ct}=\theantwortc}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=4 \OR \jeroen@get{A2}=4 \OR \jeroen@get{A3}=4\OR \jeroen@get{A4}=4\OR \jeroen@get{A5}=4\OR \jeroen@get{A6}=4 \OR \jeroen@get{A7}=4 \OR \jeroen@get{A8}=4 \OR \jeroen@get{A9}=4 \AND \value{ct}=\theantwortd}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=5 \OR \jeroen@get{A2}=5 \OR \jeroen@get{A3}=5\OR \jeroen@get{A4}=5\OR \jeroen@get{A5}=5\OR \jeroen@get{A6}=5 \OR \jeroen@get{A7}=5 \OR \jeroen@get{A8}=5 \OR \jeroen@get{A9}=5 \AND \value{ct}=\theantworte}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=6 \OR \jeroen@get{A2}=6 \OR \jeroen@get{A3}=6\OR \jeroen@get{A4}=6\OR \jeroen@get{A5}=6\OR \jeroen@get{A6}=6 \OR \jeroen@get{A7}=6 \OR \jeroen@get{A8}=6 \OR \jeroen@get{A9}=6 \AND \value{ct}=\theantwortf}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=7 \OR \jeroen@get{A2}=7 \OR \jeroen@get{A3}=7\OR \jeroen@get{A4}=7\OR \jeroen@get{A5}=7\OR \jeroen@get{A6}=7 \OR \jeroen@get{A7}=7 \OR \jeroen@get{A8}=7 \OR \jeroen@get{A9}=7 \AND \value{ct}=\theantwortg}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=8 \OR \jeroen@get{A2}=8 \OR \jeroen@get{A3}=8\OR \jeroen@get{A4}=8\OR \jeroen@get{A5}=8\OR \jeroen@get{A6}=8 \OR \jeroen@get{A7}=8 \OR \jeroen@get{A8}=8 \OR \jeroen@get{A9}=8 \AND \value{ct}=\theantworth}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=9 \OR \jeroen@get{A2}=9 \OR \jeroen@get{A3}=9\OR \jeroen@get{A4}=9\OR \jeroen@get{A5}=9\OR \jeroen@get{A6}=9 \OR \jeroen@get{A7}=9 \OR \jeroen@get{A8}=9 \OR \jeroen@get{A9}=9 \AND \value{ct}=\theantworti}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}
+\else
+\Square\fi\\ \hline}%
+%
+\ifthenelse{\theantworta=#1}{\jeroen@get{L1}}{\ifthenelse{\theantwortb=#1}{\jeroen@get{L2}}{\ifthenelse{\theantwortc=#1}{\jeroen@get{L3}}{\ifthenelse{\theantwortd=#1}{\jeroen@get{L4}}{\ifthenelse{\theantworte=#1}{\jeroen@get{L5}}{\ifthenelse{\theantwortf=#1}{\jeroen@get{L6}}{\ifthenelse{\theantwortg=#1}{\jeroen@get{L7}}{\ifthenelse{\theantworth=#1}{\jeroen@get{L8}}{{\jeroen@get{L9}}}}}}}}}} &%
+%
+%
+\ifnum\theAntworten=1
+\ifthenelse{\jeroen@get{A1}=1 \OR \jeroen@get{A2}=1 \OR \jeroen@get{A3}=1\OR \jeroen@get{A4}=1\OR \jeroen@get{A5}=1\OR \jeroen@get{A6}=1 \OR \jeroen@get{A7}=1 \OR \jeroen@get{A8}=1 \OR \jeroen@get{A9}=1 \AND \theantworta=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=2 \OR \jeroen@get{A2}=2 \OR \jeroen@get{A3}=2\OR \jeroen@get{A4}=2\OR \jeroen@get{A5}=2\OR \jeroen@get{A6}=2 \OR \jeroen@get{A7}=2 \OR \jeroen@get{A8}=2 \OR \jeroen@get{A9}=2 \AND \theantwortb=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=3 \OR \jeroen@get{A2}=3 \OR \jeroen@get{A3}=3\OR \jeroen@get{A4}=3\OR \jeroen@get{A5}=3\OR \jeroen@get{A6}=3 \OR \jeroen@get{A7}=3 \OR \jeroen@get{A8}=3 \OR \jeroen@get{A9}=3 \AND \theantwortc=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=4 \OR \jeroen@get{A2}=4 \OR \jeroen@get{A3}=4\OR \jeroen@get{A4}=4\OR \jeroen@get{A5}=4\OR \jeroen@get{A6}=4 \OR \jeroen@get{A7}=4 \OR \jeroen@get{A8}=4 \OR \jeroen@get{A9}=4 \AND \theantwortd=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=5 \OR \jeroen@get{A2}=5 \OR \jeroen@get{A3}=5\OR \jeroen@get{A4}=5\OR \jeroen@get{A5}=5\OR \jeroen@get{A6}=5 \OR \jeroen@get{A7}=5 \OR \jeroen@get{A8}=5 \OR \jeroen@get{A9}=5 \AND \theantworte=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=6 \OR \jeroen@get{A2}=6 \OR \jeroen@get{A3}=6\OR \jeroen@get{A4}=6\OR \jeroen@get{A5}=6\OR \jeroen@get{A6}=6 \OR \jeroen@get{A7}=6 \OR \jeroen@get{A8}=6 \OR \jeroen@get{A9}=6 \AND \theantwortf=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=7 \OR \jeroen@get{A2}=7 \OR \jeroen@get{A3}=7\OR \jeroen@get{A4}=7\OR \jeroen@get{A5}=7\OR \jeroen@get{A6}=7 \OR \jeroen@get{A7}=7 \OR \jeroen@get{A8}=7 \OR \jeroen@get{A9}=7 \AND \theantwortg=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=8 \OR \jeroen@get{A2}=8 \OR \jeroen@get{A3}=8\OR \jeroen@get{A4}=8\OR \jeroen@get{A5}=8\OR \jeroen@get{A6}=8 \OR \jeroen@get{A7}=8 \OR \jeroen@get{A8}=8 \OR \jeroen@get{A9}=8 \AND \theantworth=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=9 \OR \jeroen@get{A2}=9 \OR \jeroen@get{A3}=9\OR \jeroen@get{A4}=9\OR \jeroen@get{A5}=9\OR \jeroen@get{A6}=9 \OR \jeroen@get{A7}=9 \OR \jeroen@get{A8}=9 \OR \jeroen@get{A9}=9 \AND \theantworti=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}
+\else
+\Square\fi\\ \hline
+\end{tabu} \leer
+
+  \egroup}
+%
+%
+%
+%
+%
+%%%%%%%%%%%% Lange Multiplechoice Beispiele 
+%%%%%%%%%%%%%%	(vor allem für Grafiken!)
+%
+%
+%
+\newcommand\langmultiplechoice[2][5]{ %Anzahl der Antwortmoeglichkeiten, Standard: 5
+  \bgroup
+  \jeroen@set@keys{#2}%%
+	\pgfmathsetseed{\theZufall}
+\declarenumlist{group}{1}{#1}
+\pgfmathrandomitem\z{group}\setcounter{antworta}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortb}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortc}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortd}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antworte}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortf}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortg}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antworth}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antworti}{\z}\prunelist{group}
+
+\centering 
+\tabulinesep=3mm
+\meinlr{
+\begin{center}
+\begin{tabu}{|T|c|}\hline
+\forloop{ct}{1}{\value{ct}<3}
+{\ifthenelse{\value{ct}=\theantworta}{\jeroen@get{L1}}{\ifthenelse{\value{ct}=\theantwortb}{\jeroen@get{L2}}{\ifthenelse{\value{ct}=\theantwortc}{\jeroen@get{L3}}{\ifthenelse{\value{ct}=\theantwortd}{\jeroen@get{L4}}{\ifthenelse{\value{ct}=\theantworte}{\jeroen@get{L5}}{\ifthenelse{\value{ct}=\theantwortf}{\jeroen@get{L6}}{\ifthenelse{\value{ct}=\theantwortg}{\jeroen@get{L7}}{\ifthenelse{\value{ct}=\theantworth}{\jeroen@get{L8}}{{\jeroen@get{L9}}}}}}}}}}& 
+
+\ifnum\theAntworten=1
+\ifthenelse{\jeroen@get{A1}=1 \OR \jeroen@get{A2}=1 \OR \jeroen@get{A3}=1\OR \jeroen@get{A4}=1 \OR \jeroen@get{A5}=1 \OR \jeroen@get{A6}=1 \OR \jeroen@get{A7}=1 \OR \jeroen@get{A8}=1 \OR \jeroen@get{A9}=1 \AND \value{ct}=\theantworta}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=2 \OR \jeroen@get{A2}=2 \OR \jeroen@get{A3}=2\OR \jeroen@get{A4}=2\OR \jeroen@get{A5}=2\OR \jeroen@get{A6}=2 \OR \jeroen@get{A7}=2 \OR \jeroen@get{A8}=2 \OR \jeroen@get{A9}=2 \AND \value{ct}=\theantwortb}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=3 \OR \jeroen@get{A2}=3 \OR \jeroen@get{A3}=3\OR \jeroen@get{A4}=3\OR \jeroen@get{A5}=3 \OR \jeroen@get{A6}=3 \OR \jeroen@get{A7}=3 \OR \jeroen@get{A8}=3 \OR \jeroen@get{A9}=3 \AND \value{ct}=\theantwortc}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=4 \OR \jeroen@get{A2}=4 \OR \jeroen@get{A3}=4\OR \jeroen@get{A4}=4\OR \jeroen@get{A5}=4\OR \jeroen@get{A6}=4 \OR \jeroen@get{A7}=4 \OR \jeroen@get{A8}=4 \OR \jeroen@get{A9}=4 \AND \value{ct}=\theantwortd}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=5 \OR \jeroen@get{A2}=5 \OR \jeroen@get{A3}=5\OR \jeroen@get{A4}=5\OR \jeroen@get{A5}=5\OR \jeroen@get{A6}=5 \OR \jeroen@get{A7}=5 \OR \jeroen@get{A8}=5 \OR \jeroen@get{A9}=5 \AND \value{ct}=\theantworte}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=6 \OR \jeroen@get{A2}=6 \OR \jeroen@get{A3}=6\OR \jeroen@get{A4}=6\OR \jeroen@get{A5}=6\OR \jeroen@get{A6}=6 \OR \jeroen@get{A7}=6 \OR \jeroen@get{A8}=6 \OR \jeroen@get{A9}=6 \AND \value{ct}=\theantwortf}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=7 \OR \jeroen@get{A2}=7 \OR \jeroen@get{A3}=7\OR \jeroen@get{A4}=7\OR \jeroen@get{A5}=7\OR \jeroen@get{A6}=7 \OR \jeroen@get{A7}=7 \OR \jeroen@get{A8}=7 \OR \jeroen@get{A9}=7 \AND \value{ct}=\theantwortg}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=8 \OR \jeroen@get{A2}=8 \OR \jeroen@get{A3}=8\OR \jeroen@get{A4}=8\OR \jeroen@get{A5}=8\OR \jeroen@get{A6}=8 \OR \jeroen@get{A7}=8 \OR \jeroen@get{A8}=8 \OR \jeroen@get{A9}=8 \AND \value{ct}=\theantworth}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=9 \OR \jeroen@get{A2}=9 \OR \jeroen@get{A3}=9\OR \jeroen@get{A4}=9\OR \jeroen@get{A5}=9\OR \jeroen@get{A6}=9 \OR \jeroen@get{A7}=9 \OR \jeroen@get{A8}=9 \OR \jeroen@get{A9}=9 \AND \value{ct}=\theantworti}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}
+\else
+\Square\fi\\ \hline}
+
+\ifthenelse{\theantworta=3}{\jeroen@get{L1}}{\ifthenelse{\theantwortb=3}{\jeroen@get{L2}}{\ifthenelse{\theantwortc=3}{\jeroen@get{L3}}{\ifthenelse{\theantwortd=3}{\jeroen@get{L4}}{\ifthenelse{\theantworte=3}{\jeroen@get{L5}}{\ifthenelse{\theantwortf=3}{\jeroen@get{L6}}{\ifthenelse{\theantwortg=3}{\jeroen@get{L7}}{\ifthenelse{\theantworth=3}{\jeroen@get{L8}}{{\jeroen@get{L9}}}}}}}}}} &%
+%
+%
+\ifnum\theAntworten=1
+\ifthenelse{\jeroen@get{A1}=1 \OR \jeroen@get{A2}=1 \OR \jeroen@get{A3}=1\OR \jeroen@get{A4}=1\OR \jeroen@get{A5}=1\OR \jeroen@get{A6}=1 \OR \jeroen@get{A7}=1 \OR \jeroen@get{A8}=1 \OR \jeroen@get{A9}=1 \AND \theantworta=3}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=2 \OR \jeroen@get{A2}=2 \OR \jeroen@get{A3}=2\OR \jeroen@get{A4}=2\OR \jeroen@get{A5}=2\OR \jeroen@get{A6}=2 \OR \jeroen@get{A7}=2 \OR \jeroen@get{A8}=2 \OR \jeroen@get{A9}=2 \AND \theantwortb=3}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=3 \OR \jeroen@get{A2}=3 \OR \jeroen@get{A3}=3\OR \jeroen@get{A4}=3\OR \jeroen@get{A5}=3\OR \jeroen@get{A6}=3 \OR \jeroen@get{A7}=3 \OR \jeroen@get{A8}=3 \OR \jeroen@get{A9}=3 \AND \theantwortc=3}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=4 \OR \jeroen@get{A2}=4 \OR \jeroen@get{A3}=4\OR \jeroen@get{A4}=4\OR \jeroen@get{A5}=4\OR \jeroen@get{A6}=4 \OR \jeroen@get{A7}=4 \OR \jeroen@get{A8}=4 \OR \jeroen@get{A9}=4 \AND \theantwortd=3}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=5 \OR \jeroen@get{A2}=5 \OR \jeroen@get{A3}=5\OR \jeroen@get{A4}=5\OR \jeroen@get{A5}=5\OR \jeroen@get{A6}=5 \OR \jeroen@get{A7}=5 \OR \jeroen@get{A8}=5 \OR \jeroen@get{A9}=5 \AND \theantworte=3}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=6 \OR \jeroen@get{A2}=6 \OR \jeroen@get{A3}=6\OR \jeroen@get{A4}=6\OR \jeroen@get{A5}=6\OR \jeroen@get{A6}=6 \OR \jeroen@get{A7}=6 \OR \jeroen@get{A8}=6 \OR \jeroen@get{A9}=6 \AND \theantwortf=3}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=7 \OR \jeroen@get{A2}=7 \OR \jeroen@get{A3}=7\OR \jeroen@get{A4}=7\OR \jeroen@get{A5}=7\OR \jeroen@get{A6}=7 \OR \jeroen@get{A7}=7 \OR \jeroen@get{A8}=7 \OR \jeroen@get{A9}=7 \AND \theantwortg=3}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=8 \OR \jeroen@get{A2}=8 \OR \jeroen@get{A3}=8\OR \jeroen@get{A4}=8\OR \jeroen@get{A5}=8\OR \jeroen@get{A6}=8 \OR \jeroen@get{A7}=8 \OR \jeroen@get{A8}=8 \OR \jeroen@get{A9}=8 \AND \theantworth=3}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=9 \OR \jeroen@get{A2}=9 \OR \jeroen@get{A3}=9\OR \jeroen@get{A4}=9\OR \jeroen@get{A5}=9\OR \jeroen@get{A6}=9 \OR \jeroen@get{A7}=9 \OR \jeroen@get{A8}=9 \OR \jeroen@get{A9}=9 \AND \theantworti=3}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}
+\else
+\Square\fi\\ \hline
+\end{tabu}
+\end{center}}
+{\ifnum \numexpr#1>3
+\begin{tabu}{|T|c|}
+\hline
+\forloop{ct}{4}{\value{ct}<\numexpr#1}
+{\ifthenelse{\value{ct}=\theantworta}{\jeroen@get{L1}}{\ifthenelse{\value{ct}=\theantwortb}{\jeroen@get{L2}}{\ifthenelse{\value{ct}=\theantwortc}{\jeroen@get{L3}}{\ifthenelse{\value{ct}=\theantwortd}{\jeroen@get{L4}}{\ifthenelse{\value{ct}=\theantworte}{\jeroen@get{L5}}{\ifthenelse{\value{ct}=\theantwortf}{\jeroen@get{L6}}{\ifthenelse{\value{ct}=\theantwortg}{\jeroen@get{L7}}{\ifthenelse{\value{ct}=\theantworth}{\jeroen@get{L8}}{{\jeroen@get{L9}}}}}}}}}}&%
+%
+%
+\ifnum\theAntworten=1
+\ifthenelse{\jeroen@get{A1}=1 \OR \jeroen@get{A2}=1 \OR \jeroen@get{A3}=1\OR \jeroen@get{A4}=1 \OR \jeroen@get{A5}=1 \OR \jeroen@get{A6}=1 \OR \jeroen@get{A7}=1 \OR \jeroen@get{A8}=1 \OR \jeroen@get{A9}=1 \AND \value{ct}=\theantworta}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=2 \OR \jeroen@get{A2}=2 \OR \jeroen@get{A3}=2\OR \jeroen@get{A4}=2\OR \jeroen@get{A5}=2\OR \jeroen@get{A6}=2 \OR \jeroen@get{A7}=2 \OR \jeroen@get{A8}=2 \OR \jeroen@get{A9}=2 \AND \value{ct}=\theantwortb}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=3 \OR \jeroen@get{A2}=3 \OR \jeroen@get{A3}=3\OR \jeroen@get{A4}=3\OR \jeroen@get{A5}=3 \OR \jeroen@get{A6}=3 \OR \jeroen@get{A7}=3 \OR \jeroen@get{A8}=3 \OR \jeroen@get{A9}=3 \AND \value{ct}=\theantwortc}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=4 \OR \jeroen@get{A2}=4 \OR \jeroen@get{A3}=4\OR \jeroen@get{A4}=4\OR \jeroen@get{A5}=4\OR \jeroen@get{A6}=4 \OR \jeroen@get{A7}=4 \OR \jeroen@get{A8}=4 \OR \jeroen@get{A9}=4 \AND \value{ct}=\theantwortd}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=5 \OR \jeroen@get{A2}=5 \OR \jeroen@get{A3}=5\OR \jeroen@get{A4}=5\OR \jeroen@get{A5}=5\OR \jeroen@get{A6}=5 \OR \jeroen@get{A7}=5 \OR \jeroen@get{A8}=5 \OR \jeroen@get{A9}=5 \AND \value{ct}=\theantworte}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=6 \OR \jeroen@get{A2}=6 \OR \jeroen@get{A3}=6\OR \jeroen@get{A4}=6\OR \jeroen@get{A5}=6\OR \jeroen@get{A6}=6 \OR \jeroen@get{A7}=6 \OR \jeroen@get{A8}=6 \OR \jeroen@get{A9}=6 \AND \value{ct}=\theantwortf}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=7 \OR \jeroen@get{A2}=7 \OR \jeroen@get{A3}=7\OR \jeroen@get{A4}=7\OR \jeroen@get{A5}=7\OR \jeroen@get{A6}=7 \OR \jeroen@get{A7}=7 \OR \jeroen@get{A8}=7 \OR \jeroen@get{A9}=7 \AND \value{ct}=\theantwortg}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=8 \OR \jeroen@get{A2}=8 \OR \jeroen@get{A3}=8\OR \jeroen@get{A4}=8\OR \jeroen@get{A5}=8\OR \jeroen@get{A6}=8 \OR \jeroen@get{A7}=8 \OR \jeroen@get{A8}=8 \OR \jeroen@get{A9}=8 \AND \value{ct}=\theantworth}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=9 \OR \jeroen@get{A2}=9 \OR \jeroen@get{A3}=9\OR \jeroen@get{A4}=9\OR \jeroen@get{A5}=9\OR \jeroen@get{A6}=9 \OR \jeroen@get{A7}=9 \OR \jeroen@get{A8}=9 \OR \jeroen@get{A9}=9 \AND \value{ct}=\theantworti}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}
+\else
+\Square\fi\\ \hline}%
+%
+\ifthenelse{\theantworta=#1}{\jeroen@get{L1}}{\ifthenelse{\theantwortb=#1}{\jeroen@get{L2}}{\ifthenelse{\theantwortc=#1}{\jeroen@get{L3}}{\ifthenelse{\theantwortd=#1}{\jeroen@get{L4}}{\ifthenelse{\theantworte=#1}{\jeroen@get{L5}}{\ifthenelse{\theantwortf=#1}{\jeroen@get{L6}}{\ifthenelse{\theantwortg=#1}{\jeroen@get{L7}}{\ifthenelse{\theantworth=#1}{\jeroen@get{L8}}{{\jeroen@get{L9}}}}}}}}}} &%
+%
+%
+\ifnum\theAntworten=1
+\ifthenelse{\jeroen@get{A1}=1 \OR \jeroen@get{A2}=1 \OR \jeroen@get{A3}=1\OR \jeroen@get{A4}=1\OR \jeroen@get{A5}=1\OR \jeroen@get{A6}=1 \OR \jeroen@get{A7}=1 \OR \jeroen@get{A8}=1 \OR \jeroen@get{A9}=1 \AND \theantworta=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=2 \OR \jeroen@get{A2}=2 \OR \jeroen@get{A3}=2\OR \jeroen@get{A4}=2\OR \jeroen@get{A5}=2\OR \jeroen@get{A6}=2 \OR \jeroen@get{A7}=2 \OR \jeroen@get{A8}=2 \OR \jeroen@get{A9}=2 \AND \theantwortb=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=3 \OR \jeroen@get{A2}=3 \OR \jeroen@get{A3}=3\OR \jeroen@get{A4}=3\OR \jeroen@get{A5}=3\OR \jeroen@get{A6}=3 \OR \jeroen@get{A7}=3 \OR \jeroen@get{A8}=3 \OR \jeroen@get{A9}=3 \AND \theantwortc=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=4 \OR \jeroen@get{A2}=4 \OR \jeroen@get{A3}=4\OR \jeroen@get{A4}=4\OR \jeroen@get{A5}=4\OR \jeroen@get{A6}=4 \OR \jeroen@get{A7}=4 \OR \jeroen@get{A8}=4 \OR \jeroen@get{A9}=4 \AND \theantwortd=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=5 \OR \jeroen@get{A2}=5 \OR \jeroen@get{A3}=5\OR \jeroen@get{A4}=5\OR \jeroen@get{A5}=5\OR \jeroen@get{A6}=5 \OR \jeroen@get{A7}=5 \OR \jeroen@get{A8}=5 \OR \jeroen@get{A9}=5 \AND \theantworte=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=6 \OR \jeroen@get{A2}=6 \OR \jeroen@get{A3}=6\OR \jeroen@get{A4}=6\OR \jeroen@get{A5}=6\OR \jeroen@get{A6}=6 \OR \jeroen@get{A7}=6 \OR \jeroen@get{A8}=6 \OR \jeroen@get{A9}=6 \AND \theantwortf=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=7 \OR \jeroen@get{A2}=7 \OR \jeroen@get{A3}=7\OR \jeroen@get{A4}=7\OR \jeroen@get{A5}=7\OR \jeroen@get{A6}=7 \OR \jeroen@get{A7}=7 \OR \jeroen@get{A8}=7 \OR \jeroen@get{A9}=7 \AND \theantwortg=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=8 \OR \jeroen@get{A2}=8 \OR \jeroen@get{A3}=8\OR \jeroen@get{A4}=8\OR \jeroen@get{A5}=8\OR \jeroen@get{A6}=8 \OR \jeroen@get{A7}=8 \OR \jeroen@get{A8}=8 \OR \jeroen@get{A9}=8 \AND \theantworth=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\jeroen@get{A1}=9 \OR \jeroen@get{A2}=9 \OR \jeroen@get{A3}=9\OR \jeroen@get{A4}=9\OR \jeroen@get{A5}=9\OR \jeroen@get{A6}=9 \OR \jeroen@get{A7}=9 \OR \jeroen@get{A8}=9 \OR \jeroen@get{A9}=9 \AND \theantworti=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}
+\else
+\Square\fi\\ \hline
+\end{tabu}
+\fi
+}
+\egroup}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Multiple Choice (Richtig & Falsch)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%  MULTIPLECHOICE (beliebige Anzahl von Antwortmoeglichkeiten (max.9))
+%%%%%%%%%%%%%%%%%%%%%
+\newcounter{acheck}\newcounter{bcheck}\newcounter{ccheck}\newcounter{dcheck}\newcounter{echeck}\newcounter{fcheck}\newcounter{gcheck}\newcounter{hcheck}\newcounter{icheck}\newcounter{counter}
+
+\newcommand\rfmultiplechoice[3][5]{ %Anzahl der Antwortmoeglichkeiten, Standard: 5
+  \bgroup
+  \jeroen@set@keys{#3}%%
+\setcounter{counter}{0}	
+\centering 
+\tabulinesep=3mm
+\pgfmathsetseed{\theZufall}
+\declarenumlist{group}{1}{#1}
+\pgfmathrandomitem\z{group}\setcounter{antworta}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortb}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortc}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortd}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antworte}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortf}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortg}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antworth}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antworti}{\z}\prunelist{group}
+
+%\begin{minipage}{0.85\linewidth}
+\begin{tabu}{|A|c|c|}%
+\hline%
+\small \textsc{#2} & \small\textsc{Richtig} & \small \textsc{Falsch} \\ \hline
+\forloop{ct}{1}{\value{ct}<\numexpr#1}%
+{\ifthenelse{\value{ct}=\theantworta}{\jeroen@get{L1}}{\ifthenelse{\value{ct}=\theantwortb}{\jeroen@get{L2}}{\ifthenelse{\value{ct}=\theantwortc}{\jeroen@get{L3}}{\ifthenelse{\value{ct}=\theantwortd}{\jeroen@get{L4}}{\ifthenelse{\value{ct}=\theantworte}{\jeroen@get{L5}}{\ifthenelse{\value{ct}=\theantwortf}{\jeroen@get{L6}}{\ifthenelse{\value{ct}=\theantwortg}{\jeroen@get{L7}}{\ifthenelse{\value{ct}=\theantworth}{\jeroen@get{L8}}{{\jeroen@get{L9}}}}}}}}}}&%
+%
+%%% Spalte 'Richtig' %%%%
+%
+\ifnum\theAntworten=1%
+\ifthenelse{\jeroen@get{A1}=1 \OR \jeroen@get{A2}=1 \OR \jeroen@get{A3}=1\OR \jeroen@get{A4}=1 \OR \jeroen@get{A5}=1 \OR \jeroen@get{A6}=1 \OR \jeroen@get{A7}=1 \OR \jeroen@get{A8}=1 \OR \jeroen@get{A9}=1 \AND \value{ct}=\theantworta}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{acheck}{1}}{}\ifthenelse{\jeroen@get{A1}=2 \OR \jeroen@get{A2}=2 \OR \jeroen@get{A3}=2\OR \jeroen@get{A4}=2\OR \jeroen@get{A5}=2\OR \jeroen@get{A6}=2 \OR \jeroen@get{A7}=2 \OR \jeroen@get{A8}=2 \OR \jeroen@get{A9}=2 \AND \value{ct}=\theantwortb}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{bcheck}{1}}{}\ifthenelse{\jeroen@get{A1}=3 \OR \jeroen@get{A2}=3 \OR \jeroen@get{A3}=3\OR \jeroen@get{A4}=3\OR \jeroen@get{A5}=3 \OR \jeroen@get{A6}=3 \OR \jeroen@get{A7}=3 \OR \jeroen@get{A8}=3 \OR \jeroen@get{A9}=3 \AND \value{ct}=\theantwortc}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{ccheck}{1}}{}\ifthenelse{\jeroen@get{A1}=4 \OR \jeroen@get{A2}=4 \OR \jeroen@get{A3}=4\OR \jeroen@get{A4}=4\OR \jeroen@get{A5}=4\OR \jeroen@get{A6}=4 \OR \jeroen@get{A7}=4 \OR \jeroen@get{A8}=4 \OR \jeroen@get{A9}=4 \AND \value{ct}=\theantwortd}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{dcheck}{1}}{}\ifthenelse{\jeroen@get{A1}=5 \OR \jeroen@get{A2}=5 \OR \jeroen@get{A3}=5\OR \jeroen@get{A4}=5\OR \jeroen@get{A5}=5\OR \jeroen@get{A6}=5 \OR \jeroen@get{A7}=5 \OR \jeroen@get{A8}=5 \OR \jeroen@get{A9}=5 \AND \value{ct}=\theantworte}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{echeck}{1}}{}\ifthenelse{\jeroen@get{A1}=6 \OR \jeroen@get{A2}=6 \OR \jeroen@get{A3}=6\OR \jeroen@get{A4}=6\OR \jeroen@get{A5}=6\OR \jeroen@get{A6}=6 \OR \jeroen@get{A7}=6 \OR \jeroen@get{A8}=6 \OR \jeroen@get{A9}=6 \AND \value{ct}=\theantwortf}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{fcheck}{1}}{}\ifthenelse{\jeroen@get{A1}=7 \OR \jeroen@get{A2}=7 \OR \jeroen@get{A3}=7\OR \jeroen@get{A4}=7\OR \jeroen@get{A5}=7\OR \jeroen@get{A6}=7 \OR \jeroen@get{A7}=7 \OR \jeroen@get{A8}=7 \OR \jeroen@get{A9}=7 \AND \value{ct}=\theantwortg}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{gcheck}{1}}{}\ifthenelse{\jeroen@get{A1}=8 \OR \jeroen@get{A2}=8 \OR \jeroen@get{A3}=8\OR \jeroen@get{A4}=8\OR \jeroen@get{A5}=8\OR \jeroen@get{A6}=8 \OR \jeroen@get{A7}=8 \OR \jeroen@get{A8}=8 \OR \jeroen@get{A9}=8 \AND \value{ct}=\theantworth}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{hcheck}{1}}{}\ifthenelse{\jeroen@get{A1}=9 \OR \jeroen@get{A2}=9 \OR \jeroen@get{A3}=9\OR \jeroen@get{A4}=9\OR \jeroen@get{A5}=9\OR \jeroen@get{A6}=9 \OR \jeroen@get{A7}=9 \OR \jeroen@get{A8}=9 \OR \jeroen@get{A9}=9 \AND \value{ct}=\theantworti}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{icheck}{1}}{}%
+\else%
+\Square\fi&%
+%
+%%%% Spalte 'falsch'
+%
+\ifnum\theAntworten=1%
+\ifthenelse{\value{acheck}=0 \AND \value{ct}=\theantworta}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\value{bcheck}=0 \AND \value{ct}=\theantwortb}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\value{ccheck}=0 \AND \value{ct}=\theantwortc}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\value{dcheck}=0 \AND \value{ct}=\theantwortd}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\value{echeck}=0 \AND \value{ct}=\theantworte}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\value{fcheck}=0 \AND \value{ct}=\theantwortf}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\value{gcheck}=0 \AND \value{ct}=\theantwortg}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\value{hcheck}=0 \AND \value{ct}=\theantworth}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\value{icheck}=0 \AND \value{ct}=\theantworti}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}%
+\else%
+\Square\fi\\ \hline}%
+%
+%%%%% Spalte 'richtig' (letzte Zeile)
+\ifthenelse{\theantworta=#1}{\jeroen@get{L1}}{\ifthenelse{\theantwortb=#1}{\jeroen@get{L2}}{\ifthenelse{\theantwortc=#1}{\jeroen@get{L3}}{\ifthenelse{\theantwortd=#1}{\jeroen@get{L4}}{\ifthenelse{\theantworte=#1}{\jeroen@get{L5}}{\ifthenelse{\theantwortf=#1}{\jeroen@get{L6}}{\ifthenelse{\theantwortg=#1}{\jeroen@get{L7}}{\ifthenelse{\theantworth=#1}{\jeroen@get{L8}}{{\jeroen@get{L9}}}}}}}}}} &%
+%
+%
+%
+\ifnum\theAntworten=1%
+\ifthenelse{\jeroen@get{A1}=1 \OR \jeroen@get{A2}=1 \OR \jeroen@get{A3}=1\OR \jeroen@get{A4}=1\OR \jeroen@get{A5}=1\OR \jeroen@get{A6}=1 \OR \jeroen@get{A7}=1 \OR \jeroen@get{A8}=1 \OR \jeroen@get{A9}=1 \AND \theantworta=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{acheck}{1}}{}\ifthenelse{\jeroen@get{A1}=2 \OR \jeroen@get{A2}=2 \OR \jeroen@get{A3}=2\OR \jeroen@get{A4}=2\OR \jeroen@get{A5}=2\OR \jeroen@get{A6}=2 \OR \jeroen@get{A7}=2 \OR \jeroen@get{A8}=2 \OR \jeroen@get{A9}=2 \AND \theantwortb=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{bcheck}{1}}{}\ifthenelse{\jeroen@get{A1}=3 \OR \jeroen@get{A2}=3 \OR \jeroen@get{A3}=3\OR \jeroen@get{A4}=3\OR \jeroen@get{A5}=3\OR \jeroen@get{A6}=3 \OR \jeroen@get{A7}=3 \OR \jeroen@get{A8}=3 \OR \jeroen@get{A9}=3 \AND \theantwortc=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{ccheck}{1}}{}\ifthenelse{\jeroen@get{A1}=4 \OR \jeroen@get{A2}=4 \OR \jeroen@get{A3}=4\OR \jeroen@get{A4}=4\OR \jeroen@get{A5}=4\OR \jeroen@get{A6}=4 \OR \jeroen@get{A7}=4 \OR \jeroen@get{A8}=4 \OR \jeroen@get{A9}=4 \AND \theantwortd=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{dcheck}{1}}{}\ifthenelse{\jeroen@get{A1}=5 \OR \jeroen@get{A2}=5 \OR \jeroen@get{A3}=5\OR \jeroen@get{A4}=5\OR \jeroen@get{A5}=5\OR \jeroen@get{A6}=5 \OR \jeroen@get{A7}=5 \OR \jeroen@get{A8}=5 \OR \jeroen@get{A9}=5 \AND \theantworte=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{echeck}{1}}{}\ifthenelse{\jeroen@get{A1}=6 \OR \jeroen@get{A2}=6 \OR \jeroen@get{A3}=6\OR \jeroen@get{A4}=6\OR \jeroen@get{A5}=6\OR \jeroen@get{A6}=6 \OR \jeroen@get{A7}=6 \OR \jeroen@get{A8}=6 \OR \jeroen@get{A9}=6 \AND \theantwortf=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{fcheck}{1}}{}\ifthenelse{\jeroen@get{A1}=7 \OR \jeroen@get{A2}=7 \OR \jeroen@get{A3}=7\OR \jeroen@get{A4}=7\OR \jeroen@get{A5}=7\OR \jeroen@get{A6}=7 \OR \jeroen@get{A7}=7 \OR \jeroen@get{A8}=7 \OR \jeroen@get{A9}=7 \AND \theantwortg=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{gcheck}{1}}{}\ifthenelse{\jeroen@get{A1}=8 \OR \jeroen@get{A2}=8 \OR \jeroen@get{A3}=8\OR \jeroen@get{A4}=8\OR \jeroen@get{A5}=8\OR \jeroen@get{A6}=8 \OR \jeroen@get{A7}=8 \OR \jeroen@get{A8}=8 \OR \jeroen@get{A9}=8 \AND \theantworth=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{hcheck}{1}}{}\ifthenelse{\jeroen@get{A1}=9 \OR \jeroen@get{A2}=9 \OR \jeroen@get{A3}=9\OR \jeroen@get{A4}=9\OR \jeroen@get{A5}=9\OR \jeroen@get{A6}=9 \OR \jeroen@get{A7}=9 \OR \jeroen@get{A8}=9 \OR \jeroen@get{A9}=9 \AND \theantworti=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{icheck}{1}}{}%
+\else%
+\Square\fi%
+&%
+%
+%%%% Spalte 'falsch' (letzte Zeile)
+%
+\ifnum\theAntworten=1%
+\ifthenelse{\theantworta=#1 \AND \value{acheck}=0 \AND \value{counter}<#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{\addtocounter{counter}{1}%
+\ifthenelse{\theantwortb=#1 \AND \value{bcheck}=0 \AND \value{counter}<#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{\addtocounter{counter}{1}%
+\ifthenelse{\theantwortc=#1 \AND \value{ccheck}=0 \AND \value{counter}<#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{\addtocounter{counter}{1}%
+\ifthenelse{\theantwortd=#1 \AND \value{dcheck}=0 \AND \value{counter}<#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{\addtocounter{counter}{1}%
+\ifthenelse{\theantworte=#1 \AND \value{echeck}=0 \AND \value{counter}<#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{\addtocounter{counter}{1}%
+\ifthenelse{\theantwortf=#1 \AND \value{fcheck}=0 \AND \value{counter}<#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{\addtocounter{counter}{1}%
+\ifthenelse{\theantwortg=#1 \AND \value{gcheck}=0 \AND \value{counter}<#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{\addtocounter{counter}{1}%
+\ifthenelse{\theantworth=#1 \AND \value{hcheck}=0 \AND \value{counter}<#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{\addtocounter{counter}{1}%
+\ifthenelse{\theantworti=#1 \AND \value{icheck}=0 \AND \value{counter}<#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{\addtocounter{counter}{1}%
+}}}}}}}}}%
+\else%
+\Square\fi\\ \hline
+\end{tabu}\leer
+
+  \egroup}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Multiple Choice (Richtig & Falsch) ENGLISH
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%  MULTIPLECHOICE (beliebige Anzahl von Antwortmoeglichkeiten (max.9))
+%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand\tfmultiplechoice[3][5]{ %Anzahl der Antwortmoeglichkeiten, Standard: 5
+  \bgroup
+  \jeroen@set@keys{#3}%%
+\setcounter{counter}{0}		
+\centering 
+\tabulinesep=3mm
+\pgfmathsetseed{\theZufall}
+\declarenumlist{group}{1}{#1}
+\pgfmathrandomitem\z{group}\setcounter{antworta}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortb}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortc}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortd}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antworte}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortf}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortg}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antworth}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antworti}{\z}\prunelist{group}
+
+%\begin{minipage}{0.85\linewidth}
+\begin{tabu}{|A|c|c|}%
+\hline%
+\small \textsc{#2} & \small\textsc{True} & \small \textsc{False} \\ \hline
+\forloop{ct}{1}{\value{ct}<\numexpr#1}%
+{\ifthenelse{\value{ct}=\theantworta}{\jeroen@get{L1}}{\ifthenelse{\value{ct}=\theantwortb}{\jeroen@get{L2}}{\ifthenelse{\value{ct}=\theantwortc}{\jeroen@get{L3}}{\ifthenelse{\value{ct}=\theantwortd}{\jeroen@get{L4}}{\ifthenelse{\value{ct}=\theantworte}{\jeroen@get{L5}}{\ifthenelse{\value{ct}=\theantwortf}{\jeroen@get{L6}}{\ifthenelse{\value{ct}=\theantwortg}{\jeroen@get{L7}}{\ifthenelse{\value{ct}=\theantworth}{\jeroen@get{L8}}{{\jeroen@get{L9}}}}}}}}}}&%
+%
+%%% Spalte 'Richtig' %%%%
+%
+\ifnum\theAntworten=1%
+\ifthenelse{\jeroen@get{A1}=1 \OR \jeroen@get{A2}=1 \OR \jeroen@get{A3}=1\OR \jeroen@get{A4}=1 \OR \jeroen@get{A5}=1 \OR \jeroen@get{A6}=1 \OR \jeroen@get{A7}=1 \OR \jeroen@get{A8}=1 \OR \jeroen@get{A9}=1 \AND \value{ct}=\theantworta}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{acheck}{1}}{}\ifthenelse{\jeroen@get{A1}=2 \OR \jeroen@get{A2}=2 \OR \jeroen@get{A3}=2\OR \jeroen@get{A4}=2\OR \jeroen@get{A5}=2\OR \jeroen@get{A6}=2 \OR \jeroen@get{A7}=2 \OR \jeroen@get{A8}=2 \OR \jeroen@get{A9}=2 \AND \value{ct}=\theantwortb}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{bcheck}{1}}{}\ifthenelse{\jeroen@get{A1}=3 \OR \jeroen@get{A2}=3 \OR \jeroen@get{A3}=3\OR \jeroen@get{A4}=3\OR \jeroen@get{A5}=3 \OR \jeroen@get{A6}=3 \OR \jeroen@get{A7}=3 \OR \jeroen@get{A8}=3 \OR \jeroen@get{A9}=3 \AND \value{ct}=\theantwortc}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{ccheck}{1}}{}\ifthenelse{\jeroen@get{A1}=4 \OR \jeroen@get{A2}=4 \OR \jeroen@get{A3}=4\OR \jeroen@get{A4}=4\OR \jeroen@get{A5}=4\OR \jeroen@get{A6}=4 \OR \jeroen@get{A7}=4 \OR \jeroen@get{A8}=4 \OR \jeroen@get{A9}=4 \AND \value{ct}=\theantwortd}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{dcheck}{1}}{}\ifthenelse{\jeroen@get{A1}=5 \OR \jeroen@get{A2}=5 \OR \jeroen@get{A3}=5\OR \jeroen@get{A4}=5\OR \jeroen@get{A5}=5\OR \jeroen@get{A6}=5 \OR \jeroen@get{A7}=5 \OR \jeroen@get{A8}=5 \OR \jeroen@get{A9}=5 \AND \value{ct}=\theantworte}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{echeck}{1}}{}\ifthenelse{\jeroen@get{A1}=6 \OR \jeroen@get{A2}=6 \OR \jeroen@get{A3}=6\OR \jeroen@get{A4}=6\OR \jeroen@get{A5}=6\OR \jeroen@get{A6}=6 \OR \jeroen@get{A7}=6 \OR \jeroen@get{A8}=6 \OR \jeroen@get{A9}=6 \AND \value{ct}=\theantwortf}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{fcheck}{1}}{}\ifthenelse{\jeroen@get{A1}=7 \OR \jeroen@get{A2}=7 \OR \jeroen@get{A3}=7\OR \jeroen@get{A4}=7\OR \jeroen@get{A5}=7\OR \jeroen@get{A6}=7 \OR \jeroen@get{A7}=7 \OR \jeroen@get{A8}=7 \OR \jeroen@get{A9}=7 \AND \value{ct}=\theantwortg}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{gcheck}{1}}{}\ifthenelse{\jeroen@get{A1}=8 \OR \jeroen@get{A2}=8 \OR \jeroen@get{A3}=8\OR \jeroen@get{A4}=8\OR \jeroen@get{A5}=8\OR \jeroen@get{A6}=8 \OR \jeroen@get{A7}=8 \OR \jeroen@get{A8}=8 \OR \jeroen@get{A9}=8 \AND \value{ct}=\theantworth}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{hcheck}{1}}{}\ifthenelse{\jeroen@get{A1}=9 \OR \jeroen@get{A2}=9 \OR \jeroen@get{A3}=9\OR \jeroen@get{A4}=9\OR \jeroen@get{A5}=9\OR \jeroen@get{A6}=9 \OR \jeroen@get{A7}=9 \OR \jeroen@get{A8}=9 \OR \jeroen@get{A9}=9 \AND \value{ct}=\theantworti}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{icheck}{1}}{}%
+\else%
+\Square\fi&%
+%
+%%%% Spalte 'falsch'
+%
+\ifnum\theAntworten=1%
+\ifthenelse{\value{acheck}=0 \AND \value{ct}=\theantworta}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\value{bcheck}=0 \AND \value{ct}=\theantwortb}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\value{ccheck}=0 \AND \value{ct}=\theantwortc}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\value{dcheck}=0 \AND \value{ct}=\theantwortd}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\value{echeck}=0 \AND \value{ct}=\theantworte}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\value{fcheck}=0 \AND \value{ct}=\theantwortf}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\value{gcheck}=0 \AND \value{ct}=\theantwortg}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\value{hcheck}=0 \AND \value{ct}=\theantworth}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}\ifthenelse{\value{icheck}=0 \AND \value{ct}=\theantworti}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{}%
+\else%
+\Square\fi\\ \hline}%
+%
+%%%%% Spalte 'richtig' (letzte Zeile)
+\ifthenelse{\theantworta=#1}{\jeroen@get{L1}}{\ifthenelse{\theantwortb=#1}{\jeroen@get{L2}}{\ifthenelse{\theantwortc=#1}{\jeroen@get{L3}}{\ifthenelse{\theantwortd=#1}{\jeroen@get{L4}}{\ifthenelse{\theantworte=#1}{\jeroen@get{L5}}{\ifthenelse{\theantwortf=#1}{\jeroen@get{L6}}{\ifthenelse{\theantwortg=#1}{\jeroen@get{L7}}{\ifthenelse{\theantworth=#1}{\jeroen@get{L8}}{{\jeroen@get{L9}}}}}}}}}} &%
+%
+%
+%
+\ifnum\theAntworten=1%
+\ifthenelse{\jeroen@get{A1}=1 \OR \jeroen@get{A2}=1 \OR \jeroen@get{A3}=1\OR \jeroen@get{A4}=1\OR \jeroen@get{A5}=1\OR \jeroen@get{A6}=1 \OR \jeroen@get{A7}=1 \OR \jeroen@get{A8}=1 \OR \jeroen@get{A9}=1 \AND \theantworta=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{acheck}{1}}{}\ifthenelse{\jeroen@get{A1}=2 \OR \jeroen@get{A2}=2 \OR \jeroen@get{A3}=2\OR \jeroen@get{A4}=2\OR \jeroen@get{A5}=2\OR \jeroen@get{A6}=2 \OR \jeroen@get{A7}=2 \OR \jeroen@get{A8}=2 \OR \jeroen@get{A9}=2 \AND \theantwortb=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{bcheck}{1}}{}\ifthenelse{\jeroen@get{A1}=3 \OR \jeroen@get{A2}=3 \OR \jeroen@get{A3}=3\OR \jeroen@get{A4}=3\OR \jeroen@get{A5}=3\OR \jeroen@get{A6}=3 \OR \jeroen@get{A7}=3 \OR \jeroen@get{A8}=3 \OR \jeroen@get{A9}=3 \AND \theantwortc=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{ccheck}{1}}{}\ifthenelse{\jeroen@get{A1}=4 \OR \jeroen@get{A2}=4 \OR \jeroen@get{A3}=4\OR \jeroen@get{A4}=4\OR \jeroen@get{A5}=4\OR \jeroen@get{A6}=4 \OR \jeroen@get{A7}=4 \OR \jeroen@get{A8}=4 \OR \jeroen@get{A9}=4 \AND \theantwortd=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{dcheck}{1}}{}\ifthenelse{\jeroen@get{A1}=5 \OR \jeroen@get{A2}=5 \OR \jeroen@get{A3}=5\OR \jeroen@get{A4}=5\OR \jeroen@get{A5}=5\OR \jeroen@get{A6}=5 \OR \jeroen@get{A7}=5 \OR \jeroen@get{A8}=5 \OR \jeroen@get{A9}=5 \AND \theantworte=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{echeck}{1}}{}\ifthenelse{\jeroen@get{A1}=6 \OR \jeroen@get{A2}=6 \OR \jeroen@get{A3}=6\OR \jeroen@get{A4}=6\OR \jeroen@get{A5}=6\OR \jeroen@get{A6}=6 \OR \jeroen@get{A7}=6 \OR \jeroen@get{A8}=6 \OR \jeroen@get{A9}=6 \AND \theantwortf=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{fcheck}{1}}{}\ifthenelse{\jeroen@get{A1}=7 \OR \jeroen@get{A2}=7 \OR \jeroen@get{A3}=7\OR \jeroen@get{A4}=7\OR \jeroen@get{A5}=7\OR \jeroen@get{A6}=7 \OR \jeroen@get{A7}=7 \OR \jeroen@get{A8}=7 \OR \jeroen@get{A9}=7 \AND \theantwortg=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{gcheck}{1}}{}\ifthenelse{\jeroen@get{A1}=8 \OR \jeroen@get{A2}=8 \OR \jeroen@get{A3}=8\OR \jeroen@get{A4}=8\OR \jeroen@get{A5}=8\OR \jeroen@get{A6}=8 \OR \jeroen@get{A7}=8 \OR \jeroen@get{A8}=8 \OR \jeroen@get{A9}=8 \AND \theantworth=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{hcheck}{1}}{}\ifthenelse{\jeroen@get{A1}=9 \OR \jeroen@get{A2}=9 \OR \jeroen@get{A3}=9\OR \jeroen@get{A4}=9\OR \jeroen@get{A5}=9\OR \jeroen@get{A6}=9 \OR \jeroen@get{A7}=9 \OR \jeroen@get{A8}=9 \OR \jeroen@get{A9}=9 \AND \theantworti=#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}\setcounter{icheck}{1}}{}%
+\else%
+\Square\fi%
+&%
+%
+%%%% Spalte 'falsch' (letzte Zeile)
+%
+\ifnum\theAntworten=1%
+\ifthenelse{\theantworta=#1 \AND \value{acheck}=0 \AND \value{counter}<#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{\addtocounter{counter}{1}%
+\ifthenelse{\theantwortb=#1 \AND \value{bcheck}=0 \AND \value{counter}<#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{\addtocounter{counter}{1}%
+\ifthenelse{\theantwortc=#1 \AND \value{ccheck}=0 \AND \value{counter}<#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{\addtocounter{counter}{1}%
+\ifthenelse{\theantwortd=#1 \AND \value{dcheck}=0 \AND \value{counter}<#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{\addtocounter{counter}{1}%
+\ifthenelse{\theantworte=#1 \AND \value{echeck}=0 \AND \value{counter}<#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{\addtocounter{counter}{1}%
+\ifthenelse{\theantwortf=#1 \AND \value{fcheck}=0 \AND \value{counter}<#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{\addtocounter{counter}{1}%
+\ifthenelse{\theantwortg=#1 \AND \value{gcheck}=0 \AND \value{counter}<#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{\addtocounter{counter}{1}%
+\ifthenelse{\theantworth=#1 \AND \value{hcheck}=0 \AND \value{counter}<#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{\addtocounter{counter}{1}%
+\ifthenelse{\theantworti=#1 \AND \value{icheck}=0 \AND \value{counter}<#1}{\color[rgb]{1,0,0}\XBox\color[rgb]{0,0,0}}{\addtocounter{counter}{1}%
+}}}}}}}}}%
+\else%
+\Square\fi\\ \hline
+\end{tabu}\leer
+
+  \egroup}
+%%%%%%%%%%%%%%%%%%%%%%%%%% Zusatz: änderung für chemie-package %%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+
+\@ifpackageloaded{chemie}{
+
+\renewcommand{\gap}{\,\rule{1cm}{0.4pt}{\Large\textcircled{\raisebox{1.5pt}{\normalsize{\thegap}}}}\rule{1cm}{0.4pt} \addtocounter{gap}{1}}
+%
+
+\renewcommand\lueckentext[2][0]{Erg\"anze die Textl\"ucken im folgenden Satz durch Ankreuzen der jeweils
+richtigen Satzteile so, dass eine mathematisch korrekte Aussage
+entsteht! \vspace{0.3cm}
+
+\bgroup \jeroen@set@keys{#2}
+\jeroen@get{text}
+\begin{spreadtab}[\STsavecell{\links}{b2}\STsavecell{\rechts}{c2}]{{tabular}{ccc}}
+ \SThidecol&\SThidecol 0.45& \SThidecol \\ 
+ \SThiderow &b1+(#1) & (0.9-b2) \\
+\end{spreadtab}
+
+\begin{minipage}{1\linewidth}
+\begin{minipage}[t][][b]{\links\linewidth}  \vspace{0pt}
+\flushright
+\tabulinesep=3mm
+\pgfmathsetseed{\theZufall}
+\declarenumlist{group}{1}{3}
+\pgfmathrandomitem\z{group}\setcounter{antworta}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortb}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortc}{\z}\prunelist{group}
+\begin{tabu}{|M|c|}
+\hline
+\multicolumn{2}{|c|}{\Large{\textcircled{\raisebox{1.5pt}{\normalsize{1}}}}} \\\hline
+\jeroen@get{L\theantworta} \vphantom{\"Ag}& \ifthenelse{\theAntworten=1 \AND \jeroen@get{A1}=\theantworta}{\color[rgb]{1,0,0}\XBox \color[rgb]{0,0,0}}{\Square} \\ \hline
+\jeroen@get{L\theantwortb} \vphantom{\"Ag}& \ifthenelse{\theAntworten=1 \AND \jeroen@get{A1}=\theantwortb}{\color[rgb]{1,0,0}\XBox \color[rgb]{0,0,0}}{\Square}  \\\hline
+\jeroen@get{L\theantwortc} \vphantom{\"Ag}& \ifthenelse{\theAntworten=1 \AND \jeroen@get{A1}=\theantwortc}{\color[rgb]{1,0,0}\XBox \color[rgb]{0,0,0}}{\Square}  \\\hline
+\end{tabu}
+\end{minipage}\hfill\begin{minipage}[t][][b]{\rechts\linewidth}\vspace{0pt}
+\flushleft\
+\tabulinesep=3mm
+\declarenumlist{group}{1}{3}
+\pgfmathrandomitem\z{group}\setcounter{antworta}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortb}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortc}{\z}\prunelist{group}
+\begin{tabu}{|M|c|}
+\hline
+\multicolumn{2}{|c|}{\Large{\textcircled{\raisebox{1.5pt}{\normalsize{2}}}}}\\\hline
+\jeroen@get{R\theantworta}\vphantom{\"Ag}& \ifthenelse{\theAntworten=1 \AND \jeroen@get{A2}=\theantworta}{\color[rgb]{1,0,0}\XBox \color[rgb]{0,0,0}}{\Square} \\\hline
+\jeroen@get{R\theantwortb}\vphantom{\"Ag}&\ifthenelse{\theAntworten=1 \AND \jeroen@get{A2}=\theantwortb}{\color[rgb]{1,0,0}\XBox \color[rgb]{0,0,0}}{\Square}\\ \hline
+\jeroen@get{R\theantwortc}\vphantom{\"Ag}&\ifthenelse{\theAntworten=1 \AND \jeroen@get{A2}=\theantwortc}{\color[rgb]{1,0,0}\XBox \color[rgb]{0,0,0}}{\Square}\\ \hline
+\end{tabu}
+\end{minipage}
+\end{minipage}\leer
+
+\setcounter{A1}{\jeroen@get{A1}}
+\setcounter{A2}{\jeroen@get{A2}}
+\setcounter{gap}{1}
+\egroup}
+
+\renewcommand\englueckentext[2][0]{\vspace{0.3cm}
+
+Complete the following sentence by putting a cross next to one of the given possibilities for each gap so that the sentence becomes a correct statement. % Fill the blanks in the following to make an accurate mathematical statement!
+\vspace{0.3cm} 
+
+\bgroup \jeroen@set@keys{#2}
+\jeroen@get{text}
+\begin{spreadtab}[\STsavecell{\links}{b2}\STsavecell{\rechts}{c2}]{{tabular}{ccc}}
+ \SThidecol&\SThidecol 0.45& \SThidecol \\ 
+ \SThiderow &b1+(#1) & (0.9-b2) \\
+\end{spreadtab}
+
+\begin{minipage}{1\linewidth}
+\begin{minipage}[t][][b]{\links\linewidth}  \vspace{0pt}
+\flushright
+\tabulinesep=3mm
+\pgfmathsetseed{\theZufall}
+\declarenumlist{group}{1}{3}
+\pgfmathrandomitem\z{group}\setcounter{antworta}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortb}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortc}{\z}\prunelist{group}
+\begin{tabu}{|M|c|}
+\hline
+\multicolumn{2}{|c|}{\large{\textcircled{\normalsize{1}}}} \\\hline
+\jeroen@get{L\theantworta} \vphantom{\"Ag}& \ifthenelse{\theAntworten=1 \AND \jeroen@get{A1}=\theantworta}{\color[rgb]{1,0,0}\XBox \color[rgb]{0,0,0}}{\Square} \\ \hline
+\jeroen@get{L\theantwortb} \vphantom{\"Ag}& \ifthenelse{\theAntworten=1 \AND \jeroen@get{A1}=\theantwortb}{\color[rgb]{1,0,0}\XBox \color[rgb]{0,0,0}}{\Square}  \\\hline
+\jeroen@get{L\theantwortc} \vphantom{\"Ag}& \ifthenelse{\theAntworten=1 \AND \jeroen@get{A1}=\theantwortc}{\color[rgb]{1,0,0}\XBox \color[rgb]{0,0,0}}{\Square}  \\\hline
+\end{tabu}
+\end{minipage}\hfill\begin{minipage}[t][][b]{\rechts\linewidth}\vspace{0pt}
+\flushleft\
+\tabulinesep=3mm
+\declarenumlist{group}{1}{3}
+\pgfmathrandomitem\z{group}\setcounter{antworta}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortb}{\z}\prunelist{group}
+\pgfmathrandomitem\z{group}\setcounter{antwortc}{\z}\prunelist{group}
+\begin{tabu}{|M|c|}
+\hline
+\multicolumn{2}{|c|}{\large{\textcircled{\normalsize{2}}}}\\\hline
+\jeroen@get{R\theantworta}\vphantom{\"Ag}& \ifthenelse{\theAntworten=1 \AND \jeroen@get{A2}=\theantworta}{\color[rgb]{1,0,0}\XBox \color[rgb]{0,0,0}}{\Square} \\\hline
+\jeroen@get{R\theantwortb}\vphantom{\"Ag}&\ifthenelse{\theAntworten=1 \AND \jeroen@get{A2}=\theantwortb}{\color[rgb]{1,0,0}\XBox \color[rgb]{0,0,0}}{\Square}\\ \hline
+\jeroen@get{R\theantwortc}\vphantom{\"Ag}&\ifthenelse{\theAntworten=1 \AND \jeroen@get{A2}=\theantwortc}{\color[rgb]{1,0,0}\XBox \color[rgb]{0,0,0}}{\Square}\\ \hline
+\end{tabu}
+\end{minipage}
+\end{minipage}\leer
+
+\setcounter{A1}{\jeroen@get{A1}}
+\setcounter{A2}{\jeroen@get{A2}}
+\setcounter{gap}{1}
+\egroup}}{}
+
+
+\makeatother
+
+\endinput
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%
