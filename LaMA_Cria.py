@@ -849,7 +849,7 @@ class Ui_MainWindow(object):
         self.gridLayout_11_cr.addWidget(self.tab_widget_gk_cr, 0, 0, 1, 1)
         self.gridLayout.addWidget(self.groupBox_grundkompetenzen_cr, 0, 0, 4, 1)
         self.groupBox_grundkompetenzen_cr.setTitle(
-            _translate("MainWindow", "Grundkompetenzen")
+            _translate("MainWindow", "Themengebiete")
         )
         self.groupBox_grundkompetenzen_cr.hide()
 
@@ -866,7 +866,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.addWidget(self.label_ausgew_gk)
         self.gridLayout.addWidget(self.groupBox_ausgew_gk_cr, 4, 0, 1, 1)
         self.groupBox_ausgew_gk_cr.setTitle(
-            _translate("MainWindow", "Ausgewählte Grundkompetenzen")
+            _translate("MainWindow", "Ausgewählte Themengebiete")
         )
         self.label_ausgew_gk.setText(_translate("MainWindow", "-"))
         self.groupBox_ausgew_gk_cr.hide()
@@ -1234,7 +1234,7 @@ class Ui_MainWindow(object):
             3, _translate("MainWindow", "Wiederholungsprüfung")
         )
         self.comboBox_pruefungstyp.setItemText(
-            4, _translate("MainWindow", "Grundkompetenzcheck")
+            4, _translate("MainWindow", "Wiederholung")
         )
         self.comboBox_pruefungstyp.setItemText(
             5, _translate("MainWindow", "Übungsblatt")
@@ -1625,7 +1625,7 @@ class Ui_MainWindow(object):
         self.comboBox_fehlertyp.setItemText(
             7,
             _translate(
-                "MainWindow", "Falsche Kodierung (Grundkompetenz, Aufgabenformat, ...)"
+                "MainWindow", "Falsche Kodierung (Themengebiet, Aufgabenformat, ...)"
             ),
         )
         self.comboBox_fehlertyp.setItemText(8, _translate("MainWindow", "Sonstiges"))
@@ -2728,7 +2728,7 @@ class Ui_MainWindow(object):
         ######################################
 
         if self.list_creator_topics == []:
-            self.warning_window("Es wurden keine Grundkompetenzen zugewiesen.")
+            self.warning_window("Es wurden keine Themengebiete zugewiesen.")
             return
 
         if self.comboBox_af.currentText() == "bitte auswählen":
@@ -2809,7 +2809,8 @@ class Ui_MainWindow(object):
                 )
             )
             # msg.setInformativeText('Soll die PDF Datei erstellt werden?')
-            self.cb_confirm = QtWidgets.QCheckBox(  # "Hiermit bestätige ich, dass ich die eingegebene Aufgabe eigenständig\nund unter Berücksichtigung des Urheberrechtsgesetzes verfasst habe.\n"
+            self.cb_confirm = QtWidgets.QCheckBox(
+                "Hiermit bestätige ich, dass ich die eingegebene Aufgabe eigenständig\nund unter Berücksichtigung des Urheberrechtsgesetzes verfasst habe.\n"
                 "Ich stelle die eingegebene Aufgabe frei gemäß der Lizenz CC0 1.0 zur Verfügung.\nDie Aufgabe darf daher zu jeder Zeit frei verwendet, kopiert und verändert werden."
             )
             self.cb_confirm.setObjectName(_fromUtf8("cb_confirm"))
@@ -4206,17 +4207,17 @@ class Ui_MainWindow(object):
 
         if (
             self.dict_list_input_examples["data_gesamt"]["Pruefungstyp"]
-            == "Grundkompetenzcheck"
+            == "Wiederholung"
         ):
             if ausgabetyp == "schularbeit" and maximum > 2:
                 vorschau.write(
-                    "\\textsc{{Grundkompetenzcheck -- {0}}} \\hfill \\textsc{{Name:}} \\rule{{8cm}}{{0.4pt}} \\normalsize \\\ \\vspace{{\\baselineskip}} \n\n".format(
+                    "\\textsc{{Wiederholung -- {0}}} \\hfill \\textsc{{Name:}} \\rule{{8cm}}{{0.4pt}} \\normalsize \\\ \\vspace{{\\baselineskip}} \n\n".format(
                         gruppe
                     )
                 )
             else:
                 vorschau.write(
-                    "\\textsc{Grundkompetenzcheck} \\hfill \\textsc{Name:} \\rule{8cm}{0.4pt} \\normalsize \\\ \\vspace{\\baselineskip} \n\n"
+                    "\\textsc{Wiederholung} \\hfill \\textsc{Name:} \\rule{8cm}{0.4pt} \\normalsize \\\ \\vspace{\\baselineskip} \n\n"
                 )
         elif (
             self.dict_list_input_examples["data_gesamt"]["Pruefungstyp"]
@@ -4428,7 +4429,7 @@ class Ui_MainWindow(object):
 
         if (
             self.dict_list_input_examples["data_gesamt"]["Pruefungstyp"]
-            != "Grundkompetenzcheck"
+            != "Wiederholung"
             and self.dict_list_input_examples["data_gesamt"]["Pruefungstyp"]
             != "Übungsblatt"
         ):
