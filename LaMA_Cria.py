@@ -2183,6 +2183,8 @@ class Ui_MainWindow(object):
             )
         )
         QtWidgets.QApplication.restoreOverrideCursor()
+        self.adapt_choosing_list("sage")
+        self.adapt_choosing_list("feedback")
         msg.close()
 
     def create_pdf(self, dateiname, index, maximum):
@@ -2947,10 +2949,10 @@ class Ui_MainWindow(object):
             head, tail = os.path.split(all)
             x = "{" + tail + "}"
             #name, ext = os.path.splitext(tail)
-
+            print(self.creator_mode, self.cb_save.isChecked())
             if self.creator_mode == "admin" and self.cb_save.isChecked() == True:
                 str_image_path = "../_database_inoffiziell/Bilder/"
-            if self.creator_mode == "admin" and self.cb_save.isChecked() == False:
+            elif self.creator_mode == "admin" and self.cb_save.isChecked() == False:
                 str_image_path = "../_database/Bilder/"
             # if local_save == True:
             #     str_image_path = "../Lokaler_Ordner/Bilder/"
@@ -2974,7 +2976,7 @@ class Ui_MainWindow(object):
             copy_image_path = os.path.join(
                 path_programm, "_database_inoffiziell", "Bilder"
             )  ### direct inofficial save
-        if self.creator_mode == "admin" and self.cb_save.isChecked() == False:
+        elif self.creator_mode == "admin" and self.cb_save.isChecked() == False:
             copy_image_path = os.path.join(
                 path_programm, "_database", "Bilder"
             )  ### direct official save
