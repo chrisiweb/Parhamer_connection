@@ -11,7 +11,6 @@ import time
 import threading
 import sys
 import os
-import os.path
 from pathlib import Path
 import datetime
 from datetime import date
@@ -31,15 +30,14 @@ try:
 except IndexError:
     loaded_lama_file_path = ""
 
-if sys.platform.startswith("linux"):
-    workdir = os.path.dirname(os.path.realpath(__file__))
-    path_programm = os.path.join(workdir)
+path_programm = os.path.dirname(sys.argv[0])
+if sys.platform.startswith("darwin"):
+    if path_programm is "":
+        path_programm = "."
 
-else:
-    path_programm = os.path.dirname(sys.argv[0])
-    if sys.platform.startswith("darwin"):
-        if path_programm is "":
-            path_programm = "."
+if sys.platform.startswith("darwin"):
+    if path_programm is "":
+        path_programm = "."
 
 
 logo_path = os.path.join(
@@ -297,7 +295,7 @@ class Ui_Dialog_titlepage(object):
         logo_name = os.path.basename(logo_titlepage_path[0][0])
         # print(logo_name)
         self.cb_titlepage_logo.setText("Logo ({})".format(logo_name))
-        dict_titlepage["logo_path"] = logo_titlepage_path[0][0]
+        dict_titlepage["logo_path"] = "{}".format(logo_titlepage_path[0][0])
         copy_logo_titlepage_path = os.path.join(
             path_programm, "Teildokument", logo_name
         )
@@ -2145,17 +2143,17 @@ class Ui_MainWindow(object):
         # 	#### Suche inoffizielle Beispiele ######
         # 	#############################################
 
-        # 	for root, dirs, files in os.walk(os.path.join(path_programm,'_database_inoffiziell', chosen_aufgabenformat)):
-        # 		for all in files:
-        # 			if all.endswith('.tex') or all.endswith('.ltx'):
-        # 				if not ('Gesamtdokument' in all) and not ('Teildokument' in all):
-        # 					file=open(os.path.join(root,all),encoding='utf8')
-        # 					for i, line in enumerate(file):
-        # 						if not line == "\n":
-        # 							beispieldaten_dateipfad[line]=os.path.join(root,all)
-        # 							beispieldaten.append(line)
-        # 							break
-        # 					file.close()
+            for root, dirs, files in os.walk(os.path.join(path_programm,'_database_inoffiziell', klasse)):
+                for all in files:
+                    if all.endswith('.tex') or all.endswith('.ltx'):
+                        if not ('Gesamtdokument' in all) and not ('Teildokument' in all):
+                            file=open(os.path.join(root,all),encoding='utf8')
+                            for i, line in enumerate(file):
+                                if not line == "\n":
+                                    beispieldaten_dateipfad[line]=os.path.join(root,all)
+                                    beispieldaten.append(line)
+                                    break
+                            file.close()
 
         temp_dict_beispieldaten = {}
         temp_list = list(beispieldaten_dateipfad.keys())
@@ -2188,20 +2186,23 @@ class Ui_MainWindow(object):
         msg.close()
 
     def create_pdf(self, dateiname, index, maximum):
-        msg = QtWidgets.QMessageBox()
-        msg.setWindowIcon(QtGui.QIcon(logo_path))
-        msg.setWindowTitle("Lade...")
-        msg.setStandardButtons(QtWidgets.QMessageBox.NoButton)
-        if dateiname == "Teildokument" or dateiname == "Schularbeit_Vorschau":
-            rest = ""
+        if sys.platform.startswith("linux"):
+            pass
         else:
+            msg = QtWidgets.QMessageBox()
+            msg.setWindowIcon(QtGui.QIcon(logo_path))
+            msg.setWindowTitle("Lade...")
+            msg.setStandardButtons(QtWidgets.QMessageBox.NoButton)
+            if dateiname == "Teildokument" or dateiname == "Schularbeit_Vorschau":
+                rest = ""
+            else:
 
-            rest = " ({0}|{1})".format(index + 1, maximum)
-        msg.setText("Die PDF Datei wird erstellt..." + rest)
+                rest = " ({0}|{1})".format(index + 1, maximum)
+            msg.setText("Die PDF Datei wird erstellt..." + rest)
 
-        msg.show()
-        QApplication.processEvents()
-        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+            msg.show()
+            QApplication.processEvents()
+            QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
         if dateiname == "Teildokument":
             pass
@@ -2221,7 +2222,7 @@ class Ui_MainWindow(object):
                     shell=True,
                 ).wait()
                 subprocess.run(
-                    [
+                    [   "sudo",
                         "xdg-open",
                         "{0}/Teildokument/{1}.pdf".format(path_programm, dateiname),
                     ]
@@ -2849,10 +2850,10 @@ class Ui_MainWindow(object):
                     bilder,
                 )
             )
-            # self.cb_save=QtWidgets.QCheckBox("inoffizielle Aufgabe")
-            # self.cb_save.setObjectName(_fromUtf8("cb_save"))
-            # self.cb_save.setChecked(True)
-            # msg.setCheckBox(self.cb_save)
+            self.cb_save=QtWidgets.QCheckBox("inoffizielle Aufgabe")
+            self.cb_save.setObjectName(_fromUtf8("cb_save"))
+            self.cb_save.setChecked(True)
+            msg.setCheckBox(self.cb_save)
 
             msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
             buttonY = msg.button(QtWidgets.QMessageBox.Yes)
