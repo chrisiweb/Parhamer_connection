@@ -2878,19 +2878,27 @@ class Ui_MainWindow(object):
                 highest_grade = int(all[0][1])
 
         path_folder = "k" + str(highest_grade)
-        klasse_path_temp = os.path.join(
-            path_programm, "_database", path_folder, "Einzelbeispiele"
-        )
+
+        if self.creator_mode == 'admin' and self.cb_save.isChecked()==True:
+            max_integer_file = 1000
+            klasse_path_temp = os.path.join(
+                path_programm, "_database_inoffiziell", path_folder, "Einzelbeispiele"
+            )
+
+        else:
+            max_integer_file = 0
+            klasse_path_temp = os.path.join(
+                path_programm, "_database", path_folder, "Einzelbeispiele"
+            )
         # print(klasse_path_temp)
 
-        max_integer_file = 0
+        
 
         if not os.path.exists(klasse_path_temp):
             print("Creating {} for you.".format(klasse_path_temp))
             os.makedirs(klasse_path_temp)
         for all in os.listdir(klasse_path_temp):
             if all.endswith(".tex"):
-
                 file_integer, file_extension = all.split(".tex")
                 if int(file_integer) > max_integer_file:
                     max_integer_file = int(file_integer)
@@ -2901,48 +2909,37 @@ class Ui_MainWindow(object):
         # ##################################################
 
         klasse = "k" + str(highest_grade)
-        if self.creator_mode == "admin":
+        # if local_save == True:
+        #     pass
 
-            path_saved_files_temp = os.path.join(path_programm, "Beispieleinreichung")
-            if os.path.exists(path_saved_files_temp):
-                path_saved_files_klasse = os.path.join(path_saved_files_temp, klasse)
+        try:
+            path_saved_files_klasse = os.path.join(path_programm, "Beispieleinreichung", klasse)
 
-                if not os.path.exists(path_saved_files_klasse):
-                    os.makedirs(path_saved_files_klasse)
+            if not os.path.exists(path_saved_files_klasse):
+                os.makedirs(path_saved_files_klasse)
 
-                for all in os.listdir(path_saved_files_klasse):
-                    if all.endswith(".tex"):
+            for all in os.listdir(path_saved_files_klasse):
+                if all.endswith(".tex"):
+                    file_integer, file_extension = all.split(".tex")
+                    if int(file_integer) > max_integer_file:
+                        max_integer_file = int(file_integer)
 
-                        file_integer, file_extension = all.split(".tex")
-                        if int(file_integer) > max_integer_file:
-                            max_integer_file = int(file_integer)
-        else:
-            path_saved_files = os.path.join(path_programm, "Beispieleinreichung")
-            if not os.path.exists(path_saved_files):
-                msg = QtWidgets.QMessageBox()
-                msg.setWindowTitle("Fehlermeldung")
-                msg.setIcon(QtWidgets.QMessageBox.Critical)
-                msg.setWindowIcon(QtGui.QIcon(logo_path))
-                msg.setText(
-                    'Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und muss zuerst für Sie freigegeben werden.'
-                )
-                msg.setInformativeText(
-                    "Derzeit können keine neuen Aufgaben eingegeben werden."
-                )
-                msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
-                msg.exec_()
-                return
-            else:
-                path_saved_files_klasse = os.path.join(path_saved_files, klasse)
 
-                if not os.path.exists(path_saved_files_klasse):
-                    os.makedirs(path_saved_files_klasse)
+        except FileNotFoundError:
+            msg = QtWidgets.QMessageBox()
+            msg.setWindowTitle("Fehlermeldung")
+            msg.setIcon(QtWidgets.QMessageBox.Critical)
+            msg.setWindowIcon(QtGui.QIcon(logo_path))
+            msg.setText(
+                'Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und muss zuerst für Sie freigegeben werden.'
+            )
+            msg.setInformativeText(
+                "Derzeit können keine neuen Aufgaben eingegeben werden."
+            )
+            msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            msg.exec_()
+            return
 
-                for all in os.listdir(path_saved_files_klasse):
-                    if all.endswith(".tex"):
-                        file_integer, file_extension = all.split(".tex")
-                        if int(file_integer) > max_integer_file:
-                            max_integer_file = int(file_integer)
 
         # ############################################################################
 
@@ -4320,7 +4317,7 @@ class Ui_MainWindow(object):
                     content = [
                         line.replace("../_database/Bilder/", "") for line in content
                     ]
-                    # content=[line.replace('../_database_inoffiziell/Bilder/','') for line in content]
+                    content=[line.replace('../_database_inoffiziell/Bilder/','') for line in content]
 
             for line in content:
                 if "begin{beispiel}" in line:
