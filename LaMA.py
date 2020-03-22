@@ -137,6 +137,7 @@ widgets_search = [
     "cb_solution",
     "cb_drafts",
     "btn_suche",
+    "label_warnung"
 ]  #'actionRefresh_Database'
 
 widgets_create = [
@@ -1371,13 +1372,13 @@ class Ui_MainWindow(object):
         self.create_checkbox_klasse("k8", k8_beschreibung)
 
         #### Warnung ### Hinweis ####
-        self.warnung = QtWidgets.QLabel(self.centralwidget)
-        self.warnung.setWordWrap(True)
-        self.warnung.setObjectName(_fromUtf8("warnung"))
-        self.warnung.setStyleSheet(_fromUtf8("background-color: rgb(255, 80, 80);"))
-        self.warnung.setFont(QtGui.QFont('', 11))
-        self.warnung.setText(_translate("MainWindow", "Achtung: Aufgrund neuer hilfreicher Befehle ist es ratsam, ein Update des srdp-mathematik-Pakets so bald wie möglich durchzuführen! Nähere Infos unter lama.schule", None))
-        self.gridLayout.addWidget(self.warnung, 5,0,1,1)
+        self.label_warnung = QtWidgets.QLabel(self.centralwidget)
+        self.label_warnung.setWordWrap(True)
+        self.label_warnung.setObjectName(_fromUtf8("label_warnung"))
+        self.label_warnung.setStyleSheet(_fromUtf8("background-color: rgb(255, 80, 80);"))
+        self.label_warnung.setFont(QtGui.QFont('', 11))
+        self.label_warnung.setText(_translate("MainWindow", "Achtung: Aufgrund neuer hilfreicher Befehle ist es ratsam, ein Update des srdp-mathematik-Pakets so bald wie möglich durchzuführen! Nähere Infos unter lama.schule", None))
+        self.gridLayout.addWidget(self.label_warnung, 5,0,1,1)
         ##########################
 
         ##############################################################
@@ -4344,7 +4345,7 @@ class Ui_MainWindow(object):
         ####### Checks files in 'Beispieleinreichung' #####
         ##################################################
 
-        if self.creator_mode == "admin" or local_save == True:
+        if local_save == True:
             pass
         else:
             try:
