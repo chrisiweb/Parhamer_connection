@@ -2946,13 +2946,22 @@ class Ui_MainWindow(object):
         for all in dict_picture_path:
             head, tail = os.path.split(all)
             x = "{" + tail + "}"
-            name, ext = os.path.splitext(tail)
+            #name, ext = os.path.splitext(tail)
+
+            if self.creator_mode == "admin" and self.cb_save.isChecked() == True:
+                str_image_path = "../_database_inoffiziell/Bilder/"
+            if self.creator_mode == "admin" and self.cb_save.isChecked() == False:
+                str_image_path = "../_database/Bilder/"
+            # if local_save == True:
+            #     str_image_path = "../Lokaler_Ordner/Bilder/"
+            else:
+                str_image_path = "../Beispieleinreichung/Bilder/"
 
             if x in textBox_Entry:
 
                 textBox_Entry = str(textBox_Entry).replace(
                     tail,
-                    "../_database/Bilder/"
+                    str_image_path
                     + klasse
                     + "_"
                     + str(max_integer_file + 1)
@@ -2960,12 +2969,17 @@ class Ui_MainWindow(object):
                     + tail,
                 )
 
-        if self.creator_mode == "admin":
 
+        if self.creator_mode == "admin" and self.cb_save.isChecked() == True:
+            copy_image_path = os.path.join(
+                path_programm, "_database_inoffiziell", "Bilder"
+            )  ### direct inofficial save
+        if self.creator_mode == "admin" and self.cb_save.isChecked() == False:
             copy_image_path = os.path.join(
                 path_programm, "_database", "Bilder"
-            )  ### direct save
-
+            )  ### direct official save
+        # if local_save == True:
+        #     copy_image_path = os.path.join(path_programm, "Lokaler_Ordner", "Bilder")
         else:
             copy_image_path = os.path.join(
                 path_programm, "Beispieleinreichung", "Bilder"
@@ -2997,17 +3011,36 @@ class Ui_MainWindow(object):
                     return
 
             if self.creator_mode == "admin":
-                x = os.rename(
-                    copy_image_file_temp,
-                    "%s/_database/Bilder/" % path_programm
-                    + klasse
-                    + "_"
-                    + str(max_integer_file + 1)
-                    + "_"
-                    + tail,
-                )  ### direct save
-
+                if self.cb_save.isChecked() == False:               
+                    x = os.rename(
+                        copy_image_file_temp,
+                        "%s/_database/Bilder/" % path_programm
+                        + klasse
+                        + "_"
+                        + str(max_integer_file + 1)
+                        + "_"
+                        + tail,
+                    )  ### direct official save
+                if self.cb_save.isChecked() == True:               
+                    x = os.rename(
+                        copy_image_file_temp,
+                        "%s/_database_inoffiziell/Bilder/" % path_programm
+                        + klasse
+                        + "_"
+                        + str(max_integer_file + 1)
+                        + "_"
+                        + tail,
+                    )  ### direct inofficial save
             else:
+                # if local_save == True:
+                #     x = os.rename(
+                #         copy_image_file_temp,
+                #         "%s/Lokaler_Ordner/Bilder/" % path_programm
+                #         + str(max_integer_file + 1)
+                #         + "_"
+                #         + tail,
+                #     )  ### indirect
+                #else:
                 x = os.rename(
                     copy_image_file_temp,
                     "%s/Beispieleinreichung/Bilder/" % path_programm
@@ -3028,21 +3061,39 @@ class Ui_MainWindow(object):
         themen_auswahl_joined = ", ".join(sorted(themen_auswahl))
 
         if self.creator_mode == "admin":
-            file_name = os.path.join(
-                path_programm,
-                "_database",
-                klasse,
-                "Einzelbeispiele",
-                str(max_integer_file + 1) + ".tex",
-            )  ### direct save
-            file = open(file_name, "w", encoding="utf8")
+            if self.cb_save.isChecked() == False:
+                file_name = os.path.join(
+                    path_programm,
+                    "_database",
+                    klasse,
+                    "Einzelbeispiele",
+                    str(max_integer_file + 1) + ".tex",
+                )  ### direct official save
+                file = open(file_name, "w", encoding="utf8")
+            if self.cb_save.isChecked() == True:
+                file_name = os.path.join(
+                    path_programm,
+                    "_database_inoffiziell",
+                    klasse,
+                    "Einzelbeispiele",
+                    str(max_integer_file + 1) + ".tex",
+                )  ### direct inofficial save
+                file = open(file_name, "w", encoding="utf8")
         else:
+            # if local_save == True:
+            #     file_name = os.path.join(
+            #         path_programm,
+            #         "Lokaler_Ordner",
+            #         "Typ2Aufgaben",
+            #         "_L_" + str(max_integer_file + 1) + ".tex",
+            #     )  ### indirect save
+            #else:
             file_name = os.path.join(
                 path_programm,
                 "Beispieleinreichung",
                 klasse,
                 str(max_integer_file + 1) + ".tex",
-            )  ### not direct save
+            )  ### indirect save
 
             try:
                 file = open(file_name, "w", encoding="utf8")
@@ -3105,8 +3156,13 @@ class Ui_MainWindow(object):
         QtWidgets.QApplication.restoreOverrideCursor()
         msg = QtWidgets.QMessageBox()
         msg.setIcon(QtWidgets.QMessageBox.Information)
-        msg.setWindowTitle("Admin Modus - Aufgabe erfolgreich gespeichert")
+        if self.creator_mode == 'admin':
+            msg.setWindowTitle("Admin Modus - Aufgabe erfolgreich gespeichert")
+        if self.creator_mode == 'user':
+            msg.setWindowTitle("Aufgabe erfolgreich gespeichert")
         msg.setWindowIcon(QtGui.QIcon(logo_path))
+        #if local_save == True:
+        #else:
         msg.setText(
             'Die Aufgabe mit dem Titel\n\n"{0}"\n\nwurde gespeichert.'.format(
                 edit_titel
