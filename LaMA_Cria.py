@@ -2155,6 +2155,29 @@ class Ui_MainWindow(object):
                                     break
                             file.close()
 
+        ################################################
+        #### Suche lokal gespeicherte Beispiele ######
+        #############################################
+
+            for root, dirs, files in os.walk(
+                os.path.join(path_programm, "Lokaler_Ordner", klasse)
+            ):
+                for all in files:
+                    if all.endswith(".tex") or all.endswith(".ltx"):
+                        if not ("Gesamtdokument" in all) and not (
+                            "Teildokument" in all
+                        ):
+                            # print(os.path.join(root,all))
+                            file = open(os.path.join(root, all), encoding="utf8")
+                            for i, line in enumerate(file):
+                                if not line == "\n":
+                                    beispieldaten_dateipfad[line] = os.path.join(
+                                        root, all
+                                    )
+                                    beispieldaten.append(line)
+                                    break
+                            file.close()
+
         temp_dict_beispieldaten = {}
         temp_list = list(beispieldaten_dateipfad.keys())
         temp_list.sort(key=self.natural_keys)
@@ -2186,6 +2209,10 @@ class Ui_MainWindow(object):
         self.adapt_choosing_list("sage")
         self.adapt_choosing_list("feedback")
         msg.close()
+
+    ############################################################################
+    ############################################################################
+
 
     def create_pdf(self, dateiname, index, maximum):
         if sys.platform.startswith("linux"):
@@ -2724,6 +2751,7 @@ class Ui_MainWindow(object):
 
     def save_file(self):
         self.creator_mode = "user"
+        local_save = False
         ########################### WARNINGS #####
         ######################################
 
@@ -2791,7 +2819,7 @@ class Ui_MainWindow(object):
             bilder = "-"
 
         if self.creator_mode == "user":
-
+            local_save = False
             aufgabenformat = "Aufgabenformat: %s\n" % self.comboBox_af.currentText()
 
             msg.setWindowTitle("Aufgabe speichern")
@@ -2815,10 +2843,12 @@ class Ui_MainWindow(object):
             )
             self.cb_confirm.setObjectName(_fromUtf8("cb_confirm"))
             msg.setCheckBox(self.cb_confirm)
-            msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+            msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.Apply| QtWidgets.QMessageBox.No)
             buttonY = msg.button(QtWidgets.QMessageBox.Yes)
             buttonY.setText("Speichern")
             msg.setDefaultButton(QtWidgets.QMessageBox.Yes)
+            button_personal = msg.button(QtWidgets.QMessageBox.Apply)
+            button_personal.setText("Lokal speichern")
             buttonN = msg.button(QtWidgets.QMessageBox.No)
             buttonN.setText("Abbrechen")
             ret = msg.exec_()
@@ -2832,6 +2862,32 @@ class Ui_MainWindow(object):
                             "Bitte bestätigen Sie die Eigenständigkeitserklärung und Lizenzvereinbarung."
                         )
                         ret = msg.exec_()
+            elif ret == QtWidgets.QMessageBox.Apply:
+                msg_personal = QtWidgets.QMessageBox()
+                msg_personal.setWindowTitle("Aufgabe lokal speichern")
+                msg_personal.setIcon(QtWidgets.QMessageBox.Warning)
+                msg_personal.setWindowIcon(QtGui.QIcon(logo_path))
+                msg_personal.setText(
+                    "Sind Sie sicher, dass Sie diese Aufgabe nur lokal in Ihrer Dropbox speichern wollen?\n"
+                )
+                msg_personal.setInformativeText(
+                    "ACHTUNG: Durch nicht überprüfte Aufgaben können Fehler entstehen, die das Programm zum Absturz bringen!"
+                )
+                msg_personal.setStandardButtons(
+                    QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No
+                )
+                buttonY_personal = msg_personal.button(QtWidgets.QMessageBox.Yes)
+                buttonY_personal.setText("Ja")
+                buttonN_personal = msg_personal.button(QtWidgets.QMessageBox.No)
+                buttonN_personal.setText("Nein")
+                msg_personal.setDefaultButton(QtWidgets.QMessageBox.No)
+                ret_personal = msg_personal.exec_()
+
+                if ret_personal == QtWidgets.QMessageBox.Yes:
+                    local_save = True
+                if ret_personal == QtWidgets.QMessageBox.No:
+                    # ret=msg.exec_()
+                    return
             else:
                 return
 
@@ -2887,7 +2943,11 @@ class Ui_MainWindow(object):
             klasse_path_temp = os.path.join(
                 path_programm, "_database_inoffiziell", path_folder, "Einzelbeispiele"
             )
-
+        elif self.creator_mode == "user" and local_save == True:
+            max_integer_file = 0
+            klasse_path_temp = os.path.join(
+                path_programm, "Lokaler_Ordner", path_folder
+            )
         else:
             max_integer_file = 0
             klasse_path_temp = os.path.join(
@@ -2902,7 +2962,11 @@ class Ui_MainWindow(object):
             os.makedirs(klasse_path_temp)
         for all in os.listdir(klasse_path_temp):
             if all.endswith(".tex"):
-                file_integer, file_extension = all.split(".tex")
+                if local_save == True:
+                    filename=all.replace("_L_","")
+                else:
+                    filename=all
+                file_integer, file_extension = filename.split(".tex")
                 if int(file_integer) > max_integer_file:
                     max_integer_file = int(file_integer)
 
@@ -2912,36 +2976,36 @@ class Ui_MainWindow(object):
         # ##################################################
 
         klasse = "k" + str(highest_grade)
-        # if local_save == True:
-        #     pass
+        if local_save == True:
+            pass
+        else:    
+            try:
+                path_saved_files_klasse = os.path.join(path_programm, "Beispieleinreichung", klasse)
 
-        try:
-            path_saved_files_klasse = os.path.join(path_programm, "Beispieleinreichung", klasse)
+                if not os.path.exists(path_saved_files_klasse):
+                    os.makedirs(path_saved_files_klasse)
 
-            if not os.path.exists(path_saved_files_klasse):
-                os.makedirs(path_saved_files_klasse)
-
-            for all in os.listdir(path_saved_files_klasse):
-                if all.endswith(".tex"):
-                    file_integer, file_extension = all.split(".tex")
-                    if int(file_integer) > max_integer_file:
-                        max_integer_file = int(file_integer)
+                for all in os.listdir(path_saved_files_klasse):
+                    if all.endswith(".tex"):
+                        file_integer, file_extension = all.split(".tex")
+                        if int(file_integer) > max_integer_file:
+                            max_integer_file = int(file_integer)
 
 
-        except FileNotFoundError:
-            msg = QtWidgets.QMessageBox()
-            msg.setWindowTitle("Fehlermeldung")
-            msg.setIcon(QtWidgets.QMessageBox.Critical)
-            msg.setWindowIcon(QtGui.QIcon(logo_path))
-            msg.setText(
-                'Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und muss zuerst für Sie freigegeben werden.'
-            )
-            msg.setInformativeText(
-                "Derzeit können keine neuen Aufgaben eingegeben werden."
-            )
-            msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
-            msg.exec_()
-            return
+            except FileNotFoundError:
+                msg = QtWidgets.QMessageBox()
+                msg.setWindowTitle("Fehlermeldung")
+                msg.setIcon(QtWidgets.QMessageBox.Critical)
+                msg.setWindowIcon(QtGui.QIcon(logo_path))
+                msg.setText(
+                    'Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und muss zuerst für Sie freigegeben werden.'
+                )
+                msg.setInformativeText(
+                    "Derzeit können keine neuen Aufgaben eingegeben werden."
+                )
+                msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+                msg.exec_()
+                return
 
 
         # ############################################################################
@@ -2950,13 +3014,13 @@ class Ui_MainWindow(object):
             head, tail = os.path.split(all)
             x = "{" + tail + "}"
             #name, ext = os.path.splitext(tail)
-            print(self.creator_mode, self.cb_save.isChecked())
+            #print(self.creator_mode, self.cb_save.isChecked())
             if self.creator_mode == "admin" and self.cb_save.isChecked() == True:
                 str_image_path = "../_database_inoffiziell/Bilder/"
             elif self.creator_mode == "admin" and self.cb_save.isChecked() == False:
                 str_image_path = "../_database/Bilder/"
-            # if local_save == True:
-            #     str_image_path = "../Lokaler_Ordner/Bilder/"
+            elif local_save == True:
+                str_image_path = "../Lokaler_Ordner/Bilder/"
             else:
                 str_image_path = "../Beispieleinreichung/Bilder/"
 
@@ -2981,8 +3045,8 @@ class Ui_MainWindow(object):
             copy_image_path = os.path.join(
                 path_programm, "_database", "Bilder"
             )  ### direct official save
-        # if local_save == True:
-        #     copy_image_path = os.path.join(path_programm, "Lokaler_Ordner", "Bilder")
+        elif local_save == True:
+            copy_image_path = os.path.join(path_programm, "Lokaler_Ordner", "Bilder")
         else:
             copy_image_path = os.path.join(
                 path_programm, "Beispieleinreichung", "Bilder"
@@ -3035,24 +3099,26 @@ class Ui_MainWindow(object):
                         + tail,
                     )  ### direct inofficial save
             else:
-                # if local_save == True:
-                #     x = os.rename(
-                #         copy_image_file_temp,
-                #         "%s/Lokaler_Ordner/Bilder/" % path_programm
-                #         + str(max_integer_file + 1)
-                #         + "_"
-                #         + tail,
-                #     )  ### indirect
-                #else:
-                x = os.rename(
-                    copy_image_file_temp,
-                    "%s/Beispieleinreichung/Bilder/" % path_programm
-                    + klasse
-                    + "_"
-                    + str(max_integer_file + 1)
-                    + "_"
-                    + tail,
-                )  ### indirect
+                if local_save == True:
+                    x = os.rename(
+                        copy_image_file_temp,
+                        "%s/Lokaler_Ordner/Bilder/" % path_programm
+                        + klasse
+                        + "_"
+                        + str(max_integer_file + 1)
+                        + "_"
+                        + tail,
+                    )  ### direct local
+                else:
+                    x = os.rename(
+                        copy_image_file_temp,
+                        "%s/Beispieleinreichung/Bilder/" % path_programm
+                        + klasse
+                        + "_"
+                        + str(max_integer_file + 1)
+                        + "_"
+                        + tail,
+                    )  ### indirect
 
         themen_auswahl = []
 
@@ -3083,20 +3149,20 @@ class Ui_MainWindow(object):
                 )  ### direct inofficial save
                 file = open(file_name, "w", encoding="utf8")
         else:
-            # if local_save == True:
-            #     file_name = os.path.join(
-            #         path_programm,
-            #         "Lokaler_Ordner",
-            #         "Typ2Aufgaben",
-            #         "_L_" + str(max_integer_file + 1) + ".tex",
-            #     )  ### indirect save
-            #else:
-            file_name = os.path.join(
-                path_programm,
-                "Beispieleinreichung",
-                klasse,
-                str(max_integer_file + 1) + ".tex",
-            )  ### indirect save
+            if local_save == True:
+                file_name = os.path.join(
+                    path_programm,
+                    "Lokaler_Ordner",
+                    klasse,
+                    "_L_" + str(max_integer_file + 1) + ".tex",
+                )  ### direct local save
+            else:
+                file_name = os.path.join(
+                    path_programm,
+                    "Beispieleinreichung",
+                    klasse,
+                    str(max_integer_file + 1) + ".tex",
+                )  ### indirect save
 
             try:
                 file = open(file_name, "w", encoding="utf8")
@@ -3128,8 +3194,14 @@ class Ui_MainWindow(object):
         else:
             quelle = self.lineEdit_quelle.text()
 
+        if local_save == True:
+            local = "*Privat* "
+        else:
+            local = ""
+
         file.write(
             "\section{"
+            + local
             + klasse.upper()
             + " - "
             + themen_auswahl_joined
@@ -3164,13 +3236,18 @@ class Ui_MainWindow(object):
         if self.creator_mode == 'user':
             msg.setWindowTitle("Aufgabe erfolgreich gespeichert")
         msg.setWindowIcon(QtGui.QIcon(logo_path))
-        #if local_save == True:
-        #else:
-        msg.setText(
-            'Die Aufgabe mit dem Titel\n\n"{0}"\n\nwurde gespeichert.'.format(
-                edit_titel
+        if local_save == True:
+            msg.setText(
+                'Die Aufgabe mit dem Titel\n\n"{0}"\n\nwurde lokal auf Ihrem System gespeichert.'.format(
+                    edit_titel
+                )
             )
-        )
+        else:
+            msg.setText(
+                'Die Aufgabe mit dem Titel\n\n"{0}"\n\nwurde gespeichert.'.format(
+                    edit_titel
+                )
+            )
         msg.setDetailedText(
             "Details\n"
             "Thema/Themen: {0}\n"
