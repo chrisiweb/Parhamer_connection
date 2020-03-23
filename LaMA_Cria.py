@@ -676,6 +676,10 @@ class Ui_MainWindow(object):
         self.cb_solution.setChecked(True)
         self.cb_solution.setObjectName("cb_solution")
         self.horizontalLayout_2.addWidget(self.cb_solution)
+        self.cb_drafts = QtWidgets.QCheckBox(self.centralwidget)
+        self.cb_drafts.setObjectName(_fromUtf8("cb_drafts"))
+        self.horizontalLayout_2.addWidget(self.cb_drafts)
+        self.cb_drafts.toggled.connect(self.cb_drafts_enabled)
         self.btn_suche = QtWidgets.QPushButton(self.centralwidget)
         self.btn_suche.setEnabled(True)
         self.btn_suche.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
@@ -1470,6 +1474,12 @@ class Ui_MainWindow(object):
             self.cb_solution_sage, 7, 4, 2, 1, QtCore.Qt.AlignRight
         )
 
+        self.cb_drafts_sage = QtWidgets.QCheckBox(self.centralwidget)
+        self.cb_drafts_sage.setObjectName(_fromUtf8("cb_drafts_sage"))
+        self.gridLayout_5.addWidget(self.cb_drafts_sage, 8, 4, 2, 1)
+        self.cb_drafts_sage.setText(_translate("MainWindow", "Entwürfe anzeigen"))
+        self.cb_drafts_sage.toggled.connect(self.cb_drafts_sage_enabled)
+
         self.pushButton_vorschau = QtWidgets.QPushButton(self.groupBox_sage)
         self.pushButton_vorschau.setMaximumSize(QtCore.QSize(90, 16777215))
         self.pushButton_vorschau.setObjectName("pushButton_vorschau")
@@ -1738,6 +1748,7 @@ class Ui_MainWindow(object):
             ),
         )
         self.cb_solution.setText(_translate("MainWindow", "Lösungen anzeigen"))
+        self.cb_drafts.setText(_translate("MainWindow", "Entwürfe anzeigen"))
         self.btn_suche.setText(_translate("MainWindow", "Suche starten!"))
         self.btn_suche.setShortcut(_translate("MainWindow", "Return"))
         self.menuFeedback.setTitle(_translate("MainWindow", "Feedback && Fehler"))
@@ -2342,6 +2353,27 @@ class Ui_MainWindow(object):
 
         QtWidgets.QApplication.restoreOverrideCursor()
 
+
+    def cb_drafts_enabled(self):
+        if self.cb_drafts.isChecked():
+            self.warning_window(
+                "Achtung!\nEntwürfe können Fehler enthalten, die das Programm zum Absturz bringen.",
+                "\nSpeichern Sie gegebenenfalls eine erstellte Schularbeit vor der Suche!",
+                "Here be dragons!",
+            )
+
+    def cb_drafts_sage_enabled(self):
+        if self.cb_drafts_sage.isChecked():
+            self.warning_window(
+                "Achtung!\nEntwürfe können Fehler enthalten, die das Programm zum Absturz bringen.",
+                "\nSpeichern Sie gegebenenfalls eine erstellte Schularbeit vor dem Erstellen!",
+                "Here be dragons!",
+            )
+        self.adapt_choosing_list("sage")
+
+
+
+
     def PrepareTeXforPDF(self):
 
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
@@ -2738,10 +2770,10 @@ class Ui_MainWindow(object):
                 ret = msg.exec_()
                 return
 
-    def warning_window(self, text, detailed_text=""):
+    def warning_window(self, text, detailed_text="", titel="Warnung"):
         QtWidgets.QApplication.restoreOverrideCursor()
         msg = QtWidgets.QMessageBox()
-        msg.setWindowTitle("Warnung")
+        msg.setWindowTitle(titel)
         msg.setIcon(QtWidgets.QMessageBox.Warning)
         msg.setWindowIcon(QtGui.QIcon(logo_path))
         msg.setText(text)
