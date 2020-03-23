@@ -185,6 +185,11 @@ dict_picture_path = {}
 # 	dict_sage_examples[all]=[]
 list_sage_examples = []
 
+def atoi(text):
+    return int(text) if text.isdigit() else text
+
+def natural_keys(text):
+    return [atoi(c) for c in re.split("(\d+)", text)]
 
 class Ui_Dialog_titlepage(object):
     def setupUi(self, Dialog, dict_titlepage):
@@ -2394,6 +2399,34 @@ class Ui_MainWindow(object):
 
             beispieldaten = list(beispieldaten_dateipfad.keys())
 
+
+        if self.cb_drafts.isChecked():
+            #print(beispieldaten_dateipfad)
+            QtWidgets.QApplication.restoreOverrideCursor()
+            drafts_path = os.path.join(path_programm, "Beispieleinreichung")
+            for klasse in list_klassen:
+                try:
+                    drafts_path = os.path.join(path_programm, "Beispieleinreichung",klasse)
+                    for all in os.listdir(drafts_path):
+                        file = open(os.path.join(drafts_path, all), encoding="utf8")
+                        for i, line in enumerate(file):
+                            if not line == "\n":
+                                # line=line.replace('\section{', 'section{ENTWURF ')
+                                beispieldaten_dateipfad[
+                                    "ENTWURF " + line
+                                ] = os.path.join(drafts_path, all)
+                                beispieldaten.append(line)
+                                break
+                        file.close()
+                except FileNotFoundError:
+                    pass
+
+
+        ######### new tabu.sty not working ###
+        ######################################################
+        ########### work around ####################
+        #########################################
+
         path_tabu_pkg = os.path.join(path_programm, "_database", "_config", "tabu.sty")
         copy_path_tabu_pkg = os.path.join(path_programm, "Teildokument", "tabu.sty")
         if os.path.isfile(copy_path_tabu_pkg):
@@ -2457,7 +2490,7 @@ class Ui_MainWindow(object):
                 klasse = "K" + item[0]
                 thema = item[1] + "." + item[2]
 
-                for all in beispieldaten:
+                for all in list(beispieldaten_dateipfad.keys()):
                     if klasse in all:
 
                         if thema in all:
@@ -2467,7 +2500,7 @@ class Ui_MainWindow(object):
             self.combobox_searchtype.currentText()
             == "Alle Dateien ausgeben, die alle Suchkriterien enthalten"
         ):
-            beispieldaten_temporary = beispieldaten
+            beispieldaten_temporary = list(beispieldaten_dateipfad.keys())
 
             for item in suchbegriffe:
 
@@ -2553,8 +2586,10 @@ class Ui_MainWindow(object):
         for key, value in dict_gesammeltedateien.items():
             value = value.replace("\\", "/")
             file = open(filename_teildokument, "a", encoding="utf8")
-
-            file.write('\input{"' + value + '"}%\n' "\hrule	 \leer\n\n")
+            if key.startswith("ENTWURF"):
+                file.write('ENTWURF \input{"' + value + '"}%\n' "\hrule	 \leer\n\n")
+            else:
+                file.write('\input{"' + value + '"}%\n' "\hrule	 \leer\n\n")
 
         file.write('\shorthandoff{"}\n' "\end{document}")
 
@@ -3227,7 +3262,7 @@ class Ui_MainWindow(object):
             quelle = self.lineEdit_quelle.text()
 
         if local_save == True:
-            local = "*Privat* "
+            local = "*Lokal* "
         else:
             local = ""
 
@@ -3572,13 +3607,13 @@ class Ui_MainWindow(object):
         if list_mode == "feedback":
             listWidget = self.listWidget_fb
 
-            # if self.comboBox_at_fb.currentText()=='Allgemeine Rückmeldung':
-            # 	# self.comboBox_klassen_fb.clear()
-            # 	self.comboBox_kapitel_fb.clear()
-            # 	self.comboBox_unterkapitel_fb.clear()
-            # 	self.lineEdit_number_fb.clear()
-            # 	listWidget.clear()
-            # 	return
+
+            if self.comboBox_at_fb.currentText() == "Allgemeine Rückmeldung":
+                self.comboBox_fb.clear()
+                self.comboBox_fb_num.clear()
+                self.lineEdit_number_fb.clear()
+                listWidget.clear()
+                return
 
         listWidget.clear()
 
@@ -3592,13 +3627,55 @@ class Ui_MainWindow(object):
                 beispieldaten_dateipfad = json.load(f)
 
         self.beispieldaten_dateipfad = beispieldaten_dateipfad
-        # print(self.beispieldaten_dateipfad)
 
-        def atoi(text):
-            return int(text) if text.isdigit() else text
+        if self.cb_drafts_sage.isChecked():
+            #print(beispieldaten_dateipfad)
+            QtWidgets.QApplication.restoreOverrideCursor()
+            drafts_path = os.path.join(path_programm, "Beispieleinreichung")
+            for klasse in list_klassen:
+                try:
+                    drafts_path = os.path.join(path_programm, "Beispieleinreichung",klasse)
+                    for all in os.listdir(drafts_path):
+                        file = open(os.path.join(drafts_path, all), encoding="utf8")
+                        for i, line in enumerate(file):
+                            if not line == "\n":
+                                # line=line.replace('\section{', 'section{ENTWURF ')
+                                self.beispieldaten_dateipfad[line] = os.path.join(drafts_path, all)
+                                break
+                        file.close()
+                except FileNotFoundError:
+                    pass
 
-        def natural_keys(text):
-            return [atoi(c) for c in re.split("(\d+)", text)]
+        list_beispieldaten = []
+        #print(list_mode)
+        if list_mode == "sage":
+            for all in self.beispieldaten_dateipfad.values():
+                filename_all = os.path.basename(all)
+                name, extension = os.path.splitext(filename_all)
+                if name.startswith(self.lineEdit_number.text()):
+                    if "Beispieleinreichung" in all:
+                        list_beispieldaten.append("*E-" + name)
+                    else:
+                        list_beispieldaten.append(name)
+
+
+        if list_mode == "feedback":
+            for all in self.beispieldaten_dateipfad.values():
+                filename_all = os.path.basename(all)
+                name, extension = os.path.splitext(filename_all)
+                if name.startswith(self.lineEdit_number.text()):
+                    list_beispieldaten.append(name)
+
+
+        list_beispieldaten = sorted(list_beispieldaten, key=natural_keys)
+        #print(list_beispieldaten)
+        for all in list_beispieldaten:
+            if list_mode == "feedback" and all.startswith("_L_"):
+                pass
+            else:
+                listWidget.addItem(all)
+                listWidget.setFocusPolicy(QtCore.Qt.ClickFocus)
+
 
         def add_filename_to_list(file_path):
             filename_all = os.path.basename(file_path)
