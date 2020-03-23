@@ -127,6 +127,7 @@ widgets_search = [
     "groupBox_titelsuche",
     "groupBox_unterkapitel",
     "cb_solution",
+    "cb_drafts",
     "btn_suche",
     "combobox_searchtype",
 ]  # ,'label_aufgabentyp','groupBox_gk','groupBox_klassen','groupBox_themen_klasse',
@@ -153,6 +154,7 @@ widgets_create = [
 widgets_sage = [
     "actionRefresh_Database",
     "menuSuche",
+    "actionReset_sage",
     "menuNeue_Aufgabe",
     "menuFeedback",
     "menuHelp",
@@ -755,7 +757,8 @@ class Ui_MainWindow(object):
         self.actionTyp_2_Aufgaben.setObjectName("actionTyp_2_Aufgaben")
         self.actionReset = QtWidgets.QAction(MainWindow)
         self.actionReset.setObjectName("actionReset")
-
+        self.actionReset_sage = QtWidgets.QAction(MainWindow)
+        self.actionReset_sage.setObjectName(_fromUtf8("actionReset_sage"))
         self.actionLoad = QtWidgets.QAction(MainWindow)
         self.actionLoad.setObjectName(_fromUtf8("actionLoad"))
         # self.actionLoad.setVisible(False)
@@ -784,7 +787,8 @@ class Ui_MainWindow(object):
         self.actionNeue_Aufgabe_erstellen.setObjectName("actionNeue_Aufgabe_erstellen")
         self.menuDatei.addAction(self.actionRefresh_Database)
         self.menuDatei.addAction(self.actionReset)
-
+        self.menuDatei.addAction(self.actionReset_sage)
+        self.actionReset_sage.setVisible(False)        
         self.menuDatei.addAction(self.actionLoad)
         self.menuDatei.addAction(self.actionSave)
         self.menuDatei.addSeparator()
@@ -826,6 +830,7 @@ class Ui_MainWindow(object):
 
         self.actionExit.triggered.connect(self.close_app)
         self.actionReset.triggered.connect(self.reset_window)
+        self.actionReset_sage.triggered.connect(self.reset_sage)
         self.actionRefresh_Database.triggered.connect(self.refresh_ddb)
         self.actionLoad.triggered.connect(partial(self.sage_load, False))
         self.actionSave.triggered.connect(partial(self.sage_save, ""))
@@ -1783,6 +1788,7 @@ class Ui_MainWindow(object):
         self.actionAufgaben_Typ1.setText(_translate("MainWindow", "Typ 1 Aufgaben"))
         self.actionTyp_2_Aufgaben.setText(_translate("MainWindow", "Typ 2 Aufgaben"))
         self.actionReset.setText(_translate("MainWindow", "Reset"))
+        self.actionReset_sage.setText(_translate("MainWindow", "Reset Schularbeit"))
         self.actionReset.setShortcut(_translate("MainWindow", "F4"))
         self.actionLoad.setText(_translate("MainWindow", "Öffnen"))
         self.actionLoad.setShortcut("Ctrl+O")
@@ -1965,6 +1971,46 @@ class Ui_MainWindow(object):
         self.lineEdit_quelle.setText(_translate("MainWindow", ""))
         self.plainTextEdit.setPlainText(_translate("MainWindow", ""))
 
+
+    def reset_sage(self):
+        global list_sage_examples
+        self.dict_list_input_examples
+
+        msg = QtWidgets.QMessageBox()
+        msg.setIcon(QtWidgets.QMessageBox.Question)
+        msg.setWindowIcon(QtGui.QIcon(logo_path))
+        msg.setWindowTitle("Schularbeit löschen?")
+        msg.setText(
+            "Sind Sie sicher, dass Sie das Fenster zurücksetzen wollen und die erstellte Schularbeit löschen möchten?"
+        )
+        msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+        buttonY = msg.button(QtWidgets.QMessageBox.Yes)
+        buttonY.setText("Ja")
+        buttonN = msg.button(QtWidgets.QMessageBox.No)
+        buttonN.setText("Nein")
+        ret = msg.exec_()
+
+        if ret == QtWidgets.QMessageBox.Yes:
+            self.spinBox_nummer.setValue(1)
+            self.dateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
+            self.comboBox_pruefungstyp.setCurrentIndex(0)
+            self.lineEdit_klasse.setText("")
+            self.spinBox_2.setProperty("value", 91)
+            self.spinBox_3.setProperty("value", 80)
+            self.spinBox_4.setProperty("value", 64)
+            self.spinBox_5.setProperty("value", 50)
+            self.comboBox_klassen.setCurrentIndex(0)
+            self.comboBox_kapitel.setCurrentIndex(0)
+            self.comboBox_unterkapitel.setCurrentIndex(0)
+            self.lineEdit_number.setText("")
+            self.dict_list_input_examples = {}
+            for all in list_sage_examples:
+                exec("self.groupBox_bsp_{}.setParent(None)".format(all))
+            list_sage_examples=[]
+            #self.sage_aufgabe_create(False)
+           
+
+
     def tab_changed(self):
         klasse = list_klassen[self.tabWidget_klassen.currentIndex()]
         dict_klasse_name = eval("dict_{}_name".format(klasse))
@@ -2112,11 +2158,11 @@ class Ui_MainWindow(object):
         t = os.path.getmtime(filename)
         return datetime.datetime.fromtimestamp(t)
 
-    def atoi(self, text):
-        return int(text) if text.isdigit() else text
+    # def atoi(self, text):
+    #     return int(text) if text.isdigit() else text
 
-    def natural_keys(self, text):
-        return [self.atoi(c) for c in re.split("(\d+)", text)]
+    # def natural_keys(self, text):
+    #     return [self.atoi(c) for c in re.split("(\d+)", text)]
 
     def refresh_ddb(self):
         msg = QtWidgets.QMessageBox()
@@ -2196,7 +2242,7 @@ class Ui_MainWindow(object):
 
         temp_dict_beispieldaten = {}
         temp_list = list(beispieldaten_dateipfad.keys())
-        temp_list.sort(key=self.natural_keys)
+        temp_list.sort(key=natural_keys)
         for all in temp_list:
             temp_dict_beispieldaten.update({all: beispieldaten_dateipfad[all]})
 
@@ -2524,7 +2570,7 @@ class Ui_MainWindow(object):
                     if self.entry_suchbegriffe.text().lower() not in all.lower():
                         gesammeltedateien.remove(all)
 
-        gesammeltedateien.sort(key=self.natural_keys)
+        gesammeltedateien.sort(key=natural_keys)
 
         dict_gesammeltedateien = {}
 
@@ -2569,7 +2615,7 @@ class Ui_MainWindow(object):
             msg.exec_()
             return
 
-        beispieldaten.sort(key=self.natural_keys)
+        beispieldaten.sort(key=natural_keys)
         file = open(filename_teildokument, "a", encoding="utf8")
         file.write("\n \\scriptsize Suchbegriffe: ")
         for all in suchbegriffe:
@@ -4196,7 +4242,7 @@ class Ui_MainWindow(object):
             for bsp_string in list_sage_examples:
                 self.punkte_changed(bsp_string)
         # self.beurteilungsraster_changed()
-
+        self.lineEdit_number.setText("")
         QtWidgets.QApplication.restoreOverrideCursor()
 
     def pushButton_vorschau_pressed(self, ausgabetyp, index, maximum):
