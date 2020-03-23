@@ -5753,6 +5753,8 @@ class Ui_MainWindow(object):
 
         self.punkte_changed()
         self.beurteilungsraster_changed()
+        self.lineEdit_number.setText("")
+        self.lineEdit_number.setFocus()
         QtWidgets.QApplication.restoreOverrideCursor()
 
     def pushButton_ausgleich_pressed(self, bsp_name, selected_typ2_path, content):
