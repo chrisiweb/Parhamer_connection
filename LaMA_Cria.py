@@ -4241,8 +4241,8 @@ class Ui_MainWindow(object):
         if file_loaded == True:
             for bsp_string in list_sage_examples:
                 self.punkte_changed(bsp_string)
-        # self.beurteilungsraster_changed()
         self.lineEdit_number.setText("")
+        self.lineEdit_number.setFocus()
         QtWidgets.QApplication.restoreOverrideCursor()
 
     def pushButton_vorschau_pressed(self, ausgabetyp, index, maximum):
