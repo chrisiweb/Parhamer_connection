@@ -3607,13 +3607,12 @@ class Ui_MainWindow(object):
         if list_mode == "feedback":
             listWidget = self.listWidget_fb
 
-
-            if self.comboBox_at_fb.currentText() == "Allgemeine Rückmeldung":
-                self.comboBox_fb.clear()
-                self.comboBox_fb_num.clear()
-                self.lineEdit_number_fb.clear()
-                listWidget.clear()
-                return
+            # if self.comboBox_at_fb.currentText() == "Allgemeine Rückmeldung":
+            #     self.comboBox_fb.clear()
+            #     self.comboBox_fb_num.clear()
+            #     self.lineEdit_number_fb.clear()
+            #     listWidget.clear()
+            #     return
 
         listWidget.clear()
 
@@ -3627,9 +3626,7 @@ class Ui_MainWindow(object):
                 beispieldaten_dateipfad = json.load(f)
 
         self.beispieldaten_dateipfad = beispieldaten_dateipfad
-
         if self.cb_drafts_sage.isChecked():
-            #print(beispieldaten_dateipfad)
             QtWidgets.QApplication.restoreOverrideCursor()
             drafts_path = os.path.join(path_programm, "Beispieleinreichung")
             for klasse in list_klassen:
@@ -3647,34 +3644,20 @@ class Ui_MainWindow(object):
                     pass
 
         list_beispieldaten = []
-        #print(list_mode)
+
         if list_mode == "sage":
+            klasse='k'+self.comboBox_klassen.currentText()[0]
             for all in self.beispieldaten_dateipfad.values():
-                filename_all = os.path.basename(all)
-                name, extension = os.path.splitext(filename_all)
-                if name.startswith(self.lineEdit_number.text()):
-                    if "Beispieleinreichung" in all:
-                        list_beispieldaten.append("*E-" + name)
-                    else:
-                        list_beispieldaten.append(name)
+                if klasse in all:
+                    filename_all = os.path.basename(all)
+                    name, extension = os.path.splitext(filename_all)
+                    #print(filename_all)
+                    if name.startswith(self.lineEdit_number.text()):
+                        if "Beispieleinreichung" in all:
+                            list_beispieldaten.append("*E-" + name)
+                        else:
+                            list_beispieldaten.append(name)
 
-
-        if list_mode == "feedback":
-            for all in self.beispieldaten_dateipfad.values():
-                filename_all = os.path.basename(all)
-                name, extension = os.path.splitext(filename_all)
-                if name.startswith(self.lineEdit_number.text()):
-                    list_beispieldaten.append(name)
-
-
-        list_beispieldaten = sorted(list_beispieldaten, key=natural_keys)
-        #print(list_beispieldaten)
-        for all in list_beispieldaten:
-            if list_mode == "feedback" and all.startswith("_L_"):
-                pass
-            else:
-                listWidget.addItem(all)
-                listWidget.setFocusPolicy(QtCore.Qt.ClickFocus)
 
 
         def add_filename_to_list(file_path):
@@ -3768,14 +3751,13 @@ class Ui_MainWindow(object):
 
         list_beispieldaten = sorted(list_beispieldaten, key=natural_keys)
 
-        if list_mode == "sage":
-            for all in list_beispieldaten:
-                self.listWidget.addItem(all)
-                self.listWidget.setFocusPolicy(QtCore.Qt.ClickFocus)
-        if list_mode == "feedback":
-            for all in list_beispieldaten:
-                self.listWidget_fb.addItem(all)
-                self.listWidget_fb.setFocusPolicy(QtCore.Qt.ClickFocus)
+        for all in list_beispieldaten:
+            if list_mode == "feedback" and all.startswith("_L_"):
+                pass
+            else:
+                listWidget.addItem(all)
+                listWidget.setFocusPolicy(QtCore.Qt.ClickFocus)
+
 
     def save_dict_examples_data(self):
         self.dict_list_input_examples = {}
