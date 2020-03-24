@@ -695,7 +695,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addWidget(self.btn_suche)
         self.gridLayout.addLayout(self.horizontalLayout_2, 5, 2, 1, 1)
         self.groupBox_af = QtWidgets.QGroupBox(self.centralwidget)
-        # self.groupBox_af.setMaximumSize(QtCore.QSize(367, 16777215))
+        #self.groupBox_af.setMaximumSize(QtCore.QSize(20, 16777215))
         self.groupBox_af.setObjectName("groupBox_af")
         self.gridLayout_13 = QtWidgets.QGridLayout(self.groupBox_af)
         self.gridLayout_13.setObjectName("gridLayout_13")
@@ -728,7 +728,7 @@ class Ui_MainWindow(object):
         self.cb_af_zo.setObjectName("cb_af_zo")
         self.gridLayout_13.addWidget(self.cb_af_zo, 3, 2, 1, 1)
 
-        self.gridLayout.addWidget(self.groupBox_af, 3, 0, 3, 1)
+        self.gridLayout.addWidget(self.groupBox_af, 3, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
