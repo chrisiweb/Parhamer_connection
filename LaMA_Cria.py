@@ -3689,22 +3689,6 @@ class Ui_MainWindow(object):
                 except FileNotFoundError:
                     pass
 
-        list_beispieldaten = []
-
-        # if list_mode == "sage":
-        #     klasse='k'+self.comboBox_klassen.currentText()[0]
-        #     for all in self.beispieldaten_dateipfad.values():
-        #         if klasse in all:
-        #             filename_all = os.path.basename(all)
-        #             name, extension = os.path.splitext(filename_all)
-        #             #print(filename_all)
-        #             if name.startswith(self.lineEdit_number.text()):
-        #                 if "Beispieleinreichung" in all:
-        #                     list_beispieldaten.append("*E-" + name)
-        #                 else:
-        #                     list_beispieldaten.append(name)
-
-
 
         def add_filename_to_list(file_path):
             filename_all = os.path.basename(file_path)
@@ -3849,7 +3833,7 @@ class Ui_MainWindow(object):
         self.dict_list_input_examples["data_gesamt"] = dict_data_gesamt
 
     def nummer_clicked(self, item):
-        self.sage_aufgabe_add(item.text())
+        self.sage_aufgabe_add(item.text().replace("*E-", ""))
 
     def nummer_clicked_fb(self, item):
         self.label_example.setText(
