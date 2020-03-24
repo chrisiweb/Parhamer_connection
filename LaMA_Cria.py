@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #### Version number ###
 __version__ = "v1.0.2"
-__lastupdate__ = "02/20"
+__lastupdate__ = "03/20"
 ####################
 
 from PyQt5 import QtCore, QtWidgets, QtGui
@@ -3691,18 +3691,18 @@ class Ui_MainWindow(object):
 
         list_beispieldaten = []
 
-        if list_mode == "sage":
-            klasse='k'+self.comboBox_klassen.currentText()[0]
-            for all in self.beispieldaten_dateipfad.values():
-                if klasse in all:
-                    filename_all = os.path.basename(all)
-                    name, extension = os.path.splitext(filename_all)
-                    #print(filename_all)
-                    if name.startswith(self.lineEdit_number.text()):
-                        if "Beispieleinreichung" in all:
-                            list_beispieldaten.append("*E-" + name)
-                        else:
-                            list_beispieldaten.append(name)
+        # if list_mode == "sage":
+        #     klasse='k'+self.comboBox_klassen.currentText()[0]
+        #     for all in self.beispieldaten_dateipfad.values():
+        #         if klasse in all:
+        #             filename_all = os.path.basename(all)
+        #             name, extension = os.path.splitext(filename_all)
+        #             #print(filename_all)
+        #             if name.startswith(self.lineEdit_number.text()):
+        #                 if "Beispieleinreichung" in all:
+        #                     list_beispieldaten.append("*E-" + name)
+        #                 else:
+        #                     list_beispieldaten.append(name)
 
 
 
@@ -3711,7 +3711,10 @@ class Ui_MainWindow(object):
             name, extension = os.path.splitext(filename_all)
             if list_mode == "sage":
                 if name.startswith(self.lineEdit_number.text()):
-                    list_beispieldaten.append(name)
+                    if "Beispieleinreichung" in file_path:
+                        list_beispieldaten.append("*E-" + name)
+                    else:
+                        list_beispieldaten.append(name)
             if list_mode == "feedback":
                 if name.startswith(self.lineEdit_number_fb.text()):
                     list_beispieldaten.append(name)
@@ -4015,9 +4018,11 @@ class Ui_MainWindow(object):
             self.update_lists_examples()
 
         for bsp_string in list_sage_examples:
-
+            print(bsp_string)
+            temp_bsp_string=bsp_string.replace("_L_","")
             list_input = eval("self.list_input_{}".format(bsp_string))
-            klasse, example = bsp_string.split("_")
+            klasse, example = temp_bsp_string.split("_")
+            print(klasse, example)
             name = example + ".tex"
 
             for all in self.beispieldaten_dateipfad:
@@ -4052,7 +4057,8 @@ class Ui_MainWindow(object):
         # 		bsp_string=klasse+ '_' + all
         self.list_copy_images = []
         for bsp_string in list_sage_examples:
-            klasse, example = bsp_string.split("_")
+            temp_bsp_string=bsp_string.replace("_L_","")
+            klasse, example = temp_bsp_string.split("_")
 
             list_input = eval("self.list_input_{}".format(bsp_string))
 
