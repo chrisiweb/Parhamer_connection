@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__ = "v1.1.0"
+__version__ = "v1.1.1"
 __lastupdate__ = "03/20"
 ####################
 
@@ -1857,13 +1857,18 @@ class Ui_MainWindow(object):
             if ret == QtWidgets.QMessageBox.Yes:
                 opened_file = os.path.basename(sys.argv[0])
                 name, extension = os.path.splitext(opened_file)
-
+                if sys.platform.startswith("darwin"):
+                    system_folder="update_cria_mac"
+                elif sys.platform.startswith("linux"):
+                    system_folder="update_cria_linux"
+                else:
+                    system_folder="update_cria_windows"
                 filename_update = os.path.join(
                     path_programm,
                     "_database",
                     "_config",
                     "update",
-                    "update_cria_windows",
+                    system_folder,
                     "update_cria%s" % extension,
                 )
 
