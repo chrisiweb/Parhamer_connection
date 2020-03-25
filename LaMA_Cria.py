@@ -1863,6 +1863,7 @@ class Ui_MainWindow(object):
                     "_database",
                     "_config",
                     "update",
+                    "update_cria_windows",
                     "update_cria%s" % extension,
                 )
 
