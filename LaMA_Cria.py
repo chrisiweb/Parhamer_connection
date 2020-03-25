@@ -3082,7 +3082,7 @@ class Ui_MainWindow(object):
         for all in os.listdir(klasse_path_temp):
             if all.endswith(".tex"):
                 if local_save == True:
-                    filename=all.replace("_L_","")
+                    filename=all.replace("_L","")
                 else:
                     filename=all
                 file_integer, file_extension = filename.split(".tex")
@@ -3853,7 +3853,11 @@ class Ui_MainWindow(object):
 
     def sage_aufgabe_add(self, aufgabe):
         klasse = list_klassen[self.comboBox_klassen.currentIndex()]
-        example = klasse + "_" + aufgabe
+        if "_L_" in aufgabe:
+            example = klasse + aufgabe
+        else:
+            example = klasse + "_" + aufgabe
+
         if example not in list_sage_examples:
             list_sage_examples.append(example)
 
@@ -4008,11 +4012,11 @@ class Ui_MainWindow(object):
             self.update_lists_examples()
 
         for bsp_string in list_sage_examples:
-            print(bsp_string)
-            temp_bsp_string=bsp_string.replace("_L_","")
             list_input = eval("self.list_input_{}".format(bsp_string))
-            klasse, example = temp_bsp_string.split("_")
-            print(klasse, example)
+            list_bsp_string=bsp_string.split("_")
+            klasse = list_bsp_string[0]
+            example = list_bsp_string[-1]
+
             name = example + ".tex"
 
             for all in self.beispieldaten_dateipfad:
@@ -4047,8 +4051,9 @@ class Ui_MainWindow(object):
         # 		bsp_string=klasse+ '_' + all
         self.list_copy_images = []
         for bsp_string in list_sage_examples:
-            temp_bsp_string=bsp_string.replace("_L_","")
-            klasse, example = temp_bsp_string.split("_")
+            list_bsp_string=bsp_string.split("_")
+            klasse = list_bsp_string[0]
+            example = list_bsp_string[-1]
 
             list_input = eval("self.list_input_{}".format(bsp_string))
 
@@ -4254,7 +4259,9 @@ class Ui_MainWindow(object):
         # print(list_sage_examples)
 
         for bsp_string in list_sage_examples:
-            klasse, example = bsp_string.split("_")
+            list_bsp_string=bsp_string.split("_")
+            klasse = list_bsp_string[0]
+            example = list_bsp_string[-1]
             name = example + ".tex"
             # print(klasse, example)
 
@@ -4517,9 +4524,10 @@ class Ui_MainWindow(object):
 
         # list_chosen_examples=[]
 
-        # print(list_sage_examples)
-        for bsp_string in list_sage_examples:
+        #print(list_sage_examples)
+        # print(dict_gesammeltedateien)
 
+        for bsp_string in list_sage_examples:
             list_input = "self.list_input_{}".format(bsp_string)
 
             spinBox_abstand = self.dict_list_input_examples[list_input][1]
