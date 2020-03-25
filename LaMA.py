@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #### Version number ###
 __version__ = "v1.8.6"
-__lastupdate__ = "02/20"
+__lastupdate__ = "03/20"
 ####################
 
 from PyQt5 import QtCore, QtWidgets, QtGui
@@ -2679,12 +2679,18 @@ class Ui_MainWindow(object):
             if ret == QtWidgets.QMessageBox.Yes:
                 opened_file = os.path.basename(sys.argv[0])
                 name, extension = os.path.splitext(opened_file)
-
+                if sys.platform.startswith("darwin"):
+                    system_folder="update_mac"
+                elif sys.platform.startswith("linux"):
+                    system_folder="update_linux"
+                else:
+                    system_folder="update_windows"
                 filename_update = os.path.join(
                     path_programm,
                     "_database",
                     "_config",
                     "update",
+                    system_folder,
                     "update%s" % extension,
                 )
 
