@@ -133,6 +133,7 @@ widgets_search = [
 ]  # ,'label_aufgabentyp','groupBox_gk','groupBox_klassen','groupBox_themen_klasse',
 
 widgets_create = [
+    "actionRefresh_Database",
     "actionReset",
     "menuBild_einf_gen",
     "menuSuche",
@@ -166,6 +167,7 @@ widgets_sage = [
 
 
 widgets_feedback = [
+    "actionRefresh_Database",
     "menuSuche",
     "menuNeue_Schularbeit",
     "menuNeue_Aufgabe",
@@ -504,7 +506,7 @@ class Ui_Dialog_erstellen(object):
 
 class Ui_MainWindow(object):
     global dict_picture_path, list_sage_examples
-
+    
     def __init__(self):
         self.dict_chosen_topics = {}
         self.list_creator_topics = []
@@ -2274,6 +2276,7 @@ class Ui_MainWindow(object):
             )
         )
         QtWidgets.QApplication.restoreOverrideCursor()
+
         self.adapt_choosing_list("sage")
         self.adapt_choosing_list("feedback")
         msg.close()
@@ -3646,18 +3649,20 @@ class Ui_MainWindow(object):
             if self.comboBox_kapitel_fb.currentIndex() == 0:
                 self.comboBox_unterkapitel_fb.clear()
 
-        # print(self.comboBox_kapitel.currentIndex())
+
         self.adapt_choosing_list(list_mode)
 
     def comboBox_unterkapitel_changed(self, list_mode):
-
         self.adapt_choosing_list(list_mode)
 
     def adapt_choosing_list(self, list_mode):
-        if list_mode == "sage":
-            listWidget = self.listWidget
-        if list_mode == "feedback":
-            listWidget = self.listWidget_fb
+        try:
+            if list_mode == "sage":
+                listWidget = self.listWidget
+            if list_mode == "feedback":
+                    listWidget = self.listWidget_fb
+        except AttributeError:
+            return
 
             # if self.comboBox_at_fb.currentText() == "Allgemeine Rückmeldung":
             #     self.comboBox_fb.clear()
@@ -4909,7 +4914,6 @@ class Ui_MainWindow(object):
         self.listWidget.itemClicked.connect(self.nummer_clicked)
 
     def send_feedback(self):
-
         MainWindow.setMenuBar(self.menuBar)
         lists_delete = widgets_search + widgets_sage + widgets_create
         for all in lists_delete:
