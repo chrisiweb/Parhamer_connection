@@ -3082,7 +3082,7 @@ class Ui_MainWindow(object):
         for all in os.listdir(klasse_path_temp):
             if all.endswith(".tex"):
                 if local_save == True:
-                    filename=all.replace("_L","")
+                    filename=all.replace("_L_","")
                 else:
                     filename=all
                 file_integer, file_extension = filename.split(".tex")
@@ -4010,13 +4010,22 @@ class Ui_MainWindow(object):
 
         if file_loaded == False:
             self.update_lists_examples()
-
+        #print(list_sage_examples)
+        print(self.listWidget.currentItem().text())
         for bsp_string in list_sage_examples:
+            print(bsp_string)
+            if "_L_" in bsp_string:
+                local_file = True
+            else:
+                local_file = False
             list_input = eval("self.list_input_{}".format(bsp_string))
             list_bsp_string=bsp_string.split("_")
             klasse = list_bsp_string[0]
-            example = list_bsp_string[-1]
-
+            if local_file==True:
+                example = "_L_"+list_bsp_string[-1]
+            else:
+                example = list_bsp_string[-1]
+            
             name = example + ".tex"
 
             for all in self.beispieldaten_dateipfad:
@@ -4051,9 +4060,21 @@ class Ui_MainWindow(object):
         # 		bsp_string=klasse+ '_' + all
         self.list_copy_images = []
         for bsp_string in list_sage_examples:
+            if "_L_" in bsp_string:
+                local_file = True
+            else:
+                local_file = False
             list_bsp_string=bsp_string.split("_")
             klasse = list_bsp_string[0]
-            example = list_bsp_string[-1]
+
+            if local_file==True:
+                example = "_L_"+list_bsp_string[-1]
+            else:
+                example = list_bsp_string[-1]
+
+            # list_bsp_string=bsp_string.split("_")
+            # klasse = list_bsp_string[0]
+            # example = list_bsp_string[-1]
 
             list_input = eval("self.list_input_{}".format(bsp_string))
 
@@ -4080,10 +4101,14 @@ class Ui_MainWindow(object):
             label_aufgabe.setWordWrap(True)
             label_aufgabe.setObjectName("label_aufgabe_{}".format(bsp_string))
             self.gridLayout_gB.addWidget(label_aufgabe, 0, 0, 1, 1)
-
-            label_aufgabe.setText(
+            if "_L_" in bsp_string:
+                label_aufgabe.setText(
                 _translate("MainWindow", "{0}. Klasse - {1}".format(klasse[1], example))
-            )
+                )           
+            else:
+                label_aufgabe.setText(
+                    _translate("MainWindow", "{0}. Klasse - {1}".format(klasse[1], example))
+                )
 
             exec("self.label_title_{} = QtWidgets.QLabel(x)".format(bsp_string))
             label_title = eval("self.label_title_{}".format(bsp_string))
@@ -4199,9 +4224,10 @@ class Ui_MainWindow(object):
             self.gridLayout_gB.addWidget(self.groupBox_abstand, 0, 2, 2, 1)
 
             ##### GET included pictures ###
-
             name = example + ".tex"
+            print(name)
             for path in self.beispieldaten_dateipfad.values():
+                # print(path)
                 if klasse in path:
                     if name == os.path.basename(path):
                         selected_path = path
@@ -4246,7 +4272,7 @@ class Ui_MainWindow(object):
         self.lineEdit_number.setFocus()
         QtWidgets.QApplication.restoreOverrideCursor()
 
-    def pushButton_vorschau_pressed(self, ausgabetyp, index, maximum):
+    def pushButton_vorschau_pressed(self, ausgabetyp, index, maximum):        
         if ausgabetyp == "vorschau":
             self.save_dict_examples_data()
 
@@ -4259,9 +4285,20 @@ class Ui_MainWindow(object):
         # print(list_sage_examples)
 
         for bsp_string in list_sage_examples:
+            if "_L_" in bsp_string:
+                local_file = True
+            else:
+                local_file = False
             list_bsp_string=bsp_string.split("_")
             klasse = list_bsp_string[0]
-            example = list_bsp_string[-1]
+            if local_file==True:
+                example = "_L_"+list_bsp_string[-1]
+            else:
+                example = list_bsp_string[-1]
+            # list_bsp_string=bsp_string.split("_")
+            # klasse = list_bsp_string[0]
+            # example = list_bsp_string[-1]
+
             name = example + ".tex"
             # print(klasse, example)
 
@@ -4525,7 +4562,7 @@ class Ui_MainWindow(object):
         # list_chosen_examples=[]
 
         #print(list_sage_examples)
-        # print(dict_gesammeltedateien)
+        print(dict_gesammeltedateien)
 
         for bsp_string in list_sage_examples:
             list_input = "self.list_input_{}".format(bsp_string)
