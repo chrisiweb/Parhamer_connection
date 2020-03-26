@@ -4015,10 +4015,8 @@ class Ui_MainWindow(object):
 
         if file_loaded == False:
             self.update_lists_examples()
-        #print(list_sage_examples)
-        print(self.listWidget.currentItem().text())
+
         for bsp_string in list_sage_examples:
-            print(bsp_string)
             if "_L_" in bsp_string:
                 local_file = True
             else:
@@ -4230,7 +4228,6 @@ class Ui_MainWindow(object):
 
             ##### GET included pictures ###
             name = example + ".tex"
-            print(name)
             for path in self.beispieldaten_dateipfad.values():
                 # print(path)
                 if klasse in path:
@@ -4300,12 +4297,9 @@ class Ui_MainWindow(object):
                 example = "_L_"+list_bsp_string[-1]
             else:
                 example = list_bsp_string[-1]
-            # list_bsp_string=bsp_string.split("_")
-            # klasse = list_bsp_string[0]
-            # example = list_bsp_string[-1]
 
             name = example + ".tex"
-            # print(klasse, example)
+
 
             for all in self.beispieldaten_dateipfad:
                 if klasse.upper() in all:
@@ -4565,9 +4559,6 @@ class Ui_MainWindow(object):
         vorschau = open(filename_vorschau, "a", encoding="utf8")
 
         # list_chosen_examples=[]
-
-        #print(list_sage_examples)
-        print(dict_gesammeltedateien)
 
         for bsp_string in list_sage_examples:
             list_input = "self.list_input_{}".format(bsp_string)
