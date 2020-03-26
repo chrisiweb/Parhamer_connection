@@ -4763,9 +4763,6 @@ class Ui_MainWindow(object):
     #############################################################################
 
     def pushButton_send_pressed(self):
-        gmail_user = "lamabugfix@gmail.com"
-        gmail_password = "abcd&1234"
-
         if self.comboBox_at_fb.currentText() == "Allgemeine Rückmeldung":
             example = "Allgemeiner Bug Report"
             if self.plainTextEdit_fb.toPlainText() == "":
@@ -4801,50 +4798,92 @@ class Ui_MainWindow(object):
         else:
             contact = self.lineEdit_email.text()
 
-        content = "Subject: LaMA-Cria: {0}: {1}\n\nProblembeschreibung:\n\n{2}\n\n\nKontakt: {3}".format(
+        content = "Subject: LaMA-Cria - {0}: {1}\n\nProblembeschreibung:\n\n{2}\n\n\nKontakt: {3}".format(
             example, fehler, description, contact
         )
 
-        # try:
-        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        gmail_user = "lamabugfix@gmail.com"
+        try:
+            fbpassword_path = os.path.join(path_programm, "_database", "_config")
+            fbpassword_file = os.path.join(fbpassword_path, "fbpassword.txt")
+            f = open(fbpassword_file, "r")
+            fbpassword_check = []
+            fbpassword_check.append(f.read().replace(" ", "").replace("\n", ""))
+            gmail_password = fbpassword_check[0]
+        except FileNotFoundError:
+            pw_msg = QtWidgets.QInputDialog(
+                None,
+                QtCore.Qt.WindowSystemMenuHint
+                | QtCore.Qt.WindowTitleHint
+                | QtCore.Qt.WindowCloseButtonHint,
+            )
+            pw_msg.setInputMode(QtWidgets.QInputDialog.TextInput)
+            pw_msg.setWindowTitle("Passworteingabe nötig")
+            pw_msg.setLabelText("Passwort:")
+            pw_msg.setCancelButtonText("Abbrechen")
+            pw_msg.setWindowIcon(QtGui.QIcon(logo_path))
+            if pw_msg.exec_() == QtWidgets.QDialog.Accepted:
+                gmail_password = pw_msg.textValue()
+            else:
+                return
 
-        # server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-        # server.ehlo()
-        # server.login(gmail_user, gmail_password)
-        # server.sendmail('lamabugfix@gmail.com', 'lama.helpme@gmail.com', content.encode("utf8"))
-        # server.close()
+        try:
+            QtWidgets.QApplication.setOverrideCursor(
+                QtGui.QCursor(QtCore.Qt.WaitCursor)
+            )
+            server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
+            server.ehlo()
+            server.login(gmail_user, gmail_password)
+            server.sendmail(
+                "lamabugfix@gmail.com", "lama.helpme@gmail.com", content.encode("utf8")
+            )
+            server.close()
 
-        QtWidgets.QApplication.restoreOverrideCursor()
+            QtWidgets.QApplication.restoreOverrideCursor()
 
-        msg = QtWidgets.QMessageBox()
-        msg.setIcon(QtWidgets.QMessageBox.Warning)
-        msg.setWindowIcon(QtGui.QIcon(logo_path))
-        msg.setWindowTitle("Meldung gesendet")
-        msg.setText("Das Feedback bzw. die Fehlermeldung wurde erfolgreich gesendet!\n")
-        msg.setInformativeText("Vielen Dank für die Mithilfe LaMA zu verbessern.")
-        msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
-        msg.exec_()
+            msg = QtWidgets.QMessageBox()
+            msg.setIcon(QtWidgets.QMessageBox.Warning)
+            msg.setWindowIcon(QtGui.QIcon(logo_path))
+            msg.setWindowTitle("Meldung gesendet")
+            msg.setText(
+                "Das Feedback bzw. die Fehlermeldung wurde erfolgreich gesendet!\n"
+            )
+            msg.setInformativeText("Vielen Dank für die Mithilfe LaMA zu verbessern.")
+            msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            msg.exec_()
 
-        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        self.plainTextEdit_fb.setPlainText(_translate("MainWindow", ""))
+            QtWidgets.QApplication.setOverrideCursor(
+                QtGui.QCursor(QtCore.Qt.WaitCursor)
+            )
+            self.plainTextEdit_fb.setPlainText(_translate("MainWindow", ""))
+            self.comboBox_at_fb.setCurrentIndex(0)
+            self.label_example.setText(
+                _translate("MainWindow", "Ausgewählte Aufgabe: -")
+            )
+            self.comboBox_fehlertyp.setCurrentIndex(0)
+            self.comboBox_at_fb.setCurrentIndex(0)
+            self.comboBox_klassen_fb.setCurrentIndex(0)
+            self.comboBox_kapitel_fb.setCurrentIndex(0)
+            self.comboBox_unterkapitel_fb.setCurrentIndex(0)
+            self.lineEdit_number_fb.setText(_translate("MainWindow", ""))
+            self.lineEdit_email.setText(_translate("MainWindow", ""))
+            QtWidgets.QApplication.restoreOverrideCursor()
+            return
 
-        self.label_example.setText(_translate("MainWindow", "Ausgewählte Aufgabe: -"))
-        self.comboBox_fehlertyp.setCurrentIndex(0)
-        self.comboBox_at_fb.setCurrentIndex(0)
-        self.comboBox_klassen_fb.setCurrentIndex(0)
-        self.comboBox_kapitel_fb.setCurrentIndex(0)
-        self.comboBox_unterkapitel_fb.setCurrentIndex(0)
-        self.lineEdit_number_fb.setText(_translate("MainWindow", ""))
-        self.lineEdit_email.setText(_translate("MainWindow", ""))
-        QtWidgets.QApplication.restoreOverrideCursor()
-        return
+        except Exception as e:
+            print(e)
+            QtWidgets.QApplication.restoreOverrideCursor()
 
-        # except:
-        # 	msg.close()
-        # 	QtWidgets.QApplication.restoreOverrideCursor()
-
-        # 	self.warning_window('Die Meldung konnte leider nicht gesendet werden!', 'Überprüfen Sie Ihre Internetverbindung oder versuchen Sie es später erneut.')
-
+            if "smtplib.SMTPAuthenticationError" in str(sys.exc_info()[0]):
+                self.warning_window(
+                    "Das eingebene Passwort ist nicht korrekt!",
+                    "Bitte kontaktieren Sie den Support für nähere Informationen:\n\nlama.helpme@gmail.com",
+                )
+            else:
+                self.warning_window(
+                    "Die Meldung konnte leider nicht gesendet werden!",
+                    "Überprüfen Sie Ihre Internetverbindung oder versuchen Sie es später erneut.",
+                )
     #######################################################################
     ##########################################################################
     ############################################################################
