@@ -26,7 +26,7 @@ if os.path.isdir(dir_teildokument):
     try:
         for files in os.listdir(dir_teildokument):
             file_path=os.path.join(dir_teildokument, files)
-            if files.startswith('log_file_') or  files.startswith('Schularbeit_Vorschau') or files.startswith('Teildokument_'):
+            if files.startswith('log_file') or  files.startswith('Schularbeit_Vorschau') or files.startswith('Teildokument'):
                 if os.path.splitext(files)[1] != ".pdf":
                
                     os.unlink(file_path)
