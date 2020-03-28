@@ -6,7 +6,6 @@ from config import config_loader, path_programm, logo_path
 from config import logo_path
 from translate import _fromUtf8, _translate
 
-
 class Ui_Dialog_titlepage(object):
     def setupUi(self, Dialog, dict_titlepage):
         # self.dict_titlepage = dict_titlepage

@@ -10,7 +10,7 @@
 %
 
 \NeedsTeXFormat{LaTeX2e}[1996/12/26]
-\ProvidesPackage{srdp-mathematik}[2019/07/10 v1.4 Standard-Schularbeitsformate]
+\ProvidesPackage{srdp-mathematik}[2020/03/28 v1.5 Standard-Schularbeitsformate]
 
 
 \usepackage{color}
@@ -180,7 +180,7 @@
 
 \NewEnviron{beispiel}[2][\unskip]{\begin{minipage}[t]{0.88\textwidth}
 \addtocounter{number}{1}
-\begin{enumerate}[leftmargin=0pt]
+\begin{enumerate}
 	\item[\thenumber.] \BODY
 \end{enumerate}
 
@@ -232,8 +232,7 @@
 \renewcommand{\labelenumii}{(\roman{enumii})}
       			\list
         {}
-        {%
-    \leftmargin.0pt   
+        {%   
     \rightmargin.12\textwidth
     \def\makelabel##1{\stepcounter{number}%
     \hss\llap{\thenumber.}%
@@ -253,7 +252,7 @@
 \NewEnviron{aufgabenstellung}[1]{\let\itemalt\item
 \renewcommand*{\item}{\setcounter{subitemcounter}{0}\itemalt}
 \subsubsection{Aufgabenstellung:}%
-\begin{enumerate}[a),leftmargin=*]
+\begin{enumerate}[a),leftmargin=0pt]
 \item \BODY
 \end{enumerate}%
 \let\item\itemalt}
@@ -261,7 +260,7 @@
 \NewEnviron{loesung}[1]{\let\itemalt\item
 \renewcommand*{\item}{\setcounter{subitemcounter}{0}\itemalt}
 \antwort{%%
-\begin{enumerate}[a),leftmargin=*]
+\begin{enumerate}[a),leftmargin=0pt]
 \item \BODY
 \end{enumerate}}%
 \let\item\itemalt}

@@ -26,17 +26,12 @@ def create_pdf(path_file, index, maximum, typ=0):
     if path_file == "Teildokument":
         dateiname = path_file + "_" + typ
 
-        # save_file=os.path.join(path_programm, 'Teildokument')
-        # print(dateiname)
-    # elif dateiname=='Schularbeit_Vorschau':
-    # 	save_file=os.path.join(path_programm, 'Teildokument')
 
     else:
         head, tail = os.path.split(path_file)
         save_file = head
         dateiname = tail
 
-    # chosen_aufgabenformat=self.label_aufgabentyp.text()[-1]
 
     if dateiname == "Schularbeit_Vorschau" or dateiname.startswith("Teildokument"):
         if sys.platform.startswith("linux"):
@@ -46,10 +41,11 @@ def create_pdf(path_file, index, maximum, typ=0):
                 ),
                 shell=True,
             ).wait()
-            #subprocess.Popen('cd "{0}/Teildokument" ; okular "{1}.pdf"'.format(path_programm, dateiname),shell=True)
-            #subprocess.Popen('cd "{0}/Teildokument" ; xdg-open "{1}.pdf"'.format(path_programm, dateiname),shell=True)
+            # subprocess.Popen('cd "{0}/Teildokument" ; okular "{1}.pdf"'.format(path_programm, dateiname),shell=True)
+            # subprocess.Popen('cd "{0}/Teildokument" ; xdg-open "{1}.pdf"'.format(path_programm, dateiname),shell=True)
             subprocess.run(
-                [   "sudo",
+                [
+                    "sudo",
                     "xdg-open",
                     "{0}/Teildokument/{1}.pdf".format(path_programm, dateiname),
                 ]
@@ -147,3 +143,4 @@ def create_pdf(path_file, index, maximum, typ=0):
         msg.close()
 
     QtWidgets.QApplication.restoreOverrideCursor()
+

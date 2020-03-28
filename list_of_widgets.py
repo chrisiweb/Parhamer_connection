@@ -17,7 +17,9 @@ widgets_search = [
     "groupBox_themen_klasse",
     "groupBox_titelsuche",
     "cb_solution",
+    "cb_drafts",
     "btn_suche",
+    "label_warnung"
 ]  #'actionRefresh_Database'
 
 widgets_create = [
