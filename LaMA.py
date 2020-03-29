@@ -32,7 +32,7 @@ from list_of_widgets import (
     widgets_sage,
     widgets_feedback,
 )
-from subwindows import Ui_Dialog_titlepage, Ui_Dialog_ausgleichspunkte
+from subwindows import Ui_Dialog_titlepage, Ui_Dialog_ausgleichspunkte #, Ui_Dialog_erstellen
 from translate import _fromUtf8, _translate
 from sort_items import natural_keys
 from create_pdf import create_pdf
@@ -378,16 +378,27 @@ class Ui_MainWindow(object):
             | QtCore.Qt.WindowCloseButtonHint,
         )
         self.ui = Ui_Dialog_erstellen()
+        pdf=True
+        lama=True
         self.ui.setupUi(
             self.Dialog,
             dict_list_input_examples,
             beispieldaten_dateipfad_1,
             beispieldaten_dateipfad_2,
             dict_titlepage,
-            saved_file_path
+            saved_file_path,
+            pdf,
+            lama,
         )  # , dict_gesammeltedateien
         self.Dialog.show()
-        self.Dialog.exec_()
+        rsp= self.Dialog.exec_()
+
+        print(pdf)
+        # if rsp == QtWidgets.QDialog.Accepted:
+        #     print('yes')
+        #     print(self.Dialog.getPdf())
+        # else:
+        #     print('no')
 
     def setupUi(self, MainWindow):
 
