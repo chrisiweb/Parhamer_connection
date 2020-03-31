@@ -86,7 +86,6 @@ list_sage_examples = []
 
 class Ui_MainWindow(object):
     global dict_picture_path, set_chosen_gk, list_sage_examples
-
     def __init__(self):
         self.dict_sage_ausgleichspunkte_chosen = {}
         titlepage_save = os.path.join(path_programm, "Teildokument", "titlepage_save")
@@ -554,7 +553,7 @@ class Ui_MainWindow(object):
         self.label_warnung.setWordWrap(True)
         self.label_warnung.setObjectName(_fromUtf8("label_warnung"))
         self.label_warnung.setStyleSheet(_fromUtf8("background-color: rgb(255, 80, 80);"))
-        self.label_warnung.setText(_translate("MainWindow", "Achtung: Aufgrund neuer hilfreicher Befehle ist es ratsam, ein Update des srdp-mathematik-Pakets so bald wie möglich durchzuführen! Nähere Infos unter lama.schule/update", None))
+        self.label_warnung.setText(_translate("MainWindow", "Achtung: Aufgrund neuer hilfreicher Befehle ist es ratsam, ein Update des srdp-mathematik-Pakets so bald wie möglich durchzuführen! Nähere Infos unter: lama.schule/update", None))
         self.gridLayout.addWidget(self.label_warnung, 5,0,1,1)
         ##########################
 
