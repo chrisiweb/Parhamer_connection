@@ -24,7 +24,7 @@ import yaml
 from PIL import Image  ## pillow
 import smtplib
 
-from config import config_loader, path_programm, logo_path
+from config import config_loader, path_programm, logo_path, SpinBox_noWheel
 
 from list_of_widgets import (
     widgets_search,
@@ -32,7 +32,7 @@ from list_of_widgets import (
     widgets_sage,
     widgets_feedback,
 )
-from subwindows import Ui_Dialog_titlepage, Ui_Dialog_ausgleichspunkte #, Ui_Dialog_erstellen
+from subwindows import Ui_Dialog_titlepage, Ui_Dialog_ausgleichspunkte, Ui_Dialog_erstellen
 from translate import _fromUtf8, _translate
 from sort_items import natural_keys
 from create_pdf import create_pdf
@@ -45,7 +45,7 @@ except IndexError:
 
 print("Loading...")
 
-### config_loader, path_programm, logo_path
+### config_loader, path_programm, logo_path, SpinBox_noWheel
 
 config_file = os.path.join(path_programm, "_database", "_config", "config1.yml")
 
@@ -71,12 +71,6 @@ list_sage_examples = []
 
 ### list_of_widgets
 
-
-class SpinBox_noWheel(QtWidgets.QSpinBox):
-    def wheelEvent(self, event):
-        event.ignore()
-
-
 ### translate
 
 #### Dialogue Window -- Titelblatt anpassen
@@ -87,257 +81,7 @@ class SpinBox_noWheel(QtWidgets.QSpinBox):
 
 ### create_pdf
 
-
 #### Dialog Window - Schularbeit erstellen
-class Ui_Dialog_erstellen(object):
-    def setupUi(
-        self,
-        Dialog,
-        dict_list_input_examples,
-        beispieldaten_dateipfad_1,
-        beispieldaten_dateipfad_2,
-        dict_titlepage,
-        saved_file_path,
-    ):
-        # print(dict_list_input_examples)
-        # print( beispieldaten_dateipfad_1)
-        self.dict_list_input_examples = dict_list_input_examples
-        self.beispieldaten_dateipfad_1 = beispieldaten_dateipfad_1
-        self.beispieldaten_dateipfad_2 = beispieldaten_dateipfad_2
-        self.dict_titlepage = dict_titlepage
-        self.data_gesamt = self.dict_list_input_examples["data_gesamt"]
-        self.saved_file_path = saved_file_path
-        # print(self.data_gesamt)
-        self.Dialog = Dialog
-        Dialog.setObjectName("Dialog")
-        Dialog.resize(468, 208)
-        Dialog.setWindowIcon(QtGui.QIcon(logo_path))
-        self.gridLayout = QtWidgets.QGridLayout(Dialog)
-        self.gridLayout.setObjectName("gridLayout")
-        self.pushButton_sw_save = QtWidgets.QPushButton(Dialog)
-        self.pushButton_sw_save.setObjectName("pushButton_sw_save")
-        self.pushButton_sw_save.clicked.connect(self.pushButton_sw_save_pressed)
-        self.gridLayout.addWidget(self.pushButton_sw_save, 5, 3, 1, 1)
-        self.pushButton_sw_back = QtWidgets.QPushButton(Dialog)
-        self.pushButton_sw_back.setObjectName("pushButton_sw_back")
-        self.pushButton_sw_back.clicked.connect(self.pushButton_sw_back_pressed)
-        self.gridLayout.addWidget(self.pushButton_sw_back, 4, 3, 1, 1)
-        self.groupBox_sw_data = QtWidgets.QGroupBox(Dialog)
-        self.groupBox_sw_data.setObjectName("groupBox_sw_data")
-        self.gridLayout_2 = QtWidgets.QGridLayout(self.groupBox_sw_data)
-        self.gridLayout_2.setObjectName("gridLayout_2")
-        self.label_sw_num_ges = QtWidgets.QLabel(self.groupBox_sw_data)
-        self.label_sw_num_ges.setObjectName("label_sw_num_ges")
-        self.gridLayout_2.addWidget(self.label_sw_num_ges, 6, 0, 1, 1)
-        self.label_sw_num_1 = QtWidgets.QLabel(self.groupBox_sw_data)
-        self.label_sw_num_1.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.label_sw_num_1.setObjectName("label_sw_num_1")
-        self.gridLayout_2.addWidget(
-            self.label_sw_num_1, 3, 0, 1, 1, QtCore.Qt.AlignLeft
-        )
-        self.label_sw_num_2 = QtWidgets.QLabel(self.groupBox_sw_data)
-        self.label_sw_num_2.setObjectName("label_sw_num_2")
-        self.gridLayout_2.addWidget(
-            self.label_sw_num_2, 4, 0, 1, 1, QtCore.Qt.AlignLeft
-        )
-        self.label_sw_pkt_ges = QtWidgets.QLabel(self.groupBox_sw_data)
-        self.label_sw_pkt_ges.setObjectName("label_sw_pkt_ges")
-        self.gridLayout_2.addWidget(self.label_sw_pkt_ges, 6, 3, 1, 1)
-        self.label_sw_pkt_2 = QtWidgets.QLabel(self.groupBox_sw_data)
-        self.label_sw_pkt_2.setObjectName("label_sw_pkt_2")
-        self.gridLayout_2.addWidget(self.label_sw_pkt_2, 4, 3, 1, 1)
-        self.label_sw_pkt_1 = QtWidgets.QLabel(self.groupBox_sw_data)
-        self.label_sw_pkt_1.setObjectName("label_sw_pkt_1")
-        self.gridLayout_2.addWidget(self.label_sw_pkt_1, 3, 3, 1, 1)
-        self.label_sw_date = QtWidgets.QLabel(self.groupBox_sw_data)
-        self.label_sw_date.setObjectName("label_sw_date")
-        self.gridLayout_2.addWidget(self.label_sw_date, 1, 0, 1, 1)
-        self.label_sw_num_ges_int = QtWidgets.QLabel(self.groupBox_sw_data)
-        self.label_sw_num_ges_int.setObjectName("label_sw_num_ges_int")
-        self.gridLayout_2.addWidget(self.label_sw_num_ges_int, 6, 1, 1, 1)
-        self.label_sw_num_2_int = QtWidgets.QLabel(self.groupBox_sw_data)
-        self.label_sw_num_2_int.setObjectName("label_sw_num_2_int")
-        self.gridLayout_2.addWidget(self.label_sw_num_2_int, 4, 1, 1, 1)
-        self.label_sw_num_1_int = QtWidgets.QLabel(self.groupBox_sw_data)
-        self.label_sw_num_1_int.setObjectName("label_sw_num_1_int")
-        self.gridLayout_2.addWidget(self.label_sw_num_1_int, 3, 1, 1, 1)
-        self.label_sw_pkt_1_int = QtWidgets.QLabel(self.groupBox_sw_data)
-        self.label_sw_pkt_1_int.setObjectName("label_sw_pkt_1_int")
-        self.gridLayout_2.addWidget(self.label_sw_pkt_1_int, 3, 4, 1, 1)
-        self.label_sw_pkt_2_int = QtWidgets.QLabel(self.groupBox_sw_data)
-        self.label_sw_pkt_2_int.setObjectName("label_sw_pkt_2_int")
-        self.gridLayout_2.addWidget(self.label_sw_pkt_2_int, 4, 4, 1, 1)
-        self.line = QtWidgets.QFrame(self.groupBox_sw_data)
-        self.line.setFrameShape(QtWidgets.QFrame.HLine)
-        self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
-        self.line.setObjectName("line")
-        self.gridLayout_2.addWidget(self.line, 5, 0, 1, 5)
-        self.label_sw_pkt_ges_int = QtWidgets.QLabel(self.groupBox_sw_data)
-        self.label_sw_pkt_ges_int.setObjectName("label_sw_pkt_ges_int")
-        self.gridLayout_2.addWidget(self.label_sw_pkt_ges_int, 6, 4, 1, 1)
-        self.label_sw_klasse = QtWidgets.QLabel(self.groupBox_sw_data)
-        self.label_sw_klasse.setObjectName("label_sw_klasse")
-        self.gridLayout_2.addWidget(self.label_sw_klasse, 1, 3, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_sw_data, 1, 0, 5, 3)
-        self.groupBox_sw_gruppen = QtWidgets.QGroupBox(Dialog)
-        self.groupBox_sw_gruppen.setObjectName("groupBox_sw_gruppen")
-        self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBox_sw_gruppen)
-        self.gridLayout_3.setObjectName("gridLayout_3")
-        self.spinBox_sw_gruppen = QtWidgets.QSpinBox(self.groupBox_sw_gruppen)
-        self.spinBox_sw_gruppen.setMinimum(1)
-        self.spinBox_sw_gruppen.setMaximum(5)
-        self.spinBox_sw_gruppen.setObjectName("spinBox_sw_gruppen")
-        if self.data_gesamt["Pruefungstyp"] == "Übungsblatt":
-            self.groupBox_sw_gruppen.setEnabled(False)
-        self.gridLayout_3.addWidget(self.spinBox_sw_gruppen, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_sw_gruppen, 3, 3, 1, 1)
-        self.radioButton_sw_br = QtWidgets.QRadioButton(Dialog)
-        self.radioButton_sw_br.setEnabled(False)
-        self.radioButton_sw_br.setObjectName("radioButton_sw_br")
-        self.gridLayout.addWidget(self.radioButton_sw_br, 2, 3, 1, 1)
-        self.radioButton_sw_ns = QtWidgets.QRadioButton(Dialog)
-        self.radioButton_sw_ns.setEnabled(False)
-        self.radioButton_sw_ns.setObjectName("radioButton_sw_ns")
-        self.gridLayout.addWidget(self.radioButton_sw_ns, 1, 3, 1, 1)
-        if self.data_gesamt["Beurteilung"] == "ns":
-            self.radioButton_sw_ns.setChecked(True)
-        if self.data_gesamt["Beurteilung"] == "br":
-            self.radioButton_sw_br.setChecked(True)
-        self.cb_create_tex = QtWidgets.QCheckBox(Dialog)
-        self.cb_create_tex.setObjectName(_fromUtf8("cb_create_tex"))
-        self.cb_create_tex.setText(".tex")
-        self.cb_create_tex.setChecked(True)
-        self.cb_create_tex.setEnabled(False)
-        self.gridLayout.addWidget(self.cb_create_tex, 6, 0, 1, 1)
-        self.cb_create_pdf = QtWidgets.QCheckBox(Dialog)
-        self.cb_create_pdf.setObjectName(_fromUtf8("cb_create_pdf"))
-        self.cb_create_pdf.setText(".pdf")
-        self.cb_create_pdf.setChecked(True)
-        self.cb_create_pdf.toggled.connect(self.cb_create_pdf_checked)
-        self.gridLayout.addWidget(self.cb_create_pdf, 6, 1, 1, 1)
-        self.cb_create_lama = QtWidgets.QCheckBox(Dialog)
-        self.cb_create_lama.setObjectName(_fromUtf8("cb_create_lama"))
-        self.cb_create_lama.setText("Autosave (.lama)")
-        self.cb_create_lama.setChecked(True)
-        self.gridLayout.addWidget(self.cb_create_lama, 6, 2, 1, 1)
-
-        self.retranslateUi(Dialog)
-        QtCore.QMetaObject.connectSlotsByName(Dialog)
-
-    def retranslateUi(self, Dialog):
-        datum = (
-            str(self.data_gesamt["Datum"][2])
-            + "."
-            + str(self.data_gesamt["Datum"][1])
-            + "."
-            + str(self.data_gesamt["Datum"][0])
-        )
-        _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Erstellen", "Erstellen"))
-        self.radioButton_sw_ns.setText(_translate("Dialog", "Notenschlüssel"))
-        self.pushButton_sw_save.setText(_translate("Dialog", "Speichern"))
-        self.pushButton_sw_back.setText(_translate("Dialog", "Zurück "))
-        if self.data_gesamt["Pruefungstyp"] == "Schularbeit":
-            self.groupBox_sw_data.setTitle(
-                _translate("Dialog", "%i. Schularbeit" % self.data_gesamt["#"])
-            )
-        else:
-            self.groupBox_sw_data.setTitle(
-                _translate("Dialog", self.data_gesamt["Pruefungstyp"])
-            )
-        self.label_sw_num_ges.setText(_translate("Dialog", "Aufgaben gesamt:"))
-        self.label_sw_num_1.setText(_translate("Dialog", "Typ1 Aufgaben:"))
-        self.label_sw_num_2.setText(_translate("Dialog", "Typ2 Aufgaben:"))
-        self.label_sw_pkt_ges.setText(_translate("Dialog", "Gesamtpunkte:"))
-        self.label_sw_pkt_2.setText(_translate("Dialog", "Punkte Typ2:"))
-        self.label_sw_pkt_1.setText(_translate("Dialog", "Punkte Typ1:"))
-        self.label_sw_date.setText(_translate("Dialog", "Datum: %s" % datum))
-        self.label_sw_num_ges_int.setText(
-            _translate(
-                "Dialog",
-                "%s" % str(self.data_gesamt["num_1"] + self.data_gesamt["num_2"]),
-            )
-        )
-        self.label_sw_num_2_int.setText(
-            _translate("Dialog", "%i" % self.data_gesamt["num_2"])
-        )
-        self.label_sw_num_1_int.setText(
-            _translate("Dialog", "%i" % self.data_gesamt["num_1"])
-        )
-        self.label_sw_pkt_1_int.setText(
-            _translate("Dialog", "{0}".format(self.data_gesamt["punkte_1"]))
-        )
-        self.label_sw_pkt_2_int.setText(
-            _translate(
-                "Dialog",
-                "{0} (davon {1} AP)".format(
-                    self.data_gesamt["punkte_2"], self.data_gesamt["ausgleichspunkte"]
-                ),
-            )
-        )
-        self.label_sw_pkt_ges_int.setText(
-            _translate(
-                "Dialog",
-                "%s" % str(self.data_gesamt["punkte_1"] + self.data_gesamt["punkte_2"]),
-            )
-        )  # +self.data_gesamt['ausgleichspunkte']
-        self.label_sw_klasse.setText(
-            _translate("Dialog", "Klasse: %s" % self.data_gesamt["Klasse"])
-        )
-        self.groupBox_sw_gruppen.setTitle(_translate("Dialog", "Anzahl der Gruppen"))
-        self.radioButton_sw_br.setText(_translate("Dialog", "Beurteilungsraster"))
-
-    def cb_create_pdf_checked(self):
-        if (
-            self.cb_create_pdf.isChecked() == True
-            and self.data_gesamt["Pruefungstyp"] != "Übungsblatt"
-        ):
-            self.groupBox_sw_gruppen.setEnabled(True)
-        else:
-            self.groupBox_sw_gruppen.setEnabled(False)
-
-    def pushButton_sw_back_pressed(self):
-        self.Dialog.reject()
-
-    def pushButton_sw_save_pressed(self):
-        self.Dialog.reject()
-        MainWindow.hide()
-
-        if self.cb_create_pdf.isChecked():
-            pdf = True
-        else:
-            pdf = False
-
-        if self.cb_create_lama.isChecked():
-            lama = True
-        else:
-            lama = False
-        for index in range(self.spinBox_sw_gruppen.value() * 2):
-            Ui_MainWindow.pushButton_vorschau_pressed(
-                self,
-                "schularbeit",
-                index,
-                self.spinBox_sw_gruppen.value() * 2,
-                pdf,
-                lama,
-            )
-
-        MainWindow.show()
-
-        if sys.platform.startswith("linux"):
-            file_path = os.path.dirname(self.saved_file_path)
-            subprocess.Popen('xdg-open "{}"'.format(file_path), shell=True)
-        elif sys.platform.startswith("darwin"):
-            file_path = os.path.dirname(self.saved_file_path)
-            subprocess.Popen('open "{}"'.format(file_path), shell=True)
-
-        # subprocess.run(['xdg-open', "{0}/Teildokument/{1}.pdf".format(path_programm, dateiname)])
-        else:
-            file_path = os.path.dirname(self.saved_file_path).replace("/", "\\")
-            # print(file_path)
-            # .replace('\n', ' ')
-            subprocess.Popen('explorer "{}"'.format(file_path))
-            # subprocess.Popen('explorer "C:\Users\Christoph\Desktop"')
 
 
 class Ui_MainWindow(object):
@@ -377,31 +121,43 @@ class Ui_MainWindow(object):
             | QtCore.Qt.WindowTitleHint
             | QtCore.Qt.WindowCloseButtonHint,
         )
-        self.ui = Ui_Dialog_erstellen()
-        pdf=True
-        lama=True
-        self.ui.setupUi(
+        self.ui_erstellen = Ui_Dialog_erstellen()
+        self.ui_erstellen.setupUi(
             self.Dialog,
             dict_list_input_examples,
             beispieldaten_dateipfad_1,
             beispieldaten_dateipfad_2,
             dict_titlepage,
             saved_file_path,
-            pdf,
-            lama,
-        )  # , dict_gesammeltedateien
+        )
         self.Dialog.show()
         rsp= self.Dialog.exec_()
 
-        print(pdf)
-        # if rsp == QtWidgets.QDialog.Accepted:
-        #     print('yes')
-        #     print(self.Dialog.getPdf())
-        # else:
-        #     print('no')
+        if rsp == QtWidgets.QDialog.Accepted:
+            for index in range(self.ui_erstellen.spinBox_sw_gruppen.value() * 2):
+                Ui_MainWindow.pushButton_vorschau_pressed(
+                    self,
+                    "schularbeit",
+                    index,
+                    self.ui_erstellen.spinBox_sw_gruppen.value() * 2,
+                    self.ui_erstellen.pdf,
+                    self.ui_erstellen.lama,
+                )
+
+            MainWindow.show()
+
+            if sys.platform.startswith("linux"):
+                file_path = os.path.dirname(self.saved_file_path)
+                subprocess.Popen('xdg-open "{}"'.format(file_path), shell=True)
+            elif sys.platform.startswith("darwin"):
+                file_path = os.path.dirname(self.saved_file_path)
+                subprocess.Popen('open "{}"'.format(file_path), shell=True)
+            else:
+                file_path = os.path.dirname(self.saved_file_path).replace("/", "\\")
+                subprocess.Popen('explorer "{}"'.format(file_path))
+
 
     def setupUi(self, MainWindow):
-
         self.check_for_update()
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         # MainWindow.resize(900, 500)
@@ -798,7 +554,7 @@ class Ui_MainWindow(object):
         self.label_warnung.setWordWrap(True)
         self.label_warnung.setObjectName(_fromUtf8("label_warnung"))
         self.label_warnung.setStyleSheet(_fromUtf8("background-color: rgb(255, 80, 80);"))
-        self.label_warnung.setText(_translate("MainWindow", "Achtung: Aufgrund neuer hilfreicher Befehle ist es ratsam, ein Update des srdp-mathematik-Pakets so bald wie möglich durchzuführen! Nähere Infos unter lama.schule", None))
+        self.label_warnung.setText(_translate("MainWindow", "Achtung: Aufgrund neuer hilfreicher Befehle ist es ratsam, ein Update des srdp-mathematik-Pakets so bald wie möglich durchzuführen! Nähere Infos unter lama.schule/update", None))
         self.gridLayout.addWidget(self.label_warnung, 5,0,1,1)
         ##########################
 

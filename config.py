@@ -1,3 +1,4 @@
+from PyQt5 import QtCore, QtWidgets, QtGui
 import yaml
 import sys
 import os
@@ -39,3 +40,7 @@ if sys.platform.startswith("darwin"):
 logo_path = os.path.join(
     path_programm, "_database", "_config", "icon", "LaMa_icon_logo.png"
 )
+
+class SpinBox_noWheel(QtWidgets.QSpinBox):
+    def wheelEvent(self, event):
+        event.ignore()
