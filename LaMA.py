@@ -31,6 +31,7 @@ from list_of_widgets import (
     widgets_create,
     widgets_sage,
     widgets_feedback,
+    list_widgets
 )
 from subwindows import Ui_Dialog_titlepage, Ui_Dialog_ausgleichspunkte, Ui_Dialog_erstellen
 from translate import _fromUtf8, _translate
@@ -41,7 +42,6 @@ try:
     loaded_lama_file_path = sys.argv[1]
 except IndexError:
     loaded_lama_file_path = ""
-
 
 print("Loading...")
 
@@ -156,7 +156,7 @@ class Ui_MainWindow(object):
                 file_path = os.path.dirname(self.saved_file_path).replace("/", "\\")
                 subprocess.Popen('explorer "{}"'.format(file_path))
 
-
+        
     def setupUi(self, MainWindow):
         self.check_for_update()
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
@@ -1522,7 +1522,6 @@ class Ui_MainWindow(object):
         self.btn_ws_all.clicked.connect(self.btn_ws_all_pressed)
         self.btn_suche.clicked.connect(self.PrepareTeXforPDF)
         self.actionExit.triggered.connect(self.close_app)
-        self.actionFeedback.triggered.connect(self.send_feedback)
         self.actionRefresh_Database.triggered.connect(
             self.refresh_ddb
         )  # self.label_aufgabentyp.text()[-1]
@@ -1533,9 +1532,10 @@ class Ui_MainWindow(object):
         self.actionAufgaben_Typ1.triggered.connect(self.chosen_aufgabenformat_typ1)
         self.actionAufgaben_Typ2.triggered.connect(self.chosen_aufgabenformat_typ2)
         self.actionInfo.triggered.connect(self.show_info)
-        self.actionNeu.triggered.connect(self.neue_aufgabe_erstellen)
-        self.actionSage.triggered.connect(self.neue_schularbeit_erstellen)
-        self.actionSuche.triggered.connect(self.aufgaben_suchen)
+        self.actionSuche.triggered.connect(partial(self.update_gui, widgets_search))
+        self.actionSage.triggered.connect(partial(self.update_gui, widgets_sage))
+        self.actionNeu.triggered.connect(partial(self.update_gui, widgets_create)) #self.neue_aufgabe_erstellen
+        self.actionFeedback.triggered.connect(partial(self.update_gui, widgets_feedback))
         self.actionBild_einf_gen.triggered.connect(self.add_picture)
         self.actionBild_konvertieren_jpg_eps.triggered.connect(self.convert_imagetoeps)
         self.comboBox_aufgabentyp_cr.currentIndexChanged.connect(
@@ -2160,6 +2160,7 @@ class Ui_MainWindow(object):
             40, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
         )
         grid.addItem(spacerItem_end, row, column, 1, 1)
+
 
     def create_checkbox_klasse(self, klasse, chosen_dict):
         row = 0
@@ -6121,40 +6122,21 @@ class Ui_MainWindow(object):
             self.saved_file_path,
         )
 
-    def aufgaben_suchen(self):
-        lists_delete = widgets_create + widgets_sage + widgets_feedback
-        for all in lists_delete:
-            if "action" in all:
-                exec("self.%s.setVisible(False)" % all)
-            elif "menu" in all:
-                exec("self.menuBar.removeAction(self.%s.menuAction())" % all)
-            else:
-                exec("self.%s.hide()" % all)
 
-        for all in widgets_search:
-            if "action" in all:
-                exec("self.%s.setVisible(True)" % all)
-            elif "menu" in all:
-                exec("self.menuBar.addAction(self.%s.menuAction())" % all)
-            else:
-                if all == "combobox_searchtype":
-                    if self.label_aufgabentyp.text()[-1] == "2":
-                        exec("self.%s.show()" % all)
-                else:
-                    exec("self.%s.show()" % all)
-
-    def neue_aufgabe_erstellen(self):
+    def update_gui(self, chosen_gui):
         MainWindow.setMenuBar(self.menuBar)
-        lists_delete = widgets_search + widgets_sage + widgets_feedback
-        for all in lists_delete:
+        list_delete=[]
+        for item in list_widgets:
+            if item != chosen_gui:
+                list_delete += item
+        for all in list_delete:
             if "action" in all:
                 exec("self.%s.setVisible(False)" % all)
             elif "menu" in all:
                 exec("self.menuBar.removeAction(self.%s.menuAction())" % all)
             else:
                 exec("self.%s.hide()" % all)
-
-        for all in widgets_create:
+        for all in chosen_gui:
             if "action" in all:
                 exec("self.%s.setVisible(True)" % all)
             elif "menu" in all:
@@ -6162,60 +6144,114 @@ class Ui_MainWindow(object):
             else:
                 exec("self.%s.show()" % all)
 
-    def neue_schularbeit_erstellen(self):
-        MainWindow.setMenuBar(self.menuBar)
-        lists_delete = widgets_search + widgets_create + widgets_feedback
-        # self.menuBar.removeAction(self.menuDatei.menuAction())
+        if chosen_gui==widgets_sage:
+            MainWindow.setTabOrder(self.spinBox_nummer, self.dateEdit)
+            MainWindow.setTabOrder(self.dateEdit, self.lineEdit_klasse)
+            self.adapt_choosing_list("sage")
+            self.listWidget.itemClicked.connect(self.nummer_clicked)
+        if chosen_gui==widgets_feedback:
+            self.adapt_choosing_list("feedback")
+            self.listWidget_fb.itemClicked.connect(self.nummer_clicked_fb)                                          
 
-        # self.menuBar.addAction(self.menuDatei.menuAction())
-        for all in lists_delete:
-            if "action" in all:
-                exec("self.%s.setVisible(False)" % all)
-            elif "menu" in all:
-                exec("self.menuBar.removeAction(self.%s.menuAction())" % all)
-            else:
-                exec("self.%s.hide()" % all)
 
-        for all in widgets_sage:
-            if "action" in all:
-                exec("self.%s.setVisible(True)" % all)
-            elif "menu" in all:
-                exec("self.menuBar.addAction(self.%s.menuAction())" % all)
-            else:
-                exec("self.%s.show()" % all)
+    # def aufgaben_suchen(self):
+    #     lists_delete = widgets_create + widgets_sage + widgets_feedback
+    #     for all in lists_delete:
+    #         if "action" in all:
+    #             exec("self.%s.setVisible(False)" % all)
+    #         elif "menu" in all:
+    #             exec("self.menuBar.removeAction(self.%s.menuAction())" % all)
+    #         else:
+    #             exec("self.%s.hide()" % all)
 
-        MainWindow.setTabOrder(self.spinBox_nummer, self.dateEdit)
-        MainWindow.setTabOrder(self.dateEdit, self.lineEdit_klasse)
+    #     for all in widgets_search:
+    #         if "action" in all:
+    #             exec("self.%s.setVisible(True)" % all)
+    #         elif "menu" in all:
+    #             exec("self.menuBar.addAction(self.%s.menuAction())" % all)
+    #         else:
+    #             if all == "combobox_searchtype":
+    #                 if self.label_aufgabentyp.text()[-1] == "2":
+    #                     exec("self.%s.show()" % all)
+    #             else:
+    #                 exec("self.%s.show()" % all)
 
-        # self.gridLayout.removeWidget(self.groupBox_alle_aufgaben)
-        # self.gridLayout.addWidget(self.groupBox_alle_aufgaben, 2, 0, 7, 1)
 
-        self.adapt_choosing_list("sage")
-        self.listWidget.itemClicked.connect(self.nummer_clicked)
-        # print(self.listWidget.currentRow())
+    
 
-    def send_feedback(self):
+    # def neue_aufgabe_erstellen(self):
+    #     MainWindow.setMenuBar(self.menuBar)
+    #     lists_delete = widgets_search + widgets_sage + widgets_feedback
+    #     for all in lists_delete:
+    #         if "action" in all:
+    #             exec("self.%s.setVisible(False)" % all)
+    #         elif "menu" in all:
+    #             exec("self.menuBar.removeAction(self.%s.menuAction())" % all)
+    #         else:
+    #             exec("self.%s.hide()" % all)
 
-        MainWindow.setMenuBar(self.menuBar)
-        lists_delete = widgets_search + widgets_sage + widgets_create
-        for all in lists_delete:
-            if "action" in all:
-                exec("self.%s.setVisible(False)" % all)
-            elif "menu" in all:
-                exec("self.menuBar.removeAction(self.%s.menuAction())" % all)
-            else:
-                exec("self.%s.hide()" % all)
+    #     for all in widgets_create:
+    #         if "action" in all:
+    #             exec("self.%s.setVisible(True)" % all)
+    #         elif "menu" in all:
+    #             exec("self.menuBar.addAction(self.%s.menuAction())" % all)
+    #         else:
+    #             exec("self.%s.show()" % all)
 
-        for all in widgets_feedback:
-            if "action" in all:
-                exec("self.%s.setVisible(True)" % all)
-            elif "menu" in all:
-                exec("self.menuBar.addAction(self.%s.menuAction())" % all)
-            else:
-                exec("self.%s.show()" % all)
+    # def neue_schularbeit_erstellen(self):
+    #     MainWindow.setMenuBar(self.menuBar)
+    #     lists_delete = widgets_search + widgets_create + widgets_feedback
+    #     # self.menuBar.removeAction(self.menuDatei.menuAction())
 
-        self.adapt_choosing_list("feedback")
-        self.listWidget_fb.itemClicked.connect(self.nummer_clicked_fb)
+    #     # self.menuBar.addAction(self.menuDatei.menuAction())
+    #     for all in lists_delete:
+    #         if "action" in all:
+    #             exec("self.%s.setVisible(False)" % all)
+    #         elif "menu" in all:
+    #             exec("self.menuBar.removeAction(self.%s.menuAction())" % all)
+    #         else:
+    #             exec("self.%s.hide()" % all)
+
+    #     for all in widgets_sage:
+    #         if "action" in all:
+    #             exec("self.%s.setVisible(True)" % all)
+    #         elif "menu" in all:
+    #             exec("self.menuBar.addAction(self.%s.menuAction())" % all)
+    #         else:
+    #             exec("self.%s.show()" % all)
+
+    #     MainWindow.setTabOrder(self.spinBox_nummer, self.dateEdit)
+    #     MainWindow.setTabOrder(self.dateEdit, self.lineEdit_klasse)
+
+    #     # self.gridLayout.removeWidget(self.groupBox_alle_aufgaben)
+    #     # self.gridLayout.addWidget(self.groupBox_alle_aufgaben, 2, 0, 7, 1)
+
+    #     self.adapt_choosing_list("sage")
+    #     self.listWidget.itemClicked.connect(self.nummer_clicked)
+    #     # print(self.listWidget.currentRow())
+
+    # def send_feedback(self):
+
+    #     MainWindow.setMenuBar(self.menuBar)
+    #     lists_delete = widgets_search + widgets_sage + widgets_create
+    #     for all in lists_delete:
+    #         if "action" in all:
+    #             exec("self.%s.setVisible(False)" % all)
+    #         elif "menu" in all:
+    #             exec("self.menuBar.removeAction(self.%s.menuAction())" % all)
+    #         else:
+    #             exec("self.%s.hide()" % all)
+
+    #     for all in widgets_feedback:
+    #         if "action" in all:
+    #             exec("self.%s.setVisible(True)" % all)
+    #         elif "menu" in all:
+    #             exec("self.menuBar.addAction(self.%s.menuAction())" % all)
+    #         else:
+    #             exec("self.%s.show()" % all)
+
+    #     self.adapt_choosing_list("feedback")
+    #     self.listWidget_fb.itemClicked.connect(self.nummer_clicked_fb)
 
 
 if __name__ == "__main__":

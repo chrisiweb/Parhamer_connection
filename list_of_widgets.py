@@ -70,3 +70,5 @@ widgets_feedback = [
     "groupBox_email",
     "pushButton_send",
 ]
+
+list_widgets = [widgets_search, widgets_sage, widgets_create, widgets_feedback]
