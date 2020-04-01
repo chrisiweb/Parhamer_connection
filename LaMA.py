@@ -74,6 +74,8 @@ for klasse in list_klassen:
     exec('dict_{0} = config_loader(config_file,"dict_{0}")'.format(klasse))
     exec('dict_{0}_name = config_loader(config_file,"dict_{0}_name")'.format(klasse))
 
+dict_unterkapitel = config_loader(config_file, "dict_unterkapitel")
+
 
 dict_picture_path = {}
 set_chosen_gk = set([])
@@ -100,6 +102,8 @@ class Ui_MainWindow(object):
     global dict_picture_path, set_chosen_gk, list_sage_examples
     def __init__(self):
         self.dict_sage_ausgleichspunkte_chosen = {}
+        self.dict_chosen_topics = {}
+        self.list_creator_topics = []
         titlepage_save = os.path.join(path_programm, "Teildokument", "titlepage_save")
         if os.path.isfile(titlepage_save):
             with open(titlepage_save, encoding="utf8") as f:
@@ -170,6 +174,26 @@ class Ui_MainWindow(object):
         
     def setupUi(self, MainWindow):
         self.check_for_update()
+
+        ########## Dialog: Choose program ####    
+        self.Dialog = QtWidgets.QDialog(
+            None,
+            QtCore.Qt.WindowSystemMenuHint
+            | QtCore.Qt.WindowTitleHint
+            | QtCore.Qt.WindowCloseButtonHint,
+        )
+        self.ui = Ui_Dialog_choose_type()
+        self.ui.setupUi(self.Dialog)
+        self.Dialog.show()
+        rsp=self.Dialog.exec_()
+
+        if rsp == QtWidgets.QDialog.Accepted:
+            self.chosen_program = self.ui.chosen_program
+        if rsp == QtWidgets.QDialog.Rejected:
+            sys.exit(0)
+
+        ########################
+    
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         # MainWindow.resize(900, 500)
         # MainWindow.move(30,30)
@@ -576,6 +600,7 @@ class Ui_MainWindow(object):
         self.groupBox_schulstufe_cria = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_schulstufe_cria.setMaximumSize(QtCore.QSize(450, 16777215))
         self.groupBox_schulstufe_cria.setObjectName("groupBox_schulstufe_cria")
+        self.groupBox_schulstufe_cria.setTitle(_translate("MainWindow", "Themen Schulstufe", None))
         self.verticalLayout_cria = QtWidgets.QVBoxLayout(self.groupBox_schulstufe_cria)
         self.verticalLayout_cria.setObjectName("verticalLayout_cria")
         self.tabWidget_klassen_cria = QtWidgets.QTabWidget(self.groupBox_schulstufe_cria)
@@ -646,12 +671,25 @@ class Ui_MainWindow(object):
             "background-color: rgb(217, 255, 215);"
         )
         self.groupBox_unterkapitel_cria.setObjectName("groupBox_unterkapitel_cria")
+        self.groupBox_unterkapitel_cria.setTitle(_translate("MainWindow", "Unterkapitel",None))
         self.gridLayout_11_cria = QtWidgets.QGridLayout(self.groupBox_unterkapitel_cria)
         self.gridLayout_11_cria.setObjectName("gridLayout_11_cria")
         self.gridLayout.addWidget(self.groupBox_unterkapitel_cria, 1, 2, 2, 1)
 
         self.verticalLayout_cria.addWidget(self.tabWidget_klassen_cria)
         self.gridLayout.addWidget(self.groupBox_schulstufe_cria, 1, 0, 2, 1)
+        self.groupBox_ausgew_themen_cria = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBox_ausgew_themen_cria.setObjectName("groupBox_ausgew_themen_cria")
+        self.verticalLayout_2_cria = QtWidgets.QVBoxLayout(self.groupBox_ausgew_themen_cria)
+        self.verticalLayout_2_cria.setObjectName("verticalLayout_2_cria")
+        self.label_ausg_themen_cria = QtWidgets.QLabel(self.groupBox_ausgew_themen_cria)
+        self.label_ausg_themen_cria.setWordWrap(False)
+        self.label_ausg_themen_cria.setObjectName("label_ausg_themen_cria")
+        self.label_ausg_themen_cria.setWordWrap(True)
+        self.groupBox_ausgew_themen_cria.setTitle(_translate("MainWindow", "Ausgewählte Themen",None))
+        self.groupBox_ausgew_themen_cria.hide()
+        self.verticalLayout_2_cria.addWidget(self.label_ausg_themen_cria)
+        self.gridLayout.addWidget(self.groupBox_ausgew_themen_cria, 3, 2, 1, 1)
         self.groupBox_schulstufe_cria.hide()
         self.groupBox_unterkapitel_cria.hide()
 
@@ -1789,7 +1827,7 @@ class Ui_MainWindow(object):
 
         ##### ONLY NEEDED for Typ1 #####
         self.groupBox_af = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBox_af.setMaximumSize(QtCore.QSize(375, 16777215))
+        # self.groupBox_af.setMaximumSize(QtCore.QSize(375, 16777215))
         self.groupBox_af.setObjectName(_fromUtf8("groupBox_af"))
         # self.groupBox_af.setMaximumHeight(80)
         self.gridLayout_af = QtWidgets.QGridLayout(self.groupBox_af)
@@ -1806,7 +1844,30 @@ class Ui_MainWindow(object):
         self.cb_af_lt = QtWidgets.QCheckBox(self.groupBox_af)
         self.cb_af_lt.setObjectName(_fromUtf8("cb_af_lt"))
         self.gridLayout_af.addWidget(self.cb_af_lt, 1, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_af, 4, 0, 1, 1)
+
+        self.cb_af_ta = QtWidgets.QCheckBox(self.groupBox_af)
+        self.cb_af_ta.setObjectName("cb_af_ta")
+        self.gridLayout_af.addWidget(self.cb_af_ta, 2, 0, 1, 1)
+
+        self.cb_af_rf = QtWidgets.QCheckBox(self.groupBox_af)
+        self.cb_af_rf.setObjectName("cb_af_rf")
+        self.gridLayout_af.addWidget(self.cb_af_rf, 2, 2, 1, 1)
+
+        self.cb_af_ko = QtWidgets.QCheckBox(self.groupBox_af)
+        self.cb_af_ko.setObjectName("cb_af_ko")
+        self.gridLayout_af.addWidget(self.cb_af_ko, 3, 0, 1, 1)
+
+
+        if self.chosen_program!='cria':
+            self.cb_af_ko.hide()
+            self.cb_af_rf.hide()
+            self.cb_af_ta.hide()
+
+
+        if self.chosen_program=="lama":
+            self.gridLayout.addWidget(self.groupBox_af, 4, 0, 1, 1)
+        if self.chosen_program=='cria':
+            self.gridLayout.addWidget(self.groupBox_af, 3, 0, 1, 1)
 
         # #################
 
@@ -1821,6 +1882,9 @@ class Ui_MainWindow(object):
             _translate("MainWindow", "Offenes Antwortformat (OA)", None)
         )
         self.cb_af_lt.setText(_translate("MainWindow", "Lückentext (LT)", None))
+        self.cb_af_rf.setText(_translate("MainWindow", "Richtig/Falsch-Format (RF)",None))
+        self.cb_af_ko.setText(_translate("MainWindow", "Konstruktion (KO)",None))
+        self.cb_af_ta.setText(_translate("MainWindow", "Textaufgaben (TA)",None))
         #########################
 
         ### Typ1
@@ -1909,24 +1973,8 @@ class Ui_MainWindow(object):
 
         print("Done")
 
-        ########## Dialog: Choose program ####    
-        self.Dialog = QtWidgets.QDialog(
-            None,
-            QtCore.Qt.WindowSystemMenuHint
-            | QtCore.Qt.WindowTitleHint
-            | QtCore.Qt.WindowCloseButtonHint,
-        )
-        self.ui = Ui_Dialog_choose_type()
-        self.ui.setupUi(self.Dialog)
-        self.Dialog.show()
-        rsp=self.Dialog.exec_()
-
-        if rsp == QtWidgets.QDialog.Accepted:
-            self.chosen_program = self.ui.chosen_program
-            if self.chosen_program == 'cria':
-                self.update_gui(widgets_search_cria)
-        if rsp == QtWidgets.QDialog.Rejected:
-            sys.exit(0)
+        if self.chosen_program == 'cria':
+            self.update_gui(widgets_search_cria)
 
 
 
@@ -2057,73 +2105,109 @@ class Ui_MainWindow(object):
 
     def chosen_radiobutton(self, klasse, kapitel):
         dict_klasse_name = eval("dict_k{}_name".format(klasse))
-        self.groupBox_unterkapitel.setTitle(
+        self.groupBox_unterkapitel_cria.setTitle(
             _translate(
                 "MainWindow",
                 "Unterkapitel - "
                 + str(klasse)
                 + ". Klasse - "
                 + dict_klasse_name[kapitel],
+                None
             )
         )
 
         try:
-            self.scrollArea_unterkapitel.setParent(None)
+            self.scrollArea_unterkapitel_cria.setParent(None)
         except AttributeError:
             pass
 
-        self.scrollArea_unterkapitel = QtWidgets.QScrollArea(self.groupBox_unterkapitel)
-        self.scrollArea_unterkapitel.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.scrollArea_unterkapitel.setWidgetResizable(True)
-        self.scrollArea_unterkapitel.setObjectName("scrollArea_unterkapitel")
-        self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 320, 279))
-        self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
-        self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
-        self.verticalLayout_4.setObjectName("verticalLayout_4")
+        self.scrollArea_unterkapitel_cria = QtWidgets.QScrollArea(self.groupBox_unterkapitel_cria)
+        self.scrollArea_unterkapitel_cria.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.scrollArea_unterkapitel_cria.setWidgetResizable(True)
+        self.scrollArea_unterkapitel_cria.setObjectName("scrollArea_unterkapitel")
+        self.scrollAreaWidgetContents_cria = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents_cria.setGeometry(QtCore.QRect(0, 0, 320, 279))
+        self.scrollAreaWidgetContents_cria.setObjectName("scrollAreaWidgetContents_cria")
+        self.verticalLayout_4_cria = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_cria)
+        self.verticalLayout_4_cria.setObjectName("verticalLayout_4_cria")
 
         dict_klasse = eval("dict_k{}".format(klasse))
         for all in dict_klasse[kapitel]:
             # print(dict_unterkapitel[all])
 
             exec(
-                "self.checkBox_k{0}_{1}_{2} = QtWidgets.QCheckBox(self.scrollAreaWidgetContents)".format(
+                "self.checkBox_k{0}_{1}_{2} = QtWidgets.QCheckBox(self.scrollAreaWidgetContents_cria)".format(
                     klasse, kapitel, all
                 )
             )
             checkBox = eval("self.checkBox_k{0}_{1}_{2}".format(klasse, kapitel, all))
             checkBox.setObjectName("checkBox_k{0}_{1}_{2}".format(klasse, kapitel, all))
             checkBox.stateChanged.connect(
-                partial(self.checkBox_checked, klasse, kapitel, all)
+                partial(self.checkBox_checked_cria, klasse, kapitel, all)
             )
 
             thema_checked = [klasse, kapitel, all]
             if thema_checked in self.dict_chosen_topics.values():
                 checkBox.setChecked(True)
 
-            self.verticalLayout_4.addWidget(checkBox)
+            self.verticalLayout_4_cria.addWidget(checkBox)
 
-            checkBox.setText(_translate("MainWindow", dict_unterkapitel[all]))
+            checkBox.setText(_translate("MainWindow", dict_unterkapitel[all], None))
 
-        spacerItem = QtWidgets.QSpacerItem(
+        spacerItem_cria = QtWidgets.QSpacerItem(
             20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
         )
-        self.verticalLayout_4.addItem(spacerItem)
+        self.verticalLayout_4_cria.addItem(spacerItem_cria)
 
         exec(
-            "self.btn_alle_{0}_{1} = QtWidgets.QPushButton(self.scrollAreaWidgetContents)".format(
+            "self.btn_alle_{0}_{1} = QtWidgets.QPushButton(self.scrollAreaWidgetContents_cria)".format(
                 klasse, kapitel
             )
         )
         btn_alle = eval("self.btn_alle_{0}_{1}".format(klasse, kapitel))
         btn_alle.setStyleSheet("background-color: rgb(240, 240, 240);")
         btn_alle.setObjectName("btn_alle_{0}_{1}".format(klasse, kapitel))
-        btn_alle.setText(_translate("MainWindow", "alle auswählen"))
-        btn_alle.clicked.connect(partial(self.btn_alle_clicked, klasse, kapitel))
-        self.verticalLayout_4.addWidget(btn_alle, 0, QtCore.Qt.AlignLeft)
-        self.scrollArea_unterkapitel.setWidget(self.scrollAreaWidgetContents)
-        self.gridLayout_11.addWidget(self.scrollArea_unterkapitel, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_unterkapitel, 1, 2, 2, 1)
+        btn_alle.setText(_translate("MainWindow", "alle auswählen", None))
+        btn_alle.clicked.connect(partial(self.btn_alle_clicked_cria, klasse, kapitel))
+        self.verticalLayout_4_cria.addWidget(btn_alle, 0, QtCore.Qt.AlignLeft)
+        self.scrollArea_unterkapitel_cria.setWidget(self.scrollAreaWidgetContents_cria)
+        self.gridLayout_11_cria.addWidget(self.scrollArea_unterkapitel_cria, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_unterkapitel_cria, 1, 2, 2, 1)
+
+
+    def checkBox_checked_cria(self, klasse, kapitel, unterkapitel):
+        thema_checked = [klasse, kapitel, unterkapitel]
+        thema_label = kapitel + "." + unterkapitel + " (" + klasse + ".)"
+        checkBox = eval(
+            "self.checkBox_k{0}_{1}_{2}".format(klasse, kapitel, unterkapitel)
+        )
+        if checkBox.isChecked() == True:
+            if thema_label not in self.dict_chosen_topics.keys():
+                self.dict_chosen_topics[thema_label] = thema_checked
+        if checkBox.isChecked() == False:
+            del self.dict_chosen_topics[thema_label]
+        x = ", ".join(self.dict_chosen_topics.keys())
+        # print(self.dict_chosen_topics)
+        self.label_ausg_themen_cria.setText(_translate("MainWindow", x, None))
+
+
+    def btn_alle_clicked_cria(self, klasse, kapitel):
+        dict_klasse = eval("dict_k{}".format(klasse))
+        check = 0
+        for all in dict_klasse[kapitel]:
+            checkBox = eval("self.checkBox_k{0}_{1}_{2}".format(klasse, kapitel, all))
+            if check == 0:
+                if checkBox.isChecked():
+                    checkBox.setChecked(False)
+                    check = 1
+                else:
+                    checkBox.setChecked(True)
+                    check = 2
+            else:
+                if check == 1:
+                    checkBox.setChecked(False)
+                elif check == 2:
+                    checkBox.setChecked(True)
 
     def suchfenster_reset(self):
         global dict_picture_path
