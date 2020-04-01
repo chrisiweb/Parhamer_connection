@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #### Version number ###
 __version__ = "v1.8.6"
-__lastupdate__ = "03/20"
+__lastupdate__ = "04/20"
 ####################
 
 from PyQt5 import QtCore, QtWidgets, QtGui
@@ -24,7 +24,7 @@ import yaml
 from PIL import Image  ## pillow
 import smtplib
 
-from config import config_loader, path_programm, logo_path, SpinBox_noWheel
+from config import config_loader, path_programm, logo_path, logo_cria_path, SpinBox_noWheel
 
 from list_of_widgets import (
     widgets_search,
@@ -33,7 +33,7 @@ from list_of_widgets import (
     widgets_feedback,
     list_widgets
 )
-from subwindows import Ui_Dialog_titlepage, Ui_Dialog_ausgleichspunkte, Ui_Dialog_erstellen
+from subwindows import Ui_Dialog_choose_type, Ui_Dialog_titlepage, Ui_Dialog_ausgleichspunkte, Ui_Dialog_erstellen
 from translate import _fromUtf8, _translate
 from sort_items import natural_keys
 from create_pdf import create_pdf
@@ -1810,6 +1810,24 @@ class Ui_MainWindow(object):
         self.actionExit.setText(_translate("MainWindow", "Exit", None))
 
         print("Done")
+        # MainWindow.hide()
+        self.Dialog = QtWidgets.QDialog(
+            None,
+            QtCore.Qt.WindowSystemMenuHint
+            | QtCore.Qt.WindowTitleHint
+            | QtCore.Qt.WindowCloseButtonHint,
+        )
+        self.ui = Ui_Dialog_choose_type()
+        self.ui.setupUi(self.Dialog)
+        self.Dialog.show()
+        rsp=self.Dialog.exec_()
+
+        if rsp == QtWidgets.QDialog.Accepted:
+            print(self.ui.chosen_program)
+        if rsp == QtWidgets.QDialog.Rejected:
+            sys.exit(0)
+
+
 
     #######################
     #### Check for Updates

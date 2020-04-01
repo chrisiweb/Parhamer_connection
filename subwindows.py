@@ -2,9 +2,62 @@ from PyQt5 import QtCore, QtWidgets, QtGui
 import os
 import shutil
 from functools import partial
-from config import config_loader, path_programm, logo_path
+from config import config_loader, path_programm, logo_path, logo_cria_path
 from config import logo_path
 from translate import _fromUtf8, _translate
+
+
+class Ui_Dialog_choose_type(object):
+    def setupUi(self, Dialog):
+        self.Dialog = Dialog
+        self.Dialog.setObjectName("Dialog")
+        Dialog.setWindowTitle(
+            _translate("Titelplatt anpassen", "Programm auswählen", None)
+        )
+        Dialog.setWindowIcon(QtGui.QIcon(logo_path))
+        self.gridLayout = QtWidgets.QGridLayout(Dialog)
+        self.gridLayout.setObjectName("gridLayout")
+        # self.label_titlepage = QtWidgets.QLabel()
+        # # # self.label_gk.setWordWrap(True)
+        # self.label_titlepage.setObjectName(_fromUtf8("label_titlepage"))
+        # self.label_titlepage.setText(
+        #     _translate(
+        #         "MainWindow",
+        #         "Wählen Sie das gewünschte Programm aus:\n",
+        #         None,
+        #     )
+        # )
+        # self.gridLayout.addWidget(self.label_titlepage, 0,0,1,2)
+
+        self.btn_lama_cria = QtWidgets.QPushButton()
+        self.btn_lama_cria.setObjectName(_fromUtf8("btn_lama_cria"))
+        # self.btn_lama_cria.setText("LaMA Cria (Unterstufe)")
+        self.btn_lama_cria.setIcon(QtGui.QIcon(logo_cria_path))
+        self.btn_lama_cria.setIconSize(QtCore.QSize(100,100))
+        self.gridLayout.addWidget(self.btn_lama_cria, 0,0,1,1)
+        self.label_lama_cria = QtWidgets.QLabel()
+        self.label_lama_cria.setObjectName(_fromUtf8("label_lama_cria"))
+        self.label_lama_cria.setText("LaMA Cria (Unterstufe)")
+        self.gridLayout.addWidget(self.label_lama_cria, 1,0,1,1, QtCore.Qt.AlignCenter)
+        # self.btn_lama_cria.setMaximumWidth(130)
+        self.btn_lama_cria.clicked.connect(partial(self.choose_button_pressed, 'cria'))
+
+        self.btn_lama = QtWidgets.QPushButton()
+        self.btn_lama.setObjectName(_fromUtf8("btn_lama"))
+        #self.btn_lama.setText("LaMA (Oberstufe)")
+        self.btn_lama.setIcon(QtGui.QIcon(logo_path))
+        self.btn_lama.setIconSize(QtCore.QSize(100,100))
+        self.gridLayout.addWidget(self.btn_lama, 0,1,1,1)
+        self.btn_lama.clicked.connect(partial(self.choose_button_pressed, 'lama'))
+        self.label_lama = QtWidgets.QLabel()
+        self.label_lama.setObjectName(_fromUtf8("label_lama"))
+        self.label_lama.setText("LaMA (Oberstufe)")
+        self.gridLayout.addWidget(self.label_lama, 1,1,1,1, QtCore.Qt.AlignCenter)
+
+    def choose_button_pressed(self, chosen_program):
+        self.chosen_program=chosen_program
+        self.Dialog.accept()
+
 
 class Ui_Dialog_titlepage(object):
     def setupUi(self, Dialog, dict_titlepage):
