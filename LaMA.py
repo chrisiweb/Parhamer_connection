@@ -1810,7 +1810,8 @@ class Ui_MainWindow(object):
         self.actionExit.setText(_translate("MainWindow", "Exit", None))
 
         print("Done")
-        # MainWindow.hide()
+
+        ########## Dialog: Choose program ####    
         self.Dialog = QtWidgets.QDialog(
             None,
             QtCore.Qt.WindowSystemMenuHint
@@ -1823,7 +1824,7 @@ class Ui_MainWindow(object):
         rsp=self.Dialog.exec_()
 
         if rsp == QtWidgets.QDialog.Accepted:
-            print(self.ui.chosen_program)
+            self.chosen_program = self.ui.chosen_program
         if rsp == QtWidgets.QDialog.Rejected:
             sys.exit(0)
 
