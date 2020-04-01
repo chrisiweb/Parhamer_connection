@@ -71,4 +71,27 @@ widgets_feedback = [
     "pushButton_send",
 ]
 
-list_widgets = [widgets_search, widgets_sage, widgets_create, widgets_feedback]
+################# LaMA Cria
+
+widgets_search_cria = [
+    "actionRefresh_Database",
+    "actionReset",
+    "actionLoad",
+    "actionSave",
+    "menuSage",
+    "menuNeu",
+    "menuFeedback",
+    "menuHelp",
+    "label_update",
+    "groupBox_ausgew_gk",
+    "groupBox_af",
+    "groupBox_schulstufe_cria",
+#     "groupBox_titelsuche",
+    "groupBox_unterkapitel_cria",
+#     "cb_solution",
+#     "cb_drafts",
+#     "btn_suche",
+#     "combobox_searchtype",
+]
+
+list_widgets = [widgets_search, widgets_sage, widgets_create, widgets_feedback, widgets_search_cria]

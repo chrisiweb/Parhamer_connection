@@ -31,12 +31,14 @@ from list_of_widgets import (
     widgets_create,
     widgets_sage,
     widgets_feedback,
+    widgets_search_cria,
     list_widgets
 )
 from subwindows import Ui_Dialog_choose_type, Ui_Dialog_titlepage, Ui_Dialog_ausgleichspunkte, Ui_Dialog_erstellen
 from translate import _fromUtf8, _translate
 from sort_items import natural_keys
 from create_pdf import create_pdf
+# from cria_commands import create_kapitel_cria
 
 try:
     loaded_lama_file_path = sys.argv[1]
@@ -63,10 +65,20 @@ dict_gk = config_loader(config_file, "dict_gk")
 dict_aufgabenformate = config_loader(config_file, "dict_aufgabenformate")
 Klassen = config_loader(config_file, "Klassen")
 
+#### LaMA Cria
+list_klassen = config_loader(config_file, "list_klassen")
+dict_aufgabenformate = config_loader(config_file, "dict_aufgabenformate")
+
+
+for klasse in list_klassen:
+    exec('dict_{0} = config_loader(config_file,"dict_{0}")'.format(klasse))
+    exec('dict_{0}_name = config_loader(config_file,"dict_{0}_name")'.format(klasse))
+
 
 dict_picture_path = {}
 set_chosen_gk = set([])
 list_sage_examples = []
+
 
 
 ### list_of_widgets
@@ -556,6 +568,92 @@ class Ui_MainWindow(object):
         self.label_warnung.setText(_translate("MainWindow", "Achtung: Aufgrund neuer hilfreicher Befehle ist es ratsam, ein Update des srdp-mathematik-Pakets so bald wie möglich durchzuführen! Nähere Infos unter: lama.schule/update", None))
         self.gridLayout.addWidget(self.label_warnung, 5,0,1,1)
         ##########################
+
+        ##################################################################
+        ################ LAMA CRIA SEARCH #################################
+        ###################################################################
+
+        self.groupBox_schulstufe_cria = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBox_schulstufe_cria.setMaximumSize(QtCore.QSize(450, 16777215))
+        self.groupBox_schulstufe_cria.setObjectName("groupBox_schulstufe_cria")
+        self.verticalLayout_cria = QtWidgets.QVBoxLayout(self.groupBox_schulstufe_cria)
+        self.verticalLayout_cria.setObjectName("verticalLayout_cria")
+        self.tabWidget_klassen_cria = QtWidgets.QTabWidget(self.groupBox_schulstufe_cria)
+        self.tabWidget_klassen_cria.setStyleSheet("background-color: rgb(229, 246, 255);")
+        self.tabWidget_klassen_cria.setMovable(False)
+        self.tabWidget_klassen_cria.setObjectName("tabWidget_klassen_cria")
+
+        spacerItem_cria = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
+        for all in list_klassen:
+            # print(all)
+            exec("self.tab_{} = QtWidgets.QWidget()".format(all))
+            exec('self.tab_{}.setObjectName("tab_k1")'.format(all))
+            exec(
+                "self.gridLayout_{0} = QtWidgets.QGridLayout(self.tab_{0})".format(all)
+            )
+            exec('self.gridLayout_{0}.setObjectName("gridLayout_{0}")'.format(all))
+            exec(
+                "self.scrollArea_{0} = QtWidgets.QScrollArea(self.tab_{0})".format(all)
+            )
+            scrollArea_cria = eval("self.scrollArea_{0}".format(all))
+            scrollArea_cria.setFrameShape(QtWidgets.QFrame.NoFrame)
+            scrollArea_cria.setWidgetResizable(True)
+            scrollArea_cria.setObjectName("scrollArea_cria")
+            exec("self.scrollAreaWidgetContents_{} = QtWidgets.QWidget()".format(all))
+            exec(
+                "self.scrollAreaWidgetContents_{}.setGeometry(QtCore.QRect(0, 0, 264, 235))".format(
+                    all
+                )
+            )
+            exec(
+                'self.scrollAreaWidgetContents_{0}.setObjectName("scrollAreaWidgetContents_{0}")'.format(
+                    all
+                )
+            )
+            exec(
+                "self.verticalLayout_kapitel_{0} = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_{0})".format(
+                    all
+                )
+            )
+            verticalLayout_cria = eval("self.verticalLayout_kapitel_{0}".format(all))
+            verticalLayout_cria.setObjectName("verticalLayout_kapitel_{0}".format(all))
+
+            dict_klasse_name = eval("dict_{}_name".format(all))
+            for kapitel in dict_klasse_name:
+                self.create_kapitel(verticalLayout_cria, all[1], kapitel)
+
+            verticalLayout_cria.addItem(spacerItem_cria)
+            exec(
+                "self.scrollArea_{0}.setWidget(self.scrollAreaWidgetContents_{0})".format(
+                    all
+                )
+            )
+            exec(
+                "self.gridLayout_{0}.addWidget(self.scrollArea_{0}, 5, 0, 1, 1)".format(
+                    all
+                )
+            )
+            exec(
+                'self.tabWidget_klassen_cria.addTab(self.tab_{0}, "{1}. Klasse")'.format(
+                    all, all[1]
+                )
+            )
+
+        self.groupBox_unterkapitel_cria = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBox_unterkapitel_cria.setStyleSheet(
+            "background-color: rgb(217, 255, 215);"
+        )
+        self.groupBox_unterkapitel_cria.setObjectName("groupBox_unterkapitel_cria")
+        self.gridLayout_11_cria = QtWidgets.QGridLayout(self.groupBox_unterkapitel_cria)
+        self.gridLayout_11_cria.setObjectName("gridLayout_11_cria")
+        self.gridLayout.addWidget(self.groupBox_unterkapitel_cria, 1, 2, 2, 1)
+
+        self.verticalLayout_cria.addWidget(self.tabWidget_klassen_cria)
+        self.gridLayout.addWidget(self.groupBox_schulstufe_cria, 1, 0, 2, 1)
+        self.groupBox_schulstufe_cria.hide()
+        self.groupBox_unterkapitel_cria.hide()
 
         ##############################################################
         #####################CREATOR #########################################
@@ -1825,6 +1923,8 @@ class Ui_MainWindow(object):
 
         if rsp == QtWidgets.QDialog.Accepted:
             self.chosen_program = self.ui.chosen_program
+            if self.chosen_program == 'cria':
+                self.update_gui(widgets_search_cria)
         if rsp == QtWidgets.QDialog.Rejected:
             sys.exit(0)
 
@@ -1913,6 +2013,117 @@ class Ui_MainWindow(object):
             x.setToolTip(chosen_dict[all])
             y = eval("self.cb_" + all + "_cr")
             y.setToolTip(chosen_dict[all])
+
+    def tab_changed(self):
+        klasse = list_klassen[self.tabWidget_klassen.currentIndex()]
+        dict_klasse_name = eval("dict_{}_name".format(klasse))
+
+        for all in dict_klasse_name:
+            radioButton = eval("self.radioButton_{0}_{1}".format(klasse, all))
+            if radioButton.isChecked() == True:
+                self.chosen_radiobutton(klasse[1], all)
+                break
+            else:
+                try:
+                    self.scrollArea_unterkapitel.setParent(None)
+                    self.groupBox_unterkapitel.setTitle(
+                        _translate("MainWindow", "Unterkapitel")
+                    )
+                except AttributeError:
+                    pass
+
+                pass
+
+    def create_kapitel(self, layout, klasse, kapitel):
+        dict_klasse_name = eval("dict_k{}_name".format(klasse))
+        exec(
+            "self.radioButton_k{0}_{1} = QtWidgets.QRadioButton(self.scrollAreaWidgetContents_k{0})".format(
+                klasse, kapitel
+            )
+        )
+        radioButton_klasse_kapitel = eval(
+            "self.radioButton_k{0}_{1}".format(klasse, kapitel)
+        )
+        radioButton_klasse_kapitel.setObjectName("radioButton_klasse_kapitel")
+        # chosen_layout = eval('{0}_k{1}'.format(layout, klasse))
+        layout.addWidget(radioButton_klasse_kapitel)
+        radioButton_klasse_kapitel.setText(
+            _translate("MainWindow", dict_klasse_name[kapitel] + " (" + kapitel + ")", None)
+        )
+        radioButton_klasse_kapitel.toggled.connect(
+            partial(self.chosen_radiobutton, klasse, kapitel)
+        )
+
+
+    def chosen_radiobutton(self, klasse, kapitel):
+        dict_klasse_name = eval("dict_k{}_name".format(klasse))
+        self.groupBox_unterkapitel.setTitle(
+            _translate(
+                "MainWindow",
+                "Unterkapitel - "
+                + str(klasse)
+                + ". Klasse - "
+                + dict_klasse_name[kapitel],
+            )
+        )
+
+        try:
+            self.scrollArea_unterkapitel.setParent(None)
+        except AttributeError:
+            pass
+
+        self.scrollArea_unterkapitel = QtWidgets.QScrollArea(self.groupBox_unterkapitel)
+        self.scrollArea_unterkapitel.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.scrollArea_unterkapitel.setWidgetResizable(True)
+        self.scrollArea_unterkapitel.setObjectName("scrollArea_unterkapitel")
+        self.scrollAreaWidgetContents = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 320, 279))
+        self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
+        self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
+        self.verticalLayout_4.setObjectName("verticalLayout_4")
+
+        dict_klasse = eval("dict_k{}".format(klasse))
+        for all in dict_klasse[kapitel]:
+            # print(dict_unterkapitel[all])
+
+            exec(
+                "self.checkBox_k{0}_{1}_{2} = QtWidgets.QCheckBox(self.scrollAreaWidgetContents)".format(
+                    klasse, kapitel, all
+                )
+            )
+            checkBox = eval("self.checkBox_k{0}_{1}_{2}".format(klasse, kapitel, all))
+            checkBox.setObjectName("checkBox_k{0}_{1}_{2}".format(klasse, kapitel, all))
+            checkBox.stateChanged.connect(
+                partial(self.checkBox_checked, klasse, kapitel, all)
+            )
+
+            thema_checked = [klasse, kapitel, all]
+            if thema_checked in self.dict_chosen_topics.values():
+                checkBox.setChecked(True)
+
+            self.verticalLayout_4.addWidget(checkBox)
+
+            checkBox.setText(_translate("MainWindow", dict_unterkapitel[all]))
+
+        spacerItem = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
+        self.verticalLayout_4.addItem(spacerItem)
+
+        exec(
+            "self.btn_alle_{0}_{1} = QtWidgets.QPushButton(self.scrollAreaWidgetContents)".format(
+                klasse, kapitel
+            )
+        )
+        btn_alle = eval("self.btn_alle_{0}_{1}".format(klasse, kapitel))
+        btn_alle.setStyleSheet("background-color: rgb(240, 240, 240);")
+        btn_alle.setObjectName("btn_alle_{0}_{1}".format(klasse, kapitel))
+        btn_alle.setText(_translate("MainWindow", "alle auswählen"))
+        btn_alle.clicked.connect(partial(self.btn_alle_clicked, klasse, kapitel))
+        self.verticalLayout_4.addWidget(btn_alle, 0, QtCore.Qt.AlignLeft)
+        self.scrollArea_unterkapitel.setWidget(self.scrollAreaWidgetContents)
+        self.gridLayout_11.addWidget(self.scrollArea_unterkapitel, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_unterkapitel, 1, 2, 2, 1)
 
     def suchfenster_reset(self):
         global dict_picture_path
