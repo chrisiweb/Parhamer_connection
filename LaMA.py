@@ -116,6 +116,7 @@ class Ui_MainWindow(object):
                 "datum": True,
                 "klasse": True,
                 "name": True,
+
                 "note": False,
                 "unterschrift": False,
             }
@@ -677,7 +678,7 @@ class Ui_MainWindow(object):
         self.groupBox_unterkapitel_cria.setTitle(_translate("MainWindow", "Unterkapitel",None))
         self.gridLayout_11_cria = QtWidgets.QGridLayout(self.groupBox_unterkapitel_cria)
         self.gridLayout_11_cria.setObjectName("gridLayout_11_cria")
-        self.gridLayout.addWidget(self.groupBox_unterkapitel_cria, 1, 2, 2, 1)
+        self.gridLayout.addWidget(self.groupBox_unterkapitel_cria, 1, 1, 2, 1)
 
         self.verticalLayout_cria.addWidget(self.tabWidget_klassen_cria)
         self.gridLayout.addWidget(self.groupBox_schulstufe_cria, 1, 0, 2, 1)
@@ -692,7 +693,7 @@ class Ui_MainWindow(object):
         self.groupBox_ausgew_themen_cria.setTitle(_translate("MainWindow", "Ausgewählte Themen",None))
         self.groupBox_ausgew_themen_cria.hide()
         self.verticalLayout_2_cria.addWidget(self.label_ausg_themen_cria)
-        self.gridLayout.addWidget(self.groupBox_ausgew_themen_cria, 3, 2, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_ausgew_themen_cria, 3, 1, 1, 1)
         self.groupBox_schulstufe_cria.hide()
         self.groupBox_unterkapitel_cria.hide()
 
@@ -2183,7 +2184,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_4_cria.addWidget(btn_alle, 0, QtCore.Qt.AlignLeft)
         self.scrollArea_unterkapitel_cria.setWidget(self.scrollAreaWidgetContents_cria)
         self.gridLayout_11_cria.addWidget(self.scrollArea_unterkapitel_cria, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_unterkapitel_cria, 1, 2, 2, 1)
+        # self.gridLayout.addWidget(self.groupBox_unterkapitel_cria, 1, 2, 2, 1)
 
 
     def checkBox_checked_cria(self, klasse, kapitel, unterkapitel):
