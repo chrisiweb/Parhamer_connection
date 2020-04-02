@@ -267,6 +267,8 @@ class Ui_MainWindow(object):
         self.actionInfo.setObjectName(_fromUtf8("actionInfo"))
         self.actionExit = QtWidgets.QAction(MainWindow)
         self.actionExit.setObjectName(_fromUtf8("actionExit"))
+        self.actionProgram = QtWidgets.QAction(MainWindow)
+        self.actionProgram.setObjectName(_fromUtf8("actionProgram"))
         self.actionFeedback = QtWidgets.QAction(MainWindow)
         self.actionFeedback.setObjectName(_fromUtf8("actionFeedback"))
         self.menuDateityp.addAction(self.actionAufgaben_Typ1)
@@ -283,6 +285,7 @@ class Ui_MainWindow(object):
         self.menuDatei.addSeparator()
         self.menuDatei.addAction(self.actionBild_konvertieren_jpg_eps)
         self.menuDatei.addSeparator()
+        self.menuDatei.addAction(self.actionProgram)
         self.menuDatei.addAction(self.actionExit)
         self.menuSage.addAction(self.actionSage)
         self.menuNeu.addAction(self.actionNeu)
@@ -364,7 +367,7 @@ class Ui_MainWindow(object):
         self.cb_univie = QtWidgets.QCheckBox(self.groupBox_klassen)
         self.cb_univie.setObjectName(_fromUtf8("cb_univie"))
         self.gridLayout_14.addWidget(self.cb_univie, 1, 2, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_klassen, 3, 0, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_klassen, 4, 0, 1, 1)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
         self.cb_solution = QtWidgets.QCheckBox(self.centralwidget)
@@ -1668,6 +1671,7 @@ class Ui_MainWindow(object):
         self.btn_fa_all.clicked.connect(self.btn_fa_all_pressed)
         self.btn_ws_all.clicked.connect(self.btn_ws_all_pressed)
         self.btn_suche.clicked.connect(self.PrepareTeXforPDF)
+        self.actionProgram.triggered.connect(self.change_program)
         self.actionExit.triggered.connect(self.close_app)
         self.actionRefresh_Database.triggered.connect(
             self.refresh_ddb
@@ -1875,11 +1879,11 @@ class Ui_MainWindow(object):
             self.cb_af_rf.hide()
             self.cb_af_ta.hide()
 
-
-        if self.chosen_program=="lama":
-            self.gridLayout.addWidget(self.groupBox_af, 4, 0, 1, 1)
-        if self.chosen_program=='cria':
-            self.gridLayout.addWidget(self.groupBox_af, 3, 0, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_af, 3, 0, 1, 1)
+        # if self.chosen_program=="lama":
+        #     self.gridLayout.addWidget(self.groupBox_af, 4, 0, 1, 1)
+        # if self.chosen_program=='cria':
+        #     self.gridLayout.addWidget(self.groupBox_af, 3, 0, 1, 1)
 
         # #################
 
@@ -1981,6 +1985,11 @@ class Ui_MainWindow(object):
         self.actionReset.setText(_translate("MainWindow", "Reset", None))
         self.label_gk_rest.setText(_translate("MainWindow", "", None))
         self.label_gk.setText(_translate("MainWindow", "", None))
+        if self.chosen_program == 'lama':
+            program='LaMA Cria (Unterstufe)'
+        if self.chosen_program == 'cria':
+            program='LaMA (Oberstufe)'
+        self.actionProgram.setText(_translate("MainWindow", 'Zu "{}" wechseln'.format(program), None))
         self.actionExit.setText(_translate("MainWindow", "Exit", None))
 
         print("Done")
@@ -2355,6 +2364,21 @@ class Ui_MainWindow(object):
 
         except AttributeError:
             pass
+
+    def change_program(self):
+        print(self.chosen_program)
+        if self.chosen_program=='lama':
+            self.update_gui(widgets_search_cria)
+            self.chosen_program = 'cria'
+            self.actionProgram.setText(_translate("MainWindow", 'Zu "LaMA (Oberstufe)" wechseln', None))
+            return
+        if self.chosen_program=='cria':
+            self.update_gui(widgets_search)
+            self.chosen_program = 'lama'
+            self.actionProgram.setText(_translate("MainWindow", 'Zu "LaMA Cria (Unterstufe)" wechseln', None))
+            return
+
+
 
     def close_app(self):
         try:
