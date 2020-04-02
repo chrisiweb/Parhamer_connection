@@ -87,7 +87,7 @@ widgets_search_cria = [
     # "groupBox_ausgew_gk",
     "groupBox_af",
     "groupBox_schulstufe_cria",
-#     "groupBox_titelsuche",
+    "groupBox_titelsuche",
     "groupBox_unterkapitel_cria",
 #     "cb_solution",
 #     "cb_drafts",

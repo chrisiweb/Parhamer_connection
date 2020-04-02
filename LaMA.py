@@ -295,6 +295,7 @@ class Ui_MainWindow(object):
         self.menuBild_einf_gen.addAction(self.actionBild_einf_gen)
         self.menuBild_einf_gen.addSeparator()
         # self.menuBild_einf_gen.addAction(self.actionBild_konvertieren_jpg_eps)
+
         self.groupBox_ausgew_gk = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_ausgew_gk.setObjectName(_fromUtf8("groupBox_ausgew_gk"))
         self.groupBox_ausgew_gk.setMaximumHeight(110)
@@ -325,7 +326,7 @@ class Ui_MainWindow(object):
         self.scrollArea_ausgew_gk.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.scrollArea_ausgew_gk.setWidget(self.scrollAreaWidgetContents_ausgew_gk)
         self.verticalLayout_2.addWidget(self.scrollArea_ausgew_gk)
-        self.gridLayout.addWidget(self.groupBox_ausgew_gk, 3, 3, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_ausgew_gk, 3, 2, 1, 1)
 
         self.groupBox_titelsuche = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_titelsuche.setObjectName(_fromUtf8("groupBox_titelsuche"))
@@ -337,7 +338,7 @@ class Ui_MainWindow(object):
 
         self.entry_suchbegriffe.setObjectName(_fromUtf8("entry_suchbegriffe"))
         self.gridLayout_10.addWidget(self.entry_suchbegriffe, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_titelsuche, 4, 3, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_titelsuche, 4, 2, 1, 1)
         self.groupBox_klassen = QtWidgets.QGroupBox(self.centralwidget)
         # self.groupBox_klassen.setMaximumSize(QtCore.QSize(367, 16777215))
         self.groupBox_klassen.setObjectName(_fromUtf8("groupBox_klassen"))
@@ -379,7 +380,7 @@ class Ui_MainWindow(object):
         self.btn_suche.setAcceptDrops(False)
         self.btn_suche.setObjectName(_fromUtf8("btn_suche"))
         self.horizontalLayout_2.addWidget(self.btn_suche)
-        self.gridLayout.addLayout(self.horizontalLayout_2, 5, 3, 1, 1)
+        self.gridLayout.addLayout(self.horizontalLayout_2, 5, 2, 1, 1)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         # self.btn_refreshddb = QtWidgets.QPushButton(self.centralwidget)
@@ -406,7 +407,7 @@ class Ui_MainWindow(object):
         self.combobox_searchtype.addItem(_fromUtf8(""))
         self.combobox_searchtype.addItem(_fromUtf8(""))
         self.horizontalLayout_combobox.addWidget(self.combobox_searchtype)
-        self.gridLayout.addLayout(self.horizontalLayout_combobox, 0, 3, 1, 1)
+        self.gridLayout.addLayout(self.horizontalLayout_combobox, 0, 2, 1, 1)
         self.combobox_searchtype.hide()
         self.groupBox_themen_klasse = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_themen_klasse.setMaximumSize(QtCore.QSize(367, 16777215))
@@ -1105,23 +1106,29 @@ class Ui_MainWindow(object):
         ################# LaMA SAGE ####################
         #####################################################
 
+        self.splitter_sage = QtWidgets.QSplitter(self.centralwidget)
+        self.splitter_sage.setOrientation(QtCore.Qt.Horizontal)
+        self.splitter_sage.setObjectName("splitter_sage")
+
+        self.groupBox_alle_aufgaben = QtWidgets.QGroupBox(self.splitter_sage)
+        # self.groupBox_alle_aufgaben.setMinimumSize(QtCore.QSize(140, 16777215))
+        self.groupBox_alle_aufgaben.setMinimumSize(QtCore.QSize(40, 16777215))
+        self.groupBox_alle_aufgaben.setObjectName("groupBox_alle_aufgaben")
+        self.verticalLayout_sage = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben)
+        self.verticalLayout_sage.setObjectName("verticalLayout_sage")
+
         self.comboBox_at_sage = QtWidgets.QComboBox(self.centralwidget)
         self.comboBox_at_sage.setObjectName("comboBox_at_sage")
         self.comboBox_at_sage.addItem("")
         self.comboBox_at_sage.addItem("")
-        self.gridLayout.addWidget(self.comboBox_at_sage, 1, 0, 1, 1)
+        self.verticalLayout_sage.addWidget(self.comboBox_at_sage)
         self.comboBox_at_sage.setItemText(0, _translate("MainWindow", "Typ 1", None))
         self.comboBox_at_sage.setItemText(1, _translate("MainWindow", "Typ 2", None))
         self.comboBox_at_sage.currentIndexChanged.connect(self.comboBox_at_sage_changed)
         self.comboBox_at_sage.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.comboBox_at_sage.hide()
+        # self.comboBox_at_sage.hide()
 
-        self.groupBox_alle_aufgaben = QtWidgets.QGroupBox(self.centralwidget)
-        # self.groupBox_alle_aufgaben.setMinimumSize(QtCore.QSize(140, 16777215))
-        self.groupBox_alle_aufgaben.setMaximumSize(QtCore.QSize(180, 16777215))
-        self.groupBox_alle_aufgaben.setObjectName("groupBox_alle_aufgaben")
-        self.verticalLayout_sage = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben)
-        self.verticalLayout_sage.setObjectName("verticalLayout_sage")
+
         self.comboBox_gk = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
         self.comboBox_gk.setObjectName("comboBox_gk")
         list_comboBox_gk = ["", "AG", "FA", "AN", "WS", "K5", "K6", "K7", "K8"]
@@ -1151,11 +1158,12 @@ class Ui_MainWindow(object):
         self.listWidget = QtWidgets.QListWidget(self.groupBox_alle_aufgaben)
         self.listWidget.setObjectName("listWidget")
         self.verticalLayout_sage.addWidget(self.listWidget)
-        self.gridLayout.addWidget(self.groupBox_alle_aufgaben, 2, 0, 7, 1)
+        #self.gridLayout.addWidget(self.groupBox_alle_aufgaben, 2, 0, 7, 1)
+
         self.groupBox_alle_aufgaben.setTitle(_translate("MainWindow", "Aufgaben", None))
         self.groupBox_alle_aufgaben.hide()
 
-        self.groupBox_sage = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBox_sage = QtWidgets.QGroupBox(self.splitter_sage)
         self.groupBox_sage.setObjectName("groupBox_sage")
         self.gridLayout_5 = QtWidgets.QGridLayout(self.groupBox_sage)
         self.gridLayout_5.setObjectName("gridLayout_5")
@@ -1452,8 +1460,8 @@ class Ui_MainWindow(object):
             partial(self.pushButton_vorschau_pressed, "vorschau", 0, 0)
         )
         self.pushButton_vorschau.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.gridLayout.addWidget(self.groupBox_sage, 1, 2, 8, 3)
-
+        #self.gridLayout.addWidget(self.groupBox_sage, 1, 2, 8, 3)
+        self.gridLayout.addWidget(self.splitter_sage, 1, 0, 8, 1)
         self.pushButton_erstellen = QtWidgets.QPushButton(self.groupBox_sage)
         self.pushButton_erstellen.setMaximumSize(QtCore.QSize(90, 16777215))
         self.pushButton_erstellen.setObjectName("pushButton_erstellen")
@@ -1628,7 +1636,7 @@ class Ui_MainWindow(object):
         #####################################################################
 
         self.gridLayout_11.addWidget(self.tab_widget_gk, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_gk, 1, 3, 2, 1)
+        self.gridLayout.addWidget(self.groupBox_gk, 1, 2, 2, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
