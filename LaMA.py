@@ -368,7 +368,7 @@ class Ui_MainWindow(object):
         self.cb_univie = QtWidgets.QCheckBox(self.groupBox_klassen)
         self.cb_univie.setObjectName(_fromUtf8("cb_univie"))
         self.gridLayout_14.addWidget(self.cb_univie, 1, 2, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_klassen, 4, 0, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_klassen, 3, 0, 1, 1)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
         self.cb_solution = QtWidgets.QCheckBox(self.centralwidget)
@@ -597,7 +597,7 @@ class Ui_MainWindow(object):
         self.label_warnung.setObjectName(_fromUtf8("label_warnung"))
         self.label_warnung.setStyleSheet(_fromUtf8("background-color: rgb(255, 80, 80);"))
         #self.label_warnung.setMaximumSize(QtCore.QSize(375, 16777215))
-        self.label_warnung.setText(_translate("MainWindow", "Achtung: Aufgrund neuer hilfreicher Befehle ist es ratsam, ein Update des srdp-mathematik-Pakets so bald wie möglich durchzuführen! Nähere Infos unter: lama.schule/update", None))
+        self.label_warnung.setText(_translate("MainWindow", "Achtung: Aufgrund neuer hilfreicher Befehle ist es notwendig, ein Update des srdp-mathematik-Pakets so bald wie möglich durchzuführen! Nähere Infos unter: lama.schule/update", None))
         self.gridLayout.addWidget(self.label_warnung, 5,0,1,1)
         ##########################
 
@@ -1880,11 +1880,11 @@ class Ui_MainWindow(object):
             self.cb_af_rf.hide()
             self.cb_af_ta.hide()
 
-        self.gridLayout.addWidget(self.groupBox_af, 3, 0, 1, 1)
-        # if self.chosen_program=="lama":
-        #     self.gridLayout.addWidget(self.groupBox_af, 4, 0, 1, 1)
-        # if self.chosen_program=='cria':
-        #     self.gridLayout.addWidget(self.groupBox_af, 3, 0, 1, 1)
+        # self.gridLayout.addWidget(self.groupBox_af, 3, 0, 1, 1)
+        if self.chosen_program=="lama":
+            self.gridLayout.addWidget(self.groupBox_af, 4, 0, 1, 1)
+        if self.chosen_program=='cria':
+            self.gridLayout.addWidget(self.groupBox_af, 3, 0, 1, 1)
 
         # #################
 
@@ -2371,12 +2371,20 @@ class Ui_MainWindow(object):
         if self.chosen_program=='lama':
             self.update_gui(widgets_search_cria)
             self.chosen_program = 'cria'
+            self.gridLayout.addWidget(self.groupBox_af, 3, 0, 1, 1)
             self.actionProgram.setText(_translate("MainWindow", 'Zu "LaMA (Oberstufe)" wechseln', None))
+            self.cb_af_ko.show()
+            self.cb_af_rf.show()
+            self.cb_af_ta.show()
             return
         if self.chosen_program=='cria':
             self.update_gui(widgets_search)
             self.chosen_program = 'lama'
+            self.gridLayout.addWidget(self.groupBox_af, 4, 0, 1, 1)
             self.actionProgram.setText(_translate("MainWindow", 'Zu "LaMA Cria (Unterstufe)" wechseln', None))
+            self.cb_af_ko.hide()
+            self.cb_af_rf.hide()
+            self.cb_af_ta.hide()
             return
 
 
@@ -2435,7 +2443,7 @@ class Ui_MainWindow(object):
                 _translate(
                     "MainWindow",
                     "Letztes Update: "
-                    + self.modification_date(log_file).strftime("%d.%m.%y - %H:%M"),
+                    + modification_date(log_file).strftime("%d.%m.%y - %H:%M"),
                     None,
                 )
             )
@@ -2932,7 +2940,7 @@ class Ui_MainWindow(object):
                 "Teildokument",
                 "log_file_%s" % self.label_aufgabentyp.text()[-1],
             )
-            month_update_log_file = self.modification_date(log_file).strftime("%m")
+            month_update_log_file = modification_date(log_file).strftime("%m")
             month_today = datetime.date.today().strftime("%m")
             if month_today != month_update_log_file:
                 self.refresh_ddb()  # self.label_aufgabentyp.text()[-1]
