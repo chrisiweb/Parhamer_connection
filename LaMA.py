@@ -326,7 +326,7 @@ class Ui_MainWindow(object):
         self.scrollArea_ausgew_gk.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.scrollArea_ausgew_gk.setWidget(self.scrollAreaWidgetContents_ausgew_gk)
         self.verticalLayout_2.addWidget(self.scrollArea_ausgew_gk)
-        self.gridLayout.addWidget(self.groupBox_ausgew_gk, 3, 2, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_ausgew_gk, 3, 1, 1, 1)
 
         self.groupBox_titelsuche = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_titelsuche.setObjectName(_fromUtf8("groupBox_titelsuche"))
@@ -338,9 +338,9 @@ class Ui_MainWindow(object):
 
         self.entry_suchbegriffe.setObjectName(_fromUtf8("entry_suchbegriffe"))
         self.gridLayout_10.addWidget(self.entry_suchbegriffe, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_titelsuche, 4, 2, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_titelsuche, 4, 1, 1, 1)
         self.groupBox_klassen = QtWidgets.QGroupBox(self.centralwidget)
-        # self.groupBox_klassen.setMaximumSize(QtCore.QSize(367, 16777215))
+        #self.groupBox_klassen.setMaximumSize(QtCore.QSize(375, 16777215))
         self.groupBox_klassen.setObjectName(_fromUtf8("groupBox_klassen"))
         # self.groupBox_klassen.setMaximumHeight(100)
         self.gridLayout_14 = QtWidgets.QGridLayout(self.groupBox_klassen)
@@ -380,7 +380,7 @@ class Ui_MainWindow(object):
         self.btn_suche.setAcceptDrops(False)
         self.btn_suche.setObjectName(_fromUtf8("btn_suche"))
         self.horizontalLayout_2.addWidget(self.btn_suche)
-        self.gridLayout.addLayout(self.horizontalLayout_2, 5, 2, 1, 1)
+        self.gridLayout.addLayout(self.horizontalLayout_2, 5, 1, 1, 1)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         # self.btn_refreshddb = QtWidgets.QPushButton(self.centralwidget)
@@ -388,6 +388,7 @@ class Ui_MainWindow(object):
         # self.horizontalLayout.addWidget(self.btn_refreshddb)
         self.label_update = QtWidgets.QLabel(self.centralwidget)
         self.label_update.setObjectName(_fromUtf8("label_update"))
+        #self.label_update.setMaximumSize(QtCore.QSize(375, 18))
         self.label_update.setMaximumHeight(18)
         self.horizontalLayout.addWidget(self.label_update)
         # self.label_update.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
@@ -407,10 +408,10 @@ class Ui_MainWindow(object):
         self.combobox_searchtype.addItem(_fromUtf8(""))
         self.combobox_searchtype.addItem(_fromUtf8(""))
         self.horizontalLayout_combobox.addWidget(self.combobox_searchtype)
-        self.gridLayout.addLayout(self.horizontalLayout_combobox, 0, 2, 1, 1)
+        self.gridLayout.addLayout(self.horizontalLayout_combobox, 0, 1, 1, 1)
         self.combobox_searchtype.hide()
         self.groupBox_themen_klasse = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBox_themen_klasse.setMaximumSize(QtCore.QSize(367, 16777215))
+        #self.groupBox_themen_klasse.setMaximumSize(QtCore.QSize(375, 16777215))
         self.groupBox_themen_klasse.setObjectName(_fromUtf8("groupBox_themen_klasse"))
         self.verticalLayout = QtWidgets.QVBoxLayout(self.groupBox_themen_klasse)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
@@ -590,6 +591,7 @@ class Ui_MainWindow(object):
         self.label_warnung.setWordWrap(True)
         self.label_warnung.setObjectName(_fromUtf8("label_warnung"))
         self.label_warnung.setStyleSheet(_fromUtf8("background-color: rgb(255, 80, 80);"))
+        #self.label_warnung.setMaximumSize(QtCore.QSize(375, 16777215))
         self.label_warnung.setText(_translate("MainWindow", "Achtung: Aufgrund neuer hilfreicher Befehle ist es ratsam, ein Update des srdp-mathematik-Pakets so bald wie möglich durchzuführen! Nähere Infos unter: lama.schule/update", None))
         self.gridLayout.addWidget(self.label_warnung, 5,0,1,1)
         ##########################
@@ -1438,7 +1440,7 @@ class Ui_MainWindow(object):
         self.cb_solution_sage.setChecked(True)
         self.cb_solution_sage.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.gridLayout_5.addWidget(
-            self.cb_solution_sage, 7, 4, 2, 1, QtCore.Qt.AlignRight
+            self.cb_solution_sage, 7, 4, 1, 1, QtCore.Qt.AlignRight
         )
 
         self.cb_drafts_sage = QtWidgets.QCheckBox(self.centralwidget)
@@ -1472,6 +1474,7 @@ class Ui_MainWindow(object):
             self.pushButton_erstellen, 8, 5, 1, 2, QtCore.Qt.AlignRight
         )
         self.groupBox_sage.hide()
+        self.splitter_sage.hide()
 
         ################################################################
         ################################################################
@@ -1498,7 +1501,7 @@ class Ui_MainWindow(object):
         self.label_example.setText(
             _translate("MainWindow", "Ausgewählte Aufgabe: -", None)
         )
-        self.gridLayout.addWidget(self.label_example, 0, 1, 1, 1)
+        self.gridLayout.addWidget(self.label_example, 0, 0, 1, 1)
         self.label_example.hide()
 
         self.groupBox_alle_aufgaben_fb = QtWidgets.QGroupBox(self.centralwidget)
@@ -1636,7 +1639,7 @@ class Ui_MainWindow(object):
         #####################################################################
 
         self.gridLayout_11.addWidget(self.tab_widget_gk, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_gk, 1, 2, 2, 1)
+        self.gridLayout.addWidget(self.groupBox_gk, 1, 1, 2, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
@@ -1835,7 +1838,7 @@ class Ui_MainWindow(object):
 
         ##### ONLY NEEDED for Typ1 #####
         self.groupBox_af = QtWidgets.QGroupBox(self.centralwidget)
-        # self.groupBox_af.setMaximumSize(QtCore.QSize(375, 16777215))
+        #self.groupBox_af.setMaximumSize(QtCore.QSize(375, 16777215))
         self.groupBox_af.setObjectName(_fromUtf8("groupBox_af"))
         # self.groupBox_af.setMaximumHeight(80)
         self.gridLayout_af = QtWidgets.QGridLayout(self.groupBox_af)

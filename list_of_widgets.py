@@ -53,6 +53,7 @@ widgets_sage = [
     "menuHelp",
     "comboBox_at_sage",
     "groupBox_alle_aufgaben",
+    "splitter_sage",
     "groupBox_sage",
 ]  # ,'comboBox_at_sage','groupBox_sage','groupBox_notenschl','actionRefresh_Database'
 
