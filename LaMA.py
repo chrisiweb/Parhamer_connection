@@ -2933,7 +2933,7 @@ class Ui_MainWindow(object):
                 "log_file_%s" % self.label_aufgabentyp.text()[-1],
             )
         ):
-            self.refresh_ddb()  # self.label_aufgabentyp.text()[-1]
+            refresh_ddb(self)  # self.label_aufgabentyp.text()[-1]
         else:  ##  Automatic update once per month
             log_file = os.path.join(
                 path_programm,
@@ -2943,7 +2943,7 @@ class Ui_MainWindow(object):
             month_update_log_file = modification_date(log_file).strftime("%m")
             month_today = datetime.date.today().strftime("%m")
             if month_today != month_update_log_file:
-                self.refresh_ddb()  # self.label_aufgabentyp.text()[-1]
+                refresh_ddb(self)  # self.label_aufgabentyp.text()[-1]
 
         suchbegriffe = []
 
@@ -5515,7 +5515,7 @@ class Ui_MainWindow(object):
             with open(log_file_1, encoding="utf8") as f:
                 beispieldaten_dateipfad_1 = json.load(f)
         except FileNotFoundError:
-            self.refresh_ddb()  # 1
+            refresh_ddb(self)  # 1
             with open(log_file_1, encoding="utf8") as f:
                 beispieldaten_dateipfad_1 = json.load(f)
 
@@ -5526,7 +5526,7 @@ class Ui_MainWindow(object):
             with open(log_file_2, encoding="utf8") as f:
                 beispieldaten_dateipfad_2 = json.load(f)
         except FileNotFoundError:
-            self.refresh_ddb()  # 2
+            refresh_ddb(self)  # 2
             with open(log_file_2, encoding="utf8") as f:
                 beispieldaten_dateipfad_2 = json.load(f)
 

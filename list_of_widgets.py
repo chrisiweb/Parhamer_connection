@@ -75,7 +75,7 @@ widgets_feedback = [
 ################# LaMA Cria
 
 widgets_search_cria = [
-    "actionRefresh_Database",
+    # "actionRefresh_Database",
     "actionReset",
     "actionLoad",
     "actionSave",
