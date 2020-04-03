@@ -1525,6 +1525,7 @@ class Ui_MainWindow(object):
         )
         self.groupBox_sage.hide()
         self.splitter_sage.hide()
+        self.comboBox_klassen_changed("sage")
 
         ################################################################
         ################################################################
