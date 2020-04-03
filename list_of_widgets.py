@@ -55,6 +55,9 @@ widgets_sage = [
     "groupBox_alle_aufgaben",
     "splitter_sage",
     "groupBox_sage",
+    "comboBox_at_sage",
+    "comboBox_gk",
+    "comboBox_gk_num",
 ]  # ,'comboBox_at_sage','groupBox_sage','groupBox_notenschl','actionRefresh_Database'
 
 
@@ -96,4 +99,20 @@ widgets_search_cria = [
     "combobox_searchtype",
 ]
 
-list_widgets = [widgets_search, widgets_sage, widgets_create, widgets_feedback, widgets_search_cria]
+widgets_sage_cria = [
+    "actionLoad",
+    "actionSave",
+    "actionReset_sage",
+    "menuSuche",
+    "menuNeu",
+    "menuFeedback",
+    "menuHelp",
+    "groupBox_alle_aufgaben",
+    "splitter_sage",
+    "groupBox_sage",
+    "comboBox_klassen",
+    "comboBox_kapitel",
+    "comboBox_unterkapitel",
+]  # ,'comboBox_at_sage','groupBox_sage','groupBox_notenschl','actionRefresh_Database'
+
+list_widgets = [widgets_search, widgets_sage, widgets_create, widgets_feedback, widgets_search_cria, widgets_sage_cria]

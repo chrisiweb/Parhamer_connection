@@ -32,6 +32,7 @@ from list_of_widgets import (
     widgets_sage,
     widgets_feedback,
     widgets_search_cria,
+    widgets_sage_cria,
     list_widgets
 )
 from subwindows import Ui_Dialog_choose_type, Ui_Dialog_titlepage, Ui_Dialog_ausgleichspunkte, Ui_Dialog_erstellen
@@ -1125,7 +1126,9 @@ class Ui_MainWindow(object):
         self.verticalLayout_sage = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben)
         self.verticalLayout_sage.setObjectName("verticalLayout_sage")
 
-        self.comboBox_at_sage = QtWidgets.QComboBox(self.centralwidget)
+
+        ##### ComboBox LaMA ####
+        self.comboBox_at_sage = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
         self.comboBox_at_sage.setObjectName("comboBox_at_sage")
         self.comboBox_at_sage.addItem("")
         self.comboBox_at_sage.addItem("")
@@ -1157,6 +1160,47 @@ class Ui_MainWindow(object):
         )
         self.comboBox_gk_num.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.verticalLayout_sage.addWidget(self.comboBox_gk_num)
+
+        ##### ComboBox LaMA Cria ####
+        self.comboBox_klassen = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
+        self.comboBox_klassen.setObjectName("comboBox_klassen")
+        # self.comboBox_gk.addItem("")
+        index = 0
+        for all in list_klassen:
+            self.comboBox_klassen.addItem("")
+
+            self.comboBox_klassen.setItemText(
+                index, _translate("MainWindow", all[1] + ". Klasse", None)
+            )
+            index += 1
+
+        self.comboBox_klassen.currentIndexChanged.connect(
+            partial(self.comboBox_klassen_changed, "sage")
+        )
+
+        self.comboBox_klassen.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.verticalLayout_sage.addWidget(self.comboBox_klassen)
+
+        self.comboBox_kapitel = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
+        self.comboBox_kapitel.setObjectName("comboBox_kapitel")
+        self.comboBox_kapitel.currentIndexChanged.connect(
+            partial(self.comboBox_kapitel_changed, "sage")
+        )
+        self.comboBox_kapitel.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.verticalLayout_sage.addWidget(self.comboBox_kapitel)
+
+        self.comboBox_unterkapitel = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
+        self.comboBox_unterkapitel.setObjectName("comboBox_unterkapitel")
+        self.comboBox_unterkapitel.currentIndexChanged.connect(
+            partial(self.comboBox_unterkapitel_changed, "sage")
+        )
+        self.comboBox_unterkapitel.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.verticalLayout_sage.addWidget(self.comboBox_unterkapitel)
+
+
+
+
+
         self.lineEdit_number = QtWidgets.QLineEdit(self.groupBox_alle_aufgaben)
         self.lineEdit_number.setObjectName("lineEdit_number")
         self.lineEdit_number.textChanged.connect(
@@ -1685,10 +1729,10 @@ class Ui_MainWindow(object):
         self.actionAufgaben_Typ1.triggered.connect(self.chosen_aufgabenformat_typ1)
         self.actionAufgaben_Typ2.triggered.connect(self.chosen_aufgabenformat_typ2)
         self.actionInfo.triggered.connect(self.show_info)
-        self.actionSuche.triggered.connect(partial(self.update_gui, widgets_search))
-        self.actionSage.triggered.connect(partial(self.update_gui, widgets_sage))
-        self.actionNeu.triggered.connect(partial(self.update_gui, widgets_create)) #self.neue_aufgabe_erstellen
-        self.actionFeedback.triggered.connect(partial(self.update_gui, widgets_feedback))
+        self.actionSuche.triggered.connect(partial(self.update_gui, 'widgets_search'))
+        self.actionSage.triggered.connect(partial(self.update_gui, 'widgets_sage'))
+        self.actionNeu.triggered.connect(partial(self.update_gui, 'widgets_create')) #self.neue_aufgabe_erstellen
+        self.actionFeedback.triggered.connect(partial(self.update_gui, 'widgets_feedback'))
         self.actionBild_einf_gen.triggered.connect(self.add_picture)
         self.actionBild_konvertieren_jpg_eps.triggered.connect(self.convert_imagetoeps)
         self.comboBox_aufgabentyp_cr.currentIndexChanged.connect(
@@ -1997,7 +2041,7 @@ class Ui_MainWindow(object):
         print("Done")
 
         if self.chosen_program == 'cria':
-            self.update_gui(widgets_search_cria)
+            self.update_gui('widgets_search')
 
 
 
@@ -2370,8 +2414,8 @@ class Ui_MainWindow(object):
     def change_program(self):
         print(self.chosen_program)
         if self.chosen_program=='lama':
-            self.update_gui(widgets_search_cria)
             self.chosen_program = 'cria'
+            self.update_gui('widgets_search')
             self.gridLayout.addWidget(self.groupBox_af, 3, 0, 1, 1)
             self.actionProgram.setText(_translate("MainWindow", 'Zu "LaMA (Oberstufe)" wechseln', None))
             self.cb_af_ko.show()
@@ -2379,8 +2423,8 @@ class Ui_MainWindow(object):
             self.cb_af_ta.show()
             return
         if self.chosen_program=='cria':
-            self.update_gui(widgets_search)
             self.chosen_program = 'lama'
+            self.update_gui('widgets_search')
             self.gridLayout.addWidget(self.groupBox_af, 4, 0, 1, 1)
             self.actionProgram.setText(_translate("MainWindow", 'Zu "LaMA Cria (Unterstufe)" wechseln', None))
             self.cb_af_ko.hide()
@@ -5075,6 +5119,101 @@ class Ui_MainWindow(object):
             )
         )
 
+
+    def comboBox_klassen_changed(self, list_mode):
+        if list_mode == "sage":
+            dict_klasse_name = eval(
+                "dict_{}_name".format(
+                    list_klassen[self.comboBox_klassen.currentIndex()]
+                )
+            )
+            self.comboBox_kapitel.clear()
+            self.comboBox_unterkapitel.clear()
+            self.comboBox_kapitel.addItem("")
+        if list_mode == "feedback":
+            self.label_example.setText(
+                _translate("MainWindow", "Ausgewählte Aufgabe: -")
+            )
+            dict_klasse_name = eval(
+                "dict_{}_name".format(
+                    list_klassen[self.comboBox_klassen_fb.currentIndex()]
+                )
+            )
+            self.listWidget_fb.clear()
+            self.comboBox_kapitel_fb.clear()
+            self.comboBox_unterkapitel_fb.clear()
+            self.comboBox_kapitel_fb.addItem("")
+
+        for all in dict_klasse_name.keys():
+            if list_mode == "sage":
+                self.comboBox_kapitel.addItem(dict_klasse_name[all] + " (" + all + ")")
+            if list_mode == "feedback":
+                self.comboBox_kapitel_fb.addItem(
+                    dict_klasse_name[all] + " (" + all + ")"
+                )
+
+        self.adapt_choosing_list(list_mode)
+
+
+
+    def comboBox_kapitel_changed(self, list_mode):
+        dict_klasse = eval(
+            "dict_{}".format(list_klassen[self.comboBox_klassen.currentIndex()])
+        )
+
+        if list_mode == "sage":
+            dict_klasse = eval(
+                "dict_{}".format(list_klassen[self.comboBox_klassen.currentIndex()])
+            )
+            self.comboBox_unterkapitel.clear()
+
+            kapitel_shortcut = list(dict_klasse.keys())[
+                self.comboBox_kapitel.currentIndex() - 1
+            ]
+
+            # self.comboBox_unterkapitel.clear()
+            self.comboBox_unterkapitel.addItem("")
+
+        if list_mode == "feedback":
+            dict_klasse = eval(
+                "dict_{}".format(list_klassen[self.comboBox_klassen_fb.currentIndex()])
+            )
+            self.comboBox_unterkapitel_fb.clear()
+
+            kapitel_shortcut = list(dict_klasse.keys())[
+                self.comboBox_kapitel_fb.currentIndex() - 1
+            ]
+            self.comboBox_unterkapitel_fb.addItem("")
+
+        index = 1
+        for all in dict_klasse[kapitel_shortcut]:
+            if list_mode == "sage":
+                self.comboBox_unterkapitel.addItem(
+                    dict_unterkapitel[all] + " (" + all + ")"
+                )
+                # self.comboBox_unterkapitel.setItemText(index, _translate("MainWindow", dict_unterkapitel[all] + ' ('+all+')'))
+            if list_mode == "feedback":
+                self.comboBox_unterkapitel_fb.addItem(
+                    dict_unterkapitel[all] + " (" + all + ")"
+                )
+                # self.comboBox_unterkapitel_fb.setItemText(index, _translate("MainWindow", dict_unterkapitel[all] + ' ('+all+')'))
+            index += 1
+
+        if list_mode == "sage":
+            if self.comboBox_kapitel.currentIndex() == 0:
+                self.comboBox_unterkapitel.clear()
+        if list_mode == "feedback":
+            if self.comboBox_kapitel_fb.currentIndex() == 0:
+                self.comboBox_unterkapitel_fb.clear()
+
+
+        self.adapt_choosing_list(list_mode)
+
+
+    def comboBox_unterkapitel_changed(self, list_mode):
+        self.adapt_choosing_list(list_mode)
+
+
     def adapt_choosing_list(self, list_mode):
         if list_mode == "sage":
             listWidget = self.listWidget
@@ -5091,120 +5230,244 @@ class Ui_MainWindow(object):
         listWidget.clear()
 
         log_file_1 = os.path.join(path_programm, "Teildokument", "log_file_1")
-        try:
-            with open(log_file_1, encoding="utf8") as f:
-                beispieldaten_dateipfad_1 = json.load(f)
-        except FileNotFoundError:
-            refresh_ddb(self)  # 1
-            with open(log_file_1, encoding="utf8") as f:
-                beispieldaten_dateipfad_1 = json.load(f)
-
-        self.beispieldaten_dateipfad_1 = beispieldaten_dateipfad_1
-
         log_file_2 = os.path.join(path_programm, "Teildokument", "log_file_2")
-        try:
-            with open(log_file_2, encoding="utf8") as f:
-                beispieldaten_dateipfad_2 = json.load(f)
-        except FileNotFoundError:
-            refresh_ddb(self)  # 2
-            with open(log_file_2, encoding="utf8") as f:
-                beispieldaten_dateipfad_2 = json.load(f)
+        log_file_cria = os.path.join(path_programm, "Teildokument", "log_file_cria")
 
-        self.beispieldaten_dateipfad_2 = beispieldaten_dateipfad_2
+        
+        if self.chosen_program == 'lama':
+            try:
+                with open(log_file_1, encoding="utf8") as f:
+                    beispieldaten_dateipfad_1 = json.load(f)
+            except FileNotFoundError:
+                refresh_ddb(self)  # 1
+                with open(log_file_1, encoding="utf8") as f:
+                    beispieldaten_dateipfad_1 = json.load(f)
+            self.beispieldaten_dateipfad_1 = beispieldaten_dateipfad_1
+
+        #log_file_2 = os.path.join(path_programm, "Teildokument", "log_file_2")
+            try:
+                with open(log_file_2, encoding="utf8") as f:
+                    beispieldaten_dateipfad_2 = json.load(f)
+            except FileNotFoundError:
+                refresh_ddb(self)  # 2
+                with open(log_file_2, encoding="utf8") as f:
+                    beispieldaten_dateipfad_2 = json.load(f)
+            self.beispieldaten_dateipfad_2 = beispieldaten_dateipfad_2
+
+        if self.chosen_program == 'cria':
+            try:
+                with open(log_file_cria, encoding="utf8") as f:
+                    beispieldaten_dateipfad_cria = json.load(f)
+            except FileNotFoundError:
+                refresh_ddb(self)
+                with open(log_file_cria, encoding="utf8") as f:
+                    beispieldaten_dateipfad_cria = json.load(f)
+            self.beispieldaten_dateipfad_cria = beispieldaten_dateipfad_cria
+
+
 
         if self.cb_drafts_sage.isChecked():
             drafts_path = os.path.join(path_programm, "Beispieleinreichung")
-            for all in os.listdir(drafts_path):
-                if all.endswith(".tex") or all.endswith(".ltx"):
-                    pattern = re.compile("[A-Z][A-Z]")
-                    if int(self.comboBox_at_sage.currentText()[-1]) == 1:
-                        if pattern.match(all):
+            if self.chosen_program == 'lama':
+                for all in os.listdir(drafts_path):
+                    if all.endswith(".tex") or all.endswith(".ltx"):
+                        pattern = re.compile("[A-Z][A-Z]")
+                        if int(self.comboBox_at_sage.currentText()[-1]) == 1:
+                            if pattern.match(all):
+                                file = open(os.path.join(drafts_path, all), encoding="utf8")
+                                for i, line in enumerate(file):
+                                    if not line == "\n":
+                                        # line=line.replace('\section{', 'section{ENTWURF ')
+                                        self.beispieldaten_dateipfad_1[line] = os.path.join(
+                                            drafts_path, all
+                                        )
+                                        # beispieldaten.append(line)
+                                        break
+                                file.close()
+                        if int(self.comboBox_at_sage.currentText()[-1]) == 2:
+                            if not pattern.match(all):
+                                file = open(os.path.join(drafts_path, all), encoding="utf8")
+                                for i, line in enumerate(file):
+                                    if not line == "\n":
+                                        # line=line.replace('\section{', 'section{ENTWURF ')
+                                        self.beispieldaten_dateipfad_2[line] = os.path.join(
+                                            drafts_path, all
+                                        )
+                                        # beispieldaten.append(line)
+                                        break
+                                file.close()
+            if self.chosen_program == 'cria':
+                for klasse in list_klassen:
+                    try:
+                        drafts_path = os.path.join(path_programm, "Beispieleinreichung",klasse)
+                        for all in os.listdir(drafts_path):
                             file = open(os.path.join(drafts_path, all), encoding="utf8")
                             for i, line in enumerate(file):
                                 if not line == "\n":
                                     # line=line.replace('\section{', 'section{ENTWURF ')
-                                    self.beispieldaten_dateipfad_1[line] = os.path.join(
-                                        drafts_path, all
-                                    )
-                                    # beispieldaten.append(line)
+                                    self.beispieldaten_dateipfad[line] = os.path.join(drafts_path, all)
                                     break
                             file.close()
-                    if int(self.comboBox_at_sage.currentText()[-1]) == 2:
-                        if not pattern.match(all):
-                            file = open(os.path.join(drafts_path, all), encoding="utf8")
-                            for i, line in enumerate(file):
-                                if not line == "\n":
-                                    # line=line.replace('\section{', 'section{ENTWURF ')
-                                    self.beispieldaten_dateipfad_2[line] = os.path.join(
-                                        drafts_path, all
-                                    )
-                                    # beispieldaten.append(line)
-                                    break
-                            file.close()
+                    except FileNotFoundError:
+                        pass                
+
+        def add_filename_to_list(file_path):
+            filename_all = os.path.basename(file_path)
+            name, extension = os.path.splitext(filename_all)
+            if list_mode == "sage":
+                if name.startswith(self.lineEdit_number.text()):
+                    if "Beispieleinreichung" in file_path:
+                        list_beispieldaten.append("*E-" + name)
+                    else:
+                        list_beispieldaten.append(name)
+            if list_mode == "feedback":
+                if name.startswith(self.lineEdit_number_fb.text()):
+                    list_beispieldaten.append(name)
+
 
         list_beispieldaten = []
         if list_mode == "sage":
-            beispieldaten_dateipfad = eval(
-                "beispieldaten_dateipfad_%s" % self.comboBox_at_sage.currentText()[-1]
-            )
-            for all in beispieldaten_dateipfad.values():
-                filename_all = os.path.basename(all)
-                name, extension = os.path.splitext(filename_all)
-                if self.comboBox_at_sage.currentText()[-1] == "2":
-                    if name.startswith(self.lineEdit_number.text()):
-                        if "Beispieleinreichung" in all:
-                            list_beispieldaten.append("*E-" + name)
-                        else:
-                            list_beispieldaten.append(name)
+            if self.chosen_program == 'lama':
+                beispieldaten_dateipfad = eval(
+                    "beispieldaten_dateipfad_%s" % self.comboBox_at_sage.currentText()[-1]
+                )
+                for all in beispieldaten_dateipfad.values():
+                    filename_all = os.path.basename(all)
+                    name, extension = os.path.splitext(filename_all)
+                    if self.comboBox_at_sage.currentText()[-1] == "2":
+                        if name.startswith(self.lineEdit_number.text()):
+                            if "Beispieleinreichung" in all:
+                                list_beispieldaten.append("*E-" + name)
+                            else:
+                                list_beispieldaten.append(name)
+                    else:
+                        if (
+                            self.comboBox_gk.currentText() in name
+                            and self.comboBox_gk_num.currentText() in name
+                        ):
+                            try:
+                                int(self.lineEdit_number.text())
+                                number = name.split(" - ")
+                                if (
+                                    self.lineEdit_number.text() == ""
+                                    or number[1] == self.lineEdit_number.text()
+                                ):  # number[1]==self.lineEdit_number.text():
+                                    if "Beispieleinreichung" in all:
+                                        list_beispieldaten.append("*E-" + name)
+                                    else:
+                                        list_beispieldaten.append(name)
+                            except ValueError:
+                                if (
+                                    self.lineEdit_number.text() == ""
+                                    or self.lineEdit_number.text().lower() in name.lower()
+                                ):  # number[1]==self.lineEdit_number.text():
+                                    if "Beispieleinreichung" in all:
+                                        list_beispieldaten.append("*E-" + name)
+                                    else:
+                                        list_beispieldaten.append(name)
+
+                            # and self.lineEdit_number.text().lower() in name.lower()
+            
+            if self.chosen_program == 'cria':
+                dict_klasse_name = eval(
+                    "dict_{}_name".format(
+                        list_klassen[self.comboBox_klassen.currentIndex()]
+                    )
+                )
+                if self.comboBox_kapitel.currentText() is not "":
+                    kapitel_shortcut = list(dict_klasse_name.keys())[
+                        self.comboBox_kapitel.currentIndex() - 1
+                    ]
                 else:
-                    if (
-                        self.comboBox_gk.currentText() in name
-                        and self.comboBox_gk_num.currentText() in name
-                    ):
-                        try:
-                            int(self.lineEdit_number.text())
+                    kapitel_shortcut = ""
+
+                if self.comboBox_unterkapitel.currentText() is not "":
+                    shortcut = re.findall(
+                        r"\((.*)\)", self.comboBox_unterkapitel.currentText()
+                    )
+                    unterkapitel_shortcut = shortcut[-1]
+                else:
+                    unterkapitel_shortcut = ""
+
+                for all in beispieldaten_dateipfad_cria.keys():
+                    file_path = beispieldaten_dateipfad_cria[all]
+                    if str(list_klassen[self.comboBox_klassen.currentIndex()]) in file_path:
+                        if kapitel_shortcut == "":
+                            add_filename_to_list(file_path)
+                        else:
+                            if unterkapitel_shortcut == "":
+                                if kapitel_shortcut in all:
+                                    add_filename_to_list(file_path)
+                            else:
+                                thema_shortcut = (
+                                    kapitel_shortcut + "." + unterkapitel_shortcut
+                                )
+                                if thema_shortcut in all:
+                                    add_filename_to_list(file_path)
+
+
+        if list_mode == "feedback":
+            if self.chosen_program == 'lama':
+                beispieldaten_dateipfad = eval(
+                    "beispieldaten_dateipfad_%s" % self.comboBox_at_fb.currentText()[-1]
+                )
+                for all in beispieldaten_dateipfad.values():
+                    filename_all = os.path.basename(all)
+                    name, extension = os.path.splitext(filename_all)
+                    if self.comboBox_at_fb.currentText()[-1] == "2":
+                        if name.startswith(self.lineEdit_number_fb.text()):
+                            list_beispieldaten.append(name)
+                    else:
+                        if (
+                            name.startswith(self.comboBox_fb.currentText())
+                            and self.comboBox_fb_num.currentText() in name
+                        ):
                             number = name.split(" - ")
                             if (
-                                self.lineEdit_number.text() == ""
-                                or number[1] == self.lineEdit_number.text()
-                            ):  # number[1]==self.lineEdit_number.text():
-                                if "Beispieleinreichung" in all:
-                                    list_beispieldaten.append("*E-" + name)
-                                else:
-                                    list_beispieldaten.append(name)
-                        except ValueError:
-                            if (
-                                self.lineEdit_number.text() == ""
-                                or self.lineEdit_number.text().lower() in name.lower()
-                            ):  # number[1]==self.lineEdit_number.text():
-                                if "Beispieleinreichung" in all:
-                                    list_beispieldaten.append("*E-" + name)
-                                else:
-                                    list_beispieldaten.append(name)
-
-                        # and self.lineEdit_number.text().lower() in name.lower()
-        if list_mode == "feedback":
-            beispieldaten_dateipfad = eval(
-                "beispieldaten_dateipfad_%s" % self.comboBox_at_fb.currentText()[-1]
-            )
-            for all in beispieldaten_dateipfad.values():
-                filename_all = os.path.basename(all)
-                name, extension = os.path.splitext(filename_all)
-                if self.comboBox_at_fb.currentText()[-1] == "2":
-                    if name.startswith(self.lineEdit_number_fb.text()):
-                        list_beispieldaten.append(name)
+                                self.lineEdit_number_fb.text() == ""
+                                or number[1] == self.lineEdit_number_fb.text()
+                            ):
+                                list_beispieldaten.append(name)
+                            # and self.lineEdit_number.text().lower() in name.lower()
+            if self.chosen_program == 'cria':
+                dict_klasse_name = eval(
+                    "dict_{}_name".format(
+                        list_klassen[self.comboBox_klassen_fb.currentIndex()]
+                    )
+                )
+                if self.comboBox_kapitel_fb.currentText() is not "":
+                    kapitel_shortcut = list(dict_klasse_name.keys())[
+                        self.comboBox_kapitel_fb.currentIndex() - 1
+                    ]
                 else:
+                    kapitel_shortcut = ""
+
+                if self.comboBox_unterkapitel_fb.currentText() is not "":
+                    shortcut = re.findall(
+                        r"\((.*)\)", self.comboBox_unterkapitel_fb.currentText()
+                    )
+                    unterkapitel_shortcut = shortcut[-1]
+                else:
+                    unterkapitel_shortcut = ""
+
+                for all in beispieldaten_dateipfad_cria.keys():
+                    file_path = beispieldaten_dateipfad_cria[all]
                     if (
-                        name.startswith(self.comboBox_fb.currentText())
-                        and self.comboBox_fb_num.currentText() in name
+                        str(list_klassen[self.comboBox_klassen_fb.currentIndex()])
+                        in file_path
                     ):
-                        number = name.split(" - ")
-                        if (
-                            self.lineEdit_number_fb.text() == ""
-                            or number[1] == self.lineEdit_number_fb.text()
-                        ):
-                            list_beispieldaten.append(name)
-                        # and self.lineEdit_number.text().lower() in name.lower()
+                        if kapitel_shortcut == "":
+                            add_filename_to_list(file_path)
+                        else:
+                            if unterkapitel_shortcut == "":
+                                if kapitel_shortcut in all:
+                                    add_filename_to_list(file_path)
+                            else:
+                                thema_shortcut = (
+                                    kapitel_shortcut + "." + unterkapitel_shortcut
+                                )
+                                if thema_shortcut in all:
+                                    add_filename_to_list(file_path)               
 
         # print(list_beispieldaten)
         list_beispieldaten = sorted(list_beispieldaten, key=natural_keys)
@@ -6062,6 +6325,11 @@ class Ui_MainWindow(object):
 
 
     def update_gui(self, chosen_gui):
+        if self.chosen_program=='cria':
+            chosen_gui=eval(chosen_gui+'_cria')
+        else:
+            chosen_gui=eval(chosen_gui)
+
         MainWindow.setMenuBar(self.menuBar)
         list_delete=[]
         for item in list_widgets:

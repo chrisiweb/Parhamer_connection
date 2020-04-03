@@ -76,7 +76,6 @@ def refresh_ddb(self):
     msg.show()
     QApplication.processEvents()
     QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-    print(self.chosen_program)
     if self.chosen_program == 'lama':
         for selected_aufgabentyp in [1, 2]:
             beispieldaten_dateipfad = {}
@@ -114,12 +113,11 @@ def refresh_ddb(self):
             search_files(dateipfad, beispieldaten_dateipfad)
         
         log_file = os.path.join(path_programm, "Teildokument", "log_file_cria")
-        
-        print('update cria')
 
-    save_log_file(self, log_file, beispieldaten_dateipfad)
+
+        save_log_file(self, log_file, beispieldaten_dateipfad)
 
     QtWidgets.QApplication.restoreOverrideCursor()
-    # self.adapt_choosing_list("sage")
+    self.adapt_choosing_list("sage")
     # self.adapt_choosing_list("feedback")
     msg.close()
