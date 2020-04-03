@@ -8,7 +8,7 @@ import json
 import shutil
 import datetime
 from datetime import date
-from refresh_ddb import modification_date
+from refresh_ddb import refresh_ddb, modification_date
 from sort_items import natural_keys
 
 
@@ -25,6 +25,7 @@ k7_beschreibung = config_loader(config_file, "k7_beschreibung")
 k8_beschreibung = config_loader(config_file, "k8_beschreibung")
 
 dict_gk = config_loader(config_file, "dict_gk")
+Klassen = config_loader(config_file, "Klassen")
 
 
 def prepare_tex_for_pdf(self):

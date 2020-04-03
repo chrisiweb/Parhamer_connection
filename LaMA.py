@@ -204,7 +204,24 @@ class Ui_MainWindow(object):
         # MainWindow.setMaximumSize(QtCore.QSize(1078, 16777215))
         MainWindow.setLayoutDirection(QtCore.Qt.LeftToRight)
         MainWindow.setStyleSheet(_fromUtf8(""))
-        MainWindow.setWindowIcon(QtGui.QIcon(logo_path))
+        if self.chosen_program=='lama':
+            MainWindow.setWindowTitle(
+                _translate(
+                    "LaMA - LaTeX Mathematik Assistent (Oberstufe)",
+                    "LaMA - LaTeX Mathematik Assistent (Oberstufe)",
+                    None,
+                )
+            )
+            MainWindow.setWindowIcon(QtGui.QIcon(logo_path))
+        if self.chosen_program=='cria':
+            MainWindow.setWindowTitle(
+                _translate(
+                    "LaMA Cria - LaTeX Mathematik Assistent (Unterstufe)",
+                    "LaMA Cria - LaTeX Mathematik Assistent (Unterstufe)",
+                    None,
+                )
+            )
+            MainWindow.setWindowIcon(QtGui.QIcon(logo_cria_path))
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         # self.warnung = QtWidgets.QLabel(self.centralwidget)
@@ -1247,7 +1264,10 @@ class Ui_MainWindow(object):
             index += 1
         self.comboBox_pruefungstyp.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.comboBox_pruefungstyp.setMinimumContentsLength(1)
-        self.gridLayout_5.addWidget(self.comboBox_pruefungstyp, 2, 4, 1, 2)
+        if self.chosen_program=='lama':
+            self.gridLayout_5.addWidget(self.comboBox_pruefungstyp, 2, 4, 1, 2)
+        if self.chosen_program=='cria':
+            self.gridLayout_5.addWidget(self.comboBox_pruefungstyp, 2, 5, 1, 1)
         self.comboBox_pruefungstyp.currentIndexChanged.connect(
             self.comboBox_pruefungstyp_changed
         )
@@ -1274,7 +1294,11 @@ class Ui_MainWindow(object):
         self.pushButton_titlepage.setText(
             _translate("MainWindow", "Titelblatt anpassen", None)
         )
-        self.gridLayout_5.addWidget(self.pushButton_titlepage, 4, 6, 1, 1)
+        if self.chosen_program=='lama':
+            self.gridLayout_5.addWidget(self.pushButton_titlepage, 4, 6, 1, 1)
+        if self.chosen_program=='cria':
+            self.gridLayout_5.addWidget(self.pushButton_titlepage, 4, 5, 1, 1)
+        
 
         self.groupBox_default_pkt = QtWidgets.QGroupBox(self.groupBox_sage)
         self.groupBox_default_pkt.setObjectName("groupBox_default_pkt")
@@ -1786,13 +1810,6 @@ class Ui_MainWindow(object):
         ##############################################################################################
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(
-            _translate(
-                "LaMA - LaTeX Mathematik Assistent",
-                "LaMA - LaTeX Mathematik Assistent",
-                None,
-            )
-        )
         self.menuDateityp.setTitle(_translate("MainWindow", "Aufgabentyp", None))
         self.menuDatei.setTitle(_translate("MainWindow", "Datei", None))
         self.menuNeu.setTitle(_translate("MainWindow", "Neue Aufgabe", None))
@@ -2332,18 +2349,19 @@ class Ui_MainWindow(object):
         self.lineEdit_quelle.setText(_translate("MainWindow", "", None))
         self.plainTextEdit.setPlainText(_translate("MainWindow", "", None))
 
-    def reset_sage(self):
+    def reset_sage(self, program_changed=False):
         global list_sage_examples
         try:
-            self.dict_list_input_examples
-
+            if program_changed==True:
+                message="Sind Sie sicher, dass sie das Programm wechseln wollen? Dadurch werden alle bisherigen Einträge gelöscht." 
+            else:
+                message="Sind Sie sicher, dass Sie das Fenster zurücksetzen wollen und die erstellte Schularbeit löschen möchten?"
+                self.dict_list_input_examples
             msg = QtWidgets.QMessageBox()
             msg.setIcon(QtWidgets.QMessageBox.Question)
             msg.setWindowIcon(QtGui.QIcon(logo_path))
             msg.setWindowTitle("Schularbeit löschen?")
-            msg.setText(
-                "Sind Sie sicher, dass Sie das Fenster zurücksetzen wollen und die erstellte Schularbeit löschen möchten?"
-            )
+            msg.setText(message)
             msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
             buttonY = msg.button(QtWidgets.QMessageBox.Yes)
             buttonY.setText("Ja")
@@ -2413,8 +2431,9 @@ class Ui_MainWindow(object):
             pass
 
     def change_program(self):
-        print(self.chosen_program)
+        # print(self.chosen_program)
         if self.chosen_program=='lama':
+            self.reset_sage(True)
             self.chosen_program = 'cria'
             self.update_gui('widgets_search')
             self.gridLayout.addWidget(self.groupBox_af, 3, 0, 1, 1)
@@ -2422,8 +2441,18 @@ class Ui_MainWindow(object):
             self.cb_af_ko.show()
             self.cb_af_rf.show()
             self.cb_af_ta.show()
+            self.comboBox_klassen_changed("sage")
+            MainWindow.setWindowTitle(
+                _translate(
+                    "LaMA Cria - LaTeX Mathematik Assistent (Unterstufe)",
+                    "LaMA Cria - LaTeX Mathematik Assistent (Unterstufe)",
+                    None,
+                )
+            )
+            MainWindow.setWindowIcon(QtGui.QIcon(logo_cria_path))
             return
         if self.chosen_program=='cria':
+            self.reset_sage(True)
             self.chosen_program = 'lama'
             self.update_gui('widgets_search')
             self.gridLayout.addWidget(self.groupBox_af, 4, 0, 1, 1)
@@ -2431,6 +2460,14 @@ class Ui_MainWindow(object):
             self.cb_af_ko.hide()
             self.cb_af_rf.hide()
             self.cb_af_ta.hide()
+            MainWindow.setWindowTitle(
+                _translate(
+                    "LaMA - LaTeX Mathematik Assistent (Oberstufe)",
+                    "LaMA - LaTeX Mathematik Assistent (Oberstufe)",
+                    None,
+                )
+            )
+            MainWindow.setWindowIcon(QtGui.QIcon(logo_path))
             return
 
 
