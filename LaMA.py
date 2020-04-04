@@ -4902,7 +4902,7 @@ class Ui_MainWindow(object):
                     bsp_string
                 )
             )
-############################ check bis hier
+
 
             spinBox_pkt = eval("self.spinBox_pkt_{}".format(bsp_string))
             spinBox_pkt.setObjectName("spinBox_pkt_{}".format(bsp_string))
@@ -4921,7 +4921,8 @@ class Ui_MainWindow(object):
             )
             if num_of_example == 1:
                 self.pushButton_up.setEnabled(False)
-            if typ == 2 and counter == 0:
+
+            if self.chosen_program=='lama' and typ == 2 and counter == 0:
                 self.pushButton_up.setEnabled(False)
                 counter += 1
             self.pushButton_up.clicked.connect(partial(self.btn_up_pressed, all))
@@ -4941,6 +4942,8 @@ class Ui_MainWindow(object):
             )
             if num_of_example == len(list_sage_examples):
                 self.pushButton_down.setEnabled(False)
+
+############################ check bis hier
             if (
                 typ == 1
                 and self.dict_list_input_examples["data_gesamt"]["num_1"]
