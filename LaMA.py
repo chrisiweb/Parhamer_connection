@@ -4433,7 +4433,6 @@ class Ui_MainWindow(object):
             self.groupBox_notenschl.show()
 
     def sage_aufgabe_add(self, typ, aufgabe):
-        # print(aufgabe)
         list_sage_examples_typ1 = []
         list_sage_examples_typ2 = []
 
@@ -4720,27 +4719,52 @@ class Ui_MainWindow(object):
         if file_loaded == False:
             self.update_lists_examples()
 
-        for example in list_sage_examples:
-            temp_example = example.replace("_L_", "")
-            if re.search("[A-Z]", temp_example) == None:
-                bsp_string = example
-            else:
-                bsp_string = example.replace(" ", "").replace(".", "").replace("-", "_")
-            list_input = eval("self.list_input_{}".format(bsp_string))
-            name = example + ".tex"
-            for all in self.beispieldaten_dateipfad_1:
-                filename = os.path.basename(self.beispieldaten_dateipfad_1[all])
-                if name == filename:
-                    x = all.split(" - ")
-                    # print(x[-2])
-                    list_input[2] = x[-3]
-                    list_input[3] = x[-2]
+        if self.chosen_program=='lama':
+            for example in list_sage_examples:
+                temp_example = example.replace("_L_", "")
+                if re.search("[A-Z]", temp_example) == None:
+                    bsp_string = example
+                else:
+                    bsp_string = example.replace(" ", "").replace(".", "").replace("-", "_")
+                list_input = eval("self.list_input_{}".format(bsp_string))
+                name = example + ".tex"
+                for all in self.beispieldaten_dateipfad_1:
+                    filename = os.path.basename(self.beispieldaten_dateipfad_1[all])
+                    if name == filename:
+                        x = all.split(" - ")
+                        # print(x[-2])
+                        list_input[2] = x[-3]
+                        list_input[3] = x[-2]
 
-            for all in self.beispieldaten_dateipfad_2:
-                filename = os.path.basename(self.beispieldaten_dateipfad_2[all])
-                if name == filename:
-                    x = all.split(" - ")
-                    list_input[2] = x[-2]
+                for all in self.beispieldaten_dateipfad_2:
+                    filename = os.path.basename(self.beispieldaten_dateipfad_2[all])
+                    if name == filename:
+                        x = all.split(" - ")
+                        list_input[2] = x[-2]
+        if self.chosen_program=='cria':
+            for bsp_string in list_sage_examples:
+                if "_L_" in bsp_string:
+                    local_file = True
+                else:
+                    local_file = False
+                list_input = eval("self.list_input_{}".format(bsp_string))
+                list_bsp_string=bsp_string.split("_")
+                klasse = list_bsp_string[0]
+                if local_file==True:
+                    example = "_L_"+list_bsp_string[-1]
+                else:
+                    example = list_bsp_string[-1]
+                
+                name = example + ".tex"
+
+                for all in self.beispieldaten_dateipfad_cria:
+                    if klasse.upper() in all:
+
+                        filename = os.path.basename(self.beispieldaten_dateipfad_cria[all])
+                        if name == filename:
+                            chosen_section = all.split(" - ")
+                            #print(chosen_section)
+                            list_input[2] = chosen_section[-3]
 
         if file_loaded == False:
             self.list_copy_images = []
@@ -4754,13 +4778,30 @@ class Ui_MainWindow(object):
         num_of_example = 1
 
         for all in list_sage_examples:
-            temp_all = all.replace("_L_", "")
-            if re.search("[A-Z]", temp_all) == None:
-                bsp_string = all
-                typ = 2
-            else:
-                bsp_string = all.replace(" ", "").replace(".", "").replace("-", "_")
-                typ = 1
+            if self.chosen_program=='lama':
+                temp_all = all.replace("_L_", "")
+                if re.search("[A-Z]", temp_all) == None:
+                    bsp_string = all
+                    typ = 2
+                else:
+                    bsp_string = all.replace(" ", "").replace(".", "").replace("-", "_")
+                    typ = 1
+
+            if self.chosen_program=='cria':
+                bsp_string=all
+                if "_L_" in all:
+                    local_file = True
+                else:
+                    local_file = False
+                list_bsp_string=all.split("_")
+                klasse = list_bsp_string[0]
+                if local_file==True:
+                    example = "_L_"+list_bsp_string[-1]
+                else:
+                    example = list_bsp_string[-1]
+
+
+
             list_input = eval("self.list_input_{}".format(bsp_string))
             exec(
                 "self.groupBox_bsp_{} = QtWidgets.QGroupBox(self.scrollAreaWidgetContents_2)".format(
@@ -4770,17 +4811,28 @@ class Ui_MainWindow(object):
             x = eval("self.groupBox_bsp_{}".format(bsp_string))
             # x.setMaximumSize(QtCore.QSize(16777215, 200))
             x.setObjectName("groupBox_bsp_{}".format(bsp_string))
-            if (list_sage_examples.index(all) % 2) == 0 and typ == 1:
-                x.setStyleSheet(_fromUtf8("background-color: rgb(255, 255, 255);"))
-            if typ == 2:
-                x.setStyleSheet(_fromUtf8("background-color: rgb(255, 212, 212);"))
-            x.setTitle(
-                _translate(
-                    "MainWindow",
-                    "{0}. Aufgabe (Typ{1})".format(str(num_of_example), str(typ)),
-                    None,
+            if self.chosen_program=='lama':
+                if (list_sage_examples.index(all) % 2) == 0 and typ == 1:
+                    x.setStyleSheet(_fromUtf8("background-color: rgb(255, 255, 255);"))
+                if typ == 2:
+                    x.setStyleSheet(_fromUtf8("background-color: rgb(255, 212, 212);"))
+                x.setTitle(
+                    _translate(
+                        "MainWindow",
+                        "{0}. Aufgabe (Typ{1})".format(str(num_of_example), str(typ)),
+                        None,
+                    )
                 )
-            )
+            if self.chosen_program=='cria':
+                if (list_sage_examples.index(all) % 2) == 0:
+                    x.setStyleSheet(_fromUtf8("background-color: rgb(255, 255, 255);"))                
+                x.setTitle(
+                    _translate(
+                        "MainWindow",
+                        "{0}. Aufgabe".format(str(num_of_example)), None))
+                
+
+ 
             self.gridLayout_gB = QtWidgets.QGridLayout(x)
             self.gridLayout_gB.setObjectName("gridLayout_gB")
             self.gridLayout_8.addWidget(x, 0, 0, 1, 2, QtCore.Qt.AlignTop)
@@ -4791,21 +4843,34 @@ class Ui_MainWindow(object):
             label_aufgabe.setObjectName("label_aufgabe_{}".format(bsp_string))
             self.gridLayout_gB.addWidget(label_aufgabe, 0, 0, 1, 1)
 
-            if typ == 1:
-                try:
-                    aufgabenformat = (
-                        "(" + dict_aufgabenformate[list_input[3].lower()] + ")"
-                    )
-                except KeyError:
-                    aufgabenformat = ""
 
-                label_aufgabe.setText(
-                    _translate(
-                        "MainWindow", "{0} {1}".format(all, aufgabenformat), None
+            if self.chosen_program=='lama':
+                if typ == 1:
+                    try:
+                        aufgabenformat = (
+                            "(" + dict_aufgabenformate[list_input[3].lower()] + ")"
+                        )
+                    except KeyError:
+                        aufgabenformat = ""
+
+                    label_aufgabe.setText(
+                        _translate(
+                            "MainWindow", "{0} {1}".format(all, aufgabenformat), None
+                        )
                     )
-                )
-            if typ == 2:
-                label_aufgabe.setText(_translate("MainWindow", "{0}".format(all), None))
+                if typ == 2:
+                    label_aufgabe.setText(_translate("MainWindow", "{0}".format(all), None))
+            if self.chosen_program=='cria':
+                if "_L_" in bsp_string:
+                    label_aufgabe.setText(
+                    _translate("MainWindow", "{0}. Klasse - {1}".format(klasse[1], example))
+                    )           
+                else:
+                    label_aufgabe.setText(
+                        _translate("MainWindow", "{0}. Klasse - {1}".format(klasse[1], example))
+                    )        
+
+
 
             exec("self.label_title_{} = QtWidgets.QLabel(x)".format(bsp_string))
             label_title = eval("self.label_title_{}".format(bsp_string))
@@ -4820,13 +4885,14 @@ class Ui_MainWindow(object):
             # self.groupBox_pkt.setMaximumSize(QtCore.QSize(83, 53))
             self.groupBox_pkt.setObjectName("groupBox_pkt")
             self.groupBox_pkt.setTitle(_translate("MainWindow", "Punkte", None))
-            if typ == 1:
+            if typ == 1 or self.chosen_program=='cria':
                 self.groupBox_pkt.setMaximumSize(QtCore.QSize(80, 16777215))
-            if typ == 2:
+            elif typ == 2:
                 self.groupBox_pkt.setToolTip(
                     "Die Punkte stehen für die Gesamtpunkte dieser Aufgabe.\nEs müssen daher auch die Ausgleichspunkte berücksichtigt werden."
                 )
                 self.groupBox_pkt.setMaximumSize(QtCore.QSize(150, 16777215))
+
             self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBox_pkt)
             self.gridLayout_3.setObjectName("gridLayout_3")
             self.gridLayout_gB.addWidget(self.groupBox_pkt, 0, 1, 2, 1)
@@ -4836,6 +4902,8 @@ class Ui_MainWindow(object):
                     bsp_string
                 )
             )
+############################ check bis hier
+
             spinBox_pkt = eval("self.spinBox_pkt_{}".format(bsp_string))
             spinBox_pkt.setObjectName("spinBox_pkt_{}".format(bsp_string))
             spinBox_pkt.setValue(eval("self.list_input_{}".format(bsp_string))[0])
@@ -6451,7 +6519,7 @@ class Ui_MainWindow(object):
             else:
                 exec("self.%s.show()" % all)
 
-        if chosen_gui==widgets_sage:
+        if chosen_gui==widgets_sage or chosen_gui==widgets_sage_cria:
             MainWindow.setTabOrder(self.spinBox_nummer, self.dateEdit)
             MainWindow.setTabOrder(self.dateEdit, self.lineEdit_klasse)
             self.adapt_choosing_list("sage")
