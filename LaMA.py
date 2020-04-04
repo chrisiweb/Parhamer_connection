@@ -2352,24 +2352,21 @@ class Ui_MainWindow(object):
     def reset_sage(self, program_changed=False):
         global list_sage_examples
         try:
-            if program_changed==True:
-                message="Sind Sie sicher, dass sie das Programm wechseln wollen? Dadurch werden alle bisherigen Einträge gelöscht." 
-            else:
-                message="Sind Sie sicher, dass Sie das Fenster zurücksetzen wollen und die erstellte Schularbeit löschen möchten?"
+            if program_changed==False:
                 self.dict_list_input_examples
-            msg = QtWidgets.QMessageBox()
-            msg.setIcon(QtWidgets.QMessageBox.Question)
-            msg.setWindowIcon(QtGui.QIcon(logo_path))
-            msg.setWindowTitle("Schularbeit löschen?")
-            msg.setText(message)
-            msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-            buttonY = msg.button(QtWidgets.QMessageBox.Yes)
-            buttonY.setText("Ja")
-            buttonN = msg.button(QtWidgets.QMessageBox.No)
-            buttonN.setText("Nein")
-            ret = msg.exec_()
+                msg = QtWidgets.QMessageBox()
+                msg.setIcon(QtWidgets.QMessageBox.Question)
+                msg.setWindowIcon(QtGui.QIcon(logo_path))
+                msg.setWindowTitle("Schularbeit löschen?")
+                msg.setText("Sind Sie sicher, dass Sie das Fenster zurücksetzen wollen und die erstellte Schularbeit löschen möchten?")
+                msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+                buttonY = msg.button(QtWidgets.QMessageBox.Yes)
+                buttonY.setText("Ja")
+                buttonN = msg.button(QtWidgets.QMessageBox.No)
+                buttonN.setText("Nein")
+                ret = msg.exec_()
 
-            if ret == QtWidgets.QMessageBox.Yes:
+            if program_changed==True or ret == QtWidgets.QMessageBox.Yes:
                 self.spinBox_nummer.setValue(1)
                 self.dateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
                 self.comboBox_pruefungstyp.setCurrentIndex(0)
@@ -2433,6 +2430,11 @@ class Ui_MainWindow(object):
     def change_program(self):
         # print(self.chosen_program)
         if self.chosen_program=='lama':
+            response = self.question_window('Programm wechseln?',
+            'Sind Sie sicher, dass sie das LaMA Cria (Unterstufe) wechseln wollen?\nDadurch werden alle bisherigen Einträge gelöscht!')
+            if response == False:
+                return
+
             self.reset_sage(True)
             self.chosen_program = 'cria'
             self.update_gui('widgets_search')
@@ -2452,6 +2454,10 @@ class Ui_MainWindow(object):
             MainWindow.setWindowIcon(QtGui.QIcon(logo_cria_path))
             return
         if self.chosen_program=='cria':
+            response = self.question_window('Programm wechseln?',
+            'Sind Sie sicher, dass sie das LaMA (Oberstufe) wechseln wollen?\nDadurch werden alle bisherigen Einträge gelöscht!')
+            if response == False:
+                return
             self.reset_sage(True)
             self.chosen_program = 'lama'
             self.update_gui('widgets_search')
@@ -3180,6 +3186,39 @@ class Ui_MainWindow(object):
         msg.setInformativeText(detailed_text)
         msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
         msg.exec_()
+
+            # message="Sind Sie sicher, dass sie das Programm wechseln wollen? Dadurch werden alle bisherigen Einträge gelöscht." 
+            # msg = QtWidgets.QMessageBox()
+            # msg.setIcon(QtWidgets.QMessageBox.Question)
+            # msg.setWindowIcon(QtGui.QIcon(logo_path))
+            # msg.setWindowTitle("Programm wechseln?")
+            # msg.setText(message)
+            # msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+            # buttonY = msg.button(QtWidgets.QMessageBox.Yes)
+            # buttonY.setText("Ja")
+            # buttonN = msg.button(QtWidgets.QMessageBox.No)
+            # buttonN.setText("Nein")
+            # ret = msg.exec_()
+            # if ret == QtWidgets.QMessageBox.No:
+            #     return
+
+    def question_window(self, titel, text, detailed_text=""):
+        msg = QtWidgets.QMessageBox()
+        msg.setIcon(QtWidgets.QMessageBox.Question)
+        msg.setWindowIcon(QtGui.QIcon(logo_path))
+        msg.setWindowTitle(titel)
+        msg.setText(text)
+        msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+        buttonY = msg.button(QtWidgets.QMessageBox.Yes)
+        buttonY.setText("Ja")
+        buttonN = msg.button(QtWidgets.QMessageBox.No)
+        buttonN.setText("Nein")
+        response = msg.exec_()
+        if response == QtWidgets.QMessageBox.No:
+            return False
+        if response == QtWidgets.QMessageBox.Yes:
+            return True
+        
 
     def save_file(self):
         self.creator_mode = "user"
