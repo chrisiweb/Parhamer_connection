@@ -5044,7 +5044,7 @@ class Ui_MainWindow(object):
             spinBox_abstand = eval("self.spinBox_abstand_{}".format(bsp_string))
             spinBox_abstand.setObjectName("spinBox_abstand_{}".format(bsp_string))
             spinBox_abstand.setValue(eval("self.list_input_{}".format(bsp_string))[1])
-            spinBox_abstand.valueChanged.connect(partial(self.punkte_changed,bsp_string))
+            spinBox_abstand.valueChanged.connect(partial(self.abstand_changed,bsp_string))
             self.verticalLayout_3.addWidget(spinBox_abstand)
             self.gridLayout_gB.addWidget(self.groupBox_abstand, 0, 2, 2, 1)
 
@@ -5808,19 +5808,44 @@ class Ui_MainWindow(object):
 
         dict_gesammeltedateien = {}
 
-        for all in self.beispieldaten_dateipfad_1.values():
-            filename_all = os.path.basename(all)
-            name, extension = os.path.splitext(filename_all)
-            for files in list_sage_examples:
-                if files == name:
-                    dict_gesammeltedateien[name] = all
+        if self.chosen_program=='lama':
 
-        for all in self.beispieldaten_dateipfad_2.values():
-            filename_all = os.path.basename(all)
-            name, extension = os.path.splitext(filename_all)
-            for files in list_sage_examples:
-                if files == name:
-                    dict_gesammeltedateien[name] = all
+            for all in self.beispieldaten_dateipfad_1.values():
+                filename_all = os.path.basename(all)
+                name, extension = os.path.splitext(filename_all)
+                for files in list_sage_examples:
+                    if files == name:
+                        dict_gesammeltedateien[name] = all
+
+            for all in self.beispieldaten_dateipfad_2.values():
+                filename_all = os.path.basename(all)
+                name, extension = os.path.splitext(filename_all)
+                for files in list_sage_examples:
+                    if files == name:
+                        dict_gesammeltedateien[name] = all
+        elif self.chosen_program == 'cria':
+            for bsp_string in list_sage_examples:
+                if "_L_" in bsp_string:
+                    local_file = True
+                else:
+                    local_file = False
+                list_bsp_string=bsp_string.split("_")
+                klasse = list_bsp_string[0]
+                if local_file==True:
+                    example = "_L_"+list_bsp_string[-1]
+                else:
+                    example = list_bsp_string[-1]
+
+                name = example + ".tex"
+
+
+                for all in self.beispieldaten_dateipfad_cria:
+                    if klasse.upper() in all:
+                        if name == os.path.basename(self.beispieldaten_dateipfad_cria[all]):
+                            dict_gesammeltedateien[
+                                bsp_string
+                            ] = self.beispieldaten_dateipfad_cria[all]
+
 
         dict_months = {
             1: "Jänner",
@@ -6118,37 +6143,50 @@ class Ui_MainWindow(object):
         control_counter = 0
         # print(list_sage_examples)
         for all in list_sage_examples:
-            temp_all = all.replace("_L_", "")
-            if re.search("[A-Z]", temp_all) == None:
-                bsp_string = all
-                typ = 2
-            else:
-                bsp_string = all.replace(" ", "").replace(".", "").replace("-", "_")
-                typ = 1
-            list_input = "self.list_input_{}".format(bsp_string)
-            spinBox_abstand = self.dict_list_input_examples[list_input][1]
-            spinBox_pkt = self.dict_list_input_examples[list_input][0]
-            f = open(dict_gesammeltedateien[all], "r", encoding="utf8")
-            content = f.readlines()
-            f.close()
+            if self.chosen_program == 'lama':
+                temp_all = all.replace("_L_", "")
+                if re.search("[A-Z]", temp_all) == None:
+                    bsp_string = all
+                    typ = 2
+                else:
+                    bsp_string = all.replace(" ", "").replace(".", "").replace("-", "_")
+                    typ = 1
+                list_input = "self.list_input_{}".format(bsp_string)
+                spinBox_abstand = self.dict_list_input_examples[list_input][1]
+                spinBox_pkt = self.dict_list_input_examples[list_input][0]
+                f = open(dict_gesammeltedateien[all], "r", encoding="utf8")
+                content = f.readlines()
+                f.close()
 
 
-            ##### adapt content for	 creation ###
+                ##### adapt content for	 creation ###
 
-            if all in self.dict_list_input_examples["dict_ausgleichspunkte"].keys():
-                content = [line.replace("\\fbox{A}", "") for line in content]
-                for ausgleichspunkte in self.dict_list_input_examples[
-                    "dict_ausgleichspunkte"
-                ][all]:
-                    content = [
-                        line.replace(
-                            ausgleichspunkte.partition("\n")[0],
-                            "\\fbox{A} " + ausgleichspunkte.partition("\n")[0],
-                        )
-                        for line in content
-                    ]
+                if all in self.dict_list_input_examples["dict_ausgleichspunkte"].keys():
+                    content = [line.replace("\\fbox{A}", "") for line in content]
+                    for ausgleichspunkte in self.dict_list_input_examples[
+                        "dict_ausgleichspunkte"
+                    ][all]:
+                        content = [
+                            line.replace(
+                                ausgleichspunkte.partition("\n")[0],
+                                "\\fbox{A} " + ausgleichspunkte.partition("\n")[0],
+                            )
+                            for line in content
+                        ]
             ### end ###
 
+
+            if self.chosen_program == 'cria':
+                bsp_string=all
+                list_input = "self.list_input_{}".format(bsp_string)
+
+                spinBox_abstand = self.dict_list_input_examples[list_input][1]
+                spinBox_pkt = self.dict_list_input_examples[list_input][0]
+                f = open(dict_gesammeltedateien[bsp_string], "r", encoding="utf8")
+                content = f.readlines()
+                f.close()                
+                
+            # print(self.dict_list_input_examples)
             # print(self.dict_list_input_examples['data_gesamt']['copy_images'])
 
             if ausgabetyp == "schularbeit":
@@ -6308,10 +6346,10 @@ class Ui_MainWindow(object):
             ):
                 header = ""
             else:
-                if control_counter == 0 and typ == 1:
+                if self.change_program=='lama' and control_counter == 0 and typ == 1:
                     header = "\\subsubsection{Typ 1 Aufgaben}\n\n"
                     control_counter += 1
-                elif control_counter == 1 and typ == 2:
+                elif self.change_program=='lama' and control_counter == 1 and typ == 2:
                     header = "\\subsubsection{Typ 2 Aufgaben}\n\n"
                     control_counter += 1
                 else:
@@ -6342,9 +6380,20 @@ class Ui_MainWindow(object):
                         + "\n\n"
                     )
 
-            if beispiel_typ == "langesbeispiel":
+            elif self.chosen_program=='lama' and beispiel_typ == "langesbeispiel":
                 vorschau.write(
                     "\\newpage\n\n%s\\begin{langesbeispiel} \item[" % header
+                    + str(spinBox_pkt)
+                    + "]\n"
+                    + example[1]
+                    + "\n"
+                    + example[2]
+                    + "\n\n"
+                )
+
+            elif self.chosen_program=='cria' and beispiel_typ == "langesbeispiel":
+                vorschau.write(
+                    "\\begin{langesbeispiel} \item["
                     + str(spinBox_pkt)
                     + "]\n"
                     + example[1]
