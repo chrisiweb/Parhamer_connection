@@ -77,29 +77,40 @@ class Ui_Dialog_titlepage(object):
         Dialog.setWindowIcon(QtGui.QIcon(logo_path))
         self.verticalLayout_titlepage = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout_titlepage.setObjectName("verticalLayout_titlepage")
-        self.label_titlepage = QtWidgets.QLabel()
-        # # self.label_gk.setWordWrap(True)
-        self.label_titlepage.setObjectName(_fromUtf8("label_titlepage"))
-        self.label_titlepage.setText(
-            _translate(
-                "MainWindow",
-                "Wählen Sie die gewünschten Punkte für das Titelblatt aus:\n",
-                None,
-            )
+
+        self.groupBox_titlepage = QtWidgets.QGroupBox()
+        self.groupBox_titlepage.setObjectName("groupBox_titlepage")
+        self.verticalLayout_gBtitlepage = QtWidgets.QVBoxLayout(self.groupBox_titlepage)
+        self.verticalLayout_gBtitlepage.setObjectName("verticalLayout_gBtitlepage")
+        self.groupBox_titlepage.setTitle(
+            _translate("MainWindow", "Gewünschte Anzeige am Titelblatt", None)
         )
-        self.verticalLayout_titlepage.addWidget(self.label_titlepage)
+        self.verticalLayout_titlepage.addWidget(self.groupBox_titlepage)
+
+
+        self.cb_titlepage_hide_all = QtWidgets.QCheckBox("Kein Titelblatt")
+        self.cb_titlepage_hide_all.setObjectName(
+            _fromUtf8("cb_titlepage_hide_all")
+        )
+        self.verticalLayout_titlepage.addWidget(self.cb_titlepage_hide_all)
+        self.cb_titlepage_hide_all.stateChanged.connect(self.cb_titlepage_hide_all_pressed)
+        try:
+            self.cb_titlepage_hide_all.setChecked(dict_titlepage["hide_all"])
+        except KeyError:
+            dict_titlepage["hide_all"]=False
+
 
         self.cb_titlepage_logo = QtWidgets.QCheckBox("Logo")
         if dict_titlepage["logo_path"] != False:
             logo_name = os.path.basename(dict_titlepage["logo_path"])
             self.cb_titlepage_logo.setText("Logo ({})".format(logo_name))
         self.cb_titlepage_logo.setObjectName(_fromUtf8("cb_titlepage_logo"))
-        self.verticalLayout_titlepage.addWidget(self.cb_titlepage_logo)
+        self.verticalLayout_gBtitlepage.addWidget(self.cb_titlepage_logo)
         self.cb_titlepage_logo.setChecked(dict_titlepage["logo"])
 
         self.btn_titlepage_logo_path = QtWidgets.QPushButton()
         self.btn_titlepage_logo_path.setObjectName(_fromUtf8("btn_titlepage_logo_path"))
-        self.verticalLayout_titlepage.addWidget(self.btn_titlepage_logo_path)
+        self.verticalLayout_gBtitlepage.addWidget(self.btn_titlepage_logo_path)
         self.btn_titlepage_logo_path.setText("Durchsuchen")
         self.btn_titlepage_logo_path.setMaximumWidth(130)
         self.btn_titlepage_logo_path.clicked.connect(
@@ -108,35 +119,37 @@ class Ui_Dialog_titlepage(object):
 
         self.cb_titlepage_titel = QtWidgets.QCheckBox("Titel")
         self.cb_titlepage_titel.setObjectName(_fromUtf8("cb_titlepage_titel"))
-        self.verticalLayout_titlepage.addWidget(self.cb_titlepage_titel)
+        self.verticalLayout_gBtitlepage.addWidget(self.cb_titlepage_titel)
         self.cb_titlepage_titel.setChecked(dict_titlepage["titel"])
 
         self.cb_titlepage_datum = QtWidgets.QCheckBox("Datum")
         self.cb_titlepage_datum.setObjectName(_fromUtf8("cb_titlepage_datum"))
-        self.verticalLayout_titlepage.addWidget(self.cb_titlepage_datum)
+        self.verticalLayout_gBtitlepage.addWidget(self.cb_titlepage_datum)
         self.cb_titlepage_datum.setChecked(dict_titlepage["datum"])
 
         self.cb_titlepage_klasse = QtWidgets.QCheckBox("Klasse")
         self.cb_titlepage_klasse.setObjectName(_fromUtf8("cb_titlepage_klasse"))
-        self.verticalLayout_titlepage.addWidget(self.cb_titlepage_klasse)
+        self.verticalLayout_gBtitlepage.addWidget(self.cb_titlepage_klasse)
         self.cb_titlepage_klasse.setChecked(dict_titlepage["klasse"])
 
         self.cb_titlepage_name = QtWidgets.QCheckBox("Name")
         self.cb_titlepage_name.setObjectName(_fromUtf8("cb_titlepage_name"))
-        self.verticalLayout_titlepage.addWidget(self.cb_titlepage_name)
+        self.verticalLayout_gBtitlepage.addWidget(self.cb_titlepage_name)
         self.cb_titlepage_name.setChecked(dict_titlepage["name"])
 
         self.cb_titlepage_note = QtWidgets.QCheckBox("Note")
         self.cb_titlepage_note.setObjectName(_fromUtf8("cb_titlepage_note"))
-        self.verticalLayout_titlepage.addWidget(self.cb_titlepage_note)
+        self.verticalLayout_gBtitlepage.addWidget(self.cb_titlepage_note)
         self.cb_titlepage_note.setChecked(dict_titlepage["note"])
 
         self.cb_titlepage_unterschrift = QtWidgets.QCheckBox("Unterschrift")
         self.cb_titlepage_unterschrift.setObjectName(
             _fromUtf8("cb_titlepage_unterschrift")
         )
-        self.verticalLayout_titlepage.addWidget(self.cb_titlepage_unterschrift)
+        self.verticalLayout_gBtitlepage.addWidget(self.cb_titlepage_unterschrift)
         self.cb_titlepage_unterschrift.setChecked(dict_titlepage["unterschrift"])
+
+
 
         self.buttonBox_titlepage = QtWidgets.QDialogButtonBox(self.Dialog)
         self.buttonBox_titlepage = QtWidgets.QDialogButtonBox(self.Dialog)
@@ -160,6 +173,13 @@ class Ui_Dialog_titlepage(object):
         self.verticalLayout_titlepage.addWidget(self.buttonBox_titlepage)
 
         return dict_titlepage
+
+    def cb_titlepage_hide_all_pressed(self):
+        if self.cb_titlepage_hide_all.isChecked()==True:
+            self.groupBox_titlepage.setEnabled(False)
+        if self.cb_titlepage_hide_all.isChecked()==False:
+            self.groupBox_titlepage.setEnabled(True)
+            
 
     def btn_titlepage_logo_path_pressed(self, dict_titlepage):
         logo_titlepage_path = QtWidgets.QFileDialog.getOpenFileNames(
@@ -201,7 +221,6 @@ class Ui_Dialog_titlepage(object):
                 dict_titlepage[all] = True
             else:
                 dict_titlepage[all] = False
-
         self.Dialog.reject()
         return dict_titlepage
 
@@ -215,6 +234,7 @@ class Ui_Dialog_titlepage(object):
             "name": True,
             "note": False,
             "unterschrift": False,
+            "hide_all": False
         }
         for all in dict_titlepage.keys():
             if all == "logo_path":

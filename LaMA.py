@@ -122,6 +122,7 @@ class Ui_MainWindow(object):
 
                 "note": False,
                 "unterschrift": False,
+                "hide_all": False,
             }
 
         app.aboutToQuit.connect(self.close_app)
@@ -1252,6 +1253,7 @@ class Ui_MainWindow(object):
             "Schularbeit",
             "Nachschularbeit",
             "Wiederholungsschularbeit",
+            "Wiederholungsprüfung",
             "Grundkompetenzcheck",
             "Übungsblatt",
         ]
@@ -3194,20 +3196,6 @@ class Ui_MainWindow(object):
         msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
         msg.exec_()
 
-            # message="Sind Sie sicher, dass sie das Programm wechseln wollen? Dadurch werden alle bisherigen Einträge gelöscht." 
-            # msg = QtWidgets.QMessageBox()
-            # msg.setIcon(QtWidgets.QMessageBox.Question)
-            # msg.setWindowIcon(QtGui.QIcon(logo_path))
-            # msg.setWindowTitle("Programm wechseln?")
-            # msg.setText(message)
-            # msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-            # buttonY = msg.button(QtWidgets.QMessageBox.Yes)
-            # buttonY.setText("Ja")
-            # buttonN = msg.button(QtWidgets.QMessageBox.No)
-            # buttonN.setText("Nein")
-            # ret = msg.exec_()
-            # if ret == QtWidgets.QMessageBox.No:
-            #     return
 
     def question_window(self, titel, text, detailed_text=""):
         msg = QtWidgets.QMessageBox()
@@ -5855,6 +5843,20 @@ class Ui_MainWindow(object):
             == "Übungsblatt"
         ):
             vorschau.write("\\subsection{Übungsblatt}")
+        
+        elif self.dict_titlepage["hide_all"] == True:
+            if (
+                self.dict_list_input_examples["data_gesamt"]["Pruefungstyp"]
+                == "Wiederholungsprüfung"
+            ):
+                vorschau.write("\\textsc{{Name:}} \\rule{{8cm}}{{0.4pt}}"
+                "\\subsection{{{0} \\hfill {1}}}".format(self.dict_list_input_examples["data_gesamt"]["Pruefungstyp"], datum_kurz)
+                )
+            else:
+                vorschau.write("\\textsc{{Name:}} \\rule{{8cm}}{{0.4pt}}"
+                "\\subsection{{{0}. {1} \\hfill {2}}}".format(self.dict_list_input_examples["data_gesamt"]["#"],self.dict_list_input_examples["data_gesamt"]["Pruefungstyp"], datum_kurz)
+                )               
+
         else:
             vorschau.write("\\begin{titlepage}\n" "\\flushright\n")
             if self.dict_titlepage["logo"] == True:
