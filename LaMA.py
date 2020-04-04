@@ -2482,25 +2482,19 @@ class Ui_MainWindow(object):
 
     def close_app(self):
         try:
-            self.dict_list_input_examples
+            if self.dict_list_input_examples['list_examples']==[]:
+                print('empty')
+                sys.exit(0)
+            else:
+                pass
         except AttributeError:
             sys.exit(0)
 
-        msg = QtWidgets.QMessageBox()
-        msg.setIcon(QtWidgets.QMessageBox.Question)
-        msg.setWindowIcon(QtGui.QIcon(logo_path))
-        msg.setText("Möchten Sie vor dem Schließen speichern?")
-        msg.setWindowTitle("Schularbeit schon gespeichert?")
-        msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-        buttonY = msg.button(QtWidgets.QMessageBox.Yes)
-        buttonY.setText("Ja")
-        buttonN = msg.button(QtWidgets.QMessageBox.No)
-        buttonN.setText("Nein")
-        ret = msg.exec_()
+        response=self.question_window("Schularbeit schon gespeichert?", "Möchten Sie vor dem Schließen speichern?")
 
-        if ret == QtWidgets.QMessageBox.Yes:
+        if response == True:
             self.sage_save("")
-            pass
+            # pass
         else:
             sys.exit(0)
 
