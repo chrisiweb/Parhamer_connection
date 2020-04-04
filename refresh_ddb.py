@@ -109,8 +109,18 @@ def refresh_ddb(self):
     if self.chosen_program == 'cria':
         beispieldaten_dateipfad = {}
         for klasse in list_klassen:
+            #### offiziell ####
             dateipfad=os.path.join(path_programm, "_database", klasse)
             search_files(dateipfad, beispieldaten_dateipfad)
+
+            ### inoffiziell ###
+            dateipfad=os.path.join(path_programm, "_database_inoffiziell", klasse)
+            search_files(dateipfad, beispieldaten_dateipfad)
+
+            ### lokal ###
+            dateipfad=os.path.join(path_programm, "Lokaler_Ordner", klasse)
+            search_files(dateipfad, beispieldaten_dateipfad)                        
+
         
         log_file = os.path.join(path_programm, "Teildokument", "log_file_cria")
 
