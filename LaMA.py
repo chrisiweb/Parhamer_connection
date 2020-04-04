@@ -2454,8 +2454,10 @@ class Ui_MainWindow(object):
             MainWindow.setWindowIcon(QtGui.QIcon(logo_cria_path))
             return
         if self.chosen_program=='cria':
-            response = self.question_window('Programm wechseln?',
-            'Sind Sie sicher, dass sie das LaMA (Oberstufe) wechseln wollen?\nDadurch werden alle bisherigen Einträge gelöscht!')
+            response = self.question_window(
+            'Programm wechseln?',
+            'Sind Sie sicher, dass sie das LaMA (Oberstufe) wechseln wollen?\nDadurch werden alle bisherigen Einträge gelöscht!'
+            )
             if response == False:
                 return
             self.reset_sage(True)
@@ -3208,6 +3210,7 @@ class Ui_MainWindow(object):
         msg.setWindowIcon(QtGui.QIcon(logo_path))
         msg.setWindowTitle(titel)
         msg.setText(text)
+        msg.setInformativeText(detailed_text)
         msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
         buttonY = msg.button(QtWidgets.QMessageBox.Yes)
         buttonY.setText("Ja")
