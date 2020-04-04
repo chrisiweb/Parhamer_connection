@@ -4433,26 +4433,38 @@ class Ui_MainWindow(object):
             self.groupBox_notenschl.show()
 
     def sage_aufgabe_add(self, typ, aufgabe):
-        list_sage_examples_typ1 = []
-        list_sage_examples_typ2 = []
+        if self.chosen_program=='lama':
+            list_sage_examples_typ1 = []
+            list_sage_examples_typ2 = []
 
-        for all in list_sage_examples:
-            if re.search("[A-Z]", all) == None:
-                list_sage_examples_typ2.append(all)
+            for all in list_sage_examples:
+                if re.search("[A-Z]", all) == None:
+                    list_sage_examples_typ2.append(all)
+                else:
+                    list_sage_examples_typ1.append(all)
+
+            if aufgabe not in list_sage_examples:
+                if typ == 1:
+                    list_sage_examples_typ1.append(aufgabe)
+                if typ == 2:
+                    list_sage_examples_typ2.append(aufgabe)
+
+            list_sage_examples.clear()
+            list_sage_examples.extend(list_sage_examples_typ1)
+            list_sage_examples.extend(list_sage_examples_typ2)
+            num_typ1 = len(list_sage_examples_typ1)
+            num_typ2 = len(list_sage_examples_typ2)
+
+        if self.chosen_program =='cria':
+            klasse = list_klassen[self.comboBox_klassen.currentIndex()]
+            if "_L_" in aufgabe:
+                example = klasse + aufgabe
             else:
-                list_sage_examples_typ1.append(all)
+                example = klasse + "_" + aufgabe
 
-        if aufgabe not in list_sage_examples:
-            if typ == 1:
-                list_sage_examples_typ1.append(aufgabe)
-            if typ == 2:
-                list_sage_examples_typ2.append(aufgabe)
+            if example not in list_sage_examples:
+                list_sage_examples.append(example)            
 
-        list_sage_examples.clear()
-        list_sage_examples.extend(list_sage_examples_typ1)
-        list_sage_examples.extend(list_sage_examples_typ2)
-        num_typ1 = len(list_sage_examples_typ1)
-        num_typ2 = len(list_sage_examples_typ2)
         num_total = len(list_sage_examples)
         if self.chosen_program == 'lama':
             self.label_gesamtbeispiele.setText(
@@ -4561,40 +4573,57 @@ class Ui_MainWindow(object):
         self.sage_aufgabe_create(False)
 
     def btn_delete_pressed(self, aufgabe, file_loaded):
-        temp_aufgabe = aufgabe.replace("_L_", "")
-        if re.search("[A-Z]", temp_aufgabe) == None:
-            bsp_string = aufgabe
-            typ = 2
-        else:
-            bsp_string = aufgabe.replace(" ", "").replace(".", "").replace("-", "_")
-            typ = 1
 
-        exec("self.groupBox_bsp_{}.setParent(None)".format(bsp_string))
-        list_input = eval("self.list_input_{}".format(bsp_string))
-        spinBox_pkt = eval("self.spinBox_pkt_{}".format(bsp_string))
-        if typ == 1:
-            list_input[0] = self.spinBox_default_pkt.value()
-            spinBox_pkt.setValue(self.spinBox_default_pkt.value())
-        if typ == 2:
+        if self.chosen_program=='cria':
+            bsp_string=aufgabe
+            exec("self.groupBox_bsp_{}.setParent(None)".format(bsp_string))
+            list_input = eval("self.list_input_{}".format(bsp_string))
+            spinBox_pkt = eval("self.spinBox_pkt_{}".format(bsp_string))
+
             list_input[0] = 0
             list_input[3] = ""
-            ausgleich_pkt = eval("self.ausgleich_pkt_{}".format(bsp_string))
-            self.num_ausgleichspkt_gesamt -= int(ausgleich_pkt.text()[-2])
+
             spinBox_pkt.setValue(0)
-            name = aufgabe + ".tex"
-            for path in self.beispieldaten_dateipfad_2.values():
-                if name == os.path.basename(path):
-                    selected_path = path
-            try:
-                # del self.dict_sage_ausgleichspunkte_chosen[selected_path]
-                del self.dict_sage_ausgleichspunkte_chosen[aufgabe]
-            except KeyError:
-                pass
 
-        list_input[1] = 0
+            list_input[1] = 0
 
-        spinBox_abstand = eval("self.spinBox_abstand_{}".format(bsp_string))
-        spinBox_abstand.setValue(0)
+            spinBox_abstand = eval("self.spinBox_abstand_{}".format(bsp_string))
+            spinBox_abstand.setValue(0)
+        elif self.chosen_program=='lama':
+            temp_aufgabe = aufgabe.replace("_L_", "")
+            if re.search("[A-Z]", temp_aufgabe) == None:
+                bsp_string = aufgabe
+                typ = 2
+            else:
+                bsp_string = aufgabe.replace(" ", "").replace(".", "").replace("-", "_")
+                typ = 1
+
+            exec("self.groupBox_bsp_{}.setParent(None)".format(bsp_string))
+            list_input = eval("self.list_input_{}".format(bsp_string))
+            spinBox_pkt = eval("self.spinBox_pkt_{}".format(bsp_string))
+            if typ == 1:
+                list_input[0] = self.spinBox_default_pkt.value()
+                spinBox_pkt.setValue(self.spinBox_default_pkt.value())
+            if typ == 2:
+                list_input[0] = 0
+                list_input[3] = ""
+                ausgleich_pkt = eval("self.ausgleich_pkt_{}".format(bsp_string))
+                self.num_ausgleichspkt_gesamt -= int(ausgleich_pkt.text()[-2])
+                spinBox_pkt.setValue(0)
+                name = aufgabe + ".tex"
+                for path in self.beispieldaten_dateipfad_2.values():
+                    if name == os.path.basename(path):
+                        selected_path = path
+                try:
+                    # del self.dict_sage_ausgleichspunkte_chosen[selected_path]
+                    del self.dict_sage_ausgleichspunkte_chosen[aufgabe]
+                except KeyError:
+                    pass
+
+            list_input[1] = 0
+
+            spinBox_abstand = eval("self.spinBox_abstand_{}".format(bsp_string))
+            spinBox_abstand.setValue(0)
 
         if file_loaded == False:
             list_sage_examples.remove(aufgabe)
@@ -4606,24 +4635,33 @@ class Ui_MainWindow(object):
         # print(self.dict_sage_ausgleichspunkte_chosen)
         # print(aufgabe)
 
-    def punkte_changed(self):
+    def punkte_changed(self, bsp_string):
         gesamtpunkte = 0
+        
+        spinBox_pkt = eval("self.spinBox_pkt_{}".format(bsp_string))
+        punkte = spinBox_pkt.value()
 
-        for all in list_sage_examples:
-            temp_all = all.replace("_L_", "")
-            if re.search("[A-Z]", temp_all) == None:
-                bsp_string = all
-            else:
-                bsp_string = all.replace(" ", "").replace(".", "").replace("-", "_")
+        list_input = eval("self.list_input_{}".format(bsp_string))
+        list_input[0] = punkte
 
-            spinBox_pkt = eval("self.spinBox_pkt_{}".format(bsp_string))
-            punkte = spinBox_pkt.value()
-            spinBox_abstand = eval("self.spinBox_abstand_{}".format(bsp_string))
-            abstand = spinBox_abstand.value()
-            list_input = eval("self.list_input_{}".format(bsp_string))
-            list_input[0] = punkte
-            list_input[1] = abstand
-            gesamtpunkte += punkte
+        if self.chosen_program=='lama':
+            for all in list_sage_examples:
+                temp_all = all.replace("_L_", "")
+                if re.search("[A-Z]", temp_all) == None:
+                    bsp_string = all
+                else:
+                    bsp_string = all.replace(" ", "").replace(".", "").replace("-", "_")
+                gesamtpunkte += punkte
+
+        elif self.chosen_program=='cria':
+            for all in list_sage_examples:
+                list_input = eval("self.list_input_{}".format(all))
+                gesamtpunkte += list_input[0]            
+
+            # spinBox_abstand = eval("self.spinBox_abstand_{}".format(bsp_string))
+            # abstand = spinBox_abstand.value()
+            # list_input[1] = abstand
+            
 
         # gesamtpunkte+=self.num_ausgleichspkt_gesamt
         # ausgleich_pkt = eval('self.ausgleich_pkt_{}'.format(bsp_string))
@@ -4657,7 +4695,17 @@ class Ui_MainWindow(object):
         self.label_gesamtpunkte.setText(
             _translate("MainWindow", "Gesamtpunkte: %i" % gesamtpunkte, None)
         )
-        self.beurteilungsraster_changed()
+        # self.beurteilungsraster_changed() ?? not in LaMA Cria
+
+
+    def abstand_changed(self, bsp_string):
+
+        spinBox_abstand = eval("self.spinBox_abstand_{}".format(bsp_string))
+        abstand = spinBox_abstand.value()
+
+        list_input = eval("self.list_input_{}".format(bsp_string))
+        list_input[1] = abstand
+
 
     def update_default_pkt(self):
         for all in list_sage_examples:
@@ -4776,7 +4824,6 @@ class Ui_MainWindow(object):
                 self.list_copy_images = []
         counter = 0
         num_of_example = 1
-
         for all in list_sage_examples:
             if self.chosen_program=='lama':
                 temp_all = all.replace("_L_", "")
@@ -4861,13 +4908,16 @@ class Ui_MainWindow(object):
                 if typ == 2:
                     label_aufgabe.setText(_translate("MainWindow", "{0}".format(all), None))
             if self.chosen_program=='cria':
+                # print(bsp_string)
+                # print(klasse)
+                # print(example)
                 if "_L_" in bsp_string:
                     label_aufgabe.setText(
-                    _translate("MainWindow", "{0}. Klasse - {1}".format(klasse[1], example))
+                    _translate("MainWindow", "{0}. Klasse - {1}".format(klasse[1], example), None)
                     )           
                 else:
                     label_aufgabe.setText(
-                        _translate("MainWindow", "{0}. Klasse - {1}".format(klasse[1], example))
+                        _translate("MainWindow", "{0}. Klasse - {1}".format(klasse[1], example), None)
                     )        
 
 
@@ -4885,7 +4935,7 @@ class Ui_MainWindow(object):
             # self.groupBox_pkt.setMaximumSize(QtCore.QSize(83, 53))
             self.groupBox_pkt.setObjectName("groupBox_pkt")
             self.groupBox_pkt.setTitle(_translate("MainWindow", "Punkte", None))
-            if typ == 1 or self.chosen_program=='cria':
+            if self.chosen_program=='cria' or typ == 1:
                 self.groupBox_pkt.setMaximumSize(QtCore.QSize(80, 16777215))
             elif typ == 2:
                 self.groupBox_pkt.setToolTip(
@@ -4907,7 +4957,7 @@ class Ui_MainWindow(object):
             spinBox_pkt = eval("self.spinBox_pkt_{}".format(bsp_string))
             spinBox_pkt.setObjectName("spinBox_pkt_{}".format(bsp_string))
             spinBox_pkt.setValue(eval("self.list_input_{}".format(bsp_string))[0])
-            spinBox_pkt.valueChanged.connect(self.punkte_changed)
+            spinBox_pkt.valueChanged.connect(partial(self.punkte_changed, bsp_string))
             self.gridLayout_3.addWidget(spinBox_pkt, 0, 0, 1, 1)
 
             self.pushButton_up = QtWidgets.QPushButton(x)
@@ -4943,13 +4993,16 @@ class Ui_MainWindow(object):
             if num_of_example == len(list_sage_examples):
                 self.pushButton_down.setEnabled(False)
 
-############################ check bis hier
-            if (
+            if (self.chosen_program=='lama' and
                 typ == 1
                 and self.dict_list_input_examples["data_gesamt"]["num_1"]
                 == num_of_example
             ):
                 self.pushButton_down.setEnabled(False)
+
+            if self.chosen_program == 'cria' and num_of_example == len(list_sage_examples):
+                self.pushButton_down.setEnabled(False)  
+
             self.pushButton_down.clicked.connect(partial(self.btn_down_pressed, all))
 
             self.pushButton_delete = QtWidgets.QPushButton(x)
@@ -4979,7 +5032,7 @@ class Ui_MainWindow(object):
             self.groupBox_abstand.setToolTip("Neue Seite: Abstand=99")
             self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.groupBox_abstand)
             # self.groupBox_abstand.setMaximumSize(QtCore.QSize(180, 152))
-            if typ == 2:
+            if self.chosen_program=='lama' and typ == 2:
                 self.groupBox_abstand.hide()
             self.verticalLayout_3.setObjectName("verticalLayout_3")
 
@@ -4991,27 +5044,42 @@ class Ui_MainWindow(object):
             spinBox_abstand = eval("self.spinBox_abstand_{}".format(bsp_string))
             spinBox_abstand.setObjectName("spinBox_abstand_{}".format(bsp_string))
             spinBox_abstand.setValue(eval("self.list_input_{}".format(bsp_string))[1])
-            spinBox_abstand.valueChanged.connect(self.punkte_changed)
+            spinBox_abstand.valueChanged.connect(partial(self.punkte_changed,bsp_string))
             self.verticalLayout_3.addWidget(spinBox_abstand)
             self.gridLayout_gB.addWidget(self.groupBox_abstand, 0, 2, 2, 1)
 
-            self.pushButton_ausgleich = QtWidgets.QPushButton(x)
-            self.pushButton_ausgleich.setObjectName("pushButton_ausgleich")
-            self.pushButton_ausgleich.setStyleSheet(
-                _fromUtf8("background-color: light gray")
-            )
-            # self.pushButton_delete.setStyleSheet(_fromUtf8("background-color: rgb(255, 153, 153);"))
-            self.pushButton_ausgleich.setMaximumSize(QtCore.QSize(220, 30))
-            self.pushButton_ausgleich.setText("Ausgleichspunkte anpassen...")
-            self.pushButton_ausgleich.setFocusPolicy(QtCore.Qt.ClickFocus)
-            if typ == 1:
-                list_path = self.beispieldaten_dateipfad_1.values()
-            if typ == 2:
-                list_path = self.beispieldaten_dateipfad_2.values()
-            name = all + ".tex"
-            for path in list_path:
-                if name == os.path.basename(path):
-                    selected_path = path
+
+            # if self.chosen_program=='lama':
+            #     self.pushButton_ausgleich = QtWidgets.QPushButton(x)
+            #     self.pushButton_ausgleich.setObjectName("pushButton_ausgleich")
+            #     self.pushButton_ausgleich.setStyleSheet(
+            #         _fromUtf8("background-color: light gray")
+            #     )
+            #     # self.pushButton_delete.setStyleSheet(_fromUtf8("background-color: rgb(255, 153, 153);"))
+            #     self.pushButton_ausgleich.setMaximumSize(QtCore.QSize(220, 30))
+            #     self.pushButton_ausgleich.setText("Ausgleichspunkte anpassen...")
+            #     self.pushButton_ausgleich.setFocusPolicy(QtCore.Qt.ClickFocus)
+
+            ##### GET included pictures ###
+            if self.chosen_program =='lama':
+                if typ == 1:
+                    list_path = self.beispieldaten_dateipfad_1.values()
+                if typ == 2:
+                    list_path = self.beispieldaten_dateipfad_2.values()        
+                name = all + ".tex"
+
+                for path in list_path:
+                    if name == os.path.basename(path):
+                        selected_path = path
+
+            elif self.chosen_program == 'cria':
+                list_path = self.beispieldaten_dateipfad_cria.values()
+                name = example + ".tex"
+
+                for path in list_path:
+                    if klasse in path:
+                        if name == os.path.basename(path):
+                            selected_path = path
 
             f = open(selected_path, "r", encoding="utf8")
             content = f.read()
@@ -5021,7 +5089,17 @@ class Ui_MainWindow(object):
                 matches = re.findall("/Bilder/(.+.eps)}", content)
                 for image in matches:
                     self.list_copy_images.append(image)
-            if typ == 2:
+                    
+            if self.chosen_program=='lama' and typ == 2:
+                self.pushButton_ausgleich = QtWidgets.QPushButton(x)
+                self.pushButton_ausgleich.setObjectName("pushButton_ausgleich")
+                self.pushButton_ausgleich.setStyleSheet(
+                    _fromUtf8("background-color: light gray")
+                )
+                # self.pushButton_delete.setStyleSheet(_fromUtf8("background-color: rgb(255, 153, 153);"))
+                self.pushButton_ausgleich.setMaximumSize(QtCore.QSize(220, 30))
+                self.pushButton_ausgleich.setText("Ausgleichspunkte anpassen...")
+                self.pushButton_ausgleich.setFocusPolicy(QtCore.Qt.ClickFocus)
                 try:
                     num_ausgleichspkt = int(list_input[3])
                 except ValueError:
@@ -5047,9 +5125,9 @@ class Ui_MainWindow(object):
                     )
                 )
 
-            self.gridLayout_gB.addWidget(self.pushButton_ausgleich, 0, 2, 2, 1)
-            if typ == 1:
-                self.pushButton_ausgleich.hide()
+                self.gridLayout_gB.addWidget(self.pushButton_ausgleich, 0, 2, 2, 1)
+            # if self.chosen_program=='cria' or typ == 1:
+            #     self.pushButton_ausgleich.hide()
 
             MainWindow.setTabOrder(spinBox_pkt, spinBox_abstand)
 
@@ -5069,10 +5147,12 @@ class Ui_MainWindow(object):
 
             # print(list_input)
             num_of_example += 1
-            self.scrollArea_chosen.verticalScrollBar().setValue(scrollBar_position)
+            if file_loaded==True:
+                self.punkte_changed(bsp_string)
+
+        self.scrollArea_chosen.verticalScrollBar().setValue(scrollBar_position)
         # self.sum_up_ausgleich()
 
-        self.punkte_changed()
         self.beurteilungsraster_changed()
         self.lineEdit_number.setText("")
         self.lineEdit_number.setFocus()
@@ -5915,18 +5995,18 @@ class Ui_MainWindow(object):
         ):
             vorschau.write("\\subsection{Übungsblatt}")
         
-        elif self.dict_titlepage["hide_all"] == True:
-            if (
-                self.dict_list_input_examples["data_gesamt"]["Pruefungstyp"]
-                == "Wiederholungsprüfung"
-            ):
-                vorschau.write("\\textsc{{Name:}} \\rule{{8cm}}{{0.4pt}}"
-                "\\subsection{{{0} \\hfill {1}}}".format(self.dict_list_input_examples["data_gesamt"]["Pruefungstyp"], datum_kurz)
-                )
-            else:
-                vorschau.write("\\textsc{{Name:}} \\rule{{8cm}}{{0.4pt}}"
-                "\\subsection{{{0}. {1} \\hfill {2}}}".format(self.dict_list_input_examples["data_gesamt"]["#"],self.dict_list_input_examples["data_gesamt"]["Pruefungstyp"], datum_kurz)
-                )               
+        # elif self.dict_titlepage["hide_all"] == True:
+        #     if (
+        #         self.dict_list_input_examples["data_gesamt"]["Pruefungstyp"]
+        #         == "Wiederholungsprüfung"
+        #     ):
+        #         vorschau.write("\\textsc{{Name:}} \\rule{{8cm}}{{0.4pt}}"
+        #         "\\subsection{{{0} \\hfill {1}}}".format(self.dict_list_input_examples["data_gesamt"]["Pruefungstyp"], datum_kurz)
+        #         )
+        #     else:
+        #         vorschau.write("\\textsc{{Name:}} \\rule{{8cm}}{{0.4pt}}"
+        #         "\\subsection{{{0}. {1} \\hfill {2}}}".format(self.dict_list_input_examples["data_gesamt"]["#"],self.dict_list_input_examples["data_gesamt"]["Pruefungstyp"], datum_kurz)
+        #         )               
 
         else:
             vorschau.write("\\begin{titlepage}\n" "\\flushright\n")
