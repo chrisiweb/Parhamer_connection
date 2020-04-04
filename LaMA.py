@@ -1493,11 +1493,17 @@ class Ui_MainWindow(object):
         self.label_gesamtbeispiele = QtWidgets.QLabel(self.groupBox_sage)
         self.gridLayout_5.addWidget(self.label_gesamtbeispiele, 7, 0, 1, 3)
         self.label_gesamtbeispiele.setObjectName("label_gesamtbeispiele")
-        self.label_gesamtbeispiele.setText(
-            _translate(
-                "MainWindow", "Anzahl der Aufgaben: 0 (Typ1: 0 / Typ2: 0)	 ", None
+        if self.chosen_program == 'lama':
+            self.label_gesamtbeispiele.setText(
+                _translate(
+                    "MainWindow", "Anzahl der Aufgaben: 0 (Typ1: 0 / Typ2: 0)	 ", None
+                )
             )
-        )
+        if self.chosen_program == 'cria':
+            self.label_gesamtbeispiele.setText(
+                _translate(
+                    "MainWindow",
+                    "Anzahl der Aufgaben: 0",None))
 
         self.label_gesamtpunkte = QtWidgets.QLabel(self.groupBox_sage)
         self.gridLayout_5.addWidget(self.label_gesamtpunkte, 8, 0, 1, 1)
@@ -2452,6 +2458,10 @@ class Ui_MainWindow(object):
                 )
             )
             MainWindow.setWindowIcon(QtGui.QIcon(logo_cria_path))
+            self.label_gesamtbeispiele.setText(
+                _translate(
+                    "MainWindow",
+                    "Anzahl der Aufgaben: 0",None))
             return
         if self.chosen_program=='cria':
             response = self.question_window(
@@ -2476,6 +2486,11 @@ class Ui_MainWindow(object):
                 )
             )
             MainWindow.setWindowIcon(QtGui.QIcon(logo_path))
+            self.label_gesamtbeispiele.setText(
+                _translate(
+                    "MainWindow", "Anzahl der Aufgaben: 0 (Typ1: 0 / Typ2: 0)	 ", None
+                )
+            )
             return
 
 
@@ -2483,10 +2498,7 @@ class Ui_MainWindow(object):
     def close_app(self):
         try:
             if self.dict_list_input_examples['list_examples']==[]:
-                print('empty')
                 sys.exit(0)
-            else:
-                pass
         except AttributeError:
             sys.exit(0)
 
@@ -2494,7 +2506,6 @@ class Ui_MainWindow(object):
 
         if response == True:
             self.sage_save("")
-            # pass
         else:
             sys.exit(0)
 
@@ -4456,15 +4467,22 @@ class Ui_MainWindow(object):
         num_typ1 = len(list_sage_examples_typ1)
         num_typ2 = len(list_sage_examples_typ2)
         num_total = len(list_sage_examples)
-        self.label_gesamtbeispiele.setText(
-            _translate(
-                "MainWindow",
-                "Anzahl der Aufgaben: {0} (Typ1: {1} / Typ2: {2})  ".format(
-                    num_total, num_typ1, num_typ2
-                ),
-                None,
+        if self.chosen_program == 'lama':
+            self.label_gesamtbeispiele.setText(
+                _translate(
+                    "MainWindow",
+                    "Anzahl der Aufgaben: {0} (Typ1: {1} / Typ2: {2})  ".format(
+                        num_total, num_typ1, num_typ2
+                    ),
+                    None,
+                )
             )
-        )
+        if self.chosen_program == 'cria':
+            self.label_gesamtbeispiele.setText(
+                _translate(
+                    "MainWindow",
+                    "Anzahl der Aufgaben: {0}".format(num_total),None))
+            
         self.sage_aufgabe_create(False)
 
     def adapt_label_gesamtbeispiele(self):
@@ -4483,15 +4501,22 @@ class Ui_MainWindow(object):
         num_typ1 = len(list_sage_examples_typ1)
         num_typ2 = len(list_sage_examples_typ2)
         num_total = len(list_sage_examples)
-        self.label_gesamtbeispiele.setText(
-            _translate(
-                "MainWindow",
-                "Anzahl der Aufgaben: {0} (Typ1: {1} / Typ2: {2})  ".format(
-                    num_total, num_typ1, num_typ2
-                ),
-                None,
+
+        if self.chosen_program == 'lama':
+            self.label_gesamtbeispiele.setText(
+                _translate(
+                    "MainWindow",
+                    "Anzahl der Aufgaben: {0} (Typ1: {1} / Typ2: {2})  ".format(
+                        num_total, num_typ1, num_typ2
+                    ),
+                    None,
+                )
             )
-        )
+        if self.chosen_program == 'cria':
+            self.label_gesamtbeispiele.setText(
+                _translate(
+                    "MainWindow",
+                    "Anzahl der Aufgaben: {0}".format(num_total),None))
 
     def btn_up_pressed(self, aufgabe):
         self.update_lists_examples()
