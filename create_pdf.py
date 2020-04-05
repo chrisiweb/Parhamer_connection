@@ -29,24 +29,19 @@ Klassen = config_loader(config_file, "Klassen")
 
 
 def prepare_tex_for_pdf(self):
-    chosen_aufgabenformat = "Typ%sAufgaben" % self.label_aufgabentyp.text()[-1]
-
     QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
-    if not os.path.isfile(
-        os.path.join(
-            path_programm,
-            "Teildokument",
-            "log_file_%s" % self.label_aufgabentyp.text()[-1],
-        )
-    ):
+    chosen_aufgabenformat = "Typ%sAufgaben" % self.label_aufgabentyp.text()[-1]
+
+    if self.chosen_program=='lama':
+        log_file = os.path.join(path_programm,"Teildokument", "log_file_%s" % self.label_aufgabentyp.text()[-1])
+    if self.chosen_program=='cria':
+        log_file = os.path.join(path_programm,"Teildokument", "log_file_cria")
+
+
+    if not os.path.isfile(log_file):
         refresh_ddb(self)  # self.label_aufgabentyp.text()[-1]
     else:  ##  Automatic update once per month
-        log_file = os.path.join(
-            path_programm,
-            "Teildokument",
-            "log_file_%s" % self.label_aufgabentyp.text()[-1],
-        )
         month_update_log_file = modification_date(log_file).strftime("%m")
         month_today = datetime.date.today().strftime("%m")
         if month_today != month_update_log_file:
@@ -54,54 +49,55 @@ def prepare_tex_for_pdf(self):
 
     suchbegriffe = []
 
-    #### ALGEBRA UND GEOMETRIE
-    for all in ag_beschreibung:
-        x = eval("self.cb_" + all)
-        if x.isChecked() == True:
-            suchbegriffe.append(all)
-
-    #### ANALYSIS
-    for all in an_beschreibung:
-        x = eval("self.cb_" + all)
-        if x.isChecked() == True:
-            suchbegriffe.append(all)
-
-    #### FUNKTIONALE ABHÄNGIGKEITEN
-    for all in fa_beschreibung:
-        x = eval("self.cb_" + all)
-        if x.isChecked() == True:
-            suchbegriffe.append(all)
-    #### WAHRSCHEINLICHKEIT UND STATISTIK
-    for all in ws_beschreibung:
-        x = eval("self.cb_" + all)
-        if x.isChecked() == True:
-            suchbegriffe.append(all)
-
-    temp_suchbegriffe = []
-    for all in suchbegriffe:
-        temp_suchbegriffe.append(dict_gk[all])
-    suchbegriffe = temp_suchbegriffe
-
-    #### Suche der Schulstufe
-    for y in range(5, 9):
-        themen_klasse = eval("k%s_beschreibung" % y)
-        for all in themen_klasse:
-            x = eval("self.cb_k%s_" % y + all)
-            grade = "K" + str(y)
+    if self.chosen_program=='lama':
+        #### ALGEBRA UND GEOMETRIE
+        for all in ag_beschreibung:
+            x = eval("self.cb_" + all)
             if x.isChecked() == True:
-                # if grade not in suchbegriffe:
-                # suchbegriffe.append('K'+str(y))
-                suchbegriffe.append(all.upper())
+                suchbegriffe.append(all)
+
+        #### ANALYSIS
+        for all in an_beschreibung:
+            x = eval("self.cb_" + all)
+            if x.isChecked() == True:
+                suchbegriffe.append(all)
+
+        #### FUNKTIONALE ABHÄNGIGKEITEN
+        for all in fa_beschreibung:
+            x = eval("self.cb_" + all)
+            if x.isChecked() == True:
+                suchbegriffe.append(all)
+        #### WAHRSCHEINLICHKEIT UND STATISTIK
+        for all in ws_beschreibung:
+            x = eval("self.cb_" + all)
+            if x.isChecked() == True:
+                suchbegriffe.append(all)
+
+        temp_suchbegriffe = []
+        for all in suchbegriffe:
+            temp_suchbegriffe.append(dict_gk[all])
+        suchbegriffe = temp_suchbegriffe
+
+        #### Suche der Schulstufe
+        for y in range(5, 9):
+            themen_klasse = eval("k%s_beschreibung" % y)
+            for all in themen_klasse:
+                x = eval("self.cb_k%s_" % y + all)
+                grade = "K" + str(y)
+                if x.isChecked() == True:
+                    # if grade not in suchbegriffe:
+                    # suchbegriffe.append('K'+str(y))
+                    suchbegriffe.append(all.upper())
 
     #### typ1 ###
     # log_file=os.path.join(path_programm,'Typ 2 Aufgaben','Teildokument','log_file')
     ######
 
-    log_file = os.path.join(
-        path_programm,
-        "Teildokument",
-        "log_file_%s" % self.label_aufgabentyp.text()[-1],
-    )
+    # log_file = os.path.join(
+    #     path_programm,
+    #     "Teildokument",
+    #     "log_file_%s" % self.label_aufgabentyp.text()[-1],
+    # )
 
     with open(log_file, encoding="utf8") as f:
         beispieldaten_dateipfad = json.load(f)
@@ -112,33 +108,59 @@ def prepare_tex_for_pdf(self):
         # print(beispieldaten_dateipfad)
         QtWidgets.QApplication.restoreOverrideCursor()
         drafts_path = os.path.join(path_programm, "Beispieleinreichung")
-        for all in os.listdir(drafts_path):
-            if all.endswith(".tex") or all.endswith(".ltx"):
-                pattern = re.compile("[A-Z][A-Z]")
-                if int(self.label_aufgabentyp.text()[-1]) == 1:
-                    if pattern.match(all):
-                        file = open(os.path.join(drafts_path, all), encoding="utf8")
-                        for i, line in enumerate(file):
-                            if not line == "\n":
-                                # line=line.replace('\section{', 'section{ENTWURF ')
-                                beispieldaten_dateipfad[
-                                    "ENTWURF " + line
-                                ] = os.path.join(drafts_path, all)
-                                beispieldaten.append(line)
-                                break
-                        file.close()
-                if int(self.label_aufgabentyp.text()[-1]) == 2:
-                    if not pattern.match(all):
-                        file = open(os.path.join(drafts_path, all), encoding="utf8")
-                        for i, line in enumerate(file):
-                            if not line == "\n":
-                                # line=line.replace('\section{', 'section{ENTWURF ')
-                                beispieldaten_dateipfad[
-                                    "ENTWURF " + line
-                                ] = os.path.join(drafts_path, all)
-                                beispieldaten.append(line)
-                                break
-                        file.close()
+
+        if self.chosen_program=='lama':    
+            for all in os.listdir(drafts_path):
+                if all.endswith(".tex") or all.endswith(".ltx"):
+                    pattern = re.compile("[A-Z][A-Z]")
+                    if int(self.label_aufgabentyp.text()[-1]) == 1:
+                        if pattern.match(all):
+                            file = open(os.path.join(drafts_path, all), encoding="utf8")
+                            for i, line in enumerate(file):
+                                if not line == "\n":
+                                    # line=line.replace('\section{', 'section{ENTWURF ')
+                                    beispieldaten_dateipfad[
+                                        "ENTWURF " + line
+                                    ] = os.path.join(drafts_path, all)
+                                    beispieldaten.append(line)
+                                    break
+                            file.close()
+                    if int(self.label_aufgabentyp.text()[-1]) == 2:
+                        if not pattern.match(all):
+                            file = open(os.path.join(drafts_path, all), encoding="utf8")
+                            for i, line in enumerate(file):
+                                if not line == "\n":
+                                    # line=line.replace('\section{', 'section{ENTWURF ')
+                                    beispieldaten_dateipfad[
+                                        "ENTWURF " + line
+                                    ] = os.path.join(drafts_path, all)
+                                    beispieldaten.append(line)
+                                    break
+                            file.close()
+
+        elif self.chosen_program == 'cria':
+
+            if self.cb_drafts.isChecked():
+                #print(beispieldaten_dateipfad)
+                QtWidgets.QApplication.restoreOverrideCursor()
+                drafts_path = os.path.join(path_programm, "Beispieleinreichung")
+                for klasse in list_klassen:
+                    try:
+                        drafts_path = os.path.join(path_programm, "Beispieleinreichung",klasse)
+                        for all in os.listdir(drafts_path):
+                            file = open(os.path.join(drafts_path, all), encoding="utf8")
+                            for i, line in enumerate(file):
+                                if not line == "\n":
+                                    # line=line.replace('\section{', 'section{ENTWURF ')
+                                    beispieldaten_dateipfad[
+                                        "ENTWURF " + line
+                                    ] = os.path.join(drafts_path, all)
+                                    beispieldaten.append(line)
+                                    break
+                            file.close()
+                    except FileNotFoundError:
+                        pass
+
 
         # print(beispieldaten_dateipfad)
         # return
@@ -160,6 +182,8 @@ def prepare_tex_for_pdf(self):
     ########### work around ####################
     #########################################
 
+
+
     path_tabu_pkg = os.path.join(path_programm, "_database", "_config", "tabu.sty")
     copy_path_tabu_pkg = os.path.join(path_programm, "Teildokument", "tabu.sty")
     if os.path.isfile(copy_path_tabu_pkg):
@@ -168,6 +192,7 @@ def prepare_tex_for_pdf(self):
         shutil.copy(path_tabu_pkg, copy_path_tabu_pkg)
 
     ###################################################
+
 
     path_srdp_pkg = os.path.join(path_programm, "_database", "_config", "srdp-mathematik.sty")
     copy_path_srdp_pkg = os.path.join(path_programm, "Teildokument", "srdp-mathematik.sty")
@@ -178,11 +203,22 @@ def prepare_tex_for_pdf(self):
 
     ########################################################
 
-    filename_teildokument = os.path.join(
-        path_programm,
-        "Teildokument",
-        "Teildokument_%s.tex" % self.label_aufgabentyp.text()[-1],
-    )
+    if self.chosen_program=='lama':
+
+        filename_teildokument = os.path.join(
+            path_programm,
+            "Teildokument",
+            "Teildokument_%s.tex" % self.label_aufgabentyp.text()[-1],
+        )
+    
+    elif self.chosen_program=='cria':
+        for all in self.dict_chosen_topics.values():
+            suchbegriffe.append(all)
+
+        filename_teildokument = os.path.join(
+            path_programm, "Teildokument", "Teildokument_cria.tex"
+        )
+
     try:
         file = open(filename_teildokument, "w", encoding="utf8")
     except FileNotFoundError:
@@ -222,78 +258,106 @@ def prepare_tex_for_pdf(self):
     #### Typ1 ####
     # 	if self.combobox_searchtype.currentText()=='Alle Dateien ausgeben, die alle Suchkriterien enthalten':
     #######
-    if (
-        self.combobox_searchtype.currentText()
-        == "Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten"
-        and chosen_aufgabenformat == "Typ2Aufgaben"
-    ):
-        liste_kompetenzbereiche = {}
-        gkliste = []
-        r = 1
-        for all in list(beispieldaten_dateipfad.keys()):
+
+    gesammeltedateien = []
+    if self.chosen_program=='lama':
+        if (
+            self.combobox_searchtype.currentText()
+            == "Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten"
+            and chosen_aufgabenformat == "Typ2Aufgaben"
+        ):
+            liste_kompetenzbereiche = {}
             gkliste = []
-            for gkbereich in dict_gk:
-                if dict_gk[gkbereich] in all:
-                    gkliste.append(dict_gk[gkbereich])
-            liste_kompetenzbereiche.update({r: gkliste})
-            r += 1
-        for r in range(1, len(liste_kompetenzbereiche) + 1):
-            if liste_kompetenzbereiche[r] == []:
-                liste_kompetenzbereiche[r].append("-")
-            for all in suchbegriffe:
-                if all in liste_kompetenzbereiche[r]:
-                    liste_kompetenzbereiche[r].remove(all)
+            r = 1
+            for all in list(beispieldaten_dateipfad.keys()):
+                gkliste = []
+                for gkbereich in dict_gk:
+                    if dict_gk[gkbereich] in all:
+                        gkliste.append(dict_gk[gkbereich])
+                liste_kompetenzbereiche.update({r: gkliste})
+                r += 1
+            for r in range(1, len(liste_kompetenzbereiche) + 1):
+                if liste_kompetenzbereiche[r] == []:
+                    liste_kompetenzbereiche[r].append("-")
+                for all in suchbegriffe:
+                    if all in liste_kompetenzbereiche[r]:
+                        liste_kompetenzbereiche[r].remove(all)
 
-        gesammeltedateien = []
-        gesammeltedateien_temporary = []
-        for r in range(1, len(liste_kompetenzbereiche) + 1):
-            if liste_kompetenzbereiche[r] == []:
-                gesammeltedateien.append(
-                    list(beispieldaten_dateipfad.keys())[r - 1]
-                )
-        # return
-        # for all in gesammeltedateien:
-        # 	if entry_suchbegriffe.get().lower() in all.lower():
-        # 		gesammeltedateien_temporary.append(all)
-        gesammeltedateien = sorted(gesammeltedateien)
+            gesammeltedateien_temporary = []
+            for r in range(1, len(liste_kompetenzbereiche) + 1):
+                if liste_kompetenzbereiche[r] == []:
+                    gesammeltedateien.append(
+                        list(beispieldaten_dateipfad.keys())[r - 1]
+                    )
+            gesammeltedateien = sorted(gesammeltedateien)
 
-        # print(liste_kompetenzbereiche)
-        # print(gesammeltedateien)
-        # return
-    # 		gesammeltedateien=list(beispieldaten_dateipfad.keys())
-    # 		for item in suchbegriffe:
-    # 			for all in gesammeltedateien[:]:
-    # 				if item not in all:
-    # 					gesammeltedateien.remove(all)
 
-    # 		dict_gesammeltedateien={}
-    # 		for all in gesammeltedateien:
-    # 			dict_gesammeltedateien[all]=beispieldaten_dateipfdad[all]
-
-    if (
-        self.combobox_searchtype.currentText()
-        == "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten"
-        or chosen_aufgabenformat == "Typ1Aufgaben"
-    ):
-        gesammeltedateien = []
-        for all in suchbegriffe:
-            for element in list(beispieldaten_dateipfad.keys())[:]:
-                if all in element:
-                    gesammeltedateien.append(element)
-
-    if not len(self.entry_suchbegriffe.text()) == 0:
-        suchbegriffe.append(self.entry_suchbegriffe.text())
         if (
             self.combobox_searchtype.currentText()
             == "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten"
             or chosen_aufgabenformat == "Typ1Aufgaben"
         ):
-            if len(gesammeltedateien) == 0 and len(suchbegriffe) != 0:
-                gesammeltedateien = list(beispieldaten_dateipfad.keys())
-        for all in gesammeltedateien[:]:
-            if self.entry_suchbegriffe.text().lower() not in all.lower():
-                gesammeltedateien.remove(all)
+            gesammeltedateien = []
+            for all in suchbegriffe:
+                for element in list(beispieldaten_dateipfad.keys())[:]:
+                    if all in element:
+                        gesammeltedateien.append(element)
 
+        if not len(self.entry_suchbegriffe.text()) == 0:
+            suchbegriffe.append(self.entry_suchbegriffe.text())
+            if (
+                self.combobox_searchtype.currentText()
+                == "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten"
+                or chosen_aufgabenformat == "Typ1Aufgaben"
+            ):
+                if len(gesammeltedateien) == 0 and len(suchbegriffe) != 0:
+                    gesammeltedateien = list(beispieldaten_dateipfad.keys())
+            for all in gesammeltedateien[:]:
+                if self.entry_suchbegriffe.text().lower() not in all.lower():
+                    gesammeltedateien.remove(all)
+    
+    if self.chosen_program=='cria':
+        if (
+            self.combobox_searchtype.currentText()
+            == "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten"
+        ):
+            for item in suchbegriffe:
+                klasse = "K" + item[0]
+                thema = item[1] + "." + item[2]
+
+                for all in list(beispieldaten_dateipfad.keys()):
+                    if klasse in all:
+
+                        if thema in all:
+                            gesammeltedateien.append(all)
+
+        if (
+            self.combobox_searchtype.currentText()
+            == "Alle Dateien ausgeben, die alle Suchkriterien enthalten"
+        ):
+            beispieldaten_temporary = list(beispieldaten_dateipfad.keys())
+
+            for item in suchbegriffe:
+
+                klasse = "K" + item[0]
+                thema = item[1] + "." + item[2]
+                for all in beispieldaten_temporary[:]:
+                    if thema not in all:
+                        beispieldaten_temporary.remove(all)
+                    else:
+
+                        if klasse not in all:
+                            beispieldaten_temporary.remove(all)
+
+            gesammeltedateien = beispieldaten_temporary
+
+        if not len(self.entry_suchbegriffe.text()) == 0:
+            suchbegriffe.append(self.entry_suchbegriffe.text())
+            for all in gesammeltedateien[:]:
+                if not len(self.entry_suchbegriffe.text()) == 0:
+
+                    if self.entry_suchbegriffe.text().lower() not in all.lower():
+                        gesammeltedateien.remove(all)       
     # if not len(self.entry_suchbegriffe.text())==0:
     # 	suchbegriffe.append(self.entry_suchbegriffe.text())
 
@@ -304,18 +368,18 @@ def prepare_tex_for_pdf(self):
     for all in gesammeltedateien:
         dict_gesammeltedateien[all] = beispieldaten_dateipfad[all]
 
-    # print(dict_gesammeltedateien)
-    # return
 
     #### typ1 ###
     # ###############################################
     # #### Auswahl der gesuchten Antwortformate ####
     # ###############################################
-    if chosen_aufgabenformat == "Typ1Aufgaben":
+    if chosen_aufgabenformat == "Typ1Aufgaben" or self.chosen_program=='cria':
         if (
             self.cb_af_mc.isChecked()
             or self.cb_af_lt.isChecked()
             or self.cb_af_zo.isChecked()
+            or self.cb_af_rf.isChecked()
+            or self.cb_af_ta.isChecked()
             or self.cb_af_oa.isChecked() == True
         ):
             if suchbegriffe == []:
@@ -336,30 +400,32 @@ def prepare_tex_for_pdf(self):
     ###############################################
     #### Auswahl der gesuchten Klassen #########
     ###############################################
-    selected_klassen = []
-    if (
-        self.cb_k5.isChecked()
-        or self.cb_k6.isChecked()
-        or self.cb_k7.isChecked()
-        or self.cb_k8.isChecked() == True
-        or self.cb_mat.isChecked() == True
-        or self.cb_univie.isChecked()
-    ):
-        if suchbegriffe == []:
-            dict_gesammeltedateien = beispieldaten_dateipfad
-        for all_formats in list(Klassen.keys()):
-            # print(all_formats)
-            x = eval("self.cb_" + all_formats)
-            if x.isChecked() == True:                    
-                selected_klassen.append(all_formats.upper())
-                suchbegriffe.append(all_formats.upper())
-        # print(selected_klassen)
-        # print(suchbegriffe)
-        for all in list(dict_gesammeltedateien):
-            if not any(
-                all_formats.upper() in all for all_formats in selected_klassen
-            ):
-                del dict_gesammeltedateien[all]
+
+    if self.chosen_program == 'lama':
+        selected_klassen = []
+        if (
+            self.cb_k5.isChecked()
+            or self.cb_k6.isChecked()
+            or self.cb_k7.isChecked()
+            or self.cb_k8.isChecked() == True
+            or self.cb_mat.isChecked() == True
+            or self.cb_univie.isChecked()
+        ):
+            if suchbegriffe == []:
+                dict_gesammeltedateien = beispieldaten_dateipfad
+            for all_formats in list(Klassen.keys()):
+                # print(all_formats)
+                x = eval("self.cb_" + all_formats)
+                if x.isChecked() == True:                    
+                    selected_klassen.append(all_formats.upper())
+                    suchbegriffe.append(all_formats.upper())
+            # print(selected_klassen)
+            # print(suchbegriffe)
+            for all in list(dict_gesammeltedateien):
+                if not any(
+                    all_formats.upper() in all for all_formats in selected_klassen
+                ):
+                    del dict_gesammeltedateien[all]
 
     # print(dict_gesammeltedateien)
 
@@ -380,36 +446,50 @@ def prepare_tex_for_pdf(self):
     beispieldaten.sort(key=natural_keys)
     file = open(filename_teildokument, "a", encoding="utf8")
     file.write("\n \\scriptsize Suchbegriffe: ")
-    for all in suchbegriffe:
-        if all == suchbegriffe[-1]:
-            file.write(all)
-        else:
-            file.write(all + ", ")
-    file.write("\\normalsize \n \n")
+    if self.chosen_program == 'lama':
+        for all in suchbegriffe:
+            if all == suchbegriffe[-1]:
+                file.write(all)
+            else:
+                file.write(all + ", ")
+        file.write("\\normalsize \n \n")
 
-    for key, value in dict_gesammeltedateien.items():
-        value = value.replace("\\", "/")
-        file = open(filename_teildokument, "a", encoding="utf8")
+        for key, value in dict_gesammeltedateien.items():
+            value = value.replace("\\", "/")
+            file = open(filename_teildokument, "a", encoding="utf8")
 
-        ### newpage only with typ2 !!
-        if chosen_aufgabenformat == "Typ1Aufgaben":
+            ### newpage only with typ2 !!
+            if chosen_aufgabenformat == "Typ1Aufgaben":
+                if key.startswith("ENTWURF"):
+                    file.write('ENTWURF \input{"' + value + '"}%\n' "\hrule	 \leer\n\n")
+                else:
+                    file.write('\input{"' + value + '"}%\n' "\hrule	 \leer\n\n")
+            elif chosen_aufgabenformat == "Typ2Aufgaben":
+                if key.startswith("ENTWURF"):
+                    file.write('ENTWURF \input{"' + value + '"}%\n' "\\newpage \n")
+                else:
+                    file.write('\input{"' + value + '"}%\n' "\\newpage \n")
+
+    if self.chosen_program == 'cria':
+        for all in suchbegriffe:
+            if isinstance(all, list):
+                item = all[1] + "." + all[2] + " (" + all[0] + ")"
+            else:
+                item = all.upper()
+            if all == suchbegriffe[-1]:
+                file.write(item)
+            else:
+                file.write(item + ", ")
+        file.write("\\normalsize \n \n")
+
+        for key, value in dict_gesammeltedateien.items():
+            value = value.replace("\\", "/")
+            file = open(filename_teildokument, "a", encoding="utf8")
             if key.startswith("ENTWURF"):
                 file.write('ENTWURF \input{"' + value + '"}%\n' "\hrule	 \leer\n\n")
             else:
-                file.write('\input{"' + value + '"}%\n' "\hrule	 \leer\n\n")
-        elif chosen_aufgabenformat == "Typ2Aufgaben":
-            if key.startswith("ENTWURF"):
-                file.write('ENTWURF \input{"' + value + '"}%\n' "\\newpage \n")
-            else:
-                file.write('\input{"' + value + '"}%\n' "\\newpage \n")
+                file.write('\input{"' + value + '"}%\n' "\hrule	 \leer\n\n")     
 
-        # else:
-        # 	if chosen_aufgabenformat=='Typ 1 Aufgaben':
-        # 		file.write('\input{".'+value+'"}%\n'
-        # 		'\hrule	 \leer\n\n')
-        # 	elif chosen_aufgabenformat=='Typ 2 Aufgaben':
-        # 		file.write('\input{".'+value+'"}%\n'
-        # 		'\\newpage \n')
 
     file.write('\shorthandoff{"}\n' "\end{document}")
 
@@ -441,444 +521,19 @@ def prepare_tex_for_pdf(self):
         # geometry=MainWindow.geometry()
         # print(geometry)
         # MainWindow.hide()
-        typ = self.label_aufgabentyp.text()[-1]
-        if sys.platform.startswith("linux"):
-            MainWindow.hide()
+        if self.chosen_program == 'lama':
+            typ = self.label_aufgabentyp.text()[-1]
+        elif self.chosen_program == 'cria':
+            typ='cria'
+
         create_pdf("Teildokument", 0, 0, typ)
-        if sys.platform.startswith("linux"):
-            MainWindow.show()
+
         # MainWindow.show()
         # MainWindow.move(geometry.x(),geometry.y())
         # MainWindow.resize(geometry.width(), geometry.height())
 
         # sys.exit(0)
 
-
-
-def PrepareTeXforPDF(self):
-    chosen_aufgabenformat = "Typ%sAufgaben" % self.label_aufgabentyp.text()[-1]
-
-    QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-
-    if not os.path.isfile(
-        os.path.join(
-            path_programm,
-            "Teildokument",
-            "log_file_%s" % self.label_aufgabentyp.text()[-1],
-        )
-    ):
-        refresh_ddb(self)  # self.label_aufgabentyp.text()[-1]
-    else:  ##  Automatic update once per month
-        log_file = os.path.join(
-            path_programm,
-            "Teildokument",
-            "log_file_%s" % self.label_aufgabentyp.text()[-1],
-        )
-        month_update_log_file = modification_date(log_file).strftime("%m")
-        month_today = datetime.date.today().strftime("%m")
-        if month_today != month_update_log_file:
-            refresh_ddb(self)  # self.label_aufgabentyp.text()[-1]
-
-    suchbegriffe = []
-
-    #### ALGEBRA UND GEOMETRIE
-    for all in ag_beschreibung:
-        x = eval("self.cb_" + all)
-        if x.isChecked() == True:
-            suchbegriffe.append(all)
-
-    #### ANALYSIS
-    for all in an_beschreibung:
-        x = eval("self.cb_" + all)
-        if x.isChecked() == True:
-            suchbegriffe.append(all)
-
-    #### FUNKTIONALE ABHÄNGIGKEITEN
-    for all in fa_beschreibung:
-        x = eval("self.cb_" + all)
-        if x.isChecked() == True:
-            suchbegriffe.append(all)
-    #### WAHRSCHEINLICHKEIT UND STATISTIK
-    for all in ws_beschreibung:
-        x = eval("self.cb_" + all)
-        if x.isChecked() == True:
-            suchbegriffe.append(all)
-
-    temp_suchbegriffe = []
-    for all in suchbegriffe:
-        temp_suchbegriffe.append(dict_gk[all])
-    suchbegriffe = temp_suchbegriffe
-
-    #### Suche der Schulstufe
-    for y in range(5, 9):
-        themen_klasse = eval("k%s_beschreibung" % y)
-        for all in themen_klasse:
-            x = eval("self.cb_k%s_" % y + all)
-            grade = "K" + str(y)
-            if x.isChecked() == True:
-                # if grade not in suchbegriffe:
-                # suchbegriffe.append('K'+str(y))
-                suchbegriffe.append(all.upper())
-
-    #### typ1 ###
-    # log_file=os.path.join(path_programm,'Typ 2 Aufgaben','Teildokument','log_file')
-    ######
-
-    log_file = os.path.join(
-        path_programm,
-        "Teildokument",
-        "log_file_%s" % self.label_aufgabentyp.text()[-1],
-    )
-
-    with open(log_file, encoding="utf8") as f:
-        beispieldaten_dateipfad = json.load(f)
-        # beispieldaten_dateipfad=eval(beispieldaten_dateipfad)
-        beispieldaten = list(beispieldaten_dateipfad.keys())
-
-    if self.cb_drafts.isChecked():
-        # print(beispieldaten_dateipfad)
-        QtWidgets.QApplication.restoreOverrideCursor()
-        drafts_path = os.path.join(path_programm, "Beispieleinreichung")
-        for all in os.listdir(drafts_path):
-            if all.endswith(".tex") or all.endswith(".ltx"):
-                pattern = re.compile("[A-Z][A-Z]")
-                if int(self.label_aufgabentyp.text()[-1]) == 1:
-                    if pattern.match(all):
-                        file = open(os.path.join(drafts_path, all), encoding="utf8")
-                        for i, line in enumerate(file):
-                            if not line == "\n":
-                                # line=line.replace('\section{', 'section{ENTWURF ')
-                                beispieldaten_dateipfad[
-                                    "ENTWURF " + line
-                                ] = os.path.join(drafts_path, all)
-                                beispieldaten.append(line)
-                                break
-                        file.close()
-                if int(self.label_aufgabentyp.text()[-1]) == 2:
-                    if not pattern.match(all):
-                        file = open(os.path.join(drafts_path, all), encoding="utf8")
-                        for i, line in enumerate(file):
-                            if not line == "\n":
-                                # line=line.replace('\section{', 'section{ENTWURF ')
-                                beispieldaten_dateipfad[
-                                    "ENTWURF " + line
-                                ] = os.path.join(drafts_path, all)
-                                beispieldaten.append(line)
-                                break
-                        file.close()
-
-        # print(beispieldaten_dateipfad)
-        # return
-
-        # for root, dirs, files in os.walk(os.path.join(path_programm,'_database', chosen_aufgabenformat)):
-        # 	for all in files:
-        # 		if all.endswith('.tex') or all.endswith('.ltx'):
-        # 			if not ('Gesamtdokument' in all) and not ('Teildokument' in all):
-        # 				file=open(os.path.join(root,all), encoding='utf8')
-        # 				for i, line in enumerate(file):
-        # 					if not line == "\n":
-        # 						beispieldaten_dateipfad[line]=os.path.join(root,all)
-        # 						beispieldaten.append(line)
-        # 						break
-        # 				file.close()
-
-    ######### new tabu.sty not working ###
-    ######################################################
-    ########### work around ####################
-    #########################################
-
-    path_tabu_pkg = os.path.join(path_programm, "_database", "_config", "tabu.sty")
-    copy_path_tabu_pkg = os.path.join(path_programm, "Teildokument", "tabu.sty")
-    if os.path.isfile(copy_path_tabu_pkg):
-        pass
-    else:
-        shutil.copy(path_tabu_pkg, copy_path_tabu_pkg)
-
-    ###################################################
-
-    path_srdp_pkg = os.path.join(path_programm, "_database", "_config", "srdp-mathematik.sty")
-    copy_path_srdp_pkg = os.path.join(path_programm, "Teildokument", "srdp-mathematik.sty")
-    if os.path.isfile(copy_path_srdp_pkg):
-        pass
-    else:
-        shutil.copy(path_srdp_pkg, copy_path_srdp_pkg)
-
-    ########################################################
-
-    filename_teildokument = os.path.join(
-        path_programm,
-        "Teildokument",
-        "Teildokument_%s.tex" % self.label_aufgabentyp.text()[-1],
-    )
-    try:
-        file = open(filename_teildokument, "w", encoding="utf8")
-    except FileNotFoundError:
-        os.makedirs(filename_teildokument)  # If dir is not found make it recursivly
-    file.write(
-        "\documentclass[a4paper,12pt]{report}\n\n"
-        "\\usepackage{geometry}\n"
-        "\geometry{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}\n\n"
-        "\\usepackage{lmodern}\n"
-        "\\usepackage[T1]{fontenc}\n"
-        "\\usepackage{eurosym}\n"
-        "\\usepackage[utf8]{inputenc}\n"
-        "\\usepackage[ngerman]{babel}\n"
-    )
-    if self.cb_solution.isChecked() == True:
-        file.write("\\usepackage[solution_on]{srdp-mathematik} % solution_on/off\n")
-    else:
-        file.write(
-            "\\usepackage[solution_off]{srdp-mathematik} % solution_on/off\n"
-        )
-    file.write(
-        "\setcounter{Zufall}{0}\n\n\n"
-        "\pagestyle{empty} %PAGESTYLE: empty, plain, fancy\n"
-        "\onehalfspacing %Zeilenabstand\n"
-        "\setcounter{secnumdepth}{-1} % keine Nummerierung der Ueberschriften\n\n\n\n"
-        "%\n"
-        "%\n"
-        "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DOKUMENT - ANFANG %%%%%%%%%%%%%%%%%%%"
-        "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"
-        "%\n"
-        "%\n"
-        "\\begin{document}\n"
-        '\shorthandoff{"}\n'
-    )
-    file.close()
-
-    #### Typ1 ####
-    # 	if self.combobox_searchtype.currentText()=='Alle Dateien ausgeben, die alle Suchkriterien enthalten':
-    #######
-    if (
-        self.combobox_searchtype.currentText()
-        == "Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten"
-        and chosen_aufgabenformat == "Typ2Aufgaben"
-    ):
-        liste_kompetenzbereiche = {}
-        gkliste = []
-        r = 1
-        for all in list(beispieldaten_dateipfad.keys()):
-            gkliste = []
-            for gkbereich in dict_gk:
-                if dict_gk[gkbereich] in all:
-                    gkliste.append(dict_gk[gkbereich])
-            liste_kompetenzbereiche.update({r: gkliste})
-            r += 1
-        for r in range(1, len(liste_kompetenzbereiche) + 1):
-            if liste_kompetenzbereiche[r] == []:
-                liste_kompetenzbereiche[r].append("-")
-            for all in suchbegriffe:
-                if all in liste_kompetenzbereiche[r]:
-                    liste_kompetenzbereiche[r].remove(all)
-
-        gesammeltedateien = []
-        gesammeltedateien_temporary = []
-        for r in range(1, len(liste_kompetenzbereiche) + 1):
-            if liste_kompetenzbereiche[r] == []:
-                gesammeltedateien.append(
-                    list(beispieldaten_dateipfad.keys())[r - 1]
-                )
-        # return
-        # for all in gesammeltedateien:
-        # 	if entry_suchbegriffe.get().lower() in all.lower():
-        # 		gesammeltedateien_temporary.append(all)
-        gesammeltedateien = sorted(gesammeltedateien)
-
-        # print(liste_kompetenzbereiche)
-        # print(gesammeltedateien)
-        # return
-    # 		gesammeltedateien=list(beispieldaten_dateipfad.keys())
-    # 		for item in suchbegriffe:
-    # 			for all in gesammeltedateien[:]:
-    # 				if item not in all:
-    # 					gesammeltedateien.remove(all)
-
-    # 		dict_gesammeltedateien={}
-    # 		for all in gesammeltedateien:
-    # 			dict_gesammeltedateien[all]=beispieldaten_dateipfdad[all]
-
-    if (
-        self.combobox_searchtype.currentText()
-        == "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten"
-        or chosen_aufgabenformat == "Typ1Aufgaben"
-    ):
-        gesammeltedateien = []
-        for all in suchbegriffe:
-            for element in list(beispieldaten_dateipfad.keys())[:]:
-                if all in element:
-                    gesammeltedateien.append(element)
-
-    if not len(self.entry_suchbegriffe.text()) == 0:
-        suchbegriffe.append(self.entry_suchbegriffe.text())
-        if (
-            self.combobox_searchtype.currentText()
-            == "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten"
-            or chosen_aufgabenformat == "Typ1Aufgaben"
-        ):
-            if len(gesammeltedateien) == 0 and len(suchbegriffe) != 0:
-                gesammeltedateien = list(beispieldaten_dateipfad.keys())
-        for all in gesammeltedateien[:]:
-            if self.entry_suchbegriffe.text().lower() not in all.lower():
-                gesammeltedateien.remove(all)
-
-    # if not len(self.entry_suchbegriffe.text())==0:
-    # 	suchbegriffe.append(self.entry_suchbegriffe.text())
-
-    gesammeltedateien.sort(key=natural_keys)
-
-    dict_gesammeltedateien = {}
-
-    for all in gesammeltedateien:
-        dict_gesammeltedateien[all] = beispieldaten_dateipfad[all]
-
-    # print(dict_gesammeltedateien)
-    # return
-
-    #### typ1 ###
-    # ###############################################
-    # #### Auswahl der gesuchten Antwortformate ####
-    # ###############################################
-    if chosen_aufgabenformat == "Typ1Aufgaben":
-        if (
-            self.cb_af_mc.isChecked()
-            or self.cb_af_lt.isChecked()
-            or self.cb_af_zo.isChecked()
-            or self.cb_af_oa.isChecked() == True
-        ):
-            if suchbegriffe == []:
-                dict_gesammeltedateien = beispieldaten_dateipfad
-            for all_formats in list(dict_aufgabenformate.keys()):
-                x = eval("self.cb_af_" + all_formats)
-                if x.isChecked() == False:
-                    for all in list(dict_gesammeltedateien):
-                        if all_formats.upper() in all:
-                            del dict_gesammeltedateien[all]
-
-                        # if all_formats in all:
-                        # del dict_gesammeltedateien[all]
-                if x.isChecked() == True:
-                    suchbegriffe.append(all_formats)
-    ########################################################
-
-    ###############################################
-    #### Auswahl der gesuchten Klassen #########
-    ###############################################
-    selected_klassen = []
-    if (
-        self.cb_k5.isChecked()
-        or self.cb_k6.isChecked()
-        or self.cb_k7.isChecked()
-        or self.cb_k8.isChecked() == True
-        or self.cb_mat.isChecked() == True
-        or self.cb_univie.isChecked()
-    ):
-        if suchbegriffe == []:
-            dict_gesammeltedateien = beispieldaten_dateipfad
-        for all_formats in list(Klassen.keys()):
-            # print(all_formats)
-            x = eval("self.cb_" + all_formats)
-            if x.isChecked() == True:                    
-                selected_klassen.append(all_formats.upper())
-                suchbegriffe.append(all_formats.upper())
-        # print(selected_klassen)
-        # print(suchbegriffe)
-        for all in list(dict_gesammeltedateien):
-            if not any(
-                all_formats.upper() in all for all_formats in selected_klassen
-            ):
-                del dict_gesammeltedateien[all]
-
-    # print(dict_gesammeltedateien)
-
-    ##############################
-    if not dict_gesammeltedateien:
-        QtWidgets.QApplication.restoreOverrideCursor()
-        msg = QtWidgets.QMessageBox()
-        msg.setIcon(QtWidgets.QMessageBox.Warning)
-        msg.setWindowIcon(QtGui.QIcon(logo_path))
-        msg.setText("Es wurden keine passenden Aufgaben gefunden!")
-        msg.setInformativeText("Es wird keine Datei ausgegeben.")
-        msg.setWindowTitle("Warnung")
-        # msg.setDetailedText("The details are as follows:")
-        msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
-        retval = msg.exec_()
-        return
-
-    beispieldaten.sort(key=natural_keys)
-    file = open(filename_teildokument, "a", encoding="utf8")
-    file.write("\n \\scriptsize Suchbegriffe: ")
-    for all in suchbegriffe:
-        if all == suchbegriffe[-1]:
-            file.write(all)
-        else:
-            file.write(all + ", ")
-    file.write("\\normalsize \n \n")
-
-    for key, value in dict_gesammeltedateien.items():
-        value = value.replace("\\", "/")
-        file = open(filename_teildokument, "a", encoding="utf8")
-
-        ### newpage only with typ2 !!
-        if chosen_aufgabenformat == "Typ1Aufgaben":
-            if key.startswith("ENTWURF"):
-                file.write('ENTWURF \input{"' + value + '"}%\n' "\hrule	 \leer\n\n")
-            else:
-                file.write('\input{"' + value + '"}%\n' "\hrule	 \leer\n\n")
-        elif chosen_aufgabenformat == "Typ2Aufgaben":
-            if key.startswith("ENTWURF"):
-                file.write('ENTWURF \input{"' + value + '"}%\n' "\\newpage \n")
-            else:
-                file.write('\input{"' + value + '"}%\n' "\\newpage \n")
-
-        # else:
-        # 	if chosen_aufgabenformat=='Typ 1 Aufgaben':
-        # 		file.write('\input{".'+value+'"}%\n'
-        # 		'\hrule	 \leer\n\n')
-        # 	elif chosen_aufgabenformat=='Typ 2 Aufgaben':
-        # 		file.write('\input{".'+value+'"}%\n'
-        # 		'\\newpage \n')
-
-    file.write('\shorthandoff{"}\n' "\end{document}")
-
-    file.close()
-
-    # print(dict_gesammeltedateien)
-    # return
-
-    QtWidgets.QApplication.restoreOverrideCursor()
-    msg = QtWidgets.QMessageBox()
-    msg.setIcon(QtWidgets.QMessageBox.Question)
-    msg.setWindowIcon(QtGui.QIcon(logo_path))
-    msg.setText(
-        "Insgesamt wurden "
-        + str(len(dict_gesammeltedateien))
-        + " Aufgaben gefunden.\n "
-    )
-    msg.setInformativeText("Soll die PDF Datei erstellt werden?")
-    msg.setWindowTitle("Datei ausgeben?")
-    msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-    buttonY = msg.button(QtWidgets.QMessageBox.Yes)
-    buttonY.setText("Ja")
-    buttonN = msg.button(QtWidgets.QMessageBox.No)
-    buttonN.setText("Nein")
-    msg.setDefaultButton(QtWidgets.QMessageBox.Yes)
-    ret = msg.exec_()
-
-    if ret == QtWidgets.QMessageBox.Yes:
-        # geometry=MainWindow.geometry()
-        # print(geometry)
-        # MainWindow.hide()
-        typ = self.label_aufgabentyp.text()[-1]
-        if sys.platform.startswith("linux"):
-            MainWindow.hide()
-        create_pdf("Teildokument", 0, 0, typ)
-        if sys.platform.startswith("linux"):
-            MainWindow.show()
-        # MainWindow.show()
-        # MainWindow.move(geometry.x(),geometry.y())
-        # MainWindow.resize(geometry.width(), geometry.height())
-
-        # sys.exit(0)
 
 
 def create_pdf(path_file, index, maximum, typ=0):
@@ -901,13 +556,12 @@ def create_pdf(path_file, index, maximum, typ=0):
     if path_file == "Teildokument":
         dateiname = path_file + "_" + typ
 
-
     else:
         head, tail = os.path.split(path_file)
         save_file = head
         dateiname = tail
 
-
+###### check bis hier ################
     if dateiname == "Schularbeit_Vorschau" or dateiname.startswith("Teildokument"):
         if sys.platform.startswith("linux"):
             subprocess.Popen(
