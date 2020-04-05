@@ -101,28 +101,41 @@ list_sage_examples = []
 #### Dialog Window - Schularbeit erstellen
 
 
+def create_file_titlepage(titlepage_save):
+    if os.path.isfile(titlepage_save):
+        with open(titlepage_save, encoding="utf8") as f:
+            titlepage = json.load(f)
+    else:
+        titlepage = {
+            "logo": False,
+            "logo_path": False,
+            "titel": True,
+            "datum": True,
+            "klasse": True,
+            "name": True,
+            "note": False,
+            "unterschrift": False,
+            "hide_all": False,
+        }
+    return titlepage
+
+
+
+
 class Ui_MainWindow(object):
     global dict_picture_path, set_chosen_gk, list_sage_examples
     def __init__(self):
         self.dict_sage_ausgleichspunkte_chosen = {}
         self.dict_chosen_topics = {}
         self.list_creator_topics = []
+
         titlepage_save = os.path.join(path_programm, "Teildokument", "titlepage_save")
-        if os.path.isfile(titlepage_save):
-            with open(titlepage_save, encoding="utf8") as f:
-                self.dict_titlepage = json.load(f)
-        else:
-            self.dict_titlepage = {
-                "logo": False,
-                "logo_path": False,
-                "titel": True,
-                "datum": True,
-                "klasse": True,
-                "name": True,
-                "note": False,
-                "unterschrift": False,
-                "hide_all": False,
-            }
+        titlepage=create_file_titlepage(titlepage_save)
+        self.dict_titlepage=titlepage
+
+        titlepage_save = os.path.join(path_programm, "Teildokument", "titlepage_save_cria")
+        titlepage=create_file_titlepage(titlepage_save)
+        self.dict_titlepage_cria=titlepage
 
         app.aboutToQuit.connect(self.close_app)
 
@@ -1771,9 +1784,7 @@ class Ui_MainWindow(object):
             self.chosen_aufgabenformat_cr
         )
         self.pushButton_save.clicked.connect(self.save_file)
-        self.pushButton_titlepage.clicked.connect(
-            partial(self.titlepage_clicked, self.dict_titlepage)
-        )
+        self.pushButton_titlepage.clicked.connect(self.define_titlepage)
 
         for all in ag_beschreibung:
             x = eval("self.cb_" + all)
@@ -4360,7 +4371,11 @@ class Ui_MainWindow(object):
         with open(save_file, "w+", encoding="utf8") as saved_file:
             json.dump(self.dict_list_input_examples, saved_file, ensure_ascii=False)
 
-    def titlepage_clicked(self, dict_titlepage):
+    def define_titlepage(self):
+        if self.chosen_program=='lama':
+            dict_titlepage=self.dict_titlepage
+        if self.chosen_program=='cria':
+            dict_titlepage=self.dict_titlepage_cria
 
         self.Dialog = QtWidgets.QDialog(
             None,
@@ -4372,17 +4387,23 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.Dialog, dict_titlepage)
         self.Dialog.show()
         self.Dialog.exec_()
-        self.dict_titlepage = dict_titlepage
 
-        titlepage_save = os.path.join(path_programm, "Teildokument", "titlepage_save")
+        #self.dict_titlepage = dict_titlepage
+        if self.chosen_program=='lama':
+            self.dict_titlepage = dict_titlepage
+            titlepage_save = os.path.join(path_programm, "Teildokument", "titlepage_save")
+        if self.chosen_program=='cria':
+            self.dict_titlepage_cria = dict_titlepage
+            titlepage_save = os.path.join(path_programm, "Teildokument", "titlepage_save_cria")            
 
         try:
             with open(titlepage_save, "w+", encoding="utf8") as f:
-                json.dump(self.dict_titlepage, f, ensure_ascii=False)
+                json.dump(dict_titlepage, f, ensure_ascii=False)
         except FileNotFoundError:
             os.makedirs(os.path.join(path_programm, "Teildokument"))
             with open(titlepage_save, "w+", encoding="utf8") as f:
-                json.dump(self.dict_titlepage, f, ensure_ascii=False)
+                json.dump(dict_titlepage, f, ensure_ascii=False)
+
 
         # print(self.dict_titlepage)
 
@@ -5946,6 +5967,12 @@ class Ui_MainWindow(object):
             QtWidgets.QApplication.restoreOverrideCursor()
             return
 
+        if self.chosen_program=='lama':
+            dict_titlepage=self.dict_titlepage
+        if self.chosen_program=='cria':
+            dict_titlepage=self.dict_titlepage_cria
+
+
         vorschau = open(filename_vorschau, "w+", encoding="utf8")
 
         vorschau.write(
@@ -6028,16 +6055,16 @@ class Ui_MainWindow(object):
 
         else:
             try:
-                self.dict_titlepage["hide_all"]
+                dict_titlepage["hide_all"]
             except KeyError:
-                self.dict_titlepage["hide_all"]=False
+                dict_titlepage["hide_all"]=False
                 titlepage_save = os.path.join(path_programm, "Teildokument", "titlepage_save")
                 with open(titlepage_save, "w+", encoding="utf8") as f:
-                    json.dump(self.dict_titlepage, f, ensure_ascii=False)
+                    json.dump(dict_titlepage, f, ensure_ascii=False)
 
 
 
-            if self.dict_titlepage["hide_all"] == True:
+            if dict_titlepage["hide_all"] == True:
                 if (
                     self.dict_list_input_examples["data_gesamt"]["Pruefungstyp"]
                     == "Wiederholungsprüfung"
@@ -6052,8 +6079,8 @@ class Ui_MainWindow(object):
             
             else:
                 vorschau.write("\\begin{titlepage}\n" "\\flushright\n")
-                if self.dict_titlepage["logo"] == True:
-                    logo_name = os.path.basename(self.dict_titlepage["logo_path"])
+                if dict_titlepage["logo"] == True:
+                    logo_name = os.path.basename(dict_titlepage["logo_path"])
                     logo_titlepage_path = os.path.join(
                         path_programm, "Teildokument", logo_name
                     )
@@ -6079,7 +6106,7 @@ class Ui_MainWindow(object):
 
                 else:
                     vorschau.write("~\\vfil \n")
-                if self.dict_titlepage["titel"] == True:
+                if dict_titlepage["titel"] == True:
                     if (
                         self.dict_list_input_examples["data_gesamt"]["Pruefungstyp"]
                         == "Wiederholungsprüfung"
@@ -6104,9 +6131,9 @@ class Ui_MainWindow(object):
                                 "[0.5cm]" "\\textsc{\Large Nachschularbeit} \\\ \n"
                             )
                         vorschau.write("[2cm] \n")
-                if self.dict_titlepage["datum"] == True:
+                if dict_titlepage["datum"] == True:
                     vorschau.write("\\textsc{{\Large am {0}}}\\\ [1cm] \n".format(datum))
-                if self.dict_titlepage["klasse"] == True:
+                if dict_titlepage["klasse"] == True:
                     vorschau.write(
                         "\\textsc{{\Large Klasse {0}}} \\\ [1cm] \n".format(
                             self.dict_list_input_examples["data_gesamt"]["Klasse"]
@@ -6120,12 +6147,12 @@ class Ui_MainWindow(object):
                 # else:
                 # 	vorschau.write("\\vphantom{\\textsc{\\Large Gruppe}}\\\ [1cm] \n")
                 # vorschau.write("[1cm]")
-                if self.dict_titlepage["name"] == True:
+                if dict_titlepage["name"] == True:
                     vorschau.write("\\Large Name: \\rule{8cm}{0.4pt} \\\ \n")
                 vorschau.write("\\vfil\\vfil\\vfil \n")
-                if self.dict_titlepage["note"] == True:
+                if dict_titlepage["note"] == True:
                     vorschau.write("\\Large Note: \\rule{8cm}{0.4pt} \\\ [1cm]\n")
-                if self.dict_titlepage["unterschrift"] == True:
+                if dict_titlepage["unterschrift"] == True:
                     vorschau.write("\\Large Unterschrift: \\rule{8cm}{0.4pt} \\\ \n")
 
                 if self.dict_list_input_examples["data_gesamt"]["Beurteilung"] == "br":
@@ -6209,8 +6236,8 @@ class Ui_MainWindow(object):
             if ausgabetyp == "schularbeit":
                 # print(self.dict_list_input_examples['data_gesamt']['copy_images'])
                 if index == 0:
-                    if self.dict_titlepage["logo"] == True:
-                        logo_name = os.path.basename(self.dict_titlepage["logo_path"])
+                    if dict_titlepage["logo"] == True:
+                        logo_name = os.path.basename(dict_titlepage["logo_path"])
                         logo_titlepage_path = os.path.join(
                             path_programm, "Teildokument", logo_name
                         )
@@ -6633,11 +6660,17 @@ class Ui_MainWindow(object):
             self.saved_file_path
         except AttributeError:
             self.saved_file_path = path_programm
+
+        if self.chosen_program=='lama':
+            dict_titlepage=self.dict_titlepage
+        if self.chosen_program=='cria':
+            dict_titlepage=self.dict_titlepage_cria
+
         self.open_subwindow(
             self.dict_list_input_examples,
             self.beispieldaten_dateipfad_1,
             self.beispieldaten_dateipfad_2,
-            self.dict_titlepage,
+            dict_titlepage,
             self.saved_file_path,
         )
 
