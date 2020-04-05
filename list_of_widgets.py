@@ -118,4 +118,24 @@ widgets_sage_cria = [
     "comboBox_unterkapitel",
 ]  # ,'comboBox_at_sage','groupBox_sage','groupBox_notenschl','actionRefresh_Database'
 
+widgets_create_cria = [
+    "actionReset",
+    "menuBild_einf_gen",
+    "menuSuche",
+    "menuSage",
+    "menuFeedback",
+    "menuHelp",
+    "groupBox_aufgabentyp",
+    "groupBox_ausgew_gk_cr",
+    "groupBox_bilder",
+    "groupBox_titel_cr",
+    "groupBox_grundkompetenzen_cr",
+    "groupBox_punkte",
+    "groupBox_klassen_cr",
+    "groupBox_aufgabenformat",
+    "groupBox_beispieleingabe",
+    "groupBox_quelle",
+    "pushButton_save",
+]
+
 list_widgets = [widgets_search, widgets_sage, widgets_create, widgets_feedback, widgets_search_cria, widgets_sage_cria]

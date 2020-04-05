@@ -33,6 +33,7 @@ from list_of_widgets import (
     widgets_feedback,
     widgets_search_cria,
     widgets_sage_cria,
+    widgets_create_cria,   
     list_widgets
 )
 from subwindows import Ui_Dialog_choose_type, Ui_Dialog_titlepage, Ui_Dialog_ausgleichspunkte, Ui_Dialog_erstellen
@@ -756,11 +757,31 @@ class Ui_MainWindow(object):
         )
         self.tab_widget_gk_cr.setObjectName(_fromUtf8("tab_widget_gk_cr"))
         self.gridLayout_11_cr.addWidget(self.tab_widget_gk_cr, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_grundkompetenzen_cr, 1, 0, 5, 1)
-        self.groupBox_grundkompetenzen_cr.setTitle(
-            _translate("MainWindow", "Grundkompetenzen", None)
-        )
+        self.gridLayout.addWidget(self.groupBox_grundkompetenzen_cr, 0, 0,4, 1)
+        if self.chosen_program == 'lama':
+            self.groupBox_grundkompetenzen_cr.setTitle(
+                _translate("MainWindow", "Grundkompetenzen", None)
+            )
+        if self.chosen_program == 'cria':
+            self.groupBox_grundkompetenzen_cr.setTitle(
+                _translate("MainWindow", "Themengebiete", None)
+            )            
         self.groupBox_grundkompetenzen_cr.hide()
+
+
+        # self.groupBox_themengebiete_cria.setMaximumSize(QtCore.QSize(500, 16777215))
+        # self.gridLayout_11_cr_cria = QtWidgets.QGridLayout(self.groupBox_themengebiete_cria)
+        # self.gridLayout_11_cr_cria.setObjectName(_fromUtf8("gridLayout_11_cr_cria"))
+        # self.tab_widget_gk_cr_cria = QtWidgets.QTabWidget(self.groupBox_themengebiete_cria)
+        # # self.tab_widget_gk_cr.setStyleSheet(_fromUtf8("background-color: rgb(217, 255, 215);"))
+        # self.tab_widget_cr_cria.setStyleSheet("background-color: rgb(229, 246, 255);")
+        # self.tab_widget_cr_cria.setObjectName(_fromUtf8("tab_widget_gk_cr"))
+        # self.gridLayout_11_cr_cria.addWidget(self.tab_widget_cr_cria, 0, 0, 1, 1)
+        # self.gridLayout.addWidget(self.groupBox_grundkompetenzen_cr, 0, 0, 4, 1)
+        # self.groupBox_grundkompetenzen_cr.setTitle(
+        #     _translate("MainWindow", "Themengebiete")
+        # )
+        # self.groupBox_grundkompetenzen_cr.hide()
 
         self.groupBox_ausgew_gk_cr = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_ausgew_gk_cr.setMinimumSize(QtCore.QSize(350, 0))
@@ -772,7 +793,7 @@ class Ui_MainWindow(object):
         self.label_ausgew_gk.setWordWrap(True)
         self.label_ausgew_gk.setObjectName(_fromUtf8("label_ausgew_gk"))
         self.verticalLayout_2.addWidget(self.label_ausgew_gk)
-        self.gridLayout.addWidget(self.groupBox_ausgew_gk_cr, 6, 0, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_ausgew_gk_cr, 4, 0, 1, 1)
         self.groupBox_ausgew_gk_cr.setTitle(
             _translate("MainWindow", "Ausgewählte Grundkompetenzen", None)
         )
@@ -808,7 +829,7 @@ class Ui_MainWindow(object):
         self.label_bild_leer.setObjectName(_fromUtf8("label_bild_leer"))
         self.verticalLayout.addWidget(self.label_bild_leer)
         self.label_bild_leer.setText(_translate("MainWindow", "", None))
-        self.gridLayout.addWidget(self.groupBox_bilder, 7, 0, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_bilder, 5, 0, 1, 1)
         self.groupBox_bilder.hide()
 
         #### CREATE CHECKBOXES ####
@@ -971,7 +992,7 @@ class Ui_MainWindow(object):
         self.comboBox_aufgabentyp_cr.addItem(_fromUtf8(""))
         self.comboBox_aufgabentyp_cr.addItem(_fromUtf8(""))
         self.gridLayout_3.addWidget(self.comboBox_aufgabentyp_cr, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_aufgabentyp, 1, 1, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_aufgabentyp, 0, 1, 1, 1)
         self.groupBox_aufgabentyp.setTitle(
             _translate("MainWindow", "Aufgabentyp", None)
         )
@@ -992,7 +1013,7 @@ class Ui_MainWindow(object):
         self.spinBox_punkte.setProperty("value", 1)
         self.spinBox_punkte.setObjectName(_fromUtf8("spinBox_punkte"))
         self.gridLayout_6.addWidget(self.spinBox_punkte, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_punkte, 1, 2, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_punkte, 0, 2, 1, 1)
         self.groupBox_punkte.setTitle(_translate("MainWindow", "Punkte", None))
         self.groupBox_punkte.hide()
 
@@ -1008,7 +1029,7 @@ class Ui_MainWindow(object):
         self.comboBox_af.addItem(_fromUtf8(""))
         self.comboBox_af.addItem(_fromUtf8(""))
         self.gridLayout_7.addWidget(self.comboBox_af, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_aufgabenformat, 1, 3, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_aufgabenformat, 0, 3, 1, 1)
         self.groupBox_aufgabenformat.setTitle(
             _translate("MainWindow", "Aufgabenformat", None)
         )
@@ -1045,7 +1066,7 @@ class Ui_MainWindow(object):
         self.comboBox_klassen_cr.addItem(_fromUtf8(""))
         self.comboBox_klassen_cr.addItem(_fromUtf8(""))
         self.gridLayout_8.addWidget(self.comboBox_klassen_cr, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_klassen_cr, 1, 4, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_klassen_cr, 0, 4, 1, 1)
         self.groupBox_klassen_cr.setTitle(_translate("MainWindow", "Klasse", None))
         self.comboBox_klassen_cr.setItemText(0, _translate("MainWindow", "-", None))
         self.comboBox_klassen_cr.setItemText(
@@ -1073,7 +1094,7 @@ class Ui_MainWindow(object):
         self.lineEdit_titel = QtWidgets.QLineEdit(self.groupBox_titel_cr)
         self.lineEdit_titel.setObjectName(_fromUtf8("lineEdit_titel"))
         self.gridLayout_14.addWidget(self.lineEdit_titel, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_titel_cr, 2, 1, 1, 5)
+        self.gridLayout.addWidget(self.groupBox_titel_cr, 1, 1, 1, 5)
         self.groupBox_titel_cr.setTitle(_translate("MainWindow", "Titel", None))
         self.groupBox_titel_cr.hide()
 
@@ -1091,7 +1112,7 @@ class Ui_MainWindow(object):
         self.plainTextEdit = QtWidgets.QPlainTextEdit(self.groupBox_beispieleingabe)
         self.plainTextEdit.setObjectName(_fromUtf8("plainTextEdit"))
         self.gridLayout_10.addWidget(self.plainTextEdit, 1, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_beispieleingabe, 3, 1, 4, 5)
+        self.gridLayout.addWidget(self.groupBox_beispieleingabe, 2, 1, 4, 5)
         self.groupBox_beispieleingabe.setTitle(
             _translate("MainWindow", "Aufgabeneingabe", None)
         )
@@ -1113,7 +1134,7 @@ class Ui_MainWindow(object):
         self.lineEdit_quelle = QtWidgets.QLineEdit(self.groupBox_quelle)
         self.lineEdit_quelle.setObjectName(_fromUtf8("lineEdit_quelle"))
         self.gridLayout_18.addWidget(self.lineEdit_quelle, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_quelle, 7, 1, 1, 5, QtCore.Qt.AlignTop)
+        self.gridLayout.addWidget(self.groupBox_quelle, 6, 1, 1, 5, QtCore.Qt.AlignTop)
         self.groupBox_quelle.setTitle(
             _translate(
                 "MainWindow",
@@ -1125,7 +1146,7 @@ class Ui_MainWindow(object):
 
         self.pushButton_save = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_save.setObjectName(_fromUtf8("pushButton_save"))
-        self.gridLayout.addWidget(self.pushButton_save, 8, 5, 1, 1)
+        self.gridLayout.addWidget(self.pushButton_save, 7, 5, 1, 1)
         self.pushButton_save.setText(_translate("MainWindow", "Speichern", None))
         self.pushButton_save.setShortcut(_translate("MainWindow", "Return", None))
         self.pushButton_save.hide()
@@ -1556,8 +1577,8 @@ class Ui_MainWindow(object):
             partial(self.pushButton_vorschau_pressed, "vorschau", 0, 0)
         )
         self.pushButton_vorschau.setFocusPolicy(QtCore.Qt.ClickFocus)
-        #self.gridLayout.addWidget(self.groupBox_sage, 1, 2, 8, 3)
-        self.gridLayout.addWidget(self.splitter_sage, 1, 0, 8, 1)
+        # self.gridLayout.addWidget(self.groupBox_sage, 1, 2, 8, 3)
+        self.gridLayout.addWidget(self.splitter_sage, 0, 0, 8, 1)
         self.pushButton_erstellen = QtWidgets.QPushButton(self.groupBox_sage)
         self.pushButton_erstellen.setMaximumSize(QtCore.QSize(90, 16777215))
         self.pushButton_erstellen.setObjectName("pushButton_erstellen")
@@ -1596,7 +1617,7 @@ class Ui_MainWindow(object):
         self.label_example.setText(
             _translate("MainWindow", "Ausgewählte Aufgabe: -", None)
         )
-        self.gridLayout.addWidget(self.label_example, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.label_example, 0, 1, 1, 1)
         self.label_example.hide()
 
         self.groupBox_alle_aufgaben_fb = QtWidgets.QGroupBox(self.centralwidget)
