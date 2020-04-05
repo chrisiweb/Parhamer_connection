@@ -768,20 +768,146 @@ class Ui_MainWindow(object):
             )            
         self.groupBox_grundkompetenzen_cr.hide()
 
+        self.groupBox_themengebiete_cria = QtWidgets.QGroupBox(self.centralwidget)
 
-        # self.groupBox_themengebiete_cria.setMaximumSize(QtCore.QSize(500, 16777215))
-        # self.gridLayout_11_cr_cria = QtWidgets.QGridLayout(self.groupBox_themengebiete_cria)
-        # self.gridLayout_11_cr_cria.setObjectName(_fromUtf8("gridLayout_11_cr_cria"))
-        # self.tab_widget_gk_cr_cria = QtWidgets.QTabWidget(self.groupBox_themengebiete_cria)
-        # # self.tab_widget_gk_cr.setStyleSheet(_fromUtf8("background-color: rgb(217, 255, 215);"))
-        # self.tab_widget_cr_cria.setStyleSheet("background-color: rgb(229, 246, 255);")
-        # self.tab_widget_cr_cria.setObjectName(_fromUtf8("tab_widget_gk_cr"))
-        # self.gridLayout_11_cr_cria.addWidget(self.tab_widget_cr_cria, 0, 0, 1, 1)
-        # self.gridLayout.addWidget(self.groupBox_grundkompetenzen_cr, 0, 0, 4, 1)
-        # self.groupBox_grundkompetenzen_cr.setTitle(
-        #     _translate("MainWindow", "Themengebiete")
-        # )
-        # self.groupBox_grundkompetenzen_cr.hide()
+        self.groupBox_themengebiete_cria.setObjectName(
+            _fromUtf8("groupBox_themengebiete_cria")
+        )
+        self.groupBox_themengebiete_cria.setMaximumSize(QtCore.QSize(500, 16777215))
+        self.gridLayout_11_cr_cria = QtWidgets.QGridLayout(self.groupBox_themengebiete_cria)
+        self.gridLayout_11_cr_cria.setObjectName(_fromUtf8("gridLayout_11_cr_cria"))
+        self.tab_widget_cr_cria = QtWidgets.QTabWidget(self.groupBox_themengebiete_cria)
+        # self.tab_widget_gk_cr.setStyleSheet(_fromUtf8("background-color: rgb(217, 255, 215);"))
+        self.tab_widget_cr_cria.setStyleSheet("background-color: rgb(229, 246, 255);")
+        self.tab_widget_cr_cria.setObjectName(_fromUtf8("tab_widget_gk_cr"))
+        self.gridLayout_11_cr_cria.addWidget(self.tab_widget_cr_cria, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_themengebiete_cria, 0, 0, 4, 1)
+        self.groupBox_themengebiete_cria.setTitle(
+            _translate("MainWindow", "Themengebiete",None)
+        )
+        self.groupBox_themengebiete_cria.hide()
+
+
+        for all in list_klassen:
+            exec("self.tab_cr_cria_{} = QtWidgets.QWidget()".format(all))
+            exec('self.tab_cr_cria_{0}.setObjectName("tab_cr_cria_{0}")'.format(all))
+            exec(
+                "self.gridLayout_cr__cria{0} = QtWidgets.QGridLayout(self.tab_cr_cria_{0})".format(
+                    all
+                )
+            )
+            exec(
+                'self.gridLayout_cr_cria_{0}.setObjectName("gridLayout_cr_cria_{0}")'.format(all)
+            )
+            exec(
+                "self.scrollArea_cr_cria_{0} = QtWidgets.QScrollArea(self.tab_cr_cria_{0})".format(
+                    all
+                )
+            )
+            scrollArea_cr_cria = eval("self.scrollArea_cr_cria_{0}".format(all))
+            scrollArea_cr_cria.setFrameShape(QtWidgets.QFrame.NoFrame)
+            scrollArea_cr_cria.setWidgetResizable(True)
+            scrollArea_cr_cria.setObjectName("scrollArea_cr_cria")
+            exec(
+                "self.scrollAreaWidgetContents_cr_cria_{} = QtWidgets.QWidget()".format(all)
+            )
+            exec(
+                "self.scrollAreaWidgetContents_cr_cria_{}.setGeometry(QtCore.QRect(0, 0, 264, 235))".format(
+                    all
+                )
+            )
+            exec(
+                'self.scrollAreaWidgetContents_cr_cria_{0}.setObjectName("scrollAreaWidgetContents_cr_cria_{0}")'.format(
+                    all
+                )
+            )
+            exec(
+                "self.verticalLayout_kapitel_cr_cria_{0} = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_cr_cria_{0})".format(
+                    all
+                )
+            )
+            verticalLayout_cr = eval("self.verticalLayout_kapitel_cr_cria_{0}".format(all))
+            verticalLayout_cr.setObjectName("verticalLayout_kapitel_cr_cria_{0}".format(all))
+########### check bis hier #####
+            dict_klasse_name = eval("dict_{}_name".format(all))
+
+            exec(
+                "self.combobox_kapitel_{} = QtWidgets.QComboBox(self.centralwidget)".format(
+                    all
+                )
+            )
+            combobox_kapitel = eval("self.combobox_kapitel_{}".format(all))
+            # self.combobox_searchtype.setEnabled(True)
+            combobox_kapitel.setObjectName("combobox_kapitel_{}".format(all))
+            i = 0
+            for kapitel in dict_klasse_name:
+                dict_klasse_name = eval("dict_k{}_name".format(all[1]))
+                combobox_kapitel.addItem("")
+                combobox_kapitel.setItemText(
+                    i,
+                    _translate(
+                        "MainWindow", dict_klasse_name[kapitel] + " (" + kapitel + ")"
+                    ),
+                )
+                combobox_kapitel.setMinimumHeight(25)
+                combobox_kapitel.setStyleSheet("background-color: rgb(240, 240, 240);")
+                i += 1
+
+            spacerItem_unterkapitel = QtWidgets.QSpacerItem(
+                20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+            )
+            verticalLayout_cr.addWidget(combobox_kapitel)
+            combobox_kapitel.currentIndexChanged.connect(
+                partial(
+                    self.comboBox_kapitel_changed_cr,
+                    verticalLayout_cr,
+                    combobox_kapitel,
+                    all,
+                    spacerItem_unterkapitel,
+                )
+            )
+            self.label_linespacer = QtWidgets.QLabel(self.centralwidget)
+            self.label_linespacer.setObjectName(_fromUtf8("label_linespacer"))
+            self.label_linespacer.setMinimumHeight(10)
+            verticalLayout_cr.addWidget(self.label_linespacer)
+
+            exec(
+                "self.scrollArea_cr_{0}.setWidget(self.scrollAreaWidgetContents_cr_{0})".format(
+                    all
+                )
+            )
+            exec(
+                "self.gridLayout_cr_{0}.addWidget(self.scrollArea_cr_{0}, 5, 0, 1, 1)".format(
+                    all
+                )
+            )
+
+            exec(
+                'self.tab_widget_gk_cr.addTab(self.tab_cr_{0}, "{1}. Klasse")'.format(
+                    all, all[1]
+                )
+            )
+
+            dict_klasse = eval("dict_{}".format(all))
+            first_element = list(dict_klasse.keys())[0]
+            for unterkapitel in dict_klasse[first_element]:
+                self.create_checkbox_unterkapitel(
+                    verticalLayout_cr, all, first_element, unterkapitel
+                )
+
+            verticalLayout_cr.addItem(spacerItem_unterkapitel)
+
+
+
+
+##################################
+
+
+
+
+
+
+
 
         self.groupBox_ausgew_gk_cr = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_ausgew_gk_cr.setMinimumSize(QtCore.QSize(350, 0))
