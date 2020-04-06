@@ -3969,9 +3969,9 @@ class Ui_MainWindow(object):
             # name, ext =os.path.splitext(tail)
             if self.creator_mode == "admin" and self.cb_save.isChecked() == True:
                 str_image_path = "../_database_inoffiziell/Bilder/"
-            if self.creator_mode == "admin" and self.cb_save.isChecked() == False:
+            elif self.creator_mode == "admin" and self.cb_save.isChecked() == False:
                 str_image_path = "../_database/Bilder/"
-            if local_save == True:
+            elif local_save == True:
                 str_image_path = "../Lokaler_Ordner/Bilder/"
             else:
                 str_image_path = "../Beispieleinreichung/Bilder/"
@@ -3999,7 +3999,7 @@ class Ui_MainWindow(object):
                     )
             if self.chosen_program=='cria':
                 if x in textBox_Entry:
-
+                    
                     textBox_Entry = str(textBox_Entry).replace(
                         tail,
                         str_image_path
@@ -4009,12 +4009,13 @@ class Ui_MainWindow(object):
                         + "_"
                         + tail,
                     )
+
         # copy_image_path=os.path.join(path_programm,'_database','Bilder') ### direct save
         if self.creator_mode == "admin" and self.cb_save.isChecked() == False:
             copy_image_path = os.path.join(
                 path_programm, "_database", "Bilder"
             )  ### direct save
-        if self.creator_mode == "admin" and self.cb_save.isChecked() == True:
+        elif self.creator_mode == "admin" and self.cb_save.isChecked() == True:
             copy_image_path = os.path.join(
                 path_programm, "_database_inoffiziell", "Bilder"
             )  ### direct save
