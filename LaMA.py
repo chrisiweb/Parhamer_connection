@@ -3752,7 +3752,7 @@ class Ui_MainWindow(object):
             quelle = self.lineEdit_quelle.text()
 
         if local_save == True:
-            local = "*Privat* "
+            local = "*Lokal* "
         else:
             local = ""
         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
