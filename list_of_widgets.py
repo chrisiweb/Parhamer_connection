@@ -33,7 +33,7 @@ widgets_create = [
     "groupBox_ausgew_gk_cr",
     "groupBox_bilder",
     "groupBox_titel_cr",
-    "groupBox_grundkompetenzen_cr",
+    # "groupBox_grundkompetenzen_cr",
     "groupBox_punkte",
     "groupBox_klassen_cr",
     "groupBox_aufgabenformat",
@@ -125,18 +125,18 @@ widgets_create_cria = [
     "menuSage",
     "menuFeedback",
     "menuHelp",
-    "groupBox_aufgabentyp",
+    # "groupBox_aufgabentyp",
     "groupBox_ausgew_gk_cr",
     "groupBox_bilder",
     "groupBox_titel_cr",
     "groupBox_themengebiete_cria",
     # "groupBox_grundkompetenzen_cr",
     "groupBox_punkte",
-    "groupBox_klassen_cr",
+    # "groupBox_klassen_cr",
     "groupBox_aufgabenformat",
     "groupBox_beispieleingabe",
     "groupBox_quelle",
     "pushButton_save",
 ]
 
-list_widgets = [widgets_search, widgets_sage, widgets_create, widgets_feedback, widgets_search_cria, widgets_sage_cria]
+list_widgets = [widgets_search, widgets_sage, widgets_create, widgets_feedback, widgets_search_cria, widgets_sage_cria, widgets_create_cria]

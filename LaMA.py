@@ -757,15 +757,11 @@ class Ui_MainWindow(object):
         )
         self.tab_widget_gk_cr.setObjectName(_fromUtf8("tab_widget_gk_cr"))
         self.gridLayout_11_cr.addWidget(self.tab_widget_gk_cr, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_grundkompetenzen_cr, 0, 0,4, 1)
-        if self.chosen_program == 'lama':
-            self.groupBox_grundkompetenzen_cr.setTitle(
-                _translate("MainWindow", "Grundkompetenzen", None)
-            )
-        if self.chosen_program == 'cria':
-            self.groupBox_grundkompetenzen_cr.setTitle(
-                _translate("MainWindow", "Themengebiete", None)
-            )            
+        self.gridLayout.addWidget(self.groupBox_grundkompetenzen_cr, 0, 0, 4, 1)
+        self.groupBox_grundkompetenzen_cr.setTitle(
+            _translate("MainWindow", "Grundkompetenzen", None)
+        )
+         
         self.groupBox_grundkompetenzen_cr.hide()
 
         self.groupBox_themengebiete_cria = QtWidgets.QGroupBox(self.centralwidget)
@@ -773,13 +769,13 @@ class Ui_MainWindow(object):
         self.groupBox_themengebiete_cria.setObjectName(
             _fromUtf8("groupBox_themengebiete_cria")
         )
-        self.groupBox_themengebiete_cria.setMaximumSize(QtCore.QSize(500, 16777215))
+        self.groupBox_themengebiete_cria.setMaximumWidth(500)
         self.gridLayout_11_cr_cria = QtWidgets.QGridLayout(self.groupBox_themengebiete_cria)
         self.gridLayout_11_cr_cria.setObjectName(_fromUtf8("gridLayout_11_cr_cria"))
         self.tab_widget_cr_cria = QtWidgets.QTabWidget(self.groupBox_themengebiete_cria)
         # self.tab_widget_gk_cr.setStyleSheet(_fromUtf8("background-color: rgb(217, 255, 215);"))
         self.tab_widget_cr_cria.setStyleSheet("background-color: rgb(229, 246, 255);")
-        self.tab_widget_cr_cria.setObjectName(_fromUtf8("tab_widget_gk_cr"))
+        self.tab_widget_cr_cria.setObjectName(_fromUtf8("tab_widget_cr_cria"))
         self.gridLayout_11_cr_cria.addWidget(self.tab_widget_cr_cria, 0, 0, 1, 1)
         self.gridLayout.addWidget(self.groupBox_themengebiete_cria, 0, 0, 4, 1)
         self.groupBox_themengebiete_cria.setTitle(
@@ -896,18 +892,8 @@ class Ui_MainWindow(object):
                 )
 
             verticalLayout_cr_cria.addItem(spacerItem_unterkapitel_cria)
-### check bis hier ###
-
-
-
 
 #################################
-
-
-
-
-
-
 
 
         self.groupBox_ausgew_gk_cr = QtWidgets.QGroupBox(self.centralwidget)
@@ -3455,20 +3441,29 @@ class Ui_MainWindow(object):
 
         ########################### WARNINGS #####
         ######################################
+        if self.chosen_program=='lama':
+            if set_chosen_gk == set([]):
+                self.warning_window("Es wurden keine Grundkompetenzen zugewiesen.")
+                return
 
-        if set_chosen_gk == set([]):
-            self.warning_window("Es wurden keine Grundkompetenzen zugewiesen.")
-            return
+            if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+                if self.comboBox_af.currentText() == "bitte auswählen":
+                    self.warning_window("Es wurde kein Aufgabenformat ausgewählt.")
+                    return
 
-        if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+                if len(set_chosen_gk) > 1:
+                    self.warning_window("Es wurden zu viele Grundkompetenzen zugewiesen.")
+                    return
+        if self.chosen_program=='cria':
+            if self.list_creator_topics == []:
+                self.warning_window("Es wurden keine Themengebiete zugewiesen.")
+                return
+
             if self.comboBox_af.currentText() == "bitte auswählen":
                 self.warning_window("Es wurde kein Aufgabenformat ausgewählt.")
-                return
 
-            if len(set_chosen_gk) > 1:
-                self.warning_window("Es wurden zu viele Grundkompetenzen zugewiesen.")
-                return
-
+                return            
+### check bis hier ###
         if self.lineEdit_titel.text() == "":
             self.warning_window("Bitte geben Sie einen Titel ein.")
             return
