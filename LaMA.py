@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__ = "v1.8.6"
+__version__ = "v1.9.0"
 __lastupdate__ = "04/20"
 ####################
 
@@ -119,8 +119,6 @@ def create_file_titlepage(titlepage_save):
             "hide_all": False,
         }
     return titlepage
-
-
 
 
 class Ui_MainWindow(object):
