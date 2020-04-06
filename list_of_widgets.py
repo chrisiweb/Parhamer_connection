@@ -33,7 +33,7 @@ widgets_create = [
     "groupBox_ausgew_gk_cr",
     "groupBox_bilder",
     "groupBox_titel_cr",
-    # "groupBox_grundkompetenzen_cr",
+    "groupBox_grundkompetenzen_cr",
     "groupBox_punkte",
     "groupBox_klassen_cr",
     "groupBox_aufgabenformat",

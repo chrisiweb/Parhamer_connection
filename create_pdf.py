@@ -26,6 +26,7 @@ k8_beschreibung = config_loader(config_file, "k8_beschreibung")
 
 dict_gk = config_loader(config_file, "dict_gk")
 Klassen = config_loader(config_file, "Klassen")
+list_klassen = config_loader(config_file, "list_klassen")
 
 
 def prepare_tex_for_pdf(self):

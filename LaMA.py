@@ -3666,7 +3666,7 @@ class Ui_MainWindow(object):
             else:
                 return
         if self.creator_mode == "admin":
-            if self.chosen_program='cria' or self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+            if self.chosen_program=='cria' or self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
                 aufgabenformat = "Aufgabenformat: %s\n" % self.comboBox_af.currentText()
             else:
                 aufgabenformat = ""
@@ -3935,17 +3935,17 @@ class Ui_MainWindow(object):
                                     if int(file_integer) > max_integer_file:
                                         max_integer_file = int(file_integer)
                 if self.chosen_program=='cria':
-                    try:
-                        path_saved_files_klasse = os.path.join(path_programm, "Beispieleinreichung", klasse)
+                    klasse = "k" + str(highest_grade)
+                    path_saved_files_klasse = os.path.join(path_programm, "Beispieleinreichung", klasse)
 
-                        if not os.path.exists(path_saved_files_klasse):
-                            os.makedirs(path_saved_files_klasse)
+                    if not os.path.exists(path_saved_files_klasse):
+                        os.makedirs(path_saved_files_klasse)
 
-                        for all in os.listdir(path_saved_files_klasse):
-                            if all.endswith(".tex"):
-                                file_integer, file_extension = all.split(".tex")
-                                if int(file_integer) > max_integer_file:
-                                    max_integer_file = int(file_integer)
+                    for all in os.listdir(path_saved_files_klasse):
+                        if all.endswith(".tex"):
+                            file_integer, file_extension = all.split(".tex")
+                            if int(file_integer) > max_integer_file:
+                                max_integer_file = int(file_integer)
 
             except FileNotFoundError:
                 msg = QtWidgets.QMessageBox()
@@ -4049,86 +4049,201 @@ class Ui_MainWindow(object):
                     msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
                     retval = msg.exec_()
                     return
-### check bis hier ###
-            if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+
+            if self.chosen_program == 'lama':
+                if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+                    if self.creator_mode == "admin":
+                        if self.cb_save.isChecked() == False:
+                            x = os.rename(
+                                copy_image_file_temp,
+                                "%s/_database/Bilder/" % path_programm
+                                + list_chosen_gk[0].upper()
+                                + "_"
+                                + str(max_integer_file + 1)
+                                + "_"
+                                + tail,
+                            )  ### direct save
+                        if self.cb_save.isChecked() == True:
+                            x = os.rename(
+                                copy_image_file_temp,
+                                "%s/_database_inoffiziell/Bilder/" % path_programm
+                                + list_chosen_gk[0].upper()
+                                + "_"
+                                + str(max_integer_file + 1)
+                                + "_"
+                                + tail,
+                            )  ### direct save
+                    else:
+                        if local_save == True:
+                            x = os.rename(
+                                copy_image_file_temp,
+                                "%s/Lokaler_Ordner/Bilder/" % path_programm
+                                + list_chosen_gk[0].upper()
+                                + "_"
+                                + str(max_integer_file + 1)
+                                + "_"
+                                + tail,
+                            )  ### indirect
+                        else:
+                            x = os.rename(
+                                copy_image_file_temp,
+                                "%s/Beispieleinreichung/Bilder/" % path_programm
+                                + list_chosen_gk[0].upper()
+                                + "_"
+                                + str(max_integer_file + 1)
+                                + "_"
+                                + tail,
+                            )  ### indirect
+
+                if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
+                    if self.creator_mode == "admin":
+                        if self.cb_save.isChecked() == False:
+                            x = os.rename(
+                                copy_image_file_temp,
+                                "%s/_database/Bilder/" % path_programm
+                                + str(max_integer_file + 1)
+                                + "_"
+                                + tail,
+                            )  ### direct save
+                        if self.cb_save.isChecked() == True:
+                            x = os.rename(
+                                copy_image_file_temp,
+                                "%s/_database_inoffiziell/Bilder/" % path_programm
+                                + str(max_integer_file + 1)
+                                + "_"
+                                + tail,
+                            )  ### direct save
+                    else:
+                        if local_save == True:
+                            x = os.rename(
+                                copy_image_file_temp,
+                                "%s/Lokaler_Ordner/Bilder/" % path_programm
+                                + str(max_integer_file + 1)
+                                + "_"
+                                + tail,
+                            )  ### indirect
+                        else:
+                            x = os.rename(
+                                copy_image_file_temp,
+                                "%s/Beispieleinreichung/Bilder/" % path_programm
+                                + str(max_integer_file + 1)
+                                + "_"
+                                + tail,
+                            )  ### indirect save
+            
+            if self.chosen_program=='cria':
                 if self.creator_mode == "admin":
-                    if self.cb_save.isChecked() == False:
+                    if self.cb_save.isChecked() == False:               
                         x = os.rename(
                             copy_image_file_temp,
                             "%s/_database/Bilder/" % path_programm
-                            + list_chosen_gk[0].upper()
+                            + klasse
                             + "_"
                             + str(max_integer_file + 1)
                             + "_"
                             + tail,
-                        )  ### direct save
-                    if self.cb_save.isChecked() == True:
+                        )  ### direct official save
+                    if self.cb_save.isChecked() == True:               
                         x = os.rename(
                             copy_image_file_temp,
                             "%s/_database_inoffiziell/Bilder/" % path_programm
-                            + list_chosen_gk[0].upper()
+                            + klasse
                             + "_"
                             + str(max_integer_file + 1)
                             + "_"
                             + tail,
-                        )  ### direct save
+                        )  ### direct inofficial save
                 else:
                     if local_save == True:
                         x = os.rename(
                             copy_image_file_temp,
                             "%s/Lokaler_Ordner/Bilder/" % path_programm
-                            + list_chosen_gk[0].upper()
+                            + klasse
                             + "_"
                             + str(max_integer_file + 1)
                             + "_"
                             + tail,
-                        )  ### indirect
+                        )  ### direct local
                     else:
                         x = os.rename(
                             copy_image_file_temp,
                             "%s/Beispieleinreichung/Bilder/" % path_programm
-                            + list_chosen_gk[0].upper()
+                            + klasse
                             + "_"
                             + str(max_integer_file + 1)
                             + "_"
                             + tail,
                         )  ### indirect
 
-            if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
-                if self.creator_mode == "admin":
-                    if self.cb_save.isChecked() == False:
-                        x = os.rename(
-                            copy_image_file_temp,
-                            "%s/_database/Bilder/" % path_programm
-                            + str(max_integer_file + 1)
-                            + "_"
-                            + tail,
-                        )  ### direct save
-                    if self.cb_save.isChecked() == True:
-                        x = os.rename(
-                            copy_image_file_temp,
-                            "%s/_database_inoffiziell/Bilder/" % path_programm
-                            + str(max_integer_file + 1)
-                            + "_"
-                            + tail,
-                        )  ### direct save
+        if self.chosen_program=='cria':
+            themen_auswahl = []
+
+            for all in self.list_creator_topics:
+                thema = all[1] + "." + all[2]
+                if thema not in themen_auswahl:
+                    themen_auswahl.append(thema)
+
+            themen_auswahl_joined = ", ".join(sorted(themen_auswahl))
+
+            if self.creator_mode == "admin":
+                if self.cb_save.isChecked() == False:
+                    file_name = os.path.join(
+                        path_programm,
+                        "_database",
+                        klasse,
+                        "Einzelbeispiele",
+                        str(max_integer_file + 1) + ".tex",
+                    )  ### direct official save
+                    file = open(file_name, "w", encoding="utf8")
+                if self.cb_save.isChecked() == True:
+                    file_name = os.path.join(
+                        path_programm,
+                        "_database_inoffiziell",
+                        klasse,
+                        "Einzelbeispiele",
+                        str(max_integer_file + 1) + ".tex",
+                    )  ### direct inofficial save
+                    file = open(file_name, "w", encoding="utf8")
+            else:
+                if local_save == True:
+                    file_name = os.path.join(
+                        path_programm,
+                        "Lokaler_Ordner",
+                        klasse,
+                        "_L_" + str(max_integer_file + 1) + ".tex",
+                    )  ### direct local save
                 else:
-                    if local_save == True:
-                        x = os.rename(
-                            copy_image_file_temp,
-                            "%s/Lokaler_Ordner/Bilder/" % path_programm
-                            + str(max_integer_file + 1)
-                            + "_"
-                            + tail,
-                        )  ### indirect
-                    else:
-                        x = os.rename(
-                            copy_image_file_temp,
-                            "%s/Beispieleinreichung/Bilder/" % path_programm
-                            + str(max_integer_file + 1)
-                            + "_"
-                            + tail,
-                        )  ### indirect save
+                    file_name = os.path.join(
+                        path_programm,
+                        "Beispieleinreichung",
+                        klasse,
+                        str(max_integer_file + 1) + ".tex",
+                    )  ### indirect save
+
+                try:
+                    file = open(file_name, "w", encoding="utf8")
+                except FileNotFoundError:
+                    msg = QtWidgets.QMessageBox()
+                    msg.setWindowTitle("Fehlermeldung")
+                    msg.setIcon(QtWidgets.QMessageBox.Critical)
+                    msg.setWindowIcon(QtGui.QIcon(logo_path))
+                    msg.setText(
+                        'Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und\nmuss zuerst für Sie freigegeben werden.'
+                    )
+                    msg.setInformativeText(
+                        "Derzeit können keine neuen Aufgaben eingegeben werden."
+                    )
+                    msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+                    msg.exec_()
+                    return
+
+            chosen_af_lang = self.comboBox_af.currentText()
+            chosen_af = list(dict_aufgabenformate.keys())[
+                list(dict_aufgabenformate.values()).index(chosen_af_lang)
+            ]
+
+
+
 
         if " - " in edit_titel:
             edit_titel = edit_titel.replace(" - ", "-")
@@ -4139,327 +4254,24 @@ class Ui_MainWindow(object):
             quelle = self.lineEdit_quelle.text()
 
         if local_save == True:
-            local = "*Privat* "
+            local = "*Lokal* "
         else:
             local = ""
-        if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-            if self.creator_mode == "admin" or local_save == True:
 
-                pass
-            else:
-                gk_path_temp = os.path.join(
-                    path_programm, "Beispieleinreichung"
-                )  ## not direct save (path changed - comment/uncomment)
 
-            if list_chosen_gk[0] in {
-                **k5_beschreibung,
-                **k6_beschreibung,
-                **k7_beschreibung,
-                **k8_beschreibung,
-            }:  ## merged dictionaries
-                if list_chosen_gk[0] in k5_beschreibung:
-                    file_name_klasse = "K5"
-                elif list_chosen_gk[0] in k6_beschreibung:
-                    file_name_klasse = "K6"
-                elif list_chosen_gk[0] in k7_beschreibung:
-                    file_name_klasse = "K7"
-                elif list_chosen_gk[0] in k8_beschreibung:
-                    file_name_klasse = "K8"
-                if local_save == True:
-                    file_name = os.path.join(
-                        "_L_" + gk_path_temp,
-                        file_name_klasse
-                        + " - "
-                        + list_chosen_gk[0].upper()
-                        + " - "
-                        + str(max_integer_file + 1)
-                        + ".tex",
-                    )
-                else:
-                    file_name = os.path.join(
-                        gk_path_temp,
-                        file_name_klasse
-                        + " - "
-                        + list_chosen_gk[0].upper()
-                        + " - "
-                        + str(max_integer_file + 1)
-                        + ".tex",
-                    )
-
-                chosen_af = list(dict_aufgabenformate.keys())[
-                    list(dict_aufgabenformate.values()).index(
-                        self.comboBox_af.currentText()
-                    )
-                ].upper()
-
-                # print('\section{'+file_name_klasse+' - '+list_chosen_gk[0].upper()+" - "+str(max_integer_file+1) +" - " + self.lineEdit_titel.text()+" - "+chosen_af+' - '+self.lineEdit_quelle.text())
-                try:
-                    file = open(file_name, "w", encoding="utf8")
-                except FileNotFoundError:
-                    msg = QtWidgets.QMessageBox()
-                    msg.setWindowTitle("Fehlermeldung")
-                    msg.setIcon(QtWidgets.QMessageBox.Critical)
-                    msg.setWindowIcon(QtGui.QIcon(logo_path))
-                    msg.setText(
-                        'Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und\nmuss zuerst für Sie freigegeben werden.'
-                    )
-                    msg.setInformativeText(
-                        "Derzeit können keine neuen Aufgaben eingegeben werden."
-                    )
-                    msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
-                    retval = msg.exec_()
-                    return
-
-                file.write(
-                    "\section{"
-                    + local
-                    + file_name_klasse
-                    + " - "
-                    + list_chosen_gk[0].upper()
-                    + " - "
-                    + str(max_integer_file + 1)
-                    + " - "
-                    + edit_titel
-                    + " - "
-                    + chosen_af
-                    + " - "
-                    + quelle
-                    + "}\n\n"
-                    "\\begin{beispiel}["
-                    + file_name_klasse
-                    + " - "
-                    + list_chosen_gk[0].upper()
-                    + "]{"
-                    + str(self.spinBox_punkte.value())
-                    + "}\n"
-                    + textBox_Entry
-                    + "\n\\end{beispiel}"
-                )
-                file.close()
-
-            else:
-                if local_save == True:
-                    file_name = os.path.join(
-                        gk_path_temp,
-                        "_L_"
-                        + dict_gk[list_chosen_gk[0]]
-                        + " - "
-                        + str(max_integer_file + 1)
-                        + ".tex",
-                    )
-                else:
-                    file_name = os.path.join(
-                        gk_path_temp,
-                        dict_gk[list_chosen_gk[0]]
-                        + " - "
-                        + str(max_integer_file + 1)
-                        + ".tex",
-                    )
-
-                try:
-                    file = open(file_name, "w", encoding="utf8")
-                except FileNotFoundError:
-                    msg = QtWidgets.QMessageBox()
-                    msg.setWindowTitle("Fehlermeldung")
-                    msg.setIcon(QtWidgets.QMessageBox.Critical)
-                    msg.setWindowIcon(QtGui.QIcon(logo_path))
-                    msg.setText(
-                        'Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und\nmuss zuerst für Sie freigegeben werden.'
-                    )
-                    msg.setInformativeText(
-                        "Derzeit können keine neuen Aufgaben eingegeben werden."
-                    )
-                    msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
-                    retval = msg.exec_()
-                    return
-
-                if self.comboBox_klassen_cr.currentText() == "-":
-                    chosen_af = list(dict_aufgabenformate.keys())[
-                        list(dict_aufgabenformate.values()).index(
-                            self.comboBox_af.currentText()
-                        )
-                    ].upper()
-                    file.write(
-                        "\section{"
-                        + local
-                        + dict_gk[list_chosen_gk[0]]
-                        + " - "
-                        + str(max_integer_file + 1)
-                        + " - "
-                        + edit_titel
-                        + " - "
-                        + chosen_af
-                        + " - "
-                        + quelle
-                        + "}\n\n"
-                        "\\begin{beispiel}["
-                        + dict_gk[list_chosen_gk[0]]
-                        + "]{"
-                        + str(self.spinBox_punkte.value())
-                        + "}\n"
-                        + textBox_Entry
-                        + "\n\\end{beispiel}"
-                    )
-                else:
-                    try:
-                        klasse = (
-                            "K"
-                            + re.search(
-                                r"\d+", self.comboBox_klassen_cr.currentText()
-                            ).group()
-                        )  ### get selected grade
-                    except AttributeError:
-                        klasse = "MAT"
-                    chosen_af = list(dict_aufgabenformate.keys())[
-                        list(dict_aufgabenformate.values()).index(
-                            self.comboBox_af.currentText()
-                        )
-                    ].upper()
-                    file.write(
-                        "\section{"
-                        + local
-                        + dict_gk[list_chosen_gk[0]]
-                        + " - "
-                        + str(max_integer_file + 1)
-                        + " - "
-                        + klasse
-                        + " - "
-                        + edit_titel
-                        + " - "
-                        + chosen_af
-                        + " - "
-                        + quelle
-                        + "}\n\n"
-                        "\\begin{beispiel}["
-                        + dict_gk[list_chosen_gk[0]]
-                        + "]{"
-                        + str(self.spinBox_punkte.value())
-                        + "}\n"
-                        + textBox_Entry
-                        + "\n\\end{beispiel}"
-                    )
-                file.close()
-
-        if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
-            themen_klasse_auswahl = []
-            gk_auswahl = []
-
-            # print(list_chosen_gk)
-            for all in list_chosen_gk:
-                if all in {
-                    **k5_beschreibung,
-                    **k6_beschreibung,
-                    **k7_beschreibung,
-                    **k8_beschreibung,
-                }:
-                    themen_klasse_auswahl.append(all.upper())
-                else:
-                    gk_auswahl.append(dict_gk[all])
-
-            gk_auswahl_joined = ", ".join(sorted(gk_auswahl))
-            themen_klasse_auswahl_joined = ", ".join(sorted(themen_klasse_auswahl))
-
-            if self.creator_mode == "admin":
-                if self.cb_save.isChecked() == False:
-                    file_name = os.path.join(
-                        path_programm,
-                        "_database",
-                        "Typ2Aufgaben",
-                        "Einzelbeispiele",
-                        str(max_integer_file + 1) + ".tex",
-                    )  ### direct save
-                if self.cb_save.isChecked() == True:
-                    file_name = os.path.join(
-                        path_programm,
-                        "_database_inoffiziell",
-                        "Typ2Aufgaben",
-                        "Einzelbeispiele",
-                        str(max_integer_file + 1) + ".tex",
-                    )  ### direct save
-            else:
-                if local_save == True:
-                    file_name = os.path.join(
-                        path_programm,
-                        "Lokaler_Ordner",
-                        "Typ2Aufgaben",
-                        "_L_" + str(max_integer_file + 1) + ".tex",
-                    )  ### not direct save
-                else:
-                    file_name = os.path.join(
-                        path_programm,
-                        "Beispieleinreichung",
-                        str(max_integer_file + 1) + ".tex",
-                    )  ### not direct save
-
-            try:
-                file = open(file_name, "w", encoding="utf8")
-            except FileNotFoundError:
-                msg = QtWidgets.QMessageBox()
-                msg.setWindowTitle("Fehlermeldung")
-                msg.setIcon(QtWidgets.QMessageBox.Critical)
-                msg.setWindowIcon(QtGui.QIcon(logo_path))
-                msg.setText(
-                    'Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und\nmuss zuerst für Sie freigegeben werden.'
-                )
-                msg.setInformativeText(
-                    "Derzeit können keine neuen Aufgaben eingegeben werden."
-                )
-                msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
-                retval = msg.exec_()
-                return
-
-            klasse = ""
-            themen_klasse = ""
-            gk = ""
-
-            if self.comboBox_klassen_cr.currentText() == "-":
-                pass
-            else:
-                try:
-                    klasse = (
-                        "K"
-                        + re.search(
-                            r"\d+", self.comboBox_klassen_cr.currentText()
-                        ).group()
-                        + " - "
-                    )  ### get selected grade
-                except AttributeError:
-                    klasse = "MAT - "
-
-            if themen_klasse_auswahl == []:
-                gk = gk_auswahl_joined + " - "
-
-            else:  # elif gk_auswahl==[]
-                themen_klasse = themen_klasse_auswahl_joined + " - "
-                x = 9
-                for all in themen_klasse_auswahl:
-                    if all.lower() in k5_beschreibung:
-                        if x > 5:
-                            x = 5
-                    elif all.lower() in k6_beschreibung:
-                        if x > 6:
-                            x = 6
-                    elif all.lower() in k7_beschreibung:
-                        if x > 7:
-                            x = 7
-                    elif all.lower() in k8_beschreibung:
-                        if x > 8:
-                            x = 8
-                if x < 9 and klasse == "":
-                    klasse = "K%s - " % x
-
-                if gk_auswahl != []:
-                    gk = gk_auswahl_joined + " - "
-
+        if self.chosen_program == 'cria':
             file.write(
                 "\section{"
                 + local
+                + klasse.upper()
+                + " - "
+                + themen_auswahl_joined
+                + " - "
                 + str(max_integer_file + 1)
                 + " - "
-                + klasse
-                + themen_klasse
-                + gk
                 + edit_titel
+                + " - "
+                + chosen_af.upper()
                 + " - "
                 + quelle
                 + "}\n\n"
@@ -4467,40 +4279,372 @@ class Ui_MainWindow(object):
                 + str(self.spinBox_punkte.value())
                 + "] %PUNKTE DES BEISPIELS\n"
                 + textBox_Entry
-                + "\n\n\\antwort{GK: "
-                + gk_auswahl_joined
-                + "}"
                 + "\n\\end{langesbeispiel}"
             )
 
-            file.close()
+            file.close() 
+
+        if self.chosen_program=='lama':
+            if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+                if self.creator_mode == "admin" or local_save == True:
+
+                    pass
+                else:
+                    gk_path_temp = os.path.join(
+                        path_programm, "Beispieleinreichung"
+                    )  ## not direct save (path changed - comment/uncomment)
+
+                if list_chosen_gk[0] in {
+                    **k5_beschreibung,
+                    **k6_beschreibung,
+                    **k7_beschreibung,
+                    **k8_beschreibung,
+                }:  ## merged dictionaries
+                    if list_chosen_gk[0] in k5_beschreibung:
+                        file_name_klasse = "K5"
+                    elif list_chosen_gk[0] in k6_beschreibung:
+                        file_name_klasse = "K6"
+                    elif list_chosen_gk[0] in k7_beschreibung:
+                        file_name_klasse = "K7"
+                    elif list_chosen_gk[0] in k8_beschreibung:
+                        file_name_klasse = "K8"
+                    if local_save == True:
+                        file_name = os.path.join(
+                            "_L_" + gk_path_temp,
+                            file_name_klasse
+                            + " - "
+                            + list_chosen_gk[0].upper()
+                            + " - "
+                            + str(max_integer_file + 1)
+                            + ".tex",
+                        )
+                    else:
+                        file_name = os.path.join(
+                            gk_path_temp,
+                            file_name_klasse
+                            + " - "
+                            + list_chosen_gk[0].upper()
+                            + " - "
+                            + str(max_integer_file + 1)
+                            + ".tex",
+                        )
+
+                    chosen_af = list(dict_aufgabenformate.keys())[
+                        list(dict_aufgabenformate.values()).index(
+                            self.comboBox_af.currentText()
+                        )
+                    ].upper()
+
+                    # print('\section{'+file_name_klasse+' - '+list_chosen_gk[0].upper()+" - "+str(max_integer_file+1) +" - " + self.lineEdit_titel.text()+" - "+chosen_af+' - '+self.lineEdit_quelle.text())
+                    try:
+                        file = open(file_name, "w", encoding="utf8")
+                    except FileNotFoundError:
+                        msg = QtWidgets.QMessageBox()
+                        msg.setWindowTitle("Fehlermeldung")
+                        msg.setIcon(QtWidgets.QMessageBox.Critical)
+                        msg.setWindowIcon(QtGui.QIcon(logo_path))
+                        msg.setText(
+                            'Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und\nmuss zuerst für Sie freigegeben werden.'
+                        )
+                        msg.setInformativeText(
+                            "Derzeit können keine neuen Aufgaben eingegeben werden."
+                        )
+                        msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+                        retval = msg.exec_()
+                        return
+
+                    file.write(
+                        "\section{"
+                        + local
+                        + file_name_klasse
+                        + " - "
+                        + list_chosen_gk[0].upper()
+                        + " - "
+                        + str(max_integer_file + 1)
+                        + " - "
+                        + edit_titel
+                        + " - "
+                        + chosen_af
+                        + " - "
+                        + quelle
+                        + "}\n\n"
+                        "\\begin{beispiel}["
+                        + file_name_klasse
+                        + " - "
+                        + list_chosen_gk[0].upper()
+                        + "]{"
+                        + str(self.spinBox_punkte.value())
+                        + "}\n"
+                        + textBox_Entry
+                        + "\n\\end{beispiel}"
+                    )
+                    file.close()
+
+                else:
+                    if local_save == True:
+                        file_name = os.path.join(
+                            gk_path_temp,
+                            "_L_"
+                            + dict_gk[list_chosen_gk[0]]
+                            + " - "
+                            + str(max_integer_file + 1)
+                            + ".tex",
+                        )
+                    else:
+                        file_name = os.path.join(
+                            gk_path_temp,
+                            dict_gk[list_chosen_gk[0]]
+                            + " - "
+                            + str(max_integer_file + 1)
+                            + ".tex",
+                        )
+
+                    try:
+                        file = open(file_name, "w", encoding="utf8")
+                    except FileNotFoundError:
+                        msg = QtWidgets.QMessageBox()
+                        msg.setWindowTitle("Fehlermeldung")
+                        msg.setIcon(QtWidgets.QMessageBox.Critical)
+                        msg.setWindowIcon(QtGui.QIcon(logo_path))
+                        msg.setText(
+                            'Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und\nmuss zuerst für Sie freigegeben werden.'
+                        )
+                        msg.setInformativeText(
+                            "Derzeit können keine neuen Aufgaben eingegeben werden."
+                        )
+                        msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+                        retval = msg.exec_()
+                        return
+
+                    if self.comboBox_klassen_cr.currentText() == "-":
+                        chosen_af = list(dict_aufgabenformate.keys())[
+                            list(dict_aufgabenformate.values()).index(
+                                self.comboBox_af.currentText()
+                            )
+                        ].upper()
+                        file.write(
+                            "\section{"
+                            + local
+                            + dict_gk[list_chosen_gk[0]]
+                            + " - "
+                            + str(max_integer_file + 1)
+                            + " - "
+                            + edit_titel
+                            + " - "
+                            + chosen_af
+                            + " - "
+                            + quelle
+                            + "}\n\n"
+                            "\\begin{beispiel}["
+                            + dict_gk[list_chosen_gk[0]]
+                            + "]{"
+                            + str(self.spinBox_punkte.value())
+                            + "}\n"
+                            + textBox_Entry
+                            + "\n\\end{beispiel}"
+                        )
+                    else:
+                        try:
+                            klasse = (
+                                "K"
+                                + re.search(
+                                    r"\d+", self.comboBox_klassen_cr.currentText()
+                                ).group()
+                            )  ### get selected grade
+                        except AttributeError:
+                            klasse = "MAT"
+                        chosen_af = list(dict_aufgabenformate.keys())[
+                            list(dict_aufgabenformate.values()).index(
+                                self.comboBox_af.currentText()
+                            )
+                        ].upper()
+                        file.write(
+                            "\section{"
+                            + local
+                            + dict_gk[list_chosen_gk[0]]
+                            + " - "
+                            + str(max_integer_file + 1)
+                            + " - "
+                            + klasse
+                            + " - "
+                            + edit_titel
+                            + " - "
+                            + chosen_af
+                            + " - "
+                            + quelle
+                            + "}\n\n"
+                            "\\begin{beispiel}["
+                            + dict_gk[list_chosen_gk[0]]
+                            + "]{"
+                            + str(self.spinBox_punkte.value())
+                            + "}\n"
+                            + textBox_Entry
+                            + "\n\\end{beispiel}"
+                        )
+                    file.close()
+
+            if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
+                themen_klasse_auswahl = []
+                gk_auswahl = []
+
+                # print(list_chosen_gk)
+                for all in list_chosen_gk:
+                    if all in {
+                        **k5_beschreibung,
+                        **k6_beschreibung,
+                        **k7_beschreibung,
+                        **k8_beschreibung,
+                    }:
+                        themen_klasse_auswahl.append(all.upper())
+                    else:
+                        gk_auswahl.append(dict_gk[all])
+
+                gk_auswahl_joined = ", ".join(sorted(gk_auswahl))
+                themen_klasse_auswahl_joined = ", ".join(sorted(themen_klasse_auswahl))
+
+                if self.creator_mode == "admin":
+                    if self.cb_save.isChecked() == False:
+                        file_name = os.path.join(
+                            path_programm,
+                            "_database",
+                            "Typ2Aufgaben",
+                            "Einzelbeispiele",
+                            str(max_integer_file + 1) + ".tex",
+                        )  ### direct save
+                    if self.cb_save.isChecked() == True:
+                        file_name = os.path.join(
+                            path_programm,
+                            "_database_inoffiziell",
+                            "Typ2Aufgaben",
+                            "Einzelbeispiele",
+                            str(max_integer_file + 1) + ".tex",
+                        )  ### direct save
+                else:
+                    if local_save == True:
+                        file_name = os.path.join(
+                            path_programm,
+                            "Lokaler_Ordner",
+                            "Typ2Aufgaben",
+                            "_L_" + str(max_integer_file + 1) + ".tex",
+                        )  ### not direct save
+                    else:
+                        file_name = os.path.join(
+                            path_programm,
+                            "Beispieleinreichung",
+                            str(max_integer_file + 1) + ".tex",
+                        )  ### not direct save
+
+                try:
+                    file = open(file_name, "w", encoding="utf8")
+                except FileNotFoundError:
+                    msg = QtWidgets.QMessageBox()
+                    msg.setWindowTitle("Fehlermeldung")
+                    msg.setIcon(QtWidgets.QMessageBox.Critical)
+                    msg.setWindowIcon(QtGui.QIcon(logo_path))
+                    msg.setText(
+                        'Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und\nmuss zuerst für Sie freigegeben werden.'
+                    )
+                    msg.setInformativeText(
+                        "Derzeit können keine neuen Aufgaben eingegeben werden."
+                    )
+                    msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+                    retval = msg.exec_()
+                    return
+
+                klasse = ""
+                themen_klasse = ""
+                gk = ""
+
+                if self.comboBox_klassen_cr.currentText() == "-":
+                    pass
+                else:
+                    try:
+                        klasse = (
+                            "K"
+                            + re.search(
+                                r"\d+", self.comboBox_klassen_cr.currentText()
+                            ).group()
+                            + " - "
+                        )  ### get selected grade
+                    except AttributeError:
+                        klasse = "MAT - "
+
+                if themen_klasse_auswahl == []:
+                    gk = gk_auswahl_joined + " - "
+
+                else:  # elif gk_auswahl==[]
+                    themen_klasse = themen_klasse_auswahl_joined + " - "
+                    x = 9
+                    for all in themen_klasse_auswahl:
+                        if all.lower() in k5_beschreibung:
+                            if x > 5:
+                                x = 5
+                        elif all.lower() in k6_beschreibung:
+                            if x > 6:
+                                x = 6
+                        elif all.lower() in k7_beschreibung:
+                            if x > 7:
+                                x = 7
+                        elif all.lower() in k8_beschreibung:
+                            if x > 8:
+                                x = 8
+                    if x < 9 and klasse == "":
+                        klasse = "K%s - " % x
+
+                    if gk_auswahl != []:
+                        gk = gk_auswahl_joined + " - "
+
+                file.write(
+                    "\section{"
+                    + local
+                    + str(max_integer_file + 1)
+                    + " - "
+                    + klasse
+                    + themen_klasse
+                    + gk
+                    + edit_titel
+                    + " - "
+                    + quelle
+                    + "}\n\n"
+                    "\\begin{langesbeispiel} \item["
+                    + str(self.spinBox_punkte.value())
+                    + "] %PUNKTE DES BEISPIELS\n"
+                    + textBox_Entry
+                    + "\n\n\\antwort{GK: "
+                    + gk_auswahl_joined
+                    + "}"
+                    + "\n\\end{langesbeispiel}"
+                )
+
+                file.close()
 
         if dict_picture_path != {}:
-            x = ", ".join(dict_picture_path)
+            images = ", ".join(dict_picture_path)
         else:
-            x = "-"
+            images = "-"
 
-        chosen_typ = self.comboBox_aufgabentyp_cr.currentText()[-1]
-        if chosen_typ == "1":
-            if list_chosen_gk[0] in {
-                **k5_beschreibung,
-                **k6_beschreibung,
-                **k7_beschreibung,
-                **k8_beschreibung,
-            }:  ## merged dictionaries
-                if list_chosen_gk[0] in k5_beschreibung:
-                    file_name_klasse = "K5"
-                elif list_chosen_gk[0] in k6_beschreibung:
-                    file_name_klasse = "K6"
-                elif list_chosen_gk[0] in k7_beschreibung:
-                    file_name_klasse = "K7"
-                elif list_chosen_gk[0] in k8_beschreibung:
-                    file_name_klasse = "K8"
-                chosen_gk = file_name_klasse + " - " + list_chosen_gk[0].upper()
-            else:
-                chosen_gk = dict_gk[list_chosen_gk[0]]
-        if chosen_typ == "2":
-            chosen_gk = ", ".join(sorted(gk_auswahl + themen_klasse_auswahl))
+        if self.chosen_program=='lama':
+            chosen_typ = self.comboBox_aufgabentyp_cr.currentText()[-1]
+            if chosen_typ == "1":
+                if list_chosen_gk[0] in {
+                    **k5_beschreibung,
+                    **k6_beschreibung,
+                    **k7_beschreibung,
+                    **k8_beschreibung,
+                }:  ## merged dictionaries
+                    if list_chosen_gk[0] in k5_beschreibung:
+                        file_name_klasse = "K5"
+                    elif list_chosen_gk[0] in k6_beschreibung:
+                        file_name_klasse = "K6"
+                    elif list_chosen_gk[0] in k7_beschreibung:
+                        file_name_klasse = "K7"
+                    elif list_chosen_gk[0] in k8_beschreibung:
+                        file_name_klasse = "K8"
+                    chosen_gk = file_name_klasse + " - " + list_chosen_gk[0].upper()
+                else:
+                    chosen_gk = dict_gk[list_chosen_gk[0]]
+            if chosen_typ == "2":
+                chosen_gk = ", ".join(sorted(gk_auswahl + themen_klasse_auswahl))
 
         if self.creator_mode == "admin":
             if self.cb_save.isChecked() == False:
@@ -4515,8 +4659,12 @@ class Ui_MainWindow(object):
         QtWidgets.QApplication.restoreOverrideCursor()
         msg = QtWidgets.QMessageBox()
         msg.setIcon(QtWidgets.QMessageBox.Information)
-        msg.setWindowTitle("Admin Modus - Aufgabe erfolgreich gespeichert")
+        if self.creator_mode == 'admin':
+            msg.setWindowTitle("Admin Modus - Aufgabe erfolgreich gespeichert")
+        if self.creator_mode == 'user':
+            msg.setWindowTitle("Aufgabe erfolgreich gespeichert")
         msg.setWindowIcon(QtGui.QIcon(logo_path))
+
         if local_save == True:
             msg.setText(
                 'Die Typ{0}-Aufgabe mit dem Titel\n\n"{1}"\n\nwurde lokal auf ihrem System gespeichert.'.format(
@@ -4524,25 +4672,47 @@ class Ui_MainWindow(object):
                 )
             )
         else:
-            msg.setText(
-                'Die Typ{0}-Aufgabe mit dem Titel\n\n"{1}"\n\nwurde gespeichert.'.format(
-                    chosen_typ, edit_titel
+            if self.chosen_program=='lama':
+                msg.setText(
+                    'Die Typ{0}-Aufgabe mit dem Titel\n\n"{1}"\n\nwurde gespeichert.'.format(
+                        chosen_typ, edit_titel
+                    )
+                )
+
+            elif self.chosen_program=='cria':
+                msg.setText(
+                    'Die Aufgabe mit dem Titel\n\n"{0}"\n\nwurde gespeichert.'.format(
+                        edit_titel
+                    )
+                )
+
+
+        if self.chosen_program=='lama':
+            msg.setDetailedText(
+                "Details{0}\n"
+                "Grundkompetenz(en): {1}\n"
+                "Punkte: {2}\n"
+                "Klasse: {3}\n"
+                "Bilder: {4}".format(
+                    zusatz_info,
+                    chosen_gk,
+                    self.spinBox_punkte.value(),
+                    self.comboBox_klassen_cr.currentText(),
+                    images,
                 )
             )
 
-        msg.setDetailedText(
-            "Details{0}\n"
-            "Grundkompetenz(en): {1}\n"
-            "Punkte: {2}\n"
-            "Klasse: {3}\n"
-            "Bilder: {4}".format(
-                zusatz_info,
-                chosen_gk,
-                self.spinBox_punkte.value(),
-                self.comboBox_klassen_cr.currentText(),
-                x,
-            )
-        )
+        elif self.chosen_program=='cria':
+            msg.setDetailedText(
+                "Details\n"
+                "Thema/Themen: {0}\n"
+                "Punkte: {1}\n"
+                "Klasse: {2}. Klasse\n"
+                "Bilder: {3}".format(
+                    themen_auswahl_joined, self.spinBox_punkte.value(), klasse[-1], images
+                )
+            )                
+
         msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
         retval = msg.exec_()
         self.suchfenster_reset()
@@ -5884,7 +6054,7 @@ class Ui_MainWindow(object):
                             for i, line in enumerate(file):
                                 if not line == "\n":
                                     # line=line.replace('\section{', 'section{ENTWURF ')
-                                    self.beispieldaten_dateipfad[line] = os.path.join(drafts_path, all)
+                                    self.beispieldaten_dateipfad_cria[line] = os.path.join(drafts_path, all)
                                     break
                             file.close()
                     except FileNotFoundError:
