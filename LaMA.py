@@ -5037,7 +5037,8 @@ class Ui_MainWindow(object):
             )
         )
 
-        self.sage_aufgabe_create(aufgabe)
+        return [num_typ1, num_typ2]
+
 
     def adapt_label_gesamtbeispiele(self):
         list_sage_examples_typ1 = []
@@ -5303,7 +5304,7 @@ class Ui_MainWindow(object):
             # print(list_input)
 
 
-    def create_neue_aufgaben_box(self, row_number, aufgabe, aufgaben_infos):
+    def create_neue_aufgaben_box(self, row_number, aufgabe, aufgaben_infos, aufgaben_verteilung):
         typ=get_aufabentyp(aufgabe)
         new_groupbox=create_new_groupbox(self.scrollAreaWidgetContents_2,
         "{0}. Aufgabe (Typ{1})".format(row_number+1, typ))
@@ -5361,9 +5362,6 @@ class Ui_MainWindow(object):
         button_up.setIcon(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.SP_ArrowUp))
         gridLayout_gB.addWidget(button_up, 0, 3, 2, 1)
 
-        if row_number == 0:
-            button_up.setEnabled(False)
-
 
         button_down = create_new_button(new_groupbox, "")
         button_down.setMaximumSize(QtCore.QSize(30, 30))
@@ -5373,7 +5371,16 @@ class Ui_MainWindow(object):
         gridLayout_gB.addWidget(button_down, 0, 4, 2, 1)
 
 
+        if row_number == 0:
+            button_up.setEnabled(False)
+        if row_number+1 == aufgaben_verteilung[0]:
+            button_down.setEnabled(False)
 
+
+        print(row_number)
+        print(aufgaben_verteilung)
+        
+        # if row_number == 
 
             # if self.chosen_program=='lama' and typ == 2 and counter == 0:
             #     self.pushButton_up.setEnabled(False)
@@ -5443,18 +5450,12 @@ class Ui_MainWindow(object):
             return number_ausgleichspunkte
 
 
-    def sage_aufgabe_create(self, aufgabe,file_loaded=False):
-        # if file_loaded == False:
-        #     self.update_lists_examples()
-        
-        # list_input = self.collect_all_infos_aufgabe(aufgabe)
-
-        # num=self.get_number_ausgleichspunkte(aufgabe)
-        # print(num)
-
+    def sage_aufgabe_create(self, aufgabe,aufgaben_verteilung, file_loaded=False):
+        print(aufgaben_verteilung)  
         row_number=list_sage_examples.index(aufgabe)
+
         aufgaben_infos=self.collect_all_infos_aufgabe(aufgabe)
-        neue_aufgaben_box=self.create_neue_aufgaben_box(row_number, aufgabe, aufgaben_infos)
+        neue_aufgaben_box=self.create_neue_aufgaben_box(row_number, aufgabe, aufgaben_infos, aufgaben_verteilung)
               
         self.gridLayout_8.addWidget(neue_aufgaben_box, row_number, 0, 1, 2, QtCore.Qt.AlignTop)
 
@@ -6062,7 +6063,10 @@ class Ui_MainWindow(object):
         self.adapt_choosing_list(list_mode)
 
     def nummer_clicked(self, item):
-        self.sage_aufgabe_add(item.text().replace("*E-", ""))
+        aufgabe=item.text().replace("*E-", "")
+        aufgaben_verteilung = self.sage_aufgabe_add(aufgabe)   
+        
+        self.sage_aufgabe_create(aufgabe, aufgaben_verteilung)
 
     def nummer_clicked_fb(self, item):
         # print(item.text())
