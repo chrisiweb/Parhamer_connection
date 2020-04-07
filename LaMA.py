@@ -59,6 +59,7 @@ ag_beschreibung = config_loader(config_file, "ag_beschreibung")
 an_beschreibung = config_loader(config_file, "an_beschreibung")
 fa_beschreibung = config_loader(config_file, "fa_beschreibung")
 ws_beschreibung = config_loader(config_file, "ws_beschreibung")
+list_topics = [list(ag_beschreibung.keys()), list(an_beschreibung.keys()), list(fa_beschreibung.keys()), list(ws_beschreibung.keys())]
 
 k5_beschreibung = config_loader(config_file, "k5_beschreibung")
 k6_beschreibung = config_loader(config_file, "k6_beschreibung")
@@ -100,6 +101,21 @@ list_sage_examples = []
 ### create_pdf
 
 #### Dialog Window - Schularbeit erstellen
+
+#### Extrected Functions ####
+def combine_all_lists_to_one(list_of_lists):
+    combined_list=[]
+    for list in list_of_lists:
+        combined_list=combined_list+list
+    return combined_list 
+
+def get_aufabentyp(aufgabe):
+    if re.search("[A-Z]", aufgabe) == None:
+        typ=2
+    else:
+        typ=1
+    return typ
+
 
 
 def create_file_titlepage(titlepage_save):
@@ -2517,30 +2533,20 @@ class Ui_MainWindow(object):
         x = ", ".join(list_labels)
         self.label_ausgew_gk.setText(_translate("MainWindow", x, None))
 
-
+    def uncheck_all_checkboxes(self, topic):
+        x = eval("self.cb_" + topic)
+        x.setChecked(False)
+        y = eval("self.cb_" + topic + "_cr")
+        y.setChecked(False)
 
     def suchfenster_reset(self):
         global dict_picture_path
-        for all in ag_beschreibung:
-            x = eval("self.cb_" + all)
-            x.setChecked(False)
-            y = eval("self.cb_" + all + "_cr")
-            y.setChecked(False)
-        for all in an_beschreibung:
-            x = eval("self.cb_" + all)
-            x.setChecked(False)
-            y = eval("self.cb_" + all + "_cr")
-            y.setChecked(False)
-        for all in fa_beschreibung:
-            x = eval("self.cb_" + all)
-            x.setChecked(False)
-            y = eval("self.cb_" + all + "_cr")
-            y.setChecked(False)
-        for all in ws_beschreibung:
-            x = eval("self.cb_" + all)
-            x.setChecked(False)
-            y = eval("self.cb_" + all + "_cr")
-            y.setChecked(False)
+        # for all in ag_beschreibung+an_beschreibung:
+        #     print(all)
+        combined_list_of_topics=combine_all_lists_to_one(list_topics)
+        for all in combined_list_of_topics:
+            self.uncheck_all_checkboxes(all)
+
         for r in range(5, 9):
             dict_klasse = eval("k" + str(r) + "_beschreibung")
             for all in dict_klasse:
@@ -4944,26 +4950,26 @@ class Ui_MainWindow(object):
 
     def sage_aufgabe_add(self, typ, aufgabe):
         if self.chosen_program=='lama':
-            list_sage_examples_typ1 = []
-            list_sage_examples_typ2 = []
-
-            for all in list_sage_examples:
-                if re.search("[A-Z]", all) == None:
-                    list_sage_examples_typ2.append(all)
-                else:
-                    list_sage_examples_typ1.append(all)
+            # list_sage_examples_typ1 = []
+            # list_sage_examples_typ2 = []
+            if list_sage_examples==[]:
+                list_sage_examples.append(aufgabe)
 
             if aufgabe not in list_sage_examples:
-                if typ == 1:
-                    list_sage_examples_typ1.append(aufgabe)
-                if typ == 2:
-                    list_sage_examples_typ2.append(aufgabe)
+                length_of_list=len(list_sage_examples)
+                if get_aufabentyp(aufgabe)==1:
+                    for all in list_sage_examples:
+                        typ=get_aufabentyp(all)
+                        if typ==1 and list_sage_examples.index(all)+1==length_of_list:
+                            list_sage_examples.append(aufgabe) 
+                        if typ==2:
+                            index=list_sage_examples.index(all)
+                            list_sage_examples.insert(index,aufgabe)
+                            break 
 
-            list_sage_examples.clear()
-            list_sage_examples.extend(list_sage_examples_typ1)
-            list_sage_examples.extend(list_sage_examples_typ2)
-            num_typ1 = len(list_sage_examples_typ1)
-            num_typ2 = len(list_sage_examples_typ2)
+                elif get_aufabentyp(aufgabe)==2:
+                    list_sage_examples.append(aufgabe)
+
 
         if self.chosen_program =='cria':
             klasse = list_klassen[self.comboBox_klassen.currentIndex()]
@@ -4973,24 +4979,25 @@ class Ui_MainWindow(object):
                 example = klasse + "_" + aufgabe
 
             if example not in list_sage_examples:
-                list_sage_examples.append(example)            
+                list_sage_examples.append(example)
 
+        print(list_sage_examples)
         num_total = len(list_sage_examples)
-        if self.chosen_program == 'lama':
-            self.label_gesamtbeispiele.setText(
-                _translate(
-                    "MainWindow",
-                    "Anzahl der Aufgaben: {0} (Typ1: {1} / Typ2: {2})  ".format(
-                        num_total, num_typ1, num_typ2
-                    ),
-                    None,
-                )
-            )
-        if self.chosen_program == 'cria':
-            self.label_gesamtbeispiele.setText(
-                _translate(
-                    "MainWindow",
-                    "Anzahl der Aufgaben: {0}".format(num_total),None))
+        # if self.chosen_program == 'lama':
+        #     self.label_gesamtbeispiele.setText(
+        #         _translate(
+        #             "MainWindow",
+        #             "Anzahl der Aufgaben: {0} (Typ1: {1} / Typ2: {2})  ".format(
+        #                 num_total, num_typ1, num_typ2
+        #             ),
+        #             None,
+        #         )
+        #     )
+        # if self.chosen_program == 'cria':
+        #     self.label_gesamtbeispiele.setText(
+        #         _translate(
+        #             "MainWindow",
+        #             "Anzahl der Aufgaben: {0}".format(num_total),None))
             
         self.sage_aufgabe_create(False)
 
