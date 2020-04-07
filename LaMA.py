@@ -4948,57 +4948,73 @@ class Ui_MainWindow(object):
             self.groupBox_beurteilungsra.hide()
             self.groupBox_notenschl.show()
 
-    def sage_aufgabe_add(self, typ, aufgabe):
+    def sage_aufgabe_add(self, aufgabe):
         if self.chosen_program=='lama':
-            # list_sage_examples_typ1 = []
-            # list_sage_examples_typ2 = []
-            if list_sage_examples==[]:
-                list_sage_examples.append(aufgabe)
+            list_sage_examples_typ1 = []
+            list_sage_examples_typ2 = []
 
+            for all in list_sage_examples:
+                typ=get_aufabentyp(all)
+                if typ==1:
+                    list_sage_examples_typ1.append(all)
+                if typ==2:
+                    list_sage_examples_typ2.append(all)
+
+            typ_aufgabe=get_aufabentyp(aufgabe)
             if aufgabe not in list_sage_examples:
-                length_of_list=len(list_sage_examples)
-                if get_aufabentyp(aufgabe)==1:
-                    for all in list_sage_examples:
-                        typ=get_aufabentyp(all)
-                        if typ==1 and list_sage_examples.index(all)+1==length_of_list:
-                            list_sage_examples.append(aufgabe) 
-                        if typ==2:
-                            index=list_sage_examples.index(all)
-                            list_sage_examples.insert(index,aufgabe)
-                            break 
+                if typ_aufgabe == 1:
+                    list_sage_examples_typ1.append(aufgabe)
+                if typ_aufgabe == 2:
+                    list_sage_examples_typ2.append(aufgabe)
 
-                elif get_aufabentyp(aufgabe)==2:
-                    list_sage_examples.append(aufgabe)
+            list_sage_examples.clear()
+            list_sage_examples.extend(list_sage_examples_typ1)
+            list_sage_examples.extend(list_sage_examples_typ2)
+            num_typ1 = len(list_sage_examples_typ1)
+            num_typ2 = len(list_sage_examples_typ2)
 
 
         if self.chosen_program =='cria':
             klasse = list_klassen[self.comboBox_klassen.currentIndex()]
             if "_L_" in aufgabe:
-                example = klasse + aufgabe
+                aufgabe = klasse + aufgabe
             else:
-                example = klasse + "_" + aufgabe
+                aufgabe = klasse + "_" + aufgabe
 
-            if example not in list_sage_examples:
-                list_sage_examples.append(example)
+            if aufgabe not in list_sage_examples:
+                list_sage_examples.append(aufgabe)
 
-        print(list_sage_examples)
+
         num_total = len(list_sage_examples)
-        # if self.chosen_program == 'lama':
-        #     self.label_gesamtbeispiele.setText(
-        #         _translate(
-        #             "MainWindow",
-        #             "Anzahl der Aufgaben: {0} (Typ1: {1} / Typ2: {2})  ".format(
-        #                 num_total, num_typ1, num_typ2
-        #             ),
-        #             None,
-        #         )
+
+
+        if self.chosen_program =='lama':
+            label = "Anzahl der Aufgaben: {0} (Typ1: {1} / Typ2: {2})".format(num_total, num_typ1, num_typ2)
+        if self.chosen_program == 'cria':
+            label = "Anzahl der Aufgaben: {0}".format(num_total)            
+
+
+        self.label_gesamtbeispiele.setText(
+            _translate(
+                "MainWindow",
+                label,
+                None,
+            )
+        )
+
+        # if self.chosen_program =='lama':
+        #     label = "Anzahl der Aufgaben: {0} (Typ1: {1} / Typ2: {2})".format(num_total, num_typ1, num_typ2)
+
+        # self.label_gesamtbeispiele.setText(
+        #     _translate(
+        #         "MainWindow",
+        #         "Anzahl der Aufgaben: {0} (Typ1: {1} / Typ2: {2})  ".format(
+        #             num_total, num_typ1, num_typ2
+        #         ),
+        #         None,
         #     )
-        # if self.chosen_program == 'cria':
-        #     self.label_gesamtbeispiele.setText(
-        #         _translate(
-        #             "MainWindow",
-        #             "Anzahl der Aufgaben: {0}".format(num_total),None))
-            
+        # )
+
         self.sage_aufgabe_create(False)
 
     def adapt_label_gesamtbeispiele(self):
@@ -5598,7 +5614,9 @@ class Ui_MainWindow(object):
                         if name == os.path.basename(path):
                             selected_path = path
 
+            
             f = open(selected_path, "r", encoding="utf8")
+
             content = f.read()
             f.close()
 
@@ -5862,9 +5880,7 @@ class Ui_MainWindow(object):
         self.adapt_choosing_list(list_mode)
 
     def nummer_clicked(self, item):
-        self.sage_aufgabe_add(
-            int(self.comboBox_at_sage.currentText()[-1]), item.text().replace("*E-", "")
-        )
+        self.sage_aufgabe_add(item.text().replace("*E-", ""))
 
     def nummer_clicked_fb(self, item):
         # print(item.text())
