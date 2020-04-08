@@ -84,7 +84,8 @@ dict_unterkapitel = config_loader(config_file, "dict_unterkapitel")
 
 dict_picture_path = {}
 set_chosen_gk = set([])
-list_sage_examples = []
+
+
 
 
 
@@ -185,11 +186,14 @@ def simplify_string(string):
     return string   
 
 class Ui_MainWindow(object):
-    global dict_picture_path, set_chosen_gk, list_sage_examples
+    global dict_picture_path, set_chosen_gk #, list_sage_examples#, dict_alle_aufgaben_sage
     def __init__(self):
+        self.dict_alle_aufgaben_sage = {}
+        self.list_alle_aufgaben_sage = []
         self.dict_sage_ausgleichspunkte_chosen = {}
         self.dict_chosen_topics = {}
         self.list_creator_topics = []
+        
 
         titlepage_save = os.path.join(path_programm, "Teildokument", "titlepage_save")
         titlepage=create_file_titlepage(titlepage_save)
@@ -2628,7 +2632,7 @@ class Ui_MainWindow(object):
         self.plainTextEdit.setPlainText(_translate("MainWindow", "", None))
 
     def reset_sage(self, program_changed=False):
-        global list_sage_examples
+        #global list_sage_examples
         try:
             if program_changed==False:
                 self.dict_list_input_examples
@@ -2687,7 +2691,7 @@ class Ui_MainWindow(object):
                         "copy_images": [],
                     },
                 }
-                for all in list_sage_examples:
+                for all in self.list_alle_aufgaben_sage:
                     if re.search("[A-Z]", all) == None:
                         bsp_string = all
                     else:
@@ -2699,7 +2703,7 @@ class Ui_MainWindow(object):
                         exec("self.groupBox_bsp_{}.setParent(None)".format(bsp_string))
                     except AttributeError:
                         pass
-                list_sage_examples = []
+                self.list_alle_aufgaben_sage = []
                 self.sage_aufgabe_create(False)
 
         except AttributeError:
@@ -4773,7 +4777,7 @@ class Ui_MainWindow(object):
     ################## Befehle LAMA SAGE################################
 
     def sage_load(self, external_file_loaded):
-        global list_sage_examples
+        #global list_sage_examples
         if external_file_loaded == False:
             try:
                 os.path.dirname(self.saved_file_path)
@@ -4796,15 +4800,15 @@ class Ui_MainWindow(object):
         self.neue_schularbeit_erstellen()
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
-        for example in list_sage_examples:
+        for example in self.list_alle_aufgaben_sage:
             self.btn_delete_pressed(example, True)
 
         with open(self.saved_file_path, "r", encoding="utf8") as loaded_file:
             self.dict_list_input_examples = json.load(loaded_file)
 
-        list_sage_examples = self.dict_list_input_examples["list_examples"]
+        self.list_alle_aufgaben_sage = self.dict_list_input_examples["list_examples"]
 
-        for all in list_sage_examples:
+        for all in self.list_alle_aufgaben_sage:
             if any(all in s for s in self.beispieldaten_dateipfad_1.values()):
                 pass
             else:
@@ -4818,7 +4822,7 @@ class Ui_MainWindow(object):
                     )
                     return
 
-        for all in list_sage_examples:
+        for all in self.list_alle_aufgaben_sage:
             if re.search("[A-Z]", all) == None:
                 bsp_string = all
             else:
@@ -5000,7 +5004,7 @@ class Ui_MainWindow(object):
             list_sage_examples_typ1 = []
             list_sage_examples_typ2 = []
 
-            for all in list_sage_examples:
+            for all in self.list_alle_aufgaben_sage:
                 typ=get_aufgabentyp(all)
                 if typ==1:
                     list_sage_examples_typ1.append(all)
@@ -5008,15 +5012,15 @@ class Ui_MainWindow(object):
                     list_sage_examples_typ2.append(all)
 
             typ_aufgabe=get_aufgabentyp(aufgabe)
-            if aufgabe not in list_sage_examples:
+            if aufgabe not in self.list_alle_aufgaben_sage:
                 if typ_aufgabe == 1:
                     list_sage_examples_typ1.append(aufgabe)
                 if typ_aufgabe == 2:
                     list_sage_examples_typ2.append(aufgabe)
 
-            list_sage_examples.clear()
-            list_sage_examples.extend(list_sage_examples_typ1)
-            list_sage_examples.extend(list_sage_examples_typ2)
+            self.list_alle_aufgaben_sage.clear()
+            self.list_alle_aufgaben_sage.extend(list_sage_examples_typ1)
+            self.list_alle_aufgaben_sage.extend(list_sage_examples_typ2)
             num_typ1 = len(list_sage_examples_typ1)
             num_typ2 = len(list_sage_examples_typ2)
 
@@ -5028,11 +5032,11 @@ class Ui_MainWindow(object):
             else:
                 aufgabe = klasse + "_" + aufgabe
 
-            if aufgabe not in list_sage_examples:
-                list_sage_examples.append(aufgabe)
+            if aufgabe not in self.list_alle_aufgaben_sage:
+                self.list_alle_aufgaben_sage.append(aufgabe)
 
 
-        num_total = len(list_sage_examples)
+        num_total = len(self.list_alle_aufgaben_sage)
 
 
         if self.chosen_program =='lama':
@@ -5056,18 +5060,18 @@ class Ui_MainWindow(object):
         list_sage_examples_typ1 = []
         list_sage_examples_typ2 = []
 
-        for all in list_sage_examples:
+        for all in self.list_alle_aufgaben_sage:
             if re.search("[A-Z]", all) == None:
                 list_sage_examples_typ2.append(all)
             else:
                 list_sage_examples_typ1.append(all)
 
-        list_sage_examples.clear()
-        list_sage_examples.extend(list_sage_examples_typ1)
-        list_sage_examples.extend(list_sage_examples_typ2)
+        self.list_alle_aufgaben_sage.clear()
+        self.list_alle_aufgaben_sage.extend(list_sage_examples_typ1)
+        self.list_alle_aufgaben_sage.extend(list_sage_examples_typ2)
         num_typ1 = len(list_sage_examples_typ1)
         num_typ2 = len(list_sage_examples_typ2)
-        num_total = len(list_sage_examples)
+        num_total = len(self.list_alle_aufgaben_sage)
 
         if self.chosen_program == 'lama':
             self.label_gesamtbeispiele.setText(
@@ -5103,10 +5107,10 @@ class Ui_MainWindow(object):
         list_input[1] = space_value.value()
 
         # if position!=0:
-        a, b = list_sage_examples.index(aufgabe), list_sage_examples.index(aufgabe) - 1
-        list_sage_examples[a], list_sage_examples[b] = (
-            list_sage_examples[b],
-            list_sage_examples[a],
+        a, b = self.list_alle_aufgaben_sage.index(aufgabe), self.list_alle_aufgaben_sage.index(aufgabe) - 1
+        self.list_alle_aufgaben_sage[a], self.list_alle_aufgaben_sage[b] = (
+            self.list_alle_aufgaben_sage[b],
+            self.list_alle_aufgaben_sage[a],
         )
 
         self.sage_aufgabe_create(False)
@@ -5122,7 +5126,7 @@ class Ui_MainWindow(object):
 
             typ = 1
 
-        # number=list_sage_examples.index(aufgabe)
+        # number=self.list_alle_aufgaben_sage.index(aufgabe)
         list_input = eval("self.list_input_{}".format(bsp_string))
         sb_value = eval("self.spinBox_pkt_{}".format(bsp_string))
         # print(list_input)
@@ -5133,10 +5137,10 @@ class Ui_MainWindow(object):
         list_input[1] = space_value.value()
 
         # if (typ==1 and position!=len(list_sage_examples_typ1)-1) or (typ==2 and position!=len(list_sage_examples_typ2)-1):
-        a, b = list_sage_examples.index(aufgabe), list_sage_examples.index(aufgabe) + 1
-        list_sage_examples[a], list_sage_examples[b] = (
-            list_sage_examples[b],
-            list_sage_examples[a],
+        a, b = self.list_alle_aufgaben_sage.index(aufgabe), self.list_alle_aufgaben_sage.index(aufgabe) + 1
+        self.list_alle_aufgaben_sage[a], self.list_alle_aufgaben_sage[b] = (
+            self.list_alle_aufgaben_sage[b],
+            self.list_alle_aufgaben_sage[a],
         )
         self.sage_aufgabe_create(False)
 
@@ -5194,7 +5198,7 @@ class Ui_MainWindow(object):
             spinBox_abstand.setValue(0)
 
         if file_loaded == False:
-            list_sage_examples.remove(aufgabe)
+            self.list_alle_aufgaben_sage.remove(aufgabe)
             self.adapt_label_gesamtbeispiele()
             self.sage_aufgabe_create(False)
 
@@ -5213,7 +5217,7 @@ class Ui_MainWindow(object):
         list_input[0] = punkte
 
         if self.chosen_program=='lama':
-            for all in list_sage_examples:
+            for all in self.list_alle_aufgaben_sage:
                 temp_all = all.replace("_L_", "")
                 if re.search("[A-Z]", temp_all) == None:
                     bsp_string = all
@@ -5222,7 +5226,7 @@ class Ui_MainWindow(object):
                 gesamtpunkte += punkte
 
         elif self.chosen_program=='cria':
-            for all in list_sage_examples:
+            for all in self.list_alle_aufgaben_sage:
                 list_input = eval("self.list_input_{}".format(all))
                 gesamtpunkte += list_input[0]            
 
@@ -5276,7 +5280,7 @@ class Ui_MainWindow(object):
 
 
     def update_default_pkt(self):
-        for all in list_sage_examples:
+        for all in self.list_alle_aufgaben_sage:
             if re.search("[A-Z]", all) == None:
                 pass
                 # ausgleich_pkt = eval('self.ausgleich_pkt_{}'.format(all))
@@ -5288,7 +5292,7 @@ class Ui_MainWindow(object):
                 self.beurteilungsraster_changed()
 
     def update_lists_examples(self):
-        for all in list_sage_examples:
+        for all in self.list_alle_aufgaben_sage:
             temp_all = all.replace("_L_", "")
             if re.search("[A-Z]", temp_all) == None:
                 bsp_string = all
@@ -5405,12 +5409,17 @@ class Ui_MainWindow(object):
 
 
 
-
-
         return new_groupbox
 
 
-
+    # def add_aufgabe_to_dict_alle_aufgaben_sage(self, aufgabe):
+    #     info=self.collect_all_infos_aufgabe(aufgabe)
+    #     dateipfad=self.get_dateipfad_aufgabe(aufgabe)
+    #     print(info)
+    #     print(dateipfad)
+    #     info.append(dateipfad)
+    #     print(info)
+    #     #self.dict_alle_aufgaben_sage[aufgabe]=list_info
 
     def collect_punkte_aufgabe(self, aufgabe):
         aufgabe=simplify_string(aufgabe)
@@ -5446,12 +5455,13 @@ class Ui_MainWindow(object):
                 if name == filename:
                     x = all.split(" - ")
                     titel = x[-2]
-                    typ_info=self.get_number_ausgleichspunkte(aufgabe)[0] # Ausgleichspunkte
+                    typ_info=self.get_number_ausgleichspunkte(aufgabe) # Ausgleichspunkte
 
+        dateipfad=self.get_dateipfad_aufgabe(aufgabe)
 
-        return [0, 0, titel, typ_info]
+        return [0, 0, titel, typ_info, dateipfad]
 
-    def collect_content(self, aufgabe):
+    def get_dateipfad_aufgabe(self, aufgabe):
         typ=get_aufgabentyp(aufgabe)
         if self.chosen_program=='cria':
             list_path = self.beispieldaten_dateipfad_cria.values()
@@ -5462,7 +5472,12 @@ class Ui_MainWindow(object):
         name= aufgabe + ".tex"
         for path in list_path:
             if name == os.path.basename(path):
-                selected_path = path
+                dateipfad = path
+
+        return dateipfad
+
+    def collect_content(self, aufgabe):
+        selected_path = self.get_dateipfad_aufgabe(aufgabe)  
 
         f = open(selected_path, "r", encoding="utf8")
         content = f.read()
@@ -5477,13 +5492,14 @@ class Ui_MainWindow(object):
 
             number_ausgleichspunkte = content.count("\\fbox{A}")
         
-            return [number_ausgleichspunkte, content]
+            return number_ausgleichspunkte
 
 
     def sage_aufgabe_create(self, aufgabe, aufgaben_verteilung, file_loaded=False): 
-        print(aufgabe)
-        print(aufgaben_verteilung)  
-        row_number=list_sage_examples.index(aufgabe)
+        print(self.dict_alle_aufgaben_sage)
+        print(self.list_alle_aufgaben_sage)
+        #list_alle_aufgaben_sage
+        row_number=self.list_alle_aufgaben_sage.index(aufgabe)
 
         aufgaben_infos=self.collect_all_infos_aufgabe(aufgabe)
         neue_aufgaben_box=self.create_neue_aufgaben_box(row_number+1, aufgabe, aufgaben_infos)
@@ -5506,7 +5522,7 @@ class Ui_MainWindow(object):
         # r = 0
         # scrollBar_position = self.scrollArea_chosen.verticalScrollBar().value()
 
-        # for all in list_sage_examples:
+        # for all in self.list_alle_aufgaben_sage:
         #     if re.search("[A-Z]", all) == None:
         #         bsp_string = all
         #     else:
@@ -5521,7 +5537,7 @@ class Ui_MainWindow(object):
         #     self.update_lists_examples()
 
         # if self.chosen_program=='lama':
-        #     for example in list_sage_examples:
+        #     for example in self.list_alle_aufgaben_sage:
         #         temp_example = example.replace("_L_", "")
         #         if re.search("[A-Z]", temp_example) == None:
         #             bsp_string = example
@@ -5543,7 +5559,7 @@ class Ui_MainWindow(object):
         #                 x = all.split(" - ")
         #                 list_input[2] = x[-2]
         # if self.chosen_program=='cria':
-        #     for bsp_string in list_sage_examples:
+        #     for bsp_string in self.list_alle_aufgaben_sage:
         #         if "_L_" in bsp_string:
         #             local_file = True
         #         else:
@@ -5577,7 +5593,7 @@ class Ui_MainWindow(object):
         #         self.list_copy_images = []
         # counter = 0
         # num_of_example = 1
-        # for all in list_sage_examples:
+        # for all in self.list_alle_aufgaben_sage:
         #     if self.chosen_program=='lama':
         #         temp_all = all.replace("_L_", "")
         #         if re.search("[A-Z]", temp_all) == None:
@@ -5612,7 +5628,7 @@ class Ui_MainWindow(object):
         #     # x.setMaximumSize(QtCore.QSize(16777215, 200))
         #     x.setObjectName("groupBox_bsp_{}".format(bsp_string))
         #     if self.chosen_program=='lama':
-        #         if (list_sage_examples.index(all) % 2) == 0 and typ == 1:
+        #         if (self.list_alle_aufgaben_sage.index(all) % 2) == 0 and typ == 1:
         #             x.setStyleSheet(_fromUtf8("background-color: rgb(255, 255, 255);"))
         #         if typ == 2:
         #             x.setStyleSheet(_fromUtf8("background-color: rgb(255, 212, 212);"))
@@ -5624,7 +5640,7 @@ class Ui_MainWindow(object):
         #             )
         #         )
         #     if self.chosen_program=='cria':
-        #         if (list_sage_examples.index(all) % 2) == 0:
+        #         if (self.list_alle_aufgaben_sage.index(all) % 2) == 0:
         #             x.setStyleSheet(_fromUtf8("background-color: rgb(255, 255, 255);"))                
         #         x.setTitle(
         #             _translate(
@@ -5740,7 +5756,7 @@ class Ui_MainWindow(object):
         #             QtWidgets.QStyle.SP_ArrowDown
         #         )
         #     )
-        #     if num_of_example == len(list_sage_examples):
+        #     if num_of_example == len(self.list_alle_aufgaben_sage):
         #         self.pushButton_down.setEnabled(False)
 
         #     if (self.chosen_program=='lama' and
@@ -5750,7 +5766,7 @@ class Ui_MainWindow(object):
         #     ):
         #         self.pushButton_down.setEnabled(False)
 
-        #     if self.chosen_program == 'cria' and num_of_example == len(list_sage_examples):
+        #     if self.chosen_program == 'cria' and num_of_example == len(self.list_alle_aufgaben_sage):
         #         self.pushButton_down.setEnabled(False)  
 
         #     self.pushButton_down.clicked.connect(partial(self.btn_down_pressed, all))
@@ -6090,8 +6106,10 @@ class Ui_MainWindow(object):
 
     def nummer_clicked(self, item):
         aufgabe=item.text().replace("*E-", "")
-        aufgaben_verteilung = self.sage_aufgabe_add(aufgabe)   
-        
+        aufgaben_verteilung = self.sage_aufgabe_add(aufgabe)
+        infos=self.collect_all_infos_aufgabe(aufgabe)  
+        self.dict_alle_aufgaben_sage[aufgabe]=infos
+      
         self.sage_aufgabe_create(aufgabe, aufgaben_verteilung) # aufgabe, aufgaben_verteilung
 
     def nummer_clicked_fb(self, item):
@@ -6469,10 +6487,10 @@ class Ui_MainWindow(object):
         self.pkt_typ1 = 0
         self.pkt_typ2 = 0
 
-        self.dict_list_input_examples["list_examples"] = list_sage_examples
+        self.dict_list_input_examples["list_examples"] = self.list_alle_aufgaben_sage
 
         ### include data for single examples ###
-        for all in list_sage_examples:
+        for all in self.list_alle_aufgaben_sage:
             temp_all = all.replace("_L_", "")
             if re.search("[A-Z]", temp_all) == None:
                 bsp_string = all
@@ -6558,18 +6576,18 @@ class Ui_MainWindow(object):
             for all in self.beispieldaten_dateipfad_1.values():
                 filename_all = os.path.basename(all)
                 name, extension = os.path.splitext(filename_all)
-                for files in list_sage_examples:
+                for files in self.list_alle_aufgaben_sage:
                     if files == name:
                         dict_gesammeltedateien[name] = all
 
             for all in self.beispieldaten_dateipfad_2.values():
                 filename_all = os.path.basename(all)
                 name, extension = os.path.splitext(filename_all)
-                for files in list_sage_examples:
+                for files in self.list_alle_aufgaben_sage:
                     if files == name:
                         dict_gesammeltedateien[name] = all
         elif self.chosen_program == 'cria':
-            for bsp_string in list_sage_examples:
+            for bsp_string in self.list_alle_aufgaben_sage:
                 if "_L_" in bsp_string:
                     local_file = True
                 else:
@@ -6907,8 +6925,8 @@ class Ui_MainWindow(object):
         list_chosen_examples = []
         # print(self.dict_list_input_examples)
         control_counter = 0
-        # print(list_sage_examples)
-        for all in list_sage_examples:
+        # print(self.list_alle_aufgaben_sage)
+        for all in self.list_alle_aufgaben_sage:
             if self.chosen_program == 'lama':
                 temp_all = all.replace("_L_", "")
                 if re.search("[A-Z]", temp_all) == None:
@@ -7097,7 +7115,7 @@ class Ui_MainWindow(object):
             sub_list.append(ending)
             list_chosen_examples.append(sub_list)
 
-            example = list_chosen_examples[list_sage_examples.index(all)]
+            example = list_chosen_examples[self.list_alle_aufgaben_sage.index(all)]
             try:
                 x, y = example[0].split("[")
                 gk, z = y.split("]")
