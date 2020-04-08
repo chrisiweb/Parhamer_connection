@@ -133,12 +133,21 @@ def create_new_label(parent, text):
 
     return new_label    
 
-def create_new_button(parent, text):
+def create_new_button(parent, text, command):
     new_button=QtWidgets.QPushButton(parent)
     new_button.setObjectName("{}".format(new_button))
     new_button.setText(_translate("MainWindow", text, None))
 
     return new_button
+
+def create_standard_button(parent, text, command, icon=''):
+    new_standard_button = create_new_button(parent, "", "")    
+    new_standard_button.setMaximumSize(QtCore.QSize(30, 30))
+    new_standard_button.setFocusPolicy(QtCore.Qt.ClickFocus)
+    new_standard_button.setStyleSheet(_fromUtf8("background-color: light gray"))
+    new_standard_button.setIcon(QtWidgets.QApplication.style().standardIcon(icon))
+
+    return new_standard_button
 
 
 def create_new_spinbox(parent):
@@ -5304,13 +5313,13 @@ class Ui_MainWindow(object):
             # print(list_input)
 
 
-    def create_neue_aufgaben_box(self, row_number, aufgabe, aufgaben_infos, aufgaben_verteilung):
+    def create_neue_aufgaben_box(self,number, aufgabe, aufgaben_infos):
         typ=get_aufabentyp(aufgabe)
         new_groupbox=create_new_groupbox(self.scrollAreaWidgetContents_2,
-        "{0}. Aufgabe (Typ{1})".format(row_number+1, typ))
+        "{0}. Aufgabe (Typ{1})".format(number, typ))
 
         if self.chosen_program=='lama':
-            if (row_number % 2) == 0 and typ == 1:
+            if (number % 2) == 1 and typ == 1:
                 new_groupbox.setStyleSheet(_fromUtf8("background-color: rgb(255, 255, 255);"))
             if typ == 2:
                 new_groupbox.setStyleSheet(_fromUtf8("background-color: rgb(255, 212, 212);"))
@@ -5355,30 +5364,29 @@ class Ui_MainWindow(object):
             label_ausgleichspkt = create_new_label(groupbox_pkt, 'AP: {}'.format(aufgaben_infos[3]))
             horizontalLayout_groupbox_pkt.addWidget(label_ausgleichspkt)
 
-        button_up = create_new_button(new_groupbox, "")
-        button_up.setMaximumSize(QtCore.QSize(30, 30))
-        button_up.setFocusPolicy(QtCore.Qt.ClickFocus)
-        button_up.setStyleSheet(_fromUtf8("background-color: light gray"))
-        button_up.setIcon(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.SP_ArrowUp))
+
+        button_up = create_standard_button(new_groupbox, "", "", QtWidgets.QStyle.SP_ArrowUp)
         gridLayout_gB.addWidget(button_up, 0, 3, 2, 1)
 
-
-        button_down = create_new_button(new_groupbox, "")
-        button_down.setMaximumSize(QtCore.QSize(30, 30))
-        button_down.setFocusPolicy(QtCore.Qt.ClickFocus)
-        button_down.setStyleSheet(_fromUtf8("background-color: light gray"))
-        button_down.setIcon(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.SP_ArrowDown))
+        button_down = create_standard_button(new_groupbox, "", "", QtWidgets.QStyle.SP_ArrowDown)
         gridLayout_gB.addWidget(button_down, 0, 4, 2, 1)
 
+        button_delete = create_standard_button(new_groupbox, "", "", QtWidgets.QStyle.SP_TitleBarCloseButton)
+        gridLayout_gB.addWidget(button_delete, 0, 5, 2, 1)
 
-        if row_number == 0:
-            button_up.setEnabled(False)
-        if row_number+1 == aufgaben_verteilung[0]:
-            button_down.setEnabled(False)
+        #     self.pushButton_delete.clicked.connect(
+        #         partial(self.btn_delete_pressed, all, False)
+        #     )
 
 
-        print(row_number)
-        print(aufgaben_verteilung)
+        # if row_number == 0:
+        #     button_up.setEnabled(False)
+        # if row_number+1 == aufgaben_verteilung[0]:
+        #     button_down.setEnabled(False)
+
+
+        # print(row_number)
+        # print(aufgaben_verteilung)
         
         # if row_number == 
 
@@ -5450,19 +5458,27 @@ class Ui_MainWindow(object):
             return number_ausgleichspunkte
 
 
-    def sage_aufgabe_create(self, aufgabe,aufgaben_verteilung, file_loaded=False):
+    def sage_aufgabe_create(self, aufgabe, aufgaben_verteilung, file_loaded=False): 
+        print(aufgabe)
         print(aufgaben_verteilung)  
         row_number=list_sage_examples.index(aufgabe)
 
         aufgaben_infos=self.collect_all_infos_aufgabe(aufgabe)
-        neue_aufgaben_box=self.create_neue_aufgaben_box(row_number, aufgabe, aufgaben_infos, aufgaben_verteilung)
+        neue_aufgaben_box=self.create_neue_aufgaben_box(row_number+1, aufgabe, aufgaben_infos)
               
         self.gridLayout_8.addWidget(neue_aufgaben_box, row_number, 0, 1, 2, QtCore.Qt.AlignTop)
 
+        try:
+            self.gridLayout_8.removeItem(self.spacerItem)
+        except AttributeError:
+            pass
 
+        self.spacerItem = QtWidgets.QSpacerItem(
+            20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
+        self.gridLayout_8.addItem(self.spacerItem, row_number + 1, 0, 1, 2)
 
-
-
+    ##### sage_aufgabe_create(self, file_loaded=False) (working)
         # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         # self.num_ausgleichspkt_gesamt = 0
         # r = 0
@@ -5623,9 +5639,6 @@ class Ui_MainWindow(object):
         #         if typ == 2:
         #             label_aufgabe.setText(_translate("MainWindow", "{0}".format(all), None))
         #     if self.chosen_program=='cria':
-        #         # print(bsp_string)
-        #         # print(klasse)
-        #         # print(example)
         #         if "_L_" in bsp_string:
         #             label_aufgabe.setText(
         #             _translate("MainWindow", "{0}. Klasse - {1}".format(klasse[1], example), None)
@@ -5764,16 +5777,16 @@ class Ui_MainWindow(object):
         #     self.gridLayout_gB.addWidget(self.groupBox_abstand, 0, 2, 2, 1)
 
 
-        #     # if self.chosen_program=='lama':
-        #     #     self.pushButton_ausgleich = QtWidgets.QPushButton(x)
-        #     #     self.pushButton_ausgleich.setObjectName("pushButton_ausgleich")
-        #     #     self.pushButton_ausgleich.setStyleSheet(
-        #     #         _fromUtf8("background-color: light gray")
-        #     #     )
-        #     #     # self.pushButton_delete.setStyleSheet(_fromUtf8("background-color: rgb(255, 153, 153);"))
-        #     #     self.pushButton_ausgleich.setMaximumSize(QtCore.QSize(220, 30))
-        #     #     self.pushButton_ausgleich.setText("Ausgleichspunkte anpassen...")
-        #     #     self.pushButton_ausgleich.setFocusPolicy(QtCore.Qt.ClickFocus)
+        #     if self.chosen_program=='lama':
+        #         self.pushButton_ausgleich = QtWidgets.QPushButton(x)
+        #         self.pushButton_ausgleich.setObjectName("pushButton_ausgleich")
+        #         self.pushButton_ausgleich.setStyleSheet(
+        #             _fromUtf8("background-color: light gray")
+        #         )
+        #         # self.pushButton_delete.setStyleSheet(_fromUtf8("background-color: rgb(255, 153, 153);"))
+        #         self.pushButton_ausgleich.setMaximumSize(QtCore.QSize(220, 30))
+        #         self.pushButton_ausgleich.setText("Ausgleichspunkte anpassen...")
+        #         self.pushButton_ausgleich.setFocusPolicy(QtCore.Qt.ClickFocus)
 
         #     ##### GET included pictures ###
         #     if self.chosen_program =='lama':
@@ -5808,15 +5821,6 @@ class Ui_MainWindow(object):
         #             self.list_copy_images.append(image)
                     
         #     if self.chosen_program=='lama' and typ == 2:
-        #         self.pushButton_ausgleich = QtWidgets.QPushButton(x)
-        #         self.pushButton_ausgleich.setObjectName("pushButton_ausgleich")
-        #         self.pushButton_ausgleich.setStyleSheet(
-        #             _fromUtf8("background-color: light gray")
-        #         )
-        #         # self.pushButton_delete.setStyleSheet(_fromUtf8("background-color: rgb(255, 153, 153);"))
-        #         self.pushButton_ausgleich.setMaximumSize(QtCore.QSize(220, 30))
-        #         self.pushButton_ausgleich.setText("Ausgleichspunkte anpassen...")
-        #         self.pushButton_ausgleich.setFocusPolicy(QtCore.Qt.ClickFocus)
         #         try:
         #             num_ausgleichspkt = int(list_input[3])
         #         except ValueError:
@@ -5843,22 +5847,22 @@ class Ui_MainWindow(object):
         #         )
 
         #         self.gridLayout_gB.addWidget(self.pushButton_ausgleich, 0, 2, 2, 1)
-        #     # if self.chosen_program=='cria' or typ == 1:
-        #     #     self.pushButton_ausgleich.hide()
+        #     if self.chosen_program=='cria' or typ == 1:
+        #         self.pushButton_ausgleich.hide()
 
         #     MainWindow.setTabOrder(spinBox_pkt, spinBox_abstand)
 
-        try:
-            self.gridLayout_8.removeItem(self.spacerItem)
-        except AttributeError:
-            pass
+        #     try:
+        #         self.gridLayout_8.removeItem(self.spacerItem)
+        #     except AttributeError:
+        #         pass
 
-    #     self.gridLayout_8.addWidget(x, r, 0, 1, 2, QtCore.Qt.AlignTop)
+        #     self.gridLayout_8.addWidget(x, r, 0, 1, 2, QtCore.Qt.AlignTop)
 
-        self.spacerItem = QtWidgets.QSpacerItem(
-            20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
-        )
-        self.gridLayout_8.addItem(self.spacerItem, row_number + 1, 0, 1, 2)
+        #     self.spacerItem = QtWidgets.QSpacerItem(
+        #         20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        #     )
+        #     self.gridLayout_8.addItem(self.spacerItem, r + 1, 0, 1, 2)
 
         #     r += 2
 
@@ -6066,7 +6070,7 @@ class Ui_MainWindow(object):
         aufgabe=item.text().replace("*E-", "")
         aufgaben_verteilung = self.sage_aufgabe_add(aufgabe)   
         
-        self.sage_aufgabe_create(aufgabe, aufgaben_verteilung)
+        self.sage_aufgabe_create(aufgabe, aufgaben_verteilung) # aufgabe, aufgaben_verteilung
 
     def nummer_clicked_fb(self, item):
         # print(item.text())
