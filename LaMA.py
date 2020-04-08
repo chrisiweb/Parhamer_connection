@@ -3591,9 +3591,9 @@ class Ui_MainWindow(object):
             # name, ext =os.path.splitext(tail)
             if self.creator_mode == "admin" and self.cb_save.isChecked() == True:
                 str_image_path = "../_database_inoffiziell/Bilder/"
-            if self.creator_mode == "admin" and self.cb_save.isChecked() == False:
+            elif self.creator_mode == "admin" and self.cb_save.isChecked() == False:
                 str_image_path = "../_database/Bilder/"
-            if local_save == True:
+            elif local_save == True:
                 str_image_path = "../Lokaler_Ordner/Bilder/"
             else:
                 str_image_path = "../Beispieleinreichung/Bilder/"
