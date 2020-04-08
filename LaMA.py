@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__ = "v1.9.0"
+__version__ = "v1.9.1"
 __lastupdate__ = "04/20"
 ####################
 
@@ -109,7 +109,7 @@ def combine_all_lists_to_one(list_of_lists):
         combined_list=combined_list+list
     return combined_list 
 
-def get_aufabentyp(aufgabe):
+def get_aufgabentyp(aufgabe):
     if re.search("[A-Z]", aufgabe) == None:
         typ=2
     else:
@@ -137,11 +137,12 @@ def create_new_button(parent, text, command):
     new_button=QtWidgets.QPushButton(parent)
     new_button.setObjectName("{}".format(new_button))
     new_button.setText(_translate("MainWindow", text, None))
+    new_button.clicked.connect(command)
 
     return new_button
 
 def create_standard_button(parent, text, command, icon=''):
-    new_standard_button = create_new_button(parent, "", "")    
+    new_standard_button = create_new_button(parent, "", command)    
     new_standard_button.setMaximumSize(QtCore.QSize(30, 30))
     new_standard_button.setFocusPolicy(QtCore.Qt.ClickFocus)
     new_standard_button.setStyleSheet(_fromUtf8("background-color: light gray"))
@@ -149,6 +150,8 @@ def create_standard_button(parent, text, command, icon=''):
 
     return new_standard_button
 
+def still_to_define():
+    print("still to define")
 
 def create_new_spinbox(parent):
     new_spinbox = SpinBox_noWheel(parent)
@@ -4998,13 +5001,13 @@ class Ui_MainWindow(object):
             list_sage_examples_typ2 = []
 
             for all in list_sage_examples:
-                typ=get_aufabentyp(all)
+                typ=get_aufgabentyp(all)
                 if typ==1:
                     list_sage_examples_typ1.append(all)
                 if typ==2:
                     list_sage_examples_typ2.append(all)
 
-            typ_aufgabe=get_aufabentyp(aufgabe)
+            typ_aufgabe=get_aufgabentyp(aufgabe)
             if aufgabe not in list_sage_examples:
                 if typ_aufgabe == 1:
                     list_sage_examples_typ1.append(aufgabe)
@@ -5314,7 +5317,7 @@ class Ui_MainWindow(object):
 
 
     def create_neue_aufgaben_box(self,number, aufgabe, aufgaben_infos):
-        typ=get_aufabentyp(aufgabe)
+        typ=get_aufgabentyp(aufgabe)
         new_groupbox=create_new_groupbox(self.scrollAreaWidgetContents_2,
         "{0}. Aufgabe (Typ{1})".format(number, typ))
 
@@ -5346,7 +5349,7 @@ class Ui_MainWindow(object):
 
 
         groupbox_pkt = create_new_groupbox(new_groupbox, "Punkte")
-        gridLayout_gB.addWidget(groupbox_pkt, 0, 1, 2, 1)
+        gridLayout_gB.addWidget(groupbox_pkt, 0, 1, 2, 1,QtCore.Qt.AlignRight)
 
 
         horizontalLayout_groupbox_pkt = QtWidgets.QHBoxLayout(groupbox_pkt)
@@ -5365,35 +5368,44 @@ class Ui_MainWindow(object):
             horizontalLayout_groupbox_pkt.addWidget(label_ausgleichspkt)
 
 
-        button_up = create_standard_button(new_groupbox, "", "", QtWidgets.QStyle.SP_ArrowUp)
+        button_up = create_standard_button(new_groupbox, "", still_to_define, QtWidgets.QStyle.SP_ArrowUp)
         gridLayout_gB.addWidget(button_up, 0, 3, 2, 1)
 
-        button_down = create_standard_button(new_groupbox, "", "", QtWidgets.QStyle.SP_ArrowDown)
+        button_down = create_standard_button(new_groupbox, "", still_to_define, QtWidgets.QStyle.SP_ArrowDown)
         gridLayout_gB.addWidget(button_down, 0, 4, 2, 1)
 
-        button_delete = create_standard_button(new_groupbox, "", "", QtWidgets.QStyle.SP_TitleBarCloseButton)
+        button_delete = create_standard_button(new_groupbox, "", still_to_define, QtWidgets.QStyle.SP_TitleBarCloseButton)
         gridLayout_gB.addWidget(button_delete, 0, 5, 2, 1)
 
-        #     self.pushButton_delete.clicked.connect(
-        #         partial(self.btn_delete_pressed, all, False)
-        #     )
 
-
-        # if row_number == 0:
-        #     button_up.setEnabled(False)
-        # if row_number+1 == aufgaben_verteilung[0]:
-        #     button_down.setEnabled(False)
-
-
-        # print(row_number)
-        # print(aufgaben_verteilung)
+        groupbox_abstand = create_new_groupbox(new_groupbox, "Abstand (cm)")
+        groupbox_abstand.setToolTip("Neue Seite: Abstand=99")
+        groupbox_abstand.setMaximumSize(QtCore.QSize(100, 16777215))
+        gridLayout_gB.addWidget(groupbox_abstand, 0, 2, 2, 1)
         
-        # if row_number == 
+        verticalLayout_abstand = QtWidgets.QVBoxLayout(groupbox_abstand)
+        verticalLayout_abstand.setObjectName("verticalLayout_abstand")
 
-            # if self.chosen_program=='lama' and typ == 2 and counter == 0:
-            #     self.pushButton_up.setEnabled(False)
-            #     counter += 1
-            # self.pushButton_up.clicked.connect(partial(self.btn_up_pressed, all))
+        if self.chosen_program=='lama' and typ == 2:
+            groupbox_abstand.hide()
+
+        
+        spinbox_abstand = create_new_spinbox(groupbox_abstand)
+        verticalLayout_abstand.addWidget(spinbox_abstand)
+
+        
+        if typ==2:
+            content=self.collect_content(aufgabe)
+            pushbutton_ausgleich = create_new_button(new_groupbox,"Ausgleichspunkte anpassen...",
+            partial(self.pushButton_ausgleich_pressed, aufgabe, content)
+            )
+            pushbutton_ausgleich.setStyleSheet(_fromUtf8("background-color: light gray"))
+            pushbutton_ausgleich.setMaximumSize(QtCore.QSize(220, 30))
+            gridLayout_gB.addWidget(pushbutton_ausgleich, 0, 2, 2, 1)
+
+
+
+
 
         return new_groupbox
 
@@ -5414,7 +5426,7 @@ class Ui_MainWindow(object):
 
 
     def collect_all_infos_aufgabe(self, aufgabe):
-        typ=get_aufabentyp(aufgabe)
+        typ=get_aufgabentyp(aufgabe)
         name = aufgabe + ".tex"
 
         # punkte=self.collect_punkte_aufgabe(aufgabe)
@@ -5434,28 +5446,38 @@ class Ui_MainWindow(object):
                 if name == filename:
                     x = all.split(" - ")
                     titel = x[-2]
-                    typ_info=self.get_number_ausgleichspunkte(aufgabe) # Ausgleichspunkte
+                    typ_info=self.get_number_ausgleichspunkte(aufgabe)[0] # Ausgleichspunkte
 
 
         return [0, 0, titel, typ_info]
 
+    def collect_content(self, aufgabe):
+        typ=get_aufgabentyp(aufgabe)
+        if self.chosen_program=='cria':
+            list_path = self.beispieldaten_dateipfad_cria.values()
+        elif typ==1:
+            list_path = self.beispieldaten_dateipfad_1.values()
+        elif typ==2:
+            list_path = self.beispieldaten_dateipfad_2.values()        
+        name= aufgabe + ".tex"
+        for path in list_path:
+            if name == os.path.basename(path):
+                selected_path = path
+
+        f = open(selected_path, "r", encoding="utf8")
+        content = f.read()
+        f.close() 
+
+        return content       
 
     def get_number_ausgleichspunkte(self, aufgabe):
-        typ=get_aufabentyp(aufgabe)
+        typ=get_aufgabentyp(aufgabe)
         if typ==2:
-            list_path = self.beispieldaten_dateipfad_2.values()
-            name= aufgabe + ".tex"
-            for path in list_path:
-                if name == os.path.basename(path):
-                    selected_path = path
-
-            f = open(selected_path, "r", encoding="utf8")
-            content = f.read()
-            f.close()
+            content=self.collect_content(aufgabe)
 
             number_ausgleichspunkte = content.count("\\fbox{A}")
         
-            return number_ausgleichspunkte
+            return [number_ausgleichspunkte, content]
 
 
     def sage_aufgabe_create(self, aufgabe, aufgaben_verteilung, file_loaded=False): 
@@ -5879,7 +5901,7 @@ class Ui_MainWindow(object):
         # self.lineEdit_number.setFocus()
         # QtWidgets.QApplication.restoreOverrideCursor()
 
-    def pushButton_ausgleich_pressed(self, bsp_name, selected_typ2_path, content):
+    def pushButton_ausgleich_pressed(self, bsp_name, content):
 
         x = re.split("Aufgabenstellung:}|Lösungserwartung:}", content)
         str_file = x[1].replace("\t", "")
