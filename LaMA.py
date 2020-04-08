@@ -5505,7 +5505,7 @@ class Ui_MainWindow(object):
         # print(self.dict_alle_aufgaben_sage)
         # print(self.list_alle_aufgaben_sage)
         # print(aufgaben_verteilung)
-        #list_alle_aufgaben_sage
+        print(self.list_alle_aufgaben_sage)
         try:
             self.gridLayout_8.removeItem(self.spacerItem)
         except AttributeError:
@@ -5515,11 +5515,19 @@ class Ui_MainWindow(object):
 
         # if index==2:
          ###delete item with specific index in grid       
-        # self.gridLayout_8.itemAt(index-1).widget().setParent(None) 
+        #self.gridLayout_8.itemAt(index).widget().setParent(None) 
 
-        aufgaben_infos=self.collect_all_infos_aufgabe(aufgabe)
-        neue_aufgaben_box=self.create_neue_aufgaben_box(index+1, aufgabe, aufgaben_infos, aufgaben_verteilung)            
-        self.gridLayout_8.addWidget(neue_aufgaben_box, index, 0, 1, 2)
+        for item in self.list_alle_aufgaben_sage[index:]:
+            try:
+                self.gridLayout_8.itemAt(index).widget().setParent(None)
+            except AttributeError:
+                pass
+            index_item = self.list_alle_aufgaben_sage.index(item) 
+            aufgaben_infos = self.collect_all_infos_aufgabe(item)
+            print(' Reihe: ', index_item+1, 'Aufgabe:', item)  
+            neue_aufgaben_box=self.create_neue_aufgaben_box(index_item+1, item, aufgaben_infos, aufgaben_verteilung)            
+            self.gridLayout_8.addWidget(neue_aufgaben_box, index_item, 0, 1, 2)
+
 
         # for item in self.list_alle_aufgaben_sage[index-1:]:
         #     aufgaben_infos=self.collect_all_infos_aufgabe(aufgabe)
