@@ -5320,7 +5320,7 @@ class Ui_MainWindow(object):
             # print(list_input)
 
 
-    def create_neue_aufgaben_box(self,number, aufgabe, aufgaben_infos):
+    def create_neue_aufgaben_box(self,number, aufgabe, aufgaben_infos, aufgaben_verteilung):
         typ=get_aufgabentyp(aufgabe)
         new_groupbox=create_new_groupbox(self.scrollAreaWidgetContents_2,
         "{0}. Aufgabe (Typ{1})".format(number, typ))
@@ -5374,9 +5374,15 @@ class Ui_MainWindow(object):
 
         button_up = create_standard_button(new_groupbox, "", still_to_define, QtWidgets.QStyle.SP_ArrowUp)
         gridLayout_gB.addWidget(button_up, 0, 3, 2, 1)
+        if typ==1 and number==1:
+            button_up.setEnabled(False)
+
 
         button_down = create_standard_button(new_groupbox, "", still_to_define, QtWidgets.QStyle.SP_ArrowDown)
         gridLayout_gB.addWidget(button_down, 0, 4, 2, 1)
+
+        if typ==1 and number==aufgaben_verteilung[0]:
+            button_down.setEnabled(False)
 
         button_delete = create_standard_button(new_groupbox, "", still_to_define, QtWidgets.QStyle.SP_TitleBarCloseButton)
         gridLayout_gB.addWidget(button_delete, 0, 5, 2, 1)
@@ -5496,25 +5502,40 @@ class Ui_MainWindow(object):
 
 
     def sage_aufgabe_create(self, aufgabe, aufgaben_verteilung, file_loaded=False): 
-        print(self.dict_alle_aufgaben_sage)
-        print(self.list_alle_aufgaben_sage)
+        # print(self.dict_alle_aufgaben_sage)
+        # print(self.list_alle_aufgaben_sage)
+        # print(aufgaben_verteilung)
         #list_alle_aufgaben_sage
-        row_number=self.list_alle_aufgaben_sage.index(aufgabe)
-
-        aufgaben_infos=self.collect_all_infos_aufgabe(aufgabe)
-        neue_aufgaben_box=self.create_neue_aufgaben_box(row_number+1, aufgabe, aufgaben_infos)
-              
-        self.gridLayout_8.addWidget(neue_aufgaben_box, row_number, 0, 1, 2, QtCore.Qt.AlignTop)
-
         try:
             self.gridLayout_8.removeItem(self.spacerItem)
         except AttributeError:
             pass
 
+        index=self.list_alle_aufgaben_sage.index(aufgabe)
+
+        # if index==2:
+         ###delete item with specific index in grid       
+        # self.gridLayout_8.itemAt(index-1).widget().setParent(None) 
+
+        aufgaben_infos=self.collect_all_infos_aufgabe(aufgabe)
+        neue_aufgaben_box=self.create_neue_aufgaben_box(index+1, aufgabe, aufgaben_infos, aufgaben_verteilung)            
+        self.gridLayout_8.addWidget(neue_aufgaben_box, index, 0, 1, 2)
+
+        # for item in self.list_alle_aufgaben_sage[index-1:]:
+        #     aufgaben_infos=self.collect_all_infos_aufgabe(aufgabe)
+        #     neue_aufgaben_box=self.create_neue_aufgaben_box(index, item, aufgaben_infos, aufgaben_verteilung)            
+        #     self.gridLayout_8.addWidget(neue_aufgaben_box, index-1, 0, 1, 2, QtCore.Qt.AlignTop)
+        #     index+=1
+
+        ###delete item with specific index in grid
+        # if index==2:
+        #     self.gridLayout_8.itemAt(1).widget().setParent(None) 
+
+
         self.spacerItem = QtWidgets.QSpacerItem(
             20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
         )
-        self.gridLayout_8.addItem(self.spacerItem, row_number + 1, 0, 1, 2)
+        self.gridLayout_8.addItem(self.spacerItem, index + 1, 0, 1, 2)
 
     ##### sage_aufgabe_create(self, file_loaded=False) (working)
         # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
