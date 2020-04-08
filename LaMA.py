@@ -5515,18 +5515,22 @@ class Ui_MainWindow(object):
 
         # if index==2:
          ###delete item with specific index in grid       
-        #self.gridLayout_8.itemAt(index).widget().setParent(None) 
+        #self.gridLayout_8.itemAt(index).widget().setParent(None)
+        #self.gridLayout_8.count() 
+        # for i in reversed(range(index+1,len(self.list_alle_aufgaben_sage))):
+        #     print(i)
+        #     self.gridLayout_8.itemAt(i).widget().setParent(None)
+
+
 
         for item in self.list_alle_aufgaben_sage[index:]:
-            try:
-                self.gridLayout_8.itemAt(index).widget().setParent(None)
-            except AttributeError:
-                pass
-            index_item = self.list_alle_aufgaben_sage.index(item) 
+            index_item = self.list_alle_aufgaben_sage.index(item)
             aufgaben_infos = self.collect_all_infos_aufgabe(item)
-            print(' Reihe: ', index_item+1, 'Aufgabe:', item)  
-            neue_aufgaben_box=self.create_neue_aufgaben_box(index_item+1, item, aufgaben_infos, aufgaben_verteilung)            
-            self.gridLayout_8.addWidget(neue_aufgaben_box, index_item, 0, 1, 2)
+            print(' Reihe: ', index_item+1, 'Aufgabe:', item)
+              
+            # neue_aufgaben_box=self.create_neue_aufgaben_box(index_item+1, item, aufgaben_infos, aufgaben_verteilung)            
+            # self.gridLayout_8.addWidget(neue_aufgaben_box, index_item, 0, 1, 1)
+            # index_item+1
 
 
         # for item in self.list_alle_aufgaben_sage[index-1:]:
@@ -5543,7 +5547,7 @@ class Ui_MainWindow(object):
         self.spacerItem = QtWidgets.QSpacerItem(
             20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
         )
-        self.gridLayout_8.addItem(self.spacerItem, index + 1, 0, 1, 2)
+        self.gridLayout_8.addItem(self.spacerItem, index + 1, 0, 1, 1)
 
     ##### sage_aufgabe_create(self, file_loaded=False) (working)
         # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
