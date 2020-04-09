@@ -5376,13 +5376,17 @@ class Ui_MainWindow(object):
         gridLayout_gB.addWidget(button_up, 0, 3, 2, 1)
         if typ==1 and number==1:
             button_up.setEnabled(False)
-
+        if typ==2 and number==aufgaben_verteilung[0]+1:
+            button_up.setEnabled(False)
 
         button_down = create_standard_button(new_groupbox, "", still_to_define, QtWidgets.QStyle.SP_ArrowDown)
         gridLayout_gB.addWidget(button_down, 0, 4, 2, 1)
 
         if typ==1 and number==aufgaben_verteilung[0]:
             button_down.setEnabled(False)
+        if typ==2 and number==len(self.list_alle_aufgaben_sage):
+            button_down.setEnabled(False)
+
 
         button_delete = create_standard_button(new_groupbox, "", still_to_define, QtWidgets.QStyle.SP_TitleBarCloseButton)
         gridLayout_gB.addWidget(button_delete, 0, 5, 2, 1)
@@ -5505,7 +5509,7 @@ class Ui_MainWindow(object):
         # print(self.dict_alle_aufgaben_sage)
         # print(self.list_alle_aufgaben_sage)
         # print(aufgaben_verteilung)
-        print(self.list_alle_aufgaben_sage)
+        # print(self.list_alle_aufgaben_sage)
         try:
             self.gridLayout_8.removeItem(self.spacerItem)
         except AttributeError:
@@ -5513,13 +5517,17 @@ class Ui_MainWindow(object):
 
         index=self.list_alle_aufgaben_sage.index(aufgabe)
 
-
-        for i in reversed(range(index, self.gridLayout_8.count()+1)):
-            try:
-                self.gridLayout_8.itemAt(i).widget().setParent(None)
-            except AttributeError:
-                print('error2')
-                pass
+        if index==0:
+            start_value=index
+            
+        else:
+            start_value=index-1
+            for i in reversed(range(index-1, self.gridLayout_8.count()+1)):
+                try:
+                    self.gridLayout_8.itemAt(i).widget().setParent(None)
+                except AttributeError:
+                    print('error2')
+                    pass
 
 
         #     if index>=1:
@@ -5551,7 +5559,7 @@ class Ui_MainWindow(object):
 
         # print(self.gridLayout_8.indexOf(neue_aufgaben_box))
 
-        for item in self.list_alle_aufgaben_sage[index:]:
+        for item in self.list_alle_aufgaben_sage[start_value:]:
             index_item = self.list_alle_aufgaben_sage.index(item)
             item_infos = self.collect_all_infos_aufgabe(item)             
             neue_aufgaben_box=self.create_neue_aufgaben_box(index_item+1, item, item_infos, aufgaben_verteilung)            
