@@ -5088,59 +5088,78 @@ class Ui_MainWindow(object):
                     "Anzahl der Aufgaben: {0}".format(num_total),None))
 
     def btn_up_pressed(self, aufgabe):
-        self.update_lists_examples()
-        temp_aufgabe = aufgabe.replace("_L_", "")
-        if re.search("[A-Z]", temp_aufgabe) == None:
-            bsp_string = aufgabe
-            typ = 2
-        else:
-            bsp_string = aufgabe.replace(" ", "").replace(".", "").replace("-", "_")
-            typ = 1
+        print('button up', aufgabe)
 
-        list_input = eval("self.list_input_{}".format(bsp_string))
-        sb_value = eval("self.spinBox_pkt_{}".format(bsp_string))
-        list_input[0] = sb_value.value()
-
-        space_value = eval("self.spinBox_abstand_{}".format(bsp_string))
-        list_input[1] = space_value.value()
-
-        # if position!=0:
         a, b = self.list_alle_aufgaben_sage.index(aufgabe), self.list_alle_aufgaben_sage.index(aufgabe) - 1
         self.list_alle_aufgaben_sage[a], self.list_alle_aufgaben_sage[b] = (
             self.list_alle_aufgaben_sage[b],
             self.list_alle_aufgaben_sage[a],
         )
 
-        self.build_aufgaben_schularbeit(False)
+        self.build_aufgaben_schularbeit(aufgabe)
+        # self.update_lists_examples()
+        # temp_aufgabe = aufgabe.replace("_L_", "")
+        # if re.search("[A-Z]", temp_aufgabe) == None:
+        #     bsp_string = aufgabe
+        #     typ = 2
+        # else:
+        #     bsp_string = aufgabe.replace(" ", "").replace(".", "").replace("-", "_")
+        #     typ = 1
+
+        # list_input = eval("self.list_input_{}".format(bsp_string))
+        # sb_value = eval("self.spinBox_pkt_{}".format(bsp_string))
+        # list_input[0] = sb_value.value()
+
+        # space_value = eval("self.spinBox_abstand_{}".format(bsp_string))
+        # list_input[1] = space_value.value()
+
+        # # if position!=0:
+        # a, b = self.list_alle_aufgaben_sage.index(aufgabe), self.list_alle_aufgaben_sage.index(aufgabe) - 1
+        # self.list_alle_aufgaben_sage[a], self.list_alle_aufgaben_sage[b] = (
+        #     self.list_alle_aufgaben_sage[b],
+        #     self.list_alle_aufgaben_sage[a],
+        # )
+
+        # self.build_aufgaben_schularbeit(False)
 
     def btn_down_pressed(self, aufgabe):
-        self.update_lists_examples()
-        temp_aufgabe = aufgabe.replace("_L_", "")
-        if re.search("[A-Z]", temp_aufgabe) == None:
-            bsp_string = aufgabe
-            typ = 2
-        else:
-            bsp_string = aufgabe.replace(" ", "").replace(".", "").replace("-", "_")
+        print('button up', aufgabe)
 
-            typ = 1
-
-        # number=self.list_alle_aufgaben_sage.index(aufgabe)
-        list_input = eval("self.list_input_{}".format(bsp_string))
-        sb_value = eval("self.spinBox_pkt_{}".format(bsp_string))
-        # print(list_input)
-        # print(sb_value.value())
-        list_input[0] = sb_value.value()
-
-        space_value = eval("self.spinBox_abstand_{}".format(bsp_string))
-        list_input[1] = space_value.value()
-
-        # if (typ==1 and position!=len(list_sage_examples_typ1)-1) or (typ==2 and position!=len(list_sage_examples_typ2)-1):
         a, b = self.list_alle_aufgaben_sage.index(aufgabe), self.list_alle_aufgaben_sage.index(aufgabe) + 1
         self.list_alle_aufgaben_sage[a], self.list_alle_aufgaben_sage[b] = (
             self.list_alle_aufgaben_sage[b],
             self.list_alle_aufgaben_sage[a],
-        )
-        self.build_aufgaben_schularbeit(False)
+        )  
+
+        self.build_aufgaben_schularbeit(aufgabe)
+
+        # self.update_lists_examples()
+        # temp_aufgabe = aufgabe.replace("_L_", "")
+        # if re.search("[A-Z]", temp_aufgabe) == None:
+        #     bsp_string = aufgabe
+        #     typ = 2
+        # else:
+        #     bsp_string = aufgabe.replace(" ", "").replace(".", "").replace("-", "_")
+
+        #     typ = 1
+
+        # # number=self.list_alle_aufgaben_sage.index(aufgabe)
+        # list_input = eval("self.list_input_{}".format(bsp_string))
+        # sb_value = eval("self.spinBox_pkt_{}".format(bsp_string))
+        # # print(list_input)
+        # # print(sb_value.value())
+        # list_input[0] = sb_value.value()
+
+        # space_value = eval("self.spinBox_abstand_{}".format(bsp_string))
+        # list_input[1] = space_value.value()
+
+        # # if (typ==1 and position!=len(list_sage_examples_typ1)-1) or (typ==2 and position!=len(list_sage_examples_typ2)-1):
+        # a, b = self.list_alle_aufgaben_sage.index(aufgabe), self.list_alle_aufgaben_sage.index(aufgabe) + 1
+        # self.list_alle_aufgaben_sage[a], self.list_alle_aufgaben_sage[b] = (
+        #     self.list_alle_aufgaben_sage[b],
+        #     self.list_alle_aufgaben_sage[a],
+        # )
+        # self.build_aufgaben_schularbeit(False)
 
     def btn_delete_pressed(self, aufgabe):
 
@@ -5327,7 +5346,9 @@ class Ui_MainWindow(object):
             horizontalLayout_groupbox_pkt.addWidget(label_ausgleichspkt)
 
 
-        button_up = create_standard_button(new_groupbox, "", still_to_define, QtWidgets.QStyle.SP_ArrowUp)
+        button_up = create_standard_button(new_groupbox, "",
+        partial(self.btn_up_pressed, aufgabe),
+        QtWidgets.QStyle.SP_ArrowUp)
         gridLayout_gB.addWidget(button_up, 0, 3, 2, 1)
         number=index+1
         if typ==1 and number==1:
@@ -5335,7 +5356,9 @@ class Ui_MainWindow(object):
         if typ==2 and number==aufgaben_verteilung[0]+1:
             button_up.setEnabled(False)
 
-        button_down = create_standard_button(new_groupbox, "", still_to_define, QtWidgets.QStyle.SP_ArrowDown)
+        button_down = create_standard_button(new_groupbox, "",
+        partial(self.btn_down_pressed,aufgabe),
+        QtWidgets.QStyle.SP_ArrowDown)
         gridLayout_gB.addWidget(button_down, 0, 4, 2, 1)
 
         if typ==1 and number==aufgaben_verteilung[0]:
@@ -5466,10 +5489,10 @@ class Ui_MainWindow(object):
         try:
             self.gridLayout_8.itemAt(index).widget().setParent(None)
         except AttributeError:
-            print('error2')
             pass        
 
     def build_aufgaben_schularbeit(self, aufgabe, file_loaded=False): 
+        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         # print(self.dict_alle_aufgaben_sage)
         # print(self.list_alle_aufgaben_sage)
         # print(aufgaben_verteilung)
@@ -5485,6 +5508,11 @@ class Ui_MainWindow(object):
             start_value=index          
         else:
             start_value=index-1
+
+        # if end_value==None:
+        #     end_value=len(self.list_alle_aufgaben_sage)
+        # print(end_value)
+        # print(self.gridLayout_8.count()+1)
 
         for i in reversed(range(start_value, self.gridLayout_8.count()+1)):
             self.delete_widget(i)
@@ -5524,6 +5552,7 @@ class Ui_MainWindow(object):
 
         # print(self.gridLayout_8.indexOf(neue_aufgaben_box))
 
+
         for item in self.list_alle_aufgaben_sage[start_value:]:
             index_item = self.list_alle_aufgaben_sage.index(item)
             item_infos = self.collect_all_infos_aufgabe(item)             
@@ -5548,6 +5577,7 @@ class Ui_MainWindow(object):
         )
         self.gridLayout_8.addItem(self.spacerItem, index_item+1, 0, 1, 1)
 
+        QtWidgets.QApplication.restoreOverrideCursor()
 
 
     ##### build_aufgaben_schularbeit(self, file_loaded=False) (working)
