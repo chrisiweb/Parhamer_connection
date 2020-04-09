@@ -5509,9 +5509,25 @@ class Ui_MainWindow(object):
         try:
             self.gridLayout_8.removeItem(self.spacerItem)
         except AttributeError:
-            pass
+            print('error1')
 
         index=self.list_alle_aufgaben_sage.index(aufgabe)
+
+
+        for i in reversed(range(index, self.gridLayout_8.count()+1)):
+            try:
+                self.gridLayout_8.itemAt(i).widget().setParent(None)
+            except AttributeError:
+                print('error2')
+                pass
+
+
+        #     if index>=1:
+        #         print(self.gridLayout_8.itemAt(index-1).widget())
+        #         self.gridLayout_8.itemAt(index-1).widget().setParent(None)
+        # except AttributeError:
+        #     print('error2')
+
 
         # if index==2:
          ###delete item with specific index in grid       
@@ -5521,16 +5537,26 @@ class Ui_MainWindow(object):
         #     print(i)
         #     self.gridLayout_8.itemAt(i).widget().setParent(None)
 
+        # try:
+        #     self.gridLayout_8.itemAt(index-1).widget().deleteLater(None)
+        # except AttributeError:
+        #     print('error2')
 
+
+        # aufgaben_infos = self.collect_all_infos_aufgabe(aufgabe)
+        # neue_aufgaben_box=self.create_neue_aufgaben_box(index+1, aufgabe, aufgaben_infos, aufgaben_verteilung)
+        # print(neue_aufgaben_box)
+        # # print(self.gridLayout_8.indexOf(neue_aufgaben_box))
+        # self.gridLayout_8.addWidget(neue_aufgaben_box, index, 0, 1, 1)
+
+        # print(self.gridLayout_8.indexOf(neue_aufgaben_box))
 
         for item in self.list_alle_aufgaben_sage[index:]:
             index_item = self.list_alle_aufgaben_sage.index(item)
-            aufgaben_infos = self.collect_all_infos_aufgabe(item)
-            print(' Reihe: ', index_item+1, 'Aufgabe:', item)
-              
-            # neue_aufgaben_box=self.create_neue_aufgaben_box(index_item+1, item, aufgaben_infos, aufgaben_verteilung)            
-            # self.gridLayout_8.addWidget(neue_aufgaben_box, index_item, 0, 1, 1)
-            # index_item+1
+            item_infos = self.collect_all_infos_aufgabe(item)             
+            neue_aufgaben_box=self.create_neue_aufgaben_box(index_item+1, item, item_infos, aufgaben_verteilung)            
+            self.gridLayout_8.addWidget(neue_aufgaben_box, index_item, 0, 1, 1)
+            index_item+1
 
 
         # for item in self.list_alle_aufgaben_sage[index-1:]:
@@ -5547,7 +5573,9 @@ class Ui_MainWindow(object):
         self.spacerItem = QtWidgets.QSpacerItem(
             20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
         )
-        self.gridLayout_8.addItem(self.spacerItem, index + 1, 0, 1, 1)
+        self.gridLayout_8.addItem(self.spacerItem, index_item+1, 0, 1, 1)
+
+
 
     ##### sage_aufgabe_create(self, file_loaded=False) (working)
         # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
@@ -6139,10 +6167,12 @@ class Ui_MainWindow(object):
 
     def nummer_clicked(self, item):
         aufgabe=item.text().replace("*E-", "")
+        if aufgabe in self.list_alle_aufgaben_sage:
+            return
         aufgaben_verteilung = self.sage_aufgabe_add(aufgabe)
         infos=self.collect_all_infos_aufgabe(aufgabe)  
         self.dict_alle_aufgaben_sage[aufgabe]=infos
-      
+
         self.sage_aufgabe_create(aufgabe, aufgaben_verteilung) # aufgabe, aufgaben_verteilung
 
     def nummer_clicked_fb(self, item):
