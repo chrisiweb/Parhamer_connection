@@ -5177,7 +5177,11 @@ class Ui_MainWindow(object):
             self.build_aufgaben_schularbeit(self.list_alle_aufgaben_sage[index])
 
 
+    def spinbox_pkt_changed(self, aufgabe, spinbox_pkt):
+        self.dict_alle_aufgaben_sage[aufgabe][0]=spinbox_pkt.value()
 
+    def spinbox_abstand_changed(self, aufgabe, spinbox_abstand):
+        self.dict_alle_aufgaben_sage[aufgabe][1]=spinbox_abstand.value()
 
     def punkte_changed(self, bsp_string):
         gesamtpunkte = 0
@@ -5329,10 +5333,14 @@ class Ui_MainWindow(object):
         groupbox_pkt = create_new_groupbox(new_groupbox, "Punkte")
         gridLayout_gB.addWidget(groupbox_pkt, 0, 1, 2, 1,QtCore.Qt.AlignRight)
 
+        punkte=self.dict_alle_aufgaben_sage[aufgabe][0]
 
         horizontalLayout_groupbox_pkt = QtWidgets.QHBoxLayout(groupbox_pkt)
         horizontalLayout_groupbox_pkt.setObjectName(_fromUtf8("horizontalLayout_groupbox_pkt"))
         spinbox_pkt = create_new_spinbox(groupbox_pkt)
+        spinbox_pkt.setValue(punkte)
+        spinbox_pkt.valueChanged.connect(partial(self.spinbox_pkt_changed, aufgabe, spinbox_pkt))
+
         horizontalLayout_groupbox_pkt.addWidget(spinbox_pkt)
         if self.chosen_program=='cria' or typ == 1:
             groupbox_pkt.setMaximumSize(QtCore.QSize(80, 16777215))        
@@ -5343,6 +5351,7 @@ class Ui_MainWindow(object):
             groupbox_pkt.setMaximumSize(QtCore.QSize(150, 16777215))
 
             label_ausgleichspkt = create_new_label(groupbox_pkt, 'AP: {}'.format(aufgaben_infos[3]))
+
             horizontalLayout_groupbox_pkt.addWidget(label_ausgleichspkt)
 
 
@@ -5385,7 +5394,10 @@ class Ui_MainWindow(object):
             groupbox_abstand.hide()
 
         
+        abstand=self.dict_alle_aufgaben_sage[aufgabe][1]
         spinbox_abstand = create_new_spinbox(groupbox_abstand)
+        spinbox_abstand.setValue(abstand)
+        spinbox_abstand.valueChanged.connect(partial(self.spinbox_abstand_changed, aufgabe, spinbox_abstand))
         verticalLayout_abstand.addWidget(spinbox_abstand)
 
         
@@ -5500,7 +5512,7 @@ class Ui_MainWindow(object):
         try:
             self.gridLayout_8.removeItem(self.spacerItem)
         except AttributeError:
-            print('error1')
+            pass
 
         index=self.list_alle_aufgaben_sage.index(aufgabe)
 
