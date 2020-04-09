@@ -190,6 +190,8 @@ class Ui_MainWindow(object):
     def __init__(self):
         self.dict_alle_aufgaben_sage = {}
         self.list_alle_aufgaben_sage = []
+        self.dict_variablen_punkte={}
+        self.dict_variablen_label={}
         self.dict_sage_ausgleichspunkte_chosen = {}
         self.dict_chosen_topics = {}
         self.list_creator_topics = []
@@ -204,6 +206,9 @@ class Ui_MainWindow(object):
         self.dict_titlepage_cria=titlepage
 
         app.aboutToQuit.connect(self.close_app)
+
+
+
 
     def open_subwindow(
         self,
@@ -268,6 +273,7 @@ class Ui_MainWindow(object):
         self.ui = Ui_Dialog_choose_type()
         self.ui.setupUi(self.Dialog)
         self.Dialog.show()
+        self.Dialog.setFixedSize(self.Dialog.size())
         rsp=self.Dialog.exec_()
 
         if rsp == QtWidgets.QDialog.Accepted:
@@ -5088,8 +5094,6 @@ class Ui_MainWindow(object):
                     "Anzahl der Aufgaben: {0}".format(num_total),None))
 
     def btn_up_pressed(self, aufgabe):
-        print('button up', aufgabe)
-
         a, b = self.list_alle_aufgaben_sage.index(aufgabe), self.list_alle_aufgaben_sage.index(aufgabe) - 1
         self.list_alle_aufgaben_sage[a], self.list_alle_aufgaben_sage[b] = (
             self.list_alle_aufgaben_sage[b],
@@ -5123,7 +5127,6 @@ class Ui_MainWindow(object):
         # self.build_aufgaben_schularbeit(False)
 
     def btn_down_pressed(self, aufgabe):
-        print('button up', aufgabe)
 
         a, b = self.list_alle_aufgaben_sage.index(aufgabe), self.list_alle_aufgaben_sage.index(aufgabe) + 1
         self.list_alle_aufgaben_sage[a], self.list_alle_aufgaben_sage[b] = (
@@ -5175,6 +5178,9 @@ class Ui_MainWindow(object):
             self.list_alle_aufgaben_sage.remove(aufgabe)
 
             self.build_aufgaben_schularbeit(self.list_alle_aufgaben_sage[index])
+
+        if aufgabe in self.dict_sage_ausgleichspunkte_chosen:
+            del self.dict_sage_ausgleichspunkte_chosen[aufgabe]
 
 
     def spinbox_pkt_changed(self, aufgabe, spinbox_pkt):
@@ -5256,16 +5262,21 @@ class Ui_MainWindow(object):
 
 
     def update_default_pkt(self):
-        for all in self.list_alle_aufgaben_sage:
-            if re.search("[A-Z]", all) == None:
-                pass
-                # ausgleich_pkt = eval('self.ausgleich_pkt_{}'.format(all))
-                # ausgleich_pkt.setText(_translate("MainWindow", '(AP: {})'.format(len(list_sage_ausgleichspunkte_chosen)*self.spinBox_default_pkt.value()),None))
-            else:
-                bsp_string = all.replace(" ", "").replace(".", "").replace("-", "_")
-                sb_value = eval("self.spinBox_pkt_{}".format(bsp_string))
-                sb_value.setValue(self.spinBox_default_pkt.value())
-                self.beurteilungsraster_changed()
+        for all in self.dict_variablen_punkte:
+            if get_aufgabentyp(all)==1:
+                self.dict_variablen_punkte[all].setValue(self.spinBox_default_pkt.value())
+                self.dict_alle_aufgaben_sage[all][0]=self.spinBox_default_pkt.value()
+
+
+            # print(all)
+        # return
+        # if self.list_alle_aufgaben_sage!=[]:
+        #     for all in self.list_alle_aufgaben_sage:
+        #         if get_aufgabentyp(all)==1:
+        #             self.dict_alle_aufgaben_sage[all][0]=self.spinBox_default_pkt.value() 
+
+        #     self.build_aufgaben_schularbeit(self.list_alle_aufgaben_sage[0]) 
+
 
     def update_lists_examples(self):
         for all in self.list_alle_aufgaben_sage:
@@ -5296,9 +5307,11 @@ class Ui_MainWindow(object):
             # print(list_input)
 
 
+
     def create_neue_aufgaben_box(self,index, aufgabe, aufgaben_infos):
         typ=get_aufgabentyp(aufgabe)
         aufgaben_verteilung=self.get_aufgabenverteilung()
+
 
         new_groupbox=create_new_groupbox(self.scrollAreaWidgetContents_2,
         "{0}. Aufgabe (Typ{1})".format(index+1, typ))
@@ -5340,6 +5353,8 @@ class Ui_MainWindow(object):
         spinbox_pkt = create_new_spinbox(groupbox_pkt)
         spinbox_pkt.setValue(punkte)
         spinbox_pkt.valueChanged.connect(partial(self.spinbox_pkt_changed, aufgabe, spinbox_pkt))
+        self.dict_variablen_punkte[aufgabe]=spinbox_pkt
+
 
         horizontalLayout_groupbox_pkt.addWidget(spinbox_pkt)
         if self.chosen_program=='cria' or typ == 1:
@@ -5351,8 +5366,8 @@ class Ui_MainWindow(object):
             groupbox_pkt.setMaximumSize(QtCore.QSize(150, 16777215))
 
             label_ausgleichspkt = create_new_label(groupbox_pkt, 'AP: {}'.format(aufgaben_infos[3]))
-
             horizontalLayout_groupbox_pkt.addWidget(label_ausgleichspkt)
+            self.dict_variablen_label[aufgabe]=label_ausgleichspkt
 
 
         button_up = create_standard_button(new_groupbox, "",
@@ -5402,14 +5417,12 @@ class Ui_MainWindow(object):
 
         
         if typ==2:
-            content=self.collect_content(aufgabe)
+            # content=self.collect_content(aufgabe)
             pushbutton_ausgleich = create_new_button(new_groupbox,"Ausgleichspunkte anpassen...",
-            partial(self.pushButton_ausgleich_pressed, aufgabe, content)
-            )
+            partial(self.pushButton_ausgleich_pressed, aufgabe))
             pushbutton_ausgleich.setStyleSheet(_fromUtf8("background-color: light gray"))
             pushbutton_ausgleich.setMaximumSize(QtCore.QSize(220, 30))
             gridLayout_gB.addWidget(pushbutton_ausgleich, 0, 2, 2, 1)
-
 
 
         return new_groupbox
@@ -5451,6 +5464,7 @@ class Ui_MainWindow(object):
                     x = all.split(" - ")
                     titel = x[-3]
                     typ_info=x[-2] #Aufgabenformat
+            punkte=self.spinBox_default_pkt.value()
 
         if typ==2:
             for all in self.beispieldaten_dateipfad_2:
@@ -5459,10 +5473,11 @@ class Ui_MainWindow(object):
                     x = all.split(" - ")
                     titel = x[-2]
                     typ_info=self.get_number_ausgleichspunkte(aufgabe) # Ausgleichspunkte
+            punkte=0
 
         dateipfad=self.get_dateipfad_aufgabe(aufgabe)
 
-        return [0, 0, titel, typ_info, dateipfad]
+        return [punkte, 0, titel, typ_info, dateipfad]
 
     def get_dateipfad_aufgabe(self, aufgabe):
         typ=get_aufgabentyp(aufgabe)
@@ -5490,6 +5505,7 @@ class Ui_MainWindow(object):
 
     def get_number_ausgleichspunkte(self, aufgabe):
         typ=get_aufgabentyp(aufgabe)
+
         if typ==2:
             content=self.collect_content(aufgabe)
 
@@ -5497,11 +5513,42 @@ class Ui_MainWindow(object):
         
             return number_ausgleichspunkte
 
+
+    # def update_einzelaufgabe(self, aufgabe):
+    #     index=self.list_alle_aufgaben_sage.index(aufgabe)
+    #     print(index)
+    #     try:
+    #         self.gridLayout_8.removeItem(self.spacerItem)
+    #     except AttributeError:
+    #         pass
+    #     aufgabe_infos = self.collect_all_infos_aufgabe(aufgabe)
+    #     # old_box=self.gridLayout_8.itemAt(index).widget()    
+    #     # self.gridLayout_8.itemAt(index).widget()
+    #     #self.delete_widget(index)
+    #     # for i in range(self.gridLayout_8.count()):
+    #     #     print(i)
+    #     # self.delete_widget(index)
+    #     self.gridLayout_8.itemAt(index).widget().hide()
+    #     box=self.create_neue_aufgaben_box(index, aufgabe, aufgabe_infos)         
+    #     box.show()
+
+    #     self.spacerItem = QtWidgets.QSpacerItem(
+    #         20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+    #     )
+    #     self.gridLayout_8.addItem(self.spacerItem, index_item+1, 0, 1, 1)        
+    #     # self.gridLayout_8.removeWidget(self.gridLayout_8.itemAt(index).widget())
+    #     # print(aufgabe)
+    #     # print(index)
+
+
     def delete_widget(self, index):
         try:
             self.gridLayout_8.itemAt(index).widget().setParent(None)
         except AttributeError:
+            print('error')
             pass        
+
+
 
     def build_aufgaben_schularbeit(self, aufgabe, file_loaded=False): 
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
@@ -5572,7 +5619,7 @@ class Ui_MainWindow(object):
             self.gridLayout_8.addWidget(neue_aufgaben_box, index_item, 0, 1, 1)
             index_item+1
 
-
+        # print(self.dict_alle_aufgaben_variablen)
         # for item in self.list_alle_aufgaben_sage[index-1:]:
         #     aufgaben_infos=self.collect_all_infos_aufgabe(aufgabe)
         #     neue_aufgaben_box=self.create_neue_aufgaben_box(index, item, aufgaben_infos, aufgaben_verteilung)            
@@ -5992,9 +6039,7 @@ class Ui_MainWindow(object):
         # self.lineEdit_number.setText("")
         # self.lineEdit_number.setFocus()
         # QtWidgets.QApplication.restoreOverrideCursor()
-
-    def pushButton_ausgleich_pressed(self, bsp_name, content):
-
+    def split_content_ausgleichspunkte(self, content):
         x = re.split("Aufgabenstellung:}|Lösungserwartung:}", content)
         str_file = x[1].replace("\t", "")
         ausgleichspunkte_split_text = re.split("\n\n|\n\t", str_file)
@@ -6007,15 +6052,13 @@ class Ui_MainWindow(object):
             for item in x:
                 temp_list.append(item)
         ausgleichspunkte_split_text = temp_list
-        # print(ausgleichspunkte_split_text)
+
         for all in ausgleichspunkte_split_text:
             if "\\begin{pspicture*}" in all:
                 ausgleichspunkte_split_text[
                     ausgleichspunkte_split_text.index(all)
                 ] = "[...] GRAFIK [...]"
 
-        # print(ausgleichspunkte_split_text)
-        # return
         for all in ausgleichspunkte_split_text:
             z = all.replace("\t", "")
             z = z.replace("\\leer", "")
@@ -6035,37 +6078,43 @@ class Ui_MainWindow(object):
             if all == "":
                 ausgleichspunkte_split_text.remove(all)
 
-        # print(ausgleichspunkte_split_text)
-        for all in reversed(ausgleichspunkte_split_text):
+        return ausgleichspunkte_split_text
+
+
+    def pushButton_ausgleich_pressed(self, aufgabe):
+        content = self.collect_content(aufgabe)
+
+        split_content = self.split_content_ausgleichspunkte(content)
+
+
+        for all in reversed(split_content):
             if "\\antwort{" in all:
-                index_end = ausgleichspunkte_split_text.index(all)
+                index_end = split_content.index(all)
                 break
 
         try:
-            ausgleichspunkte_split_text = ausgleichspunkte_split_text[:index_end]
+            split_content = split_content[:index_end]
         except UnboundLocalError:
             self.warning_window(
-                "Es ist ein Fehler bei der Auswahl der Ausgleichspunkte von Beispiel {} aufgetreten! (Das Beispiel kann dennoch verwendet und individuell in der TeX-Datei bearbeitet werden.)\n".format(
-                    bsp_name
+                "Es ist ein Fehler bei der Auswahl der Ausgleichspunkte von Aufgabe {} aufgetreten! (Die Aufgabe kann dennoch verwendet und individuell in der TeX-Datei bearbeitet werden.)\n".format(
+                    aufgabe
                 ),
-                'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team.',
+                'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!',
             )
             return
 
         # for all in self.dict_sage_ausgleichspunkte_chosen[selected_typ2_path]:
         # 	print(all)
-        # print(self.dict_sage_ausgleichspunkte_chosen)
 
-        if bsp_name in self.dict_sage_ausgleichspunkte_chosen.keys():
+        if aufgabe in self.dict_sage_ausgleichspunkte_chosen.keys():
             # print(self.dict_sage_ausgleichspunkte_chosen[selected_typ2_path])
             # return
             list_sage_ausgleichspunkte_chosen = self.dict_sage_ausgleichspunkte_chosen[
-                bsp_name
+                aufgabe
             ]
         else:
             list_sage_ausgleichspunkte_chosen = []
-            # print(ausgleichspunkte_split_text)
-            for all in ausgleichspunkte_split_text:
+            for all in split_content:
                 if "\\fbox{A}" in all:
                     x = all.replace("\\fbox{A}", "")
                     list_sage_ausgleichspunkte_chosen.append(x)
@@ -6078,24 +6127,32 @@ class Ui_MainWindow(object):
         )
         self.ui = Ui_Dialog_ausgleichspunkte()
         self.ui.setupUi(
-            self.Dialog, ausgleichspunkte_split_text, list_sage_ausgleichspunkte_chosen
+            self.Dialog, split_content, list_sage_ausgleichspunkte_chosen
         )
         self.Dialog.show()
         self.Dialog.exec_()
         # print(list_sage_ausgleichspunkte_chosen)
+
         self.dict_sage_ausgleichspunkte_chosen[
-            bsp_name
+            aufgabe
         ] = list_sage_ausgleichspunkte_chosen
-        temp_bsp_name = bsp_name.replace("_L_", "")
-        if re.search("[A-Z]", temp_bsp_name) == None:
-            bsp_string = bsp_name
-        else:
-            bsp_string = bsp_name.replace(" ", "").replace(".", "").replace("-", "_")
-        list_input = eval("self.list_input_{}".format(bsp_string))
-        list_input[3] = len(list_sage_ausgleichspunkte_chosen)
+        # temp_bsp_name = bsp_name.replace("_L_", "")
+
+        # simplify_string(aufgabe)
+        # if re.search("[A-Z]", temp_bsp_name) == None:
+        #     bsp_string = bsp_name
+        # else:
+        #     bsp_string = bsp_name.replace(" ", "").replace(".", "").replace("-", "_")
+
+        self.dict_alle_aufgaben_sage[aufgabe][3]=len(list_sage_ausgleichspunkte_chosen)
+
+        self.dict_variablen_label[aufgabe].setText(_translate("MainWindow","AP: {}".format(len(list_sage_ausgleichspunkte_chosen)), None))
+        # get_number_ausgleichspunkte
+        # list_input = eval("self.list_input_{}".format(bsp_string))
+        # list_input[3] = len(list_sage_ausgleichspunkte_chosen)
 
         # print(self.dict_sage_ausgleichspunkte_chosen)
-        self.build_aufgaben_schularbeit(False)
+        # self.build_aufgaben_schularbeit(False)
 
     def comboBox_at_sage_changed(self):
         if self.comboBox_at_sage.currentText()[-1] == "1":
@@ -6187,8 +6244,9 @@ class Ui_MainWindow(object):
         self.sage_aufgabe_add(aufgabe)
         infos=self.collect_all_infos_aufgabe(aufgabe)  
         self.dict_alle_aufgaben_sage[aufgabe]=infos
-
         self.build_aufgaben_schularbeit(aufgabe) # aufgabe, aufgaben_verteilung
+        self.lineEdit_number.setText("")
+        self.lineEdit_number.setFocus()
 
     def nummer_clicked_fb(self, item):
         # print(item.text())
@@ -6567,26 +6625,27 @@ class Ui_MainWindow(object):
 
         self.dict_list_input_examples["list_examples"] = self.list_alle_aufgaben_sage
 
+        return
         ### include data for single examples ###
-        for all in self.list_alle_aufgaben_sage:
-            temp_all = all.replace("_L_", "")
-            if re.search("[A-Z]", temp_all) == None:
-                bsp_string = all
-                typ = 2
-            else:
-                bsp_string = all.replace(" ", "").replace(".", "").replace("-", "_")
-                typ = 1
-            list_input = eval("self.list_input_{}".format(bsp_string))
-            self.dict_list_input_examples[
-                "self.list_input_{}".format(bsp_string)
-            ] = list_input
+        # for all in self.list_alle_aufgaben_sage:
+        #     temp_all = all.replace("_L_", "")
+        #     if re.search("[A-Z]", temp_all) == None:
+        #         bsp_string = all
+        #         typ = 2
+        #     else:
+        #         bsp_string = all.replace(" ", "").replace(".", "").replace("-", "_")
+        #         typ = 1
+        #     list_input = eval("self.list_input_{}".format(bsp_string))
+        #     self.dict_list_input_examples[
+        #         "self.list_input_{}".format(bsp_string)
+        #     ] = list_input
 
-            if typ == 1:
-                self.pkt_typ1 += list_input[0]
-                num_typ1 += 1
-            if typ == 2:
-                self.pkt_typ2 += list_input[0]
-                num_typ2 += 1
+        #     if typ == 1:
+        #         self.pkt_typ1 += list_input[0]
+        #         num_typ1 += 1
+        #     if typ == 2:
+        #         self.pkt_typ2 += list_input[0]
+        #         num_typ2 += 1
         ### end ###
 
         ### include dictionary of changed 'ausgleichspunkte' ###
