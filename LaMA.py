@@ -2704,7 +2704,7 @@ class Ui_MainWindow(object):
                     except AttributeError:
                         pass
                 self.list_alle_aufgaben_sage = []
-                self.sage_aufgabe_create(False)
+                self.build_aufgaben_schularbeit(False)
 
         except AttributeError:
             pass
@@ -4864,7 +4864,7 @@ class Ui_MainWindow(object):
             "dict_ausgleichspunkte"
         ]
 
-        self.sage_aufgabe_create(True)
+        self.build_aufgaben_schularbeit(True)
         self.spinBox_default_pkt.setValue(
             self.dict_list_input_examples["data_gesamt"]["Typ1 Standard"]
         )
@@ -4999,30 +4999,29 @@ class Ui_MainWindow(object):
             self.groupBox_beurteilungsra.hide()
             self.groupBox_notenschl.show()
 
+
+    def get_aufgabenverteilung(self):
+        num_typ1=0
+        num_typ2=0
+        for all in self.list_alle_aufgaben_sage:
+            typ=get_aufgabentyp(all)
+            if typ==1:
+                num_typ1 +=1
+            if typ==2:
+                num_typ2 +=1
+
+
+        return [num_typ1, num_typ2]
+
     def sage_aufgabe_add(self, aufgabe):
         if self.chosen_program=='lama':
-            list_sage_examples_typ1 = []
-            list_sage_examples_typ2 = []
 
-            for all in self.list_alle_aufgaben_sage:
-                typ=get_aufgabentyp(all)
-                if typ==1:
-                    list_sage_examples_typ1.append(all)
-                if typ==2:
-                    list_sage_examples_typ2.append(all)
-
-            typ_aufgabe=get_aufgabentyp(aufgabe)
-            if aufgabe not in self.list_alle_aufgaben_sage:
-                if typ_aufgabe == 1:
-                    list_sage_examples_typ1.append(aufgabe)
-                if typ_aufgabe == 2:
-                    list_sage_examples_typ2.append(aufgabe)
-
-            self.list_alle_aufgaben_sage.clear()
-            self.list_alle_aufgaben_sage.extend(list_sage_examples_typ1)
-            self.list_alle_aufgaben_sage.extend(list_sage_examples_typ2)
-            num_typ1 = len(list_sage_examples_typ1)
-            num_typ2 = len(list_sage_examples_typ2)
+            num_typ1, num_typ2 = self.get_aufgabenverteilung()
+            typ=get_aufgabentyp(aufgabe)
+            if typ==1:
+                self.list_alle_aufgaben_sage.insert(num_typ1, aufgabe)
+            if typ==2:
+                self.list_alle_aufgaben_sage.append(aufgabe)   
 
 
         if self.chosen_program =='cria':
@@ -5053,7 +5052,6 @@ class Ui_MainWindow(object):
             )
         )
 
-        return [num_typ1, num_typ2]
 
 
     def adapt_label_gesamtbeispiele(self):
@@ -5113,7 +5111,7 @@ class Ui_MainWindow(object):
             self.list_alle_aufgaben_sage[a],
         )
 
-        self.sage_aufgabe_create(False)
+        self.build_aufgaben_schularbeit(False)
 
     def btn_down_pressed(self, aufgabe):
         self.update_lists_examples()
@@ -5142,70 +5140,25 @@ class Ui_MainWindow(object):
             self.list_alle_aufgaben_sage[b],
             self.list_alle_aufgaben_sage[a],
         )
-        self.sage_aufgabe_create(False)
+        self.build_aufgaben_schularbeit(False)
 
-    def btn_delete_pressed(self, aufgabe, file_loaded):
+    def btn_delete_pressed(self, aufgabe):
 
-        if self.chosen_program=='cria':
-            bsp_string=aufgabe
-            exec("self.groupBox_bsp_{}.setParent(None)".format(bsp_string))
-            list_input = eval("self.list_input_{}".format(bsp_string))
-            spinBox_pkt = eval("self.spinBox_pkt_{}".format(bsp_string))
+        index=self.list_alle_aufgaben_sage.index(aufgabe)
 
-            list_input[0] = 0
-            list_input[3] = ""
-
-            spinBox_pkt.setValue(0)
-
-            list_input[1] = 0
-
-            spinBox_abstand = eval("self.spinBox_abstand_{}".format(bsp_string))
-            spinBox_abstand.setValue(0)
-        elif self.chosen_program=='lama':
-            temp_aufgabe = aufgabe.replace("_L_", "")
-            if re.search("[A-Z]", temp_aufgabe) == None:
-                bsp_string = aufgabe
-                typ = 2
-            else:
-                bsp_string = aufgabe.replace(" ", "").replace(".", "").replace("-", "_")
-                typ = 1
-
-            exec("self.groupBox_bsp_{}.setParent(None)".format(bsp_string))
-            list_input = eval("self.list_input_{}".format(bsp_string))
-            spinBox_pkt = eval("self.spinBox_pkt_{}".format(bsp_string))
-            if typ == 1:
-                list_input[0] = self.spinBox_default_pkt.value()
-                spinBox_pkt.setValue(self.spinBox_default_pkt.value())
-            if typ == 2:
-                list_input[0] = 0
-                list_input[3] = ""
-                ausgleich_pkt = eval("self.ausgleich_pkt_{}".format(bsp_string))
-                self.num_ausgleichspkt_gesamt -= int(ausgleich_pkt.text()[-2])
-                spinBox_pkt.setValue(0)
-                name = aufgabe + ".tex"
-                for path in self.beispieldaten_dateipfad_2.values():
-                    if name == os.path.basename(path):
-                        selected_path = path
-                try:
-                    # del self.dict_sage_ausgleichspunkte_chosen[selected_path]
-                    del self.dict_sage_ausgleichspunkte_chosen[aufgabe]
-                except KeyError:
-                    pass
-
-            list_input[1] = 0
-
-            spinBox_abstand = eval("self.spinBox_abstand_{}".format(bsp_string))
-            spinBox_abstand.setValue(0)
-
-        if file_loaded == False:
+        if index+1 == len(self.list_alle_aufgaben_sage):
+            self.delete_widget(index) 
+            del self.dict_alle_aufgaben_sage[aufgabe]
             self.list_alle_aufgaben_sage.remove(aufgabe)
-            self.adapt_label_gesamtbeispiele()
-            self.sage_aufgabe_create(False)
 
-        ### reset Ausgleichspunkte
-        # del self.dict_sage_ausgleichspunkte_chosen[aufgabe]
-        # print(self.dict_sage_ausgleichspunkte_chosen)
-        # print(aufgabe)
+        else:
+            del self.dict_alle_aufgaben_sage[aufgabe]
+            self.list_alle_aufgaben_sage.remove(aufgabe)
+
+            self.build_aufgaben_schularbeit(self.list_alle_aufgaben_sage[index])
+
+
+
 
     def punkte_changed(self, bsp_string):
         gesamtpunkte = 0
@@ -5320,13 +5273,15 @@ class Ui_MainWindow(object):
             # print(list_input)
 
 
-    def create_neue_aufgaben_box(self,number, aufgabe, aufgaben_infos, aufgaben_verteilung):
+    def create_neue_aufgaben_box(self,index, aufgabe, aufgaben_infos):
         typ=get_aufgabentyp(aufgabe)
+        aufgaben_verteilung=self.get_aufgabenverteilung()
+
         new_groupbox=create_new_groupbox(self.scrollAreaWidgetContents_2,
-        "{0}. Aufgabe (Typ{1})".format(number, typ))
+        "{0}. Aufgabe (Typ{1})".format(index+1, typ))
 
         if self.chosen_program=='lama':
-            if (number % 2) == 1 and typ == 1:
+            if (index % 2) == 0 and typ == 1:
                 new_groupbox.setStyleSheet(_fromUtf8("background-color: rgb(255, 255, 255);"))
             if typ == 2:
                 new_groupbox.setStyleSheet(_fromUtf8("background-color: rgb(255, 212, 212);"))
@@ -5374,6 +5329,7 @@ class Ui_MainWindow(object):
 
         button_up = create_standard_button(new_groupbox, "", still_to_define, QtWidgets.QStyle.SP_ArrowUp)
         gridLayout_gB.addWidget(button_up, 0, 3, 2, 1)
+        number=index+1
         if typ==1 and number==1:
             button_up.setEnabled(False)
         if typ==2 and number==aufgaben_verteilung[0]+1:
@@ -5388,7 +5344,9 @@ class Ui_MainWindow(object):
             button_down.setEnabled(False)
 
 
-        button_delete = create_standard_button(new_groupbox, "", still_to_define, QtWidgets.QStyle.SP_TitleBarCloseButton)
+        button_delete = create_standard_button(new_groupbox, "",
+        partial(self.btn_delete_pressed, aufgabe),
+        QtWidgets.QStyle.SP_TitleBarCloseButton)
         gridLayout_gB.addWidget(button_delete, 0, 5, 2, 1)
 
 
@@ -5504,8 +5462,14 @@ class Ui_MainWindow(object):
         
             return number_ausgleichspunkte
 
+    def delete_widget(self, index):
+        try:
+            self.gridLayout_8.itemAt(index).widget().setParent(None)
+        except AttributeError:
+            print('error2')
+            pass        
 
-    def sage_aufgabe_create(self, aufgabe, aufgaben_verteilung, file_loaded=False): 
+    def build_aufgaben_schularbeit(self, aufgabe, file_loaded=False): 
         # print(self.dict_alle_aufgaben_sage)
         # print(self.list_alle_aufgaben_sage)
         # print(aufgaben_verteilung)
@@ -5518,16 +5482,17 @@ class Ui_MainWindow(object):
         index=self.list_alle_aufgaben_sage.index(aufgabe)
 
         if index==0:
-            start_value=index
-            
+            start_value=index          
         else:
             start_value=index-1
-            for i in reversed(range(index-1, self.gridLayout_8.count()+1)):
-                try:
-                    self.gridLayout_8.itemAt(i).widget().setParent(None)
-                except AttributeError:
-                    print('error2')
-                    pass
+
+        for i in reversed(range(start_value, self.gridLayout_8.count()+1)):
+            self.delete_widget(i)
+                # try:
+                #     self.gridLayout_8.itemAt(i).widget().setParent(None)
+                # except AttributeError:
+                #     print('error2')
+                #     pass
 
 
         #     if index>=1:
@@ -5562,7 +5527,7 @@ class Ui_MainWindow(object):
         for item in self.list_alle_aufgaben_sage[start_value:]:
             index_item = self.list_alle_aufgaben_sage.index(item)
             item_infos = self.collect_all_infos_aufgabe(item)             
-            neue_aufgaben_box=self.create_neue_aufgaben_box(index_item+1, item, item_infos, aufgaben_verteilung)            
+            neue_aufgaben_box=self.create_neue_aufgaben_box(index_item, item, item_infos)            
             self.gridLayout_8.addWidget(neue_aufgaben_box, index_item, 0, 1, 1)
             index_item+1
 
@@ -5585,7 +5550,7 @@ class Ui_MainWindow(object):
 
 
 
-    ##### sage_aufgabe_create(self, file_loaded=False) (working)
+    ##### build_aufgaben_schularbeit(self, file_loaded=False) (working)
         # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         # self.num_ausgleichspkt_gesamt = 0
         # r = 0
@@ -6088,7 +6053,7 @@ class Ui_MainWindow(object):
         list_input[3] = len(list_sage_ausgleichspunkte_chosen)
 
         # print(self.dict_sage_ausgleichspunkte_chosen)
-        self.sage_aufgabe_create(False)
+        self.build_aufgaben_schularbeit(False)
 
     def comboBox_at_sage_changed(self):
         if self.comboBox_at_sage.currentText()[-1] == "1":
@@ -6177,11 +6142,11 @@ class Ui_MainWindow(object):
         aufgabe=item.text().replace("*E-", "")
         if aufgabe in self.list_alle_aufgaben_sage:
             return
-        aufgaben_verteilung = self.sage_aufgabe_add(aufgabe)
+        self.sage_aufgabe_add(aufgabe)
         infos=self.collect_all_infos_aufgabe(aufgabe)  
         self.dict_alle_aufgaben_sage[aufgabe]=infos
 
-        self.sage_aufgabe_create(aufgabe, aufgaben_verteilung) # aufgabe, aufgaben_verteilung
+        self.build_aufgaben_schularbeit(aufgabe) # aufgabe, aufgaben_verteilung
 
     def nummer_clicked_fb(self, item):
         # print(item.text())
