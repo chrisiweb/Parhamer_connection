@@ -385,12 +385,15 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
     def setupUi(
         self,
         Dialog,
+        # MainWindow,
         dict_list_input_examples,
         beispieldaten_dateipfad_1,
         beispieldaten_dateipfad_2,
         dict_titlepage,
         saved_file_path,
     ):
+        
+        #print(MainWindow.dict_alle_aufgaben_sage)
         self.dict_list_input_examples = dict_list_input_examples
         self.beispieldaten_dateipfad_1 = beispieldaten_dateipfad_1
         self.beispieldaten_dateipfad_2 = beispieldaten_dateipfad_2

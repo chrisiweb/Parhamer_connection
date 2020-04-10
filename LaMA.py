@@ -110,13 +110,6 @@ def combine_all_lists_to_one(list_of_lists):
         combined_list=combined_list+list
     return combined_list 
 
-def get_aufgabentyp(aufgabe):
-    if re.search("[A-Z]", aufgabe) == None:
-        typ=2
-    else:
-        typ=1
-    return typ
-
 
 def create_new_groupbox(parent, name):
     new_groupbox = QtWidgets.QGroupBox(parent)
@@ -210,7 +203,7 @@ class Ui_MainWindow(object):
 
 
 
-    def open_subwindow(
+    def open_dialogwindow_erstellen(
         self,
         dict_list_input_examples,
         beispieldaten_dateipfad_1,
@@ -227,6 +220,7 @@ class Ui_MainWindow(object):
         self.ui_erstellen = Ui_Dialog_erstellen()
         self.ui_erstellen.setupUi(
             self.Dialog,
+            # self,
             dict_list_input_examples,
             beispieldaten_dateipfad_1,
             beispieldaten_dateipfad_2,
@@ -238,7 +232,7 @@ class Ui_MainWindow(object):
 
         if rsp == QtWidgets.QDialog.Accepted:
             for index in range(self.ui_erstellen.spinBox_sw_gruppen.value() * 2):
-                Ui_MainWindow.pushButton_vorschau_pressed(
+                self.pushButton_vorschau_pressed(
                     self,
                     "schularbeit",
                     index,
@@ -247,7 +241,7 @@ class Ui_MainWindow(object):
                     self.ui_erstellen.lama,
                 )
 
-            MainWindow.show()
+            # MainWindow.show()
 
             if sys.platform.startswith("linux"):
                 file_path = os.path.dirname(self.saved_file_path)
@@ -1496,7 +1490,7 @@ class Ui_MainWindow(object):
         self.radioButton_notenschl.setChecked(True)
         self.radioButton_notenschl.setObjectName("radioButton_notenschl")
         self.radioButton_notenschl.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.radioButton_notenschl.toggled.connect(self.beurteilungsraster_changed)
+        self.radioButton_notenschl.toggled.connect(self.notenanzeige_changed)
         self.gridLayout_5.addWidget(self.radioButton_notenschl, 3, 4, 1, 2)
         self.radioButton_beurteilungsraster = QtWidgets.QRadioButton(self.groupBox_sage)
         self.radioButton_beurteilungsraster.setObjectName(
@@ -1504,7 +1498,7 @@ class Ui_MainWindow(object):
         )
         self.radioButton_beurteilungsraster.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.radioButton_beurteilungsraster.toggled.connect(
-            self.beurteilungsraster_changed
+            self.notenanzeige_changed
         )
         self.gridLayout_5.addWidget(self.radioButton_beurteilungsraster, 4, 4, 1, 2)
 
@@ -1614,7 +1608,7 @@ class Ui_MainWindow(object):
         self.spinBox_3.setMaximumSize(QtCore.QSize(55, 20))
         self.spinBox_3.setProperty("value", 80)
         self.spinBox_3.setObjectName("spinBox_3")
-        self.spinBox_3.valueChanged.connect(self.punkte_changed)
+        self.spinBox_3.valueChanged.connect(self.update_punkte)
         self.spinBox_3.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.gridLayout_6.addWidget(self.spinBox_3, 0, 4, 1, 1)
         self.label_sg_pkt = QtWidgets.QLabel(self.groupBox_notenschl)
@@ -1635,7 +1629,7 @@ class Ui_MainWindow(object):
         self.spinBox_2.setMaximumSize(QtCore.QSize(55, 20))
         self.spinBox_2.setProperty("value", 91)
         self.spinBox_2.setObjectName("spinBox_2")
-        self.spinBox_2.valueChanged.connect(self.punkte_changed)
+        self.spinBox_2.valueChanged.connect(self.update_punkte)
         self.spinBox_2.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.gridLayout_6.addWidget(self.spinBox_2, 0, 1, 1, 1)
         self.label_b = QtWidgets.QLabel(self.groupBox_notenschl)
@@ -1646,7 +1640,7 @@ class Ui_MainWindow(object):
         self.spinBox_4.setMaximumSize(QtCore.QSize(55, 20))
         self.spinBox_4.setProperty("value", 64)
         self.spinBox_4.setObjectName("spinBox_4")
-        self.spinBox_4.valueChanged.connect(self.punkte_changed)
+        self.spinBox_4.valueChanged.connect(self.update_punkte)
         self.spinBox_4.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.gridLayout_6.addWidget(self.spinBox_4, 1, 1, 1, 1)
         self.label_b_pkt = QtWidgets.QLabel(self.groupBox_notenschl)
@@ -1663,7 +1657,7 @@ class Ui_MainWindow(object):
         self.spinBox_5.setMaximumSize(QtCore.QSize(55, 20))
         self.spinBox_5.setProperty("value", 50)
         self.spinBox_5.setObjectName("spinBox_5")
-        self.spinBox_5.valueChanged.connect(self.punkte_changed)
+        self.spinBox_5.valueChanged.connect(self.update_punkte)
         self.spinBox_5.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.gridLayout_6.addWidget(self.spinBox_5, 1, 4, 1, 1)
         self.gridLayout_5.addWidget(self.groupBox_notenschl, 6, 0, 1, 7)
@@ -1681,31 +1675,31 @@ class Ui_MainWindow(object):
 
         ### Groupbox Beurteilungsraster #####
 
-        self.groupBox_beurteilungsra = QtWidgets.QGroupBox(self.groupBox_sage)
-        self.groupBox_beurteilungsra.setObjectName("groupBox_beurteilungsra")
-        self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_beurteilungsra)
+        self.groupBox_beurteilungsraster = QtWidgets.QGroupBox(self.groupBox_sage)
+        self.groupBox_beurteilungsraster.setObjectName("groupBox_beurteilungsraster")
+        self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_beurteilungsraster)
         self.gridLayout_6.setObjectName("gridLayout_6")
 
-        self.label_typ1_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsra)
+        self.label_typ1_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsraster)
         self.label_typ1_pkt.setObjectName("label_typ1_pkt")
         self.gridLayout_6.addWidget(self.label_typ1_pkt, 0, 0, 1, 1)
         # self.label_typ1_pkt.setText(_translate("MainWindow", "Punkte Typ 1: 0",None))
 
-        self.label_typ2_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsra)
+        self.label_typ2_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsraster)
         self.label_typ2_pkt.setObjectName("label_typ2_pkt")
         self.gridLayout_6.addWidget(self.label_typ2_pkt, 1, 0, 1, 1)
 
-        self.label_ausgleich_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsra)
+        self.label_ausgleich_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsraster)
         self.label_ausgleich_pkt.setObjectName("label_ausgleich_pkt")
         self.gridLayout_6.addWidget(self.label_ausgleich_pkt, 2, 0, 1, 1)
         # self.label_ausgleich_pkt.setText(_translate("MainWindow", "Ausgleichspunkte: 0",None))
 
         # self.label_typ2_pkt.setText(_translate("MainWindow", "Punkte Typ 2: 0",None))
 
-        self.groupBox_beurteilungsra.setTitle(
+        self.groupBox_beurteilungsraster.setTitle(
             _translate("MainWindow", "Beurteilungsraster", None)
         )
-        self.groupBox_beurteilungsra.hide()
+        self.groupBox_beurteilungsraster.hide()
 
         ### Zusammenfassung d. SA ###
 
@@ -1758,7 +1752,7 @@ class Ui_MainWindow(object):
             self.pushButton_vorschau, 7, 5, 1, 2, QtCore.Qt.AlignRight
         )
         self.pushButton_vorschau.clicked.connect(
-            partial(self.pushButton_vorschau_pressed, "vorschau", 0, 0)
+            partial(self.pushButton_vorschau_pressed, "vorschau")
         )
         self.pushButton_vorschau.setFocusPolicy(QtCore.Qt.ClickFocus)
         # self.gridLayout.addWidget(self.groupBox_sage, 1, 2, 8, 3)
@@ -3114,13 +3108,13 @@ class Ui_MainWindow(object):
             self.radioButton_beurteilungsraster.setEnabled(False)
             self.radioButton_notenschl.setEnabled(False)
             self.groupBox_notenschl.setEnabled(False)
-            self.groupBox_beurteilungsra.setEnabled(False)
+            self.groupBox_beurteilungsraster.setEnabled(False)
             self.pushButton_titlepage.setEnabled(False)
         else:
             self.radioButton_beurteilungsraster.setEnabled(True)
             self.radioButton_notenschl.setEnabled(True)
             self.groupBox_notenschl.setEnabled(True)
-            self.groupBox_beurteilungsra.setEnabled(True)
+            self.groupBox_beurteilungsraster.setEnabled(True)
             self.pushButton_titlepage.setEnabled(True)
 
     def cb_rest_checked(self):
@@ -4978,39 +4972,33 @@ class Ui_MainWindow(object):
         # buttonN.setText('Standard wieder herstellen')
         # msg.exec_()
 
-    def beurteilungsraster_changed(self):
+    def notenanzeige_changed(self):
         if self.radioButton_beurteilungsraster.isChecked():
             self.groupBox_notenschl.hide()
-            self.gridLayout_5.addWidget(self.groupBox_beurteilungsra, 6, 0, 1, 7)
-            self.save_dict_examples_data()
-            self.label_typ1_pkt.setText(
-                _translate("MainWindow", "Punkte Typ 1: {}".format(self.pkt_typ1), None)
-            )
-            self.label_typ2_pkt.setText(
-                _translate("MainWindow", "Punkte Typ 2: {}".format(self.pkt_typ2), None)
-            )
-            self.label_ausgleich_pkt.setText(
-                _translate(
-                    "MainWindow",
-                    "(davon Ausgleichspunkte: {})".format(
-                        self.num_ausgleichspkt_gesamt
-                    ),
-                    None,
-                )
-            )
-            self.groupBox_beurteilungsra.show()
+            self.gridLayout_5.addWidget(self.groupBox_beurteilungsraster, 6, 0, 1, 7)
+            self.groupBox_beurteilungsraster.show()
 
         if self.radioButton_notenschl.isChecked():
-            self.gridLayout_5.removeWidget(self.groupBox_beurteilungsra)
-            self.groupBox_beurteilungsra.hide()
+            self.gridLayout_5.removeWidget(self.groupBox_beurteilungsraster)
+            self.groupBox_beurteilungsraster.hide()
             self.groupBox_notenschl.show()
 
+        self.update_punkte()
+
+    def get_aufgabentyp(self, aufgabe):
+        if self.chosen_program=='cria':
+            typ=None
+        elif re.search("[A-Z]", aufgabe) == None:
+            typ=2
+        else:
+            typ=1
+        return typ
 
     def get_aufgabenverteilung(self):
         num_typ1=0
         num_typ2=0
         for all in self.list_alle_aufgaben_sage:
-            typ=get_aufgabentyp(all)
+            typ=self.get_aufgabentyp(all)
             if typ==1:
                 num_typ1 +=1
             if typ==2:
@@ -5023,7 +5011,7 @@ class Ui_MainWindow(object):
         if self.chosen_program=='lama':
 
             num_typ1, num_typ2 = self.get_aufgabenverteilung()
-            typ=get_aufgabentyp(aufgabe)
+            typ=self.get_aufgabentyp(aufgabe)
             if typ==1:
                 self.list_alle_aufgaben_sage.insert(num_typ1, aufgabe)
             if typ==2:
@@ -5164,92 +5152,124 @@ class Ui_MainWindow(object):
         # )
         # self.build_aufgaben_schularbeit(False)
 
+    def erase_aufgabe(self, aufgabe):
+        del self.dict_alle_aufgaben_sage[aufgabe]
+        del self.dict_variablen_punkte[aufgabe]
+        self.list_alle_aufgaben_sage.remove(aufgabe)
+        if self.get_aufgabentyp(aufgabe)==2:
+            del self.dict_variablen_label[aufgabe]
+        if aufgabe in self.dict_sage_ausgleichspunkte_chosen:
+            del self.dict_sage_ausgleichspunkte_chosen[aufgabe]
+
+
+
+
+
     def btn_delete_pressed(self, aufgabe):
 
         index=self.list_alle_aufgaben_sage.index(aufgabe)
 
         if index+1 == len(self.list_alle_aufgaben_sage):
-            self.delete_widget(index) 
-            del self.dict_alle_aufgaben_sage[aufgabe]
-            self.list_alle_aufgaben_sage.remove(aufgabe)
+            self.delete_widget(index)
+            self.erase_aufgabe(aufgabe) 
 
         else:
-            del self.dict_alle_aufgaben_sage[aufgabe]
-            self.list_alle_aufgaben_sage.remove(aufgabe)
-
+            self.erase_aufgabe(aufgabe)
             self.build_aufgaben_schularbeit(self.list_alle_aufgaben_sage[index])
+        
+        self.update_punkte()
 
-        if aufgabe in self.dict_sage_ausgleichspunkte_chosen:
-            del self.dict_sage_ausgleichspunkte_chosen[aufgabe]
+
 
 
     def spinbox_pkt_changed(self, aufgabe, spinbox_pkt):
         self.dict_alle_aufgaben_sage[aufgabe][0]=spinbox_pkt.value()
+        self.update_punkte()
 
     def spinbox_abstand_changed(self, aufgabe, spinbox_abstand):
         self.dict_alle_aufgaben_sage[aufgabe][1]=spinbox_abstand.value()
+        self.update_punkte()
 
-    def punkte_changed(self, bsp_string):
-        gesamtpunkte = 0
+
+    def get_punkteverteilung(self):
+        pkt_typ1=0
+        pkt_typ2=0
+        pkt_ausgleich=0
+        for all in self.dict_variablen_punkte:
+            typ=self.get_aufgabentyp(all)
+            if typ==1:
+                pkt_typ1 += self.dict_variablen_punkte[all].value()
+            if typ==2:
+                pkt_typ2 += self.dict_variablen_punkte[all].value()
+                pkt_ausgleich += self.dict_alle_aufgaben_sage[all][3]
         
-        spinBox_pkt = eval("self.spinBox_pkt_{}".format(bsp_string))
-        punkte = spinBox_pkt.value()
+        gesamtpunkte=pkt_typ1+pkt_typ2
+        return [gesamtpunkte, pkt_typ1, pkt_typ2]
 
-        list_input = eval("self.list_input_{}".format(bsp_string))
-        list_input[0] = punkte
+    def update_notenschluessel(self):
+        gesamtpunkte= self.get_punkteverteilung()[0]
 
-        if self.chosen_program=='lama':
-            for all in self.list_alle_aufgaben_sage:
-                temp_all = all.replace("_L_", "")
-                if re.search("[A-Z]", temp_all) == None:
-                    bsp_string = all
-                else:
-                    bsp_string = all.replace(" ", "").replace(".", "").replace("-", "_")
-                gesamtpunkte += punkte
-
-        elif self.chosen_program=='cria':
-            for all in self.list_alle_aufgaben_sage:
-                list_input = eval("self.list_input_{}".format(all))
-                gesamtpunkte += list_input[0]            
-
-            # spinBox_abstand = eval("self.spinBox_abstand_{}".format(bsp_string))
-            # abstand = spinBox_abstand.value()
-            # list_input[1] = abstand
-            
-
-        # gesamtpunkte+=self.num_ausgleichspkt_gesamt
-        # ausgleich_pkt = eval('self.ausgleich_pkt_{}'.format(bsp_string))
-
-        # ausgleich_pkt.setText(_translate("MainWindow", '(AP: {})'.format(len(list_sage_ausgleichspunkte_chosen)),None))
-
-        list_punkte = []
+        verteilung_notenschluessel = []
         for g in range(2, 6):
             r = 0
             x = eval("self.spinBox_{}.value()".format(g))
             if gesamtpunkte * x / 100 == int(gesamtpunkte * x / 100):
-                list_punkte.append(int(gesamtpunkte * (x / 100)))
+                verteilung_notenschluessel.append(int(gesamtpunkte * (x / 100)))
             else:
-                list_punkte.append(int(gesamtpunkte * (x / 100)) + 1)
+                verteilung_notenschluessel.append(int(gesamtpunkte * (x / 100)) + 1)
             r += 1
 
         self.label_sg_pkt.setText(
-            _translate("MainWindow", "% (ab {})".format(list_punkte[0]), None)
+            _translate("MainWindow", "% (ab {})".format(verteilung_notenschluessel[0]), None)
         )
         self.label_g_pkt.setText(
-            _translate("MainWindow", "% (ab {})".format(list_punkte[1]), None)
+            _translate("MainWindow", "% (ab {})".format(verteilung_notenschluessel[1]), None)
         )
         self.label_b_pkt.setText(
-            _translate("MainWindow", "% (ab {})".format(list_punkte[2]), None)
+            _translate("MainWindow", "% (ab {})".format(verteilung_notenschluessel[2]), None)
         )
         self.label_g_pkt_2.setText(
-            _translate("MainWindow", "% (ab {})".format(list_punkte[3]), None)
+            _translate("MainWindow", "% (ab {})".format(verteilung_notenschluessel[3]), None)
         )
-        # self.label_ng_pkt.setText(_translate("MainWindow",	 "% (<{})".format(pkt_ge),None))
+
+
+    def update_beurteilungsraster(self):
+
+        punkteverteilung= self.get_punkteverteilung()
+
+        self.label_typ1_pkt.setText(
+            _translate("MainWindow", "Punkte Typ 1: {}".format(punkteverteilung[1]), None)
+        )
+        self.label_typ2_pkt.setText(
+            _translate("MainWindow", "Punkte Typ 2: {}".format(punkteverteilung[2]), None)
+        )
+        self.label_ausgleich_pkt.setText(
+            _translate(
+                "MainWindow",
+                "(davon Ausgleichspunkte: {})".format(
+                    pkt_ausgleich
+                ),
+                None,
+            )
+        )
+
+
+
+    def update_punkte(self):
+
+        gesamtpunkte = self.get_punkteverteilung()[0]
+
+        if self.radioButton_notenschl.isChecked():
+            self.update_notenschluessel()
+
+        if self.radioButton_beurteilungsraster.isChecked():
+            self.update_beurteilungsraster()
+
 
         self.label_gesamtpunkte.setText(
             _translate("MainWindow", "Gesamtpunkte: %i" % gesamtpunkte, None)
-        )
-        # self.beurteilungsraster_changed() ?? not in LaMA Cria
+        )     
+        # self.notenanzeige_changed() ?? not in LaMA Cria
 
 
     def abstand_changed(self, bsp_string):
@@ -5263,7 +5283,7 @@ class Ui_MainWindow(object):
 
     def update_default_pkt(self):
         for all in self.dict_variablen_punkte:
-            if get_aufgabentyp(all)==1:
+            if self.get_aufgabentyp(all)==1:
                 self.dict_variablen_punkte[all].setValue(self.spinBox_default_pkt.value())
                 self.dict_alle_aufgaben_sage[all][0]=self.spinBox_default_pkt.value()
 
@@ -5272,7 +5292,7 @@ class Ui_MainWindow(object):
         # return
         # if self.list_alle_aufgaben_sage!=[]:
         #     for all in self.list_alle_aufgaben_sage:
-        #         if get_aufgabentyp(all)==1:
+        #         if self.get_aufgabentyp(all)==1:
         #             self.dict_alle_aufgaben_sage[all][0]=self.spinBox_default_pkt.value() 
 
         #     self.build_aufgaben_schularbeit(self.list_alle_aufgaben_sage[0]) 
@@ -5309,7 +5329,7 @@ class Ui_MainWindow(object):
 
 
     def create_neue_aufgaben_box(self,index, aufgabe, aufgaben_infos):
-        typ=get_aufgabentyp(aufgabe)
+        typ=self.get_aufgabentyp(aufgabe)
         aufgaben_verteilung=self.get_aufgabenverteilung()
 
 
@@ -5437,25 +5457,27 @@ class Ui_MainWindow(object):
     #     print(info)
     #     #self.dict_alle_aufgaben_sage[aufgabe]=list_info
 
-    def collect_punkte_aufgabe(self, aufgabe):
-        aufgabe=simplify_string(aufgabe)
-        spinBox_pkt=eval("self.spinBox_pkt_{}".format(aufgabe))
-        punkte = spinBox_pkt.value()
-        return punkte
+    # def collect_punkte_aufgabe(self, aufgabe):
+    #     aufgabe=simplify_string(aufgabe)
+    #     spinBox_pkt=eval("self.spinBox_pkt_{}".format(aufgabe))
+    #     punkte = spinBox_pkt.value()
+    #     return punkte
 
-    def collect_abstand_aufgabe(self, aufgabe):
-        aufgabe=simplify_string(aufgabe)
-        spinBox_abstand=eval("self.spinBox_abstand_{}".format(aufgabe))
-        abstand = spinBox_abstand.value()
-        return abstand
+    # def collect_abstand_aufgabe(self, aufgabe):
+    #     aufgabe=simplify_string(aufgabe)
+    #     spinBox_abstand=eval("self.spinBox_abstand_{}".format(aufgabe))
+    #     abstand = spinBox_abstand.value()
+    #     return abstand
 
 
     def collect_all_infos_aufgabe(self, aufgabe):
-        typ=get_aufgabentyp(aufgabe)
+        typ=self.get_aufgabentyp(aufgabe)
         name = aufgabe + ".tex"
 
         # punkte=self.collect_punkte_aufgabe(aufgabe)
         # abstand=self.collect_abstand_aufgabe(aufgabe)
+
+        if typ==None:
 
         if typ==1:
             for all in self.beispieldaten_dateipfad_1:
@@ -5466,7 +5488,7 @@ class Ui_MainWindow(object):
                     typ_info=x[-2] #Aufgabenformat
             punkte=self.spinBox_default_pkt.value()
 
-        if typ==2:
+        elif typ==2:
             for all in self.beispieldaten_dateipfad_2:
                 filename = os.path.basename(self.beispieldaten_dateipfad_2[all])
                 if name == filename:
@@ -5475,12 +5497,12 @@ class Ui_MainWindow(object):
                     typ_info=self.get_number_ausgleichspunkte(aufgabe) # Ausgleichspunkte
             punkte=0
 
-        dateipfad=self.get_dateipfad_aufgabe(aufgabe)
+        # dateipfad=self.get_dateipfad_aufgabe(aufgabe)
 
-        return [punkte, 0, titel, typ_info, dateipfad]
+        return [punkte, 0, titel, typ_info]
 
     def get_dateipfad_aufgabe(self, aufgabe):
-        typ=get_aufgabentyp(aufgabe)
+        typ=self.get_aufgabentyp(aufgabe)
         if self.chosen_program=='cria':
             list_path = self.beispieldaten_dateipfad_cria.values()
         elif typ==1:
@@ -5504,7 +5526,7 @@ class Ui_MainWindow(object):
         return content       
 
     def get_number_ausgleichspunkte(self, aufgabe):
-        typ=get_aufgabentyp(aufgabe)
+        typ=self.get_aufgabentyp(aufgabe)
 
         if typ==2:
             content=self.collect_content(aufgabe)
@@ -5636,6 +5658,7 @@ class Ui_MainWindow(object):
         )
         self.gridLayout_8.addItem(self.spacerItem, index_item+1, 0, 1, 1)
 
+        self.update_punkte()
         QtWidgets.QApplication.restoreOverrideCursor()
 
 
@@ -5846,7 +5869,7 @@ class Ui_MainWindow(object):
         #     spinBox_pkt = eval("self.spinBox_pkt_{}".format(bsp_string))
         #     spinBox_pkt.setObjectName("spinBox_pkt_{}".format(bsp_string))
         #     spinBox_pkt.setValue(eval("self.list_input_{}".format(bsp_string))[0])
-        #     spinBox_pkt.valueChanged.connect(partial(self.punkte_changed, bsp_string))
+        #     spinBox_pkt.valueChanged.connect(partial(self.update_punkte, bsp_string))
         #     self.gridLayout_3.addWidget(spinBox_pkt, 0, 0, 1, 1)
 
         #     self.pushButton_up = QtWidgets.QPushButton(x)
@@ -6030,12 +6053,12 @@ class Ui_MainWindow(object):
         #     # print(list_input)
         #     num_of_example += 1
         #     if file_loaded==True:
-        #         self.punkte_changed(bsp_string)
+        #         self.update_punkte(bsp_string)
 
         # self.scrollArea_chosen.verticalScrollBar().setValue(scrollBar_position)
         # # self.sum_up_ausgleich()
 
-        # self.beurteilungsraster_changed()
+        # self.notenanzeige_changed()
         # self.lineEdit_number.setText("")
         # self.lineEdit_number.setFocus()
         # QtWidgets.QApplication.restoreOverrideCursor()
@@ -6147,6 +6170,7 @@ class Ui_MainWindow(object):
         self.dict_alle_aufgaben_sage[aufgabe][3]=len(list_sage_ausgleichspunkte_chosen)
 
         self.dict_variablen_label[aufgabe].setText(_translate("MainWindow","AP: {}".format(len(list_sage_ausgleichspunkte_chosen)), None))
+        self.update_punkte()
         # get_number_ausgleichspunkte
         # list_input = eval("self.list_input_{}".format(bsp_string))
         # list_input[3] = len(list_sage_ausgleichspunkte_chosen)
@@ -6625,7 +6649,7 @@ class Ui_MainWindow(object):
 
         self.dict_list_input_examples["list_examples"] = self.list_alle_aufgaben_sage
 
-        return
+
         ### include data for single examples ###
         # for all in self.list_alle_aufgaben_sage:
         #     temp_all = all.replace("_L_", "")
@@ -6698,11 +6722,15 @@ class Ui_MainWindow(object):
 
 
     def pushButton_vorschau_pressed(
-        self, ausgabetyp, index, maximum, pdf=True, lama=True
+        self, ausgabetyp, index=0, maximum=0, pdf=True, lama=True
     ):
-        if ausgabetyp == "vorschau":
-            self.save_dict_examples_data()
+        # if ausgabetyp == "vorschau":
+        #     self.save_dict_examples_data()
 
+        # print(self.dict_list_input_examples)
+        # print(self.dict_alle_aufgaben_sage)
+        # print(self.list_alle_aufgaben_sage)
+        # print(self.dict_sage_ausgleichspunkte_chosen)
 
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
@@ -6746,7 +6774,9 @@ class Ui_MainWindow(object):
                                 bsp_string
                             ] = self.beispieldaten_dateipfad_cria[all]
 
-
+        print(dict_gesammeltedateien)
+        print(self.dict_alle_aufgaben_sage)
+        return
         dict_months = {
             1: "Jänner",
             2: "Februar",
@@ -7543,7 +7573,7 @@ class Ui_MainWindow(object):
         if self.chosen_program=='cria':
             dict_titlepage=self.dict_titlepage_cria
 
-        self.open_subwindow(
+        self.open_dialogwindow_erstellen(
             self.dict_list_input_examples,
             self.beispieldaten_dateipfad_1,
             self.beispieldaten_dateipfad_2,
