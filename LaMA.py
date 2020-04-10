@@ -188,6 +188,7 @@ class Ui_MainWindow(object):
         self.dict_sage_ausgleichspunkte_chosen = {}
         self.dict_chosen_topics = {}
         self.list_creator_topics = []
+        self.list_copy_images=[]
         
 
         titlepage_save = os.path.join(path_programm, "Teildokument", "titlepage_save")
@@ -205,7 +206,7 @@ class Ui_MainWindow(object):
 
     def open_dialogwindow_erstellen(
         self,
-        dict_list_input_examples,
+        dict_all_infos_for_file,
         beispieldaten_dateipfad_1,
         beispieldaten_dateipfad_2,
         dict_titlepage,
@@ -221,7 +222,7 @@ class Ui_MainWindow(object):
         self.ui_erstellen.setupUi(
             self.Dialog,
             # self,
-            dict_list_input_examples,
+            dict_all_infos_for_file,
             beispieldaten_dateipfad_1,
             beispieldaten_dateipfad_2,
             dict_titlepage,
@@ -2635,7 +2636,7 @@ class Ui_MainWindow(object):
         #global list_sage_examples
         try:
             if program_changed==False:
-                self.dict_list_input_examples
+                self.dict_all_infos_for_file
                 msg = QtWidgets.QMessageBox()
                 msg.setIcon(QtWidgets.QMessageBox.Question)
                 msg.setWindowIcon(QtGui.QIcon(logo_path))
@@ -2663,8 +2664,8 @@ class Ui_MainWindow(object):
                 self.comboBox_gk.setCurrentIndex(0)
                 self.comboBox_gk_num.setCurrentIndex(0)
                 self.lineEdit_number.setText("")
-                self.dict_list_input_examples = {
-                    "list_examples": [],
+                self.dict_all_infos_for_file = {
+                    "list_alle_aufgaben": [],
                     "dict_ausgleichspunkte": {},
                     "data_gesamt": {
                         "#": self.spinBox_nummer.value(),
@@ -2778,7 +2779,7 @@ class Ui_MainWindow(object):
 
     def close_app(self):
         try:
-            if self.dict_list_input_examples['list_examples']==[]:
+            if self.dict_all_infos_for_file["list_alle_aufgaben"]==[]:
                 sys.exit(0)
         except AttributeError:
             sys.exit(0)
@@ -4809,9 +4810,9 @@ class Ui_MainWindow(object):
             self.btn_delete_pressed(example, True)
 
         with open(self.saved_file_path, "r", encoding="utf8") as loaded_file:
-            self.dict_list_input_examples = json.load(loaded_file)
+            self.dict_all_infos_for_file = json.load(loaded_file)
 
-        self.list_alle_aufgaben_sage = self.dict_list_input_examples["list_examples"]
+        self.list_alle_aufgaben_sage = self.dict_all_infos_for_file["list_alle_aufgaben"]
 
         for all in self.list_alle_aufgaben_sage:
             if any(all in s for s in self.beispieldaten_dateipfad_1.values()):
@@ -4834,18 +4835,18 @@ class Ui_MainWindow(object):
                 bsp_string = all.replace(" ", "").replace(".", "").replace("-", "_")
             # print(bsp_string)
             exec(
-                'self.list_input_{0}=self.dict_list_input_examples["self.list_input_{0}"]'.format(
+                'self.list_input_{0}=self.dict_all_infos_for_file["self.list_input_{0}"]'.format(
                     bsp_string
                 )
             )
-        self.spinBox_nummer.setValue(self.dict_list_input_examples["data_gesamt"]["#"])
+        self.spinBox_nummer.setValue(self.dict_all_infos_for_file["data_gesamt"]["#"])
         self.lineEdit_klasse.setText(
-            self.dict_list_input_examples["data_gesamt"]["Klasse"]
+            self.dict_all_infos_for_file["data_gesamt"]["Klasse"]
         )
 
         try:
             index = self.comboBox_pruefungstyp.findText(
-                self.dict_list_input_examples["data_gesamt"]["Pruefungstyp"],
+                self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"],
                 QtCore.Qt.MatchFixedString,
             )
         except KeyError:
@@ -4853,37 +4854,37 @@ class Ui_MainWindow(object):
         if index >= 0:
             self.comboBox_pruefungstyp.setCurrentIndex(index)
 
-        if self.dict_list_input_examples["data_gesamt"]["Beurteilung"] == "ns":
+        if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "ns":
             self.radioButton_notenschl.setChecked(True)
             self.radioButton_beurteilungsraster.setChecked(False)
-        if self.dict_list_input_examples["data_gesamt"]["Beurteilung"] == "br":
+        if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "br":
             self.radioButton_notenschl.setChecked(False)
             self.radioButton_beurteilungsraster.setChecked(True)
 
-        year = self.dict_list_input_examples["data_gesamt"]["Datum"][0]
-        month = self.dict_list_input_examples["data_gesamt"]["Datum"][1]
-        day = self.dict_list_input_examples["data_gesamt"]["Datum"][2]
+        year = self.dict_all_infos_for_file["data_gesamt"]["Datum"][0]
+        month = self.dict_all_infos_for_file["data_gesamt"]["Datum"][1]
+        day = self.dict_all_infos_for_file["data_gesamt"]["Datum"][2]
         self.dateEdit.setDate(QtCore.QDate(year, month, day))
 
-        self.dict_sage_ausgleichspunkte_chosen = self.dict_list_input_examples[
+        self.dict_sage_ausgleichspunkte_chosen = self.dict_all_infos_for_file[
             "dict_ausgleichspunkte"
         ]
 
         self.build_aufgaben_schularbeit(True)
         self.spinBox_default_pkt.setValue(
-            self.dict_list_input_examples["data_gesamt"]["Typ1 Standard"]
+            self.dict_all_infos_for_file["data_gesamt"]["Typ1 Standard"]
         )
         self.spinBox_2.setValue(
-            self.dict_list_input_examples["data_gesamt"]["Notenschluessel"][0]
+            self.dict_all_infos_for_file["data_gesamt"]["Notenschluessel"][0]
         )
         self.spinBox_3.setValue(
-            self.dict_list_input_examples["data_gesamt"]["Notenschluessel"][1]
+            self.dict_all_infos_for_file["data_gesamt"]["Notenschluessel"][1]
         )
         self.spinBox_4.setValue(
-            self.dict_list_input_examples["data_gesamt"]["Notenschluessel"][2]
+            self.dict_all_infos_for_file["data_gesamt"]["Notenschluessel"][2]
         )
         self.spinBox_5.setValue(
-            self.dict_list_input_examples["data_gesamt"]["Notenschluessel"][3]
+            self.dict_all_infos_for_file["data_gesamt"]["Notenschluessel"][3]
         )
 
         QtWidgets.QApplication.restoreOverrideCursor()
@@ -4903,7 +4904,7 @@ class Ui_MainWindow(object):
             )
             if path_backup_file[0] == "":
                 return
-            self.save_dict_examples_data()
+            self.collect_all_infos_for_creating_file()
             save_file = path_backup_file[0]
 
         else:
@@ -4918,7 +4919,7 @@ class Ui_MainWindow(object):
         self.saved_file_path = save_file
 
         with open(save_file, "w+", encoding="utf8") as saved_file:
-            json.dump(self.dict_list_input_examples, saved_file, ensure_ascii=False)
+            json.dump(self.dict_all_infos_for_file, saved_file, ensure_ascii=False)
 
     def define_titlepage(self):
         if self.chosen_program=='lama':
@@ -5358,7 +5359,7 @@ class Ui_MainWindow(object):
         
         if typ==None:
             try:
-                aufgabenformat = "\n"+dict_aufgabenformate[aufgaben_infos[3].lower()]
+                aufgabenformat = " ("+dict_aufgabenformate[aufgaben_infos[3].lower()+")"]
             except KeyError:
                 aufgabenformat = "" 
             if '_L_' in aufgaben_nummer:
@@ -5368,7 +5369,7 @@ class Ui_MainWindow(object):
                 label="{0}. Klasse - {1}{2}".format(klasse, aufgaben_nummer, aufgabenformat)
         elif typ==1:
             try:
-                aufgabenformat = "\n"+dict_aufgabenformate[aufgaben_infos[3].lower()]
+                aufgabenformat = " ("+dict_aufgabenformate[aufgaben_infos[3].lower()+")"]
             except KeyError:
                 aufgabenformat = "" 
             label="{0}{1}".format(aufgabe, aufgabenformat)
@@ -5547,14 +5548,23 @@ class Ui_MainWindow(object):
         typ=self.get_aufgabentyp(aufgabe)
         if self.chosen_program=='cria':
             list_path = self.beispieldaten_dateipfad_cria.values()
-        elif typ==1:
-            list_path = self.beispieldaten_dateipfad_1.values()
-        elif typ==2:
-            list_path = self.beispieldaten_dateipfad_2.values()        
-        name= aufgabe + ".tex"
-        for path in list_path:
-            if name == os.path.basename(path):
-                dateipfad = path
+            klasse, aufgabe = self.split_klasse_aufgabe(aufgabe)
+            name = aufgabe + ".tex"
+            for path in list_path:
+                if klasse.lower() in path.lower():
+                    if name == os.path.basename(path):
+                        dateipfad = path
+
+        if self.chosen_program=='lama':
+            if typ==1:
+                list_path = self.beispieldaten_dateipfad_1.values()
+            elif typ==2:
+                list_path = self.beispieldaten_dateipfad_2.values()        
+            name = aufgabe + ".tex"
+            for path in list_path:
+                if name == os.path.basename(path):
+                    dateipfad = path
+
 
         return dateipfad
 
@@ -5601,6 +5611,14 @@ class Ui_MainWindow(object):
             klasse_aufgabe=klasse+'_'+aufgabe 
         return klasse_aufgabe       
 
+    def add_image_path_to_list(self, aufgabe):
+        content = self.collect_content(aufgabe)
+
+        if "\\includegraphics" in content:
+            matches = re.findall("/Bilder/(.+.eps)}", content)
+            for image in matches:
+                self.list_copy_images.append(image) 
+
     def build_aufgaben_schularbeit(self, aufgabe, file_loaded=False): 
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         # print(self.dict_alle_aufgaben_sage)
@@ -5613,10 +5631,7 @@ class Ui_MainWindow(object):
         except AttributeError:
             pass
 
-        # if self.chosen_program=='cria':
-        #     klasse_aufgabe=self.build_klasse_aufgabe(aufgabe)
-        #     index=self.list_alle_aufgaben_sage.index(klasse_aufgabe)
-        # else:    
+ 
         index=self.list_alle_aufgaben_sage.index(aufgabe)
 
 
@@ -5625,10 +5640,6 @@ class Ui_MainWindow(object):
         else:
             start_value=index-1
 
-        # if end_value==None:
-        #     end_value=len(self.list_alle_aufgaben_sage)
-        # print(end_value)
-        # print(self.gridLayout_8.count()+1)
 
         for i in reversed(range(start_value, self.gridLayout_8.count()+1)):
             self.delete_widget(i)
@@ -5637,32 +5648,22 @@ class Ui_MainWindow(object):
 
         for item in self.list_alle_aufgaben_sage[start_value:]:
             index_item = self.list_alle_aufgaben_sage.index(item)
-            # if self.chosen_program=='cria':
-            #     x=self.split_klasse_aufgabe(item)
-            #     x=x[1] 
-            # else:
-            #     x=item    
             item_infos = self.collect_all_infos_aufgabe(item)             
             neue_aufgaben_box=self.create_neue_aufgaben_box(index_item, item, item_infos)            
             self.gridLayout_8.addWidget(neue_aufgaben_box, index_item, 0, 1, 1)
             index_item+1
 
-        # print(self.dict_alle_aufgaben_variablen)
-        # for item in self.list_alle_aufgaben_sage[index-1:]:
-        #     aufgaben_infos=self.collect_all_infos_aufgabe(aufgabe)
-        #     neue_aufgaben_box=self.create_neue_aufgaben_box(index, item, aufgaben_infos, aufgaben_verteilung)            
-        #     self.gridLayout_8.addWidget(neue_aufgaben_box, index-1, 0, 1, 2, QtCore.Qt.AlignTop)
-        #     index+=1
 
-        ###delete item with specific index in grid
-        # if index==2:
-        #     self.gridLayout_8.itemAt(1).widget().setParent(None) 
 
 
         self.spacerItem = QtWidgets.QSpacerItem(
             20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
         )
         self.gridLayout_8.addItem(self.spacerItem, index_item+1, 0, 1, 1)
+
+        
+        self.add_image_path_to_list(aufgabe)
+
 
         self.update_punkte()
         QtWidgets.QApplication.restoreOverrideCursor()
@@ -5737,7 +5738,7 @@ class Ui_MainWindow(object):
 
         # if file_loaded == False:
         #     self.list_copy_images = []
-        #     self.save_dict_examples_data()
+        #     self.collect_all_infos_for_creating_file()
         # if file_loaded == True:
         #     try:
         #         self.list_copy_images
@@ -5913,7 +5914,7 @@ class Ui_MainWindow(object):
 
         #     if (self.chosen_program=='lama' and
         #         typ == 1
-        #         and self.dict_list_input_examples["data_gesamt"]["num_1"]
+        #         and self.dict_all_infos_for_file["data_gesamt"]["num_1"]
         #         == num_of_example
         #     ):
         #         self.pushButton_down.setEnabled(False)
@@ -6650,14 +6651,15 @@ class Ui_MainWindow(object):
                 listWidget.addItem(all)
                 listWidget.setFocusPolicy(QtCore.Qt.ClickFocus)
 
-    def save_dict_examples_data(self):
-        self.dict_list_input_examples = {}
+    def collect_all_infos_for_creating_file(self):
+        self.dict_all_infos_for_file = {}
+        #self.dict_list_input_examples = {}
         num_typ1 = 0
         num_typ2 = 0
         self.pkt_typ1 = 0
         self.pkt_typ2 = 0
 
-        self.dict_list_input_examples["list_examples"] = self.list_alle_aufgaben_sage
+        self.dict_all_infos_for_file["list_alle_aufgaben"] = self.list_alle_aufgaben_sage
 
 
         ### include data for single examples ###
@@ -6670,7 +6672,7 @@ class Ui_MainWindow(object):
         #         bsp_string = all.replace(" ", "").replace(".", "").replace("-", "_")
         #         typ = 1
         #     list_input = eval("self.list_input_{}".format(bsp_string))
-        #     self.dict_list_input_examples[
+        #     self.dict_all_infos_for_file[
         #         "self.list_input_{}".format(bsp_string)
         #     ] = list_input
 
@@ -6683,7 +6685,7 @@ class Ui_MainWindow(object):
         ### end ###
 
         ### include dictionary of changed 'ausgleichspunkte' ###
-        self.dict_list_input_examples[
+        self.dict_all_infos_for_file[
             "dict_ausgleichspunkte"
         ] = self.dict_sage_ausgleichspunkte_chosen
 
@@ -6727,7 +6729,7 @@ class Ui_MainWindow(object):
             "copy_images": self.list_copy_images,
         }
 
-        self.dict_list_input_examples["data_gesamt"] = dict_data_gesamt
+        self.dict_all_infos_for_file["data_gesamt"] = dict_data_gesamt
         ### end ###
 
 
@@ -6735,9 +6737,9 @@ class Ui_MainWindow(object):
         self, ausgabetyp, index=0, maximum=0, pdf=True, lama=True
     ):
         # if ausgabetyp == "vorschau":
-        #     self.save_dict_examples_data()
+        self.collect_all_infos_for_creating_file()
 
-        # print(self.dict_list_input_examples)
+        # print(self.dict_all_infos_for_file)
         # print(self.dict_alle_aufgaben_sage)
         # print(self.list_alle_aufgaben_sage)
         # print(self.dict_sage_ausgleichspunkte_chosen)
@@ -6765,25 +6767,9 @@ class Ui_MainWindow(object):
         elif self.chosen_program == 'cria':
             for aufgabe in self.list_alle_aufgaben_sage:
                 klasse, name = self.split_klasse_aufgabe(aufgabe)
-                    # if "_L_" in bsp_string:
-                #     local_file = True
-                # else:
-                #     local_file = False
-                # list_bsp_string=bsp_string.split("_")
-                # klasse = list_bsp_string[0]
-                # if local_file==True:
-                #     example = "_L_"+list_bsp_string[-1]
-                # else:
-                #     example = list_bsp_string[-1]
-                # name = aufgabe + '.tex'
 
                 name = name + ".tex"
-
-            #     for files in self.list_alle_aufgaben_sage:
-            #         print(files)
-                    # if files == name:
-                    #     dict_gesammeltedateien[name] = all
-
+                
                 for all in self.beispieldaten_dateipfad_cria:
                     filename_all = os.path.basename(all)
                     if klasse.upper() in all:
@@ -6792,8 +6778,9 @@ class Ui_MainWindow(object):
                                 aufgabe
                             ] = self.beispieldaten_dateipfad_cria[all]
 
-        print(dict_gesammeltedateien)
-        return
+        # print(self.dict_alle_aufgaben_sage)
+        # print(self.list_alle_aufgaben_sage)
+
         dict_months = {
             1: "Jänner",
             2: "Februar",
@@ -6819,7 +6806,7 @@ class Ui_MainWindow(object):
         }
 
         # print(str(self.spinBox_nummer.value()) +str(self.dateEdit.date().day()) +'. '+dict_months[self.dateEdit.date().month()]+' '+ str(self.dateEdit.date().year()))
-        raw_date = self.dict_list_input_examples["data_gesamt"]["Datum"]
+        raw_date = self.dict_all_infos_for_file["data_gesamt"]["Datum"]
         datum_kurz = (
             str(raw_date[2]) + ". " + str(raw_date[1]) + ". " + str(raw_date[0])
         )
@@ -6897,9 +6884,6 @@ class Ui_MainWindow(object):
             dict_titlepage=self.dict_titlepage_cria
 
 
-        print(self.dict_list_input_examples)
-        return
-
         vorschau = open(filename_vorschau, "w+", encoding="utf8")
 
         vorschau.write(
@@ -6959,7 +6943,7 @@ class Ui_MainWindow(object):
 
 
         if (
-            self.dict_list_input_examples["data_gesamt"]["Pruefungstyp"]
+            self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
             == "Grundkompetenzcheck"
         ):
             if ausgabetyp == "schularbeit" and maximum > 2:
@@ -6973,7 +6957,7 @@ class Ui_MainWindow(object):
                     "\\textsc{Grundkompetenzcheck} \\hfill \\textsc{Name:} \\rule{8cm}{0.4pt} \\normalsize \\\ \\vspace{\\baselineskip} \n\n"
                 )
         elif (
-            self.dict_list_input_examples["data_gesamt"]["Pruefungstyp"]
+            self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
             == "Übungsblatt"
         ):
             vorschau.write("\\subsection{Übungsblatt}")
@@ -6993,15 +6977,15 @@ class Ui_MainWindow(object):
 
             if dict_titlepage["hide_all"] == True:
                 if (
-                    self.dict_list_input_examples["data_gesamt"]["Pruefungstyp"]
+                    self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
                     == "Wiederholungsprüfung"
                 ):
                     vorschau.write("\\textsc{{Name:}} \\rule{{8cm}}{{0.4pt}}"
-                    "\\subsection{{{0} \\hfill {1}}}".format(self.dict_list_input_examples["data_gesamt"]["Pruefungstyp"], datum_kurz)
+                    "\\subsection{{{0} \\hfill {1}}}".format(self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"], datum_kurz)
                     )
                 else:
                     vorschau.write("\\textsc{{Name:}} \\rule{{8cm}}{{0.4pt}}"
-                    "\\subsection{{{0}. {1} \\hfill {2}}}".format(self.dict_list_input_examples["data_gesamt"]["#"],self.dict_list_input_examples["data_gesamt"]["Pruefungstyp"], datum_kurz)
+                    "\\subsection{{{0}. {1} \\hfill {2}}}".format(self.dict_all_infos_for_file["data_gesamt"]["#"],self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"], datum_kurz)
                     )  
             
             else:
@@ -7035,23 +7019,23 @@ class Ui_MainWindow(object):
                     vorschau.write("~\\vfil \n")
                 if dict_titlepage["titel"] == True:
                     if (
-                        self.dict_list_input_examples["data_gesamt"]["Pruefungstyp"]
+                        self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
                         == "Wiederholungsprüfung"
                     ):
                         vorschau.write("\\textsc{{\\Huge Wiederholungsprüfung}} \\\ \n")
                     else:
                         vorschau.write(
                             "\\textsc{{\\Huge {0}. Mathematikschularbeit}} \\\ \n".format(
-                                self.dict_list_input_examples["data_gesamt"]["#"]
+                                self.dict_all_infos_for_file["data_gesamt"]["#"]
                             )
                         )
                         if (
-                            self.dict_list_input_examples["data_gesamt"]["Pruefungstyp"]
+                            self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
                             == "Wiederholungsschularbeit"
                         ):
                             vorschau.write("[0.5cm]" "\\textsc{\Large Wiederholung} \\\ \n")
                         if (
-                            self.dict_list_input_examples["data_gesamt"]["Pruefungstyp"]
+                            self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
                             == "Nachschularbeit"
                         ):
                             vorschau.write(
@@ -7063,7 +7047,7 @@ class Ui_MainWindow(object):
                 if dict_titlepage["klasse"] == True:
                     vorschau.write(
                         "\\textsc{{\Large Klasse {0}}} \\\ [1cm] \n".format(
-                            self.dict_list_input_examples["data_gesamt"]["Klasse"]
+                            self.dict_all_infos_for_file["data_gesamt"]["Klasse"]
                         )
                     )
 
@@ -7082,10 +7066,10 @@ class Ui_MainWindow(object):
                 if dict_titlepage["unterschrift"] == True:
                     vorschau.write("\\Large Unterschrift: \\rule{8cm}{0.4pt} \\\ \n")
 
-                if self.dict_list_input_examples["data_gesamt"]["Beurteilung"] == "br":
+                if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "br":
                     exkl_teil2_pkt = (
-                        self.dict_list_input_examples["data_gesamt"]["punkte_2"]
-                        - self.dict_list_input_examples["data_gesamt"]["ausgleichspunkte"]
+                        self.dict_all_infos_for_file["data_gesamt"]["punkte_2"]
+                        - self.dict_all_infos_for_file["data_gesamt"]["ausgleichspunkte"]
                     )
                     vorschau.write(
                         "\\newpage \n"
@@ -7096,8 +7080,8 @@ class Ui_MainWindow(object):
                         "AP={{{1}}}, % Ausgleichspunkte aus Teil 2\n"
                         "T2={{{2}}}, % Punkte im Teil 2\n"
                         "}} \\newpage".format(
-                            self.dict_list_input_examples["data_gesamt"]["punkte_1"],
-                            self.dict_list_input_examples["data_gesamt"][
+                            self.dict_all_infos_for_file["data_gesamt"]["punkte_1"],
+                            self.dict_all_infos_for_file["data_gesamt"][
                                 "ausgleichspunkte"
                             ],
                             exkl_teil2_pkt,
@@ -7110,33 +7094,37 @@ class Ui_MainWindow(object):
         vorschau = open(filename_vorschau, "a", encoding="utf8")
         # for key, value in dict_gesammeltedateien.items():
         list_chosen_examples = []
-        # print(self.dict_list_input_examples)
+        # print(self.dict_all_infos_for_file)
         control_counter = 0
         # print(self.list_alle_aufgaben_sage)
-        for all in self.list_alle_aufgaben_sage:
+
+
+        for aufgabe in self.list_alle_aufgaben_sage:
             if self.chosen_program == 'lama':
-                temp_all = all.replace("_L_", "")
-                if re.search("[A-Z]", temp_all) == None:
-                    bsp_string = all
-                    typ = 2
-                else:
-                    bsp_string = all.replace(" ", "").replace(".", "").replace("-", "_")
-                    typ = 1
-                list_input = "self.list_input_{}".format(bsp_string)
-                spinBox_abstand = self.dict_list_input_examples[list_input][1]
-                spinBox_pkt = self.dict_list_input_examples[list_input][0]
-                f = open(dict_gesammeltedateien[all], "r", encoding="utf8")
+                typ=self.get_aufgabentyp(aufgabe)
+                # temp_all = all.replace("_L_", "")
+                # if re.search("[A-Z]", temp_all) == None:
+                #     bsp_string = all
+                #     typ = 2
+                # else:
+                #     bsp_string = all.replace(" ", "").replace(".", "").replace("-", "_")
+                #     typ = 1
+                
+                spinbox_pkt = self.dict_alle_aufgaben_sage[aufgabe][0]
+                spinbox_abstand = self.dict_alle_aufgaben_sage[aufgabe][1]
+                
+                f = open(dict_gesammeltedateien[aufgabe], "r", encoding="utf8")
                 content = f.readlines()
                 f.close()
 
 
                 ##### adapt content for	 creation ###
 
-                if all in self.dict_list_input_examples["dict_ausgleichspunkte"].keys():
+                if aufgabe in self.dict_all_infos_for_file["dict_ausgleichspunkte"].keys():
                     content = [line.replace("\\fbox{A}", "") for line in content]
-                    for ausgleichspunkte in self.dict_list_input_examples[
+                    for ausgleichspunkte in self.dict_all_infos_for_file[
                         "dict_ausgleichspunkte"
-                    ][all]:
+                    ][aufgabe]:
                         content = [
                             line.replace(
                                 ausgleichspunkte.partition("\n")[0],
@@ -7148,20 +7136,20 @@ class Ui_MainWindow(object):
 
 
             if self.chosen_program == 'cria':
-                bsp_string=all
-                list_input = "self.list_input_{}".format(bsp_string)
-
-                spinBox_abstand = self.dict_list_input_examples[list_input][1]
-                spinBox_pkt = self.dict_list_input_examples[list_input][0]
-                f = open(dict_gesammeltedateien[bsp_string], "r", encoding="utf8")
-                content = f.readlines()
-                f.close()                
+                # bsp_string=all
+                # list_input = "self.list_input_{}".format(bsp_string)
+                spinbox_pkt = self.dict_alle_aufgaben_sage[aufgabe][0]
+                spinbox_abstand = self.dict_alle_aufgaben_sage[aufgabe][1]
                 
-            # print(self.dict_list_input_examples)
-            # print(self.dict_list_input_examples['data_gesamt']['copy_images'])
+                f = open(dict_gesammeltedateien[aufgabe], "r", encoding="utf8")
+                content = f.readlines()
+                f.close()             
+                
+            # print(self.dict_all_infos_for_file)
+            # print(self.dict_all_infos_for_file['data_gesamt']['copy_images'])
 
             if ausgabetyp == "schularbeit":
-                # print(self.dict_list_input_examples['data_gesamt']['copy_images'])
+                # print(self.dict_all_infos_for_file['data_gesamt']['copy_images'])
                 if index == 0:
                     if dict_titlepage["logo"] == True:
                         logo_name = os.path.basename(dict_titlepage["logo_path"])
@@ -7179,27 +7167,18 @@ class Ui_MainWindow(object):
                                 ),
                             )
                         else:
-                            msg = QtWidgets.QMessageBox()
-                            msg.setIcon(QtWidgets.QMessageBox.Warning)
-                            msg.setWindowIcon(QtGui.QIcon(logo_path))
-                            msg.setText("Das Logo konnte nicht gefunden werden.")
-                            msg.setInformativeText(
-                                "Bitte suchen Sie ein Logo unter: \n\nTitelblatt anpassen - Durchsuchen"
-                            )
-                            msg.setWindowTitle("Kein Logo ausgewählt")
-                            msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
-                            msg.exec_()
+                            self.warning_window("Das Logo konnte nicht gefunden werden.", 
+                            "Bitte suchen Sie ein Logo unter: \n\nTitelblatt anpassen - Durchsuchen",
+                            "Kein Logo ausgewählt")
 
-                    # print(self.dict_list_input_examples['data_gesamt']['copy_images'])
-                    # return
 
                     if (
-                        self.dict_list_input_examples["data_gesamt"]["copy_images"]
+                        self.dict_all_infos_for_file["data_gesamt"]["copy_images"]
                         == []
                     ):
                         pass
                     else:
-                        for image in self.dict_list_input_examples["data_gesamt"][
+                        for image in self.dict_all_infos_for_file["data_gesamt"][
                             "copy_images"
                         ]:
                             if os.path.isfile(
@@ -7266,7 +7245,7 @@ class Ui_MainWindow(object):
                                 )
 
 
-                for image in self.dict_list_input_examples["data_gesamt"][
+                for image in self.dict_all_infos_for_file["data_gesamt"][
                     "copy_images"
                 ]:
                     content = [
@@ -7281,6 +7260,7 @@ class Ui_MainWindow(object):
                         for line in content
                     ]
 
+
             for line in content:
                 if "begin{beispiel}" in line:
                     beginning = line
@@ -7294,6 +7274,7 @@ class Ui_MainWindow(object):
                 if "end{beispiel}" in line or "end{langesbeispiel}" in line:
                     ending = line
                     end = content.index(line)
+
             content = content[start:end]
             joined_content = "".join(content)
             sub_list = []
@@ -7302,7 +7283,7 @@ class Ui_MainWindow(object):
             sub_list.append(ending)
             list_chosen_examples.append(sub_list)
 
-            example = list_chosen_examples[self.list_alle_aufgaben_sage.index(all)]
+            example = list_chosen_examples[self.list_alle_aufgaben_sage.index(aufgabe)]
             try:
                 x, y = example[0].split("[")
                 gk, z = y.split("]")
@@ -7310,9 +7291,9 @@ class Ui_MainWindow(object):
                 gk = ""
 
             if (
-                self.dict_list_input_examples["data_gesamt"]["Pruefungstyp"]
+                self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
                 == "Grundkompetenzcheck"
-                or self.dict_list_input_examples["data_gesamt"]["Pruefungstyp"]
+                or self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
                 == "Übungsblatt"
             ):
                 header = ""
@@ -7343,7 +7324,7 @@ class Ui_MainWindow(object):
                         "%s\\begin{beispiel}[" % header
                         + gk
                         + "]{"
-                        + str(spinBox_pkt)
+                        + str(spinbox_pkt)
                         + "}\n"
                         + example[1]
                         + "\n"
@@ -7354,7 +7335,7 @@ class Ui_MainWindow(object):
             elif self.chosen_program=='lama' and beispiel_typ == "langesbeispiel":
                 vorschau.write(
                     "\\newpage\n\n%s\\begin{langesbeispiel} \item[" % header
-                    + str(spinBox_pkt)
+                    + str(spinbox_pkt)
                     + "]\n"
                     + example[1]
                     + "\n"
@@ -7365,7 +7346,7 @@ class Ui_MainWindow(object):
             elif self.chosen_program=='cria' and beispiel_typ == "langesbeispiel":
                 vorschau.write(
                     "\\begin{langesbeispiel} \item["
-                    + str(spinBox_pkt)
+                    + str(spinbox_pkt)
                     + "]\n"
                     + example[1]
                     + "\n"
@@ -7373,20 +7354,20 @@ class Ui_MainWindow(object):
                     + "\n\n"
                 )
 
-            if spinBox_abstand != 0:
-                if spinBox_abstand == 99:
+            if spinbox_abstand != 0:
+                if spinbox_abstand == 99:
                     vorschau.write("\\newpage \n\n")
                 else:
-                    vorschau.write("\\vspace{" + str(spinBox_abstand) + "cm} \n\n")
+                    vorschau.write("\\vspace{" + str(spinbox_abstand) + "cm} \n\n")
 
         if (
-            self.dict_list_input_examples["data_gesamt"]["Pruefungstyp"]
+            self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
             != "Grundkompetenzcheck"
-            and self.dict_list_input_examples["data_gesamt"]["Pruefungstyp"]
+            and self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
             != "Übungsblatt"
         ):
-            if self.dict_list_input_examples["data_gesamt"]["Beurteilung"] == "ns":
-                notenschluessel = self.dict_list_input_examples["data_gesamt"][
+            if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "ns":
+                notenschluessel = self.dict_all_infos_for_file["data_gesamt"][
                     "Notenschluessel"
                 ]
                 vorschau.write(
@@ -7582,7 +7563,7 @@ class Ui_MainWindow(object):
     ############################################################################
 
     def pushButton_erstellen_pressed(self):
-        self.save_dict_examples_data()
+        self.collect_all_infos_for_creating_file()
         try:
             self.saved_file_path
         except AttributeError:
@@ -7594,7 +7575,7 @@ class Ui_MainWindow(object):
             dict_titlepage=self.dict_titlepage_cria
 
         self.open_dialogwindow_erstellen(
-            self.dict_list_input_examples,
+            self.dict_all_infos_for_file,
             self.beispieldaten_dateipfad_1,
             self.beispieldaten_dateipfad_2,
             dict_titlepage,
