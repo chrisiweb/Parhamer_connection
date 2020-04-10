@@ -5335,7 +5335,7 @@ class Ui_MainWindow(object):
         typ=self.get_aufgabentyp(aufgabe)
         aufgaben_verteilung=self.get_aufgabenverteilung()
         if self.chosen_program=='cria':
-            klasse, aufgaben_nummer=self.split_aufgabe(aufgabe)
+            klasse, aufgaben_nummer=self.split_klasse_aufgabe(aufgabe)
             klasse=klasse[1]
 
             new_groupbox=create_new_groupbox(self.scrollAreaWidgetContents_2,
@@ -5346,10 +5346,9 @@ class Ui_MainWindow(object):
 
 
         if (index % 2) == 0 and (typ==1 or typ==None):
-            if (index % 2) == 0:
-                new_groupbox.setStyleSheet(_fromUtf8("background-color: rgb(255, 255, 255);"))
-            if typ == 2:
-                new_groupbox.setStyleSheet(_fromUtf8("background-color: rgb(255, 212, 212);"))
+            new_groupbox.setStyleSheet(_fromUtf8("background-color: rgb(255, 255, 255);"))
+        if typ == 2:
+            new_groupbox.setStyleSheet(_fromUtf8("background-color: rgb(255, 212, 212);"))
 
 
 
@@ -5359,13 +5358,17 @@ class Ui_MainWindow(object):
         
         if typ==None:
             try:
-                aufgabenformat = " ("+dict_aufgabenformate[aufgaben_infos[3].lower()]+")"
+                aufgabenformat = "\n"+dict_aufgabenformate[aufgaben_infos[3].lower()]
             except KeyError:
                 aufgabenformat = "" 
-            label="{0}. Klasse - {1}{2}".format(klasse, aufgaben_nummer, aufgabenformat)
+            if '_L_' in aufgaben_nummer:
+                x= aufgaben_nummer.replace("_L_","")
+                label="{0}. Klasse - {1} (lokal){2}".format(klasse, x, aufgabenformat)
+            else:
+                label="{0}. Klasse - {1}{2}".format(klasse, aufgaben_nummer, aufgabenformat)
         elif typ==1:
             try:
-                aufgabenformat = " ("+dict_aufgabenformate[aufgaben_infos[3].lower()]+")"
+                aufgabenformat = "\n"+dict_aufgabenformate[aufgaben_infos[3].lower()]
             except KeyError:
                 aufgabenformat = "" 
             label="{0}{1}".format(aufgabe, aufgabenformat)
@@ -5502,7 +5505,7 @@ class Ui_MainWindow(object):
         # abstand=self.collect_abstand_aufgabe(aufgabe)
 
         if typ==None:
-            klasse, aufgabe=self.split_aufgabe(aufgabe)
+            klasse, aufgabe=self.split_klasse_aufgabe(aufgabe)
             name=aufgabe + ".tex"
             for all in self.beispieldaten_dateipfad_cria:
                 if klasse.upper() in all:
@@ -5583,8 +5586,10 @@ class Ui_MainWindow(object):
             pass        
 
 
-    def split_aufgabe(self, aufgabe):
-        klasse, aufgabe=aufgabe.split('_')
+    def split_klasse_aufgabe(self, aufgabe):
+        klasse, aufgabe=aufgabe.split("_",1)
+        if 'L_' in aufgabe:
+            aufgabe='_'+aufgabe   
 
         return klasse, aufgabe
 
@@ -5598,11 +5603,11 @@ class Ui_MainWindow(object):
 
     def build_aufgaben_schularbeit(self, aufgabe, file_loaded=False): 
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        print(self.dict_alle_aufgaben_sage)
-        print(self.list_alle_aufgaben_sage)
+        # print(self.dict_alle_aufgaben_sage)
+        # print(self.list_alle_aufgaben_sage)
         # print(aufgaben_verteilung)
         # print(self.list_alle_aufgaben_sage)
-        print(aufgabe)
+        # print(aufgabe)
         try:
             self.gridLayout_8.removeItem(self.spacerItem)
         except AttributeError:
@@ -5633,7 +5638,7 @@ class Ui_MainWindow(object):
         for item in self.list_alle_aufgaben_sage[start_value:]:
             index_item = self.list_alle_aufgaben_sage.index(item)
             # if self.chosen_program=='cria':
-            #     x=self.split_aufgabe(item)
+            #     x=self.split_klasse_aufgabe(item)
             #     x=x[1] 
             # else:
             #     x=item    
@@ -6756,31 +6761,38 @@ class Ui_MainWindow(object):
                 for files in self.list_alle_aufgaben_sage:
                     if files == name:
                         dict_gesammeltedateien[name] = all
+
         elif self.chosen_program == 'cria':
-            for bsp_string in self.list_alle_aufgaben_sage:
-                if "_L_" in bsp_string:
-                    local_file = True
-                else:
-                    local_file = False
-                list_bsp_string=bsp_string.split("_")
-                klasse = list_bsp_string[0]
-                if local_file==True:
-                    example = "_L_"+list_bsp_string[-1]
-                else:
-                    example = list_bsp_string[-1]
+            for aufgabe in self.list_alle_aufgaben_sage:
+                klasse, name = self.split_klasse_aufgabe(aufgabe)
+                    # if "_L_" in bsp_string:
+                #     local_file = True
+                # else:
+                #     local_file = False
+                # list_bsp_string=bsp_string.split("_")
+                # klasse = list_bsp_string[0]
+                # if local_file==True:
+                #     example = "_L_"+list_bsp_string[-1]
+                # else:
+                #     example = list_bsp_string[-1]
+                # name = aufgabe + '.tex'
 
-                name = example + ".tex"
+                name = name + ".tex"
 
+            #     for files in self.list_alle_aufgaben_sage:
+            #         print(files)
+                    # if files == name:
+                    #     dict_gesammeltedateien[name] = all
 
                 for all in self.beispieldaten_dateipfad_cria:
+                    filename_all = os.path.basename(all)
                     if klasse.upper() in all:
                         if name == os.path.basename(self.beispieldaten_dateipfad_cria[all]):
                             dict_gesammeltedateien[
-                                bsp_string
+                                aufgabe
                             ] = self.beispieldaten_dateipfad_cria[all]
 
         print(dict_gesammeltedateien)
-        print(self.dict_alle_aufgaben_sage)
         return
         dict_months = {
             1: "Jänner",
@@ -6884,6 +6896,9 @@ class Ui_MainWindow(object):
         if self.chosen_program=='cria':
             dict_titlepage=self.dict_titlepage_cria
 
+
+        print(self.dict_list_input_examples)
+        return
 
         vorschau = open(filename_vorschau, "w+", encoding="utf8")
 
