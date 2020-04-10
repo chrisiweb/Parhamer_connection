@@ -67,12 +67,12 @@ k7_beschreibung = config_loader(config_file, "k7_beschreibung")
 k8_beschreibung = config_loader(config_file, "k8_beschreibung")
 
 dict_gk = config_loader(config_file, "dict_gk")
-dict_aufgabenformate = config_loader(config_file, "dict_aufgabenformate")
 Klassen = config_loader(config_file, "Klassen")
 
 #### LaMA Cria
 list_klassen = config_loader(config_file, "list_klassen")
 dict_aufgabenformate = config_loader(config_file, "dict_aufgabenformate")
+dict_aufgabenformate_only_cria = config_loader(config_file, "dict_aufgabenformate_only_cria")
 
 
 for klasse in list_klassen:
@@ -153,6 +153,16 @@ def create_new_spinbox(parent):
 
     return new_spinbox
 
+def create_new_combobox(parent):
+    new_combobox = QtWidgets.QComboBox(parent)
+    new_combobox.setObjectName(_fromUtf8("{}".format(new_combobox)))
+
+    return new_combobox
+
+
+def add_options_to_combobox(combobox, index, item):
+    combobox.addItem(_fromUtf8(""))
+    combobox.setItemText(index, _translate("MainWindow", item, None))
 
 
 
@@ -177,6 +187,8 @@ def create_file_titlepage(titlepage_save):
 def simplify_string(string):
     string=string.replace(" ", "").replace(".", "").replace("-", "_")
     return string   
+
+
 
 class Ui_MainWindow(object):
     global dict_picture_path, set_chosen_gk #, list_sage_examples#, dict_alle_aufgaben_sage
@@ -1192,7 +1204,10 @@ class Ui_MainWindow(object):
         self.spinBox_punkte.setProperty("value", 1)
         self.spinBox_punkte.setObjectName(_fromUtf8("spinBox_punkte"))
         self.gridLayout_6.addWidget(self.spinBox_punkte, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_punkte, 0, 2, 1, 1)
+        if self.chosen_program=='lama':
+            self.gridLayout.addWidget(self.groupBox_punkte, 0, 2, 1, 1)
+        if self.chosen_program=='cria':
+            self.gridLayout.addWidget(self.groupBox_punkte, 0, 1, 1, 1)
         self.groupBox_punkte.setTitle(_translate("MainWindow", "Punkte", None))
         self.groupBox_punkte.hide()
 
@@ -1200,27 +1215,29 @@ class Ui_MainWindow(object):
         self.groupBox_aufgabenformat.setObjectName(_fromUtf8("groupBox_aufgabenformat"))
         self.gridLayout_7 = QtWidgets.QGridLayout(self.groupBox_aufgabenformat)
         self.gridLayout_7.setObjectName(_fromUtf8("gridLayout_7"))
-        self.comboBox_af = QtWidgets.QComboBox(self.groupBox_aufgabenformat)
-        self.comboBox_af.setObjectName(_fromUtf8("comboBox_af"))
-        self.comboBox_af.addItem(_fromUtf8(""))
-        self.comboBox_af.addItem(_fromUtf8(""))
-        self.comboBox_af.addItem(_fromUtf8(""))
-        self.comboBox_af.addItem(_fromUtf8(""))
-        self.comboBox_af.addItem(_fromUtf8(""))
+
+        self.comboBox_af = create_new_combobox(self.groupBox_aufgabenformat)
+        add_options_to_combobox(self.comboBox_af, 0, "bitte auswählen")
+
         self.gridLayout_7.addWidget(self.comboBox_af, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_aufgabenformat, 0, 3, 1, 1)
+
+        if self.chosen_program=='lama':
+            self.gridLayout.addWidget(self.groupBox_aufgabenformat, 0, 3, 1, 1)
+        if self.chosen_program=='cria':
+            self.gridLayout.addWidget(self.groupBox_aufgabenformat, 0, 2, 1, 1)
         self.groupBox_aufgabenformat.setTitle(
             _translate("MainWindow", "Aufgabenformat", None)
         )
-        self.comboBox_af.setItemText(
-            0, _translate("MainWindow", "bitte auswählen", None)
-        )
+
         i = 1
         for all in dict_aufgabenformate:
-            self.comboBox_af.setItemText(
-                i, _translate("MainWindow", dict_aufgabenformate[all], None)
-            )
-            i += 1
+            add_options_to_combobox(self.comboBox_af, i, dict_aufgabenformate[all])
+            i+=1
+        if self.chosen_program=='cria':
+            for all in dict_aufgabenformate_only_cria:
+                add_options_to_combobox(self.comboBox_af, i, dict_aufgabenformate_only_cria[all])
+                i+=1
+
         self.groupBox_aufgabenformat.hide()
         self.label_keine_auswahl = QtWidgets.QLabel(self.groupBox_aufgabenformat)
         self.label_keine_auswahl.setObjectName(_fromUtf8("label_keine_auswahl"))
@@ -2727,10 +2744,17 @@ class Ui_MainWindow(object):
             self.chosen_program = 'cria'
             self.update_gui('widgets_search')
             self.gridLayout.addWidget(self.groupBox_af, 3, 0, 1, 1)
+            self.gridLayout.addWidget(self.groupBox_punkte, 0, 1, 1, 1)
+            self.gridLayout.addWidget(self.groupBox_aufgabenformat, 0, 2, 1, 1)
             self.actionProgram.setText(_translate("MainWindow", 'Zu "LaMA (Oberstufe)" wechseln', None))
             self.cb_af_ko.show()
             self.cb_af_rf.show()
             self.cb_af_ta.show()
+            if self.chosen_program=='cria':
+                i=5
+                for all in dict_aufgabenformate_only_cria:
+                    add_options_to_combobox(self.comboBox_af, i, dict_aufgabenformate_only_cria[all])
+                    i+=1
             self.comboBox_klassen_changed("sage")
             MainWindow.setWindowTitle(
                 _translate(
@@ -2756,10 +2780,18 @@ class Ui_MainWindow(object):
             self.chosen_program = 'lama'
             self.update_gui('widgets_search')
             self.gridLayout.addWidget(self.groupBox_af, 4, 0, 1, 1)
+            self.gridLayout.addWidget(self.groupBox_punkte, 0, 2, 1, 1)
+            self.gridLayout.addWidget(self.groupBox_aufgabenformat, 0, 3, 1, 1)
             self.actionProgram.setText(_translate("MainWindow", 'Zu "LaMA Cria (Unterstufe)" wechseln', None))
             self.cb_af_ko.hide()
             self.cb_af_rf.hide()
             self.cb_af_ta.hide()
+            self.comboBox_af.removeItem(7)
+            self.comboBox_af.removeItem(6)
+            self.comboBox_af.removeItem(5)
+
+
+
             MainWindow.setWindowTitle(
                 _translate(
                     "LaMA - LaTeX Mathematik Assistent (Oberstufe)",

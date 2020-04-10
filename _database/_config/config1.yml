@@ -391,6 +391,13 @@ dict_aufgabenformate: # Only used in PyQT
         "oa": "Offenes Antwortformat"
         "zo": "Zuordnungsformat"
 
+
+dict_aufgabenformate_only_cria:
+    "rf": "Richtig/Falsch-Format"
+    "ta": "Textaufgaben"
+    "ko": "Konstruktion"
+
+
 Klassen: 
         "k5": "5. Klasse"
         "k6": "6. Klasse"
@@ -399,14 +406,7 @@ Klassen:
         "mat": "Matura"
         "univie": "Uni Wien"
 
-dict_aufgabenformate_cria:
-    "lt": "Lückentext"
-    "mc": "Mutiple Choice"
-    "oa": "Offenes Antwortformat"
-    "rf": "Richtig/Falsch-Format"
-    "ta": "Textaufgaben"
-    "zo": "Zuordnungsformat"
-    "ko": "Konstruktion"
+
 
 
 list_klassen:
