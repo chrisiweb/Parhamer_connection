@@ -2704,7 +2704,12 @@ class Ui_MainWindow(object):
                     except AttributeError:
                         pass
                 self.list_alle_aufgaben_sage = []
-                self.build_aufgaben_schularbeit(False)
+                self.dict_alle_aufgaben_sage={}
+                self.dict_variablen_label={}
+                self.dict_variablen_punkte={}
+                for i in reversed(range(self.gridLayout_8.count())):
+                    self.delete_widget(i)
+                #self.build_aufgaben_schularbeit(False)
 
         except AttributeError:
             pass
@@ -5019,14 +5024,7 @@ class Ui_MainWindow(object):
 
 
         if self.chosen_program =='cria':
-            klasse = list_klassen[self.comboBox_klassen.currentIndex()]
-            if "_L_" in aufgabe:
-                aufgabe = klasse + aufgabe
-            else:
-                aufgabe = klasse + "_" + aufgabe
-
-            if aufgabe not in self.list_alle_aufgaben_sage:
-                self.list_alle_aufgaben_sage.append(aufgabe)
+            self.list_alle_aufgaben_sage.append(aufgabe)
 
 
         num_total = len(self.list_alle_aufgaben_sage)
@@ -5184,6 +5182,7 @@ class Ui_MainWindow(object):
 
     def spinbox_pkt_changed(self, aufgabe, spinbox_pkt):
         self.dict_alle_aufgaben_sage[aufgabe][0]=spinbox_pkt.value()
+        print(self.dict_alle_aufgaben_sage)
         self.update_punkte()
 
     def spinbox_abstand_changed(self, aufgabe, spinbox_abstand):
@@ -5195,15 +5194,19 @@ class Ui_MainWindow(object):
         pkt_typ1=0
         pkt_typ2=0
         pkt_ausgleich=0
+        gesamtpunkte=0
         for all in self.dict_variablen_punkte:
             typ=self.get_aufgabentyp(all)
-            if typ==1:
+            if typ==None:
+                gesamtpunkte += self.dict_variablen_punkte[all].value()
+            elif typ==1:
                 pkt_typ1 += self.dict_variablen_punkte[all].value()
-            if typ==2:
+                gesamtpunkte += pkt_typ1
+            elif typ==2:
                 pkt_typ2 += self.dict_variablen_punkte[all].value()
                 pkt_ausgleich += self.dict_alle_aufgaben_sage[all][3]
-        
-        gesamtpunkte=pkt_typ1+pkt_typ2
+                gesamtpunkte += pkt_typ2
+
         return [gesamtpunkte, pkt_typ1, pkt_typ2]
 
     def update_notenschluessel(self):
@@ -5331,13 +5334,19 @@ class Ui_MainWindow(object):
     def create_neue_aufgaben_box(self,index, aufgabe, aufgaben_infos):
         typ=self.get_aufgabentyp(aufgabe)
         aufgaben_verteilung=self.get_aufgabenverteilung()
+        if self.chosen_program=='cria':
+            klasse, aufgaben_nummer=self.split_aufgabe(aufgabe)
+            klasse=klasse[1]
+
+            new_groupbox=create_new_groupbox(self.scrollAreaWidgetContents_2,
+            "{0}. Aufgabe".format(index+1))
+        else:
+            new_groupbox=create_new_groupbox(self.scrollAreaWidgetContents_2,
+            "{0}. Aufgabe (Typ{1})".format(index+1, typ))
 
 
-        new_groupbox=create_new_groupbox(self.scrollAreaWidgetContents_2,
-        "{0}. Aufgabe (Typ{1})".format(index+1, typ))
-
-        if self.chosen_program=='lama':
-            if (index % 2) == 0 and typ == 1:
+        if (index % 2) == 0 and (typ==1 or typ==None):
+            if (index % 2) == 0:
                 new_groupbox.setStyleSheet(_fromUtf8("background-color: rgb(255, 255, 255);"))
             if typ == 2:
                 new_groupbox.setStyleSheet(_fromUtf8("background-color: rgb(255, 212, 212);"))
@@ -5347,13 +5356,20 @@ class Ui_MainWindow(object):
         gridLayout_gB = QtWidgets.QGridLayout(new_groupbox)
         gridLayout_gB.setObjectName("gridLayout_gB")
 
-        if typ==1:
+        
+        if typ==None:
             try:
-                aufgabenformat = dict_aufgabenformate[aufgaben_infos[3].lower()]
+                aufgabenformat = " ("+dict_aufgabenformate[aufgaben_infos[3].lower()]+")"
             except KeyError:
                 aufgabenformat = "" 
-            label="{0} ({1})".format(aufgabe, aufgabenformat)
-        if typ == 2:
+            label="{0}. Klasse - {1}{2}".format(klasse, aufgaben_nummer, aufgabenformat)
+        elif typ==1:
+            try:
+                aufgabenformat = " ("+dict_aufgabenformate[aufgaben_infos[3].lower()]+")"
+            except KeyError:
+                aufgabenformat = "" 
+            label="{0}{1}".format(aufgabe, aufgabenformat)
+        elif typ == 2:
             label="{0}".format(aufgabe)
 
         label_aufgabe = create_new_label(new_groupbox, label)
@@ -5365,7 +5381,6 @@ class Ui_MainWindow(object):
 
         groupbox_pkt = create_new_groupbox(new_groupbox, "Punkte")
         gridLayout_gB.addWidget(groupbox_pkt, 0, 1, 2, 1,QtCore.Qt.AlignRight)
-
         punkte=self.dict_alle_aufgaben_sage[aufgabe][0]
 
         horizontalLayout_groupbox_pkt = QtWidgets.QHBoxLayout(groupbox_pkt)
@@ -5395,7 +5410,7 @@ class Ui_MainWindow(object):
         QtWidgets.QStyle.SP_ArrowUp)
         gridLayout_gB.addWidget(button_up, 0, 3, 2, 1)
         number=index+1
-        if typ==1 and number==1:
+        if (typ==1 or typ==None) and number==1:
             button_up.setEnabled(False)
         if typ==2 and number==aufgaben_verteilung[0]+1:
             button_up.setEnabled(False)
@@ -5407,7 +5422,7 @@ class Ui_MainWindow(object):
 
         if typ==1 and number==aufgaben_verteilung[0]:
             button_down.setEnabled(False)
-        if typ==2 and number==len(self.list_alle_aufgaben_sage):
+        if (typ==2 or typ==None) and number==len(self.list_alle_aufgaben_sage):
             button_down.setEnabled(False)
 
 
@@ -5469,17 +5484,40 @@ class Ui_MainWindow(object):
     #     abstand = spinBox_abstand.value()
     #     return abstand
 
+    def get_klasse(self, aufgabe):
+        # print(list_klassen[self.comboBox_klassen.currentIndex()])
+        # dateipfad = self.get_dateipfad_aufgabe(aufgabe)
+        # if "Beispieleinreichung" in dateipfad or "Lokaler_Ordner" in dateipfad:
+        #     klasse=os.path.basename(os.path.dirname(dateipfad))
+        # else:  
+        klasse=list_klassen[self.comboBox_klassen.currentIndex()]
+        
+        return klasse
+
 
     def collect_all_infos_aufgabe(self, aufgabe):
         typ=self.get_aufgabentyp(aufgabe)
-        name = aufgabe + ".tex"
 
         # punkte=self.collect_punkte_aufgabe(aufgabe)
         # abstand=self.collect_abstand_aufgabe(aufgabe)
 
         if typ==None:
+            klasse, aufgabe=self.split_aufgabe(aufgabe)
+            name=aufgabe + ".tex"
+            for all in self.beispieldaten_dateipfad_cria:
+                if klasse.upper() in all:
+                    filename = os.path.basename(self.beispieldaten_dateipfad_cria[all])
+                    print(filename)
+                    print(name)
+                    if name == filename:
+                        section_split = all.split(" - ")
+                        titel=section_split[3]
+                        typ_info=section_split[4] # Aufgabenformat
+            punkte=0
+
 
         if typ==1:
+            name = aufgabe + ".tex"
             for all in self.beispieldaten_dateipfad_1:
                 filename = os.path.basename(self.beispieldaten_dateipfad_1[all])
                 if name == filename:
@@ -5489,6 +5527,7 @@ class Ui_MainWindow(object):
             punkte=self.spinBox_default_pkt.value()
 
         elif typ==2:
+            name = aufgabe + ".tex"
             for all in self.beispieldaten_dateipfad_2:
                 filename = os.path.basename(self.beispieldaten_dateipfad_2[all])
                 if name == filename:
@@ -5536,33 +5575,6 @@ class Ui_MainWindow(object):
             return number_ausgleichspunkte
 
 
-    # def update_einzelaufgabe(self, aufgabe):
-    #     index=self.list_alle_aufgaben_sage.index(aufgabe)
-    #     print(index)
-    #     try:
-    #         self.gridLayout_8.removeItem(self.spacerItem)
-    #     except AttributeError:
-    #         pass
-    #     aufgabe_infos = self.collect_all_infos_aufgabe(aufgabe)
-    #     # old_box=self.gridLayout_8.itemAt(index).widget()    
-    #     # self.gridLayout_8.itemAt(index).widget()
-    #     #self.delete_widget(index)
-    #     # for i in range(self.gridLayout_8.count()):
-    #     #     print(i)
-    #     # self.delete_widget(index)
-    #     self.gridLayout_8.itemAt(index).widget().hide()
-    #     box=self.create_neue_aufgaben_box(index, aufgabe, aufgabe_infos)         
-    #     box.show()
-
-    #     self.spacerItem = QtWidgets.QSpacerItem(
-    #         20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
-    #     )
-    #     self.gridLayout_8.addItem(self.spacerItem, index_item+1, 0, 1, 1)        
-    #     # self.gridLayout_8.removeWidget(self.gridLayout_8.itemAt(index).widget())
-    #     # print(aufgabe)
-    #     # print(index)
-
-
     def delete_widget(self, index):
         try:
             self.gridLayout_8.itemAt(index).widget().setParent(None)
@@ -5571,19 +5583,37 @@ class Ui_MainWindow(object):
             pass        
 
 
+    def split_aufgabe(self, aufgabe):
+        klasse, aufgabe=aufgabe.split('_')
+
+        return klasse, aufgabe
+
+    def build_klasse_aufgabe(self, aufgabe):
+        klasse=self.get_klasse(aufgabe)
+        if '_L_' in aufgabe:
+            klasse_aufgabe=klasse+aufgabe
+        else:    
+            klasse_aufgabe=klasse+'_'+aufgabe 
+        return klasse_aufgabe       
 
     def build_aufgaben_schularbeit(self, aufgabe, file_loaded=False): 
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        # print(self.dict_alle_aufgaben_sage)
-        # print(self.list_alle_aufgaben_sage)
+        print(self.dict_alle_aufgaben_sage)
+        print(self.list_alle_aufgaben_sage)
         # print(aufgaben_verteilung)
         # print(self.list_alle_aufgaben_sage)
+        print(aufgabe)
         try:
             self.gridLayout_8.removeItem(self.spacerItem)
         except AttributeError:
             pass
 
+        # if self.chosen_program=='cria':
+        #     klasse_aufgabe=self.build_klasse_aufgabe(aufgabe)
+        #     index=self.list_alle_aufgaben_sage.index(klasse_aufgabe)
+        # else:    
         index=self.list_alle_aufgaben_sage.index(aufgabe)
+
 
         if index==0:
             start_value=index          
@@ -5597,45 +5627,16 @@ class Ui_MainWindow(object):
 
         for i in reversed(range(start_value, self.gridLayout_8.count()+1)):
             self.delete_widget(i)
-                # try:
-                #     self.gridLayout_8.itemAt(i).widget().setParent(None)
-                # except AttributeError:
-                #     print('error2')
-                #     pass
 
-
-        #     if index>=1:
-        #         print(self.gridLayout_8.itemAt(index-1).widget())
-        #         self.gridLayout_8.itemAt(index-1).widget().setParent(None)
-        # except AttributeError:
-        #     print('error2')
-
-
-        # if index==2:
-         ###delete item with specific index in grid       
-        #self.gridLayout_8.itemAt(index).widget().setParent(None)
-        #self.gridLayout_8.count() 
-        # for i in reversed(range(index+1,len(self.list_alle_aufgaben_sage))):
-        #     print(i)
-        #     self.gridLayout_8.itemAt(i).widget().setParent(None)
-
-        # try:
-        #     self.gridLayout_8.itemAt(index-1).widget().deleteLater(None)
-        # except AttributeError:
-        #     print('error2')
-
-
-        # aufgaben_infos = self.collect_all_infos_aufgabe(aufgabe)
-        # neue_aufgaben_box=self.create_neue_aufgaben_box(index+1, aufgabe, aufgaben_infos, aufgaben_verteilung)
-        # print(neue_aufgaben_box)
-        # # print(self.gridLayout_8.indexOf(neue_aufgaben_box))
-        # self.gridLayout_8.addWidget(neue_aufgaben_box, index, 0, 1, 1)
-
-        # print(self.gridLayout_8.indexOf(neue_aufgaben_box))
 
 
         for item in self.list_alle_aufgaben_sage[start_value:]:
             index_item = self.list_alle_aufgaben_sage.index(item)
+            # if self.chosen_program=='cria':
+            #     x=self.split_aufgabe(item)
+            #     x=x[1] 
+            # else:
+            #     x=item    
             item_infos = self.collect_all_infos_aufgabe(item)             
             neue_aufgaben_box=self.create_neue_aufgaben_box(index_item, item, item_infos)            
             self.gridLayout_8.addWidget(neue_aufgaben_box, index_item, 0, 1, 1)
@@ -6263,11 +6264,15 @@ class Ui_MainWindow(object):
 
     def nummer_clicked(self, item):
         aufgabe=item.text().replace("*E-", "")
+        if self.chosen_program=='cria':
+            aufgabe=self.build_klasse_aufgabe(aufgabe)
+
         if aufgabe in self.list_alle_aufgaben_sage:
             return
         self.sage_aufgabe_add(aufgabe)
-        infos=self.collect_all_infos_aufgabe(aufgabe)  
+        infos=self.collect_all_infos_aufgabe(aufgabe)
         self.dict_alle_aufgaben_sage[aufgabe]=infos
+
         self.build_aufgaben_schularbeit(aufgabe) # aufgabe, aufgaben_verteilung
         self.lineEdit_number.setText("")
         self.lineEdit_number.setFocus()
