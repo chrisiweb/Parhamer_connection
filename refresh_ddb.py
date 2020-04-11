@@ -66,7 +66,9 @@ def save_log_file(self, log_file, beispieldaten_dateipfad):
         )
     )
 
-def refresh_ddb(self):
+def refresh_ddb(self, selected_program=False):
+    if selected_program==False:
+        selected_program=self.chosen_program
     msg = QtWidgets.QMessageBox()
     msg.setWindowIcon(QtGui.QIcon(logo_path))
     msg.setWindowTitle("Refresh Database")
@@ -76,7 +78,7 @@ def refresh_ddb(self):
     msg.show()
     QApplication.processEvents()
     QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-    if self.chosen_program == 'lama':
+    if selected_program == 'lama':
         for selected_aufgabentyp in [1, 2]:
             beispieldaten_dateipfad = {}
             # beispieldaten = []
@@ -106,7 +108,7 @@ def refresh_ddb(self):
 
             save_log_file(self, log_file, beispieldaten_dateipfad)
 
-    if self.chosen_program == 'cria':
+    if selected_program == 'cria':
         beispieldaten_dateipfad = {}
         for klasse in list_klassen:
             #### offiziell ####

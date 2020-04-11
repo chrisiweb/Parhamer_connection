@@ -4884,8 +4884,102 @@ class Ui_MainWindow(object):
     ##################################################################
     ################## Befehle LAMA SAGE################################
 
+    def create_log_file(self, typ):
+        if typ==None:
+            program='cria'
+            log_file=os.path.join(path_programm, "Teildokument", "log_file_cria")
+        else:
+            program='lama'
+            if typ==1:
+                log_file=os.path.join(path_programm, "Teildokument", "log_file_1")
+            if typ==2:
+                log_file=os.path.join(path_programm, "Teildokument", "log_file_2")
+
+        refresh_ddb(self, program)
+        with open(log_file, encoding="utf8") as f:
+            beispieldaten_dateipfad = json.load(f)
+        
+        return beispieldaten_dateipfad
+
+        
+
+    def check_if_file_exists(self): #aufgabe
+        # print(self.beispieldaten_dateipfad_1.values())
+        typ=None
+        for i in range(2):
+            while True:
+                try:
+                    if typ==None:
+                        search_list=self.beispieldaten_dateipfad_cria.values() 
+                    elif typ==1:
+                        search_list=self.beispieldaten_dateipfad_1.values()
+                    elif typ==2:
+                        search_list=self.beispieldaten_dateipfad_2.values()
+                    break
+                except AttributeError:
+                    if typ==None:
+                        self.beispieldaten_dateipfad_cria=self.create_log_file(typ) 
+                    elif typ==1:
+                        self.beispieldaten_dateipfad_1=self.create_log_file(typ)
+                    elif typ==2:
+                        self.beispieldaten_dateipfad_2=self.create_log_file(typ)
+                break
+                            
+            
+
+
+
+        print('done') 
+        return    
+        # if typ==None:
+        #     mode='cria', log_file='log_file_cria'
+        # if typ==1:
+        #     mode='lama', log_file='log_file_1'    
+        
+        # if typ==1:
+        #     if any(all in path for path in self.beispieldaten_dateipfad_1.values()):
+        #         pass
+        #     else:
+        #         print('not')    
+        # if typ==2:
+                
+        #     print(all)
+        #     if any(all in path for path in self.beispieldaten_dateipfad_1.values()):
+        #         print(all)
+        #     else:
+        #         print('false')   
+        # return
+        # try:
+        #     self.beispieldaten_dateipfad_1
+        #     self.beispieldaten_dateipfad_2
+       
+        # except AttributeError:
+        #     refresh_ddb(self, 'lama')
+        #     log_file_1 = os.path.join(path_programm, "Teildokument", "log_file_1")
+        #     log_file_2 = os.path.join(path_programm, "Teildokument", "log_file_2")
+        #     with open(log_file_1, encoding="utf8") as f:
+        #         beispieldaten_dateipfad_1 = json.load(f)
+        #     self.beispieldaten_dateipfad_1 = beispieldaten_dateipfad_1
+        #     with open(log_file_2, encoding="utf8") as f:
+        #         beispieldaten_dateipfad_2 = json.load(f)
+        #     self.beispieldaten_dateipfad_2 = beispieldaten_dateipfad_2
+
+        
+        # try:
+        #     self.beispieldaten_dateipfad_cria
+        # except AttributeError:
+        #     refresh_ddb(self,'cria')
+        #     log_file_cria = os.path.join(path_programm, "Teildokument", "log_file_cria")
+        #     with open(log_file_cria, encoding="utf8") as f:
+        #         beispieldaten_dateipfad_cria = json.load(f)
+        #     self.beispieldaten_dateipfad_cria = beispieldaten_dateipfad_cria
+
+
+
     def sage_load(self, external_file_loaded):
         #global list_sage_examples
+        self.check_if_file_exists()
+        return
         if external_file_loaded == False:
             try:
                 os.path.dirname(self.saved_file_path)
@@ -4905,16 +4999,17 @@ class Ui_MainWindow(object):
         if external_file_loaded == True:
             self.saved_file_path = loaded_lama_file_path
 
-        self.neue_schularbeit_erstellen()
-        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        self.update_gui('widgets_sage')
 
-        for example in self.list_alle_aufgaben_sage:
-            self.btn_delete_pressed(example, True)
+        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        self.reset_sage()
 
         with open(self.saved_file_path, "r", encoding="utf8") as loaded_file:
             self.dict_all_infos_for_file = json.load(loaded_file)
 
+
         self.list_alle_aufgaben_sage = self.dict_all_infos_for_file["list_alle_aufgaben"]
+        self.dict_alle_aufgaben_sage = self.dict_all_infos_for_file["dict_alle_aufgaben"]
 
         for all in self.list_alle_aufgaben_sage:
             if any(all in s for s in self.beispieldaten_dateipfad_1.values()):
@@ -4923,13 +5018,22 @@ class Ui_MainWindow(object):
                 if any(all in s for s in self.beispieldaten_dateipfad_2.values()):
                     pass
                 else:
-                    self.warning_window(
-                        'Die Aufgabe "{}" konnte nicht in der Datenbank gefunden werden. \n\n\n (Tipp: Refresh Database)'.format(
-                            all
-                        )
-                    )
-                    return
+                    response=self.question_window("Aufgabe nicht gefunden", 'Die Aufgabe "{}" konnte nicht in der vorliegenden Datenbank nicht gefunden werden. Wollen Sie diese Aufgabe entfernen?',
+                    'Dies könnte daran liegen, dass die Datenbank veraltet ist (Tipp: Refresh Database)')
 
+                    if response==True:
+                        print('ja')
+                    if response==False:
+                        print('nein')
+
+                    # self.warning_window(
+                    #     'Die Aufgabe "{}" konnte nicht in der Datenbank gefunden werden. \n\n\n (Tipp: Refresh Database)'.format(
+                    #         all
+                    #     )
+                    # )
+                    return
+        print('done')
+        return
         for all in self.list_alle_aufgaben_sage:
             if re.search("[A-Z]", all) == None:
                 bsp_string = all
@@ -5013,10 +5117,9 @@ class Ui_MainWindow(object):
             name, extension = os.path.splitext(path_file)
             path_file = name + "_autosave.lama"
             save_file = path_file
-        try:
-            self.neue_schularbeit_erstellen()
-        except AttributeError:
-            pass
+
+        self.update_gui('widgets_sage')    
+
 
         self.saved_file_path = save_file
 
@@ -6814,7 +6917,7 @@ class Ui_MainWindow(object):
 
         self.dict_all_infos_for_file["list_alle_aufgaben"] = self.list_alle_aufgaben_sage
 
-
+        self.dict_all_infos_for_file["dict_alle_aufgaben"]= self.dict_alle_aufgaben_sage
         ### include data for single examples ###
         # for all in self.list_alle_aufgaben_sage:
         #     temp_all = all.replace("_L_", "")
