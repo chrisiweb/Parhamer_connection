@@ -390,12 +390,10 @@ dict_aufgabenformate: # Only used in PyQT
         "mc": "Mutiple Choice"
         "oa": "Offenes Antwortformat"
         "zo": "Zuordnungsformat"
+        "rf": "Richtig/Falsch-Format"
+        "ta": "Textaufgaben"
+        "ko": "Konstruktion"
 
-
-dict_aufgabenformate_only_cria:
-    "rf": "Richtig/Falsch-Format"
-    "ta": "Textaufgaben"
-    "ko": "Konstruktion"
 
 
 Klassen: 

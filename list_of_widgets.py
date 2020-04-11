@@ -139,4 +139,18 @@ widgets_create_cria = [
     "pushButton_save",
 ]
 
-list_widgets = [widgets_search, widgets_sage, widgets_create, widgets_feedback, widgets_search_cria, widgets_sage_cria, widgets_create_cria]
+widgets_feedback_cria = [
+    "menuSuche",
+    "menuSage",
+    "menuNeu",
+    "menuHelp",
+    "comboBox_at_fb",
+    "label_example",
+    "groupBox_alle_aufgaben_fb_cria",
+    "groupBox_fehlertyp",
+    "groupBox_feedback",
+    "groupBox_email",
+    "pushButton_send",
+]
+
+list_widgets = [widgets_search, widgets_sage, widgets_create, widgets_feedback, widgets_search_cria, widgets_sage_cria, widgets_create_cria, widgets_feedback_cria]

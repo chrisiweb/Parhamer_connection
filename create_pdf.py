@@ -28,6 +28,8 @@ dict_gk = config_loader(config_file, "dict_gk")
 Klassen = config_loader(config_file, "Klassen")
 list_klassen = config_loader(config_file, "list_klassen")
 
+dict_aufgabenformate = config_loader(config_file, "dict_aufgabenformate")
+
 
 def prepare_tex_for_pdf(self):
     QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
@@ -386,6 +388,16 @@ def prepare_tex_for_pdf(self):
             if suchbegriffe == []:
                 dict_gesammeltedateien = beispieldaten_dateipfad
             for all_formats in list(dict_aufgabenformate.keys()):
+                x = eval("self.cb_af_" + all_formats)
+                if x.isChecked() == False:
+                    for all in list(dict_gesammeltedateien):
+                        if all_formats.upper() in all:
+                            del dict_gesammeltedateien[all]
+
+                        # if all_formats in all:
+                        # del dict_gesammeltedateien[all]
+
+            for all_formats in list(dict_aufgabenformate_only_cria.keys()):
                 x = eval("self.cb_af_" + all_formats)
                 if x.isChecked() == False:
                     for all in list(dict_gesammeltedateien):
