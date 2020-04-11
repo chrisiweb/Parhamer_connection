@@ -336,10 +336,9 @@ def prepare_tex_for_pdf(self):
 
         if (
             self.combobox_searchtype.currentText()
-            == "Alle Dateien ausgeben, die alle Suchkriterien enthalten"
+            == "Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten"
         ):
             beispieldaten_temporary = list(beispieldaten_dateipfad.keys())
-
             for item in suchbegriffe:
 
                 klasse = "K" + item[0]
@@ -397,15 +396,6 @@ def prepare_tex_for_pdf(self):
                         # if all_formats in all:
                         # del dict_gesammeltedateien[all]
 
-            for all_formats in list(dict_aufgabenformate_only_cria.keys()):
-                x = eval("self.cb_af_" + all_formats)
-                if x.isChecked() == False:
-                    for all in list(dict_gesammeltedateien):
-                        if all_formats.upper() in all:
-                            del dict_gesammeltedateien[all]
-
-                        # if all_formats in all:
-                        # del dict_gesammeltedateien[all]
                 if x.isChecked() == True:
                     suchbegriffe.append(all_formats)
     ########################################################
