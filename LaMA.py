@@ -2056,7 +2056,7 @@ class Ui_MainWindow(object):
         self.actionReset.triggered.connect(self.suchfenster_reset)
         self.actionReset_sage.triggered.connect(self.reset_sage)
         self.actionLoad.triggered.connect(partial(self.sage_load, False))
-        self.actionSave.triggered.connect(partial(self.sage_save, ""))
+        self.actionSave.triggered.connect(self.sage_save)
         self.actionAufgaben_Typ1.triggered.connect(self.chosen_aufgabenformat_typ1)
         self.actionAufgaben_Typ2.triggered.connect(self.chosen_aufgabenformat_typ2)
         self.actionInfo.triggered.connect(self.show_info)
@@ -2719,8 +2719,6 @@ class Ui_MainWindow(object):
         self.plainTextEdit.setPlainText(_translate("MainWindow", "", None))
 
     def reset_sage(self, program_changed=False):
-        #global list_sage_examples
-        # try:
         if program_changed==False:
             response=self.question_window('Schularbeit löschen?',
             'Sind Sie sicher, dass Sie das Fenster zurücksetzen wollen und die erstellte Schularbeit löschen möchten?')
@@ -2772,28 +2770,15 @@ class Ui_MainWindow(object):
                 "copy_images": [],
             },
         }
-        # for all in self.list_alle_aufgaben_sage:
-        #     if re.search("[A-Z]", all) == None:
-        #         bsp_string = all
-        #     else:
-        #         bsp_string = (
-        #             all.replace(" ", "").replace(".", "").replace("-", "_")
-        #         )
 
-        #     try:
-        #         exec("self.groupBox_bsp_{}.setParent(None)".format(bsp_string))
-        #     except AttributeError:
-        #         pass
         self.list_alle_aufgaben_sage = []
         self.dict_alle_aufgaben_sage={}
         self.dict_variablen_label={}
         self.dict_variablen_punkte={}
         for i in reversed(range(self.gridLayout_8.count())):
             self.delete_widget(i)
-            #self.build_aufgaben_schularbeit(False)
 
-        # except AttributeError:
-        #     pass
+
 
     def change_program(self):
         # print(self.chosen_program)
@@ -2874,16 +2859,14 @@ class Ui_MainWindow(object):
 
 
     def close_app(self):
-        try:
-            if self.dict_all_infos_for_file["list_alle_aufgaben"]==[]:
-                sys.exit(0)
-        except AttributeError:
+        if self.list_alle_aufgaben_sage==[]:
             sys.exit(0)
+
 
         response=self.question_window("Schularbeit schon gespeichert?", "Möchten Sie vor dem Schließen speichern?")
 
         if response == True:
-            self.sage_save("")
+            self.sage_save()
         else:
             sys.exit(0)
 
@@ -4950,56 +4933,6 @@ class Ui_MainWindow(object):
                 file_found=False
             return file_found
 
-        # if any(aufgabe in path for path in searched_paths):
-
-        
-
-
-        print('done') 
-        return    
-        # if typ==None:
-        #     mode='cria', log_file='log_file_cria'
-        # if typ==1:
-        #     mode='lama', log_file='log_file_1'    
-        
-        # if typ==1:
-        #     if any(all in path for path in self.beispieldaten_dateipfad_1.values()):
-        #         pass
-        #     else:
-        #         print('not')    
-        # if typ==2:
-                
-        #     print(all)
-        #     if any(all in path for path in self.beispieldaten_dateipfad_1.values()):
-        #         print(all)
-        #     else:
-        #         print('false')   
-        # return
-        # try:
-        #     self.beispieldaten_dateipfad_1
-        #     self.beispieldaten_dateipfad_2
-       
-        # except AttributeError:
-        #     refresh_ddb(self, 'lama')
-        #     log_file_1 = os.path.join(path_programm, "Teildokument", "log_file_1")
-        #     log_file_2 = os.path.join(path_programm, "Teildokument", "log_file_2")
-        #     with open(log_file_1, encoding="utf8") as f:
-        #         beispieldaten_dateipfad_1 = json.load(f)
-        #     self.beispieldaten_dateipfad_1 = beispieldaten_dateipfad_1
-        #     with open(log_file_2, encoding="utf8") as f:
-        #         beispieldaten_dateipfad_2 = json.load(f)
-        #     self.beispieldaten_dateipfad_2 = beispieldaten_dateipfad_2
-
-        
-        # try:
-        #     self.beispieldaten_dateipfad_cria
-        # except AttributeError:
-        #     refresh_ddb(self,'cria')
-        #     log_file_cria = os.path.join(path_programm, "Teildokument", "log_file_cria")
-        #     with open(log_file_cria, encoding="utf8") as f:
-        #         beispieldaten_dateipfad_cria = json.load(f)
-        #     self.beispieldaten_dateipfad_cria = beispieldaten_dateipfad_cria
-
 
 
     def sage_load(self, external_file_loaded):
@@ -5024,9 +4957,9 @@ class Ui_MainWindow(object):
 
         self.update_gui('widgets_sage')
 
-        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        
         self.reset_sage()
-
+        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         with open(self.saved_file_path, "r", encoding="utf8") as loaded_file:
             self.dict_all_infos_for_file = json.load(loaded_file)
 
@@ -5038,6 +4971,7 @@ class Ui_MainWindow(object):
         for aufgabe in self.list_alle_aufgaben_sage:
             file_found=self.check_if_file_exists(aufgabe)
             if file_found==False:
+                QtWidgets.QApplication.restoreOverrideCursor()
                 response=self.question_window("Aufgabe nicht gefunden",
                 'Die Aufgabe "{}" konnte in der Datenbank nicht gefunden werden. Dies könnte daran liegen, dass die Datenbank veraltet ist (Tipp: Refresh Database)'.format(aufgabe),
                 'Wollen Sie diese Aufgabe entfernen?')
@@ -5045,6 +4979,7 @@ class Ui_MainWindow(object):
                 if response==True:
                     self.list_alle_aufgaben_sage.remove(aufgabe)
                     del self.dict_alle_aufgaben_sage[aufgabe]
+                    QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
                 if response==False:
                     return
                  
@@ -5105,14 +5040,14 @@ class Ui_MainWindow(object):
         )
 
         QtWidgets.QApplication.restoreOverrideCursor()
-
-    def sage_save(self, path_file):  # path_file
+    
+    def sage_save(self, path_file=None):  # path_file
         try:
             self.saved_file_path
         except AttributeError:
             self.saved_file_path = path_programm
 
-        if path_file == "":
+        if path_file == None:
             path_backup_file = QtWidgets.QFileDialog.getSaveFileName(
                 None,
                 "Speichern unter",
@@ -5420,7 +5355,6 @@ class Ui_MainWindow(object):
                 pkt_typ1 += self.dict_variablen_punkte[all].value()
                 gesamtpunkte += self.dict_variablen_punkte[all].value()
             elif typ==2:
-                print(self.dict_variablen_punkte)
                 pkt_typ2 += self.dict_variablen_punkte[all].value()
                 pkt_ausgleich += self.dict_alle_aufgaben_sage[all][3]
                 gesamtpunkte += self.dict_variablen_punkte[all].value()
@@ -5465,7 +5399,6 @@ class Ui_MainWindow(object):
     def update_beurteilungsraster(self):
 
         punkteverteilung= self.get_punkteverteilung()
-        print(punkteverteilung)
         self.label_typ1_pkt.setText(
             _translate("MainWindow", "Punkte Typ 1: {}".format(punkteverteilung[1]), None)
         )
@@ -5741,8 +5674,6 @@ class Ui_MainWindow(object):
             for all in self.beispieldaten_dateipfad_cria:
                 if klasse.upper() in all:
                     filename = os.path.basename(self.beispieldaten_dateipfad_cria[all])
-                    print(filename)
-                    print(name)
                     if name == filename:
                         section_split = all.split(" - ")
                         titel=section_split[3]
@@ -5822,7 +5753,6 @@ class Ui_MainWindow(object):
         try:
             self.gridLayout_8.itemAt(index).widget().setParent(None)
         except AttributeError:
-            print('error')
             pass        
 
 
