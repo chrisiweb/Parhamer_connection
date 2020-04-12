@@ -2863,6 +2863,16 @@ class Ui_MainWindow(object):
         if self.list_alle_aufgaben_sage==[]:
             sys.exit(0)
 
+        # else: # not working: self.dict_all_infos_for_file == self.dict_all_infos_for_file_save_status always equal??
+        #     try:
+        #         self.collect_all_infos_for_creating_file()
+        #         print(self.dict_all_infos_for_file_save_status)
+        #         print(self.dict_all_infos_for_file)
+        #         if self.dict_all_infos_for_file == self.dict_all_infos_for_file_save_status:
+        #             sys.exit(0)
+        #     except AttributeError:
+        #         pass                
+
 
         response=self.question_window("Schularbeit schon gespeichert?", "Möchten Sie vor dem Schließen speichern?")
 
@@ -5055,13 +5065,13 @@ class Ui_MainWindow(object):
 
         QtWidgets.QApplication.restoreOverrideCursor()
     
-    def sage_save(self, path_file=False):  # path_file
+    def sage_save(self, path_create_tex_file=False):  # path_file
         try:
             self.saved_file_path
         except AttributeError:
             self.saved_file_path = path_programm
 
-        if path_file == False:
+        if path_create_tex_file == False:
             path_backup_file = QtWidgets.QFileDialog.getSaveFileName(
                 None,
                 "Speichern unter",
@@ -5074,9 +5084,9 @@ class Ui_MainWindow(object):
             save_file = path_backup_file[0]
 
         else:
-            name, extension = os.path.splitext(path_file)
-            path_file = name + "_autosave.lama"
-            save_file = path_file
+            name, extension = os.path.splitext(path_create_tex_file)
+            path_create_tex_file = name + "_autosave.lama"
+            save_file = path_create_tex_file
 
         self.update_gui('widgets_sage')    
 
@@ -5085,6 +5095,7 @@ class Ui_MainWindow(object):
 
         with open(save_file, "w+", encoding="utf8") as saved_file:
             json.dump(self.dict_all_infos_for_file, saved_file, ensure_ascii=False)
+
 
     def define_titlepage(self):
         if self.chosen_program=='lama':
