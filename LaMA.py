@@ -6466,6 +6466,13 @@ class Ui_MainWindow(object):
 
         if aufgabe in self.list_alle_aufgaben_sage:
             return
+
+        try:
+            self.collect_content(aufgabe)
+        except FileNotFoundError:
+            self.warning_window('Die Datei konnte nicht gefunden werden.\nBitte wählen Sie "Refresh Database" (F5) und versuchen Sie es erneut.')
+            return
+    
         self.sage_aufgabe_add(aufgabe)
         infos=self.collect_all_infos_aufgabe(aufgabe)
         self.dict_alle_aufgaben_sage[aufgabe]=infos
