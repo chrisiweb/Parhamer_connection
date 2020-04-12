@@ -2863,7 +2863,15 @@ class Ui_MainWindow(object):
         if self.list_alle_aufgaben_sage==[]:
             sys.exit(0)
 
-        # else: # not working: self.dict_all_infos_for_file == self.dict_all_infos_for_file_save_status always equal??
+        else: # not working: self.dict_all_infos_for_file == self.dict_all_infos_for_file_save_status always equal??
+            try:
+                path=self.saved_file_path
+                loaded_file=self.load_file(path)
+                if loaded_file == self.dict_all_infos_for_file:
+                    sys.exit(0)
+            except AttributeError:
+                pass
+
         #     try:
         #         self.collect_all_infos_for_creating_file()
         #         print(self.dict_all_infos_for_file_save_status)
@@ -2874,7 +2882,7 @@ class Ui_MainWindow(object):
         #         pass                
 
 
-        response=self.question_window("Schularbeit schon gespeichert?", "Möchten Sie vor dem Schließen speichern?")
+        response=self.question_window("Änderungen speichern?", "Möchten Sie die Änderungen speichern?")
 
         if response == True:
             self.sage_save()
@@ -4977,7 +4985,8 @@ class Ui_MainWindow(object):
 
         try:
             if self.chosen_program==loaded_file["data_gesamt"]['program']:
-                self.reset_sage()
+                if self.list_alle_aufgaben_sage != []:              
+                    self.reset_sage()
             else:
                 self.change_program()
         except KeyError:
