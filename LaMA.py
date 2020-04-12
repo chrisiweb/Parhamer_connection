@@ -4975,10 +4975,15 @@ class Ui_MainWindow(object):
 
         loaded_file=self.load_file(self.saved_file_path)
 
-        if self.chosen_program==loaded_file["data_gesamt"]['program']:
-            self.reset_sage()
-        else:
-            self.change_program()
+        try:
+            if self.chosen_program==loaded_file["data_gesamt"]['program']:
+                self.reset_sage()
+            else:
+                self.change_program()
+        except KeyError:
+            self.warning_window('Die geöffnete *.lama-Datei ist veraltet und kann nur mit der Version LaMA 1.x geöffnet werden.',
+            'Bitte laden Sie ein aktuelle *.lama-Datei oder kontaktieren Sie lama.helpme@gmail.com, wenn Sie Hilfe benötigen.')
+            return
 
         self.dict_all_infos_for_file =self.load_file(self.saved_file_path)
 
