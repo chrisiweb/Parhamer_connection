@@ -1608,6 +1608,7 @@ class Ui_MainWindow(object):
         self.gridLayout_8 = QtWidgets.QGridLayout(self.scrollAreaWidgetContents_2)
         self.gridLayout_8.setObjectName("gridLayout_8")
         self.scrollArea_chosen.setWidget(self.scrollAreaWidgetContents_2)
+        self.scrollArea_chosen.verticalScrollBar().rangeChanged.connect(lambda: self.scrollArea_chosen.verticalScrollBar().setValue(self.scrollArea_chosen.verticalScrollBar().maximum()))
         self.gridLayout_5.addWidget(self.scrollArea_chosen, 5, 0, 1, 7)
 
         # self.line_seperator = QtWidgets.QFrame(self.scrollAreaWidgetContents_2)
@@ -5786,6 +5787,7 @@ class Ui_MainWindow(object):
         # print(aufgaben_verteilung)
         # print(self.list_alle_aufgaben_sage)
         # print(aufgabe)
+
         try:
             self.gridLayout_8.removeItem(self.spacerItem)
         except AttributeError:
@@ -6916,6 +6918,7 @@ class Ui_MainWindow(object):
             self.list_copy_images = []
 
         dict_data_gesamt = {
+            "program":self.chosen_program,
             "#": self.spinBox_nummer.value(),
             "Pruefungstyp": self.comboBox_pruefungstyp.currentText(),
             "Datum": [
