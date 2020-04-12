@@ -4935,6 +4935,10 @@ class Ui_MainWindow(object):
             return file_found
 
 
+    def load_file(self, path):
+        with open(path, "r", encoding="utf8") as loaded_file:
+            loaded_file=json.load(loaded_file)
+        return loaded_file
 
     def sage_load(self, external_file_loaded):
         if external_file_loaded == False:
@@ -4956,13 +4960,22 @@ class Ui_MainWindow(object):
         if external_file_loaded == True:
             self.saved_file_path = loaded_lama_file_path
 
-        self.update_gui('widgets_sage')
 
         
-        self.reset_sage()
+
+        loaded_file=self.load_file(self.saved_file_path)
+
+        if self.chosen_program==loaded_file["data_gesamt"]['program']:
+            self.reset_sage()
+        else:
+            self.change_program()
+
+        self.dict_all_infos_for_file =self.load_file(self.saved_file_path)
+
+
+        self.update_gui('widgets_sage')
+        
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        with open(self.saved_file_path, "r", encoding="utf8") as loaded_file:
-            self.dict_all_infos_for_file = json.load(loaded_file)
 
 
         self.list_alle_aufgaben_sage = self.dict_all_infos_for_file["list_alle_aufgaben"]
@@ -5042,13 +5055,13 @@ class Ui_MainWindow(object):
 
         QtWidgets.QApplication.restoreOverrideCursor()
     
-    def sage_save(self, path_file=None):  # path_file
+    def sage_save(self, path_file=False):  # path_file
         try:
             self.saved_file_path
         except AttributeError:
             self.saved_file_path = path_programm
 
-        if path_file == None:
+        if path_file == False:
             path_backup_file = QtWidgets.QFileDialog.getSaveFileName(
                 None,
                 "Speichern unter",
@@ -5108,7 +5121,7 @@ class Ui_MainWindow(object):
 
 
         # print(self.dict_titlepage)
-
+        
         # QtWidgets.QApplication.restoreOverrideCursor()
         # msg = QtWidgets.QMessageBox()
         # msg.setIcon(QtWidgets.QMessageBox.Question)
