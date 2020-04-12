@@ -2720,86 +2720,80 @@ class Ui_MainWindow(object):
 
     def reset_sage(self, program_changed=False):
         #global list_sage_examples
-        try:
-            if program_changed==False:
-                self.dict_all_infos_for_file
-                msg = QtWidgets.QMessageBox()
-                msg.setIcon(QtWidgets.QMessageBox.Question)
-                msg.setWindowIcon(QtGui.QIcon(logo_path))
-                msg.setWindowTitle("Schularbeit löschen?")
-                msg.setText("Sind Sie sicher, dass Sie das Fenster zurücksetzen wollen und die erstellte Schularbeit löschen möchten?")
-                msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-                buttonY = msg.button(QtWidgets.QMessageBox.Yes)
-                buttonY.setText("Ja")
-                buttonN = msg.button(QtWidgets.QMessageBox.No)
-                buttonN.setText("Nein")
-                ret = msg.exec_()
+        # try:
+        if program_changed==False:
+            response=self.question_window('Schularbeit löschen?',
+            'Sind Sie sicher, dass Sie das Fenster zurücksetzen wollen und die erstellte Schularbeit löschen möchten?')
 
-            if program_changed==True or ret == QtWidgets.QMessageBox.Yes:
-                self.spinBox_nummer.setValue(1)
-                self.dateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
-                self.comboBox_pruefungstyp.setCurrentIndex(0)
-                self.lineEdit_klasse.setText("")
-                self.spinBox_default_pkt.setValue(1)
-                self.radioButton_notenschl.setChecked(True)
-                self.spinBox_2.setProperty("value", 91)
-                self.spinBox_3.setProperty("value", 80)
-                self.spinBox_4.setProperty("value", 64)
-                self.spinBox_5.setProperty("value", 50)
-                self.comboBox_at_sage.setCurrentIndex(0)
-                self.comboBox_gk.setCurrentIndex(0)
-                self.comboBox_gk_num.setCurrentIndex(0)
-                self.lineEdit_number.setText("")
-                self.dict_all_infos_for_file = {
-                    "list_alle_aufgaben": [],
-                    "dict_ausgleichspunkte": {},
-                    "data_gesamt": {
-                        "#": self.spinBox_nummer.value(),
-                        "Pruefungstyp": self.comboBox_pruefungstyp.currentText(),
-                        "Datum": [
-                            self.dateEdit.date().year(),
-                            self.dateEdit.date().month(),
-                            self.dateEdit.date().day(),
-                        ],  # .toPyDate()
-                        "Klasse": "",
-                        "Beurteilung": "ns",
-                        "Notenschluessel": [
-                            self.spinBox_2.value(),
-                            self.spinBox_3.value(),
-                            self.spinBox_4.value(),
-                            self.spinBox_5.value(),
-                        ],
-                        "Typ1 Standard": self.spinBox_default_pkt.value(),
-                        "num_1": 0,
-                        "punkte_1": 0,
-                        "num_2": 0,
-                        "punkte_2": 0,
-                        "ausgleichspunkte": 0,
-                        "copy_images": [],
-                    },
-                }
-                for all in self.list_alle_aufgaben_sage:
-                    if re.search("[A-Z]", all) == None:
-                        bsp_string = all
-                    else:
-                        bsp_string = (
-                            all.replace(" ", "").replace(".", "").replace("-", "_")
-                        )
+            if response==False:
+                return
 
-                    try:
-                        exec("self.groupBox_bsp_{}.setParent(None)".format(bsp_string))
-                    except AttributeError:
-                        pass
-                self.list_alle_aufgaben_sage = []
-                self.dict_alle_aufgaben_sage={}
-                self.dict_variablen_label={}
-                self.dict_variablen_punkte={}
-                for i in reversed(range(self.gridLayout_8.count())):
-                    self.delete_widget(i)
-                #self.build_aufgaben_schularbeit(False)
 
-        except AttributeError:
-            pass
+
+        self.spinBox_nummer.setValue(1)
+        self.dateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
+        self.comboBox_pruefungstyp.setCurrentIndex(0)
+        self.lineEdit_klasse.setText("")
+        self.spinBox_default_pkt.setValue(1)
+        self.radioButton_notenschl.setChecked(True)
+        self.spinBox_2.setProperty("value", 91)
+        self.spinBox_3.setProperty("value", 80)
+        self.spinBox_4.setProperty("value", 64)
+        self.spinBox_5.setProperty("value", 50)
+        self.comboBox_at_sage.setCurrentIndex(0)
+        self.comboBox_gk.setCurrentIndex(0)
+        self.comboBox_gk_num.setCurrentIndex(0)
+        self.lineEdit_number.setText("")
+        self.dict_all_infos_for_file = {
+            "list_alle_aufgaben": [],
+            "dict_ausgleichspunkte": {},
+            "data_gesamt": {
+                "#": self.spinBox_nummer.value(),
+                "Pruefungstyp": self.comboBox_pruefungstyp.currentText(),
+                "Datum": [
+                    self.dateEdit.date().year(),
+                    self.dateEdit.date().month(),
+                    self.dateEdit.date().day(),
+                ],  # .toPyDate()
+                "Klasse": "",
+                "Beurteilung": "ns",
+                "Notenschluessel": [
+                    self.spinBox_2.value(),
+                    self.spinBox_3.value(),
+                    self.spinBox_4.value(),
+                    self.spinBox_5.value(),
+                ],
+                "Typ1 Standard": self.spinBox_default_pkt.value(),
+                "num_1": 0,
+                "punkte_1": 0,
+                "num_2": 0,
+                "punkte_2": 0,
+                "ausgleichspunkte": 0,
+                "copy_images": [],
+            },
+        }
+        # for all in self.list_alle_aufgaben_sage:
+        #     if re.search("[A-Z]", all) == None:
+        #         bsp_string = all
+        #     else:
+        #         bsp_string = (
+        #             all.replace(" ", "").replace(".", "").replace("-", "_")
+        #         )
+
+        #     try:
+        #         exec("self.groupBox_bsp_{}.setParent(None)".format(bsp_string))
+        #     except AttributeError:
+        #         pass
+        self.list_alle_aufgaben_sage = []
+        self.dict_alle_aufgaben_sage={}
+        self.dict_variablen_label={}
+        self.dict_variablen_punkte={}
+        for i in reversed(range(self.gridLayout_8.count())):
+            self.delete_widget(i)
+            #self.build_aufgaben_schularbeit(False)
+
+        # except AttributeError:
+        #     pass
 
     def change_program(self):
         # print(self.chosen_program)
@@ -4901,11 +4895,8 @@ class Ui_MainWindow(object):
         
         return beispieldaten_dateipfad
 
-        
 
-    def check_if_file_exists(self): #aufgabe
-        # print(self.beispieldaten_dateipfad_1.values())
-        typ=None
+    def check_if_log_file_exists(self, typ):
         for i in range(2):
             while True:
                 try:
@@ -4924,9 +4915,44 @@ class Ui_MainWindow(object):
                     elif typ==2:
                         self.beispieldaten_dateipfad_2=self.create_log_file(typ)
                 break
-                            
-            
 
+
+
+    def check_if_file_exists(self, aufgabe): #aufgabe
+        typ=self.get_aufgabentyp(aufgabe)
+        self.check_if_log_file_exists(typ)
+                            
+        if typ==1:
+            list_paths = self.beispieldaten_dateipfad_1.values()
+        if typ==2:
+            list_paths = self.beispieldaten_dateipfad_2.values()
+        if typ==None:
+            list_paths = self.beispieldaten_dateipfad_cria.values()
+            klasse, aufgabe=self.split_klasse_aufgabe(aufgabe)
+
+        name=aufgabe + ".tex"
+        
+        if typ==None:
+            for path in list_paths:
+                if klasse.lower() in path.lower():
+                    if name == os.path.basename(path):                        
+                        file_found=True
+                        return file_found
+                    else:
+                        pass
+            file_found=False             
+            return file_found              
+                        
+        else:
+            if any(name == os.path.basename(path) for path in list_paths):
+                file_found=True
+            else:
+                file_found=False
+            return file_found
+
+        # if any(aufgabe in path for path in searched_paths):
+
+        
 
 
         print('done') 
@@ -4977,9 +5003,6 @@ class Ui_MainWindow(object):
 
 
     def sage_load(self, external_file_loaded):
-        #global list_sage_examples
-        self.check_if_file_exists()
-        return
         if external_file_loaded == False:
             try:
                 os.path.dirname(self.saved_file_path)
@@ -5011,40 +5034,22 @@ class Ui_MainWindow(object):
         self.list_alle_aufgaben_sage = self.dict_all_infos_for_file["list_alle_aufgaben"]
         self.dict_alle_aufgaben_sage = self.dict_all_infos_for_file["dict_alle_aufgaben"]
 
-        for all in self.list_alle_aufgaben_sage:
-            if any(all in s for s in self.beispieldaten_dateipfad_1.values()):
-                pass
-            else:
-                if any(all in s for s in self.beispieldaten_dateipfad_2.values()):
-                    pass
-                else:
-                    response=self.question_window("Aufgabe nicht gefunden", 'Die Aufgabe "{}" konnte nicht in der vorliegenden Datenbank nicht gefunden werden. Wollen Sie diese Aufgabe entfernen?',
-                    'Dies könnte daran liegen, dass die Datenbank veraltet ist (Tipp: Refresh Database)')
 
-                    if response==True:
-                        print('ja')
-                    if response==False:
-                        print('nein')
+        for aufgabe in self.list_alle_aufgaben_sage:
+            file_found=self.check_if_file_exists(aufgabe)
+            if file_found==False:
+                response=self.question_window("Aufgabe nicht gefunden",
+                'Die Aufgabe "{}" konnte in der Datenbank nicht gefunden werden. Dies könnte daran liegen, dass die Datenbank veraltet ist (Tipp: Refresh Database)'.format(aufgabe),
+                'Wollen Sie diese Aufgabe entfernen?')
 
-                    # self.warning_window(
-                    #     'Die Aufgabe "{}" konnte nicht in der Datenbank gefunden werden. \n\n\n (Tipp: Refresh Database)'.format(
-                    #         all
-                    #     )
-                    # )
+                if response==True:
+                    self.list_alle_aufgaben_sage.remove(aufgabe)
+                    del self.dict_alle_aufgaben_sage[aufgabe]
+                if response==False:
                     return
-        print('done')
-        return
-        for all in self.list_alle_aufgaben_sage:
-            if re.search("[A-Z]", all) == None:
-                bsp_string = all
-            else:
-                bsp_string = all.replace(" ", "").replace(".", "").replace("-", "_")
-            # print(bsp_string)
-            exec(
-                'self.list_input_{0}=self.dict_all_infos_for_file["self.list_input_{0}"]'.format(
-                    bsp_string
-                )
-            )
+                 
+            
+
         self.spinBox_nummer.setValue(self.dict_all_infos_for_file["data_gesamt"]["#"])
         self.lineEdit_klasse.setText(
             self.dict_all_infos_for_file["data_gesamt"]["Klasse"]
@@ -5076,7 +5081,13 @@ class Ui_MainWindow(object):
             "dict_ausgleichspunkte"
         ]
 
-        self.build_aufgaben_schularbeit(True)
+        self.list_copy_images = self.dict_all_infos_for_file["data_gesamt"]["copy_images"]
+
+
+        for aufgabe in self.list_alle_aufgaben_sage:
+            self.build_aufgaben_schularbeit(aufgabe, True)
+
+
         self.spinBox_default_pkt.setValue(
             self.dict_all_infos_for_file["data_gesamt"]["Typ1 Standard"]
         )
@@ -5407,11 +5418,12 @@ class Ui_MainWindow(object):
                 gesamtpunkte += self.dict_variablen_punkte[all].value()
             elif typ==1:
                 pkt_typ1 += self.dict_variablen_punkte[all].value()
-                gesamtpunkte += pkt_typ1
+                gesamtpunkte += self.dict_variablen_punkte[all].value()
             elif typ==2:
+                print(self.dict_variablen_punkte)
                 pkt_typ2 += self.dict_variablen_punkte[all].value()
                 pkt_ausgleich += self.dict_alle_aufgaben_sage[all][3]
-                gesamtpunkte += pkt_typ2
+                gesamtpunkte += self.dict_variablen_punkte[all].value()
 
         return [gesamtpunkte, pkt_typ1, pkt_typ2]
 
@@ -5442,21 +5454,34 @@ class Ui_MainWindow(object):
         )
 
 
+    def get_number_ausgleichspunkte_gesamt(self):
+        number_ausgleichspkt_gesamt=0
+        for aufgabe in self.list_alle_aufgaben_sage:
+            if self.get_aufgabentyp(aufgabe)==2:  
+                number_ausgleichspkt_gesamt += self.dict_alle_aufgaben_sage[aufgabe][3]
+
+        return number_ausgleichspkt_gesamt
+
     def update_beurteilungsraster(self):
 
         punkteverteilung= self.get_punkteverteilung()
-
+        print(punkteverteilung)
         self.label_typ1_pkt.setText(
             _translate("MainWindow", "Punkte Typ 1: {}".format(punkteverteilung[1]), None)
         )
         self.label_typ2_pkt.setText(
             _translate("MainWindow", "Punkte Typ 2: {}".format(punkteverteilung[2]), None)
         )
+
+        number_ausgleichspunkte_gesamt=self.get_number_ausgleichspunkte_gesamt()
+
+        # for aufgabe in self.list_alle_aufgaben_sage:
+        #     print(self.dict_alle_aufgaben_sage[aufgabe])
         self.label_ausgleich_pkt.setText(
             _translate(
                 "MainWindow",
                 "(davon Ausgleichspunkte: {})".format(
-                    pkt_ausgleich
+                    number_ausgleichspunkte_gesamt
                 ),
                 None,
             )
@@ -5609,7 +5634,7 @@ class Ui_MainWindow(object):
             )
             groupbox_pkt.setMaximumSize(QtCore.QSize(150, 16777215))
 
-            label_ausgleichspkt = create_new_label(groupbox_pkt, 'AP: {}'.format(aufgaben_infos[3]))
+            label_ausgleichspkt = create_new_label(groupbox_pkt, 'AP: {}'.format(self.dict_alle_aufgaben_sage[aufgabe][3]))
             horizontalLayout_groupbox_pkt.addWidget(label_ausgleichspkt)
             self.dict_variablen_label[aufgabe]=label_ausgleichspkt
 
