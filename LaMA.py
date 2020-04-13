@@ -215,57 +215,6 @@ class Ui_MainWindow(object):
 
 
 
-
-    def open_dialogwindow_erstellen(
-        self,
-        dict_all_infos_for_file,
-        beispieldaten_dateipfad_1,
-        beispieldaten_dateipfad_2,
-        dict_titlepage,
-        saved_file_path,
-    ):  # , dict_gesammeltedateien
-        self.Dialog = QtWidgets.QDialog(
-            None,
-            QtCore.Qt.WindowSystemMenuHint
-            | QtCore.Qt.WindowTitleHint
-            | QtCore.Qt.WindowCloseButtonHint,
-        )
-        self.ui_erstellen = Ui_Dialog_erstellen()
-        self.ui_erstellen.setupUi(
-            self.Dialog,
-            # self,
-            dict_all_infos_for_file,
-            beispieldaten_dateipfad_1,
-            beispieldaten_dateipfad_2,
-            dict_titlepage,
-            saved_file_path,
-        )
-        self.Dialog.show()
-        rsp= self.Dialog.exec_()
-
-        if rsp == QtWidgets.QDialog.Accepted:
-            for index in range(self.ui_erstellen.spinBox_sw_gruppen.value() * 2):
-                self.pushButton_vorschau_pressed(
-                    self,
-                    "schularbeit",
-                    index,
-                    self.ui_erstellen.spinBox_sw_gruppen.value() * 2,
-                    self.ui_erstellen.pdf,
-                    self.ui_erstellen.lama,
-                )
-
-            # MainWindow.show()
-
-            if sys.platform.startswith("linux"):
-                file_path = os.path.dirname(self.saved_file_path)
-                subprocess.Popen('xdg-open "{}"'.format(file_path), shell=True)
-            elif sys.platform.startswith("darwin"):
-                file_path = os.path.dirname(self.saved_file_path)
-                subprocess.Popen('open "{}"'.format(file_path), shell=True)
-            else:
-                file_path = os.path.dirname(self.saved_file_path).replace("/", "\\")
-                subprocess.Popen('explorer "{}"'.format(file_path))
-
         
     def setupUi(self, MainWindow):
         self.check_for_update()
@@ -2371,6 +2320,60 @@ class Ui_MainWindow(object):
 
 
 
+
+
+    def open_dialogwindow_erstellen(
+        self,
+        dict_all_infos_for_file,
+        beispieldaten_dateipfad_1,
+        beispieldaten_dateipfad_2,
+        dict_titlepage,
+        saved_file_path,
+    ):  # , dict_gesammeltedateien
+        self.Dialog = QtWidgets.QDialog(
+            None,
+            QtCore.Qt.WindowSystemMenuHint
+            | QtCore.Qt.WindowTitleHint
+            | QtCore.Qt.WindowCloseButtonHint,
+        )
+        self.ui_erstellen = Ui_Dialog_erstellen()
+        self.ui_erstellen.setupUi(
+            self.Dialog,
+            # self,
+            dict_all_infos_for_file,
+            beispieldaten_dateipfad_1,
+            beispieldaten_dateipfad_2,
+            dict_titlepage,
+            saved_file_path,
+        )
+        self.Dialog.show()
+        rsp= self.Dialog.exec_()
+
+        if rsp == QtWidgets.QDialog.Accepted:
+            for index in range(self.ui_erstellen.spinBox_sw_gruppen.value() * 2):
+                self.pushButton_vorschau_pressed(
+                    self,
+                    "schularbeit",
+                    index,
+                    self.ui_erstellen.spinBox_sw_gruppen.value() * 2,
+                    self.ui_erstellen.pdf,
+                    self.ui_erstellen.lama,
+                )
+
+            # MainWindow.show()
+
+            if sys.platform.startswith("linux"):
+                file_path = os.path.dirname(self.saved_file_path)
+                subprocess.Popen('xdg-open "{}"'.format(file_path), shell=True)
+            elif sys.platform.startswith("darwin"):
+                file_path = os.path.dirname(self.saved_file_path)
+                subprocess.Popen('open "{}"'.format(file_path), shell=True)
+            else:
+                file_path = os.path.dirname(self.saved_file_path).replace("/", "\\")
+                subprocess.Popen('explorer "{}"'.format(file_path))
+
+
+
     #######################
     #### Check for Updates
     ##########################
@@ -2863,7 +2866,7 @@ class Ui_MainWindow(object):
         if self.list_alle_aufgaben_sage==[]:
             sys.exit(0)
 
-        else: # not working: self.dict_all_infos_for_file == self.dict_all_infos_for_file_save_status always equal??
+        else:
             try:
                 path=self.saved_file_path
                 loaded_file=self.load_file(path)
@@ -2872,14 +2875,7 @@ class Ui_MainWindow(object):
             except AttributeError:
                 pass
 
-        #     try:
-        #         self.collect_all_infos_for_creating_file()
-        #         print(self.dict_all_infos_for_file_save_status)
-        #         print(self.dict_all_infos_for_file)
-        #         if self.dict_all_infos_for_file == self.dict_all_infos_for_file_save_status:
-        #             sys.exit(0)
-        #     except AttributeError:
-        #         pass                
+        
 
 
         response=self.question_window("Änderungen speichern?", "Möchten Sie die Änderungen speichern?")
