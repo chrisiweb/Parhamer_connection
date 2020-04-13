@@ -24,7 +24,7 @@ widgets_search = [
 
 widgets_create = [
     "actionReset",
-    "menuBild_einf_gen",
+    "menuBild_einbinden",
     "menuSuche",
     "menuSage",
     "menuFeedback",
@@ -120,7 +120,7 @@ widgets_sage_cria = [
 
 widgets_create_cria = [
     "actionReset",
-    "menuBild_einf_gen",
+    "menuBild_einbinden",
     "menuSuche",
     "menuSage",
     "menuFeedback",

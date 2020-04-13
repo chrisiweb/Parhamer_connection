@@ -104,6 +104,16 @@ set_chosen_gk = set([])
 #### Dialog Window - Schularbeit erstellen
 
 #### Extrected Functions ####
+
+def add_action(menu, text, command):
+    new_action = QtWidgets.QAction(MainWindow)
+    new_action.setObjectName(_fromUtf8("{}".format(new_action)))
+    menu.addAction(new_action)
+    new_action.setText(_translate("MainWindow", text, None))
+    new_action.triggered.connect(command)
+
+    return new_action
+
 def combine_all_lists_to_one(list_of_lists):
     combined_list=[]
     for list in list_of_lists:
@@ -293,73 +303,123 @@ class Ui_MainWindow(object):
         self.menuFeedback.setObjectName(_fromUtf8("menuFeedback"))
         self.menuHelp = QtWidgets.QMenu(self.menuBar)
         self.menuHelp.setObjectName(_fromUtf8("menuHelp"))
-        self.menuBild_einf_gen = QtWidgets.QMenu(self.menuBar)
-        self.menuBild_einf_gen.setObjectName(_fromUtf8("menuBild_einf_gen"))
-        self.actionBild_einf_gen = QtWidgets.QAction(MainWindow)
-        self.actionBild_einf_gen.setObjectName(_fromUtf8("actionBild_einf_gen"))
-        self.actionBild_konvertieren_jpg_eps = QtWidgets.QAction(MainWindow)
-        self.actionBild_konvertieren_jpg_eps.setObjectName(
-            _fromUtf8("actionBild_konvertieren_jpg_eps")
-        )
+        self.menuBild_einbinden = QtWidgets.QMenu(self.menuBar)
+        self.menuBild_einbinden.setObjectName(_fromUtf8("menuBild_einbinden"))
+        # self.actionBild_einbinden = QtWidgets.QAction(MainWindow)
+        # self.actionBild_einbinden.setObjectName(_fromUtf8("actionBild_einbinden"))
+        # self.actionBild_konvertieren_jpg_eps = QtWidgets.QAction(MainWindow)
+        # self.actionBild_konvertieren_jpg_eps.setObjectName(
+        #     _fromUtf8("actionBild_konvertieren_jpg_eps")
+        # )
         MainWindow.setMenuBar(self.menuBar)
-        self.actionReset = QtWidgets.QAction(MainWindow)
-        self.actionReset.setObjectName(_fromUtf8("actionReset"))
-        self.actionReset_sage = QtWidgets.QAction(MainWindow)
-        self.actionReset_sage.setObjectName(_fromUtf8("actionReset_sage"))
-        self.actionLoad = QtWidgets.QAction(MainWindow)
-        self.actionLoad.setObjectName(_fromUtf8("actionLoad"))
-        # self.actionLoad.setVisible(False)
-        self.actionSave = QtWidgets.QAction(MainWindow)
-        self.actionSave.setObjectName(_fromUtf8("actionSave"))
-        # self.actionSave.setVisible(False)
-        self.actionAufgaben_Typ1 = QtWidgets.QAction(MainWindow)
-        self.actionAufgaben_Typ1.setObjectName(_fromUtf8("actionAufgaben_Typ1"))
-        self.actionAufgaben_Typ2 = QtWidgets.QAction(MainWindow)
-        self.actionAufgaben_Typ2.setObjectName(_fromUtf8("actionAufgaben_Typ2"))
-        self.actionRefresh_Database = QtWidgets.QAction(MainWindow)
-        self.actionRefresh_Database.setObjectName(_fromUtf8("actionRefresh_Database"))
-        self.actionNeu = QtWidgets.QAction(MainWindow)
-        self.actionNeu.setObjectName(_fromUtf8("actionNeu"))
-        self.actionSage = QtWidgets.QAction(MainWindow)
-        self.actionSage.setObjectName(_fromUtf8("actionSage"))
-        self.actionSuche = QtWidgets.QAction(MainWindow)
-        self.actionSuche.setObjectName(_fromUtf8("actionSuche"))
-        self.actionInfo = QtWidgets.QAction(MainWindow)
-        self.actionInfo.setObjectName(_fromUtf8("actionInfo"))
-        self.actionExit = QtWidgets.QAction(MainWindow)
-        self.actionExit.setObjectName(_fromUtf8("actionExit"))
-        self.actionProgram = QtWidgets.QAction(MainWindow)
-        self.actionProgram.setObjectName(_fromUtf8("actionProgram"))
-        self.actionFeedback = QtWidgets.QAction(MainWindow)
-        self.actionFeedback.setObjectName(_fromUtf8("actionFeedback"))
-        self.menuDateityp.addAction(self.actionAufgaben_Typ1)
-        self.menuDateityp.addAction(self.actionAufgaben_Typ2)
-        self.menuFeedback.addAction(self.actionFeedback)
-        self.menuHelp.addAction(self.actionInfo)
-        self.menuDatei.addAction(self.actionRefresh_Database)
-        self.menuDatei.addAction(self.actionReset)
-        self.menuDatei.addAction(self.actionReset_sage)
+        self.actionReset = add_action(self.menuDatei, "Reset", self.suchfenster_reset)
+
+        self.actionReset_sage = add_action(self.menuDatei, "Reset Schularbeit", self.reset_sage)
         self.actionReset_sage.setVisible(False)
+
+        self.actionRefresh_Database = add_action(self.menuDatei, "Refresh Database", partial(refresh_ddb, self))
+        self.actionRefresh_Database.setShortcut("F5")
+
         self.menuDatei.addSeparator()
-        self.menuDatei.addAction(self.actionLoad)
-        self.menuDatei.addAction(self.actionSave)
+
+        self.actionLoad = add_action(self.menuDatei, "Öffnen", self.sage_load)
+        self.actionLoad.setShortcut("Ctrl+O")
+        self.actionSave = add_action(self.menuDatei, "Speichern", self.sage_save)
+        self.actionSave.setShortcut("Ctrl+S")
+
         self.menuDatei.addSeparator()
-        self.menuDatei.addAction(self.actionBild_konvertieren_jpg_eps)
+
+        self.actionBild_konvertieren_jpg_eps = add_action(self.menuDatei, "Grafik konvertieren (jpg/png zu eps)", self.convert_imagetoeps)
+
         self.menuDatei.addSeparator()
-        self.menuDatei.addAction(self.actionProgram)
-        self.menuDatei.addAction(self.actionExit)
-        self.menuSage.addAction(self.actionSage)
-        self.menuNeu.addAction(self.actionNeu)
-        self.menuSuche.addAction(self.actionSuche)
+
+        if self.chosen_program == 'lama':
+            program='LaMA Cria (Unterstufe)'
+        if self.chosen_program == 'cria':
+            program='LaMA (Oberstufe)'
+        self.actionProgram = add_action(self.menuDatei, 'Zu "{}" wechseln'.format(program), self.change_program)
+
+        self.actionExit = add_action(self.menuDatei, "Exit", self.close_app)
+
+
+        self.actionAufgaben_Typ1 = add_action(self.menuDateityp, "Typ1 Aufgaben", self.chosen_aufgabenformat_typ1)
+        self.actionAufgaben_Typ1.setShortcut("Ctrl+1")
+
+        self.actionAufgaben_Typ2 = add_action(self.menuDateityp, "Typ2 Aufgaben", self.chosen_aufgabenformat_typ2)
+        self.actionAufgaben_Typ2.setShortcut("Ctrl+2") 
+
+        self.actionSuche = add_action(self.menuSuche, "Aufgaben suchen...", partial(self.update_gui, 'widgets_search'))
+        self.actionSuche.setShortcut("F1")
+
+        self.actionSage = add_action(self.menuSage, "Neue Schularbeit erstellen...", partial(self.update_gui, 'widgets_sage'))
+        self.actionSage.setShortcut("F2")
+
+        self.actionNeu = add_action(self.menuNeu, "Neue Aufgabe erstellen...", partial(self.update_gui, 'widgets_create'))
+        self.actionNeu.setShortcut("F3") 
+
+        self.actionBild_einbinden = add_action(self.menuBild_einbinden, "Durchsuchen...", self.add_picture)
+
+        self.actionFeedback = add_action(self.menuFeedback, "Feedback oder Fehler senden...", partial(self.update_gui, 'widgets_feedback'))
+
+        self.actionInfo = add_action(self.menuHelp, "Über LaMA", self.show_info)      
+        # self.actionReset = QtWidgets.QAction(MainWindow)
+        # self.actionReset.setObjectName(_fromUtf8("actionReset"))
+        # self.actionReset_sage = QtWidgets.QAction(MainWindow)
+        # self.actionReset_sage.setObjectName(_fromUtf8("actionReset_sage"))
+        # self.actionLoad = QtWidgets.QAction(MainWindow)
+        # self.actionLoad.setObjectName(_fromUtf8("actionLoad"))
+        # self.actionLoad.setVisible(False)
+        # self.actionSave = QtWidgets.QAction(MainWindow)
+        # self.actionSave.setObjectName(_fromUtf8("actionSave"))
+        # self.actionSave.setVisible(False)
+        # self.actionAufgaben_Typ1 = QtWidgets.QAction(MainWindow)
+        # self.actionAufgaben_Typ1.setObjectName(_fromUtf8("actionAufgaben_Typ1"))
+        # self.actionAufgaben_Typ2 = QtWidgets.QAction(MainWindow)
+        # self.actionAufgaben_Typ2.setObjectName(_fromUtf8("actionAufgaben_Typ2"))
+        # self.actionRefresh_Database = QtWidgets.QAction(MainWindow)
+        # self.actionRefresh_Database.setObjectName(_fromUtf8("actionRefresh_Database"))
+        # self.actionNeu = QtWidgets.QAction(MainWindow)
+        # self.actionNeu.setObjectName(_fromUtf8("actionNeu"))
+        # self.actionSage = QtWidgets.QAction(MainWindow)
+        # self.actionSage.setObjectName(_fromUtf8("actionSage"))
+        # self.actionSuche = QtWidgets.QAction(MainWindow)
+        # self.actionSuche.setObjectName(_fromUtf8("actionSuche"))
+        # self.actionInfo = QtWidgets.QAction(MainWindow)
+        # self.actionInfo.setObjectName(_fromUtf8("actionInfo"))
+        # self.actionExit = QtWidgets.QAction(MainWindow)
+        # self.actionExit.setObjectName(_fromUtf8("actionExit"))
+        # self.actionProgram = QtWidgets.QAction(MainWindow)
+        # self.actionProgram.setObjectName(_fromUtf8("actionProgram"))
+        # self.actionFeedback = QtWidgets.QAction(MainWindow)
+        # self.actionFeedback.setObjectName(_fromUtf8("actionFeedback"))
+        # self.menuDateityp.addAction(self.actionAufgaben_Typ1)
+        # self.menuDateityp.addAction(self.actionAufgaben_Typ2)
+        # self.menuFeedback.addAction(self.actionFeedback)
+        # self.menuHelp.addAction(self.actionInfo)
+        # self.menuDatei.addAction(self.actionRefresh_Database)
+        # self.menuDatei.addAction(self.actionReset)
+        # self.menuDatei.addAction(self.actionReset_sage)
+        
+        # self.menuDatei.addSeparator()
+        # self.menuDatei.addAction(self.actionLoad)
+        # self.menuDatei.addAction(self.actionSave)
+        # self.menuDatei.addSeparator()
+        # self.menuDatei.addAction(self.actionBild_konvertieren_jpg_eps)
+        # self.menuDatei.addSeparator()
+        # self.menuDatei.addAction(self.actionProgram)
+        # self.menuDatei.addAction(self.actionExit)
+        # self.menuSage.addAction(self.actionSage)
+        # self.menuNeu.addAction(self.actionNeu)
+        # self.menuSuche.addAction(self.actionSuche)
         self.menuBar.addAction(self.menuDatei.menuAction())
         self.menuBar.addAction(self.menuDateityp.menuAction())
         self.menuBar.addAction(self.menuSage.menuAction())
         self.menuBar.addAction(self.menuNeu.menuAction())
         self.menuBar.addAction(self.menuFeedback.menuAction())
         self.menuBar.addAction(self.menuHelp.menuAction())
-        self.menuBild_einf_gen.addAction(self.actionBild_einf_gen)
-        self.menuBild_einf_gen.addSeparator()
-        # self.menuBild_einf_gen.addAction(self.actionBild_konvertieren_jpg_eps)
+        # self.menuBild_einbinden.addAction(self.actionBild_einbinden)
+        # self.menuBild_einbinden.addSeparator()
+        # self.menuBild_einbinden.addAction(self.actionBild_konvertieren_jpg_eps)
 
         self.groupBox_ausgew_gk = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_ausgew_gk.setObjectName(_fromUtf8("groupBox_ausgew_gk"))
@@ -1998,24 +2058,24 @@ class Ui_MainWindow(object):
         self.btn_fa_all.clicked.connect(self.btn_fa_all_pressed)
         self.btn_ws_all.clicked.connect(self.btn_ws_all_pressed)
         self.btn_suche.clicked.connect(partial(prepare_tex_for_pdf,self))
-        self.actionProgram.triggered.connect(self.change_program)
-        self.actionExit.triggered.connect(self.close_app)
-        self.actionRefresh_Database.triggered.connect(
-            partial(refresh_ddb,self)
-        )  # self.label_aufgabentyp.text()[-1]
-        self.actionReset.triggered.connect(self.suchfenster_reset)
-        self.actionReset_sage.triggered.connect(self.reset_sage)
-        self.actionLoad.triggered.connect(partial(self.sage_load, False))
-        self.actionSave.triggered.connect(self.sage_save)
-        self.actionAufgaben_Typ1.triggered.connect(self.chosen_aufgabenformat_typ1)
-        self.actionAufgaben_Typ2.triggered.connect(self.chosen_aufgabenformat_typ2)
-        self.actionInfo.triggered.connect(self.show_info)
-        self.actionSuche.triggered.connect(partial(self.update_gui, 'widgets_search'))
-        self.actionSage.triggered.connect(partial(self.update_gui, 'widgets_sage'))
-        self.actionNeu.triggered.connect(partial(self.update_gui, 'widgets_create')) #self.neue_aufgabe_erstellen
-        self.actionFeedback.triggered.connect(partial(self.update_gui, 'widgets_feedback'))
-        self.actionBild_einf_gen.triggered.connect(self.add_picture)
-        self.actionBild_konvertieren_jpg_eps.triggered.connect(self.convert_imagetoeps)
+        # self.actionProgram.triggered.connect(self.change_program)
+        # self.actionExit.triggered.connect(self.close_app)
+        # self.actionRefresh_Database.triggered.connect(
+        #     partial(refresh_ddb,self)
+        # )  # self.label_aufgabentyp.text()[-1]
+        # self.actionReset.triggered.connect(self.suchfenster_reset)
+        # self.actionReset_sage.triggered.connect(self.reset_sage)
+        # self.actionLoad.triggered.connect(partial(self.sage_load, False))
+        # self.actionSave.triggered.connect(self.sage_save)
+        # self.actionAufgaben_Typ1.triggered.connect(self.chosen_aufgabenformat_typ1)
+        # self.actionAufgaben_Typ2.triggered.connect(self.chosen_aufgabenformat_typ2)
+        # self.actionInfo.triggered.connect(self.show_info)
+        # self.actionSuche.triggered.connect(partial(self.update_gui, 'widgets_search'))
+        # self.actionSage.triggered.connect(partial(self.update_gui, 'widgets_sage'))
+        # self.actionNeu.triggered.connect(partial(self.update_gui, 'widgets_create')) #self.neue_aufgabe_erstellen
+        # self.actionFeedback.triggered.connect(partial(self.update_gui, 'widgets_feedback'))
+        # self.actionBild_einbinden.triggered.connect(self.add_picture)
+        # self.actionBild_konvertieren_jpg_eps.triggered.connect(self.convert_imagetoeps)
         self.comboBox_aufgabentyp_cr.currentIndexChanged.connect(
             self.chosen_aufgabenformat_cr
         )
@@ -2069,51 +2129,50 @@ class Ui_MainWindow(object):
         self.menuNeu.setTitle(_translate("MainWindow", "Neue Aufgabe", None))
         self.menuSage.setTitle(_translate("MainWindow", "Neue Schularbeit", None))
         self.menuSuche.setTitle(_translate("MainWindow", "Aufgabensuche", None))
-        self.menuBild_einf_gen.setTitle(_translate("MainWindow", "Bild einfügen", None))
+        self.menuBild_einbinden.setTitle(_translate("MainWindow", "Bild einfügen", None))
         self.menuFeedback.setTitle(_translate("MainWindow", "Feedback && Fehler", None))
-        self.actionBild_einf_gen.setText(
-            _translate("MainWindow", "Durchsuchen...", None)
-        )
-        self.actionBild_konvertieren_jpg_eps.setText(
-            _translate("MainWindow", "Grafik konvertieren (jpg/png zu eps)", None)
-        )
+        # self.actionBild_einbinden.setText(
+        #     _translate("MainWindow", "Durchsuchen...", None)
+        # )
+        # self.actionBild_konvertieren_jpg_eps.setText(
+        #     _translate("MainWindow", "Grafik konvertieren (jpg/png zu eps)", None)
+        # )
         self.menuHelp.setTitle(_translate("MainWindow", "?", None))
-        self.actionReset.setText(_translate("MainWindow", "Reset", None))
-        self.actionReset_sage.setText(
-            _translate("MainWindow", "Reset Schularbeit", None)
-        )
-        self.actionReset.setShortcut("F4")
-        self.actionLoad.setText(_translate("MainWindow", "Öffnen", None))
-        self.actionLoad.setShortcut("Ctrl+O")
-        self.actionSave.setText(_translate("MainWindow", "Speichern", None))
-        self.actionSave.setShortcut("Ctrl+S")
-        self.actionFeedback.setText(
-            _translate("MainWindow", "Feedback oder Fehler senden ...", None)
-        )
-        self.actionAufgaben_Typ1.setText(
-            _translate("MainWindow", "Typ 1 Aufgaben", None)
-        )
-        self.actionAufgaben_Typ1.setShortcut("Ctrl+1")
-        self.actionAufgaben_Typ2.setText(
-            _translate("MainWindow", "Typ 2 Aufgaben", None)
-        )
-        self.actionAufgaben_Typ2.setShortcut("Ctrl+2")
-        self.actionInfo.setText(_translate("MainWindow", "Über LaMA", None))
-        self.actionNeu.setText(
-            _translate("MainWindow", "Neue Aufgabe erstellen...", None)
-        )
-        self.actionNeu.setShortcut("F3")
-        self.actionSage.setText(
-            _translate("MainWindow", "Neue Schularbeit erstellen...", None)
-        )
-        self.actionSage.setShortcut("F2")
-        self.actionSuche.setText(_translate("MainWindow", "Aufgaben suchen...", None))
-        self.actionSuche.setShortcut("F1")
-        self.actionExit.setText(_translate("MainWindow", "Exit", None))
-        self.actionRefresh_Database.setText(
-            _translate("MainWindow", "Refresh Database", None)
-        )
-        self.actionRefresh_Database.setShortcut("F5")
+        # self.actionReset.setText(_translate("MainWindow", "Reset", None))
+        # self.actionReset_sage.setText(
+        #     _translate("MainWindow", "Reset Schularbeit", None)
+        # )
+        # self.actionReset.setShortcut("F4")
+        # self.actionLoad.setText(_translate("MainWindow", "Öffnen", None))
+        # self.actionLoad.setShortcut("Ctrl+O")
+        # self.actionSave.setText(_translate("MainWindow", "Speichern", None))
+        # self.actionSave.setShortcut("Ctrl+S")
+        # self.actionFeedback.setText(
+        #     _translate("MainWindow", "Feedback oder Fehler senden ...", None)
+        # )
+        # self.actionAufgaben_Typ1.setText(
+        #     _translate("MainWindow", "Typ 1 Aufgaben", None)
+        # )
+        # self.actionAufgaben_Typ1.setShortcut("Ctrl+1")
+        # self.actionAufgaben_Typ2.setText(
+        #     _translate("MainWindow", "Typ 2 Aufgaben", None)
+        # )
+        # self.actionAufgaben_Typ2.setShortcut("Ctrl+2")
+        # self.actionInfo.setText(_translate("MainWindow", "Über LaMA", None))
+        # self.actionNeu.setText(
+        #     _translate("MainWindow", "Neue Aufgabe erstellen...", None)
+        # )
+        # self.actionNeu.setShortcut("F3")
+        # self.actionSage.setText(
+        #     _translate("MainWindow", "Neue Schularbeit erstellen...", None)
+        # )
+        # self.actionSage.setShortcut("F2")
+        # self.actionSuche.setText(_translate("MainWindow", "Aufgaben suchen...", None))
+        # self.actionSuche.setShortcut("F1")
+        # self.actionExit.setText(_translate("MainWindow", "Exit", None))
+        # self.actionRefresh_Database.setText(
+        #     _translate("MainWindow", "Refresh Database", None)
+        # )
         self.label_aufgabentyp.setText(
             _translate("MainWindow", "Aufgabentyp: Typ 1", None)
         )
@@ -2303,7 +2362,7 @@ class Ui_MainWindow(object):
             self.tab_widget_gk.indexOf(self.tab_ws),
             _translate("MainWindow", "Wahrscheinlichkeit und Statistik", None),
         )
-        self.actionReset.setText(_translate("MainWindow", "Reset", None))
+        # self.actionReset.setText(_translate("MainWindow", "Reset", None))
         self.label_gk_rest.setText(_translate("MainWindow", "", None))
         self.label_gk.setText(_translate("MainWindow", "", None))
         if self.chosen_program == 'lama':
@@ -2868,10 +2927,11 @@ class Ui_MainWindow(object):
 
         else:
             try:
-                path=self.saved_file_path
-                loaded_file=self.load_file(path)
-                if loaded_file == self.dict_all_infos_for_file:
-                    sys.exit(0)
+                if os.path.isfile(self.saved_file_path)==True:
+                    path=self.saved_file_path
+                    loaded_file=self.load_file(path)
+                    if loaded_file == self.dict_all_infos_for_file:
+                        sys.exit(0)
             except AttributeError:
                 pass
 
