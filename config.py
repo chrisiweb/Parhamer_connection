@@ -3,11 +3,17 @@ import yaml
 import sys
 import os
 
+path_programm = os.path.dirname(sys.argv[0])
+if sys.platform.startswith("darwin"):
+    if path_programm is "":
+        path_programm = "."
+
+config_file = os.path.join(path_programm, "_database", "_config", "config.yml")
 
 def config_loader(pathToFile, parameter):
     for i in range(5):
         try:
-            config1 = yaml.safe_load(open(pathToFile, encoding="utf8"))
+            config_file = yaml.safe_load(open(pathToFile, encoding="utf8"))
             break
         except FileNotFoundError:
             print("File not Found!")
@@ -24,7 +30,7 @@ def config_loader(pathToFile, parameter):
                     config_path, 5 - i
                 )
             )
-    return config1[parameter]
+    return config_file[parameter]
 
 
 # if sys.platform.startswith("linux"):
@@ -32,10 +38,7 @@ def config_loader(pathToFile, parameter):
 #     path_programm = os.path.join(workdir)
 
 # else:
-path_programm = os.path.dirname(sys.argv[0])
-if sys.platform.startswith("darwin"):
-    if path_programm is "":
-        path_programm = "."
+
 
 logo_path = os.path.join(
     path_programm, "_database", "_config", "icon", "LaMA_icon_logo.png"

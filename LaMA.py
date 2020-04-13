@@ -24,7 +24,7 @@ import yaml
 from PIL import Image  ## pillow
 import smtplib
 
-from config import config_loader, path_programm, logo_path, logo_cria_path, SpinBox_noWheel
+from config import config_file, config_loader, path_programm, logo_path, logo_cria_path, SpinBox_noWheel
 
 from list_of_widgets import (
     widgets_search,
@@ -54,7 +54,7 @@ print("Loading...")
 
 ### config_loader, path_programm, logo_path, SpinBox_noWheel
 
-config_file = os.path.join(path_programm, "_database", "_config", "config1.yml")
+
 
 ag_beschreibung = config_loader(config_file, "ag_beschreibung")
 an_beschreibung = config_loader(config_file, "an_beschreibung")

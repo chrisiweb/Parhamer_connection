@@ -4,11 +4,11 @@ import os
 import datetime
 from datetime import date
 import json
-from config import config_loader, logo_path, path_programm
+from config import config_file, config_loader, logo_path, path_programm
 from translate import _fromUtf8, _translate
 from sort_items import natural_keys
 
-config_file = os.path.join(path_programm, "_database", "_config", "config1.yml")
+
 list_klassen = config_loader(config_file, "list_klassen")
 
 def modification_date(filename):

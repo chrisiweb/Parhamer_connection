@@ -3,7 +3,7 @@ import os
 import subprocess
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QApplication
-from config import config_loader, logo_path, path_programm
+from config import config_file, config_loader, logo_path, path_programm
 import json
 import shutil
 import datetime
@@ -12,7 +12,6 @@ from refresh_ddb import refresh_ddb, modification_date
 from sort_items import natural_keys
 
 
-config_file = os.path.join(path_programm, "_database", "_config", "config1.yml")
 
 ag_beschreibung = config_loader(config_file, "ag_beschreibung")
 an_beschreibung = config_loader(config_file, "an_beschreibung")
