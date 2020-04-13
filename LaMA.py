@@ -128,14 +128,21 @@ def create_new_groupbox(parent, name):
 
     return new_groupbox
 
-def create_new_label(parent, text):
+def create_new_label(parent, text, wordwrap=False):
     new_label=QtWidgets.QLabel(parent)
     # label_aufgabe = eval("self.label_aufgabe_{}".format(bsp_string))
     new_label.setWordWrap(True)
     new_label.setObjectName("{}".format(new_label))  
     new_label.setText(_translate("MainWindow",text, None))
+    new_label.setWordWrap(wordwrap)
 
-    return new_label    
+    return new_label
+
+def create_new_lineedit(parent):
+    new_lineedit = QtWidgets.QLineEdit(parent)
+    new_lineedit.setObjectName(_fromUtf8("{}".format(new_lineedit)))
+
+    return new_lineedit    
 
 def create_new_button(parent, text, command):
     new_button=QtWidgets.QPushButton(parent)
@@ -305,12 +312,6 @@ class Ui_MainWindow(object):
         self.menuHelp.setObjectName(_fromUtf8("menuHelp"))
         self.menuBild_einbinden = QtWidgets.QMenu(self.menuBar)
         self.menuBild_einbinden.setObjectName(_fromUtf8("menuBild_einbinden"))
-        # self.actionBild_einbinden = QtWidgets.QAction(MainWindow)
-        # self.actionBild_einbinden.setObjectName(_fromUtf8("actionBild_einbinden"))
-        # self.actionBild_konvertieren_jpg_eps = QtWidgets.QAction(MainWindow)
-        # self.actionBild_konvertieren_jpg_eps.setObjectName(
-        #     _fromUtf8("actionBild_konvertieren_jpg_eps")
-        # )
         MainWindow.setMenuBar(self.menuBar)
         self.actionReset = add_action(self.menuDatei, "Reset", self.suchfenster_reset)
 
@@ -362,70 +363,24 @@ class Ui_MainWindow(object):
         self.actionFeedback = add_action(self.menuFeedback, "Feedback oder Fehler senden...", partial(self.update_gui, 'widgets_feedback'))
 
         self.actionInfo = add_action(self.menuHelp, "Über LaMA", self.show_info)      
-        # self.actionReset = QtWidgets.QAction(MainWindow)
-        # self.actionReset.setObjectName(_fromUtf8("actionReset"))
-        # self.actionReset_sage = QtWidgets.QAction(MainWindow)
-        # self.actionReset_sage.setObjectName(_fromUtf8("actionReset_sage"))
-        # self.actionLoad = QtWidgets.QAction(MainWindow)
-        # self.actionLoad.setObjectName(_fromUtf8("actionLoad"))
-        # self.actionLoad.setVisible(False)
-        # self.actionSave = QtWidgets.QAction(MainWindow)
-        # self.actionSave.setObjectName(_fromUtf8("actionSave"))
-        # self.actionSave.setVisible(False)
-        # self.actionAufgaben_Typ1 = QtWidgets.QAction(MainWindow)
-        # self.actionAufgaben_Typ1.setObjectName(_fromUtf8("actionAufgaben_Typ1"))
-        # self.actionAufgaben_Typ2 = QtWidgets.QAction(MainWindow)
-        # self.actionAufgaben_Typ2.setObjectName(_fromUtf8("actionAufgaben_Typ2"))
-        # self.actionRefresh_Database = QtWidgets.QAction(MainWindow)
-        # self.actionRefresh_Database.setObjectName(_fromUtf8("actionRefresh_Database"))
-        # self.actionNeu = QtWidgets.QAction(MainWindow)
-        # self.actionNeu.setObjectName(_fromUtf8("actionNeu"))
-        # self.actionSage = QtWidgets.QAction(MainWindow)
-        # self.actionSage.setObjectName(_fromUtf8("actionSage"))
-        # self.actionSuche = QtWidgets.QAction(MainWindow)
-        # self.actionSuche.setObjectName(_fromUtf8("actionSuche"))
-        # self.actionInfo = QtWidgets.QAction(MainWindow)
-        # self.actionInfo.setObjectName(_fromUtf8("actionInfo"))
-        # self.actionExit = QtWidgets.QAction(MainWindow)
-        # self.actionExit.setObjectName(_fromUtf8("actionExit"))
-        # self.actionProgram = QtWidgets.QAction(MainWindow)
-        # self.actionProgram.setObjectName(_fromUtf8("actionProgram"))
-        # self.actionFeedback = QtWidgets.QAction(MainWindow)
-        # self.actionFeedback.setObjectName(_fromUtf8("actionFeedback"))
-        # self.menuDateityp.addAction(self.actionAufgaben_Typ1)
-        # self.menuDateityp.addAction(self.actionAufgaben_Typ2)
-        # self.menuFeedback.addAction(self.actionFeedback)
-        # self.menuHelp.addAction(self.actionInfo)
-        # self.menuDatei.addAction(self.actionRefresh_Database)
-        # self.menuDatei.addAction(self.actionReset)
-        # self.menuDatei.addAction(self.actionReset_sage)
-        
-        # self.menuDatei.addSeparator()
-        # self.menuDatei.addAction(self.actionLoad)
-        # self.menuDatei.addAction(self.actionSave)
-        # self.menuDatei.addSeparator()
-        # self.menuDatei.addAction(self.actionBild_konvertieren_jpg_eps)
-        # self.menuDatei.addSeparator()
-        # self.menuDatei.addAction(self.actionProgram)
-        # self.menuDatei.addAction(self.actionExit)
-        # self.menuSage.addAction(self.actionSage)
-        # self.menuNeu.addAction(self.actionNeu)
-        # self.menuSuche.addAction(self.actionSuche)
+
+
         self.menuBar.addAction(self.menuDatei.menuAction())
         self.menuBar.addAction(self.menuDateityp.menuAction())
         self.menuBar.addAction(self.menuSage.menuAction())
         self.menuBar.addAction(self.menuNeu.menuAction())
         self.menuBar.addAction(self.menuFeedback.menuAction())
         self.menuBar.addAction(self.menuHelp.menuAction())
-        # self.menuBild_einbinden.addAction(self.actionBild_einbinden)
-        # self.menuBild_einbinden.addSeparator()
-        # self.menuBild_einbinden.addAction(self.actionBild_konvertieren_jpg_eps)
 
-        self.groupBox_ausgew_gk = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBox_ausgew_gk.setObjectName(_fromUtf8("groupBox_ausgew_gk"))
+
+        self.groupBox_ausgew_gk = create_new_groupbox(self.centralwidget, "Ausgewählte Grundkompetenzen")
         self.groupBox_ausgew_gk.setMaximumHeight(110)
+        # self.groupBox_ausgew_gk = QtWidgets.QGroupBox(self.centralwidget)
+        # self.groupBox_ausgew_gk.setObjectName(_fromUtf8("groupBox_ausgew_gk"))
+
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.groupBox_ausgew_gk)
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
+
         self.scrollArea_ausgew_gk = QtWidgets.QScrollArea(self.groupBox_ausgew_gk)
         self.scrollArea_ausgew_gk.setWidgetResizable(True)
         self.scrollArea_ausgew_gk.setObjectName("scrollArea_ausgew_gk")
@@ -440,30 +395,42 @@ class Ui_MainWindow(object):
             "verticalLayout_scrollA_ausgew_gk"
         )
 
-        self.label_gk = QtWidgets.QLabel(self.scrollArea_ausgew_gk)
-        self.label_gk.setWordWrap(True)
-        self.label_gk.setObjectName(_fromUtf8("label_gk"))
+        self.label_gk = create_new_label(self.scrollArea_ausgew_gk, "", True)
         self.verticalLayout_scrollA_ausgew_gk.addWidget(self.label_gk)
-        self.label_gk_rest = QtWidgets.QLabel(self.scrollArea_ausgew_gk)
-        self.label_gk_rest.setWordWrap(False)
-        self.label_gk_rest.setObjectName(_fromUtf8("label_gk_rest"))
+        # self.label_gk = QtWidgets.QLabel(self.scrollArea_ausgew_gk)
+        # self.label_gk.setWordWrap(True)
+        # self.label_gk.setObjectName(_fromUtf8("label_gk"))
+
+        self.label_gk_rest = create_new_label(self.scrollArea_ausgew_gk, "")
+        # self.label_gk_rest = QtWidgets.QLabel(self.scrollArea_ausgew_gk)
+        # self.label_gk_rest.setWordWrap(False)
+        # self.label_gk_rest.setObjectName(_fromUtf8("label_gk_rest"))
         self.verticalLayout_scrollA_ausgew_gk.addWidget(self.label_gk_rest)
+
         self.scrollArea_ausgew_gk.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.scrollArea_ausgew_gk.setWidget(self.scrollAreaWidgetContents_ausgew_gk)
         self.verticalLayout_2.addWidget(self.scrollArea_ausgew_gk)
+
         self.gridLayout.addWidget(self.groupBox_ausgew_gk, 3, 1, 1, 1)
 
-        self.groupBox_titelsuche = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBox_titelsuche.setObjectName(_fromUtf8("groupBox_titelsuche"))
+
+        self.groupBox_titelsuche = create_new_groupbox(self.centralwidget, "Titelsuche:")
+
+        # self.groupBox_titelsuche = QtWidgets.QGroupBox(self.centralwidget)
+        # self.groupBox_titelsuche.setObjectName(_fromUtf8("groupBox_titelsuche"))
 
         # self.groupBox_titelsuche.setMaximumHeight(65)
+
         self.gridLayout_10 = QtWidgets.QGridLayout(self.groupBox_titelsuche)
         self.gridLayout_10.setObjectName(_fromUtf8("gridLayout_10"))
-        self.entry_suchbegriffe = QtWidgets.QLineEdit(self.groupBox_titelsuche)
 
-        self.entry_suchbegriffe.setObjectName(_fromUtf8("entry_suchbegriffe"))
+
+        self.entry_suchbegriffe = create_new_lineedit(self.groupBox_titelsuche)
         self.gridLayout_10.addWidget(self.entry_suchbegriffe, 0, 0, 1, 1)
+
         self.gridLayout.addWidget(self.groupBox_titelsuche, 4, 1, 1, 1)
+
+
         self.groupBox_klassen = QtWidgets.QGroupBox(self.centralwidget)
         #self.groupBox_klassen.setMaximumSize(QtCore.QSize(375, 16777215))
         self.groupBox_klassen.setObjectName(_fromUtf8("groupBox_klassen"))
@@ -2176,9 +2143,9 @@ class Ui_MainWindow(object):
         self.label_aufgabentyp.setText(
             _translate("MainWindow", "Aufgabentyp: Typ 1", None)
         )
-        self.groupBox_ausgew_gk.setTitle(
-            _translate("MainWindow", "Ausgewählte Grundkompetenzen", None)
-        )
+        # self.groupBox_ausgew_gk.setTitle(
+        #     _translate("MainWindow", "Ausgewählte Grundkompetenzen", None)
+        # )
         self.groupBox_titelsuche.setTitle(_translate("MainWindow", "Titelsuche:", None))
         self.groupBox_klassen.setTitle(_translate("MainWindow", "Suchfilter", None))
         self.cb_k7.setText(_translate("MainWindow", "7. Klasse", None))
@@ -2363,8 +2330,8 @@ class Ui_MainWindow(object):
             _translate("MainWindow", "Wahrscheinlichkeit und Statistik", None),
         )
         # self.actionReset.setText(_translate("MainWindow", "Reset", None))
-        self.label_gk_rest.setText(_translate("MainWindow", "", None))
-        self.label_gk.setText(_translate("MainWindow", "", None))
+        # self.label_gk_rest.setText(_translate("MainWindow", "", None))
+        # self.label_gk.setText(_translate("MainWindow", "", None))
         if self.chosen_program == 'lama':
             program='LaMA Cria (Unterstufe)'
         if self.chosen_program == 'cria':
