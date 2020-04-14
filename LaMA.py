@@ -322,6 +322,7 @@ class Ui_MainWindow(object):
         self.menuBild_einbinden.setObjectName(_fromUtf8("menuBild_einbinden"))
         MainWindow.setMenuBar(self.menuBar)
         self.actionReset = add_action(self.menuDatei, "Reset", self.suchfenster_reset)
+        self.actionReset.setShortcut("F4")
 
         self.actionReset_sage = add_action(self.menuDatei, "Reset Schularbeit", self.reset_sage)
         self.actionReset_sage.setVisible(False)
@@ -2733,6 +2734,30 @@ class Ui_MainWindow(object):
         for all in list(dict_aufgabenformate.keys()):
             x = eval("self.cb_af_" + all)
             x.setChecked(False)
+
+        ### LaMA Cria
+        for klasse in list_klassen:
+            dict_klasse_name = eval("dict_{}_name".format(klasse))
+            for all in dict_klasse_name:
+                radioButton = eval("self.radioButton_{0}_{1}".format(klasse, all))
+                if radioButton.isChecked() == True:
+                    radioButton.setAutoExclusive(False)
+                    radioButton.setChecked(False)
+                    radioButton.setAutoExclusive(True)
+
+        try:
+            self.scrollArea_unterkapitel_cria.hide()
+        except AttributeError:
+
+            pass
+        self.groupBox_unterkapitel_cria.setTitle(_translate("MainWindow", "Unterkapitel", None))
+
+        for example in self.list_creator_topics[:]:
+            cb_unterkapitel = eval(
+                "self.cb_unterkapitel_{0}_{1}".format(example[1], example[2])
+            )
+            cb_unterkapitel.setChecked(False)
+
         self.entry_suchbegriffe.setText("")
         self.cb_solution.setChecked(True)
         self.spinBox_punkte.setProperty("value", 1)
@@ -2776,6 +2801,9 @@ class Ui_MainWindow(object):
         self.comboBox_at_sage.setCurrentIndex(0)
         self.comboBox_gk.setCurrentIndex(0)
         self.comboBox_gk_num.setCurrentIndex(0)
+        self.comboBox_klassen.setCurrentIndex(0)
+        self.comboBox_kapitel.setCurrentIndex(0)
+        self.comboBox_unterkapitel.setCurrentIndex(0)
         self.lineEdit_number.setText("")
         self.dict_all_infos_for_file = {
             "list_alle_aufgaben": [],
@@ -2823,7 +2851,7 @@ class Ui_MainWindow(object):
             if response == False:
                 return
 
-            self.reset_sage(True)
+
             self.chosen_program = 'cria'
             self.update_gui('widgets_search')
             self.gridLayout.addWidget(self.groupBox_af, 3, 0, 1, 1)
@@ -2860,7 +2888,7 @@ class Ui_MainWindow(object):
             )
             if response == False:
                 return
-            self.reset_sage(True)
+            # self.reset_sage(True)
             self.chosen_program = 'lama'
             self.update_gui('widgets_search')
             self.gridLayout.addWidget(self.groupBox_af, 4, 0, 1, 1)
@@ -2875,7 +2903,6 @@ class Ui_MainWindow(object):
             self.comboBox_af.removeItem(5)
 
 
-
             MainWindow.setWindowTitle(
                 _translate(
                     "LaMA - LaTeX Mathematik Assistent (Oberstufe)",
@@ -2883,13 +2910,18 @@ class Ui_MainWindow(object):
                     None,
                 )
             )
-            MainWindow.setWindowIcon(QtGui.QIcon(logo_path))
-            self.label_gesamtbeispiele.setText(
-                _translate(
-                    "MainWindow", "Anzahl der Aufgaben: 0 (Typ1: 0 / Typ2: 0)	 ", None
-                )
+
+        MainWindow.setWindowIcon(QtGui.QIcon(logo_path))
+        self.label_gesamtbeispiele.setText(
+            _translate(
+                "MainWindow", "Anzahl der Aufgaben: 0 (Typ1: 0 / Typ2: 0)	 ", None
             )
-            return
+        )
+
+        self.reset_sage(True)
+        self.suchfenster_reset()
+
+
 
 
 
@@ -6140,7 +6172,7 @@ class Ui_MainWindow(object):
         log_file_2 = os.path.join(path_programm, "Teildokument", "log_file_2")
         log_file_cria = os.path.join(path_programm, "Teildokument", "log_file_cria")
 
-        
+
         if self.chosen_program == 'lama':
             try:
                 with open(log_file_1, encoding="utf8") as f:
