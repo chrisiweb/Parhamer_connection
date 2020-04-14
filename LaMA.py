@@ -5136,11 +5136,11 @@ class Ui_MainWindow(object):
 
         self.saved_file_path = save_file
 
-        # all_infos_yaml = yaml.dump(self.dict_all_infos_for_file)
+
 
         with open(save_file, "w+", encoding="utf8") as saved_file:
             json.dump(all_infos_yaml, saved_file, ensure_ascii=False)
-            # yaml.dump(self.dict_all_infos_for_file, saved_file)ll
+
 
 
     def define_titlepage(self):
@@ -5160,7 +5160,6 @@ class Ui_MainWindow(object):
         self.Dialog.show()
         self.Dialog.exec_()
 
-        #self.dict_titlepage = dict_titlepage
         if self.chosen_program=='lama':
             self.dict_titlepage = dict_titlepage
             titlepage_save = os.path.join(path_programm, "Teildokument", "titlepage_save")
@@ -5177,28 +5176,7 @@ class Ui_MainWindow(object):
                 json.dump(dict_titlepage, f, ensure_ascii=False)
 
 
-        # print(self.dict_titlepage)
-        
-        # QtWidgets.QApplication.restoreOverrideCursor()
-        # msg = QtWidgets.QMessageBox()
-        # msg.setIcon(QtWidgets.QMessageBox.Question)
-        # msg.setWindowIcon(QtGui.QIcon(logo_path))
-        # msg.setWindowTitle("Titelblatt anpassen")
-        # msg.setText('Wählen Sie die gewünschten Punkte für das Titelblatt aus:')
-        # self.cb_titlepage_title= QtWidgets.QCheckBox("Titel")
-        # self.cb_titlepage_title.setObjectName(_fromUtf8("cb_titlepage_titel"))
-        # msg.setCheckBox(self.cb_titlepage_title)
-        # self.cb_titlepage_datum= QtWidgets.QCheckBox("Datum")
-        # self.cb_titlepage_datum.setObjectName(_fromUtf8("cb_titlepage_datum"))
-        # msg.setCheckBox(self.cb_titlepage_datum)
 
-        # msg.setStandardButtons(QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
-        # buttonY = msg.button(QtWidgets.QMessageBox.Yes)
-        # buttonY.setText('Speichern')
-        # msg.setDefaultButton(QtWidgets.QMessageBox.Yes)
-        # buttonN = msg.button(QtWidgets.QMessageBox.No)
-        # buttonN.setText('Standard wieder herstellen')
-        # msg.exec_()
 
     def notenanzeige_changed(self):
         if self.radioButton_beurteilungsraster.isChecked():
@@ -5310,30 +5288,7 @@ class Ui_MainWindow(object):
         )
 
         self.build_aufgaben_schularbeit(aufgabe)
-        # self.update_lists_examples()
-        # temp_aufgabe = aufgabe.replace("_L_", "")
-        # if re.search("[A-Z]", temp_aufgabe) == None:
-        #     bsp_string = aufgabe
-        #     typ = 2
-        # else:
-        #     bsp_string = aufgabe.replace(" ", "").replace(".", "").replace("-", "_")
-        #     typ = 1
 
-        # list_input = eval("self.list_input_{}".format(bsp_string))
-        # sb_value = eval("self.spinBox_pkt_{}".format(bsp_string))
-        # list_input[0] = sb_value.value()
-
-        # space_value = eval("self.spinBox_abstand_{}".format(bsp_string))
-        # list_input[1] = space_value.value()
-
-        # # if position!=0:
-        # a, b = self.list_alle_aufgaben_sage.index(aufgabe), self.list_alle_aufgaben_sage.index(aufgabe) - 1
-        # self.list_alle_aufgaben_sage[a], self.list_alle_aufgaben_sage[b] = (
-        #     self.list_alle_aufgaben_sage[b],
-        #     self.list_alle_aufgaben_sage[a],
-        # )
-
-        # self.build_aufgaben_schularbeit(False)
 
     def btn_down_pressed(self, aufgabe):
 
@@ -5345,33 +5300,7 @@ class Ui_MainWindow(object):
 
         self.build_aufgaben_schularbeit(aufgabe)
 
-        # self.update_lists_examples()
-        # temp_aufgabe = aufgabe.replace("_L_", "")
-        # if re.search("[A-Z]", temp_aufgabe) == None:
-        #     bsp_string = aufgabe
-        #     typ = 2
-        # else:
-        #     bsp_string = aufgabe.replace(" ", "").replace(".", "").replace("-", "_")
 
-        #     typ = 1
-
-        # # number=self.list_alle_aufgaben_sage.index(aufgabe)
-        # list_input = eval("self.list_input_{}".format(bsp_string))
-        # sb_value = eval("self.spinBox_pkt_{}".format(bsp_string))
-        # # print(list_input)
-        # # print(sb_value.value())
-        # list_input[0] = sb_value.value()
-
-        # space_value = eval("self.spinBox_abstand_{}".format(bsp_string))
-        # list_input[1] = space_value.value()
-
-        # # if (typ==1 and position!=len(list_sage_examples_typ1)-1) or (typ==2 and position!=len(list_sage_examples_typ2)-1):
-        # a, b = self.list_alle_aufgaben_sage.index(aufgabe), self.list_alle_aufgaben_sage.index(aufgabe) + 1
-        # self.list_alle_aufgaben_sage[a], self.list_alle_aufgaben_sage[b] = (
-        #     self.list_alle_aufgaben_sage[b],
-        #     self.list_alle_aufgaben_sage[a],
-        # )
-        # self.build_aufgaben_schularbeit(False)
 
     def erase_aufgabe(self, aufgabe):
         del self.dict_alle_aufgaben_sage[aufgabe]
@@ -5381,8 +5310,6 @@ class Ui_MainWindow(object):
             del self.dict_variablen_label[aufgabe]
         if aufgabe in self.dict_sage_ausgleichspunkte_chosen:
             del self.dict_sage_ausgleichspunkte_chosen[aufgabe]
-
-
 
 
 
@@ -5510,15 +5437,6 @@ class Ui_MainWindow(object):
         # self.notenanzeige_changed() ?? not in LaMA Cria
 
 
-    def abstand_changed(self, bsp_string):
-
-        spinBox_abstand = eval("self.spinBox_abstand_{}".format(bsp_string))
-        abstand = spinBox_abstand.value()
-
-        list_input = eval("self.list_input_{}".format(bsp_string))
-        list_input[1] = abstand
-
-
     def update_default_pkt(self):
         for all in self.dict_variablen_punkte:
             if self.get_aufgabentyp(all)==1:
@@ -5526,43 +5444,6 @@ class Ui_MainWindow(object):
                 self.dict_alle_aufgaben_sage[all][0]=self.spinBox_default_pkt.value()
 
 
-            # print(all)
-        # return
-        # if self.list_alle_aufgaben_sage!=[]:
-        #     for all in self.list_alle_aufgaben_sage:
-        #         if self.get_aufgabentyp(all)==1:
-        #             self.dict_alle_aufgaben_sage[all][0]=self.spinBox_default_pkt.value() 
-
-        #     self.build_aufgaben_schularbeit(self.list_alle_aufgaben_sage[0]) 
-
-
-    def update_lists_examples(self):
-        for all in self.list_alle_aufgaben_sage:
-            temp_all = all.replace("_L_", "")
-            if re.search("[A-Z]", temp_all) == None:
-                bsp_string = all
-                typ = 2
-            else:
-                bsp_string = all.replace(" ", "").replace(".", "").replace("-", "_")
-                typ = 1
-
-            try:
-                list_input = eval("self.list_input_{}".format(bsp_string))
-                sb_value = eval("self.spinBox_pkt_{}".format(bsp_string))
-                list_input[0] = sb_value.value()
-                space_value = eval("self.spinBox_abstand_{}".format(bsp_string))
-                list_input[1] = space_value.value()
-            except AttributeError:
-                if typ == 1:
-                    exec(
-                        'self.list_input_{0}=[{1},0,"",""]'.format(
-                            bsp_string, self.spinBox_default_pkt.value()
-                        )
-                    )
-                if typ == 2:
-                    exec('self.list_input_{}=[0,0,"",""]'.format(bsp_string))
-                list_input = eval("self.list_input_{}".format(bsp_string))
-            # print(list_input)
 
 
 
@@ -5901,406 +5782,7 @@ class Ui_MainWindow(object):
         QtWidgets.QApplication.restoreOverrideCursor()
 
 
-    ##### build_aufgaben_schularbeit(self, file_loaded=False) (working)
-        # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        # self.num_ausgleichspkt_gesamt = 0
-        # r = 0
-        # scrollBar_position = self.scrollArea_chosen.verticalScrollBar().value()
 
-        # for all in self.list_alle_aufgaben_sage:
-        #     if re.search("[A-Z]", all) == None:
-        #         bsp_string = all
-        #     else:
-        #         bsp_string = all.replace(" ", "").replace(".", "").replace("-", "_")
-
-        #     try:
-        #         exec("self.groupBox_bsp_{}.setParent(None)".format(bsp_string))
-        #     except AttributeError:
-        #         pass
-
-        # if file_loaded == False:
-        #     self.update_lists_examples()
-
-        # if self.chosen_program=='lama':
-        #     for example in self.list_alle_aufgaben_sage:
-        #         temp_example = example.replace("_L_", "")
-        #         if re.search("[A-Z]", temp_example) == None:
-        #             bsp_string = example
-        #         else:
-        #             bsp_string = example.replace(" ", "").replace(".", "").replace("-", "_")
-        #         list_input = eval("self.list_input_{}".format(bsp_string))
-        #         name = example + ".tex"
-        #         for all in self.beispieldaten_dateipfad_1:
-        #             filename = os.path.basename(self.beispieldaten_dateipfad_1[all])
-        #             if name == filename:
-        #                 x = all.split(" - ")
-        #                 # print(x[-2])
-        #                 list_input[2] = x[-3]
-        #                 list_input[3] = x[-2]
-
-        #         for all in self.beispieldaten_dateipfad_2:
-        #             filename = os.path.basename(self.beispieldaten_dateipfad_2[all])
-        #             if name == filename:
-        #                 x = all.split(" - ")
-        #                 list_input[2] = x[-2]
-        # if self.chosen_program=='cria':
-        #     for bsp_string in self.list_alle_aufgaben_sage:
-        #         if "_L_" in bsp_string:
-        #             local_file = True
-        #         else:
-        #             local_file = False
-        #         list_input = eval("self.list_input_{}".format(bsp_string))
-        #         list_bsp_string=bsp_string.split("_")
-        #         klasse = list_bsp_string[0]
-        #         if local_file==True:
-        #             example = "_L_"+list_bsp_string[-1]
-        #         else:
-        #             example = list_bsp_string[-1]
-                
-        #         name = example + ".tex"
-
-        #         for all in self.beispieldaten_dateipfad_cria:
-        #             if klasse.upper() in all:
-
-        #                 filename = os.path.basename(self.beispieldaten_dateipfad_cria[all])
-        #                 if name == filename:
-        #                     chosen_section = all.split(" - ")
-        #                     #print(chosen_section)
-        #                     list_input[2] = chosen_section[-3]
-
-        # if file_loaded == False:
-        #     self.list_copy_images = []
-        #     self.collect_all_infos_for_creating_file()
-        # if file_loaded == True:
-        #     try:
-        #         self.list_copy_images
-        #     except AttributeError:
-        #         self.list_copy_images = []
-        # counter = 0
-        # num_of_example = 1
-        # for all in self.list_alle_aufgaben_sage:
-        #     if self.chosen_program=='lama':
-        #         temp_all = all.replace("_L_", "")
-        #         if re.search("[A-Z]", temp_all) == None:
-        #             bsp_string = all
-        #             typ = 2
-        #         else:
-        #             bsp_string = all.replace(" ", "").replace(".", "").replace("-", "_")
-        #             typ = 1
-
-        #     if self.chosen_program=='cria':
-        #         bsp_string=all
-        #         if "_L_" in all:
-        #             local_file = True
-        #         else:
-        #             local_file = False
-        #         list_bsp_string=all.split("_")
-        #         klasse = list_bsp_string[0]
-        #         if local_file==True:
-        #             example = "_L_"+list_bsp_string[-1]
-        #         else:
-        #             example = list_bsp_string[-1]
-
-
-
-        #     list_input = eval("self.list_input_{}".format(bsp_string))
-        #     exec(
-        #         "self.groupBox_bsp_{} = QtWidgets.QGroupBox(self.scrollAreaWidgetContents_2)".format(
-        #             bsp_string
-        #         )
-        #     )
-        #     x = eval("self.groupBox_bsp_{}".format(bsp_string))
-        #     # x.setMaximumSize(QtCore.QSize(16777215, 200))
-        #     x.setObjectName("groupBox_bsp_{}".format(bsp_string))
-        #     if self.chosen_program=='lama':
-        #         if (self.list_alle_aufgaben_sage.index(all) % 2) == 0 and typ == 1:
-        #             x.setStyleSheet(_fromUtf8("background-color: rgb(255, 255, 255);"))
-        #         if typ == 2:
-        #             x.setStyleSheet(_fromUtf8("background-color: rgb(255, 212, 212);"))
-        #         x.setTitle(
-        #             _translate(
-        #                 "MainWindow",
-        #                 "{0}. Aufgabe (Typ{1})".format(str(num_of_example), str(typ)),
-        #                 None,
-        #             )
-        #         )
-        #     if self.chosen_program=='cria':
-        #         if (self.list_alle_aufgaben_sage.index(all) % 2) == 0:
-        #             x.setStyleSheet(_fromUtf8("background-color: rgb(255, 255, 255);"))                
-        #         x.setTitle(
-        #             _translate(
-        #                 "MainWindow",
-        #                 "{0}. Aufgabe".format(str(num_of_example)), None))
-                
-
- 
-        #     self.gridLayout_gB = QtWidgets.QGridLayout(x)
-        #     self.gridLayout_gB.setObjectName("gridLayout_gB")
-        #     self.gridLayout_8.addWidget(x, 0, 0, 1, 2, QtCore.Qt.AlignTop)
-
-        #     exec("self.label_aufgabe_{} = QtWidgets.QLabel(x)".format(bsp_string))
-        #     label_aufgabe = eval("self.label_aufgabe_{}".format(bsp_string))
-        #     label_aufgabe.setWordWrap(True)
-        #     label_aufgabe.setObjectName("label_aufgabe_{}".format(bsp_string))
-        #     self.gridLayout_gB.addWidget(label_aufgabe, 0, 0, 1, 1)
-
-
-        #     if self.chosen_program=='lama':
-        #         if typ == 1:
-        #             try:
-        #                 aufgabenformat = (
-        #                     "(" + dict_aufgabenformate[list_input[3].lower()] + ")"
-        #                 )
-        #             except KeyError:
-        #                 aufgabenformat = ""
-
-        #             label_aufgabe.setText(
-        #                 _translate(
-        #                     "MainWindow", "{0} {1}".format(all, aufgabenformat), None
-        #                 )
-        #             )
-        #         if typ == 2:
-        #             label_aufgabe.setText(_translate("MainWindow", "{0}".format(all), None))
-        #     if self.chosen_program=='cria':
-        #         if "_L_" in bsp_string:
-        #             label_aufgabe.setText(
-        #             _translate("MainWindow", "{0}. Klasse - {1}".format(klasse[1], example), None)
-        #             )           
-        #         else:
-        #             label_aufgabe.setText(
-        #                 _translate("MainWindow", "{0}. Klasse - {1}".format(klasse[1], example), None)
-        #             )        
-
-
-
-        #     exec("self.label_title_{} = QtWidgets.QLabel(x)".format(bsp_string))
-        #     label_title = eval("self.label_title_{}".format(bsp_string))
-        #     label_title.setWordWrap(True)
-        #     label_title.setObjectName("label_title_{}".format(bsp_string))
-        #     self.gridLayout_gB.addWidget(label_title, 1, 0, 1, 1)
-        #     label_title.setText(
-        #         _translate("MainWindow", "Titel: {}".format(list_input[2]), None)
-        #     )  # list_titles[i-1]
-
-        #     self.groupBox_pkt = QtWidgets.QGroupBox(x)
-        #     # self.groupBox_pkt.setMaximumSize(QtCore.QSize(83, 53))
-        #     self.groupBox_pkt.setObjectName("groupBox_pkt")
-        #     self.groupBox_pkt.setTitle(_translate("MainWindow", "Punkte", None))
-        #     if self.chosen_program=='cria' or typ == 1:
-        #         self.groupBox_pkt.setMaximumSize(QtCore.QSize(80, 16777215))
-        #     elif typ == 2:
-        #         self.groupBox_pkt.setToolTip(
-        #             "Die Punkte stehen für die Gesamtpunkte dieser Aufgabe.\nEs müssen daher auch die Ausgleichspunkte berücksichtigt werden."
-        #         )
-        #         self.groupBox_pkt.setMaximumSize(QtCore.QSize(150, 16777215))
-
-        #     self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBox_pkt)
-        #     self.gridLayout_3.setObjectName("gridLayout_3")
-        #     self.gridLayout_gB.addWidget(self.groupBox_pkt, 0, 1, 2, 1)
-
-        #     exec(
-        #         "self.spinBox_pkt_{} = SpinBox_noWheel(self.groupBox_pkt)".format(
-        #             bsp_string
-        #         )
-        #     )
-
-
-        #     spinBox_pkt = eval("self.spinBox_pkt_{}".format(bsp_string))
-        #     spinBox_pkt.setObjectName("spinBox_pkt_{}".format(bsp_string))
-        #     spinBox_pkt.setValue(eval("self.list_input_{}".format(bsp_string))[0])
-        #     spinBox_pkt.valueChanged.connect(partial(self.update_punkte, bsp_string))
-        #     self.gridLayout_3.addWidget(spinBox_pkt, 0, 0, 1, 1)
-
-        #     self.pushButton_up = QtWidgets.QPushButton(x)
-        #     self.pushButton_up.setObjectName("pushButton_up")
-        #     self.pushButton_up.setMaximumSize(QtCore.QSize(30, 30))
-        #     self.pushButton_up.setFocusPolicy(QtCore.Qt.ClickFocus)
-        #     self.gridLayout_gB.addWidget(self.pushButton_up, 0, 3, 2, 1)
-        #     self.pushButton_up.setStyleSheet(_fromUtf8("background-color: light gray"))
-        #     self.pushButton_up.setIcon(
-        #         QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.SP_ArrowUp)
-        #     )
-        #     if num_of_example == 1:
-        #         self.pushButton_up.setEnabled(False)
-
-        #     if self.chosen_program=='lama' and typ == 2 and counter == 0:
-        #         self.pushButton_up.setEnabled(False)
-        #         counter += 1
-        #     self.pushButton_up.clicked.connect(partial(self.btn_up_pressed, all))
-
-        #     self.pushButton_down = QtWidgets.QPushButton(x)
-        #     self.pushButton_down.setObjectName("pushButton_down")
-        #     self.pushButton_down.setStyleSheet(
-        #         _fromUtf8("background-color: light gray")
-        #     )
-        #     self.pushButton_down.setMaximumSize(QtCore.QSize(30, 30))
-        #     self.pushButton_down.setFocusPolicy(QtCore.Qt.ClickFocus)
-        #     self.gridLayout_gB.addWidget(self.pushButton_down, 0, 4, 2, 1)
-        #     self.pushButton_down.setIcon(
-        #         QtWidgets.QApplication.style().standardIcon(
-        #             QtWidgets.QStyle.SP_ArrowDown
-        #         )
-        #     )
-        #     if num_of_example == len(self.list_alle_aufgaben_sage):
-        #         self.pushButton_down.setEnabled(False)
-
-        #     if (self.chosen_program=='lama' and
-        #         typ == 1
-        #         and self.dict_all_infos_for_file["data_gesamt"]["num_1"]
-        #         == num_of_example
-        #     ):
-        #         self.pushButton_down.setEnabled(False)
-
-        #     if self.chosen_program == 'cria' and num_of_example == len(self.list_alle_aufgaben_sage):
-        #         self.pushButton_down.setEnabled(False)  
-
-        #     self.pushButton_down.clicked.connect(partial(self.btn_down_pressed, all))
-
-        #     self.pushButton_delete = QtWidgets.QPushButton(x)
-        #     self.pushButton_delete.setObjectName("pushButton_delete")
-        #     self.pushButton_delete.setStyleSheet(
-        #         _fromUtf8("background-color: light gray")
-        #     )
-        #     # self.pushButton_delete.setStyleSheet(_fromUtf8("background-color: rgb(255, 153, 153);"))
-        #     self.pushButton_delete.setMaximumSize(QtCore.QSize(30, 30))
-        #     self.pushButton_delete.setFocusPolicy(QtCore.Qt.ClickFocus)
-        #     self.gridLayout_gB.addWidget(self.pushButton_delete, 0, 5, 2, 1)
-        #     self.pushButton_delete.setIcon(
-        #         QtWidgets.QApplication.style().standardIcon(
-        #             QtWidgets.QStyle.SP_TitleBarCloseButton
-        #         )
-        #     )
-        #     self.pushButton_delete.clicked.connect(
-        #         partial(self.btn_delete_pressed, all, False)
-        #     )
-
-        #     self.groupBox_abstand = QtWidgets.QGroupBox(x)
-        #     self.groupBox_abstand.setObjectName("groupBox_abstand")
-        #     self.groupBox_abstand.setTitle(
-        #         _translate("MainWindow", "Abstand (cm)", None)
-        #     )
-        #     self.groupBox_abstand.setMaximumSize(QtCore.QSize(100, 16777215))
-        #     self.groupBox_abstand.setToolTip("Neue Seite: Abstand=99")
-        #     self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.groupBox_abstand)
-        #     # self.groupBox_abstand.setMaximumSize(QtCore.QSize(180, 152))
-        #     if self.chosen_program=='lama' and typ == 2:
-        #         self.groupBox_abstand.hide()
-        #     self.verticalLayout_3.setObjectName("verticalLayout_3")
-
-        #     exec(
-        #         "self.spinBox_abstand_{} = SpinBox_noWheel(self.groupBox_abstand)".format(
-        #             bsp_string
-        #         )
-        #     )
-        #     spinBox_abstand = eval("self.spinBox_abstand_{}".format(bsp_string))
-        #     spinBox_abstand.setObjectName("spinBox_abstand_{}".format(bsp_string))
-        #     spinBox_abstand.setValue(eval("self.list_input_{}".format(bsp_string))[1])
-        #     spinBox_abstand.valueChanged.connect(partial(self.abstand_changed,bsp_string))
-        #     self.verticalLayout_3.addWidget(spinBox_abstand)
-        #     self.gridLayout_gB.addWidget(self.groupBox_abstand, 0, 2, 2, 1)
-
-
-        #     if self.chosen_program=='lama':
-        #         self.pushButton_ausgleich = QtWidgets.QPushButton(x)
-        #         self.pushButton_ausgleich.setObjectName("pushButton_ausgleich")
-        #         self.pushButton_ausgleich.setStyleSheet(
-        #             _fromUtf8("background-color: light gray")
-        #         )
-        #         # self.pushButton_delete.setStyleSheet(_fromUtf8("background-color: rgb(255, 153, 153);"))
-        #         self.pushButton_ausgleich.setMaximumSize(QtCore.QSize(220, 30))
-        #         self.pushButton_ausgleich.setText("Ausgleichspunkte anpassen...")
-        #         self.pushButton_ausgleich.setFocusPolicy(QtCore.Qt.ClickFocus)
-
-        #     ##### GET included pictures ###
-        #     if self.chosen_program =='lama':
-        #         if typ == 1:
-        #             list_path = self.beispieldaten_dateipfad_1.values()
-        #         if typ == 2:
-        #             list_path = self.beispieldaten_dateipfad_2.values()        
-        #         name = all + ".tex"
-
-        #         for path in list_path:
-        #             if name == os.path.basename(path):
-        #                 selected_path = path
-
-        #     elif self.chosen_program == 'cria':
-        #         list_path = self.beispieldaten_dateipfad_cria.values()
-        #         name = example + ".tex"
-
-        #         for path in list_path:
-        #             if klasse in path:
-        #                 if name == os.path.basename(path):
-        #                     selected_path = path
-
-            
-        #     f = open(selected_path, "r", encoding="utf8")
-
-        #     content = f.read()
-        #     f.close()
-
-        #     if "\\includegraphics" in content:
-        #         matches = re.findall("/Bilder/(.+.eps)}", content)
-        #         for image in matches:
-        #             self.list_copy_images.append(image)
-                    
-        #     if self.chosen_program=='lama' and typ == 2:
-        #         try:
-        #             num_ausgleichspkt = int(list_input[3])
-        #         except ValueError:
-        #             num_ausgleichspkt = content.count("\\fbox{A}")
-
-        #         exec(
-        #             "self.ausgleich_pkt_{} = QtWidgets.QLabel(self.groupBox_pkt)".format(
-        #                 bsp_string
-        #             )
-        #         )
-        #         ausgleich_pkt = eval("self.ausgleich_pkt_{}".format(bsp_string))
-        #         ausgleich_pkt.setObjectName("ausgleich_pkt_{}".format(bsp_string))
-        #         self.gridLayout_3.addWidget(ausgleich_pkt, 0, 1, 1, 1)
-        #         list_input[3] = num_ausgleichspkt
-        #         ausgleich_pkt.setText(
-        #             _translate("MainWindow", "(AP: {})".format(num_ausgleichspkt), None)
-        #         )  ##*self.spinBox_default_pkt.value())
-        #         self.num_ausgleichspkt_gesamt += num_ausgleichspkt
-        #         list_input[3] = num_ausgleichspkt
-        #         self.pushButton_ausgleich.clicked.connect(
-        #             partial(
-        #                 self.pushButton_ausgleich_pressed, all, selected_path, content
-        #             )
-        #         )
-
-        #         self.gridLayout_gB.addWidget(self.pushButton_ausgleich, 0, 2, 2, 1)
-        #     if self.chosen_program=='cria' or typ == 1:
-        #         self.pushButton_ausgleich.hide()
-
-        #     MainWindow.setTabOrder(spinBox_pkt, spinBox_abstand)
-
-        #     try:
-        #         self.gridLayout_8.removeItem(self.spacerItem)
-        #     except AttributeError:
-        #         pass
-
-        #     self.gridLayout_8.addWidget(x, r, 0, 1, 2, QtCore.Qt.AlignTop)
-
-        #     self.spacerItem = QtWidgets.QSpacerItem(
-        #         20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
-        #     )
-        #     self.gridLayout_8.addItem(self.spacerItem, r + 1, 0, 1, 2)
-
-        #     r += 2
-
-        #     # print(list_input)
-        #     num_of_example += 1
-        #     if file_loaded==True:
-        #         self.update_punkte(bsp_string)
-
-        # self.scrollArea_chosen.verticalScrollBar().setValue(scrollBar_position)
-        # # self.sum_up_ausgleich()
-
-        # self.notenanzeige_changed()
-        # self.lineEdit_number.setText("")
-        # self.lineEdit_number.setFocus()
-        # QtWidgets.QApplication.restoreOverrideCursor()
     def split_content_ausgleichspunkte(self, content):
         x = re.split("Aufgabenstellung:}|Lösungserwartung:}", content)
         str_file = x[1].replace("\t", "")
