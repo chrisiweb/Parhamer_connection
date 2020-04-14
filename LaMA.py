@@ -121,6 +121,14 @@ def combine_all_lists_to_one(list_of_lists):
     return combined_list 
 
 
+def create_new_checkbox(parent, text, checked=False):
+    new_checkbox = QtWidgets.QCheckBox(parent)
+    new_checkbox.setObjectName(_fromUtf8("{}".format(new_checkbox)))
+    new_checkbox.setText(_translate("MainWindow", text, None))
+    new_checkbox.setChecked(checked)
+
+    return new_checkbox
+
 def create_new_groupbox(parent, name):
     new_groupbox = QtWidgets.QGroupBox(parent)
     new_groupbox.setObjectName("{}".format(new_groupbox))
@@ -375,8 +383,7 @@ class Ui_MainWindow(object):
 
         self.groupBox_ausgew_gk = create_new_groupbox(self.centralwidget, "Ausgewählte Grundkompetenzen")
         self.groupBox_ausgew_gk.setMaximumHeight(110)
-        # self.groupBox_ausgew_gk = QtWidgets.QGroupBox(self.centralwidget)
-        # self.groupBox_ausgew_gk.setObjectName(_fromUtf8("groupBox_ausgew_gk"))
+
 
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.groupBox_ausgew_gk)
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
@@ -397,14 +404,10 @@ class Ui_MainWindow(object):
 
         self.label_gk = create_new_label(self.scrollArea_ausgew_gk, "", True)
         self.verticalLayout_scrollA_ausgew_gk.addWidget(self.label_gk)
-        # self.label_gk = QtWidgets.QLabel(self.scrollArea_ausgew_gk)
-        # self.label_gk.setWordWrap(True)
-        # self.label_gk.setObjectName(_fromUtf8("label_gk"))
+
 
         self.label_gk_rest = create_new_label(self.scrollArea_ausgew_gk, "")
-        # self.label_gk_rest = QtWidgets.QLabel(self.scrollArea_ausgew_gk)
-        # self.label_gk_rest.setWordWrap(False)
-        # self.label_gk_rest.setObjectName(_fromUtf8("label_gk_rest"))
+
         self.verticalLayout_scrollA_ausgew_gk.addWidget(self.label_gk_rest)
 
         self.scrollArea_ausgew_gk.setFrameShape(QtWidgets.QFrame.NoFrame)
@@ -431,94 +434,96 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.groupBox_titelsuche, 4, 1, 1, 1)
 
 
-        self.groupBox_klassen = QtWidgets.QGroupBox(self.centralwidget)
-        #self.groupBox_klassen.setMaximumSize(QtCore.QSize(375, 16777215))
-        self.groupBox_klassen.setObjectName(_fromUtf8("groupBox_klassen"))
-        # self.groupBox_klassen.setMaximumHeight(100)
+        self.groupBox_klassen = create_new_groupbox(self.centralwidget, "Themen Schulstufe")
         self.gridLayout_14 = QtWidgets.QGridLayout(self.groupBox_klassen)
         self.gridLayout_14.setObjectName(_fromUtf8("gridLayout_14"))
-        self.cb_k5 = QtWidgets.QCheckBox(self.groupBox_klassen)
-        self.cb_k5.setObjectName(_fromUtf8("cb_k5"))
+
+        self.cb_k5 = create_new_checkbox(self.groupBox_klassen, "5. Klasse")
         self.gridLayout_14.addWidget(self.cb_k5, 0, 0, 1, 1)
-        self.cb_k7 = QtWidgets.QCheckBox(self.groupBox_klassen)
-        self.cb_k7.setObjectName(_fromUtf8("cb_k7"))
-        self.gridLayout_14.addWidget(self.cb_k7, 0, 1, 1, 1)
-        self.cb_k6 = QtWidgets.QCheckBox(self.groupBox_klassen)
-        self.cb_k6.setObjectName(_fromUtf8("cb_k6"))
+
+        self.cb_k6 = create_new_checkbox(self.groupBox_klassen, "6. Klasse")
         self.gridLayout_14.addWidget(self.cb_k6, 1, 0, 1, 1)
-        self.cb_k8 = QtWidgets.QCheckBox(self.groupBox_klassen)
-        self.cb_k8.setObjectName(_fromUtf8("cb_k8"))
+
+        self.cb_k7 = create_new_checkbox(self.groupBox_klassen, "7. Klasse")
+        self.gridLayout_14.addWidget(self.cb_k7, 0, 1, 1, 1)
+
+        self.cb_k8 = create_new_checkbox(self.groupBox_klassen, "8. Klasse")
         self.gridLayout_14.addWidget(self.cb_k8, 1, 1, 1, 1)
-        self.cb_mat = QtWidgets.QCheckBox(self.groupBox_klassen)
-        self.cb_mat.setObjectName(_fromUtf8("cb_mat"))
-        self.gridLayout_14.addWidget(self.cb_mat, 0, 2, 1, 1)
-        self.cb_univie = QtWidgets.QCheckBox(self.groupBox_klassen)
-        self.cb_univie.setObjectName(_fromUtf8("cb_univie"))
+
+        self.cb_matura = create_new_checkbox(self.groupBox_klassen, "Matura")
+        self.gridLayout_14.addWidget(self.cb_matura, 0, 2, 1, 1)
+
+        self.cb_univie = create_new_checkbox(self.groupBox_klassen, "Uni Wien")
         self.gridLayout_14.addWidget(self.cb_univie, 1, 2, 1, 1)
+
         self.gridLayout.addWidget(self.groupBox_klassen, 3, 0, 1, 1)
+
+
+
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
-        self.cb_solution = QtWidgets.QCheckBox(self.centralwidget)
-        self.cb_solution.setObjectName(_fromUtf8("cb_solution"))
-        self.cb_solution.setChecked(True)
+
+        self.cb_solution = create_new_checkbox(self.centralwidget, "Lösungen anzeigen", True)
         self.horizontalLayout_2.addWidget(self.cb_solution, QtCore.Qt.AlignLeft)
-        self.cb_drafts = QtWidgets.QCheckBox(self.centralwidget)
-        self.cb_drafts.setObjectName(_fromUtf8("cb_drafts"))
+
+        self.cb_drafts = create_new_checkbox(self.centralwidget, "Entwürfe anzeigen")
         self.horizontalLayout_2.addWidget(self.cb_drafts)
         self.cb_drafts.toggled.connect(self.cb_drafts_enabled)
-        self.btn_suche = QtWidgets.QPushButton(self.centralwidget)
-        self.btn_suche.setEnabled(True)
-        self.btn_suche.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
-        self.btn_suche.setAcceptDrops(False)
-        self.btn_suche.setObjectName(_fromUtf8("btn_suche"))
+
+        self.btn_suche = create_new_button(self.centralwidget,"Suche starten", partial(prepare_tex_for_pdf,self))
+        self.btn_suche.setShortcut(_translate("MainWindow", "Return", None))
         self.horizontalLayout_2.addWidget(self.btn_suche)
-        self.gridLayout.addLayout(self.horizontalLayout_2, 5, 1, 1, 1)
+
+        self.gridLayout.addLayout(self.horizontalLayout_2, 5, 1, 1, 1)        
+
+
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
-        # self.btn_refreshddb = QtWidgets.QPushButton(self.centralwidget)
-        # self.btn_refreshddb.setObjectName(_fromUtf8("btn_refreshddb"))
-        # self.horizontalLayout.addWidget(self.btn_refreshddb)
-        self.label_update = QtWidgets.QLabel(self.centralwidget)
-        self.label_update.setObjectName(_fromUtf8("label_update"))
-        #self.label_update.setMaximumSize(QtCore.QSize(375, 18))
+
+
+        self.label_update = create_new_label(self.centralwidget, "")
         self.label_update.setMaximumHeight(18)
         self.horizontalLayout.addWidget(self.label_update)
-        # self.label_update.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
+
         self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
+
+
         self.horizontalLayout_combobox = QtWidgets.QHBoxLayout()
         self.horizontalLayout_combobox.setObjectName(
             _fromUtf8("horizontalLayout_combobox")
         )
-        self.label_aufgabentyp = QtWidgets.QLabel(self.centralwidget)
-        self.label_aufgabentyp.setObjectName(_fromUtf8("label_aufgabentyp"))
+
+        self.label_aufgabentyp = create_new_label(self.centralwidget, "Aufgabentyp: Typ 1")
         self.horizontalLayout_combobox.addWidget(self.label_aufgabentyp)
-        self.combobox_searchtype = QtWidgets.QComboBox(self.centralwidget)
-        # self.combobox_searchtype.setEnabled(True)
+
+        self.combobox_searchtype = create_new_combobox(self.centralwidget)
         self.combobox_searchtype.setMinimumContentsLength(1)
-        # self.combobox_searchtype.setFrame(True)
-        self.combobox_searchtype.setObjectName(_fromUtf8("combobox_searchtype"))
-        self.combobox_searchtype.addItem(_fromUtf8(""))
-        self.combobox_searchtype.addItem(_fromUtf8(""))
+
+        add_options_to_combobox(self.combobox_searchtype, 0, "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten")
+        add_options_to_combobox(self.combobox_searchtype, 1, "Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten")
+
         self.horizontalLayout_combobox.addWidget(self.combobox_searchtype)
+
         self.gridLayout.addLayout(self.horizontalLayout_combobox, 0, 1, 1, 1)
         self.combobox_searchtype.hide()
-        self.groupBox_themen_klasse = QtWidgets.QGroupBox(self.centralwidget)
-        #self.groupBox_themen_klasse.setMaximumSize(QtCore.QSize(375, 16777215))
-        self.groupBox_themen_klasse.setObjectName(_fromUtf8("groupBox_themen_klasse"))
+
+
+        self.groupBox_themen_klasse = create_new_groupbox(self.centralwidget, "Themen Schulstufen")
+
         self.verticalLayout = QtWidgets.QVBoxLayout(self.groupBox_themen_klasse)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.tabWidget = QtWidgets.QTabWidget(self.groupBox_themen_klasse)
         self.tabWidget.setStyleSheet(_fromUtf8("background-color: rgb(229, 246, 255);"))
-        self.tabWidget.setMovable(False)
         self.tabWidget.setObjectName(_fromUtf8("tabWidget"))
         self.verticalLayout.addWidget(self.tabWidget)
+
         self.gridLayout.addWidget(self.groupBox_themen_klasse, 1, 0, 2, 1)
-        self.groupBox_gk = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBox_gk.setObjectName(_fromUtf8("groupBox_gk"))
+
+        self.groupBox_gk = create_new_groupbox(self.centralwidget, "Grundkompetenzen")
+
         self.gridLayout_11 = QtWidgets.QGridLayout(self.groupBox_gk)
         self.gridLayout_11.setObjectName(_fromUtf8("gridLayout_11"))
         self.tab_widget_gk = QtWidgets.QTabWidget(self.groupBox_gk)
-        # self.tab_widget_gk.setMaximumSize(QtCore.QSize(650, 16777215))
         self.tab_widget_gk.setStyleSheet(
             _fromUtf8("background-color: rgb(217, 255, 215);")
         )
@@ -1238,7 +1243,7 @@ class Ui_MainWindow(object):
         self.comboBox_klassen_cr.addItem(_fromUtf8(""))
         self.comboBox_klassen_cr.addItem(_fromUtf8(""))
         self.gridLayout_8.addWidget(self.comboBox_klassen_cr, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_klassen_cr, 0, 4, 1, 1)
+        #self.gridLayout.addWidget(self.groupBox_klassen_cr, 0, 4, 1, 1)
         self.groupBox_klassen_cr.setTitle(_translate("MainWindow", "Klasse", None))
         self.comboBox_klassen_cr.setItemText(0, _translate("MainWindow", "-", None))
         self.comboBox_klassen_cr.setItemText(
@@ -2024,7 +2029,7 @@ class Ui_MainWindow(object):
         self.btn_an_all.clicked.connect(self.btn_an_all_pressed)
         self.btn_fa_all.clicked.connect(self.btn_fa_all_pressed)
         self.btn_ws_all.clicked.connect(self.btn_ws_all_pressed)
-        self.btn_suche.clicked.connect(partial(prepare_tex_for_pdf,self))
+        # self.btn_suche.clicked.connect(partial(prepare_tex_for_pdf,self))
         # self.actionProgram.triggered.connect(self.change_program)
         # self.actionExit.triggered.connect(self.close_app)
         # self.actionRefresh_Database.triggered.connect(
@@ -2140,20 +2145,20 @@ class Ui_MainWindow(object):
         # self.actionRefresh_Database.setText(
         #     _translate("MainWindow", "Refresh Database", None)
         # )
-        self.label_aufgabentyp.setText(
-            _translate("MainWindow", "Aufgabentyp: Typ 1", None)
-        )
+        # self.label_aufgabentyp.setText(
+        #     _translate("MainWindow", "Aufgabentyp: Typ 1", None)
+        # )
         # self.groupBox_ausgew_gk.setTitle(
         #     _translate("MainWindow", "Ausgewählte Grundkompetenzen", None)
         # )
         self.groupBox_titelsuche.setTitle(_translate("MainWindow", "Titelsuche:", None))
         self.groupBox_klassen.setTitle(_translate("MainWindow", "Suchfilter", None))
-        self.cb_k7.setText(_translate("MainWindow", "7. Klasse", None))
-        self.cb_k5.setText(_translate("MainWindow", "5. Klasse", None))
-        self.cb_k6.setText(_translate("MainWindow", "6. Klasse", None))
-        self.cb_k8.setText(_translate("MainWindow", "8. Klasse", None))
-        self.cb_mat.setText(_translate("MainWindow", "Matura", None))
-        self.cb_univie.setText(_translate("MainWindow", "Uni Wien", None))
+        # self.cb_k7.setText(_translate("MainWindow", "7. Klasse", None))
+        # self.cb_k5.setText(_translate("MainWindow", "5. Klasse", None))
+        # self.cb_k6.setText(_translate("MainWindow", "6. Klasse", None))
+        # self.cb_k8.setText(_translate("MainWindow", "8. Klasse", None))
+        # self.cb_mat.setText(_translate("MainWindow", "Matura", None))
+        # self.cb_univie.setText(_translate("MainWindow", "Uni Wien", None))
         self.cb_solution.setText(_translate("MainWindow", "Lösungen anzeigen", None))
         self.cb_drafts.setText(_translate("MainWindow", "Entwürfe anzeigen", None))
 
@@ -2174,7 +2179,7 @@ class Ui_MainWindow(object):
             self.label_update.setText(
                 _translate("MainWindow", "Letztes Update: ---", None)
             )
-        self.btn_suche.setText(_translate("MainWindow", "Suche starten", None))
+        # self.btn_suche.setText(_translate("MainWindow", "Suche starten", None))
 
         # self.btn_refreshddb.setText(_translate("MainWindow", "Refresh Database", None))
         # self.menu_aufgabentyp.setItemText(0, _translate("MainWindow", "Typ 1", None))
@@ -2293,8 +2298,8 @@ class Ui_MainWindow(object):
             self.tabWidget.indexOf(self.tab_k8),
             _translate("MainWindow", "8. Klasse", None),
         )
-        self.groupBox_gk.setTitle(_translate("MainWindow", "Grundkompetenzen", None))
-        self.btn_suche.setShortcut(_translate("MainWindow", "Return", None))
+        # self.groupBox_gk.setTitle(_translate("MainWindow", "Grundkompetenzen", None))
+        # self.btn_suche.setShortcut(_translate("MainWindow", "Return", None))
         # self.btn_refreshddb.setShortcut(_translate("MainWindow", "F5", None))
 
         ############# Infos for GKs
@@ -4979,6 +4984,7 @@ class Ui_MainWindow(object):
     def load_file(self, path):
         with open(path, "r", encoding="utf8") as loaded_file:
             loaded_file=json.load(loaded_file)
+            print(loaded_file)
         return loaded_file
 
     def sage_load(self, external_file_loaded):
@@ -5130,8 +5136,11 @@ class Ui_MainWindow(object):
 
         self.saved_file_path = save_file
 
+        # all_infos_yaml = yaml.dump(self.dict_all_infos_for_file)
+
         with open(save_file, "w+", encoding="utf8") as saved_file:
-            json.dump(self.dict_all_infos_for_file, saved_file, ensure_ascii=False)
+            json.dump(all_infos_yaml, saved_file, ensure_ascii=False)
+            # yaml.dump(self.dict_all_infos_for_file, saved_file)ll
 
 
     def define_titlepage(self):
