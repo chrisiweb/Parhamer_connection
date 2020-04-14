@@ -185,11 +185,17 @@ def create_new_combobox(parent):
     return new_combobox
 
 
-def add_options_to_combobox(combobox, index, item):
+def add_new_option(combobox, index, item):
     combobox.addItem(_fromUtf8(""))
     combobox.setItemText(index, _translate("MainWindow", item, None))
 
 
+# def add_new_tab(tabwidget, name)
+#     new_tab=QtWidgets.QWidget()
+#     new_tab.setObjectName("{}".forma(new_tab))
+#     tabwidget.addTab(new_tab, name)
+
+#     return new_tab
 
 def create_file_titlepage(titlepage_save):
     if os.path.isfile(titlepage_save):
@@ -500,8 +506,8 @@ class Ui_MainWindow(object):
         self.combobox_searchtype = create_new_combobox(self.centralwidget)
         self.combobox_searchtype.setMinimumContentsLength(1)
 
-        add_options_to_combobox(self.combobox_searchtype, 0, "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten")
-        add_options_to_combobox(self.combobox_searchtype, 1, "Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten")
+        add_new_option(self.combobox_searchtype, 0, "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten")
+        add_new_option(self.combobox_searchtype, 1, "Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten")
 
         self.horizontalLayout_combobox.addWidget(self.combobox_searchtype)
 
@@ -714,6 +720,7 @@ class Ui_MainWindow(object):
         )
         for all in list_klassen:
             # print(all)
+            # add_new_tab(self.tabWidget_klassen_cria, "{}. Klasse".format(all))
             exec("self.tab_{} = QtWidgets.QWidget()".format(all))
             exec('self.tab_{}.setObjectName("tab_k1")'.format(all))
             exec(
@@ -1199,7 +1206,7 @@ class Ui_MainWindow(object):
         self.gridLayout_7.setObjectName(_fromUtf8("gridLayout_7"))
 
         self.comboBox_af = create_new_combobox(self.groupBox_aufgabenformat)
-        add_options_to_combobox(self.comboBox_af, 0, "bitte auswählen")
+        add_new_option(self.comboBox_af, 0, "bitte auswählen")
 
         self.gridLayout_7.addWidget(self.comboBox_af, 0, 0, 1, 1)
 
@@ -1213,7 +1220,7 @@ class Ui_MainWindow(object):
 
         i = 1
         for all in dict_aufgabenformate:
-            add_options_to_combobox(self.comboBox_af, i, dict_aufgabenformate[all])
+            add_new_option(self.comboBox_af, i, dict_aufgabenformate[all])
         
             if self.chosen_program=='lama' and i==4:
                 break
@@ -2748,15 +2755,26 @@ class Ui_MainWindow(object):
         try:
             self.scrollArea_unterkapitel_cria.hide()
         except AttributeError:
-
             pass
         self.groupBox_unterkapitel_cria.setTitle(_translate("MainWindow", "Unterkapitel", None))
 
-        for example in self.list_creator_topics[:]:
-            cb_unterkapitel = eval(
-                "self.cb_unterkapitel_{0}_{1}".format(example[1], example[2])
-            )
-            cb_unterkapitel.setChecked(False)
+        # for klasse in list_klassen:
+        #     dict_klasse = eval("dict_{}".format(klasse))
+        #     check = 0
+        #     for kapitel in dict_klasse:
+        #         print(kapitel)
+        #         for unterkapitel in dict_klasse[kapitel]:
+        #             print(unterkapitel)
+        #         # for unterkapitel in dict_klasse[kapitel]:
+                
+        #             checkBox = eval("self.cb_unterkapitel_{0}_{1}".format(kapitel, unterkapitel))
+        #             checkBox.setChecked(False)
+
+        # for example in self.list_creator_topics[:]:
+        #     cb_unterkapitel = eval(
+        #         "self.cb_unterkapitel_{0}_{1}".format(example[1], example[2])
+        #     )
+        #     cb_unterkapitel.setChecked(False)
 
         self.entry_suchbegriffe.setText("")
         self.cb_solution.setChecked(True)
@@ -2865,7 +2883,7 @@ class Ui_MainWindow(object):
                 i=5
                 for all in dict_aufgabenformate:
                     if all == 'rf' or all == 'ta' or all=='ko':
-                        add_options_to_combobox(self.comboBox_af, i, dict_aufgabenformate[all])
+                        add_new_option(self.comboBox_af, i, dict_aufgabenformate[all])
                         i+=1
             self.comboBox_klassen_changed("sage")
             MainWindow.setWindowTitle(
