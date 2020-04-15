@@ -184,18 +184,28 @@ def create_new_combobox(parent):
 
     return new_combobox
 
+def create_new_radiobutton(parent, text):
+    new_radiobutton = QtWidgets.QRadioButton(parent)
+    new_radiobutton.setObjectName("{}".format(new_radiobutton))
+    new_radiobutton.setFocusPolicy(QtCore.Qt.ClickFocus)
+    new_radiobutton.setText(
+            _translate("MainWindow", text, None)
+        )
+
+    return new_radiobutton
+
 
 def add_new_option(combobox, index, item):
     combobox.addItem(_fromUtf8(""))
     combobox.setItemText(index, _translate("MainWindow", item, None))
 
 
-# def add_new_tab(tabwidget, name)
-#     new_tab=QtWidgets.QWidget()
-#     new_tab.setObjectName("{}".forma(new_tab))
-#     tabwidget.addTab(new_tab, name)
+def add_new_tab(tabwidget, name):
+    new_tab=QtWidgets.QWidget()
+    new_tab.setObjectName("{}".format(new_tab))
+    tabwidget.addTab(new_tab, name)
 
-#     return new_tab
+    return new_tab
 
 def create_file_titlepage(titlepage_save):
     if os.path.isfile(titlepage_save):
@@ -226,6 +236,7 @@ class Ui_MainWindow(object):
     def __init__(self):
         self.dict_alle_aufgaben_sage = {}
         self.list_alle_aufgaben_sage = []
+        self.dict_widget_variables = {}
         self.dict_variablen_punkte={}
         self.dict_variablen_label={}
         self.dict_sage_ausgleichspunkte_chosen = {}
@@ -718,61 +729,112 @@ class Ui_MainWindow(object):
         spacerItem_cria = QtWidgets.QSpacerItem(
             20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
         )
-        for all in list_klassen:
-            # print(all)
-            # add_new_tab(self.tabWidget_klassen_cria, "{}. Klasse".format(all))
-            exec("self.tab_{} = QtWidgets.QWidget()".format(all))
-            exec('self.tab_{}.setObjectName("tab_k1")'.format(all))
-            exec(
-                "self.gridLayout_{0} = QtWidgets.QGridLayout(self.tab_{0})".format(all)
-            )
-            exec('self.gridLayout_{0}.setObjectName("gridLayout_{0}")'.format(all))
-            exec(
-                "self.scrollArea_{0} = QtWidgets.QScrollArea(self.tab_{0})".format(all)
-            )
-            scrollArea_cria = eval("self.scrollArea_{0}".format(all))
-            scrollArea_cria.setFrameShape(QtWidgets.QFrame.NoFrame)
-            scrollArea_cria.setWidgetResizable(True)
-            scrollArea_cria.setObjectName("scrollArea_cria")
-            exec("self.scrollAreaWidgetContents_{} = QtWidgets.QWidget()".format(all))
-            exec(
-                "self.scrollAreaWidgetContents_{}.setGeometry(QtCore.QRect(0, 0, 264, 235))".format(
-                    all
-                )
-            )
-            exec(
-                'self.scrollAreaWidgetContents_{0}.setObjectName("scrollAreaWidgetContents_{0}")'.format(
-                    all
-                )
-            )
-            exec(
-                "self.verticalLayout_kapitel_{0} = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_{0})".format(
-                    all
-                )
-            )
-            verticalLayout_cria = eval("self.verticalLayout_kapitel_{0}".format(all))
-            verticalLayout_cria.setObjectName("verticalLayout_kapitel_{0}".format(all))
+        for klasse in list_klassen:
+            name='tab_{0}'.format(klasse)
+            new_tab = add_new_tab(self.tabWidget_klassen_cria, "{}. Klasse".format(klasse[1]))
+            #self.dict_widget_variables[name]=new_tab
+            new_gridlayout = QtWidgets.QGridLayout(new_tab)
+            new_gridlayout.setObjectName("{}".format(new_gridlayout))
 
-            dict_klasse_name = eval("dict_{}_name".format(all))
+            new_scrollarea = QtWidgets.QScrollArea(new_tab)
+            new_scrollarea.setObjectName("{}".format(new_scrollarea))
+            new_scrollarea.setFrameShape(QtWidgets.QFrame.NoFrame)
+            new_scrollarea.setWidgetResizable(True)
+
+            new_scrollareacontent = QtWidgets.QWidget()
+            new_scrollareacontent.setGeometry(QtCore.QRect(0, 0, 264, 235))
+            new_scrollareacontent.setObjectName("{}".format(new_scrollareacontent))
+
+            new_verticallayout = QtWidgets.QVBoxLayout(new_scrollareacontent)
+            new_verticallayout.setObjectName("{}".format(new_verticallayout))
+
+            dict_klasse_name = eval("dict_{}_name".format(klasse))
+
             for kapitel in dict_klasse_name:
-                self.create_kapitel(verticalLayout_cria, all[1], kapitel)
+                new_radiobutton = create_new_radiobutton(new_scrollareacontent, dict_klasse_name[kapitel] + " (" + kapitel + ")")
+                new_verticallayout.addWidget(new_radiobutton)
+                new_radiobutton.toggled.connect(
+                    partial(self.chosen_radiobutton, klasse, kapitel)
+                )
 
-            verticalLayout_cria.addItem(spacerItem_cria)
-            exec(
-                "self.scrollArea_{0}.setWidget(self.scrollAreaWidgetContents_{0})".format(
-                    all
-                )
-            )
-            exec(
-                "self.gridLayout_{0}.addWidget(self.scrollArea_{0}, 5, 0, 1, 1)".format(
-                    all
-                )
-            )
-            exec(
-                'self.tabWidget_klassen_cria.addTab(self.tab_{0}, "{1}. Klasse")'.format(
-                    all, all[1]
-                )
-            )
+            new_verticallayout.addItem(spacerItem_cria)
+
+            new_scrollarea.setWidget(new_scrollareacontent)
+
+            new_gridlayout.addWidget(new_scrollarea, 5,0,1,1)
+
+            # self.tabWidget_klassen_cria.addTab(new_tab, "")
+            # exec(
+            #     "self.scrollArea_{0}.setWidget(self.scrollAreaWidgetContents_{0})".format(
+            #         all
+            #     )
+            # )
+            # exec(
+            #     "self.gridLayout_{0}.addWidget(self.scrollArea_{0}, 5, 0, 1, 1)".format(
+            #         all
+            #     )
+            # )
+            # exec(
+            #     'self.tabWidget_klassen_cria.addTab(self.tab_{0}, "{1}. Klasse")'.format(
+            #         all, all[1]
+            #     )
+            # )
+
+            # exec("self.tab_{} = QtWidgets.QWidget()".format(all))
+            # exec('self.tab_{}.setObjectName("tab_k1")'.format(all))
+            # exec(
+            #     "self.gridLayout_{0} = QtWidgets.QGridLayout(self.tab_{0})".format(all)
+            # )
+            # exec('self.gridLayout_{0}.setObjectName("gridLayout_{0}")'.format(all))
+            # exec(
+            #     "self.scrollArea_{0} = QtWidgets.QScrollArea(self.tab_{0})".format(all)
+            # )
+            # scrollArea_cria = eval("self.scrollArea_{0}".format(all))
+            # scrollArea_cria.setFrameShape(QtWidgets.QFrame.NoFrame)
+            # scrollArea_cria.setWidgetResizable(True)
+            # scrollArea_cria.setObjectName("scrollArea_cria")
+            # exec("self.scrollAreaWidgetContents_{} = QtWidgets.QWidget()".format(all))
+            # exec(
+            #     "self.scrollAreaWidgetContents_{}.setGeometry(QtCore.QRect(0, 0, 264, 235))".format(
+            #         all
+            #     )
+            # )
+            # exec(
+            #     'self.scrollAreaWidgetContents_{0}.setObjectName("scrollAreaWidgetContents_{0}")'.format(
+            #         all
+            #     )
+            # )
+
+            # exec(
+            #     "self.verticalLayout_kapitel_{0} = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_{0})".format(
+            #         all
+            #     )
+            # )
+            # verticalLayout_cria = eval("self.verticalLayout_kapitel_{0}".format(all))
+            # verticalLayout_cria.setObjectName("verticalLayout_kapitel_{0}".format(all))
+
+
+
+            # dict_klasse_name = eval("dict_{}_name".format(all))
+            # for kapitel in dict_klasse_name:
+            #     self.create_kapitel(verticalLayout_cria, all[1], kapitel)
+
+            # verticalLayout_cria.addItem(spacerItem_cria)
+            # exec(
+            #     "self.scrollArea_{0}.setWidget(self.scrollAreaWidgetContents_{0})".format(
+            #         all
+            #     )
+            # )
+            # exec(
+            #     "self.gridLayout_{0}.addWidget(self.scrollArea_{0}, 5, 0, 1, 1)".format(
+            #         all
+            #     )
+            # )
+            # exec(
+            #     'self.tabWidget_klassen_cria.addTab(self.tab_{0}, "{1}. Klasse")'.format(
+            #         all, all[1]
+            #     )
+            # )
 
         self.groupBox_unterkapitel_cria = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_unterkapitel_cria.setStyleSheet(
@@ -783,6 +845,19 @@ class Ui_MainWindow(object):
         self.gridLayout_11_cria = QtWidgets.QGridLayout(self.groupBox_unterkapitel_cria)
         self.gridLayout_11_cria.setObjectName("gridLayout_11_cria")
         self.gridLayout.addWidget(self.groupBox_unterkapitel_cria, 1, 1, 2, 1)
+
+
+        self.scrollArea_unterkapitel_cria = QtWidgets.QScrollArea(self.groupBox_unterkapitel_cria)
+        self.scrollArea_unterkapitel_cria.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.scrollArea_unterkapitel_cria.setWidgetResizable(True)
+        self.scrollArea_unterkapitel_cria.setObjectName("scrollArea_unterkapitel")
+        self.scrollAreaWidgetContents_cria = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents_cria.setGeometry(QtCore.QRect(0, 0, 320, 279))
+        self.scrollAreaWidgetContents_cria.setObjectName("scrollAreaWidgetContents_cria")
+        self.verticalLayout_4_cria = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_cria)
+        self.verticalLayout_4_cria.setObjectName("verticalLayout_4_cria")
+        self.scrollArea_unterkapitel_cria.setWidget(self.scrollAreaWidgetContents_cria)
+        self.gridLayout_11_cria.addWidget(self.scrollArea_unterkapitel_cria, 0, 0, 1, 1)
 
         self.verticalLayout_cria.addWidget(self.tabWidget_klassen_cria)
         self.gridLayout.addWidget(self.groupBox_schulstufe_cria, 1, 0, 2, 1)
@@ -2517,97 +2592,133 @@ class Ui_MainWindow(object):
 
                 pass
 
-    def create_kapitel(self, layout, klasse, kapitel):
-        dict_klasse_name = eval("dict_k{}_name".format(klasse))
-        exec(
-            "self.radioButton_k{0}_{1} = QtWidgets.QRadioButton(self.scrollAreaWidgetContents_k{0})".format(
-                klasse, kapitel
-            )
-        )
-        radioButton_klasse_kapitel = eval(
-            "self.radioButton_k{0}_{1}".format(klasse, kapitel)
-        )
-        radioButton_klasse_kapitel.setObjectName("radioButton_klasse_kapitel")
-        # chosen_layout = eval('{0}_k{1}'.format(layout, klasse))
-        layout.addWidget(radioButton_klasse_kapitel)
-        radioButton_klasse_kapitel.setText(
-            _translate("MainWindow", dict_klasse_name[kapitel] + " (" + kapitel + ")", None)
-        )
-        radioButton_klasse_kapitel.toggled.connect(
-            partial(self.chosen_radiobutton, klasse, kapitel)
-        )
+    # def create_kapitel(self, layout, klasse, kapitel): #, layout, klasse, kapitel
+    #     print(klasse)
+    #     print(kapitel)
+    #     dict_klasse_name = eval("dict_k{}_name".format(klasse[1]))
+
+    #     create_new_radiobutton(layout, dict_klasse_name[kapitel] + " (" + kapitel + ")")
+        
+        # create_new_radiobutton(layout, "")
+
+    #     exec(
+    #         "self.radioButton_k{0}_{1} = QtWidgets.QRadioButton(self.scrollAreaWidgetContents_k{0})".format(
+    #             klasse, kapitel
+    #         )
+    #     )
+    #     radioButton_klasse_kapitel = eval(
+    #         "self.radioButton_k{0}_{1}".format(klasse, kapitel)
+    #     )
+    #     radioButton_klasse_kapitel.setObjectName("radioButton_klasse_kapitel")
+    #     # chosen_layout = eval('{0}_k{1}'.format(layout, klasse))
+    #     layout.addWidget(radioButton_klasse_kapitel)
+    #     radioButton_klasse_kapitel.setText(
+    #         _translate("MainWindow", dict_klasse_name[kapitel] + " (" + kapitel + ")", None)
+    #     )
+    #     radioButton_klasse_kapitel.toggled.connect(
+    #         partial(self.chosen_radiobutton, klasse, kapitel)
+    #     )
 
 
     def chosen_radiobutton(self, klasse, kapitel):
-        dict_klasse_name = eval("dict_k{}_name".format(klasse))
+        print(klasse, kapitel)
+        dict_klasse = eval("dict_{}".format(klasse))
+        dict_klasse_name = eval("dict_{}_name".format(klasse))
+        
         self.groupBox_unterkapitel_cria.setTitle(
             _translate(
                 "MainWindow",
                 "Unterkapitel - "
-                + str(klasse)
+                + klasse[1]
                 + ". Klasse - "
                 + dict_klasse_name[kapitel],
                 None
             )
         )
 
+
+
         try:
-            self.scrollArea_unterkapitel_cria.setParent(None)
+            self.verticalLayout_4_cria.removeItem(self.spacerItem_unterkapitel_cria)
         except AttributeError:
             pass
 
-        self.scrollArea_unterkapitel_cria = QtWidgets.QScrollArea(self.groupBox_unterkapitel_cria)
-        self.scrollArea_unterkapitel_cria.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.scrollArea_unterkapitel_cria.setWidgetResizable(True)
-        self.scrollArea_unterkapitel_cria.setObjectName("scrollArea_unterkapitel")
-        self.scrollAreaWidgetContents_cria = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_cria.setGeometry(QtCore.QRect(0, 0, 320, 279))
-        self.scrollAreaWidgetContents_cria.setObjectName("scrollAreaWidgetContents_cria")
-        self.verticalLayout_4_cria = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_cria)
-        self.verticalLayout_4_cria.setObjectName("verticalLayout_4_cria")
+        self.delete_all_widgets(self.verticalLayout_4_cria)
 
-        dict_klasse = eval("dict_k{}".format(klasse))
-        for all in dict_klasse[kapitel]:
-            # print(dict_unterkapitel[all])
 
-            exec(
-                "self.checkBox_k{0}_{1}_{2} = QtWidgets.QCheckBox(self.scrollAreaWidgetContents_cria)".format(
-                    klasse, kapitel, all
-                )
-            )
-            checkBox = eval("self.checkBox_k{0}_{1}_{2}".format(klasse, kapitel, all))
-            checkBox.setObjectName("checkBox_k{0}_{1}_{2}".format(klasse, kapitel, all))
-            checkBox.stateChanged.connect(
-                partial(self.checkBox_checked_cria, klasse, kapitel, all)
-            )
+        for unterkapitel in dict_klasse[kapitel]:
+            checkbox = create_new_checkbox(self.scrollAreaWidgetContents_cria, dict_unterkapitel[unterkapitel])
+            self.verticalLayout_4_cria.addWidget(checkbox)
+            label='checkbox_{0}_{1}_{2}'.format(klasse, kapitel, unterkapitel)
+            # self.dict_widget_variables[label]=checkbox  #### creates widgets ???
 
-            thema_checked = [klasse, kapitel, all]
-            if thema_checked in self.dict_chosen_topics.values():
-                checkBox.setChecked(True)
 
-            self.verticalLayout_4_cria.addWidget(checkBox)
-
-            checkBox.setText(_translate("MainWindow", dict_unterkapitel[all], None))
-
-        spacerItem_cria = QtWidgets.QSpacerItem(
+        self.spacerItem_unterkapitel_cria = QtWidgets.QSpacerItem(
             20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
         )
-        self.verticalLayout_4_cria.addItem(spacerItem_cria)
 
-        exec(
-            "self.btn_alle_{0}_{1} = QtWidgets.QPushButton(self.scrollAreaWidgetContents_cria)".format(
-                klasse, kapitel
-            )
-        )
-        btn_alle = eval("self.btn_alle_{0}_{1}".format(klasse, kapitel))
-        btn_alle.setStyleSheet("background-color: rgb(240, 240, 240);")
-        btn_alle.setObjectName("btn_alle_{0}_{1}".format(klasse, kapitel))
-        btn_alle.setText(_translate("MainWindow", "alle auswählen", None))
-        btn_alle.clicked.connect(partial(self.btn_alle_clicked_cria, klasse, kapitel))
-        self.verticalLayout_4_cria.addWidget(btn_alle, 0, QtCore.Qt.AlignLeft)
-        self.scrollArea_unterkapitel_cria.setWidget(self.scrollAreaWidgetContents_cria)
-        self.gridLayout_11_cria.addWidget(self.scrollArea_unterkapitel_cria, 0, 0, 1, 1)
-        # self.gridLayout.addWidget(self.groupBox_unterkapitel_cria, 1, 2, 2, 1)
+        self.verticalLayout_4_cria.addItem(self.spacerItem_unterkapitel_cria) 
+
+        # button_check_all = create_new_button(self.scrollAreaWidgetContents_cria, 'alle auswählen', partial(self.btn_alle_clicked_cria, klasse, kapitel))
+        # button_check_all.setStyleSheet("background-color: rgb(240, 240, 240);")                  
+        # self.verticalLayout_4_cria.addWidget(button_check_all, 0, QtCore.Qt.AlignLeft)
+    #     try:
+    #         self.scrollArea_unterkapitel_cria.setParent(None)
+    #     except AttributeError:
+    #         pass
+
+    #     self.scrollArea_unterkapitel_cria = QtWidgets.QScrollArea(self.groupBox_unterkapitel_cria)
+    #     self.scrollArea_unterkapitel_cria.setFrameShape(QtWidgets.QFrame.NoFrame)
+    #     self.scrollArea_unterkapitel_cria.setWidgetResizable(True)
+    #     self.scrollArea_unterkapitel_cria.setObjectName("scrollArea_unterkapitel")
+    #     self.scrollAreaWidgetContents_cria = QtWidgets.QWidget()
+    #     self.scrollAreaWidgetContents_cria.setGeometry(QtCore.QRect(0, 0, 320, 279))
+    #     self.scrollAreaWidgetContents_cria.setObjectName("scrollAreaWidgetContents_cria")
+    #     self.verticalLayout_4_cria = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_cria)
+    #     self.verticalLayout_4_cria.setObjectName("verticalLayout_4_cria")
+
+    #     dict_klasse = eval("dict_k{}".format(klasse))
+    #     for all in dict_klasse[kapitel]:
+    #         # print(dict_unterkapitel[all])
+
+    #         exec(
+    #             "self.checkBox_k{0}_{1}_{2} = QtWidgets.QCheckBox(self.scrollAreaWidgetContents_cria)".format(
+    #                 klasse, kapitel, all
+    #             )
+    #         )
+    #         checkBox = eval("self.checkBox_k{0}_{1}_{2}".format(klasse, kapitel, all))
+    #         checkBox.setObjectName("checkBox_k{0}_{1}_{2}".format(klasse, kapitel, all))
+    #         checkBox.stateChanged.connect(
+    #             partial(self.checkBox_checked_cria, klasse, kapitel, all)
+    #         )
+
+    #         thema_checked = [klasse, kapitel, all]
+    #         if thema_checked in self.dict_chosen_topics.values():
+    #             checkBox.setChecked(True)
+
+    #         self.verticalLayout_4_cria.addWidget(checkBox)
+
+    #         checkBox.setText(_translate("MainWindow", dict_unterkapitel[all], None))
+        # self.spacerItem_unterkapitel_cria = QtWidgets.QSpacerItem(
+        #     20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        # )
+
+        # self.verticalLayout_4_cria.addItem(self.spacerItem_unterkapitel_cria)
+
+    #     exec(
+    #         "self.btn_alle_{0}_{1} = QtWidgets.QPushButton(self.scrollAreaWidgetContents_cria)".format(
+    #             klasse, kapitel
+    #         )
+    #     )
+    #     btn_alle = eval("self.btn_alle_{0}_{1}".format(klasse, kapitel))
+    #     btn_alle.setStyleSheet("background-color: rgb(240, 240, 240);")
+    #     btn_alle.setObjectName("btn_alle_{0}_{1}".format(klasse, kapitel))
+    #     btn_alle.setText(_translate("MainWindow", "alle auswählen", None))
+    #     btn_alle.clicked.connect(partial(self.btn_alle_clicked_cria, klasse, kapitel))
+    #     self.verticalLayout_4_cria.addWidget(btn_alle, 0, QtCore.Qt.AlignLeft)
+    #     self.scrollArea_unterkapitel_cria.setWidget(self.scrollAreaWidgetContents_cria)
+    #     self.gridLayout_11_cria.addWidget(self.scrollArea_unterkapitel_cria, 0, 0, 1, 1)
+    #     # self.gridLayout.addWidget(self.groupBox_unterkapitel_cria, 1, 2, 2, 1)
 
 
     def checkBox_checked_cria(self, klasse, kapitel, unterkapitel):
@@ -2627,22 +2738,37 @@ class Ui_MainWindow(object):
 
 
     def btn_alle_clicked_cria(self, klasse, kapitel):
-        dict_klasse = eval("dict_k{}".format(klasse))
-        check = 0
-        for all in dict_klasse[kapitel]:
-            checkBox = eval("self.checkBox_k{0}_{1}_{2}".format(klasse, kapitel, all))
-            if check == 0:
-                if checkBox.isChecked():
-                    checkBox.setChecked(False)
-                    check = 1
-                else:
-                    checkBox.setChecked(True)
-                    check = 2
-            else:
-                if check == 1:
-                    checkBox.setChecked(False)
-                elif check == 2:
-                    checkBox.setChecked(True)
+        # dict_klasse = eval("dict_{}".format(klasse))
+        # check = 0
+        print('test')
+        # print(dict_klasse[kapitel])
+        # first_checkbox= 'checkbox_{0}_{1}_{2}'.format(klasse, kapitel, dict_klasse[kapitel][0])
+        # print(first_checkbox)
+        # if self.dict_widget_variables[first_checkbox].isChecked()==False:
+        #     check_checkboxes = True
+        # else:
+        #     check_checkboxes = False
+            
+
+        # for all in self.dict_widget_variables:
+        #     if all.startswith('checkbox_{0}_{1}_'.format(klasse, kapitel)):
+        #         self.dict_widget_variables[all].setChecked(check_checkboxes)
+
+        # print(self.dict_widget_variables)
+        # for all in dict_klasse[kapitel]:
+        #     checkBox = eval("self.checkBox_k{0}_{1}_{2}".format(klasse, kapitel, all))
+        #     if check == 0:
+        #         if checkBox.isChecked():
+        #             checkBox.setChecked(False)
+        #             check = 1
+        #         else:
+        #             checkBox.setChecked(True)
+        #             check = 2
+        #     else:
+        #         if check == 1:
+        #             checkBox.setChecked(False)
+        #         elif check == 2:
+        #             checkBox.setChecked(True)
 
     def comboBox_kapitel_changed_cr(
         self, verticalLayout_cr_cria, combobox_kapitel, klasse, spacerItem_unterkapitel_cria
@@ -2857,7 +2983,7 @@ class Ui_MainWindow(object):
         self.dict_variablen_label={}
         self.dict_variablen_punkte={}
         for i in reversed(range(self.gridLayout_8.count())):
-            self.delete_widget(i)
+            self.delete_widget(self.gridLayout_8, i)
 
 
 
@@ -5368,7 +5494,7 @@ class Ui_MainWindow(object):
         index=self.list_alle_aufgaben_sage.index(aufgabe)
 
         if index+1 == len(self.list_alle_aufgaben_sage):
-            self.delete_widget(index)
+            self.delete_widget(self.gridLayout_8, index)
             self.erase_aufgabe(aufgabe) 
 
         else:
@@ -5750,10 +5876,13 @@ class Ui_MainWindow(object):
         
             return number_ausgleichspunkte
 
+    def delete_all_widgets(self, layout):
+        for i in reversed(range(layout.count())):
+            self.delete_widget(layout, i)
 
-    def delete_widget(self, index):
+    def delete_widget(self, layout , index):
         try:
-            self.gridLayout_8.itemAt(index).widget().setParent(None)
+            layout.itemAt(index).widget().setParent(None)
         except AttributeError:
             pass        
 
@@ -5805,7 +5934,7 @@ class Ui_MainWindow(object):
 
 
         for i in reversed(range(start_value, self.gridLayout_8.count()+1)):
-            self.delete_widget(i)
+            self.delete_widget(self.gridLayout_8, i)
 
 
 
