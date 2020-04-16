@@ -870,116 +870,154 @@ class Ui_MainWindow(object):
         self.groupBox_themengebiete_cria.hide()
 
 
-        for all in list_klassen:
-            exec("self.tab_cr_cria_{} = QtWidgets.QWidget()".format(all))
-            exec('self.tab_cr_cria_{0}.setObjectName("tab_cr_cria_{0}")'.format(all))
-            exec(
-                "self.gridLayout_cr_cria_{0} = QtWidgets.QGridLayout(self.tab_cr_cria_{0})".format(
-                    all
-                )
-            )
-            exec(
-                'self.gridLayout_cr_cria_{0}.setObjectName("gridLayout_cr_cria_{0}")'.format(all)
-            )
-            exec(
-                "self.scrollArea_cr_cria_{0} = QtWidgets.QScrollArea(self.tab_cr_cria_{0})".format(
-                    all
-                )
-            )
-            scrollArea_cr_cria = eval("self.scrollArea_cr_cria_{0}".format(all))
-            scrollArea_cr_cria.setFrameShape(QtWidgets.QFrame.NoFrame)
-            scrollArea_cr_cria.setWidgetResizable(True)
-            scrollArea_cr_cria.setObjectName("scrollArea_cr_cria")
-            exec(
-                "self.scrollAreaWidgetContents_cr_cria_{} = QtWidgets.QWidget()".format(all)
-            )
-            exec(
-                "self.scrollAreaWidgetContents_cr_cria_{}.setGeometry(QtCore.QRect(0, 0, 264, 235))".format(
-                    all
-                )
-            )
-            exec(
-                'self.scrollAreaWidgetContents_cr_cria_{0}.setObjectName("scrollAreaWidgetContents_cr_cria_{0}")'.format(
-                    all
-                )
-            )
-            exec(
-                "self.verticalLayout_kapitel_cr_cria_{0} = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_cr_cria_{0})".format(
-                    all
-                )
-            )
-            verticalLayout_cr_cria = eval("self.verticalLayout_kapitel_cr_cria_{0}".format(all))
-            verticalLayout_cr_cria.setObjectName("verticalLayout_kapitel_cr_cria_{0}".format(all))
+        for klasse in list_klassen:
+            name='tab_{0}'.format(klasse)
+            new_tab = add_new_tab(self.tab_widget_cr_cria, "{}. Klasse".format(klasse[1]))
+            #self.dict_widget_variables[name]=new_tab
+            new_gridlayout = QtWidgets.QGridLayout(new_tab)
+            new_gridlayout.setObjectName("{}".format(new_gridlayout))
 
-            dict_klasse_name = eval("dict_{}_name".format(all))
+            new_scrollarea = QtWidgets.QScrollArea(new_tab)
+            new_scrollarea.setObjectName("{}".format(new_scrollarea))
+            new_scrollarea.setFrameShape(QtWidgets.QFrame.NoFrame)
+            new_scrollarea.setWidgetResizable(True)
 
-            exec(
-                "self.combobox_kapitel_{} = QtWidgets.QComboBox(self.centralwidget)".format(
-                    all
-                )
-            )
-            combobox_kapitel = eval("self.combobox_kapitel_{}".format(all))
-            # self.combobox_searchtype.setEnabled(True)
-            combobox_kapitel.setObjectName("combobox_kapitel_{}".format(all))
-            i = 0
-            for kapitel in dict_klasse_name:
-                dict_klasse_name = eval("dict_k{}_name".format(all[1]))
-                combobox_kapitel.addItem("")
-                combobox_kapitel.setItemText(
-                    i,
-                    _translate(
-                        "MainWindow", dict_klasse_name[kapitel] + " (" + kapitel + ")", None
-                    ),
-                )
-                combobox_kapitel.setMinimumHeight(25)
-                combobox_kapitel.setStyleSheet("background-color: rgb(240, 240, 240);")
-                i += 1
+            new_scrollareacontent = QtWidgets.QWidget()
+            new_scrollareacontent.setGeometry(QtCore.QRect(0, 0, 264, 235))
+            new_scrollareacontent.setObjectName("{}".format(new_scrollareacontent))
 
-            spacerItem_unterkapitel_cria = QtWidgets.QSpacerItem(
-                20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
-            )
-            verticalLayout_cr_cria.addWidget(combobox_kapitel)
-            combobox_kapitel.currentIndexChanged.connect(
-                partial(
-                    self.comboBox_kapitel_changed_cr,
-                    verticalLayout_cr_cria,
-                    combobox_kapitel,
-                    all,
-                    spacerItem_unterkapitel_cria,
-                )
-            )
-            self.label_linespacer_cria = QtWidgets.QLabel(self.centralwidget)
-            self.label_linespacer_cria.setObjectName(_fromUtf8("label_linespacer_cria"))
-            self.label_linespacer_cria.setMinimumHeight(10)
-            verticalLayout_cr_cria.addWidget(self.label_linespacer_cria)
+            new_verticallayout = QtWidgets.QVBoxLayout(new_scrollareacontent)
+            new_verticallayout.setObjectName("{}".format(new_verticallayout))   
 
-            exec(
-                "self.scrollArea_cr_cria_{0}.setWidget(self.scrollAreaWidgetContents_cr_cria_{0})".format(
-                    all
-                )
-            )
-            exec(
-                "self.gridLayout_cr_cria_{0}.addWidget(self.scrollArea_cr_cria_{0}, 5, 0, 1, 1)".format(
-                    all
-                )
-            )
 
-            exec(
-                'self.tab_widget_cr_cria.addTab(self.tab_cr_cria_{0}, "{1}. Klasse")'.format(
-                    all, all[1]
-                )
-            )
+            combobox_kapitel = create_new_combobox(new_scrollareacontent)
+            dict_klasse = eval('dict_{}_name'.format(klasse))
+            index=0
+            # for kapitel in dict_klasse_name:
+            #     add_new_option(combobox_kapitel,index,dict_klasse_name[kapitel] + " (" + kapitel + ")")
+            #     index +=1
 
-            dict_klasse = eval("dict_{}".format(all))
-            first_element = list(dict_klasse.keys())[0]
-            for unterkapitel in dict_klasse[first_element]:
-                self.create_checkbox_unterkapitel(
-                    verticalLayout_cr_cria, all, first_element, unterkapitel
-                )
+            new_verticallayout.addWidget(combobox_kapitel)
 
-            verticalLayout_cr_cria.addItem(spacerItem_unterkapitel_cria)
+
+            # new_verticallayout.addItem(spacerItem_cria)
+
+            new_scrollarea.setWidget(new_scrollareacontent)
+
+            new_gridlayout.addWidget(new_scrollarea, 5,0,1,1)
+
+            # exec("self.tab_cr_cria_{} = QtWidgets.QWidget()".format(all))
+            # exec('self.tab_cr_cria_{0}.setObjectName("tab_cr_cria_{0}")'.format(all))
+            # exec(
+            #     "self.gridLayout_cr_cria_{0} = QtWidgets.QGridLayout(self.tab_cr_cria_{0})".format(
+            #         all
+            #     )
+            # )
+            # exec(
+            #     'self.gridLayout_cr_cria_{0}.setObjectName("gridLayout_cr_cria_{0}")'.format(all)
+            # )
+            # exec(
+            #     "self.scrollArea_cr_cria_{0} = QtWidgets.QScrollArea(self.tab_cr_cria_{0})".format(
+            #         all
+            #     )
+            # )
+            # scrollArea_cr_cria = eval("self.scrollArea_cr_cria_{0}".format(all))
+            # scrollArea_cr_cria.setFrameShape(QtWidgets.QFrame.NoFrame)
+            # scrollArea_cr_cria.setWidgetResizable(True)
+            # scrollArea_cr_cria.setObjectName("scrollArea_cr_cria")
+            # exec(
+            #     "self.scrollAreaWidgetContents_cr_cria_{} = QtWidgets.QWidget()".format(all)
+            # )
+            # exec(
+            #     "self.scrollAreaWidgetContents_cr_cria_{}.setGeometry(QtCore.QRect(0, 0, 264, 235))".format(
+            #         all
+            #     )
+            # )
+            # exec(
+            #     'self.scrollAreaWidgetContents_cr_cria_{0}.setObjectName("scrollAreaWidgetContents_cr_cria_{0}")'.format(
+            #         all
+            #     )
+            # )
+            # exec(
+            #     "self.verticalLayout_kapitel_cr_cria_{0} = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_cr_cria_{0})".format(
+            #         all
+            #     )
+            # )
+            # verticalLayout_cr_cria = eval("self.verticalLayout_kapitel_cr_cria_{0}".format(all))
+            # verticalLayout_cr_cria.setObjectName("verticalLayout_kapitel_cr_cria_{0}".format(all))
+
+
+
+            # dict_klasse_name = eval("dict_{}_name".format(all))
+
+            # exec(
+            #     "self.combobox_kapitel_{} = QtWidgets.QComboBox(self.centralwidget)".format(
+            #         all
+            #     )
+            # )
+            # combobox_kapitel = eval("self.combobox_kapitel_{}".format(all))
+            # # self.combobox_searchtype.setEnabled(True)
+            # combobox_kapitel.setObjectName("combobox_kapitel_{}".format(all))
+            # i = 0
+            # for kapitel in dict_klasse_name:
+            #     dict_klasse_name = eval("dict_k{}_name".format(all[1]))
+            #     combobox_kapitel.addItem("")
+            #     combobox_kapitel.setItemText(
+            #         i,
+            #         _translate(
+            #             "MainWindow", dict_klasse_name[kapitel] + " (" + kapitel + ")", None
+            #         ),
+            #     )
+            #     combobox_kapitel.setMinimumHeight(25)
+            #     combobox_kapitel.setStyleSheet("background-color: rgb(240, 240, 240);")
+            #     i += 1
+
+            # spacerItem_unterkapitel_cria = QtWidgets.QSpacerItem(
+            #     20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+            # )
+            # verticalLayout_cr_cria.addWidget(combobox_kapitel)
+            # combobox_kapitel.currentIndexChanged.connect(
+            #     partial(
+            #         self.comboBox_kapitel_changed_cr,
+            #         verticalLayout_cr_cria,
+            #         combobox_kapitel,
+            #         all,
+            #         spacerItem_unterkapitel_cria,
+            #     )
+            # )
+            # self.label_linespacer_cria = QtWidgets.QLabel(self.centralwidget)
+            # self.label_linespacer_cria.setObjectName(_fromUtf8("label_linespacer_cria"))
+            # self.label_linespacer_cria.setMinimumHeight(10)
+            # verticalLayout_cr_cria.addWidget(self.label_linespacer_cria)
+
+            # exec(
+            #     "self.scrollArea_cr_cria_{0}.setWidget(self.scrollAreaWidgetContents_cr_cria_{0})".format(
+            #         all
+            #     )
+            # )
+            # exec(
+            #     "self.gridLayout_cr_cria_{0}.addWidget(self.scrollArea_cr_cria_{0}, 5, 0, 1, 1)".format(
+            #         all
+            #     )
+            # )
+
+            # exec(
+            #     'self.tab_widget_cr_cria.addTab(self.tab_cr_cria_{0}, "{1}. Klasse")'.format(
+            #         all, all[1]
+            #     )
+            # )
+
+            # dict_klasse = eval("dict_{}".format(all))
+            # first_element = list(dict_klasse.keys())[0]
+            # for unterkapitel in dict_klasse[first_element]:
+            #     self.create_checkbox_unterkapitel(
+            #         verticalLayout_cr_cria, all, first_element, unterkapitel
+            #     )
+
+            # verticalLayout_cr_cria.addItem(spacerItem_unterkapitel_cria)
 
 #################################
+        self.tab_widget_cr_cria.currentChanged.connect(self.tab_widget_cr_cria_changed)
 
 
         self.groupBox_ausgew_gk_cr = QtWidgets.QGroupBox(self.centralwidget)
@@ -3274,6 +3312,9 @@ class Ui_MainWindow(object):
     ###############################################################
     ################### Befehle Creator ###########################
     #############################################################
+    def tab_widget_cr_cria_changed(self):
+        print(self.tab_widget_cr_cria.currentIndex())
+
 
     def add_picture(self):
         try:
