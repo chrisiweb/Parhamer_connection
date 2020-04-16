@@ -775,78 +775,6 @@ class Ui_MainWindow(object):
 
             new_gridlayout.addWidget(new_scrollarea, 5,0,1,1)
 
-            # self.tabWidget_klassen_cria.addTab(new_tab, "")
-            # exec(
-            #     "self.scrollArea_{0}.setWidget(self.scrollAreaWidgetContents_{0})".format(
-            #         all
-            #     )
-            # )
-            # exec(
-            #     "self.gridLayout_{0}.addWidget(self.scrollArea_{0}, 5, 0, 1, 1)".format(
-            #         all
-            #     )
-            # )
-            # exec(
-            #     'self.tabWidget_klassen_cria.addTab(self.tab_{0}, "{1}. Klasse")'.format(
-            #         all, all[1]
-            #     )
-            # )
-
-            # exec("self.tab_{} = QtWidgets.QWidget()".format(all))
-            # exec('self.tab_{}.setObjectName("tab_k1")'.format(all))
-            # exec(
-            #     "self.gridLayout_{0} = QtWidgets.QGridLayout(self.tab_{0})".format(all)
-            # )
-            # exec('self.gridLayout_{0}.setObjectName("gridLayout_{0}")'.format(all))
-            # exec(
-            #     "self.scrollArea_{0} = QtWidgets.QScrollArea(self.tab_{0})".format(all)
-            # )
-            # scrollArea_cria = eval("self.scrollArea_{0}".format(all))
-            # scrollArea_cria.setFrameShape(QtWidgets.QFrame.NoFrame)
-            # scrollArea_cria.setWidgetResizable(True)
-            # scrollArea_cria.setObjectName("scrollArea_cria")
-            # exec("self.scrollAreaWidgetContents_{} = QtWidgets.QWidget()".format(all))
-            # exec(
-            #     "self.scrollAreaWidgetContents_{}.setGeometry(QtCore.QRect(0, 0, 264, 235))".format(
-            #         all
-            #     )
-            # )
-            # exec(
-            #     'self.scrollAreaWidgetContents_{0}.setObjectName("scrollAreaWidgetContents_{0}")'.format(
-            #         all
-            #     )
-            # )
-
-            # exec(
-            #     "self.verticalLayout_kapitel_{0} = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_{0})".format(
-            #         all
-            #     )
-            # )
-            # verticalLayout_cria = eval("self.verticalLayout_kapitel_{0}".format(all))
-            # verticalLayout_cria.setObjectName("verticalLayout_kapitel_{0}".format(all))
-
-
-
-            # dict_klasse_name = eval("dict_{}_name".format(all))
-            # for kapitel in dict_klasse_name:
-            #     self.create_kapitel(verticalLayout_cria, all[1], kapitel)
-
-            # verticalLayout_cria.addItem(spacerItem_cria)
-            # exec(
-            #     "self.scrollArea_{0}.setWidget(self.scrollAreaWidgetContents_{0})".format(
-            #         all
-            #     )
-            # )
-            # exec(
-            #     "self.gridLayout_{0}.addWidget(self.scrollArea_{0}, 5, 0, 1, 1)".format(
-            #         all
-            #     )
-            # )
-            # exec(
-            #     'self.tabWidget_klassen_cria.addTab(self.tab_{0}, "{1}. Klasse")'.format(
-            #         all, all[1]
-            #     )
-            # )
 
         self.groupBox_unterkapitel_cria = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_unterkapitel_cria.setStyleSheet(
@@ -1691,13 +1619,6 @@ class Ui_MainWindow(object):
         self.scrollArea_chosen.verticalScrollBar().rangeChanged.connect(lambda: self.scrollArea_chosen.verticalScrollBar().setValue(self.scrollArea_chosen.verticalScrollBar().maximum()))
         self.gridLayout_5.addWidget(self.scrollArea_chosen, 5, 0, 1, 7)
 
-        # self.line_seperator = QtWidgets.QFrame(self.scrollAreaWidgetContents_2)
-        # self.line_seperator.setFrameShape(QtWidgets.QFrame.HLine)
-        # self.line_seperator.setFrameShadow(QtWidgets.QFrame.Raised)
-        # self.line_seperator.setObjectName("line_seperator")
-        # self.line_seperator.setFocusPolicy(QtCore.Qt.NoFocus)
-        # self.line_seperator.setLineWidth(3)
-        # self.line_seperator.hide()
 
         self.groupBox_notenschl = QtWidgets.QGroupBox(self.groupBox_sage)
         self.groupBox_notenschl.setObjectName("groupBox_notenschl")
@@ -2128,25 +2049,7 @@ class Ui_MainWindow(object):
         self.btn_an_all.clicked.connect(self.btn_an_all_pressed)
         self.btn_fa_all.clicked.connect(self.btn_fa_all_pressed)
         self.btn_ws_all.clicked.connect(self.btn_ws_all_pressed)
-        # self.btn_suche.clicked.connect(partial(prepare_tex_for_pdf,self))
-        # self.actionProgram.triggered.connect(self.change_program)
-        # self.actionExit.triggered.connect(self.close_app)
-        # self.actionRefresh_Database.triggered.connect(
-        #     partial(refresh_ddb,self)
-        # )  # self.label_aufgabentyp.text()[-1]
-        # self.actionReset.triggered.connect(self.suchfenster_reset)
-        # self.actionReset_sage.triggered.connect(self.reset_sage)
-        # self.actionLoad.triggered.connect(partial(self.sage_load, False))
-        # self.actionSave.triggered.connect(self.sage_save)
-        # self.actionAufgaben_Typ1.triggered.connect(self.chosen_aufgabenformat_typ1)
-        # self.actionAufgaben_Typ2.triggered.connect(self.chosen_aufgabenformat_typ2)
-        # self.actionInfo.triggered.connect(self.show_info)
-        # self.actionSuche.triggered.connect(partial(self.update_gui, 'widgets_search'))
-        # self.actionSage.triggered.connect(partial(self.update_gui, 'widgets_sage'))
-        # self.actionNeu.triggered.connect(partial(self.update_gui, 'widgets_create')) #self.neue_aufgabe_erstellen
-        # self.actionFeedback.triggered.connect(partial(self.update_gui, 'widgets_feedback'))
-        # self.actionBild_einbinden.triggered.connect(self.add_picture)
-        # self.actionBild_konvertieren_jpg_eps.triggered.connect(self.convert_imagetoeps)
+
         self.comboBox_aufgabentyp_cr.currentIndexChanged.connect(
             self.chosen_aufgabenformat_cr
         )
@@ -2202,62 +2105,12 @@ class Ui_MainWindow(object):
         self.menuSuche.setTitle(_translate("MainWindow", "Aufgabensuche", None))
         self.menuBild_einbinden.setTitle(_translate("MainWindow", "Bild einfügen", None))
         self.menuFeedback.setTitle(_translate("MainWindow", "Feedback && Fehler", None))
-        # self.actionBild_einbinden.setText(
-        #     _translate("MainWindow", "Durchsuchen...", None)
-        # )
-        # self.actionBild_konvertieren_jpg_eps.setText(
-        #     _translate("MainWindow", "Grafik konvertieren (jpg/png zu eps)", None)
-        # )
+
         self.menuHelp.setTitle(_translate("MainWindow", "?", None))
-        # self.actionReset.setText(_translate("MainWindow", "Reset", None))
-        # self.actionReset_sage.setText(
-        #     _translate("MainWindow", "Reset Schularbeit", None)
-        # )
-        # self.actionReset.setShortcut("F4")
-        # self.actionLoad.setText(_translate("MainWindow", "Öffnen", None))
-        # self.actionLoad.setShortcut("Ctrl+O")
-        # self.actionSave.setText(_translate("MainWindow", "Speichern", None))
-        # self.actionSave.setShortcut("Ctrl+S")
-        # self.actionFeedback.setText(
-        #     _translate("MainWindow", "Feedback oder Fehler senden ...", None)
-        # )
-        # self.actionAufgaben_Typ1.setText(
-        #     _translate("MainWindow", "Typ 1 Aufgaben", None)
-        # )
-        # self.actionAufgaben_Typ1.setShortcut("Ctrl+1")
-        # self.actionAufgaben_Typ2.setText(
-        #     _translate("MainWindow", "Typ 2 Aufgaben", None)
-        # )
-        # self.actionAufgaben_Typ2.setShortcut("Ctrl+2")
-        # self.actionInfo.setText(_translate("MainWindow", "Über LaMA", None))
-        # self.actionNeu.setText(
-        #     _translate("MainWindow", "Neue Aufgabe erstellen...", None)
-        # )
-        # self.actionNeu.setShortcut("F3")
-        # self.actionSage.setText(
-        #     _translate("MainWindow", "Neue Schularbeit erstellen...", None)
-        # )
-        # self.actionSage.setShortcut("F2")
-        # self.actionSuche.setText(_translate("MainWindow", "Aufgaben suchen...", None))
-        # self.actionSuche.setShortcut("F1")
-        # self.actionExit.setText(_translate("MainWindow", "Exit", None))
-        # self.actionRefresh_Database.setText(
-        #     _translate("MainWindow", "Refresh Database", None)
-        # )
-        # self.label_aufgabentyp.setText(
-        #     _translate("MainWindow", "Aufgabentyp: Typ 1", None)
-        # )
-        # self.groupBox_ausgew_gk.setTitle(
-        #     _translate("MainWindow", "Ausgewählte Grundkompetenzen", None)
-        # )
+
         self.groupBox_titelsuche.setTitle(_translate("MainWindow", "Titelsuche:", None))
         self.groupBox_klassen.setTitle(_translate("MainWindow", "Suchfilter", None))
-        # self.cb_k7.setText(_translate("MainWindow", "7. Klasse", None))
-        # self.cb_k5.setText(_translate("MainWindow", "5. Klasse", None))
-        # self.cb_k6.setText(_translate("MainWindow", "6. Klasse", None))
-        # self.cb_k8.setText(_translate("MainWindow", "8. Klasse", None))
-        # self.cb_mat.setText(_translate("MainWindow", "Matura", None))
-        # self.cb_univie.setText(_translate("MainWindow", "Uni Wien", None))
+
         self.cb_solution.setText(_translate("MainWindow", "Lösungen anzeigen", None))
         self.cb_drafts.setText(_translate("MainWindow", "Entwürfe anzeigen", None))
 
@@ -2588,52 +2441,6 @@ class Ui_MainWindow(object):
             y = eval("self.cb_" + all + "_cr")
             y.setToolTip(chosen_dict[all])
 
-    # def tab_changed(self):
-    #     klasse = list_klassen[self.tabWidget_klassen.currentIndex()]
-    #     dict_klasse_name = eval("dict_{}_name".format(klasse))
-
-    #     for all in dict_klasse_name:
-    #         radioButton = eval("self.radioButton_{0}_{1}".format(klasse, all))
-    #         if radioButton.isChecked() == True:
-    #             self.chosen_radiobutton(klasse[1], all)
-    #             break
-    #         else:
-    #             try:
-    #                 self.scrollArea_unterkapitel.setParent(None)
-    #                 self.groupBox_unterkapitel.setTitle(
-    #                     _translate("MainWindow", "Unterkapitel")
-    #                 )
-    #             except AttributeError:
-    #                 pass
-
-    #             pass
-
-    # def create_kapitel(self, layout, klasse, kapitel): #, layout, klasse, kapitel
-    #     print(klasse)
-    #     print(kapitel)
-    #     dict_klasse_name = eval("dict_k{}_name".format(klasse[1]))
-
-    #     create_new_radiobutton(layout, dict_klasse_name[kapitel] + " (" + kapitel + ")")
-        
-        # create_new_radiobutton(layout, "")
-
-    #     exec(
-    #         "self.radioButton_k{0}_{1} = QtWidgets.QRadioButton(self.scrollAreaWidgetContents_k{0})".format(
-    #             klasse, kapitel
-    #         )
-    #     )
-    #     radioButton_klasse_kapitel = eval(
-    #         "self.radioButton_k{0}_{1}".format(klasse, kapitel)
-    #     )
-    #     radioButton_klasse_kapitel.setObjectName("radioButton_klasse_kapitel")
-    #     # chosen_layout = eval('{0}_k{1}'.format(layout, klasse))
-    #     layout.addWidget(radioButton_klasse_kapitel)
-    #     radioButton_klasse_kapitel.setText(
-    #         _translate("MainWindow", dict_klasse_name[kapitel] + " (" + kapitel + ")", None)
-    #     )
-    #     radioButton_klasse_kapitel.toggled.connect(
-    #         partial(self.chosen_radiobutton, klasse, kapitel)
-    #     )
 
     def tabWidget_klassen_cria_changed(self):
         klasse =list_klassen[self.tabWidget_klassen_cria.currentIndex()]
@@ -2734,93 +2541,6 @@ class Ui_MainWindow(object):
                 else:
                     self.dict_widget_variables[label_button_check_all].show()
 
-
-
-
-        # for unterkapitel in dict_klasse[kapitel]:
-        #     label='checkbox_unterkapitel_{0}_{1}_{2}'.format(klasse, kapitel, unterkapitel)
-        #     self.dict_widget_variables[label].show()
-        # # try:
-        # #     self.verticalLayout_4_cria.removeItem(self.spacerItem_unterkapitel_cria)
-        # # except AttributeError:
-        # #     pass
-
-        # # self.delete_all_widgets(self.verticalLayout_4_cria)
-
-
-        # for unterkapitel in dict_klasse[kapitel]:
-        #     checkbox = create_new_checkbox(self.scrollAreaWidgetContents_cria, dict_unterkapitel[unterkapitel])
-        #     self.verticalLayout_4_cria.addWidget(checkbox)
-        #     label='checkbox_{0}_{1}_{2}'.format(klasse, kapitel, unterkapitel)
-        #     self.dict_widget_variables[label]=checkbox  #### creates widgets ???
-
-
-        # self.spacerItem_unterkapitel_cria = QtWidgets.QSpacerItem(
-        #     20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
-        # )
-
-        # self.verticalLayout_4_cria.addItem(self.spacerItem_unterkapitel_cria) 
-
-        # button_check_all = create_new_button(self.scrollAreaWidgetContents_cria, 'alle auswählen', partial(self.btn_alle_clicked_cria, klasse, kapitel))
-        # button_check_all.setStyleSheet("background-color: rgb(240, 240, 240);")                  
-        # self.verticalLayout_4_cria.addWidget(button_check_all, 0, QtCore.Qt.AlignLeft)
-    #     try:
-    #         self.scrollArea_unterkapitel_cria.setParent(None)
-    #     except AttributeError:
-    #         pass
-
-    #     self.scrollArea_unterkapitel_cria = QtWidgets.QScrollArea(self.groupBox_unterkapitel_cria)
-    #     self.scrollArea_unterkapitel_cria.setFrameShape(QtWidgets.QFrame.NoFrame)
-    #     self.scrollArea_unterkapitel_cria.setWidgetResizable(True)
-    #     self.scrollArea_unterkapitel_cria.setObjectName("scrollArea_unterkapitel")
-    #     self.scrollAreaWidgetContents_cria = QtWidgets.QWidget()
-    #     self.scrollAreaWidgetContents_cria.setGeometry(QtCore.QRect(0, 0, 320, 279))
-    #     self.scrollAreaWidgetContents_cria.setObjectName("scrollAreaWidgetContents_cria")
-    #     self.verticalLayout_4_cria = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_cria)
-    #     self.verticalLayout_4_cria.setObjectName("verticalLayout_4_cria")
-
-    #     dict_klasse = eval("dict_k{}".format(klasse))
-    #     for all in dict_klasse[kapitel]:
-    #         # print(dict_unterkapitel[all])
-
-    #         exec(
-    #             "self.checkBox_k{0}_{1}_{2} = QtWidgets.QCheckBox(self.scrollAreaWidgetContents_cria)".format(
-    #                 klasse, kapitel, all
-    #             )
-    #         )
-    #         checkBox = eval("self.checkBox_k{0}_{1}_{2}".format(klasse, kapitel, all))
-    #         checkBox.setObjectName("checkBox_k{0}_{1}_{2}".format(klasse, kapitel, all))
-    #         checkBox.stateChanged.connect(
-    #             partial(self.checkBox_checked_cria, klasse, kapitel, all)
-    #         )
-
-    #         thema_checked = [klasse, kapitel, all]
-    #         if thema_checked in self.dict_chosen_topics.values():
-    #             checkBox.setChecked(True)
-
-    #         self.verticalLayout_4_cria.addWidget(checkBox)
-
-    #         checkBox.setText(_translate("MainWindow", dict_unterkapitel[all], None))
-        # self.spacerItem_unterkapitel_cria = QtWidgets.QSpacerItem(
-        #     20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
-        # )
-
-        # self.verticalLayout_4_cria.addItem(self.spacerItem_unterkapitel_cria)
-
-    #     exec(
-    #         "self.btn_alle_{0}_{1} = QtWidgets.QPushButton(self.scrollAreaWidgetContents_cria)".format(
-    #             klasse, kapitel
-    #         )
-    #     )
-    #     btn_alle = eval("self.btn_alle_{0}_{1}".format(klasse, kapitel))
-    #     btn_alle.setStyleSheet("background-color: rgb(240, 240, 240);")
-    #     btn_alle.setObjectName("btn_alle_{0}_{1}".format(klasse, kapitel))
-    #     btn_alle.setText(_translate("MainWindow", "alle auswählen", None))
-    #     btn_alle.clicked.connect(partial(self.btn_alle_clicked_cria, klasse, kapitel))
-    #     self.verticalLayout_4_cria.addWidget(btn_alle, 0, QtCore.Qt.AlignLeft)
-    #     self.scrollArea_unterkapitel_cria.setWidget(self.scrollAreaWidgetContents_cria)
-    #     self.gridLayout_11_cria.addWidget(self.scrollArea_unterkapitel_cria, 0, 0, 1, 1)
-    #     # self.gridLayout.addWidget(self.groupBox_unterkapitel_cria, 1, 2, 2, 1)
 
 
     def checkBox_checked_cria(self, klasse, kapitel, unterkapitel):      
@@ -2969,66 +2689,10 @@ class Ui_MainWindow(object):
                 if all.startswith('radiobutton_kapitel_{}'.format(klasse)):
                     self.dict_widget_variables[all].setChecked(True)
                     break
-                    # if self.dict_widget_variables[all].isChecked():
-                    #     split_ending = all.rpartition("_")
-                    #     kapitel = split_ending[-1]
-                    #     self.chosen_radiobutton(klasse, kapitel)
-                        # return
-        # for klasse in list_klassen:
-        #     group_radiobutton = self.dict_widget_variables['group_radiobutton_klasse_{0}'.format(klasse)]
 
-        #     group_radiobutton.setAutoExclusive(False)
-
-        # for all in self.dict_widget_variables:
-        #     if all.startswith('radiobutton_kapitel_'):
-        #         group_radiobutton = 'group_radiobutton_klasse_{0}'.format(klasse)
-        #         radiobutton = self.dict_widget_variables[all]
-        #         if radiobutton.isChecked()==True:
-        #             print(True)
-        #             # radiobutton.setAutoExclusive(False)
-        #             radiobutton.setChecked(False)
-        #             # radiobutton.setAutoExclusive(True)
-        #         else:
-        #             print(False)
-                # print(all)
-                # print(radiobutton)
-                # radiobutton.setAutoExclusive(False)
-                # radiobutton.setChecked(False)
-                # radiobutton.setAutoExclusive(True)
-        # for klasse in list_klassen:
-        #     dict_klasse_name = eval("dict_{}_name".format(klasse))
-        #     print(self.dict_widget_variables)
-            # for all in dict_klasse_name:
-            #     radioButton = eval("self.radioButton_{0}_{1}".format(klasse, all))
-            #     if radioButton.isChecked() == True:
-            #         radioButton.setAutoExclusive(False)
-            #         radioButton.setChecked(False)
-            #         radioButton.setAutoExclusive(True)
-
-        # try:
-        #     self.scrollArea_unterkapitel_cria.hide()
-        # except AttributeError:
-        #     pass
         self.groupBox_unterkapitel_cria.setTitle(_translate("MainWindow", "Unterkapitel", None))
 
-        # for klasse in list_klassen:
-        #     dict_klasse = eval("dict_{}".format(klasse))
-        #     check = 0
-        #     for kapitel in dict_klasse:
-        #         print(kapitel)
-        #         for unterkapitel in dict_klasse[kapitel]:
-        #             print(unterkapitel)
-        #         # for unterkapitel in dict_klasse[kapitel]:
-                
-        #             checkBox = eval("self.cb_unterkapitel_{0}_{1}".format(kapitel, unterkapitel))
-        #             checkBox.setChecked(False)
-
-        # for example in self.list_creator_topics[:]:
-        #     cb_unterkapitel = eval(
-        #         "self.cb_unterkapitel_{0}_{1}".format(example[1], example[2])
-        #     )
-        #     cb_unterkapitel.setChecked(False)
-
+ 
         self.entry_suchbegriffe.setText("")
         self.cb_solution.setChecked(True)
         self.spinBox_punkte.setProperty("value", 1)
@@ -3579,132 +3243,6 @@ class Ui_MainWindow(object):
             x = "Weitere: " + x
         self.label_gk_rest.setText(_translate("MainWindow", str(x), None))
 
-    ############################################################################
-    ############################################################################
-    ######### Button REFRESH DATABASE ######################################
-    ############################################################################
-
-    # def modification_date(self, filename):
-    #     t = os.path.getmtime(filename)
-    #     return datetime.datetime.fromtimestamp(t)
-
-    # def refresh_ddb(self):
-    #     msg = QtWidgets.QMessageBox()
-    #     msg.setWindowIcon(QtGui.QIcon(logo_path))
-    #     msg.setWindowTitle("Refresh Database")
-    #     msg.setStandardButtons(QtWidgets.QMessageBox.NoButton)
-    #     msg.setText("Datenbank wird aktualisiert. Bitte warten...")
-
-    #     msg.show()
-    #     QApplication.processEvents()
-    #     QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-    #     for selected_aufgabentyp in [1, 2]:
-    #         beispieldaten_dateipfad = {}
-    #         beispieldaten = []
-    #         chosen_aufgabenformat = "Typ%sAufgaben" % selected_aufgabentyp
-    #         ########################################################
-    #         ##### Suche offizielle Beispiele ####################
-    #         ##################################################
-
-    #         for root, dirs, files in os.walk(
-    #             os.path.join(path_programm, "_database", chosen_aufgabenformat)
-    #         ):
-    #             for all in files:
-    #                 if all.endswith(".tex") or all.endswith(".ltx"):
-    #                     if not ("Gesamtdokument" in all) and not (
-    #                         "Teildokument" in all
-    #                     ):
-    #                         file = open(os.path.join(root, all), encoding="utf8")
-    #                         for i, line in enumerate(file):
-    #                             if not line == "\n":
-    #                                 beispieldaten_dateipfad[line] = os.path.join(
-    #                                     root, all
-    #                                 )
-    #                                 beispieldaten.append(line)
-    #                                 break
-    #                         file.close()
-
-    #         ################################################
-    #         #### Suche inoffizielle Beispiele ######
-    #         #############################################
-
-    #         for root, dirs, files in os.walk(
-    #             os.path.join(
-    #                 path_programm, "_database_inoffiziell", chosen_aufgabenformat
-    #             )
-    #         ):
-    #             for all in files:
-    #                 if all.endswith(".tex") or all.endswith(".ltx"):
-    #                     if not ("Gesamtdokument" in all) and not (
-    #                         "Teildokument" in all
-    #                     ):
-    #                         file = open(os.path.join(root, all), encoding="utf8")
-    #                         for i, line in enumerate(file):
-    #                             if not line == "\n":
-    #                                 beispieldaten_dateipfad[line] = os.path.join(
-    #                                     root, all
-    #                                 )
-    #                                 beispieldaten.append(line)
-    #                                 break
-    #                         file.close()
-
-    #         ################################################
-    #         #### Suche lokal gespeicherte Beispiele ######
-    #         #############################################
-
-    #         for root, dirs, files in os.walk(
-    #             os.path.join(path_programm, "Lokaler_Ordner", chosen_aufgabenformat)
-    #         ):
-    #             for all in files:
-    #                 if all.endswith(".tex") or all.endswith(".ltx"):
-    #                     if not ("Gesamtdokument" in all) and not (
-    #                         "Teildokument" in all
-    #                     ):
-    #                         # print(os.path.join(root,all))
-    #                         file = open(os.path.join(root, all), encoding="utf8")
-    #                         for i, line in enumerate(file):
-    #                             if not line == "\n":
-    #                                 beispieldaten_dateipfad[line] = os.path.join(
-    #                                     root, all
-    #                                 )
-    #                                 beispieldaten.append(line)
-    #                                 break
-    #                         file.close()
-
-    #         temp_dict_beispieldaten = {}
-    #         temp_list = list(beispieldaten_dateipfad.keys())
-    #         temp_list.sort(key=natural_keys)
-    #         for all in temp_list:
-    #             temp_dict_beispieldaten.update({all: beispieldaten_dateipfad[all]})
-
-    #         beispieldaten_dateipfad = temp_dict_beispieldaten
-
-    #         # print(beispieldaten_dateipfad)
-
-    #         log_file = os.path.join(
-    #             path_programm, "Teildokument", "log_file_%s" % selected_aufgabentyp
-    #         )
-
-    #         try:
-    #             with open(log_file, "w+", encoding="utf8") as f:
-    #                 json.dump(beispieldaten_dateipfad, f, ensure_ascii=False)
-    #         except FileNotFoundError:
-    #             os.makedirs(os.path.join(path_programm, "Teildokument"))
-    #             with open(log_file, "w+", encoding="utf8") as f:
-    #                 json.dump(beispieldaten_dateipfad, f, ensure_ascii=False)
-
-    #         self.label_update.setText(
-    #             _translate(
-    #                 "MainWindow",
-    #                 "Last Update: "
-    #                 + self.modification_date(log_file).strftime("%d.%m.%y - %H:%M"),
-    #                 None,
-    #             )
-    #         )
-    #     QtWidgets.QApplication.restoreOverrideCursor()
-    #     self.adapt_choosing_list("sage")
-    #     self.adapt_choosing_list("feedback")
-    #     msg.close()
 
     ############################################################################
     ############################################################################
@@ -5885,33 +5423,7 @@ class Ui_MainWindow(object):
         return new_groupbox
 
 
-    # def add_aufgabe_to_dict_alle_aufgaben_sage(self, aufgabe):
-    #     info=self.collect_all_infos_aufgabe(aufgabe)
-    #     dateipfad=self.get_dateipfad_aufgabe(aufgabe)
-    #     print(info)
-    #     print(dateipfad)
-    #     info.append(dateipfad)
-    #     print(info)
-    #     #self.dict_alle_aufgaben_sage[aufgabe]=list_info
-
-    # def collect_punkte_aufgabe(self, aufgabe):
-    #     aufgabe=simplify_string(aufgabe)
-    #     spinBox_pkt=eval("self.spinBox_pkt_{}".format(aufgabe))
-    #     punkte = spinBox_pkt.value()
-    #     return punkte
-
-    # def collect_abstand_aufgabe(self, aufgabe):
-    #     aufgabe=simplify_string(aufgabe)
-    #     spinBox_abstand=eval("self.spinBox_abstand_{}".format(aufgabe))
-    #     abstand = spinBox_abstand.value()
-    #     return abstand
-
     def get_klasse(self, aufgabe):
-        # print(list_klassen[self.comboBox_klassen.currentIndex()])
-        # dateipfad = self.get_dateipfad_aufgabe(aufgabe)
-        # if "Beispieleinreichung" in dateipfad or "Lokaler_Ordner" in dateipfad:
-        #     klasse=os.path.basename(os.path.dirname(dateipfad))
-        # else:  
         klasse=list_klassen[self.comboBox_klassen.currentIndex()]
         
         return klasse
@@ -5919,9 +5431,6 @@ class Ui_MainWindow(object):
 
     def collect_all_infos_aufgabe(self, aufgabe):
         typ=self.get_aufgabentyp(aufgabe)
-
-        # punkte=self.collect_punkte_aufgabe(aufgabe)
-        # abstand=self.collect_abstand_aufgabe(aufgabe)
 
         if typ==None:
             klasse, aufgabe=self.split_klasse_aufgabe(aufgabe)
