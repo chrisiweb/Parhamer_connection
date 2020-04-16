@@ -324,9 +324,8 @@ def prepare_tex_for_pdf(self):
             == "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten"
         ):
             for item in suchbegriffe:
-                klasse = "K" + item[0]
+                klasse = item[0].upper()
                 thema = item[1] + "." + item[2]
-
                 for all in list(beispieldaten_dateipfad.keys()):
                     if klasse in all:
 

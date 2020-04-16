@@ -2637,7 +2637,7 @@ class Ui_MainWindow(object):
 
     def tabWidget_klassen_cria_changed(self):
         klasse =list_klassen[self.tabWidget_klassen_cria.currentIndex()]
-
+    
         for all in self.dict_widget_variables:
             if all.startswith('radiobutton_kapitel_{}'.format(klasse)):
                 if self.dict_widget_variables[all].isChecked():
@@ -2662,7 +2662,8 @@ class Ui_MainWindow(object):
                 for unterkapitel in dict_klasse[alle_kapitel]:
                     label='checkbox_unterkapitel_{0}_{1}_{2}'.format(alle_klassen, alle_kapitel, unterkapitel)
                     self.dict_widget_variables[label].hide()
-        self.button_check_all_unterkapitel.hide()         
+
+        # self.button_check_all_unterkapitel.hide()         
 
     def create_all_checkboxes_unterkapitel(self):
         for klasse in list_klassen:
@@ -2677,16 +2678,28 @@ class Ui_MainWindow(object):
                     self.dict_widget_variables[label]=checkbox  #### creates widgets ???
 
 
+
         self.spacerItem_unterkapitel_cria = QtWidgets.QSpacerItem(
             20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
         )
 
         self.verticalLayout_4_cria.addItem(self.spacerItem_unterkapitel_cria)    
 
-        self.button_check_all_unterkapitel = create_new_button(self.scrollAreaWidgetContents_cria, 'alle auswählen',None)
-        self.button_check_all_unterkapitel.setStyleSheet("background-color: rgb(240, 240, 240);")                  
-        self.verticalLayout_4_cria.addWidget(self.button_check_all_unterkapitel, 0, QtCore.Qt.AlignLeft)
-        self.button_check_all_unterkapitel.hide()                 
+        for klasse in list_klassen:
+            dict_klasse = eval("dict_{}".format(klasse))
+            for kapitel in dict_klasse:
+                button_check_all_unterkapitel = create_new_button(self.scrollAreaWidgetContents_cria, 'alle auswählen',None)
+                button_check_all_unterkapitel.setStyleSheet("background-color: rgb(240, 240, 240);")
+                button_check_all_unterkapitel.clicked.connect(partial(self.btn_alle_unterkapitel_clicked_cria, klasse, kapitel))                  
+                self.verticalLayout_4_cria.addWidget(button_check_all_unterkapitel, 0, QtCore.Qt.AlignLeft)
+                button_check_all_unterkapitel.hide()
+                label_button_check_all = 'button_check_all_unterkapitel_{0}_{1}'.format(klasse, kapitel)
+                self.dict_widget_variables[label_button_check_all]=button_check_all_unterkapitel
+
+        # self.button_check_all_unterkapitel = create_new_button(self.scrollAreaWidgetContents_cria, 'alle auswählen',None)
+        # self.button_check_all_unterkapitel.setStyleSheet("background-color: rgb(240, 240, 240);")                  
+        # self.verticalLayout_4_cria.addWidget(self.button_check_all_unterkapitel, 0, QtCore.Qt.AlignLeft)
+        # self.button_check_all_unterkapitel.hide()                 
 
     def chosen_radiobutton(self, klasse, kapitel):
         dict_klasse = eval("dict_{}".format(klasse))
@@ -2713,9 +2726,14 @@ class Ui_MainWindow(object):
                     else:
                         self.dict_widget_variables[label].hide()  
 
-        self.button_check_all_unterkapitel.clicked.connect(partial(self.btn_alle_unterkapitel_clicked_cria, klasse, kapitel))
-        self.button_check_all_unterkapitel.show()    
-        # new_button.clicked.connect(command)
+        label_button_check_all = 'button_check_all_unterkapitel_{0}_{1}'.format(klasse, kapitel)
+        for button in self.dict_widget_variables:
+            if button.startswith('button_check_all_unterkapitel_'):
+                if button != label_button_check_all:
+                    self.dict_widget_variables[button].hide()
+                else:
+                    self.dict_widget_variables[label_button_check_all].show()
+
 
 
 
