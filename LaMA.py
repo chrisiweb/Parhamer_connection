@@ -156,7 +156,8 @@ def create_new_button(parent, text, command):
     new_button=QtWidgets.QPushButton(parent)
     new_button.setObjectName("{}".format(new_button))
     new_button.setText(_translate("MainWindow", text, None))
-    new_button.clicked.connect(command)
+    if command != None:
+        new_button.clicked.connect(command)
 
     return new_button
 
@@ -726,6 +727,7 @@ class Ui_MainWindow(object):
         self.tabWidget_klassen_cria.setMovable(False)
         self.tabWidget_klassen_cria.setObjectName("tabWidget_klassen_cria")
 
+
         spacerItem_cria = QtWidgets.QSpacerItem(
             20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
         )
@@ -749,13 +751,23 @@ class Ui_MainWindow(object):
             new_verticallayout.setObjectName("{}".format(new_verticallayout))
 
             dict_klasse_name = eval("dict_{}_name".format(klasse))
-
+            
+            
+            group_radiobutton = QtWidgets.QButtonGroup()
+            # label_group='group_radiobutton_klasse_{0}'.format(klasse)
+            # self.dict_widget_variables[label_group]=group_radiobutton
             for kapitel in dict_klasse_name:
                 new_radiobutton = create_new_radiobutton(new_scrollareacontent, dict_klasse_name[kapitel] + " (" + kapitel + ")")
                 new_verticallayout.addWidget(new_radiobutton)
                 new_radiobutton.toggled.connect(
                     partial(self.chosen_radiobutton, klasse, kapitel)
                 )
+                group_radiobutton.addButton(new_radiobutton)
+                label = 'radiobutton_kapitel_{0}_{1}'.format(klasse, kapitel)
+                self.dict_widget_variables[label]=new_radiobutton
+
+
+
 
             new_verticallayout.addItem(spacerItem_cria)
 
@@ -846,6 +858,7 @@ class Ui_MainWindow(object):
         self.gridLayout_11_cria.setObjectName("gridLayout_11_cria")
         self.gridLayout.addWidget(self.groupBox_unterkapitel_cria, 1, 1, 2, 1)
 
+        self.tabWidget_klassen_cria.currentChanged.connect(self.tabWidget_klassen_cria_changed)
 
         self.scrollArea_unterkapitel_cria = QtWidgets.QScrollArea(self.groupBox_unterkapitel_cria)
         self.scrollArea_unterkapitel_cria.setFrameShape(QtWidgets.QFrame.NoFrame)
@@ -858,6 +871,9 @@ class Ui_MainWindow(object):
         self.verticalLayout_4_cria.setObjectName("verticalLayout_4_cria")
         self.scrollArea_unterkapitel_cria.setWidget(self.scrollAreaWidgetContents_cria)
         self.gridLayout_11_cria.addWidget(self.scrollArea_unterkapitel_cria, 0, 0, 1, 1)
+
+        self.create_all_checkboxes_unterkapitel()
+
 
         self.verticalLayout_cria.addWidget(self.tabWidget_klassen_cria)
         self.gridLayout.addWidget(self.groupBox_schulstufe_cria, 1, 0, 2, 1)
@@ -2572,25 +2588,25 @@ class Ui_MainWindow(object):
             y = eval("self.cb_" + all + "_cr")
             y.setToolTip(chosen_dict[all])
 
-    def tab_changed(self):
-        klasse = list_klassen[self.tabWidget_klassen.currentIndex()]
-        dict_klasse_name = eval("dict_{}_name".format(klasse))
+    # def tab_changed(self):
+    #     klasse = list_klassen[self.tabWidget_klassen.currentIndex()]
+    #     dict_klasse_name = eval("dict_{}_name".format(klasse))
 
-        for all in dict_klasse_name:
-            radioButton = eval("self.radioButton_{0}_{1}".format(klasse, all))
-            if radioButton.isChecked() == True:
-                self.chosen_radiobutton(klasse[1], all)
-                break
-            else:
-                try:
-                    self.scrollArea_unterkapitel.setParent(None)
-                    self.groupBox_unterkapitel.setTitle(
-                        _translate("MainWindow", "Unterkapitel")
-                    )
-                except AttributeError:
-                    pass
+    #     for all in dict_klasse_name:
+    #         radioButton = eval("self.radioButton_{0}_{1}".format(klasse, all))
+    #         if radioButton.isChecked() == True:
+    #             self.chosen_radiobutton(klasse[1], all)
+    #             break
+    #         else:
+    #             try:
+    #                 self.scrollArea_unterkapitel.setParent(None)
+    #                 self.groupBox_unterkapitel.setTitle(
+    #                     _translate("MainWindow", "Unterkapitel")
+    #                 )
+    #             except AttributeError:
+    #                 pass
 
-                pass
+    #             pass
 
     # def create_kapitel(self, layout, klasse, kapitel): #, layout, klasse, kapitel
     #     print(klasse)
@@ -2619,9 +2635,60 @@ class Ui_MainWindow(object):
     #         partial(self.chosen_radiobutton, klasse, kapitel)
     #     )
 
+    def tabWidget_klassen_cria_changed(self):
+        klasse =list_klassen[self.tabWidget_klassen_cria.currentIndex()]
+
+        for all in self.dict_widget_variables:
+            if all.startswith('radiobutton_kapitel_{}'.format(klasse)):
+                if self.dict_widget_variables[all].isChecked():
+                    split_ending = all.rpartition("_")
+                    kapitel = split_ending[-1]
+                    self.chosen_radiobutton(klasse, kapitel)
+                    return
+    
+        
+        self.groupBox_unterkapitel_cria.setTitle(
+            _translate(
+                "MainWindow",
+                "Unterkapitel",
+                None
+            )
+        )
+
+        for alle_klassen in list_klassen:
+            dict_klasse = eval("dict_{}".format(alle_klassen))
+            for alle_kapitel in dict_klasse:
+
+                for unterkapitel in dict_klasse[alle_kapitel]:
+                    label='checkbox_unterkapitel_{0}_{1}_{2}'.format(alle_klassen, alle_kapitel, unterkapitel)
+                    self.dict_widget_variables[label].hide()
+        self.button_check_all_unterkapitel.hide()         
+
+    def create_all_checkboxes_unterkapitel(self):
+        for klasse in list_klassen:
+            dict_klasse = eval("dict_{}".format(klasse))
+            for kapitel in dict_klasse:
+                for unterkapitel in dict_klasse[kapitel]:
+                    checkbox = create_new_checkbox(self.scrollAreaWidgetContents_cria, dict_unterkapitel[unterkapitel])
+                    checkbox.stateChanged.connect(partial(self.checkBox_checked_cria, klasse, kapitel, unterkapitel))
+                    self.verticalLayout_4_cria.addWidget(checkbox)
+                    checkbox.hide()
+                    label='checkbox_unterkapitel_{0}_{1}_{2}'.format(klasse, kapitel, unterkapitel)
+                    self.dict_widget_variables[label]=checkbox  #### creates widgets ???
+
+
+        self.spacerItem_unterkapitel_cria = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
+
+        self.verticalLayout_4_cria.addItem(self.spacerItem_unterkapitel_cria)    
+
+        self.button_check_all_unterkapitel = create_new_button(self.scrollAreaWidgetContents_cria, 'alle auswählen',None)
+        self.button_check_all_unterkapitel.setStyleSheet("background-color: rgb(240, 240, 240);")                  
+        self.verticalLayout_4_cria.addWidget(self.button_check_all_unterkapitel, 0, QtCore.Qt.AlignLeft)
+        self.button_check_all_unterkapitel.hide()                 
 
     def chosen_radiobutton(self, klasse, kapitel):
-        print(klasse, kapitel)
         dict_klasse = eval("dict_{}".format(klasse))
         dict_klasse_name = eval("dict_{}_name".format(klasse))
         
@@ -2636,28 +2703,45 @@ class Ui_MainWindow(object):
             )
         )
 
+        for alle_klassen in list_klassen:
+            dict_klasse = eval("dict_{}".format(alle_klassen))
+            for alle_kapitel in dict_klasse:
+                for unterkapitel in dict_klasse[alle_kapitel]:
+                    label='checkbox_unterkapitel_{0}_{1}_{2}'.format(alle_klassen, alle_kapitel, unterkapitel)
+                    if alle_klassen==klasse and alle_kapitel==kapitel:
+                        self.dict_widget_variables[label].show()
+                    else:
+                        self.dict_widget_variables[label].hide()  
+
+        self.button_check_all_unterkapitel.clicked.connect(partial(self.btn_alle_unterkapitel_clicked_cria, klasse, kapitel))
+        self.button_check_all_unterkapitel.show()    
+        # new_button.clicked.connect(command)
 
 
-        try:
-            self.verticalLayout_4_cria.removeItem(self.spacerItem_unterkapitel_cria)
-        except AttributeError:
-            pass
 
-        self.delete_all_widgets(self.verticalLayout_4_cria)
+        # for unterkapitel in dict_klasse[kapitel]:
+        #     label='checkbox_unterkapitel_{0}_{1}_{2}'.format(klasse, kapitel, unterkapitel)
+        #     self.dict_widget_variables[label].show()
+        # # try:
+        # #     self.verticalLayout_4_cria.removeItem(self.spacerItem_unterkapitel_cria)
+        # # except AttributeError:
+        # #     pass
 
-
-        for unterkapitel in dict_klasse[kapitel]:
-            checkbox = create_new_checkbox(self.scrollAreaWidgetContents_cria, dict_unterkapitel[unterkapitel])
-            self.verticalLayout_4_cria.addWidget(checkbox)
-            label='checkbox_{0}_{1}_{2}'.format(klasse, kapitel, unterkapitel)
-            # self.dict_widget_variables[label]=checkbox  #### creates widgets ???
+        # # self.delete_all_widgets(self.verticalLayout_4_cria)
 
 
-        self.spacerItem_unterkapitel_cria = QtWidgets.QSpacerItem(
-            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
-        )
+        # for unterkapitel in dict_klasse[kapitel]:
+        #     checkbox = create_new_checkbox(self.scrollAreaWidgetContents_cria, dict_unterkapitel[unterkapitel])
+        #     self.verticalLayout_4_cria.addWidget(checkbox)
+        #     label='checkbox_{0}_{1}_{2}'.format(klasse, kapitel, unterkapitel)
+        #     self.dict_widget_variables[label]=checkbox  #### creates widgets ???
 
-        self.verticalLayout_4_cria.addItem(self.spacerItem_unterkapitel_cria) 
+
+        # self.spacerItem_unterkapitel_cria = QtWidgets.QSpacerItem(
+        #     20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        # )
+
+        # self.verticalLayout_4_cria.addItem(self.spacerItem_unterkapitel_cria) 
 
         # button_check_all = create_new_button(self.scrollAreaWidgetContents_cria, 'alle auswählen', partial(self.btn_alle_clicked_cria, klasse, kapitel))
         # button_check_all.setStyleSheet("background-color: rgb(240, 240, 240);")                  
@@ -2721,54 +2805,40 @@ class Ui_MainWindow(object):
     #     # self.gridLayout.addWidget(self.groupBox_unterkapitel_cria, 1, 2, 2, 1)
 
 
-    def checkBox_checked_cria(self, klasse, kapitel, unterkapitel):
+    def checkBox_checked_cria(self, klasse, kapitel, unterkapitel):      
         thema_checked = [klasse, kapitel, unterkapitel]
-        thema_label = kapitel + "." + unterkapitel + " (" + klasse + ".)"
-        checkBox = eval(
-            "self.checkBox_k{0}_{1}_{2}".format(klasse, kapitel, unterkapitel)
-        )
-        if checkBox.isChecked() == True:
+        thema_label = kapitel + "." + unterkapitel + " (" + klasse[1] + ".)"
+        
+        label_checkbox = 'checkbox_unterkapitel_{0}_{1}_{2}'.format(klasse, kapitel, unterkapitel)
+
+        checkbox = self.dict_widget_variables[label_checkbox]
+ 
+        if checkbox.isChecked() == True:
             if thema_label not in self.dict_chosen_topics.keys():
                 self.dict_chosen_topics[thema_label] = thema_checked
-        if checkBox.isChecked() == False:
+        if checkbox.isChecked() == False:
             del self.dict_chosen_topics[thema_label]
         x = ", ".join(self.dict_chosen_topics.keys())
         # print(self.dict_chosen_topics)
         self.label_ausg_themen_cria.setText(_translate("MainWindow", x, None))
 
 
-    def btn_alle_clicked_cria(self, klasse, kapitel):
-        # dict_klasse = eval("dict_{}".format(klasse))
-        # check = 0
-        print('test')
-        # print(dict_klasse[kapitel])
-        # first_checkbox= 'checkbox_{0}_{1}_{2}'.format(klasse, kapitel, dict_klasse[kapitel][0])
-        # print(first_checkbox)
-        # if self.dict_widget_variables[first_checkbox].isChecked()==False:
-        #     check_checkboxes = True
-        # else:
-        #     check_checkboxes = False
+    def btn_alle_unterkapitel_clicked_cria(self, klasse, kapitel):
+        dict_klasse = eval("dict_{}".format(klasse))
+
+        first_checkbox= 'checkbox_unterkapitel_{0}_{1}_{2}'.format(klasse, kapitel, dict_klasse[kapitel][0])
+
+        if self.dict_widget_variables[first_checkbox].isChecked()==False:
+            check_checkboxes = True
+        else:
+            check_checkboxes = False
             
 
-        # for all in self.dict_widget_variables:
-        #     if all.startswith('checkbox_{0}_{1}_'.format(klasse, kapitel)):
-        #         self.dict_widget_variables[all].setChecked(check_checkboxes)
+        for all in self.dict_widget_variables:
+            if all.startswith('checkbox_unterkapitel_{0}_{1}_'.format(klasse, kapitel)):
+                self.dict_widget_variables[all].setChecked(check_checkboxes)
 
-        # print(self.dict_widget_variables)
-        # for all in dict_klasse[kapitel]:
-        #     checkBox = eval("self.checkBox_k{0}_{1}_{2}".format(klasse, kapitel, all))
-        #     if check == 0:
-        #         if checkBox.isChecked():
-        #             checkBox.setChecked(False)
-        #             check = 1
-        #         else:
-        #             checkBox.setChecked(True)
-        #             check = 2
-        #     else:
-        #         if check == 1:
-        #             checkBox.setChecked(False)
-        #         elif check == 2:
-        #             checkBox.setChecked(True)
+ 
 
     def comboBox_kapitel_changed_cr(
         self, verticalLayout_cr_cria, combobox_kapitel, klasse, spacerItem_unterkapitel_cria
@@ -2869,19 +2939,58 @@ class Ui_MainWindow(object):
             x.setChecked(False)
 
         ### LaMA Cria
-        for klasse in list_klassen:
-            dict_klasse_name = eval("dict_{}_name".format(klasse))
-            for all in dict_klasse_name:
-                radioButton = eval("self.radioButton_{0}_{1}".format(klasse, all))
-                if radioButton.isChecked() == True:
-                    radioButton.setAutoExclusive(False)
-                    radioButton.setChecked(False)
-                    radioButton.setAutoExclusive(True)
 
-        try:
-            self.scrollArea_unterkapitel_cria.hide()
-        except AttributeError:
-            pass
+        self.tabWidget_klassen_cria.setCurrentIndex(0)
+        
+        for all in self.dict_widget_variables:
+            if all.startswith('checkbox_unterkapitel_'):
+                self.dict_widget_variables[all].setChecked(False)
+
+        for klasse in list_klassen:
+            for all in self.dict_widget_variables:
+                if all.startswith('radiobutton_kapitel_{}'.format(klasse)):
+                    self.dict_widget_variables[all].setChecked(True)
+                    break
+                    # if self.dict_widget_variables[all].isChecked():
+                    #     split_ending = all.rpartition("_")
+                    #     kapitel = split_ending[-1]
+                    #     self.chosen_radiobutton(klasse, kapitel)
+                        # return
+        # for klasse in list_klassen:
+        #     group_radiobutton = self.dict_widget_variables['group_radiobutton_klasse_{0}'.format(klasse)]
+
+        #     group_radiobutton.setAutoExclusive(False)
+
+        # for all in self.dict_widget_variables:
+        #     if all.startswith('radiobutton_kapitel_'):
+        #         group_radiobutton = 'group_radiobutton_klasse_{0}'.format(klasse)
+        #         radiobutton = self.dict_widget_variables[all]
+        #         if radiobutton.isChecked()==True:
+        #             print(True)
+        #             # radiobutton.setAutoExclusive(False)
+        #             radiobutton.setChecked(False)
+        #             # radiobutton.setAutoExclusive(True)
+        #         else:
+        #             print(False)
+                # print(all)
+                # print(radiobutton)
+                # radiobutton.setAutoExclusive(False)
+                # radiobutton.setChecked(False)
+                # radiobutton.setAutoExclusive(True)
+        # for klasse in list_klassen:
+        #     dict_klasse_name = eval("dict_{}_name".format(klasse))
+        #     print(self.dict_widget_variables)
+            # for all in dict_klasse_name:
+            #     radioButton = eval("self.radioButton_{0}_{1}".format(klasse, all))
+            #     if radioButton.isChecked() == True:
+            #         radioButton.setAutoExclusive(False)
+            #         radioButton.setChecked(False)
+            #         radioButton.setAutoExclusive(True)
+
+        # try:
+        #     self.scrollArea_unterkapitel_cria.hide()
+        # except AttributeError:
+        #     pass
         self.groupBox_unterkapitel_cria.setTitle(_translate("MainWindow", "Unterkapitel", None))
 
         # for klasse in list_klassen:
