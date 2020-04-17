@@ -869,6 +869,9 @@ class Ui_MainWindow(object):
         )
         self.groupBox_themengebiete_cria.hide()
 
+        self.spacerItem_unterkapitel_creator_cria = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
 
         for klasse in list_klassen:
             name='tab_{0}'.format(klasse)
@@ -891,14 +894,28 @@ class Ui_MainWindow(object):
 
 
             combobox_kapitel = create_new_combobox(new_scrollareacontent)
-            dict_klasse = eval('dict_{}_name'.format(klasse))
+            combobox_kapitel.setStyleSheet("background-color: rgb(240, 240, 240);selection-background-color: rgb(240, 240, 240); selection-color: rgb(0, 0, 0)")
+            combobox_kapitel.setMinimumHeight(25)
+            self.dict_widget_variables['combobox_kapitel_creator_cria_{}'.format(klasse)]=combobox_kapitel
+            dict_klasse_name = eval('dict_{}_name'.format(klasse))
             index=0
-            # for kapitel in dict_klasse_name:
-            #     add_new_option(combobox_kapitel,index,dict_klasse_name[kapitel] + " (" + kapitel + ")")
-            #     index +=1
+            for kapitel in dict_klasse_name:
+                add_new_option(combobox_kapitel,index,dict_klasse_name[kapitel] + " (" + kapitel + ")")
+                index +=1
+            combobox_kapitel.currentIndexChanged.connect(partial(self.comboBox_kapitel_changed_cr, new_scrollareacontent,new_verticallayout, klasse))
 
             new_verticallayout.addWidget(combobox_kapitel)
 
+            dict_klasse = eval('dict_{}'.format(klasse))
+
+            for unterkapitel in dict_klasse[list(dict_klasse.keys())[0]]:
+                new_checkbox=create_new_checkbox(new_scrollareacontent, dict_unterkapitel[unterkapitel])
+                new_checkbox.stateChanged.connect(partial(self.create_checkbox_unterkapitel, klasse, kapitel, unterkapitel))
+                new_verticallayout.addWidget(new_checkbox)
+                 
+          
+
+            new_verticallayout.addItem(self.spacerItem_unterkapitel_creator_cria)
 
             # new_verticallayout.addItem(spacerItem_cria)
 
@@ -975,6 +992,7 @@ class Ui_MainWindow(object):
             # spacerItem_unterkapitel_cria = QtWidgets.QSpacerItem(
             #     20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
             # )
+            
             # verticalLayout_cr_cria.addWidget(combobox_kapitel)
             # combobox_kapitel.currentIndexChanged.connect(
             #     partial(
@@ -1017,7 +1035,7 @@ class Ui_MainWindow(object):
             # verticalLayout_cr_cria.addItem(spacerItem_unterkapitel_cria)
 
 #################################
-        self.tab_widget_cr_cria.currentChanged.connect(self.tab_widget_cr_cria_changed)
+        
 
 
         self.groupBox_ausgew_gk_cr = QtWidgets.QGroupBox(self.centralwidget)
@@ -1390,7 +1408,7 @@ class Ui_MainWindow(object):
         self.pushButton_save.setObjectName(_fromUtf8("pushButton_save"))
         self.gridLayout.addWidget(self.pushButton_save, 7, 5, 1, 1)
         self.pushButton_save.setText(_translate("MainWindow", "Speichern", None))
-        self.pushButton_save.setShortcut(_translate("MainWindow", "Return", None))
+        # self.pushButton_save.setShortcut(_translate("MainWindow", "Return", None))
         self.pushButton_save.hide()
 
         self.tab_widget_gk.setCurrentIndex(0)
@@ -2616,60 +2634,64 @@ class Ui_MainWindow(object):
 
  
 
-    def comboBox_kapitel_changed_cr(
-        self, verticalLayout_cr_cria, combobox_kapitel, klasse, spacerItem_unterkapitel_cria
-    ):
-        # spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        verticalLayout_cr_cria.removeItem(spacerItem_unterkapitel_cria)
+    def comboBox_kapitel_changed_cr(self, parent, layout, klasse): # , verticalLayout_cr_cria, combobox_kapitel, klasse, spacerItem_unterkapitel_cria
+        layout.removeItem(self.spacerItem_unterkapitel_creator_cria)
+
+        self.delete_all_widgets(layout, 1)
+
+        text_combobox=self.dict_widget_variables['combobox_kapitel_creator_cria_{}'.format(klasse)].currentText()
+        kapitel=text_combobox[text_combobox.find("(")+1:text_combobox.find(")")]
+        
         dict_klasse = eval("dict_{}".format(klasse))
-        chosen_kapitel = list(dict_klasse.keys())[combobox_kapitel.currentIndex()]
 
-        for i in reversed(range(2, verticalLayout_cr_cria.count())):
-            verticalLayout_cr_cria.itemAt(i).widget().close()
+        for unterkapitel in dict_klasse[kapitel]:
+            new_checkbox=create_new_checkbox(parent, dict_unterkapitel[unterkapitel])
+            # self.dict_widget_variables['checkbox_unterkapitel_creator_cria_{0}_{1}_{2}'.format(klasse, kapitel, unterkapitel)]=new_checkbox
+            new_checkbox.stateChanged.connect(partial(self.create_checkbox_unterkapitel, klasse, kapitel, unterkapitel))
+            self.create_checkbox_unterkapitel(klasse, kapitel, unterkapitel) 
+            layout.addWidget(new_checkbox)
 
-        for unterkapitel in dict_klasse[chosen_kapitel]:
-            self.create_checkbox_unterkapitel(
-                verticalLayout_cr_cria, klasse, chosen_kapitel, unterkapitel
-            )
-
-        verticalLayout_cr_cria.addItem(spacerItem_unterkapitel_cria)
+        layout.addItem(self.spacerItem_unterkapitel_creator_cria)
 
 
 
-    def create_checkbox_unterkapitel(self, layout, klasse, kapitel, unterkapitel):
+
+    def create_checkbox_unterkapitel(self, klasse, kapitel, unterkapitel):
         # exec('self.tab_cr_{} = QtWidgets.QWidget()'.format(all))
         # exec('self.tab_cr_{0}.setObjectName("tab_cr_{0}")'.format(all))
-        exec(
-            "self.cb_unterkapitel_{0}_{1}= QtWidgets.QCheckBox(self.centralwidget)".format(
-                kapitel, unterkapitel
-            )
-        )
-        cb_unterkapitel = eval(
-            "self.cb_unterkapitel_{0}_{1}".format(kapitel, unterkapitel)
-        )
-        # self.cb_thema.setChecked(True)
-        cb_unterkapitel.setObjectName(
-            "cb_unterkapitel_{0}_{1}".format(kapitel, unterkapitel)
-        )
-        layout.addWidget(cb_unterkapitel, QtCore.Qt.AlignTop)
-        cb_unterkapitel.setText(
-            _translate(
-                "MainWindow",
-                dict_unterkapitel[unterkapitel] + " (" + unterkapitel + ")", None
-            )
-        )
-        cb_unterkapitel.stateChanged.connect(
-            partial(
-                self.checkBox_checked_creator,
-                cb_unterkapitel,
-                klasse,
-                kapitel,
-                unterkapitel,
-            )
-        )
-        aufgabe_chosen = [klasse, kapitel, unterkapitel]
-        if aufgabe_chosen in self.list_creator_topics:
-            cb_unterkapitel.setChecked(True)
+        self.label_ausgew_gk.setText(_translate("MainWindow", kapitel+"_"+unterkapitel+" ("+klasse[1]+")", None))
+        print(klasse, kapitel, unterkapitel)
+        # exec(
+        #     "self.cb_unterkapitel_{0}_{1}= QtWidgets.QCheckBox(self.centralwidget)".format(
+        #         kapitel, unterkapitel
+        #     )
+        # )
+        # cb_unterkapitel = eval(
+        #     "self.cb_unterkapitel_{0}_{1}".format(kapitel, unterkapitel)
+        # )
+        # # self.cb_thema.setChecked(True)
+        # cb_unterkapitel.setObjectName(
+        #     "cb_unterkapitel_{0}_{1}".format(kapitel, unterkapitel)
+        # )
+        # layout.addWidget(cb_unterkapitel, QtCore.Qt.AlignTop)
+        # cb_unterkapitel.setText(
+        #     _translate(
+        #         "MainWindow",
+        #         dict_unterkapitel[unterkapitel] + " (" + unterkapitel + ")", None
+        #     )
+        # )
+        # cb_unterkapitel.stateChanged.connect(
+        #     partial(
+        #         self.checkBox_checked_creator,
+        #         cb_unterkapitel,
+        #         klasse,
+        #         kapitel,
+        #         unterkapitel,
+        #     )
+        # )
+        # aufgabe_chosen = [klasse, kapitel, unterkapitel]
+        # if aufgabe_chosen in self.list_creator_topics:
+        #     cb_unterkapitel.setChecked(True)
 
     def checkBox_checked_creator(self, cb_unterkapitel, klasse, kapitel, unterkapitel):
         thema_checked = [klasse, kapitel, unterkapitel]
@@ -3312,8 +3334,18 @@ class Ui_MainWindow(object):
     ###############################################################
     ################### Befehle Creator ###########################
     #############################################################
-    def tab_widget_cr_cria_changed(self):
-        print(self.tab_widget_cr_cria.currentIndex())
+    # def tab_widget_cr_cria_changed(self):
+        
+    #     # combobox_kapitel=self.dict_widget_variables['combobox_kapitel_creator_cria']
+    #     # combobox_kapitel.clear()
+    #     print(self.tab_widget_cr_cria.currentIndex())
+        # # add_new_option(combobox_klasse, 0, str(self.tab_widget_cr_cria.currentIndex()))
+        # index=self.tab_widget_cr_cria.currentIndex()
+        # dict_klasse_name = eval('dict_{}_name'.format(list_klassen[index]))
+        # index=0
+        # for kapitel in dict_klasse_name:
+        #     add_new_option(combobox_kapitel,index,dict_klasse_name[kapitel] + " (" + kapitel + ")")
+        #     index +=1
 
 
     def add_picture(self):
@@ -5553,8 +5585,8 @@ class Ui_MainWindow(object):
         
             return number_ausgleichspunkte
 
-    def delete_all_widgets(self, layout):
-        for i in reversed(range(layout.count())):
+    def delete_all_widgets(self, layout, start=0):
+        for i in reversed(range(start, layout.count())):
             self.delete_widget(layout, i)
 
     def delete_widget(self, layout , index):
