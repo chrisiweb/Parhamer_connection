@@ -729,17 +729,20 @@ class Ui_MainWindow(object):
         self.tabWidget_klassen_cria.setStyleSheet("background-color: rgb(229, 246, 255);")
         self.tabWidget_klassen_cria.setMovable(False)
         self.tabWidget_klassen_cria.setObjectName("tabWidget_klassen_cria")
+        # self.tabWidget_klassen_cria.setFocusPolicy(QtCore.Qt.NoFocus)
 
 
         spacerItem_cria = QtWidgets.QSpacerItem(
             20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
         )
         for klasse in list_klassen:
-            name='tab_{0}'.format(klasse)
+            # name='tab_{0}'.format(klasse)
             new_tab = add_new_tab(self.tabWidget_klassen_cria, "{}. Klasse".format(klasse[1]))
+            # new_tab.setFocusPolicy(QtCore.Qt.NoFocus)
             #self.dict_widget_variables[name]=new_tab
             new_gridlayout = QtWidgets.QGridLayout(new_tab)
             new_gridlayout.setObjectName("{}".format(new_gridlayout))
+            
 
             new_scrollarea = QtWidgets.QScrollArea(new_tab)
             new_scrollarea.setObjectName("{}".format(new_scrollarea))
@@ -850,7 +853,6 @@ class Ui_MainWindow(object):
         self.groupBox_grundkompetenzen_cr.setTitle(
             _translate("MainWindow", "Grundkompetenzen", None)
         )
-         
         self.groupBox_grundkompetenzen_cr.hide()
 
         self.groupBox_themengebiete_cria = QtWidgets.QGroupBox(self.centralwidget)
@@ -865,6 +867,7 @@ class Ui_MainWindow(object):
         # self.tab_widget_gk_cr.setStyleSheet(_fromUtf8("background-color: rgb(217, 255, 215);"))
         self.tab_widget_cr_cria.setStyleSheet("background-color: rgb(229, 246, 255);")
         self.tab_widget_cr_cria.setObjectName(_fromUtf8("tab_widget_cr_cria"))
+        self.tab_widget_cr_cria.setFocusPolicy(QtCore.Qt.NoFocus)
         self.gridLayout_11_cr_cria.addWidget(self.tab_widget_cr_cria, 0, 0, 1, 1)
         self.gridLayout.addWidget(self.groupBox_themengebiete_cria, 0, 0, 4, 1)
         self.groupBox_themengebiete_cria.setTitle(
@@ -879,6 +882,7 @@ class Ui_MainWindow(object):
         for klasse in list_klassen:
             name='tab_{0}'.format(klasse)
             new_tab = add_new_tab(self.tab_widget_cr_cria, "{}. Klasse".format(klasse[1]))
+            # new_tab.setFocusPolicy(QtCore.Qt.NoFocus)
             #self.dict_widget_variables[name]=new_tab
             new_gridlayout = QtWidgets.QGridLayout(new_tab)
             new_gridlayout.setObjectName("{}".format(new_gridlayout))
@@ -886,6 +890,7 @@ class Ui_MainWindow(object):
             new_scrollarea = QtWidgets.QScrollArea(new_tab)
             new_scrollarea.setObjectName("{}".format(new_scrollarea))
             new_scrollarea.setFrameShape(QtWidgets.QFrame.NoFrame)
+            new_scrollarea.setFocusPolicy(QtCore.Qt.NoFocus)
             new_scrollarea.setWidgetResizable(True)
 
             new_scrollareacontent = QtWidgets.QWidget()
@@ -915,6 +920,7 @@ class Ui_MainWindow(object):
                 new_checkbox=create_new_checkbox(new_scrollareacontent, dict_unterkapitel[unterkapitel] + ' (' + unterkapitel +')')
                 new_checkbox.stateChanged.connect(partial(self.checkbox_unterkapitel_checked_creator_cria, new_checkbox, klasse, list(dict_klasse.keys())[0], unterkapitel))
                 new_verticallayout.addWidget(new_checkbox)
+                new_checkbox.setFocusPolicy(QtCore.Qt.NoFocus)
                  
           
 
@@ -1068,6 +1074,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName(_fromUtf8("scrollArea"))
         self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.scrollArea.setFocusPolicy(QtCore.Qt.NoFocus)
         self.scrollAreaWidgetContents_bilder = QtWidgets.QWidget()
         self.scrollAreaWidgetContents_bilder.setGeometry(QtCore.QRect(0, 0, 320, 40))
         self.scrollAreaWidgetContents_bilder.setObjectName(
@@ -1374,6 +1381,7 @@ class Ui_MainWindow(object):
         self.gridLayout_10.addWidget(self.label, 0, 0, 1, 1)
         self.plainTextEdit = QtWidgets.QPlainTextEdit(self.groupBox_beispieleingabe)
         self.plainTextEdit.setObjectName(_fromUtf8("plainTextEdit"))
+        self.plainTextEdit.setTabChangesFocus(True)
         self.gridLayout_10.addWidget(self.plainTextEdit, 1, 0, 1, 1)
         self.gridLayout.addWidget(self.groupBox_beispieleingabe, 2, 1, 4, 5)
         self.groupBox_beispieleingabe.setTitle(
@@ -1409,6 +1417,7 @@ class Ui_MainWindow(object):
 
         self.pushButton_save = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_save.setObjectName(_fromUtf8("pushButton_save"))
+        self.pushButton_save.setFocusPolicy(QtCore.Qt.NoFocus)
         self.gridLayout.addWidget(self.pushButton_save, 7, 5, 1, 1)
         self.pushButton_save.setText(_translate("MainWindow", "Speichern", None))
         # self.pushButton_save.setShortcut(_translate("MainWindow", "Return", None))
@@ -1422,7 +1431,7 @@ class Ui_MainWindow(object):
         MainWindow.setTabOrder(self.comboBox_klassen_cr, self.lineEdit_titel)
         MainWindow.setTabOrder(self.lineEdit_titel, self.plainTextEdit)
         MainWindow.setTabOrder(self.plainTextEdit, self.lineEdit_quelle)
-        MainWindow.setTabOrder(self.lineEdit_quelle, self.pushButton_save)
+        MainWindow.setTabOrder(self.lineEdit_quelle, self.comboBox_aufgabentyp_cr)
 
         ####################################################
         #####################################################
@@ -2045,6 +2054,7 @@ class Ui_MainWindow(object):
         self.gridLayout_fb.setObjectName(_fromUtf8("gridLayout_fb"))
         self.plainTextEdit_fb = QtWidgets.QPlainTextEdit(self.groupBox_feedback)
         self.plainTextEdit_fb.setObjectName(_fromUtf8("plainTextEdit_fb"))
+        self.plainTextEdit_fb.setTabChangesFocus(True)
         self.gridLayout_fb.addWidget(self.plainTextEdit_fb, 0, 0, 1, 1)
         self.gridLayout.addWidget(self.groupBox_feedback, 2, 1, 1, 3)
         self.groupBox_feedback.setTitle(
@@ -2651,7 +2661,7 @@ class Ui_MainWindow(object):
             new_checkbox=create_new_checkbox(parent, dict_unterkapitel[unterkapitel])
             
             new_checkbox.stateChanged.connect(partial(self.checkbox_unterkapitel_checked_creator_cria,new_checkbox, klasse, kapitel, unterkapitel))
-
+            new_checkbox.setFocusPolicy(QtCore.Qt.NoFocus)
             layout.addWidget(new_checkbox)
 
         layout.addItem(self.spacerItem_unterkapitel_creator_cria)
