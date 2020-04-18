@@ -3046,6 +3046,7 @@ class Ui_MainWindow(object):
                 "self.cb_" + cb_name + '.setObjectName(_fromUtf8("cb_' + cb_name + '"))'
             )
             x = eval("self.cb_" + cb_name)
+            x.setFocusPolicy(QtCore.Qt.NoFocus)
             x.setText(_translate("MainWindow", dict_gk[all], None))
             grid = eval("self.gridLayout_scrollA_" + gk_type)
             grid.addWidget(x, row, column, 1, 1)
