@@ -342,6 +342,9 @@ class Ui_MainWindow(object):
         self.actionReset = add_action(self.menuDatei, "Reset", self.suchfenster_reset)
         self.actionReset.setShortcut("F4")
 
+        # self.actionReset_creator = add_action(self.menuDatei, "Reset", self.suchfenster_reset)
+        # self.actionReset.setShortcut("F4")
+
         self.actionReset_sage = add_action(self.menuDatei, "Reset Schularbeit", self.reset_sage)
         self.actionReset_sage.setVisible(False)
 
@@ -909,8 +912,8 @@ class Ui_MainWindow(object):
             dict_klasse = eval('dict_{}'.format(klasse))
 
             for unterkapitel in dict_klasse[list(dict_klasse.keys())[0]]:
-                new_checkbox=create_new_checkbox(new_scrollareacontent, dict_unterkapitel[unterkapitel])
-                new_checkbox.stateChanged.connect(partial(self.create_checkbox_unterkapitel, klasse, kapitel, unterkapitel))
+                new_checkbox=create_new_checkbox(new_scrollareacontent, dict_unterkapitel[unterkapitel] + ' (' + unterkapitel +')')
+                new_checkbox.stateChanged.connect(partial(self.checkbox_unterkapitel_checked_creator_cria, new_checkbox, klasse, list(dict_klasse.keys())[0], unterkapitel))
                 new_verticallayout.addWidget(new_checkbox)
                  
           
@@ -1028,7 +1031,7 @@ class Ui_MainWindow(object):
             # dict_klasse = eval("dict_{}".format(all))
             # first_element = list(dict_klasse.keys())[0]
             # for unterkapitel in dict_klasse[first_element]:
-            #     self.create_checkbox_unterkapitel(
+            #     self.checkbox_unterkapitel_checked_creator_cria(
             #         verticalLayout_cr_cria, all, first_element, unterkapitel
             #     )
 
@@ -1326,7 +1329,7 @@ class Ui_MainWindow(object):
         self.comboBox_klassen_cr.addItem(_fromUtf8(""))
         self.comboBox_klassen_cr.addItem(_fromUtf8(""))
         self.gridLayout_8.addWidget(self.comboBox_klassen_cr, 0, 0, 1, 1)
-        #self.gridLayout.addWidget(self.groupBox_klassen_cr, 0, 4, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_klassen_cr, 0, 4, 1, 1)
         self.groupBox_klassen_cr.setTitle(_translate("MainWindow", "Klasse", None))
         self.comboBox_klassen_cr.setItemText(0, _translate("MainWindow", "-", None))
         self.comboBox_klassen_cr.setItemText(
@@ -2646,9 +2649,9 @@ class Ui_MainWindow(object):
 
         for unterkapitel in dict_klasse[kapitel]:
             new_checkbox=create_new_checkbox(parent, dict_unterkapitel[unterkapitel])
-            # self.dict_widget_variables['checkbox_unterkapitel_creator_cria_{0}_{1}_{2}'.format(klasse, kapitel, unterkapitel)]=new_checkbox
-            new_checkbox.stateChanged.connect(partial(self.create_checkbox_unterkapitel, klasse, kapitel, unterkapitel))
-            self.create_checkbox_unterkapitel(klasse, kapitel, unterkapitel) 
+            
+            new_checkbox.stateChanged.connect(partial(self.checkbox_unterkapitel_checked_creator_cria,new_checkbox, klasse, kapitel, unterkapitel))
+
             layout.addWidget(new_checkbox)
 
         layout.addItem(self.spacerItem_unterkapitel_creator_cria)
@@ -2656,11 +2659,21 @@ class Ui_MainWindow(object):
 
 
 
-    def create_checkbox_unterkapitel(self, klasse, kapitel, unterkapitel):
-        # exec('self.tab_cr_{} = QtWidgets.QWidget()'.format(all))
-        # exec('self.tab_cr_{0}.setObjectName("tab_cr_{0}")'.format(all))
-        self.label_ausgew_gk.setText(_translate("MainWindow", kapitel+"_"+unterkapitel+" ("+klasse[1]+")", None))
-        print(klasse, kapitel, unterkapitel)
+    def checkbox_unterkapitel_checked_creator_cria(self, checkbox, klasse, kapitel, unterkapitel):
+        thema_checked = [klasse, kapitel, unterkapitel]
+
+        if checkbox.isChecked():
+            if thema_checked not in self.list_creator_topics:
+                self.list_creator_topics.append(thema_checked)
+        if checkbox.isChecked() == False:
+            self.list_creator_topics.remove(thema_checked)
+
+        list_labels = []
+        for all in self.list_creator_topics:
+            thema_label = all[1] + "." + all[2] + " (" + all[0][1] + ".)"
+            list_labels.append(thema_label)
+        x = ", ".join(list_labels)
+        self.label_ausgew_gk.setText(_translate("MainWindow", x, None))
         # exec(
         #     "self.cb_unterkapitel_{0}_{1}= QtWidgets.QCheckBox(self.centralwidget)".format(
         #         kapitel, unterkapitel
@@ -2693,20 +2706,20 @@ class Ui_MainWindow(object):
         # if aufgabe_chosen in self.list_creator_topics:
         #     cb_unterkapitel.setChecked(True)
 
-    def checkBox_checked_creator(self, cb_unterkapitel, klasse, kapitel, unterkapitel):
-        thema_checked = [klasse, kapitel, unterkapitel]
-        if cb_unterkapitel.isChecked():
-            if thema_checked not in self.list_creator_topics:
-                self.list_creator_topics.append(thema_checked)
-        if cb_unterkapitel.isChecked() == False:
-            self.list_creator_topics.remove(thema_checked)
+    # def checkBox_checked_creator(self, cb_unterkapitel, klasse, kapitel, unterkapitel):
+    #     thema_checked = [klasse, kapitel, unterkapitel]
+    #     if cb_unterkapitel.isChecked():
+    #         if thema_checked not in self.list_creator_topics:
+    #             self.list_creator_topics.append(thema_checked)
+    #     if cb_unterkapitel.isChecked() == False:
+    #         self.list_creator_topics.remove(thema_checked)
 
-        list_labels = []
-        for all in self.list_creator_topics:
-            thema_label = all[1] + "." + all[2] + " (" + all[0][1] + ".)"
-            list_labels.append(thema_label)
-        x = ", ".join(list_labels)
-        self.label_ausgew_gk.setText(_translate("MainWindow", x, None))
+    #     list_labels = []
+    #     for all in self.list_creator_topics:
+    #         thema_label = all[1] + "." + all[2] + " (" + all[0][1] + ".)"
+    #         list_labels.append(thema_label)
+    #     x = ", ".join(list_labels)
+    #     self.label_ausgew_gk.setText(_translate("MainWindow", x, None))
 
     def uncheck_all_checkboxes(self, topic):
         x = eval("self.cb_" + topic)
