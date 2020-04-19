@@ -234,6 +234,7 @@ def simplify_string(string):
 
 class Ui_MainWindow(object):
     global dict_picture_path, set_chosen_gk #, list_sage_examples#, dict_alle_aufgaben_sage
+    
     def __init__(self):
         self.dict_alle_aufgaben_sage = {}
         self.list_alle_aufgaben_sage = []
@@ -257,7 +258,12 @@ class Ui_MainWindow(object):
         app.aboutToQuit.connect(self.close_app)
 
 
-
+    # def resizeEvent(self, event):
+    #     print('resize')  
+    #     QtGui.QMainWindow.resizeEvent(self, event)
+        
+    # def setupUi(self, MainWindow):
+    #     self.check_for_update()
         
     def setupUi(self, MainWindow):
         self.check_for_update()
@@ -718,7 +724,6 @@ class Ui_MainWindow(object):
         ##################################################################
         ################ LAMA CRIA SEARCH #################################
         ###################################################################
-
         self.groupBox_schulstufe_cria = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_schulstufe_cria.setMaximumSize(QtCore.QSize(450, 16777215))
         self.groupBox_schulstufe_cria.setObjectName("groupBox_schulstufe_cria")
@@ -828,14 +833,12 @@ class Ui_MainWindow(object):
 
         ##############################################################
         #####################CREATOR #########################################
-        ##########################################################################
-
         self.groupBox_aufgabentyp = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_aufgabentyp.setObjectName(_fromUtf8("groupBox_aufgabentyp"))
         self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBox_aufgabentyp)
         self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
-
         self.groupBox_grundkompetenzen_cr = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBox_grundkompetenzen_cr.setFocusPolicy(QtCore.Qt.NoFocus)
         # self.groupBox_grundkompetenzen_cr.setMaximumSize(QtCore.QSize(350, 16777215))
         self.groupBox_grundkompetenzen_cr.setObjectName(
             _fromUtf8("groupBox_grundkompetenzen_cr")
@@ -847,6 +850,7 @@ class Ui_MainWindow(object):
         self.tab_widget_gk_cr.setStyleSheet(
             _fromUtf8("background-color: rgb(217, 255, 215);")
         )
+        self.tab_widget_gk_cr.setFocusPolicy(QtCore.Qt.NoFocus)
         self.tab_widget_gk_cr.setObjectName(_fromUtf8("tab_widget_gk_cr"))
         self.gridLayout_11_cr.addWidget(self.tab_widget_gk_cr, 0, 0, 1, 1)
         self.gridLayout.addWidget(self.groupBox_grundkompetenzen_cr, 0, 0, 4, 1)
@@ -882,8 +886,6 @@ class Ui_MainWindow(object):
         for klasse in list_klassen:
             name='tab_{0}'.format(klasse)
             new_tab = add_new_tab(self.tab_widget_cr_cria, "{}. Klasse".format(klasse[1]))
-            # new_tab.setFocusPolicy(QtCore.Qt.NoFocus)
-            #self.dict_widget_variables[name]=new_tab
             new_gridlayout = QtWidgets.QGridLayout(new_tab)
             new_gridlayout.setObjectName("{}".format(new_gridlayout))
 
@@ -926,122 +928,10 @@ class Ui_MainWindow(object):
 
             new_verticallayout.addItem(self.spacerItem_unterkapitel_creator_cria)
 
-            # new_verticallayout.addItem(spacerItem_cria)
-
             new_scrollarea.setWidget(new_scrollareacontent)
 
             new_gridlayout.addWidget(new_scrollarea, 5,0,1,1)
 
-            # exec("self.tab_cr_cria_{} = QtWidgets.QWidget()".format(all))
-            # exec('self.tab_cr_cria_{0}.setObjectName("tab_cr_cria_{0}")'.format(all))
-            # exec(
-            #     "self.gridLayout_cr_cria_{0} = QtWidgets.QGridLayout(self.tab_cr_cria_{0})".format(
-            #         all
-            #     )
-            # )
-            # exec(
-            #     'self.gridLayout_cr_cria_{0}.setObjectName("gridLayout_cr_cria_{0}")'.format(all)
-            # )
-            # exec(
-            #     "self.scrollArea_cr_cria_{0} = QtWidgets.QScrollArea(self.tab_cr_cria_{0})".format(
-            #         all
-            #     )
-            # )
-            # scrollArea_cr_cria = eval("self.scrollArea_cr_cria_{0}".format(all))
-            # scrollArea_cr_cria.setFrameShape(QtWidgets.QFrame.NoFrame)
-            # scrollArea_cr_cria.setWidgetResizable(True)
-            # scrollArea_cr_cria.setObjectName("scrollArea_cr_cria")
-            # exec(
-            #     "self.scrollAreaWidgetContents_cr_cria_{} = QtWidgets.QWidget()".format(all)
-            # )
-            # exec(
-            #     "self.scrollAreaWidgetContents_cr_cria_{}.setGeometry(QtCore.QRect(0, 0, 264, 235))".format(
-            #         all
-            #     )
-            # )
-            # exec(
-            #     'self.scrollAreaWidgetContents_cr_cria_{0}.setObjectName("scrollAreaWidgetContents_cr_cria_{0}")'.format(
-            #         all
-            #     )
-            # )
-            # exec(
-            #     "self.verticalLayout_kapitel_cr_cria_{0} = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_cr_cria_{0})".format(
-            #         all
-            #     )
-            # )
-            # verticalLayout_cr_cria = eval("self.verticalLayout_kapitel_cr_cria_{0}".format(all))
-            # verticalLayout_cr_cria.setObjectName("verticalLayout_kapitel_cr_cria_{0}".format(all))
-
-
-
-            # dict_klasse_name = eval("dict_{}_name".format(all))
-
-            # exec(
-            #     "self.combobox_kapitel_{} = QtWidgets.QComboBox(self.centralwidget)".format(
-            #         all
-            #     )
-            # )
-            # combobox_kapitel = eval("self.combobox_kapitel_{}".format(all))
-            # # self.combobox_searchtype.setEnabled(True)
-            # combobox_kapitel.setObjectName("combobox_kapitel_{}".format(all))
-            # i = 0
-            # for kapitel in dict_klasse_name:
-            #     dict_klasse_name = eval("dict_k{}_name".format(all[1]))
-            #     combobox_kapitel.addItem("")
-            #     combobox_kapitel.setItemText(
-            #         i,
-            #         _translate(
-            #             "MainWindow", dict_klasse_name[kapitel] + " (" + kapitel + ")", None
-            #         ),
-            #     )
-            #     combobox_kapitel.setMinimumHeight(25)
-            #     combobox_kapitel.setStyleSheet("background-color: rgb(240, 240, 240);")
-            #     i += 1
-
-            # spacerItem_unterkapitel_cria = QtWidgets.QSpacerItem(
-            #     20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
-            # )
-            
-            # verticalLayout_cr_cria.addWidget(combobox_kapitel)
-            # combobox_kapitel.currentIndexChanged.connect(
-            #     partial(
-            #         self.comboBox_kapitel_changed_cr,
-            #         verticalLayout_cr_cria,
-            #         combobox_kapitel,
-            #         all,
-            #         spacerItem_unterkapitel_cria,
-            #     )
-            # )
-            # self.label_linespacer_cria = QtWidgets.QLabel(self.centralwidget)
-            # self.label_linespacer_cria.setObjectName(_fromUtf8("label_linespacer_cria"))
-            # self.label_linespacer_cria.setMinimumHeight(10)
-            # verticalLayout_cr_cria.addWidget(self.label_linespacer_cria)
-
-            # exec(
-            #     "self.scrollArea_cr_cria_{0}.setWidget(self.scrollAreaWidgetContents_cr_cria_{0})".format(
-            #         all
-            #     )
-            # )
-            # exec(
-            #     "self.gridLayout_cr_cria_{0}.addWidget(self.scrollArea_cr_cria_{0}, 5, 0, 1, 1)".format(
-            #         all
-            #     )
-            # )
-
-            # exec(
-            #     'self.tab_widget_cr_cria.addTab(self.tab_cr_cria_{0}, "{1}. Klasse")'.format(
-            #         all, all[1]
-            #     )
-            # )
-
-            # dict_klasse = eval("dict_{}".format(all))
-            # first_element = list(dict_klasse.keys())[0]
-            # for unterkapitel in dict_klasse[first_element]:
-            #     self.checkbox_unterkapitel_checked_creator_cria(
-            #         verticalLayout_cr_cria, all, first_element, unterkapitel
-            #     )
-
-            # verticalLayout_cr_cria.addItem(spacerItem_unterkapitel_cria)
 
 #################################
         
@@ -1076,6 +966,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.scrollArea.setFocusPolicy(QtCore.Qt.NoFocus)
         self.scrollAreaWidgetContents_bilder = QtWidgets.QWidget()
+        # self.scrollAreaWidgetContents_bilder.setFocusPolicy(QtCore.Qt.NoFocus)
         self.scrollAreaWidgetContents_bilder.setGeometry(QtCore.QRect(0, 0, 320, 40))
         self.scrollAreaWidgetContents_bilder.setObjectName(
             _fromUtf8("scrollAreaWidgetContents_bilder")
@@ -1094,6 +985,7 @@ class Ui_MainWindow(object):
         self.label_bild_leer.setObjectName(_fromUtf8("label_bild_leer"))
         self.verticalLayout.addWidget(self.label_bild_leer)
         self.label_bild_leer.setText(_translate("MainWindow", "", None))
+        self.label_bild_leer.setFocusPolicy(QtCore.Qt.NoFocus)
         self.gridLayout.addWidget(self.groupBox_bilder, 5, 0, 1, 1)
         self.groupBox_bilder.hide()
 
@@ -1122,6 +1014,7 @@ class Ui_MainWindow(object):
             _translate("MainWindow", "Algebra und Geometrie", None),
         )
         self.scrollArea_ag_cr.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.scrollArea_ag_cr.setFocusPolicy(QtCore.Qt.NoFocus)
         self.scrollArea_ag_cr.setWidget(self.scrollAreaWidgetContents_ag_cr)
         self.gridLayout_ag_cr.addWidget(self.scrollArea_ag_cr, 1, 0, 7, 1)
 
@@ -1149,6 +1042,7 @@ class Ui_MainWindow(object):
             _translate("MainWindow", "Funktionale Abhängigkeiten", None),
         )
         self.scrollArea_fa_cr.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.scrollArea_fa_cr.setFocusPolicy(QtCore.Qt.NoFocus)
         self.scrollArea_fa_cr.setWidget(self.scrollAreaWidgetContents_fa_cr)
         self.gridLayout_fa_cr.addWidget(self.scrollArea_fa_cr, 1, 0, 7, 1)
         # ##### AN ####
@@ -1175,6 +1069,7 @@ class Ui_MainWindow(object):
             _translate("MainWindow", "Analysis", None),
         )
         self.scrollArea_an_cr.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.scrollArea_an_cr.setFocusPolicy(QtCore.Qt.NoFocus)
         self.scrollArea_an_cr.setWidget(self.scrollAreaWidgetContents_an_cr)
         self.gridLayout_an_cr.addWidget(self.scrollArea_an_cr, 1, 0, 7, 1)
         # ### WS ####
@@ -1201,6 +1096,7 @@ class Ui_MainWindow(object):
             _translate("MainWindow", "Wahrscheinlichkeit und Statistik", None),
         )
         self.scrollArea_ws_cr.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.scrollArea_ws_cr.setFocusPolicy(QtCore.Qt.NoFocus)
         self.scrollArea_ws_cr.setWidget(self.scrollAreaWidgetContents_ws_cr)
         self.gridLayout_ws_cr.addWidget(self.scrollArea_ws_cr, 1, 0, 7, 1)
         # ### 5. Klasse ###
@@ -1425,13 +1321,13 @@ class Ui_MainWindow(object):
 
         self.tab_widget_gk.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-        MainWindow.setTabOrder(self.comboBox_aufgabentyp_cr, self.spinBox_punkte)
-        MainWindow.setTabOrder(self.spinBox_punkte, self.comboBox_af)
-        MainWindow.setTabOrder(self.comboBox_af, self.comboBox_klassen_cr)
-        MainWindow.setTabOrder(self.comboBox_klassen_cr, self.lineEdit_titel)
-        MainWindow.setTabOrder(self.lineEdit_titel, self.plainTextEdit)
-        MainWindow.setTabOrder(self.plainTextEdit, self.lineEdit_quelle)
-        MainWindow.setTabOrder(self.lineEdit_quelle, self.comboBox_aufgabentyp_cr)
+        # MainWindow.setTabOrder(self.comboBox_aufgabentyp_cr, self.spinBox_punkte)
+        # MainWindow.setTabOrder(self.spinBox_punkte, self.comboBox_af)
+        # MainWindow.setTabOrder(self.comboBox_af, self.comboBox_klassen_cr)
+        # MainWindow.setTabOrder(self.comboBox_klassen_cr, self.lineEdit_titel)
+        # MainWindow.setTabOrder(self.lineEdit_titel, self.plainTextEdit)
+        # MainWindow.setTabOrder(self.plainTextEdit, self.lineEdit_quelle)
+        # MainWindow.setTabOrder(self.lineEdit_quelle, self.comboBox_aufgabentyp_cr)
 
         ####################################################
         #####################################################
@@ -1572,7 +1468,7 @@ class Ui_MainWindow(object):
         self.comboBox_pruefungstyp.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.comboBox_pruefungstyp.setMinimumContentsLength(1)
         if self.chosen_program=='lama':
-            self.gridLayout_5.addWidget(self.comboBox_pruefungstyp, 2, 4, 1, 2)
+            self.gridLayout_5.addWidget(self.comboBox_pruefungstyp, 0, 4, 1, 2)
         if self.chosen_program=='cria':
             self.gridLayout_5.addWidget(self.comboBox_pruefungstyp, 2, 5, 1, 1)
         self.comboBox_pruefungstyp.currentIndexChanged.connect(
@@ -1585,7 +1481,7 @@ class Ui_MainWindow(object):
         self.radioButton_notenschl.setObjectName("radioButton_notenschl")
         self.radioButton_notenschl.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.radioButton_notenschl.toggled.connect(self.notenanzeige_changed)
-        self.gridLayout_5.addWidget(self.radioButton_notenschl, 3, 4, 1, 2)
+        self.gridLayout_5.addWidget(self.radioButton_notenschl, 2, 4, 1, 1)
         self.radioButton_beurteilungsraster = QtWidgets.QRadioButton(self.groupBox_sage)
         self.radioButton_beurteilungsraster.setObjectName(
             "radioButton_beurteilungsraster"
@@ -1594,7 +1490,7 @@ class Ui_MainWindow(object):
         self.radioButton_beurteilungsraster.toggled.connect(
             self.notenanzeige_changed
         )
-        self.gridLayout_5.addWidget(self.radioButton_beurteilungsraster, 4, 4, 1, 2)
+        self.gridLayout_5.addWidget(self.radioButton_beurteilungsraster, 3, 4, 1, 1)
 
         self.pushButton_titlepage = QtWidgets.QPushButton(self.groupBox_sage)
         self.pushButton_titlepage.setObjectName(_fromUtf8("pushButton_titlepage"))
@@ -1602,7 +1498,7 @@ class Ui_MainWindow(object):
             _translate("MainWindow", "Titelblatt anpassen", None)
         )
         if self.chosen_program=='lama':
-            self.gridLayout_5.addWidget(self.pushButton_titlepage, 4, 6, 1, 1)
+            self.gridLayout_5.addWidget(self.pushButton_titlepage, 2, 5, 1, 1)
         if self.chosen_program=='cria':
             self.gridLayout_5.addWidget(self.pushButton_titlepage, 4, 5, 1, 1)
         
@@ -1619,7 +1515,7 @@ class Ui_MainWindow(object):
         self.spinBox_default_pkt.setObjectName("spinBox_default_pkt")
         self.verticalLayout_default_pkt.addWidget(self.spinBox_default_pkt)
         self.spinBox_default_pkt.valueChanged.connect(self.update_default_pkt)
-        self.gridLayout_5.addWidget(self.groupBox_default_pkt, 2, 3, 3, 1)
+        self.gridLayout_5.addWidget(self.groupBox_default_pkt, 0, 3, 4, 1)
 
         self.groupBox_klasse = QtWidgets.QGroupBox(self.groupBox_sage)
         self.groupBox_klasse.setObjectName("groupBox_klasse")
@@ -1629,7 +1525,7 @@ class Ui_MainWindow(object):
         self.lineEdit_klasse = QtWidgets.QLineEdit(self.groupBox_klasse)
         self.lineEdit_klasse.setObjectName("lineEdit_klasse")
         self.verticalLayout_4.addWidget(self.lineEdit_klasse)
-        self.gridLayout_5.addWidget(self.groupBox_klasse, 2, 2, 3, 1)
+        self.gridLayout_5.addWidget(self.groupBox_klasse, 0, 2, 4, 1)
         # self.groupBox_klasse.setMaximumSize(QtCore.QSize(90, 16777215))
         self.groupBox_datum = QtWidgets.QGroupBox(self.groupBox_sage)
         self.groupBox_datum.setObjectName("groupBox_datum")
@@ -1639,7 +1535,7 @@ class Ui_MainWindow(object):
         self.dateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
         self.dateEdit.setObjectName("dateEdit")
         self.verticalLayout_5.addWidget(self.dateEdit)
-        self.gridLayout_5.addWidget(self.groupBox_datum, 2, 1, 3, 1)
+        self.gridLayout_5.addWidget(self.groupBox_datum, 0, 1, 4, 1)
         # self.groupBox_datum.setMaximumSize(QtCore.QSize(140, 16777215))
         self.groupBox_nummer = QtWidgets.QGroupBox(self.groupBox_sage)
         self.groupBox_nummer.setObjectName("groupBox_nummer")
@@ -1662,7 +1558,7 @@ class Ui_MainWindow(object):
             _translate("MainWindow", "Typ1 Standard", None)
         )
         self.verticalLayout_6.addWidget(self.spinBox_nummer)
-        self.gridLayout_5.addWidget(self.groupBox_nummer, 2, 0, 3, 1)
+        self.gridLayout_5.addWidget(self.groupBox_nummer, 0, 0, 4, 1)
         self.horizontalspacer = QtWidgets.QSpacerItem(
             20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
         )
@@ -2404,7 +2300,6 @@ class Ui_MainWindow(object):
         if rsp == QtWidgets.QDialog.Accepted:
             for index in range(self.ui_erstellen.spinBox_sw_gruppen.value() * 2):
                 self.pushButton_vorschau_pressed(
-                    self,
                     "schularbeit",
                     index,
                     self.ui_erstellen.spinBox_sw_gruppen.value() * 2,
@@ -3133,6 +3028,7 @@ class Ui_MainWindow(object):
             )
             x_label = eval("self.cb_label_" + klasse + "_" + cb_name)
             x_label.setWordWrap(True)
+            x.setFocusPolicy(QtCore.Qt.NoFocus)
             x_label.setText(_translate("MainWindow", cb_label, None))
 
             # self.label = QtWidgets.QLabel(self.groupBox_beispieleingabe)
@@ -4922,7 +4818,7 @@ class Ui_MainWindow(object):
     def load_file(self, path):
         with open(path, "r", encoding="utf8") as loaded_file:
             loaded_file=json.load(loaded_file)
-            print(loaded_file)
+            # print(loaded_file)
         return loaded_file
 
     def sage_load(self, external_file_loaded):
@@ -5077,7 +4973,7 @@ class Ui_MainWindow(object):
 
 
         with open(save_file, "w+", encoding="utf8") as saved_file:
-            json.dump(all_infos_yaml, saved_file, ensure_ascii=False)
+            json.dump(self.dict_all_infos_for_file, saved_file, ensure_ascii=False)
 
 
 
@@ -5270,7 +5166,7 @@ class Ui_MainWindow(object):
 
     def spinbox_pkt_changed(self, aufgabe, spinbox_pkt):
         self.dict_alle_aufgaben_sage[aufgabe][0]=spinbox_pkt.value()
-        print(self.dict_alle_aufgaben_sage)
+        # print(self.dict_alle_aufgaben_sage)
         self.update_punkte()
 
     def spinbox_abstand_changed(self, aufgabe, spinbox_abstand):
@@ -5641,7 +5537,8 @@ class Ui_MainWindow(object):
         if "\\includegraphics" in content:
             matches = re.findall("/Bilder/(.+.eps)}", content)
             for image in matches:
-                self.list_copy_images.append(image) 
+                self.list_copy_images.append(image)
+        # print(self.list_copy_images) 
 
     def build_aufgaben_schularbeit(self, aufgabe, file_loaded=False): 
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
@@ -6285,47 +6182,8 @@ class Ui_MainWindow(object):
                                 )
                                 if thema_shortcut in all:
                                     add_filename_to_list(file_path)   
-                # dict_klasse_name = eval(
-                #     "dict_{}_name".format(
-                #         list_klassen[self.comboBox_klassen_fb_cria.currentIndex()]
-                #     )
-                # )
-                # if self.comboBox_kapitel_fb_cria.currentText() is not "":
-                #     kapitel_shortcut = list(dict_klasse_name.keys())[
-                #         self.comboBox_kapitel_fb_cria.currentIndex() - 1
-                #     ]
-                # else:
-                #     kapitel_shortcut = ""
 
-                # if self.comboBox_unterkapitel_fb_cria.currentText() is not "":
-                #     shortcut = re.findall(
-                #         r"\((.*)\)", self.comboBox_unterkapitel_fb_cria.currentText()
-                #     )
-                #     unterkapitel_shortcut = shortcut[-1]
-                # else:
-                #     unterkapitel_shortcut = ""
 
-                # for all in beispieldaten_dateipfad_cria.keys():
-                #     print(all)
-                #     file_path = beispieldaten_dateipfad_cria[all]
-                #     if (
-                #         str(list_klassen[self.comboBox_klassen_fb_cria.currentIndex()])
-                #         in file_path
-                #     ):
-                #         if kapitel_shortcut == "":
-                #             add_filename_to_list(file_path)
-                #         else:
-                #             if unterkapitel_shortcut == "":
-                #                 if kapitel_shortcut in all:
-                #                     add_filename_to_list(file_path)
-                #             else:
-                #                 thema_shortcut = (
-                #                     kapitel_shortcut + "." + unterkapitel_shortcut
-                #                 )
-                #                 if thema_shortcut in all:
-                #                     add_filename_to_list(file_path)               
-
-        # print(list_beispieldaten)
         list_beispieldaten = sorted(list_beispieldaten, key=natural_keys)
 
         for all in list_beispieldaten:
@@ -6383,10 +6241,10 @@ class Ui_MainWindow(object):
 
         try:
             self.num_ausgleichspkt_gesamt
-            self.list_copy_images
+        #     self.list_copy_images
         except AttributeError:
             self.num_ausgleichspkt_gesamt = 0
-            self.list_copy_images = []
+        #     self.list_copy_images = []
 
         dict_data_gesamt = {
             "program":self.chosen_program,
@@ -6413,7 +6271,7 @@ class Ui_MainWindow(object):
             "ausgleichspunkte": self.num_ausgleichspkt_gesamt,
             "copy_images": self.list_copy_images,
         }
-
+        
         self.dict_all_infos_for_file["data_gesamt"] = dict_data_gesamt
         ### end ###
 
@@ -6424,10 +6282,6 @@ class Ui_MainWindow(object):
         # if ausgabetyp == "vorschau":
         self.collect_all_infos_for_creating_file()
 
-        # print(self.dict_all_infos_for_file)
-        # print(self.dict_alle_aufgaben_sage)
-        # print(self.list_alle_aufgaben_sage)
-        # print(self.dict_sage_ausgleichspunkte_chosen)
 
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
@@ -6463,8 +6317,6 @@ class Ui_MainWindow(object):
                                 aufgabe
                             ] = self.beispieldaten_dateipfad_cria[all]
 
-        # print(self.dict_alle_aufgaben_sage)
-        # print(self.list_alle_aufgaben_sage)
 
         dict_months = {
             1: "Jänner",
@@ -6740,9 +6592,7 @@ class Ui_MainWindow(object):
                     vorschau.write(
                         "\\textsc{{\\Large Gruppe {0}}} \\\ [1cm]\n".format(gruppe)
                     )
-                # else:
-                # 	vorschau.write("\\vphantom{\\textsc{\\Large Gruppe}}\\\ [1cm] \n")
-                # vorschau.write("[1cm]")
+
                 if dict_titlepage["name"] == True:
                     vorschau.write("\\Large Name: \\rule{8cm}{0.4pt} \\\ \n")
                 vorschau.write("\\vfil\\vfil\\vfil \n")
@@ -6777,24 +6627,17 @@ class Ui_MainWindow(object):
         vorschau.close()
 
         vorschau = open(filename_vorschau, "a", encoding="utf8")
-        # for key, value in dict_gesammeltedateien.items():
         list_chosen_examples = []
-        # print(self.dict_all_infos_for_file)
+
         control_counter = 0
-        # print(self.list_alle_aufgaben_sage)
+
 
 
         for aufgabe in self.list_alle_aufgaben_sage:
             if self.chosen_program == 'lama':
                 typ=self.get_aufgabentyp(aufgabe)
-                # temp_all = all.replace("_L_", "")
-                # if re.search("[A-Z]", temp_all) == None:
-                #     bsp_string = all
-                #     typ = 2
-                # else:
-                #     bsp_string = all.replace(" ", "").replace(".", "").replace("-", "_")
-                #     typ = 1
-                
+
+
                 spinbox_pkt = self.dict_alle_aufgaben_sage[aufgabe][0]
                 spinbox_abstand = self.dict_alle_aufgaben_sage[aufgabe][1]
                 
@@ -6829,12 +6672,9 @@ class Ui_MainWindow(object):
                 f = open(dict_gesammeltedateien[aufgabe], "r", encoding="utf8")
                 content = f.readlines()
                 f.close()             
-                
-            # print(self.dict_all_infos_for_file)
-            # print(self.dict_all_infos_for_file['data_gesamt']['copy_images'])
+
 
             if ausgabetyp == "schularbeit":
-                # print(self.dict_all_infos_for_file['data_gesamt']['copy_images'])
                 if index == 0:
                     if dict_titlepage["logo"] == True:
                         logo_name = os.path.basename(dict_titlepage["logo_path"])

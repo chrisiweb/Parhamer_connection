@@ -409,7 +409,7 @@ def prepare_tex_for_pdf(self):
             or self.cb_k6.isChecked()
             or self.cb_k7.isChecked()
             or self.cb_k8.isChecked() == True
-            or self.cb_mat.isChecked() == True
+            or self.cb_matura.isChecked() == True
             or self.cb_univie.isChecked()
         ):
             if suchbegriffe == []:
