@@ -120,6 +120,20 @@ def combine_all_lists_to_one(list_of_lists):
         combined_list=combined_list+list
     return combined_list 
 
+def create_new_gridlayout(parent=None):
+    new_gridlayout = QtWidgets.QGridLayout(parent)
+    new_gridlayout.setObjectName(_fromUtf8("{}".format(new_gridlayout)))
+    return new_gridlayout
+
+def create_new_verticallayout(parent=None):
+    new_verticallayout = QtWidgets.QVBoxLayout(parent)
+    new_verticallayout.setObjectName(_fromUtf8("{}".format(new_verticallayout)))
+    return new_verticallayout
+
+def create_new_horizontallayout(parent=None):
+    new_horizontallayout = QtWidgets.QHBoxLayout(parent)
+    new_horizontallayout.setObjectName(_fromUtf8("{}".format(new_horizontallayout)))
+    return new_horizontallayout
 
 def create_new_checkbox(parent, text, checked=False):
     new_checkbox = QtWidgets.QCheckBox(parent)
@@ -207,6 +221,7 @@ def add_new_tab(tabwidget, name):
     tabwidget.addTab(new_tab, name)
 
     return new_tab
+
 
 def create_file_titlepage(titlepage_save):
     if os.path.isfile(titlepage_save):
@@ -314,14 +329,14 @@ class Ui_MainWindow(object):
             MainWindow.setWindowIcon(QtGui.QIcon(logo_cria_path))
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
-        # self.warnung = QtWidgets.QLabel(self.centralwidget)
-        # self.warnung.setWordWrap(True)
-        # self.warnung.setObjectName(_fromUtf8("warnung"))
-        # self.warnung.setText(_translate("MainWindow", "Test", None))
-        self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
-        self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
+
+
+        self.gridLayout = create_new_gridlayout(self.centralwidget)
+        # self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
+        # self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         #######################################################
         ############ Menu Bar ###################
+
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
         MainWindow.setStatusBar(self.statusbar)
@@ -413,8 +428,9 @@ class Ui_MainWindow(object):
         self.groupBox_ausgew_gk.setMaximumHeight(110)
 
 
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.groupBox_ausgew_gk)
-        self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
+        self.verticalLayout_2 = create_new_verticallayout(self.groupBox_ausgew_gk)
+        # QtWidgets.QVBoxLayout(self.groupBox_ausgew_gk)
+        # self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
 
         self.scrollArea_ausgew_gk = QtWidgets.QScrollArea(self.groupBox_ausgew_gk)
         self.scrollArea_ausgew_gk.setWidgetResizable(True)
@@ -423,12 +439,14 @@ class Ui_MainWindow(object):
         self.scrollAreaWidgetContents_ausgew_gk.setObjectName(
             "scrollAreaWidgetContents_ausgew_gk"
         )
-        self.verticalLayout_scrollA_ausgew_gk = QtWidgets.QVBoxLayout(
-            self.scrollAreaWidgetContents_ausgew_gk
-        )
-        self.verticalLayout_scrollA_ausgew_gk.setObjectName(
-            "verticalLayout_scrollA_ausgew_gk"
-        )
+
+        self.verticalLayout_scrollA_ausgew_gk = create_new_verticallayout(self.scrollAreaWidgetContents_ausgew_gk)
+        # QtWidgets.QVBoxLayout(
+        #     self.scrollAreaWidgetContents_ausgew_gk
+        # )
+        # self.verticalLayout_scrollA_ausgew_gk.setObjectName(
+        #     "verticalLayout_scrollA_ausgew_gk"
+        # )
 
         self.label_gk = create_new_label(self.scrollArea_ausgew_gk, "", True)
         self.verticalLayout_scrollA_ausgew_gk.addWidget(self.label_gk)
@@ -452,8 +470,9 @@ class Ui_MainWindow(object):
 
         # self.groupBox_titelsuche.setMaximumHeight(65)
 
-        self.gridLayout_10 = QtWidgets.QGridLayout(self.groupBox_titelsuche)
-        self.gridLayout_10.setObjectName(_fromUtf8("gridLayout_10"))
+        self.gridLayout_10 = create_new_gridlayout(self.groupBox_titelsuche)
+        # QtWidgets.QGridLayout(self.groupBox_titelsuche)
+        # self.gridLayout_10.setObjectName(_fromUtf8("gridLayout_10"))
 
 
         self.entry_suchbegriffe = create_new_lineedit(self.groupBox_titelsuche)
@@ -463,8 +482,9 @@ class Ui_MainWindow(object):
 
 
         self.groupBox_klassen = create_new_groupbox(self.centralwidget, "Themen Schulstufe")
-        self.gridLayout_14 = QtWidgets.QGridLayout(self.groupBox_klassen)
-        self.gridLayout_14.setObjectName(_fromUtf8("gridLayout_14"))
+        self.gridLayout_14 = create_new_gridlayout(self.groupBox_klassen)
+        # QtWidgets.QGridLayout(self.groupBox_klassen)
+        # self.gridLayout_14.setObjectName(_fromUtf8("gridLayout_14"))
 
         self.cb_k5 = create_new_checkbox(self.groupBox_klassen, "5. Klasse")
         self.gridLayout_14.addWidget(self.cb_k5, 0, 0, 1, 1)
@@ -487,9 +507,10 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.groupBox_klassen, 3, 0, 1, 1)
 
 
-
-        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
+        
+        self.horizontalLayout_2 = create_new_horizontallayout()
+        # QtWidgets.QHBoxLayout()
+        # self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
 
         self.cb_solution = create_new_checkbox(self.centralwidget, "Lösungen anzeigen", True)
         self.horizontalLayout_2.addWidget(self.cb_solution, QtCore.Qt.AlignLeft)
@@ -516,10 +537,11 @@ class Ui_MainWindow(object):
         self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
 
 
-        self.horizontalLayout_combobox = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_combobox.setObjectName(
-            _fromUtf8("horizontalLayout_combobox")
-        )
+        self.horizontalLayout_combobox = create_new_horizontallayout()
+        # QtWidgets.QHBoxLayout()
+        # self.horizontalLayout_combobox.setObjectName(
+            # _fromUtf8("horizontalLayout_combobox")
+        # )
 
         self.label_aufgabentyp = create_new_label(self.centralwidget, "Aufgabentyp: Typ 1")
         self.horizontalLayout_combobox.addWidget(self.label_aufgabentyp)
@@ -538,8 +560,9 @@ class Ui_MainWindow(object):
 
         self.groupBox_themen_klasse = create_new_groupbox(self.centralwidget, "Themen Schulstufen")
 
-        self.verticalLayout = QtWidgets.QVBoxLayout(self.groupBox_themen_klasse)
-        self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
+        self.verticalLayout = create_new_verticallayout(self.groupBox_themen_klasse) 
+        # QtWidgets.QVBoxLayout(self.groupBox_themen_klasse)
+        # self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.tabWidget = QtWidgets.QTabWidget(self.groupBox_themen_klasse)
         self.tabWidget.setStyleSheet(_fromUtf8("background-color: rgb(229, 246, 255);"))
         self.tabWidget.setObjectName(_fromUtf8("tabWidget"))
@@ -549,8 +572,10 @@ class Ui_MainWindow(object):
 
         self.groupBox_gk = create_new_groupbox(self.centralwidget, "Grundkompetenzen")
 
-        self.gridLayout_11 = QtWidgets.QGridLayout(self.groupBox_gk)
-        self.gridLayout_11.setObjectName(_fromUtf8("gridLayout_11"))
+        self.gridLayout_11 = create_new_gridlayout(self.groupBox_gk)
+        
+        # QtWidgets.QGridLayout(self.groupBox_gk)
+        # self.gridLayout_11.setObjectName(_fromUtf8("gridLayout_11"))
         self.tab_widget_gk = QtWidgets.QTabWidget(self.groupBox_gk)
         self.tab_widget_gk.setStyleSheet(
             _fromUtf8("background-color: rgb(217, 255, 215);")
@@ -572,11 +597,13 @@ class Ui_MainWindow(object):
             self.scrollAreaWidgetContents_ag
         )
         self.gridLayout_scrollA_ag.setObjectName("gridLayout_scrollA_ag")
-        self.btn_ag_all = QtWidgets.QPushButton(self.scrollArea_ag)
+
+        self.btn_ag_all = create_new_button(self.scrollArea_ag, "alle auswählen", self.btn_ag_all_pressed)
+        # QtWidgets.QPushButton(self.scrollArea_ag)
+        # self.btn_ag_all.setObjectName(_fromUtf8("btn_ag_all"))
         self.btn_ag_all.setStyleSheet(
             _fromUtf8("background-color: rgb(240, 240, 240);")
         )
-        self.btn_ag_all.setObjectName(_fromUtf8("btn_ag_all"))
         self.gridLayout_scrollA_ag.addWidget(
             self.btn_ag_all, 10, 4, 1, 1, QtCore.Qt.AlignRight
         )
@@ -724,12 +751,13 @@ class Ui_MainWindow(object):
         ##################################################################
         ################ LAMA CRIA SEARCH #################################
         ###################################################################
-        self.groupBox_schulstufe_cria = QtWidgets.QGroupBox(self.centralwidget)
+
+        self.groupBox_schulstufe_cria = create_new_groupbox(self.centralwidget, "Themen Schulstufe")
         self.groupBox_schulstufe_cria.setMaximumSize(QtCore.QSize(450, 16777215))
-        self.groupBox_schulstufe_cria.setObjectName("groupBox_schulstufe_cria")
-        self.groupBox_schulstufe_cria.setTitle(_translate("MainWindow", "Themen Schulstufe", None))
+
         self.verticalLayout_cria = QtWidgets.QVBoxLayout(self.groupBox_schulstufe_cria)
         self.verticalLayout_cria.setObjectName("verticalLayout_cria")
+
         self.tabWidget_klassen_cria = QtWidgets.QTabWidget(self.groupBox_schulstufe_cria)
         self.tabWidget_klassen_cria.setStyleSheet("background-color: rgb(229, 246, 255);")
         self.tabWidget_klassen_cria.setMovable(False)
@@ -2010,7 +2038,7 @@ class Ui_MainWindow(object):
         self.btn_k6.clicked.connect(self.btn_k6_pressed)
         self.btn_k7.clicked.connect(self.btn_k7_pressed)
         self.btn_k8.clicked.connect(self.btn_k8_pressed)
-        self.btn_ag_all.clicked.connect(self.btn_ag_all_pressed)
+        # self.btn_ag_all.clicked.connect(self.btn_ag_all_pressed)
         self.btn_an_all.clicked.connect(self.btn_an_all_pressed)
         self.btn_fa_all.clicked.connect(self.btn_fa_all_pressed)
         self.btn_ws_all.clicked.connect(self.btn_ws_all_pressed)
@@ -2226,7 +2254,7 @@ class Ui_MainWindow(object):
         self.create_Tooltip(ws_beschreibung)
         #############################################
 
-        self.btn_ag_all.setText(_translate("MainWindow", "alle auswählen", None))
+        # self.btn_ag_all.setText(_translate("MainWindow", "alle auswählen", None))
         self.tab_widget_gk.setTabText(
             self.tab_widget_gk.indexOf(self.tab_ag),
             _translate("MainWindow", "Algebra und Geometrie", None),
