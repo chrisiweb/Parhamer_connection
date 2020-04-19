@@ -52,28 +52,34 @@ def prepare_tex_for_pdf(self):
     suchbegriffe = []
 
     if self.chosen_program=='lama':
-        #### ALGEBRA UND GEOMETRIE
-        for all in ag_beschreibung:
-            x = eval("self.cb_" + all)
-            if x.isChecked() == True:
-                suchbegriffe.append(all)
+        for widget in self.dict_widget_variables:
+            if widget.startswith('checkbox_search_'):
+                if self.dict_widget_variables[widget].isChecked()==True:
+                    gk=widget.split('checkbox_search_')[1]
+                    suchbegriffe.append(gk)   
 
-        #### ANALYSIS
-        for all in an_beschreibung:
-            x = eval("self.cb_" + all)
-            if x.isChecked() == True:
-                suchbegriffe.append(all)
+        # #### ALGEBRA UND GEOMETRIE
+        # for all in ag_beschreibung:
+        #     x = eval("self.cb_" + all)
+        #     if x.isChecked() == True:
+        #         suchbegriffe.append(all)
 
-        #### FUNKTIONALE ABHÄNGIGKEITEN
-        for all in fa_beschreibung:
-            x = eval("self.cb_" + all)
-            if x.isChecked() == True:
-                suchbegriffe.append(all)
-        #### WAHRSCHEINLICHKEIT UND STATISTIK
-        for all in ws_beschreibung:
-            x = eval("self.cb_" + all)
-            if x.isChecked() == True:
-                suchbegriffe.append(all)
+        # #### ANALYSIS
+        # for all in an_beschreibung:
+        #     x = eval("self.cb_" + all)
+        #     if x.isChecked() == True:
+        #         suchbegriffe.append(all)
+
+        # #### FUNKTIONALE ABHÄNGIGKEITEN
+        # for all in fa_beschreibung:
+        #     x = eval("self.cb_" + all)
+        #     if x.isChecked() == True:
+        #         suchbegriffe.append(all)
+        # #### WAHRSCHEINLICHKEIT UND STATISTIK
+        # for all in ws_beschreibung:
+        #     x = eval("self.cb_" + all)
+        #     if x.isChecked() == True:
+        #         suchbegriffe.append(all)
 
         temp_suchbegriffe = []
         for all in suchbegriffe:

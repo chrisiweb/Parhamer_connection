@@ -583,131 +583,137 @@ class Ui_MainWindow(object):
         self.tab_widget_gk.setObjectName(_fromUtf8("tab_widget_gk"))
 
         #### AG #####
-        self.tab_ag = QtWidgets.QWidget()
-        self.tab_ag.setObjectName(_fromUtf8("tab_ag"))
-        self.gridLayout_ag = QtWidgets.QGridLayout(self.tab_ag)
-        self.gridLayout_ag.setObjectName(_fromUtf8("gridLayout_ag"))
-        self.scrollArea_ag = QtWidgets.QScrollArea(self.tab_ag)
-        self.scrollArea_ag.setWidgetResizable(True)
-        self.scrollArea_ag.setObjectName("scrollArea_ag")
-        self.scrollAreaWidgetContents_ag = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_ag.setGeometry(QtCore.QRect(0, 0, 641, 252))
-        self.scrollAreaWidgetContents_ag.setObjectName("scrollAreaWidgetContents_ag")
-        self.gridLayout_scrollA_ag = QtWidgets.QGridLayout(
-            self.scrollAreaWidgetContents_ag
-        )
-        self.gridLayout_scrollA_ag.setObjectName("gridLayout_scrollA_ag")
+        self.create_tab_checkboxes_search("Algebra und Geometrie", ag_beschreibung)
+        # self.tab_ag = QtWidgets.QWidget()
+        # self.tab_ag.setObjectName(_fromUtf8("tab_ag"))
+        # self.gridLayout_ag = QtWidgets.QGridLayout(self.tab_ag)
+        # self.gridLayout_ag.setObjectName(_fromUtf8("gridLayout_ag"))
+        # self.scrollArea_ag = QtWidgets.QScrollArea(self.tab_ag)
+        # self.scrollArea_ag.setWidgetResizable(True)
+        # self.scrollArea_ag.setObjectName("scrollArea_ag")
+        # self.scrollAreaWidgetContents_ag = QtWidgets.QWidget()
+        # self.scrollAreaWidgetContents_ag.setGeometry(QtCore.QRect(0, 0, 641, 252))
+        # self.scrollAreaWidgetContents_ag.setObjectName("scrollAreaWidgetContents_ag")
+        # self.gridLayout_scrollA_ag = QtWidgets.QGridLayout(
+        #     self.scrollAreaWidgetContents_ag
+        # )
+        # self.gridLayout_scrollA_ag.setObjectName("gridLayout_scrollA_ag")
 
-        self.btn_ag_all = create_new_button(self.scrollArea_ag, "alle auswählen", self.btn_ag_all_pressed)
+        # self.btn_ag_all = create_new_button(self.scrollArea_ag, "alle auswählen", self.btn_ag_all_pressed)
         # QtWidgets.QPushButton(self.scrollArea_ag)
         # self.btn_ag_all.setObjectName(_fromUtf8("btn_ag_all"))
-        self.btn_ag_all.setStyleSheet(
-            _fromUtf8("background-color: rgb(240, 240, 240);")
-        )
-        self.gridLayout_scrollA_ag.addWidget(
-            self.btn_ag_all, 10, 4, 1, 1, QtCore.Qt.AlignRight
-        )
-        self.btn_ag_all.setMinimumSize(QtCore.QSize(100, 22))
-        # self.btn_ag_all.setMaximumSize(QtCore.QSize(100,22))
-        self.tab_widget_gk.addTab(self.tab_ag, _fromUtf8(""))
-        self.create_checkbox_gk("ag", ag_beschreibung)
-        self.scrollArea_ag.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.scrollArea_ag.setWidget(self.scrollAreaWidgetContents_ag)
-        self.gridLayout_ag.addWidget(self.scrollArea_ag, 1, 0, 7, 1)
+        # self.btn_ag_all.setStyleSheet(
+        #     _fromUtf8("background-color: rgb(240, 240, 240);")
+        # )
+        # self.gridLayout_scrollA_ag.addWidget(
+        #     self.btn_ag_all, 10, 4, 1, 1, QtCore.Qt.AlignRight
+        # )
+        # self.btn_ag_all.setMinimumSize(QtCore.QSize(100, 22))
+        # # self.btn_ag_all.setMaximumSize(QtCore.QSize(100,22))
+        # self.tab_widget_gk.addTab(self.tab_ag, _fromUtf8(""))
+        # self.create_checkbox_gk("ag", ag_beschreibung)
+        # self.scrollArea_ag.setFrameShape(QtWidgets.QFrame.NoFrame)
+        # self.scrollArea_ag.setWidget(self.scrollAreaWidgetContents_ag)
+        # self.gridLayout_ag.addWidget(self.scrollArea_ag, 1, 0, 7, 1)
         #
 
         ### FA ###
-        self.tab_fa = QtWidgets.QWidget()
-        self.tab_fa.setObjectName(_fromUtf8("tab_fa"))
-        self.gridLayout_fa = QtWidgets.QGridLayout(self.tab_fa)
-        self.gridLayout_fa.setObjectName(_fromUtf8("gridLayout_fa"))
-        self.scrollArea_fa = QtWidgets.QScrollArea(self.tab_fa)
-        self.scrollArea_fa.setWidgetResizable(True)
-        self.scrollArea_fa.setObjectName("scrollArea_fa")
-        self.scrollAreaWidgetContents_fa = QtWidgets.QWidget()
-        # self.scrollAreaWidgetContents_ag.setGeometry(QtCore.QRect(0, 0, 641, 252))
-        self.scrollAreaWidgetContents_fa.setObjectName("scrollAreaWidgetContents_fa")
-        self.gridLayout_scrollA_fa = QtWidgets.QGridLayout(
-            self.scrollAreaWidgetContents_fa
-        )
-        self.gridLayout_scrollA_fa.setObjectName("gridLayout_scrollA_fa")
-        self.btn_fa_all = QtWidgets.QPushButton(self.scrollArea_fa)
-        self.btn_fa_all.setStyleSheet(
-            _fromUtf8("background-color: rgb(240, 240, 240);")
-        )
-        self.btn_fa_all.setObjectName(_fromUtf8("btn_fa_all"))
-        self.gridLayout_scrollA_fa.addWidget(
-            self.btn_fa_all, 10, 6, 1, 1, QtCore.Qt.AlignRight
-        )
-        self.btn_fa_all.setMinimumSize(QtCore.QSize(100, 22))
-        # self.btn_fa_all.setMaximumSize(QtCore.QSize(100,22))
-        self.tab_widget_gk.addTab(self.tab_fa, _fromUtf8(""))
-        self.create_checkbox_gk("fa", fa_beschreibung)
-        self.scrollArea_fa.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.scrollArea_fa.setWidget(self.scrollAreaWidgetContents_fa)
-        self.gridLayout_fa.addWidget(self.scrollArea_fa, 1, 0, 7, 1)
+        self.create_tab_checkboxes_search("Funktionale Abhängigkeiten", fa_beschreibung)
+
+        # self.tab_fa = QtWidgets.QWidget()
+        # self.tab_fa.setObjectName(_fromUtf8("tab_fa"))
+        # self.gridLayout_fa = QtWidgets.QGridLayout(self.tab_fa)
+        # self.gridLayout_fa.setObjectName(_fromUtf8("gridLayout_fa"))
+        # self.scrollArea_fa = QtWidgets.QScrollArea(self.tab_fa)
+        # self.scrollArea_fa.setWidgetResizable(True)
+        # self.scrollArea_fa.setObjectName("scrollArea_fa")
+        # self.scrollAreaWidgetContents_fa = QtWidgets.QWidget()
+        # # self.scrollAreaWidgetContents_ag.setGeometry(QtCore.QRect(0, 0, 641, 252))
+        # self.scrollAreaWidgetContents_fa.setObjectName("scrollAreaWidgetContents_fa")
+        # self.gridLayout_scrollA_fa = QtWidgets.QGridLayout(
+        #     self.scrollAreaWidgetContents_fa
+        # )
+        # self.gridLayout_scrollA_fa.setObjectName("gridLayout_scrollA_fa")
+        # self.btn_fa_all = QtWidgets.QPushButton(self.scrollArea_fa)
+        # self.btn_fa_all.setStyleSheet(
+        #     _fromUtf8("background-color: rgb(240, 240, 240);")
+        # )
+        # self.btn_fa_all.setObjectName(_fromUtf8("btn_fa_all"))
+        # self.gridLayout_scrollA_fa.addWidget(
+        #     self.btn_fa_all, 10, 6, 1, 1, QtCore.Qt.AlignRight
+        # )
+        # self.btn_fa_all.setMinimumSize(QtCore.QSize(100, 22))
+        # # self.btn_fa_all.setMaximumSize(QtCore.QSize(100,22))
+        # self.tab_widget_gk.addTab(self.tab_fa, _fromUtf8(""))
+        # self.create_checkbox_gk("fa", fa_beschreibung)
+        # self.scrollArea_fa.setFrameShape(QtWidgets.QFrame.NoFrame)
+        # self.scrollArea_fa.setWidget(self.scrollAreaWidgetContents_fa)
+        # self.gridLayout_fa.addWidget(self.scrollArea_fa, 1, 0, 7, 1)
 
         ### AN ###
-        self.tab_an = QtWidgets.QWidget()
-        self.tab_an.setObjectName(_fromUtf8("tab_an"))
-        self.gridLayout_an = QtWidgets.QGridLayout(self.tab_an)
-        self.gridLayout_an.setObjectName(_fromUtf8("gridLayout_an"))
-        self.scrollArea_an = QtWidgets.QScrollArea(self.tab_an)
-        self.scrollArea_an.setWidgetResizable(True)
-        self.scrollArea_an.setObjectName("scrollArea_an")
-        self.scrollAreaWidgetContents_an = QtWidgets.QWidget()
-        # self.scrollAreaWidgetContents_ag.setGeometry(QtCore.QRect(0, 0, 641, 252))
-        self.scrollAreaWidgetContents_an.setObjectName("scrollAreaWidgetContents_an")
-        self.gridLayout_scrollA_an = QtWidgets.QGridLayout(
-            self.scrollAreaWidgetContents_an
-        )
-        self.gridLayout_scrollA_an.setObjectName("gridLayout_scrollA_an")
-        self.btn_an_all = QtWidgets.QPushButton(self.scrollArea_an)
-        self.btn_an_all.setStyleSheet(
-            _fromUtf8("background-color: rgb(240, 240, 240);")
-        )
-        self.btn_an_all.setObjectName(_fromUtf8("btn_an_all"))
-        self.gridLayout_scrollA_an.addWidget(
-            self.btn_an_all, 10, 2, 1, 1, QtCore.Qt.AlignRight
-        )
-        self.btn_an_all.setMinimumSize(QtCore.QSize(100, 22))
-        # self.btn_an_all.setMaximumSize(QtCore.QSize(100,22))
-        self.tab_widget_gk.addTab(self.tab_an, _fromUtf8(""))
-        self.create_checkbox_gk("an", an_beschreibung)
-        self.scrollArea_an.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.scrollArea_an.setWidget(self.scrollAreaWidgetContents_an)
-        self.gridLayout_an.addWidget(self.scrollArea_an, 1, 0, 7, 1)
+        self.create_tab_checkboxes_search("Analysis", an_beschreibung)
+        # self.tab_an = QtWidgets.QWidget()
+        # self.tab_an.setObjectName(_fromUtf8("tab_an"))
+        # self.gridLayout_an = QtWidgets.QGridLayout(self.tab_an)
+        # self.gridLayout_an.setObjectName(_fromUtf8("gridLayout_an"))
+        # self.scrollArea_an = QtWidgets.QScrollArea(self.tab_an)
+        # self.scrollArea_an.setWidgetResizable(True)
+        # self.scrollArea_an.setObjectName("scrollArea_an")
+        # self.scrollAreaWidgetContents_an = QtWidgets.QWidget()
+        # # self.scrollAreaWidgetContents_ag.setGeometry(QtCore.QRect(0, 0, 641, 252))
+        # self.scrollAreaWidgetContents_an.setObjectName("scrollAreaWidgetContents_an")
+        # self.gridLayout_scrollA_an = QtWidgets.QGridLayout(
+        #     self.scrollAreaWidgetContents_an
+        # )
+        # self.gridLayout_scrollA_an.setObjectName("gridLayout_scrollA_an")
+        # self.btn_an_all = QtWidgets.QPushButton(self.scrollArea_an)
+        # self.btn_an_all.setStyleSheet(
+        #     _fromUtf8("background-color: rgb(240, 240, 240);")
+        # )
+        # self.btn_an_all.setObjectName(_fromUtf8("btn_an_all"))
+        # self.gridLayout_scrollA_an.addWidget(
+        #     self.btn_an_all, 10, 2, 1, 1, QtCore.Qt.AlignRight
+        # )
+        # self.btn_an_all.setMinimumSize(QtCore.QSize(100, 22))
+        # # self.btn_an_all.setMaximumSize(QtCore.QSize(100,22))
+        # self.tab_widget_gk.addTab(self.tab_an, _fromUtf8(""))
+        # self.create_checkbox_gk("an", an_beschreibung)
+        # self.scrollArea_an.setFrameShape(QtWidgets.QFrame.NoFrame)
+        # self.scrollArea_an.setWidget(self.scrollAreaWidgetContents_an)
+        # self.gridLayout_an.addWidget(self.scrollArea_an, 1, 0, 7, 1)
 
         ### WS ###
-        self.tab_ws = QtWidgets.QWidget()
-        self.tab_ws.setObjectName(_fromUtf8("tab_ws"))
-        self.gridLayout_ws = QtWidgets.QGridLayout(self.tab_ws)
-        self.gridLayout_ws.setObjectName(_fromUtf8("gridLayout_ws"))
-        self.scrollArea_ws = QtWidgets.QScrollArea(self.tab_ws)
-        self.scrollArea_ws.setWidgetResizable(True)
-        self.scrollArea_ws.setObjectName("scrollArea_ws")
-        self.scrollAreaWidgetContents_ws = QtWidgets.QWidget()
-        # self.scrollAreaWidgetContents_ag.setGeometry(QtCore.QRect(0, 0, 641, 252))
-        self.scrollAreaWidgetContents_ws.setObjectName("scrollAreaWidgetContents_ws")
-        self.gridLayout_scrollA_ws = QtWidgets.QGridLayout(
-            self.scrollAreaWidgetContents_ws
-        )
-        self.gridLayout_scrollA_ws.setObjectName("gridLayout_scrollA_ws")
-        self.btn_ws_all = QtWidgets.QPushButton(self.tab_ws)
-        self.btn_ws_all.setStyleSheet(
-            _fromUtf8("background-color: rgb(240, 240, 240);")
-        )
-        self.btn_ws_all.setObjectName(_fromUtf8("btn_ws_all"))
-        self.gridLayout_scrollA_ws.addWidget(
-            self.btn_ws_all, 10, 2, 1, 1, QtCore.Qt.AlignRight
-        )
-        self.btn_ws_all.setMinimumSize(QtCore.QSize(100, 22))
-        # self.btn_ws_all.setMaximumSize(QtCore.QSize(100,22))
-        self.tab_widget_gk.addTab(self.tab_ws, _fromUtf8(""))
-        self.create_checkbox_gk("ws", ws_beschreibung)
-        self.scrollArea_ws.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.scrollArea_ws.setWidget(self.scrollAreaWidgetContents_ws)
-        self.gridLayout_ws.addWidget(self.scrollArea_ws, 1, 0, 7, 1)
+        self.create_tab_checkboxes_search("Wahrscheinlichkeit und Statistik", ws_beschreibung)
+        
+        # self.tab_ws = QtWidgets.QWidget()
+        # self.tab_ws.setObjectName(_fromUtf8("tab_ws"))
+        # self.gridLayout_ws = QtWidgets.QGridLayout(self.tab_ws)
+        # self.gridLayout_ws.setObjectName(_fromUtf8("gridLayout_ws"))
+        # self.scrollArea_ws = QtWidgets.QScrollArea(self.tab_ws)
+        # self.scrollArea_ws.setWidgetResizable(True)
+        # self.scrollArea_ws.setObjectName("scrollArea_ws")
+        # self.scrollAreaWidgetContents_ws = QtWidgets.QWidget()
+        # # self.scrollAreaWidgetContents_ag.setGeometry(QtCore.QRect(0, 0, 641, 252))
+        # self.scrollAreaWidgetContents_ws.setObjectName("scrollAreaWidgetContents_ws")
+        # self.gridLayout_scrollA_ws = QtWidgets.QGridLayout(
+        #     self.scrollAreaWidgetContents_ws
+        # )
+        # self.gridLayout_scrollA_ws.setObjectName("gridLayout_scrollA_ws")
+        # self.btn_ws_all = QtWidgets.QPushButton(self.tab_ws)
+        # self.btn_ws_all.setStyleSheet(
+        #     _fromUtf8("background-color: rgb(240, 240, 240);")
+        # )
+        # self.btn_ws_all.setObjectName(_fromUtf8("btn_ws_all"))
+        # self.gridLayout_scrollA_ws.addWidget(
+        #     self.btn_ws_all, 10, 2, 1, 1, QtCore.Qt.AlignRight
+        # )
+        # self.btn_ws_all.setMinimumSize(QtCore.QSize(100, 22))
+        # # self.btn_ws_all.setMaximumSize(QtCore.QSize(100,22))
+        # self.tab_widget_gk.addTab(self.tab_ws, _fromUtf8(""))
+        # self.create_checkbox_gk("ws", ws_beschreibung)
+        # self.scrollArea_ws.setFrameShape(QtWidgets.QFrame.NoFrame)
+        # self.scrollArea_ws.setWidget(self.scrollAreaWidgetContents_ws)
+        # self.gridLayout_ws.addWidget(self.scrollArea_ws, 1, 0, 7, 1)
         ######### Klassenthemen
         ### K5
         self.tab_k5 = QtWidgets.QWidget()
@@ -2038,10 +2044,7 @@ class Ui_MainWindow(object):
         self.btn_k6.clicked.connect(self.btn_k6_pressed)
         self.btn_k7.clicked.connect(self.btn_k7_pressed)
         self.btn_k8.clicked.connect(self.btn_k8_pressed)
-        # self.btn_ag_all.clicked.connect(self.btn_ag_all_pressed)
-        self.btn_an_all.clicked.connect(self.btn_an_all_pressed)
-        self.btn_fa_all.clicked.connect(self.btn_fa_all_pressed)
-        self.btn_ws_all.clicked.connect(self.btn_ws_all_pressed)
+
 
         self.comboBox_aufgabentyp_cr.currentIndexChanged.connect(
             self.chosen_aufgabenformat_cr
@@ -2049,21 +2052,21 @@ class Ui_MainWindow(object):
         self.pushButton_save.clicked.connect(self.save_file)
         self.pushButton_titlepage.clicked.connect(self.define_titlepage)
 
-        for all in ag_beschreibung:
-            x = eval("self.cb_" + all)
-            x.stateChanged.connect(self.cb_checked)
+        # for all in ag_beschreibung:
+        #     x = eval("self.cb_" + all)
+        #     x.stateChanged.connect(self.cb_checked)
 
-        for all in fa_beschreibung:
-            x = eval("self.cb_" + all)
-            x.stateChanged.connect(self.cb_checked)
+        # for all in fa_beschreibung:
+        #     x = eval("self.cb_" + all)
+        #     x.stateChanged.connect(self.cb_checked)
 
-        for all in an_beschreibung:
-            x = eval("self.cb_" + all)
-            x.stateChanged.connect(self.cb_checked)
+        # for all in an_beschreibung:
+        #     x = eval("self.cb_" + all)
+        #     x.stateChanged.connect(self.cb_checked)
 
-        for all in ws_beschreibung:
-            x = eval("self.cb_" + all)
-            x.stateChanged.connect(self.cb_checked)
+        # for all in ws_beschreibung:
+        #     x = eval("self.cb_" + all)
+        #     x.stateChanged.connect(self.cb_checked)
 
         for g in range(5, 9):
             for all in eval("k%s_beschreibung" % g):
@@ -2255,30 +2258,30 @@ class Ui_MainWindow(object):
         #############################################
 
         # self.btn_ag_all.setText(_translate("MainWindow", "alle auswählen", None))
-        self.tab_widget_gk.setTabText(
-            self.tab_widget_gk.indexOf(self.tab_ag),
-            _translate("MainWindow", "Algebra und Geometrie", None),
-        )
-        self.btn_an_all.setText(_translate("MainWindow", "alle auswählen", None))
-        self.tab_widget_gk.setTabText(
-            self.tab_widget_gk.indexOf(self.tab_an),
-            _translate("MainWindow", "Analysis", None),
-        )
-        self.btn_fa_all.setText(_translate("MainWindow", "alle auswählen", None))
-        self.tab_widget_gk.setTabText(
-            self.tab_widget_gk.indexOf(self.tab_fa),
-            _translate("MainWindow", "Funktionale Abhängigkeiten", None),
-        )
-        self.btn_fa_all.setText(_translate("MainWindow", "alle auswählen", None))
-        self.tab_widget_gk.setTabText(
-            self.tab_widget_gk.indexOf(self.tab_fa),
-            _translate("MainWindow", "Funktionale Abhängigkeiten", None),
-        )
-        self.btn_ws_all.setText(_translate("MainWindow", "alle auswählen", None))
-        self.tab_widget_gk.setTabText(
-            self.tab_widget_gk.indexOf(self.tab_ws),
-            _translate("MainWindow", "Wahrscheinlichkeit und Statistik", None),
-        )
+        # self.tab_widget_gk.setTabText(
+        #     self.tab_widget_gk.indexOf(self.tab_ag),
+        #     _translate("MainWindow", "Algebra und Geometrie", None),
+        # )
+        # self.btn_an_all.setText(_translate("MainWindow", "alle auswählen", None))
+        # self.tab_widget_gk.setTabText(
+        #     self.tab_widget_gk.indexOf(self.tab_an),
+        #     _translate("MainWindow", "Analysis", None),
+        # )
+        # self.btn_fa_all.setText(_translate("MainWindow", "alle auswählen", None))
+        # self.tab_widget_gk.setTabText(
+        #     self.tab_widget_gk.indexOf(self.tab_fa),
+        #     _translate("MainWindow", "Funktionale Abhängigkeiten", None),
+        # )
+        # self.btn_fa_all.setText(_translate("MainWindow", "alle auswählen", None))
+        # self.tab_widget_gk.setTabText(
+        #     self.tab_widget_gk.indexOf(self.tab_fa),
+        #     _translate("MainWindow", "Funktionale Abhängigkeiten", None),
+        # )
+        # self.btn_ws_all.setText(_translate("MainWindow", "alle auswählen", None))
+        # self.tab_widget_gk.setTabText(
+        #     self.tab_widget_gk.indexOf(self.tab_ws),
+        #     _translate("MainWindow", "Wahrscheinlichkeit und Statistik", None),
+        # )
         # self.actionReset.setText(_translate("MainWindow", "Reset", None))
         # self.label_gk_rest.setText(_translate("MainWindow", "", None))
         # self.label_gk.setText(_translate("MainWindow", "", None))
@@ -2348,6 +2351,99 @@ class Ui_MainWindow(object):
                 subprocess.Popen('explorer "{}"'.format(file_path))
 
 
+    def create_tab_checkboxes_search(self, titel, chosen_dictionary):
+        new_tab=add_new_tab(self.tab_widget_gk, titel)    
+        # self.tab_ag = QtWidgets.QWidget()
+        # self.tab_ag.setObjectName(_fromUtf8("tab_ag"))
+        gridlayout=create_new_gridlayout(new_tab)
+        # self.gridLayout_ag = QtWidgets.QGridLayout(self.tab_ag)
+        # self.gridLayout_ag.setObjectName(_fromUtf8("gridLayout_ag"))
+        scrollarea = QtWidgets.QScrollArea(new_tab)
+        scrollarea.setWidgetResizable(True)
+        scrollarea.setObjectName("{}".format(scrollarea))
+        scrollareacontent = QtWidgets.QWidget()
+        scrollareacontent.setGeometry(QtCore.QRect(0, 0, 641, 252))
+        scrollareacontent.setObjectName("{}".format(scrollareacontent))
+        gridLayout_scrollarea = create_new_gridlayout(scrollareacontent)    
+
+        button_check_all = create_new_button(scrollarea, "alle auswählen", partial(self.button_all_gk_pressed,chosen_dictionary))
+        button_check_all.setStyleSheet(
+            _fromUtf8("background-color: rgb(240, 240, 240);")
+        )
+              
+
+        button_check_all.setMinimumSize(QtCore.QSize(100, 22))
+
+        row, column = self.create_list_of_all_gk_checkboxes(scrollareacontent, gridLayout_scrollarea, 'search', chosen_dictionary)
+
+        gridLayout_scrollarea.addWidget(
+            button_check_all, 10, column, 1, 1, QtCore.Qt.AlignRight
+        )
+
+        scrollarea.setFrameShape(QtWidgets.QFrame.NoFrame)
+        scrollarea.setWidget(scrollareacontent)
+        gridlayout.addWidget(scrollarea, 1, 0, 7, 1)
+
+    def create_list_of_all_gk_checkboxes(self, parent, layout, mode, chosen_dictionary):
+        spacerItem = QtWidgets.QSpacerItem(
+            100, 0, QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Minimum
+        )
+        row = 0
+        column = 0
+        if mode=='creator':       
+        # if "cr" in gk_type:
+            max_row = 8
+            name_start='checkbox_creator_'
+        if mode=='search':
+        # else:
+            max_row = 9
+            name_start='checkbox_search_'
+        for all in chosen_dictionary:
+            new_checkbox = create_new_checkbox(parent, dict_gk[all])
+            new_checkbox.setFocusPolicy(QtCore.Qt.NoFocus)
+            layout.addWidget(new_checkbox, row, column, 1, 1)
+            new_checkbox.stateChanged.connect(self.checkbox_gk_checked) 
+            name=name_start+all
+            self.dict_widget_variables[name]=new_checkbox
+
+            if row > max_row:
+                row = 0
+                column += 1
+                layout.addItem(spacerItem, row, column, 1, 1)
+                column += 1
+            else:
+                row += 1
+        return row, column
+        #     if "cr" in gk_type:
+        #         cb_name = str(all + "_cr")
+        #     else:
+        #         cb_name = all
+        #     exec(
+        #         "self.cb_"
+        #         + cb_name
+        #         + "=QtWidgets.QCheckBox(self.scrollAreaWidgetContents_"
+        #         + gk_type
+        #         + ")"
+        #     )
+        #     exec(
+        #         "self.cb_" + cb_name + '.setObjectName(_fromUtf8("cb_' + cb_name + '"))'
+        #     )
+        #     x = eval("self.cb_" + cb_name)
+        #     x.setFocusPolicy(QtCore.Qt.NoFocus)
+        #     x.setText(_translate("MainWindow", dict_gk[all], None))
+        #     grid = eval("self.gridLayout_scrollA_" + gk_type)
+        #     grid.addWidget(x, row, column, 1, 1)
+
+        #     if row > max_row:
+        #         row = 0
+        #         column += 1
+        #         spacerItem = QtWidgets.QSpacerItem(
+        #             100, 0, QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Minimum
+        #         )
+        #         grid.addItem(spacerItem, row, column, 1, 1)
+        #         column += 1
+        #     else:
+        #         row += 1
 
     #######################
     #### Check for Updates
@@ -2427,11 +2523,16 @@ class Ui_MainWindow(object):
                     )
 
     def create_Tooltip(self, chosen_dict):
-        for all in chosen_dict:
-            x = eval("self.cb_" + all)
-            x.setToolTip(chosen_dict[all])
-            y = eval("self.cb_" + all + "_cr")
-            y.setToolTip(chosen_dict[all])
+        try:
+            for all in chosen_dict:
+                x = eval("self.cb_" + all)
+                x.setToolTip(chosen_dict[all])
+                y = eval("self.cb_" + all + "_cr")
+                y.setToolTip(chosen_dict[all])
+        except AttributeError:
+            for all in chosen_dict:
+                name='checkbox_search_'+all
+                self.dict_widget_variables[name].setToolTip(chosen_dict[all])
 
 
     def tabWidget_klassen_cria_changed(self):
@@ -2946,7 +3047,6 @@ class Ui_MainWindow(object):
         self.get_logfile()
 
     def create_checkbox_gk(self, gk_type, chosen_dict):
-
         row = 0
         column = 0
         if "cr" in gk_type:
@@ -3147,61 +3247,79 @@ class Ui_MainWindow(object):
                 x = eval("self.cb_k8_" + all)
                 x.setChecked(False)
 
-    def btn_ag_all_pressed(self):
-        if self.cb_ag11.isChecked() == False:
-            for all in ag_beschreibung:
-                x = eval("self.cb_" + all)
-                x.setChecked(True)
-        elif self.cb_ag11.isChecked() == True:
-            for all in ag_beschreibung:
-                x = eval("self.cb_" + all)
-                x.setChecked(False)
+    def button_all_gk_pressed(self, chosen_dictionary): 
+        #checkbox_creator_
+        name_start='checkbox_search_'
+        first_element=name_start+list(chosen_dictionary.keys())[0]
 
-    def btn_an_all_pressed(self):
-        if self.cb_an11.isChecked() == False:
-            for all in an_beschreibung:
-                x = eval("self.cb_" + all)
-                x.setChecked(True)
-        elif self.cb_an11.isChecked() == True:
-            for all in an_beschreibung:
-                x = eval("self.cb_" + all)
-                x.setChecked(False)
+        if self.dict_widget_variables[first_element].isChecked() == False:
+            for all in chosen_dictionary:
+                name=name_start+all
+                self.dict_widget_variables[name].setChecked(True)
+        else:
+            for all in chosen_dictionary:
+                name=name_start+all
+                self.dict_widget_variables[name].setChecked(False)           
+        # if self.cb_ag11.isChecked() == False:
+        #     for all in ag_beschreibung:
+        #         x = eval("self.cb_" + all)
+        #         x.setChecked(True)
+        # elif self.cb_ag11.isChecked() == True:
+        #     for all in ag_beschreibung:
+        #         x = eval("self.cb_" + all)
+        #         x.setChecked(False)
 
-    def btn_fa_all_pressed(self):
-        if self.cb_fa11.isChecked() == False:
-            for all in fa_beschreibung:
-                x = eval("self.cb_" + all)
-                x.setChecked(True)
-        elif self.cb_fa11.isChecked() == True:
-            for all in fa_beschreibung:
-                x = eval("self.cb_" + all)
-                x.setChecked(False)
+    # def btn_an_all_pressed(self):
+    #     if self.cb_an11.isChecked() == False:
+    #         for all in an_beschreibung:
+    #             x = eval("self.cb_" + all)
+    #             x.setChecked(True)
+    #     elif self.cb_an11.isChecked() == True:
+    #         for all in an_beschreibung:
+    #             x = eval("self.cb_" + all)
+    #             x.setChecked(False)
 
-    def btn_ws_all_pressed(self):
-        if self.cb_ws11.isChecked() == False:
-            for all in ws_beschreibung:
-                x = eval("self.cb_" + all)
-                x.setChecked(True)
-        elif self.cb_ws11.isChecked() == True:
-            for all in ws_beschreibung:
-                x = eval("self.cb_" + all)
-                x.setChecked(False)
+    # def btn_fa_all_pressed(self):
+    #     if self.cb_fa11.isChecked() == False:
+    #         for all in fa_beschreibung:
+    #             x = eval("self.cb_" + all)
+    #             x.setChecked(True)
+    #     elif self.cb_fa11.isChecked() == True:
+    #         for all in fa_beschreibung:
+    #             x = eval("self.cb_" + all)
+    #             x.setChecked(False)
+
+    # def btn_ws_all_pressed(self):
+    #     if self.cb_ws11.isChecked() == False:
+    #         for all in ws_beschreibung:
+    #             x = eval("self.cb_" + all)
+    #             x.setChecked(True)
+    #     elif self.cb_ws11.isChecked() == True:
+    #         for all in ws_beschreibung:
+    #             x = eval("self.cb_" + all)
+    #             x.setChecked(False)
 
     # def cb_checked(self):
     # 	set_chosen_gk=set([])
 
-    def cb_checked(self):
+    def checkbox_gk_checked(self):
         chosen_gk = []
 
-        list_gk = ["ag", "fa", "an", "ws"]
 
-        for thema in list_gk:
-            exec("set_chosen_gk_%s=set([])" % thema)
-            for all in eval("%s_beschreibung" % thema):
-                x = eval("self.cb_" + all)
-                if x.isChecked() == True:
-                    eval("set_chosen_gk_%s.add(x.text())" % thema)
-            eval("chosen_gk.extend(sorted(set_chosen_gk_%s))" % thema)
+        for widget in self.dict_widget_variables:
+            if widget.startswith('checkbox_search_'):
+                if self.dict_widget_variables[widget].isChecked()==True:
+                    gk=widget.split('checkbox_search_')[1]
+                    chosen_gk.append(dict_gk[gk])
+        # list_gk = ["ag", "fa", "an", "ws"]
+
+        # for thema in list_gk:
+        #     exec("set_chosen_gk_%s=set([])" % thema)
+        #     for all in eval("%s_beschreibung" % thema):
+        #         x = eval("self.cb_" + all)
+        #         if x.isChecked() == True:
+        #             eval("set_chosen_gk_%s.add(x.text())" % thema)
+        #     eval("chosen_gk.extend(sorted(set_chosen_gk_%s))" % thema)
 
         x = ", ".join(chosen_gk)
 
