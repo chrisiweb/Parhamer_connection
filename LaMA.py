@@ -52,6 +52,17 @@ try:
 except IndexError:
     loaded_lama_file_path = ""
 
+black =QtGui.QColor(0  , 0, 0)
+white = QtGui.QColor(255, 255, 255)
+gray = QtGui.QColor(214, 214, 214)
+blue_1=QtGui.QColor(245, 245, 255)
+blue_2=QtGui.QColor(225, 240, 240)
+blue_3=QtGui.QColor(224, 233, 232) #211, 224, 223  
+blue_4=QtGui.QColor(168, 189, 194)  
+blue_5=QtGui.QColor(88, 111, 124)
+blue_6=QtGui.QColor(47, 69, 80)
+blue_7=QtGui.QColor(47, 69, 80)        
+
 print("Loading...")
 
 ### config_loader, path_programm, logo_path, SpinBox_noWheel
@@ -106,6 +117,17 @@ set_chosen_gk = set([])
 #### Dialog Window - Schularbeit erstellen
 
 #### Extrected Functions ####
+
+def get_color(color):
+    color= "rgb({0}, {1}, {2})".format(color.red(), color.green(), color.blue())
+    return color
+# def set_color_background(color):
+#     color_set= "background-color: rgb({0}, {1}, {2});".format(color.red(), color.green(), color.blue())
+#     return color_set    
+
+# def set_color_text(color):
+#     color_set = "color: rgb({0}, {1}, {2});".format(color.red(), color.green(), color.blue())
+#     return color_set  
 
 def add_action(menu, text, command):
     new_action = QtWidgets.QAction(MainWindow)
@@ -181,7 +203,7 @@ def create_standard_button(parent, text, command, icon=''):
     new_standard_button = create_new_button(parent, "", command)    
     new_standard_button.setMaximumSize(QtCore.QSize(30, 30))
     new_standard_button.setFocusPolicy(QtCore.Qt.ClickFocus)
-    new_standard_button.setStyleSheet(_fromUtf8("background-color: light gray"))
+    # new_standard_button.setStyleSheet(_fromUtf8("background-color: light gray"))
     new_standard_button.setIcon(QtWidgets.QApplication.style().standardIcon(icon))
 
     return new_standard_button
@@ -567,7 +589,11 @@ class Ui_MainWindow(object):
         # QtWidgets.QVBoxLayout(self.groupBox_themen_klasse)
         # self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.tabWidget = QtWidgets.QTabWidget(self.groupBox_themen_klasse)
-        self.tabWidget.setStyleSheet(_fromUtf8("background-color: rgb(229, 246, 255);"))
+        background_color=get_color(blue_7)
+        text_color=get_color(white)
+        self.tabWidget.setStyleSheet(_fromUtf8("color: {0};background-color: {1}".format(text_color, background_color)))        
+        # self.tabWidget.setStyleSheet(set_color_text(white))
+
         self.tabWidget.setObjectName(_fromUtf8("tabWidget"))
         self.verticalLayout.addWidget(self.tabWidget)
 
@@ -580,9 +606,15 @@ class Ui_MainWindow(object):
         # QtWidgets.QGridLayout(self.groupBox_gk)
         # self.gridLayout_11.setObjectName(_fromUtf8("gridLayout_11"))
         self.tab_widget_gk = QtWidgets.QTabWidget(self.groupBox_gk)
-        self.tab_widget_gk.setStyleSheet(
-            _fromUtf8("background-color: rgb(217, 255, 215);")
-        )
+        background_color=get_color(blue_7)
+        text_color=get_color(white)
+        self.tab_widget_gk.setStyleSheet(_fromUtf8("color: {0};background-color: {1}".format(text_color, background_color)))
+        # self.tab_widget_gk.setStyleSheet(_fromUtf8("color: {0}".format(white)))
+        # self.tab_widget_gk.setStyleSheet("QToolTip { color: white; background-color: rgb(47, 69, 80); border: 0px; }")
+        # ))
+        
+            # 
+        #  print(gray.red())
         self.tab_widget_gk.setObjectName(_fromUtf8("tab_widget_gk"))
 
         #### AG #####
@@ -718,8 +750,11 @@ class Ui_MainWindow(object):
         # self.scrollArea_ws.setWidget(self.scrollAreaWidgetContents_ws)
         # self.gridLayout_ws.addWidget(self.scrollArea_ws, 1, 0, 7, 1)
         ######### Klassenthemen
+        background_color=get_color(blue_3)
+        text_color=get_color(black)
         ### K5
         self.tab_k5 = QtWidgets.QWidget()
+        self.tab_k5.setStyleSheet(_fromUtf8("color: {0};background-color: {1}".format(text_color, background_color)))
         self.tab_k5.setObjectName(_fromUtf8("tab_k5"))
         self.gridLayout_k5 = QtWidgets.QGridLayout(self.tab_k5)
         self.gridLayout_k5.setObjectName(_fromUtf8("gridLayout_k5"))
@@ -727,6 +762,7 @@ class Ui_MainWindow(object):
         self.create_checkbox_klasse("k5", k5_beschreibung)
         ### K6
         self.tab_k6 = QtWidgets.QWidget()
+        self.tab_k6.setStyleSheet(_fromUtf8("color: {0};background-color: {1}".format(text_color, background_color)))
         self.tab_k6.setObjectName(_fromUtf8("tab_k6"))
         self.gridLayout_k6 = QtWidgets.QGridLayout(self.tab_k6)
         self.gridLayout_k6.setObjectName(_fromUtf8("gridLayout_k6"))
@@ -734,6 +770,7 @@ class Ui_MainWindow(object):
         self.create_checkbox_klasse("k6", k6_beschreibung)
         ### K7
         self.tab_k7 = QtWidgets.QWidget()
+        self.tab_k7.setStyleSheet(_fromUtf8("color: {0};background-color: {1}".format(text_color, background_color)))
         self.tab_k7.setObjectName(_fromUtf8("tab_k7"))
         self.gridLayout_k7 = QtWidgets.QGridLayout(self.tab_k7)
         self.gridLayout_k7.setObjectName(_fromUtf8("gridLayout_k7"))
@@ -741,6 +778,7 @@ class Ui_MainWindow(object):
         self.tabWidget.addTab(self.tab_k7, _fromUtf8(""))
         ### K8
         self.tab_k8 = QtWidgets.QWidget()
+        self.tab_k8.setStyleSheet(_fromUtf8("color: {0};background-color: {1}".format(text_color, background_color)))
         self.tab_k8.setObjectName(_fromUtf8("tab_k8"))
         self.gridLayout_k8 = QtWidgets.QGridLayout(self.tab_k8)
         self.gridLayout_k8.setObjectName(_fromUtf8("gridLayout_k8"))
@@ -751,7 +789,7 @@ class Ui_MainWindow(object):
         self.label_warnung = QtWidgets.QLabel(self.centralwidget)
         self.label_warnung.setWordWrap(True)
         self.label_warnung.setObjectName(_fromUtf8("label_warnung"))
-        self.label_warnung.setStyleSheet(_fromUtf8("background-color: rgb(255, 80, 80);"))
+        self.label_warnung.setStyleSheet(_fromUtf8("border-radius: 25px;border: 2px solid rgb(195, 58, 63);")) #background-color: rgb(195, 58, 63)
         #self.label_warnung.setMaximumSize(QtCore.QSize(375, 16777215))
         self.label_warnung.setText(_translate("MainWindow", "Achtung: Aufgrund neuer hilfreicher Befehle ist es notwendig, ein Update des srdp-mathematik-Pakets so bald wie möglich durchzuführen! Nähere Infos unter: lama.schule/update", None))
         self.gridLayout.addWidget(self.label_warnung, 5,0,1,1)
@@ -768,7 +806,10 @@ class Ui_MainWindow(object):
         self.verticalLayout_cria.setObjectName("verticalLayout_cria")
 
         self.tabWidget_klassen_cria = QtWidgets.QTabWidget(self.groupBox_schulstufe_cria)
-        self.tabWidget_klassen_cria.setStyleSheet("background-color: rgb(229, 246, 255);")
+        text_color=get_color(white)
+        background_color= get_color(blue_7)
+        self.tabWidget_klassen_cria.setStyleSheet(_fromUtf8("color: {0};background-color: {1}".format(text_color, background_color)))
+        # self.tabWidget_klassen_cria.setStyleSheet("background-color: rgb(229, 246, 255);")
         self.tabWidget_klassen_cria.setMovable(False)
         self.tabWidget_klassen_cria.setObjectName("tabWidget_klassen_cria")
         # self.tabWidget_klassen_cria.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -780,8 +821,9 @@ class Ui_MainWindow(object):
         for klasse in list_klassen:
             # name='tab_{0}'.format(klasse)
             new_tab = add_new_tab(self.tabWidget_klassen_cria, "{}. Klasse".format(klasse[1]))
-            # new_tab.setFocusPolicy(QtCore.Qt.NoFocus)
-            #self.dict_widget_variables[name]=new_tab
+            text_color=get_color(black)
+            background_color= get_color(blue_3)
+            new_tab.setStyleSheet(_fromUtf8("color: {0};background-color: {1}".format(text_color, background_color)))
             new_gridlayout = QtWidgets.QGridLayout(new_tab)
             new_gridlayout.setObjectName("{}".format(new_gridlayout))
             
@@ -790,7 +832,6 @@ class Ui_MainWindow(object):
             new_scrollarea.setObjectName("{}".format(new_scrollarea))
             new_scrollarea.setFrameShape(QtWidgets.QFrame.NoFrame)
             new_scrollarea.setWidgetResizable(True)
-
             new_scrollareacontent = QtWidgets.QWidget()
             new_scrollareacontent.setGeometry(QtCore.QRect(0, 0, 264, 235))
             new_scrollareacontent.setObjectName("{}".format(new_scrollareacontent))
@@ -884,13 +925,15 @@ class Ui_MainWindow(object):
         self.gridLayout_11_cr = QtWidgets.QGridLayout(self.groupBox_grundkompetenzen_cr)
         self.gridLayout_11_cr.setObjectName(_fromUtf8("gridLayout_11_cr"))
         self.tab_widget_gk_cr = QtWidgets.QTabWidget(self.groupBox_grundkompetenzen_cr)
-        self.tab_widget_gk_cr.setStyleSheet(
-            _fromUtf8("background-color: rgb(217, 255, 215);")
-        )
+        background_color=get_color(blue_7)
+        text_color =get_color(white)
+        self.tab_widget_gk_cr.setStyleSheet(_fromUtf8("color: {0}; background-color: {1};".format(text_color, background_color)))
+        #     _fromUtf8("background-color: rgb(217, 255, 215);")
+        # )
         self.tab_widget_gk_cr.setFocusPolicy(QtCore.Qt.NoFocus)
         self.tab_widget_gk_cr.setObjectName(_fromUtf8("tab_widget_gk_cr"))
         self.gridLayout_11_cr.addWidget(self.tab_widget_gk_cr, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_grundkompetenzen_cr, 0, 0, 4, 1)
+        self.gridLayout.addWidget(self.groupBox_grundkompetenzen_cr, 0, 0, 5, 1)
         self.groupBox_grundkompetenzen_cr.setTitle(
             _translate("MainWindow", "Grundkompetenzen", None)
         )
@@ -905,7 +948,10 @@ class Ui_MainWindow(object):
         self.gridLayout_11_cr_cria = QtWidgets.QGridLayout(self.groupBox_themengebiete_cria)
         self.gridLayout_11_cr_cria.setObjectName(_fromUtf8("gridLayout_11_cr_cria"))
         self.tab_widget_cr_cria = QtWidgets.QTabWidget(self.groupBox_themengebiete_cria)
-        # self.tab_widget_gk_cr.setStyleSheet(_fromUtf8("background-color: rgb(217, 255, 215);"))
+        # self.tab_widget_gk_cr.setStyleSheet(_fromUtf8("background-color: rgb(217, 255, 215);")
+        # background_color=get_color(blue_7)
+        # text_color =get_color(white)
+        # self.tab_widget_gk_cr.setStyleSheet(_fromUtf8("color: {0}; background-color: {1};".format(text_color, background_color)))
         self.tab_widget_cr_cria.setStyleSheet("background-color: rgb(229, 246, 255);")
         self.tab_widget_cr_cria.setObjectName(_fromUtf8("tab_widget_cr_cria"))
         self.tab_widget_cr_cria.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -1043,8 +1089,11 @@ class Ui_MainWindow(object):
         # ### WS ####
         self.create_tab_checkboxes_search(self.tab_widget_gk_cr, "Wahrscheinlichkeit und Statistik", ws_beschreibung, 'creator')
 
+        background_color=get_color(blue_3)
+        text_color=get_color(black)
         # ### 5. Klasse ###
         self.tab_k5_cr = QtWidgets.QWidget()
+        self.tab_k5_cr.setStyleSheet(_fromUtf8("color: {0};background-color: {1}".format(text_color, background_color)))
         self.tab_k5_cr.setObjectName(_fromUtf8("tab_k5_cr"))
         self.gridLayout_k5_cr = QtWidgets.QGridLayout(self.tab_k5_cr)
         self.gridLayout_k5_cr.setObjectName(_fromUtf8("gridLayout_k5_cr"))
@@ -1058,6 +1107,7 @@ class Ui_MainWindow(object):
         # ### 6. Klasse ###
         self.tab_k6_cr = QtWidgets.QWidget()
         self.tab_k6_cr.setObjectName(_fromUtf8("tab_k6_cr"))
+        self.tab_k6_cr.setStyleSheet(_fromUtf8("color: {0};background-color: {1}".format(text_color, background_color)))
         self.gridLayout_k6_cr = QtWidgets.QGridLayout(self.tab_k6_cr)
         self.gridLayout_k6_cr.setObjectName(_fromUtf8("gridLayout_k6_cr"))
         self.tab_widget_gk_cr.addTab(self.tab_k6_cr, _fromUtf8(""))
@@ -1070,6 +1120,7 @@ class Ui_MainWindow(object):
         # ### 7. Klasse ###
         self.tab_k7_cr = QtWidgets.QWidget()
         self.tab_k7_cr.setObjectName(_fromUtf8("tab_k7_cr"))
+        self.tab_k7_cr.setStyleSheet(_fromUtf8("color: {0};background-color: {1}".format(text_color, background_color)))
         self.gridLayout_k7_cr = QtWidgets.QGridLayout(self.tab_k7_cr)
         self.gridLayout_k7_cr.setObjectName(_fromUtf8("gridLayout_k7_cr"))
         self.tab_widget_gk_cr.addTab(self.tab_k7_cr, _fromUtf8(""))
@@ -1082,6 +1133,7 @@ class Ui_MainWindow(object):
         # ### 8. Klasse ###
         self.tab_k8_cr = QtWidgets.QWidget()
         self.tab_k8_cr.setObjectName(_fromUtf8("tab_k8_cr"))
+        self.tab_k8_cr.setStyleSheet(_fromUtf8("color: {0};background-color: {1}".format(text_color, background_color)))
         self.gridLayout_k8_cr = QtWidgets.QGridLayout(self.tab_k8_cr)
         self.gridLayout_k8_cr.setObjectName(_fromUtf8("gridLayout_k8_cr"))
         self.tab_widget_gk_cr.addTab(self.tab_k8_cr, _fromUtf8(""))
@@ -1215,7 +1267,7 @@ class Ui_MainWindow(object):
         self.gridLayout_10 = QtWidgets.QGridLayout(self.groupBox_beispieleingabe)
         self.gridLayout_10.setObjectName(_fromUtf8("gridLayout_10"))
         self.label = QtWidgets.QLabel(self.groupBox_beispieleingabe)
-        self.label.setStyleSheet(_fromUtf8("background-color: rgb(255, 178, 178);"))
+        self.label.setStyleSheet(_fromUtf8("border-radius: 25px;border: 2px solid rgb(195, 58, 63);"))
         self.label.setWordWrap(True)
         self.label.setObjectName(_fromUtf8("label"))
         self.gridLayout_10.addWidget(self.label, 0, 0, 1, 1)
@@ -2271,6 +2323,9 @@ class Ui_MainWindow(object):
         scrollarea = QtWidgets.QScrollArea(new_tab)
         scrollarea.setWidgetResizable(True)
         scrollarea.setObjectName("{}".format(scrollarea))
+        background_color=get_color(blue_3)
+        text_color = get_color(black)
+        new_tab.setStyleSheet(_fromUtf8("color: {0};background-color: {1}".format(text_color, background_color)))
         scrollareacontent = QtWidgets.QWidget()
         scrollareacontent.setGeometry(QtCore.QRect(0, 0, 641, 252))
         scrollareacontent.setObjectName("{}".format(scrollareacontent))
@@ -2297,7 +2352,7 @@ class Ui_MainWindow(object):
 
     def create_list_of_all_gk_checkboxes(self, parent, layout, mode, chosen_dictionary):
         spacerItem = QtWidgets.QSpacerItem(
-            100, 0, QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Minimum
+            10, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
         )
         row = 0
         column = 0
@@ -2312,6 +2367,8 @@ class Ui_MainWindow(object):
         for all in chosen_dictionary:
             new_checkbox = create_new_checkbox(parent, dict_gk[all])
             new_checkbox.setFocusPolicy(QtCore.Qt.NoFocus)
+            background_color=get_color(blue_7)
+            new_checkbox.setStyleSheet("QToolTip {{ color: white; background-color: {}; border: 0px; }}".format(background_color))
             layout.addWidget(new_checkbox, row, column, 1, 1)
             new_checkbox.stateChanged.connect(partial(self.checkbox_gk_checked, mode)) 
             name=name_start+all
@@ -2324,6 +2381,10 @@ class Ui_MainWindow(object):
                 column += 1
             else:
                 row += 1
+        # print(column)
+        spacerItem_right = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        layout.addItem(spacerItem_right, 0, column+1, 1, 1)
+        
         return row, column
         #     if "cr" in gk_type:
         #         cb_name = str(all + "_cr")
@@ -2434,16 +2495,20 @@ class Ui_MainWindow(object):
                     )
 
     def create_Tooltip(self, chosen_dict):
-        try:
-            for all in chosen_dict:
-                x = eval("self.cb_" + all)
-                x.setToolTip(chosen_dict[all])
-                y = eval("self.cb_" + all + "_cr")
-                y.setToolTip(chosen_dict[all])
-        except AttributeError:
-            for all in chosen_dict:
-                name='checkbox_search_'+all
-                self.dict_widget_variables[name].setToolTip(chosen_dict[all])
+        # try:
+        #     for all in chosen_dict:
+        #         x = eval("self.cb_" + all)
+        #         x.setToolTip(chosen_dict[all])
+        #         y = eval("self.cb_" + all + "_cr")
+        #         y.setToolTip(chosen_dict[all])
+        # except AttributeError:
+        for all in chosen_dict:
+            name='checkbox_search_'+all
+            self.dict_widget_variables[name].setToolTip(chosen_dict[all])
+        for all in chosen_dict:
+            name='checkbox_creator_'+all
+            self.dict_widget_variables[name].setToolTip(chosen_dict[all])
+
 
 
     def tabWidget_klassen_cria_changed(self):
@@ -2875,7 +2940,6 @@ class Ui_MainWindow(object):
 
         self.reset_sage(True)
         self.suchfenster_reset()
-
 
 
 
@@ -5361,12 +5425,6 @@ class Ui_MainWindow(object):
             "{0}. Aufgabe (Typ{1})".format(index+1, typ))
 
 
-        if (index % 2) == 0 and (typ==1 or typ==None):
-            new_groupbox.setStyleSheet(_fromUtf8("background-color: rgb(255, 255, 255);"))
-        if typ == 2:
-            new_groupbox.setStyleSheet(_fromUtf8("background-color: rgb(255, 212, 212);"))
-
-
 
         gridLayout_gB = QtWidgets.QGridLayout(new_groupbox)
         gridLayout_gB.setObjectName("gridLayout_gB")
@@ -5398,6 +5456,7 @@ class Ui_MainWindow(object):
         gridLayout_gB.addWidget(label_titel, 1, 0, 1, 1)
 
 
+
         groupbox_pkt = create_new_groupbox(new_groupbox, "Punkte")
         gridLayout_gB.addWidget(groupbox_pkt, 0, 1, 2, 1,QtCore.Qt.AlignRight)
         punkte=self.dict_alle_aufgaben_sage[aufgabe][0]
@@ -5422,6 +5481,19 @@ class Ui_MainWindow(object):
             label_ausgleichspkt = create_new_label(groupbox_pkt, 'AP: {}'.format(self.dict_alle_aufgaben_sage[aufgabe][3]))
             horizontalLayout_groupbox_pkt.addWidget(label_ausgleichspkt)
             self.dict_variablen_label[aufgabe]=label_ausgleichspkt
+
+
+        if (index % 2) == 1 and (typ==1 or typ==None):
+            background_color=get_color(blue_1)
+            new_groupbox.setStyleSheet(_fromUtf8("QGroupBox {{background-color: {0};}} ".format(background_color)))
+        if typ == 2:
+            background_color=get_color(blue_6)
+            text_color = get_color(white)
+            new_groupbox.setStyleSheet(_fromUtf8("QGroupBox {{background-color: {0}; color: {1}}}".format(background_color, text_color)))
+            label_aufgabe.setStyleSheet(_fromUtf8("color: {0}".format(text_color)))
+            label_titel.setStyleSheet(_fromUtf8("color: {0}".format(text_color)))
+            groupbox_pkt.setStyleSheet(_fromUtf8("color: {0}".format(text_color)))
+            spinbox_pkt.setStyleSheet(_fromUtf8("color: rgb(0,0,0)"))
 
 
         button_up = create_standard_button(new_groupbox, "",
@@ -5474,7 +5546,6 @@ class Ui_MainWindow(object):
             # content=self.collect_content(aufgabe)
             pushbutton_ausgleich = create_new_button(new_groupbox,"Ausgleichspunkte anpassen...",
             partial(self.pushButton_ausgleich_pressed, aufgabe))
-            pushbutton_ausgleich.setStyleSheet(_fromUtf8("background-color: light gray"))
             pushbutton_ausgleich.setMaximumSize(QtCore.QSize(220, 30))
             gridLayout_gB.addWidget(pushbutton_ausgleich, 0, 2, 2, 1)
 
@@ -7220,21 +7291,24 @@ if __name__ == "__main__":
 
     app = QApplication(sys.argv)
     app.setStyle('Fusion')
-    # palette = QtGui.QPalette()
-    # palette.setColor(QtGui.QPalette.Window, QtGui.QColor(53,53,53))
-    # palette.setColor(QtGui.QPalette.WindowText, QtCore.Qt.white)
-    # palette.setColor(QtGui.QPalette.Base, QtGui.QColor(15,15,15))
-    # palette.setColor(QtGui.QPalette.AlternateBase, QtGui.QColor(53,53,53))
-    # palette.setColor(QtGui.QPalette.ToolTipBase, QtCore.Qt.white)
-    # palette.setColor(QtGui.QPalette.ToolTipText, QtCore.Qt.white)
-    # palette.setColor(QtGui.QPalette.Text, QtCore.Qt.white)
-    # palette.setColor(QtGui.QPalette.Button, QtGui.QColor(53,53,53))
+    app.setStyleSheet("QToolTip { color: white; background-color: rgb(47, 69, 80); border: 0px; }")
+    font = QtGui.QFont("Calibri Light", 10)
+    app.setFont(font)
+    palette = QtGui.QPalette()
+    palette.setColor(QtGui.QPalette.Window, white) # Window background
+    palette.setColor(QtGui.QPalette.WindowText, QtCore.Qt.black) 
+    palette.setColor(QtGui.QPalette.Base, blue_1)
+    palette.setColor(QtGui.QPalette.AlternateBase, blue_1)
+    palette.setColor(QtGui.QPalette.ToolTipBase, white)
+    palette.setColor(QtGui.QPalette.ToolTipText, QtCore.Qt.white)
+    palette.setColor(QtGui.QPalette.Text, blue_6)
+    palette.setColor(QtGui.QPalette.Button, blue_4)
     # palette.setColor(QtGui.QPalette.ButtonText, QtCore.Qt.white)
     # palette.setColor(QtGui.QPalette.BrightText, QtCore.Qt.red)
          
-    # palette.setColor(QtGui.QPalette.Highlight, QtGui.QColor(142,45,197).lighter())
-    # palette.setColor(QtGui.QPalette.HighlightedText, QtCore.Qt.black)
-    # app.setPalette(palette)
+    palette.setColor(QtGui.QPalette.Highlight, blue_7)
+    palette.setColor(QtGui.QPalette.HighlightedText, white)
+    app.setPalette(palette)
 
     MainWindow = QMainWindow()
     screen_resolution = app.desktop().screenGeometry()
