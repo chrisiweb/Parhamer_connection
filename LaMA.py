@@ -61,7 +61,8 @@ blue_3=QtGui.QColor(224, 233, 232) #211, 224, 223
 blue_4=QtGui.QColor(168, 189, 194)  
 blue_5=QtGui.QColor(88, 111, 124)
 blue_6=QtGui.QColor(47, 69, 80)
-blue_7=QtGui.QColor(47, 69, 80)        
+blue_7=QtGui.QColor(47, 69, 80)
+red= QtGui.QColor(195, 58, 63)        
 
 print("Loading...")
 
@@ -789,7 +790,8 @@ class Ui_MainWindow(object):
         self.label_warnung = QtWidgets.QLabel(self.centralwidget)
         self.label_warnung.setWordWrap(True)
         self.label_warnung.setObjectName(_fromUtf8("label_warnung"))
-        self.label_warnung.setStyleSheet(_fromUtf8("border-radius: 25px;border: 2px solid rgb(195, 58, 63);")) #background-color: rgb(195, 58, 63)
+        color=get_color(red)
+        self.label_warnung.setStyleSheet(_fromUtf8("border: 2px solid {};".format(color))) #background-color: rgb(195, 58, 63)
         #self.label_warnung.setMaximumSize(QtCore.QSize(375, 16777215))
         self.label_warnung.setText(_translate("MainWindow", "Achtung: Aufgrund neuer hilfreicher Befehle ist es notwendig, ein Update des srdp-mathematik-Pakets so bald wie möglich durchzuführen! Nähere Infos unter: lama.schule/update", None))
         self.gridLayout.addWidget(self.label_warnung, 5,0,1,1)
@@ -866,9 +868,9 @@ class Ui_MainWindow(object):
 
 
         self.groupBox_unterkapitel_cria = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBox_unterkapitel_cria.setStyleSheet(
-            "background-color: rgb(217, 255, 215);"
-        )
+        # self.groupBox_unterkapitel_cria.setStyleSheet(
+        #     "background-color: rgb(217, 255, 215);"
+        # )
         self.groupBox_unterkapitel_cria.setObjectName("groupBox_unterkapitel_cria")
         self.groupBox_unterkapitel_cria.setTitle(_translate("MainWindow", "Unterkapitel",None))
         self.gridLayout_11_cria = QtWidgets.QGridLayout(self.groupBox_unterkapitel_cria)
@@ -881,6 +883,9 @@ class Ui_MainWindow(object):
         self.scrollArea_unterkapitel_cria.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.scrollArea_unterkapitel_cria.setWidgetResizable(True)
         self.scrollArea_unterkapitel_cria.setObjectName("scrollArea_unterkapitel")
+        background_color=get_color(blue_3)
+        self.scrollArea_unterkapitel_cria.setStyleSheet("background-color: {};".format(background_color)
+        )
         self.scrollAreaWidgetContents_cria = QtWidgets.QWidget()
         self.scrollAreaWidgetContents_cria.setGeometry(QtCore.QRect(0, 0, 320, 279))
         self.scrollAreaWidgetContents_cria.setObjectName("scrollAreaWidgetContents_cria")
@@ -1073,7 +1078,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.label_bild_leer)
         self.label_bild_leer.setText(_translate("MainWindow", "", None))
         self.label_bild_leer.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.gridLayout.addWidget(self.groupBox_bilder, 6, 0, 2, 1)
+        self.gridLayout.addWidget(self.groupBox_bilder, 6, 0, 1, 1)
         self.groupBox_bilder.hide()
 
         #### CREATE CHECKBOXES ####
@@ -1143,7 +1148,7 @@ class Ui_MainWindow(object):
             _translate("MainWindow", "8. Klasse", None),
         )
 
-        self.groupBox_aufgabentyp.setMaximumSize(100, 60)
+        # self.groupBox_aufgabentyp.setMaximumSize(100, 60)
         self.comboBox_aufgabentyp_cr = QtWidgets.QComboBox(self.groupBox_aufgabentyp)
         self.comboBox_aufgabentyp_cr.setObjectName(_fromUtf8("comboBox_aufgabentyp_cr"))
         self.comboBox_aufgabentyp_cr.addItem(_fromUtf8(""))
@@ -1163,7 +1168,7 @@ class Ui_MainWindow(object):
 
         self.groupBox_punkte = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_punkte.setObjectName(_fromUtf8("groupBox_punkte"))
-        self.groupBox_punkte.setMaximumSize(80, 60)
+        # self.groupBox_punkte.setMaximumSize(80, 60)
         self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_punkte)
         self.gridLayout_6.setObjectName(_fromUtf8("gridLayout_6"))
         self.spinBox_punkte = QtWidgets.QSpinBox(self.groupBox_punkte)
@@ -1267,7 +1272,8 @@ class Ui_MainWindow(object):
         self.gridLayout_10 = QtWidgets.QGridLayout(self.groupBox_beispieleingabe)
         self.gridLayout_10.setObjectName(_fromUtf8("gridLayout_10"))
         self.label = QtWidgets.QLabel(self.groupBox_beispieleingabe)
-        self.label.setStyleSheet(_fromUtf8("border-radius: 25px;border: 2px solid rgb(195, 58, 63);"))
+        color = get_color(red)
+        self.label.setStyleSheet(_fromUtf8("border: 2px solid {};".format(color)))
         self.label.setWordWrap(True)
         self.label.setObjectName(_fromUtf8("label"))
         self.gridLayout_10.addWidget(self.label, 0, 0, 1, 1)
@@ -2339,9 +2345,9 @@ class Ui_MainWindow(object):
         if mode=='search':
             button_check_all = create_new_button(scrollarea, "alle auswählen", partial(self.button_all_gk_pressed,chosen_dictionary))
             button_check_all.setMinimumSize(QtCore.QSize(100, 22))
-            button_check_all.setStyleSheet(
-                _fromUtf8("background-color: rgb(240, 240, 240);")
-            )
+            # button_check_all.setStyleSheet(
+            #     _fromUtf8("background-color: rgb(240, 240, 240);")
+            # )
             gridLayout_scrollarea.addWidget(
                 button_check_all, 10, column, 1, 1, QtCore.Qt.AlignRight
             )
@@ -2538,7 +2544,8 @@ class Ui_MainWindow(object):
                 for unterkapitel in dict_klasse[alle_kapitel]:
                     label='checkbox_unterkapitel_{0}_{1}_{2}'.format(alle_klassen, alle_kapitel, unterkapitel)
                     self.dict_widget_variables[label].hide()
-
+                label_button_check_all = 'button_check_all_unterkapitel_{0}_{1}'.format(alle_klassen, alle_kapitel)
+                self.dict_widget_variables[label_button_check_all].hide()
         # self.button_check_all_unterkapitel.hide()         
 
     def create_all_checkboxes_unterkapitel(self):
@@ -7292,7 +7299,7 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setStyle('Fusion')
     app.setStyleSheet("QToolTip { color: white; background-color: rgb(47, 69, 80); border: 0px; }")
-    font = QtGui.QFont("Calibri Light", 10)
+    font = QtGui.QFont("Calibri Light", 9)
     app.setFont(font)
     palette = QtGui.QPalette()
     palette.setColor(QtGui.QPalette.Window, white) # Window background
