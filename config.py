@@ -10,6 +10,21 @@ if sys.platform.startswith("darwin"):
 
 config_file = os.path.join(path_programm, "_database", "_config", "config.yml")
 
+colors_ui = {
+'black'  : QtGui.QColor(0  , 0, 0),
+'white'  : QtGui.QColor(255, 255, 255),
+'gray'   : QtGui.QColor(214, 214, 214),
+'blue_1' : QtGui.QColor(245, 245, 255),
+'blue_2' : QtGui.QColor(225, 240, 240),
+'blue_3' : QtGui.QColor(224, 233, 232), #211, 224, 223  
+'blue_4' : QtGui.QColor(168, 189, 194),  
+'blue_5' : QtGui.QColor(88, 111, 124),
+'blue_6' : QtGui.QColor(47, 69, 80),
+'blue_7' : QtGui.QColor(47, 69, 80),
+'red'    : QtGui.QColor(195, 58, 63),
+}
+  
+
 def config_loader(pathToFile, parameter):
     for i in range(5):
         try:
