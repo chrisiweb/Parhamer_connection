@@ -71,8 +71,28 @@ def get_color(color):
 StyleSheet_tabWiget = """
 QTabBar::tab:selected {{background: {0}; color: {1}}}
 QWidget {{color: {2};background-color: {3}}}
-""".format(get_color(blue_3), get_color(black), get_color(white), get_color(blue_7))
+""".format(get_color(blue_2), get_color(black), get_color(white), get_color(blue_7))
 
+StyleSheet_new_tab = """
+color: {0};background-color: {1}
+""".format(get_color(black), get_color(blue_2))
+
+
+StyleSheet_typ2 = """
+QGroupBox {{background-color: {0}; color: {1}}}
+QLabel {{color:  {1}}}
+""".format(get_color(blue_5), get_color(white))
+
+## sizePolicy = QtWidgets.QSizePolicy( ######### Breite ############, ######### Höhe ############) 
+SizePolicy_fixed = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+SizePolicy_fixed_height = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+SizePolicy_fixed_width = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding)
+SizePolicy_maximum = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
+SizePolicy_maximum_height = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
+SizePolicy_maximum_width = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Expanding)
+SizePolicy_minimum = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+SizePolicy_minimum_height = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+SizePolicy_minimum_width = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
 print("Loading...")
 
 ### config_loader, path_programm, logo_path, SpinBox_noWheel
@@ -758,12 +778,9 @@ class Ui_MainWindow(object):
         # self.scrollArea_ws.setWidget(self.scrollAreaWidgetContents_ws)
         # self.gridLayout_ws.addWidget(self.scrollArea_ws, 1, 0, 7, 1)
         ######### Klassenthemen
-        background_color=get_color(blue_3)
-        text_color=get_color(black)
-
         ### K5
         self.tab_k5 = QtWidgets.QWidget()
-        self.tab_k5.setStyleSheet(_fromUtf8("color: {0};background-color: {1}".format(text_color, background_color)))
+        self.tab_k5.setStyleSheet(StyleSheet_new_tab)
         self.tab_k5.setObjectName(_fromUtf8("tab_k5"))
         self.gridLayout_k5 = QtWidgets.QGridLayout(self.tab_k5)
         self.gridLayout_k5.setObjectName(_fromUtf8("gridLayout_k5"))
@@ -771,7 +788,7 @@ class Ui_MainWindow(object):
         self.create_checkbox_klasse("k5", k5_beschreibung)
         ### K6
         self.tab_k6 = QtWidgets.QWidget()
-        self.tab_k6.setStyleSheet(_fromUtf8("color: {0};background-color: {1}".format(text_color, background_color)))
+        self.tab_k6.setStyleSheet(StyleSheet_new_tab)
         self.tab_k6.setObjectName(_fromUtf8("tab_k6"))
         self.gridLayout_k6 = QtWidgets.QGridLayout(self.tab_k6)
         self.gridLayout_k6.setObjectName(_fromUtf8("gridLayout_k6"))
@@ -779,7 +796,7 @@ class Ui_MainWindow(object):
         self.create_checkbox_klasse("k6", k6_beschreibung)
         ### K7
         self.tab_k7 = QtWidgets.QWidget()
-        self.tab_k7.setStyleSheet(_fromUtf8("color: {0};background-color: {1}".format(text_color, background_color)))
+        self.tab_k7.setStyleSheet(StyleSheet_new_tab)
         self.tab_k7.setObjectName(_fromUtf8("tab_k7"))
         self.gridLayout_k7 = QtWidgets.QGridLayout(self.tab_k7)
         self.gridLayout_k7.setObjectName(_fromUtf8("gridLayout_k7"))
@@ -787,7 +804,7 @@ class Ui_MainWindow(object):
         self.tabWidget.addTab(self.tab_k7, _fromUtf8(""))
         ### K8
         self.tab_k8 = QtWidgets.QWidget()
-        self.tab_k8.setStyleSheet(_fromUtf8("color: {0};background-color: {1}".format(text_color, background_color)))
+        self.tab_k8.setStyleSheet(StyleSheet_new_tab)
         self.tab_k8.setObjectName(_fromUtf8("tab_k8"))
         self.gridLayout_k8 = QtWidgets.QGridLayout(self.tab_k8)
         self.gridLayout_k8.setObjectName(_fromUtf8("gridLayout_k8"))
@@ -829,9 +846,7 @@ class Ui_MainWindow(object):
         for klasse in list_klassen:
             # name='tab_{0}'.format(klasse)
             new_tab = add_new_tab(self.tabWidget_klassen_cria, "{}. Klasse".format(klasse[1]))
-            text_color=get_color(black)
-            background_color= get_color(blue_3)
-            new_tab.setStyleSheet(_fromUtf8("color: {0};background-color: {1}".format(text_color, background_color)))
+            new_tab.setStyleSheet(StyleSheet_new_tab)
             new_gridlayout = QtWidgets.QGridLayout(new_tab)
             new_gridlayout.setObjectName("{}".format(new_gridlayout))
             
@@ -889,9 +904,7 @@ class Ui_MainWindow(object):
         self.scrollArea_unterkapitel_cria.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.scrollArea_unterkapitel_cria.setWidgetResizable(True)
         self.scrollArea_unterkapitel_cria.setObjectName("scrollArea_unterkapitel")
-        background_color=get_color(blue_3)
-        self.scrollArea_unterkapitel_cria.setStyleSheet("background-color: {};".format(background_color)
-        )
+        self.scrollArea_unterkapitel_cria.setStyleSheet(StyleSheet_new_tab)
         self.scrollAreaWidgetContents_cria = QtWidgets.QWidget()
         self.scrollAreaWidgetContents_cria.setGeometry(QtCore.QRect(0, 0, 320, 279))
         self.scrollAreaWidgetContents_cria.setObjectName("scrollAreaWidgetContents_cria")
@@ -921,7 +934,7 @@ class Ui_MainWindow(object):
         self.groupBox_unterkapitel_cria.hide()
 
         ##############################################################
-        #####################CREATOR #########################################
+        ##################### CREATOR #########################################
         self.groupBox_aufgabentyp = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_aufgabentyp.setObjectName(_fromUtf8("groupBox_aufgabentyp"))
         self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBox_aufgabentyp)
@@ -954,6 +967,7 @@ class Ui_MainWindow(object):
         self.groupBox_themengebiete_cria.setObjectName(
             _fromUtf8("groupBox_themengebiete_cria")
         )
+        self.groupBox_themengebiete_cria.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Expanding))
         self.groupBox_themengebiete_cria.setMaximumWidth(500)
         self.gridLayout_11_cr_cria = QtWidgets.QGridLayout(self.groupBox_themengebiete_cria)
         self.gridLayout_11_cr_cria.setObjectName(_fromUtf8("gridLayout_11_cr_cria"))
@@ -978,9 +992,7 @@ class Ui_MainWindow(object):
         for klasse in list_klassen:
             name='tab_{0}'.format(klasse)
             new_tab = add_new_tab(self.tab_widget_cr_cria, "{}. Klasse".format(klasse[1]))
-            background_color=get_color(blue_3)
-            text_color =get_color(black)
-            new_tab.setStyleSheet(_fromUtf8("color: {0}; background-color: {1};".format(text_color, background_color)))
+            new_tab.setStyleSheet(StyleSheet_new_tab)
             new_gridlayout = QtWidgets.QGridLayout(new_tab)
             new_gridlayout.setObjectName("{}".format(new_gridlayout))
 
@@ -1034,15 +1046,22 @@ class Ui_MainWindow(object):
 
 
         self.groupBox_ausgew_gk_cr = create_new_groupbox(self.centralwidget, "Ausgewählte Grundkompetenzen")
-        # self.groupBox_ausgew_gk_cr.setMinimumSize(QtCore.QSize(350, 0))
         self.groupBox_ausgew_gk_cr.setMaximumWidth(500)
+        
+        # self.groupBox_ausgew_gk_cr.setsizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum))
+        # self.groupBox_ausgew_gk_cr.setMinimumSize(QtCore.QSize(350, 0))
+        # self.groupBox_ausgew_gk_cr.setSizePolicy(SizePolicy_maximum_height)
 
 
         self.verticalLayout_2 = create_new_verticallayout(self.groupBox_ausgew_gk_cr)
+
         # QtWidgets.QVBoxLayout(self.groupBox_ausgew_gk_cr)
         # self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
 
-        self.label_ausgew_gk_creator = create_new_label(self.groupBox_ausgew_gk_cr, "", True)  
+        self.label_ausgew_gk_creator = create_new_label(self.groupBox_ausgew_gk_cr, "", True)
+        # self.label_ausgew_gk_creator.setSizePolicy(SizePolicy_maximum_width)
+        # self.label_ausgew_gk_creator.setSizePolicy(SizePolicy_fixed_height)
+        # self.label_ausgew_gk_creator.setSizePolicy(SizePolicy_fixed_width)  
         # QtWidgets.QLabel(self.groupBox_ausgew_gk_cr)
         # self.label_ausgew_gk.setWordWrap(True)
         # self.label_ausgew_gk.setObjectName(_fromUtf8("label_ausgew_gk"))
@@ -1054,9 +1073,12 @@ class Ui_MainWindow(object):
 
         
         self.groupBox_bilder = create_new_groupbox(self.centralwidget, "Bilder (klicken, um Bilder zu entfernen)")
+        self.groupBox_bilder.setMaximumWidth(500)
+        self.groupBox_bilder.setSizePolicy(SizePolicy_maximum_height)
         # QtWidgets.QGroupBox(self.centralwidget)
         #self.groupBox_bilder.setMaximumWidth(500)
-        self.groupBox_bilder.setMaximumSize(QtCore.QSize(500, 110))
+        # self.groupBox_bilder.setSizePolicy(SizePolicy_maximum_height)
+        # self.groupBox_bilder.setMaximumSize(QtCore.QSize(500, 110))
         # self.groupBox_bilder.setObjectName(_fromUtf8("groupBox_bilder"))
         # self.groupBox_bilder.setMaximumWidth(500)
         self.gridLayout_13 = QtWidgets.QGridLayout(self.groupBox_bilder)
@@ -1103,11 +1125,9 @@ class Ui_MainWindow(object):
         # ### WS ####
         self.create_tab_checkboxes_search(self.tab_widget_gk_cr, "Wahrscheinlichkeit und Statistik", ws_beschreibung, 'creator')
 
-        background_color=get_color(blue_3)
-        text_color=get_color(black)
         # ### 5. Klasse ###
         self.tab_k5_cr = QtWidgets.QWidget()
-        self.tab_k5_cr.setStyleSheet(_fromUtf8("color: {0};background-color: {1}".format(text_color, background_color)))
+        self.tab_k5_cr.setStyleSheet(StyleSheet_new_tab)
         self.tab_k5_cr.setObjectName(_fromUtf8("tab_k5_cr"))
         self.gridLayout_k5_cr = QtWidgets.QGridLayout(self.tab_k5_cr)
         self.gridLayout_k5_cr.setObjectName(_fromUtf8("gridLayout_k5_cr"))
@@ -1121,7 +1141,7 @@ class Ui_MainWindow(object):
         # ### 6. Klasse ###
         self.tab_k6_cr = QtWidgets.QWidget()
         self.tab_k6_cr.setObjectName(_fromUtf8("tab_k6_cr"))
-        self.tab_k6_cr.setStyleSheet(_fromUtf8("color: {0};background-color: {1}".format(text_color, background_color)))
+        self.tab_k6_cr.setStyleSheet(StyleSheet_new_tab)
         self.gridLayout_k6_cr = QtWidgets.QGridLayout(self.tab_k6_cr)
         self.gridLayout_k6_cr.setObjectName(_fromUtf8("gridLayout_k6_cr"))
         self.tab_widget_gk_cr.addTab(self.tab_k6_cr, _fromUtf8(""))
@@ -1134,7 +1154,7 @@ class Ui_MainWindow(object):
         # ### 7. Klasse ###
         self.tab_k7_cr = QtWidgets.QWidget()
         self.tab_k7_cr.setObjectName(_fromUtf8("tab_k7_cr"))
-        self.tab_k7_cr.setStyleSheet(_fromUtf8("color: {0};background-color: {1}".format(text_color, background_color)))
+        self.tab_k7_cr.setStyleSheet(StyleSheet_new_tab)
         self.gridLayout_k7_cr = QtWidgets.QGridLayout(self.tab_k7_cr)
         self.gridLayout_k7_cr.setObjectName(_fromUtf8("gridLayout_k7_cr"))
         self.tab_widget_gk_cr.addTab(self.tab_k7_cr, _fromUtf8(""))
@@ -1147,7 +1167,7 @@ class Ui_MainWindow(object):
         # ### 8. Klasse ###
         self.tab_k8_cr = QtWidgets.QWidget()
         self.tab_k8_cr.setObjectName(_fromUtf8("tab_k8_cr"))
-        self.tab_k8_cr.setStyleSheet(_fromUtf8("color: {0};background-color: {1}".format(text_color, background_color)))
+        self.tab_k8_cr.setStyleSheet(StyleSheet_new_tab)
         self.gridLayout_k8_cr = QtWidgets.QGridLayout(self.tab_k8_cr)
         self.gridLayout_k8_cr.setObjectName(_fromUtf8("gridLayout_k8_cr"))
         self.tab_widget_gk_cr.addTab(self.tab_k8_cr, _fromUtf8(""))
@@ -1160,6 +1180,7 @@ class Ui_MainWindow(object):
         # self.groupBox_aufgabentyp.setMaximumSize(100, 60)
         self.comboBox_aufgabentyp_cr = QtWidgets.QComboBox(self.groupBox_aufgabentyp)
         self.comboBox_aufgabentyp_cr.setObjectName(_fromUtf8("comboBox_aufgabentyp_cr"))
+        # self.comboBox_aufgabentyp_cr.setSizePolicy(SizePolicy_fixed)
         self.comboBox_aufgabentyp_cr.addItem(_fromUtf8(""))
         self.comboBox_aufgabentyp_cr.addItem(_fromUtf8(""))
         self.gridLayout_3.addWidget(self.comboBox_aufgabentyp_cr, 0, 0, 1, 1)
@@ -1177,6 +1198,7 @@ class Ui_MainWindow(object):
 
         self.groupBox_punkte = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_punkte.setObjectName(_fromUtf8("groupBox_punkte"))
+        # self.groupBox_punkte.setSizePolicy(SizePolicy_fixed)
         # self.groupBox_punkte.setMaximumSize(80, 60)
         self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_punkte)
         self.gridLayout_6.setObjectName(_fromUtf8("gridLayout_6"))
@@ -1193,6 +1215,7 @@ class Ui_MainWindow(object):
 
         self.groupBox_aufgabenformat = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_aufgabenformat.setObjectName(_fromUtf8("groupBox_aufgabenformat"))
+        self.groupBox_aufgabenformat.setMaximumWidth(300)
         self.gridLayout_7 = QtWidgets.QGridLayout(self.groupBox_aufgabenformat)
         self.gridLayout_7.setObjectName(_fromUtf8("gridLayout_7"))
 
@@ -1481,7 +1504,7 @@ class Ui_MainWindow(object):
         if self.chosen_program=='lama':
             self.gridLayout_5.addWidget(self.comboBox_pruefungstyp, 0, 4, 1, 2)
         if self.chosen_program=='cria':
-            self.gridLayout_5.addWidget(self.comboBox_pruefungstyp, 2, 5, 1, 1)
+            self.gridLayout_5.addWidget(self.comboBox_pruefungstyp, 0, 5, 1, 1)
         self.comboBox_pruefungstyp.currentIndexChanged.connect(
             self.comboBox_pruefungstyp_changed
         )
@@ -1526,17 +1549,18 @@ class Ui_MainWindow(object):
         self.spinBox_default_pkt.setObjectName("spinBox_default_pkt")
         self.verticalLayout_default_pkt.addWidget(self.spinBox_default_pkt)
         self.spinBox_default_pkt.valueChanged.connect(self.update_default_pkt)
-        self.gridLayout_5.addWidget(self.groupBox_default_pkt, 0, 3, 4, 1)
+        self.gridLayout_5.addWidget(self.groupBox_default_pkt, 0, 3, 3, 1)
 
         self.groupBox_klasse = QtWidgets.QGroupBox(self.groupBox_sage)
         self.groupBox_klasse.setObjectName("groupBox_klasse")
+        # self.groupBox_klasse.setSizePolicy(SizePolicy_fixed)
         # self.groupBox_klasse.setMaximumSize(QtCore.QSize(200, 16777215))
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.groupBox_klasse)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.lineEdit_klasse = QtWidgets.QLineEdit(self.groupBox_klasse)
         self.lineEdit_klasse.setObjectName("lineEdit_klasse")
         self.verticalLayout_4.addWidget(self.lineEdit_klasse)
-        self.gridLayout_5.addWidget(self.groupBox_klasse, 0, 2, 4, 1)
+        self.gridLayout_5.addWidget(self.groupBox_klasse, 0, 2, 3, 1)
         # self.groupBox_klasse.setMaximumSize(QtCore.QSize(90, 16777215))
         self.groupBox_datum = QtWidgets.QGroupBox(self.groupBox_sage)
         self.groupBox_datum.setObjectName("groupBox_datum")
@@ -1546,7 +1570,7 @@ class Ui_MainWindow(object):
         self.dateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
         self.dateEdit.setObjectName("dateEdit")
         self.verticalLayout_5.addWidget(self.dateEdit)
-        self.gridLayout_5.addWidget(self.groupBox_datum, 0, 1, 4, 1)
+        self.gridLayout_5.addWidget(self.groupBox_datum, 0, 1, 3, 1)
         # self.groupBox_datum.setMaximumSize(QtCore.QSize(140, 16777215))
         self.groupBox_nummer = QtWidgets.QGroupBox(self.groupBox_sage)
         self.groupBox_nummer.setObjectName("groupBox_nummer")
@@ -1569,7 +1593,7 @@ class Ui_MainWindow(object):
             _translate("MainWindow", "Typ1 Standard", None)
         )
         self.verticalLayout_6.addWidget(self.spinBox_nummer)
-        self.gridLayout_5.addWidget(self.groupBox_nummer, 0, 0, 4, 1)
+        self.gridLayout_5.addWidget(self.groupBox_nummer, 0, 0, 3, 1)
         self.horizontalspacer = QtWidgets.QSpacerItem(
             20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
         )
@@ -2330,6 +2354,7 @@ class Ui_MainWindow(object):
 
     def create_tab_checkboxes_search(self,tab_widget, titel, chosen_dictionary, mode):
         new_tab=add_new_tab(tab_widget, titel)    #self.tab_widget_gk self.tab_widget_gk_cr
+        new_tab.setStyleSheet(StyleSheet_new_tab)
         # self.tab_ag = QtWidgets.QWidget()
         # self.tab_ag.setObjectName(_fromUtf8("tab_ag"))
         gridlayout=create_new_gridlayout(new_tab)
@@ -2338,9 +2363,7 @@ class Ui_MainWindow(object):
         scrollarea = QtWidgets.QScrollArea(new_tab)
         scrollarea.setWidgetResizable(True)
         scrollarea.setObjectName("{}".format(scrollarea))
-        background_color=get_color(blue_3)
-        text_color = get_color(black)
-        new_tab.setStyleSheet(_fromUtf8("color: {0};background-color: {1}".format(text_color, background_color)))
+
         scrollareacontent = QtWidgets.QWidget()
         scrollareacontent.setGeometry(QtCore.QRect(0, 0, 641, 252))
         scrollareacontent.setObjectName("{}".format(scrollareacontent))
@@ -5196,10 +5219,11 @@ class Ui_MainWindow(object):
     def sage_aufgabe_add(self, aufgabe):
         if self.chosen_program=='lama':
 
-            num_typ1, num_typ2 = self.get_aufgabenverteilung()
+            old_num_typ1, old_num_typ2 = self.get_aufgabenverteilung()
+
             typ=self.get_aufgabentyp(aufgabe)
             if typ==1:
-                self.list_alle_aufgaben_sage.insert(num_typ1, aufgabe)
+                self.list_alle_aufgaben_sage.insert(old_num_typ1, aufgabe)
             if typ==2:
                 self.list_alle_aufgaben_sage.append(aufgabe)   
 
@@ -5207,7 +5231,7 @@ class Ui_MainWindow(object):
         if self.chosen_program =='cria':
             self.list_alle_aufgaben_sage.append(aufgabe)
 
-
+        num_typ1, num_typ2 = self.get_aufgabenverteilung()
         num_total = len(self.list_alle_aufgaben_sage)
 
 
@@ -5503,13 +5527,14 @@ class Ui_MainWindow(object):
             background_color=get_color(blue_1)
             new_groupbox.setStyleSheet(_fromUtf8("QGroupBox {{background-color: {0};}} ".format(background_color)))
         if typ == 2:
-            background_color=get_color(blue_6)
-            text_color = get_color(white)
-            new_groupbox.setStyleSheet(_fromUtf8("QGroupBox {{background-color: {0}; color: {1}}}".format(background_color, text_color)))
-            label_aufgabe.setStyleSheet(_fromUtf8("color: {0}".format(text_color)))
-            label_titel.setStyleSheet(_fromUtf8("color: {0}".format(text_color)))
-            groupbox_pkt.setStyleSheet(_fromUtf8("color: {0}".format(text_color)))
-            spinbox_pkt.setStyleSheet(_fromUtf8("color: rgb(0,0,0)"))
+            new_groupbox.setStyleSheet(StyleSheet_typ2)
+            # background_color=get_color(blue_5)
+            # text_color = get_color(white)
+            # new_groupbox.setStyleSheet(_fromUtf8("QGroupBox {{background-color: {0}; color: {1}}}".format(background_color, text_color)))
+            # label_aufgabe.setStyleSheet(_fromUtf8("color: {0}".format(text_color)))
+            # label_titel.setStyleSheet(_fromUtf8("color: {0}".format(text_color)))
+            # groupbox_pkt.setStyleSheet(_fromUtf8("color: {0}".format(text_color)))
+            # spinbox_pkt.setStyleSheet(_fromUtf8("color: rgb(0,0,0)"))
 
 
         button_up = create_standard_button(new_groupbox, "",
@@ -7314,11 +7339,11 @@ if __name__ == "__main__":
     palette.setColor(QtGui.QPalette.Window, white) # Window background
     palette.setColor(QtGui.QPalette.WindowText, QtCore.Qt.black) 
     palette.setColor(QtGui.QPalette.Base, white)
-    palette.setColor(QtGui.QPalette.AlternateBase, blue_3)
+    palette.setColor(QtGui.QPalette.AlternateBase, blue_2)
     palette.setColor(QtGui.QPalette.ToolTipBase, white)
     palette.setColor(QtGui.QPalette.ToolTipText, QtCore.Qt.white)
     palette.setColor(QtGui.QPalette.Text, blue_6)
-    palette.setColor(QtGui.QPalette.Button, blue_1) #blue_4
+    palette.setColor(QtGui.QPalette.Button, blue_3) #blue_4
 
     # palette.setColor(QtGui.QPalette.Inactive,QtGui.QPalette.WindowText, gray)
     palette.setColor(QtGui.QPalette.Disabled,QtGui.QPalette.WindowText, QtCore.Qt.darkGray)

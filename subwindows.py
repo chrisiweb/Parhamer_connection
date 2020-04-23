@@ -2,7 +2,7 @@ from PyQt5 import QtCore, QtWidgets, QtGui
 import os
 import shutil
 from functools import partial
-from config import config_loader, path_programm, logo_path, logo_cria_path
+from config import config_loader, path_programm, logo_path, logo_cria_button_path
 from config import logo_path
 from translate import _fromUtf8, _translate
 
@@ -33,10 +33,10 @@ class Ui_Dialog_choose_type(object):
         self.btn_lama_cria = QtWidgets.QPushButton()
         self.btn_lama_cria.setObjectName(_fromUtf8("btn_lama_cria"))
         # self.btn_lama_cria.setText("LaMA Cria (Unterstufe)")
-        self.btn_lama_cria.setIcon(QtGui.QIcon(logo_cria_path))
+        self.btn_lama_cria.setIcon(QtGui.QIcon(logo_cria_button_path))
         self.btn_lama_cria.setIconSize(QtCore.QSize(120,120))
         self.btn_lama_cria.setFixedSize(120,120)
-        # self.btn_lama_cria.setStyleSheet(_fromUtf8("background-color: rgb(63, 169, 245);"))
+        self.btn_lama_cria.setStyleSheet(_fromUtf8("background-color: rgb(63, 169, 245);"))
         self.btn_lama_cria.setAutoDefault(False)
         self.btn_lama_cria.setShortcut("F1")
         self.gridLayout.addWidget(self.btn_lama_cria, 0,0,1,1, QtCore.Qt.AlignCenter)

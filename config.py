@@ -15,8 +15,8 @@ colors_ui = {
 'white'  : QtGui.QColor(255, 255, 255),
 'gray'   : QtGui.QColor(214, 214, 214),
 'blue_1' : QtGui.QColor(245, 245, 255),
-'blue_2' : QtGui.QColor(225, 240, 240),
-'blue_3' : QtGui.QColor(224, 233, 232), #211, 224, 223  
+'blue_2' : QtGui.QColor(224, 233, 232),
+'blue_3' : QtGui.QColor(194,208,212), #211, 224, 223  
 'blue_4' : QtGui.QColor(168, 189, 194),  
 'blue_5' : QtGui.QColor(88, 111, 124),
 'blue_6' : QtGui.QColor(47, 69, 80),
@@ -61,6 +61,10 @@ logo_path = os.path.join(
 
 logo_cria_path = os.path.join(
     path_programm, "_database", "_config", "icon", "LaMA_cria_icon_logo.png"
+)
+
+logo_cria_button_path = os.path.join(
+    path_programm, "_database", "_config", "icon", "LaMa_cria_icon_logo_button.png"
 )
 
 class SpinBox_noWheel(QtWidgets.QSpinBox):
