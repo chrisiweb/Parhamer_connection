@@ -81,7 +81,7 @@ color: {0};background-color: {1}
 StyleSheet_typ2 = """
 QGroupBox {{background-color: {0}; color: {1}}}
 QLabel {{color:  {1}}}
-""".format(get_color(blue_5), get_color(white))
+""".format(get_color(blue_3), get_color(black))
 
 ## sizePolicy = QtWidgets.QSizePolicy( ######### Breite ############, ######### Höhe ############) 
 SizePolicy_fixed = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
@@ -7347,7 +7347,7 @@ if __name__ == "__main__":
 
     # palette.setColor(QtGui.QPalette.Inactive,QtGui.QPalette.WindowText, gray)
     palette.setColor(QtGui.QPalette.Disabled,QtGui.QPalette.WindowText, QtCore.Qt.darkGray)
-    palette.setColor(QtGui.QPalette.Disabled,QtGui.QPalette.Base, QtCore.Qt.gray)
+    # palette.setColor(QtGui.QPalette.Disabled,QtGui.QPalette.Base, QtCore.Qt.gray)
     # palette.setColor(QtGui.QPalette.ButtonText, QtCore.Qt.white)
     # palette.setColor(QtGui.QPalette.BrightText, QtCore.Qt.red)
          
