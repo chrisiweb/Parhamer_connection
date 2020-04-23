@@ -626,12 +626,12 @@ class Ui_MainWindow(object):
         self.verticalLayout = create_new_verticallayout(self.groupBox_themen_klasse) 
         # QtWidgets.QVBoxLayout(self.groupBox_themen_klasse)
         # self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.tab_widget_cria = QtWidgets.QTabWidget(self.groupBox_themen_klasse)
-        self.tab_widget_cria.setStyleSheet(StyleSheet_tabWiget)      
+        self.tab_widget_themen = QtWidgets.QTabWidget(self.groupBox_themen_klasse)
+        self.tab_widget_themen.setStyleSheet(StyleSheet_tabWiget)      
         # self.tabWidget.setStyleSheet(set_color_text(white))
 
-        self.tab_widget_cria.setObjectName(_fromUtf8("tab_widget_cria"))
-        self.verticalLayout.addWidget(self.tab_widget_cria)
+        self.tab_widget_themen.setObjectName(_fromUtf8("tab_widget_themen"))
+        self.verticalLayout.addWidget(self.tab_widget_themen)
 
         self.gridLayout.addWidget(self.groupBox_themen_klasse, 1, 0, 2, 1)
 
@@ -786,7 +786,7 @@ class Ui_MainWindow(object):
         # self.gridLayout_ws.addWidget(self.scrollArea_ws, 1, 0, 7, 1)
         ######### Klassenthemen
         ### K5
-        self.create_tab_checkboxes_themen(self.tab_widget_cria, "k5", "search")
+        self.create_tab_checkboxes_themen(self.tab_widget_themen, "k5", "search")
         # self.tab_k5 = QtWidgets.QWidget()
         # self.tab_k5.setStyleSheet(StyleSheet_new_tab)
         # self.tab_k5.setObjectName(_fromUtf8("tab_k5"))
@@ -795,31 +795,31 @@ class Ui_MainWindow(object):
         # self.tabWidget.addTab(self.tab_k5, _fromUtf8(""))
         # self.create_checkbox_klasse("k5", k5_beschreibung)
         ### K6
-        self.create_tab_checkboxes_themen(self.tab_widget_cria, "k6", "search")
+        self.create_tab_checkboxes_themen(self.tab_widget_themen, "k6", "search")
         # self.tab_k6 = QtWidgets.QWidget()
         # self.tab_k6.setStyleSheet(StyleSheet_new_tab)
         # self.tab_k6.setObjectName(_fromUtf8("tab_k6"))
         # self.gridLayout_k6 = QtWidgets.QGridLayout(self.tab_k6)
         # self.gridLayout_k6.setObjectName(_fromUtf8("gridLayout_k6"))
-        # self.tab_widget_cria.addTab(self.tab_k6, _fromUtf8(""))
+        # self.tab_widget_themen.addTab(self.tab_k6, _fromUtf8(""))
         # self.create_checkbox_klasse("k6", k6_beschreibung)
         ### K7
-        self.create_tab_checkboxes_themen(self.tab_widget_cria, "k7", "search")
+        self.create_tab_checkboxes_themen(self.tab_widget_themen, "k7", "search")
         # self.tab_k7 = QtWidgets.QWidget()
         # self.tab_k7.setStyleSheet(StyleSheet_new_tab)
         # self.tab_k7.setObjectName(_fromUtf8("tab_k7"))
         # self.gridLayout_k7 = QtWidgets.QGridLayout(self.tab_k7)
         # self.gridLayout_k7.setObjectName(_fromUtf8("gridLayout_k7"))
         # self.create_checkbox_klasse("k7", k7_beschreibung)
-        # self.tab_widget_cria.addTab(self.tab_k7, _fromUtf8(""))
+        # self.tab_widget_themen.addTab(self.tab_k7, _fromUtf8(""))
         ### K8
-        self.create_tab_checkboxes_themen(self.tab_widget_cria, "k8", "search")
+        self.create_tab_checkboxes_themen(self.tab_widget_themen, "k8", "search")
         # self.tab_k8 = QtWidgets.QWidget()
         # self.tab_k8.setStyleSheet(StyleSheet_new_tab)
         # self.tab_k8.setObjectName(_fromUtf8("tab_k8"))
         # self.gridLayout_k8 = QtWidgets.QGridLayout(self.tab_k8)
         # self.gridLayout_k8.setObjectName(_fromUtf8("gridLayout_k8"))
-        # self.tab_widget_cria.addTab(self.tab_k8, _fromUtf8(""))
+        # self.tab_widget_themen.addTab(self.tab_k8, _fromUtf8(""))
         # self.create_checkbox_klasse("k8", k8_beschreibung)
 
         #### Warnung ### Hinweis ####
@@ -1137,56 +1137,60 @@ class Ui_MainWindow(object):
         self.create_tab_checkboxes_gk(self.tab_widget_gk_cr, "Wahrscheinlichkeit und Statistik", ws_beschreibung, 'creator')
 
         # ### 5. Klasse ###
-        self.tab_k5_cr = QtWidgets.QWidget()
-        self.tab_k5_cr.setStyleSheet(StyleSheet_new_tab)
-        self.tab_k5_cr.setObjectName(_fromUtf8("tab_k5_cr"))
-        self.gridLayout_k5_cr = QtWidgets.QGridLayout(self.tab_k5_cr)
-        self.gridLayout_k5_cr.setObjectName(_fromUtf8("gridLayout_k5_cr"))
-        self.tab_widget_gk_cr.addTab(self.tab_k5_cr, _fromUtf8(""))
-        self.create_checkbox_klasse("k5_cr", k5_beschreibung)
-        self.tab_widget_gk_cr.setTabText(
-            self.tab_widget_gk_cr.indexOf(self.tab_k5_cr),
-            _translate("MainWindow", "5. Klasse", None),
-        )
+        self.create_tab_checkboxes_themen(self.tab_widget_gk_cr,"k5", "creator")
+        # self.tab_k5_cr = QtWidgets.QWidget()
+        # self.tab_k5_cr.setStyleSheet(StyleSheet_new_tab)
+        # self.tab_k5_cr.setObjectName(_fromUtf8("tab_k5_cr"))
+        # self.gridLayout_k5_cr = QtWidgets.QGridLayout(self.tab_k5_cr)
+        # self.gridLayout_k5_cr.setObjectName(_fromUtf8("gridLayout_k5_cr"))
+        # self.tab_widget_gk_cr.addTab(self.tab_k5_cr, _fromUtf8(""))
+        # self.create_checkbox_klasse("k5_cr", k5_beschreibung)
+        # self.tab_widget_gk_cr.setTabText(
+        #     self.tab_widget_gk_cr.indexOf(self.tab_k5_cr),
+        #     _translate("MainWindow", "5. Klasse", None),
+        # )
 
         # ### 6. Klasse ###
-        self.tab_k6_cr = QtWidgets.QWidget()
-        self.tab_k6_cr.setObjectName(_fromUtf8("tab_k6_cr"))
-        self.tab_k6_cr.setStyleSheet(StyleSheet_new_tab)
-        self.gridLayout_k6_cr = QtWidgets.QGridLayout(self.tab_k6_cr)
-        self.gridLayout_k6_cr.setObjectName(_fromUtf8("gridLayout_k6_cr"))
-        self.tab_widget_gk_cr.addTab(self.tab_k6_cr, _fromUtf8(""))
-        self.create_checkbox_klasse("k6_cr", k6_beschreibung)
-        self.tab_widget_gk_cr.setTabText(
-            self.tab_widget_gk_cr.indexOf(self.tab_k6_cr),
-            _translate("MainWindow", "6. Klasse", None),
-        )
+        self.create_tab_checkboxes_themen(self.tab_widget_gk_cr,"k6", "creator")
+        # self.tab_k6_cr = QtWidgets.QWidget()
+        # self.tab_k6_cr.setObjectName(_fromUtf8("tab_k6_cr"))
+        # self.tab_k6_cr.setStyleSheet(StyleSheet_new_tab)
+        # self.gridLayout_k6_cr = QtWidgets.QGridLayout(self.tab_k6_cr)
+        # self.gridLayout_k6_cr.setObjectName(_fromUtf8("gridLayout_k6_cr"))
+        # self.tab_widget_gk_cr.addTab(self.tab_k6_cr, _fromUtf8(""))
+        # self.create_checkbox_klasse("k6_cr", k6_beschreibung)
+        # self.tab_widget_gk_cr.setTabText(
+        #     self.tab_widget_gk_cr.indexOf(self.tab_k6_cr),
+        #     _translate("MainWindow", "6. Klasse", None),
+        # )
 
         # ### 7. Klasse ###
-        self.tab_k7_cr = QtWidgets.QWidget()
-        self.tab_k7_cr.setObjectName(_fromUtf8("tab_k7_cr"))
-        self.tab_k7_cr.setStyleSheet(StyleSheet_new_tab)
-        self.gridLayout_k7_cr = QtWidgets.QGridLayout(self.tab_k7_cr)
-        self.gridLayout_k7_cr.setObjectName(_fromUtf8("gridLayout_k7_cr"))
-        self.tab_widget_gk_cr.addTab(self.tab_k7_cr, _fromUtf8(""))
-        self.create_checkbox_klasse("k7_cr", k7_beschreibung)
-        self.tab_widget_gk_cr.setTabText(
-            self.tab_widget_gk_cr.indexOf(self.tab_k7_cr),
-            _translate("MainWindow", "7. Klasse", None),
-        )
+        self.create_tab_checkboxes_themen(self.tab_widget_gk_cr,"k7", "creator")
+        # self.tab_k7_cr = QtWidgets.QWidget()
+        # self.tab_k7_cr.setObjectName(_fromUtf8("tab_k7_cr"))
+        # self.tab_k7_cr.setStyleSheet(StyleSheet_new_tab)
+        # self.gridLayout_k7_cr = QtWidgets.QGridLayout(self.tab_k7_cr)
+        # self.gridLayout_k7_cr.setObjectName(_fromUtf8("gridLayout_k7_cr"))
+        # self.tab_widget_gk_cr.addTab(self.tab_k7_cr, _fromUtf8(""))
+        # self.create_checkbox_klasse("k7_cr", k7_beschreibung)
+        # self.tab_widget_gk_cr.setTabText(
+        #     self.tab_widget_gk_cr.indexOf(self.tab_k7_cr),
+        #     _translate("MainWindow", "7. Klasse", None),
+        # )
 
         # ### 8. Klasse ###
-        self.tab_k8_cr = QtWidgets.QWidget()
-        self.tab_k8_cr.setObjectName(_fromUtf8("tab_k8_cr"))
-        self.tab_k8_cr.setStyleSheet(StyleSheet_new_tab)
-        self.gridLayout_k8_cr = QtWidgets.QGridLayout(self.tab_k8_cr)
-        self.gridLayout_k8_cr.setObjectName(_fromUtf8("gridLayout_k8_cr"))
-        self.tab_widget_gk_cr.addTab(self.tab_k8_cr, _fromUtf8(""))
-        self.create_checkbox_klasse("k8_cr", k8_beschreibung)
-        self.tab_widget_gk_cr.setTabText(
-            self.tab_widget_gk_cr.indexOf(self.tab_k8_cr),
-            _translate("MainWindow", "8. Klasse", None),
-        )
+        self.create_tab_checkboxes_themen(self.tab_widget_gk_cr,"k8", "creator")
+        # self.tab_k8_cr = QtWidgets.QWidget()
+        # self.tab_k8_cr.setObjectName(_fromUtf8("tab_k8_cr"))
+        # self.tab_k8_cr.setStyleSheet(StyleSheet_new_tab)
+        # self.gridLayout_k8_cr = QtWidgets.QGridLayout(self.tab_k8_cr)
+        # self.gridLayout_k8_cr.setObjectName(_fromUtf8("gridLayout_k8_cr"))
+        # self.tab_widget_gk_cr.addTab(self.tab_k8_cr, _fromUtf8(""))
+        # self.create_checkbox_klasse("k8_cr", k8_beschreibung)
+        # self.tab_widget_gk_cr.setTabText(
+        #     self.tab_widget_gk_cr.indexOf(self.tab_k8_cr),
+        #     _translate("MainWindow", "8. Klasse", None),
+        # )
 
         # self.groupBox_aufgabentyp.setMaximumSize(100, 60)
         self.comboBox_aufgabentyp_cr = QtWidgets.QComboBox(self.groupBox_aufgabentyp)
@@ -2042,7 +2046,7 @@ class Ui_MainWindow(object):
         # self.actionReset.setObjectName(_fromUtf8("actionReset"))
 
         self.retranslateUi(MainWindow)
-        self.tab_widget_cria.setCurrentIndex(0)
+        self.tab_widget_themen.setCurrentIndex(0)
 
         self.tab_widget_gk_cr.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -2094,10 +2098,10 @@ class Ui_MainWindow(object):
         #     x = eval("self.cb_" + all + "_cr")
         #     x.stateChanged.connect(lambda: self.gk_checked_cr("gk"))
 
-        for g in range(5, 9):
-            for all in eval("k%s_beschreibung" % g):
-                x = eval("self.cb_k%s_cr_" % g + all + "_cr")
-                x.stateChanged.connect(lambda: self.gk_checked_cr("klasse"))
+        # for g in range(5, 9):
+        #     for all in eval("k%s_beschreibung" % g):
+        #         x = eval("self.cb_k%s_cr_" % g + all + "_cr")
+        #         x.stateChanged.connect(lambda: self.gk_checked_cr("klasse"))
 
         if loaded_lama_file_path != "":
             self.sage_load(True)
@@ -2244,18 +2248,18 @@ class Ui_MainWindow(object):
         #     _translate("MainWindow", "5. Klasse", None),
         # )
         # self.btn_k6.setText(_translate("MainWindow", "alle auswählen", None))
-        # self.tab_widget_cria.setTabText(
-        #     self.tab_widget_cria.indexOf(self.tab_k6),
+        # self.tab_widget_themen.setTabText(
+        #     self.tab_widget_themen.indexOf(self.tab_k6),
         #     _translate("MainWindow", "6. Klasse", None),
         # )
         # self.btn_k7.setText(_translate("MainWindow", "alle auswählen", None))
-        # self.tab_widget_cria.setTabText(
-        #     self.tab_widget_cria.indexOf(self.tab_k7),
+        # self.tab_widget_themen.setTabText(
+        #     self.tab_widget_themen.indexOf(self.tab_k7),
         #     _translate("MainWindow", "7. Klasse", None),
         # )
         # self.btn_k8.setText(_translate("MainWindow", "alle auswählen", None))
-        # self.tab_widget_cria.setTabText(
-        #     self.tab_widget_cria.indexOf(self.tab_k8),
+        # self.tab_widget_themen.setTabText(
+        #     self.tab_widget_themen.indexOf(self.tab_k8),
         #     _translate("MainWindow", "8. Klasse", None),
         # )
         # self.groupBox_gk.setTitle(_translate("MainWindow", "Grundkompetenzen", None))
@@ -2364,9 +2368,9 @@ class Ui_MainWindow(object):
 
     def create_checkboxes_themen(self,parent, layout, klasse, mode):
         if mode=='creator':       
-            name_start='checkbox_creator_themen_'
+            name_start='checkbox_creator_themen_{}_'.format(klasse)
         if mode=='search':
-            name_start='checkbox_search_themen_'
+            name_start='checkbox_search_themen_{}_'.format(klasse)
 
 
         dict_klasse = eval('{}_beschreibung'.format(klasse))
@@ -2374,7 +2378,7 @@ class Ui_MainWindow(object):
 
         for thema in dict_klasse:
             new_checkbox = create_new_checkbox(parent, "")
-            new_checkbox.stateChanged.connect(self.checkbox_rest_checked)
+            new_checkbox.stateChanged.connect(partial(self.checkbox_checked, mode, 'themen'))
             new_checkbox.setSizePolicy(SizePolicy_fixed)
             layout.addWidget(new_checkbox, row,0,1,1)
 
@@ -2512,12 +2516,14 @@ class Ui_MainWindow(object):
         row=self.create_checkboxes_themen(scrollareacontent, gridlayout_scrollarea, klasse, mode)
 
         dict_klasse = eval('{}_beschreibung'.format(klasse))
-        button_check_all = create_new_button(scrollareacontent, "alle auswählen", partial(self.button_all_checkboxes_pressed,dict_klasse, 'themen'))
-        button_check_all.setSizePolicy(SizePolicy_fixed)
+        if mode=='search':
+            button_check_all = create_new_button(scrollareacontent, "alle auswählen", partial(self.button_all_checkboxes_pressed,dict_klasse, 'themen', klasse))
+            button_check_all.setSizePolicy(SizePolicy_fixed)
 
         gridlayout_scrollarea.setRowStretch(row, 1)
 
-        gridlayout_scrollarea.addWidget(button_check_all, row+1, 0, 1,2)      
+        if mode=='search':
+            gridlayout_scrollarea.addWidget(button_check_all, row+1, 0, 1,2)      
 
         scrollarea.setFrameShape(QtWidgets.QFrame.NoFrame)
         scrollarea.setWidget(scrollareacontent)
@@ -2584,7 +2590,7 @@ class Ui_MainWindow(object):
             background_color=get_color(blue_7)
             new_checkbox.setStyleSheet("QToolTip {{ color: white; background-color: {}; border: 0px; }}".format(background_color))
             layout.addWidget(new_checkbox, row, column, 1, 1)
-            new_checkbox.stateChanged.connect(partial(self.checkbox_checked, mode)) 
+            new_checkbox.stateChanged.connect(partial(self.checkbox_checked, mode, 'gk')) 
             name=name_start+all
             self.dict_widget_variables[name]=new_checkbox
 
@@ -2709,13 +2715,6 @@ class Ui_MainWindow(object):
                     )
 
     def create_Tooltip(self, chosen_dict):
-        # try:
-        #     for all in chosen_dict:
-        #         x = eval("self.cb_" + all)
-        #         x.setToolTip(chosen_dict[all])
-        #         y = eval("self.cb_" + all + "_cr")
-        #         y.setToolTip(chosen_dict[all])
-        # except AttributeError:
         for all in chosen_dict:
             name='checkbox_search_gk_'+all
             self.dict_widget_variables[name].setToolTip(chosen_dict[all])
@@ -3290,158 +3289,121 @@ class Ui_MainWindow(object):
     #     grid.addItem(spacerItem_end, row, column, 1, 1)
 
 
-    def create_checkbox_klasse(self, klasse, chosen_dict):
-        row = 0
-        column = 0
-        max_row = 9
+    # def create_checkbox_klasse(self, klasse, chosen_dict):
+    #     row = 0
+    #     column = 0
+    #     max_row = 9
 
-        for all in chosen_dict:
-            if "cr" in klasse:
-                cb_name = str(all + "_cr")
-                cb_label = chosen_dict[all].replace("\n", " ")
-            else:
-                cb_name = all
-                cb_label = chosen_dict[all]
-            exec(
-                "self.cb_"
-                + klasse
-                + "_"
-                + cb_name
-                + "= QtWidgets.QCheckBox(self.tab_"
-                + klasse
-                + ")"
-            )
-            exec(
-                "self.cb_"
-                + klasse
-                + "_"
-                + cb_name
-                + '.setObjectName(_fromUtf8("cb_'
-                + klasse
-                + "_"
-                + cb_name
-                + '"))'
-            )
-            grid = eval("self.gridLayout_" + klasse)
-            x = eval("self.cb_" + klasse + "_" + cb_name)
-            # x.setMaximumWidth(25)
-            x.setMaximumSize(QtCore.QSize(20, 22))
-            exec(
-                "self.cb_label_"
-                + klasse
-                + "_"
-                + cb_name
-                + "= QtWidgets.QLabel(self.tab_"
-                + klasse
-                + ")"
-            )
-            exec(
-                "self.cb_label_"
-                + klasse
-                + "_"
-                + cb_name
-                + '.setObjectName(_fromUtf8("cb_label_'
-                + klasse
-                + "_"
-                + cb_name
-                + '"))'
-            )
-            x_label = eval("self.cb_label_" + klasse + "_" + cb_name)
-            x_label.setWordWrap(True)
-            x.setFocusPolicy(QtCore.Qt.NoFocus)
-            x_label.setText(_translate("MainWindow", cb_label, None))
+    #     for all in chosen_dict:
+    #         if "cr" in klasse:
+    #             cb_name = str(all + "_cr")
+    #             cb_label = chosen_dict[all].replace("\n", " ")
+    #         else:
+    #             cb_name = all
+    #             cb_label = chosen_dict[all]
+    #         exec(
+    #             "self.cb_"
+    #             + klasse
+    #             + "_"
+    #             + cb_name
+    #             + "= QtWidgets.QCheckBox(self.tab_"
+    #             + klasse
+    #             + ")"
+    #         )
+    #         exec(
+    #             "self.cb_"
+    #             + klasse
+    #             + "_"
+    #             + cb_name
+    #             + '.setObjectName(_fromUtf8("cb_'
+    #             + klasse
+    #             + "_"
+    #             + cb_name
+    #             + '"))'
+    #         )
+    #         grid = eval("self.gridLayout_" + klasse)
+    #         x = eval("self.cb_" + klasse + "_" + cb_name)
+    #         # x.setMaximumWidth(25)
+    #         x.setMaximumSize(QtCore.QSize(20, 22))
+    #         exec(
+    #             "self.cb_label_"
+    #             + klasse
+    #             + "_"
+    #             + cb_name
+    #             + "= QtWidgets.QLabel(self.tab_"
+    #             + klasse
+    #             + ")"
+    #         )
+    #         exec(
+    #             "self.cb_label_"
+    #             + klasse
+    #             + "_"
+    #             + cb_name
+    #             + '.setObjectName(_fromUtf8("cb_label_'
+    #             + klasse
+    #             + "_"
+    #             + cb_name
+    #             + '"))'
+    #         )
+    #         x_label = eval("self.cb_label_" + klasse + "_" + cb_name)
+    #         x_label.setWordWrap(True)
+    #         x.setFocusPolicy(QtCore.Qt.NoFocus)
+    #         x_label.setText(_translate("MainWindow", cb_label, None))
 
-            # self.label = QtWidgets.QLabel(self.groupBox_beispieleingabe)
-            # label_aufgabe=eval('self.label_aufgabe_{}'.format(bsp_string))
-            # x_label.setWordWrap(True)
-            # label_aufgabe.setObjectName("label_aufgabe_{}".format(bsp_string))
-            # self.gridLayout_gB.addWidget(label_aufgabe, 0, 0, 1, 1)
+    #         # self.label = QtWidgets.QLabel(self.groupBox_beispieleingabe)
+    #         # label_aufgabe=eval('self.label_aufgabe_{}'.format(bsp_string))
+    #         # x_label.setWordWrap(True)
+    #         # label_aufgabe.setObjectName("label_aufgabe_{}".format(bsp_string))
+    #         # self.gridLayout_gB.addWidget(label_aufgabe, 0, 0, 1, 1)
 
-            # x.setText(_translate("MainWindow", cb_label, None))
-            grid.addWidget(x, row, column, 1, 1)
-            grid.addWidget(x_label, row, column + 1, 1, 1)
+    #         # x.setText(_translate("MainWindow", cb_label, None))
+    #         grid.addWidget(x, row, column, 1, 1)
+    #         grid.addWidget(x_label, row, column + 1, 1, 1)
 
-            if row > max_row:
-                row = 0
-                column += 2
-            else:
-                row += 1
+    #         if row > max_row:
+    #             row = 0
+    #             column += 2
+    #         else:
+    #             row += 1
 
-            if "cr" in klasse:
-                pass
-            else:
-                exec(
-                    "self.btn_"
-                    + klasse
-                    + "= QtWidgets.QPushButton(self.tab_"
-                    + klasse
-                    + ")"
-                )
-                exec(
-                    'self.btn_%s.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))'
-                    % klasse
-                )
-                exec(
-                    "self.btn_"
-                    + klasse
-                    + '.setObjectName(_fromUtf8("btn_'
-                    + klasse
-                    + '"))'
-                )
-                x_all = eval("self.btn_" + klasse)
-                x_all.setMinimumSize(QtCore.QSize(100, 22))
-                # x_all.setMaximumSize(QtCore.QSize(100,22))
-                exec(
-                    "self.gridLayout_"
-                    + klasse
-                    + ".addWidget(self.btn_"
-                    + klasse
-                    + ", max_row, column+1, 1, 1, QtCore.Qt.AlignRight)"
-                )
+    #         if "cr" in klasse:
+    #             pass
+    #         else:
+    #             exec(
+    #                 "self.btn_"
+    #                 + klasse
+    #                 + "= QtWidgets.QPushButton(self.tab_"
+    #                 + klasse
+    #                 + ")"
+    #             )
+    #             exec(
+    #                 'self.btn_%s.setStyleSheet(_fromUtf8("background-color: rgb(240, 240, 240);"))'
+    #                 % klasse
+    #             )
+    #             exec(
+    #                 "self.btn_"
+    #                 + klasse
+    #                 + '.setObjectName(_fromUtf8("btn_'
+    #                 + klasse
+    #                 + '"))'
+    #             )
+    #             x_all = eval("self.btn_" + klasse)
+    #             x_all.setMinimumSize(QtCore.QSize(100, 22))
+    #             # x_all.setMaximumSize(QtCore.QSize(100,22))
+    #             exec(
+    #                 "self.gridLayout_"
+    #                 + klasse
+    #                 + ".addWidget(self.btn_"
+    #                 + klasse
+    #                 + ", max_row, column+1, 1, 1, QtCore.Qt.AlignRight)"
+    #             )
 
-    # def btn_k5_pressed(self):
-    #     if self.cb_k5_fu.isChecked() == False:
-    #         for all in k5_beschreibung:
-    #             x = eval("self.cb_k5_" + all)
-    #             x.setChecked(True)
-    #     elif self.cb_k5_fu.isChecked() == True:
-    #         for all in k5_beschreibung:
-    #             x = eval("self.cb_k5_" + all)
-    #             x.setChecked(False)
 
-    # def btn_k6_pressed(self):
-    #     if self.cb_k6_bsw.isChecked() == False:
-    #         for all in k6_beschreibung:
-    #             x = eval("self.cb_k6_" + all)
-    #             x.setChecked(True)
-    #     elif self.cb_k6_bsw.isChecked() == True:
-    #         for all in k6_beschreibung:
-    #             x = eval("self.cb_k6_" + all)
-    #             x.setChecked(False)
-
-    # def btn_k7_pressed(self):
-    #     if self.cb_k7_dr.isChecked() == False:
-    #         for all in k7_beschreibung:
-    #             x = eval("self.cb_k7_" + all)
-    #             x.setChecked(True)
-    #     elif self.cb_k7_dr.isChecked() == True:
-    #         for all in k7_beschreibung:
-    #             x = eval("self.cb_k7_" + all)
-    #             x.setChecked(False)
-
-    # def btn_k8_pressed(self):
-    #     if self.cb_k8_ddg.isChecked() == False:
-    #         for all in k8_beschreibung:
-    #             x = eval("self.cb_k8_" + all)
-    #             x.setChecked(True)
-    #     elif self.cb_k8_ddg.isChecked() == True:
-    #         for all in k8_beschreibung:
-    #             x = eval("self.cb_k8_" + all)
-    #             x.setChecked(False)
-
-    def button_all_checkboxes_pressed(self, chosen_dictionary, typ): 
+    def button_all_checkboxes_pressed(self, chosen_dictionary, typ, klasse=None): 
         #checkbox_creator_
         name_start='checkbox_search_{}_'.format(typ)
+        if typ=='themen':
+            name_start=name_start+klasse+'_'
         first_element=name_start+list(chosen_dictionary.keys())[0]
 
         if self.dict_widget_variables[first_element].isChecked() == False:
@@ -3452,79 +3414,76 @@ class Ui_MainWindow(object):
             for all in chosen_dictionary:
                 name=name_start+all
                 self.dict_widget_variables[name].setChecked(False)           
-        # if self.cb_ag11.isChecked() == False:
-        #     for all in ag_beschreibung:
-        #         x = eval("self.cb_" + all)
-        #         x.setChecked(True)
-        # elif self.cb_ag11.isChecked() == True:
-        #     for all in ag_beschreibung:
-        #         x = eval("self.cb_" + all)
-        #         x.setChecked(False)
 
-    # def btn_an_all_pressed(self):
-    #     if self.cb_an11.isChecked() == False:
-    #         for all in an_beschreibung:
-    #             x = eval("self.cb_" + all)
-    #             x.setChecked(True)
-    #     elif self.cb_an11.isChecked() == True:
-    #         for all in an_beschreibung:
-    #             x = eval("self.cb_" + all)
-    #             x.setChecked(False)
 
-    # def btn_fa_all_pressed(self):
-    #     if self.cb_fa11.isChecked() == False:
-    #         for all in fa_beschreibung:
-    #             x = eval("self.cb_" + all)
-    #             x.setChecked(True)
-    #     elif self.cb_fa11.isChecked() == True:
-    #         for all in fa_beschreibung:
-    #             x = eval("self.cb_" + all)
-    #             x.setChecked(False)
-
-    # def btn_ws_all_pressed(self):
-    #     if self.cb_ws11.isChecked() == False:
-    #         for all in ws_beschreibung:
-    #             x = eval("self.cb_" + all)
-    #             x.setChecked(True)
-    #     elif self.cb_ws11.isChecked() == True:
-    #         for all in ws_beschreibung:
-    #             x = eval("self.cb_" + all)
-    #             x.setChecked(False)
-
-    # def cb_checked(self):
-    # 	set_chosen_gk=set([])
-
-    def checkbox_checked(self, mode):
+    def checkbox_checked(self, mode, typ):
         chosen_gk = []
-        if mode == 'search':
-            name_checkbox='checkbox_search_gk_'
-        if mode == 'creator':
-            name_checkbox='checkbox_creator_gk_'  
+        chosen_themen = []
+        name_checkbox='checkbox_{0}_'.format(mode)
+
 
         for widget in self.dict_widget_variables:
             if widget.startswith(name_checkbox):
                 if self.dict_widget_variables[widget].isChecked()==True:
-                    gk=widget.split(name_checkbox)[1]
-                    chosen_gk.append(dict_gk[gk])
+                    if 'gk' in widget:
+                        # print(widget)
+                        # widget.split('_'))
+                        gk=widget.split('_')[-1]
+                        chosen_gk.append(dict_gk[gk])                        
+                    if 'themen' in widget:
+                        klasse = widget.split('_')[-2]
+                        thema = widget.split('_')[-1]
+                        # typ, klasse, thema = widget.split(name_checkbox)[1].split('_')
+                        chosen_themen.append(thema.upper() + " ("+ klasse[1]+ ")")                   
 
-
-        # list_gk = ["ag", "fa", "an", "ws"]
-
-        # for thema in list_gk:
-        #     exec("set_chosen_gk_%s=set([])" % thema)
-        #     for all in eval("%s_beschreibung" % thema):
-        #         x = eval("self.cb_" + all)
-        #         if x.isChecked() == True:
-        #             eval("set_chosen_gk_%s.add(x.text())" % thema)
-        #     eval("chosen_gk.extend(sorted(set_chosen_gk_%s))" % thema)
 
         x = ", ".join(chosen_gk)
+        if len(chosen_themen) > 6:
+            y = ", ".join(sorted(chosen_themen)[:6])
+            y = y + ", ..."
+        else:
+            y = ", ".join(sorted(chosen_themen))
 
         if mode=='search':
-            label=self.label_ausgew_gk
+            if len(chosen_themen) > 0:
+                y = "Weitere: " + y
+            self.label_ausgew_gk.setText(_translate("MainWindow", str(x), None))
+            self.label_ausgew_gk_rest.setText(_translate("MainWindow", str(y), None))
         if mode=='creator':
-            label=self.label_ausgew_gk_creator
-        label.setText(_translate("MainWindow", str(x), None))
+            if x=='':
+                gesamt=y
+            elif y=='':
+                gesamt=x
+            else:
+                gesamt = x + ', ' + y
+            self.label_ausgew_gk_creator.setText(_translate("MainWindow", str(gesamt), None))
+
+
+
+    def checkbox_rest_checked(self, mode):
+        set_chosen_gk = set([])
+        if mode=='creator':       
+            name_checkbox='checkbox_creator_themen_'
+        if mode=='search':
+            name_checkbox='checkbox_search_themen_'
+
+        for widget in self.dict_widget_variables:
+            if widget.startswith(name_checkbox):
+                if self.dict_widget_variables[widget].isChecked()==True:
+                    klasse, thema = widget.split(name_checkbox)[1].split('_')
+                    set_chosen_gk.add(thema.upper() + " ("+ klasse[1]+ ")") 
+
+
+        if len(set_chosen_gk) > 6:
+            x = ", ".join(list(sorted(set_chosen_gk))[:6])
+            x = x + ", ..."
+        else:
+            x = ", ".join(sorted(set_chosen_gk))
+        if len(set_chosen_gk) > 0:
+            x = "Weitere: " + x
+        self.label_ausgew_gk_rest.setText(_translate("MainWindow", str(x), None))
+
+
 
     def comboBox_pruefungstyp_changed(self):
         if (
@@ -3543,33 +3502,8 @@ class Ui_MainWindow(object):
             self.groupBox_beurteilungsraster.setEnabled(True)
             self.pushButton_titlepage.setEnabled(True)
 
-    def checkbox_rest_checked(self):
-        print('test')
-        # set_chosen_gk = set([])
-        # for all in k5_beschreibung:
-        #     x = eval("self.cb_k5_" + all)
-        #     if x.isChecked() == True:
-        #         set_chosen_gk.add(all.upper() + "(5)")
-        # for all in k6_beschreibung:
-        #     x = eval("self.cb_k6_" + all)
-        #     if x.isChecked() == True:
-        #         set_chosen_gk.add(all.upper() + "(6)")
-        # for all in k7_beschreibung:
-        #     x = eval("self.cb_k7_" + all)
-        #     if x.isChecked() == True:
-        #         set_chosen_gk.add(all.upper() + "(7)")
-        # for all in k8_beschreibung:
-        #     x = eval("self.cb_k8_" + all)
-        #     if x.isChecked() == True:
-        #         set_chosen_gk.add(all.upper() + "(8)")
-        # if len(set_chosen_gk) > 6:
-        #     x = ", ".join(list(sorted(set_chosen_gk))[:6])
-        #     x = x + ", ..."
-        # else:
-        #     x = ", ".join(sorted(set_chosen_gk))
-        # if len(set_chosen_gk) > 0:
-        #     x = "Weitere: " + x
-        # self.label_ausgew_gk_rest.setText(_translate("MainWindow", str(x), None))
+
+
 
 
     ############################################################################
