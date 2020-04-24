@@ -532,6 +532,7 @@ class Ui_MainWindow(object):
 
 
         self.groupBox_titelsuche = create_new_groupbox(self.centralwidget, "Titelsuche:")
+        self.groupBox_titelsuche.setSizePolicy(SizePolicy_fixed_height)
 
         # self.groupBox_titelsuche = QtWidgets.QGroupBox(self.centralwidget)
         # self.groupBox_titelsuche.setObjectName(_fromUtf8("groupBox_titelsuche"))
@@ -546,13 +547,12 @@ class Ui_MainWindow(object):
         self.entry_suchbegriffe = create_new_lineedit(self.groupBox_titelsuche)
         self.gridLayout_10.addWidget(self.entry_suchbegriffe, 0, 0, 1, 1)
 
-        self.gridLayout.addWidget(self.groupBox_titelsuche, 4, 1, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_titelsuche, 4, 1, 1, 1, QtCore.Qt.AlignTop)
 
 
         self.groupBox_klassen = create_new_groupbox(self.centralwidget, "Themen Schulstufe")
         self.gridLayout_14 = create_new_gridlayout(self.groupBox_klassen)
-        # QtWidgets.QGridLayout(self.groupBox_klassen)
-        # self.gridLayout_14.setObjectName(_fromUtf8("gridLayout_14"))
+
 
         self.cb_k5 = create_new_checkbox(self.groupBox_klassen, "5. Klasse")
         self.gridLayout_14.addWidget(self.cb_k5, 0, 0, 1, 1)
@@ -923,7 +923,7 @@ class Ui_MainWindow(object):
         self.scrollArea_unterkapitel_cria.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.scrollArea_unterkapitel_cria.setWidgetResizable(True)
         self.scrollArea_unterkapitel_cria.setObjectName("scrollArea_unterkapitel")
-        self.scrollArea_unterkapitel_cria.setStyleSheet(StyleSheet_new_tab)
+        self.scrollArea_unterkapitel_cria.setStyleSheet("background-color: {}".format(get_color(blue_3)))
         self.scrollAreaWidgetContents_cria = QtWidgets.QWidget()
         self.scrollAreaWidgetContents_cria.setGeometry(QtCore.QRect(0, 0, 320, 279))
         self.scrollAreaWidgetContents_cria.setObjectName("scrollAreaWidgetContents_cria")
@@ -1033,6 +1033,7 @@ class Ui_MainWindow(object):
             selection_text_color=get_color(white)
             combobox_kapitel.setStyleSheet("background-color: rgb(240, 240, 240);selection-background-color: {0}; selection-color: {1}".format(selection_background_color, selection_text_color))
             combobox_kapitel.setMinimumHeight(25)
+            
             self.dict_widget_variables['combobox_kapitel_creator_cria_{}'.format(klasse)]=combobox_kapitel
             dict_klasse_name = eval('dict_{}_name'.format(klasse))
             index=0
@@ -1044,13 +1045,14 @@ class Ui_MainWindow(object):
             new_verticallayout.addWidget(combobox_kapitel)
 
             dict_klasse = eval('dict_{}'.format(klasse))
-
-            for unterkapitel in dict_klasse[list(dict_klasse.keys())[0]]:
+            kapitel= list(dict_klasse.keys())[0]
+            print(kapitel)
+            for unterkapitel in dict_klasse[kapitel]:
                 new_checkbox=create_new_checkbox(new_scrollareacontent, dict_unterkapitel[unterkapitel] + ' (' + unterkapitel +')')
-                new_checkbox.stateChanged.connect(partial(self.checkbox_unterkapitel_checked_creator_cria, new_checkbox, klasse, list(dict_klasse.keys())[0], unterkapitel))
+                new_checkbox.stateChanged.connect(partial(self.checkbox_unterkapitel_checked_creator_cria, new_checkbox, klasse, kapitel, unterkapitel))
+                self.dict_widget_variables['checkbox_unterkapitel_creator_{0}_{1}_{2}'.format(klasse, kapitel, unterkapitel)]=new_checkbox
                 new_verticallayout.addWidget(new_checkbox)
                 new_checkbox.setFocusPolicy(QtCore.Qt.NoFocus)
-                 
           
 
             new_verticallayout.addItem(self.spacerItem_unterkapitel_creator_cria)
@@ -2822,9 +2824,9 @@ class Ui_MainWindow(object):
         self.groupBox_unterkapitel_cria.setTitle(
             _translate(
                 "MainWindow",
-                "Unterkapitel - "
+                "Unterkapitel  - "
                 + klasse[1]
-                + ". Klasse - "
+                + ". Klasse  - "
                 + dict_klasse_name[kapitel],
                 None
             )
@@ -2896,11 +2898,15 @@ class Ui_MainWindow(object):
         dict_klasse = eval("dict_{}".format(klasse))
 
         for unterkapitel in dict_klasse[kapitel]:
-            new_checkbox=create_new_checkbox(parent, dict_unterkapitel[unterkapitel])
-            
-            new_checkbox.stateChanged.connect(partial(self.checkbox_unterkapitel_checked_creator_cria,new_checkbox, klasse, kapitel, unterkapitel))
-            new_checkbox.setFocusPolicy(QtCore.Qt.NoFocus)
-            layout.addWidget(new_checkbox)
+            if 'checkbox_unterkapitel_creator_{0}_{1}_{2}'.format(klasse, kapitel, unterkapitel) in self.dict_widget_variables:
+                checkbox = self.dict_widget_variables['checkbox_unterkapitel_creator_{0}_{1}_{2}'.format(klasse, kapitel, unterkapitel)]
+                layout.addWidget(checkbox) 
+            else:
+                new_checkbox=create_new_checkbox(parent, dict_unterkapitel[unterkapitel])              
+                new_checkbox.stateChanged.connect(partial(self.checkbox_unterkapitel_checked_creator_cria,new_checkbox, klasse, kapitel, unterkapitel))
+                self.dict_widget_variables['checkbox_unterkapitel_creator_{0}_{1}_{2}'.format(klasse, kapitel, unterkapitel)]=new_checkbox
+                new_checkbox.setFocusPolicy(QtCore.Qt.NoFocus)
+                layout.addWidget(new_checkbox)
 
         layout.addItem(self.spacerItem_unterkapitel_creator_cria)
 
@@ -2969,40 +2975,40 @@ class Ui_MainWindow(object):
     #     x = ", ".join(list_labels)
     #     self.label_ausgew_gk.setText(_translate("MainWindow", x, None))
 
-    def uncheck_all_checkboxes(self, thema):
-        name = 'checkbox_search_gk_'+ thema       
-        self.dict_widget_variables[name].setChecked(False)
+    def uncheck_all_checkboxes(self, typ):
+        name='checkbox_search_{}_'.format(typ)
+        name_creator='checkbox_creator_{}_'.format(typ)  
+        # if typ=='gk':     
+        #     name = 'checkbox_search_gk_'
+        #     name_creator = 'checkbox_creator_gk_' 
 
-        name = 'checkbox_creator_gk_'+ thema       
-        self.dict_widget_variables[name].setChecked(False)
+        # if typ=='themen':
+        #     name = 'checkbox_search_themen_'
+
+        for all in self.dict_widget_variables:
+            if all.startswith(name) or all.startswith(name_creator):
+                self.dict_widget_variables[all].setChecked(False)
+
+        # # name = 'checkbox_creator_{}_'.format(typ)+ thema       
+        # self.dict_widget_variables[name].setChecked(False)
         
 
     def suchfenster_reset(self):
         global dict_picture_path
-        # for all in ag_beschreibung+an_beschreibung:
-        #     print(all)
-        combined_list_of_topics=combine_all_lists_to_one(list_topics)
-        for all in combined_list_of_topics:
-            self.uncheck_all_checkboxes(all)
 
-        for r in range(6, 9):
-            dict_klasse = eval("k" + str(r) + "_beschreibung")
-            for all in dict_klasse:
-                x = eval("self.cb_k" + str(r) + "_" + all)
-                x.setChecked(False)
-                y = eval("self.cb_k" + str(r) + "_cr_" + all + "_cr")
-                y.setChecked(False)
-        for all in Klassen:
-            x = eval("self.cb_" + all)
-            x.setChecked(False)
-        for all in list(dict_aufgabenformate.keys()):
-            x = eval("self.cb_af_" + all)
-            x.setChecked(False)
+        self.uncheck_all_checkboxes('gk')
+
+        self.uncheck_all_checkboxes('themen')
+
 
         ### LaMA Cria
 
         self.tabWidget_klassen_cria.setCurrentIndex(0)
-        
+        self.tab_widget_cr_cria.setCurrentIndex(0)
+        for klasse in list_klassen:
+            self.dict_widget_variables['combobox_kapitel_creator_cria_{}'.format(klasse)].setCurrentIndex(0)
+
+
         for all in self.dict_widget_variables:
             if all.startswith('checkbox_unterkapitel_'):
                 self.dict_widget_variables[all].setChecked(False)
