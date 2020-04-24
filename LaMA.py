@@ -26,7 +26,7 @@ import smtplib
 # import qdarkstyle
 
 
-from config import colors_ui, config_file, config_loader, path_programm, logo_path, logo_cria_path, SpinBox_noWheel
+from config import colors_ui, config_file, config_loader, path_programm, logo_path, logo_cria_path, SpinBox_noWheel, ClickLabel
 
 from list_of_widgets import (
     widgets_search,
@@ -136,7 +136,12 @@ dict_picture_path = {}
 set_chosen_gk = set([])
 
 
+class ClickLabel(QtWidgets.QLabel):
+    clicked = QtCore.pyqtSignal()
 
+    def mousePressEvent(self, event):
+        self.clicked.emit()
+        QtWidgets.QLabel.mousePressEvent(self, event)
 
 
 ### list_of_widgets
@@ -209,10 +214,13 @@ def create_new_groupbox(parent, name):
 
     return new_groupbox
 
-def create_new_label(parent, text, wordwrap=False):
-    new_label=QtWidgets.QLabel(parent)
-    # label_aufgabe = eval("self.label_aufgabe_{}".format(bsp_string))
-    new_label.setWordWrap(True)
+def create_new_label(parent, text, wordwrap=False, clickable=False):
+    new_label = ClickLabel()
+    if clickable==False:
+        new_label=QtWidgets.QLabel(parent)
+    elif clickable == True:
+        new_label = ClickLabel()   
+
     new_label.setObjectName("{}".format(new_label))  
     new_label.setText(_translate("MainWindow",text, None))
     new_label.setWordWrap(wordwrap)
@@ -2366,6 +2374,15 @@ class Ui_MainWindow(object):
                 file_path = os.path.dirname(self.saved_file_path).replace("/", "\\")
                 subprocess.Popen('explorer "{}"'.format(file_path))
 
+
+    def click_label_to_check(self, new_checkbox):
+        if new_checkbox.isChecked()==False:
+            new_checkbox.setChecked(True)
+        else:
+            new_checkbox.setChecked(False) 
+
+
+
     def create_checkboxes_themen(self,parent, layout, klasse, mode):
         if mode=='creator':       
             name_start='checkbox_creator_themen_{}_'.format(klasse)
@@ -2380,16 +2397,23 @@ class Ui_MainWindow(object):
             new_checkbox = create_new_checkbox(parent, "")
             new_checkbox.stateChanged.connect(partial(self.checkbox_checked, mode, 'themen'))
             new_checkbox.setSizePolicy(SizePolicy_fixed)
-            layout.addWidget(new_checkbox, row,0,1,1)
-
-            new_label = create_new_label(parent, dict_klasse[thema], True)
-            layout.addWidget(new_label, row, 1, 1, 1)
-
             name = name_start+thema
             self.dict_widget_variables[name]=new_checkbox
+            layout.addWidget(new_checkbox, row,0,1,1)
+
+            new_label = create_new_label(parent, dict_klasse[thema], True,True)
+            new_label.clicked.connect(partial(self.click_label_to_check, new_checkbox))
+            layout.addWidget(new_label, row, 1, 1, 1)
+
             row+=1
 
         return row
+
+
+
+
+
+
     #     row = 0
     #     column = 0
     #     max_row = 9
@@ -3567,29 +3591,22 @@ class Ui_MainWindow(object):
         self.label_bild_leer.hide()
         for all in list_filename[0]:
             head, tail = os.path.split(all)
-            # print(head,tail)
-            # print(dict_picture_path.keys())
+
             if tail in dict_picture_path.keys():
                 pass
             else:
                 head, tail = os.path.split(all)
                 dict_picture_path[tail] = all
-                x = "self.label_bild_" + str(i)
-                # print(dict_picture_path)
-                # print(head,tail)
-                exec("%s= QtWidgets.QLabel(self.scrollAreaWidgetContents_bilder)" % x)
-                eval(x).setObjectName(_fromUtf8("label_bild_%s" % i))
+                name_of_image = "self.label_bild_" + str(i)
 
-                eval(x).mousePressEvent = functools.partial(
-                    self.del_picture, name_of_image=x
-                )
-                self.verticalLayout.addWidget(eval(x))
-                eval(x).setText(_translate("MainWindow", tail, None))
-                i += 1
+                label_picture = create_new_label(self.scrollAreaWidgetContents_bilder, tail, False, True)
+                label_picture.clicked.connect(partial(self.del_picture, label_picture))
+                self.verticalLayout.addWidget(label_picture)
 
-    def del_picture(self, event, name_of_image=None):
-        del dict_picture_path[eval(name_of_image).text()]
-        eval(name_of_image).hide()
+
+    def del_picture(self, label_picture):
+        del dict_picture_path[label_picture.text()]
+        label_picture.hide()
         if len(dict_picture_path) == 0:
             self.label_bild_leer.show()
 

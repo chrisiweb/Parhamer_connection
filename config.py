@@ -70,3 +70,10 @@ logo_cria_button_path = os.path.join(
 class SpinBox_noWheel(QtWidgets.QSpinBox):
     def wheelEvent(self, event):
         event.ignore()
+
+class ClickLabel(QtWidgets.QLabel):
+    clicked = QtCore.pyqtSignal()
+
+    def mousePressEvent(self, event):
+        self.clicked.emit()
+        QtWidgets.QLabel.mousePressEvent(self, event)
