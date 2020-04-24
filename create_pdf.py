@@ -55,8 +55,14 @@ def prepare_tex_for_pdf(self):
         for widget in self.dict_widget_variables:
             if widget.startswith('checkbox_search_'):
                 if self.dict_widget_variables[widget].isChecked()==True:
-                    gk=widget.split('checkbox_search_')[1]
-                    suchbegriffe.append(gk)   
+                    if 'gk' in widget:
+                        gk=widget.split('_')[-1]
+                        suchbegriffe.append(dict_gk[gk])   
+                      
+                    if 'themen' in widget:
+                        klasse = widget.split('_')[-2]
+                        thema = widget.split('_')[-1]
+                        suchbegriffe.append(thema.upper())
 
         # #### ALGEBRA UND GEOMETRIE
         # for all in ag_beschreibung:
@@ -81,21 +87,23 @@ def prepare_tex_for_pdf(self):
         #     if x.isChecked() == True:
         #         suchbegriffe.append(all)
 
-        temp_suchbegriffe = []
-        for all in suchbegriffe:
-            temp_suchbegriffe.append(dict_gk[all])
-        suchbegriffe = temp_suchbegriffe
-
+        # temp_suchbegriffe = []
+        # for all in suchbegriffe:
+        #     temp_suchbegriffe.append(dict_gk[all])
+        # suchbegriffe = temp_suchbegriffe
+        # print(suchbegriffe)
+        # return        
         #### Suche der Schulstufe
-        for y in range(5, 9):
-            themen_klasse = eval("k%s_beschreibung" % y)
-            for all in themen_klasse:
-                x = eval("self.cb_k%s_" % y + all)
-                grade = "K" + str(y)
-                if x.isChecked() == True:
-                    # if grade not in suchbegriffe:
-                    # suchbegriffe.append('K'+str(y))
-                    suchbegriffe.append(all.upper())
+
+        # for y in range(5, 9):
+        #     themen_klasse = eval("k%s_beschreibung" % y)
+        #     for all in themen_klasse:
+        #         x = eval("self.cb_k%s_" % y + all)
+        #         grade = "K" + str(y)
+        #         if x.isChecked() == True:
+        #             # if grade not in suchbegriffe:
+        #             # suchbegriffe.append('K'+str(y))
+        #             suchbegriffe.append(all.upper())
 
     #### typ1 ###
     # log_file=os.path.join(path_programm,'Typ 2 Aufgaben','Teildokument','log_file')

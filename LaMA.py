@@ -1530,7 +1530,7 @@ class Ui_MainWindow(object):
         self.comboBox_pruefungstyp.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.comboBox_pruefungstyp.setMinimumContentsLength(1)
         if self.chosen_program=='lama':
-            self.gridLayout_5.addWidget(self.comboBox_pruefungstyp, 0, 4, 1, 1)
+            self.gridLayout_5.addWidget(self.comboBox_pruefungstyp, 0, 5, 1, 1)
         if self.chosen_program=='cria':
             self.gridLayout_5.addWidget(self.comboBox_pruefungstyp, 0, 5, 1, 1)
         self.comboBox_pruefungstyp.currentIndexChanged.connect(
@@ -1541,8 +1541,12 @@ class Ui_MainWindow(object):
         self.combobox_beurteilung = create_new_combobox(self.groupBox_sage)
         add_new_option(self.combobox_beurteilung, 0, 'Notenschlüssel')
         add_new_option(self.combobox_beurteilung, 1, 'Beurteilungsraster')
+        self.combobox_beurteilung.currentIndexChanged.connect(self.notenanzeige_changed)
         # self.combobox_beurteilung.setMinimumContentsLength(1)
-        self.gridLayout_5.addWidget(self.combobox_beurteilung, 1,4,1,1)
+        self.gridLayout_5.addWidget(self.combobox_beurteilung, 1,5,1,1)
+
+        spacerItem_right = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout_5.addItem(spacerItem_right, 1,4, 1, 1)
         # self.radioButton_notenschl = QtWidgets.QRadioButton(self.groupBox_sage)
         # self.radioButton_notenschl.setChecked(True)
         # self.radioButton_notenschl.setObjectName("radioButton_notenschl")
@@ -1565,13 +1569,14 @@ class Ui_MainWindow(object):
             _translate("MainWindow", "Titelblatt anpassen", None)
         )
         if self.chosen_program=='lama':
-            self.gridLayout_5.addWidget(self.pushButton_titlepage, 2, 4, 1, 1)
+            self.gridLayout_5.addWidget(self.pushButton_titlepage, 2, 5, 1, 1)
         if self.chosen_program=='cria':
             self.gridLayout_5.addWidget(self.pushButton_titlepage, 4, 5, 1, 1)
         
 
         self.groupBox_default_pkt = QtWidgets.QGroupBox(self.groupBox_sage)
         self.groupBox_default_pkt.setObjectName("groupBox_default_pkt")
+        self.groupBox_default_pkt.setSizePolicy(SizePolicy_fixed)
         # self.groupBox_default_pkt.setMaximumSize(QtCore.QSize(120, 16777215))
         self.verticalLayout_default_pkt = QtWidgets.QVBoxLayout(
             self.groupBox_default_pkt
@@ -1586,7 +1591,7 @@ class Ui_MainWindow(object):
 
         self.groupBox_klasse = QtWidgets.QGroupBox(self.groupBox_sage)
         self.groupBox_klasse.setObjectName("groupBox_klasse")
-        # self.groupBox_klasse.setSizePolicy(SizePolicy_fixed)
+        self.groupBox_klasse.setSizePolicy(SizePolicy_fixed)
         # self.groupBox_klasse.setMaximumSize(QtCore.QSize(200, 16777215))
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.groupBox_klasse)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
@@ -1597,6 +1602,7 @@ class Ui_MainWindow(object):
         # self.groupBox_klasse.setMaximumSize(QtCore.QSize(90, 16777215))
         self.groupBox_datum = QtWidgets.QGroupBox(self.groupBox_sage)
         self.groupBox_datum.setObjectName("groupBox_datum")
+        self.groupBox_datum.setSizePolicy(SizePolicy_fixed)
         self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.groupBox_datum)
         self.verticalLayout_5.setObjectName("verticalLayout_5")
         self.dateEdit = QtWidgets.QDateEdit(self.groupBox_datum)
@@ -1607,6 +1613,7 @@ class Ui_MainWindow(object):
         # self.groupBox_datum.setMaximumSize(QtCore.QSize(140, 16777215))
         self.groupBox_nummer = QtWidgets.QGroupBox(self.groupBox_sage)
         self.groupBox_nummer.setObjectName("groupBox_nummer")
+        self.groupBox_nummer.setSizePolicy(SizePolicy_fixed)
         self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.groupBox_nummer)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
         self.spinBox_nummer = QtWidgets.QSpinBox(self.groupBox_nummer)
@@ -1649,7 +1656,7 @@ class Ui_MainWindow(object):
         self.gridLayout_8.setObjectName("gridLayout_8")
         self.scrollArea_chosen.setWidget(self.scrollAreaWidgetContents_2)
         self.scrollArea_chosen.verticalScrollBar().rangeChanged.connect(lambda: self.scrollArea_chosen.verticalScrollBar().setValue(self.scrollArea_chosen.verticalScrollBar().maximum()))
-        self.gridLayout_5.addWidget(self.scrollArea_chosen, 5, 0, 1, 5)
+        self.gridLayout_5.addWidget(self.scrollArea_chosen, 5, 0, 1, 6)
 
 
         self.groupBox_notenschl = create_new_groupbox(self.groupBox_sage, "Notenschlüssel")
@@ -1659,44 +1666,48 @@ class Ui_MainWindow(object):
         self.gridLayout_6.setObjectName("gridLayout_6")
 
         self.label_sg = create_new_label(self.groupBox_notenschl,"Sehr Gut:")
-        # self.label_sg.setSizePolicy(SizePolicy_fixed)
+        self.label_sg.setSizePolicy(SizePolicy_fixed)
         self.gridLayout_6.addWidget(self.label_sg,0,0,1,1)
         self.spinBox_2 = create_new_spinbox(self.groupBox_notenschl, 91)
-        # self.spinBox_2.setSizePolicy(SizePolicy_fixed)
+        self.spinBox_2.setSizePolicy(SizePolicy_fixed)
+        self.spinBox_2.valueChanged.connect(self.update_punkte)
         self.gridLayout_6.addWidget(self.spinBox_2,0,1,1,1)
         self.label_sg_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
         self.gridLayout_6.addWidget(self.label_sg_pkt,0,2,1,1)
 
 
         self.label_g = create_new_label(self.groupBox_notenschl,"Gut:")
-        # self.label_g.setSizePolicy(SizePolicy_fixed)
+        self.label_g.setSizePolicy(SizePolicy_fixed)
         self.gridLayout_6.addWidget(self.label_g,0,3,1,1)
         self.spinBox_3 = create_new_spinbox(self.groupBox_notenschl, 80)
-        # self.spinBox_3.setSizePolicy(SizePolicy_fixed)
+        self.spinBox_3.setSizePolicy(SizePolicy_fixed)
+        self.spinBox_3.valueChanged.connect(self.update_punkte)
         self.gridLayout_6.addWidget(self.spinBox_3,0,4,1,1)
         self.label_g_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
         self.gridLayout_6.addWidget(self.label_g_pkt,0,5,1,1)
 
 
         self.label_b = create_new_label(self.groupBox_notenschl,"Befriedigend:")
-        # self.label_b.setSizePolicy(SizePolicy_fixed)
+        self.label_b.setSizePolicy(SizePolicy_fixed)
         self.gridLayout_6.addWidget(self.label_b,1,0,1,1)
         self.spinBox_4 = create_new_spinbox(self.groupBox_notenschl, 64)
-        # self.spinBox_4.setSizePolicy(SizePolicy_fixed)
+        self.spinBox_4.setSizePolicy(SizePolicy_fixed)
+        self.spinBox_4.valueChanged.connect(self.update_punkte)
         self.gridLayout_6.addWidget(self.spinBox_4,1,1,1,1)
         self.label_b_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
         self.gridLayout_6.addWidget(self.label_b_pkt,1,2,1,1)
 
         self.label_g_2 = create_new_label(self.groupBox_notenschl,"Genügend:")
-        # self.label_g_2.setSizePolicy(SizePolicy_fixed)
+        self.label_g_2.setSizePolicy(SizePolicy_fixed)
         self.gridLayout_6.addWidget(self.label_g_2,1,3,1,1)
         self.spinBox_5 = create_new_spinbox(self.groupBox_notenschl, 50)
-        # self.spinBox_5.setSizePolicy(SizePolicy_fixed)
+        self.spinBox_5.setSizePolicy(SizePolicy_fixed)
+        self.spinBox_5.valueChanged.connect(self.update_punkte)
         self.gridLayout_6.addWidget(self.spinBox_5,1,4,1,1)
         self.label_g_2_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
         self.gridLayout_6.addWidget(self.label_g_2_pkt,1,5,1,1)
 
-        self.gridLayout_5.addWidget(self.groupBox_notenschl, 6, 0, 1, 5)
+        self.gridLayout_5.addWidget(self.groupBox_notenschl, 6, 0, 1, 6)
 
         # horizontallayout_note = create_new_horizontallayout(self.groupBox_notenschl)
         # self.gridLayout_6
@@ -1830,12 +1841,12 @@ class Ui_MainWindow(object):
         self.cb_solution_sage.setSizePolicy(SizePolicy_fixed)
         self.cb_solution_sage.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.gridLayout_5.addWidget(
-            self.cb_solution_sage, 7, 3, 1, 1)
+            self.cb_solution_sage, 7, 4, 1, 1)
 
         self.cb_drafts_sage = QtWidgets.QCheckBox(self.centralwidget)
         self.cb_drafts_sage.setSizePolicy(SizePolicy_fixed)
         self.cb_drafts_sage.setObjectName(_fromUtf8("cb_drafts_sage"))
-        self.gridLayout_5.addWidget(self.cb_drafts_sage, 8, 3, 1, 1)
+        self.gridLayout_5.addWidget(self.cb_drafts_sage, 8, 4, 1, 1)
         self.cb_drafts_sage.setText(_translate("MainWindow", "Entwürfe anzeigen", None))
         # self.horizontalLayout_2.addWidget(self.cb_drafts_sage)
         self.cb_drafts_sage.toggled.connect(self.cb_drafts_sage_enabled)
@@ -1847,13 +1858,13 @@ class Ui_MainWindow(object):
         self.pushButton_vorschau.setText(_translate("MainWindow", "Vorschau", None))
         self.pushButton_vorschau.setShortcut(_translate("MainWindow", "Return", None))
         self.gridLayout_5.addWidget(
-            self.pushButton_vorschau, 7, 4, 1, 1, QtCore.Qt.AlignRight)
+            self.pushButton_vorschau, 7, 5, 1, 1, QtCore.Qt.AlignRight)
         self.pushButton_vorschau.clicked.connect(
             partial(self.pushButton_vorschau_pressed, "vorschau")
         )
         self.pushButton_vorschau.setFocusPolicy(QtCore.Qt.ClickFocus)
         # self.gridLayout.addWidget(self.groupBox_sage, 1, 2, 8, 3)
-        self.gridLayout.addWidget(self.splitter_sage, 0, 0, 8, 1)
+        self.gridLayout.addWidget(self.splitter_sage, 0, 0, 8, 2)
         self.pushButton_erstellen = QtWidgets.QPushButton(self.groupBox_sage)
         self.pushButton_erstellen.setSizePolicy(SizePolicy_fixed)
         self.pushButton_erstellen.setObjectName("pushButton_erstellen")
@@ -1861,7 +1872,7 @@ class Ui_MainWindow(object):
         self.pushButton_erstellen.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.pushButton_erstellen.clicked.connect(self.pushButton_erstellen_pressed)
         self.gridLayout_5.addWidget(
-            self.pushButton_erstellen, 8, 4, 1, 1, QtCore.Qt.AlignRight
+            self.pushButton_erstellen, 8, 5, 1, 1, QtCore.Qt.AlignRight
         )
         self.groupBox_sage.hide()
         self.splitter_sage.hide()
@@ -1873,6 +1884,7 @@ class Ui_MainWindow(object):
         #######################################################################
         
         self.comboBox_at_fb = QtWidgets.QComboBox(self.centralwidget)
+        # self.comboBox_at_fb.setSizePolicy(SizePolicy_fixed)
         self.comboBox_at_fb.setObjectName("comboBox_at_fb")
         self.comboBox_at_fb.addItem("")
         self.comboBox_at_fb.addItem("")
@@ -1897,6 +1909,7 @@ class Ui_MainWindow(object):
         self.label_example.hide()
 
         self.groupBox_alle_aufgaben_fb = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBox_alle_aufgaben_fb.setSizePolicy(SizePolicy_fixed_width)
         self.groupBox_alle_aufgaben_fb.setMinimumSize(QtCore.QSize(140, 16777215))
         # self.groupBox_alle_aufgaben_fb.setMaximumSize(QtCore.QSize(180, 16777215))
         self.groupBox_alle_aufgaben_fb.setObjectName("groupBox_alle_aufgaben_fb")
@@ -2006,6 +2019,7 @@ class Ui_MainWindow(object):
 
 
         self.groupBox_fehlertyp = QtWidgets.QGroupBox(self.centralwidget)
+        # self.groupBox_fehlertyp.setSizePolicy(SizePolicy_fixed)
         self.groupBox_fehlertyp.setObjectName("groupBox_fehlertyp")
         self.gridLayout_fehlertyp = QtWidgets.QGridLayout(self.groupBox_fehlertyp)
         self.gridLayout_fehlertyp.setObjectName("gridLayout_feedback")
@@ -5761,6 +5775,7 @@ class Ui_MainWindow(object):
 
 
         groupbox_abstand = create_new_groupbox(new_groupbox, "Abstand (cm)")
+        groupbox_abstand.setSizePolicy(SizePolicy_fixed)
         groupbox_abstand.setToolTip("Neue Seite: Abstand=99")
         # groupbox_abstand.setMaximumSize(QtCore.QSize(100, 16777215))
         gridLayout_gB.addWidget(groupbox_abstand, 0, 2, 2, 1)
@@ -5786,6 +5801,8 @@ class Ui_MainWindow(object):
 
             pushbutton_ausgleich = create_new_button(new_groupbox,"Ausgleichspunkte\nanpassen...",
             partial(self.pushButton_ausgleich_pressed, aufgabe))
+            pushbutton_ausgleich.setStyleSheet("padding: 6px")
+            pushbutton_ausgleich.setSizePolicy(SizePolicy_fixed)
             # pushbutton_ausgleich.setMaximumSize(QtCore.QSize(220, 30))
             gridLayout_gB.addWidget(pushbutton_ausgleich, 1, 2, 1, 1)
 
@@ -6121,9 +6138,10 @@ class Ui_MainWindow(object):
             list_comboBox_gk = ["", "AG", "FA", "AN", "WS", "K5", "K6", "K7", "K8"]
             index = 0
             for all in list_comboBox_gk:
-                self.comboBox_gk.addItem("")
-                self.comboBox_gk.setItemText(index, _translate("MainWindow", all, None))
-                index += 1
+                print(all)
+                # self.comboBox_gk.addItem("")
+                # self.comboBox_gk.setItemText(index, _translate("MainWindow", all, None))
+                # index += 1
             self.comboBox_fb_num.clear()
 
         if self.comboBox_at_fb.currentText()[-1] == "2":
