@@ -136,12 +136,12 @@ dict_picture_path = {}
 set_chosen_gk = set([])
 
 
-class ClickLabel(QtWidgets.QLabel):
-    clicked = QtCore.pyqtSignal()
+# class ClickLabel(QtWidgets.QLabel):
+#     clicked = QtCore.pyqtSignal()
 
-    def mousePressEvent(self, event):
-        self.clicked.emit()
-        QtWidgets.QLabel.mousePressEvent(self, event)
+#     def mousePressEvent(self, event):
+#         self.clicked.emit()
+#         QtWidgets.QLabel.mousePressEvent(self, event)
 
 
 ### list_of_widgets
@@ -243,8 +243,9 @@ def create_new_button(parent, text, command):
     return new_button
 
 def create_standard_button(parent, text, command, icon=''):
-    new_standard_button = create_new_button(parent, "", command)    
-    new_standard_button.setMaximumSize(QtCore.QSize(30, 30))
+    new_standard_button = create_new_button(parent, "", command)
+    new_standard_button.setSizePolicy(SizePolicy_fixed)    
+    # new_standard_button.setMaximumSize(QtCore.QSize(30, 30))
     new_standard_button.setFocusPolicy(QtCore.Qt.ClickFocus)
     # new_standard_button.setStyleSheet(_fromUtf8("background-color: light gray"))
     new_standard_button.setIcon(QtWidgets.QApplication.style().standardIcon(icon))
@@ -254,10 +255,10 @@ def create_standard_button(parent, text, command, icon=''):
 def still_to_define():
     print("still to define")
 
-def create_new_spinbox(parent):
+def create_new_spinbox(parent,value=0):
     new_spinbox = SpinBox_noWheel(parent)
     new_spinbox.setObjectName("{}".format(new_spinbox))
-
+    new_spinbox.setValue(value)   
     return new_spinbox
 
 def create_new_combobox(parent):
@@ -1046,7 +1047,6 @@ class Ui_MainWindow(object):
 
             dict_klasse = eval('dict_{}'.format(klasse))
             kapitel= list(dict_klasse.keys())[0]
-            print(kapitel)
             for unterkapitel in dict_klasse[kapitel]:
                 new_checkbox=create_new_checkbox(new_scrollareacontent, dict_unterkapitel[unterkapitel] + ' (' + unterkapitel +')')
                 new_checkbox.stateChanged.connect(partial(self.checkbox_unterkapitel_checked_creator_cria, new_checkbox, klasse, kapitel, unterkapitel))
@@ -1205,7 +1205,7 @@ class Ui_MainWindow(object):
         # self.groupBox_aufgabentyp.setMaximumSize(100, 60)
         self.comboBox_aufgabentyp_cr = QtWidgets.QComboBox(self.groupBox_aufgabentyp)
         self.comboBox_aufgabentyp_cr.setObjectName(_fromUtf8("comboBox_aufgabentyp_cr"))
-        # self.comboBox_aufgabentyp_cr.setSizePolicy(SizePolicy_fixed)
+        self.comboBox_aufgabentyp_cr.setSizePolicy(SizePolicy_fixed)
         self.comboBox_aufgabentyp_cr.addItem(_fromUtf8(""))
         self.comboBox_aufgabentyp_cr.addItem(_fromUtf8(""))
         self.gridLayout_3.addWidget(self.comboBox_aufgabentyp_cr, 0, 0, 1, 1)
@@ -1223,13 +1223,14 @@ class Ui_MainWindow(object):
 
         self.groupBox_punkte = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_punkte.setObjectName(_fromUtf8("groupBox_punkte"))
-        # self.groupBox_punkte.setSizePolicy(SizePolicy_fixed)
+        self.groupBox_punkte.setSizePolicy(SizePolicy_fixed)
         # self.groupBox_punkte.setMaximumSize(80, 60)
         self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_punkte)
         self.gridLayout_6.setObjectName(_fromUtf8("gridLayout_6"))
         self.spinBox_punkte = QtWidgets.QSpinBox(self.groupBox_punkte)
         self.spinBox_punkte.setProperty("value", 1)
         self.spinBox_punkte.setObjectName(_fromUtf8("spinBox_punkte"))
+        # self.spinBox_punkte.setSizePolicy(SizePolicy_minimum_height)
         self.gridLayout_6.addWidget(self.spinBox_punkte, 0, 0, 1, 1)
         if self.chosen_program=='lama':
             self.gridLayout.addWidget(self.groupBox_punkte, 0, 2, 1, 1)
@@ -1278,7 +1279,7 @@ class Ui_MainWindow(object):
 
         self.groupBox_klassen_cr = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_klassen_cr.setObjectName(_fromUtf8("groupBox_klassen_cr"))
-        self.groupBox_klassen_cr.setMaximumSize(100, 60)
+        # self.groupBox_klassen_cr.setMaximumSize(100, 60)
         self.gridLayout_8 = QtWidgets.QGridLayout(self.groupBox_klassen_cr)
         self.gridLayout_8.setObjectName(_fromUtf8("gridLayout_8"))
         self.comboBox_klassen_cr = QtWidgets.QComboBox(self.groupBox_klassen_cr)
@@ -1399,7 +1400,7 @@ class Ui_MainWindow(object):
 
         self.groupBox_alle_aufgaben = QtWidgets.QGroupBox(self.splitter_sage)
         # self.groupBox_alle_aufgaben.setMinimumSize(QtCore.QSize(140, 16777215))
-        self.groupBox_alle_aufgaben.setMinimumSize(QtCore.QSize(40, 16777215))
+        self.groupBox_alle_aufgaben.setMinimumWidth(1)
         self.groupBox_alle_aufgaben.setObjectName("groupBox_alle_aufgaben")
         self.verticalLayout_sage = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben)
         self.verticalLayout_sage.setObjectName("verticalLayout_sage")
@@ -1494,6 +1495,7 @@ class Ui_MainWindow(object):
         self.groupBox_alle_aufgaben.hide()
 
         self.groupBox_sage = QtWidgets.QGroupBox(self.splitter_sage)
+        self.groupBox_sage.setMinimumWidth(1)
         self.groupBox_sage.setObjectName("groupBox_sage")
         self.gridLayout_5 = QtWidgets.QGridLayout(self.groupBox_sage)
         self.gridLayout_5.setObjectName("gridLayout_5")
@@ -1508,6 +1510,7 @@ class Ui_MainWindow(object):
         # self.checkBox_wiederholung.setText(_translate("MainWindow", "Wiederholung", None))
 
         self.comboBox_pruefungstyp = QtWidgets.QComboBox(self.groupBox_sage)
+        self.comboBox_pruefungstyp.setMinimumContentsLength(1)
         self.comboBox_pruefungstyp.setObjectName("comboBox_pruefungstyp")
         list_comboBox_pruefungstyp = [
             "Schularbeit",
@@ -1527,7 +1530,7 @@ class Ui_MainWindow(object):
         self.comboBox_pruefungstyp.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.comboBox_pruefungstyp.setMinimumContentsLength(1)
         if self.chosen_program=='lama':
-            self.gridLayout_5.addWidget(self.comboBox_pruefungstyp, 0, 4, 1, 2)
+            self.gridLayout_5.addWidget(self.comboBox_pruefungstyp, 0, 4, 1, 1)
         if self.chosen_program=='cria':
             self.gridLayout_5.addWidget(self.comboBox_pruefungstyp, 0, 5, 1, 1)
         self.comboBox_pruefungstyp.currentIndexChanged.connect(
@@ -1535,21 +1538,26 @@ class Ui_MainWindow(object):
         )
         # self.verticalLayout_sage.addWidget(self.comboBox_pruefungstyp)
 
-        self.radioButton_notenschl = QtWidgets.QRadioButton(self.groupBox_sage)
-        self.radioButton_notenschl.setChecked(True)
-        self.radioButton_notenschl.setObjectName("radioButton_notenschl")
-        self.radioButton_notenschl.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.radioButton_notenschl.toggled.connect(self.notenanzeige_changed)
-        self.gridLayout_5.addWidget(self.radioButton_notenschl, 2, 4, 1, 1)
-        self.radioButton_beurteilungsraster = QtWidgets.QRadioButton(self.groupBox_sage)
-        self.radioButton_beurteilungsraster.setObjectName(
-            "radioButton_beurteilungsraster"
-        )
-        self.radioButton_beurteilungsraster.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.radioButton_beurteilungsraster.toggled.connect(
-            self.notenanzeige_changed
-        )
-        self.gridLayout_5.addWidget(self.radioButton_beurteilungsraster, 3, 4, 1, 1)
+        self.combobox_beurteilung = create_new_combobox(self.groupBox_sage)
+        add_new_option(self.combobox_beurteilung, 0, 'Notenschlüssel')
+        add_new_option(self.combobox_beurteilung, 1, 'Beurteilungsraster')
+        # self.combobox_beurteilung.setMinimumContentsLength(1)
+        self.gridLayout_5.addWidget(self.combobox_beurteilung, 1,4,1,1)
+        # self.radioButton_notenschl = QtWidgets.QRadioButton(self.groupBox_sage)
+        # self.radioButton_notenschl.setChecked(True)
+        # self.radioButton_notenschl.setObjectName("radioButton_notenschl")
+        # self.radioButton_notenschl.setFocusPolicy(QtCore.Qt.ClickFocus)
+        # self.radioButton_notenschl.toggled.connect(self.notenanzeige_changed)
+        # self.gridLayout_5.addWidget(self.radioButton_notenschl, 2, 4, 1, 1)
+        # self.radioButton_beurteilungsraster = QtWidgets.QRadioButton(self.groupBox_sage)
+        # self.radioButton_beurteilungsraster.setObjectName(
+        #     "radioButton_beurteilungsraster"
+        # )
+        # self.radioButton_beurteilungsraster.setFocusPolicy(QtCore.Qt.ClickFocus)
+        # self.radioButton_beurteilungsraster.toggled.connect(
+        #     self.notenanzeige_changed
+        # )
+        # self.gridLayout_5.addWidget(self.radioButton_beurteilungsraster, 3, 4, 1, 1)
 
         self.pushButton_titlepage = QtWidgets.QPushButton(self.groupBox_sage)
         self.pushButton_titlepage.setObjectName(_fromUtf8("pushButton_titlepage"))
@@ -1557,7 +1565,7 @@ class Ui_MainWindow(object):
             _translate("MainWindow", "Titelblatt anpassen", None)
         )
         if self.chosen_program=='lama':
-            self.gridLayout_5.addWidget(self.pushButton_titlepage, 2, 5, 1, 1)
+            self.gridLayout_5.addWidget(self.pushButton_titlepage, 2, 4, 1, 1)
         if self.chosen_program=='cria':
             self.gridLayout_5.addWidget(self.pushButton_titlepage, 4, 5, 1, 1)
         
@@ -1605,12 +1613,12 @@ class Ui_MainWindow(object):
         self.spinBox_nummer.setValue(1)
         self.spinBox_nummer.setObjectName("spinBox_nummer")
         # self.groupBox_nummer.setMaximumSize(QtCore.QSize(90, 16777215))
-        self.radioButton_notenschl.setText(
-            _translate("MainWindow", "Notenschlüssel", None)
-        )
-        self.radioButton_beurteilungsraster.setText(
-            _translate("MainWindow", "Beurteilungsraster", None)
-        )
+        # self.radioButton_notenschl.setText(
+        #     _translate("MainWindow", "Notenschlüssel", None)
+        # )
+        # self.radioButton_beurteilungsraster.setText(
+        #     _translate("MainWindow", "Beurteilungsraster", None)
+        # )
         self.groupBox_klasse.setTitle(_translate("MainWindow", "Klasse", None))
         self.groupBox_datum.setTitle(_translate("MainWindow", "Datum", None))
         self.groupBox_nummer.setTitle(_translate("MainWindow", "Nummer", None))
@@ -1619,10 +1627,10 @@ class Ui_MainWindow(object):
         )
         self.verticalLayout_6.addWidget(self.spinBox_nummer)
         self.gridLayout_5.addWidget(self.groupBox_nummer, 0, 0, 3, 1)
-        self.horizontalspacer = QtWidgets.QSpacerItem(
-            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
-        )
-        self.gridLayout_5.addItem(self.horizontalspacer, 2, 4, 3, 1)
+        # self.horizontalspacer = QtWidgets.QSpacerItem(
+        #     20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        # )
+        # self.gridLayout_5.addItem(self.horizontalspacer, 2, 4, 3, 1)
         # self.pushButton_vorschau = QtWidgets.QPushButton(self.groupBox_sage)
         # self.pushButton_vorschau.setMaximumSize(QtCore.QSize(77, 16777215))
         # self.pushButton_vorschau.setObjectName("pushButton_vorschau")
@@ -1634,88 +1642,132 @@ class Ui_MainWindow(object):
         self.scrollArea_chosen.setObjectName("scrollArea_chosen")
         self.scrollArea_chosen.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 389, 323))
+        # self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 389, 323))
         self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
         self.scrollAreaWidgetContents_2.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.gridLayout_8 = QtWidgets.QGridLayout(self.scrollAreaWidgetContents_2)
         self.gridLayout_8.setObjectName("gridLayout_8")
         self.scrollArea_chosen.setWidget(self.scrollAreaWidgetContents_2)
         self.scrollArea_chosen.verticalScrollBar().rangeChanged.connect(lambda: self.scrollArea_chosen.verticalScrollBar().setValue(self.scrollArea_chosen.verticalScrollBar().maximum()))
-        self.gridLayout_5.addWidget(self.scrollArea_chosen, 5, 0, 1, 7)
+        self.gridLayout_5.addWidget(self.scrollArea_chosen, 5, 0, 1, 5)
 
 
-        self.groupBox_notenschl = QtWidgets.QGroupBox(self.groupBox_sage)
-        self.groupBox_notenschl.setObjectName("groupBox_notenschl")
+        self.groupBox_notenschl = create_new_groupbox(self.groupBox_sage, "Notenschlüssel")
+        # QtWidgets.QGroupBox(self.groupBox_sage)
+        # self.groupBox_notenschl.setObjectName("groupBox_notenschl")
         self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_notenschl)
         self.gridLayout_6.setObjectName("gridLayout_6")
-        self.spinBox_3 = SpinBox_noWheel(self.groupBox_notenschl)
-        self.spinBox_3.setMaximumSize(QtCore.QSize(55, 20))
-        self.spinBox_3.setProperty("value", 80)
-        self.spinBox_3.setObjectName("spinBox_3")
-        self.spinBox_3.valueChanged.connect(self.update_punkte)
-        self.spinBox_3.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.gridLayout_6.addWidget(self.spinBox_3, 0, 4, 1, 1)
-        self.label_sg_pkt = QtWidgets.QLabel(self.groupBox_notenschl)
-        self.label_sg_pkt.setObjectName("label_sg_pkt")
-        self.gridLayout_6.addWidget(self.label_sg_pkt, 0, 2, 1, 1)
-        self.label_g_pkt = QtWidgets.QLabel(self.groupBox_notenschl)
-        self.label_g_pkt.setObjectName("label_g_pkt")
-        self.gridLayout_6.addWidget(self.label_g_pkt, 0, 5, 1, 1)
-        self.label_g = QtWidgets.QLabel(self.groupBox_notenschl)
-        self.label_g.setMaximumSize(QtCore.QSize(54, 20))
-        self.label_g.setObjectName("label_g")
-        self.gridLayout_6.addWidget(self.label_g, 0, 3, 1, 1)
-        self.label_sg = QtWidgets.QLabel(self.groupBox_notenschl)
-        self.label_sg.setMaximumSize(QtCore.QSize(64, 20))
-        self.label_sg.setObjectName("label_sg")
-        self.gridLayout_6.addWidget(self.label_sg, 0, 0, 1, 1)
-        self.spinBox_2 = SpinBox_noWheel(self.groupBox_notenschl)
-        self.spinBox_2.setMaximumSize(QtCore.QSize(55, 20))
-        self.spinBox_2.setProperty("value", 91)
-        self.spinBox_2.setObjectName("spinBox_2")
-        self.spinBox_2.valueChanged.connect(self.update_punkte)
-        self.spinBox_2.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.gridLayout_6.addWidget(self.spinBox_2, 0, 1, 1, 1)
-        self.label_b = QtWidgets.QLabel(self.groupBox_notenschl)
-        self.label_b.setMaximumSize(QtCore.QSize(80, 20))
-        self.label_b.setObjectName("label_b")
-        self.gridLayout_6.addWidget(self.label_b, 1, 0, 1, 1)
-        self.spinBox_4 = SpinBox_noWheel(self.groupBox_notenschl)
-        self.spinBox_4.setMaximumSize(QtCore.QSize(55, 20))
-        self.spinBox_4.setProperty("value", 64)
-        self.spinBox_4.setObjectName("spinBox_4")
-        self.spinBox_4.valueChanged.connect(self.update_punkte)
-        self.spinBox_4.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.gridLayout_6.addWidget(self.spinBox_4, 1, 1, 1, 1)
-        self.label_b_pkt = QtWidgets.QLabel(self.groupBox_notenschl)
-        self.label_b_pkt.setObjectName("label_b_pkt")
-        self.gridLayout_6.addWidget(self.label_b_pkt, 1, 2, 1, 1)
-        self.label_g_2 = QtWidgets.QLabel(self.groupBox_notenschl)
-        self.label_g_2.setMaximumSize(QtCore.QSize(80, 20))
-        self.label_g_2.setObjectName("label_g_2")
-        self.gridLayout_6.addWidget(self.label_g_2, 1, 3, 1, 1)
-        self.label_g_pkt_2 = QtWidgets.QLabel(self.groupBox_notenschl)
-        self.label_g_pkt_2.setObjectName("label_g_pkt_2")
-        self.gridLayout_6.addWidget(self.label_g_pkt_2, 1, 5, 1, 1)
-        self.spinBox_5 = SpinBox_noWheel(self.groupBox_notenschl)
-        self.spinBox_5.setMaximumSize(QtCore.QSize(55, 20))
-        self.spinBox_5.setProperty("value", 50)
-        self.spinBox_5.setObjectName("spinBox_5")
-        self.spinBox_5.valueChanged.connect(self.update_punkte)
-        self.spinBox_5.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.gridLayout_6.addWidget(self.spinBox_5, 1, 4, 1, 1)
-        self.gridLayout_5.addWidget(self.groupBox_notenschl, 6, 0, 1, 7)
-        self.groupBox_notenschl.setTitle(
-            _translate("MainWindow", "Notenschlüssel", None)
-        )
-        self.label_sg_pkt.setText(_translate("MainWindow", "% (ab 0)", None))
-        self.label_g_pkt.setText(_translate("MainWindow", "% (ab 0)", None))
-        self.label_g.setText(_translate("MainWindow", "Gut:", None))
-        self.label_sg.setText(_translate("MainWindow", "Sehr Gut:", None))
-        self.label_b.setText(_translate("MainWindow", "Befriedigend:", None))
-        self.label_b_pkt.setText(_translate("MainWindow", "% (ab 0)", None))
-        self.label_g_2.setText(_translate("MainWindow", "Genügend:", None))
-        self.label_g_pkt_2.setText(_translate("MainWindow", "% (ab 0)", None))
+
+        self.label_sg = create_new_label(self.groupBox_notenschl,"Sehr Gut:")
+        # self.label_sg.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout_6.addWidget(self.label_sg,0,0,1,1)
+        self.spinBox_2 = create_new_spinbox(self.groupBox_notenschl, 91)
+        # self.spinBox_2.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout_6.addWidget(self.spinBox_2,0,1,1,1)
+        self.label_sg_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
+        self.gridLayout_6.addWidget(self.label_sg_pkt,0,2,1,1)
+
+
+        self.label_g = create_new_label(self.groupBox_notenschl,"Gut:")
+        # self.label_g.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout_6.addWidget(self.label_g,0,3,1,1)
+        self.spinBox_3 = create_new_spinbox(self.groupBox_notenschl, 80)
+        # self.spinBox_3.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout_6.addWidget(self.spinBox_3,0,4,1,1)
+        self.label_g_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
+        self.gridLayout_6.addWidget(self.label_g_pkt,0,5,1,1)
+
+
+        self.label_b = create_new_label(self.groupBox_notenschl,"Befriedigend:")
+        # self.label_b.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout_6.addWidget(self.label_b,1,0,1,1)
+        self.spinBox_4 = create_new_spinbox(self.groupBox_notenschl, 64)
+        # self.spinBox_4.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout_6.addWidget(self.spinBox_4,1,1,1,1)
+        self.label_b_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
+        self.gridLayout_6.addWidget(self.label_b_pkt,1,2,1,1)
+
+        self.label_g_2 = create_new_label(self.groupBox_notenschl,"Genügend:")
+        # self.label_g_2.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout_6.addWidget(self.label_g_2,1,3,1,1)
+        self.spinBox_5 = create_new_spinbox(self.groupBox_notenschl, 50)
+        # self.spinBox_5.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout_6.addWidget(self.spinBox_5,1,4,1,1)
+        self.label_g_2_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
+        self.gridLayout_6.addWidget(self.label_g_2_pkt,1,5,1,1)
+
+        self.gridLayout_5.addWidget(self.groupBox_notenschl, 6, 0, 1, 5)
+
+        # horizontallayout_note = create_new_horizontallayout(self.groupBox_notenschl)
+        # self.gridLayout_6
+        # self.spinBox_3 = SpinBox_noWheel(self.groupBox_notenschl)
+        # self.spinBox_3.setMaximumSize(QtCore.QSize(55, 20))
+        # self.spinBox_3.setProperty("value", 80)
+        # self.spinBox_3.setObjectName("spinBox_3")
+        # self.spinBox_3.valueChanged.connect(self.update_punkte)
+        # self.spinBox_3.setFocusPolicy(QtCore.Qt.ClickFocus)
+        # self.gridLayout_6.addWidget(self.spinBox_3, 0, 4, 1, 1)
+        # self.label_sg_pkt = QtWidgets.QLabel(self.groupBox_notenschl)
+        # self.label_sg_pkt.setObjectName("label_sg_pkt")
+        # self.gridLayout_6.addWidget(self.label_sg_pkt, 0, 2, 1, 1)
+        # self.label_g_pkt = QtWidgets.QLabel(self.groupBox_notenschl)
+        # self.label_g_pkt.setObjectName("label_g_pkt")
+        # self.gridLayout_6.addWidget(self.label_g_pkt, 0, 5, 1, 1)
+        # self.label_g = QtWidgets.QLabel(self.groupBox_notenschl)
+        # self.label_g.setMaximumSize(QtCore.QSize(54, 20))
+        # self.label_g.setObjectName("label_g")
+        # self.gridLayout_6.addWidget(self.label_g, 0, 3, 1, 1)
+        # self.label_sg = QtWidgets.QLabel(self.groupBox_notenschl)
+        # self.label_sg.setMaximumSize(QtCore.QSize(64, 20))
+        # self.label_sg.setObjectName("label_sg")
+        # self.gridLayout_6.addWidget(self.label_sg, 0, 0, 1, 1)
+        # self.spinBox_2 = SpinBox_noWheel(self.groupBox_notenschl)
+        # self.spinBox_2.setMaximumSize(QtCore.QSize(55, 20))
+        # self.spinBox_2.setProperty("value", 91)
+        # self.spinBox_2.setObjectName("spinBox_2")
+        # self.spinBox_2.valueChanged.connect(self.update_punkte)
+        # self.spinBox_2.setFocusPolicy(QtCore.Qt.ClickFocus)
+        # self.gridLayout_6.addWidget(self.spinBox_2, 0, 1, 1, 1)
+        # self.label_b = QtWidgets.QLabel(self.groupBox_notenschl)
+        # self.label_b.setMaximumSize(QtCore.QSize(80, 20))
+        # self.label_b.setObjectName("label_b")
+        # self.gridLayout_6.addWidget(self.label_b, 1, 0, 1, 1)
+        # self.spinBox_4 = SpinBox_noWheel(self.groupBox_notenschl)
+        # self.spinBox_4.setMaximumSize(QtCore.QSize(55, 20))
+        # self.spinBox_4.setProperty("value", 64)
+        # self.spinBox_4.setObjectName("spinBox_4")
+        # self.spinBox_4.valueChanged.connect(self.update_punkte)
+        # self.spinBox_4.setFocusPolicy(QtCore.Qt.ClickFocus)
+        # self.gridLayout_6.addWidget(self.spinBox_4, 1, 1, 1, 1)
+        # self.label_b_pkt = QtWidgets.QLabel(self.groupBox_notenschl)
+        # self.label_b_pkt.setObjectName("label_b_pkt")
+        # self.gridLayout_6.addWidget(self.label_b_pkt, 1, 2, 1, 1)
+        # self.label_g_2 = QtWidgets.QLabel(self.groupBox_notenschl)
+        # self.label_g_2.setMaximumSize(QtCore.QSize(80, 20))
+        # self.label_g_2.setObjectName("label_g_2")
+        # self.gridLayout_6.addWidget(self.label_g_2, 1, 3, 1, 1)
+        # self.label_g_pkt_2 = QtWidgets.QLabel(self.groupBox_notenschl)
+        # self.label_g_pkt_2.setObjectName("label_g_pkt_2")
+        # self.gridLayout_6.addWidget(self.label_g_pkt_2, 1, 5, 1, 1)
+        # self.spinBox_5 = SpinBox_noWheel(self.groupBox_notenschl)
+        # self.spinBox_5.setMaximumSize(QtCore.QSize(55, 20))
+        # self.spinBox_5.setProperty("value", 50)
+        # self.spinBox_5.setObjectName("spinBox_5")
+        # self.spinBox_5.valueChanged.connect(self.update_punkte)
+        # self.spinBox_5.setFocusPolicy(QtCore.Qt.ClickFocus)
+        # self.gridLayout_6.addWidget(self.spinBox_5, 1, 4, 1, 1)
+
+        # self.groupBox_notenschl.setTitle(
+        #     _translate("MainWindow", "Notenschlüssel", None)
+        # )
+        # self.label_sg_pkt.setText(_translate("MainWindow", "% (ab 0)", None))
+        # self.label_g_pkt.setText(_translate("MainWindow", "% (ab 0)", None))
+        # self.label_g.setText(_translate("MainWindow", "Gut:", None))
+        # self.label_sg.setText(_translate("MainWindow", "Sehr Gut:", None))
+        # self.label_b.setText(_translate("MainWindow", "Befriedigend:", None))
+        # self.label_b_pkt.setText(_translate("MainWindow", "% (ab 0)", None))
+        # self.label_g_2.setText(_translate("MainWindow", "Genügend:", None))
+        # self.label_g_pkt_2.setText(_translate("MainWindow", "% (ab 0)", None))
 
         ### Groupbox Beurteilungsraster #####
 
@@ -1753,7 +1805,7 @@ class Ui_MainWindow(object):
         if self.chosen_program == 'lama':
             self.label_gesamtbeispiele.setText(
                 _translate(
-                    "MainWindow", "Anzahl der Aufgaben: 0 (Typ1: 0 / Typ2: 0)	 ", None
+                    "MainWindow", "Anzahl der Aufgaben: 0\n(Typ1: 0 / Typ2: 0)", None
                 )
             )
         if self.chosen_program == 'cria':
@@ -1775,26 +1827,27 @@ class Ui_MainWindow(object):
             _translate("MainWindow", "Lösungen anzeigen", None)
         )
         self.cb_solution_sage.setChecked(True)
+        self.cb_solution_sage.setSizePolicy(SizePolicy_fixed)
         self.cb_solution_sage.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.gridLayout_5.addWidget(
-            self.cb_solution_sage, 7, 4, 1, 1, QtCore.Qt.AlignRight
-        )
+            self.cb_solution_sage, 7, 3, 1, 1)
 
         self.cb_drafts_sage = QtWidgets.QCheckBox(self.centralwidget)
+        self.cb_drafts_sage.setSizePolicy(SizePolicy_fixed)
         self.cb_drafts_sage.setObjectName(_fromUtf8("cb_drafts_sage"))
-        self.gridLayout_5.addWidget(self.cb_drafts_sage, 8, 4, 2, 1)
+        self.gridLayout_5.addWidget(self.cb_drafts_sage, 8, 3, 1, 1)
         self.cb_drafts_sage.setText(_translate("MainWindow", "Entwürfe anzeigen", None))
         # self.horizontalLayout_2.addWidget(self.cb_drafts_sage)
         self.cb_drafts_sage.toggled.connect(self.cb_drafts_sage_enabled)
 
         self.pushButton_vorschau = QtWidgets.QPushButton(self.groupBox_sage)
-        self.pushButton_vorschau.setMaximumSize(QtCore.QSize(90, 16777215))
+        self.pushButton_vorschau.setSizePolicy(SizePolicy_fixed)
+        # self.pushButton_vorschau.setMaximumSize(QtCore.QSize(90, 16777215))
         self.pushButton_vorschau.setObjectName("pushButton_vorschau")
         self.pushButton_vorschau.setText(_translate("MainWindow", "Vorschau", None))
         self.pushButton_vorschau.setShortcut(_translate("MainWindow", "Return", None))
         self.gridLayout_5.addWidget(
-            self.pushButton_vorschau, 7, 5, 1, 2, QtCore.Qt.AlignRight
-        )
+            self.pushButton_vorschau, 7, 4, 1, 1, QtCore.Qt.AlignRight)
         self.pushButton_vorschau.clicked.connect(
             partial(self.pushButton_vorschau_pressed, "vorschau")
         )
@@ -1802,13 +1855,13 @@ class Ui_MainWindow(object):
         # self.gridLayout.addWidget(self.groupBox_sage, 1, 2, 8, 3)
         self.gridLayout.addWidget(self.splitter_sage, 0, 0, 8, 1)
         self.pushButton_erstellen = QtWidgets.QPushButton(self.groupBox_sage)
-        self.pushButton_erstellen.setMaximumSize(QtCore.QSize(90, 16777215))
+        self.pushButton_erstellen.setSizePolicy(SizePolicy_fixed)
         self.pushButton_erstellen.setObjectName("pushButton_erstellen")
         self.pushButton_erstellen.setText(_translate("MainWindow", "Erstellen", None))
         self.pushButton_erstellen.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.pushButton_erstellen.clicked.connect(self.pushButton_erstellen_pressed)
         self.gridLayout_5.addWidget(
-            self.pushButton_erstellen, 8, 5, 1, 2, QtCore.Qt.AlignRight
+            self.pushButton_erstellen, 8, 4, 1, 1, QtCore.Qt.AlignRight
         )
         self.groupBox_sage.hide()
         self.splitter_sage.hide()
@@ -1845,7 +1898,7 @@ class Ui_MainWindow(object):
 
         self.groupBox_alle_aufgaben_fb = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_alle_aufgaben_fb.setMinimumSize(QtCore.QSize(140, 16777215))
-        self.groupBox_alle_aufgaben_fb.setMaximumSize(QtCore.QSize(180, 16777215))
+        # self.groupBox_alle_aufgaben_fb.setMaximumSize(QtCore.QSize(180, 16777215))
         self.groupBox_alle_aufgaben_fb.setObjectName("groupBox_alle_aufgaben_fb")
         self.verticalLayout_fb = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben_fb)
         self.verticalLayout_fb.setObjectName("verticalLayout_fb")
@@ -1890,7 +1943,7 @@ class Ui_MainWindow(object):
         self.groupBox_alle_aufgaben_fb_cria = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_alle_aufgaben_fb_cria.setMinimumWidth(100)
         self.groupBox_alle_aufgaben_fb_cria.setMinimumSize(QtCore.QSize(140, 16777215))
-        self.groupBox_alle_aufgaben_fb_cria.setMaximumSize(QtCore.QSize(200, 16777215))
+        # self.groupBox_alle_aufgaben_fb_cria.setMaximumSize(QtCore.QSize(200, 16777215))
         self.groupBox_alle_aufgaben_fb_cria.setObjectName("groupBox_alle_aufgaben_fb_cria")
         self.verticalLayout_fb_cria = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben_fb_cria)
         self.verticalLayout_fb_cria.setObjectName("verticalLayout_fb_cria")
@@ -3057,7 +3110,8 @@ class Ui_MainWindow(object):
         self.comboBox_pruefungstyp.setCurrentIndex(0)
         self.lineEdit_klasse.setText("")
         self.spinBox_default_pkt.setValue(1)
-        self.radioButton_notenschl.setChecked(True)
+        self.combobox_beurteilung.setCurrentIndex(0)
+        # self.radioButton_notenschl.setChecked(True)
         self.spinBox_2.setProperty("value", 91)
         self.spinBox_3.setProperty("value", 80)
         self.spinBox_4.setProperty("value", 64)
@@ -3178,7 +3232,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowIcon(QtGui.QIcon(logo_path))
         self.label_gesamtbeispiele.setText(
             _translate(
-                "MainWindow", "Anzahl der Aufgaben: 0 (Typ1: 0 / Typ2: 0)	 ", None
+                "MainWindow", "Anzahl der Aufgaben: 0\n(Typ1: 0 / Typ2: 0)", None
             )
         )
 
@@ -3520,14 +3574,16 @@ class Ui_MainWindow(object):
             self.comboBox_pruefungstyp.currentText() == "Grundkompetenzcheck"
             or self.comboBox_pruefungstyp.currentText() == "Übungsblatt"
         ):
-            self.radioButton_beurteilungsraster.setEnabled(False)
-            self.radioButton_notenschl.setEnabled(False)
+            self.combobox_beurteilung.setEnabled(False)
+            # self.radioButton_beurteilungsraster.setEnabled(False)
+            # self.radioButton_notenschl.setEnabled(False)
             self.groupBox_notenschl.setEnabled(False)
             self.groupBox_beurteilungsraster.setEnabled(False)
             self.pushButton_titlepage.setEnabled(False)
         else:
-            self.radioButton_beurteilungsraster.setEnabled(True)
-            self.radioButton_notenschl.setEnabled(True)
+            self.combobox_beurteilung.setEnabled(True)
+            # self.radioButton_beurteilungsraster.setEnabled(True)
+            # self.radioButton_notenschl.setEnabled(True)
             self.groupBox_notenschl.setEnabled(True)
             self.groupBox_beurteilungsraster.setEnabled(True)
             self.pushButton_titlepage.setEnabled(True)
@@ -5207,11 +5263,13 @@ class Ui_MainWindow(object):
             self.comboBox_pruefungstyp.setCurrentIndex(index)
 
         if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "ns":
-            self.radioButton_notenschl.setChecked(True)
-            self.radioButton_beurteilungsraster.setChecked(False)
+            self.combobox_beurteilung.setCurrentIndex(0)
+            # self.radioButton_notenschl.setChecked(True)
+            # self.radioButton_beurteilungsraster.setChecked(False)
         if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "br":
-            self.radioButton_notenschl.setChecked(False)
-            self.radioButton_beurteilungsraster.setChecked(True)
+            self.combobox_beurteilung.setCurrentIndex(1)
+            # self.radioButton_notenschl.setChecked(False)
+            # self.radioButton_beurteilungsraster.setChecked(True)
 
         year = self.dict_all_infos_for_file["data_gesamt"]["Datum"][0]
         month = self.dict_all_infos_for_file["data_gesamt"]["Datum"][1]
@@ -5318,15 +5376,16 @@ class Ui_MainWindow(object):
 
 
     def notenanzeige_changed(self):
-        if self.radioButton_beurteilungsraster.isChecked():
+        if self.combobox_beurteilung.currentIndex()==0:
+            self.gridLayout_5.removeWidget(self.groupBox_beurteilungsraster)
+            self.groupBox_beurteilungsraster.hide()
+            self.groupBox_notenschl.show()
+        if self.combobox_beurteilung.currentIndex()==1:
             self.groupBox_notenschl.hide()
             self.gridLayout_5.addWidget(self.groupBox_beurteilungsraster, 6, 0, 1, 7)
             self.groupBox_beurteilungsraster.show()
 
-        if self.radioButton_notenschl.isChecked():
-            self.gridLayout_5.removeWidget(self.groupBox_beurteilungsraster)
-            self.groupBox_beurteilungsraster.hide()
-            self.groupBox_notenschl.show()
+
 
         self.update_punkte()
 
@@ -5372,7 +5431,7 @@ class Ui_MainWindow(object):
 
 
         if self.chosen_program =='lama':
-            label = "Anzahl der Aufgaben: {0} (Typ1: {1} / Typ2: {2})".format(num_total, num_typ1, num_typ2)
+            label = "Anzahl der Aufgaben: {0}\n(Typ1: {1} / Typ2: {2})".format(num_total, num_typ1, num_typ2)
         if self.chosen_program == 'cria':
             label = "Anzahl der Aufgaben: {0}".format(num_total)            
 
@@ -5408,7 +5467,7 @@ class Ui_MainWindow(object):
             self.label_gesamtbeispiele.setText(
                 _translate(
                     "MainWindow",
-                    "Anzahl der Aufgaben: {0} (Typ1: {1} / Typ2: {2})  ".format(
+                    "Anzahl der Aufgaben: {0}\n(Typ1: {1} / Typ2: {2})".format(
                         num_total, num_typ1, num_typ2
                     ),
                     None,
@@ -5521,7 +5580,7 @@ class Ui_MainWindow(object):
         self.label_b_pkt.setText(
             _translate("MainWindow", "% (ab {})".format(verteilung_notenschluessel[2]), None)
         )
-        self.label_g_pkt_2.setText(
+        self.label_g_2_pkt.setText(
             _translate("MainWindow", "% (ab {})".format(verteilung_notenschluessel[3]), None)
         )
 
@@ -5564,10 +5623,12 @@ class Ui_MainWindow(object):
 
         gesamtpunkte = self.get_punkteverteilung()[0]
 
-        if self.radioButton_notenschl.isChecked():
+        # print(self.combobox_beurteilung.currentIndex())
+        # return
+        if self.combobox_beurteilung.currentIndex()==0:
             self.update_notenschluessel()
 
-        if self.radioButton_beurteilungsraster.isChecked():
+        if self.combobox_beurteilung.currentIndex()==1:
             self.update_beurteilungsraster()
 
 
@@ -5646,17 +5707,15 @@ class Ui_MainWindow(object):
 
 
         horizontalLayout_groupbox_pkt.addWidget(spinbox_pkt)
-        if self.chosen_program=='cria' or typ == 1:
-            groupbox_pkt.setMaximumSize(QtCore.QSize(80, 16777215))        
-        elif typ == 2:
+        # if self.chosen_program=='cria' or typ == 1:
+            # groupbox_pkt.setMaximumSize(QtCore.QSize(80, 16777215))        
+        if typ == 2:
             groupbox_pkt.setToolTip(
                 "Die Punkte stehen für die Gesamtpunkte dieser Aufgabe.\nEs müssen daher auch die Ausgleichspunkte berücksichtigt werden."
             )
-            groupbox_pkt.setMaximumSize(QtCore.QSize(150, 16777215))
+            # groupbox_pkt.setMaximumSize(QtCore.QSize(150, 16777215))
 
-            label_ausgleichspkt = create_new_label(groupbox_pkt, 'AP: {}'.format(self.dict_alle_aufgaben_sage[aufgabe][3]))
-            horizontalLayout_groupbox_pkt.addWidget(label_ausgleichspkt)
-            self.dict_variablen_label[aufgabe]=label_ausgleichspkt
+
 
 
         if (index % 2) == 1 and (typ==1 or typ==None):
@@ -5676,6 +5735,7 @@ class Ui_MainWindow(object):
         button_up = create_standard_button(new_groupbox, "",
         partial(self.btn_up_pressed, aufgabe),
         QtWidgets.QStyle.SP_ArrowUp)
+        
         gridLayout_gB.addWidget(button_up, 0, 3, 2, 1)
         number=index+1
         if (typ==1 or typ==None) and number==1:
@@ -5702,7 +5762,7 @@ class Ui_MainWindow(object):
 
         groupbox_abstand = create_new_groupbox(new_groupbox, "Abstand (cm)")
         groupbox_abstand.setToolTip("Neue Seite: Abstand=99")
-        groupbox_abstand.setMaximumSize(QtCore.QSize(100, 16777215))
+        # groupbox_abstand.setMaximumSize(QtCore.QSize(100, 16777215))
         gridLayout_gB.addWidget(groupbox_abstand, 0, 2, 2, 1)
         
         verticalLayout_abstand = QtWidgets.QVBoxLayout(groupbox_abstand)
@@ -5720,11 +5780,15 @@ class Ui_MainWindow(object):
 
         
         if typ==2:
-            # content=self.collect_content(aufgabe)
-            pushbutton_ausgleich = create_new_button(new_groupbox,"Ausgleichspunkte anpassen...",
+            label_ausgleichspkt = create_new_label(groupbox_pkt, 'Ausgleichspunkte: {}'.format(self.dict_alle_aufgaben_sage[aufgabe][3]))
+            gridLayout_gB.addWidget(label_ausgleichspkt, 0, 2, 1, 1)
+            self.dict_variablen_label[aufgabe]=label_ausgleichspkt
+
+            pushbutton_ausgleich = create_new_button(new_groupbox,"Ausgleichspunkte\nanpassen...",
             partial(self.pushButton_ausgleich_pressed, aufgabe))
-            pushbutton_ausgleich.setMaximumSize(QtCore.QSize(220, 30))
-            gridLayout_gB.addWidget(pushbutton_ausgleich, 0, 2, 2, 1)
+            # pushbutton_ausgleich.setMaximumSize(QtCore.QSize(220, 30))
+            gridLayout_gB.addWidget(pushbutton_ausgleich, 1, 2, 1, 1)
+
 
 
         return new_groupbox
@@ -6013,7 +6077,7 @@ class Ui_MainWindow(object):
 
         self.dict_alle_aufgaben_sage[aufgabe][3]=len(list_sage_ausgleichspunkte_chosen)
 
-        self.dict_variablen_label[aufgabe].setText(_translate("MainWindow","AP: {}".format(len(list_sage_ausgleichspunkte_chosen)), None))
+        self.dict_variablen_label[aufgabe].setText(_translate("MainWindow","Ausgleichspunkte: {}".format(len(list_sage_ausgleichspunkte_chosen)), None))
         self.update_punkte()
         # get_number_ausgleichspunkte
         # list_input = eval("self.list_input_{}".format(bsp_string))
@@ -6548,10 +6612,11 @@ class Ui_MainWindow(object):
         ### end ###
 
         ### include basic data of test ###
-        if self.radioButton_beurteilungsraster.isChecked():
-            beurteilung = "br"
-        else:
+        if self.combobox_beurteilung.currentIndex() == 0:
             beurteilung = "ns"
+        if self.combobox_beurteilung.currentIndex() == 1:
+            beurteilung = "br"
+
 
         try:
             self.num_ausgleichspkt_gesamt

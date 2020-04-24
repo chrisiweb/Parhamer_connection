@@ -59,8 +59,9 @@ widgets_sage = [
     "comboBox_gk",
     "comboBox_gk_num",
     "groupBox_default_pkt",
-    "radioButton_notenschl",
-    "radioButton_beurteilungsraster",
+    "combobox_beurteilung",
+    # "radioButton_notenschl",
+    # "radioButton_beurteilungsraster",
 ]  # ,'comboBox_at_sage','groupBox_sage','groupBox_notenschl','actionRefresh_Database'
 
 
