@@ -10,8 +10,7 @@ import datetime
 from datetime import date
 from refresh_ddb import refresh_ddb, modification_date
 from sort_items import natural_keys
-from standard_dialog_windows import warning_window
-
+from standard_dialog_windows import question_window
 
 
 ag_beschreibung = config_loader(config_file, "ag_beschreibung")
@@ -36,11 +35,14 @@ def prepare_tex_for_pdf(self):
 
     chosen_aufgabenformat = "Typ%sAufgaben" % self.label_aufgabentyp.text()[-1]
 
-    if self.chosen_program=='lama':
-        log_file = os.path.join(path_programm,"Teildokument", "log_file_%s" % self.label_aufgabentyp.text()[-1])
-    if self.chosen_program=='cria':
-        log_file = os.path.join(path_programm,"Teildokument", "log_file_cria")
-
+    if self.chosen_program == "lama":
+        log_file = os.path.join(
+            path_programm,
+            "Teildokument",
+            "log_file_%s" % self.label_aufgabentyp.text()[-1],
+        )
+    if self.chosen_program == "cria":
+        log_file = os.path.join(path_programm, "Teildokument", "log_file_cria")
 
     if not os.path.isfile(log_file):
         refresh_ddb(self)  # self.label_aufgabentyp.text()[-1]
@@ -52,17 +54,17 @@ def prepare_tex_for_pdf(self):
 
     suchbegriffe = []
 
-    if self.chosen_program=='lama':
+    if self.chosen_program == "lama":
         for widget in self.dict_widget_variables:
-            if widget.startswith('checkbox_search_'):
-                if self.dict_widget_variables[widget].isChecked()==True:
-                    if 'gk' in widget:
-                        gk=widget.split('_')[-1]
-                        suchbegriffe.append(dict_gk[gk])   
-                      
-                    if 'themen' in widget:
-                        klasse = widget.split('_')[-2]
-                        thema = widget.split('_')[-1]
+            if widget.startswith("checkbox_search_"):
+                if self.dict_widget_variables[widget].isChecked() == True:
+                    if "gk" in widget:
+                        gk = widget.split("_")[-1]
+                        suchbegriffe.append(dict_gk[gk])
+
+                    if "themen" in widget:
+                        klasse = widget.split("_")[-2]
+                        thema = widget.split("_")[-1]
                         suchbegriffe.append(thema.upper())
 
         # #### ALGEBRA UND GEOMETRIE
@@ -93,7 +95,7 @@ def prepare_tex_for_pdf(self):
         #     temp_suchbegriffe.append(dict_gk[all])
         # suchbegriffe = temp_suchbegriffe
         # print(suchbegriffe)
-        # return        
+        # return
         #### Suche der Schulstufe
 
         # for y in range(5, 9):
@@ -126,7 +128,7 @@ def prepare_tex_for_pdf(self):
         QtWidgets.QApplication.restoreOverrideCursor()
         drafts_path = os.path.join(path_programm, "Beispieleinreichung")
 
-        if self.chosen_program=='lama':    
+        if self.chosen_program == "lama":
             for all in os.listdir(drafts_path):
                 if all.endswith(".tex") or all.endswith(".ltx"):
                     pattern = re.compile("[A-Z][A-Z]")
@@ -155,15 +157,17 @@ def prepare_tex_for_pdf(self):
                                     break
                             file.close()
 
-        elif self.chosen_program == 'cria':
+        elif self.chosen_program == "cria":
 
             if self.cb_drafts.isChecked():
-                #print(beispieldaten_dateipfad)
+                # print(beispieldaten_dateipfad)
                 QtWidgets.QApplication.restoreOverrideCursor()
                 drafts_path = os.path.join(path_programm, "Beispieleinreichung")
                 for klasse in list_klassen:
                     try:
-                        drafts_path = os.path.join(path_programm, "Beispieleinreichung",klasse)
+                        drafts_path = os.path.join(
+                            path_programm, "Beispieleinreichung", klasse
+                        )
                         for all in os.listdir(drafts_path):
                             file = open(os.path.join(drafts_path, all), encoding="utf8")
                             for i, line in enumerate(file):
@@ -177,7 +181,6 @@ def prepare_tex_for_pdf(self):
                             file.close()
                     except FileNotFoundError:
                         pass
-
 
         # print(beispieldaten_dateipfad)
         # return
@@ -199,8 +202,6 @@ def prepare_tex_for_pdf(self):
     ########### work around ####################
     #########################################
 
-
-
     path_tabu_pkg = os.path.join(path_programm, "_database", "_config", "tabu.sty")
     copy_path_tabu_pkg = os.path.join(path_programm, "Teildokument", "tabu.sty")
     if os.path.isfile(copy_path_tabu_pkg):
@@ -209,10 +210,12 @@ def prepare_tex_for_pdf(self):
         shutil.copy(path_tabu_pkg, copy_path_tabu_pkg)
 
     ###################################################
-
-
-    path_srdp_pkg = os.path.join(path_programm, "_database", "_config", "srdp-mathematik.sty")
-    copy_path_srdp_pkg = os.path.join(path_programm, "Teildokument", "srdp-mathematik.sty")
+    path_srdp_pkg = os.path.join(
+        path_programm, "_database", "_config", "srdp-mathematik.sty"
+    )
+    copy_path_srdp_pkg = os.path.join(
+        path_programm, "Teildokument", "srdp-mathematik.sty"
+    )
     if os.path.isfile(copy_path_srdp_pkg):
         pass
     else:
@@ -220,15 +223,15 @@ def prepare_tex_for_pdf(self):
 
     ########################################################
 
-    if self.chosen_program=='lama':
+    if self.chosen_program == "lama":
 
         filename_teildokument = os.path.join(
             path_programm,
             "Teildokument",
             "Teildokument_%s.tex" % self.label_aufgabentyp.text()[-1],
         )
-    
-    elif self.chosen_program=='cria':
+
+    elif self.chosen_program == "cria":
         for all in self.dict_chosen_topics.values():
             suchbegriffe.append(all)
 
@@ -253,9 +256,7 @@ def prepare_tex_for_pdf(self):
     if self.cb_solution.isChecked() == True:
         file.write("\\usepackage[solution_on]{srdp-mathematik} % solution_on/off\n")
     else:
-        file.write(
-            "\\usepackage[solution_off]{srdp-mathematik} % solution_on/off\n"
-        )
+        file.write("\\usepackage[solution_off]{srdp-mathematik} % solution_on/off\n")
     file.write(
         "\setcounter{Zufall}{0}\n\n\n"
         "\pagestyle{empty} %PAGESTYLE: empty, plain, fancy\n"
@@ -277,7 +278,7 @@ def prepare_tex_for_pdf(self):
     #######
 
     gesammeltedateien = []
-    if self.chosen_program=='lama':
+    if self.chosen_program == "lama":
         if (
             self.combobox_searchtype.currentText()
             == "Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten"
@@ -308,7 +309,6 @@ def prepare_tex_for_pdf(self):
                     )
             gesammeltedateien = sorted(gesammeltedateien)
 
-
         if (
             self.combobox_searchtype.currentText()
             == "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten"
@@ -332,8 +332,8 @@ def prepare_tex_for_pdf(self):
             for all in gesammeltedateien[:]:
                 if self.entry_suchbegriffe.text().lower() not in all.lower():
                     gesammeltedateien.remove(all)
-    
-    if self.chosen_program=='cria':
+
+    if self.chosen_program == "cria":
         if (
             self.combobox_searchtype.currentText()
             == "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten"
@@ -372,7 +372,7 @@ def prepare_tex_for_pdf(self):
                 if not len(self.entry_suchbegriffe.text()) == 0:
 
                     if self.entry_suchbegriffe.text().lower() not in all.lower():
-                        gesammeltedateien.remove(all)       
+                        gesammeltedateien.remove(all)
     # if not len(self.entry_suchbegriffe.text())==0:
     # 	suchbegriffe.append(self.entry_suchbegriffe.text())
 
@@ -383,12 +383,11 @@ def prepare_tex_for_pdf(self):
     for all in gesammeltedateien:
         dict_gesammeltedateien[all] = beispieldaten_dateipfad[all]
 
-
     #### typ1 ###
     # ###############################################
     # #### Auswahl der gesuchten Antwortformate ####
     # ###############################################
-    if chosen_aufgabenformat == "Typ1Aufgaben" or self.chosen_program=='cria':
+    if chosen_aufgabenformat == "Typ1Aufgaben" or self.chosen_program == "cria":
         if (
             self.cb_af_mc.isChecked()
             or self.cb_af_lt.isChecked()
@@ -417,7 +416,7 @@ def prepare_tex_for_pdf(self):
     #### Auswahl der gesuchten Klassen #########
     ###############################################
 
-    if self.chosen_program == 'lama':
+    if self.chosen_program == "lama":
         selected_klassen = []
         if (
             self.cb_k5.isChecked()
@@ -432,7 +431,7 @@ def prepare_tex_for_pdf(self):
             for all_formats in list(Klassen.keys()):
                 # print(all_formats)
                 x = eval("self.cb_" + all_formats)
-                if x.isChecked() == True:                    
+                if x.isChecked() == True:
                     selected_klassen.append(all_formats.upper())
                     suchbegriffe.append(all_formats.upper())
             # print(selected_klassen)
@@ -462,7 +461,7 @@ def prepare_tex_for_pdf(self):
     beispieldaten.sort(key=natural_keys)
     file = open(filename_teildokument, "a", encoding="utf8")
     file.write("\n \\scriptsize Suchbegriffe: ")
-    if self.chosen_program == 'lama':
+    if self.chosen_program == "lama":
         for all in suchbegriffe:
             if all == suchbegriffe[-1]:
                 file.write(all)
@@ -486,7 +485,7 @@ def prepare_tex_for_pdf(self):
                 else:
                     file.write('\input{"' + value + '"}%\n' "\\newpage \n")
 
-    if self.chosen_program == 'cria':
+    if self.chosen_program == "cria":
         for all in suchbegriffe:
             if isinstance(all, list):
                 item = all[1] + "." + all[2] + " (" + all[0] + ")"
@@ -504,8 +503,7 @@ def prepare_tex_for_pdf(self):
             if key.startswith("ENTWURF"):
                 file.write('ENTWURF \input{"' + value + '"}%\n' "\hrule	 \leer\n\n")
             else:
-                file.write('\input{"' + value + '"}%\n' "\hrule	 \leer\n\n")     
-
+                file.write('\input{"' + value + '"}%\n' "\hrule	 \leer\n\n")
 
     file.write('\shorthandoff{"}\n' "\end{document}")
 
@@ -537,10 +535,10 @@ def prepare_tex_for_pdf(self):
         # geometry=MainWindow.geometry()
         # print(geometry)
         # MainWindow.hide()
-        if self.chosen_program == 'lama':
+        if self.chosen_program == "lama":
             typ = self.label_aufgabentyp.text()[-1]
-        elif self.chosen_program == 'cria':
-            typ='cria'
+        elif self.chosen_program == "cria":
+            typ = "cria"
 
         create_pdf("Teildokument", 0, 0, typ)
 
@@ -549,7 +547,6 @@ def prepare_tex_for_pdf(self):
         # MainWindow.resize(geometry.width(), geometry.height())
 
         # sys.exit(0)
-
 
 
 def create_pdf(path_file, index, maximum, typ=0):
@@ -577,7 +574,7 @@ def create_pdf(path_file, index, maximum, typ=0):
         save_file = head
         dateiname = tail
 
-###### check bis hier ################
+    ###### check bis hier ################
     if dateiname == "Schularbeit_Vorschau" or dateiname.startswith("Teildokument"):
         if sys.platform.startswith("linux"):
             subprocess.Popen(
@@ -624,19 +621,24 @@ def create_pdf(path_file, index, maximum, typ=0):
                 sumatrapdf = ""
 
             # print(os.path.splitdrive(path_programm)[0])
-            latex_output_file = open("{0}/Teildokument/temp.txt".format(path_programm), "w")
+            latex_output_file = open(
+                "{0}/Teildokument/temp.txt".format(path_programm), "w"
+            )
             subprocess.Popen(
                 'cd "{0}/Teildokument" & latex -interaction=nonstopmode --synctex=-1 "{1}.tex"& dvips "{1}.dvi" & ps2pdf -dNOSAFER "{1}.ps"'.format(
-                    path_programm, dateiname),
-                    cwd=os.path.splitdrive(path_programm)[0],
-                    stdout=latex_output_file,
-                    shell=True
-                    ).wait()
-                
-                # ,
+                    path_programm, dateiname
+                ),
+                cwd=os.path.splitdrive(path_programm)[0],
+                stdout=latex_output_file,
+                shell=True,
+            ).wait()
+
+            # ,
             latex_output_file.close()
-            latex_output_file = open("{0}/Teildokument/temp.txt".format(path_programm), "r")
-            latex_output=latex_output_file.readlines()
+            latex_output_file = open(
+                "{0}/Teildokument/temp.txt".format(path_programm), "r"
+            )
+            latex_output = latex_output_file.readlines()
             latex_output_file.close()
 
             # if "! LaTeX Error:" in latex_output:
@@ -645,38 +647,49 @@ def create_pdf(path_file, index, maximum, typ=0):
 
             for all in latex_output:
                 if "! LaTeX Error:" in all:
-                    start=latex_output.index(all)
+                    start = latex_output.index(all)
                     break
-            
-            try: 
-                list_error=latex_output[start:]
-            
+
+            try:
+                list_error = latex_output[start:]
+
                 for all in list_error:
-                    if all == '\n':
-                        end=list_error.index(all)
+                    if all == "\n":
+                        end = list_error.index(all)
                         break
-                error="".join(list_error[:3]).replace("\n","")
+                error = "".join(list_error[:3]).replace("\n", "")
                 print(error)
                 if sys.platform.startswith("linux"):
                     pass
                 else:
-                    msg.close()                
-                warning_window('Achtung! Es ist ein Fehler beim Erstellen der PDF-Datei aufgetreten.', error, "Fehler beim Erstellen der PDF-Datei")
-                return
+                    msg.close()
+                QtWidgets.QApplication.restoreOverrideCursor()
+                response = question_window(
+                    "Fehler beim Erstellen der PDF-Datei",
+                    "Es ist ein Fehler beim Erstellen der PDF-Datei aufgetreten. Dadurch wurde die PDF-Datei voraussichtlich nicht vollständig erstellt.\n\n"+
+                    'Dies kann viele unterschiedliche Ursachen haben (siehe Details).\n'+
+                    'Durch das Aktualisieren der Datenbank ("Refresh Datsbase") können jedoch die meisten dieser Fehler behoben werden.\n',
+                    "Wollen Sie fehlerhafte PDF-Datei dennoch anzeiegen?",
+                    "Fehlermeldung:\n" + error,
+                )
+
+                if response == True:
+                    pass
+                if response == False:
+                    return
 
             except UnboundLocalError:
-                pass                    
-
+                pass
 
             # for all in latex_output[start:]:
             #     if all=="\n":
             #         print(latex_output[start:].index(all))
             #         print(all)
             #         print('end')
-                    # break
+            # break
 
             # print(start, ENDE)
-            # print(latex_output[start:end])                
+            # print(latex_output[start:end])
 
             if sumatrapdf != "":
                 subprocess.Popen(
@@ -735,4 +748,3 @@ def create_pdf(path_file, index, maximum, typ=0):
         msg.close()
 
     QtWidgets.QApplication.restoreOverrideCursor()
-

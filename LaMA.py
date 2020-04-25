@@ -44,6 +44,7 @@ from translate import _fromUtf8, _translate
 from sort_items import natural_keys
 from create_pdf import prepare_tex_for_pdf, create_pdf
 from refresh_ddb import modification_date, refresh_ddb
+from standard_dialog_windows import warning_window, question_window
  
 # from cria_commands import create_kapitel_cria
 
@@ -324,6 +325,7 @@ class Ui_MainWindow(object):
         self.dict_alle_aufgaben_sage = {}
         self.list_alle_aufgaben_sage = []
         self.dict_widget_variables = {}
+        self.list_selected_topics_creator = []
         self.dict_variablen_punkte={}
         self.dict_variablen_label={}
         self.dict_sage_ausgleichspunkte_chosen = {}
@@ -2839,7 +2841,7 @@ class Ui_MainWindow(object):
                         os.startfile(filename_update)
                     sys.exit(0)
                 except Exception as e:
-                    self.warning_window(
+                    warning_window(
                         'Das neue Update von LaMA konnte leider nicht installiert werden! Bitte versuchen Sie es später erneut oder melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler".',
                         'Fehler:\n"{}"'.format(e),
                     )
@@ -3149,7 +3151,7 @@ class Ui_MainWindow(object):
 
     def reset_sage(self, program_changed=False):
         if program_changed==False:
-            response=self.question_window('Schularbeit löschen?',
+            response=question_window('Schularbeit löschen?',
             'Sind Sie sicher, dass Sie das Fenster zurücksetzen wollen und die erstellte Schularbeit löschen möchten?')
 
             if response==False:
@@ -3216,8 +3218,8 @@ class Ui_MainWindow(object):
     def change_program(self):
         # print(self.chosen_program)
         if self.chosen_program=='lama':
-            response = self.question_window('Programm wechseln?',
-            'Sind Sie sicher, dass sie das LaMA Cria (Unterstufe) wechseln wollen?\nDadurch werden alle bisherigen Einträge gelöscht!')
+            response = question_window('Programm wechseln?',
+            'Sind Sie sicher, dass sie zu LaMA Cria (Unterstufe) wechseln wollen?\nDadurch werden alle bisherigen Einträge gelöscht!')
             if response == False:
                 return
 
@@ -3264,9 +3266,9 @@ class Ui_MainWindow(object):
                     "Anzahl der Aufgaben: 0",None))
             return
         if self.chosen_program=='cria':
-            response = self.question_window(
+            response = question_window(
             'Programm wechseln?',
-            'Sind Sie sicher, dass sie das LaMA (Oberstufe) wechseln wollen?\nDadurch werden alle bisherigen Einträge gelöscht!'
+            'Sind Sie sicher, dass sie zu LaMA (Oberstufe) wechseln wollen?\nDadurch werden alle bisherigen Einträge gelöscht!'
             )
             if response == False:
                 return
@@ -3332,7 +3334,7 @@ class Ui_MainWindow(object):
         
 
 
-        response=self.question_window("Änderungen speichern?", "Möchten Sie die Änderungen speichern?")
+        response=question_window("Änderungen speichern?", "Möchten Sie die Änderungen speichern?")
 
         if response == True:
             self.sage_save()
@@ -3681,7 +3683,7 @@ class Ui_MainWindow(object):
 
     def cb_drafts_enabled(self):
         if self.cb_drafts.isChecked():
-            self.warning_window(
+            warning_window(
                 "Entwürfe können Fehler enthalten, die das Programm zum Absturz bringen.",
                 "Speichern Sie gegebenenfalls eine erstellte Schularbeit vor der Suche!",
                 "Warnung - Here be dragons!",
@@ -3689,7 +3691,7 @@ class Ui_MainWindow(object):
 
     def cb_drafts_sage_enabled(self):
         if self.cb_drafts_sage.isChecked():
-            self.warning_window(
+            warning_window(
                 "Entwürfe können Fehler enthalten, die das Programm zum Absturz bringen.",
                 "Speichern Sie gegebenenfalls eine erstellte Schularbeit vor dem Erstellen!",
                 "Warnung - Here be dragons!",
@@ -3797,7 +3799,7 @@ class Ui_MainWindow(object):
                         img = img.convert("RGB")
                         img.save(output)
                     else:
-                        self.warning_window(
+                        warning_window(
                             "Die Datei konnte nicht konvertiert werden."
                         )
                         return
@@ -3868,36 +3870,7 @@ class Ui_MainWindow(object):
     #     x = ", ".join(sorted(set_chosen_gk_label))
     #     self.label_ausgew_gk.setText(_translate("MainWindow", str(x), None))
 
-    def warning_window(self, text, detailed_text="", titel="Warnung"):
-        QtWidgets.QApplication.restoreOverrideCursor()
-        msg = QtWidgets.QMessageBox()
-        msg.setWindowTitle(titel)
-        msg.setIcon(QtWidgets.QMessageBox.Warning)
-        msg.setWindowIcon(QtGui.QIcon(logo_path))
-        msg.setText(text)
-        msg.setInformativeText(detailed_text)
-        msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
-        msg.exec_()
-
-
-    def question_window(self, titel, text, detailed_text=""):
-        msg = QtWidgets.QMessageBox()
-        msg.setIcon(QtWidgets.QMessageBox.Question)
-        msg.setWindowIcon(QtGui.QIcon(logo_path))
-        msg.setWindowTitle(titel)
-        msg.setText(text)
-        msg.setInformativeText(detailed_text)
-        msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-        buttonY = msg.button(QtWidgets.QMessageBox.Yes)
-        buttonY.setText("Ja")
-        buttonN = msg.button(QtWidgets.QMessageBox.No)
-        buttonN.setText("Nein")
-        response = msg.exec_()
-        if response == QtWidgets.QMessageBox.No:
-            return False
-        if response == QtWidgets.QMessageBox.Yes:
-            return True
-        
+       
 
     def save_file(self):
         # print(set_chosen_gk)
@@ -3908,38 +3881,38 @@ class Ui_MainWindow(object):
         ######################################
         if self.chosen_program=='lama':
             if self.list_selected_topics_creator == []:
-                self.warning_window("Es wurden keine Grundkompetenzen zugewiesen.")
+                warning_window("Es wurden keine Grundkompetenzen zugewiesen.")
                 return
 
             if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
                 if self.comboBox_af.currentText() == "bitte auswählen":
-                    self.warning_window("Es wurde kein Aufgabenformat ausgewählt.")
+                    warning_window("Es wurde kein Aufgabenformat ausgewählt.")
                     return
 
                 if len(self.list_selected_topics_creator) > 1:
-                    self.warning_window("Es wurden zu viele Grundkompetenzen zugewiesen.")
+                    warning_window("Es wurden zu viele Grundkompetenzen zugewiesen.")
                     return
         elif self.chosen_program=='cria':
             if self.list_creator_topics == []:
-                self.warning_window("Es wurden keine Themengebiete zugewiesen.")
+                warning_window("Es wurden keine Themengebiete zugewiesen.")
                 return
 
             if self.comboBox_af.currentText() == "bitte auswählen":
-                self.warning_window("Es wurde kein Aufgabenformat ausgewählt.")
+                warning_window("Es wurde kein Aufgabenformat ausgewählt.")
 
                 return            
 
         if self.lineEdit_titel.text() == "":
-            self.warning_window("Bitte geben Sie einen Titel ein.")
+            warning_window("Bitte geben Sie einen Titel ein.")
             return
 
         if self.plainTextEdit.toPlainText() == "":
-            self.warning_window(
+            warning_window(
                 'Bitte geben Sie den LaTeX-Quelltext der Aufgabe im Bereich "Aufgabeneingabe" ein.'
             )
             return
         if self.lineEdit_quelle.text() == "":
-            self.warning_window("Bitte geben Sie die Quelle an.")
+            warning_window("Bitte geben Sie die Quelle an.")
             return
 
         textBox_Entry = self.plainTextEdit.toPlainText()
@@ -3948,7 +3921,7 @@ class Ui_MainWindow(object):
         ####### CHECK INCL. & ATTACHED IMAGE RATIO ####
 
         if textBox_Entry.count("\includegraphics") > len(dict_picture_path):
-            self.warning_window(
+            warning_window(
                 "Es sind zu wenige Bilder angehängt ("
                 + str(len(dict_picture_path))
                 + "/"
@@ -3957,7 +3930,7 @@ class Ui_MainWindow(object):
             )
             return
         if textBox_Entry.count("\includegraphics") < len(dict_picture_path):
-            self.warning_window(
+            warning_window(
                 "Es sind zu viele Bilder angehängt ("
                 + str(len(dict_picture_path))
                 + "/"
@@ -4089,7 +4062,7 @@ class Ui_MainWindow(object):
                     if ret == QtWidgets.QMessageBox.No:
                         return
                     else:
-                        self.warning_window(
+                        warning_window(
                             "Bitte bestätigen Sie die Eigenständigkeitserklärung und Lizenzvereinbarung."
                         )
                         ret = msg.exec_()
@@ -5298,7 +5271,7 @@ class Ui_MainWindow(object):
             else:
                 self.change_program()
         except KeyError:
-            self.warning_window('Die geöffnete *.lama-Datei ist veraltet und kann nur mit der Version LaMA 1.x geöffnet werden.',
+            warning_window('Die geöffnete *.lama-Datei ist veraltet und kann nur mit der Version LaMA 1.x geöffnet werden.',
             'Bitte laden Sie ein aktuelle *.lama-Datei oder kontaktieren Sie lama.helpme@gmail.com, wenn Sie Hilfe benötigen.')
             return
 
@@ -5318,7 +5291,7 @@ class Ui_MainWindow(object):
             file_found=self.check_if_file_exists(aufgabe)
             if file_found==False:
                 QtWidgets.QApplication.restoreOverrideCursor()
-                response=self.question_window("Aufgabe nicht gefunden",
+                response=question_window("Aufgabe nicht gefunden",
                 'Die Aufgabe "{}" konnte in der Datenbank nicht gefunden werden. Dies könnte daran liegen, dass die Datenbank veraltet ist (Tipp: Refresh Database)'.format(aufgabe),
                 'Wollen Sie diese Aufgabe entfernen?')
 
@@ -6112,7 +6085,7 @@ class Ui_MainWindow(object):
         try:
             split_content = split_content[:index_end]
         except UnboundLocalError:
-            self.warning_window(
+            warning_window(
                 "Es ist ein Fehler bei der Auswahl der Ausgleichspunkte von Aufgabe {} aufgetreten! (Die Aufgabe kann dennoch verwendet und individuell in der TeX-Datei bearbeitet werden.)\n".format(
                     aufgabe
                 ),
@@ -6267,7 +6240,7 @@ class Ui_MainWindow(object):
         try:
             self.collect_content(aufgabe)
         except FileNotFoundError:
-            self.warning_window('Die Datei konnte nicht gefunden werden.\nBitte wählen Sie "Refresh Database" (F5) und versuchen Sie es erneut.')
+            warning_window('Die Datei konnte nicht gefunden werden.\nBitte wählen Sie "Refresh Database" (F5) und versuchen Sie es erneut.')
             return
     
         self.sage_aufgabe_add(aufgabe)
@@ -7158,7 +7131,7 @@ class Ui_MainWindow(object):
                                 ),
                             )
                         else:
-                            self.warning_window("Das Logo konnte nicht gefunden werden.", 
+                            warning_window("Das Logo konnte nicht gefunden werden.", 
                             "Bitte suchen Sie ein Logo unter: \n\nTitelblatt anpassen - Durchsuchen",
                             "Kein Logo ausgewählt")
 
@@ -7432,25 +7405,25 @@ class Ui_MainWindow(object):
         if self.comboBox_at_fb.currentText() == "Allgemeine Rückmeldung":
             example = "Allgemeiner Bug Report"
             if self.plainTextEdit_fb.toPlainText() == "":
-                self.warning_window(
+                warning_window(
                     "Bitte geben Sie ein Feedback oder beschreiben Sie das Problem im Textfeld."
                 )
                 return
         else:
             rest, example = self.label_example.text().split(": ")
             if example == "-":
-                self.warning_window(
+                warning_window(
                     'Bitte wählen Sie die Aufgabe, zu der Sie eine Rückmeldung geben möchten oder wählen Sie "Allgemeine Rückmeldung" aus.'
                 )
                 return
 
         fehler = self.comboBox_fehlertyp.currentText()
         if fehler == "":
-            self.warning_window("Bitte wählen Sie einen Betreff aus.")
+            warning_window("Bitte wählen Sie einen Betreff aus.")
             return
         if fehler == "Sonstiges" or fehler == "Feedback":
             if self.plainTextEdit_fb.toPlainText() == "":
-                self.warning_window(
+                warning_window(
                     "Bitte geben Sie nähere Informationen im Textfeld an."
                 )
                 return
@@ -7543,12 +7516,12 @@ class Ui_MainWindow(object):
             QtWidgets.QApplication.restoreOverrideCursor()
 
             if "smtplib.SMTPAuthenticationError" in str(sys.exc_info()[0]):
-                self.warning_window(
+                warning_window(
                     "Das eingebene Passwort ist nicht korrekt!",
                     "Bitte kontaktieren Sie den Support für nähere Informationen:\n\nlama.helpme@gmail.com",
                 )
             else:
-                self.warning_window(
+                warning_window(
                     "Die Meldung konnte leider nicht gesendet werden!",
                     "Überprüfen Sie Ihre Internetverbindung oder versuchen Sie es später erneut.",
                 )
@@ -7619,6 +7592,15 @@ if __name__ == "__main__":
     import sys
 
     app = QApplication(sys.argv)
+    # translator = QtCore.QTranslator()
+    # translator.load("".join(["qt_",str(QtCore.QLocale().system().name())]), 
+    #        QtCore.QLibraryInfo.location(QtCore.QLibraryInfo.TranslationsPath))
+    # app.installTranslator(translator)
+    ###
+    # translator = QtCore.QTranslator(app)
+    # translator.load('i18n/tr_de', os.path.dirname(__file__))
+    # app.installTranslator(translator)
+
     app.setStyle('Fusion')
     app.setStyleSheet("QToolTip { color: white; background-color: rgb(47, 69, 80); border: 0px; }")
     font = QtGui.QFont("Calibri Light", 9)
