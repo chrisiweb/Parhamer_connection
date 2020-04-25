@@ -135,7 +135,7 @@ dict_unterkapitel = config_loader(config_file, "dict_unterkapitel")
 
 
 dict_picture_path = {}
-set_chosen_gk = set([])
+# set_chosen_gk = set([])
 
 
 # class ClickLabel(QtWidgets.QLabel):
@@ -318,7 +318,7 @@ def simplify_string(string):
 
 
 class Ui_MainWindow(object):
-    global dict_picture_path, set_chosen_gk #, list_sage_examples#, dict_alle_aufgaben_sage
+    global dict_picture_path#, set_chosen_gk #, list_sage_examples#, dict_alle_aufgaben_sage
     
     def __init__(self):
         self.dict_alle_aufgaben_sage = {}
@@ -1034,7 +1034,7 @@ class Ui_MainWindow(object):
             combobox_kapitel = create_new_combobox(new_scrollareacontent)
             selection_background_color=get_color(blue_7)
             selection_text_color=get_color(white)
-            combobox_kapitel.setStyleSheet("background-color: rgb(240, 240, 240);selection-background-color: {0}; selection-color: {1}".format(selection_background_color, selection_text_color))
+            combobox_kapitel.setStyleSheet("background-color: {0};selection-background-color: {1}; selection-color: {2}".format(get_color(blue_3) , selection_background_color, selection_text_color))
             combobox_kapitel.setMinimumHeight(25)
             
             self.dict_widget_variables['combobox_kapitel_creator_cria_{}'.format(klasse)]=combobox_kapitel
@@ -1240,7 +1240,7 @@ class Ui_MainWindow(object):
 
         self.groupBox_aufgabenformat = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_aufgabenformat.setObjectName(_fromUtf8("groupBox_aufgabenformat"))
-        self.groupBox_aufgabenformat.setSizePolicy(SizePolicy_fixed_height)
+        self.groupBox_aufgabenformat.setSizePolicy(SizePolicy_minimum)
         # self.groupBox_aufgabenformat.setMaximumWidth(300)
         self.gridLayout_7 = QtWidgets.QGridLayout(self.groupBox_aufgabenformat)
         self.gridLayout_7.setObjectName(_fromUtf8("gridLayout_7"))
@@ -1552,10 +1552,7 @@ class Ui_MainWindow(object):
             index += 1
         self.comboBox_pruefungstyp.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.comboBox_pruefungstyp.setMinimumContentsLength(5)
-        if self.chosen_program=='lama':
-            self.gridLayout_5.addWidget(self.comboBox_pruefungstyp, 0, 4, 1, 2)
-        if self.chosen_program=='cria':
-            self.gridLayout_5.addWidget(self.comboBox_pruefungstyp, 0, 4, 1, 2)
+        self.gridLayout_5.addWidget(self.comboBox_pruefungstyp, 0, 4, 1, 2)
         self.comboBox_pruefungstyp.currentIndexChanged.connect(
             self.comboBox_pruefungstyp_changed
         )
@@ -1814,16 +1811,16 @@ class Ui_MainWindow(object):
 
         self.label_typ1_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsraster)
         self.label_typ1_pkt.setObjectName("label_typ1_pkt")
-        self.gridLayout_6.addWidget(self.label_typ1_pkt, 0, 0, 1, 1)
+        self.gridLayout_6.addWidget(self.label_typ1_pkt, 0, 0, 1, 2)
         # self.label_typ1_pkt.setText(_translate("MainWindow", "Punkte Typ 1: 0",None))
 
         self.label_typ2_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsraster)
         self.label_typ2_pkt.setObjectName("label_typ2_pkt")
-        self.gridLayout_6.addWidget(self.label_typ2_pkt, 1, 0, 1, 1)
+        self.gridLayout_6.addWidget(self.label_typ2_pkt, 1, 0, 1, 2)
 
-        self.label_ausgleich_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsraster)
-        self.label_ausgleich_pkt.setObjectName("label_ausgleich_pkt")
-        self.gridLayout_6.addWidget(self.label_ausgleich_pkt, 2, 0, 1, 1)
+        # self.label_ausgleich_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsraster)
+        # self.label_ausgleich_pkt.setObjectName("label_ausgleich_pkt")
+        # self.gridLayout_6.addWidget(self.label_ausgleich_pkt, 2, 0, 1, 2)
         # self.label_ausgleich_pkt.setText(_translate("MainWindow", "Ausgleichspunkte: 0",None))
 
         # self.label_typ2_pkt.setText(_translate("MainWindow", "Punkte Typ 2: 0",None))
@@ -1831,6 +1828,8 @@ class Ui_MainWindow(object):
         self.groupBox_beurteilungsraster.setTitle(
             _translate("MainWindow", "Beurteilungsraster", None)
         )
+                    
+        self.gridLayout_5.addWidget(self.groupBox_beurteilungsraster, 6, 0, 1, 6)
         self.groupBox_beurteilungsraster.hide()
 
         ### Zusammenfassung d. SA ###
@@ -2637,6 +2636,7 @@ class Ui_MainWindow(object):
         if mode=='search':
             dict_klasse = eval('{}_beschreibung'.format(klasse))
             button_check_all = create_new_button(scrollareacontent, "alle auswählen", partial(self.button_all_checkboxes_pressed,dict_klasse, 'themen', klasse))
+            button_check_all.setStyleSheet("background-color: {}; ".format(get_color(blue_3)))
             button_check_all.setSizePolicy(SizePolicy_fixed)
 
         gridlayout_scrollarea.setRowStretch(row, 1)
@@ -2679,6 +2679,7 @@ class Ui_MainWindow(object):
 
         if mode=='search':
             button_check_all = create_new_button(scrollarea, "alle auswählen", partial(self.button_all_checkboxes_pressed,chosen_dictionary, 'gk'))
+            button_check_all.setStyleSheet("background-color: {}; ".format(get_color(blue_3)))
             button_check_all.setSizePolicy(SizePolicy_fixed)
 
             gridLayout_scrollarea.addWidget(
@@ -3210,9 +3211,17 @@ class Ui_MainWindow(object):
             if response == False:
                 return
 
-            self.gridLayout.removeWidget(self.groupBox_punkte)
-            # self.gridLayout.addWidget(self.groupBox_punkte, 0, 2, 1, 1)
-            self.gridLayout.removeWidget(self.groupBox_aufgabenformat)
+
+        # if self.chosen_program=='lama':
+        #     self.gridLayout.addWidget(self.groupBox_punkte, 0, 2, 1, 1)
+        #     self.gridLayout.addWidget(self.groupBox_aufgabenformat, 0, 3, 1, 1)
+        # if self.chosen_program=='cria':
+        #     self.gridLayout.addWidget(self.groupBox_punkte, 0, 1, 1, 1)
+        #     self.gridLayout.addWidget(self.groupBox_aufgabenformat, 0, 2, 1, 1)
+
+            # self.gridLayout.removeWidget(self.groupBox_punkte)
+            # # self.gridLayout.addWidget(self.groupBox_punkte, 0, 2, 1, 1)
+            # self.gridLayout.removeWidget(self.groupBox_aufgabenformat)
             # self.gridLayout.addWidget(self.groupBox_aufgabenformat, 0, 3, 1, 1)
 
             self.chosen_program = 'cria'
@@ -3256,9 +3265,9 @@ class Ui_MainWindow(object):
             self.update_gui('widgets_search')
 
             
-            self.gridLayout.removeWidget(self.groupBox_punkte)
-            # self.gridLayout.addWidget(self.groupBox_punkte, 0, 2, 1, 1)
-            self.gridLayout.removeWidget(self.groupBox_aufgabenformat)
+            # self.gridLayout.removeWidget(self.groupBox_punkte)
+            # # self.gridLayout.addWidget(self.groupBox_punkte, 0, 2, 1, 1)
+            # self.gridLayout.removeWidget(self.groupBox_aufgabenformat)
             # self.gridLayout.removeWidget(self.groupBox_punkte)
             # # self.gridLayout.addWidget(self.groupBox_punkte, 0, 1, 1, 1)
             # self.gridLayout.removeWidget(self.groupBox_aufgabenformat)
@@ -3555,8 +3564,11 @@ class Ui_MainWindow(object):
 
 
     def checkbox_checked(self, mode, typ):
+        # global set_chosen_gk
         chosen_gk = []
         chosen_themen = []
+        self.list_selected_topics_creator=[]
+        # set_chosen_gk = set([])
         name_checkbox='checkbox_{0}_'.format(mode)
 
 
@@ -3567,10 +3579,14 @@ class Ui_MainWindow(object):
                         # print(widget)
                         # widget.split('_'))
                         gk=widget.split('_')[-1]
-                        chosen_gk.append(dict_gk[gk])                        
+                        chosen_gk.append(dict_gk[gk])
+                        if mode == 'creator':
+                            self.list_selected_topics_creator.append(gk)                        
                     if 'themen' in widget:
                         klasse = widget.split('_')[-2]
                         thema = widget.split('_')[-1]
+                        if mode == 'creator':
+                            self.list_selected_topics_creator.append(thema)
                         # typ, klasse, thema = widget.split(name_checkbox)[1].split('_')
                         chosen_themen.append(thema.upper() + " ("+ klasse[1]+ ")")                   
 
@@ -3595,31 +3611,33 @@ class Ui_MainWindow(object):
             else:
                 gesamt = x + ', ' + y
             self.label_ausgew_gk_creator.setText(_translate("MainWindow", str(gesamt), None))
+        print(self.list_selected_topics_creator)
 
 
 
-    def checkbox_rest_checked(self, mode):
-        set_chosen_gk = set([])
-        if mode=='creator':       
-            name_checkbox='checkbox_creator_themen_'
-        if mode=='search':
-            name_checkbox='checkbox_search_themen_'
+    # def checkbox_rest_checked(self, mode):
+    #     # set_chosen_gk = set([])
+    #     if mode=='creator':       
+    #         name_checkbox='checkbox_creator_themen_'
+    #     if mode=='search':
+    #         name_checkbox='checkbox_search_themen_'
 
-        for widget in self.dict_widget_variables:
-            if widget.startswith(name_checkbox):
-                if self.dict_widget_variables[widget].isChecked()==True:
-                    klasse, thema = widget.split(name_checkbox)[1].split('_')
-                    set_chosen_gk.add(thema.upper() + " ("+ klasse[1]+ ")") 
+    #     for widget in self.dict_widget_variables:
+    #         if widget.startswith(name_checkbox):
+    #             if self.dict_widget_variables[widget].isChecked()==True:
+    #                 klasse, thema = widget.split(name_checkbox)[1].split('_')
+    #                 set_chosen_gk.add(thema.upper() + " ("+ klasse[1]+ ")") 
 
 
-        if len(set_chosen_gk) > 6:
-            x = ", ".join(list(sorted(set_chosen_gk))[:6])
-            x = x + ", ..."
-        else:
-            x = ", ".join(sorted(set_chosen_gk))
-        if len(set_chosen_gk) > 0:
-            x = "Weitere: " + x
-        self.label_ausgew_gk_rest.setText(_translate("MainWindow", str(x), None))
+    #     if len(set_chosen_gk) > 6:
+    #         x = ", ".join(list(sorted(set_chosen_gk))[:6])
+    #         x = x + ", ..."
+    #     else:
+    #         x = ", ".join(sorted(set_chosen_gk))
+    #     if len(set_chosen_gk) > 0:
+    #         x = "Weitere: " + x
+    #     self.label_ausgew_gk_rest.setText(_translate("MainWindow", str(x), None))
+    #     # print(set_chosen_gk)
 
 
 
@@ -3872,12 +3890,14 @@ class Ui_MainWindow(object):
         
 
     def save_file(self):
+        # print(set_chosen_gk)
+        # return
         self.creator_mode = "user"
         local_save = False
         ########################### WARNINGS #####
         ######################################
         if self.chosen_program=='lama':
-            if set_chosen_gk == set([]):
+            if self.list_selected_topics_creator == []:
                 self.warning_window("Es wurden keine Grundkompetenzen zugewiesen.")
                 return
 
@@ -3886,7 +3906,7 @@ class Ui_MainWindow(object):
                     self.warning_window("Es wurde kein Aufgabenformat ausgewählt.")
                     return
 
-                if len(set_chosen_gk) > 1:
+                if len(self.list_selected_topics_creator) > 1:
                     self.warning_window("Es wurden zu viele Grundkompetenzen zugewiesen.")
                     return
         elif self.chosen_program=='cria':
@@ -3913,7 +3933,7 @@ class Ui_MainWindow(object):
             return
 
         textBox_Entry = self.plainTextEdit.toPlainText()
-        list_chosen_gk = list(set_chosen_gk)
+        list_chosen_gk = self.list_selected_topics_creator
 
         ####### CHECK INCL. & ATTACHED IMAGE RATIO ####
 
@@ -5431,12 +5451,10 @@ class Ui_MainWindow(object):
 
     def notenanzeige_changed(self):
         if self.combobox_beurteilung.currentIndex()==0:
-            self.gridLayout_5.removeWidget(self.groupBox_beurteilungsraster)
             self.groupBox_beurteilungsraster.hide()
             self.groupBox_notenschl.show()
         if self.combobox_beurteilung.currentIndex()==1:
             self.groupBox_notenschl.hide()
-            self.gridLayout_5.addWidget(self.groupBox_beurteilungsraster, 6, 0, 1, 7)
             self.groupBox_beurteilungsraster.show()
 
 
@@ -5650,26 +5668,27 @@ class Ui_MainWindow(object):
     def update_beurteilungsraster(self):
 
         punkteverteilung= self.get_punkteverteilung()
+        number_ausgleichspunkte_gesamt=self.get_number_ausgleichspunkte_gesamt()
         self.label_typ1_pkt.setText(
             _translate("MainWindow", "Punkte Typ 1: {}".format(punkteverteilung[1]), None)
         )
         self.label_typ2_pkt.setText(
-            _translate("MainWindow", "Punkte Typ 2: {}".format(punkteverteilung[2]), None)
+            _translate("MainWindow", "Punkte Typ 2: {0} (davon Ausgleichspunkte: {1})".format(punkteverteilung[2], number_ausgleichspunkte_gesamt), None)
         )
 
-        number_ausgleichspunkte_gesamt=self.get_number_ausgleichspunkte_gesamt()
+        
 
         # for aufgabe in self.list_alle_aufgaben_sage:
         #     print(self.dict_alle_aufgaben_sage[aufgabe])
-        self.label_ausgleich_pkt.setText(
-            _translate(
-                "MainWindow",
-                "(davon Ausgleichspunkte: {})".format(
-                    number_ausgleichspunkte_gesamt
-                ),
-                None,
-            )
-        )
+        # self.label_ausgleich_pkt.setText(
+        #     _translate(
+        #         "MainWindow",
+        #         "(davon Ausgleichspunkte: {})".format(
+        #             number_ausgleichspunkte_gesamt
+        #         ),
+        #         None,
+        #     )
+        # )
 
 
 
@@ -5765,7 +5784,7 @@ class Ui_MainWindow(object):
             # groupbox_pkt.setMaximumSize(QtCore.QSize(80, 16777215))        
         if typ == 2:
             groupbox_pkt.setToolTip(
-                "Die Punkte stehen für die Gesamtpunkte dieser Aufgabe.\nEs müssen daher auch die Ausgleichspunkte berücksichtigt werden."
+                "Die Punkte geben die Gesamtpunkte dieser Aufgabe an.\nEs müssen daher auch die Ausgleichspunkte berücksichtigt werden."
             )
             # groupbox_pkt.setMaximumSize(QtCore.QSize(150, 16777215))
 
