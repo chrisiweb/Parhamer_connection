@@ -989,8 +989,9 @@ class Ui_MainWindow(object):
         self.groupBox_themengebiete_cria.setObjectName(
             _fromUtf8("groupBox_themengebiete_cria")
         )
-        self.groupBox_themengebiete_cria.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Expanding))
-        self.groupBox_themengebiete_cria.setMaximumWidth(500)
+        # self.groupBox_themengebiete_cria.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Expanding))
+        # self.groupBox_themengebiete_cria.setMaximumWidth(500)
+        # self.groupBox_themengebiete_cria.setSizePolicy(SizePolicy)
         self.gridLayout_11_cr_cria = QtWidgets.QGridLayout(self.groupBox_themengebiete_cria)
         self.gridLayout_11_cr_cria.setObjectName(_fromUtf8("gridLayout_11_cr_cria"))
         self.tab_widget_cr_cria = QtWidgets.QTabWidget(self.groupBox_themengebiete_cria)
@@ -1034,7 +1035,7 @@ class Ui_MainWindow(object):
             combobox_kapitel = create_new_combobox(new_scrollareacontent)
             selection_background_color=get_color(blue_7)
             selection_text_color=get_color(white)
-            combobox_kapitel.setStyleSheet("background-color: {0};selection-background-color: {1}; selection-color: {2}".format(get_color(blue_3) , selection_background_color, selection_text_color))
+            combobox_kapitel.setStyleSheet("background-color: {0};selection-background-color: {1}; selection-color: {2}".format(get_color(white) , selection_background_color, selection_text_color))
             combobox_kapitel.setMinimumHeight(25)
             
             self.dict_widget_variables['combobox_kapitel_creator_cria_{}'.format(klasse)]=combobox_kapitel
@@ -1225,7 +1226,7 @@ class Ui_MainWindow(object):
 
         self.groupBox_punkte = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_punkte.setObjectName(_fromUtf8("groupBox_punkte"))
-        self.groupBox_punkte.setSizePolicy(SizePolicy_fixed)
+        self.groupBox_punkte.setSizePolicy(SizePolicy_fixed_height)
         # self.groupBox_punkte.setMaximumSize(80, 60)
         self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_punkte)
         self.gridLayout_6.setObjectName(_fromUtf8("gridLayout_6"))
@@ -1240,7 +1241,8 @@ class Ui_MainWindow(object):
 
         self.groupBox_aufgabenformat = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_aufgabenformat.setObjectName(_fromUtf8("groupBox_aufgabenformat"))
-        self.groupBox_aufgabenformat.setSizePolicy(SizePolicy_minimum)
+        self.groupBox_aufgabenformat.setSizePolicy(SizePolicy_fixed_height)
+        # self.groupBox_aufgabenformat.setSizePolicy(SizePolicy_minimum)
         # self.groupBox_aufgabenformat.setMaximumWidth(300)
         self.gridLayout_7 = QtWidgets.QGridLayout(self.groupBox_aufgabenformat)
         self.gridLayout_7.setObjectName(_fromUtf8("gridLayout_7"))
@@ -1260,6 +1262,8 @@ class Ui_MainWindow(object):
         self.groupBox_aufgabenformat.setTitle(
             _translate("MainWindow", "Aufgabenformat", None)
         )
+
+
 
         i = 1
         for all in dict_aufgabenformate:
@@ -1313,6 +1317,12 @@ class Ui_MainWindow(object):
             5, _translate("MainWindow", "Matura", None)
         )
         self.groupBox_klassen_cr.hide()
+
+        # spacerItem_creator = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        # self.gridLayout.addItem(spacerItem_creator, 0,5, 1, 1)
+        # spacerItem_creator.hide()
+
+
 
         self.groupBox_titel_cr = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_titel_cr.setObjectName(_fromUtf8("groupBox_titel_cr"))
@@ -3109,7 +3119,7 @@ class Ui_MainWindow(object):
                     self.dict_widget_variables[all].setChecked(True)
                     break
 
-        self.tab_widget_cr_cria.setCurrentIndex(0)
+        # self.tab_widget_cr_cria.setCurrentIndex(0)
 
         # self.tabWidget_klassen_cria.setCurrentIndex(0)
         klasse=list_klassen[self.tabWidget_klassen_cria.currentIndex()]
