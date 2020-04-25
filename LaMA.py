@@ -94,6 +94,8 @@ QLabel {{color:  {1}}}
 SizePolicy_fixed = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
 SizePolicy_fixed_height = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
 SizePolicy_fixed_width = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding)
+SizePolicy_preferred = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+SizePolicy_preferred_width = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding) 
 SizePolicy_maximum = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
 SizePolicy_maximum_height = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
 SizePolicy_maximum_width = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Expanding)
@@ -924,7 +926,7 @@ class Ui_MainWindow(object):
         self.scrollArea_unterkapitel_cria.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.scrollArea_unterkapitel_cria.setWidgetResizable(True)
         self.scrollArea_unterkapitel_cria.setObjectName("scrollArea_unterkapitel")
-        self.scrollArea_unterkapitel_cria.setStyleSheet("background-color: {}".format(get_color(blue_3)))
+        self.scrollArea_unterkapitel_cria.setStyleSheet("background-color: {}".format(get_color(blue_4)))
         self.scrollAreaWidgetContents_cria = QtWidgets.QWidget()
         self.scrollAreaWidgetContents_cria.setGeometry(QtCore.QRect(0, 0, 320, 279))
         self.scrollAreaWidgetContents_cria.setObjectName("scrollAreaWidgetContents_cria")
@@ -1402,9 +1404,9 @@ class Ui_MainWindow(object):
         self.splitter_sage.setObjectName("splitter_sage")
 
         self.groupBox_alle_aufgaben = QtWidgets.QGroupBox(self.splitter_sage)
-        # self.groupBox_alle_aufgaben.setMinimumSize(QtCore.QSize(140, 16777215))
         self.groupBox_alle_aufgaben.setMinimumWidth(1)
         self.groupBox_alle_aufgaben.setObjectName("groupBox_alle_aufgaben")
+
         self.verticalLayout_sage = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben)
         self.verticalLayout_sage.setObjectName("verticalLayout_sage")
 
@@ -1442,8 +1444,20 @@ class Ui_MainWindow(object):
         )
         self.comboBox_gk_num.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.verticalLayout_sage.addWidget(self.comboBox_gk_num)
+        
 
         ##### ComboBox LaMA Cria ####
+
+        # self.groupBox_alle_aufgaben_cria = QtWidgets.QGroupBox(self.splitter_sage)
+        # # self.groupBox_alle_aufgaben.setMinimumSize(QtCore.QSize(140, 16777215))
+        # self.groupBox_alle_aufgaben.setMinimumWidth(1)
+        # self.groupBox_alle_aufgaben.setObjectName("groupBox_alle_aufgaben")
+        # # self.groupBox_alle_aufgaben.setSizePolicy(SizePolicy_preferred_width)
+        # self.verticalLayout_sage = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben)
+        # self.verticalLayout_sage.setObjectName("verticalLayout_sage")
+
+
+
         self.comboBox_klassen = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
         self.comboBox_klassen.setObjectName("comboBox_klassen")
         # self.comboBox_gk.addItem("")
@@ -1495,6 +1509,12 @@ class Ui_MainWindow(object):
         #self.gridLayout.addWidget(self.groupBox_alle_aufgaben, 2, 0, 7, 1)
 
         self.groupBox_alle_aufgaben.setTitle(_translate("MainWindow", "Aufgaben", None))
+        # print(self.groupBox_alle_aufgaben.height())
+        # print(self.groupBox_alle_aufgaben.sizeHint())
+        # print(self.groupBox_alle_aufgaben.minimumSizeHint())
+        # self.groupBox_alle_aufgaben.setMinimumWidth(280)
+        # self.groupBox_alle_aufgaben.resize(self.groupBox_alle_aufgaben.sizeHint())
+        
         self.groupBox_alle_aufgaben.hide()
 
         self.groupBox_sage = QtWidgets.QGroupBox(self.splitter_sage)
@@ -2613,8 +2633,9 @@ class Ui_MainWindow(object):
 
         row=self.create_checkboxes_themen(scrollareacontent, gridlayout_scrollarea, klasse, mode)
 
-        dict_klasse = eval('{}_beschreibung'.format(klasse))
+        
         if mode=='search':
+            dict_klasse = eval('{}_beschreibung'.format(klasse))
             button_check_all = create_new_button(scrollareacontent, "alle auswählen", partial(self.button_all_checkboxes_pressed,dict_klasse, 'themen', klasse))
             button_check_all.setSizePolicy(SizePolicy_fixed)
 
@@ -2877,7 +2898,7 @@ class Ui_MainWindow(object):
             dict_klasse = eval("dict_{}".format(klasse))
             for kapitel in dict_klasse:
                 button_check_all_unterkapitel = create_new_button(self.scrollAreaWidgetContents_cria, 'alle auswählen',None)
-                button_check_all_unterkapitel.setStyleSheet("background-color: rgb(240, 240, 240);")
+                # button_check_all_unterkapitel.setStyleSheet("background-color: rgb(240, 240, 240);")
                 button_check_all_unterkapitel.clicked.connect(partial(self.btn_alle_unterkapitel_clicked_cria, klasse, kapitel))                  
                 self.verticalLayout_4_cria.addWidget(button_check_all_unterkapitel, 0, QtCore.Qt.AlignLeft)
                 button_check_all_unterkapitel.hide()
@@ -3073,13 +3094,9 @@ class Ui_MainWindow(object):
         self.uncheck_all_checkboxes('themen')
 
 
-        ### LaMA Cria
-
-        self.tabWidget_klassen_cria.setCurrentIndex(0)
-        self.tab_widget_cr_cria.setCurrentIndex(0)
+        ### LaMA Cria      
         for klasse in list_klassen:
             self.dict_widget_variables['combobox_kapitel_creator_cria_{}'.format(klasse)].setCurrentIndex(0)
-
 
         for all in self.dict_widget_variables:
             if all.startswith('checkbox_unterkapitel_'):
@@ -3091,8 +3108,13 @@ class Ui_MainWindow(object):
                     self.dict_widget_variables[all].setChecked(True)
                     break
 
-        self.groupBox_unterkapitel_cria.setTitle(_translate("MainWindow", "Unterkapitel", None))
+        self.tab_widget_cr_cria.setCurrentIndex(0)
 
+        # self.tabWidget_klassen_cria.setCurrentIndex(0)
+        klasse=list_klassen[self.tabWidget_klassen_cria.currentIndex()]
+        dict_klasse = eval('dict_{}_name'.format(klasse))
+        kapitel=list(dict_klasse.keys())[0]
+        self.chosen_radiobutton(klasse, kapitel)
  
         self.entry_suchbegriffe.setText("")
         self.cb_solution.setChecked(True)
@@ -3271,7 +3293,6 @@ class Ui_MainWindow(object):
 
         self.reset_sage(True)
         self.suchfenster_reset()
-
 
 
 
