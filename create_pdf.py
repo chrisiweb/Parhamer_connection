@@ -10,6 +10,7 @@ import datetime
 from datetime import date
 from refresh_ddb import refresh_ddb, modification_date
 from sort_items import natural_keys
+from standard_dialog_windows import warning_window
 
 
 
@@ -623,13 +624,60 @@ def create_pdf(path_file, index, maximum, typ=0):
                 sumatrapdf = ""
 
             # print(os.path.splitdrive(path_programm)[0])
+            latex_output_file = open("{0}/Teildokument/temp.txt".format(path_programm), "w")
             subprocess.Popen(
-                'cd "{0}/Teildokument" & latex --synctex=-1 "{1}.tex"& dvips "{1}.dvi" & ps2pdf -dNOSAFER "{1}.ps"'.format(
-                    path_programm, dateiname
-                ),
-                cwd=os.path.splitdrive(path_programm)[0],
-                shell=True,
-            ).wait()
+                'cd "{0}/Teildokument" & latex -interaction=nonstopmode --synctex=-1 "{1}.tex"& dvips "{1}.dvi" & ps2pdf -dNOSAFER "{1}.ps"'.format(
+                    path_programm, dateiname),
+                    cwd=os.path.splitdrive(path_programm)[0],
+                    stdout=latex_output_file,
+                    shell=True
+                    ).wait()
+                
+                # ,
+            latex_output_file.close()
+            latex_output_file = open("{0}/Teildokument/temp.txt".format(path_programm), "r")
+            latex_output=latex_output_file.readlines()
+            latex_output_file.close()
+
+            # if "! LaTeX Error:" in latex_output:
+            #     error=latex_output.split("! LaTeX Error:")[1]
+            # print(error)
+
+            for all in latex_output:
+                if "! LaTeX Error:" in all:
+                    start=latex_output.index(all)
+                    break
+            
+            try: 
+                list_error=latex_output[start:]
+            
+                for all in list_error:
+                    if all == '\n':
+                        end=list_error.index(all)
+                        break
+                error="".join(list_error[:3]).replace("\n","")
+                print(error)
+                if sys.platform.startswith("linux"):
+                    pass
+                else:
+                    msg.close()                
+                warning_window('Achtung! Es ist ein Fehler beim Erstellen der PDF-Datei aufgetreten.', error, "Fehler beim Erstellen der PDF-Datei")
+                return
+
+            except UnboundLocalError:
+                pass                    
+
+
+            # for all in latex_output[start:]:
+            #     if all=="\n":
+            #         print(latex_output[start:].index(all))
+            #         print(all)
+            #         print('end')
+                    # break
+
+            # print(start, ENDE)
+            # print(latex_output[start:end])                
+
             if sumatrapdf != "":
                 subprocess.Popen(
                     'cd "{0}/Teildokument" &"{1}" "{2}.pdf"'.format(
