@@ -551,9 +551,6 @@ def prepare_tex_for_pdf(self):
 
 
 def extract_error_from_output(latex_output):
-    # if "! LaTeX Error:" in latex_output:
-    #     error=latex_output.split("! LaTeX Error:")[1]
-    # print(error)
     start=None
     for all in latex_output:
         if "! LaTeX Error:" in all:
@@ -580,18 +577,14 @@ def extract_error_from_output(latex_output):
             error_location = "".join(latex_output[:start+end])
             index_start=error_location.rfind(path_programm)
             index_end = error_location[index_start:].find('"')
-            # error_location[index:]
-            print(index_start)
-            print(index_end)
-            print(error_location[index_start:index_start+index_end])
+
+            error_location = error_location[index_start:index_start+index_end]
 
 
-
-        # for all in reversed(latex_output[:start+end]):
-        #     if path_programm in all:
-        #         print(all)
-        #         break
-            
+        if error_location==None:
+            detailed_text= error
+        else:
+            detailed_text= error + "\n\nFehlerhafte Datei:\n" + error_location     
         QtWidgets.QApplication.restoreOverrideCursor()
         response = question_window(
             "Fehler beim Erstellen der PDF-Datei",
@@ -600,13 +593,14 @@ def extract_error_from_output(latex_output):
             'Durch das Aktualisieren der Datenbank ("Refresh Datsbase") können jedoch die meisten dieser Fehler behoben werden.\n'+
             'Sollte der Fehler weiterhin bestehen, bitte kontaktieren Sie uns unter lama.helpme@gmail.com',
             "Wollen Sie die fehlerhafte PDF-Datei dennoch anzeigen?",
-            "Fehlermeldung:\n" + error,
+            "Fehlermeldung:\n" + detailed_text,
         )
 
-        if response == True:
-            pass
-        if response == False:
-            return
+        return response
+        # if response == True:
+        #     return
+        # if response == False:
+        #     return
 
 def create_pdf(path_file, index, maximum, typ=0):
     if sys.platform.startswith("linux"):
@@ -722,7 +716,10 @@ def create_pdf(path_file, index, maximum, typ=0):
             else:
                 msg.close()
 
-            extract_error_from_output(latex_output)
+            response = extract_error_from_output(latex_output)
+
+            if response==False:
+                return
             # return
             # stop=True
             # ,
