@@ -550,6 +550,64 @@ def prepare_tex_for_pdf(self):
         # sys.exit(0)
 
 
+def extract_error_from_output(latex_output):
+    # if "! LaTeX Error:" in latex_output:
+    #     error=latex_output.split("! LaTeX Error:")[1]
+    # print(error)
+    start=None
+    for all in latex_output:
+        if "! LaTeX Error:" in all:
+            start = latex_output.index(all)
+
+    if start ==None:
+        for all in latex_output:
+            if "! " in all:
+                start = latex_output.index(all)
+                break
+
+    if start != None:
+        list_error = latex_output[start:]
+
+        for all in list_error:
+            if all == "":
+                end = list_error.index(all)
+                break
+        error = "".join(list_error[:end])#.replace("\n", "")
+
+        if path_programm in error:
+            error_location=None
+        else:
+            error_location = "".join(latex_output[:start+end])
+            index_start=error_location.rfind(path_programm)
+            index_end = error_location[index_start:].find('"')
+            # error_location[index:]
+            print(index_start)
+            print(index_end)
+            print(error_location[index_start:index_start+index_end])
+
+
+
+        # for all in reversed(latex_output[:start+end]):
+        #     if path_programm in all:
+        #         print(all)
+        #         break
+            
+        QtWidgets.QApplication.restoreOverrideCursor()
+        response = question_window(
+            "Fehler beim Erstellen der PDF-Datei",
+            "Es ist ein Fehler beim Erstellen der PDF-Datei aufgetreten. Dadurch konnte die PDF-Datei nicht vollständig erzeugt werden.\n\n"+
+            'Dies kann viele unterschiedliche Ursachen haben (siehe Details).\n'+
+            'Durch das Aktualisieren der Datenbank ("Refresh Datsbase") können jedoch die meisten dieser Fehler behoben werden.\n'+
+            'Sollte der Fehler weiterhin bestehen, bitte kontaktieren Sie uns unter lama.helpme@gmail.com',
+            "Wollen Sie die fehlerhafte PDF-Datei dennoch anzeigen?",
+            "Fehlermeldung:\n" + error,
+        )
+
+        if response == True:
+            pass
+        if response == False:
+            return
+
 def create_pdf(path_file, index, maximum, typ=0):
     if sys.platform.startswith("linux"):
         pass
@@ -657,59 +715,18 @@ def create_pdf(path_file, index, maximum, typ=0):
             )
             latex_output = latex_output_file.read().splitlines()
             latex_output_file.close()
-            print(latex_output)
-            return
+            # print(latex_output)
+
+            if sys.platform.startswith("linux"):
+                pass
+            else:
+                msg.close()
+
+            extract_error_from_output(latex_output)
+            # return
             # stop=True
             # ,
 
-
-            # if "! LaTeX Error:" in latex_output:
-            #     error=latex_output.split("! LaTeX Error:")[1]
-            # print(error)
-            start=None
-            for all in latex_output:
-                if "! LaTeX Error:" in all:
-                    start = latex_output.index(all)
-            if start ==None:
-                for all in latex_output:
-                    if "! " in all:
-                        start = latex_output.index(all)
-                        break
-
-            if start != None:
-                if sys.platform.startswith("linux"):
-                    pass
-                else:
-                    msg.close()
-                list_error = latex_output[start:]
-
-                for all in list_error:
-                    if all == "\n":
-                        end = list_error.index(all)
-                        break
-                error = "".join(list_error[:end]).replace("\n", "")
-                # print(error)
-                print('----------------------------------')
-                for all in reversed(latex_output[:start+end]):
-                    if path_programm in all:
-                        print(all)
-                        break
-                    
-                QtWidgets.QApplication.restoreOverrideCursor()
-                response = question_window(
-                    "Fehler beim Erstellen der PDF-Datei",
-                    "Es ist ein Fehler beim Erstellen der PDF-Datei aufgetreten. Dadurch konnte die PDF-Datei nicht vollständig erzeugt werden.\n\n"+
-                    'Dies kann viele unterschiedliche Ursachen haben (siehe Details).\n'+
-                    'Durch das Aktualisieren der Datenbank ("Refresh Datsbase") können jedoch die meisten dieser Fehler behoben werden.\n'+
-                    'Sollte der Fehler weiterhin bestehen, bitte kontaktieren Sie uns unter lama.helpme@gmail.com',
-                    "Wollen Sie die fehlerhafte PDF-Datei dennoch anzeigen?",
-                    "Fehlermeldung:\n" + error,
-                )
-
-                if response == True:
-                    pass
-                if response == False:
-                    return
 
             # except UnboundLocalError:
             #     pass
