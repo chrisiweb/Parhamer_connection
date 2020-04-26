@@ -7,6 +7,7 @@ from config import config_file, config_loader, logo_path, path_programm
 import json
 import shutil
 import datetime
+import time
 from datetime import date
 from refresh_ddb import refresh_ddb, modification_date
 from sort_items import natural_keys
@@ -573,6 +574,7 @@ def create_pdf(path_file, index, maximum, typ=0):
         head, tail = os.path.split(path_file)
         save_file = head
         dateiname = tail
+    
 
     ###### check bis hier ################
     if dateiname == "Schularbeit_Vorschau" or dateiname.startswith("Teildokument"):
@@ -621,55 +623,86 @@ def create_pdf(path_file, index, maximum, typ=0):
                 sumatrapdf = ""
 
             # print(os.path.splitdrive(path_programm)[0])
+            print('Pdf-Datei wird erstellt. Bitte warten...')
+
             latex_output_file = open(
                 "{0}/Teildokument/temp.txt".format(path_programm), "w"
             )
-            subprocess.Popen(
+
+            p=subprocess.Popen(
                 'cd "{0}/Teildokument" & latex -interaction=nonstopmode --synctex=-1 "{1}.tex"& dvips "{1}.dvi" & ps2pdf -dNOSAFER "{1}.ps"'.format(
                     path_programm, dateiname
                 ),
                 cwd=os.path.splitdrive(path_programm)[0],
                 stdout=latex_output_file,
                 shell=True,
-            ).wait()
-
-            # ,
+            )
             latex_output_file.close()
+
+
+            animation = "|/-\\"
+            idx = 0
+            while True:
+                if p.poll()!=None:
+                    print('Done')
+                    break
+                print(animation[idx % len(animation)], end="\r")
+                idx += 1
+                time.sleep(0.1)
+            p.wait()
+
+
             latex_output_file = open(
                 "{0}/Teildokument/temp.txt".format(path_programm), "r"
             )
-            latex_output = latex_output_file.readlines()
+            latex_output = latex_output_file.read().splitlines()
             latex_output_file.close()
+            print(latex_output)
+            return
+            # stop=True
+            # ,
+
 
             # if "! LaTeX Error:" in latex_output:
             #     error=latex_output.split("! LaTeX Error:")[1]
             # print(error)
-
+            start=None
             for all in latex_output:
                 if "! LaTeX Error:" in all:
                     start = latex_output.index(all)
-                    break
+            if start ==None:
+                for all in latex_output:
+                    if "! " in all:
+                        start = latex_output.index(all)
+                        break
 
-            try:
+            if start != None:
+                if sys.platform.startswith("linux"):
+                    pass
+                else:
+                    msg.close()
                 list_error = latex_output[start:]
 
                 for all in list_error:
                     if all == "\n":
                         end = list_error.index(all)
                         break
-                error = "".join(list_error[:3]).replace("\n", "")
-                print(error)
-                if sys.platform.startswith("linux"):
-                    pass
-                else:
-                    msg.close()
+                error = "".join(list_error[:end]).replace("\n", "")
+                # print(error)
+                print('----------------------------------')
+                for all in reversed(latex_output[:start+end]):
+                    if path_programm in all:
+                        print(all)
+                        break
+                    
                 QtWidgets.QApplication.restoreOverrideCursor()
                 response = question_window(
                     "Fehler beim Erstellen der PDF-Datei",
-                    "Es ist ein Fehler beim Erstellen der PDF-Datei aufgetreten. Dadurch wurde die PDF-Datei voraussichtlich nicht vollständig erstellt.\n\n"+
+                    "Es ist ein Fehler beim Erstellen der PDF-Datei aufgetreten. Dadurch konnte die PDF-Datei nicht vollständig erzeugt werden.\n\n"+
                     'Dies kann viele unterschiedliche Ursachen haben (siehe Details).\n'+
-                    'Durch das Aktualisieren der Datenbank ("Refresh Datsbase") können jedoch die meisten dieser Fehler behoben werden.\n',
-                    "Wollen Sie fehlerhafte PDF-Datei dennoch anzeiegen?",
+                    'Durch das Aktualisieren der Datenbank ("Refresh Datsbase") können jedoch die meisten dieser Fehler behoben werden.\n'+
+                    'Sollte der Fehler weiterhin bestehen, bitte kontaktieren Sie uns unter lama.helpme@gmail.com',
+                    "Wollen Sie die fehlerhafte PDF-Datei dennoch anzeigen?",
                     "Fehlermeldung:\n" + error,
                 )
 
@@ -678,8 +711,9 @@ def create_pdf(path_file, index, maximum, typ=0):
                 if response == False:
                     return
 
-            except UnboundLocalError:
-                pass
+            # except UnboundLocalError:
+            #     pass
+                # print('Pdf-Datei konnte erfolgreich erstellt werden.')
 
             # for all in latex_output[start:]:
             #     if all=="\n":
