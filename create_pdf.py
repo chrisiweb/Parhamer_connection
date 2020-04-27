@@ -551,16 +551,18 @@ def prepare_tex_for_pdf(self):
 
 
 def extract_error_from_output(latex_output):
+    # print(latex_output)
+
     start=None
     for all in latex_output:
-        if "! LaTeX Error:" in all:
+        if all.startswith("! LaTeX Error:"):
             start = latex_output.index(all)
-
+            break    
     if start ==None:
         for all in latex_output:
-            if "! " in all:
+            if all.startswith("! "):
                 start = latex_output.index(all)
-                break
+                break     
 
     if start != None:
         list_error = latex_output[start:]
@@ -575,10 +577,12 @@ def extract_error_from_output(latex_output):
             error_location=None
         else:
             error_location = "".join(latex_output[:start+end])
+            print(error_location)
             index_start=error_location.rfind(path_programm)
-            index_end = error_location[index_start:].find('"')
+            index_end = error_location[index_start:].find('.tex')+4
 
             error_location = error_location[index_start:index_start+index_end]
+            print(error_location)
 
 
         if error_location==None:
