@@ -6021,13 +6021,31 @@ class Ui_MainWindow(object):
         QtWidgets.QApplication.restoreOverrideCursor()
 
 
+    def split_all_items_of_list(self, chosen_list, string):
+        temporary_list = []
+        for all in chosen_list:
+            pieces = all.split(string)
+            for item in pieces:
+                temporary_list.append(item)
+        return temporary_list
+
+
     def split_content_ausgleichspunkte_new_format(self, content):
         x = content.split("\\begin{aufgabenstellung}")[1].split("\\end{aufgabenstellung}")
-        aufgabenstellung = x[0]
-        ausgleichspunkte_split_text = aufgabenstellung.split("\\Subitem{")
-        print(ausgleichspunkte_split_text)
+        aufgabenstellung = x[0].replace("\t", "")
+        ausgleichspunkte_split_text = re.split("\n\n|\n\t", aufgabenstellung)
+
+        ausgleichspunkte_split_text = self.split_all_items_of_list(ausgleichspunkte_split_text, "\\item")
+
+        ausgleichspunkte_split_text = self.split_all_items_of_list(ausgleichspunkte_split_text, "\\Subitem{")
+
+
 
         for all in ausgleichspunkte_split_text:
+            if all.startswith(' '):
+                x=all[1:]
+                ausgleichspunkte_split_text[ausgleichspunkte_split_text.index(all)] = x
+                
             if "\\begin{pspicture*}" in all:
                 ausgleichspunkte_split_text[
                     ausgleichspunkte_split_text.index(all)
@@ -6048,10 +6066,11 @@ class Ui_MainWindow(object):
             y = "\n".join(x)
             ausgleichspunkte_split_text[ausgleichspunkte_split_text.index(all)] = y        
 
-        for all in ausgleichspunkte_split_text[:]:
-            if all == "":
-                ausgleichspunkte_split_text.remove(all)
 
+        for all in ausgleichspunkte_split_text[:]:
+            if all == "" or all.startswith('%'):
+                ausgleichspunkte_split_text.remove(all)
+        print(ausgleichspunkte_split_text)
         return ausgleichspunkte_split_text
 
     def split_content_ausgleichspunkte(self, content):
@@ -6135,7 +6154,7 @@ class Ui_MainWindow(object):
 
         # for all in self.dict_sage_ausgleichspunkte_chosen[selected_typ2_path]:
         # 	print(all)
-
+        # return
         if aufgabe in self.dict_sage_ausgleichspunkte_chosen.keys():
             # print(self.dict_sage_ausgleichspunkte_chosen[selected_typ2_path])
             # return
