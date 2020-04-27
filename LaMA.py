@@ -927,7 +927,7 @@ class Ui_MainWindow(object):
         self.scrollArea_unterkapitel_cria.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.scrollArea_unterkapitel_cria.setWidgetResizable(True)
         self.scrollArea_unterkapitel_cria.setObjectName("scrollArea_unterkapitel")
-        self.scrollArea_unterkapitel_cria.setStyleSheet("background-color: {}".format(get_color(blue_4)))
+        self.scrollArea_unterkapitel_cria.setStyleSheet("background-color: {}".format(get_color(blue_2)))
         self.scrollAreaWidgetContents_cria = QtWidgets.QWidget()
         self.scrollAreaWidgetContents_cria.setGeometry(QtCore.QRect(0, 0, 320, 279))
         self.scrollAreaWidgetContents_cria.setObjectName("scrollAreaWidgetContents_cria")
@@ -935,6 +935,10 @@ class Ui_MainWindow(object):
         self.verticalLayout_4_cria.setObjectName("verticalLayout_4_cria")
         self.scrollArea_unterkapitel_cria.setWidget(self.scrollAreaWidgetContents_cria)
         self.gridLayout_11_cria.addWidget(self.scrollArea_unterkapitel_cria, 0, 0, 1, 1)
+
+        self.label_unterkapitel_cria = create_new_label(self.scrollAreaWidgetContents_cria,"")
+        self.label_unterkapitel_cria.setStyleSheet("padding-bottom: 15px")
+        self.verticalLayout_4_cria.addWidget(self.label_unterkapitel_cria)
 
         self.create_all_checkboxes_unterkapitel()
 
@@ -1049,8 +1053,10 @@ class Ui_MainWindow(object):
 
             new_verticallayout.addWidget(combobox_kapitel)
 
+
             dict_klasse = eval('dict_{}'.format(klasse))
             kapitel= list(dict_klasse.keys())[0]
+
             for unterkapitel in dict_klasse[kapitel]:
                 new_checkbox=create_new_checkbox(new_scrollareacontent, dict_unterkapitel[unterkapitel] + ' (' + unterkapitel +')')
                 new_checkbox.stateChanged.connect(partial(self.checkbox_unterkapitel_checked_creator_cria, new_checkbox, klasse, kapitel, unterkapitel))
@@ -1634,6 +1640,7 @@ class Ui_MainWindow(object):
         # self.groupBox_klasse.setMaximumSize(QtCore.QSize(90, 16777215))
         self.groupBox_datum = QtWidgets.QGroupBox(self.groupBox_sage)
         self.groupBox_datum.setObjectName("groupBox_datum")
+        self.groupBox_datum.setStyleSheet("padding-right: 10px")
         self.groupBox_datum.setSizePolicy(SizePolicy_fixed_height)
         self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.groupBox_datum)
         self.verticalLayout_5.setObjectName("verticalLayout_5")
@@ -2866,14 +2873,7 @@ class Ui_MainWindow(object):
                     self.chosen_radiobutton(klasse, kapitel)
                     return
     
-        
-        self.groupBox_unterkapitel_cria.setTitle(
-            _translate(
-                "MainWindow",
-                "Unterkapitel",
-                None
-            )
-        )
+        self.label_unterkapitel_cria.setText("")
 
         for alle_klassen in list_klassen:
             dict_klasse = eval("dict_{}".format(alle_klassen))
@@ -2925,17 +2925,14 @@ class Ui_MainWindow(object):
     def chosen_radiobutton(self, klasse, kapitel):
         dict_klasse = eval("dict_{}".format(klasse))
         dict_klasse_name = eval("dict_{}_name".format(klasse))
-        
-        self.groupBox_unterkapitel_cria.setTitle(
-            _translate(
+
+        self.label_unterkapitel_cria.setText(_translate(
                 "MainWindow",
-                "Unterkapitel  - "
-                + klasse[1]
+                klasse[1]
                 + ". Klasse  - "
                 + dict_klasse_name[kapitel],
                 None
-            )
-        )
+            ))        
 
         for alle_klassen in list_klassen:
             dict_klasse = eval("dict_{}".format(alle_klassen))
@@ -3222,7 +3219,8 @@ class Ui_MainWindow(object):
             if response == False:
                 return
 
-
+            self.reset_sage(True)
+            self.suchfenster_reset()
         # if self.chosen_program=='lama':
         #     self.gridLayout.addWidget(self.groupBox_punkte, 0, 2, 1, 1)
         #     self.gridLayout.addWidget(self.groupBox_aufgabenformat, 0, 3, 1, 1)
@@ -3271,7 +3269,9 @@ class Ui_MainWindow(object):
             )
             if response == False:
                 return
-            # self.reset_sage(True)
+            self.reset_sage(True)
+            self.suchfenster_reset()
+
             self.chosen_program = 'lama'
             self.update_gui('widgets_search')
 
@@ -3311,8 +3311,7 @@ class Ui_MainWindow(object):
             )
         )
 
-        self.reset_sage(True)
-        self.suchfenster_reset()
+
 
 
 
@@ -5741,10 +5740,10 @@ class Ui_MainWindow(object):
         elif typ == 2:
             label="{0}".format(aufgabe)
 
-        label_aufgabe = create_new_label(new_groupbox, label)
+        label_aufgabe = create_new_label(new_groupbox, label, True)
         gridLayout_gB.addWidget(label_aufgabe, 0, 0, 1, 1)
 
-        label_titel = create_new_label(new_groupbox, "Titel: {}".format(aufgaben_infos[2]))
+        label_titel = create_new_label(new_groupbox, "Titel: {}".format(aufgaben_infos[2]),True)
         gridLayout_gB.addWidget(label_titel, 1, 0, 1, 1)
 
 
@@ -5978,11 +5977,6 @@ class Ui_MainWindow(object):
 
     def build_aufgaben_schularbeit(self, aufgabe, file_loaded=False): 
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        # print(self.dict_alle_aufgaben_sage)
-        # print(self.list_alle_aufgaben_sage)
-        # print(aufgaben_verteilung)
-        # print(self.list_alle_aufgaben_sage)
-        # print(aufgabe)
 
         try:
             self.gridLayout_8.removeItem(self.spacerItem)
@@ -6027,8 +6021,41 @@ class Ui_MainWindow(object):
         QtWidgets.QApplication.restoreOverrideCursor()
 
 
+    def split_content_ausgleichspunkte_new_format(self, content):
+        x = content.split("\\begin{aufgabenstellung}")[1].split("\\end{aufgabenstellung}")
+        aufgabenstellung = x[0]
+        ausgleichspunkte_split_text = aufgabenstellung.split("\\Subitem{")
+        print(ausgleichspunkte_split_text)
+
+        for all in ausgleichspunkte_split_text:
+            if "\\begin{pspicture*}" in all:
+                ausgleichspunkte_split_text[
+                    ausgleichspunkte_split_text.index(all)
+                ] = "[...] GRAFIK [...]"
+
+        for all in ausgleichspunkte_split_text:
+            z = all.replace("\t", "")
+            z = z.replace("\\leer", "")
+            x = [
+                line for line in z.split("\n") if line.strip() != ""
+            ]  # delete all empty lines
+            for item in x[:]:
+                if "begin{" in item or "end{" in item:
+                    if "tabular" in item or "tabu" in item:
+                        pass
+                    else:
+                        x.remove(item)
+            y = "\n".join(x)
+            ausgleichspunkte_split_text[ausgleichspunkte_split_text.index(all)] = y        
+
+        for all in ausgleichspunkte_split_text[:]:
+            if all == "":
+                ausgleichspunkte_split_text.remove(all)
+
+        return ausgleichspunkte_split_text
 
     def split_content_ausgleichspunkte(self, content):
+        
         x = re.split("Aufgabenstellung:}|Lösungserwartung:}", content)
         str_file = x[1].replace("\t", "")
         ausgleichspunkte_split_text = re.split("\n\n|\n\t", str_file)
@@ -6067,30 +6094,44 @@ class Ui_MainWindow(object):
             if all == "":
                 ausgleichspunkte_split_text.remove(all)
 
-        return ausgleichspunkte_split_text
+        for all in reversed(ausgleichspunkte_split_text):
+            if "\\antwort{" in all:
+                index_end = ausgleichspunkte_split_text.index(all)
+                break
+
+        return ausgleichspunkte_split_text, index_end
 
 
     def pushButton_ausgleich_pressed(self, aufgabe):
         content = self.collect_content(aufgabe)
-
-        split_content = self.split_content_ausgleichspunkte(content)
-
-
-        for all in reversed(split_content):
-            if "\\antwort{" in all:
-                index_end = split_content.index(all)
-                break
+       
 
         try:
+            split_content, index_end = self.split_content_ausgleichspunkte(content)
             split_content = split_content[:index_end]
         except UnboundLocalError:
-            warning_window(
-                "Es ist ein Fehler bei der Auswahl der Ausgleichspunkte von Aufgabe {} aufgetreten! (Die Aufgabe kann dennoch verwendet und individuell in der TeX-Datei bearbeitet werden.)\n".format(
-                    aufgabe
-                ),
-                'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!',
-            )
-            return
+            split_content = self.split_content_ausgleichspunkte_new_format(content)
+            try:
+                split_content
+            except UnboundLocalError:
+                warning_window(
+                    "Es ist ein Fehler bei der Auswahl der Ausgleichspunkte von Aufgabe {} aufgetreten! (Die Aufgabe kann dennoch verwendet und individuell in der TeX-Datei bearbeitet werden.)\n".format(
+                        aufgabe
+                    ),
+                    'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!',
+                )
+                return        
+
+        # try:
+        #     split_content = split_content[:index_end]
+        # except UnboundLocalError:
+        #     warning_window(
+        #         "Es ist ein Fehler bei der Auswahl der Ausgleichspunkte von Aufgabe {} aufgetreten! (Die Aufgabe kann dennoch verwendet und individuell in der TeX-Datei bearbeitet werden.)\n".format(
+        #             aufgabe
+        #         ),
+        #         'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!',
+        #     )
+        #     return
 
         # for all in self.dict_sage_ausgleichspunkte_chosen[selected_typ2_path]:
         # 	print(all)

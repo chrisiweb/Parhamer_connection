@@ -474,7 +474,7 @@ def prepare_tex_for_pdf(self):
             value = value.replace("\\", "/")
             file = open(filename_teildokument, "a", encoding="utf8")
 
-            ### newpage only with typ2 !!
+
             if chosen_aufgabenformat == "Typ1Aufgaben":
                 if key.startswith("ENTWURF"):
                     file.write('ENTWURF \input{"' + value + '"}%\n' "\hrule	 \leer\n\n")
@@ -510,8 +510,6 @@ def prepare_tex_for_pdf(self):
 
     file.close()
 
-    # print(dict_gesammeltedateien)
-    # return
 
     QtWidgets.QApplication.restoreOverrideCursor()
     msg = QtWidgets.QMessageBox()
@@ -533,9 +531,6 @@ def prepare_tex_for_pdf(self):
     ret = msg.exec_()
 
     if ret == QtWidgets.QMessageBox.Yes:
-        # geometry=MainWindow.geometry()
-        # print(geometry)
-        # MainWindow.hide()
         if self.chosen_program == "lama":
             typ = self.label_aufgabentyp.text()[-1]
         elif self.chosen_program == "cria":
@@ -543,11 +538,7 @@ def prepare_tex_for_pdf(self):
 
         create_pdf("Teildokument", 0, 0, typ)
 
-        # MainWindow.show()
-        # MainWindow.move(geometry.x(),geometry.y())
-        # MainWindow.resize(geometry.width(), geometry.height())
 
-        # sys.exit(0)
 
 
 def extract_error_from_output(latex_output):
@@ -597,10 +588,7 @@ def extract_error_from_output(latex_output):
         )
 
         return response
-        # if response == True:
-        #     return
-        # if response == False:
-        #     return
+
 
 def build_pdf_file(folder_name, file_name, latex_output_file):
     if sys.platform.startswith("linux") or sys.platform.startswith("darwin"):
@@ -611,19 +599,6 @@ def build_pdf_file(folder_name, file_name, latex_output_file):
             stdout=latex_output_file,
             shell=True,
         )
-
-        # subprocess.Popen(
-        #     'cd "{0}" ; latex --synctex=-1 {1}.tex ; dvips {1}.dvi ; ps2pdf -dNOSAFER {1}.ps'.format(
-        #         folder_name, file_name
-        #     ),
-        #     shell=True,
-        # ).wait()
-        # subprocess.Popen(
-        #     'cd "{0}" ; latex --synctex=-1 "{1}.tex" ; dvips "{1}.dvi" ; ps2pdf -dNOSAFER "{1}.ps"'.format(
-        #         folder_name, file_name
-        #     ),
-        #     shell=True,
-        # ).wait()
 
     else:
         process=subprocess.Popen(
@@ -667,7 +642,7 @@ def open_pdf_file(folder_name, file_name):
         else:
             sumatrapdf = ""
 
-        # if sumatrapdf != "":
+
         subprocess.Popen(
             'cd "{0}" &"{1}" "{2}.pdf"'.format(
                 folder_name, sumatrapdf, file_name
@@ -675,12 +650,7 @@ def open_pdf_file(folder_name, file_name):
             cwd=os.path.splitdrive(path_programm)[0],
             shell=True,
         ).poll()
-        # else:
-        #     subprocess.Popen(
-        #         'cd "{0}/Teildokument" &"{1}.pdf"'.format(path_programm, file_name),
-        #         cwd=os.path.splitdrive(path_programm)[0],
-        #         shell=True,
-        #     ).poll()
+
 
 def loading_animation(process):
     animation = "|/-\\"
@@ -765,170 +735,3 @@ def create_pdf(path_file, index, maximum, typ=0):
 
     QtWidgets.QApplication.restoreOverrideCursor()
 
-        # latex_output_file = open(
-        #     "{0}/Teildokument/temp.txt".format(path_programm), "w"
-        # )
-
-        # process = build_pdf_file(folder_name, file_name)
-
-        # latex_output_file.close()
-
-        # loading_animation(process)
-
-        # p.wait()
-
-
-        # latex_output_file = open(
-        #     "{0}/Teildokument/temp.txt".format(path_programm), "r"
-        # )
-        # latex_output = latex_output_file.read().splitlines()
-        # latex_output_file.close()
-
-
-        # if sys.platform.startswith("linux"):
-        #     pass
-        # else:
-        #     msg.close()
-
-        # response = extract_error_from_output(latex_output)
-
-        # if response==False:
-        #     return 
-
-
-        # if sys.platform.startswith("linux"):
-        #     subprocess.Popen(
-        #         'cd "{0}/Teildokument" ; latex --synctex=-1 {1}.tex ; dvips {1}.dvi ; ps2pdf -dNOSAFER {1}.ps'.format(
-        #             path_programm, file_name
-        #         ),
-        #         shell=True,
-        #     ).wait()
-            # subprocess.Popen('cd "{0}/Teildokument" ; okular "{1}.pdf"'.format(path_programm, file_name),shell=True)
-            # subprocess.Popen('cd "{0}/Teildokument" ; xdg-open "{1}.pdf"'.format(path_programm, file_name),shell=True)
-            # subprocess.run(
-            #     [
-            #         "sudo",
-            #         "xdg-open",
-            #         "{0}/Teildokument/{1}.pdf".format(path_programm, file_name),
-            #     ]
-            # )
-        # elif sys.platform.startswith("darwin"):
-        #     subprocess.Popen(
-        #         'cd "{0}/Teildokument" ; latex --synctex=-1 {1}.tex ; dvips {1}.dvi ; ps2pdf -dNOSAFER {1}.ps'.format(
-        #             path_programm, file_name
-        #         ),
-        #         shell=True,
-        #     ).wait()
-            # subprocess.run(
-            #     ["open", "{0}/Teildokument/{1}.pdf".format(path_programm, file_name),]
-            # )
-        # else:
-            # if os.path.isfile(
-            #     os.path.join("C:\\", "Program Files", "SumatraPDF", "SumatraPDF.exe")
-            # ):
-            #     sumatrapdf = os.path.join(
-            #         "C:\\", "Program Files", "SumatraPDF", "SumatraPDF.exe"
-            #     )
-            # elif os.path.isfile(
-            #     os.path.join(
-            #         "C:\\", "Program Files (x86)", "SumatraPDF", "SumatraPDF.exe"
-            #     )
-            # ):
-            #     sumatrapdf = os.path.join(
-            #         "C:\\", "Program Files (x86)", "SumatraPDF", "SumatraPDF.exe"
-            #     )
-            # else:
-            #     sumatrapdf = ""
-
-            # print(os.path.splitdrive(path_programm)[0])
-
-            # p=subprocess.Popen(
-            #     'cd "{0}/Teildokument" & latex -interaction=nonstopmode --synctex=-1 "{1}.tex"& dvips "{1}.dvi" & ps2pdf -dNOSAFER "{1}.ps"'.format(
-            #         path_programm, file_name
-            #     ),
-            #     cwd=os.path.splitdrive(path_programm)[0],
-            #     stdout=latex_output_file,
-            #     shell=True,
-            # )
-
-            # return
-            # stop=True
-            # ,
-
-
-            # except UnboundLocalError:
-            #     pass
-                # print('Pdf-Datei konnte erfolgreich erstellt werden.')
-
-            # for all in latex_output[start:]:
-            #     if all=="\n":
-            #         print(latex_output[start:].index(all))
-            #         print(all)
-            #         print('end')
-            # break
-
-            # print(start, ENDE)
-            # print(latex_output[start:end])
-
-            # if sumatrapdf != "":
-            #     subprocess.Popen(
-            #         'cd "{0}/Teildokument" &"{1}" "{2}.pdf"'.format(
-            #             path_programm, sumatrapdf, file_name
-            #         ),
-            #         cwd=os.path.splitdrive(path_programm)[0],
-            #         shell=True,
-            #     ).poll()
-            # else:
-            #     subprocess.Popen(
-            #         'cd "{0}/Teildokument" &"{1}.pdf"'.format(path_programm, file_name),
-            #         cwd=os.path.splitdrive(path_programm)[0],
-            #         shell=True,
-            #     ).poll()
-
-        # os.unlink("{0}/Teildokument/{1}.aux".format(path_programm, file_name))
-        # os.unlink("{0}/Teildokument/{1}.log".format(path_programm, file_name))
-        # os.unlink("{0}/Teildokument/{1}.dvi".format(path_programm, file_name))
-        # os.unlink("{0}/Teildokument/{1}.ps".format(path_programm, file_name))
-
-    # else:
-    #     build_pdf_file(folder_name, file_name)
-
-        # delete_unneeded_files(folder_name, file_name)
-
-        # if sys.platform.startswith("linux"):
-            
-        #     subprocess.Popen(
-        #         'cd "{0}" ; latex --synctex=-1 {1}.tex ; dvips {1}.dvi ; ps2pdf -dNOSAFER {1}.ps'.format(
-        #             folder_name, file_name
-        #         ),
-        #         shell=True,
-        #     ).wait()
-        # elif sys.platform.startswith("darwin"):
-        #     # print(file_name)
-        #     subprocess.Popen(
-        #         'cd "{0}" ; latex --synctex=-1 "{1}.tex" ; dvips "{1}.dvi" ; ps2pdf -dNOSAFER "{1}.ps"'.format(
-        #             folder_name, file_name
-        #         ),
-        #         shell=True,
-        #     ).wait()
-        # else:
-        #     subprocess.Popen(
-        #         'cd "{0}" & latex --synctex=-1 "{1}.tex"& dvips "{1}.dvi" & ps2pdf -dNOSAFER "{1}.ps"'.format(
-        #             folder_name, file_name
-        #         ),
-        #         cwd=os.path.splitdrive(path_file)[0],
-        #         shell=True,
-        #     ).wait()
-
-        # os.unlink("{0}/{1}.aux".format(folder_name, file_name))
-        # os.unlink("{0}/{1}.log".format(folder_name, file_name))
-        # os.unlink("{0}/{1}.dvi".format(folder_name, file_name))
-        # os.unlink("{0}/{1}.ps".format(folder_name, file_name))
-        # os.unlink("{0}/{1}.synctex".format(folder_name, file_name))
-
-    # if sys.platform.startswith("linux"):
-    #     pass
-    # else:
-    #     msg.close()
-
-    # QtWidgets.QApplication.restoreOverrideCursor()
