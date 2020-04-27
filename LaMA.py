@@ -3622,7 +3622,7 @@ class Ui_MainWindow(object):
             else:
                 gesamt = x + ', ' + y
             self.label_ausgew_gk_creator.setText(_translate("MainWindow", str(gesamt), None))
-        print(self.list_selected_topics_creator)
+        # print(self.list_selected_topics_creator)
 
 
 
