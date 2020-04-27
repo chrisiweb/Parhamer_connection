@@ -602,8 +602,8 @@ def build_pdf_file(folder_name, file_name, latex_output_file):
 
     else:
         process=subprocess.Popen(
-            'cd "{0}/Teildokument" & latex -interaction=nonstopmode --synctex=-1 "{1}.tex"& dvips "{1}.dvi" & ps2pdf -dNOSAFER "{1}.ps"'.format(
-                path_programm, file_name
+            'cd "{0}" & latex -interaction=nonstopmode --synctex=-1 "{1}.tex"& dvips "{1}.dvi" & ps2pdf -dNOSAFER "{1}.ps"'.format(
+                folder_name, file_name
             ),
             cwd=os.path.splitdrive(path_programm)[0],
             stdout=latex_output_file,
@@ -612,17 +612,18 @@ def build_pdf_file(folder_name, file_name, latex_output_file):
     return process
 
 def open_pdf_file(folder_name, file_name):
+    file_path = os.path.join(folder_name, file_name)
     if sys.platform.startswith("linux"):
         subprocess.run(
             [
                 "sudo",
                 "xdg-open",
-                "{0}/{1}.pdf".format(folder_name, file_name),
+                "{0}.pdf".format(file_path),
             ]
         )
     elif sys.platform.startswith("darwin"):
         subprocess.run(
-            ["open", "{0}/{1}.pdf".format(folder_name, file_name),]
+            ["open", "{0}.pdf".format(file_path),]
             )
     else:
         if os.path.isfile(
@@ -664,10 +665,11 @@ def loading_animation(process):
         time.sleep(0.1)  
 
 def delete_unneeded_files(folder_name, file_name):
-    os.unlink("{0}/{1}.aux".format(folder_name, file_name))
-    os.unlink("{0}/{1}.log".format(folder_name, file_name))
-    os.unlink("{0}/{1}.dvi".format(folder_name, file_name))
-    os.unlink("{0}/{1}.ps".format(folder_name, file_name))
+    file_path = os.path.join(folder_name, file_name)
+    os.unlink("{0}.aux".format(file_path))
+    os.unlink("{0}.log".format(file_path))
+    os.unlink("{0}.dvi".format(file_path))
+    os.unlink("{0}.ps".format(file_path))
 
 def create_pdf(path_file, index, maximum, typ=0):
     if sys.platform.startswith("linux"):
@@ -689,13 +691,14 @@ def create_pdf(path_file, index, maximum, typ=0):
     if path_file == "Teildokument":
         folder_name = '{0}/Teildokument'.format(path_programm)
         file_name = path_file + "_" + typ
-
     else:
         head, tail = os.path.split(path_file)
-        folder_name = head
         file_name = tail
+        if path_file == 'Schularbeit_Vorschau':
+            folder_name = '{0}/Teildokument'.format(path_programm)
+        else:
+            folder_name = head
     
-
     print('Pdf-Datei wird erstellt. Bitte warten...')
 
     latex_output_file = open(

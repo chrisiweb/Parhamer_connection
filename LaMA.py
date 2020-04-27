@@ -6070,7 +6070,6 @@ class Ui_MainWindow(object):
         for all in ausgleichspunkte_split_text[:]:
             if all == "" or all.startswith('%'):
                 ausgleichspunkte_split_text.remove(all)
-        print(ausgleichspunkte_split_text)
         return ausgleichspunkte_split_text
 
     def split_content_ausgleichspunkte(self, content):
@@ -6141,23 +6140,9 @@ class Ui_MainWindow(object):
                 )
                 return        
 
-        # try:
-        #     split_content = split_content[:index_end]
-        # except UnboundLocalError:
-        #     warning_window(
-        #         "Es ist ein Fehler bei der Auswahl der Ausgleichspunkte von Aufgabe {} aufgetreten! (Die Aufgabe kann dennoch verwendet und individuell in der TeX-Datei bearbeitet werden.)\n".format(
-        #             aufgabe
-        #         ),
-        #         'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!',
-        #     )
-        #     return
 
-        # for all in self.dict_sage_ausgleichspunkte_chosen[selected_typ2_path]:
-        # 	print(all)
-        # return
         if aufgabe in self.dict_sage_ausgleichspunkte_chosen.keys():
-            # print(self.dict_sage_ausgleichspunkte_chosen[selected_typ2_path])
-            # return
+
             list_sage_ausgleichspunkte_chosen = self.dict_sage_ausgleichspunkte_chosen[
                 aufgabe
             ]
@@ -6185,24 +6170,13 @@ class Ui_MainWindow(object):
         self.dict_sage_ausgleichspunkte_chosen[
             aufgabe
         ] = list_sage_ausgleichspunkte_chosen
-        # temp_bsp_name = bsp_name.replace("_L_", "")
 
-        # simplify_string(aufgabe)
-        # if re.search("[A-Z]", temp_bsp_name) == None:
-        #     bsp_string = bsp_name
-        # else:
-        #     bsp_string = bsp_name.replace(" ", "").replace(".", "").replace("-", "_")
 
         self.dict_alle_aufgaben_sage[aufgabe][3]=len(list_sage_ausgleichspunkte_chosen)
 
         self.dict_variablen_label[aufgabe].setText(_translate("MainWindow","Ausgleichspunkte: {}".format(len(list_sage_ausgleichspunkte_chosen)), None))
         self.update_punkte()
-        # get_number_ausgleichspunkte
-        # list_input = eval("self.list_input_{}".format(bsp_string))
-        # list_input[3] = len(list_sage_ausgleichspunkte_chosen)
 
-        # print(self.dict_sage_ausgleichspunkte_chosen)
-        # self.build_aufgaben_schularbeit(False)
 
     def comboBox_at_sage_changed(self):
         if self.comboBox_at_sage.currentText()[-1] == "1":
@@ -7420,6 +7394,8 @@ class Ui_MainWindow(object):
             if pdf == True:
                 if sys.platform.startswith("linux"):
                     MainWindow.hide()
+                print(name)
+                print(index)
                 create_pdf(name, index, maximum)
                 if sys.platform.startswith("linux"):
                     MainWindow.show()
