@@ -5542,6 +5542,32 @@ class Ui_MainWindow(object):
         self.adapt_choosing_list(list_mode)
 
 
+    def add_filename_to_list(file_path):
+        filename_all = os.path.basename(file_path)
+        name, extension = os.path.splitext(filename_all)
+        if list_mode == "sage":
+            if name.startswith(self.lineEdit_number.text()):
+                if "Beispieleinreichung" in file_path:
+                    list_beispieldaten.append("*E-" + name)
+                else:
+                    list_beispieldaten.append(name)
+        if list_mode == "feedback":
+            if name.startswith(self.lineEdit_number_fb.text()) and self.chosen_program=='lama':
+                list_beispieldaten.append(name)
+            if name.startswith(self.lineEdit_number_fb_cria.text()) and self.chosen_program=='cria':
+                list_beispieldaten.append(name)
+
+    def get_dictionary_of_file_paths(self, log_file):
+        try:
+            with open(log_file, encoding="utf8") as f:
+                dictionary = json.load(f)
+        except FileNotFoundError:
+            refresh_ddb(self)  # 1
+            with open(log_file, encoding="utf8") as f:
+                dictionary = json.load(f)
+
+        return dictionary       
+
     def adapt_choosing_list(self, list_mode):
         if list_mode == "sage":
             listWidget = self.listWidget
@@ -5566,34 +5592,41 @@ class Ui_MainWindow(object):
 
 
         if self.chosen_program == 'lama':
-            try:
-                with open(log_file_1, encoding="utf8") as f:
-                    beispieldaten_dateipfad_1 = json.load(f)
-            except FileNotFoundError:
-                refresh_ddb(self)  # 1
-                with open(log_file_1, encoding="utf8") as f:
-                    beispieldaten_dateipfad_1 = json.load(f)
+            beispieldaten_dateipfad_1 = self.get_dictionary_of_file_paths(log_file_1)
             self.beispieldaten_dateipfad_1 = beispieldaten_dateipfad_1
 
-        #log_file_2 = os.path.join(path_programm, "Teildokument", "log_file_2")
-            try:
-                with open(log_file_2, encoding="utf8") as f:
-                    beispieldaten_dateipfad_2 = json.load(f)
-            except FileNotFoundError:
-                refresh_ddb(self)  # 2
-                with open(log_file_2, encoding="utf8") as f:
-                    beispieldaten_dateipfad_2 = json.load(f)
+            beispieldaten_dateipfad_2 = self.get_dictionary_of_file_paths(log_file_2)
             self.beispieldaten_dateipfad_2 = beispieldaten_dateipfad_2
+            # try:
+            #     with open(log_file_1, encoding="utf8") as f:
+            #         beispieldaten_dateipfad_1 = json.load(f)
+            # except FileNotFoundError:
+            #     refresh_ddb(self)  # 1
+            #     with open(log_file_1, encoding="utf8") as f:
+            #         beispieldaten_dateipfad_1 = json.load(f)
+            # self.beispieldaten_dateipfad_1 = beispieldaten_dateipfad_1
+
+        #log_file_2 = os.path.join(path_programm, "Teildokument", "log_file_2")
+            # try:
+            #     with open(log_file_2, encoding="utf8") as f:
+            #         beispieldaten_dateipfad_2 = json.load(f)
+            # except FileNotFoundError:
+            #     refresh_ddb(self)  # 2
+            #     with open(log_file_2, encoding="utf8") as f:
+            #         beispieldaten_dateipfad_2 = json.load(f)
+            # self.beispieldaten_dateipfad_2 = beispieldaten_dateipfad_2
 
         if self.chosen_program == 'cria':
-            try:
-                with open(log_file_cria, encoding="utf8") as f:
-                    beispieldaten_dateipfad_cria = json.load(f)
-            except FileNotFoundError:
-                refresh_ddb(self)
-                with open(log_file_cria, encoding="utf8") as f:
-                    beispieldaten_dateipfad_cria = json.load(f)
+            beispieldaten_dateipfad_cria = self.get_dictionary_of_file_paths(log_file_cria)
             self.beispieldaten_dateipfad_cria = beispieldaten_dateipfad_cria
+            # try:
+            #     with open(log_file_cria, encoding="utf8") as f:
+            #         beispieldaten_dateipfad_cria = json.load(f)
+            # except FileNotFoundError:
+            #     refresh_ddb(self)
+            #     with open(log_file_cria, encoding="utf8") as f:
+            #         beispieldaten_dateipfad_cria = json.load(f)
+            # self.beispieldaten_dateipfad_cria = beispieldaten_dateipfad_cria
 
 
 
@@ -5641,21 +5674,6 @@ class Ui_MainWindow(object):
                             file.close()
                     except FileNotFoundError:
                         pass                
-
-        def add_filename_to_list(file_path):
-            filename_all = os.path.basename(file_path)
-            name, extension = os.path.splitext(filename_all)
-            if list_mode == "sage":
-                if name.startswith(self.lineEdit_number.text()):
-                    if "Beispieleinreichung" in file_path:
-                        list_beispieldaten.append("*E-" + name)
-                    else:
-                        list_beispieldaten.append(name)
-            if list_mode == "feedback":
-                if name.startswith(self.lineEdit_number_fb.text()) and self.chosen_program=='lama':
-                    list_beispieldaten.append(name)
-                if name.startswith(self.lineEdit_number_fb_cria.text()) and self.chosen_program=='cria':
-                    list_beispieldaten.append(name)
 
 
         list_beispieldaten = []

@@ -702,11 +702,11 @@ def create_pdf(path_file, index, maximum, typ=0):
     print('Pdf-Datei wird erstellt. Bitte warten...')
 
     latex_output_file = open(
-        "{0}/Teildokument/temp.txt".format(path_programm), "w"
+        "{0}/Teildokument/temp.txt".format(path_programm), "w", encoding="utf8", errors='ignore'
     )
 
     process = build_pdf_file(folder_name, file_name, latex_output_file)
-
+    process.poll()
     latex_output_file.close()
 
     loading_animation(process)
@@ -719,7 +719,7 @@ def create_pdf(path_file, index, maximum, typ=0):
         msg.close()
 
     latex_output_file = open(
-        "{0}/Teildokument/temp.txt".format(path_programm), "r"
+        "{0}/Teildokument/temp.txt".format(path_programm), "r", encoding="utf8", errors='ignore'
     )
     latex_output = latex_output_file.read().splitlines()
     latex_output_file.close()
