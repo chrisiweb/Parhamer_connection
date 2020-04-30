@@ -4582,7 +4582,7 @@ class Ui_MainWindow(object):
         self.ui = Ui_Dialog_titlepage()
         self.ui.setupUi(self.Dialog, dict_titlepage)
         self.Dialog.show()
-        self.Dialog.exec_()
+        self.Dialog.exec()
 
         if self.chosen_program=='lama':
             self.dict_titlepage = dict_titlepage
@@ -5542,7 +5542,7 @@ class Ui_MainWindow(object):
         self.adapt_choosing_list(list_mode)
 
 
-    def add_filename_to_list(file_path):
+    def add_filename_to_list(self, list_mode, file_path, list_beispieldaten):
         filename_all = os.path.basename(file_path)
         name, extension = os.path.splitext(filename_all)
         if list_mode == "sage":
@@ -5744,17 +5744,17 @@ class Ui_MainWindow(object):
                     file_path = beispieldaten_dateipfad_cria[all]
                     if str(list_klassen[self.comboBox_klassen.currentIndex()]) in file_path:
                         if kapitel_shortcut == "":
-                            add_filename_to_list(file_path)
+                            self.add_filename_to_list(list_mode, file_path, list_beispieldaten)
                         else:
                             if unterkapitel_shortcut == "":
                                 if kapitel_shortcut in all:
-                                    add_filename_to_list(file_path)
+                                    self.add_filename_to_list(list_mode, file_path, list_beispieldaten)
                             else:
                                 thema_shortcut = (
                                     kapitel_shortcut + "." + unterkapitel_shortcut
                                 )
                                 if thema_shortcut in all:
-                                    add_filename_to_list(file_path)
+                                    self.add_filename_to_list(list_mode, file_path, list_beispieldaten)
 
 
         if list_mode == "feedback":
@@ -5805,17 +5805,17 @@ class Ui_MainWindow(object):
                     file_path = beispieldaten_dateipfad_cria[all]
                     if str(list_klassen[self.comboBox_klassen_fb_cria.currentIndex()]) in file_path:
                         if kapitel_shortcut == "":
-                            add_filename_to_list(file_path)
+                            self.add_filename_to_list(list_mode, file_path, list_beispieldaten)
                         else:
                             if unterkapitel_shortcut == "":
                                 if kapitel_shortcut in all:
-                                    add_filename_to_list(file_path)
+                                    self.add_filename_to_list(list_mode, file_path, list_beispieldaten)
                             else:
                                 thema_shortcut = (
                                     kapitel_shortcut + "." + unterkapitel_shortcut
                                 )
                                 if thema_shortcut in all:
-                                    add_filename_to_list(file_path)   
+                                    self.add_filename_to_list(list_mode, file_path, list_beispieldaten)   
 
 
         list_beispieldaten = sorted(list_beispieldaten, key=natural_keys)
@@ -6800,8 +6800,6 @@ class Ui_MainWindow(object):
 
 
 if __name__ == "__main__":
-    import sys
-
     app = QApplication(sys.argv)
     # translator = QtCore.QTranslator()
     # translator.load("".join(["qt_",str(QtCore.QLocale().system().name())]), 

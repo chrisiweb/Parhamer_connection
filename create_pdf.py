@@ -1,9 +1,10 @@
+from PyQt5 import QtCore, QtWidgets, QtGui
+from PyQt5.QtWidgets import QMainWindow, QApplication
 import sys
 import os
 import subprocess
-from PyQt5 import QtCore, QtWidgets, QtGui
-from PyQt5.QtWidgets import QMainWindow, QApplication
-from config import config_file, config_loader, logo_path, path_programm
+from functools import partial
+from config import colors_ui, config_file, config_loader, logo_path, path_programm
 import json
 import shutil
 import datetime
@@ -29,6 +30,54 @@ Klassen = config_loader(config_file, "Klassen")
 list_klassen = config_loader(config_file, "list_klassen")
 
 dict_aufgabenformate = config_loader(config_file, "dict_aufgabenformate")
+
+def get_color(color):
+    color= "rgb({0}, {1}, {2})".format(color.red(), color.green(), color.blue())
+    return color
+
+blue_7=colors_ui['blue_7']
+
+
+class Ui_Dialog_loading(object):
+    def setupUi(self, Dialog):
+        self.Dialog = Dialog
+        self.Dialog.setObjectName("Dialog")
+        Dialog.setWindowFlags(QtCore.Qt.WindowSystemMenuHint
+            | QtCore.Qt.WindowTitleHint)
+        Dialog.setWindowTitle('Lade...')
+        Dialog.setStyleSheet("background-color: {}; color: white".format(get_color(blue_7)))
+        pixmap = QtGui.QPixmap(logo_path)
+        Dialog.setWindowIcon(QtGui.QIcon(logo_path))
+        Dialog.setFixedSize(200,50)
+        verticalLayout = QtWidgets.QVBoxLayout(Dialog)
+        verticalLayout.setObjectName("verticalLayout")
+
+        label=QtWidgets.QLabel(Dialog)
+        label.setObjectName("label")  
+        label.setText("Die PDF Datei wird erstellt...")
+        # label.setFixedSize(200,50)
+        # label.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        label.setAlignment(QtCore.Qt.AlignCenter)
+        verticalLayout.addWidget(label)
+             
+
+
+class Worker(QtCore.QObject):
+    finished = QtCore.pyqtSignal()
+
+    @QtCore.pyqtSlot()
+    def task(self, folder_name, file_name, latex_output_file):
+        process = build_pdf_file(folder_name, file_name, latex_output_file)
+        process.poll()
+        latex_output_file.close()
+
+        loading_animation(process)
+
+        process.wait()
+
+        # for i in range(10000):
+        #     print(i)
+        self.finished.emit()
 
 
 def prepare_tex_for_pdf(self):
@@ -672,22 +721,69 @@ def delete_unneeded_files(folder_name, file_name):
     os.unlink("{0}.ps".format(file_path))
 
 def create_pdf(path_file, index, maximum, typ=0):
-    if sys.platform.startswith("linux"):
-        pass
-    else:
-        msg = QtWidgets.QMessageBox()
-        msg.setWindowIcon(QtGui.QIcon(logo_path))
-        msg.setWindowTitle("Lade...")
-        msg.setStandardButtons(QtWidgets.QMessageBox.NoButton)
-        if path_file == "Teildokument" or path_file == "Schularbeit_Vorschau":
-            rest = ""
-        else:
-            rest = " ({0}|{1})".format(index + 1, maximum)
-        msg.setText("Die PDF Datei wird erstellt..." + rest)
 
-        msg.show()
-        QApplication.processEvents()
-        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+    # Dialog = QtWidgets.QDialog(
+    #     None,
+    #     QtCore.Qt.WindowSystemMenuHint
+    #     | QtCore.Qt.WindowTitleHint
+    #     | QtCore.Qt.WindowCloseButtonHint,
+    # )
+    # ui = ModalInfoDialog()
+    # ui.setupUi(Dialog, "Test")
+    # Dialog.show()
+
+    # msg = QtWidgets.QMessageBox()
+    # msg.setText("Die PDF Datei wird erstellt...")
+    # msg.setStandardButtons(QtWidgets.QMessageBox.Abort)
+    # buttonAbort = msg.button(QtWidgets.QMessageBox.Abort)
+    # buttonAbort.setText("Abbrechen")
+
+    # msg.show()
+    # thread = QtCore.QThread(msg)
+    # worker = Worker()
+    # worker.finished.connect(msg.close)
+    # worker.moveToThread(thread)
+    # thread.started.connect(worker.task)
+    # thread.start()
+    # thread.exit()
+    # response = msg.exec()
+
+    # if response == QtWidgets.QMessageBox.Abort:
+    #     print('test')
+        # thread.wait()
+        # return
+        # sys.exit() 
+
+
+
+    # d = 
+    # d.show()
+    # thread = QtCore.QThread(d)
+
+    # worker = Worker()
+    # worker.finished.connect(d.close)
+    # worker.moveToThread(thread)
+    # thread.started.connect(worker.task)
+    # thread.start()
+
+    # return
+
+    # if sys.platform.startswith("linux"):
+    #     pass
+    # else:
+    #     msg = QtWidgets.QMessageBox()
+    #     msg.setWindowIcon(QtGui.QIcon(logo_path))
+    #     msg.setWindowTitle("Lade...")
+    #     msg.setStandardButtons(QtWidgets.QMessageBox.NoButton)
+    #     if path_file == "Teildokument" or path_file == "Schularbeit_Vorschau":
+    #         rest = ""
+    #     else:
+    #         rest = " ({0}|{1})".format(index + 1, maximum)
+    #     msg.setText("Die PDF Datei wird erstellt..." + rest)
+
+    #     msg.show()
+    #     QApplication.processEvents()
+    QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
     if path_file == "Teildokument":
         folder_name = '{0}/Teildokument'.format(path_programm)
         file_name = path_file + "_" + typ
@@ -705,18 +801,71 @@ def create_pdf(path_file, index, maximum, typ=0):
         "{0}/Teildokument/temp.txt".format(path_programm), "w", encoding="utf8", errors='ignore'
     )
 
-    process = build_pdf_file(folder_name, file_name, latex_output_file)
-    process.poll()
-    latex_output_file.close()
 
-    loading_animation(process)
+    Dialog = QtWidgets.QDialog()
+    ui = Ui_Dialog_loading()
+    ui.setupUi(Dialog)
+    # print(QMainWindow().pos().x())
+    # print(QMainWindow().pos().y())
 
-    process.wait()
+    # msg = QtWidgets.QMessageBox()
+    # msg.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+    # height =  QMainWindow().geometry().height()
+    # width =  QMainWindow().geometry().width()
+    # x= QMainWindow().pos().x()
+    # y=QMainWindow().pos().y()
 
-    if sys.platform.startswith("linux"):
-        pass
-    else:
-        msg.close()
+    # msg.setStyleSheet("QLabel{min-width:200 px; min-height:100px}")
+    # msg.move(x+0.5*height, y+0.6*width)
+
+    # msg.setWindowIcon(QtGui.QIcon(logo_path))
+    # QtGui.QPixmap.pixmap = ExportS
+    # pixmap = QtGui.QPixmap(logo_path)
+    # msg.setWindowIcon(QtGui.QIcon(logo_path))
+    # msg.setIconPixmap(logo_path)
+    # # msg.setIcon(QtGui.QIcon(logo_path))
+    # # msg.setWindowFlags(QtCore.Qt.CustomizeWindowHint)
+    # # msg.setDetailedText("These details disable the close button for some reason.")
+    # msg.setWindowFlags(msg.windowFlags() & ~QtCore.Qt.WindowCloseButtonHint)
+    # # msg.move(QMainWindow().pos().x()+200, QMainWindow().pos().y()+200)
+    # # msg.setWindowFlags(QtCore.Qt.WindowTitleHint)
+    # #QtCore.Qt.FramelessWindowHint
+    # # msg.setWindowFlags(QtCore.Qt.WindowTitleHint)
+    #     # QtCore.Qt.WindowSystemMenuHint
+    #     #     # | QtCore.Qt.WindowTitleHint
+    #         # | QtCore.Qt.WindowCloseButtonHint)
+    # # msg.setWindowTitle("Lade...")
+    # msg.setText("Die PDF Datei wird erstellt...")
+    # msg.setStandardButtons(QtWidgets.QMessageBox.Abort)
+    # buttonAbort = msg.button(QtWidgets.QMessageBox.Abort)
+    # buttonAbort.hide()
+    # buttonAbort.setText('Abbrechen')
+    # msg.show()
+    thread = QtCore.QThread(Dialog)
+    worker = Worker()
+    worker.finished.connect(Dialog.close)
+    worker.moveToThread(thread)
+    thread.started.connect(partial(worker.task, folder_name, file_name, latex_output_file))
+    thread.start()
+    thread.exit()
+    Dialog.exec()
+
+    # if response == QtWidgets.QMessageBox.Abort:
+    #     thread.exit()
+    #     return
+
+    # process = build_pdf_file(folder_name, file_name, latex_output_file)
+    # process.poll()
+    # latex_output_file.close()
+
+    # loading_animation(process)
+
+    # process.wait()
+
+    # if sys.platform.startswith("linux"):
+    #     pass
+    # else:
+    #     msg.close()
 
     latex_output_file = open(
         "{0}/Teildokument/temp.txt".format(path_programm), "r", encoding="utf8", errors='ignore'
@@ -733,8 +882,10 @@ def create_pdf(path_file, index, maximum, typ=0):
     if file_name == "Schularbeit_Vorschau" or file_name.startswith("Teildokument"):
         open_pdf_file(folder_name, file_name)
 
-
-    delete_unneeded_files(folder_name, file_name)
-
+    try:
+        delete_unneeded_files(folder_name, file_name)
+    except Exception as e:
+        print('error')
+        return
     QtWidgets.QApplication.restoreOverrideCursor()
 
