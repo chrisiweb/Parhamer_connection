@@ -39,7 +39,7 @@ blue_7=colors_ui['blue_7']
 
 
 class Ui_Dialog_loading(object):
-    def setupUi(self, Dialog):
+    def setupUi(self, Dialog, rest):
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
         Dialog.setWindowFlags(QtCore.Qt.WindowSystemMenuHint
@@ -48,17 +48,20 @@ class Ui_Dialog_loading(object):
         Dialog.setStyleSheet("background-color: {}; color: white".format(get_color(blue_7)))
         pixmap = QtGui.QPixmap(logo_path)
         Dialog.setWindowIcon(QtGui.QIcon(logo_path))
-        Dialog.setFixedSize(200,50)
+        Dialog.setFixedSize(250,100)
         verticalLayout = QtWidgets.QVBoxLayout(Dialog)
         verticalLayout.setObjectName("verticalLayout")
 
         label=QtWidgets.QLabel(Dialog)
         label.setObjectName("label")  
-        label.setText("Die PDF Datei wird erstellt...")
+        label.setText("Die PDF Datei wird erstellt..." + rest)
         # label.setFixedSize(200,50)
         # label.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         label.setAlignment(QtCore.Qt.AlignCenter)
         verticalLayout.addWidget(label)
+        # self.progressbar = QtWidgets.QProgressBar(Dialog)
+        # self.progressbar.setGeometry(0, 0, 300, 25)
+        # verticalLayout.addWidget(self.progressbar)
              
 
 
@@ -775,11 +778,7 @@ def create_pdf(path_file, index, maximum, typ=0):
     #     msg.setWindowIcon(QtGui.QIcon(logo_path))
     #     msg.setWindowTitle("Lade...")
     #     msg.setStandardButtons(QtWidgets.QMessageBox.NoButton)
-    #     if path_file == "Teildokument" or path_file == "Schularbeit_Vorschau":
-    #         rest = ""
-    #     else:
-    #         rest = " ({0}|{1})".format(index + 1, maximum)
-    #     msg.setText("Die PDF Datei wird erstellt..." + rest)
+
 
     #     msg.show()
     #     QApplication.processEvents()
@@ -801,10 +800,15 @@ def create_pdf(path_file, index, maximum, typ=0):
         "{0}/Teildokument/temp.txt".format(path_programm), "w", encoding="utf8", errors='ignore'
     )
 
+    if path_file == "Teildokument" or path_file == "Schularbeit_Vorschau":
+        rest = ""
+    else:
+        rest = " ({0}|{1})".format(index + 1, maximum)
 
     Dialog = QtWidgets.QDialog()
     ui = Ui_Dialog_loading()
-    ui.setupUi(Dialog)
+    ui.setupUi(Dialog, rest)
+
     # print(QMainWindow().pos().x())
     # print(QMainWindow().pos().y())
 
