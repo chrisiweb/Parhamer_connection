@@ -409,296 +409,296 @@ class Ui_MainWindow(object):
         #######################################################
         ############ Menu Bar ###################
 
-#         self.statusbar = QtWidgets.QStatusBar(MainWindow)
-#         self.statusbar.setObjectName(_fromUtf8("statusbar"))
-#         MainWindow.setStatusBar(self.statusbar)
-#         self.menuBar = QtWidgets.QMenuBar(MainWindow)
-#         self.menuBar.setGeometry(QtCore.QRect(0, 0, 950, 21))
-#         self.menuBar.setObjectName(_fromUtf8("menuBar"))
-#         self.menuDateityp = QtWidgets.QMenu(self.menuBar)
-#         self.menuDateityp.setObjectName(_fromUtf8("menuDateityp"))
-#         self.menuDatei = QtWidgets.QMenu(self.menuBar)
-#         self.menuDatei.setObjectName(_fromUtf8("menuDatei"))
-#         self.menuNeu = QtWidgets.QMenu(self.menuBar)
-#         self.menuNeu.setObjectName(_fromUtf8("menuNeu"))
-#         self.menuSage = QtWidgets.QMenu(self.menuBar)
-#         self.menuSage.setObjectName(_fromUtf8("menuSage"))
-#         self.menuSuche = QtWidgets.QMenu(self.menuBar)
-#         self.menuSuche.setObjectName(_fromUtf8("menuSuche"))
-#         self.menuFeedback = QtWidgets.QMenu(self.menuBar)
-#         self.menuFeedback.setObjectName(_fromUtf8("menuFeedback"))
-#         self.menuHelp = QtWidgets.QMenu(self.menuBar)
-#         self.menuHelp.setObjectName(_fromUtf8("menuHelp"))
-#         self.menuBild_einbinden = QtWidgets.QMenu(self.menuBar)
-#         self.menuBild_einbinden.setObjectName(_fromUtf8("menuBild_einbinden"))
-#         MainWindow.setMenuBar(self.menuBar)
-#         self.actionReset = add_action(self.menuDatei, "Reset", self.suchfenster_reset)
-#         self.actionReset.setShortcut("F4")
+        self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        self.statusbar.setObjectName(_fromUtf8("statusbar"))
+        MainWindow.setStatusBar(self.statusbar)
+        self.menuBar = QtWidgets.QMenuBar(MainWindow)
+        self.menuBar.setGeometry(QtCore.QRect(0, 0, 950, 21))
+        self.menuBar.setObjectName(_fromUtf8("menuBar"))
+        self.menuDateityp = QtWidgets.QMenu(self.menuBar)
+        self.menuDateityp.setObjectName(_fromUtf8("menuDateityp"))
+        self.menuDatei = QtWidgets.QMenu(self.menuBar)
+        self.menuDatei.setObjectName(_fromUtf8("menuDatei"))
+        self.menuNeu = QtWidgets.QMenu(self.menuBar)
+        self.menuNeu.setObjectName(_fromUtf8("menuNeu"))
+        self.menuSage = QtWidgets.QMenu(self.menuBar)
+        self.menuSage.setObjectName(_fromUtf8("menuSage"))
+        self.menuSuche = QtWidgets.QMenu(self.menuBar)
+        self.menuSuche.setObjectName(_fromUtf8("menuSuche"))
+        self.menuFeedback = QtWidgets.QMenu(self.menuBar)
+        self.menuFeedback.setObjectName(_fromUtf8("menuFeedback"))
+        self.menuHelp = QtWidgets.QMenu(self.menuBar)
+        self.menuHelp.setObjectName(_fromUtf8("menuHelp"))
+        self.menuBild_einbinden = QtWidgets.QMenu(self.menuBar)
+        self.menuBild_einbinden.setObjectName(_fromUtf8("menuBild_einbinden"))
+        MainWindow.setMenuBar(self.menuBar)
+        self.actionReset = add_action(self.menuDatei, "Reset", self.suchfenster_reset)
+        self.actionReset.setShortcut("F4")
 
-#         # self.actionReset_creator = add_action(self.menuDatei, "Reset", self.suchfenster_reset)
-#         # self.actionReset.setShortcut("F4")
+        # self.actionReset_creator = add_action(self.menuDatei, "Reset", self.suchfenster_reset)
+        # self.actionReset.setShortcut("F4")
 
-#         self.actionReset_sage = add_action(self.menuDatei, "Reset Schularbeit", self.reset_sage)
-#         self.actionReset_sage.setVisible(False)
+        self.actionReset_sage = add_action(self.menuDatei, "Reset Schularbeit", self.reset_sage)
+        self.actionReset_sage.setVisible(False)
 
-#         self.actionRefresh_Database = add_action(self.menuDatei, "Refresh Database", partial(refresh_ddb, self))
-#         self.actionRefresh_Database.setShortcut("F5")
+        self.actionRefresh_Database = add_action(self.menuDatei, "Refresh Database", partial(refresh_ddb, self))
+        self.actionRefresh_Database.setShortcut("F5")
 
-#         self.menuDatei.addSeparator()
+        self.menuDatei.addSeparator()
 
-#         self.actionLoad = add_action(self.menuDatei, "Öffnen", self.sage_load)
-#         self.actionLoad.setShortcut("Ctrl+O")
-#         self.actionSave = add_action(self.menuDatei, "Speichern", self.sage_save)
-#         self.actionSave.setShortcut("Ctrl+S")
+        self.actionLoad = add_action(self.menuDatei, "Öffnen", self.sage_load)
+        self.actionLoad.setShortcut("Ctrl+O")
+        self.actionSave = add_action(self.menuDatei, "Speichern", self.sage_save)
+        self.actionSave.setShortcut("Ctrl+S")
 
-#         self.menuDatei.addSeparator()
+        self.menuDatei.addSeparator()
 
-#         self.actionBild_konvertieren_jpg_eps = add_action(self.menuDatei, "Grafik konvertieren (jpg/png zu eps)", self.convert_imagetoeps)
+        self.actionBild_konvertieren_jpg_eps = add_action(self.menuDatei, "Grafik konvertieren (jpg/png zu eps)", self.convert_imagetoeps)
 
-#         self.menuDatei.addSeparator()
+        self.menuDatei.addSeparator()
 
-#         if self.chosen_program == 'lama':
-#             program='LaMA Cria (Unterstufe)'
-#         if self.chosen_program == 'cria':
-#             program='LaMA (Oberstufe)'
-#         self.actionProgram = add_action(self.menuDatei, 'Zu "{}" wechseln'.format(program), self.change_program)
+        if self.chosen_program == 'lama':
+            program='LaMA Cria (Unterstufe)'
+        if self.chosen_program == 'cria':
+            program='LaMA (Oberstufe)'
+        self.actionProgram = add_action(self.menuDatei, 'Zu "{}" wechseln'.format(program), self.change_program)
 
-#         self.actionExit = add_action(self.menuDatei, "Exit", self.close_app)
-
-
-#         self.actionAufgaben_Typ1 = add_action(self.menuDateityp, "Typ1 Aufgaben", self.chosen_aufgabenformat_typ1)
-#         self.actionAufgaben_Typ1.setShortcut("Ctrl+1")
-
-#         self.actionAufgaben_Typ2 = add_action(self.menuDateityp, "Typ2 Aufgaben", self.chosen_aufgabenformat_typ2)
-#         self.actionAufgaben_Typ2.setShortcut("Ctrl+2") 
-
-#         self.actionSuche = add_action(self.menuSuche, "Aufgaben suchen...", partial(self.update_gui, 'widgets_search'))
-#         self.actionSuche.setShortcut("F1")
-
-#         self.actionSage = add_action(self.menuSage, "Neue Schularbeit erstellen...", partial(self.update_gui, 'widgets_sage'))
-#         self.actionSage.setShortcut("F2")
-
-#         self.actionNeu = add_action(self.menuNeu, "Neue Aufgabe erstellen...", partial(self.update_gui, 'widgets_create'))
-#         self.actionNeu.setShortcut("F3") 
-
-#         self.actionBild_einbinden = add_action(self.menuBild_einbinden, "Durchsuchen...", self.add_picture)
-
-#         self.actionFeedback = add_action(self.menuFeedback, "Feedback oder Fehler senden...", partial(self.update_gui, 'widgets_feedback'))
-
-#         self.actionInfo = add_action(self.menuHelp, "Über LaMA", self.show_info)      
+        self.actionExit = add_action(self.menuDatei, "Exit", self.close_app)
 
 
-#         self.menuBar.addAction(self.menuDatei.menuAction())
-#         self.menuBar.addAction(self.menuDateityp.menuAction())
-#         self.menuBar.addAction(self.menuSage.menuAction())
-#         self.menuBar.addAction(self.menuNeu.menuAction())
-#         self.menuBar.addAction(self.menuFeedback.menuAction())
-#         self.menuBar.addAction(self.menuHelp.menuAction())
+        self.actionAufgaben_Typ1 = add_action(self.menuDateityp, "Typ1 Aufgaben", self.chosen_aufgabenformat_typ1)
+        self.actionAufgaben_Typ1.setShortcut("Ctrl+1")
+
+        self.actionAufgaben_Typ2 = add_action(self.menuDateityp, "Typ2 Aufgaben", self.chosen_aufgabenformat_typ2)
+        self.actionAufgaben_Typ2.setShortcut("Ctrl+2") 
+
+        self.actionSuche = add_action(self.menuSuche, "Aufgaben suchen...", partial(self.update_gui, 'widgets_search'))
+        self.actionSuche.setShortcut("F1")
+
+        self.actionSage = add_action(self.menuSage, "Neue Schularbeit erstellen...", partial(self.update_gui, 'widgets_sage'))
+        self.actionSage.setShortcut("F2")
+
+        self.actionNeu = add_action(self.menuNeu, "Neue Aufgabe erstellen...", partial(self.update_gui, 'widgets_create'))
+        self.actionNeu.setShortcut("F3") 
+
+        self.actionBild_einbinden = add_action(self.menuBild_einbinden, "Durchsuchen...", self.add_picture)
+
+        self.actionFeedback = add_action(self.menuFeedback, "Feedback oder Fehler senden...", partial(self.update_gui, 'widgets_feedback'))
+
+        self.actionInfo = add_action(self.menuHelp, "Über LaMA", self.show_info)      
 
 
-#         self.groupBox_ausgew_gk = create_new_groupbox(self.centralwidget, "Ausgewählte Grundkompetenzen")
-#         self.groupBox_ausgew_gk.setMaximumHeight(110)
+        self.menuBar.addAction(self.menuDatei.menuAction())
+        self.menuBar.addAction(self.menuDateityp.menuAction())
+        self.menuBar.addAction(self.menuSage.menuAction())
+        self.menuBar.addAction(self.menuNeu.menuAction())
+        self.menuBar.addAction(self.menuFeedback.menuAction())
+        self.menuBar.addAction(self.menuHelp.menuAction())
 
 
-#         self.verticalLayout_2 = create_new_verticallayout(self.groupBox_ausgew_gk)
-#         # QtWidgets.QVBoxLayout(self.groupBox_ausgew_gk)
-#         # self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
-
-#         self.scrollArea_ausgew_gk = QtWidgets.QScrollArea(self.groupBox_ausgew_gk)
-#         self.scrollArea_ausgew_gk.setWidgetResizable(True)
-#         self.scrollArea_ausgew_gk.setObjectName("scrollArea_ausgew_gk")
-#         self.scrollAreaWidgetContents_ausgew_gk = QtWidgets.QWidget()
-#         self.scrollAreaWidgetContents_ausgew_gk.setObjectName(
-#             "scrollAreaWidgetContents_ausgew_gk"
-#         )
-
-#         self.verticalLayout_scrollA_ausgew_gk = create_new_verticallayout(self.scrollAreaWidgetContents_ausgew_gk)
-#         # QtWidgets.QVBoxLayout(
-#         #     self.scrollAreaWidgetContents_ausgew_gk
-#         # )
-#         # self.verticalLayout_scrollA_ausgew_gk.setObjectName(
-#         #     "verticalLayout_scrollA_ausgew_gk"
-#         # )
-
-#         self.label_ausgew_gk = create_new_label(self.scrollArea_ausgew_gk, "", True)
-#         self.verticalLayout_scrollA_ausgew_gk.addWidget(self.label_ausgew_gk)
+        self.groupBox_ausgew_gk = create_new_groupbox(self.centralwidget, "Ausgewählte Grundkompetenzen")
+        self.groupBox_ausgew_gk.setMaximumHeight(110)
 
 
-#         self.label_ausgew_gk_rest = create_new_label(self.scrollArea_ausgew_gk, "")
+        self.verticalLayout_2 = create_new_verticallayout(self.groupBox_ausgew_gk)
+        # QtWidgets.QVBoxLayout(self.groupBox_ausgew_gk)
+        # self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
 
-#         self.verticalLayout_scrollA_ausgew_gk.addWidget(self.label_ausgew_gk_rest)
+        self.scrollArea_ausgew_gk = QtWidgets.QScrollArea(self.groupBox_ausgew_gk)
+        self.scrollArea_ausgew_gk.setWidgetResizable(True)
+        self.scrollArea_ausgew_gk.setObjectName("scrollArea_ausgew_gk")
+        self.scrollAreaWidgetContents_ausgew_gk = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents_ausgew_gk.setObjectName(
+            "scrollAreaWidgetContents_ausgew_gk"
+        )
 
-#         self.scrollArea_ausgew_gk.setFrameShape(QtWidgets.QFrame.NoFrame)
-#         self.scrollArea_ausgew_gk.setWidget(self.scrollAreaWidgetContents_ausgew_gk)
-#         self.verticalLayout_2.addWidget(self.scrollArea_ausgew_gk)
+        self.verticalLayout_scrollA_ausgew_gk = create_new_verticallayout(self.scrollAreaWidgetContents_ausgew_gk)
+        # QtWidgets.QVBoxLayout(
+        #     self.scrollAreaWidgetContents_ausgew_gk
+        # )
+        # self.verticalLayout_scrollA_ausgew_gk.setObjectName(
+        #     "verticalLayout_scrollA_ausgew_gk"
+        # )
 
-#         self.gridLayout.addWidget(self.groupBox_ausgew_gk, 3, 1, 1, 1)
-
-
-#         self.groupBox_titelsuche = create_new_groupbox(self.centralwidget, "Titelsuche:")
-#         self.groupBox_titelsuche.setSizePolicy(SizePolicy_fixed_height)
-
-#         # self.groupBox_titelsuche = QtWidgets.QGroupBox(self.centralwidget)
-#         # self.groupBox_titelsuche.setObjectName(_fromUtf8("groupBox_titelsuche"))
-
-#         # self.groupBox_titelsuche.setMaximumHeight(65)
-
-#         self.gridLayout_10 = create_new_gridlayout(self.groupBox_titelsuche)
-#         # QtWidgets.QGridLayout(self.groupBox_titelsuche)
-#         # self.gridLayout_10.setObjectName(_fromUtf8("gridLayout_10"))
-
-
-#         self.entry_suchbegriffe = create_new_lineedit(self.groupBox_titelsuche)
-#         self.gridLayout_10.addWidget(self.entry_suchbegriffe, 0, 0, 1, 1)
-
-#         self.gridLayout.addWidget(self.groupBox_titelsuche, 4, 1, 1, 1, QtCore.Qt.AlignTop)
+        self.label_ausgew_gk = create_new_label(self.scrollArea_ausgew_gk, "", True)
+        self.verticalLayout_scrollA_ausgew_gk.addWidget(self.label_ausgew_gk)
 
 
-#         self.groupBox_klassen = create_new_groupbox(self.centralwidget, "Themen Schulstufe")
-#         self.gridLayout_14 = create_new_gridlayout(self.groupBox_klassen)
+        self.label_ausgew_gk_rest = create_new_label(self.scrollArea_ausgew_gk, "")
+
+        self.verticalLayout_scrollA_ausgew_gk.addWidget(self.label_ausgew_gk_rest)
+
+        self.scrollArea_ausgew_gk.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.scrollArea_ausgew_gk.setWidget(self.scrollAreaWidgetContents_ausgew_gk)
+        self.verticalLayout_2.addWidget(self.scrollArea_ausgew_gk)
+
+        self.gridLayout.addWidget(self.groupBox_ausgew_gk, 3, 1, 1, 1)
 
 
-#         self.cb_k5 = create_new_checkbox(self.groupBox_klassen, "5. Klasse")
-#         self.gridLayout_14.addWidget(self.cb_k5, 0, 0, 1, 1)
+        self.groupBox_titelsuche = create_new_groupbox(self.centralwidget, "Titelsuche:")
+        self.groupBox_titelsuche.setSizePolicy(SizePolicy_fixed_height)
 
-#         self.cb_k6 = create_new_checkbox(self.groupBox_klassen, "6. Klasse")
-#         self.gridLayout_14.addWidget(self.cb_k6, 1, 0, 1, 1)
+        # self.groupBox_titelsuche = QtWidgets.QGroupBox(self.centralwidget)
+        # self.groupBox_titelsuche.setObjectName(_fromUtf8("groupBox_titelsuche"))
 
-#         self.cb_k7 = create_new_checkbox(self.groupBox_klassen, "7. Klasse")
-#         self.gridLayout_14.addWidget(self.cb_k7, 0, 1, 1, 1)
+        # self.groupBox_titelsuche.setMaximumHeight(65)
 
-#         self.cb_k8 = create_new_checkbox(self.groupBox_klassen, "8. Klasse")
-#         self.gridLayout_14.addWidget(self.cb_k8, 1, 1, 1, 1)
+        self.gridLayout_10 = create_new_gridlayout(self.groupBox_titelsuche)
+        # QtWidgets.QGridLayout(self.groupBox_titelsuche)
+        # self.gridLayout_10.setObjectName(_fromUtf8("gridLayout_10"))
 
-#         self.cb_matura = create_new_checkbox(self.groupBox_klassen, "Matura")
-#         self.gridLayout_14.addWidget(self.cb_matura, 0, 2, 1, 1)
 
-#         self.cb_univie = create_new_checkbox(self.groupBox_klassen, "Uni Wien")
-#         self.cb_univie.setToolTip(
-#         'Aufgaben mit dieser Kennzeichnung wurden im Rahmen einer Lehrveranstaltung auf der\nUniverstität Wien von Studiernden erstellt und von den Lehrveranstaltungsleitern evaluiert.'
-#         )
-#         self.gridLayout_14.addWidget(self.cb_univie, 1, 2, 1, 1)
+        self.entry_suchbegriffe = create_new_lineedit(self.groupBox_titelsuche)
+        self.gridLayout_10.addWidget(self.entry_suchbegriffe, 0, 0, 1, 1)
 
-#         self.gridLayout.addWidget(self.groupBox_klassen, 3, 0, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_titelsuche, 4, 1, 1, 1, QtCore.Qt.AlignTop)
+
+
+        self.groupBox_klassen = create_new_groupbox(self.centralwidget, "Themen Schulstufe")
+        self.gridLayout_14 = create_new_gridlayout(self.groupBox_klassen)
+
+
+        self.cb_k5 = create_new_checkbox(self.groupBox_klassen, "5. Klasse")
+        self.gridLayout_14.addWidget(self.cb_k5, 0, 0, 1, 1)
+
+        self.cb_k6 = create_new_checkbox(self.groupBox_klassen, "6. Klasse")
+        self.gridLayout_14.addWidget(self.cb_k6, 1, 0, 1, 1)
+
+        self.cb_k7 = create_new_checkbox(self.groupBox_klassen, "7. Klasse")
+        self.gridLayout_14.addWidget(self.cb_k7, 0, 1, 1, 1)
+
+        self.cb_k8 = create_new_checkbox(self.groupBox_klassen, "8. Klasse")
+        self.gridLayout_14.addWidget(self.cb_k8, 1, 1, 1, 1)
+
+        self.cb_matura = create_new_checkbox(self.groupBox_klassen, "Matura")
+        self.gridLayout_14.addWidget(self.cb_matura, 0, 2, 1, 1)
+
+        self.cb_univie = create_new_checkbox(self.groupBox_klassen, "Uni Wien")
+        self.cb_univie.setToolTip(
+        'Aufgaben mit dieser Kennzeichnung wurden im Rahmen einer Lehrveranstaltung auf der\nUniverstität Wien von Studiernden erstellt und von den Lehrveranstaltungsleitern evaluiert.'
+        )
+        self.gridLayout_14.addWidget(self.cb_univie, 1, 2, 1, 1)
+
+        self.gridLayout.addWidget(self.groupBox_klassen, 3, 0, 1, 1)
 
 
         
-#         self.horizontalLayout_2 = create_new_horizontallayout()
-#         # QtWidgets.QHBoxLayout()
-#         # self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
+        self.horizontalLayout_2 = create_new_horizontallayout()
+        # QtWidgets.QHBoxLayout()
+        # self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
 
-#         self.cb_solution = create_new_checkbox(self.centralwidget, "Lösungen anzeigen", True)
-#         self.horizontalLayout_2.addWidget(self.cb_solution, QtCore.Qt.AlignLeft)
+        self.cb_solution = create_new_checkbox(self.centralwidget, "Lösungen anzeigen", True)
+        self.horizontalLayout_2.addWidget(self.cb_solution, QtCore.Qt.AlignLeft)
 
-#         self.cb_drafts = create_new_checkbox(self.centralwidget, "Entwürfe anzeigen")
-#         self.horizontalLayout_2.addWidget(self.cb_drafts)
-#         self.cb_drafts.toggled.connect(self.cb_drafts_enabled)
+        self.cb_drafts = create_new_checkbox(self.centralwidget, "Entwürfe anzeigen")
+        self.horizontalLayout_2.addWidget(self.cb_drafts)
+        self.cb_drafts.toggled.connect(self.cb_drafts_enabled)
 
-#         self.btn_suche = create_new_button(self.centralwidget,"Suche starten", partial(prepare_tex_for_pdf,self))
-#         self.btn_suche.setShortcut(_translate("MainWindow", "Return", None))
-#         self.horizontalLayout_2.addWidget(self.btn_suche)
+        self.btn_suche = create_new_button(self.centralwidget,"Suche starten", partial(prepare_tex_for_pdf,self))
+        self.btn_suche.setShortcut(_translate("MainWindow", "Return", None))
+        self.horizontalLayout_2.addWidget(self.btn_suche)
 
-#         self.gridLayout.addLayout(self.horizontalLayout_2, 5, 1, 1, 1)        
-
-
-#         self.horizontalLayout = QtWidgets.QHBoxLayout()
-#         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
+        self.gridLayout.addLayout(self.horizontalLayout_2, 5, 1, 1, 1)        
 
 
-#         self.label_update = create_new_label(self.centralwidget, "")
-#         self.label_update.setMaximumHeight(18)
-#         self.horizontalLayout.addWidget(self.label_update)
-
-#         self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
 
 
-#         self.horizontalLayout_combobox = create_new_horizontallayout()
-#         # QtWidgets.QHBoxLayout()
-#         # self.horizontalLayout_combobox.setObjectName(
-#             # _fromUtf8("horizontalLayout_combobox")
-#         # )
+        self.label_update = create_new_label(self.centralwidget, "")
+        self.label_update.setMaximumHeight(18)
+        self.horizontalLayout.addWidget(self.label_update)
 
-#         self.label_aufgabentyp = create_new_label(self.centralwidget, "Aufgabentyp: Typ 1")
-#         self.horizontalLayout_combobox.addWidget(self.label_aufgabentyp)
-
-#         self.combobox_searchtype = create_new_combobox(self.centralwidget)
-#         self.combobox_searchtype.setMinimumContentsLength(1)
-
-#         add_new_option(self.combobox_searchtype, 0, "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten")
-#         add_new_option(self.combobox_searchtype, 1, "Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten")
-
-#         self.horizontalLayout_combobox.addWidget(self.combobox_searchtype)
-
-#         self.gridLayout.addLayout(self.horizontalLayout_combobox, 0, 1, 1, 1)
-#         self.combobox_searchtype.hide()
+        self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
 
 
-#         self.groupBox_themen_klasse = create_new_groupbox(self.centralwidget, "Themen Schulstufen")
+        self.horizontalLayout_combobox = create_new_horizontallayout()
+        # QtWidgets.QHBoxLayout()
+        # self.horizontalLayout_combobox.setObjectName(
+            # _fromUtf8("horizontalLayout_combobox")
+        # )
 
-#         self.verticalLayout = create_new_verticallayout(self.groupBox_themen_klasse) 
-#         # QtWidgets.QVBoxLayout(self.groupBox_themen_klasse)
-#         # self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-#         self.tab_widget_themen = QtWidgets.QTabWidget(self.groupBox_themen_klasse)
-#         self.tab_widget_themen.setStyleSheet(StyleSheet_tabWiget)      
-#         # self.tabWidget.setStyleSheet(set_color_text(white))
+        self.label_aufgabentyp = create_new_label(self.centralwidget, "Aufgabentyp: Typ 1")
+        self.horizontalLayout_combobox.addWidget(self.label_aufgabentyp)
 
-#         self.tab_widget_themen.setObjectName(_fromUtf8("tab_widget_themen"))
-#         self.verticalLayout.addWidget(self.tab_widget_themen)
+        self.combobox_searchtype = create_new_combobox(self.centralwidget)
+        self.combobox_searchtype.setMinimumContentsLength(1)
 
-#         self.gridLayout.addWidget(self.groupBox_themen_klasse, 1, 0, 2, 1)
+        add_new_option(self.combobox_searchtype, 0, "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten")
+        add_new_option(self.combobox_searchtype, 1, "Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten")
 
-#         self.groupBox_gk = create_new_groupbox(self.centralwidget, "Grundkompetenzen")
+        self.horizontalLayout_combobox.addWidget(self.combobox_searchtype)
 
-#         self.gridLayout_11 = create_new_gridlayout(self.groupBox_gk)
+        self.gridLayout.addLayout(self.horizontalLayout_combobox, 0, 1, 1, 1)
+        self.combobox_searchtype.hide()
+
+
+        self.groupBox_themen_klasse = create_new_groupbox(self.centralwidget, "Themen Schulstufen")
+
+        self.verticalLayout = create_new_verticallayout(self.groupBox_themen_klasse) 
+        # QtWidgets.QVBoxLayout(self.groupBox_themen_klasse)
+        # self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
+        self.tab_widget_themen = QtWidgets.QTabWidget(self.groupBox_themen_klasse)
+        self.tab_widget_themen.setStyleSheet(StyleSheet_tabWiget)      
+        # self.tabWidget.setStyleSheet(set_color_text(white))
+
+        self.tab_widget_themen.setObjectName(_fromUtf8("tab_widget_themen"))
+        self.verticalLayout.addWidget(self.tab_widget_themen)
+
+        self.gridLayout.addWidget(self.groupBox_themen_klasse, 1, 0, 2, 1)
+
+        self.groupBox_gk = create_new_groupbox(self.centralwidget, "Grundkompetenzen")
+
+        self.gridLayout_11 = create_new_gridlayout(self.groupBox_gk)
         
-#         # QtWidgets.QGridLayout(self.groupBox_gk)
-#         # self.gridLayout_11.setObjectName(_fromUtf8("gridLayout_11"))
-#         self.tab_widget_gk = QtWidgets.QTabWidget(self.groupBox_gk)
+        # QtWidgets.QGridLayout(self.groupBox_gk)
+        # self.gridLayout_11.setObjectName(_fromUtf8("gridLayout_11"))
+        self.tab_widget_gk = QtWidgets.QTabWidget(self.groupBox_gk)
 
-#         self.tab_widget_gk.setStyleSheet(StyleSheet_tabWiget)
-#         # self.tab_widget_gk.setStyleSheet(_fromUtf8("color: {0}".format(white)))
-#         # self.tab_widget_gk.setStyleSheet("QToolTip { color: white; background-color: rgb(47, 69, 80); border: 0px; }")
-#         # ))
+        self.tab_widget_gk.setStyleSheet(StyleSheet_tabWiget)
+        # self.tab_widget_gk.setStyleSheet(_fromUtf8("color: {0}".format(white)))
+        # self.tab_widget_gk.setStyleSheet("QToolTip { color: white; background-color: rgb(47, 69, 80); border: 0px; }")
+        # ))
         
-#             # 
-#         #  print(gray.red())
-#         self.tab_widget_gk.setObjectName(_fromUtf8("tab_widget_gk"))
+            # 
+        #  print(gray.red())
+        self.tab_widget_gk.setObjectName(_fromUtf8("tab_widget_gk"))
 
-#         #### AG #####
-#         self.create_tab_checkboxes_gk(self.tab_widget_gk, "Algebra und Geometrie", ag_beschreibung, 'search')
+        #### AG #####
+        self.create_tab_checkboxes_gk(self.tab_widget_gk, "Algebra und Geometrie", ag_beschreibung, 'search')
 
-#         ### FA ###
-#         self.create_tab_checkboxes_gk(self.tab_widget_gk,"Funktionale Abhängigkeiten", fa_beschreibung, 'search')
+        ### FA ###
+        self.create_tab_checkboxes_gk(self.tab_widget_gk,"Funktionale Abhängigkeiten", fa_beschreibung, 'search')
 
-#         ### AN ###
-#         self.create_tab_checkboxes_gk(self.tab_widget_gk,"Analysis", an_beschreibung, 'search')
+        ### AN ###
+        self.create_tab_checkboxes_gk(self.tab_widget_gk,"Analysis", an_beschreibung, 'search')
 
-#         ### WS ###
-#         self.create_tab_checkboxes_gk(self.tab_widget_gk,"Wahrscheinlichkeit und Statistik", ws_beschreibung, 'search')
+        ### WS ###
+        self.create_tab_checkboxes_gk(self.tab_widget_gk,"Wahrscheinlichkeit und Statistik", ws_beschreibung, 'search')
         
-#         ######### Klassenthemen
-#         ### K5
-#         self.create_tab_checkboxes_themen(self.tab_widget_themen, "k5", "search")
+        ######### Klassenthemen
+        ### K5
+        self.create_tab_checkboxes_themen(self.tab_widget_themen, "k5", "search")
 
-#         ### K6
-#         self.create_tab_checkboxes_themen(self.tab_widget_themen, "k6", "search")
+        ### K6
+        self.create_tab_checkboxes_themen(self.tab_widget_themen, "k6", "search")
 
-#         ### K7
-#         self.create_tab_checkboxes_themen(self.tab_widget_themen, "k7", "search")
+        ### K7
+        self.create_tab_checkboxes_themen(self.tab_widget_themen, "k7", "search")
 
-#         ### K8
-#         self.create_tab_checkboxes_themen(self.tab_widget_themen, "k8", "search")
+        ### K8
+        self.create_tab_checkboxes_themen(self.tab_widget_themen, "k8", "search")
 
-#         #### Warnung ### Hinweis ####
-#         self.label_warnung = QtWidgets.QLabel(self.centralwidget)
-#         self.label_warnung.setWordWrap(True)
-#         self.label_warnung.setObjectName(_fromUtf8("label_warnung"))
-#         color=get_color(red)
-#         self.label_warnung.setStyleSheet(_fromUtf8("border: 2px solid {};".format(color))) #background-color: rgb(195, 58, 63)
-#         #self.label_warnung.setMaximumSize(QtCore.QSize(375, 16777215))
-#         self.label_warnung.setText(_translate("MainWindow", "Achtung: Aufgrund neuer hilfreicher Befehle ist es notwendig, ein Update des srdp-mathematik-Pakets so bald wie möglich durchzuführen! Nähere Infos unter: lama.schule/update", None))
-#         self.gridLayout.addWidget(self.label_warnung, 5,0,1,1)
-#         ##########################
+        #### Warnung ### Hinweis ####
+        self.label_warnung = QtWidgets.QLabel(self.centralwidget)
+        self.label_warnung.setWordWrap(True)
+        self.label_warnung.setObjectName(_fromUtf8("label_warnung"))
+        color=get_color(red)
+        self.label_warnung.setStyleSheet(_fromUtf8("border: 2px solid {};".format(color))) #background-color: rgb(195, 58, 63)
+        #self.label_warnung.setMaximumSize(QtCore.QSize(375, 16777215))
+        self.label_warnung.setText(_translate("MainWindow", "Achtung: Aufgrund neuer hilfreicher Befehle ist es notwendig, ein Update des srdp-mathematik-Pakets so bald wie möglich durchzuführen! Nähere Infos unter: lama.schule/update", None))
+        self.gridLayout.addWidget(self.label_warnung, 5,0,1,1)
+        ##########################
 
 #         # ##################################################################
 #         # ################ LAMA CRIA SEARCH #################################
@@ -1896,9 +1896,9 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
 #         self.statusbar = QtWidgets.QStatusBar(MainWindow)
 #         self.statusbar.setObjectName(_fromUtf8("statusbar"))
-#         MainWindow.setStatusBar(self.statusbar)
-#         # self.actionReset = QtWidgets.QAction(MainWindow)
-#         # self.actionReset.setObjectName(_fromUtf8("actionReset"))
+        MainWindow.setStatusBar(self.statusbar)
+        # self.actionReset = QtWidgets.QAction(MainWindow)
+        # self.actionReset.setObjectName(_fromUtf8("actionReset"))
 
 #         self.retranslateUi(MainWindow)
 #         self.tab_widget_themen.setCurrentIndex(0)
