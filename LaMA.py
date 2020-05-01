@@ -627,11 +627,11 @@ class Ui_MainWindow(object):
             #         all
             #     )
             # )
-            exec(
-                "self.gridLayout_{0}.addWidget(self.scrollArea_{0}, 5, 0, 1, 1)".format(
-                    all
-                )
-            )
+            # exec(
+            #     "self.gridLayout_{0}.addWidget(self.scrollArea_{0}, 5, 0, 1, 1)".format(
+            #         all
+            #     )
+            # )
             exec(
                 'self.tabWidget_klassen_cria.addTab(self.tab_{0}, "{1}. Klasse")'.format(
                     all, all[1]
