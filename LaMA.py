@@ -2230,9 +2230,9 @@ class Ui_MainWindow(object):
         gridlayout.addWidget(scrollarea, 1, 0, 7, 1)
 
     def create_list_of_all_gk_checkboxes(self, parent, layout, mode, chosen_dictionary):
-        spacerItem = QtWidgets.QSpacerItem(
-            10, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        )
+        # spacerItem = QtWidgets.QSpacerItem(
+        #     10, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        # )
         row = 0
         column = 0
         if mode=='creator':       
@@ -2253,15 +2253,15 @@ class Ui_MainWindow(object):
             name=name_start+all
             self.dict_widget_variables[name]=new_checkbox
 
-        #     if row > max_row:
-        #         row = 0
-        #         column += 1
-        #         layout.addItem(spacerItem, row, column, 1, 1)
-        #         column += 1
-        #     else:
-        #         row += 1
+            if row > max_row:
+                row = 0
+                column += 1
+                layout.addItem(spacerItem, row, column, 1, 1)
+                column += 1
+            else:
+                row += 1
         # # print(column)
-        # spacerItem_right = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem_right = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         # layout.addItem(spacerItem_right, 0, column+1, 1, 1)
         
         return row, column
