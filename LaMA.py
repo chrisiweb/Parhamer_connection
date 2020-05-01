@@ -565,6 +565,7 @@ class Ui_MainWindow(object):
         self.label_warnung.setText(_translate("MainWindow", "Achtung: Aufgrund neuer hilfreicher Befehle ist es ratsam, ein Update des srdp-mathematik-Pakets so bald wie möglich durchzuführen! Nähere Infos unter: lama.schule/update", None))
         self.gridLayout.addWidget(self.label_warnung, 5,0,1,1)
         ##########################
+        
         ##################################################################
         ################ LAMA CRIA SEARCH #################################
         ###################################################################
@@ -582,74 +583,6 @@ class Ui_MainWindow(object):
         spacerItem_cria = QtWidgets.QSpacerItem(
             20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
         )
-        for all in list_klassen:
-            # print(all)
-            exec("self.tab_{} = QtWidgets.QWidget()".format(all))
-            exec('self.tab_{}.setObjectName("tab_k1")'.format(all))
-            exec(
-                "self.gridLayout_{0} = QtWidgets.QGridLayout(self.tab_{0})".format(all)
-            )
-            exec('self.gridLayout_{0}.setObjectName("gridLayout_{0}")'.format(all))
-            exec(
-                "self.scrollArea_{0} = QtWidgets.QScrollArea(self.tab_{0})".format(all)
-            )
-            scrollArea_cria = eval("self.scrollArea_{0}".format(all))
-            scrollArea_cria.setFrameShape(QtWidgets.QFrame.NoFrame)
-            scrollArea_cria.setWidgetResizable(True)
-            scrollArea_cria.setObjectName("scrollArea_cria")
-            exec("self.scrollAreaWidgetContents_{} = QtWidgets.QWidget()".format(all))
-            exec(
-                "self.scrollAreaWidgetContents_{}.setGeometry(QtCore.QRect(0, 0, 264, 235))".format(
-                    all
-                )
-            )
-            exec(
-                'self.scrollAreaWidgetContents_{0}.setObjectName("scrollAreaWidgetContents_{0}")'.format(
-                    all
-                )
-            )
-            exec(
-                "self.verticalLayout_kapitel_{0} = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_{0})".format(
-                    all
-                )
-            )
-            verticalLayout_cria = eval("self.verticalLayout_kapitel_{0}".format(all))
-            verticalLayout_cria.setObjectName("verticalLayout_kapitel_{0}".format(all))
-
-            dict_klasse_name = eval("dict_{}_name".format(all))
-            for kapitel in dict_klasse_name:
-                self.create_kapitel(verticalLayout_cria, all[1], kapitel)
-
-            verticalLayout_cria.addItem(spacerItem_cria)
-            exec(
-                "self.scrollArea_{0}.setWidget(self.scrollAreaWidgetContents_{0})".format(
-                    all
-                )
-            )
-            exec(
-                "self.gridLayout_{0}.addWidget(self.scrollArea_{0}, 5, 0, 1, 1)".format(
-                    all
-                )
-            )
-            exec(
-                'self.tabWidget_klassen_cria.addTab(self.tab_{0}, "{1}. Klasse")'.format(
-                    all, all[1]
-                )
-            )
-
-        self.groupBox_unterkapitel_cria = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBox_unterkapitel_cria.setStyleSheet(
-            "background-color: rgb(217, 255, 215);"
-        )
-        self.groupBox_unterkapitel_cria.setObjectName("groupBox_unterkapitel_cria")
-        self.gridLayout_11_cria = QtWidgets.QGridLayout(self.groupBox_unterkapitel_cria)
-        self.gridLayout_11_cria.setObjectName("gridLayout_11_cria")
-        self.gridLayout.addWidget(self.groupBox_unterkapitel_cria, 1, 2, 2, 1)
-
-        self.verticalLayout_cria.addWidget(self.tabWidget_klassen_cria)
-        self.gridLayout.addWidget(self.groupBox_schulstufe_cria, 1, 0, 2, 1)
-        self.groupBox_schulstufe_cria.hide()
-        self.groupBox_unterkapitel_cria.hide()
         ##############################################################
         #####################CREATOR #########################################
         ##########################################################################
@@ -2008,7 +1941,7 @@ class Ui_MainWindow(object):
             x.setToolTip(chosen_dict[all])
             y = eval("self.cb_" + all + "_cr")
             y.setToolTip(chosen_dict[all])
-
+            
     def tab_changed(self):
         klasse = list_klassen[self.tabWidget_klassen.currentIndex()]
         dict_klasse_name = eval("dict_{}_name".format(klasse))
