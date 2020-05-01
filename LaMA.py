@@ -501,12 +501,12 @@ class Ui_MainWindow(object):
 
 
         self.verticalLayout_2 = create_new_verticallayout(self.groupBox_ausgew_gk)
-        # # QtWidgets.QVBoxLayout(self.groupBox_ausgew_gk)
-        # # self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
+        # QtWidgets.QVBoxLayout(self.groupBox_ausgew_gk)
+        # self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
 
-        # self.scrollArea_ausgew_gk = QtWidgets.QScrollArea(self.groupBox_ausgew_gk)
-        # self.scrollArea_ausgew_gk.setWidgetResizable(True)
-        # self.scrollArea_ausgew_gk.setObjectName("scrollArea_ausgew_gk")
+        self.scrollArea_ausgew_gk = QtWidgets.QScrollArea(self.groupBox_ausgew_gk)
+        self.scrollArea_ausgew_gk.setWidgetResizable(True)
+        self.scrollArea_ausgew_gk.setObjectName("scrollArea_ausgew_gk")
         # self.scrollAreaWidgetContents_ausgew_gk = QtWidgets.QWidget()
         # self.scrollAreaWidgetContents_ausgew_gk.setObjectName(
         #     "scrollAreaWidgetContents_ausgew_gk"
