@@ -1652,239 +1652,239 @@ class Ui_MainWindow(object):
         self.splitter_sage.hide()
         self.comboBox_klassen_changed("sage")
 
-#         ################################################################
-#         ################################################################
-#         ########### FEEDBACK #############################################
-#         #######################################################################
+        ################################################################
+        ################################################################
+        ########### FEEDBACK #############################################
+        #######################################################################
         
-#         self.comboBox_at_fb = QtWidgets.QComboBox(self.centralwidget)
-#         # self.comboBox_at_fb.setSizePolicy(SizePolicy_fixed)
-#         self.comboBox_at_fb.setObjectName("comboBox_at_fb")
-#         self.comboBox_at_fb.addItem("")
-#         self.comboBox_at_fb.addItem("")
-#         self.comboBox_at_fb.addItem("")
-#         self.gridLayout.addWidget(self.comboBox_at_fb, 0, 0, 1, 1)
-#         self.comboBox_at_fb.setItemText(0, _translate("MainWindow", "Typ 1", None))
-#         self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Typ 2", None))
-#         self.comboBox_at_fb.setItemText(
-#             2, _translate("MainWindow", "Allgemeine Rückmeldung", None)
-#         )
-#         self.comboBox_at_fb.currentIndexChanged.connect(self.comboBox_at_fb_changed)
-#         self.comboBox_at_fb.setFocusPolicy(QtCore.Qt.ClickFocus)
-#         self.comboBox_at_fb.hide()
+        self.comboBox_at_fb = QtWidgets.QComboBox(self.centralwidget)
+        # self.comboBox_at_fb.setSizePolicy(SizePolicy_fixed)
+        self.comboBox_at_fb.setObjectName("comboBox_at_fb")
+        self.comboBox_at_fb.addItem("")
+        self.comboBox_at_fb.addItem("")
+        self.comboBox_at_fb.addItem("")
+        self.gridLayout.addWidget(self.comboBox_at_fb, 0, 0, 1, 1)
+        self.comboBox_at_fb.setItemText(0, _translate("MainWindow", "Typ 1", None))
+        self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Typ 2", None))
+        self.comboBox_at_fb.setItemText(
+            2, _translate("MainWindow", "Allgemeine Rückmeldung", None)
+        )
+        self.comboBox_at_fb.currentIndexChanged.connect(self.comboBox_at_fb_changed)
+        self.comboBox_at_fb.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.comboBox_at_fb.hide()
 
-#         self.label_example = QtWidgets.QLabel(self.centralwidget)
-#         self.label_example.setObjectName(_fromUtf8("label_example"))
-#         # self.label_update.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
-#         self.label_example.setText(
-#             _translate("MainWindow", "Ausgewählte Aufgabe: -", None)
-#         )
-#         self.gridLayout.addWidget(self.label_example, 0, 1, 1, 1)
-#         self.label_example.hide()
+        self.label_example = QtWidgets.QLabel(self.centralwidget)
+        self.label_example.setObjectName(_fromUtf8("label_example"))
+        # self.label_update.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
+        self.label_example.setText(
+            _translate("MainWindow", "Ausgewählte Aufgabe: -", None)
+        )
+        self.gridLayout.addWidget(self.label_example, 0, 1, 1, 1)
+        self.label_example.hide()
 
-#         self.groupBox_alle_aufgaben_fb = QtWidgets.QGroupBox(self.centralwidget)
-#         self.groupBox_alle_aufgaben_fb.setSizePolicy(SizePolicy_fixed_width)
-#         self.groupBox_alle_aufgaben_fb.setMinimumSize(QtCore.QSize(140, 16777215))
-#         # self.groupBox_alle_aufgaben_fb.setMaximumSize(QtCore.QSize(180, 16777215))
-#         self.groupBox_alle_aufgaben_fb.setObjectName("groupBox_alle_aufgaben_fb")
-#         self.verticalLayout_fb = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben_fb)
-#         self.verticalLayout_fb.setObjectName("verticalLayout_fb")
-#         self.comboBox_fb = QtWidgets.QComboBox(self.groupBox_alle_aufgaben_fb)
-#         self.comboBox_fb.setObjectName("comboBox_fb")
-#         list_comboBox_fb = ["", "AG", "FA", "AN", "WS", "K5", "K6", "K7", "K8"]
-#         index = 0
-#         for all in list_comboBox_fb:
-#             self.comboBox_fb.addItem("")
-#             self.comboBox_fb.setItemText(index, _translate("MainWindow", all, None))
-#             index += 1
-#         self.comboBox_fb.currentIndexChanged.connect(
-#             partial(self.comboBox_gk_changed, "feedback")
-#         )
-#         self.comboBox_fb.setFocusPolicy(QtCore.Qt.ClickFocus)
-#         self.verticalLayout_fb.addWidget(self.comboBox_fb)
-#         self.comboBox_fb_num = QtWidgets.QComboBox(self.groupBox_alle_aufgaben_fb)
-#         self.comboBox_fb_num.setObjectName("comboBox_gk_num")
-#         self.comboBox_fb_num.currentIndexChanged.connect(
-#             partial(self.comboBox_gk_num_changed, "feedback")
-#         )
-#         self.comboBox_fb_num.setFocusPolicy(QtCore.Qt.ClickFocus)
-#         self.verticalLayout_fb.addWidget(self.comboBox_fb_num)
-#         self.lineEdit_number_fb = QtWidgets.QLineEdit(self.groupBox_alle_aufgaben_fb)
-#         self.lineEdit_number_fb.setObjectName("lineEdit_number_fb")
-#         self.lineEdit_number_fb.textChanged.connect(
-#             partial(self.lineEdit_number_changed, "feedback")
-#         )
-#         self.verticalLayout_fb.addWidget(self.lineEdit_number_fb)
-#         self.listWidget_fb = QtWidgets.QListWidget(self.groupBox_alle_aufgaben)
-#         self.listWidget_fb.setObjectName("listWidget")
-#         self.verticalLayout_fb.addWidget(self.listWidget_fb)
-#         self.gridLayout.addWidget(self.groupBox_alle_aufgaben_fb, 1, 0, 3, 1)
-#         self.groupBox_alle_aufgaben_fb.setTitle(
-#             _translate("MainWindow", "Aufgaben", None)
-#         )
-#         self.groupBox_alle_aufgaben_fb.hide()
-
-
-#         #### Feedback Cria ####
-
-#         # self.groupBox_alle_aufgaben_fb_cria = QtWidgets.QGroupBox(self.centralwidget)
-#         # self.groupBox_alle_aufgaben_fb_cria.setMinimumWidth(100)
-#         # self.groupBox_alle_aufgaben_fb_cria.setMinimumSize(QtCore.QSize(140, 16777215))
-#         # # self.groupBox_alle_aufgaben_fb_cria.setMaximumSize(QtCore.QSize(200, 16777215))
-#         # self.groupBox_alle_aufgaben_fb_cria.setObjectName("groupBox_alle_aufgaben_fb_cria")
-#         # self.verticalLayout_fb_cria = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben_fb_cria)
-#         # self.verticalLayout_fb_cria.setObjectName("verticalLayout_fb_cria")
-#         # self.comboBox_klassen_fb_cria = QtWidgets.QComboBox(self.groupBox_alle_aufgaben_fb_cria)
-#         # self.comboBox_klassen_fb_cria.setObjectName("self.comboBox_klassen_fb_cria")
-
-#         # i = 0
-#         # for all in list_klassen:
-
-#         #     self.comboBox_klassen_fb_cria.addItem("")
-
-#         #     self.comboBox_klassen_fb_cria.setItemText(
-#         #         i, _translate("MainWindow", all[1] + ". Klasse",None),
-#         #     )
-#         #     i += 1
-
-#         # self.comboBox_klassen_fb_cria.currentIndexChanged.connect(
-#         #     partial(self.comboBox_klassen_changed, "feedback")
-#         # )
-
-#         # self.comboBox_klassen_fb_cria.setFocusPolicy(QtCore.Qt.ClickFocus)
-#         # self.verticalLayout_fb_cria.addWidget(self.comboBox_klassen_fb_cria)
-#         # self.comboBox_kapitel_fb_cria = QtWidgets.QComboBox(self.groupBox_alle_aufgaben_fb_cria)
-#         # self.comboBox_kapitel_fb_cria.setObjectName("self.comboBox_kapitel_fb_cria")
-
-#         # self.comboBox_kapitel_fb_cria.currentIndexChanged.connect(
-#         #     partial(self.comboBox_kapitel_changed, "feedback")
-#         # )
-#         # self.comboBox_kapitel_fb_cria.setFocusPolicy(QtCore.Qt.ClickFocus)
-#         # self.verticalLayout_fb_cria.addWidget(self.comboBox_kapitel_fb_cria)
+        self.groupBox_alle_aufgaben_fb = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBox_alle_aufgaben_fb.setSizePolicy(SizePolicy_fixed_width)
+        self.groupBox_alle_aufgaben_fb.setMinimumSize(QtCore.QSize(140, 16777215))
+        # self.groupBox_alle_aufgaben_fb.setMaximumSize(QtCore.QSize(180, 16777215))
+        self.groupBox_alle_aufgaben_fb.setObjectName("groupBox_alle_aufgaben_fb")
+        self.verticalLayout_fb = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben_fb)
+        self.verticalLayout_fb.setObjectName("verticalLayout_fb")
+        self.comboBox_fb = QtWidgets.QComboBox(self.groupBox_alle_aufgaben_fb)
+        self.comboBox_fb.setObjectName("comboBox_fb")
+        list_comboBox_fb = ["", "AG", "FA", "AN", "WS", "K5", "K6", "K7", "K8"]
+        index = 0
+        for all in list_comboBox_fb:
+            self.comboBox_fb.addItem("")
+            self.comboBox_fb.setItemText(index, _translate("MainWindow", all, None))
+            index += 1
+        self.comboBox_fb.currentIndexChanged.connect(
+            partial(self.comboBox_gk_changed, "feedback")
+        )
+        self.comboBox_fb.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.verticalLayout_fb.addWidget(self.comboBox_fb)
+        self.comboBox_fb_num = QtWidgets.QComboBox(self.groupBox_alle_aufgaben_fb)
+        self.comboBox_fb_num.setObjectName("comboBox_gk_num")
+        self.comboBox_fb_num.currentIndexChanged.connect(
+            partial(self.comboBox_gk_num_changed, "feedback")
+        )
+        self.comboBox_fb_num.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.verticalLayout_fb.addWidget(self.comboBox_fb_num)
+        self.lineEdit_number_fb = QtWidgets.QLineEdit(self.groupBox_alle_aufgaben_fb)
+        self.lineEdit_number_fb.setObjectName("lineEdit_number_fb")
+        self.lineEdit_number_fb.textChanged.connect(
+            partial(self.lineEdit_number_changed, "feedback")
+        )
+        self.verticalLayout_fb.addWidget(self.lineEdit_number_fb)
+        self.listWidget_fb = QtWidgets.QListWidget(self.groupBox_alle_aufgaben)
+        self.listWidget_fb.setObjectName("listWidget")
+        self.verticalLayout_fb.addWidget(self.listWidget_fb)
+        self.gridLayout.addWidget(self.groupBox_alle_aufgaben_fb, 1, 0, 3, 1)
+        self.groupBox_alle_aufgaben_fb.setTitle(
+            _translate("MainWindow", "Aufgaben", None)
+        )
+        self.groupBox_alle_aufgaben_fb.hide()
 
 
-#         # self.comboBox_unterkapitel_fb_cria = QtWidgets.QComboBox(
-#         #     self.groupBox_alle_aufgaben_fb_cria
-#         # )
-#         # self.comboBox_unterkapitel_fb_cria.setObjectName("self.comboBox_unterkapitel_fb_cria")
+        #### Feedback Cria ####
 
-#         # self.comboBox_unterkapitel_fb_cria.currentIndexChanged.connect(
-#         #     partial(self.comboBox_unterkapitel_changed, "feedback")
-#         # )
-#         # self.comboBox_unterkapitel_fb_cria.setFocusPolicy(QtCore.Qt.ClickFocus)
-#         # self.verticalLayout_fb_cria.addWidget(self.comboBox_unterkapitel_fb_cria)
+        self.groupBox_alle_aufgaben_fb_cria = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBox_alle_aufgaben_fb_cria.setMinimumWidth(100)
+        self.groupBox_alle_aufgaben_fb_cria.setMinimumSize(QtCore.QSize(140, 16777215))
+        # self.groupBox_alle_aufgaben_fb_cria.setMaximumSize(QtCore.QSize(200, 16777215))
+        self.groupBox_alle_aufgaben_fb_cria.setObjectName("groupBox_alle_aufgaben_fb_cria")
+        self.verticalLayout_fb_cria = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben_fb_cria)
+        self.verticalLayout_fb_cria.setObjectName("verticalLayout_fb_cria")
+        self.comboBox_klassen_fb_cria = QtWidgets.QComboBox(self.groupBox_alle_aufgaben_fb_cria)
+        self.comboBox_klassen_fb_cria.setObjectName("self.comboBox_klassen_fb_cria")
 
-#         # self.lineEdit_number_fb_cria = QtWidgets.QLineEdit(self.groupBox_alle_aufgaben_fb_cria)
-#         # self.lineEdit_number_fb_cria.setObjectName("lineEdit_number_fb_cria")
+        i = 0
+        for all in list_klassen:
 
-#         # self.lineEdit_number_fb_cria.textChanged.connect(
-#         #     partial(self.adapt_choosing_list, "feedback")
-#         # )
-#         # self.verticalLayout_fb_cria.addWidget(self.lineEdit_number_fb_cria)
-#         # self.listWidget_fb_cria= QtWidgets.QListWidget(self.groupBox_alle_aufgaben_fb_cria)
-#         # self.listWidget_fb_cria.setObjectName("listWidget_fb_cria")
-#         # self.verticalLayout_fb_cria.addWidget(self.listWidget_fb_cria)
-#         # self.gridLayout.addWidget(self.groupBox_alle_aufgaben_fb_cria, 1, 0, 3, 1)
-#         # self.groupBox_alle_aufgaben_fb_cria.setTitle(_translate("MainWindow", "Aufgaben",None))
-#         # self.groupBox_alle_aufgaben_fb_cria.hide()
+            self.comboBox_klassen_fb_cria.addItem("")
 
-#         # self.comboBox_kapitel_fb_cria.addItem("")
-#         # for all in dict_k1_name:
-#         #     self.comboBox_kapitel_fb_cria.addItem(
-#         #         dict_k1_name[all] + " (" + all + ")"
-#         #     )
+            self.comboBox_klassen_fb_cria.setItemText(
+                i, _translate("MainWindow", all[1] + ". Klasse",None),
+            )
+            i += 1
+
+        self.comboBox_klassen_fb_cria.currentIndexChanged.connect(
+            partial(self.comboBox_klassen_changed, "feedback")
+        )
+
+        self.comboBox_klassen_fb_cria.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.verticalLayout_fb_cria.addWidget(self.comboBox_klassen_fb_cria)
+        self.comboBox_kapitel_fb_cria = QtWidgets.QComboBox(self.groupBox_alle_aufgaben_fb_cria)
+        self.comboBox_kapitel_fb_cria.setObjectName("self.comboBox_kapitel_fb_cria")
+
+        self.comboBox_kapitel_fb_cria.currentIndexChanged.connect(
+            partial(self.comboBox_kapitel_changed, "feedback")
+        )
+        self.comboBox_kapitel_fb_cria.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.verticalLayout_fb_cria.addWidget(self.comboBox_kapitel_fb_cria)
+
+
+        self.comboBox_unterkapitel_fb_cria = QtWidgets.QComboBox(
+            self.groupBox_alle_aufgaben_fb_cria
+        )
+        self.comboBox_unterkapitel_fb_cria.setObjectName("self.comboBox_unterkapitel_fb_cria")
+
+        self.comboBox_unterkapitel_fb_cria.currentIndexChanged.connect(
+            partial(self.comboBox_unterkapitel_changed, "feedback")
+        )
+        self.comboBox_unterkapitel_fb_cria.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.verticalLayout_fb_cria.addWidget(self.comboBox_unterkapitel_fb_cria)
+
+        self.lineEdit_number_fb_cria = QtWidgets.QLineEdit(self.groupBox_alle_aufgaben_fb_cria)
+        self.lineEdit_number_fb_cria.setObjectName("lineEdit_number_fb_cria")
+
+        self.lineEdit_number_fb_cria.textChanged.connect(
+            partial(self.adapt_choosing_list, "feedback")
+        )
+        self.verticalLayout_fb_cria.addWidget(self.lineEdit_number_fb_cria)
+        self.listWidget_fb_cria= QtWidgets.QListWidget(self.groupBox_alle_aufgaben_fb_cria)
+        self.listWidget_fb_cria.setObjectName("listWidget_fb_cria")
+        self.verticalLayout_fb_cria.addWidget(self.listWidget_fb_cria)
+        self.gridLayout.addWidget(self.groupBox_alle_aufgaben_fb_cria, 1, 0, 3, 1)
+        self.groupBox_alle_aufgaben_fb_cria.setTitle(_translate("MainWindow", "Aufgaben",None))
+        self.groupBox_alle_aufgaben_fb_cria.hide()
+
+        self.comboBox_kapitel_fb_cria.addItem("")
+        for all in dict_k1_name:
+            self.comboBox_kapitel_fb_cria.addItem(
+                dict_k1_name[all] + " (" + all + ")"
+            )
 
 
 
-#         # self.groupBox_fehlertyp = QtWidgets.QGroupBox(self.centralwidget)
-#         # # self.groupBox_fehlertyp.setSizePolicy(SizePolicy_fixed)
-#         # self.groupBox_fehlertyp.setObjectName("groupBox_fehlertyp")
-#         # self.gridLayout_fehlertyp = QtWidgets.QGridLayout(self.groupBox_fehlertyp)
-#         # self.gridLayout_fehlertyp.setObjectName("gridLayout_feedback")
-#         # self.groupBox_fehlertyp.setTitle(_translate("MainWindow", "Betreff", None))
+        self.groupBox_fehlertyp = QtWidgets.QGroupBox(self.centralwidget)
+        # self.groupBox_fehlertyp.setSizePolicy(SizePolicy_fixed)
+        self.groupBox_fehlertyp.setObjectName("groupBox_fehlertyp")
+        self.gridLayout_fehlertyp = QtWidgets.QGridLayout(self.groupBox_fehlertyp)
+        self.gridLayout_fehlertyp.setObjectName("gridLayout_feedback")
+        self.groupBox_fehlertyp.setTitle(_translate("MainWindow", "Betreff", None))
 
-#         # self.comboBox_fehlertyp = QtWidgets.QComboBox(self.groupBox_fehlertyp)
-#         # self.comboBox_fehlertyp.setObjectName("comboBox_pruefungstyp")
-#         # self.comboBox_fehlertyp.addItem("")
-#         # self.comboBox_fehlertyp.addItem("")
-#         # self.comboBox_fehlertyp.addItem("")
-#         # self.comboBox_fehlertyp.addItem("")
-#         # self.comboBox_fehlertyp.addItem("")
-#         # self.comboBox_fehlertyp.addItem("")
-#         # self.comboBox_fehlertyp.addItem("")
-#         # self.comboBox_fehlertyp.addItem("")
-#         # self.comboBox_fehlertyp.addItem("")
-#         # self.comboBox_fehlertyp.setItemText(
-#         #     1, _translate("MainWindow", "Feedback", None)
-#         # )
-#         # self.comboBox_fehlertyp.setItemText(
-#         #     2, _translate("MainWindow", "Fehler in der Angabe", None)
-#         # )
-#         # self.comboBox_fehlertyp.setItemText(
-#         #     3, _translate("MainWindow", "Fehler in der Lösung", None)
-#         # )
-#         # self.comboBox_fehlertyp.setItemText(
-#         #     4, _translate("MainWindow", "Bild wird nicht (richtig) angezeigt", None)
-#         # )
-#         # self.comboBox_fehlertyp.setItemText(
-#         #     5, _translate("MainWindow", "Grafik ist unleserlich/fehlerhaft", None)
-#         # )
-#         # self.comboBox_fehlertyp.setItemText(
-#         #     6, _translate("MainWindow", "Aufgabe ist doppelt vorhanden", None)
-#         # )
-#         # self.comboBox_fehlertyp.setItemText(
-#         #     7,
-#         #     _translate(
-#         #         "MainWindow",
-#         #         "Falsche Kodierung (Grundkompetenz, Aufgabenformat, ...)",
-#         #         None,
-#         #     ),
-#         # )
-#         # self.comboBox_fehlertyp.setItemText(
-#         #     8, _translate("MainWindow", "Sonstiges", None)
-#         # )
+        self.comboBox_fehlertyp = QtWidgets.QComboBox(self.groupBox_fehlertyp)
+        self.comboBox_fehlertyp.setObjectName("comboBox_pruefungstyp")
+        self.comboBox_fehlertyp.addItem("")
+        self.comboBox_fehlertyp.addItem("")
+        self.comboBox_fehlertyp.addItem("")
+        self.comboBox_fehlertyp.addItem("")
+        self.comboBox_fehlertyp.addItem("")
+        self.comboBox_fehlertyp.addItem("")
+        self.comboBox_fehlertyp.addItem("")
+        self.comboBox_fehlertyp.addItem("")
+        self.comboBox_fehlertyp.addItem("")
+        self.comboBox_fehlertyp.setItemText(
+            1, _translate("MainWindow", "Feedback", None)
+        )
+        self.comboBox_fehlertyp.setItemText(
+            2, _translate("MainWindow", "Fehler in der Angabe", None)
+        )
+        self.comboBox_fehlertyp.setItemText(
+            3, _translate("MainWindow", "Fehler in der Lösung", None)
+        )
+        self.comboBox_fehlertyp.setItemText(
+            4, _translate("MainWindow", "Bild wird nicht (richtig) angezeigt", None)
+        )
+        self.comboBox_fehlertyp.setItemText(
+            5, _translate("MainWindow", "Grafik ist unleserlich/fehlerhaft", None)
+        )
+        self.comboBox_fehlertyp.setItemText(
+            6, _translate("MainWindow", "Aufgabe ist doppelt vorhanden", None)
+        )
+        self.comboBox_fehlertyp.setItemText(
+            7,
+            _translate(
+                "MainWindow",
+                "Falsche Kodierung (Grundkompetenz, Aufgabenformat, ...)",
+                None,
+            ),
+        )
+        self.comboBox_fehlertyp.setItemText(
+            8, _translate("MainWindow", "Sonstiges", None)
+        )
 
-#         # self.comboBox_fehlertyp.setFocusPolicy(QtCore.Qt.ClickFocus)
-#         # self.gridLayout_fehlertyp.addWidget(self.comboBox_fehlertyp, 0, 0, 1, 1)
-#         # self.gridLayout.addWidget(self.groupBox_fehlertyp, 1, 1, 1, 3)
-#         # self.groupBox_fehlertyp.hide()
+        self.comboBox_fehlertyp.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.gridLayout_fehlertyp.addWidget(self.comboBox_fehlertyp, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_fehlertyp, 1, 1, 1, 3)
+        self.groupBox_fehlertyp.hide()
 
-#         # self.groupBox_feedback = QtWidgets.QGroupBox(self.centralwidget)
-#         # self.groupBox_feedback.setObjectName(_fromUtf8("groupBox_feedback"))
-#         # self.gridLayout_fb = QtWidgets.QGridLayout(self.groupBox_feedback)
-#         # self.gridLayout_fb.setObjectName(_fromUtf8("gridLayout_fb"))
-#         # self.plainTextEdit_fb = QtWidgets.QPlainTextEdit(self.groupBox_feedback)
-#         # self.plainTextEdit_fb.setObjectName(_fromUtf8("plainTextEdit_fb"))
-#         # self.plainTextEdit_fb.setTabChangesFocus(True)
-#         # self.gridLayout_fb.addWidget(self.plainTextEdit_fb, 0, 0, 1, 1)
-#         # self.gridLayout.addWidget(self.groupBox_feedback, 2, 1, 1, 3)
-#         # self.groupBox_feedback.setTitle(
-#         #     _translate("MainWindow", "Feedback bzw. Problembeschreibung", None)
-#         # )
-#         # self.groupBox_feedback.hide()
+        self.groupBox_feedback = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBox_feedback.setObjectName(_fromUtf8("groupBox_feedback"))
+        self.gridLayout_fb = QtWidgets.QGridLayout(self.groupBox_feedback)
+        self.gridLayout_fb.setObjectName(_fromUtf8("gridLayout_fb"))
+        self.plainTextEdit_fb = QtWidgets.QPlainTextEdit(self.groupBox_feedback)
+        self.plainTextEdit_fb.setObjectName(_fromUtf8("plainTextEdit_fb"))
+        self.plainTextEdit_fb.setTabChangesFocus(True)
+        self.gridLayout_fb.addWidget(self.plainTextEdit_fb, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_feedback, 2, 1, 1, 3)
+        self.groupBox_feedback.setTitle(
+            _translate("MainWindow", "Feedback bzw. Problembeschreibung", None)
+        )
+        self.groupBox_feedback.hide()
 
-#         # self.groupBox_email = QtWidgets.QGroupBox(self.centralwidget)
-#         # self.groupBox_email.setObjectName("groupBox_email")
-#         # # self.groupBox_klasse.setMaximumSize(QtCore.QSize(200, 16777215))
-#         # self.verticalLayout_email = QtWidgets.QVBoxLayout(self.groupBox_email)
-#         # self.verticalLayout_email.setObjectName("verticalLayout_email")
-#         # self.lineEdit_email = QtWidgets.QLineEdit(self.groupBox_email)
-#         # self.lineEdit_email.setObjectName("lineEdit_email")
-#         # self.groupBox_email.setTitle(
-#         #     _translate("MainWindow", "E-Mail Adresse für Nachfragen (optional)", None)
-#         # )
-#         # self.verticalLayout_email.addWidget(self.lineEdit_email)
-#         # self.gridLayout.addWidget(self.groupBox_email, 3, 1, 1, 3)
-#         # self.groupBox_email.hide()
+        self.groupBox_email = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBox_email.setObjectName("groupBox_email")
+        # self.groupBox_klasse.setMaximumSize(QtCore.QSize(200, 16777215))
+        self.verticalLayout_email = QtWidgets.QVBoxLayout(self.groupBox_email)
+        self.verticalLayout_email.setObjectName("verticalLayout_email")
+        self.lineEdit_email = QtWidgets.QLineEdit(self.groupBox_email)
+        self.lineEdit_email.setObjectName("lineEdit_email")
+        self.groupBox_email.setTitle(
+            _translate("MainWindow", "E-Mail Adresse für Nachfragen (optional)", None)
+        )
+        self.verticalLayout_email.addWidget(self.lineEdit_email)
+        self.gridLayout.addWidget(self.groupBox_email, 3, 1, 1, 3)
+        self.groupBox_email.hide()
 
-#         # self.pushButton_send = QtWidgets.QPushButton(self.centralwidget)
-#         # self.pushButton_send.setObjectName(_fromUtf8("pushButton_send"))
-#         # self.gridLayout.addWidget(
-#         #     self.pushButton_send, 4, 3, 1, 1, QtCore.Qt.AlignRight
-#         # )
-#         # self.pushButton_send.setText(_translate("MainWindow", "Senden", None))
-#         # self.pushButton_send.clicked.connect(self.pushButton_send_pressed)
-#         # self.pushButton_send.hide()
+        self.pushButton_send = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_send.setObjectName(_fromUtf8("pushButton_send"))
+        self.gridLayout.addWidget(
+            self.pushButton_send, 4, 3, 1, 1, QtCore.Qt.AlignRight
+        )
+        self.pushButton_send.setText(_translate("MainWindow", "Senden", None))
+        self.pushButton_send.clicked.connect(self.pushButton_send_pressed)
+        self.pushButton_send.hide()
 
 #         ####################################################################
 #         #####################################################################
