@@ -1221,99 +1221,99 @@ class Ui_MainWindow(object):
 #         ################# LaMA SAGE ####################
 #         #####################################################
 
-#         self.splitter_sage = QtWidgets.QSplitter(self.centralwidget)
-#         self.splitter_sage.setOrientation(QtCore.Qt.Horizontal)
-#         self.splitter_sage.setObjectName("splitter_sage")
+        self.splitter_sage = QtWidgets.QSplitter(self.centralwidget)
+        self.splitter_sage.setOrientation(QtCore.Qt.Horizontal)
+        self.splitter_sage.setObjectName("splitter_sage")
 
-#         self.groupBox_alle_aufgaben = QtWidgets.QGroupBox(self.splitter_sage)
-#         self.groupBox_alle_aufgaben.setMinimumWidth(1)
-#         self.groupBox_alle_aufgaben.setObjectName("groupBox_alle_aufgaben")
+        self.groupBox_alle_aufgaben = QtWidgets.QGroupBox(self.splitter_sage)
+        self.groupBox_alle_aufgaben.setMinimumWidth(1)
+        self.groupBox_alle_aufgaben.setObjectName("groupBox_alle_aufgaben")
 
-#         self.verticalLayout_sage = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben)
-#         self.verticalLayout_sage.setObjectName("verticalLayout_sage")
-
-
-#         ##### ComboBox LaMA ####
-#         self.comboBox_at_sage = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
-#         self.comboBox_at_sage.setObjectName("comboBox_at_sage")
-#         self.comboBox_at_sage.addItem("")
-#         self.comboBox_at_sage.addItem("")
-#         self.verticalLayout_sage.addWidget(self.comboBox_at_sage)
-#         self.comboBox_at_sage.setItemText(0, _translate("MainWindow", "Typ 1", None))
-#         self.comboBox_at_sage.setItemText(1, _translate("MainWindow", "Typ 2", None))
-#         self.comboBox_at_sage.currentIndexChanged.connect(self.comboBox_at_sage_changed)
-#         self.comboBox_at_sage.setFocusPolicy(QtCore.Qt.ClickFocus)
-#         # self.comboBox_at_sage.hide()
+        self.verticalLayout_sage = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben)
+        self.verticalLayout_sage.setObjectName("verticalLayout_sage")
 
 
-#         self.comboBox_gk = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
-#         self.comboBox_gk.setObjectName("comboBox_gk")
-#         list_comboBox_gk = ["", "AG", "FA", "AN", "WS", "K5", "K6", "K7", "K8"]
-#         index = 0
-#         for all in list_comboBox_gk:
-#             self.comboBox_gk.addItem("")
-#             self.comboBox_gk.setItemText(index, _translate("MainWindow", all, None))
-#             index += 1
-#         self.comboBox_gk.currentIndexChanged.connect(
-#             partial(self.comboBox_gk_changed, "sage")
-#         )
-#         self.comboBox_gk.setFocusPolicy(QtCore.Qt.ClickFocus)
-#         self.verticalLayout_sage.addWidget(self.comboBox_gk)
-#         self.comboBox_gk_num = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
-#         self.comboBox_gk_num.setObjectName("comboBox_gk_num")
-#         self.comboBox_gk_num.currentIndexChanged.connect(
-#             partial(self.comboBox_gk_num_changed, "sage")
-#         )
-#         self.comboBox_gk_num.setFocusPolicy(QtCore.Qt.ClickFocus)
-#         self.verticalLayout_sage.addWidget(self.comboBox_gk_num)
+        ##### ComboBox LaMA ####
+        self.comboBox_at_sage = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
+        self.comboBox_at_sage.setObjectName("comboBox_at_sage")
+        self.comboBox_at_sage.addItem("")
+        self.comboBox_at_sage.addItem("")
+        self.verticalLayout_sage.addWidget(self.comboBox_at_sage)
+        self.comboBox_at_sage.setItemText(0, _translate("MainWindow", "Typ 1", None))
+        self.comboBox_at_sage.setItemText(1, _translate("MainWindow", "Typ 2", None))
+        self.comboBox_at_sage.currentIndexChanged.connect(self.comboBox_at_sage_changed)
+        self.comboBox_at_sage.setFocusPolicy(QtCore.Qt.ClickFocus)
+        # self.comboBox_at_sage.hide()
+
+
+        self.comboBox_gk = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
+        self.comboBox_gk.setObjectName("comboBox_gk")
+        list_comboBox_gk = ["", "AG", "FA", "AN", "WS", "K5", "K6", "K7", "K8"]
+        index = 0
+        for all in list_comboBox_gk:
+            self.comboBox_gk.addItem("")
+            self.comboBox_gk.setItemText(index, _translate("MainWindow", all, None))
+            index += 1
+        self.comboBox_gk.currentIndexChanged.connect(
+            partial(self.comboBox_gk_changed, "sage")
+        )
+        self.comboBox_gk.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.verticalLayout_sage.addWidget(self.comboBox_gk)
+        self.comboBox_gk_num = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
+        self.comboBox_gk_num.setObjectName("comboBox_gk_num")
+        self.comboBox_gk_num.currentIndexChanged.connect(
+            partial(self.comboBox_gk_num_changed, "sage")
+        )
+        self.comboBox_gk_num.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.verticalLayout_sage.addWidget(self.comboBox_gk_num)
         
 
-#         ##### ComboBox LaMA Cria ####
+        ##### ComboBox LaMA Cria ####
 
-#         # self.groupBox_alle_aufgaben_cria = QtWidgets.QGroupBox(self.splitter_sage)
-#         # # self.groupBox_alle_aufgaben.setMinimumSize(QtCore.QSize(140, 16777215))
-#         # self.groupBox_alle_aufgaben.setMinimumWidth(1)
-#         # self.groupBox_alle_aufgaben.setObjectName("groupBox_alle_aufgaben")
-#         # # self.groupBox_alle_aufgaben.setSizePolicy(SizePolicy_preferred_width)
-#         # self.verticalLayout_sage = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben)
-#         # self.verticalLayout_sage.setObjectName("verticalLayout_sage")
+        # self.groupBox_alle_aufgaben_cria = QtWidgets.QGroupBox(self.splitter_sage)
+        # # self.groupBox_alle_aufgaben.setMinimumSize(QtCore.QSize(140, 16777215))
+        # self.groupBox_alle_aufgaben.setMinimumWidth(1)
+        # self.groupBox_alle_aufgaben.setObjectName("groupBox_alle_aufgaben")
+        # # self.groupBox_alle_aufgaben.setSizePolicy(SizePolicy_preferred_width)
+        # self.verticalLayout_sage = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben)
+        # self.verticalLayout_sage.setObjectName("verticalLayout_sage")
 
 
 
-#         self.comboBox_klassen = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
-#         self.comboBox_klassen.setObjectName("comboBox_klassen")
-#         # self.comboBox_gk.addItem("")
-#         index = 0
-#         for all in list_klassen:
-#             self.comboBox_klassen.addItem("")
+        self.comboBox_klassen = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
+        self.comboBox_klassen.setObjectName("comboBox_klassen")
+        # self.comboBox_gk.addItem("")
+        index = 0
+        for all in list_klassen:
+            self.comboBox_klassen.addItem("")
 
-#             self.comboBox_klassen.setItemText(
-#                 index, _translate("MainWindow", all[1] + ". Klasse", None)
-#             )
-#             index += 1
+            self.comboBox_klassen.setItemText(
+                index, _translate("MainWindow", all[1] + ". Klasse", None)
+            )
+            index += 1
 
-#         self.comboBox_klassen.currentIndexChanged.connect(
-#             partial(self.comboBox_klassen_changed, "sage")
-#         )
+        self.comboBox_klassen.currentIndexChanged.connect(
+            partial(self.comboBox_klassen_changed, "sage")
+        )
 
-#         self.comboBox_klassen.setFocusPolicy(QtCore.Qt.ClickFocus)
-#         self.verticalLayout_sage.addWidget(self.comboBox_klassen)
+        self.comboBox_klassen.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.verticalLayout_sage.addWidget(self.comboBox_klassen)
 
-#         self.comboBox_kapitel = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
-#         self.comboBox_kapitel.setObjectName("comboBox_kapitel")
-#         self.comboBox_kapitel.currentIndexChanged.connect(
-#             partial(self.comboBox_kapitel_changed, "sage")
-#         )
-#         self.comboBox_kapitel.setFocusPolicy(QtCore.Qt.ClickFocus)
-#         self.verticalLayout_sage.addWidget(self.comboBox_kapitel)
+        self.comboBox_kapitel = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
+        self.comboBox_kapitel.setObjectName("comboBox_kapitel")
+        self.comboBox_kapitel.currentIndexChanged.connect(
+            partial(self.comboBox_kapitel_changed, "sage")
+        )
+        self.comboBox_kapitel.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.verticalLayout_sage.addWidget(self.comboBox_kapitel)
 
-#         self.comboBox_unterkapitel = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
-#         self.comboBox_unterkapitel.setObjectName("comboBox_unterkapitel")
-#         self.comboBox_unterkapitel.currentIndexChanged.connect(
-#             partial(self.comboBox_unterkapitel_changed, "sage")
-#         )
-#         self.comboBox_unterkapitel.setFocusPolicy(QtCore.Qt.ClickFocus)
-#         self.verticalLayout_sage.addWidget(self.comboBox_unterkapitel)
+        self.comboBox_unterkapitel = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
+        self.comboBox_unterkapitel.setObjectName("comboBox_unterkapitel")
+        self.comboBox_unterkapitel.currentIndexChanged.connect(
+            partial(self.comboBox_unterkapitel_changed, "sage")
+        )
+        self.comboBox_unterkapitel.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.verticalLayout_sage.addWidget(self.comboBox_unterkapitel)
 
 
 
