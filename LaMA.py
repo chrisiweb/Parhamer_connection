@@ -1319,189 +1319,189 @@ class Ui_MainWindow(object):
 
 
 
-#         self.lineEdit_number = QtWidgets.QLineEdit(self.groupBox_alle_aufgaben)
-#         self.lineEdit_number.setObjectName("lineEdit_number")
-#         self.lineEdit_number.textChanged.connect(
-#             partial(self.lineEdit_number_changed, "sage")
-#         )
-#         self.verticalLayout_sage.addWidget(self.lineEdit_number)
-#         self.listWidget = QtWidgets.QListWidget(self.groupBox_alle_aufgaben)
-#         self.listWidget.setObjectName("listWidget")
-#         self.verticalLayout_sage.addWidget(self.listWidget)
-#         #self.gridLayout.addWidget(self.groupBox_alle_aufgaben, 2, 0, 7, 1)
+        self.lineEdit_number = QtWidgets.QLineEdit(self.groupBox_alle_aufgaben)
+        self.lineEdit_number.setObjectName("lineEdit_number")
+        self.lineEdit_number.textChanged.connect(
+            partial(self.lineEdit_number_changed, "sage")
+        )
+        self.verticalLayout_sage.addWidget(self.lineEdit_number)
+        self.listWidget = QtWidgets.QListWidget(self.groupBox_alle_aufgaben)
+        self.listWidget.setObjectName("listWidget")
+        self.verticalLayout_sage.addWidget(self.listWidget)
+        #self.gridLayout.addWidget(self.groupBox_alle_aufgaben, 2, 0, 7, 1)
 
-#         self.groupBox_alle_aufgaben.setTitle(_translate("MainWindow", "Aufgaben", None))
-#         # print(self.groupBox_alle_aufgaben.height())
-#         # print(self.groupBox_alle_aufgaben.sizeHint())
-#         # print(self.groupBox_alle_aufgaben.minimumSizeHint())
-#         # self.groupBox_alle_aufgaben.setMinimumWidth(280)
-#         # self.groupBox_alle_aufgaben.resize(self.groupBox_alle_aufgaben.sizeHint())
+        self.groupBox_alle_aufgaben.setTitle(_translate("MainWindow", "Aufgaben", None))
+        # print(self.groupBox_alle_aufgaben.height())
+        # print(self.groupBox_alle_aufgaben.sizeHint())
+        # print(self.groupBox_alle_aufgaben.minimumSizeHint())
+        # self.groupBox_alle_aufgaben.setMinimumWidth(280)
+        # self.groupBox_alle_aufgaben.resize(self.groupBox_alle_aufgaben.sizeHint())
         
-#         self.groupBox_alle_aufgaben.hide()
+        self.groupBox_alle_aufgaben.hide()
 
-#         self.groupBox_sage = QtWidgets.QGroupBox(self.splitter_sage)
-#         self.groupBox_sage.setMinimumWidth(1)
-#         self.groupBox_sage.setObjectName("groupBox_sage")
-#         self.gridLayout_5 = QtWidgets.QGridLayout(self.groupBox_sage)
-#         self.gridLayout_5.setObjectName("gridLayout_5")
-#         self.groupBox_sage.setTitle(
-#             _translate("MainWindow", "Schularbeitserstellung", None)
-#         )
+        self.groupBox_sage = QtWidgets.QGroupBox(self.splitter_sage)
+        self.groupBox_sage.setMinimumWidth(1)
+        self.groupBox_sage.setObjectName("groupBox_sage")
+        self.gridLayout_5 = QtWidgets.QGridLayout(self.groupBox_sage)
+        self.gridLayout_5.setObjectName("gridLayout_5")
+        self.groupBox_sage.setTitle(
+            _translate("MainWindow", "Schularbeitserstellung", None)
+        )
 
-#         # self.checkBox_wiederholung = QtWidgets.QCheckBox(self.groupBox_sage)
-#         # self.checkBox_wiederholung.setObjectName("checkBox_wiederholung")
-#         # self.checkBox_wiederholung.setFocusPolicy(QtCore.Qt.ClickFocus)
-#         # self.gridLayout_5.addWidget(self.checkBox_wiederholung, 2, 4, 1, 2)
-#         # self.checkBox_wiederholung.setText(_translate("MainWindow", "Wiederholung", None))
+        # self.checkBox_wiederholung = QtWidgets.QCheckBox(self.groupBox_sage)
+        # self.checkBox_wiederholung.setObjectName("checkBox_wiederholung")
+        # self.checkBox_wiederholung.setFocusPolicy(QtCore.Qt.ClickFocus)
+        # self.gridLayout_5.addWidget(self.checkBox_wiederholung, 2, 4, 1, 2)
+        # self.checkBox_wiederholung.setText(_translate("MainWindow", "Wiederholung", None))
 
-#         self.comboBox_pruefungstyp = QtWidgets.QComboBox(self.groupBox_sage)
-#         self.comboBox_pruefungstyp.setMinimumContentsLength(1)
-#         self.comboBox_pruefungstyp.setObjectName("comboBox_pruefungstyp")
-#         list_comboBox_pruefungstyp = [
-#             "Schularbeit",
-#             "Nachschularbeit",
-#             "Wiederholungsschularbeit",
-#             "Wiederholungsprüfung",
-#             "Grundkompetenzcheck",
-#             "Übungsblatt",
-#         ]
-#         index = 0
-#         for all in list_comboBox_pruefungstyp:
-#             self.comboBox_pruefungstyp.addItem("")
-#             self.comboBox_pruefungstyp.setItemText(
-#                 index, _translate("MainWindow", all, None)
-#             )
-#             index += 1
-#         self.comboBox_pruefungstyp.setFocusPolicy(QtCore.Qt.ClickFocus)
-#         self.comboBox_pruefungstyp.setMinimumContentsLength(5)
-#         self.gridLayout_5.addWidget(self.comboBox_pruefungstyp, 0, 4, 1, 2)
-#         self.comboBox_pruefungstyp.currentIndexChanged.connect(
-#             self.comboBox_pruefungstyp_changed
-#         )
-#         # self.verticalLayout_sage.addWidget(self.comboBox_pruefungstyp)
+        self.comboBox_pruefungstyp = QtWidgets.QComboBox(self.groupBox_sage)
+        self.comboBox_pruefungstyp.setMinimumContentsLength(1)
+        self.comboBox_pruefungstyp.setObjectName("comboBox_pruefungstyp")
+        list_comboBox_pruefungstyp = [
+            "Schularbeit",
+            "Nachschularbeit",
+            "Wiederholungsschularbeit",
+            "Wiederholungsprüfung",
+            "Grundkompetenzcheck",
+            "Übungsblatt",
+        ]
+        index = 0
+        for all in list_comboBox_pruefungstyp:
+            self.comboBox_pruefungstyp.addItem("")
+            self.comboBox_pruefungstyp.setItemText(
+                index, _translate("MainWindow", all, None)
+            )
+            index += 1
+        self.comboBox_pruefungstyp.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.comboBox_pruefungstyp.setMinimumContentsLength(5)
+        self.gridLayout_5.addWidget(self.comboBox_pruefungstyp, 0, 4, 1, 2)
+        self.comboBox_pruefungstyp.currentIndexChanged.connect(
+            self.comboBox_pruefungstyp_changed
+        )
+        # self.verticalLayout_sage.addWidget(self.comboBox_pruefungstyp)
 
-#         self.combobox_beurteilung = create_new_combobox(self.groupBox_sage)
-#         add_new_option(self.combobox_beurteilung, 0, 'Notenschlüssel')
-#         add_new_option(self.combobox_beurteilung, 1, 'Beurteilungsraster')
-#         self.combobox_beurteilung.currentIndexChanged.connect(self.notenanzeige_changed)
-#         # self.combobox_beurteilung.setMinimumContentsLength(1)
-#         self.gridLayout_5.addWidget(self.combobox_beurteilung, 1,4,1,2)
+        self.combobox_beurteilung = create_new_combobox(self.groupBox_sage)
+        add_new_option(self.combobox_beurteilung, 0, 'Notenschlüssel')
+        add_new_option(self.combobox_beurteilung, 1, 'Beurteilungsraster')
+        self.combobox_beurteilung.currentIndexChanged.connect(self.notenanzeige_changed)
+        # self.combobox_beurteilung.setMinimumContentsLength(1)
+        self.gridLayout_5.addWidget(self.combobox_beurteilung, 1,4,1,2)
 
-#         # spacerItem_right = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-#         # self.gridLayout_5.addItem(spacerItem_right, 1,4, 1, 1)
+        # spacerItem_right = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        # self.gridLayout_5.addItem(spacerItem_right, 1,4, 1, 1)
 
-#         # self.radioButton_notenschl = QtWidgets.QRadioButton(self.groupBox_sage)
-#         # self.radioButton_notenschl.setChecked(True)
-#         # self.radioButton_notenschl.setObjectName("radioButton_notenschl")
-#         # self.radioButton_notenschl.setFocusPolicy(QtCore.Qt.ClickFocus)
-#         # self.radioButton_notenschl.toggled.connect(self.notenanzeige_changed)
-#         # self.gridLayout_5.addWidget(self.radioButton_notenschl, 2, 4, 1, 1)
-#         # self.radioButton_beurteilungsraster = QtWidgets.QRadioButton(self.groupBox_sage)
-#         # self.radioButton_beurteilungsraster.setObjectName(
-#         #     "radioButton_beurteilungsraster"
-#         # )
-#         # self.radioButton_beurteilungsraster.setFocusPolicy(QtCore.Qt.ClickFocus)
-#         # self.radioButton_beurteilungsraster.toggled.connect(
-#         #     self.notenanzeige_changed
-#         # )
-#         # self.gridLayout_5.addWidget(self.radioButton_beurteilungsraster, 3, 4, 1, 1)
+        # self.radioButton_notenschl = QtWidgets.QRadioButton(self.groupBox_sage)
+        # self.radioButton_notenschl.setChecked(True)
+        # self.radioButton_notenschl.setObjectName("radioButton_notenschl")
+        # self.radioButton_notenschl.setFocusPolicy(QtCore.Qt.ClickFocus)
+        # self.radioButton_notenschl.toggled.connect(self.notenanzeige_changed)
+        # self.gridLayout_5.addWidget(self.radioButton_notenschl, 2, 4, 1, 1)
+        # self.radioButton_beurteilungsraster = QtWidgets.QRadioButton(self.groupBox_sage)
+        # self.radioButton_beurteilungsraster.setObjectName(
+        #     "radioButton_beurteilungsraster"
+        # )
+        # self.radioButton_beurteilungsraster.setFocusPolicy(QtCore.Qt.ClickFocus)
+        # self.radioButton_beurteilungsraster.toggled.connect(
+        #     self.notenanzeige_changed
+        # )
+        # self.gridLayout_5.addWidget(self.radioButton_beurteilungsraster, 3, 4, 1, 1)
 
-#         self.pushButton_titlepage = QtWidgets.QPushButton(self.groupBox_sage)
-#         self.pushButton_titlepage.setObjectName(_fromUtf8("pushButton_titlepage"))
-#         self.pushButton_titlepage.setText(
-#             _translate("MainWindow", "Titelblatt anpassen", None)
-#         )
-#         if self.chosen_program=='lama':
-#             self.gridLayout_5.addWidget(self.pushButton_titlepage, 2, 4, 1, 2)
-#         if self.chosen_program=='cria':
-#             self.gridLayout_5.addWidget(self.pushButton_titlepage, 2, 4, 1, 2)
+        self.pushButton_titlepage = QtWidgets.QPushButton(self.groupBox_sage)
+        self.pushButton_titlepage.setObjectName(_fromUtf8("pushButton_titlepage"))
+        self.pushButton_titlepage.setText(
+            _translate("MainWindow", "Titelblatt anpassen", None)
+        )
+        if self.chosen_program=='lama':
+            self.gridLayout_5.addWidget(self.pushButton_titlepage, 2, 4, 1, 2)
+        if self.chosen_program=='cria':
+            self.gridLayout_5.addWidget(self.pushButton_titlepage, 2, 4, 1, 2)
         
 
-#         self.groupBox_default_pkt = QtWidgets.QGroupBox(self.groupBox_sage)
-#         self.groupBox_default_pkt.setObjectName("groupBox_default_pkt")
-#         self.groupBox_default_pkt.setSizePolicy(SizePolicy_fixed_height)
-#         # self.groupBox_default_pkt.setMaximumSize(QtCore.QSize(120, 16777215))
-#         self.verticalLayout_default_pkt = QtWidgets.QVBoxLayout(
-#             self.groupBox_default_pkt
-#         )
-#         self.verticalLayout_default_pkt.setObjectName("verticalLayout_default_pkt")
-#         self.spinBox_default_pkt = SpinBox_noWheel(self.groupBox_default_pkt)
-#         self.spinBox_default_pkt.setValue(1)
-#         self.spinBox_default_pkt.setObjectName("spinBox_default_pkt")
-#         self.verticalLayout_default_pkt.addWidget(self.spinBox_default_pkt)
-#         self.spinBox_default_pkt.valueChanged.connect(self.update_default_pkt)
-#         self.gridLayout_5.addWidget(self.groupBox_default_pkt, 0, 3, 3, 1)
+        self.groupBox_default_pkt = QtWidgets.QGroupBox(self.groupBox_sage)
+        self.groupBox_default_pkt.setObjectName("groupBox_default_pkt")
+        self.groupBox_default_pkt.setSizePolicy(SizePolicy_fixed_height)
+        # self.groupBox_default_pkt.setMaximumSize(QtCore.QSize(120, 16777215))
+        self.verticalLayout_default_pkt = QtWidgets.QVBoxLayout(
+            self.groupBox_default_pkt
+        )
+        self.verticalLayout_default_pkt.setObjectName("verticalLayout_default_pkt")
+        self.spinBox_default_pkt = SpinBox_noWheel(self.groupBox_default_pkt)
+        self.spinBox_default_pkt.setValue(1)
+        self.spinBox_default_pkt.setObjectName("spinBox_default_pkt")
+        self.verticalLayout_default_pkt.addWidget(self.spinBox_default_pkt)
+        self.spinBox_default_pkt.valueChanged.connect(self.update_default_pkt)
+        self.gridLayout_5.addWidget(self.groupBox_default_pkt, 0, 3, 3, 1)
 
-#         self.groupBox_klasse = QtWidgets.QGroupBox(self.groupBox_sage)
-#         self.groupBox_klasse.setObjectName("groupBox_klasse")
-#         self.groupBox_klasse.setSizePolicy(SizePolicy_fixed_height)
-#         # self.groupBox_klasse.setMaximumSize(QtCore.QSize(200, 16777215))
-#         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.groupBox_klasse)
-#         self.verticalLayout_4.setObjectName("verticalLayout_4")
-#         self.lineEdit_klasse = QtWidgets.QLineEdit(self.groupBox_klasse)
-#         self.lineEdit_klasse.setObjectName("lineEdit_klasse")
-#         self.verticalLayout_4.addWidget(self.lineEdit_klasse)
-#         self.gridLayout_5.addWidget(self.groupBox_klasse, 0, 2, 3, 1)
-#         # self.groupBox_klasse.setMaximumSize(QtCore.QSize(90, 16777215))
-#         self.groupBox_datum = QtWidgets.QGroupBox(self.groupBox_sage)
-#         self.groupBox_datum.setObjectName("groupBox_datum")
-#         self.groupBox_datum.setStyleSheet("padding-right: 10px")
-#         self.groupBox_datum.setSizePolicy(SizePolicy_fixed_height)
-#         self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.groupBox_datum)
-#         self.verticalLayout_5.setObjectName("verticalLayout_5")
-#         self.dateEdit = QtWidgets.QDateEdit(self.groupBox_datum)
-#         self.dateEdit.setCalendarPopup(True)
-#         self.dateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
-#         self.dateEdit.setObjectName("dateEdit")
-#         self.verticalLayout_5.addWidget(self.dateEdit)
-#         self.gridLayout_5.addWidget(self.groupBox_datum, 0, 1, 3, 1)
-#         # self.groupBox_datum.setMaximumSize(QtCore.QSize(140, 16777215))
-#         self.groupBox_nummer = QtWidgets.QGroupBox(self.groupBox_sage)
-#         self.groupBox_nummer.setObjectName("groupBox_nummer")
-#         self.groupBox_nummer.setSizePolicy(SizePolicy_fixed_height)
-#         self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.groupBox_nummer)
-#         self.verticalLayout_6.setObjectName("verticalLayout_6")
-#         self.spinBox_nummer = QtWidgets.QSpinBox(self.groupBox_nummer)
-#         self.spinBox_nummer.setValue(1)
-#         self.spinBox_nummer.setObjectName("spinBox_nummer")
-#         # self.groupBox_nummer.setMaximumSize(QtCore.QSize(90, 16777215))
-#         # self.radioButton_notenschl.setText(
-#         #     _translate("MainWindow", "Notenschlüssel", None)
-#         # )
-#         # self.radioButton_beurteilungsraster.setText(
-#         #     _translate("MainWindow", "Beurteilungsraster", None)
-#         # )
-#         self.groupBox_klasse.setTitle(_translate("MainWindow", "Klasse", None))
-#         self.groupBox_datum.setTitle(_translate("MainWindow", "Datum", None))
-#         self.groupBox_nummer.setTitle(_translate("MainWindow", "Nummer", None))
-#         self.groupBox_default_pkt.setTitle(
-#             _translate("MainWindow", "Typ1 Standard", None)
-#         )
-#         self.verticalLayout_6.addWidget(self.spinBox_nummer)
-#         self.gridLayout_5.addWidget(self.groupBox_nummer, 0, 0, 3, 1)
-#         # self.horizontalspacer = QtWidgets.QSpacerItem(
-#         #     20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
-#         # )
-#         # self.gridLayout_5.addItem(self.horizontalspacer, 2, 4, 3, 1)
-#         # self.pushButton_vorschau = QtWidgets.QPushButton(self.groupBox_sage)
-#         # self.pushButton_vorschau.setMaximumSize(QtCore.QSize(77, 16777215))
-#         # self.pushButton_vorschau.setObjectName("pushButton_vorschau")
-#         # self.gridLayout_5.addWidget(self.pushButton_vorschau, 7, 3, 1, 1, QtCore.Qt.AlignRight)
+        self.groupBox_klasse = QtWidgets.QGroupBox(self.groupBox_sage)
+        self.groupBox_klasse.setObjectName("groupBox_klasse")
+        self.groupBox_klasse.setSizePolicy(SizePolicy_fixed_height)
+        # self.groupBox_klasse.setMaximumSize(QtCore.QSize(200, 16777215))
+        self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.groupBox_klasse)
+        self.verticalLayout_4.setObjectName("verticalLayout_4")
+        self.lineEdit_klasse = QtWidgets.QLineEdit(self.groupBox_klasse)
+        self.lineEdit_klasse.setObjectName("lineEdit_klasse")
+        self.verticalLayout_4.addWidget(self.lineEdit_klasse)
+        self.gridLayout_5.addWidget(self.groupBox_klasse, 0, 2, 3, 1)
+        # self.groupBox_klasse.setMaximumSize(QtCore.QSize(90, 16777215))
+        self.groupBox_datum = QtWidgets.QGroupBox(self.groupBox_sage)
+        self.groupBox_datum.setObjectName("groupBox_datum")
+        self.groupBox_datum.setStyleSheet("padding-right: 10px")
+        self.groupBox_datum.setSizePolicy(SizePolicy_fixed_height)
+        self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.groupBox_datum)
+        self.verticalLayout_5.setObjectName("verticalLayout_5")
+        self.dateEdit = QtWidgets.QDateEdit(self.groupBox_datum)
+        self.dateEdit.setCalendarPopup(True)
+        self.dateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
+        self.dateEdit.setObjectName("dateEdit")
+        self.verticalLayout_5.addWidget(self.dateEdit)
+        self.gridLayout_5.addWidget(self.groupBox_datum, 0, 1, 3, 1)
+        # self.groupBox_datum.setMaximumSize(QtCore.QSize(140, 16777215))
+        self.groupBox_nummer = QtWidgets.QGroupBox(self.groupBox_sage)
+        self.groupBox_nummer.setObjectName("groupBox_nummer")
+        self.groupBox_nummer.setSizePolicy(SizePolicy_fixed_height)
+        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.groupBox_nummer)
+        self.verticalLayout_6.setObjectName("verticalLayout_6")
+        self.spinBox_nummer = QtWidgets.QSpinBox(self.groupBox_nummer)
+        self.spinBox_nummer.setValue(1)
+        self.spinBox_nummer.setObjectName("spinBox_nummer")
+        # self.groupBox_nummer.setMaximumSize(QtCore.QSize(90, 16777215))
+        # self.radioButton_notenschl.setText(
+        #     _translate("MainWindow", "Notenschlüssel", None)
+        # )
+        # self.radioButton_beurteilungsraster.setText(
+        #     _translate("MainWindow", "Beurteilungsraster", None)
+        # )
+        self.groupBox_klasse.setTitle(_translate("MainWindow", "Klasse", None))
+        self.groupBox_datum.setTitle(_translate("MainWindow", "Datum", None))
+        self.groupBox_nummer.setTitle(_translate("MainWindow", "Nummer", None))
+        self.groupBox_default_pkt.setTitle(
+            _translate("MainWindow", "Typ1 Standard", None)
+        )
+        self.verticalLayout_6.addWidget(self.spinBox_nummer)
+        self.gridLayout_5.addWidget(self.groupBox_nummer, 0, 0, 3, 1)
+        # self.horizontalspacer = QtWidgets.QSpacerItem(
+        #     20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        # )
+        # self.gridLayout_5.addItem(self.horizontalspacer, 2, 4, 3, 1)
+        # self.pushButton_vorschau = QtWidgets.QPushButton(self.groupBox_sage)
+        # self.pushButton_vorschau.setMaximumSize(QtCore.QSize(77, 16777215))
+        # self.pushButton_vorschau.setObjectName("pushButton_vorschau")
+        # self.gridLayout_5.addWidget(self.pushButton_vorschau, 7, 3, 1, 1, QtCore.Qt.AlignRight)
 
-#         self.scrollArea_chosen = QtWidgets.QScrollArea(self.groupBox_sage)
-#         self.scrollArea_chosen.setFrameShape(QtWidgets.QFrame.StyledPanel)
-#         self.scrollArea_chosen.setWidgetResizable(True)
-#         self.scrollArea_chosen.setObjectName("scrollArea_chosen")
-#         self.scrollArea_chosen.setFocusPolicy(QtCore.Qt.ClickFocus)
-#         self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
-#         # self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 389, 323))
-#         self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
-#         self.scrollAreaWidgetContents_2.setFocusPolicy(QtCore.Qt.ClickFocus)
-#         self.gridLayout_8 = QtWidgets.QGridLayout(self.scrollAreaWidgetContents_2)
-#         self.gridLayout_8.setObjectName("gridLayout_8")
-#         self.scrollArea_chosen.setWidget(self.scrollAreaWidgetContents_2)
-#         self.scrollArea_chosen.verticalScrollBar().rangeChanged.connect(lambda: self.scrollArea_chosen.verticalScrollBar().setValue(self.scrollArea_chosen.verticalScrollBar().maximum()))
-#         self.gridLayout_5.addWidget(self.scrollArea_chosen, 5, 0, 1, 6)
+        self.scrollArea_chosen = QtWidgets.QScrollArea(self.groupBox_sage)
+        self.scrollArea_chosen.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.scrollArea_chosen.setWidgetResizable(True)
+        self.scrollArea_chosen.setObjectName("scrollArea_chosen")
+        self.scrollArea_chosen.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
+        # self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 389, 323))
+        self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
+        self.scrollAreaWidgetContents_2.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.gridLayout_8 = QtWidgets.QGridLayout(self.scrollAreaWidgetContents_2)
+        self.gridLayout_8.setObjectName("gridLayout_8")
+        self.scrollArea_chosen.setWidget(self.scrollAreaWidgetContents_2)
+        self.scrollArea_chosen.verticalScrollBar().rangeChanged.connect(lambda: self.scrollArea_chosen.verticalScrollBar().setValue(self.scrollArea_chosen.verticalScrollBar().maximum()))
+        self.gridLayout_5.addWidget(self.scrollArea_chosen, 5, 0, 1, 6)
 
 
 #         self.groupBox_notenschl = create_new_groupbox(self.groupBox_sage, "Notenschlüssel")
