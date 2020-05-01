@@ -2213,7 +2213,7 @@ class Ui_MainWindow(object):
 
           
       
-        row, column = self.create_list_of_all_gk_checkboxes(scrollareacontent, gridLayout_scrollarea, mode, chosen_dictionary)
+        # row, column = self.create_list_of_all_gk_checkboxes(scrollareacontent, gridLayout_scrollarea, mode, chosen_dictionary)
 
 
         # if mode=='search':
