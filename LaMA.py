@@ -843,9 +843,7 @@ class Ui_MainWindow(object):
         self.groupBox_themengebiete_cria.setObjectName(
             _fromUtf8("groupBox_themengebiete_cria")
         )
-        # self.groupBox_themengebiete_cria.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Expanding))
-        # self.groupBox_themengebiete_cria.setMaximumWidth(500)
-        # self.groupBox_themengebiete_cria.setSizePolicy(SizePolicy)
+
         self.gridLayout_11_cr_cria = QtWidgets.QGridLayout(self.groupBox_themengebiete_cria)
         self.gridLayout_11_cr_cria.setObjectName(_fromUtf8("gridLayout_11_cr_cria"))
         self.tab_widget_cr_cria = QtWidgets.QTabWidget(self.groupBox_themengebiete_cria)
@@ -861,10 +859,7 @@ class Ui_MainWindow(object):
             _translate("MainWindow", "Themengebiete",None)
         )
         self.groupBox_themengebiete_cria.hide()
-############
-        # self.spacerItem_unterkapitel_creator_cria = QtWidgets.QSpacerItem(
-        #     20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
-        # )
+
 
         for klasse in list_klassen:
             name='tab_{0}'.format(klasse)
