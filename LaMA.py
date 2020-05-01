@@ -2235,23 +2235,23 @@ class Ui_MainWindow(object):
         )
         row = 0
         column = 0
-        # if mode=='creator':       
-        # # if "cr" in gk_type:
-        #     max_row = 10
-        #     name_start='checkbox_creator_gk_'
-        # if mode=='search':
-        # # else:
-        #     max_row = 9
-        #     name_start='checkbox_search_gk_'
-        # for all in chosen_dictionary:
-        #     new_checkbox = create_new_checkbox(parent, dict_gk[all])
-        #     new_checkbox.setFocusPolicy(QtCore.Qt.NoFocus)
-        #     background_color=get_color(blue_7)
-        #     new_checkbox.setStyleSheet("QToolTip {{ color: white; background-color: {}; border: 0px; }}".format(background_color))
-        #     layout.addWidget(new_checkbox, row, column, 1, 1)
-        #     new_checkbox.stateChanged.connect(partial(self.checkbox_checked, mode, 'gk')) 
-        #     name=name_start+all
-        #     self.dict_widget_variables[name]=new_checkbox
+        if mode=='creator':       
+        # if "cr" in gk_type:
+            max_row = 10
+            name_start='checkbox_creator_gk_'
+        if mode=='search':
+        # else:
+            max_row = 9
+            name_start='checkbox_search_gk_'
+        for all in chosen_dictionary:
+            new_checkbox = create_new_checkbox(parent, dict_gk[all])
+            new_checkbox.setFocusPolicy(QtCore.Qt.NoFocus)
+            background_color=get_color(blue_7)
+            new_checkbox.setStyleSheet("QToolTip {{ color: white; background-color: {}; border: 0px; }}".format(background_color))
+            layout.addWidget(new_checkbox, row, column, 1, 1)
+            new_checkbox.stateChanged.connect(partial(self.checkbox_checked, mode, 'gk')) 
+            name=name_start+all
+            self.dict_widget_variables[name]=new_checkbox
 
         #     if row > max_row:
         #         row = 0
