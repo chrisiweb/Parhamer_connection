@@ -621,22 +621,22 @@ class Ui_MainWindow(object):
             for kapitel in dict_klasse_name:
                 self.create_kapitel(verticalLayout_cria, all[1], kapitel)
 
-            # verticalLayout_cria.addItem(spacerItem_cria)
-            # exec(
-            #     "self.scrollArea_{0}.setWidget(self.scrollAreaWidgetContents_{0})".format(
-            #         all
-            #     )
-            # )
-            # exec(
-            #     "self.gridLayout_{0}.addWidget(self.scrollArea_{0}, 5, 0, 1, 1)".format(
-            #         all
-            #     )
-            # )
-            # exec(
-            #     'self.tabWidget_klassen_cria.addTab(self.tab_{0}, "{1}. Klasse")'.format(
-            #         all, all[1]
-            #     )
-            # )
+            verticalLayout_cria.addItem(spacerItem_cria)
+            exec(
+                "self.scrollArea_{0}.setWidget(self.scrollAreaWidgetContents_{0})".format(
+                    all
+                )
+            )
+            exec(
+                "self.gridLayout_{0}.addWidget(self.scrollArea_{0}, 5, 0, 1, 1)".format(
+                    all
+                )
+            )
+            exec(
+                'self.tabWidget_klassen_cria.addTab(self.tab_{0}, "{1}. Klasse")'.format(
+                    all, all[1]
+                )
+            )
         # self.groupBox_unterkapitel_cria = QtWidgets.QGroupBox(self.centralwidget)
         # self.groupBox_unterkapitel_cria.setStyleSheet(
         #     "background-color: rgb(217, 255, 215);"
