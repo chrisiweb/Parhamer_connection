@@ -1095,39 +1095,39 @@ class Ui_MainWindow(object):
         )
         self.label_keine_auswahl.hide()
 
-#         self.groupBox_klassen_cr = QtWidgets.QGroupBox(self.centralwidget)
-#         self.groupBox_klassen_cr.setObjectName(_fromUtf8("groupBox_klassen_cr"))
-#         # self.groupBox_klassen_cr.setMaximumSize(100, 60)
-#         self.gridLayout_8 = QtWidgets.QGridLayout(self.groupBox_klassen_cr)
-#         self.gridLayout_8.setObjectName(_fromUtf8("gridLayout_8"))
-#         self.comboBox_klassen_cr = QtWidgets.QComboBox(self.groupBox_klassen_cr)
-#         self.comboBox_klassen_cr.setObjectName(_fromUtf8("comboBox_klassen_cr"))
-#         self.comboBox_klassen_cr.addItem(_fromUtf8(""))
-#         self.comboBox_klassen_cr.addItem(_fromUtf8(""))
-#         self.comboBox_klassen_cr.addItem(_fromUtf8(""))
-#         self.comboBox_klassen_cr.addItem(_fromUtf8(""))
-#         self.comboBox_klassen_cr.addItem(_fromUtf8(""))
-#         self.comboBox_klassen_cr.addItem(_fromUtf8(""))
-#         self.gridLayout_8.addWidget(self.comboBox_klassen_cr, 0, 0, 1, 1)
-#         self.gridLayout.addWidget(self.groupBox_klassen_cr, 0, 4, 1, 1)
-#         self.groupBox_klassen_cr.setTitle(_translate("MainWindow", "Klasse", None))
-#         self.comboBox_klassen_cr.setItemText(0, _translate("MainWindow", "-", None))
-#         self.comboBox_klassen_cr.setItemText(
-#             1, _translate("MainWindow", "5. Klasse", None)
-#         )
-#         self.comboBox_klassen_cr.setItemText(
-#             2, _translate("MainWindow", "6. Klasse", None)
-#         )
-#         self.comboBox_klassen_cr.setItemText(
-#             3, _translate("MainWindow", "7. Klasse", None)
-#         )
-#         self.comboBox_klassen_cr.setItemText(
-#             4, _translate("MainWindow", "8. Klasse", None)
-#         )
-#         self.comboBox_klassen_cr.setItemText(
-#             5, _translate("MainWindow", "Matura", None)
-#         )
-#         self.groupBox_klassen_cr.hide()
+        self.groupBox_klassen_cr = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBox_klassen_cr.setObjectName(_fromUtf8("groupBox_klassen_cr"))
+        # self.groupBox_klassen_cr.setMaximumSize(100, 60)
+        self.gridLayout_8 = QtWidgets.QGridLayout(self.groupBox_klassen_cr)
+        self.gridLayout_8.setObjectName(_fromUtf8("gridLayout_8"))
+        self.comboBox_klassen_cr = QtWidgets.QComboBox(self.groupBox_klassen_cr)
+        self.comboBox_klassen_cr.setObjectName(_fromUtf8("comboBox_klassen_cr"))
+        self.comboBox_klassen_cr.addItem(_fromUtf8(""))
+        self.comboBox_klassen_cr.addItem(_fromUtf8(""))
+        self.comboBox_klassen_cr.addItem(_fromUtf8(""))
+        self.comboBox_klassen_cr.addItem(_fromUtf8(""))
+        self.comboBox_klassen_cr.addItem(_fromUtf8(""))
+        self.comboBox_klassen_cr.addItem(_fromUtf8(""))
+        self.gridLayout_8.addWidget(self.comboBox_klassen_cr, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_klassen_cr, 0, 4, 1, 1)
+        self.groupBox_klassen_cr.setTitle(_translate("MainWindow", "Klasse", None))
+        self.comboBox_klassen_cr.setItemText(0, _translate("MainWindow", "-", None))
+        self.comboBox_klassen_cr.setItemText(
+            1, _translate("MainWindow", "5. Klasse", None)
+        )
+        self.comboBox_klassen_cr.setItemText(
+            2, _translate("MainWindow", "6. Klasse", None)
+        )
+        self.comboBox_klassen_cr.setItemText(
+            3, _translate("MainWindow", "7. Klasse", None)
+        )
+        self.comboBox_klassen_cr.setItemText(
+            4, _translate("MainWindow", "8. Klasse", None)
+        )
+        self.comboBox_klassen_cr.setItemText(
+            5, _translate("MainWindow", "Matura", None)
+        )
+        self.groupBox_klassen_cr.hide()
 
 #         # spacerItem_creator = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
 #         # self.gridLayout.addItem(spacerItem_creator, 0,5, 1, 1)
@@ -1890,16 +1890,16 @@ class Ui_MainWindow(object):
 #         ######################################################################
 #         #####################################################################
 
-#         self.gridLayout_11.addWidget(self.tab_widget_gk, 0, 0, 1, 1)
-#         self.gridLayout.addWidget(self.groupBox_gk, 1, 1, 2, 1)
+        self.gridLayout_11.addWidget(self.tab_widget_gk, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_gk, 1, 1, 2, 1)
         MainWindow.setCentralWidget(self.centralwidget)
-#         self.statusbar = QtWidgets.QStatusBar(MainWindow)
-#         self.statusbar.setObjectName(_fromUtf8("statusbar"))
+        self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        self.statusbar.setObjectName(_fromUtf8("statusbar"))
         MainWindow.setStatusBar(self.statusbar)
         # self.actionReset = QtWidgets.QAction(MainWindow)
         # self.actionReset.setObjectName(_fromUtf8("actionReset"))
 
-#         self.retranslateUi(MainWindow)
+        self.retranslateUi(MainWindow)
 #         self.tab_widget_themen.setCurrentIndex(0)
 
 #         self.tab_widget_gk_cr.setCurrentIndex(0)
