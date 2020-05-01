@@ -2256,7 +2256,7 @@ class Ui_MainWindow(object):
             if row > max_row:
                 row = 0
                 column += 1
-                layout.addItem(spacerItem, row, column, 1, 1)
+                # layout.addItem(spacerItem, row, column, 1, 1)
                 column += 1
             else:
                 row += 1
