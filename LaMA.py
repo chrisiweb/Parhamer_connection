@@ -991,109 +991,109 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.groupBox_bilder, 6, 0, 1, 1)
         self.groupBox_bilder.hide()
 
-#         #### CREATE CHECKBOXES ####
-#         ##### AG #####
-#         self.create_tab_checkboxes_gk(self.tab_widget_gk_cr, "Algebra und Geometrie", ag_beschreibung, 'creator')
+        #### CREATE CHECKBOXES ####
+        ##### AG #####
+        self.create_tab_checkboxes_gk(self.tab_widget_gk_cr, "Algebra und Geometrie", ag_beschreibung, 'creator')
 
-#         # # #### FA ####
-#         self.create_tab_checkboxes_gk(self.tab_widget_gk_cr, "Funktionale Abhängigkeiten", fa_beschreibung, 'creator')
+        # # #### FA ####
+        self.create_tab_checkboxes_gk(self.tab_widget_gk_cr, "Funktionale Abhängigkeiten", fa_beschreibung, 'creator')
 
-#         # ##### AN ####
-#         self.create_tab_checkboxes_gk(self.tab_widget_gk_cr, "Analysis", an_beschreibung, 'creator')
+        # ##### AN ####
+        self.create_tab_checkboxes_gk(self.tab_widget_gk_cr, "Analysis", an_beschreibung, 'creator')
 
-#         # ### WS ####
-#         self.create_tab_checkboxes_gk(self.tab_widget_gk_cr, "Wahrscheinlichkeit und Statistik", ws_beschreibung, 'creator')
+        # ### WS ####
+        self.create_tab_checkboxes_gk(self.tab_widget_gk_cr, "Wahrscheinlichkeit und Statistik", ws_beschreibung, 'creator')
 
-#         # ### 5. Klasse ###
-#         self.create_tab_checkboxes_themen(self.tab_widget_gk_cr,"k5", "creator")
+        # ### 5. Klasse ###
+        self.create_tab_checkboxes_themen(self.tab_widget_gk_cr,"k5", "creator")
 
-#         # ### 6. Klasse ###
-#         self.create_tab_checkboxes_themen(self.tab_widget_gk_cr,"k6", "creator")
+        # ### 6. Klasse ###
+        self.create_tab_checkboxes_themen(self.tab_widget_gk_cr,"k6", "creator")
 
-#         # ### 7. Klasse ###
-#         self.create_tab_checkboxes_themen(self.tab_widget_gk_cr,"k7", "creator")
+        # ### 7. Klasse ###
+        self.create_tab_checkboxes_themen(self.tab_widget_gk_cr,"k7", "creator")
 
-#         # ### 8. Klasse ###
-#         self.create_tab_checkboxes_themen(self.tab_widget_gk_cr,"k8", "creator")
+        # ### 8. Klasse ###
+        self.create_tab_checkboxes_themen(self.tab_widget_gk_cr,"k8", "creator")
 
-#         # self.groupBox_aufgabentyp.setMaximumSize(100, 60)
-#         self.comboBox_aufgabentyp_cr = QtWidgets.QComboBox(self.groupBox_aufgabentyp)
-#         self.comboBox_aufgabentyp_cr.setObjectName(_fromUtf8("comboBox_aufgabentyp_cr"))
-#         self.comboBox_aufgabentyp_cr.setSizePolicy(SizePolicy_fixed)
-#         self.comboBox_aufgabentyp_cr.addItem(_fromUtf8(""))
-#         self.comboBox_aufgabentyp_cr.addItem(_fromUtf8(""))
-#         self.gridLayout_3.addWidget(self.comboBox_aufgabentyp_cr, 0, 0, 1, 1)
-#         self.gridLayout.addWidget(self.groupBox_aufgabentyp, 0, 1, 1, 1)
-#         self.groupBox_aufgabentyp.setTitle(
-#             _translate("MainWindow", "Aufgabentyp", None)
-#         )
-#         self.comboBox_aufgabentyp_cr.setItemText(
-#             0, _translate("MainWindow", "Typ 1", None)
-#         )
-#         self.comboBox_aufgabentyp_cr.setItemText(
-#             1, _translate("MainWindow", "Typ 2", None)
-#         )
-#         self.groupBox_aufgabentyp.hide()
+        # self.groupBox_aufgabentyp.setMaximumSize(100, 60)
+        self.comboBox_aufgabentyp_cr = QtWidgets.QComboBox(self.groupBox_aufgabentyp)
+        self.comboBox_aufgabentyp_cr.setObjectName(_fromUtf8("comboBox_aufgabentyp_cr"))
+        self.comboBox_aufgabentyp_cr.setSizePolicy(SizePolicy_fixed)
+        self.comboBox_aufgabentyp_cr.addItem(_fromUtf8(""))
+        self.comboBox_aufgabentyp_cr.addItem(_fromUtf8(""))
+        self.gridLayout_3.addWidget(self.comboBox_aufgabentyp_cr, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_aufgabentyp, 0, 1, 1, 1)
+        self.groupBox_aufgabentyp.setTitle(
+            _translate("MainWindow", "Aufgabentyp", None)
+        )
+        self.comboBox_aufgabentyp_cr.setItemText(
+            0, _translate("MainWindow", "Typ 1", None)
+        )
+        self.comboBox_aufgabentyp_cr.setItemText(
+            1, _translate("MainWindow", "Typ 2", None)
+        )
+        self.groupBox_aufgabentyp.hide()
 
-#         self.groupBox_punkte = QtWidgets.QGroupBox(self.centralwidget)
-#         self.groupBox_punkte.setObjectName(_fromUtf8("groupBox_punkte"))
-#         self.groupBox_punkte.setSizePolicy(SizePolicy_fixed_height)
-#         # self.groupBox_punkte.setMaximumSize(80, 60)
-#         self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_punkte)
-#         self.gridLayout_6.setObjectName(_fromUtf8("gridLayout_6"))
-#         self.spinBox_punkte = QtWidgets.QSpinBox(self.groupBox_punkte)
-#         self.spinBox_punkte.setProperty("value", 1)
-#         self.spinBox_punkte.setObjectName(_fromUtf8("spinBox_punkte"))
-#         # self.spinBox_punkte.setSizePolicy(SizePolicy_minimum_height)
-#         self.gridLayout_6.addWidget(self.spinBox_punkte, 0, 0, 1, 1)
+        self.groupBox_punkte = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBox_punkte.setObjectName(_fromUtf8("groupBox_punkte"))
+        self.groupBox_punkte.setSizePolicy(SizePolicy_fixed_height)
+        # self.groupBox_punkte.setMaximumSize(80, 60)
+        self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_punkte)
+        self.gridLayout_6.setObjectName(_fromUtf8("gridLayout_6"))
+        self.spinBox_punkte = QtWidgets.QSpinBox(self.groupBox_punkte)
+        self.spinBox_punkte.setProperty("value", 1)
+        self.spinBox_punkte.setObjectName(_fromUtf8("spinBox_punkte"))
+        # self.spinBox_punkte.setSizePolicy(SizePolicy_minimum_height)
+        self.gridLayout_6.addWidget(self.spinBox_punkte, 0, 0, 1, 1)
 
-#         self.groupBox_punkte.setTitle(_translate("MainWindow", "Punkte", None))
-#         self.groupBox_punkte.hide()
+        self.groupBox_punkte.setTitle(_translate("MainWindow", "Punkte", None))
+        self.groupBox_punkte.hide()
 
-#         self.groupBox_aufgabenformat = QtWidgets.QGroupBox(self.centralwidget)
-#         self.groupBox_aufgabenformat.setObjectName(_fromUtf8("groupBox_aufgabenformat"))
-#         self.groupBox_aufgabenformat.setSizePolicy(SizePolicy_fixed_height)
-#         # self.groupBox_aufgabenformat.setSizePolicy(SizePolicy_minimum)
-#         # self.groupBox_aufgabenformat.setMaximumWidth(300)
-#         self.gridLayout_7 = QtWidgets.QGridLayout(self.groupBox_aufgabenformat)
-#         self.gridLayout_7.setObjectName(_fromUtf8("gridLayout_7"))
+        self.groupBox_aufgabenformat = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBox_aufgabenformat.setObjectName(_fromUtf8("groupBox_aufgabenformat"))
+        self.groupBox_aufgabenformat.setSizePolicy(SizePolicy_fixed_height)
+        # self.groupBox_aufgabenformat.setSizePolicy(SizePolicy_minimum)
+        # self.groupBox_aufgabenformat.setMaximumWidth(300)
+        self.gridLayout_7 = QtWidgets.QGridLayout(self.groupBox_aufgabenformat)
+        self.gridLayout_7.setObjectName(_fromUtf8("gridLayout_7"))
 
-#         self.comboBox_af = create_new_combobox(self.groupBox_aufgabenformat)
-#         add_new_option(self.comboBox_af, 0, "bitte auswählen")
+        self.comboBox_af = create_new_combobox(self.groupBox_aufgabenformat)
+        add_new_option(self.comboBox_af, 0, "bitte auswählen")
 
-#         self.gridLayout_7.addWidget(self.comboBox_af, 0, 0, 1, 1)
-
-
-#         if self.chosen_program=='lama':
-#             self.gridLayout.addWidget(self.groupBox_punkte, 0, 2, 1, 1)
-#             self.gridLayout.addWidget(self.groupBox_aufgabenformat, 0, 3, 1, 1)
-#         if self.chosen_program=='cria':
-#             self.gridLayout.addWidget(self.groupBox_punkte, 0, 1, 1, 1)
-#             self.gridLayout.addWidget(self.groupBox_aufgabenformat, 0, 2, 1, 1)
-#         self.groupBox_aufgabenformat.setTitle(
-#             _translate("MainWindow", "Aufgabenformat", None)
-#         )
+        self.gridLayout_7.addWidget(self.comboBox_af, 0, 0, 1, 1)
 
 
+        if self.chosen_program=='lama':
+            self.gridLayout.addWidget(self.groupBox_punkte, 0, 2, 1, 1)
+            self.gridLayout.addWidget(self.groupBox_aufgabenformat, 0, 3, 1, 1)
+        if self.chosen_program=='cria':
+            self.gridLayout.addWidget(self.groupBox_punkte, 0, 1, 1, 1)
+            self.gridLayout.addWidget(self.groupBox_aufgabenformat, 0, 2, 1, 1)
+        self.groupBox_aufgabenformat.setTitle(
+            _translate("MainWindow", "Aufgabenformat", None)
+        )
 
-#         i = 1
-#         for all in dict_aufgabenformate:
-#             add_new_option(self.comboBox_af, i, dict_aufgabenformate[all])
+
+
+        i = 1
+        for all in dict_aufgabenformate:
+            add_new_option(self.comboBox_af, i, dict_aufgabenformate[all])
         
-#             if self.chosen_program=='lama' and i==4:
-#                 break
-#             else:
-#                 i+=1
+            if self.chosen_program=='lama' and i==4:
+                break
+            else:
+                i+=1
 
-#         self.groupBox_aufgabenformat.hide()
-#         self.label_keine_auswahl = QtWidgets.QLabel(self.groupBox_aufgabenformat)
-#         self.label_keine_auswahl.setObjectName(_fromUtf8("label_keine_auswahl"))
-#         self.label_keine_auswahl.setMinimumSize(QtCore.QSize(145, 0))
-#         self.gridLayout_7.addWidget(self.label_keine_auswahl)
-#         self.label_keine_auswahl.setText(
-#             _translate("MainWindow", "keine Auswahl nötig", None)
-#         )
-#         self.label_keine_auswahl.hide()
+        self.groupBox_aufgabenformat.hide()
+        self.label_keine_auswahl = QtWidgets.QLabel(self.groupBox_aufgabenformat)
+        self.label_keine_auswahl.setObjectName(_fromUtf8("label_keine_auswahl"))
+        self.label_keine_auswahl.setMinimumSize(QtCore.QSize(145, 0))
+        self.gridLayout_7.addWidget(self.label_keine_auswahl)
+        self.label_keine_auswahl.setText(
+            _translate("MainWindow", "keine Auswahl nötig", None)
+        )
+        self.label_keine_auswahl.hide()
 
 #         self.groupBox_klassen_cr = QtWidgets.QGroupBox(self.centralwidget)
 #         self.groupBox_klassen_cr.setObjectName(_fromUtf8("groupBox_klassen_cr"))
