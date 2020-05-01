@@ -633,36 +633,36 @@ class Ui_MainWindow(object):
         self.combobox_searchtype.hide()
 
 
-        # self.groupBox_themen_klasse = create_new_groupbox(self.centralwidget, "Themen Schulstufen")
+        self.groupBox_themen_klasse = create_new_groupbox(self.centralwidget, "Themen Schulstufen")
 
-        # self.verticalLayout = create_new_verticallayout(self.groupBox_themen_klasse) 
-        # # QtWidgets.QVBoxLayout(self.groupBox_themen_klasse)
-        # # self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        # self.tab_widget_themen = QtWidgets.QTabWidget(self.groupBox_themen_klasse)
-        # self.tab_widget_themen.setStyleSheet(StyleSheet_tabWiget)      
-        # # self.tabWidget.setStyleSheet(set_color_text(white))
+        self.verticalLayout = create_new_verticallayout(self.groupBox_themen_klasse) 
+        # QtWidgets.QVBoxLayout(self.groupBox_themen_klasse)
+        # self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
+        self.tab_widget_themen = QtWidgets.QTabWidget(self.groupBox_themen_klasse)
+        self.tab_widget_themen.setStyleSheet(StyleSheet_tabWiget)      
+        # self.tabWidget.setStyleSheet(set_color_text(white))
 
-        # self.tab_widget_themen.setObjectName(_fromUtf8("tab_widget_themen"))
-        # self.verticalLayout.addWidget(self.tab_widget_themen)
+        self.tab_widget_themen.setObjectName(_fromUtf8("tab_widget_themen"))
+        self.verticalLayout.addWidget(self.tab_widget_themen)
 
-        # self.gridLayout.addWidget(self.groupBox_themen_klasse, 1, 0, 2, 1)
+        self.gridLayout.addWidget(self.groupBox_themen_klasse, 1, 0, 2, 1)
 
-        # self.groupBox_gk = create_new_groupbox(self.centralwidget, "Grundkompetenzen")
+        self.groupBox_gk = create_new_groupbox(self.centralwidget, "Grundkompetenzen")
 
-        # self.gridLayout_11 = create_new_gridlayout(self.groupBox_gk)
+        self.gridLayout_11 = create_new_gridlayout(self.groupBox_gk)
         
-        # # QtWidgets.QGridLayout(self.groupBox_gk)
-        # # self.gridLayout_11.setObjectName(_fromUtf8("gridLayout_11"))
-        # self.tab_widget_gk = QtWidgets.QTabWidget(self.groupBox_gk)
+        # QtWidgets.QGridLayout(self.groupBox_gk)
+        # self.gridLayout_11.setObjectName(_fromUtf8("gridLayout_11"))
+        self.tab_widget_gk = QtWidgets.QTabWidget(self.groupBox_gk)
 
-        # self.tab_widget_gk.setStyleSheet(StyleSheet_tabWiget)
-        # # self.tab_widget_gk.setStyleSheet(_fromUtf8("color: {0}".format(white)))
-        # # self.tab_widget_gk.setStyleSheet("QToolTip { color: white; background-color: rgb(47, 69, 80); border: 0px; }")
-        # # ))
+        self.tab_widget_gk.setStyleSheet(StyleSheet_tabWiget)
+        # self.tab_widget_gk.setStyleSheet(_fromUtf8("color: {0}".format(white)))
+        # self.tab_widget_gk.setStyleSheet("QToolTip { color: white; background-color: rgb(47, 69, 80); border: 0px; }")
+        # ))
         
-        #     # 
-        # #  print(gray.red())
-        # self.tab_widget_gk.setObjectName(_fromUtf8("tab_widget_gk"))
+            # 
+        #  print(gray.red())
+        self.tab_widget_gk.setObjectName(_fromUtf8("tab_widget_gk"))
 
         # #### AG #####
         # self.create_tab_checkboxes_gk(self.tab_widget_gk, "Algebra und Geometrie", ag_beschreibung, 'search')
