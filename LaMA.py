@@ -2197,19 +2197,19 @@ class Ui_MainWindow(object):
     def create_tab_checkboxes_gk(self,tab_widget, titel, chosen_dictionary, mode):
         new_tab=add_new_tab(tab_widget, titel)    #self.tab_widget_gk self.tab_widget_gk_cr
         new_tab.setStyleSheet(StyleSheet_new_tab)
-        # # self.tab_ag = QtWidgets.QWidget()
-        # # self.tab_ag.setObjectName(_fromUtf8("tab_ag"))
-        # gridlayout=create_new_gridlayout(new_tab)
-        # # self.gridLayout_ag = QtWidgets.QGridLayout(self.tab_ag)
-        # # self.gridLayout_ag.setObjectName(_fromUtf8("gridLayout_ag"))
-        # scrollarea = QtWidgets.QScrollArea(new_tab)
-        # scrollarea.setWidgetResizable(True)
-        # scrollarea.setObjectName("{}".format(scrollarea))
+        # self.tab_ag = QtWidgets.QWidget()
+        # self.tab_ag.setObjectName(_fromUtf8("tab_ag"))
+        gridlayout=create_new_gridlayout(new_tab)
+        # self.gridLayout_ag = QtWidgets.QGridLayout(self.tab_ag)
+        # self.gridLayout_ag.setObjectName(_fromUtf8("gridLayout_ag"))
+        scrollarea = QtWidgets.QScrollArea(new_tab)
+        scrollarea.setWidgetResizable(True)
+        scrollarea.setObjectName("{}".format(scrollarea))
 
-        # scrollareacontent = QtWidgets.QWidget()
-        # scrollareacontent.setGeometry(QtCore.QRect(0, 0, 641, 252))
-        # scrollareacontent.setObjectName("{}".format(scrollareacontent))
-        # gridLayout_scrollarea = create_new_gridlayout(scrollareacontent)    
+        scrollareacontent = QtWidgets.QWidget()
+        scrollareacontent.setGeometry(QtCore.QRect(0, 0, 641, 252))
+        scrollareacontent.setObjectName("{}".format(scrollareacontent))
+        gridLayout_scrollarea = create_new_gridlayout(scrollareacontent)    
 
           
       
