@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__ = "v1.8.6"
+__version__ = "v1.9.1"
 __lastupdate__ = "04/20"
 ####################
 
@@ -31,6 +31,7 @@ from list_of_widgets import (
     widgets_create,
     widgets_sage,
     widgets_feedback,
+    widgets_search_cria,
     list_widgets
 )
 from subwindows import Ui_Dialog_choose_type, Ui_Dialog_titlepage, Ui_Dialog_ausgleichspunkte, Ui_Dialog_erstellen
@@ -63,6 +64,14 @@ dict_gk = config_loader(config_file, "dict_gk")
 dict_aufgabenformate = config_loader(config_file, "dict_aufgabenformate")
 Klassen = config_loader(config_file, "Klassen")
 
+#### LaMA Cria
+list_klassen = config_loader(config_file, "list_klassen")
+dict_aufgabenformate = config_loader(config_file, "dict_aufgabenformate")
+
+
+for klasse in list_klassen:
+    exec('dict_{0} = config_loader(config_file,"dict_{0}")'.format(klasse))
+    exec('dict_{0}_name = config_loader(config_file,"dict_{0}_name")'.format(klasse))
 
 dict_picture_path = {}
 set_chosen_gk = set([])
