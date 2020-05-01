@@ -2233,6 +2233,7 @@ class Ui_MainWindow(object):
         # spacerItem = QtWidgets.QSpacerItem(
         #     10, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
         # )
+        
         row = 0
         column = 0
         if mode=='creator':       
