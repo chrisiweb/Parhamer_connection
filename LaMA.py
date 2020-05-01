@@ -583,6 +583,60 @@ class Ui_MainWindow(object):
         spacerItem_cria = QtWidgets.QSpacerItem(
             20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
         )
+        for all in list_klassen:
+            # print(all)
+            exec("self.tab_{} = QtWidgets.QWidget()".format(all))
+            exec('self.tab_{}.setObjectName("tab_k1")'.format(all))
+            exec(
+                "self.gridLayout_{0} = QtWidgets.QGridLayout(self.tab_{0})".format(all)
+            )
+            exec('self.gridLayout_{0}.setObjectName("gridLayout_{0}")'.format(all))
+            exec(
+                "self.scrollArea_{0} = QtWidgets.QScrollArea(self.tab_{0})".format(all)
+            )
+            scrollArea_cria = eval("self.scrollArea_{0}".format(all))
+            scrollArea_cria.setFrameShape(QtWidgets.QFrame.NoFrame)
+            scrollArea_cria.setWidgetResizable(True)
+            scrollArea_cria.setObjectName("scrollArea_cria")
+            exec("self.scrollAreaWidgetContents_{} = QtWidgets.QWidget()".format(all))
+            exec(
+                "self.scrollAreaWidgetContents_{}.setGeometry(QtCore.QRect(0, 0, 264, 235))".format(
+                    all
+                )
+            )
+            exec(
+                'self.scrollAreaWidgetContents_{0}.setObjectName("scrollAreaWidgetContents_{0}")'.format(
+                    all
+                )
+            )
+            exec(
+                "self.verticalLayout_kapitel_{0} = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_{0})".format(
+                    all
+                )
+            )
+            verticalLayout_cria = eval("self.verticalLayout_kapitel_{0}".format(all))
+            verticalLayout_cria.setObjectName("verticalLayout_kapitel_{0}".format(all))
+
+            dict_klasse_name = eval("dict_{}_name".format(all))
+            for kapitel in dict_klasse_name:
+                self.create_kapitel(verticalLayout_cria, all[1], kapitel)
+
+            verticalLayout_cria.addItem(spacerItem_cria)
+            exec(
+                "self.scrollArea_{0}.setWidget(self.scrollAreaWidgetContents_{0})".format(
+                    all
+                )
+            )
+            exec(
+                "self.gridLayout_{0}.addWidget(self.scrollArea_{0}, 5, 0, 1, 1)".format(
+                    all
+                )
+            )
+            exec(
+                'self.tabWidget_klassen_cria.addTab(self.tab_{0}, "{1}. Klasse")'.format(
+                    all, all[1]
+                )
+            )
         ##############################################################
         #####################CREATOR #########################################
         ##########################################################################
