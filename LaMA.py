@@ -2197,37 +2197,37 @@ class Ui_MainWindow(object):
     def create_tab_checkboxes_gk(self,tab_widget, titel, chosen_dictionary, mode):
         new_tab=add_new_tab(tab_widget, titel)    #self.tab_widget_gk self.tab_widget_gk_cr
         new_tab.setStyleSheet(StyleSheet_new_tab)
-        # self.tab_ag = QtWidgets.QWidget()
-        # self.tab_ag.setObjectName(_fromUtf8("tab_ag"))
-        gridlayout=create_new_gridlayout(new_tab)
-        # self.gridLayout_ag = QtWidgets.QGridLayout(self.tab_ag)
-        # self.gridLayout_ag.setObjectName(_fromUtf8("gridLayout_ag"))
-        scrollarea = QtWidgets.QScrollArea(new_tab)
-        scrollarea.setWidgetResizable(True)
-        scrollarea.setObjectName("{}".format(scrollarea))
+        # # self.tab_ag = QtWidgets.QWidget()
+        # # self.tab_ag.setObjectName(_fromUtf8("tab_ag"))
+        # gridlayout=create_new_gridlayout(new_tab)
+        # # self.gridLayout_ag = QtWidgets.QGridLayout(self.tab_ag)
+        # # self.gridLayout_ag.setObjectName(_fromUtf8("gridLayout_ag"))
+        # scrollarea = QtWidgets.QScrollArea(new_tab)
+        # scrollarea.setWidgetResizable(True)
+        # scrollarea.setObjectName("{}".format(scrollarea))
 
-        scrollareacontent = QtWidgets.QWidget()
-        scrollareacontent.setGeometry(QtCore.QRect(0, 0, 641, 252))
-        scrollareacontent.setObjectName("{}".format(scrollareacontent))
-        gridLayout_scrollarea = create_new_gridlayout(scrollareacontent)    
+        # scrollareacontent = QtWidgets.QWidget()
+        # scrollareacontent.setGeometry(QtCore.QRect(0, 0, 641, 252))
+        # scrollareacontent.setObjectName("{}".format(scrollareacontent))
+        # gridLayout_scrollarea = create_new_gridlayout(scrollareacontent)    
 
           
       
-        row, column = self.create_list_of_all_gk_checkboxes(scrollareacontent, gridLayout_scrollarea, mode, chosen_dictionary)
+        # row, column = self.create_list_of_all_gk_checkboxes(scrollareacontent, gridLayout_scrollarea, mode, chosen_dictionary)
 
 
-        if mode=='search':
-            button_check_all = create_new_button(scrollarea, "alle auswählen", partial(self.button_all_checkboxes_pressed,chosen_dictionary, 'gk'))
-            button_check_all.setStyleSheet("background-color: {}; ".format(get_color(blue_3)))
-            button_check_all.setSizePolicy(SizePolicy_fixed)
+        # if mode=='search':
+        #     button_check_all = create_new_button(scrollarea, "alle auswählen", partial(self.button_all_checkboxes_pressed,chosen_dictionary, 'gk'))
+        #     button_check_all.setStyleSheet("background-color: {}; ".format(get_color(blue_3)))
+        #     button_check_all.setSizePolicy(SizePolicy_fixed)
 
-            gridLayout_scrollarea.addWidget(
-                button_check_all, 10, column, 1, 1, QtCore.Qt.AlignRight
-            )
+        #     gridLayout_scrollarea.addWidget(
+        #         button_check_all, 10, column, 1, 1, QtCore.Qt.AlignRight
+        #     )
 
-        scrollarea.setFrameShape(QtWidgets.QFrame.NoFrame)
-        scrollarea.setWidget(scrollareacontent)
-        gridlayout.addWidget(scrollarea, 1, 0, 7, 1)
+        # scrollarea.setFrameShape(QtWidgets.QFrame.NoFrame)
+        # scrollarea.setWidget(scrollareacontent)
+        # gridlayout.addWidget(scrollarea, 1, 0, 7, 1)
 
     def create_list_of_all_gk_checkboxes(self, parent, layout, mode, chosen_dictionary):
         spacerItem = QtWidgets.QSpacerItem(
