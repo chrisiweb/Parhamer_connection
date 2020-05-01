@@ -2213,9 +2213,9 @@ class Ui_MainWindow(object):
 
           
       
-        # row, column = self.create_list_of_all_gk_checkboxes(scrollareacontent, gridLayout_scrollarea, mode, chosen_dictionary)
+        row, column = self.create_list_of_all_gk_checkboxes(scrollareacontent, gridLayout_scrollarea, mode, chosen_dictionary)
 
-        column=0
+
         if mode=='search':
             button_check_all = create_new_button(scrollarea, "alle auswählen", partial(self.button_all_checkboxes_pressed,chosen_dictionary, 'gk'))
             button_check_all.setStyleSheet("background-color: {}; ".format(get_color(blue_3)))
@@ -2235,34 +2235,34 @@ class Ui_MainWindow(object):
         )
         row = 0
         column = 0
-        if mode=='creator':       
-        # if "cr" in gk_type:
-            max_row = 10
-            name_start='checkbox_creator_gk_'
-        if mode=='search':
-        # else:
-            max_row = 9
-            name_start='checkbox_search_gk_'
-        for all in chosen_dictionary:
-            new_checkbox = create_new_checkbox(parent, dict_gk[all])
-            new_checkbox.setFocusPolicy(QtCore.Qt.NoFocus)
-            background_color=get_color(blue_7)
-            new_checkbox.setStyleSheet("QToolTip {{ color: white; background-color: {}; border: 0px; }}".format(background_color))
-            layout.addWidget(new_checkbox, row, column, 1, 1)
-            new_checkbox.stateChanged.connect(partial(self.checkbox_checked, mode, 'gk')) 
-            name=name_start+all
-            self.dict_widget_variables[name]=new_checkbox
+        # if mode=='creator':       
+        # # if "cr" in gk_type:
+        #     max_row = 10
+        #     name_start='checkbox_creator_gk_'
+        # if mode=='search':
+        # # else:
+        #     max_row = 9
+        #     name_start='checkbox_search_gk_'
+        # for all in chosen_dictionary:
+        #     new_checkbox = create_new_checkbox(parent, dict_gk[all])
+        #     new_checkbox.setFocusPolicy(QtCore.Qt.NoFocus)
+        #     background_color=get_color(blue_7)
+        #     new_checkbox.setStyleSheet("QToolTip {{ color: white; background-color: {}; border: 0px; }}".format(background_color))
+        #     layout.addWidget(new_checkbox, row, column, 1, 1)
+        #     new_checkbox.stateChanged.connect(partial(self.checkbox_checked, mode, 'gk')) 
+        #     name=name_start+all
+        #     self.dict_widget_variables[name]=new_checkbox
 
-            if row > max_row:
-                row = 0
-                column += 1
-                layout.addItem(spacerItem, row, column, 1, 1)
-                column += 1
-            else:
-                row += 1
-        # print(column)
-        spacerItem_right = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        layout.addItem(spacerItem_right, 0, column+1, 1, 1)
+        #     if row > max_row:
+        #         row = 0
+        #         column += 1
+        #         layout.addItem(spacerItem, row, column, 1, 1)
+        #         column += 1
+        #     else:
+        #         row += 1
+        # # print(column)
+        # spacerItem_right = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        # layout.addItem(spacerItem_right, 0, column+1, 1, 1)
         
         return row, column
 
