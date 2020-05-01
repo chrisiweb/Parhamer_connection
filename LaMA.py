@@ -809,116 +809,116 @@ class Ui_MainWindow(object):
         self.groupBox_schulstufe_cria.hide()
         self.groupBox_unterkapitel_cria.hide()
 
-#         ##############################################################
-#         ##################### CREATOR #########################################
-#         self.groupBox_aufgabentyp = QtWidgets.QGroupBox(self.centralwidget)
-#         self.groupBox_aufgabentyp.setObjectName(_fromUtf8("groupBox_aufgabentyp"))
-#         self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBox_aufgabentyp)
-#         self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
-#         self.groupBox_grundkompetenzen_cr = QtWidgets.QGroupBox(self.centralwidget)
-#         self.groupBox_grundkompetenzen_cr.setFocusPolicy(QtCore.Qt.NoFocus)
-#         # self.groupBox_grundkompetenzen_cr.setMaximumSize(QtCore.QSize(350, 16777215))
-#         self.groupBox_grundkompetenzen_cr.setObjectName(
-#             _fromUtf8("groupBox_grundkompetenzen_cr")
-#         )
-#         self.groupBox_grundkompetenzen_cr.setMaximumWidth(500)
-#         self.gridLayout_11_cr = QtWidgets.QGridLayout(self.groupBox_grundkompetenzen_cr)
-#         self.gridLayout_11_cr.setObjectName(_fromUtf8("gridLayout_11_cr"))
-#         self.tab_widget_gk_cr = QtWidgets.QTabWidget(self.groupBox_grundkompetenzen_cr)
+        ##############################################################
+        ##################### CREATOR #########################################
+        self.groupBox_aufgabentyp = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBox_aufgabentyp.setObjectName(_fromUtf8("groupBox_aufgabentyp"))
+        self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBox_aufgabentyp)
+        self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
+        self.groupBox_grundkompetenzen_cr = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBox_grundkompetenzen_cr.setFocusPolicy(QtCore.Qt.NoFocus)
+        # self.groupBox_grundkompetenzen_cr.setMaximumSize(QtCore.QSize(350, 16777215))
+        self.groupBox_grundkompetenzen_cr.setObjectName(
+            _fromUtf8("groupBox_grundkompetenzen_cr")
+        )
+        self.groupBox_grundkompetenzen_cr.setMaximumWidth(500)
+        self.gridLayout_11_cr = QtWidgets.QGridLayout(self.groupBox_grundkompetenzen_cr)
+        self.gridLayout_11_cr.setObjectName(_fromUtf8("gridLayout_11_cr"))
+        self.tab_widget_gk_cr = QtWidgets.QTabWidget(self.groupBox_grundkompetenzen_cr)
 
-#         self.tab_widget_gk_cr.setStyleSheet(StyleSheet_tabWiget)
-#         #     _fromUtf8("background-color: rgb(217, 255, 215);")
-#         # )
-#         self.tab_widget_gk_cr.setFocusPolicy(QtCore.Qt.NoFocus)
-#         self.tab_widget_gk_cr.setObjectName(_fromUtf8("tab_widget_gk_cr"))
-#         self.gridLayout_11_cr.addWidget(self.tab_widget_gk_cr, 0, 0, 1, 1)
-#         self.gridLayout.addWidget(self.groupBox_grundkompetenzen_cr, 0, 0, 5, 1)
-#         self.groupBox_grundkompetenzen_cr.setTitle(
-#             _translate("MainWindow", "Grundkompetenzen", None)
-#         )
-#         self.groupBox_grundkompetenzen_cr.hide()
+        self.tab_widget_gk_cr.setStyleSheet(StyleSheet_tabWiget)
+        #     _fromUtf8("background-color: rgb(217, 255, 215);")
+        # )
+        self.tab_widget_gk_cr.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.tab_widget_gk_cr.setObjectName(_fromUtf8("tab_widget_gk_cr"))
+        self.gridLayout_11_cr.addWidget(self.tab_widget_gk_cr, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_grundkompetenzen_cr, 0, 0, 5, 1)
+        self.groupBox_grundkompetenzen_cr.setTitle(
+            _translate("MainWindow", "Grundkompetenzen", None)
+        )
+        self.groupBox_grundkompetenzen_cr.hide()
 
-#         # self.groupBox_themengebiete_cria = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBox_themengebiete_cria = QtWidgets.QGroupBox(self.centralwidget)
 
-#         # self.groupBox_themengebiete_cria.setObjectName(
-#         #     _fromUtf8("groupBox_themengebiete_cria")
-#         # )
-#         # # self.groupBox_themengebiete_cria.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Expanding))
-#         # # self.groupBox_themengebiete_cria.setMaximumWidth(500)
-#         # # self.groupBox_themengebiete_cria.setSizePolicy(SizePolicy)
-#         # self.gridLayout_11_cr_cria = QtWidgets.QGridLayout(self.groupBox_themengebiete_cria)
-#         # self.gridLayout_11_cr_cria.setObjectName(_fromUtf8("gridLayout_11_cr_cria"))
-#         # self.tab_widget_cr_cria = QtWidgets.QTabWidget(self.groupBox_themengebiete_cria)
-#         # # self.tab_widget_gk_cr.setStyleSheet(_fromUtf8("background-color: rgb(217, 255, 215);")
-#         # self.tab_widget_cr_cria.setStyleSheet(StyleSheet_tabWiget)
+        self.groupBox_themengebiete_cria.setObjectName(
+            _fromUtf8("groupBox_themengebiete_cria")
+        )
+        # self.groupBox_themengebiete_cria.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Expanding))
+        # self.groupBox_themengebiete_cria.setMaximumWidth(500)
+        # self.groupBox_themengebiete_cria.setSizePolicy(SizePolicy)
+        self.gridLayout_11_cr_cria = QtWidgets.QGridLayout(self.groupBox_themengebiete_cria)
+        self.gridLayout_11_cr_cria.setObjectName(_fromUtf8("gridLayout_11_cr_cria"))
+        self.tab_widget_cr_cria = QtWidgets.QTabWidget(self.groupBox_themengebiete_cria)
+        # self.tab_widget_gk_cr.setStyleSheet(_fromUtf8("background-color: rgb(217, 255, 215);")
+        self.tab_widget_cr_cria.setStyleSheet(StyleSheet_tabWiget)
 
-#         # # self.tab_widget_cr_cria.setStyleSheet("background-color: rgb(229, 246, 255);")
-#         # self.tab_widget_cr_cria.setObjectName(_fromUtf8("tab_widget_cr_cria"))
-#         # self.tab_widget_cr_cria.setFocusPolicy(QtCore.Qt.NoFocus)
-#         # self.gridLayout_11_cr_cria.addWidget(self.tab_widget_cr_cria, 0, 0, 1, 1)
-#         # self.gridLayout.addWidget(self.groupBox_themengebiete_cria, 0, 0, 5, 1)
-#         # self.groupBox_themengebiete_cria.setTitle(
-#         #     _translate("MainWindow", "Themengebiete",None)
-#         # )
-#         # self.groupBox_themengebiete_cria.hide()
+        # self.tab_widget_cr_cria.setStyleSheet("background-color: rgb(229, 246, 255);")
+        self.tab_widget_cr_cria.setObjectName(_fromUtf8("tab_widget_cr_cria"))
+        self.tab_widget_cr_cria.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.gridLayout_11_cr_cria.addWidget(self.tab_widget_cr_cria, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_themengebiete_cria, 0, 0, 5, 1)
+        self.groupBox_themengebiete_cria.setTitle(
+            _translate("MainWindow", "Themengebiete",None)
+        )
+        self.groupBox_themengebiete_cria.hide()
 
-#         # self.spacerItem_unterkapitel_creator_cria = QtWidgets.QSpacerItem(
-#         #     20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
-#         # )
+        # self.spacerItem_unterkapitel_creator_cria = QtWidgets.QSpacerItem(
+        #     20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        # )
 
-#         # for klasse in list_klassen:
-#         #     name='tab_{0}'.format(klasse)
-#         #     new_tab = add_new_tab(self.tab_widget_cr_cria, "{}. Klasse".format(klasse[1]))
-#         #     new_tab.setStyleSheet(StyleSheet_new_tab)
-#         #     new_gridlayout = QtWidgets.QGridLayout(new_tab)
-#         #     new_gridlayout.setObjectName("{}".format(new_gridlayout))
+        # for klasse in list_klassen:
+        #     name='tab_{0}'.format(klasse)
+        #     new_tab = add_new_tab(self.tab_widget_cr_cria, "{}. Klasse".format(klasse[1]))
+        #     new_tab.setStyleSheet(StyleSheet_new_tab)
+        #     new_gridlayout = QtWidgets.QGridLayout(new_tab)
+        #     new_gridlayout.setObjectName("{}".format(new_gridlayout))
 
-#         #     new_scrollarea = QtWidgets.QScrollArea(new_tab)
-#         #     new_scrollarea.setObjectName("{}".format(new_scrollarea))
-#         #     new_scrollarea.setFrameShape(QtWidgets.QFrame.NoFrame)
-#         #     new_scrollarea.setFocusPolicy(QtCore.Qt.NoFocus)
-#         #     new_scrollarea.setWidgetResizable(True)
-#         #     new_scrollareacontent = QtWidgets.QWidget()
-#         #     new_scrollareacontent.setGeometry(QtCore.QRect(0, 0, 264, 235))
-#         #     new_scrollareacontent.setObjectName("{}".format(new_scrollareacontent))
+        #     new_scrollarea = QtWidgets.QScrollArea(new_tab)
+        #     new_scrollarea.setObjectName("{}".format(new_scrollarea))
+        #     new_scrollarea.setFrameShape(QtWidgets.QFrame.NoFrame)
+        #     new_scrollarea.setFocusPolicy(QtCore.Qt.NoFocus)
+        #     new_scrollarea.setWidgetResizable(True)
+        #     new_scrollareacontent = QtWidgets.QWidget()
+        #     new_scrollareacontent.setGeometry(QtCore.QRect(0, 0, 264, 235))
+        #     new_scrollareacontent.setObjectName("{}".format(new_scrollareacontent))
 
-#         #     new_verticallayout = QtWidgets.QVBoxLayout(new_scrollareacontent)
-#         #     new_verticallayout.setObjectName("{}".format(new_verticallayout))   
+        #     new_verticallayout = QtWidgets.QVBoxLayout(new_scrollareacontent)
+        #     new_verticallayout.setObjectName("{}".format(new_verticallayout))   
 
 
-#         #     combobox_kapitel = create_new_combobox(new_scrollareacontent)
-#         #     selection_background_color=get_color(blue_7)
-#         #     selection_text_color=get_color(white)
-#         #     combobox_kapitel.setStyleSheet("background-color: {0};selection-background-color: {1}; selection-color: {2}".format(get_color(white) , selection_background_color, selection_text_color))
-#         #     combobox_kapitel.setMinimumHeight(25)
+        #     combobox_kapitel = create_new_combobox(new_scrollareacontent)
+        #     selection_background_color=get_color(blue_7)
+        #     selection_text_color=get_color(white)
+        #     combobox_kapitel.setStyleSheet("background-color: {0};selection-background-color: {1}; selection-color: {2}".format(get_color(white) , selection_background_color, selection_text_color))
+        #     combobox_kapitel.setMinimumHeight(25)
             
-#         #     self.dict_widget_variables['combobox_kapitel_creator_cria_{}'.format(klasse)]=combobox_kapitel
-#         #     dict_klasse_name = eval('dict_{}_name'.format(klasse))
-#         #     index=0
-#         #     for kapitel in dict_klasse_name:
-#         #         add_new_option(combobox_kapitel,index,dict_klasse_name[kapitel] + " (" + kapitel + ")")
-#         #         index +=1
-#         #     combobox_kapitel.currentIndexChanged.connect(partial(self.comboBox_kapitel_changed_cr, new_scrollareacontent,new_verticallayout, klasse))
+        #     self.dict_widget_variables['combobox_kapitel_creator_cria_{}'.format(klasse)]=combobox_kapitel
+        #     dict_klasse_name = eval('dict_{}_name'.format(klasse))
+        #     index=0
+        #     for kapitel in dict_klasse_name:
+        #         add_new_option(combobox_kapitel,index,dict_klasse_name[kapitel] + " (" + kapitel + ")")
+        #         index +=1
+        #     combobox_kapitel.currentIndexChanged.connect(partial(self.comboBox_kapitel_changed_cr, new_scrollareacontent,new_verticallayout, klasse))
 
-#         #     new_verticallayout.addWidget(combobox_kapitel)
+        #     new_verticallayout.addWidget(combobox_kapitel)
 
 
-#         #     dict_klasse = eval('dict_{}'.format(klasse))
-#         #     kapitel= list(dict_klasse.keys())[0]
+        #     dict_klasse = eval('dict_{}'.format(klasse))
+        #     kapitel= list(dict_klasse.keys())[0]
 
-#         #     for unterkapitel in dict_klasse[kapitel]:
-#         #         new_checkbox=create_new_checkbox(new_scrollareacontent, dict_unterkapitel[unterkapitel] + ' (' + unterkapitel +')')
-#         #         new_checkbox.stateChanged.connect(partial(self.checkbox_unterkapitel_checked_creator_cria, new_checkbox, klasse, kapitel, unterkapitel))
-#         #         self.dict_widget_variables['checkbox_unterkapitel_creator_{0}_{1}_{2}'.format(klasse, kapitel, unterkapitel)]=new_checkbox
-#         #         new_verticallayout.addWidget(new_checkbox)
-#         #         new_checkbox.setFocusPolicy(QtCore.Qt.NoFocus)
+        #     for unterkapitel in dict_klasse[kapitel]:
+        #         new_checkbox=create_new_checkbox(new_scrollareacontent, dict_unterkapitel[unterkapitel] + ' (' + unterkapitel +')')
+        #         new_checkbox.stateChanged.connect(partial(self.checkbox_unterkapitel_checked_creator_cria, new_checkbox, klasse, kapitel, unterkapitel))
+        #         self.dict_widget_variables['checkbox_unterkapitel_creator_{0}_{1}_{2}'.format(klasse, kapitel, unterkapitel)]=new_checkbox
+        #         new_verticallayout.addWidget(new_checkbox)
+        #         new_checkbox.setFocusPolicy(QtCore.Qt.NoFocus)
           
 
-#         #     new_verticallayout.addItem(self.spacerItem_unterkapitel_creator_cria)
+        #     new_verticallayout.addItem(self.spacerItem_unterkapitel_creator_cria)
 
-#         #     new_scrollarea.setWidget(new_scrollareacontent)
+        #     new_scrollarea.setWidget(new_scrollareacontent)
 
-#         #     new_gridlayout.addWidget(new_scrollarea, 5,0,1,1)
+        #     new_gridlayout.addWidget(new_scrollarea, 5,0,1,1)
 
 
 # #################################
