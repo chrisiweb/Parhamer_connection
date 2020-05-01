@@ -1129,6 +1129,8 @@ class Ui_MainWindow(object):
         )
         self.groupBox_klassen_cr.hide()
 
+        self.gridLayout.setRowStretch(5, 1)
+
 ##### MAC ERROR ??
 #         # spacerItem_creator = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
 #         # self.gridLayout.addItem(spacerItem_creator, 0,5, 1, 1)
