@@ -6809,8 +6809,8 @@ if __name__ == "__main__":
 
     app.setStyle('Fusion')
     app.setStyleSheet("QToolTip { color: white; background-color: rgb(47, 69, 80); border: 0px; }")
-    font = QtGui.QFont("Calibri Light", 9)
-    app.setFont(font)
+    # font = QtGui.QFont("Calibri Light", 9)
+    # app.setFont(font)
     palette = QtGui.QPalette()
     palette.setColor(QtGui.QPalette.Window, white) # Window background
     palette.setColor(QtGui.QPalette.WindowText, QtCore.Qt.black) 
