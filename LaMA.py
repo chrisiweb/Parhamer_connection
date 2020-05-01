@@ -1129,91 +1129,92 @@ class Ui_MainWindow(object):
         )
         self.groupBox_klassen_cr.hide()
 
+##### MAC ERROR ??
 #         # spacerItem_creator = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
 #         # self.gridLayout.addItem(spacerItem_creator, 0,5, 1, 1)
 #         # spacerItem_creator.hide()
+#######################
 
 
+        self.groupBox_titel_cr = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBox_titel_cr.setObjectName(_fromUtf8("groupBox_titel_cr"))
+        self.groupBox_titel_cr.setSizePolicy(SizePolicy_fixed_height)
+        # self.groupBox_titel_cr.setMaximumHeight(60)
+        self.gridLayout_14 = QtWidgets.QGridLayout(self.groupBox_titel_cr)
+        self.gridLayout_14.setObjectName(_fromUtf8("gridLayout_14"))
+        self.lineEdit_titel = QtWidgets.QLineEdit(self.groupBox_titel_cr)
+        self.lineEdit_titel.setObjectName(_fromUtf8("lineEdit_titel"))
+        self.gridLayout_14.addWidget(self.lineEdit_titel, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_titel_cr, 1, 1, 1, 5)
+        self.groupBox_titel_cr.setTitle(_translate("MainWindow", "Titel", None))
+        self.groupBox_titel_cr.hide()
 
-#         self.groupBox_titel_cr = QtWidgets.QGroupBox(self.centralwidget)
-#         self.groupBox_titel_cr.setObjectName(_fromUtf8("groupBox_titel_cr"))
-#         self.groupBox_titel_cr.setSizePolicy(SizePolicy_fixed_height)
-#         # self.groupBox_titel_cr.setMaximumHeight(60)
-#         self.gridLayout_14 = QtWidgets.QGridLayout(self.groupBox_titel_cr)
-#         self.gridLayout_14.setObjectName(_fromUtf8("gridLayout_14"))
-#         self.lineEdit_titel = QtWidgets.QLineEdit(self.groupBox_titel_cr)
-#         self.lineEdit_titel.setObjectName(_fromUtf8("lineEdit_titel"))
-#         self.gridLayout_14.addWidget(self.lineEdit_titel, 0, 0, 1, 1)
-#         self.gridLayout.addWidget(self.groupBox_titel_cr, 1, 1, 1, 5)
-#         self.groupBox_titel_cr.setTitle(_translate("MainWindow", "Titel", None))
-#         self.groupBox_titel_cr.hide()
+        self.groupBox_beispieleingabe = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBox_beispieleingabe.setObjectName(
+            _fromUtf8("groupBox_beispieleingabe")
+        )
+        self.gridLayout_10 = QtWidgets.QGridLayout(self.groupBox_beispieleingabe)
+        self.gridLayout_10.setObjectName(_fromUtf8("gridLayout_10"))
+        self.label = QtWidgets.QLabel(self.groupBox_beispieleingabe)
+        color = get_color(red)
+        self.label.setStyleSheet(_fromUtf8("border: 2px solid {};".format(color)))
+        self.label.setWordWrap(True)
+        self.label.setObjectName(_fromUtf8("label"))
+        self.gridLayout_10.addWidget(self.label, 0, 0, 1, 1)
+        self.plainTextEdit = QtWidgets.QPlainTextEdit(self.groupBox_beispieleingabe)
+        self.plainTextEdit.setObjectName(_fromUtf8("plainTextEdit"))
+        self.plainTextEdit.setTabChangesFocus(True)
+        self.gridLayout_10.addWidget(self.plainTextEdit, 1, 0, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_beispieleingabe, 2, 1, 4, 5)
+        self.groupBox_beispieleingabe.setTitle(
+            _translate("MainWindow", "Aufgabeneingabe", None)
+        )
+        self.label.setText(
+            _translate(
+                "MainWindow",
+                "Info: Eingabe des Aufgabentextes zwischen \\begin{beispiel}...\\end{beispiel}",
+                None,
+            )
+        )
+        self.groupBox_beispieleingabe.hide()
 
-#         self.groupBox_beispieleingabe = QtWidgets.QGroupBox(self.centralwidget)
-#         self.groupBox_beispieleingabe.setObjectName(
-#             _fromUtf8("groupBox_beispieleingabe")
-#         )
-#         self.gridLayout_10 = QtWidgets.QGridLayout(self.groupBox_beispieleingabe)
-#         self.gridLayout_10.setObjectName(_fromUtf8("gridLayout_10"))
-#         self.label = QtWidgets.QLabel(self.groupBox_beispieleingabe)
-#         color = get_color(red)
-#         self.label.setStyleSheet(_fromUtf8("border: 2px solid {};".format(color)))
-#         self.label.setWordWrap(True)
-#         self.label.setObjectName(_fromUtf8("label"))
-#         self.gridLayout_10.addWidget(self.label, 0, 0, 1, 1)
-#         self.plainTextEdit = QtWidgets.QPlainTextEdit(self.groupBox_beispieleingabe)
-#         self.plainTextEdit.setObjectName(_fromUtf8("plainTextEdit"))
-#         self.plainTextEdit.setTabChangesFocus(True)
-#         self.gridLayout_10.addWidget(self.plainTextEdit, 1, 0, 1, 1)
-#         self.gridLayout.addWidget(self.groupBox_beispieleingabe, 2, 1, 4, 5)
-#         self.groupBox_beispieleingabe.setTitle(
-#             _translate("MainWindow", "Aufgabeneingabe", None)
-#         )
-#         self.label.setText(
-#             _translate(
-#                 "MainWindow",
-#                 "Info: Eingabe des Aufgabentextes zwischen \\begin{beispiel}...\\end{beispiel}",
-#                 None,
-#             )
-#         )
-#         self.groupBox_beispieleingabe.hide()
+        self.groupBox_quelle = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBox_quelle.setObjectName(_fromUtf8("groupBox_quelle"))
+        # self.groupBox_quelle.setMaximumSize(QtCore.QSize(16777215, 60))
+        # self.groupBox_quelle.setMaximumHeight(60)
+        self.groupBox_quelle.setSizePolicy(SizePolicy_fixed_height)
+        self.gridLayout_18 = QtWidgets.QGridLayout(self.groupBox_quelle)
+        self.gridLayout_18.setObjectName(_fromUtf8("gridLayout_18"))
+        self.lineEdit_quelle = QtWidgets.QLineEdit(self.groupBox_quelle)
+        self.lineEdit_quelle.setObjectName(_fromUtf8("lineEdit_quelle"))
+        self.gridLayout_18.addWidget(self.lineEdit_quelle, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_quelle, 6, 1, 1, 5, QtCore.Qt.AlignTop)
+        self.groupBox_quelle.setTitle(
+            _translate(
+                "MainWindow",
+                "Quelle oder Autor (Vorname Nachname) - Eingabe: VorNac",
+                None,
+            )
+        )
+        self.groupBox_quelle.hide()
 
-#         self.groupBox_quelle = QtWidgets.QGroupBox(self.centralwidget)
-#         self.groupBox_quelle.setObjectName(_fromUtf8("groupBox_quelle"))
-#         # self.groupBox_quelle.setMaximumSize(QtCore.QSize(16777215, 60))
-#         # self.groupBox_quelle.setMaximumHeight(60)
-#         self.groupBox_quelle.setSizePolicy(SizePolicy_fixed_height)
-#         self.gridLayout_18 = QtWidgets.QGridLayout(self.groupBox_quelle)
-#         self.gridLayout_18.setObjectName(_fromUtf8("gridLayout_18"))
-#         self.lineEdit_quelle = QtWidgets.QLineEdit(self.groupBox_quelle)
-#         self.lineEdit_quelle.setObjectName(_fromUtf8("lineEdit_quelle"))
-#         self.gridLayout_18.addWidget(self.lineEdit_quelle, 0, 0, 1, 1)
-#         self.gridLayout.addWidget(self.groupBox_quelle, 6, 1, 1, 5, QtCore.Qt.AlignTop)
-#         self.groupBox_quelle.setTitle(
-#             _translate(
-#                 "MainWindow",
-#                 "Quelle oder Autor (Vorname Nachname) - Eingabe: VorNac",
-#                 None,
-#             )
-#         )
-#         self.groupBox_quelle.hide()
+        self.pushButton_save = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_save.setObjectName(_fromUtf8("pushButton_save"))
+        self.pushButton_save.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.gridLayout.addWidget(self.pushButton_save, 7, 5, 1, 1)
+        self.pushButton_save.setText(_translate("MainWindow", "Speichern", None))
+        # self.pushButton_save.setShortcut(_translate("MainWindow", "Return", None))
+        self.pushButton_save.hide()
 
-#         self.pushButton_save = QtWidgets.QPushButton(self.centralwidget)
-#         self.pushButton_save.setObjectName(_fromUtf8("pushButton_save"))
-#         self.pushButton_save.setFocusPolicy(QtCore.Qt.NoFocus)
-#         self.gridLayout.addWidget(self.pushButton_save, 7, 5, 1, 1)
-#         self.pushButton_save.setText(_translate("MainWindow", "Speichern", None))
-#         # self.pushButton_save.setShortcut(_translate("MainWindow", "Return", None))
-#         self.pushButton_save.hide()
-
-#         self.tab_widget_gk.setCurrentIndex(0)
-#         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-#         # MainWindow.setTabOrder(self.comboBox_aufgabentyp_cr, self.spinBox_punkte)
-#         # MainWindow.setTabOrder(self.spinBox_punkte, self.comboBox_af)
-#         # MainWindow.setTabOrder(self.comboBox_af, self.comboBox_klassen_cr)
-#         # MainWindow.setTabOrder(self.comboBox_klassen_cr, self.lineEdit_titel)
-#         # MainWindow.setTabOrder(self.lineEdit_titel, self.plainTextEdit)
-#         # MainWindow.setTabOrder(self.plainTextEdit, self.lineEdit_quelle)
-#         # MainWindow.setTabOrder(self.lineEdit_quelle, self.comboBox_aufgabentyp_cr)
+        self.tab_widget_gk.setCurrentIndex(0)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        # MainWindow.setTabOrder(self.comboBox_aufgabentyp_cr, self.spinBox_punkte)
+        # MainWindow.setTabOrder(self.spinBox_punkte, self.comboBox_af)
+        # MainWindow.setTabOrder(self.comboBox_af, self.comboBox_klassen_cr)
+        # MainWindow.setTabOrder(self.comboBox_klassen_cr, self.lineEdit_titel)
+        # MainWindow.setTabOrder(self.lineEdit_titel, self.plainTextEdit)
+        # MainWindow.setTabOrder(self.plainTextEdit, self.lineEdit_quelle)
+        # MainWindow.setTabOrder(self.lineEdit_quelle, self.comboBox_aufgabentyp_cr)
 
 #         ####################################################
 #         #####################################################
@@ -1896,8 +1897,7 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
         MainWindow.setStatusBar(self.statusbar)
-        # self.actionReset = QtWidgets.QAction(MainWindow)
-        # self.actionReset.setObjectName(_fromUtf8("actionReset"))
+
 
         self.retranslateUi(MainWindow)
 #         self.tab_widget_themen.setCurrentIndex(0)
