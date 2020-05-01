@@ -501,203 +501,203 @@ class Ui_MainWindow(object):
 
 
         self.verticalLayout_2 = create_new_verticallayout(self.groupBox_ausgew_gk)
-        # QtWidgets.QVBoxLayout(self.groupBox_ausgew_gk)
-        # self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
+        # # QtWidgets.QVBoxLayout(self.groupBox_ausgew_gk)
+        # # self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
 
-        self.scrollArea_ausgew_gk = QtWidgets.QScrollArea(self.groupBox_ausgew_gk)
-        self.scrollArea_ausgew_gk.setWidgetResizable(True)
-        self.scrollArea_ausgew_gk.setObjectName("scrollArea_ausgew_gk")
-        self.scrollAreaWidgetContents_ausgew_gk = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_ausgew_gk.setObjectName(
-            "scrollAreaWidgetContents_ausgew_gk"
-        )
-
-        self.verticalLayout_scrollA_ausgew_gk = create_new_verticallayout(self.scrollAreaWidgetContents_ausgew_gk)
-        # QtWidgets.QVBoxLayout(
-        #     self.scrollAreaWidgetContents_ausgew_gk
-        # )
-        # self.verticalLayout_scrollA_ausgew_gk.setObjectName(
-        #     "verticalLayout_scrollA_ausgew_gk"
+        # self.scrollArea_ausgew_gk = QtWidgets.QScrollArea(self.groupBox_ausgew_gk)
+        # self.scrollArea_ausgew_gk.setWidgetResizable(True)
+        # self.scrollArea_ausgew_gk.setObjectName("scrollArea_ausgew_gk")
+        # self.scrollAreaWidgetContents_ausgew_gk = QtWidgets.QWidget()
+        # self.scrollAreaWidgetContents_ausgew_gk.setObjectName(
+        #     "scrollAreaWidgetContents_ausgew_gk"
         # )
 
-        self.label_ausgew_gk = create_new_label(self.scrollArea_ausgew_gk, "", True)
-        self.verticalLayout_scrollA_ausgew_gk.addWidget(self.label_ausgew_gk)
+        # self.verticalLayout_scrollA_ausgew_gk = create_new_verticallayout(self.scrollAreaWidgetContents_ausgew_gk)
+        # # QtWidgets.QVBoxLayout(
+        # #     self.scrollAreaWidgetContents_ausgew_gk
+        # # )
+        # # self.verticalLayout_scrollA_ausgew_gk.setObjectName(
+        # #     "verticalLayout_scrollA_ausgew_gk"
+        # # )
+
+        # self.label_ausgew_gk = create_new_label(self.scrollArea_ausgew_gk, "", True)
+        # self.verticalLayout_scrollA_ausgew_gk.addWidget(self.label_ausgew_gk)
 
 
-        self.label_ausgew_gk_rest = create_new_label(self.scrollArea_ausgew_gk, "")
+        # self.label_ausgew_gk_rest = create_new_label(self.scrollArea_ausgew_gk, "")
 
-        self.verticalLayout_scrollA_ausgew_gk.addWidget(self.label_ausgew_gk_rest)
+        # self.verticalLayout_scrollA_ausgew_gk.addWidget(self.label_ausgew_gk_rest)
 
-        self.scrollArea_ausgew_gk.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.scrollArea_ausgew_gk.setWidget(self.scrollAreaWidgetContents_ausgew_gk)
-        self.verticalLayout_2.addWidget(self.scrollArea_ausgew_gk)
+        # self.scrollArea_ausgew_gk.setFrameShape(QtWidgets.QFrame.NoFrame)
+        # self.scrollArea_ausgew_gk.setWidget(self.scrollAreaWidgetContents_ausgew_gk)
+        # self.verticalLayout_2.addWidget(self.scrollArea_ausgew_gk)
 
-        self.gridLayout.addWidget(self.groupBox_ausgew_gk, 3, 1, 1, 1)
-
-
-        self.groupBox_titelsuche = create_new_groupbox(self.centralwidget, "Titelsuche:")
-        self.groupBox_titelsuche.setSizePolicy(SizePolicy_fixed_height)
-
-        # self.groupBox_titelsuche = QtWidgets.QGroupBox(self.centralwidget)
-        # self.groupBox_titelsuche.setObjectName(_fromUtf8("groupBox_titelsuche"))
-
-        # self.groupBox_titelsuche.setMaximumHeight(65)
-
-        self.gridLayout_10 = create_new_gridlayout(self.groupBox_titelsuche)
-        # QtWidgets.QGridLayout(self.groupBox_titelsuche)
-        # self.gridLayout_10.setObjectName(_fromUtf8("gridLayout_10"))
+        # self.gridLayout.addWidget(self.groupBox_ausgew_gk, 3, 1, 1, 1)
 
 
-        self.entry_suchbegriffe = create_new_lineedit(self.groupBox_titelsuche)
-        self.gridLayout_10.addWidget(self.entry_suchbegriffe, 0, 0, 1, 1)
+        # self.groupBox_titelsuche = create_new_groupbox(self.centralwidget, "Titelsuche:")
+        # self.groupBox_titelsuche.setSizePolicy(SizePolicy_fixed_height)
 
-        self.gridLayout.addWidget(self.groupBox_titelsuche, 4, 1, 1, 1, QtCore.Qt.AlignTop)
+        # # self.groupBox_titelsuche = QtWidgets.QGroupBox(self.centralwidget)
+        # # self.groupBox_titelsuche.setObjectName(_fromUtf8("groupBox_titelsuche"))
 
+        # # self.groupBox_titelsuche.setMaximumHeight(65)
 
-        self.groupBox_klassen = create_new_groupbox(self.centralwidget, "Themen Schulstufe")
-        self.gridLayout_14 = create_new_gridlayout(self.groupBox_klassen)
-
-
-        self.cb_k5 = create_new_checkbox(self.groupBox_klassen, "5. Klasse")
-        self.gridLayout_14.addWidget(self.cb_k5, 0, 0, 1, 1)
-
-        self.cb_k6 = create_new_checkbox(self.groupBox_klassen, "6. Klasse")
-        self.gridLayout_14.addWidget(self.cb_k6, 1, 0, 1, 1)
-
-        self.cb_k7 = create_new_checkbox(self.groupBox_klassen, "7. Klasse")
-        self.gridLayout_14.addWidget(self.cb_k7, 0, 1, 1, 1)
-
-        self.cb_k8 = create_new_checkbox(self.groupBox_klassen, "8. Klasse")
-        self.gridLayout_14.addWidget(self.cb_k8, 1, 1, 1, 1)
-
-        self.cb_matura = create_new_checkbox(self.groupBox_klassen, "Matura")
-        self.gridLayout_14.addWidget(self.cb_matura, 0, 2, 1, 1)
-
-        self.cb_univie = create_new_checkbox(self.groupBox_klassen, "Uni Wien")
-        self.cb_univie.setToolTip(
-        'Aufgaben mit dieser Kennzeichnung wurden im Rahmen einer Lehrveranstaltung auf der\nUniverstität Wien von Studiernden erstellt und von den Lehrveranstaltungsleitern evaluiert.'
-        )
-        self.gridLayout_14.addWidget(self.cb_univie, 1, 2, 1, 1)
-
-        self.gridLayout.addWidget(self.groupBox_klassen, 3, 0, 1, 1)
+        # self.gridLayout_10 = create_new_gridlayout(self.groupBox_titelsuche)
+        # # QtWidgets.QGridLayout(self.groupBox_titelsuche)
+        # # self.gridLayout_10.setObjectName(_fromUtf8("gridLayout_10"))
 
 
-        
-        self.horizontalLayout_2 = create_new_horizontallayout()
-        # QtWidgets.QHBoxLayout()
-        # self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
+        # self.entry_suchbegriffe = create_new_lineedit(self.groupBox_titelsuche)
+        # self.gridLayout_10.addWidget(self.entry_suchbegriffe, 0, 0, 1, 1)
 
-        self.cb_solution = create_new_checkbox(self.centralwidget, "Lösungen anzeigen", True)
-        self.horizontalLayout_2.addWidget(self.cb_solution, QtCore.Qt.AlignLeft)
-
-        self.cb_drafts = create_new_checkbox(self.centralwidget, "Entwürfe anzeigen")
-        self.horizontalLayout_2.addWidget(self.cb_drafts)
-        self.cb_drafts.toggled.connect(self.cb_drafts_enabled)
-
-        self.btn_suche = create_new_button(self.centralwidget,"Suche starten", partial(prepare_tex_for_pdf,self))
-        self.btn_suche.setShortcut(_translate("MainWindow", "Return", None))
-        self.horizontalLayout_2.addWidget(self.btn_suche)
-
-        self.gridLayout.addLayout(self.horizontalLayout_2, 5, 1, 1, 1)        
+        # self.gridLayout.addWidget(self.groupBox_titelsuche, 4, 1, 1, 1, QtCore.Qt.AlignTop)
 
 
-        self.horizontalLayout = QtWidgets.QHBoxLayout()
-        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
+        # self.groupBox_klassen = create_new_groupbox(self.centralwidget, "Themen Schulstufe")
+        # self.gridLayout_14 = create_new_gridlayout(self.groupBox_klassen)
 
 
-        self.label_update = create_new_label(self.centralwidget, "")
-        self.label_update.setMaximumHeight(18)
-        self.horizontalLayout.addWidget(self.label_update)
+        # self.cb_k5 = create_new_checkbox(self.groupBox_klassen, "5. Klasse")
+        # self.gridLayout_14.addWidget(self.cb_k5, 0, 0, 1, 1)
 
-        self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
+        # self.cb_k6 = create_new_checkbox(self.groupBox_klassen, "6. Klasse")
+        # self.gridLayout_14.addWidget(self.cb_k6, 1, 0, 1, 1)
 
+        # self.cb_k7 = create_new_checkbox(self.groupBox_klassen, "7. Klasse")
+        # self.gridLayout_14.addWidget(self.cb_k7, 0, 1, 1, 1)
 
-        self.horizontalLayout_combobox = create_new_horizontallayout()
-        # QtWidgets.QHBoxLayout()
-        # self.horizontalLayout_combobox.setObjectName(
-            # _fromUtf8("horizontalLayout_combobox")
+        # self.cb_k8 = create_new_checkbox(self.groupBox_klassen, "8. Klasse")
+        # self.gridLayout_14.addWidget(self.cb_k8, 1, 1, 1, 1)
+
+        # self.cb_matura = create_new_checkbox(self.groupBox_klassen, "Matura")
+        # self.gridLayout_14.addWidget(self.cb_matura, 0, 2, 1, 1)
+
+        # self.cb_univie = create_new_checkbox(self.groupBox_klassen, "Uni Wien")
+        # self.cb_univie.setToolTip(
+        # 'Aufgaben mit dieser Kennzeichnung wurden im Rahmen einer Lehrveranstaltung auf der\nUniverstität Wien von Studiernden erstellt und von den Lehrveranstaltungsleitern evaluiert.'
         # )
+        # self.gridLayout_14.addWidget(self.cb_univie, 1, 2, 1, 1)
 
-        self.label_aufgabentyp = create_new_label(self.centralwidget, "Aufgabentyp: Typ 1")
-        self.horizontalLayout_combobox.addWidget(self.label_aufgabentyp)
-
-        self.combobox_searchtype = create_new_combobox(self.centralwidget)
-        self.combobox_searchtype.setMinimumContentsLength(1)
-
-        add_new_option(self.combobox_searchtype, 0, "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten")
-        add_new_option(self.combobox_searchtype, 1, "Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten")
-
-        self.horizontalLayout_combobox.addWidget(self.combobox_searchtype)
-
-        self.gridLayout.addLayout(self.horizontalLayout_combobox, 0, 1, 1, 1)
-        self.combobox_searchtype.hide()
+        # self.gridLayout.addWidget(self.groupBox_klassen, 3, 0, 1, 1)
 
 
-        self.groupBox_themen_klasse = create_new_groupbox(self.centralwidget, "Themen Schulstufen")
-
-        self.verticalLayout = create_new_verticallayout(self.groupBox_themen_klasse) 
-        # QtWidgets.QVBoxLayout(self.groupBox_themen_klasse)
-        # self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.tab_widget_themen = QtWidgets.QTabWidget(self.groupBox_themen_klasse)
-        self.tab_widget_themen.setStyleSheet(StyleSheet_tabWiget)      
-        # self.tabWidget.setStyleSheet(set_color_text(white))
-
-        self.tab_widget_themen.setObjectName(_fromUtf8("tab_widget_themen"))
-        self.verticalLayout.addWidget(self.tab_widget_themen)
-
-        self.gridLayout.addWidget(self.groupBox_themen_klasse, 1, 0, 2, 1)
-
-        self.groupBox_gk = create_new_groupbox(self.centralwidget, "Grundkompetenzen")
-
-        self.gridLayout_11 = create_new_gridlayout(self.groupBox_gk)
         
-        # QtWidgets.QGridLayout(self.groupBox_gk)
-        # self.gridLayout_11.setObjectName(_fromUtf8("gridLayout_11"))
-        self.tab_widget_gk = QtWidgets.QTabWidget(self.groupBox_gk)
+        # self.horizontalLayout_2 = create_new_horizontallayout()
+        # # QtWidgets.QHBoxLayout()
+        # # self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
 
-        self.tab_widget_gk.setStyleSheet(StyleSheet_tabWiget)
-        # self.tab_widget_gk.setStyleSheet(_fromUtf8("color: {0}".format(white)))
-        # self.tab_widget_gk.setStyleSheet("QToolTip { color: white; background-color: rgb(47, 69, 80); border: 0px; }")
-        # ))
+        # self.cb_solution = create_new_checkbox(self.centralwidget, "Lösungen anzeigen", True)
+        # self.horizontalLayout_2.addWidget(self.cb_solution, QtCore.Qt.AlignLeft)
+
+        # self.cb_drafts = create_new_checkbox(self.centralwidget, "Entwürfe anzeigen")
+        # self.horizontalLayout_2.addWidget(self.cb_drafts)
+        # self.cb_drafts.toggled.connect(self.cb_drafts_enabled)
+
+        # self.btn_suche = create_new_button(self.centralwidget,"Suche starten", partial(prepare_tex_for_pdf,self))
+        # self.btn_suche.setShortcut(_translate("MainWindow", "Return", None))
+        # self.horizontalLayout_2.addWidget(self.btn_suche)
+
+        # self.gridLayout.addLayout(self.horizontalLayout_2, 5, 1, 1, 1)        
+
+
+        # self.horizontalLayout = QtWidgets.QHBoxLayout()
+        # self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
+
+
+        # self.label_update = create_new_label(self.centralwidget, "")
+        # self.label_update.setMaximumHeight(18)
+        # self.horizontalLayout.addWidget(self.label_update)
+
+        # self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
+
+
+        # self.horizontalLayout_combobox = create_new_horizontallayout()
+        # # QtWidgets.QHBoxLayout()
+        # # self.horizontalLayout_combobox.setObjectName(
+        #     # _fromUtf8("horizontalLayout_combobox")
+        # # )
+
+        # self.label_aufgabentyp = create_new_label(self.centralwidget, "Aufgabentyp: Typ 1")
+        # self.horizontalLayout_combobox.addWidget(self.label_aufgabentyp)
+
+        # self.combobox_searchtype = create_new_combobox(self.centralwidget)
+        # self.combobox_searchtype.setMinimumContentsLength(1)
+
+        # add_new_option(self.combobox_searchtype, 0, "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten")
+        # add_new_option(self.combobox_searchtype, 1, "Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten")
+
+        # self.horizontalLayout_combobox.addWidget(self.combobox_searchtype)
+
+        # self.gridLayout.addLayout(self.horizontalLayout_combobox, 0, 1, 1, 1)
+        # self.combobox_searchtype.hide()
+
+
+        # self.groupBox_themen_klasse = create_new_groupbox(self.centralwidget, "Themen Schulstufen")
+
+        # self.verticalLayout = create_new_verticallayout(self.groupBox_themen_klasse) 
+        # # QtWidgets.QVBoxLayout(self.groupBox_themen_klasse)
+        # # self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
+        # self.tab_widget_themen = QtWidgets.QTabWidget(self.groupBox_themen_klasse)
+        # self.tab_widget_themen.setStyleSheet(StyleSheet_tabWiget)      
+        # # self.tabWidget.setStyleSheet(set_color_text(white))
+
+        # self.tab_widget_themen.setObjectName(_fromUtf8("tab_widget_themen"))
+        # self.verticalLayout.addWidget(self.tab_widget_themen)
+
+        # self.gridLayout.addWidget(self.groupBox_themen_klasse, 1, 0, 2, 1)
+
+        # self.groupBox_gk = create_new_groupbox(self.centralwidget, "Grundkompetenzen")
+
+        # self.gridLayout_11 = create_new_gridlayout(self.groupBox_gk)
         
-            # 
-        #  print(gray.red())
-        self.tab_widget_gk.setObjectName(_fromUtf8("tab_widget_gk"))
+        # # QtWidgets.QGridLayout(self.groupBox_gk)
+        # # self.gridLayout_11.setObjectName(_fromUtf8("gridLayout_11"))
+        # self.tab_widget_gk = QtWidgets.QTabWidget(self.groupBox_gk)
 
-        #### AG #####
-        self.create_tab_checkboxes_gk(self.tab_widget_gk, "Algebra und Geometrie", ag_beschreibung, 'search')
-
-        ### FA ###
-        self.create_tab_checkboxes_gk(self.tab_widget_gk,"Funktionale Abhängigkeiten", fa_beschreibung, 'search')
-
-        ### AN ###
-        self.create_tab_checkboxes_gk(self.tab_widget_gk,"Analysis", an_beschreibung, 'search')
-
-        ### WS ###
-        self.create_tab_checkboxes_gk(self.tab_widget_gk,"Wahrscheinlichkeit und Statistik", ws_beschreibung, 'search')
+        # self.tab_widget_gk.setStyleSheet(StyleSheet_tabWiget)
+        # # self.tab_widget_gk.setStyleSheet(_fromUtf8("color: {0}".format(white)))
+        # # self.tab_widget_gk.setStyleSheet("QToolTip { color: white; background-color: rgb(47, 69, 80); border: 0px; }")
+        # # ))
         
-        ######### Klassenthemen
-        ### K5
-        self.create_tab_checkboxes_themen(self.tab_widget_themen, "k5", "search")
+        #     # 
+        # #  print(gray.red())
+        # self.tab_widget_gk.setObjectName(_fromUtf8("tab_widget_gk"))
 
-        ### K6
-        self.create_tab_checkboxes_themen(self.tab_widget_themen, "k6", "search")
+        # #### AG #####
+        # self.create_tab_checkboxes_gk(self.tab_widget_gk, "Algebra und Geometrie", ag_beschreibung, 'search')
 
-        ### K7
-        self.create_tab_checkboxes_themen(self.tab_widget_themen, "k7", "search")
+        # ### FA ###
+        # self.create_tab_checkboxes_gk(self.tab_widget_gk,"Funktionale Abhängigkeiten", fa_beschreibung, 'search')
 
-        ### K8
-        self.create_tab_checkboxes_themen(self.tab_widget_themen, "k8", "search")
+        # ### AN ###
+        # self.create_tab_checkboxes_gk(self.tab_widget_gk,"Analysis", an_beschreibung, 'search')
 
-        #### Warnung ### Hinweis ####
-        self.label_warnung = QtWidgets.QLabel(self.centralwidget)
-        self.label_warnung.setWordWrap(True)
-        self.label_warnung.setObjectName(_fromUtf8("label_warnung"))
-        color=get_color(red)
-        self.label_warnung.setStyleSheet(_fromUtf8("border: 2px solid {};".format(color))) #background-color: rgb(195, 58, 63)
-        #self.label_warnung.setMaximumSize(QtCore.QSize(375, 16777215))
-        self.label_warnung.setText(_translate("MainWindow", "Achtung: Aufgrund neuer hilfreicher Befehle ist es notwendig, ein Update des srdp-mathematik-Pakets so bald wie möglich durchzuführen! Nähere Infos unter: lama.schule/update", None))
-        self.gridLayout.addWidget(self.label_warnung, 5,0,1,1)
+        # ### WS ###
+        # self.create_tab_checkboxes_gk(self.tab_widget_gk,"Wahrscheinlichkeit und Statistik", ws_beschreibung, 'search')
+        
+        # ######### Klassenthemen
+        # ### K5
+        # self.create_tab_checkboxes_themen(self.tab_widget_themen, "k5", "search")
+
+        # ### K6
+        # self.create_tab_checkboxes_themen(self.tab_widget_themen, "k6", "search")
+
+        # ### K7
+        # self.create_tab_checkboxes_themen(self.tab_widget_themen, "k7", "search")
+
+        # ### K8
+        # self.create_tab_checkboxes_themen(self.tab_widget_themen, "k8", "search")
+
+        # #### Warnung ### Hinweis ####
+        # self.label_warnung = QtWidgets.QLabel(self.centralwidget)
+        # self.label_warnung.setWordWrap(True)
+        # self.label_warnung.setObjectName(_fromUtf8("label_warnung"))
+        # color=get_color(red)
+        # self.label_warnung.setStyleSheet(_fromUtf8("border: 2px solid {};".format(color))) #background-color: rgb(195, 58, 63)
+        # #self.label_warnung.setMaximumSize(QtCore.QSize(375, 16777215))
+        # self.label_warnung.setText(_translate("MainWindow", "Achtung: Aufgrund neuer hilfreicher Befehle ist es notwendig, ein Update des srdp-mathematik-Pakets so bald wie möglich durchzuführen! Nähere Infos unter: lama.schule/update", None))
+        # self.gridLayout.addWidget(self.label_warnung, 5,0,1,1)
         ##########################
 
 #         # ##################################################################
