@@ -535,51 +535,51 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.groupBox_ausgew_gk, 3, 1, 1, 1)
 
 
-        # self.groupBox_titelsuche = create_new_groupbox(self.centralwidget, "Titelsuche:")
-        # self.groupBox_titelsuche.setSizePolicy(SizePolicy_fixed_height)
+        self.groupBox_titelsuche = create_new_groupbox(self.centralwidget, "Titelsuche:")
+        self.groupBox_titelsuche.setSizePolicy(SizePolicy_fixed_height)
 
-        # # self.groupBox_titelsuche = QtWidgets.QGroupBox(self.centralwidget)
-        # # self.groupBox_titelsuche.setObjectName(_fromUtf8("groupBox_titelsuche"))
+        # self.groupBox_titelsuche = QtWidgets.QGroupBox(self.centralwidget)
+        # self.groupBox_titelsuche.setObjectName(_fromUtf8("groupBox_titelsuche"))
 
-        # # self.groupBox_titelsuche.setMaximumHeight(65)
+        # self.groupBox_titelsuche.setMaximumHeight(65)
 
-        # self.gridLayout_10 = create_new_gridlayout(self.groupBox_titelsuche)
-        # # QtWidgets.QGridLayout(self.groupBox_titelsuche)
-        # # self.gridLayout_10.setObjectName(_fromUtf8("gridLayout_10"))
-
-
-        # self.entry_suchbegriffe = create_new_lineedit(self.groupBox_titelsuche)
-        # self.gridLayout_10.addWidget(self.entry_suchbegriffe, 0, 0, 1, 1)
-
-        # self.gridLayout.addWidget(self.groupBox_titelsuche, 4, 1, 1, 1, QtCore.Qt.AlignTop)
+        self.gridLayout_10 = create_new_gridlayout(self.groupBox_titelsuche)
+        # QtWidgets.QGridLayout(self.groupBox_titelsuche)
+        # self.gridLayout_10.setObjectName(_fromUtf8("gridLayout_10"))
 
 
-        # self.groupBox_klassen = create_new_groupbox(self.centralwidget, "Themen Schulstufe")
-        # self.gridLayout_14 = create_new_gridlayout(self.groupBox_klassen)
+        self.entry_suchbegriffe = create_new_lineedit(self.groupBox_titelsuche)
+        self.gridLayout_10.addWidget(self.entry_suchbegriffe, 0, 0, 1, 1)
+
+        self.gridLayout.addWidget(self.groupBox_titelsuche, 4, 1, 1, 1, QtCore.Qt.AlignTop)
 
 
-        # self.cb_k5 = create_new_checkbox(self.groupBox_klassen, "5. Klasse")
-        # self.gridLayout_14.addWidget(self.cb_k5, 0, 0, 1, 1)
+        self.groupBox_klassen = create_new_groupbox(self.centralwidget, "Themen Schulstufe")
+        self.gridLayout_14 = create_new_gridlayout(self.groupBox_klassen)
 
-        # self.cb_k6 = create_new_checkbox(self.groupBox_klassen, "6. Klasse")
-        # self.gridLayout_14.addWidget(self.cb_k6, 1, 0, 1, 1)
 
-        # self.cb_k7 = create_new_checkbox(self.groupBox_klassen, "7. Klasse")
-        # self.gridLayout_14.addWidget(self.cb_k7, 0, 1, 1, 1)
+        self.cb_k5 = create_new_checkbox(self.groupBox_klassen, "5. Klasse")
+        self.gridLayout_14.addWidget(self.cb_k5, 0, 0, 1, 1)
 
-        # self.cb_k8 = create_new_checkbox(self.groupBox_klassen, "8. Klasse")
-        # self.gridLayout_14.addWidget(self.cb_k8, 1, 1, 1, 1)
+        self.cb_k6 = create_new_checkbox(self.groupBox_klassen, "6. Klasse")
+        self.gridLayout_14.addWidget(self.cb_k6, 1, 0, 1, 1)
 
-        # self.cb_matura = create_new_checkbox(self.groupBox_klassen, "Matura")
-        # self.gridLayout_14.addWidget(self.cb_matura, 0, 2, 1, 1)
+        self.cb_k7 = create_new_checkbox(self.groupBox_klassen, "7. Klasse")
+        self.gridLayout_14.addWidget(self.cb_k7, 0, 1, 1, 1)
 
-        # self.cb_univie = create_new_checkbox(self.groupBox_klassen, "Uni Wien")
-        # self.cb_univie.setToolTip(
-        # 'Aufgaben mit dieser Kennzeichnung wurden im Rahmen einer Lehrveranstaltung auf der\nUniverstität Wien von Studiernden erstellt und von den Lehrveranstaltungsleitern evaluiert.'
-        # )
-        # self.gridLayout_14.addWidget(self.cb_univie, 1, 2, 1, 1)
+        self.cb_k8 = create_new_checkbox(self.groupBox_klassen, "8. Klasse")
+        self.gridLayout_14.addWidget(self.cb_k8, 1, 1, 1, 1)
 
-        # self.gridLayout.addWidget(self.groupBox_klassen, 3, 0, 1, 1)
+        self.cb_matura = create_new_checkbox(self.groupBox_klassen, "Matura")
+        self.gridLayout_14.addWidget(self.cb_matura, 0, 2, 1, 1)
+
+        self.cb_univie = create_new_checkbox(self.groupBox_klassen, "Uni Wien")
+        self.cb_univie.setToolTip(
+        'Aufgaben mit dieser Kennzeichnung wurden im Rahmen einer Lehrveranstaltung auf der\nUniverstität Wien von Studiernden erstellt und von den Lehrveranstaltungsleitern evaluiert.'
+        )
+        self.gridLayout_14.addWidget(self.cb_univie, 1, 2, 1, 1)
+
+        self.gridLayout.addWidget(self.groupBox_klassen, 3, 0, 1, 1)
 
 
         
