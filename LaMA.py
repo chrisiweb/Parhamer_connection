@@ -664,7 +664,7 @@ class Ui_MainWindow(object):
         #  print(gray.red())
         self.tab_widget_gk.setObjectName(_fromUtf8("tab_widget_gk"))
 
-        #### AG #####
+        # #### AG #####
         self.create_tab_checkboxes_gk(self.tab_widget_gk, "Algebra und Geometrie", ag_beschreibung, 'search')
 
         ### FA ###
@@ -698,7 +698,7 @@ class Ui_MainWindow(object):
         #self.label_warnung.setMaximumSize(QtCore.QSize(375, 16777215))
         self.label_warnung.setText(_translate("MainWindow", "Achtung: Aufgrund neuer hilfreicher Befehle ist es notwendig, ein Update des srdp-mathematik-Pakets so bald wie möglich durchzuführen! Nähere Infos unter: lama.schule/update", None))
         self.gridLayout.addWidget(self.label_warnung, 5,0,1,1)
-        ##########################
+        #########################
 
         ##################################################################
         ################ LAMA CRIA SEARCH #################################
@@ -718,11 +718,10 @@ class Ui_MainWindow(object):
         # self.tabWidget_klassen_cria.setFocusPolicy(QtCore.Qt.NoFocus)
 
 
-        spacerItem_cria = QtWidgets.QSpacerItem(
-            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
-        )
+        # spacerItem_cria = QtWidgets.QSpacerItem(
+        #     20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        # )
         for klasse in list_klassen:
-            # name='tab_{0}'.format(klasse)
             new_tab = add_new_tab(self.tabWidget_klassen_cria, "{}. Klasse".format(klasse[1]))
             new_tab.setStyleSheet(StyleSheet_new_tab)
             new_gridlayout = QtWidgets.QGridLayout(new_tab)
@@ -744,8 +743,6 @@ class Ui_MainWindow(object):
             
             
             group_radiobutton = QtWidgets.QButtonGroup()
-            # label_group='group_radiobutton_klasse_{0}'.format(klasse)
-            # self.dict_widget_variables[label_group]=group_radiobutton
             for kapitel in dict_klasse_name:
                 new_radiobutton = create_new_radiobutton(new_scrollareacontent, dict_klasse_name[kapitel] + " (" + kapitel + ")")
                 new_verticallayout.addWidget(new_radiobutton)
@@ -757,9 +754,9 @@ class Ui_MainWindow(object):
                 self.dict_widget_variables[label]=new_radiobutton
 
 
+            new_verticallayout.addStretch()
 
-
-            new_verticallayout.addItem(spacerItem_cria)
+            # new_verticallayout.addItem(spacerItem_cria)
 
             new_scrollarea.setWidget(new_scrollareacontent)
 
@@ -864,10 +861,10 @@ class Ui_MainWindow(object):
             _translate("MainWindow", "Themengebiete",None)
         )
         self.groupBox_themengebiete_cria.hide()
-
-        self.spacerItem_unterkapitel_creator_cria = QtWidgets.QSpacerItem(
-            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
-        )
+############
+        # self.spacerItem_unterkapitel_creator_cria = QtWidgets.QSpacerItem(
+        #     20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        # )
 
         for klasse in list_klassen:
             name='tab_{0}'.format(klasse)
@@ -915,17 +912,16 @@ class Ui_MainWindow(object):
                 self.dict_widget_variables['checkbox_unterkapitel_creator_{0}_{1}_{2}'.format(klasse, kapitel, unterkapitel)]=new_checkbox
                 new_verticallayout.addWidget(new_checkbox)
                 new_checkbox.setFocusPolicy(QtCore.Qt.NoFocus)
-          
 
-            new_verticallayout.addItem(self.spacerItem_unterkapitel_creator_cria)
+            new_verticallayout.addStretch()
+            # new_verticallayout.addItem(self.spacerItem_unterkapitel_creator_cria)
 
             new_scrollarea.setWidget(new_scrollareacontent)
 
             new_gridlayout.addWidget(new_scrollarea, 5,0,1,1)
 
 
-#################################
-        
+# #################################
 
 
         self.groupBox_ausgew_gk_cr = create_new_groupbox(self.centralwidget, "Ausgewählte Grundkompetenzen")
@@ -1133,10 +1129,7 @@ class Ui_MainWindow(object):
         )
         self.groupBox_klassen_cr.hide()
 
-        # spacerItem_creator = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        # self.gridLayout.addItem(spacerItem_creator, 0,5, 1, 1)
-        # spacerItem_creator.hide()
-
+        self.gridLayout.setRowStretch(5, 1)
 
 
         self.groupBox_titel_cr = QtWidgets.QGroupBox(self.centralwidget)
@@ -1219,10 +1212,10 @@ class Ui_MainWindow(object):
         # MainWindow.setTabOrder(self.plainTextEdit, self.lineEdit_quelle)
         # MainWindow.setTabOrder(self.lineEdit_quelle, self.comboBox_aufgabentyp_cr)
 
-        ####################################################
-        #####################################################
-        ################# LaMA SAGE ####################
-        #####################################################
+#         ####################################################
+#         #####################################################
+#         ################# LaMA SAGE ####################
+#         #####################################################
 
         self.splitter_sage = QtWidgets.QSplitter(self.centralwidget)
         self.splitter_sage.setOrientation(QtCore.Qt.Horizontal)
@@ -1889,10 +1882,10 @@ class Ui_MainWindow(object):
         self.pushButton_send.clicked.connect(self.pushButton_send_pressed)
         self.pushButton_send.hide()
 
-        ####################################################################
-        #####################################################################
-        ######################################################################
-        #####################################################################
+#         ####################################################################
+#         #####################################################################
+#         ######################################################################
+#         #####################################################################
 
         self.gridLayout_11.addWidget(self.tab_widget_gk, 0, 0, 1, 1)
         self.gridLayout.addWidget(self.groupBox_gk, 1, 1, 2, 1)
@@ -1900,8 +1893,7 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
         MainWindow.setStatusBar(self.statusbar)
-        # self.actionReset = QtWidgets.QAction(MainWindow)
-        # self.actionReset.setObjectName(_fromUtf8("actionReset"))
+
 
         self.retranslateUi(MainWindow)
         self.tab_widget_themen.setCurrentIndex(0)
@@ -1909,15 +1901,15 @@ class Ui_MainWindow(object):
         self.tab_widget_gk_cr.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-        ############################################################################
-        ############## Commands ####################################################
-        ############################################################################
+#         ############################################################################
+#         ############## Commands ####################################################
+#         ############################################################################
 
-        # self.btn_refreshddb.clicked.connect(self.refresh_ddb)
-        # self.btn_k5.clicked.connect(self.btn_k5_pressed)
-        # self.btn_k6.clicked.connect(self.btn_k6_pressed)
-        # self.btn_k7.clicked.connect(self.btn_k7_pressed)
-        # self.btn_k8.clicked.connect(self.btn_k8_pressed)
+#         # self.btn_refreshddb.clicked.connect(self.refresh_ddb)
+#         # self.btn_k5.clicked.connect(self.btn_k5_pressed)
+#         # self.btn_k6.clicked.connect(self.btn_k6_pressed)
+#         # self.btn_k7.clicked.connect(self.btn_k7_pressed)
+#         # self.btn_k8.clicked.connect(self.btn_k8_pressed)
 
 
         self.comboBox_aufgabentyp_cr.currentIndexChanged.connect(
@@ -2209,7 +2201,7 @@ class Ui_MainWindow(object):
         scrollarea.setWidgetResizable(True)
         scrollarea.setObjectName("{}".format(scrollarea))
 
-        scrollareacontent = QtWidgets.QWidget()
+        scrollareacontent = QtWidgets.QWidget(scrollarea)
         scrollareacontent.setGeometry(QtCore.QRect(0, 0, 641, 252))
         scrollareacontent.setObjectName("{}".format(scrollareacontent))
         gridLayout_scrollarea = create_new_gridlayout(scrollareacontent)    
@@ -2229,13 +2221,10 @@ class Ui_MainWindow(object):
             )
 
         scrollarea.setFrameShape(QtWidgets.QFrame.NoFrame)
-        scrollarea.setWidget(scrollareacontent)
+        scrollarea.setWidget(scrollareacontent)      
         gridlayout.addWidget(scrollarea, 1, 0, 7, 1)
 
     def create_list_of_all_gk_checkboxes(self, parent, layout, mode, chosen_dictionary):
-        spacerItem = QtWidgets.QSpacerItem(
-            10, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        )
         row = 0
         column = 0
         if mode=='creator':       
@@ -2259,13 +2248,10 @@ class Ui_MainWindow(object):
             if row > max_row:
                 row = 0
                 column += 1
-                layout.addItem(spacerItem, row, column, 1, 1)
-                column += 1
             else:
                 row += 1
-        # print(column)
-        spacerItem_right = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        layout.addItem(spacerItem_right, 0, column+1, 1, 1)
+        
+        layout.setColumnStretch(column, 1)
         
         return row, column
 
