@@ -2261,7 +2261,7 @@ class Ui_MainWindow(object):
             else:
                 row += 1
         # # print(column)
-        spacerItem_right = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        # spacerItem_right = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         # layout.addItem(spacerItem_right, 0, column+1, 1, 1)
         
         return row, column
