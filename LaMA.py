@@ -667,38 +667,38 @@ class Ui_MainWindow(object):
         # #### AG #####
         self.create_tab_checkboxes_gk(self.tab_widget_gk, "Algebra und Geometrie", ag_beschreibung, 'search')
 
-        # ### FA ###
-        # self.create_tab_checkboxes_gk(self.tab_widget_gk,"Funktionale Abhängigkeiten", fa_beschreibung, 'search')
+        ### FA ###
+        self.create_tab_checkboxes_gk(self.tab_widget_gk,"Funktionale Abhängigkeiten", fa_beschreibung, 'search')
 
-        # ### AN ###
-        # self.create_tab_checkboxes_gk(self.tab_widget_gk,"Analysis", an_beschreibung, 'search')
+        ### AN ###
+        self.create_tab_checkboxes_gk(self.tab_widget_gk,"Analysis", an_beschreibung, 'search')
 
-        # ### WS ###
-        # self.create_tab_checkboxes_gk(self.tab_widget_gk,"Wahrscheinlichkeit und Statistik", ws_beschreibung, 'search')
+        ### WS ###
+        self.create_tab_checkboxes_gk(self.tab_widget_gk,"Wahrscheinlichkeit und Statistik", ws_beschreibung, 'search')
         
-        # ######### Klassenthemen
-        # ### K5
-        # self.create_tab_checkboxes_themen(self.tab_widget_themen, "k5", "search")
+        ######### Klassenthemen
+        ### K5
+        self.create_tab_checkboxes_themen(self.tab_widget_themen, "k5", "search")
 
-        # ### K6
-        # self.create_tab_checkboxes_themen(self.tab_widget_themen, "k6", "search")
+        ### K6
+        self.create_tab_checkboxes_themen(self.tab_widget_themen, "k6", "search")
 
-        # ### K7
-        # self.create_tab_checkboxes_themen(self.tab_widget_themen, "k7", "search")
+        ### K7
+        self.create_tab_checkboxes_themen(self.tab_widget_themen, "k7", "search")
 
-        # ### K8
-        # self.create_tab_checkboxes_themen(self.tab_widget_themen, "k8", "search")
+        ### K8
+        self.create_tab_checkboxes_themen(self.tab_widget_themen, "k8", "search")
 
-        # #### Warnung ### Hinweis ####
-        # self.label_warnung = QtWidgets.QLabel(self.centralwidget)
-        # self.label_warnung.setWordWrap(True)
-        # self.label_warnung.setObjectName(_fromUtf8("label_warnung"))
-        # color=get_color(red)
-        # self.label_warnung.setStyleSheet(_fromUtf8("border: 2px solid {};".format(color))) #background-color: rgb(195, 58, 63)
-        # #self.label_warnung.setMaximumSize(QtCore.QSize(375, 16777215))
-        # self.label_warnung.setText(_translate("MainWindow", "Achtung: Aufgrund neuer hilfreicher Befehle ist es notwendig, ein Update des srdp-mathematik-Pakets so bald wie möglich durchzuführen! Nähere Infos unter: lama.schule/update", None))
-        # self.gridLayout.addWidget(self.label_warnung, 5,0,1,1)
-        ##########################
+        #### Warnung ### Hinweis ####
+        self.label_warnung = QtWidgets.QLabel(self.centralwidget)
+        self.label_warnung.setWordWrap(True)
+        self.label_warnung.setObjectName(_fromUtf8("label_warnung"))
+        color=get_color(red)
+        self.label_warnung.setStyleSheet(_fromUtf8("border: 2px solid {};".format(color))) #background-color: rgb(195, 58, 63)
+        #self.label_warnung.setMaximumSize(QtCore.QSize(375, 16777215))
+        self.label_warnung.setText(_translate("MainWindow", "Achtung: Aufgrund neuer hilfreicher Befehle ist es notwendig, ein Update des srdp-mathematik-Pakets so bald wie möglich durchzuführen! Nähere Infos unter: lama.schule/update", None))
+        self.gridLayout.addWidget(self.label_warnung, 5,0,1,1)
+        #########################
 
 #         # ##################################################################
 #         # ################ LAMA CRIA SEARCH #################################
@@ -2230,10 +2230,6 @@ class Ui_MainWindow(object):
         gridlayout.addWidget(scrollarea, 1, 0, 7, 1)
 
     def create_list_of_all_gk_checkboxes(self, parent, layout, mode, chosen_dictionary):
-        # spacerItem = QtWidgets.QSpacerItem(
-        #     10, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        # )
-        
         row = 0
         column = 0
         if mode=='creator':       
@@ -2257,15 +2253,10 @@ class Ui_MainWindow(object):
             if row > max_row:
                 row = 0
                 column += 1
-                # layout.addItem(spacerItem, row, column, 1, 1)
-                # column += 1
             else:
                 row += 1
         
         layout.setColumnStretch(column, 1)
-        # # print(column)
-        # spacerItem_right = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        # layout.addItem(spacerItem_right, 0, column+1, 1, 1)
         
         return row, column
 
