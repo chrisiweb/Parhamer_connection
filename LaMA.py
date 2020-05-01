@@ -583,54 +583,54 @@ class Ui_MainWindow(object):
 
 
         
-        # self.horizontalLayout_2 = create_new_horizontallayout()
-        # # QtWidgets.QHBoxLayout()
-        # # self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
+        self.horizontalLayout_2 = create_new_horizontallayout()
+        # QtWidgets.QHBoxLayout()
+        # self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
 
-        # self.cb_solution = create_new_checkbox(self.centralwidget, "Lösungen anzeigen", True)
-        # self.horizontalLayout_2.addWidget(self.cb_solution, QtCore.Qt.AlignLeft)
+        self.cb_solution = create_new_checkbox(self.centralwidget, "Lösungen anzeigen", True)
+        self.horizontalLayout_2.addWidget(self.cb_solution, QtCore.Qt.AlignLeft)
 
-        # self.cb_drafts = create_new_checkbox(self.centralwidget, "Entwürfe anzeigen")
-        # self.horizontalLayout_2.addWidget(self.cb_drafts)
-        # self.cb_drafts.toggled.connect(self.cb_drafts_enabled)
+        self.cb_drafts = create_new_checkbox(self.centralwidget, "Entwürfe anzeigen")
+        self.horizontalLayout_2.addWidget(self.cb_drafts)
+        self.cb_drafts.toggled.connect(self.cb_drafts_enabled)
 
-        # self.btn_suche = create_new_button(self.centralwidget,"Suche starten", partial(prepare_tex_for_pdf,self))
-        # self.btn_suche.setShortcut(_translate("MainWindow", "Return", None))
-        # self.horizontalLayout_2.addWidget(self.btn_suche)
+        self.btn_suche = create_new_button(self.centralwidget,"Suche starten", partial(prepare_tex_for_pdf,self))
+        self.btn_suche.setShortcut(_translate("MainWindow", "Return", None))
+        self.horizontalLayout_2.addWidget(self.btn_suche)
 
-        # self.gridLayout.addLayout(self.horizontalLayout_2, 5, 1, 1, 1)        
-
-
-        # self.horizontalLayout = QtWidgets.QHBoxLayout()
-        # self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
+        self.gridLayout.addLayout(self.horizontalLayout_2, 5, 1, 1, 1)        
 
 
-        # self.label_update = create_new_label(self.centralwidget, "")
-        # self.label_update.setMaximumHeight(18)
-        # self.horizontalLayout.addWidget(self.label_update)
-
-        # self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
 
 
-        # self.horizontalLayout_combobox = create_new_horizontallayout()
-        # # QtWidgets.QHBoxLayout()
-        # # self.horizontalLayout_combobox.setObjectName(
-        #     # _fromUtf8("horizontalLayout_combobox")
-        # # )
+        self.label_update = create_new_label(self.centralwidget, "")
+        self.label_update.setMaximumHeight(18)
+        self.horizontalLayout.addWidget(self.label_update)
 
-        # self.label_aufgabentyp = create_new_label(self.centralwidget, "Aufgabentyp: Typ 1")
-        # self.horizontalLayout_combobox.addWidget(self.label_aufgabentyp)
+        self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
 
-        # self.combobox_searchtype = create_new_combobox(self.centralwidget)
-        # self.combobox_searchtype.setMinimumContentsLength(1)
 
-        # add_new_option(self.combobox_searchtype, 0, "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten")
-        # add_new_option(self.combobox_searchtype, 1, "Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten")
+        self.horizontalLayout_combobox = create_new_horizontallayout()
+        # QtWidgets.QHBoxLayout()
+        # self.horizontalLayout_combobox.setObjectName(
+            # _fromUtf8("horizontalLayout_combobox")
+        # )
 
-        # self.horizontalLayout_combobox.addWidget(self.combobox_searchtype)
+        self.label_aufgabentyp = create_new_label(self.centralwidget, "Aufgabentyp: Typ 1")
+        self.horizontalLayout_combobox.addWidget(self.label_aufgabentyp)
 
-        # self.gridLayout.addLayout(self.horizontalLayout_combobox, 0, 1, 1, 1)
-        # self.combobox_searchtype.hide()
+        self.combobox_searchtype = create_new_combobox(self.centralwidget)
+        self.combobox_searchtype.setMinimumContentsLength(1)
+
+        add_new_option(self.combobox_searchtype, 0, "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten")
+        add_new_option(self.combobox_searchtype, 1, "Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten")
+
+        self.horizontalLayout_combobox.addWidget(self.combobox_searchtype)
+
+        self.gridLayout.addLayout(self.horizontalLayout_combobox, 0, 1, 1, 1)
+        self.combobox_searchtype.hide()
 
 
         # self.groupBox_themen_klasse = create_new_groupbox(self.centralwidget, "Themen Schulstufen")
