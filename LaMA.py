@@ -1504,153 +1504,153 @@ class Ui_MainWindow(object):
         self.gridLayout_5.addWidget(self.scrollArea_chosen, 5, 0, 1, 6)
 
 
-#         self.groupBox_notenschl = create_new_groupbox(self.groupBox_sage, "Notenschlüssel")
-#         # QtWidgets.QGroupBox(self.groupBox_sage)
-#         # self.groupBox_notenschl.setObjectName("groupBox_notenschl")
-#         self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_notenschl)
-#         self.gridLayout_6.setObjectName("gridLayout_6")
+        self.groupBox_notenschl = create_new_groupbox(self.groupBox_sage, "Notenschlüssel")
+        # QtWidgets.QGroupBox(self.groupBox_sage)
+        # self.groupBox_notenschl.setObjectName("groupBox_notenschl")
+        self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_notenschl)
+        self.gridLayout_6.setObjectName("gridLayout_6")
 
-#         self.label_sg = create_new_label(self.groupBox_notenschl,"Sehr Gut:")
-#         self.label_sg.setSizePolicy(SizePolicy_fixed)
-#         self.gridLayout_6.addWidget(self.label_sg,0,0,1,1)
-#         self.spinBox_2 = create_new_spinbox(self.groupBox_notenschl, 91)
-#         self.spinBox_2.setSizePolicy(SizePolicy_fixed)
-#         self.spinBox_2.valueChanged.connect(self.update_punkte)
-#         self.gridLayout_6.addWidget(self.spinBox_2,0,1,1,1)
-#         self.label_sg_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
-#         self.gridLayout_6.addWidget(self.label_sg_pkt,0,2,1,1)
-
-
-#         self.label_g = create_new_label(self.groupBox_notenschl,"Gut:")
-#         self.label_g.setSizePolicy(SizePolicy_fixed)
-#         self.gridLayout_6.addWidget(self.label_g,0,3,1,1)
-#         self.spinBox_3 = create_new_spinbox(self.groupBox_notenschl, 80)
-#         self.spinBox_3.setSizePolicy(SizePolicy_fixed)
-#         self.spinBox_3.valueChanged.connect(self.update_punkte)
-#         self.gridLayout_6.addWidget(self.spinBox_3,0,4,1,1)
-#         self.label_g_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
-#         self.gridLayout_6.addWidget(self.label_g_pkt,0,5,1,1)
+        self.label_sg = create_new_label(self.groupBox_notenschl,"Sehr Gut:")
+        self.label_sg.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout_6.addWidget(self.label_sg,0,0,1,1)
+        self.spinBox_2 = create_new_spinbox(self.groupBox_notenschl, 91)
+        self.spinBox_2.setSizePolicy(SizePolicy_fixed)
+        self.spinBox_2.valueChanged.connect(self.update_punkte)
+        self.gridLayout_6.addWidget(self.spinBox_2,0,1,1,1)
+        self.label_sg_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
+        self.gridLayout_6.addWidget(self.label_sg_pkt,0,2,1,1)
 
 
-#         self.label_b = create_new_label(self.groupBox_notenschl,"Befriedigend:")
-#         self.label_b.setSizePolicy(SizePolicy_fixed)
-#         self.gridLayout_6.addWidget(self.label_b,1,0,1,1)
-#         self.spinBox_4 = create_new_spinbox(self.groupBox_notenschl, 64)
-#         self.spinBox_4.setSizePolicy(SizePolicy_fixed)
-#         self.spinBox_4.valueChanged.connect(self.update_punkte)
-#         self.gridLayout_6.addWidget(self.spinBox_4,1,1,1,1)
-#         self.label_b_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
-#         self.gridLayout_6.addWidget(self.label_b_pkt,1,2,1,1)
+        self.label_g = create_new_label(self.groupBox_notenschl,"Gut:")
+        self.label_g.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout_6.addWidget(self.label_g,0,3,1,1)
+        self.spinBox_3 = create_new_spinbox(self.groupBox_notenschl, 80)
+        self.spinBox_3.setSizePolicy(SizePolicy_fixed)
+        self.spinBox_3.valueChanged.connect(self.update_punkte)
+        self.gridLayout_6.addWidget(self.spinBox_3,0,4,1,1)
+        self.label_g_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
+        self.gridLayout_6.addWidget(self.label_g_pkt,0,5,1,1)
 
-#         self.label_g_2 = create_new_label(self.groupBox_notenschl,"Genügend:")
-#         self.label_g_2.setSizePolicy(SizePolicy_fixed)
-#         self.gridLayout_6.addWidget(self.label_g_2,1,3,1,1)
-#         self.spinBox_5 = create_new_spinbox(self.groupBox_notenschl, 50)
-#         self.spinBox_5.setSizePolicy(SizePolicy_fixed)
-#         self.spinBox_5.valueChanged.connect(self.update_punkte)
-#         self.gridLayout_6.addWidget(self.spinBox_5,1,4,1,1)
-#         self.label_g_2_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
-#         self.gridLayout_6.addWidget(self.label_g_2_pkt,1,5,1,1)
 
-#         self.gridLayout_5.addWidget(self.groupBox_notenschl, 6, 0, 1, 6)
+        self.label_b = create_new_label(self.groupBox_notenschl,"Befriedigend:")
+        self.label_b.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout_6.addWidget(self.label_b,1,0,1,1)
+        self.spinBox_4 = create_new_spinbox(self.groupBox_notenschl, 64)
+        self.spinBox_4.setSizePolicy(SizePolicy_fixed)
+        self.spinBox_4.valueChanged.connect(self.update_punkte)
+        self.gridLayout_6.addWidget(self.spinBox_4,1,1,1,1)
+        self.label_b_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
+        self.gridLayout_6.addWidget(self.label_b_pkt,1,2,1,1)
 
-#         ### Groupbox Beurteilungsraster #####
+        self.label_g_2 = create_new_label(self.groupBox_notenschl,"Genügend:")
+        self.label_g_2.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout_6.addWidget(self.label_g_2,1,3,1,1)
+        self.spinBox_5 = create_new_spinbox(self.groupBox_notenschl, 50)
+        self.spinBox_5.setSizePolicy(SizePolicy_fixed)
+        self.spinBox_5.valueChanged.connect(self.update_punkte)
+        self.gridLayout_6.addWidget(self.spinBox_5,1,4,1,1)
+        self.label_g_2_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
+        self.gridLayout_6.addWidget(self.label_g_2_pkt,1,5,1,1)
 
-#         self.groupBox_beurteilungsraster = QtWidgets.QGroupBox(self.groupBox_sage)
-#         self.groupBox_beurteilungsraster.setObjectName("groupBox_beurteilungsraster")
-#         self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_beurteilungsraster)
-#         self.gridLayout_6.setObjectName("gridLayout_6")
+        self.gridLayout_5.addWidget(self.groupBox_notenschl, 6, 0, 1, 6)
 
-#         self.label_typ1_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsraster)
-#         self.label_typ1_pkt.setObjectName("label_typ1_pkt")
-#         self.gridLayout_6.addWidget(self.label_typ1_pkt, 0, 0, 1, 2)
-#         # self.label_typ1_pkt.setText(_translate("MainWindow", "Punkte Typ 1: 0",None))
+        ### Groupbox Beurteilungsraster #####
 
-#         self.label_typ2_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsraster)
-#         self.label_typ2_pkt.setObjectName("label_typ2_pkt")
-#         self.gridLayout_6.addWidget(self.label_typ2_pkt, 1, 0, 1, 2)
+        self.groupBox_beurteilungsraster = QtWidgets.QGroupBox(self.groupBox_sage)
+        self.groupBox_beurteilungsraster.setObjectName("groupBox_beurteilungsraster")
+        self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_beurteilungsraster)
+        self.gridLayout_6.setObjectName("gridLayout_6")
 
-#         self.groupBox_beurteilungsraster.setTitle(
-#             _translate("MainWindow", "Beurteilungsraster", None)
-#         )
+        self.label_typ1_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsraster)
+        self.label_typ1_pkt.setObjectName("label_typ1_pkt")
+        self.gridLayout_6.addWidget(self.label_typ1_pkt, 0, 0, 1, 2)
+        # self.label_typ1_pkt.setText(_translate("MainWindow", "Punkte Typ 1: 0",None))
+
+        self.label_typ2_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsraster)
+        self.label_typ2_pkt.setObjectName("label_typ2_pkt")
+        self.gridLayout_6.addWidget(self.label_typ2_pkt, 1, 0, 1, 2)
+
+        self.groupBox_beurteilungsraster.setTitle(
+            _translate("MainWindow", "Beurteilungsraster", None)
+        )
                     
-#         self.gridLayout_5.addWidget(self.groupBox_beurteilungsraster, 6, 0, 1, 6)
-#         self.groupBox_beurteilungsraster.hide()
+        self.gridLayout_5.addWidget(self.groupBox_beurteilungsraster, 6, 0, 1, 6)
+        self.groupBox_beurteilungsraster.hide()
 
-#         ### Zusammenfassung d. SA ###
-#         if self.chosen_program == 'lama':
-#             label = "Anzahl der Aufgaben: 0 (Typ1: 0 / Typ2: 0)"
-#             # self.label_gesamtbeispiele.setText(
-#             #     _translate(
-#             #         "MainWindow", "Anzahl der Aufgaben: 0\n(Typ1: 0 / Typ2: 0)", None
-#             #     )
-#             # )
-#         if self.chosen_program == 'cria':
-#             label = "Anzahl der Aufgaben: 0"
-#             # self.label_gesamtbeispiele.setText(
-#             #     _translate(
-#             #         "MainWindow",
-#             #         "Anzahl der Aufgaben: 0",None))
-
-
-#         self.label_gesamtbeispiele = create_new_label(self.groupBox_sage, label, True)
-#         # QtWidgets.QLabel(self.groupBox_sage)
-#         self.gridLayout_5.addWidget(self.label_gesamtbeispiele, 7, 0, 1, 3)
-#         # self.label_gesamtbeispiele.setObjectName("label_gesamtbeispiele")
+        ### Zusammenfassung d. SA ###
+        if self.chosen_program == 'lama':
+            label = "Anzahl der Aufgaben: 0 (Typ1: 0 / Typ2: 0)"
+            # self.label_gesamtbeispiele.setText(
+            #     _translate(
+            #         "MainWindow", "Anzahl der Aufgaben: 0\n(Typ1: 0 / Typ2: 0)", None
+            #     )
+            # )
+        if self.chosen_program == 'cria':
+            label = "Anzahl der Aufgaben: 0"
+            # self.label_gesamtbeispiele.setText(
+            #     _translate(
+            #         "MainWindow",
+            #         "Anzahl der Aufgaben: 0",None))
 
 
-#         self.label_gesamtpunkte = QtWidgets.QLabel(self.groupBox_sage)
-#         self.gridLayout_5.addWidget(self.label_gesamtpunkte, 8, 0, 1, 2)
-#         self.label_gesamtpunkte.setObjectName("label_gesamtpunkte")
-#         self.label_gesamtpunkte.setText(
-#             _translate("MainWindow", "Gesamtpunkte: 0", None)
-#         )
+        self.label_gesamtbeispiele = create_new_label(self.groupBox_sage, label, True)
+        # QtWidgets.QLabel(self.groupBox_sage)
+        self.gridLayout_5.addWidget(self.label_gesamtbeispiele, 7, 0, 1, 3)
+        # self.label_gesamtbeispiele.setObjectName("label_gesamtbeispiele")
 
-#         self.cb_solution_sage = QtWidgets.QCheckBox(self.centralwidget)
-#         self.cb_solution_sage.setObjectName(_fromUtf8("cb_solution"))
-#         self.cb_solution_sage.setText(
-#             _translate("MainWindow", "Lösungen anzeigen", None)
-#         )
-#         self.cb_solution_sage.setChecked(True)
-#         self.cb_solution_sage.setSizePolicy(SizePolicy_fixed)
-#         self.cb_solution_sage.setFocusPolicy(QtCore.Qt.ClickFocus)
-#         self.gridLayout_5.addWidget(
-#             self.cb_solution_sage, 7, 4, 1, 1)
 
-#         self.cb_drafts_sage = QtWidgets.QCheckBox(self.centralwidget)
-#         self.cb_drafts_sage.setSizePolicy(SizePolicy_fixed)
-#         self.cb_drafts_sage.setObjectName(_fromUtf8("cb_drafts_sage"))
-#         self.gridLayout_5.addWidget(self.cb_drafts_sage, 8, 4, 1, 1)
-#         self.cb_drafts_sage.setText(_translate("MainWindow", "Entwürfe anzeigen", None))
-#         # self.horizontalLayout_2.addWidget(self.cb_drafts_sage)
-#         self.cb_drafts_sage.toggled.connect(self.cb_drafts_sage_enabled)
+        self.label_gesamtpunkte = QtWidgets.QLabel(self.groupBox_sage)
+        self.gridLayout_5.addWidget(self.label_gesamtpunkte, 8, 0, 1, 2)
+        self.label_gesamtpunkte.setObjectName("label_gesamtpunkte")
+        self.label_gesamtpunkte.setText(
+            _translate("MainWindow", "Gesamtpunkte: 0", None)
+        )
 
-#         self.pushButton_vorschau = QtWidgets.QPushButton(self.groupBox_sage)
-#         self.pushButton_vorschau.setSizePolicy(SizePolicy_fixed)
-#         # self.pushButton_vorschau.setMaximumSize(QtCore.QSize(90, 16777215))
-#         self.pushButton_vorschau.setObjectName("pushButton_vorschau")
-#         self.pushButton_vorschau.setText(_translate("MainWindow", "Vorschau", None))
-#         self.pushButton_vorschau.setShortcut(_translate("MainWindow", "Return", None))
-#         self.gridLayout_5.addWidget(
-#             self.pushButton_vorschau, 7, 5, 1, 1, QtCore.Qt.AlignRight)
-#         self.pushButton_vorschau.clicked.connect(
-#             partial(self.pushButton_vorschau_pressed, "vorschau")
-#         )
-#         self.pushButton_vorschau.setFocusPolicy(QtCore.Qt.ClickFocus)
-#         # self.gridLayout.addWidget(self.groupBox_sage, 1, 2, 8, 3)
-#         self.gridLayout.addWidget(self.splitter_sage, 0, 0, 8, 2)
-#         self.pushButton_erstellen = QtWidgets.QPushButton(self.groupBox_sage)
-#         self.pushButton_erstellen.setSizePolicy(SizePolicy_fixed)
-#         self.pushButton_erstellen.setObjectName("pushButton_erstellen")
-#         self.pushButton_erstellen.setText(_translate("MainWindow", "Erstellen", None))
-#         self.pushButton_erstellen.setFocusPolicy(QtCore.Qt.ClickFocus)
-#         self.pushButton_erstellen.clicked.connect(self.pushButton_erstellen_pressed)
-#         self.gridLayout_5.addWidget(
-#             self.pushButton_erstellen, 8, 5, 1, 1, QtCore.Qt.AlignRight
-#         )
-#         self.groupBox_sage.hide()
-#         self.splitter_sage.hide()
-#         self.comboBox_klassen_changed("sage")
+        self.cb_solution_sage = QtWidgets.QCheckBox(self.centralwidget)
+        self.cb_solution_sage.setObjectName(_fromUtf8("cb_solution"))
+        self.cb_solution_sage.setText(
+            _translate("MainWindow", "Lösungen anzeigen", None)
+        )
+        self.cb_solution_sage.setChecked(True)
+        self.cb_solution_sage.setSizePolicy(SizePolicy_fixed)
+        self.cb_solution_sage.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.gridLayout_5.addWidget(
+            self.cb_solution_sage, 7, 4, 1, 1)
+
+        self.cb_drafts_sage = QtWidgets.QCheckBox(self.centralwidget)
+        self.cb_drafts_sage.setSizePolicy(SizePolicy_fixed)
+        self.cb_drafts_sage.setObjectName(_fromUtf8("cb_drafts_sage"))
+        self.gridLayout_5.addWidget(self.cb_drafts_sage, 8, 4, 1, 1)
+        self.cb_drafts_sage.setText(_translate("MainWindow", "Entwürfe anzeigen", None))
+        # self.horizontalLayout_2.addWidget(self.cb_drafts_sage)
+        self.cb_drafts_sage.toggled.connect(self.cb_drafts_sage_enabled)
+
+        self.pushButton_vorschau = QtWidgets.QPushButton(self.groupBox_sage)
+        self.pushButton_vorschau.setSizePolicy(SizePolicy_fixed)
+        # self.pushButton_vorschau.setMaximumSize(QtCore.QSize(90, 16777215))
+        self.pushButton_vorschau.setObjectName("pushButton_vorschau")
+        self.pushButton_vorschau.setText(_translate("MainWindow", "Vorschau", None))
+        self.pushButton_vorschau.setShortcut(_translate("MainWindow", "Return", None))
+        self.gridLayout_5.addWidget(
+            self.pushButton_vorschau, 7, 5, 1, 1, QtCore.Qt.AlignRight)
+        self.pushButton_vorschau.clicked.connect(
+            partial(self.pushButton_vorschau_pressed, "vorschau")
+        )
+        self.pushButton_vorschau.setFocusPolicy(QtCore.Qt.ClickFocus)
+        # self.gridLayout.addWidget(self.groupBox_sage, 1, 2, 8, 3)
+        self.gridLayout.addWidget(self.splitter_sage, 0, 0, 8, 2)
+        self.pushButton_erstellen = QtWidgets.QPushButton(self.groupBox_sage)
+        self.pushButton_erstellen.setSizePolicy(SizePolicy_fixed)
+        self.pushButton_erstellen.setObjectName("pushButton_erstellen")
+        self.pushButton_erstellen.setText(_translate("MainWindow", "Erstellen", None))
+        self.pushButton_erstellen.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.pushButton_erstellen.clicked.connect(self.pushButton_erstellen_pressed)
+        self.gridLayout_5.addWidget(
+            self.pushButton_erstellen, 8, 5, 1, 1, QtCore.Qt.AlignRight
+        )
+        self.groupBox_sage.hide()
+        self.splitter_sage.hide()
+        self.comboBox_klassen_changed("sage")
 
 #         ################################################################
 #         ################################################################
