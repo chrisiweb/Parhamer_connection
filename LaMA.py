@@ -912,8 +912,8 @@ class Ui_MainWindow(object):
                 self.dict_widget_variables['checkbox_unterkapitel_creator_{0}_{1}_{2}'.format(klasse, kapitel, unterkapitel)]=new_checkbox
                 new_verticallayout.addWidget(new_checkbox)
                 new_checkbox.setFocusPolicy(QtCore.Qt.NoFocus)
-          
 
+            new_verticallayout.addStretch()
             # new_verticallayout.addItem(self.spacerItem_unterkapitel_creator_cria)
 
             new_scrollarea.setWidget(new_scrollareacontent)
@@ -922,75 +922,74 @@ class Ui_MainWindow(object):
 
 
 # #################################
+
+
+        self.groupBox_ausgew_gk_cr = create_new_groupbox(self.centralwidget, "Ausgewählte Grundkompetenzen")
+        self.groupBox_ausgew_gk_cr.setMaximumWidth(500)
         
+        # self.groupBox_ausgew_gk_cr.setsizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum))
+        # self.groupBox_ausgew_gk_cr.setMinimumSize(QtCore.QSize(350, 0))
+        # self.groupBox_ausgew_gk_cr.setSizePolicy(SizePolicy_maximum_height)
 
 
-#         self.groupBox_ausgew_gk_cr = create_new_groupbox(self.centralwidget, "Ausgewählte Grundkompetenzen")
-#         self.groupBox_ausgew_gk_cr.setMaximumWidth(500)
-        
-#         # self.groupBox_ausgew_gk_cr.setsizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum))
-#         # self.groupBox_ausgew_gk_cr.setMinimumSize(QtCore.QSize(350, 0))
-#         # self.groupBox_ausgew_gk_cr.setSizePolicy(SizePolicy_maximum_height)
+        self.verticalLayout_2 = create_new_verticallayout(self.groupBox_ausgew_gk_cr)
 
+        # QtWidgets.QVBoxLayout(self.groupBox_ausgew_gk_cr)
+        # self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
 
-#         self.verticalLayout_2 = create_new_verticallayout(self.groupBox_ausgew_gk_cr)
+        self.label_ausgew_gk_creator = create_new_label(self.groupBox_ausgew_gk_cr, "", True)
+        # self.label_ausgew_gk_creator.setSizePolicy(SizePolicy_maximum_width)
+        # self.label_ausgew_gk_creator.setSizePolicy(SizePolicy_fixed_height)
+        # self.label_ausgew_gk_creator.setSizePolicy(SizePolicy_fixed_width)  
+        # QtWidgets.QLabel(self.groupBox_ausgew_gk_cr)
+        # self.label_ausgew_gk.setWordWrap(True)
+        # self.label_ausgew_gk.setObjectName(_fromUtf8("label_ausgew_gk"))
+        self.verticalLayout_2.addWidget(self.label_ausgew_gk_creator)
+        self.gridLayout.addWidget(self.groupBox_ausgew_gk_cr, 5, 0, 1, 1)
 
-#         # QtWidgets.QVBoxLayout(self.groupBox_ausgew_gk_cr)
-#         # self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
-
-#         self.label_ausgew_gk_creator = create_new_label(self.groupBox_ausgew_gk_cr, "", True)
-#         # self.label_ausgew_gk_creator.setSizePolicy(SizePolicy_maximum_width)
-#         # self.label_ausgew_gk_creator.setSizePolicy(SizePolicy_fixed_height)
-#         # self.label_ausgew_gk_creator.setSizePolicy(SizePolicy_fixed_width)  
-#         # QtWidgets.QLabel(self.groupBox_ausgew_gk_cr)
-#         # self.label_ausgew_gk.setWordWrap(True)
-#         # self.label_ausgew_gk.setObjectName(_fromUtf8("label_ausgew_gk"))
-#         self.verticalLayout_2.addWidget(self.label_ausgew_gk_creator)
-#         self.gridLayout.addWidget(self.groupBox_ausgew_gk_cr, 5, 0, 1, 1)
-
-#         # self.label_ausgew_gk.setText(_translate("MainWindow", "", None))
-#         self.groupBox_ausgew_gk_cr.hide()
+        # self.label_ausgew_gk.setText(_translate("MainWindow", "", None))
+        self.groupBox_ausgew_gk_cr.hide()
 
         
-#         self.groupBox_bilder = create_new_groupbox(self.centralwidget, "Bilder (klicken, um Bilder zu entfernen)")
-#         self.groupBox_bilder.setMaximumWidth(500)
-#         self.groupBox_bilder.setSizePolicy(SizePolicy_maximum_height)
-#         # QtWidgets.QGroupBox(self.centralwidget)
-#         #self.groupBox_bilder.setMaximumWidth(500)
-#         # self.groupBox_bilder.setSizePolicy(SizePolicy_maximum_height)
-#         # self.groupBox_bilder.setMaximumSize(QtCore.QSize(500, 110))
-#         # self.groupBox_bilder.setObjectName(_fromUtf8("groupBox_bilder"))
-#         # self.groupBox_bilder.setMaximumWidth(500)
-#         self.gridLayout_13 = QtWidgets.QGridLayout(self.groupBox_bilder)
-#         self.gridLayout_13.setObjectName(_fromUtf8("gridLayout_13"))
-#         self.scrollArea = QtWidgets.QScrollArea(self.groupBox_bilder)
-#         self.scrollArea.setWidgetResizable(True)
-#         self.scrollArea.setObjectName(_fromUtf8("scrollArea"))
-#         self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
-#         self.scrollArea.setFocusPolicy(QtCore.Qt.NoFocus)
-#         self.scrollAreaWidgetContents_bilder = QtWidgets.QWidget()
-#         # self.scrollAreaWidgetContents_bilder.setFocusPolicy(QtCore.Qt.NoFocus)
-#         # self.scrollAreaWidgetContents_bilder.setGeometry(QtCore.QRect(0, 0, 320, 40))
-#         self.scrollAreaWidgetContents_bilder.setObjectName(
-#             _fromUtf8("scrollAreaWidgetContents_bilder")
-#         )
-#         self.verticalLayout = QtWidgets.QVBoxLayout(
-#             self.scrollAreaWidgetContents_bilder
-#         )
-#         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-#         self.scrollArea.setWidget(self.scrollAreaWidgetContents_bilder)
-#         self.gridLayout_13.addWidget(self.scrollArea, 1, 0, 1, 1)
-#         self.groupBox_bilder.setTitle(
-#             _translate("MainWindow", "Bilder (klicken, um Bilder zu entfernen)", None)
-#         )
+        self.groupBox_bilder = create_new_groupbox(self.centralwidget, "Bilder (klicken, um Bilder zu entfernen)")
+        self.groupBox_bilder.setMaximumWidth(500)
+        self.groupBox_bilder.setSizePolicy(SizePolicy_maximum_height)
+        # QtWidgets.QGroupBox(self.centralwidget)
+        #self.groupBox_bilder.setMaximumWidth(500)
+        # self.groupBox_bilder.setSizePolicy(SizePolicy_maximum_height)
+        # self.groupBox_bilder.setMaximumSize(QtCore.QSize(500, 110))
+        # self.groupBox_bilder.setObjectName(_fromUtf8("groupBox_bilder"))
+        # self.groupBox_bilder.setMaximumWidth(500)
+        self.gridLayout_13 = QtWidgets.QGridLayout(self.groupBox_bilder)
+        self.gridLayout_13.setObjectName(_fromUtf8("gridLayout_13"))
+        self.scrollArea = QtWidgets.QScrollArea(self.groupBox_bilder)
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollArea.setObjectName(_fromUtf8("scrollArea"))
+        self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.scrollArea.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.scrollAreaWidgetContents_bilder = QtWidgets.QWidget()
+        # self.scrollAreaWidgetContents_bilder.setFocusPolicy(QtCore.Qt.NoFocus)
+        # self.scrollAreaWidgetContents_bilder.setGeometry(QtCore.QRect(0, 0, 320, 40))
+        self.scrollAreaWidgetContents_bilder.setObjectName(
+            _fromUtf8("scrollAreaWidgetContents_bilder")
+        )
+        self.verticalLayout = QtWidgets.QVBoxLayout(
+            self.scrollAreaWidgetContents_bilder
+        )
+        self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents_bilder)
+        self.gridLayout_13.addWidget(self.scrollArea, 1, 0, 1, 1)
+        self.groupBox_bilder.setTitle(
+            _translate("MainWindow", "Bilder (klicken, um Bilder zu entfernen)", None)
+        )
 
-#         self.label_bild_leer = QtWidgets.QLabel(self.scrollAreaWidgetContents_bilder)
-#         self.label_bild_leer.setObjectName(_fromUtf8("label_bild_leer"))
-#         self.verticalLayout.addWidget(self.label_bild_leer)
-#         self.label_bild_leer.setText(_translate("MainWindow", "", None))
-#         self.label_bild_leer.setFocusPolicy(QtCore.Qt.NoFocus)
-#         self.gridLayout.addWidget(self.groupBox_bilder, 6, 0, 1, 1)
-#         self.groupBox_bilder.hide()
+        self.label_bild_leer = QtWidgets.QLabel(self.scrollAreaWidgetContents_bilder)
+        self.label_bild_leer.setObjectName(_fromUtf8("label_bild_leer"))
+        self.verticalLayout.addWidget(self.label_bild_leer)
+        self.label_bild_leer.setText(_translate("MainWindow", "", None))
+        self.label_bild_leer.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.gridLayout.addWidget(self.groupBox_bilder, 6, 0, 1, 1)
+        self.groupBox_bilder.hide()
 
 #         #### CREATE CHECKBOXES ####
 #         ##### AG #####
