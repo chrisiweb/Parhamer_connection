@@ -721,55 +721,49 @@ class Ui_MainWindow(object):
         spacerItem_cria = QtWidgets.QSpacerItem(
             20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
         )
-        for klasse in list_klassen:
-            # name='tab_{0}'.format(klasse)
-            new_tab = add_new_tab(self.tabWidget_klassen_cria, "{}. Klasse".format(klasse[1]))
-            new_tab.setStyleSheet(StyleSheet_new_tab)
-            new_gridlayout = QtWidgets.QGridLayout(new_tab)
-            new_gridlayout.setObjectName("{}".format(new_gridlayout))
+        # for klasse in list_klassen:
+        #     new_tab = add_new_tab(self.tabWidget_klassen_cria, "{}. Klasse".format(klasse[1]))
+        #     new_tab.setStyleSheet(StyleSheet_new_tab)
+        #     new_gridlayout = QtWidgets.QGridLayout(new_tab)
+        #     new_gridlayout.setObjectName("{}".format(new_gridlayout))
             
 
-            new_scrollarea = QtWidgets.QScrollArea(new_tab)
-            new_scrollarea.setObjectName("{}".format(new_scrollarea))
-            new_scrollarea.setFrameShape(QtWidgets.QFrame.NoFrame)
-            new_scrollarea.setWidgetResizable(True)
-            new_scrollareacontent = QtWidgets.QWidget()
-            new_scrollareacontent.setGeometry(QtCore.QRect(0, 0, 264, 235))
-            new_scrollareacontent.setObjectName("{}".format(new_scrollareacontent))
+        #     new_scrollarea = QtWidgets.QScrollArea(new_tab)
+        #     new_scrollarea.setObjectName("{}".format(new_scrollarea))
+        #     new_scrollarea.setFrameShape(QtWidgets.QFrame.NoFrame)
+        #     new_scrollarea.setWidgetResizable(True)
+        #     new_scrollareacontent = QtWidgets.QWidget()
+        #     new_scrollareacontent.setGeometry(QtCore.QRect(0, 0, 264, 235))
+        #     new_scrollareacontent.setObjectName("{}".format(new_scrollareacontent))
 
-            new_verticallayout = QtWidgets.QVBoxLayout(new_scrollareacontent)
-            new_verticallayout.setObjectName("{}".format(new_verticallayout))
+        #     new_verticallayout = QtWidgets.QVBoxLayout(new_scrollareacontent)
+        #     new_verticallayout.setObjectName("{}".format(new_verticallayout))
 
-            dict_klasse_name = eval("dict_{}_name".format(klasse))
+        #     dict_klasse_name = eval("dict_{}_name".format(klasse))
             
             
-            group_radiobutton = QtWidgets.QButtonGroup()
-            # label_group='group_radiobutton_klasse_{0}'.format(klasse)
-            # self.dict_widget_variables[label_group]=group_radiobutton
-            for kapitel in dict_klasse_name:
-                new_radiobutton = create_new_radiobutton(new_scrollareacontent, dict_klasse_name[kapitel] + " (" + kapitel + ")")
-                new_verticallayout.addWidget(new_radiobutton)
-                new_radiobutton.toggled.connect(
-                    partial(self.chosen_radiobutton, klasse, kapitel)
-                )
-                group_radiobutton.addButton(new_radiobutton)
-                label = 'radiobutton_kapitel_{0}_{1}'.format(klasse, kapitel)
-                self.dict_widget_variables[label]=new_radiobutton
+        #     group_radiobutton = QtWidgets.QButtonGroup()
+        #     for kapitel in dict_klasse_name:
+        #         new_radiobutton = create_new_radiobutton(new_scrollareacontent, dict_klasse_name[kapitel] + " (" + kapitel + ")")
+        #         new_verticallayout.addWidget(new_radiobutton)
+        #         new_radiobutton.toggled.connect(
+        #             partial(self.chosen_radiobutton, klasse, kapitel)
+        #         )
+        #         group_radiobutton.addButton(new_radiobutton)
+        #         label = 'radiobutton_kapitel_{0}_{1}'.format(klasse, kapitel)
+        #         self.dict_widget_variables[label]=new_radiobutton
 
 
 
 
-            new_verticallayout.addItem(spacerItem_cria)
+        #     new_verticallayout.addItem(spacerItem_cria)
 
-            new_scrollarea.setWidget(new_scrollareacontent)
+        #     new_scrollarea.setWidget(new_scrollareacontent)
 
-            new_gridlayout.addWidget(new_scrollarea, 5,0,1,1)
+        #     new_gridlayout.addWidget(new_scrollarea, 5,0,1,1)
 
 
         self.groupBox_unterkapitel_cria = QtWidgets.QGroupBox(self.centralwidget)
-        # self.groupBox_unterkapitel_cria.setStyleSheet(
-        #     "background-color: rgb(217, 255, 215);"
-        # )
         self.groupBox_unterkapitel_cria.setObjectName("groupBox_unterkapitel_cria")
         self.groupBox_unterkapitel_cria.setTitle(_translate("MainWindow", "Unterkapitel",None))
         self.gridLayout_11_cria = QtWidgets.QGridLayout(self.groupBox_unterkapitel_cria)
