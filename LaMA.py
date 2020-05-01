@@ -2230,9 +2230,9 @@ class Ui_MainWindow(object):
         gridlayout.addWidget(scrollarea, 1, 0, 7, 1)
 
     def create_list_of_all_gk_checkboxes(self, parent, layout, mode, chosen_dictionary):
-        # spacerItem = QtWidgets.QSpacerItem(
-        #     10, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        # )
+        spacerItem = QtWidgets.QSpacerItem(
+            10, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         row = 0
         column = 0
         if mode=='creator':       
