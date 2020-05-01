@@ -2216,18 +2216,18 @@ class Ui_MainWindow(object):
         row, column = self.create_list_of_all_gk_checkboxes(scrollareacontent, gridLayout_scrollarea, mode, chosen_dictionary)
 
 
-        # if mode=='search':
-        #     button_check_all = create_new_button(scrollarea, "alle auswählen", partial(self.button_all_checkboxes_pressed,chosen_dictionary, 'gk'))
-        #     button_check_all.setStyleSheet("background-color: {}; ".format(get_color(blue_3)))
-        #     button_check_all.setSizePolicy(SizePolicy_fixed)
+        if mode=='search':
+            button_check_all = create_new_button(scrollarea, "alle auswählen", partial(self.button_all_checkboxes_pressed,chosen_dictionary, 'gk'))
+            button_check_all.setStyleSheet("background-color: {}; ".format(get_color(blue_3)))
+            button_check_all.setSizePolicy(SizePolicy_fixed)
 
-        #     gridLayout_scrollarea.addWidget(
-        #         button_check_all, 10, column, 1, 1, QtCore.Qt.AlignRight
-        #     )
+            gridLayout_scrollarea.addWidget(
+                button_check_all, 10, column, 1, 1, QtCore.Qt.AlignRight
+            )
 
-        scrollarea.setFrameShape(QtWidgets.QFrame.NoFrame)
-        # scrollarea.setWidget(scrollareacontent)
-        # gridlayout.addWidget(scrollarea, 1, 0, 7, 1)
+        # scrollarea.setFrameShape(QtWidgets.QFrame.NoFrame)
+        scrollarea.setWidget(scrollareacontent)
+        gridlayout.addWidget(scrollarea, 1, 0, 7, 1)
 
     def create_list_of_all_gk_checkboxes(self, parent, layout, mode, chosen_dictionary):
         spacerItem = QtWidgets.QSpacerItem(
