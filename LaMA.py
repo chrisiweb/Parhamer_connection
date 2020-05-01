@@ -665,7 +665,7 @@ class Ui_MainWindow(object):
         self.tab_widget_gk.setObjectName(_fromUtf8("tab_widget_gk"))
 
         # #### AG #####
-        # self.create_tab_checkboxes_gk(self.tab_widget_gk, "Algebra und Geometrie", ag_beschreibung, 'search')
+        self.create_tab_checkboxes_gk(self.tab_widget_gk, "Algebra und Geometrie", ag_beschreibung, 'search')
 
         # ### FA ###
         # self.create_tab_checkboxes_gk(self.tab_widget_gk,"Funktionale Abhängigkeiten", fa_beschreibung, 'search')
