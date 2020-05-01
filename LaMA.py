@@ -718,9 +718,9 @@ class Ui_MainWindow(object):
         # self.tabWidget_klassen_cria.setFocusPolicy(QtCore.Qt.NoFocus)
 
 
-        spacerItem_cria = QtWidgets.QSpacerItem(
-            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
-        )
+        # spacerItem_cria = QtWidgets.QSpacerItem(
+        #     20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        # )
         for klasse in list_klassen:
             new_tab = add_new_tab(self.tabWidget_klassen_cria, "{}. Klasse".format(klasse[1]))
             new_tab.setStyleSheet(StyleSheet_new_tab)
@@ -754,9 +754,9 @@ class Ui_MainWindow(object):
                 self.dict_widget_variables[label]=new_radiobutton
 
 
+            new_verticallayout.addStretch()
 
-
-            new_verticallayout.addItem(spacerItem_cria)
+            # new_verticallayout.addItem(spacerItem_cria)
 
             new_scrollarea.setWidget(new_scrollareacontent)
 
