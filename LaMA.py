@@ -721,93 +721,96 @@ class Ui_MainWindow(object):
         spacerItem_cria = QtWidgets.QSpacerItem(
             20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
         )
-        # for klasse in list_klassen:
-        #     new_tab = add_new_tab(self.tabWidget_klassen_cria, "{}. Klasse".format(klasse[1]))
-        #     new_tab.setStyleSheet(StyleSheet_new_tab)
-        #     new_gridlayout = QtWidgets.QGridLayout(new_tab)
-        #     new_gridlayout.setObjectName("{}".format(new_gridlayout))
+        for klasse in list_klassen:
+            # name='tab_{0}'.format(klasse)
+            new_tab = add_new_tab(self.tabWidget_klassen_cria, "{}. Klasse".format(klasse[1]))
+            new_tab.setStyleSheet(StyleSheet_new_tab)
+            new_gridlayout = QtWidgets.QGridLayout(new_tab)
+            new_gridlayout.setObjectName("{}".format(new_gridlayout))
             
 
-        #     new_scrollarea = QtWidgets.QScrollArea(new_tab)
-        #     new_scrollarea.setObjectName("{}".format(new_scrollarea))
-        #     new_scrollarea.setFrameShape(QtWidgets.QFrame.NoFrame)
-        #     new_scrollarea.setWidgetResizable(True)
-        #     new_scrollareacontent = QtWidgets.QWidget()
-        #     new_scrollareacontent.setGeometry(QtCore.QRect(0, 0, 264, 235))
-        #     new_scrollareacontent.setObjectName("{}".format(new_scrollareacontent))
+            new_scrollarea = QtWidgets.QScrollArea(new_tab)
+            new_scrollarea.setObjectName("{}".format(new_scrollarea))
+            new_scrollarea.setFrameShape(QtWidgets.QFrame.NoFrame)
+            new_scrollarea.setWidgetResizable(True)
+            new_scrollareacontent = QtWidgets.QWidget()
+            new_scrollareacontent.setGeometry(QtCore.QRect(0, 0, 264, 235))
+            new_scrollareacontent.setObjectName("{}".format(new_scrollareacontent))
 
-        #     new_verticallayout = QtWidgets.QVBoxLayout(new_scrollareacontent)
-        #     new_verticallayout.setObjectName("{}".format(new_verticallayout))
+            new_verticallayout = QtWidgets.QVBoxLayout(new_scrollareacontent)
+            new_verticallayout.setObjectName("{}".format(new_verticallayout))
 
-        #     dict_klasse_name = eval("dict_{}_name".format(klasse))
+            dict_klasse_name = eval("dict_{}_name".format(klasse))
             
             
-        #     group_radiobutton = QtWidgets.QButtonGroup()
-        #     for kapitel in dict_klasse_name:
-        #         new_radiobutton = create_new_radiobutton(new_scrollareacontent, dict_klasse_name[kapitel] + " (" + kapitel + ")")
-        #         new_verticallayout.addWidget(new_radiobutton)
-        #         new_radiobutton.toggled.connect(
-        #             partial(self.chosen_radiobutton, klasse, kapitel)
-        #         )
-        #         group_radiobutton.addButton(new_radiobutton)
-        #         label = 'radiobutton_kapitel_{0}_{1}'.format(klasse, kapitel)
-        #         self.dict_widget_variables[label]=new_radiobutton
+            group_radiobutton = QtWidgets.QButtonGroup()
+            # label_group='group_radiobutton_klasse_{0}'.format(klasse)
+            # self.dict_widget_variables[label_group]=group_radiobutton
+            for kapitel in dict_klasse_name:
+                new_radiobutton = create_new_radiobutton(new_scrollareacontent, dict_klasse_name[kapitel] + " (" + kapitel + ")")
+                new_verticallayout.addWidget(new_radiobutton)
+                new_radiobutton.toggled.connect(
+                    partial(self.chosen_radiobutton, klasse, kapitel)
+                )
+                group_radiobutton.addButton(new_radiobutton)
+                label = 'radiobutton_kapitel_{0}_{1}'.format(klasse, kapitel)
+                self.dict_widget_variables[label]=new_radiobutton
 
 
 
 
-        #     new_verticallayout.addItem(spacerItem_cria)
+            new_verticallayout.addItem(spacerItem_cria)
 
-        #     new_scrollarea.setWidget(new_scrollareacontent)
+            new_scrollarea.setWidget(new_scrollareacontent)
 
-        #     new_gridlayout.addWidget(new_scrollarea, 5,0,1,1)
-
-
-        # self.groupBox_unterkapitel_cria = QtWidgets.QGroupBox(self.centralwidget)
-        # self.groupBox_unterkapitel_cria.setObjectName("groupBox_unterkapitel_cria")
-        # self.groupBox_unterkapitel_cria.setTitle(_translate("MainWindow", "Unterkapitel",None))
-        # self.gridLayout_11_cria = QtWidgets.QGridLayout(self.groupBox_unterkapitel_cria)
-        # self.gridLayout_11_cria.setObjectName("gridLayout_11_cria")
-        # self.gridLayout.addWidget(self.groupBox_unterkapitel_cria, 1, 1, 2, 1)
-
-        # self.tabWidget_klassen_cria.currentChanged.connect(self.tabWidget_klassen_cria_changed)
-
-        # self.scrollArea_unterkapitel_cria = QtWidgets.QScrollArea(self.groupBox_unterkapitel_cria)
-        # self.scrollArea_unterkapitel_cria.setFrameShape(QtWidgets.QFrame.NoFrame)
-        # self.scrollArea_unterkapitel_cria.setWidgetResizable(True)
-        # self.scrollArea_unterkapitel_cria.setObjectName("scrollArea_unterkapitel")
-        # self.scrollArea_unterkapitel_cria.setStyleSheet("background-color: {}".format(get_color(blue_2)))
-        # self.scrollAreaWidgetContents_cria = QtWidgets.QWidget()
-        # self.scrollAreaWidgetContents_cria.setGeometry(QtCore.QRect(0, 0, 320, 279))
-        # self.scrollAreaWidgetContents_cria.setObjectName("scrollAreaWidgetContents_cria")
-        # self.verticalLayout_4_cria = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_cria)
-        # self.verticalLayout_4_cria.setObjectName("verticalLayout_4_cria")
-        # self.scrollArea_unterkapitel_cria.setWidget(self.scrollAreaWidgetContents_cria)
-        # self.gridLayout_11_cria.addWidget(self.scrollArea_unterkapitel_cria, 0, 0, 1, 1)
-
-        # self.label_unterkapitel_cria = create_new_label(self.scrollAreaWidgetContents_cria,"")
-        # self.label_unterkapitel_cria.setStyleSheet("padding-bottom: 15px")
-        # self.verticalLayout_4_cria.addWidget(self.label_unterkapitel_cria)
-
-        # self.create_all_checkboxes_unterkapitel()
+            new_gridlayout.addWidget(new_scrollarea, 5,0,1,1)
 
 
-        # self.verticalLayout_cria.addWidget(self.tabWidget_klassen_cria)
-        # self.gridLayout.addWidget(self.groupBox_schulstufe_cria, 1, 0, 2, 1)
-        # self.groupBox_ausgew_themen_cria = QtWidgets.QGroupBox(self.centralwidget)
-        # self.groupBox_ausgew_themen_cria.setObjectName("groupBox_ausgew_themen_cria")
-        # self.verticalLayout_2_cria = QtWidgets.QVBoxLayout(self.groupBox_ausgew_themen_cria)
-        # self.verticalLayout_2_cria.setObjectName("verticalLayout_2_cria")
-        # self.label_ausg_themen_cria = QtWidgets.QLabel(self.groupBox_ausgew_themen_cria)
-        # self.label_ausg_themen_cria.setWordWrap(False)
-        # self.label_ausg_themen_cria.setObjectName("label_ausg_themen_cria")
-        # self.label_ausg_themen_cria.setWordWrap(True)
-        # self.groupBox_ausgew_themen_cria.setTitle(_translate("MainWindow", "Ausgewählte Themen",None))
-        # self.groupBox_ausgew_themen_cria.hide()
-        # self.verticalLayout_2_cria.addWidget(self.label_ausg_themen_cria)
-        # self.gridLayout.addWidget(self.groupBox_ausgew_themen_cria, 3, 1, 1, 1)
-        # self.groupBox_schulstufe_cria.hide()
-        # self.groupBox_unterkapitel_cria.hide()
+        self.groupBox_unterkapitel_cria = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBox_unterkapitel_cria.setObjectName("groupBox_unterkapitel_cria")
+        self.groupBox_unterkapitel_cria.setTitle(_translate("MainWindow", "Unterkapitel",None))
+        self.gridLayout_11_cria = QtWidgets.QGridLayout(self.groupBox_unterkapitel_cria)
+        self.gridLayout_11_cria.setObjectName("gridLayout_11_cria")
+        self.gridLayout.addWidget(self.groupBox_unterkapitel_cria, 1, 1, 2, 1)
+
+        self.tabWidget_klassen_cria.currentChanged.connect(self.tabWidget_klassen_cria_changed)
+
+        self.scrollArea_unterkapitel_cria = QtWidgets.QScrollArea(self.groupBox_unterkapitel_cria)
+        self.scrollArea_unterkapitel_cria.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.scrollArea_unterkapitel_cria.setWidgetResizable(True)
+        self.scrollArea_unterkapitel_cria.setObjectName("scrollArea_unterkapitel")
+        self.scrollArea_unterkapitel_cria.setStyleSheet("background-color: {}".format(get_color(blue_2)))
+        self.scrollAreaWidgetContents_cria = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents_cria.setGeometry(QtCore.QRect(0, 0, 320, 279))
+        self.scrollAreaWidgetContents_cria.setObjectName("scrollAreaWidgetContents_cria")
+        self.verticalLayout_4_cria = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_cria)
+        self.verticalLayout_4_cria.setObjectName("verticalLayout_4_cria")
+        self.scrollArea_unterkapitel_cria.setWidget(self.scrollAreaWidgetContents_cria)
+        self.gridLayout_11_cria.addWidget(self.scrollArea_unterkapitel_cria, 0, 0, 1, 1)
+
+        self.label_unterkapitel_cria = create_new_label(self.scrollAreaWidgetContents_cria,"")
+        self.label_unterkapitel_cria.setStyleSheet("padding-bottom: 15px")
+        self.verticalLayout_4_cria.addWidget(self.label_unterkapitel_cria)
+
+        self.create_all_checkboxes_unterkapitel()
+
+
+        self.verticalLayout_cria.addWidget(self.tabWidget_klassen_cria)
+        self.gridLayout.addWidget(self.groupBox_schulstufe_cria, 1, 0, 2, 1)
+        self.groupBox_ausgew_themen_cria = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBox_ausgew_themen_cria.setObjectName("groupBox_ausgew_themen_cria")
+        self.verticalLayout_2_cria = QtWidgets.QVBoxLayout(self.groupBox_ausgew_themen_cria)
+        self.verticalLayout_2_cria.setObjectName("verticalLayout_2_cria")
+        self.label_ausg_themen_cria = QtWidgets.QLabel(self.groupBox_ausgew_themen_cria)
+        self.label_ausg_themen_cria.setWordWrap(False)
+        self.label_ausg_themen_cria.setObjectName("label_ausg_themen_cria")
+        self.label_ausg_themen_cria.setWordWrap(True)
+        self.groupBox_ausgew_themen_cria.setTitle(_translate("MainWindow", "Ausgewählte Themen",None))
+        self.groupBox_ausgew_themen_cria.hide()
+        self.verticalLayout_2_cria.addWidget(self.label_ausg_themen_cria)
+        self.gridLayout.addWidget(self.groupBox_ausgew_themen_cria, 3, 1, 1, 1)
+        self.groupBox_schulstufe_cria.hide()
+        self.groupBox_unterkapitel_cria.hide()
 
         ##############################################################
         ##################### CREATOR #########################################
@@ -6806,8 +6809,8 @@ if __name__ == "__main__":
 
     app.setStyle('Fusion')
     app.setStyleSheet("QToolTip { color: white; background-color: rgb(47, 69, 80); border: 0px; }")
-    # font = QtGui.QFont("Calibri Light", 9)
-    # app.setFont(font)
+    font = QtGui.QFont("Calibri Light", 9)
+    app.setFont(font)
     palette = QtGui.QPalette()
     palette.setColor(QtGui.QPalette.Window, white) # Window background
     palette.setColor(QtGui.QPalette.WindowText, QtCore.Qt.black) 
