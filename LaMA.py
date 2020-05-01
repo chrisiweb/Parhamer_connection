@@ -598,28 +598,28 @@ class Ui_MainWindow(object):
             scrollArea_cria.setFrameShape(QtWidgets.QFrame.NoFrame)
             scrollArea_cria.setWidgetResizable(True)
             scrollArea_cria.setObjectName("scrollArea_cria")
-            # exec("self.scrollAreaWidgetContents_{} = QtWidgets.QWidget()".format(all))
-            # exec(
-            #     "self.scrollAreaWidgetContents_{}.setGeometry(QtCore.QRect(0, 0, 264, 235))".format(
-            #         all
-            #     )
-            # )
-            # exec(
-            #     'self.scrollAreaWidgetContents_{0}.setObjectName("scrollAreaWidgetContents_{0}")'.format(
-            #         all
-            #     )
-            # )
-            # exec(
-            #     "self.verticalLayout_kapitel_{0} = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_{0})".format(
-            #         all
-            #     )
-            # )
-            # verticalLayout_cria = eval("self.verticalLayout_kapitel_{0}".format(all))
-            # verticalLayout_cria.setObjectName("verticalLayout_kapitel_{0}".format(all))
+            exec("self.scrollAreaWidgetContents_{} = QtWidgets.QWidget()".format(all))
+            exec(
+                "self.scrollAreaWidgetContents_{}.setGeometry(QtCore.QRect(0, 0, 264, 235))".format(
+                    all
+                )
+            )
+            exec(
+                'self.scrollAreaWidgetContents_{0}.setObjectName("scrollAreaWidgetContents_{0}")'.format(
+                    all
+                )
+            )
+            exec(
+                "self.verticalLayout_kapitel_{0} = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_{0})".format(
+                    all
+                )
+            )
+            verticalLayout_cria = eval("self.verticalLayout_kapitel_{0}".format(all))
+            verticalLayout_cria.setObjectName("verticalLayout_kapitel_{0}".format(all))
 
-            # dict_klasse_name = eval("dict_{}_name".format(all))
-            # for kapitel in dict_klasse_name:
-            #     self.create_kapitel(verticalLayout_cria, all[1], kapitel)
+            dict_klasse_name = eval("dict_{}_name".format(all))
+            for kapitel in dict_klasse_name:
+                self.create_kapitel(verticalLayout_cria, all[1], kapitel)
 
             # verticalLayout_cria.addItem(spacerItem_cria)
             # exec(
