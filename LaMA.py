@@ -512,27 +512,27 @@ class Ui_MainWindow(object):
             "scrollAreaWidgetContents_ausgew_gk"
         )
 
-        # self.verticalLayout_scrollA_ausgew_gk = create_new_verticallayout(self.scrollAreaWidgetContents_ausgew_gk)
-        # # QtWidgets.QVBoxLayout(
-        # #     self.scrollAreaWidgetContents_ausgew_gk
-        # # )
-        # # self.verticalLayout_scrollA_ausgew_gk.setObjectName(
-        # #     "verticalLayout_scrollA_ausgew_gk"
-        # # )
+        self.verticalLayout_scrollA_ausgew_gk = create_new_verticallayout(self.scrollAreaWidgetContents_ausgew_gk)
+        # QtWidgets.QVBoxLayout(
+        #     self.scrollAreaWidgetContents_ausgew_gk
+        # )
+        # self.verticalLayout_scrollA_ausgew_gk.setObjectName(
+        #     "verticalLayout_scrollA_ausgew_gk"
+        # )
 
-        # self.label_ausgew_gk = create_new_label(self.scrollArea_ausgew_gk, "", True)
-        # self.verticalLayout_scrollA_ausgew_gk.addWidget(self.label_ausgew_gk)
+        self.label_ausgew_gk = create_new_label(self.scrollArea_ausgew_gk, "", True)
+        self.verticalLayout_scrollA_ausgew_gk.addWidget(self.label_ausgew_gk)
 
 
-        # self.label_ausgew_gk_rest = create_new_label(self.scrollArea_ausgew_gk, "")
+        self.label_ausgew_gk_rest = create_new_label(self.scrollArea_ausgew_gk, "")
 
-        # self.verticalLayout_scrollA_ausgew_gk.addWidget(self.label_ausgew_gk_rest)
+        self.verticalLayout_scrollA_ausgew_gk.addWidget(self.label_ausgew_gk_rest)
 
-        # self.scrollArea_ausgew_gk.setFrameShape(QtWidgets.QFrame.NoFrame)
-        # self.scrollArea_ausgew_gk.setWidget(self.scrollAreaWidgetContents_ausgew_gk)
-        # self.verticalLayout_2.addWidget(self.scrollArea_ausgew_gk)
+        self.scrollArea_ausgew_gk.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.scrollArea_ausgew_gk.setWidget(self.scrollAreaWidgetContents_ausgew_gk)
+        self.verticalLayout_2.addWidget(self.scrollArea_ausgew_gk)
 
-        # self.gridLayout.addWidget(self.groupBox_ausgew_gk, 3, 1, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_ausgew_gk, 3, 1, 1, 1)
 
 
         # self.groupBox_titelsuche = create_new_groupbox(self.centralwidget, "Titelsuche:")
