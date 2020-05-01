@@ -632,11 +632,11 @@ class Ui_MainWindow(object):
                     all
                 )
             )
-            exec(
-                'self.tabWidget_klassen_cria.addTab(self.tab_{0}, "{1}. Klasse")'.format(
-                    all, all[1]
-                )
-            )
+            # exec(
+            #     'self.tabWidget_klassen_cria.addTab(self.tab_{0}, "{1}. Klasse")'.format(
+            #         all, all[1]
+            #     )
+            # )
         # self.groupBox_unterkapitel_cria = QtWidgets.QGroupBox(self.centralwidget)
         # self.groupBox_unterkapitel_cria.setStyleSheet(
         #     "background-color: rgb(217, 255, 215);"
