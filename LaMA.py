@@ -26,7 +26,7 @@ import smtplib
 # import qdarkstyle
 
 
-from config import colors_ui, config_file, config_loader, path_programm, logo_path, logo_cria_path, SpinBox_noWheel, ClickLabel
+from config import colors_ui, get_color,config_file, config_loader, path_programm, logo_path, logo_cria_path, SpinBox_noWheel, ClickLabel
 
 from list_of_widgets import (
     widgets_search,
@@ -2234,7 +2234,9 @@ class Ui_MainWindow(object):
             new_checkbox = create_new_checkbox(parent, dict_gk[all])
             new_checkbox.setFocusPolicy(QtCore.Qt.NoFocus)
             background_color=get_color(blue_7)
-            new_checkbox.setStyleSheet("QToolTip {{ color: white; background-color: {}; border: 0px; }}".format(background_color))
+            new_checkbox.setStyleSheet("""QToolTip {{ color: white; background-color: {}; border: 0px; }}       
+            QCheckBox {{padding-right: 10px, padding-bottom: 10px}}
+            """.format(background_color))
             layout.addWidget(new_checkbox, row, column, 1, 1)
             new_checkbox.stateChanged.connect(partial(self.checkbox_checked, mode, 'gk')) 
             name=name_start+all

@@ -4,7 +4,7 @@ import sys
 import os
 import subprocess
 from functools import partial
-from config import colors_ui, config_file, config_loader, logo_path, path_programm
+from config import colors_ui, get_color, config_file, config_loader, logo_path,logo_cria_button_path, path_programm
 import json
 import shutil
 import datetime
@@ -13,6 +13,7 @@ from datetime import date
 from refresh_ddb import refresh_ddb, modification_date
 from sort_items import natural_keys
 from standard_dialog_windows import question_window
+from subwindows import Ui_Dialog_processing
 
 
 ag_beschreibung = config_loader(config_file, "ag_beschreibung")
@@ -31,41 +32,59 @@ list_klassen = config_loader(config_file, "list_klassen")
 
 dict_aufgabenformate = config_loader(config_file, "dict_aufgabenformate")
 
-def get_color(color):
-    color= "rgb({0}, {1}, {2})".format(color.red(), color.green(), color.blue())
-    return color
+# def get_color(color):
+#     color= "rgb({0}, {1}, {2})".format(color.red(), color.green(), color.blue())
+#     return color
 
-blue_7=colors_ui['blue_7']
+# blue_7=colors_ui['blue_7']
 
 
-class Ui_Dialog_loading(object):
-    def setupUi(self, Dialog, rest):
-        self.Dialog = Dialog
-        self.Dialog.setObjectName("Dialog")
-        Dialog.setWindowFlags(QtCore.Qt.WindowSystemMenuHint
-            | QtCore.Qt.WindowTitleHint)
-        Dialog.setWindowTitle('Lade...')
-        Dialog.setStyleSheet("background-color: {}; color: white".format(get_color(blue_7)))
-        pixmap = QtGui.QPixmap(logo_path)
-        Dialog.setWindowIcon(QtGui.QIcon(logo_path))
-        Dialog.setFixedSize(250,100)
-        verticalLayout = QtWidgets.QVBoxLayout(Dialog)
-        verticalLayout.setObjectName("verticalLayout")
+# class Ui_Dialog_processing(object):
+#     def setupUi(self, Dialog, rest):
+#         self.Dialog = Dialog
+#         self.Dialog.setObjectName("Dialog")
+#         Dialog.setWindowFlags(QtCore.Qt.WindowSystemMenuHint
+#             | QtCore.Qt.WindowTitleHint)
+#         Dialog.setWindowTitle('Lade...')
+#         Dialog.setStyleSheet("background-color: {}; color: white".format(get_color(blue_7)))
+#         pixmap = QtGui.QPixmap(logo_path)
+#         Dialog.setWindowIcon(QtGui.QIcon(logo_path))
+#         Dialog.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed))
+#         horizontalLayout = QtWidgets.QHBoxLayout(Dialog)
+#         horizontalLayout.setObjectName("horizontal")
 
-        label=QtWidgets.QLabel(Dialog)
-        label.setObjectName("label")  
-        label.setText("Die PDF Datei wird erstellt..." + rest)
-        # label.setFixedSize(200,50)
-        # label.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
-        label.setAlignment(QtCore.Qt.AlignCenter)
-        verticalLayout.addWidget(label)
-        # self.progressbar = QtWidgets.QProgressBar(Dialog)
-        # self.progressbar.setGeometry(0, 0, 300, 25)
-        # verticalLayout.addWidget(self.progressbar)
+#         pixmap = QtGui.QPixmap(logo_cria_button_path)
+#         # Dialog.setPixmap(pixmap.scaled(110, 110, QtCore.Qt.KeepAspectRatio))
+#         image = QtWidgets.QLabel(Dialog)
+#         image.setObjectName("image")
+#         image.setPixmap(pixmap)
+
+#         label=QtWidgets.QLabel(Dialog)
+#         label.setObjectName("label")  
+#         label.setText("Die PDF Datei wird erstellt..." + rest)
+#         label_spinner = QtWidgets.QLabel(Dialog)
+#         label.setObjectName("label_spinner")
+#         label_spinner.setFixedSize(40,40)    
+#         spinner = QtWaitingSpinner(label_spinner)
+#         spinner.setRoundness(70.0)
+#         # spinner.setMinimumTrailOpacity(10.0)
+#         # spinner.setTrailFadePercentage(60.0)
+#         spinner.setNumberOfLines(12)
+#         spinner.setLineLength(10)
+#         # spinner.setLineWidth(5)
+#         spinner.setInnerRadius(10)
+#         # spinner.setRevolutionsPerSecond(2)
+#         spinner.setColor(QtCore.Qt.white)
+#         spinner.start() # starts spinning
+#         label.setAlignment(QtCore.Qt.AlignCenter)
+#         horizontalLayout.addWidget(image)
+#         horizontalLayout.addWidget(label)
+#         horizontalLayout.addWidget(label_spinner)
+
              
 
 
-class Worker(QtCore.QObject):
+class Worker_CreatePDF(QtCore.QObject):
     finished = QtCore.pyqtSignal()
 
     @QtCore.pyqtSlot()
@@ -78,8 +97,6 @@ class Worker(QtCore.QObject):
 
         process.wait()
 
-        # for i in range(10000):
-        #     print(i)
         self.finished.emit()
 
 
@@ -725,63 +742,6 @@ def delete_unneeded_files(folder_name, file_name):
 
 def create_pdf(path_file, index, maximum, typ=0):
 
-    # Dialog = QtWidgets.QDialog(
-    #     None,
-    #     QtCore.Qt.WindowSystemMenuHint
-    #     | QtCore.Qt.WindowTitleHint
-    #     | QtCore.Qt.WindowCloseButtonHint,
-    # )
-    # ui = ModalInfoDialog()
-    # ui.setupUi(Dialog, "Test")
-    # Dialog.show()
-
-    # msg = QtWidgets.QMessageBox()
-    # msg.setText("Die PDF Datei wird erstellt...")
-    # msg.setStandardButtons(QtWidgets.QMessageBox.Abort)
-    # buttonAbort = msg.button(QtWidgets.QMessageBox.Abort)
-    # buttonAbort.setText("Abbrechen")
-
-    # msg.show()
-    # thread = QtCore.QThread(msg)
-    # worker = Worker()
-    # worker.finished.connect(msg.close)
-    # worker.moveToThread(thread)
-    # thread.started.connect(worker.task)
-    # thread.start()
-    # thread.exit()
-    # response = msg.exec()
-
-    # if response == QtWidgets.QMessageBox.Abort:
-    #     print('test')
-        # thread.wait()
-        # return
-        # sys.exit() 
-
-
-
-    # d = 
-    # d.show()
-    # thread = QtCore.QThread(d)
-
-    # worker = Worker()
-    # worker.finished.connect(d.close)
-    # worker.moveToThread(thread)
-    # thread.started.connect(worker.task)
-    # thread.start()
-
-    # return
-
-    # if sys.platform.startswith("linux"):
-    #     pass
-    # else:
-    #     msg = QtWidgets.QMessageBox()
-    #     msg.setWindowIcon(QtGui.QIcon(logo_path))
-    #     msg.setWindowTitle("Lade...")
-    #     msg.setStandardButtons(QtWidgets.QMessageBox.NoButton)
-
-
-    #     msg.show()
-    #     QApplication.processEvents()
     QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
     if path_file == "Teildokument":
         folder_name = '{0}/Teildokument'.format(path_programm)
@@ -805,48 +765,14 @@ def create_pdf(path_file, index, maximum, typ=0):
     else:
         rest = " ({0}|{1})".format(index + 1, maximum)
 
+    text="Die PDF Datei wird erstellt..." + rest
     Dialog = QtWidgets.QDialog()
-    ui = Ui_Dialog_loading()
-    ui.setupUi(Dialog, rest)
+    ui = Ui_Dialog_processing()
+    ui.setupUi(Dialog, text)
 
-    # print(QMainWindow().pos().x())
-    # print(QMainWindow().pos().y())
 
-    # msg = QtWidgets.QMessageBox()
-    # msg.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-    # height =  QMainWindow().geometry().height()
-    # width =  QMainWindow().geometry().width()
-    # x= QMainWindow().pos().x()
-    # y=QMainWindow().pos().y()
-
-    # msg.setStyleSheet("QLabel{min-width:200 px; min-height:100px}")
-    # msg.move(x+0.5*height, y+0.6*width)
-
-    # msg.setWindowIcon(QtGui.QIcon(logo_path))
-    # QtGui.QPixmap.pixmap = ExportS
-    # pixmap = QtGui.QPixmap(logo_path)
-    # msg.setWindowIcon(QtGui.QIcon(logo_path))
-    # msg.setIconPixmap(logo_path)
-    # # msg.setIcon(QtGui.QIcon(logo_path))
-    # # msg.setWindowFlags(QtCore.Qt.CustomizeWindowHint)
-    # # msg.setDetailedText("These details disable the close button for some reason.")
-    # msg.setWindowFlags(msg.windowFlags() & ~QtCore.Qt.WindowCloseButtonHint)
-    # # msg.move(QMainWindow().pos().x()+200, QMainWindow().pos().y()+200)
-    # # msg.setWindowFlags(QtCore.Qt.WindowTitleHint)
-    # #QtCore.Qt.FramelessWindowHint
-    # # msg.setWindowFlags(QtCore.Qt.WindowTitleHint)
-    #     # QtCore.Qt.WindowSystemMenuHint
-    #     #     # | QtCore.Qt.WindowTitleHint
-    #         # | QtCore.Qt.WindowCloseButtonHint)
-    # # msg.setWindowTitle("Lade...")
-    # msg.setText("Die PDF Datei wird erstellt...")
-    # msg.setStandardButtons(QtWidgets.QMessageBox.Abort)
-    # buttonAbort = msg.button(QtWidgets.QMessageBox.Abort)
-    # buttonAbort.hide()
-    # buttonAbort.setText('Abbrechen')
-    # msg.show()
     thread = QtCore.QThread(Dialog)
-    worker = Worker()
+    worker = Worker_CreatePDF()
     worker.finished.connect(Dialog.close)
     worker.moveToThread(thread)
     thread.started.connect(partial(worker.task, folder_name, file_name, latex_output_file))
@@ -854,22 +780,7 @@ def create_pdf(path_file, index, maximum, typ=0):
     thread.exit()
     Dialog.exec()
 
-    # if response == QtWidgets.QMessageBox.Abort:
-    #     thread.exit()
-    #     return
 
-    # process = build_pdf_file(folder_name, file_name, latex_output_file)
-    # process.poll()
-    # latex_output_file.close()
-
-    # loading_animation(process)
-
-    # process.wait()
-
-    # if sys.platform.startswith("linux"):
-    #     pass
-    # else:
-    #     msg.close()
 
     latex_output_file = open(
         "{0}/Teildokument/temp.txt".format(path_programm), "r", encoding="utf8", errors='ignore'

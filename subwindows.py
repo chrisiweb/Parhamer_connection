@@ -2,10 +2,12 @@ from PyQt5 import QtCore, QtWidgets, QtGui
 import os
 import shutil
 from functools import partial
-from config import config_loader, path_programm, logo_path, logo_cria_button_path
-from config import logo_path
+from config import config_loader, colors_ui, get_color, path_programm, logo_path, logo_cria_button_path
 from translate import _fromUtf8, _translate
 
+from waitingspinnerwidget import QtWaitingSpinner
+
+blue_7=colors_ui['blue_7']
 
 class Ui_Dialog_choose_type(object):
     def setupUi(self, Dialog):
@@ -18,17 +20,6 @@ class Ui_Dialog_choose_type(object):
         Dialog.setStyleSheet("QToolTip { color: white; background-color: rgb(47, 69, 80); border: 0px; }")
         self.gridLayout = QtWidgets.QGridLayout(Dialog)
         self.gridLayout.setObjectName("gridLayout")
-        # self.label_titlepage = QtWidgets.QLabel()
-        # # # self.label_gk.setWordWrap(True)
-        # self.label_titlepage.setObjectName(_fromUtf8("label_titlepage"))
-        # self.label_titlepage.setText(
-        #     _translate(
-        #         "MainWindow",
-        #         "Wählen Sie das gewünschte Programm aus:\n",
-        #         None,
-        #     )
-        # )
-        # self.gridLayout.addWidget(self.label_titlepage, 0,0,1,2)
 
         self.btn_lama_cria = QtWidgets.QPushButton()
         self.btn_lama_cria.setObjectName(_fromUtf8("btn_lama_cria"))
@@ -65,6 +56,53 @@ class Ui_Dialog_choose_type(object):
     def choose_button_pressed(self, chosen_program):
         self.chosen_program=chosen_program
         self.Dialog.accept()
+
+
+
+class Ui_Dialog_processing(object):
+    def setupUi(self, Dialog, text):
+        self.Dialog = Dialog
+        self.Dialog.setObjectName("Dialog")
+        Dialog.setWindowFlags(QtCore.Qt.WindowSystemMenuHint
+            | QtCore.Qt.WindowTitleHint)
+        Dialog.setWindowTitle('Lade...')
+        Dialog.setStyleSheet("background-color: {}; color: white".format(get_color(blue_7)))
+        pixmap = QtGui.QPixmap(logo_path)
+        Dialog.setWindowIcon(QtGui.QIcon(logo_path))
+        Dialog.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed))
+        horizontalLayout = QtWidgets.QHBoxLayout(Dialog)
+        horizontalLayout.setObjectName("horizontal")
+
+        pixmap = QtGui.QPixmap(logo_cria_button_path)
+        # Dialog.setPixmap(pixmap.scaled(110, 110, QtCore.Qt.KeepAspectRatio))
+        image = QtWidgets.QLabel(Dialog)
+        image.setObjectName("image")
+        image.setPixmap(pixmap.scaled(30, 30, QtCore.Qt.KeepAspectRatio))
+
+        label=QtWidgets.QLabel(Dialog)
+        label.setObjectName("label")  
+        label.setText(text)
+        label_spinner = QtWidgets.QLabel(Dialog)
+        label.setObjectName("label_spinner")
+        label_spinner.setFixedSize(30,30)    
+        spinner = QtWaitingSpinner(label_spinner)
+        spinner.setRoundness(70.0)
+        # spinner.setMinimumTrailOpacity(10.0)
+        # spinner.setTrailFadePercentage(60.0)
+        spinner.setNumberOfLines(15)
+        spinner.setLineLength(8)
+        # spinner.setLineWidth(5)
+        spinner.setInnerRadius(5)
+        # spinner.setRevolutionsPerSecond(2)
+        spinner.setColor(QtCore.Qt.white)
+        spinner.start() # starts spinning
+        label.setAlignment(QtCore.Qt.AlignCenter)
+        horizontalLayout.addWidget(image)
+        horizontalLayout.addWidget(label)
+        horizontalLayout.addWidget(label_spinner)
+
+
+
 
 
 class Ui_Dialog_titlepage(object):
