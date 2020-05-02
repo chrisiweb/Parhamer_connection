@@ -22,19 +22,20 @@ def split_content_ausgleichspunkte_new_format(mode, content):
     ## mode ='ausgleichspunkte', 'show_hide_items'
     x = content.split("\\begin{aufgabenstellung}")[1].split("\\end{aufgabenstellung}")
     aufgabenstellung = x[0].replace("\t", "")
+    ausgleichspunkte_split_text = re.split("\n\n|\n\t", aufgabenstellung)
 
-    print(aufgabenstellung)
-    ausgleichspunkte_split_text = aufgabenstellung.split("\\item")
+    # print(aufgabenstellung)
+    # ausgleichspunkte_split_text = aufgabenstellung.split("\\item")
     
-    if mode == 'show_hide_item':
-        for all in ausgleichspunkte_split_text[:]:
-            if all.isspace()==True:
-                ausgleichspunkte_split_text.remove(all)
-        return ausgleichspunkte_split_text
+    # if mode == 'show_hide_item':
+    #     for all in ausgleichspunkte_split_text[:]:
+    #         if all.isspace()==True:
+    #             ausgleichspunkte_split_text.remove(all)
+    #     return ausgleichspunkte_split_text
 
 
-    ausgleichspunkte_split_text = split_all_items_of_list(ausgleichspunkte_split_text, "\n\n")
-    ausgleichspunkte_split_text = split_all_items_of_list(ausgleichspunkte_split_text, "\n\t")
+    # ausgleichspunkte_split_text = split_all_items_of_list(ausgleichspunkte_split_text, "\n\n")
+    # ausgleichspunkte_split_text = split_all_items_of_list(ausgleichspunkte_split_text, "\n\t")
     # ausgleichspunkte_split_text = re.split("\n\n|\n\t", aufgabenstellung)
 
 
