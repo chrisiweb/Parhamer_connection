@@ -5172,10 +5172,10 @@ class Ui_MainWindow(object):
        
 
         try:
-            split_content, index_end = split_content_ausgleichspunkte(content)
+            split_content, index_end = split_content_ausgleichspunkte('ausgleichspunkte', content)
             split_content = split_content[:index_end]
         except UnboundLocalError:
-            split_content = split_content_ausgleichspunkte_new_format(content)
+            split_content = split_content_ausgleichspunkte_new_format('ausgleichspunkte',content)
             try:
                 split_content
             except UnboundLocalError:
