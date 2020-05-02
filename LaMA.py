@@ -27,7 +27,7 @@ import smtplib
 
 
 from config import colors_ui, get_color,config_file, config_loader, path_programm, logo_path, logo_cria_path, SpinBox_noWheel, ClickLabel
-
+from create_new_widgets import *
 from list_of_widgets import (
     widgets_search,
     widgets_create,
@@ -45,6 +45,8 @@ from sort_items import natural_keys
 from create_pdf import prepare_tex_for_pdf, create_pdf
 from refresh_ddb import modification_date, refresh_ddb
 from standard_dialog_windows import warning_window, question_window
+from predefined_size_policy import *
+from work_with_content import collect_content, split_content_ausgleichspunkte_new_format, split_content_ausgleichspunkte
  
 # from cria_commands import create_kapitel_cria
 
@@ -92,17 +94,7 @@ QLabel {{color:  {1}}}
 """.format(get_color(blue_3), get_color(black))
 
 ## sizePolicy = QtWidgets.QSizePolicy( ######### Breite ############, ######### Höhe ############) 
-SizePolicy_fixed = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-SizePolicy_fixed_height = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
-SizePolicy_fixed_width = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding)
-SizePolicy_preferred = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
-SizePolicy_preferred_width = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding) 
-SizePolicy_maximum = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
-SizePolicy_maximum_height = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
-SizePolicy_maximum_width = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Expanding)
-SizePolicy_minimum = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
-SizePolicy_minimum_height = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-SizePolicy_minimum_width = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+
 print("Loading...")
 
 ### config_loader, path_programm, logo_path, SpinBox_noWheel
@@ -171,126 +163,7 @@ dict_picture_path = {}
 #     color_set = "color: rgb({0}, {1}, {2});".format(color.red(), color.green(), color.blue())
 #     return color_set  
 
-def add_action(menu, text, command):
-    new_action = QtWidgets.QAction(MainWindow)
-    new_action.setObjectName(_fromUtf8("{}".format(new_action)))
-    menu.addAction(new_action)
-    new_action.setText(_translate("MainWindow", text, None))
-    new_action.triggered.connect(command)
 
-    return new_action
-
-def combine_all_lists_to_one(list_of_lists):
-    combined_list=[]
-    for list in list_of_lists:
-        combined_list=combined_list+list
-    return combined_list 
-
-def create_new_gridlayout(parent=None):
-    new_gridlayout = QtWidgets.QGridLayout(parent)
-    new_gridlayout.setObjectName(_fromUtf8("{}".format(new_gridlayout)))
-    return new_gridlayout
-
-def create_new_verticallayout(parent=None):
-    new_verticallayout = QtWidgets.QVBoxLayout(parent)
-    new_verticallayout.setObjectName(_fromUtf8("{}".format(new_verticallayout)))
-    return new_verticallayout
-
-def create_new_horizontallayout(parent=None):
-    new_horizontallayout = QtWidgets.QHBoxLayout(parent)
-    new_horizontallayout.setObjectName(_fromUtf8("{}".format(new_horizontallayout)))
-    return new_horizontallayout
-
-def create_new_checkbox(parent, text, checked=False):
-    new_checkbox = QtWidgets.QCheckBox(parent)
-    new_checkbox.setObjectName(_fromUtf8("{}".format(new_checkbox)))
-    new_checkbox.setText(_translate("MainWindow", text, None))
-    new_checkbox.setChecked(checked)
-
-    return new_checkbox
-
-def create_new_groupbox(parent, name):
-    new_groupbox = QtWidgets.QGroupBox(parent)
-    new_groupbox.setObjectName("{}".format(new_groupbox))
-    new_groupbox.setTitle(_translate("MainWindow", "{}".format(name), None))
-
-    return new_groupbox
-
-def create_new_label(parent, text, wordwrap=False, clickable=False):
-    new_label = ClickLabel()
-    if clickable==False:
-        new_label=QtWidgets.QLabel(parent)
-    elif clickable == True:
-        new_label = ClickLabel()   
-
-    new_label.setObjectName("{}".format(new_label))  
-    new_label.setText(_translate("MainWindow",text, None))
-    new_label.setWordWrap(wordwrap)
-
-    return new_label
-
-def create_new_lineedit(parent):
-    new_lineedit = QtWidgets.QLineEdit(parent)
-    new_lineedit.setObjectName(_fromUtf8("{}".format(new_lineedit)))
-
-    return new_lineedit    
-
-def create_new_button(parent, text, command):
-    new_button=QtWidgets.QPushButton(parent)
-    new_button.setObjectName("{}".format(new_button))
-    new_button.setText(_translate("MainWindow", text, None))
-    if command != None:
-        new_button.clicked.connect(command)
-
-    return new_button
-
-def create_standard_button(parent, text, command, icon=''):
-    new_standard_button = create_new_button(parent, "", command)
-    new_standard_button.setSizePolicy(SizePolicy_fixed)    
-    # new_standard_button.setMaximumSize(QtCore.QSize(30, 30))
-    new_standard_button.setFocusPolicy(QtCore.Qt.ClickFocus)
-    # new_standard_button.setStyleSheet(_fromUtf8("background-color: light gray"))
-    new_standard_button.setIcon(QtWidgets.QApplication.style().standardIcon(icon))
-
-    return new_standard_button
-
-def still_to_define():
-    print("still to define")
-
-def create_new_spinbox(parent,value=0):
-    new_spinbox = SpinBox_noWheel(parent)
-    new_spinbox.setObjectName("{}".format(new_spinbox))
-    new_spinbox.setValue(value)   
-    return new_spinbox
-
-def create_new_combobox(parent):
-    new_combobox = QtWidgets.QComboBox(parent)
-    new_combobox.setObjectName(_fromUtf8("{}".format(new_combobox)))
-
-    return new_combobox
-
-def create_new_radiobutton(parent, text):
-    new_radiobutton = QtWidgets.QRadioButton(parent)
-    new_radiobutton.setObjectName("{}".format(new_radiobutton))
-    new_radiobutton.setFocusPolicy(QtCore.Qt.ClickFocus)
-    new_radiobutton.setText(
-            _translate("MainWindow", text, None)
-        )
-
-    return new_radiobutton
-
-
-def add_new_option(combobox, index, item):
-    combobox.addItem(_fromUtf8(""))
-    combobox.setItemText(index, _translate("MainWindow", item, None))
-
-
-def add_new_tab(tabwidget, name):
-    new_tab=QtWidgets.QWidget()
-    new_tab.setObjectName("{}".format(new_tab))
-    tabwidget.addTab(new_tab, name)
-
-    return new_tab
 
 
 def create_file_titlepage(titlepage_save):
@@ -432,28 +305,28 @@ class Ui_MainWindow(object):
         self.menuBild_einbinden = QtWidgets.QMenu(self.menuBar)
         self.menuBild_einbinden.setObjectName(_fromUtf8("menuBild_einbinden"))
         MainWindow.setMenuBar(self.menuBar)
-        self.actionReset = add_action(self.menuDatei, "Reset", self.suchfenster_reset)
+        self.actionReset = add_action(MainWindow, self.menuDatei, "Reset", self.suchfenster_reset)
         self.actionReset.setShortcut("F4")
 
         # self.actionReset_creator = add_action(self.menuDatei, "Reset", self.suchfenster_reset)
         # self.actionReset.setShortcut("F4")
 
-        self.actionReset_sage = add_action(self.menuDatei, "Reset Schularbeit", self.reset_sage)
+        self.actionReset_sage = add_action(MainWindow,self.menuDatei, "Reset Schularbeit", self.reset_sage)
         self.actionReset_sage.setVisible(False)
 
-        self.actionRefresh_Database = add_action(self.menuDatei, "Datenbank aktualisieren", partial(refresh_ddb, self))
+        self.actionRefresh_Database = add_action(MainWindow,self.menuDatei, "Datenbank aktualisieren", partial(refresh_ddb, self))
         self.actionRefresh_Database.setShortcut("F5")
 
         self.menuDatei.addSeparator()
 
-        self.actionLoad = add_action(self.menuDatei, "Öffnen", self.sage_load)
+        self.actionLoad = add_action(MainWindow,self.menuDatei, "Öffnen", self.sage_load)
         self.actionLoad.setShortcut("Ctrl+O")
-        self.actionSave = add_action(self.menuDatei, "Speichern", self.sage_save)
+        self.actionSave = add_action(MainWindow,self.menuDatei, "Speichern", self.sage_save)
         self.actionSave.setShortcut("Ctrl+S")
 
         self.menuDatei.addSeparator()
 
-        self.actionBild_konvertieren_jpg_eps = add_action(self.menuDatei, "Grafik konvertieren (jpg/png zu eps)", self.convert_imagetoeps)
+        self.actionBild_konvertieren_jpg_eps = add_action(MainWindow,self.menuDatei, "Grafik konvertieren (jpg/png zu eps)", self.convert_imagetoeps)
 
         self.menuDatei.addSeparator()
 
@@ -461,31 +334,31 @@ class Ui_MainWindow(object):
             program='LaMA Cria (Unterstufe)'
         if self.chosen_program == 'cria':
             program='LaMA (Oberstufe)'
-        self.actionProgram = add_action(self.menuDatei, 'Zu "{}" wechseln'.format(program), self.change_program)
+        self.actionProgram = add_action(MainWindow,self.menuDatei, 'Zu "{}" wechseln'.format(program), self.change_program)
 
-        self.actionExit = add_action(self.menuDatei, "Exit", self.close_app)
+        self.actionExit = add_action(MainWindow,self.menuDatei, "Exit", self.close_app)
 
 
-        self.actionAufgaben_Typ1 = add_action(self.menuDateityp, "Typ1 Aufgaben", self.chosen_aufgabenformat_typ1)
+        self.actionAufgaben_Typ1 = add_action(MainWindow,self.menuDateityp, "Typ1 Aufgaben", self.chosen_aufgabenformat_typ1)
         self.actionAufgaben_Typ1.setShortcut("Ctrl+1")
 
-        self.actionAufgaben_Typ2 = add_action(self.menuDateityp, "Typ2 Aufgaben", self.chosen_aufgabenformat_typ2)
+        self.actionAufgaben_Typ2 = add_action(MainWindow,self.menuDateityp, "Typ2 Aufgaben", self.chosen_aufgabenformat_typ2)
         self.actionAufgaben_Typ2.setShortcut("Ctrl+2") 
 
-        self.actionSuche = add_action(self.menuSuche, "Aufgaben suchen...", partial(self.update_gui, 'widgets_search'))
+        self.actionSuche = add_action(MainWindow,self.menuSuche, "Aufgaben suchen...", partial(self.update_gui, 'widgets_search'))
         self.actionSuche.setShortcut("F1")
 
-        self.actionSage = add_action(self.menuSage, "Neue Schularbeit erstellen...", partial(self.update_gui, 'widgets_sage'))
+        self.actionSage = add_action(MainWindow,self.menuSage, "Neue Schularbeit erstellen...", partial(self.update_gui, 'widgets_sage'))
         self.actionSage.setShortcut("F2")
 
-        self.actionNeu = add_action(self.menuNeu, "Neue Aufgabe erstellen...", partial(self.update_gui, 'widgets_create'))
+        self.actionNeu = add_action(MainWindow,self.menuNeu, "Neue Aufgabe erstellen...", partial(self.update_gui, 'widgets_create'))
         self.actionNeu.setShortcut("F3") 
 
-        self.actionBild_einbinden = add_action(self.menuBild_einbinden, "Durchsuchen...", self.add_picture)
+        self.actionBild_einbinden = add_action(MainWindow,self.menuBild_einbinden, "Durchsuchen...", self.add_picture)
 
-        self.actionFeedback = add_action(self.menuFeedback, "Feedback oder Fehler senden...", partial(self.update_gui, 'widgets_feedback'))
+        self.actionFeedback = add_action(MainWindow,self.menuFeedback, "Feedback oder Fehler senden...", partial(self.update_gui, 'widgets_feedback'))
 
-        self.actionInfo = add_action(self.menuHelp, "Über LaMA", self.show_info)      
+        self.actionInfo = add_action(MainWindow,self.menuHelp, "Über LaMA", self.show_info)      
 
 
         self.menuBar.addAction(self.menuDatei.menuAction())
@@ -1674,7 +1547,7 @@ class Ui_MainWindow(object):
         self.label_example.hide()
 
         self.groupBox_alle_aufgaben_fb = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBox_alle_aufgaben_fb.setSizePolicy(SizePolicy_fixed_width)
+        # self.groupBox_alle_aufgaben_fb.setSizePolicy(SizePolicy_fixed_width)
         # self.groupBox_alle_aufgaben_fb.setMinimumSize(QtCore.QSize(140, 16777215))
         # self.groupBox_alle_aufgaben_fb.setMaximumSize(QtCore.QSize(180, 16777215))
         self.groupBox_alle_aufgaben_fb.setObjectName("groupBox_alle_aufgaben_fb")
@@ -4974,6 +4847,9 @@ class Ui_MainWindow(object):
             # pushbutton_ausgleich.setMaximumSize(QtCore.QSize(220, 30))
             gridLayout_gB.addWidget(pushbutton_ausgleich, 1, 2, 1, 1)
 
+            # pushbutton_aufgabe_bearbeiten = create_new_button(groupbox_pkt, 'Aufgabe bearbeiten', still_to_define)
+            # gridLayout_gB.addWidget(pushbutton_aufgabe_bearbeiten, 0,1,1,1)
+
 
 
         return new_groupbox
@@ -5047,20 +4923,65 @@ class Ui_MainWindow(object):
 
         return dateipfad
 
-    def collect_content(self, aufgabe):
-        selected_path = self.get_dateipfad_aufgabe(aufgabe)  
+    # def aufgabe_bearbeiten(self, aufgabe):
+    #     content = self.collect_content(aufgabe)
 
-        f = open(selected_path, "r", encoding="utf8")
-        content = f.read()
-        f.close() 
+    #     x = content.split("\\begin{aufgabenstellung}")[1].split("\\end{aufgabenstellung}")
+    #     aufgabenstellung = x[0].replace("\t", "")
+    #     ausgleichspunkte_split_text = re.split("\n\n|\n\t", aufgabenstellung)
 
-        return content       
+    #     ausgleichspunkte_split_text = self.split_all_items_of_list(ausgleichspunkte_split_text, "\\item")
+
+    #     ausgleichspunkte_split_text = self.split_all_items_of_list(ausgleichspunkte_split_text, "\\Subitem{")
+
+    #     print(ausgleichspunkte_split_text)
+    #     return
+
+    #     for all in ausgleichspunkte_split_text:
+    #         if all.startswith(' '):
+    #             x=all[1:]
+    #             ausgleichspunkte_split_text[ausgleichspunkte_split_text.index(all)] = x
+                
+    #         if "\\begin{pspicture*}" in all:
+    #             ausgleichspunkte_split_text[
+    #                 ausgleichspunkte_split_text.index(all)
+    #             ] = "[...] GRAFIK [...]"
+
+    #     for all in ausgleichspunkte_split_text:
+    #         z = all.replace("\t", "")
+    #         z = z.replace("\\leer", "")
+    #         x = [
+    #             line for line in z.split("\n") if line.strip() != ""
+    #         ]  # delete all empty lines
+    #         for item in x[:]:
+    #             if "begin{" in item or "end{" in item:
+    #                 if "tabular" in item or "tabu" in item:
+    #                     pass
+    #                 else:
+    #                     x.remove(item)
+    #         y = "\n".join(x)
+    #         ausgleichspunkte_split_text[ausgleichspunkte_split_text.index(all)] = y        
+
+
+    #     for all in ausgleichspunkte_split_text[:]:
+    #         if all == "" or all.startswith('%'):
+    #             ausgleichspunkte_split_text.remove(all)
+        # return ausgleichspunkte_split_text
+
+    # def collect_content(self, aufgabe):
+    #     selected_path = self.get_dateipfad_aufgabe(aufgabe)  
+
+    #     f = open(selected_path, "r", encoding="utf8")
+    #     content = f.read()
+    #     f.close() 
+
+    #     return content       
 
     def get_number_ausgleichspunkte(self, aufgabe):
         typ=self.get_aufgabentyp(aufgabe)
 
         if typ==2:
-            content=self.collect_content(aufgabe)
+            content=collect_content(self, aufgabe)
 
             number_ausgleichspunkte = content.count("\\fbox{A}")
         
@@ -5093,7 +5014,7 @@ class Ui_MainWindow(object):
         return klasse_aufgabe       
 
     def add_image_path_to_list(self, aufgabe):
-        content = self.collect_content(aufgabe)
+        content = collect_content(self, aufgabe)
 
         if "\\includegraphics" in content:
             matches = re.findall("/Bilder/(.+.eps)}", content)
@@ -5147,114 +5068,114 @@ class Ui_MainWindow(object):
         QtWidgets.QApplication.restoreOverrideCursor()
 
 
-    def split_all_items_of_list(self, chosen_list, string):
-        temporary_list = []
-        for all in chosen_list:
-            pieces = all.split(string)
-            for item in pieces:
-                temporary_list.append(item)
-        return temporary_list
+    # def split_all_items_of_list(self, chosen_list, string):
+    #     temporary_list = []
+    #     for all in chosen_list:
+    #         pieces = all.split(string)
+    #         for item in pieces:
+    #             temporary_list.append(item)
+    #     return temporary_list
 
 
-    def split_content_ausgleichspunkte_new_format(self, content):
-        x = content.split("\\begin{aufgabenstellung}")[1].split("\\end{aufgabenstellung}")
-        aufgabenstellung = x[0].replace("\t", "")
-        ausgleichspunkte_split_text = re.split("\n\n|\n\t", aufgabenstellung)
+    # def split_content_ausgleichspunkte_new_format(self, content):
+    #     x = content.split("\\begin{aufgabenstellung}")[1].split("\\end{aufgabenstellung}")
+    #     aufgabenstellung = x[0].replace("\t", "")
+    #     ausgleichspunkte_split_text = re.split("\n\n|\n\t", aufgabenstellung)
 
-        ausgleichspunkte_split_text = self.split_all_items_of_list(ausgleichspunkte_split_text, "\\item")
+    #     ausgleichspunkte_split_text = self.split_all_items_of_list(ausgleichspunkte_split_text, "\\item")
 
-        ausgleichspunkte_split_text = self.split_all_items_of_list(ausgleichspunkte_split_text, "\\Subitem{")
+    #     ausgleichspunkte_split_text = self.split_all_items_of_list(ausgleichspunkte_split_text, "\\Subitem{")
 
 
 
-        for all in ausgleichspunkte_split_text:
-            if all.startswith(' '):
-                x=all[1:]
-                ausgleichspunkte_split_text[ausgleichspunkte_split_text.index(all)] = x
+    #     for all in ausgleichspunkte_split_text:
+    #         if all.startswith(' '):
+    #             x=all[1:]
+    #             ausgleichspunkte_split_text[ausgleichspunkte_split_text.index(all)] = x
                 
-            if "\\begin{pspicture*}" in all:
-                ausgleichspunkte_split_text[
-                    ausgleichspunkte_split_text.index(all)
-                ] = "[...] GRAFIK [...]"
+    #         if "\\begin{pspicture*}" in all:
+    #             ausgleichspunkte_split_text[
+    #                 ausgleichspunkte_split_text.index(all)
+    #             ] = "[...] GRAFIK [...]"
 
-        for all in ausgleichspunkte_split_text:
-            z = all.replace("\t", "")
-            z = z.replace("\\leer", "")
-            x = [
-                line for line in z.split("\n") if line.strip() != ""
-            ]  # delete all empty lines
-            for item in x[:]:
-                if "begin{" in item or "end{" in item:
-                    if "tabular" in item or "tabu" in item:
-                        pass
-                    else:
-                        x.remove(item)
-            y = "\n".join(x)
-            ausgleichspunkte_split_text[ausgleichspunkte_split_text.index(all)] = y        
+    #     for all in ausgleichspunkte_split_text:
+    #         z = all.replace("\t", "")
+    #         z = z.replace("\\leer", "")
+    #         x = [
+    #             line for line in z.split("\n") if line.strip() != ""
+    #         ]  # delete all empty lines
+    #         for item in x[:]:
+    #             if "begin{" in item or "end{" in item:
+    #                 if "tabular" in item or "tabu" in item:
+    #                     pass
+    #                 else:
+    #                     x.remove(item)
+    #         y = "\n".join(x)
+    #         ausgleichspunkte_split_text[ausgleichspunkte_split_text.index(all)] = y        
 
 
-        for all in ausgleichspunkte_split_text[:]:
-            if all == "" or all.startswith('%'):
-                ausgleichspunkte_split_text.remove(all)
-        return ausgleichspunkte_split_text
+    #     for all in ausgleichspunkte_split_text[:]:
+    #         if all == "" or all.startswith('%'):
+    #             ausgleichspunkte_split_text.remove(all)
+    #     return ausgleichspunkte_split_text
 
-    def split_content_ausgleichspunkte(self, content):
+    # def split_content_ausgleichspunkte(self, content):
         
-        x = re.split("Aufgabenstellung:}|Lösungserwartung:}", content)
-        str_file = x[1].replace("\t", "")
-        ausgleichspunkte_split_text = re.split("\n\n|\n\t", str_file)
+    #     x = re.split("Aufgabenstellung:}|Lösungserwartung:}", content)
+    #     str_file = x[1].replace("\t", "")
+    #     ausgleichspunkte_split_text = re.split("\n\n|\n\t", str_file)
 
-        temp_list = []
-        for all in ausgleichspunkte_split_text:
-            x = ausgleichspunkte_split_text[
-                ausgleichspunkte_split_text.index(all)
-            ].split("\item ")
-            for item in x:
-                temp_list.append(item)
-        ausgleichspunkte_split_text = temp_list
+    #     temp_list = []
+    #     for all in ausgleichspunkte_split_text:
+    #         x = ausgleichspunkte_split_text[
+    #             ausgleichspunkte_split_text.index(all)
+    #         ].split("\item ")
+    #         for item in x:
+    #             temp_list.append(item)
+    #     ausgleichspunkte_split_text = temp_list
 
-        for all in ausgleichspunkte_split_text:
-            if "\\begin{pspicture*}" in all:
-                ausgleichspunkte_split_text[
-                    ausgleichspunkte_split_text.index(all)
-                ] = "[...] GRAFIK [...]"
+    #     for all in ausgleichspunkte_split_text:
+    #         if "\\begin{pspicture*}" in all:
+    #             ausgleichspunkte_split_text[
+    #                 ausgleichspunkte_split_text.index(all)
+    #             ] = "[...] GRAFIK [...]"
 
-        for all in ausgleichspunkte_split_text:
-            z = all.replace("\t", "")
-            z = z.replace("\\leer", "")
-            x = [
-                line for line in z.split("\n") if line.strip() != ""
-            ]  # delete all empty lines
-            for item in x[:]:
-                if "begin{" in item or "end{" in item:
-                    if "tabular" in item or "tabu" in item:
-                        pass
-                    else:
-                        x.remove(item)
-            y = "\n".join(x)
-            ausgleichspunkte_split_text[ausgleichspunkte_split_text.index(all)] = y
+    #     for all in ausgleichspunkte_split_text:
+    #         z = all.replace("\t", "")
+    #         z = z.replace("\\leer", "")
+    #         x = [
+    #             line for line in z.split("\n") if line.strip() != ""
+    #         ]  # delete all empty lines
+    #         for item in x[:]:
+    #             if "begin{" in item or "end{" in item:
+    #                 if "tabular" in item or "tabu" in item:
+    #                     pass
+    #                 else:
+    #                     x.remove(item)
+    #         y = "\n".join(x)
+    #         ausgleichspunkte_split_text[ausgleichspunkte_split_text.index(all)] = y
 
-        for all in ausgleichspunkte_split_text[:]:
-            if all == "":
-                ausgleichspunkte_split_text.remove(all)
+    #     for all in ausgleichspunkte_split_text[:]:
+    #         if all == "":
+    #             ausgleichspunkte_split_text.remove(all)
 
-        for all in reversed(ausgleichspunkte_split_text):
-            if "\\antwort{" in all:
-                index_end = ausgleichspunkte_split_text.index(all)
-                break
+    #     for all in reversed(ausgleichspunkte_split_text):
+    #         if "\\antwort{" in all:
+    #             index_end = ausgleichspunkte_split_text.index(all)
+    #             break
 
-        return ausgleichspunkte_split_text, index_end
+    #     return ausgleichspunkte_split_text, index_end
 
 
     def pushButton_ausgleich_pressed(self, aufgabe):
-        content = self.collect_content(aufgabe)
+        content = collect_content(self, aufgabe)
        
 
         try:
-            split_content, index_end = self.split_content_ausgleichspunkte(content)
+            split_content, index_end = split_content_ausgleichspunkte(content)
             split_content = split_content[:index_end]
         except UnboundLocalError:
-            split_content = self.split_content_ausgleichspunkte_new_format(content)
+            split_content = split_content_ausgleichspunkte_new_format(content)
             try:
                 split_content
             except UnboundLocalError:
@@ -5287,7 +5208,7 @@ class Ui_MainWindow(object):
         )
         self.ui = Ui_Dialog_ausgleichspunkte()
         self.ui.setupUi(
-            self.Dialog, split_content, list_sage_ausgleichspunkte_chosen
+            self.Dialog, content, split_content, list_sage_ausgleichspunkte_chosen
         )
         self.Dialog.show()
         self.Dialog.exec_()
@@ -5399,7 +5320,7 @@ class Ui_MainWindow(object):
             return
 
         try:
-            self.collect_content(aufgabe)
+            collect_content(self, aufgabe)
         except FileNotFoundError:
             warning_window('Die Datei konnte nicht gefunden werden.\nBitte wählen Sie "Refresh Database" (F5) und versuchen Sie es erneut.')
             return

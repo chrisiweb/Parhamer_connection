@@ -4,8 +4,16 @@ import shutil
 from functools import partial
 from config import config_loader, colors_ui, get_color, path_programm, logo_path, logo_cria_button_path
 from translate import _fromUtf8, _translate
+from create_new_widgets import (create_new_verticallayout,
+create_new_horizontallayout,
+create_new_gridlayout,
+create_new_button,
+create_new_checkbox,
+create_new_combobox,
+add_new_option)
 
 from waitingspinnerwidget import QtWaitingSpinner
+from work_with_content import split_content_ausgleichspunkte, split_content_ausgleichspunkte_new_format
 
 blue_7=colors_ui['blue_7']
 
@@ -294,16 +302,22 @@ class Ui_Dialog_titlepage(object):
 
 class Ui_Dialog_ausgleichspunkte(object):
     def setupUi(
-        self, Dialog, ausgleichspunkte_split_text, list_sage_ausgleichspunkte_chosen
+        self, Dialog, content, ausgleichspunkte_split_text, list_sage_ausgleichspunkte_chosen
     ):
-        # print(list_sage_ausgleichspunkte_chosen)
         self.ausgleichspunkte_split_text = ausgleichspunkte_split_text
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
         self.Dialog.resize(600, 400)
         self.Dialog.setWindowIcon(QtGui.QIcon(logo_path))
-        self.gridLayout_2 = QtWidgets.QGridLayout(Dialog)
-        self.gridLayout_2.setObjectName("gridLayout_2")
+
+        verticallayout_titlepage = create_new_verticallayout(Dialog)
+        # self.gridLayout_2 = QtWidgets.QGridLayout(Dialog)
+        # self.gridLayout_2.setObjectName("gridLayout_2")
+        self.combobox_edit = create_new_combobox(Dialog)
+        verticallayout_titlepage.addWidget(self.combobox_edit)
+        self.combobox_edit.addItem("Ausgleichspunkte anpassen")
+        self.combobox_edit.addItem("Aufgabenstellungen ein-/ausblenden")
+        self.combobox_edit.currentIndexChanged.connect(self.combobox_edit_changed) 
         self.scrollArea = QtWidgets.QScrollArea(Dialog)
         self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.scrollArea.setWidgetResizable(True)
@@ -337,7 +351,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.gridLayout.addWidget(self.label_solution, row, 1, 1, 3, QtCore.Qt.AlignTop)
         row += 1
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-        self.gridLayout_2.addWidget(self.scrollArea, 0, 0, 1, 1)
+        verticallayout_titlepage.addWidget(self.scrollArea)
         self.buttonBox = QtWidgets.QDialogButtonBox(self.Dialog)
         self.buttonBox = QtWidgets.QDialogButtonBox(self.Dialog)
         self.buttonBox.setStandardButtons(
@@ -348,7 +362,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         buttonX.setText("Abbrechen")
         self.buttonBox.setObjectName("buttonBox")
         self.buttonBox.rejected.connect(self.Dialog.reject)
-        self.gridLayout_2.addWidget(self.buttonBox, 1, 0, 1, 1)
+        verticallayout_titlepage.addWidget(self.buttonBox)
         self.buttonBox.accepted.connect(
             partial(self.pushButton_OK_pressed, list_sage_ausgleichspunkte_chosen)
         )
@@ -362,6 +376,9 @@ class Ui_Dialog_ausgleichspunkte(object):
         Dialog.setWindowTitle(
             _translate("Ausgleichspunkte anpassen", "Ausgleichspunkte anpassen")
         )
+
+    def combobox_edit_changed(self):
+        print(self.combobox_edit.currentIndex())
 
     def create_checkbox_ausgleich(
         self, linetext, row, cb_counter, list_sage_ausgleichspunkte_chosen
