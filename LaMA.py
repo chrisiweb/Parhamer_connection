@@ -4598,6 +4598,7 @@ class Ui_MainWindow(object):
         self.update_punkte()
 
     def get_aufgabentyp(self, aufgabe):
+        aufgabe=aufgabe.replace('_L_','')
         if self.chosen_program=='cria':
             typ=None
         elif re.search("[A-Z]", aufgabe) == None:
