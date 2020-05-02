@@ -650,7 +650,7 @@ def extract_error_from_output(latex_output):
             "Fehler beim Erstellen der PDF-Datei",
             "Es ist ein Fehler beim Erstellen der PDF-Datei aufgetreten. Dadurch konnte die PDF-Datei nicht vollständig erzeugt werden.\n\n"+
             'Dies kann viele unterschiedliche Ursachen haben (siehe Details).\n'+
-            'Durch das Aktualisieren der Datenbank ("Refresh Datsbase") können jedoch die meisten dieser Fehler behoben werden.\n'+
+            'Durch das Aktualisieren der Datenbank (F5) können jedoch die meisten dieser Fehler behoben werden.\n'+
             'Sollte der Fehler weiterhin bestehen, bitte kontaktieren Sie uns unter lama.helpme@gmail.com',
             "Wollen Sie die fehlerhafte PDF-Datei dennoch anzeigen?",
             "Fehlermeldung:\n" + detailed_text,

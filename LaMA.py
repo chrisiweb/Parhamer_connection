@@ -441,7 +441,7 @@ class Ui_MainWindow(object):
         self.actionReset_sage = add_action(self.menuDatei, "Reset Schularbeit", self.reset_sage)
         self.actionReset_sage.setVisible(False)
 
-        self.actionRefresh_Database = add_action(self.menuDatei, "Refresh Database", partial(refresh_ddb, self))
+        self.actionRefresh_Database = add_action(self.menuDatei, "Datenbank aktualisieren", partial(refresh_ddb, self))
         self.actionRefresh_Database.setShortcut("F5")
 
         self.menuDatei.addSeparator()
@@ -1675,9 +1675,10 @@ class Ui_MainWindow(object):
 
         self.groupBox_alle_aufgaben_fb = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_alle_aufgaben_fb.setSizePolicy(SizePolicy_fixed_width)
-        self.groupBox_alle_aufgaben_fb.setMinimumSize(QtCore.QSize(140, 16777215))
+        # self.groupBox_alle_aufgaben_fb.setMinimumSize(QtCore.QSize(140, 16777215))
         # self.groupBox_alle_aufgaben_fb.setMaximumSize(QtCore.QSize(180, 16777215))
         self.groupBox_alle_aufgaben_fb.setObjectName("groupBox_alle_aufgaben_fb")
+        # self.groupBox_alle_aufgaben_fb.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding))
         self.verticalLayout_fb = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben_fb)
         self.verticalLayout_fb.setObjectName("verticalLayout_fb")
         self.comboBox_fb = QtWidgets.QComboBox(self.groupBox_alle_aufgaben_fb)
@@ -1709,7 +1710,7 @@ class Ui_MainWindow(object):
         self.listWidget_fb = QtWidgets.QListWidget(self.groupBox_alle_aufgaben)
         self.listWidget_fb.setObjectName("listWidget")
         self.verticalLayout_fb.addWidget(self.listWidget_fb)
-        self.gridLayout.addWidget(self.groupBox_alle_aufgaben_fb, 1, 0, 3, 1)
+        self.gridLayout.addWidget(self.groupBox_alle_aufgaben_fb, 1, 0, 5, 1)
         self.groupBox_alle_aufgaben_fb.setTitle(
             _translate("MainWindow", "Aufgaben", None)
         )
@@ -1720,7 +1721,7 @@ class Ui_MainWindow(object):
 
         self.groupBox_alle_aufgaben_fb_cria = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_alle_aufgaben_fb_cria.setMinimumWidth(100)
-        self.groupBox_alle_aufgaben_fb_cria.setMinimumSize(QtCore.QSize(140, 16777215))
+        # self.groupBox_alle_aufgaben_fb_cria.setMinimumSize(QtCore.QSize(140, 16777215))
         # self.groupBox_alle_aufgaben_fb_cria.setMaximumSize(QtCore.QSize(200, 16777215))
         self.groupBox_alle_aufgaben_fb_cria.setObjectName("groupBox_alle_aufgaben_fb_cria")
         self.verticalLayout_fb_cria = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben_fb_cria)
@@ -1775,7 +1776,7 @@ class Ui_MainWindow(object):
         self.listWidget_fb_cria= QtWidgets.QListWidget(self.groupBox_alle_aufgaben_fb_cria)
         self.listWidget_fb_cria.setObjectName("listWidget_fb_cria")
         self.verticalLayout_fb_cria.addWidget(self.listWidget_fb_cria)
-        self.gridLayout.addWidget(self.groupBox_alle_aufgaben_fb_cria, 1, 0, 3, 1)
+        self.gridLayout.addWidget(self.groupBox_alle_aufgaben_fb_cria, 1, 0, 5, 1)
         self.groupBox_alle_aufgaben_fb_cria.setTitle(_translate("MainWindow", "Aufgaben",None))
         self.groupBox_alle_aufgaben_fb_cria.hide()
 
@@ -1842,11 +1843,13 @@ class Ui_MainWindow(object):
 
         self.groupBox_feedback = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_feedback.setObjectName(_fromUtf8("groupBox_feedback"))
+        # self.groupBox_feedback.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)) 
         self.gridLayout_fb = QtWidgets.QGridLayout(self.groupBox_feedback)
         self.gridLayout_fb.setObjectName(_fromUtf8("gridLayout_fb"))
         self.plainTextEdit_fb = QtWidgets.QPlainTextEdit(self.groupBox_feedback)
         self.plainTextEdit_fb.setObjectName(_fromUtf8("plainTextEdit_fb"))
         self.plainTextEdit_fb.setTabChangesFocus(True)
+
         self.gridLayout_fb.addWidget(self.plainTextEdit_fb, 0, 0, 1, 1)
         self.gridLayout.addWidget(self.groupBox_feedback, 2, 1, 1, 3)
         self.groupBox_feedback.setTitle(
@@ -1865,13 +1868,13 @@ class Ui_MainWindow(object):
             _translate("MainWindow", "E-Mail Adresse für Nachfragen (optional)", None)
         )
         self.verticalLayout_email.addWidget(self.lineEdit_email)
-        self.gridLayout.addWidget(self.groupBox_email, 3, 1, 1, 3)
+        self.gridLayout.addWidget(self.groupBox_email, 4, 1, 1, 3)
         self.groupBox_email.hide()
 
         self.pushButton_send = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_send.setObjectName(_fromUtf8("pushButton_send"))
         self.gridLayout.addWidget(
-            self.pushButton_send, 4, 3, 1, 1, QtCore.Qt.AlignRight
+            self.pushButton_send, 5, 3, 1, 1, QtCore.Qt.AlignRight
         )
         self.pushButton_send.setText(_translate("MainWindow", "Senden", None))
         self.pushButton_send.clicked.connect(self.pushButton_send_pressed)
@@ -4444,7 +4447,7 @@ class Ui_MainWindow(object):
             if file_found==False:
                 QtWidgets.QApplication.restoreOverrideCursor()
                 response=question_window("Aufgabe nicht gefunden",
-                'Die Aufgabe "{}" konnte in der Datenbank nicht gefunden werden. Dies könnte daran liegen, dass die Datenbank veraltet ist (Tipp: Refresh Database)'.format(aufgabe),
+                'Die Aufgabe "{}" konnte in der Datenbank nicht gefunden werden. Dies könnte daran liegen, dass die Datenbank veraltet ist (Tipp: Datenbank aktualisieren)'.format(aufgabe),
                 'Wollen Sie diese Aufgabe entfernen?')
 
                 if response==True:
