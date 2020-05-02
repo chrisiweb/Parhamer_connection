@@ -13,6 +13,7 @@ create_new_combobox,
 add_new_option)
 
 from waitingspinnerwidget import QtWaitingSpinner
+from predefined_size_policy import SizePolicy_fixed
 from work_with_content import split_content_ausgleichspunkte, split_content_ausgleichspunkte_new_format
 
 blue_7=colors_ui['blue_7']
@@ -305,6 +306,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         self, Dialog, content, ausgleichspunkte_split_text, list_sage_ausgleichspunkte_chosen
     ):
         self.ausgleichspunkte_split_text = ausgleichspunkte_split_text
+        self.list_sage_ausgleichspunkte_chosen = list_sage_ausgleichspunkte_chosen
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
         self.Dialog.resize(600, 400)
@@ -335,14 +337,16 @@ class Ui_Dialog_ausgleichspunkte(object):
             "[...] EINFÜHRUNGSTEXT [...] \n\nAufgabenstellung:\n"
         )
         self.gridLayout.addWidget(self.label_einleitung, 0, 1, 1, 3, QtCore.Qt.AlignTop)
-        row = 1
-        cb_counter = 0
 
-        for all in self.ausgleichspunkte_split_text:
-            cb_counter = self.create_checkbox_ausgleich(
-                all, row, cb_counter, list_sage_ausgleichspunkte_chosen
-            )
-            row += 1
+        row = self.build_checkboxes_for_content()
+        # row = 1
+        # cb_counter = 0
+
+        # for all in self.ausgleichspunkte_split_text:
+        #     cb_counter = self.create_checkbox_ausgleich(
+        #         all, row, cb_counter, list_sage_ausgleichspunkte_chosen
+        #     )
+        #     row += 1
 
         self.label_solution = QtWidgets.QLabel(self.scrollAreaWidgetContents)
         self.label_solution.setWordWrap(True)
@@ -378,10 +382,30 @@ class Ui_Dialog_ausgleichspunkte(object):
         )
 
     def combobox_edit_changed(self):
-        print(self.combobox_edit.currentIndex())
+        for i in reversed(range(self.gridLayout.count())): 
+            self.gridLayout.itemAt(i).widget().setParent(None)
+        if self.combobox_edit.currentIndex() == 0:
+            self.build_checkboxes_for_content()
+        if self.combobox_edit.currentIndex() ==1 :
+            try:
+                list_sage_show_hide_items
+            except NameError:
+                print('error') #### work with content ###
+            
+
+            
+    
+    def build_checkboxes_for_content(self):
+        row = 1
+        cb_counter = 0        
+        for all in self.ausgleichspunkte_split_text:
+            cb_counter = self.create_checkbox_ausgleich(
+                all, row, cb_counter)
+            row += 1
+        return row        
 
     def create_checkbox_ausgleich(
-        self, linetext, row, cb_counter, list_sage_ausgleichspunkte_chosen
+        self, linetext, row, cb_counter
     ):
         counter = row - 1
         if "GRAFIK" in linetext:
@@ -393,9 +417,10 @@ class Ui_Dialog_ausgleichspunkte(object):
                 )
             )
             checkBox = eval("self.checkBox_{}".format(counter))
-            checkBox.setMaximumSize(QtCore.QSize(20, 16777215))
+            # checkBox.setMaximumSize(QtCore.QSize(20, 16777215))
             # self.checkBox.setText("")
             checkBox.setObjectName("checkBox_{}".format(counter))
+            checkBox.setSizePolicy(SizePolicy_fixed)
             self.gridLayout.addWidget(checkBox, row, 0, 1, 1, QtCore.Qt.AlignTop)
             cb_counter += 1
 
@@ -409,7 +434,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         label.setObjectName("label_{}".format(counter))
         if "\\fbox{A}" in linetext:
             linetext = linetext.replace("\\fbox{A}", "")
-        if linetext in list_sage_ausgleichspunkte_chosen:
+        if linetext in self.list_sage_ausgleichspunkte_chosen:
             checkBox.setChecked(True)
 
         label.setText(linetext)

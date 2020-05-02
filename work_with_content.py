@@ -26,49 +26,51 @@ def split_content_ausgleichspunkte_new_format(mode, content):
     print(aufgabenstellung)
     ausgleichspunkte_split_text = aufgabenstellung.split("\\item")
     
-    for all in ausgleichspunkte_split_text[:]:
-        if all.isspace()==True:
-            ausgleichspunkte_split_text.remove(all)
-
-    print(ausgleichspunkte_split_text)
-    # ausgleichspunkte_split_text = split_all_items_of_list(ausgleichspunkte_split_text, "\n\n")
-    # ausgleichspunkte_split_text = split_all_items_of_list(ausgleichspunkte_split_text, "\n\t")
-    # # ausgleichspunkte_split_text = re.split("\n\n|\n\t", aufgabenstellung)
+    if mode == 'show_hide_item':
+        for all in ausgleichspunkte_split_text[:]:
+            if all.isspace()==True:
+                ausgleichspunkte_split_text.remove(all)
+        return ausgleichspunkte_split_text
 
 
-    # ausgleichspunkte_split_text = split_all_items_of_list(ausgleichspunkte_split_text, "\\Subitem{")
+    ausgleichspunkte_split_text = split_all_items_of_list(ausgleichspunkte_split_text, "\n\n")
+    ausgleichspunkte_split_text = split_all_items_of_list(ausgleichspunkte_split_text, "\n\t")
+    # ausgleichspunkte_split_text = re.split("\n\n|\n\t", aufgabenstellung)
+
+
+    ausgleichspunkte_split_text = split_all_items_of_list(ausgleichspunkte_split_text, "\\Subitem{")
 
 
 
-    # for all in ausgleichspunkte_split_text:
-    #     if all.startswith(' '):
-    #         x=all[1:]
-    #         ausgleichspunkte_split_text[ausgleichspunkte_split_text.index(all)] = x
+    for all in ausgleichspunkte_split_text:
+        if all.startswith(' '):
+            x=all[1:]
+            ausgleichspunkte_split_text[ausgleichspunkte_split_text.index(all)] = x
             
-    #     if "\\begin{pspicture*}" in all:
-    #         ausgleichspunkte_split_text[
-    #             ausgleichspunkte_split_text.index(all)
-    #         ] = "[...] GRAFIK [...]"
+        if "\\begin{pspicture*}" in all:
+            ausgleichspunkte_split_text[
+                ausgleichspunkte_split_text.index(all)
+            ] = "[...] GRAFIK [...]"
 
-    # for all in ausgleichspunkte_split_text:
-    #     z = all.replace("\t", "")
-    #     z = z.replace("\\leer", "")
-    #     x = [
-    #         line for line in z.split("\n") if line.strip() != ""
-    #     ]  # delete all empty lines
-    #     for item in x[:]:
-    #         if "begin{" in item or "end{" in item:
-    #             if "tabular" in item or "tabu" in item:
-    #                 pass
-    #             else:
-    #                 x.remove(item)
-    #     y = "\n".join(x)
-    #     ausgleichspunkte_split_text[ausgleichspunkte_split_text.index(all)] = y        
+    for all in ausgleichspunkte_split_text:
+        z = all.replace("\t", "")
+        z = z.replace("\\leer", "")
+        x = [
+            line for line in z.split("\n") if line.strip() != ""
+        ]  # delete all empty lines
+        for item in x[:]:
+            if "begin{" in item or "end{" in item:
+                if "tabular" in item or "tabu" in item:
+                    pass
+                else:
+                    x.remove(item)
+        y = "\n".join(x)
+        ausgleichspunkte_split_text[ausgleichspunkte_split_text.index(all)] = y        
 
 
-    # for all in ausgleichspunkte_split_text[:]:
-    #     if all == "" or all.startswith('%'):
-    #         ausgleichspunkte_split_text.remove(all)
+    for all in ausgleichspunkte_split_text[:]:
+        if all == "" or all.startswith('%'):
+            ausgleichspunkte_split_text.remove(all)
     return ausgleichspunkte_split_text
 
 def split_content_ausgleichspunkte(mode, content):
