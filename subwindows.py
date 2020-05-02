@@ -82,6 +82,7 @@ class Ui_Dialog_processing(object):
         label=QtWidgets.QLabel(Dialog)
         label.setObjectName("label")  
         label.setText(text)
+        label.setStyleSheet("padding: 20px")
         label_spinner = QtWidgets.QLabel(Dialog)
         label.setObjectName("label_spinner")
         label_spinner.setFixedSize(30,30)    
