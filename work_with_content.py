@@ -48,8 +48,9 @@ def split_aufgaben_content_new_format(content):
     #     return aufgabenstellung_split_text
 
 
-    aufgabenstellung_split_text = split_all_items_of_list(aufgabenstellung_split_text, "\n\n")
-    aufgabenstellung_split_text = split_all_items_of_list(aufgabenstellung_split_text, "\n\t")
+    # aufgabenstellung_split_text = split_all_items_of_list(aufgabenstellung_split_text, "\n\n")
+    # aufgabenstellung_split_text = split_all_items_of_list(aufgabenstellung_split_text, "\n\t")
+    
     # aufgabenstellung_split_text = re.split("\n\n|\n\t", aufgabenstellung)
 
 
@@ -84,7 +85,7 @@ def split_aufgaben_content_new_format(content):
 
 
     for all in aufgabenstellung_split_text[:]:
-        if all == "" or all.startswith('%'):
+        if all == "": # or all.replace('ITEM','').startswith('%') or all.replace('ITEM','').startswith(' %')
             aufgabenstellung_split_text.remove(all)
     return aufgabenstellung_split_text
 
