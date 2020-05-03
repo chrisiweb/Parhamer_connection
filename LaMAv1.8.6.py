@@ -4404,7 +4404,7 @@ class Ui_MainWindow(object):
 		self.ui.setupUi(self.Dialog, ausgleichspunkte_split_text, list_sage_ausgleichspunkte_chosen)
 		self.Dialog.show()
 		self.Dialog.exec_()
-		#print(list_sage_ausgleichspunkte_chosen)
+		print(list_sage_ausgleichspunkte_chosen)
 		self.dict_sage_ausgleichspunkte_chosen[bsp_name]=list_sage_ausgleichspunkte_chosen
 
 

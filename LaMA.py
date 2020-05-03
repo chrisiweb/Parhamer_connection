@@ -4602,8 +4602,8 @@ class Ui_MainWindow(object):
             del self.dict_variablen_label[aufgabe]
         if aufgabe in self.dict_sage_ausgleichspunkte_chosen:
             del self.dict_sage_ausgleichspunkte_chosen[aufgabe]
-        if aufgabe in self.list_sage_hide_show_items_chosen:
-            del self.list_sage_hide_show_items_chosen[aufgabe]
+        if aufgabe in self.dict_sage_hide_show_items_chosen:
+            del self.dict_sage_hide_show_items_chosen[aufgabe]
 
 
 
@@ -5212,6 +5212,7 @@ class Ui_MainWindow(object):
                     x = all.replace("\\fbox{A}", "")
                     list_sage_ausgleichspunkte_chosen.append(x)
 
+        # print(list_sage_ausgleichspunkte_chosen)
         if aufgabe in self.dict_sage_hide_show_items_chosen.keys():
             list_sage_hide_show_items_chosen = self.dict_sage_hide_show_items_chosen[aufgabe]
         else:
@@ -5242,6 +5243,7 @@ class Ui_MainWindow(object):
 
         self.dict_variablen_label[aufgabe].setText(_translate("MainWindow","Ausgleichspunkte: {}".format(len(self.ui.list_sage_ausgleichspunkte_chosen)), None))
         self.update_punkte()
+        #### Predefined Ausgleichspunkte überschreiben gewählte
 
 
     def comboBox_at_sage_changed(self):

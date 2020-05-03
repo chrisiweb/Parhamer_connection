@@ -308,6 +308,7 @@ class Ui_Dialog_ausgleichspunkte(object):
     ):
         self.aufgabenstellung_split_text = aufgabenstellung_split_text
         self.list_sage_ausgleichspunkte_chosen = list_sage_ausgleichspunkte_chosen
+        print(self.list_sage_ausgleichspunkte_chosen)
         self.list_sage_hide_show_items_chosen = list_sage_hide_show_items_chosen
         self.dict_widget_variables_ausgleichspunkte = {}
         self.dict_widget_variables_hide_show_items = {}
@@ -414,10 +415,14 @@ class Ui_Dialog_ausgleichspunkte(object):
     def build_checkboxes_for_content(self):
         row = 1
         if self.combobox_edit.currentIndex()==0:
+            # print(self.list_sage_ausgleichspunkte_chosen)
             for linetext in self.aufgabenstellung_split_text:
                 checkbox = self.create_checkbox_ausgleich(linetext, row)
                 if checkbox != None:
+                    
                     self.dict_widget_variables_ausgleichspunkte[linetext]=checkbox
+                    
+
                 row += 1
         elif self.combobox_edit.currentIndex()==1:
             for linetext in self.aufgabenstellung_split_text:
@@ -435,9 +440,11 @@ class Ui_Dialog_ausgleichspunkte(object):
 
     def create_checkbox_ausgleich(self, linetext, row):
         checkbox_label = create_new_label(self.scrollAreaWidgetContents,"",True,True)
+        
         if "GRAFIK" in linetext:
             checkbox=None
         else:
+            
             checkbox = create_new_checkbox(self.scrollAreaWidgetContents,"")
             checkbox.setSizePolicy(SizePolicy_fixed)
             self.gridLayout.addWidget(checkbox, row, 0, 1, 1, QtCore.Qt.AlignTop)
@@ -446,9 +453,19 @@ class Ui_Dialog_ausgleichspunkte(object):
             if "\\fbox{A}" in linetext:
                 linetext = linetext.replace("\\fbox{A}", "")
 
+            # print(linetext)
             if self.combobox_edit.currentIndex()==0:
+                # if linetext == self.list_sage_ausgleichspunkte_chosen[0]:
+                #     print(True)
+                # else:
+                #     print(False)
+                #     print(linetext)
+                #     print(self.list_sage_ausgleichspunkte_chosen[0])
                 if linetext in self.list_sage_ausgleichspunkte_chosen:
+                    # print(True)
                     checkbox.setChecked(True)
+            #     if linetext in self.list_sage_ausgleichspunkte_chosen:
+            #         checkbox.setChecked(True)
         
             checkbox_label.clicked.connect(partial(self.checkbox_label_clicked, checkbox))
 
@@ -467,14 +484,16 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.list_sage_ausgleichspunkte_chosen=[]
         for linetext in list(self.dict_widget_variables_ausgleichspunkte.keys()):
             if self.dict_widget_variables_ausgleichspunkte[linetext].isChecked()==True:
-                self.list_sage_ausgleichspunkte_chosen.append(linetext)
+                self.list_sage_ausgleichspunkte_chosen.append(linetext.replace("\\fbox{A}", ""))
 
         self.list_sage_hide_show_items_chosen=[]    
         for linetext in list(self.dict_widget_variables_hide_show_items.keys()):
             if self.dict_widget_variables_hide_show_items[linetext].isChecked()==False:
-                self.list_sage_hide_show_items_chosen.append(linetext) 
+                self.list_sage_hide_show_items_chosen.append(linetext.replace("\\fbox{A}", "")) 
         
         list_sage_ausgleichspunkte_chosen = self.list_sage_ausgleichspunkte_chosen
+
+        print(self.list_sage_ausgleichspunkte_chosen)
         # print(self.list_sage_hide_show_items_chosen)
         
         # for i in range(0, len(self.aufgabenstellung_split_text)):
