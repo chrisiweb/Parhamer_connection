@@ -6218,14 +6218,14 @@ class Ui_MainWindow(object):
                     for ausgleichspunkte in self.dict_all_infos_for_file[
                         "dict_ausgleichspunkte"
                     ][aufgabe]:
-                        print(ausgleichspunkte)
-                        # content = [
-                        #     line.replace(
-                        #         ausgleichspunkte.partition("\n")[0],
-                        #         "\\fbox{A} " + ausgleichspunkte.partition("\n")[0],
-                        #     )
-                        #     for line in content
-                        # ]
+                        ausgleichspunkte = ausgleichspunkte.replace('ITEM','')                
+                        content = [
+                            line.replace(
+                                ausgleichspunkte.partition("\n")[0],
+                                "\\fbox{A} " + ausgleichspunkte.partition("\n")[0],
+                            )
+                            for line in content
+                        ]
                 ### end ###
                 if aufgabe in self.dict_all_infos_for_file["dict_hide_show_items"].keys():
                     for hide_item in self.dict_all_infos_for_file["dict_hide_show_items"][aufgabe]:
@@ -6249,8 +6249,8 @@ class Ui_MainWindow(object):
 
 
             # print(self.dict_all_infos_for_file)
-            QtWidgets.QApplication.restoreOverrideCursor() 
-            return
+            # QtWidgets.QApplication.restoreOverrideCursor() 
+            # return
             if self.chosen_program == 'cria':
                 # bsp_string=all
                 # list_input = "self.list_input_{}".format(bsp_string)
