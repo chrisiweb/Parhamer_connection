@@ -6198,8 +6198,6 @@ class Ui_MainWindow(object):
 
         control_counter = 0
 
-        print(self.dict_sage_ausgleichspunkte_chosen)
-        print(self.dict_sage_hide_show_items_chosen) 
         for aufgabe in self.list_alle_aufgaben_sage:
             if self.chosen_program == 'lama':
                 typ=self.get_aufgabentyp(aufgabe)
@@ -6220,16 +6218,39 @@ class Ui_MainWindow(object):
                     for ausgleichspunkte in self.dict_all_infos_for_file[
                         "dict_ausgleichspunkte"
                     ][aufgabe]:
-                        content = [
-                            line.replace(
-                                ausgleichspunkte.partition("\n")[0],
-                                "\\fbox{A} " + ausgleichspunkte.partition("\n")[0],
-                            )
-                            for line in content
-                        ]
-            ### end ###
-            print(self.dict_all_infos_for_file) 
+                        print(ausgleichspunkte)
+                        # content = [
+                        #     line.replace(
+                        #         ausgleichspunkte.partition("\n")[0],
+                        #         "\\fbox{A} " + ausgleichspunkte.partition("\n")[0],
+                        #     )
+                        #     for line in content
+                        # ]
+                ### end ###
+                if aufgabe in self.dict_all_infos_for_file["dict_hide_show_items"].keys():
+                    for hide_item in self.dict_all_infos_for_file["dict_hide_show_items"][aufgabe]:
+                        index=0
+                        shorten_item = hide_item.split("\n")[0]
+                        for all_lines in content:
+                            if index==0 and shorten_item.replace('ITEM','') in all_lines:
+                                index = content.index(all_lines)
 
+                            elif index !=0 and "\\item" in all_lines:
+                                end_index = content.index(all_lines)
+                                break
+                            elif index !=0:
+                                if "\\end{aufgabenstellung}" in all_lines or "\\end{enumerate}" in all_lines:
+                                    end_index = content.index(all_lines)
+                                    break
+
+                        del content[index:end_index]
+
+
+
+
+            # print(self.dict_all_infos_for_file)
+            QtWidgets.QApplication.restoreOverrideCursor() 
+            return
             if self.chosen_program == 'cria':
                 # bsp_string=all
                 # list_input = "self.list_input_{}".format(bsp_string)
