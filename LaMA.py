@@ -46,7 +46,7 @@ from create_pdf import prepare_tex_for_pdf, create_pdf
 from refresh_ddb import modification_date, refresh_ddb
 from standard_dialog_windows import warning_window, question_window
 from predefined_size_policy import *
-from work_with_content import collect_content, split_content_ausgleichspunkte_new_format, split_content_ausgleichspunkte
+from work_with_content import collect_content, split_aufgaben_content_new_format, split_aufgaben_content
  
 # from cria_commands import create_kapitel_cria
 
@@ -201,6 +201,7 @@ class Ui_MainWindow(object):
         self.dict_variablen_punkte={}
         self.dict_variablen_label={}
         self.dict_sage_ausgleichspunkte_chosen = {}
+        self.dict_sage_hide_show_items_chosen = {}
         self.dict_chosen_topics = {}
         self.list_creator_topics = []
         self.list_copy_images=[]
@@ -4591,6 +4592,8 @@ class Ui_MainWindow(object):
             del self.dict_variablen_label[aufgabe]
         if aufgabe in self.dict_sage_ausgleichspunkte_chosen:
             del self.dict_sage_ausgleichspunkte_chosen[aufgabe]
+        if aufgabe in self.list_sage_hide_show_items_chosen:
+            del self.list_sage_hide_show_items_chosen[aufgabe]
 
 
 
@@ -4840,7 +4843,7 @@ class Ui_MainWindow(object):
             gridLayout_gB.addWidget(label_ausgleichspkt, 0, 2, 1, 1)
             self.dict_variablen_label[aufgabe]=label_ausgleichspkt
 
-            pushbutton_ausgleich = create_new_button(new_groupbox,"Ausgleichspunkte anpassen...",
+            pushbutton_ausgleich = create_new_button(new_groupbox,"Aufgabe bearbeiten...",
             partial(self.pushButton_ausgleich_pressed, aufgabe))
             pushbutton_ausgleich.setStyleSheet("padding: 6px")
             pushbutton_ausgleich.setSizePolicy(SizePolicy_fixed)
@@ -4928,26 +4931,26 @@ class Ui_MainWindow(object):
 
     #     x = content.split("\\begin{aufgabenstellung}")[1].split("\\end{aufgabenstellung}")
     #     aufgabenstellung = x[0].replace("\t", "")
-    #     ausgleichspunkte_split_text = re.split("\n\n|\n\t", aufgabenstellung)
+    #     aufgabenstellung_split_text = re.split("\n\n|\n\t", aufgabenstellung)
 
-    #     ausgleichspunkte_split_text = self.split_all_items_of_list(ausgleichspunkte_split_text, "\\item")
+    #     aufgabenstellung_split_text = self.split_all_items_of_list(aufgabenstellung_split_text, "\\item")
 
-    #     ausgleichspunkte_split_text = self.split_all_items_of_list(ausgleichspunkte_split_text, "\\Subitem{")
+    #     aufgabenstellung_split_text = self.split_all_items_of_list(aufgabenstellung_split_text, "\\Subitem{")
 
-    #     print(ausgleichspunkte_split_text)
+    #     print(aufgabenstellung_split_text)
     #     return
 
-    #     for all in ausgleichspunkte_split_text:
+    #     for all in aufgabenstellung_split_text:
     #         if all.startswith(' '):
     #             x=all[1:]
-    #             ausgleichspunkte_split_text[ausgleichspunkte_split_text.index(all)] = x
+    #             aufgabenstellung_split_text[aufgabenstellung_split_text.index(all)] = x
                 
     #         if "\\begin{pspicture*}" in all:
-    #             ausgleichspunkte_split_text[
-    #                 ausgleichspunkte_split_text.index(all)
+    #             aufgabenstellung_split_text[
+    #                 aufgabenstellung_split_text.index(all)
     #             ] = "[...] GRAFIK [...]"
 
-    #     for all in ausgleichspunkte_split_text:
+    #     for all in aufgabenstellung_split_text:
     #         z = all.replace("\t", "")
     #         z = z.replace("\\leer", "")
     #         x = [
@@ -4960,13 +4963,13 @@ class Ui_MainWindow(object):
     #                 else:
     #                     x.remove(item)
     #         y = "\n".join(x)
-    #         ausgleichspunkte_split_text[ausgleichspunkte_split_text.index(all)] = y        
+    #         aufgabenstellung_split_text[aufgabenstellung_split_text.index(all)] = y        
 
 
-    #     for all in ausgleichspunkte_split_text[:]:
+    #     for all in aufgabenstellung_split_text[:]:
     #         if all == "" or all.startswith('%'):
-    #             ausgleichspunkte_split_text.remove(all)
-        # return ausgleichspunkte_split_text
+    #             aufgabenstellung_split_text.remove(all)
+        # return aufgabenstellung_split_text
 
     # def collect_content(self, aufgabe):
     #     selected_path = self.get_dateipfad_aufgabe(aufgabe)  
@@ -5080,25 +5083,25 @@ class Ui_MainWindow(object):
     # def split_content_ausgleichspunkte_new_format(self, content):
     #     x = content.split("\\begin{aufgabenstellung}")[1].split("\\end{aufgabenstellung}")
     #     aufgabenstellung = x[0].replace("\t", "")
-    #     ausgleichspunkte_split_text = re.split("\n\n|\n\t", aufgabenstellung)
+    #     aufgabenstellung_split_text = re.split("\n\n|\n\t", aufgabenstellung)
 
-    #     ausgleichspunkte_split_text = self.split_all_items_of_list(ausgleichspunkte_split_text, "\\item")
+    #     aufgabenstellung_split_text = self.split_all_items_of_list(aufgabenstellung_split_text, "\\item")
 
-    #     ausgleichspunkte_split_text = self.split_all_items_of_list(ausgleichspunkte_split_text, "\\Subitem{")
+    #     aufgabenstellung_split_text = self.split_all_items_of_list(aufgabenstellung_split_text, "\\Subitem{")
 
 
 
-    #     for all in ausgleichspunkte_split_text:
+    #     for all in aufgabenstellung_split_text:
     #         if all.startswith(' '):
     #             x=all[1:]
-    #             ausgleichspunkte_split_text[ausgleichspunkte_split_text.index(all)] = x
+    #             aufgabenstellung_split_text[aufgabenstellung_split_text.index(all)] = x
                 
     #         if "\\begin{pspicture*}" in all:
-    #             ausgleichspunkte_split_text[
-    #                 ausgleichspunkte_split_text.index(all)
+    #             aufgabenstellung_split_text[
+    #                 aufgabenstellung_split_text.index(all)
     #             ] = "[...] GRAFIK [...]"
 
-    #     for all in ausgleichspunkte_split_text:
+    #     for all in aufgabenstellung_split_text:
     #         z = all.replace("\t", "")
     #         z = z.replace("\\leer", "")
     #         x = [
@@ -5111,36 +5114,36 @@ class Ui_MainWindow(object):
     #                 else:
     #                     x.remove(item)
     #         y = "\n".join(x)
-    #         ausgleichspunkte_split_text[ausgleichspunkte_split_text.index(all)] = y        
+    #         aufgabenstellung_split_text[aufgabenstellung_split_text.index(all)] = y        
 
 
-    #     for all in ausgleichspunkte_split_text[:]:
+    #     for all in aufgabenstellung_split_text[:]:
     #         if all == "" or all.startswith('%'):
-    #             ausgleichspunkte_split_text.remove(all)
-    #     return ausgleichspunkte_split_text
+    #             aufgabenstellung_split_text.remove(all)
+    #     return aufgabenstellung_split_text
 
     # def split_content_ausgleichspunkte(self, content):
         
     #     x = re.split("Aufgabenstellung:}|Lösungserwartung:}", content)
     #     str_file = x[1].replace("\t", "")
-    #     ausgleichspunkte_split_text = re.split("\n\n|\n\t", str_file)
+    #     aufgabenstellung_split_text = re.split("\n\n|\n\t", str_file)
 
     #     temp_list = []
-    #     for all in ausgleichspunkte_split_text:
-    #         x = ausgleichspunkte_split_text[
-    #             ausgleichspunkte_split_text.index(all)
+    #     for all in aufgabenstellung_split_text:
+    #         x = aufgabenstellung_split_text[
+    #             aufgabenstellung_split_text.index(all)
     #         ].split("\item ")
     #         for item in x:
     #             temp_list.append(item)
-    #     ausgleichspunkte_split_text = temp_list
+    #     aufgabenstellung_split_text = temp_list
 
-    #     for all in ausgleichspunkte_split_text:
+    #     for all in aufgabenstellung_split_text:
     #         if "\\begin{pspicture*}" in all:
-    #             ausgleichspunkte_split_text[
-    #                 ausgleichspunkte_split_text.index(all)
+    #             aufgabenstellung_split_text[
+    #                 aufgabenstellung_split_text.index(all)
     #             ] = "[...] GRAFIK [...]"
 
-    #     for all in ausgleichspunkte_split_text:
+    #     for all in aufgabenstellung_split_text:
     #         z = all.replace("\t", "")
     #         z = z.replace("\\leer", "")
     #         x = [
@@ -5153,18 +5156,18 @@ class Ui_MainWindow(object):
     #                 else:
     #                     x.remove(item)
     #         y = "\n".join(x)
-    #         ausgleichspunkte_split_text[ausgleichspunkte_split_text.index(all)] = y
+    #         aufgabenstellung_split_text[aufgabenstellung_split_text.index(all)] = y
 
-    #     for all in ausgleichspunkte_split_text[:]:
+    #     for all in aufgabenstellung_split_text[:]:
     #         if all == "":
-    #             ausgleichspunkte_split_text.remove(all)
+    #             aufgabenstellung_split_text.remove(all)
 
-    #     for all in reversed(ausgleichspunkte_split_text):
+    #     for all in reversed(aufgabenstellung_split_text):
     #         if "\\antwort{" in all:
-    #             index_end = ausgleichspunkte_split_text.index(all)
+    #             index_end = aufgabenstellung_split_text.index(all)
     #             break
 
-    #     return ausgleichspunkte_split_text, index_end
+    #     return aufgabenstellung_split_text, index_end
 
 
     def pushButton_ausgleich_pressed(self, aufgabe):
@@ -5172,10 +5175,10 @@ class Ui_MainWindow(object):
        
 
         try:
-            split_content, index_end = split_content_ausgleichspunkte('ausgleichspunkte', content)
+            split_content, index_end = split_aufgaben_content(content)
             split_content = split_content[:index_end]
         except UnboundLocalError:
-            split_content = split_content_ausgleichspunkte_new_format('ausgleichspunkte',content)
+            split_content = split_aufgaben_content_new_format(content)
             try:
                 split_content
             except UnboundLocalError:
@@ -5189,7 +5192,6 @@ class Ui_MainWindow(object):
 
 
         if aufgabe in self.dict_sage_ausgleichspunkte_chosen.keys():
-
             list_sage_ausgleichspunkte_chosen = self.dict_sage_ausgleichspunkte_chosen[
                 aufgabe
             ]
@@ -5200,6 +5202,10 @@ class Ui_MainWindow(object):
                     x = all.replace("\\fbox{A}", "")
                     list_sage_ausgleichspunkte_chosen.append(x)
 
+        if aufgabe in self.dict_sage_hide_show_items_chosen.keys():
+            list_sage_hide_show_items_chosen = self.dict_sage_hide_show_items_chosen[aufgabe]
+        else:
+            list_sage_hide_show_items_chosen=[]
         self.Dialog = QtWidgets.QDialog(
             None,
             QtCore.Qt.WindowSystemMenuHint
@@ -5208,16 +5214,19 @@ class Ui_MainWindow(object):
         )
         self.ui = Ui_Dialog_ausgleichspunkte()
         self.ui.setupUi(
-            self.Dialog, content, split_content, list_sage_ausgleichspunkte_chosen
+            self.Dialog, split_content, list_sage_ausgleichspunkte_chosen, list_sage_hide_show_items_chosen
         )
         # self.Dialog.show()
         self.Dialog.exec_()
-        # print(list_sage_ausgleichspunkte_chosen)
-
+        
         self.dict_sage_ausgleichspunkte_chosen[
             aufgabe
         ] = list_sage_ausgleichspunkte_chosen
 
+        self.dict_sage_hide_show_items_chosen[aufgabe]= list_sage_hide_show_items_chosen
+
+        print(self.dict_sage_ausgleichspunkte_chosen)
+        print(self.dict_sage_hide_show_items_chosen)
 
         self.dict_alle_aufgaben_sage[aufgabe][3]=len(list_sage_ausgleichspunkte_chosen)
 

@@ -15,7 +15,7 @@ add_new_option)
 
 from waitingspinnerwidget import QtWaitingSpinner
 from predefined_size_policy import SizePolicy_fixed
-from work_with_content import split_content_ausgleichspunkte, split_content_ausgleichspunkte_new_format
+#from work_with_content import split_content_ausgleichspunkte, split_content_ausgleichspunkte_new_format
 
 blue_7=colors_ui['blue_7']
 
@@ -121,7 +121,7 @@ class Ui_Dialog_titlepage(object):
         # self.dict_titlepage = dict_titlepage
         # print(self.dict_titlepage)
 
-        # self.ausgleichspunkte_split_text=ausgleichspunkte_split_text
+        # self.aufgabenstellung_split_text=aufgabenstellung_split_text
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
         Dialog.setWindowTitle(
@@ -304,14 +304,20 @@ class Ui_Dialog_titlepage(object):
 
 class Ui_Dialog_ausgleichspunkte(object):
     def setupUi(
-        self, Dialog, content, ausgleichspunkte_split_text, list_sage_ausgleichspunkte_chosen
+        self, Dialog, aufgabenstellung_split_text, list_sage_ausgleichspunkte_chosen, list_sage_hide_show_items_chosen
     ):
-        self.ausgleichspunkte_split_text = ausgleichspunkte_split_text
+        self.aufgabenstellung_split_text = aufgabenstellung_split_text
         self.list_sage_ausgleichspunkte_chosen = list_sage_ausgleichspunkte_chosen
+        self.list_sage_hide_show_items_chosen = list_sage_hide_show_items_chosen
+        self.dict_widget_variables_ausgleichspunkte = {}
+        self.dict_widget_variables_hide_show_items = {}
+
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
+        self.Dialog.setWindowTitle("Ausgleichspunkte anpassen")
         self.Dialog.resize(600, 400)
         self.Dialog.setWindowIcon(QtGui.QIcon(logo_path))
+
 
         verticallayout_titlepage = create_new_verticallayout(Dialog)
         # self.gridLayout_2 = QtWidgets.QGridLayout(Dialog)
@@ -320,7 +326,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         verticallayout_titlepage.addWidget(self.combobox_edit)
         self.combobox_edit.addItem("Ausgleichspunkte anpassen")
         self.combobox_edit.addItem("Aufgabenstellungen ein-/ausblenden")
-        self.combobox_edit.currentIndexChanged.connect(partial(self.combobox_edit_changed, content)) 
+        self.combobox_edit.currentIndexChanged.connect(self.combobox_edit_changed) 
         self.scrollArea = QtWidgets.QScrollArea(Dialog)
         self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.scrollArea.setWidgetResizable(True)
@@ -344,130 +350,109 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.label_solution.setObjectName("label_solution")
         self.label_solution.setText("\nLösungserwartung:\n[...]")
 
-        row = self.build_checkboxes_for_content(self.ausgleichspunkte_split_text)
-        # row = 1
-        # cb_counter = 0
+        row = self.build_checkboxes_for_content()
 
-        # for all in self.ausgleichspunkte_split_text:
-        #     cb_counter = self.create_checkbox_ausgleich(
-        #         all, row, cb_counter, list_sage_ausgleichspunkte_chosen
-        #     )
-        #     row += 1
-
-
-        # self.gridLayout.addWidget(self.label_solution, row, 1, 1, 3, QtCore.Qt.AlignTop)
-        # row += 1
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         verticallayout_titlepage.addWidget(self.scrollArea)
+        # self.buttonBox = QtWidgets.QDialogButtonBox(self.Dialog)
         self.buttonBox = QtWidgets.QDialogButtonBox(self.Dialog)
-        self.buttonBox = QtWidgets.QDialogButtonBox(self.Dialog)
+        self.buttonBox.setObjectName("buttonBox")
         self.buttonBox.setStandardButtons(
             QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel
         )
 
         buttonX = self.buttonBox.button(QtWidgets.QDialogButtonBox.Cancel)
         buttonX.setText("Abbrechen")
-        self.buttonBox.setObjectName("buttonBox")
         self.buttonBox.rejected.connect(self.Dialog.reject)
         verticallayout_titlepage.addWidget(self.buttonBox)
         self.buttonBox.accepted.connect(
             partial(self.pushButton_OK_pressed, list_sage_ausgleichspunkte_chosen)
         )
-        self.retranslateUi(self.Dialog)
+        # # self.retranslateUi(self.Dialog)
         QtCore.QMetaObject.connectSlotsByName(self.Dialog)
 
         # return list_sage_ausgleichspunkte_chosen
 
-    def retranslateUi(self, Dialog):
-        _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(
-            _translate("Ausgleichspunkte anpassen", "Ausgleichspunkte anpassen")
-        )
+    # def retranslateUi(self, Dialog):
+    #     _translate = QtCore.QCoreApplication.translate
+    #     Dialog.setWindowTitle(
+    #         _translate("Ausgleichspunkte anpassen", "Ausgleichspunkte anpassen")
+    #     )
 
-    def combobox_edit_changed(self, content):
+    def combobox_edit_changed(self):
         for i in reversed(range(1,self.gridLayout.count())): 
             self.gridLayout.itemAt(i).widget().setParent(None)
         if self.combobox_edit.currentIndex() == 0:
-            self.build_checkboxes_for_content(self.ausgleichspunkte_split_text)
+            self.build_checkboxes_for_content()
         if self.combobox_edit.currentIndex() ==1 :
-            try:
-                self.list_sage_show_hide_items
-            except AttributeError:
-                try:
-                    split_content, index_end = split_content_ausgleichspunkte('show_hide_item', content)
-                    split_content = split_content[:index_end]
-                except UnboundLocalError:
-                    split_content = split_content_ausgleichspunkte_new_format('show_hide_item',content)
-                    try:
-                        split_content
-                    except UnboundLocalError:
-                        warning_window(
-                            "Es ist ein Fehler bei der Auswahl der Ausgleichspunkte von Aufgabe {} aufgetreten! (Die Aufgabe kann dennoch verwendet und individuell in der TeX-Datei bearbeitet werden.)\n".format(
-                                aufgabe
-                            ),
-                            'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!',
-                        )
-                        return
-                self.list_sage_show_hide_items = split_content
-            self.build_checkboxes_for_content(self.list_sage_show_hide_items)
+            self.build_checkboxes_for_content()
+            # try:
+            #     self.list_sage_show_hide_items
+            # except AttributeError:
+            #     try:
+            #         split_content, index_end = split_content_ausgleichspunkte('show_hide_item', content)
+            #         split_content = split_content[:index_end]
+            #     except UnboundLocalError:
+            #         split_content = split_content_ausgleichspunkte_new_format('show_hide_item',content)
+            #         try:
+            #             split_content
+            #         except UnboundLocalError:
+            #             warning_window(
+            #                 "Es ist ein Fehler bei der Auswahl der Ausgleichspunkte von Aufgabe {} aufgetreten! (Die Aufgabe kann dennoch verwendet und individuell in der TeX-Datei bearbeitet werden.)\n".format(
+            #                     aufgabe
+            #                 ),
+            #                 'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!',
+            #             )
+            #             return
+            #     self.list_sage_show_hide_items = split_content
+            
                 
-            
-
-            
+          
     
-    def build_checkboxes_for_content(self, list_of_parts):
+    def build_checkboxes_for_content(self):
         row = 1
-        cb_counter = 0        
-        for all in list_of_parts:
-            cb_counter = self.create_checkbox_ausgleich(
-                all, row, cb_counter)
-            row += 1
+        if self.combobox_edit.currentIndex()==0:
+            for linetext in self.aufgabenstellung_split_text:
+                checkbox = self.create_checkbox_ausgleich(linetext, row)
+                if checkbox != None:
+                    self.dict_widget_variables_ausgleichspunkte[linetext]=checkbox
+                row += 1
+        elif self.combobox_edit.currentIndex()==1:
+            for linetext in self.aufgabenstellung_split_text:
+                if linetext.startswith('ITEM'):
+                    checkbox = self.create_checkbox_ausgleich(linetext, row)
+                    checkbox.setChecked(True)
+                    if checkbox !=None:
+                        self.dict_widget_variables_hide_show_items[linetext]=checkbox   
+                else:
+                    label= create_new_label(self.scrollAreaWidgetContents,linetext.replace('ITEM',''), True)
+                    self.gridLayout.addWidget(label, row, 1, 1, 2, QtCore.Qt.AlignTop)
+                row += 1             
         self.gridLayout.addWidget(self.label_solution, row, 1, 1, 3, QtCore.Qt.AlignTop)
     
 
-    def create_checkbox_ausgleich(
-        self, linetext, row, cb_counter
-    ):
-        counter = row - 1
+    def create_checkbox_ausgleich(self, linetext, row):
+        checkbox_label = create_new_label(self.scrollAreaWidgetContents,"",True,True)
         if "GRAFIK" in linetext:
-            pass
+            checkbox=None
         else:
             checkbox = create_new_checkbox(self.scrollAreaWidgetContents,"")
-            # exec(
-            #     "self.checkBox_{} = QtWidgets.QCheckBox(self.scrollAreaWidgetContents)".format(
-            #         counter
-            #     )
-            # )
-            # checkBox = eval("self.checkBox_{}".format(counter))
-            # # checkBox.setMaximumSize(QtCore.QSize(20, 16777215))
-            # # self.checkBox.setText("")
-            # checkBox.setObjectName("checkBox_{}".format(counter))
             checkbox.setSizePolicy(SizePolicy_fixed)
             self.gridLayout.addWidget(checkbox, row, 0, 1, 1, QtCore.Qt.AlignTop)
-            cb_counter += 1
 
 
             if "\\fbox{A}" in linetext:
                 linetext = linetext.replace("\\fbox{A}", "")
 
-
-            checkbox_label = create_new_label(self.scrollAreaWidgetContents,linetext,True,True)
+            if self.combobox_edit.currentIndex()==0:
+                if linetext in self.list_sage_ausgleichspunkte_chosen:
+                    checkbox.setChecked(True)
+        
             checkbox_label.clicked.connect(partial(self.checkbox_label_clicked, checkbox))
-        # exec(
-        #     "self.label_{} = QtWidgets.QLabel(self.scrollAreaWidgetContents)".format(
-        #         counter
-        #     )
-        # )
-        # label = eval("self.label_{}".format(counter))
-        # label.setWordWrap(True)
-        # label.setObjectName("label_{}".format(counter))
 
-            if linetext in self.list_sage_ausgleichspunkte_chosen:
-                checkBox.setChecked(True)
-
-            checkbox_label.setText(linetext)
-            self.gridLayout.addWidget(checkbox_label, row, 1, 1, 2, QtCore.Qt.AlignTop)
-        return cb_counter
+        checkbox_label.setText(linetext.replace("ITEM",""))
+        self.gridLayout.addWidget(checkbox_label, row, 1, 1, 2, QtCore.Qt.AlignTop)
+        return checkbox
 
     def checkbox_label_clicked(self, checkbox):
         if checkbox.isChecked()==True:
@@ -476,33 +461,44 @@ class Ui_Dialog_ausgleichspunkte(object):
             checkbox.setChecked(True)
 
     def pushButton_OK_pressed(self, list_sage_ausgleichspunkte_chosen):
-        # print(len(self.ausgleichspunkte_split_text))
-        for i in range(0, len(self.ausgleichspunkte_split_text)):
-            try:
-                checkBox = eval("self.checkBox_{}".format(i))
-                if (
-                    eval("self.label_{}".format(i)).text()
-                    in list_sage_ausgleichspunkte_chosen
-                ):
-                    if checkBox.isChecked() == False:
-                        list_sage_ausgleichspunkte_chosen.remove(
-                            eval("self.label_{}".format(i)).text()
-                        )
-                else:
-                    if checkBox.isChecked() == True:
-                        list_sage_ausgleichspunkte_chosen.append(
-                            eval("self.label_{}".format(i)).text()
-                        )
+      
 
-            except AttributeError:
-                pass
+        for linetext in list(self.dict_widget_variables_ausgleichspunkte.keys()):
+            if self.dict_widget_variables_ausgleichspunkte[linetext].isChecked()==True:
+                self.list_sage_ausgleichspunkte_chosen.append(linetext.replace('ITEM',''))
+            
+        for linetext in list(self.dict_widget_variables_hide_show_items.keys()):
+            if self.dict_widget_variables_hide_show_items[linetext].isChecked()==False:
+                self.list_sage_hide_show_items_chosen.append(linetext.replace('ITEM','')) 
+        
+        
+        # for i in range(0, len(self.aufgabenstellung_split_text)):
+        #     try:
+        #         checkBox = eval("self.checkBox_{}".format(i))
+        #         if (
+        #             eval("self.label_{}".format(i)).text()
+        #             in list_sage_ausgleichspunkte_chosen
+        #         ):
+        #             if checkBox.isChecked() == False:
+        #                 list_sage_ausgleichspunkte_chosen.remove(
+        #                     eval("self.label_{}".format(i)).text()
+        #                 )
+        #         else:
+        #             if checkBox.isChecked() == True:
+        #                 list_sage_ausgleichspunkte_chosen.append(
+        #                     eval("self.label_{}".format(i)).text()
+        #                 )
+
+        #     except AttributeError:
+        #         pass
 
         # print(list_sage_ausgleichspunkte_chosen)
 
         self.Dialog.reject()
+
         # print(list_sage_ausgleichspunkte_chosen)
         # self.list_sage_ausgleichspunkte_chosen=list_sage_ausgleichspunkte_chosen
-        return list_sage_ausgleichspunkte_chosen
+        # return list_sage_ausgleichspunkte_chosen
 
 class Ui_Dialog_erstellen(QtWidgets.QDialog):
     def setupUi(

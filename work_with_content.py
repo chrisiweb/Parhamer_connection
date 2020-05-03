@@ -17,43 +17,57 @@ def split_all_items_of_list(chosen_list, string):
             temporary_list.append(item)
     return temporary_list
 
+def delete_empty_items(liste):
+    for all in liste[:]:
+        if all.isspace()==True or all == '':
+            liste.remove(all)
 
-def split_content_ausgleichspunkte_new_format(mode, content):
+    return liste    
+
+def split_aufgaben_content_new_format(content):
     ## mode ='ausgleichspunkte', 'show_hide_items'
     x = content.split("\\begin{aufgabenstellung}")[1].split("\\end{aufgabenstellung}")
     aufgabenstellung = x[0].replace("\t", "")
-    # ausgleichspunkte_split_text = re.split("\n\n|\n\t", aufgabenstellung)
+    # aufgabenstellung_split_text = re.split("\n\n|\n\t", aufgabenstellung)
 
     # print(aufgabenstellung)
-    ausgleichspunkte_split_text = aufgabenstellung.split("\\item")
-    print(ausgleichspunkte_split_text)
+    aufgabenstellung_split_text = aufgabenstellung.split("\\item")
+
+    aufgabenstellung_split_text = delete_empty_items(aufgabenstellung_split_text)
+    # for all in aufgabenstellung_split_text[:]:
+    #     if all.isspace()==True:
+    #         aufgabenstellung_split_text.remove(all)
+
+    aufgabenstellung_split_text=['ITEM' + string for string in aufgabenstellung_split_text]
+
+    # print(aufgabenstellung_split_text)
     # if mode == 'show_hide_item':
-    #     for all in ausgleichspunkte_split_text[:]:
+    #     for all in aufgabenstellung_split_text[:]:
     #         if all.isspace()==True:
-    #             ausgleichspunkte_split_text.remove(all)
-    #     return ausgleichspunkte_split_text
+    #             aufgabenstellung_split_text.remove(all)
+    #     return aufgabenstellung_split_text
 
 
-    ausgleichspunkte_split_text = split_all_items_of_list(ausgleichspunkte_split_text, "\n\n")
-    ausgleichspunkte_split_text = split_all_items_of_list(ausgleichspunkte_split_text, "\n\t")
-    # ausgleichspunkte_split_text = re.split("\n\n|\n\t", aufgabenstellung)
+    aufgabenstellung_split_text = split_all_items_of_list(aufgabenstellung_split_text, "\n\n")
+    aufgabenstellung_split_text = split_all_items_of_list(aufgabenstellung_split_text, "\n\t")
+    # aufgabenstellung_split_text = re.split("\n\n|\n\t", aufgabenstellung)
 
 
-    ausgleichspunkte_split_text = split_all_items_of_list(ausgleichspunkte_split_text, "\\Subitem{")
+    aufgabenstellung_split_text = split_all_items_of_list(aufgabenstellung_split_text, "\\Subitem{")
 
 
 
-    for all in ausgleichspunkte_split_text:
+    for all in aufgabenstellung_split_text:
         if all.startswith(' '):
             x=all[1:]
-            ausgleichspunkte_split_text[ausgleichspunkte_split_text.index(all)] = x
+            aufgabenstellung_split_text[aufgabenstellung_split_text.index(all)] = x
             
         if "\\begin{pspicture*}" in all:
-            ausgleichspunkte_split_text[
-                ausgleichspunkte_split_text.index(all)
+            aufgabenstellung_split_text[
+                aufgabenstellung_split_text.index(all)
             ] = "[...] GRAFIK [...]"
 
-    for all in ausgleichspunkte_split_text:
+    for all in aufgabenstellung_split_text:
         z = all.replace("\t", "")
         z = z.replace("\\leer", "")
         x = [
@@ -66,37 +80,51 @@ def split_content_ausgleichspunkte_new_format(mode, content):
                 else:
                     x.remove(item)
         y = "\n".join(x)
-        ausgleichspunkte_split_text[ausgleichspunkte_split_text.index(all)] = y        
+        aufgabenstellung_split_text[aufgabenstellung_split_text.index(all)] = y        
 
 
-    for all in ausgleichspunkte_split_text[:]:
+    for all in aufgabenstellung_split_text[:]:
         if all == "" or all.startswith('%'):
-            ausgleichspunkte_split_text.remove(all)
-    return ausgleichspunkte_split_text
+            aufgabenstellung_split_text.remove(all)
+    return aufgabenstellung_split_text
 
-def split_content_ausgleichspunkte(mode, content):
+
+def split_aufgaben_content(content):
     ## mode ='ausgleichspunkte', 'show_hide_items' 
     x = re.split("Aufgabenstellung:}|Lösungserwartung:}", content)
-    str_file = x[1].replace("\t", "")
-    ausgleichspunkte_split_text = re.split("\n\n|\n\t", str_file)
+    aufgabenstellung = x[1].replace("\t", "")
+    aufgabenstellung = aufgabenstellung.replace("\\begin{enumerate}","").replace("\\end{enumerate}","")
+    aufgabenstellung_split_text = aufgabenstellung.split("\\item")
 
-    temp_list = []
-    for all in ausgleichspunkte_split_text:
-        x = ausgleichspunkte_split_text[
-            ausgleichspunkte_split_text.index(all)
-        ].split("\item ")
-        for item in x:
-            temp_list.append(item)
-    ausgleichspunkte_split_text = temp_list
+    aufgabenstellung_split_text = delete_empty_items(aufgabenstellung_split_text)
+    # for all in aufgabenstellung_split_text[:]:
+    #     if all.isspace()==True:
+    #         aufgabenstellung_split_text.remove(all)
 
-    # print(ausgleichspunkte_split_text)
-    for all in ausgleichspunkte_split_text:
+    aufgabenstellung_split_text=['ITEM' + string for string in aufgabenstellung_split_text]
+
+
+    aufgabenstellung_split_text = split_all_items_of_list(aufgabenstellung_split_text, "\n\n")
+    aufgabenstellung_split_text = split_all_items_of_list(aufgabenstellung_split_text, "\n\t")
+    
+    # temp_list = []
+    # for all in aufgabenstellung_split_text:
+    #     x = aufgabenstellung_split_text[
+    #         aufgabenstellung_split_text.index(all)
+    #     ].split("\item ")
+    #     for item in x:
+    #         temp_list.append(item)
+    # aufgabenstellung_split_text = temp_list
+
+    # print(aufgabenstellung_split_text)
+
+    for all in aufgabenstellung_split_text:
         if "\\begin{pspicture*}" in all:
-            ausgleichspunkte_split_text[
-                ausgleichspunkte_split_text.index(all)
+            aufgabenstellung_split_text[
+                aufgabenstellung_split_text.index(all)
             ] = "[...] GRAFIK [...]"
 
-    for all in ausgleichspunkte_split_text:
+    for all in aufgabenstellung_split_text:
         z = all.replace("\t", "")
         z = z.replace("\\leer", "")
         x = [
@@ -109,15 +137,16 @@ def split_content_ausgleichspunkte(mode, content):
                 else:
                     x.remove(item)
         y = "\n".join(x)
-        ausgleichspunkte_split_text[ausgleichspunkte_split_text.index(all)] = y
+        aufgabenstellung_split_text[aufgabenstellung_split_text.index(all)] = y
 
-    for all in ausgleichspunkte_split_text[:]:
-        if all == "":
-            ausgleichspunkte_split_text.remove(all)
+    # for all in aufgabenstellung_split_text[:]:
+    #     if all == "":
+    #         aufgabenstellung_split_text.remove(all)
+    aufgabenstellung_split_text = delete_empty_items(aufgabenstellung_split_text)
 
-    for all in reversed(ausgleichspunkte_split_text):
+    for all in reversed(aufgabenstellung_split_text):
         if "\\antwort{" in all:
-            index_end = ausgleichspunkte_split_text.index(all)
+            index_end = aufgabenstellung_split_text.index(all)
             break
 
-    return ausgleichspunkte_split_text, index_end
+    return aufgabenstellung_split_text, index_end
