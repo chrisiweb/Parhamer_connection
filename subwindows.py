@@ -85,6 +85,7 @@ class Ui_Dialog_processing(object):
         # Dialog.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed))
         horizontalLayout = QtWidgets.QHBoxLayout(Dialog)
         horizontalLayout.setObjectName("horizontal")
+        horizontalLayout.setSizeConstraint(QtWidgets.QHBoxLayout.SetFixedSize)
 
         pixmap = QtGui.QPixmap(logo_cria_button_path)
         # Dialog.setPixmap(pixmap.scaled(110, 110, QtCore.Qt.KeepAspectRatio))
