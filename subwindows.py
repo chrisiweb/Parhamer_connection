@@ -370,6 +370,8 @@ class Ui_Dialog_ausgleichspunkte(object):
         )
         # # self.retranslateUi(self.Dialog)
         QtCore.QMetaObject.connectSlotsByName(self.Dialog)
+        
+        # self.list_sage_ausgleichspunkte_chosen=list_sage_ausgleichspunkte_chosen
 
         # return list_sage_ausgleichspunkte_chosen
 
@@ -462,15 +464,18 @@ class Ui_Dialog_ausgleichspunkte(object):
 
     def pushButton_OK_pressed(self, list_sage_ausgleichspunkte_chosen):
       
-
+        self.list_sage_ausgleichspunkte_chosen=[]
         for linetext in list(self.dict_widget_variables_ausgleichspunkte.keys()):
             if self.dict_widget_variables_ausgleichspunkte[linetext].isChecked()==True:
-                self.list_sage_ausgleichspunkte_chosen.append(linetext.replace('ITEM',''))
-            
+                self.list_sage_ausgleichspunkte_chosen.append(linetext)
+
+        self.list_sage_hide_show_items_chosen=[]    
         for linetext in list(self.dict_widget_variables_hide_show_items.keys()):
             if self.dict_widget_variables_hide_show_items[linetext].isChecked()==False:
-                self.list_sage_hide_show_items_chosen.append(linetext.replace('ITEM','')) 
+                self.list_sage_hide_show_items_chosen.append(linetext) 
         
+        list_sage_ausgleichspunkte_chosen = self.list_sage_ausgleichspunkte_chosen
+        # print(self.list_sage_hide_show_items_chosen)
         
         # for i in range(0, len(self.aufgabenstellung_split_text)):
         #     try:
@@ -496,9 +501,6 @@ class Ui_Dialog_ausgleichspunkte(object):
 
         self.Dialog.reject()
 
-        # print(list_sage_ausgleichspunkte_chosen)
-        # self.list_sage_ausgleichspunkte_chosen=list_sage_ausgleichspunkte_chosen
-        # return list_sage_ausgleichspunkte_chosen
 
 class Ui_Dialog_erstellen(QtWidgets.QDialog):
     def setupUi(

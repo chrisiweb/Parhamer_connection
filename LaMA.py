@@ -4360,9 +4360,19 @@ class Ui_MainWindow(object):
         day = self.dict_all_infos_for_file["data_gesamt"]["Datum"][2]
         self.dateEdit.setDate(QtCore.QDate(year, month, day))
 
-        self.dict_sage_ausgleichspunkte_chosen = self.dict_all_infos_for_file[
-            "dict_ausgleichspunkte"
-        ]
+        try:
+            self.dict_sage_ausgleichspunkte_chosen = self.dict_all_infos_for_file[
+                "dict_ausgleichspunkte"
+            ]
+        except KeyError:
+            self.dict_sage_ausgleichspunkte_chosen = {}
+
+        try:
+            self.dict_sage_hide_show_items_chosen = self.dict_all_infos_for_file[
+                "dict_hide_show_items"
+            ]
+        except KeyError:
+            self.dict_sage_hide_show_items_chosen = {}            
 
         self.list_copy_images = self.dict_all_infos_for_file["data_gesamt"]["copy_images"]
 
@@ -5218,19 +5228,19 @@ class Ui_MainWindow(object):
         )
         # self.Dialog.show()
         self.Dialog.exec_()
-        
+
         self.dict_sage_ausgleichspunkte_chosen[
             aufgabe
-        ] = list_sage_ausgleichspunkte_chosen
+        ] = self.ui.list_sage_ausgleichspunkte_chosen
 
-        self.dict_sage_hide_show_items_chosen[aufgabe]= list_sage_hide_show_items_chosen
+        self.dict_sage_hide_show_items_chosen[aufgabe]= self.ui.list_sage_hide_show_items_chosen
 
-        print(self.dict_sage_ausgleichspunkte_chosen)
-        print(self.dict_sage_hide_show_items_chosen)
+        # print(self.dict_sage_ausgleichspunkte_chosen)
+        # print(self.dict_sage_hide_show_items_chosen)
 
-        self.dict_alle_aufgaben_sage[aufgabe][3]=len(list_sage_ausgleichspunkte_chosen)
+        self.dict_alle_aufgaben_sage[aufgabe][3]=len(self.ui.list_sage_ausgleichspunkte_chosen)
 
-        self.dict_variablen_label[aufgabe].setText(_translate("MainWindow","Ausgleichspunkte: {}".format(len(list_sage_ausgleichspunkte_chosen)), None))
+        self.dict_variablen_label[aufgabe].setText(_translate("MainWindow","Ausgleichspunkte: {}".format(len(self.ui.list_sage_ausgleichspunkte_chosen)), None))
         self.update_punkte()
 
 
@@ -5779,6 +5789,13 @@ class Ui_MainWindow(object):
         ] = self.dict_sage_ausgleichspunkte_chosen
 
         ### end ###
+        ### include dictionary hide/show items ###
+        self.dict_all_infos_for_file[
+            "dict_hide_show_items"
+        ] = self.dict_sage_hide_show_items_chosen
+
+        ### end ###
+
 
         ### include basic data of test ###
         if self.combobox_beurteilung.currentIndex() == 0:
@@ -6179,8 +6196,8 @@ class Ui_MainWindow(object):
 
         control_counter = 0
 
-
-
+        print(self.dict_sage_ausgleichspunkte_chosen)
+        print(self.dict_sage_hide_show_items_chosen) 
         for aufgabe in self.list_alle_aufgaben_sage:
             if self.chosen_program == 'lama':
                 typ=self.get_aufgabentyp(aufgabe)
@@ -6209,7 +6226,7 @@ class Ui_MainWindow(object):
                             for line in content
                         ]
             ### end ###
-
+            print(self.dict_all_infos_for_file) 
 
             if self.chosen_program == 'cria':
                 # bsp_string=all
