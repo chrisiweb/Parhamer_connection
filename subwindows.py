@@ -78,9 +78,11 @@ class Ui_Dialog_processing(object):
             | QtCore.Qt.WindowTitleHint)
         Dialog.setWindowTitle('Lade...')
         Dialog.setStyleSheet("background-color: {}; color: white".format(get_color(blue_7)))
+        # Dialog.setSizePolicy(SizePolicy_fixed)
+        # Dialog.setFixedSize(Dialog.size())
         pixmap = QtGui.QPixmap(logo_path)
         Dialog.setWindowIcon(QtGui.QIcon(logo_path))
-        Dialog.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed))
+        # Dialog.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed))
         horizontalLayout = QtWidgets.QHBoxLayout(Dialog)
         horizontalLayout.setObjectName("horizontal")
 
