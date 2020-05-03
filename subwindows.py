@@ -421,7 +421,10 @@ class Ui_Dialog_ausgleichspunkte(object):
         if self.combobox_edit.currentIndex()==0:
             # print(self.list_sage_ausgleichspunkte_chosen)
             for linetext in self.aufgabenstellung_split_text:
-                checkbox = self.create_checkbox_ausgleich(linetext, row)
+                if linetext.replace('ITEM','').startswith('%') or linetext.replace('ITEM','').startswith(' %'):
+                    checkbox=None
+                else:
+                    checkbox = self.create_checkbox_ausgleich(linetext, row)
                 if checkbox != None:
                     
                     self.dict_widget_variables_ausgleichspunkte[linetext]=checkbox

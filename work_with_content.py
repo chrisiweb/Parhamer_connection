@@ -29,7 +29,7 @@ def split_aufgaben_content_new_format(content):
     x = content.split("\\begin{aufgabenstellung}")[1].split("\\end{aufgabenstellung}")
     aufgabenstellung = x[0].replace("\t", "")
     # aufgabenstellung_split_text = re.split("\n\n|\n\t", aufgabenstellung)
-
+    # aufgabenstellung = aufgabenstellung.replace('%Aufgabentext','')
     # print(aufgabenstellung)
     aufgabenstellung_split_text = aufgabenstellung.split("\\item")
 
@@ -37,7 +37,6 @@ def split_aufgaben_content_new_format(content):
     # for all in aufgabenstellung_split_text[:]:
     #     if all.isspace()==True:
     #         aufgabenstellung_split_text.remove(all)
-
     aufgabenstellung_split_text=['ITEM' + string for string in aufgabenstellung_split_text]
 
     # print(aufgabenstellung_split_text)
