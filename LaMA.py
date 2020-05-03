@@ -1965,7 +1965,7 @@ class Ui_MainWindow(object):
             dict_titlepage,
             saved_file_path,
         )
-        self.Dialog.show()
+        # self.Dialog.show()
         rsp= self.Dialog.exec_()
 
         if rsp == QtWidgets.QDialog.Accepted:
@@ -4435,9 +4435,9 @@ class Ui_MainWindow(object):
             | QtCore.Qt.WindowTitleHint
             | QtCore.Qt.WindowCloseButtonHint,
         )
-        self.ui = Ui_Dialog_titlepage()
+        self.ui = Ui_Dialog_titlepage(self)
         self.ui.setupUi(self.Dialog, dict_titlepage)
-        self.Dialog.show()
+        # self.Dialog.show()
         self.Dialog.exec()
 
         if self.chosen_program=='lama':
@@ -5210,7 +5210,7 @@ class Ui_MainWindow(object):
         self.ui.setupUi(
             self.Dialog, content, split_content, list_sage_ausgleichspunkte_chosen
         )
-        self.Dialog.show()
+        # self.Dialog.show()
         self.Dialog.exec_()
         # print(list_sage_ausgleichspunkte_chosen)
 
