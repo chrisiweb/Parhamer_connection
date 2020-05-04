@@ -4446,7 +4446,7 @@ class Ui_MainWindow(object):
             | QtCore.Qt.WindowTitleHint
             | QtCore.Qt.WindowCloseButtonHint,
         )
-        self.ui = Ui_Dialog_titlepage(self)
+        self.ui = Ui_Dialog_titlepage()
         self.ui.setupUi(self.Dialog, dict_titlepage)
         # self.Dialog.show()
         self.Dialog.exec()
@@ -5182,21 +5182,21 @@ class Ui_MainWindow(object):
 
     def pushButton_ausgleich_pressed(self, aufgabe):
         content = collect_content(self, aufgabe)
-       
 
         try:
             split_content, index_end = split_aufgaben_content(content)
             split_content = split_content[:index_end]
-        except UnboundLocalError:
-            split_content = split_aufgaben_content_new_format(content)
+        except Exception as e1:
             try:
-                split_content
-            except UnboundLocalError:
+                split_content = split_aufgaben_content_new_format(content)
+            except Exception as e2:
+                split_content=None
+            if split_content==None:
                 warning_window(
-                    "Es ist ein Fehler bei der Auswahl der Ausgleichspunkte von Aufgabe {} aufgetreten! (Die Aufgabe kann dennoch verwendet und individuell in der TeX-Datei bearbeitet werden.)\n".format(
+                    "Es ist ein Fehler bei der Anzeige der Aufgabe {} aufgetreten! (Die Aufgabe kann voraussichtlich dennoch verwendet und individuell in der TeX-Datei bearbeitet werden.)\n".format(
                         aufgabe
                     ),
-                    'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!',
+                    'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!'
                 )
                 return        
 

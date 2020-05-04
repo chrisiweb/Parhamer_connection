@@ -26,7 +26,10 @@ def delete_empty_items(liste):
 
 def split_aufgaben_content_new_format(content):
     ## mode ='ausgleichspunkte', 'show_hide_items'
-    x = content.split("\\begin{aufgabenstellung}")[1].split("\\end{aufgabenstellung}")
+    try:
+        x = content.split("\\begin{aufgabenstellung}")[1].split("\\end{aufgabenstellung}")
+    except IndexError:
+        return
     aufgabenstellung = x[0].replace("\t", "")
     # aufgabenstellung_split_text = re.split("\n\n|\n\t", aufgabenstellung)
     # aufgabenstellung = aufgabenstellung.replace('%Aufgabentext','')
@@ -90,9 +93,12 @@ def split_aufgaben_content_new_format(content):
 
 
 def split_aufgaben_content(content):
-    ## mode ='ausgleichspunkte', 'show_hide_items' 
+    ## mode ='ausgleichspunkte', 'show_hide_items'
     x = re.split("Aufgabenstellung:}|Lösungserwartung:}", content)
-    aufgabenstellung = x[1].replace("\t", "")
+    try:
+        aufgabenstellung = x[1].replace("\t", "")
+    except IndexError:
+        return
     aufgabenstellung = aufgabenstellung.replace("\\begin{enumerate}","").replace("\\end{enumerate}","")
     aufgabenstellung_split_text = aufgabenstellung.split("\\item")
 

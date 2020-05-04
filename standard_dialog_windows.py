@@ -2,7 +2,7 @@ from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from config import logo_path
 
-def warning_window(text, detailed_text="", titel="Warnung"):
+def warning_window(text, detailed_text="", titel="Warnung", informative_text=""):
     QtWidgets.QApplication.restoreOverrideCursor()
     msg = QtWidgets.QMessageBox()
     msg.setWindowTitle(titel)

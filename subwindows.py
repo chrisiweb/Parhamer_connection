@@ -424,25 +424,24 @@ class Ui_Dialog_ausgleichspunkte(object):
                 if linetext.replace('ITEM','').startswith('%') or linetext.replace('ITEM','').startswith(' %'):
                     checkbox=None
                 else:
-                    checkbox = self.create_checkbox_ausgleich(linetext, row)
+                    checkbox, checkbox_label = self.create_checkbox_ausgleich(linetext, row)
                 if checkbox != None:
-                    
-                    self.dict_widget_variables_ausgleichspunkte[linetext]=checkbox
-                    
+                    self.dict_widget_variables_ausgleichspunkte[linetext]=checkbox                   
 
                 row += 1
         elif self.combobox_edit.currentIndex()==1:
             for linetext in self.aufgabenstellung_split_text:
                 if linetext.startswith('ITEM'):
-                    checkbox = self.create_checkbox_ausgleich(linetext, row)
+                    checkbox, checkbox_label = self.create_checkbox_ausgleich(linetext, row)
                     if checkbox !=None:
-                        self.dict_widget_variables_hide_show_items[linetext]=checkbox   
+                        self.dict_widget_variables_hide_show_items[linetext]=checkbox 
                 else:
                     label= create_new_label(self.scrollAreaWidgetContents,linetext.replace('ITEM',''), True)
                     self.gridLayout.addWidget(label, row, 1, 1, 2, QtCore.Qt.AlignTop)
                 row += 1             
         self.gridLayout.addWidget(self.label_solution, row, 1, 1, 3, QtCore.Qt.AlignTop)
     
+
 
     def create_checkbox_ausgleich(self, linetext, row):
         checkbox_label = create_new_label(self.scrollAreaWidgetContents,"",True,True)
@@ -474,7 +473,7 @@ class Ui_Dialog_ausgleichspunkte(object):
 
         checkbox_label.setText(linetext.replace("ITEM",""))
         self.gridLayout.addWidget(checkbox_label, row, 1, 1, 2, QtCore.Qt.AlignTop)
-        return checkbox
+        return checkbox, checkbox_label
 
     def checkbox_label_clicked(self, checkbox):
         if checkbox.isChecked()==True:
