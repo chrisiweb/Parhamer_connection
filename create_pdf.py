@@ -419,18 +419,18 @@ def prepare_tex_for_pdf(self):
 
         if (
             self.combobox_searchtype.currentText()
-            == "Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten"
+            == "Alle Dateien ausgeben, die alle Suchkriterien enthalten"
         ):
+
             beispieldaten_temporary = list(beispieldaten_dateipfad.keys())
             for item in suchbegriffe:
 
-                klasse = "K" + item[0]
+                klasse = item[0].upper()
                 thema = item[1] + "." + item[2]
                 for all in beispieldaten_temporary[:]:
                     if thema not in all:
                         beispieldaten_temporary.remove(all)
-                    else:
-
+                    else:  
                         if klasse not in all:
                             beispieldaten_temporary.remove(all)
 

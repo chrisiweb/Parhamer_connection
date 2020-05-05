@@ -499,7 +499,12 @@ class Ui_MainWindow(object):
         self.combobox_searchtype.setMinimumContentsLength(1)
 
         add_new_option(self.combobox_searchtype, 0, "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten")
-        add_new_option(self.combobox_searchtype, 1, "Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten")
+        if self.chosen_program=='lama':
+            label="Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten"
+        if self.chosen_program=='cria':
+            label= 'Alle Dateien ausgeben, die alle Suchkriterien enthalten'
+
+        add_new_option(self.combobox_searchtype, 1, label)
 
         self.horizontalLayout_combobox.addWidget(self.combobox_searchtype)
 
@@ -619,6 +624,7 @@ class Ui_MainWindow(object):
             group_radiobutton = QtWidgets.QButtonGroup()
             for kapitel in dict_klasse_name:
                 new_radiobutton = create_new_radiobutton(new_scrollareacontent, dict_klasse_name[kapitel] + " (" + kapitel + ")")
+              
                 new_verticallayout.addWidget(new_radiobutton)
                 new_radiobutton.toggled.connect(
                     partial(self.chosen_radiobutton, klasse, kapitel)
@@ -635,7 +641,6 @@ class Ui_MainWindow(object):
             new_scrollarea.setWidget(new_scrollareacontent)
 
             new_gridlayout.addWidget(new_scrollarea, 5,0,1,1)
-
 
         self.groupBox_unterkapitel_cria = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_unterkapitel_cria.setObjectName("groupBox_unterkapitel_cria")
@@ -682,6 +687,10 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.groupBox_ausgew_themen_cria, 3, 1, 1, 1)
         self.groupBox_schulstufe_cria.hide()
         self.groupBox_unterkapitel_cria.hide()
+
+        dict_klasse_1 = eval("dict_{}_name".format(list_klassen[0]))
+        erstes_kapitel = list(dict_klasse_1.keys())[0]
+        self.dict_widget_variables['radiobutton_kapitel_{0}_{1}'.format(list_klassen[0], erstes_kapitel)].setChecked(True)
 
         ##############################################################
         ##################### CREATOR #########################################
@@ -782,8 +791,9 @@ class Ui_MainWindow(object):
                 new_verticallayout.addWidget(new_checkbox)
                 new_checkbox.setFocusPolicy(QtCore.Qt.NoFocus)
 
-            new_verticallayout.addStretch()
+            # new_verticallayout.addStretch()
             # new_verticallayout.addItem(self.spacerItem_unterkapitel_creator_cria)
+            new_verticallayout.addStretch()
 
             new_scrollarea.setWidget(new_scrollareacontent)
 
@@ -794,6 +804,7 @@ class Ui_MainWindow(object):
 
 
         self.groupBox_ausgew_gk_cr = create_new_groupbox(self.centralwidget, "Ausgewählte Grundkompetenzen")
+        self.groupBox_ausgew_gk_cr.setSizePolicy(SizePolicy_fixed_height)
         self.groupBox_ausgew_gk_cr.setMaximumWidth(500)
         
         # self.groupBox_ausgew_gk_cr.setsizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum))
@@ -821,7 +832,7 @@ class Ui_MainWindow(object):
 
         
         self.groupBox_bilder = create_new_groupbox(self.centralwidget, "Bilder (klicken, um Bilder zu entfernen)")
-        self.groupBox_bilder.setMaximumWidth(500)
+        # self.groupBox_bilder.setMaximumWidth(500)
         self.groupBox_bilder.setSizePolicy(SizePolicy_maximum_height)
         # QtWidgets.QGroupBox(self.centralwidget)
         #self.groupBox_bilder.setMaximumWidth(500)
@@ -1907,14 +1918,14 @@ class Ui_MainWindow(object):
         ######
 
         ### Typ2
-        self.combobox_searchtype.setItemText(
-            1,
-            _translate(
-                "MainWindow",
-                "Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten",
-                None,
-            ),
-        )
+        # self.combobox_searchtype.setItemText(
+        #     1,
+        #     _translate(
+        #         "MainWindow",
+        #         "Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten",
+        #         None,
+        #     ),
+        # )
         ######
 
         self.groupBox_themen_klasse.setTitle(
@@ -2345,9 +2356,9 @@ class Ui_MainWindow(object):
  
 
     def comboBox_kapitel_changed_cr(self, parent, layout, klasse): # , verticalLayout_cr_cria, combobox_kapitel, klasse, spacerItem_unterkapitel_cria
-        layout.removeItem(self.spacerItem_unterkapitel_creator_cria)
+        # layout.removeItem(self.spacerItem_unterkapitel_creator_cria)
 
-        self.delete_all_widgets(layout, 1)
+        self.delete_all_widgets(layout,1)
 
         text_combobox=self.dict_widget_variables['combobox_kapitel_creator_cria_{}'.format(klasse)].currentText()
         kapitel=text_combobox[text_combobox.find("(")+1:text_combobox.find(")")]
@@ -2357,15 +2368,16 @@ class Ui_MainWindow(object):
         for unterkapitel in dict_klasse[kapitel]:
             if 'checkbox_unterkapitel_creator_{0}_{1}_{2}'.format(klasse, kapitel, unterkapitel) in self.dict_widget_variables:
                 checkbox = self.dict_widget_variables['checkbox_unterkapitel_creator_{0}_{1}_{2}'.format(klasse, kapitel, unterkapitel)]
-                layout.addWidget(checkbox) 
+                layout.insertWidget(layout.count()-1, checkbox) 
             else:
                 new_checkbox=create_new_checkbox(parent, dict_unterkapitel[unterkapitel])              
                 new_checkbox.stateChanged.connect(partial(self.checkbox_unterkapitel_checked_creator_cria,new_checkbox, klasse, kapitel, unterkapitel))
                 self.dict_widget_variables['checkbox_unterkapitel_creator_{0}_{1}_{2}'.format(klasse, kapitel, unterkapitel)]=new_checkbox
                 new_checkbox.setFocusPolicy(QtCore.Qt.NoFocus)
-                layout.addWidget(new_checkbox)
+                layout.insertWidget(layout.count()-1, new_checkbox)
 
-        layout.addItem(self.spacerItem_unterkapitel_creator_cria)
+        # layout.addStretch()
+        # layout.addItem(self.spacerItem_unterkapitel_creator_cria)
 
 
 
@@ -2550,7 +2562,7 @@ class Ui_MainWindow(object):
             self.cb_af_ko.show()
             self.cb_af_rf.show()
             self.cb_af_ta.show()
-
+            self.combobox_searchtype.setItemText(1, _translate("MainWindow", "Alle Dateien ausgeben, die alle Suchkriterien enthalten", None))
             i=5
             for all in dict_aufgabenformate:
                 if all == 'rf' or all == 'ta' or all=='ko':
@@ -2570,6 +2582,7 @@ class Ui_MainWindow(object):
             self.gridLayout.addWidget(self.groupBox_af, 4, 0, 1, 1)
             self.gridLayout.addWidget(self.groupBox_punkte, 0, 2, 1, 1)
             self.gridLayout.addWidget(self.groupBox_aufgabenformat, 0, 3, 1, 1)
+            self.combobox_searchtype.setItemText(1, _translate("MainWindow", "Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten", None))
             
             self.cb_af_ko.hide()
             self.cb_af_rf.hide()
