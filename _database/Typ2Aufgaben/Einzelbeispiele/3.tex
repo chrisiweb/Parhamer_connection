@@ -1,10 +1,10 @@
 \section{03 - MAT - WS 1.1, WS 1.3, WS 3.1, WS 3.2, WS 3.3 - Section Control - BIFIE Aufgabensammlung}
 
 \begin{langesbeispiel} \item[0] %PUNKTE DES BEISPIELS
-				Der Begriff Section Control (Abschnittskontrolle) bezeichnet ein System zur Überwachung von Tempolimits im Straßenverkehr, bei dem nicht die Geschwindigkeit an einem bestimmten Punkt gemessen wird, sondern die Durchschnittsgeschwindigkeit über eine längere Strecke. Dies geschieht mithilfe von zwei Überkopfkontrollpunkten, die mit Kameras ausgestattet sind. 
+Der Begriff Section Control (Abschnittskontrolle) bezeichnet ein System zur Überwachung von Tempolimits im Straßenverkehr, bei dem nicht die Geschwindigkeit an einem bestimmten Punkt gemessen wird, sondern die Durchschnittsgeschwindigkeit über eine längere Strecke. Dies geschieht mithilfe von zwei Überkopfkontrollpunkten, die mit Kameras ausgestattet sind. 
 Das Fahrzeug wird sowohl beim ersten als auch beim zweiten Kontrollpunkt fotografiert.
  
-Die zulässige Höchstgeschwindigkeit bei einer bestimmten Abschnittskontrolle beträgt $100\,km/h$. Da die Polizei eine Toleranz kleiner $3\,km/h$ gewährt, löst die Section Control bei $103\,km/h$ aus. Lenker/innen von Fahrzeugen, die dieses Limit erreichen oder überschreiten, machen sich strafbar und werden im Folgenden als "`Temposünder"' bezeichnet.
+Die zulässige Höchstgeschwindigkeit bei einer bestimmten Abschnittskontrolle beträgt $100\,$km/h. Da die Polizei eine Toleranz kleiner $3\,$km/h gewährt, löst die Section Control bei $103\,$km/h aus. Lenker/innen von Fahrzeugen, die dieses Limit erreichen oder überschreiten, machen sich strafbar und werden im Folgenden als "`Temposünder"' bezeichnet.
 
 Eine Stichprobe der Durchschnittsgeschwindigkeiten von zehn Fahrzeugen ist in der nachfolgenden Tabelle aufgelistet und im abgebildeten Boxplot dargestellt.
 				\leer
@@ -16,8 +16,8 @@ Eine Stichprobe der Durchschnittsgeschwindigkeiten von zehn Fahrzeugen ist in de
 				
 				\begin{center}\newrgbcolor{zzttqq}{0.6 0.2 0.}
 \psset{xunit=0.3cm,yunit=0.3cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
-\begin{pspicture*}(86.08,-2.)(131.,7.765)
-\multips(86,0)(1.0,0){45}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,-2.)(0,7.765)}
+\begin{pspicture*}(84.8,-2.)(131.,7.765)
+\multips(86,0)(1.0,0){45}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,0)(0,7.765)}
 \psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=2.,Dy=5.,ticksize=-2pt 0,subticks=2]{->}(0,0)(86.08,-2.)(131.,7.765)
 \psframe[linecolor=zzttqq,fillcolor=zzttqq,fillstyle=solid,opacity=0.1](93.,1.0)(113.,5.)
 \psline[linecolor=zzttqq,fillcolor=zzttqq,fillstyle=solid,opacity=0.1](88.,1.)(88.,5.)
@@ -25,15 +25,15 @@ Eine Stichprobe der Durchschnittsgeschwindigkeiten von zehn Fahrzeugen ist in de
 \psline[linecolor=zzttqq,fillcolor=zzttqq,fillstyle=solid,opacity=0.1](98.,1.)(98.,5.)
 \psline[linecolor=zzttqq,fillcolor=zzttqq,fillstyle=solid,opacity=0.1](88.,3.)(93.,3.)
 \psline[linecolor=zzttqq,fillcolor=zzttqq,fillstyle=solid,opacity=0.1](113.,3.)(129.,3.)
-\end{pspicture*}\end{center}
+\end{pspicture*}\end{center}%Aufgabentext
 
-\subsection{Aufgabenstellung:}
-\begin{enumerate}
-	\item Bestimme den arithmetischen Mittelwert $\overline{x}$ und die empirische Standardabweichung $s$ der Durchschnittsgeschwindigkeiten in der Stichprobe!
-	
-	Kreuze die zutreffende(n) Aussage(n) zur Standardabweichung an!
-	
-	\multiplechoice[5]{  %Anzahl der Antwortmoeglichkeiten, Standard: 5
+\begin{aufgabenstellung}
+\item %Aufgabentext
+
+\Subitem{Bestimme den arithmetischen Mittelwert $\overline{x}$ und die empirische Standardabweichung $s$ der Durchschnittsgeschwindigkeiten in der Stichprobe!} %Unterpunkt1
+\Subitem{Kreuze die zutreffende(n) Aussage(n) zur Standardabweichung an!
+
+\multiplechoice[5]{  %Anzahl der Antwortmoeglichkeiten, Standard: 5
 					L1={Die Standardabweichung ist ein Maß für die Streuung um den arithmetischen Mittelwert.},   %1. Antwortmoeglichkeit 
 					L2={Die Standardabweichung ist immer ca. ein Zehntel des arithmetischen Mittelwerts.},   %2. Antwortmoeglichkeit
 					L3={Die Varianz ist die quadrierte Standardabweichung.},   %3. Antwortmoeglichkeit
@@ -49,26 +49,56 @@ Eine Stichprobe der Durchschnittsgeschwindigkeiten von zehn Fahrzeugen ist in de
 					A3=4,  % 3. Antwort
 					A4=0,  % 4. Antwort
 					A5=0,  % 5. Antwort
-					}
-		\item Bestimme aus dem Boxplot (Kastenschaubild) der Stichprobe den Median sowie das obere und untere Quartil! Gib an, welche zwei Streumaße aus dem Boxplot ablesbar sind! Bestimme auf deren Werte!
-		\item Die Erfahrung zeigt, dass die Wahrscheinlichkeit, ein zufällig ausgewähltes Fahrzeug mit einer Durchschnittsgeschwindigkeit von mindestens $103\,km/h$ zu erfassen, $14\,\%$ beträgt. Berechne den Erwartungswert $\mu$ und die Standardabweichung $\sigma$ der Temposünder unter fünfzig zufällig ausgewählen Fahrzeuglenkern! Berechne, wie groß die Wahrscheinlichkeit ist, dass die Anzahl der Temposünder unter fünfzig Fahrzeuglenkern innerhalb der einfachen Standardabweichung um den Erwartungswert, d.h. im Intervall $[\mu-\sigma;\mu+\sigma]$ liegt!
-\end{enumerate}
+					}} %Unterpunkt2
 
-\antwort{\subsection{Lösungserwartung:}
-\begin{enumerate}
-	\item Richtige Lösungen siehe oben. Zusätzliche Information:
-	
-	$$\overline{x}=\frac{1}{10}\cdot\sum_{i=1}^{10}{x_i=103,3}\,km/h$$
-	$$s=\sqrt{\frac{1}{9}\cdot\sum_{i=1}^{10}{(x_i-\overline{x})^2}}=13,6\,km/h$$
-	\item Daten aus dem Boxplot:
-		 \subitem Median ... $98\,km/h$
-		 \subitem unteres Quartil ... $93\,km/h$
-		\subitem oberes Quartil ... $113\,km/h$
-		\subitem Spannweite ... $41\,km/h$
-		\subitem Quartilsabstand ... $20\,km/h$
-	\item Lösung mittels Binomialverteilung
-	\subitem $\mu=n\cdot p=50\cdot 0,14=7$
-	\subitem $\sigma=\sqrt{\mu\cdot (1-p)}=2,45$
-	\subitem $P(\mu-\sigma<X<\mu+\sigma)=P(5\leq X\leq 9)=P(X=5)+P(X=6)+P(X=7)+P(X=8)+P(X=9)=0,1286+0,1570+0,1606+0,1406+0,1068=0,6936=69,36\,\%$
-\end{enumerate}}
+\item %Aufgabentext
+
+\Subitem{Bestimme aus dem Boxplot (Kastenschaubild) der Stichprobe den Median sowie das obere und untere Quartil.} %Unterpunkt1
+\Subitem{Gib an, welche zwei Streumaße aus dem Boxplot ablesbar sind. Bestimme auch deren Werte.} %Unterpunkt2
+
+\item Die Erfahrung zeigt, dass die Wahrscheinlichkeit, ein zufällig ausgewähltes Fahrzeug mit einer Durchschnittsgeschwindigkeit von mindestens $103\,km/h$ zu erfassen, $14\,\%$ beträgt. %Aufgabentext
+
+\Subitem{Berechne den Erwartungswert $\mu$ und die Standardabweichung $\sigma$ der Temposünder unter fünfzig zufällig ausgewählten Fahrzeuglenkern.} %Unterpunkt1
+\Subitem{Berechne, wie groß die Wahrscheinlichkeit ist, dass die Anzahl der Temposünder unter fünfzig Fahrzeuglenkern innerhalb der einfachen Standardabweichung um den Erwartungswert, d.h. im Intervall $[\mu-\sigma;\mu+\sigma]$ liegt.} %Unterpunkt2
+
+\end{aufgabenstellung}
+
+\begin{loesung}
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{$\overline{x}=\frac{1}{10}\cdot\sum_{i=1}^{10}{x_i=103,3}\,km/h$
+
+$s=\sqrt{\frac{1}{9}\cdot\sum_{i=1}^{10}{(x_i-\overline{x})^2}}=13,6\,km/h$} %Lösung von Unterpunkt1
+\Subitem{Richtige MC-Antworten: 1,3,4} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die richtige Berechnung des arithmetischen Mittelwerts und der Standardabweichung.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die korrekten Antworten.} %Lösungschlüssel von Unterpunkt2
+
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{Median ... $98\,$km/h\qquad unteres Quartil ... $93\,$km/h\qquad oberes Quartil ... $113\,$km/h} %Lösung von Unterpunkt1
+\Subitem{Spannweite ... $41\,$km/h\qquad Quartilsabstand ... $20\,$km/h} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die korrekten Werte.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die korrekten Werte.} %Lösungschlüssel von Unterpunkt2
+
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{$\mu=n\cdot p=50\cdot 0,14=7$\qquad $\sigma=\sqrt{\mu\cdot (1-p)}=2,45$} %Lösung von Unterpunkt1
+\Subitem{$P(\mu-\sigma<X<\mu+\sigma)=P(5\leq X\leq 9)=P(X=5)+P(X=6)+P(X=7)+P(X=8)+P(X=9)=0,1286+0,1570+0,1606+0,1406+0,1068=0,6936=69,36\,\%$} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die korrekten Werte.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die korrekte Wahrscheinlichkeit.} %Lösungschlüssel von Unterpunkt2
+
+\end{loesung}
+
 \end{langesbeispiel}

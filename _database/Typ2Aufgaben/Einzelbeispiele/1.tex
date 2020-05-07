@@ -1,18 +1,19 @@
 \section{01 - MAT - AN 1.1, AN 1.3, AN 3.3 - Wasserstand eines Bergsees - BIFIE Aufgabensammlung}
 
 \begin{langesbeispiel} \item[0] %PUNKTE DES BEISPIELS
-				Die Funktion $h$ beschreibt die Wasserhöhe eines Bergsees in Abhängigkeit von der Zeit $t$. Die nachstehende Abbildung zeigt den Graphen der Funktion $h$.
+Die Funktion $h$ beschreibt die Wasserhöhe eines Bergsees in Abhängigkeit von der Zeit $t$. Die nachstehende Abbildung zeigt den Graphen der Funktion $h$.
 				
-				\begin{center}\resizebox{1\linewidth}{!}{\newrgbcolor{ttqqqq}{0.2 0. 0.}
+				\begin{center}\newrgbcolor{ttqqqq}{0.2 0. 0.}
 \psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
 \begin{pspicture*}(-1.08,-2.4)(9.15,5.98)
-\multips(0,-2)(0,1.0){9}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,0)(9.15,0)}
-\multips(0,0)(1.0,0){11}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,-2.4)(0,5.98)}
-\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=1.,Dy=1.,ticksize=-2pt 0,subticks=2]{->}(0,0)(0.,-2.2)(9.15,5.98)
+\multips(0,-2)(0,1.0){9}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,0)(9.15,0)}
+\multips(0,0)(1.0,0){11}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,-2.4)(0,5.98)}
+\psaxes[labelFontSize=\scriptstyle,showorigin=false,xAxis=true,yAxis=true,Dx=1.,Dy=1.,ticksize=-2pt 0,subticks=0]{->}(0,0)(0.,-2.2)(9.15,5.98)
 \psplot[linewidth=1.2pt,plotpoints=200]{0}{9.15}{2.2686248826559873E-4*x^(7.0)-0.00614949610902518*x^(6.0)+0.058139356739772344*x^(5.0)-0.21026452712641674*x^(4.0)+0.1312581165522796*x^(3.0)+0.4502153007836318*x^(2.0)-0.19131188236159785*x+2.6}
-\rput[tl](0.28,5.5){Wasserhöhe h (in mm)}
-\rput[tl](5.82,0.62){Zeit t (in Wochen)}
 \begin{scriptsize}
+\rput[tl](0.2,5.8){Wasserhöhe h (in mm)}
+\rput[tl](6.62,0.3){Zeit t (in Wochen)}
+
 \psdots[dotstyle=*,linecolor=ttqqqq](0.,2.6)
 \rput[bl](0.2,2.14){\ttqqqq{$A = (0/2,6)$}}
 \psdots[dotstyle=*,linecolor=ttqqqq](2.,3.2)
@@ -27,24 +28,67 @@
 \rput[bl](7.32,4.78){\ttqqqq{$F = (7,9/4,7)$}}
 \rput[bl](6.48,3.92){$h$}
 \end{scriptsize}
-\end{pspicture*}}\end{center}
+\end{pspicture*}\end{center}%Aufgabentext
 
-\subsection{Aufgabenstellung:}
-\begin{enumerate}
-	\item Bestimme den Wert des Differenzenquotienten des Wasserstand
-$s$ im Intervall $[0; 2]$ und beschreibe in Worten, was dieser Wert angibt! Um wie viel Prozent ist die Wasserhöhe während der ersten zwei Wochen gestiegen.
-	\item Was beschreibt die erste Ableitungsfunktion $h'$ der Funktion $h$? Betimme näherungsweise den Wert des Differenzialquotienten der Wasserhöhe zum Zeitpunkt $t=6$ und beschreibe in Worten, was dieser Wert angibt!
-	\item Was beschreibt die zweite Ableitungsfunktion $h''$ der Funktion $h$? Wann etwa nimmt die Wasserhöhe am stärksten zu?
-\end{enumerate}
+\begin{aufgabenstellung}
+\item %Aufgabentext
 
-\antwort{\subsection{Lösungserwartung:}
-\begin{enumerate}
-	\item $\dfrac{3,2-2,6}{2-0}=0,3 \rightarrow$ Bis zum Ende der zweiten Woche nimmt die Wasserhöhe im Mittel pro Woche um 0,3 $m$ zu.
-	
-	$3,2:2,6\approx 1,23 \rightarrow$ Der Wasserstand nahm um ca. $23\,\%$ zu.
-	\item Durch die erste Ableitungsfunktion $h'$ ist die Änderungsgeschwindigkeit der Wasserhöhe bestimmt.
-	
-	$h'(6)\approx 1,6 \rightarrow$ Das bedeutet, dass nach sechs Wochen die momentane Änderungsrate $1,6\,mm$ pro Woche beträgt.
-	\item Die zweite Ableitungsfunktion $h''$ beschreibt das Monotonieverhalten der Änderungsrate der Wasserhöhe bzw. die momentane Änderungsrate der Änderungsgeschwindigkeit der Wasserhöhe. Die Wasserhöhe nimmt nach ca. 6,5 Wochen am stärksten zu.
-\end{enumerate}}
+\Subitem{Bestimme den Wert des Differenzenquotienten des Wasserstand
+$s$ im Intervall $[0; 2]$ und beschreibe in Worten, was dieser Wert angibt!} %Unterpunkt1
+\Subitem{Um wie viel Prozent ist die Wasserhöhe während der ersten zwei Wochen gestiegen.} %Unterpunkt2
+
+\item 
+
+\Subitem{Was beschreibt die erste Ableitungsfunktion $h'$ der Funktion $h$?}
+
+\Subitem{Bestimme näherungsweise den Wert des Differenzialquotienten der Wasserhöhe zum Zeitpunkt $t=6$ und beschreibe in Worten, was dieser Wert angibt!}
+
+\item
+
+\Subitem{Was beschreibt die zweite Ableitungsfunktion $h''$ der Funktion $h$?}
+
+\Subitem{Wann etwa nimmt die Wasserhöhe am stärksten zu?}
+
+\end{aufgabenstellung}
+
+\begin{loesung}
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{$\dfrac{3,2-2,6}{2-0}=0,3$
+
+Bis zum Ende der zweiten Woche nimmt die Wasserhöhe im Mittel pro Woche um 0,3 $m$ zu.} %Lösung von Unterpunkt1
+\Subitem{$3,2:2,6\approx 1,23 \rightarrow$ Der Wasserstand nahm um ca. $23\,\%$ zu.} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für den richtigen Differenzenquotienten und einer entsprechenden Interpretation.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die korrekte Angabe des prozentuellen Zuwachs.} %Lösungschlüssel von Unterpunkt2
+
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{Durch die erste Ableitungsfunktion $h'$ ist die Änderungsgeschwindigkeit der Wasserhöhe bestimmt.} %Lösung von Unterpunkt1
+\Subitem{$h'(6)\approx 1,6$ 
+
+Das bedeutet, dass nach sechs Wochen die momentane Änderungsrate $1,6\,mm$ pro Woche beträgt.} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die richtige Interpretation der ersten Ableitungsfunktion.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für eine gute Näherung für den Differentialquotient sowie eine richtige Beschreibung.} %Lösungschlüssel von Unterpunkt2
+
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{Die zweite Ableitungsfunktion $h''$ beschreibt das Monotonieverhalten der Änderungsrate der Wasserhöhe bzw. die momentane Änderungsrate der Änderungsgeschwindigkeit der Wasserhöhe.} %Lösung von Unterpunkt1
+\Subitem{Die Wasserhöhe nimmt nach ca. 6,5 Wochen am stärksten zu.} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die richtige Interpretation der zweiten Ableitungsfunktion.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die korrekte Bestimmung der stärksten Zunahme.} %Lösungschlüssel von Unterpunkt2
+
+\end{loesung}
+
 \end{langesbeispiel}
