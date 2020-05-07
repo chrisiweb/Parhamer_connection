@@ -5213,7 +5213,6 @@ class Ui_MainWindow(object):
                 )
                 return        
 
-
         if aufgabe in self.dict_sage_ausgleichspunkte_chosen.keys():
             list_sage_ausgleichspunkte_chosen = self.dict_sage_ausgleichspunkte_chosen[
                 aufgabe

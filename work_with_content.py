@@ -30,6 +30,7 @@ def split_aufgaben_content_new_format(content):
         x = content.split("\\begin{aufgabenstellung}")[1].split("\\end{aufgabenstellung}")
     except IndexError:
         return
+ 
     aufgabenstellung = x[0].replace("\t", "")
     # aufgabenstellung_split_text = re.split("\n\n|\n\t", aufgabenstellung)
     # aufgabenstellung = aufgabenstellung.replace('%Aufgabentext','')
@@ -37,6 +38,8 @@ def split_aufgaben_content_new_format(content):
     aufgabenstellung_split_text = aufgabenstellung.split("\\item")
 
     aufgabenstellung_split_text = delete_empty_items(aufgabenstellung_split_text)
+
+    print(aufgabenstellung_split_text)
     # for all in aufgabenstellung_split_text[:]:
     #     if all.isspace()==True:
     #         aufgabenstellung_split_text.remove(all)
@@ -56,7 +59,7 @@ def split_aufgaben_content_new_format(content):
     # aufgabenstellung_split_text = re.split("\n\n|\n\t", aufgabenstellung)
 
 
-    aufgabenstellung_split_text = split_all_items_of_list(aufgabenstellung_split_text, "\\Subitem{")
+    aufgabenstellung_split_text = split_all_items_of_list(aufgabenstellung_split_text, "\\Subitem")
 
 
 

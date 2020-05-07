@@ -432,11 +432,11 @@ class Ui_Dialog_ausgleichspunkte(object):
         elif self.combobox_edit.currentIndex()==1:
             for linetext in self.aufgabenstellung_split_text:
                 if linetext.startswith('ITEM'):
-                    checkbox, checkbox_label = self.create_checkbox_ausgleich(linetext, row)
+                    checkbox, checkbox_label = self.create_checkbox_ausgleich(linetext.replace('{','').replace('}',''), row)
                     if checkbox !=None:
                         self.dict_widget_variables_hide_show_items[linetext]=checkbox 
                 else:
-                    label= create_new_label(self.scrollAreaWidgetContents,linetext.replace('ITEM',''), True)
+                    label= create_new_label(self.scrollAreaWidgetContents,linetext.replace('ITEM','').replace('{','').replace('}',''), True)
                     self.gridLayout.addWidget(label, row, 1, 1, 2, QtCore.Qt.AlignTop)
                 row += 1             
         self.gridLayout.addWidget(self.label_solution, row, 1, 1, 3, QtCore.Qt.AlignTop)
