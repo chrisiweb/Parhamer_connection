@@ -24,6 +24,12 @@ def delete_empty_items(liste):
 
     return liste    
 
+def get_subitem(string):
+    if string.startswith('ITEM'):
+        return string
+    else:
+        return 'SUBitem'+string
+
 def split_aufgaben_content_new_format(content):
     ## mode ='ausgleichspunkte', 'show_hide_items'
     try:
@@ -31,21 +37,20 @@ def split_aufgaben_content_new_format(content):
     except IndexError:
         return
  
-    aufgabenstellung = x[0].replace("\t", "")
+    aufgabenstellung = x[0].replace("\t", "").replace("%Aufgabentext","")
     # aufgabenstellung_split_text = re.split("\n\n|\n\t", aufgabenstellung)
     # aufgabenstellung = aufgabenstellung.replace('%Aufgabentext','')
     # print(aufgabenstellung)
     aufgabenstellung_split_text = aufgabenstellung.split("\\item")
 
     aufgabenstellung_split_text = delete_empty_items(aufgabenstellung_split_text)
-
-    print(aufgabenstellung_split_text)
+    # print(aufgabenstellung_split_text)
     # for all in aufgabenstellung_split_text[:]:
     #     if all.isspace()==True:
     #         aufgabenstellung_split_text.remove(all)
     aufgabenstellung_split_text=['ITEM' + string for string in aufgabenstellung_split_text]
-
-    # print(aufgabenstellung_split_text)
+    
+    
     # if mode == 'show_hide_item':
     #     for all in aufgabenstellung_split_text[:]:
     #         if all.isspace()==True:
@@ -53,25 +58,25 @@ def split_aufgaben_content_new_format(content):
     #     return aufgabenstellung_split_text
 
 
-    # aufgabenstellung_split_text = split_all_items_of_list(aufgabenstellung_split_text, "\n\n")
-    # aufgabenstellung_split_text = split_all_items_of_list(aufgabenstellung_split_text, "\n\t")
-    
+   
     # aufgabenstellung_split_text = re.split("\n\n|\n\t", aufgabenstellung)
 
 
     aufgabenstellung_split_text = split_all_items_of_list(aufgabenstellung_split_text, "\\Subitem")
+    aufgabenstellung_split_text=[get_subitem(string) for string in aufgabenstellung_split_text]
 
-
+    aufgabenstellung_split_text = split_all_items_of_list(aufgabenstellung_split_text, "\n\n")
+    aufgabenstellung_split_text = split_all_items_of_list(aufgabenstellung_split_text, "\n\t")
 
     for all in aufgabenstellung_split_text:
         if all.startswith(' '):
             x=all[1:]
             aufgabenstellung_split_text[aufgabenstellung_split_text.index(all)] = x
-            
+              
         if "\\begin{pspicture*}" in all:
             aufgabenstellung_split_text[
                 aufgabenstellung_split_text.index(all)
-            ] = "[...] GRAFIK [...]"
+            ] = "[...] GRAFIK [...]"    
 
     for all in aufgabenstellung_split_text:
         z = all.replace("\t", "")
@@ -89,9 +94,8 @@ def split_aufgaben_content_new_format(content):
         aufgabenstellung_split_text[aufgabenstellung_split_text.index(all)] = y        
 
 
-    for all in aufgabenstellung_split_text[:]:
-        if all == "": # or all.replace('ITEM','').startswith('%') or all.replace('ITEM','').startswith(' %')
-            aufgabenstellung_split_text.remove(all)
+    aufgabenstellung_split_text = delete_empty_items(aufgabenstellung_split_text)
+
     return aufgabenstellung_split_text
 
 
@@ -159,3 +163,26 @@ def split_aufgaben_content(content):
             break
 
     return aufgabenstellung_split_text, index_end
+
+def prepare_content_for_hide_show_items(content):
+    # print(content)
+    # temp_content = content
+    index=0
+    temp_list=[]
+    temp_content=[]
+    for item in content:
+        if item.startswith('ITEM') and temp_list!=[]:
+            combined_string=''
+            for all in temp_list:
+                if all.replace('ITEM','').isspace()==True:
+                    combined_string = combined_string + all
+                else:
+                    combined_string = combined_string + all + '\n\n'
+
+            temp_content.append(combined_string)
+            temp_list = []
+            temp_list.append(item)
+        else:
+            temp_list.append(item)
+
+    return temp_content

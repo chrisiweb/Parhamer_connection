@@ -15,7 +15,7 @@ add_new_option)
 
 from waitingspinnerwidget import QtWaitingSpinner
 from predefined_size_policy import SizePolicy_fixed
-#from work_with_content import split_content_ausgleichspunkte, split_content_ausgleichspunkte_new_format
+from work_with_content import prepare_content_for_hide_show_items
 
 blue_7=colors_ui['blue_7']
 
@@ -311,6 +311,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         self, Dialog, aufgabenstellung_split_text, list_sage_ausgleichspunkte_chosen, list_sage_hide_show_items_chosen
     ):
         self.aufgabenstellung_split_text = aufgabenstellung_split_text
+        self.hide_show_items_split_text = prepare_content_for_hide_show_items(aufgabenstellung_split_text)
         self.list_sage_ausgleichspunkte_chosen = list_sage_ausgleichspunkte_chosen
         # print(self.list_sage_ausgleichspunkte_chosen)
         self.list_sage_hide_show_items_chosen = list_sage_hide_show_items_chosen
@@ -414,42 +415,57 @@ class Ui_Dialog_ausgleichspunkte(object):
             #     self.list_sage_show_hide_items = split_content
             
                 
-          
+         
     
     def build_checkboxes_for_content(self):
         row = 1
         if self.combobox_edit.currentIndex()==0:
             # print(self.list_sage_ausgleichspunkte_chosen)
             for linetext in self.aufgabenstellung_split_text:
-                if linetext.replace('ITEM','').startswith('%') or linetext.replace('ITEM','').startswith(' %'):
-                    checkbox=None
-                else:
-                    checkbox, checkbox_label = self.create_checkbox_ausgleich(linetext, row)
+                # if linetext.replace('ITEM','').startswith('%') or linetext.replace('ITEM','').startswith(' %'):
+                #     checkbox=None
+                # else:
+                checkbox, checkbox_label = self.create_checkbox_ausgleich(linetext, row)
                 if checkbox != None:
                     self.dict_widget_variables_ausgleichspunkte[linetext]=checkbox                   
 
                 row += 1
         elif self.combobox_edit.currentIndex()==1:
-            for linetext in self.aufgabenstellung_split_text:
-                if linetext.startswith('ITEM'):
-                    checkbox, checkbox_label = self.create_checkbox_ausgleich(linetext.replace('{','').replace('}',''), row)
-                    if checkbox !=None:
-                        self.dict_widget_variables_hide_show_items[linetext]=checkbox 
-                else:
-                    label= create_new_label(self.scrollAreaWidgetContents,linetext.replace('ITEM','').replace('{','').replace('}',''), True)
-                    self.gridLayout.addWidget(label, row, 1, 1, 2, QtCore.Qt.AlignTop)
+            for linetext in self.hide_show_items_split_text:
+                # print(linetext)
+                # if linetext.replace('ITEM','').startswith('%') or linetext.replace('ITEM','').startswith(' %'):
+                #     checkbox=None
+                # else:
+                checkbox, checkbox_label = self.create_checkbox_ausgleich(linetext, row)
+                if checkbox!=None:
+                    checkbox.clicked.connect(partial(self.checkbox_clicked, checkbox, checkbox_label))
+                    self.dict_widget_variables_hide_show_items[linetext]=checkbox 
+            # for linetext in self.aufgabenstellung_split_text:
+            #     if linetext.startswith('ITEM'):
+            #         checkbox, checkbox_label = self.create_checkbox_ausgleich(linetext, row)
+            #         if checkbox !=None:
+            #             self.dict_widget_variables_hide_show_items[linetext]=checkbox 
+            #     else:
+            #         label= create_new_label(self.scrollAreaWidgetContents,linetext.replace('{','').replace('}',''), True)
+            #         self.gridLayout.addWidget(label, row, 1, 1, 2, QtCore.Qt.AlignTop)
                 row += 1             
         self.gridLayout.addWidget(self.label_solution, row, 1, 1, 3, QtCore.Qt.AlignTop)
-    
 
+        self.gridLayout.setRowStretch(row, 1)
+    
+    def checkbox_clicked(self, checkbox, checkbox_label):
+        if checkbox.isChecked()==True:
+            checkbox_label.setStyleSheet("color: black")
+        else:
+            checkbox_label.setStyleSheet("color: gray")
 
     def create_checkbox_ausgleich(self, linetext, row):
         checkbox_label = create_new_label(self.scrollAreaWidgetContents,"",True,True)
         
-        if "GRAFIK" in linetext:
+        if ("GRAFIK" in linetext or linetext.replace("ITEM","").isspace()==True) and self.combobox_edit.currentIndex()==0: #
             checkbox=None
         else:
-            
+            # print(linetext) 
             checkbox = create_new_checkbox(self.scrollAreaWidgetContents,"")
             checkbox.setSizePolicy(SizePolicy_fixed)
             self.gridLayout.addWidget(checkbox, row, 0, 1, 1, QtCore.Qt.AlignTop)
@@ -463,23 +479,25 @@ class Ui_Dialog_ausgleichspunkte(object):
                 if linetext in self.list_sage_ausgleichspunkte_chosen:
                     checkbox.setChecked(True)
             if self.combobox_edit.currentIndex()==1:
+                print(self.list_sage_hide_show_items_chosen)
                 if linetext in self.list_sage_hide_show_items_chosen:
                     checkbox.setChecked(False)
                 else: 
                     checkbox.setChecked(True)
 
         
-            checkbox_label.clicked.connect(partial(self.checkbox_label_clicked, checkbox))
+            checkbox_label.clicked.connect(partial(self.checkbox_label_clicked, checkbox, checkbox_label))
 
-        checkbox_label.setText(linetext.replace("ITEM",""))
+        checkbox_label.setText(linetext.replace("ITEM","").replace('SUBitem','').replace('{','').replace('}',''))
         self.gridLayout.addWidget(checkbox_label, row, 1, 1, 2, QtCore.Qt.AlignTop)
         return checkbox, checkbox_label
 
-    def checkbox_label_clicked(self, checkbox):
+    def checkbox_label_clicked(self, checkbox, checkbox_label):
         if checkbox.isChecked()==True:
             checkbox.setChecked(False)
         else:
             checkbox.setChecked(True)
+        self.checkbox_clicked(checkbox, checkbox_label)
 
     def pushButton_OK_pressed(self, list_sage_ausgleichspunkte_chosen):
       
@@ -494,9 +512,10 @@ class Ui_Dialog_ausgleichspunkte(object):
                 self.list_sage_hide_show_items_chosen.append(linetext.replace("\\fbox{A}", "")) 
         
         list_sage_ausgleichspunkte_chosen = self.list_sage_ausgleichspunkte_chosen
+        list_sage_hide_show_items_chosen = self.list_sage_hide_show_items_chosen
 
         # print(self.list_sage_ausgleichspunkte_chosen)
-        # print(self.list_sage_hide_show_items_chosen)
+        print(self.list_sage_hide_show_items_chosen)
         
         # for i in range(0, len(self.aufgabenstellung_split_text)):
         #     try:

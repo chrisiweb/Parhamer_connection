@@ -5249,7 +5249,7 @@ class Ui_MainWindow(object):
         self.dict_sage_hide_show_items_chosen[aufgabe]= self.ui.list_sage_hide_show_items_chosen
 
         # print(self.dict_sage_ausgleichspunkte_chosen)
-        # print(self.dict_sage_hide_show_items_chosen)
+        print(self.dict_sage_hide_show_items_chosen)
 
         self.dict_alle_aufgaben_sage[aufgabe][3]=len(self.ui.list_sage_ausgleichspunkte_chosen)
 
