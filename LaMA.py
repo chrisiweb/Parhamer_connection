@@ -2823,12 +2823,29 @@ class Ui_MainWindow(object):
             self.label_keine_auswahl.show()
             self.comboBox_af.hide()
 
-  
+
+    # def is_empty(self, structure):
+    #     if structure:
+    #         return False
+    #     else:
+    #         return True        
+
+    # def check_entry_creator(self):
+    #     lama_entry = [self.list_selected_topics_creator]
+    #     print('test')
+    #     for all in lama_entry:
+    #         _=self.is_empty(all)
+    #         if _  == False:
+    #             return str(all)
+
+
     def save_file(self):
         self.creator_mode = "user"
         local_save = False
         ########################### WARNINGS #####
         ######################################
+        warning = self.check_entry_creator()
+        # print(warning)
         if self.chosen_program=='lama':
             if self.list_selected_topics_creator == []:
                 warning_window("Es wurden keine Grundkompetenzen zugewiesen.")
