@@ -479,9 +479,10 @@ class Ui_Dialog_ausgleichspunkte(object):
                 if linetext in self.list_sage_ausgleichspunkte_chosen:
                     checkbox.setChecked(True)
             if self.combobox_edit.currentIndex()==1:
-                print(self.list_sage_hide_show_items_chosen)
+                # print(self.list_sage_hide_show_items_chosen)
                 if linetext in self.list_sage_hide_show_items_chosen:
                     checkbox.setChecked(False)
+                    checkbox_label.setStyleSheet("color: gray")
                 else: 
                     checkbox.setChecked(True)
 
@@ -515,7 +516,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         list_sage_hide_show_items_chosen = self.list_sage_hide_show_items_chosen
 
         # print(self.list_sage_ausgleichspunkte_chosen)
-        print(self.list_sage_hide_show_items_chosen)
+        # print(self.list_sage_hide_show_items_chosen)
         
         # for i in range(0, len(self.aufgabenstellung_split_text)):
         #     try:

@@ -6239,28 +6239,71 @@ class Ui_MainWindow(object):
                             for line in content
                         ]
                 ### end ###
+                # print(content)
                 if aufgabe in self.dict_all_infos_for_file["dict_hide_show_items"].keys():
-                    for hide_item in self.dict_all_infos_for_file["dict_hide_show_items"][aufgabe]:
-                        index=0
-                        shorten_item = hide_item.split("\n")[0]
-                        for all_lines in content:
-                            if index==0 and shorten_item.replace('ITEM','') in all_lines:
-                                index = content.index(all_lines)
-
-                            elif index !=0 and "\\item" in all_lines:
-                                end_index = content.index(all_lines)
-                                break
-                            elif index !=0:
-                                if "\\end{aufgabenstellung}" in all_lines or "\\end{enumerate}" in all_lines:
-                                    end_index = content.index(all_lines)
+                    # print(content)        
+                    for item in self.dict_all_infos_for_file["dict_hide_show_items"][aufgabe]:
+                        hide_item = item.split('\n')[0]
+                        hide_item = hide_item.replace('ITEM','').replace('SUBitem','').strip()
+                        # hide_item =  repr(hide_item) #raw string
+                        # print(repr(hide_item))
+                        start_index=-1
+                        end_index=-1
+                        for idx, line in enumerate(content):
+                            if start_index == -1:
+                                if hide_item in line:
+                                    start_index=idx
+                                    continue
+                            else:
+                                if '\\item' in line:
+                                    end_index=idx
                                     break
+                                if "\\end{aufgabenstellung}" in line:
+                                    end_index=idx
+                                    break
+                        if start_index==-1 or end_index==-1:
+                            warning_window("Das Ein- bzw. Ausblenden von Aufgabenstellungen in Aufgabe {} konnte leider nicht durchgeführt werden.\n"
+                            "Die Aufgabe wird daher vollständig angezeigt. Bitte bearbeiten sie diese Aufgabe manuell.".format(aufgabe))                
+                        else:
+                            for i in reversed(range(start_index+1)):
+                                if '\\item' in content[i]:
+                                    print(content[i])             
+                                    start_index=i
+                                    break
+                            for index, line in enumerate(content[start_index:end_index]):
+                                content[start_index+index]='% '+line
 
-                        del content[index:end_index]
+                            # del content[start_index:end_index]
+
+                    # print(start_index)
+                    # print(content[start_index])
+                    # print(end_index)
+                    # print(content[end_index])
+                    # print(content)
+                    # print(content[start_index:end_index])
 
 
+                    # print(content)
+                    #     index=0
+                    #     shorten_item = hide_item.split("\n")[0]
+                    #     for all_lines in content:
+                    #         if index==0 and shorten_item.replace('ITEM','') in all_lines:
+                    #             index = content.index(all_lines)
+
+                    #         elif index !=0 and "\\item" in all_lines:
+                    #             end_index = content.index(all_lines)
+                    #             break
+                    #         elif index !=0:
+                    #             if "\\end{aufgabenstellung}" in all_lines or "\\end{enumerate}" in all_lines:
+                    #                 end_index = content.index(all_lines)
+                    #                 break
+
+                    #     del content[index:end_index]
 
 
-            # print(self.dict_all_infos_for_file)
+            # print(content[start_index-1])
+            # print(content)
+            # # # print(self.dict_all_infos_for_file)
             # QtWidgets.QApplication.restoreOverrideCursor() 
             # return
             if self.chosen_program == 'cria':

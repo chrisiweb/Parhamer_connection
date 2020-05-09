@@ -164,6 +164,16 @@ def split_aufgaben_content(content):
 
     return aufgabenstellung_split_text, index_end
 
+def merge_list_to_string(list_):
+    combined_string=''
+    for all in list_:
+        item_short=all.replace('ITEM','') 
+        if item_short.isspace()==True or not item_short:
+            combined_string = combined_string + all
+        else:
+            combined_string = combined_string + all + '\n\n'
+    return combined_string
+
 def prepare_content_for_hide_show_items(content):
     # print(content)
     # temp_content = content
@@ -172,17 +182,14 @@ def prepare_content_for_hide_show_items(content):
     temp_content=[]
     for item in content:
         if item.startswith('ITEM') and temp_list!=[]:
-            combined_string=''
-            for all in temp_list:
-                if all.replace('ITEM','').isspace()==True:
-                    combined_string = combined_string + all
-                else:
-                    combined_string = combined_string + all + '\n\n'
-
+            combined_string=merge_list_to_string(temp_list)      
             temp_content.append(combined_string)
             temp_list = []
             temp_list.append(item)
         else:
             temp_list.append(item)
+   
+    combined_string = merge_list_to_string(temp_list)
+    temp_content.append(combined_string)
 
     return temp_content
