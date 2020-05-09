@@ -237,7 +237,12 @@ class Ui_MainWindow(object):
         )
         self.ui = Ui_Dialog_choose_type()
         self.ui.setupUi(self.Dialog)
+        # self.Dialog.setWindowState(QtCore.Qt.WindowActive)
+        # self.Dialog.isActiveWindow()
+        self.Dialog.setWindowFlags(self.Dialog.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
         self.Dialog.show()
+        self.Dialog.setWindowFlags(self.Dialog.windowFlags() & ~QtCore.Qt.WindowStaysOnTopHint)
+        self.Dialog.show()        
         self.Dialog.setFixedSize(self.Dialog.size())
         rsp=self.Dialog.exec_()
 
@@ -6233,9 +6238,7 @@ class Ui_MainWindow(object):
                         ausgleichspunkte = ausgleichspunkte.replace('ITEM','').replace('SUBitem','').strip()
                         if ausgleichspunkte.startswith('{'):
                             ausgleichspunkte = ausgleichspunkte[1:]
-                        # for line in content:
-                        #     print(line)
-                        # print(content)               
+             
                         content = [
                             line.replace(
                                 ausgleichspunkte.partition("\n")[0],
@@ -6244,16 +6247,13 @@ class Ui_MainWindow(object):
                             for line in content
                         ]
                 ### end ###
-                # print(content)
-                # return
-                # print(content)
+
                 if aufgabe in self.dict_all_infos_for_file["dict_hide_show_items"].keys():
                     # print(content)        
                     for item in self.dict_all_infos_for_file["dict_hide_show_items"][aufgabe]:
                         hide_item = item.split('\n')[0]
                         hide_item = hide_item.replace('ITEM','').replace('SUBitem','').strip()
-                        # hide_item =  repr(hide_item) #raw string
-                        # print(repr(hide_item))
+
                         start_index=-1
                         end_index=-1
                         for idx, line in enumerate(content):
@@ -6268,13 +6268,14 @@ class Ui_MainWindow(object):
                                 if "\\end{aufgabenstellung}" in line:
                                     end_index=idx
                                     break
+                                if "Lösungserwartung" in line:
+                                    break
                         if start_index==-1 or end_index==-1:
                             warning_window("Das Ein- bzw. Ausblenden von Aufgabenstellungen in Aufgabe {} konnte leider nicht durchgeführt werden.\n"
                             "Die Aufgabe wird daher vollständig angezeigt. Bitte bearbeiten sie diese Aufgabe manuell.".format(aufgabe))                
                         else:
                             for i in reversed(range(start_index+1)):
-                                if '\\item' in content[i]:
-                                    print(content[i])             
+                                if '\\item' in content[i]:         
                                     start_index=i
                                     break
                             for index, line in enumerate(content[start_index:end_index]):
@@ -6282,37 +6283,6 @@ class Ui_MainWindow(object):
 
                             # del content[start_index:end_index]
 
-                    # print(start_index)
-                    # print(content[start_index])
-                    # print(end_index)
-                    # print(content[end_index])
-                    # print(content)
-                    # print(content[start_index:end_index])
-
-
-                    # print(content)
-                    #     index=0
-                    #     shorten_item = hide_item.split("\n")[0]
-                    #     for all_lines in content:
-                    #         if index==0 and shorten_item.replace('ITEM','') in all_lines:
-                    #             index = content.index(all_lines)
-
-                    #         elif index !=0 and "\\item" in all_lines:
-                    #             end_index = content.index(all_lines)
-                    #             break
-                    #         elif index !=0:
-                    #             if "\\end{aufgabenstellung}" in all_lines or "\\end{enumerate}" in all_lines:
-                    #                 end_index = content.index(all_lines)
-                    #                 break
-
-                    #     del content[index:end_index]
-
-
-            # print(content[start_index-1])
-            # print(content)
-            # # # print(self.dict_all_infos_for_file)
-            # QtWidgets.QApplication.restoreOverrideCursor() 
-            # return
             if self.chosen_program == 'cria':
                 # bsp_string=all
                 # list_input = "self.list_input_{}".format(bsp_string)

@@ -27,6 +27,7 @@ class Ui_Dialog_choose_type(object):
             _translate("Titelplatt anpassen", "Programm auswählen", None)
         )
         Dialog.setWindowIcon(QtGui.QIcon(logo_path))
+        
         Dialog.setStyleSheet("QToolTip { color: white; background-color: rgb(47, 69, 80); border: 0px; }")
         Dialog.setSizePolicy(SizePolicy_fixed)
         self.gridLayout = QtWidgets.QGridLayout(Dialog)
