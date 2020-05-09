@@ -6230,7 +6230,12 @@ class Ui_MainWindow(object):
                     for ausgleichspunkte in self.dict_all_infos_for_file[
                         "dict_ausgleichspunkte"
                     ][aufgabe]:
-                        ausgleichspunkte = ausgleichspunkte.replace('ITEM','')                
+                        ausgleichspunkte = ausgleichspunkte.replace('ITEM','').replace('SUBitem','').strip()
+                        if ausgleichspunkte.startswith('{'):
+                            ausgleichspunkte = ausgleichspunkte[1:]
+                        # for line in content:
+                        #     print(line)
+                        # print(content)               
                         content = [
                             line.replace(
                                 ausgleichspunkte.partition("\n")[0],
@@ -6239,6 +6244,8 @@ class Ui_MainWindow(object):
                             for line in content
                         ]
                 ### end ###
+                # print(content)
+                # return
                 # print(content)
                 if aufgabe in self.dict_all_infos_for_file["dict_hide_show_items"].keys():
                     # print(content)        

@@ -498,7 +498,8 @@ class Ui_Dialog_ausgleichspunkte(object):
             checkbox.setChecked(False)
         else:
             checkbox.setChecked(True)
-        self.checkbox_clicked(checkbox, checkbox_label)
+        if self.combobox_edit.currentIndex()==1:
+            self.checkbox_clicked(checkbox, checkbox_label)
 
     def pushButton_OK_pressed(self, list_sage_ausgleichspunkte_chosen):
       
