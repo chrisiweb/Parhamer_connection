@@ -2844,8 +2844,8 @@ class Ui_MainWindow(object):
         local_save = False
         ########################### WARNINGS #####
         ######################################
-        warning = self.check_entry_creator()
-        # print(warning)
+        # warning = self.check_entry_creator()
+        # # print(warning)
         if self.chosen_program=='lama':
             if self.list_selected_topics_creator == []:
                 warning_window("Es wurden keine Grundkompetenzen zugewiesen.")
