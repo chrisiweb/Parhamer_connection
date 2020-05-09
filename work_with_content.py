@@ -38,28 +38,14 @@ def split_aufgaben_content_new_format(content):
         return
  
     aufgabenstellung = x[0].replace("\t", "").replace("%Aufgabentext","")
-    # aufgabenstellung_split_text = re.split("\n\n|\n\t", aufgabenstellung)
-    # aufgabenstellung = aufgabenstellung.replace('%Aufgabentext','')
-    # print(aufgabenstellung)
+
     aufgabenstellung_split_text = aufgabenstellung.split("\\item")
 
     aufgabenstellung_split_text = delete_empty_items(aufgabenstellung_split_text)
-    # print(aufgabenstellung_split_text)
-    # for all in aufgabenstellung_split_text[:]:
-    #     if all.isspace()==True:
-    #         aufgabenstellung_split_text.remove(all)
+
     aufgabenstellung_split_text=['ITEM' + string for string in aufgabenstellung_split_text]
     
-    
-    # if mode == 'show_hide_item':
-    #     for all in aufgabenstellung_split_text[:]:
-    #         if all.isspace()==True:
-    #             aufgabenstellung_split_text.remove(all)
-    #     return aufgabenstellung_split_text
 
-
-   
-    # aufgabenstellung_split_text = re.split("\n\n|\n\t", aufgabenstellung)
 
 
     aufgabenstellung_split_text = split_all_items_of_list(aufgabenstellung_split_text, "\\Subitem")
@@ -110,9 +96,7 @@ def split_aufgaben_content(content):
     aufgabenstellung_split_text = aufgabenstellung.split("\\item")
 
     aufgabenstellung_split_text = delete_empty_items(aufgabenstellung_split_text)
-    # for all in aufgabenstellung_split_text[:]:
-    #     if all.isspace()==True:
-    #         aufgabenstellung_split_text.remove(all)
+
 
     aufgabenstellung_split_text=['ITEM' + string for string in aufgabenstellung_split_text]
 
@@ -120,16 +104,7 @@ def split_aufgaben_content(content):
     aufgabenstellung_split_text = split_all_items_of_list(aufgabenstellung_split_text, "\n\n")
     aufgabenstellung_split_text = split_all_items_of_list(aufgabenstellung_split_text, "\n\t")
     
-    # temp_list = []
-    # for all in aufgabenstellung_split_text:
-    #     x = aufgabenstellung_split_text[
-    #         aufgabenstellung_split_text.index(all)
-    #     ].split("\item ")
-    #     for item in x:
-    #         temp_list.append(item)
-    # aufgabenstellung_split_text = temp_list
 
-    # print(aufgabenstellung_split_text)
 
     for all in aufgabenstellung_split_text:
         if "\\begin{pspicture*}" in all:

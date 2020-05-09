@@ -395,25 +395,7 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.build_checkboxes_for_content()
         if self.combobox_edit.currentIndex() ==1 :
             self.build_checkboxes_for_content()
-            # try:
-            #     self.list_sage_show_hide_items
-            # except AttributeError:
-            #     try:
-            #         split_content, index_end = split_content_ausgleichspunkte('show_hide_item', content)
-            #         split_content = split_content[:index_end]
-            #     except UnboundLocalError:
-            #         split_content = split_content_ausgleichspunkte_new_format('show_hide_item',content)
-            #         try:
-            #             split_content
-            #         except UnboundLocalError:
-            #             warning_window(
-            #                 "Es ist ein Fehler bei der Auswahl der Ausgleichspunkte von Aufgabe {} aufgetreten! (Die Aufgabe kann dennoch verwendet und individuell in der TeX-Datei bearbeitet werden.)\n".format(
-            #                     aufgabe
-            #                 ),
-            #                 'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!',
-            #             )
-            #             return
-            #     self.list_sage_show_hide_items = split_content
+
             
                 
          
@@ -433,22 +415,12 @@ class Ui_Dialog_ausgleichspunkte(object):
                 row += 1
         elif self.combobox_edit.currentIndex()==1:
             for linetext in self.hide_show_items_split_text:
-                # print(linetext)
-                # if linetext.replace('ITEM','').startswith('%') or linetext.replace('ITEM','').startswith(' %'):
-                #     checkbox=None
-                # else:
+
                 checkbox, checkbox_label = self.create_checkbox_ausgleich(linetext, row)
                 if checkbox!=None:
                     checkbox.clicked.connect(partial(self.checkbox_clicked, checkbox, checkbox_label))
                     self.dict_widget_variables_hide_show_items[linetext]=checkbox 
-            # for linetext in self.aufgabenstellung_split_text:
-            #     if linetext.startswith('ITEM'):
-            #         checkbox, checkbox_label = self.create_checkbox_ausgleich(linetext, row)
-            #         if checkbox !=None:
-            #             self.dict_widget_variables_hide_show_items[linetext]=checkbox 
-            #     else:
-            #         label= create_new_label(self.scrollAreaWidgetContents,linetext.replace('{','').replace('}',''), True)
-            #         self.gridLayout.addWidget(label, row, 1, 1, 2, QtCore.Qt.AlignTop)
+
                 row += 1             
         self.gridLayout.addWidget(self.label_solution, row, 1, 1, 3, QtCore.Qt.AlignTop)
 
@@ -517,30 +489,6 @@ class Ui_Dialog_ausgleichspunkte(object):
         list_sage_ausgleichspunkte_chosen = self.list_sage_ausgleichspunkte_chosen
         list_sage_hide_show_items_chosen = self.list_sage_hide_show_items_chosen
 
-        # print(self.list_sage_ausgleichspunkte_chosen)
-        # print(self.list_sage_hide_show_items_chosen)
-        
-        # for i in range(0, len(self.aufgabenstellung_split_text)):
-        #     try:
-        #         checkBox = eval("self.checkBox_{}".format(i))
-        #         if (
-        #             eval("self.label_{}".format(i)).text()
-        #             in list_sage_ausgleichspunkte_chosen
-        #         ):
-        #             if checkBox.isChecked() == False:
-        #                 list_sage_ausgleichspunkte_chosen.remove(
-        #                     eval("self.label_{}".format(i)).text()
-        #                 )
-        #         else:
-        #             if checkBox.isChecked() == True:
-        #                 list_sage_ausgleichspunkte_chosen.append(
-        #                     eval("self.label_{}".format(i)).text()
-        #                 )
-
-        #     except AttributeError:
-        #         pass
-
-        # print(list_sage_ausgleichspunkte_chosen)
 
         self.Dialog.reject()
 
