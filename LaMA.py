@@ -26,7 +26,7 @@ import smtplib
 # import qdarkstyle
 
 
-from config import colors_ui, get_color,config_file, config_loader, path_programm, logo_path, logo_cria_path, SpinBox_noWheel, ClickLabel
+from config import colors_ui, get_color,config_file, config_loader, path_programm, logo_path, logo_cria_path, SpinBox_noWheel, ClickLabel, bring_to_front, is_empty
 from create_new_widgets import *
 from list_of_widgets import (
     widgets_search,
@@ -39,7 +39,7 @@ from list_of_widgets import (
     widgets_feedback_cria,    
     list_widgets
 )
-from subwindows import Ui_Dialog_choose_type, Ui_Dialog_titlepage, Ui_Dialog_ausgleichspunkte, Ui_Dialog_erstellen
+from subwindows import Ui_Dialog_choose_type, Ui_Dialog_titlepage, Ui_Dialog_ausgleichspunkte, Ui_Dialog_erstellen, Ui_Dialog_speichern
 from translate import _fromUtf8, _translate
 from sort_items import natural_keys
 from create_pdf import prepare_tex_for_pdf, create_pdf
@@ -153,7 +153,6 @@ def simplify_string(string):
     return string   
 
 
-
 class Ui_MainWindow(object):
     global dict_picture_path#, set_chosen_gk #, list_sage_examples#, dict_alle_aufgaben_sage
     
@@ -203,10 +202,11 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.Dialog)
         # self.Dialog.setWindowState(QtCore.Qt.WindowActive)
         # self.Dialog.isActiveWindow()
-        self.Dialog.setWindowFlags(self.Dialog.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
-        self.Dialog.show()
-        self.Dialog.setWindowFlags(self.Dialog.windowFlags() & ~QtCore.Qt.WindowStaysOnTopHint)
-        self.Dialog.show()        
+        bring_to_front(self.Dialog)
+        # self.Dialog.setWindowFlags(self.Dialog.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
+        # self.Dialog.show()
+        # self.Dialog.setWindowFlags(self.Dialog.windowFlags() & ~QtCore.Qt.WindowStaysOnTopHint)
+        # self.Dialog.show()        
         self.Dialog.setFixedSize(self.Dialog.size())
         rsp=self.Dialog.exec_()
 
@@ -216,7 +216,7 @@ class Ui_MainWindow(object):
             sys.exit(0)
 
         ########################
-    
+        self.MainWindow = MainWindow
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         # MainWindow.resize(900, 500)
         # MainWindow.move(30,30)
@@ -1699,6 +1699,7 @@ class Ui_MainWindow(object):
 
         self.tab_widget_gk_cr.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        print(self.MainWindow.geometry())
 
 #         ############################################################################
 #         ############## Commands ####################################################
@@ -1708,7 +1709,7 @@ class Ui_MainWindow(object):
         self.comboBox_aufgabentyp_cr.currentIndexChanged.connect(
             self.chosen_aufgabenformat_cr
         )
-        self.pushButton_save.clicked.connect(self.save_file)
+        self.pushButton_save.clicked.connect(self.button_speichern_pressed)
         self.pushButton_titlepage.clicked.connect(self.define_titlepage)
 
         if loaded_lama_file_path != "":
@@ -2627,12 +2628,12 @@ class Ui_MainWindow(object):
                         gk=widget.split('_')[-1]
                         chosen_gk.append(dict_gk[gk])
                         if mode == 'creator':
-                            self.list_selected_topics_creator.append(gk)                        
+                            self.list_selected_topics_creator.append(dict_gk[gk])                        
                     if 'themen' in widget:
                         klasse = widget.split('_')[-2]
                         thema = widget.split('_')[-1]
                         if mode == 'creator':
-                            self.list_selected_topics_creator.append(thema)
+                            self.list_selected_topics_creator.append(thema.upper() + " ("+ klasse[1]+ ".)")
                         # typ, klasse, thema = widget.split(name_checkbox)[1].split('_')
                         chosen_themen.append(thema.upper() + " ("+ klasse[1]+ ")")                   
 
@@ -2824,133 +2825,111 @@ class Ui_MainWindow(object):
             self.comboBox_af.hide()
 
 
-    # def is_empty(self, structure):
-    #     if structure:
-    #         return False
-    #     else:
-    #         return True        
+     
 
     # def check_entry_creator(self):
-    #     lama_entry = [self.list_selected_topics_creator]
-    #     print('test')
     #     for all in lama_entry:
-    #         _=self.is_empty(all)
-    #         if _  == False:
-    #             return str(all)
+    #         structure =self.is_empty(all)
+    #         if structure  == True:
+    #             return idx
 
+    def get_number_of_included_images(self):
+        num = self.plainTextEdit.toPlainText().count("\includegraphics")
+        return num
 
-    def save_file(self):
+    def check_included_attached_image_ratio(self):
+        included = self.get_number_of_included_images()
+        attached = len(dict_picture_path)
+        return included, attached
+ 
+
+    def check_entry_creator(self):
+        if self.chosen_program=='lama':
+            if is_empty(self.list_selected_topics_creator)==True:
+                return "Es wurden keine Grundkompetenzen zugewiesen."
+
+            if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+                if len(self.list_selected_topics_creator) > 1:
+                    return "Es wurden zu viele Grundkompetenzen zugewiesen."
+
+        if self.chosen_program=='cria' and is_empty(self.list_creator_topics)==True:
+            return "Es wurden keine Themengebiete zugewiesen."
+
+        if self.comboBox_aufgabentyp_cr.currentText() != "Typ 2" and self.comboBox_af.currentText() == "bitte auswählen":
+            return "Es wurde kein Aufgabenformat ausgewählt."
+
+        if is_empty(self.lineEdit_titel.text())==True:
+            return "Bitte geben Sie einen Titel ein."
+
+        if is_empty(self.plainTextEdit.toPlainText())==True:
+            return 'Bitte geben Sie den LaTeX-Quelltext der Aufgabe im Bereich "Aufgabeneingabe" ein.'
+
+        if is_empty(self.lineEdit_quelle.text())==True:
+            return "Bitte geben Sie die Quelle an."
+
+        included, attached = self.check_included_attached_image_ratio()
+        if included != attached:
+            if included > attached:
+                str_='wenige'
+            elif included < attached:
+                str_='viele'
+            warning = "Es sind zu {0} Bilder angehängt ({1}/{2})".format(str_, included, attached)    
+            return warning
+ 
+
+    def check_for_admin_mode(self):
+        if self.lineEdit_titel.text().startswith("###"):
+            _,titel = self.lineEdit_titel.text().split("###")
+            titel = titel.strip()
+            self.creator_mode = "admin"
+        else:
+            titel = self.lineEdit_titel.text().strip()
+        return titel
+        #     try:
+        #         x, y = self.lineEdit_titel.text().split("### ")
+        #     except ValueError:
+        #         x, y = self.lineEdit_titel.text().split("###")
+        #     self.creator_mode = "admin"
+        #     edit_titel = y
+        # else:
+        #     edit_titel = self.lineEdit_titel.text()
+
+    def button_speichern_pressed(self):
         self.creator_mode = "user"
         local_save = False
         ########################### WARNINGS #####
         ######################################
-        # warning = self.check_entry_creator()
-        # # print(warning)
-        if self.chosen_program=='lama':
-            if self.list_selected_topics_creator == []:
-                warning_window("Es wurden keine Grundkompetenzen zugewiesen.")
-                return
 
-            if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-                if self.comboBox_af.currentText() == "bitte auswählen":
-                    warning_window("Es wurde kein Aufgabenformat ausgewählt.")
-                    return
-
-                if len(self.list_selected_topics_creator) > 1:
-                    warning_window("Es wurden zu viele Grundkompetenzen zugewiesen.")
-                    return
-        elif self.chosen_program=='cria':
-            if self.list_creator_topics == []:
-                warning_window("Es wurden keine Themengebiete zugewiesen.")
-                return
-
-            if self.comboBox_af.currentText() == "bitte auswählen":
-                warning_window("Es wurde kein Aufgabenformat ausgewählt.")
-
-                return            
-
-        if self.lineEdit_titel.text() == "":
-            warning_window("Bitte geben Sie einen Titel ein.")
+        warning = self.check_entry_creator()
+        if warning != None:
+            warning_window(warning)
             return
 
-        if self.plainTextEdit.toPlainText() == "":
-            warning_window(
-                'Bitte geben Sie den LaTeX-Quelltext der Aufgabe im Bereich "Aufgabeneingabe" ein.'
-            )
-            return
-        if self.lineEdit_quelle.text() == "":
-            warning_window("Bitte geben Sie die Quelle an.")
-            return
+
+        ####### CHECK INCL. & ATTACHED IMAGE RATIO ####
+      
+
+
+        ##### 
 
         textBox_Entry = self.plainTextEdit.toPlainText()
         list_chosen_gk = self.list_selected_topics_creator
 
-        ####### CHECK INCL. & ATTACHED IMAGE RATIO ####
-
-        if textBox_Entry.count("\includegraphics") > len(dict_picture_path):
-            warning_window(
-                "Es sind zu wenige Bilder angehängt ("
-                + str(len(dict_picture_path))
-                + "/"
-                + str(textBox_Entry.count("\includegraphics"))
-                + ")."
-            )
-            return
-        if textBox_Entry.count("\includegraphics") < len(dict_picture_path):
-            warning_window(
-                "Es sind zu viele Bilder angehängt ("
-                + str(len(dict_picture_path))
-                + "/"
-                + str(textBox_Entry.count("\includegraphics"))
-                + ")."
-            )
-            return
-
         ###############################
         ###### Check if Admin Mode is activated ####
 
-        if self.lineEdit_titel.text().startswith("###"):
-            try:
-                x, y = self.lineEdit_titel.text().split("### ")
-            except ValueError:
-                x, y = self.lineEdit_titel.text().split("###")
-            self.creator_mode = "admin"
-            edit_titel = y
-        else:
-            edit_titel = self.lineEdit_titel.text()
+        edit_titel = self.check_for_admin_mode()
+
+
         ################################################
 
-        QtWidgets.QApplication.restoreOverrideCursor()
-        msg = QtWidgets.QMessageBox()
-        msg.setIcon(QtWidgets.QMessageBox.Question)
-        msg.setWindowIcon(QtGui.QIcon(logo_path))
+        # QtWidgets.QApplication.restoreOverrideCursor()
+        # msg = QtWidgets.QMessageBox()
+        # msg.setIcon(QtWidgets.QMessageBox.Question)
+        # msg.setWindowIcon(QtGui.QIcon(logo_path))
 
         if self.chosen_program=='lama':
-            if len(list_chosen_gk) > 1:
-                temp_list_chosen_gk = []
-                for all in list_chosen_gk:
-                    if all in {
-                        **k5_beschreibung,
-                        **k6_beschreibung,
-                        **k7_beschreibung,
-                        **k8_beschreibung,
-                    }:
-                        temp_list_chosen_gk.append(all.upper())
-                    else:
-                        temp_list_chosen_gk.append(dict_gk[all])
-                # print(temp_list_chosen_gk)
-                gk = ", ".join(sorted(temp_list_chosen_gk))
-            else:
-                if list_chosen_gk[0] in {
-                    **k5_beschreibung,
-                    **k6_beschreibung,
-                    **k7_beschreibung,
-                    **k8_beschreibung,
-                }:
-                    gk = list_chosen_gk[0].upper()
-
-                else:
-                    gk = dict_gk[list_chosen_gk[0]]
+            themen = ', '.join(self.list_selected_topics_creator)
 
         if self.chosen_program =='cria':
             list_labels = []
@@ -2964,65 +2943,109 @@ class Ui_MainWindow(object):
         else:
             bilder = "-"
 
+
         if self.creator_mode == "user":
             local_save = False
             if self.chosen_program=='cria' or self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-                aufgabenformat = "Aufgabenformat: %s\n" % self.comboBox_af.currentText()
+                aufgabenformat = "Aufgabenformat: %s" % self.comboBox_af.currentText()
             else:
                 aufgabenformat = ""
-            msg.setWindowTitle("Aufgabe speichern")
+
             if self.chosen_program=='lama':
-                msg.setText(
-                    "Sind Sie sicher, dass Sie die folgendene Aufgabe speichern wollen?\n\n"
-                    "Aufgabentyp: {0}\n"
-                    "Titel: {1}\n{2}"
-                    "Grundkompetenz: {3}\n"
-                    "Quelle: {4}\n"
-                    "Bilder: {5}\n".format(
-                        self.comboBox_aufgabentyp_cr.currentText(),
-                        edit_titel,
-                        aufgabenformat,
-                        gk,
-                        self.lineEdit_quelle.text(),
-                        bilder,
-                    )
-                )
+                aufgabentyp="Aufgabentyp: {0}".format(self.comboBox_aufgabentyp_cr.currentText())
+                titel_themen =  'Grundkompetenz(en)'
             if self.chosen_program=='cria':
-                msg.setText(
-                    "Sind Sie sicher, dass Sie die folgendene Aufgabe speichern wollen?\n\n"
-                    "Titel: {0}\n{1}"
-                    "Themengebiet(e): {2}\n"
-                    "Quelle: {3}\n"
-                    "Bilder: {4}\n".format(
-                        edit_titel,
-                        aufgabenformat,
-                        themen,
-                        self.lineEdit_quelle.text(),
-                        bilder,
-                    )
-                )                
-            # msg.setInformativeText('Soll die PDF Datei erstellt werden?')
+                aufgabentyp = ''
+                titel_themen =  'Themengebiet(e)'
 
 
-            self.cb_confirm = QtWidgets.QCheckBox(
-                "Hiermit bestätige ich, dass ich die eingegebene Aufgabe eigenständig\nund unter Berücksichtigung des Urheberrechtsgesetzes verfasst habe.\n"
-                "Ich stelle die eingegebene Aufgabe frei gemäß der Lizenz CC0 1.0 zur Verfügung.\nDie Aufgabe darf daher zu jeder Zeit frei verwendet, kopiert und verändert werden."
+            Dialog_speichern = QtWidgets.QDialog(            
+            None,
+            QtCore.Qt.WindowSystemMenuHint
+            | QtCore.Qt.WindowTitleHint
+            | QtCore.Qt.WindowCloseButtonHint,)
+            ui = Ui_Dialog_speichern()
+            ui.setupUi(Dialog_speichern)
+            ui.label.setText("Sind Sie sicher, dass Sie die folgendene Aufgabe speichern wollen?\n\n"
+                """
+                {0}\n
+                Titel: {1}\n
+                {2}\n
+                {3}: {4}\n
+                Quelle: {5}\n
+                Bilder: {6}\n
+                
+                """.format(
+                    aufgabentyp,
+                    edit_titel,
+                    aufgabenformat,
+                    titel_themen,
+                    themen,
+                    self.lineEdit_quelle.text(),
+                    bilder,
+                )
             )
-            self.cb_confirm.setObjectName(_fromUtf8("cb_confirm"))
-            msg.setCheckBox(self.cb_confirm)
-            msg.setStandardButtons(
-                QtWidgets.QMessageBox.Yes
-                | QtWidgets.QMessageBox.Apply
-                | QtWidgets.QMessageBox.No
-            )
-            buttonY = msg.button(QtWidgets.QMessageBox.Yes)
-            buttonY.setText("Speichern")
-            msg.setDefaultButton(QtWidgets.QMessageBox.Yes)
-            button_personal = msg.button(QtWidgets.QMessageBox.Apply)
-            button_personal.setText("Lokal speichern")
-            buttonN = msg.button(QtWidgets.QMessageBox.No)
-            buttonN.setText("Abbrechen")
-            ret = msg.exec_()
+            # # # self.Dialog.setWindowState(QtCore.Qt.WindowActive)
+            # # # self.Dialog.isActiveWindow()
+            # # bring_to_front(self.Dialog)
+            # # # self.Dialog.setWindowFlags(self.Dialog.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
+            # # # self.Dialog.show()
+            # # # self.Dialog.setWindowFlags(self.Dialog.windowFlags() & ~QtCore.Qt.WindowStaysOnTopHint)
+            # # # self.Dialog.show()        
+            # # self.Dialog.setFixedSize(self.Dialog.size())
+            response = Dialog_speichern.exec()
+
+
+            # msg.setText(
+            #     "Sind Sie sicher, dass Sie die folgendene Aufgabe speichern wollen?\n\n"
+            #     "{0}"
+            #     "Titel: {1}\n{2}"
+            #     "{3}: {4}\n"
+            #     "Quelle: {5}\n"
+            #     "Bilder: {6}\n".format(
+            #         aufgabentyp,
+            #         edit_titel,
+            #         aufgabenformat,
+            #         titel_themen,
+            #         themen,
+            #         self.lineEdit_quelle.text(),
+            #         bilder,
+            #     )
+            # )
+         
+            # self.cb_confirm= QtWidgets.QCheckBox(
+            #     "Hiermit bestätige ich, dass ich die eingegebene Aufgabe eigenständig\nund unter Berücksichtigung des Urheberrechtsgesetzes verfasst habe.\n"
+            #     "Ich stelle die eingegebene Aufgabe frei gemäß der Lizenz CC0 1.0 zur Verfügung.\nDie Aufgabe darf daher zu jeder Zeit frei verwendet, kopiert und verändert werden."
+            # )
+            
+            # self.cb_confirm.setObjectName(_fromUtf8("cb_confirm"))
+            # msg.setCheckBox(self.cb_confirm)
+            # msg.setStandardButtons(
+            #     QtWidgets.QMessageBox.Yes
+            #     | QtWidgets.QMessageBox.Apply
+            #     | QtWidgets.QMessageBox.No
+            # )
+            # buttonY = msg.button(QtWidgets.QMessageBox.Yes)
+            # buttonY.setText("Speichern")
+            # msg.setDefaultButton(QtWidgets.QMessageBox.Yes)
+            # button_personal = msg.button(QtWidgets.QMessageBox.Apply)
+            # button_personal.setText("Lokal speichern")
+            # buttonN = msg.button(QtWidgets.QMessageBox.No)
+            # buttonN.setText("Abbrechen")
+            # response = msg.exec_()
+
+            print(response)
+            if response== QtWidgets.QMessageBox.Yes:
+                print('yes')
+            if response == QtWidgets.QMessageBox.Apply:
+                print('apply')
+            return
+
+
+        # if rsp == QtWidgets.QDialog.Accepted:
+        #     self.chosen_program = self.ui.chosen_program
+        # if rsp == QtWidgets.QDialog.Rejected:
+        #     sys.exit(0)
 
             if ret == QtWidgets.QMessageBox.Yes:
                 while self.cb_confirm.isChecked() == False:
@@ -3057,8 +3080,8 @@ class Ui_MainWindow(object):
                 if ret_personal == QtWidgets.QMessageBox.Yes:
                     local_save = True
 
-                if ret_personal == QtWidgets.QMessageBox.No:
-                    return
+                # if ret_personal == QtWidgets.QMessageBox.No:
+                #     msg_personal.reject()
             else:
                 return
         if self.creator_mode == "admin":
@@ -5579,7 +5602,6 @@ class Ui_MainWindow(object):
     def pushButton_vorschau_pressed(
         self, ausgabetyp, index=0, maximum=0, pdf=True, lama=True
     ):
-        # if ausgabetyp == "vorschau":
         self.collect_all_infos_for_creating_file()
 
 
@@ -6291,7 +6313,7 @@ class Ui_MainWindow(object):
                     with open(filename_vorschau, "w", encoding="utf8") as vorschau:
                         vorschau.write(text)
 
-        # MainWindow.show()
+
         QtWidgets.QApplication.restoreOverrideCursor()
 
         # sys.exit[0]

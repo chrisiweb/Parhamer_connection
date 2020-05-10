@@ -2,22 +2,32 @@ from PyQt5 import QtCore, QtWidgets, QtGui
 import os
 import shutil
 from functools import partial
-from config import config_loader, colors_ui, get_color, path_programm, logo_path, logo_cria_button_path
+from config import (
+    config_loader,
+    colors_ui,
+    get_color,
+    path_programm,
+    logo_path,
+    logo_cria_button_path,
+)
 from translate import _fromUtf8, _translate
-from create_new_widgets import (create_new_verticallayout,
-create_new_horizontallayout,
-create_new_gridlayout,
-create_new_button,
-create_new_label,
-create_new_checkbox,
-create_new_combobox,
-add_new_option)
+from create_new_widgets import (
+    create_new_verticallayout,
+    create_new_horizontallayout,
+    create_new_gridlayout,
+    create_new_button,
+    create_new_label,
+    create_new_checkbox,
+    create_new_combobox,
+    add_new_option,
+)
 
 from waitingspinnerwidget import QtWaitingSpinner
 from predefined_size_policy import SizePolicy_fixed
 from work_with_content import prepare_content_for_hide_show_items
 
-blue_7=colors_ui['blue_7']
+blue_7 = colors_ui["blue_7"]
+
 
 class Ui_Dialog_choose_type(object):
     def setupUi(self, Dialog):
@@ -27,8 +37,8 @@ class Ui_Dialog_choose_type(object):
             _translate("Titelplatt anpassen", "Programm auswählen", None)
         )
         Dialog.setWindowIcon(QtGui.QIcon(logo_path))
-        
-        Dialog.setStyleSheet("QToolTip { color: white; background-color: rgb(47, 69, 80); border: 0px; }")
+
+        # Dialog.setStyleSheet("QToolTip { color: white; background-color: rgb(47, 69, 80); border: 0px; }")
         Dialog.setSizePolicy(SizePolicy_fixed)
         self.gridLayout = QtWidgets.QGridLayout(Dialog)
         self.gridLayout.setObjectName("gridLayout")
@@ -37,48 +47,54 @@ class Ui_Dialog_choose_type(object):
         self.btn_lama_cria.setObjectName(_fromUtf8("btn_lama_cria"))
         # self.btn_lama_cria.setText("LaMA Cria (Unterstufe)")
         self.btn_lama_cria.setIcon(QtGui.QIcon(logo_cria_button_path))
-        self.btn_lama_cria.setIconSize(QtCore.QSize(120,120))
-        self.btn_lama_cria.setFixedSize(120,120)
-        self.btn_lama_cria.setStyleSheet(_fromUtf8("background-color: rgb(63, 169, 245);"))
+        self.btn_lama_cria.setIconSize(QtCore.QSize(120, 120))
+        self.btn_lama_cria.setFixedSize(120, 120)
+        self.btn_lama_cria.setStyleSheet(
+            _fromUtf8("background-color: rgb(63, 169, 245);")
+        )
         self.btn_lama_cria.setAutoDefault(False)
         self.btn_lama_cria.setShortcut("F1")
-        self.gridLayout.addWidget(self.btn_lama_cria, 0,0,1,1, QtCore.Qt.AlignCenter)
+        self.gridLayout.addWidget(self.btn_lama_cria, 0, 0, 1, 1, QtCore.Qt.AlignCenter)
         self.label_lama_cria = QtWidgets.QLabel()
         self.label_lama_cria.setObjectName(_fromUtf8("label_lama_cria"))
         self.label_lama_cria.setText("LaMA Cria (Unterstufe)")
-        self.gridLayout.addWidget(self.label_lama_cria, 1,0,1,1, QtCore.Qt.AlignCenter)
+        self.gridLayout.addWidget(
+            self.label_lama_cria, 1, 0, 1, 1, QtCore.Qt.AlignCenter
+        )
         # self.btn_lama_cria.setMaximumWidth(130)
-        self.btn_lama_cria.clicked.connect(partial(self.choose_button_pressed, 'cria'))
+        self.btn_lama_cria.clicked.connect(partial(self.choose_button_pressed, "cria"))
 
         self.btn_lama = QtWidgets.QPushButton()
         self.btn_lama.setObjectName(_fromUtf8("btn_lama"))
-        #self.btn_lama.setText("LaMA (Oberstufe)")
+        # self.btn_lama.setText("LaMA (Oberstufe)")
         self.btn_lama.setIcon(QtGui.QIcon(logo_path))
-        self.btn_lama.setIconSize(QtCore.QSize(120,120))
+        self.btn_lama.setIconSize(QtCore.QSize(120, 120))
         self.btn_lama.setShortcut("F2")
-        self.btn_lama.setFixedSize(120,120)
+        self.btn_lama.setFixedSize(120, 120)
         self.btn_lama.setAutoDefault(False)
-        self.gridLayout.addWidget(self.btn_lama, 0,1,1,1, QtCore.Qt.AlignCenter)
-        self.btn_lama.clicked.connect(partial(self.choose_button_pressed, 'lama'))
+        self.gridLayout.addWidget(self.btn_lama, 0, 1, 1, 1, QtCore.Qt.AlignCenter)
+        self.btn_lama.clicked.connect(partial(self.choose_button_pressed, "lama"))
         self.label_lama = QtWidgets.QLabel()
         self.label_lama.setObjectName(_fromUtf8("label_lama"))
         self.label_lama.setText("LaMA (Oberstufe)")
-        self.gridLayout.addWidget(self.label_lama, 1,1,1,1, QtCore.Qt.AlignCenter)
+        self.gridLayout.addWidget(self.label_lama, 1, 1, 1, 1, QtCore.Qt.AlignCenter)
 
     def choose_button_pressed(self, chosen_program):
-        self.chosen_program=chosen_program
+        self.chosen_program = chosen_program
         self.Dialog.accept()
-
 
 
 class Ui_Dialog_processing(object):
     def setupUi(self, Dialog, text):
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
-        Dialog.setWindowFlags(QtCore.Qt.WindowSystemMenuHint
-            | QtCore.Qt.WindowTitleHint)
-        Dialog.setWindowTitle('Lade...')
-        Dialog.setStyleSheet("background-color: {}; color: white".format(get_color(blue_7)))
+        Dialog.setWindowFlags(
+            QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint
+        )
+        Dialog.setWindowTitle("Lade...")
+        Dialog.setStyleSheet(
+            "background-color: {}; color: white".format(get_color(blue_7))
+        )
         # Dialog.setSizePolicy(SizePolicy_fixed)
         # Dialog.setFixedSize(Dialog.size())
         pixmap = QtGui.QPixmap(logo_path)
@@ -94,13 +110,13 @@ class Ui_Dialog_processing(object):
         image.setObjectName("image")
         image.setPixmap(pixmap.scaled(30, 30, QtCore.Qt.KeepAspectRatio))
 
-        label=QtWidgets.QLabel(Dialog)
-        label.setObjectName("label")  
+        label = QtWidgets.QLabel(Dialog)
+        label.setObjectName("label")
         label.setText(text)
         label.setStyleSheet("padding: 20px")
         label_spinner = QtWidgets.QLabel(Dialog)
         label.setObjectName("label_spinner")
-        label_spinner.setFixedSize(30,30)    
+        label_spinner.setFixedSize(30, 30)
         spinner = QtWaitingSpinner(label_spinner)
         spinner.setRoundness(70.0)
         # spinner.setMinimumTrailOpacity(10.0)
@@ -111,13 +127,11 @@ class Ui_Dialog_processing(object):
         spinner.setInnerRadius(5)
         # spinner.setRevolutionsPerSecond(2)
         spinner.setColor(QtCore.Qt.white)
-        spinner.start() # starts spinning
+        spinner.start()  # starts spinning
         label.setAlignment(QtCore.Qt.AlignCenter)
         horizontalLayout.addWidget(image)
         horizontalLayout.addWidget(label)
         horizontalLayout.addWidget(label_spinner)
-
-
 
 
 
@@ -149,18 +163,16 @@ class Ui_Dialog_titlepage(object):
         )
         self.verticalLayout_titlepage.addWidget(self.groupBox_titlepage)
 
-
         self.cb_titlepage_hide_all = QtWidgets.QCheckBox("Kein Titelblatt")
-        self.cb_titlepage_hide_all.setObjectName(
-            _fromUtf8("cb_titlepage_hide_all")
-        )
+        self.cb_titlepage_hide_all.setObjectName(_fromUtf8("cb_titlepage_hide_all"))
         self.verticalLayout_titlepage.addWidget(self.cb_titlepage_hide_all)
-        self.cb_titlepage_hide_all.stateChanged.connect(self.cb_titlepage_hide_all_pressed)
+        self.cb_titlepage_hide_all.stateChanged.connect(
+            self.cb_titlepage_hide_all_pressed
+        )
         try:
             self.cb_titlepage_hide_all.setChecked(dict_titlepage["hide_all"])
         except KeyError:
-            dict_titlepage["hide_all"]=False
-
+            dict_titlepage["hide_all"] = False
 
         self.cb_titlepage_logo = QtWidgets.QCheckBox("Logo")
         if dict_titlepage["logo_path"] != False:
@@ -211,8 +223,6 @@ class Ui_Dialog_titlepage(object):
         self.verticalLayout_gBtitlepage.addWidget(self.cb_titlepage_unterschrift)
         self.cb_titlepage_unterschrift.setChecked(dict_titlepage["unterschrift"])
 
-
-
         self.buttonBox_titlepage = QtWidgets.QDialogButtonBox(self.Dialog)
         self.buttonBox_titlepage = QtWidgets.QDialogButtonBox(self.Dialog)
         self.buttonBox_titlepage.setStandardButtons(
@@ -237,11 +247,10 @@ class Ui_Dialog_titlepage(object):
         return dict_titlepage
 
     def cb_titlepage_hide_all_pressed(self):
-        if self.cb_titlepage_hide_all.isChecked()==True:
+        if self.cb_titlepage_hide_all.isChecked() == True:
             self.groupBox_titlepage.setEnabled(False)
-        if self.cb_titlepage_hide_all.isChecked()==False:
+        if self.cb_titlepage_hide_all.isChecked() == False:
             self.groupBox_titlepage.setEnabled(True)
-            
 
     def btn_titlepage_logo_path_pressed(self, dict_titlepage):
         logo_titlepage_path = QtWidgets.QFileDialog.getOpenFileNames(
@@ -296,7 +305,7 @@ class Ui_Dialog_titlepage(object):
             "name": True,
             "note": False,
             "unterschrift": False,
-            "hide_all": False
+            "hide_all": False,
         }
         for all in dict_titlepage.keys():
             if all == "logo_path":
@@ -309,10 +318,16 @@ class Ui_Dialog_titlepage(object):
 
 class Ui_Dialog_ausgleichspunkte(object):
     def setupUi(
-        self, Dialog, aufgabenstellung_split_text, list_sage_ausgleichspunkte_chosen, list_sage_hide_show_items_chosen
+        self,
+        Dialog,
+        aufgabenstellung_split_text,
+        list_sage_ausgleichspunkte_chosen,
+        list_sage_hide_show_items_chosen,
     ):
         self.aufgabenstellung_split_text = aufgabenstellung_split_text
-        self.hide_show_items_split_text = prepare_content_for_hide_show_items(aufgabenstellung_split_text)
+        self.hide_show_items_split_text = prepare_content_for_hide_show_items(
+            aufgabenstellung_split_text
+        )
         self.list_sage_ausgleichspunkte_chosen = list_sage_ausgleichspunkte_chosen
         # print(self.list_sage_ausgleichspunkte_chosen)
         self.list_sage_hide_show_items_chosen = list_sage_hide_show_items_chosen
@@ -325,7 +340,6 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.Dialog.resize(600, 400)
         self.Dialog.setWindowIcon(QtGui.QIcon(logo_path))
 
-
         verticallayout_titlepage = create_new_verticallayout(Dialog)
         # self.gridLayout_2 = QtWidgets.QGridLayout(Dialog)
         # self.gridLayout_2.setObjectName("gridLayout_2")
@@ -333,7 +347,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         verticallayout_titlepage.addWidget(self.combobox_edit)
         self.combobox_edit.addItem("Ausgleichspunkte anpassen")
         self.combobox_edit.addItem("Aufgabenstellungen ein-/ausblenden")
-        self.combobox_edit.currentIndexChanged.connect(self.combobox_edit_changed) 
+        self.combobox_edit.currentIndexChanged.connect(self.combobox_edit_changed)
         self.scrollArea = QtWidgets.QScrollArea(Dialog)
         self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.scrollArea.setWidgetResizable(True)
@@ -377,7 +391,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         )
         # # self.retranslateUi(self.Dialog)
         QtCore.QMetaObject.connectSlotsByName(self.Dialog)
-        
+
         # self.list_sage_ausgleichspunkte_chosen=list_sage_ausgleichspunkte_chosen
 
         # return list_sage_ausgleichspunkte_chosen
@@ -389,20 +403,16 @@ class Ui_Dialog_ausgleichspunkte(object):
     #     )
 
     def combobox_edit_changed(self):
-        for i in reversed(range(1,self.gridLayout.count())): 
+        for i in reversed(range(1, self.gridLayout.count())):
             self.gridLayout.itemAt(i).widget().setParent(None)
         if self.combobox_edit.currentIndex() == 0:
             self.build_checkboxes_for_content()
-        if self.combobox_edit.currentIndex() ==1 :
+        if self.combobox_edit.currentIndex() == 1:
             self.build_checkboxes_for_content()
 
-            
-                
-         
-    
     def build_checkboxes_for_content(self):
         row = 1
-        if self.combobox_edit.currentIndex()==0:
+        if self.combobox_edit.currentIndex() == 0:
             # print(self.list_sage_ausgleichspunkte_chosen)
             for linetext in self.aufgabenstellung_split_text:
                 # if linetext.replace('ITEM','').startswith('%') or linetext.replace('ITEM','').startswith(' %'):
@@ -410,85 +420,103 @@ class Ui_Dialog_ausgleichspunkte(object):
                 # else:
                 checkbox, checkbox_label = self.create_checkbox_ausgleich(linetext, row)
                 if checkbox != None:
-                    self.dict_widget_variables_ausgleichspunkte[linetext]=checkbox                   
+                    self.dict_widget_variables_ausgleichspunkte[linetext] = checkbox
 
                 row += 1
-        elif self.combobox_edit.currentIndex()==1:
+        elif self.combobox_edit.currentIndex() == 1:
             for linetext in self.hide_show_items_split_text:
 
                 checkbox, checkbox_label = self.create_checkbox_ausgleich(linetext, row)
-                if checkbox!=None:
-                    checkbox.clicked.connect(partial(self.checkbox_clicked, checkbox, checkbox_label))
-                    self.dict_widget_variables_hide_show_items[linetext]=checkbox 
+                if checkbox != None:
+                    checkbox.clicked.connect(
+                        partial(self.checkbox_clicked, checkbox, checkbox_label)
+                    )
+                    self.dict_widget_variables_hide_show_items[linetext] = checkbox
 
-                row += 1             
+                row += 1
         self.gridLayout.addWidget(self.label_solution, row, 1, 1, 3, QtCore.Qt.AlignTop)
 
         self.gridLayout.setRowStretch(row, 1)
-    
+
     def checkbox_clicked(self, checkbox, checkbox_label):
-        if checkbox.isChecked()==True:
+        if checkbox.isChecked() == True:
             checkbox_label.setStyleSheet("color: black")
         else:
             checkbox_label.setStyleSheet("color: gray")
 
     def create_checkbox_ausgleich(self, linetext, row):
-        checkbox_label = create_new_label(self.scrollAreaWidgetContents,"",True,True)
-        
-        if ("GRAFIK" in linetext or linetext.replace("ITEM","").isspace()==True) and self.combobox_edit.currentIndex()==0: #
-            checkbox=None
+        checkbox_label = create_new_label(self.scrollAreaWidgetContents, "", True, True)
+
+        if (
+            "GRAFIK" in linetext or linetext.replace("ITEM", "").isspace() == True
+        ) and self.combobox_edit.currentIndex() == 0:  #
+            checkbox = None
         else:
-            # print(linetext) 
-            checkbox = create_new_checkbox(self.scrollAreaWidgetContents,"")
+            # print(linetext)
+            checkbox = create_new_checkbox(self.scrollAreaWidgetContents, "")
             checkbox.setSizePolicy(SizePolicy_fixed)
             self.gridLayout.addWidget(checkbox, row, 0, 1, 1, QtCore.Qt.AlignTop)
-
 
             if "\\fbox{A}" in linetext:
                 linetext = linetext.replace("\\fbox{A}", "")
 
             # print(linetext)
-            if self.combobox_edit.currentIndex()==0:
+            if self.combobox_edit.currentIndex() == 0:
                 if linetext in self.list_sage_ausgleichspunkte_chosen:
                     checkbox.setChecked(True)
-            if self.combobox_edit.currentIndex()==1:
+            if self.combobox_edit.currentIndex() == 1:
                 # print(self.list_sage_hide_show_items_chosen)
                 if linetext in self.list_sage_hide_show_items_chosen:
                     checkbox.setChecked(False)
                     checkbox_label.setStyleSheet("color: gray")
-                else: 
+                else:
                     checkbox.setChecked(True)
 
-        
-            checkbox_label.clicked.connect(partial(self.checkbox_label_clicked, checkbox, checkbox_label))
+            checkbox_label.clicked.connect(
+                partial(self.checkbox_label_clicked, checkbox, checkbox_label)
+            )
 
-        checkbox_label.setText(linetext.replace("ITEM","").replace('SUBitem','').replace('{','').replace('}',''))
+        checkbox_label.setText(
+            linetext.replace("ITEM", "")
+            .replace("SUBitem", "")
+            .replace("{", "")
+            .replace("}", "")
+        )
         self.gridLayout.addWidget(checkbox_label, row, 1, 1, 2, QtCore.Qt.AlignTop)
         return checkbox, checkbox_label
 
     def checkbox_label_clicked(self, checkbox, checkbox_label):
-        if checkbox.isChecked()==True:
+        if checkbox.isChecked() == True:
             checkbox.setChecked(False)
         else:
             checkbox.setChecked(True)
-        if self.combobox_edit.currentIndex()==1:
+        if self.combobox_edit.currentIndex() == 1:
             self.checkbox_clicked(checkbox, checkbox_label)
 
     def pushButton_OK_pressed(self, list_sage_ausgleichspunkte_chosen):
-      
-        self.list_sage_ausgleichspunkte_chosen=[]
-        for linetext in list(self.dict_widget_variables_ausgleichspunkte.keys()):
-            if self.dict_widget_variables_ausgleichspunkte[linetext].isChecked()==True:
-                self.list_sage_ausgleichspunkte_chosen.append(linetext.replace("\\fbox{A}", ""))
 
-        self.list_sage_hide_show_items_chosen=[]    
+        self.list_sage_ausgleichspunkte_chosen = []
+        for linetext in list(self.dict_widget_variables_ausgleichspunkte.keys()):
+            if (
+                self.dict_widget_variables_ausgleichspunkte[linetext].isChecked()
+                == True
+            ):
+                self.list_sage_ausgleichspunkte_chosen.append(
+                    linetext.replace("\\fbox{A}", "")
+                )
+
+        self.list_sage_hide_show_items_chosen = []
         for linetext in list(self.dict_widget_variables_hide_show_items.keys()):
-            if self.dict_widget_variables_hide_show_items[linetext].isChecked()==False:
-                self.list_sage_hide_show_items_chosen.append(linetext.replace("\\fbox{A}", "")) 
-        
+            if (
+                self.dict_widget_variables_hide_show_items[linetext].isChecked()
+                == False
+            ):
+                self.list_sage_hide_show_items_chosen.append(
+                    linetext.replace("\\fbox{A}", "")
+                )
+
         list_sage_ausgleichspunkte_chosen = self.list_sage_ausgleichspunkte_chosen
         list_sage_hide_show_items_chosen = self.list_sage_hide_show_items_chosen
-
 
         self.Dialog.reject()
 
@@ -504,8 +532,8 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
         dict_titlepage,
         saved_file_path,
     ):
-        
-        #print(MainWindow.dict_alle_aufgaben_sage)
+
+        # print(MainWindow.dict_alle_aufgaben_sage)
         self.dict_list_input_examples = dict_list_input_examples
         self.beispieldaten_dateipfad_1 = beispieldaten_dateipfad_1
         self.beispieldaten_dateipfad_2 = beispieldaten_dateipfad_2
@@ -520,11 +548,11 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
         self.gridLayout.setObjectName("gridLayout")
         self.pushButton_sw_save = QtWidgets.QPushButton(Dialog)
         self.pushButton_sw_save.setObjectName("pushButton_sw_save")
-        self.pushButton_sw_save.clicked.connect(self.pushButton_sw_save_pressed) 
+        self.pushButton_sw_save.clicked.connect(self.pushButton_sw_save_pressed)
         self.gridLayout.addWidget(self.pushButton_sw_save, 5, 3, 1, 1)
         self.pushButton_sw_back = QtWidgets.QPushButton(Dialog)
         self.pushButton_sw_back.setObjectName("pushButton_sw_back")
-        self.pushButton_sw_back.clicked.connect(self.pushButton_sw_back_pressed) 
+        self.pushButton_sw_back.clicked.connect(self.pushButton_sw_back_pressed)
         self.gridLayout.addWidget(self.pushButton_sw_back, 4, 3, 1, 1)
         self.groupBox_sw_data = QtWidgets.QGroupBox(Dialog)
         self.groupBox_sw_data.setObjectName("groupBox_sw_data")
@@ -713,7 +741,80 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
         if self.cb_create_lama.isChecked():
             self.lama = True
         else:
-            self.lama = False   
+            self.lama = False
 
         self.Dialog.accept()
 
+
+class Ui_Dialog_speichern(QtWidgets.QDialog):
+    def setupUi(self, Dialog):
+        self.Dialog = Dialog
+        Dialog.setObjectName("Dialog")
+        Dialog.setWindowTitle("Aufgabe speichern")
+        Dialog.setStyleSheet("color: white; background-color: {0}".format(get_color(blue_7)))
+        Dialog.setWindowIcon(QtGui.QIcon(logo_path))
+        gridlayout = create_new_gridlayout(Dialog)
+
+        self.label = create_new_label(Dialog, "")
+        gridlayout.addWidget(self.label, 0, 0, 1, 2)
+        self.cb_confirm = create_new_checkbox(Dialog, "")
+        self.cb_confirm.setSizePolicy(SizePolicy_fixed)
+        self.cb_confirm.setStyleSheet("background-color: white; color: black")
+        gridlayout.addWidget(self.cb_confirm, 1, 0, 1, 1,QtCore.Qt.AlignTop)
+        self.label_checkbox = create_new_label(
+            Dialog,
+            "Hiermit bestätige ich, dass ich die eingegebene Aufgabe eigenständig und unter Berücksichtigung des Urheberrechtsgesetzes verfasst habe.\n"
+            "Ich stelle die eingegebene Aufgabe frei gemäß der Lizenz CC0 1.0 zur Verfügung. Die Aufgabe darf daher zu jeder Zeit frei verwendet, kopiert und verändert werden.",
+            True,
+            True,
+        )
+        gridlayout.addWidget(self.label_checkbox, 1,1,1,1, QtCore.Qt.AlignTop)
+        self.label_checkbox.clicked.connect(self.label_checkbox_clicked)
+        self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
+        self.buttonBox.setStandardButtons(
+            QtWidgets.QDialogButtonBox.Yes | QtWidgets.QDialogButtonBox.No | QtWidgets.QDialogButtonBox.Apply
+        )
+        
+        
+        # .setStandardButtons(
+        #         QtWidgets.QMessageBox.Yes
+        #         | QtWidgets.QMessageBox.Apply
+        #         | QtWidgets.QMessageBox.No
+        #     )
+
+        buttonY = self.buttonBox.button(QtWidgets.QDialogButtonBox.Yes)
+        buttonY.setText("Speichern")
+        buttonY.clicked.connect(self.yes_pressed)
+        # self.buttonBox.setDefaultButton(QtWidgets.QDialogButtonBox.Yes)
+        button_local = self.buttonBox.button(QtWidgets.QDialogButtonBox.Apply)
+        button_local.setText("Lokal speichern")
+        button_local.clicked.connect(self.local_pressed)
+        buttonN = self.buttonBox.button(QtWidgets.QDialogButtonBox.No)
+        buttonN.setText("Abbrechen")
+        gridlayout.addWidget(self.buttonBox, 2,1,1,1)
+
+        self.buttonBox.rejected.connect(Dialog.reject)
+        # self.buttonBox.accepted.connect(Dialog.accept)
+
+
+        # return 
+        # self.buttonBox.accepted.connect(Dialog.accept)
+        # self.buttonBox.accepted.connect(
+        #     partial(self.pushButton_OK_pressed, list_sage_ausgleichspunkte_chosen)
+        # )
+    
+        return "Test"
+    def local_pressed(self):
+        # print(self.Dialog.result())
+        return False
+
+    def yes_pressed(self):
+        # self.Dialog.result()
+        # self.Dialog.accept()
+        return True
+
+    def label_checkbox_clicked(self):
+        if self.cb_confirm.isChecked()==True:
+            self.cb_confirm.setChecked(False)
+        elif self.cb_confirm.isChecked()==False:
+            self.cb_confirm.setChecked(True)

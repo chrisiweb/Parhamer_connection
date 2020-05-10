@@ -81,3 +81,15 @@ class ClickLabel(QtWidgets.QLabel):
     def mousePressEvent(self, event):
         self.clicked.emit()
         QtWidgets.QLabel.mousePressEvent(self, event)
+
+def bring_to_front(window):
+    window.setWindowFlags(window.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
+    window.show()
+    window.setWindowFlags(window.windowFlags() & ~QtCore.Qt.WindowStaysOnTopHint)
+    window.show() 
+
+def is_empty(structure):
+    if structure:
+        return False
+    else:
+        return True 

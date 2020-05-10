@@ -178,5 +178,6 @@ def refresh_ddb(self, selected_program=False):
 
     QtWidgets.QApplication.restoreOverrideCursor()
     self.adapt_choosing_list("sage")
+    # bring_to_front(QMainWindow())
     # self.adapt_choosing_list("feedback")
     # msg.close()
