@@ -760,10 +760,12 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
         Dialog.setStyleSheet("color: white; background-color: {0}".format(get_color(blue_7)))
         Dialog.setWindowIcon(QtGui.QIcon(logo_path))
         gridlayout = create_new_gridlayout(Dialog)
-
+        label_question = create_new_label(Dialog, "Sind Sie sicher, dass Sie die folgendene Aufgabe speichern wollen?\n\n")
+        gridlayout.addWidget(label_question, 0,0,1,2)
         self.label = create_new_label(Dialog, "")
+        self.label.setStyleSheet("padding-left: 25px;")
         # self.label.setWordWrap(True)
-        gridlayout.addWidget(self.label, 0, 0, 1, 2)
+        gridlayout.addWidget(self.label, 1, 0, 1, 2)
         # if creator_mode == 'user':
         #     label = ""
         # if creator_mode == 'admin':
@@ -771,8 +773,8 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
         if self.creator_mode == 'user':
             self.cb_confirm = create_new_checkbox(Dialog, "")
             self.cb_confirm.setSizePolicy(SizePolicy_fixed)
-            self.cb_confirm.setStyleSheet("background-color: white; color: black")
-            gridlayout.addWidget(self.cb_confirm, 1, 0, 1, 1,QtCore.Qt.AlignTop)
+            self.cb_confirm.setStyleSheet("background-color: white; color: black;")
+            gridlayout.addWidget(self.cb_confirm, 2, 0, 1, 1,QtCore.Qt.AlignTop)
             self.label_checkbox = create_new_label(
                 Dialog,
                 "Hiermit bestätige ich, dass ich die eingegebene Aufgabe eigenständig und\nunter Berücksichtigung des Urheberrechtsgesetzes verfasst habe.\n"
@@ -781,7 +783,8 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
                 False,
                 True,
             )
-            gridlayout.addWidget(self.label_checkbox, 1,1,1,1, QtCore.Qt.AlignTop)
+            self.label_checkbox.setStyleSheet("padding-bottom: 20px;")
+            gridlayout.addWidget(self.label_checkbox, 2,1,1,1, QtCore.Qt.AlignTop)
             self.label_checkbox.clicked.connect(self.label_checkbox_clicked)
         
         if self.creator_mode == 'admin':
@@ -789,7 +792,7 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
             self.combobox_in_official.setStyleSheet("background-color: white; color: black")
             self.combobox_in_official.addItem("inoffizelle Aufgabe")
             self.combobox_in_official.addItem("offizielle Aufgabe")
-            gridlayout.addWidget(self.combobox_in_official, 1, 0, 1, 1)
+            gridlayout.addWidget(self.combobox_in_official, 2, 0, 1, 1)
 
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         if self.creator_mode == 'user':
@@ -819,7 +822,7 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
             button_local.setText("Lokal speichern")
             button_local.clicked.connect(self.local_pressed)
 
-        gridlayout.addWidget(self.buttonBox, 2,1,1,1)
+        gridlayout.addWidget(self.buttonBox, 3,1,1,1)
 
         
         # self.buttonBox.accepted.connect(Dialog.accept)

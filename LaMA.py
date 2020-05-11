@@ -2885,14 +2885,7 @@ class Ui_MainWindow(object):
         else:
             titel = self.lineEdit_titel.text().strip()
         return titel
-        #     try:
-        #         x, y = self.lineEdit_titel.text().split("### ")
-        #     except ValueError:
-        #         x, y = self.lineEdit_titel.text().split("###")
-        #     self.creator_mode = "admin"
-        #     edit_titel = y
-        # else:
-        #     edit_titel = self.lineEdit_titel.text()
+
 
     def open_dialogwindow_save(self, information):
         Dialog_speichern = QtWidgets.QDialog(            
@@ -2902,10 +2895,8 @@ class Ui_MainWindow(object):
         | QtCore.Qt.WindowCloseButtonHint,)
         self.ui_save = Ui_Dialog_speichern()
         self.ui_save.setupUi(Dialog_speichern, self.creator_mode)
-        self.ui_save.label.setText(
-        "Sind Sie sicher, dass Sie die folgendene Aufgabe speichern wollen?\n\n"+
-        information
-        )
+        self.ui_save.label.setText(information)
+        # self.ui_save.label.setStyleSheet("padding: 10px")
         return Dialog_speichern
 
 
@@ -2913,36 +2904,27 @@ class Ui_MainWindow(object):
     def button_speichern_pressed(self):
         self.creator_mode = "user"
         local_save = False
-        ########################### WARNINGS #####
-        ######################################
+
+        ######## WARNINGS #####
 
         warning = self.check_entry_creator()
         if warning != None:
             warning_window(warning)
             return
 
-
-        ####### CHECK INCL. & ATTACHED IMAGE RATIO ####
-      
-
-
-        ##### 
+        #######
 
         textBox_Entry = self.plainTextEdit.toPlainText()
         list_chosen_gk = self.list_selected_topics_creator
 
-        ###############################
+
         ###### Check if Admin Mode is activated ####
 
         edit_titel = self.check_for_admin_mode()
 
-
         ################################################
 
-        # QtWidgets.QApplication.restoreOverrideCursor()
-        # msg = QtWidgets.QMessageBox()
-        # msg.setIcon(QtWidgets.QMessageBox.Question)
-        # msg.setWindowIcon(QtGui.QIcon(logo_path))
+
 
         if self.chosen_program=='lama':
             themen = ', '.join(self.list_selected_topics_creator)
@@ -2956,34 +2938,25 @@ class Ui_MainWindow(object):
 
         if dict_picture_path != {}:
             bilder = ", ".join(dict_picture_path)
-            bilder = '\nBilder: {bilder}'
+            bilder = '\n\nBilder: {bilder}'
         else:
             bilder = ''
 
 
         if self.chosen_program=='cria' or self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-            aufgabenformat = "Aufgabenformat: %s\n" % self.comboBox_af.currentText()
+            aufgabenformat = "Aufgabenformat: %s\n\n" % self.comboBox_af.currentText()
         else:
             aufgabenformat = ""
 
         if self.chosen_program=='lama':
-            aufgabentyp="Aufgabentyp: {0}\n".format(self.comboBox_aufgabentyp_cr.currentText())
+            aufgabentyp="Aufgabentyp: {0}\n\n".format(self.comboBox_aufgabentyp_cr.currentText())
             titel_themen =  'Grundkompetenz(en)'
         if self.chosen_program=='cria':
             aufgabentyp = ''
             titel_themen =  'Themengebiet(e)'
 
         
-        information="""
-
-        {0}
-        Titel: {1}\n
-        {2}
-        {3}: {4}\n
-        Quelle: {5}
-        {6}
-
-        """.format(
+        information="{0}Titel: {1}\n\n{2}{3}: {4}\n\nQuelle: {5}{6}\n\n".format(
             aufgabentyp,
             edit_titel,
             aufgabenformat,
@@ -6411,7 +6384,8 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
 
     app.setStyle('Fusion')
-    app.setStyleSheet("QToolTip { color: white; background-color: rgb(47, 69, 80); border: 0px; }")
+    app.setStyleSheet("""QToolTip {{ color: white; background-color: {0}; border: 0px; }}
+    """.format(get_color(blue_7)))
     # font = QtGui.QFont("Calibri Light", 9)
     # app.setFont(font)
     palette = QtGui.QPalette()
