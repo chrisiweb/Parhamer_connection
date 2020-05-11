@@ -2894,6 +2894,24 @@ class Ui_MainWindow(object):
         # else:
         #     edit_titel = self.lineEdit_titel.text()
 
+    def open_dialogwindow_save(self, information):
+        print(self.creator_mode)
+
+        Dialog_speichern = QtWidgets.QDialog(            
+        None,
+        QtCore.Qt.WindowSystemMenuHint
+        | QtCore.Qt.WindowTitleHint
+        | QtCore.Qt.WindowCloseButtonHint,)
+        self.ui_save = Ui_Dialog_speichern()
+        self.ui_save.setupUi(Dialog_speichern, self.creator_mode)
+        self.ui_save.label.setText(
+        "Sind Sie sicher, dass Sie die folgendene Aufgabe speichern wollen?\n\n"+
+        information
+        )
+        return Dialog_speichern
+
+
+
     def button_speichern_pressed(self):
         self.creator_mode = "user"
         local_save = False
@@ -2944,47 +2962,109 @@ class Ui_MainWindow(object):
             bilder = "-"
 
 
+        if self.chosen_program=='cria' or self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+            aufgabenformat = "Aufgabenformat: %s" % self.comboBox_af.currentText()
+        else:
+            aufgabenformat = ""
+
+        if self.chosen_program=='lama':
+            aufgabentyp="Aufgabentyp: {0}".format(self.comboBox_aufgabentyp_cr.currentText())
+            titel_themen =  'Grundkompetenz(en)'
+        if self.chosen_program=='cria':
+            aufgabentyp = ''
+            titel_themen =  'Themengebiet(e)'
+
+        
+        information="""
+
+        {0}\n
+        Titel: {1}\n
+        {2}\n
+        {3}: {4}\n
+        Quelle: {5}\n
+        Bilder: {6}\n
+
+        """.format(
+            aufgabentyp,
+            edit_titel,
+            aufgabenformat,
+            titel_themen,
+            themen,
+            self.lineEdit_quelle.text(),
+            bilder,
+        )
+
+
+        Dialog_speichern = self.open_dialogwindow_save(information)
+
+        response = Dialog_speichern.exec()
+
+        if response == 0:
+            return
+
+        confirmed=self.ui_save.get_output()
+
         if self.creator_mode == "user":
             local_save = False
-            if self.chosen_program=='cria' or self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-                aufgabenformat = "Aufgabenformat: %s" % self.comboBox_af.currentText()
-            else:
-                aufgabenformat = ""
 
-            if self.chosen_program=='lama':
-                aufgabentyp="Aufgabentyp: {0}".format(self.comboBox_aufgabentyp_cr.currentText())
-                titel_themen =  'Grundkompetenz(en)'
-            if self.chosen_program=='cria':
-                aufgabentyp = ''
-                titel_themen =  'Themengebiet(e)'
+            while confirmed == (True, False) or confirmed == (False, None):
+                if confirmed == (True, False):
+                    warning_window(
+                        "Bitte bestätigen Sie die Eigenständigkeitserklärung und Lizenzvereinbarung."
+                    )
+                elif confirmed == (False, None):
+                    local_save = question_window("Aufgabe lokal speichern?",
+                    "Sind Sie sicher, dass Sie diese Aufgabe nur lokal speichern wollen?",
+                    "ACHTUNG: Durch nicht überprüfte Aufgaben entstehen möglicherweise Fehler, die das Programm zum Absturz bringen können!",
+                    )
+                    if local_save == True:
+                        break
+              
+                response = Dialog_speichern.exec()
+                if response == 0:
+                    return
+                confirmed=self.ui_save.get_output() 
 
+        print(confirmed)
+        return
+        # if self.creator_mode == "admin":
 
-            Dialog_speichern = QtWidgets.QDialog(            
-            None,
-            QtCore.Qt.WindowSystemMenuHint
-            | QtCore.Qt.WindowTitleHint
-            | QtCore.Qt.WindowCloseButtonHint,)
-            ui = Ui_Dialog_speichern()
-            ui.setupUi(Dialog_speichern)
-            ui.label.setText("Sind Sie sicher, dass Sie die folgendene Aufgabe speichern wollen?\n\n"
-                """
-                {0}\n
-                Titel: {1}\n
-                {2}\n
-                {3}: {4}\n
-                Quelle: {5}\n
-                Bilder: {6}\n
-                
-                """.format(
-                    aufgabentyp,
-                    edit_titel,
-                    aufgabenformat,
-                    titel_themen,
-                    themen,
-                    self.lineEdit_quelle.text(),
-                    bilder,
-                )
-            )
+            # while confirmed == (False, None):
+
+            #     response = Dialog_speichern.exec()
+            #     if response == 0:
+            #         return
+            #     confirmed=ui.get_output()
+                # print(response)
+                # msg_personal = QtWidgets.QMessageBox()
+                # msg_personal.setWindowTitle("Aufgabe lokal speichern")
+                # msg_personal.setIcon(QtWidgets.QMessageBox.Warning)
+                # msg_personal.setWindowIcon(QtGui.QIcon(logo_path))
+                # msg_personal.setText(
+                #     "Sind Sie sicher, dass Sie diese Aufgabe nur lokal in Ihrer Dropbox speichern wollen?\n"
+                # )
+                # msg_personal.setInformativeText(
+                #     "ACHTUNG: Durch nicht überprüfte Aufgaben können Fehler entstehen, die das Programm zum Absturz bringen!"
+                # )
+                # msg_personal.setStandardButtons(
+                #     QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No
+                # )
+                # buttonY_personal = msg_personal.button(QtWidgets.QMessageBox.Yes)
+                # buttonY_personal.setText("Ja")
+                # buttonN_personal = msg_personal.button(QtWidgets.QMessageBox.No)
+                # buttonN_personal.setText("Nein")
+                # msg_personal.setDefaultButton(QtWidgets.QMessageBox.No)
+                # ret_personal = msg_personal.exec_()
+
+                # if ret_personal == QtWidgets.QMessageBox.Yes:
+                #     local_save = True                
+            # if confirmed == True:
+            #     while ui.cb_confirm.isChecked() == False:
+            #         warning_window(
+            #             "Bitte bestätigen Sie die Eigenständigkeitserklärung und Lizenzvereinbarung."
+            #         )
+            #         response = Dialog_speichern.exec()
+
             # # # self.Dialog.setWindowState(QtCore.Qt.WindowActive)
             # # # self.Dialog.isActiveWindow()
             # # bring_to_front(self.Dialog)
@@ -2993,9 +3073,34 @@ class Ui_MainWindow(object):
             # # # self.Dialog.setWindowFlags(self.Dialog.windowFlags() & ~QtCore.Qt.WindowStaysOnTopHint)
             # # # self.Dialog.show()        
             # # self.Dialog.setFixedSize(self.Dialog.size())
-            response = Dialog_speichern.exec()
+            
+            # print(response)
+
+            # if response == 1:
+            #     confirmed=ui.get_output()
+            # else:
+            #     return
+            # while ui.cb_confirm.isChecked() == False:
+
+            #     if confirmed == True:
+            #         warning_window(
+            #             "Bitte bestätigen Sie die Eigenständigkeitserklärung und Lizenzvereinbarung."
+            #         )
+            #     else:
+            #         break                     
+
+            # print(confirmed)  
+
+            # if confirmed == True:
+            #     while ui.cb_confirm.isChecked() == False:
+            #         warning_window(
+            #             "Bitte bestätigen Sie die Eigenständigkeitserklärung und Lizenzvereinbarung."
+            #         )
+            #         Dialog_speichern.exec()
 
 
+
+                        # ret = msg.exec_()                    
             # msg.setText(
             #     "Sind Sie sicher, dass Sie die folgendene Aufgabe speichern wollen?\n\n"
             #     "{0}"
@@ -3034,12 +3139,12 @@ class Ui_MainWindow(object):
             # buttonN.setText("Abbrechen")
             # response = msg.exec_()
 
-            print(response)
-            if response== QtWidgets.QMessageBox.Yes:
-                print('yes')
-            if response == QtWidgets.QMessageBox.Apply:
-                print('apply')
-            return
+            # print(response)
+            # if response== QtWidgets.QMessageBox.Yes:
+            #     print('yes')
+            # if response == QtWidgets.QMessageBox.Apply:
+            #     print('apply')
+            # return
 
 
         # if rsp == QtWidgets.QDialog.Accepted:
@@ -3047,96 +3152,100 @@ class Ui_MainWindow(object):
         # if rsp == QtWidgets.QDialog.Rejected:
         #     sys.exit(0)
 
-            if ret == QtWidgets.QMessageBox.Yes:
-                while self.cb_confirm.isChecked() == False:
-                    if ret == QtWidgets.QMessageBox.No:
-                        return
-                    else:
-                        warning_window(
-                            "Bitte bestätigen Sie die Eigenständigkeitserklärung und Lizenzvereinbarung."
-                        )
-                        ret = msg.exec_()
-            elif ret == QtWidgets.QMessageBox.Apply:
-                msg_personal = QtWidgets.QMessageBox()
-                msg_personal.setWindowTitle("Aufgabe lokal speichern")
-                msg_personal.setIcon(QtWidgets.QMessageBox.Warning)
-                msg_personal.setWindowIcon(QtGui.QIcon(logo_path))
-                msg_personal.setText(
-                    "Sind Sie sicher, dass Sie diese Aufgabe nur lokal in Ihrer Dropbox speichern wollen?\n"
-                )
-                msg_personal.setInformativeText(
-                    "ACHTUNG: Durch nicht überprüfte Aufgaben können Fehler entstehen, die das Programm zum Absturz bringen!"
-                )
-                msg_personal.setStandardButtons(
-                    QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No
-                )
-                buttonY_personal = msg_personal.button(QtWidgets.QMessageBox.Yes)
-                buttonY_personal.setText("Ja")
-                buttonN_personal = msg_personal.button(QtWidgets.QMessageBox.No)
-                buttonN_personal.setText("Nein")
-                msg_personal.setDefaultButton(QtWidgets.QMessageBox.No)
-                ret_personal = msg_personal.exec_()
+            # if ret == QtWidgets.QMessageBox.Yes:
+            #     while self.cb_confirm.isChecked() == False:
+            #         if ret == QtWidgets.QMessageBox.No:
+            #             return
+            #         else:
+            #             warning_window(
+            #                 "Bitte bestätigen Sie die Eigenständigkeitserklärung und Lizenzvereinbarung."
+            #             )
+            #             ret = msg.exec_()
+            # elif ret == QtWidgets.QMessageBox.Apply:
+            #     msg_personal = QtWidgets.QMessageBox()
+            #     msg_personal.setWindowTitle("Aufgabe lokal speichern")
+            #     msg_personal.setIcon(QtWidgets.QMessageBox.Warning)
+            #     msg_personal.setWindowIcon(QtGui.QIcon(logo_path))
+            #     msg_personal.setText(
+            #         "Sind Sie sicher, dass Sie diese Aufgabe nur lokal in Ihrer Dropbox speichern wollen?\n"
+            #     )
+            #     msg_personal.setInformativeText(
+            #         "ACHTUNG: Durch nicht überprüfte Aufgaben können Fehler entstehen, die das Programm zum Absturz bringen!"
+            #     )
+            #     msg_personal.setStandardButtons(
+            #         QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No
+            #     )
+            #     buttonY_personal = msg_personal.button(QtWidgets.QMessageBox.Yes)
+            #     buttonY_personal.setText("Ja")
+            #     buttonN_personal = msg_personal.button(QtWidgets.QMessageBox.No)
+            #     buttonN_personal.setText("Nein")
+            #     msg_personal.setDefaultButton(QtWidgets.QMessageBox.No)
+            #     ret_personal = msg_personal.exec_()
 
-                if ret_personal == QtWidgets.QMessageBox.Yes:
-                    local_save = True
+            #     if ret_personal == QtWidgets.QMessageBox.Yes:
+            #         local_save = True
 
-                # if ret_personal == QtWidgets.QMessageBox.No:
-                #     msg_personal.reject()
-            else:
-                return
-        if self.creator_mode == "admin":
-            if self.chosen_program=='cria' or self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-                aufgabenformat = "Aufgabenformat: %s\n" % self.comboBox_af.currentText()
-            else:
-                aufgabenformat = ""
-            msg.setWindowTitle("Admin Modus - Aufgabe speichern")
-            if self.chosen_program=='lama':
-                msg.setText(
-                    "Sind Sie sicher, dass Sie die folgendene Aufgabe speichern wollen?\n\n"
-                    "Aufgabentyp: {0}\n"
-                    "Titel: {1}\n{2}"
-                    "Grundkompetenz: {3}\n"
-                    "Quelle: {4}\n"
-                    "Bilder: {5}\n".format(
-                        self.comboBox_aufgabentyp_cr.currentText(),
-                        edit_titel,
-                        aufgabenformat,
-                        gk,
-                        self.lineEdit_quelle.text(),
-                        bilder,
-                    )
-                )
-            if self.chosen_program=='cria':
-                msg.setText(
-                    "Sind Sie sicher, dass Sie die folgendene Aufgabe speichern wollen?\n\n"
-                    "Titel: {0}\n{1}"
-                    "Themengebiet(e): {2}\n"
-                    "Quelle: {3}\n"
-                    "Bilder: {4}\n".format(
-                        edit_titel,
-                        aufgabenformat,
-                        themen,
-                        self.lineEdit_quelle.text(),
-                        bilder,
-                    )
-                )
-            self.cb_save = QtWidgets.QCheckBox("inoffizielle Aufgabe")
-            self.cb_save.setObjectName(_fromUtf8("cb_save"))
-            self.cb_save.setChecked(True)
-            msg.setCheckBox(self.cb_save)
+            #     # if ret_personal == QtWidgets.QMessageBox.No:
+            #     #     msg_personal.reject()
+            # else:
+            #     return
+        # if self.creator_mode == "admin":
+        #     Dialog_speichern = self.open_dialogwindow_save(information)
 
-            msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-            buttonY = msg.button(QtWidgets.QMessageBox.Yes)
-            buttonY.setText("Speichern")
-            msg.setDefaultButton(QtWidgets.QMessageBox.Yes)
-            buttonN = msg.button(QtWidgets.QMessageBox.No)
-            buttonN.setText("Abbrechen")
-            ret = msg.exec_()
+        #     response = Dialog_speichern.exec()
 
-            if ret == QtWidgets.QMessageBox.Yes:
-                pass
-            else:
-                return
+            # if self.chosen_program=='cria' or self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+            #     aufgabenformat = "Aufgabenformat: %s\n" % self.comboBox_af.currentText()
+            # else:
+            #     aufgabenformat = ""
+            # msg.setWindowTitle("Admin Modus - Aufgabe speichern")
+            # if self.chosen_program=='lama':
+            #     msg.setText(
+            #         "Sind Sie sicher, dass Sie die folgendene Aufgabe speichern wollen?\n\n"
+            #         "Aufgabentyp: {0}\n"
+            #         "Titel: {1}\n{2}"
+            #         "Grundkompetenz: {3}\n"
+            #         "Quelle: {4}\n"
+            #         "Bilder: {5}\n".format(
+            #             self.comboBox_aufgabentyp_cr.currentText(),
+            #             edit_titel,
+            #             aufgabenformat,
+            #             gk,
+            #             self.lineEdit_quelle.text(),
+            #             bilder,
+            #         )
+            #     )
+            # if self.chosen_program=='cria':
+            #     msg.setText(
+            #         "Sind Sie sicher, dass Sie die folgendene Aufgabe speichern wollen?\n\n"
+            #         "Titel: {0}\n{1}"
+            #         "Themengebiet(e): {2}\n"
+            #         "Quelle: {3}\n"
+            #         "Bilder: {4}\n".format(
+            #             edit_titel,
+            #             aufgabenformat,
+            #             themen,
+            #             self.lineEdit_quelle.text(),
+            #             bilder,
+            #         )
+            #     )
+            # self.cb_save = QtWidgets.QCheckBox("inoffizielle Aufgabe")
+            # self.cb_save.setObjectName(_fromUtf8("cb_save"))
+            # self.cb_save.setChecked(True)
+            # msg.setCheckBox(self.cb_save)
+
+            # msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+            # buttonY = msg.button(QtWidgets.QMessageBox.Yes)
+            # buttonY.setText("Speichern")
+            # msg.setDefaultButton(QtWidgets.QMessageBox.Yes)
+            # buttonN = msg.button(QtWidgets.QMessageBox.No)
+            # buttonN.setText("Abbrechen")
+            # ret = msg.exec_()
+
+            # if ret == QtWidgets.QMessageBox.Yes:
+            #     pass
+            # else:
+            #     return
 
         ##### GET MAX FILENUMBER IN DIR #####
         if self.chosen_program=='lama':

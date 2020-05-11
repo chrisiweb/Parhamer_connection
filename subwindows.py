@@ -747,34 +747,56 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
 
 
 class Ui_Dialog_speichern(QtWidgets.QDialog):
-    def setupUi(self, Dialog):
+    def setupUi(self, Dialog, creator_mode):
         self.Dialog = Dialog
+        self.creator_mode = creator_mode
         Dialog.setObjectName("Dialog")
-        Dialog.setWindowTitle("Aufgabe speichern")
+        if self.creator_mode == 'user':
+            titel = "Aufgabe speichern"
+        if self.creator_mode == 'admin':
+            titel = "Administrator Modus - Aufgabe speichern"
+        Dialog.setWindowTitle(titel)
+        
         Dialog.setStyleSheet("color: white; background-color: {0}".format(get_color(blue_7)))
         Dialog.setWindowIcon(QtGui.QIcon(logo_path))
         gridlayout = create_new_gridlayout(Dialog)
 
         self.label = create_new_label(Dialog, "")
         gridlayout.addWidget(self.label, 0, 0, 1, 2)
-        self.cb_confirm = create_new_checkbox(Dialog, "")
-        self.cb_confirm.setSizePolicy(SizePolicy_fixed)
-        self.cb_confirm.setStyleSheet("background-color: white; color: black")
-        gridlayout.addWidget(self.cb_confirm, 1, 0, 1, 1,QtCore.Qt.AlignTop)
-        self.label_checkbox = create_new_label(
-            Dialog,
-            "Hiermit bestätige ich, dass ich die eingegebene Aufgabe eigenständig und unter Berücksichtigung des Urheberrechtsgesetzes verfasst habe.\n"
-            "Ich stelle die eingegebene Aufgabe frei gemäß der Lizenz CC0 1.0 zur Verfügung. Die Aufgabe darf daher zu jeder Zeit frei verwendet, kopiert und verändert werden.",
-            True,
-            True,
-        )
-        gridlayout.addWidget(self.label_checkbox, 1,1,1,1, QtCore.Qt.AlignTop)
-        self.label_checkbox.clicked.connect(self.label_checkbox_clicked)
-        self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
-        self.buttonBox.setStandardButtons(
-            QtWidgets.QDialogButtonBox.Yes | QtWidgets.QDialogButtonBox.No | QtWidgets.QDialogButtonBox.Apply
-        )
+        # if creator_mode == 'user':
+        #     label = ""
+        # if creator_mode == 'admin':
+        #     label = "inoffizielle Aufgabe"
+        if self.creator_mode == 'user':
+            self.cb_confirm = create_new_checkbox(Dialog, "")
+            self.cb_confirm.setSizePolicy(SizePolicy_fixed)
+            self.cb_confirm.setStyleSheet("background-color: white; color: black")
+            gridlayout.addWidget(self.cb_confirm, 1, 0, 1, 1,QtCore.Qt.AlignTop)
+            self.label_checkbox = create_new_label(
+                Dialog,
+                "Hiermit bestätige ich, dass ich die eingegebene Aufgabe eigenständig und unter Berücksichtigung des Urheberrechtsgesetzes verfasst habe.\n"
+                "Ich stelle die eingegebene Aufgabe frei gemäß der Lizenz CC0 1.0 zur Verfügung. Die Aufgabe darf daher zu jeder Zeit frei verwendet, kopiert und verändert werden.",
+                True,
+                True,
+            )
+            gridlayout.addWidget(self.label_checkbox, 1,1,1,1, QtCore.Qt.AlignTop)
+            self.label_checkbox.clicked.connect(self.label_checkbox_clicked)
         
+        if self.creator_mode == 'admin':
+            self.combobox_in_official = create_new_combobox(Dialog)
+            self.combobox_in_official.setStyleSheet("background-color: white; color: black")
+            self.combobox_in_official.addItem("inoffizelle Aufgabe")
+            self.combobox_in_official.addItem("offizielle Aufgabe")
+            gridlayout.addWidget(self.combobox_in_official, 1, 0, 1, 1)
+
+        self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
+        if self.creator_mode == 'user':
+            self.buttonBox.setStandardButtons(
+                QtWidgets.QDialogButtonBox.Yes | QtWidgets.QDialogButtonBox.No | QtWidgets.QDialogButtonBox.Apply
+            )
+        if self.creator_mode == 'admin':
+            self.buttonBox.setStandardButtons(
+                QtWidgets.QDialogButtonBox.Yes | QtWidgets.QDialogButtonBox.No)            
         
         # .setStandardButtons(
         #         QtWidgets.QMessageBox.Yes
@@ -782,18 +804,22 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
         #         | QtWidgets.QMessageBox.No
         #     )
 
+        buttonN = self.buttonBox.button(QtWidgets.QDialogButtonBox.No)
+        buttonN.setText("Abbrechen")
+        self.buttonBox.rejected.connect(Dialog.reject)
+
         buttonY = self.buttonBox.button(QtWidgets.QDialogButtonBox.Yes)
         buttonY.setText("Speichern")
         buttonY.clicked.connect(self.yes_pressed)
-        # self.buttonBox.setDefaultButton(QtWidgets.QDialogButtonBox.Yes)
-        button_local = self.buttonBox.button(QtWidgets.QDialogButtonBox.Apply)
-        button_local.setText("Lokal speichern")
-        button_local.clicked.connect(self.local_pressed)
-        buttonN = self.buttonBox.button(QtWidgets.QDialogButtonBox.No)
-        buttonN.setText("Abbrechen")
+
+        if self.creator_mode == 'user':
+            button_local = self.buttonBox.button(QtWidgets.QDialogButtonBox.Apply)
+            button_local.setText("Lokal speichern")
+            button_local.clicked.connect(self.local_pressed)
+
         gridlayout.addWidget(self.buttonBox, 2,1,1,1)
 
-        self.buttonBox.rejected.connect(Dialog.reject)
+        
         # self.buttonBox.accepted.connect(Dialog.accept)
 
 
@@ -802,19 +828,26 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
         # self.buttonBox.accepted.connect(
         #     partial(self.pushButton_OK_pressed, list_sage_ausgleichspunkte_chosen)
         # )
-    
-        return "Test"
+
     def local_pressed(self):
+        self.confirmed = (False, None)
+        self.Dialog.accept()
         # print(self.Dialog.result())
-        return False
+        # return False
 
     def yes_pressed(self):
-        # self.Dialog.result()
-        # self.Dialog.accept()
-        return True
+        if self.creator_mode == 'admin':
+            self.confirmed = (True, self.combobox_in_official.currentIndex()) 
+        else:
+            self.confirmed = (True,self.cb_confirm.isChecked()) 
+        self.Dialog.accept()
+        # return True
 
     def label_checkbox_clicked(self):
         if self.cb_confirm.isChecked()==True:
             self.cb_confirm.setChecked(False)
         elif self.cb_confirm.isChecked()==False:
             self.cb_confirm.setChecked(True)
+
+    def get_output(self):
+        return self.confirmed
