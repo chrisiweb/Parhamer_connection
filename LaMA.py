@@ -2965,28 +2965,32 @@ class Ui_MainWindow(object):
     def get_highest_grade(self):
         highest_grade = 1
         for all in self.list_selected_topics_creator:
-            if int(all[0][1]) > highest_grade:
+            if int(all[0][1]) > int(highest_grade):
                 highest_grade = all[0][1]
         klasse = 'k{}'.format(highest_grade)
         return klasse
 
     def check_if_in_klasse(self):
-        if re.search('\(.\.\)',self.list_selected_topics_creator[0]) != None:   
+        thema= self.list_selected_topics_creator[0]
+        if re.search('\(.\.\)',thema) != None:   
             thema, klasse = thema.split("(")
-            thema = thema.lower()
+            thema = thema.lower().strip()
             klasse = klasse.strip(".)")
         
-            return klasse
-        return
+            return thema, klasse
+        return None, None
 
-        # print([thema, klasse])
+
+    def create_path_from_list(self, list_):
+        path=path_programm
+        for all in list_:
+            path=os.path.join(path, all)
+
+        return path
+
     def aufgabenpfad_bestimmen(self, confirmed, local_save):
-        print(self.list_selected_topics_creator)
-        print(self.creator_mode)
-        print(self.chosen_program)
-        print(local_save)
-        print(confirmed)
-        list_path=[]  
+        list_path=[]
+
         if self.creator_mode == 'admin':
             if confirmed[1]==0:
                 list_path.append('_database_inoffiziell')
@@ -2997,23 +3001,24 @@ class Ui_MainWindow(object):
         else:
             list_path.append('Beispieleinreichung')
 
+
         if self.chosen_program == 'lama':
-            if confirmed==(True, True): # Beispieleinreichung
+            if confirmed[0]=='user': # Beispieleinreichung
                 pass
             elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
                 list_path.append('Typ1Aufgaben')
             elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
                 list_path.append('Typ2Aufgaben')
         elif self.chosen_program == 'cria':
-            klasse = self.get_highest_grade()
-            list_path.append(klasse)
-            # self.list_selected_topics_creator
+            highest_grade = self.get_highest_grade()
+            list_path.append(highest_grade)
+
 
         if self.chosen_program == 'lama' and local_save==False:
-            if confirmed ==(True, True): # Beispieleinreichung
+            if confirmed[0]=='user': # Beispieleinreichung
                 pass
             elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-                klasse=self.check_if_in_klasse()
+                _,klasse=self.check_if_in_klasse()
                 if klasse==None:
                     list_path.append('_Grundkompetenzen')
                 else:
@@ -3023,15 +3028,54 @@ class Ui_MainWindow(object):
         elif self.chosen_program == 'cria' and local_save==False:
             list_path.append('Einzelbeispiele')
 
+
         if self.chosen_program == 'lama' and local_save==False:
-            if confirmed[0]==True: # Beispieleinreichung
+            if confirmed[0]=='user': # Beispieleinreichung
                 pass
             elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-                _ = self.list_selected_topics_creator[0].partition(' ')
-                print(_)                   
+                thema, klasse=self.check_if_in_klasse()
+                if klasse==None:
+                    list_path.append(self.list_selected_topics_creator[0][:2])
+                    list_path.append(self.list_selected_topics_creator[0])
+                else:
+                    list_path.append(thema)
+                    list_path.append('Einzelbeispiele')
 
-        #### offiziell typ1 not working
-        print(list_path)
+                  
+        path=self.create_path_from_list(list_path)
+
+        return path
+
+    def get_max_integer_file(self, confirmed, path):
+        if confirmed == ['admin', 0]:
+            max_integer_file = 1000
+        else:
+            max_integer_file = 0
+
+        if not os.path.exists(path):
+            print("Creating {} for you.".format(path))
+            os.makedirs(path)
+        for all in os.listdir(path):
+            if all.endswith(".tex"):
+                print(all.rsplit('-',1)[-1])
+                # file_integer, file_extension = y.split(".tex")
+                # if int(file_integer) > max_integer_file:
+                #     max_integer_file = int(file_integer)
+
+
+        # max_integer_file = 0
+
+        # if not os.path.exists(gk_path_temp):
+        #     print("Creating {} for you.".format(gk_path_temp))
+        #     os.makedirs(gk_path_temp)
+        # for all in os.listdir(gk_path_temp):
+        #     if all.endswith(".tex"):
+        #         file_integer, file_extension = all.split(".tex")
+        #         file_integer = file_integer.replace("_L_", "")
+
+        #         if int(file_integer) > max_integer_file:
+        #             max_integer_file = int(file_integer)
+
 
 
 
@@ -3098,12 +3142,12 @@ class Ui_MainWindow(object):
         if self.creator_mode == "user":
             local_save = False
 
-            while confirmed == (True, False) or confirmed == (False, None):
-                if confirmed == (True, False):
+            while confirmed == ['user', False] or confirmed == ['local', None]:
+                if confirmed == ['user', False]:
                     warning_window(
                         "Bitte bestätigen Sie die Eigenständigkeitserklärung und Lizenzvereinbarung."
                     )
-                elif confirmed == (False, None):
+                elif confirmed == ['local', None]:
                     local_save = question_window("Aufgabe lokal speichern?",
                     "Sind Sie sicher, dass Sie diese Aufgabe nur lokal speichern wollen?",
                     "ACHTUNG: Durch nicht überprüfte Aufgaben entstehen möglicherweise Fehler, die das Programm zum Absturz bringen können!",
@@ -3117,9 +3161,11 @@ class Ui_MainWindow(object):
                 confirmed=self.ui_save.get_output() 
 
 
-        # print(confirmed)
-        self.aufgabenpfad_bestimmen(confirmed, local_save)
-        print(self.list_selected_topics_creator)
+
+        save_dateipfad = self.aufgabenpfad_bestimmen(confirmed, local_save)
+
+        self.get_max_integer_file(confirmed, save_dateipfad)
+
         return
         ##### GET MAX FILENUMBER IN DIR #####
         # self.aufgabentyp_bestimmen()

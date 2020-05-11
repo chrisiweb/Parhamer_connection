@@ -835,16 +835,16 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
         # )
 
     def local_pressed(self):
-        self.confirmed = (False, None)
+        self.confirmed = ['local', None]
         self.Dialog.accept()
         # print(self.Dialog.result())
         # return False
 
     def yes_pressed(self):
         if self.creator_mode == 'admin':
-            self.confirmed = (True, self.combobox_in_official.currentIndex()) 
+            self.confirmed = ['admin', self.combobox_in_official.currentIndex()]
         else:
-            self.confirmed = (True,self.cb_confirm.isChecked()) 
+            self.confirmed = ['user',self.cb_confirm.isChecked()]
         self.Dialog.accept()
         # return True
 
