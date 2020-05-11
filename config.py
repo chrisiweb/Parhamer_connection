@@ -93,3 +93,7 @@ def is_empty(structure):
         return False
     else:
         return True 
+
+def shorten_gk(gk):
+    gk = gk.lower().replace(' ','').replace('.','').replace('-l','')
+    return gk

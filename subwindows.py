@@ -762,6 +762,7 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
         gridlayout = create_new_gridlayout(Dialog)
 
         self.label = create_new_label(Dialog, "")
+        # self.label.setWordWrap(True)
         gridlayout.addWidget(self.label, 0, 0, 1, 2)
         # if creator_mode == 'user':
         #     label = ""
@@ -774,9 +775,10 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
             gridlayout.addWidget(self.cb_confirm, 1, 0, 1, 1,QtCore.Qt.AlignTop)
             self.label_checkbox = create_new_label(
                 Dialog,
-                "Hiermit bestätige ich, dass ich die eingegebene Aufgabe eigenständig und unter Berücksichtigung des Urheberrechtsgesetzes verfasst habe.\n"
-                "Ich stelle die eingegebene Aufgabe frei gemäß der Lizenz CC0 1.0 zur Verfügung. Die Aufgabe darf daher zu jeder Zeit frei verwendet, kopiert und verändert werden.",
-                True,
+                "Hiermit bestätige ich, dass ich die eingegebene Aufgabe eigenständig und\nunter Berücksichtigung des Urheberrechtsgesetzes verfasst habe.\n"
+                "Ich stelle die eingegebene Aufgabe frei gemäß der Lizenz CC0 1.0 zur Verfügung.\n"
+                "Die Aufgabe darf daher zu jeder Zeit frei verwendet, kopiert und verändert werden.",
+                False,
                 True,
             )
             gridlayout.addWidget(self.label_checkbox, 1,1,1,1, QtCore.Qt.AlignTop)

@@ -26,7 +26,7 @@ import smtplib
 # import qdarkstyle
 
 
-from config import colors_ui, get_color,config_file, config_loader, path_programm, logo_path, logo_cria_path, SpinBox_noWheel, ClickLabel, bring_to_front, is_empty
+from config import colors_ui, get_color,config_file, config_loader, path_programm, logo_path, logo_cria_path, SpinBox_noWheel, ClickLabel, bring_to_front, is_empty, shorten_gk
 from create_new_widgets import *
 from list_of_widgets import (
     widgets_search,
@@ -2895,8 +2895,6 @@ class Ui_MainWindow(object):
         #     edit_titel = self.lineEdit_titel.text()
 
     def open_dialogwindow_save(self, information):
-        print(self.creator_mode)
-
         Dialog_speichern = QtWidgets.QDialog(            
         None,
         QtCore.Qt.WindowSystemMenuHint
@@ -2958,17 +2956,18 @@ class Ui_MainWindow(object):
 
         if dict_picture_path != {}:
             bilder = ", ".join(dict_picture_path)
+            bilder = '\nBilder: {bilder}'
         else:
-            bilder = "-"
+            bilder = ''
 
 
         if self.chosen_program=='cria' or self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-            aufgabenformat = "Aufgabenformat: %s" % self.comboBox_af.currentText()
+            aufgabenformat = "Aufgabenformat: %s\n" % self.comboBox_af.currentText()
         else:
             aufgabenformat = ""
 
         if self.chosen_program=='lama':
-            aufgabentyp="Aufgabentyp: {0}".format(self.comboBox_aufgabentyp_cr.currentText())
+            aufgabentyp="Aufgabentyp: {0}\n".format(self.comboBox_aufgabentyp_cr.currentText())
             titel_themen =  'Grundkompetenz(en)'
         if self.chosen_program=='cria':
             aufgabentyp = ''
@@ -2977,12 +2976,12 @@ class Ui_MainWindow(object):
         
         information="""
 
-        {0}\n
+        {0}
         Titel: {1}\n
-        {2}\n
+        {2}
         {3}: {4}\n
-        Quelle: {5}\n
-        Bilder: {6}\n
+        Quelle: {5}
+        {6}
 
         """.format(
             aufgabentyp,
@@ -3026,6 +3025,10 @@ class Ui_MainWindow(object):
                 confirmed=self.ui_save.get_output() 
 
         print(confirmed)
+        print(list_chosen_gk)
+        for all in list_chosen_gk:        
+            print(shorten_gk(all))
+
         return
 
 
