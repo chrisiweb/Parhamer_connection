@@ -166,7 +166,7 @@ class Ui_MainWindow(object):
         self.dict_sage_ausgleichspunkte_chosen = {}
         self.dict_sage_hide_show_items_chosen = {}
         self.dict_chosen_topics = {}
-        self.list_creator_topics = []
+        # self.list_creator_topics = []
         self.list_copy_images=[]
         
 
@@ -2296,13 +2296,13 @@ class Ui_MainWindow(object):
         thema_checked = [klasse, kapitel, unterkapitel]
 
         if checkbox.isChecked():
-            if thema_checked not in self.list_creator_topics:
-                self.list_creator_topics.append(thema_checked)
+            if thema_checked not in self.list_selected_topics_creator:
+                self.list_selected_topics_creator.append(thema_checked)
         if checkbox.isChecked() == False:
-            self.list_creator_topics.remove(thema_checked)
+            self.list_selected_topics_creator.remove(thema_checked)
 
         list_labels = []
-        for all in self.list_creator_topics:
+        for all in self.list_selected_topics_creator:
             thema_label = all[1] + "." + all[2] + " (" + all[0][1] + ".)"
             list_labels.append(thema_label)
         x = ", ".join(list_labels)
@@ -2851,7 +2851,7 @@ class Ui_MainWindow(object):
                 if len(self.list_selected_topics_creator) > 1:
                     return "Es wurden zu viele Grundkompetenzen zugewiesen."
 
-        if self.chosen_program=='cria' and is_empty(self.list_creator_topics)==True:
+        if self.chosen_program=='cria' and is_empty(self.list_selected_topics_creator)==True:
             return "Es wurden keine Themengebiete zugewiesen."
 
         if self.comboBox_aufgabentyp_cr.currentText() != "Typ 2" and self.comboBox_af.currentText() == "bitte auswählen":
@@ -2904,11 +2904,13 @@ class Ui_MainWindow(object):
     def create_information_themen(self):
         if self.chosen_program=='lama':
             themen = ', '.join(self.list_selected_topics_creator)
-            titel_themen =  'Grundkompetenz(en)'
-
+            if len(self.list_selected_topics_creator)==1:
+                titel_themen =  'Grundkompetenz'
+            else: 
+                titel_themen =  'Grundkompetenzen'
         if self.chosen_program =='cria':
             list_labels = []
-            for all in self.list_creator_topics:
+            for all in self.list_selected_topics_creator:
                 thema_label = all[1] + "." + all[2] + " (" + all[0][1] + ".)"
                 list_labels.append(thema_label)
             themen = ", ".join(list_labels)
@@ -2919,7 +2921,7 @@ class Ui_MainWindow(object):
     def create_information_bilder(self):
         if dict_picture_path != {}:
             bilder = ", ".join(dict_picture_path)
-            bilder = '\n\nBilder: {bilder}'
+            bilder = '\n\nBilder: {}'.format(bilder)
         else:
             bilder = ''
         return bilder
@@ -2958,9 +2960,94 @@ class Ui_MainWindow(object):
         self.ui_save.setupUi(Dialog_speichern, self.creator_mode)
         self.ui_save.label.setText(information)
         # self.ui_save.label.setStyleSheet("padding: 10px")
-        return Dialog_speichern
+        return Dialog_speichern 
+
+    def get_highest_grade(self):
+        highest_grade = 1
+        for all in self.list_selected_topics_creator:
+            if int(all[0][1]) > highest_grade:
+                highest_grade = all[0][1]
+        klasse = 'k{}'.format(highest_grade)
+        return klasse
+
+    def check_if_in_klasse(self):
+        if re.search('\(.\.\)',self.list_selected_topics_creator[0]) != None:   
+            thema, klasse = thema.split("(")
+            thema = thema.lower()
+            klasse = klasse.strip(".)")
+        
+            return klasse
+        return
+
+        # print([thema, klasse])
+    def aufgabenpfad_bestimmen(self, confirmed, local_save):
+        print(self.list_selected_topics_creator)
+        print(self.creator_mode)
+        print(self.chosen_program)
+        print(local_save)
+        print(confirmed)
+        list_path=[]  
+        if self.creator_mode == 'admin':
+            if confirmed[1]==0:
+                list_path.append('_database_inoffiziell')
+            if confirmed[1]==1:
+                list_path.append('_database')
+        elif local_save==True:
+            list_path.append('Lokaler_Ordner')
+        else:
+            list_path.append('Beispieleinreichung')
+
+        if self.chosen_program == 'lama':
+            if confirmed==(True, True): # Beispieleinreichung
+                pass
+            elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+                list_path.append('Typ1Aufgaben')
+            elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
+                list_path.append('Typ2Aufgaben')
+        elif self.chosen_program == 'cria':
+            klasse = self.get_highest_grade()
+            list_path.append(klasse)
+            # self.list_selected_topics_creator
+
+        if self.chosen_program == 'lama' and local_save==False:
+            if confirmed ==(True, True): # Beispieleinreichung
+                pass
+            elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+                klasse=self.check_if_in_klasse()
+                if klasse==None:
+                    list_path.append('_Grundkompetenzen')
+                else:
+                    list_path.append('{}.Klasse'.format(klasse))
+            elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
+                list_path.append('Einzelbeispiele')
+        elif self.chosen_program == 'cria' and local_save==False:
+            list_path.append('Einzelbeispiele')
+
+        if self.chosen_program == 'lama' and local_save==False:
+            if confirmed[0]==True: # Beispieleinreichung
+                pass
+            elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+                _ = self.list_selected_topics_creator[0].partition(' ')
+                print(_)                   
+
+        #### offiziell typ1 not working
+        print(list_path)
 
 
+
+        
+        # self.list_selected_topics_creator
+
+
+        # ['database/database_inoffiziell/lokal', "typ1/USklasse", "Gk/klasse", "themaOS/GKparent", "gkdetail", "Einzelbeispiele"]    
+            #             gk_path_temp = os.path.join(
+            #                 path_programm,
+            #                 "_database_inoffiziell",
+            #                 "Typ1Aufgaben",
+            #                 path_folder,
+            #                 list_chosen_gk[0],
+            #                 "Einzelbeispiele",
+            #             )
 
     def button_speichern_pressed(self):
         # self.creator_mode = "user"
@@ -2976,7 +3063,8 @@ class Ui_MainWindow(object):
         #######
 
         textBox_Entry = self.plainTextEdit.toPlainText()
-        list_chosen_gk = self.list_selected_topics_creator
+        list_chosen_themen = self.list_selected_topics_creator
+        print(self.list_selected_topics_creator)
 
 
         ###### Check if Admin Mode is activated ####
@@ -2986,8 +3074,6 @@ class Ui_MainWindow(object):
         ################################################
 
         list_information = self.create_information_of_file_creator()
-        print(list_information)
-
         
         information="{0}Titel: {1}\n\n{2}: {3}\n\n{4}Quelle: {5}{6}\n\n".format(
             list_information[0],
@@ -3030,147 +3116,165 @@ class Ui_MainWindow(object):
                     return
                 confirmed=self.ui_save.get_output() 
 
-        print(confirmed)
-        print(list_chosen_gk)
-        for all in list_chosen_gk:        
-            print(shorten_gk(all))
 
+        # print(confirmed)
+        self.aufgabenpfad_bestimmen(confirmed, local_save)
+        print(self.list_selected_topics_creator)
         return
-
-
         ##### GET MAX FILENUMBER IN DIR #####
+        # self.aufgabentyp_bestimmen()
         if self.chosen_program=='lama':
-            if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-                # print(set_chosen_gk)
-                if list_chosen_gk[0] in {
-                    **k5_beschreibung,
-                    **k6_beschreibung,
-                    **k7_beschreibung,
-                    **k8_beschreibung,
-                }:  ## merged dictionaries
-                    if list_chosen_gk[0] in k5_beschreibung:
-                        path_folder = "5.Klasse"
-                    elif list_chosen_gk[0] in k6_beschreibung:
-                        path_folder = "6.Klasse"
-                    elif list_chosen_gk[0] in k7_beschreibung:
-                        path_folder = "7.Klasse"
-                    elif list_chosen_gk[0] in k8_beschreibung:
-                        path_folder = "8.Klasse"
+            print(list_chosen_themen)
 
-                    if self.creator_mode == "admin" and self.cb_save.isChecked() == True:
-                        gk_path_temp = os.path.join(
-                            path_programm,
-                            "_database_inoffiziell",
-                            "Typ1Aufgaben",
-                            path_folder,
-                            list_chosen_gk[0],
-                            "Einzelbeispiele",
-                        )
+            for all in list_chosen_themen:
+                print(shorten_gk(all))
+            # return             
+            # if 
+            #     path_folder_1="Typ1Aufgaben"
+            #     thema = list_chosen_themen[0]
+            #     if re.search('\(.\.\)',thema) != None:
+            #         thema, klasse = thema.split("(")
+            #         thema = thema.lower()
+            #         klasse = klasse.strip(".)")
+            #         print([thema, klasse])
 
-                    elif self.creator_mode == "user" and local_save == True:
-                        gk_path_temp = os.path.join(
-                            path_programm, "Lokaler_Ordner", "Typ1Aufgaben"
-                        )
+            #         path_folder_2 = "{klasse}.Klasse"
+            #         path_folder_3 = thema
 
-                    else:
-                        gk_path_temp = os.path.join(
-                            path_programm,
-                            "_database",
-                            "Typ1Aufgaben",
-                            path_folder,
-                            list_chosen_gk[0],
-                            "Einzelbeispiele",
-                        )
+                # else:
+                    
 
-                    if local_save == True:
-                        z = " - "
-                    else:
-                        z = list_chosen_gk[0].upper() + " - "
+            return  
+            #     # print(set_chosen_gk)
+            #     if list_chosen_gk[0] in {
+            #         **k5_beschreibung,
+            #         **k6_beschreibung,
+            #         **k7_beschreibung,
+            #         **k8_beschreibung,
+            #     }:  ## merged dictionaries
+            #         if list_chosen_gk[0] in k5_beschreibung:
+            #             path_folder = "5.Klasse"
+            #         elif list_chosen_gk[0] in k6_beschreibung:
+            #             path_folder = "6.Klasse"
+            #         elif list_chosen_gk[0] in k7_beschreibung:
+            #             path_folder = "7.Klasse"
+            #         elif list_chosen_gk[0] in k8_beschreibung:
+            #             path_folder = "8.Klasse"
 
-                else:
-                    path_folder = "_Grundkompetenzen"
-                    if self.creator_mode == "admin" and self.cb_save.isChecked() == True:
-                        gk_path_temp = os.path.join(
-                            path_programm,
-                            "_database_inoffiziell",
-                            "Typ1Aufgaben",
-                            path_folder,
-                            dict_gk[list_chosen_gk[0]][:2],
-                            dict_gk[list_chosen_gk[0]],
-                            "Einzelbeispiele",
-                        )
-                    elif self.creator_mode == "user" and local_save == True:
-                        gk_path_temp = os.path.join(
-                            path_programm, "Lokaler_Ordner", "Typ1Aufgaben"
-                        )
+            #         if self.creator_mode == "admin" and self.cb_save.isChecked() == True:
+            #             gk_path_temp = os.path.join(
+            #                 path_programm,
+            #                 "_database_inoffiziell",
+            #                 "Typ1Aufgaben",
+            #                 path_folder,
+            #                 list_chosen_gk[0],
+            #                 "Einzelbeispiele",
+            #             )
 
-                    else:
-                        gk_path_temp = os.path.join(
-                            path_programm,
-                            "_database",
-                            "Typ1Aufgaben",
-                            path_folder,
-                            dict_gk[list_chosen_gk[0]][:2],
-                            dict_gk[list_chosen_gk[0]],
-                            "Einzelbeispiele",
-                        )
-                    if local_save == True:
-                        z = " - "
-                    else:
-                        z = dict_gk[list_chosen_gk[0]] + " - "
+            #         elif self.creator_mode == "user" and local_save == True:
+            #             gk_path_temp = os.path.join(
+            #                 path_programm, "Lokaler_Ordner", "Typ1Aufgaben"
+            #             )
 
-                if self.creator_mode == "admin" and self.cb_save.isChecked() == True:
-                    max_integer_file = 1000
-                else:
-                    max_integer_file = 0
+            #         else:
+            #             gk_path_temp = os.path.join(
+            #                 path_programm,
+            #                 "_database",
+            #                 "Typ1Aufgaben",
+            #                 path_folder,
+            #                 list_chosen_gk[0],
+            #                 "Einzelbeispiele",
+            #             )
 
-                if not os.path.exists(gk_path_temp):
-                    print("Creating {} for you.".format(gk_path_temp))
-                    os.makedirs(gk_path_temp)
-                for all in os.listdir(gk_path_temp):
-                    if all.endswith(".tex"):
-                        x, y = all.split(z)
-                        file_integer, file_extension = y.split(".tex")
-                        if int(file_integer) > max_integer_file:
-                            max_integer_file = int(file_integer)
+            #         if local_save == True:
+            #             z = " - "
+            #         else:
+            #             z = list_chosen_gk[0].upper() + " - "
 
-                # print(max_integer_file)
+            #     else:
+            #         path_folder = "_Grundkompetenzen"
+            #         if self.creator_mode == "admin" and self.cb_save.isChecked() == True:
+            #             gk_path_temp = os.path.join(
+            #                 path_programm,
+            #                 "_database_inoffiziell",
+            #                 "Typ1Aufgaben",
+            #                 path_folder,
+            #                 dict_gk[list_chosen_gk[0]][:2],
+            #                 dict_gk[list_chosen_gk[0]],
+            #                 "Einzelbeispiele",
+            #             )
+            #         elif self.creator_mode == "user" and local_save == True:
+            #             gk_path_temp = os.path.join(
+            #                 path_programm, "Lokaler_Ordner", "Typ1Aufgaben"
+            #             )
 
-            if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
-                if self.creator_mode == "admin" and self.cb_save.isChecked() == True:
-                    gk_path_temp = os.path.join(
-                        path_programm,
-                        "_database_inoffiziell",
-                        "Typ2Aufgaben",
-                        "Einzelbeispiele",
-                    )
+            #         else:
+            #             gk_path_temp = os.path.join(
+            #                 path_programm,
+            #                 "_database",
+            #                 "Typ1Aufgaben",
+            #                 path_folder,
+            #                 dict_gk[list_chosen_gk[0]][:2],
+            #                 dict_gk[list_chosen_gk[0]],
+            #                 "Einzelbeispiele",
+            #             )
+            #         if local_save == True:
+            #             z = " - "
+            #         else:
+            #             z = dict_gk[list_chosen_gk[0]] + " - "
 
-                elif self.creator_mode == "user" and local_save == True:
-                    gk_path_temp = os.path.join(
-                        path_programm, "Lokaler_Ordner", "Typ2Aufgaben"
-                    )
+            #     if self.creator_mode == "admin" and self.cb_save.isChecked() == True:
+            #         max_integer_file = 1000
+            #     else:
+            #         max_integer_file = 0
 
-                else:
-                    gk_path_temp = os.path.join(
-                        path_programm, "_database", "Typ2Aufgaben", "Einzelbeispiele"
-                    )
-                max_integer_file = 0
+            #     if not os.path.exists(gk_path_temp):
+            #         print("Creating {} for you.".format(gk_path_temp))
+            #         os.makedirs(gk_path_temp)
+            #     for all in os.listdir(gk_path_temp):
+            #         if all.endswith(".tex"):
+            #             x, y = all.split(z)
+            #             file_integer, file_extension = y.split(".tex")
+            #             if int(file_integer) > max_integer_file:
+            #                 max_integer_file = int(file_integer)
 
-                if not os.path.exists(gk_path_temp):
-                    print("Creating {} for you.".format(gk_path_temp))
-                    os.makedirs(gk_path_temp)
-                for all in os.listdir(gk_path_temp):
-                    if all.endswith(".tex"):
-                        file_integer, file_extension = all.split(".tex")
-                        file_integer = file_integer.replace("_L_", "")
+            #     # print(max_integer_file)
 
-                        if int(file_integer) > max_integer_file:
-                            max_integer_file = int(file_integer)
+            # if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
+            #     if self.creator_mode == "admin" and self.cb_save.isChecked() == True:
+            #         gk_path_temp = os.path.join(
+            #             path_programm,
+            #             "_database_inoffiziell",
+            #             "Typ2Aufgaben",
+            #             "Einzelbeispiele",
+            #         )
+
+            #     elif self.creator_mode == "user" and local_save == True:
+            #         gk_path_temp = os.path.join(
+            #             path_programm, "Lokaler_Ordner", "Typ2Aufgaben"
+            #         )
+
+            #     else:
+            #         gk_path_temp = os.path.join(
+            #             path_programm, "_database", "Typ2Aufgaben", "Einzelbeispiele"
+            #         )
+            #     max_integer_file = 0
+
+            #     if not os.path.exists(gk_path_temp):
+            #         print("Creating {} for you.".format(gk_path_temp))
+            #         os.makedirs(gk_path_temp)
+            #     for all in os.listdir(gk_path_temp):
+            #         if all.endswith(".tex"):
+            #             file_integer, file_extension = all.split(".tex")
+            #             file_integer = file_integer.replace("_L_", "")
+
+            #             if int(file_integer) > max_integer_file:
+            #                 max_integer_file = int(file_integer)
 
 
         if self.chosen_program=='cria':
             highest_grade = 1
-            for all in self.list_creator_topics:
+            for all in self.list_selected_topics_creator:
                 if int(all[0][1]) > highest_grade:
                     highest_grade = int(all[0][1])
 
@@ -3498,7 +3602,7 @@ class Ui_MainWindow(object):
         if self.chosen_program=='cria':
             themen_auswahl = []
 
-            for all in self.list_creator_topics:
+            for all in self.list_selected_topics_creator:
                 thema = all[1] + "." + all[2]
                 if thema not in themen_auswahl:
                     themen_auswahl.append(thema)
