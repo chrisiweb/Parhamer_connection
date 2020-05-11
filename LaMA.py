@@ -1699,7 +1699,6 @@ class Ui_MainWindow(object):
 
         self.tab_widget_gk_cr.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-        print(self.MainWindow.geometry())
 
 #         ############################################################################
 #         ############## Commands ####################################################
@@ -2876,16 +2875,78 @@ class Ui_MainWindow(object):
             warning = "Es sind zu {0} Bilder angehängt ({1}/{2})".format(str_, included, attached)    
             return warning
  
-
+    
     def check_for_admin_mode(self):
+        if self.lineEdit_titel.text().startswith("###"):
+            mode = 'admin'
+        else:
+            mode = 'user'
+        return mode
+
+
+    def create_information_aufgabentyp(self):
+        if self.chosen_program=='lama':
+            aufgabentyp="Aufgabentyp: {0}\n\n".format(self.comboBox_aufgabentyp_cr.currentText())          
+        if self.chosen_program=='cria':
+            aufgabentyp = ''
+            
+        return aufgabentyp
+
+
+    def create_information_titel(self):
         if self.lineEdit_titel.text().startswith("###"):
             _,titel = self.lineEdit_titel.text().split("###")
             titel = titel.strip()
-            self.creator_mode = "admin"
         else:
             titel = self.lineEdit_titel.text().strip()
         return titel
 
+    def create_information_themen(self):
+        if self.chosen_program=='lama':
+            themen = ', '.join(self.list_selected_topics_creator)
+            titel_themen =  'Grundkompetenz(en)'
+
+        if self.chosen_program =='cria':
+            list_labels = []
+            for all in self.list_creator_topics:
+                thema_label = all[1] + "." + all[2] + " (" + all[0][1] + ".)"
+                list_labels.append(thema_label)
+            themen = ", ".join(list_labels)
+            titel_themen =  'Themengebiet(e)'
+        return titel_themen, themen
+
+
+    def create_information_bilder(self):
+        if dict_picture_path != {}:
+            bilder = ", ".join(dict_picture_path)
+            bilder = '\n\nBilder: {bilder}'
+        else:
+            bilder = ''
+        return bilder
+
+    def create_information_aufgabenformat(self):
+        if self.chosen_program=='cria' or self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+            aufgabenformat = "Aufgabenformat: %s\n\n" % self.comboBox_af.currentText()
+        else:
+            aufgabenformat = ""
+        return aufgabenformat
+
+
+
+    def create_information_of_file_creator(self):
+        aufgabentyp = self.create_information_aufgabentyp()
+
+        titel = self.create_information_titel()
+
+        titel_themen, themen = self.create_information_themen()
+
+        aufgabenformat = self.create_information_aufgabenformat()
+
+        bilder = self.create_information_bilder()
+
+        quelle = self.lineEdit_quelle.text()
+
+        return [aufgabentyp, titel, titel_themen, themen, aufgabenformat, quelle, bilder]
 
     def open_dialogwindow_save(self, information):
         Dialog_speichern = QtWidgets.QDialog(            
@@ -2902,7 +2963,7 @@ class Ui_MainWindow(object):
 
 
     def button_speichern_pressed(self):
-        self.creator_mode = "user"
+        # self.creator_mode = "user"
         local_save = False
 
         ######## WARNINGS #####
@@ -2920,50 +2981,22 @@ class Ui_MainWindow(object):
 
         ###### Check if Admin Mode is activated ####
 
-        edit_titel = self.check_for_admin_mode()
+        self.creator_mode = self.check_for_admin_mode()
 
         ################################################
 
-
-
-        if self.chosen_program=='lama':
-            themen = ', '.join(self.list_selected_topics_creator)
-
-        if self.chosen_program =='cria':
-            list_labels = []
-            for all in self.list_creator_topics:
-                thema_label = all[1] + "." + all[2] + " (" + all[0][1] + ".)"
-                list_labels.append(thema_label)
-            themen = ", ".join(list_labels)
-
-        if dict_picture_path != {}:
-            bilder = ", ".join(dict_picture_path)
-            bilder = '\n\nBilder: {bilder}'
-        else:
-            bilder = ''
-
-
-        if self.chosen_program=='cria' or self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-            aufgabenformat = "Aufgabenformat: %s\n\n" % self.comboBox_af.currentText()
-        else:
-            aufgabenformat = ""
-
-        if self.chosen_program=='lama':
-            aufgabentyp="Aufgabentyp: {0}\n\n".format(self.comboBox_aufgabentyp_cr.currentText())
-            titel_themen =  'Grundkompetenz(en)'
-        if self.chosen_program=='cria':
-            aufgabentyp = ''
-            titel_themen =  'Themengebiet(e)'
+        list_information = self.create_information_of_file_creator()
+        print(list_information)
 
         
-        information="{0}Titel: {1}\n\n{2}{3}: {4}\n\nQuelle: {5}{6}\n\n".format(
-            aufgabentyp,
-            edit_titel,
-            aufgabenformat,
-            titel_themen,
-            themen,
-            self.lineEdit_quelle.text(),
-            bilder,
+        information="{0}Titel: {1}\n\n{2}: {3}\n\n{4}Quelle: {5}{6}\n\n".format(
+            list_information[0],
+            list_information[1],
+            list_information[2],
+            list_information[3],
+            list_information[4],
+            list_information[5],
+            list_information[6],
         )
 
 
