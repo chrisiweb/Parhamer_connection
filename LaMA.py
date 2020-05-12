@@ -44,7 +44,7 @@ from translate import _fromUtf8, _translate
 from sort_items import natural_keys
 from create_pdf import prepare_tex_for_pdf, create_pdf
 from refresh_ddb import modification_date, refresh_ddb
-from standard_dialog_windows import warning_window, question_window
+from standard_dialog_windows import warning_window, question_window, critical_window
 from predefined_size_policy import *
 from work_with_content import collect_content, split_aufgaben_content_new_format, split_aufgaben_content
  
@@ -3134,19 +3134,26 @@ class Ui_MainWindow(object):
         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
             typ=2
 
-        for all in os.listdir(path):
-            if all.endswith(".tex"):
-                file_integer=self.get_integer(all)
-                if self.chosen_program=='cria':
-                    if int(file_integer) > max_integer_file:
-                        max_integer_file = int(file_integer)                    
-                elif typ==1 and name in all:
-                    if int(file_integer) > max_integer_file:
-                        max_integer_file = int(file_integer)
-                elif typ==2 and '-' not in all:
-                    if int(file_integer) > max_integer_file:
-                        max_integer_file = int(file_integer)                                        
+        try:
+            for all in os.listdir(path):
+                if all.endswith(".tex"):
+                    file_integer=self.get_integer(all)
+                    if self.chosen_program=='cria':
+                        if int(file_integer) > max_integer_file:
+                            max_integer_file = int(file_integer)                    
+                    elif typ==1 and name in all:
+                        if int(file_integer) > max_integer_file:
+                            max_integer_file = int(file_integer)
+                    elif typ==2 and '-' not in all:
+                        if int(file_integer) > max_integer_file:
+                            max_integer_file = int(file_integer)                                        
 
+
+        except FileNotFoundError:
+            critical_window(
+                'Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und\nmuss zuerst für Sie freigegeben werden.',
+                'Derzeit können keine neuen Aufgaben eingegeben werden.\nBitte melden Sie sich unter lama.helpme@gmail.com!',
+            )
 
 
         return max_integer_file                    
