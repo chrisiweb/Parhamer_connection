@@ -2950,6 +2950,7 @@ class Ui_MainWindow(object):
 
         return [aufgabentyp, titel, titel_themen, themen, aufgabenformat, quelle, bilder]
 
+
     def open_dialogwindow_save(self, information):
         Dialog_speichern = QtWidgets.QDialog(            
         None,
@@ -2961,6 +2962,7 @@ class Ui_MainWindow(object):
         self.ui_save.label.setText(information)
         # self.ui_save.label.setStyleSheet("padding: 10px")
         return Dialog_speichern 
+
 
     def get_highest_grade(self):
         highest_grade = 1
@@ -2988,36 +2990,32 @@ class Ui_MainWindow(object):
 
         return path
 
-    def aufgabenpfad_bestimmen(self, confirmed, local_save):
+    def aufgabenpfad_bestimmen(self, typ_save, local_save):
         list_path=[]
 
-        if self.creator_mode == 'admin':
-            if confirmed[1]==0:
-                list_path.append('_database_inoffiziell')
-            if confirmed[1]==1:
-                list_path.append('_database')
-        elif local_save==True:
+        if local_save==True:
             list_path.append('Lokaler_Ordner')
         else:
-            list_path.append('Beispieleinreichung')
+            if typ_save==['admin', 1]:
+                list_path.append('_database_inoffiziell')
+            else:
+                list_path.append('_database')
 
+        #####
 
         if self.chosen_program == 'lama':
-            if confirmed[0]=='user': # Beispieleinreichung
-                pass
-            elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+            if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
                 list_path.append('Typ1Aufgaben')
-            elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
+            if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
                 list_path.append('Typ2Aufgaben')
         elif self.chosen_program == 'cria':
             highest_grade = self.get_highest_grade()
             list_path.append(highest_grade)
 
+        #####
 
         if self.chosen_program == 'lama' and local_save==False:
-            if confirmed[0]=='user': # Beispieleinreichung
-                pass
-            elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+            if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
                 _,klasse=self.check_if_in_klasse()
                 if klasse==None:
                     list_path.append('_Grundkompetenzen')
@@ -3025,43 +3023,70 @@ class Ui_MainWindow(object):
                     list_path.append('{}.Klasse'.format(klasse))
             elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
                 list_path.append('Einzelbeispiele')
+
         elif self.chosen_program == 'cria' and local_save==False:
             list_path.append('Einzelbeispiele')
 
+        #####
 
         if self.chosen_program == 'lama' and local_save==False:
-            if confirmed[0]=='user': # Beispieleinreichung
-                pass
-            elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+            if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
                 thema, klasse=self.check_if_in_klasse()
                 if klasse==None:
                     list_path.append(self.list_selected_topics_creator[0][:2])
                     list_path.append(self.list_selected_topics_creator[0])
+                    list_path.append('Einzelbeispiele')
                 else:
                     list_path.append(thema)
                     list_path.append('Einzelbeispiele')
 
-                  
+        #####
+
+
         path=self.create_path_from_list(list_path)
 
         return path
 
-    def get_max_integer_file(self, confirmed, path):
-        if confirmed == ['admin', 0]:
+
+    def get_integer(self, file_name):
+        # file_name_start = all.rsplit('-',1)[0]
+        file_integer = file_name.rsplit('-',1)[-1]
+        file_integer = file_integer.replace(".tex","").strip()
+
+        return file_integer
+
+    def get_max_integer_file(self, typ_save, path, max_integer_file=0):
+        if max_integer_file != 0:
+            pass
+        elif typ_save == ['admin', 1]:
             max_integer_file = 1000
         else:
             max_integer_file = 0
 
         if not os.path.exists(path):
-            print("Creating {} for you.".format(path))
+            print('Creating "{}" for you.'.format(path))
             os.makedirs(path)
+
+
         for all in os.listdir(path):
             if all.endswith(".tex"):
-                print(all.rsplit('-',1)[-1])
-                # file_integer, file_extension = y.split(".tex")
-                # if int(file_integer) > max_integer_file:
-                #     max_integer_file = int(file_integer)
+                file_integer=self.get_integer(all)
+                if int(file_integer) > max_integer_file:
+                    max_integer_file = int(file_integer)                
 
+        # print(file_name_start)
+        # print(file_integer)
+        # list_path.append(self.list_selected_topics_creator[0][:2])
+        # list_path.append(self.list_selected_topics_creator[0])
+        # if typ_save[0] != 'local':
+        #     temporary_path = os.path.join(path_programm, 'Beispieleinreichung')
+        #     for all in os.listdir(temporary_path):
+        #         file_name_start,file_integer=self.get_integer(all)
+        #         if all.startswith(file_name_start)
+
+
+
+        return max_integer_file
 
         # max_integer_file = 0
 
@@ -3093,22 +3118,57 @@ class Ui_MainWindow(object):
             #                 "Einzelbeispiele",
             #             )
 
+    def check_files_beispieleinreichung(self, typ_save, max_integer_file):
+        list_path = [path_programm, 'Beispieleinreichung']
+        if self.chosen_program == 'cria':
+            highest_grade = self.get_highest_grade()
+            list_path.append(highest_grade)
+
+        path = self.create_path_from_list(list_path)
+
+
+        if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+            typ=1
+            name = self.list_selected_topics_creator[0]
+
+        if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
+            typ=2
+
+        for all in os.listdir(path):
+            if all.endswith(".tex"):
+                file_integer=self.get_integer(all)
+                if self.chosen_program=='cria':
+                    if int(file_integer) > max_integer_file:
+                        max_integer_file = int(file_integer)                    
+                elif typ==1 and name in all:
+                    if int(file_integer) > max_integer_file:
+                        max_integer_file = int(file_integer)
+                elif typ==2 and '-' not in all:
+                    if int(file_integer) > max_integer_file:
+                        max_integer_file = int(file_integer)                                        
+
+
+
+        return max_integer_file                    
+
+
+
     def button_speichern_pressed(self):
         # self.creator_mode = "user"
         local_save = False
 
         ######## WARNINGS #####
 
-        warning = self.check_entry_creator()
-        if warning != None:
-            warning_window(warning)
-            return
+        # warning = self.check_entry_creator()
+        # if warning != None:
+        #     warning_window(warning)
+        #     return
 
         #######
 
         textBox_Entry = self.plainTextEdit.toPlainText()
         list_chosen_themen = self.list_selected_topics_creator
-        print(self.list_selected_topics_creator)
+        # print(self.list_selected_topics_creator)
 
 
         ###### Check if Admin Mode is activated ####
@@ -3137,17 +3197,17 @@ class Ui_MainWindow(object):
         if response == 0:
             return
 
-        confirmed=self.ui_save.get_output()
+        typ_save=self.ui_save.get_output()
 
         if self.creator_mode == "user":
             local_save = False
 
-            while confirmed == ['user', False] or confirmed == ['local', None]:
-                if confirmed == ['user', False]:
+            while typ_save == ['user', False] or typ_save == ['local', None]:
+                if typ_save == ['user', False]:
                     warning_window(
                         "Bitte bestätigen Sie die Eigenständigkeitserklärung und Lizenzvereinbarung."
                     )
-                elif confirmed == ['local', None]:
+                elif typ_save == ['local', None]:
                     local_save = question_window("Aufgabe lokal speichern?",
                     "Sind Sie sicher, dass Sie diese Aufgabe nur lokal speichern wollen?",
                     "ACHTUNG: Durch nicht überprüfte Aufgaben entstehen möglicherweise Fehler, die das Programm zum Absturz bringen können!",
@@ -3158,14 +3218,20 @@ class Ui_MainWindow(object):
                 response = Dialog_speichern.exec()
                 if response == 0:
                     return
-                confirmed=self.ui_save.get_output() 
+                typ_save=self.ui_save.get_output() 
 
 
 
-        save_dateipfad = self.aufgabenpfad_bestimmen(confirmed, local_save)
+        save_dateipfad = self.aufgabenpfad_bestimmen(typ_save, local_save)
 
-        self.get_max_integer_file(confirmed, save_dateipfad)
+        max_integer_file = self.get_max_integer_file(typ_save, save_dateipfad) 
 
+        if typ_save[0] != 'local':
+            max_integer_file = self.check_files_beispieleinreichung(typ_save, max_integer_file)
+        #     path = os.path.join(path_programm, 'Beispieleinreichung')
+        #     max_integer_file = self.get_max_integer_file(typ_save,path, max_integer_file)
+
+        print(max_integer_file)
         return
         ##### GET MAX FILENUMBER IN DIR #####
         # self.aufgabentyp_bestimmen()
@@ -3190,7 +3256,7 @@ class Ui_MainWindow(object):
                 # else:
                     
 
-            return  
+        return  
             #     # print(set_chosen_gk)
             #     if list_chosen_gk[0] in {
             #         **k5_beschreibung,

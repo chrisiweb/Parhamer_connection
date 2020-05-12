@@ -790,8 +790,8 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
         if self.creator_mode == 'admin':
             self.combobox_in_official = create_new_combobox(Dialog)
             self.combobox_in_official.setStyleSheet("background-color: white; color: black")
+            self.combobox_in_official.addItem("offizielle Aufgabe")            
             self.combobox_in_official.addItem("inoffizelle Aufgabe")
-            self.combobox_in_official.addItem("offizielle Aufgabe")
             gridlayout.addWidget(self.combobox_in_official, 2, 0, 1, 1)
 
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
