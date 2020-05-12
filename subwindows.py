@@ -811,7 +811,7 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
 
         buttonN = self.buttonBox.button(QtWidgets.QDialogButtonBox.No)
         buttonN.setText("Abbrechen")
-        self.buttonBox.rejected.connect(Dialog.reject)
+        self.buttonBox.rejected.connect(self.Dialog.reject)
 
         buttonY = self.buttonBox.button(QtWidgets.QDialogButtonBox.Yes)
         buttonY.setText("Speichern")
@@ -845,6 +845,7 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
             self.confirmed = ['admin', self.combobox_in_official.currentIndex()]
         else:
             self.confirmed = ['user',self.cb_confirm.isChecked()]
+                
         self.Dialog.accept()
         # return True
 
