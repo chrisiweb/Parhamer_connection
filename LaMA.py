@@ -2972,8 +2972,7 @@ class Ui_MainWindow(object):
         klasse = 'k{}'.format(highest_grade)
         return klasse
 
-    def check_if_in_klasse(self):
-        thema= self.list_selected_topics_creator[0]
+    def split_thema_klasse(self, thema):      
         if re.search('\(.\.\)',thema) != None:   
             thema, klasse = thema.split("(")
             thema = thema.lower().strip()
@@ -2984,14 +2983,14 @@ class Ui_MainWindow(object):
 
 
     def create_path_from_list(self, list_):
-        path=path_programm
+        path=''
         for all in list_:
             path=os.path.join(path, all)
 
         return path
 
-    def aufgabenpfad_bestimmen(self, typ_save, local_save):
-        list_path=[]
+    def get_parent_folder(self, typ_save, local_save):
+        list_path=[path_programm]
 
         if local_save==True:
             list_path.append('Lokaler_Ordner')
@@ -3000,9 +2999,12 @@ class Ui_MainWindow(object):
                 list_path.append('_database_inoffiziell')
             else:
                 list_path.append('_database')
+        return list_path
 
-        #####
+    def aufgabenpfad_bestimmen(self, typ_save, local_save):
+        list_path = self.get_parent_folder(typ_save, local_save)
 
+        #### 
         if self.chosen_program == 'lama':
             if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
                 list_path.append('Typ1Aufgaben')
@@ -3016,7 +3018,8 @@ class Ui_MainWindow(object):
 
         if self.chosen_program == 'lama' and local_save==False:
             if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-                _,klasse=self.check_if_in_klasse()
+                print(self.list_selected_topics_creator[0])
+                _,klasse=self.split_thema_klasse(self.list_selected_topics_creator[0])
                 if klasse==None:
                     list_path.append('_Grundkompetenzen')
                 else:
@@ -3031,7 +3034,7 @@ class Ui_MainWindow(object):
 
         if self.chosen_program == 'lama' and local_save==False:
             if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-                thema, klasse=self.check_if_in_klasse()
+                thema, klasse=self.split_thema_klasse(self.list_selected_topics_creator[0])
                 if klasse==None:
                     list_path.append(self.list_selected_topics_creator[0][:2])
                     list_path.append(self.list_selected_topics_creator[0])
@@ -3049,16 +3052,24 @@ class Ui_MainWindow(object):
 
 
     def get_integer(self, file_name):
-        # file_name_start = all.rsplit('-',1)[0]
         file_integer = file_name.rsplit('-',1)[-1]
         file_integer = file_integer.replace(".tex","").strip()
 
         return file_integer
 
-    def get_max_integer_file(self, typ_save, path, max_integer_file=0):
-        if max_integer_file != 0:
-            pass
-        elif typ_save == ['admin', 1]:
+    def get_max_integer_file(self, typ_save, path):
+        max_integer_file = self.check_files_path(typ_save, path) 
+
+        if typ_save[0] != 'local':
+            max_integer_file = self.check_files_beispieleinreichung(typ_save, max_integer_file)
+
+        return max_integer_file
+
+
+    def check_files_path(self, typ_save, path):
+        # if max_integer_file != 0:
+        #     pass
+        if typ_save == ['admin', 1]:
             max_integer_file = 1000
         else:
             max_integer_file = 0
@@ -3074,49 +3085,8 @@ class Ui_MainWindow(object):
                 if int(file_integer) > max_integer_file:
                     max_integer_file = int(file_integer)                
 
-        # print(file_name_start)
-        # print(file_integer)
-        # list_path.append(self.list_selected_topics_creator[0][:2])
-        # list_path.append(self.list_selected_topics_creator[0])
-        # if typ_save[0] != 'local':
-        #     temporary_path = os.path.join(path_programm, 'Beispieleinreichung')
-        #     for all in os.listdir(temporary_path):
-        #         file_name_start,file_integer=self.get_integer(all)
-        #         if all.startswith(file_name_start)
-
-
 
         return max_integer_file
-
-        # max_integer_file = 0
-
-        # if not os.path.exists(gk_path_temp):
-        #     print("Creating {} for you.".format(gk_path_temp))
-        #     os.makedirs(gk_path_temp)
-        # for all in os.listdir(gk_path_temp):
-        #     if all.endswith(".tex"):
-        #         file_integer, file_extension = all.split(".tex")
-        #         file_integer = file_integer.replace("_L_", "")
-
-        #         if int(file_integer) > max_integer_file:
-        #             max_integer_file = int(file_integer)
-
-
-
-
-        
-        # self.list_selected_topics_creator
-
-
-        # ['database/database_inoffiziell/lokal', "typ1/USklasse", "Gk/klasse", "themaOS/GKparent", "gkdetail", "Einzelbeispiele"]    
-            #             gk_path_temp = os.path.join(
-            #                 path_programm,
-            #                 "_database_inoffiziell",
-            #                 "Typ1Aufgaben",
-            #                 path_folder,
-            #                 list_chosen_gk[0],
-            #                 "Einzelbeispiele",
-            #             )
 
     def check_files_beispieleinreichung(self, typ_save, max_integer_file):
         list_path = [path_programm, 'Beispieleinreichung']
@@ -3156,9 +3126,59 @@ class Ui_MainWindow(object):
             )
 
 
-        return max_integer_file                    
+        return max_integer_file
+                    
+
+    def edit_image_name(self, typ_save, max_integer_file,name):
+        if self.chosen_program == 'cria':
+            highest_grade = self.get_highest_grade()
+            name = '{0}_{1}_{2}'.format(highest_grade, max_integer_file+1, name)
+        
+        elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+            thema, klasse = self.split_thema_klasse(self.list_selected_topics_creator[0])
+            if thema == None:
+                thema = shorten_gk(self.list_selected_topics_creator[0]).upper()
+                name = '{0}_{1}_{2}'.format(thema, max_integer_file+1, name)
+            else:
+                name = 'k{0}_{1}_{2}_{3}'.format(klasse, thema, max_integer_file+1, name)
+
+        elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
+            name = '{0}_{1}'.format(max_integer_file+1, name)
 
 
+        return name
+
+
+    def replace_image_name(self, typ_save, max_integer_file):
+        textBox_Entry = self.plainTextEdit.toPlainText()
+        for old_image_name in dict_picture_path:
+            string = "{" + old_image_name + "}"
+
+            new_image_name = self.edit_image_name(typ_save, max_integer_file, old_image_name)
+
+            if string in self.plainTextEdit.toPlainText():
+                textBox_Entry = textBox_Entry.replace(old_image_name, new_image_name)
+            else:
+                return [False, old_image_name]
+
+        return [True, textBox_Entry]
+
+
+    def copy_image_save(self, typ_save, max_integer_file, parent_image_path):
+        for old_image_path in list(dict_picture_path.values()):
+            old_image_name = os.path.basename(old_image_path)
+            new_image_name = self.edit_image_name(typ_save, max_integer_file, old_image_name)
+            new_image_path = os.path.join(parent_image_path, new_image_name)
+            try:
+                shutil.copy(old_image_path, new_image_path)
+            except FileNotFoundError:
+                try:
+                    os.mkdir(new_image_path)
+                    shutil.copy(old_image_path, new_image_path)
+                except FileNotFoundError:
+                    warning_window('Die Grafik mit dem Dateinamen "{}" konnte im Aufgabentext nicht gefunden werden.'.format(old_image_name),
+                    'Bitte versichern Sie sich, dass der Dateiname korrekt geschrieben ist und Sie die richtige Grafik eingefügt haben.')
+                    return
 
     def button_speichern_pressed(self):
         # self.creator_mode = "user"
@@ -3173,8 +3193,8 @@ class Ui_MainWindow(object):
 
         #######
 
-        textBox_Entry = self.plainTextEdit.toPlainText()
-        list_chosen_themen = self.list_selected_topics_creator
+        # textBox_Entry = self.plainTextEdit.toPlainText()
+        # list_chosen_themen = self.list_selected_topics_creator
         # print(self.list_selected_topics_creator)
 
 
@@ -3241,342 +3261,114 @@ class Ui_MainWindow(object):
 
         save_dateipfad = self.aufgabenpfad_bestimmen(typ_save, local_save)
 
-        max_integer_file = self.get_max_integer_file(typ_save, save_dateipfad) 
-
-        if typ_save[0] != 'local':
-            max_integer_file = self.check_files_beispieleinreichung(typ_save, max_integer_file)
-        #     path = os.path.join(path_programm, 'Beispieleinreichung')
-        #     max_integer_file = self.get_max_integer_file(typ_save,path, max_integer_file)
-
-        # print(max_integer_file)
-        # return
-        ##### GET MAX FILENUMBER IN DIR #####
-        # self.aufgabentyp_bestimmen()
-        # if self.chosen_program=='lama':
-        #     print(list_chosen_themen)
-
-        #     for all in list_chosen_themen:
-        #         print(shorten_gk(all))
-            # return             
-            # if 
-            #     path_folder_1="Typ1Aufgaben"
-            #     thema = list_chosen_themen[0]
-            #     if re.search('\(.\.\)',thema) != None:
-            #         thema, klasse = thema.split("(")
-            #         thema = thema.lower()
-            #         klasse = klasse.strip(".)")
-            #         print([thema, klasse])
-
-            #         path_folder_2 = "{klasse}.Klasse"
-            #         path_folder_3 = thema
-
-                # else:
-                    
-
-        # return  
-            #     # print(set_chosen_gk)
-            #     if list_chosen_gk[0] in {
-            #         **k5_beschreibung,
-            #         **k6_beschreibung,
-            #         **k7_beschreibung,
-            #         **k8_beschreibung,
-            #     }:  ## merged dictionaries
-            #         if list_chosen_gk[0] in k5_beschreibung:
-            #             path_folder = "5.Klasse"
-            #         elif list_chosen_gk[0] in k6_beschreibung:
-            #             path_folder = "6.Klasse"
-            #         elif list_chosen_gk[0] in k7_beschreibung:
-            #             path_folder = "7.Klasse"
-            #         elif list_chosen_gk[0] in k8_beschreibung:
-            #             path_folder = "8.Klasse"
-
-            #         if self.creator_mode == "admin" and self.cb_save.isChecked() == True:
-            #             gk_path_temp = os.path.join(
-            #                 path_programm,
-            #                 "_database_inoffiziell",
-            #                 "Typ1Aufgaben",
-            #                 path_folder,
-            #                 list_chosen_gk[0],
-            #                 "Einzelbeispiele",
-            #             )
-
-            #         elif self.creator_mode == "user" and local_save == True:
-            #             gk_path_temp = os.path.join(
-            #                 path_programm, "Lokaler_Ordner", "Typ1Aufgaben"
-            #             )
-
-            #         else:
-            #             gk_path_temp = os.path.join(
-            #                 path_programm,
-            #                 "_database",
-            #                 "Typ1Aufgaben",
-            #                 path_folder,
-            #                 list_chosen_gk[0],
-            #                 "Einzelbeispiele",
-            #             )
-
-            #         if local_save == True:
-            #             z = " - "
-            #         else:
-            #             z = list_chosen_gk[0].upper() + " - "
-
-            #     else:
-            #         path_folder = "_Grundkompetenzen"
-            #         if self.creator_mode == "admin" and self.cb_save.isChecked() == True:
-            #             gk_path_temp = os.path.join(
-            #                 path_programm,
-            #                 "_database_inoffiziell",
-            #                 "Typ1Aufgaben",
-            #                 path_folder,
-            #                 dict_gk[list_chosen_gk[0]][:2],
-            #                 dict_gk[list_chosen_gk[0]],
-            #                 "Einzelbeispiele",
-            #             )
-            #         elif self.creator_mode == "user" and local_save == True:
-            #             gk_path_temp = os.path.join(
-            #                 path_programm, "Lokaler_Ordner", "Typ1Aufgaben"
-            #             )
-
-            #         else:
-            #             gk_path_temp = os.path.join(
-            #                 path_programm,
-            #                 "_database",
-            #                 "Typ1Aufgaben",
-            #                 path_folder,
-            #                 dict_gk[list_chosen_gk[0]][:2],
-            #                 dict_gk[list_chosen_gk[0]],
-            #                 "Einzelbeispiele",
-            #             )
-            #         if local_save == True:
-            #             z = " - "
-            #         else:
-            #             z = dict_gk[list_chosen_gk[0]] + " - "
-
-            #     if self.creator_mode == "admin" and self.cb_save.isChecked() == True:
-            #         max_integer_file = 1000
-            #     else:
-            #         max_integer_file = 0
-
-            #     if not os.path.exists(gk_path_temp):
-            #         print("Creating {} for you.".format(gk_path_temp))
-            #         os.makedirs(gk_path_temp)
-            #     for all in os.listdir(gk_path_temp):
-            #         if all.endswith(".tex"):
-            #             x, y = all.split(z)
-            #             file_integer, file_extension = y.split(".tex")
-            #             if int(file_integer) > max_integer_file:
-            #                 max_integer_file = int(file_integer)
-
-            #     # print(max_integer_file)
-
-            # if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
-            #     if self.creator_mode == "admin" and self.cb_save.isChecked() == True:
-            #         gk_path_temp = os.path.join(
-            #             path_programm,
-            #             "_database_inoffiziell",
-            #             "Typ2Aufgaben",
-            #             "Einzelbeispiele",
-            #         )
-
-            #     elif self.creator_mode == "user" and local_save == True:
-            #         gk_path_temp = os.path.join(
-            #             path_programm, "Lokaler_Ordner", "Typ2Aufgaben"
-            #         )
-
-            #     else:
-            #         gk_path_temp = os.path.join(
-            #             path_programm, "_database", "Typ2Aufgaben", "Einzelbeispiele"
-            #         )
-            #     max_integer_file = 0
-
-            #     if not os.path.exists(gk_path_temp):
-            #         print("Creating {} for you.".format(gk_path_temp))
-            #         os.makedirs(gk_path_temp)
-            #     for all in os.listdir(gk_path_temp):
-            #         if all.endswith(".tex"):
-            #             file_integer, file_extension = all.split(".tex")
-            #             file_integer = file_integer.replace("_L_", "")
-
-            #             if int(file_integer) > max_integer_file:
-            #                 max_integer_file = int(file_integer)
 
 
-        # if self.chosen_program=='cria':
-        #     highest_grade = 1
-        #     for all in self.list_selected_topics_creator:
-        #         if int(all[0][1]) > highest_grade:
-        #             highest_grade = int(all[0][1])
+        max_integer_file = self.get_max_integer_file(typ_save, save_dateipfad)
 
-        #     path_folder = "k" + str(highest_grade)
 
-        #     if self.creator_mode == 'admin' and self.cb_save.isChecked()==True:
-        #         max_integer_file = 1000
-        #         klasse_path_temp = os.path.join(
-        #             path_programm, "_database_inoffiziell", path_folder, "Einzelbeispiele"
-        #         )
-        #     elif self.creator_mode == "user" and local_save == True:
-        #         max_integer_file = 0
-        #         klasse_path_temp = os.path.join(
-        #             path_programm, "Lokaler_Ordner", path_folder
-        #         )
-        #     else:
-        #         max_integer_file = 0
-        #         klasse_path_temp = os.path.join(
-        #             path_programm, "_database", path_folder, "Einzelbeispiele"
-        #         )
-        #     # print(klasse_path_temp)
-
-            
-
-        #     if not os.path.exists(klasse_path_temp):
-        #         print("Creating {} for you.".format(klasse_path_temp))
-        #         os.makedirs(klasse_path_temp)
-        #     for all in os.listdir(klasse_path_temp):
-        #         if all.endswith(".tex"):
-        #             if local_save == True:
-        #                 filename=all.replace("_L_","")
-        #             else:
-        #                 filename=all
-        #             file_integer, file_extension = filename.split(".tex")
-        #             if int(file_integer) > max_integer_file:
-        #                 max_integer_file = int(file_integer) 
-
-        ####### Checks files in 'Beispieleinreichung' #####
-        ##################################################
-
-        # if local_save == True:
-        #     pass
-        # else:
-        #     try:
-        #         if self.chosen_program=='lama':
-        #             path_saved_files = os.path.join(path_programm, "Beispieleinreichung")
-        #             if list_chosen_gk[0] in {
-        #                 **k5_beschreibung,
-        #                 **k6_beschreibung,
-        #                 **k7_beschreibung,
-        #                 **k8_beschreibung,
-        #             }:  ## merged dictionaries
-        #                 if list_chosen_gk[0] in k5_beschreibung:
-        #                     file_name_klasse = "K5"
-        #                 elif list_chosen_gk[0] in k6_beschreibung:
-        #                     file_name_klasse = "K6"
-        #                 elif list_chosen_gk[0] in k7_beschreibung:
-        #                     file_name_klasse = "K7"
-        #                 elif list_chosen_gk[0] in k8_beschreibung:
-        #                     file_name_klasse = "K8"
-        #                 z = file_name_klasse + " - " + list_chosen_gk[0].upper() + " - "
-
-        #             else:
-        #                 z = dict_gk[list_chosen_gk[0]] + " - "
-        #             if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-        #                 for all in os.listdir(path_saved_files):
-        #                     if all.endswith(".tex"):
-        #                         if z in all:
-        #                             x, y = all.split(z)
-        #                             file_integer, file_extension = y.split(".tex")
-        #                             if int(file_integer) > max_integer_file:
-        #                                 max_integer_file = int(file_integer)
-
-        #             if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
-        #                 for all in os.listdir(path_saved_files):
-        #                     if all.endswith(".tex"):
-        #                         if "-" in all:
-        #                             pass
-        #                         else:
-        #                             file_integer, file_extension = all.split(".tex")
-        #                             if int(file_integer) > max_integer_file:
-        #                                 max_integer_file = int(file_integer)
-        #         if self.chosen_program=='cria':
-        #             klasse = "k" + str(highest_grade)
-        #             path_saved_files_klasse = os.path.join(path_programm, "Beispieleinreichung", klasse)
-
-        #             if not os.path.exists(path_saved_files_klasse):
-        #                 os.makedirs(path_saved_files_klasse)
-
-        #             for all in os.listdir(path_saved_files_klasse):
-        #                 if all.endswith(".tex"):
-        #                     file_integer, file_extension = all.split(".tex")
-        #                     if int(file_integer) > max_integer_file:
-        #                         max_integer_file = int(file_integer)
-
-        #     except FileNotFoundError:
-        #         msg = QtWidgets.QMessageBox()
-        #         msg.setWindowTitle("Fehlermeldung")
-        #         msg.setIcon(QtWidgets.QMessageBox.Critical)
-        #         msg.setWindowIcon(QtGui.QIcon(logo_path))
-        #         msg.setText(
-        #             'Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und\nmuss zuerst für Sie freigegeben werden.'
-        #         )
-        #         msg.setInformativeText(
-        #             "Derzeit können keine neuen Aufgaben eingegeben werden."
-        #         )
-        #         msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
-        #         retval = msg.exec_()
-        #         return
         ############################################################################
 
-        for all in dict_picture_path:
-            head, tail = os.path.split(all)
-            x = "{" + tail + "}"
-            # name, ext =os.path.splitext(tail)
-            if self.creator_mode == "admin" and self.cb_save.isChecked() == True:
-                str_image_path = "../_database_inoffiziell/Bilder/"
-            elif self.creator_mode == "admin" and self.cb_save.isChecked() == False:
-                str_image_path = "../_database/Bilder/"
-            elif local_save == True:
-                str_image_path = "../Lokaler_Ordner/Bilder/"
-            else:
-                str_image_path = "../Beispieleinreichung/Bilder/"
+        # head, tail = os.path.split('hippo.eps')
+        # string = "{" + tail + "}"
 
-            if self.chosen_program=='lama':    
-                if (
-                    x in textBox_Entry
-                    and self.comboBox_aufgabentyp_cr.currentText() == "Typ 1"
-                ):
-                    textBox_Entry = str(textBox_Entry).replace(
-                        tail,
-                        str_image_path
-                        + list_chosen_gk[0].upper()
-                        + "_"
-                        + str(max_integer_file + 1)
-                        + "_"
-                        + tail,
-                    )
-                if (
-                    x in textBox_Entry
-                    and self.comboBox_aufgabentyp_cr.currentText() == "Typ 2"
-                ):
-                    textBox_Entry = str(textBox_Entry).replace(
-                        tail, str_image_path + str(max_integer_file + 1) + "_" + tail
-                    )
-            if self.chosen_program=='cria':
-                if x in textBox_Entry:
+        # new_image_name = self.edit_image_name(typ_save, max_integer_file, tail)
+        # print(new_image_name)
+        # return       
+
+        response = self.replace_image_name(typ_save, max_integer_file)
+        if response[0] == False:
+            warning_window('Die Grafik mit dem Dateinamen "{}" konnte im Aufgabentext nicht gefunden werden.'.format(response[1]),
+            'Bitte versichern Sie sich, dass der Dateiname korrekt geschrieben ist und Sie die richtige Grafik eingefügt haben.')
+            return
+        else:
+            textBox_Entry = response[1]
+        # for all in dict_picture_path:
+        #     head, old_image_name = os.path.split(all)
+        #     string = "{" + old_image_name + "}"
+
+        #     new_image_name = self.edit_image_name(typ_save, max_integer_file, old_image_name)
+
+        #     if string in textBox_Entry:
+        #         textBox_Entry = textBox_Entry.replace(old_image_name, new_image_name)
+        #     else:
+        #         warning_window('Die Grafik mit dem Dateinamen "{}" konnte im Aufgabentext nicht gefunden werden.'.format(old_image_name),
+        #         'Bitte versichern Sie sich, dass der Dateiname korrekt geschrieben ist und Sie die richtige Grafik eingefügt haben.')
+        #         return
+
+            # name, ext =os.path.splitext(tail)
+            # if self.creator_mode == "admin" and self.cb_save.isChecked() == True:
+            #     str_image_path = "../_database_inoffiziell/Bilder/"
+            # elif self.creator_mode == "admin" and self.cb_save.isChecked() == False:
+            #     str_image_path = "../_database/Bilder/"
+            # elif local_save == True:
+            #     str_image_path = "../Lokaler_Ordner/Bilder/"
+            # else:
+            #     str_image_path = "../Beispieleinreichung/Bilder/"
+
+            # if self.chosen_program=='lama':    
+            #     if (
+            #         x in textBox_Entry
+            #         and self.comboBox_aufgabentyp_cr.currentText() == "Typ 1"
+            #     ):
+            #         textBox_Entry = str(textBox_Entry).replace(
+            #             tail,
+            #             str_image_path
+            #             + list_chosen_gk[0].upper()
+            #             + "_"
+            #             + str(max_integer_file + 1)
+            #             + "_"
+            #             + tail,
+            #         )
+            #     if (
+            #         x in textBox_Entry
+            #         and self.comboBox_aufgabentyp_cr.currentText() == "Typ 2"
+            #     ):
+            #         textBox_Entry = str(textBox_Entry).replace(
+            #             tail, str_image_path + str(max_integer_file + 1) + "_" + tail
+            #         )
+            # if self.chosen_program=='cria':
+            #     if x in textBox_Entry:
                     
-                    textBox_Entry = str(textBox_Entry).replace(
-                        tail,
-                        str_image_path
-                        + klasse
-                        + "_"
-                        + str(max_integer_file + 1)
-                        + "_"
-                        + tail,
-                    )
+            #         textBox_Entry = str(textBox_Entry).replace(
+            #             tail,
+            #             str_image_path
+            #             + klasse
+            #             + "_"
+            #             + str(max_integer_file + 1)
+            #             + "_"
+            #             + tail,
+            #         )
 
         # copy_image_path=os.path.join(path_programm,'_database','Bilder') ### direct save
-        if self.creator_mode == "admin" and typ_save==['admin', 0]:
-            copy_image_path = os.path.join(
-                path_programm, "_database", "Bilder"
-            )  ### direct save
-        elif self.creator_mode == "admin" and typ_save==['admin', 1]:
-            copy_image_path = os.path.join(
-                path_programm, "_database_inoffiziell", "Bilder"
-            )  ### direct save
-        elif local_save == True:
-            copy_image_path = os.path.join(path_programm, "Lokaler_Ordner", "Bilder")
-        else:
-            copy_image_path = os.path.join(
-                path_programm, "Beispieleinreichung", "Bilder"
-            )  ### indirect save
+
+        # if self.creator_mode == "admin" and typ_save==['admin', 0]:
+        #     copy_image_path = os.path.join(
+        #         path_programm, "_database", "Bilder"
+        #     )  ### direct save
+        # elif self.creator_mode == "admin" and typ_save==['admin', 1]:
+        #     copy_image_path = os.path.join(
+        #         path_programm, "_database_inoffiziell", "Bilder"
+        #     )  ### direct save
+        # elif local_save == True:
+        #     copy_image_path = os.path.join(path_programm, "Lokaler_Ordner", "Bilder")
+        # else:
+        #     copy_image_path = os.path.join(
+        #         path_programm, "Beispieleinreichung", "Bilder"
+        #     )  ### indirect save
+
+
+        list_path = self.get_parent_folder(typ_save, local_save)
+        if typ_save[0]=='user':
+            list_path[1]='Beispieleinreichung'
+        list_path.append('Bilder')
+        parent_image_path = self.create_path_from_list(list_path)
+
+        self.copy_image_save(typ_save, max_integer_file, parent_image_path)
+
+
+
+        return
+
 
         for all in list(dict_picture_path.values()):
             image_path_temp = all
