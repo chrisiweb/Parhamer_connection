@@ -2357,10 +2357,10 @@ class Ui_MainWindow(object):
         self.label_ausgew_gk_creator.setText(_translate("MainWindow", "", None))
         self.label_bild_leer.show()
 
-        for i in range(len(dict_picture_path)):
-            x = eval("self.label_bild_" + str(i))
-            x.hide()
-        dict_picture_path = {}
+        for picture in self.dict_widget_variables:
+            if picture.startswith('label_bild_creator_'):
+                self.del_picture(self.dict_widget_variables[picture])
+
         if self.lineEdit_titel.text().startswith("###"):
             self.lineEdit_titel.setText(_translate("MainWindow", "###", None))
         else:
@@ -2734,9 +2734,10 @@ class Ui_MainWindow(object):
             else:
                 head, tail = os.path.split(all)
                 dict_picture_path[tail] = all
-                name_of_image = "self.label_bild_" + str(i)
-
+                # name_of_image = "self.label_bild_" + str(i)
+                # print(name_of_image)
                 label_picture = create_new_label(self.scrollAreaWidgetContents_bilder, tail, False, True)
+                self.dict_widget_variables['label_bild_creator_{}'.format(tail)] = label_picture
                 label_picture.clicked.connect(partial(self.del_picture, label_picture))
                 self.verticalLayout.addWidget(label_picture)
 
@@ -3370,155 +3371,155 @@ class Ui_MainWindow(object):
         return
 
 
-        for all in list(dict_picture_path.values()):
-            image_path_temp = all
-            head, tail = os.path.split(image_path_temp)
-            copy_image_file_temp = os.path.join(copy_image_path, tail)
-            try:
-                shutil.copy(image_path_temp, copy_image_file_temp)
-            except FileNotFoundError:
-                try:
-                    os.mkdir(copy_image_path)
-                    shutil.copy(image_path_temp, copy_image_file_temp)
-                except FileNotFoundError:
-                    msg = QtWidgets.QMessageBox()
-                    msg.setWindowTitle("Fehlermeldung")
-                    msg.setIcon(QtWidgets.QMessageBox.Critical)
-                    msg.setWindowIcon(QtGui.QIcon(logo_path))
-                    msg.setText(
-                        'Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und\nmuss zuerst für Sie freigegeben werden.'
-                    )
-                    msg.setInformativeText(
-                        "Derzeit können keine neuen Aufgaben eingegeben werden."
-                    )
-                    msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
-                    retval = msg.exec_()
-                    return
+        # for all in list(dict_picture_path.values()):
+        #     image_path_temp = all
+        #     head, tail = os.path.split(image_path_temp)
+        #     copy_image_file_temp = os.path.join(copy_image_path, tail)
+        #     try:
+        #         shutil.copy(image_path_temp, copy_image_file_temp)
+        #     except FileNotFoundError:
+        #         try:
+        #             os.mkdir(copy_image_path)
+        #             shutil.copy(image_path_temp, copy_image_file_temp)
+        #         except FileNotFoundError:
+        #             msg = QtWidgets.QMessageBox()
+        #             msg.setWindowTitle("Fehlermeldung")
+        #             msg.setIcon(QtWidgets.QMessageBox.Critical)
+        #             msg.setWindowIcon(QtGui.QIcon(logo_path))
+        #             msg.setText(
+        #                 'Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und\nmuss zuerst für Sie freigegeben werden.'
+        #             )
+        #             msg.setInformativeText(
+        #                 "Derzeit können keine neuen Aufgaben eingegeben werden."
+        #             )
+        #             msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+        #             retval = msg.exec_()
+        #             return
 
-            if self.chosen_program == 'lama':
-                if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-                    if self.creator_mode == "admin":
-                        if self.cb_save.isChecked() == False:
-                            x = os.rename(
-                                copy_image_file_temp,
-                                "%s/_database/Bilder/" % path_programm
-                                + list_chosen_gk[0].upper()
-                                + "_"
-                                + str(max_integer_file + 1)
-                                + "_"
-                                + tail,
-                            )  ### direct save
-                        if self.cb_save.isChecked() == True:
-                            x = os.rename(
-                                copy_image_file_temp,
-                                "%s/_database_inoffiziell/Bilder/" % path_programm
-                                + list_chosen_gk[0].upper()
-                                + "_"
-                                + str(max_integer_file + 1)
-                                + "_"
-                                + tail,
-                            )  ### direct save
-                    else:
-                        if local_save == True:
-                            x = os.rename(
-                                copy_image_file_temp,
-                                "%s/Lokaler_Ordner/Bilder/" % path_programm
-                                + list_chosen_gk[0].upper()
-                                + "_"
-                                + str(max_integer_file + 1)
-                                + "_"
-                                + tail,
-                            )  ### indirect
-                        else:
-                            x = os.rename(
-                                copy_image_file_temp,
-                                "%s/Beispieleinreichung/Bilder/" % path_programm
-                                + list_chosen_gk[0].upper()
-                                + "_"
-                                + str(max_integer_file + 1)
-                                + "_"
-                                + tail,
-                            )  ### indirect
+        #     if self.chosen_program == 'lama':
+        #         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+        #             if self.creator_mode == "admin":
+        #                 if self.cb_save.isChecked() == False:
+        #                     x = os.rename(
+        #                         copy_image_file_temp,
+        #                         "%s/_database/Bilder/" % path_programm
+        #                         + list_chosen_gk[0].upper()
+        #                         + "_"
+        #                         + str(max_integer_file + 1)
+        #                         + "_"
+        #                         + tail,
+        #                     )  ### direct save
+        #                 if self.cb_save.isChecked() == True:
+        #                     x = os.rename(
+        #                         copy_image_file_temp,
+        #                         "%s/_database_inoffiziell/Bilder/" % path_programm
+        #                         + list_chosen_gk[0].upper()
+        #                         + "_"
+        #                         + str(max_integer_file + 1)
+        #                         + "_"
+        #                         + tail,
+        #                     )  ### direct save
+        #             else:
+        #                 if local_save == True:
+        #                     x = os.rename(
+        #                         copy_image_file_temp,
+        #                         "%s/Lokaler_Ordner/Bilder/" % path_programm
+        #                         + list_chosen_gk[0].upper()
+        #                         + "_"
+        #                         + str(max_integer_file + 1)
+        #                         + "_"
+        #                         + tail,
+        #                     )  ### indirect
+        #                 else:
+        #                     x = os.rename(
+        #                         copy_image_file_temp,
+        #                         "%s/Beispieleinreichung/Bilder/" % path_programm
+        #                         + list_chosen_gk[0].upper()
+        #                         + "_"
+        #                         + str(max_integer_file + 1)
+        #                         + "_"
+        #                         + tail,
+        #                     )  ### indirect
 
-                if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
-                    if self.creator_mode == "admin":
-                        if self.cb_save.isChecked() == False:
-                            x = os.rename(
-                                copy_image_file_temp,
-                                "%s/_database/Bilder/" % path_programm
-                                + str(max_integer_file + 1)
-                                + "_"
-                                + tail,
-                            )  ### direct save
-                        if self.cb_save.isChecked() == True:
-                            x = os.rename(
-                                copy_image_file_temp,
-                                "%s/_database_inoffiziell/Bilder/" % path_programm
-                                + str(max_integer_file + 1)
-                                + "_"
-                                + tail,
-                            )  ### direct save
-                    else:
-                        if local_save == True:
-                            x = os.rename(
-                                copy_image_file_temp,
-                                "%s/Lokaler_Ordner/Bilder/" % path_programm
-                                + str(max_integer_file + 1)
-                                + "_"
-                                + tail,
-                            )  ### indirect
-                        else:
-                            x = os.rename(
-                                copy_image_file_temp,
-                                "%s/Beispieleinreichung/Bilder/" % path_programm
-                                + str(max_integer_file + 1)
-                                + "_"
-                                + tail,
-                            )  ### indirect save
+        #         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
+        #             if self.creator_mode == "admin":
+        #                 if self.cb_save.isChecked() == False:
+        #                     x = os.rename(
+        #                         copy_image_file_temp,
+        #                         "%s/_database/Bilder/" % path_programm
+        #                         + str(max_integer_file + 1)
+        #                         + "_"
+        #                         + tail,
+        #                     )  ### direct save
+        #                 if self.cb_save.isChecked() == True:
+        #                     x = os.rename(
+        #                         copy_image_file_temp,
+        #                         "%s/_database_inoffiziell/Bilder/" % path_programm
+        #                         + str(max_integer_file + 1)
+        #                         + "_"
+        #                         + tail,
+        #                     )  ### direct save
+        #             else:
+        #                 if local_save == True:
+        #                     x = os.rename(
+        #                         copy_image_file_temp,
+        #                         "%s/Lokaler_Ordner/Bilder/" % path_programm
+        #                         + str(max_integer_file + 1)
+        #                         + "_"
+        #                         + tail,
+        #                     )  ### indirect
+        #                 else:
+        #                     x = os.rename(
+        #                         copy_image_file_temp,
+        #                         "%s/Beispieleinreichung/Bilder/" % path_programm
+        #                         + str(max_integer_file + 1)
+        #                         + "_"
+        #                         + tail,
+        #                     )  ### indirect save
             
-            if self.chosen_program=='cria':
-                if self.creator_mode == "admin":
-                    if self.cb_save.isChecked() == False:               
-                        x = os.rename(
-                            copy_image_file_temp,
-                            "%s/_database/Bilder/" % path_programm
-                            + klasse
-                            + "_"
-                            + str(max_integer_file + 1)
-                            + "_"
-                            + tail,
-                        )  ### direct official save
-                    if self.cb_save.isChecked() == True:               
-                        x = os.rename(
-                            copy_image_file_temp,
-                            "%s/_database_inoffiziell/Bilder/" % path_programm
-                            + klasse
-                            + "_"
-                            + str(max_integer_file + 1)
-                            + "_"
-                            + tail,
-                        )  ### direct inofficial save
-                else:
-                    if local_save == True:
-                        x = os.rename(
-                            copy_image_file_temp,
-                            "%s/Lokaler_Ordner/Bilder/" % path_programm
-                            + klasse
-                            + "_"
-                            + str(max_integer_file + 1)
-                            + "_"
-                            + tail,
-                        )  ### direct local
-                    else:
-                        x = os.rename(
-                            copy_image_file_temp,
-                            "%s/Beispieleinreichung/Bilder/" % path_programm
-                            + klasse
-                            + "_"
-                            + str(max_integer_file + 1)
-                            + "_"
-                            + tail,
-                        )  ### indirect
+        #     if self.chosen_program=='cria':
+        #         if self.creator_mode == "admin":
+        #             if self.cb_save.isChecked() == False:               
+        #                 x = os.rename(
+        #                     copy_image_file_temp,
+        #                     "%s/_database/Bilder/" % path_programm
+        #                     + klasse
+        #                     + "_"
+        #                     + str(max_integer_file + 1)
+        #                     + "_"
+        #                     + tail,
+        #                 )  ### direct official save
+        #             if self.cb_save.isChecked() == True:               
+        #                 x = os.rename(
+        #                     copy_image_file_temp,
+        #                     "%s/_database_inoffiziell/Bilder/" % path_programm
+        #                     + klasse
+        #                     + "_"
+        #                     + str(max_integer_file + 1)
+        #                     + "_"
+        #                     + tail,
+        #                 )  ### direct inofficial save
+        #         else:
+        #             if local_save == True:
+        #                 x = os.rename(
+        #                     copy_image_file_temp,
+        #                     "%s/Lokaler_Ordner/Bilder/" % path_programm
+        #                     + klasse
+        #                     + "_"
+        #                     + str(max_integer_file + 1)
+        #                     + "_"
+        #                     + tail,
+        #                 )  ### direct local
+        #             else:
+        #                 x = os.rename(
+        #                     copy_image_file_temp,
+        #                     "%s/Beispieleinreichung/Bilder/" % path_programm
+        #                     + klasse
+        #                     + "_"
+        #                     + str(max_integer_file + 1)
+        #                     + "_"
+        #                     + tail,
+        #                 )  ### indirect
 
         if self.chosen_program=='cria':
             themen_auswahl = []
