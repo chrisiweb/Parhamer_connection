@@ -12,7 +12,16 @@ def warning_window(text, detailed_text="", titel="Warnung", informative_text="")
     msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
     msg.exec_()
 
-
+def information_window(text, titel="Information", informative_text="", detailed_text=""):
+    msg = QtWidgets.QMessageBox()
+    msg.setWindowTitle(titel)
+    msg.setIcon(QtWidgets.QMessageBox.Information)
+    msg.setWindowIcon(QtGui.QIcon(logo_path))
+    msg.setText(text)
+    msg.setDetailedText(detailed_text)
+    msg.setInformativeText(informative_text)
+    msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+    msg.exec_()
 
 def question_window(titel, text, informative_text="", detailed_text=""):
     msg = QtWidgets.QMessageBox()
