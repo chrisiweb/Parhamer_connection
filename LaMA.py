@@ -938,30 +938,11 @@ class Ui_MainWindow(object):
         for all in Klassen:
             if all != "univie":
                 self.comboBox_klassen_cr.addItem(Klassen[all])
-        # self.comboBox_klassen_cr.addItem(_fromUtf8(""))
-        # self.comboBox_klassen_cr.addItem(_fromUtf8(""))
-        # self.comboBox_klassen_cr.addItem(_fromUtf8(""))
-        # self.comboBox_klassen_cr.addItem(_fromUtf8(""))
-        # self.comboBox_klassen_cr.addItem(_fromUtf8(""))
+
         self.gridLayout_8.addWidget(self.comboBox_klassen_cr, 0, 0, 1, 1)
         self.gridLayout.addWidget(self.groupBox_klassen_cr, 0, 4, 1, 1)
 
-        # self.comboBox_klassen_cr.setItemText(0, _translate("MainWindow", "-", None))
-        # self.comboBox_klassen_cr.setItemText(
-        #     1, _translate("MainWindow", "5. Klasse", None)
-        # )
-        # self.comboBox_klassen_cr.setItemText(
-        #     2, _translate("MainWindow", "6. Klasse", None)
-        # )
-        # self.comboBox_klassen_cr.setItemText(
-        #     3, _translate("MainWindow", "7. Klasse", None)
-        # )
-        # self.comboBox_klassen_cr.setItemText(
-        #     4, _translate("MainWindow", "8. Klasse", None)
-        # )
-        # self.comboBox_klassen_cr.setItemText(
-        #     5, _translate("MainWindow", "Matura", None)
-        # )
+
         self.groupBox_klassen_cr.hide()
 
         self.gridLayout.setRowStretch(5, 1)
@@ -3348,7 +3329,7 @@ class Ui_MainWindow(object):
         )
 
         ##### Show Dialog "Saving file"
-        
+
         Dialog_speichern = self.open_dialogwindow_save(information)
 
         response = Dialog_speichern.exec()
