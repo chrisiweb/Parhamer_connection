@@ -43,7 +43,7 @@ from subwindows import Ui_Dialog_choose_type, Ui_Dialog_titlepage, Ui_Dialog_aus
 from translate import _fromUtf8, _translate
 from sort_items import natural_keys
 from create_pdf import prepare_tex_for_pdf, create_pdf
-from refresh_ddb import modification_date, refresh_ddb
+from refresh_ddb import modification_date, refresh_ddb, search_files
 from standard_dialog_windows import warning_window, question_window, critical_window, information_window
 from predefined_size_policy import *
 from work_with_content import collect_content, split_aufgaben_content_new_format, split_aufgaben_content
@@ -1494,7 +1494,7 @@ class Ui_MainWindow(object):
         )
         self.verticalLayout_fb.addWidget(self.lineEdit_number_fb)
         self.listWidget_fb = QtWidgets.QListWidget(self.groupBox_alle_aufgaben)
-        self.listWidget_fb.setObjectName("listWidget")
+        self.listWidget_fb.setObjectName("listWidget_fb")
         self.verticalLayout_fb.addWidget(self.listWidget_fb)
         self.gridLayout.addWidget(self.groupBox_alle_aufgaben_fb, 1, 0, 5, 1)
         self.groupBox_alle_aufgaben_fb.setTitle(
@@ -1559,9 +1559,9 @@ class Ui_MainWindow(object):
             partial(self.adapt_choosing_list, "feedback")
         )
         self.verticalLayout_fb_cria.addWidget(self.lineEdit_number_fb_cria)
-        self.listWidget_fb_cria= QtWidgets.QListWidget(self.groupBox_alle_aufgaben_fb_cria)
-        self.listWidget_fb_cria.setObjectName("listWidget_fb_cria")
-        self.verticalLayout_fb_cria.addWidget(self.listWidget_fb_cria)
+        self.listWidget_fb= QtWidgets.QListWidget(self.groupBox_alle_aufgaben_fb_cria)
+        self.listWidget_fb.setObjectName("listWidget_fb")
+        self.verticalLayout_fb_cria.addWidget(self.listWidget_fb)
         self.gridLayout.addWidget(self.groupBox_alle_aufgaben_fb_cria, 1, 0, 5, 1)
         self.groupBox_alle_aufgaben_fb_cria.setTitle(_translate("MainWindow", "Aufgaben",None))
         self.groupBox_alle_aufgaben_fb_cria.hide()
@@ -3997,8 +3997,6 @@ class Ui_MainWindow(object):
 
 
 
-
-
     def create_neue_aufgaben_box(self,index, aufgabe, aufgaben_infos):
         typ=self.get_aufgabentyp(aufgabe)
         aufgaben_verteilung=self.get_aufgabenverteilung()
@@ -4359,7 +4357,7 @@ class Ui_MainWindow(object):
         self.dict_sage_hide_show_items_chosen[aufgabe]= self.ui.list_sage_hide_show_items_chosen
 
         # print(self.dict_sage_ausgleichspunkte_chosen)
-        print(self.dict_sage_hide_show_items_chosen)
+        # print(self.dict_sage_hide_show_items_chosen)
 
         self.dict_alle_aufgaben_sage[aufgabe][3]=len(self.ui.list_sage_ausgleichspunkte_chosen)
 
@@ -4617,20 +4615,21 @@ class Ui_MainWindow(object):
         return dictionary       
 
     def adapt_choosing_list(self, list_mode):
+        # print(list_mode)    
+        # return
         if list_mode == "sage":
             listWidget = self.listWidget
         if list_mode == "feedback":
-            if self.chosen_program=='lama':
-                listWidget = self.listWidget_fb
-            if self.chosen_program=='cria':
-                listWidget = self.listWidget_fb_cria
+            listWidget = self.listWidget_fb
 
+        
             if self.comboBox_at_fb.currentText() == "Allgemeine Rückmeldung":
                 self.comboBox_fb.clear()
                 self.comboBox_fb_num.clear()
                 self.lineEdit_number_fb.clear()
                 listWidget.clear()
                 return
+
 
         listWidget.clear()
 
@@ -4639,19 +4638,24 @@ class Ui_MainWindow(object):
         log_file_cria = os.path.join(path_programm, "Teildokument", "log_file_cria")
 
 
-        if self.chosen_program == 'lama':
-            beispieldaten_dateipfad_1 = self.get_dictionary_of_file_paths(log_file_1)
-            self.beispieldaten_dateipfad_1 = beispieldaten_dateipfad_1
+        # if self.chosen_program == 'lama':
+        #     beispieldaten_dateipfad_1 = self.get_dictionary_of_file_paths(log_file_1)
+        #     self.beispieldaten_dateipfad_1 = beispieldaten_dateipfad_1
 
-            beispieldaten_dateipfad_2 = self.get_dictionary_of_file_paths(log_file_2)
-            self.beispieldaten_dateipfad_2 = beispieldaten_dateipfad_2
-
-
-        if self.chosen_program == 'cria':
-            beispieldaten_dateipfad_cria = self.get_dictionary_of_file_paths(log_file_cria)
-            self.beispieldaten_dateipfad_cria = beispieldaten_dateipfad_cria
+        #     beispieldaten_dateipfad_2 = self.get_dictionary_of_file_paths(log_file_2)
+        #     self.beispieldaten_dateipfad_2 = beispieldaten_dateipfad_2
 
 
+        # if self.chosen_program == 'cria':
+        #     beispieldaten_dateipfad_cria = self.get_dictionary_of_file_paths(log_file_cria)
+        #     self.beispieldaten_dateipfad_cria = beispieldaten_dateipfad_cria
+
+        drafts_path = os.path.join(path_programm, "Beispieleinreichung")
+        # for all in os.listdir(drafts_path):
+        # temp_dict={}
+        # x=search_files(drafts_path)
+        # print(x)
+        return
 
         if self.cb_drafts_sage.isChecked():
             drafts_path = os.path.join(path_programm, "Beispieleinreichung")
@@ -5832,7 +5836,7 @@ class Ui_MainWindow(object):
         if chosen_gui==widgets_feedback or chosen_gui==widgets_feedback_cria:
             self.adapt_choosing_list("feedback")
             self.listWidget_fb.itemClicked.connect(self.nummer_clicked_fb)
-            self.listWidget_fb_cria.itemClicked.connect(self.nummer_clicked_fb)                                          
+            # self.listWidget_fb.itemClicked.connect(self.nummer_clicked_fb)                                          
 
 
 if __name__ == "__main__":

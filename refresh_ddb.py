@@ -17,14 +17,14 @@ def modification_date(filename):
     t = os.path.getmtime(filename)
     return datetime.datetime.fromtimestamp(t)
 
-def search_files(dateipfad, beispieldaten_dateipfad):
+def search_files(dateipfad, beispieldaten_dateipfad={}):
     for root, dirs, files in os.walk(dateipfad):
         for all in files:
             if all.endswith(".tex") or all.endswith(".ltx"):
                 if not ("Gesamtdokument" in all) and not (
                     "Teildokument" in all
                 ):
-                    file = open(os.path.join(root, all), encoding="utf8")
+                    file = open(os.path.join(root, all), "r",encoding="utf8")
                     for i, line in enumerate(file):
                         if not line == "\n":
                             beispieldaten_dateipfad[line] = os.path.join(
@@ -72,28 +72,28 @@ def save_log_file(self, log_file, beispieldaten_dateipfad):
 def collect_all_exisiting_files(self, selected_program):
     if selected_program == 'lama':
         for selected_aufgabentyp in [1, 2]:
-            beispieldaten_dateipfad = {}
+            # beispieldaten_dateipfad = {}
             # beispieldaten = []
             chosen_aufgabenformat = "Typ%sAufgaben" % selected_aufgabentyp
             ########################################################
             ##### Suche offizielle Beispiele ####################
             ##################################################
             dateipfad=os.path.join(path_programm, "_database", chosen_aufgabenformat)
-            search_files(dateipfad, beispieldaten_dateipfad)
+            beispieldaten_dateipfad = search_files(dateipfad)
 
 
             ################################################
             #### Suche inoffizielle Beispiele ######
             #############################################
             dateipfad=os.path.join(path_programm, "_database_inoffiziell", chosen_aufgabenformat)
-            search_files(dateipfad, beispieldaten_dateipfad)
+            beispieldaten_dateipfad = search_files(dateipfad, beispieldaten_dateipfad)
 
 
             ################################################
             #### Suche lokal gespeicherte Beispiele ######
             #############################################
             dateipfad=os.path.join(path_programm, "Lokaler_Ordner", chosen_aufgabenformat)
-            search_files(dateipfad, beispieldaten_dateipfad)
+            beispieldaten_dateipfad = search_files(dateipfad, beispieldaten_dateipfad)
 
             #########
             log_file = os.path.join(path_programm, "Teildokument", "log_file_%s" % selected_aufgabentyp)
