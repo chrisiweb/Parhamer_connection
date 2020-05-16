@@ -166,8 +166,8 @@ class Ui_MainWindow(object):
         self.dict_sage_ausgleichspunkte_chosen = {}
         self.dict_sage_hide_show_items_chosen = {}
         self.dict_chosen_topics = {}
-        # self.list_creator_topics = []
         self.list_copy_images=[]
+
         
 
         titlepage_save = os.path.join(path_programm, "Teildokument", "titlepage_save")
@@ -214,6 +214,14 @@ class Ui_MainWindow(object):
             self.chosen_program = self.ui.chosen_program
         if rsp == QtWidgets.QDialog.Rejected:
             sys.exit(0)
+
+
+        if self.chosen_program == 'cria':
+            self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad('cria')
+        else:
+            self.beispieldaten_dateipfad_1 = self.define_beispieldaten_dateipfad(1)
+            self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)
+
 
         ########################
         self.MainWindow = MainWindow
@@ -284,7 +292,7 @@ class Ui_MainWindow(object):
         self.actionReset_sage = add_action(MainWindow,self.menuDatei, "Reset Schularbeit", self.reset_sage)
         self.actionReset_sage.setVisible(False)
 
-        self.actionRefresh_Database = add_action(MainWindow,self.menuDatei, "Datenbank aktualisieren", partial(refresh_ddb, self))
+        self.actionRefresh_Database = add_action(MainWindow,self.menuDatei, "Datenbank aktualisieren", self.action_refreshddb_selected)
         self.actionRefresh_Database.setShortcut("F5")
 
         self.menuDatei.addSeparator()
@@ -1699,6 +1707,8 @@ class Ui_MainWindow(object):
         if loaded_lama_file_path != "":
             self.sage_load(True)
 
+
+
         ############################################################################################
         ##############################################################################################
 
@@ -2447,6 +2457,7 @@ class Ui_MainWindow(object):
 
         self.actionProgram.setText(_translate("MainWindow", 'Zu "{}" wechseln'.format(change_to), None))
 
+
         if self.chosen_program=='lama':
             self.chosen_program = 'cria'
 
@@ -2470,6 +2481,7 @@ class Ui_MainWindow(object):
                 _translate(
                     "MainWindow",
                     "Anzahl der Aufgaben: 0",None))
+            self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad('cria')
 
         elif self.chosen_program=='cria':
             self.chosen_program = 'lama'
@@ -2496,6 +2508,8 @@ class Ui_MainWindow(object):
         MainWindow.setWindowIcon(QtGui.QIcon(icon))
 
         self.update_gui('widgets_search')
+        self.beispieldaten_dateipfad_1 = self.define_beispieldaten_dateipfad(1)
+        self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)
 
 
 
@@ -2544,7 +2558,7 @@ class Ui_MainWindow(object):
         msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
         msg.exec_()
 
-    def get_logfile(self):
+    def refresh_label_update(self):
         try:
             x = "log_file_%s" % self.label_aufgabentyp.text()[-1]
             log_file = os.path.join(path_programm, "Teildokument", x)
@@ -2567,7 +2581,7 @@ class Ui_MainWindow(object):
         )
         self.groupBox_af.show()
         self.combobox_searchtype.hide()
-        self.get_logfile()
+        self.refresh_label_update()
 
     def chosen_aufgabenformat_typ2(self):
         self.label_aufgabentyp.setText(
@@ -2575,7 +2589,7 @@ class Ui_MainWindow(object):
         )
         self.groupBox_af.hide()
         self.combobox_searchtype.show()
-        self.get_logfile()
+        self.refresh_label_update()
 
 
 
@@ -3462,6 +3476,13 @@ class Ui_MainWindow(object):
     ##################################################################
     ################## Befehle LAMA SAGE################################
 
+    def action_refreshddb_selected(self):
+        refresh_ddb(self)
+
+        self.refresh_label_update()
+        self.adapt_choosing_list("sage")
+
+
     def create_log_file(self, typ):
         if typ==None:
             program='cria'
@@ -3480,31 +3501,61 @@ class Ui_MainWindow(object):
         return beispieldaten_dateipfad
 
 
-    def check_if_log_file_exists(self, typ):
-        for i in range(2):
-            while True:
-                try:
-                    if typ==None:
-                        search_list=self.beispieldaten_dateipfad_cria.values() 
-                    elif typ==1:
-                        search_list=self.beispieldaten_dateipfad_1.values()
-                    elif typ==2:
-                        search_list=self.beispieldaten_dateipfad_2.values()
-                    break
-                except AttributeError:
-                    if typ==None:
-                        self.beispieldaten_dateipfad_cria=self.create_log_file(typ) 
-                    elif typ==1:
-                        self.beispieldaten_dateipfad_1=self.create_log_file(typ)
-                    elif typ==2:
-                        self.beispieldaten_dateipfad_2=self.create_log_file(typ)
-                break
+    def define_beispieldaten_dateipfad(self, typ):
+        # try:
+        #     if typ==None:
+        #         return self.beispieldaten_dateipfad_cria
+        #     elif typ==1:
+        #         return self.beispieldaten_dateipfad_1
+        #     elif typ==2:
+        #         return self.beispieldaten_dateipfad_2       
+        # except AttributeError:
+        #     print(False)
+        # if typ==None:
+        #     string='cria'
+        # else:
+        #     string=typ
+
+        log_file = os.path.join(path_programm, "Teildokument", "log_file_{}".format(typ))
+        
+            
+        beispieldaten_dateipfad = self.get_beispieldaten_dateipfad(log_file)
+
+        return beispieldaten_dateipfad
+
+        # try:
+        #     with open(log_file, encoding="utf8") as f:
+        #         dictionary = json.load(f)
+        # except FileNotFoundError:
+        #     refresh_ddb(self)  # 1
+        #     with open(log_file, encoding="utf8") as f:
+        #         dictionary = json.load(f)
+
+        # return dictionary
+        # for i in range(2):
+        #     while True:
+        #         try:
+        #             if typ==None:
+        #                 search_list=self.beispieldaten_dateipfad_cria.values() 
+        #             elif typ==1:
+        #                 search_list=self.beispieldaten_dateipfad_1.values()
+        #             elif typ==2:
+        #                 search_list=self.beispieldaten_dateipfad_2.values()
+        #             break
+        #         except AttributeError:
+        #             if typ==None:
+        #                 self.beispieldaten_dateipfad_cria=self.create_log_file(typ) 
+        #             elif typ==1:
+        #                 self.beispieldaten_dateipfad_1=self.create_log_file(typ)
+        #             elif typ==2:
+        #                 self.beispieldaten_dateipfad_2=self.create_log_file(typ)
+        #         break
 
 
 
     def check_if_file_exists(self, aufgabe): #aufgabe
         typ=self.get_aufgabentyp(aufgabe)
-        self.check_if_log_file_exists(typ)
+        # self.define_beispieldaten_dateipfad(typ)
                             
         if typ==1:
             list_paths = self.beispieldaten_dateipfad_1.values()
@@ -4603,16 +4654,30 @@ class Ui_MainWindow(object):
             if name.startswith(self.lineEdit_number_fb_cria.text()) and self.chosen_program=='cria':
                 list_beispieldaten.append(name)
 
-    def get_dictionary_of_file_paths(self, log_file):
+    def get_beispieldaten_dateipfad(self, log_file):          
         try:
             with open(log_file, encoding="utf8") as f:
                 dictionary = json.load(f)
         except FileNotFoundError:
-            refresh_ddb(self)  # 1
+            refresh_ddb(self)
             with open(log_file, encoding="utf8") as f:
                 dictionary = json.load(f)
 
-        return dictionary       
+        return dictionary
+
+    def get_aufgabentyp_from_path(self, abs_path):
+        path, filename = os.path.split(abs_path)
+        parent_folder = os.path.basename(path)
+   
+
+        if parent_folder != "Beispieleinreichung":
+            typ='cria'
+        elif re.search("[A-Z]", filename) == None:
+            typ=2
+        else:
+            typ=1
+
+        return typ               
 
     def adapt_choosing_list(self, list_mode):
         # print(list_mode)    
@@ -4633,9 +4698,27 @@ class Ui_MainWindow(object):
 
         listWidget.clear()
 
-        log_file_1 = os.path.join(path_programm, "Teildokument", "log_file_1")
-        log_file_2 = os.path.join(path_programm, "Teildokument", "log_file_2")
-        log_file_cria = os.path.join(path_programm, "Teildokument", "log_file_cria")
+        if self.chosen_program == 'cria':
+            beispieldaten_dateipfad = self.beispieldaten_dateipfad_cria
+        else:
+            if self.comboBox_at_sage.currentText() == 'Typ 1':
+                beispieldaten_dateipfad = self.beispieldaten_dateipfad_1
+            elif self.comboBox_at_sage.currentText() == 'Typ 2':
+                beispieldaten_dateipfad = self.beispieldaten_dateipfad_2
+
+
+        # self.get_beispieldaten_dateipfad(log_file_1)
+        # list_typ=[None,1,2]
+        # for typ in list_typ:
+        # self.beispieldaten_dateipfad_cria = self.check_if_log_file_exists(None)
+        # self.beispieldaten_dateipfad_1 = self.check_if_log_file_exists(1)
+        # self.beispieldaten_dateipfad_2 = self.check_if_log_file_exists(2)
+        # return
+        # print(self.beispieldaten_dateipfad_1)
+        # return
+        # log_file_1 = os.path.join(path_programm, "Teildokument", "log_file_1")
+        # log_file_2 = os.path.join(path_programm, "Teildokument", "log_file_2")
+        # log_file_cria = os.path.join(path_programm, "Teildokument", "log_file_cria")
 
 
         # if self.chosen_program == 'lama':
@@ -4650,7 +4733,55 @@ class Ui_MainWindow(object):
         #     beispieldaten_dateipfad_cria = self.get_dictionary_of_file_paths(log_file_cria)
         #     self.beispieldaten_dateipfad_cria = beispieldaten_dateipfad_cria
 
+        list_beispieldaten = list(self.beispieldaten_dateipfad_1.values())
+        
+        
+        #list_beispieldaten = sorted(list_beispieldaten)
+
+        for all in list_beispieldaten:
+            name, extension = os.path.splitext(os.path.basename(all))
+            item = QtWidgets.QListWidgetItem()
+            item.setText(name)
+            if name.startswith('_L_'):
+                item.setBackground(blue_3)
+            listWidget.addItem(item)
+
+
+
+
+        return
         drafts_path = os.path.join(path_programm, "Beispieleinreichung")
+
+
+        beispieldaten_dateipfad_beispieleinreichung = search_files(drafts_path)
+        print(beispieldaten_dateipfad_beispieleinreichung)
+
+        
+
+
+        for all in beispieldaten_dateipfad_beispieleinreichung.values():
+            aufgabentyp = self.get_aufgabentyp_from_path(all)
+            print(aufgabentyp)
+
+
+
+        
+        #     path, filename = os.path.split(all)
+        #     parent_folder = os.path.split(path)
+        #     if parent_folder != "Beispieleinreichung":
+        #         typ='cria'
+        #     elif re.search("[A-Z]", aufgabe) == None:
+        #         typ=2
+        #     else:
+        #         typ=1
+            # x= os.path.basename(x)
+        
+            # print(os.path.dirname(all))
+            # print(os.path.basename(os.path.normpath(all)))
+            # path, filename = os.path.split(all)
+            # print(path)
+            # print(filename)
+            # print(os.path.split(path))
         # for all in os.listdir(drafts_path):
         # temp_dict={}
         # x=search_files(drafts_path)

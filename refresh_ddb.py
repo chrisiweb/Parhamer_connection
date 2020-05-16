@@ -44,12 +44,6 @@ def save_log_file(self, log_file, beispieldaten_dateipfad):
 
     beispieldaten_dateipfad = temp_dict_beispieldaten
 
-    # print(beispieldaten_dateipfad)
-
-    # log_file = os.path.join(
-    #     path_programm, "Teildokument", "log_file_%s" % selected_aufgabentyp
-    # )
-
 
     try:
         with open(log_file, "w+", encoding="utf8") as f:
@@ -59,27 +53,20 @@ def save_log_file(self, log_file, beispieldaten_dateipfad):
         with open(log_file, "w+", encoding="utf8") as f:
             json.dump(beispieldaten_dateipfad, f, ensure_ascii=False)
 
-    self.label_update.setText(
-        _translate(
-            "MainWindow",
-            "Last Update: "
-            + modification_date(log_file).strftime("%d.%m.%y - %H:%M"),
-            None,
-        )
-    )
+
 
 
 def collect_all_exisiting_files(self, selected_program):
     if selected_program == 'lama':
-        for selected_aufgabentyp in [1, 2]:
-            # beispieldaten_dateipfad = {}
+        for selected_aufgabentyp in [1,2]:
+            beispieldaten_dateipfad = {}
             # beispieldaten = []
             chosen_aufgabenformat = "Typ%sAufgaben" % selected_aufgabentyp
             ########################################################
             ##### Suche offizielle Beispiele ####################
             ##################################################
             dateipfad=os.path.join(path_programm, "_database", chosen_aufgabenformat)
-            beispieldaten_dateipfad = search_files(dateipfad)
+            beispieldaten_dateipfad = search_files(dateipfad, beispieldaten_dateipfad)
 
 
             ################################################
@@ -98,6 +85,7 @@ def collect_all_exisiting_files(self, selected_program):
             #########
             log_file = os.path.join(path_programm, "Teildokument", "log_file_%s" % selected_aufgabentyp)
 
+            # print(beispieldaten_dateipfad)
             save_log_file(self, log_file, beispieldaten_dateipfad)
 
     if selected_program == 'cria':
@@ -177,7 +165,7 @@ def refresh_ddb(self, selected_program=False):
 
 
     QtWidgets.QApplication.restoreOverrideCursor()
-    self.adapt_choosing_list("sage")
+    # self.adapt_choosing_list("sage")
     # bring_to_front(QMainWindow())
     # self.adapt_choosing_list("feedback")
     # msg.close()
