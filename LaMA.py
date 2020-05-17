@@ -41,7 +41,7 @@ from list_of_widgets import (
 )
 from subwindows import Ui_Dialog_choose_type, Ui_Dialog_titlepage, Ui_Dialog_ausgleichspunkte, Ui_Dialog_erstellen, Ui_Dialog_speichern
 from translate import _fromUtf8, _translate
-from sort_items import natural_keys
+from sort_items import natural_keys, natural_keys_path
 from create_pdf import prepare_tex_for_pdf, create_pdf
 from refresh_ddb import modification_date, refresh_ddb, search_files
 from standard_dialog_windows import warning_window, question_window, critical_window, information_window
@@ -4671,7 +4671,7 @@ class Ui_MainWindow(object):
    
 
         if parent_folder != "Beispieleinreichung":
-            typ='cria'
+            typ=None
         elif re.search("[A-Z]", filename) == None:
             typ=2
         else:
@@ -4679,9 +4679,24 @@ class Ui_MainWindow(object):
 
         return typ               
 
+    def get_drafts_for_listwidget(self, typ):
+        list_=[]
+        drafts_path = os.path.join(path_programm, "Beispieleinreichung")
+
+        beispieldaten_dateipfad_beispieleinreichung = search_files(drafts_path)
+
+        for all in beispieldaten_dateipfad_beispieleinreichung.values():
+            aufgabentyp = self.get_aufgabentyp_from_path(all)
+            if aufgabentyp == typ:
+                list_.append(all)
+            
+        return list_
+        
+
+
+
+
     def adapt_choosing_list(self, list_mode):
-        # print(list_mode)    
-        # return
         if list_mode == "sage":
             listWidget = self.listWidget
         if list_mode == "feedback":
@@ -4698,12 +4713,16 @@ class Ui_MainWindow(object):
 
         listWidget.clear()
 
+
         if self.chosen_program == 'cria':
+            typ=None
             beispieldaten_dateipfad = self.beispieldaten_dateipfad_cria
         else:
             if self.comboBox_at_sage.currentText() == 'Typ 1':
+                typ=1
                 beispieldaten_dateipfad = self.beispieldaten_dateipfad_1
             elif self.comboBox_at_sage.currentText() == 'Typ 2':
+                typ=2
                 beispieldaten_dateipfad = self.beispieldaten_dateipfad_2
 
 
@@ -4733,35 +4752,45 @@ class Ui_MainWindow(object):
         #     beispieldaten_dateipfad_cria = self.get_dictionary_of_file_paths(log_file_cria)
         #     self.beispieldaten_dateipfad_cria = beispieldaten_dateipfad_cria
 
-        list_beispieldaten = list(self.beispieldaten_dateipfad_1.values())
-        
+        list_beispieldaten = list(beispieldaten_dateipfad.values())
+        # list_beispieldaten.sort()
         
         #list_beispieldaten = sorted(list_beispieldaten)
+
+
+        if self.cb_drafts_sage.isChecked():
+            liste_draft = self.get_drafts_for_listwidget(typ)
+
+            list_beispieldaten = list_beispieldaten + liste_draft
+
+        # print(list_beispieldaten)
+        # list_beispieldaten.sort(key= lambda x: os.path.basename(x))
+        list_beispieldaten = sorted(list_beispieldaten, key=natural_keys)
+        # print(list_beispieldaten)
 
         for all in list_beispieldaten:
             name, extension = os.path.splitext(os.path.basename(all))
             item = QtWidgets.QListWidgetItem()
-            item.setText(name)
+            if "Beispieleinreichung" in all:
+                item.setText(name + ' (Entwurf)')
+            else:
+                item.setText(name) 
+
             if name.startswith('_L_'):
                 item.setBackground(blue_3)
-            listWidget.addItem(item)
-
-
-
+                listWidget.addItem(item)
+            elif "Beispieleinreichung" in all:
+                item.setBackground(blue_7)
+                item.setForeground(white)
+                listWidget.addItem(item)    
+            else:
+                listWidget.addItem(item)
 
         return
-        drafts_path = os.path.join(path_programm, "Beispieleinreichung")
 
 
-        beispieldaten_dateipfad_beispieleinreichung = search_files(drafts_path)
-        print(beispieldaten_dateipfad_beispieleinreichung)
-
-        
 
 
-        for all in beispieldaten_dateipfad_beispieleinreichung.values():
-            aufgabentyp = self.get_aufgabentyp_from_path(all)
-            print(aufgabentyp)
 
 
 
@@ -4786,7 +4815,7 @@ class Ui_MainWindow(object):
         # temp_dict={}
         # x=search_files(drafts_path)
         # print(x)
-        return
+        # return
 
         if self.cb_drafts_sage.isChecked():
             drafts_path = os.path.join(path_programm, "Beispieleinreichung")
