@@ -1435,7 +1435,7 @@ class Ui_MainWindow(object):
         )
         self.groupBox_sage.hide()
         self.splitter_sage.hide()
-        self.comboBox_klassen_changed("sage")
+        # self.comboBox_klassen_changed("sage")
 
         ################################################################
         ################################################################
@@ -2460,6 +2460,11 @@ class Ui_MainWindow(object):
 
         if self.chosen_program=='lama':
             self.chosen_program = 'cria'
+            try:
+                self.beispieldaten_dateipfad_cria
+            except AttributeError:
+                self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad('cria')
+         
 
             self.gridLayout.addWidget(self.groupBox_af, 3, 0, 1, 1)
             self.gridLayout.addWidget(self.groupBox_punkte, 0, 1, 1, 1)
@@ -2485,6 +2490,14 @@ class Ui_MainWindow(object):
 
         elif self.chosen_program=='cria':
             self.chosen_program = 'lama'
+
+            try:
+                self.beispieldaten_dateipfad_1
+                self.beispieldaten_dateipfad_2
+            except AttributeError:
+                self.beispieldaten_dateipfad_1 = self.define_beispieldaten_dateipfad(1)
+                self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)
+
 
             self.gridLayout.addWidget(self.groupBox_af, 4, 0, 1, 1)
             self.gridLayout.addWidget(self.groupBox_punkte, 0, 2, 1, 1)
@@ -3480,7 +3493,7 @@ class Ui_MainWindow(object):
         refresh_ddb(self)
 
         self.refresh_label_update()
-        self.adapt_choosing_list("sage")
+        # self.adapt_choosing_list("sage")
 
 
     def create_log_file(self, typ):
@@ -4665,6 +4678,13 @@ class Ui_MainWindow(object):
 
         return dictionary
 
+    def get_name_from_path(self, path):
+        path, filename = os.path.split(path)
+        filename, extension = os.path.splitext(filename)
+        
+        return filename
+
+
     def get_aufgabentyp_from_path(self, abs_path):
         path, filename = os.path.split(abs_path)
         parent_folder = os.path.basename(path)
@@ -4693,10 +4713,29 @@ class Ui_MainWindow(object):
         return list_
         
 
+    def delete_item_with_string_from_list(self, string, list_):
+        for section in list_[:]:
+            # print(string)
+            # print(section)
+            if string not in section:
+                list_.remove(section)
+                # print('Delete')
+            #     
+        
+        # print(list_)
+        return list_
+
+
+            #     del temp_dictionary[item]    
+            # else:
+            #     print(item)
+        # print(temp_dictionary)
+        # return temp_dictionary        
 
 
 
     def adapt_choosing_list(self, list_mode):
+        # print("Adapt choosing list")
         if list_mode == "sage":
             listWidget = self.listWidget
         if list_mode == "feedback":
@@ -4725,6 +4764,66 @@ class Ui_MainWindow(object):
                 typ=2
                 beispieldaten_dateipfad = self.beispieldaten_dateipfad_2
 
+        # print(beispieldaten_dateipfad)
+
+        # beispieldaten_dateipfad.clear()
+
+        # print(beispieldaten_dateipfad)
+        list_beispieldaten_dateipfad = list(beispieldaten_dateipfad.keys())
+        if self.comboBox_gk.currentText() != '':
+            if self.comboBox_gk_num.currentText() == '':
+                string = self.comboBox_gk.currentText()
+            else:
+                string = self.comboBox_gk.currentText() + ' ' + self.comboBox_gk_num.currentText()
+
+            list_beispieldaten_dateipfad = self.delete_item_with_string_from_list(string, list_beispieldaten_dateipfad)
+            
+            
+            print(list_beispieldaten_dateipfad)
+
+            # for section in list(beispieldaten_dateipfad.keys()):
+            #     if self.comboBox_gk.currentText() not in section:
+            #         del beispieldaten_dateipfad[section]  
+
+        # print(list_beispieldaten_dateipfad)          
+            # string = self.comboBox_gk.currentText()
+            # beispieldaten_dateipfad = self.delete_item_with_string_from_dictionary(string, beispieldaten_dateipfad)
+            # if self.comboBox_gk_num.currentText() == '':
+            #     string = self.comboBox_gk.currentText()
+            #     beispieldaten_dateipfad = self.delete_item_with_string_from_dictionary(string, beispieldaten_dateipfad)
+            # else:
+            #     string = self.comboBox_gk.currentText() + ' ' + self.comboBox_gk_num.currentText()
+            #     beispieldaten_dateipfad = self.delete_item_with_string_from_dictionary(string, beispieldaten_dateipfad)
+                # for section in list(beispieldaten_dateipfad.keys()):
+                #     if self.comboBox_gk.currentText() not in section:
+                #         del beispieldaten_dateipfad[section]                
+        
+
+
+        # print(beispieldaten_dateipfad)
+        # print(self.beispieldaten_dateipfad_1)
+        return        
+        print('Lama')
+        print(self.comboBox_at_sage.currentText())
+        print(self.comboBox_gk.currentText())
+        print(self.comboBox_gk_num.currentText())
+        print(self.lineEdit_number.text())
+
+        # print('cria')
+        # print(self.comboBox_klassen.currentText())
+        # print(self.comboBox_kapitel.currentText())
+        # print(self.comboBox_unterkapitel.currentText())
+        # print(self.lineEdit_number.text())
+
+        
+
+        return
+
+        ### Plan adapt_choosing_list:
+        # 1. collect all paths (alle Einstellungen überprüfen) in list
+        # 2. get file name of items
+        # 3. sort
+        # 4. add_to_list  
 
         # self.get_beispieldaten_dateipfad(log_file_1)
         # list_typ=[None,1,2]
@@ -4766,8 +4865,9 @@ class Ui_MainWindow(object):
         # print(list_beispieldaten)
         # list_beispieldaten.sort(key= lambda x: os.path.basename(x))
         list_beispieldaten = sorted(list_beispieldaten, key=natural_keys)
+        self.get_name_from_path(list_beispieldaten[0])
         # print(list_beispieldaten)
-
+        return
         for all in list_beispieldaten:
             name, extension = os.path.splitext(os.path.basename(all))
             item = QtWidgets.QListWidgetItem()
