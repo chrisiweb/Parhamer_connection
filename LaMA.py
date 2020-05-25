@@ -1124,6 +1124,7 @@ class Ui_MainWindow(object):
 
         self.lineEdit_number = QtWidgets.QLineEdit(self.groupBox_alle_aufgaben)
         self.lineEdit_number.setObjectName("lineEdit_number")
+        self.lineEdit_number.setValidator(QtGui.QIntValidator())
         self.lineEdit_number.textChanged.connect(
             partial(self.lineEdit_number_changed, "sage")
         )
@@ -3491,27 +3492,32 @@ class Ui_MainWindow(object):
 
     def action_refreshddb_selected(self):
         refresh_ddb(self)
-
+        if self.chosen_program=='lama':
+            self.beispieldaten_dateipfad_1 = self.define_beispieldaten_dateipfad(1)
+            self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)
+        elif self.chosen_program=='cria':
+            self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad('cria')
+        self.beispieldaten_dateipfad_1
         self.refresh_label_update()
         # self.adapt_choosing_list("sage")
 
 
-    def create_log_file(self, typ):
-        if typ==None:
-            program='cria'
-            log_file=os.path.join(path_programm, "Teildokument", "log_file_cria")
-        else:
-            program='lama'
-            if typ==1:
-                log_file=os.path.join(path_programm, "Teildokument", "log_file_1")
-            if typ==2:
-                log_file=os.path.join(path_programm, "Teildokument", "log_file_2")
+    # def create_log_file(self, typ):
+    #     if typ==None:
+    #         program='cria'
+    #         log_file=os.path.join(path_programm, "Teildokument", "log_file_cria")
+    #     else:
+    #         program='lama'
+    #         if typ==1:
+    #             log_file=os.path.join(path_programm, "Teildokument", "log_file_1")
+    #         if typ==2:
+    #             log_file=os.path.join(path_programm, "Teildokument", "log_file_2")
 
-        refresh_ddb(self, program)
-        with open(log_file, encoding="utf8") as f:
-            beispieldaten_dateipfad = json.load(f)
+    #     refresh_ddb(self, program)
+    #     with open(log_file, encoding="utf8") as f:
+    #         beispieldaten_dateipfad = json.load(f)
         
-        return beispieldaten_dateipfad
+    #     return beispieldaten_dateipfad
 
 
     def define_beispieldaten_dateipfad(self, typ):
@@ -4219,9 +4225,9 @@ class Ui_MainWindow(object):
                 if klasse.upper() in all:
                     filename = os.path.basename(self.beispieldaten_dateipfad_cria[all])
                     if name == filename:
-                        section_split = all.split(" - ")
-                        titel=section_split[3]
-                        typ_info=section_split[4] # Aufgabenformat
+                        info = self.split_section(all)
+                        titel=info[2]
+                        typ_info=info[3] # Aufgabenformat
             punkte=0
 
 
@@ -4715,22 +4721,29 @@ class Ui_MainWindow(object):
 
     def delete_item_with_string_from_list(self, string, list_):
         for section in list_[:]:
-            # print(string)
-            # print(section)
             if string not in section:
                 list_.remove(section)
-                # print('Delete')
-            #     
-        
-        # print(list_)
+
         return list_
+       
 
+    def split_section(self, section):
+        section = re.split("-|{|}", section)
 
-            #     del temp_dictionary[item]    
-            # else:
-            #     print(item)
-        # print(temp_dictionary)
-        # return temp_dictionary        
+        info = [item.strip() for item in section]
+        info.pop(0)
+        info.pop(-1)
+
+        return info
+
+    def search_for_number(self, list_):
+        for section in list_[:]:
+            info = self.split_section(section)
+            if self.lineEdit_number.text() != info[1]:
+                # print(info[1])
+                # print(section)
+                list_.remove(section)
+        return list_
 
 
 
@@ -4770,17 +4783,25 @@ class Ui_MainWindow(object):
 
         # print(beispieldaten_dateipfad)
         list_beispieldaten_dateipfad = list(beispieldaten_dateipfad.keys())
-        if self.comboBox_gk.currentText() != '':
-            if self.comboBox_gk_num.currentText() == '':
+        if is_empty(self.comboBox_gk.currentText())==False:
+            if is_empty(self.comboBox_gk_num.currentText()==True):
                 string = self.comboBox_gk.currentText()
             else:
                 string = self.comboBox_gk.currentText() + ' ' + self.comboBox_gk_num.currentText()
 
             list_beispieldaten_dateipfad = self.delete_item_with_string_from_list(string, list_beispieldaten_dateipfad)
-            
-            
-            print(list_beispieldaten_dateipfad)
 
+        
+        if is_empty(self.lineEdit_number.text()) == False:
+            list_beispieldaten_dateipfad = self.search_for_number(list_beispieldaten_dateipfad)
+
+
+        print(list_beispieldaten_dateipfad)
+
+
+
+
+        #self.lineEdit_number.text()
             # for section in list(beispieldaten_dateipfad.keys()):
             #     if self.comboBox_gk.currentText() not in section:
             #         del beispieldaten_dateipfad[section]  
