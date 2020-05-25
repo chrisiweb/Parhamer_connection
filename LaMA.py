@@ -41,7 +41,7 @@ from list_of_widgets import (
 )
 from subwindows import Ui_Dialog_choose_type, Ui_Dialog_titlepage, Ui_Dialog_ausgleichspunkte, Ui_Dialog_erstellen, Ui_Dialog_speichern
 from translate import _fromUtf8, _translate
-from sort_items import natural_keys, natural_keys_path
+from sort_items import natural_keys, sorted_gks
 from create_pdf import prepare_tex_for_pdf, create_pdf
 from refresh_ddb import modification_date, refresh_ddb, search_files
 from standard_dialog_windows import warning_window, question_window, critical_window, information_window
@@ -4705,14 +4705,13 @@ class Ui_MainWindow(object):
 
         return typ               
 
-    def get_drafts_for_listwidget(self, typ):
-        list_=[]
+    def get_beispieldaten_dateipfad_draft(self, typ):
         drafts_path = os.path.join(path_programm, "Beispieleinreichung")
+        list_ =[]
+        beispieldaten_dateipfad_draft = search_files(drafts_path)
 
-        beispieldaten_dateipfad_beispieleinreichung = search_files(drafts_path)
-
-        for all in beispieldaten_dateipfad_beispieleinreichung.values():
-            aufgabentyp = self.get_aufgabentyp_from_path(all)
+        for all in beispieldaten_dateipfad_draft.keys():
+            aufgabentyp = self.get_aufgabentyp_from_path(beispieldaten_dateipfad_draft[all])
             if aufgabentyp == typ:
                 list_.append(all)
             
@@ -4728,7 +4727,7 @@ class Ui_MainWindow(object):
        
 
     def split_section(self, section):
-        section = re.split("-|{|}", section)
+        section = re.split(" - |{|}", section)
 
         info = [item.strip() for item in section]
         info.pop(0)
@@ -4740,12 +4739,44 @@ class Ui_MainWindow(object):
         for section in list_[:]:
             info = self.split_section(section)
             if self.lineEdit_number.text() != info[1]:
-                # print(info[1])
-                # print(section)
                 list_.remove(section)
         return list_
 
+    # def get_path_from_section(self, section):
+    #     try:
+    #         path = beispieldaten_dateipfad[section]
+    #     except KeyError:
+    #         beispieldaten_dateipfad_draft = search_files(drafts_path)
+    #         path = beispieldaten_dateipfad_draft[section]
+    #     return path
 
+    def add_items_to_listwidget(self, list_beispieldaten_sections, beispieldaten_dateipfad, listWidget):
+        for section in list_beispieldaten_sections:
+            try:
+                path = beispieldaten_dateipfad[section]
+            except KeyError:
+                drafts_path = os.path.join(path_programm, "Beispieleinreichung")
+                beispieldaten_dateipfad_draft = search_files(drafts_path)
+                path = beispieldaten_dateipfad_draft[section]
+
+
+            name, extension = os.path.splitext(os.path.basename(path))
+
+            item = QtWidgets.QListWidgetItem()
+            if "Beispieleinreichung" in path:
+                item.setText(name + ' (Entwurf)')
+            else:
+                item.setText(name)
+
+            if name.startswith('_L_'):
+                item.setBackground(blue_3)
+                listWidget.addItem(item)
+            elif "Beispieleinreichung" in path:
+                item.setBackground(blue_7)
+                item.setForeground(white)
+                listWidget.addItem(item)    
+            else:
+                listWidget.addItem(item)
 
     def adapt_choosing_list(self, list_mode):
         # print("Adapt choosing list")
@@ -4782,21 +4813,84 @@ class Ui_MainWindow(object):
         # beispieldaten_dateipfad.clear()
 
         # print(beispieldaten_dateipfad)
-        list_beispieldaten_dateipfad = list(beispieldaten_dateipfad.keys())
+        list_beispieldaten_sections = list(beispieldaten_dateipfad.keys())
         if is_empty(self.comboBox_gk.currentText())==False:
-            if is_empty(self.comboBox_gk_num.currentText()==True):
+            if is_empty(self.comboBox_gk_num.currentText())==True:
                 string = self.comboBox_gk.currentText()
             else:
                 string = self.comboBox_gk.currentText() + ' ' + self.comboBox_gk_num.currentText()
 
-            list_beispieldaten_dateipfad = self.delete_item_with_string_from_list(string, list_beispieldaten_dateipfad)
+            list_beispieldaten_sections = self.delete_item_with_string_from_list(string, list_beispieldaten_sections)
 
         
         if is_empty(self.lineEdit_number.text()) == False:
-            list_beispieldaten_dateipfad = self.search_for_number(list_beispieldaten_dateipfad)
+            list_beispieldaten_sections = self.search_for_number(list_beispieldaten_sections)
 
 
-        print(list_beispieldaten_dateipfad)
+        if self.cb_drafts_sage.isChecked():
+            drafts=self.get_beispieldaten_dateipfad_draft(typ)
+
+            list_beispieldaten_sections = list_beispieldaten_sections + drafts
+
+
+        list_beispieldaten_sections = sorted_gks(list_beispieldaten_sections)
+
+
+        self.add_items_to_listwidget(list_beispieldaten_sections, beispieldaten_dateipfad, listWidget)
+
+        # for section in list_beispieldaten_sections:
+        #     try:
+        #         path = beispieldaten_dateipfad[section]
+        #     except KeyError:
+        #         drafts_path = os.path.join(path_programm, "Beispieleinreichung")
+        #         beispieldaten_dateipfad_draft = search_files(drafts_path)
+        #         path = beispieldaten_dateipfad_draft[section]
+
+
+        #     name, extension = os.path.splitext(os.path.basename(path))
+
+        #     item = QtWidgets.QListWidgetItem()
+        #     if "Beispieleinreichung" in path:
+        #         item.setText(name + ' (Entwurf)')
+        #     else:
+        #         item.setText(name)
+
+        #     if name.startswith('_L_'):
+        #         item.setBackground(blue_3)
+        #         listWidget.addItem(item)
+        #     elif "Beispieleinreichung" in path:
+        #         item.setBackground(blue_7)
+        #         item.setForeground(white)
+        #         listWidget.addItem(item)    
+        #     else:
+        #         listWidget.addItem(item)
+
+
+            
+
+
+
+        return
+        for all in list_beispieldaten:
+            name, extension = os.path.splitext(os.path.basename(all))
+            item = QtWidgets.QListWidgetItem()
+            if "Beispieleinreichung" in all:
+                item.setText(name + ' (Entwurf)')
+            else:
+                item.setText(name) 
+
+            if name.startswith('_L_'):
+                item.setBackground(blue_3)
+                listWidget.addItem(item)
+            elif "Beispieleinreichung" in all:
+                item.setBackground(blue_7)
+                item.setForeground(white)
+                listWidget.addItem(item)    
+            else:
+                listWidget.addItem(item)
+        
+            # print(path)    
+        # print(list_beispieldaten_dateipfad)
 
 
 
