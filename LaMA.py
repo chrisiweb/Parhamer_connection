@@ -4897,6 +4897,10 @@ class Ui_MainWindow(object):
                 info= self.split_section(section)
                 if klasse not in info[0]:
                     list_beispieldaten_sections.remove(section)
+        
+            if is_empty(self.comboBox_kapitel.currentText())==False:
+                print(self.comboBox_kapitel.currentText())
+                ## get string in Brackets
 
             # list_beispieldaten_sections = sorted(list_beispieldaten_sections)
 
