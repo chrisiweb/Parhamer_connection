@@ -2705,13 +2705,60 @@ class Ui_MainWindow(object):
                 "Warnung - Here be dragons!",
             )
 
+
+    def add_drafts_to_beispieldaten(self):
+        drafts_path = os.path.join(path_programm, "Beispieleinreichung")
+        beispieldaten_dateipfad_draft = search_files(drafts_path)
+        for section in beispieldaten_dateipfad_draft.keys():
+            path = beispieldaten_dateipfad_draft[section]
+            aufgabentyp = self.get_aufgabentyp_from_path(path)
+            if self.chosen_program == 'lama':
+                if aufgabentyp == 1:
+                    self.beispieldaten_dateipfad_1[section]=path
+                elif aufgabentyp == 2:
+                    self.beispieldaten_dateipfad_2[section]=path
+            elif self.chosen_program=='cria' and aufgabentyp == None:
+                self.beispieldaten_dateipfad_cria[section]=path
+
+    def delete_drafts_from_beispieldaten(self):
+        drafts_path = os.path.join(path_programm, "Beispieleinreichung")
+        beispieldaten_dateipfad_draft = search_files(drafts_path) 
+        for section in beispieldaten_dateipfad_draft.keys():
+            path = beispieldaten_dateipfad_draft[section]
+            aufgabentyp = self.get_aufgabentyp_from_path(path)
+            if self.chosen_program == 'lama':
+                if section in self.beispieldaten_dateipfad_1:
+                    del self.beispieldaten_dateipfad_1[section]
+                elif section in self.beispieldaten_dateipfad_2:
+                    del self.beispieldaten_dateipfad_2[section]
+            elif self.chosen_program=='cria' and section in self.beispieldaten_dateipfad_cria:
+                del self.beispieldaten_dateipfad_cria[section]                    
+    
+
+
     def cb_drafts_sage_enabled(self):
-        if self.cb_drafts_sage.isChecked():
+        if self.cb_drafts_sage.isChecked()==True:
             warning_window(
                 "Entwürfe können Fehler enthalten, die das Programm zum Absturz bringen.",
                 "Speichern Sie gegebenenfalls eine erstellte Schularbeit vor dem Erstellen!",
                 "Warnung - Here be dragons!",
             )
+
+            self.add_drafts_to_beispieldaten()
+
+        if self.cb_drafts_sage.isChecked()==False:
+            self.delete_drafts_from_beispieldaten()
+
+
+        # print(self.beispieldaten_dateipfad_1)
+        # for section in beispieldaten_dateipfad_draft.keys():
+        #     path = beispieldaten_dateipfad_draft[section]
+        #     aufgabentyp = self.get_aufgabentyp_from_path(path)
+        #     if aufgabentyp == typ:
+        #         list_section.append(section)
+        #         list_path.append(path)
+        # print(self.beispieldaten_dateipfad_1)
+        # print(self.beispieldaten_dateipfad_2)
         self.adapt_choosing_list("sage")
 
 
@@ -4253,12 +4300,27 @@ class Ui_MainWindow(object):
 
         return [punkte, 0, titel, typ_info]
 
-    def get_dateipfad_aufgabe(self, aufgabe):
+    def get_dateipfad_aufgabe(self, aufgabe, draft=False):
+        name=aufgabe + ".tex"
         typ=self.get_aufgabentyp(aufgabe)
+
+        if draft==True:      
+            _,list_path = self.get_beispieldaten_dateipfad_draft(typ)
+            
+            for path in list_path:
+                if name == os.path.basename(path):
+                    dateipfad = path
+                    break
+            return dateipfad
+            # drafts_path = os.path.join(path_programm, "Beispieleinreichung")
+            # beispieldaten_dateipfad_draft = search_files(drafts_path)
+            # print(aufgabe)
+            # print(beispieldaten_dateipfad_draft)            
+
         if self.chosen_program=='cria':
             list_path = self.beispieldaten_dateipfad_cria.values()
             klasse, aufgabe = self.split_klasse_aufgabe(aufgabe)
-            name = aufgabe + ".tex"
+            # name = aufgabe + ".tex"
             for path in list_path:
                 if klasse.lower() in path.lower():
                     if name == os.path.basename(path):
@@ -4269,7 +4331,7 @@ class Ui_MainWindow(object):
                 list_path = self.beispieldaten_dateipfad_1.values()
             elif typ==2:
                 list_path = self.beispieldaten_dateipfad_2.values()        
-            name = aufgabe + ".tex"
+            # name = aufgabe + ".tex"
             for path in list_path:
                 if name == os.path.basename(path):
                     dateipfad = path
@@ -4523,7 +4585,13 @@ class Ui_MainWindow(object):
         self.adapt_choosing_list(list_mode)
 
     def nummer_clicked(self, item):
-        aufgabe=item.text().replace("*E-", "")
+        if '(Entwurf)' in item.text():
+            aufgabe=item.text().replace(" (Entwurf)", "")
+            draft=True
+        else:
+            aufgabe=item.text()
+            draft=False
+
         if self.chosen_program=='cria':
             aufgabe=self.build_klasse_aufgabe(aufgabe)
 
@@ -4531,7 +4599,7 @@ class Ui_MainWindow(object):
             return
 
         try:
-            collect_content(self, aufgabe)
+            collect_content(self, aufgabe, draft)
         except FileNotFoundError:
             warning_window('Die Datei konnte nicht gefunden werden.\nBitte wählen Sie "Refresh Database" (F5) und versuchen Sie es erneut.')
             return
@@ -4707,15 +4775,19 @@ class Ui_MainWindow(object):
 
     def get_beispieldaten_dateipfad_draft(self, typ):
         drafts_path = os.path.join(path_programm, "Beispieleinreichung")
-        list_ =[]
+        list_section =[]
+        list_path = []
         beispieldaten_dateipfad_draft = search_files(drafts_path)
 
-        for all in beispieldaten_dateipfad_draft.keys():
-            aufgabentyp = self.get_aufgabentyp_from_path(beispieldaten_dateipfad_draft[all])
+        for section in beispieldaten_dateipfad_draft.keys():
+            path = beispieldaten_dateipfad_draft[section]
+            aufgabentyp = self.get_aufgabentyp_from_path(path)
             if aufgabentyp == typ:
-                list_.append(all)
+                list_section.append(section)
+                list_path.append(path)
+
             
-        return list_
+        return list_section, list_path
         
 
     def delete_item_with_string_from_list(self, string, list_):
@@ -4759,9 +4831,7 @@ class Ui_MainWindow(object):
                 beispieldaten_dateipfad_draft = search_files(drafts_path)
                 path = beispieldaten_dateipfad_draft[section]
 
-
             name, extension = os.path.splitext(os.path.basename(path))
-
             item = QtWidgets.QListWidgetItem()
             if "Beispieleinreichung" in path:
                 item.setText(name + ' (Entwurf)')
@@ -4772,14 +4842,14 @@ class Ui_MainWindow(object):
                 item.setBackground(blue_3)
                 listWidget.addItem(item)
             elif "Beispieleinreichung" in path:
-                item.setBackground(blue_7)
+                item.setBackground(blue_5)
                 item.setForeground(white)
                 listWidget.addItem(item)    
             else:
                 listWidget.addItem(item)
 
     def adapt_choosing_list(self, list_mode):
-        # print("Adapt choosing list")
+        print("Adapt choosing list")
         if list_mode == "sage":
             listWidget = self.listWidget
         if list_mode == "feedback":
@@ -4808,35 +4878,56 @@ class Ui_MainWindow(object):
                 typ=2
                 beispieldaten_dateipfad = self.beispieldaten_dateipfad_2
 
-        # print(beispieldaten_dateipfad)
 
-        # beispieldaten_dateipfad.clear()
-
-        # print(beispieldaten_dateipfad)
         list_beispieldaten_sections = list(beispieldaten_dateipfad.keys())
-        if is_empty(self.comboBox_gk.currentText())==False:
-            if is_empty(self.comboBox_gk_num.currentText())==True:
-                string = self.comboBox_gk.currentText()
-            else:
-                string = self.comboBox_gk.currentText() + ' ' + self.comboBox_gk_num.currentText()
 
-            list_beispieldaten_sections = self.delete_item_with_string_from_list(string, list_beispieldaten_sections)
 
-        
+        if self.chosen_program == 'lama':
+            if is_empty(self.comboBox_gk.currentText())==False:
+                if is_empty(self.comboBox_gk_num.currentText())==True:
+                    string = self.comboBox_gk.currentText()
+                else:
+                    string = self.comboBox_gk.currentText() + ' ' + self.comboBox_gk_num.currentText()
+
+                list_beispieldaten_sections = self.delete_item_with_string_from_list(string, list_beispieldaten_sections)
+
+        if self.chosen_program == 'cria':
+            klasse = 'K'+self.comboBox_klassen.currentText()[0]
+            for section in list_beispieldaten_sections[:]:     
+                info= self.split_section(section)
+                if klasse not in info[0]:
+                    list_beispieldaten_sections.remove(section)
+            list_beispieldaten_sections = sorted(list_beispieldaten_sections)
+
+        print(list_beispieldaten_sections)        
+        print(self.comboBox_kapitel.currentText())
+        print(self.comboBox_unterkapitel.currentText())
+
+
+
         if is_empty(self.lineEdit_number.text()) == False:
             list_beispieldaten_sections = self.search_for_number(list_beispieldaten_sections)
 
 
-        if self.cb_drafts_sage.isChecked():
-            drafts=self.get_beispieldaten_dateipfad_draft(typ)
+        # if self.cb_drafts_sage.isChecked():
 
-            list_beispieldaten_sections = list_beispieldaten_sections + drafts
+        #     drafts,_=self.get_beispieldaten_dateipfad_draft(typ)
+
+        #     list_beispieldaten_sections = list_beispieldaten_sections + drafts
 
 
-        list_beispieldaten_sections = sorted_gks(list_beispieldaten_sections)
+        list_beispieldaten_sections = sorted_gks(list_beispieldaten_sections, self.chosen_program)
 
 
         self.add_items_to_listwidget(list_beispieldaten_sections, beispieldaten_dateipfad, listWidget)
+
+        return
+
+        print('cria')
+        print(self.comboBox_klassen.currentText())
+        print(self.comboBox_kapitel.currentText())
+        print(self.comboBox_unterkapitel.currentText())
+        print(self.lineEdit_number.text())
 
         # for section in list_beispieldaten_sections:
         #     try:
@@ -4870,24 +4961,24 @@ class Ui_MainWindow(object):
 
 
 
-        return
-        for all in list_beispieldaten:
-            name, extension = os.path.splitext(os.path.basename(all))
-            item = QtWidgets.QListWidgetItem()
-            if "Beispieleinreichung" in all:
-                item.setText(name + ' (Entwurf)')
-            else:
-                item.setText(name) 
+        # return
+        # for all in list_beispieldaten:
+        #     name, extension = os.path.splitext(os.path.basename(all))
+        #     item = QtWidgets.QListWidgetItem()
+        #     if "Beispieleinreichung" in all:
+        #         item.setText(name + ' (Entwurf)')
+        #     else:
+        #         item.setText(name) 
 
-            if name.startswith('_L_'):
-                item.setBackground(blue_3)
-                listWidget.addItem(item)
-            elif "Beispieleinreichung" in all:
-                item.setBackground(blue_7)
-                item.setForeground(white)
-                listWidget.addItem(item)    
-            else:
-                listWidget.addItem(item)
+        #     if name.startswith('_L_'):
+        #         item.setBackground(blue_3)
+        #         listWidget.addItem(item)
+        #     elif "Beispieleinreichung" in all:
+        #         item.setBackground(blue_7)
+        #         item.setForeground(white)
+        #         listWidget.addItem(item)    
+        #     else:
+        #         listWidget.addItem(item)
         
             # print(path)    
         # print(list_beispieldaten_dateipfad)
