@@ -21,9 +21,13 @@ def sorted_gks(list_, chosen_program):
     return list_
 
 def cria_order(text):
-    print(text.split(' - ')[2])
-    # print(text.split(' - ')[2])
-    return int(text.split(' - ')[2]) if text.isdigit() else text
+    try:
+        return int(text.split(' - ')[2])
+    except ValueError:
+        print('Wrong section format. "{}"'.format(text))
+        return 0
+    # print(x)
+    #return [atoi(c) for c in text.split(' - ')[2]]
 
 
 def lama_order(text):

@@ -3544,9 +3544,9 @@ class Ui_MainWindow(object):
             self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)
         elif self.chosen_program=='cria':
             self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad('cria')
-        self.beispieldaten_dateipfad_1
+
         self.refresh_label_update()
-        # self.adapt_choosing_list("sage")
+        self.adapt_choosing_list("sage")
 
 
     # def create_log_file(self, typ):
@@ -4897,13 +4897,14 @@ class Ui_MainWindow(object):
                 info= self.split_section(section)
                 if klasse not in info[0]:
                     list_beispieldaten_sections.remove(section)
-            list_beispieldaten_sections = sorted(list_beispieldaten_sections)
 
-        print(list_beispieldaten_sections)        
-        print(self.comboBox_kapitel.currentText())
-        print(self.comboBox_unterkapitel.currentText())
+            # list_beispieldaten_sections = sorted(list_beispieldaten_sections)
 
+        # print(list_beispieldaten_sections)        
+        # print(self.comboBox_kapitel.currentText())
+        # print(self.comboBox_unterkapitel.currentText())
 
+        # return
 
         if is_empty(self.lineEdit_number.text()) == False:
             list_beispieldaten_sections = self.search_for_number(list_beispieldaten_sections)
