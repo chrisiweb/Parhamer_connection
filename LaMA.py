@@ -1449,13 +1449,17 @@ class Ui_MainWindow(object):
         self.comboBox_at_fb.setObjectName("comboBox_at_fb")
         self.comboBox_at_fb.addItem("")
         self.comboBox_at_fb.addItem("")
-        self.comboBox_at_fb.addItem("")
         self.gridLayout.addWidget(self.comboBox_at_fb, 0, 0, 1, 1)
-        self.comboBox_at_fb.setItemText(0, _translate("MainWindow", "Typ 1", None))
-        self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Typ 2", None))
-        self.comboBox_at_fb.setItemText(
-            2, _translate("MainWindow", "Allgemeine Rückmeldung", None)
-        )
+        if self.chosen_program == 'lama':
+            self.comboBox_at_fb.setItemText(0, _translate("MainWindow", "Typ 1", None))
+            self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Typ 2", None))
+            self.comboBox_at_fb.addItem("")
+            self.comboBox_at_fb.setItemText(
+                2, _translate("MainWindow", "Allgemeine Rückmeldung", None)
+            )
+        if self.chosen_program == 'cria':
+            self.comboBox_at_fb.setItemText(0, _translate("MainWindow", "Aufgabenrückmeldung", None))
+            self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Allgemeine Rückmeldung", None))            
         self.comboBox_at_fb.currentIndexChanged.connect(self.comboBox_at_fb_changed)
         self.comboBox_at_fb.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.comboBox_at_fb.hide()
@@ -2475,6 +2479,11 @@ class Ui_MainWindow(object):
             self.cb_af_ko.show()
             self.cb_af_rf.show()
             self.cb_af_ta.show()
+
+            self.comboBox_at_fb.setItemText(0, _translate("MainWindow", "Aufgabenrückmeldung", None))
+            self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Allgemeine Rückmeldung", None))
+            self.comboBox_at_fb.removeItem(2)
+
             self.combobox_searchtype.setItemText(1, _translate("MainWindow", "Alle Dateien ausgeben, die alle Suchkriterien enthalten", None))
             i=5
             for all in dict_aufgabenformate:
@@ -2506,7 +2515,12 @@ class Ui_MainWindow(object):
             self.gridLayout.addWidget(self.groupBox_aufgabenformat, 0, 3, 1, 1)
             self.actionProgram.setText(_translate("MainWindow", 'Zu "LaMA Cria (Unterstufe)" wechseln', None))
             self.combobox_searchtype.setItemText(1, _translate("MainWindow", "Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten", None))
-            
+
+            self.comboBox_at_fb.setItemText(0, _translate("MainWindow", "Typ 1", None))
+            self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Typ 2", None))
+            self.comboBox_at_fb.addItem("")
+            self.comboBox_at_fb.setItemText(2, _translate("MainWindow", "Allgemeine Rückmeldung", None))
+
             self.cb_af_ko.hide()
             self.cb_af_rf.hide()
             self.cb_af_ta.hide()
@@ -4537,8 +4551,10 @@ class Ui_MainWindow(object):
 
         if self.comboBox_at_fb.currentText() == "Allgemeine Rückmeldung":
             self.groupBox_alle_aufgaben_fb.setEnabled(False)
+            self.groupBox_alle_aufgaben_fb_cria.setEnabled(False)
         else:
             self.groupBox_alle_aufgaben_fb.setEnabled(True)
+            self.groupBox_alle_aufgaben_fb_cria.setEnabled(True)
         if self.comboBox_at_fb.currentText()[-1] == "1":
             self.comboBox_fb.clear()
             self.lineEdit_number_fb.clear()
@@ -4843,7 +4859,7 @@ class Ui_MainWindow(object):
     #         path = beispieldaten_dateipfad_draft[section]
     #     return path
 
-    def add_items_to_listwidget(self, list_beispieldaten_sections, beispieldaten_dateipfad, listWidget):
+    def add_items_to_listwidget(self, list_beispieldaten_sections, beispieldaten_dateipfad, listWidget, listWidget_mode):
         for section in list_beispieldaten_sections:
             try:
                 path = beispieldaten_dateipfad[section]
@@ -4862,12 +4878,18 @@ class Ui_MainWindow(object):
                 item.setText(name)
 
             if name.startswith('_L_'):
-                item.setBackground(blue_3)
-                listWidget.addItem(item)
+                if listWidget_mode=='feedback':
+                    pass
+                else:
+                    item.setBackground(blue_3)
+                    listWidget.addItem(item)
             elif "Beispieleinreichung" in path:
-                item.setBackground(blue_5)
-                item.setForeground(white)
-                listWidget.addItem(item)    
+                if listWidget_mode == 'feedback':
+                    pass
+                else:
+                    item.setBackground(blue_5)
+                    item.setForeground(white)
+                    listWidget.addItem(item)    
             else:
                 listWidget.addItem(item)
 
@@ -4966,7 +4988,7 @@ class Ui_MainWindow(object):
         list_beispieldaten_sections = sorted_gks(list_beispieldaten_sections, self.chosen_program)
 
 
-        self.add_items_to_listwidget(list_beispieldaten_sections, beispieldaten_dateipfad, listWidget)
+        self.add_items_to_listwidget(list_beispieldaten_sections, beispieldaten_dateipfad, listWidget, list_mode)
 
         return
 
