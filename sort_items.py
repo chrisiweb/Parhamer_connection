@@ -17,7 +17,7 @@ def sorted_gks(list_, chosen_program):
     elif chosen_program == 'cria':
         list_ = sorted(list_, key = cria_order)
 
-    print(list_)
+    # print(list_)
     return list_
 
 def cria_order(text):

@@ -754,7 +754,7 @@ class Ui_MainWindow(object):
                 add_new_option(combobox_kapitel,index,dict_klasse_name[kapitel] + " (" + kapitel + ")")
                 index +=1
             combobox_kapitel.currentIndexChanged.connect(partial(self.comboBox_kapitel_changed_cr, new_scrollareacontent,new_verticallayout, klasse))
-
+        
             new_verticallayout.addWidget(combobox_kapitel)
 
 
@@ -775,7 +775,8 @@ class Ui_MainWindow(object):
             new_scrollarea.setWidget(new_scrollareacontent)
 
             new_gridlayout.addWidget(new_scrollarea, 5,0,1,1)
-
+        
+        # self.comboBox_kapitel_changed_cr(new_scrollareacontent,new_verticallayout, )
 
 # #################################
 
@@ -1436,7 +1437,7 @@ class Ui_MainWindow(object):
         )
         self.groupBox_sage.hide()
         self.splitter_sage.hide()
-        # self.comboBox_klassen_changed("sage")
+        self.comboBox_klassen_changed("sage")
 
         ################################################################
         ################################################################
@@ -4848,6 +4849,11 @@ class Ui_MainWindow(object):
             else:
                 listWidget.addItem(item)
 
+    def get_string_in_parantheses(self, string):
+        kapitel =re.findall("\((..?.)\)", string)
+        return kapitel[-1]
+
+
     def adapt_choosing_list(self, list_mode):
         print("Adapt choosing list")
         if list_mode == "sage":
@@ -4899,7 +4905,20 @@ class Ui_MainWindow(object):
                     list_beispieldaten_sections.remove(section)
         
             if is_empty(self.comboBox_kapitel.currentText())==False:
-                print(self.comboBox_kapitel.currentText())
+                kapitel = self.get_string_in_parantheses(self.comboBox_kapitel.currentText())
+                if is_empty(self.comboBox_unterkapitel.currentText())==True:
+                    list_beispieldaten_sections = self.delete_item_with_string_from_list(kapitel, list_beispieldaten_sections)
+                else: 
+                    unterkapitel = self.get_string_in_parantheses(self.comboBox_unterkapitel.currentText())
+                    string=kapitel+'.'+unterkapitel
+                    list_beispieldaten_sections = self.delete_item_with_string_from_list(string, list_beispieldaten_sections)    
+
+        print(list_beispieldaten_sections)
+                # x =re.findall("\(.*\)", self.comboBox_kapitel.currentText())
+                # print(x)
+
+                #self.comboBox_kapitel.currentText().split()
+
                 ## get string in Brackets
 
             # list_beispieldaten_sections = sorted(list_beispieldaten_sections)
