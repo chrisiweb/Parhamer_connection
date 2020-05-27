@@ -2504,6 +2504,7 @@ class Ui_MainWindow(object):
             self.gridLayout.addWidget(self.groupBox_af, 4, 0, 1, 1)
             self.gridLayout.addWidget(self.groupBox_punkte, 0, 2, 1, 1)
             self.gridLayout.addWidget(self.groupBox_aufgabenformat, 0, 3, 1, 1)
+            self.actionProgram.setText(_translate("MainWindow", 'Zu "LaMA Cria (Unterstufe)" wechseln', None))
             self.combobox_searchtype.setItemText(1, _translate("MainWindow", "Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten", None))
             
             self.cb_af_ko.hide()
@@ -3547,6 +3548,8 @@ class Ui_MainWindow(object):
             self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad('cria')
 
         self.refresh_label_update()
+        if self.cb_drafts_sage.isChecked()==True:
+            self.add_drafts_to_beispieldaten()
         self.adapt_choosing_list("sage")
 
 
@@ -4301,42 +4304,50 @@ class Ui_MainWindow(object):
 
         return [punkte, 0, titel, typ_info]
 
-    def get_dateipfad_aufgabe(self, aufgabe, draft=False):
-        name=aufgabe + ".tex"
-        typ=self.get_aufgabentyp(aufgabe)
+    def get_dateipfad_from_filename(self, list_path, filename, klasse=None):
+        if self.chosen_program == 'cria':
+            for path in list_path:
+                if klasse.lower() in path.lower():
+                    if filename == os.path.basename(path):
+                        dateipfad = path
+                        break
+        elif self.chosen_program == 'lama':
+            for path in list_path:
+                if filename == os.path.basename(path):
+                    dateipfad = path
+                    break                    
+        return dateipfad
 
+    def get_dateipfad_aufgabe(self, aufgabe, draft=False):
+        typ=self.get_aufgabentyp(aufgabe)
+        klasse=None
         if draft==True:      
             _,list_path = self.get_beispieldaten_dateipfad_draft(typ)
-            
-            for path in list_path:
-                if name == os.path.basename(path):
-                    dateipfad = path
-                    break
+            if self.chosen_program == 'cria':
+                klasse, aufgabe = self.split_klasse_aufgabe(aufgabe)
+
+            filename=aufgabe + ".tex"
+
+            dateipfad = self.get_dateipfad_from_filename(list_path, filename, klasse)
+
             return dateipfad
-            # drafts_path = os.path.join(path_programm, "Beispieleinreichung")
-            # beispieldaten_dateipfad_draft = search_files(drafts_path)
-            # print(aufgabe)
-            # print(beispieldaten_dateipfad_draft)            
+         
 
         if self.chosen_program=='cria':
             list_path = self.beispieldaten_dateipfad_cria.values()
             klasse, aufgabe = self.split_klasse_aufgabe(aufgabe)
-            # name = aufgabe + ".tex"
-            for path in list_path:
-                if klasse.lower() in path.lower():
-                    if name == os.path.basename(path):
-                        dateipfad = path
+            filename = aufgabe + ".tex"
+            
 
         if self.chosen_program=='lama':
             if typ==1:
                 list_path = self.beispieldaten_dateipfad_1.values()
             elif typ==2:
                 list_path = self.beispieldaten_dateipfad_2.values()        
-            # name = aufgabe + ".tex"
-            for path in list_path:
-                if name == os.path.basename(path):
-                    dateipfad = path
+            filename = aufgabe + ".tex"
 
+
+        dateipfad = self.get_dateipfad_from_filename(list_path, filename, klasse)
 
         return dateipfad
 
@@ -4589,6 +4600,9 @@ class Ui_MainWindow(object):
         if '(Entwurf)' in item.text():
             aufgabe=item.text().replace(" (Entwurf)", "")
             draft=True
+        elif '(lokal)' in item.text():
+            aufgabe=item.text().replace(" (lokal)","")
+            draft=False
         else:
             aufgabe=item.text()
             draft=False
@@ -4811,8 +4825,14 @@ class Ui_MainWindow(object):
     def search_for_number(self, list_):
         for section in list_[:]:
             info = self.split_section(section)
-            if self.lineEdit_number.text() != info[1]:
+            if self.chosen_program == 'lama':
+                number = info[1]
+            elif self.chosen_program == 'cria':
+                number = info[2]
+
+            if not number.startswith(self.lineEdit_number.text()):
                 list_.remove(section)
+
         return list_
 
     # def get_path_from_section(self, section):
@@ -4836,6 +4856,8 @@ class Ui_MainWindow(object):
             item = QtWidgets.QListWidgetItem()
             if "Beispieleinreichung" in path:
                 item.setText(name + ' (Entwurf)')
+            elif "Lokaler_Ordner" in path:
+                item.setText(name + ' (lokal)')
             else:
                 item.setText(name)
 
@@ -4913,7 +4935,7 @@ class Ui_MainWindow(object):
                     string=kapitel+'.'+unterkapitel
                     list_beispieldaten_sections = self.delete_item_with_string_from_list(string, list_beispieldaten_sections)    
 
-        print(list_beispieldaten_sections)
+        # print(list_beispieldaten_sections)
                 # x =re.findall("\(.*\)", self.comboBox_kapitel.currentText())
                 # print(x)
 
@@ -4932,7 +4954,8 @@ class Ui_MainWindow(object):
         if is_empty(self.lineEdit_number.text()) == False:
             list_beispieldaten_sections = self.search_for_number(list_beispieldaten_sections)
 
-
+        # print(list_beispieldaten_sections)
+        # return
         # if self.cb_drafts_sage.isChecked():
 
         #     drafts,_=self.get_beispieldaten_dateipfad_draft(typ)
@@ -5997,10 +6020,10 @@ class Ui_MainWindow(object):
             ):
                 header = ""
             else:
-                if self.change_program=='lama' and control_counter == 0 and typ == 1:
+                if self.chosen_program=='lama' and control_counter == 0 and typ == 1:
                     header = "\\subsubsection{Typ 1 Aufgaben}\n\n"
                     control_counter += 1
-                elif self.change_program=='lama' and control_counter == 1 and typ == 2:
+                elif self.chosen_program=='lama' and control_counter == 1 and typ == 2:
                     header = "\\subsubsection{Typ 2 Aufgaben}\n\n"
                     control_counter += 1
                 else:
