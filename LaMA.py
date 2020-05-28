@@ -4919,8 +4919,8 @@ class Ui_MainWindow(object):
 
 
     def adapt_choosing_list(self, list_mode):
-        print(list_mode)
-        print("Adapt choosing list")
+        # print(list_mode)
+        # print("Adapt choosing list")
         if list_mode == "sage":
             listWidget = self.listWidget
         if list_mode == "feedback":
