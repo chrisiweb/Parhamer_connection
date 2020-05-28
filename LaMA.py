@@ -148,9 +148,9 @@ def create_file_titlepage(titlepage_save):
         }
     return titlepage
 
-def simplify_string(string):
-    string=string.replace(" ", "").replace(".", "").replace("-", "_")
-    return string   
+# def simplify_string(string):
+#     string=string.replace(" ", "").replace(".", "").replace("-", "_")
+#     return string   
 
 
 class Ui_MainWindow(object):
@@ -1367,24 +1367,13 @@ class Ui_MainWindow(object):
         ### Zusammenfassung d. SA ###
         if self.chosen_program == 'lama':
             label = "Anzahl der Aufgaben: 0 (Typ1: 0 / Typ2: 0)"
-            # self.label_gesamtbeispiele.setText(
-            #     _translate(
-            #         "MainWindow", "Anzahl der Aufgaben: 0\n(Typ1: 0 / Typ2: 0)", None
-            #     )
-            # )
+
         if self.chosen_program == 'cria':
             label = "Anzahl der Aufgaben: 0"
-            # self.label_gesamtbeispiele.setText(
-            #     _translate(
-            #         "MainWindow",
-            #         "Anzahl der Aufgaben: 0",None))
 
 
         self.label_gesamtbeispiele = create_new_label(self.groupBox_sage, label, True)
-        # QtWidgets.QLabel(self.groupBox_sage)
         self.gridLayout_5.addWidget(self.label_gesamtbeispiele, 7, 0, 1, 3)
-        # self.label_gesamtbeispiele.setObjectName("label_gesamtbeispiele")
-
 
         self.label_gesamtpunkte = QtWidgets.QLabel(self.groupBox_sage)
         self.gridLayout_5.addWidget(self.label_gesamtpunkte, 8, 0, 1, 2)
@@ -1474,11 +1463,8 @@ class Ui_MainWindow(object):
         self.label_example.hide()
 
         self.groupBox_alle_aufgaben_fb = QtWidgets.QGroupBox(self.centralwidget)
-        # self.groupBox_alle_aufgaben_fb.setSizePolicy(SizePolicy_fixed_width)
-        # self.groupBox_alle_aufgaben_fb.setMinimumSize(QtCore.QSize(140, 16777215))
-        # self.groupBox_alle_aufgaben_fb.setMaximumSize(QtCore.QSize(180, 16777215))
+
         self.groupBox_alle_aufgaben_fb.setObjectName("groupBox_alle_aufgaben_fb")
-        # self.groupBox_alle_aufgaben_fb.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding))
         self.verticalLayout_fb = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben_fb)
         self.verticalLayout_fb.setObjectName("verticalLayout_fb")
         self.comboBox_fb = QtWidgets.QComboBox(self.groupBox_alle_aufgaben_fb)
@@ -1824,21 +1810,6 @@ class Ui_MainWindow(object):
         self.cb_af_ta.setText(_translate("MainWindow", "Textaufgaben (TA)",None))
         #########################
 
-        ### Typ1
-        # self.combobox_searchtype.setItemText(1, _translate("MainWindow", "Alle Dateien ausgeben, die alle Suchkriterien enthalten", None))
-        ######
-
-        ### Typ2
-        # self.combobox_searchtype.setItemText(
-        #     1,
-        #     _translate(
-        #         "MainWindow",
-        #         "Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten",
-        #         None,
-        #     ),
-        # )
-        ######
-
         self.groupBox_themen_klasse.setTitle(
             _translate("MainWindow", "Themen Schulstufe", None)
         )
@@ -1986,11 +1957,9 @@ class Ui_MainWindow(object):
     def create_tab_checkboxes_gk(self,tab_widget, titel, chosen_dictionary, mode):
         new_tab=add_new_tab(tab_widget, titel)    #self.tab_widget_gk self.tab_widget_gk_cr
         new_tab.setStyleSheet(StyleSheet_new_tab)
-        # self.tab_ag = QtWidgets.QWidget()
-        # self.tab_ag.setObjectName(_fromUtf8("tab_ag"))
+
         gridlayout=create_new_gridlayout(new_tab)
-        # self.gridLayout_ag = QtWidgets.QGridLayout(self.tab_ag)
-        # self.gridLayout_ag.setObjectName(_fromUtf8("gridLayout_ag"))
+
         scrollarea = QtWidgets.QScrollArea(new_tab)
         scrollarea.setWidgetResizable(True)
         scrollarea.setObjectName("{}".format(scrollarea))
@@ -1999,9 +1968,7 @@ class Ui_MainWindow(object):
         scrollareacontent.setGeometry(QtCore.QRect(0, 0, 641, 252))
         scrollareacontent.setObjectName("{}".format(scrollareacontent))
         gridLayout_scrollarea = create_new_gridlayout(scrollareacontent)    
-
-          
-      
+     
         row, column = self.create_list_of_all_gk_checkboxes(scrollareacontent, gridLayout_scrollarea, mode, chosen_dictionary)
 
 
@@ -2022,11 +1989,9 @@ class Ui_MainWindow(object):
         row = 0
         column = 0
         if mode=='creator':       
-        # if "cr" in gk_type:
             max_row = 10
             name_start='checkbox_creator_gk_'
         if mode=='search':
-        # else:
             max_row = 9
             name_start='checkbox_search_gk_'
         for all in chosen_dictionary:
@@ -4528,6 +4493,8 @@ class Ui_MainWindow(object):
         if self.comboBox_at_sage.currentText()[-1] == "1":
             self.comboBox_gk.clear()
             self.lineEdit_number.clear()
+            self.comboBox_gk.setEnabled(True)
+            self.comboBox_gk_num.setEnabled(True)
             list_comboBox_gk = ["", "AG", "FA", "AN", "WS", "K5", "K6", "K7", "K8"]
             index = 0
             for all in list_comboBox_gk:
@@ -4537,10 +4504,12 @@ class Ui_MainWindow(object):
             self.comboBox_gk_num.clear()
 
         if self.comboBox_at_sage.currentText()[-1] == "2":
-            self.comboBox_gk.clear()
-            self.comboBox_gk.addItem("-")
-            self.comboBox_gk_num.clear()
-            self.comboBox_gk_num.addItem("-")
+            self.comboBox_gk.setEnabled(False)
+            self.comboBox_gk_num.setEnabled(False)
+            # self.comboBox_gk.clear()
+            # self.comboBox_gk.addItem("-")
+            # self.comboBox_gk_num.clear()
+            # self.comboBox_gk_num.addItem("-")
         self.adapt_choosing_list("sage")
 
     def comboBox_at_fb_changed(self):
@@ -4851,13 +4820,6 @@ class Ui_MainWindow(object):
 
         return list_
 
-    # def get_path_from_section(self, section):
-    #     try:
-    #         path = beispieldaten_dateipfad[section]
-    #     except KeyError:
-    #         beispieldaten_dateipfad_draft = search_files(drafts_path)
-    #         path = beispieldaten_dateipfad_draft[section]
-    #     return path
 
     def add_items_to_listwidget(self, list_beispieldaten_sections, beispieldaten_dateipfad, listWidget, listWidget_mode):
         for section in list_beispieldaten_sections:
@@ -4883,6 +4845,7 @@ class Ui_MainWindow(object):
                 else:
                     item.setBackground(blue_3)
                     listWidget.addItem(item)
+
             elif "Beispieleinreichung" in path:
                 if listWidget_mode == 'feedback':
                     pass
@@ -4892,6 +4855,8 @@ class Ui_MainWindow(object):
                     listWidget.addItem(item)    
             else:
                 listWidget.addItem(item)
+
+        listWidget.setFocusPolicy(QtCore.Qt.ClickFocus)
 
     def get_string_in_parantheses(self, string):
         kapitel =re.findall("\((..?.)\)", string)
@@ -4931,7 +4896,6 @@ class Ui_MainWindow(object):
 
         list_beispieldaten_sections = list(beispieldaten_dateipfad.keys())
 
-
         if self.chosen_program == 'lama':
             if is_empty(self.comboBox_gk.currentText())==False:
                 if is_empty(self.comboBox_gk_num.currentText())==True:
@@ -4957,32 +4921,10 @@ class Ui_MainWindow(object):
                     string=kapitel+'.'+unterkapitel
                     list_beispieldaten_sections = self.delete_item_with_string_from_list(string, list_beispieldaten_sections)    
 
-        # print(list_beispieldaten_sections)
-                # x =re.findall("\(.*\)", self.comboBox_kapitel.currentText())
-                # print(x)
 
-                #self.comboBox_kapitel.currentText().split()
-
-                ## get string in Brackets
-
-            # list_beispieldaten_sections = sorted(list_beispieldaten_sections)
-
-        # print(list_beispieldaten_sections)        
-        # print(self.comboBox_kapitel.currentText())
-        # print(self.comboBox_unterkapitel.currentText())
-
-        # return
 
         if is_empty(self.lineEdit_number.text()) == False:
             list_beispieldaten_sections = self.search_for_number(list_beispieldaten_sections)
-
-        # print(list_beispieldaten_sections)
-        # return
-        # if self.cb_drafts_sage.isChecked():
-
-        #     drafts,_=self.get_beispieldaten_dateipfad_draft(typ)
-
-        #     list_beispieldaten_sections = list_beispieldaten_sections + drafts
 
 
         list_beispieldaten_sections = sorted_gks(list_beispieldaten_sections, self.chosen_program)
@@ -4990,403 +4932,7 @@ class Ui_MainWindow(object):
 
         self.add_items_to_listwidget(list_beispieldaten_sections, beispieldaten_dateipfad, listWidget, list_mode)
 
-        return
 
-        print('cria')
-        print(self.comboBox_klassen.currentText())
-        print(self.comboBox_kapitel.currentText())
-        print(self.comboBox_unterkapitel.currentText())
-        print(self.lineEdit_number.text())
-
-        # for section in list_beispieldaten_sections:
-        #     try:
-        #         path = beispieldaten_dateipfad[section]
-        #     except KeyError:
-        #         drafts_path = os.path.join(path_programm, "Beispieleinreichung")
-        #         beispieldaten_dateipfad_draft = search_files(drafts_path)
-        #         path = beispieldaten_dateipfad_draft[section]
-
-
-        #     name, extension = os.path.splitext(os.path.basename(path))
-
-        #     item = QtWidgets.QListWidgetItem()
-        #     if "Beispieleinreichung" in path:
-        #         item.setText(name + ' (Entwurf)')
-        #     else:
-        #         item.setText(name)
-
-        #     if name.startswith('_L_'):
-        #         item.setBackground(blue_3)
-        #         listWidget.addItem(item)
-        #     elif "Beispieleinreichung" in path:
-        #         item.setBackground(blue_7)
-        #         item.setForeground(white)
-        #         listWidget.addItem(item)    
-        #     else:
-        #         listWidget.addItem(item)
-
-
-            
-
-
-
-        # return
-        # for all in list_beispieldaten:
-        #     name, extension = os.path.splitext(os.path.basename(all))
-        #     item = QtWidgets.QListWidgetItem()
-        #     if "Beispieleinreichung" in all:
-        #         item.setText(name + ' (Entwurf)')
-        #     else:
-        #         item.setText(name) 
-
-        #     if name.startswith('_L_'):
-        #         item.setBackground(blue_3)
-        #         listWidget.addItem(item)
-        #     elif "Beispieleinreichung" in all:
-        #         item.setBackground(blue_7)
-        #         item.setForeground(white)
-        #         listWidget.addItem(item)    
-        #     else:
-        #         listWidget.addItem(item)
-        
-            # print(path)    
-        # print(list_beispieldaten_dateipfad)
-
-
-
-
-        #self.lineEdit_number.text()
-            # for section in list(beispieldaten_dateipfad.keys()):
-            #     if self.comboBox_gk.currentText() not in section:
-            #         del beispieldaten_dateipfad[section]  
-
-        # print(list_beispieldaten_dateipfad)          
-            # string = self.comboBox_gk.currentText()
-            # beispieldaten_dateipfad = self.delete_item_with_string_from_dictionary(string, beispieldaten_dateipfad)
-            # if self.comboBox_gk_num.currentText() == '':
-            #     string = self.comboBox_gk.currentText()
-            #     beispieldaten_dateipfad = self.delete_item_with_string_from_dictionary(string, beispieldaten_dateipfad)
-            # else:
-            #     string = self.comboBox_gk.currentText() + ' ' + self.comboBox_gk_num.currentText()
-            #     beispieldaten_dateipfad = self.delete_item_with_string_from_dictionary(string, beispieldaten_dateipfad)
-                # for section in list(beispieldaten_dateipfad.keys()):
-                #     if self.comboBox_gk.currentText() not in section:
-                #         del beispieldaten_dateipfad[section]                
-        
-
-
-        # print(beispieldaten_dateipfad)
-        # print(self.beispieldaten_dateipfad_1)
-        return        
-        print('Lama')
-        print(self.comboBox_at_sage.currentText())
-        print(self.comboBox_gk.currentText())
-        print(self.comboBox_gk_num.currentText())
-        print(self.lineEdit_number.text())
-
-        # print('cria')
-        # print(self.comboBox_klassen.currentText())
-        # print(self.comboBox_kapitel.currentText())
-        # print(self.comboBox_unterkapitel.currentText())
-        # print(self.lineEdit_number.text())
-
-        
-
-        return
-
-        ### Plan adapt_choosing_list:
-        # 1. collect all paths (alle Einstellungen überprüfen) in list
-        # 2. get file name of items
-        # 3. sort
-        # 4. add_to_list  
-
-        # self.get_beispieldaten_dateipfad(log_file_1)
-        # list_typ=[None,1,2]
-        # for typ in list_typ:
-        # self.beispieldaten_dateipfad_cria = self.check_if_log_file_exists(None)
-        # self.beispieldaten_dateipfad_1 = self.check_if_log_file_exists(1)
-        # self.beispieldaten_dateipfad_2 = self.check_if_log_file_exists(2)
-        # return
-        # print(self.beispieldaten_dateipfad_1)
-        # return
-        # log_file_1 = os.path.join(path_programm, "Teildokument", "log_file_1")
-        # log_file_2 = os.path.join(path_programm, "Teildokument", "log_file_2")
-        # log_file_cria = os.path.join(path_programm, "Teildokument", "log_file_cria")
-
-
-        # if self.chosen_program == 'lama':
-        #     beispieldaten_dateipfad_1 = self.get_dictionary_of_file_paths(log_file_1)
-        #     self.beispieldaten_dateipfad_1 = beispieldaten_dateipfad_1
-
-        #     beispieldaten_dateipfad_2 = self.get_dictionary_of_file_paths(log_file_2)
-        #     self.beispieldaten_dateipfad_2 = beispieldaten_dateipfad_2
-
-
-        # if self.chosen_program == 'cria':
-        #     beispieldaten_dateipfad_cria = self.get_dictionary_of_file_paths(log_file_cria)
-        #     self.beispieldaten_dateipfad_cria = beispieldaten_dateipfad_cria
-
-        list_beispieldaten = list(beispieldaten_dateipfad.values())
-        # list_beispieldaten.sort()
-        
-        #list_beispieldaten = sorted(list_beispieldaten)
-
-
-        if self.cb_drafts_sage.isChecked():
-            liste_draft = self.get_drafts_for_listwidget(typ)
-
-            list_beispieldaten = list_beispieldaten + liste_draft
-
-        # print(list_beispieldaten)
-        # list_beispieldaten.sort(key= lambda x: os.path.basename(x))
-        list_beispieldaten = sorted(list_beispieldaten, key=natural_keys)
-        self.get_name_from_path(list_beispieldaten[0])
-        # print(list_beispieldaten)
-        return
-        for all in list_beispieldaten:
-            name, extension = os.path.splitext(os.path.basename(all))
-            item = QtWidgets.QListWidgetItem()
-            if "Beispieleinreichung" in all:
-                item.setText(name + ' (Entwurf)')
-            else:
-                item.setText(name) 
-
-            if name.startswith('_L_'):
-                item.setBackground(blue_3)
-                listWidget.addItem(item)
-            elif "Beispieleinreichung" in all:
-                item.setBackground(blue_7)
-                item.setForeground(white)
-                listWidget.addItem(item)    
-            else:
-                listWidget.addItem(item)
-
-        return
-
-
-
-
-
-
-
-        
-        #     path, filename = os.path.split(all)
-        #     parent_folder = os.path.split(path)
-        #     if parent_folder != "Beispieleinreichung":
-        #         typ='cria'
-        #     elif re.search("[A-Z]", aufgabe) == None:
-        #         typ=2
-        #     else:
-        #         typ=1
-            # x= os.path.basename(x)
-        
-            # print(os.path.dirname(all))
-            # print(os.path.basename(os.path.normpath(all)))
-            # path, filename = os.path.split(all)
-            # print(path)
-            # print(filename)
-            # print(os.path.split(path))
-        # for all in os.listdir(drafts_path):
-        # temp_dict={}
-        # x=search_files(drafts_path)
-        # print(x)
-        # return
-
-        if self.cb_drafts_sage.isChecked():
-            drafts_path = os.path.join(path_programm, "Beispieleinreichung")
-            if self.chosen_program == 'lama':
-                for all in os.listdir(drafts_path):
-                    if all.endswith(".tex") or all.endswith(".ltx"):
-                        pattern = re.compile("[A-Z][A-Z]")
-                        if int(self.comboBox_at_sage.currentText()[-1]) == 1:
-                            if pattern.match(all):
-                                file = open(os.path.join(drafts_path, all), encoding="utf8")
-                                for i, line in enumerate(file):
-                                    if not line == "\n":
-                                        # line=line.replace('\section{', 'section{ENTWURF ')
-                                        self.beispieldaten_dateipfad_1[line] = os.path.join(
-                                            drafts_path, all
-                                        )
-                                        # beispieldaten.append(line)
-                                        break
-                                file.close()
-                        if int(self.comboBox_at_sage.currentText()[-1]) == 2:
-                            if not pattern.match(all):
-                                file = open(os.path.join(drafts_path, all), encoding="utf8")
-                                for i, line in enumerate(file):
-                                    if not line == "\n":
-                                        # line=line.replace('\section{', 'section{ENTWURF ')
-                                        self.beispieldaten_dateipfad_2[line] = os.path.join(
-                                            drafts_path, all
-                                        )
-                                        # beispieldaten.append(line)
-                                        break
-                                file.close()
-            if self.chosen_program == 'cria':
-                for klasse in list_klassen:
-                    try:
-                        drafts_path = os.path.join(path_programm, "Beispieleinreichung",klasse)
-                        for all in os.listdir(drafts_path):
-                            file = open(os.path.join(drafts_path, all), encoding="utf8")
-                            for i, line in enumerate(file):
-                                if not line == "\n":
-                                    # line=line.replace('\section{', 'section{ENTWURF ')
-                                    self.beispieldaten_dateipfad_cria[line] = os.path.join(drafts_path, all)
-                                    break
-                            file.close()
-                    except FileNotFoundError:
-                        pass                
-
-
-        list_beispieldaten = []
-        if list_mode == "sage":
-            if self.chosen_program == 'lama':
-                beispieldaten_dateipfad = eval(
-                    "beispieldaten_dateipfad_%s" % self.comboBox_at_sage.currentText()[-1]
-                )
-                for all in beispieldaten_dateipfad.values():
-                    filename_all = os.path.basename(all)
-                    name, extension = os.path.splitext(filename_all)
-                    if self.comboBox_at_sage.currentText()[-1] == "2":
-                        if name.startswith(self.lineEdit_number.text()):
-                            if "Beispieleinreichung" in all:
-                                list_beispieldaten.append("*E-" + name)
-                            else:
-                                list_beispieldaten.append(name)
-                    else:
-                        if (
-                            self.comboBox_gk.currentText() in name
-                            and self.comboBox_gk_num.currentText() in name
-                        ):
-                            try:
-                                int(self.lineEdit_number.text())
-                                number = name.split(" - ")
-                                if (
-                                    self.lineEdit_number.text() == ""
-                                    or number[1] == self.lineEdit_number.text()
-                                ):  # number[1]==self.lineEdit_number.text():
-                                    if "Beispieleinreichung" in all:
-                                        list_beispieldaten.append("*E-" + name)
-                                    else:
-                                        list_beispieldaten.append(name)
-                            except ValueError:
-                                if (
-                                    self.lineEdit_number.text() == ""
-                                    or self.lineEdit_number.text().lower() in name.lower()
-                                ):  # number[1]==self.lineEdit_number.text():
-                                    if "Beispieleinreichung" in all:
-                                        list_beispieldaten.append("*E-" + name)
-                                    else:
-                                        list_beispieldaten.append(name)
-
-                            # and self.lineEdit_number.text().lower() in name.lower()
-            
-            if self.chosen_program == 'cria':
-                dict_klasse_name = eval(
-                    "dict_{}_name".format(
-                        list_klassen[self.comboBox_klassen.currentIndex()]
-                    )
-                )
-                if self.comboBox_kapitel.currentText() is not "":
-                    kapitel_shortcut = list(dict_klasse_name.keys())[
-                        self.comboBox_kapitel.currentIndex() - 1
-                    ]
-                else:
-                    kapitel_shortcut = ""
-
-                if self.comboBox_unterkapitel.currentText() is not "":
-                    shortcut = re.findall(
-                        r"\((.*)\)", self.comboBox_unterkapitel.currentText()
-                    )
-                    unterkapitel_shortcut = shortcut[-1]
-                else:
-                    unterkapitel_shortcut = ""
-
-                for all in beispieldaten_dateipfad_cria.keys():
-                    file_path = beispieldaten_dateipfad_cria[all]
-                    if str(list_klassen[self.comboBox_klassen.currentIndex()]) in file_path:
-                        if kapitel_shortcut == "":
-                            self.add_filename_to_list(list_mode, file_path, list_beispieldaten)
-                        else:
-                            if unterkapitel_shortcut == "":
-                                if kapitel_shortcut in all:
-                                    self.add_filename_to_list(list_mode, file_path, list_beispieldaten)
-                            else:
-                                thema_shortcut = (
-                                    kapitel_shortcut + "." + unterkapitel_shortcut
-                                )
-                                if thema_shortcut in all:
-                                    self.add_filename_to_list(list_mode, file_path, list_beispieldaten)
-
-
-        if list_mode == "feedback":
-            if self.chosen_program == 'lama':
-                beispieldaten_dateipfad = eval(
-                    "beispieldaten_dateipfad_%s" % self.comboBox_at_fb.currentText()[-1]
-                )
-                for all in beispieldaten_dateipfad.values():
-                    filename_all = os.path.basename(all)
-                    name, extension = os.path.splitext(filename_all)
-                    if self.comboBox_at_fb.currentText()[-1] == "2":
-                        if name.startswith(self.lineEdit_number_fb.text()):
-                            list_beispieldaten.append(name)
-                    else:
-                        if (
-                            name.startswith(self.comboBox_fb.currentText())
-                            and self.comboBox_fb_num.currentText() in name
-                        ):
-                            number = name.split(" - ")
-                            if (
-                                self.lineEdit_number_fb.text() == ""
-                                or number[1] == self.lineEdit_number_fb.text()
-                            ):
-                                list_beispieldaten.append(name)
-                            # and self.lineEdit_number.text().lower() in name.lower()
-            if self.chosen_program == 'cria':         
-                dict_klasse_name = eval(
-                    "dict_{}_name".format(
-                        list_klassen[self.comboBox_klassen_fb_cria.currentIndex()]
-                    )
-                )
-                if self.comboBox_kapitel_fb_cria.currentText() is not "":
-                    kapitel_shortcut = list(dict_klasse_name.keys())[
-                        self.comboBox_kapitel_fb_cria.currentIndex() - 1
-                    ]
-                else:
-                    kapitel_shortcut = ""
-
-                if self.comboBox_unterkapitel_fb_cria.currentText() is not "":
-                    shortcut = re.findall(
-                        r"\((.*)\)", self.comboBox_unterkapitel_fb_cria.currentText()
-                    )
-                    unterkapitel_shortcut = shortcut[-1]
-                else:
-                    unterkapitel_shortcut = ""
-
-                for all in beispieldaten_dateipfad_cria.keys():
-                    file_path = beispieldaten_dateipfad_cria[all]
-                    if str(list_klassen[self.comboBox_klassen_fb_cria.currentIndex()]) in file_path:
-                        if kapitel_shortcut == "":
-                            self.add_filename_to_list(list_mode, file_path, list_beispieldaten)
-                        else:
-                            if unterkapitel_shortcut == "":
-                                if kapitel_shortcut in all:
-                                    self.add_filename_to_list(list_mode, file_path, list_beispieldaten)
-                            else:
-                                thema_shortcut = (
-                                    kapitel_shortcut + "." + unterkapitel_shortcut
-                                )
-                                if thema_shortcut in all:
-                                    self.add_filename_to_list(list_mode, file_path, list_beispieldaten)   
-
-
-        list_beispieldaten = sorted(list_beispieldaten, key=natural_keys)
-        for all in list_beispieldaten:
-            if list_mode == "feedback" and all.startswith("_L_"):
-                pass
-            else:
-                listWidget.addItem(all)
-                listWidget.setFocusPolicy(QtCore.Qt.ClickFocus)
 
     def collect_all_infos_for_creating_file(self):
         self.dict_all_infos_for_file = {}
@@ -5617,13 +5163,17 @@ class Ui_MainWindow(object):
         )
         if ausgabetyp == "vorschau":
             if self.cb_solution_sage.isChecked() == True:
-                vorschau.write(
-                    "\\usepackage[solution_on]{srdp-mathematik} % solution_on/off\n"
-                )
+                solution = "on"
             else:
-                vorschau.write(
-                    "\\usepackage[solution_off]{srdp-mathematik} % solution_on/off\n"
-                )
+                solution = "off"
+            
+            vorschau.write(
+                "\\usepackage[solution_{}]{{srdp-mathematik}} % solution_on/off\n".format(solution)
+            )
+            # else:
+            #     vorschau.write(
+            #         "\\usepackage[solution_off]{srdp-mathematik} % solution_on/off\n"
+            #     )
         if ausgabetyp == "schularbeit":
             if index % 2 == 0:
                 vorschau.write(
