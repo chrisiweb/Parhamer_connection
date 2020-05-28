@@ -1105,17 +1105,17 @@ class Ui_MainWindow(object):
 
         self.comboBox_kapitel = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
         self.comboBox_kapitel.setObjectName("comboBox_kapitel")
-        self.comboBox_kapitel.currentIndexChanged.connect(
-            partial(self.comboBox_kapitel_changed, "sage")
-        )
+        # self.comboBox_kapitel.currentIndexChanged.connect(
+        #     partial(self.comboBox_kapitel_changed, "sage")
+        # )
         self.comboBox_kapitel.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.verticalLayout_sage.addWidget(self.comboBox_kapitel)
 
         self.comboBox_unterkapitel = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
         self.comboBox_unterkapitel.setObjectName("comboBox_unterkapitel")
-        self.comboBox_unterkapitel.currentIndexChanged.connect(
-            partial(self.comboBox_unterkapitel_changed, "sage")
-        )
+        # self.comboBox_unterkapitel.currentIndexChanged.connect(
+        #     partial(self.comboBox_unterkapitel_changed, "sage")
+        # )
         self.comboBox_unterkapitel.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.verticalLayout_sage.addWidget(self.comboBox_unterkapitel)
 
@@ -1428,30 +1428,19 @@ class Ui_MainWindow(object):
         self.splitter_sage.hide()
         self.comboBox_klassen_changed("sage")
 
+        self.comboBox_kapitel.currentIndexChanged.connect(
+            partial(self.comboBox_kapitel_changed, "sage")
+        )
+
+        self.comboBox_unterkapitel.currentIndexChanged.connect(
+            partial(self.comboBox_unterkapitel_changed, "sage")
+        )
+
         ################################################################
         ################################################################
         ########### FEEDBACK #############################################
         #######################################################################
         
-        self.comboBox_at_fb = QtWidgets.QComboBox(self.centralwidget)
-        # self.comboBox_at_fb.setSizePolicy(SizePolicy_fixed)
-        self.comboBox_at_fb.setObjectName("comboBox_at_fb")
-        self.comboBox_at_fb.addItem("")
-        self.comboBox_at_fb.addItem("")
-        self.gridLayout.addWidget(self.comboBox_at_fb, 0, 0, 1, 1)
-        if self.chosen_program == 'lama':
-            self.comboBox_at_fb.setItemText(0, _translate("MainWindow", "Typ 1", None))
-            self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Typ 2", None))
-            self.comboBox_at_fb.addItem("")
-            self.comboBox_at_fb.setItemText(
-                2, _translate("MainWindow", "Allgemeine Rückmeldung", None)
-            )
-        if self.chosen_program == 'cria':
-            self.comboBox_at_fb.setItemText(0, _translate("MainWindow", "Aufgabenrückmeldung", None))
-            self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Allgemeine Rückmeldung", None))            
-        self.comboBox_at_fb.currentIndexChanged.connect(self.comboBox_at_fb_changed)
-        self.comboBox_at_fb.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.comboBox_at_fb.hide()
 
         self.label_example = QtWidgets.QLabel(self.centralwidget)
         self.label_example.setObjectName(_fromUtf8("label_example"))
@@ -1467,6 +1456,28 @@ class Ui_MainWindow(object):
         self.groupBox_alle_aufgaben_fb.setObjectName("groupBox_alle_aufgaben_fb")
         self.verticalLayout_fb = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben_fb)
         self.verticalLayout_fb.setObjectName("verticalLayout_fb")
+
+        self.comboBox_at_fb = QtWidgets.QComboBox(self.groupBox_alle_aufgaben_fb)
+        # self.comboBox_at_fb.setSizePolicy(SizePolicy_fixed)
+        self.comboBox_at_fb.setObjectName("comboBox_at_fb")
+        self.comboBox_at_fb.addItem("")
+        self.comboBox_at_fb.addItem("")
+        self.verticalLayout_fb.addWidget(self.comboBox_at_fb)
+        if self.chosen_program == 'lama':
+            self.comboBox_at_fb.setItemText(0, _translate("MainWindow", "Typ 1", None))
+            self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Typ 2", None))
+            self.comboBox_at_fb.addItem("")
+            self.comboBox_at_fb.setItemText(
+                2, _translate("MainWindow", "Allgemeine Rückmeldung", None)
+            )
+        if self.chosen_program == 'cria':
+            self.comboBox_at_fb.setItemText(0, _translate("MainWindow", "Aufgabenrückmeldung", None))
+            self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Allgemeine Rückmeldung", None))            
+        self.comboBox_at_fb.currentIndexChanged.connect(self.comboBox_at_fb_changed)
+        self.comboBox_at_fb.setFocusPolicy(QtCore.Qt.ClickFocus)
+        # self.comboBox_at_fb.hide()
+
+
         self.comboBox_fb = QtWidgets.QComboBox(self.groupBox_alle_aufgaben_fb)
         self.comboBox_fb.setObjectName("comboBox_fb")
         list_comboBox_fb = ["", "AG", "FA", "AN", "WS", "K5", "K6", "K7", "K8"]
@@ -1496,7 +1507,7 @@ class Ui_MainWindow(object):
         self.listWidget_fb = QtWidgets.QListWidget(self.groupBox_alle_aufgaben)
         self.listWidget_fb.setObjectName("listWidget_fb")
         self.verticalLayout_fb.addWidget(self.listWidget_fb)
-        self.gridLayout.addWidget(self.groupBox_alle_aufgaben_fb, 1, 0, 5, 1)
+        self.gridLayout.addWidget(self.groupBox_alle_aufgaben_fb, 0, 0, 6, 1)
         self.groupBox_alle_aufgaben_fb.setTitle(
             _translate("MainWindow", "Aufgaben", None)
         )
@@ -1534,9 +1545,9 @@ class Ui_MainWindow(object):
         self.comboBox_kapitel_fb_cria = QtWidgets.QComboBox(self.groupBox_alle_aufgaben_fb_cria)
         self.comboBox_kapitel_fb_cria.setObjectName("self.comboBox_kapitel_fb_cria")
 
-        self.comboBox_kapitel_fb_cria.currentIndexChanged.connect(
-            partial(self.comboBox_kapitel_changed, "feedback")
-        )
+        # self.comboBox_kapitel_fb_cria.currentIndexChanged.connect(
+        #     partial(self.comboBox_kapitel_changed, "feedback")
+        # )
         self.comboBox_kapitel_fb_cria.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.verticalLayout_fb_cria.addWidget(self.comboBox_kapitel_fb_cria)
 
@@ -1546,9 +1557,9 @@ class Ui_MainWindow(object):
         )
         self.comboBox_unterkapitel_fb_cria.setObjectName("self.comboBox_unterkapitel_fb_cria")
 
-        self.comboBox_unterkapitel_fb_cria.currentIndexChanged.connect(
-            partial(self.comboBox_unterkapitel_changed, "feedback")
-        )
+        # self.comboBox_unterkapitel_fb_cria.currentIndexChanged.connect(
+        #     partial(self.comboBox_unterkapitel_changed, "feedback")
+        # )
         self.comboBox_unterkapitel_fb_cria.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.verticalLayout_fb_cria.addWidget(self.comboBox_unterkapitel_fb_cria)
 
@@ -1559,10 +1570,10 @@ class Ui_MainWindow(object):
             partial(self.adapt_choosing_list, "feedback")
         )
         self.verticalLayout_fb_cria.addWidget(self.lineEdit_number_fb_cria)
-        self.listWidget_fb= QtWidgets.QListWidget(self.groupBox_alle_aufgaben_fb_cria)
-        self.listWidget_fb.setObjectName("listWidget_fb")
-        self.verticalLayout_fb_cria.addWidget(self.listWidget_fb)
-        self.gridLayout.addWidget(self.groupBox_alle_aufgaben_fb_cria, 1, 0, 5, 1)
+        self.listWidget_fb_cria= QtWidgets.QListWidget(self.groupBox_alle_aufgaben_fb_cria)
+        self.listWidget_fb_cria.setObjectName("listWidget_fb_cria")
+        self.verticalLayout_fb_cria.addWidget(self.listWidget_fb_cria)
+        self.gridLayout.addWidget(self.groupBox_alle_aufgaben_fb_cria, 0, 0, 5, 1)
         self.groupBox_alle_aufgaben_fb_cria.setTitle(_translate("MainWindow", "Aufgaben",None))
         self.groupBox_alle_aufgaben_fb_cria.hide()
 
@@ -1665,6 +1676,14 @@ class Ui_MainWindow(object):
         self.pushButton_send.setText(_translate("MainWindow", "Senden", None))
         self.pushButton_send.clicked.connect(self.pushButton_send_pressed)
         self.pushButton_send.hide()
+
+        self.comboBox_kapitel_fb_cria.currentIndexChanged.connect(
+            partial(self.comboBox_kapitel_changed, "feedback")
+        )
+
+        self.comboBox_unterkapitel_fb_cria.currentIndexChanged.connect(
+            partial(self.comboBox_unterkapitel_changed, "feedback")
+        )
 
 #         ####################################################################
 #         #####################################################################
@@ -4512,6 +4531,12 @@ class Ui_MainWindow(object):
             # self.comboBox_gk_num.addItem("-")
         self.adapt_choosing_list("sage")
 
+    def change_status_combobox_general_feedback(self, status):
+        self.comboBox_fb.setEnabled(status)
+        self.comboBox_fb_num.setEnabled(status)
+        self.lineEdit_number_fb.setEnabled(status)
+        self.listWidget_fb.setEnabled(status)
+
     def comboBox_at_fb_changed(self):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         self.label_example.setText(
@@ -4519,11 +4544,13 @@ class Ui_MainWindow(object):
         )
 
         if self.comboBox_at_fb.currentText() == "Allgemeine Rückmeldung":
-            self.groupBox_alle_aufgaben_fb.setEnabled(False)
-            self.groupBox_alle_aufgaben_fb_cria.setEnabled(False)
+            self.change_status_combobox_general_feedback(False)
+            # self.groupBox_alle_aufgaben_fb.setEnabled(False)
+            # self.groupBox_alle_aufgaben_fb_cria.setEnabled(False)
         else:
-            self.groupBox_alle_aufgaben_fb.setEnabled(True)
-            self.groupBox_alle_aufgaben_fb_cria.setEnabled(True)
+            self.change_status_combobox_general_feedback(True)
+            # self.groupBox_alle_aufgaben_fb.setEnabled(True)
+            # self.groupBox_alle_aufgaben_fb_cria.setEnabled(True)
         if self.comboBox_at_fb.currentText()[-1] == "1":
             self.comboBox_fb.clear()
             self.lineEdit_number_fb.clear()
@@ -4535,9 +4562,7 @@ class Ui_MainWindow(object):
 
         if self.comboBox_at_fb.currentText()[-1] == "2":
             self.comboBox_fb.clear()
-            self.comboBox_fb.addItem("-")
             self.comboBox_fb_num.clear()
-            self.comboBox_fb_num.addItem("-")
         self.adapt_choosing_list("feedback")
         QtWidgets.QApplication.restoreOverrideCursor()
 
@@ -4651,7 +4676,7 @@ class Ui_MainWindow(object):
                     list_klassen[self.comboBox_klassen_fb_cria.currentIndex()]
                 )
             )
-            self.listWidget_fb.clear()
+            self.listWidget_fb_cria.clear()
             self.comboBox_kapitel_fb_cria.clear()
             self.comboBox_unterkapitel_fb_cria.clear()
             self.comboBox_kapitel_fb_cria.addItem("")
@@ -4664,7 +4689,7 @@ class Ui_MainWindow(object):
                     dict_klasse_name[all] + " (" + all + ")"
                 )
 
-        self.adapt_choosing_list(list_mode)
+        # self.adapt_choosing_list(list_mode)
 
 
 
@@ -4807,15 +4832,14 @@ class Ui_MainWindow(object):
 
         return info
 
-    def search_for_number(self, list_):
+    def search_for_number(self, list_, line_entry):    
         for section in list_[:]:
             info = self.split_section(section)
             if self.chosen_program == 'lama':
                 number = info[1]
             elif self.chosen_program == 'cria':
                 number = info[2]
-
-            if not number.startswith(self.lineEdit_number.text()):
+            if not number.startswith(line_entry):
                 list_.remove(section)
 
         return list_
@@ -4832,6 +4856,7 @@ class Ui_MainWindow(object):
 
             name, extension = os.path.splitext(os.path.basename(path))
             item = QtWidgets.QListWidgetItem()
+
             if "Beispieleinreichung" in path:
                 item.setText(name + ' (Entwurf)')
             elif "Lokaler_Ordner" in path:
@@ -4863,12 +4888,46 @@ class Ui_MainWindow(object):
         return kapitel[-1]
 
 
+    def adjust_beispieldaten_combobox_lama(self, list_beispieldaten_sections, combobox_gk, combobox_gk_num):
+        if is_empty(combobox_gk)==False:
+            if is_empty(combobox_gk_num)==True:
+                string = combobox_gk
+            else:
+                string = combobox_gk + ' ' + combobox_gk_num
+
+            list_beispieldaten_sections = self.delete_item_with_string_from_list(string, list_beispieldaten_sections)
+        return list_beispieldaten_sections
+
+
+    def adjust_beispieldaten_combobox_cria(self, list_beispieldaten_sections, combobox_klasse, combobox_kapitel, combobox_unterkapitel):
+        klasse = 'K'+combobox_klasse[0]
+        for section in list_beispieldaten_sections[:]:     
+            info= self.split_section(section)
+            if klasse not in info[0]:
+                list_beispieldaten_sections.remove(section)
+    
+        if is_empty(combobox_kapitel)==False:
+            kapitel = self.get_string_in_parantheses(combobox_kapitel)
+            if is_empty(combobox_unterkapitel)==True:
+                list_beispieldaten_sections = self.delete_item_with_string_from_list(kapitel, list_beispieldaten_sections)
+            else: 
+                unterkapitel = self.get_string_in_parantheses(combobox_unterkapitel)
+                string=kapitel+'.'+unterkapitel
+                list_beispieldaten_sections = self.delete_item_with_string_from_list(string, list_beispieldaten_sections)
+
+        return list_beispieldaten_sections 
+
+
     def adapt_choosing_list(self, list_mode):
+        print(list_mode)
         print("Adapt choosing list")
         if list_mode == "sage":
             listWidget = self.listWidget
         if list_mode == "feedback":
-            listWidget = self.listWidget_fb
+            if self.chosen_program == 'lama':   
+                listWidget = self.listWidget_fb
+            elif self.chosen_program == 'cria':   
+                listWidget = self.listWidget_fb_cria
 
         
             if self.comboBox_at_fb.currentText() == "Allgemeine Rückmeldung":
@@ -4886,49 +4945,80 @@ class Ui_MainWindow(object):
             typ=None
             beispieldaten_dateipfad = self.beispieldaten_dateipfad_cria
         else:
-            if self.comboBox_at_sage.currentText() == 'Typ 1':
+            if (self.comboBox_at_sage.currentText() == 'Typ 1' and list_mode=='sage') or (self.comboBox_at_fb.currentText() == 'Typ 1' and list_mode=='feedback'):
                 typ=1
                 beispieldaten_dateipfad = self.beispieldaten_dateipfad_1
-            elif self.comboBox_at_sage.currentText() == 'Typ 2':
+            elif (self.comboBox_at_sage.currentText() == 'Typ 2' and list_mode == 'sage') or (self.comboBox_at_fb.currentText() == 'Typ 2' and list_mode == 'feedback'):
                 typ=2
                 beispieldaten_dateipfad = self.beispieldaten_dateipfad_2
 
 
         list_beispieldaten_sections = list(beispieldaten_dateipfad.keys())
 
-        if self.chosen_program == 'lama':
-            if is_empty(self.comboBox_gk.currentText())==False:
-                if is_empty(self.comboBox_gk_num.currentText())==True:
-                    string = self.comboBox_gk.currentText()
-                else:
-                    string = self.comboBox_gk.currentText() + ' ' + self.comboBox_gk_num.currentText()
 
-                list_beispieldaten_sections = self.delete_item_with_string_from_list(string, list_beispieldaten_sections)
+        if self.chosen_program == 'lama':
+            if list_mode == 'sage':
+                combobox_gk = self.comboBox_gk.currentText()
+                combobox_gk_num = self.comboBox_gk_num.currentText()
+            elif list_mode == 'feedback':
+                combobox_gk = self.comboBox_fb.currentText()
+                combobox_gk_num = self.comboBox_fb_num.currentText()
+
+            list_beispieldaten_sections = self.adjust_beispieldaten_combobox_lama(
+                list_beispieldaten_sections,
+                combobox_gk,
+                combobox_gk_num,
+                )
+
+
 
         if self.chosen_program == 'cria':
-            klasse = 'K'+self.comboBox_klassen.currentText()[0]
-            for section in list_beispieldaten_sections[:]:     
-                info= self.split_section(section)
-                if klasse not in info[0]:
-                    list_beispieldaten_sections.remove(section)
+            if list_mode == 'sage':
+                combobox_klasse = self.comboBox_klassen.currentText()
+                combobox_kapitel = self.comboBox_kapitel.currentText()
+                combobox_unterkapitel = self.comboBox_unterkapitel.currentText()
+            elif list_mode == 'feedback':
+                combobox_klasse = self.comboBox_klassen_fb_cria.currentText()
+                combobox_kapitel = self.comboBox_kapitel_fb_cria.currentText()
+                combobox_unterkapitel = self.comboBox_unterkapitel_fb_cria.currentText()                
+
+            list_beispieldaten_sections = self.adjust_beispieldaten_combobox_cria(
+                list_beispieldaten_sections,
+                combobox_klasse,
+                combobox_kapitel,
+                combobox_unterkapitel,
+                )
+                
+            # klasse = 'K'+combobox_klasse[0]
+            # for section in list_beispieldaten_sections[:]:     
+            #     info= self.split_section(section)
+            #     if klasse not in info[0]:
+            #         list_beispieldaten_sections.remove(section)
         
-            if is_empty(self.comboBox_kapitel.currentText())==False:
-                kapitel = self.get_string_in_parantheses(self.comboBox_kapitel.currentText())
-                if is_empty(self.comboBox_unterkapitel.currentText())==True:
-                    list_beispieldaten_sections = self.delete_item_with_string_from_list(kapitel, list_beispieldaten_sections)
-                else: 
-                    unterkapitel = self.get_string_in_parantheses(self.comboBox_unterkapitel.currentText())
-                    string=kapitel+'.'+unterkapitel
-                    list_beispieldaten_sections = self.delete_item_with_string_from_list(string, list_beispieldaten_sections)    
+            # if is_empty(combobox_kapitel)==False:
+            #     kapitel = self.get_string_in_parantheses(combobox_kapitel)
+            #     if is_empty(combobox_unterkapitel)==True:
+            #         list_beispieldaten_sections = self.delete_item_with_string_from_list(kapitel, list_beispieldaten_sections)
+            #     else: 
+            #         unterkapitel = self.get_string_in_parantheses(combobox_unterkapitel)
+            #         string=kapitel+'.'+unterkapitel
+            #         list_beispieldaten_sections = self.delete_item_with_string_from_list(string, list_beispieldaten_sections)    
 
 
+        if list_mode == 'sage':
+            line_entry = self.lineEdit_number.text()
+        elif list_mode == 'feedback':
+            if self.chosen_program == 'lama':
+                line_entry = self.lineEdit_number_fb.text()
+            elif self.chosen_program == 'cria':
+                line_entry = self.lineEdit_number_fb_cria.text()
 
-        if is_empty(self.lineEdit_number.text()) == False:
-            list_beispieldaten_sections = self.search_for_number(list_beispieldaten_sections)
+        if is_empty(line_entry) == False:
+            list_beispieldaten_sections = self.search_for_number(list_beispieldaten_sections, line_entry)
+
 
 
         list_beispieldaten_sections = sorted_gks(list_beispieldaten_sections, self.chosen_program)
-
 
         self.add_items_to_listwidget(list_beispieldaten_sections, beispieldaten_dateipfad, listWidget, list_mode)
 
@@ -5921,7 +6011,7 @@ class Ui_MainWindow(object):
         if chosen_gui==widgets_feedback or chosen_gui==widgets_feedback_cria:
             self.adapt_choosing_list("feedback")
             self.listWidget_fb.itemClicked.connect(self.nummer_clicked_fb)
-            # self.listWidget_fb.itemClicked.connect(self.nummer_clicked_fb)                                          
+            self.listWidget_fb_cria.itemClicked.connect(self.nummer_clicked_fb)                                          
 
 
 if __name__ == "__main__":
