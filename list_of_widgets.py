@@ -147,6 +147,7 @@ widgets_feedback_cria = [
     "menuHelp",
     "comboBox_at_fb",
     "label_example",
+    "comboBox_at_fb_cria",
     "groupBox_alle_aufgaben_fb_cria",
     "groupBox_fehlertyp",
     "groupBox_feedback",

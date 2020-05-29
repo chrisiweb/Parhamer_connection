@@ -1463,18 +1463,18 @@ class Ui_MainWindow(object):
         self.comboBox_at_fb.addItem("")
         self.comboBox_at_fb.addItem("")
         self.verticalLayout_fb.addWidget(self.comboBox_at_fb)
-        if self.chosen_program == 'lama':
-            self.comboBox_at_fb.setItemText(0, _translate("MainWindow", "Typ 1", None))
-            self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Typ 2", None))
-            self.comboBox_at_fb.addItem("")
-            self.comboBox_at_fb.setItemText(
-                2, _translate("MainWindow", "Allgemeine Rückmeldung", None)
-            )
-        if self.chosen_program == 'cria':
-            self.comboBox_at_fb.setItemText(0, _translate("MainWindow", "Aufgabenrückmeldung", None))
-            self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Allgemeine Rückmeldung", None))            
+
+        self.comboBox_at_fb.setItemText(0, _translate("MainWindow", "Typ 1", None))
+        self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Typ 2", None))
+        self.comboBox_at_fb.addItem("")
+        self.comboBox_at_fb.setItemText(
+            2, _translate("MainWindow", "Allgemeine Rückmeldung", None)
+        )
+        # if self.chosen_program == 'cria':
+        #     self.comboBox_at_fb.setItemText(0, _translate("MainWindow", "Aufgabenrückmeldung", None))
+        #     self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Allgemeine Rückmeldung", None))            
         self.comboBox_at_fb.currentIndexChanged.connect(self.comboBox_at_fb_changed)
-        self.comboBox_at_fb.setFocusPolicy(QtCore.Qt.ClickFocus)
+        # self.comboBox_at_fb.setFocusPolicy(QtCore.Qt.ClickFocus)
         # self.comboBox_at_fb.hide()
 
 
@@ -1515,6 +1515,19 @@ class Ui_MainWindow(object):
 
 
         #### Feedback Cria ####
+        self.comboBox_at_fb_cria = QtWidgets.QComboBox()
+        self.comboBox_at_fb_cria.setObjectName("comboBox_at_fb_cria")
+        self.comboBox_at_fb_cria.addItem("Aufgabenrückmeldung")
+        self.comboBox_at_fb_cria.addItem("Allgemeine Rückmeldung")
+        self.comboBox_at_fb_cria.currentIndexChanged.connect(self.comboBox_at_fb_cria_changed)
+        # if self.chosen_program == 'cria':
+        #     self.comboBox_at_fb.setItemText(0, _translate("MainWindow", "Aufgabenrückmeldung", None))
+        #     self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Allgemeine Rückmeldung", None))            
+        # self.comboBox_at_fb.currentIndexChanged.connect(self.comboBox_at_fb_changed)
+        # self.comboBox_at_fb.setFocusPolicy(QtCore.Qt.ClickFocus)
+
+        self.gridLayout.addWidget(self.comboBox_at_fb_cria, 0,0,1,1)
+        self.comboBox_at_fb_cria.hide()
 
         self.groupBox_alle_aufgaben_fb_cria = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_alle_aufgaben_fb_cria.setMinimumWidth(100)
@@ -1525,6 +1538,8 @@ class Ui_MainWindow(object):
         self.verticalLayout_fb_cria.setObjectName("verticalLayout_fb_cria")
         self.comboBox_klassen_fb_cria = QtWidgets.QComboBox(self.groupBox_alle_aufgaben_fb_cria)
         self.comboBox_klassen_fb_cria.setObjectName("self.comboBox_klassen_fb_cria")
+
+
 
         i = 0
         for all in list_klassen:
@@ -1573,7 +1588,7 @@ class Ui_MainWindow(object):
         self.listWidget_fb_cria= QtWidgets.QListWidget(self.groupBox_alle_aufgaben_fb_cria)
         self.listWidget_fb_cria.setObjectName("listWidget_fb_cria")
         self.verticalLayout_fb_cria.addWidget(self.listWidget_fb_cria)
-        self.gridLayout.addWidget(self.groupBox_alle_aufgaben_fb_cria, 0, 0, 5, 1)
+        self.gridLayout.addWidget(self.groupBox_alle_aufgaben_fb_cria, 1, 0, 5, 1)
         self.groupBox_alle_aufgaben_fb_cria.setTitle(_translate("MainWindow", "Aufgaben",None))
         self.groupBox_alle_aufgaben_fb_cria.hide()
 
@@ -2464,9 +2479,9 @@ class Ui_MainWindow(object):
             self.cb_af_rf.show()
             self.cb_af_ta.show()
 
-            self.comboBox_at_fb.setItemText(0, _translate("MainWindow", "Aufgabenrückmeldung", None))
-            self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Allgemeine Rückmeldung", None))
-            self.comboBox_at_fb.removeItem(2)
+            # self.comboBox_at_fb.setItemText(0, _translate("MainWindow", "Aufgabenrückmeldung", None))
+            # self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Allgemeine Rückmeldung", None))
+            # self.comboBox_at_fb.removeItem(2)
 
             self.combobox_searchtype.setItemText(1, _translate("MainWindow", "Alle Dateien ausgeben, die alle Suchkriterien enthalten", None))
             i=5
@@ -2500,10 +2515,10 @@ class Ui_MainWindow(object):
             self.actionProgram.setText(_translate("MainWindow", 'Zu "LaMA Cria (Unterstufe)" wechseln', None))
             self.combobox_searchtype.setItemText(1, _translate("MainWindow", "Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten", None))
 
-            self.comboBox_at_fb.setItemText(0, _translate("MainWindow", "Typ 1", None))
-            self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Typ 2", None))
-            self.comboBox_at_fb.addItem("")
-            self.comboBox_at_fb.setItemText(2, _translate("MainWindow", "Allgemeine Rückmeldung", None))
+            # self.comboBox_at_fb.setItemText(0, _translate("MainWindow", "Typ 1", None))
+            # self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Typ 2", None))
+            # # self.comboBox_at_fb.addItem("")
+            # self.comboBox_at_fb.setItemText(2, _translate("MainWindow", "Allgemeine Rückmeldung", None))
 
             self.cb_af_ko.hide()
             self.cb_af_rf.hide()
@@ -4523,8 +4538,11 @@ class Ui_MainWindow(object):
             self.comboBox_gk_num.clear()
 
         if self.comboBox_at_sage.currentText()[-1] == "2":
+            self.comboBox_gk.setCurrentIndex(0)
+            self.comboBox_gk_num.setCurrentIndex(0)
             self.comboBox_gk.setEnabled(False)
             self.comboBox_gk_num.setEnabled(False)
+
             # self.comboBox_gk.clear()
             # self.comboBox_gk.addItem("-")
             # self.comboBox_gk_num.clear()
@@ -4536,21 +4554,42 @@ class Ui_MainWindow(object):
         self.comboBox_fb_num.setEnabled(status)
         self.lineEdit_number_fb.setEnabled(status)
         self.listWidget_fb.setEnabled(status)
+        # self.comboBox_klassen_fb_cria.setEnabled(status)
+        # self.comboBox_kapitel_fb_cria.setEnabled(status)
+        # self.comboBox_unterkapitel_fb_cria.setEnabled(status)
+
+    def comboBox_at_fb_cria_changed(self):
+        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        self.label_example.setText(
+            _translate("MainWindow", "Ausgewählte Aufgabe: -", None)
+        )
+        if self.comboBox_at_fb_cria.currentText() == "Allgemeine Rückmeldung":
+            self.groupBox_alle_aufgaben_fb_cria.setEnabled(False)
+            self.comboBox_klassen_fb_cria.setCurrentIndex(0)
+            self.comboBox_kapitel_fb_cria.setCurrentIndex(0)
+            self.comboBox_unterkapitel_fb_cria.setCurrentIndex(0)
+            self.lineEdit_number_fb_cria.clear()
+            self.listWidget_fb_cria.clear()
+        else:
+            self.groupBox_alle_aufgaben_fb_cria.setEnabled(True)
+            self.adapt_choosing_list('feedback')
+
+
+        QtWidgets.QApplication.restoreOverrideCursor()
 
     def comboBox_at_fb_changed(self):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         self.label_example.setText(
             _translate("MainWindow", "Ausgewählte Aufgabe: -", None)
         )
-
         if self.comboBox_at_fb.currentText() == "Allgemeine Rückmeldung":
             self.change_status_combobox_general_feedback(False)
             # self.groupBox_alle_aufgaben_fb.setEnabled(False)
             # self.groupBox_alle_aufgaben_fb_cria.setEnabled(False)
         else:
             self.change_status_combobox_general_feedback(True)
-            # self.groupBox_alle_aufgaben_fb.setEnabled(True)
-            # self.groupBox_alle_aufgaben_fb_cria.setEnabled(True)
+        # self.groupBox_alle_aufgaben_fb.setEnabled(True)
+        # self.groupBox_alle_aufgaben_fb_cria.setEnabled(True)
         if self.comboBox_at_fb.currentText()[-1] == "1":
             self.comboBox_fb.clear()
             self.lineEdit_number_fb.clear()
@@ -4832,15 +4871,26 @@ class Ui_MainWindow(object):
 
         return info
 
-    def search_for_number(self, list_, line_entry):    
+    def search_for_number(self, list_, line_entry, list_mode):
         for section in list_[:]:
             info = self.split_section(section)
+            # print(line_entry)
             if self.chosen_program == 'lama':
-                number = info[1]
+                if list_mode == 'sage':
+                    combobox_at = self.comboBox_at_sage.currentText()
+                elif list_mode == 'feedback':
+                    combobox_at = self.comboBox_at_fb.currentText()
+
+                if combobox_at == "Typ 1":
+                    number = info[1]
+                if combobox_at == "Typ 2":
+                    number = info[0]
             elif self.chosen_program == 'cria':
                 number = info[2]
             if not number.startswith(line_entry):
                 list_.remove(section)
+            # else:
+            #     print(True)
 
         return list_
 
@@ -5007,16 +5057,21 @@ class Ui_MainWindow(object):
 
         if list_mode == 'sage':
             line_entry = self.lineEdit_number.text()
+            # print('sage')
         elif list_mode == 'feedback':
             if self.chosen_program == 'lama':
                 line_entry = self.lineEdit_number_fb.text()
+                # print('lama feedback')
             elif self.chosen_program == 'cria':
                 line_entry = self.lineEdit_number_fb_cria.text()
 
+
+        # print(list_beispieldaten_sections)
+
         if is_empty(line_entry) == False:
-            list_beispieldaten_sections = self.search_for_number(list_beispieldaten_sections, line_entry)
+            list_beispieldaten_sections = self.search_for_number(list_beispieldaten_sections, line_entry, list_mode)
 
-
+        # print(list_beispieldaten_sections)
 
         list_beispieldaten_sections = sorted_gks(list_beispieldaten_sections, self.chosen_program)
 
@@ -5256,23 +5311,29 @@ class Ui_MainWindow(object):
                 solution = "on"
             else:
                 solution = "off"
+        elif ausgabetyp == 'schularbeit':
+            if index % 2 == 0:
+                solution = "on"
+            elif index % 2 == 1:
+                solution = "off"
             
-            vorschau.write(
-                "\\usepackage[solution_{}]{{srdp-mathematik}} % solution_on/off\n".format(solution)
-            )
+        vorschau.write(
+            "\\usepackage[solution_{}]{{srdp-mathematik}} % solution_on/off\n".format(solution)
+        )
             # else:
             #     vorschau.write(
             #         "\\usepackage[solution_off]{srdp-mathematik} % solution_on/off\n"
             #     )
-        if ausgabetyp == "schularbeit":
-            if index % 2 == 0:
-                vorschau.write(
-                    "\\usepackage[solution_on]{srdp-mathematik} % solution_on/off\n"
-                )
-            if index % 2 == 1:
-                vorschau.write(
-                    "\\usepackage[solution_off]{srdp-mathematik} % solution_on/off\n"
-                )
+        # if ausgabetyp == "schularbeit":
+        #     if index % 2 == 0:
+        #         vorschau.write(
+        #             "\\usepackage[solution_on]{srdp-mathematik} % solution_on/off\n"
+        #         )
+        #     if index % 2 == 1:
+        #         vorschau.write(
+        #             "\\usepackage[solution_off]{srdp-mathematik} % solution_on/off\n"
+        #         )
+
         if maximum > 2:
             comment = " %Gruppen: 0=A, 1=B, 2=C, ..."
         else:
