@@ -47,6 +47,7 @@ from refresh_ddb import modification_date, refresh_ddb, search_files
 from standard_dialog_windows import warning_window, question_window, critical_window, information_window
 from predefined_size_policy import *
 from work_with_content import collect_content, split_aufgaben_content_new_format, split_aufgaben_content
+from build_titlepage import get_titlepage_vorschau
  
 # from cria_commands import create_kapitel_cria
 
@@ -152,6 +153,28 @@ def create_file_titlepage(titlepage_save):
 #     string=string.replace(" ", "").replace(".", "").replace("-", "_")
 #     return string   
 
+def check_format_titlepage_save(filename):
+    path = os.path.join(path_programm, "Teildokument", filename)
+    try:
+        titlepage=create_file_titlepage(path)
+    except json.decoder.JSONDecodeError:
+        print('The file "{}" has an invalid format. The standard was restored!'.format(filename))
+        titlepage = {
+            "logo": False,
+            "logo_path": False,
+            "titel": True,
+            "datum": True,
+            "klasse": True,
+            "name": True,
+            "note": False,
+            "unterschrift": False,
+            "hide_all": False,
+        }
+        with open(path, "w+", encoding="utf8") as f:
+            json.dump(titlepage, f, ensure_ascii=False)
+
+    return titlepage    
+
 
 class Ui_MainWindow(object):
     global dict_picture_path#, set_chosen_gk #, list_sage_examples#, dict_alle_aufgaben_sage
@@ -169,24 +192,14 @@ class Ui_MainWindow(object):
         self.list_copy_images=[]
 
         
+        self.dict_titlepage = check_format_titlepage_save("titlepage_save")
 
-        titlepage_save = os.path.join(path_programm, "Teildokument", "titlepage_save")
-        titlepage=create_file_titlepage(titlepage_save)
-        self.dict_titlepage=titlepage
+        self.dict_titlepage_cria = check_format_titlepage_save("titlepage_save_cria")
 
-        titlepage_save = os.path.join(path_programm, "Teildokument", "titlepage_save_cria")
-        titlepage=create_file_titlepage(titlepage_save)
-        self.dict_titlepage_cria=titlepage
 
         app.aboutToQuit.connect(self.close_app)
 
 
-    # def resizeEvent(self, event):
-    #     print('resize')  
-    #     QtGui.QMainWindow.resizeEvent(self, event)
-        
-    # def setupUi(self, MainWindow):
-    #     self.check_for_update()
         
     def setupUi(self, MainWindow):
         self.check_for_update()
@@ -4554,9 +4567,7 @@ class Ui_MainWindow(object):
         self.comboBox_fb_num.setEnabled(status)
         self.lineEdit_number_fb.setEnabled(status)
         self.listWidget_fb.setEnabled(status)
-        # self.comboBox_klassen_fb_cria.setEnabled(status)
-        # self.comboBox_kapitel_fb_cria.setEnabled(status)
-        # self.comboBox_unterkapitel_fb_cria.setEnabled(status)
+
 
     def comboBox_at_fb_cria_changed(self):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
@@ -4584,12 +4595,10 @@ class Ui_MainWindow(object):
         )
         if self.comboBox_at_fb.currentText() == "Allgemeine Rückmeldung":
             self.change_status_combobox_general_feedback(False)
-            # self.groupBox_alle_aufgaben_fb.setEnabled(False)
-            # self.groupBox_alle_aufgaben_fb_cria.setEnabled(False)
         else:
             self.change_status_combobox_general_feedback(True)
-        # self.groupBox_alle_aufgaben_fb.setEnabled(True)
-        # self.groupBox_alle_aufgaben_fb_cria.setEnabled(True)
+
+
         if self.comboBox_at_fb.currentText()[-1] == "1":
             self.comboBox_fb.clear()
             self.lineEdit_number_fb.clear()
@@ -4677,7 +4686,6 @@ class Ui_MainWindow(object):
         self.lineEdit_number.setFocus()
 
     def nummer_clicked_fb(self, item):
-        # print(item.text())
         if self.chosen_program=='lama':
             self.label_example.setText(
                 _translate(
@@ -4790,20 +4798,21 @@ class Ui_MainWindow(object):
         self.adapt_choosing_list(list_mode)
 
 
-    def add_filename_to_list(self, list_mode, file_path, list_beispieldaten):
-        filename_all = os.path.basename(file_path)
-        name, extension = os.path.splitext(filename_all)
-        if list_mode == "sage":
-            if name.startswith(self.lineEdit_number.text()):
-                if "Beispieleinreichung" in file_path:
-                    list_beispieldaten.append("*E-" + name)
-                else:
-                    list_beispieldaten.append(name)
-        if list_mode == "feedback":
-            if name.startswith(self.lineEdit_number_fb.text()) and self.chosen_program=='lama':
-                list_beispieldaten.append(name)
-            if name.startswith(self.lineEdit_number_fb_cria.text()) and self.chosen_program=='cria':
-                list_beispieldaten.append(name)
+    # def add_filename_to_list(self, list_mode, file_path, list_beispieldaten):
+    #     name = self.get_name_from_path(filepath)
+    #     filename_all = os.path.basename(file_path)
+    #     name, extension = os.path.splitext(filename_all)
+    #     if list_mode == "sage":
+    #         if name.startswith(self.lineEdit_number.text()):
+    #             if "Beispieleinreichung" in file_path:
+    #                 list_beispieldaten.append("*E-" + name)
+    #             else:
+    #                 list_beispieldaten.append(name)
+    #     if list_mode == "feedback":
+    #         if name.startswith(self.lineEdit_number_fb.text()) and self.chosen_program=='lama':
+    #             list_beispieldaten.append(name)
+    #         if name.startswith(self.lineEdit_number_fb_cria.text()) and self.chosen_program=='cria':
+    #             list_beispieldaten.append(name)
 
     def get_beispieldaten_dateipfad(self, log_file):          
         try:
@@ -4969,8 +4978,6 @@ class Ui_MainWindow(object):
 
 
     def adapt_choosing_list(self, list_mode):
-        # print(list_mode)
-        # print("Adapt choosing list")
         if list_mode == "sage":
             listWidget = self.listWidget
         if list_mode == "feedback":
@@ -5149,6 +5156,315 @@ class Ui_MainWindow(object):
         
         self.dict_all_infos_for_file["data_gesamt"] = dict_data_gesamt
         ### end ###
+    
+
+    
+    # def get_datum(self):
+    #     dict_months = {
+    #         1: "Jänner",
+    #         2: "Februar",
+    #         3: "März",
+    #         4: "April",
+    #         5: "Mai",
+    #         6: "Juni",
+    #         7: "Juli",
+    #         8: "August",
+    #         9: "September",
+    #         10: "Oktober",
+    #         11: "November",
+    #         12: "Dezember",
+    #     }
+    #     dict_wochentag = {
+    #         0: "Montag",
+    #         1: "Dienstag",
+    #         2: "Mittwoch",
+    #         3: "Donnerstag",
+    #         4: "Freitag",
+    #         5: "Samstag",
+    #         6: "Sonntag",
+    #     }
+
+    #     raw_date = self.dict_all_infos_for_file["data_gesamt"]["Datum"]
+
+    #     year = raw_date[0]
+    #     month = "{:02d}".format(raw_date[1])
+    #     month_word = dict_months[raw_date[1]]
+    #     day = "{:02d}".format(raw_date[2])
+    #     weekday = dict_wochentag[datetime.datetime(raw_date[0], raw_date[1], raw_date[2]).weekday()]
+
+    #     datum_kurz = "{0}.{1}.{2}".format(day, month, year)
+
+    #     datum = "{0}, {1}. {2} {3}".format(weekday, day, month_word, year)
+
+    #     return datum_kurz, datum
+
+
+    # def collect_titlepage_info(self):
+    #     try:
+    #         dict_titlepage["hide_all"]
+    #     except KeyError:
+    #         dict_titlepage["hide_all"]=False
+    #         titlepage_save = os.path.join(path_programm, "Teildokument", "titlepage_save")
+    #         with open(titlepage_save, "w+", encoding="utf8") as f:
+    #             json.dump(dict_titlepage, f, ensure_ascii=False)
+        
+
+    # def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum):
+    #     datum_kurz, datum = self.get_datum()
+
+    #     if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Grundkompetenzcheck":        
+
+    #         if ausgabetyp == "schularbeit" and maximum > 2:
+    #             gruppe = " -- " + dict_gruppen[int(index / 2)]
+    #         else:
+    #             gruppe = ""
+
+
+    #         titlepage = (
+    #             "\\textsc{{Grundkompetenzcheck{0}}} \\hfill \\textsc{{Name:}} \\rule{{8cm}}{{0.4pt}}"
+    #             "\\normalsize \\\ \\vspace{{\\baselineskip}} \n\n".format(gruppe))
+            
+    #         return titlepage
+
+
+    #     elif self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Übungsblatt":
+    #         titlepage = "\\subsection{Übungsblatt}"
+
+    #         return titlepage         
+
+    #     elif dict_titlepage["hide_all"] == True:
+
+    #         if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Wiederholungsprüfung":
+    #             subsection = self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
+    #         else: 
+    #             subsection = (str(self.dict_all_infos_for_file["data_gesamt"]["#"]) + 
+    #             ". " +
+    #             self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"])
+                       
+
+    #         titlepage = "\\subsection{{{0} \\hfill {1}}}".format(subsection, datum_kurz)
+    #         return titlepage
+
+    #     else:
+    #         if dict_titlepage["logo"] == True:
+    #             logo_name = os.path.basename(dict_titlepage["logo_path"])
+    #             logo_titlepage_path = os.path.join(path_programm, "Teildokument", logo_name)
+
+    #             if os.path.isfile(logo_titlepage_path):
+    #                 logo_input = ("\\begin{{minipage}}[t]{{0.4\\textwidth}} \\vspace{{0pt}}\n"
+    #                 "\\includegraphics[width=1\\textwidth]{{{0}}}\n"
+    #                 "\\end{{minipage}} \\\ \\vfil \n"
+    #                 .format(logo_name))
+    #             else:
+    #                 warning_window("Das Logo konnte nicht gefunden werden.",
+    #                 "Bitte suchen Sie ein Logo unter: \n\nTitelblatt anpassen - Durchsuchen",
+    #                 "Kein Logo gefunden"
+    #                 )
+    #                 logo_input= "~\\vfil \n"
+    #         else:
+    #             logo_input= "~\\vfil \n"        
+    #             # logo_input = "~\\vfil \n"
+
+    #         if dict_titlepage["titel"] == True:
+    #             if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Wiederholungsprüfung":
+    #                 title_header = "\\textsc{{\\Huge Wiederholungsprüfung}}"
+    #             else:
+    #                 title_header = "\\textsc{{\\Huge {0}. Mathematikschularbeit}}".format(self.dict_all_infos_for_file["data_gesamt"]["#"])
+                    
+    #                 if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Wiederholungsschularbeit":
+    #                     add_on = "Wiederholung"
+    #                 elif self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Nachschularbeit":
+    #                     add_on = "Nachschularbeit"
+    #                 else:
+    #                     add_on = None
+                    
+    #                 if add_on != None:
+    #                     title_header = title_header + "[0.5cm] \\textsc{{\Large {0}}}".format(add_on)
+                    
+    #                 title_header = title_header + "\\\ \n [2cm] \n"
+    #         else:
+    #             title_header = ''
+
+    #         if dict_titlepage["datum"] == True:
+    #             datum_text =  "\\textsc{{\Large am {0}}}\\\ [1cm] \n".format(datum)
+    #         else:
+    #             datum_text = ''
+
+    #         if dict_titlepage["klasse"] == True:
+    #             klasse = "\\textsc{{\Large Klasse {0}}} \\\ [1cm] \n".format(
+    #                 self.dict_all_infos_for_file["data_gesamt"]["Klasse"]
+    #                 )
+    #         else:
+    #             klasse = ''
+
+    #         if ausgabetyp == "schularbeit" and maximum > 2:
+    #             gruppe = "\\textsc{{\\Large Gruppe {0}}} \\\ [1cm]\n".format(gruppe)
+    #         else:
+    #             gruppe = ''
+
+
+    #         if dict_titlepage["name"] == True:
+    #             name = "\\Large Name: \\rule{8cm}{0.4pt} \\\ \n"
+    #         else:
+    #             name = ''
+            
+
+    #         if dict_titlepage["note"] == True:
+    #             note = "\\Large Note: \\rule{8cm}{0.4pt} \\\ [1cm]\n"
+    #         else:
+    #             note = ''
+
+    #         if dict_titlepage["unterschrift"] == True:
+    #             unterschrift = "\\Large Unterschrift: \\rule{8cm}{0.4pt} \\\ \n"
+    #         else:
+    #             unterschrift = ''
+
+
+    #         if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "br":
+    #             teil2_pkt_ohne_ap = (
+    #                 self.dict_all_infos_for_file["data_gesamt"]["punkte_2"]
+    #                 - self.dict_all_infos_for_file["data_gesamt"]["ausgleichspunkte"])
+
+    #             beurteilungsraster = (
+    #                 "\\newpage \n"
+    #                 "\\flushleft \\normalsize\n"
+    #                 "\\thispagestyle{{empty}}\n"
+    #                 "\\beurteilungsraster{{0.85}}{{0.68}}{{0.5}}{{1/3}}{{ % Prozentschluessel\n"
+    #                 "T1={{{0}}}, % Punkte im Teil 1\n"
+    #                 "AP={{{1}}}, % Ausgleichspunkte aus Teil 2\n"
+    #                 "T2={{{2}}}, % Punkte im Teil 2\n"
+    #                 "}} \\newpage"
+    #                 .format(
+    #                 self.dict_all_infos_for_file["data_gesamt"]["punkte_1"],
+    #                 teil2_pkt_ohne_ap,
+    #                 ))
+    #         else:
+    #             beurteilungsraster = ''
+        
+
+    #         titlepage = (
+    #         "\\begin{{titlepage}}\n" "\\flushright\n"
+    #         "{0}"
+    #         "{1}"
+    #         "{2}"
+    #         "{3}"
+    #         "{4}"
+    #         "{5}"
+    #         "\\vfil\\vfil\\vfil \n"
+    #         "{6}"
+    #         "{7}"
+    #         "{8}"
+    #         "\\end{{titlepage}}\n\n".format(
+    #         logo_input,
+    #         title_header,
+    #         datum_text,
+    #         klasse,
+    #         gruppe,
+    #         name,
+    #         note,
+    #         unterschrift,
+    #         beurteilungsraster,
+    #         ))
+
+    #         return titlepage
+            ## "\\vfil\\vfil\\vfil \n" nach name
+
+
+            # if dict_titlepage["logo"] == True:
+            #     logo_name = os.path.basename(dict_titlepage["logo_path"])
+            #     logo_titlepage_path = os.path.join(
+            #         path_programm, "Teildokument", logo_name
+            #     )
+            #     if os.path.isfile(logo_titlepage_path):
+            #         vorschau.write(
+            #             "\\begin{{minipage}}[t]{{0.4\\textwidth}} \\vspace{{0pt}} \\includegraphics[width=1\\textwidth]{{{0}}}\\end{{minipage}} \\\ \\vfil \n".format(
+            #                 logo_name
+            #             )
+            #         )
+            #     else:
+            #         msg = QtWidgets.QMessageBox()
+            #         msg.setIcon(QtWidgets.QMessageBox.Warning)
+            #         msg.setWindowIcon(QtGui.QIcon(logo_path))
+            #         msg.setText("Das Logo konnte nicht gefunden werden.")
+            #         msg.setInformativeText(
+            #             "Bitte suchen Sie ein Logo unter: \n\nTitelblatt anpassen - Durchsuchen"
+            #         )
+            #         msg.setWindowTitle("Kein Logo ausgewählt")
+            #         msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            #         msg.exec_()
+
+            #         vorschau.write("~\\vfil \n")
+
+            # else:
+            #     vorschau.write("~\\vfil \n")
+            # if dict_titlepage["titel"] == True:
+            #     if (
+            #         self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
+            #         == "Wiederholungsprüfung"
+            #     ):
+            #         vorschau.write("\\textsc{{\\Huge Wiederholungsprüfung}} \\\ \n")
+            #     else:
+            #         vorschau.write(
+            #             "\\textsc{{\\Huge {0}. Mathematikschularbeit}} \\\ \n".format(
+            #                 self.dict_all_infos_for_file["data_gesamt"]["#"]
+            #             )
+            #         )
+            #         if (
+            #             self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
+            #             == "Wiederholungsschularbeit"
+            #         ):
+            #             vorschau.write("[0.5cm]" "\\textsc{\Large Wiederholung} \\\ \n")
+            #         if (
+            #             self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
+            #             == "Nachschularbeit"
+            #         ):
+            #             vorschau.write(
+            #                 "[0.5cm]" "\\textsc{\Large Nachschularbeit} \\\ \n"
+            #             )
+            #         vorschau.write("[2cm] \n")
+            # if dict_titlepage["datum"] == True:
+            #     vorschau.write("\\textsc{{\Large am {0}}}\\\ [1cm] \n".format(datum))
+            # if dict_titlepage["klasse"] == True:
+            #     vorschau.write(
+            #         "\\textsc{{\Large Klasse {0}}} \\\ [1cm] \n".format(
+            #             self.dict_all_infos_for_file["data_gesamt"]["Klasse"]
+            #         )
+            #     )
+
+            # if ausgabetyp == "schularbeit" and maximum > 2:
+            #     vorschau.write(
+            #         "\\textsc{{\\Large Gruppe {0}}} \\\ [1cm]\n".format(gruppe)
+            #     )
+
+            # if dict_titlepage["name"] == True:
+            #     vorschau.write("\\Large Name: \\rule{8cm}{0.4pt} \\\ \n")
+            # vorschau.write("\\vfil\\vfil\\vfil \n")
+            # if dict_titlepage["note"] == True:
+            #     vorschau.write("\\Large Note: \\rule{8cm}{0.4pt} \\\ [1cm]\n")
+            # if dict_titlepage["unterschrift"] == True:
+            #     vorschau.write("\\Large Unterschrift: \\rule{8cm}{0.4pt} \\\ \n")
+
+            # if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "br":
+            #     exkl_teil2_pkt = (
+            #         self.dict_all_infos_for_file["data_gesamt"]["punkte_2"]
+            #         - self.dict_all_infos_for_file["data_gesamt"]["ausgleichspunkte"]
+            #     )
+            #     vorschau.write(
+            #         "\\newpage \n"
+            #         "\\flushleft \\normalsize\n"
+            #         "\\thispagestyle{{empty}}\n"
+            #         "\\beurteilungsraster{{0.85}}{{0.68}}{{0.5}}{{1/3}}{{ % Prozentschluessel\n"
+            #         "T1={{{0}}}, % Punkte im Teil 1\n"
+            #         "AP={{{1}}}, % Ausgleichspunkte aus Teil 2\n"
+            #         "T2={{{2}}}, % Punkte im Teil 2\n"
+            #         "}} \\newpage".format(
+            #             self.dict_all_infos_for_file["data_gesamt"]["punkte_1"],
+            #             self.dict_all_infos_for_file["data_gesamt"][
+            #                 "ausgleichspunkte"
+            #             ],
+            #             exkl_teil2_pkt,
+            #         )
+            #     )
 
 
     def pushButton_vorschau_pressed(
@@ -5192,42 +5508,6 @@ class Ui_MainWindow(object):
                             ] = self.beispieldaten_dateipfad_cria[all]
 
 
-        dict_months = {
-            1: "Jänner",
-            2: "Februar",
-            3: "März",
-            4: "April",
-            5: "Mai",
-            6: "Juni",
-            7: "Juli",
-            8: "August",
-            9: "September",
-            10: "Oktober",
-            11: "November",
-            12: "Dezember",
-        }
-        dict_wochentag = {
-            0: "Montag",
-            1: "Dienstag",
-            2: "Mittwoch",
-            3: "Donnerstag",
-            4: "Freitag",
-            5: "Samstag",
-            6: "Sonntag",
-        }
-
-        # print(str(self.spinBox_nummer.value()) +str(self.dateEdit.date().day()) +'. '+dict_months[self.dateEdit.date().month()]+' '+ str(self.dateEdit.date().year()))
-        raw_date = self.dict_all_infos_for_file["data_gesamt"]["Datum"]
-        datum_kurz = (
-            str(raw_date[2]) + ". " + str(raw_date[1]) + ". " + str(raw_date[0])
-        )
-        datum = (
-            str(raw_date[2]) + ". " + dict_months[raw_date[1]] + " " + str(raw_date[0])
-        )
-        wochentag = dict_wochentag[
-            datetime.datetime(raw_date[0], raw_date[1], raw_date[2]).weekday()
-        ]
-        datum = wochentag + ", " + datum
 
         if ausgabetyp == "vorschau":
             filename_vorschau = os.path.join(
@@ -5294,32 +5574,85 @@ class Ui_MainWindow(object):
         if self.chosen_program=='cria':
             dict_titlepage=self.dict_titlepage_cria
 
+        
+        dict_vorschau = {}
+        if (ausgabetyp == "vorschau" and self.cb_solution_sage.isChecked() == True) or (ausgabetyp == 'schularbeit' and index % 2 == 0):
+            dict_vorschau['solution'] = "on"
+        else:
+            dict_vorschau['solution'] = "off"
+
+        dict_vorschau['index']=int(index / 2)
+
+        if maximum > 2:
+            dict_vorschau['comment'] = " %Gruppen: 0=A, 1=B, 2=C, ..."
+        else:
+            dict_vorschau['comment'] = ""
+
+        if ausgabetyp == "vorschau" or ausgabetyp == "schularbeit":
+            dict_vorschau['pagestyle']= 'empty'
+        else:
+            dict_vorschau['pagestyle']= 'plain'
+
+        dict_vorschau['titlepage'] = get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum)
+
+
+        # if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Grundkompetenzcheck":        
+
+        #     if ausgabetyp == "schularbeit" and maximum > 2:
+        #         gruppe = " -- " + dict_gruppen[int(index / 2)]
+        #     else:
+        #         gruppe = ""      
 
         vorschau = open(filename_vorschau, "w+", encoding="utf8")
 
         vorschau.write(
-            "\documentclass[a4paper,12pt]{report}\n\n"
-            "\\usepackage{geometry}\n"
-            "\geometry{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}\n\n"
-            "\\usepackage{lmodern}\n"
-            "\\usepackage[T1]{fontenc}\n"
-            "\\usepackage[utf8]{inputenc}\n"
-            "\\usepackage[ngerman]{babel}\n"
-        )
-        if ausgabetyp == "vorschau":
-            if self.cb_solution_sage.isChecked() == True:
-                solution = "on"
-            else:
-                solution = "off"
-        elif ausgabetyp == 'schularbeit':
-            if index % 2 == 0:
-                solution = "on"
-            elif index % 2 == 1:
-                solution = "off"
+            "\documentclass[a4paper,12pt]{{report}}\n\n"
+            "\\usepackage{{geometry}}\n"
+            "\geometry{{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}}\n\n"
+
+            "\\usepackage{{lmodern}}\n"
+            "\\usepackage[T1]{{fontenc}}\n"
+            "\\usepackage[utf8]{{inputenc}}\n"
+            "\\usepackage[ngerman]{{babel}}\n"
+            "\\usepackage[solution_{0}]{{srdp-mathematik}} % solution_on/off\n"
+            "\setcounter{{Zufall}}{{{1}}}{2}\n\n\n"
+
+            "\pagestyle{{{3}}} %PAGESTYLE: empty, plain\n"
+            "\onehalfspacing %Zeilenabstand\n"
+            "\setcounter{{secnumdepth}}{{-1}} % keine Nummerierung der Ueberschriften\n\n\n\n"
+
+
+            "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"
+            "%%%%%%%%%%%%%%%%%% DOKUMENT - ANFANG %%%%%%%%%%%%%%%%%%\n"
+            "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n\n"
+
+            "\\begin{{document}}\n"
+            "{4}"
             
-        vorschau.write(
-            "\\usepackage[solution_{}]{{srdp-mathematik}} % solution_on/off\n".format(solution)
-        )
+        .format(
+        dict_vorschau['solution'],
+        dict_vorschau['index'],
+        dict_vorschau['comment'],
+        dict_vorschau['pagestyle'],
+        dict_vorschau['titlepage'],
+        ))
+
+        vorschau.close()
+
+        # if ausgabetyp == "vorschau":
+        #     if self.cb_solution_sage.isChecked() == True:
+        #         solution = "on"
+        #     else:
+        #         solution = "off"
+        # elif ausgabetyp == 'schularbeit':
+        #     if index % 2 == 0:
+        #         solution = "on"
+        #     elif index % 2 == 1:
+        #         solution = "off"
+            
+        # vorschau.write(
+        #     "\\usepackage[solution_{}]{{srdp-mathematik}} % solution_on/off\n".format(solution)
+        # )
             # else:
             #     vorschau.write(
             #         "\\usepackage[solution_off]{srdp-mathematik} % solution_on/off\n"
@@ -5334,181 +5667,181 @@ class Ui_MainWindow(object):
         #             "\\usepackage[solution_off]{srdp-mathematik} % solution_on/off\n"
         #         )
 
-        if maximum > 2:
-            comment = " %Gruppen: 0=A, 1=B, 2=C, ..."
-        else:
-            comment = ""
+        # if maximum > 2:
+        #     comment = " %Gruppen: 0=A, 1=B, 2=C, ..."
+        # else:
+        #     comment = ""
 
-        vorschau.write(
-            "\setcounter{{Zufall}}{{{0}}}{1}\n\n\n".format(int(index / 2), comment)
-        )
-        if ausgabetyp == "vorschau" or ausgabetyp == "schularbeit":
-            vorschau.write("\pagestyle{plain} %PAGESTYLE: empty, plain\n")
-        else:
-            vorschau.write("\pagestyle{empty} %PAGESTYLE: empty, plain\n")
-        vorschau.write(
-            "\onehalfspacing %Zeilenabstand\n"
-            "\setcounter{secnumdepth}{-1} % keine Nummerierung der Ueberschriften\n\n\n\n"
-            "%\n"
-            "%\n"
-            "%%%%%%%%%%%%%%%%%% DOKUMENT - ANFANG %%%%%%%%%%%%%%%%%%%"
-            "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"
-            "%\n"
-            "%\n"
-            "\\begin{document}\n"
-        )
+        # vorschau.write(
+        #     "\setcounter{{Zufall}}{{{0}}}{1}\n\n\n".format(int(index / 2), comment)
+        # )
+        # if ausgabetyp == "vorschau" or ausgabetyp == "schularbeit":
+        #     vorschau.write("\pagestyle{plain} %PAGESTYLE: empty, plain\n")
+        # else:
+        #     vorschau.write("\pagestyle{empty} %PAGESTYLE: empty, plain\n")
+        # vorschau.write(
+        #     "\onehalfspacing %Zeilenabstand\n"
+        #     "\setcounter{secnumdepth}{-1} % keine Nummerierung der Ueberschriften\n\n\n\n"
+        #     "%\n"
+        #     "%\n"
+        #     "%%%%%%%%%%%%%%%%%% DOKUMENT - ANFANG %%%%%%%%%%%%%%%%%%%"
+        #     "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"
+        #     "%\n"
+        #     "%\n"
+        #     "\\begin{document}\n"
+        # )
 
-        if ausgabetyp == "schularbeit":
-            gruppe = dict_gruppen[int(index / 2)]
+        # if ausgabetyp == "schularbeit":
+        #     gruppe = dict_gruppen[int(index / 2)]
 
 
 
-        if (
-            self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
-            == "Grundkompetenzcheck"
-        ):
-            if ausgabetyp == "schularbeit" and maximum > 2:
-                vorschau.write(
-                    "\\textsc{{Grundkompetenzcheck -- {0}}} \\hfill \\textsc{{Name:}} \\rule{{8cm}}{{0.4pt}} \\normalsize \\\ \\vspace{{\\baselineskip}} \n\n".format(
-                        gruppe
-                    )
-                )
-            else:
-                vorschau.write(
-                    "\\textsc{Grundkompetenzcheck} \\hfill \\textsc{Name:} \\rule{8cm}{0.4pt} \\normalsize \\\ \\vspace{\\baselineskip} \n\n"
-                )
-        elif (
-            self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
-            == "Übungsblatt"
-        ):
-            vorschau.write("\\subsection{Übungsblatt}")
+        # if (
+        #     self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
+        #     == "Grundkompetenzcheck"
+        # ):
+        #     if ausgabetyp == "schularbeit" and maximum > 2:
+        #         vorschau.write(
+        #             "\\textsc{{Grundkompetenzcheck -- {0}}} \\hfill \\textsc{{Name:}} \\rule{{8cm}}{{0.4pt}} \\normalsize \\\ \\vspace{{\\baselineskip}} \n\n".format(
+        #                 gruppe
+        #             )
+        #         )
+        #     else:
+        #         vorschau.write(
+        #             "\\textsc{Grundkompetenzcheck} \\hfill \\textsc{Name:} \\rule{8cm}{0.4pt} \\normalsize \\\ \\vspace{\\baselineskip} \n\n"
+        #         )
+        # elif (
+        #     self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
+        #     == "Übungsblatt"
+        # ):
+        #     vorschau.write("\\subsection{Übungsblatt}")
         
             
 
-        else:
-            try:
-                dict_titlepage["hide_all"]
-            except KeyError:
-                dict_titlepage["hide_all"]=False
-                titlepage_save = os.path.join(path_programm, "Teildokument", "titlepage_save")
-                with open(titlepage_save, "w+", encoding="utf8") as f:
-                    json.dump(dict_titlepage, f, ensure_ascii=False)
+        # else:
+        #     try:
+        #         dict_titlepage["hide_all"]
+        #     except KeyError:
+        #         dict_titlepage["hide_all"]=False
+        #         titlepage_save = os.path.join(path_programm, "Teildokument", "titlepage_save")
+        #         with open(titlepage_save, "w+", encoding="utf8") as f:
+        #             json.dump(dict_titlepage, f, ensure_ascii=False)
 
 
 
-            if dict_titlepage["hide_all"] == True:
-                if (
-                    self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
-                    == "Wiederholungsprüfung"
-                ):
-                    vorschau.write("\\textsc{{Name:}} \\rule{{8cm}}{{0.4pt}}"
-                    "\\subsection{{{0} \\hfill {1}}}".format(self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"], datum_kurz)
-                    )
-                else:
-                    vorschau.write("\\textsc{{Name:}} \\rule{{8cm}}{{0.4pt}}"
-                    "\\subsection{{{0}. {1} \\hfill {2}}}".format(self.dict_all_infos_for_file["data_gesamt"]["#"],self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"], datum_kurz)
-                    )  
+        #     if dict_titlepage["hide_all"] == True:
+        #         if (
+        #             self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
+        #             == "Wiederholungsprüfung"
+        #         ):
+        #             vorschau.write("\\textsc{{Name:}} \\rule{{8cm}}{{0.4pt}}"
+        #             "\\subsection{{{0} \\hfill {1}}}".format(self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"], datum_kurz)
+        #             )
+        #         else:
+        #             vorschau.write("\\textsc{{Name:}} \\rule{{8cm}}{{0.4pt}}"
+        #             "\\subsection{{{0}. {1} \\hfill {2}}}".format(self.dict_all_infos_for_file["data_gesamt"]["#"],self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"], datum_kurz)
+        #             )  
             
-            else:
-                vorschau.write("\\begin{titlepage}\n" "\\flushright\n")
-                if dict_titlepage["logo"] == True:
-                    logo_name = os.path.basename(dict_titlepage["logo_path"])
-                    logo_titlepage_path = os.path.join(
-                        path_programm, "Teildokument", logo_name
-                    )
-                    if os.path.isfile(logo_titlepage_path):
-                        vorschau.write(
-                            "\\begin{{minipage}}[t]{{0.4\\textwidth}} \\vspace{{0pt}} \\includegraphics[width=1\\textwidth]{{{0}}}\\end{{minipage}} \\\ \\vfil \n".format(
-                                logo_name
-                            )
-                        )
-                    else:
-                        msg = QtWidgets.QMessageBox()
-                        msg.setIcon(QtWidgets.QMessageBox.Warning)
-                        msg.setWindowIcon(QtGui.QIcon(logo_path))
-                        msg.setText("Das Logo konnte nicht gefunden werden.")
-                        msg.setInformativeText(
-                            "Bitte suchen Sie ein Logo unter: \n\nTitelblatt anpassen - Durchsuchen"
-                        )
-                        msg.setWindowTitle("Kein Logo ausgewählt")
-                        msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
-                        msg.exec_()
+        #     else:
+        #         vorschau.write("\\begin{titlepage}\n" "\\flushright\n")
+        #         if dict_titlepage["logo"] == True:
+        #             logo_name = os.path.basename(dict_titlepage["logo_path"])
+        #             logo_titlepage_path = os.path.join(
+        #                 path_programm, "Teildokument", logo_name
+        #             )
+        #             if os.path.isfile(logo_titlepage_path):
+        #                 vorschau.write(
+        #                     "\\begin{{minipage}}[t]{{0.4\\textwidth}} \\vspace{{0pt}} \\includegraphics[width=1\\textwidth]{{{0}}}\\end{{minipage}} \\\ \\vfil \n".format(
+        #                         logo_name
+        #                     )
+        #                 )
+        #             else:
+        #                 msg = QtWidgets.QMessageBox()
+        #                 msg.setIcon(QtWidgets.QMessageBox.Warning)
+        #                 msg.setWindowIcon(QtGui.QIcon(logo_path))
+        #                 msg.setText("Das Logo konnte nicht gefunden werden.")
+        #                 msg.setInformativeText(
+        #                     "Bitte suchen Sie ein Logo unter: \n\nTitelblatt anpassen - Durchsuchen"
+        #                 )
+        #                 msg.setWindowTitle("Kein Logo ausgewählt")
+        #                 msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+        #                 msg.exec_()
 
-                        vorschau.write("~\\vfil \n")
+        #                 vorschau.write("~\\vfil \n")
 
-                else:
-                    vorschau.write("~\\vfil \n")
-                if dict_titlepage["titel"] == True:
-                    if (
-                        self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
-                        == "Wiederholungsprüfung"
-                    ):
-                        vorschau.write("\\textsc{{\\Huge Wiederholungsprüfung}} \\\ \n")
-                    else:
-                        vorschau.write(
-                            "\\textsc{{\\Huge {0}. Mathematikschularbeit}} \\\ \n".format(
-                                self.dict_all_infos_for_file["data_gesamt"]["#"]
-                            )
-                        )
-                        if (
-                            self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
-                            == "Wiederholungsschularbeit"
-                        ):
-                            vorschau.write("[0.5cm]" "\\textsc{\Large Wiederholung} \\\ \n")
-                        if (
-                            self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
-                            == "Nachschularbeit"
-                        ):
-                            vorschau.write(
-                                "[0.5cm]" "\\textsc{\Large Nachschularbeit} \\\ \n"
-                            )
-                        vorschau.write("[2cm] \n")
-                if dict_titlepage["datum"] == True:
-                    vorschau.write("\\textsc{{\Large am {0}}}\\\ [1cm] \n".format(datum))
-                if dict_titlepage["klasse"] == True:
-                    vorschau.write(
-                        "\\textsc{{\Large Klasse {0}}} \\\ [1cm] \n".format(
-                            self.dict_all_infos_for_file["data_gesamt"]["Klasse"]
-                        )
-                    )
+        #         else:
+        #             vorschau.write("~\\vfil \n")
+        #         if dict_titlepage["titel"] == True:
+        #             if (
+        #                 self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
+        #                 == "Wiederholungsprüfung"
+        #             ):
+        #                 vorschau.write("\\textsc{{\\Huge Wiederholungsprüfung}} \\\ \n")
+        #             else:
+        #                 vorschau.write(
+        #                     "\\textsc{{\\Huge {0}. Mathematikschularbeit}} \\\ \n".format(
+        #                         self.dict_all_infos_for_file["data_gesamt"]["#"]
+        #                     )
+        #                 )
+        #                 if (
+        #                     self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
+        #                     == "Wiederholungsschularbeit"
+        #                 ):
+        #                     vorschau.write("[0.5cm]" "\\textsc{\Large Wiederholung} \\\ \n")
+        #                 if (
+        #                     self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
+        #                     == "Nachschularbeit"
+        #                 ):
+        #                     vorschau.write(
+        #                         "[0.5cm]" "\\textsc{\Large Nachschularbeit} \\\ \n"
+        #                     )
+        #                 vorschau.write("[2cm] \n")
+        #         if dict_titlepage["datum"] == True:
+        #             vorschau.write("\\textsc{{\Large am {0}}}\\\ [1cm] \n".format(datum))
+        #         if dict_titlepage["klasse"] == True:
+        #             vorschau.write(
+        #                 "\\textsc{{\Large Klasse {0}}} \\\ [1cm] \n".format(
+        #                     self.dict_all_infos_for_file["data_gesamt"]["Klasse"]
+        #                 )
+        #             )
 
-                if ausgabetyp == "schularbeit" and maximum > 2:
-                    vorschau.write(
-                        "\\textsc{{\\Large Gruppe {0}}} \\\ [1cm]\n".format(gruppe)
-                    )
+        #         if ausgabetyp == "schularbeit" and maximum > 2:
+        #             vorschau.write(
+        #                 "\\textsc{{\\Large Gruppe {0}}} \\\ [1cm]\n".format(gruppe)
+        #             )
 
-                if dict_titlepage["name"] == True:
-                    vorschau.write("\\Large Name: \\rule{8cm}{0.4pt} \\\ \n")
-                vorschau.write("\\vfil\\vfil\\vfil \n")
-                if dict_titlepage["note"] == True:
-                    vorschau.write("\\Large Note: \\rule{8cm}{0.4pt} \\\ [1cm]\n")
-                if dict_titlepage["unterschrift"] == True:
-                    vorschau.write("\\Large Unterschrift: \\rule{8cm}{0.4pt} \\\ \n")
+        #         if dict_titlepage["name"] == True:
+        #             vorschau.write("\\Large Name: \\rule{8cm}{0.4pt} \\\ \n")
+        #         vorschau.write("\\vfil\\vfil\\vfil \n")
+        #         if dict_titlepage["note"] == True:
+        #             vorschau.write("\\Large Note: \\rule{8cm}{0.4pt} \\\ [1cm]\n")
+        #         if dict_titlepage["unterschrift"] == True:
+        #             vorschau.write("\\Large Unterschrift: \\rule{8cm}{0.4pt} \\\ \n")
 
-                if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "br":
-                    exkl_teil2_pkt = (
-                        self.dict_all_infos_for_file["data_gesamt"]["punkte_2"]
-                        - self.dict_all_infos_for_file["data_gesamt"]["ausgleichspunkte"]
-                    )
-                    vorschau.write(
-                        "\\newpage \n"
-                        "\\flushleft \\normalsize\n"
-                        "\\thispagestyle{{empty}}\n"
-                        "\\beurteilungsraster{{0.85}}{{0.68}}{{0.5}}{{1/3}}{{ % Prozentschluessel\n"
-                        "T1={{{0}}}, % Punkte im Teil 1\n"
-                        "AP={{{1}}}, % Ausgleichspunkte aus Teil 2\n"
-                        "T2={{{2}}}, % Punkte im Teil 2\n"
-                        "}} \\newpage".format(
-                            self.dict_all_infos_for_file["data_gesamt"]["punkte_1"],
-                            self.dict_all_infos_for_file["data_gesamt"][
-                                "ausgleichspunkte"
-                            ],
-                            exkl_teil2_pkt,
-                        )
-                    )
+        #         if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "br":
+        #             exkl_teil2_pkt = (
+        #                 self.dict_all_infos_for_file["data_gesamt"]["punkte_2"]
+        #                 - self.dict_all_infos_for_file["data_gesamt"]["ausgleichspunkte"]
+        #             )
+        #             vorschau.write(
+        #                 "\\newpage \n"
+        #                 "\\flushleft \\normalsize\n"
+        #                 "\\thispagestyle{{empty}}\n"
+        #                 "\\beurteilungsraster{{0.85}}{{0.68}}{{0.5}}{{1/3}}{{ % Prozentschluessel\n"
+        #                 "T1={{{0}}}, % Punkte im Teil 1\n"
+        #                 "AP={{{1}}}, % Ausgleichspunkte aus Teil 2\n"
+        #                 "T2={{{2}}}, % Punkte im Teil 2\n"
+        #                 "}} \\newpage".format(
+        #                     self.dict_all_infos_for_file["data_gesamt"]["punkte_1"],
+        #                     self.dict_all_infos_for_file["data_gesamt"][
+        #                         "ausgleichspunkte"
+        #                     ],
+        #                     exkl_teil2_pkt,
+        #                 )
+        #             )
 
-                vorschau.write("\\end{titlepage}\n\n")
-        vorschau.close()
+        #         vorschau.write("\\end{titlepage}\n\n")
+        # vorschau.close()
 
         vorschau = open(filename_vorschau, "a", encoding="utf8")
         list_chosen_examples = []
