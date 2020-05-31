@@ -26,7 +26,18 @@ import smtplib
 # import qdarkstyle
 
 
-from config import colors_ui, get_color,config_file, config_loader, path_programm, logo_path, logo_cria_path, SpinBox_noWheel, ClickLabel, bring_to_front, is_empty, shorten_gk
+from config import (colors_ui, 
+get_color,
+config_file,
+config_loader,
+path_programm,
+logo_path,
+logo_cria_path,
+SpinBox_noWheel,
+ClickLabel,
+bring_to_front,
+is_empty, 
+shorten_gk)
 from create_new_widgets import *
 from list_of_widgets import (
     widgets_search,
@@ -48,6 +59,7 @@ from standard_dialog_windows import warning_window, question_window, critical_wi
 from predefined_size_policy import *
 from work_with_content import collect_content, split_aufgaben_content_new_format, split_aufgaben_content
 from build_titlepage import get_titlepage_vorschau
+from prepare_content_vorschau import edit_content_vorschau, copy_logo_to_target_path
  
 # from cria_commands import create_kapitel_cria
 
@@ -434,8 +446,8 @@ class Ui_MainWindow(object):
         self.cb_k8 = create_new_checkbox(self.groupBox_klassen, "8. Klasse")
         self.gridLayout_14.addWidget(self.cb_k8, 1, 1, 1, 1)
 
-        self.cb_matura = create_new_checkbox(self.groupBox_klassen, "Matura")
-        self.gridLayout_14.addWidget(self.cb_matura, 0, 2, 1, 1)
+        self.cb_mat = create_new_checkbox(self.groupBox_klassen, "Matura")
+        self.gridLayout_14.addWidget(self.cb_mat, 0, 2, 1, 1)
 
         self.cb_univie = create_new_checkbox(self.groupBox_klassen, "Uni Wien")
         self.cb_univie.setToolTip(
@@ -448,8 +460,7 @@ class Ui_MainWindow(object):
 
         
         self.horizontalLayout_2 = create_new_horizontallayout()
-        # QtWidgets.QHBoxLayout()
-        # self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
+
 
         self.cb_solution = create_new_checkbox(self.centralwidget, "Lösungen anzeigen", True)
         self.horizontalLayout_2.addWidget(self.cb_solution, QtCore.Qt.AlignLeft)
@@ -3167,6 +3178,7 @@ class Ui_MainWindow(object):
 
 
         return max_integer_file
+   
 
     def get_path_beispieleinreichung(self):
         list_path = [path_programm, 'Beispieleinreichung']
@@ -3212,21 +3224,25 @@ class Ui_MainWindow(object):
                     
 
     def edit_image_name(self, typ_save, name):
+        if typ_save[0] == 'local':
+            local = '_L_'
+        else:
+            local = ''
+
         if self.chosen_program == 'cria':
             highest_grade = self.get_highest_grade()
-            name = '{0}_{1}_{2}'.format(highest_grade, self.max_integer_file+1, name)
+            name = '{0}{1}_{2}_{3}'.format(local, highest_grade, self.max_integer_file+1, name)
         
         elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
             thema, klasse = self.split_thema_klasse(self.list_selected_topics_creator[0])
             if thema == None:
                 thema = shorten_gk(self.list_selected_topics_creator[0]).upper()
-                name = '{0}_{1}_{2}'.format(thema, self.max_integer_file+1, name)
+                name = '{0}{1}_{2}_{3}'.format(local,thema, self.max_integer_file+1, name)
             else:
-                name = 'k{0}_{1}_{2}_{3}'.format(klasse, thema, self.max_integer_file+1, name)
+                name = '{0}k{1}_{2}_{3}_{4}'.format(local, klasse, thema, self.max_integer_file+1, name)
 
         elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
-            name = '{0}_{1}'.format(self.max_integer_file+1, name)
-
+            name = '{0}{1}_{2}'.format(local, self.max_integer_file+1, name)
 
         return name
 
@@ -3237,6 +3253,17 @@ class Ui_MainWindow(object):
             string = "{" + old_image_name + "}"
 
             new_image_name = self.edit_image_name(typ_save, old_image_name)
+
+            if typ_save[1] == 0:
+                path = '../_database/Bilder/'
+            elif typ_save[1] == 1:
+                path = '../_database_inoffiziell/Bilder/'
+            elif typ_save[0] == 'user':
+                path = '../Beispieleinreichung/Bilder/'
+            elif typ_save[0] == 'local':
+                path = '../Lokaler_Ordner/Bilder/'
+
+            new_image_name = path + new_image_name
 
             if string in self.plainTextEdit.toPlainText():
                 textBox_Entry = textBox_Entry.replace(old_image_name, new_image_name)
@@ -3299,7 +3326,8 @@ class Ui_MainWindow(object):
                     klasse = 'K'+klasse
             else:
                 klasse = list(Klassen.keys())[self.comboBox_klassen_cr.currentIndex()-1]
-                klasse = klasse[:3].upper()
+                klasse = klasse.upper()
+
         if klasse==None:
             klasse=''
         return klasse
@@ -3492,7 +3520,6 @@ class Ui_MainWindow(object):
             textBox_Entry = response[1]
 
 
-
         list_path = self.get_parent_folder(typ_save)
         if typ_save[0]=='user':
             list_path[1]='Beispieleinreichung'
@@ -3505,12 +3532,15 @@ class Ui_MainWindow(object):
 
         file_name = self.create_file_name()
 
-        if self.creator_mode == 'user':
-            save_dateipfad = self.get_path_beispieleinreichung()
 
+        if typ_save[0] == 'user': 
+            save_dateipfad = self.get_path_beispieleinreichung()
+            
         abs_path_file = os.path.join(save_dateipfad, file_name)
 
         section = self.create_section()
+
+
 
         with open(abs_path_file, "w", encoding="utf8") as file:
             file.write(section+"\n\n")
@@ -4421,7 +4451,7 @@ class Ui_MainWindow(object):
             matches = re.findall("/Bilder/(.+.eps)}", content)
             for image in matches:
                 self.list_copy_images.append(image)
-        # print(self.list_copy_images) 
+
 
     def build_aufgaben_schularbeit(self, aufgabe, file_loaded=False): 
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
@@ -4461,7 +4491,7 @@ class Ui_MainWindow(object):
         )
         self.gridLayout_8.addItem(self.spacerItem, index_item+1, 0, 1, 1)
 
-        
+
         self.add_image_path_to_list(aufgabe)
 
 
@@ -5467,6 +5497,71 @@ class Ui_MainWindow(object):
             #     )
 
 
+
+    def get_dict_gesammeltedateien(self):
+        dict_gesammeltedateien = {}
+
+        if self.chosen_program == 'lama':
+            for aufgabe in self.list_alle_aufgaben_sage:
+                typ = self.get_aufgabentyp(aufgabe)
+                if typ==1:
+                    beispieldaten_dateipfad = self.beispieldaten_dateipfad_1
+                elif typ==2:
+                    beispieldaten_dateipfad = self.beispieldaten_dateipfad_2
+
+                for path in beispieldaten_dateipfad.values():
+                    name = self.get_name_from_path(path)
+
+                    if aufgabe == name:
+                        dict_gesammeltedateien[aufgabe] = path
+                        break  
+        
+        if self.chosen_program == 'cria':
+            beispieldaten_dateipfad = self.beispieldaten_dateipfad_cria
+
+            for item in self.list_alle_aufgaben_sage:
+                klasse, aufgabe = self.split_klasse_aufgabe(item)
+                for path in beispieldaten_dateipfad.values():
+                    name = self.get_name_from_path(path)
+                    if (klasse in path) and (aufgabe == name):
+                        dict_gesammeltedateien[aufgabe] = path 
+
+
+        return dict_gesammeltedateien
+        
+        
+
+        # if self.chosen_program=='lama':
+
+        #     for all in self.beispieldaten_dateipfad_1.values():
+        #         filename_all = os.path.basename(all)
+        #         name, extension = os.path.splitext(filename_all)
+        #         for files in self.list_alle_aufgaben_sage:
+        #             if files == name:
+        #                 dict_gesammeltedateien[name] = all
+
+        #     for all in self.beispieldaten_dateipfad_2.values():
+        #         filename_all = os.path.basename(all)
+        #         name, extension = os.path.splitext(filename_all)
+        #         for files in self.list_alle_aufgaben_sage:
+        #             if files == name:
+        #                 dict_gesammeltedateien[name] = all
+
+        # elif self.chosen_program == 'cria':
+        #     for aufgabe in self.list_alle_aufgaben_sage:
+        #         klasse, name = self.split_klasse_aufgabe(aufgabe)
+
+        #         name = name + ".tex"
+                
+        #         for all in self.beispieldaten_dateipfad_cria:
+        #             filename_all = os.path.basename(all)
+        #             if klasse.upper() in all:
+        #                 if name == os.path.basename(self.beispieldaten_dateipfad_cria[all]):
+        #                     dict_gesammeltedateien[
+        #                         aufgabe
+        #                     ] = self.beispieldaten_dateipfad_cria[all]
+        # print(dict_gesammeltedateien)
+
     def pushButton_vorschau_pressed(
         self, ausgabetyp, index=0, maximum=0, pdf=True, lama=True
     ):
@@ -5475,38 +5570,7 @@ class Ui_MainWindow(object):
 
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
-        dict_gesammeltedateien = {}
-
-        if self.chosen_program=='lama':
-
-            for all in self.beispieldaten_dateipfad_1.values():
-                filename_all = os.path.basename(all)
-                name, extension = os.path.splitext(filename_all)
-                for files in self.list_alle_aufgaben_sage:
-                    if files == name:
-                        dict_gesammeltedateien[name] = all
-
-            for all in self.beispieldaten_dateipfad_2.values():
-                filename_all = os.path.basename(all)
-                name, extension = os.path.splitext(filename_all)
-                for files in self.list_alle_aufgaben_sage:
-                    if files == name:
-                        dict_gesammeltedateien[name] = all
-
-        elif self.chosen_program == 'cria':
-            for aufgabe in self.list_alle_aufgaben_sage:
-                klasse, name = self.split_klasse_aufgabe(aufgabe)
-
-                name = name + ".tex"
-                
-                for all in self.beispieldaten_dateipfad_cria:
-                    filename_all = os.path.basename(all)
-                    if klasse.upper() in all:
-                        if name == os.path.basename(self.beispieldaten_dateipfad_cria[all]):
-                            dict_gesammeltedateien[
-                                aufgabe
-                            ] = self.beispieldaten_dateipfad_cria[all]
-
+        dict_gesammeltedateien = self.get_dict_gesammeltedateien()
 
 
         if ausgabetyp == "vorschau":
@@ -5628,7 +5692,7 @@ class Ui_MainWindow(object):
 
             "\\begin{{document}}\n"
             "{4}"
-            
+
         .format(
         dict_vorschau['solution'],
         dict_vorschau['index'],
@@ -5848,295 +5912,324 @@ class Ui_MainWindow(object):
 
         control_counter = 0
 
-        for aufgabe in self.list_alle_aufgaben_sage:
-            if self.chosen_program == 'lama':
-                typ=self.get_aufgabentyp(aufgabe)
+        if (
+        is_empty(self.dict_all_infos_for_file["dict_ausgleichspunkte"])==False or 
+        is_empty( self.dict_all_infos_for_file["dict_hide_show_items"])==False
+        ):
+
+            content = edit_content_vorschau(self, dict_gesammeltedateien, ausgabetyp, index, dict_titlepage)
+
+        if ausgabetyp == "schularbeit":
+            if dict_titlepage["logo"] == True:
+                success = copy_logo_to_target_path(self, dict_titlepage["logo_path"])
+                if success == False:
+                    warning_window("Das Logo konnte nicht gefunden werden.", 
+                    "Bitte suchen Sie ein Logo unter: \n\nTitelblatt anpassen - Durchsuchen",
+                    "Kein Logo ausgewählt")
 
 
-                spinbox_pkt = self.dict_alle_aufgaben_sage[aufgabe][0]
-                spinbox_abstand = self.dict_alle_aufgaben_sage[aufgabe][1]
+        if is_empty(self.dict_all_infos_for_file["data_gesamt"]["copy_images"])==False:
+            for image in self.dict_all_infos_for_file["data_gesamt"]["copy_images"]:
+                print(image)
+
+        return
+        spinbox_pkt = self.dict_alle_aufgaben_sage[aufgabe][0]
+        spinbox_abstand = self.dict_alle_aufgaben_sage[aufgabe][1]
+        # for aufgabe in self.list_alle_aufgaben_sage:
+        #     print(aufgabe)
+            # return
+            # if self.chosen_program == 'lama':
+            #     typ=self.get_aufgabentyp(aufgabe)
+
+
+            #     spinbox_pkt = self.dict_alle_aufgaben_sage[aufgabe][0]
+            #     spinbox_abstand = self.dict_alle_aufgaben_sage[aufgabe][1]
                 
-                f = open(dict_gesammeltedateien[aufgabe], "r", encoding="utf8")
-                content = f.readlines()
-                f.close()
+            #     f = open(dict_gesammeltedateien[aufgabe], "r", encoding="utf8")
+            #     content = f.readlines()
+            #     f.close()
 
 
-                ##### adapt content for	 creation ###
+            #     ##### adapt content for	 creation ###
 
-                if aufgabe in self.dict_all_infos_for_file["dict_ausgleichspunkte"].keys():
-                    content = [line.replace("\\fbox{A}", "") for line in content]
-                    for ausgleichspunkte in self.dict_all_infos_for_file[
-                        "dict_ausgleichspunkte"
-                    ][aufgabe]:
-                        ausgleichspunkte = ausgleichspunkte.replace('ITEM','').replace('SUBitem','').strip()
-                        if ausgleichspunkte.startswith('{'):
-                            ausgleichspunkte = ausgleichspunkte[1:]
+            #     if aufgabe in self.dict_all_infos_for_file["dict_ausgleichspunkte"].keys():
+            #         content = [line.replace("\\fbox{A}", "") for line in content]
+            #         for ausgleichspunkte in self.dict_all_infos_for_file[
+            #             "dict_ausgleichspunkte"
+            #         ][aufgabe]:
+            #             ausgleichspunkte = ausgleichspunkte.replace('ITEM','').replace('SUBitem','').strip()
+            #             if ausgleichspunkte.startswith('{'):
+            #                 ausgleichspunkte = ausgleichspunkte[1:]
              
-                        content = [
-                            line.replace(
-                                ausgleichspunkte.partition("\n")[0],
-                                "\\fbox{A} " + ausgleichspunkte.partition("\n")[0],
-                            )
-                            for line in content
-                        ]
-                ### end ###
+            #             content = [
+            #                 line.replace(
+            #                     ausgleichspunkte.partition("\n")[0],
+            #                     "\\fbox{A} " + ausgleichspunkte.partition("\n")[0],
+            #                 )
+            #                 for line in content
+            #             ]
+            #     ### end ###
 
-                if aufgabe in self.dict_all_infos_for_file["dict_hide_show_items"].keys():
-                    # print(content)        
-                    for item in self.dict_all_infos_for_file["dict_hide_show_items"][aufgabe]:
-                        hide_item = item.split('\n')[0]
-                        hide_item = hide_item.replace('ITEM','').replace('SUBitem','').strip()
+            #     if aufgabe in self.dict_all_infos_for_file["dict_hide_show_items"].keys():
+            #         # print(content)        
+            #         for item in self.dict_all_infos_for_file["dict_hide_show_items"][aufgabe]:
+            #             hide_item = item.split('\n')[0]
+            #             hide_item = hide_item.replace('ITEM','').replace('SUBitem','').strip()
 
-                        start_index=-1
-                        end_index=-1
-                        for idx, line in enumerate(content):
-                            if start_index == -1:
-                                if hide_item in line:
-                                    start_index=idx
-                                    continue
-                            else:
-                                if '\\item' in line:
-                                    end_index=idx
-                                    break
-                                if "\\end{aufgabenstellung}" in line:
-                                    end_index=idx
-                                    break
-                                if "Lösungserwartung" in line:
-                                    break
-                        if start_index==-1 or end_index==-1:
-                            warning_window("Das Ein- bzw. Ausblenden von Aufgabenstellungen in Aufgabe {} konnte leider nicht durchgeführt werden.\n"
-                            "Die Aufgabe wird daher vollständig angezeigt. Bitte bearbeiten sie diese Aufgabe manuell.".format(aufgabe))                
-                        else:
-                            for i in reversed(range(start_index+1)):
-                                if '\\item' in content[i]:         
-                                    start_index=i
-                                    break
-                            for index, line in enumerate(content[start_index:end_index]):
-                                content[start_index+index]='% '+line
+            #             start_index=-1
+            #             end_index=-1
+            #             for idx, line in enumerate(content):
+            #                 if start_index == -1:
+            #                     if hide_item in line:
+            #                         start_index=idx
+            #                         continue
+            #                 else:
+            #                     if '\\item' in line:
+            #                         end_index=idx
+            #                         break
+            #                     if "\\end{aufgabenstellung}" in line:
+            #                         end_index=idx
+            #                         break
+            #                     if "Lösungserwartung" in line:
+            #                         break
+            #             if start_index==-1 or end_index==-1:
+            #                 warning_window("Das Ein- bzw. Ausblenden von Aufgabenstellungen in Aufgabe {} konnte leider nicht durchgeführt werden.\n"
+            #                 "Die Aufgabe wird daher vollständig angezeigt. Bitte bearbeiten sie diese Aufgabe manuell.".format(aufgabe))                
+            #             else:
+            #                 for i in reversed(range(start_index+1)):
+            #                     if '\\item' in content[i]:         
+            #                         start_index=i
+            #                         break
+            #                 for index, line in enumerate(content[start_index:end_index]):
+            #                     content[start_index+index]='% '+line
 
-                            # del content[start_index:end_index]
+            #                 # del content[start_index:end_index]
 
-            if self.chosen_program == 'cria':
-                # bsp_string=all
-                # list_input = "self.list_input_{}".format(bsp_string)
-                spinbox_pkt = self.dict_alle_aufgaben_sage[aufgabe][0]
-                spinbox_abstand = self.dict_alle_aufgaben_sage[aufgabe][1]
+            # if self.chosen_program == 'cria':
+            #     # bsp_string=all
+            #     # list_input = "self.list_input_{}".format(bsp_string)
+            #     spinbox_pkt = self.dict_alle_aufgaben_sage[aufgabe][0]
+            #     spinbox_abstand = self.dict_alle_aufgaben_sage[aufgabe][1]
                 
-                f = open(dict_gesammeltedateien[aufgabe], "r", encoding="utf8")
-                content = f.readlines()
-                f.close()             
+            #     f = open(dict_gesammeltedateien[aufgabe], "r", encoding="utf8")
+            #     content = f.readlines()
+            #     f.close()             
 
 
-            if ausgabetyp == "schularbeit":
-                if index == 0:
-                    if dict_titlepage["logo"] == True:
-                        logo_name = os.path.basename(dict_titlepage["logo_path"])
-                        logo_titlepage_path = os.path.join(
-                            path_programm, "Teildokument", logo_name
-                        )
-                        if os.path.isfile(logo_titlepage_path):
-                            shutil.copy(
-                                logo_titlepage_path,
-                                os.path.join(
-                                    os.path.dirname(
-                                        self.chosen_path_schularbeit_erstellen[0]
-                                    ),
-                                    logo_name,
-                                ),
-                            )
-                        else:
-                            warning_window("Das Logo konnte nicht gefunden werden.", 
-                            "Bitte suchen Sie ein Logo unter: \n\nTitelblatt anpassen - Durchsuchen",
-                            "Kein Logo ausgewählt")
+            # if ausgabetyp == "schularbeit":
+            #     if index == 0:
+            #         if dict_titlepage["logo"] == True:
+            #             logo_name = os.path.basename(dict_titlepage["logo_path"])
+            #             logo_titlepage_path = os.path.join(
+            #                 path_programm, "Teildokument", logo_name
+            #             )
+            #             if os.path.isfile(logo_titlepage_path):
+            #                 shutil.copy(
+            #                     logo_titlepage_path,
+            #                     os.path.join(
+            #                         os.path.dirname(
+            #                             self.chosen_path_schularbeit_erstellen[0]
+            #                         ),
+            #                         logo_name,
+            #                     ),
+            #                 )
+            #             else:
+            #                 warning_window("Das Logo konnte nicht gefunden werden.", 
+            #                 "Bitte suchen Sie ein Logo unter: \n\nTitelblatt anpassen - Durchsuchen",
+            #                 "Kein Logo ausgewählt")
 
 
-                    if (
-                        self.dict_all_infos_for_file["data_gesamt"]["copy_images"]
-                        == []
-                    ):
-                        pass
-                    else:
-                        for image in self.dict_all_infos_for_file["data_gesamt"][
-                            "copy_images"
-                        ]:
-                            if os.path.isfile(
-                                os.path.join(
-                                    path_programm, "_database", "Bilder", image
-                                )
-                            ):
-                                shutil.copy(
-                                    os.path.join(
-                                        path_programm, "_database", "Bilder", image
-                                    ),
-                                    os.path.join(
-                                        os.path.dirname(
-                                            self.chosen_path_schularbeit_erstellen[0]
-                                        ),
-                                        image,
-                                    ),
-                                )
+            #         if (
+            #             self.dict_all_infos_for_file["data_gesamt"]["copy_images"]
+            #             == []
+            #         ):
+            #             pass
+            #         else:
+            #             for image in self.dict_all_infos_for_file["data_gesamt"][
+            #                 "copy_images"
+            #             ]:
+            #                 if os.path.isfile(
+            #                     os.path.join(
+            #                         path_programm, "_database", "Bilder", image
+            #                     )
+            #                 ):
+            #                     shutil.copy(
+            #                         os.path.join(
+            #                             path_programm, "_database", "Bilder", image
+            #                         ),
+            #                         os.path.join(
+            #                             os.path.dirname(
+            #                                 self.chosen_path_schularbeit_erstellen[0]
+            #                             ),
+            #                             image,
+            #                         ),
+            #                     )
 
-                            elif os.path.isfile(
-                                os.path.join(
-                                    path_programm,
-                                    "_database_inoffiziell",
-                                    "Bilder",
-                                    image,
-                                )
-                            ):
-                                shutil.copy(
-                                    os.path.join(
-                                        path_programm,
-                                        "_database_inoffiziell",
-                                        "Bilder",
-                                        image,
-                                    ),
-                                    os.path.join(
-                                        os.path.dirname(
-                                            self.chosen_path_schularbeit_erstellen[0]
-                                        ),
-                                        image,
-                                    ),
-                                )
+            #                 elif os.path.isfile(
+            #                     os.path.join(
+            #                         path_programm,
+            #                         "_database_inoffiziell",
+            #                         "Bilder",
+            #                         image,
+            #                     )
+            #                 ):
+            #                     shutil.copy(
+            #                         os.path.join(
+            #                             path_programm,
+            #                             "_database_inoffiziell",
+            #                             "Bilder",
+            #                             image,
+            #                         ),
+            #                         os.path.join(
+            #                             os.path.dirname(
+            #                                 self.chosen_path_schularbeit_erstellen[0]
+            #                             ),
+            #                             image,
+            #                         ),
+            #                     )
 
-                            elif os.path.isfile(
-                                os.path.join(
-                                    path_programm,
-                                    "Beispieleinreichung",
-                                    "Bilder",
-                                    image,
-                                )
-                            ):
-                                shutil.copy(
-                                    os.path.join(
-                                        path_programm,
-                                        "Beispieleinreichung",
-                                        "Bilder",
-                                        image,
-                                    ),
-                                    os.path.join(
-                                        os.path.dirname(
-                                            self.chosen_path_schularbeit_erstellen[0]
-                                        ),
-                                        image,
-                                    ),
-                                )
-
-
-                for image in self.dict_all_infos_for_file["data_gesamt"][
-                    "copy_images"
-                ]:
-                    content = [
-                        line.replace("../_database/Bilder/", "") for line in content
-                    ]
-                    content = [
-                        line.replace("../_database_inoffiziell/Bilder/", "")
-                        for line in content
-                    ]
-                    content = [
-                        line.replace("../Beispieleinreichung/Bilder/", "")
-                        for line in content
-                    ]
+            #                 elif os.path.isfile(
+            #                     os.path.join(
+            #                         path_programm,
+            #                         "Beispieleinreichung",
+            #                         "Bilder",
+            #                         image,
+            #                     )
+            #                 ):
+            #                     shutil.copy(
+            #                         os.path.join(
+            #                             path_programm,
+            #                             "Beispieleinreichung",
+            #                             "Bilder",
+            #                             image,
+            #                         ),
+            #                         os.path.join(
+            #                             os.path.dirname(
+            #                                 self.chosen_path_schularbeit_erstellen[0]
+            #                             ),
+            #                             image,
+            #                         ),
+            #                     )
 
 
-            for line in content:
-                if "begin{beispiel}" in line:
-                    beginning = line
-                    start = content.index(line) + 1
-                    beispiel_typ = "beispiel"
-                if "begin{langesbeispiel}" in line:
-                    beginning = line
-                    start = content.index(line) + 1
-                    beispiel_typ = "langesbeispiel"
+            #     for image in self.dict_all_infos_for_file["data_gesamt"][
+            #         "copy_images"
+            #     ]:
+            #         content = [
+            #             line.replace("../_database/Bilder/", "") for line in content
+            #         ]
+            #         content = [
+            #             line.replace("../_database_inoffiziell/Bilder/", "")
+            #             for line in content
+            #         ]
+            #         content = [
+            #             line.replace("../Beispieleinreichung/Bilder/", "")
+            #             for line in content
+            #         ]
 
-                if "end{beispiel}" in line or "end{langesbeispiel}" in line:
-                    ending = line
-                    end = content.index(line)
 
-            content = content[start:end]
-            joined_content = "".join(content)
-            sub_list = []
-            sub_list.append(beginning)
-            sub_list.append(joined_content)
-            sub_list.append(ending)
-            list_chosen_examples.append(sub_list)
+            # for line in content:
+            #     if "begin{beispiel}" in line:
+            #         beginning = line
+            #         start = content.index(line) + 1
+            #         beispiel_typ = "beispiel"
+            #     if "begin{langesbeispiel}" in line:
+            #         beginning = line
+            #         start = content.index(line) + 1
+            #         beispiel_typ = "langesbeispiel"
 
-            example = list_chosen_examples[self.list_alle_aufgaben_sage.index(aufgabe)]
-            try:
-                x, y = example[0].split("[")
-                gk, z = y.split("]")
-            except ValueError:
-                gk = ""
+            #     if "end{beispiel}" in line or "end{langesbeispiel}" in line:
+            #         ending = line
+            #         end = content.index(line)
 
-            if (
-                self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
-                == "Grundkompetenzcheck"
-                or self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
-                == "Übungsblatt"
-            ):
-                header = ""
-            else:
-                if self.chosen_program=='lama' and control_counter == 0 and typ == 1:
-                    header = "\\subsubsection{Typ 1 Aufgaben}\n\n"
-                    control_counter += 1
-                elif self.chosen_program=='lama' and control_counter == 1 and typ == 2:
-                    header = "\\subsubsection{Typ 2 Aufgaben}\n\n"
-                    control_counter += 1
-                else:
-                    header = ""
+            # content = content[start:end]
+            # joined_content = "".join(content)
+            # sub_list = []
+            # sub_list.append(beginning)
+            # sub_list.append(joined_content)
+            # sub_list.append(ending)
+            # list_chosen_examples.append(sub_list)
 
-            if beispiel_typ == "beispiel":
-                if gk == "":
-                    vorschau.write(
-                        "%s\\begin{beispiel}{" % header
-                        + str(spinbox_pkt)
-                        + "}\n"
-                        + example[1]
-                        + "\n"
-                        + example[2]
-                        + "\n\n"
-                    )
+            # example = list_chosen_examples[self.list_alle_aufgaben_sage.index(aufgabe)]
+            # try:
+            #     x, y = example[0].split("[")
+            #     gk, z = y.split("]")
+            # except ValueError:
+            #     gk = ""
 
-                else:
-                    vorschau.write(
-                        "%s\\begin{beispiel}[" % header
-                        + gk
-                        + "]{"
-                        + str(spinbox_pkt)
-                        + "}\n"
-                        + example[1]
-                        + "\n"
-                        + example[2]
-                        + "\n\n"
-                    )
+            # if (
+            #     self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
+            #     == "Grundkompetenzcheck"
+            #     or self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
+            #     == "Übungsblatt"
+            # ):
+            #     header = ""
+            # else:
+            #     if self.chosen_program=='lama' and control_counter == 0 and typ == 1:
+            #         header = "\\subsubsection{Typ 1 Aufgaben}\n\n"
+            #         control_counter += 1
+            #     elif self.chosen_program=='lama' and control_counter == 1 and typ == 2:
+            #         header = "\\subsubsection{Typ 2 Aufgaben}\n\n"
+            #         control_counter += 1
+            #     else:
+            #         header = ""
 
-            elif self.chosen_program=='lama' and beispiel_typ == "langesbeispiel":
-                vorschau.write(
-                    "\\newpage\n\n%s\\begin{langesbeispiel} \item[" % header
-                    + str(spinbox_pkt)
-                    + "]\n"
-                    + example[1]
-                    + "\n"
-                    + example[2]
-                    + "\n\n"
-                )
+            # if beispiel_typ == "beispiel":
+            #     if gk == "":
+            #         vorschau.write(
+            #             "%s\\begin{beispiel}{" % header
+            #             + str(spinbox_pkt)
+            #             + "}\n"
+            #             + example[1]
+            #             + "\n"
+            #             + example[2]
+            #             + "\n\n"
+            #         )
 
-            elif self.chosen_program=='cria' and beispiel_typ == "langesbeispiel":
-                vorschau.write(
-                    "\\begin{langesbeispiel} \item["
-                    + str(spinbox_pkt)
-                    + "]\n"
-                    + example[1]
-                    + "\n"
-                    + example[2]
-                    + "\n\n"
-                )
+            #     else:
+            #         vorschau.write(
+            #             "%s\\begin{beispiel}[" % header
+            #             + gk
+            #             + "]{"
+            #             + str(spinbox_pkt)
+            #             + "}\n"
+            #             + example[1]
+            #             + "\n"
+            #             + example[2]
+            #             + "\n\n"
+            #         )
 
-            if spinbox_abstand != 0:
-                if spinbox_abstand == 99:
-                    vorschau.write("\\newpage \n\n")
-                else:
-                    vorschau.write("\\vspace{" + str(spinbox_abstand) + "cm} \n\n")
+            # elif self.chosen_program=='lama' and beispiel_typ == "langesbeispiel":
+            #     vorschau.write(
+            #         "\\newpage\n\n%s\\begin{langesbeispiel} \item[" % header
+            #         + str(spinbox_pkt)
+            #         + "]\n"
+            #         + example[1]
+            #         + "\n"
+            #         + example[2]
+            #         + "\n\n"
+            #     )
+
+            # elif self.chosen_program=='cria' and beispiel_typ == "langesbeispiel":
+            #     vorschau.write(
+            #         "\\begin{langesbeispiel} \item["
+            #         + str(spinbox_pkt)
+            #         + "]\n"
+            #         + example[1]
+            #         + "\n"
+            #         + example[2]
+            #         + "\n\n"
+            #     )
+
+            # if spinbox_abstand != 0:
+            #     if spinbox_abstand == 99:
+            #         vorschau.write("\\newpage \n\n")
+            #     else:
+            #         vorschau.write("\\vspace{" + str(spinbox_abstand) + "cm} \n\n")
+
+
+        # return
+
 
         if (
             self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]

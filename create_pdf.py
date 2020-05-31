@@ -408,6 +408,7 @@ def prepare_tex_for_pdf(self):
             self.combobox_searchtype.currentText()
             == "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten"
         ):
+            print(suchbegriffe)
             for item in suchbegriffe:
                 klasse = item[0].upper()
                 thema = item[1] + "." + item[2]
@@ -493,13 +494,14 @@ def prepare_tex_for_pdf(self):
             or self.cb_k6.isChecked()
             or self.cb_k7.isChecked()
             or self.cb_k8.isChecked() == True
-            or self.cb_matura.isChecked() == True
+            or self.cb_mat.isChecked() == True
             or self.cb_univie.isChecked()
         ):
+            print(self.cb_mat.isChecked())
             if suchbegriffe == []:
                 dict_gesammeltedateien = beispieldaten_dateipfad
             for all_formats in list(Klassen.keys()):
-                # print(all_formats)
+                print(all_formats)
                 x = eval("self.cb_" + all_formats)
                 if x.isChecked() == True:
                     selected_klassen.append(all_formats.upper())

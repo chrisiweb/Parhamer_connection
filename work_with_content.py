@@ -3,9 +3,8 @@ import re
 def collect_content(self, aufgabe, draft=False):
     selected_path = self.get_dateipfad_aufgabe(aufgabe, draft)  
 
-    f = open(selected_path, "r", encoding="utf8")
-    content = f.read()
-    f.close() 
+    with open(selected_path, 'r', encoding="utf8") as f:
+        content = f.read()
 
     return content
 
