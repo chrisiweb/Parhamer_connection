@@ -2381,9 +2381,11 @@ class Ui_MainWindow(object):
         self.label_ausgew_gk_creator.setText(_translate("MainWindow", "", None))
         self.label_bild_leer.show()
 
-        for picture in self.dict_widget_variables:
+
+        for picture in list(self.dict_widget_variables.keys())[:]:
             if picture.startswith('label_bild_creator_'):
-                self.del_picture(self.dict_widget_variables[picture])
+                self.del_picture(picture)
+
 
         if self.lineEdit_titel.text().startswith("###"):
             self.lineEdit_titel.setText(_translate("MainWindow", "###", None))
@@ -2836,16 +2838,19 @@ class Ui_MainWindow(object):
                 # name_of_image = "self.label_bild_" + str(i)
                 # print(name_of_image)
                 label_picture = create_new_label(self.scrollAreaWidgetContents_bilder, tail, False, True)
-                self.dict_widget_variables['label_bild_creator_{}'.format(tail)] = label_picture
-                label_picture.clicked.connect(partial(self.del_picture, label_picture))
+                label_picture_name = 'label_bild_creator_{}'.format(tail)
+                self.dict_widget_variables[label_picture_name] = label_picture
+                label_picture.clicked.connect(partial(self.del_picture, label_picture_name))
                 self.verticalLayout.addWidget(label_picture)
 
 
-    def del_picture(self, label_picture):
-        del dict_picture_path[label_picture.text()]
-        label_picture.hide()
+    def del_picture(self, picture):
+        del dict_picture_path[self.dict_widget_variables[picture].text()]
+        self.dict_widget_variables[picture].hide()
         if len(dict_picture_path) == 0:
             self.label_bild_leer.show()
+
+        del self.dict_widget_variables[picture]
 
     def convert_imagetoeps(self):
         msg = QtWidgets.QMessageBox()
@@ -5931,6 +5936,7 @@ class Ui_MainWindow(object):
         if is_empty(self.dict_all_infos_for_file["data_gesamt"]["copy_images"])==False:
             for image in self.dict_all_infos_for_file["data_gesamt"]["copy_images"]:
                 print(image)
+                print(image.rsplit('_', 1))
 
         return
         spinbox_pkt = self.dict_alle_aufgaben_sage[aufgabe][0]

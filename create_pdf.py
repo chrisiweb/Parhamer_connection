@@ -497,11 +497,9 @@ def prepare_tex_for_pdf(self):
             or self.cb_mat.isChecked() == True
             or self.cb_univie.isChecked()
         ):
-            print(self.cb_mat.isChecked())
             if suchbegriffe == []:
                 dict_gesammeltedateien = beispieldaten_dateipfad
             for all_formats in list(Klassen.keys()):
-                print(all_formats)
                 x = eval("self.cb_" + all_formats)
                 if x.isChecked() == True:
                     selected_klassen.append(all_formats.upper())
