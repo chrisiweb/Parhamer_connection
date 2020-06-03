@@ -5157,9 +5157,12 @@ class Ui_MainWindow(object):
                 split_content[2] = split_content[2] + "\\vspace{{{0}cm}} \n\n".format(spinbox_abstand)
 
 
-        with open(filename_vorschau, "a", encoding="utf8") as vorschau:
+        with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
             for all in split_content:
-                vorschau.write(all)
+                vorschau.write(
+                    all
+                    +"\n"
+                )
             vorschau.write("\n\n")
         
         return first_typ2
