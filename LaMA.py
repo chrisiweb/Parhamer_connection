@@ -5723,223 +5723,6 @@ class Ui_MainWindow(object):
 
         vorschau.close()
 
-        # if ausgabetyp == "vorschau":
-        #     if self.cb_solution_sage.isChecked() == True:
-        #         solution = "on"
-        #     else:
-        #         solution = "off"
-        # elif ausgabetyp == 'schularbeit':
-        #     if index % 2 == 0:
-        #         solution = "on"
-        #     elif index % 2 == 1:
-        #         solution = "off"
-            
-        # vorschau.write(
-        #     "\\usepackage[solution_{}]{{srdp-mathematik}} % solution_on/off\n".format(solution)
-        # )
-            # else:
-            #     vorschau.write(
-            #         "\\usepackage[solution_off]{srdp-mathematik} % solution_on/off\n"
-            #     )
-        # if ausgabetyp == "schularbeit":
-        #     if index % 2 == 0:
-        #         vorschau.write(
-        #             "\\usepackage[solution_on]{srdp-mathematik} % solution_on/off\n"
-        #         )
-        #     if index % 2 == 1:
-        #         vorschau.write(
-        #             "\\usepackage[solution_off]{srdp-mathematik} % solution_on/off\n"
-        #         )
-
-        # if maximum > 2:
-        #     comment = " %Gruppen: 0=A, 1=B, 2=C, ..."
-        # else:
-        #     comment = ""
-
-        # vorschau.write(
-        #     "\setcounter{{Zufall}}{{{0}}}{1}\n\n\n".format(int(index / 2), comment)
-        # )
-        # if ausgabetyp == "vorschau" or ausgabetyp == "schularbeit":
-        #     vorschau.write("\pagestyle{plain} %PAGESTYLE: empty, plain\n")
-        # else:
-        #     vorschau.write("\pagestyle{empty} %PAGESTYLE: empty, plain\n")
-        # vorschau.write(
-        #     "\onehalfspacing %Zeilenabstand\n"
-        #     "\setcounter{secnumdepth}{-1} % keine Nummerierung der Ueberschriften\n\n\n\n"
-        #     "%\n"
-        #     "%\n"
-        #     "%%%%%%%%%%%%%%%%%% DOKUMENT - ANFANG %%%%%%%%%%%%%%%%%%%"
-        #     "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"
-        #     "%\n"
-        #     "%\n"
-        #     "\\begin{document}\n"
-        # )
-
-        # if ausgabetyp == "schularbeit":
-        #     gruppe = dict_gruppen[int(index / 2)]
-
-
-
-        # if (
-        #     self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
-        #     == "Grundkompetenzcheck"
-        # ):
-        #     if ausgabetyp == "schularbeit" and maximum > 2:
-        #         vorschau.write(
-        #             "\\textsc{{Grundkompetenzcheck -- {0}}} \\hfill \\textsc{{Name:}} \\rule{{8cm}}{{0.4pt}} \\normalsize \\\ \\vspace{{\\baselineskip}} \n\n".format(
-        #                 gruppe
-        #             )
-        #         )
-        #     else:
-        #         vorschau.write(
-        #             "\\textsc{Grundkompetenzcheck} \\hfill \\textsc{Name:} \\rule{8cm}{0.4pt} \\normalsize \\\ \\vspace{\\baselineskip} \n\n"
-        #         )
-        # elif (
-        #     self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
-        #     == "Übungsblatt"
-        # ):
-        #     vorschau.write("\\subsection{Übungsblatt}")
-        
-            
-
-        # else:
-        #     try:
-        #         dict_titlepage["hide_all"]
-        #     except KeyError:
-        #         dict_titlepage["hide_all"]=False
-        #         titlepage_save = os.path.join(path_programm, "Teildokument", "titlepage_save")
-        #         with open(titlepage_save, "w+", encoding="utf8") as f:
-        #             json.dump(dict_titlepage, f, ensure_ascii=False)
-
-
-
-        #     if dict_titlepage["hide_all"] == True:
-        #         if (
-        #             self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
-        #             == "Wiederholungsprüfung"
-        #         ):
-        #             vorschau.write("\\textsc{{Name:}} \\rule{{8cm}}{{0.4pt}}"
-        #             "\\subsection{{{0} \\hfill {1}}}".format(self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"], datum_kurz)
-        #             )
-        #         else:
-        #             vorschau.write("\\textsc{{Name:}} \\rule{{8cm}}{{0.4pt}}"
-        #             "\\subsection{{{0}. {1} \\hfill {2}}}".format(self.dict_all_infos_for_file["data_gesamt"]["#"],self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"], datum_kurz)
-        #             )  
-            
-        #     else:
-        #         vorschau.write("\\begin{titlepage}\n" "\\flushright\n")
-        #         if dict_titlepage["logo"] == True:
-        #             logo_name = os.path.basename(dict_titlepage["logo_path"])
-        #             logo_titlepage_path = os.path.join(
-        #                 path_programm, "Teildokument", logo_name
-        #             )
-        #             if os.path.isfile(logo_titlepage_path):
-        #                 vorschau.write(
-        #                     "\\begin{{minipage}}[t]{{0.4\\textwidth}} \\vspace{{0pt}} \\includegraphics[width=1\\textwidth]{{{0}}}\\end{{minipage}} \\\ \\vfil \n".format(
-        #                         logo_name
-        #                     )
-        #                 )
-        #             else:
-        #                 msg = QtWidgets.QMessageBox()
-        #                 msg.setIcon(QtWidgets.QMessageBox.Warning)
-        #                 msg.setWindowIcon(QtGui.QIcon(logo_path))
-        #                 msg.setText("Das Logo konnte nicht gefunden werden.")
-        #                 msg.setInformativeText(
-        #                     "Bitte suchen Sie ein Logo unter: \n\nTitelblatt anpassen - Durchsuchen"
-        #                 )
-        #                 msg.setWindowTitle("Kein Logo ausgewählt")
-        #                 msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
-        #                 msg.exec_()
-
-        #                 vorschau.write("~\\vfil \n")
-
-        #         else:
-        #             vorschau.write("~\\vfil \n")
-        #         if dict_titlepage["titel"] == True:
-        #             if (
-        #                 self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
-        #                 == "Wiederholungsprüfung"
-        #             ):
-        #                 vorschau.write("\\textsc{{\\Huge Wiederholungsprüfung}} \\\ \n")
-        #             else:
-        #                 vorschau.write(
-        #                     "\\textsc{{\\Huge {0}. Mathematikschularbeit}} \\\ \n".format(
-        #                         self.dict_all_infos_for_file["data_gesamt"]["#"]
-        #                     )
-        #                 )
-        #                 if (
-        #                     self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
-        #                     == "Wiederholungsschularbeit"
-        #                 ):
-        #                     vorschau.write("[0.5cm]" "\\textsc{\Large Wiederholung} \\\ \n")
-        #                 if (
-        #                     self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
-        #                     == "Nachschularbeit"
-        #                 ):
-        #                     vorschau.write(
-        #                         "[0.5cm]" "\\textsc{\Large Nachschularbeit} \\\ \n"
-        #                     )
-        #                 vorschau.write("[2cm] \n")
-        #         if dict_titlepage["datum"] == True:
-        #             vorschau.write("\\textsc{{\Large am {0}}}\\\ [1cm] \n".format(datum))
-        #         if dict_titlepage["klasse"] == True:
-        #             vorschau.write(
-        #                 "\\textsc{{\Large Klasse {0}}} \\\ [1cm] \n".format(
-        #                     self.dict_all_infos_for_file["data_gesamt"]["Klasse"]
-        #                 )
-        #             )
-
-        #         if ausgabetyp == "schularbeit" and maximum > 2:
-        #             vorschau.write(
-        #                 "\\textsc{{\\Large Gruppe {0}}} \\\ [1cm]\n".format(gruppe)
-        #             )
-
-        #         if dict_titlepage["name"] == True:
-        #             vorschau.write("\\Large Name: \\rule{8cm}{0.4pt} \\\ \n")
-        #         vorschau.write("\\vfil\\vfil\\vfil \n")
-        #         if dict_titlepage["note"] == True:
-        #             vorschau.write("\\Large Note: \\rule{8cm}{0.4pt} \\\ [1cm]\n")
-        #         if dict_titlepage["unterschrift"] == True:
-        #             vorschau.write("\\Large Unterschrift: \\rule{8cm}{0.4pt} \\\ \n")
-
-        #         if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "br":
-        #             exkl_teil2_pkt = (
-        #                 self.dict_all_infos_for_file["data_gesamt"]["punkte_2"]
-        #                 - self.dict_all_infos_for_file["data_gesamt"]["ausgleichspunkte"]
-        #             )
-        #             vorschau.write(
-        #                 "\\newpage \n"
-        #                 "\\flushleft \\normalsize\n"
-        #                 "\\thispagestyle{{empty}}\n"
-        #                 "\\beurteilungsraster{{0.85}}{{0.68}}{{0.5}}{{1/3}}{{ % Prozentschluessel\n"
-        #                 "T1={{{0}}}, % Punkte im Teil 1\n"
-        #                 "AP={{{1}}}, % Ausgleichspunkte aus Teil 2\n"
-        #                 "T2={{{2}}}, % Punkte im Teil 2\n"
-        #                 "}} \\newpage".format(
-        #                     self.dict_all_infos_for_file["data_gesamt"]["punkte_1"],
-        #                     self.dict_all_infos_for_file["data_gesamt"][
-        #                         "ausgleichspunkte"
-        #                     ],
-        #                     exkl_teil2_pkt,
-        #                 )
-        #             )
-
-        #         vorschau.write("\\end{titlepage}\n\n")
-        # vorschau.close()
-
-        # vorschau = open(filename_vorschau, "a", encoding="utf8")
-        
-
-        # control_counter = 0
-
-        # if (
-        # is_empty(self.dict_all_infos_for_file["dict_ausgleichspunkte"])==False or 
-        # is_empty( self.dict_all_infos_for_file["dict_hide_show_items"])==False
-        # ):
-
-        # list_chosen_examples = []
-        # print(self.list_alle_aufgaben_sage)
-        # print(self.dict_alle_aufgaben_sage)
 
         for aufgabe in self.list_alle_aufgaben_sage:
 
@@ -5947,8 +5730,20 @@ class Ui_MainWindow(object):
 
             split_content = split_content_at_beispiel_umgebung(content)
 
+            if split_content == False:
+                text = "".join(content)
+                critical_window('Es ist ein Fehler beim Erstellen der Datei aufgetreten, da die Formatierung der Aufgabe "{}" fehlerhaft ist.'.format(aufgabe),
+                    'Bitte überprüfen Sie die Formatierung der Aufgabe oder informieren Sie das LaMA-Team via "Feedback & Fehler".',
+                    detailed_text=
+                    'Fehlerhafter LaTeX-Aufgabentext:\n\n"\n'+
+                    text+
+                    '"',
+                )
+                return
+
             if self.get_aufgabentyp(aufgabe) == 1:
-                grundkompetenz = "["+aufgabe.split("-")[0].strip()+"]"
+                gk = aufgabe.replace('_L_','')
+                grundkompetenz = "["+gk.split("-")[0].strip()+"]"
             else:
                 grundkompetenz = ''
 
@@ -5963,7 +5758,7 @@ class Ui_MainWindow(object):
 
             elif "beispiel" in split_content[0]:
 
-                split_content[0] = "\\\\begin{{beispiel}}{{{0}}}{1} %PUNKTE DES BEISPIELS\n".format(spinbox_pkt, grundkompetenz) 
+                split_content[0] = "\\begin{{beispiel}}{0}{{{1}}} %PUNKTE DES BEISPIELS\n".format(grundkompetenz, spinbox_pkt) 
 
 
             spinbox_abstand = self.dict_alle_aufgaben_sage[aufgabe][1]
@@ -5973,71 +5768,38 @@ class Ui_MainWindow(object):
                 else:
                     split_content[2] = split_content[2] + "\\vspace{{{0}cm}} \n\n".format(spinbox_abstand)
 
-
-            print(split_content)
-
-            #     
-            #     spinbox_abstand = self.dict_alle_aufgaben_sage[aufgabe][1]
-
- 
+            with open(filename_vorschau, "a", encoding="utf8") as vorschau:
+                for all in split_content:
+                    vorschau.write(all)
+                vorschau.write("\n\n")
 
 
-        return
+        if (
+            self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
+            != "Grundkompetenzcheck"
+            and self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
+            != "Übungsblatt"
+        ):
+            if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "ns":
+                notenschluessel = self.dict_all_infos_for_file["data_gesamt"]["Notenschluessel"]
 
-
-           #     if gk == "":
-            #         vorschau.write(
-            #             "%s\\begin{beispiel}{" % header
-            #             + str(spinbox_pkt)
-            #             + "}\n"
-            #             + example[1]
-            #             + "\n"
-            #             + example[2]
-            #             + "\n\n"
-            #         )
-
-            #     else:
-            #         vorschau.write(
-            #             "%s\\begin{beispiel}[" % header
-            #             + gk
-            #             + "]{"
-            #             + str(spinbox_pkt)
-            #             + "}\n"
-            #             + example[1]
-            #             + "\n"
-            #             + example[2]
-            #             + "\n\n"
-            #         )
-
-            # elif self.chosen_program=='lama' and beispiel_typ == "langesbeispiel":
-            #     vorschau.write(
-            #         "\\newpage\n\n%s\\begin{langesbeispiel} \item[" % header
-            #         + str(spinbox_pkt)
-            #         + "]\n"
-            #         + example[1]
-            #         + "\n"
-            #         + example[2]
-            #         + "\n\n"
-            #     )
-
-            # elif self.chosen_program=='cria' and beispiel_typ == "langesbeispiel":
-            #     vorschau.write(
-            #         "\\begin{langesbeispiel} \item["
-            #         + str(spinbox_pkt)
-            #         + "]\n"
-            #         + example[1]
-            #         + "\n"
-            #         + example[2]
-            #         + "\n\n"
-            #     )
-
-        # example = list_chosen_examples[self.list_alle_aufgaben_sage.index(aufgabe)]
-        # try:
-        #     x, y = example[0].split("[")
-        #     gk, z = y.split("]")
-        # except ValueError:
-        #     gk = ""
-
+                with open(filename_vorschau, "a", encoding="utf8") as vorschau:
+                    vorschau.write(
+                        "\n\n\\notenschluessel{{{0}}}{{{1}}}{{{2}}}{{{3}}}"
+                        .format(
+                            notenschluessel[0] / 100,
+                            notenschluessel[1] / 100,
+                            notenschluessel[2] / 100,
+                            notenschluessel[3] / 100,
+                        )
+                    )
+                
+            
+        with open(filename_vorschau, "a", encoding="utf8") as vorschau:
+            vorschau.write(
+                "\n\n"
+                "\end{document}"
+                )
 
 
         if ausgabetyp == "schularbeit":
@@ -6055,231 +5817,6 @@ class Ui_MainWindow(object):
                 
 
 
-                # print(image.rsplit('_', 1))
-        # print(dict_picture_path)
-        return
-
-        # for aufgabe in self.list_alle_aufgaben_sage:
-        #     print(aufgabe)
-            # return
-            # if self.chosen_program == 'lama':
-            #     typ=self.get_aufgabentyp(aufgabe)
-
-
-            #     spinbox_pkt = self.dict_alle_aufgaben_sage[aufgabe][0]
-            #     spinbox_abstand = self.dict_alle_aufgaben_sage[aufgabe][1]
-                
-            #     f = open(dict_gesammeltedateien[aufgabe], "r", encoding="utf8")
-            #     content = f.readlines()
-            #     f.close()
-
-
-            #     ##### adapt content for	 creation ###
-
-            #     if aufgabe in self.dict_all_infos_for_file["dict_ausgleichspunkte"].keys():
-            #         content = [line.replace("\\fbox{A}", "") for line in content]
-            #         for ausgleichspunkte in self.dict_all_infos_for_file[
-            #             "dict_ausgleichspunkte"
-            #         ][aufgabe]:
-            #             ausgleichspunkte = ausgleichspunkte.replace('ITEM','').replace('SUBitem','').strip()
-            #             if ausgleichspunkte.startswith('{'):
-            #                 ausgleichspunkte = ausgleichspunkte[1:]
-             
-            #             content = [
-            #                 line.replace(
-            #                     ausgleichspunkte.partition("\n")[0],
-            #                     "\\fbox{A} " + ausgleichspunkte.partition("\n")[0],
-            #                 )
-            #                 for line in content
-            #             ]
-            #     ### end ###
-
-            #     if aufgabe in self.dict_all_infos_for_file["dict_hide_show_items"].keys():
-            #         # print(content)        
-            #         for item in self.dict_all_infos_for_file["dict_hide_show_items"][aufgabe]:
-            #             hide_item = item.split('\n')[0]
-            #             hide_item = hide_item.replace('ITEM','').replace('SUBitem','').strip()
-
-            #             start_index=-1
-            #             end_index=-1
-            #             for idx, line in enumerate(content):
-            #                 if start_index == -1:
-            #                     if hide_item in line:
-            #                         start_index=idx
-            #                         continue
-            #                 else:
-            #                     if '\\item' in line:
-            #                         end_index=idx
-            #                         break
-            #                     if "\\end{aufgabenstellung}" in line:
-            #                         end_index=idx
-            #                         break
-            #                     if "Lösungserwartung" in line:
-            #                         break
-            #             if start_index==-1 or end_index==-1:
-            #                 warning_window("Das Ein- bzw. Ausblenden von Aufgabenstellungen in Aufgabe {} konnte leider nicht durchgeführt werden.\n"
-            #                 "Die Aufgabe wird daher vollständig angezeigt. Bitte bearbeiten sie diese Aufgabe manuell.".format(aufgabe))                
-            #             else:
-            #                 for i in reversed(range(start_index+1)):
-            #                     if '\\item' in content[i]:         
-            #                         start_index=i
-            #                         break
-            #                 for index, line in enumerate(content[start_index:end_index]):
-            #                     content[start_index+index]='% '+line
-
-            #                 # del content[start_index:end_index]
-
-            # if self.chosen_program == 'cria':
-            #     # bsp_string=all
-            #     # list_input = "self.list_input_{}".format(bsp_string)
-            #     spinbox_pkt = self.dict_alle_aufgaben_sage[aufgabe][0]
-            #     spinbox_abstand = self.dict_alle_aufgaben_sage[aufgabe][1]
-                
-            #     f = open(dict_gesammeltedateien[aufgabe], "r", encoding="utf8")
-            #     content = f.readlines()
-            #     f.close()             
-
-
-            # if ausgabetyp == "schularbeit":
-            #     if index == 0:
-            #         if dict_titlepage["logo"] == True:
-            #             logo_name = os.path.basename(dict_titlepage["logo_path"])
-            #             logo_titlepage_path = os.path.join(
-            #                 path_programm, "Teildokument", logo_name
-            #             )
-            #             if os.path.isfile(logo_titlepage_path):
-            #                 shutil.copy(
-            #                     logo_titlepage_path,
-            #                     os.path.join(
-            #                         os.path.dirname(
-            #                             self.chosen_path_schularbeit_erstellen[0]
-            #                         ),
-            #                         logo_name,
-            #                     ),
-            #                 )
-            #             else:
-            #                 warning_window("Das Logo konnte nicht gefunden werden.", 
-            #                 "Bitte suchen Sie ein Logo unter: \n\nTitelblatt anpassen - Durchsuchen",
-            #                 "Kein Logo ausgewählt")
-
-
-            #         if (
-            #             self.dict_all_infos_for_file["data_gesamt"]["copy_images"]
-            #             == []
-            #         ):
-            #             pass
-            #         else:
-            #             for image in self.dict_all_infos_for_file["data_gesamt"][
-            #                 "copy_images"
-            #             ]:
-            #                 if os.path.isfile(
-            #                     os.path.join(
-            #                         path_programm, "_database", "Bilder", image
-            #                     )
-            #                 ):
-            #                     shutil.copy(
-            #                         os.path.join(
-            #                             path_programm, "_database", "Bilder", image
-            #                         ),
-            #                         os.path.join(
-            #                             os.path.dirname(
-            #                                 self.chosen_path_schularbeit_erstellen[0]
-            #                             ),
-            #                             image,
-            #                         ),
-            #                     )
-
-            #                 elif os.path.isfile(
-            #                     os.path.join(
-            #                         path_programm,
-            #                         "_database_inoffiziell",
-            #                         "Bilder",
-            #                         image,
-            #                     )
-            #                 ):
-            #                     shutil.copy(
-            #                         os.path.join(
-            #                             path_programm,
-            #                             "_database_inoffiziell",
-            #                             "Bilder",
-            #                             image,
-            #                         ),
-            #                         os.path.join(
-            #                             os.path.dirname(
-            #                                 self.chosen_path_schularbeit_erstellen[0]
-            #                             ),
-            #                             image,
-            #                         ),
-            #                     )
-
-            #                 elif os.path.isfile(
-            #                     os.path.join(
-            #                         path_programm,
-            #                         "Beispieleinreichung",
-            #                         "Bilder",
-            #                         image,
-            #                     )
-            #                 ):
-            #                     shutil.copy(
-            #                         os.path.join(
-            #                             path_programm,
-            #                             "Beispieleinreichung",
-            #                             "Bilder",
-            #                             image,
-            #                         ),
-            #                         os.path.join(
-            #                             os.path.dirname(
-            #                                 self.chosen_path_schularbeit_erstellen[0]
-            #                             ),
-            #                             image,
-            #                         ),
-            #                     )
-
-
-            #     for image in self.dict_all_infos_for_file["data_gesamt"][
-            #         "copy_images"
-            #     ]:
-            #         content = [
-            #             line.replace("../_database/Bilder/", "") for line in content
-            #         ]
-            #         content = [
-            #             line.replace("../_database_inoffiziell/Bilder/", "")
-            #             for line in content
-            #         ]
-            #         content = [
-            #             line.replace("../Beispieleinreichung/Bilder/", "")
-            #             for line in content
-            #         ]
-
-
-            # for line in content:
-            #     if "begin{beispiel}" in line:
-            #         beginning = line
-            #         start = content.index(line) + 1
-            #         beispiel_typ = "beispiel"
-            #     if "begin{langesbeispiel}" in line:
-            #         beginning = line
-            #         start = content.index(line) + 1
-            #         beispiel_typ = "langesbeispiel"
-
-            #     if "end{beispiel}" in line or "end{langesbeispiel}" in line:
-            #         ending = line
-            #         end = content.index(line)
-
-            # content = content[start:end]
-            # joined_content = "".join(content)
-            # sub_list = []
-            # sub_list.append(beginning)
-            # sub_list.append(joined_content)
-            # sub_list.append(ending)
-            # list_chosen_examples.append(sub_list)
-
-            # example = list_chosen_examples[self.list_alle_aufgaben_sage.index(aufgabe)]
-            # try:
-            #     x, y = example[0].split("[")
-            #     gk, z = y.split("]")
-            # except ValueError:
-            #     gk = ""
 ################################################## ausgelassen
             # if (
             #     self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
@@ -6298,120 +5835,31 @@ class Ui_MainWindow(object):
             #     else:
             #         header = ""
 #################################
-            # if beispiel_typ == "beispiel":
-            #     if gk == "":
-            #         vorschau.write(
-            #             "%s\\begin{beispiel}{" % header
-            #             + str(spinbox_pkt)
-            #             + "}\n"
-            #             + example[1]
-            #             + "\n"
-            #             + example[2]
-            #             + "\n\n"
-            #         )
 
-            #     else:
-            #         vorschau.write(
-            #             "%s\\begin{beispiel}[" % header
-            #             + gk
-            #             + "]{"
-            #             + str(spinbox_pkt)
-            #             + "}\n"
-            #             + example[1]
-            #             + "\n"
-            #             + example[2]
-            #             + "\n\n"
-            #         )
-
-            # elif self.chosen_program=='lama' and beispiel_typ == "langesbeispiel":
-            #     vorschau.write(
-            #         "\\newpage\n\n%s\\begin{langesbeispiel} \item[" % header
-            #         + str(spinbox_pkt)
-            #         + "]\n"
-            #         + example[1]
-            #         + "\n"
-            #         + example[2]
-            #         + "\n\n"
-            #     )
-
-            # elif self.chosen_program=='cria' and beispiel_typ == "langesbeispiel":
-            #     vorschau.write(
-            #         "\\begin{langesbeispiel} \item["
-            #         + str(spinbox_pkt)
-            #         + "]\n"
-            #         + example[1]
-            #         + "\n"
-            #         + example[2]
-            #         + "\n\n"
-            #     )
-
-            # if spinbox_abstand != 0:
-            #     if spinbox_abstand == 99:
-            #         vorschau.write("\\newpage \n\n")
-            #     else:
-            #         vorschau.write("\\vspace{" + str(spinbox_abstand) + "cm} \n\n")
-
-
-        # return
-
-
-        if (
-            self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
-            != "Grundkompetenzcheck"
-            and self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
-            != "Übungsblatt"
-        ):
-            if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "ns":
-                notenschluessel = self.dict_all_infos_for_file["data_gesamt"][
-                    "Notenschluessel"
-                ]
-                vorschau.write(
-                    "\n\n\\notenschluessel{{{0}}}{{{1}}}{{{2}}}{{{3}}}".format(
-                        notenschluessel[0] / 100,
-                        notenschluessel[1] / 100,
-                        notenschluessel[2] / 100,
-                        notenschluessel[3] / 100,
-                    )
-                )
-        vorschau.write("\n\n\end{document}")
-        vorschau.close()
-
-        # MainWindow.hide()
-        # msg.setIcon(QtWidgets.QMessageBox.Question)
-        # msg.setInformativeText('Möchten Sie das neue Update installieren?')
 
         if ausgabetyp == "vorschau":
-            if sys.platform.startswith("linux"):
-                MainWindow.hide()
             create_pdf("Schularbeit_Vorschau", 0, 0)
-            if sys.platform.startswith("linux"):
-                MainWindow.show()
+    
         if ausgabetyp == "schularbeit":
             name, extension = os.path.splitext(filename_vorschau)
 
             if pdf == True:
-                if sys.platform.startswith("linux"):
-                    MainWindow.hide()
-
                 create_pdf(name, index, maximum)
-                if sys.platform.startswith("linux"):
-                    MainWindow.show()
 
+                temp_filename = name + ".pdf"
                 if maximum > 2:
                     if index % 2 == 0:
-                        shutil.move(
-                            name + ".pdf",
-                            name
-                            + "_{}_Loesung.pdf".format(dict_gruppen[int(index / 2)]),
-                        )
+                        new_filename = name + "_{}_Loesung.pdf".format(dict_gruppen[int(index / 2)])
                     else:
-                        shutil.move(
-                            name + ".pdf",
-                            name + "_{}.pdf".format(dict_gruppen[int(index / 2)]),
-                        )
-                else:
-                    if index % 2 == 0:
-                        shutil.move(name + ".pdf", name + "_Loesung.pdf")
+                        new_filename = name + "_{}.pdf".format(dict_gruppen[int(index / 2)])
+                    
+                    shutil.move(temp_filename, new_filename)
+
+                elif index % 2 == 0:
+                    new_filename = name + "_Loesung.pdf"
+                
+                    shutil.move(temp_filename, new_filename)
+
 
                 if index == maximum - 1:
                     with open(filename_vorschau, "r", encoding="utf8") as vorschau:
@@ -6428,7 +5876,6 @@ class Ui_MainWindow(object):
 
         QtWidgets.QApplication.restoreOverrideCursor()
 
-        # sys.exit[0]
 
     #######################################################################
     ########################################################################

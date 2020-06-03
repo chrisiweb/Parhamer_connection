@@ -109,16 +109,13 @@ def split_content_at_beispiel_umgebung(content):
         list_.append(beginning)
         list_.append(joined_content)
         list_.append(ending)
+        return list_
     except UnboundLocalError:
-        warning_window("Es ist ein Fehler beim Erstellen aufgetreten.",
-        "Bitte versuchen Sie es erneut",
-        "Warnung",
-        "Fehlerhafter Inhalt:\n" + content,
-        )
+        return False
 
 
 
-    return list_
+    
 
 
 

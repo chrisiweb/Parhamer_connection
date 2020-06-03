@@ -49,7 +49,8 @@ def critical_window(text, informative_text="", titel="Fehlermeldung", detailed_t
     msg.setIcon(QtWidgets.QMessageBox.Critical)
     msg.setWindowIcon(QtGui.QIcon(logo_path))
     msg.setText(text)
-    msg.setInformativeText(detailed_text)
+    msg.setInformativeText(informative_text)
+    msg.setDetailedText(detailed_text)
     msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
     msg.exec_()
 

@@ -130,41 +130,41 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum):
                 if add_on != None:
                     title_header = title_header + "[0.5cm] \\textsc{{\Large {0}}}".format(add_on)
                 
-                title_header = title_header + "\\\ \n [2cm] \n"
+                title_header = title_header + "\\\ [2cm] \n\n"
         else:
             title_header = ''
 
         if dict_titlepage["datum"] == True:
-            datum_text =  "\\textsc{{\Large am {0}}}\\\ [1cm] \n".format(datum)
+            datum_text =  "\\textsc{{\Large am {0}}}\\\ [1cm] \n\n".format(datum)
         else:
             datum_text = ''
 
         if dict_titlepage["klasse"] == True:
-            klasse = "\\textsc{{\Large Klasse {0}}} \\\ [1cm] \n".format(
+            klasse = "\\textsc{{\Large Klasse {0}}} \\\ [1cm] \n\n".format(
                 self.dict_all_infos_for_file["data_gesamt"]["Klasse"]
                 )
         else:
             klasse = ''
 
         if ausgabetyp == "schularbeit" and maximum > 2:
-            gruppe = "\\textsc{{\\Large Gruppe {0}}} \\\ [1cm]\n".format(gruppe)
+            gruppe = "\\textsc{{\\Large Gruppe {0}}} \\\ [1cm]\n\n".format(gruppe)
         else:
             gruppe = ''
 
 
         if dict_titlepage["name"] == True:
-            name = "\\Large Name: \\rule{8cm}{0.4pt} \\\ \n"
+            name = "\\Large Name: \\rule{8cm}{0.4pt} \\\ \n\n"
         else:
             name = ''
         
 
         if dict_titlepage["note"] == True:
-            note = "\\Large Note: \\rule{8cm}{0.4pt} \\\ [1cm]\n"
+            note = "\\Large Note: \\rule{8cm}{0.4pt} \\\ [1cm]\n\n"
         else:
             note = ''
 
         if dict_titlepage["unterschrift"] == True:
-            unterschrift = "\\Large Unterschrift: \\rule{8cm}{0.4pt} \\\ \n"
+            unterschrift = "\\Large Unterschrift: \\rule{8cm}{0.4pt} \\\ \n\n"
         else:
             unterschrift = ''
 
@@ -175,14 +175,15 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum):
                 - self.dict_all_infos_for_file["data_gesamt"]["ausgleichspunkte"])
 
             beurteilungsraster = (
-                "\\newpage \n"
+                "\\newpage \n\n"
                 "\\flushleft \\normalsize\n"
                 "\\thispagestyle{{empty}}\n"
                 "\\beurteilungsraster{{0.85}}{{0.68}}{{0.5}}{{1/3}}{{ % Prozentschluessel\n"
                 "T1={{{0}}}, % Punkte im Teil 1\n"
                 "AP={{{1}}}, % Ausgleichspunkte aus Teil 2\n"
                 "T2={{{2}}}, % Punkte im Teil 2\n"
-                "}} \\newpage"
+                "}} \n\n"
+                "\\newpage\n\n"
                 .format(
                 self.dict_all_infos_for_file["data_gesamt"]["punkte_1"],
                 teil2_pkt_ohne_ap,
@@ -192,7 +193,8 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum):
     
 
         titlepage = (
-        "\\begin{{titlepage}}\n" "\\flushright\n"
+        "\\begin{{titlepage}}\n\n"
+        "\\flushright\n"
         "{0}"
         "{1}"
         "{2}"
