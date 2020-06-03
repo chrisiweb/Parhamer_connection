@@ -116,7 +116,7 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum):
 
         if dict_titlepage["titel"] == True:
             if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Wiederholungsprüfung":
-                title_header = "\\textsc{{\\Huge Wiederholungsprüfung}}"
+                title_header = "\\textsc{{\\Huge Wiederholungsprüfung}} \\\ [2cm]"
             else:
                 title_header = "\\textsc{{\\Huge {0}. Mathematikschularbeit}}".format(self.dict_all_infos_for_file["data_gesamt"]["#"])
                 
@@ -128,7 +128,7 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum):
                     add_on = None
                 
                 if add_on != None:
-                    title_header = title_header + "[0.5cm] \\textsc{{\Large {0}}}".format(add_on)
+                    title_header = title_header + "\\\ [0.5cm] \\textsc{{\Large {0}}}".format(add_on)
                 
                 title_header = title_header + "\\\ [2cm] \n\n"
         else:
@@ -186,6 +186,7 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum):
                 "\\newpage\n\n"
                 .format(
                 self.dict_all_infos_for_file["data_gesamt"]["punkte_1"],
+                self.dict_all_infos_for_file["data_gesamt"]["ausgleichspunkte"],
                 teil2_pkt_ohne_ap,
                 ))
         else:

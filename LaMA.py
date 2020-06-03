@@ -5268,7 +5268,7 @@ class Ui_MainWindow(object):
         if self.chosen_program=='lama' and (
             self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
             != "Grundkompetenzcheck"
-            or self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
+            and self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
             != "Übungsblatt"
         ):
             header = "\\subsubsection{Typ 1 Aufgaben}\n\n"
@@ -5329,10 +5329,11 @@ class Ui_MainWindow(object):
                 critical_window('Es ist ein Fehler beim Erstellen der Datei aufgetreten, da die Formatierung der Aufgabe "{}" fehlerhaft ist.'.format(aufgabe),
                     'Bitte überprüfen Sie die Formatierung der Aufgabe oder informieren Sie das LaMA-Team via "Feedback & Fehler".',
                     detailed_text=
-                    'Fehlerhafter LaTeX-Aufgabentext:\n\n"\n'+
+                    'Fehlerhafter LaTeX-Aufgabentext:\n\n"""\n'+
                     text+
-                    '"',
+                    '\n"""',
                 )
+                QtWidgets.QApplication.restoreOverrideCursor()
                 return
             
 
