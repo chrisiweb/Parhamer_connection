@@ -2,6 +2,7 @@ import os
 import shutil
 from config import path_programm, is_empty
 from work_with_content import collect_content
+from standard_dialog_windows import warning_window
 
 def edit_content_ausgleichspunkte(self, aufgabe, content):
     content = [line.replace("\\fbox{A}", "") for line in content]
@@ -74,109 +75,86 @@ def copy_logo_to_target_path(self, logo_path):
     else:
         return False
 
+def replace_image_path_in_content(string, content):
+    return [line.replace(string, "") for line in content]
 
-
-
-def edit_content_vorschau(self):
-    for aufgabe in self.list_alle_aufgaben_sage:
-
-        content = collect_content(self, aufgabe)
-        
-
-        if self.chosen_program == 'lama':
-            typ=self.get_aufgabentyp(aufgabe)
-
-
-            if aufgabe in self.dict_all_infos_for_file["dict_ausgleichspunkte"].keys():
-                content = edit_content_ausgleichspunkte(self, aufgabe, content)
-
-
-            if aufgabe in self.dict_all_infos_for_file["dict_hide_show_items"].keys():
-                content = edit_content_hide_show_items(self, aufgabe, content)
+def edit_content_image_path(content):
+    content = replace_image_path_in_content("../_database/Bilder/", content)
+    content = replace_image_path_in_content("../_database_inoffiziell/Bilder/", content)
+    content = replace_image_path_in_content("../Beispieleinreichung/Bilder/", content)
+    content = replace_image_path_in_content("../Lokaler_Ordner/Bilder/", content)
 
     return content
 
 
-def copy_included_images(self):
-    
-    if os.path.isfile(
-        os.path.join(
-            path_programm, "_database", "Bilder", image
-        )
-    ):
-        shutil.copy(
-            os.path.join(
-                path_programm, "_database", "Bilder", image
-            ),
-            os.path.join(
-                os.path.dirname(
-                    self.chosen_path_schularbeit_erstellen[0]
-                ),
-                image,
-            ),
-        )
+def split_content_at_beispiel_umgebung(content):
+    for line in content:
+        if "begin{beispiel}" in line:
+            beginning = line
+            start = content.index(line) + 1
+            beispiel_typ = "beispiel"
+        if "begin{langesbeispiel}" in line:
+            beginning = line
+            start = content.index(line) + 1
+            beispiel_typ = "langesbeispiel"
 
-    elif os.path.isfile(
-        os.path.join(
-            path_programm,
-            "_database_inoffiziell",
-            "Bilder",
-            image,
-        )
-    ):
-        shutil.copy(
-            os.path.join(
-                path_programm,
-                "_database_inoffiziell",
-                "Bilder",
-                image,
-            ),
-            os.path.join(
-                os.path.dirname(
-                    self.chosen_path_schularbeit_erstellen[0]
-                ),
-                image,
-            ),
-        )
+        if "end{beispiel}" in line or "end{langesbeispiel}" in line:
+            ending = line
+            end = content.index(line)
 
-    elif os.path.isfile(
-        os.path.join(
-            path_programm,
-            "Beispieleinreichung",
-            "Bilder",
-            image,
-        )
-    ):
-        shutil.copy(
-            os.path.join(
-                path_programm,
-                "Beispieleinreichung",
-                "Bilder",
-                image,
-            ),
-            os.path.join(
-                os.path.dirname(
-                    self.chosen_path_schularbeit_erstellen[0]
-                ),
-                image,
-            ),
+    try:
+        content = content[start:end]
+        joined_content = "".join(content)
+        list_ = []
+        list_.append(beginning)
+        list_.append(joined_content)
+        list_.append(ending)
+    except UnboundLocalError:
+        warning_window("Es ist ein Fehler beim Erstellen aufgetreten.",
+        "Bitte versuchen Sie es erneut",
+        "Warnung",
+        "Fehlerhafter Inhalt:\n" + content,
         )
 
 
-    for image in self.dict_all_infos_for_file["data_gesamt"][
-        "copy_images"
-    ]:
-        content = [
-            line.replace("../_database/Bilder/", "") for line in content
-        ]
-        content = [
-            line.replace("../_database_inoffiziell/Bilder/", "")
-            for line in content
-        ]
-        content = [
-            line.replace("../Beispieleinreichung/Bilder/", "")
-            for line in content
-        ]
+
+    return list_
+
+
+
+def edit_content_vorschau(self, aufgabe, ausgabetyp):
+    content = collect_content(self, aufgabe, readlines = True)
+
+    if self.chosen_program == 'lama':
+        typ=self.get_aufgabentyp(aufgabe)
+
+
+        if aufgabe in self.dict_all_infos_for_file["dict_ausgleichspunkte"].keys():
+            content = edit_content_ausgleichspunkte(self, aufgabe, content)
+
+
+        if aufgabe in self.dict_all_infos_for_file["dict_hide_show_items"].keys():
+            content = edit_content_hide_show_items(self, aufgabe, content)
+
+    if ausgabetyp == "schularbeit" and is_empty(self.dict_all_infos_for_file["data_gesamt"]["copy_images"])==False:
+        edit_content_image_path(content)    
+
+    return content
+
+
+
+def copy_included_images(self, image):
+    path_bilder = ["_database", "_database_inoffiziell", "Beispieleinreichung", "Lokaler_Ordner"]
+
+    for folder in path_bilder:
+        path_image = os.path.join(path_programm, folder, "Bilder", image)
+        if os.path.isfile(path_image):
+            saving_path = os.path.join(os.path.dirname(self.chosen_path_schularbeit_erstellen[0]),image)
+            shutil.copy(path_image, saving_path)
+            break
+    return
+
+
 
 
         # for line in content:

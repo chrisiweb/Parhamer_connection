@@ -59,7 +59,12 @@ from standard_dialog_windows import warning_window, question_window, critical_wi
 from predefined_size_policy import *
 from work_with_content import collect_content, split_aufgaben_content_new_format, split_aufgaben_content
 from build_titlepage import get_titlepage_vorschau
-from prepare_content_vorschau import edit_content_vorschau, copy_logo_to_target_path
+from prepare_content_vorschau import (
+    edit_content_vorschau,
+    copy_logo_to_target_path,
+    copy_included_images,
+    split_content_at_beispiel_umgebung
+)
  
 # from cria_commands import create_kapitel_cria
 
@@ -2396,8 +2401,9 @@ class Ui_MainWindow(object):
 
     def reset_sage(self, program_changed=False):
         if program_changed==False:
-            response=question_window('Schularbeit löschen?',
-            'Sind Sie sicher, dass Sie das Fenster zurücksetzen wollen und die erstellte Schularbeit löschen möchten?')
+            response=question_window(
+            'Sind Sie sicher, dass Sie das Fenster zurücksetzen wollen und die erstellte Schularbeit löschen möchten?',
+            titel = 'Schularbeit löschen?')
 
             if response==False:
                 return
@@ -2472,8 +2478,9 @@ class Ui_MainWindow(object):
             icon = logo_path
 
 
-        response = question_window('Programm wechseln?',
-        'Sind Sie sicher, dass sie zu {} wechseln wollen?\nDadurch werden alle bisherigen Einträge gelöscht!'.format(change_to))
+        response = question_window(
+        'Sind Sie sicher, dass sie zu {} wechseln wollen?\nDadurch werden alle bisherigen Einträge gelöscht!'.format(change_to),
+        titel='Programm wechseln?')
 
         if response == False:
             return
@@ -2585,7 +2592,9 @@ class Ui_MainWindow(object):
         
 
 
-        response=question_window("Änderungen speichern?", "Möchten Sie die Änderungen speichern?")
+        response=question_window(
+        "Möchten Sie die Änderungen speichern?",
+        titel="Änderungen speichern?")
 
         if response == True:
             self.sage_save()
@@ -3493,9 +3502,10 @@ class Ui_MainWindow(object):
                         "Bitte bestätigen Sie die Eigenständigkeitserklärung und Lizenzvereinbarung."
                     )
                 elif typ_save == ['local', None]:
-                    self.local_save = question_window("Aufgabe lokal speichern?",
+                    self.local_save = question_window(
                     "Sind Sie sicher, dass Sie diese Aufgabe nur lokal speichern wollen?",
                     "ACHTUNG: Durch nicht überprüfte Aufgaben entstehen möglicherweise Fehler, die das Programm zum Absturz bringen können!",
+                    "Aufgabe lokal speichern?",
                     )
                     if self.local_save == True:
                         break
@@ -3593,7 +3603,7 @@ class Ui_MainWindow(object):
 
 
         QtWidgets.QApplication.restoreOverrideCursor()
-        information_window(text, window_title,'', information)
+        information_window(text,'',window_title, information)
 
         self.suchfenster_reset()
 
@@ -3775,9 +3785,11 @@ class Ui_MainWindow(object):
             file_found=self.check_if_file_exists(aufgabe)
             if file_found==False:
                 QtWidgets.QApplication.restoreOverrideCursor()
-                response=question_window("Aufgabe nicht gefunden",
+                response=question_window(
                 'Die Aufgabe "{}" konnte in der Datenbank nicht gefunden werden. Dies könnte daran liegen, dass die Datenbank veraltet ist (Tipp: Datenbank aktualisieren)'.format(aufgabe),
-                'Wollen Sie diese Aufgabe entfernen?')
+                'Wollen Sie diese Aufgabe entfernen?'
+                "Aufgabe nicht gefunden"
+                )
 
                 if response==True:
                     self.list_alle_aufgaben_sage.remove(aufgabe)
@@ -4382,16 +4394,16 @@ class Ui_MainWindow(object):
     def get_dateipfad_aufgabe(self, aufgabe, draft=False):
         typ=self.get_aufgabentyp(aufgabe)
         klasse=None
-        if draft==True:      
-            _,list_path = self.get_beispieldaten_dateipfad_draft(typ)
-            if self.chosen_program == 'cria':
-                klasse, aufgabe = self.split_klasse_aufgabe(aufgabe)
+        # if draft==True:      
+        #     _,list_path = self.get_beispieldaten_dateipfad_draft(typ)
+        #     if self.chosen_program == 'cria':
+        #         klasse, aufgabe = self.split_klasse_aufgabe(aufgabe)
 
-            filename=aufgabe + ".tex"
+        #     filename=aufgabe + ".tex"
 
-            dateipfad = self.get_dateipfad_from_filename(list_path, filename, klasse)
+        #     dateipfad = self.get_dateipfad_from_filename(list_path, filename, klasse)
 
-            return dateipfad
+        #     return dateipfad
          
 
         if self.chosen_program=='cria':
@@ -4692,13 +4704,13 @@ class Ui_MainWindow(object):
     def nummer_clicked(self, item):
         if '(Entwurf)' in item.text():
             aufgabe=item.text().replace(" (Entwurf)", "")
-            draft=True
+            # draft=True
         elif '(lokal)' in item.text():
             aufgabe=item.text().replace(" (lokal)","")
-            draft=False
+            # draft=False
         else:
             aufgabe=item.text()
-            draft=False
+            # draft=False
 
         if self.chosen_program=='cria':
             aufgabe=self.build_klasse_aufgabe(aufgabe)
@@ -4707,7 +4719,7 @@ class Ui_MainWindow(object):
             return
 
         try:
-            collect_content(self, aufgabe, draft)
+            collect_content(self, aufgabe)
         except FileNotFoundError:
             warning_window('Die Datei konnte nicht gefunden werden.\nBitte wählen Sie "Refresh Database" (F5) und versuchen Sie es erneut.')
             return
@@ -5664,6 +5676,9 @@ class Ui_MainWindow(object):
 
         dict_vorschau['titlepage'] = get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum)
 
+        # if self.chosen_program=='lama' and control_counter == 0 and typ == 1:
+        #     header = "\\subsubsection{Typ 1 Aufgaben}\n\n"
+
 
         # if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Grundkompetenzcheck":        
 
@@ -5912,17 +5927,118 @@ class Ui_MainWindow(object):
         #         vorschau.write("\\end{titlepage}\n\n")
         # vorschau.close()
 
-        vorschau = open(filename_vorschau, "a", encoding="utf8")
-        list_chosen_examples = []
+        # vorschau = open(filename_vorschau, "a", encoding="utf8")
+        
 
-        control_counter = 0
+        # control_counter = 0
 
-        if (
-        is_empty(self.dict_all_infos_for_file["dict_ausgleichspunkte"])==False or 
-        is_empty( self.dict_all_infos_for_file["dict_hide_show_items"])==False
-        ):
+        # if (
+        # is_empty(self.dict_all_infos_for_file["dict_ausgleichspunkte"])==False or 
+        # is_empty( self.dict_all_infos_for_file["dict_hide_show_items"])==False
+        # ):
 
-            content = edit_content_vorschau(self, dict_gesammeltedateien, ausgabetyp, index, dict_titlepage)
+        # list_chosen_examples = []
+        # print(self.list_alle_aufgaben_sage)
+        # print(self.dict_alle_aufgaben_sage)
+
+        for aufgabe in self.list_alle_aufgaben_sage:
+
+            content = edit_content_vorschau(self, aufgabe, ausgabetyp)
+
+            split_content = split_content_at_beispiel_umgebung(content)
+
+            if self.get_aufgabentyp(aufgabe) == 1:
+                grundkompetenz = "["+aufgabe.split("-")[0].strip()+"]"
+            else:
+                grundkompetenz = ''
+
+            path_aufgabe = self.get_dateipfad_aufgabe(aufgabe)
+
+            spinbox_pkt = self.dict_alle_aufgaben_sage[aufgabe][0]
+
+            
+
+            if "langesbeispiel" in split_content[0]:
+                split_content[0] = "\\newpage\n\n\\begin{{langesbeispiel}} \item[{0}] %PUNKTE DES BEISPIELS".format(spinbox_pkt)
+
+            elif "beispiel" in split_content[0]:
+
+                split_content[0] = "\\\\begin{{beispiel}}{{{0}}}{1} %PUNKTE DES BEISPIELS\n".format(spinbox_pkt, grundkompetenz) 
+
+
+            spinbox_abstand = self.dict_alle_aufgaben_sage[aufgabe][1]
+            if spinbox_abstand != 0:
+                if spinbox_abstand == 99:
+                    split_content[2] = split_content[2] + "\\newpage \n\n"
+                else:
+                    split_content[2] = split_content[2] + "\\vspace{{{0}cm}} \n\n".format(spinbox_abstand)
+
+
+            print(split_content)
+
+            #     
+            #     spinbox_abstand = self.dict_alle_aufgaben_sage[aufgabe][1]
+
+ 
+
+
+        return
+
+
+           #     if gk == "":
+            #         vorschau.write(
+            #             "%s\\begin{beispiel}{" % header
+            #             + str(spinbox_pkt)
+            #             + "}\n"
+            #             + example[1]
+            #             + "\n"
+            #             + example[2]
+            #             + "\n\n"
+            #         )
+
+            #     else:
+            #         vorschau.write(
+            #             "%s\\begin{beispiel}[" % header
+            #             + gk
+            #             + "]{"
+            #             + str(spinbox_pkt)
+            #             + "}\n"
+            #             + example[1]
+            #             + "\n"
+            #             + example[2]
+            #             + "\n\n"
+            #         )
+
+            # elif self.chosen_program=='lama' and beispiel_typ == "langesbeispiel":
+            #     vorschau.write(
+            #         "\\newpage\n\n%s\\begin{langesbeispiel} \item[" % header
+            #         + str(spinbox_pkt)
+            #         + "]\n"
+            #         + example[1]
+            #         + "\n"
+            #         + example[2]
+            #         + "\n\n"
+            #     )
+
+            # elif self.chosen_program=='cria' and beispiel_typ == "langesbeispiel":
+            #     vorschau.write(
+            #         "\\begin{langesbeispiel} \item["
+            #         + str(spinbox_pkt)
+            #         + "]\n"
+            #         + example[1]
+            #         + "\n"
+            #         + example[2]
+            #         + "\n\n"
+            #     )
+
+        # example = list_chosen_examples[self.list_alle_aufgaben_sage.index(aufgabe)]
+        # try:
+        #     x, y = example[0].split("[")
+        #     gk, z = y.split("]")
+        # except ValueError:
+        #     gk = ""
+
+
 
         if ausgabetyp == "schularbeit":
             if dict_titlepage["logo"] == True:
@@ -5933,14 +6049,16 @@ class Ui_MainWindow(object):
                     "Kein Logo ausgewählt")
 
 
-        if is_empty(self.dict_all_infos_for_file["data_gesamt"]["copy_images"])==False:
-            for image in self.dict_all_infos_for_file["data_gesamt"]["copy_images"]:
-                print(image)
-                print(image.rsplit('_', 1))
+            if is_empty(self.dict_all_infos_for_file["data_gesamt"]["copy_images"])==False:
+                for image in self.dict_all_infos_for_file["data_gesamt"]["copy_images"]:
+                    copy_included_images(self, image)
+                
 
+
+                # print(image.rsplit('_', 1))
+        # print(dict_picture_path)
         return
-        spinbox_pkt = self.dict_alle_aufgaben_sage[aufgabe][0]
-        spinbox_abstand = self.dict_alle_aufgaben_sage[aufgabe][1]
+
         # for aufgabe in self.list_alle_aufgaben_sage:
         #     print(aufgabe)
             # return
@@ -6162,7 +6280,7 @@ class Ui_MainWindow(object):
             #     gk, z = y.split("]")
             # except ValueError:
             #     gk = ""
-
+################################################## ausgelassen
             # if (
             #     self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
             #     == "Grundkompetenzcheck"
@@ -6179,7 +6297,7 @@ class Ui_MainWindow(object):
             #         control_counter += 1
             #     else:
             #         header = ""
-
+#################################
             # if beispiel_typ == "beispiel":
             #     if gk == "":
             #         vorschau.write(

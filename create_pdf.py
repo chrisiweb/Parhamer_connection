@@ -647,12 +647,12 @@ def extract_error_from_output(latex_output):
             detailed_text= error + "\n\nFehlerhafte Datei:\n" + error_location     
         QtWidgets.QApplication.restoreOverrideCursor()
         response = question_window(
-            "Fehler beim Erstellen der PDF-Datei",
             "Es ist ein Fehler beim Erstellen der PDF-Datei aufgetreten. Dadurch konnte die PDF-Datei nicht vollständig erzeugt werden.\n\n"+
             'Dies kann viele unterschiedliche Ursachen haben (siehe Details).\n'+
             'Durch das Aktualisieren der Datenbank (F5) können jedoch die meisten dieser Fehler behoben werden.\n'+
             'Sollte der Fehler weiterhin bestehen, bitte kontaktieren Sie uns unter lama.helpme@gmail.com',
             "Wollen Sie die fehlerhafte PDF-Datei dennoch anzeigen?",
+            "Fehler beim Erstellen der PDF-Datei",
             "Fehlermeldung:\n" + detailed_text,
         )
 

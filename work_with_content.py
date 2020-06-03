@@ -1,10 +1,13 @@
 import re
 
-def collect_content(self, aufgabe, draft=False):
-    selected_path = self.get_dateipfad_aufgabe(aufgabe, draft)  
-
+def collect_content(self, aufgabe, readlines=False):
+    selected_path = self.get_dateipfad_aufgabe(aufgabe)  
+    
     with open(selected_path, 'r', encoding="utf8") as f:
-        content = f.read()
+        if readlines == False:
+            content = f.read()
+        if readlines == True:
+            content = f.readlines()
 
     return content
 
