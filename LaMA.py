@@ -5578,6 +5578,48 @@ class Ui_MainWindow(object):
         #                         aufgabe
         #                     ] = self.beispieldaten_dateipfad_cria[all]
         # print(dict_gesammeltedateien)
+    def add_content_to_tex_file(self, aufgabe, split_content, filename_vorschau, first_typ2):
+        if self.get_aufgabentyp(aufgabe) == 1:
+            gk = aufgabe.replace('_L_','')
+            grundkompetenz = "["+gk.split("-")[0].strip()+"]"
+        else:
+            grundkompetenz = ''
+
+        path_aufgabe = self.get_dateipfad_aufgabe(aufgabe)
+
+        spinbox_pkt = self.dict_alle_aufgaben_sage[aufgabe][0]
+
+        if self.get_aufgabentyp(aufgabe)==2:
+            if first_typ2 == False:    
+                start = "\\newpage \n\n\subsubsection{Typ 2 Aufgaben}\n\n"
+                first_typ2 = True
+            else:
+                start = "\\newpage\n\n"
+        else:
+            start = "" 
+
+        if "langesbeispiel" in split_content[0]:
+            split_content[0] = "{0}\\begin{{langesbeispiel}} \item[{1}] %PUNKTE DES BEISPIELS".format(start, spinbox_pkt)
+
+        elif "beispiel" in split_content[0]:
+            split_content[0] = "{0}\\begin{{beispiel}}{1}{{{2}}} %PUNKTE DES BEISPIELS\n".format(start, grundkompetenz, spinbox_pkt) 
+
+
+        spinbox_abstand = self.dict_alle_aufgaben_sage[aufgabe][1]
+        if spinbox_abstand != 0:
+            if spinbox_abstand == 99:
+                split_content[2] = split_content[2] + "\\newpage \n\n"
+            else:
+                split_content[2] = split_content[2] + "\\vspace{{{0}cm}} \n\n".format(spinbox_abstand)
+
+
+        with open(filename_vorschau, "a", encoding="utf8") as vorschau:
+            for all in split_content:
+                vorschau.write(all)
+            vorschau.write("\n\n")
+        
+        return first_typ2
+
 
     def pushButton_vorschau_pressed(
         self, ausgabetyp, index=0, maximum=0, pdf=True, lama=True
@@ -5676,16 +5718,17 @@ class Ui_MainWindow(object):
 
         dict_vorschau['titlepage'] = get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum)
 
-        # if self.chosen_program=='lama' and control_counter == 0 and typ == 1:
-        #     header = "\\subsubsection{Typ 1 Aufgaben}\n\n"
+        if self.chosen_program=='lama' and (
+            self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
+            != "Grundkompetenzcheck"
+            or self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
+            != "Übungsblatt"
+        ):
+            header = "\\subsubsection{Typ 1 Aufgaben}\n\n"
+        else:
+            header = ""
 
-
-        # if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Grundkompetenzcheck":        
-
-        #     if ausgabetyp == "schularbeit" and maximum > 2:
-        #         gruppe = " -- " + dict_gruppen[int(index / 2)]
-        #     else:
-        #         gruppe = ""      
+    
 
         vorschau = open(filename_vorschau, "w+", encoding="utf8")
 
@@ -5712,6 +5755,7 @@ class Ui_MainWindow(object):
 
             "\\begin{{document}}\n"
             "{4}"
+            "{5}"
 
         .format(
         dict_vorschau['solution'],
@@ -5719,11 +5763,14 @@ class Ui_MainWindow(object):
         dict_vorschau['comment'],
         dict_vorschau['pagestyle'],
         dict_vorschau['titlepage'],
+        header
         ))
 
         vorschau.close()
 
 
+
+        first_typ2 = False
         for aufgabe in self.list_alle_aufgaben_sage:
 
             content = edit_content_vorschau(self, aufgabe, ausgabetyp)
@@ -5740,38 +5787,16 @@ class Ui_MainWindow(object):
                     '"',
                 )
                 return
-
-            if self.get_aufgabentyp(aufgabe) == 1:
-                gk = aufgabe.replace('_L_','')
-                grundkompetenz = "["+gk.split("-")[0].strip()+"]"
-            else:
-                grundkompetenz = ''
-
-            path_aufgabe = self.get_dateipfad_aufgabe(aufgabe)
-
-            spinbox_pkt = self.dict_alle_aufgaben_sage[aufgabe][0]
-
             
-
-            if "langesbeispiel" in split_content[0]:
-                split_content[0] = "\\newpage\n\n\\begin{{langesbeispiel}} \item[{0}] %PUNKTE DES BEISPIELS".format(spinbox_pkt)
-
-            elif "beispiel" in split_content[0]:
-
-                split_content[0] = "\\begin{{beispiel}}{0}{{{1}}} %PUNKTE DES BEISPIELS\n".format(grundkompetenz, spinbox_pkt) 
+            
+            print(self.get_aufgabentyp(aufgabe))
+            print(first_typ2)
 
 
-            spinbox_abstand = self.dict_alle_aufgaben_sage[aufgabe][1]
-            if spinbox_abstand != 0:
-                if spinbox_abstand == 99:
-                    split_content[2] = split_content[2] + "\\newpage \n\n"
-                else:
-                    split_content[2] = split_content[2] + "\\vspace{{{0}cm}} \n\n".format(spinbox_abstand)
 
-            with open(filename_vorschau, "a", encoding="utf8") as vorschau:
-                for all in split_content:
-                    vorschau.write(all)
-                vorschau.write("\n\n")
+
+            first_typ2 = self.add_content_to_tex_file(aufgabe, split_content, filename_vorschau, first_typ2)
+
 
 
         if (
@@ -5796,10 +5821,7 @@ class Ui_MainWindow(object):
                 
             
         with open(filename_vorschau, "a", encoding="utf8") as vorschau:
-            vorschau.write(
-                "\n\n"
-                "\end{document}"
-                )
+            vorschau.write("\n\n\end{document}")
 
 
         if ausgabetyp == "schularbeit":
