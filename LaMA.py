@@ -4170,6 +4170,7 @@ class Ui_MainWindow(object):
 
         groupbox_pkt = create_new_groupbox(new_groupbox, "Punkte")
         gridLayout_gB.addWidget(groupbox_pkt, 0, 1, 2, 1,QtCore.Qt.AlignRight)
+
         punkte=self.dict_alle_aufgaben_sage[aufgabe][0]
 
         horizontalLayout_groupbox_pkt = QtWidgets.QHBoxLayout(groupbox_pkt)
@@ -4304,9 +4305,19 @@ class Ui_MainWindow(object):
                     x = all.split(" - ")
                     titel = x[-2]
                     typ_info=self.get_number_ausgleichspunkte(aufgabe) # Ausgleichspunkte
-            punkte=0
+             
+            punkte = self.get_punkte_aufgabe(aufgabe)
 
         return [punkte, 0, titel, typ_info]
+
+    def get_punkte_aufgabe(self, aufgabe):
+        content = collect_content(self, aufgabe)
+        start = re.findall("begin{langesbeispiel}.*\\\item\[[0-9][0-9]?\]", content)
+        try:
+            return int(re.split("\[|\]", start[0])[1])
+        except IndexError:
+            return 0
+
 
     def get_dateipfad_from_filename(self, list_path, filename, klasse=None):
         if self.chosen_program == 'cria':
