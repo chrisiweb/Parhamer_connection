@@ -9,6 +9,7 @@ from config import (
     path_programm,
     logo_path,
     logo_cria_button_path,
+    is_empty,
 )
 from translate import _fromUtf8, _translate
 from create_new_widgets import (
@@ -416,7 +417,7 @@ class Ui_Dialog_ausgleichspunkte(object):
     def build_checkboxes_for_content(self):
         row = 1
         if self.combobox_edit.currentIndex() == 0:
-            # print(self.list_sage_ausgleichspunkte_chosen)
+            print(self.aufgabenstellung_split_text)
             for linetext in self.aufgabenstellung_split_text:
                 # if linetext.replace('ITEM','').startswith('%') or linetext.replace('ITEM','').startswith(' %'):
                 #     checkbox=None
@@ -449,13 +450,11 @@ class Ui_Dialog_ausgleichspunkte(object):
 
     def create_checkbox_ausgleich(self, linetext, row):
         checkbox_label = create_new_label(self.scrollAreaWidgetContents, "", True, True)
-
         if (
-            "GRAFIK" in linetext or linetext.replace("ITEM", "").isspace() == True
+            "GRAFIK" in linetext or is_empty(linetext.replace("ITEM", "").strip()) == True
         ) and self.combobox_edit.currentIndex() == 0:  #
             checkbox = None
         else:
-            # print(linetext)
             checkbox = create_new_checkbox(self.scrollAreaWidgetContents, "")
             checkbox.setSizePolicy(SizePolicy_fixed)
             self.gridLayout.addWidget(checkbox, row, 0, 1, 1, QtCore.Qt.AlignTop)
