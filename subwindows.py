@@ -1,6 +1,7 @@
 from PyQt5 import QtCore, QtWidgets, QtGui
 import os
 import shutil
+from string import ascii_lowercase
 from functools import partial
 from config import (
     config_loader,
@@ -417,20 +418,21 @@ class Ui_Dialog_ausgleichspunkte(object):
     def build_checkboxes_for_content(self):
         row = 1
         if self.combobox_edit.currentIndex() == 0:
-            print(self.aufgabenstellung_split_text)
+            # print(self.aufgabenstellung_split_text)
             for linetext in self.aufgabenstellung_split_text:
-                # if linetext.replace('ITEM','').startswith('%') or linetext.replace('ITEM','').startswith(' %'):
-                #     checkbox=None
-                # else:
-                checkbox, checkbox_label = self.create_checkbox_ausgleich(linetext, row)
-                if checkbox != None:
-                    self.dict_widget_variables_ausgleichspunkte[linetext] = checkbox
+                if ( "GRAFIK" in linetext or is_empty(linetext.replace("ITEM", "").strip()) == True
+                ) and self.combobox_edit.currentIndex() == 0:  #
+                    checkbox = None
+                else:
+                    checkbox, checkbox_label = self.create_checkbox_ausgleich(linetext, row)
+                    if checkbox != None:
+                        self.dict_widget_variables_ausgleichspunkte[linetext] = checkbox
 
-                row += 1
+                    row += 1
         elif self.combobox_edit.currentIndex() == 1:
+            item_number=0
             for linetext in self.hide_show_items_split_text:
-
-                checkbox, checkbox_label = self.create_checkbox_ausgleich(linetext, row)
+                checkbox, checkbox_label = self.create_checkbox_ausgleich(linetext, row, item_number)
                 if checkbox != None:
                     checkbox.clicked.connect(
                         partial(self.checkbox_clicked, checkbox, checkbox_label)
@@ -438,6 +440,8 @@ class Ui_Dialog_ausgleichspunkte(object):
                     self.dict_widget_variables_hide_show_items[linetext] = checkbox
 
                 row += 1
+                item_number +=1
+                
         self.gridLayout.addWidget(self.label_solution, row, 1, 1, 3, QtCore.Qt.AlignTop)
 
         self.gridLayout.setRowStretch(row, 1)
@@ -447,43 +451,41 @@ class Ui_Dialog_ausgleichspunkte(object):
             checkbox_label.setStyleSheet("color: black")
         else:
             checkbox_label.setStyleSheet("color: gray")
+            
 
-    def create_checkbox_ausgleich(self, linetext, row):
+    def create_checkbox_ausgleich(self, linetext, row, item_number=None):
         checkbox_label = create_new_label(self.scrollAreaWidgetContents, "", True, True)
-        if (
-            "GRAFIK" in linetext or is_empty(linetext.replace("ITEM", "").strip()) == True
-        ) and self.combobox_edit.currentIndex() == 0:  #
-            checkbox = None
-        else:
-            checkbox = create_new_checkbox(self.scrollAreaWidgetContents, "")
-            checkbox.setSizePolicy(SizePolicy_fixed)
-            self.gridLayout.addWidget(checkbox, row, 0, 1, 1, QtCore.Qt.AlignTop)
 
-            if "\\fbox{A}" in linetext:
-                linetext = linetext.replace("\\fbox{A}", "")
+        checkbox = create_new_checkbox(self.scrollAreaWidgetContents, "")
+        checkbox.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout.addWidget(checkbox, row, 0, 1, 1, QtCore.Qt.AlignTop)
 
-            # print(linetext)
-            if self.combobox_edit.currentIndex() == 0:
-                if linetext in self.list_sage_ausgleichspunkte_chosen:
-                    checkbox.setChecked(True)
-            if self.combobox_edit.currentIndex() == 1:
-                # print(self.list_sage_hide_show_items_chosen)
-                if linetext in self.list_sage_hide_show_items_chosen:
-                    checkbox.setChecked(False)
-                    checkbox_label.setStyleSheet("color: gray")
-                else:
-                    checkbox.setChecked(True)
+        if "\\fbox{A}" in linetext:
+            linetext = linetext.replace("\\fbox{A}", "")
 
-            checkbox_label.clicked.connect(
-                partial(self.checkbox_label_clicked, checkbox, checkbox_label)
-            )
+        # print(linetext)
+        if self.combobox_edit.currentIndex() == 0:
+            if linetext in self.list_sage_ausgleichspunkte_chosen:
+                checkbox.setChecked(True)
+        if self.combobox_edit.currentIndex() == 1:
+            # print(self.list_sage_hide_show_items_chosen)
+            if linetext in self.list_sage_hide_show_items_chosen:
+                checkbox.setChecked(False)
+                checkbox_label.setStyleSheet("color: gray")
+            else:
+                checkbox.setChecked(True)
 
-        checkbox_label.setText(
-            linetext.replace("ITEM", "")
-            .replace("SUBitem", "")
-            .replace("{", "")
-            .replace("}", "")
+        checkbox_label.clicked.connect(
+            partial(self.checkbox_label_clicked, checkbox, checkbox_label)
         )
+
+        
+        linetext = linetext.replace("ITEM", "").replace("SUBitem", "").replace("{", "").replace("}", "").strip()
+        if self.combobox_edit.currentIndex() == 1:
+            linetext = ascii_lowercase[item_number] + ')\n' + linetext
+
+        checkbox_label.setText(linetext)
+
         self.gridLayout.addWidget(checkbox_label, row, 1, 1, 2, QtCore.Qt.AlignTop)
         return checkbox, checkbox_label
 
