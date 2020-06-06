@@ -891,6 +891,7 @@ class Ui_MainWindow(object):
         self.comboBox_aufgabentyp_cr.setSizePolicy(SizePolicy_fixed)
         self.comboBox_aufgabentyp_cr.addItem(_fromUtf8(""))
         self.comboBox_aufgabentyp_cr.addItem(_fromUtf8(""))
+        # self.comboBox_aufgabentyp_cr.currentIndexChanged.connect(self.comboBox_aufgabentyp_cr_changed)
         self.gridLayout_3.addWidget(self.comboBox_aufgabentyp_cr, 0, 0, 1, 1)
         self.gridLayout.addWidget(self.groupBox_aufgabentyp, 0, 1, 1, 1)
         self.groupBox_aufgabentyp.setTitle(
@@ -2750,11 +2751,17 @@ class Ui_MainWindow(object):
     def cb_drafts_enabled(self):
         if self.cb_drafts.isChecked():
             warning_window(
-                "Entwürfe können Fehler enthalten, die das Programm zum Absturz bringen.",
+                "Entwürfe können Fehler enthalten, die das Programm zum Absturz bringen.\n"
                 "Speichern Sie gegebenenfalls eine erstellte Schularbeit vor der Suche!",
                 "Warnung - Here be dragons!",
             )
 
+
+    # def comboBox_aufgabentyp_cr_changed(self):
+    #     if self.comboBox_aufgabentyp_cr.currentIndex() == 0:
+    #         self.spinBox_punkte.setValue(1)
+    #     elif self.comboBox_aufgabentyp_cr.currentIndex() == 1:
+    #         self.spinBox_punkte.setValue(0)    
 
     def add_drafts_to_beispieldaten(self):
         drafts_path = os.path.join(path_programm, "Beispieleinreichung")
@@ -2789,7 +2796,7 @@ class Ui_MainWindow(object):
     def cb_drafts_sage_enabled(self):
         if self.cb_drafts_sage.isChecked()==True:
             warning_window(
-                "Entwürfe können Fehler enthalten, die das Programm zum Absturz bringen.",
+                "Entwürfe können Fehler enthalten, die das Programm zum Absturz bringen.\n"
                 "Speichern Sie gegebenenfalls eine erstellte Schularbeit vor dem Erstellen!",
                 "Warnung - Here be dragons!",
             )
