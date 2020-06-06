@@ -21,7 +21,7 @@ from create_new_widgets import (
     create_new_combobox,
     add_new_option,
 )
-
+from standard_dialog_windows import critical_window
 from waitingspinnerwidget import QtWaitingSpinner
 from predefined_size_policy import SizePolicy_fixed
 from work_with_content import prepare_content_for_hide_show_items
@@ -274,16 +274,19 @@ class Ui_Dialog_titlepage(object):
         for all in dict_titlepage.keys():
             if all == "logo_path":
                 if self.cb_titlepage_logo.isChecked() and dict_titlepage[all] == False:
-                    msg = QtWidgets.QMessageBox()
-                    msg.setIcon(QtWidgets.QMessageBox.Warning)
-                    msg.setWindowIcon(QtGui.QIcon(logo_path))
-                    msg.setText("Es wurde kein Logo ausgewählt")
-                    msg.setInformativeText(
-                        "Bitte geben Sie den Dateipfad des Logos an oder wählen Sie das Logo ab."
-                    )
-                    msg.setWindowTitle("Kein Logo ausgewählt")
-                    msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
-                    msg.exec_()
+                    critical_window(
+                        "Bitte geben Sie den Dateipfad eines Logos an oder wählen Sie das Logo auf der Titelseite ab.",
+                        titel="Kein Logo ausgewählt")
+                    # msg = QtWidgets.QMessageBox()
+                    # msg.setIcon(QtWidgets.QMessageBox.Warning)
+                    # msg.setWindowIcon(QtGui.QIcon(logo_path))
+                    # msg.setText("Es wurde kein Logo ausgewählt")
+                    # msg.setInformativeText(
+                    #     "Bitte geben Sie den Dateipfad des Logos an oder wählen Sie das Logo ab."
+                    # )
+                    # msg.setWindowTitle("Kein Logo ausgewählt")
+                    # msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+                    # msg.exec_()
                     return
                 continue
 

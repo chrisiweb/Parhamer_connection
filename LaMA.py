@@ -50,7 +50,7 @@ from list_of_widgets import (
     widgets_feedback_cria,    
     list_widgets
 )
-from subwindows import Ui_Dialog_choose_type, Ui_Dialog_titlepage, Ui_Dialog_ausgleichspunkte, Ui_Dialog_erstellen, Ui_Dialog_speichern
+from subwindows import Ui_Dialog_choose_type,Ui_Dialog_titlepage , Ui_Dialog_ausgleichspunkte, Ui_Dialog_erstellen, Ui_Dialog_speichern
 from translate import _fromUtf8, _translate
 from sort_items import natural_keys, sorted_gks
 from create_pdf import prepare_tex_for_pdf, create_pdf
@@ -4275,6 +4275,7 @@ class Ui_MainWindow(object):
         typ=self.get_aufgabentyp(aufgabe)
 
         if typ==None:
+            punkte = self.get_punkte_aufgabe(aufgabe)
             klasse, aufgabe=self.split_klasse_aufgabe(aufgabe)
             name=aufgabe + ".tex"
             for all in self.beispieldaten_dateipfad_cria:
@@ -4284,10 +4285,10 @@ class Ui_MainWindow(object):
                         info = self.split_section(all)
                         titel=info[2]
                         typ_info=info[3] # Aufgabenformat
-            punkte=0
+            
 
 
-        if typ==1:
+        elif typ==1:
             name = aufgabe + ".tex"
             for all in self.beispieldaten_dateipfad_1:
                 filename = os.path.basename(self.beispieldaten_dateipfad_1[all])
@@ -4481,7 +4482,6 @@ class Ui_MainWindow(object):
                     x = all.replace("\\fbox{A}", "")
                     list_sage_ausgleichspunkte_chosen.append(x)
 
-        # print(list_sage_ausgleichspunkte_chosen)
         if aufgabe in self.dict_sage_hide_show_items_chosen.keys():
             list_sage_hide_show_items_chosen = self.dict_sage_hide_show_items_chosen[aufgabe]
         else:
@@ -4831,12 +4831,17 @@ class Ui_MainWindow(object):
 
     def split_section(self, section):
         section = re.split(" - |{|}", section)
-
         info = [item.strip() for item in section]
         info.pop(0)
         info.pop(-1)
 
         return info
+
+    def delete_zeros_at_beginning(self, string):
+        while string.startswith("0"):
+            string = string[1:]
+        return string
+        
 
     def search_for_number(self, list_, line_entry, list_mode):
         for section in list_[:]:
@@ -4849,15 +4854,15 @@ class Ui_MainWindow(object):
                     combobox_at = self.comboBox_at_fb.currentText()
 
                 if combobox_at == "Typ 1":
-                    number = info[1]
+                    number = self.delete_zeros_at_beginning(info[1])
                 if combobox_at == "Typ 2":
-                    number = info[0]
+                    number = self.delete_zeros_at_beginning(info[0])
+
+                    
             elif self.chosen_program == 'cria':
-                number = info[2]
+                number = self.delete_zeros_at_beginning(info[2])
             if not number.startswith(line_entry):
                 list_.remove(section)
-            # else:
-            #     print(True)
 
         return list_
 
@@ -4910,7 +4915,8 @@ class Ui_MainWindow(object):
             if is_empty(combobox_gk_num)==True:
                 string = combobox_gk
             else:
-                string = combobox_gk + ' ' + combobox_gk_num
+                short_gk = shorten_gk(combobox_gk.lower() + combobox_gk_num)
+                string = dict_gk[short_gk]
 
             list_beispieldaten_sections = self.delete_item_with_string_from_list(string, list_beispieldaten_sections)
         return list_beispieldaten_sections
@@ -5016,7 +5022,6 @@ class Ui_MainWindow(object):
                 # print('lama feedback')
             elif self.chosen_program == 'cria':
                 line_entry = self.lineEdit_number_fb_cria.text()
-
 
 
         if is_empty(line_entry) == False:
