@@ -685,7 +685,7 @@ def open_pdf_file(folder_name, file_name):
     if sys.platform.startswith("linux"):
         subprocess.run(
             [
-                "sudo",
+                # "sudo",
                 "xdg-open",
                 "{0}.pdf".format(file_path),
             ]
