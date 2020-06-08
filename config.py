@@ -63,10 +63,6 @@ logo_path = os.path.join(
     path_programm, "_database", "_config", "icon", "LaMA_icon_logo.png"
 )
 
-logo_button_path = os.path.join(
-    path_programm, "_database", "_config", "icon", "LaMA_icon_logo_button.png"
-)
-
 logo_cria_path = os.path.join(
     path_programm, "_database", "_config", "icon", "LaMA_cria_icon_logo.png"
 )

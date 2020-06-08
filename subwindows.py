@@ -9,7 +9,6 @@ from config import (
     get_color,
     path_programm,
     logo_path,
-    logo_button_path,
     logo_cria_button_path,
     is_empty,
 )
