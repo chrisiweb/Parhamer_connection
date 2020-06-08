@@ -69,7 +69,7 @@ class Ui_Dialog_choose_type(object):
         self.btn_lama = QtWidgets.QPushButton()
         self.btn_lama.setObjectName(_fromUtf8("btn_lama"))
         # self.btn_lama.setText("LaMA (Oberstufe)")
-        self.btn_lama.setIcon(QtGui.QIcon(logo_button_path))
+        self.btn_lama.setIcon(QtGui.QIcon(logo_path))
         self.btn_lama.setIconSize(QtCore.QSize(120, 120))
         self.btn_lama.setShortcut("F2")
         self.btn_lama.setFixedSize(120, 120)
