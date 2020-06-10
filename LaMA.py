@@ -5650,7 +5650,7 @@ if __name__ == "__main__":
     screen_resolution = app.desktop().screenGeometry()
     screen_width, screen_height = screen_resolution.width(), screen_resolution.height()
 
-    MainWindow.setGeometry(30, 30, screen_width * 0.5, screen_height * 0.8)
+    MainWindow.setGeometry(30, 30, round(screen_width * 0.5), round(screen_height * 0.8))
     MainWindow.move(30, 30)
 
     ui = Ui_MainWindow()

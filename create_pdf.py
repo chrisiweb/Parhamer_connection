@@ -683,15 +683,14 @@ def build_pdf_file(folder_name, file_name, latex_output_file):
 def open_pdf_file(folder_name, file_name):
     file_path = os.path.join(folder_name, file_name)
     if sys.platform.startswith("linux"):
-        print(file_path)
-        os.system("xdg-open {0}.pdf".format(file_path))
-        # subprocess.run(
-        #     [
-        #         # "sudo",
-        #         "xdg-open",
-        #         "{0}.pdf".format(file_path),
-        #     ]
-        # )
+        # os.system("xdg-open {0}.pdf".format(file_path))
+        subprocess.run(
+            [
+                # "sudo",
+                "xdg-open",
+                "{0}.pdf".format(file_path),
+            ]
+        )
     elif sys.platform.startswith("darwin"):
         subprocess.run(
             ["open", "{0}.pdf".format(file_path),]
