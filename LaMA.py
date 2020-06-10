@@ -65,6 +65,7 @@ from prepare_content_vorschau import (
     copy_included_images,
     split_content_at_beispiel_umgebung
 )
+from convert_image_to_eps import convert_image_to_eps
  
 # from cria_commands import create_kapitel_cria
 
@@ -334,7 +335,7 @@ class Ui_MainWindow(object):
 
         self.menuDatei.addSeparator()
 
-        self.actionBild_konvertieren_jpg_eps = add_action(MainWindow,self.menuDatei, "Grafik konvertieren (jpg/png zu eps)", self.convert_imagetoeps)
+        self.actionBild_convert_image_eps = add_action(MainWindow,self.menuDatei, "Grafik konvertieren (jpg/png zu eps)", self.convert_image_eps_clicked)
 
         self.menuDatei.addSeparator()
 
@@ -2868,7 +2869,8 @@ class Ui_MainWindow(object):
 
         del self.dict_widget_variables[picture]
 
-    def convert_imagetoeps(self):
+    def convert_image_eps_clicked(self):
+        
         msg = QtWidgets.QMessageBox()
         # msg.setIcon(QtWidgets.QMessageBox.Question)
         msg.setWindowIcon(QtGui.QIcon(logo_path))
@@ -2893,48 +2895,52 @@ class Ui_MainWindow(object):
                 None,
                 "Select a folder:",
                 os.path.dirname(self.saved_file_path),
-                "Bilder (*.jpg; *.png)",
+                "Bilder (*.jpg; *.jpeg; *.jfif; *.png);; Alle Dateien (*.*)",
             )
             if filename[0] != []:
                 self.saved_file_path = filename[0][0]
-                for all in filename[0]:
-                    # print(all)
-                    name, ext = os.path.splitext(all)
-                    if ext.lower() == ".jpg" or ext.lower() == ".jpeg":
-                        output = str(name) + ".eps"
-                        # output=all.replace('jpg','eps')
-                        img = Image.open(str(all))
-                        img.save(output)
-                    elif ext.lower() == ".png":
-                        output = str(name) + ".eps"
-                        img = Image.open(str(all))
-                        img = img.convert("RGB")
-                        img.save(output)
-                    else:
-                        warning_window(
-                            "Die Datei konnte nicht konvertiert werden."
-                        )
-                        return
-                msg = QtWidgets.QMessageBox()
-                msg.setIcon(QtWidgets.QMessageBox.Information)
-                msg.setWindowIcon(QtGui.QIcon(logo_path))
-                if len(filename[0]) == 1:
-                    msg.setText(
-                        "Es wurde "
-                        + str(len(filename[0]))
-                        + " Datei erfolgreich konvertiert."
-                    )
-                else:
-                    msg.setText(
-                        "Es wurden "
-                        + str(len(filename[0]))
-                        + " Dateien erfolgreich konvertiert."
-                    )
+                for image in filename[0]:
+                    response = convert_image_to_eps(image)
+                    if response == True:
+                        if len(filename[0]) == 1:
+                            text = 'wurde {} Datei'.format(len(filename[0]))
+                        else:
+                            text = 'wurden {} Dateien'.format(len(filename[0]))
 
-                msg.setWindowTitle("Grafik(en) konvertieren")
-                msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
-                ret = msg.exec_()
-                return
+                        information_window(
+                            'Es {0} erfolgreich konvertiert.'.format(text),
+                            titel = 'Grafik(en) erfolgreich konvertiert',
+                            detailed_text= "Konvertierte Grafik(en):\n{}".format(', '.join(filename[0]))
+                        )
+                    else:
+                        critical_window(
+                            "Beim Konvertieren der Grafik(en) ist ein Fehler aufgetreten. (siehe Details)",
+                            titel = 'Fehler beim Konvertieren',
+                            detailed_text='Fehlermeldung:\n{0}: {1}'.format(type(response).__name__, response)
+                        )
+
+
+
+                # msg = QtWidgets.QMessageBox()
+                # msg.setIcon(QtWidgets.QMessageBox.Information)
+                # msg.setWindowIcon(QtGui.QIcon(logo_path))
+                # if len(filename[0]) == 1:
+                #     msg.setText(
+                #         "Es wurde "
+                #         + str(len(filename[0]))
+                #         + " Datei erfolgreich konvertiert."
+                #     )
+                # else:
+                #     msg.setText(
+                #         "Es wurden "
+                #         + str(len(filename[0]))
+                #         + " Dateien erfolgreich konvertiert."
+                #     )
+
+                # msg.setWindowTitle("Grafik(en) konvertieren")
+                # msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+                # ret = msg.exec_()
+                # return
 
     def chosen_aufgabenformat_cr(self):
         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
