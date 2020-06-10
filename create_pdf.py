@@ -683,6 +683,7 @@ def build_pdf_file(folder_name, file_name, latex_output_file):
 def open_pdf_file(folder_name, file_name):
     file_path = os.path.join(folder_name, file_name)
     if sys.platform.startswith("linux"):
+        print(file_path)
         subprocess.run(
             [
                 # "sudo",
