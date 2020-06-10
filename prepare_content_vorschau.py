@@ -134,7 +134,7 @@ def edit_content_vorschau(self, aufgabe, ausgabetyp):
             content = edit_content_hide_show_items(self, aufgabe, content)
 
     if ausgabetyp == "schularbeit" and is_empty(self.dict_all_infos_for_file["data_gesamt"]["copy_images"])==False:
-        edit_content_image_path(content)    
+        content = edit_content_image_path(content)    
 
     return content
 

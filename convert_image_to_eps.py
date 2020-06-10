@@ -31,4 +31,4 @@ def convert_image_to_eps(image):
         return e
 
 
-    ###https://stackoverflow.com/questions/47398291/saving-to-eps-not-supported-in-python-pillow
+    ### https://stackoverflow.com/questions/47398291/saving-to-eps-not-supported-in-python-pillow
