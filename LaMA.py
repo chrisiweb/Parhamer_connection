@@ -335,7 +335,7 @@ class Ui_MainWindow(object):
 
         self.menuDatei.addSeparator()
 
-        self.actionBild_convert_image_eps = add_action(MainWindow,self.menuDatei, "Grafik konvertieren (jpg/png zu eps)", self.convert_image_eps_clicked)
+        self.actionBild_convert_image_eps = add_action(MainWindow,self.menuDatei, "Grafik zu eps-Datei konvertieren", self.convert_image_eps_clicked)
 
         self.menuDatei.addSeparator()
 
@@ -2870,7 +2870,6 @@ class Ui_MainWindow(object):
         del self.dict_widget_variables[picture]
 
     def convert_image_eps_clicked(self):
-        
         msg = QtWidgets.QMessageBox()
         # msg.setIcon(QtWidgets.QMessageBox.Question)
         msg.setWindowIcon(QtGui.QIcon(logo_path))
@@ -2895,29 +2894,31 @@ class Ui_MainWindow(object):
                 None,
                 "Select a folder:",
                 os.path.dirname(self.saved_file_path),
-                "Bilder (*.jpg; *.jpeg; *.jfif; *.png);; Alle Dateien (*.*)",
+                "Bilder (*.jpg; *.jpeg; *.png; *.jfif);; Alle Dateien (*.*)",
             )
             if filename[0] != []:
                 self.saved_file_path = filename[0][0]
                 for image in filename[0]:
                     response = convert_image_to_eps(image)
-                    if response == True:
-                        if len(filename[0]) == 1:
-                            text = 'wurde {} Datei'.format(len(filename[0]))
-                        else:
-                            text = 'wurden {} Dateien'.format(len(filename[0]))
-
-                        information_window(
-                            'Es {0} erfolgreich konvertiert.'.format(text),
-                            titel = 'Grafik(en) erfolgreich konvertiert',
-                            detailed_text= "Konvertierte Grafik(en):\n{}".format(', '.join(filename[0]))
-                        )
+                    if response != True:
+                        break
+                if response == True:
+                    if len(filename[0]) == 1:
+                        text = 'wurde {} Datei'.format(len(filename[0]))
                     else:
-                        critical_window(
-                            "Beim Konvertieren der Grafik(en) ist ein Fehler aufgetreten. (siehe Details)",
-                            titel = 'Fehler beim Konvertieren',
-                            detailed_text='Fehlermeldung:\n{0}: {1}'.format(type(response).__name__, response)
-                        )
+                        text = 'wurden {} Dateien'.format(len(filename[0]))
+
+                    information_window(
+                        'Es {0} erfolgreich konvertiert.'.format(text),
+                        titel = 'Grafik(en) erfolgreich konvertiert',
+                        detailed_text= "Konvertierte Grafik(en):\n{}".format('\n'.join(filename[0]))
+                    )
+                else:
+                    critical_window(
+                        "Beim Konvertieren der folgenden Grafik ist ein Fehler aufgetreten:\n\n{}".format(image),
+                        titel = 'Fehler beim Konvertieren',
+                        detailed_text='Fehlermeldung:\n\n"{0}: {1}"'.format(type(response).__name__, response)
+                    )
 
 
 
