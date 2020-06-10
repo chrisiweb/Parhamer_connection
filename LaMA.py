@@ -2922,27 +2922,6 @@ class Ui_MainWindow(object):
 
 
 
-                # msg = QtWidgets.QMessageBox()
-                # msg.setIcon(QtWidgets.QMessageBox.Information)
-                # msg.setWindowIcon(QtGui.QIcon(logo_path))
-                # if len(filename[0]) == 1:
-                #     msg.setText(
-                #         "Es wurde "
-                #         + str(len(filename[0]))
-                #         + " Datei erfolgreich konvertiert."
-                #     )
-                # else:
-                #     msg.setText(
-                #         "Es wurden "
-                #         + str(len(filename[0]))
-                #         + " Dateien erfolgreich konvertiert."
-                #     )
-
-                # msg.setWindowTitle("Grafik(en) konvertieren")
-                # msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
-                # ret = msg.exec_()
-                # return
-
     def chosen_aufgabenformat_cr(self):
         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
             self.label_keine_auswahl.hide()
@@ -2952,13 +2931,6 @@ class Ui_MainWindow(object):
             self.comboBox_af.hide()
 
 
-     
-
-    # def check_entry_creator(self):
-    #     for all in lama_entry:
-    #         structure =self.is_empty(all)
-    #         if structure  == True:
-    #             return idx
 
     def get_number_of_included_images(self):
         num = self.plainTextEdit.toPlainText().count("\includegraphics")

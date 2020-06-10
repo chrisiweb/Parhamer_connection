@@ -1,10 +1,7 @@
 import os
 from PIL import Image
-from standard_dialog_windows import critical_window
 
 def remove_transparency(im, bg_color=(255, 255, 255)):
-    ### Taken from https://stackoverflow.com/a/35859141/7444782
-
     if im.mode in ('RGBA', 'LA') or (im.mode == 'P' and 'transparency' in im.info):
         alpha = im.convert('RGBA').split()[-1]
 
@@ -14,6 +11,8 @@ def remove_transparency(im, bg_color=(255, 255, 255)):
     else:
         return im
 
+    ### Taken from https://stackoverflow.com/a/35859141/7444782
+
 def convert_image_to_eps(image):
     name, ext = os.path.splitext(image)
 
@@ -21,8 +20,6 @@ def convert_image_to_eps(image):
         fig = Image.open(image)
 
         if fig.mode in ('RGBA', 'LA'):
-            # https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html?highlight=eps#eps
-            # print('Current figure mode "{}" cannot be directly saved to .eps and should be converted (e.g. to "RGB")'.format(fig.mode))
             fig = remove_transparency(fig)
             fig = fig.convert('RGB')
 
@@ -34,23 +31,4 @@ def convert_image_to_eps(image):
         return e
 
 
-        
-
-
-
     ###https://stackoverflow.com/questions/47398291/saving-to-eps-not-supported-in-python-pillow
-    # if ext.lower() == ".jpg" or ext.lower() == ".jpeg":
-    #     output = str(name) + ".eps"
-    #     # output=all.replace('jpg','eps')
-    #     img = Image.open(str(all))
-    #     img.save(output)
-    # elif ext.lower() == ".png":
-    #     output = str(name) + ".eps"
-    #     img = Image.open(str(all))
-    #     img = img.convert("RGB")
-    #     img.save(output)
-    # else:
-    #     warning_window(
-    #         "Die Datei konnte nicht konvertiert werden."
-    #     )
-    #     return
