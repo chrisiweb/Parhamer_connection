@@ -14,6 +14,7 @@ from refresh_ddb import refresh_ddb, modification_date
 from sort_items import natural_keys
 from standard_dialog_windows import question_window
 from subwindows import Ui_Dialog_processing
+import webbrowser
 
 
 ag_beschreibung = config_loader(config_file, "ag_beschreibung")
@@ -683,6 +684,8 @@ def build_pdf_file(folder_name, file_name, latex_output_file):
 def open_pdf_file(folder_name, file_name):
     file_path = os.path.join(folder_name, file_name)
     if sys.platform.startswith("linux"):
+        file_path = file_path + '.pdf'
+        webbrowser.open_new(file_path)
         # os.system("xdg-open {0}.pdf".format(file_path))
         subprocess.run(
             [
