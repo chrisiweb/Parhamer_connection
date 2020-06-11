@@ -409,7 +409,6 @@ def prepare_tex_for_pdf(self):
             self.combobox_searchtype.currentText()
             == "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten"
         ):
-            print(suchbegriffe)
             for item in suchbegriffe:
                 klasse = item[0].upper()
                 thema = item[1] + "." + item[2]

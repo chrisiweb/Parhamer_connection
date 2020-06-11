@@ -55,7 +55,7 @@ from translate import _fromUtf8, _translate
 from sort_items import natural_keys, sorted_gks
 from create_pdf import prepare_tex_for_pdf, create_pdf
 from refresh_ddb import modification_date, refresh_ddb, search_files
-from standard_dialog_windows import warning_window, question_window, critical_window, information_window
+from standard_dialog_windows import warning_window, question_window, critical_window, information_window, custom_window
 from predefined_size_policy import *
 from work_with_content import collect_content, split_aufgaben_content_new_format, split_aufgaben_content
 from build_titlepage import get_titlepage_vorschau
@@ -367,7 +367,9 @@ class Ui_MainWindow(object):
 
         self.actionFeedback = add_action(MainWindow,self.menuFeedback, "Feedback oder Fehler senden...", partial(self.update_gui, 'widgets_feedback'))
 
-        self.actionInfo = add_action(MainWindow,self.menuHelp, "Über LaMA", self.show_info)      
+        self.actionInfo = add_action(MainWindow,self.menuHelp, "Über LaMA", self.show_info)
+        self.actionSupport = add_action(MainWindow, self.menuHelp, "LaMA Unterstützen", self.show_support)
+
 
 
         self.menuBar.addAction(self.menuDatei.menuAction())
@@ -2606,23 +2608,48 @@ class Ui_MainWindow(object):
     def show_info(self):
         QtWidgets.QApplication.restoreOverrideCursor()
 
-        msg = QtWidgets.QMessageBox()
-
-        pixmap = QtGui.QPixmap(logo_path)
-
-        msg.setIconPixmap(pixmap.scaled(110, 110, QtCore.Qt.KeepAspectRatio))
-        msg.setWindowIcon(QtGui.QIcon(logo_path))
-        msg.setText(
+        custom_window(
             "LaMA - LaTeX Mathematik Assistent %s  \n\n"
             "Authors: Christoph Weberndorfer, Matthias Konzett\n\n"
-            "License: GNU General Public License v3.0  \n\n"
-            "Credits: David Fischer	" % __version__
+            "License: GNU General Public License v3.0  \n\n" % __version__,
+            "Credits: David Fischer\n"
+            "Logo & Icon: Lisa Schultz\n\n"
+            "E-Mail-Adresse: lama.helpme@gmail.com\n"
+            "Weiter Infos: lama.schule",
+            titel = "Über LaMA - LaTeX Mathematik Assistent",
         )
-        msg.setInformativeText("Logo & Icon: Lisa Schultz")
-        msg.setWindowTitle("Über LaMA - LaTeX Mathematik Assistent")
-        # msg.setDetailedText("The details are as follows:")
-        msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
-        msg.exec_()
+
+    def show_support(self):
+        QtWidgets.QApplication.restoreOverrideCursor()
+
+        custom_window(
+            "LaMA ist gratis und soll es auch bleiben!\n",
+            "Wir freuen uns dennoch sehr über eine Unterstützung für die Weiterntwicklung von LaMA.\n\n"
+            """ 
+            Name: Matthias Konzett
+            IBAN: AT57 1921 0200 9941 7002
+            BLZ: 19210 
+            """,            
+            titel = "LaMA unterstützen",
+        )        
+
+        # msg = QtWidgets.QMessageBox()
+
+        # pixmap = QtGui.QPixmap(logo_path)
+
+        # msg.setIconPixmap(pixmap.scaled(110, 110, QtCore.Qt.KeepAspectRatio))
+        # msg.setWindowIcon(QtGui.QIcon(logo_path))
+        # msg.setText(
+        #     "LaMA - LaTeX Mathematik Assistent %s  \n\n"
+        #     "Authors: Christoph Weberndorfer, Matthias Konzett\n\n"
+        #     "License: GNU General Public License v3.0  \n\n"
+        #     "Credits: David Fischer	" % __version__
+        # )
+        # msg.setInformativeText("Logo & Icon: Lisa Schultz")
+        # msg.setWindowTitle("Über LaMA - LaTeX Mathematik Assistent")
+        # # msg.setDetailedText("The details are as follows:")
+        # msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+        # msg.exec_()
 
     def refresh_label_update(self):
         try:

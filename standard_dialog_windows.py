@@ -54,3 +54,18 @@ def critical_window(text, informative_text="", titel="Fehlermeldung", detailed_t
     msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
     msg.exec_()
 
+def custom_window(text, informative_text="", titel="LaMA - LaTeX Mathematik Assistent", detailed_text="", logo=logo_path):
+    msg = QtWidgets.QMessageBox()
+
+    pixmap = QtGui.QPixmap(logo)
+
+    msg.setIconPixmap(pixmap.scaled(110, 110, QtCore.Qt.KeepAspectRatio))
+    msg.setWindowIcon(QtGui.QIcon(logo_path))
+    msg.setText(text)
+    msg.setInformativeText(informative_text)
+    msg.setWindowTitle(titel)
+    msg.setDetailedText(detailed_text)
+    msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+    msg.exec_()
+
+
