@@ -2112,54 +2112,66 @@ class Ui_MainWindow(object):
         update_check.append(__version__)
 
         if update_check[0] != update_check[1]:
-            msg = QtWidgets.QMessageBox()
-            msg.setIcon(QtWidgets.QMessageBox.Question)
-            msg.setWindowIcon(QtGui.QIcon(logo_path))
-            msg.setText("Es ist ein neues Update vorhanden.")
-            msg.setInformativeText("Möchten Sie das neue Update installieren?")
-            msg.setWindowTitle("Update vorhanden")
-            msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-            buttonY = msg.button(QtWidgets.QMessageBox.Yes)
-            buttonY.setText("Ja")
-            buttonN = msg.button(QtWidgets.QMessageBox.No)
-            buttonN.setText("Nein")
-            ret = msg.exec_()
-
-            if ret == QtWidgets.QMessageBox.Yes:
-                opened_file = os.path.basename(sys.argv[0])
-                name, extension = os.path.splitext(opened_file)
-                if sys.platform.startswith("darwin"):
-                    system_folder="update_mac"
-                elif sys.platform.startswith("linux"):
-                    system_folder="update_linux"
-                else:
-                    system_folder="update_windows"
-                filename_update = os.path.join(
-                    path_programm,
-                    "_database",
-                    "_config",
-                    "update",
-                    system_folder,
-                    "update%s" % extension,
+            if sys.platform.startswith("linux"):
+                information_window(
+                    "Es ist ein neues Update verfügbar.",
+                    "Es wird empfohlen die neueste Version von LaMA unter lama.schule/downloads herunterzuladen",
+                    titel= "Neue Version verfügbar"
                 )
+            else:
+                ret = question_window(
+                    "Es ist eine neue Version von LaMA ist verfügbar.",
+                    "Möchten Sie das neue Update jetzt installieren?",
+                    "Neue Version verfügbar",
+                )
+                # msg = QtWidgets.QMessageBox()
+                # msg.setIcon(QtWidgets.QMessageBox.Question)
+                # msg.setWindowIcon(QtGui.QIcon(logo_path))
+                # msg.setText("Es ist eine neue Version von LaMA verfügbar.")
+                # msg.setInformativeText("Möchten Sie das neue Update installieren?")
+                # msg.setWindowTitle("Neue Version verfügbar")
+                # msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+                # buttonY = msg.button(QtWidgets.QMessageBox.Yes)
+                # buttonY.setText("Ja")
+                # buttonN = msg.button(QtWidgets.QMessageBox.No)
+                # buttonN.setText("Nein")
+                # ret = msg.exec_()
 
-                try:
-                    if sys.platform.startswith("linux") or sys.platform.startswith(
-                        "darwin"
-                    ):
-                        if extension == ".py":
-                            os.system("python3 {}".format(filename_update))
-                        else:
-                            os.system("chmod 777 {}".format(filename_update))
-                            os.system(filename_update)
+                if ret == True:
+                    opened_file = os.path.basename(sys.argv[0])
+                    name, extension = os.path.splitext(opened_file)
+                    if sys.platform.startswith("darwin"):
+                        system_folder="update_mac"
+                    # elif sys.platform.startswith("linux"):
+                    #     system_folder="update_linux"
                     else:
-                        os.startfile(filename_update)
-                    sys.exit(0)
-                except Exception as e:
-                    warning_window(
-                        'Das neue Update von LaMA konnte leider nicht installiert werden! Bitte versuchen Sie es später erneut oder melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler".',
-                        'Fehler:\n"{}"'.format(e),
+                        system_folder="update_windows"
+                    filename_update = os.path.join(
+                        path_programm,
+                        "_database",
+                        "_config",
+                        "update",
+                        system_folder,
+                        "update%s" % extension,
                     )
+
+                    try:
+                        if sys.platform.startswith("linux") or sys.platform.startswith(
+                            "darwin"
+                        ):
+                            if extension == ".py":
+                                os.system("python3 {}".format(filename_update))
+                            else:
+                                os.system("chmod 777 {}".format(filename_update))
+                                os.system(filename_update)
+                        else:
+                            os.startfile(filename_update)
+                        sys.exit(0)
+                    except Exception as e:
+                        warning_window(
+                            'Das neue Update von LaMA konnte leider nicht installiert werden! Bitte versuchen Sie es später erneut oder melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler".',
+                            'Fehler:\n"{}"'.format(e),
+                        )
 
     def create_Tooltip(self, chosen_dict):
         for all in chosen_dict:
