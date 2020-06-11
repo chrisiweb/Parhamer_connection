@@ -685,7 +685,7 @@ def open_pdf_file(folder_name, file_name):
     file_path = os.path.join(folder_name, file_name)
     if sys.platform.startswith("linux"):
         file_path = file_path + '.pdf'
-        webbrowser.open_new(file_path)
+        webbrowser.open(file_path, new=2, autoraise=True)
         # os.system("xdg-open {0}.pdf".format(file_path))
         # subprocess.run(
         #     [
@@ -737,12 +737,22 @@ def loading_animation(process):
         idx += 1
         time.sleep(0.1)  
 
+def try_to_delete_file(file):
+    try:
+        os.unlink(file)
+    except FileNotFoundError:
+        pass
+
+
 def delete_unneeded_files(folder_name, file_name):
     file_path = os.path.join(folder_name, file_name)
-    os.unlink("{0}.aux".format(file_path))
-    os.unlink("{0}.log".format(file_path))
-    os.unlink("{0}.dvi".format(file_path))
-    os.unlink("{0}.ps".format(file_path))
+    
+    try_to_delete_file("{0}.aux".format(file_path))
+    try_to_delete_file("{0}.log".format(file_path))
+    try_to_delete_file("{0}.dvi".format(file_path))
+    try_to_delete_file("{0}.ps".format(file_path))
+
+
 
 def create_pdf(path_file, index, maximum, typ=0):
 
