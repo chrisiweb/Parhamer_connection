@@ -4,7 +4,7 @@
 __version__ = "v1.9.1"
 __lastupdate__ = "04/20"
 ####################
-
+#mac test
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QApplication
 import time
@@ -2935,18 +2935,12 @@ class Ui_MainWindow(object):
         return aufgabenformat
 
 
-
     def create_information_of_file_creator(self):
         aufgabentyp = self.create_information_aufgabentyp()
-
         titel = self.create_information_titel()
-
         titel_themen, themen = self.create_information_themen()
-
         aufgabenformat = self.create_information_aufgabenformat()
-
         bilder = self.create_information_bilder()
-
         quelle = self.lineEdit_quelle.text()
 
         return [aufgabentyp, titel, titel_themen, themen, aufgabenformat, quelle, bilder]
@@ -2990,10 +2984,10 @@ class Ui_MainWindow(object):
 
         return path
 
-    def get_parent_folder(self, typ_save, local_save):
+    def get_parent_folder(self, typ_save):
         list_path=[path_programm]
 
-        if local_save==True:
+        if self.local_save==True:
             list_path.append('Lokaler_Ordner')
         else:
             if typ_save==['admin', 1]:
@@ -3002,8 +2996,8 @@ class Ui_MainWindow(object):
                 list_path.append('_database')
         return list_path
 
-    def aufgabenpfad_bestimmen(self, typ_save, local_save):
-        list_path = self.get_parent_folder(typ_save, local_save)
+    def create_aufgabenpfad(self, typ_save):
+        list_path = self.get_parent_folder(typ_save)
 
         #### 
         if self.chosen_program == 'lama':
@@ -3017,9 +3011,8 @@ class Ui_MainWindow(object):
 
         #####
 
-        if self.chosen_program == 'lama' and local_save==False:
+        if self.chosen_program == 'lama' and self.local_save==False:
             if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-                print(self.list_selected_topics_creator[0])
                 _,klasse=self.split_thema_klasse(self.list_selected_topics_creator[0])
                 if klasse==None:
                     list_path.append('_Grundkompetenzen')
@@ -3028,12 +3021,12 @@ class Ui_MainWindow(object):
             elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
                 list_path.append('Einzelbeispiele')
 
-        elif self.chosen_program == 'cria' and local_save==False:
+        elif self.chosen_program == 'cria' and self.local_save==False:
             list_path.append('Einzelbeispiele')
 
         #####
 
-        if self.chosen_program == 'lama' and local_save==False:
+        if self.chosen_program == 'lama' and self.local_save==False:
             if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
                 thema, klasse=self.split_thema_klasse(self.list_selected_topics_creator[0])
                 if klasse==None:
@@ -3181,16 +3174,38 @@ class Ui_MainWindow(object):
                     'Bitte versichern Sie sich, dass der Dateiname korrekt geschrieben ist und Sie die richtige Grafik eingefügt haben.')
                     return
 
+    def create_file_name(self, max_integer_file):
+        number = max_integer_file+1
+
+        if self.chosen_program == 'cria':
+            name = "{0}.tex".format(number)  
+        elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+            thema, klasse = self.split_thema_klasse(self.list_selected_topics_creator[0])
+            if thema == None:
+                name = "{0} - {1}.tex".format(self.list_selected_topics_creator[0], number)
+            else:
+                name = "K{0} - {1} - {2}.tex".format(klasse, thema.upper(), number)
+        else:
+            name = "{0}.tex".format(number)
+        
+        if self.local_save==True:
+            name = "_L_"+name
+
+        return name
+        # print(typ_save)
+        # print(self.local_save)
+
+
     def button_speichern_pressed(self):
         # self.creator_mode = "user"
-        local_save = False
+        self.local_save = False
 
         ######## WARNINGS #####
 
-        # warning = self.check_entry_creator()
-        # if warning != None:
-        #     warning_window(warning)
-        #     return
+        warning = self.check_entry_creator()
+        if warning != None:
+            warning_window(warning)
+            return
 
         #######
 
@@ -3238,7 +3253,7 @@ class Ui_MainWindow(object):
         #         return
 
         if self.creator_mode == "user":
-            local_save = False
+            # local_save = False
 
             while typ_save == ['user', False] or typ_save == ['local', None]:
                 if typ_save == ['user', False]:
@@ -3246,11 +3261,11 @@ class Ui_MainWindow(object):
                         "Bitte bestätigen Sie die Eigenständigkeitserklärung und Lizenzvereinbarung."
                     )
                 elif typ_save == ['local', None]:
-                    local_save = question_window("Aufgabe lokal speichern?",
+                    self.local_save = question_window("Aufgabe lokal speichern?",
                     "Sind Sie sicher, dass Sie diese Aufgabe nur lokal speichern wollen?",
                     "ACHTUNG: Durch nicht überprüfte Aufgaben entstehen möglicherweise Fehler, die das Programm zum Absturz bringen können!",
                     )
-                    if local_save == True:
+                    if self.local_save == True:
                         break
               
                 response = Dialog_speichern.exec()
@@ -3260,21 +3275,14 @@ class Ui_MainWindow(object):
 
 
 
-        save_dateipfad = self.aufgabenpfad_bestimmen(typ_save, local_save)
+        save_dateipfad = self.create_aufgabenpfad(typ_save)
 
 
 
         max_integer_file = self.get_max_integer_file(typ_save, save_dateipfad)
 
 
-        ############################################################################
-
-        # head, tail = os.path.split('hippo.eps')
-        # string = "{" + tail + "}"
-
-        # new_image_name = self.edit_image_name(typ_save, max_integer_file, tail)
-        # print(new_image_name)
-        # return       
+        ############################################################################ 
 
         response = self.replace_image_name(typ_save, max_integer_file)
         if response[0] == False:
@@ -3283,82 +3291,10 @@ class Ui_MainWindow(object):
             return
         else:
             textBox_Entry = response[1]
-        # for all in dict_picture_path:
-        #     head, old_image_name = os.path.split(all)
-        #     string = "{" + old_image_name + "}"
-
-        #     new_image_name = self.edit_image_name(typ_save, max_integer_file, old_image_name)
-
-        #     if string in textBox_Entry:
-        #         textBox_Entry = textBox_Entry.replace(old_image_name, new_image_name)
-        #     else:
-        #         warning_window('Die Grafik mit dem Dateinamen "{}" konnte im Aufgabentext nicht gefunden werden.'.format(old_image_name),
-        #         'Bitte versichern Sie sich, dass der Dateiname korrekt geschrieben ist und Sie die richtige Grafik eingefügt haben.')
-        #         return
-
-            # name, ext =os.path.splitext(tail)
-            # if self.creator_mode == "admin" and self.cb_save.isChecked() == True:
-            #     str_image_path = "../_database_inoffiziell/Bilder/"
-            # elif self.creator_mode == "admin" and self.cb_save.isChecked() == False:
-            #     str_image_path = "../_database/Bilder/"
-            # elif local_save == True:
-            #     str_image_path = "../Lokaler_Ordner/Bilder/"
-            # else:
-            #     str_image_path = "../Beispieleinreichung/Bilder/"
-
-            # if self.chosen_program=='lama':    
-            #     if (
-            #         x in textBox_Entry
-            #         and self.comboBox_aufgabentyp_cr.currentText() == "Typ 1"
-            #     ):
-            #         textBox_Entry = str(textBox_Entry).replace(
-            #             tail,
-            #             str_image_path
-            #             + list_chosen_gk[0].upper()
-            #             + "_"
-            #             + str(max_integer_file + 1)
-            #             + "_"
-            #             + tail,
-            #         )
-            #     if (
-            #         x in textBox_Entry
-            #         and self.comboBox_aufgabentyp_cr.currentText() == "Typ 2"
-            #     ):
-            #         textBox_Entry = str(textBox_Entry).replace(
-            #             tail, str_image_path + str(max_integer_file + 1) + "_" + tail
-            #         )
-            # if self.chosen_program=='cria':
-            #     if x in textBox_Entry:
-                    
-            #         textBox_Entry = str(textBox_Entry).replace(
-            #             tail,
-            #             str_image_path
-            #             + klasse
-            #             + "_"
-            #             + str(max_integer_file + 1)
-            #             + "_"
-            #             + tail,
-            #         )
-
-        # copy_image_path=os.path.join(path_programm,'_database','Bilder') ### direct save
-
-        # if self.creator_mode == "admin" and typ_save==['admin', 0]:
-        #     copy_image_path = os.path.join(
-        #         path_programm, "_database", "Bilder"
-        #     )  ### direct save
-        # elif self.creator_mode == "admin" and typ_save==['admin', 1]:
-        #     copy_image_path = os.path.join(
-        #         path_programm, "_database_inoffiziell", "Bilder"
-        #     )  ### direct save
-        # elif local_save == True:
-        #     copy_image_path = os.path.join(path_programm, "Lokaler_Ordner", "Bilder")
-        # else:
-        #     copy_image_path = os.path.join(
-        #         path_programm, "Beispieleinreichung", "Bilder"
-        #     )  ### indirect save
 
 
-        list_path = self.get_parent_folder(typ_save, local_save)
+
+        list_path = self.get_parent_folder(typ_save)
         if typ_save[0]=='user':
             list_path[1]='Beispieleinreichung'
         list_path.append('Bilder')
@@ -3366,161 +3302,10 @@ class Ui_MainWindow(object):
 
         self.copy_image_save(typ_save, max_integer_file, parent_image_path)
 
+        file_name = self.create_file_name(max_integer_file)
 
 
-        return
-
-
-        # for all in list(dict_picture_path.values()):
-        #     image_path_temp = all
-        #     head, tail = os.path.split(image_path_temp)
-        #     copy_image_file_temp = os.path.join(copy_image_path, tail)
-        #     try:
-        #         shutil.copy(image_path_temp, copy_image_file_temp)
-        #     except FileNotFoundError:
-        #         try:
-        #             os.mkdir(copy_image_path)
-        #             shutil.copy(image_path_temp, copy_image_file_temp)
-        #         except FileNotFoundError:
-        #             msg = QtWidgets.QMessageBox()
-        #             msg.setWindowTitle("Fehlermeldung")
-        #             msg.setIcon(QtWidgets.QMessageBox.Critical)
-        #             msg.setWindowIcon(QtGui.QIcon(logo_path))
-        #             msg.setText(
-        #                 'Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und\nmuss zuerst für Sie freigegeben werden.'
-        #             )
-        #             msg.setInformativeText(
-        #                 "Derzeit können keine neuen Aufgaben eingegeben werden."
-        #             )
-        #             msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
-        #             retval = msg.exec_()
-        #             return
-
-        #     if self.chosen_program == 'lama':
-        #         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-        #             if self.creator_mode == "admin":
-        #                 if self.cb_save.isChecked() == False:
-        #                     x = os.rename(
-        #                         copy_image_file_temp,
-        #                         "%s/_database/Bilder/" % path_programm
-        #                         + list_chosen_gk[0].upper()
-        #                         + "_"
-        #                         + str(max_integer_file + 1)
-        #                         + "_"
-        #                         + tail,
-        #                     )  ### direct save
-        #                 if self.cb_save.isChecked() == True:
-        #                     x = os.rename(
-        #                         copy_image_file_temp,
-        #                         "%s/_database_inoffiziell/Bilder/" % path_programm
-        #                         + list_chosen_gk[0].upper()
-        #                         + "_"
-        #                         + str(max_integer_file + 1)
-        #                         + "_"
-        #                         + tail,
-        #                     )  ### direct save
-        #             else:
-        #                 if local_save == True:
-        #                     x = os.rename(
-        #                         copy_image_file_temp,
-        #                         "%s/Lokaler_Ordner/Bilder/" % path_programm
-        #                         + list_chosen_gk[0].upper()
-        #                         + "_"
-        #                         + str(max_integer_file + 1)
-        #                         + "_"
-        #                         + tail,
-        #                     )  ### indirect
-        #                 else:
-        #                     x = os.rename(
-        #                         copy_image_file_temp,
-        #                         "%s/Beispieleinreichung/Bilder/" % path_programm
-        #                         + list_chosen_gk[0].upper()
-        #                         + "_"
-        #                         + str(max_integer_file + 1)
-        #                         + "_"
-        #                         + tail,
-        #                     )  ### indirect
-
-        #         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
-        #             if self.creator_mode == "admin":
-        #                 if self.cb_save.isChecked() == False:
-        #                     x = os.rename(
-        #                         copy_image_file_temp,
-        #                         "%s/_database/Bilder/" % path_programm
-        #                         + str(max_integer_file + 1)
-        #                         + "_"
-        #                         + tail,
-        #                     )  ### direct save
-        #                 if self.cb_save.isChecked() == True:
-        #                     x = os.rename(
-        #                         copy_image_file_temp,
-        #                         "%s/_database_inoffiziell/Bilder/" % path_programm
-        #                         + str(max_integer_file + 1)
-        #                         + "_"
-        #                         + tail,
-        #                     )  ### direct save
-        #             else:
-        #                 if local_save == True:
-        #                     x = os.rename(
-        #                         copy_image_file_temp,
-        #                         "%s/Lokaler_Ordner/Bilder/" % path_programm
-        #                         + str(max_integer_file + 1)
-        #                         + "_"
-        #                         + tail,
-        #                     )  ### indirect
-        #                 else:
-        #                     x = os.rename(
-        #                         copy_image_file_temp,
-        #                         "%s/Beispieleinreichung/Bilder/" % path_programm
-        #                         + str(max_integer_file + 1)
-        #                         + "_"
-        #                         + tail,
-        #                     )  ### indirect save
-            
-        #     if self.chosen_program=='cria':
-        #         if self.creator_mode == "admin":
-        #             if self.cb_save.isChecked() == False:               
-        #                 x = os.rename(
-        #                     copy_image_file_temp,
-        #                     "%s/_database/Bilder/" % path_programm
-        #                     + klasse
-        #                     + "_"
-        #                     + str(max_integer_file + 1)
-        #                     + "_"
-        #                     + tail,
-        #                 )  ### direct official save
-        #             if self.cb_save.isChecked() == True:               
-        #                 x = os.rename(
-        #                     copy_image_file_temp,
-        #                     "%s/_database_inoffiziell/Bilder/" % path_programm
-        #                     + klasse
-        #                     + "_"
-        #                     + str(max_integer_file + 1)
-        #                     + "_"
-        #                     + tail,
-        #                 )  ### direct inofficial save
-        #         else:
-        #             if local_save == True:
-        #                 x = os.rename(
-        #                     copy_image_file_temp,
-        #                     "%s/Lokaler_Ordner/Bilder/" % path_programm
-        #                     + klasse
-        #                     + "_"
-        #                     + str(max_integer_file + 1)
-        #                     + "_"
-        #                     + tail,
-        #                 )  ### direct local
-        #             else:
-        #                 x = os.rename(
-        #                     copy_image_file_temp,
-        #                     "%s/Beispieleinreichung/Bilder/" % path_programm
-        #                     + klasse
-        #                     + "_"
-        #                     + str(max_integer_file + 1)
-        #                     + "_"
-        #                     + tail,
-        #                 )  ### indirect
-
+        #### ??? ###
         if self.chosen_program=='cria':
             themen_auswahl = []
 
@@ -3530,65 +3315,24 @@ class Ui_MainWindow(object):
                     themen_auswahl.append(thema)
 
             themen_auswahl_joined = ", ".join(sorted(themen_auswahl))
+        #####
 
-            if self.creator_mode == "admin":
-                if self.cb_save.isChecked() == False:
-                    file_name = os.path.join(
-                        path_programm,
-                        "_database",
-                        klasse,
-                        "Einzelbeispiele",
-                        str(max_integer_file + 1) + ".tex",
-                    )  ### direct official save
-                    file = open(file_name, "w", encoding="utf8")
-                if self.cb_save.isChecked() == True:
-                    file_name = os.path.join(
-                        path_programm,
-                        "_database_inoffiziell",
-                        klasse,
-                        "Einzelbeispiele",
-                        str(max_integer_file + 1) + ".tex",
-                    )  ### direct inofficial save
-                    file = open(file_name, "w", encoding="utf8")
-            else:
-                if local_save == True:
-                    file_name = os.path.join(
-                        path_programm,
-                        "Lokaler_Ordner",
-                        klasse,
-                        "_L_" + str(max_integer_file + 1) + ".tex",
-                    )  ### direct local save
-                else:
-                    file_name = os.path.join(
-                        path_programm,
-                        "Beispieleinreichung",
-                        klasse,
-                        str(max_integer_file + 1) + ".tex",
-                    )  ### indirect save
-
-                try:
-                    file = open(file_name, "w", encoding="utf8")
-                except FileNotFoundError:
-                    msg = QtWidgets.QMessageBox()
-                    msg.setWindowTitle("Fehlermeldung")
-                    msg.setIcon(QtWidgets.QMessageBox.Critical)
-                    msg.setWindowIcon(QtGui.QIcon(logo_path))
-                    msg.setText(
-                        'Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und\nmuss zuerst für Sie freigegeben werden.'
-                    )
-                    msg.setInformativeText(
-                        "Derzeit können keine neuen Aufgaben eingegeben werden."
-                    )
-                    msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
-                    msg.exec_()
-                    return
-
-            chosen_af_lang = self.comboBox_af.currentText()
-            chosen_af = list(dict_aufgabenformate.keys())[
-                list(dict_aufgabenformate.values()).index(chosen_af_lang)
-            ]
+        try:
+            file = open(file_name, "w", encoding="utf8")
+        except FileNotFoundError:
+            warning_window('Die Grafik mit dem Dateinamen "{}" konnte im Aufgabentext nicht gefunden werden.'.format(response[1]),
+            'Bitte versichern Sie sich, dass der Dateiname korrekt geschrieben ist und Sie die richtige Grafik eingefügt haben.')
+            return
 
 
+        chosen_af_lang = self.comboBox_af.currentText()
+        chosen_af = list(dict_aufgabenformate.keys())[
+            list(dict_aufgabenformate.values()).index(chosen_af_lang)
+        ]
+
+        
+        print(list_information)
+        return
 
 
         if " - " in edit_titel:
@@ -3599,7 +3343,7 @@ class Ui_MainWindow(object):
         else:
             quelle = self.lineEdit_quelle.text()
 
-        if local_save == True:
+        if self.local_save == True:
             local = "*Lokal* "
         else:
             local = ""
@@ -3632,7 +3376,7 @@ class Ui_MainWindow(object):
 
         if self.chosen_program=='lama':
             if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-                if self.creator_mode == "admin" or local_save == True:
+                if self.creator_mode == "admin" or self.local_save == True:
 
                     pass
                 else:
@@ -3654,7 +3398,7 @@ class Ui_MainWindow(object):
                         file_name_klasse = "K7"
                     elif list_chosen_gk[0] in k8_beschreibung:
                         file_name_klasse = "K8"
-                    if local_save == True:
+                    if self.local_save == True:
                         file_name = os.path.join(
                             "_L_" + gk_path_temp,
                             file_name_klasse
@@ -3727,7 +3471,7 @@ class Ui_MainWindow(object):
                     file.close()
 
                 else:
-                    if local_save == True:
+                    if self.local_save == True:
                         file_name = os.path.join(
                             gk_path_temp,
                             "_L_"
@@ -3866,7 +3610,7 @@ class Ui_MainWindow(object):
                             str(max_integer_file + 1) + ".tex",
                         )  ### direct save
                 else:
-                    if local_save == True:
+                    if self.local_save == True:
                         file_name = os.path.join(
                             path_programm,
                             "Lokaler_Ordner",
@@ -3997,7 +3741,7 @@ class Ui_MainWindow(object):
                 zusatz_info = " (Offiziell)"
             if self.cb_save.isChecked() == True:
                 zusatz_info = " (Inoffiziell)"
-        elif local_save == True:
+        elif self.local_save == True:
             zusatz_info = " (Lokaler Ordner)"
         else:
             zusatz_info = ""
@@ -4011,7 +3755,7 @@ class Ui_MainWindow(object):
             msg.setWindowTitle("Aufgabe erfolgreich gespeichert")
         msg.setWindowIcon(QtGui.QIcon(logo_path))
 
-        if local_save == True:
+        if self.local_save == True:
             msg.setText(
                 'Die Typ{0}-Aufgabe mit dem Titel\n\n"{1}"\n\nwurde lokal auf ihrem System gespeichert.'.format(
                     chosen_typ, edit_titel
