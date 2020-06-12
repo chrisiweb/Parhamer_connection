@@ -1,20 +1,20 @@
 \section{06 - MAT - WS 2.2, WS 3.1, WS 3.2 - Ärztliche Untersuchung an einer Schule - BIFIE Aufgabensammlung}
 
 \begin{langesbeispiel} \item[0] %PUNKTE DES BEISPIELS
-				Eine Schulärztin hat die Untersuchung der Oberstufenschüler/innen einer Schule abgeschlossen. Die Auswertung der Ergebnisse ist in den nachstehenden Abbildungen grafisch dargestellt.
+Eine Schulärztin hat die Untersuchung der Oberstufenschüler/innen einer Schule abgeschlossen. Die Auswertung der Ergebnisse ist in den nachstehenden Abbildungen grafisch dargestellt.
 				\leer
 				\begin{center}
 				\begin{tabular}{|c|c|} \hline
 				Mädchen&Burschen\\ \hline
 				\multicolumn{2}{|c|}{Körpergröße}\\
 				\multicolumn{1}{|c}{\resizebox{0.3\linewidth}{!}{\kreisdiagramm\begin{tikzpicture}
-				\tikzstyle{every node}=[font=\tiny]
+				\tikzstyle{every node}=[font=\footnotesize]
 				\pie[color={black!10 ,black!20 , black!30, black!40}, %Farbe
 				text=inside %Format: inside,pin, legend
 				]
 				{22/unter 150\,cm , 14/über 175\,cm , 64/150-175\,cm} %Werte
 				\end{tikzpicture}}}&\multicolumn{1}{c|}{\resizebox{0.3\linewidth}{!}{\kreisdiagramm\begin{tikzpicture}
-				\tikzstyle{every node}=[font=\tiny]
+				\tikzstyle{every node}=[font=\footnotesize]
 				\pie[color={black!10 ,black!20 , black!30, black!40}, %Farbe
 				text=inside %Format: inside,pin, legend
 				]
@@ -22,13 +22,13 @@
 				\end{tikzpicture}}}\\ \hline
 				\multicolumn{2}{|c|}{Gewicht}\\
 				\multicolumn{1}{|c}{\resizebox{0.3\linewidth}{!}{\kreisdiagramm\begin{tikzpicture}
-				\tikzstyle{every node}=[font=\tiny]
+				\tikzstyle{every node}=[font=\footnotesize]
 				\pie[color={black!10 ,black!20 , black!30, black!40}, %Farbe
 				text=inside %Format: inside,pin, legend
 				]
 				{28/Untergewicht , 11/Übergewicht, 61/Normalgewicht} %Werte
 				\end{tikzpicture}}}&\multicolumn{1}{c|}{\resizebox{0.3\linewidth}{!}{\kreisdiagramm\begin{tikzpicture}
-				\tikzstyle{every node}=[font=\tiny]
+				\tikzstyle{every node}=[font=\footnotesize]
 				\pie[color={black!10 ,black!20 , black!30, black!40}, %Farbe
 				text=inside %Format: inside,pin, legend
 				]
@@ -36,13 +36,13 @@
 				\end{tikzpicture}}}\\ \hline
 				\multicolumn{2}{|c|}{Rauchverhalten}\\
 				\multicolumn{1}{|c}{\resizebox{0.3\linewidth}{!}{\kreisdiagramm\begin{tikzpicture}
-				\tikzstyle{every node}=[font=\tiny]
+				\tikzstyle{every node}=[font=\footnotesize]
 				\pie[color={black!10 ,black!20 , black!30, black!40}, %Farbe
 				text=inside %Format: inside,pin, legend
 				]
 				{42/Raucherinnen, 58/Nichtraucherinnen} %Werte
 				\end{tikzpicture}}}&\multicolumn{1}{c|}{\resizebox{0.3\linewidth}{!}{\kreisdiagramm\begin{tikzpicture}
-				\tikzstyle{every node}=[font=\tiny]
+				\tikzstyle{every node}=[font=\footnotesize]
 				\pie[color={black!10 ,black!20 , black!30, black!40}, %Farbe
 				text=inside %Format: inside,pin, legend
 				]
@@ -60,57 +60,75 @@ Von den einzelnen Klassen wurde dabei folgende Schüleranzahl erfasst:
 				männlich&14&9&7&9&10&11&13&8\\ \hline \hline
 				gesamt&32&31&27&25&26&26&25&26\\ \hline
 				\end{tabular}
-				\end{center}
-				
-\subsection{Aufgabenstellung:}
-\begin{enumerate}
-	\item Geben Sie auf Basis der erhobenen Daten einen Term zur Berechnung der Wahscheinlichkeit für folgendes Ereignis an, wobei angenommen wird, dass die angegebenen Prozentsätze unabhängig von der Schulstufe sind: 
+				\end{center}%Aufgabentext
+
+\begin{aufgabenstellung}
+\item %Aufgabentext
+
+\Subitem{Gib auf Basis der erhobenen Daten einen Term zur Berechnung der Wahrscheinlichkeit für folgendes Ereignis an, wobei angenommen wird, dass die angegebenen Prozentsätze unabhängig von der Schulstufe sind: 
 \begin{center}
 "`In den 5. Klassen gibt es höchstens 2 Raucherinnen."'
-\end{center}
+\end{center}} %Unterpunkt1
+
 In dieser Schule wurden die Schüler/innen nicht nach Klassen geordnet untersucht, sondern jede/r entschied selbst, wann sie/er zur Schulärztin ging (zufällige Reihenfolge angenommen).
 
-Wie viele Schüler/innen musste die Schulärztin untersuchen, um mit absoluter Sicherheit mindestens eine Raucherin/einen Raucher aus den 5. Klassen zu finden, wenn sie weiß, dass es in den 5. Klassen mindestens eine/n davon gibt?
-	\item Auf Basis der oben angeführten Daten wurde für die Burschen eines Jahrgangs der folgende statistische Kennwert ermittelt:
+\Subitem{Wie viele Schüler/innen musste die Schulärztin untersuchen, um mit absoluter Sicherheit mindestens eine Raucherin/einen Raucher aus den 5. Klassen zu finden, wenn sie weiß, dass es in den 5. Klassen mindestens eine/n davon gibt?} %Unterpunkt2
+
+\item Auf Basis der oben angeführten Daten wurde für die Burschen eines Jahrgangs der folgende statistische Kennwert ermittelt:
 \begin{center}
 $\mu=n\cdot p=23\cdot 0,34=7,82$
-\end{center}
-Was drückt dieser Kennwert aus? Interpretieren Sie diesen Kennwert im gegebenen 
-Zusammenhang und nutzen Sie dabei sowohl die grafische Abbildung der Untersuchungsergebnisse als auch die tabellarische Übersicht über die Klassenschülerzahlen.
+\end{center} %Aufgabentext
 
-Ist der so errechnete Kennwert aussagekräftig? Begründen Sie Ihre Antwort!
-\end{enumerate}
+\Subitem{Was drückt dieser Kennwert aus? Interpretiere diesen Kennwert im gegebenen 
+Zusammenhang und nutzen Sie dabei sowohl die grafische Abbildung der Untersuchungsergebnisse als auch die tabellarische Übersicht über die Klassenschülerzahlen.} %Unterpunkt1
+\Subitem{Ist der so errechnete Kennwert aussagekräftig? Begründe deine Antwort.} %Unterpunkt2
 
-\antwort{\subsection{Lösungserwartung:}
-\begin{enumerate}
-	\item $X$ ... Anzahl der Raucherinnen aus allen 5. Klassen
+\end{aufgabenstellung}
+
+\begin{loesung}
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{$X$ ... Anzahl der Raucherinnen aus allen 5. Klassen
 	
 	$X$ ... Binomialverteilung mit $n=40,p=0,42$
 	
 	$P(X\leq2)=P(X=0)+P(X=1)+P(X=2)=$
 	
-	$=\binom{40}{0}\cdot 0,42^0\cdot 0,58^{40}+\binom{40}{1}\cdot 0,42^1\cdot 0,58^{39}+\binom{40}{2}\cdot 0,42^2\cdot 0,58^{38}$
+	$=\binom{40}{0}\cdot 0,42^0\cdot 0,58^{40}+\binom{40}{1}\cdot 0,42^1\cdot 0,58^{39}+\binom{40}{2}\cdot 0,42^2\cdot 0,58^{38}$} %Lösung von Unterpunkt1
+\Subitem{Da in der Angabe nur statistische Aussagen gemacht werden, aufgrund derer nicht mit Sicherheit behauptet werden kann, ob es mehr als eine Raucherin/einen Raucher in den 5. Klassen gibt, müssen alle Schüler/innen untersucht werden, um mit Sicherheit eine Raucherin/einen Raucher in der 5. Klasse zu finden.} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für einen korrekten Term.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die richtige Angabe der zu untersuchenden Schüler/innen.} %Lösungschlüssel von Unterpunkt2
+
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{In allen 5. Klassen zusammen gibt es 23 Burschen. Der Prozentsatz der Burschen mit einer Körpergröße von über 175 cm beträgt 34\,\%.
 	
-	Da in der Angabe nur statistische Aussagen gemacht werden, aufgrund 
-derer nicht mit Sicherheit behauptet werden kann, ob es mehr als eine
- Raucherin/einen Raucher in den 5. Klassen gibt, müssen alle Schüler/innen untersucht werden, um mit Sicherheit eine Raucherin/einen Raucher in der 5. Klasse zu finden.
-	\item In allen 5. Klassen zusammen gibt es 23 Burschen. Der Prozentsatz der Burschen mit einer Körpergröße von über 175 cm beträgt 34\,\%.
-	
-Somit drückt der berechnete Wert $\mu=n\cdot p=23\cdot 0,34=7,82$ die Anzahl der zu erwartenden Burschen in den 5. Klassen mit einer Körpergröße von über 175 cm aus.
+Somit drückt der berechnete Wert $\mu=n\cdot p=23\cdot 0,34=7,82$ die Anzahl der zu erwartenden Burschen in den 5. Klassen mit einer Körpergröße von über 175 cm aus.} %Lösung von Unterpunkt1
+\Subitem{Da die Daten für die gesamte Oberstufe ausgewertet sind und Schüler/innen während der Oberstufe noch wachsen, werden voraussichtlich weniger so große Schüler in den 5. Klassen zu finden sein. Somit ist der errechnete Erwartungswert nicht aussagekräftig bzw. sinnvoll.} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die korrekte Deutung des Kennwerts.
 
 Wesentlich für die Richtigkeit der Antwort sind:
 \subitem $\circ$ sinngemäße Formulierung für "`Erwartungswert"'
 \subitem $\circ$ Burschen aus 5. Klassen mit über 175 cm Körpergröße 
 
 Eine Rundung auf 8 ist in diesem Zusammenhang als falsch zu werten, da
- es sich bei $\mu$ nur um einen statistischen Kennwert und nicht um einen realen Ausgang eines Zufallsexperiments handelt.
-
-Da die Daten für die gesamte Oberstufe ausgewertet sind und Schüler/innen während der Oberstufe noch wachsen, werden voraussichtlich weniger so große Schüler in den 5. Klassen zu finden sein. Somit ist der errechnete Erwartungswert nicht aussagekräftig bzw. sinnvoll.
+ es sich bei $\mu$ nur um einen statistischen Kennwert und nicht um einen realen Ausgang eines Zufallsexperiments handelt.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für eine korrekte Begründung.
 
 Wesentlich für die Richtigkeit der Antwort ist die sinngemäße Darstellung einer der folgenden Interpretationen:
 \subitem $\circ$ Die unabhängige Wiederholung (im Sinne des Bernoulli-Experiments) ist nicht gegeben.
 \subitem $\circ$ Die verwendete Wahrscheinlichkeit (über 175 cm Körpergröße) bzw. relative Häufigkeit ist auf die beobachtete Eigenschaft (Bursch aus 5. Klassen) nicht anzuwenden.
 
-Die Burschen/Jugendlichen wachsen im Laufe der Oberstufe, daher ist die relative Häufigkeit auf diese Gruppe nur eingeschränkt übertragbar.
-\end{enumerate}}
+Die Burschen/Jugendlichen wachsen im Laufe der Oberstufe, daher ist die relative Häufigkeit auf diese Gruppe nur eingeschränkt übertragbar.} %Lösungschlüssel von Unterpunkt2
+
+\end{loesung}
+
 \end{langesbeispiel}

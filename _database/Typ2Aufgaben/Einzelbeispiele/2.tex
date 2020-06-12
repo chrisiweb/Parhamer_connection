@@ -3,25 +3,28 @@
 \begin{langesbeispiel} \item[0] %PUNKTE DES BEISPIELS
 Eine Universität führt für die angemeldeten Bewerber/innen einen Aufnahmetest durch. Dabei werden zehn Multiple-Choice-Fragen gestellt, wobei jede Frage vier Antwortmöglichkeiten hat.
 Nur eine davon ist richtig. Wer mindestens acht Fragen richtig beantwortet, wird sicher aufgenommen. Wer alle zehn Fragen richtig beantwortet, erhält zusätzlich ein Leistungsstipendium.
-Die Ersteller/innen dieses Tests geben die Wahrscheinlichkeit, bei zufälligem Ankreuzen aller Fragen aufgenommen zu werden, mit 0,04158\,\% an. Nimm an, dass Kandidat $K$ alle
-Antworten völlig zufällig ankreuzt.
+Die Ersteller/innen dieses Tests geben die Wahrscheinlichkeit, bei zufälligem Ankreuzen aller Fragen aufgenommen zu werden, mit $0,04158\,\%$ an. 
 
-\subsection{Aufgabenstellung:}
+Nimm an, dass Kandidat $K$ alle Antworten völlig zufällig ankreuzt.%Aufgabentext
 
-\begin{enumerate}
-	\item Nenne zwei Gründe, warum die Anzahl der richtig beantworteten Fragen unter den vorliegenden Angaben binomialverteilt ist! 
-	
-Gib einen möglichen Grund an, warum in der Realität das Modell der Binomialverteilung hier eigentlich nicht anwendbar ist!
-	
-	\item Geben Sie die Wahrscheinlichkeit an, dass Kandidat $K$ nicht aufgenommen wird! Berechnen Sie die Wahrscheinlichkeit, dass Kandidat $K$ ein Leistungsstipendium erhält!
-\end{enumerate}
+\begin{aufgabenstellung}
+\item %Aufgabentext
 
-\antwort{\subsection{Lösungserwartung:}
+\Subitem{Nenne zwei Gründe, warum die Anzahl der richtig beantworteten Fragen unter den vorliegenden Angaben binomialverteilt ist!} %Unterpunkt1
+\Subitem{Gib einen möglichen Grund an, warum in der Realität das Modell der Binomialverteilung hier eigentlich nicht anwendbar ist!} %Unterpunkt2
 
-\begin{enumerate}
-	\item Dieser Aufgabenteil ist durch sinngemäßes Angeben von mindestens zwei der vier angeführten Gründe richtig gelöst: \leer
-	
-Die Anzahl der richtig beantworteten Fragen ist unter den vorliegenden Angaben binomialverteilt, weil
+\item
+
+\Subitem{Gib die Wahrscheinlichkeit an, dass Kandidat $K$ nicht aufgenommen wird!}
+
+\Subitem{Berechne die Wahrscheinlichkeit, dass Kandidat $K$ ein Leistungsstipendium erhält!}
+
+\end{aufgabenstellung}
+
+\begin{loesung}
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{Die Anzahl der richtig beantworteten Fragen ist unter den vorliegenden Angaben binomialverteilt, weil
 
 \begin{itemize}
 	\item es nur die beiden Ausgänge "`richtig beantwortet"' und "`falsch beantwortet"' gibt
@@ -29,10 +32,8 @@ Die Anzahl der richtig beantworteten Fragen ist unter den vorliegenden Angaben b
 \item die Erfolgswahrscheinlichkeit dabei konstant bleibt
 \item es sich dabei um ein "`Bernoulli-Experiment"' handelt
 \end{itemize} 
-
-Der zweite Aufgabenteil ist korrekt gelöst, wenn ein Grund (sinngemäß) angeführt wird, z. B.: \leer
-
-\begin{itemize}
+} %Lösung von Unterpunkt1
+\Subitem{\begin{itemize}
 	\item Eine Bewerberin/ein Bewerber, die/der sich für ein Studium interessiert, wird sicher
 nicht beim Aufnahmetest zufällig ankreuzen.
 \item Sobald Kandidat $K$ auch nur eine Antwortmöglichkeit einer Frage ausschließen kann, wäre die Voraussetzung für die Binomialverteilung verletzt. Genau aus diesem Grund
@@ -41,23 +42,30 @@ wird die Universität mit zehn Multiple-Choice-Fragen nicht das Auslangen finden
 \item Die Unabhängigkeit der Wiederholung des Zufallsexperiments ist sicher dadurch verletzt, dass die einzelnen Kandidatinnen und Kandidaten aufgrund ihrer Vorbildung
 unterschiedliche Erfolgswahrscheinlichkeiten für die Beantwortung der einzelnen Fragen aufweisen. Somit kann unter diesen Voraussetzungen niemals von einer unabhängigen
 Wiederholung mit Zählen der Anzahl der Erfolge im Sinne eines Bernoulli-Experiments gesprochen werden.
-\end{itemize}
+\end{itemize}} %%Lösung von Unterpunkt2
 
-Es sind auch weitere eigenständige Lösungen denkbar. \leer
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt wenn sinngemäß mindestens zwei der vier angeführten Gründe genannt wurden. (Es sind auch weitere eigenständige Lösungen denkbar.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt wenn sinngemäß mindestens einer der beiden angeführten Gründe genannt wurden. (Es sind auch weitere eigenständige Lösungen denkbar.} %Lösungschlüssel von Unterpunkt2
 
-\item Für die Lösung ist keine Binomialverteilung nötig, da das gesuchte Ereignis das Gegenereignis zur "`Aufnahme"' darstellt. Somit beträgt die (von den Testautorinnen und Testautoren) angegebene Wahrscheinlichkeit:
+\item \subsection{Lösungserwartung:} 
 
-\[P(\text{Ablehnung})=1-P(\text{Aufnahme})=1-0,0004158=0,9995842\]
+\Subitem{Für die Lösung ist keine Binomialverteilung nötig, da das gesuchte Ereignis das Gegenereignis zur "`Aufnahme"' darstellt. Somit beträgt die (von den Testautorinnen und Testautoren) angegebene Wahrscheinlichkeit:
 
-Die Ablehnung des Kandidaten $K$ ist somit praktisch sicher.\leer
+$P(\text{Ablehnung})=1-P(\text{Aufnahme})=1-0,0004158=0,9995842$
 
-Auch hier ist keine Binomialverteilung nötig, da ein Zufallsexperiment mit einer Erfolgswahrscheinlichkeit
-von 0,25 zehnmal unabhängig wiederholt wird, wobei bei jeder Wiederholung ein "`Erfolg"' eintritt. \leer
+Die Ablehnung des Kandidaten $K$ ist somit praktisch sicher.} %Lösung von Unterpunkt1
+\Subitem{Auch hier ist keine Binomialverteilung nötig, da ein Zufallsexperiment mit einer Erfolgswahrscheinlichkeit von 0,25 zehnmal unabhängig wiederholt wird, wobei bei jeder Wiederholung ein "`Erfolg"' eintritt.
 
+Die Wahrscheinlichkeit beträgt somit $P(\text{Leistungsstipendium})=0,25^{10}\approx 0$.} %%Lösung von Unterpunkt2
 
-Die Wahrscheinlichkeit beträgt somit $P(\text{Leistungsstipendium})=0,25^{10}\approx 0$.
-\end{enumerate}
-}
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die richtige Wahrscheinlichkeit.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die richtige Wahrscheinlichkeit.} %Lösungschlüssel von Unterpunkt2
 
-				
+\end{loesung}
 \end{langesbeispiel}

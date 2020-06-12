@@ -1,24 +1,26 @@
 \section{05 - MAT - WS 2.2, WS 3.1, WS 3.3 - Mathematikschularbeiten - BIFIE Aufgabensammlung}
 
 \begin{langesbeispiel} \item[0] %PUNKTE DES BEISPIELS
-				Wenn in der Oberstufe in einem Semester höchstens zwei Mathematikschularbeiten vorgesehen sind, muss jede versäumte Schularbeit nachgeholt werden.
-				Ein Mathematiklehrer hat auf Basis seiner langjährigen Erfahrung die untenstehende Tabelle erstellt. Dabei beschreibt $h(n)$ die relative Häufigkeit, dass bei einer Schularbeit insgesamt $n$ Schüler/innen fehlen. 
-				\leer
+Wenn in der Oberstufe in einem Semester höchstens zwei Mathematikschularbeiten vorgesehen sind, muss jede versäumte Schularbeit nachgeholt werden.
+				Ein Mathematiklehrer hat auf Basis seiner langjährigen Erfahrung die untenstehende Tabelle erstellt. Dabei beschreibt $h(n)$ die relative Häufigkeit, dass bei einer Schularbeit insgesamt $n$ Schüler/innen fehlen.\vspace{0,3cm}
 				
 \begin{center}
 				\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|} \hline
 				$n$&0&1&2&3&4&5&6&7&>7\\ \hline
 				$h(n)$&0,15&0,15&0,2&0,3&0,1&0,05&0,03&0,02&0\\ \hline
 				\end{tabular}	
-\end{center}
-			
+\end{center}%Aufgabentext
 
-\subsection{Aufgabenstellung:}
-\begin{enumerate}
-	\item Gib an, mit wie vielen Fehlenden der Mathematiklehrer im Durchschnitt bei jeder Schularbeit rechnen muss!
+\begin{aufgabenstellung}
+\item %Aufgabentext
+
+\Subitem{Gib an, mit wie vielen Fehlenden der Mathematiklehrer im Durchschnitt bei jeder Schularbeit rechnen muss.} %Unterpunkt1
+\Subitem{Lässt sich aus dem errechneten Durchschnittswert mit Sicherheit behaupten, dass bei jeder Mathematikschularbeit mindestens eine Schülerin/ein Schüler fehlt? Begründe deine Antwort.} %Unterpunkt2
+
+\item %Aufgabentext
+
+\Subitem{Kreuze die beiden zutreffenden Aussagen an!
 	
-	Lässt sich aus dem errechneten Durchschnittswert mit Sicherheit behaupten, dass bei jeder Mathematikschularbeit mindestens eine Schülerin/ein Schüler fehlt? Begründe deine Antwort!
-	\item Kreuze die beiden zutreffenden Aussagen an!
 	\multiplechoice[5]{  %Anzahl der Antwortmoeglichkeiten, Standard: 5
 					L1={Es kann nie passieren, dass acht Schüler/innen bei einer Schularbeit fehlen.},   %1. Antwortmoeglichkeit 
 					L2={Die Wahrscheinlichkeit, dass bei einer Mathematikschularbeit niemand fehlt, ist gleich groß wie die Wahrscheinlichkeit, dass eine Schülerin/ein Schüler fehlt.},   %2. Antwortmoeglichkeit
@@ -35,25 +37,39 @@
 					A3=0,  % 3. Antwort
 					A4=0,  % 4. Antwort
 					A5=0,  % 5. Antwort
-					}
+					}} %Unterpunkt1
 					
-					
-					In einer bestimmten Klasse werden im kommenden Schuljahr vier Schularbeiten (zwei pro Semester) geschrieben.
-					
-					Gib einen Term an, mit dem die Wahrscheinlichkeitsverteilung für die Anzahl der Mathematikschularbeiten dieser Klasse, die aufgrund fehlender SchülerInnen nachgeholt werden müssen, berechnet werden kann!
-					
-					$P(X=k)=$ \antwort[\rule{3cm}{0.3pt}]{$\Vek{4}{k}{}\cdot 0,85^k\cdot 0,15^{4-k}$} mit $k=$ \antwort[\rule{3cm}{0.3pt}]{0,1,2,...,4}
-\end{enumerate}
+In einer bestimmten Klasse werden im kommenden Schuljahr vier Schularbeiten (zwei pro Semester) geschrieben.
 
-\antwort{\subsection{Lösungserwartung:}
-\begin{enumerate}
-	\item Im Durchschnitt muss der Mathematiklehrer mit 2,42 Fehlenden rechnen.
-	
-	Eine auf ganze Zahlen gerundete Antwort ist nicht korrekt, da der Erwartungswert nur statistische Aussagekraft hat und somit die Rundung die Aussage verändert.
-	
-	Daraus lässt sich aber nicht mit Sicherheit behaupten, dass bei jeder Mathematikschularbeit jemand fehlt, da es sich dabei um eine statistische Kenngröße handelt, die keine konkrete Aussage über die einzelne Schularbeit erlaubt.
-	
-	Eine Schülerantwort, die darauf abzielt, dass es entsprechend der empirischen Häufigkeitsverteilung mit $15\,\%$iger Häufigkeit zu keinem Fehlen kommt, ist als nicht korrekt zu bewerten, da in der Aufgabenstellung verlangt wird, den Erwartungswert zu interpretieren.
-	\item siehe oben.
-\end{enumerate}}
+\Subitem{Gib einen Term an, mit dem die Wahrscheinlichkeitsverteilung für die Anzahl der Mathematikschularbeiten dieser Klasse, die aufgrund fehlender SchülerInnen nachgeholt werden müssen, berechnet werden kann!
+					
+					$P(X=k)=$ \antwort[\rule{3cm}{0.3pt}]{$\Vek{4}{k}{}\cdot 0,85^k\cdot 0,15^{4-k}$} mit $k=$ \antwort[\rule{3cm}{0.3pt}]{0,1,2,...,4}} %Unterpunkt2
+
+\end{aufgabenstellung}
+
+\begin{loesung}
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{Im Durchschnitt muss der Mathematiklehrer mit 2,42 Fehlenden rechnen.} %Lösung von Unterpunkt1
+\Subitem{Daraus lässt sich nicht mit Sicherheit behaupten, dass bei jeder Mathematikschularbeit jemand fehlt, da es sich dabei um eine statistische Kenngröße handelt, die keine konkrete Aussage über die einzelne Schularbeit erlaubt.} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die korrekte Angabe der zu erwartenden Anzahl. Eine auf ganze Zahlen gerundete Antwort ist nicht korrekt, da der Erwartungswert nur statistische Aussagekraft hat und somit die Rundung die Aussage verändert.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für eine korrekte Begründung. Eine Schülerantwort, die darauf abzielt, dass es entsprechend der empirischen Häufigkeitsverteilung mit $15\,\%$iger Häufigkeit zu keinem Fehlen kommt, ist als nicht korrekt zu bewerten, da in der Aufgabenstellung verlangt wird, den Erwartungswert zu interpretieren.} %Lösungschlüssel von Unterpunkt2
+
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{Richtigen MC-Antworten: 2,4} %Lösung von Unterpunkt1
+\Subitem{$P(X=k)=\Vek{4}{k}{}\cdot 0,85^k\cdot 0,15^{4-k}$ mit $k=0,1,2,...,4$} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die richtigen MC-Antworten.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für den richtigen Term.} %Lösungschlüssel von Unterpunkt2
+
+\end{loesung}
+
 \end{langesbeispiel}

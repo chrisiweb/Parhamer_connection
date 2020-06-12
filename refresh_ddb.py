@@ -4,9 +4,11 @@ import os
 import datetime
 from datetime import date
 import json
+from functools import partial
 from config import config_file, config_loader, logo_path, path_programm
 from translate import _fromUtf8, _translate
 from sort_items import natural_keys
+from subwindows import Ui_Dialog_processing
 
 
 list_klassen = config_loader(config_file, "list_klassen")
@@ -66,18 +68,8 @@ def save_log_file(self, log_file, beispieldaten_dateipfad):
         )
     )
 
-def refresh_ddb(self, selected_program=False):
-    if selected_program==False:
-        selected_program=self.chosen_program
-    msg = QtWidgets.QMessageBox()
-    msg.setWindowIcon(QtGui.QIcon(logo_path))
-    msg.setWindowTitle("Refresh Database")
-    msg.setStandardButtons(QtWidgets.QMessageBox.NoButton)
-    msg.setText("Datenbank wird aktualisiert. Bitte warten...")
 
-    msg.show()
-    QApplication.processEvents()
-    QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+def collect_all_exisiting_files(self, selected_program):
     if selected_program == 'lama':
         for selected_aufgabentyp in [1, 2]:
             beispieldaten_dateipfad = {}
@@ -129,7 +121,63 @@ def refresh_ddb(self, selected_program=False):
 
         save_log_file(self, log_file, beispieldaten_dateipfad)
 
+
+
+
+class Worker_RefreshDDB(QtCore.QObject):
+    finished = QtCore.pyqtSignal()
+
+    @QtCore.pyqtSlot()
+    def task(self,Ui_Mainwindow, selected_program):
+        collect_all_exisiting_files(Ui_Mainwindow, selected_program)
+        # process = build_pdf_file(folder_name, file_name, latex_output_file)
+        # process.poll()
+        # latex_output_file.close()
+
+        # loading_animation(process)
+
+        # process.wait()
+
+        self.finished.emit()
+
+
+
+def refresh_ddb(self, selected_program=False):
+    if selected_program==False:
+        selected_program=self.chosen_program
+
+    QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+
+
+    # msg = QtWidgets.QMessageBox()
+    # msg.setWindowIcon(QtGui.QIcon(logo_path))
+    # msg.setWindowTitle("Refresh Database")
+    # msg.setStandardButtons(QtWidgets.QMessageBox.NoButton)
+    # msg.setText("Datenbank wird aktualisiert. Bitte warten...")
+
+    # msg.show()
+    # QApplication.processEvents()
+
+    text="Datenbank wird aktualisiert. Bitte warten..."
+    Dialog = QtWidgets.QDialog()
+    ui = Ui_Dialog_processing()
+    ui.setupUi(Dialog, text)
+
+
+    thread = QtCore.QThread(Dialog)
+    worker = Worker_RefreshDDB()
+    worker.finished.connect(Dialog.close)
+    worker.moveToThread(thread)
+    thread.started.connect(partial(worker.task, self, selected_program))
+    thread.start()
+    thread.exit()
+    Dialog.exec()
+
+    
+
+
     QtWidgets.QApplication.restoreOverrideCursor()
     self.adapt_choosing_list("sage")
+    # bring_to_front(QMainWindow())
     # self.adapt_choosing_list("feedback")
-    msg.close()
+    # msg.close()

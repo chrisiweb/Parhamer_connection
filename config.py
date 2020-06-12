@@ -23,7 +23,11 @@ colors_ui = {
 'blue_7' : QtGui.QColor(47, 69, 80),
 'red'    : QtGui.QColor(195, 58, 63),
 }
-  
+
+def get_color(color):
+    color= "rgb({0}, {1}, {2})".format(color.red(), color.green(), color.blue())
+    return color
+
 
 def config_loader(pathToFile, parameter):
     for i in range(5):
@@ -77,3 +81,19 @@ class ClickLabel(QtWidgets.QLabel):
     def mousePressEvent(self, event):
         self.clicked.emit()
         QtWidgets.QLabel.mousePressEvent(self, event)
+
+def bring_to_front(window):
+    window.setWindowFlags(window.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
+    window.show()
+    window.setWindowFlags(window.windowFlags() & ~QtCore.Qt.WindowStaysOnTopHint)
+    window.show() 
+
+def is_empty(structure):
+    if structure:
+        return False
+    else:
+        return True 
+
+def shorten_gk(gk):
+    gk = gk.lower().replace(' ','').replace('.','').replace('-l','')
+    return gk
