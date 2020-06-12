@@ -4,7 +4,7 @@
 __version__ = "v1.9.1"
 __lastupdate__ = "04/20"
 ####################
-
+#mac test
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QApplication
 import time
