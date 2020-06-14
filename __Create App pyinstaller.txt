@@ -1,0 +1,12 @@
+Create App for Mac
+
+1) Install Python3, pip3 (already installed?), pyinstaller
+2) get py file working
+3) goto Path in terminal an enter: 
+
+	pyinstaller -F LaMA.py
+(probably error, because of tkinter, which is not used), then:
+	
+	pyinstaller -F LaMA.py --exclude-module tkinter
+
+	
