@@ -10,7 +10,7 @@ jobs:
       max-parallel: 4
       matrix:
         python-version: [3.7]
-        os: [macOS-10.14] #ubuntu-latest, windows-latest, macOS-latest
+        os: [macOS-10.13] #ubuntu-latest, windows-latest, macOS-latest
 
     steps:
     - uses: actions/checkout@v1
@@ -20,15 +20,15 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        python -m pip3 install --upgrade pip3
-        pip3 install pyinstaller
-        pip3 install pyqt5
-        pip3 install pyyaml
-        pip3 install pillow
+        python -m pip install --upgrade pip
+        pip install pyinstaller
+        pip install pyqt5
+        pip install pyyaml
+        pip install pillow
     - name: Build with pyinstaller
       if: matrix.os != 'windows-latest'
       run: |  
-        pyinstaller -F LaMA.py        
+        pyinstaller -F -i icon_lama.icns LaMA.py        
     - name: Build with pyinstaller Windows
       if: matrix.os == 'windows-latest'
       run: |  
