@@ -2115,7 +2115,7 @@ class Ui_MainWindow(object):
             if sys.platform.startswith("linux"):
                 information_window(
                     "Es ist ein neues Update verfügbar.",
-                    "Es wird empfohlen die neueste Version von LaMA unter lama.schule/downloads herunterzuladen",
+                    "Es wird empfohlen die neueste Version von LaMA unter lama.schule/downloads herunterzuladen und damit die alte Version zu ersetzen.",
                     titel= "Neue Version verfügbar"
                 )
             else:
