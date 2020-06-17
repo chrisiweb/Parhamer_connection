@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__ = "v1.9.1"
-__lastupdate__ = "04/20"
+__version__ = "v2.0.0"
+__lastupdate__ = "06/20"
 ####################
 
 from PyQt5 import QtCore, QtWidgets, QtGui
@@ -23,7 +23,6 @@ from functools import partial
 import yaml
 from PIL import Image  ## pillow
 import smtplib
-# import qdarkstyle
 
 
 from config import (colors_ui, 
@@ -231,13 +230,9 @@ class Ui_MainWindow(object):
         )
         self.ui = Ui_Dialog_choose_type()
         self.ui.setupUi(self.Dialog)
-        # self.Dialog.setWindowState(QtCore.Qt.WindowActive)
-        # self.Dialog.isActiveWindow()
+
         bring_to_front(self.Dialog)
-        # self.Dialog.setWindowFlags(self.Dialog.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
-        # self.Dialog.show()
-        # self.Dialog.setWindowFlags(self.Dialog.windowFlags() & ~QtCore.Qt.WindowStaysOnTopHint)
-        # self.Dialog.show()        
+       
         self.Dialog.setFixedSize(self.Dialog.size())
         rsp=self.Dialog.exec_()
 
