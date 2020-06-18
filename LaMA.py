@@ -343,10 +343,10 @@ class Ui_MainWindow(object):
         self.actionExit = add_action(MainWindow,self.menuDatei, "Exit", self.close_app)
 
 
-        self.actionAufgaben_Typ1 = add_action(MainWindow,self.menuDateityp, "Typ1 Aufgaben", self.chosen_aufgabenformat_typ1)
+        self.actionAufgaben_Typ1 = add_action(MainWindow,self.menuDateityp, "Typ1 Aufgaben", self.chosen_aufgabenformat_typ)
         self.actionAufgaben_Typ1.setShortcut("Ctrl+1")
 
-        self.actionAufgaben_Typ2 = add_action(MainWindow,self.menuDateityp, "Typ2 Aufgaben", self.chosen_aufgabenformat_typ2)
+        self.actionAufgaben_Typ2 = add_action(MainWindow,self.menuDateityp, "Typ2 Aufgaben", self.chosen_aufgabenformat_typ)
         self.actionAufgaben_Typ2.setShortcut("Ctrl+2") 
 
         self.actionSuche = add_action(MainWindow,self.menuSuche, "Aufgaben suchen...", partial(self.update_gui, 'widgets_search'))
@@ -2675,21 +2675,30 @@ class Ui_MainWindow(object):
                 _translate("MainWindow", "Letztes Update: ---", None)
             )
 
-    def chosen_aufgabenformat_typ1(self):
-        self.label_aufgabentyp.setText(
-            _translate("MainWindow", "Aufgabentyp: Typ 1", None)
-        )
-        self.groupBox_af.show()
-        self.combobox_searchtype.hide()
-        self.refresh_label_update()
+    def chosen_aufgabenformat_typ(self):
+        chosen_type= self.label_aufgabentyp.text()[-1]
+        if chosen_type == str(2):
+            self.label_aufgabentyp.setText(
+                _translate("MainWindow", "Aufgabentyp: Typ 1", None)
+            )
+            self.groupBox_af.show()
+            self.combobox_searchtype.hide()
+            self.refresh_label_update()
+        elif chosen_type == str(1):
+            self.label_aufgabentyp.setText(
+                _translate("MainWindow", "Aufgabentyp: Typ 2", None)
+            )
+            self.groupBox_af.hide()
+            self.combobox_searchtype.show()
+            self.refresh_label_update()
 
-    def chosen_aufgabenformat_typ2(self):
-        self.label_aufgabentyp.setText(
-            _translate("MainWindow", "Aufgabentyp: Typ 2", None)
-        )
-        self.groupBox_af.hide()
-        self.combobox_searchtype.show()
-        self.refresh_label_update()
+    # def chosen_aufgabenformat_typ2(self):
+    #     self.label_aufgabentyp.setText(
+    #         _translate("MainWindow", "Aufgabentyp: Typ 2", None)
+    #     )
+    #     self.groupBox_af.hide()
+    #     self.combobox_searchtype.show()
+    #     self.refresh_label_update()
 
 
 
@@ -5641,6 +5650,17 @@ class Ui_MainWindow(object):
             else:
                 exec("self.%s.show()" % all)
 
+        if chosen_gui == widgets_search:
+            if self.label_aufgabentyp.text()[-1] == str(1):
+                self.combobox_searchtype.hide()
+        # if chosen_type == str(2):
+        #     self.label_aufgabentyp.setText(
+        #         _translate("MainWindow", "Aufgabentyp: Typ 1", None)
+        #     )
+        #     self.groupBox_af.show()
+        #     self.combobox_searchtype.hide()
+        #     self.refresh_label_update()
+        #     self.chosen_aufgabenformat_typ()
         if chosen_gui==widgets_sage or chosen_gui==widgets_sage_cria:
             MainWindow.setTabOrder(self.spinBox_nummer, self.dateEdit)
             MainWindow.setTabOrder(self.dateEdit, self.lineEdit_klasse)
