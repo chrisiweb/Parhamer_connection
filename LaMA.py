@@ -2631,7 +2631,7 @@ class Ui_MainWindow(object):
 
         custom_window(
             "LaMA ist gratis und soll es auch bleiben!\n",
-            "Wir freuen uns dennoch sehr über eine Unterstützung für die Weiterntwicklung von LaMA.\n\n"
+            "Wir freuen uns dennoch sehr über eine Unterstützung für die Weiterentwicklung von LaMA.\n\n"
             """ 
             Name: Matthias Konzett
             IBAN: AT57 1921 0200 9941 7002
