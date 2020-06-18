@@ -1,6 +1,18 @@
+v2.0.0
+ - merge LaMA and LaMA Cria to one program
+ - change GUI and color scheme
+ - change Loading window
+
+v1.9.1
+ - Bug fix: Errors when files with images saved directly 
+
+v1.9.0
+  - New: Drafts can be searched and included in tests
+  - New: Files can be saved locally and used
+  - Bug fix
+
 v1.8.6
   - Bug fix: Edit maximum size for SAGE widgets for small screens
-
 
 v1.8.5
   - Bug Fix: Update did not work, when permission of update is not changed manually
@@ -8,20 +20,24 @@ v1.8.5
 
 
 v1.8.4
+
   - added ScrollArea for "Grundkompetenzen" for small screens
-  - "Uebungsblatt" and "Nachschularbeit" can be created
-  - "Uebungsblatt" & "Grundkompetenzcheck" disables Option "Notenschluessel/Beurteilungsraster"
+  - "Übungsblatt" and "Nachschularbeit" can be created
+  - "Übungsblatt" & "Grundkompetenzcheck" disables Option "Notenschlüssel/Beurteilungsraster"
   - "Schularbeit" can be reseted
   - Creation of .pdf and/or .lama can be skipped, when creating a test
 
 
 v1.8.3
+
   - Password for writing bug report removed from source code
 
 v1.8.2
+
 - Bug Fix:
   - Tests cannot be created on macOS, when there are spaces in the filename
   - MacOS raises error when folder is opened after creating a test
 
 v1.8.1
+
 - Bug Fix: No PDF output when SumatraPDF is not installed	
