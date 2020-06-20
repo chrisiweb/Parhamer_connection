@@ -3688,10 +3688,12 @@ class Ui_MainWindow(object):
 
 
     def load_file(self, path):
-        with open(path, "r", encoding="utf8") as loaded_file:
-            loaded_file=json.load(loaded_file)
-            # print(loaded_file)
-        return loaded_file
+        try:
+            with open(path, "r", encoding="utf8") as loaded_file:
+                loaded_file=json.load(loaded_file)      
+            return loaded_file
+        except json.decoder.JSONDecodeError:
+            return
 
     def sage_load(self, external_file_loaded):
         if external_file_loaded == False:
