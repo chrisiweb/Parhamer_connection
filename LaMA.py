@@ -244,9 +244,12 @@ class Ui_MainWindow(object):
 
         if self.chosen_program == 'cria':
             self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad('cria')
+            self.beispieldaten_dateipfad_1 = None
+            self.beispieldaten_dateipfad_2 = None
         else:
             self.beispieldaten_dateipfad_1 = self.define_beispieldaten_dateipfad(1)
             self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)
+            self.beispieldaten_dateipfad_cria = None
 
 
         ########################
@@ -1900,8 +1903,10 @@ class Ui_MainWindow(object):
     def open_dialogwindow_erstellen(
         self,
         dict_all_infos_for_file,
-        beispieldaten_dateipfad_1,
-        beispieldaten_dateipfad_2,
+        chosen_program,
+        # beispieldaten_dateipfad_1,
+        # beispieldaten_dateipfad_2,
+        # beispieldaten_dateipfad_cria,
         dict_titlepage,
         saved_file_path,
     ):  # , dict_gesammeltedateien
@@ -1916,8 +1921,10 @@ class Ui_MainWindow(object):
             self.Dialog,
             # self,
             dict_all_infos_for_file,
-            beispieldaten_dateipfad_1,
-            beispieldaten_dateipfad_2,
+            chosen_program,
+            # beispieldaten_dateipfad_1,
+            # beispieldaten_dateipfad_2,
+            # beispieldaten_dateipfad_cria,
             dict_titlepage,
             saved_file_path,
         )
@@ -2509,9 +2516,8 @@ class Ui_MainWindow(object):
 
         if self.chosen_program=='lama':
             self.chosen_program = 'cria'
-            try:
-                self.beispieldaten_dateipfad_cria
-            except AttributeError:
+
+            if self.beispieldaten_dateipfad_cria == None:
                 self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad('cria')
          
 
@@ -2545,10 +2551,7 @@ class Ui_MainWindow(object):
         elif self.chosen_program=='cria':
             self.chosen_program = 'lama'
 
-            try:
-                self.beispieldaten_dateipfad_1
-                self.beispieldaten_dateipfad_2
-            except AttributeError:
+            if self.beispieldaten_dateipfad_1 == None or self.beispieldaten_dateipfad_2 == None:
                 self.beispieldaten_dateipfad_1 = self.define_beispieldaten_dateipfad(1)
                 self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)
 
@@ -5619,8 +5622,10 @@ class Ui_MainWindow(object):
 
         self.open_dialogwindow_erstellen(
             self.dict_all_infos_for_file,
-            self.beispieldaten_dateipfad_1,
-            self.beispieldaten_dateipfad_2,
+            self.chosen_program,
+            # self.beispieldaten_dateipfad_1,
+            # self.beispieldaten_dateipfad_2,
+            # self.beispieldaten_dateipfad_cria,
             dict_titlepage,
             self.saved_file_path,
         )

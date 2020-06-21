@@ -531,16 +531,19 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
         Dialog,
         # MainWindow,
         dict_list_input_examples,
-        beispieldaten_dateipfad_1,
-        beispieldaten_dateipfad_2,
+        chosen_program,
+        # beispieldaten_dateipfad_1,
+        # beispieldaten_dateipfad_2,
+        # beispieldaten_dateipfad_cria,
         dict_titlepage,
         saved_file_path,
     ):
-
+        print(chosen_program)
         # print(MainWindow.dict_alle_aufgaben_sage)
         self.dict_list_input_examples = dict_list_input_examples
-        self.beispieldaten_dateipfad_1 = beispieldaten_dateipfad_1
-        self.beispieldaten_dateipfad_2 = beispieldaten_dateipfad_2
+        # self.beispieldaten_dateipfad_1 = beispieldaten_dateipfad_1
+        # self.beispieldaten_dateipfad_2 = beispieldaten_dateipfad_2
+        # self.beispieldaten_dateipfad_cria = beispieldaten_dateipfad_cria
         self.dict_titlepage = dict_titlepage
         self.data_gesamt = self.dict_list_input_examples["data_gesamt"]
         self.saved_file_path = saved_file_path
@@ -658,7 +661,22 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
         self.gridLayout.addWidget(self.cb_create_lama, 6, 2, 1, 1)
 
         self.retranslateUi(Dialog)
+
+        if chosen_program == 'cria':
+            self.label_sw_num_1.hide()
+            self.label_sw_num_1_int.hide()
+            self.label_sw_pkt_1.hide()
+            self.label_sw_pkt_1_int.hide()
+            self.label_sw_num_2.hide()
+            self.label_sw_num_2_int.hide()
+            self.label_sw_pkt_2.hide()
+            self.label_sw_pkt_2_int.hide()
+            print(self.data_gesamt)
+            print(Ui_MainWindow.dict_variablen_punkte)
+
         QtCore.QMetaObject.connectSlotsByName(Dialog)
+
+
         # return pdf
 
     def retranslateUi(self, Dialog):
