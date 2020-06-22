@@ -1902,13 +1902,7 @@ class Ui_MainWindow(object):
 
     def open_dialogwindow_erstellen(
         self,
-        dict_all_infos_for_file,
-        chosen_program,
-        # beispieldaten_dateipfad_1,
-        # beispieldaten_dateipfad_2,
-        # beispieldaten_dateipfad_cria,
         dict_titlepage,
-        saved_file_path,
     ):  # , dict_gesammeltedateien
         self.Dialog = QtWidgets.QDialog(
             None,
@@ -1919,16 +1913,11 @@ class Ui_MainWindow(object):
         self.ui_erstellen = Ui_Dialog_erstellen()
         self.ui_erstellen.setupUi(
             self.Dialog,
-            # self,
-            dict_all_infos_for_file,
-            chosen_program,
-            # beispieldaten_dateipfad_1,
-            # beispieldaten_dateipfad_2,
-            # beispieldaten_dateipfad_cria,
+            self,
+            self.dict_all_infos_for_file,
             dict_titlepage,
-            saved_file_path,
+            self.saved_file_path,
         )
-        # self.Dialog.show()
         rsp= self.Dialog.exec_()
 
         if rsp == QtWidgets.QDialog.Accepted:
@@ -1940,18 +1929,16 @@ class Ui_MainWindow(object):
                     self.ui_erstellen.pdf,
                     self.ui_erstellen.lama,
                 )
-
-            # MainWindow.show()
-
-            if sys.platform.startswith("linux"):
-                file_path = os.path.dirname(self.saved_file_path)
-                subprocess.Popen('xdg-open "{}"'.format(file_path), shell=True)
-            elif sys.platform.startswith("darwin"):
-                file_path = os.path.dirname(self.saved_file_path)
-                subprocess.Popen('open "{}"'.format(file_path), shell=True)
-            else:
-                file_path = os.path.dirname(self.saved_file_path).replace("/", "\\")
-                subprocess.Popen('explorer "{}"'.format(file_path))
+            if not is_empty(self.chosen_path_schularbeit_erstellen[0]):
+                if sys.platform.startswith("linux"):
+                    file_path = os.path.dirname(self.saved_file_path)
+                    subprocess.Popen('xdg-open "{}"'.format(file_path), shell=True)
+                elif sys.platform.startswith("darwin"):
+                    file_path = os.path.dirname(self.saved_file_path)
+                    subprocess.Popen('open "{}"'.format(file_path), shell=True)
+                else:
+                    file_path = os.path.dirname(self.saved_file_path).replace("/", "\\")
+                    subprocess.Popen('explorer "{}"'.format(file_path))
 
 
     def click_label_to_check(self, new_checkbox):
@@ -5076,6 +5063,8 @@ class Ui_MainWindow(object):
         self.pkt_typ1 = 0
         self.pkt_typ2 = 0
 
+        print(self.get_punkteverteilung())
+
         self.dict_all_infos_for_file["list_alle_aufgaben"] = self.list_alle_aufgaben_sage
 
         self.dict_all_infos_for_file["dict_alle_aufgaben"]= self.dict_alle_aufgaben_sage
@@ -5228,7 +5217,6 @@ class Ui_MainWindow(object):
 
         dict_gesammeltedateien = self.get_dict_gesammeltedateien()
 
-
         if ausgabetyp == "vorschau":
             filename_vorschau = os.path.join(
                 path_programm, "Teildokument", "Schularbeit_Vorschau.tex"
@@ -5258,7 +5246,6 @@ class Ui_MainWindow(object):
                     QtWidgets.QApplication.restoreOverrideCursor()
                     return
                 self.saved_file_path = self.chosen_path_schularbeit_erstellen[0]
-                # print(self.chosen_path_schularbeit_erstellen[0])
 
                 dirname = os.path.dirname(self.chosen_path_schularbeit_erstellen[0])
                 filename = os.path.basename(self.chosen_path_schularbeit_erstellen[0])
@@ -5283,7 +5270,7 @@ class Ui_MainWindow(object):
 
                 # filename_vorschau=self.chosen_path_schularbeit_erstellen[0]
 
-        dict_gruppen = {0: "A", 1: "B", 2: "C", 3: "D", 4: "E", 5: "F"}
+        self.dict_gruppen = {0: "A", 1: "B", 2: "C", 3: "D", 4: "E", 5: "F"}
 
         if filename_vorschau == "":
             QtWidgets.QApplication.restoreOverrideCursor()
@@ -5313,7 +5300,7 @@ class Ui_MainWindow(object):
         else:
             dict_vorschau['pagestyle']= 'plain'
 
-        dict_vorschau['titlepage'] = get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum)
+        dict_vorschau['titlepage'] = get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, index)
 
         if self.chosen_program=='lama' and (
             self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
@@ -5443,9 +5430,9 @@ class Ui_MainWindow(object):
                 temp_filename = name + ".pdf"
                 if maximum > 2:
                     if index % 2 == 0:
-                        new_filename = name + "_{}_Loesung.pdf".format(dict_gruppen[int(index / 2)])
+                        new_filename = name + "_{}_Loesung.pdf".format(self.dict_gruppen[int(index / 2)])
                     else:
-                        new_filename = name + "_{}.pdf".format(dict_gruppen[int(index / 2)])
+                        new_filename = name + "_{}.pdf".format(self.dict_gruppen[int(index / 2)])
                     
                     shutil.move(temp_filename, new_filename)
 
@@ -5621,13 +5608,13 @@ class Ui_MainWindow(object):
             dict_titlepage=self.dict_titlepage_cria
 
         self.open_dialogwindow_erstellen(
-            self.dict_all_infos_for_file,
-            self.chosen_program,
+            # self.dict_all_infos_for_file,
+            # self.chosen_program,
             # self.beispieldaten_dateipfad_1,
             # self.beispieldaten_dateipfad_2,
             # self.beispieldaten_dateipfad_cria,
             dict_titlepage,
-            self.saved_file_path,
+            # self.saved_file_path,
         )
 
 

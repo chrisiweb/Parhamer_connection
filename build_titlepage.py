@@ -57,14 +57,14 @@ def check_if_hide_all_exists(dict_titlepage):
 
     
 
-def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum):
+def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, index):
     datum_kurz, datum = get_datum(self)
     dict_titlepage = check_if_hide_all_exists(dict_titlepage)
 
     if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Grundkompetenzcheck":        
 
         if ausgabetyp == "schularbeit" and maximum > 2:
-            gruppe = " -- " + dict_gruppen[int(index / 2)]
+            gruppe = " -- " + self.dict_gruppen[int(index / 2)]
         else:
             gruppe = ""
 
@@ -147,6 +147,7 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum):
             klasse = ''
 
         if ausgabetyp == "schularbeit" and maximum > 2:
+            gruppe=self.dict_gruppen[int(index/2)]
             gruppe = "\\textsc{{\\Large Gruppe {0}}} \\\ [1cm]\n\n".format(gruppe)
         else:
             gruppe = ''

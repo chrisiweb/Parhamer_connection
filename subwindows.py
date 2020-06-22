@@ -529,23 +529,28 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
     def setupUi(
         self,
         Dialog,
-        # MainWindow,
+        Ui_MainWindow,
         dict_list_input_examples,
-        chosen_program,
-        # beispieldaten_dateipfad_1,
-        # beispieldaten_dateipfad_2,
-        # beispieldaten_dateipfad_cria,
         dict_titlepage,
         saved_file_path,
     ):
-        print(chosen_program)
-        # print(MainWindow.dict_alle_aufgaben_sage)
+
         self.dict_list_input_examples = dict_list_input_examples
-        # self.beispieldaten_dateipfad_1 = beispieldaten_dateipfad_1
-        # self.beispieldaten_dateipfad_2 = beispieldaten_dateipfad_2
-        # self.beispieldaten_dateipfad_cria = beispieldaten_dateipfad_cria
         self.dict_titlepage = dict_titlepage
-        self.data_gesamt = self.dict_list_input_examples["data_gesamt"]
+        self.data_gesamt = Ui_MainWindow.dict_all_infos_for_file["data_gesamt"]
+
+ 
+        self.pkt_gesamt = Ui_MainWindow.get_punkteverteilung()[0]
+        self.pkt_typ1 = Ui_MainWindow.get_punkteverteilung()[1]
+        self.pkt_typ2 = Ui_MainWindow.get_punkteverteilung()[2]
+        self.num_gesamt = len(Ui_MainWindow.dict_all_infos_for_file['list_alle_aufgaben']) 
+        self.num_typ1 = Ui_MainWindow.get_aufgabenverteilung()[0]
+        self.num_typ2 = Ui_MainWindow.get_aufgabenverteilung()[1]
+
+        self.pkt_ausgleich = Ui_MainWindow.get_number_ausgleichspunkte_gesamt()
+        
+        # self.dict_list_input_examples["data_gesamt"]
+
         self.saved_file_path = saved_file_path
         self.Dialog = Dialog
         Dialog.setObjectName("Dialog")
@@ -662,7 +667,7 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
 
         self.retranslateUi(Dialog)
 
-        if chosen_program == 'cria':
+        if Ui_MainWindow.chosen_program == 'cria':
             self.label_sw_num_1.hide()
             self.label_sw_num_1_int.hide()
             self.label_sw_pkt_1.hide()
@@ -671,10 +676,10 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
             self.label_sw_num_2_int.hide()
             self.label_sw_pkt_2.hide()
             self.label_sw_pkt_2_int.hide()
-            print(self.data_gesamt)
-            print(Ui_MainWindow.dict_variablen_punkte)
 
         QtCore.QMetaObject.connectSlotsByName(Dialog)
+
+
 
 
         # return pdf
@@ -707,35 +712,12 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
         self.label_sw_pkt_2.setText(_translate("Dialog", "Punkte Typ2:"))
         self.label_sw_pkt_1.setText(_translate("Dialog", "Punkte Typ1:"))
         self.label_sw_date.setText(_translate("Dialog", "Datum: %s" % datum))
-        self.label_sw_num_ges_int.setText(
-            _translate(
-                "Dialog",
-                "%s" % str(self.data_gesamt["num_1"] + self.data_gesamt["num_2"]),
-            )
-        )
-        self.label_sw_num_2_int.setText(
-            _translate("Dialog", "%i" % self.data_gesamt["num_2"])
-        )
-        self.label_sw_num_1_int.setText(
-            _translate("Dialog", "%i" % self.data_gesamt["num_1"])
-        )
-        self.label_sw_pkt_1_int.setText(
-            _translate("Dialog", "{0}".format(self.data_gesamt["punkte_1"]))
-        )
-        self.label_sw_pkt_2_int.setText(
-            _translate(
-                "Dialog",
-                "{0} (davon {1} AP)".format(
-                    self.data_gesamt["punkte_2"], self.data_gesamt["ausgleichspunkte"]
-                ),
-            )
-        )
-        self.label_sw_pkt_ges_int.setText(
-            _translate(
-                "Dialog",
-                "%s" % str(self.data_gesamt["punkte_1"] + self.data_gesamt["punkte_2"]),
-            )
-        )  # +self.data_gesamt['ausgleichspunkte']
+        self.label_sw_num_ges_int.setText(str(self.num_gesamt))
+        self.label_sw_num_2_int.setText(str(self.num_typ2))
+        self.label_sw_num_1_int.setText(str(self.num_typ1))
+        self.label_sw_pkt_1_int.setText(str(self.pkt_typ1))
+        self.label_sw_pkt_2_int.setText("{0} (davon {1} AP)".format(self.pkt_typ2, self.pkt_ausgleich))
+        self.label_sw_pkt_ges_int.setText(str(self.pkt_gesamt))
         self.label_sw_klasse.setText(
             _translate("Dialog", "Klasse: %s" % self.data_gesamt["Klasse"])
         )
