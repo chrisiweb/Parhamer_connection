@@ -5063,8 +5063,6 @@ class Ui_MainWindow(object):
         self.pkt_typ1 = 0
         self.pkt_typ2 = 0
 
-        print(self.get_punkteverteilung())
-
         self.dict_all_infos_for_file["list_alle_aufgaben"] = self.list_alle_aufgaben_sage
 
         self.dict_all_infos_for_file["dict_alle_aufgaben"]= self.dict_alle_aufgaben_sage
