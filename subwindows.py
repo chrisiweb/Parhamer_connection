@@ -749,10 +749,8 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
         self.label.setStyleSheet("padding-left: 25px;")
         # self.label.setWordWrap(True)
         gridlayout.addWidget(self.label, 1, 0, 1, 2)
-        # if creator_mode == 'user':
-        #     label = ""
-        # if creator_mode == 'admin':
-        #     label = "inoffizielle Aufgabe"
+
+
         if self.creator_mode == 'user':
             self.cb_confirm = create_new_checkbox(Dialog, "")
             self.cb_confirm.setSizePolicy(SizePolicy_fixed)
