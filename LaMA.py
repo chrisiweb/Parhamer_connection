@@ -2453,11 +2453,11 @@ class Ui_MainWindow(object):
                     self.spinBox_5.value(),
                 ],
                 "Typ1 Standard": self.spinBox_default_pkt.value(),
-                "num_1": 0,
-                "punkte_1": 0,
-                "num_2": 0,
-                "punkte_2": 0,
-                "ausgleichspunkte": 0,
+                # "num_1": 0,
+                # "punkte_1": 0,
+                # "num_2": 0,
+                # "punkte_2": 0,
+                # "ausgleichspunkte": 0,
                 "copy_images": [],
             },
         }
@@ -5057,11 +5057,6 @@ class Ui_MainWindow(object):
 
     def collect_all_infos_for_creating_file(self):
         self.dict_all_infos_for_file = {}
-        #self.dict_list_input_examples = {}
-        num_typ1 = 0
-        num_typ2 = 0
-        self.pkt_typ1 = 0
-        self.pkt_typ2 = 0
 
         self.dict_all_infos_for_file["list_alle_aufgaben"] = self.list_alle_aufgaben_sage
 
@@ -5090,13 +5085,6 @@ class Ui_MainWindow(object):
             beurteilung = "br"
 
 
-        try:
-            self.num_ausgleichspkt_gesamt
-        #     self.list_copy_images
-        except AttributeError:
-            self.num_ausgleichspkt_gesamt = 0
-        #     self.list_copy_images = []
-
         dict_data_gesamt = {
             "program":self.chosen_program,
             "#": self.spinBox_nummer.value(),
@@ -5115,11 +5103,6 @@ class Ui_MainWindow(object):
                 self.spinBox_5.value(),
             ],
             "Typ1 Standard": self.spinBox_default_pkt.value(),
-            "num_1": num_typ1,
-            "punkte_1": self.pkt_typ1,
-            "num_2": num_typ2,
-            "punkte_2": self.pkt_typ2,
-            "ausgleichspunkte": self.num_ausgleichspkt_gesamt,
             "copy_images": self.list_copy_images,
         }
         

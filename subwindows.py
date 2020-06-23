@@ -279,16 +279,7 @@ class Ui_Dialog_titlepage(object):
                     critical_window(
                         "Bitte geben Sie den Dateipfad eines Logos an oder wählen Sie das Logo auf der Titelseite ab.",
                         titel="Kein Logo ausgewählt")
-                    # msg = QtWidgets.QMessageBox()
-                    # msg.setIcon(QtWidgets.QMessageBox.Warning)
-                    # msg.setWindowIcon(QtGui.QIcon(logo_path))
-                    # msg.setText("Es wurde kein Logo ausgewählt")
-                    # msg.setInformativeText(
-                    #     "Bitte geben Sie den Dateipfad des Logos an oder wählen Sie das Logo ab."
-                    # )
-                    # msg.setWindowTitle("Kein Logo ausgewählt")
-                    # msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
-                    # msg.exec_()
+
                     return
                 continue
 
@@ -397,15 +388,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         # # self.retranslateUi(self.Dialog)
         QtCore.QMetaObject.connectSlotsByName(self.Dialog)
 
-        # self.list_sage_ausgleichspunkte_chosen=list_sage_ausgleichspunkte_chosen
 
-        # return list_sage_ausgleichspunkte_chosen
-
-    # def retranslateUi(self, Dialog):
-    #     _translate = QtCore.QCoreApplication.translate
-    #     Dialog.setWindowTitle(
-    #         _translate("Ausgleichspunkte anpassen", "Ausgleichspunkte anpassen")
-    #     )
 
     def combobox_edit_changed(self):
         for i in reversed(range(1, self.gridLayout.count())):
@@ -680,10 +663,6 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
 
-
-
-        # return pdf
-
     def retranslateUi(self, Dialog):
         datum = (
             str(self.data_gesamt["Datum"][2])
@@ -807,11 +786,6 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
             self.buttonBox.setStandardButtons(
                 QtWidgets.QDialogButtonBox.Yes | QtWidgets.QDialogButtonBox.No)            
         
-        # .setStandardButtons(
-        #         QtWidgets.QMessageBox.Yes
-        #         | QtWidgets.QMessageBox.Apply
-        #         | QtWidgets.QMessageBox.No
-        #     )
 
         buttonN = self.buttonBox.button(QtWidgets.QDialogButtonBox.No)
         buttonN.setText("Abbrechen")
@@ -828,21 +802,11 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
 
         gridlayout.addWidget(self.buttonBox, 3,1,1,1)
 
-        
-        # self.buttonBox.accepted.connect(Dialog.accept)
-
-
-        # return 
-        # self.buttonBox.accepted.connect(Dialog.accept)
-        # self.buttonBox.accepted.connect(
-        #     partial(self.pushButton_OK_pressed, list_sage_ausgleichspunkte_chosen)
-        # )
 
     def local_pressed(self):
         self.confirmed = ['local', None]
         self.Dialog.accept()
-        # print(self.Dialog.result())
-        # return False
+
 
     def yes_pressed(self):
         if self.creator_mode == 'admin':
