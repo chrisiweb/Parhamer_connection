@@ -48,7 +48,6 @@ def check_if_hide_all_exists(dict_titlepage):
     try:
         dict_titlepage["hide_all"]
     except KeyError:
-        print('not found')
         dict_titlepage["hide_all"]=False
         titlepage_save = os.path.join(path_programm, "Teildokument", "titlepage_save")
         with open(titlepage_save, "w+", encoding="utf8") as f:
@@ -60,6 +59,13 @@ def check_if_hide_all_exists(dict_titlepage):
 def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, index):
     datum_kurz, datum = get_datum(self)
     dict_titlepage = check_if_hide_all_exists(dict_titlepage)
+
+    pkt_gesamt = self.get_punkteverteilung()[0]
+    pkt_typ1 = self.get_punkteverteilung()[1]
+    pkt_typ2 = self.get_punkteverteilung()[2]
+    pkt_ausgleich = self.get_number_ausgleichspunkte_gesamt()
+
+
 
     if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Grundkompetenzcheck":        
 
@@ -171,9 +177,7 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, index):
 
 
         if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "br":
-            teil2_pkt_ohne_ap = (
-                self.dict_all_infos_for_file["data_gesamt"]["punkte_2"]
-                - self.dict_all_infos_for_file["data_gesamt"]["ausgleichspunkte"])
+            teil2_pkt_ohne_ap = pkt_typ2 - pkt_ausgleich
 
             beurteilungsraster = (
                 "\\newpage \n\n"
@@ -186,8 +190,8 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, index):
                 "}} \n\n"
                 "\\newpage\n\n"
                 .format(
-                self.dict_all_infos_for_file["data_gesamt"]["punkte_1"],
-                self.dict_all_infos_for_file["data_gesamt"]["ausgleichspunkte"],
+                pkt_typ2,
+                pkt_ausgleich,
                 teil2_pkt_ohne_ap,
                 ))
         else:
