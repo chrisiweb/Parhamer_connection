@@ -445,6 +445,8 @@ class Ui_Dialog_ausgleichspunkte(object):
 
         if "\\fbox{A}" in linetext:
             linetext = linetext.replace("\\fbox{A}", "")
+        if "\\ASubitem" in linetext:
+            linetext = linetext.replace("\\ASubitem", "")
 
         # print(linetext)
         if self.combobox_edit.currentIndex() == 0:
@@ -489,7 +491,7 @@ class Ui_Dialog_ausgleichspunkte(object):
                 == True
             ):
                 self.list_sage_ausgleichspunkte_chosen.append(
-                    linetext.replace("\\fbox{A}", "")
+                    linetext.replace("\\fbox{A}", "").replace("\\ASubitem","")
                 )
 
         self.list_sage_hide_show_items_chosen = []

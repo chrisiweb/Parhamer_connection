@@ -4386,6 +4386,7 @@ class Ui_MainWindow(object):
             content=collect_content(self, aufgabe)
 
             number_ausgleichspunkte = content.count("\\fbox{A}")
+            number_ausgleichspunkte = number_ausgleichspunkte + content.count("\\ASubitem")
         
             return number_ausgleichspunkte
 
@@ -4491,16 +4492,21 @@ class Ui_MainWindow(object):
                     'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!'
                 )
                 return        
-
+        print(self.dict_sage_ausgleichspunkte_chosen)
         if aufgabe in self.dict_sage_ausgleichspunkte_chosen.keys():
+            print('no')
             list_sage_ausgleichspunkte_chosen = self.dict_sage_ausgleichspunkte_chosen[
                 aufgabe
             ]
         else:
+            print('test')
             list_sage_ausgleichspunkte_chosen = []
             for all in split_content:
                 if "\\fbox{A}" in all:
                     x = all.replace("\\fbox{A}", "")
+                    list_sage_ausgleichspunkte_chosen.append(x)
+                if "\\ASubitem" in all:
+                    x = all.replace("\\ASubitem", "")
                     list_sage_ausgleichspunkte_chosen.append(x)
 
         if aufgabe in self.dict_sage_hide_show_items_chosen.keys():

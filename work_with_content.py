@@ -51,6 +51,7 @@ def split_aufgaben_content_new_format(content):
 
 
     aufgabenstellung_split_text = split_all_items_of_list(aufgabenstellung_split_text, "\\Subitem")
+    # aufgabenstellung_split_text = split_all_items_of_list(aufgabenstellung_split_text, "\\ASubitem")
     aufgabenstellung_split_text=[get_subitem(string) for string in aufgabenstellung_split_text]
 
     aufgabenstellung_split_text = split_all_items_of_list(aufgabenstellung_split_text, "\n\n")

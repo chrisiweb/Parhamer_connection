@@ -5,21 +5,154 @@ from work_with_content import collect_content
 from standard_dialog_windows import warning_window
 
 def edit_content_ausgleichspunkte(self, aufgabe, content):
-    content = [line.replace("\\fbox{A}", "") for line in content]
-    for ausgleichspunkte in self.dict_all_infos_for_file[
-        "dict_ausgleichspunkte"
-    ][aufgabe]:
-        ausgleichspunkte = ausgleichspunkte.replace('ITEM','').replace('SUBitem','').strip()
-        if ausgleichspunkte.startswith('{'):
-            ausgleichspunkte = ausgleichspunkte[1:]
+    content = [line.replace("\\fbox{A}", "").replace("\\ASubitem","\\Subitem").replace("\\Aitem","\\item") for line in content]
 
-        content = [
-            line.replace(
-                ausgleichspunkte.partition("\n")[0],
-                "\\fbox{A} " + ausgleichspunkte.partition("\n")[0],
-            )
-            for line in content
-        ]
+
+    for ausgleichspunkte in self.dict_all_infos_for_file["dict_ausgleichspunkte"][aufgabe]:
+        for i, line in enumerate(content):
+            ausgleichspunkte = ausgleichspunkte.replace('ITEM','').replace('SUBitem','').strip()
+            if ausgleichspunkte.partition("\n")[0] in line:
+                if "\\Subitem" in line:
+                    line = line.replace("\\Subitem","\\ASubitem")
+                else:
+                    if ausgleichspunkte.startswith('{'):
+                        ausgleichspunkte = ausgleichspunkte[1:]
+
+                    line = line.replace(
+                    ausgleichspunkte.partition("\n")[0],
+                    "\\fbox{A} " + ausgleichspunkte.partition("\n")[0],
+                    )
+                content[i]=line
+                break
+            if i+1 == len(content):
+                warning_window(
+                    "Leider ist ein Fehler beim Bearbeiten der Ausgleichspunkte augetreten",
+                    detailed_text="Bitte ändern Sie die Ausgleichspunkte nach dem Erstellen manuell in der LaTeX-Datei.",
+                )
+                return content
+
+
+    # for i, line in enumerate(content):
+    #     print(line)
+    #     for ausgleichspunkte in self.dict_all_infos_for_file["dict_ausgleichspunkte"][aufgabe]:
+    #         print(ausgleichspunkte)
+    #         if ausgleichspunkte in line:
+    #             print('yes')
+                # print(line)
+                # if "ASubitem" not in line or "AItem" not in line:
+                #     if "\\Subitem" in line:
+                #         line = line.replace("\\Subitem","\\ASubitem")
+                #     elif "\\item" in line:
+                #         line = line.replace("\\item","\\Aitem")                    
+                #     else:
+                #         ausgleichspunkte = ausgleichspunkte.replace('ITEM','').replace('SUBitem','').strip()
+                #         if ausgleichspunkte.startswith('{'):
+                #             ausgleichspunkte = ausgleichspunkte[1:]
+
+                #         line = line.replace(
+                #         ausgleichspunkte.partition("\n")[0],
+                #         "\\fbox{A} " + ausgleichspunkte.partition("\n")[0],
+                #         )
+                #     content[i]=line
+            # else:
+            #     print('no')
+                # print(line)
+                # if "\\ASubitem" in line:
+                #     line = line.replace("\\ASubitem","\\Subitem")
+                # elif "\\Aitem" in line:
+                #     line = line.replace("\\Aitem","\\item")
+                # elif "\\fbox{A}" in line:
+                #     print('yes: ', line)
+                #     line = line.replace("\\fbox{A}", "")
+                # content[i]=line 
+    
+
+    # print(content)
+    # return
+                    # if ausgleichspunkte not in line:
+                    #     line = line.replace("ASubitem","Subitem")
+                    #     print(ausgleichspunkte)
+                    #     print(line)
+                    #     content[i]=line
+                    #     print(False)
+                    # else:
+                    #     print(True)
+                
+    #### content wird nicht gespeichert !!!..
+    
+
+
+    # content = [line.replace("ASubitem", "Subitem" for line in content if )]
+
+    # for line in content:
+    #     for ausgleichspunkte in self.dict_all_infos_for_file[
+    #             "dict_ausgleichspunkte"
+    #         ][aufgabe]:
+    #             if ausgleichspunkte in line:
+    #                 if "ASubitem" not in line or "AItem" not in line:
+    #                     # print(line)
+    #                     if "\\Subitem" in line:
+    #                         line.replace("\\Subitem","\\ASubitem")
+
+    #                     elif "\\item" in line:
+    #                         line.replace("\\item","\\Aitem")
+
+    #                     else:
+
+    #                         ausgleichspunkte = ausgleichspunkte.replace('ITEM','').replace('SUBitem','').strip()
+    #                         if ausgleichspunkte.startswith('{'):
+    #                             ausgleichspunkte = ausgleichspunkte[1:]
+
+    #                         line.replace(
+    #                         ausgleichspunkte.partition("\n")[0],
+    #                         "\\fbox{A} " + ausgleichspunkte.partition("\n")[0],
+    #                         )
+    #                 print('yes')
+    #             else:
+    #                 if "ASubitem" in line:
+    #                     line.replace("ASubitem","Subitem")
+
+
+    # for ausgleichspunkte in self.dict_all_infos_for_file[
+    #     "dict_ausgleichspunkte"
+    # ][aufgabe]:
+
+        
+
+    #     ausgleichspunkte = ausgleichspunkte.replace('ITEM','').replace('SUBitem','').strip()
+    #     if ausgleichspunkte.startswith('{'):
+    #         ausgleichspunkte = ausgleichspunkte[1:]
+
+    #     for line in content:
+    #         # print(ausgleichspunkte)
+    #         # # if "ASubitem" not in line:
+    #         # print(line)
+
+    #         if ausgleichspunkte in line:
+    #             if "ASubitem" not in line:
+    #                 # print(line)
+    #                 if "Subitem" in line:
+    #                     line.replace("Subitem","ASubitem")
+    #                 # line.replace(
+    #                 # ausgleichspunkte.partition("\n")[0],
+    #                 # "\\fbox{A} " + ausgleichspunkte.partition("\n")[0],
+    #                 # )
+    #             print('yes')
+    #         else:
+    #             if "ASubitem" in line:
+    #                 line.replace("ASubitem","Subitem")
+
+
+
+        # content = [
+        #     line.replace(
+        #         ausgleichspunkte.partition("\n")[0],
+        #         "\\fbox{A} " + ausgleichspunkte.partition("\n")[0],
+        #     ) 
+        #     if "ASubitem" not in line else pass for line in content
+        # ]
+    # print(content)
+    # return
     return content
 
 def edit_content_hide_show_items(self,aufgabe, content):
@@ -126,6 +259,7 @@ def edit_content_vorschau(self, aufgabe, ausgabetyp):
         typ=self.get_aufgabentyp(aufgabe)
 
 
+        
         if aufgabe in self.dict_all_infos_for_file["dict_ausgleichspunkte"].keys():
             content = edit_content_ausgleichspunkte(self, aufgabe, content)
 
