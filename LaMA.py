@@ -2841,15 +2841,6 @@ class Ui_MainWindow(object):
             self.delete_drafts_from_beispieldaten()
 
 
-        # print(self.beispieldaten_dateipfad_1)
-        # for section in beispieldaten_dateipfad_draft.keys():
-        #     path = beispieldaten_dateipfad_draft[section]
-        #     aufgabentyp = self.get_aufgabentyp_from_path(path)
-        #     if aufgabentyp == typ:
-        #         list_section.append(section)
-        #         list_path.append(path)
-        # print(self.beispieldaten_dateipfad_1)
-        # print(self.beispieldaten_dateipfad_2)
         self.adapt_choosing_list("sage")
 
 
@@ -3340,8 +3331,7 @@ class Ui_MainWindow(object):
             name = "_L_"+name
 
         return name
-        # print(typ_save)
-        # print(self.local_save)
+
 
     def get_klasse_section(self):
         if self.chosen_program == 'cria':
@@ -4492,14 +4482,11 @@ class Ui_MainWindow(object):
                     'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!'
                 )
                 return        
-        print(self.dict_sage_ausgleichspunkte_chosen)
         if aufgabe in self.dict_sage_ausgleichspunkte_chosen.keys():
-            print('no')
             list_sage_ausgleichspunkte_chosen = self.dict_sage_ausgleichspunkte_chosen[
                 aufgabe
             ]
         else:
-            print('test')
             list_sage_ausgleichspunkte_chosen = []
             for all in split_content:
                 if "\\fbox{A}" in all:
@@ -4873,7 +4860,6 @@ class Ui_MainWindow(object):
     def search_for_number(self, list_, line_entry, list_mode):
         for section in list_[:]:
             info = self.split_section(section)
-            # print(line_entry)
             if self.chosen_program == 'lama':
                 if list_mode == 'sage':
                     combobox_at = self.comboBox_at_sage.currentText()
@@ -5042,11 +5028,9 @@ class Ui_MainWindow(object):
 
         if list_mode == 'sage':
             line_entry = self.lineEdit_number.text()
-            # print('sage')
         elif list_mode == 'feedback':
             if self.chosen_program == 'lama':
                 line_entry = self.lineEdit_number_fb.text()
-                # print('lama feedback')
             elif self.chosen_program == 'cria':
                 line_entry = self.lineEdit_number_fb_cria.text()
 
