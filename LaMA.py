@@ -5399,12 +5399,12 @@ class Ui_MainWindow(object):
                 create_pdf(name, index, maximum)
 
                 temp_filename = name + ".pdf"
-                
+
 				if maximum>2:
 					if index%2==0:
-						shutil.move(name+'.pdf', name+'_{}_Loesung.pdf'.format(dict_gruppen[int(index/2)]))
+						shutil.move(name+'.pdf', name+'_{}_Loesung.pdf'.format(self.dict_gruppen[int(index/2)]))
 					else:
-						shutil.move(name+'.pdf', name+'_{}.pdf'.format(dict_gruppen[int(index/2)]))
+						shutil.move(name+'.pdf', name+'_{}.pdf'.format(self.dict_gruppen[int(index/2)]))
 				else:
 					if index%2==0:
 						shutil.move(name+'.pdf', name+'_Loesung.pdf')
