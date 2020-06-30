@@ -754,7 +754,7 @@ def delete_unneeded_files(folder_name, file_name):
 
 
 def create_pdf(path_file, index, maximum, typ=0):
-
+    print(path_file)
     QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
     if path_file == "Teildokument":
         folder_name = '{0}/Teildokument'.format(path_programm)
@@ -802,18 +802,19 @@ def create_pdf(path_file, index, maximum, typ=0):
     latex_output_file.close()
 
 
-    response = extract_error_from_output(latex_output)
-
-    if response==False:
-        return 
-
     if file_name == "Schularbeit_Vorschau" or file_name.startswith("Teildokument"):
+
+        response = extract_error_from_output(latex_output)
+
+        if response==False:
+            return
+             
         open_pdf_file(folder_name, file_name)
 
     try:
         delete_unneeded_files(folder_name, file_name)
     except Exception as e:
-        print('error')
+        print('Error: ' + e)
         return
     QtWidgets.QApplication.restoreOverrideCursor()
 
