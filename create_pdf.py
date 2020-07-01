@@ -811,10 +811,10 @@ def create_pdf(path_file, index, maximum, typ=0):
              
         open_pdf_file(folder_name, file_name)
 
-    try:
-        delete_unneeded_files(folder_name, file_name)
-    except Exception as e:
-        print('Error: ' + e)
-        return
+    # try:
+    #     delete_unneeded_files(folder_name, file_name)
+    # except Exception as e:
+    #     print('Error: ' + e)
+    #     return
     QtWidgets.QApplication.restoreOverrideCursor()
 
