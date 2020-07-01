@@ -670,6 +670,8 @@ def build_pdf_file(folder_name, file_name, latex_output_file):
         )
 
     else:
+        print(folder_name)
+        print(file_name)
         process=subprocess.Popen(
             'cd "{0}" & latex -interaction=nonstopmode --synctex=-1 "{1}.tex"& dvips "{1}.dvi" & ps2pdf -dNOSAFER "{1}.ps"'.format(
                 folder_name, file_name
