@@ -672,9 +672,22 @@ def build_pdf_file(folder_name, file_name, latex_output_file):
     else:
         print(folder_name)
         print(file_name)
+        drive_programm = os.path.splitdrive(path_programm)[0]
+        drive_save = os.path.splitdrive(folder_name)[0]
+
+        print(drive_programm)
+        print(drive_save)
+
+        if drive_programm.upper() != drive_save.upper():
+            drive = drive_save.upper()
+        else:
+            drive = ''
+
+        print(drive)
+
         process=subprocess.Popen(
-            'cd "{0}" & latex -interaction=nonstopmode --synctex=-1 "{1}.tex"& dvips "{1}.dvi" & ps2pdf -dNOSAFER "{1}.ps"'.format(
-                folder_name, file_name
+            '{0} & cd "{1}" & latex -interaction=nonstopmode --synctex=-1 "{2}.tex"& dvips "{2}.dvi" & ps2pdf -dNOSAFER "{2}.ps"'.format(
+                drive, folder_name, file_name
             ),
             cwd=os.path.splitdrive(path_programm)[0],
             stdout=latex_output_file,
@@ -756,7 +769,6 @@ def delete_unneeded_files(folder_name, file_name):
 
 
 def create_pdf(path_file, index, maximum, typ=0):
-    print(path_file)
     QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
     if path_file == "Teildokument":
         folder_name = '{0}/Teildokument'.format(path_programm)
@@ -813,10 +825,10 @@ def create_pdf(path_file, index, maximum, typ=0):
              
         open_pdf_file(folder_name, file_name)
 
-    # try:
-    #     delete_unneeded_files(folder_name, file_name)
-    # except Exception as e:
-    #     print('Error: ' + e)
-    #     return
+    try:
+        delete_unneeded_files(folder_name, file_name)
+    except Exception as e:
+        print('Error: ' + e)
+        return
     QtWidgets.QApplication.restoreOverrideCursor()
 

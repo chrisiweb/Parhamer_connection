@@ -2619,6 +2619,8 @@ class Ui_MainWindow(object):
 
 
 		else:
+			print(save_file)
+			print(dateiname)
 			if sys.platform.startswith('linux'):
 				subprocess.Popen('cd "{0}" ; latex --synctex=-1 {1}.tex ; dvips {1}.dvi ; ps2pdf -dNOSAFER {1}.ps'.format(save_file, dateiname),shell=True).wait()
 			elif sys.platform.startswith('darwin'):

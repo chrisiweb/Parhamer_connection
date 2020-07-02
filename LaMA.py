@@ -5400,28 +5400,28 @@ class Ui_MainWindow(object):
 
                 temp_filename = name + ".pdf"
 
-                if maximum>2:
-                    if index%2==0:
-                        shutil.move(name+'.pdf', name+'_{}_Loesung.pdf'.format(self.dict_gruppen[int(index/2)]))
-                    else:
-                        shutil.move(name+'.pdf', name+'_{}.pdf'.format(self.dict_gruppen[int(index/2)]))
-                else:
-                    if index%2==0:
-                        shutil.move(name+'.pdf', name+'_Loesung.pdf')
-
-
-                # if maximum > 2:
-                #     if index % 2 == 0:
-                #         new_filename = name + "_{}_Loesung.pdf".format(self.dict_gruppen[int(index / 2)])
+                # if maximum>2:
+                #     if index%2==0:
+                #         shutil.move(name+'.pdf', name+'_{}_Loesung.pdf'.format(self.dict_gruppen[int(index/2)]))
                 #     else:
-                #         new_filename = name + "_{}.pdf".format(self.dict_gruppen[int(index / 2)])
-                    
-                #     shutil.move(temp_filename, new_filename)
+                #         shutil.move(name+'.pdf', name+'_{}.pdf'.format(self.dict_gruppen[int(index/2)]))
+                # else:
+                #     if index%2==0:
+                #         shutil.move(name+'.pdf', name+'_Loesung.pdf')
 
-                # elif index % 2 == 0:
-                #     new_filename = name + "_Loesung.pdf"
+
+                if maximum > 2:
+                    if index % 2 == 0:
+                        new_filename = name + "_{}_Loesung.pdf".format(self.dict_gruppen[int(index / 2)])
+                    else:
+                        new_filename = name + "_{}.pdf".format(self.dict_gruppen[int(index / 2)])
+                    
+                    shutil.move(temp_filename, new_filename)
+
+                elif index % 2 == 0:
+                    new_filename = name + "_Loesung.pdf"
                 
-                #     shutil.move(temp_filename, new_filename)
+                    shutil.move(temp_filename, new_filename)
 
 
                 if index == maximum - 1:
