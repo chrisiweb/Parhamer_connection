@@ -4,7 +4,7 @@ import sys
 import os
 import subprocess
 from functools import partial
-from config import colors_ui, get_color, config_file, config_loader, logo_path,logo_cria_button_path, path_programm
+from config import colors_ui, get_color, config_file, config_loader, logo_path,logo_cria_button_path, path_programm, is_empty
 import json
 import shutil
 import datetime
@@ -33,56 +33,7 @@ list_klassen = config_loader(config_file, "list_klassen")
 
 dict_aufgabenformate = config_loader(config_file, "dict_aufgabenformate")
 
-# def get_color(color):
-#     color= "rgb({0}, {1}, {2})".format(color.red(), color.green(), color.blue())
-#     return color
-
-# blue_7=colors_ui['blue_7']
-
-
-# class Ui_Dialog_processing(object):
-#     def setupUi(self, Dialog, rest):
-#         self.Dialog = Dialog
-#         self.Dialog.setObjectName("Dialog")
-#         Dialog.setWindowFlags(QtCore.Qt.WindowSystemMenuHint
-#             | QtCore.Qt.WindowTitleHint)
-#         Dialog.setWindowTitle('Lade...')
-#         Dialog.setStyleSheet("background-color: {}; color: white".format(get_color(blue_7)))
-#         pixmap = QtGui.QPixmap(logo_path)
-#         Dialog.setWindowIcon(QtGui.QIcon(logo_path))
-#         Dialog.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed))
-#         horizontalLayout = QtWidgets.QHBoxLayout(Dialog)
-#         horizontalLayout.setObjectName("horizontal")
-
-#         pixmap = QtGui.QPixmap(logo_cria_button_path)
-#         # Dialog.setPixmap(pixmap.scaled(110, 110, QtCore.Qt.KeepAspectRatio))
-#         image = QtWidgets.QLabel(Dialog)
-#         image.setObjectName("image")
-#         image.setPixmap(pixmap)
-
-#         label=QtWidgets.QLabel(Dialog)
-#         label.setObjectName("label")  
-#         label.setText("Die PDF Datei wird erstellt..." + rest)
-#         label_spinner = QtWidgets.QLabel(Dialog)
-#         label.setObjectName("label_spinner")
-#         label_spinner.setFixedSize(40,40)    
-#         spinner = QtWaitingSpinner(label_spinner)
-#         spinner.setRoundness(70.0)
-#         # spinner.setMinimumTrailOpacity(10.0)
-#         # spinner.setTrailFadePercentage(60.0)
-#         spinner.setNumberOfLines(12)
-#         spinner.setLineLength(10)
-#         # spinner.setLineWidth(5)
-#         spinner.setInnerRadius(10)
-#         # spinner.setRevolutionsPerSecond(2)
-#         spinner.setColor(QtCore.Qt.white)
-#         spinner.start() # starts spinning
-#         label.setAlignment(QtCore.Qt.AlignCenter)
-#         horizontalLayout.addWidget(image)
-#         horizontalLayout.addWidget(label)
-#         horizontalLayout.addWidget(label_spinner)
-
-             
+           
 
 
 class Worker_CreatePDF(QtCore.QObject):
@@ -122,6 +73,7 @@ def prepare_tex_for_pdf(self):
         month_today = datetime.date.today().strftime("%m")
         if month_today != month_update_log_file:
             refresh_ddb(self)  # self.label_aufgabentyp.text()[-1]
+            self.label_update.setText("Letztes Update: "+ modification_date(log_file).strftime("%d.%m.%y - %H:%M"))
 
     suchbegriffe = []
 
@@ -137,57 +89,6 @@ def prepare_tex_for_pdf(self):
                         klasse = widget.split("_")[-2]
                         thema = widget.split("_")[-1]
                         suchbegriffe.append(thema.upper())
-
-        # #### ALGEBRA UND GEOMETRIE
-        # for all in ag_beschreibung:
-        #     x = eval("self.cb_" + all)
-        #     if x.isChecked() == True:
-        #         suchbegriffe.append(all)
-
-        # #### ANALYSIS
-        # for all in an_beschreibung:
-        #     x = eval("self.cb_" + all)
-        #     if x.isChecked() == True:
-        #         suchbegriffe.append(all)
-
-        # #### FUNKTIONALE ABHÄNGIGKEITEN
-        # for all in fa_beschreibung:
-        #     x = eval("self.cb_" + all)
-        #     if x.isChecked() == True:
-        #         suchbegriffe.append(all)
-        # #### WAHRSCHEINLICHKEIT UND STATISTIK
-        # for all in ws_beschreibung:
-        #     x = eval("self.cb_" + all)
-        #     if x.isChecked() == True:
-        #         suchbegriffe.append(all)
-
-        # temp_suchbegriffe = []
-        # for all in suchbegriffe:
-        #     temp_suchbegriffe.append(dict_gk[all])
-        # suchbegriffe = temp_suchbegriffe
-        # print(suchbegriffe)
-        # return
-        #### Suche der Schulstufe
-
-        # for y in range(5, 9):
-        #     themen_klasse = eval("k%s_beschreibung" % y)
-        #     for all in themen_klasse:
-        #         x = eval("self.cb_k%s_" % y + all)
-        #         grade = "K" + str(y)
-        #         if x.isChecked() == True:
-        #             # if grade not in suchbegriffe:
-        #             # suchbegriffe.append('K'+str(y))
-        #             suchbegriffe.append(all.upper())
-
-    #### typ1 ###
-    # log_file=os.path.join(path_programm,'Typ 2 Aufgaben','Teildokument','log_file')
-    ######
-
-    # log_file = os.path.join(
-    #     path_programm,
-    #     "Teildokument",
-    #     "log_file_%s" % self.label_aufgabentyp.text()[-1],
-    # )
 
     with open(log_file, encoding="utf8") as f:
         beispieldaten_dateipfad = json.load(f)
@@ -253,22 +154,7 @@ def prepare_tex_for_pdf(self):
                     except FileNotFoundError:
                         pass
 
-        # print(beispieldaten_dateipfad)
-        # return
 
-        # for root, dirs, files in os.walk(os.path.join(path_programm,'_database', chosen_aufgabenformat)):
-        # 	for all in files:
-        # 		if all.endswith('.tex') or all.endswith('.ltx'):
-        # 			if not ('Gesamtdokument' in all) and not ('Teildokument' in all):
-        # 				file=open(os.path.join(root,all), encoding='utf8')
-        # 				for i, line in enumerate(file):
-        # 					if not line == "\n":
-        # 						beispieldaten_dateipfad[line]=os.path.join(root,all)
-        # 						beispieldaten.append(line)
-        # 						break
-        # 				file.close()
-
-    ######### new tabu.sty not working ###
     ######################################################
     ########### work around ####################
     #########################################
@@ -670,25 +556,24 @@ def build_pdf_file(folder_name, file_name, latex_output_file):
         )
 
     else:
-        print(folder_name)
-        print(file_name)
         drive_programm = os.path.splitdrive(path_programm)[0]
         drive_save = os.path.splitdrive(folder_name)[0]
-
-        print(drive_programm)
-        print(drive_save)
 
         if drive_programm.upper() != drive_save.upper():
             drive = drive_save.upper()
         else:
             drive = ''
 
-        print(drive)
-
-        process=subprocess.Popen(
-            '{0} & cd "{1}" & latex -interaction=nonstopmode --synctex=-1 "{2}.tex"& dvips "{2}.dvi" & ps2pdf -dNOSAFER "{2}.ps"'.format(
+        if is_empty(drive):
+            terminal_command = 'cd "{0}" & latex -interaction=nonstopmode --synctex=-1 "{1}.tex"& dvips "{1}.dvi" & ps2pdf -dNOSAFER "{1}.ps"'.format(
+                folder_name, file_name
+            )
+        else:
+            terminal_command = '{0} & cd "{1}" & latex -interaction=nonstopmode --synctex=-1 "{2}.tex"& dvips "{2}.dvi" & ps2pdf -dNOSAFER "{2}.ps"'.format(
                 drive, folder_name, file_name
-            ),
+            )
+
+        process=subprocess.Popen(terminal_command,
             cwd=os.path.splitdrive(path_programm)[0],
             stdout=latex_output_file,
             shell=True,
