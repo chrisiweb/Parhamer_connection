@@ -3278,23 +3278,30 @@ class Ui_MainWindow(object):
             string = "{" + old_image_name + "}"
 
             new_image_name = self.edit_image_name(typ_save, old_image_name)
-
-            if typ_save[1] == 0:
+            print(new_image_name)
+            print(typ_save)
+            if typ_save == ['admin', 0]:
+                print('offiziell')
                 path = '../_database/Bilder/'
-            elif typ_save[1] == 1:
+            elif typ_save == ['admin', 1]:
+                print('inoffiziell')
                 path = '../_database_inoffiziell/Bilder/'
             elif typ_save[0] == 'user':
+                print('beispieleinreichung')
                 path = '../Beispieleinreichung/Bilder/'
             elif typ_save[0] == 'local':
+                print('lokal')
                 path = '../Lokaler_Ordner/Bilder/'
 
             new_image_name = path + new_image_name
+            print(new_image_name)
 
             if string in self.plainTextEdit.toPlainText():
                 textBox_Entry = textBox_Entry.replace(old_image_name, new_image_name)
             else:
                 return [False, old_image_name]
 
+        print(textBox_Entry)
         return [True, textBox_Entry]
 
 

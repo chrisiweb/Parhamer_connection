@@ -2,6 +2,7 @@ from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QApplication
 import sys
 import os
+import re
 import subprocess
 from functools import partial
 from config import colors_ui, get_color, config_file, config_loader, logo_path,logo_cria_button_path, path_programm, is_empty
