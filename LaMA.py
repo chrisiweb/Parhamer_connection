@@ -584,6 +584,7 @@ class Ui_MainWindow(object):
         #self.label_warnung.setMaximumSize(QtCore.QSize(375, 16777215))
         self.label_warnung.setText(_translate("MainWindow", "Achtung: Aufgrund neuer hilfreicher Befehle ist es notwendig, ein Update des srdp-mathematik-Pakets so bald wie möglich durchzuführen! Nähere Infos unter: lama.schule/update", None))
         self.gridLayout.addWidget(self.label_warnung, 5,0,1,1)
+        # self.label_warnung.hide()
         #########################
 
         ##################################################################
