@@ -2796,9 +2796,9 @@ class Ui_MainWindow(object):
     def cb_drafts_enabled(self):
         if self.cb_drafts.isChecked():
             warning_window(
-                "Entwürfe können Fehler enthalten, die das Programm zum Absturz bringen.\n"
+                "Entwürfe können Fehler enthalten, die das Programm zum Absturz bringen.",
                 "Speichern Sie gegebenenfalls eine erstellte Schularbeit vor der Suche!",
-                "Warnung - Here be dragons!",
+                titel="Warnung - Here be dragons!",
             )
 
 
@@ -2841,9 +2841,9 @@ class Ui_MainWindow(object):
     def cb_drafts_sage_enabled(self):
         if self.cb_drafts_sage.isChecked()==True:
             warning_window(
-                "Entwürfe können Fehler enthalten, die das Programm zum Absturz bringen.\n"
-                "Speichern Sie gegebenenfalls eine erstellte Schularbeit vor dem Erstellen!",
-                "Warnung - Here be dragons!",
+                "Entwürfe können Fehler enthalten, die das Programm zum Absturz bringen.",
+                "Speichern Sie gegebenenfalls eine erstellte Schularbeit vor der Suche!",
+                titel="Warnung - Here be dragons!",
             )
 
             self.add_drafts_to_beispieldaten()
