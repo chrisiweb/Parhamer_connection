@@ -220,7 +220,6 @@ class Ui_MainWindow(object):
         
     def setupUi(self, MainWindow):
         self.check_for_update()
-        print(loaded_lama_file_path)
         if loaded_lama_file_path == "":
             ########## Dialog: Choose program ####    
             self.Dialog = QtWidgets.QDialog(
@@ -245,10 +244,7 @@ class Ui_MainWindow(object):
             loaded_file= self.load_file(loaded_lama_file_path)
             try:
                 self.chosen_program = loaded_file["data_gesamt"]['program']
-                #     if self.list_alle_aufgaben_sage != []:              
-                #         self.reset_sage()
-                # else:
-                #     self.change_program()
+
             except KeyError:
                 warning_window('Die geöffnete *.lama-Datei ist veraltet und kann nur mit der Version LaMA 1.x geöffnet werden.',
                 'Bitte laden Sie eine aktuelle *.lama-Datei oder kontaktieren Sie lama.helpme@gmail.com, wenn Sie Hilfe benötigen.')
