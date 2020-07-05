@@ -2,7 +2,7 @@ from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from config import logo_path
 
-def warning_window(text, informative_text="", titel="Warnung", detailed_text=""):
+def warning_window(text, detailed_text="", titel="Warnung", informative_text=""):
     msg = QtWidgets.QMessageBox()
     msg.setWindowTitle(titel)
     msg.setIcon(QtWidgets.QMessageBox.Warning)
@@ -23,7 +23,7 @@ def information_window(text, informative_text="", titel="Information", detailed_
     msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
     msg.exec_()
 
-def question_window(text, informative_text="", titel ="Sind sie sicher?", detailed_text=""):
+def question_window(text, informative_text="", titel ="Sind Sie sicher?", detailed_text=""):
     msg = QtWidgets.QMessageBox()
     msg.setIcon(QtWidgets.QMessageBox.Question)
     msg.setWindowIcon(QtGui.QIcon(logo_path))

@@ -220,26 +220,40 @@ class Ui_MainWindow(object):
         
     def setupUi(self, MainWindow):
         self.check_for_update()
+        print(loaded_lama_file_path)
+        if loaded_lama_file_path == "":
+            ########## Dialog: Choose program ####    
+            self.Dialog = QtWidgets.QDialog(
+                None,
+                QtCore.Qt.WindowSystemMenuHint
+                | QtCore.Qt.WindowTitleHint
+                | QtCore.Qt.WindowCloseButtonHint,
+            )
+            self.ui = Ui_Dialog_choose_type()
+            self.ui.setupUi(self.Dialog)
 
-        ########## Dialog: Choose program ####    
-        self.Dialog = QtWidgets.QDialog(
-            None,
-            QtCore.Qt.WindowSystemMenuHint
-            | QtCore.Qt.WindowTitleHint
-            | QtCore.Qt.WindowCloseButtonHint,
-        )
-        self.ui = Ui_Dialog_choose_type()
-        self.ui.setupUi(self.Dialog)
+            bring_to_front(self.Dialog)
+        
+            self.Dialog.setFixedSize(self.Dialog.size())
+            rsp=self.Dialog.exec_()
 
-        bring_to_front(self.Dialog)
-       
-        self.Dialog.setFixedSize(self.Dialog.size())
-        rsp=self.Dialog.exec_()
-
-        if rsp == QtWidgets.QDialog.Accepted:
-            self.chosen_program = self.ui.chosen_program
-        if rsp == QtWidgets.QDialog.Rejected:
-            sys.exit(0)
+            if rsp == QtWidgets.QDialog.Accepted:
+                self.chosen_program = self.ui.chosen_program
+            if rsp == QtWidgets.QDialog.Rejected:
+                sys.exit(0)
+        else:
+            loaded_file= self.load_file(loaded_lama_file_path)
+            try:
+                self.chosen_program = loaded_file["data_gesamt"]['program']
+                #     if self.list_alle_aufgaben_sage != []:              
+                #         self.reset_sage()
+                # else:
+                #     self.change_program()
+            except KeyError:
+                warning_window('Die geöffnete *.lama-Datei ist veraltet und kann nur mit der Version LaMA 1.x geöffnet werden.',
+                'Bitte laden Sie eine aktuelle *.lama-Datei oder kontaktieren Sie lama.helpme@gmail.com, wenn Sie Hilfe benötigen.')
+                return
+            
 
 
         if self.chosen_program == 'cria':
@@ -366,7 +380,7 @@ class Ui_MainWindow(object):
         self.actionFeedback = add_action(MainWindow,self.menuFeedback, "Feedback oder Fehler senden...", partial(self.update_gui, 'widgets_feedback'))
 
         self.actionInfo = add_action(MainWindow,self.menuHelp, "Über LaMA", self.show_info)
-        self.actionSupport = add_action(MainWindow, self.menuHelp, "LaMA Unterstützen", self.show_support)
+        self.actionSupport = add_action(MainWindow, self.menuHelp, "LaMA unterstützen", self.show_support)
 
 
 
@@ -2489,7 +2503,7 @@ class Ui_MainWindow(object):
         titel='Programm wechseln?')
 
         if response == False:
-            return
+            return False
 
         self.reset_sage(True)
         self.suchfenster_reset()
@@ -3705,10 +3719,12 @@ class Ui_MainWindow(object):
                 if self.list_alle_aufgaben_sage != []:              
                     self.reset_sage()
             else:
-                self.change_program()
+                response = self.change_program()
+                if response == False:
+                    return
         except KeyError:
             warning_window('Die geöffnete *.lama-Datei ist veraltet und kann nur mit der Version LaMA 1.x geöffnet werden.',
-            'Bitte laden Sie ein aktuelle *.lama-Datei oder kontaktieren Sie lama.helpme@gmail.com, wenn Sie Hilfe benötigen.')
+            'Bitte laden Sie eine aktuelle *.lama-Datei oder kontaktieren Sie lama.helpme@gmail.com, wenn Sie Hilfe benötigen.')
             return
 
         self.dict_all_infos_for_file =self.load_file(self.saved_file_path)
@@ -3729,7 +3745,7 @@ class Ui_MainWindow(object):
                 QtWidgets.QApplication.restoreOverrideCursor()
                 response=question_window(
                 'Die Aufgabe "{}" konnte in der Datenbank nicht gefunden werden. Dies könnte daran liegen, dass die Datenbank veraltet ist (Tipp: Datenbank aktualisieren)'.format(aufgabe),
-                'Wollen Sie diese Aufgabe entfernen?'
+                'Wollen Sie diese Aufgabe entfernen? (Ansonsten wird die Datei nicht geladen)',
                 "Aufgabe nicht gefunden"
                 )
 
