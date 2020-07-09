@@ -5,6 +5,7 @@ from string import ascii_lowercase
 from functools import partial
 from config import (
     config_loader,
+    config_file,
     colors_ui,
     get_color,
     path_programm,
@@ -21,6 +22,8 @@ from create_new_widgets import (
     create_new_label,
     create_new_checkbox,
     create_new_combobox,
+    create_new_spinbox,
+    create_new_groupbox,
     add_new_option,
 )
 from standard_dialog_windows import critical_window
@@ -28,7 +31,38 @@ from waitingspinnerwidget import QtWaitingSpinner
 from predefined_size_policy import SizePolicy_fixed
 from work_with_content import prepare_content_for_hide_show_items
 
-blue_7 = colors_ui["blue_7"]
+ag_beschreibung = config_loader(config_file, "ag_beschreibung")
+an_beschreibung = config_loader(config_file, "an_beschreibung")
+fa_beschreibung = config_loader(config_file, "fa_beschreibung")
+ws_beschreibung = config_loader(config_file, "ws_beschreibung")
+
+black =colors_ui['black']
+white = colors_ui['white']
+gray = colors_ui['gray']
+blue_1=colors_ui['blue_1']
+blue_2=colors_ui['blue_2']
+blue_3=colors_ui['blue_3'] 
+blue_4=colors_ui['blue_4']  
+blue_5=colors_ui['blue_5']
+blue_6=colors_ui['blue_6']
+blue_7=colors_ui['blue_7']
+red= colors_ui['red']   
+
+def get_color(color):
+    color= "rgb({0}, {1}, {2})".format(color.red(), color.green(), color.blue())
+    return color
+
+StyleSheet_tabWidget = """
+QTabBar::tab:selected {{
+background: {0}; color: {1};
+padding-right: 10px; padding-left: 10px;
+border-top: 2px solid {3};
+border-left: 2px solid {3};
+border-right: 2px solid {3};
+}}
+
+QWidget {{color: {2};background-color: {3}}}
+""".format(get_color(blue_2), get_color(black), get_color(white), get_color(blue_7))
 
 
 class Ui_Dialog_choose_type(object):
@@ -135,6 +169,57 @@ class Ui_Dialog_processing(object):
         horizontalLayout.addWidget(label)
         horizontalLayout.addWidget(label_spinner)
 
+class Ui_Dialog_random_quiz(object):
+    def setupUi(self, Dialog, Ui_MainWindow):
+        self.Dialog = Dialog
+        self.Dialog.setObjectName("Dialog")
+        Dialog.setWindowTitle("Zufälliges Quiz")
+        Dialog.setWindowIcon(QtGui.QIcon(logo_path))
+        self.gridlayout_random_quiz = QtWidgets.QGridLayout(Dialog)
+        self.gridlayout_random_quiz.setObjectName("gridlayout_random_quiz")
+
+        self.groupBox_gk = create_new_groupbox(Dialog, "Grundkompetenzen auswählen")
+
+        self.gridLayout_11 = create_new_gridlayout(self.groupBox_gk)
+        self.tab_widget_gk = QtWidgets.QTabWidget(self.groupBox_gk)
+
+        self.tab_widget_gk.setStyleSheet(StyleSheet_tabWidget)
+        self.tab_widget_gk.setObjectName(_fromUtf8("tab_widget_gk"))
+        self.gridLayout_11.addWidget(self.tab_widget_gk, 0, 0, 1, 1)
+        self.gridlayout_random_quiz.addWidget(self.groupBox_gk, 0, 0, 1, 2)
+
+        Ui_MainWindow.create_tab_checkboxes_gk(self.tab_widget_gk, "Algebra und Geometrie", ag_beschreibung, 'search')
+        Ui_MainWindow.create_tab_checkboxes_gk(self.tab_widget_gk,"Funktionale Abhängigkeiten", fa_beschreibung, 'search')
+        Ui_MainWindow.create_tab_checkboxes_gk(self.tab_widget_gk,"Analysis", an_beschreibung, 'search')
+        Ui_MainWindow.create_tab_checkboxes_gk(self.tab_widget_gk,"Wahrscheinlichkeit und Statistik", ws_beschreibung, 'search')
+
+
+        self.groupBox_aufgaben = create_new_groupbox(Dialog, "Anzahl der Aufgaben")
+        self.gridlayout_random_quiz.addWidget(self.groupBox_aufgaben, 1,0,1,1) 
+        self.spinbox_number_aufgaben = create_new_spinbox(Dialog, 10)
+        self.verticalLayout_aufgaben = create_new_verticallayout(self.groupBox_aufgaben)
+        self.verticalLayout_aufgaben.addWidget(self.spinbox_number_aufgaben)
+
+        # self.buttonBox_titlepage = QtWidgets.QDialogButtonBox(self.Dialog)
+        # self.buttonBox_titlepage = QtWidgets.QDialogButtonBox(self.Dialog)
+        # self.buttonBox_titlepage.setStandardButtons(
+        #     QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel
+        # )
+
+        # # buttonS = self.buttonBox_titlepage.button(QtWidgets.QDialogButtonBox.Save)
+        # # buttonS.setText('Speichern')
+        # buttonX = self.buttonBox_titlepage.button(QtWidgets.QDialogButtonBox.Cancel)
+        # buttonX.setText("Standard wiederherstellen")
+        # self.buttonBox_titlepage.setObjectName("buttonBox")
+        # self.buttonBox_titlepage.rejected.connect(
+        #     partial(self.set_default_titlepage, dict_titlepage)
+        # )
+        # self.buttonBox_titlepage.accepted.connect(
+        #     partial(self.save_titlepage, dict_titlepage)
+        # )
+        # # self.retranslateUi(self.Dialog)
+
+        # self.verticalLayout_titlepage.addWidget(self.buttonBox_titlepage)
 
 
 class Ui_Dialog_titlepage(object):

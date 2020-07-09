@@ -49,7 +49,7 @@ from list_of_widgets import (
     widgets_feedback_cria,    
     list_widgets
 )
-from subwindows import Ui_Dialog_choose_type,Ui_Dialog_titlepage , Ui_Dialog_ausgleichspunkte, Ui_Dialog_erstellen, Ui_Dialog_speichern
+from subwindows import Ui_Dialog_choose_type,Ui_Dialog_titlepage, Ui_Dialog_random_quiz, Ui_Dialog_ausgleichspunkte, Ui_Dialog_erstellen, Ui_Dialog_speichern
 from translate import _fromUtf8, _translate
 from sort_items import natural_keys, sorted_gks
 from create_pdf import prepare_tex_for_pdf, create_pdf
@@ -89,7 +89,7 @@ def get_color(color):
     color= "rgb({0}, {1}, {2})".format(color.red(), color.green(), color.blue())
     return color
 
-StyleSheet_tabWiget = """
+StyleSheet_tabWidget = """
 QTabBar::tab:selected {{
 background: {0}; color: {1};
 padding-right: 10px; padding-left: 10px;
@@ -535,7 +535,7 @@ class Ui_MainWindow(object):
         # QtWidgets.QVBoxLayout(self.groupBox_themen_klasse)
         # self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.tab_widget_themen = QtWidgets.QTabWidget(self.groupBox_themen_klasse)
-        self.tab_widget_themen.setStyleSheet(StyleSheet_tabWiget)      
+        self.tab_widget_themen.setStyleSheet(StyleSheet_tabWidget)      
         # self.tabWidget.setStyleSheet(set_color_text(white))
 
         self.tab_widget_themen.setObjectName(_fromUtf8("tab_widget_themen"))
@@ -551,7 +551,7 @@ class Ui_MainWindow(object):
         # self.gridLayout_11.setObjectName(_fromUtf8("gridLayout_11"))
         self.tab_widget_gk = QtWidgets.QTabWidget(self.groupBox_gk)
 
-        self.tab_widget_gk.setStyleSheet(StyleSheet_tabWiget)
+        self.tab_widget_gk.setStyleSheet(StyleSheet_tabWidget)
         # self.tab_widget_gk.setStyleSheet(_fromUtf8("color: {0}".format(white)))
         # self.tab_widget_gk.setStyleSheet("QToolTip { color: white; background-color: rgb(47, 69, 80); border: 0px; }")
         # ))
@@ -559,7 +559,9 @@ class Ui_MainWindow(object):
             # 
         #  print(gray.red())
         self.tab_widget_gk.setObjectName(_fromUtf8("tab_widget_gk"))
-
+        self.gridLayout_11.addWidget(self.tab_widget_gk, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_gk, 1, 1, 2, 1)
+        
         # #### AG #####
         self.create_tab_checkboxes_gk(self.tab_widget_gk, "Algebra und Geometrie", ag_beschreibung, 'search')
 
@@ -608,7 +610,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_cria.setObjectName("verticalLayout_cria")
 
         self.tabWidget_klassen_cria = QtWidgets.QTabWidget(self.groupBox_schulstufe_cria)
-        self.tabWidget_klassen_cria.setStyleSheet(StyleSheet_tabWiget)
+        self.tabWidget_klassen_cria.setStyleSheet(StyleSheet_tabWidget)
 
         self.tabWidget_klassen_cria.setMovable(False)
         self.tabWidget_klassen_cria.setObjectName("tabWidget_klassen_cria")
@@ -727,7 +729,7 @@ class Ui_MainWindow(object):
         self.gridLayout_11_cr.setObjectName(_fromUtf8("gridLayout_11_cr"))
         self.tab_widget_gk_cr = QtWidgets.QTabWidget(self.groupBox_grundkompetenzen_cr)
 
-        self.tab_widget_gk_cr.setStyleSheet(StyleSheet_tabWiget)
+        self.tab_widget_gk_cr.setStyleSheet(StyleSheet_tabWidget)
         #     _fromUtf8("background-color: rgb(217, 255, 215);")
         # )
         self.tab_widget_gk_cr.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -749,7 +751,7 @@ class Ui_MainWindow(object):
         self.gridLayout_11_cr_cria.setObjectName(_fromUtf8("gridLayout_11_cr_cria"))
         self.tab_widget_cr_cria = QtWidgets.QTabWidget(self.groupBox_themengebiete_cria)
         # self.tab_widget_gk_cr.setStyleSheet(_fromUtf8("background-color: rgb(217, 255, 215);")
-        self.tab_widget_cr_cria.setStyleSheet(StyleSheet_tabWiget)
+        self.tab_widget_cr_cria.setStyleSheet(StyleSheet_tabWidget)
 
         # self.tab_widget_cr_cria.setStyleSheet("background-color: rgb(229, 246, 255);")
         self.tab_widget_cr_cria.setObjectName(_fromUtf8("tab_widget_cr_cria"))
@@ -1211,6 +1213,7 @@ class Ui_MainWindow(object):
             "Wiederholungsprüfung",
             "Grundkompetenzcheck",
             "Übungsblatt",
+            "Quiz",
         ]
         index = 0
         for all in list_comboBox_pruefungstyp:
@@ -1747,8 +1750,8 @@ class Ui_MainWindow(object):
 #         ######################################################################
 #         #####################################################################
 
-        self.gridLayout_11.addWidget(self.tab_widget_gk, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_gk, 1, 1, 2, 1)
+        # self.gridLayout_11.addWidget(self.tab_widget_gk, 0, 0, 1, 1)
+        # self.gridLayout.addWidget(self.groupBox_gk, 1, 1, 2, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
@@ -2773,16 +2776,28 @@ class Ui_MainWindow(object):
         if (
             self.comboBox_pruefungstyp.currentText() == "Grundkompetenzcheck"
             or self.comboBox_pruefungstyp.currentText() == "Übungsblatt"
+            or self.comboBox_pruefungstyp.currentText() == "Quiz"
         ):
             self.combobox_beurteilung.setEnabled(False)
             self.groupBox_notenschl.setEnabled(False)
             self.groupBox_beurteilungsraster.setEnabled(False)
-            self.pushButton_titlepage.setEnabled(False)
+            if self.comboBox_pruefungstyp.currentText() == "Quiz":
+                self.pushButton_titlepage.setEnabled(True)
+                self.pushButton_titlepage.setText("Zufälliges Quiz erstellen")
+                self.comboBox_at_sage.setCurrentIndex(0)
+                self.comboBox_at_sage.setEnabled(False)
+            
+            else:
+                self.pushButton_titlepage.setEnabled(False)
+                self.comboBox_at_sage.setEnabled(True)
+                self.pushButton_titlepage.setText("Titelblatt anpassen")
         else:
             self.combobox_beurteilung.setEnabled(True)
             self.groupBox_notenschl.setEnabled(True)
             self.groupBox_beurteilungsraster.setEnabled(True)
             self.pushButton_titlepage.setEnabled(True)
+            self.comboBox_at_sage.setEnabled(True)
+            self.pushButton_titlepage.setText("Titelblatt anpassen")
 
 
 
@@ -3856,36 +3871,48 @@ class Ui_MainWindow(object):
 
 
     def define_titlepage(self):
-        if self.chosen_program=='lama':
-            dict_titlepage=self.dict_titlepage
-        if self.chosen_program=='cria':
-            dict_titlepage=self.dict_titlepage_cria
+        if self.comboBox_pruefungstyp.currentText() == "Quiz":
+            self.Dialog = QtWidgets.QDialog(
+                None,
+                QtCore.Qt.WindowSystemMenuHint
+                | QtCore.Qt.WindowTitleHint
+                | QtCore.Qt.WindowCloseButtonHint,
+            )
+            self.ui = Ui_Dialog_random_quiz()
+            self.ui.setupUi(self.Dialog, self)
+            # self.Dialog.show()
+            self.Dialog.exec()
+        else:
+            if self.chosen_program=='lama':
+                dict_titlepage=self.dict_titlepage
+            if self.chosen_program=='cria':
+                dict_titlepage=self.dict_titlepage_cria
 
-        self.Dialog = QtWidgets.QDialog(
-            None,
-            QtCore.Qt.WindowSystemMenuHint
-            | QtCore.Qt.WindowTitleHint
-            | QtCore.Qt.WindowCloseButtonHint,
-        )
-        self.ui = Ui_Dialog_titlepage()
-        self.ui.setupUi(self.Dialog, dict_titlepage)
-        # self.Dialog.show()
-        self.Dialog.exec()
+            self.Dialog = QtWidgets.QDialog(
+                None,
+                QtCore.Qt.WindowSystemMenuHint
+                | QtCore.Qt.WindowTitleHint
+                | QtCore.Qt.WindowCloseButtonHint,
+            )
+            self.ui = Ui_Dialog_titlepage()
+            self.ui.setupUi(self.Dialog, dict_titlepage)
+            # self.Dialog.show()
+            self.Dialog.exec()
 
-        if self.chosen_program=='lama':
-            self.dict_titlepage = dict_titlepage
-            titlepage_save = os.path.join(path_programm, "Teildokument", "titlepage_save")
-        if self.chosen_program=='cria':
-            self.dict_titlepage_cria = dict_titlepage
-            titlepage_save = os.path.join(path_programm, "Teildokument", "titlepage_save_cria")            
+            if self.chosen_program=='lama':
+                self.dict_titlepage = dict_titlepage
+                titlepage_save = os.path.join(path_programm, "Teildokument", "titlepage_save")
+            if self.chosen_program=='cria':
+                self.dict_titlepage_cria = dict_titlepage
+                titlepage_save = os.path.join(path_programm, "Teildokument", "titlepage_save_cria")            
 
-        try:
-            with open(titlepage_save, "w+", encoding="utf8") as f:
-                json.dump(dict_titlepage, f, ensure_ascii=False)
-        except FileNotFoundError:
-            os.makedirs(os.path.join(path_programm, "Teildokument"))
-            with open(titlepage_save, "w+", encoding="utf8") as f:
-                json.dump(dict_titlepage, f, ensure_ascii=False)
+            try:
+                with open(titlepage_save, "w+", encoding="utf8") as f:
+                    json.dump(dict_titlepage, f, ensure_ascii=False)
+            except FileNotFoundError:
+                os.makedirs(os.path.join(path_programm, "Teildokument"))
+                with open(titlepage_save, "w+", encoding="utf8") as f:
+                    json.dump(dict_titlepage, f, ensure_ascii=False)
 
 
 
