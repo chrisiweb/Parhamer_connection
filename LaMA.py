@@ -18,6 +18,7 @@ import json
 import subprocess
 import shutil
 import re
+import random
 import functools
 from functools import partial
 import yaml
@@ -1213,8 +1214,9 @@ class Ui_MainWindow(object):
             "Wiederholungsprüfung",
             "Grundkompetenzcheck",
             "Übungsblatt",
-            "Quiz",
         ]
+        if self.chosen_program == 'lama':
+            list_comboBox_pruefungstyp.append("Quiz")
         index = 0
         for all in list_comboBox_pruefungstyp:
             self.comboBox_pruefungstyp.addItem("")
@@ -2010,7 +2012,7 @@ class Ui_MainWindow(object):
         
         if mode=='search':
             dict_klasse = eval('{}_beschreibung'.format(klasse))
-            button_check_all = create_new_button(scrollareacontent, "alle auswählen", partial(self.button_all_checkboxes_pressed,dict_klasse, 'themen', klasse))
+            button_check_all = create_new_button(scrollareacontent, "alle auswählen", partial(self.button_all_checkboxes_pressed,dict_klasse, 'themen', mode, klasse))
             button_check_all.setStyleSheet("background-color: {}; ".format(get_color(blue_3)))
             button_check_all.setSizePolicy(SizePolicy_fixed)
 
@@ -2042,8 +2044,8 @@ class Ui_MainWindow(object):
         row, column = self.create_list_of_all_gk_checkboxes(scrollareacontent, gridLayout_scrollarea, mode, chosen_dictionary)
 
 
-        if mode=='search':
-            button_check_all = create_new_button(scrollarea, "alle auswählen", partial(self.button_all_checkboxes_pressed,chosen_dictionary, 'gk'))
+        if mode=='search' or mode == 'quiz':
+            button_check_all = create_new_button(scrollarea, "alle auswählen", partial(self.button_all_checkboxes_pressed,chosen_dictionary, 'gk', mode))
             button_check_all.setStyleSheet("background-color: {}; ".format(get_color(blue_3)))
             button_check_all.setSizePolicy(SizePolicy_fixed)
 
@@ -2064,6 +2066,9 @@ class Ui_MainWindow(object):
         if mode=='search':
             max_row = 9
             name_start='checkbox_search_gk_'
+        if mode == 'quiz':
+            max_row = 9
+            name_start='checkbox_quiz_gk_'
         for all in chosen_dictionary:
             new_checkbox = create_new_checkbox(parent, dict_gk[all])
             new_checkbox.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -2526,6 +2531,7 @@ class Ui_MainWindow(object):
             self.gridLayout.addWidget(self.groupBox_punkte, 0, 1, 1, 1)
             self.gridLayout.addWidget(self.groupBox_aufgabenformat, 0, 2, 1, 1)
             self.actionProgram.setText(_translate("MainWindow", 'Zu "LaMA (Oberstufe)" wechseln', None))
+            self.comboBox_pruefungstyp.removeItem("Quiz")
             self.cb_af_ko.show()
             self.cb_af_rf.show()
             self.cb_af_ta.show()
@@ -2567,7 +2573,7 @@ class Ui_MainWindow(object):
             # self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Typ 2", None))
             # # self.comboBox_at_fb.addItem("")
             # self.comboBox_at_fb.setItemText(2, _translate("MainWindow", "Allgemeine Rückmeldung", None))
-
+            self.comboBox_pruefungstyp.addItem("Quiz")
             self.cb_af_ko.hide()
             self.cb_af_rf.hide()
             self.cb_af_ta.hide()
@@ -2706,8 +2712,11 @@ class Ui_MainWindow(object):
 
 
 
-    def button_all_checkboxes_pressed(self, chosen_dictionary, typ, klasse=None): 
-        name_start='checkbox_search_{}_'.format(typ)
+    def button_all_checkboxes_pressed(self, chosen_dictionary, typ, mode, klasse=None):
+        if mode == 'quiz':  
+            name_start='checkbox_quiz_{}_'.format(typ)
+        else:
+            name_start='checkbox_search_{}_'.format(typ) 
         if typ=='themen':
             name_start=name_start+klasse+'_'
         first_element=name_start+list(chosen_dictionary.keys())[0]
@@ -2729,18 +2738,15 @@ class Ui_MainWindow(object):
         # set_chosen_gk = set([])
         name_checkbox='checkbox_{0}_'.format(mode)
 
-
         for widget in self.dict_widget_variables:
             if widget.startswith(name_checkbox):
                 if self.dict_widget_variables[widget].isChecked()==True:
                     if 'gk' in widget:
-                        # print(widget)
-                        # widget.split('_'))
                         gk=widget.split('_')[-1]
                         chosen_gk.append(dict_gk[gk])
                         if mode == 'creator':
                             self.list_selected_topics_creator.append(dict_gk[gk])                        
-                    if 'themen' in widget:
+                    elif 'themen' in widget:
                         klasse = widget.split('_')[-2]
                         thema = widget.split('_')[-1]
                         if mode == 'creator':
@@ -3872,16 +3878,44 @@ class Ui_MainWindow(object):
 
     def define_titlepage(self):
         if self.comboBox_pruefungstyp.currentText() == "Quiz":
-            self.Dialog = QtWidgets.QDialog(
+            Dialog = QtWidgets.QDialog(
                 None,
                 QtCore.Qt.WindowSystemMenuHint
                 | QtCore.Qt.WindowTitleHint
                 | QtCore.Qt.WindowCloseButtonHint,
             )
-            self.ui = Ui_Dialog_random_quiz()
-            self.ui.setupUi(self.Dialog, self)
+            ui = Ui_Dialog_random_quiz()
+            ui.setupUi(Dialog, self)
             # self.Dialog.show()
-            self.Dialog.exec()
+            response = Dialog.exec()
+            if response == 0:
+                return
+            print(response)
+            print(ui.random_quiz_response)
+            chosen_gks = ui.random_quiz_response[1]
+
+            random_list = []
+            for all in self.beispieldaten_dateipfad_1:
+                for gks in chosen_gks:
+                    if gks in all:
+                        random_list.append(all)
+                #     if str(gks in str(all):
+                #         random_list.append(self.beispieldaten_dateipfad_1[all])
+            if random_list == []:
+                random_list = self.beispieldaten_dateipfad_1.copy()
+
+            if ui.random_quiz_response[0]<len(random_list):
+                number_examples = len(random_list)
+            else:
+                number_examples = ui.random_quiz_response[0]
+            print(random_list)
+            sampling = random.sample(random_list, number_examples)
+            print(sampling)
+            print(len(sampling))
+            
+            
+
+            
         else:
             if self.chosen_program=='lama':
                 dict_titlepage=self.dict_titlepage

@@ -31,6 +31,7 @@ from waitingspinnerwidget import QtWaitingSpinner
 from predefined_size_policy import SizePolicy_fixed
 from work_with_content import prepare_content_for_hide_show_items
 
+dict_gk = config_loader(config_file, "dict_gk")
 ag_beschreibung = config_loader(config_file, "ag_beschreibung")
 an_beschreibung = config_loader(config_file, "an_beschreibung")
 fa_beschreibung = config_loader(config_file, "fa_beschreibung")
@@ -186,20 +187,44 @@ class Ui_Dialog_random_quiz(object):
         self.tab_widget_gk.setStyleSheet(StyleSheet_tabWidget)
         self.tab_widget_gk.setObjectName(_fromUtf8("tab_widget_gk"))
         self.gridLayout_11.addWidget(self.tab_widget_gk, 0, 0, 1, 1)
-        self.gridlayout_random_quiz.addWidget(self.groupBox_gk, 0, 0, 1, 2)
+        self.gridlayout_random_quiz.addWidget(self.groupBox_gk, 0, 0, 1, 3)
 
-        Ui_MainWindow.create_tab_checkboxes_gk(self.tab_widget_gk, "Algebra und Geometrie", ag_beschreibung, 'search')
-        Ui_MainWindow.create_tab_checkboxes_gk(self.tab_widget_gk,"Funktionale Abhängigkeiten", fa_beschreibung, 'search')
-        Ui_MainWindow.create_tab_checkboxes_gk(self.tab_widget_gk,"Analysis", an_beschreibung, 'search')
-        Ui_MainWindow.create_tab_checkboxes_gk(self.tab_widget_gk,"Wahrscheinlichkeit und Statistik", ws_beschreibung, 'search')
+        Ui_MainWindow.create_tab_checkboxes_gk(self.tab_widget_gk, "Algebra und Geometrie", ag_beschreibung, 'quiz')
+        Ui_MainWindow.create_tab_checkboxes_gk(self.tab_widget_gk,"Funktionale Abhängigkeiten", fa_beschreibung, 'quiz')
+        Ui_MainWindow.create_tab_checkboxes_gk(self.tab_widget_gk,"Analysis", an_beschreibung, 'quiz')
+        Ui_MainWindow.create_tab_checkboxes_gk(self.tab_widget_gk,"Wahrscheinlichkeit und Statistik", ws_beschreibung, 'quiz')
 
 
         self.groupBox_aufgaben = create_new_groupbox(Dialog, "Anzahl der Aufgaben")
-        self.gridlayout_random_quiz.addWidget(self.groupBox_aufgaben, 1,0,1,1) 
+        self.gridlayout_random_quiz.addWidget(self.groupBox_aufgaben, 1,0,2,1) 
         self.spinbox_number_aufgaben = create_new_spinbox(Dialog, 10)
         self.verticalLayout_aufgaben = create_new_verticallayout(self.groupBox_aufgaben)
         self.verticalLayout_aufgaben.addWidget(self.spinbox_number_aufgaben)
 
+        self.button_create_quiz = create_new_button(Dialog, "Quiz erstellen", partial(self.create_quiz, Ui_MainWindow))
+        self.gridlayout_random_quiz.addWidget(self.button_create_quiz, 1,2,1,1)
+
+        self.button_cancel = create_new_button(Dialog, "Abbrechen", self.random_quiz_cancel)
+        self.gridlayout_random_quiz.addWidget(self.button_cancel, 2,2,1,1)
+
+
+
+    
+    def random_quiz_cancel(self):
+        self.Dialog.reject()
+    
+    def create_quiz(self,Ui_MainWindow):
+        chosen_gk = []
+        for widget in Ui_MainWindow.dict_widget_variables:
+            if widget.startswith('checkbox_quiz_'):
+                if Ui_MainWindow.dict_widget_variables[widget].isChecked()==True:
+                    gk=widget.split('_')[-1]
+                    chosen_gk.append(dict_gk[gk])
+
+        self.random_quiz_response = [self.spinbox_number_aufgaben.value(), chosen_gk] 
+        self.Dialog.accept()          
+
+        # print(Ui_MainWindow.dict_widget_variables)
         # self.buttonBox_titlepage = QtWidgets.QDialogButtonBox(self.Dialog)
         # self.buttonBox_titlepage = QtWidgets.QDialogButtonBox(self.Dialog)
         # self.buttonBox_titlepage.setStandardButtons(
