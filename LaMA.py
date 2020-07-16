@@ -18,7 +18,6 @@ import json
 import subprocess
 import shutil
 import re
-import random
 import functools
 from functools import partial
 import yaml
@@ -50,7 +49,7 @@ from list_of_widgets import (
     widgets_feedback_cria,    
     list_widgets
 )
-from subwindows import Ui_Dialog_choose_type,Ui_Dialog_titlepage, Ui_Dialog_random_quiz, Ui_Dialog_ausgleichspunkte, Ui_Dialog_erstellen, Ui_Dialog_speichern
+from subwindows import Ui_Dialog_choose_type,Ui_Dialog_titlepage , Ui_Dialog_ausgleichspunkte, Ui_Dialog_erstellen, Ui_Dialog_speichern
 from translate import _fromUtf8, _translate
 from sort_items import natural_keys, sorted_gks
 from create_pdf import prepare_tex_for_pdf, create_pdf
@@ -90,7 +89,7 @@ def get_color(color):
     color= "rgb({0}, {1}, {2})".format(color.red(), color.green(), color.blue())
     return color
 
-StyleSheet_tabWidget = """
+StyleSheet_tabWiget = """
 QTabBar::tab:selected {{
 background: {0}; color: {1};
 padding-right: 10px; padding-left: 10px;
@@ -536,7 +535,7 @@ class Ui_MainWindow(object):
         # QtWidgets.QVBoxLayout(self.groupBox_themen_klasse)
         # self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.tab_widget_themen = QtWidgets.QTabWidget(self.groupBox_themen_klasse)
-        self.tab_widget_themen.setStyleSheet(StyleSheet_tabWidget)      
+        self.tab_widget_themen.setStyleSheet(StyleSheet_tabWiget)      
         # self.tabWidget.setStyleSheet(set_color_text(white))
 
         self.tab_widget_themen.setObjectName(_fromUtf8("tab_widget_themen"))
@@ -552,7 +551,7 @@ class Ui_MainWindow(object):
         # self.gridLayout_11.setObjectName(_fromUtf8("gridLayout_11"))
         self.tab_widget_gk = QtWidgets.QTabWidget(self.groupBox_gk)
 
-        self.tab_widget_gk.setStyleSheet(StyleSheet_tabWidget)
+        self.tab_widget_gk.setStyleSheet(StyleSheet_tabWiget)
         # self.tab_widget_gk.setStyleSheet(_fromUtf8("color: {0}".format(white)))
         # self.tab_widget_gk.setStyleSheet("QToolTip { color: white; background-color: rgb(47, 69, 80); border: 0px; }")
         # ))
@@ -560,9 +559,7 @@ class Ui_MainWindow(object):
             # 
         #  print(gray.red())
         self.tab_widget_gk.setObjectName(_fromUtf8("tab_widget_gk"))
-        self.gridLayout_11.addWidget(self.tab_widget_gk, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_gk, 1, 1, 2, 1)
-        
+
         # #### AG #####
         self.create_tab_checkboxes_gk(self.tab_widget_gk, "Algebra und Geometrie", ag_beschreibung, 'search')
 
@@ -611,7 +608,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_cria.setObjectName("verticalLayout_cria")
 
         self.tabWidget_klassen_cria = QtWidgets.QTabWidget(self.groupBox_schulstufe_cria)
-        self.tabWidget_klassen_cria.setStyleSheet(StyleSheet_tabWidget)
+        self.tabWidget_klassen_cria.setStyleSheet(StyleSheet_tabWiget)
 
         self.tabWidget_klassen_cria.setMovable(False)
         self.tabWidget_klassen_cria.setObjectName("tabWidget_klassen_cria")
@@ -730,7 +727,7 @@ class Ui_MainWindow(object):
         self.gridLayout_11_cr.setObjectName(_fromUtf8("gridLayout_11_cr"))
         self.tab_widget_gk_cr = QtWidgets.QTabWidget(self.groupBox_grundkompetenzen_cr)
 
-        self.tab_widget_gk_cr.setStyleSheet(StyleSheet_tabWidget)
+        self.tab_widget_gk_cr.setStyleSheet(StyleSheet_tabWiget)
         #     _fromUtf8("background-color: rgb(217, 255, 215);")
         # )
         self.tab_widget_gk_cr.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -752,7 +749,7 @@ class Ui_MainWindow(object):
         self.gridLayout_11_cr_cria.setObjectName(_fromUtf8("gridLayout_11_cr_cria"))
         self.tab_widget_cr_cria = QtWidgets.QTabWidget(self.groupBox_themengebiete_cria)
         # self.tab_widget_gk_cr.setStyleSheet(_fromUtf8("background-color: rgb(217, 255, 215);")
-        self.tab_widget_cr_cria.setStyleSheet(StyleSheet_tabWidget)
+        self.tab_widget_cr_cria.setStyleSheet(StyleSheet_tabWiget)
 
         # self.tab_widget_cr_cria.setStyleSheet("background-color: rgb(229, 246, 255);")
         self.tab_widget_cr_cria.setObjectName(_fromUtf8("tab_widget_cr_cria"))
@@ -1215,8 +1212,6 @@ class Ui_MainWindow(object):
             "Grundkompetenzcheck",
             "Übungsblatt",
         ]
-        if self.chosen_program == 'lama':
-            list_comboBox_pruefungstyp.append("Quiz")
         index = 0
         for all in list_comboBox_pruefungstyp:
             self.comboBox_pruefungstyp.addItem("")
@@ -1752,8 +1747,8 @@ class Ui_MainWindow(object):
 #         ######################################################################
 #         #####################################################################
 
-        # self.gridLayout_11.addWidget(self.tab_widget_gk, 0, 0, 1, 1)
-        # self.gridLayout.addWidget(self.groupBox_gk, 1, 1, 2, 1)
+        self.gridLayout_11.addWidget(self.tab_widget_gk, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_gk, 1, 1, 2, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
@@ -2012,7 +2007,7 @@ class Ui_MainWindow(object):
         
         if mode=='search':
             dict_klasse = eval('{}_beschreibung'.format(klasse))
-            button_check_all = create_new_button(scrollareacontent, "alle auswählen", partial(self.button_all_checkboxes_pressed,dict_klasse, 'themen', mode, klasse))
+            button_check_all = create_new_button(scrollareacontent, "alle auswählen", partial(self.button_all_checkboxes_pressed,dict_klasse, 'themen', klasse))
             button_check_all.setStyleSheet("background-color: {}; ".format(get_color(blue_3)))
             button_check_all.setSizePolicy(SizePolicy_fixed)
 
@@ -2044,8 +2039,8 @@ class Ui_MainWindow(object):
         row, column = self.create_list_of_all_gk_checkboxes(scrollareacontent, gridLayout_scrollarea, mode, chosen_dictionary)
 
 
-        if mode=='search' or mode == 'quiz':
-            button_check_all = create_new_button(scrollarea, "alle auswählen", partial(self.button_all_checkboxes_pressed,chosen_dictionary, 'gk', mode))
+        if mode=='search':
+            button_check_all = create_new_button(scrollarea, "alle auswählen", partial(self.button_all_checkboxes_pressed,chosen_dictionary, 'gk'))
             button_check_all.setStyleSheet("background-color: {}; ".format(get_color(blue_3)))
             button_check_all.setSizePolicy(SizePolicy_fixed)
 
@@ -2066,9 +2061,6 @@ class Ui_MainWindow(object):
         if mode=='search':
             max_row = 9
             name_start='checkbox_search_gk_'
-        if mode == 'quiz':
-            max_row = 9
-            name_start='checkbox_quiz_gk_'
         for all in chosen_dictionary:
             new_checkbox = create_new_checkbox(parent, dict_gk[all])
             new_checkbox.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -2423,8 +2415,8 @@ class Ui_MainWindow(object):
         self.lineEdit_quelle.setText(_translate("MainWindow", "", None))
         self.plainTextEdit.setPlainText(_translate("MainWindow", "", None))
 
-    def reset_sage(self, question_reset=True):
-        if question_reset==True and not is_empty(self.list_alle_aufgaben_sage):
+    def reset_sage(self, program_changed=False):
+        if program_changed==False:
             response=question_window(
             'Sind Sie sicher, dass Sie das Fenster zurücksetzen wollen und die erstellte Schularbeit löschen möchten?',
             titel = 'Schularbeit löschen?')
@@ -2509,7 +2501,7 @@ class Ui_MainWindow(object):
         if response == False:
             return False
 
-        self.reset_sage(False)
+        self.reset_sage(True)
         self.suchfenster_reset()
         self.reset_feedback()
         # self.comboBox_fehlertyp.setCurrentIndex(0)
@@ -2531,8 +2523,7 @@ class Ui_MainWindow(object):
             self.gridLayout.addWidget(self.groupBox_punkte, 0, 1, 1, 1)
             self.gridLayout.addWidget(self.groupBox_aufgabenformat, 0, 2, 1, 1)
             self.actionProgram.setText(_translate("MainWindow", 'Zu "LaMA (Oberstufe)" wechseln', None))
-            self.comboBox_pruefungstyp.removeItem(6) # delete Quiz
-            self.cb_af_ko.show() 
+            self.cb_af_ko.show()
             self.cb_af_rf.show()
             self.cb_af_ta.show()
 
@@ -2573,7 +2564,7 @@ class Ui_MainWindow(object):
             # self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Typ 2", None))
             # # self.comboBox_at_fb.addItem("")
             # self.comboBox_at_fb.setItemText(2, _translate("MainWindow", "Allgemeine Rückmeldung", None))
-            self.comboBox_pruefungstyp.addItem("Quiz")
+
             self.cb_af_ko.hide()
             self.cb_af_rf.hide()
             self.cb_af_ta.hide()
@@ -2712,11 +2703,8 @@ class Ui_MainWindow(object):
 
 
 
-    def button_all_checkboxes_pressed(self, chosen_dictionary, typ, mode, klasse=None):
-        if mode == 'quiz':  
-            name_start='checkbox_quiz_{}_'.format(typ)
-        else:
-            name_start='checkbox_search_{}_'.format(typ) 
+    def button_all_checkboxes_pressed(self, chosen_dictionary, typ, klasse=None): 
+        name_start='checkbox_search_{}_'.format(typ)
         if typ=='themen':
             name_start=name_start+klasse+'_'
         first_element=name_start+list(chosen_dictionary.keys())[0]
@@ -2738,15 +2726,18 @@ class Ui_MainWindow(object):
         # set_chosen_gk = set([])
         name_checkbox='checkbox_{0}_'.format(mode)
 
+
         for widget in self.dict_widget_variables:
             if widget.startswith(name_checkbox):
                 if self.dict_widget_variables[widget].isChecked()==True:
                     if 'gk' in widget:
+                        # print(widget)
+                        # widget.split('_'))
                         gk=widget.split('_')[-1]
                         chosen_gk.append(dict_gk[gk])
                         if mode == 'creator':
                             self.list_selected_topics_creator.append(dict_gk[gk])                        
-                    elif 'themen' in widget:
+                    if 'themen' in widget:
                         klasse = widget.split('_')[-2]
                         thema = widget.split('_')[-1]
                         if mode == 'creator':
@@ -2782,28 +2773,16 @@ class Ui_MainWindow(object):
         if (
             self.comboBox_pruefungstyp.currentText() == "Grundkompetenzcheck"
             or self.comboBox_pruefungstyp.currentText() == "Übungsblatt"
-            or self.comboBox_pruefungstyp.currentText() == "Quiz"
         ):
             self.combobox_beurteilung.setEnabled(False)
             self.groupBox_notenschl.setEnabled(False)
             self.groupBox_beurteilungsraster.setEnabled(False)
-            if self.comboBox_pruefungstyp.currentText() == "Quiz":
-                self.pushButton_titlepage.setEnabled(True)
-                self.pushButton_titlepage.setText("Zufälliges Quiz erstellen")
-                self.comboBox_at_sage.setCurrentIndex(0)
-                self.comboBox_at_sage.setEnabled(False)
-            
-            else:
-                self.pushButton_titlepage.setEnabled(False)
-                self.comboBox_at_sage.setEnabled(True)
-                self.pushButton_titlepage.setText("Titelblatt anpassen")
+            self.pushButton_titlepage.setEnabled(False)
         else:
             self.combobox_beurteilung.setEnabled(True)
             self.groupBox_notenschl.setEnabled(True)
             self.groupBox_beurteilungsraster.setEnabled(True)
             self.pushButton_titlepage.setEnabled(True)
-            self.comboBox_at_sage.setEnabled(True)
-            self.pushButton_titlepage.setText("Titelblatt anpassen")
 
 
 
@@ -3818,8 +3797,9 @@ class Ui_MainWindow(object):
 
         self.list_copy_images = self.dict_all_infos_for_file["data_gesamt"]["copy_images"]
 
+
         for aufgabe in self.list_alle_aufgaben_sage:
-            self.build_aufgaben_schularbeit(aufgabe)
+            self.build_aufgaben_schularbeit(aufgabe, True)
 
 
         self.spinBox_default_pkt.setValue(
@@ -3876,120 +3856,36 @@ class Ui_MainWindow(object):
 
 
     def define_titlepage(self):
-        if self.comboBox_pruefungstyp.currentText() == "Quiz":
-            Dialog = QtWidgets.QDialog(
-                None,
-                QtCore.Qt.WindowSystemMenuHint
-                | QtCore.Qt.WindowTitleHint
-                | QtCore.Qt.WindowCloseButtonHint,
-            )
-            ui = Ui_Dialog_random_quiz()
-            ui.setupUi(Dialog, self)
-            # self.Dialog.show()
-            response = Dialog.exec()
-            if response == 0:
-                return
+        if self.chosen_program=='lama':
+            dict_titlepage=self.dict_titlepage
+        if self.chosen_program=='cria':
+            dict_titlepage=self.dict_titlepage_cria
 
-            chosen_gks = ui.random_quiz_response[1]
+        self.Dialog = QtWidgets.QDialog(
+            None,
+            QtCore.Qt.WindowSystemMenuHint
+            | QtCore.Qt.WindowTitleHint
+            | QtCore.Qt.WindowCloseButtonHint,
+        )
+        self.ui = Ui_Dialog_titlepage()
+        self.ui.setupUi(self.Dialog, dict_titlepage)
+        # self.Dialog.show()
+        self.Dialog.exec()
 
-            random_list = []
-            for all in self.beispieldaten_dateipfad_1:
-                for gks in chosen_gks:
-                    if gks in all:
-                        _file = os.path.basename(self.beispieldaten_dateipfad_1[all])
-                        filename, extension = os.path.splitext(_file) 
-                        random_list.append(filename)
+        if self.chosen_program=='lama':
+            self.dict_titlepage = dict_titlepage
+            titlepage_save = os.path.join(path_programm, "Teildokument", "titlepage_save")
+        if self.chosen_program=='cria':
+            self.dict_titlepage_cria = dict_titlepage
+            titlepage_save = os.path.join(path_programm, "Teildokument", "titlepage_save_cria")            
 
-
-            if random_list == []:
-                for all in self.beispieldaten_dateipfad_1:
-                        _file = os.path.basename(self.beispieldaten_dateipfad_1[all])
-                        filename, extension = os.path.splitext(_file)
-                        if filename.split(' - ')[0] in dict_gk.values(): #ignore all not examples not in gks
-                            random_list.append(filename)  
-
-            if len(random_list)<ui.random_quiz_response[0]:
-                number_examples = len(random_list)
-                warning_window("Es sind insgesamt weniger Aufgaben enthalten ({0}), als die ausgwählte Anzahl der Aufgaben ({1}).".format(
-                    len(random_list),
-                    ui.random_quiz_response[0],
-                ),
-                "Es werden alle vorhandenen Aufgaben in zufälliger Reihenfolge ausgegeben.",
-                "Anzahl der Aufgaben")
-            else:
-                number_examples = ui.random_quiz_response[0]
-
-            sampling = random.sample(random_list, number_examples)
-
-            if not is_empty(self.list_alle_aufgaben_sage):
-                response=question_window(
-                'Sind Sie sicher, dass Sie das Fenster zurücksetzen wollen und die erstellte Schularbeit löschen möchten?',
-                titel = 'Schularbeit löschen?')
-
-                if response==False:
-                    return
-
-                for aufgabe in self.list_alle_aufgaben_sage:
-                    self.btn_delete_pressed(aufgabe)
-            # self.list_alle_aufgaben_sage = []
-
-            QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-
-            for aufgabe in sampling:
-                self.sage_aufgabe_add(aufgabe)
-                infos=self.collect_all_infos_aufgabe(aufgabe)
-                self.dict_alle_aufgaben_sage[aufgabe]=infos
-
-                self.build_aufgaben_schularbeit(aufgabe) # aufgabe, aufgaben_verteilung
-
-            QtWidgets.QApplication.restoreOverrideCursor()
-
-            # self.list_alle_aufgaben_sage = []
-            # for all in sampling:
-            #     self.list_alle_aufgaben_sage.append(all)
-
-            # for all in self.list_alle_aufgaben_sage: 
-            #     self.build_aufgaben_schularbeit(all)
-
-               
-            # print(sampling)
-            # print(len(sampling))
-
-            
-            
-
-            
-        else:
-            if self.chosen_program=='lama':
-                dict_titlepage=self.dict_titlepage
-            if self.chosen_program=='cria':
-                dict_titlepage=self.dict_titlepage_cria
-
-            self.Dialog = QtWidgets.QDialog(
-                None,
-                QtCore.Qt.WindowSystemMenuHint
-                | QtCore.Qt.WindowTitleHint
-                | QtCore.Qt.WindowCloseButtonHint,
-            )
-            self.ui = Ui_Dialog_titlepage()
-            self.ui.setupUi(self.Dialog, dict_titlepage)
-            # self.Dialog.show()
-            self.Dialog.exec()
-
-            if self.chosen_program=='lama':
-                self.dict_titlepage = dict_titlepage
-                titlepage_save = os.path.join(path_programm, "Teildokument", "titlepage_save")
-            if self.chosen_program=='cria':
-                self.dict_titlepage_cria = dict_titlepage
-                titlepage_save = os.path.join(path_programm, "Teildokument", "titlepage_save_cria")            
-
-            try:
-                with open(titlepage_save, "w+", encoding="utf8") as f:
-                    json.dump(dict_titlepage, f, ensure_ascii=False)
-            except FileNotFoundError:
-                os.makedirs(os.path.join(path_programm, "Teildokument"))
-                with open(titlepage_save, "w+", encoding="utf8") as f:
-                    json.dump(dict_titlepage, f, ensure_ascii=False)
+        try:
+            with open(titlepage_save, "w+", encoding="utf8") as f:
+                json.dump(dict_titlepage, f, ensure_ascii=False)
+        except FileNotFoundError:
+            os.makedirs(os.path.join(path_programm, "Teildokument"))
+            with open(titlepage_save, "w+", encoding="utf8") as f:
+                json.dump(dict_titlepage, f, ensure_ascii=False)
 
 
 
@@ -4531,7 +4427,7 @@ class Ui_MainWindow(object):
                 self.list_copy_images.append(image)
 
 
-    def build_aufgaben_schularbeit(self, aufgabe): 
+    def build_aufgaben_schularbeit(self, aufgabe, file_loaded=False): 
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
         try:
@@ -5368,14 +5264,6 @@ class Ui_MainWindow(object):
         if self.chosen_program=='cria':
             dict_titlepage=self.dict_titlepage_cria
 
-        if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Quiz":
-            documentclass="\documentclass[18pt]{{beamer}}\n\n"
-            geometry = ""
-            spacing = ""
-        else:
-            documentclass="\documentclass[a4paper,12pt]{{report}}\n\n"
-            geometry = "\geometry{{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}}\n\n"
-            spacing = "\onehalfspacing %Zeilenabstand\n"
         
         dict_vorschau = {}
         if (ausgabetyp == "vorschau" and self.cb_solution_sage.isChecked() == True) or (ausgabetyp == 'schularbeit' and index % 2 == 0):
@@ -5412,7 +5300,7 @@ class Ui_MainWindow(object):
         vorschau = open(filename_vorschau, "w+", encoding="utf8")
 
         vorschau.write(
-            "\documentclass[a4paper,12pt]{{report}}\n\n" #documentclass
+            "\documentclass[a4paper,12pt]{{report}}\n\n"
             "\\usepackage{{geometry}}\n"
             "\geometry{{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}}\n\n"
 
@@ -5450,11 +5338,11 @@ class Ui_MainWindow(object):
 
 
         first_typ2 = False
-        for aufgabe in self.list_alle_aufgaben_sage:                          
+        for aufgabe in self.list_alle_aufgaben_sage:
+
             content = edit_content_vorschau(self, aufgabe, ausgabetyp)
 
             split_content = split_content_at_beispiel_umgebung(content)
-
 
             if split_content == False:
                 text = "".join(content)
@@ -5468,17 +5356,8 @@ class Ui_MainWindow(object):
                 QtWidgets.QApplication.restoreOverrideCursor()
                 return
             
-            if self.comboBox_pruefungstyp.currentText() == "Quiz":
-                with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
-                    for i in range(2):
-                        vorschau.write("\n\n\\setcounter{{Antworten}}{{{0}}}\n\n".format(i))
-                        vorschau.write(
-                            split_content[1]
-                            +"\n"
-                        )
-                        vorschau.write("\n\n\\newpage\n\n")
-            else:
-                first_typ2 = self.add_content_to_tex_file(aufgabe, split_content, filename_vorschau, first_typ2)
+
+            first_typ2 = self.add_content_to_tex_file(aufgabe, split_content, filename_vorschau, first_typ2)
 
 
 
