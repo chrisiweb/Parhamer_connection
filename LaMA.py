@@ -2423,8 +2423,8 @@ class Ui_MainWindow(object):
         self.lineEdit_quelle.setText(_translate("MainWindow", "", None))
         self.plainTextEdit.setPlainText(_translate("MainWindow", "", None))
 
-    def reset_sage(self, program_changed=False):
-        if program_changed==False:
+    def reset_sage(self, question_reset=True):
+        if question_reset==True and not is_empty(self.list_alle_aufgaben_sage):
             response=question_window(
             'Sind Sie sicher, dass Sie das Fenster zurücksetzen wollen und die erstellte Schularbeit löschen möchten?',
             titel = 'Schularbeit löschen?')
@@ -2509,7 +2509,7 @@ class Ui_MainWindow(object):
         if response == False:
             return False
 
-        self.reset_sage(True)
+        self.reset_sage(False)
         self.suchfenster_reset()
         self.reset_feedback()
         # self.comboBox_fehlertyp.setCurrentIndex(0)
@@ -2531,8 +2531,8 @@ class Ui_MainWindow(object):
             self.gridLayout.addWidget(self.groupBox_punkte, 0, 1, 1, 1)
             self.gridLayout.addWidget(self.groupBox_aufgabenformat, 0, 2, 1, 1)
             self.actionProgram.setText(_translate("MainWindow", 'Zu "LaMA (Oberstufe)" wechseln', None))
-            self.comboBox_pruefungstyp.removeItem("Quiz")
-            self.cb_af_ko.show()
+            self.comboBox_pruefungstyp.removeItem(6) # delete Quiz
+            self.cb_af_ko.show() 
             self.cb_af_rf.show()
             self.cb_af_ta.show()
 
@@ -3818,9 +3818,8 @@ class Ui_MainWindow(object):
 
         self.list_copy_images = self.dict_all_infos_for_file["data_gesamt"]["copy_images"]
 
-
         for aufgabe in self.list_alle_aufgaben_sage:
-            self.build_aufgaben_schularbeit(aufgabe, True)
+            self.build_aufgaben_schularbeit(aufgabe)
 
 
         self.spinBox_default_pkt.setValue(
@@ -3890,28 +3889,72 @@ class Ui_MainWindow(object):
             response = Dialog.exec()
             if response == 0:
                 return
-            print(response)
-            print(ui.random_quiz_response)
+
             chosen_gks = ui.random_quiz_response[1]
 
             random_list = []
             for all in self.beispieldaten_dateipfad_1:
                 for gks in chosen_gks:
                     if gks in all:
-                        random_list.append(all)
-                #     if str(gks in str(all):
-                #         random_list.append(self.beispieldaten_dateipfad_1[all])
-            if random_list == []:
-                random_list = self.beispieldaten_dateipfad_1.copy()
+                        _file = os.path.basename(self.beispieldaten_dateipfad_1[all])
+                        filename, extension = os.path.splitext(_file) 
+                        random_list.append(filename)
 
-            if ui.random_quiz_response[0]<len(random_list):
+
+            if random_list == []:
+                for all in self.beispieldaten_dateipfad_1:
+                        _file = os.path.basename(self.beispieldaten_dateipfad_1[all])
+                        filename, extension = os.path.splitext(_file)
+                        if filename.split(' - ')[0] in dict_gk.values(): #ignore all not examples not in gks
+                            random_list.append(filename)  
+
+            if len(random_list)<ui.random_quiz_response[0]:
                 number_examples = len(random_list)
+                warning_window("Es sind insgesamt weniger Aufgaben enthalten ({0}), als die ausgwählte Anzahl der Aufgaben ({1}).".format(
+                    len(random_list),
+                    ui.random_quiz_response[0],
+                ),
+                "Es werden alle vorhandenen Aufgaben in zufälliger Reihenfolge ausgegeben.",
+                "Anzahl der Aufgaben")
             else:
                 number_examples = ui.random_quiz_response[0]
-            print(random_list)
+
             sampling = random.sample(random_list, number_examples)
-            print(sampling)
-            print(len(sampling))
+
+            if not is_empty(self.list_alle_aufgaben_sage):
+                response=question_window(
+                'Sind Sie sicher, dass Sie das Fenster zurücksetzen wollen und die erstellte Schularbeit löschen möchten?',
+                titel = 'Schularbeit löschen?')
+
+                if response==False:
+                    return
+
+                for aufgabe in self.list_alle_aufgaben_sage:
+                    self.btn_delete_pressed(aufgabe)
+            # self.list_alle_aufgaben_sage = []
+
+            QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+
+            for aufgabe in sampling:
+                self.sage_aufgabe_add(aufgabe)
+                infos=self.collect_all_infos_aufgabe(aufgabe)
+                self.dict_alle_aufgaben_sage[aufgabe]=infos
+
+                self.build_aufgaben_schularbeit(aufgabe) # aufgabe, aufgaben_verteilung
+
+            QtWidgets.QApplication.restoreOverrideCursor()
+
+            # self.list_alle_aufgaben_sage = []
+            # for all in sampling:
+            #     self.list_alle_aufgaben_sage.append(all)
+
+            # for all in self.list_alle_aufgaben_sage: 
+            #     self.build_aufgaben_schularbeit(all)
+
+               
+            # print(sampling)
+            # print(len(sampling))
+
             
             
 
@@ -4488,7 +4531,7 @@ class Ui_MainWindow(object):
                 self.list_copy_images.append(image)
 
 
-    def build_aufgaben_schularbeit(self, aufgabe, file_loaded=False): 
+    def build_aufgaben_schularbeit(self, aufgabe): 
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
         try:
@@ -5325,6 +5368,14 @@ class Ui_MainWindow(object):
         if self.chosen_program=='cria':
             dict_titlepage=self.dict_titlepage_cria
 
+        if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Quiz":
+            documentclass="\documentclass[18pt]{{beamer}}\n\n"
+            geometry = ""
+            spacing = ""
+        else:
+            documentclass="\documentclass[a4paper,12pt]{{report}}\n\n"
+            geometry = "\geometry{{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}}\n\n"
+            spacing = "\onehalfspacing %Zeilenabstand\n"
         
         dict_vorschau = {}
         if (ausgabetyp == "vorschau" and self.cb_solution_sage.isChecked() == True) or (ausgabetyp == 'schularbeit' and index % 2 == 0):
@@ -5361,7 +5412,7 @@ class Ui_MainWindow(object):
         vorschau = open(filename_vorschau, "w+", encoding="utf8")
 
         vorschau.write(
-            "\documentclass[a4paper,12pt]{{report}}\n\n"
+            "\documentclass[a4paper,12pt]{{report}}\n\n" #documentclass
             "\\usepackage{{geometry}}\n"
             "\geometry{{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}}\n\n"
 
@@ -5399,11 +5450,11 @@ class Ui_MainWindow(object):
 
 
         first_typ2 = False
-        for aufgabe in self.list_alle_aufgaben_sage:
-
+        for aufgabe in self.list_alle_aufgaben_sage:                          
             content = edit_content_vorschau(self, aufgabe, ausgabetyp)
 
             split_content = split_content_at_beispiel_umgebung(content)
+
 
             if split_content == False:
                 text = "".join(content)
@@ -5417,8 +5468,17 @@ class Ui_MainWindow(object):
                 QtWidgets.QApplication.restoreOverrideCursor()
                 return
             
-
-            first_typ2 = self.add_content_to_tex_file(aufgabe, split_content, filename_vorschau, first_typ2)
+            if self.comboBox_pruefungstyp.currentText() == "Quiz":
+                with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
+                    for i in range(2):
+                        vorschau.write("\n\n\\setcounter{{Antworten}}{{{0}}}\n\n".format(i))
+                        vorschau.write(
+                            split_content[1]
+                            +"\n"
+                        )
+                        vorschau.write("\n\n\\newpage\n\n")
+            else:
+                first_typ2 = self.add_content_to_tex_file(aufgabe, split_content, filename_vorschau, first_typ2)
 
 
 
