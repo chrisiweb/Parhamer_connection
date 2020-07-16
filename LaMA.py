@@ -803,7 +803,7 @@ class Ui_MainWindow(object):
             kapitel= list(dict_klasse.keys())[0]
 
             for unterkapitel in dict_klasse[kapitel]:
-                new_checkbox=create_new_checkbox(new_scrollareacontent, dict_unterkapitel[unterkapitel] + ' (' + unterkapitel +')')
+                new_checkbox=create_new_checkbox(new_scrollareacontent, dict_unterkapitel[unterkapitel]) # + ' (' + unterkapitel +')' 
                 new_checkbox.stateChanged.connect(partial(self.checkbox_unterkapitel_checked_creator_cria, new_checkbox, klasse, kapitel, unterkapitel))
                 self.dict_widget_variables['checkbox_unterkapitel_creator_{0}_{1}_{2}'.format(klasse, kapitel, unterkapitel)]=new_checkbox
                 new_verticallayout.addWidget(new_checkbox)
