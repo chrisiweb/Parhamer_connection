@@ -91,13 +91,36 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, index):
 
         if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Wiederholungsprüfung":
             subsection = self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
-        else: 
-            subsection = (str(self.dict_all_infos_for_file["data_gesamt"]["#"]) + 
-            ". " +
-            self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"])
+        else:
+            if self.groupBox_nummer.isEnabled()==False:
+                subsection = self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
+            else:    
+                subsection = (str(self.dict_all_infos_for_file["data_gesamt"]["#"]) + 
+                ". " +
+                self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"])
                     
 
         titlepage = "\\subsection{{{0} \\hfill {1}}}".format(subsection, datum_kurz)
+
+        if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "br":
+            teil2_pkt_ohne_ap = pkt_typ2 - pkt_ausgleich
+
+            beurteilungsraster = (
+                "\\flushleft \\normalsize\n"
+                "\\thispagestyle{{empty}}\n"
+                "\\beurteilungsraster{{0.85}}{{0.68}}{{0.5}}{{1/3}}{{ % Prozentschluessel\n"
+                "T1={{{0}}}, % Punkte im Teil 1\n"
+                "AP={{{1}}}, % Ausgleichspunkte aus Teil 2\n"
+                "T2={{{2}}}, % Punkte im Teil 2\n"
+                "}} \n\n"
+                "\\newpage\n\n"
+                .format(
+                pkt_typ2,
+                pkt_ausgleich,
+                teil2_pkt_ohne_ap,
+                ))
+
+            titlepage = titlepage + beurteilungsraster
         return titlepage
 
     else:
@@ -123,20 +146,26 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, index):
         if dict_titlepage["titel"] == True:
             if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Wiederholungsprüfung":
                 title_header = "\\textsc{{\\Huge Wiederholungsprüfung}} \\\ [2cm]"
+            elif (
+                self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Schularbeit" or
+                self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Wiederholungsschularbeit" or
+                self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Nachschularbeit"):
+                    title_header = "\\textsc{{\\Huge {0}. Mathematikschularbeit}}".format(self.dict_all_infos_for_file["data_gesamt"]["#"])
+                    
+                    if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Wiederholungsschularbeit":
+                        add_on = "Wiederholung"
+                    elif self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Nachschularbeit":
+                        add_on = "Nachschularbeit"
+                    else:
+                        add_on = None
+                    
+                    if add_on != None:
+                        title_header = title_header + "\\\ [0.5cm] \\textsc{{\Large {0}}}".format(add_on)
+                    
+                    title_header = title_header + "\\\ [2cm] \n\n"
+                
             else:
-                title_header = "\\textsc{{\\Huge {0}. Mathematikschularbeit}}".format(self.dict_all_infos_for_file["data_gesamt"]["#"])
-                
-                if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Wiederholungsschularbeit":
-                    add_on = "Wiederholung"
-                elif self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Nachschularbeit":
-                    add_on = "Nachschularbeit"
-                else:
-                    add_on = None
-                
-                if add_on != None:
-                    title_header = title_header + "\\\ [0.5cm] \\textsc{{\Large {0}}}".format(add_on)
-                
-                title_header = title_header + "\\\ [2cm] \n\n"
+                title_header = "\\textsc{{\\Huge {0}}} \\\ [2cm]".format(self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"])    
         else:
             title_header = ''
 

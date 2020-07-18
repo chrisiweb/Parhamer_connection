@@ -203,6 +203,7 @@ class Ui_Dialog_random_quiz(object):
 
         self.button_create_quiz = create_new_button(Dialog, "Quiz erstellen", partial(self.create_quiz, Ui_MainWindow))
         self.gridlayout_random_quiz.addWidget(self.button_create_quiz, 1,2,1,1)
+        self.button_create_quiz.setFocus()
 
         self.button_cancel = create_new_button(Dialog, "Abbrechen", self.random_quiz_cancel)
         self.gridlayout_random_quiz.addWidget(self.button_cancel, 2,2,1,1)

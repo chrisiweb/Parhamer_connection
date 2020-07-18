@@ -171,3 +171,11 @@ def prepare_content_for_hide_show_items(content):
     temp_content.append(combined_string)
 
     return temp_content
+
+
+def edit_content_quiz(content, solution):
+    # print(content)
+    if solution == True:
+        if "\multiplechoice[" in content:
+            print(True)
+    return content

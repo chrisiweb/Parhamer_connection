@@ -57,7 +57,7 @@ from create_pdf import prepare_tex_for_pdf, create_pdf
 from refresh_ddb import modification_date, refresh_ddb, search_files
 from standard_dialog_windows import warning_window, question_window, critical_window, information_window, custom_window
 from predefined_size_policy import *
-from work_with_content import collect_content, split_aufgaben_content_new_format, split_aufgaben_content
+from work_with_content import collect_content, split_aufgaben_content_new_format, split_aufgaben_content, edit_content_quiz
 from build_titlepage import get_titlepage_vorschau
 from prepare_content_vorschau import (
     edit_content_vorschau,
@@ -1215,8 +1215,12 @@ class Ui_MainWindow(object):
             "Grundkompetenzcheck",
             "Übungsblatt",
         ]
+        # self.comboBox_pruefungstyp.setEditable(True)
+
         if self.chosen_program == 'lama':
             list_comboBox_pruefungstyp.append("Quiz")
+        list_comboBox_pruefungstyp.append("Benutzerdefiniert")
+
         index = 0
         for all in list_comboBox_pruefungstyp:
             self.comboBox_pruefungstyp.addItem("")
@@ -2779,6 +2783,8 @@ class Ui_MainWindow(object):
 
 
     def comboBox_pruefungstyp_changed(self):
+        self.comboBox_pruefungstyp.setEditable(False)
+        self.groupBox_nummer.setEnabled(True)
         if (
             self.comboBox_pruefungstyp.currentText() == "Grundkompetenzcheck"
             or self.comboBox_pruefungstyp.currentText() == "Übungsblatt"
@@ -2804,6 +2810,10 @@ class Ui_MainWindow(object):
             self.pushButton_titlepage.setEnabled(True)
             self.comboBox_at_sage.setEnabled(True)
             self.pushButton_titlepage.setText("Titelblatt anpassen")
+            if self.comboBox_pruefungstyp.currentText() == "Benutzerdefiniert":
+                self.comboBox_pruefungstyp.setEditable(True)
+                self.groupBox_nummer.setEnabled(False)
+                # self.spinBox_nummer.setEnabled(False)
 
 
 
@@ -5369,12 +5379,18 @@ class Ui_MainWindow(object):
             dict_titlepage=self.dict_titlepage_cria
 
         if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Quiz":
-            documentclass="\documentclass[18pt]{{beamer}}\n\n"
-            geometry = ""
+            documentclass="\documentclass[18pt]{beamer}\n\n"
+            geometry = (
+                "\let\oldframe\\frame"
+                "\\renewcommand\\frame[1][allowframebreaks]{\oldframe[#1]}\n"
+                "\\usetheme{Boadilla}\n"
+                "\\usecolortheme{seahorse}\n"
+                "\date{}\n"
+                )
             spacing = ""
         else:
-            documentclass="\documentclass[a4paper,12pt]{{report}}\n\n"
-            geometry = "\geometry{{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}}\n\n"
+            documentclass="\documentclass[a4paper,12pt]{report}\n\n"
+            geometry = "\geometry{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}\n\n"
             spacing = "\onehalfspacing %Zeilenabstand\n"
         
         dict_vorschau = {}
@@ -5399,11 +5415,19 @@ class Ui_MainWindow(object):
 
         if self.chosen_program=='lama' and (
             self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
-            != "Grundkompetenzcheck"
-            and self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
-            != "Übungsblatt"
+            == "Schularbeit" or
+            self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
+            == "Wiederholungsschularbeit" or
+            self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
+            == "Nachschularbeit"            
         ):
             header = "\\subsubsection{Typ 1 Aufgaben}\n\n"
+        elif self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Quiz":
+            header=("\\title{{Typ1 - Quiz}} \n"
+                "\subtitle{{Anzahl der Aufgaben: {0}}} \n"
+                "\maketitle \n"
+                "\subtitle{{}} \n"
+            ).format(len(self.list_alle_aufgaben_sage))
         else:
             header = ""
 
@@ -5412,19 +5436,20 @@ class Ui_MainWindow(object):
         vorschau = open(filename_vorschau, "w+", encoding="utf8")
 
         vorschau.write(
-            "\documentclass[a4paper,12pt]{{report}}\n\n" #documentclass
+            "{0}"
             "\\usepackage{{geometry}}\n"
-            "\geometry{{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}}\n\n"
-
+            "{1}"
+            # "\documentclass[a4paper,12pt]{{report}}\n\n" #documentclass
+            # "\geometry{{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}}\n\n"
             "\\usepackage{{lmodern}}\n"
             "\\usepackage[T1]{{fontenc}}\n"
             "\\usepackage[utf8]{{inputenc}}\n"
             "\\usepackage[ngerman]{{babel}}\n"
-            "\\usepackage[solution_{0}]{{srdp-mathematik}} % solution_on/off\n"
-            "\setcounter{{Zufall}}{{{1}}}{2}\n\n\n"
+            "\\usepackage[solution_{2}]{{srdp-mathematik}} % solution_on/off\n"
+            "\setcounter{{Zufall}}{{{3}}}{4}\n\n\n"
 
-            "\pagestyle{{{3}}} %PAGESTYLE: empty, plain\n"
-            "\onehalfspacing %Zeilenabstand\n"
+            "\pagestyle{{{5}}} %PAGESTYLE: empty, plain\n"
+            "{6}"# "\onehalfspacing %Zeilenabstand\n"
             "\setcounter{{secnumdepth}}{{-1}} % keine Nummerierung der Ueberschriften\n\n\n\n"
 
 
@@ -5433,16 +5458,19 @@ class Ui_MainWindow(object):
             "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n\n"
 
             "\\begin{{document}}\n"
-            "{4}"
-            "{5}"
+            "{7}"
+            "{8}"
 
         .format(
+        documentclass,
+        geometry,
         dict_vorschau['solution'],
         dict_vorschau['index'],
         dict_vorschau['comment'],
         dict_vorschau['pagestyle'],
+        spacing,
         dict_vorschau['titlepage'],
-        header
+        header,
         ))
 
         vorschau.close()
@@ -5450,6 +5478,7 @@ class Ui_MainWindow(object):
 
 
         first_typ2 = False
+        aufgaben_nummer=1
         for aufgabe in self.list_alle_aufgaben_sage:                          
             content = edit_content_vorschau(self, aufgabe, ausgabetyp)
 
@@ -5472,11 +5501,20 @@ class Ui_MainWindow(object):
                 with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
                     for i in range(2):
                         vorschau.write("\n\n\\setcounter{{Antworten}}{{{0}}}\n\n".format(i))
+                        if i==0:
+                            vorschau.write("\\title{{Aufgabe {0}}}\maketitle\n\n".format(aufgaben_nummer))
+                            solution = False
+                        elif i==1:
+                            vorschau.write("\\title{{\\textcolor{{red}}{{Aufgabe {0} (Lösung)}}}}\maketitle\n\n".format(aufgaben_nummer))
+                            solution = True
+
+                        content = edit_content_quiz(split_content[1], solution)
                         vorschau.write(
-                            split_content[1]
+                            content
                             +"\n"
                         )
-                        vorschau.write("\n\n\\newpage\n\n")
+                        vorschau.write("\n\n\\framebreak\n\n")
+                aufgaben_nummer +=1
             else:
                 first_typ2 = self.add_content_to_tex_file(aufgabe, split_content, filename_vorschau, first_typ2)
 
@@ -5487,6 +5525,8 @@ class Ui_MainWindow(object):
             != "Grundkompetenzcheck"
             and self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
             != "Übungsblatt"
+            and self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
+            != "Quiz"
         ):
             if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "ns":
                 notenschluessel = self.dict_all_infos_for_file["data_gesamt"]["Notenschluessel"]
