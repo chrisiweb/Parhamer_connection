@@ -85,7 +85,18 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, index):
     elif self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Übungsblatt":
         titlepage = "\\subsection{Übungsblatt}"
 
-        return titlepage         
+        return titlepage
+
+
+    elif self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Quiz":
+        titlepage=("\\title{{Typ1 - Quiz}} \n"
+            "\subtitle{{Anzahl der Aufgaben: {0}}} \n"
+            "\maketitle \n"
+            "\subtitle{{}} \n"
+        ).format(len(self.list_alle_aufgaben_sage))
+
+        return titlepage
+
 
     elif dict_titlepage["hide_all"] == True:
 

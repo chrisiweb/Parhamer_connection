@@ -172,10 +172,33 @@ def prepare_content_for_hide_show_items(content):
 
     return temp_content
 
+def split_at_string(content, string):
+    if string in content:
+        content = content.split(string)
+        content = string + content[1]
+    return content
 
 def edit_content_quiz(content, solution):
-    # print(content)
+    aufgabenformate=["\multiplechoice", "\langmultiplechoice", "\lueckentext", "\zuordnen"]
+    if "\\begin{pspicture*}" in content:
+        content = content.replace("\\begin{pspicture*}", "\\resizebox{!}{0.8\\textheight}{\\begin{pspicture*}")
+        content = content.replace("\end{pspicture*}", "\end{pspicture*}}")
+
+    if "\langmultiplechoice" in content:
+        temp_content = split_at_string(content, "\langmultiplechoice")
+        if  "\\begin{pspicture*}" in temp_content:
+            print('yes') 
+
+    if solution== False:
+        for all in aufgabenformate:
+            if all in content:
+                content = content.replace(all, "\n\\framebreak\n" + all)
     if solution == True:
-        if "\multiplechoice[" in content:
-            print(True)
+        for all in aufgabenformate:
+            content = split_at_string(content, all)
+        # content = split_at_string(content, "\langmultiplechoice")
+        # content = split_at_string(content, "\lueckentext")
+        # content = split_at_string(content, "\zuordnen")
+
+
     return content

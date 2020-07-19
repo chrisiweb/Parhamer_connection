@@ -2798,6 +2798,18 @@ class Ui_MainWindow(object):
                 self.pushButton_titlepage.setText("Zufälliges Quiz erstellen")
                 self.comboBox_at_sage.setCurrentIndex(0)
                 self.comboBox_at_sage.setEnabled(False)
+                if self.get_aufgabenverteilung()[1] != 0:
+                    response = question_window(
+                        "Das Quiz ist ausschließlich für Typ1-Aufgaben konzipiert. Sollen alle enthaltenen Typ2-Aufgaben entfernt und das Quiz erstellt werden?",
+                        titel = "Typ2 Aufgaben entfernen?")
+                    if response == False:
+                        self.comboBox_pruefungstyp.setCurrentIndex(0)
+                        return
+                    else:
+                        for aufgabe in self.list_alle_aufgaben_sage[:]:
+                            typ = self.get_aufgabentyp(aufgabe)
+                            if typ==2:
+                                self.btn_delete_pressed(aufgabe)
             
             else:
                 self.pushButton_titlepage.setEnabled(False)
@@ -3939,7 +3951,7 @@ class Ui_MainWindow(object):
                 if response==False:
                     return
 
-                for aufgabe in self.list_alle_aufgaben_sage:
+                for aufgabe in self.list_alle_aufgaben_sage[:]:
                     self.btn_delete_pressed(aufgabe)
             # self.list_alle_aufgaben_sage = []
 
@@ -5382,7 +5394,7 @@ class Ui_MainWindow(object):
             documentclass="\documentclass[18pt]{beamer}\n\n"
             geometry = (
                 "\let\oldframe\\frame"
-                "\\renewcommand\\frame[1][allowframebreaks]{\oldframe[#1]}\n"
+                "\\renewcommand\\frame[1][allowframebreaks, c]{\oldframe[#1]}\n"
                 "\\usetheme{Boadilla}\n"
                 "\\usecolortheme{seahorse}\n"
                 "\date{}\n"
@@ -5422,12 +5434,7 @@ class Ui_MainWindow(object):
             == "Nachschularbeit"            
         ):
             header = "\\subsubsection{Typ 1 Aufgaben}\n\n"
-        elif self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Quiz":
-            header=("\\title{{Typ1 - Quiz}} \n"
-                "\subtitle{{Anzahl der Aufgaben: {0}}} \n"
-                "\maketitle \n"
-                "\subtitle{{}} \n"
-            ).format(len(self.list_alle_aufgaben_sage))
+
         else:
             header = ""
 
@@ -5510,10 +5517,11 @@ class Ui_MainWindow(object):
 
                         content = edit_content_quiz(split_content[1], solution)
                         vorschau.write(
-                            content
-                            +"\n"
+                            "\\begin{frame}\n"+
+                            content+
+                            "\n\\end{frame}\n\n"
                         )
-                        vorschau.write("\n\n\\framebreak\n\n")
+                        # vorschau.write("\n\n\\framebreak\n\n")
                 aufgaben_nummer +=1
             else:
                 first_typ2 = self.add_content_to_tex_file(aufgabe, split_content, filename_vorschau, first_typ2)
