@@ -181,13 +181,16 @@ def split_at_string(content, string):
 def edit_content_quiz(content, solution):
     aufgabenformate=["\multiplechoice", "\langmultiplechoice", "\lueckentext", "\zuordnen"]
     if "\\begin{pspicture*}" in content:
-        content = content.replace("\\begin{pspicture*}", "\\resizebox{!}{0.8\\textheight}{\\begin{pspicture*}")
+        content = content.replace("\\begin{pspicture*}", "\\resizebox{!}{0.7\\textheight}{\\begin{pspicture*}")
         content = content.replace("\end{pspicture*}", "\end{pspicture*}}")
 
     if "\langmultiplechoice" in content:
-        temp_content = split_at_string(content, "\langmultiplechoice")
+        split_content = content.split("\langmultiplechoice")
+        temp_content = split_content[1]
         if  "\\begin{pspicture*}" in temp_content:
-            print('yes') 
+            temp_content= temp_content.replace("\\resizebox{!}{0.7\\textheight}", "\\resizebox{!}{0.25\\textheight}")
+        print(temp_content)
+        content = content.replace(split_content[1], temp_content)
 
     if solution== False:
         for all in aufgabenformate:
