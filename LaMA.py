@@ -329,7 +329,7 @@ class Ui_MainWindow(object):
         # self.actionReset_creator = add_action(self.menuDatei, "Reset", self.suchfenster_reset)
         # self.actionReset.setShortcut("F4")
 
-        self.actionReset_sage = add_action(MainWindow,self.menuDatei, "Reset Schularbeit", self.reset_sage)
+        self.actionReset_sage = add_action(MainWindow,self.menuDatei, "Reset Datei", self.reset_sage)
         self.actionReset_sage.setVisible(False)
 
         self.actionRefresh_Database = add_action(MainWindow,self.menuDatei, "Datenbank aktualisieren", self.action_refreshddb_selected)
@@ -366,10 +366,10 @@ class Ui_MainWindow(object):
         self.actionSuche = add_action(MainWindow,self.menuSuche, "Aufgaben suchen...", partial(self.update_gui, 'widgets_search'))
         self.actionSuche.setShortcut("F1")
 
-        self.actionSage = add_action(MainWindow,self.menuSage, "Neue Schularbeit erstellen...", partial(self.update_gui, 'widgets_sage'))
+        self.actionSage = add_action(MainWindow,self.menuSage, "Neue Datei erstellen...", partial(self.update_gui, 'widgets_sage'))
         self.actionSage.setShortcut("F2")
 
-        self.actionNeu = add_action(MainWindow,self.menuNeu, "Neue Aufgabe erstellen...", partial(self.update_gui, 'widgets_create'))
+        self.actionNeu = add_action(MainWindow,self.menuNeu, "Neue Aufgabe zur Datenbank hinzufügen...", partial(self.update_gui, 'widgets_create'))
         self.actionNeu.setShortcut("F3") 
 
         self.actionBild_einbinden = add_action(MainWindow,self.menuBild_einbinden, "Durchsuchen...", self.add_picture)
@@ -1194,9 +1194,9 @@ class Ui_MainWindow(object):
         self.groupBox_sage.setObjectName("groupBox_sage")
         self.gridLayout_5 = QtWidgets.QGridLayout(self.groupBox_sage)
         self.gridLayout_5.setObjectName("gridLayout_5")
-        self.groupBox_sage.setTitle(
-            _translate("MainWindow", "Schularbeitserstellung", None)
-        )
+        # self.groupBox_sage.setTitle(
+        #     _translate("MainWindow", "Erstellen", None)
+        # )
 
         # self.checkBox_wiederholung = QtWidgets.QCheckBox(self.groupBox_sage)
         # self.checkBox_wiederholung.setObjectName("checkBox_wiederholung")
@@ -1792,8 +1792,8 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         self.menuDateityp.setTitle(_translate("MainWindow", "Aufgabentyp", None))
         self.menuDatei.setTitle(_translate("MainWindow", "Datei", None))
-        self.menuNeu.setTitle(_translate("MainWindow", "Neue Aufgabe", None))
-        self.menuSage.setTitle(_translate("MainWindow", "Neue Schularbeit", None))
+        self.menuNeu.setTitle(_translate("MainWindow", "Aufgabe hinzufügen", None))
+        self.menuSage.setTitle(_translate("MainWindow", "Erstellen", None))
         self.menuSuche.setTitle(_translate("MainWindow", "Aufgabensuche", None))
         self.menuBild_einbinden.setTitle(_translate("MainWindow", "Bild einfügen", None))
         self.menuFeedback.setTitle(_translate("MainWindow", "Feedback && Fehler", None))
@@ -2430,8 +2430,8 @@ class Ui_MainWindow(object):
     def reset_sage(self, question_reset=True):
         if question_reset==True and not is_empty(self.list_alle_aufgaben_sage):
             response=question_window(
-            'Sind Sie sicher, dass Sie das Fenster zurücksetzen wollen und die erstellte Schularbeit löschen möchten?',
-            titel = 'Schularbeit löschen?')
+            'Sind Sie sicher, dass Sie das Fenster zurücksetzen wollen und die erstellte Datei löschen möchten?',
+            titel = 'Datei löschen?')
 
             if response==False:
                 return
@@ -2824,6 +2824,8 @@ class Ui_MainWindow(object):
             self.pushButton_titlepage.setText("Titelblatt anpassen")
             if self.comboBox_pruefungstyp.currentText() == "Benutzerdefiniert":
                 self.comboBox_pruefungstyp.setEditable(True)
+                self.comboBox_pruefungstyp.lineEdit().selectAll()
+                # setCursorPosition(0)
                 self.groupBox_nummer.setEnabled(False)
                 # self.spinBox_nummer.setEnabled(False)
 
@@ -2840,7 +2842,7 @@ class Ui_MainWindow(object):
         if self.cb_drafts.isChecked():
             warning_window(
                 "Entwürfe können Fehler enthalten, die das Programm zum Absturz bringen.",
-                "Speichern Sie gegebenenfalls eine erstellte Schularbeit vor der Suche!",
+                "Speichern Sie gegebenenfalls eine erstellte Datei vor der Suche!",
                 titel="Warnung - Here be dragons!",
             )
 
@@ -2885,7 +2887,7 @@ class Ui_MainWindow(object):
         if self.cb_drafts_sage.isChecked()==True:
             warning_window(
                 "Entwürfe können Fehler enthalten, die das Programm zum Absturz bringen.",
-                "Speichern Sie gegebenenfalls eine erstellte Schularbeit vor der Suche!",
+                "Speichern Sie gegebenenfalls eine erstellte Datei vor der Suche!",
                 titel="Warnung - Here be dragons!",
             )
 
@@ -3945,8 +3947,8 @@ class Ui_MainWindow(object):
 
             if not is_empty(self.list_alle_aufgaben_sage):
                 response=question_window(
-                'Sind Sie sicher, dass Sie das Fenster zurücksetzen wollen und die erstellte Schularbeit löschen möchten?',
-                titel = 'Schularbeit löschen?')
+                'Sind Sie sicher, dass Sie das Fenster zurücksetzen wollen und die erstellte Datei löschen möchten?',
+                titel = 'Datei löschen?')
 
                 if response==False:
                     return
