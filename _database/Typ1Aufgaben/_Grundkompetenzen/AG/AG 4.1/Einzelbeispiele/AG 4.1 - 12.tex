@@ -5,15 +5,6 @@ In einem Rhombus mit der Seite $a$ halbieren die Diagonalen $e=AC$ und $f=BD$ ei
 
 \resizebox{1\linewidth}{!}{\newrgbcolor{uuuuuu}{0.26666666666666666 0.26666666666666666 0.26666666666666666}
 \newrgbcolor{srsrsr}{0.12941176470588237 0.12941176470588237 0.12941176470588237}
-\newrgbcolor{srsrsr}{0.12941176470588237 0.12941176470588237 0.12941176470588237}
-\newrgbcolor{srsrsr}{0.12941176470588237 0.12941176470588237 0.12941176470588237}
-\newrgbcolor{srsrsr}{0.12941176470588237 0.12941176470588237 0.12941176470588237}
-\newrgbcolor{srsrsr}{0.12941176470588237 0.12941176470588237 0.12941176470588237}
-\newrgbcolor{srsrsr}{0.12941176470588237 0.12941176470588237 0.12941176470588237}
-\newrgbcolor{srsrsr}{0.12941176470588237 0.12941176470588237 0.12941176470588237}
-\newrgbcolor{srsrsr}{0.12941176470588237 0.12941176470588237 0.12941176470588237}
-\newrgbcolor{srsrsr}{0.12941176470588237 0.12941176470588237 0.12941176470588237}
-\newrgbcolor{srsrsr}{0.12941176470588237 0.12941176470588237 0.12941176470588237}
 \psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
 \begin{pspicture*}(-2.98,-2.3)(12.48,6.14)
 \psline(-2.,-1.)(6.,-1.)
@@ -32,22 +23,20 @@ In einem Rhombus mit der Seite $a$ halbieren die Diagonalen $e=AC$ und $f=BD$ ei
 \pscustom[linecolor=srsrsr,fillcolor=srsrsr,fillstyle=solid,opacity=0.2]{
 \parametricplot{0.7853981633974482}{3.141592653589793}{1.*cos(t)+6.|1.*sin(t)+-1.}
 \lineto(6.,-1.)\closepath}
-\begin{scriptsize}
-\psdots[dotsize=3pt 0,dotstyle=*,linecolor=darkgray](-2.,-1.)
-\rput[bl](-2.2,-1.58){\darkgray{$A$}}
-\psdots[dotsize=3pt 0,dotstyle=*,linecolor=darkgray](6.,-1.)
-\rput[bl](6.18,-1.42){\darkgray{$B$}}
+\psdots[dotsize=3pt 0,dotstyle=*](-2.,-1.)
+\rput[bl](-2.2,-1.58){$A$}
+\psdots[dotsize=3pt 0,dotstyle=*](6.,-1.)
+\rput[bl](6.18,-1.42){$B$}
 \rput[bl](2.,-1.32){$a$}
-\psdots[dotsize=3pt 0,dotstyle=*,linecolor=darkgray](3.6568542494923806,4.65685424949238)
-\rput[bl](3.74,4.78){\darkgray{$D$}}
-\rput[bl](-1.48,-0.82){\srsrsr{$\alpha$}}
-\psdots[dotsize=3pt 0,dotstyle=*,linecolor=darkgray](11.656854249492381,4.65685424949238)
-\rput[bl](11.74,4.78){\darkgray{$C$}}
+\psdots[dotsize=3pt 0,dotstyle=*](3.6568542494923806,4.65685424949238)
+\rput[bl](3.74,4.78){$D$}
+\rput[bl](-1.48,-0.82){$\alpha$}
+\psdots[dotsize=3pt 0,dotstyle=*](11.656854249492381,4.65685424949238)
+\rput[bl](11.74,4.78){$C$}
 \rput[bl](6.46,2.06){$e$}
 \rput[bl](4.34,3.36){$f$}
-\psdots[dotsize=3pt 0,dotstyle=*,linecolor=darkgray](4.828427124746191,1.8284271247461896)
-\rput[bl](5.58,-0.76){\srsrsr{$\beta$}}
-\end{scriptsize}
+\psdots[dotsize=3pt 0,dotstyle=*](4.828427124746191,1.8284271247461896)
+\rput[bl](5.58,-0.76){$\beta$}
 \end{pspicture*}}
 
 Gegeben sind die Seitenlänge $a$ und der Winkel $\beta$. Gib eine Formel an, mit der $f$ mithilfe von $a$ und $\beta$ berechnet werden kann.

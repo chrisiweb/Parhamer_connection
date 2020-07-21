@@ -1,0 +1,42 @@
+\section{FA 6.3 - 14 - MAT - Bewegung auf einem Kreis - OA - Matura 2019/20 1. HT}
+
+\begin{beispiel}[FA 6.3]{1}
+Ein Punkt bewegt sich auf einem Kreis mit dem Mittelpunkt $M=(0\mid 0)$ mit konstanter Geschwindigkeit gegen den Uhrzeigersinn.\\
+Zu Beginn der Bewegung (zum Zeitpunkt $t=0$) liegt der Punkt $P$ auf der positiven $x$-Achse wie in der nachstehenden Abbildung dargestellt.
+
+\begin{center}
+\psset{xunit=0.8cm,yunit=0.8cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-4.62,-4.5)(4.76,4.52)
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=none,Dx=1.,Dy=1.,ticks=none]{->}(0,0)(-4.62,-4.5)(4.76,4.52)[$x$,140] [$y$,-40]
+\pscircle[linewidth=2.pt](0.,0.){2.4}
+\psdots[dotsize=7pt 0,dotstyle=*,linecolor=darkgray](0.,0.)
+\rput[bl](0.08,0.28){$M$}
+\psdots[dotsize=7pt 0,dotstyle=*,linecolor=darkgray](3.,0.)
+\rput[bl](3.08,0.28){$P$}
+\end{pspicture*}
+\end{center}
+
+Die Funktion $f$ ordnet der Zeit $t$ die zweite Koordinate $f(t)=a\cdot\sin(b\cdot t)$ des Punktes $P$ zur Zeit $t$ zu ($t$ in s, $f(t)$ in dm, $a,b\in\mathbb{R}^+$). Der in der nachstehenden Abbildung dargestellte Graph von $f$ verläuft durch den Punkt $H$, wobei gilt: $f'(1,5)=0$.
+
+\begin{center}
+\psset{xunit=0.7cm,yunit=0.55cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-0.8,-5.48)(18.46,5.06)
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=none,Dx=1.,Dy=1.,ticks=none]{->}(0,0)(0,-5.48)(18.46,5.06)[$t$,140] [$f(t)$,-40]
+\psplot[linewidth=2.pt,plotpoints=200]{0}{18.459999999999972}{4.0*SIN(x)}
+\rput[tl](0.26,-0.15){0}
+\rput[tl](-0.5,0.26){0}
+\rput[bl](2.7,-1.94){$f$}
+\rput[bl](1.66,4.16){$H=(1,5\mid 4)$}
+\psdots[dotsize=7pt 0,dotstyle=*](1.57,3.9999987317273384)
+\end{pspicture*}
+\end{center}
+
+Ermittle den Radius des Kreises und die Umlaufzeit des Punktes $P$ (für eine Umrundung).\leer
+
+Radius des Kreises:\,\antwort[\rule{2cm}{0.3pt}]{4}\,dm\leer
+
+Umlaufzeit:\,\antwort[\rule{2cm}{0.3pt}]{6}\,s
+
+\antwort{\textbf{Lösungschlüssel:}\\
+Ist nur einer der angegebenen Werte richtig, ist ein halber Punkt zu geben.}
+\end{beispiel}

@@ -1,4 +1,4 @@
-\section{FA 5.5 - 1 Verdoppelungszeit - OA - BIFIE}
+\section{FA 5.5 - 1 - Verdoppelungszeit - OA - BIFIE}
 
 \begin{beispiel}[FA 5.5]{1} %PUNKTE DES BEISPIELS
 Die unten stehende Abbildung zeigt den Graphen einer Exponentialfunktion $f$ mit $f(t) = a \cdot b^t$. 
@@ -7,10 +7,10 @@ Die unten stehende Abbildung zeigt den Graphen einer Exponentialfunktion $f$ mit
 
 \begin{center}
 \psset{xunit=1cm,yunit=0.001cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
-\begin{pspicture*}(-1.5058596872100787,-819.5645465347067)(9.591161771235118,8641.841504203152)
+\begin{pspicture*}(-1.5058596872100787,-500)(9.591161771235118,8641.841504203152)
 \multips(0,-1000)(0,1000.0){10}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(-1.5058596872100787,0)(9.591161771235118,0)}
-\multips(-1,0)(1.0,0){12}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,-819.5645465347067)(0,8641.841504203152)}
-\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=1.,Dy=1000.,ticksize=-2pt 0,subticks=2]{->}(0,0)(-1.5058596872100787,-819.5645465347067)(9.591161771235118,8641.841504203152)[t in Jahren,140] [\euro,-40]
+\multips(-1,0)(1.0,0){12}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,0)(0,8641.841504203152)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=1.,Dy=1000.,ticksize=-2pt 0,subticks=0]{->}(0,0)(-1.5058596872100787,-819.5645465347067)(9.591161771235118,8641.841504203152)[t in Jahren,140] [\euro,-40]
 \psplot[plotpoints=200]{-1.5058596872100787}{9.591161771235118}{2000.0*2.0^(x/4.0)}
 \rput[tl](2.3189640354286287,3700){$f$}
 \end{pspicture*}

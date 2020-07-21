@@ -1,0 +1,45 @@
+\section{AG 3.5 - 9 - K5 - Normalvektoren - ZO - MarStr UNIVIE}
+
+\begin{beispiel}[AG 3.5]{1}
+Die folgende Abbildung definiert vier Vektoren $\vec{a}$, $\vec{b}$, $\vec{c}$ und $\vec{d}$ aus $\mathbb{R}^2$. 
+
+\begin{center}
+\psset{xunit=0.7cm,yunit=0.7cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-3.9842392011876386,-3.8737955044436427)(3.936599960489496,3.880289148566624)
+\multips(0,-3)(0,1.0){8}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(-3.9842392011876386,0)(3.936599960489496,0)}
+\multips(-3,0)(1.0,0){8}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,-3.8737955044436427)(0,3.880289148566624)}
+\psaxes[labelFontSize=\scriptstyle, showorigin=false, xAxis=true,yAxis=true,Dx=1.,Dy=1.,ticksize=-2pt 0,subticks=0]{->}(0,0)(-3.9842392011876386,-3.8737955044436427)(3.936599960489496,3.880289148566624)
+\psline[linewidth=1.pt]{->}(0,0)(1.,3.)
+\psline[linewidth=1.pt]{->}(-3.,-1.)(3.,3.)
+\psline[linewidth=1.pt]{->}(-2.,3.)(1.,-3.)
+\psline[linewidth=1.pt]{->}(3.,1.)(1.,0.)
+\begin{scriptsize}
+\rput[bl](0.35,2.2){$\vec{a}$}
+\rput[bl](-1.9,1.4){$\vec{b}$}
+\rput[bl](1.5,1.6){$\vec{c}$}
+\rput[bl](2.3,0.2){$\vec{d}$}
+\end{scriptsize}
+\end{pspicture*}
+\end{center}
+
+Ordne jedem der Vektoren $\vec{a}$, $\vec{b}$, $\vec{c}$ und $\vec{d}$ einen möglichen Normalvektor (aus A bis F) zu!
+
+\zuordnen{
+				R1={$\vec{a}$},				% Response 1
+				R2={$\vec{b}$},				% Response 2
+				R3={$\vec{c}$},				% Response 3
+				R4={$\vec{d}$},				% Response 4
+				%% Moegliche Zuordnungen: %%
+				A={\small{$\vec{n_1}= \Vek{2}{1}{}$}}, 				%Moeglichkeit A  
+				B={\small{$\vec{n_2}= \Vek{1}{-2}{}$}}, 			%Moeglichkeit B  
+				C={\small{$\vec{n_3}= \Vek{2}{3}{}$}}, 				%Moeglichkeit C  
+				D={\small{$\vec{n_4}= \Vek{3}{-1}{}$}}, 			%Moeglichkeit D  
+				E={\small{$\vec{n_5}= \Vek{-3}{-1}{}$}}, 			%Moeglichkeit E  
+				F={\small{$\vec{n_6}= \Vek{-2}{3}{}$}}, 			%Moeglichkeit F  
+				%% LOESUNG: %%
+				A1={D},				% 1. richtige Zuordnung
+				A2={A},				% 2. richtige Zuordnung
+				A3={F},				% 3. richtige Zuordnung
+				A4={B},				% 4. richtige Zuordnung
+				}
+\end{beispiel}

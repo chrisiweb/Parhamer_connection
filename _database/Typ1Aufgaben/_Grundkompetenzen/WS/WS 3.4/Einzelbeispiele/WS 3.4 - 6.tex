@@ -1,0 +1,31 @@
+\section{WS 3.4 - 6 - Normalapproximation - OA - BarTri UNIVIE}
+
+\begin{beispiel}[WS 3.4]{1}
+Sei $X$ eine binomialverteilte Zufallsvariable mit $n=900$ und $p=0,5$. Die Binomialverteilung soll durch eine Normalverteilung approximiert werden. Sei $f$ die Dichtefunktion dieser Normalverteilung mit dem Erwartungswert $\mu$ und der Standardabweichung $\sigma$. In der nachstehenden Abbildung ist der Graph der Dichtefunktion $f$ der Normalverteilung dargestellt. Die grau schraffierte Fläche entspricht der Wahrscheinlichkeit $P(X \geq 475)=0,0478$.
+
+\begin{center}
+\psset{xunit=0.1cm,yunit=82.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(392.6091170022341,-0.008)(507.8452503256819,0.027862928774716657)
+\multips(0,0)(0,0.005){6}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(392.6091170022341,0)(507.8452503256819,0)}
+\multips(400,0)(10.0,0){12}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,-0.0015769551481449933)(0,0.027862928774716657)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=10.,Dy=0.005,ticksize=-2pt 0,subticks=0]{->}(0,0)(392.6091170022341,-0.0015769551481449933)(507.8452503256819,0.027862928774716657)
+\pscustom[linewidth=0.8pt,fillcolor=black,fillstyle=solid,opacity=0.5]{\psplot{475.}{526.}{EXP((-(x-450.0)^(2.0))/(15.0^(2.0)*2.0))/(abs(15.0)*sqrt(3.141592653589793*2.0))}\lineto(526.,0)\lineto(475.,0)\closepath}
+
+\psplot[linewidth=1.6pt,plotpoints=200]{392.6091170022341}{507.8452503256819}{EXP((-(x-450.0)^(2.0))/(15.0^(2.0)*2.0))/(abs(15.0)*sqrt(3.141592653589793*2.0))}
+\psline[linewidth=1.pt](450.,0.02659615202676218)(450.,0.)
+\begin{scriptsize}
+\rput[bl](430.70846351822166,0.016){$f$}
+\end{scriptsize}
+\end{pspicture*}
+\end{center}
+
+Die Binomialverteilung mit den Parametern $n=900$ und $p=0,5$ kann näherungsweise durch die Normalverteilung approximiert werden, da die Faustregel $\sigma^2 \geqslant 9$ erfüllt ist.
+
+Drücke $\mu$ und $\sigma$ näherungsweise durch $n$ und $p$ aus. Berechne anschließend den Näherungswert von $P(450 \leqslant X\leqslant 475)$ mit Hilfe der Grafik.\leer
+
+$\mu= \antwort[\rule{5cm}{0.3pt}]{900 \cdot 0,5=450}$\\
+\newline
+$\sigma= \antwort[\rule{5cm}{0.3pt}]{\sqrt {900 \cdot 0,5 \cdot (1-0,5)}=15}$\\
+\newline
+$P(450 \leqslant X\leqslant 475)= \antwort[\rule{5cm}{0.3pt}]{0,5-0,0478= 0,4522}$\\
+\end{beispiel}

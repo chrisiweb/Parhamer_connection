@@ -1,0 +1,73 @@
+\section{AG 1.2 - 8 - MAT - Umformen und einsetzen in Formeln - MC - FilJan}
+
+
+\begin{beispiel}[AG 1.2]{1} %PUNKTE DES BEISPIELS
+
+Gegeben ist folgende Schaltung:
+
+\newrgbcolor{ttqqtt}{0.2 0 0.2}
+\psset{xunit=0.65cm,yunit=0.65cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=5pt 2,arrowinset=0.25}
+\begin{center}
+\begin{pspicture*}(1.65,2.8)(9.2,7.3)
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=1,Dy=1,ticksize=-2pt 0,subticks=2]{->}(0,0)(-2.2534905675922268,-3.8839004709576583)(14.463571792619675,10.543358360953654)
+\psline[linewidth=1.7pt](2,3)(2,6)
+\psline[linewidth=1.7pt](2,6)(3,6)
+\psline[linewidth=1.7pt](3,6.5)(5,6.5)
+\psline[linewidth=1.7pt](3,5.5)(5,5.5)
+\psline[linewidth=1.7pt](5,6.5)(5,5.5)
+\psline[linewidth=1.7pt](3,5.5)(3,6.5)
+\psline[linewidth=1.7pt](5,6)(6,6)
+\psline[linewidth=1.7pt](6,6.5)(6,5.5)
+\psline[linewidth=1.7pt](6,6.5)(8,6.5)
+\psline[linewidth=1.7pt](8,5.5)(8,6.5)
+\psline[linewidth=1.7pt](6,5.5)(8,5.5)
+\psline[linewidth=1.7pt](8,6)(9,6)
+\psline[linewidth=1.7pt](9,6)(9,3)
+\psline[linewidth=1pt]{->}(3,4.5)(5,4.5)
+\psline[linewidth=1pt]{->}(6,4.5)(8,4.5)
+\psline[linewidth=1pt]{->}(2.2,3)(8.8,3)
+\psline[linewidth=1pt]{->}(2,6)(2.7301994645926997,6)
+\psline[linewidth=1pt]{->}(5,6)(5.7,6)
+\begin{scriptsize}
+\psdots[dotstyle=*,linecolor=ttqqtt](2,3)
+\rput[bl](3.6,6.7){\normalsize $R_1$}
+\rput[bl](6.6,6.7){\normalsize $R_2$}
+\psdots[dotstyle=*,linecolor=ttqqtt](9,3)
+\rput[bl](3.6,4.7){\normalsize $U_1$}
+\rput[bl](6.6,4.7){\normalsize $U_2$}
+\rput[bl](5.0,3.2){\normalsize $U_{ges}$}
+\rput[bl](2.2,6.25){\normalsize $I_1$}
+\rput[bl](5.15,6.25){\normalsize $I_2$}
+\end{scriptsize}
+\end{pspicture*}
+\end{center}
+
+
+$R_1$ und $R_2$ sind die elektrischen Widerstände. $U_1$, $U_2$ und $U_{ges}$ sind die elektrischen Spannungen. $I_1$ und $I_2$ sind die elektrischen Stromstärken. 
+
+Für die Gesamtspannung gilt: $U_{ges}=U_1+U_2$. \\
+Für die elektrischen Stromstärken gilt: $I_1 = I_2$.
+
+Kreuze die beiden zutreffenden Aussagen an! 
+
+\multiplechoice[5]{  %Anzahl der Antwortmoeglichkeiten, Standard: 5
+				L1={Wenn man die Differenz von den elektrischen Stromstärken $I_1$ und $I_2$ berechnet, dann ist das Ergebnis größer als 0.
+				},   %1. Antwortmoeglichkeit 
+				L2={Wenn der elektrische Widerstand durch $R_1= \dfrac{U_1}{I_1}$ berechnet wird, dann kann er auch durch $R_1= \dfrac{U_{ges}+U_2}{I_1}$ bestimmt werden.},   %2. Antwortmoeglichkeit
+				L3={Wenn die elektrischen Stromstärken durch $I_1=\dfrac{U_1}{R_1}$ und $I_2=\dfrac{U_2}{R_2}$ gegeben sind, dann gilt die Proportion $\dfrac{U_1}{R_1}=\dfrac{U_2}{R_2}$. },   %3. Antwortmoeglichkeit
+				L4={ Wenn man die Gleichung $\dfrac{U_{ges} - U_2}{R_1}= \dfrac{U_2}{R_2}$ nach $U_{ges}$ umformt, dann erhält man $U_{ges}= \dfrac{U_2 \cdot R_1}{R_2} - U_2$.},   %4. Antwortmoeglichkeit
+				L5={Wenn die elektrischen Spannungen $U_1$ und $U_2$ gleich groß sind, dann ergibt $U_2$ die Hälfte der Gesamtspannung $U_{ges}.$},	 %5. Antwortmoeglichkeit
+				L6={},	 %6. Antwortmoeglichkeit
+				L7={},	 %7. Antwortmoeglichkeit
+				L8={},	 %8. Antwortmoeglichkeit
+				L9={},	 %9. Antwortmoeglichkeit
+				%% LOESUNG: %%
+				A1=3,  % 1. Antwort
+				A2=5,	 % 2. Antwort
+				A3=0,  % 3. Antwort
+				A4=0,  % 4. Antwort
+				A5=0,  % 5. Antwort
+				}
+
+
+\end{beispiel}

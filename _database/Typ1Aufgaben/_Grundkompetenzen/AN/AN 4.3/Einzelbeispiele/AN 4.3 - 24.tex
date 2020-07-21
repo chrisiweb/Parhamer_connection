@@ -1,0 +1,43 @@
+\section{AN 4.3 - 24 - K8 - Fläche zwischen zwei Funktionen - MC - MatKon}
+
+\begin{beispiel}[AN 4.3]{1}
+Gegeben sind die Graphen der Funktionen $f$ und $g$ sowie einige Berechnungsansätze zur Ermittlung des farbig markierten Flächeninhalts. Kreuze die beiden Terme an, mit denen man den gesuchten Flächeninhalt berechnen kann.
+
+\begin{center}
+				\newrgbcolor{ccqqqq}{0.8 0. 0.}
+\psset{xunit=0.6cm,yunit=0.6cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-10.58,-4.68)(11.88,10.74)
+\multips(0,-4)(0,1.0){16}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(-10.58,0)(11.88,0)}
+\multips(-10,0)(1.0,0){22}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,-4.68)(0,10.74)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,showorigin=false,Dx=1.,Dy=1.,ticksize=-2pt 0,subticks=0]{->}(0,0)(-10.58,-4.68)(11.88,10.74)[$x$,140] [$y$,-40]
+\pscustom[linewidth=0.8pt,fillcolor=black,fillstyle=solid,opacity=0.3]{\psplot{-8.81}{7.74}{0.03550822763583852*x^(3.0)+0.03780455218739425*x^(2.0)-1.7194977563887346*x+3.0047391584462124}\lineto(7.74,8.418)\psplot{7.74}{-8.81}{0.7*x+3.0}\lineto(-8.81,-3.19269309985994)\closepath}
+\psplot[linewidth=2.pt,plotpoints=200]{-10.580000000000009}{10.880000000000013}{0.03550822763583852*x^(3.0)+0.03780455218739425*x^(2.0)-1.7194977563887346*x+3.0047391584462124}
+\psplot[linewidth=1.5pt]{-10.58}{10.88}{(--30.--7.*x)/10.}
+\psplot[linewidth=1.5pt,plotpoints=200]{-10.580000000000009}{10.880000000000013}{0.7*x+3.0}
+\rput[tl](7.4,10.08){$f$}
+\rput[tl](9.7,9.6){$g$}
+\psdots[dotsize=8pt 0,dotstyle=*](-8.805037976618635,-3.1635265836330424)
+\rput[bl](-8.3,-3.8){$S = (a\mid b)$}
+\psdots[dotsize=8pt 0,dotstyle=*](7.73840896972363,8.416886278806544)
+\rput[bl](8.1,7.8){$T = (c\mid d)$}
+\end{pspicture*}
+				\end{center}
+				
+				\multiplechoice[5]{  %Anzahl der Antwortmoeglichkeiten, Standard: 5
+				L1={$\displaystyle\int^c_a\left(f(x)-g(x)\right)\,\text{dx}$},   %1. Antwortmoeglichkeit 
+				L2={$\bigg|\displaystyle\int^c_0\left(f(x)-g(x)\right)\,\text{dx}\bigg|+\displaystyle\int^0_a\left(f(x)-g(x)\right)\,\text{dx}$},   %2. Antwortmoeglichkeit
+				L3={$\displaystyle\int^0_b\left(f(x)-g(x)\right)\,\text{dx}+\displaystyle\int^d_0\left(g(x)-f(x)\right)\,\text{dx}$},   %3. Antwortmoeglichkeit
+				L4={$\displaystyle\int^0_a\left(f(x)-g(x)\right)\,\text{dx}-\bigg|\displaystyle\int^c_0\left(f(x)-g(x)\right)\,\text{dx}\bigg|$},   %4. Antwortmoeglichkeit
+				L5={$$-\displaystyle\int^a_0\left(f(x)-g(x)\right)\,\text{dx}-\displaystyle\int^c_0\left(f(x)-g(x)\right)\,\text{dx}$$},	 %5. Antwortmoeglichkeit
+				L6={},	 %6. Antwortmoeglichkeit
+				L7={},	 %7. Antwortmoeglichkeit
+				L8={},	 %8. Antwortmoeglichkeit
+				L9={},	 %9. Antwortmoeglichkeit
+				%% LOESUNG: %%
+				A1=2,  % 1. Antwort
+				A2=5,	 % 2. Antwort
+				A3=0,  % 3. Antwort
+				A4=0,  % 4. Antwort
+				A5=0,  % 5. Antwort
+				}
+\end{beispiel}

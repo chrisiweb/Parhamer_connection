@@ -1,0 +1,103 @@
+\section{134 - K7 - WM - Kostenfunktion - VerSie}
+
+\begin{langesbeispiel} \item[8] %PUNKTE DES BEISPIELS
+Gegeben ist die Kostenfunktion $K(x)=\frac{1}{12\,000}x^3-\frac{1}{40}x^2+\frac{3}{40}x+1\,000$, die die Produktionskosten eines Produkts der Firma Posmath modelliert. Ein Stück dieses Produkts wird von Posmath um 15\,\euro verkauft ($p(x)=15$).
+
+\begin{center}
+\psset{xunit=0.02cm,yunit=0.001cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-40.980536585366234,-434.2105263157913)(437.3631219512213,5789.473684210529)
+\multips(0,0)(0,1000.0){7}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,0)(437.3631219512213,0)}
+\multips(0,0)(50.0,0){10}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,0)(0,5789.473684210529)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=50.,Dy=1000.,ticksize=-2pt 0,subticks=0]{->}(0,0)(0.,0.)(437.3631219512213,5789.473684210529)[$x$,140] [$K(x)$,-40]
+\psplot[linewidth=2.pt,plotpoints=200]{0}{437.3631219512213}{1.0/12000.0*x^(3.0)-1.0/40.0*x^(2.0)+3.0/40.0*x+1000.0}
+\rput[tl](370.93565853658686,1749.9999999999998){$K$}
+\antwort{\psplot[linewidth=2.pt,plotpoints=200]{0}{437.3631219512213}{15.0*x}}
+\end{pspicture*}
+\end{center}%Aufgabentext
+
+\begin{aufgabenstellung}
+\item %Aufgabentext
+
+\Subitem{Stelle die Gleichung der Erlösfunktion $E$ auf und zeichne sie in die Grafik ein.\vspace{0,3cm}
+	
+	$E(x)=\,\antwort[\rule{5cm}{0.3pt}]{15x}$} %Unterpunkt1
+\Subitem{Lies aus der Grafik ab, ab welcher Produktionsstückzahl die Firma Gewinn macht.} %Unterpunkt2
+
+\item Als Kostenkehre wird jener Punkt bezeichnet, ab dem ein degressiver Verlauf der Kostenfunktion in einen progressiven Verlauf übergeht.
+
+\Subitem{Bestimme die Kostenkehre dieser Funktion.}
+\Subitem{Welchen Eigenschaften, die du von der Untersuchung einer Polynomfunktion kennst entsprichst ein progressiver Verlauf der Kostenfunktion und was ist die Entsprechung zur Kostenkehre?\vspace{0,3cm}
+	
+	progressiver Verlauf $K(x)\,\hat{=}\,\antwort[\rule{5cm}{0.3pt}]{\text{streng monoton steigend}}$\vspace{0,3cm}
+	
+	Kostenkehre $\hat{=}\,\antwort[\rule{5cm}{0.3pt}]{\text{Wendestelle}}$}
+	
+\item Die erste Ableitung der Kostenfunktion wird als Grenzkostenfunktion bezeichnet.
+
+\ASubitem{Bestimme den Wert der Grenzkostenfunktion für eine Produktion von 100 Stück.}
+
+\Subitem{Was bedeutet der Wert im gegebenen Kontext?}
+
+\item
+\Subitem{Bestimme die Gewinnfunktion $G(x)$ dieser Produktion.}
+\Subitem{Berechne jene Stückzahl bei der der Gewinn maximal ist.}
+
+\end{aufgabenstellung}
+
+\begin{loesung}
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{Funktionsgleichung und Graph siehe oben.} %Lösung von Unterpunkt1
+\Subitem{Ab einer Produktionsmenge von 61,91 Stück macht die Firma einen Gewinn.} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die richtige Funktionsgleichung mit Graphen.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die korrekte Angabe der Produktionsmenge.
+
+		Toleranzintervall: $[55; 70]$} %Lösungschlüssel von Unterpunkt2
+
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{$K'(x)=\frac{1}{400}x^2-\frac{1}{20}x+\frac{3}{40}$\\
+	$K''(x)=\frac{1}{200}x-\frac{1}{20}$
+	
+	$K''(x)=0 \Rightarrow x=100$
+	
+	Die Kostenkehre liegt an der Stelle 100.} %Lösung von Unterpunkt1
+\Subitem{Eigenschaften siehe oben.} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die richtige Berechnung der Kostenkehre.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die richtigen Eigenschaften.} %Lösungschlüssel von Unterpunkt2
+
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{$K'(x)=\frac{1}{400}x^2-\frac{1}{20}x+\frac{3}{40}$
+	 
+	 $K'(100)=-2,425$} %Lösung von Unterpunkt1
+\Subitem{Bei einer Produktion von 100 Stück beträgt die momentane Kostenänderung $-2,425$.} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die richtige Berechnung der Grenzkosten.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die richtige Interpretation.} %Lösungschlüssel von Unterpunkt2
+
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{$G(x)=E(x)-K(x)=-\frac{1}{12000}x^3+\frac{1}{40}x^2+\frac{597}{40}x-1000$} %Lösung von Unterpunkt1
+\Subitem{$G'(x)=0 \Rightarrow (x_1=-164,01)$ und $x_2=364,01$} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die Gewinnfunktion.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für jene Stelle an der die Gewinnfunktion maximal ist.} %Lösungschlüssel von Unterpunkt2
+
+\end{loesung}
+
+\end{langesbeispiel}

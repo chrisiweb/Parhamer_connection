@@ -1,0 +1,87 @@
+\section{137 - K8 - AN 1.2, AN 3.3, AN 4.3, FA 2.2 - U-Bahnfahrt - VerSie}
+
+\begin{langesbeispiel} \item[6] %PUNKTE DES BEISPIELS
+Zwischen zwei Stationen fährt eine U-Bahn annähernd geradlinig. Betrachtet man die Geschwindigkeit eines Zuges zwischen diesen beiden Stationen, so lässt sie sich näherungsweise durch drei Funktionen $v_1, v_2, v_3$ beschreiben. Von zwei Funktionen sind die Funktionsgleichungen gegeben.
+\begin{center}
+\begin{tabular}{ll}
+$v_1(t)=-\frac{3}{100}t^3+\frac{9}{20}t^2$&$0\leq t<10$\\
+$v_2(t)=15$&$10\leq t<45$
+\end{tabular}
+\end{center}
+
+\psset{xunit=0.21cm,yunit=0.3cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-3.5,-2.00375)(64.5,24.140416666666933)
+\multips(0,0)(0,5.0){6}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,0)(63.85584905660413,0)}
+\multips(0,0)(5.0,0){14}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,0)(0,24.140416666666933)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=5.,Dy=5.,ticksize=-2pt 0,subticks=0]{->}(0,0)(0.,0.)(64.5,24.140416666666933)[t in s,140] [v(t) in m/s,-40]
+\psplot[linewidth=2.pt,plotpoints=200]{0}{10}{-3.0/100.0*x^(3.0)+9.0/20.0*x^(2.0)}
+\rput[tl](5.723773584905671,13.262916666666781){$v_1$}
+\psplot[linewidth=2.pt]{10}{45}{(--15.-0.*x)/1.}
+\rput[tl](27.366792452830328,16.4){$v_2$}
+\psline[linewidth=2.pt](60.,0.)(45.,15.)
+\rput[tl](53.123773584905955,8){$v_3$}
+\end{pspicture*}%Aufgabentext
+
+\begin{aufgabenstellung}
+\item %Aufgabentext
+
+\Subitem{Stelle eine Formel für die Berechnung des in diesem Zeitintervall zurückgelegten Weges auf und berechne ihn.} %Unterpunkt1
+\Subitem{Schätze jenen Zeitpunkt ab, zu dem die U-bahn die Hälfte des Weges zurückgelegt hat.} %Unterpunkt2
+
+\item %Aufgabentext
+
+\ASubitem{Berechne die mittlere Beschleunigung des Zuges vom Anfahren bis zum Erreichen der Höchstgeschwindigkeit.} %Unterpunkt1
+\Subitem{Berechne den Zeitpunkt, an dem die U-Bahn ihre maximale Beschleunigung erreicht.} %Unterpunkt2
+
+\item %Aufgabentext
+
+\Subitem{Gib eine Funktionsgleichung der Funktion $v_3(t)$ mit Hilfe obiger Graphik an.} %Unterpunkt1
+\Subitem{Bestimme die Stammfunktion $s_3(t)$ der Funktion $v_3$, wenn gilt $s_3(45)=600$.} %Unterpunkt2
+
+\end{aufgabenstellung}
+
+\begin{loesung}
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{$\displaystyle\int^{10}_0 -\frac{3}{100}t^3+\frac{9}{20}t^2\,\text{d}t+15\cdot 35+\frac{15\cdot 15}{2}=75+525+112,5+=712,5$} %Lösung von Unterpunkt1
+\Subitem{Nach 28,75\,s hat die U-Bahn die Hälfte des Weges zurückgelegt.} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die richtige Länge des zurückgelegten Weges.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für den richtige Zeitdauer.} %Lösungschlüssel von Unterpunkt2
+
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{$\frac{15}{10}=1,5 \Rightarrow$ die mittlere Beschleunigung in dieser Zeit beträgt 1,5\,m/s.} %Lösung von Unterpunkt1
+\Subitem{Zeitpunkt mit der höchsten Beschleunigung: $v_1(t)''=0 \Rightarrow t=5$
+	
+	Nach 5 Sekunden hat die U-Bahn ihre maximale Beschleunigung erreicht.} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die richtige mittlere Beschleunigung.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für den Zeitpunkt der maximalen Beschleunigung.} %Lösungschlüssel von Unterpunkt2
+
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{$v_3(t)=-x+d \Rightarrow 10=-50+d \Rightarrow d=60$
+	
+	$v_3(t)=-x+60$} %Lösung von Unterpunkt1
+\Subitem{$s_3(t)=\displaystyle\int -x+60\,\text{d}x=-\frac{x^2}{2}+60x+c$
+	
+	$s_3(45)=600 \Rightarrow 600=-\frac{45^2}{2}+60\cdot 45+c$
+	
+	$c\approx -1087,5 \Rightarrow s_3(t)=-\frac{x^2}{2}+60x-1087,5$} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die Funktionsgleichung von $v_3(t)$.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die Stammfunktion $s_3(t)$.} %Lösungschlüssel von Unterpunkt2
+
+\end{loesung}
+
+\end{langesbeispiel}

@@ -1,22 +1,24 @@
-\section{AN 3.3 - 18 Kennzeichnung von x-Werten - OA - BIFIE}
+\section{AN 3.3 - 18 - Kennzeichnung von x-Werten - OA - BIFIE}
 
 \begin{beispiel}[AN 3.3]{1} %PUNKTE DES BEISPIELS
 				Gegeben ist der Graph einer Polynomfunktion $p$ vierten Grades.
+
 				\begin{center}
-					\resizebox{0.8\linewidth}{!}{\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
 \begin{pspicture*}(-2.9012837549228814,-1.9558356059894804)(7.174341949391406,4.504623283802101)
-\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=none,Dx=1.,Dy=1.,ticksize=-2pt 0,subticks=2]{->}(0,0)(-2.9012837549228814,-3.4558356059894804)(7.174341949391406,4.504623283802101)[x,140] [f(x),-40]
+\begin{scriptsize}
+\psaxes[xAxis=true,yAxis=true,labels=none,showorigin=false,Dx=1.,Dy=1.,ticks=none]{->}(0,0)(-2.9012837549228814,-3.4558356059894804)(7.174341949391406,4.504623283802101)[$x$,140] [$f(x)$,-40]
 \psplot[linewidth=1.2pt,plotpoints=200]{-2.9012837549228814}{7.174341949391406}{0.04476746827082035*x^(4.0)-0.39849247750651484*x^(3.0)+0.4810583904695643*x^(2.0)+2.195760884972902*x-0.43693110431769716}
-\rput[tl](1.3862165447853263,3.432748208875048){p}
+\rput[tl](1.3862165447853263,3.432748208875048){$p$}
 \antwort{\psline[linewidth=1.6pt,linestyle=dashed,dash=2pt 2pt](0.44736601711643037,0.)(0.44736601711643037,0.6077694040791073)
 \psline[linewidth=1.6pt,linestyle=dashed,dash=2pt 2pt](4.003326560536594,0.)(4.003326560536594,1.9946011716313592)
-\begin{scriptsize}
-\psdots[dotsize=3pt 0,dotstyle=*,linecolor=darkgray](0.44736601711643037,0.6077694040791073)
-\psdots[dotsize=3pt 0,dotstyle=*,linecolor=darkgray](4.003326560536594,1.9946011716313592)
-\psdots[dotsize=3pt 0,dotstyle=x,linecolor=darkgray](0.44736601711643037,0.)
-\psdots[dotsize=3pt 0,dotstyle=x,linecolor=darkgray](4.003326560536594,0.)
-\end{scriptsize}}
-\end{pspicture*}}
+\psdots[dotsize=4pt 0,dotstyle=*](0.44736601711643037,0.6077694040791073)
+\psdots[dotsize=4pt 0,dotstyle=*](4.003326560536594,1.9946011716313592)
+\psdots[dotsize=4pt 0,dotstyle=*](0.44736601711643037,0.)
+\psdots[dotsize=4pt 0,dotstyle=*](4.003326560536594,0.)
+}
+\end{scriptsize}
+\end{pspicture*}
 				\end{center}
 				\leer
 				

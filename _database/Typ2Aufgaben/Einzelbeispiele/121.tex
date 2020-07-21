@@ -1,0 +1,131 @@
+\section{121 - MAT - AG 2.1, AN 3.3, WS 1.1, WS 2.1 - Tennis - Matura 2018/19 2. NT}
+
+\begin{langesbeispiel} \item[6] %PUNKTE DES BEISPIELS
+Tennis ist ein Rückschlagspiel zwischen zwei oder vier Personen, bei dem ein Tennisball über
+ein Netz geschlagen werden muss. Das Spielfeld ist rechteckig und wird durch ein Netz in zwei
+Hälften geteilt (siehe Abbildung 1). Für ein Spiel zwischen zwei Personen ist der Platz $23,77$\,m
+lang und $8,23$\,m breit. Das Spielfeld wird durch die Grundlinien und die Seitenlinien begrenzt. Das
+Netz weist eine maximale Höhe von $1,07$\,m auf.
+
+Abbildung 1:
+
+\begin{center}
+\includegraphics[width=0.4\textwidth]{../_database/Bilder/121_tennis.eps}
+\end{center}%Aufgabentext
+
+\begin{aufgabenstellung}
+\item Die Funktion $f$: $\mathbb{R}^+_0\rightarrow\mathbb{R}$ mit $f(x)=-0,0007\cdot x^3+0,005\cdot x^2+0,2\cdot x+0,4$ beschreibt eine Bahnkurve eines Tennisballs bis zu derjenigen Stelle, an der der Tennisball erstmals den Boden berührt. Dabei gibt $x$ die waagrechte Entfernung des Tennisballs vom Abschlagpunkt und $f(x)$ die Flughöhe des Tennisballs über dem Boden an ($x$ und $f(x)$ in m). Die Flugbahn des Tennisballs startet zwischen den Seitenlinien an der Grundlinie und die Ebene, in der die Flugbahn liegt, verläuft parallel zu Seitenlinie des Tennisfelds.%Aufgabentext
+
+\ASubitem{Gib an, in welcher waagrechten Entfernung vom Abschlagpunkt der Tennisball seine maximale Höhe erreicht.\leer
+	
+	waagrechte Entfernung vom Abschlagpunkt: $\antwort[\rule{3cm}{0.3pt}]{12,4}$\,m} %Unterpunkt1
+\Subitem{Überprüfe rechnerisch, ob der Tennisball im gegnerischen Spielfeld oder hinter der Grundlinie landet.} %Unterpunkt2
+
+\item Fällt ein Tennisball lotrecht (ohne Drehung) auf den Boden, so springt er wieder lotrecht zurück. Der Restitutionskoeffizient $r$ ist ein Maß für die Sprungfähigkeit des Tennisballs.
+	
+	Es gilt: $r=\dfrac{v_2}{v_1}$, wobei $v_1$ der Betrag der Geschwindigkeit des Tennisballs vor und $v_2$ der Betrag der Geschwindigkeit des Tennisballs nach dem Aufprall ist.
+	
+	Die Differenz der vertikalen Geschwindigkeiten unmittelbar vor und nach dem Aufprall ist aufgrund der unterschiedlichen Bewegungsrichtungen des Tennisballs definiert durch:\\
+	$\Delta v=v_2-(-v_1)$.%Aufgabentext
+
+\Subitem{Gib $\Delta v$ in Abhängigkeit von $v_1$ und $r$ an.\leer
+	
+	$\Delta v=\,\antwort[\rule{3cm}{0.3pt}]{r\cdot v_1+v_1}$} %Unterpunkt1
+	
+Ein Tennisball trifft mit der Geschwindigkeit $v_1=4,4$\,m/s lotrecht auf dem Boden auf. Der Restitutionskoeffizient beträgt für diesen Tennisball $r=0,6$. Die Kontaktzeit mit dem Boden beträgt 0,01\,s.	
+	
+\Subitem{Berechne die durchschnittliche Beschleunigung $a$ (in m/s$^2$) des Tennisballs in vertikaler Richtung beim Aufprall (während der Kontaktzeit).\leer
+	
+	$a=\,\antwort[\rule{3cm}{0.3pt}]{704}$\,m/s$^2$} %Unterpunkt2
+
+\item Bei einem Fünf-Satz-Tennismatch gewinnt ein Spieler, sobald er drei Sätze gewonnen hat. Für einen Satzgewinn müssen in der Regel sechs Games gewonnen werden, wobei es für jedes gewonnene Game einen Punkt gibt.
+	
+	Für unterschiedliche Wahrscheinlichkeiten $p$ für ein gewonnenes Game wurden die daraus resultierenden Wahrscheinlichkeiten $m$ für einen Matchgewinn bei einem Fünf-Satz-Match ermittelt. In der nachstehenden Tabelle sind diese Wahrscheinlichkeiten angeführt.
+	
+	\begin{center}
+	\begin{tabular}{|c|c|}\hline
+	\cellcolor[gray]{0.9}$p$&\cellcolor[gray]{0.9}$m$\\ \hline
+	0,5&0,5\\ \hline
+	0,51&0,6302\\ \hline
+	0,55&0,9512\\ \hline
+	0,6&0,9995\\ \hline
+	0,7&1,000\\ \hline
+	\end{tabular}
+	\end{center}
+	
+	Die Wahrscheinlichkeit, dass Spieler $A$ ein Game gewinnt, ist um 2 Prozentpunkte höher als die Wahrscheinlichkeit, dass sein Gegenspieler $B$ ein Game gewinnt.%Aufgabentext
+
+\Subitem{Gib an, um wie viel Prozentpunkte die Wahrscheinlichkeit, dass Spieler $A$ ein Fünf-Satz-Match gewinnt, höher ist als jene für seine Gegenspieler $B$.} %Unterpunkt1
+
+Gegenüber einem anderen, schwächeren Gegenspieler $C$ hat Spieler $A$ einen Vorteil von 10 Prozentpunkten, ein Game zu gewinnen.
+
+\Subitem{Zeige, dass die Wahrscheinlichkeit, dass Spieler $A$ ein Fünf-Satz-Match gegen Gegenspieler $C$ gewinnt, um 50,94 Prozent höher ist als bei einem Fünf-Satz-Match gegen $B$.} %Unterpunkt2
+
+\end{aufgabenstellung}
+
+\begin{loesung}
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{mögliche Vorgehensweise:
+	
+	$f'(x)=0$\\
+	$-0,0021\cdot x^2+0,01\cdot x+0,2=0 \Rightarrow x_1=12,42\ldots$\quad$(x_2=-7,66\ldots)$\\
+	waagrechte Entfernung vom Abschlagpunkt: ca. 12,4\,m} %Lösung von Unterpunkt1
+\Subitem{$f(x)=0 \Rightarrow x_1=21,597\ldots$\quad$(x_2=-2,15\ldots, x_3=-12,30\ldots)$\\
+	Die einzige positive Nullstelle von $f$ ist $x_1\approx 21,6$.
+	
+	Da das Spielfeld 23,77\,m lang ist, landet der Tennisball im gegnerischen Spielfeld.} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Ausgleichspunkt für die richtige Lösung.
+
+		Toleranzintervall: $[12,4\,\text{m}; 12,5\,\text{m}]$\\
+		Die Aufgabe  ist auch dann als richtig gelöst zu werten, wenn bei korrektem Ansatz das
+Ergebnis aufgrund eines Rechenfehlers nicht richtig ist.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für einen richtigen rechnerischen Nachweis.} %Lösungschlüssel von Unterpunkt2
+
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{$\Delta v=r\cdot v_1+v_1$} %Lösung von Unterpunkt1
+\Subitem{mögliche Vorgehensweise:\\
+	$\Delta v=v_1\cdot(1+r)=4,4\cdot(1+0,6)=7,04$\\
+	$a=7,04:0,01=704$\\
+	$a=704$\,m/s$^2$} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die richtige Lösung. Andere Schreibweisen der Lösung sind ebenfalls als
+richtig zu werten.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die richtige Lösung.
+
+		Toleranzintervall für $a$: $[700\,\text{m/s}^2;710\,\text{m/s}^2]$\\
+		Die Aufgabe ist auch dann als richtig gelöst zu werten, wenn bei korrektem Ansatz das Ergebnis aufgrund eines Rechenfehlers nicht richtig ist.} %Lösungschlüssel von Unterpunkt2
+
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{$0,6302-0,3698=0,2604$
+	
+	Diese Wahrscheinlichkeit ist um ca. 26 Prozentpunkte höher.} %Lösung von Unterpunkt1
+\Subitem{Wahrscheinlichkeit, dass Spieler $A$ ein Fünf-Satz-Match gegen Spieler $C$ gewinnt: $0,9512$\\
+	Wahrscheinlichkeit, dass Spieler $A$ ein Fünf-Satz-Match gegen Spieler $B$ gewinnt: $0,6302$
+	
+	$\frac{0,9512}{0,6302}=1,50936\ldots\approx 1,5094$
+	
+	$\Rightarrow 0,9512$ ist um ca. 50,94 Prozent höher als 0,6302. } %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die richtige Lösung.
+
+		Toleranzintervall: $[26; 26,1]$} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für einen richtigen rechnerischen Nachweis.
+
+		Die Aufgabe ist auch dann als richtig gelöst zu werten, wenn bei korrektem Ansatz des Ergebnis aufgrund eines Rechenfehlers nicht richtig ist.} %Lösungschlüssel von Unterpunkt2
+
+\end{loesung}
+
+\end{langesbeispiel}

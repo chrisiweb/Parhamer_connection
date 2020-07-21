@@ -4,30 +4,30 @@
 Der Graph einer Funktion $f$ schneidet die $x$-Achse in einem gewissen Bereich an den Stellen $a,b,c,d$ und $e$.
 
 \begin{center}
-	\resizebox{0.8\linewidth}{!}{\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
 \begin{pspicture*}(-0.94,-1.5)(13.44,3.78)
-\multips(0,-1)(0,1.0){6}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(-0.94,0)(13.44,0)}
-\multips(0,0)(1.0,0){15}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,-1.5)(0,3.78)}
-\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=1.,Dy=1.,ticksize=-2pt 0,subticks=2]{->}(0,0)(-0.94,-1.5)(13.44,3.78)[x,140] [f(x),-40]
-\rput[tl](10.36,0.32){e}
-\rput[tl](8.34,0.38){d}
-\rput[tl](6.16,0.32){c}
-\rput[tl](3.68,0.38){b}
-\rput[tl](0.3,0.32){a}
-\rput[tl](3.1,2.6){f}
+\multips(0,-1)(0,1.0){6}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(-0.94,0)(13.44,0)}
+\multips(0,0)(1.0,0){15}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,-1.5)(0,3.78)}
+\psaxes[labelFontSize=\scriptstyle,showorigin=false,xAxis=true,yAxis=true,Dx=1.,Dy=1.,ticksize=-2pt 0,subticks=0]{->}(0,0)(-0.94,-1.5)(13.44,3.78)[$x$,140] [$f(x)$,-40]
+\rput[tl](10.36,0.32){$e$}
+\rput[tl](8.34,0.38){$d$}
+\rput[tl](6.16,0.32){$c$}
+\rput[tl](3.68,0.38){$b$}
+\rput[tl](0.3,0.32){$a$}
+\rput[tl](3.1,2.6){$f$}
 \psline[linewidth=2.pt]{->}(3.,4.)(5.14,3.98)
 \psplot[linewidth=2.pt,plotpoints=200]{-0.940000000000001}{13.44000000000002}{SIN(1.5*(x-2.14))/(0.5*(x-2.14))-0.020000000000000018}
-\end{pspicture*}}
+\end{pspicture*}
 \end{center}
 
 Welche der nachstehend angeführten bestimmten Integrale haben einen Wert, der größer als 0 ist? Kreuze die beiden zutreffenden bestimmten Integrale an!\leer
 
 \multiplechoice[5]{  %Anzahl der Antwortmoeglichkeiten, Standard: 5
-				L1={$$\int^c_a f(x)dx$$},   %1. Antwortmoeglichkeit 
-				L2={$$\int^c_b f(x)dx$$},   %2. Antwortmoeglichkeit
-				L3={$$\int^d_b f(x)dx$$},   %3. Antwortmoeglichkeit
-				L4={$$\int^b_a f(x)dx$$},   %4. Antwortmoeglichkeit
-				L5={$$\int^e_d f(x)dx$$},	 %5. Antwortmoeglichkeit
+				L1={$$\int^c_a f(x)\,\text{d}x$$},   %1. Antwortmoeglichkeit 
+				L2={$$\int^c_b f(x)\,\text{d}x$$},   %2. Antwortmoeglichkeit
+				L3={$$\int^d_b f(x)\,\text{d}x$$},   %3. Antwortmoeglichkeit
+				L4={$$\int^b_a f(x)\,\text{d}x$$},   %4. Antwortmoeglichkeit
+				L5={$$\int^e_d f(x)\,\text{d}x$$},	 %5. Antwortmoeglichkeit
 				L6={},	 %6. Antwortmoeglichkeit
 				L7={},	 %7. Antwortmoeglichkeit
 				L8={},	 %8. Antwortmoeglichkeit

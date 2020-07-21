@@ -1,0 +1,29 @@
+\section{AN 4.2 - 12 - K8 - Integrationsregeln - LT - MirDar UNIVIE}
+
+\begin{beispiel}[AN 4.2]{1}
+Es ist die Funktion $f$ mit $f(x)=3 \cdot \cos(2 \cdot x) +4$ mit $x \in \mathbb{R}$ gegeben und folgende Rechnung wird durchgeführt: \\
+
+
+Zeile 0: \hspace{1cm} $\displaystyle \int (3 \cdot \cos(2x) + 4)\; \text{d} x =$ \\
+
+Zeile 1: \hspace{1cm} $3 \cdot \displaystyle \int ( \cos(2x) + 4)\; \text{d} x =$ \\
+
+Zeile 2: \hspace{1cm} $3 \cdot \left( \displaystyle \int \cos(2x) \;  \text{d}x + \int 4 \; \text{d} x \right) = $ \\
+
+Zeile 3: \hspace{1cm} $3\cdot \displaystyle \frac{1}{2} \cdot \sin(2x) + 12x +c$ mit $c\in \mathbb{R}$ \\
+
+\textbf{Aufgabenstellung:} \\
+\lueckentext[-0.18]{
+				text={Von \gap geschieht ein Fehler, da  die Regel \gap nicht richtig angewendet wird.}, 	%Lueckentext Luecke=\gap
+				L1={Zeile 0 auf Zeile 1}, 		%1.Moeglichkeit links  
+				L2={Zeile 1 auf Zeile 2}, 		%2.Moeglichkeit links
+				L3={Zeile 2 auf Zeile 3}, 		%3.Moeglichkeit links
+				R1={$\displaystyle \int f(x) \pm g(x)\;  \text{d} x = \\ \int f(x) \; \text{d} x \pm \int g(x)\;  \text{d} x$}, 		%1.Moeglichkeit rechts 
+				R2={$\displaystyle \int f(kx) \; \text{d} x = \frac{1}{k} \cdot F(kx)+c$ \\ mit $k \in \mathbb{R}^*, \, c \in \mathbb{R}$}, 		%2.Moeglichkeit rechts
+				R3={$\displaystyle \int k \cdot f(x) \, \text{d}x = k \cdot \int f(x) \; \text{d} x$ mit $k \in \mathbb{R}$}, 		%3.Moeglichkeit rechts
+				%% LOESUNG: %%
+				A1=1,   % Antwort links
+				A2=3		% Antwort rechts 
+				}
+
+\end{beispiel}

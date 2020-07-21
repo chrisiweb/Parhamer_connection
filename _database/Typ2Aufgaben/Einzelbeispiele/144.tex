@@ -1,0 +1,120 @@
+\section{144 - MAT - AG 2.1, FA 3.4, AN 3.3, AN 4.3 - Ozonmessung - Matura 2019/20 1. HT}
+
+\begin{langesbeispiel}\item[6] %PUNKTE DER AUFGABE
+Das Gas Ozon hat Auswirkungen auf unsere Gesundheit. Aus diesem Grund werden in Messstationen und mithilfe von Wetterballons die jeweiligen Ozonkonzentrationen in unterschiedlichen Atmosphärenschichten gemessen.%Aufgabentext
+
+\begin{aufgabenstellung}
+\item Auf der Hohen Warte in Wien befindet sich in 220\,m Seehöhe eine Wetterstation. Hier wird für eine Messreihe ein Wetterballon mit einem Ozonmessgerät gestartet. Das Ozonmessgerät beginnt mit seinen Aufzeichnungen, wenn der Wetterballon eine Seehöhe von 2\,km erreicht hat.
+
+Nimm an, dass der Wetterballon (mit der Anfangsgeschwindigkeit 0\,m/s) lotrecht in die Höhe steigt und dabei gleichmäßig mit 0,125\,m/s$^2$ beschleunigt, bis er zu einem Zeitpunkt $t_1$ eine Geschwindigkeit von 6\,m/s erreicht. Die Zeit wird dabei in Sekunden und die Seehöhe in Metern gemessen.%Aufgabentext
+
+\Subitem{Ermittle die Höhe des Wetterballons über der Wetterstation zum Zeitpunkt $t_1$.}
+
+Ab dem Zeitpunkt $t_1$ steigt der Wetterballon mit der konstanten Geschwindigkeit von 6\,m/s lotrecht weiter.
+
+\Subitem{Ermittle, wie viele Sekunden nach dem Start das Messgerät mit seinen Aufzeichnungen beginnt.} %Unterpunkt2
+
+\item Ein Wetterballon hab bei einem Luftdruck von 1\,013,25\,hPa ein Volumen von 6,3\,m$^3$. Durch die Abnahme des Luftdrucks während des Aufstiegs dehnt sich der Wetterballon immer weiter aus und wird näherungsweise kugelförmig. Bei einem Durchmesser von $d$ Metern zerplatzt er.
+
+Der Luftdruck kann in Abhängigkeit von der Seehöhe $h$ durch eine Funktion $p$ modelliert werden. Dabei ordnet die Funktion $p$ der Seehöhe $h$ den Luftdruck $p(h)$ zu.
+
+Es gilt: $p(h)=1\,013,25\cdot\left(1-\dfrac{0,0065\cdot h}{288,15}\right)^{5,255}$ mit $h$ in m, $p(h)$ in hPa
+
+Gehe davon aus, dass der Luftdruck $p(h)$ und das Volumen $V(h)$ des Wetterballons indirekt proportional zueinander sind. Dabei ist $V(h)$ das Volumen des Wetterballons in der Seehöhe $h$.%Aufgabentext
+
+\Subitem{Drücke das Volumen $V(h)$ durch die Seehöhe $h$ aus.\leer
+
+$V(h)=\,\antwort[\rule{5cm}{0.3pt}]{\dfrac{6,3}{\left(1-\dfrac{0,0065\cdot h}{288,15}\right)^{5,255}}}$ mit $h$ in m, $V(h)$ in m$^3$} %Unterpunkt1
+
+Der Wetterballon zerplatzt in einer Seehöhe von $h=27\,873,6$\,m.
+
+\Subitem{Berechne den Durchmesser $d$ des Wetterballons in Metern, bei dem dieser zerplatzt.} %Unterpunkt2
+
+\item Das sogenannte \textit{Gesamtozon} ist ein Maß für die Dicke der Ozonschicht und wird in sogenannten \textit{Dobson-Einheiten} (DU) angegeben.
+
+Die von einem Wetterballon aufgezeichneten Messdaten können modellhaft durch eine quadratische Funktion $f$ beschrieben werden. Dabei ordnet $f$ der Höhe $h$ die Gesamtozondichte $f(h)$ zu ($h$ in km, $f(h)$ in DU/km).
+
+Der höchste Wert von 36\,DU/km wird in einer Seehöhe von 22\,km gemessen. In einer Seehöhe von 37\,km beträgt der gemessene Wert 1\,DU/km.%Aufgabentext
+
+\ASubitem{Ermittle $f(h)$.\leer
+
+$f(h)=\,\antwort[\rule{5cm}{0.3pt}]{-\frac{7}{45}\cdot h^2+\frac{308}{45}\cdot h-\frac{1\,768}{45}}$} %Unterpunkt1
+
+In der Erdatmosphäre entspricht 1\,DU einer 0,01\,mm dicken Schicht reinen Ozons an der Erdoberfläche. Die Dicke derjenigen Schicht reinen Ozons an der Erdoberfläche, die dem Gesamtozon zwischen 7\,km und 37\,km Seehöhe entspricht, ist $\displaystyle\int^{37}_7 f(h)\dx[h]$.
+
+\Subitem{Berechne die Dicke dieser Schicht.\leer
+
+Dicke dieser Schichte:\,\antwort[\rule{5cm}{0.3pt}]{7,3}\,mm} %Unterpunkt2
+
+\end{aufgabenstellung}
+
+\begin{loesung}
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{mögliche Vorgehensweise:
+
+$v(t)=0,125\cdot t$\\ 
+$t\ldots$ Zeit in s, $v(t)\ldots$ Geschwindigkeit des Wetterballons in m/s zum Zeitpunkt $t$
+
+$v(t_1)=6 \Rightarrow t_1=\dfrac{6}{0,125}=48$
+
+$\displaystyle\int^{48}_0 v(t)\dx[t]=144$
+
+Die Höher des Wetterballons über der Wetterstation zum Zeitpunkt $t_1$ beträgt 144\,m.} %Lösung von Unterpunkt1
+\Subitem{mögliche Vorgehensweise:
+
+verbleibende senkrechte Strecke bis zum Start des Messung:\\
+$2\,000-220-144=1\,636$
+
+$\frac{1\,636}{6}+48=320,\dot{6}$
+
+Das Messgerät beginnt seine Aufzeichnungen ca. 321\,s nach dem Start.} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die richtige Lösung, wobei die Einheit "`m"' nicht angegeben sein muss.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die richtige Lösung, wobei die Einheit "`s"' nicht angegeben sein muss.} %Lösungschlüssel von Unterpunkt2
+
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{$V(h)=\,\dfrac{6,3}{\left(1-\dfrac{0,0065\cdot h}{288,15}\right)^{5,255}}$ mit $h$ in m, $V(h)$ in m$^3$} %Lösung von Unterpunkt1
+\Subitem{mögliche Vorgehensweise:
+
+$V(27\,873,6)=1\,150,351\ldots$
+
+$\dfrac{4\cdot\left(\frac{d}{2}\right)^3\cdot\pi}{3}=1\,150,351\ldots \Rightarrow d=13,0\ldots \approx 13$
+
+Der Durchmesser des Wetterballons, bei dem dieser zerplatzt, beträgt ca. 13\,m.} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die richtige Lösung. Andere Schreibweise der Lösung sind ebenfalls als richtig zu werten.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die richtige Lösung, wobei die Einheit "`m"' nicht angegeben sein muss.} %Lösungschlüssel von Unterpunkt2
+
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{mögliche Vorgehensweise:
+
+$f(h)=a\cdot h^2+b\cdot h+c$\\
+$f(37)=1$\\
+$f(22)=36$\\
+$f'(22)=0$\\
+$f(h)=-\frac{7}{45}\cdot h^2+\frac{308}{45}\cdot h-\frac{1\,768}{45}$} %Lösung von Unterpunkt1
+\Subitem{$\displaystyle\int^{37}_7 f(h)\dx[h]=730$\leer
+
+$730\cdot 0,01=7,3$
+
+Dicke dieser Schicht: 7,3\,mm} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Ausgleichspunkt für die richtige Lösung. Andere Schreibweisen der Lösung sind ebenfalls als richtig zu werten.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die richtige Lösung.} %Lösungschlüssel von Unterpunkt2
+
+\end{loesung}
+
+\antwort{GK/Themen: AG 2.1, FA 3.4, AN 3.3, AN 4.3}
+\end{langesbeispiel}

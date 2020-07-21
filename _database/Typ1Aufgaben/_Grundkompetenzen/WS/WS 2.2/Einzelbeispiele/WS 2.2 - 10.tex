@@ -1,0 +1,105 @@
+\section{WS 2.2 - 10 - WS 2.2.-Gesetz der großen Zahlen-MC-MirDar - MC - MirDar UNIVIE}
+
+\begin{beispiel}[WS 2.2]{1}
+Ein fairer sechsseitiger Würfel wird 100.000 Mal geworfen und es werden die Anzahlen der dabei vorkommenden Augenzahlen 1, 2, 3, 4, 5, 6 notiert.
+
+Kreuze das Diagramm an, welches die relative Häufigkeitsverteilung des Experiments am ehesten darstellt. 
+
+\langmultiplechoice[6]{  %Anzahl der Antwortmoeglichkeiten, Standard: 5
+				L1={
+\psset{xunit=0.5cm,yunit=2.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-1.4,-0.25)(7.,1.05)
+\multips(0,0)(0,0.2){8}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,0)(7.,0)}
+\multips(0,0)(1.0,0){9}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,0)(0,1.05)}
+\begin{scriptsize}
+\psaxes[comma,xAxis=true,yAxis=true,Dx=1.,Dy=0.2,ticksize=-2pt 0,subticks=0]{->}(0,0)(0.,0.)(7.,1.05)[,140] [rel. H.,-40]
+\end{scriptsize}
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](0.5,0)(1.5,0.03)
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](1.5,0)(2.5,0.)
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](2.5,0)(3.5,0.15)
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](3.5,0)(4.5,0.24)
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](4.5,0)(5.5,0.5)
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](5.5,0)(6.5,0.08)
+\end{pspicture*}},   %1. Antwortmoeglichkeit 
+				L2={\psset{xunit=0.5cm,yunit=2.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-1.4,-0.25)(7.,1.05)
+\multips(0,0)(0,0.2){8}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,0)(7.,0)}
+\multips(0,0)(1.0,0){9}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,0)(0,1.05)}
+\begin{scriptsize}
+\psaxes[comma,xAxis=true,yAxis=true,Dx=1.,Dy=0.2,ticksize=-2pt 0,subticks=0]{->}(0,0)(0.,0.)(7.,1.05)[,140] [rel. H.,-40]
+\end{scriptsize}
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](0.5,0)(1.5,0.1)
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](1.5,0)(2.5,0.167)
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](2.5,0)(3.5,0.233)
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](3.5,0)(4.5,0.233)
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](4.5,0)(5.5,0.167)
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](5.5,0)(6.5,0.1)
+\end{pspicture*}},   %2. Antwortmoeglichkeit
+				L3={\psset{xunit=0.5cm,yunit=2.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-1.4,-0.25)(7.,1.05)
+\multips(0,0)(0,0.2){8}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,0)(7.,0)}
+\multips(0,0)(1.0,0){9}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,0)(0,1.05)}
+\begin{scriptsize}
+\psaxes[comma,xAxis=true,yAxis=true,Dx=1.,Dy=0.2,ticksize=-2pt 0,subticks=0]{->}(0,0)(0.,0.)(7.,1.05)[,140] [rel. H.,-40]
+\end{scriptsize}
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](0.5,0)(1.5,0.21)
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](1.5,0)(2.5,0.4)
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](2.5,0)(3.5,0.3)
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](3.5,0)(4.5,0.04)
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](4.5,0)(5.5,0.03)
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](5.5,0)(6.5,0.02)
+\end{pspicture*}},   %3. Antwortmoeglichkeit
+				L4={\psset{xunit=0.5cm,yunit=2.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-1.4,-0.25)(7.,1.05)
+\multips(0,0)(0,0.2){8}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,0)(7.,0)}
+\multips(0,0)(1.0,0){9}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,0)(0,1.05)}
+\begin{scriptsize}
+\psaxes[comma,xAxis=true,yAxis=true,Dx=1.,Dy=0.2,ticksize=-2pt 0,subticks=0]{->}(0,0)(0.,0.)(7.,1.05)[,140] [rel. H.,-40]
+\end{scriptsize}
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](0.5,0)(1.5,0.16666)
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](1.5,0)(2.5,0.16)
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](2.5,0)(3.5,0.166)
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](3.5,0)(4.5,0.1569)
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](4.5,0)(5.5,0.16666)
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](5.5,0)(6.5,0.18378)
+\end{pspicture*}},   %4. Antwortmoeglichkeit
+				L5={\psset{xunit=0.5cm,yunit=2.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-1.4,-0.25)(7.,1.05)
+\multips(0,0)(0,0.2){8}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,0)(7.,0)}
+\multips(0,0)(1.0,0){9}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,0)(0,1.05)}
+\begin{scriptsize}
+\psaxes[comma,xAxis=true,yAxis=true,Dx=1.,Dy=0.2,ticksize=-2pt 0,subticks=0]{->}(0,0)(0.,0.)(7.,1.05)[,140] [rel. H.,-40]
+\end{scriptsize}
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](0.5,0)(1.5,0.2)
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](1.5,0)(2.5,0.05)
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](2.5,0)(3.5,0.14)
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](3.5,0)(4.5,0.002)
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](4.5,0)(5.5,0.2405)
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](5.5,0)(6.5,0.3675)
+\end{pspicture*}},	 %5. Antwortmoeglichkeit
+				L6={\psset{xunit=0.5cm,yunit=2.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-1.4,-0.25)(7.,1.05)
+\multips(0,0)(0,0.2){8}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,0)(7.,0)}
+\multips(0,0)(1.0,0){9}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,0)(0,1.05)}
+\begin{scriptsize}
+\psaxes[comma,xAxis=true,yAxis=true,Dx=1.,Dy=0.2,ticksize=-2pt 0,subticks=0]{->}(0,0)(0.,0.)(7.,1.05)[,140] [rel. H.,-40]
+\end{scriptsize}
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](0.5,0)(1.5,0.12)
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](1.5,0)(2.5,0.01)
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](2.5,0)(3.5,0.001)
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](3.5,0)(4.5,0.0015)
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](4.5,0)(5.5,0.6)
+\psframe[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.6](5.5,0)(6.5,0.2675)
+\end{pspicture*}},	 %6. Antwortmoeglichkeit
+				L7={},	 %7. Antwortmoeglichkeit
+				L8={},	 %8. Antwortmoeglichkeit
+				L9={},	 %9. Antwortmoeglichkeit
+				%% LOESUNG: %%
+				A1=4,  % 1. Antwort
+				A2=0,	 % 2. Antwort
+				A3=0,  % 3. Antwort
+				A4=0,  % 4. Antwort
+				A5=0,  % 5. Antwort
+				A6=0,
+				}
+\end{beispiel}

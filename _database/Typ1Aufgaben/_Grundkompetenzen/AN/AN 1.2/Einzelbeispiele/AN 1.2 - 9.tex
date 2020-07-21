@@ -1,0 +1,48 @@
+\section{AN 1.2 - 9 - MAT - Differenzenquotient und Differentialquotient - MC - Matura 2018/19 2. NT}
+
+\begin{beispiel}[AN 1.2]{1}
+Nachstehend ist der Graph einer Polynomfunktion $f$ zweiten Grades abgebildet. Zusätzlich sind vier Punkte auf dem Graphen mit den $x$-Koordinaten $x_1, x_2, x_3$ und $x_4$ eingezeichnet.
+
+\begin{center}
+\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-0.66,-1.)(8.98,6.4)
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=none,Dx=1.,Dy=1.,ticks=none]{->}(0,0)(-0.66,-1.)(8.98,6.4)[$x$,140] [$f(x)$,-40]
+\psplot[linewidth=2.pt,plotpoints=200]{-0.6600000000000003}{8.980000000000004}{0.2*(x-2.0)^(2.0)+1.0}
+\psline[linewidth=2.pt](0.7227653404212884,0.)(0.7227653404212884,1.3262656751258295)
+\psline[linewidth=2.pt](2.5680578014886875,0.)(2.5680578014886875,1.0645379331664322)
+\psline[linewidth=2.pt](4.248200471379322,0.)(4.248200471379322,2.010881071902041)
+\psline[linewidth=2.pt](6.516517766805217,0.)(6.516517766805217,5.079786547573437)
+\rput[tl](7.04,5.76){$f$}
+\rput[tl](0.65,-0.15){$x_1$}
+\rput[tl](2.45,-0.15){$x_2$}
+\rput[tl](4.15,-0.15){$x_3$}
+\rput[tl](6.4,-0.15){$x_4$}
+\begin{scriptsize}
+\psdots[dotsize=6pt 0,dotstyle=*](0.7227653404212884,1.3262656751258295)
+\psdots[dotsize=6pt 0,dotstyle=*](2.5680578014886875,1.0645379331664322)
+\psdots[dotsize=6pt 0,dotstyle=*](4.248200471379322,2.010881071902041)
+\psdots[dotsize=6pt 0,dotstyle=*](6.516517766805217,5.079786547573437)
+\end{scriptsize}
+\end{pspicture*}
+\end{center}
+
+Kreuze die beiden auf die Funktion $f$ zutreffenden Aussagen an.
+
+\multiplechoice[5]{  %Anzahl der Antwortmoeglichkeiten, Standard: 5
+				L1={Der Differenzenquotient für das Intervall $[x_1;x_2]$ ist kleiner als der Differentialquotient an der Stelle $x_1$.},   %1. Antwortmoeglichkeit 
+				L2={Der Differenzenquotient für das Intervall $[x_1;x_3]$ ist kleiner als der Differentialquotient an der Stelle $x_3$.},   %2. Antwortmoeglichkeit
+				L3={Der Differenzenquotient für das Intervall $[x_1;x_4]$ ist kleiner als der Differentialquotient an der Stelle $x_2$.},   %3. Antwortmoeglichkeit
+				L4={Der Differenzenquotient für das Intervall $[x_2;x_4]$ ist größer als der Differentialquotient an der Stelle $x_2$.},   %4. Antwortmoeglichkeit
+				L5={Der Differenzenquotient für das Intervall $[x_3;x_4]$ ist größer als der Differentialquotient an der Stelle $x_4$.},	 %5. Antwortmoeglichkeit
+				L6={},	 %6. Antwortmoeglichkeit
+				L7={},	 %7. Antwortmoeglichkeit
+				L8={},	 %8. Antwortmoeglichkeit
+				L9={},	 %9. Antwortmoeglichkeit
+				%% LOESUNG: %%
+				A1=2,  % 1. Antwort
+				A2=4,	 % 2. Antwort
+				A3=0,  % 3. Antwort
+				A4=0,  % 4. Antwort
+				A5=0,  % 5. Antwort
+				}
+\end{beispiel}

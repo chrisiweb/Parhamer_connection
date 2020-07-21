@@ -1,0 +1,118 @@
+\section{143 - MAT - AG 2.1, AN 3.3, WS 2.3, WS 3.1, WS 3.4 - Quiz mit Spielbrett - Matura 2019/20 1. HT}
+
+\begin{langesbeispiel}\item[6] %PUNKTE DER AUFGABE
+Bei einem Quiz werden hintereinander mehrere Fragen gestellt, die jeweils mit "`ja"' oder "`nein"' beantwortet werden. Auf einem Spielbrett steht eine Spielfigur zu Beginn eines jeden Spieldurchgangs auf dem Feld mit der Zahl 0. Bei jeder richtigen Antwort wird diese Spielfigur um ein Feld nach rechts, bei jeder falschen Antwort um ein Feld nach links gezogen. Die Felder des Spielbretts sind mit ganzen Zahlen in aufsteigender Reihenfolge beschriftet (siehe nachstehende Abbildung). Das Spielbrett kann auf beiden Seiten beliebig verlängert werden.
+\begin{center}
+Spielbrett
+
+\resizebox{1\linewidth}{!}{\begin{tabular}{C{0,8cm}|C{0,8cm}|C{0,8cm}|C{0,8cm}|C{0,8cm}|C{0,8cm}|C{0,8cm}|C{0,8cm}|C{0,8cm}|C{0,8cm}|C{0,8cm}|C{0,8cm}|C{0,8cm}|C{0,8cm}|C{0,8cm}}\hline
+---&$-6$&$-5$&$-4$&$-3$&$-2$&$-1$&$0$&$1$&$2$&$3$&$4$&$5$&$6$&---\\ \hline
+\end{tabular}}
+\end{center}
+
+Maria und Tom spielen dieses Quiz. Tom befragt Maria.%Aufgabentext
+
+\begin{aufgabenstellung}
+\item Bei einem Spieldurchgang ist das Quiz zu Ende, wenn die Spielfigur auf dem Feld mit der Zahl 2 zu stehen kommt.
+
+Mit $A$ wird das Ereignis bezeichnet, dass die Spielfigur nach höchstens 4 Fragen auf dem Feld mit der Zahl 2 steht.
+
+Maria beantwortet jede Frage unabhängig von den anderen Fragen mit der gleichen Wahrscheinlichkeit $p$ richtig.%Aufgabentext
+
+\Subitem{Gib die Wahrscheinlichkeit $P(A)$ in Abhängigkeit von $p$ an.\leer
+
+$P(A)=\,\antwort[\rule{5cm}{0.3pt}]{p^2+2\cdot p^3\cdot(1-p)}$} %Unterpunkt1
+
+Wird $p$ erhöht, so vergrößert sich die Wahrscheinlichkeit $P(A)$.
+
+\Subitem{Gib dasjenige $p\in[0;1]$ an, bei dem die Wahrscheinlichkeit $P(A)$ am stärksten wächst (also die lokale Änderungsrate von $P(A)$ am größten ist).} %Unterpunkt2
+
+\item Bei einem anderen Spieldurchgang werden Maria genau 100 Fragen gestellt. Die Beantwortet dabei jede Frage unabhängig von den anderen Fragen mit der Wahrscheinlichkeit 0,8 richtig. Die Zufallsvariable $Y$ gibt die Zahl desjenigen Feldes an, auf dem die Spielfigur nach der Beantwortung der 100 Fragen steht.%Aufgabentext
+
+\Subitem{Berechne den Erwartungswert $E(Y)$.\leer
+
+$E(Y)=\,\antwort[\rule{5cm}{0.3pt}]{100\cdot 0,8-100\cdot 0,2=60}$} %Unterpunkt1
+
+Die Zufallsvariable $Y$ wird durch eine normalverteilte Zufallsvariable $Z$ angenähert. Dabei gilt: $E(Y)=E(Z)$ und die Standardabweichung $\sigma$ von $Z$ ist 8.
+
+\Subitem{Ermittle das um den Erwartungswert $E(Z)$ symmetrische Intervall $[z_1;z_2]$, für das $P(z_1\leq Z\leq z_2)=95,4\,\%$ gilt.} %Unterpunkt2
+
+\item Bei einem anderen Spieldurchgang beantwortet Maria alle Fragen durch Raten. Sie beantwortet somit jede Frage unabhängig von den anderen Fragen mit der Wahrscheinlichkeit 0,5 richtig.\\
+Für jede gerade Anzahl $n$ an Fragen mit $n\geq 2$ gilt:
+
+$M(n)=\binom{n}{\frac{n}{2}}\cdot 0,5^n$%Aufgabentext
+
+\ASubitem{Interpretiere $M(n)$ im gegebenen Kontext.} %Unterpunkt1
+
+Für jede gerade Anzahl $n$ an Fragen mit $n\geq 10$ kann $M(n)$ durch\\
+ $\widetilde{M}(n)=\sqrt{\dfrac{2}{\pi\cdot n}}$ näherungsweise berechnet werden.
+
+Für jedes gerade $n\geq 10$ gibt es ein $n^*$, sodass gilt: $\widetilde{M}(n^*)=\frac{1}{2}\cdot \widetilde{M}(n)$.
+
+\Subitem{Bestimme $n^*$ in Abhängigkeit von $n$.\leer
+
+$n^*=\,\antwort[\rule{5cm}{0.3pt}]{4\cdot n}$} %Unterpunkt2
+
+\end{aufgabenstellung}
+
+\begin{loesung}
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{$P(A)=p^2+2\cdot p^3\cdot(1-p)$} %Lösung von Unterpunkt1
+\Subitem{mögliche Vorgehensweise:
+
+$f(p)=p^2+2\cdot p^3\cdot(1-p)$\\
+$f'(p)=2\cdot p+6\cdot p^2-8\cdot p^3$\\
+$f''(p)=2+12\cdot p-24\cdot p^2$\\
+$f''(p)=0 \Rightarrow p_1=0,6318\ldots\approx 0,632$\quad $(p_2=-0,1318\ldots)$\\
+$(f'''(0,6318\ldots)\neq 0)$
+
+Bei $p\approx 0,632$ wächst die Wahrscheinlichkeit $P(A)$ am stärksten.} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die richtige Lösung. Andere Schreibweisen der Lösung sind ebenfalls als richtig zu werten.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die richtige Lösung. Andere Schreibweisen der Lösung sind ebenfalls als richtig zu werten.} %Lösungschlüssel von Unterpunkt2
+
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{$E(Y)=100\cdot 0,8-100\cdot 0,2=60$} %Lösung von Unterpunkt1
+\Subitem{mögliche Vorgehensweise:
+
+$E(Z)=60$ und $\sigma=8$
+
+Es gilt: $P(E(Z)-2\cdot\sigma\leq Z\leq E(Z)+2\cdot\sigma)\approx 0,954 \Rightarrow z_1\approx 22, z_2\approx 76 \Rightarrow [44;76]$} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die richtige Lösung.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für ein richtiges Intervall, wobei die Angabe der beiden richtigen Werte ohne Intervallschreibweise als richtig zu werten ist.
+
+Toleranzintervall für $z_1$: $[44;45]$\\
+Toleranzintervall für $z_2$: $[75;76]$} %Lösungschlüssel von Unterpunkt2
+
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{mögliche Interpretation:
+
+$M(n)$ gibt die Wahrscheinlichkeit an, dass Maria genau die Hälfte der Fragen richtig beantwortet.
+
+oder:
+
+$M(n)$ gibt die Wahrscheinlichkeit an, dass die Spielfigur nach $n$ Fragen auf dem Feld mit der Zahl 0 steht.} %Lösung von Unterpunkt1
+\Subitem{$\widetilde{M}(n^*)=\frac{1}{2}\cdot\sqrt{\frac{2}{\pi\cdot n}}$\leer
+
+$\sqrt{\frac{2}{\pi\cdot n^*}}=\frac{1}{2}\cdot\sqrt{\frac{2}{\pi\cdot n}} \Rightarrow n^*=4\cdot n$} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Ausgleichspunkt für eine richtige Interpretation.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die richtige Lösung.} %Lösungschlüssel von Unterpunkt2
+
+\end{loesung}
+
+\antwort{GK/Themen: AG 2.1, AN 3.3, WS 2.3, WS 3.1, WS 3.4}
+\end{langesbeispiel}

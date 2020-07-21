@@ -17,18 +17,18 @@ Bei einer meteorologischen Messstelle wurden die Tageshöchsttemperaturen für d
 Stelle die aufgezeichneten Tageshöchsttemperaturen in einem Kastenschaubild (Boxplot) dar!
 
 \begin{center}
-	\resizebox{0.9\linewidth}{!}{\psset{xunit=0.6cm,yunit=0.9cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\psset{xunit=0.5cm,yunit=0.9cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
 \begin{pspicture*}(13.5,-1.46)(41.66,5.14)
 \multips(0,0)(0,10.0){1}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=darkgray]{c-c}(13.5,0)(41.66,0)}
 \multips(13,0)(1.0,0){29}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=darkgray]{c-c}(0,0)(0,5.14)}
-\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=1.,Dy=1.,ticksize=-2pt 0,subticks=2](0,0)(13.5,-1.46)(41.66,5.14)
+\psaxes[xAxis=true,yAxis=true,Dx=2.,Dy=1.,ticksize=-2pt 0,subticks=0](0,0)(13.5,-1.46)(41.66,5.14)
 \antwort{\psframe[linewidth=0.8pt,fillcolor=black,fillstyle=solid,opacity=0.1](26.,1.0)(33.,3.)
 \psline[linewidth=0.8pt,fillcolor=black,fillstyle=solid,opacity=0.1](19.,1.)(19.,3.)
 \psline[linewidth=0.8pt,fillcolor=black,fillstyle=solid,opacity=0.1](40.,1.)(40.,3.)
 \psline[linewidth=0.8pt,fillcolor=black,fillstyle=solid,opacity=0.1](27.,1.)(27.,3.)
 \psline[linewidth=0.8pt,fillcolor=black,fillstyle=solid,opacity=0.1](19.,2.)(26.,2.)
 \psline[linewidth=0.8pt,fillcolor=black,fillstyle=solid,opacity=0.1](33.,2.)(40.,2.)}
-\rput[tl](35,-0.7){Temperatur in $^\circ$C}
-\end{pspicture*}}
+\rput[tl](35,-0.9){Temperatur in $^\circ$C}
+\end{pspicture*}
 \end{center}
 \end{beispiel}

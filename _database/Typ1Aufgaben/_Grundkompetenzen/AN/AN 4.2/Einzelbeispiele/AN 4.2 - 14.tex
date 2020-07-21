@@ -1,0 +1,32 @@
+\section{AN 4.2 - 14 - MAT - Flächeninhalt zwischen zwei Funktionen - OA - JanRos UNIVIE}
+
+\begin{beispiel}[AN 4.2]{1} %PUNKTE DES BEISPIELS
+Gegeben sind zwei Funktionen $f$ und $g$.
+Im nachstehenden Koordinatensystem sind die Graphen der beiden Funktionen $f$ und $g$ dargestellt.
+$A$ bezeichnet den grau eingefärbten Flächeninhalt.
+
+\begin{center}
+
+\newrgbcolor{uququq}{0.25098039215686274 0.25098039215686274 0.25098039215686274}
+\psset{xunit=1.5cm,yunit=1.5cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-0.8,-0.8)(5.,5.)
+\multips(0,0)(0,1.0){5}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(-0.8,0)(5.,0)}
+\multips(0,0)(1.0,0){5}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=darkgray]{c-c}(0,-0.8)(0,5.)}
+\psaxes[labelFontSize=\normalsize,showorigin=false,xAxis=true,yAxis=true,Dx=1.,Dy=1.,ticksize=-2pt 0,subticks=0]{->}(0,0)(-0.8,-0.8)(5.,5.)[x,140] [f(x),-40]
+\pscustom[linewidth=0.8pt,linecolor=gray,fillcolor=gray,fillstyle=solid,opacity=0.1]{\psplot{1.}{2.}{1.0/x}\lineto(2.,4.)\psplot{2.}{1.}{-x^(2.0)+3.0*x+2.0}\lineto(1.,1.)\closepath}
+\psplot[linewidth=2.pt,linecolor=uququq,plotpoints=200]{-0.8}{5.0}{1.0/x}
+\psplot[linewidth=2.pt,plotpoints=200]{-0.8}{5.0}{-x^(2.0)+3.0*x+2.0}
+\begin{normalsize}
+\rput[bl](0.3,4.1){\uququq{$f$}}
+\rput[bl](-0.7,0.4){$g$}
+\rput[bl](1.4,2.4){\uququq{$A$}}
+\end{normalsize}
+\end{pspicture*}
+
+\end{center}
+
+Gib einen korrekten Ausdruck für $A$ mithilfe der Integralschreibweise an.
+
+$A=\antwort[\rule{5cm}{0.3pt}]{\int\limits_{1}^{2} \left( g(x)-f(x)\right)\,\text{d}x}$
+
+\end{beispiel}

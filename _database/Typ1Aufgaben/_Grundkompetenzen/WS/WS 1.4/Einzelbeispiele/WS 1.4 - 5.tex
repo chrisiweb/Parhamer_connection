@@ -1,0 +1,25 @@
+\section{WS 1.4 - 5 - MAT - Lawinengefahr - OA - Matura-HT-18/19}
+
+\begin{beispiel}[WS 1.4]{1}
+In den Wintermonaten wird täglich vom Lawinenwarndienst der sogenannte Lawinenlagebericht
+veröffentlicht. Dieser enthält unter anderem eine Einschätzung der Lawinengefahr entsprechend
+den fünf Gefahrenstufen.\leer
+
+In einer bestimmten Region wurden im Winter 2013/14 Aufzeichnungen über die Gefahrenstufen
+geführt. Die Aufzeichnungen listen in einer Datenliste alle Tage auf, an denen eine der Gefahrenstufen 1 bis 4 galt. (Für die Gefahrenstufe 5 gibt es in dieser Datenliste keinen Eintrag, da diese Gefahrenstufe im betrachteten Zeitraum nicht auftrat.)\\
+Die nachstehende Abbildung zeigt den relativen Anteil der Tage mit einer entsprechenden Gefahrenstufe.\leer
+
+\begin{center}
+\begin{tikzpicture}
+\pie[color={black!30 ,black!10 , black!50, black!20}, %Farbe
+text=pin, %Format: inside,pin, legend
+rotate=-10,
+before number=\phantom,after number=,radius=2]
+{27/Gefahrenstufe 1, 2/Gefahrenstufe 4, 15/Gefahrenstufe 3,56/Gefahrenstufe 2} %Werte
+\end{tikzpicture}
+\end{center}
+
+Begründe warum die Gefahrenstufe 2 der Median der Datenliste (die der obigen Abbildung zugrunde liegt) sein muss!
+
+\antwort{Der Zentriwinkel des Sektors für "`Gefahrenstufe 2"' ist größer als 180\degre. Das bedeutet, dass mehr als 50\,\% der Einträge in der zugrunde liegenden Datenliste Tage mit "`Gefahrenstufe 2"' sind. Daher beträgt der Median 2. (Andere richtige Begründungen (z.B. grafische Begründungen) sind ebenfalls als richtig zu werten.)}
+\end{beispiel}

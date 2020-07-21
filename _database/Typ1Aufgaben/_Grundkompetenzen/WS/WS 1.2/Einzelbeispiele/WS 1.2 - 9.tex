@@ -1,0 +1,46 @@
+\section{WS 1.2 - 9 - Boxplot über eine Umfrage - OA - AngMac UNIVIE}
+
+\begin{beispiel}[WS 1.2]{1}
+Für eine Umfrage über den Arbeitsaufwand der vorwissenschaftlichen Arbeit wurden 40 Schüler*innen der 8. Klassen befragt, wie viele Stunden sie für die Literaturrecherche aufgewendet haben. Bei der Auswertung aller Antworten konnten folgende Ergebnisse über die aufgewendete Stundenanzahl festgehalten werden:
+
+\begin{itemize}
+\item Die geringste Stundenanzahl, die genannt wurde, betrug 2 Stunden, während die längste 31 Stunden betrug.
+\item 10 Schüler*innen haben mehr als 18 Stunden aufgewendet. 
+\item 4 Schüler*innen haben angegeben, genau 22 Stunden aufgewendet zu haben.
+\item 50\% aller Befragten haben weniger als 11 Stunden aufgewendet.
+\item Ein Viertel aller Befragten hat weniger als 7 Stunden aufgewendet.\end{itemize}
+
+\subsubsection{Aufgabenstellung:} Zeichne einen Boxplot, der diese Ergebnisse korrekt darstellt!
+\vspace{-1cm}
+
+\newrgbcolor{zzttqq}{0.6 0.2 0}
+\psset{xunit=0.45cm,yunit=0.5cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-0.8653415032262738,-2.1249624963749913)(33.8582369392962,11.981491245899718)
+\multips(0,0)(2,0){18}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{c-c}(0,0)(0,10)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=false,labels=x,Dx=2,Dy=2,ticksize=-2pt 0,subticks=0]{->}(0,0)(-0.8653415032262738,-2.1249624963749913)(33.8582369392962,11.981491245899718)
+\antwort{\psframe[linewidth=0.8pt,linecolor=zzttqq,fillcolor=zzttqq,fillstyle=solid,opacity=0.1](7,2)(18,8)
+\psline[linewidth=0.8pt,linecolor=zzttqq,fillcolor=zzttqq,fillstyle=solid,opacity=0.1](2,2)(2,8)
+\psline[linewidth=0.8pt,linecolor=zzttqq,fillcolor=zzttqq,fillstyle=solid,opacity=0.1](31,2)(31,8)
+\psline[linewidth=0.8pt,linecolor=zzttqq,fillcolor=zzttqq,fillstyle=solid,opacity=0.1](11,2)(11,8)
+\psline[linewidth=0.8pt,linecolor=zzttqq,fillcolor=zzttqq,fillstyle=solid,opacity=0.1](2,5)(7,5)
+\psline[linewidth=0.8pt,linecolor=zzttqq,fillcolor=zzttqq,fillstyle=solid,opacity=0.1](18,5)(31,5)}
+\end{pspicture*}
+
+\vspace{-1.1cm}
+
+ \begin{footnotesize}
+\antwort{Lösungserwartung:\\ 
+Ein möglicher Boxplot wurde beispielhaft eingezeichnet.\\ 
+Lösungsschlüssel:\\
+ Der Punkt ist zu geben, wenn alle nachfolgenden Bedingungen für den Boxplot erfüllt sind:
+ \begin{itemize}
+ \item Das Minimum ist 2; das Maximum ist 31.
+ \item Für das erste Quartil Q1 gilt: $2\leq Q1 \leq 7$
+ \item Für den Median M gilt: $Q1 \leq M \leq 11$
+ \item Für das dritte Quartil Q3 gilt: $18 \leq Q3 \leq 31$.
+ \end{itemize}
+
+
+Die Höhe des Boxplots (sofern ein Rechteck erkennbar bleibt) bzw. der Abstand zur Achse sind dabei nicht relevant. Auch entartete Boxplots (z.B. Boxplots, bei denen der Median und das erste Quartil gleich sind) sind als korrekt zu werten, wenn sie alle oben genannten Bedingungen erfüllen.} 
+\end{footnotesize}
+\end{beispiel}

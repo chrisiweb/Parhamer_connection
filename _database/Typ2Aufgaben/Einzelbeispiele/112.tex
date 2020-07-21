@@ -1,0 +1,128 @@
+\section{112 - MAT - AG 2.2, AN 3.3, FA 1.4, FA 1.5 - Kostenfunktion - Matura 1. NT 2018/19}
+
+\begin{langesbeispiel} \item[8] %PUNKTE DES BEISPIELS
+Ein Hersteller interessiert sich für die monatlich anfallenden Kosten bei der Produktion eines bestimmten Produkts. Die Produktionskosten für dieses Produkt lassen sich in Abhängigkeit von der Produktionsmenge $x$ (in Mengeneinheiten, ME) durch eine Polynomfunktion dritten Grades $K$ mit\\ 
+$K(x)=8\cdot 10^{-7}\cdot x^3-7,5\cdot 10^{-4}\cdot x^2+0,2405\cdot x+42$ modellieren ($K(x)$ in Geldeinheiten, GE).%Aufgabentext
+
+\begin{aufgabenstellung}
+\item %Aufgabentext
+
+\ASubitem{Berechne für dieses Produkt den durchschnittlichen Kostenanstieg pro zusätzlich produzierter Mengeneinheit im Intervall $[100\,\text{ME}; 200\,\text{ME}]$.} %Unterpunkt1
+\Subitem{Ermittle, ab welcher Produktionsmenge die Grenzkosten steigen.} %Unterpunkt2
+
+\item Die Produktionsmenge $x_\text{opt}$, für die die Stückkostenfunktion $\overline{K}$ mit\\ 
+$\overline{K}(x)=\dfrac{K(x)}{x}$ minimal ist, heißt Betriebsoptimum zur Kostenfunktion $K$.%Aufgabentext
+
+\Subitem{Ermittle das Betriebsoptimum $x_\text{opt}$.} %Unterpunkt1
+
+Der Hersteller berechnet die Produktionskosten für die Produktionsmenge $x_\text{opt}$. Dabei stellt er fest, dass diese Kosten $65\,\%$ seines für die Produktion dieses Produkts verfügbaren Kapitals ausmachen.
+
+\Subitem{Berechne das dem Hersteller für die Produktion dieses Produkts zur Verfügung stehende Kapital.} %Unterpunkt2
+
+\item Für den Verkaufspreis $p$ kann der Erlös in Abhängigkeit von der Produktionsmenge $x$ durch eine lineare Funktion $E$ mit $E(x)=p\cdot x$ beschrieben werden ($E(x)$ in GE, $x$ in ME, $p$ in GE/ME). Dabei wird vorausgesetzt, dass gleich viele Mengeneinheiten verkauft wie produziert werden.%Aufgabentext
+
+\Subitem{Bestimme $p$ so, dass der maximale Gewinn bei einem Verkauf von 600\,ME erzielt wird.} %Unterpunkt1
+
+Die maximal mögliche Produktionsmenge beträgt 650\,ME.
+
+\Subitem{Bestimme den Gewinnbereich (also denjenigen Produktionsbereich, in dem der Hersteller Gewinn erzielt).} %Unterpunkt2
+
+\item Für ein weiteres Produkt dieses Herstellers sind in der nachstehenden Tabelle die Produktionskosten (in GE) für verschiedene Produktionsmengen (in ME) dargestellt.
+	
+	\begin{tabular}{|l|c|c|c|c|c|}\hline
+	\cellcolor[gray]{0.9}Produktionsmenge (in ME)&50&100&250&\antwort{$\approx 365$}&500\\ \hline
+	\cellcolor[gray]{0.9}Produktionskosten (in GE)&197&253&308&380&700\\ \hline
+	\end{tabular}
+	
+	Diese Produktionskosten können durch eine Polynomfunktion dritten Grades $K_1$ mit $K_1(x)=a\cdot x^3+b\cdot x^2+c\cdot x+d$ mit $a,b,c,d\in\mathbb{R}$ modelliert werden.%Aufgabentext
+
+\Subitem{Bestimme die Werte von $a,b,c$ und $d$.} %Unterpunkt1
+\Subitem{Berechne die in der obigen Tabelle fehlende Produktionsmenge.} %Unterpunkt2
+
+\end{aufgabenstellung}
+
+\begin{loesung}
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{$\dfrac{K(200)-K(100)}{200-100}=\dfrac{66,5-59,35}{100}=0,0715$\,GE/ME} %Lösung von Unterpunkt1
+\Subitem{mögliche Vorgehensweise:\\
+	$K''(x)=4,8\cdot 10^{-6}\cdot x-1,5\cdot 10^{-3}$\\
+	$K''(x)\geq 0 \Rightarrow x\geq 312,5$\,ME\\
+	Ab der Produktionsmenge von 312,5\,ME steigen die Grenzkosten.} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Ausgleichspunkt für die richtige Lösung, wobei die Einheit "`GE/ME"' nicht angeführt sein muss.
+
+Toleranzintervall: $[0,05\,\text{GE/ME}; 0,10\,\text{GE/ME}]$\\
+Die Aufgabe ist auch dann als richtig gelöst zu werten, wenn bei korrektem Ansatz das Ergebnis aufgrund eines Rechenfehlers nicht richtig ist.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die richtige Lösung, wobei die Einheit "`ME"' nicht angeführt sein muss.
+
+Toleranzintervall: $[312\,\text{ME}; 313\,\text{ME}]$\\
+Die Aufgabe ist auch dann als richtig gelöst zu werten, wenn bei korrektem Ansatz das Ergebnis aufgrund eines Rechenfehlers nicht richtig ist.} %Lösungschlüssel von Unterpunkt2
+
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{mögliche Vorgehensweise:\\
+$\overline{K}(x)=8\cdot 10^{-7}\cdot x^2-7,5\cdot 10^{-4}\cdot x+0,2405+\frac{42}{x}$\\
+$\overline{K}'(x)=1,6\cdot 10^{-6}\cdot x-7,5\cdot 10^{-4}-\frac{42}{x^2}$\\
+$\overline{K}'(x)=0 \Rightarrow x_\text{opt}\approx 554,2\,$ME\\
+($\overline{K}''(x)>0 \Rightarrow$ Es liegt ein Minimum vor)} %Lösung von Unterpunkt1
+\Subitem{mögliche Vorgehensweise:\\
+$K(554,2)\approx 81,1$\,GE $\Rightarrow$ $81,1:0,65\approx 125$\\
+Dem Hersteller stehen für die Produktion dieses Produkts ca. 125\,GE zur Verfügung.} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die richtige Lösung, wobei die Einheit "`ME"' nicht angeführt sein muss und eine Überprüfung, dass es sich um ein Minimum handelt, nicht durchgeführt werden muss.
+
+Toleranzintervall: $[554\,\text{ME}; 555\,\text{ME}]$\\
+Die Aufgabe ist auch dann als richtig gelöst zu werten, wenn bei korrektem Ansatz das Ergebnis aufgrund eines Rechenfehlers nicht richtig ist.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die richtige Lösung, wobei die Einheit "`GE"' nicht angeführt sein muss.
+
+Toleranzintervall: $[120\,\text{GE}; 130\,\text{GE}]$} %Lösungschlüssel von Unterpunkt2
+
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{mögliche Vorgehensweise:\\
+$G(x)=E(x)-K(x)$\\
+$G'(x)=p-K'(x)$\\
+$G'(600)=p-K'(600)=0 \Rightarrow p=0,2045$\,GE/ME} %Lösung von Unterpunkt1
+\Subitem{mögliche Vorgehensweise:\\
+$G(x)=0 \Rightarrow x_1\approx 335 (x_2\approx 799, x_3\approx -196)$\\
+Gewinnbereich: $[355\,\text{ME}; 650\,\text{ME}]$} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die richtige Lösung, wobei die Einheit "`GE/ME"' nicht angeführt sein muss.
+
+Toleranzintervall: $[0,20; 0,21]$} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die Angabe eines richtigen Gewinnbereichs, wobei die Einheit "`ME"' nicht angeführt sein muss.
+
+Toleranzintervall für $x_1$: $[325;345]$} %Lösungschlüssel von Unterpunkt2
+
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{$a\approx 1,5\cdot 10^{-5}$\\
+$b\approx -9,8\cdot 10^{-3}$\\
+$c\approx 2,324$\\
+$d\approx 103$} %Lösung von Unterpunkt1
+\Subitem{$K_1(x)=380 \Rightarrow x\approx 365$\,ME} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die richtigen Werte von $a,b,c$ und $d$.
+
+Toleranzintervall für $a$: $[1\cdot 10^{-5}; 2\cdot 10^{-5}]$\\
+Toleranzintervall für $b$: $[-1\cdot 10^{-2}; -9\cdot 10^{-3}]$\\
+Toleranzintervall für $c$: $[2; 2,5]$\\
+Toleranzintervall für $d$: $[100; 105]$} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die richtige Lösung, wobei die Lösung je nach Rundung der Koeffizienten $a,b,c$ und $d$ variieren kann.	} %Lösungschlüssel von Unterpunkt2
+
+\end{loesung}
+
+\end{langesbeispiel}

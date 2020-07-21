@@ -4,21 +4,20 @@
 Die Funktion $E$ gibt den Erlös $E(x)$ und die Funktion $K$ die Kosten $K(x)$ jeweils in Euro bezogen auf die Produktionsmenge $x$ an. Die Produktionsmenge $x$ wird in Mengeneinheiten (ME) angegeben. Im folgenden Koordinatensystem sind die Graphen beider Funktion dargestellt:
 
 
-\begin{center}
-\resizebox{0.5\linewidth}{!}{\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{center}\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
 \begin{pspicture*}(-0.6,-0.44)(7.42,6.)
-\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=none,Dx=1.,Dy=1.,ticksize=-2pt 0,subticks=2]{->}(0,0)(0.,0.)(7.42,6.)[,140] [,-40]
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=none,Dx=1.,Dy=1.,ticksize=0pt 0,subticks=2]{->}(0,0)(0.,0.)(7.42,6.)[,140] [,-40]
 \psplot[linewidth=1.6pt,plotpoints=200]{-0.5999999999999998}{7.420000000000003}{x}
 \psplot[linewidth=1.6pt,plotpoints=200]{-0.5999999999999998}{7.420000000000003}{0.5*x+2.0}
+\begin{scriptsize}
 \rput[tl](6.34,4.94){K}
 \rput[tl](4.9,5.74){E}
-\begin{scriptsize}
-\psdots[dotsize=3pt 0,dotstyle=*,linecolor=darkgray](4.,4.)
-\rput[bl](3.78,4.14){\darkgray{S}}
-\rput[bl](6.5,0.2){$x$ in ME}
+\psdots[dotsize=5pt 0,dotstyle=*](4.,4.)
+\rput[bl](3.78,4.14){S}
+\rput[bl](6,0.2){$x$ in ME}
 \rput[bl](0.2,5.7){$E(x)$, $K(x)$ in \euro}
 \end{scriptsize}
-\end{pspicture*}}
+\end{pspicture*}
 \end{center}
 
 Interpretiere die beiden Koordinaten des Schnittpunkts $S$ der beiden Funktionsgraphen im gegebenen Zusammenhang!

@@ -3,19 +3,20 @@
 \begin{beispiel}[AN 4.3]{1} %PUNKTE DES BEISPIELS
 				Die nachstehende Abbildung zeigt den Graphen einer Funktion $v$, die die Geschwindigkeit $v(t)$ in Abhängigkeit von der Zeit $t$ ($t$ in Sekunden) modelliert.
 				
-				\begin{center}\resizebox{0.7\linewidth}{!}{\newrgbcolor{zzttqq}{0.6 0.2 0.}
+				\begin{center}\newrgbcolor{zzttqq}{0.6 0.2 0.}
 \psset{xunit=1.0cm,yunit=0.05cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
 \begin{pspicture*}(-1.36,-13.200000000000774)(11.22,117.20000000000373)
-\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=1.,Dy=20.,ticksize=-2pt 0,subticks=2]{->}(0,0)(-1.36,-13.200000000000774)(11.22,117.20000000000373)[t,140] [v(t),-40]
-\pscustom[linewidth=0.pt,fillcolor=zzttqq,fillstyle=solid,opacity=0.10]{\psplot{0.}{10.}{-x^(2.0)+100.0}\lineto(10.,0)\lineto(0.,0)\closepath}
-\psplot[linewidth=1.2pt,plotpoints=200]{0}{10}{-x^(2.0)+100.0}
-\rput[tl](6.2,74.00000000000223){v}
 \begin{scriptsize}
+\psaxes[xAxis=true,yAxis=true,Dx=1.,Dy=20.,ticksize=-2pt 0,subticks=0]{->}(0,0)(-1.36,-13.200000000000774)(11.22,117.20000000000373)[$t$,140] [$v(t)$,-40]
+\pscustom[linewidth=0.pt,fillcolor=zzttqq,fillstyle=solid,opacity=0.2]{\psplot{0.}{10.}{-x^(2.0)+100.0}\lineto(10.,0)\lineto(0.,0)\closepath}
+\psplot[linewidth=1.2pt,plotpoints=200]{0}{10}{-x^(2.0)+100.0}
+\rput[tl](6.2,70){$v$}
+
 \psdots[dotsize=3pt 0,dotstyle=*,linecolor=blue](-10.,0.)
 \end{scriptsize}
-\end{pspicture*}}\end{center}\leer
+\end{pspicture*}\end{center}\leer
 
-Gib an, was die Aussage $$\int^5_0{v(t)}\text{d}t>\int^{10}_5{v(t)}\text{d}t$$ im vorliegenden Kontext bedeutet!\leer
+Gib an, was die Aussage $$\int^5_0{v(t)}\,\text{d}t>\int^{10}_5{v(t)}\,\text{d}t$$ im vorliegenden Kontext bedeutet!\leer
 
 \antwort{Die zurückgelegte Wegstrecke ist in den ersten 5 Sekunden größer als in den zweiten 5 Sekunden.}
 \end{beispiel}

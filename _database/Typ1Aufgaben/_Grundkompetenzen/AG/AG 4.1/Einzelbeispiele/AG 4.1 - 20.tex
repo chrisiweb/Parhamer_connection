@@ -1,0 +1,36 @@
+\section{AG 4.1 - 20 - MAT - Dreieck - OA - Matura-HT-18/19}
+
+\begin{beispiel}[AG 4.1]{1}
+Gegeben ist nachstehendes Dreieck mit den Seitenlängen $r,s$ und $t$.
+
+
+\begin{center}
+\newrgbcolor{qqwuqq}{0. 0.39215686274509803 0.}
+\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(0.62,0.82)(10.44,4.76)
+\pscustom[linewidth=0.4pt,linecolor=qqwuqq,fillcolor=qqwuqq,fillstyle=solid,opacity=0.05]{
+\parametricplot{-1.2217304763960306}{0.0}{0.8*cos(t)+1.|0.8*sin(t)+4.}
+\lineto(1.,4.)\closepath}
+\pscustom[linewidth=0.4pt,linecolor=qqwuqq,fillcolor=qqwuqq,fillstyle=solid,opacity=0.1]{
+\parametricplot{0.349065850398866}{1.9198621771937625}{0.6*cos(t)+2.08115919297032|0.6*sin(t)+1.0295395304782633}
+\lineto(2.08115919297032,1.0295395304782633)\closepath}
+\psellipse*[linewidth=5pt,linecolor=qqwuqq,fillcolor=qqwuqq,fillstyle=solid,opacity=1](2.2303185794670384,1.3494128670794354)(0.04,0.04)
+\psline[linewidth=0.8pt](1.,4.)(10.242432258363863,4.)
+\psline[linewidth=0.8pt](1.,4.)(2.08115919297032,1.0295395304782633)
+\psline[linewidth=0.8pt](2.08115919297032,1.0295395304782633)(10.242432258363863,4.)
+\rput[bl](5.68,4.24){$t$}
+\rput[bl](1.22,2.42){$r$}
+\rput[bl](6.26,2.22){$s$}
+\begin{scriptsize}
+\rput[bl](1.25,3.58){\qqwuqq{$70\textrm{\degre}$}}
+\end{scriptsize}
+\end{pspicture*}
+\end{center}
+
+Berechne das Verhältnis $\frac{r}{t}$ für dieses Dreieck!
+
+\antwort{
+$\frac{r}{t}=\cos(70^\circ)\approx 0,34$
+
+Toleranzintervall: $[0,3; 0,4]$}
+\end{beispiel}

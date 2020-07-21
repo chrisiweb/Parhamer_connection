@@ -1,0 +1,95 @@
+\section{107 - MAT - AG 4.2, AN 4.3, FA 2.1, FA 4.3 - Körper mit rechteckigen Querschnittsflächen - Matura-HT-18/19-OT}
+
+\begin{langesbeispiel} \item[6] %PUNKTE DES BEISPIELS
+Die nachstehenden Abbildungen 1 und 2 stellen einen Körper mit ebenen Seitenflächen im Schrägriss bzw. eine Schnittfläche dar.
+		\begin{center}
+		\resizebox{0.8\linewidth}{!}{\includegraphics{../_database/Bilder/107_koerper.eps}}
+		\end{center}
+
+Die vordere Seitenfläche $ABFE$ steht normal auf die horizontale Grundfläche $ABCD$ und auf die horizontale Deckfläche $EFGH$, während die hintere Seitenfläche $DCGH$ zur Grundfläche unter dem Winkel $\alpha$ $(0^\circ<\alpha<90^\circ)$ geneigt ist.
+
+Die beiden Seitenflächen $ADHE$ und $BCGF$ weisen gegenüber der Grundfläche den gleichen Neigungswinkel $\beta$ (mit $\beta\approx 76^\circ)$ auf.
+
+Die horizontalen Querschnittsflächen des Körpers sind in jeder Höhe rechteckig. Die Längen $a(h)$ und die Breiten $b(h)$ dieser Rechtecke ändern sich lineare in Abhängigkeit von der Höhe $h$. Die Grundfläche hat eine Länge von 10\,cm und eine Breite von 6\,cm, die Deckfläche hat eine Länge von 20\,cm und eine Breite von 3\,cm. Die Höhe des Körpers beträgt 20\,cm.%Aufgabentext
+
+\begin{aufgabenstellung}
+\item Die Funktion $Q\!:[0;20]\rightarrow\mathbb{R}$ beschreibt die Größe der Querschnittsfläche $Q(h)$ in Abhängigkeit von der Höhe $h$ (mit $Q(h)$ in cm$^2$, $h$ in cm).
+	
+	Es gilt: $Q(h)=s\cdot h^2+1,5\cdot h+t$ mit $s,t\in\mathbb{R}$.%Aufgabentext
+
+\Subitem{Bestimme die Werte von $s$ und $t$.} %Unterpunkt1
+\Subitem{Berechne das Volumen des Körpers und gib das Ergebnis inklusive Einheit an.} %Unterpunkt2
+
+\item Die lokale Änderungsrate der Breite $b(h)$ nimmt für jedes $h\in[0;20]$ einen konstanten Wert $c\in\mathbb{R}$ an.%Aufgabentext
+
+\Subitem{Berechne $c$.} %Unterpunkt1
+\Subitem{Beschreibe den Zusammenhang zwischen $c$ und $\alpha$ mithilfe einer Gleichung.} %Unterpunkt2
+
+\item Die Funktion $a$ beschreibt die Länge $a(h)$ in der Höhe $h$ mit $a(h)$ und $h$ in cm.%Aufgabentext
+
+\ASubitem{Gib eine Funktionsgleichung von $a$ an.} %Unterpunkt1
+
+Ändert man den Winkel $\beta$ auf $45^\circ$ und lässt die Länge der Grundlinie $AB$ und die Körperhöhe unverändert, so erhält man eine neue vordere Seitenfläche $ABF_1E_2$, bei der die Funktion $a_1$ mit $a_1(h)=2\cdot h+10$ die Länge $a_1(h)$ in der Höhe $h$ beschreibt ($a_1(h)$ und $h$ in cm).
+
+\Subitem{Gib das Verhältnis $\displaystyle\int^{20}_0 a_1(h)\dx[h]:\displaystyle\int^{20}_0 a(h)\dx[h]$ an und interpretiere das Ergebnis in Bezug auf die neue vordere Seitenfläche $ABF_1E_1$ und die ursprüngliche vordere Seitenfläche $ABFE$.} %Unterpunkt2
+
+\end{aufgabenstellung}
+
+\begin{loesung}
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{mögliche Vorgehensweise:\\
+	$Q(0)=60 \Rightarrow t=60$\\
+	$Q(20)=60 \Rightarrow 60=400\cdot s+90 \Rightarrow s=-\frac{3}{40}$} %Lösung von Unterpunkt1
+\Subitem{$V=\displaystyle\int^{20}_0 Q(h)\dx[h]=-\frac{1}{40}\cdot 20^3+0,75\cdot 20^2+60\cdot 20=1\,300$\,cm$^3$} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die Angabe der beiden richtigen Werte.
+
+	Toleranzintervall für $s\!:[-0,08;-0,07]$\\
+	Die Aufgabe ist auch dann als richtig gelöst zu werten, wenn bei korrektem Ansatz das Ergebnis aufgrund eines Rechenfehlers nicht richtig ist.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die richtige Lösung unter Angabe einer richtigen Einheit.
+
+	Toleranzintervall: $[1\,280\,\text{cm}^3;1\,320\,\text{cm}^3]$\\
+	Die Aufgabe ist auch dann als richtig gelöst zu werten, wenn bei korrektem Ansatz das Ergebnis aufgrund eines Rechenfehlers nicht richtig ist.} %Lösungschlüssel von Unterpunkt2
+
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{$c=\frac{3-6}{20}=-\frac{3}{20}$} %Lösung von Unterpunkt1
+\Subitem{$\tan(\alpha)=-\frac{1}{c}$} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die richtige Lösung.
+
+	Toleranzintervall: $[-0,2;-0,1]$} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die richtige Gleichung. Äquivalente Gleichungen sind als richtig zu werten.} %Lösungschlüssel von Unterpunkt2
+
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{mögliche Vorgehensweise:\\
+	$a(h)=\frac{a(20)-a(0)}{20}\cdot h+a(0)$\\
+	$a(h)=\frac{1}{2}\cdot h+10$} %Lösung von Unterpunkt1
+\Subitem{mögliche Vorgehensweise:\\
+	$\displaystyle\int^{20}_0 a_1(h)\dx[h]=\displaystyle\int^{20}_0(2\cdot h+10)\dx[h]=600$
+	
+	$\displaystyle\int^{20}_0 a(h)\dx[h]=\displaystyle\int^{20}_0\left(\frac{1}{2}\cdot h+10\right)\dx[h]=300$
+	
+	$\displaystyle\int^{20}_0 a_1(h)\dx[h]:\displaystyle\int^{20}_0 a(h)\dx[h]=600:300=2:1$
+	
+	Das Verhältnis des Flächeninhalts der neuen Seitenwand $ABF_1E_1$ zum Flächeninhalt der ursprünglichen Seitenwand $ABFE$ ist $2:1$.	} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Ausgleichspunkt für eine richtige Gleichung. Äquivalente Gleichungen sind als richtig zu werten.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die richtige Lösung und eine richtige Interpretation.
+
+	Die Aufgabe ist auch dann als richtig gelöst zu werten, wenn bei korrektem Ansatz das Ergebnis aufgrund eines Rechenfehlers nicht richtig ist.} %Lösungschlüssel von Unterpunkt2
+
+\end{loesung}
+
+\end{langesbeispiel}

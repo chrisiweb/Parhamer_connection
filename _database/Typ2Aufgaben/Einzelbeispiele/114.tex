@@ -1,0 +1,74 @@
+\section{114 - MAT - WS 2.3, WS 3.2, WS 4.1 - Kino - Matura 1.NT 2018/19}
+
+\begin{langesbeispiel} \item[4] %PUNKTE DES BEISPIELS
+Ein Kino hat drei Säle. Im ersten Saal sind 185 Sitzplätze, im zweiten Saal 94 und im dritten Saal 76.
+
+Neue Filme starten üblicherweise an einem Donnerstag. Der Kinobetreiber nimmt modellhaft an, dass an so einem Donnerstag bei einer Vorstellung eines neuen Films in allen drei Sälen jeder einzelne Sitzplatz mit einer Wahrscheinlichkeit von $95\,\%$ belegt ist.%Aufgabentext
+
+\begin{aufgabenstellung}
+\item Es sei $X$ eine binomialverteilte Zufallsvariable mit den Parametern $n=355$ und $p=0,95$.%Aufgabentext
+
+\Subitem{Beschreibe die Bedeutung des Terms $1-P(X<350)$ im gegebenen Kontext.} %Unterpunkt1
+
+Zum Schulschluss mietet eine Schule alle drei Säle für denselben Film zur selben Beginnzeit.
+Alle Sitzplätze werden vergeben, jede Besucherin / jeder Besucher bekommt ein Ticket für
+einen bestimmten Sitzplatz in einem der drei Säle. Alle Tickets haben zusätzlich zur Platznum-
+mer noch eine fortlaufende, jeweils unterschiedliche Losnummer. Unmittelbar vor der Vor-
+stellung werden zwei Losnummern ausgelost. Die beiden Personen, die die entsprechenden
+Tickets besitzen, erhalten jeweils eine große Portion Popcorn.
+
+\Subitem{Gib die Wahrscheinlichkeit an, dass diese beiden Personen Tickets für denselben Saal haben.} %Unterpunkt2
+
+\item Der Betreiber des Kinos möchte wissen, wie zufrieden seine Kundschaft mit dem gebotenen
+Service (Buffet, Sauberkeit etc.) ist. Bei einer Umfrage geben von 628 Besucherinnen und
+Besuchern 515 Besucher/innen an, dass sie mit dem gebotenen Service im Kino insgesamt
+zufrieden sind.%Aufgabentext
+
+\ASubitem{Bestimme auf Basis dieser Befragung ein symmetrisches 95-\%- Konfidenzintervall für den relativen Anteil aller Besucher/innen dieses Kinos, die mit dem gebotenen Service insgesamt zufrieden sind.}
+
+Bei einer zweiten Befragung werden viermal so viele Personen befragt, wobei der relative An-
+teil der mit dem gebotenen Service insgesamt zufriedenen Besucher/innen wieder genauso
+groß wie bei der ersten Befragung ist.
+ %Unterpunkt1
+\Subitem{Gib an, wie sich diese Vergrößerung der Stichprobe konkret auf die Breite des aus der ersten Befragung ermittelten symmetrischen 95-\%- Konfidenzintervalls auswirkt.} %Unterpunkt2
+
+\end{aufgabenstellung}
+
+\begin{loesung}
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{mögliche Beschreibung:\\
+Der Term beschreibt die Wahrscheinlichkeit, dass bei einer Vorstellung eines neuen Films
+(in allen drei Sälen zusammen) mindestens 350 Sitzplätze belegt sind.} %Lösung von Unterpunkt1
+\Subitem{Anzahl der Sitzplätze insgesamt: 355\\
+$P=\dfrac{185}{355}\cdot\dfrac{184}{354}+\dfrac{94}{355}\cdot\dfrac{93}{354}+\dfrac{76}{355}\cdot\dfrac{75}{354}\approx 0,3858=38,58\,\%$} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für eine korrekte Beschreibung des Terms im gegebenen Kontext.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die richtige Lösung. Andere Schreibweisen des Ergebnisses sind ebenfalls als richtig zu werten.
+
+Die Aufgabe ist auch dann als richtig gelöst zu werten, wenn bei korrektem Ansatz das Ergebnis aufgrund eines Rechenfehlers nicht richtig ist.} %Lösungschlüssel von Unterpunkt2
+
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{mögliche Vorgehensweise:\\
+$n=628$, $h=\dfrac{515}{628}\approx 0,82$\\
+$0,82\pm 1,96\cdot\sqrt{\dfrac{0,82\cdot 0,18}{628}}\approx 0,82\pm 0,03 \Rightarrow [0,79; 0,85]$} %Lösung von Unterpunkt1
+\Subitem{mögliche Interpretation:\\
+Eine Erhöhung der Anzahl der Befragten auf das Vierfache führt (bei gleichem relativem Anteil h) zu einer Halbierung der Breite des Konfidenzintervalls.} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Ausgleichspunkt für ein richtiges Intervall. Andere Schreibweisen des Ergebnisses (als Bruch oder in Prozent) sind ebenfalls als richtig zu werten.
+
+Toleranzintervall für den unteren Wert: $[0,76;0,80]$\\
+Toleranzintervall für den oberen Wert: $[0,83;0,86]$\\
+Die Aufgabe ist auch dann als richtig gelöst zu werten, wenn bei korrektem Ansatz das Ergebnis aufgrund eines Rechenfehlers nicht richtig ist.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die Angabe der richtigen Auswirkung auf die Breite.} %Lösungschlüssel von Unterpunkt2
+
+\end{loesung}
+
+\end{langesbeispiel}

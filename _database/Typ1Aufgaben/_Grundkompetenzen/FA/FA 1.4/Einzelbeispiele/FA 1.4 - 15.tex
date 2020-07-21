@@ -1,0 +1,29 @@
+\section{FA 1.4 - 15 - MAT - Gewinnfunktion - OA - Matura 2018/19 2. NT}
+
+\begin{beispiel}[FA 1.4]{1}
+Die unten stehende Abbildung zeigt eine lineare Kostenfunktion $K$: $x\rightarrow K(x)$ und eine lineare Erlösfunktion $E$: $x\rightarrow E(x)$ mit $x\in [0;6]$.
+
+Für die Gewinnfunktion $G$: $x\rightarrow G(x)$ gilt für alle $x\in [0;6]$: $G(x)=E(x)-K(x)$.
+
+Zeichne in der nachstehenden Abbildung den Graphen von $G$ ein.
+
+\begin{center}
+\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-0.6,-8.46)(6.7,8.6)
+\multips(0,-8)(0,1.0){18}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,0)(6.7,0)}
+\multips(0,0)(1.0,0){8}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,-8.46)(0,8.6)}
+\psaxes[labelFontSize=\scriptstyle,showorigin=false,xAxis=true,yAxis=true,Dx=1.,Dy=1.,ticksize=-2pt 0,subticks=0]{->}(0,0)(0.,-10)(6.7,8.6)[$x$,140] [\text{$K(x), E(x), G(x)$},-40]
+\psplot[linewidth=2.pt]{0}{6.7}{(--15.--3.*x)/5.}
+\psplot[linewidth=2.pt]{0}{6.7}{(-0.--6.*x)/5.}
+\rput[tl](2.2,4.94){$K$}
+\rput[tl](3.26,3.86){$E$}
+\antwort{\rput[tl](3.36,-1.16){$G$}
+\psplot[linewidth=2.pt,plotpoints=200]{0}{6.700000000000003}{1.2*x-(0.6*x+3.0)}}
+\end{pspicture*}
+\end{center}
+
+\antwort{Lösungsschlüssel:
+
+Ein Punkt für die Darstellung des Graphen der Funktion $G$, wobei $G$ eine lineare Funktion sein
+muss, deren Graph durch die beiden Punkte $(0\mid -3)$ und $(5\mid 0)$ verläuft.}
+\end{beispiel}

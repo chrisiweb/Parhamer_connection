@@ -6,14 +6,16 @@ Gegeben ist eine Funktion $f$ mit $f(x)=e^{\lambda\cdot x}$ mit $\lambda\in\math
 Die nachstehende Abbildung zeigt die Graphen der Funktion $f$ und ihrer Ableitungsfunktion $f'$.
 
 \begin{center}
-	\resizebox{1\linewidth}{!}{\psset{xunit=2cm,yunit=1.5cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\psset{xunit=1.5cm,yunit=1cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.6pt,arrowsize=3pt 2,arrowinset=0.25}
 \begin{pspicture*}(-1.2346000372737964,-1.4366998545829988)(4.555176783111674,2.5471337003771946)
-\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=y,ticks=y,Dx=0.5,Dy=1.,ticksize=-4pt 0,subticks=2]{->}(0,0)(-1.2346000372737964,-1.4366998545829988)(4.555176783111674,2.5471337003771946)[x,140] [\text{f(x),f'(x)},-40]
-\psplot[linewidth=2.pt,plotpoints=200]{-1.2346000372737964}{4.3}{2.718281828459045^(-0.5*x)}
-\psplot[linewidth=2.pt,plotpoints=200]{-1.2346000372737964}{4.3}{-1.0/2.0*2.718281828459045^(-1.0/2.0*x)}
+\begin{scriptsize}
+\psaxes[xAxis=true,yAxis=true,labels=y,ticks=y,Dx=0.5,Dy=1.,showorigin=false,ticksize=-4pt 0,subticks=0]{->}(0,0)(-1.2346000372737964,-1.4366998545829988)(4.555176783111674,2.5471337003771946)[$x$,140] [\text{$f(x),f'(x)$},-40]
+\psplot[linewidth=1.pt,plotpoints=200]{-1.2346000372737964}{4.3}{2.718281828459045^(-0.5*x)}
+\psplot[linewidth=1.pt,plotpoints=200]{-1.2346000372737964}{4.3}{-1.0/2.0*2.718281828459045^(-1.0/2.0*x)}
 \rput[tl](1.0934268157661011,0.9213324676675828){$f$}
 \rput[tl](1.2665143141333797,-0.40661205065248157){$f'$}
-\end{pspicture*}}
+\end{scriptsize}
+\end{pspicture*}
 \end{center}
 
 Gib den Wert des Parameters $\lambda$ an!\leer

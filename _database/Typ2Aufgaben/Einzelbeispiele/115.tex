@@ -1,0 +1,119 @@
+\section{115 - K5 - VAG2 - AG 3.2, AG 3.3, AG 3.4, AG 3.5, AG-L 3.6, AG-L 3.7 - Mathematischer Orientierungslauf - MatKon}
+
+\begin{langesbeispiel} \item[6] %PUNKTE DES BEISPIELS
+Frau Prof. Gonmall und Herr Prof. Konzett bieten im Sommersemester 2020 zum ersten Mal die unverbindliche Übung "`Mathematischer Orientierungslauf"' an. Im Unterschied zum bisherigen Orientierungslauf wird diesmal der Weg zu den einzelnen Stationen jeweils mit Hilfe der Vektorrechnung beschrieben. 
+
+Da die Anmeldezahlen bereits im Vorfeld explodiert sind, waren die beiden ProfessorInnen gezwungen einen Aufnahmetest für die BewerberInnen zu kreieren, der aus drei Teilen besteht und mit dem "`goldenen Zirkel"' belohnt wird. Zu Beginn musst du deine Partnerin sicher zum Ausgang des Labyrinths führen, damit sie sich anschließend auf die Suche nach den Zirkel-Koordinaten begeben kann. Der Aufnahmetest endet, sobald deine Partnerin den goldenen Zirkel in der Hand hält. Natürlich wollen du und deine Teampartnerin dabei sein!%Aufgabentext
+
+\begin{aufgabenstellung}
+\item Zu Beginn des Aufnahmetests wird deine Partnerin in die Mitte eines Labyrinths gestellt. Nun muss sie den Weg zum Ausgang $A$ finden. Du bist mit ihr über Telefon verbunden und hältst außerdem folgende Karte in den Händen:
+
+\begin{center}
+\psset{xunit=0.6cm,yunit=0.2cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-6.949797086796506,-13.744147420534643)(6.553817483534391,20.61929870065968)
+\multips(0,-15)(0,2.5){15}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(-6.949797086796506,0)(6.553817483534391,0)}
+\multips(-6,0)(2,0){7}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,-13.744147420534643)(0,20.61929870065968)}
+\psaxes[labelFontSize=\scriptstyle,showorigin=false,xAxis=true,yAxis=true,Dx=2,Dy=5,ticksize=-2pt 0,subticks=0]{->}(0,0)(-6.949797086796506,-13.744147420534643)(6.553817483534391,20.61929870065968)[x,140] [y,-40]
+\psline[linewidth=2pt](-1,0)(-1,8)
+\psline[linewidth=2pt](-1,8)(3,8)
+\psline[linewidth=2pt](1,0)(1,4)
+\psline[linewidth=2pt](3,8)(3,-6)
+\psline[linewidth=2pt](-1,0)(-1,-2)
+\psline[linewidth=2pt](1,-2)(1,0)
+\psline[linewidth=2pt](1,-2)(1,-10)
+\psline[linewidth=2pt](1,-10)(5,-10)
+\psline[linewidth=2pt](5,-10)(5,12)
+\psline[linewidth=2pt](5,12)(-1,12)
+\psline[linewidth=2pt](-1,8)(-3,8)
+\psline[linewidth=2pt](-3,8)(-3,15)
+\psline[linewidth=2pt](-1,12)(-1,15)
+\psline[linewidth=2pt](1,-6)(-3,-6)
+\psline[linewidth=2pt](-3,-6)(-3,4)
+\psline[linewidth=2pt](1,15)(1,12)
+\psline[linewidth=2pt](1,15)(5,15)
+\psline[linewidth=2pt](-1,-6)(-1,-10)
+\psline[linewidth=2pt](-1,-10)(-5,-10)
+\psline[linewidth=2pt](-5,-6)(-5,15)
+\psline[linewidth=2pt](-5,15)(-3,15)
+\begin{scriptsize}
+\psdots[dotsize=8pt 0,dotstyle=*](0,0)
+\rput[bl](0.12142685623158189,-1.3369296338652374){$S$}
+\psdots[dotsize=8pt 0,dotstyle=*](-2,15)
+\rput[bl](-1.9052167660693031,16.007191565300896){$A$}
+\end{scriptsize}
+\end{pspicture*}
+\end{center}
+
+(Vorsicht: Deiner Partnerin ist es nur erlaubt sich parallel zur $x$- bzw. zur $y$-Achse zu bewegen. Die Einheiten des Koordinatensystems sind jeweils in Metern angegeben.)
+%Aufgabentext
+
+\ASubitem{Schreibe die sieben Vektoren auf, die deine Partnerin nacheinander zum Ausgang führen:\vspace{0,1cm}
+
+$\Vek{0}{5}{}\rightarrow\Vek{\antwort[\rule{0.7cm}{0.3pt}]{2}}{\antwort[\rule{0.7cm}{0.3pt}]{0}}{}\rightarrow\Vek{\antwort[\rule{0.7cm}{0.3pt}]{0}}{\antwort[\rule{0.7cm}{0.3pt}]{-12,5}}{}\rightarrow\Vek{\antwort[\rule{0.7cm}{0.3pt}]{2}}{\antwort[\rule{0.7cm}{0.3pt}]{0}}{}\rightarrow\Vek{\antwort[\rule{0.7cm}{0.3pt}]{0}}{\antwort[\rule{0.7cm}{0.3pt}]{17,5}}{}\rightarrow\Vek{\antwort[\rule{0.7cm}{0.3pt}]{-6}}{\antwort[\rule{0.7cm}{0.3pt}]{0}}{}\rightarrow\Vek{0}{5}{}$\vspace{0,1cm}} %Unterpunkt1
+\Subitem{Berechne die kürzeste Entfernung (Luftlinie) zwischen ihrer Startposition $S$ und dem Ausgang $A$.} %Unterpunkt2
+
+\item Vom Ausgang des Labyrinths $A$ sieht man eine kleine Holzhütte, die die Koordinaten $H=(18\mid 30)$ hat. Wenn man vom Ausgang des Labyrinths gerade auf die Holzhütte zugeht, wurden fünf Meter vor der Holzhütte die Koordinaten des goldenen Zirkels vergraben.%Aufgabentext
+
+\Subitem{Berechne jene Distanz, die zwischen Holzhütte und dem Ausgang des Labyrinths liegt.} %Unterpunkt1
+\Subitem{Berechne die Koordinaten jenes Punkts $P$ an dem deine Teampartnerin nach der letzten Aufgabe graben muss.} %Unterpunkt2
+
+\item Die letzte Aufgabe ist es, den goldenen Zirkel zu erlangen! Auf dem erdbeschmierten Zettel kann deine Teampartnerin gerade noch die Zirkel-Koordinaten erkennen: $(-23\mid 24)$.
+
+Du behauptest, deine Teampartnerin soll sich entlang der folgenden Gerade bewegen: $X=\Vek{18}{30}{}+t\cdot\Vek{-3}{-1}{}$.
+
+Deine Teampartnerin ist mit dir nicht einer Meinung und meint sie sollte entlang der folgenden Gerade laufen: $41x-6y=558$.%Aufgabentext
+
+\Subitem{Wer von euch beiden hat Recht? Begründe deine Antwort mit entsprechenden Rechnungen.} %Unterpunkt1
+\Subitem{Berechne den Winkel um den sich eure beiden Geraden unterscheiden.} %Unterpunkt2
+
+\end{aufgabenstellung}
+
+\begin{loesung}
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{$\Vek{0}{5}{}+\Vek{2}{0}{}+\Vek{0}{-12,5}{}+\Vek{2}{0}{}+\Vek{0}{17,5}{}+\Vek{-6}{0}{}+\Vek{0}{5}{}=\Vek{-2}{15}{}$\leer} %Lösung von Unterpunkt1
+\Subitem{$\sqrt{(-2)^2+15^2}\approx 15,13$
+
+Die Zielposition befindet sich 15,13\,m von der Startposition entfernt.} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für das Aufstellen der sieben Vektoren.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die richtige Berechnung der Luftlinie.} %Lösungschlüssel von Unterpunkt2
+
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{$\vec{AH}=\Vek{20}{15}{} \Rightarrow |\vec{AH}|=\sqrt{20^2+15^2}\approx 25$} %Lösung von Unterpunkt1
+\Subitem{$\vec{AH}_0=\Vek{0,8}{0,6}{}$
+
+$P=\Vek{-2}{15}{}+20\cdot\Vek{0,8}{0,6}{}=\Vek{14}{27}{}$} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die richtige Länge des Vektors.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die Koordinaten von $P$.} %Lösungschlüssel von Unterpunkt2
+
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{$\Vek{-23}{24}{}=\Vek{18}{30}{}+t\cdot\Vek{-3}{-1}{}$\vspace{0,3cm}
+
+$\Rightarrow$ I:$-23=18-3t \Rightarrow t=13,\dot{6}$, II:$24=30-t \Rightarrow t=6 \Rightarrow (-23\mid 24)\notin g$ 
+
+$41\cdot(-23)-6\cdot 24=-1087\neq 558 \Rightarrow (-23\mid 24)\notin g$
+
+Keine der beiden hat Recht mit der Aussage.} %Lösung von Unterpunkt1
+\Subitem{$\cos(\varphi)=\dfrac{\Vek{-3}{-1}{}\cdot\Vek{6}{41}{}}{\sqrt{9+1}\cdot\sqrt{36+1681}}=\dfrac{-18-41}{\sqrt{17170}}=-0,4502636$\leer
+
+$\varphi=116,76^\circ$} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die begründete Feststellung, dass keine Recht hat.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die richtige Berechnung des Winkels.} %Lösungschlüssel von Unterpunkt2
+
+\end{loesung}
+
+\end{langesbeispiel}

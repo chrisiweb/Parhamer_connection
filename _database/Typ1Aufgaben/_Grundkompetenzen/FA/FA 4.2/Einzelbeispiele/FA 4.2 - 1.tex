@@ -1,4 +1,4 @@
-\section{FA 4.2 - 1 Skalierung der Achsen - OA - BIFIE}
+\section{FA 4.2 - 1 - Skalierung der Achsen - OA - BIFIE}
 
 \begin{beispiel}[FA 4.2]{1} %PUNKTE DES BEISPIELS
 				Die unten stehende Grafik zeigt einen Ausschnitt des Graphen einer Polynomfunktion $f$ vom Grad 3. In der nebenstehenden Wertetabelle sind die Koordinaten einzelner Punkte angeführt.
@@ -24,12 +24,11 @@ x&y\\ \hline
 
 \antwort{
 \begin{center}
-\resizebox{0.7\linewidth}{!}{
-\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,linecolor=red, arrowsize=3pt 2,arrowinset=0.25}
+\psset{xunit=0.6cm,yunit=0.6cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,linecolor=red, arrowsize=3pt 2,arrowinset=0.25}
 \begin{pspicture*}(-4.570792985132227,-2.465844625046254)(5.760579952472768,5.4026959759175615)
-\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=1.,Dy=1.,ticksize=-2pt 0,subticks=2]{->}(0,0)(-4.570792985132227,-2.465844625046254)(5.760579952472768,5.4026959759175615)[x,140] [f(x),-40]
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=1.,Dy=1.,showorigin=false,ticksize=-2pt 0,subticks=0]{->}(0,0)(-4.570792985132227,-2.465844625046254)(5.760579952472768,5.4026959759175615)[x,140] [f(x),-40]
 \psplot[linewidth=1.2pt,plotpoints=200]{-4.570792985132227}{5.760579952472768}{-0.062*(x+1.0)^(2.0)*(x-5.0)}
-\end{pspicture*}}
+\end{pspicture*}
 \end{center}}
 
 \antwort{Aus einer der Nullstellen ergibt sich die Skalierung der x-Achse, aus dem Punkt (1/1) die Skalierung der y-Achse. Die Aufgabe ist dann als richtig gelöst zu werten, wenn die Punkte mit ganzzahligen Koordinaten gut ablesbar sind und mindestens zwei ganzzahlige Werte auf jeder Achse eingetragen sind.}

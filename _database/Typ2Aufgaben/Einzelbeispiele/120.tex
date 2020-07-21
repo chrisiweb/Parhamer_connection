@@ -1,0 +1,93 @@
+\section{120 - K6 - FA 1.5, FA 4.3, FA 4.4 - Vulkaninseln - MatKon}
+
+\begin{langesbeispiel} \item[6] %PUNKTE DES BEISPIELS
+Durch vulkanische Aktivitäten haben sich im Laufe der Jahrtausende in der Karibik zwei neue Inseln gebildet. Das Relief ("`Höhenprofil"') der Inseln wird unter und über dem Meeresspiegel annähernd beschrieben durch folgende Funktion:
+						
+						$$f(x)=-\frac{2}{55}x^4+\frac{25}{88}x^2-\frac{11}{160}$$
+						
+						Die Funktion bzw. Koordinatenachsen wurden bereits vorteilhaft gewählt, sodass sich der Koordinatenursprung in der Mitte der beiden Inseln befindet (siehe Skizze).
+						
+						\begin{center}
+						\newrgbcolor{srsrsr}{0.12941176470588237 0.12941176470588237 0.12941176470588237}
+\newrgbcolor{sasasa}{0.16470588235294117 0.16470588235294117 0.16470588235294117}
+\newrgbcolor{sasasa}{0.16470588235294117 0.16470588235294117 0.16470588235294117}
+\newrgbcolor{sasasa}{0.16470588235294117 0.16470588235294117 0.16470588235294117}
+\newrgbcolor{sasasa}{0.16470588235294117 0.16470588235294117 0.16470588235294117}
+\newrgbcolor{vvvvvv}{0.3333333333333333 0.3333333333333333 0.3333333333333333}
+\newrgbcolor{vvvvvv}{0.3333333333333333 0.3333333333333333 0.3333333333333333}
+\newrgbcolor{vvvvvv}{0.3333333333333333 0.3333333333333333 0.3333333333333333}
+\newrgbcolor{vvvvvv}{0.3333333333333333 0.3333333333333333 0.3333333333333333}
+\psset{xunit=1.0cm,yunit=4.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-3.56,-0.32711538461538664)(4.06,0.7567006487488384)
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=none,Dx=1.,Dy=0.2,ticks=none]{->}(0,0)(-3.56,-0.32711538461538664)(4.06,0.7567006487488384)
+\pscustom[linewidth=0.8pt,linecolor=sasasa,fillcolor=sasasa,fillstyle=solid,opacity=0.1]{\psplot{-2.7}{-0.5}{-2.0/55.0*x^(4.0)+25.0/88.0*x^(2.0)-11.0/160.0}\lineto(-0.5,0)\lineto(-2.7,0)\closepath}
+\pscustom[linewidth=0.8pt,linecolor=sasasa,fillcolor=sasasa,fillstyle=solid,opacity=0.1]{\psplot{0.5}{2.75}{-2.0/55.0*x^(4.0)+25.0/88.0*x^(2.0)-11.0/160.0}\lineto(2.75,0)\lineto(0.5,0)\closepath}
+\psplot[linewidth=2.pt,linecolor=srsrsr,plotpoints=200]{-3.560000000000002}{4.0600000000000005}{-2.0/55.0*x^(4.0)+25.0/88.0*x^(2.0)-11.0/160.0}
+\pspolygon[linewidth=2.pt,linecolor=vvvvvv,fillcolor=vvvvvv,fillstyle=solid,opacity=0.25](-3.76,0.)(-3.76,-0.3665268767377222)(4.26,-0.3665268767377222)(4.26,0.)
+\rput[tl](0.74,-0.15){Wasser}
+\end{pspicture*}
+\end{center}
+
+So bedeutet zum Beispiel $f(1)=0,1789$, dass die Höhe der Insel bei einem Abstand von 100\,m zur Mitte bereits 17,89\,m über dem Meeresspiegel ist.
+						
+						Ein Überlebender einer Flugzeugkatastrophe ist auf einer der beiden Inseln gestrandet, auf der es kein Süßwasser gibt.
+						
+						Beurteile die Überlebenschance des Gestrandeten für den Fall, dass es auf der anderen Insel Süßwasser gibt. Beantworte dafür folgende Fragestellungen:%Aufgabentext
+
+\begin{aufgabenstellung}
+\item %Aufgabentext
+
+\Subitem{Wie weit sind die beiden Inseln voneinander entfernt? (Tipp: Nullstellen)} %Unterpunkt1
+\Subitem{Wie lange würde man brauchen, um von einer zu anderen Insel zu schwimmen? Gib dafür eine geeignete durchschnittliche Schwimmgeschwindigkeit an.} %Unterpunkt2
+
+\item %Aufgabentext
+
+\ASubitem{Könnte ein Nichtschwimmer "`zu Fuß"' die Entfernung zwischen beiden Inseln überwinden? Argumentiere mit Hilfe der Funktion.} %Unterpunkt1
+\Subitem{Wie man der Funktion entnehmen kann, sind die beiden Inseln gleich hoch. Gib an, wie hoch die Inseln über dem Meeresspiegel liegen.} %Unterpunkt2
+
+\item %Aufgabentext
+
+\Subitem{Für welche $x$-Werte hat die Funktion den $y$-Wert 0,2.} %Unterpunkt1
+\Subitem{Könnte man das gegebene Höhenprofil auch mit einem Polynomfunktion dritten Grades beschrieben? Begründe deine Meinung.} %Unterpunkt2
+
+\end{aufgabenstellung}
+
+\begin{loesung}
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{Nullstellen: $x_1=-\frac{11}{4}, x_2=-\frac{1}{2}, x_3=\frac{1}{2}, x_4=\frac{11}{4}$
+	
+	Abstand zwischen den beiden Inseln: $(0,5-(-0,5))\cdot 100=100$\,m} %Lösung von Unterpunkt1
+\Subitem{Annahme einer Schwimmgeschwindigkeit eines normalen Menschen (z.B. 2\,km/h) $\Rightarrow$ $100$\,m in 3 min.} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für den richtigen Inselabstand.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für eine (halbwegs) vernünftige Schwimmgeschwindigkeit und die daraus richtig berechnete Zeitspanne.} %Lösungschlüssel von Unterpunkt2
+
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{$f(0)=-0,07 \Rightarrow$ tiefster Punkt zwischen den beiden Inseln liegt bei $0,07\cdot 100=7$\,m. Ein Nichtschwimmer kann also NICHT auf die andere Insel gelangen.} %Lösung von Unterpunkt1
+\Subitem{Da der Graph der Funktion symmetrisch zur y-Achse ist, sind beide Inseln gleich hoch. Der höchste Punkt liegt jeweils bei 49\,m.} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punk für eine richtige Begründung.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die richtige Höhe.} %Lösungschlüssel von Unterpunkt2
+
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{$x$-Werte: $-2,59; -1,05; 1,05; 2,59$} %Lösung von Unterpunkt1
+\Subitem{Nein, da die Funktion drei Extremstellen hat. Eine Funktion dritten Grades hat jedoch höchsten zwei Nullstellen.} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die korrekten $x$-Werte.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für eine richtige Begründung.} %Lösungschlüssel von Unterpunkt2
+
+\end{loesung}
+
+\end{langesbeispiel}

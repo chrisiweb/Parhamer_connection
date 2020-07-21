@@ -1,0 +1,38 @@
+\section{AG-L 1.3 - 2 - K5 - Mengenverknüpfungen - MC - MatKon}
+
+\begin{beispiel}[AG-L 1.3]{1}
+Gegeben sind die drei Mengen $X, Y, Z$. Gib eine geeignete Mengenverknüpfung an, welche der grauen Fläche im Mengendiagramm entspricht!
+
+\meinlr{\begin{center}
+\resizebox{0.9\linewidth}{!}{
+\begin{pspicture}(-5,-5)(5,5)
+\pscustom[fillstyle=solid,fillcolor=gray]
+{ 
+  \pscircle(1.5;210){3}
+    \pscircle(1.5;90){3}
+  \pscircle(1.5;-30){3}  
+} 
+
+
+\rput[tl](2.7,3.4){$Y$}
+\rput[tl](4.3,-1.6){$Z$}
+\rput[tl](-4.7,-1.6){$X$}
+\end{pspicture}}
+\end{center}}{\multiplechoice[6]{  %Anzahl der Antwortmoeglichkeiten, Standard: 5
+				L1={$X\cup Y\cup Z$},   %1. Antwortmoeglichkeit 
+				L2={$Y\backslash(X\cap Z)$},   %2. Antwortmoeglichkeit
+				L3={$X\cap Y\cap Z$},   %3. Antwortmoeglichkeit
+				L4={$X\backslash(Y\cup Z)$},   %4. Antwortmoeglichkeit
+				L5={$(Y\cup Z)\backslash X$},	 %5. Antwortmoeglichkeit
+				L6={$Z\backslash X\backslash Y$},	 %6. Antwortmoeglichkeit
+				L7={},	 %7. Antwortmoeglichkeit
+				L8={},	 %8. Antwortmoeglichkeit
+				L9={},	 %9. Antwortmoeglichkeit
+				%% LOESUNG: %%
+				A1=1,  % 1. Antwort
+				A2=0,	 % 2. Antwort
+				A3=0,  % 3. Antwort
+				A4=0,  % 4. Antwort
+				A5=0,  % 5. Antwort
+				}}
+\end{beispiel}

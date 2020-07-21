@@ -1,0 +1,30 @@
+\section{AG 3.4 - 25 - MAT - Skalierung der Koordinatenachsen - OA - Matura 2019/20 1. HT}
+
+\begin{beispiel}[AG 3.4]{1}
+Im nachstehenden Koordinatensystem, dessen Achsen unterschiedlich skaliert sind, ist eine Gerade $g$ dargestellt. Auf der $x$-Achse ist $a$ und auf der $y$-Achse ist $b$ markiert. Dabei sind $a$ und $b$ ganzzahlig.
+
+Die Gerade $g$ wird durch $y=-2\cdot x+4$ beschrieben.
+
+\begin{center}
+\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-2.8,-4.52)(5.86,4.5)
+\multips(0,-4)(0,1.0){10}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(-2.8,0)(5.86,0)}
+\multips(-2,0)(1.0,0){9}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,-4.52)(0,4.5)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,labels=none,Dx=1.,Dy=1.,ticksize=-2pt 0,subticks=0]{->}(0,0)(-2.8,-4.52)(5.86,4.5)[$x$,140] [$y$,-40]
+\psplot[linewidth=2.pt]{-2.8}{5.86}{(--8.-2.*x)/4.}
+\rput[bl](-2.04,3.16){$g$}
+\rput[bl](-0.36,0.92){$b$}
+\rput[bl](0.16,0.14){$0$}
+\rput[bl](1.94,-0.43){$a$}
+\end{pspicture*}
+\end{center}
+
+Gib a und b an.\leer
+
+$a=\,\antwort[\rule{5cm}{0.3pt}]{1}$\leer
+
+$b=\,\antwort[\rule{5cm}{0.3pt}]{2}$
+
+\antwort{\textbf{Lösungsschlüssel:}\\ 
+Ist nur einer der angegebenen Werte richtig, ist ein halber Punkt zu geben.}
+\end{beispiel}

@@ -1,0 +1,96 @@
+\section{132 - K6 - FA 6.3, FA-L 7.1 - E-Gitarre - VerSie}
+
+\begin{langesbeispiel} \item[6] %PUNKTE DES BEISPIELS
+Eine E-Gitarre hat eine Mensur (Gesamtlänge des freischwingenden Teils einer Gitarrensaite) von 62,5\,cm. Beim Bundieren teilt man die Mensur der Gitarre durch 17,815 und erhält so die Breite des ersten Bundes der E-Gitarre.\\
+Dann zieht man diesen Wert von 62,5\,cm ab und teilt die restliche Saite wieder durch 17,815. So erhält man die Breite des 2. Bundes.\\ 
+Nun zieht man die beiden Breiten von der Mensur ab und dividiert die Differenz nochmals durch 17,815, um die Breite des dritten Bundes zu erhalten. Mit dieser Methode fährt man fort, bis man den 22. Bund am Hals der Gitarre markiert hat.%Aufgabentext
+
+\begin{aufgabenstellung}
+\item Ermittle die jeweiligen Abstände der ersten sieben Bundstäbchen der E-Gitarre.%Aufgabentext
+
+
+
+\item %Aufgabentext
+
+Bei der "`wohltemperierten Stimmung"' einer Gitarre teilt man das Intervall zwischen dem Grundton und der ersten Oktave (doppelte Frequenz) in zwölf Halbtonschritte. Die Folge der Frequenzen soll eine geometrische Folge bilden. Gegeben ist der Grundton A mit einer Frequenz von 440\,Hz.
+	
+	Vervollständige die Tabelle und gib die Frequenzen aller Töne (gerundet auf ganze Hz) bis zur Oktave mit 880\,Hz an.\vspace{0,2cm}
+	
+	\begin{scriptsize}
+	\begin{tabular}{|p{0.7cm}|p{0.7cm}|p{0.7cm}|p{0.7cm}|p{0.7cm}|p{0.7cm}|p{0.7cm}|p{0.7cm}|p{0.7cm}|p{0.7cm}|p{0.7cm}|p{0.7cm}|p{0.7cm}|}\hline
+	&&&&&&&&&&&&\\
+	440\,Hz&\antwort{466}&\antwort{494}&\antwort{523}&\antwort{554}&\antwort{587}&\antwort{622}&\antwort{659}&\antwort{698}&\antwort{740}&\antwort{784}&\antwort{831}&880\,Hz\\ 
+	&&&&&&&&&&&&\\\hline
+	\end{tabular}
+	\end{scriptsize}
+
+\item %Aufgabentext
+
+\Subitem{Der Grundton A der E-Gitarre ist eine Sinusschwingung mit einer Frequenz von 440\,Hz (Schwingungen pro Sekunde). Berechne die Schwingungsdauer T für diese harmonische Schwingung.} %Unterpunkt1
+\Subitem{Gegeben sind die beiden Schwingungsbilder der Töne A und B, die mit derselben Frequenz schwingen. Welchen Unterschied wirst du beim Hören dieser beiden Töne bemerken?
+
+\meinlr{Ton A
+	
+	\begin{center}
+	\psset{xunit=0.75cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-5.34,-1.88)(3.92,2.36)
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=false,labels=y,Dx=1.,Dy=1.,ticksize=-2pt 0,subticks=2]{->}(0,0)(-5.34,-1.88)(3.92,2.36)
+\psplot[linewidth=2.pt,plotpoints=200]{-5.340000000000001}{3.9200000000000026}{SIN(2.0*x)}
+\end{pspicture*}
+	\end{center}}{Ton B
+	
+	\begin{center}
+	\psset{xunit=0.75cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-5.34,-2.3)(3.92,2.3)
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=false,labels=y,Dx=1.,Dy=1.,ticksize=-2pt 0,subticks=2]{->}(0,0)(-5.34,-1.88)(3.92,2.36)
+\psplot[linewidth=2.pt,plotpoints=200]{-5.340000000000001}{3.9200000000000026}{2*SIN(2.0*x)}
+\end{pspicture*}
+	\end{center}}} %Unterpunkt2
+
+\end{aufgabenstellung}
+
+\begin{loesung}
+\item \subsection{Lösungserwartung:} 
+
+1. Bund: $62,5:17,815\approx 3,5$\\
+	2. Bund: $(62,5-3,5):17,815\approx 3,31$\\
+	3. Bund: $(62,5-3,5-3,31):17,815\approx 3,13$\\
+	4. Bund: $(62,5-3,5-3,31-3,13):17,815\approx 2,95$\\
+	5. Bund: $(62,5-3,5-3,31-3,13-2,95):17,815\approx 2,78$\\
+	6. Bund: $(62,5-3,5-3,31-3,13-2,95-2,78):17,815\approx 2,63$\\
+	7. Bund: $(62,5-3,5-3,31-3,13-2,95-2,78-2,63):17,815\approx 2,48$
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für das richtige Vorgehen.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die fehlerfreie Berechnung.} %Lösungschlüssel von Unterpunkt2
+
+
+\item \subsection{Lösungserwartung:} 
+
+Tabelle siehe oben.
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt das Berechnen einer geometrischen Reihe.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die richtigen Werte.} %Lösungschlüssel von Unterpunkt2
+
+
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{$\dfrac{1}{440}=0,00227\bar{27}$
+	
+	Die Schwingungsdauer beträgt ungefähr 0,002 Sekunden.} %Lösung von Unterpunkt1
+\Subitem{Je größer die Amplitude, desto lauter der Ton. Der Ton B ist also lauter als der Ton A.} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die Berechnung der Schwingungsdauer.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für eine korrekte Interpretation.} %Lösungschlüssel von Unterpunkt2
+
+\end{loesung}
+
+\end{langesbeispiel}

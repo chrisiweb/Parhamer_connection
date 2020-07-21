@@ -7,13 +7,14 @@ Für die in der Abbildung eingezeichneten Stellen $a$ und $b$ gilt: $\cos(a) = \
 \begin{center}
 \winkelfunktion\psset{xunit=2.0cm,yunit=1.5cm,trigLabels,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
 \begin{pspicture*}(-.5,-1.3)(4.5,1.5)
-\psaxes[labelFontSize=\scriptstyle,trigLabelBase=2,xAxis=true,yAxis=true,Dx=4,Dy=1.,ticksize=-2pt 0,subticks=0]{->}(0,0)(-1,-8)(4.5,1.5)[$x$,140] [$f(x)\text{, }g(x)$,-40]
+\begin{scriptsize}
+\psaxes[trigLabelBase=2,xAxis=true,showorigin=false,yAxis=true,Dx=4,Dy=1.,ticksize=-2pt 0,subticks=0]{->}(0,0)(-1,-8)(4.5,1.5)[$x$,140] [$f(x)\text{, }g(x)$,-40]
 \psplot[xunit=0.63661977cm,linewidth=0.8pt,plotpoints=200]{-10}{20}{SIN(0.5*x)}
 \psplot[xunit=0.63661977cm,linewidth=0.8pt,plotpoints=200]{-10}{20}{COS(0.5*x)}
 
 \psline[linewidth=0.8pt,linestyle=dashed,dash=1pt 1pt](1.69,0.)(1.69,-0.85)
 \psline[linewidth=0.8pt,linestyle=dashed,dash=1pt 1pt](2.69,0.)(2.69,-0.85)
-\begin{scriptsize}
+
 \rput[bl](1.63,0.1){$a$}
 \rput[bl](2.63,0.1){$b$}
 \rput[bl](3.7,-0.8){$f$}

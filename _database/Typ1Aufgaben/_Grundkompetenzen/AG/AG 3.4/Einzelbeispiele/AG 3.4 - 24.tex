@@ -1,0 +1,21 @@
+\section{AG 3.4 - 24 - MAT - Parallele Gerade durch einen Punkt - OA - Matura 2018/19 2. NT}
+
+\begin{beispiel}[AG 3.4]{1}
+Im nachstehenden Koordinatensystem ist eine Gerade $g$ abgebildet. Die gekennzeichneten Punkte der Geraden $g$ haben ganzzahlige Koordinaten.
+\begin{center}
+\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-5.74,-4.72)(5.72,4.68)
+\multips(0,-4)(0,1.0){10}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(-5.74,0)(5.72,0)}
+\multips(-5,0)(1.0,0){12}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,-4.72)(0,4.68)}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,showorigin=false,yAxis=true,Dx=1.,Dy=1.,ticksize=-2pt 0,subticks=0]{->}(0,0)(-5.74,-4.72)(5.72,4.68)[$x$,140] [$y$,-40]
+\psplot[linewidth=2.pt]{-5.74}{5.72}{(-2.-2.*x)/-3.}
+\psdots[dotsize=7pt 0,dotstyle=*](5.,4.)
+\psdots[dotsize=7pt 0,dotstyle=*](2.,2.)
+\rput[bl](-4.34,-1.94){$g$}
+\end{pspicture*}
+\end{center}
+
+Gib eine Parameterdarstellung einer zu $g$ parallelen Geraden $h$ durch den Punkte $(3\mid -1)$ an.\leer
+
+$h$: $X=\,\antwort[\rule{3cm}{0.3pt}]{\binom{3}{-1}+t\cdot\binom{3}{2}\text{ mit }t\in\mathbb{R}}$
+\end{beispiel}

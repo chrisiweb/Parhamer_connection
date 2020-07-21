@@ -1,0 +1,118 @@
+\section{127 - K7 - AN 3.3, FA 4.3 - Pegelstand - VerSie}
+
+\begin{langesbeispiel} \item[6] %PUNKTE DES BEISPIELS
+Starke Regenfälle haben Auswirkungen auf den Pegelstand eines Flusses.\\
+Die Funktion $P$ beschreibt die Höhe des Pegelstandes im Zeitintervall $[0;t_A]$. Wobei $t_A$ jenen Zeitpunkt beschreibt, zu dem der Pegelstand wieder auf die zum Zeitpunkt $t=0$ gegebene Anfangshöhe gefallen ist.\\
+$P(t)$ gibt die Höhe des Pegelstandes in m an, die Zeit $t$ wird in Stunden gemessen. Für $P$ ist eine geeignete Modellfunktion zu ermitteln, dazu soll unter den anschließend angeführten Funktionen die geeignetste ausgewählt werden.
+
+$P_1(t)=-\frac{1}{16}t^2+\frac{1}{2}t+1$
+
+$P_2(t)=\frac{1}{32}(-t^3+6t^2+32)$
+
+$P_3(t)=\frac{1}{108}(t^3-18t^2+81t+108)$\leer
+
+Nachfolgende Bedingungen sind zu berücksichtigen:
+\singlespacing
+\begin{enumerate}[1)]
+\item Zum Zeitpunkt $t=0$ nimmt der Pegelstand den (üblichen) Wert von 1\,m an.
+\item Zum Zeitpunkt $t=4$ erreicht die Pegelhöhe ein Maximum.
+\item Im Zeitintervall $[0;t_A]$ wechselt der Pegelstand genau einmal das Monotonieverhalten.
+\item Das Zeitintervall $[0;4]$ ist länger als das Zeitintervall $[4;t_A]$.
+\end{enumerate}
+\onehalfspacing%Aufgabentext
+
+\begin{aufgabenstellung}
+\item %Aufgabentext
+
+\Subitem{Arbeite dabei mit nebenstehender Tabelle und kreuze an, welche Bedingungen die einzelnen Funktionen erfüllen. Entscheide danach, welche von den drei Funktionen am geeignetsten ist.
+	\begin{center}
+	\begin{tabular}{|p{1,5cm}|C{1,5cm}|C{1,5cm}|C{1,5cm}|C{1,5cm}|}\hline
+	&(1)&(2)&(3)&(4)\\ \hline
+	$P_1$&$\times$&$\times$&$\times$&\\ \hline
+	$P_2$&\antwort{$\times$}&\antwort{$\times$}&\antwort{$\times$}&\antwort{$\times$}\\ \hline
+	$P_3$&\antwort{$\times$}&&\antwort{$\times$}&\\ \hline
+	\end{tabular}
+	\end{center}} %Unterpunkt1
+\Subitem{Begründe rechnerisch, warum für die Funktion $P_1$ die zweite Aussage richtig ist.} %Unterpunkt2
+
+\item Verwende für die Aufgabenstellung die von dir gewählte Modellfunktion.%Aufgabentext
+
+\Subitem{Veranschauliche den Graphen der gewählten Modellfunktion im untenstehenden Koordinatensystem mit geeignet skalierten Koordinatenachsen.
+
+\begin{center}
+\psset{xunit=0.8cm,yunit=0.8cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}	
+\begin{pspicture*}(-5.76,-5.42)(7.76,5.62)
+\psaxes[labelFontSize=\scriptstyle,showorigin=false,xAxis=true,yAxis=true,Dx=1.,Dy=1.,labels=none,ticks=none]{->}(0,0)(-5.76,-5.42)(7.76,5.62)
+\end{pspicture*}
+	\end{center}} %Unterpunkt1
+\Subitem{Ermittle die maximale Pegelhöhe.} %Unterpunkt2
+
+\item Verwende weiterhin für die Aufgabenstellung die von dir gewählte Modellfunktion.%Aufgabentext
+
+\Subitem{Ermittle den Zeitpunkt $t_A$.} %Unterpunkt1
+\Subitem{Ermittle, zu welchem Zeitpunkt der Pegelstand mit der größten Geschwindigkeit ansteigt.} %Unterpunkt2
+
+\end{aufgabenstellung}
+
+\begin{loesung}
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{Tabelle: siehe oben.} %Lösung von Unterpunkt1
+\Subitem{$P_1'(t)=-\frac{1}{8}t+\frac{1}{2}$
+
+$P_1'(t)=0 \Rightarrow 0=-\frac{1}{8}t+\frac{1}{2} \Rightarrow \frac{1}{8}t=\frac{1}{2}\Rightarrow t=4$
+
+An der stelle $t=4$, hat die Funktion $P_1$ eine Extremstelle.
+
+$P_1''(t)=\frac{-1}{8} \Rightarrow$ es muss sich dabei um eine Maximumstelle handeln.} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die richtig ausgefüllte Tabelle.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für den rechnerischen Nachweis.} %Lösungschlüssel von Unterpunkt2
+
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{Graph von $P_2$:
+
+\psset{xunit=0.8cm,yunit=0.8cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1.6pt,arrowsize=3pt 2,arrowinset=0.25}	
+\begin{pspicture*}(-5.76,-5.42)(7.76,5.62)
+\multips(0,-5)(0,1.0){12}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(-5.76,0)(7.76,0)}
+\multips(-5,0)(1.0,0){14}{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=gray]{c-c}(0,-5.42)(0,5.62)}
+\psaxes[labelFontSize=\scriptstyle,showorigin=false,xAxis=true,yAxis=true,Dx=1.,Dy=1.,ticksize=-2pt 0,subticks=0]{->}(0,0)(-5.76,-5.42)(7.76,5.62)
+\psplot[linewidth=2.pt,plotpoints=200]{-5.760000000000003}{7.760000000000002}{1.0/32.0*(-x^(3.0)+6.0*x^(2.0)+32.0)}
+\begin{scriptsize}
+\rput[bl](-3.2,4.3){$P_2$}
+\end{scriptsize}
+\end{pspicture*}
+} %Lösung von Unterpunkt1
+\Subitem{Maximale Pegelhöhe: $P_2(4)=2$} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für den richtigen Graph mit korrekter Achsenbeschriftung.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die Berechnung der maximalen Pegelhöhe.} %Lösungschlüssel von Unterpunkt2
+
+\item \subsection{Lösungserwartung:} 
+
+\Subitem{$P_2(t)=1 \Rightarrow t_1=0; t_2=6$.
+	
+	$t_A=6$} %Lösung von Unterpunkt1
+\Subitem{$P_2'(t)=\frac{1}{32}(-3t^2+12t) \Rightarrow P_2''(t)=\frac{1}{32}(-6t+12)$
+	
+	$P_2''(t)=\frac{1}{32}(-6t+12)=0 \Rightarrow t=2$
+	
+	Zwei Stunden nach Beginn steigt der Pegelstand mit der größten Geschwindigkeit an.
+} %%Lösung von Unterpunkt2
+
+\setcounter{subitemcounter}{0}
+\subsection{Lösungsschlüssel:}
+ 
+\Subitem{Ein Punkt für die richtige Berechnung von $t_A$.} %Lösungschlüssel von Unterpunkt1
+\Subitem{Ein Punkt für die richtige Berechnung der Zeitpunkts.} %Lösungschlüssel von Unterpunkt2
+
+\end{loesung}
+
+\end{langesbeispiel}
