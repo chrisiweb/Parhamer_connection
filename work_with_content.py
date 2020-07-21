@@ -171,3 +171,52 @@ def prepare_content_for_hide_show_items(content):
     temp_content.append(combined_string)
 
     return temp_content
+
+def split_at_string(content, string):
+    if string in content:
+        temp_content = content.split(string)
+        temp_content = string + temp_content[1]
+        if "meinlr{" in content and temp_content.strip().endswith("}}"):
+            # temp_content = '}'.join(temp_content.rsplit('}}', 1))
+            temp_content = temp_content.strip()[:-1]
+            print(temp_content)
+        content = temp_content
+
+    return content
+
+def edit_content_quiz(content, solution):
+    aufgabenformate=["\multiplechoice", "\langmultiplechoice", "\lueckentext", "\zuordnen"]
+    content = content.replace("\onehalfspacing","")
+    if "\\begin{pspicture*}" in content:
+        content = content.replace("\\begin{pspicture*}", "\\resizebox{!}{0.7\\textheight}{\\begin{pspicture*}")
+        content = content.replace("\end{pspicture*}", "\end{pspicture*}}")
+
+
+    if "\langmultiplechoice" in content:
+        split_content = content.split("\langmultiplechoice")
+        temp_content = split_content[1]
+        if  "\\begin{pspicture*}" in temp_content:
+            temp_content= temp_content.replace("\\resizebox{!}{0.7\\textheight}", "\\resizebox{!}{0.25\\textheight}")
+        content = content.replace(split_content[1], temp_content)
+
+    if "\zuordnen" in content:
+        split_content = content.split("\zuordnen")
+        temp_content = split_content[1]
+        if  "\\begin{pspicture*}" in temp_content:
+            temp_content= temp_content.replace("\\resizebox{!}{0.7\\textheight}", "\\resizebox{!}{0.18\\textheight}")
+        content = content.replace(split_content[1], temp_content)
+
+
+    if solution== False:
+        for all in aufgabenformate:
+            if all in content:
+                content = content.replace(all, "\n\\framebreak\n" + all)
+    if solution == True:
+        for all in aufgabenformate:
+            content = split_at_string(content, all)
+        # content = split_at_string(content, "\langmultiplechoice")
+        # content = split_at_string(content, "\lueckentext")
+        # content = split_at_string(content, "\zuordnen")
+
+
+    return content
