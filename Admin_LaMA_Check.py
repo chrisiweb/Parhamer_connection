@@ -6,8 +6,8 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 import os
 import sys
 import shutil
-from config import config_loader 
-
+from config import config_loader, is_empty 
+import re
 # from tkinter import *
 # from tkinter import filedialog
 import yaml
@@ -32,6 +32,36 @@ k8_beschreibung = config_loader(config_file, "k8_beschreibung")
 dict_gk = config_loader(config_file, "dict_gk")
 dict_aufgabenformate = config_loader(config_file, "dict_aufgabenformate")
 Klassen = config_loader(config_file, "Klassen")
+
+def get_info_from_path(path):
+    filename = os.path.basename(path)
+    if os.path.basename(os.path.dirname(path)) != "Beispieleinreichung":
+        typ=None
+        klasse = os.path.basename(os.path.dirname(path))
+        thema = None
+        nummer, _ = os.path.splitext(filename)
+    elif re.search("[A-Z]", filename) == None:
+        typ=2
+        klasse=None
+        thema=None
+        nummer, _ =os.path.splitext(os.path.basename(path))
+    else:
+        filename,_ = os.path.splitext(filename)
+        list_filename_split = filename.split(" - ")
+        if len(list_filename_split)==2:
+            typ=1
+            klasse=None
+            thema = list_filename_split[0]
+            nummer = list_filename_split[1]
+        else:
+            typ=1
+            klasse= list_filename_split[0].lower()
+            thema = list_filename_split[1]
+            nummer = list_filename_split[2]
+
+    info= [typ, klasse, thema, nummer]
+
+    return info
 
 
 class Ui_MainWindow(object):
@@ -94,80 +124,102 @@ class Ui_MainWindow(object):
         self.pushButton_move.setText(_translate("MainWindow", "Aufgaben verschieben"))
 
     def btn_check_pressed(self):
-        for file in os.walk(path_beispieleinreichung):
-            print(file)
-        # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        # filename_testdokument = os.path.join(
-        #     path_programm, "Testdokument", "Testdokument.tex"
-        # )
+        path_folder_items = []
+        for path, subdires, files in os.walk(path_beispieleinreichung):
+            for name in files:
+                if 'Bilder' not in path:
+                    path_folder_items.append(os.path.join(path, name))
+        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        filename_testdokument = os.path.join(
+            path_programm, "Testdokument", "Testdokument.tex"
+        )
         # folder_items = os.listdir(path_beispieleinreichung)
-        # path_folder_items = []
+        
         # for all in folder_items:
         #     path_folder_items.append(os.path.join(path_beispieleinreichung, all))
-        # try:
-        #     file = open(filename_testdokument, "w+")  # , encoding='ISO-8859-1'
+        try:
+            file = open(filename_testdokument, "w+")  # , encoding='ISO-8859-1'
 
-        # except FileNotFoundError:
-        #     os.makedirs(os.path.dirname(filename_testdokument))
-        #     file = open(filename_testdokument, "w+")
+        except FileNotFoundError:
+            os.makedirs(os.path.dirname(filename_testdokument))
+            file = open(filename_testdokument, "w+")
 
-        # file.write(
-        #     "\documentclass[a4paper,12pt]{report}\n\n"
-        #     "\\usepackage{geometry}\n"
-        #     "\geometry{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}\n\n"
-        #     "\\usepackage{lmodern}\n"
-        #     "\\usepackage[T1]{fontenc}\n"
-        #     "\\usepackage[utf8]{inputenc}\n"
-        #     "\\usepackage[ngerman]{babel}\n"
-        #     "\\usepackage[solution_on]{srdp-mathematik} % solution_on/off\n"
-        #     "\setcounter{Zufall}{0}\n\n\n"
-        #     "\pagestyle{empty} %PAGESTYLE: empty, plain, fancy\n"
-        #     "\onehalfspacing %Zeilenabstand\n"
-        #     "\setcounter{secnumdepth}{-1} % keine Nummerierung der Ueberschriften\n\n\n\n"
-        #     "%\n"
-        #     "%\n"
-        #     "%%%%%%%%%%%%%%%%%% DOKUMENT - ANFANG %%%%%%%%%%%%%%%%%%%"
-        #     "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"
-        #     "%\n"
-        #     "%\n"
-        #     "\\begin{document}\n"
-        #     '\shorthandoff{"}\n'
-        # )
-        # file.close()
-        # file = open(filename_testdokument, "a")
-        # for all in path_folder_items:
-        #     if all.endswith(".tex"):
-        #         value = all.replace("\\", "/")
-        #         file.write('\input{"' + value + '"}%\n' "\\newpage \n")
-        # file.write('\shorthandoff{"}\n' "\end{document}")
-        # print("Öffne Editor...")
-        # os.startfile(filename_testdokument)
-        # QtWidgets.QApplication.restoreOverrideCursor()
+        file.write(
+            "\documentclass[a4paper,12pt]{report}\n\n"
+            "\\usepackage{geometry}\n"
+            "\geometry{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}\n\n"
+            "\\usepackage{lmodern}\n"
+            "\\usepackage[T1]{fontenc}\n"
+            "\\usepackage[utf8]{inputenc}\n"
+            "\\usepackage[ngerman]{babel}\n"
+            "\\usepackage[solution_on]{srdp-mathematik} % solution_on/off\n"
+            "\setcounter{Zufall}{0}\n\n\n"
+            "\pagestyle{empty} %PAGESTYLE: empty, plain, fancy\n"
+            "\onehalfspacing %Zeilenabstand\n"
+            "\setcounter{secnumdepth}{-1} % keine Nummerierung der Ueberschriften\n\n\n\n"
+            "%\n"
+            "%\n"
+            "%%%%%%%%%%%%%%%%%% DOKUMENT - ANFANG %%%%%%%%%%%%%%%%%%%"
+            "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"
+            "%\n"
+            "%\n"
+            "\\begin{document}\n"
+            '\shorthandoff{"}\n'
+        )
+        file.close()
+
+        with open(filename_testdokument, "a", encoding="utf8") as file: 
+            for all in path_folder_items:
+                value = all.replace("\\", "/")
+                file.write('\input{"' + value + '"}%\n' "\\newpage \n")
+            file.write('\shorthandoff{"}\n' "\end{document}")
+        print("Öffne Editor...")
+        os.startfile(filename_testdokument)
+        QtWidgets.QApplication.restoreOverrideCursor()
 
     def btn_move_pressed(self):
-        print('move')
-        # filenames_fullpath = QtWidgets.QFileDialog.getOpenFileNames(
-        #     None, "Dateien wählen", path_beispieleinreichung, "LaTeX Dateien (*.tex)"
-        # )
-        # # filenames_fullpath =  filedialog.askopenfilenames(initialdir = path_beispieleinreichung,title = "Durchsuchen...")
-        # list_files_move = []
-        # for item in filenames_fullpath[0]:
-        #     if os.path.isfile(os.path.join(path_beispieleinreichung, item)):
-        #         list_files_move.append(os.path.basename(item))
+        filenames_fullpath = QtWidgets.QFileDialog.getOpenFileNames(
+            None, "Dateien wählen", path_beispieleinreichung, "LaTeX Dateien (*.tex)"
+        )
 
-        # # print(list_files_move)
-        # for files in list_files_move:
-        #     file_path = os.path.join(path_beispieleinreichung, files)
+        list_files_move = []
+        for item in filenames_fullpath[0]:
+            if os.path.isfile(os.path.join(path_beispieleinreichung, item)):
+                list_files_move.append(item)
 
-        #     f = open(file_path, "r", encoding="utf8")
-        #     content = f.read()
-        #     content = content.replace(
-        #         "../Beispieleinreichung/Bilder", "../_database/Bilder"
-        #     )
-        #     f.close()
-        #     f = open(file_path, "w", encoding="utf8")
-        #     f.write(content)
-        #     f.close()
+        if is_empty(list_files_move) == True:
+            return
+
+        # for all in list_files_move:
+        #     with open(all, "r", encoding="utf8") as file:
+        #         content = file.read()
+
+        #         content = content.replace(
+        #             "../Beispieleinreichung/Bilder", "../_database/Bilder"
+        #         )
+
+        #     with open(all, "w", encoding="utf8") as file:
+        #         file.write(content)
+
+        for all in list_files_move:
+            info = get_info_from_path(all)
+            filename = os.path.basename(all)
+            if info[0]==None:
+                new_path = os.path.join(path_programm,"_database",info[1],"Einzelbeispiele",filename)
+            elif info[0]==2:
+                new_path = os.path.join(path_programm,"_database","Typ2Aufgaben","Einzelbeispiele",filename)
+            elif info[0]==1 and info[1]==None:
+                gk, gk_num = info[2].split(" ")
+                if "-" in gk:
+                    gk,_ = gk.split("-")
+                new_path = os.path.join(path_programm,"_database","Typ1Aufgaben","_Grundkompetenzen",gk,info[2],"Einzelbeispiele",filename)
+            elif info[0]==1 and info[1] != None:
+                new_path = os.path.join(path_programm,"_database","Typ1Aufgaben","{}.Klasse".format(info[1][-1]),info[2].lower(),"Einzelbeispiele",filename)                
+            
+            print(new_path)
+            if os.path.isfile()
+
+        ############################
 
         # if list_files_move == []:
         #     return
@@ -262,6 +314,7 @@ if __name__ == "__main__":
     import sys
 
     app = QApplication(sys.argv)
+    app.setStyle('Fusion')
     MainWindow = QMainWindow()
 
     ui = Ui_MainWindow()

@@ -5833,7 +5833,6 @@ class Ui_MainWindow(object):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-
     app.setStyle('Fusion')
     app.setStyleSheet("""QToolTip {{ color: white; background-color: {0}; border: 0px; }}
     """.format(get_color(blue_7)))
