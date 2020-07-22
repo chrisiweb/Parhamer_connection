@@ -8,9 +8,8 @@ import sys
 import shutil
 from config import config_loader, is_empty 
 import re
-# from tkinter import *
-# from tkinter import filedialog
 import yaml
+from standard_dialog_windows import information_window
 
 path_programm = os.path.dirname(sys.argv[0])
 path_beispieleinreichung = os.path.join(path_programm, "Beispieleinreichung")
@@ -190,17 +189,18 @@ class Ui_MainWindow(object):
         if is_empty(list_files_move) == True:
             return
 
-        # for all in list_files_move:
-        #     with open(all, "r", encoding="utf8") as file:
-        #         content = file.read()
+        for all in list_files_move:
+            with open(all, "r", encoding="utf8") as file:
+                content = file.read()
 
-        #         content = content.replace(
-        #             "../Beispieleinreichung/Bilder", "../_database/Bilder"
-        #         )
+                content = content.replace(
+                    "../Beispieleinreichung/Bilder", "../_database/Bilder"
+                )
 
-        #     with open(all, "w", encoding="utf8") as file:
-        #         file.write(content)
+            with open(all, "w", encoding="utf8") as file:
+                file.write(content)
 
+        number_images = 0
         for all in list_files_move:
             info = get_info_from_path(all)
             filename = os.path.basename(all)
@@ -215,100 +215,41 @@ class Ui_MainWindow(object):
                 new_path = os.path.join(path_programm,"_database","Typ1Aufgaben","_Grundkompetenzen",gk,info[2],"Einzelbeispiele",filename)
             elif info[0]==1 and info[1] != None:
                 new_path = os.path.join(path_programm,"_database","Typ1Aufgaben","{}.Klasse".format(info[1][-1]),info[2].lower(),"Einzelbeispiele",filename)                
-            
-            print(new_path)
-            if os.path.isfile()
 
-        ############################
 
-        # if list_files_move == []:
-        #     return
+            if os.path.isdir(os.path.dirname(new_path)) == False:
+                os.makedirs(os.path.dirname(new_path))
 
-        # path_beispieleinreichung_images = os.path.join(
-        #     path_beispieleinreichung, "Bilder"
-        # )
-        # image_folder_items = os.listdir(path_beispieleinreichung_images)
-        # image_counter = 0
-        # for all in list_files_move:
-        #     gk = all.split(" - ")
-        #     # print(all)
 
-        #     if len(gk) == 1:
-        #         shutil.move(
-        #             os.path.join(path_beispieleinreichung, all),
-        #             os.path.join(
-        #                 path_programm,
-        #                 "_database",
-        #                 "Typ2Aufgaben",
-        #                 "Einzelbeispiele",
-        #                 all,
-        #             ),
-        #         )
+            with open(all, "r", encoding="utf8") as file:
+                content = file.read()
 
-        #     if len(gk) == 2:
-        #         shutil.move(
-        #             os.path.join(path_beispieleinreichung, all),
-        #             os.path.join(
-        #                 path_programm,
-        #                 "_database",
-        #                 "Typ1Aufgaben",
-        #                 "_Grundkompetenzen",
-        #                 gk[0][:2],
-        #                 gk[0],
-        #                 "Einzelbeispiele",
-        #                 all,
-        #             ),
-        #         )
 
-        #     if len(gk) == 3:
-        #         klasse = gk[0][1] + ".Klasse"
-        #         thema = gk[1].lower()
-        #         shutil.move(
-        #             os.path.join(path_beispieleinreichung, all),
-        #             os.path.join(
-        #                 path_programm,
-        #                 "_database",
-        #                 "Typ1Aufgaben",
-        #                 klasse,
-        #                 thema,
-        #                 "Einzelbeispiele",
-        #                 all,
-        #             ),
-        #         )
+            shutil.move(all, new_path)
 
-        #     for image in image_folder_items[:]:
-        #         # print(gk)
-        #         chosen_file, extension = os.path.splitext(all)
-        #         chosen_image = (
-        #             chosen_file.replace(" ", "").replace(".", "").replace("-", "_")
-        #         )
-        #         chosen_image = chosen_image + "_"
-        #         # print(chosen_image)
-        #         # print('Bilder: '+image)
-        #         if image.startswith(chosen_image):
-        #             image_counter += 1
-        #             if image.endswith(".eps"):
-        #                 shutil.move(
-        #                     os.path.join(path_beispieleinreichung_images, image),
-        #                     os.path.join(path_programm, "_database", "Bilder", image),
-        #                 )
-        #             else:
-        #                 image_folder_items.remove(image)
-        # msg = QtWidgets.QMessageBox()
-        # msg.setIcon(QtWidgets.QMessageBox.Information)
-        # msg.setText(
-        #     "Erledigt.\nEs wurden "
-        #     + str(len(list_files_move))
-        #     + " Datei(en) und "
-        #     + str(image_counter)
-        #     + " Bild(er) verschoben."
-        # )
-        # msg.setWindowTitle("Dateien kopiert")
-        # msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
-        # ret = msg.exec_()
 
-        # sys.exit(0)
+            if content.count("includegraphics") != 0:
+                path_beispieleinreichung_images = os.path.join(path_programm, "Beispieleinreichung","Bilder")
+                split_content = re.split("../_database/Bilder/|.eps",content)
+                for i in range(1,len(split_content),2):
+                    image_name = split_content[i]
+                    image_name = image_name + '.eps'
+                    old_image_path = os.path.join(path_beispieleinreichung_images, image_name)
+                    new_image_path = os.path.join(path_programm, "_database", "Bilder", image_name)
 
+                    shutil.move(os.path.join(path_beispieleinreichung_images, image_name),
+                        os.path.join(path_programm, "_database", "Bilder", image_name)
+                        )
+                number_images += content.count("includegraphics")
+
+
+        information_window(
+            "Es wurden {0} Aufgaben und {1} Bild(er) in die Datenbank verschoben!".format(len(list_files_move), number_images),
+            titel="Erfolgreich verschoben"
+        )
+
+        sys.exit(0)
+ 
 
 if __name__ == "__main__":
     import sys
