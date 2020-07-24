@@ -872,7 +872,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.label_bild_leer)
         self.label_bild_leer.setText(_translate("MainWindow", "", None))
         self.label_bild_leer.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.gridLayout.addWidget(self.groupBox_bilder, 6, 0, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_bilder, 6, 0, 2, 1)
         self.groupBox_bilder.hide()
 
         #### CREATE CHECKBOXES ####
