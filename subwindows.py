@@ -30,6 +30,7 @@ from standard_dialog_windows import critical_window
 from waitingspinnerwidget import QtWaitingSpinner
 from predefined_size_policy import SizePolicy_fixed
 from work_with_content import prepare_content_for_hide_show_items
+from sort_items import sorted_gks
 
 dict_gk = config_loader(config_file, "dict_gk")
 ag_beschreibung = config_loader(config_file, "ag_beschreibung")
@@ -169,6 +170,163 @@ class Ui_Dialog_processing(object):
         horizontalLayout.addWidget(image)
         horizontalLayout.addWidget(label)
         horizontalLayout.addWidget(label_spinner)
+
+
+class Ui_Dialog_variation(object):
+    def setupUi(self, Dialog, MainWindow):
+        self.MainWindow = MainWindow
+        self.beispieldaten_dateipfad_cria = MainWindow.beispieldaten_dateipfad_cria
+        self.beispieldaten_dateipfad_1 = MainWindow.beispieldaten_dateipfad_1
+        self.beispieldaten_dateipfad_2 = MainWindow.beispieldaten_dateipfad_2
+
+
+        self.Dialog = Dialog
+        self.Dialog.setObjectName("Dialog")
+        Dialog.setWindowTitle("Vorhandene Aufgabe auswählen")
+        Dialog.setWindowIcon(QtGui.QIcon(logo_path))
+        verticalLayout_variation = create_new_verticallayout(Dialog)
+
+        self.groupBox_alle_aufgaben = QtWidgets.QGroupBox()
+        self.groupBox_alle_aufgaben.setMinimumWidth(1)
+        self.groupBox_alle_aufgaben.setObjectName("groupBox_alle_aufgaben")
+
+        self.verticalLayout_sage = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben)
+        self.verticalLayout_sage.setObjectName("verticalLayout_sage")
+
+
+        ##### ComboBox LaMA ####
+        self.comboBox_at_sage = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
+        self.comboBox_at_sage.setObjectName("comboBox_at_sage")
+        self.comboBox_at_sage.addItem("")
+        self.comboBox_at_sage.addItem("")
+        self.verticalLayout_sage.addWidget(self.comboBox_at_sage)
+        self.comboBox_at_sage.setItemText(0, _translate("MainWindow", "Typ 1", None))
+        self.comboBox_at_sage.setItemText(1, _translate("MainWindow", "Typ 2", None))
+        self.comboBox_at_sage.currentIndexChanged.connect(self.comboBox_at_sage_changed)
+        self.comboBox_at_sage.setFocusPolicy(QtCore.Qt.ClickFocus)
+        # self.comboBox_at_sage.hide()
+
+
+        self.comboBox_gk = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
+        self.comboBox_gk.setObjectName("comboBox_gk")
+        list_comboBox_gk = ["", "AG", "FA", "AN", "WS", "K5", "K6", "K7", "K8"]
+        index = 0
+        for all in list_comboBox_gk:
+            self.comboBox_gk.addItem("")
+            self.comboBox_gk.setItemText(index, _translate("MainWindow", all, None))
+            index += 1
+        # self.comboBox_gk.currentIndexChanged.connect(
+        #     partial(self.comboBox_gk_changed, "sage")
+        # )
+        self.comboBox_gk.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.verticalLayout_sage.addWidget(self.comboBox_gk)
+        self.comboBox_gk_num = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
+        self.comboBox_gk_num.setObjectName("comboBox_gk_num")
+        # self.comboBox_gk_num.currentIndexChanged.connect(
+        #     partial(self.comboBox_gk_num_changed, "sage")
+        # )
+        self.comboBox_gk_num.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.verticalLayout_sage.addWidget(self.comboBox_gk_num)
+        self.lineEdit_number = QtWidgets.QLineEdit(self.groupBox_alle_aufgaben)
+        self.lineEdit_number.setObjectName("lineEdit_number")
+        self.lineEdit_number.setValidator(QtGui.QIntValidator())
+        # self.lineEdit_number.textChanged.connect(
+        #     partial(self.lineEdit_number_changed, "sage")
+        # )
+        self.verticalLayout_sage.addWidget(self.lineEdit_number)
+        self.listWidget = QtWidgets.QListWidget(self.groupBox_alle_aufgaben)
+        self.listWidget.setObjectName("listWidget")
+        self.verticalLayout_sage.addWidget(self.listWidget)
+
+
+        self.groupBox_alle_aufgaben.setTitle(_translate("MainWindow", "Aufgaben", None))
+        
+
+        verticalLayout_variation.addWidget(self.groupBox_alle_aufgaben)
+        self.adapt_choosing_list()
+
+
+    def comboBox_at_sage_changed(self):
+        if self.comboBox_at_sage.currentText()[-1] == "1":
+            self.comboBox_gk.clear()
+            self.lineEdit_number.clear()
+            self.comboBox_gk.setEnabled(True)
+            self.comboBox_gk_num.setEnabled(True)
+            list_comboBox_gk = ["", "AG", "FA", "AN", "WS", "K5", "K6", "K7", "K8"]
+            index = 0
+            for all in list_comboBox_gk:
+                self.comboBox_gk.addItem("")
+                self.comboBox_gk.setItemText(index, _translate("MainWindow", all, None))
+                index += 1
+            self.comboBox_gk_num.clear()
+
+        if self.comboBox_at_sage.currentText()[-1] == "2":
+            self.comboBox_gk.setCurrentIndex(0)
+            self.comboBox_gk_num.setCurrentIndex(0)
+            self.comboBox_gk.setEnabled(False)
+            self.comboBox_gk_num.setEnabled(False)
+
+        self.adapt_choosing_list()
+
+    def adapt_choosing_list(self):
+        self.listWidget.clear()
+
+
+        if self.MainWindow.chosen_program == 'cria':
+            typ=None
+            beispieldaten_dateipfad = self.beispieldaten_dateipfad_cria
+        else:
+            if self.comboBox_at_sage.currentText() == 'Typ 1':
+                typ=1
+                beispieldaten_dateipfad = self.beispieldaten_dateipfad_1
+            elif self.comboBox_at_sage.currentText() == 'Typ 2':
+                typ=2
+                beispieldaten_dateipfad = self.beispieldaten_dateipfad_2
+
+
+        list_beispieldaten_sections = list(beispieldaten_dateipfad.keys())
+
+
+        if self.MainWindow.chosen_program == 'lama':
+            combobox_gk = self.comboBox_gk.currentText()
+            combobox_gk_num = self.comboBox_gk_num.currentText()
+
+            list_beispieldaten_sections = self.MainWindow.adjust_beispieldaten_combobox_lama(
+                list_beispieldaten_sections,
+                combobox_gk,
+                combobox_gk_num,
+                )
+
+
+
+        if self.MainWindow.chosen_program == 'cria':
+            combobox_klasse = self.comboBox_klassen.currentText()
+            combobox_kapitel = self.comboBox_kapitel.currentText()
+            combobox_unterkapitel = self.comboBox_unterkapitel.currentText()
+             
+
+            list_beispieldaten_sections = self.MainWindow.adjust_beispieldaten_combobox_cria(
+                list_beispieldaten_sections,
+                combobox_klasse,
+                combobox_kapitel,
+                combobox_unterkapitel,
+                )
+                
+
+        line_entry = self.lineEdit_number.text()
+
+
+
+        if is_empty(line_entry) == False:
+            list_beispieldaten_sections = self.search_for_number(list_beispieldaten_sections, line_entry, "sage")
+
+
+        list_beispieldaten_sections = sorted_gks(list_beispieldaten_sections, self.MainWindow.chosen_program)
+
+        # self.MainWindow.add_items_to_listwidget(list_beispieldaten_sections, beispieldaten_dateipfad, self.listWidget, "sage")
+        for all in list_beispieldaten_sections:
+            self.listWidget.addItem(all)
+
 
 class Ui_Dialog_random_quiz(object):
     def setupUi(self, Dialog, Ui_MainWindow):

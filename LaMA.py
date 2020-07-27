@@ -50,7 +50,15 @@ from list_of_widgets import (
     widgets_feedback_cria,    
     list_widgets
 )
-from subwindows import Ui_Dialog_choose_type,Ui_Dialog_titlepage, Ui_Dialog_random_quiz, Ui_Dialog_ausgleichspunkte, Ui_Dialog_erstellen, Ui_Dialog_speichern
+from subwindows import (
+    Ui_Dialog_choose_type,
+    Ui_Dialog_titlepage,
+    Ui_Dialog_random_quiz,
+    Ui_Dialog_ausgleichspunkte,
+    Ui_Dialog_erstellen,
+    Ui_Dialog_speichern,
+    Ui_Dialog_variation,
+)
 from translate import _fromUtf8, _translate
 from sort_items import natural_keys, sorted_gks
 from create_pdf import prepare_tex_for_pdf, create_pdf
@@ -719,6 +727,19 @@ class Ui_MainWindow(object):
         self.groupBox_aufgabentyp.setObjectName(_fromUtf8("groupBox_aufgabentyp"))
         self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBox_aufgabentyp)
         self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
+
+
+        self.groupBox_variation_cr = create_new_groupbox(self.centralwidget, "Aufgabenvariation")
+        self.verticalLayout_variation = create_new_verticallayout(self.groupBox_variation_cr)
+
+        self.button_variation_cr = create_new_button(self.groupBox_variation_cr, "Variation vorhandender Aufgabe...", self.button_variation_cr_pressed)
+        self.button_variation_cr.setMinimumWidth(0)
+        self.verticalLayout_variation.addWidget(self.button_variation_cr)
+
+        self.gridLayout.addWidget(self.groupBox_variation_cr, 0, 0, 1, 1)
+        self.groupBox_variation_cr.hide()
+
+
         self.groupBox_grundkompetenzen_cr = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_grundkompetenzen_cr.setFocusPolicy(QtCore.Qt.NoFocus)
         # self.groupBox_grundkompetenzen_cr.setMaximumSize(QtCore.QSize(350, 16777215))
@@ -736,7 +757,7 @@ class Ui_MainWindow(object):
         self.tab_widget_gk_cr.setFocusPolicy(QtCore.Qt.NoFocus)
         self.tab_widget_gk_cr.setObjectName(_fromUtf8("tab_widget_gk_cr"))
         self.gridLayout_11_cr.addWidget(self.tab_widget_gk_cr, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_grundkompetenzen_cr, 0, 0, 5, 1)
+        self.gridLayout.addWidget(self.groupBox_grundkompetenzen_cr, 1, 0, 5, 1)
         self.groupBox_grundkompetenzen_cr.setTitle(
             _translate("MainWindow", "Grundkompetenzen", None)
         )
@@ -758,7 +779,7 @@ class Ui_MainWindow(object):
         self.tab_widget_cr_cria.setObjectName(_fromUtf8("tab_widget_cr_cria"))
         self.tab_widget_cr_cria.setFocusPolicy(QtCore.Qt.NoFocus)
         self.gridLayout_11_cr_cria.addWidget(self.tab_widget_cr_cria, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_themengebiete_cria, 0, 0, 5, 1)
+        self.gridLayout.addWidget(self.groupBox_themengebiete_cria, 1, 0, 5, 1)
         self.groupBox_themengebiete_cria.setTitle(
             _translate("MainWindow", "Themengebiete",None)
         )
@@ -827,7 +848,7 @@ class Ui_MainWindow(object):
 
         self.groupBox_ausgew_gk_cr = create_new_groupbox(self.centralwidget, "Ausgewählte Grundkompetenzen")
         self.groupBox_ausgew_gk_cr.setSizePolicy(SizePolicy_fixed_height)
-        self.groupBox_ausgew_gk_cr.setMaximumWidth(500)
+        # self.groupBox_ausgew_gk_cr.setMaximumWidth(500)
         
         self.verticalLayout_2 = create_new_verticallayout(self.groupBox_ausgew_gk_cr)
 
@@ -836,10 +857,11 @@ class Ui_MainWindow(object):
         self.label_ausgew_gk_creator = create_new_label(self.groupBox_ausgew_gk_cr, "", True)
 
         self.verticalLayout_2.addWidget(self.label_ausgew_gk_creator)
-        self.gridLayout.addWidget(self.groupBox_ausgew_gk_cr, 5, 0, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_ausgew_gk_cr, 6, 0, 1, 1)
 
         # self.label_ausgew_gk.setText(_translate("MainWindow", "", None))
         self.groupBox_ausgew_gk_cr.hide()
+
 
         
         self.groupBox_bilder = create_new_groupbox(self.centralwidget, "Bilder (klicken, um Bilder zu entfernen)")
@@ -872,7 +894,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.label_bild_leer)
         self.label_bild_leer.setText(_translate("MainWindow", "", None))
         self.label_bild_leer.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.gridLayout.addWidget(self.groupBox_bilder, 6, 0, 2, 1)
+        self.gridLayout.addWidget(self.groupBox_bilder, 7, 0, 2, 1)
         self.groupBox_bilder.hide()
 
         #### CREATE CHECKBOXES ####
@@ -1031,7 +1053,7 @@ class Ui_MainWindow(object):
         self.plainTextEdit.setObjectName(_fromUtf8("plainTextEdit"))
         self.plainTextEdit.setTabChangesFocus(True)
         self.gridLayout_10.addWidget(self.plainTextEdit, 1, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_beispieleingabe, 2, 1, 4, 5)
+        self.gridLayout.addWidget(self.groupBox_beispieleingabe, 2, 1, 5, 5)
         self.groupBox_beispieleingabe.setTitle(
             _translate("MainWindow", "Aufgabeneingabe", None)
         )
@@ -1054,7 +1076,7 @@ class Ui_MainWindow(object):
         self.lineEdit_quelle = QtWidgets.QLineEdit(self.groupBox_quelle)
         self.lineEdit_quelle.setObjectName(_fromUtf8("lineEdit_quelle"))
         self.gridLayout_18.addWidget(self.lineEdit_quelle, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_quelle, 6, 1, 1, 5, QtCore.Qt.AlignTop)
+        self.gridLayout.addWidget(self.groupBox_quelle, 7, 1, 1, 5, QtCore.Qt.AlignTop)
         self.groupBox_quelle.setTitle(
             _translate(
                 "MainWindow",
@@ -1067,7 +1089,7 @@ class Ui_MainWindow(object):
         self.pushButton_save = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_save.setObjectName(_fromUtf8("pushButton_save"))
         self.pushButton_save.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.gridLayout.addWidget(self.pushButton_save, 7, 5, 1, 1)
+        self.gridLayout.addWidget(self.pushButton_save, 8, 5, 1, 1)
         self.pushButton_save.setText(_translate("MainWindow", "Speichern", None))
         # self.pushButton_save.setShortcut(_translate("MainWindow", "Return", None))
         self.pushButton_save.hide()
@@ -2046,7 +2068,7 @@ class Ui_MainWindow(object):
         gridLayout_scrollarea = create_new_gridlayout(scrollareacontent)    
      
         row, column = self.create_list_of_all_gk_checkboxes(scrollareacontent, gridLayout_scrollarea, mode, chosen_dictionary)
-
+        # gridLayout_scrollarea.setRowStretch(row, 10)
 
         if mode=='search' or mode == 'quiz':
             button_check_all = create_new_button(scrollarea, "alle auswählen", partial(self.button_all_checkboxes_pressed,chosen_dictionary, 'gk', mode))
@@ -2907,6 +2929,18 @@ class Ui_MainWindow(object):
     ###############################################################
     ################### Befehle Creator ###########################
     #############################################################
+
+    def button_variation_cr_pressed(self):
+        Dialog = QtWidgets.QDialog(
+            None,
+            QtCore.Qt.WindowSystemMenuHint
+            | QtCore.Qt.WindowTitleHint
+            | QtCore.Qt.WindowCloseButtonHint,
+        )
+        ui = Ui_Dialog_variation()
+        ui.setupUi(Dialog, self)
+        # self.Dialog.show()
+        response = Dialog.exec()
 
 
     def add_picture(self):

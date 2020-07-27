@@ -614,11 +614,19 @@ def open_pdf_file(folder_name, file_name):
                 "C:\\", "Program Files (x86)", "SumatraPDF", "SumatraPDF.exe"
             )
         else:
-            sumatrapdf = ""
+            try:
+                appdata_folder = os.path.dirname(os.environ['APPDATA'])
+                user_sumatra_folder = os.path.join(appdata_folder, "Local", "SumatraPDF", "SumatraPDF.exe")
+                if os.path.isfile(user_sumatra_folder):
+                    sumatrapdf = user_sumatra_folder
+                else:
+                    sumatrapdf = ""
+            except KeyError:
+                sumatrapdf = ""
 
 
         subprocess.Popen(
-            'cd "{0}" &"{1}" "{2}.pdf"'.format(
+            'cd "{0}" &{1} "{2}.pdf"'.format(
                 folder_name, sumatrapdf, file_name
             ),
             cwd=os.path.splitdrive(path_programm)[0],
