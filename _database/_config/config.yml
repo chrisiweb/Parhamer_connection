@@ -417,7 +417,7 @@ list_klassen:
 dict_k1_name:
     "BZ" : "Bruchzahlen"
     "DZ" : "Dezimalzahlen"
-    "EG" : "Einführung in der Geometrie"
+    # "EG" : "Einführung in der Geometrie"
     "GG" : "Geometrische Grundbegriffe"
     "GU" : "Gleichungen und Ungleichungen"
     "KR" : "Kreis"
@@ -432,20 +432,17 @@ dict_k1_name:
 
 dict_k1:
     "BZ":
-        - "as"
         - "ef"
         - "ek"
+        - "as"
         - "md"
     "DZ":
-        - "as"
-        - "di"
         - "ef"
         - "ma"
+        - "as"
         - "mu"
+        - "di"
         - "vg"
-    "EG":
-        - "bqw"
-        - "glkf"
     "GG":
         - "am"
         - "ew"
@@ -469,6 +466,8 @@ dict_k1:
         - "odz"
         - "rvz"
     "QW":
+        - "bqw"
+        - "glkf"
         - "no"
         - "ri"
         - "sch"

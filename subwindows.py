@@ -1,6 +1,7 @@
 from PyQt5 import QtCore, QtWidgets, QtGui
 import os
 import shutil
+import re
 from string import ascii_lowercase
 from functools import partial
 from config import (
@@ -215,24 +216,18 @@ class Ui_Dialog_variation(object):
             self.comboBox_gk.addItem("")
             self.comboBox_gk.setItemText(index, _translate("MainWindow", all, None))
             index += 1
-        # self.comboBox_gk.currentIndexChanged.connect(
-        #     partial(self.comboBox_gk_changed, "sage")
-        # )
+        self.comboBox_gk.currentIndexChanged.connect(self.comboBox_gk_changed)
         self.comboBox_gk.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.verticalLayout_sage.addWidget(self.comboBox_gk)
         self.comboBox_gk_num = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
         self.comboBox_gk_num.setObjectName("comboBox_gk_num")
-        # self.comboBox_gk_num.currentIndexChanged.connect(
-        #     partial(self.comboBox_gk_num_changed, "sage")
-        # )
+        self.comboBox_gk_num.currentIndexChanged.connect(self.adapt_choosing_list)
         self.comboBox_gk_num.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.verticalLayout_sage.addWidget(self.comboBox_gk_num)
         self.lineEdit_number = QtWidgets.QLineEdit(self.groupBox_alle_aufgaben)
         self.lineEdit_number.setObjectName("lineEdit_number")
         self.lineEdit_number.setValidator(QtGui.QIntValidator())
-        # self.lineEdit_number.textChanged.connect(
-        #     partial(self.lineEdit_number_changed, "sage")
-        # )
+        self.lineEdit_number.textChanged.connect(self.adapt_choosing_list)
         self.verticalLayout_sage.addWidget(self.lineEdit_number)
         self.listWidget = QtWidgets.QListWidget(self.groupBox_alle_aufgaben)
         self.listWidget.setObjectName("listWidget")
@@ -243,8 +238,32 @@ class Ui_Dialog_variation(object):
         
 
         verticalLayout_variation.addWidget(self.groupBox_alle_aufgaben)
+
+        
+        self.buttonBox_variation = QtWidgets.QDialogButtonBox(self.Dialog)
+        self.buttonBox_variation.setStandardButtons(
+            QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel
+        )
+
+        # buttonS = self.buttonBox_titlepage.button(QtWidgets.QDialogButtonBox.Save)
+        # buttonS.setText('Speichern')
+        buttonX = self.buttonBox_variation.button(QtWidgets.QDialogButtonBox.Cancel)
+        buttonX.setText("Abbrechen")
+        self.buttonBox_variation.setObjectName("buttonBox_variation")
+        self.buttonBox_variation.rejected.connect(self.cancel_pressed)
+        self.buttonBox_variation.accepted.connect(self.choose_example)
+        verticalLayout_variation.addWidget(self.buttonBox_variation)
         self.adapt_choosing_list()
 
+    def cancel_pressed(self):
+        self.Dialog.reject()
+    
+    def choose_example(self):
+        try:
+            self.chosen_variaton = self.listWidget.selectedItems()[0].text()
+        except IndexError:
+            self.chosen_variaton = None
+        self.Dialog.accept()
 
     def comboBox_at_sage_changed(self):
         if self.comboBox_at_sage.currentText()[-1] == "1":
@@ -267,6 +286,78 @@ class Ui_Dialog_variation(object):
             self.comboBox_gk_num.setEnabled(False)
 
         self.adapt_choosing_list()
+
+    def comboBox_gk_changed(self):
+        self.adapt_choosing_list()
+
+        self.comboBox_gk_num.clear()
+        if self.comboBox_gk.currentText()=="":
+            return
+        self.comboBox_gk_num.addItem("")
+        self.lineEdit_number.clear()
+        list_klassen = ["k5", "k6", "k7", "k8"]
+        if self.comboBox_gk.currentText().lower() in list_klassen:
+            x = eval("%s_beschreibung" % self.comboBox_gk.currentText().lower())
+            for all in x.keys():
+                self.comboBox_gk_num.addItem(all.upper())
+        else:
+            for all in dict_gk.keys():
+                if all.startswith(self.comboBox_gk.currentText().lower()):
+                    self.comboBox_gk_num.addItem(dict_gk[all][-3:])
+
+
+    def add_items_to_listwidget(self, list_beispieldaten_sections, beispieldaten_dateipfad):
+        for section in list_beispieldaten_sections:
+            try:
+                path = beispieldaten_dateipfad[section]
+            except KeyError:
+                drafts_path = os.path.join(path_programm, "Beispieleinreichung")
+                beispieldaten_dateipfad_draft = search_files(drafts_path)
+                path = beispieldaten_dateipfad_draft[section]
+
+            name, extension = os.path.splitext(os.path.basename(path))
+            item = QtWidgets.QListWidgetItem()
+
+            item.setText(name)
+
+            if name.startswith('_L_') or "Beispieleinreichung" in path:
+                pass
+            else:
+                self.listWidget.addItem(item)
+
+    def delete_zeros_at_beginning(self, string):
+        while string.startswith("0"):
+            string = string[1:]
+        return string
+
+    def split_section(self, section):
+        section = re.split(" - |{|}", section)
+        info = [item.strip() for item in section]
+        info.pop(0)
+        info.pop(-1)
+
+        return info
+
+    def search_for_number(self, list_, line_entry):
+        for section in list_[:]:
+            info = self.split_section(section)
+            if self.MainWindow.chosen_program == 'lama':
+                combobox_at = self.comboBox_at_sage.currentText()
+
+
+                if combobox_at == "Typ 1":
+                    number = self.delete_zeros_at_beginning(info[1])
+                if combobox_at == "Typ 2":
+                    number = self.delete_zeros_at_beginning(info[0])
+
+                    
+            elif self.MainWindow.chosen_program == 'cria':
+                number = self.delete_zeros_at_beginning(info[2])
+            if not number.startswith(line_entry):
+                list_.remove(section)
+
+        return list_
+
 
     def adapt_choosing_list(self):
         self.listWidget.clear()
@@ -318,14 +409,13 @@ class Ui_Dialog_variation(object):
 
 
         if is_empty(line_entry) == False:
-            list_beispieldaten_sections = self.search_for_number(list_beispieldaten_sections, line_entry, "sage")
+            list_beispieldaten_sections = self.search_for_number(list_beispieldaten_sections, line_entry)
 
 
         list_beispieldaten_sections = sorted_gks(list_beispieldaten_sections, self.MainWindow.chosen_program)
 
-        # self.MainWindow.add_items_to_listwidget(list_beispieldaten_sections, beispieldaten_dateipfad, self.listWidget, "sage")
-        for all in list_beispieldaten_sections:
-            self.listWidget.addItem(all)
+        self.add_items_to_listwidget(list_beispieldaten_sections, beispieldaten_dateipfad)
+
 
 
 class Ui_Dialog_random_quiz(object):

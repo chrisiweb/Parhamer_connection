@@ -2942,6 +2942,14 @@ class Ui_MainWindow(object):
         # self.Dialog.show()
         response = Dialog.exec()
 
+        if response == 1:
+            chosen_variaton = ui.chosen_variaton
+
+            if chosen_variaton != None:
+                print(chosen_variaton)
+            print('accepted')
+        if response == 0:
+            print('rejected')
 
     def add_picture(self):
         try:
