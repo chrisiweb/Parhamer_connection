@@ -433,7 +433,7 @@ class Ui_MainWindow(object):
         self.scrollArea_ausgew_gk.setWidget(self.scrollAreaWidgetContents_ausgew_gk)
         self.verticalLayout_2.addWidget(self.scrollArea_ausgew_gk)
 
-        self.gridLayout.addWidget(self.groupBox_ausgew_gk, 3, 1, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_ausgew_gk, 3, 0, 1, 1)
 
 
         self.groupBox_titelsuche = create_new_groupbox(self.centralwidget, "Titelsuche:")
@@ -480,7 +480,7 @@ class Ui_MainWindow(object):
         )
         self.gridLayout_14.addWidget(self.cb_univie, 1, 2, 1, 1)
 
-        self.gridLayout.addWidget(self.groupBox_klassen, 3, 0, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_klassen, 3, 1, 1, 1)
 
 
         
@@ -550,7 +550,7 @@ class Ui_MainWindow(object):
         self.tab_widget_themen.setObjectName(_fromUtf8("tab_widget_themen"))
         self.verticalLayout.addWidget(self.tab_widget_themen)
 
-        self.gridLayout.addWidget(self.groupBox_themen_klasse, 1, 0, 2, 1)
+        self.gridLayout.addWidget(self.groupBox_themen_klasse, 1, 1, 2, 1)
 
         self.groupBox_gk = create_new_groupbox(self.centralwidget, "Grundkompetenzen")
 
@@ -569,7 +569,7 @@ class Ui_MainWindow(object):
         #  print(gray.red())
         self.tab_widget_gk.setObjectName(_fromUtf8("tab_widget_gk"))
         self.gridLayout_11.addWidget(self.tab_widget_gk, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_gk, 1, 1, 2, 1)
+        self.gridLayout.addWidget(self.groupBox_gk, 1, 0, 2, 1)
         
         # #### AG #####
         self.create_tab_checkboxes_gk(self.tab_widget_gk, "Algebra und Geometrie", ag_beschreibung, 'search')
