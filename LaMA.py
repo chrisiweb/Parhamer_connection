@@ -757,7 +757,7 @@ class Ui_MainWindow(object):
         self.tab_widget_gk_cr.setFocusPolicy(QtCore.Qt.NoFocus)
         self.tab_widget_gk_cr.setObjectName(_fromUtf8("tab_widget_gk_cr"))
         self.gridLayout_11_cr.addWidget(self.tab_widget_gk_cr, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_grundkompetenzen_cr, 0, 0, 6, 1)
+        self.gridLayout.addWidget(self.groupBox_grundkompetenzen_cr, 1, 0, 5, 1)
         self.groupBox_grundkompetenzen_cr.setTitle(
             _translate("MainWindow", "Grundkompetenzen", None)
         )
@@ -779,7 +779,7 @@ class Ui_MainWindow(object):
         self.tab_widget_cr_cria.setObjectName(_fromUtf8("tab_widget_cr_cria"))
         self.tab_widget_cr_cria.setFocusPolicy(QtCore.Qt.NoFocus)
         self.gridLayout_11_cr_cria.addWidget(self.tab_widget_cr_cria, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_themengebiete_cria, 0, 0, 6, 1)
+        self.gridLayout.addWidget(self.groupBox_themengebiete_cria, 1, 0, 5, 1)
         self.groupBox_themengebiete_cria.setTitle(
             _translate("MainWindow", "Themengebiete",None)
         )
