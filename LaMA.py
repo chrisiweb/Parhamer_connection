@@ -65,7 +65,13 @@ from create_pdf import prepare_tex_for_pdf, create_pdf
 from refresh_ddb import modification_date, refresh_ddb, search_files
 from standard_dialog_windows import warning_window, question_window, critical_window, information_window, custom_window
 from predefined_size_policy import *
-from work_with_content import collect_content, split_aufgaben_content_new_format, split_aufgaben_content, edit_content_quiz
+from work_with_content import (
+    collect_content,
+    split_aufgaben_content_new_format,
+    split_aufgaben_content,
+    edit_content_quiz,
+    get_section_from_content,
+)
 from build_titlepage import get_titlepage_vorschau
 from prepare_content_vorschau import (
     edit_content_vorschau,
@@ -107,11 +113,23 @@ border-left: 2px solid {3};
 border-right: 2px solid {3};
 }}
 
+QTabBar::tab::disabled {{
+background-color: gray;
+}}
+
+
 QWidget {{color: {2};background-color: {3}}}
+
+
+
 """.format(get_color(blue_2), get_color(black), get_color(white), get_color(blue_7))
 
+#QWidget::disabled {{background-color: {4}}}
+
 StyleSheet_new_tab = """
-color: {0};background-color: {1}
+QWidget {{color: {0}; background-color:{1}}}
+
+QWidget::disabled {{background-color: lightGray}}
 """.format(get_color(black), get_color(blue_2))
 
 
@@ -2351,6 +2369,7 @@ class Ui_MainWindow(object):
 
         text_combobox=self.dict_widget_variables['combobox_kapitel_creator_cria_{}'.format(klasse)].currentText()
         kapitel=text_combobox[text_combobox.find("(")+1:text_combobox.find(")")]
+        print(kapitel)
         
         dict_klasse = eval("dict_{}".format(klasse))
 
@@ -2359,7 +2378,7 @@ class Ui_MainWindow(object):
                 checkbox = self.dict_widget_variables['checkbox_unterkapitel_creator_{0}_{1}_{2}'.format(klasse, kapitel, unterkapitel)]
                 layout.insertWidget(layout.count()-1, checkbox) 
             else:
-                new_checkbox=create_new_checkbox(parent, dict_unterkapitel[unterkapitel])              
+                new_checkbox=create_new_checkbox(parent, dict_unterkapitel[unterkapitel] + ' (' + unterkapitel +')')              
                 new_checkbox.stateChanged.connect(partial(self.checkbox_unterkapitel_checked_creator_cria,new_checkbox, klasse, kapitel, unterkapitel))
                 self.dict_widget_variables['checkbox_unterkapitel_creator_{0}_{1}_{2}'.format(klasse, kapitel, unterkapitel)]=new_checkbox
                 new_checkbox.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -2408,8 +2427,9 @@ class Ui_MainWindow(object):
 
 
         ### LaMA Cria      
-        for klasse in list_klassen:
-            self.dict_widget_variables['combobox_kapitel_creator_cria_{}'.format(klasse)].setCurrentIndex(0)
+        # for klasse in list_klassen:
+        #     self.dict_widget_variables['combobox_kapitel_creator_cria_{}'.format(klasse)].setCurrentIndex(0) 
+        # ## Problem with variation
 
         for all in self.dict_widget_variables:
             if all.startswith('checkbox_unterkapitel_'):
@@ -2435,6 +2455,9 @@ class Ui_MainWindow(object):
         self.comboBox_klassen_cr.setCurrentIndex(0)
         self.label_ausgew_gk_creator.setText(_translate("MainWindow", "", None))
         self.label_bild_leer.show()
+
+        self.chosen_variaton = None
+        self.reset_variation()
 
 
         for picture in list(self.dict_widget_variables.keys())[:]:
@@ -2538,6 +2561,7 @@ class Ui_MainWindow(object):
         self.reset_sage(False)
         self.suchfenster_reset()
         self.reset_feedback()
+        
         # self.comboBox_fehlertyp.setCurrentIndex(0)
         # self.plainTextEdit.setPlainText("")
         
@@ -2930,6 +2954,134 @@ class Ui_MainWindow(object):
     ################### Befehle Creator ###########################
     #############################################################
 
+
+
+    def collect_data_aufgabe(self, aufgabe):
+        content = collect_content(self,aufgabe)
+        
+        section = get_section_from_content(content)
+
+        if section == None:
+            warning_window('Die gewählte Aufgabe {} ist fehlerhaft.\nBitte melden Sie diese unter "Feedback & Fehler".\nVielen Dank!'.format(aufgabe))
+            return
+
+        list_collected_data = re.split("{| - |}", section)[1:-1]
+        print(list_collected_data)
+        dict_collected_data = {}
+
+        dict_collected_data['aufgabe']=aufgabe
+
+        dict_collected_data['klasse']=None
+        for all in list_collected_data:
+            if re.match("K[0-9]",all) or all == "MAT":
+                dict_collected_data['klasse']=all
+        typ = self.get_aufgabentyp(aufgabe)
+        info = self.collect_all_infos_aufgabe(aufgabe)
+
+        if typ==None:
+            themen = list_collected_data[1].split(", ")
+            dict_collected_data['thema']=  themen
+        elif typ==1:
+            dict_collected_data['thema']=  [list_collected_data[0]]
+        elif typ==2:
+            gks = list_collected_data[-3].split(", ")
+            dict_collected_data['thema']=  gks
+            # dict_collected_data['titel']=  list_collected_data[-]
+
+        dict_collected_data['titel'] = info[2]
+
+        if isinstance(info[3], int):
+            dict_collected_data['aufgabenformat'] = None
+        else:    
+            dict_collected_data['aufgabenformat'] = info[3]
+        dict_collected_data['quelle'] = list_collected_data[-1]
+
+        return dict_collected_data
+
+    def set_infos_chosen_variation(self, dict_collected_data):
+        # self.suchfenster_reset()
+
+        aufgabe = dict_collected_data['aufgabe']
+        typ = self.get_aufgabentyp(aufgabe)
+
+        if self.chosen_program == 'lama':
+            list_comboBox_gk = ["AG", "FA", "AN", "WS", "K5", "K6", "K7", "K8"]
+            if typ==1:
+                gk, nummer = aufgabe.split(" - ")
+                short_gk = shorten_gk(gk)
+                checkbox_gk = "checkbox_creator_gk_{}".format(short_gk)
+                self.dict_widget_variables[checkbox_gk].setChecked(True)
+                self.tab_widget_gk_cr.setCurrentIndex(list_comboBox_gk.index(gk.split(" ")[0]))
+                # 
+            elif typ==2:
+                for gk in dict_collected_data['thema']:
+                    short_gk = shorten_gk(gk)
+                    checkbox_gk = "checkbox_creator_gk_{}".format(short_gk)
+                    self.dict_widget_variables[checkbox_gk].setChecked(True)
+                self.tab_widget_gk_cr.setCurrentIndex(list_comboBox_gk.index(dict_collected_data['thema'][0].split(" ")[0]))
+
+            self.groupBox_grundkompetenzen_cr.setEnabled(False)
+
+
+            self.comboBox_aufgabentyp_cr.setCurrentIndex(typ-1)
+            self.groupBox_aufgabentyp.setEnabled(False)
+
+        elif self.chosen_program == 'cria':
+            # index=list_klassen.index(klasse)
+            # self.tab_widget_cr_cria.setCurrentIndex(index)
+
+            for thema in dict_collected_data['thema']:
+                klasse = dict_collected_data['klasse'].lower()
+                kapitel, unterkapitel = thema.split(".")
+
+                combobox_thema = 'combobox_kapitel_creator_cria_{}'.format(klasse)
+                dict_klasse_name = eval("dict_{}_name".format(klasse))
+                thema_name = dict_klasse_name[kapitel]
+                index = self.dict_widget_variables[combobox_thema].findText(thema_name + " ("+kapitel+")")
+                self.dict_widget_variables[combobox_thema].setCurrentIndex(index)
+
+                checkbox_thema = 'checkbox_unterkapitel_creator_{0}_{1}_{2}'.format(klasse, kapitel, unterkapitel)
+                self.dict_widget_variables[checkbox_thema].setChecked(True)
+
+                self.groupBox_themengebiete_cria.setEnabled(False)
+
+        punkte = self.get_punkte_aufgabe(aufgabe)
+
+        self.spinBox_punkte.setValue(punkte)
+        if dict_collected_data['aufgabenformat'] !=  None:
+            try:
+                full_aufgabenformat = dict_aufgabenformate[dict_collected_data['aufgabenformat'].lower()]
+                index = self.comboBox_af.findText(full_aufgabenformat)
+                self.comboBox_af.setEnabled(False)
+            except AttributeError:
+                warning_window('Die gewählte Aufgabe {} ist fehlerhaft.\nBitte melden Sie diese unter "Feedback & Fehler".\nVielen Dank!'.format(aufgabe))
+                index = 0
+            self.comboBox_af.setCurrentIndex(index)
+        else:
+            self.comboBox_af.setCurrentIndex(0)
+        
+        if dict_collected_data['klasse'] !=  None and typ != None:
+            try:
+                full_klasse = Klassen[dict_collected_data['klasse'].lower()]
+                index = self.comboBox_klassen_cr.findText(full_klasse)
+            except AttributeError:
+                warning_window('Die gewählte Aufgabe {} ist fehlerhaft.\nBitte melden Sie diese unter "Feedback & Fehler".\nVielen Dank!'.format(aufgabe))
+                index = 0
+            self.comboBox_klassen_cr.setCurrentIndex(index)
+        else:
+            self.comboBox_klassen_cr.setCurrentIndex(0)
+
+        self.lineEdit_titel.setText(dict_collected_data["titel"])
+        self.lineEdit_quelle.setText(dict_collected_data["quelle"])
+
+    def reset_variation(self):
+        self.button_variation_cr.setText("Variation vorhandender Aufgabe...")
+        self.groupBox_grundkompetenzen_cr.setEnabled(True)
+        self.groupBox_aufgabentyp.setEnabled(True)
+        self.comboBox_af.setEnabled(True)
+        self.groupBox_themengebiete_cria.setEnabled(True)
+
+
     def button_variation_cr_pressed(self):
         Dialog = QtWidgets.QDialog(
             None,
@@ -2943,13 +3095,21 @@ class Ui_MainWindow(object):
         response = Dialog.exec()
 
         if response == 1:
-            chosen_variaton = ui.chosen_variaton
+            self.suchfenster_reset()
+            self.chosen_variaton = ui.chosen_variaton
+            if self.chosen_variaton != None:
+                self.button_variation_cr.setText("Variation von: {}".format(self.chosen_variaton.upper()))
+                dict_collected_data = self.collect_data_aufgabe(self.chosen_variaton)
+            else:
+                self.suchfenster_reset()
+                self.reset_variation()
+                return
 
-            if chosen_variaton != None:
-                print(chosen_variaton)
-            print('accepted')
         if response == 0:
-            print('rejected')
+            return
+
+        self.set_infos_chosen_variation(dict_collected_data)
+        print(dict_collected_data)
 
     def add_picture(self):
         try:
@@ -3046,11 +3206,16 @@ class Ui_MainWindow(object):
 
     def chosen_aufgabenformat_cr(self):
         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-            self.label_keine_auswahl.hide()
-            self.comboBox_af.show()
+            self.groupBox_aufgabenformat.setEnabled(True)
+            # self.label_keine_auswahl.hide()
+            # self.comboBox_af.show()
+            self.comboBox_af.removeItem(0)
         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
-            self.label_keine_auswahl.show()
-            self.comboBox_af.hide()
+            self.comboBox_af.insertItem(0, "keine Auswahl nötig")
+            self.comboBox_af.setCurrentIndex(0)
+            self.groupBox_aufgabenformat.setEnabled(False)
+            # self.label_keine_auswahl.show()
+            # self.comboBox_af.hide()
 
 
 
@@ -4476,8 +4641,8 @@ class Ui_MainWindow(object):
                     filename = os.path.basename(self.beispieldaten_dateipfad_cria[all])
                     if name == filename:
                         info = self.split_section(all)
-                        titel=info[2]
-                        typ_info=info[3] # Aufgabenformat
+                        titel=info[3]
+                        typ_info=info[4] # Aufgabenformat
             
 
 
@@ -4506,9 +4671,18 @@ class Ui_MainWindow(object):
 
     def get_punkte_aufgabe(self, aufgabe):
         content = collect_content(self, aufgabe)
-        start = re.findall("begin{langesbeispiel}.*\\\item\[[0-9][0-9]?\]", content)
+        start = re.findall("begin{beispiel}.*\{[0-9][0-9]?\}", content)
+        typ = 'beispiel'
+        if start == []:
+            start = re.findall("begin{langesbeispiel}.*\\\item\[[0-9][0-9]?\]", content)
+            typ = 'langesbeispiel'
         try:
-            return int(re.split("\[|\]", start[0])[1])
+            if typ == 'langesbeispiel':
+                punkte = int(re.findall(r"\[([0-9][0-9]?)\]",start[0])[0])
+            else:
+                punkte = int(re.findall(r"\{([0-9][0-9]?)\}",start[0])[0])
+
+            return punkte
         except IndexError:
             return 0
 

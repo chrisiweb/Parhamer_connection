@@ -38,6 +38,13 @@ ag_beschreibung = config_loader(config_file, "ag_beschreibung")
 an_beschreibung = config_loader(config_file, "an_beschreibung")
 fa_beschreibung = config_loader(config_file, "fa_beschreibung")
 ws_beschreibung = config_loader(config_file, "ws_beschreibung")
+list_klassen = config_loader(config_file, "list_klassen")
+
+for klasse in list_klassen:
+    exec('dict_{0} = config_loader(config_file,"dict_{0}")'.format(klasse))
+    exec('dict_{0}_name = config_loader(config_file,"dict_{0}_name")'.format(klasse))
+
+dict_unterkapitel = config_loader(config_file, "dict_unterkapitel")
 
 black =colors_ui['black']
 white = colors_ui['white']
@@ -196,34 +203,71 @@ class Ui_Dialog_variation(object):
 
 
         ##### ComboBox LaMA ####
-        self.comboBox_at_sage = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
-        self.comboBox_at_sage.setObjectName("comboBox_at_sage")
-        self.comboBox_at_sage.addItem("")
-        self.comboBox_at_sage.addItem("")
-        self.verticalLayout_sage.addWidget(self.comboBox_at_sage)
-        self.comboBox_at_sage.setItemText(0, _translate("MainWindow", "Typ 1", None))
-        self.comboBox_at_sage.setItemText(1, _translate("MainWindow", "Typ 2", None))
-        self.comboBox_at_sage.currentIndexChanged.connect(self.comboBox_at_sage_changed)
-        self.comboBox_at_sage.setFocusPolicy(QtCore.Qt.ClickFocus)
-        # self.comboBox_at_sage.hide()
+        if self.MainWindow.chosen_program == 'lama':
+            self.comboBox_at_sage = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
+            self.comboBox_at_sage.setObjectName("comboBox_at_sage")
+            self.comboBox_at_sage.addItem("")
+            self.comboBox_at_sage.addItem("")
+            self.verticalLayout_sage.addWidget(self.comboBox_at_sage)
+            self.comboBox_at_sage.setItemText(0, _translate("MainWindow", "Typ 1", None))
+            self.comboBox_at_sage.setItemText(1, _translate("MainWindow", "Typ 2", None))
+            self.comboBox_at_sage.currentIndexChanged.connect(self.comboBox_at_sage_changed)
+            self.comboBox_at_sage.setFocusPolicy(QtCore.Qt.ClickFocus)
+            
+            # self.comboBox_at_sage.hide()
 
 
-        self.comboBox_gk = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
-        self.comboBox_gk.setObjectName("comboBox_gk")
-        list_comboBox_gk = ["", "AG", "FA", "AN", "WS", "K5", "K6", "K7", "K8"]
-        index = 0
-        for all in list_comboBox_gk:
-            self.comboBox_gk.addItem("")
-            self.comboBox_gk.setItemText(index, _translate("MainWindow", all, None))
-            index += 1
-        self.comboBox_gk.currentIndexChanged.connect(self.comboBox_gk_changed)
-        self.comboBox_gk.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.verticalLayout_sage.addWidget(self.comboBox_gk)
-        self.comboBox_gk_num = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
-        self.comboBox_gk_num.setObjectName("comboBox_gk_num")
-        self.comboBox_gk_num.currentIndexChanged.connect(self.adapt_choosing_list)
-        self.comboBox_gk_num.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.verticalLayout_sage.addWidget(self.comboBox_gk_num)
+            self.comboBox_gk = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
+            self.comboBox_gk.setObjectName("comboBox_gk")
+            list_comboBox_gk = ["", "AG", "FA", "AN", "WS", "K5", "K6", "K7", "K8"]
+            index = 0
+            for all in list_comboBox_gk:
+                self.comboBox_gk.addItem("")
+                self.comboBox_gk.setItemText(index, _translate("MainWindow", all, None))
+                index += 1
+            self.comboBox_gk.currentIndexChanged.connect(self.comboBox_gk_changed)
+            self.comboBox_gk.setFocusPolicy(QtCore.Qt.ClickFocus)
+            self.verticalLayout_sage.addWidget(self.comboBox_gk)
+            self.comboBox_gk_num = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
+            self.comboBox_gk_num.setObjectName("comboBox_gk_num")
+            self.comboBox_gk_num.currentIndexChanged.connect(self.adapt_choosing_list)
+            self.comboBox_gk_num.setFocusPolicy(QtCore.Qt.ClickFocus)
+            self.verticalLayout_sage.addWidget(self.comboBox_gk_num)
+
+
+
+        ##### ComboBox LaMA Cria ####
+        if self.MainWindow.chosen_program == 'cria':
+            self.comboBox_klassen = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
+            self.comboBox_klassen.setObjectName("comboBox_klassen")
+            # self.comboBox_gk.addItem("")
+            index = 0
+            for all in list_klassen:
+                self.comboBox_klassen.addItem("")
+
+                self.comboBox_klassen.setItemText(
+                    index, _translate("MainWindow", all[1] + ". Klasse", None)
+                )
+                index += 1
+
+            self.comboBox_klassen.currentIndexChanged.connect(self.comboBox_klassen_changed)
+
+            self.comboBox_klassen.setFocusPolicy(QtCore.Qt.ClickFocus)
+            self.verticalLayout_sage.addWidget(self.comboBox_klassen)
+
+            self.comboBox_kapitel = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
+            self.comboBox_kapitel.setObjectName("comboBox_kapitel")
+            self.comboBox_kapitel.currentIndexChanged.connect(self.comboBox_kapitel_changed)
+            self.comboBox_kapitel.setFocusPolicy(QtCore.Qt.ClickFocus)
+            self.verticalLayout_sage.addWidget(self.comboBox_kapitel)
+
+            self.comboBox_unterkapitel = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
+            self.comboBox_unterkapitel.setObjectName("comboBox_unterkapitel")
+            self.comboBox_unterkapitel.currentIndexChanged.connect(self.adapt_choosing_list)
+            self.comboBox_unterkapitel.setFocusPolicy(QtCore.Qt.ClickFocus)
+            self.verticalLayout_sage.addWidget(self.comboBox_unterkapitel)
+
+
         self.lineEdit_number = QtWidgets.QLineEdit(self.groupBox_alle_aufgaben)
         self.lineEdit_number.setObjectName("lineEdit_number")
         self.lineEdit_number.setValidator(QtGui.QIntValidator())
@@ -255,12 +299,26 @@ class Ui_Dialog_variation(object):
         verticalLayout_variation.addWidget(self.buttonBox_variation)
         self.adapt_choosing_list()
 
+        if self.MainWindow.chosen_program=='lama':
+            self.comboBox_at_sage.setCurrentIndex(self.MainWindow.comboBox_aufgabentyp_cr.currentIndex())
+        elif self.MainWindow.chosen_program=='cria':
+            self.comboBox_klassen.setCurrentIndex(self.MainWindow.tab_widget_cr_cria.currentIndex())
+
+
     def cancel_pressed(self):
         self.Dialog.reject()
     
     def choose_example(self):
         try:
-            self.chosen_variaton = self.listWidget.selectedItems()[0].text()
+            if self.listWidget.selectedItems()[0].text() == self.no_choice:
+                self.chosen_variaton = None
+            elif self.MainWindow.chosen_program == 'cria':
+                klasse = list_klassen[self.comboBox_klassen.currentIndex()]
+                self.chosen_variaton = klasse + "_" + self.listWidget.selectedItems()[0].text()    
+            else:
+                self.chosen_variaton = self.listWidget.selectedItems()[0].text()
+
+
         except IndexError:
             self.chosen_variaton = None
         self.Dialog.accept()
@@ -305,8 +363,60 @@ class Ui_Dialog_variation(object):
                 if all.startswith(self.comboBox_gk.currentText().lower()):
                     self.comboBox_gk_num.addItem(dict_gk[all][-3:])
 
+    def comboBox_klassen_changed(self):
+        dict_klasse_name = eval(
+            "dict_{}_name".format(
+                list_klassen[self.comboBox_klassen.currentIndex()]
+            )
+        )
+        self.comboBox_kapitel.clear()
+        self.comboBox_unterkapitel.clear()
+        self.comboBox_kapitel.addItem("")
+
+
+        for all in dict_klasse_name.keys():
+            self.comboBox_kapitel.addItem(dict_klasse_name[all] + " (" + all + ")")
+
+    def comboBox_kapitel_changed(self):
+        dict_klasse = eval(
+            "dict_{}".format(list_klassen[self.comboBox_klassen.currentIndex()])
+        )
+
+        dict_klasse = eval(
+            "dict_{}".format(list_klassen[self.comboBox_klassen.currentIndex()])
+        )
+        self.comboBox_unterkapitel.clear()
+
+        kapitel_shortcut = list(dict_klasse.keys())[
+            self.comboBox_kapitel.currentIndex() - 1
+        ]
+
+        # self.comboBox_unterkapitel.clear()
+        self.comboBox_unterkapitel.addItem("")
+
+        index = 1
+        for all in dict_klasse[kapitel_shortcut]:
+            self.comboBox_unterkapitel.addItem(
+                dict_unterkapitel[all] + " (" + all + ")"
+            )
+                
+               
+            index += 1
+
+        if self.comboBox_kapitel.currentIndex() == 0:
+            self.comboBox_unterkapitel.clear()
+
+
+        self.adapt_choosing_list()
+
+
+    # def comboBox_unterkapitel_changed(self):
+    #     self.adapt_choosing_list()
+
 
     def add_items_to_listwidget(self, list_beispieldaten_sections, beispieldaten_dateipfad):
+        self.no_choice = "-- keine Auswahl --"
+        self.listWidget.addItem(self.no_choice)
         for section in list_beispieldaten_sections:
             try:
                 path = beispieldaten_dateipfad[section]

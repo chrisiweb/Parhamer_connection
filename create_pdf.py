@@ -599,39 +599,39 @@ def open_pdf_file(folder_name, file_name):
             ["open", "{0}.pdf".format(file_path),]
             )
     else:
-        if os.path.isfile(
-            os.path.join("C:\\", "Program Files", "SumatraPDF", "SumatraPDF.exe")
-        ):
-            sumatrapdf = os.path.join(
-                "C:\\", "Program Files", "SumatraPDF", "SumatraPDF.exe"
-            )
-        elif os.path.isfile(
-            os.path.join(
-                "C:\\", "Program Files (x86)", "SumatraPDF", "SumatraPDF.exe"
-            )
-        ):
-            sumatrapdf = os.path.join(
-                "C:\\", "Program Files (x86)", "SumatraPDF", "SumatraPDF.exe"
-            )
-        else:
-            try:
-                appdata_folder = os.path.dirname(os.environ['APPDATA'])
-                user_sumatra_folder = os.path.join(appdata_folder, "Local", "SumatraPDF", "SumatraPDF.exe")
-                if os.path.isfile(user_sumatra_folder):
-                    sumatrapdf = user_sumatra_folder
-                else:
-                    sumatrapdf = ""
-            except KeyError:
-                sumatrapdf = ""
+        # if os.path.isfile(
+        #     os.path.join("C:\\", "Program Files", "SumatraPDF", "SumatraPDF.exe")
+        # ):
+        #     sumatrapdf = os.path.join(
+        #         "C:\\", "Program Files", "SumatraPDF", "SumatraPDF.exe"
+        #     )
+        # elif os.path.isfile(
+        #     os.path.join(
+        #         "C:\\", "Program Files (x86)", "SumatraPDF", "SumatraPDF.exe"
+        #     )
+        # ):
+        #     sumatrapdf = os.path.join(
+        #         "C:\\", "Program Files (x86)", "SumatraPDF", "SumatraPDF.exe"
+        #     )
+        # else:
+        #     try:
+        #         appdata_folder = os.path.dirname(os.environ['APPDATA'])
+        #         user_sumatra_folder = os.path.join(appdata_folder, "Local", "SumatraPDF", "SumatraPDF.exe")
+        #         if os.path.isfile(user_sumatra_folder):
+        #             sumatrapdf = user_sumatra_folder
+        #         else:
+        #             sumatrapdf = ""
+        #     except KeyError:
+        #         sumatrapdf = ""
 
 
         subprocess.Popen(
-            'cd "{0}" &{1} "{2}.pdf"'.format(
-                folder_name, sumatrapdf, file_name
+            'cd "{0}" & "{1}.pdf"'.format(
+                folder_name,file_name
             ),
             cwd=os.path.splitdrive(path_programm)[0],
             shell=True,
-        ).poll()
+        ).poll() # sumatrapdf {1}
 
 
 def loading_animation(process):
