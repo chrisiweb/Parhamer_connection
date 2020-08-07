@@ -2999,8 +2999,6 @@ class Ui_MainWindow(object):
         return dict_collected_data
 
     def set_infos_chosen_variation(self, dict_collected_data):
-        # self.suchfenster_reset()
-
         aufgabe = dict_collected_data['aufgabe']
         typ = self.get_aufgabentyp(aufgabe)
 
@@ -3027,11 +3025,11 @@ class Ui_MainWindow(object):
             self.groupBox_aufgabentyp.setEnabled(False)
 
         elif self.chosen_program == 'cria':
-            # index=list_klassen.index(klasse)
-            # self.tab_widget_cr_cria.setCurrentIndex(index)
+            klasse = dict_collected_data['klasse'].lower()
+            index=list_klassen.index(klasse)
+            self.tab_widget_cr_cria.setCurrentIndex(index)
 
             for thema in dict_collected_data['thema']:
-                klasse = dict_collected_data['klasse'].lower()
                 kapitel, unterkapitel = thema.split(".")
 
                 combobox_thema = 'combobox_kapitel_creator_cria_{}'.format(klasse)
@@ -3072,7 +3070,7 @@ class Ui_MainWindow(object):
             self.comboBox_klassen_cr.setCurrentIndex(0)
 
         self.lineEdit_titel.setText(dict_collected_data["titel"])
-        self.lineEdit_quelle.setText(dict_collected_data["quelle"])
+        # self.lineEdit_quelle.setText(dict_collected_data["quelle"])
 
     def reset_variation(self):
         self.button_variation_cr.setText("Variation vorhandender Aufgabe...")
