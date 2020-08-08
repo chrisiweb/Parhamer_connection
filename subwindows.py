@@ -311,16 +311,16 @@ class Ui_Dialog_variation(object):
     def choose_example(self):
         try:
             if self.listWidget.selectedItems()[0].text() == self.no_choice:
-                self.chosen_variaton = None
+                self.chosen_variation = None
             elif self.MainWindow.chosen_program == 'cria':
                 klasse = list_klassen[self.comboBox_klassen.currentIndex()]
-                self.chosen_variaton = klasse + "_" + self.listWidget.selectedItems()[0].text()    
+                self.chosen_variation = klasse + "_" + self.listWidget.selectedItems()[0].text()    
             else:
-                self.chosen_variaton = self.listWidget.selectedItems()[0].text()
+                self.chosen_variation = self.listWidget.selectedItems()[0].text()
 
 
         except IndexError:
-            self.chosen_variaton = None
+            self.chosen_variation = None
         self.Dialog.accept()
 
     def comboBox_at_sage_changed(self):
@@ -432,7 +432,12 @@ class Ui_Dialog_variation(object):
 
             if name.startswith('_L_') or "Beispieleinreichung" in path:
                 pass
+            # elif re.search("[.+]", name)==True:
+            #     print('found')
+            # elif re.search("[.+]", name):
+            #     pass
             else:
+                print(re.search("\[.+\]", name))
                 self.listWidget.addItem(item)
 
     def delete_zeros_at_beginning(self, string):
@@ -1201,7 +1206,7 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
 
 
 class Ui_Dialog_speichern(QtWidgets.QDialog):
-    def setupUi(self, Dialog, creator_mode):
+    def setupUi(self, Dialog, creator_mode, chosen_variation):
         self.Dialog = Dialog
         self.creator_mode = creator_mode
         Dialog.setObjectName("Dialog")
@@ -1248,9 +1253,14 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
 
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         if self.creator_mode == 'user':
-            self.buttonBox.setStandardButtons(
-                QtWidgets.QDialogButtonBox.Yes | QtWidgets.QDialogButtonBox.No | QtWidgets.QDialogButtonBox.Apply
-            )
+            if chosen_variation == None:
+                self.buttonBox.setStandardButtons(
+                    QtWidgets.QDialogButtonBox.Yes | QtWidgets.QDialogButtonBox.No | QtWidgets.QDialogButtonBox.Apply
+                )
+            else:
+                self.buttonBox.setStandardButtons(
+                    QtWidgets.QDialogButtonBox.Yes | QtWidgets.QDialogButtonBox.No
+                    )                
         if self.creator_mode == 'admin':
             self.buttonBox.setStandardButtons(
                 QtWidgets.QDialogButtonBox.Yes | QtWidgets.QDialogButtonBox.No)            
@@ -1264,10 +1274,11 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
         buttonY.setText("Speichern")
         buttonY.clicked.connect(self.yes_pressed)
 
-        if self.creator_mode == 'user':
+        if self.creator_mode == 'user' and chosen_variation == None:
             button_local = self.buttonBox.button(QtWidgets.QDialogButtonBox.Apply)
             button_local.setText("Lokal speichern")
             button_local.clicked.connect(self.local_pressed)
+
 
         gridlayout.addWidget(self.buttonBox, 3,1,1,1)
 

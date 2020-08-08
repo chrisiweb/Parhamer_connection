@@ -2369,7 +2369,7 @@ class Ui_MainWindow(object):
 
         text_combobox=self.dict_widget_variables['combobox_kapitel_creator_cria_{}'.format(klasse)].currentText()
         kapitel=text_combobox[text_combobox.find("(")+1:text_combobox.find(")")]
-        print(kapitel)
+        # print(kapitel)
         
         dict_klasse = eval("dict_{}".format(klasse))
 
@@ -2456,7 +2456,7 @@ class Ui_MainWindow(object):
         self.label_ausgew_gk_creator.setText(_translate("MainWindow", "", None))
         self.label_bild_leer.show()
 
-        self.chosen_variaton = None
+        self.chosen_variation = None
         self.reset_variation()
 
 
@@ -2966,7 +2966,7 @@ class Ui_MainWindow(object):
             return
 
         list_collected_data = re.split("{| - |}", section)[1:-1]
-        print(list_collected_data)
+        # print(list_collected_data)
         dict_collected_data = {}
 
         dict_collected_data['aufgabe']=aufgabe
@@ -3094,10 +3094,10 @@ class Ui_MainWindow(object):
 
         if response == 1:
             self.suchfenster_reset()
-            self.chosen_variaton = ui.chosen_variaton
-            if self.chosen_variaton != None:
-                self.button_variation_cr.setText("Variation von: {}".format(self.chosen_variaton.upper()))
-                dict_collected_data = self.collect_data_aufgabe(self.chosen_variaton)
+            self.chosen_variation = ui.chosen_variation
+            if self.chosen_variation != None:
+                self.button_variation_cr.setText("Variation von: {}".format(self.chosen_variation.upper()))
+                dict_collected_data = self.collect_data_aufgabe(self.chosen_variation)
             else:
                 self.suchfenster_reset()
                 self.reset_variation()
@@ -3107,7 +3107,7 @@ class Ui_MainWindow(object):
             return
 
         self.set_infos_chosen_variation(dict_collected_data)
-        print(dict_collected_data)
+        # print(dict_collected_data)
 
     def add_picture(self):
         try:
@@ -3132,8 +3132,6 @@ class Ui_MainWindow(object):
             else:
                 head, tail = os.path.split(all)
                 dict_picture_path[tail] = all
-                # name_of_image = "self.label_bild_" + str(i)
-                # print(name_of_image)
                 label_picture = create_new_label(self.scrollAreaWidgetContents_bilder, tail, False, True)
                 label_picture_name = 'label_bild_creator_{}'.format(tail)
                 self.dict_widget_variables[label_picture_name] = label_picture
@@ -3337,7 +3335,7 @@ class Ui_MainWindow(object):
         | QtCore.Qt.WindowTitleHint
         | QtCore.Qt.WindowCloseButtonHint,)
         self.ui_save = Ui_Dialog_speichern()
-        self.ui_save.setupUi(Dialog_speichern, self.creator_mode)
+        self.ui_save.setupUi(Dialog_speichern, self.creator_mode, self.chosen_variation)
         self.ui_save.label.setText(information)
         # self.ui_save.label.setStyleSheet("padding: 10px")
         return Dialog_speichern 
@@ -3435,6 +3433,30 @@ class Ui_MainWindow(object):
 
         return file_integer
 
+    def get_max_integer_file_variation(self, save_dateipfad):
+        max_integer_file = 0
+
+        for file in os.listdir(save_dateipfad):                  
+            if re.match("{}\[.+\].tex".format(self.chosen_variation), file):
+                split_file=re.split("\[|\]",file)
+                max_int = int(split_file[1])
+                if max_int > max_integer_file:
+                    max_integer_file = max_int
+
+        path_beispieleinreichung = self.get_path_beispieleinreichung()
+        for path, dirs, files in os.walk(path_beispieleinreichung):
+            for all in files:
+                if re.match("{}\[.+\].tex".format(self.chosen_variation), all):
+                    split_file=re.split("\[|\]",all)
+                    max_int = int(split_file[1])
+                    if max_int > max_integer_file:
+                        max_integer_file = max_int
+
+        return max_integer_file
+
+    def check_files_beispieleinreichung_variation(self, max_integer_file):
+        path = self.get_path_beispieleinreichung()
+
     def get_max_integer_file(self, typ_save, path):
         max_integer_file = self.check_files_path(typ_save, path) 
 
@@ -3473,6 +3495,8 @@ class Ui_MainWindow(object):
 
         path = self.create_path_from_list(list_path)
         return path        
+
+
     def check_files_beispieleinreichung(self, typ_save, max_integer_file):
         path = self.get_path_beispieleinreichung()
 
@@ -3576,7 +3600,13 @@ class Ui_MainWindow(object):
     def create_file_name(self):
         number = self.max_integer_file+1
 
-        if self.chosen_program == 'cria':
+        if self.chosen_variation != None:
+            if self.chosen_program == 'cria':
+                klasse, filenumber = self.chosen_variation.split("_")
+                name = "{0}[{1}].tex".format(filenumber, number)
+            else:
+                name = "{0}[{1}].tex".format(self.chosen_variation, number)
+        elif self.chosen_program == 'cria':
             name = "{0}.tex".format(number)  
         elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
             thema, klasse = self.split_thema_klasse(self.list_selected_topics_creator[0])
@@ -3743,6 +3773,10 @@ class Ui_MainWindow(object):
         )
 
         ##### Show Dialog "Saving file"
+        try:
+            self.chosen_variation
+        except AttributeError:
+            self.chosen_variation = None
 
         Dialog_speichern = self.open_dialogwindow_save(information)
 
@@ -3751,7 +3785,7 @@ class Ui_MainWindow(object):
             return
 
         typ_save=self.ui_save.get_output()
-
+        
 
         if self.creator_mode == "user":
 
@@ -3776,12 +3810,16 @@ class Ui_MainWindow(object):
 
 
 
-        save_dateipfad = self.create_aufgabenpfad(typ_save)
+        if self.chosen_variation == None:
+            save_dateipfad = self.create_aufgabenpfad(typ_save)
+            
+            self.max_integer_file = self.get_max_integer_file(typ_save, save_dateipfad)
 
+        else:
+            dateipfad = self.get_dateipfad_aufgabe(self.chosen_variation)
+            save_dateipfad = os.path.dirname(dateipfad)
 
-
-        self.max_integer_file = self.get_max_integer_file(typ_save, save_dateipfad)
-
+            self.max_integer_file = self.get_max_integer_file_variation(save_dateipfad)
 
         ############################################################################ 
 
@@ -3805,7 +3843,6 @@ class Ui_MainWindow(object):
 
 
         file_name = self.create_file_name()
-
 
         if typ_save[0] == 'user': 
             save_dateipfad = self.get_path_beispieleinreichung()

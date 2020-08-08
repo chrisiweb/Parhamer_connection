@@ -516,22 +516,27 @@ def extract_error_from_output(latex_output):
             if all == "":
                 end = list_error.index(all)
                 break
-        error = "".join(list_error[:end])#.replace("\n", "")
+        try:
+            error = "".join(list_error[:end])#.replace("\n", "")
 
-        if path_programm in error:
-            error_location=None
-        else:
-            error_location = "".join(latex_output[:start+end])
-            index_start=error_location.rfind(path_programm)
-            index_end = error_location[index_start:].find('.tex')+4
+            if path_programm in error:
+                error_location=None
+            else:
+                error_location = "".join(latex_output[:start+end])
+                index_start=error_location.rfind(path_programm)
+                index_end = error_location[index_start:].find('.tex')+4
 
-            error_location = error_location[index_start:index_start+index_end]
+                error_location = error_location[index_start:index_start+index_end]
 
 
-        if error_location==None:
-            detailed_text= error
-        else:
-            detailed_text= error + "\n\nFehlerhafte Datei:\n" + error_location     
+            if error_location==None:
+                detailed_text= error
+            else:
+                detailed_text= error + "\n\nFehlerhafte Datei:\n" + error_location
+
+        except UnboundLocalError:
+            detailed_text = "Undefined Error"
+
         QtWidgets.QApplication.restoreOverrideCursor()
         response = question_window(
             "Es ist ein Fehler beim Erstellen der PDF-Datei aufgetreten. Dadurch konnte die PDF-Datei nicht vollständig erzeugt werden.\n\n"+
