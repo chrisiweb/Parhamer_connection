@@ -432,12 +432,9 @@ class Ui_Dialog_variation(object):
 
             if name.startswith('_L_') or "Beispieleinreichung" in path:
                 pass
-            # elif re.search("[.+]", name)==True:
-            #     print('found')
-            # elif re.search("[.+]", name):
-            #     pass
+            elif re.search("\[.+\]", name) != None:
+                pass
             else:
-                print(re.search("\[.+\]", name))
                 self.listWidget.addItem(item)
 
     def delete_zeros_at_beginning(self, string):

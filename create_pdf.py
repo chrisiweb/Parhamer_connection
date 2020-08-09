@@ -276,8 +276,13 @@ def prepare_tex_for_pdf(self):
             for all in suchbegriffe:
                 for element in list(beispieldaten_dateipfad.keys())[:]:
                     if all in element:
-                        gesammeltedateien.append(element)
+                        if self.cb_show_variation.isChecked()==False and re.search("[0-9]\[.+\]", element) != None:
+                            print(element)
+                            pass
+                        else:
+                            gesammeltedateien.append(element)
 
+            print(gesammeltedateien)
         if not len(self.entry_suchbegriffe.text()) == 0:
             suchbegriffe.append(self.entry_suchbegriffe.text())
             if (

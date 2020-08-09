@@ -500,23 +500,31 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addWidget(self.groupBox_klassen, 3, 1, 1, 1)
 
-
-        
+       
         self.horizontalLayout_2 = create_new_horizontallayout()
 
 
         self.cb_solution = create_new_checkbox(self.centralwidget, "Lösungen anzeigen", True)
         self.horizontalLayout_2.addWidget(self.cb_solution, QtCore.Qt.AlignLeft)
 
+        self.cb_show_variation = create_new_checkbox(self.centralwidget, "Aufgabenvariationen anzeigen")
+        self.horizontalLayout_2.addWidget(self.cb_show_variation)
+
         self.cb_drafts = create_new_checkbox(self.centralwidget, "Entwürfe anzeigen")
         self.horizontalLayout_2.addWidget(self.cb_drafts)
         self.cb_drafts.toggled.connect(self.cb_drafts_enabled)
 
+
+        # self.gridLayout.addWidget(self.cb_show_variaton,5, 1,1,1)
+
         self.btn_suche = create_new_button(self.centralwidget,"Suche starten", partial(prepare_tex_for_pdf,self))
         self.btn_suche.setShortcut(_translate("MainWindow", "Return", None))
-        self.horizontalLayout_2.addWidget(self.btn_suche)
+        self.gridLayout.addWidget(self.btn_suche,6, 1,1,1, QtCore.Qt.AlignRight)
+        # self.horizontalLayout_2.addWidget(self.btn_suche)
 
-        self.gridLayout.addLayout(self.horizontalLayout_2, 5, 1, 1, 1)        
+
+        self.gridLayout.addLayout(self.horizontalLayout_2,5, 1, 1, 1)        
+
 
 
         self.horizontalLayout = QtWidgets.QHBoxLayout()
@@ -622,7 +630,7 @@ class Ui_MainWindow(object):
         self.label_warnung.setStyleSheet(_fromUtf8("border: 2px solid {};".format(color))) #background-color: rgb(195, 58, 63)
         #self.label_warnung.setMaximumSize(QtCore.QSize(375, 16777215))
         self.label_warnung.setText(_translate("MainWindow", "Achtung: Aufgrund neuer hilfreicher Befehle ist es notwendig, ein Update des srdp-mathematik-Pakets so bald wie möglich durchzuführen! Nähere Infos unter: lama.schule/update", None))
-        self.gridLayout.addWidget(self.label_warnung, 5,0,1,1)
+        self.gridLayout.addWidget(self.label_warnung, 6,0,1,1)
         # self.label_warnung.hide()
         #########################
 
@@ -1484,10 +1492,13 @@ class Ui_MainWindow(object):
         self.gridLayout_5.addWidget(
             self.cb_solution_sage, 7, 4, 1, 1)
 
+        self.cb_show_variaton_sage = create_new_checkbox(self.centralwidget, "Aufgabenvariationen anzeigen")
+        self.gridLayout_5.addWidget(self.cb_show_variaton_sage, 8, 4, 1, 1)
+
         self.cb_drafts_sage = QtWidgets.QCheckBox(self.centralwidget)
         self.cb_drafts_sage.setSizePolicy(SizePolicy_fixed)
         self.cb_drafts_sage.setObjectName(_fromUtf8("cb_drafts_sage"))
-        self.gridLayout_5.addWidget(self.cb_drafts_sage, 8, 4, 1, 1)
+        self.gridLayout_5.addWidget(self.cb_drafts_sage, 9, 4, 1, 1)
         self.cb_drafts_sage.setText(_translate("MainWindow", "Entwürfe anzeigen", None))
         # self.horizontalLayout_2.addWidget(self.cb_drafts_sage)
         self.cb_drafts_sage.toggled.connect(self.cb_drafts_sage_enabled)
@@ -1499,7 +1510,7 @@ class Ui_MainWindow(object):
         self.pushButton_vorschau.setText(_translate("MainWindow", "Vorschau", None))
         self.pushButton_vorschau.setShortcut(_translate("MainWindow", "Return", None))
         self.gridLayout_5.addWidget(
-            self.pushButton_vorschau, 7, 5, 1, 1, QtCore.Qt.AlignRight)
+            self.pushButton_vorschau, 8, 5, 1, 1, QtCore.Qt.AlignRight)
         self.pushButton_vorschau.clicked.connect(
             partial(self.pushButton_vorschau_pressed, "vorschau")
         )
@@ -1513,7 +1524,7 @@ class Ui_MainWindow(object):
         self.pushButton_erstellen.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.pushButton_erstellen.clicked.connect(self.pushButton_erstellen_pressed)
         self.gridLayout_5.addWidget(
-            self.pushButton_erstellen, 8, 5, 1, 1, QtCore.Qt.AlignRight
+            self.pushButton_erstellen, 9, 5, 1, 1, QtCore.Qt.AlignRight
         )
         self.groupBox_sage.hide()
         self.splitter_sage.hide()
@@ -1913,7 +1924,7 @@ class Ui_MainWindow(object):
 
         # self.gridLayout.addWidget(self.groupBox_af, 3, 0, 1, 1)
         if self.chosen_program=="lama":
-            self.gridLayout.addWidget(self.groupBox_af, 4, 0, 1, 1)
+            self.gridLayout.addWidget(self.groupBox_af, 4, 0, 2, 1)
         if self.chosen_program=='cria':
             self.gridLayout.addWidget(self.groupBox_af, 3, 0, 1, 1)
 

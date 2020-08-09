@@ -16,6 +16,7 @@ widgets_search = [
     "groupBox_klassen",
     "groupBox_themen_klasse",
     "groupBox_titelsuche",
+    "cb_show_variation",
     "cb_solution",
     "cb_drafts",
     "btn_suche",
