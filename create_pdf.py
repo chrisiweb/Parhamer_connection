@@ -282,7 +282,7 @@ def prepare_tex_for_pdf(self):
                         else:
                             gesammeltedateien.append(element)
 
-            print(gesammeltedateien)
+            # print(gesammeltedateien)
         if not len(self.entry_suchbegriffe.text()) == 0:
             suchbegriffe.append(self.entry_suchbegriffe.text())
             if (

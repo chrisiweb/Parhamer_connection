@@ -1243,9 +1243,28 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
         
         if self.creator_mode == 'admin':
             self.combobox_in_official = create_new_combobox(Dialog)
-            self.combobox_in_official.setStyleSheet("background-color: white; color: black")
+            self.combobox_in_official.setStyleSheet("""
+            QWidget {{
+                background-color: white;
+                color: black;
+                selection-background-color: {0};
+                selection-color: white;
+            }}
+
+            QComboBox::disabled {{
+               background-color: gray; color: white; 
+            }}
+            """.format(get_color(blue_7)))
             self.combobox_in_official.addItem("offizielle Aufgabe")            
             self.combobox_in_official.addItem("inoffizelle Aufgabe")
+            if chosen_variation !=None:
+                number = chosen_variation.split(' - ')
+                number = number[-1].split('_')
+                if int(number[-1]) < 1000:
+                    self.combobox_in_official.setCurrentIndex(0)
+                else:
+                    self.combobox_in_official.setCurrentIndex(1)
+                self.combobox_in_official.setEnabled(False)
             gridlayout.addWidget(self.combobox_in_official, 2, 0, 1, 1)
 
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)

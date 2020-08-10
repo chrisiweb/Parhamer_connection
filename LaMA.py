@@ -120,8 +120,6 @@ background-color: gray;
 
 QWidget {{color: {2};background-color: {3}}}
 
-
-
 """.format(get_color(blue_2), get_color(black), get_color(white), get_color(blue_7))
 
 #QWidget::disabled {{background-color: {4}}}
@@ -504,17 +502,20 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2 = create_new_horizontallayout()
 
 
-        self.cb_solution = create_new_checkbox(self.centralwidget, "Lösungen anzeigen", True)
-        self.horizontalLayout_2.addWidget(self.cb_solution, QtCore.Qt.AlignLeft)
+        self.cb_solution = create_new_checkbox(self.centralwidget, "Lösungen", True)
+        self.horizontalLayout_2.addWidget(self.cb_solution)
+        self.cb_solution.setToolTip("Die gesuchten Aufgaben werden inklusive der Lösungen angezeigt.")
 
-        self.cb_show_variation = create_new_checkbox(self.centralwidget, "Aufgabenvariationen anzeigen")
+        self.cb_show_variation = create_new_checkbox(self.centralwidget, "Aufgabenvariationen")
         self.horizontalLayout_2.addWidget(self.cb_show_variation)
+        self.cb_show_variation.setToolTip("Es werden alle Aufgabenvariationen angezeigt.")
 
-        self.cb_drafts = create_new_checkbox(self.centralwidget, "Entwürfe anzeigen")
+        self.cb_drafts = create_new_checkbox(self.centralwidget, "Entwürfe")
         self.horizontalLayout_2.addWidget(self.cb_drafts)
+        self.cb_drafts.setToolTip('Es werden auch jene Aufgaben durchsucht, die sich im "Beispieleinreichung"-Ordner befinden,\njedoch bisher noch nicht auf Fehler überprüft und in die Datenbank aufgenommen wurden.')
         self.cb_drafts.toggled.connect(self.cb_drafts_enabled)
 
-
+    
         # self.gridLayout.addWidget(self.cb_show_variaton,5, 1,1,1)
 
         self.btn_suche = create_new_button(self.centralwidget,"Suche starten", partial(prepare_tex_for_pdf,self))
@@ -1492,13 +1493,13 @@ class Ui_MainWindow(object):
         self.gridLayout_5.addWidget(
             self.cb_solution_sage, 7, 4, 1, 1)
 
-        self.cb_show_variaton_sage = create_new_checkbox(self.centralwidget, "Aufgabenvariationen anzeigen")
-        self.gridLayout_5.addWidget(self.cb_show_variaton_sage, 8, 4, 1, 1)
+        # self.cb_show_variaton_sage = create_new_checkbox(self.centralwidget, "Aufgabenvariationen anzeigen")
+        # self.gridLayout_5.addWidget(self.cb_show_variaton_sage, 8, 4, 1, 1)
 
         self.cb_drafts_sage = QtWidgets.QCheckBox(self.centralwidget)
         self.cb_drafts_sage.setSizePolicy(SizePolicy_fixed)
         self.cb_drafts_sage.setObjectName(_fromUtf8("cb_drafts_sage"))
-        self.gridLayout_5.addWidget(self.cb_drafts_sage, 9, 4, 1, 1)
+        self.gridLayout_5.addWidget(self.cb_drafts_sage, 8, 4, 1, 1)
         self.cb_drafts_sage.setText(_translate("MainWindow", "Entwürfe anzeigen", None))
         # self.horizontalLayout_2.addWidget(self.cb_drafts_sage)
         self.cb_drafts_sage.toggled.connect(self.cb_drafts_sage_enabled)
@@ -1854,8 +1855,8 @@ class Ui_MainWindow(object):
         self.groupBox_titelsuche.setTitle(_translate("MainWindow", "Titelsuche:", None))
         self.groupBox_klassen.setTitle(_translate("MainWindow", "Suchfilter", None))
 
-        self.cb_solution.setText(_translate("MainWindow", "Lösungen anzeigen", None))
-        self.cb_drafts.setText(_translate("MainWindow", "Entwürfe anzeigen", None))
+        # self.cb_solution.setText(_translate("MainWindow", "Lösungen anzeigen", None))
+        # self.cb_drafts.setText(_translate("MainWindow", "Entwürfe anzeigen", None))
 
         try:
             if self.chosen_program=='lama':
@@ -3080,7 +3081,10 @@ class Ui_MainWindow(object):
         else:
             self.comboBox_klassen_cr.setCurrentIndex(0)
 
-        self.lineEdit_titel.setText(dict_collected_data["titel"])
+        if self.lineEdit_titel.text().startswith("###"):
+            self.lineEdit_titel.setText("### "+dict_collected_data["titel"])
+        else:
+            self.lineEdit_titel.setText(dict_collected_data["titel"])
         # self.lineEdit_quelle.setText(dict_collected_data["quelle"])
 
     def reset_variation(self):
