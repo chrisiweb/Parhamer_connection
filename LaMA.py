@@ -3701,7 +3701,16 @@ class Ui_MainWindow(object):
     def create_section(self):
         # print(self.list_selected_topics_creator)
         # self.get_type()
-        nummer = self.max_integer_file+1
+        if self.chosen_variation != None:
+            if self.chosen_program == 'lama':
+                x = self.chosen_variation.split(" - ")
+            else:   
+                x = self.chosen_variation.split("_")
+            variation_nummer = x[-1]
+
+            nummer = "{0}[{1}".format(variation_nummer, self.max_integer_file+1)
+        else:
+            nummer = self.max_integer_file+1
 
         klasse = self.get_klasse_section()
 
