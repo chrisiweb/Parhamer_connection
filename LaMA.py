@@ -492,7 +492,7 @@ class Ui_MainWindow(object):
 
         self.cb_univie = create_new_checkbox(self.groupBox_klassen, "Uni Wien")
         self.cb_univie.setToolTip(
-        'Aufgaben mit dieser Kennzeichnung wurden im Rahmen einer Lehrveranstaltung auf der\nUniverstität Wien von Studiernden erstellt und von den Lehrveranstaltungsleitern evaluiert.'
+        'Aufgaben mit dieser Kennzeichnung wurden im Rahmen einer Lehrveranstaltung auf der\nUniverstität Wien von Studierenden erstellt und von den Lehrveranstaltungsleitern evaluiert.'
         )
         self.gridLayout_14.addWidget(self.cb_univie, 1, 2, 1, 1)
 
@@ -1219,7 +1219,7 @@ class Ui_MainWindow(object):
 
         self.lineEdit_number = QtWidgets.QLineEdit(self.groupBox_alle_aufgaben)
         self.lineEdit_number.setObjectName("lineEdit_number")
-        self.lineEdit_number.setValidator(QtGui.QIntValidator())
+        # self.lineEdit_number.setValidator(QtGui.QIntValidator())
         self.lineEdit_number.textChanged.connect(
             partial(self.lineEdit_number_changed, "sage")
         )
@@ -3708,7 +3708,7 @@ class Ui_MainWindow(object):
                 x = self.chosen_variation.split("_")
             variation_nummer = x[-1]
 
-            nummer = "{0}[{1}".format(variation_nummer, self.max_integer_file+1)
+            nummer = "{0}[{1}]".format(variation_nummer, self.max_integer_file+1)
         else:
             nummer = self.max_integer_file+1
 

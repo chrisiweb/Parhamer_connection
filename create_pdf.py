@@ -52,6 +52,22 @@ class Worker_CreatePDF(QtCore.QObject):
 
         self.finished.emit()
 
+def get_number_of_variations(self, dict_gesammeltedateien):
+    dict_number_of_variations = {}
+    for key, value in dict_gesammeltedateien.items():
+        dirname = os.path.dirname(value)
+        filename = os.path.basename(value)
+        filename = os.path.splitext(filename)[0]
+        counter = 0
+        for all in os.listdir(dirname):
+            if re.match("{}\[.+\].tex".format(filename),all):
+                counter += 1
+        if counter != 0:
+            dict_number_of_variations[key] = counter
+
+    return dict_number_of_variations
+
+        
 
 def prepare_tex_for_pdf(self):
     QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
@@ -277,7 +293,7 @@ def prepare_tex_for_pdf(self):
                 for element in list(beispieldaten_dateipfad.keys())[:]:
                     if all in element:
                         if self.cb_show_variation.isChecked()==False and re.search("[0-9]\[.+\]", element) != None:
-                            print(element)
+                            # print(element)
                             pass
                         else:
                             gesammeltedateien.append(element)
@@ -404,7 +420,9 @@ def prepare_tex_for_pdf(self):
                 ):
                     del dict_gesammeltedateien[all]
 
-    # print(dict_gesammeltedateien)
+
+    dict_number_of_variations = get_number_of_variations(self, dict_gesammeltedateien)
+    print(dict_number_of_variations)
 
     ##############################
     if not dict_gesammeltedateien:
@@ -437,7 +455,11 @@ def prepare_tex_for_pdf(self):
 
 
             if chosen_aufgabenformat == "Typ1Aufgaben":
-                if key.startswith("ENTWURF"):
+                if key in dict_number_of_variations and self.cb_show_variation.isChecked()==False:
+                    anzahl = dict_number_of_variations[key] 
+                    file.write('\\textcolor{{blue}}{{\\fbox{{Anzahl der vorhandenen Variationen: {0}}}}}\\vspace{{-0.5cm}}\input{{"'.format(anzahl) + value + '"}%\n' "\hrule	 \leer\n\n")
+  
+                elif key.startswith("ENTWURF"):
                     file.write('ENTWURF \input{"' + value + '"}%\n' "\hrule	 \leer\n\n")
                 else:
                     file.write('\input{"' + value + '"}%\n' "\hrule	 \leer\n\n")
@@ -458,6 +480,8 @@ def prepare_tex_for_pdf(self):
             else:
                 file.write(item + ", ")
         file.write("\\normalsize \n \n")
+
+
 
         for key, value in dict_gesammeltedateien.items():
             value = value.replace("\\", "/")
