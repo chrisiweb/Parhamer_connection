@@ -20,11 +20,26 @@ def sorted_gks(list_, chosen_program):
     return list_
 
 def cria_order(text):
+    # return float(text.split(' - ')[2])
     try:
-        return int(text.split(' - ')[2])
+        number = text.split(' - ')[2]
+        if re.match("[0-9]+\[.+\]",number):
+            split_number = re.split("\[|\]",number)
+        return float(number)
     except ValueError:
-        print('Wrong section format. "{}"'.format(text))
-        return 0
+        print('Wrong section format: {}'.format(text))
+        return         
+    # try:
+    #     number = text.split(' - ')[2]
+    #     if re.match("[0-9]+\[.+\]",number):
+    #         split_number = re.split("\[|\]",number)
+    #         print(split_number)
+    #         float(split_number[0] + '.' + split_number[1])
+    #     return int(text.split(' - ')[2])
+    # except ValueError:
+    #     print('Wrong section format: {}'.format(text))
+    #     return 
+    
     # print(x)
     #return [atoi(c) for c in text.split(' - ')[2]]
 

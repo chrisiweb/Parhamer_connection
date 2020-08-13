@@ -439,6 +439,7 @@ def prepare_tex_for_pdf(self):
         return
 
     beispieldaten.sort(key=natural_keys)
+    green = "green!40!black!60!"
     file = open(filename_teildokument, "a", encoding="utf8")
     file.write("\n \\scriptsize Suchbegriffe: ")
     if self.chosen_program == "lama":
@@ -448,26 +449,29 @@ def prepare_tex_for_pdf(self):
             else:
                 file.write(all + ", ")
         file.write("\\normalsize \n \n")
-
         for key, value in dict_gesammeltedateien.items():
             value = value.replace("\\", "/")
             file = open(filename_teildokument, "a", encoding="utf8")
-
-
+            
             if chosen_aufgabenformat == "Typ1Aufgaben":
-                if key in dict_number_of_variations and self.cb_show_variation.isChecked()==False:
-                    anzahl = dict_number_of_variations[key] 
-                    file.write('\\textcolor{{blue}}{{\\fbox{{Anzahl der vorhandenen Variationen: {0}}}}}\\vspace{{-0.5cm}}\input{{"'.format(anzahl) + value + '"}%\n' "\hrule	 \leer\n\n")
-  
-                elif key.startswith("ENTWURF"):
-                    file.write('ENTWURF \input{"' + value + '"}%\n' "\hrule	 \leer\n\n")
-                else:
-                    file.write('\input{"' + value + '"}%\n' "\hrule	 \leer\n\n")
+                input_string = '\input{"' + value + '"}\n\hrule\leer\n\n'
             elif chosen_aufgabenformat == "Typ2Aufgaben":
-                if key.startswith("ENTWURF"):
-                    file.write('ENTWURF \input{"' + value + '"}%\n' "\\newpage \n")
-                else:
-                    file.write('\input{"' + value + '"}%\n' "\\newpage \n")
+                input_string = '\input{"' + value + '"}\n\\newpage\n\n'
+            
+
+            if key in dict_number_of_variations and self.cb_show_variation.isChecked()==False:
+                anzahl = dict_number_of_variations[key] 
+                input_string = "\\textcolor{{{0}}}{{\\fbox{{Anzahl der vorhandenen Variationen: {1}}}}}\\vspace{{-0.5cm}}".format(green,anzahl) + input_string
+  
+            if re.search("[0-9]\[.+\]", key) != None and self.cb_show_variation.isChecked()==True:
+                input_string = input_string.replace('}\n','}}\n')
+                input_string = "\\textcolor{{{0}}}{{".format(green) + input_string
+
+            if key.startswith("ENTWURF"):
+                input_string = 'ENTWURF\\vspace{-0.5cm}' + input_string
+
+            file.write(input_string)
+
 
     if self.chosen_program == "cria":
         for all in suchbegriffe:
@@ -482,15 +486,27 @@ def prepare_tex_for_pdf(self):
         file.write("\\normalsize \n \n")
 
 
-
         for key, value in dict_gesammeltedateien.items():
             value = value.replace("\\", "/")
             file = open(filename_teildokument, "a", encoding="utf8")
-            if key.startswith("ENTWURF"):
-                file.write('ENTWURF \input{"' + value + '"}%\n' "\hrule	 \leer\n\n")
-            else:
-                file.write('\input{"' + value + '"}%\n' "\hrule	 \leer\n\n")
 
+            input_string = '\input{"' + value + '"}\n\hrule\leer\n\n'
+
+            if key in dict_number_of_variations and self.cb_show_variation.isChecked()==False:
+                anzahl = dict_number_of_variations[key] 
+                input_string = "\\textcolor{{{0}}}{{\\fbox{{Anzahl der vorhandenen Variationen: {1}}}}}\\vspace{{-0.5cm}}".format(green,anzahl) + input_string
+  
+            if re.search("[0-9]\[.+\]", key) != None and self.cb_show_variation.isChecked()==True:
+                input_string = input_string.replace('}\n','}}\n')
+                input_string = "\\textcolor{{{0}}}{{".format(green) + input_string
+
+            # if key.startswith("ENTWURF"):
+            #     input_string = 'ENTWURF\\vspace{-0.5cm}' + input_string
+            if key.startswith("ENTWURF"):
+                input_string = 'ENTWURF\\vspace{-0.5cm}' + input_string
+
+            
+            file.write(input_string)
     file.write('\shorthandoff{"}\n' "\end{document}")
 
     file.close()

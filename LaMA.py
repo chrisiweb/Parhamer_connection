@@ -353,7 +353,7 @@ class Ui_MainWindow(object):
         # self.actionReset_creator = add_action(self.menuDatei, "Reset", self.suchfenster_reset)
         # self.actionReset.setShortcut("F4")
 
-        self.actionReset_sage = add_action(MainWindow,self.menuDatei, "Reset Datei", self.reset_sage)
+        self.actionReset_sage = add_action(MainWindow,self.menuDatei, "Reset Datei", partial(self.reset_sage, True))
         self.actionReset_sage.setVisible(False)
 
         self.actionRefresh_Database = add_action(MainWindow,self.menuDatei, "Datenbank aktualisieren", self.action_refreshddb_selected)
@@ -5307,19 +5307,21 @@ class Ui_MainWindow(object):
             name, extension = os.path.splitext(os.path.basename(path))
             item = QtWidgets.QListWidgetItem()
 
-            if "Beispieleinreichung" in path:
-                item.setText(name + ' (Entwurf)')
-            elif "Lokaler_Ordner" in path:
-                item.setText(name + ' (lokal)')
-            else:
-                item.setText(name)
+            # if "Beispieleinreichung" in path:
+            #     item.setText(name + ' (Entwurf)')
+            # elif "Lokaler_Ordner" in path:
+            #     item.setText(name + ' (lokal)')
+            # else:
+            item.setText(name)
 
             if name.startswith('_L_'):
                 if listWidget_mode=='feedback':
                     pass
                 else:
                     item.setBackground(blue_3)
+                    item.setToolTip("lokal gespeichert")
                     listWidget.addItem(item)
+
 
             elif "Beispieleinreichung" in path:
                 if listWidget_mode == 'feedback':
@@ -5327,9 +5329,17 @@ class Ui_MainWindow(object):
                 else:
                     item.setBackground(blue_5)
                     item.setForeground(white)
-                    listWidget.addItem(item)    
+                    item.setToolTip("Entwurf")
+                    listWidget.addItem(item)
+
+            elif re.search("\[.+\]", name) != None:
+                item.setForeground(QtGui.QColor(108, 159, 103))
+                item.setToolTip("Variation")
+                listWidget.addItem(item)
             else:
                 listWidget.addItem(item)
+            # item.setToolTip(path)
+            
 
         listWidget.setFocusPolicy(QtCore.Qt.ClickFocus)
 
@@ -5456,6 +5466,7 @@ class Ui_MainWindow(object):
 
         list_beispieldaten_sections = sorted_gks(list_beispieldaten_sections, self.chosen_program)
 
+        # print(list_beispieldaten_sections)
         self.add_items_to_listwidget(list_beispieldaten_sections, beispieldaten_dateipfad, listWidget, list_mode)
 
 
