@@ -99,6 +99,7 @@ widgets_search_cria = [
     "groupBox_schulstufe_cria",
     "groupBox_titelsuche",
     "groupBox_unterkapitel_cria",
+    "cb_show_variation",
     "cb_solution",
     "cb_drafts",
     "btn_suche",

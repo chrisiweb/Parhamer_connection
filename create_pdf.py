@@ -5,7 +5,7 @@ import os
 import re
 import subprocess
 from functools import partial
-from config import colors_ui, get_color, config_file, config_loader, logo_path,logo_cria_button_path, path_programm, is_empty
+from config import colors_ui, get_color, config_file, config_loader, logo_path,logo_cria_button_path, path_programm, is_empty, split_section
 import json
 import shutil
 import datetime
@@ -67,6 +67,18 @@ def get_number_of_variations(self, dict_gesammeltedateien):
 
     return dict_number_of_variations
 
+def check_gks_not_included(gk_liste, suchbegriffe):
+    list_ = []
+    for all in gk_liste:
+        if all not in suchbegriffe:
+            list_.append(all)
+    if list_ != []:
+        return list_
+    else:
+        return
+    
+            # print(all)
+            # gesammeltedateien.append(all)
         
 
 def prepare_tex_for_pdf(self):
@@ -258,31 +270,58 @@ def prepare_tex_for_pdf(self):
             == "Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten"
             and chosen_aufgabenformat == "Typ2Aufgaben"
         ):
-            liste_kompetenzbereiche = {}
-            gkliste = []
-            r = 1
+            # liste_kompetenzbereiche = {}
+            # gkliste = []
+            # r = 1
             for all in list(beispieldaten_dateipfad.keys()):
-                gkliste = []
-                for gkbereich in dict_gk:
-                    if dict_gk[gkbereich] in all:
-                        gkliste.append(dict_gk[gkbereich])
-                liste_kompetenzbereiche.update({r: gkliste})
-                r += 1
-            for r in range(1, len(liste_kompetenzbereiche) + 1):
-                if liste_kompetenzbereiche[r] == []:
-                    liste_kompetenzbereiche[r].append("-")
-                for all in suchbegriffe:
-                    if all in liste_kompetenzbereiche[r]:
-                        liste_kompetenzbereiche[r].remove(all)
+                info = split_section(all, self.chosen_program)
+                # print(info)
+                gk_liste = info[2].split(", ")
+                
+                # print(gk_liste)
+                
+                # if self.cb_show_variation.isChecked()==False and re.search("[0-9]\[.+\]", all) != None:
+                #     print(all)
+                #     continue
+                # gkliste = []
+                # for gkbereich in dict_gk:
+                #     if dict_gk[gkbereich] in all:
+                #         gkliste.append(dict_gk[gkbereich])
+                # liste_kompetenzbereiche.update({r: gkliste})
+                # r += 1
+                not_included_items = check_gks_not_included(gk_liste, suchbegriffe)
 
-            gesammeltedateien_temporary = []
-            for r in range(1, len(liste_kompetenzbereiche) + 1):
-                if liste_kompetenzbereiche[r] == []:
-                    gesammeltedateien.append(
-                        list(beispieldaten_dateipfad.keys())[r - 1]
-                    )
+                # print(not_included_items)
+                # print(all)
+                if not_included_items == None:
+                    if self.cb_show_variation.isChecked()==False and re.search("[0-9]\[.+\]", all) != None:
+                        pass
+                    else:
+                        gesammeltedateien.append(all)
+
+                # gesammeltedateien.append(all)
+                # for all in gk_liste:
+                #     if all not in suchbegriffe:
+                        
+                
+                #         print(all)
+                #         gesammeltedateien.append(all)
+            # print(suchbegriffe)
+            # for r in range(1, len(liste_kompetenzbereiche) + 1):
+            #     if liste_kompetenzbereiche[r] == []:
+            #         liste_kompetenzbereiche[r].append("-")
+            #     for all in suchbegriffe:
+            #         if all in liste_kompetenzbereiche[r]:
+            #             liste_kompetenzbereiche[r].remove(all)
+
+            # gesammeltedateien_temporary = []
+            # for r in range(1, len(liste_kompetenzbereiche) + 1):
+            #     if liste_kompetenzbereiche[r] == []:
+            #         gesammeltedateien.append(
+            #             list(beispieldaten_dateipfad.keys())[r - 1]
+            #         )
             gesammeltedateien = sorted(gesammeltedateien)
-
+        # print(gesammeltedateien)
         if (
             self.combobox_searchtype.currentText()
             == "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten"
@@ -322,9 +361,12 @@ def prepare_tex_for_pdf(self):
                 thema = item[1] + "." + item[2]
                 for all in list(beispieldaten_dateipfad.keys()):
                     if klasse in all:
-
                         if thema in all:
-                            gesammeltedateien.append(all)
+                            if self.cb_show_variation.isChecked()==False and re.search("[0-9]\[.+\]", all) != None:
+                                print(all)
+                                pass
+                            else:
+                                gesammeltedateien.append(all)
 
         if (
             self.combobox_searchtype.currentText()
@@ -337,10 +379,11 @@ def prepare_tex_for_pdf(self):
                 klasse = item[0].upper()
                 thema = item[1] + "." + item[2]
                 for all in beispieldaten_temporary[:]:
-                    if thema not in all:
+                    if self.cb_show_variation.isChecked()==False and re.search("[0-9]\[.+\]", all) != None:
+                       beispieldaten_temporary.remove(all) 
+                    elif thema not in all:
                         beispieldaten_temporary.remove(all)
-                    else:  
-                        if klasse not in all:
+                    elif klasse not in all:
                             beispieldaten_temporary.remove(all)
 
             gesammeltedateien = beispieldaten_temporary

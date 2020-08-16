@@ -15,20 +15,23 @@ def sorted_gks(list_, chosen_program):
     if chosen_program == 'lama':
         list_ = sorted(list_, key=lama_order)
     elif chosen_program == 'cria':
+        print(list_)
         list_ = sorted(list_, key = cria_order)
     
     return list_
 
 def cria_order(text):
     # return float(text.split(' - ')[2])
+    # print(text)
     try:
         number = text.split(' - ')[2]
         if re.match("[0-9]+\[.+\]",number):
             split_number = re.split("\[|\]",number)
+            number = split_number[0] +"."+ split_number[1]
         return float(number)
     except ValueError:
         print('Wrong section format: {}'.format(text))
-        return         
+        return 0        
     # try:
     #     number = text.split(' - ')[2]
     #     if re.match("[0-9]+\[.+\]",number):
