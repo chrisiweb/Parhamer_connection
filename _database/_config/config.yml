@@ -225,6 +225,32 @@ ws_beschreibung:
     "ws41": "Konfidenzintervalle als Schätzung für eine Wahrscheinlichkeit oder einen\nunbekannten Anteil p interpretieren (frequentistische Deutung) und verwenden\nkönnen, Berechnungen auf Basis der Binomialverteilung oder einer durch die\nNormalverteilung approximierten Binomialverteilung durchführen können"
     "ws42": "Einfache Anteilstests durchführen können\nund ihr Ergebnis erläutern können"
 
+zusatzthemen_beschreibung:
+    "bsw": "Beschreibende Statistik und Wahrscheinlichkeit"
+    "dr": "Differentialrechnung"
+    "ddg": "Differenzen- und Differentialgleichungen; Grundlagen der Systemdynamik"
+    "dwv": "Diskrete Wahrscheinlichkeitsverteilungen" 
+    "fo": "Folgen"
+    "fu": "Funktionen"
+    "fin": "Finanzmathematik"
+    "ghg": "Gleichungen höheren Grades als 2"
+    "gl": "Gleichungen und Gleichungssysteme"
+    "ir": "Integralrechnung"
+    "kkk": "Kreise, Kugeln, Kegelschnittslinien und andere Kurven"
+    "kz": "Komplexe Zahlen"
+    "mtz": "Matrizen"
+    "mzr": "Mengen, Zahlen, Rechengesetze"
+    "pwlu": "Potenzen, Wurzeln, Logarithmen und Ungleichungen"
+    "re": "Reihen"
+    "rf": "Reelle Funktionen"
+    "sws": "Stetgie Wahrscheinlichkeitsverteilungen; Beurteilende Statistik"
+    "tr": "Trigonometrie"
+    "vag2": "Vektoren und analytische Geometrie"
+    "vag3": "Vektoren und analytische Geometrie in R3 und Rn"
+    "wm": "Wirtschaftsmathematik"
+
+    
+
 k5_beschreibung: 
     "fu": "Funktionen"
     "gl": "Gleichungen und Gleichungssysteme"
