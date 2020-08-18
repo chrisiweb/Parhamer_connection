@@ -23,6 +23,7 @@ an_beschreibung = config_loader(config_file, "an_beschreibung")
 fa_beschreibung = config_loader(config_file, "fa_beschreibung")
 ws_beschreibung = config_loader(config_file, "ws_beschreibung")
 
+zusatzthemen_beschreibung = config_loader(config_file, "zusatzthemen_beschreibung")
 k5_beschreibung = config_loader(config_file, "k5_beschreibung")
 k6_beschreibung = config_loader(config_file, "k6_beschreibung")
 k7_beschreibung = config_loader(config_file, "k7_beschreibung")
@@ -208,13 +209,17 @@ class Ui_MainWindow(object):
                 new_path = os.path.join(path_programm,"_database",info[1],"Einzelbeispiele",filename)
             elif info[0]==2:
                 new_path = os.path.join(path_programm,"_database","Typ2Aufgaben","Einzelbeispiele",filename)
-            elif info[0]==1 and info[1]==None:
-                gk, gk_num = info[2].split(" ")
-                if "-" in gk:
-                    gk,_ = gk.split("-")
-                new_path = os.path.join(path_programm,"_database","Typ1Aufgaben","_Grundkompetenzen",gk,info[2],"Einzelbeispiele",filename)
-            elif info[0]==1 and info[1] != None:
-                new_path = os.path.join(path_programm,"_database","Typ1Aufgaben","{}.Klasse".format(info[1][-1]),info[2].lower(),"Einzelbeispiele",filename)                
+            
+            elif info[0]==1:
+                if info[2].lower() in zusatzthemen_beschreibung:
+                    new_path = os.path.join(path_programm,"_database","Typ1Aufgaben","Zusatzthemen",info[2],filename)
+                else:
+                    gk, gk_num = info[2].split(" ")
+                    if "-" in gk:
+                        gk,_ = gk.split("-")
+                    new_path = os.path.join(path_programm,"_database","Typ1Aufgaben","_Grundkompetenzen",gk,info[2],"Einzelbeispiele",filename)
+            # elif info[0]==1 and info[1] != None:
+                                
 
 
             if os.path.isdir(os.path.dirname(new_path)) == False:
