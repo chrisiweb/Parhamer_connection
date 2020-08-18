@@ -287,6 +287,7 @@ class Ui_Dialog_variation(object):
         self.verticalLayout_sage.addWidget(self.lineEdit_number)
         self.listWidget = QtWidgets.QListWidget(self.groupBox_alle_aufgaben)
         self.listWidget.setObjectName("listWidget")
+        self.listWidget.itemDoubleClicked.connect(self.choose_example)
         self.verticalLayout_sage.addWidget(self.listWidget)
 
         self.groupBox_alle_aufgaben.setTitle(_translate("MainWindow", "Aufgaben", None))

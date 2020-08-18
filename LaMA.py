@@ -1336,7 +1336,7 @@ class Ui_MainWindow(object):
 
         self.comboBox_gk = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
         self.comboBox_gk.setObjectName("comboBox_gk")
-        list_comboBox_gk = ["", "AG", "FA", "AN", "WS", "K5", "K6", "K7", "K8"]
+        list_comboBox_gk = ["", "AG", "FA", "AN","WS", "Zusatzthemen"]
         index = 0
         for all in list_comboBox_gk:
             self.comboBox_gk.addItem("")
@@ -2691,7 +2691,8 @@ class Ui_MainWindow(object):
             if all.startswith(name) or all.startswith(name_creator):
                 self.dict_widget_variables[all].setChecked(False)
 
-    def suchfenster_reset(self):
+    def suchfenster_reset(self, variation=False):
+
         global dict_picture_path
 
         self.uncheck_all_checkboxes("gk")
@@ -2739,7 +2740,10 @@ class Ui_MainWindow(object):
         else:
             self.lineEdit_titel.setText(_translate("MainWindow", "", None))
         self.lineEdit_quelle.setText(_translate("MainWindow", "", None))
-        self.plainTextEdit.setPlainText(_translate("MainWindow", "", None))
+
+        if variation == False:
+            self.plainTextEdit.setPlainText(_translate("MainWindow", "", None))
+
 
     def reset_sage(self, question_reset=True):
         if question_reset == True and not is_empty(self.list_alle_aufgaben_sage):
@@ -3392,7 +3396,7 @@ class Ui_MainWindow(object):
         response = Dialog.exec()
 
         if response == 1:
-            self.suchfenster_reset()
+            self.suchfenster_reset(True)
             self.chosen_variation = ui.chosen_variation
             if self.chosen_variation != None:
                 self.button_variation_cr.setText(
@@ -3400,7 +3404,7 @@ class Ui_MainWindow(object):
                 )
                 dict_collected_data = self.collect_data_aufgabe(self.chosen_variation)
             else:
-                self.suchfenster_reset()
+                self.suchfenster_reset(True)
                 self.reset_variation()
                 return
 
@@ -5399,18 +5403,19 @@ class Ui_MainWindow(object):
 
     def comboBox_gk_changed(self, list_mode):
         self.adapt_choosing_list(list_mode)
-
+        print('yes')
         if list_mode == "sage":
             self.comboBox_gk_num.clear()
             if self.comboBox_gk.currentText() == "":
                 return
             self.comboBox_gk_num.addItem("")
             self.lineEdit_number.clear()
-            list_klassen = ["k5", "k6", "k7", "k8"]
-            if self.comboBox_gk.currentText().lower() in list_klassen:
-                x = eval("%s_beschreibung" % self.comboBox_gk.currentText().lower())
-                for all in x.keys():
-                    self.comboBox_gk_num.addItem(all.upper())
+            # list_klassen = ["k5", "k6", "k7", "k8"]
+            if self.comboBox_gk.currentText() == "Zusatzthemen":
+            #     x = eval("%s_beschreibung" % self.comboBox_gk.currentText().lower())
+                for all in zusatzthemen_beschreibung:
+                    label = zusatzthemen_beschreibung[all] + " ("+ all+")"
+                    self.comboBox_gk_num.addItem(label)
             else:
                 for all in dict_gk.keys():
                     if all.startswith(self.comboBox_gk.currentText().lower()):
@@ -5421,11 +5426,15 @@ class Ui_MainWindow(object):
                 return
             self.comboBox_fb_num.addItem("")
             self.lineEdit_number_fb.clear()
-            list_klassen = ["k5", "k6", "k7", "k8"]
-            if self.comboBox_fb.currentText().lower() in list_klassen:
-                x = eval("%s_beschreibung" % self.comboBox_fb.currentText().lower())
-                for all in x.keys():
-                    self.comboBox_fb_num.addItem(all.upper())
+            # list_klassen = ["k5", "k6", "k7", "k8"]
+            # if self.comboBox_fb.currentText().lower() in list_klassen:
+            #     x = eval("%s_beschreibung" % self.comboBox_fb.currentText().lower())
+            #     for all in x.keys():
+            #         self.comboBox_fb_num.addItem(all.upper())
+            if self.comboBox_fb.currentText() == "Zusatzthemen":
+                for all in zusatzthemen_beschreibung:
+                    label = zusatzthemen_beschreibung[all] + " ("+ all+")"
+                    self.comboBox_gk_num.addItem(label)            
             else:
                 for all in dict_gk.keys():
                     if all.startswith(self.comboBox_fb.currentText().lower()):
@@ -5807,7 +5816,14 @@ class Ui_MainWindow(object):
         if self.chosen_program == "lama":
             if list_mode == "sage":
                 combobox_gk = self.comboBox_gk.currentText()
-                combobox_gk_num = self.comboBox_gk_num.currentText()
+                result = re.findall("\(([a-z]+)\)",self.comboBox_gk_num.currentText())
+                if not is_empty(result):
+                    combobox_gk_num = result[-1]
+                else:
+                    combobox_gk_num = self.comboBox_gk_num.currentText()
+                # print(x.group(1))
+                print(combobox_gk)
+                print(combobox_gk_num)
             elif list_mode == "feedback":
                 combobox_gk = self.comboBox_fb.currentText()
                 combobox_gk_num = self.comboBox_fb_num.currentText()
