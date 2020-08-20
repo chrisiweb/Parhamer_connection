@@ -5403,7 +5403,6 @@ class Ui_MainWindow(object):
 
     def comboBox_gk_changed(self, list_mode):
         self.adapt_choosing_list(list_mode)
-        print('yes')
         if list_mode == "sage":
             self.comboBox_gk_num.clear()
             if self.comboBox_gk.currentText() == "":
@@ -5634,7 +5633,7 @@ class Ui_MainWindow(object):
 
         return list_section, list_path
 
-    def delete_item_with_string_from_list(self, string, list_):
+    def delete_item_without_string_from_list(self, string, list_):
         for section in list_[:]:
             if string not in section:
                 list_.remove(section)
@@ -5734,14 +5733,27 @@ class Ui_MainWindow(object):
     def adjust_beispieldaten_combobox_lama(
         self, list_beispieldaten_sections, combobox_gk, combobox_gk_num
     ):
-        if is_empty(combobox_gk) == False:
+        if combobox_gk == "Zusatzthemen":
+            if is_empty(combobox_gk_num) == True:             
+                for section in list_beispieldaten_sections[:]:
+                    section_split = split_section(section, self.chosen_program)
+                    thema = section_split[0]
+                    if thema.lower() not in zusatzthemen_beschreibung:
+                        list_beispieldaten_sections.remove(section)
+            else:
+                list_beispieldaten_sections = self.delete_item_without_string_from_list(
+                    combobox_gk_num.upper(), list_beispieldaten_sections
+                )                
+
+        elif is_empty(combobox_gk) == False:
+
             if is_empty(combobox_gk_num) == True:
                 string = combobox_gk
             else:
                 short_gk = shorten_gk(combobox_gk.lower() + combobox_gk_num)
                 string = dict_gk[short_gk]
 
-            list_beispieldaten_sections = self.delete_item_with_string_from_list(
+            list_beispieldaten_sections = self.delete_item_without_string_from_list(
                 string, list_beispieldaten_sections
             )
         return list_beispieldaten_sections
@@ -5762,13 +5774,13 @@ class Ui_MainWindow(object):
         if is_empty(combobox_kapitel) == False:
             kapitel = self.get_string_in_parantheses(combobox_kapitel)
             if is_empty(combobox_unterkapitel) == True:
-                list_beispieldaten_sections = self.delete_item_with_string_from_list(
+                list_beispieldaten_sections = self.delete_item_without_string_from_list(
                     kapitel, list_beispieldaten_sections
                 )
             else:
                 unterkapitel = self.get_string_in_parantheses(combobox_unterkapitel)
                 string = kapitel + "." + unterkapitel
-                list_beispieldaten_sections = self.delete_item_with_string_from_list(
+                list_beispieldaten_sections = self.delete_item_without_string_from_list(
                     string, list_beispieldaten_sections
                 )
 

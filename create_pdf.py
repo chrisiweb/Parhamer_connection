@@ -504,7 +504,7 @@ def prepare_tex_for_pdf(self):
 
             if key in dict_number_of_variations and self.cb_show_variation.isChecked()==False:
                 anzahl = dict_number_of_variations[key] 
-                input_string = "\\begin{{samepage}}\\textcolor{{{0}}}{{\\fbox{{Anzahl der vorhandenen Variationen: {1}}}}}\\vspace{{-0.5cm}}".format(green,anzahl) + input_string + "\end{samepage}"
+                input_string = "\\begin{{minipage}}{{\\textwidth}}\\textcolor{{{0}}}{{\\fbox{{Anzahl der vorhandenen Variationen: {1}}}}}\\vspace{{-0.5cm}}".format(green,anzahl) + input_string + "\end{minipage}\n"
   
             if re.search("[0-9]\[.+\]", key) != None and self.cb_show_variation.isChecked()==True:
                 input_string = input_string.replace('}\n','}}\n')
