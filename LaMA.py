@@ -661,7 +661,20 @@ class Ui_MainWindow(object):
         # QtWidgets.QVBoxLayout(self.groupBox_themen_klasse)
         # self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.tab_widget_themen = QtWidgets.QTabWidget(self.groupBox_themen_klasse)
-        self.tab_widget_themen.setStyleSheet(StyleSheet_tabWidget)
+        self.tab_widget_themen.setStyleSheet("""
+            QTabBar::tab:selected {{
+            background: {0}; color: {1};
+            padding-right: 10px; padding-left: 10px; padding-bottom: 5px; padding-top: 5px;
+            border-top: 2px solid {3};
+            border-left: 2px solid {3};
+            border-right: 2px solid {3};
+            }}
+
+            QWidget {{color: {2};background-color: {3}}}
+
+            """.format(
+                get_color(blue_2), get_color(black), get_color(white), get_color(blue_7)
+            ))
         # self.tabWidget.setStyleSheet(set_color_text(white))
 
         self.tab_widget_themen.setObjectName(_fromUtf8("tab_widget_themen"))
@@ -3289,16 +3302,22 @@ class Ui_MainWindow(object):
         typ = self.get_aufgabentyp(aufgabe)
 
         if self.chosen_program == "lama":
-            list_comboBox_gk = ["AG", "FA", "AN", "WS", "K5", "K6", "K7", "K8"]
+            list_comboBox_gk = ["AG", "FA", "AN", "WS", "Zusatzthemen"]
+            # print(aufgabe)
+            # return
             if typ == 1:
                 gk, nummer = aufgabe.split(" - ")
                 short_gk = shorten_gk(gk)
-                checkbox_gk = "checkbox_creator_gk_{}".format(short_gk)
+                if short_gk in zusatzthemen_beschreibung:
+                    checkbox_gk = "checkbox_creator_themen_{}".format(short_gk)
+                    index = list_comboBox_gk.index("Zusatzthemen")
+                else:    
+                    checkbox_gk = "checkbox_creator_gk_{}".format(short_gk)
+                    index = list_comboBox_gk.index(gk.split(" ")[0])
+
                 self.dict_widget_variables[checkbox_gk].setChecked(True)
-                self.tab_widget_gk_cr.setCurrentIndex(
-                    list_comboBox_gk.index(gk.split(" ")[0])
-                )
-                #
+                self.tab_widget_gk_cr.setCurrentIndex(index)
+    
             elif typ == 2:
                 for gk in dict_collected_data["thema"]:
                     short_gk = shorten_gk(gk)
@@ -5340,7 +5359,7 @@ class Ui_MainWindow(object):
             self.lineEdit_number.clear()
             self.comboBox_gk.setEnabled(True)
             self.comboBox_gk_num.setEnabled(True)
-            list_comboBox_gk = ["", "AG", "FA", "AN", "WS", "K5", "K6", "K7", "K8"]
+            list_comboBox_gk = ["", "AG", "FA", "AN", "WS", "Zusatzthemen"]
             index = 0
             for all in list_comboBox_gk:
                 self.comboBox_gk.addItem("")

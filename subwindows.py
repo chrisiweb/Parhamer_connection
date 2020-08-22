@@ -40,6 +40,7 @@ fa_beschreibung = config_loader(config_file, "fa_beschreibung")
 ws_beschreibung = config_loader(config_file, "ws_beschreibung")
 list_klassen = config_loader(config_file, "list_klassen")
 
+zusatzthemen_beschreibung = config_loader(config_file, "zusatzthemen_beschreibung")
 for klasse in list_klassen:
     exec('dict_{0} = config_loader(config_file,"dict_{0}")'.format(klasse))
     exec('dict_{0}_name = config_loader(config_file,"dict_{0}_name")'.format(klasse))
@@ -226,7 +227,7 @@ class Ui_Dialog_variation(object):
 
             self.comboBox_gk = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
             self.comboBox_gk.setObjectName("comboBox_gk")
-            list_comboBox_gk = ["", "AG", "FA", "AN", "WS", "K5", "K6", "K7", "K8"]
+            list_comboBox_gk = ["", "AG", "FA", "AN","WS", "Zusatzthemen"]
             index = 0
             for all in list_comboBox_gk:
                 self.comboBox_gk.addItem("")
@@ -343,7 +344,7 @@ class Ui_Dialog_variation(object):
             self.lineEdit_number.clear()
             self.comboBox_gk.setEnabled(True)
             self.comboBox_gk_num.setEnabled(True)
-            list_comboBox_gk = ["", "AG", "FA", "AN", "WS", "K5", "K6", "K7", "K8"]
+            list_comboBox_gk = ["", "AG", "FA", "AN", "WS", "Zusatzthemen"]
             index = 0
             for all in list_comboBox_gk:
                 self.comboBox_gk.addItem("")
@@ -367,11 +368,12 @@ class Ui_Dialog_variation(object):
             return
         self.comboBox_gk_num.addItem("")
         self.lineEdit_number.clear()
-        list_klassen = ["k5", "k6", "k7", "k8"]
-        if self.comboBox_gk.currentText().lower() in list_klassen:
-            x = eval("%s_beschreibung" % self.comboBox_gk.currentText().lower())
-            for all in x.keys():
-                self.comboBox_gk_num.addItem(all.upper())
+        # list_klassen = ["k5", "k6", "k7", "k8"]
+        if self.comboBox_gk.currentText() == "Zusatzthemen":
+        #     x = eval("%s_beschreibung" % self.comboBox_gk.currentText().lower())
+            for all in zusatzthemen_beschreibung:
+                label = zusatzthemen_beschreibung[all] + " ("+ all+")"
+                self.comboBox_gk_num.addItem(label)
         else:
             for all in dict_gk.keys():
                 if all.startswith(self.comboBox_gk.currentText().lower()):
@@ -495,7 +497,11 @@ class Ui_Dialog_variation(object):
 
         if self.MainWindow.chosen_program == "lama":
             combobox_gk = self.comboBox_gk.currentText()
-            combobox_gk_num = self.comboBox_gk_num.currentText()
+            result = re.findall("\(([a-z]+)\)",self.comboBox_gk_num.currentText())
+            if not is_empty(result):
+                combobox_gk_num = result[-1]
+            else:
+                combobox_gk_num = self.comboBox_gk_num.currentText()
 
             list_beispieldaten_sections = self.MainWindow.adjust_beispieldaten_combobox_lama(
                 list_beispieldaten_sections, combobox_gk, combobox_gk_num,

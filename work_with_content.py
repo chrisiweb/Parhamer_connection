@@ -211,7 +211,6 @@ def split_at_string(content, string):
         if "meinlr{" in content and temp_content.strip().endswith("}}"):
             # temp_content = '}'.join(temp_content.rsplit('}}', 1))
             temp_content = temp_content.strip()[:-1]
-            print(temp_content)
         content = temp_content
 
     return content
