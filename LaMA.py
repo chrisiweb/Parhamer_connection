@@ -1729,6 +1729,7 @@ class Ui_MainWindow(object):
         self.label_example.hide()
 
         self.groupBox_alle_aufgaben_fb = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBox_alle_aufgaben_fb.setMaximumWidth(250)
 
         self.groupBox_alle_aufgaben_fb.setObjectName("groupBox_alle_aufgaben_fb")
         self.verticalLayout_fb = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben_fb)
@@ -1756,7 +1757,7 @@ class Ui_MainWindow(object):
 
         self.comboBox_fb = QtWidgets.QComboBox(self.groupBox_alle_aufgaben_fb)
         self.comboBox_fb.setObjectName("comboBox_fb")
-        list_comboBox_fb = ["", "AG", "FA", "AN", "WS", "K5", "K6", "K7", "K8"]
+        list_comboBox_fb = ["", "AG", "FA", "AN","WS", "Zusatzthemen"]
         index = 0
         for all in list_comboBox_fb:
             self.comboBox_fb.addItem("")
@@ -1936,7 +1937,7 @@ class Ui_MainWindow(object):
 
         self.comboBox_fehlertyp.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.gridLayout_fehlertyp.addWidget(self.comboBox_fehlertyp, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_fehlertyp, 1, 1, 1, 3)
+        self.gridLayout.addWidget(self.groupBox_fehlertyp, 1, 1, 1, 1)
         self.groupBox_fehlertyp.hide()
 
         self.groupBox_feedback = QtWidgets.QGroupBox(self.centralwidget)
@@ -1949,7 +1950,7 @@ class Ui_MainWindow(object):
         self.plainTextEdit_fb.setTabChangesFocus(True)
 
         self.gridLayout_fb.addWidget(self.plainTextEdit_fb, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_feedback, 2, 1, 1, 3)
+        self.gridLayout.addWidget(self.groupBox_feedback, 2, 1, 1, 1)
         self.groupBox_feedback.setTitle(
             _translate("MainWindow", "Feedback bzw. Problembeschreibung", None)
         )
@@ -1966,13 +1967,13 @@ class Ui_MainWindow(object):
             _translate("MainWindow", "E-Mail Adresse für Nachfragen (optional)", None)
         )
         self.verticalLayout_email.addWidget(self.lineEdit_email)
-        self.gridLayout.addWidget(self.groupBox_email, 4, 1, 1, 3)
+        self.gridLayout.addWidget(self.groupBox_email, 4, 1, 1, 1)
         self.groupBox_email.hide()
 
         self.pushButton_send = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_send.setObjectName(_fromUtf8("pushButton_send"))
         self.gridLayout.addWidget(
-            self.pushButton_send, 5, 3, 1, 1, QtCore.Qt.AlignRight
+            self.pushButton_send, 5, 1, 1, 1, QtCore.Qt.AlignRight
         )
         self.pushButton_send.setText(_translate("MainWindow", "Senden", None))
         self.pushButton_send.clicked.connect(self.pushButton_send_pressed)
@@ -2130,7 +2131,7 @@ class Ui_MainWindow(object):
         #########################
 
         self.groupBox_themen_klasse.setTitle(
-            _translate("MainWindow", "Weitere Themengebiete", None)
+            _translate("MainWindow", "Erweiterungsstoff", None)
         )
 
         ############# Infos for GKs
@@ -3008,13 +3009,16 @@ class Ui_MainWindow(object):
 
     def refresh_label_update(self):
         try:
-            x = "log_file_%s" % self.label_aufgabentyp.text()[-1]
-            log_file = os.path.join(path_programm, "Teildokument", x)
+            if self.chosen_program == 'cria':
+                log_file = "log_file_cria"
+            else:
+                log_file = "log_file_%s" % self.label_aufgabentyp.text()[-1]
+            path_log_file = os.path.join(path_programm, "Teildokument", log_file)
             self.label_update.setText(
                 _translate(
                     "MainWindow",
                     "Letztes Update: "
-                    + modification_date(log_file).strftime("%d.%m.%y - %H:%M"),
+                    + modification_date(path_log_file).strftime("%d.%m.%y - %H:%M"),
                     None,
                 )
             )
@@ -5433,7 +5437,7 @@ class Ui_MainWindow(object):
             if self.comboBox_fb.currentText() == "Zusatzthemen":
                 for all in zusatzthemen_beschreibung:
                     label = zusatzthemen_beschreibung[all] + " ("+ all+")"
-                    self.comboBox_gk_num.addItem(label)            
+                    self.comboBox_fb_num.addItem(label)            
             else:
                 for all in dict_gk.keys():
                     if all.startswith(self.comboBox_fb.currentText().lower()):
@@ -5834,11 +5838,18 @@ class Ui_MainWindow(object):
                 else:
                     combobox_gk_num = self.comboBox_gk_num.currentText()
                 # print(x.group(1))
-                print(combobox_gk)
-                print(combobox_gk_num)
+                # print(combobox_gk)
+                # print(combobox_gk_num)
             elif list_mode == "feedback":
                 combobox_gk = self.comboBox_fb.currentText()
-                combobox_gk_num = self.comboBox_fb_num.currentText()
+                result = re.findall("\(([a-z]+)\)",self.comboBox_fb_num.currentText())
+                if not is_empty(result):
+                    combobox_gk_num = result[-1]
+                else:
+                    combobox_gk_num = self.comboBox_fb_num.currentText()
+
+                # combobox_gk = self.comboBox_fb.currentText()
+                # combobox_gk_num = self.comboBox_fb_num.currentText()
 
             list_beispieldaten_sections = self.adjust_beispieldaten_combobox_lama(
                 list_beispieldaten_sections, combobox_gk, combobox_gk_num,
