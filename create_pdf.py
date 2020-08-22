@@ -363,7 +363,7 @@ def prepare_tex_for_pdf(self):
                     if klasse in all:
                         if thema in all:
                             if self.cb_show_variation.isChecked()==False and re.search("[0-9]\[.+\]", all) != None:
-                                print(all)
+                                # print(all)
                                 pass
                             else:
                                 gesammeltedateien.append(all)
@@ -465,7 +465,7 @@ def prepare_tex_for_pdf(self):
 
 
     dict_number_of_variations = get_number_of_variations(self, dict_gesammeltedateien)
-    print(dict_number_of_variations)
+    # print(dict_number_of_variations)
 
     ##############################
     if not dict_gesammeltedateien:
