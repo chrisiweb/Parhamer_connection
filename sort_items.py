@@ -15,7 +15,6 @@ def sorted_gks(list_, chosen_program):
     if chosen_program == 'lama':
         list_ = sorted(list_, key=lama_order)
     elif chosen_program == 'cria':
-        print(list_)
         list_ = sorted(list_, key = cria_order)
     
     return list_
