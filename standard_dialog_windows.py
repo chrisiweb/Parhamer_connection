@@ -2,6 +2,7 @@ from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from config import logo_path
 
+
 def warning_window(text, detailed_text="", titel="Warnung", informative_text=""):
     msg = QtWidgets.QMessageBox()
     msg.setWindowTitle(titel)
@@ -12,7 +13,10 @@ def warning_window(text, detailed_text="", titel="Warnung", informative_text="")
     msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
     msg.exec_()
 
-def information_window(text, informative_text="", titel="Information", detailed_text=""):
+
+def information_window(
+    text, informative_text="", titel="Information", detailed_text=""
+):
     msg = QtWidgets.QMessageBox()
     msg.setWindowTitle(titel)
     msg.setIcon(QtWidgets.QMessageBox.Information)
@@ -23,7 +27,10 @@ def information_window(text, informative_text="", titel="Information", detailed_
     msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
     msg.exec_()
 
-def question_window(text, informative_text="", titel ="Sind Sie sicher?", detailed_text=""):
+
+def question_window(
+    text, informative_text="", titel="Sind Sie sicher?", detailed_text=""
+):
     msg = QtWidgets.QMessageBox()
     msg.setIcon(QtWidgets.QMessageBox.Question)
     msg.setWindowIcon(QtGui.QIcon(logo_path))
@@ -32,7 +39,7 @@ def question_window(text, informative_text="", titel ="Sind Sie sicher?", detail
     msg.setInformativeText(informative_text)
     msg.setDetailedText(detailed_text)
     msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-    
+
     buttonY = msg.button(QtWidgets.QMessageBox.Yes)
     buttonY.setText("Ja")
     buttonN = msg.button(QtWidgets.QMessageBox.No)
@@ -42,6 +49,7 @@ def question_window(text, informative_text="", titel ="Sind Sie sicher?", detail
         return False
     if response == QtWidgets.QMessageBox.Yes:
         return True
+
 
 def critical_window(text, informative_text="", titel="Fehlermeldung", detailed_text=""):
     msg = QtWidgets.QMessageBox()
@@ -54,7 +62,14 @@ def critical_window(text, informative_text="", titel="Fehlermeldung", detailed_t
     msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
     msg.exec_()
 
-def custom_window(text, informative_text="", titel="LaMA - LaTeX Mathematik Assistent", detailed_text="", logo=logo_path):
+
+def custom_window(
+    text,
+    informative_text="",
+    titel="LaMA - LaTeX Mathematik Assistent",
+    detailed_text="",
+    logo=logo_path,
+):
     msg = QtWidgets.QMessageBox()
 
     pixmap = QtGui.QPixmap(logo)
@@ -67,5 +82,4 @@ def custom_window(text, informative_text="", titel="LaMA - LaTeX Mathematik Assi
     msg.setDetailedText(detailed_text)
     msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
     msg.exec_()
-
 

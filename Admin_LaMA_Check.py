@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 import os
 import sys
 import shutil
-from config import config_loader, is_empty 
+from config import config_loader, is_empty
 import re
 import yaml
 from standard_dialog_windows import information_window
@@ -33,33 +33,34 @@ dict_gk = config_loader(config_file, "dict_gk")
 dict_aufgabenformate = config_loader(config_file, "dict_aufgabenformate")
 Klassen = config_loader(config_file, "Klassen")
 
+
 def get_info_from_path(path):
     filename = os.path.basename(path)
     if os.path.basename(os.path.dirname(path)) != "Beispieleinreichung":
-        typ=None
+        typ = None
         klasse = os.path.basename(os.path.dirname(path))
         thema = None
         nummer, _ = os.path.splitext(filename)
     elif re.search("[A-Z]", filename) == None:
-        typ=2
-        klasse=None
-        thema=None
-        nummer, _ =os.path.splitext(os.path.basename(path))
+        typ = 2
+        klasse = None
+        thema = None
+        nummer, _ = os.path.splitext(os.path.basename(path))
     else:
-        filename,_ = os.path.splitext(filename)
+        filename, _ = os.path.splitext(filename)
         list_filename_split = filename.split(" - ")
-        if len(list_filename_split)==2:
-            typ=1
-            klasse=None
+        if len(list_filename_split) == 2:
+            typ = 1
+            klasse = None
             thema = list_filename_split[0]
             nummer = list_filename_split[1]
         else:
-            typ=1
-            klasse= list_filename_split[0].lower()
+            typ = 1
+            klasse = list_filename_split[0].lower()
             thema = list_filename_split[1]
             nummer = list_filename_split[2]
 
-    info= [typ, klasse, thema, nummer]
+    info = [typ, klasse, thema, nummer]
 
     return info
 
@@ -127,14 +128,14 @@ class Ui_MainWindow(object):
         path_folder_items = []
         for path, subdires, files in os.walk(path_beispieleinreichung):
             for name in files:
-                if 'Bilder' not in path:
+                if "Bilder" not in path:
                     path_folder_items.append(os.path.join(path, name))
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         filename_testdokument = os.path.join(
             path_programm, "Testdokument", "Testdokument.tex"
         )
         # folder_items = os.listdir(path_beispieleinreichung)
-        
+
         # for all in folder_items:
         #     path_folder_items.append(os.path.join(path_beispieleinreichung, all))
         try:
@@ -168,7 +169,7 @@ class Ui_MainWindow(object):
         )
         file.close()
 
-        with open(filename_testdokument, "a", encoding="utf8") as file: 
+        with open(filename_testdokument, "a", encoding="utf8") as file:
             for all in path_folder_items:
                 value = all.replace("\\", "/")
                 file.write('\input{"' + value + '"}%\n' "\\newpage \n")
@@ -205,62 +206,89 @@ class Ui_MainWindow(object):
         for all in list_files_move:
             info = get_info_from_path(all)
             filename = os.path.basename(all)
-            if info[0]==None:
-                new_path = os.path.join(path_programm,"_database",info[1],"Einzelbeispiele",filename)
-            elif info[0]==2:
-                new_path = os.path.join(path_programm,"_database","Typ2Aufgaben","Einzelbeispiele",filename)
-            
-            elif info[0]==1:
+            if info[0] == None:
+                new_path = os.path.join(
+                    path_programm, "_database", info[1], "Einzelbeispiele", filename
+                )
+            elif info[0] == 2:
+                new_path = os.path.join(
+                    path_programm,
+                    "_database",
+                    "Typ2Aufgaben",
+                    "Einzelbeispiele",
+                    filename,
+                )
+
+            elif info[0] == 1:
                 if info[2].lower() in zusatzthemen_beschreibung:
-                    new_path = os.path.join(path_programm,"_database","Typ1Aufgaben","Zusatzthemen",info[2],filename)
+                    new_path = os.path.join(
+                        path_programm,
+                        "_database",
+                        "Typ1Aufgaben",
+                        "Zusatzthemen",
+                        info[2],
+                        filename,
+                    )
                 else:
                     gk, gk_num = info[2].split(" ")
                     if "-" in gk:
-                        gk,_ = gk.split("-")
-                    new_path = os.path.join(path_programm,"_database","Typ1Aufgaben","_Grundkompetenzen",gk,info[2],"Einzelbeispiele",filename)
+                        gk, _ = gk.split("-")
+                    new_path = os.path.join(
+                        path_programm,
+                        "_database",
+                        "Typ1Aufgaben",
+                        "_Grundkompetenzen",
+                        gk,
+                        info[2],
+                        "Einzelbeispiele",
+                        filename,
+                    )
             # elif info[0]==1 and info[1] != None:
-                                
-
 
             if os.path.isdir(os.path.dirname(new_path)) == False:
                 os.makedirs(os.path.dirname(new_path))
 
-
             with open(all, "r", encoding="utf8") as file:
                 content = file.read()
 
-
             shutil.move(all, new_path)
 
-
             if content.count("includegraphics") != 0:
-                path_beispieleinreichung_images = os.path.join(path_programm, "Beispieleinreichung","Bilder")
-                split_content = re.split("../_database/Bilder/|.eps",content)
-                for i in range(1,len(split_content),2):
+                path_beispieleinreichung_images = os.path.join(
+                    path_programm, "Beispieleinreichung", "Bilder"
+                )
+                split_content = re.split("../_database/Bilder/|.eps", content)
+                for i in range(1, len(split_content), 2):
                     image_name = split_content[i]
-                    image_name = image_name + '.eps'
-                    old_image_path = os.path.join(path_beispieleinreichung_images, image_name)
-                    new_image_path = os.path.join(path_programm, "_database", "Bilder", image_name)
+                    image_name = image_name + ".eps"
+                    old_image_path = os.path.join(
+                        path_beispieleinreichung_images, image_name
+                    )
+                    new_image_path = os.path.join(
+                        path_programm, "_database", "Bilder", image_name
+                    )
 
-                    shutil.move(os.path.join(path_beispieleinreichung_images, image_name),
-                        os.path.join(path_programm, "_database", "Bilder", image_name)
-                        )
+                    shutil.move(
+                        os.path.join(path_beispieleinreichung_images, image_name),
+                        os.path.join(path_programm, "_database", "Bilder", image_name),
+                    )
                 number_images += content.count("includegraphics")
 
-
         information_window(
-            "Es wurden {0} Aufgaben und {1} Bild(er) in die Datenbank verschoben!".format(len(list_files_move), number_images),
-            titel="Erfolgreich verschoben"
+            "Es wurden {0} Aufgaben und {1} Bild(er) in die Datenbank verschoben!".format(
+                len(list_files_move), number_images
+            ),
+            titel="Erfolgreich verschoben",
         )
 
         sys.exit(0)
- 
+
 
 if __name__ == "__main__":
     import sys
 
     app = QApplication(sys.argv)
-    app.setStyle('Fusion')
+    app.setStyle("Fusion")
     MainWindow = QMainWindow()
 
     ui = Ui_MainWindow()

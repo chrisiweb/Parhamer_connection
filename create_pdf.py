@@ -5,7 +5,17 @@ import os
 import re
 import subprocess
 from functools import partial
-from config import colors_ui, get_color, config_file, config_loader, logo_path,logo_cria_button_path, path_programm, is_empty, split_section
+from config import (
+    colors_ui,
+    get_color,
+    config_file,
+    config_loader,
+    logo_path,
+    logo_cria_button_path,
+    path_programm,
+    is_empty,
+    split_section,
+)
 import json
 import shutil
 import datetime
@@ -34,8 +44,6 @@ list_klassen = config_loader(config_file, "list_klassen")
 
 dict_aufgabenformate = config_loader(config_file, "dict_aufgabenformate")
 
-           
-
 
 class Worker_CreatePDF(QtCore.QObject):
     finished = QtCore.pyqtSignal()
@@ -52,6 +60,7 @@ class Worker_CreatePDF(QtCore.QObject):
 
         self.finished.emit()
 
+
 def get_number_of_variations(self, dict_gesammeltedateien):
     dict_number_of_variations = {}
     for key, value in dict_gesammeltedateien.items():
@@ -60,12 +69,13 @@ def get_number_of_variations(self, dict_gesammeltedateien):
         filename = os.path.splitext(filename)[0]
         counter = 0
         for all in os.listdir(dirname):
-            if re.match("{}\[.+\].tex".format(filename),all):
+            if re.match("{}\[.+\].tex".format(filename), all):
                 counter += 1
         if counter != 0:
             dict_number_of_variations[key] = counter
 
     return dict_number_of_variations
+
 
 def check_gks_not_included(gk_liste, suchbegriffe):
     list_ = []
@@ -76,10 +86,10 @@ def check_gks_not_included(gk_liste, suchbegriffe):
         return list_
     else:
         return
-    
-            # print(all)
-            # gesammeltedateien.append(all)
-        
+
+        # print(all)
+        # gesammeltedateien.append(all)
+
 
 def prepare_tex_for_pdf(self):
     QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
@@ -102,7 +112,10 @@ def prepare_tex_for_pdf(self):
         month_today = datetime.date.today().strftime("%m")
         if month_today != month_update_log_file:
             refresh_ddb(self)  # self.label_aufgabentyp.text()[-1]
-            self.label_update.setText("Letztes Update: "+ modification_date(log_file).strftime("%d.%m.%y - %H:%M"))
+            self.label_update.setText(
+                "Letztes Update: "
+                + modification_date(log_file).strftime("%d.%m.%y - %H:%M")
+            )
 
     suchbegriffe = []
 
@@ -182,7 +195,6 @@ def prepare_tex_for_pdf(self):
                             file.close()
                     except FileNotFoundError:
                         pass
-
 
     ######################################################
     ########### work around ####################
@@ -277,9 +289,9 @@ def prepare_tex_for_pdf(self):
                 info = split_section(all, self.chosen_program)
                 # print(info)
                 gk_liste = info[2].split(", ")
-                
+
                 # print(gk_liste)
-                
+
                 # if self.cb_show_variation.isChecked()==False and re.search("[0-9]\[.+\]", all) != None:
                 #     print(all)
                 #     continue
@@ -294,7 +306,10 @@ def prepare_tex_for_pdf(self):
                 # print(not_included_items)
                 # print(all)
                 if not_included_items == None:
-                    if self.cb_show_variation.isChecked()==False and re.search("[0-9]\[.+\]", all) != None:
+                    if (
+                        self.cb_show_variation.isChecked() == False
+                        and re.search("[0-9]\[.+\]", all) != None
+                    ):
                         pass
                     else:
                         gesammeltedateien.append(all)
@@ -302,8 +317,7 @@ def prepare_tex_for_pdf(self):
                 # gesammeltedateien.append(all)
                 # for all in gk_liste:
                 #     if all not in suchbegriffe:
-                        
-                
+
                 #         print(all)
                 #         gesammeltedateien.append(all)
             # print(suchbegriffe)
@@ -331,7 +345,10 @@ def prepare_tex_for_pdf(self):
             for all in suchbegriffe:
                 for element in list(beispieldaten_dateipfad.keys())[:]:
                     if all in element:
-                        if self.cb_show_variation.isChecked()==False and re.search("[0-9]\[.+\]", element) != None:
+                        if (
+                            self.cb_show_variation.isChecked() == False
+                            and re.search("[0-9]\[.+\]", element) != None
+                        ):
                             # print(element)
                             pass
                         else:
@@ -362,7 +379,10 @@ def prepare_tex_for_pdf(self):
                 for all in list(beispieldaten_dateipfad.keys()):
                     if klasse in all:
                         if thema in all:
-                            if self.cb_show_variation.isChecked()==False and re.search("[0-9]\[.+\]", all) != None:
+                            if (
+                                self.cb_show_variation.isChecked() == False
+                                and re.search("[0-9]\[.+\]", all) != None
+                            ):
                                 # print(all)
                                 pass
                             else:
@@ -379,12 +399,15 @@ def prepare_tex_for_pdf(self):
                 klasse = item[0].upper()
                 thema = item[1] + "." + item[2]
                 for all in beispieldaten_temporary[:]:
-                    if self.cb_show_variation.isChecked()==False and re.search("[0-9]\[.+\]", all) != None:
-                       beispieldaten_temporary.remove(all) 
+                    if (
+                        self.cb_show_variation.isChecked() == False
+                        and re.search("[0-9]\[.+\]", all) != None
+                    ):
+                        beispieldaten_temporary.remove(all)
                     elif thema not in all:
                         beispieldaten_temporary.remove(all)
                     elif klasse not in all:
-                            beispieldaten_temporary.remove(all)
+                        beispieldaten_temporary.remove(all)
 
             gesammeltedateien = beispieldaten_temporary
 
@@ -463,7 +486,6 @@ def prepare_tex_for_pdf(self):
                 ):
                     del dict_gesammeltedateien[all]
 
-
     dict_number_of_variations = get_number_of_variations(self, dict_gesammeltedateien)
     # print(dict_number_of_variations)
 
@@ -495,26 +517,36 @@ def prepare_tex_for_pdf(self):
         for key, value in dict_gesammeltedateien.items():
             value = value.replace("\\", "/")
             file = open(filename_teildokument, "a", encoding="utf8")
-            
+
             if chosen_aufgabenformat == "Typ1Aufgaben":
                 input_string = '\input{"' + value + '"}\n\hrule\leer\n\n'
             elif chosen_aufgabenformat == "Typ2Aufgaben":
                 input_string = '\input{"' + value + '"}\n\\newpage\n\n'
-            
 
-            if key in dict_number_of_variations and self.cb_show_variation.isChecked()==False:
-                anzahl = dict_number_of_variations[key] 
-                input_string = "\\begin{{minipage}}{{\\textwidth}}\\textcolor{{{0}}}{{\\fbox{{Anzahl der vorhandenen Variationen: {1}}}}}\\vspace{{-0.5cm}}".format(green,anzahl) + input_string + "\end{minipage}\n"
-  
-            if re.search("[0-9]\[.+\]", key) != None and self.cb_show_variation.isChecked()==True:
-                input_string = input_string.replace('}\n','}}\n')
+            if (
+                key in dict_number_of_variations
+                and self.cb_show_variation.isChecked() == False
+            ):
+                anzahl = dict_number_of_variations[key]
+                input_string = (
+                    "\\begin{{minipage}}{{\\textwidth}}\\textcolor{{{0}}}{{\\fbox{{Anzahl der vorhandenen Variationen: {1}}}}}\\vspace{{-0.5cm}}".format(
+                        green, anzahl
+                    )
+                    + input_string
+                    + "\end{minipage}\n"
+                )
+
+            if (
+                re.search("[0-9]\[.+\]", key) != None
+                and self.cb_show_variation.isChecked() == True
+            ):
+                input_string = input_string.replace("}\n", "}}\n")
                 input_string = "\\textcolor{{{0}}}{{".format(green) + input_string
 
             if key.startswith("ENTWURF"):
-                input_string = 'ENTWURF\\vspace{-0.5cm}' + input_string
+                input_string = "ENTWURF\\vspace{-0.5cm}" + input_string
 
             file.write(input_string)
-
 
     if self.chosen_program == "cria":
         for all in suchbegriffe:
@@ -528,32 +560,40 @@ def prepare_tex_for_pdf(self):
                 file.write(item + ", ")
         file.write("\\normalsize \n \n")
 
-
         for key, value in dict_gesammeltedateien.items():
             value = value.replace("\\", "/")
             file = open(filename_teildokument, "a", encoding="utf8")
 
             input_string = '\input{"' + value + '"}\n\hrule\leer\n\n'
 
-            if key in dict_number_of_variations and self.cb_show_variation.isChecked()==False:
-                anzahl = dict_number_of_variations[key] 
-                input_string = "\\textcolor{{{0}}}{{\\fbox{{Anzahl der vorhandenen Variationen: {1}}}}}\\vspace{{-0.5cm}}".format(green,anzahl) + input_string
-  
-            if re.search("[0-9]\[.+\]", key) != None and self.cb_show_variation.isChecked()==True:
-                input_string = input_string.replace('}\n','}}\n')
+            if (
+                key in dict_number_of_variations
+                and self.cb_show_variation.isChecked() == False
+            ):
+                anzahl = dict_number_of_variations[key]
+                input_string = (
+                    "\\textcolor{{{0}}}{{\\fbox{{Anzahl der vorhandenen Variationen: {1}}}}}\\vspace{{-0.5cm}}".format(
+                        green, anzahl
+                    )
+                    + input_string
+                )
+
+            if (
+                re.search("[0-9]\[.+\]", key) != None
+                and self.cb_show_variation.isChecked() == True
+            ):
+                input_string = input_string.replace("}\n", "}}\n")
                 input_string = "\\textcolor{{{0}}}{{".format(green) + input_string
 
             # if key.startswith("ENTWURF"):
             #     input_string = 'ENTWURF\\vspace{-0.5cm}' + input_string
             if key.startswith("ENTWURF"):
-                input_string = 'ENTWURF\\vspace{-0.5cm}' + input_string
+                input_string = "ENTWURF\\vspace{-0.5cm}" + input_string
 
-            
             file.write(input_string)
     file.write('\shorthandoff{"}\n' "\end{document}")
 
     file.close()
-
 
     QtWidgets.QApplication.restoreOverrideCursor()
     msg = QtWidgets.QMessageBox()
@@ -583,19 +623,17 @@ def prepare_tex_for_pdf(self):
         create_pdf("Teildokument", 0, 0, typ)
 
 
-
-
 def extract_error_from_output(latex_output):
-    start=None
+    start = None
     for all in latex_output:
         if all.startswith("! LaTeX Error:"):
             start = latex_output.index(all)
-            break    
-    if start ==None:
+            break
+    if start == None:
         for all in latex_output:
             if all.startswith("! "):
                 start = latex_output.index(all)
-                break     
+                break
 
     if start != None:
         list_error = latex_output[start:]
@@ -605,32 +643,31 @@ def extract_error_from_output(latex_output):
                 end = list_error.index(all)
                 break
         try:
-            error = "".join(list_error[:end])#.replace("\n", "")
+            error = "".join(list_error[:end])  # .replace("\n", "")
 
             if path_programm in error:
-                error_location=None
+                error_location = None
             else:
-                error_location = "".join(latex_output[:start+end])
-                index_start=error_location.rfind(path_programm)
-                index_end = error_location[index_start:].find('.tex')+4
+                error_location = "".join(latex_output[: start + end])
+                index_start = error_location.rfind(path_programm)
+                index_end = error_location[index_start:].find(".tex") + 4
 
-                error_location = error_location[index_start:index_start+index_end]
+                error_location = error_location[index_start : index_start + index_end]
 
-
-            if error_location==None:
-                detailed_text= error
+            if error_location == None:
+                detailed_text = error
             else:
-                detailed_text= error + "\n\nFehlerhafte Datei:\n" + error_location
+                detailed_text = error + "\n\nFehlerhafte Datei:\n" + error_location
 
         except UnboundLocalError:
             detailed_text = "Undefined Error"
 
         QtWidgets.QApplication.restoreOverrideCursor()
         response = question_window(
-            "Es ist ein Fehler beim Erstellen der PDF-Datei aufgetreten. Dadurch konnte die PDF-Datei nicht vollständig erzeugt werden.\n\n"+
-            'Dies kann viele unterschiedliche Ursachen haben (siehe Details).\n'+
-            'Durch das Aktualisieren der Datenbank (F5) können jedoch die meisten dieser Fehler behoben werden.\n'+
-            'Sollte der Fehler weiterhin bestehen, bitte kontaktieren Sie uns unter lama.helpme@gmail.com',
+            "Es ist ein Fehler beim Erstellen der PDF-Datei aufgetreten. Dadurch konnte die PDF-Datei nicht vollständig erzeugt werden.\n\n"
+            + "Dies kann viele unterschiedliche Ursachen haben (siehe Details).\n"
+            + "Durch das Aktualisieren der Datenbank (F5) können jedoch die meisten dieser Fehler behoben werden.\n"
+            + "Sollte der Fehler weiterhin bestehen, bitte kontaktieren Sie uns unter lama.helpme@gmail.com",
             "Wollen Sie die fehlerhafte PDF-Datei dennoch anzeigen?",
             "Fehler beim Erstellen der PDF-Datei",
             "Fehlermeldung:\n" + detailed_text,
@@ -641,7 +678,7 @@ def extract_error_from_output(latex_output):
 
 def build_pdf_file(folder_name, file_name, latex_output_file):
     if sys.platform.startswith("linux") or sys.platform.startswith("darwin"):
-        process=subprocess.Popen(
+        process = subprocess.Popen(
             'cd "{0}" ; latex -interaction=nonstopmode --synctex=-1 "{1}.tex" ; dvips "{1}.dvi" ; ps2pdf -dNOSAFER "{1}.ps"'.format(
                 folder_name, file_name
             ),
@@ -656,7 +693,7 @@ def build_pdf_file(folder_name, file_name, latex_output_file):
         if drive_programm.upper() != drive_save.upper():
             drive = drive_save.upper()
         else:
-            drive = ''
+            drive = ""
 
         if is_empty(drive):
             terminal_command = 'cd "{0}" & latex -interaction=nonstopmode --synctex=-1 "{1}.tex"& dvips "{1}.dvi" & ps2pdf -dNOSAFER "{1}.ps"'.format(
@@ -667,17 +704,19 @@ def build_pdf_file(folder_name, file_name, latex_output_file):
                 drive, folder_name, file_name
             )
 
-        process=subprocess.Popen(terminal_command,
+        process = subprocess.Popen(
+            terminal_command,
             cwd=os.path.splitdrive(path_programm)[0],
             stdout=latex_output_file,
             shell=True,
         )
     return process
 
+
 def open_pdf_file(folder_name, file_name):
     file_path = os.path.join(folder_name, file_name)
     if sys.platform.startswith("linux"):
-        file_path = file_path + '.pdf'
+        file_path = file_path + ".pdf"
         webbrowser.open(file_path, new=2, autoraise=True)
         # os.system("xdg-open {0}.pdf".format(file_path))
         # subprocess.run(
@@ -690,7 +729,7 @@ def open_pdf_file(folder_name, file_name):
     elif sys.platform.startswith("darwin"):
         subprocess.run(
             ["open", "{0}.pdf".format(file_path),]
-            )
+        )
     else:
         # if os.path.isfile(
         #     os.path.join("C:\\", "Program Files", "SumatraPDF", "SumatraPDF.exe")
@@ -717,26 +756,24 @@ def open_pdf_file(folder_name, file_name):
         #     except KeyError:
         #         sumatrapdf = ""
 
-
         subprocess.Popen(
-            'cd "{0}" & "{1}.pdf"'.format(
-                folder_name,file_name
-            ),
+            'cd "{0}" & "{1}.pdf"'.format(folder_name, file_name),
             cwd=os.path.splitdrive(path_programm)[0],
             shell=True,
-        ).poll() # sumatrapdf {1}
+        ).poll()  # sumatrapdf {1}
 
 
 def loading_animation(process):
     animation = "|/-\\"
     idx = 0
     while True:
-        if process.poll()!=None:
-            print('Done')
+        if process.poll() != None:
+            print("Done")
             break
         print(animation[idx % len(animation)], end="\r")
         idx += 1
-        time.sleep(0.1)  
+        time.sleep(0.1)
+
 
 def try_to_delete_file(file):
     try:
@@ -747,31 +784,33 @@ def try_to_delete_file(file):
 
 def delete_unneeded_files(folder_name, file_name):
     file_path = os.path.join(folder_name, file_name)
-    
+
     try_to_delete_file("{0}.aux".format(file_path))
     try_to_delete_file("{0}.log".format(file_path))
     try_to_delete_file("{0}.dvi".format(file_path))
     try_to_delete_file("{0}.ps".format(file_path))
 
 
-
 def create_pdf(path_file, index, maximum, typ=0):
     QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
     if path_file == "Teildokument":
-        folder_name = '{0}/Teildokument'.format(path_programm)
+        folder_name = "{0}/Teildokument".format(path_programm)
         file_name = path_file + "_" + typ
     else:
         head, tail = os.path.split(path_file)
         file_name = tail
-        if path_file == 'Schularbeit_Vorschau':
-            folder_name = '{0}/Teildokument'.format(path_programm)
+        if path_file == "Schularbeit_Vorschau":
+            folder_name = "{0}/Teildokument".format(path_programm)
         else:
             folder_name = head
-    
-    print('Pdf-Datei wird erstellt. Bitte warten...')
+
+    print("Pdf-Datei wird erstellt. Bitte warten...")
 
     latex_output_file = open(
-        "{0}/Teildokument/temp.txt".format(path_programm), "w", encoding="utf8", errors='ignore'
+        "{0}/Teildokument/temp.txt".format(path_programm),
+        "w",
+        encoding="utf8",
+        errors="ignore",
     )
 
     if path_file == "Teildokument" or path_file == "Schularbeit_Vorschau":
@@ -779,43 +818,44 @@ def create_pdf(path_file, index, maximum, typ=0):
     else:
         rest = " ({0}|{1})".format(index + 1, maximum)
 
-    text="Die PDF Datei wird erstellt..." + rest
+    text = "Die PDF Datei wird erstellt..." + rest
     Dialog = QtWidgets.QDialog()
     ui = Ui_Dialog_processing()
     ui.setupUi(Dialog, text)
-
 
     thread = QtCore.QThread(Dialog)
     worker = Worker_CreatePDF()
     worker.finished.connect(Dialog.close)
     worker.moveToThread(thread)
-    thread.started.connect(partial(worker.task, folder_name, file_name, latex_output_file))
+    thread.started.connect(
+        partial(worker.task, folder_name, file_name, latex_output_file)
+    )
     thread.start()
     thread.exit()
     Dialog.exec()
 
-
-
     latex_output_file = open(
-        "{0}/Teildokument/temp.txt".format(path_programm), "r", encoding="utf8", errors='ignore'
+        "{0}/Teildokument/temp.txt".format(path_programm),
+        "r",
+        encoding="utf8",
+        errors="ignore",
     )
     latex_output = latex_output_file.read().splitlines()
     latex_output_file.close()
-
 
     if file_name == "Schularbeit_Vorschau" or file_name.startswith("Teildokument"):
 
         response = extract_error_from_output(latex_output)
 
-        if response==False:
+        if response == False:
             return
-             
+
         open_pdf_file(folder_name, file_name)
 
     try:
         delete_unneeded_files(folder_name, file_name)
     except Exception as e:
-        print('Error: ' + e)
+        print("Error: " + e)
         return
     QtWidgets.QApplication.restoreOverrideCursor()
 

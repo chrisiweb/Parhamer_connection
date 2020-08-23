@@ -72,16 +72,32 @@ class QtWaitingSpinner(QtWidgets.QWidget):
         painter.setPen(QtCore.Qt.NoPen)
         for i in range(0, self._numberOfLines):
             painter.save()
-            painter.translate(self._innerRadius + self._lineLength, self._innerRadius + self._lineLength)
+            painter.translate(
+                self._innerRadius + self._lineLength,
+                self._innerRadius + self._lineLength,
+            )
             rotateAngle = float(360 * i) / float(self._numberOfLines)
             painter.rotate(rotateAngle)
             painter.translate(self._innerRadius, 0)
-            distance = self.lineCountDistanceFromPrimary(i, self._currentCounter, self._numberOfLines)
-            color = self.currentLineColor(distance, self._numberOfLines, self._trailFadePercentage,
-                                          self._minimumTrailOpacity, self._color)
+            distance = self.lineCountDistanceFromPrimary(
+                i, self._currentCounter, self._numberOfLines
+            )
+            color = self.currentLineColor(
+                distance,
+                self._numberOfLines,
+                self._trailFadePercentage,
+                self._minimumTrailOpacity,
+                self._color,
+            )
             painter.setBrush(color)
-            painter.drawRoundedRect(QtCore.QRect(0, -self._lineWidth / 2, self._lineLength, self._lineWidth), self._roundness,
-                                    self._roundness, QtCore.Qt.RelativeSize)
+            painter.drawRoundedRect(
+                QtCore.QRect(
+                    0, -self._lineWidth / 2, self._lineLength, self._lineWidth
+                ),
+                self._roundness,
+                self._roundness,
+                QtCore.Qt.RelativeSize,
+            )
             painter.restore()
 
     def start(self):
@@ -181,12 +197,16 @@ class QtWaitingSpinner(QtWidgets.QWidget):
         self.setFixedSize(size, size)
 
     def updateTimer(self):
-        self._timer.setInterval(1000 / (self._numberOfLines * self._revolutionsPerSecond))
+        self._timer.setInterval(
+            1000 / (self._numberOfLines * self._revolutionsPerSecond)
+        )
 
     def updatePosition(self):
         if self.parentWidget() and self._centerOnParent:
-            self.move(self.parentWidget().width() / 2 - self.width() / 2,
-                      self.parentWidget().height() / 2 - self.height() / 2)
+            self.move(
+                self.parentWidget().width() / 2 - self.width() / 2,
+                self.parentWidget().height() / 2 - self.height() / 2,
+            )
 
     def lineCountDistanceFromPrimary(self, current, primary, totalNrOfLines):
         distance = primary - current
@@ -194,7 +214,9 @@ class QtWaitingSpinner(QtWidgets.QWidget):
             distance += totalNrOfLines
         return distance
 
-    def currentLineColor(self, countDistance, totalNrOfLines, trailFadePerc, minOpacity, colorinput):
+    def currentLineColor(
+        self, countDistance, totalNrOfLines, trailFadePerc, minOpacity, colorinput
+    ):
         color = QtGui.QColor(colorinput)
         if countDistance == 0:
             return color
