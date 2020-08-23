@@ -1419,7 +1419,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_sage.addWidget(self.listWidget)
         # self.gridLayout.addWidget(self.groupBox_alle_aufgaben, 2, 0, 7, 1)
 
-        self.groupBox_alle_aufgaben.setTitle(_translate("MainWindow", "Aufgaben", None))
+        # self.groupBox_alle_aufgaben.setTitle(_translate("MainWindow", "Aufgaben", None))
         # print(self.groupBox_alle_aufgaben.height())
         # print(self.groupBox_alle_aufgaben.sizeHint())
         # print(self.groupBox_alle_aufgaben.minimumSizeHint())
