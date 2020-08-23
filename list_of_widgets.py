@@ -20,7 +20,7 @@ widgets_search = [
     "cb_solution",
     "cb_drafts",
     "btn_suche",
-    "label_warnung"
+    "label_warnung",
 ]  #'actionRefresh_Database'
 
 widgets_create = [
@@ -159,4 +159,14 @@ widgets_feedback_cria = [
     "pushButton_send",
 ]
 
-list_widgets = [widgets_search, widgets_sage, widgets_create, widgets_feedback, widgets_search_cria, widgets_sage_cria, widgets_create_cria, widgets_feedback_cria]
+list_widgets = [
+    widgets_search,
+    widgets_sage,
+    widgets_create,
+    widgets_feedback,
+    widgets_search_cria,
+    widgets_sage_cria,
+    widgets_create_cria,
+    widgets_feedback_cria,
+]
+

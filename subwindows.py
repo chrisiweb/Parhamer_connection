@@ -227,7 +227,7 @@ class Ui_Dialog_variation(object):
 
             self.comboBox_gk = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
             self.comboBox_gk.setObjectName("comboBox_gk")
-            list_comboBox_gk = ["", "AG", "FA", "AN","WS", "Zusatzthemen"]
+            list_comboBox_gk = ["", "AG", "FA", "AN", "WS", "Zusatzthemen"]
             index = 0
             for all in list_comboBox_gk:
                 self.comboBox_gk.addItem("")
@@ -370,9 +370,9 @@ class Ui_Dialog_variation(object):
         self.lineEdit_number.clear()
         # list_klassen = ["k5", "k6", "k7", "k8"]
         if self.comboBox_gk.currentText() == "Zusatzthemen":
-        #     x = eval("%s_beschreibung" % self.comboBox_gk.currentText().lower())
+            #     x = eval("%s_beschreibung" % self.comboBox_gk.currentText().lower())
             for all in zusatzthemen_beschreibung:
-                label = zusatzthemen_beschreibung[all] + " ("+ all+")"
+                label = zusatzthemen_beschreibung[all] + " (" + all + ")"
                 self.comboBox_gk_num.addItem(label)
         else:
             for all in dict_gk.keys():
@@ -497,7 +497,7 @@ class Ui_Dialog_variation(object):
 
         if self.MainWindow.chosen_program == "lama":
             combobox_gk = self.comboBox_gk.currentText()
-            result = re.findall("\(([a-z]+)\)",self.comboBox_gk_num.currentText())
+            result = re.findall("\(([a-z]+)\)", self.comboBox_gk_num.currentText())
             if not is_empty(result):
                 combobox_gk_num = result[-1]
             else:

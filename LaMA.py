@@ -661,7 +661,8 @@ class Ui_MainWindow(object):
         # QtWidgets.QVBoxLayout(self.groupBox_themen_klasse)
         # self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.tab_widget_themen = QtWidgets.QTabWidget(self.groupBox_themen_klasse)
-        self.tab_widget_themen.setStyleSheet("""
+        self.tab_widget_themen.setStyleSheet(
+            """
             QTabBar::tab:selected {{
             background: {0}; color: {1};
             padding-right: 10px; padding-left: 10px; padding-bottom: 5px; padding-top: 5px;
@@ -674,7 +675,8 @@ class Ui_MainWindow(object):
 
             """.format(
                 get_color(blue_2), get_color(black), get_color(white), get_color(blue_7)
-            ))
+            )
+        )
         # self.tabWidget.setStyleSheet(set_color_text(white))
 
         self.tab_widget_themen.setObjectName(_fromUtf8("tab_widget_themen"))
@@ -1349,7 +1351,7 @@ class Ui_MainWindow(object):
 
         self.comboBox_gk = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
         self.comboBox_gk.setObjectName("comboBox_gk")
-        list_comboBox_gk = ["", "AG", "FA", "AN","WS", "Zusatzthemen"]
+        list_comboBox_gk = ["", "AG", "FA", "AN", "WS", "Zusatzthemen"]
         index = 0
         for all in list_comboBox_gk:
             self.comboBox_gk.addItem("")
@@ -1770,7 +1772,7 @@ class Ui_MainWindow(object):
 
         self.comboBox_fb = QtWidgets.QComboBox(self.groupBox_alle_aufgaben_fb)
         self.comboBox_fb.setObjectName("comboBox_fb")
-        list_comboBox_fb = ["", "AG", "FA", "AN","WS", "Zusatzthemen"]
+        list_comboBox_fb = ["", "AG", "FA", "AN", "WS", "Zusatzthemen"]
         index = 0
         for all in list_comboBox_fb:
             self.comboBox_fb.addItem("")
@@ -2243,13 +2245,11 @@ class Ui_MainWindow(object):
 
         return row
 
-    def create_tab_checkboxes_themen(self, tab_widget,mode):
+    def create_tab_checkboxes_themen(self, tab_widget, mode):
         # new_tab = add_new_tab(
         #     tab_widget, "{}. Klasse".format(klasse[1])
         # )  # self.tab_widget_gk self.tab_widget_gk_cr
-        new_tab = add_new_tab(
-            tab_widget, "Zusatzthemen"
-        )
+        new_tab = add_new_tab(tab_widget, "Zusatzthemen")
         new_tab.setStyleSheet(StyleSheet_new_tab)
 
         verticalLayout = create_new_verticallayout(new_tab)
@@ -2758,7 +2758,6 @@ class Ui_MainWindow(object):
         if variation == False:
             self.plainTextEdit.setPlainText(_translate("MainWindow", "", None))
 
-
     def reset_sage(self, question_reset=True):
         if question_reset == True and not is_empty(self.list_alle_aufgaben_sage):
             response = question_window(
@@ -3022,7 +3021,7 @@ class Ui_MainWindow(object):
 
     def refresh_label_update(self):
         try:
-            if self.chosen_program == 'cria':
+            if self.chosen_program == "cria":
                 log_file = "log_file_cria"
             else:
                 log_file = "log_file_%s" % self.label_aufgabentyp.text()[-1]
@@ -3102,9 +3101,7 @@ class Ui_MainWindow(object):
                         # klasse = widget.split("_")[-2]
                         thema = widget.split("_")[-1]
                         if mode == "creator":
-                            self.list_selected_topics_creator.append(
-                                thema.upper()
-                            )
+                            self.list_selected_topics_creator.append(thema.upper())
                         # typ, klasse, thema = widget.split(name_checkbox)[1].split('_')
                         chosen_themen.append(thema.upper())
 
@@ -3311,13 +3308,13 @@ class Ui_MainWindow(object):
                 if short_gk in zusatzthemen_beschreibung:
                     checkbox_gk = "checkbox_creator_themen_{}".format(short_gk)
                     index = list_comboBox_gk.index("Zusatzthemen")
-                else:    
+                else:
                     checkbox_gk = "checkbox_creator_gk_{}".format(short_gk)
                     index = list_comboBox_gk.index(gk.split(" ")[0])
 
                 self.dict_widget_variables[checkbox_gk].setChecked(True)
                 self.tab_widget_gk_cr.setCurrentIndex(index)
-    
+
             elif typ == 2:
                 for gk in dict_collected_data["thema"]:
                     short_gk = shorten_gk(gk)
@@ -3741,10 +3738,13 @@ class Ui_MainWindow(object):
 
         if self.chosen_program == "lama" and self.local_save == False:
             if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-                if self.list_selected_topics_creator[0].lower() in zusatzthemen_beschreibung:
+                if (
+                    self.list_selected_topics_creator[0].lower()
+                    in zusatzthemen_beschreibung
+                ):
                     list_path.append("Zusatzthemen")
                 else:
-                    list_path.append("_Grundkompetenzen")    
+                    list_path.append("_Grundkompetenzen")
                 # _, klasse = self.split_thema_klasse(
                 #     self.list_selected_topics_creator[0]
                 # )
@@ -3765,11 +3765,11 @@ class Ui_MainWindow(object):
                 thema = self.list_selected_topics_creator[0]
 
                 if thema.lower() in zusatzthemen_beschreibung:
-                    list_path.append(thema) 
-                else:    
+                    list_path.append(thema)
+                else:
                     list_path.append(self.list_selected_topics_creator[0][:2])
                     list_path.append(self.list_selected_topics_creator[0])
-                    list_path.append("Einzelbeispiele")                    
+                    list_path.append("Einzelbeispiele")
                 # thema, klasse = self.split_thema_klasse(
                 #     self.list_selected_topics_creator[0]
                 # )
@@ -3778,7 +3778,7 @@ class Ui_MainWindow(object):
                 #     list_path.append(self.list_selected_topics_creator[0])
                 #     list_path.append("Einzelbeispiele")
                 # else:
-                
+
         #####
         path = self.create_path_from_list(list_path)
 
@@ -3792,7 +3792,7 @@ class Ui_MainWindow(object):
 
     def get_max_integer_file_variation(self, save_dateipfad):
         max_integer_file = 0
-        if self.chosen_program=='cria':
+        if self.chosen_program == "cria":
             variation_of = self.chosen_variation.split("_")[1]
         else:
             variation_of = self.chosen_variation
@@ -4269,7 +4269,7 @@ class Ui_MainWindow(object):
         abs_path_file = os.path.join(save_dateipfad, file_name)
 
         section = self.create_section()
-        
+
         with open(abs_path_file, "w", encoding="utf8") as file:
             file.write(section + "\n\n")
             if self.chosen_program == "cria":
@@ -5434,9 +5434,9 @@ class Ui_MainWindow(object):
             self.lineEdit_number.clear()
             # list_klassen = ["k5", "k6", "k7", "k8"]
             if self.comboBox_gk.currentText() == "Zusatzthemen":
-            #     x = eval("%s_beschreibung" % self.comboBox_gk.currentText().lower())
+                #     x = eval("%s_beschreibung" % self.comboBox_gk.currentText().lower())
                 for all in zusatzthemen_beschreibung:
-                    label = zusatzthemen_beschreibung[all] + " ("+ all+")"
+                    label = zusatzthemen_beschreibung[all] + " (" + all + ")"
                     self.comboBox_gk_num.addItem(label)
             else:
                 for all in dict_gk.keys():
@@ -5455,8 +5455,8 @@ class Ui_MainWindow(object):
             #         self.comboBox_fb_num.addItem(all.upper())
             if self.comboBox_fb.currentText() == "Zusatzthemen":
                 for all in zusatzthemen_beschreibung:
-                    label = zusatzthemen_beschreibung[all] + " ("+ all+")"
-                    self.comboBox_fb_num.addItem(label)            
+                    label = zusatzthemen_beschreibung[all] + " (" + all + ")"
+                    self.comboBox_fb_num.addItem(label)
             else:
                 for all in dict_gk.keys():
                     if all.startswith(self.comboBox_fb.currentText().lower()):
@@ -5757,7 +5757,7 @@ class Ui_MainWindow(object):
         self, list_beispieldaten_sections, combobox_gk, combobox_gk_num
     ):
         if combobox_gk == "Zusatzthemen":
-            if is_empty(combobox_gk_num) == True:             
+            if is_empty(combobox_gk_num) == True:
                 for section in list_beispieldaten_sections[:]:
                     section_split = split_section(section, self.chosen_program)
                     thema = section_split[0]
@@ -5766,7 +5766,7 @@ class Ui_MainWindow(object):
             else:
                 list_beispieldaten_sections = self.delete_item_without_string_from_list(
                     combobox_gk_num.upper(), list_beispieldaten_sections
-                )                
+                )
 
         elif is_empty(combobox_gk) == False:
 
@@ -5851,7 +5851,7 @@ class Ui_MainWindow(object):
         if self.chosen_program == "lama":
             if list_mode == "sage":
                 combobox_gk = self.comboBox_gk.currentText()
-                result = re.findall("\(([a-z]+)\)",self.comboBox_gk_num.currentText())
+                result = re.findall("\(([a-z]+)\)", self.comboBox_gk_num.currentText())
                 if not is_empty(result):
                     combobox_gk_num = result[-1]
                 else:
@@ -5861,7 +5861,7 @@ class Ui_MainWindow(object):
                 # print(combobox_gk_num)
             elif list_mode == "feedback":
                 combobox_gk = self.comboBox_fb.currentText()
-                result = re.findall("\(([a-z]+)\)",self.comboBox_fb_num.currentText())
+                result = re.findall("\(([a-z]+)\)", self.comboBox_fb_num.currentText())
                 if not is_empty(result):
                     combobox_gk_num = result[-1]
                 else:
