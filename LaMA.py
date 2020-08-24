@@ -821,6 +821,8 @@ class Ui_MainWindow(object):
 
             new_verticallayout.addStretch()
 
+            btn_alle_kapitel = create_new_button(new_scrollareacontent,"alle Kapitel der {}. Klasse auswählen".format(klasse[1]),partial(self.btn_alle_kapitel_clicked, klasse))
+            new_verticallayout.addWidget(btn_alle_kapitel)
             # new_verticallayout.addItem(spacerItem_cria)
 
             new_scrollarea.setWidget(new_scrollareacontent)
@@ -873,8 +875,24 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.groupBox_schulstufe_cria, 1, 0, 2, 1)
         self.groupBox_ausgew_themen_cria = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_ausgew_themen_cria.setObjectName("groupBox_ausgew_themen_cria")
-        self.verticalLayout_2_cria = QtWidgets.QVBoxLayout(
+        self.gridLayout_12_cria = QtWidgets.QGridLayout(self.groupBox_ausgew_themen_cria)
+        self.gridLayout_12_cria.setObjectName("gridLayout_12_cria")
+        self.scrollArea_ausgew_themen_cria = QtWidgets.QScrollArea(
             self.groupBox_ausgew_themen_cria
+        )
+        self.scrollArea_ausgew_themen_cria.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.scrollArea_ausgew_themen_cria.setWidgetResizable(True)
+        self.scrollArea_ausgew_themen_cria.setObjectName("scrollArea_ausgew_themen")
+
+        self.scrollAreaWidgetContents_ausgew_themen_cria = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents_ausgew_themen_cria.setGeometry(QtCore.QRect(0, 0, 320, 279))
+        self.scrollAreaWidgetContents_ausgew_themen_cria.setObjectName(
+            "scrollAreaWidgetContents_ausgew_themen_cria"
+        )
+        self.scrollArea_ausgew_themen_cria.setWidget(self.scrollAreaWidgetContents_ausgew_themen_cria)
+        self.gridLayout_12_cria.addWidget(self.scrollArea_ausgew_themen_cria, 0, 0, 1, 1)
+        self.verticalLayout_2_cria = QtWidgets.QVBoxLayout(
+            self.scrollAreaWidgetContents_ausgew_themen_cria
         )
         self.verticalLayout_2_cria.setObjectName("verticalLayout_2_cria")
         self.label_ausg_themen_cria = QtWidgets.QLabel(self.groupBox_ausgew_themen_cria)
@@ -884,6 +902,7 @@ class Ui_MainWindow(object):
         self.groupBox_ausgew_themen_cria.setTitle(
             _translate("MainWindow", "Ausgewählte Themen", None)
         )
+        # self.groupBox_ausgew_themen_cria.setMaximumHeight(200)
         self.groupBox_ausgew_themen_cria.hide()
         self.verticalLayout_2_cria.addWidget(self.label_ausg_themen_cria)
         self.gridLayout.addWidget(self.groupBox_ausgew_themen_cria, 3, 1, 1, 1)
@@ -2557,6 +2576,30 @@ class Ui_MainWindow(object):
         # self.button_check_all_unterkapitel.setStyleSheet("background-color: rgb(240, 240, 240);")
         # self.verticalLayout_4_cria.addWidget(self.button_check_all_unterkapitel, 0, QtCore.Qt.AlignLeft)
         # self.button_check_all_unterkapitel.hide()
+
+    def btn_alle_kapitel_clicked(self, klasse):
+        dict_klasse_name = eval("dict_{}_name".format(klasse))
+        dict_klasse = eval("dict_{}".format(klasse))
+        first_chapter = list(dict_klasse_name.keys())[0]
+        first_checkbox = "checkbox_unterkapitel_{0}_{1}_{2}".format(
+            klasse, first_chapter, dict_klasse[first_chapter][0]
+        )
+        if self.dict_widget_variables[first_checkbox].isChecked() == True:
+            all_checked = True
+        else:
+            all_checked = False
+        
+                   
+        for kapitel in dict_klasse_name:
+            first_checkbox = "checkbox_unterkapitel_{0}_{1}_{2}".format(
+                klasse, kapitel, dict_klasse[kapitel][0]
+            )
+            if all_checked == True:
+                self.dict_widget_variables[first_checkbox].setChecked(True)
+            else:
+                self.dict_widget_variables[first_checkbox].setChecked(False)
+
+            self.btn_alle_unterkapitel_clicked_cria(klasse, kapitel)
 
     def chosen_radiobutton(self, klasse, kapitel):
         dict_klasse = eval("dict_{}".format(klasse))
