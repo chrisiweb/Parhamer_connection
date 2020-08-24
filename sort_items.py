@@ -12,11 +12,12 @@ def natural_keys(text):
 
 def sorted_gks(list_, chosen_program):
     if chosen_program == "lama":
+        list_ = sorted(list_, key=natural_keys)
         list_ = sorted(list_, key=lama_order)
     elif chosen_program == "cria":
         list_ = sorted(list_, key=cria_order)
+        list_ = sorted(list_, key=natural_keys)
 
-    list_ = sorted(list_, key=natural_keys)
     return list_
 
 
