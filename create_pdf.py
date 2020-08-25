@@ -22,7 +22,7 @@ import datetime
 import time
 from datetime import date
 from refresh_ddb import refresh_ddb, modification_date
-from sort_items import natural_keys
+from sort_items import natural_keys, lama_order
 from standard_dialog_windows import question_window
 from subwindows import Ui_Dialog_processing
 import webbrowser
@@ -89,7 +89,7 @@ def check_gks_not_included(gk_liste, suchbegriffe):
 
         # print(all)
         # gesammeltedateien.append(all)
-
+  
 
 def prepare_tex_for_pdf(self):
     QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
@@ -354,7 +354,10 @@ def prepare_tex_for_pdf(self):
                         else:
                             gesammeltedateien.append(element)
 
-            # print(gesammeltedateien)
+            # for all in gesammeltedateien:
+            #     info = split_section(all, self.chosen_program)
+            #     print(info)
+            # gesammeltedateien = sorted(gesammeltedateien, key = section_order)
         if not len(self.entry_suchbegriffe.text()) == 0:
             suchbegriffe.append(self.entry_suchbegriffe.text())
             if (
@@ -421,7 +424,10 @@ def prepare_tex_for_pdf(self):
     # if not len(self.entry_suchbegriffe.text())==0:
     # 	suchbegriffe.append(self.entry_suchbegriffe.text())
 
-    gesammeltedateien.sort(key=natural_keys)
+    if self.chosen_program == "lama" and chosen_aufgabenformat == "Typ2Aufgaben":
+        gesammeltedateien.sort(key=lama_order)
+    else:
+        gesammeltedateien.sort(key=natural_keys)
 
     dict_gesammeltedateien = {}
 
@@ -551,7 +557,7 @@ def prepare_tex_for_pdf(self):
     if self.chosen_program == "cria":
         for all in suchbegriffe:
             if isinstance(all, list):
-                item = all[1] + "." + all[2] + " (" + all[0] + ")"
+                item = all[1] + "." + all[2] + " (" + all[0][1] + ".)"
             else:
                 item = all.upper()
             if all == suchbegriffe[-1]:

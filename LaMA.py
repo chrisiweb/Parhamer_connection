@@ -2529,7 +2529,7 @@ class Ui_MainWindow(object):
                 for unterkapitel in dict_klasse[kapitel]:
                     checkbox = create_new_checkbox(
                         self.scrollAreaWidgetContents_cria,
-                        dict_unterkapitel[unterkapitel],
+                        dict_unterkapitel[unterkapitel] + " ("+unterkapitel + ")",
                     )
                     checkbox.stateChanged.connect(
                         partial(
@@ -2581,15 +2581,18 @@ class Ui_MainWindow(object):
         dict_klasse_name = eval("dict_{}_name".format(klasse))
         dict_klasse = eval("dict_{}".format(klasse))
         first_chapter = list(dict_klasse_name.keys())[0]
+        first_radiobutton = "radiobutton_kapitel_{0}_{1}".format(klasse, first_chapter)
         first_checkbox = "checkbox_unterkapitel_{0}_{1}_{2}".format(
             klasse, first_chapter, dict_klasse[first_chapter][0]
         )
+        self.dict_widget_variables[first_radiobutton].setChecked(True)
+
         if self.dict_widget_variables[first_checkbox].isChecked() == True:
             all_checked = True
         else:
             all_checked = False
         
-                   
+           
         for kapitel in dict_klasse_name:
             first_checkbox = "checkbox_unterkapitel_{0}_{1}_{2}".format(
                 klasse, kapitel, dict_klasse[kapitel][0]
@@ -3736,14 +3739,14 @@ class Ui_MainWindow(object):
         klasse = "k{}".format(highest_grade)
         return klasse
 
-    def split_thema_klasse(self, thema):
-        if re.search("\(.\.\)", thema) != None:
-            thema, klasse = thema.split("(")
-            thema = thema.lower().strip()
-            klasse = klasse.strip(".)")
+    # def split_thema_klasse(self, thema):
+    #     if re.search("\(.\.\)", thema) != None:
+    #         thema, klasse = thema.split("(")
+    #         thema = thema.lower().strip()
+    #         klasse = klasse.strip(".)")
 
-            return thema, klasse
-        return None, None
+    #         return thema, klasse
+    #     return None, None
 
     def create_path_from_list(self, list_):
         path = ""
@@ -3831,6 +3834,7 @@ class Ui_MainWindow(object):
         file_integer = file_name.rsplit("-", 1)[-1]
         file_integer = file_integer.replace(".tex", "").strip()
         file_integer = file_integer.split("[")[0]
+        file_integer = file_integer.replace("i.","")
         return file_integer
 
     def get_max_integer_file_variation(self, save_dateipfad):
@@ -3861,8 +3865,8 @@ class Ui_MainWindow(object):
 
     def get_max_integer_file(self, typ_save, path):
         max_integer_file = self.check_files_path(typ_save, path)
-
-        if typ_save[0] != "local":
+        
+        if typ_save[0] != "local" and typ_save != ['admin',1]:
             max_integer_file = self.check_files_beispieleinreichung(
                 typ_save, max_integer_file
             )
@@ -3870,15 +3874,11 @@ class Ui_MainWindow(object):
         return max_integer_file
 
     def check_files_path(self, typ_save, path):
-        if typ_save == ["admin", 1]:
-            max_integer_file = 1000
-        else:
-            max_integer_file = 0
+        max_integer_file = 0
 
         if not os.path.exists(path):
             print('Creating "{}" for you.'.format(path))
             os.makedirs(path)
-
         for all in os.listdir(path):
             if all.endswith(".tex"):
                 file_integer = self.get_integer(all)
@@ -3905,7 +3905,6 @@ class Ui_MainWindow(object):
 
         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
             typ = 2
-
         try:
             for all in os.listdir(path):
                 if all.endswith(".tex"):
@@ -3916,7 +3915,7 @@ class Ui_MainWindow(object):
                     elif typ == 1 and name in all:
                         if int(file_integer) > max_integer_file:
                             max_integer_file = int(file_integer)
-                    elif typ == 2 and "-" not in all:
+                    elif typ == 2 and self.get_aufgabentyp(all)==2:
                         if int(file_integer) > max_integer_file:
                             max_integer_file = int(file_integer)
 
@@ -3933,29 +3932,34 @@ class Ui_MainWindow(object):
             local = "_L_"
         else:
             local = ""
+        
+        number = self.max_integer_file + 1
+        if typ_save == ['admin', 1]:
+            number = "i."+str(number)
+ 
 
         if self.chosen_program == "cria":
             highest_grade = self.get_highest_grade()
             name = "{0}{1}_{2}_{3}".format(
-                local, highest_grade, self.max_integer_file + 1, name
+                local, highest_grade, number, name
             )
 
         elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-            thema, klasse = self.split_thema_klasse(
-                self.list_selected_topics_creator[0]
+            # thema, klasse = self.split_thema_klasse(
+            #     self.list_selected_topics_creator[0]
+            # )
+            # if thema == None:
+            thema = shorten_gk(self.list_selected_topics_creator[0]).upper()
+            name = "{0}{1}_{2}_{3}".format(
+                local, thema, number, name
             )
-            if thema == None:
-                thema = shorten_gk(self.list_selected_topics_creator[0]).upper()
-                name = "{0}{1}_{2}_{3}".format(
-                    local, thema, self.max_integer_file + 1, name
-                )
-            else:
-                name = "{0}k{1}_{2}_{3}_{4}".format(
-                    local, klasse, thema, self.max_integer_file + 1, name
-                )
+            # else:
+            #     name = "{0}k{1}_{2}_{3}_{4}".format(
+            #         local, klasse, thema, self.max_integer_file + 1, name
+            #     )
 
         elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
-            name = "{0}{1}_{2}".format(local, self.max_integer_file + 1, name)
+            name = "{0}{1}_{2}".format(local, number, name)
 
         return name
 
@@ -4003,9 +4007,11 @@ class Ui_MainWindow(object):
                     )
                     return
 
-    def create_file_name(self):
+    def create_file_name(self, typ_save):
         number = self.max_integer_file + 1
-
+        if typ_save == ['admin', 1] and self.chosen_variation == None:
+            number = "i."+str(number)
+            
         if self.chosen_variation != None:
             if self.chosen_program == "cria":
                 klasse, filenumber = self.chosen_variation.split("_")
@@ -4015,15 +4021,15 @@ class Ui_MainWindow(object):
         elif self.chosen_program == "cria":
             name = "{0}.tex".format(number)
         elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-            thema, klasse = self.split_thema_klasse(
-                self.list_selected_topics_creator[0]
+            # thema, klasse = self.split_thema_klasse(
+            #     self.list_selected_topics_creator[0]
+            # )
+            # if thema == None:
+            name = "{0} - {1}.tex".format(
+                self.list_selected_topics_creator[0], number
             )
-            if thema == None:
-                name = "{0} - {1}.tex".format(
-                    self.list_selected_topics_creator[0], number
-                )
-            else:
-                name = "K{0} - {1} - {2}.tex".format(klasse, thema.upper(), number)
+            # else:
+            #     name = "K{0} - {1} - {2}.tex".format(klasse, thema.upper(), number)
         else:
             name = "{0}.tex".format(number)
 
@@ -4036,26 +4042,28 @@ class Ui_MainWindow(object):
         if self.chosen_program == "cria":
             klasse = self.get_highest_grade().upper()
         if self.chosen_program == "lama":
-            if self.comboBox_klassen_cr.currentIndex() == 0:
-                _, klasse = self.split_thema_klasse(
-                    self.list_selected_topics_creator[0]
-                )
-                if klasse != None:
-                    temp_list = []
-                    for all in self.list_selected_topics_creator:
-                        temp_themen, temp_klasse = self.split_thema_klasse(all)
-                        if int(temp_klasse) > int(klasse):
-                            klasse = temp_klasse
-                        temp_list.append(temp_themen)
-                    klasse = "K" + klasse
-            else:
+            if self.comboBox_klassen_cr.currentIndex() != 0:
+            #     _, klasse = self.split_thema_klasse(
+            #         self.list_selected_topics_creator[0]
+            #     )
+            #     if klasse != None:
+            #         temp_list = []
+            #         for all in self.list_selected_topics_creator:
+            #             temp_themen, temp_klasse = self.split_thema_klasse(all)
+            #             if int(temp_klasse) > int(klasse):
+            #                 klasse = temp_klasse
+            #             temp_list.append(temp_themen)
+            #         klasse = "K" + klasse
+            # else:
                 klasse = list(Klassen.keys())[
                     self.comboBox_klassen_cr.currentIndex() - 1
                 ]
                 klasse = klasse.upper()
+            else:
+                klasse = ""
 
-        if klasse == None:
-            klasse = ""
+        # if klasse == None:
+        #     klasse = ""
         return klasse
 
     def get_themen_section(self):
@@ -4068,23 +4076,23 @@ class Ui_MainWindow(object):
             themen = ", ".join(sorted(themen_auswahl))
 
         elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-            themen, _ = self.split_thema_klasse(self.list_selected_topics_creator[0])
-            if themen == None:  # Typ1 - GK
-                themen = self.list_selected_topics_creator[0]
-            else:  # Typ1 - Zusatzthemen
-                themen = themen.upper()
+            # themen, _ = self.split_thema_klasse(self.list_selected_topics_creator[0])
+            # if themen == None:  # Typ1 - GK
+            themen = self.list_selected_topics_creator[0]
+            # else:  # Typ1 - Zusatzthemen
+                # themen = themen.upper()
 
         elif (
             self.comboBox_aufgabentyp_cr.currentText() == "Typ 2"
         ):  # Typ2 - GK & Zusatzthemen
-            list_ = []
-            for all in self.list_selected_topics_creator:
-                thema, _ = self.split_thema_klasse(all)
-                if thema == None:
-                    list_.append(all)
-                else:
-                    list_.append(thema.upper())
-            themen = ", ".join(list_)
+            # list_ = []
+            # for all in self.list_selected_topics_creator:
+                # thema, _ = self.split_thema_klasse(all)
+                # if thema == None:
+                # list_.append(all)
+                # else:
+                    # list_.append(thema.upper())
+            themen = ", ".join(self.list_selected_topics_creator)
 
         return themen
 
@@ -4095,7 +4103,7 @@ class Ui_MainWindow(object):
 
         return section_string
 
-    def create_section(self):
+    def create_section(self, typ_save):
         # print(self.list_selected_topics_creator)
         # self.get_type()
         if self.chosen_variation != None:
@@ -4106,8 +4114,12 @@ class Ui_MainWindow(object):
             variation_nummer = x[-1]
 
             nummer = "{0}[{1}]".format(variation_nummer, self.max_integer_file + 1)
+
         else:
             nummer = self.max_integer_file + 1
+            if typ_save == ['admin', 1]:
+                nummer = "i."+str(nummer)
+
 
         klasse = self.get_klasse_section()
 
@@ -4136,7 +4148,7 @@ class Ui_MainWindow(object):
             ]  # Unterstufe
 
         elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-            thema, _ = self.split_thema_klasse(self.list_selected_topics_creator[0])
+            # thema, _ = self.split_thema_klasse(self.list_selected_topics_creator[0])
 
             if klasse == "":
                 list_section = [
@@ -4304,14 +4316,14 @@ class Ui_MainWindow(object):
 
         self.copy_image_save(typ_save, parent_image_path)
 
-        file_name = self.create_file_name()
+        file_name = self.create_file_name(typ_save)
 
         if typ_save[0] == "user":
             save_dateipfad = self.get_path_beispieleinreichung()
 
         abs_path_file = os.path.join(save_dateipfad, file_name)
 
-        section = self.create_section()
+        section = self.create_section(typ_save)
 
         with open(abs_path_file, "w", encoding="utf8") as file:
             file.write(section + "\n\n")

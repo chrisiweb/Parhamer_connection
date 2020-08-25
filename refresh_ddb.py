@@ -7,7 +7,7 @@ import json
 from functools import partial
 from config import config_file, config_loader, logo_path, path_programm
 from translate import _fromUtf8, _translate
-from sort_items import natural_keys
+from sort_items import natural_keys, lama_order
 from subwindows import Ui_Dialog_processing
 
 
@@ -37,7 +37,12 @@ def search_files(dateipfad, beispieldaten_dateipfad={}):
 def save_log_file(self, log_file, beispieldaten_dateipfad):
     temp_dict_beispieldaten = {}
     temp_list = list(beispieldaten_dateipfad.keys())
-    temp_list.sort(key=natural_keys)
+    name_logfile = os.path.basename(log_file)
+    if name_logfile == "log_file_2":
+        temp_list.sort(key=lama_order)
+    else:
+        temp_list.sort(key=natural_keys)
+
     for all in temp_list:
         temp_dict_beispieldaten.update({all: beispieldaten_dateipfad[all]})
 

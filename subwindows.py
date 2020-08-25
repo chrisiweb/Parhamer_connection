@@ -1295,7 +1295,7 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
             if chosen_variation != None:
                 number = chosen_variation.split(" - ")
                 number = number[-1].split("_")
-                if int(number[-1]) < 1000:
+                if "i." in number:
                     self.combobox_in_official.setCurrentIndex(0)
                 else:
                     self.combobox_in_official.setCurrentIndex(1)
