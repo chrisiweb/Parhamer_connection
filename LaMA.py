@@ -756,7 +756,7 @@ class Ui_MainWindow(object):
             )
         )
         self.gridLayout.addWidget(self.label_warnung, 6, 0, 1, 1)
-        # self.label_warnung.hide()
+        self.label_warnung.hide()
         #########################
 
         ##################################################################
