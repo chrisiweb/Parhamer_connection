@@ -22,7 +22,7 @@ import datetime
 import time
 from datetime import date
 from refresh_ddb import refresh_ddb, modification_date
-from sort_items import natural_keys, lama_order
+from sort_items import natural_keys, lama_order, typ2_order
 from standard_dialog_windows import question_window
 from subwindows import Ui_Dialog_processing
 import webbrowser
@@ -423,12 +423,14 @@ def prepare_tex_for_pdf(self):
                         gesammeltedateien.remove(all)
     # if not len(self.entry_suchbegriffe.text())==0:
     # 	suchbegriffe.append(self.entry_suchbegriffe.text())
+    print(gesammeltedateien)
 
     if self.chosen_program == "lama" and chosen_aufgabenformat == "Typ2Aufgaben":
-        gesammeltedateien.sort(key=lama_order)
+        gesammeltedateien.sort(key=typ2_order)
     else:
         gesammeltedateien.sort(key=natural_keys)
 
+    print(gesammeltedateien)
     dict_gesammeltedateien = {}
 
     for all in gesammeltedateien:

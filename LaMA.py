@@ -1682,7 +1682,7 @@ class Ui_MainWindow(object):
             label = "Anzahl der Aufgaben: 0"
 
         self.label_gesamtbeispiele = create_new_label(self.groupBox_sage, label, True)
-        self.gridLayout_5.addWidget(self.label_gesamtbeispiele, 7, 0, 1, 3)
+        self.gridLayout_5.addWidget(self.label_gesamtbeispiele, 7, 0, 1, 2)
 
         self.label_gesamtpunkte = QtWidgets.QLabel(self.groupBox_sage)
         self.gridLayout_5.addWidget(self.label_gesamtpunkte, 8, 0, 1, 2)
@@ -1699,7 +1699,7 @@ class Ui_MainWindow(object):
         self.cb_solution_sage.setChecked(True)
         self.cb_solution_sage.setSizePolicy(SizePolicy_fixed)
         self.cb_solution_sage.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.gridLayout_5.addWidget(self.cb_solution_sage, 7, 4, 1, 1)
+        self.gridLayout_5.addWidget(self.cb_solution_sage, 7, 3, 1, 2)
 
         # self.cb_show_variaton_sage = create_new_checkbox(self.centralwidget, "Aufgabenvariationen anzeigen")
         # self.gridLayout_5.addWidget(self.cb_show_variaton_sage, 8, 4, 1, 1)
@@ -1707,7 +1707,7 @@ class Ui_MainWindow(object):
         self.cb_drafts_sage = QtWidgets.QCheckBox(self.centralwidget)
         self.cb_drafts_sage.setSizePolicy(SizePolicy_fixed)
         self.cb_drafts_sage.setObjectName(_fromUtf8("cb_drafts_sage"))
-        self.gridLayout_5.addWidget(self.cb_drafts_sage, 8, 4, 1, 1)
+        self.gridLayout_5.addWidget(self.cb_drafts_sage, 8, 3, 1, 2)
         self.cb_drafts_sage.setText(_translate("MainWindow", "Entwürfe anzeigen", None))
         # self.horizontalLayout_2.addWidget(self.cb_drafts_sage)
         self.cb_drafts_sage.toggled.connect(self.cb_drafts_sage_enabled)
@@ -1726,7 +1726,7 @@ class Ui_MainWindow(object):
         )
         self.pushButton_vorschau.setFocusPolicy(QtCore.Qt.ClickFocus)
         # self.gridLayout.addWidget(self.groupBox_sage, 1, 2, 8, 3)
-        self.gridLayout.addWidget(self.splitter_sage, 0, 0, 8, 2)
+        self.gridLayout.addWidget(self.splitter_sage, 0, 0, 8, 1)
         self.pushButton_erstellen = QtWidgets.QPushButton(self.groupBox_sage)
         self.pushButton_erstellen.setSizePolicy(SizePolicy_fixed)
         self.pushButton_erstellen.setObjectName("pushButton_erstellen")
@@ -5480,7 +5480,6 @@ class Ui_MainWindow(object):
         QtWidgets.QApplication.restoreOverrideCursor()
 
     def comboBox_gk_changed(self, list_mode):
-        self.adapt_choosing_list(list_mode)
         if list_mode == "sage":
             self.comboBox_gk_num.clear()
             if self.comboBox_gk.currentText() == "":
@@ -5516,6 +5515,8 @@ class Ui_MainWindow(object):
                 for all in dict_gk.keys():
                     if all.startswith(self.comboBox_fb.currentText().lower()):
                         self.comboBox_fb_num.addItem(dict_gk[all][-3:])
+
+        self.adapt_choosing_list(list_mode)
 
     def comboBox_gk_num_changed(self, list_mode):
         self.adapt_choosing_list(list_mode)

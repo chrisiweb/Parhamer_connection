@@ -1,5 +1,6 @@
 import re
 import os
+from config import split_section
 
 
 def atoi(text):
@@ -62,7 +63,32 @@ def lama_order(text):
     else:
         return 5
 
+def typ2_order(text):
+    number = re.split("section{| - ", text)[1]
+    if "*Lokal*" in number:
+        number = number.replace("*Lokal* ","")
+        list_ = [0]
+        # number = str(1) + number
+        # return [0,int(number)]
 
+    elif "i." in number:
+        number = number.replace("i.","")
+        # number = str(3) + number
+        list_ = [2]
+        # return [1,int(number)]
+    else:
+        list_ = [1]
+        # number = str(2) + number
+        # return [2,int(number)]
+
+    list_.append(int(number))
+    print(list_)
+    return list_
+    # print(number)
+    # return int(number)
+    # list_ = [atoi(x) for x in number]
+    # print(list_)
+    # return list_
 # def atoi_path(text):
 #     return int(text) if text.isdigit() else text
 
