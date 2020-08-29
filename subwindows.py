@@ -601,35 +601,11 @@ class Ui_Dialog_random_quiz(object):
         self.random_quiz_response = [self.spinbox_number_aufgaben.value(), chosen_gk]
         self.Dialog.accept()
 
-        # print(Ui_MainWindow.dict_widget_variables)
-        # self.buttonBox_titlepage = QtWidgets.QDialogButtonBox(self.Dialog)
-        # self.buttonBox_titlepage = QtWidgets.QDialogButtonBox(self.Dialog)
-        # self.buttonBox_titlepage.setStandardButtons(
-        #     QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel
-        # )
-
-        # # buttonS = self.buttonBox_titlepage.button(QtWidgets.QDialogButtonBox.Save)
-        # # buttonS.setText('Speichern')
-        # buttonX = self.buttonBox_titlepage.button(QtWidgets.QDialogButtonBox.Cancel)
-        # buttonX.setText("Standard wiederherstellen")
-        # self.buttonBox_titlepage.setObjectName("buttonBox")
-        # self.buttonBox_titlepage.rejected.connect(
-        #     partial(self.set_default_titlepage, dict_titlepage)
-        # )
-        # self.buttonBox_titlepage.accepted.connect(
-        #     partial(self.save_titlepage, dict_titlepage)
-        # )
-        # # self.retranslateUi(self.Dialog)
-
-        # self.verticalLayout_titlepage.addWidget(self.buttonBox_titlepage)
 
 
 class Ui_Dialog_titlepage(object):
     def setupUi(self, Dialog, dict_titlepage):
-        # self.dict_titlepage = dict_titlepage
-        # print(self.dict_titlepage)
 
-        # self.aufgabenstellung_split_text=aufgabenstellung_split_text
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
         Dialog.setWindowTitle(
@@ -749,7 +725,7 @@ class Ui_Dialog_titlepage(object):
             return
 
         logo_name = os.path.basename(logo_titlepage_path[0][0])
-        # print(logo_name)
+
         self.cb_titlepage_logo.setText("Logo ({})".format(logo_name))
         dict_titlepage["logo_path"] = "{}".format(logo_titlepage_path[0][0])
         copy_logo_titlepage_path = os.path.join(
@@ -813,7 +789,7 @@ class Ui_Dialog_ausgleichspunkte(object):
             aufgabenstellung_split_text
         )
         self.list_sage_ausgleichspunkte_chosen = list_sage_ausgleichspunkte_chosen
-        # print(self.list_sage_ausgleichspunkte_chosen)
+
         self.list_sage_hide_show_items_chosen = list_sage_hide_show_items_chosen
         self.dict_widget_variables_ausgleichspunkte = {}
         self.dict_widget_variables_hide_show_items = {}
@@ -887,7 +863,6 @@ class Ui_Dialog_ausgleichspunkte(object):
     def build_checkboxes_for_content(self):
         row = 1
         if self.combobox_edit.currentIndex() == 0:
-            # print(self.aufgabenstellung_split_text)
             for linetext in self.aufgabenstellung_split_text:
                 if (
                     "GRAFIK" in linetext
@@ -939,12 +914,11 @@ class Ui_Dialog_ausgleichspunkte(object):
         if "\\ASubitem" in linetext:
             linetext = linetext.replace("\\ASubitem", "")
 
-        # print(linetext)
+
         if self.combobox_edit.currentIndex() == 0:
             if linetext in self.list_sage_ausgleichspunkte_chosen:
                 checkbox.setChecked(True)
         if self.combobox_edit.currentIndex() == 1:
-            # print(self.list_sage_hide_show_items_chosen)
             if linetext in self.list_sage_hide_show_items_chosen:
                 checkbox.setChecked(False)
                 checkbox_label.setStyleSheet("color: gray")

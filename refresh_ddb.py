@@ -90,7 +90,6 @@ def collect_all_exisiting_files(self, selected_program):
                 path_programm, "Teildokument", "log_file_%s" % selected_aufgabentyp
             )
 
-            # print(beispieldaten_dateipfad)
             save_log_file(self, log_file, beispieldaten_dateipfad)
 
     if selected_program == "cria":

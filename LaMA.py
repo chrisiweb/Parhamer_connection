@@ -698,7 +698,6 @@ class Ui_MainWindow(object):
         # ))
 
         #
-        #  print(gray.red())
         self.tab_widget_gk.setObjectName(_fromUtf8("tab_widget_gk"))
         self.gridLayout_11.addWidget(self.tab_widget_gk, 0, 0, 1, 1)
         self.gridLayout.addWidget(self.groupBox_gk, 1, 0, 2, 1)
@@ -1439,9 +1438,6 @@ class Ui_MainWindow(object):
         # self.gridLayout.addWidget(self.groupBox_alle_aufgaben, 2, 0, 7, 1)
 
         # self.groupBox_alle_aufgaben.setTitle(_translate("MainWindow", "Aufgaben", None))
-        # print(self.groupBox_alle_aufgaben.height())
-        # print(self.groupBox_alle_aufgaben.sizeHint())
-        # print(self.groupBox_alle_aufgaben.minimumSizeHint())
         # self.groupBox_alle_aufgaben.setMinimumWidth(280)
         # self.groupBox_alle_aufgaben.resize(self.groupBox_alle_aufgaben.sizeHint())
 
@@ -2654,7 +2650,7 @@ class Ui_MainWindow(object):
         if checkbox.isChecked() == False:
             del self.dict_chosen_topics[thema_label]
         x = ", ".join(self.dict_chosen_topics.keys())
-        # print(self.dict_chosen_topics)
+
         self.label_ausg_themen_cria.setText(_translate("MainWindow", x, None))
 
     def btn_alle_unterkapitel_clicked_cria(self, klasse, kapitel):
@@ -2684,7 +2680,6 @@ class Ui_MainWindow(object):
             "combobox_kapitel_creator_cria_{}".format(klasse)
         ].currentText()
         kapitel = text_combobox[text_combobox.find("(") + 1 : text_combobox.find(")")]
-        # print(kapitel)
 
         dict_klasse = eval("dict_{}".format(klasse))
 
@@ -3308,7 +3303,7 @@ class Ui_MainWindow(object):
             return
 
         list_collected_data = re.split("{| - |}", section)[1:-1]
-        # print(list_collected_data)
+
         dict_collected_data = {}
 
         dict_collected_data["aufgabe"] = aufgabe
@@ -3346,8 +3341,7 @@ class Ui_MainWindow(object):
 
         if self.chosen_program == "lama":
             list_comboBox_gk = ["AG", "FA", "AN", "WS", "Zusatzthemen"]
-            # print(aufgabe)
-            # return
+
             if typ == 1:
                 gk, nummer = aufgabe.split(" - ")
                 short_gk = shorten_gk(gk)
@@ -3478,7 +3472,7 @@ class Ui_MainWindow(object):
             return
 
         self.set_infos_chosen_variation(dict_collected_data)
-        # print(dict_collected_data)
+
 
     def add_picture(self):
         try:
@@ -4104,8 +4098,6 @@ class Ui_MainWindow(object):
         return section_string
 
     def create_section(self, typ_save):
-        # print(self.list_selected_topics_creator)
-        # self.get_type()
         if self.chosen_variation != None:
             if self.chosen_program == "lama":
                 x = self.chosen_variation.split(" - ")
@@ -4291,9 +4283,6 @@ class Ui_MainWindow(object):
 
             self.max_integer_file = self.get_max_integer_file_variation(save_dateipfad)
 
-        # print(save_dateipfad)
-        # print(self.max_integer_file)
-        # return
         ############################################################################
 
         response = self.replace_image_name(typ_save)
@@ -4697,8 +4686,6 @@ class Ui_MainWindow(object):
             # for all in self.list_alle_aufgaben_sage:
             #     self.build_aufgaben_schularbeit(all)
 
-            # print(sampling)
-            # print(len(sampling))
 
         else:
             if self.chosen_program == "lama":
@@ -5735,7 +5722,6 @@ class Ui_MainWindow(object):
     def search_for_number(self, list_, line_entry, list_mode):
         for section in list_[:]:
             info = split_section(section, self.chosen_program)
-            # print(info)
             if self.chosen_program == "lama":
                 if list_mode == "sage":
                     combobox_at = self.comboBox_at_sage.currentText()
@@ -5912,9 +5898,7 @@ class Ui_MainWindow(object):
                     combobox_gk_num = result[-1]
                 else:
                     combobox_gk_num = self.comboBox_gk_num.currentText()
-                # print(x.group(1))
-                # print(combobox_gk)
-                # print(combobox_gk_num)
+
             elif list_mode == "feedback":
                 combobox_gk = self.comboBox_fb.currentText()
                 result = re.findall("\(([a-z]+)\)", self.comboBox_fb_num.currentText())
@@ -5964,7 +5948,6 @@ class Ui_MainWindow(object):
             list_beispieldaten_sections, self.chosen_program
         )
 
-        # print(list_beispieldaten_sections)
         self.add_items_to_listwidget(
             list_beispieldaten_sections, beispieldaten_dateipfad, listWidget, list_mode
         )
