@@ -111,10 +111,10 @@ def split_section(section, chosen_program):
     info = [item.strip() for item in section]
     info.pop(0)
     info.pop(-1)
-    if chosen_program == "lama":
-        if re.match("K[0-9]", info[1]) or info[1] == "MAT":
-            pass
-        else:
-            info.insert(1, None)
+    # if chosen_program == "lama":
+    if re.match("K[0-9]", info[1]) or info[1] == "MAT":
+        pass
+    else:
+        info.insert(1, None)
 
     return info

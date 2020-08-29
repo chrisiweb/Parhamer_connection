@@ -698,7 +698,6 @@ class Ui_MainWindow(object):
         # ))
 
         #
-        #  print(gray.red())
         self.tab_widget_gk.setObjectName(_fromUtf8("tab_widget_gk"))
         self.gridLayout_11.addWidget(self.tab_widget_gk, 0, 0, 1, 1)
         self.gridLayout.addWidget(self.groupBox_gk, 1, 0, 2, 1)
@@ -821,6 +820,8 @@ class Ui_MainWindow(object):
 
             new_verticallayout.addStretch()
 
+            btn_alle_kapitel = create_new_button(new_scrollareacontent,"alle Kapitel der {}. Klasse auswählen".format(klasse[1]),partial(self.btn_alle_kapitel_clicked, klasse))
+            new_verticallayout.addWidget(btn_alle_kapitel)
             # new_verticallayout.addItem(spacerItem_cria)
 
             new_scrollarea.setWidget(new_scrollareacontent)
@@ -873,8 +874,24 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.groupBox_schulstufe_cria, 1, 0, 2, 1)
         self.groupBox_ausgew_themen_cria = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_ausgew_themen_cria.setObjectName("groupBox_ausgew_themen_cria")
-        self.verticalLayout_2_cria = QtWidgets.QVBoxLayout(
+        self.gridLayout_12_cria = QtWidgets.QGridLayout(self.groupBox_ausgew_themen_cria)
+        self.gridLayout_12_cria.setObjectName("gridLayout_12_cria")
+        self.scrollArea_ausgew_themen_cria = QtWidgets.QScrollArea(
             self.groupBox_ausgew_themen_cria
+        )
+        self.scrollArea_ausgew_themen_cria.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.scrollArea_ausgew_themen_cria.setWidgetResizable(True)
+        self.scrollArea_ausgew_themen_cria.setObjectName("scrollArea_ausgew_themen")
+
+        self.scrollAreaWidgetContents_ausgew_themen_cria = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents_ausgew_themen_cria.setGeometry(QtCore.QRect(0, 0, 320, 279))
+        self.scrollAreaWidgetContents_ausgew_themen_cria.setObjectName(
+            "scrollAreaWidgetContents_ausgew_themen_cria"
+        )
+        self.scrollArea_ausgew_themen_cria.setWidget(self.scrollAreaWidgetContents_ausgew_themen_cria)
+        self.gridLayout_12_cria.addWidget(self.scrollArea_ausgew_themen_cria, 0, 0, 1, 1)
+        self.verticalLayout_2_cria = QtWidgets.QVBoxLayout(
+            self.scrollAreaWidgetContents_ausgew_themen_cria
         )
         self.verticalLayout_2_cria.setObjectName("verticalLayout_2_cria")
         self.label_ausg_themen_cria = QtWidgets.QLabel(self.groupBox_ausgew_themen_cria)
@@ -884,6 +901,7 @@ class Ui_MainWindow(object):
         self.groupBox_ausgew_themen_cria.setTitle(
             _translate("MainWindow", "Ausgewählte Themen", None)
         )
+        # self.groupBox_ausgew_themen_cria.setMaximumHeight(200)
         self.groupBox_ausgew_themen_cria.hide()
         self.verticalLayout_2_cria.addWidget(self.label_ausg_themen_cria)
         self.gridLayout.addWidget(self.groupBox_ausgew_themen_cria, 3, 1, 1, 1)
@@ -1420,9 +1438,6 @@ class Ui_MainWindow(object):
         # self.gridLayout.addWidget(self.groupBox_alle_aufgaben, 2, 0, 7, 1)
 
         # self.groupBox_alle_aufgaben.setTitle(_translate("MainWindow", "Aufgaben", None))
-        # print(self.groupBox_alle_aufgaben.height())
-        # print(self.groupBox_alle_aufgaben.sizeHint())
-        # print(self.groupBox_alle_aufgaben.minimumSizeHint())
         # self.groupBox_alle_aufgaben.setMinimumWidth(280)
         # self.groupBox_alle_aufgaben.resize(self.groupBox_alle_aufgaben.sizeHint())
 
@@ -1663,7 +1678,7 @@ class Ui_MainWindow(object):
             label = "Anzahl der Aufgaben: 0"
 
         self.label_gesamtbeispiele = create_new_label(self.groupBox_sage, label, True)
-        self.gridLayout_5.addWidget(self.label_gesamtbeispiele, 7, 0, 1, 3)
+        self.gridLayout_5.addWidget(self.label_gesamtbeispiele, 7, 0, 1, 2)
 
         self.label_gesamtpunkte = QtWidgets.QLabel(self.groupBox_sage)
         self.gridLayout_5.addWidget(self.label_gesamtpunkte, 8, 0, 1, 2)
@@ -1680,7 +1695,7 @@ class Ui_MainWindow(object):
         self.cb_solution_sage.setChecked(True)
         self.cb_solution_sage.setSizePolicy(SizePolicy_fixed)
         self.cb_solution_sage.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.gridLayout_5.addWidget(self.cb_solution_sage, 7, 4, 1, 1)
+        self.gridLayout_5.addWidget(self.cb_solution_sage, 7, 3, 1, 2)
 
         # self.cb_show_variaton_sage = create_new_checkbox(self.centralwidget, "Aufgabenvariationen anzeigen")
         # self.gridLayout_5.addWidget(self.cb_show_variaton_sage, 8, 4, 1, 1)
@@ -1688,7 +1703,7 @@ class Ui_MainWindow(object):
         self.cb_drafts_sage = QtWidgets.QCheckBox(self.centralwidget)
         self.cb_drafts_sage.setSizePolicy(SizePolicy_fixed)
         self.cb_drafts_sage.setObjectName(_fromUtf8("cb_drafts_sage"))
-        self.gridLayout_5.addWidget(self.cb_drafts_sage, 8, 4, 1, 1)
+        self.gridLayout_5.addWidget(self.cb_drafts_sage, 8, 3, 1, 2)
         self.cb_drafts_sage.setText(_translate("MainWindow", "Entwürfe anzeigen", None))
         # self.horizontalLayout_2.addWidget(self.cb_drafts_sage)
         self.cb_drafts_sage.toggled.connect(self.cb_drafts_sage_enabled)
@@ -1707,7 +1722,7 @@ class Ui_MainWindow(object):
         )
         self.pushButton_vorschau.setFocusPolicy(QtCore.Qt.ClickFocus)
         # self.gridLayout.addWidget(self.groupBox_sage, 1, 2, 8, 3)
-        self.gridLayout.addWidget(self.splitter_sage, 0, 0, 8, 2)
+        self.gridLayout.addWidget(self.splitter_sage, 0, 0, 8, 1)
         self.pushButton_erstellen = QtWidgets.QPushButton(self.groupBox_sage)
         self.pushButton_erstellen.setSizePolicy(SizePolicy_fixed)
         self.pushButton_erstellen.setObjectName("pushButton_erstellen")
@@ -2510,7 +2525,7 @@ class Ui_MainWindow(object):
                 for unterkapitel in dict_klasse[kapitel]:
                     checkbox = create_new_checkbox(
                         self.scrollAreaWidgetContents_cria,
-                        dict_unterkapitel[unterkapitel],
+                        dict_unterkapitel[unterkapitel] + " ("+unterkapitel + ")",
                     )
                     checkbox.stateChanged.connect(
                         partial(
@@ -2557,6 +2572,33 @@ class Ui_MainWindow(object):
         # self.button_check_all_unterkapitel.setStyleSheet("background-color: rgb(240, 240, 240);")
         # self.verticalLayout_4_cria.addWidget(self.button_check_all_unterkapitel, 0, QtCore.Qt.AlignLeft)
         # self.button_check_all_unterkapitel.hide()
+
+    def btn_alle_kapitel_clicked(self, klasse):
+        dict_klasse_name = eval("dict_{}_name".format(klasse))
+        dict_klasse = eval("dict_{}".format(klasse))
+        first_chapter = list(dict_klasse_name.keys())[0]
+        first_radiobutton = "radiobutton_kapitel_{0}_{1}".format(klasse, first_chapter)
+        first_checkbox = "checkbox_unterkapitel_{0}_{1}_{2}".format(
+            klasse, first_chapter, dict_klasse[first_chapter][0]
+        )
+        self.dict_widget_variables[first_radiobutton].setChecked(True)
+
+        if self.dict_widget_variables[first_checkbox].isChecked() == True:
+            all_checked = True
+        else:
+            all_checked = False
+        
+           
+        for kapitel in dict_klasse_name:
+            first_checkbox = "checkbox_unterkapitel_{0}_{1}_{2}".format(
+                klasse, kapitel, dict_klasse[kapitel][0]
+            )
+            if all_checked == True:
+                self.dict_widget_variables[first_checkbox].setChecked(True)
+            else:
+                self.dict_widget_variables[first_checkbox].setChecked(False)
+
+            self.btn_alle_unterkapitel_clicked_cria(klasse, kapitel)
 
     def chosen_radiobutton(self, klasse, kapitel):
         dict_klasse = eval("dict_{}".format(klasse))
@@ -2608,7 +2650,7 @@ class Ui_MainWindow(object):
         if checkbox.isChecked() == False:
             del self.dict_chosen_topics[thema_label]
         x = ", ".join(self.dict_chosen_topics.keys())
-        # print(self.dict_chosen_topics)
+
         self.label_ausg_themen_cria.setText(_translate("MainWindow", x, None))
 
     def btn_alle_unterkapitel_clicked_cria(self, klasse, kapitel):
@@ -2638,7 +2680,6 @@ class Ui_MainWindow(object):
             "combobox_kapitel_creator_cria_{}".format(klasse)
         ].currentText()
         kapitel = text_combobox[text_combobox.find("(") + 1 : text_combobox.find(")")]
-        # print(kapitel)
 
         dict_klasse = eval("dict_{}".format(klasse))
 
@@ -3262,7 +3303,7 @@ class Ui_MainWindow(object):
             return
 
         list_collected_data = re.split("{| - |}", section)[1:-1]
-        # print(list_collected_data)
+
         dict_collected_data = {}
 
         dict_collected_data["aufgabe"] = aufgabe
@@ -3300,8 +3341,7 @@ class Ui_MainWindow(object):
 
         if self.chosen_program == "lama":
             list_comboBox_gk = ["AG", "FA", "AN", "WS", "Zusatzthemen"]
-            # print(aufgabe)
-            # return
+
             if typ == 1:
                 gk, nummer = aufgabe.split(" - ")
                 short_gk = shorten_gk(gk)
@@ -3432,7 +3472,7 @@ class Ui_MainWindow(object):
             return
 
         self.set_infos_chosen_variation(dict_collected_data)
-        # print(dict_collected_data)
+
 
     def add_picture(self):
         try:
@@ -3693,14 +3733,14 @@ class Ui_MainWindow(object):
         klasse = "k{}".format(highest_grade)
         return klasse
 
-    def split_thema_klasse(self, thema):
-        if re.search("\(.\.\)", thema) != None:
-            thema, klasse = thema.split("(")
-            thema = thema.lower().strip()
-            klasse = klasse.strip(".)")
+    # def split_thema_klasse(self, thema):
+    #     if re.search("\(.\.\)", thema) != None:
+    #         thema, klasse = thema.split("(")
+    #         thema = thema.lower().strip()
+    #         klasse = klasse.strip(".)")
 
-            return thema, klasse
-        return None, None
+    #         return thema, klasse
+    #     return None, None
 
     def create_path_from_list(self, list_):
         path = ""
@@ -3788,6 +3828,7 @@ class Ui_MainWindow(object):
         file_integer = file_name.rsplit("-", 1)[-1]
         file_integer = file_integer.replace(".tex", "").strip()
         file_integer = file_integer.split("[")[0]
+        file_integer = file_integer.replace("i.","")
         return file_integer
 
     def get_max_integer_file_variation(self, save_dateipfad):
@@ -3818,8 +3859,8 @@ class Ui_MainWindow(object):
 
     def get_max_integer_file(self, typ_save, path):
         max_integer_file = self.check_files_path(typ_save, path)
-
-        if typ_save[0] != "local":
+        
+        if typ_save[0] != "local" and typ_save != ['admin',1]:
             max_integer_file = self.check_files_beispieleinreichung(
                 typ_save, max_integer_file
             )
@@ -3827,15 +3868,11 @@ class Ui_MainWindow(object):
         return max_integer_file
 
     def check_files_path(self, typ_save, path):
-        if typ_save == ["admin", 1]:
-            max_integer_file = 1000
-        else:
-            max_integer_file = 0
+        max_integer_file = 0
 
         if not os.path.exists(path):
             print('Creating "{}" for you.'.format(path))
             os.makedirs(path)
-
         for all in os.listdir(path):
             if all.endswith(".tex"):
                 file_integer = self.get_integer(all)
@@ -3862,7 +3899,6 @@ class Ui_MainWindow(object):
 
         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
             typ = 2
-
         try:
             for all in os.listdir(path):
                 if all.endswith(".tex"):
@@ -3873,7 +3909,7 @@ class Ui_MainWindow(object):
                     elif typ == 1 and name in all:
                         if int(file_integer) > max_integer_file:
                             max_integer_file = int(file_integer)
-                    elif typ == 2 and "-" not in all:
+                    elif typ == 2 and self.get_aufgabentyp(all)==2:
                         if int(file_integer) > max_integer_file:
                             max_integer_file = int(file_integer)
 
@@ -3890,29 +3926,34 @@ class Ui_MainWindow(object):
             local = "_L_"
         else:
             local = ""
+        
+        number = self.max_integer_file + 1
+        if typ_save == ['admin', 1]:
+            number = "i."+str(number)
+ 
 
         if self.chosen_program == "cria":
             highest_grade = self.get_highest_grade()
             name = "{0}{1}_{2}_{3}".format(
-                local, highest_grade, self.max_integer_file + 1, name
+                local, highest_grade, number, name
             )
 
         elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-            thema, klasse = self.split_thema_klasse(
-                self.list_selected_topics_creator[0]
+            # thema, klasse = self.split_thema_klasse(
+            #     self.list_selected_topics_creator[0]
+            # )
+            # if thema == None:
+            thema = shorten_gk(self.list_selected_topics_creator[0]).upper()
+            name = "{0}{1}_{2}_{3}".format(
+                local, thema, number, name
             )
-            if thema == None:
-                thema = shorten_gk(self.list_selected_topics_creator[0]).upper()
-                name = "{0}{1}_{2}_{3}".format(
-                    local, thema, self.max_integer_file + 1, name
-                )
-            else:
-                name = "{0}k{1}_{2}_{3}_{4}".format(
-                    local, klasse, thema, self.max_integer_file + 1, name
-                )
+            # else:
+            #     name = "{0}k{1}_{2}_{3}_{4}".format(
+            #         local, klasse, thema, self.max_integer_file + 1, name
+            #     )
 
         elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
-            name = "{0}{1}_{2}".format(local, self.max_integer_file + 1, name)
+            name = "{0}{1}_{2}".format(local, number, name)
 
         return name
 
@@ -3960,9 +4001,11 @@ class Ui_MainWindow(object):
                     )
                     return
 
-    def create_file_name(self):
+    def create_file_name(self, typ_save):
         number = self.max_integer_file + 1
-
+        if typ_save == ['admin', 1] and self.chosen_variation == None:
+            number = "i."+str(number)
+            
         if self.chosen_variation != None:
             if self.chosen_program == "cria":
                 klasse, filenumber = self.chosen_variation.split("_")
@@ -3972,15 +4015,15 @@ class Ui_MainWindow(object):
         elif self.chosen_program == "cria":
             name = "{0}.tex".format(number)
         elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-            thema, klasse = self.split_thema_klasse(
-                self.list_selected_topics_creator[0]
+            # thema, klasse = self.split_thema_klasse(
+            #     self.list_selected_topics_creator[0]
+            # )
+            # if thema == None:
+            name = "{0} - {1}.tex".format(
+                self.list_selected_topics_creator[0], number
             )
-            if thema == None:
-                name = "{0} - {1}.tex".format(
-                    self.list_selected_topics_creator[0], number
-                )
-            else:
-                name = "K{0} - {1} - {2}.tex".format(klasse, thema.upper(), number)
+            # else:
+            #     name = "K{0} - {1} - {2}.tex".format(klasse, thema.upper(), number)
         else:
             name = "{0}.tex".format(number)
 
@@ -3993,26 +4036,28 @@ class Ui_MainWindow(object):
         if self.chosen_program == "cria":
             klasse = self.get_highest_grade().upper()
         if self.chosen_program == "lama":
-            if self.comboBox_klassen_cr.currentIndex() == 0:
-                _, klasse = self.split_thema_klasse(
-                    self.list_selected_topics_creator[0]
-                )
-                if klasse != None:
-                    temp_list = []
-                    for all in self.list_selected_topics_creator:
-                        temp_themen, temp_klasse = self.split_thema_klasse(all)
-                        if int(temp_klasse) > int(klasse):
-                            klasse = temp_klasse
-                        temp_list.append(temp_themen)
-                    klasse = "K" + klasse
-            else:
+            if self.comboBox_klassen_cr.currentIndex() != 0:
+            #     _, klasse = self.split_thema_klasse(
+            #         self.list_selected_topics_creator[0]
+            #     )
+            #     if klasse != None:
+            #         temp_list = []
+            #         for all in self.list_selected_topics_creator:
+            #             temp_themen, temp_klasse = self.split_thema_klasse(all)
+            #             if int(temp_klasse) > int(klasse):
+            #                 klasse = temp_klasse
+            #             temp_list.append(temp_themen)
+            #         klasse = "K" + klasse
+            # else:
                 klasse = list(Klassen.keys())[
                     self.comboBox_klassen_cr.currentIndex() - 1
                 ]
                 klasse = klasse.upper()
+            else:
+                klasse = ""
 
-        if klasse == None:
-            klasse = ""
+        # if klasse == None:
+        #     klasse = ""
         return klasse
 
     def get_themen_section(self):
@@ -4025,23 +4070,23 @@ class Ui_MainWindow(object):
             themen = ", ".join(sorted(themen_auswahl))
 
         elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-            themen, _ = self.split_thema_klasse(self.list_selected_topics_creator[0])
-            if themen == None:  # Typ1 - GK
-                themen = self.list_selected_topics_creator[0]
-            else:  # Typ1 - Zusatzthemen
-                themen = themen.upper()
+            # themen, _ = self.split_thema_klasse(self.list_selected_topics_creator[0])
+            # if themen == None:  # Typ1 - GK
+            themen = self.list_selected_topics_creator[0]
+            # else:  # Typ1 - Zusatzthemen
+                # themen = themen.upper()
 
         elif (
             self.comboBox_aufgabentyp_cr.currentText() == "Typ 2"
         ):  # Typ2 - GK & Zusatzthemen
-            list_ = []
-            for all in self.list_selected_topics_creator:
-                thema, _ = self.split_thema_klasse(all)
-                if thema == None:
-                    list_.append(all)
-                else:
-                    list_.append(thema.upper())
-            themen = ", ".join(list_)
+            # list_ = []
+            # for all in self.list_selected_topics_creator:
+                # thema, _ = self.split_thema_klasse(all)
+                # if thema == None:
+                # list_.append(all)
+                # else:
+                    # list_.append(thema.upper())
+            themen = ", ".join(self.list_selected_topics_creator)
 
         return themen
 
@@ -4052,9 +4097,7 @@ class Ui_MainWindow(object):
 
         return section_string
 
-    def create_section(self):
-        # print(self.list_selected_topics_creator)
-        # self.get_type()
+    def create_section(self, typ_save):
         if self.chosen_variation != None:
             if self.chosen_program == "lama":
                 x = self.chosen_variation.split(" - ")
@@ -4063,8 +4106,12 @@ class Ui_MainWindow(object):
             variation_nummer = x[-1]
 
             nummer = "{0}[{1}]".format(variation_nummer, self.max_integer_file + 1)
+
         else:
             nummer = self.max_integer_file + 1
+            if typ_save == ['admin', 1]:
+                nummer = "i."+str(nummer)
+
 
         klasse = self.get_klasse_section()
 
@@ -4093,7 +4140,7 @@ class Ui_MainWindow(object):
             ]  # Unterstufe
 
         elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-            thema, _ = self.split_thema_klasse(self.list_selected_topics_creator[0])
+            # thema, _ = self.split_thema_klasse(self.list_selected_topics_creator[0])
 
             if klasse == "":
                 list_section = [
@@ -4236,9 +4283,6 @@ class Ui_MainWindow(object):
 
             self.max_integer_file = self.get_max_integer_file_variation(save_dateipfad)
 
-        # print(save_dateipfad)
-        # print(self.max_integer_file)
-        # return
         ############################################################################
 
         response = self.replace_image_name(typ_save)
@@ -4261,14 +4305,14 @@ class Ui_MainWindow(object):
 
         self.copy_image_save(typ_save, parent_image_path)
 
-        file_name = self.create_file_name()
+        file_name = self.create_file_name(typ_save)
 
         if typ_save[0] == "user":
             save_dateipfad = self.get_path_beispieleinreichung()
 
         abs_path_file = os.path.join(save_dateipfad, file_name)
 
-        section = self.create_section()
+        section = self.create_section(typ_save)
 
         with open(abs_path_file, "w", encoding="utf8") as file:
             file.write(section + "\n\n")
@@ -4642,8 +4686,6 @@ class Ui_MainWindow(object):
             # for all in self.list_alle_aufgaben_sage:
             #     self.build_aufgaben_schularbeit(all)
 
-            # print(sampling)
-            # print(len(sampling))
 
         else:
             if self.chosen_program == "lama":
@@ -5425,7 +5467,6 @@ class Ui_MainWindow(object):
         QtWidgets.QApplication.restoreOverrideCursor()
 
     def comboBox_gk_changed(self, list_mode):
-        self.adapt_choosing_list(list_mode)
         if list_mode == "sage":
             self.comboBox_gk_num.clear()
             if self.comboBox_gk.currentText() == "":
@@ -5461,6 +5502,8 @@ class Ui_MainWindow(object):
                 for all in dict_gk.keys():
                     if all.startswith(self.comboBox_fb.currentText().lower()):
                         self.comboBox_fb_num.addItem(dict_gk[all][-3:])
+
+        self.adapt_choosing_list(list_mode)
 
     def comboBox_gk_num_changed(self, list_mode):
         self.adapt_choosing_list(list_mode)
@@ -5679,7 +5722,6 @@ class Ui_MainWindow(object):
     def search_for_number(self, list_, line_entry, list_mode):
         for section in list_[:]:
             info = split_section(section, self.chosen_program)
-            # print(info)
             if self.chosen_program == "lama":
                 if list_mode == "sage":
                     combobox_at = self.comboBox_at_sage.currentText()
@@ -5856,9 +5898,7 @@ class Ui_MainWindow(object):
                     combobox_gk_num = result[-1]
                 else:
                     combobox_gk_num = self.comboBox_gk_num.currentText()
-                # print(x.group(1))
-                # print(combobox_gk)
-                # print(combobox_gk_num)
+
             elif list_mode == "feedback":
                 combobox_gk = self.comboBox_fb.currentText()
                 result = re.findall("\(([a-z]+)\)", self.comboBox_fb_num.currentText())
@@ -5908,7 +5948,6 @@ class Ui_MainWindow(object):
             list_beispieldaten_sections, self.chosen_program
         )
 
-        # print(list_beispieldaten_sections)
         self.add_items_to_listwidget(
             list_beispieldaten_sections, beispieldaten_dateipfad, listWidget, list_mode
         )

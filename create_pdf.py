@@ -22,7 +22,7 @@ import datetime
 import time
 from datetime import date
 from refresh_ddb import refresh_ddb, modification_date
-from sort_items import natural_keys
+from sort_items import natural_keys, lama_order, typ2_order
 from standard_dialog_windows import question_window
 from subwindows import Ui_Dialog_processing
 import webbrowser
@@ -87,9 +87,7 @@ def check_gks_not_included(gk_liste, suchbegriffe):
     else:
         return
 
-        # print(all)
-        # gesammeltedateien.append(all)
-
+  
 
 def prepare_tex_for_pdf(self):
     QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
@@ -138,7 +136,6 @@ def prepare_tex_for_pdf(self):
         beispieldaten = list(beispieldaten_dateipfad.keys())
 
     if self.cb_drafts.isChecked():
-        # print(beispieldaten_dateipfad)
         QtWidgets.QApplication.restoreOverrideCursor()
         drafts_path = os.path.join(path_programm, "Beispieleinreichung")
 
@@ -174,7 +171,6 @@ def prepare_tex_for_pdf(self):
         elif self.chosen_program == "cria":
 
             if self.cb_drafts.isChecked():
-                # print(beispieldaten_dateipfad)
                 QtWidgets.QApplication.restoreOverrideCursor()
                 drafts_path = os.path.join(path_programm, "Beispieleinreichung")
                 for klasse in list_klassen:
@@ -287,24 +283,11 @@ def prepare_tex_for_pdf(self):
             # r = 1
             for all in list(beispieldaten_dateipfad.keys()):
                 info = split_section(all, self.chosen_program)
-                # print(info)
                 gk_liste = info[2].split(", ")
 
-                # print(gk_liste)
-
-                # if self.cb_show_variation.isChecked()==False and re.search("[0-9]\[.+\]", all) != None:
-                #     print(all)
-                #     continue
-                # gkliste = []
-                # for gkbereich in dict_gk:
-                #     if dict_gk[gkbereich] in all:
-                #         gkliste.append(dict_gk[gkbereich])
-                # liste_kompetenzbereiche.update({r: gkliste})
-                # r += 1
                 not_included_items = check_gks_not_included(gk_liste, suchbegriffe)
 
-                # print(not_included_items)
-                # print(all)
+
                 if not_included_items == None:
                     if (
                         self.cb_show_variation.isChecked() == False
@@ -314,28 +297,9 @@ def prepare_tex_for_pdf(self):
                     else:
                         gesammeltedateien.append(all)
 
-                # gesammeltedateien.append(all)
-                # for all in gk_liste:
-                #     if all not in suchbegriffe:
 
-                #         print(all)
-                #         gesammeltedateien.append(all)
-            # print(suchbegriffe)
-            # for r in range(1, len(liste_kompetenzbereiche) + 1):
-            #     if liste_kompetenzbereiche[r] == []:
-            #         liste_kompetenzbereiche[r].append("-")
-            #     for all in suchbegriffe:
-            #         if all in liste_kompetenzbereiche[r]:
-            #             liste_kompetenzbereiche[r].remove(all)
-
-            # gesammeltedateien_temporary = []
-            # for r in range(1, len(liste_kompetenzbereiche) + 1):
-            #     if liste_kompetenzbereiche[r] == []:
-            #         gesammeltedateien.append(
-            #             list(beispieldaten_dateipfad.keys())[r - 1]
-            #         )
             gesammeltedateien = sorted(gesammeltedateien)
-        # print(gesammeltedateien)
+
         if (
             self.combobox_searchtype.currentText()
             == "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten"
@@ -349,12 +313,11 @@ def prepare_tex_for_pdf(self):
                             self.cb_show_variation.isChecked() == False
                             and re.search("[0-9]\[.+\]", element) != None
                         ):
-                            # print(element)
                             pass
                         else:
                             gesammeltedateien.append(element)
 
-            # print(gesammeltedateien)
+
         if not len(self.entry_suchbegriffe.text()) == 0:
             suchbegriffe.append(self.entry_suchbegriffe.text())
             if (
@@ -383,7 +346,6 @@ def prepare_tex_for_pdf(self):
                                 self.cb_show_variation.isChecked() == False
                                 and re.search("[0-9]\[.+\]", all) != None
                             ):
-                                # print(all)
                                 pass
                             else:
                                 gesammeltedateien.append(all)
@@ -421,7 +383,10 @@ def prepare_tex_for_pdf(self):
     # if not len(self.entry_suchbegriffe.text())==0:
     # 	suchbegriffe.append(self.entry_suchbegriffe.text())
 
-    gesammeltedateien.sort(key=natural_keys)
+    if self.chosen_program == "lama" and chosen_aufgabenformat == "Typ2Aufgaben":
+        gesammeltedateien.sort(key=typ2_order)
+    else:
+        gesammeltedateien.sort(key=natural_keys)
 
     dict_gesammeltedateien = {}
 
@@ -478,8 +443,7 @@ def prepare_tex_for_pdf(self):
                 if x.isChecked() == True:
                     selected_klassen.append(all_formats.upper())
                     suchbegriffe.append(all_formats.upper())
-            # print(selected_klassen)
-            # print(suchbegriffe)
+
             for all in list(dict_gesammeltedateien):
                 if not any(
                     all_formats.upper() in all for all_formats in selected_klassen
@@ -487,7 +451,6 @@ def prepare_tex_for_pdf(self):
                     del dict_gesammeltedateien[all]
 
     dict_number_of_variations = get_number_of_variations(self, dict_gesammeltedateien)
-    # print(dict_number_of_variations)
 
     ##############################
     if not dict_gesammeltedateien:
@@ -551,7 +514,7 @@ def prepare_tex_for_pdf(self):
     if self.chosen_program == "cria":
         for all in suchbegriffe:
             if isinstance(all, list):
-                item = all[1] + "." + all[2] + " (" + all[0] + ")"
+                item = all[1] + "." + all[2] + " (" + all[0][1] + ".)"
             else:
                 item = all.upper()
             if all == suchbegriffe[-1]:

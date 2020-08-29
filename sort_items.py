@@ -1,5 +1,6 @@
 import re
 import os
+from config import split_section
 
 
 def atoi(text):
@@ -22,8 +23,7 @@ def sorted_gks(list_, chosen_program):
 
 
 def cria_order(text):
-    # return float(text.split(' - ')[2])
-    # print(text)
+
     try:
         number = text.split(" - ")[2]
         if re.match("[0-9]+\[.+\]", number):
@@ -33,19 +33,6 @@ def cria_order(text):
     except ValueError:
         print("Wrong section format: {}".format(text))
         return 0
-    # try:
-    #     number = text.split(' - ')[2]
-    #     if re.match("[0-9]+\[.+\]",number):
-    #         split_number = re.split("\[|\]",number)
-    #         print(split_number)
-    #         float(split_number[0] + '.' + split_number[1])
-    #     return int(text.split(' - ')[2])
-    # except ValueError:
-    #     print('Wrong section format: {}'.format(text))
-    #     return
-
-    # print(x)
-    # return [atoi(c) for c in text.split(' - ')[2]]
 
 
 def lama_order(text):
@@ -62,10 +49,21 @@ def lama_order(text):
     else:
         return 5
 
+def typ2_order(text):
+    number = re.split("section{| - ", text)[1]
+    if "*Lokal*" in number:
+        number = number.replace("*Lokal* ","")
+        list_ = [0]
+        # number = str(1) + number
+        # return [0,int(number)]
 
-# def atoi_path(text):
-#     return int(text) if text.isdigit() else text
+    elif "i." in number:
+        number = number.replace("i.","")
+        list_ = [2]
 
+    else:
+        list_ = [1]
 
-# def natural_keys_path(text):
-#     return [atoi(c) for c in re.split("(\d+)", os.path.basename(text))]
+    list_.append(int(number))
+    return list_
+
