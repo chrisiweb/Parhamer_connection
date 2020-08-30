@@ -6413,7 +6413,7 @@ class Ui_MainWindow(object):
         self.lineEdit_email.setText(_translate("MainWindow", "", None))
 
     def pushButton_send_pressed(self):
-        if self.comboBox_at_fb.currentText() == "Allgemeine Rückmeldung":
+        if self.comboBox_at_fb.currentText() == "Allgemeine Rückmeldung" or self.comboBox_at_fb_cria.currentText()  == "Allgemeine Rückmeldung":
             example = "Allgemeiner Bug Report"
             if self.plainTextEdit_fb.toPlainText() == "":
                 warning_window(
@@ -6479,64 +6479,54 @@ class Ui_MainWindow(object):
             else:
                 return
 
-        # try:
-        # print(gmail_user)
-        # print(gmail_password)
-        QtWidgets.QApplication.setOverrideCursor(
-            QtGui.QCursor(QtCore.Qt.WaitCursor)
-        )
-        server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
-        server.ehlo()
-        server.login(gmail_user,gmail_password)
-        server.sendmail(
-            "lamabugfix@gmail.com", "lama.helpme@gmail.com", content.encode("utf8")
-        )
-        server.close()
+        try:
+            QtWidgets.QApplication.setOverrideCursor(
+                QtGui.QCursor(QtCore.Qt.WaitCursor)
+            )
+            server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
+            server.ehlo()
+            server.login(gmail_user,gmail_password)
+            server.sendmail(
+                "lamabugfix@gmail.com", "lama.helpme@gmail.com", content.encode("utf8")
+            )
+            server.close()
 
-        QtWidgets.QApplication.restoreOverrideCursor()
+            QtWidgets.QApplication.restoreOverrideCursor()
 
-        msg = QtWidgets.QMessageBox()
-        msg.setIcon(QtWidgets.QMessageBox.Warning)
-        msg.setWindowIcon(QtGui.QIcon(logo_path))
-        msg.setWindowTitle("Meldung gesendet")
-        msg.setText(
-            "Das Feedback bzw. die Fehlermeldung wurde erfolgreich gesendet!\n"
-        )
-        msg.setInformativeText("Vielen Dank für die Mithilfe LaMA zu verbessern.")
-        msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
-        msg.exec_()
+            msg = QtWidgets.QMessageBox()
+            msg.setIcon(QtWidgets.QMessageBox.Warning)
+            msg.setWindowIcon(QtGui.QIcon(logo_path))
+            msg.setWindowTitle("Meldung gesendet")
+            msg.setText(
+                "Das Feedback bzw. die Fehlermeldung wurde erfolgreich gesendet!\n"
+            )
+            msg.setInformativeText("Vielen Dank für die Mithilfe LaMA zu verbessern.")
+            msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            msg.exec_()
 
-        QtWidgets.QApplication.setOverrideCursor(
-            QtGui.QCursor(QtCore.Qt.WaitCursor)
-        )
-        self.reset_feedback()
+            QtWidgets.QApplication.setOverrideCursor(
+                QtGui.QCursor(QtCore.Qt.WaitCursor)
+            )
+            self.reset_feedback()
 
-        QtWidgets.QApplication.restoreOverrideCursor()
+            QtWidgets.QApplication.restoreOverrideCursor()
 
-        return
-        # except:
-        #     # print(error[0])
-        #     QtWidgets.QApplication.restoreOverrideCursor()
+            return
+        except:
+            QtWidgets.QApplication.restoreOverrideCursor()
 
-        #     if "smtplib.SMTPAuthenticationError" in str(sys.exc_info()[0]):
-        #         text = "Bitte kontaktieren Sie den Support unter:\nlama.helpme@gmail.com"
-        #         # critical_window(
-        #         #     "Das Feedback konnte leider nicht gesendet werden!",
-        #         #     "Bitte kontaktieren Sie den Support unter lama.helpme@gmail.com",
-        #         #     "Fehler beim Senden",
-        #         #     "Fehlermeldung:")
-        #     else:
-        #         text = "Überprüfen Sie Ihre Internetverbindung oder kontaktieren Sie den Support für nähere Informationen unter:\nlama.helpme@gmail.com"
+            if "smtplib.SMTPAuthenticationError" in str(sys.exc_info()[0]):
+                text = "Bitte kontaktieren Sie den Support unter:\nlama.helpme@gmail.com"
 
-        #     critical_window(
-        #         "Das Feedback konnte leider nicht gesendet werden!",
-        #         text,
-        #         "Fehler beim Senden",
-        #         "Fehlermeldung:\n" + str(sys.exc_info()))
-        #         # warning_window(
-        #         #     "Die Meldung konnte leider nicht gesendet werden!",
-        #         #     "Überprüfen Sie Ihre Internetverbindung oder versuchen Sie es später erneut.",
-        #         # )
+            else:
+                text = "Überprüfen Sie Ihre Internetverbindung oder kontaktieren Sie den Support für nähere Informationen unter:\nlama.helpme@gmail.com"
+
+            critical_window(
+                "Das Feedback konnte leider nicht gesendet werden!",
+                text,
+                "Fehler beim Senden",
+                "Fehlermeldung:\n" + str(sys.exc_info()))
+
 
     #######################################################################
     ##########################################################################
