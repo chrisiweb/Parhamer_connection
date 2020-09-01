@@ -17,7 +17,6 @@ def sorted_gks(list_, chosen_program):
         list_ = sorted(list_, key=lama_order)
     elif chosen_program == "cria":
         list_ = sorted(list_, key=cria_order)
-        list_ = sorted(list_, key=natural_keys)
 
     return list_
 
@@ -29,10 +28,14 @@ def cria_order(text):
         if re.match("[0-9]+\[.+\]", number):
             split_number = re.split("\[|\]", number)
             number = split_number[0] + "." + split_number[1]
-        return float(number)
+            list_ = [int(split_number[0]), int(split_number[1])]
+        else:
+            list_ = [int(number)]
+
+        return list_
     except ValueError:
         print("Wrong section format: {}".format(text))
-        return 0
+        return []
 
 
 def lama_order(text):

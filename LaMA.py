@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__ = "v2.1.0"
+__version__ = "v2.0.3"
 __lastupdate__ = "09/20"
 ####################
 
@@ -5735,6 +5735,7 @@ class Ui_MainWindow(object):
 
             elif self.chosen_program == "cria":
                 number = self.delete_zeros_at_beginning(info[2])
+
             if not number.startswith(line_entry):
                 list_.remove(section)
         return list_
