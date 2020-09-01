@@ -22,16 +22,21 @@ def sorted_gks(list_, chosen_program):
 
 
 def cria_order(text):
-
+    if "*Lokal*" in text.split(" - ")[0]:
+        list_ = [0]
+    elif "i." in text.split(" - ")[2]:
+        list_ = [2]
+    else:
+        list_ = [1] 
     try:
         number = text.split(" - ")[2]
+        number = number.replace("i.","")
         if re.match("[0-9]+\[.+\]", number):
             split_number = re.split("\[|\]", number)
-            number = split_number[0] + "." + split_number[1]
-            list_ = [int(split_number[0]), int(split_number[1])]
+            list_.append(int(split_number[0]))
+            list_.append(int(split_number[1]))
         else:
-            list_ = [int(number)]
-
+            list_.append(int(number))
         return list_
     except ValueError:
         print("Wrong section format: {}".format(text))

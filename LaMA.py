@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__ = "v2.1.0"
+__version__ = "v2.0.3"
 __lastupdate__ = "09/20"
 ####################
 
@@ -3829,6 +3829,7 @@ class Ui_MainWindow(object):
         file_integer = file_integer.replace(".tex", "").strip()
         file_integer = file_integer.split("[")[0]
         file_integer = file_integer.replace("i.","")
+        file_integer = file_integer.replace("_L_","")
         return file_integer
 
     def get_max_integer_file_variation(self, save_dateipfad):
@@ -5735,7 +5736,7 @@ class Ui_MainWindow(object):
 
             elif self.chosen_program == "cria":
                 number = self.delete_zeros_at_beginning(info[2])
-
+            number = number.replace("i.","")
             if not number.startswith(line_entry):
                 list_.remove(section)
         return list_
