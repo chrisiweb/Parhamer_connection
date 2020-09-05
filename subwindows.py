@@ -283,7 +283,7 @@ class Ui_Dialog_variation(object):
 
         self.lineEdit_number = QtWidgets.QLineEdit(self.groupBox_alle_aufgaben)
         self.lineEdit_number.setObjectName("lineEdit_number")
-        self.lineEdit_number.setValidator(QtGui.QIntValidator())
+        # self.lineEdit_number.setValidator(QtGui.QIntValidator())
         self.lineEdit_number.textChanged.connect(self.adapt_choosing_list)
         self.verticalLayout_sage.addWidget(self.lineEdit_number)
         self.listWidget = QtWidgets.QListWidget(self.groupBox_alle_aufgaben)
@@ -1268,11 +1268,11 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
             self.combobox_in_official.addItem("inoffizelle Aufgabe")
             if chosen_variation != None:
                 number = chosen_variation.split(" - ")
-                number = number[-1].split("_")
-                if "i." in number:
-                    self.combobox_in_official.setCurrentIndex(0)
-                else:
+                number = number[-1].split("_")[-1]
+                if "i" in number:
                     self.combobox_in_official.setCurrentIndex(1)
+                else:
+                    self.combobox_in_official.setCurrentIndex(0)
                 self.combobox_in_official.setEnabled(False)
             gridlayout.addWidget(self.combobox_in_official, 2, 0, 1, 1)
 
