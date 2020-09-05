@@ -1,3 +1,29 @@
+v2.1.0
+ - new function: create variation of existing file
+ - change to "Zusatzthemen"
+ - bug fix: sending feedback raises error via gmail adress
+ - bug fix: error when sending "Allgemeine Rückmeldung" in LaMA Cria
+ - bug fix: incorrect sorting of typ2 examples
+ - bug fix: error when adding examples to Sage
+ - bug fix: open PDF on Windows
+ - bug fix: error saving local files  
+
+v2.0.3
+ - bug fix: save test in different drive
+ - bug fix: search examples including drafts
+ - bug fix: creating files for users including images
+ - bug fix: loading LaMA file through double click
+
+v2.0.2
+ - bug fix: error when creating test with 'beurteilungsraster'
+ - bug fix: change ausgleichspunkte not working
+
+v2.0.1
+ - bug fix: error when app closed and only .tex-file was created
+ - bug fix: create groups in sage
+ - bug fix: error when creating test in LaMA cria 
+ - correct spelling mistake
+
 v2.0.0
  - merge LaMA and LaMA Cria to one program
  - change GUI and color scheme
@@ -22,8 +48,8 @@ v1.8.5
 v1.8.4
 
   - added ScrollArea for "Grundkompetenzen" for small screens
-  - "Ãœbungsblatt" and "Nachschularbeit" can be created
-  - "Ãœbungsblatt" & "Grundkompetenzcheck" disables Option "NotenschlÃ¼ssel/Beurteilungsraster"
+  - "Übungsblatt" and "Nachschularbeit" can be created
+  - "Übungsblatt" & "Grundkompetenzcheck" disables Option "Notenschlüssel/Beurteilungsraster"
   - "Schularbeit" can be reseted
   - Creation of .pdf and/or .lama can be skipped, when creating a test
 

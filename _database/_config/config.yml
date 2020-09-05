@@ -248,6 +248,7 @@ zusatzthemen_beschreibung:
     "vag2": "Vektoren und analytische Geometrie"
     "vag3": "Vektoren und analytische Geometrie in R3 und Rn"
     "wm": "Wirtschaftsmathematik"
+    "wh": "Wiederholung Unterstufe"
 
     
 
@@ -487,6 +488,8 @@ dict_k1:
         - "mast"
         - "zm"
     "NZ":
+        - "ef"
+        - "zs"
         - "azs"
         - "dzs"
         - "odz"
@@ -962,6 +965,7 @@ dict_unterkapitel:
     "zm" : "Zeichnen im gegebenen Maßstab"
     "zma" : "Zeitmaße"
     "zo" : "Zuordnungen, Tabellen und Graphen"
+    "zs" : "Zahlenstrahl"
     "zz" : "Zeitdauer und Zeitpunkt"
     "zzr" : "Zinseszinsrechnung"
 ...
