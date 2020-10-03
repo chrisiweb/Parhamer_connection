@@ -77,10 +77,16 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, index):
         else:
             gruppe = ""
 
-        titlepage = (
-            "\\textsc{{Grundkompetenzcheck{0}}} \\hfill \\textsc{{Name:}} \\rule{{8cm}}{{0.4pt}}"
-            "\\normalsize \\\ \\vspace{{\\baselineskip}} \n\n".format(gruppe)
-        )
+        if self.dict_all_infos_for_file["data_gesamt"]["#"]==0:
+            titlepage = (
+                "\\textsc{{Grundkompetenzcheck{0}}} \\hfill \\textsc{{Name:}} \\rule{{7.5cm}}{{0.4pt}} \\hfill {1}"
+                "\\normalsize \\\ \\vspace{{\\baselineskip}} \n\n".format(gruppe, datum_kurz)
+            )
+        else:
+            titlepage = (
+                "\\textsc{{{0}. Grundkompetenzcheck{1}}} \\hfill \\textsc{{Name:}} \\rule{{7.5cm}}{{0.4pt}} \\hfill {2}"
+                "\\normalsize \\\ \\vspace{{\\baselineskip}} \n\n".format(self.dict_all_infos_for_file["data_gesamt"]["#"], gruppe, datum_kurz)
+            )
 
         return titlepage
 
@@ -110,11 +116,14 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, index):
             if self.groupBox_nummer.isEnabled() == False:
                 subsection = self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
             else:
-                subsection = (
-                    str(self.dict_all_infos_for_file["data_gesamt"]["#"])
-                    + ". "
-                    + self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
-                )
+                if self.dict_all_infos_for_file["data_gesamt"]["#"]==0:
+                    subsection = self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
+                else:                    
+                    subsection = (
+                        str(self.dict_all_infos_for_file["data_gesamt"]["#"])
+                        + ". "
+                        + self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
+                    )
 
         titlepage = "\\subsection{{{0} \\hfill {1}}}".format(subsection, datum_kurz)
 
@@ -171,9 +180,12 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, index):
                 or self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
                 == "Nachschularbeit"
             ):
-                title_header = "\\textsc{{\\Huge {0}. Mathematikschularbeit}}".format(
-                    self.dict_all_infos_for_file["data_gesamt"]["#"]
-                )
+                if self.dict_all_infos_for_file["data_gesamt"]["#"]==0:
+                    title_header = "\\textsc{{\\Huge Mathematikschularbeit}}"    
+                else:    
+                    title_header = "\\textsc{{\\Huge {0}. Mathematikschularbeit}}".format(
+                        self.dict_all_infos_for_file["data_gesamt"]["#"]
+                    )
 
                 if (
                     self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]

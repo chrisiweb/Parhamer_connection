@@ -1473,6 +1473,7 @@ class Ui_MainWindow(object):
 
         if self.chosen_program == "lama":
             list_comboBox_pruefungstyp.append("Quiz")
+
         list_comboBox_pruefungstyp.append("Benutzerdefiniert")
 
         index = 0
@@ -1554,6 +1555,7 @@ class Ui_MainWindow(object):
         self.spinBox_nummer = QtWidgets.QSpinBox(self.groupBox_nummer)
         self.spinBox_nummer.setValue(1)
         self.spinBox_nummer.setObjectName("spinBox_nummer")
+        self.spinBox_nummer.setToolTip("0 = keine Nummerierung")
         # self.groupBox_nummer.setMaximumSize(QtCore.QSize(90, 16777215))
         # self.radioButton_notenschl.setText(
         #     _translate("MainWindow", "Notenschlüssel", None)
@@ -3180,6 +3182,7 @@ class Ui_MainWindow(object):
             self.combobox_beurteilung.setEnabled(False)
             self.groupBox_notenschl.setEnabled(False)
             self.groupBox_beurteilungsraster.setEnabled(False)
+            self.spinBox_nummer.setValue(0)
             if self.comboBox_pruefungstyp.currentText() == "Quiz":
                 self.pushButton_titlepage.setEnabled(True)
                 self.pushButton_titlepage.setText("Zufälliges Quiz erstellen")
@@ -3209,6 +3212,7 @@ class Ui_MainWindow(object):
             self.groupBox_beurteilungsraster.setEnabled(True)
             self.pushButton_titlepage.setEnabled(True)
             self.comboBox_at_sage.setEnabled(True)
+            self.spinBox_nummer.setValue(1)
             self.pushButton_titlepage.setText("Titelblatt anpassen")
             if self.comboBox_pruefungstyp.currentText() == "Benutzerdefiniert":
                 self.comboBox_pruefungstyp.setEditable(True)

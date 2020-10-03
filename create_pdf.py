@@ -818,7 +818,7 @@ def create_pdf(path_file, index, maximum, typ=0):
     try:
         delete_unneeded_files(folder_name, file_name)
     except Exception as e:
-        print("Error: " + e)
+        print("Error: " + str(e))
         return
     QtWidgets.QApplication.restoreOverrideCursor()
 
