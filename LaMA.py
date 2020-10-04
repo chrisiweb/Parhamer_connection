@@ -24,6 +24,8 @@ from functools import partial
 import yaml
 from PIL import Image  ## pillow
 import smtplib
+import urllib.request
+
 
 
 from config import (
@@ -40,6 +42,7 @@ from config import (
     is_empty,
     shorten_gk,
     split_section,
+    still_to_define
 )
 from create_new_widgets import *
 from list_of_widgets import (
@@ -482,6 +485,9 @@ class Ui_MainWindow(object):
         self.actionSupport = add_action(
             MainWindow, self.menuHelp, "LaMA unterstützen", self.show_support
         )
+        self.actionUpdate = add_action(
+            MainWindow, self.menuHelp, "Nach Update suchen...", self.search_for_updates
+            )
 
         self.menuBar.addAction(self.menuDatei.menuAction())
         self.menuBar.addAction(self.menuDateityp.menuAction())
@@ -3029,6 +3035,17 @@ class Ui_MainWindow(object):
             "Weiter Infos: lama.schule",
             titel="Über LaMA - LaTeX Mathematik Assistent",
         )
+
+    def search_for_updates(self):
+
+        uf = urllib.request.urlopen("https://chrisiweb.github.io/lama_latest_update/")
+        html = uf.read()
+        print(html)
+        text = re.search("Version: \[(.*)\]",str(html))
+
+        print(text)
+        version = text.group(1)
+        print(version)
 
     def show_support(self):
         QtWidgets.QApplication.restoreOverrideCursor()

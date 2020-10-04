@@ -118,3 +118,6 @@ def split_section(section, chosen_program):
             info.insert(1, None)
 
     return info
+
+def still_to_define():
+    print('still to define')
