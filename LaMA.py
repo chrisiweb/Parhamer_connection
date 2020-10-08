@@ -3037,15 +3037,24 @@ class Ui_MainWindow(object):
         )
 
     def search_for_updates(self):
+        ### get version from webpage
+        # uf = urllib.request.urlopen("https://chrisiweb.github.io/lama_latest_update/")
+        # html = uf.read()
+        # print(html)
+        # text = re.search("Version: \[(.*)\]",str(html))
 
-        uf = urllib.request.urlopen("https://chrisiweb.github.io/lama_latest_update/")
-        html = uf.read()
-        print(html)
-        text = re.search("Version: \[(.*)\]",str(html))
+        # print(text)
+        # version = text.group(1)
+        # print(version)
 
-        print(text)
-        version = text.group(1)
-        print(version)
+        print(path_programm)
+        for root, dirs, files in os.walk("c:\\"):
+            for file in files:
+                if file == "srdp-mathematik.sty":
+                    print(file)
+                    print(os.path.join(root, file))
+
+        print('done')
 
     def show_support(self):
         QtWidgets.QApplication.restoreOverrideCursor()
