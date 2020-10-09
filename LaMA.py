@@ -3048,11 +3048,30 @@ class Ui_MainWindow(object):
         # print(version)
 
         print(path_programm)
-        for root, dirs, files in os.walk("c:\\"):
-            for file in files:
-                if file == "srdp-mathematik.sty":
-                    print(file)
-                    print(os.path.join(root, file))
+        path_home=Path.home()
+        path_new_package = os.path.join(path_programm, "_database", "_config", "srdp-mathematik.sty")
+        if os.path.isfile(path_new_package)==False:
+            warning_window("Das neue srdp-mathematik-Paket konnte nicht gefunden werden. Bitte versuche es später erneut.")
+            return
+
+        possible_locations = [
+            os.path.join("c:\\","Program Files","MiKTeX 2.9"),
+            os.path.join("c:\\","Program Files (x86)","MiKTeX 2.9"),
+            os.path.join(path_home, "AppData", "Roaming", "MiKTeX")
+            # os.path.join(
+            # "C:\Users\Christoph\AppData\Roaming\MiKTeX\2.9\tex\latex\srdp-mathematik\srdp-mathematik.sty
+        ]
+
+        for path in possible_locations:
+            print(path)
+            for root, dirs, files in os.walk(path):
+                for file in files:
+                    if file == "srdp-mathematik.sty":
+                        print(file)
+                        path_file = os.path.join(root, file)
+                        print(path_new_package)
+                        print(os.path.isfile(path_new_package))
+                        shutil.copy(path_new_package, path_file)
 
         print('done')
 
