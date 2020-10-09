@@ -1,8 +1,13 @@
+v2.1.1
+ - number GKCs, and show date
+ - number=0, means no numbering of headline
+ - bug fix: error when saving examples directly in folders
+
 v2.1.0
  - new function: create variation of existing file
  - change to "Zusatzthemen"
  - bug fix: sending feedback raises error via gmail adress
- - bug fix: error when sending "Allgemeine Rückmeldung" in LaMA Cria
+ - bug fix: error when sending "Allgemeine Rï¿½ckmeldung" in LaMA Cria
  - bug fix: incorrect sorting of typ2 examples
  - bug fix: error when adding examples to Sage
  - bug fix: open PDF on Windows
@@ -48,8 +53,8 @@ v1.8.5
 v1.8.4
 
   - added ScrollArea for "Grundkompetenzen" for small screens
-  - "Übungsblatt" and "Nachschularbeit" can be created
-  - "Übungsblatt" & "Grundkompetenzcheck" disables Option "Notenschlüssel/Beurteilungsraster"
+  - "ï¿½bungsblatt" and "Nachschularbeit" can be created
+  - "ï¿½bungsblatt" & "Grundkompetenzcheck" disables Option "Notenschlï¿½ssel/Beurteilungsraster"
   - "Schularbeit" can be reseted
   - Creation of .pdf and/or .lama can be skipped, when creating a test
 
