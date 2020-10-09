@@ -369,6 +369,9 @@ class Ui_MainWindow(object):
         self.menuFeedback.setObjectName(_fromUtf8("menuFeedback"))
         self.menuHelp = QtWidgets.QMenu(self.menuBar)
         self.menuHelp.setObjectName(_fromUtf8("menuHelp"))
+        self.menuUpdate = QtWidgets.QMenu(self.menuHelp)
+        self.menuUpdate.setObjectName(_fromUtf8("menuUpdate"))
+        self.menuUpdate.setTitle("Update...")
         self.menuBild_einbinden = QtWidgets.QMenu(self.menuBar)
         self.menuBild_einbinden.setObjectName(_fromUtf8("menuBild_einbinden"))
         MainWindow.setMenuBar(self.menuBar)
@@ -485,8 +488,8 @@ class Ui_MainWindow(object):
         self.actionSupport = add_action(
             MainWindow, self.menuHelp, "LaMA unterstützen", self.show_support
         )
-        self.actionUpdate = add_action(
-            MainWindow, self.menuHelp, "Nach Update suchen...", self.search_for_updates
+        self.actionUpdate_srdpmathematik = add_action(
+            MainWindow, self.menuUpdate, '"srdp-mathematik.sty" aktualisieren', self.update_srdpmathematik
             )
 
         self.menuBar.addAction(self.menuDatei.menuAction())
@@ -495,6 +498,7 @@ class Ui_MainWindow(object):
         self.menuBar.addAction(self.menuNeu.menuAction())
         self.menuBar.addAction(self.menuFeedback.menuAction())
         self.menuBar.addAction(self.menuHelp.menuAction())
+        self.menuHelp.addAction(self.menuUpdate.menuAction())
 
         self.groupBox_ausgew_gk = create_new_groupbox(
             self.centralwidget, "Ausgewählte Grundkompetenzen"
@@ -3036,7 +3040,12 @@ class Ui_MainWindow(object):
             titel="Über LaMA - LaTeX Mathematik Assistent",
         )
 
-    def search_for_updates(self):
+    def update_srdpmathematik(self):
+        response = question_window('Sind Sie sicher, dass Sie das Paket "srdp-mathematik.sty" aktualisieren möchten?')
+        
+        if response==False:
+            return
+        
         ### get version from webpage
         # uf = urllib.request.urlopen("https://chrisiweb.github.io/lama_latest_update/")
         # html = uf.read()
@@ -3047,11 +3056,11 @@ class Ui_MainWindow(object):
         # version = text.group(1)
         # print(version)
 
-        print(path_programm)
+        # print(path_programm)
         path_home=Path.home()
         path_new_package = os.path.join(path_programm, "_database", "_config", "srdp-mathematik.sty")
         if os.path.isfile(path_new_package)==False:
-            warning_window("Das neue srdp-mathematik-Paket konnte nicht gefunden werden. Bitte versuche es später erneut.")
+            warning_window("Das neue srdp-mathematik-Paket konnte nicht gefunden werden. Bitte versuchen Sie es später erneut.")
             return
 
         possible_locations = [
@@ -3062,18 +3071,21 @@ class Ui_MainWindow(object):
             # "C:\Users\Christoph\AppData\Roaming\MiKTeX\2.9\tex\latex\srdp-mathematik\srdp-mathematik.sty
         ]
 
+        update_successfull=False
         for path in possible_locations:
-            print(path)
             for root, dirs, files in os.walk(path):
                 for file in files:
                     if file == "srdp-mathematik.sty":
-                        print(file)
                         path_file = os.path.join(root, file)
-                        print(path_new_package)
-                        print(os.path.isfile(path_new_package))
                         shutil.copy(path_new_package, path_file)
+                        update_successfull=True
 
-        print('done')
+        if update_successfull == False:
+            critical_window("Das Update konnte leider nicht durchgeführt werden. Aktualisieren Sie das Paket manuell oder wenden Sie sich an lama.helpme@gmail.com für Unterstützung.")
+            return
+        if update_successfull == True:
+            information_window("Das Paket wurde erfolgreich aktualisiert.")
+            return
 
     def show_support(self):
         QtWidgets.QApplication.restoreOverrideCursor()
