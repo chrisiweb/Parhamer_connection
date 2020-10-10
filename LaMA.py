@@ -3087,7 +3087,11 @@ class Ui_MainWindow(object):
                 for file in files:
                     if file == "srdp-mathematik.sty":
                         path_file = os.path.join(root, file)
-                        shutil.copy2(path_new_package, path_file)
+                        try:
+                            shutil.copy2(path_new_package, path_file)
+                        except PermissionError:
+                            warning_window("Das Update konnte leider nicht durchgerführt werden, da notwendigen Berechtigungen fehlen. Starten Sie LaMA erneut als Administrator (Rechtsklick -> 'Als Administrator ausführen') und versuchen Sie es erneut.")
+                            return
                         update_successfull=True
 
         if update_successfull == False:
