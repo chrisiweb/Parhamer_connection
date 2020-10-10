@@ -3063,6 +3063,11 @@ class Ui_MainWindow(object):
             warning_window("Das neue srdp-mathematik-Paket konnte nicht gefunden werden. Bitte versuchen Sie es später erneut.")
             return
 
+        print(path_home)
+        mac_path = os.path.join(path_home, "Library","texmf","tex","latex","srdp-mathematik.sty")
+        print(mac_path)
+        print(os.path.isfile(mac_path))
+        return
         possible_locations = [
             os.path.join("c:\\","Program Files","MiKTeX 2.9"),
             os.path.join("c:\\","Program Files (x86)","MiKTeX 2.9"),
