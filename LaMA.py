@@ -3063,10 +3063,10 @@ class Ui_MainWindow(object):
             warning_window("Das neue srdp-mathematik-Paket konnte nicht gefunden werden. Bitte versuchen Sie es später erneut.")
             return
 
-        print(path_home)
-        mac_path = os.path.join(path_home, "Library","texmf","tex","latex","srdp-mathematik.sty")
-        print(mac_path)
-        print(os.path.isfile(mac_path))
+        # print(path_home)
+        # mac_path = os.path.join(path_home, "Library","texmf","tex","latex","srdp-mathematik.sty")
+        # print(mac_path)
+        # print(os.path.isfile(mac_path))
 
         if sys.platform.startswith("darwin") or sys.platform.startswith("linux"):
             possible_locations = [
