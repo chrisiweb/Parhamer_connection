@@ -201,7 +201,7 @@ def prepare_tex_for_pdf(self):
     if os.path.isfile(copy_path_tabu_pkg):
         pass
     else:
-        shutil.copy(path_tabu_pkg, copy_path_tabu_pkg)
+        shutil.copy2(path_tabu_pkg, copy_path_tabu_pkg)
 
     ###################################################
     path_srdp_pkg = os.path.join(
@@ -213,7 +213,7 @@ def prepare_tex_for_pdf(self):
     if os.path.isfile(copy_path_srdp_pkg):
         pass
     else:
-        shutil.copy(path_srdp_pkg, copy_path_srdp_pkg)
+        shutil.copy2(path_srdp_pkg, copy_path_srdp_pkg)
 
     ########################################################
 
