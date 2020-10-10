@@ -3067,14 +3067,19 @@ class Ui_MainWindow(object):
         mac_path = os.path.join(path_home, "Library","texmf","tex","latex","srdp-mathematik.sty")
         print(mac_path)
         print(os.path.isfile(mac_path))
-        return
-        possible_locations = [
-            os.path.join("c:\\","Program Files","MiKTeX 2.9"),
-            os.path.join("c:\\","Program Files (x86)","MiKTeX 2.9"),
-            os.path.join(path_home, "AppData", "Roaming", "MiKTeX")
-            # os.path.join(
-            # "C:\Users\Christoph\AppData\Roaming\MiKTeX\2.9\tex\latex\srdp-mathematik\srdp-mathematik.sty
-        ]
+
+        if sys.platform.startswith("darwin") or sys.platform.startswith("linux"):
+            possible_locations = [
+                os.path.join(path_home, "Library","texmf")
+            ]
+        else:
+            possible_locations = [
+                os.path.join("c:\\","Program Files","MiKTeX 2.9"),
+                os.path.join("c:\\","Program Files (x86)","MiKTeX 2.9"),
+                os.path.join(path_home, "AppData", "Roaming", "MiKTeX")
+                # os.path.join(
+                # "C:\Users\Christoph\AppData\Roaming\MiKTeX\2.9\tex\latex\srdp-mathematik\srdp-mathematik.sty
+            ]
 
         update_successfull=False
         for path in possible_locations:
