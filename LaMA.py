@@ -3090,7 +3090,7 @@ class Ui_MainWindow(object):
                         try:
                             shutil.copy2(path_new_package, path_file)
                         except PermissionError:
-                            warning_window("Das Update konnte leider nicht durchgerführt werden, da notwendigen Berechtigungen fehlen. Starten Sie LaMA erneut als Administrator (Rechtsklick -> 'Als Administrator ausführen') und versuchen Sie es erneut.")
+                            warning_window("Das Update konnte leider nicht durchgeführt werden, da notwendige Berechtigungen fehlen. Starten Sie LaMA erneut als Administrator (Rechtsklick -> 'Als Administrator ausführen') und versuchen Sie es erneut.")
                             return
                         update_successfull=True
 
