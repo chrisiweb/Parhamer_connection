@@ -85,22 +85,22 @@ for i, item in enumerate(items):
     printProgressBar(i + 1, l, prefix = 'Installation:',  length = 50)
 
 if p_status==0:
-    print('\nProgramm wurde erfolgreich aktualisiert. Drücken Sie "Enter", um fortzufahren...')
+    print('\nProgramm wurde erfolgreich aktualisiert. LaMA kann nun neu gestartet werden...')
 else:
     #print(newapp_path)
     print('\nProgramm konnte nicht aktualisiert werden. Bitte versuchen Sie es später erneut.\nFehler: "%s"\n\nDrücken Sie "Enter", um mit der älteren Version fortzufahren...'%str(output)[2:-5]) 
     
 input()
 
-if sys.platform.startswith('linux'):
-    if extension=='.py':
-        subprocess.run("python3 " + mainfile_path, shell=True)
-    else:
-        subprocess.run(mainfile_path, shell=True)
-elif sys.platform.startswith('darwin'):
-    os.system(mainfile_path)
-    #subprocess.run("python3 " + mainfile_path, shell=True)
-else:
-    os.startfile(mainfile_path)
+# if sys.platform.startswith('linux'):
+#     if extension=='.py':
+#         subprocess.run("python3 " + mainfile_path, shell=True)
+#     else:
+#         subprocess.run(mainfile_path, shell=True)
+# elif sys.platform.startswith('darwin'):
+#     os.system(mainfile_path)
+#     #subprocess.run("python3 " + mainfile_path, shell=True)
+# else:
+#     os.startfile(mainfile_path)
  
 
