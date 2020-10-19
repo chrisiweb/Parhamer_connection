@@ -128,12 +128,14 @@ class Ui_MainWindow(object):
         path_folder_items = []
         for path, subdires, files in os.walk(path_beispieleinreichung):
             for name in files:
-                if "Bilder" not in path:
+                filname, extension = os.path.splitext(name)
+                if ("Bilder" not in path) and (extension == '.tex'):
                     path_folder_items.append(os.path.join(path, name))
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         filename_testdokument = os.path.join(
             path_programm, "Testdokument", "Testdokument.tex"
         )
+
         # folder_items = os.listdir(path_beispieleinreichung)
 
         # for all in folder_items:
@@ -171,6 +173,7 @@ class Ui_MainWindow(object):
 
         with open(filename_testdokument, "a", encoding="utf8") as file:
             for all in path_folder_items:
+                print(all)
                 value = all.replace("\\", "/")
                 file.write('\input{"' + value + '"}%\n' "\\newpage \n")
             file.write('\shorthandoff{"}\n' "\end{document}")
