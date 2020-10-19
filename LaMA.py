@@ -4003,7 +4003,14 @@ class Ui_MainWindow(object):
         else:
             local = ""
         
-        number = self.max_integer_file + 1
+        if self.chosen_variation == None:
+            number = self.max_integer_file + 1
+        else:
+            _,variation_number = self.chosen_variation.split(" - ")
+            # print(variation_number)
+            number = "{0}[{1}]".format(variation_number, self.max_integer_file + 1) 
+            # print(number)               
+
         if typ_save == ['admin', 1]:
             number = "i."+str(number)
  
@@ -4023,6 +4030,8 @@ class Ui_MainWindow(object):
             name = "{0}{1}_{2}_{3}".format(
                 local, thema, number, name
             )
+            # print(self.chosen_variation)
+            # print(name)
             # else:
             #     name = "{0}k{1}_{2}_{3}_{4}".format(
             #         local, klasse, thema, self.max_integer_file + 1, name
@@ -4061,6 +4070,8 @@ class Ui_MainWindow(object):
         for old_image_path in list(dict_picture_path.values()):
             old_image_name = os.path.basename(old_image_path)
             new_image_name = self.edit_image_name(typ_save, old_image_name)
+            # print(new_image_name)
+            # return
             new_image_path = os.path.join(parent_image_path, new_image_name)
             try:
                 shutil.copy(old_image_path, new_image_path)
