@@ -4006,8 +4006,9 @@ class Ui_MainWindow(object):
         if self.chosen_variation == None:
             number = self.max_integer_file + 1
         else:
-            _,variation_number = self.chosen_variation.split(" - ")
-            # print(variation_number)
+            list_ = re.split(" - |_", self.chosen_variation)
+            variation_number = list_[-1]
+            # _,variation_number = self.chosen_variation.split(" - ")
             number = "{0}[{1}]".format(variation_number, self.max_integer_file + 1) 
             # print(number)               
 
