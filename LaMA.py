@@ -3425,7 +3425,7 @@ class Ui_MainWindow(object):
                     index = list_comboBox_gk.index("Zusatzthemen")
                 else:
                     checkbox_gk = "checkbox_creator_gk_{}".format(short_gk)
-                    index = list_comboBox_gk.index(gk.split(" ")[0])
+                    index = list_comboBox_gk.index(gk.split(" ")[0].replace("-L",""))
 
                 self.dict_widget_variables[checkbox_gk].setChecked(True)
                 self.tab_widget_gk_cr.setCurrentIndex(index)
