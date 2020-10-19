@@ -24,6 +24,8 @@ from functools import partial
 import yaml
 from PIL import Image  ## pillow
 import smtplib
+import urllib.request
+
 
 
 from config import (
@@ -40,6 +42,7 @@ from config import (
     is_empty,
     shorten_gk,
     split_section,
+    still_to_define
 )
 from create_new_widgets import *
 from list_of_widgets import (
@@ -366,6 +369,9 @@ class Ui_MainWindow(object):
         self.menuFeedback.setObjectName(_fromUtf8("menuFeedback"))
         self.menuHelp = QtWidgets.QMenu(self.menuBar)
         self.menuHelp.setObjectName(_fromUtf8("menuHelp"))
+        self.menuUpdate = QtWidgets.QMenu(self.menuHelp)
+        self.menuUpdate.setObjectName(_fromUtf8("menuUpdate"))
+        self.menuUpdate.setTitle("Update...")
         self.menuBild_einbinden = QtWidgets.QMenu(self.menuBar)
         self.menuBild_einbinden.setObjectName(_fromUtf8("menuBild_einbinden"))
         MainWindow.setMenuBar(self.menuBar)
@@ -482,6 +488,9 @@ class Ui_MainWindow(object):
         self.actionSupport = add_action(
             MainWindow, self.menuHelp, "LaMA unterstützen", self.show_support
         )
+        self.actionUpdate_srdpmathematik = add_action(
+            MainWindow, self.menuUpdate, '"srdp-mathematik.sty" aktualisieren', self.update_srdpmathematik
+            )
 
         self.menuBar.addAction(self.menuDatei.menuAction())
         self.menuBar.addAction(self.menuDateityp.menuAction())
@@ -489,6 +498,7 @@ class Ui_MainWindow(object):
         self.menuBar.addAction(self.menuNeu.menuAction())
         self.menuBar.addAction(self.menuFeedback.menuAction())
         self.menuBar.addAction(self.menuHelp.menuAction())
+        self.menuHelp.addAction(self.menuUpdate.menuAction())
 
         self.groupBox_ausgew_gk = create_new_groupbox(
             self.centralwidget, "Ausgewählte Grundkompetenzen"
@@ -3030,6 +3040,67 @@ class Ui_MainWindow(object):
             titel="Über LaMA - LaTeX Mathematik Assistent",
         )
 
+    def update_srdpmathematik(self):
+        response = question_window('Sind Sie sicher, dass Sie das Paket "srdp-mathematik.sty" aktualisieren möchten?')
+        
+        if response==False:
+            return
+        
+        ### get version from webpage
+        # uf = urllib.request.urlopen("https://chrisiweb.github.io/lama_latest_update/")
+        # html = uf.read()
+        # print(html)
+        # text = re.search("Version: \[(.*)\]",str(html))
+
+        # print(text)
+        # version = text.group(1)
+        # print(version)
+
+        # print(path_programm)
+        path_home=Path.home()
+        path_new_package = os.path.join(path_programm, "_database", "_config", "srdp-mathematik.sty")
+        if os.path.isfile(path_new_package)==False:
+            warning_window("Das neue srdp-mathematik-Paket konnte nicht gefunden werden. Bitte versuchen Sie es später erneut.")
+            return
+
+        # print(path_home)
+        # mac_path = os.path.join(path_home, "Library","texmf","tex","latex","srdp-mathematik.sty")
+        # print(mac_path)
+        # print(os.path.isfile(mac_path))
+
+        if sys.platform.startswith("darwin") or sys.platform.startswith("linux"):
+            possible_locations = [
+                os.path.join(path_home, "Library","texmf")
+            ]
+        else:
+            possible_locations = [
+                os.path.join("c:\\","Program Files","MiKTeX 2.9"),
+                os.path.join("c:\\","Program Files (x86)","MiKTeX 2.9"),
+                os.path.join(path_home, "AppData", "Roaming", "MiKTeX")
+                # os.path.join(
+                # "C:\Users\Christoph\AppData\Roaming\MiKTeX\2.9\tex\latex\srdp-mathematik\srdp-mathematik.sty
+            ]
+
+        update_successfull=False
+        for path in possible_locations:
+            for root, dirs, files in os.walk(path):
+                for file in files:
+                    if file == "srdp-mathematik.sty":
+                        path_file = os.path.join(root, file)
+                        try:
+                            shutil.copy2(path_new_package, path_file)
+                        except PermissionError:
+                            warning_window("Das Update konnte leider nicht durchgeführt werden, da notwendige Berechtigungen fehlen. Starten Sie LaMA erneut als Administrator (Rechtsklick -> 'Als Administrator ausführen') und versuchen Sie es erneut.")
+                            return
+                        update_successfull=True
+
+        if update_successfull == False:
+            critical_window("Das Update konnte leider nicht durchgeführt werden. Aktualisieren Sie das Paket manuell oder wenden Sie sich an lama.helpme@gmail.com für Unterstützung.")
+            return
+        if update_successfull == True:
+            information_window("Das Paket wurde erfolgreich aktualisiert.")
+            return
+
     def show_support(self):
         QtWidgets.QApplication.restoreOverrideCursor()
 
@@ -3354,7 +3425,7 @@ class Ui_MainWindow(object):
                     index = list_comboBox_gk.index("Zusatzthemen")
                 else:
                     checkbox_gk = "checkbox_creator_gk_{}".format(short_gk)
-                    index = list_comboBox_gk.index(gk.split(" ")[0])
+                    index = list_comboBox_gk.index(gk.split(" ")[0].replace("-L",""))
 
                 self.dict_widget_variables[checkbox_gk].setChecked(True)
                 self.tab_widget_gk_cr.setCurrentIndex(index)
@@ -3932,7 +4003,15 @@ class Ui_MainWindow(object):
         else:
             local = ""
         
-        number = self.max_integer_file + 1
+        if self.chosen_variation == None:
+            number = self.max_integer_file + 1
+        else:
+            list_ = re.split(" - |_", self.chosen_variation)
+            variation_number = list_[-1]
+            # _,variation_number = self.chosen_variation.split(" - ")
+            number = "{0}[{1}]".format(variation_number, self.max_integer_file + 1) 
+            # print(number)               
+
         if typ_save == ['admin', 1]:
             number = "i."+str(number)
  
@@ -3952,6 +4031,8 @@ class Ui_MainWindow(object):
             name = "{0}{1}_{2}_{3}".format(
                 local, thema, number, name
             )
+            # print(self.chosen_variation)
+            # print(name)
             # else:
             #     name = "{0}k{1}_{2}_{3}_{4}".format(
             #         local, klasse, thema, self.max_integer_file + 1, name
@@ -3990,6 +4071,8 @@ class Ui_MainWindow(object):
         for old_image_path in list(dict_picture_path.values()):
             old_image_name = os.path.basename(old_image_path)
             new_image_name = self.edit_image_name(typ_save, old_image_name)
+            # print(new_image_name)
+            # return
             new_image_path = os.path.join(parent_image_path, new_image_name)
             try:
                 shutil.copy(old_image_path, new_image_path)

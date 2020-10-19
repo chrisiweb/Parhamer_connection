@@ -128,12 +128,14 @@ class Ui_MainWindow(object):
         path_folder_items = []
         for path, subdires, files in os.walk(path_beispieleinreichung):
             for name in files:
-                if "Bilder" not in path:
+                filname, extension = os.path.splitext(name)
+                if ("Bilder" not in path) and (extension == '.tex'):
                     path_folder_items.append(os.path.join(path, name))
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         filename_testdokument = os.path.join(
             path_programm, "Testdokument", "Testdokument.tex"
         )
+
         # folder_items = os.listdir(path_beispieleinreichung)
 
         # for all in folder_items:
@@ -188,15 +190,23 @@ class Ui_MainWindow(object):
             if os.path.isfile(os.path.join(path_beispieleinreichung, item)):
                 list_files_move.append(item)
 
+
         if is_empty(list_files_move) == True:
             return
+
+        for all in list_files_move:
+            filename = os.path.basename(all)
+            if "i." in filename:
+                save_folder = "_database_inoffiziell"
+            else:
+                save_folder = "_database" 
 
         for all in list_files_move:
             with open(all, "r", encoding="utf8") as file:
                 content = file.read()
 
                 content = content.replace(
-                    "../Beispieleinreichung/Bilder", "../_database/Bilder"
+                    "../Beispieleinreichung/Bilder", "../{0}/Bilder".format(save_folder)
                 )
 
             with open(all, "w", encoding="utf8") as file:
@@ -208,12 +218,12 @@ class Ui_MainWindow(object):
             filename = os.path.basename(all)
             if info[0] == None:
                 new_path = os.path.join(
-                    path_programm, "_database", info[1], "Einzelbeispiele", filename
+                    path_programm, "{0}".format(save_folder), info[1], "Einzelbeispiele", filename
                 )
             elif info[0] == 2:
                 new_path = os.path.join(
                     path_programm,
-                    "_database",
+                    "{0}".format(save_folder),
                     "Typ2Aufgaben",
                     "Einzelbeispiele",
                     filename,
@@ -223,7 +233,7 @@ class Ui_MainWindow(object):
                 if info[2].lower() in zusatzthemen_beschreibung:
                     new_path = os.path.join(
                         path_programm,
-                        "_database",
+                        "{0}".format(save_folder),
                         "Typ1Aufgaben",
                         "Zusatzthemen",
                         info[2],
@@ -235,7 +245,7 @@ class Ui_MainWindow(object):
                         gk, _ = gk.split("-")
                     new_path = os.path.join(
                         path_programm,
-                        "_database",
+                        "{0}".format(save_folder),
                         "Typ1Aufgaben",
                         "_Grundkompetenzen",
                         gk,
@@ -257,7 +267,7 @@ class Ui_MainWindow(object):
                 path_beispieleinreichung_images = os.path.join(
                     path_programm, "Beispieleinreichung", "Bilder"
                 )
-                split_content = re.split("../_database/Bilder/|.eps", content)
+                split_content = re.split("../{0}/Bilder/|.eps".format(save_folder), content)
                 for i in range(1, len(split_content), 2):
                     image_name = split_content[i]
                     image_name = image_name + ".eps"
@@ -265,12 +275,12 @@ class Ui_MainWindow(object):
                         path_beispieleinreichung_images, image_name
                     )
                     new_image_path = os.path.join(
-                        path_programm, "_database", "Bilder", image_name
+                        path_programm, "{0}".format(save_folder), "Bilder", image_name
                     )
 
                     shutil.move(
                         os.path.join(path_beispieleinreichung_images, image_name),
-                        os.path.join(path_programm, "_database", "Bilder", image_name),
+                        os.path.join(path_programm, "{0}".format(save_folder), "Bilder", image_name),
                     )
                 number_images += content.count("includegraphics")
 
