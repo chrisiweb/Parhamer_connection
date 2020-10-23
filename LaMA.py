@@ -64,6 +64,7 @@ from subwindows import (
     Ui_Dialog_erstellen,
     Ui_Dialog_speichern,
     Ui_Dialog_variation,
+    Ui_Dialog_setup,
 )
 from translate import _fromUtf8, _translate
 from sort_items import natural_keys, sorted_gks
@@ -367,6 +368,9 @@ class Ui_MainWindow(object):
         self.menuSuche.setObjectName(_fromUtf8("menuSuche"))
         self.menuFeedback = QtWidgets.QMenu(self.menuBar)
         self.menuFeedback.setObjectName(_fromUtf8("menuFeedback"))
+        self.menuOptionen = QtWidgets.QMenu(self.menuBar)
+        self.menuOptionen.setObjectName(_fromUtf8("menuOptionen"))
+        self.menuOptionen.setTitle("Optionen")
         self.menuHelp = QtWidgets.QMenu(self.menuBar)
         self.menuHelp.setObjectName(_fromUtf8("menuHelp"))
         self.menuUpdate = QtWidgets.QMenu(self.menuHelp)
@@ -482,21 +486,28 @@ class Ui_MainWindow(object):
             partial(self.update_gui, "widgets_feedback"),
         )
 
+        self.actionEinstellungen = add_action(
+            MainWindow, self.menuOptionen, 'Einstellungen', self.open_setup
+            )  
+
         self.actionInfo = add_action(
             MainWindow, self.menuHelp, "Über LaMA", self.show_info
         )
         self.actionSupport = add_action(
             MainWindow, self.menuHelp, "LaMA unterstützen", self.show_support
         )
+
         self.actionUpdate_srdpmathematik = add_action(
             MainWindow, self.menuUpdate, '"srdp-mathematik.sty" aktualisieren', self.update_srdpmathematik
             )
 
+      
         self.menuBar.addAction(self.menuDatei.menuAction())
         self.menuBar.addAction(self.menuDateityp.menuAction())
         self.menuBar.addAction(self.menuSage.menuAction())
         self.menuBar.addAction(self.menuNeu.menuAction())
         self.menuBar.addAction(self.menuFeedback.menuAction())
+        self.menuBar.addAction(self.menuOptionen.menuAction())
         self.menuBar.addAction(self.menuHelp.menuAction())
         self.menuHelp.addAction(self.menuUpdate.menuAction())
 
@@ -3025,6 +3036,21 @@ class Ui_MainWindow(object):
             self.sage_save()
         else:
             sys.exit(0)
+
+    def open_setup(self):
+        # still_to_define()
+        Dialog = QtWidgets.QDialog(
+            None,
+            QtCore.Qt.WindowSystemMenuHint
+            | QtCore.Qt.WindowTitleHint
+            | QtCore.Qt.WindowCloseButtonHint,
+        )
+        ui = Ui_Dialog_setup()
+        ui.setupUi(Dialog, self)
+        # self.Dialog.show()
+        response = Dialog.exec()
+
+        print(response)
 
     def show_info(self):
         QtWidgets.QApplication.restoreOverrideCursor()

@@ -24,12 +24,13 @@ from create_new_widgets import (
     create_new_checkbox,
     create_new_combobox,
     create_new_spinbox,
+    create_new_lineedit,
     create_new_groupbox,
     add_new_option,
 )
 from standard_dialog_windows import critical_window
 from waitingspinnerwidget import QtWaitingSpinner
-from predefined_size_policy import SizePolicy_fixed
+from predefined_size_policy import SizePolicy_fixed, SizePolicy_fixed_height
 from work_with_content import prepare_content_for_hide_show_items
 from sort_items import sorted_gks
 
@@ -1329,3 +1330,67 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
 
     def get_output(self):
         return self.confirmed
+
+
+class Ui_Dialog_setup(object):
+    def setupUi(self, Dialog, MainWindow):
+        self.MainWindow = MainWindow
+        # self.beispieldaten_dateipfad_cria = MainWindow.beispieldaten_dateipfad_cria
+        # self.beispieldaten_dateipfad_1 = MainWindow.beispieldaten_dateipfad_1
+        # self.beispieldaten_dateipfad_2 = MainWindow.beispieldaten_dateipfad_2
+
+        self.Dialog = Dialog
+        self.Dialog.setObjectName("Dialog")
+        Dialog.setWindowTitle("Einstellungen")
+        Dialog.setWindowIcon(QtGui.QIcon(logo_path))
+        gridlayout_setup = create_new_gridlayout(Dialog)
+
+        groupbox_path_pdf = create_new_groupbox(Dialog, "Pfad PDF Reader")
+        groupbox_path_pdf.setSizePolicy(SizePolicy_fixed_height)
+        horizontallayout_path_pdf = create_new_horizontallayout(groupbox_path_pdf)
+
+        self.label_pdf_reader = create_new_label(Dialog,"Dateipfad:")
+        horizontallayout_path_pdf.addWidget(self.label_pdf_reader)
+
+        self.lineedit_pdf_reader = create_new_lineedit(groupbox_path_pdf)
+        horizontallayout_path_pdf.addWidget(self.lineedit_pdf_reader)
+
+        self.button_search_pdf_reader = create_new_button(groupbox_path_pdf, "Durchsuchen", self.search_pdf_reader)
+        horizontallayout_path_pdf.addWidget(self.button_search_pdf_reader)
+
+        gridlayout_setup.addWidget(groupbox_path_pdf,0,0,1,1)
+
+
+        self.buttonBox_setup = QtWidgets.QDialogButtonBox(self.Dialog)
+        self.buttonBox_setup.setStandardButtons(
+            QtWidgets.QDialogButtonBox.Save | QtWidgets.QDialogButtonBox.Cancel
+        )
+
+        buttonS = self.buttonBox_setup.button(QtWidgets.QDialogButtonBox.Save)
+        buttonS.setText('Speichern')
+        buttonX = self.buttonBox_setup.button(QtWidgets.QDialogButtonBox.Cancel)
+        buttonX.setText("Abbrechen")
+        self.buttonBox_setup.rejected.connect(self.reject_dialog)
+        self.buttonBox_setup.accepted.connect(self.save_setting)
+
+
+        gridlayout_setup.addWidget(self.buttonBox_setup,5,0,1,1)
+
+    def search_pdf_reader(self):
+        list_filename = QtWidgets.QFileDialog.getOpenFileName(
+            None, "Durchsuchen", path_programm, "Alle Dateien (*)"
+            )
+        if list_filename[0] == []:
+            return
+
+        print(list_filename)
+        self.lineedit_pdf_reader.setText(list_filename[0])
+
+    def reject_dialog(self):
+        self.Dialog.reject()
+
+    def save_setting(self):
+        print('saved')
+        self.Dialog.accept()
+    
+
