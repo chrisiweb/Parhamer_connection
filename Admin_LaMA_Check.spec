@@ -1,10 +1,10 @@
-# -*- mode: python -*-
+# -*- mode: python ; coding: utf-8 -*-
 
 block_cipher = None
 
 
 a = Analysis(['Admin_LaMA_Check.py'],
-             pathex=['C:\\Users\\Christoph\\Documents\\Parahamer_connection\\Parhamer_connection'],
+             pathex=['C:\\Users\\Chris\\Documents\\GitHub\\Parhamer_connection'],
              binaries=[],
              datas=[],
              hiddenimports=[],
@@ -28,5 +28,6 @@ exe = EXE(pyz,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,
+          upx_exclude=[],
           runtime_tmpdir=None,
           console=True )
