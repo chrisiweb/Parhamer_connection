@@ -490,6 +490,10 @@ class Ui_MainWindow(object):
             MainWindow, self.menuOptionen, 'Einstellungen', self.open_setup
             )  
 
+        self.actionUpdate_srdpmathematik = add_action(
+            MainWindow, self.menuUpdate, '"srdp-mathematik.sty" aktualisieren', self.update_srdpmathematik
+            )
+            
         self.actionInfo = add_action(
             MainWindow, self.menuHelp, "Über LaMA", self.show_info
         )
@@ -497,9 +501,7 @@ class Ui_MainWindow(object):
             MainWindow, self.menuHelp, "LaMA unterstützen", self.show_support
         )
 
-        self.actionUpdate_srdpmathematik = add_action(
-            MainWindow, self.menuUpdate, '"srdp-mathematik.sty" aktualisieren', self.update_srdpmathematik
-            )
+
 
       
         self.menuBar.addAction(self.menuDatei.menuAction())
@@ -508,8 +510,9 @@ class Ui_MainWindow(object):
         self.menuBar.addAction(self.menuNeu.menuAction())
         self.menuBar.addAction(self.menuFeedback.menuAction())
         self.menuBar.addAction(self.menuOptionen.menuAction())
+        self.menuOptionen.addAction(self.menuUpdate.menuAction())
         self.menuBar.addAction(self.menuHelp.menuAction())
-        self.menuHelp.addAction(self.menuUpdate.menuAction())
+
 
         self.groupBox_ausgew_gk = create_new_groupbox(
             self.centralwidget, "Ausgewählte Grundkompetenzen"
