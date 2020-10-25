@@ -493,7 +493,7 @@ class Ui_MainWindow(object):
         self.actionUpdate_srdpmathematik = add_action(
             MainWindow, self.menuUpdate, '"srdp-mathematik.sty" aktualisieren', self.update_srdpmathematik
             )
-            
+
         self.actionInfo = add_action(
             MainWindow, self.menuHelp, "Über LaMA", self.show_info
         )
@@ -2444,6 +2444,7 @@ class Ui_MainWindow(object):
 
         update_check = []
         update_check.append(f.read().replace(" ", "").replace("\n", ""))
+        f.close()
         update_check.append(__version__)
 
         if update_check[0] != update_check[1]:
@@ -3053,6 +3054,8 @@ class Ui_MainWindow(object):
         # self.Dialog.show()
         response = Dialog.exec()
 
+        # self.lama_settings = ui.lama_settings
+        # print(self.lama_settings)
         print(response)
 
     def show_info(self):

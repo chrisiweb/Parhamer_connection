@@ -11,6 +11,11 @@ if sys.platform.startswith("darwin"):
 
 config_file = os.path.join(path_programm, "_database", "_config", "config.yml")
 
+
+lama_settings_file = os.path.join(
+            path_programm, "Teildokument", "lama_settings"
+        )
+        
 colors_ui = {
     "black": QtGui.QColor(0, 0, 0),
     "white": QtGui.QColor(255, 255, 255),

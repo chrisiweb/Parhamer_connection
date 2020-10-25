@@ -3,10 +3,12 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 import sys
 import os
 import re
+import json
 import subprocess
 from functools import partial
 from config import (
     colors_ui,
+    lama_settings_file,
     get_color,
     config_file,
     config_loader,
@@ -677,6 +679,12 @@ def build_pdf_file(folder_name, file_name, latex_output_file):
 
 
 def open_pdf_file(folder_name, file_name):
+    try:
+        with open(lama_settings_file, "r", encoding="utf8") as f:
+            lama_settings = json.load(f)
+        path_pdf_reader = '"{}"'.format(lama_settings['pdf_reader'])
+    except FileNotFoundError:
+        path_pdf_reader = ""
     file_path = os.path.join(folder_name, file_name)
     if sys.platform.startswith("linux"):
         file_path = file_path + ".pdf"
@@ -718,12 +726,18 @@ def open_pdf_file(folder_name, file_name):
         #             sumatrapdf = ""
         #     except KeyError:
         #         sumatrapdf = ""
-
+        stderr_file = 'Teildokument/stderr.txt'
         subprocess.Popen(
-            'cd "{0}" & "{1}.pdf"'.format(folder_name, file_name),
+            'cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
             cwd=os.path.splitdrive(path_programm)[0],
+            stderr=open(stderr_file, 'w', encoding="utf8"),
             shell=True,
-        ).poll()  # sumatrapdf {1}
+        ).poll() # sumatrapdf {1}
+
+        ## read file not working
+        # with open(stderr_file, "r", encoding="utf8") as file:
+        #     print(file.read(1))
+        # print(errors)
 
 
 def loading_animation(process):

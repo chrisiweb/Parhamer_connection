@@ -1,11 +1,13 @@
 from PyQt5 import QtCore, QtWidgets, QtGui
 import os
 import shutil
+import json
 import re
 from string import ascii_lowercase
 from functools import partial
 from config import (
     config_loader,
+    lama_settings_file,
     config_file,
     colors_ui,
     get_color,
@@ -1335,6 +1337,13 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
 class Ui_Dialog_setup(object):
     def setupUi(self, Dialog, MainWindow):
         self.MainWindow = MainWindow
+        try: 
+            with open(lama_settings_file, "r", encoding="utf8") as f:
+                self.lama_settings = json.load(f)
+        except FileNotFoundError:
+            self.lama_settings = {
+                'pdf_reader' : "",
+            }
         # self.beispieldaten_dateipfad_cria = MainWindow.beispieldaten_dateipfad_cria
         # self.beispieldaten_dateipfad_1 = MainWindow.beispieldaten_dateipfad_1
         # self.beispieldaten_dateipfad_2 = MainWindow.beispieldaten_dateipfad_2
@@ -1345,7 +1354,7 @@ class Ui_Dialog_setup(object):
         Dialog.setWindowIcon(QtGui.QIcon(logo_path))
         gridlayout_setup = create_new_gridlayout(Dialog)
 
-        groupbox_path_pdf = create_new_groupbox(Dialog, "Pfad PDF Reader")
+        groupbox_path_pdf = create_new_groupbox(Dialog, "PDF Reader")
         groupbox_path_pdf.setSizePolicy(SizePolicy_fixed_height)
         horizontallayout_path_pdf = create_new_horizontallayout(groupbox_path_pdf)
 
@@ -1354,6 +1363,7 @@ class Ui_Dialog_setup(object):
 
         self.lineedit_pdf_reader = create_new_lineedit(groupbox_path_pdf)
         horizontallayout_path_pdf.addWidget(self.lineedit_pdf_reader)
+        self.lineedit_pdf_reader.setText(self.lama_settings['pdf_reader'])
 
         self.button_search_pdf_reader = create_new_button(groupbox_path_pdf, "Durchsuchen", self.search_pdf_reader)
         horizontallayout_path_pdf.addWidget(self.button_search_pdf_reader)
@@ -1378,19 +1388,21 @@ class Ui_Dialog_setup(object):
 
     def search_pdf_reader(self):
         list_filename = QtWidgets.QFileDialog.getOpenFileName(
-            None, "Durchsuchen", path_programm, "Alle Dateien (*)"
+            None, "Durchsuchen", self.lama_settings['pdf_reader'], "Alle Dateien (*)"
             )
-        if list_filename[0] == []:
+        if list_filename[0] == '':
             return
 
-        print(list_filename)
         self.lineedit_pdf_reader.setText(list_filename[0])
 
     def reject_dialog(self):
         self.Dialog.reject()
 
     def save_setting(self):
-        print('saved')
+        self.lama_settings['pdf_reader']=self.lineedit_pdf_reader.text()
+        with open(lama_settings_file, "w+", encoding="utf8") as f:
+            json.dump(self.lama_settings, f, ensure_ascii=False)
+
         self.Dialog.accept()
     
 
