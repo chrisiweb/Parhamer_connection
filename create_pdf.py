@@ -2,6 +2,7 @@ from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QApplication
 import sys
 import os
+import signal
 import re
 import json
 import subprocess
@@ -25,7 +26,7 @@ import time
 from datetime import date
 from refresh_ddb import refresh_ddb, modification_date
 from sort_items import natural_keys, lama_order, typ2_order
-from standard_dialog_windows import question_window
+from standard_dialog_windows import question_window, warning_window
 from subwindows import Ui_Dialog_processing
 import webbrowser
 
@@ -726,18 +727,97 @@ def open_pdf_file(folder_name, file_name):
         #             sumatrapdf = ""
         #     except KeyError:
         #         sumatrapdf = ""
-        stderr_file = 'Teildokument/stderr.txt'
-        subprocess.Popen(
-            'cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
-            cwd=os.path.splitdrive(path_programm)[0],
-            stderr=open(stderr_file, 'w', encoding="utf8"),
-            shell=True,
-        ).poll() # sumatrapdf {1}
+        stderr_file = os.path.join("Teildokument","stderr.txt")
+        # error_file = open("{0}/Teildokument/stderr.txt".format(path_programm),
+        #     "w",
+        #     encoding="utf8",
+        #     # errors="ignore",
+        #     )
+        # open_process = subprocess.Popen('cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
+        #     # cwd=os.path.splitdrive(path_programm)[0],
+        #     stdout=error_file,
+        #     shell=True,).poll()
+        # open_process.poll()
+
+        process = subprocess.Popen('cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
+        # stdout = subprocess.PIPE,
+        stderr = subprocess.PIPE,
+        shell=True
+        )
+        process.poll()
+        # output = process.stdout.readline()
+        error = process.stderr.readline().decode()
+        print(error)
+        if error != "":
+            warning_window("Der angegebene Dateipfad konnte nicht gefunden werden")
+            process = subprocess.Popen('cd "{0}" & "{1}.pdf"'.format(folder_name, file_name),
+            shell=True
+            ).poll()
+
+        # process.terminate()
+        # p_status=process.wait()
+        # print((output, err))
+        # print(output, err)
+        # os.killpg(os.getpgid(process.pid), signal.SIGTERM)
+        # try:
+        #     process = subprocess.Popen('cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
+        #     stdout = subprocess.PIPE,
+        #     shell=True)
+        #     process.communicate()
+        #     process.terminate()
+        #     # subprocess.Popen('cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
+        #     # shell=True,
+        #     # )
+        # except subprocess.CalledProcessError:
+        #     warning_window("Fehler beim Öffnen der PDF Datei")
+        #     subprocess.Popen('cd "{0}" & "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
+        #     shell=True,
+        #     )
+        # try:
+
+        #     # process = subprocess.run('cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
+        #     # check=True,
+        #     # shell=True)
+        #     # process.terminate()
+        # except subprocess.CalledProcessError:
+        #     warning_window("Fehler beim Öffnen der PDF Datei")
+        #     process = subprocess.call('cd "{0}" & "{2}.pdf"'.format(folder_name,path_pdf_reader,file_name),
+        #     shell=True).terminate()
+        # y = open(stderr_file, "r")
+        # x = y.read()
+        # print(x)
+        # y.close()
+
+        # with open(stderr_file,"w") as error_file:
+        #     process = subprocess.Popen('cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
+        #     stderr=error_file,
+        #     shell=True,
+        #     )
+        #     process.poll()
+        # print(error_file)
+        # with open(stderr_file, "r") as file:
+        #     errors = file.read()
+
+        # error_file.seek(1)
+        # error_file.close()
+
+
+        # print(process.returncode)
+
+        # print(os.path.isfile(stderr_file))
+
+        # print(errors)
+
+        # stderr_file = 'Teildokument/stderr.txt'
+        # subprocess.Popen(
+        #     'cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
+        #     cwd=os.path.splitdrive(path_programm)[0],
+        #     stderr=open(stderr_file, 'w', encoding="utf8"),
+        #     shell=True,
+        # ).poll() # sumatrapdf {1}
 
         ## read file not working
-        # with open(stderr_file, "r", encoding="utf8") as file:
-        #     print(file.read(1))
-        # print(errors)
+
 
 
 def loading_animation(process):
