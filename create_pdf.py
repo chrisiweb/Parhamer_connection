@@ -739,14 +739,15 @@ def open_pdf_file(folder_name, file_name):
         #     shell=True,).poll()
         # open_process.poll()
 
-        process = subprocess.Popen('cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
+        process = subprocess.Popen('cd "{0}" & "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
         # stdout = subprocess.PIPE,
         stderr = subprocess.PIPE,
         shell=True
         )
         process.poll()
-        # output = process.stdout.readline()
         error = process.stderr.readline().decode()
+        # output = process.stdout.readline()
+        
         print(error)
         if error != "":
             warning_window("Der angegebene Dateipfad konnte nicht gefunden werden")
