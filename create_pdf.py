@@ -683,7 +683,7 @@ def open_pdf_file(folder_name, file_name):
     try:
         with open(lama_settings_file, "r", encoding="utf8") as f:
             lama_settings = json.load(f)
-        path_pdf_reader = '"{}"'.format(lama_settings['pdf_reader'])
+        path_pdf_reader = '{}'.format(lama_settings['pdf_reader'])
     except FileNotFoundError:
         path_pdf_reader = ""
     file_path = os.path.join(folder_name, file_name)
@@ -727,7 +727,7 @@ def open_pdf_file(folder_name, file_name):
         #             sumatrapdf = ""
         #     except KeyError:
         #         sumatrapdf = ""
-        stderr_file = os.path.join("Teildokument","stderr.txt")
+        # stderr_file = os.path.join("Teildokument","stderr.txt")
         # error_file = open("{0}/Teildokument/stderr.txt".format(path_programm),
         #     "w",
         #     encoding="utf8",
@@ -739,21 +739,45 @@ def open_pdf_file(folder_name, file_name):
         #     shell=True,).poll()
         # open_process.poll()
 
-        process = subprocess.Popen('cd "{0}" & "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
-        # stdout = subprocess.PIPE,
-        stderr = subprocess.PIPE,
-        shell=True
-        )
-        process.poll()
-        error = process.stderr.readline().decode()
-        # output = process.stdout.readline()
+        # process = subprocess.Popen('cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
+        # # stdout = subprocess.PIPE,
+        # # stderr = subprocess.PIPE,
+        # shell=True
+        # ).poll()
+
+        # with open('test.log', 'w') as f:  # replace 'w' with 'wb' for Python 3
+        # print(path_pdf_reader)
+        # print(os.path.isfile(path_pdf_reader))
+
+        if os.path.isfile(path_pdf_reader) == False:
+            warning_window("Der ausgewählte Pfad zum Öffnen der Pdf-Dateien ist fehlerhaft. Bitte korrigieren oder löschen Sie diesen.")
+            path_pdf_reader = ""
+        else:
+            path_pdf_reader = '"{}"'.format(path_pdf_reader) 
+
+        subprocess.Popen(
+            'cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
+            shell = True).poll()
         
-        print(error)
-        if error != "":
-            warning_window("Der angegebene Dateipfad konnte nicht gefunden werden")
-            process = subprocess.Popen('cd "{0}" & "{1}.pdf"'.format(folder_name, file_name),
-            shell=True
-            ).poll()
+        # os.killpg(os.getpgid(pro.pid), signal.SIGINT)
+
+            # if not line:
+            #     break
+            # yield line    
+                # sys.stdout.write(line)
+                # f.write(line)
+        # error = process.stderr.readline().decode()
+        # print(process)
+        # print(process.returncode)
+        # print(error)
+        # output = process.stdout.readline()
+        # process.poll()
+        # print(output)
+        # if error != "":
+        #     warning_window("Der angegebene Dateipfad konnte nicht gefunden werden")
+        #     process = subprocess.Popen('cd "{0}" & "{1}.pdf"'.format(folder_name, file_name),
+        #     shell=True
+        #     ).poll()
 
         # process.terminate()
         # p_status=process.wait()

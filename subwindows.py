@@ -1364,6 +1364,7 @@ class Ui_Dialog_setup(object):
         self.lineedit_pdf_reader = create_new_lineedit(groupbox_path_pdf)
         horizontallayout_path_pdf.addWidget(self.lineedit_pdf_reader)
         self.lineedit_pdf_reader.setText(self.lama_settings['pdf_reader'])
+        
 
         self.button_search_pdf_reader = create_new_button(groupbox_path_pdf, "Durchsuchen", self.search_pdf_reader)
         horizontallayout_path_pdf.addWidget(self.button_search_pdf_reader)
