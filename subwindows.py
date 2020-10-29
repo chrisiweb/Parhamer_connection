@@ -1342,6 +1342,7 @@ class Ui_Dialog_setup(object):
                 self.lama_settings = json.load(f)
         except FileNotFoundError:
             self.lama_settings = {
+                'start_program' : 0,
                 'pdf_reader' : "",
             }
         # self.beispieldaten_dateipfad_cria = MainWindow.beispieldaten_dateipfad_cria
@@ -1354,6 +1355,22 @@ class Ui_Dialog_setup(object):
         Dialog.setWindowIcon(QtGui.QIcon(logo_path))
         gridlayout_setup = create_new_gridlayout(Dialog)
 
+        groupbox_start_program = create_new_groupbox(Dialog, "Auswahl beim Programmstart")
+        groupbox_start_program.setSizePolicy(SizePolicy_fixed_height)
+        horizontalLayout_start_program = create_new_horizontallayout(groupbox_start_program)
+
+        # label_start_program = create_new_label(groupbox_start_program, "Auswahl")
+        # horizontalLayout_start_program.addWidget(label_start_program)
+
+        self.combobox_start_program = create_new_combobox(groupbox_start_program)
+        add_new_option(self.combobox_start_program, 0, "beim Start fragen")
+        add_new_option(self.combobox_start_program, 1, "LaMA Cria (Unterstufe)")
+        add_new_option(self.combobox_start_program, 2, "LaMA (Oberstufe)")
+        self.combobox_start_program.setCurrentIndex(self.lama_settings['start_program'])
+        horizontalLayout_start_program.addWidget(self.combobox_start_program)
+
+        gridlayout_setup.addWidget(groupbox_start_program, 0,0,1,1)
+
         groupbox_path_pdf = create_new_groupbox(Dialog, "PDF Reader")
         groupbox_path_pdf.setSizePolicy(SizePolicy_fixed_height)
         horizontallayout_path_pdf = create_new_horizontallayout(groupbox_path_pdf)
@@ -1364,12 +1381,12 @@ class Ui_Dialog_setup(object):
         self.lineedit_pdf_reader = create_new_lineedit(groupbox_path_pdf)
         horizontallayout_path_pdf.addWidget(self.lineedit_pdf_reader)
         self.lineedit_pdf_reader.setText(self.lama_settings['pdf_reader'])
-        
+
 
         self.button_search_pdf_reader = create_new_button(groupbox_path_pdf, "Durchsuchen", self.search_pdf_reader)
         horizontallayout_path_pdf.addWidget(self.button_search_pdf_reader)
 
-        gridlayout_setup.addWidget(groupbox_path_pdf,0,0,1,1)
+        gridlayout_setup.addWidget(groupbox_path_pdf,1,0,1,1)
 
 
         self.buttonBox_setup = QtWidgets.QDialogButtonBox(self.Dialog)
@@ -1399,8 +1416,15 @@ class Ui_Dialog_setup(object):
     def reject_dialog(self):
         self.Dialog.reject()
 
+    def save_settings_to_dict(self):
+        dict_={}
+        dict_['start_program'] = self.combobox_start_program.currentIndex()
+        dict_['pdf_reader'] = self.lineedit_pdf_reader.text()
+
+        return dict_
+
     def save_setting(self):
-        self.lama_settings['pdf_reader']=self.lineedit_pdf_reader.text()
+        self.lama_settings = self.save_settings_to_dict()
         with open(lama_settings_file, "w+", encoding="utf8") as f:
             json.dump(self.lama_settings, f, ensure_ascii=False)
 

@@ -34,6 +34,7 @@ from config import (
     config_file,
     config_loader,
     path_programm,
+    lama_settings_file,
     logo_path,
     logo_cria_path,
     SpinBox_noWheel,
@@ -262,6 +263,11 @@ class Ui_MainWindow(object):
         self.dict_sage_hide_show_items_chosen = {}
         self.dict_chosen_topics = {}
         self.list_copy_images = []
+        try: 
+            with open(lama_settings_file, "r", encoding="utf8") as f:
+                self.lama_settings = json.load(f)
+        except FileNotFoundError:
+            self.lama_settings = {}        
 
         self.dict_titlepage = check_format_titlepage_save("titlepage_save")
 
@@ -271,8 +277,13 @@ class Ui_MainWindow(object):
 
     def setupUi(self, MainWindow):
         self.check_for_update()
-        if loaded_lama_file_path == "":
+        try: 
+            self.lama_settings["start_program"]
+        except KeyError:
+            self.lama_settings["start_program"] = 0
+        if loaded_lama_file_path == "" and self.lama_settings["start_program"]==0:
             ########## Dialog: Choose program ####
+
             self.Dialog = QtWidgets.QDialog(
                 None,
                 QtCore.Qt.WindowSystemMenuHint
@@ -291,7 +302,7 @@ class Ui_MainWindow(object):
                 self.chosen_program = self.ui.chosen_program
             if rsp == QtWidgets.QDialog.Rejected:
                 sys.exit(0)
-        else:
+        elif loaded_lama_file_path != "":
             loaded_file = self.load_file(loaded_lama_file_path)
             try:
                 self.chosen_program = loaded_file["data_gesamt"]["program"]
@@ -302,6 +313,10 @@ class Ui_MainWindow(object):
                     "Bitte laden Sie eine aktuelle *.lama-Datei oder kontaktieren Sie lama.helpme@gmail.com, wenn Sie Hilfe benötigen.",
                 )
                 return
+        elif self.lama_settings["start_program"] == 1:
+            self.chosen_program= 'cria'
+        elif self.lama_settings["start_program"] == 2:
+            self.chosen_program = 'lama'
 
         if self.chosen_program == "cria":
             self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
@@ -487,7 +502,7 @@ class Ui_MainWindow(object):
         )
 
         self.actionEinstellungen = add_action(
-            MainWindow, self.menuOptionen, 'Einstellungen', self.open_setup
+            MainWindow, self.menuOptionen, 'LaMA konfigurieren ...', self.open_setup
             )  
 
         self.actionUpdate_srdpmathematik = add_action(
@@ -1459,6 +1474,7 @@ class Ui_MainWindow(object):
         self.listWidget = QtWidgets.QListWidget(self.groupBox_alle_aufgaben)
         self.listWidget.setObjectName("listWidget")
         self.verticalLayout_sage.addWidget(self.listWidget)
+        self.listWidget.itemClicked.connect(self.nummer_clicked)
         # self.gridLayout.addWidget(self.groupBox_alle_aufgaben, 2, 0, 7, 1)
 
         # self.groupBox_alle_aufgaben.setTitle(_translate("MainWindow", "Aufgaben", None))
@@ -1840,6 +1856,8 @@ class Ui_MainWindow(object):
         self.listWidget_fb = QtWidgets.QListWidget(self.groupBox_alle_aufgaben)
         self.listWidget_fb.setObjectName("listWidget_fb")
         self.verticalLayout_fb.addWidget(self.listWidget_fb)
+        self.listWidget_fb.itemClicked.connect(self.nummer_clicked_fb)
+
         self.gridLayout.addWidget(self.groupBox_alle_aufgaben_fb, 0, 0, 6, 1)
         self.groupBox_alle_aufgaben_fb.setTitle(
             _translate("MainWindow", "Aufgaben", None)
@@ -1933,6 +1951,7 @@ class Ui_MainWindow(object):
         )
         self.listWidget_fb_cria.setObjectName("listWidget_fb_cria")
         self.verticalLayout_fb_cria.addWidget(self.listWidget_fb_cria)
+        self.listWidget_fb_cria.itemClicked.connect(self.nummer_clicked_fb)
         self.gridLayout.addWidget(self.groupBox_alle_aufgaben_fb_cria, 1, 0, 5, 1)
         self.groupBox_alle_aufgaben_fb_cria.setTitle(
             _translate("MainWindow", "Aufgaben", None)
@@ -3056,7 +3075,7 @@ class Ui_MainWindow(object):
 
         # self.lama_settings = ui.lama_settings
         # print(self.lama_settings)
-        print(response)
+        # print(response)
 
     def show_info(self):
         QtWidgets.QApplication.restoreOverrideCursor()
@@ -5632,6 +5651,9 @@ class Ui_MainWindow(object):
         self.adapt_choosing_list(list_mode)
 
     def nummer_clicked(self, item):
+        print(item)
+        print('sage:' + item.text())
+        # return
         if "(Entwurf)" in item.text():
             aufgabe = item.text().replace(" (Entwurf)", "")
             # draft=True
@@ -5665,6 +5687,8 @@ class Ui_MainWindow(object):
         self.lineEdit_number.setFocus()
 
     def nummer_clicked_fb(self, item):
+        print(item)
+        print('feedback: '+item.text())
         if self.chosen_program == "lama":
             self.label_example.setText(
                 _translate(
@@ -5988,8 +6012,6 @@ class Ui_MainWindow(object):
                 listWidget.clear()
                 return
 
-        listWidget.clear()
-
         if self.chosen_program == "cria":
             typ = None
             beispieldaten_dateipfad = self.beispieldaten_dateipfad_cria
@@ -6069,6 +6091,13 @@ class Ui_MainWindow(object):
             list_beispieldaten_sections, self.chosen_program
         )
 
+        listWidget.clear()
+        # print(list_beispieldaten_sections)
+        # listWidget.addItem('test')
+        # listWidget.addItem('test1')
+        # listWidget.addItem('test2')
+        # listWidget.addItem('test3')
+        # listWidget.addItem('test4')
         self.add_items_to_listwidget(
             list_beispieldaten_sections, beispieldaten_dateipfad, listWidget, list_mode
         )
@@ -6716,11 +6745,11 @@ class Ui_MainWindow(object):
             MainWindow.setTabOrder(self.spinBox_nummer, self.dateEdit)
             MainWindow.setTabOrder(self.dateEdit, self.lineEdit_klasse)
             self.adapt_choosing_list("sage")
-            self.listWidget.itemClicked.connect(self.nummer_clicked)
+            # self.listWidget.itemClicked.connect(self.nummer_clicked)
         if chosen_gui == widgets_feedback or chosen_gui == widgets_feedback_cria:
             self.adapt_choosing_list("feedback")
-            self.listWidget_fb.itemClicked.connect(self.nummer_clicked_fb)
-            self.listWidget_fb_cria.itemClicked.connect(self.nummer_clicked_fb)
+            # self.listWidget_fb.itemClicked.connect(self.nummer_clicked_fb)
+            # self.listWidget_fb_cria.itemClicked.connect(self.nummer_clicked_fb)
 
 
 if __name__ == "__main__":
@@ -6754,6 +6783,19 @@ if __name__ == "__main__":
 
     palette.setColor(QtGui.QPalette.Highlight, blue_7)
     palette.setColor(QtGui.QPalette.HighlightedText, white)
+
+    ### Dark Mode
+    # palette_dark_mode = QtGui.QPalette()
+    # palette_dark_mode.setColor(QtGui.QPalette.Window, QtGui.QColor(53, 53, 53))  # Window background
+    # palette_dark_mode.setColor(QtGui.QPalette.WindowText, white)
+    # palette_dark_mode.setColor(QtGui.QPalette.Text, white)
+    # palette_dark_mode.setColor(QtGui.QPalette.Base, QtGui.QColor(53, 53, 53))
+    # palette_dark_mode.setColor(QtGui.QPalette.ToolTipBase, blue_7)
+    # palette_dark_mode.setColor(QtGui.QPalette.Button, QtGui.QColor(53, 53, 53))
+    # palette_dark_mode.setColor(QtGui.QPalette.ButtonText, white)
+    # palette_dark_mode.setColor(QtGui.QPalette.HighlightedText, white)
+    # palette_dark_mode.setColor(QtGui.QPalette.Highlight, blue_7)
+
     app.setPalette(palette)
 
     MainWindow = QMainWindow()
