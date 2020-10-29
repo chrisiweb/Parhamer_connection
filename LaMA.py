@@ -5651,9 +5651,6 @@ class Ui_MainWindow(object):
         self.adapt_choosing_list(list_mode)
 
     def nummer_clicked(self, item):
-        print(item)
-        print('sage:' + item.text())
-        # return
         if "(Entwurf)" in item.text():
             aufgabe = item.text().replace(" (Entwurf)", "")
             # draft=True
@@ -5687,8 +5684,6 @@ class Ui_MainWindow(object):
         self.lineEdit_number.setFocus()
 
     def nummer_clicked_fb(self, item):
-        print(item)
-        print('feedback: '+item.text())
         if self.chosen_program == "lama":
             self.label_example.setText(
                 _translate(
@@ -6467,7 +6462,7 @@ class Ui_MainWindow(object):
 
                 with open(filename_vorschau, "a", encoding="utf8") as vorschau:
                     vorschau.write(
-                        "\n\n\\notenschluessel{{{0}}}{{{1}}}{{{2}}}{{{3}}}".format(
+                        "\n\n\\null\\notenschluessel{{{0}}}{{{1}}}{{{2}}}{{{3}}}".format(
                             notenschluessel[0] / 100,
                             notenschluessel[1] / 100,
                             notenschluessel[2] / 100,
