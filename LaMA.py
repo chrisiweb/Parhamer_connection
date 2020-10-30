@@ -3998,8 +3998,13 @@ class Ui_MainWindow(object):
         max_integer_file = 0
 
         if not os.path.exists(path):
-            print('Creating "{}" for you.'.format(path))
-            os.makedirs(path)
+            try:
+                os.makedirs(path)
+                print('Creating "{}" for you.'.format(path))
+            except PermissionError:
+                return max_integer_file
+
+          
         for all in os.listdir(path):
             if all.endswith(".tex"):
                 file_integer = self.get_integer(all)
