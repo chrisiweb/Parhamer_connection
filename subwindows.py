@@ -1367,7 +1367,10 @@ class Ui_Dialog_setup(object):
         add_new_option(self.combobox_start_program, 0, "beim Start fragen")
         add_new_option(self.combobox_start_program, 1, "LaMA Cria (Unterstufe)")
         add_new_option(self.combobox_start_program, 2, "LaMA (Oberstufe)")
-        self.combobox_start_program.setCurrentIndex(self.lama_settings['start_program'])
+        try:
+            self.combobox_start_program.setCurrentIndex(self.lama_settings['start_program'])
+        except KeyError:
+            self.lama_settings['start_program'] = 0
         horizontalLayout_start_program.addWidget(self.combobox_start_program)
 
         gridlayout_setup.addWidget(groupbox_start_program, 0,0,1,1)
@@ -1381,7 +1384,10 @@ class Ui_Dialog_setup(object):
 
         self.lineedit_pdf_reader = create_new_lineedit(groupbox_path_pdf)
         horizontallayout_path_pdf.addWidget(self.lineedit_pdf_reader)
-        self.lineedit_pdf_reader.setText(self.lama_settings['pdf_reader'])
+        try:
+            self.lineedit_pdf_reader.setText(self.lama_settings['pdf_reader'])
+        except KeyError:
+            self.lama_settings['pdf_reader'] = ""
 
 
         self.button_search_pdf_reader = create_new_button(groupbox_path_pdf, "Durchsuchen", self.search_pdf_reader)

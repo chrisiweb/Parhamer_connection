@@ -750,7 +750,7 @@ def open_pdf_file(folder_name, file_name):
         # print(os.path.isfile(path_pdf_reader))
 
         if os.path.isfile(path_pdf_reader) == False:
-            warning_window("Der ausgewählte Pfad zum Öffnen der Pdf-Dateien ist fehlerhaft. Bitte korrigieren oder löschen Sie diesen.")
+            warning_window("Der ausgewählte Pfad des Pdf-Readers zum Öffnen der Dateien ist fehlerhaft. Bitte korrigieren oder löschen Sie diesen.")
             path_pdf_reader = ""
         else:
             path_pdf_reader = '"{}"'.format(path_pdf_reader) 
