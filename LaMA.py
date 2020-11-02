@@ -263,6 +263,7 @@ class Ui_MainWindow(object):
         self.dict_sage_hide_show_items_chosen = {}
         self.dict_chosen_topics = {}
         self.list_copy_images = []
+
         try: 
             with open(lama_settings_file, "r", encoding="utf8") as f:
                 self.lama_settings = json.load(f)
@@ -1632,11 +1633,12 @@ class Ui_MainWindow(object):
         self.gridLayout_8 = QtWidgets.QGridLayout(self.scrollAreaWidgetContents_2)
         self.gridLayout_8.setObjectName("gridLayout_8")
         self.scrollArea_chosen.setWidget(self.scrollAreaWidgetContents_2)
-        self.scrollArea_chosen.verticalScrollBar().rangeChanged.connect(
-            lambda: self.scrollArea_chosen.verticalScrollBar().setValue(
-                self.scrollArea_chosen.verticalScrollBar().maximum()
-            )
-        )
+        self.scrollArea_chosen.verticalScrollBar().rangeChanged.connect(self.change_scrollbar_position)
+        # self.scrollArea_chosen.verticalScrollBar().rangeChanged.connect(
+        #     lambda: self.scrollArea_chosen.verticalScrollBar().setValue(
+        #         self.scrollArea_chosen.verticalScrollBar().maximum()
+        #     )
+        # )
         self.gridLayout_5.addWidget(self.scrollArea_chosen, 5, 0, 1, 6)
 
         self.groupBox_notenschl = create_new_groupbox(
@@ -3073,9 +3075,6 @@ class Ui_MainWindow(object):
         # self.Dialog.show()
         response = Dialog.exec()
 
-        # self.lama_settings = ui.lama_settings
-        # print(self.lama_settings)
-        # print(response)
 
     def show_info(self):
         QtWidgets.QApplication.restoreOverrideCursor()
@@ -5005,8 +5004,9 @@ class Ui_MainWindow(object):
         else:
             self.erase_aufgabe(aufgabe)
             self.build_aufgaben_schularbeit(self.list_alle_aufgaben_sage[index])
-
+        
         self.update_punkte()
+        self.button_was_deleted = True
 
     def spinbox_pkt_changed(self, aufgabe, spinbox_pkt):
         self.dict_alle_aufgaben_sage[aufgabe][0] = spinbox_pkt.value()
@@ -5015,6 +5015,32 @@ class Ui_MainWindow(object):
     def spinbox_abstand_changed(self, aufgabe, spinbox_abstand):
         self.dict_alle_aufgaben_sage[aufgabe][1] = spinbox_abstand.value()
         self.update_punkte()
+
+    def change_scrollbar_position(self):
+        try:
+            if self.button_was_deleted == True:
+                self.button_was_deleted = False
+                return   
+        except AttributeError:
+            pass
+
+        pos_maximum = self.scrollArea_chosen.verticalScrollBar().maximum()
+        height_aufgabe = 110
+        num_typ2 = self.get_aufgabenverteilung()[1]
+        pos_end_typ1 = pos_maximum - height_aufgabe*num_typ2
+
+        if self.listWidget.currentItem() != None:
+            aufgabe = self.listWidget.currentItem().text()
+            typ = self.get_aufgabentyp(aufgabe)
+            if typ == 2 or typ == None:
+                self.scrollArea_chosen.verticalScrollBar().setValue(pos_maximum)
+            elif typ == 1:
+                self.scrollArea_chosen.verticalScrollBar().setValue(pos_end_typ1)
+        else:
+            self.scrollArea_chosen.verticalScrollBar().setValue(pos_maximum)
+
+        
+
 
     def get_punkteverteilung(self):
         pkt_typ1 = 0
@@ -5097,7 +5123,6 @@ class Ui_MainWindow(object):
         )
 
     def update_punkte(self):
-
         gesamtpunkte = self.get_punkteverteilung()[0]
         num_typ1, num_typ2 = self.get_aufgabenverteilung()
         num_total = len(self.list_alle_aufgaben_sage)
@@ -5454,6 +5479,7 @@ class Ui_MainWindow(object):
         for i in reversed(range(start_value, self.gridLayout_8.count() + 1)):
             self.delete_widget(self.gridLayout_8, i)
 
+
         for item in self.list_alle_aufgaben_sage[start_value:]:
             index_item = self.list_alle_aufgaben_sage.index(item)
             item_infos = self.collect_all_infos_aufgabe(item)
@@ -5463,6 +5489,7 @@ class Ui_MainWindow(object):
             self.gridLayout_8.addWidget(neue_aufgaben_box, index_item, 0, 1, 1)
             index_item + 1
 
+
         self.spacerItem = QtWidgets.QSpacerItem(
             20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
         )
@@ -5471,6 +5498,20 @@ class Ui_MainWindow(object):
         self.add_image_path_to_list(aufgabe)
 
         self.update_punkte()
+
+            
+        # pos_value = self.scrollArea_chosen.verticalScrollBar().value()
+        # pos_maximum = self.scrollArea_chosen.verticalScrollBar().maximum()
+        # print(pos_maximum)
+        # # height_aufgabe = 110
+        # # print(self.get_aufgabenverteilung())
+        # # num_typ2 = self.get_aufgabenverteilung()[1]
+        # # pos_end_typ1 = pos_maximum - height_aufgabe*num_typ2 + 400
+        # self.scrollbar_position = [pos_value, pos_end_typ1]
+        # self.scrollArea_chosen.verticalScrollBar().setValue(pos_maximum)
+        
+        # print(self.scrollbar_position)
+
         QtWidgets.QApplication.restoreOverrideCursor()
 
     def pushButton_ausgleich_pressed(self, aufgabe):
@@ -5699,6 +5740,7 @@ class Ui_MainWindow(object):
         self.build_aufgaben_schularbeit(aufgabe)  # aufgabe, aufgaben_verteilung
         self.lineEdit_number.setText("")
         self.lineEdit_number.setFocus()
+
 
     def nummer_clicked_fb(self, item):
         if self.chosen_program == "lama":
@@ -6104,12 +6146,7 @@ class Ui_MainWindow(object):
         )
 
         listWidget.clear()
-        # print(list_beispieldaten_sections)
-        # listWidget.addItem('test')
-        # listWidget.addItem('test1')
-        # listWidget.addItem('test2')
-        # listWidget.addItem('test3')
-        # listWidget.addItem('test4')
+
         self.add_items_to_listwidget(
             list_beispieldaten_sections, beispieldaten_dateipfad, listWidget, list_mode
         )
