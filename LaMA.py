@@ -4996,7 +4996,6 @@ class Ui_MainWindow(object):
             del self.dict_sage_hide_show_items_chosen[aufgabe]
 
     def btn_delete_pressed(self, aufgabe):
-
         index = self.list_alle_aufgaben_sage.index(aufgabe)
 
         if index + 1 == len(self.list_alle_aufgaben_sage):
@@ -5100,12 +5099,25 @@ class Ui_MainWindow(object):
     def update_punkte(self):
 
         gesamtpunkte = self.get_punkteverteilung()[0]
+        num_typ1, num_typ2 = self.get_aufgabenverteilung()
+        num_total = len(self.list_alle_aufgaben_sage)
 
         if self.combobox_beurteilung.currentIndex() == 0:
             self.update_notenschluessel()
 
         if self.combobox_beurteilung.currentIndex() == 1:
             self.update_beurteilungsraster()
+
+        if self.chosen_program == 'cria':
+            self.label_gesamtbeispiele.setText("Anzahl der Aufgaben: {0}"
+                .format(num_total)
+            )
+        if self.chosen_program == 'lama':
+            self.label_gesamtbeispiele.setText("Anzahl der Aufgaben: {0}\n(Typ1: {1} / Typ2: {2})"
+                .format(
+                    num_total, num_typ1, num_typ2
+                    )
+            )
 
         self.label_gesamtpunkte.setText(
             _translate("MainWindow", "Gesamtpunkte: %i" % gesamtpunkte, None)
