@@ -11,6 +11,11 @@ if sys.platform.startswith("darwin"):
 
 config_file = os.path.join(path_programm, "_database", "_config", "config.yml")
 
+
+lama_settings_file = os.path.join(
+            path_programm, "Teildokument", "lama_settings"
+        )
+        
 colors_ui = {
     "black": QtGui.QColor(0, 0, 0),
     "white": QtGui.QColor(255, 255, 255),
@@ -32,26 +37,23 @@ def get_color(color):
 
 
 def config_loader(pathToFile, parameter):
-    for i in range(5):
-        try:
-            config_file = yaml.safe_load(open(pathToFile, encoding="utf8"))
-            break
-        except FileNotFoundError:
-            print("File not Found!")
-            if sys.platform.startswith("linux") or sys.platform.startswith("darwin"):
-                root = "."
-            else:
-                root = ""
-            config_path = os.path.join(".", "_database", "_config")
-            if not os.path.exists(config_path):
-                print("No worries, we'll create the structure for you.")
-                os.makedirs(config_path)
-            input(
-                "Please place your config file in '{}' and hit enter. {} tries left!".format(
-                    config_path, 5 - i
-                )
-            )
-    return config_file[parameter]
+    try:
+        config_file = yaml.safe_load(open(pathToFile, encoding="utf8"))
+        return config_file[parameter]
+    except FileNotFoundError:
+        print("File not Found!")
+        if sys.platform.startswith("linux") or sys.platform.startswith("darwin"):
+            root = "."
+        else:
+            root = ""
+            
+        config_path = os.path.join(".", "_database", "_config")
+        # if not os.path.exists(config_path):
+        #     print("No worries, we'll create the structure for you.")
+        #     os.makedirs(config_path)
+        print('Die Konfigurationsdatei "config.yml" konnte nicht gefunden werden. Stellen Sie sicher, dass sich der Ordner "_database" und das Programm LaMA im selben Ordner befinden.')
+        sys.exit()    
+    
 
 
 # if sys.platform.startswith("linux"):

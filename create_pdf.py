@@ -2,11 +2,14 @@ from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QApplication
 import sys
 import os
+import signal
 import re
+import json
 import subprocess
 from functools import partial
 from config import (
     colors_ui,
+    lama_settings_file,
     get_color,
     config_file,
     config_loader,
@@ -23,7 +26,7 @@ import time
 from datetime import date
 from refresh_ddb import refresh_ddb, modification_date
 from sort_items import natural_keys, lama_order, typ2_order
-from standard_dialog_windows import question_window
+from standard_dialog_windows import question_window, warning_window
 from subwindows import Ui_Dialog_processing
 import webbrowser
 
@@ -677,6 +680,12 @@ def build_pdf_file(folder_name, file_name, latex_output_file):
 
 
 def open_pdf_file(folder_name, file_name):
+    try:
+        with open(lama_settings_file, "r", encoding="utf8") as f:
+            lama_settings = json.load(f)
+        path_pdf_reader = '{}'.format(lama_settings['pdf_reader'])
+    except FileNotFoundError:
+        path_pdf_reader = ""
     file_path = os.path.join(folder_name, file_name)
     if sys.platform.startswith("linux"):
         file_path = file_path + ".pdf"
@@ -718,12 +727,122 @@ def open_pdf_file(folder_name, file_name):
         #             sumatrapdf = ""
         #     except KeyError:
         #         sumatrapdf = ""
+        # stderr_file = os.path.join("Teildokument","stderr.txt")
+        # error_file = open("{0}/Teildokument/stderr.txt".format(path_programm),
+        #     "w",
+        #     encoding="utf8",
+        #     # errors="ignore",
+        #     )
+        # open_process = subprocess.Popen('cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
+        #     # cwd=os.path.splitdrive(path_programm)[0],
+        #     stdout=error_file,
+        #     shell=True,).poll()
+        # open_process.poll()
+
+        # process = subprocess.Popen('cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
+        # # stdout = subprocess.PIPE,
+        # # stderr = subprocess.PIPE,
+        # shell=True
+        # ).poll()
+
+        # with open('test.log', 'w') as f:  # replace 'w' with 'wb' for Python 3
+        # print(path_pdf_reader)
+        # print(os.path.isfile(path_pdf_reader))
+
+        if os.path.isfile(path_pdf_reader) == False:
+            warning_window("Der ausgewählte Pfad des Pdf-Readers zum Öffnen der Dateien ist fehlerhaft. Bitte korrigieren oder löschen Sie diesen.")
+            path_pdf_reader = ""
+        else:
+            path_pdf_reader = '"{}"'.format(path_pdf_reader) 
 
         subprocess.Popen(
-            'cd "{0}" & "{1}.pdf"'.format(folder_name, file_name),
-            cwd=os.path.splitdrive(path_programm)[0],
-            shell=True,
-        ).poll()  # sumatrapdf {1}
+            'cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
+            shell = True).poll()
+        
+        # os.killpg(os.getpgid(pro.pid), signal.SIGINT)
+
+            # if not line:
+            #     break
+            # yield line    
+                # sys.stdout.write(line)
+                # f.write(line)
+        # error = process.stderr.readline().decode()
+        # print(process)
+        # print(process.returncode)
+        # print(error)
+        # output = process.stdout.readline()
+        # process.poll()
+        # print(output)
+        # if error != "":
+        #     warning_window("Der angegebene Dateipfad konnte nicht gefunden werden")
+        #     process = subprocess.Popen('cd "{0}" & "{1}.pdf"'.format(folder_name, file_name),
+        #     shell=True
+        #     ).poll()
+
+        # process.terminate()
+        # p_status=process.wait()
+        # print((output, err))
+        # print(output, err)
+        # os.killpg(os.getpgid(process.pid), signal.SIGTERM)
+        # try:
+        #     process = subprocess.Popen('cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
+        #     stdout = subprocess.PIPE,
+        #     shell=True)
+        #     process.communicate()
+        #     process.terminate()
+        #     # subprocess.Popen('cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
+        #     # shell=True,
+        #     # )
+        # except subprocess.CalledProcessError:
+        #     warning_window("Fehler beim Öffnen der PDF Datei")
+        #     subprocess.Popen('cd "{0}" & "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
+        #     shell=True,
+        #     )
+        # try:
+
+        #     # process = subprocess.run('cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
+        #     # check=True,
+        #     # shell=True)
+        #     # process.terminate()
+        # except subprocess.CalledProcessError:
+        #     warning_window("Fehler beim Öffnen der PDF Datei")
+        #     process = subprocess.call('cd "{0}" & "{2}.pdf"'.format(folder_name,path_pdf_reader,file_name),
+        #     shell=True).terminate()
+        # y = open(stderr_file, "r")
+        # x = y.read()
+        # print(x)
+        # y.close()
+
+        # with open(stderr_file,"w") as error_file:
+        #     process = subprocess.Popen('cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
+        #     stderr=error_file,
+        #     shell=True,
+        #     )
+        #     process.poll()
+        # print(error_file)
+        # with open(stderr_file, "r") as file:
+        #     errors = file.read()
+
+        # error_file.seek(1)
+        # error_file.close()
+
+
+        # print(process.returncode)
+
+        # print(os.path.isfile(stderr_file))
+
+        # print(errors)
+
+        # stderr_file = 'Teildokument/stderr.txt'
+        # subprocess.Popen(
+        #     'cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
+        #     cwd=os.path.splitdrive(path_programm)[0],
+        #     stderr=open(stderr_file, 'w', encoding="utf8"),
+        #     shell=True,
+        # ).poll() # sumatrapdf {1}
+
+        ## read file not working
+
 
 
 def loading_animation(process):
