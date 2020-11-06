@@ -1344,6 +1344,7 @@ class Ui_Dialog_setup(object):
             self.lama_settings = {
                 'start_program' : 0,
                 'pdf_reader' : "",
+                'database' : 2,
             }
         # self.beispieldaten_dateipfad_cria = MainWindow.beispieldaten_dateipfad_cria
         # self.beispieldaten_dateipfad_1 = MainWindow.beispieldaten_dateipfad_1
@@ -1395,6 +1396,27 @@ class Ui_Dialog_setup(object):
 
         gridlayout_setup.addWidget(groupbox_path_pdf,1,0,1,1)
 
+        groupbox_database = create_new_groupbox(Dialog, "Datenbank")
+        horizontalLayout_database = create_new_horizontallayout(groupbox_database)
+
+        label_database = create_new_label(Dialog, "Datenbank automatisch aktualisieren:")
+        horizontalLayout_database.addWidget(label_database)
+        self.combobox_database = create_new_combobox(groupbox_database)
+        horizontalLayout_database.addWidget(self.combobox_database)
+
+        add_new_option(self.combobox_database, 0, "jedes Mal beim Öffnen von LaMA")
+        add_new_option(self.combobox_database, 1, "wöchentlich")
+        add_new_option(self.combobox_database, 2, "monatlich")
+        add_new_option(self.combobox_database, 3, "niemals")
+
+        try:
+            self.combobox_database.setCurrentIndex(self.lama_settings['database'])
+        except:
+            self.lama_settings['database'] = 2
+            self.combobox_database.setCurrentIndex(2)
+        
+        gridlayout_setup.addWidget(groupbox_database, 2,0,1,1)
+
 
         self.buttonBox_setup = QtWidgets.QDialogButtonBox(self.Dialog)
         self.buttonBox_setup.setStandardButtons(
@@ -1427,6 +1449,7 @@ class Ui_Dialog_setup(object):
         dict_={}
         dict_['start_program'] = self.combobox_start_program.currentIndex()
         dict_['pdf_reader'] = self.lineedit_pdf_reader.text()
+        dict_['database'] = self.combobox_database.currentIndex()
 
         return dict_
 
