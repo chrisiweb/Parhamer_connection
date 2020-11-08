@@ -686,7 +686,17 @@ def open_pdf_file(folder_name, file_name):
         path_pdf_reader = '{}'.format(lama_settings['pdf_reader'])
     except FileNotFoundError:
         path_pdf_reader = ""
+
+    if os.path.isfile(path_pdf_reader) == False:
+        if is_empty(path_pdf_reader)== False:
+            warning_window("Der ausgewählte Pfad des Pdf-Readers zum Öffnen der Dateien ist fehlerhaft. Bitte korrigieren oder löschen Sie diesen.")
+        path_pdf_reader = ""
+    else:
+        path_pdf_reader = '"{}"'.format(path_pdf_reader) 
+
     file_path = os.path.join(folder_name, file_name)
+
+
     if sys.platform.startswith("linux"):
         file_path = file_path + ".pdf"
         webbrowser.open(file_path, new=2, autoraise=True)
@@ -699,9 +709,14 @@ def open_pdf_file(folder_name, file_name):
         #     ]
         # )
     elif sys.platform.startswith("darwin"):
-        subprocess.run(
-            ["open", "{0}.pdf".format(file_path),]
-        )
+        if is_empty(path_pdf_reader)==True:
+            subprocess.run(
+                ["open", "{0}.pdf".format(file_path),]
+            )
+        else:
+            subprocess.run(
+                ["open", "{}".format(path_pdf_reader),"{}.pdf".format(file_path),]
+            )            
     else:
         # if os.path.isfile(
         #     os.path.join("C:\\", "Program Files", "SumatraPDF", "SumatraPDF.exe")
@@ -749,11 +764,12 @@ def open_pdf_file(folder_name, file_name):
         # print(path_pdf_reader)
         # print(os.path.isfile(path_pdf_reader))
 
-        if os.path.isfile(path_pdf_reader) == False:
-            warning_window("Der ausgewählte Pfad des Pdf-Readers zum Öffnen der Dateien ist fehlerhaft. Bitte korrigieren oder löschen Sie diesen.")
-            path_pdf_reader = ""
-        else:
-            path_pdf_reader = '"{}"'.format(path_pdf_reader) 
+        # if os.path.isfile(path_pdf_reader) == False:
+        #     if is_empty(path_pdf_reader)== False:
+        #         warning_window("Der ausgewählte Pfad des Pdf-Readers zum Öffnen der Dateien ist fehlerhaft. Bitte korrigieren oder löschen Sie diesen.")
+        #     path_pdf_reader = ""
+        # else:
+        #     path_pdf_reader = '"{}"'.format(path_pdf_reader) 
 
         subprocess.Popen(
             'cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
