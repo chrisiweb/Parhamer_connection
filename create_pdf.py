@@ -90,13 +90,43 @@ def check_gks_not_included(gk_liste, suchbegriffe):
     else:
         return
 
-  
+def refresh_ddb_according_to_intervall(self, log_file):
+    try:
+        self.lama_settings['database']
+    except KeyError:
+        self.lama_settings['database']=2
+
+    if self.lama_settings['database']==1:
+        today = datetime.date.today()
+        week_ago = today - datetime.timedelta(days=7)
+        week_ago = week_ago.strftime("%y%m%d")
+        date_logfile = modification_date(log_file).strftime("%y%m%d")
+        # print('week')
+        if int(date_logfile)<int(week_ago):
+            refresh_ddb(self)
+
+    elif self.lama_settings['database'] == 2:
+        month_today = datetime.date.today().strftime("%m")
+        month_update_log_file = modification_date(log_file).strftime("%m")
+        # print('month')
+        if month_today != month_update_log_file:
+            refresh_ddb(self)  # self.label_aufgabentyp.text()[-1]
+    
+    elif self.lama_settings['database'] == 3:
+        # print('never')
+        return
+
+    self.label_update.setText(
+        "Letztes Update: "
+        + modification_date(log_file).strftime("%d.%m.%y - %H:%M")
+    )
+    # print('refreshed')      
 
 def prepare_tex_for_pdf(self):
     QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
     chosen_aufgabenformat = "Typ%sAufgaben" % self.label_aufgabentyp.text()[-1]
-    print(self.lama_settings)
+    # print(self.lama_settings)
     if self.chosen_program == "lama":
         log_file = os.path.join(
             path_programm,
@@ -108,31 +138,8 @@ def prepare_tex_for_pdf(self):
 
     if not os.path.isfile(log_file):
         refresh_ddb(self)  # self.label_aufgabentyp.text()[-1]
-    else:  ##  Automatic update once per month
-        try:
-            self.lama_settings['database']
-        except KeyError:
-            self.lama_settings['database']=2
-        print(modification_date(log_file))
-        print(modification_date(log_file).strftime("%d"))
-        today = datetime.date.today()
-        week_ago = today - datetime.timedelta(days=7)
-        week_ago = week_ago.strftime("%y%m%d")
-        print(week_ago)
-        date_logfile = modification_date(log_file).strftime("%y%m%d") 
-        print(modification_date(log_file).strftime("%y%m%d"))
-        if int(date_logfile)<int(week_ago):
-            print('update')
-        else:
-            print('no update')
-        month_update_log_file = modification_date(log_file).strftime("%m")
-        month_today = datetime.date.today().strftime("%m")
-        if month_today != month_update_log_file:
-            refresh_ddb(self)  # self.label_aufgabentyp.text()[-1]
-            self.label_update.setText(
-                "Letztes Update: "
-                + modification_date(log_file).strftime("%d.%m.%y - %H:%M")
-            )
+    else:  ##  Automatic update per week/month/...
+        refresh_ddb_according_to_intervall(self, log_file)
 
     suchbegriffe = []
 

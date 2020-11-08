@@ -319,6 +319,15 @@ class Ui_MainWindow(object):
         elif self.lama_settings["start_program"] == 2:
             self.chosen_program = 'lama'
 
+
+        try: 
+            self.lama_settings["database"]
+        except KeyError:
+            self.lama_settings["database"] = 2
+
+        if self.lama_settings["database"] == 0:
+            refresh_ddb(self) 
+ 
         if self.chosen_program == "cria":
             self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
                 "cria"
@@ -3034,7 +3043,8 @@ class Ui_MainWindow(object):
 
         MainWindow.setWindowTitle(program_name)
         MainWindow.setWindowIcon(QtGui.QIcon(icon))
-
+        if self.lama_settings["database"]==0:
+            refresh_ddb(self)
         self.update_gui("widgets_search")
         self.beispieldaten_dateipfad_1 = self.define_beispieldaten_dateipfad(1)
         self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)
@@ -3063,7 +3073,6 @@ class Ui_MainWindow(object):
             sys.exit(0)
 
     def open_setup(self):
-        # still_to_define()
         Dialog = QtWidgets.QDialog(
             None,
             QtCore.Qt.WindowSystemMenuHint
@@ -3074,6 +3083,8 @@ class Ui_MainWindow(object):
         ui.setupUi(Dialog, self)
         # self.Dialog.show()
         response = Dialog.exec()
+        if response == 1:
+            self.lama_settings = ui.lama_settings
 
 
     def show_info(self):
