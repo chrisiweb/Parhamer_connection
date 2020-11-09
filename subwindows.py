@@ -1353,7 +1353,7 @@ class Ui_Dialog_setup(object):
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
         Dialog.setWindowTitle("Einstellungen")
-        self.Dialog.setMinimumWidth(600)
+        # self.Dialog.setMinimumWidth(400)
         Dialog.setWindowIcon(QtGui.QIcon(logo_path))
         gridlayout_setup = create_new_gridlayout(Dialog)
 
