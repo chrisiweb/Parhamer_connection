@@ -2486,7 +2486,7 @@ class Ui_MainWindow(object):
                 )
             else:
                 ret = question_window(
-                    "Es ist eine neue Version von LaMA ist verfügbar.",
+                    "Es ist eine neue Version von LaMA verfügbar.",
                     "Möchten Sie das neue Update jetzt installieren?",
                     "Neue Version verfügbar",
                 )
