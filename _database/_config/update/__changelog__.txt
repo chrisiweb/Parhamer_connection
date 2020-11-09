@@ -1,4 +1,4 @@
-v2.2.0 beta
+v2.2.0
  - new function: update srdp-mathematik via LaMA
  - new fuction: LaMA settings (define pdf-reader path, pre-choice programm)  
  - bug fix: error when saving variation of L-GKs
