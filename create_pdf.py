@@ -709,15 +709,13 @@ def open_pdf_file(folder_name, file_name):
         path_pdf_reader = '{}'.format(lama_settings['pdf_reader'])
     except FileNotFoundError:
         path_pdf_reader = ""
-
-    if os.path.isfile(path_pdf_reader) == False:
-        if is_empty(path_pdf_reader)== False:
-            warning_window("Der ausgewählte Pfad des Pdf-Readers zum Öffnen der Dateien ist fehlerhaft. Bitte korrigieren oder löschen Sie diesen.")
-        path_pdf_reader = ""
-    else:
-        path_pdf_reader = '"{}"'.format(path_pdf_reader) 
-
+    # print(path_programm)
+    # print(path_pdf_reader)
+    # print(os.path.isfile("{}".format(path_pdf_reader)))
+    # print(os.stat(path_pdf_reader))
     file_path = os.path.join(folder_name, file_name)
+    # subprocess.run(["open","-a","{}".format(path_pdf_reader), "{0}.pdf".format(file_path)])
+
 
 
     if sys.platform.startswith("linux"):
@@ -732,14 +730,29 @@ def open_pdf_file(folder_name, file_name):
         #     ]
         # )
     elif sys.platform.startswith("darwin"):
-        if is_empty(path_pdf_reader)==True:
+        # if is_empty(path_pdf_reader)==True:
+        #     subprocess.run(
+        #         ["open", "{0}.pdf".format(file_path),]
+        #     )
+        # else:
+        if os.path.exists(path_pdf_reader) == False:
+            if is_empty(path_pdf_reader)== False:
+                warning_window("Der ausgewählte Pfad des Pdf-Readers zum Öffnen der Dateien ist fehlerhaft. Bitte korrigieren oder löschen Sie diesen.")
+            
             subprocess.run(
-                ["open", "{0}.pdf".format(file_path),]
+                ["open", "{0}.pdf".format(file_path)]
             )
         else:
             subprocess.run(
-                ["open", "{}".format(path_pdf_reader),"{}.pdf".format(file_path),]
-            )            
+                ["open","-a","{}".format(path_pdf_reader), "{0}.pdf".format(file_path)]
+            )
+            # subprocess.Popen(
+            #     'open -a {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
+            #     shell = True).poll()
+
+            # subprocess.run(
+            #     ["open","-a {0} {1}.pdf".format(path_pdf_reader,file_path),]
+            # )            
     else:
         # if os.path.isfile(
         #     os.path.join("C:\\", "Program Files", "SumatraPDF", "SumatraPDF.exe")

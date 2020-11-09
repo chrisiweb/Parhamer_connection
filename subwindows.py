@@ -1439,7 +1439,9 @@ class Ui_Dialog_setup(object):
             )
         if list_filename[0] == '':
             return
-
+        print(list_filename)
+        # print(os.path.isfile("-a {}".format(list_filename[0]))
+        # print(os.path.isdir("-a {}".format(list_filename[0]))
         self.lineedit_pdf_reader.setText(list_filename[0])
 
     def reject_dialog(self):

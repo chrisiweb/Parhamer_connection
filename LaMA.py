@@ -3087,6 +3087,7 @@ class Ui_MainWindow(object):
             self.lama_settings = ui.lama_settings
 
 
+
     def show_info(self):
         QtWidgets.QApplication.restoreOverrideCursor()
 
