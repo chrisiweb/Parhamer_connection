@@ -800,12 +800,12 @@ def open_pdf_file(folder_name, file_name):
         # print(path_pdf_reader)
         # print(os.path.isfile(path_pdf_reader))
 
-        # if os.path.isfile(path_pdf_reader) == False:
-        #     if is_empty(path_pdf_reader)== False:
-        #         warning_window("Der ausgewählte Pfad des Pdf-Readers zum Öffnen der Dateien ist fehlerhaft. Bitte korrigieren oder löschen Sie diesen.")
-        #     path_pdf_reader = ""
-        # else:
-        #     path_pdf_reader = '"{}"'.format(path_pdf_reader) 
+        if os.path.isfile(path_pdf_reader) == False:
+            if is_empty(path_pdf_reader)== False:
+                warning_window("Der ausgewählte Pfad des Pdf-Readers zum Öffnen der Dateien ist fehlerhaft. Bitte korrigieren oder löschen Sie diesen.")
+            path_pdf_reader = ""
+        else:
+            path_pdf_reader = '"{}"'.format(path_pdf_reader) 
 
         subprocess.Popen(
             'cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
