@@ -1,3 +1,6 @@
+v2.2.1
+ - bug fix: Path of PDF-Reader with space returns error
+
 v2.2.0
  - new function: update srdp-mathematik via LaMA
  - new fuction: LaMA settings (define pdf-reader path, pre-choice programm)  
