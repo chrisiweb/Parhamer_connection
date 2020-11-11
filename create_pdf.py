@@ -709,12 +709,8 @@ def open_pdf_file(folder_name, file_name):
         path_pdf_reader = '{}'.format(lama_settings['pdf_reader'])
     except FileNotFoundError:
         path_pdf_reader = ""
-    # print(path_programm)
-    # print(path_pdf_reader)
-    # print(os.path.isfile("{}".format(path_pdf_reader)))
-    # print(os.stat(path_pdf_reader))
+
     file_path = os.path.join(folder_name, file_name)
-    # subprocess.run(["open","-a","{}".format(path_pdf_reader), "{0}.pdf".format(file_path)])
 
 
 
@@ -730,11 +726,6 @@ def open_pdf_file(folder_name, file_name):
         #     ]
         # )
     elif sys.platform.startswith("darwin"):
-        # if is_empty(path_pdf_reader)==True:
-        #     subprocess.run(
-        #         ["open", "{0}.pdf".format(file_path),]
-        #     )
-        # else:
         if os.path.exists(path_pdf_reader) == False:
             if is_empty(path_pdf_reader)== False:
                 warning_window("Der ausgewählte Pfad des Pdf-Readers zum Öffnen der Dateien ist fehlerhaft. Bitte korrigieren oder löschen Sie diesen.")
@@ -746,60 +737,8 @@ def open_pdf_file(folder_name, file_name):
             subprocess.run(
                 ["open","-a","{}".format(path_pdf_reader), "{0}.pdf".format(file_path)]
             )
-            # subprocess.Popen(
-            #     'open -a {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
-            #     shell = True).poll()
-
-            # subprocess.run(
-            #     ["open","-a {0} {1}.pdf".format(path_pdf_reader,file_path),]
-            # )            
+         
     else:
-        # if os.path.isfile(
-        #     os.path.join("C:\\", "Program Files", "SumatraPDF", "SumatraPDF.exe")
-        # ):
-        #     sumatrapdf = os.path.join(
-        #         "C:\\", "Program Files", "SumatraPDF", "SumatraPDF.exe"
-        #     )
-        # elif os.path.isfile(
-        #     os.path.join(
-        #         "C:\\", "Program Files (x86)", "SumatraPDF", "SumatraPDF.exe"
-        #     )
-        # ):
-        #     sumatrapdf = os.path.join(
-        #         "C:\\", "Program Files (x86)", "SumatraPDF", "SumatraPDF.exe"
-        #     )
-        # else:
-        #     try:
-        #         appdata_folder = os.path.dirname(os.environ['APPDATA'])
-        #         user_sumatra_folder = os.path.join(appdata_folder, "Local", "SumatraPDF", "SumatraPDF.exe")
-        #         if os.path.isfile(user_sumatra_folder):
-        #             sumatrapdf = user_sumatra_folder
-        #         else:
-        #             sumatrapdf = ""
-        #     except KeyError:
-        #         sumatrapdf = ""
-        # stderr_file = os.path.join("Teildokument","stderr.txt")
-        # error_file = open("{0}/Teildokument/stderr.txt".format(path_programm),
-        #     "w",
-        #     encoding="utf8",
-        #     # errors="ignore",
-        #     )
-        # open_process = subprocess.Popen('cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
-        #     # cwd=os.path.splitdrive(path_programm)[0],
-        #     stdout=error_file,
-        #     shell=True,).poll()
-        # open_process.poll()
-
-        # process = subprocess.Popen('cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
-        # # stdout = subprocess.PIPE,
-        # # stderr = subprocess.PIPE,
-        # shell=True
-        # ).poll()
-
-        # with open('test.log', 'w') as f:  # replace 'w' with 'wb' for Python 3
-        # print(path_pdf_reader)
-        # print(os.path.isfile(path_pdf_reader))
-
         if os.path.isfile(path_pdf_reader) == False:
             if is_empty(path_pdf_reader)== False:
                 warning_window("Der ausgewählte Pfad des Pdf-Readers zum Öffnen der Dateien ist fehlerhaft. Bitte korrigieren oder löschen Sie diesen.")
@@ -811,91 +750,6 @@ def open_pdf_file(folder_name, file_name):
             'cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
             shell = True).poll()
         
-        # os.killpg(os.getpgid(pro.pid), signal.SIGINT)
-
-            # if not line:
-            #     break
-            # yield line    
-                # sys.stdout.write(line)
-                # f.write(line)
-        # error = process.stderr.readline().decode()
-        # print(process)
-        # print(process.returncode)
-        # print(error)
-        # output = process.stdout.readline()
-        # process.poll()
-        # print(output)
-        # if error != "":
-        #     warning_window("Der angegebene Dateipfad konnte nicht gefunden werden")
-        #     process = subprocess.Popen('cd "{0}" & "{1}.pdf"'.format(folder_name, file_name),
-        #     shell=True
-        #     ).poll()
-
-        # process.terminate()
-        # p_status=process.wait()
-        # print((output, err))
-        # print(output, err)
-        # os.killpg(os.getpgid(process.pid), signal.SIGTERM)
-        # try:
-        #     process = subprocess.Popen('cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
-        #     stdout = subprocess.PIPE,
-        #     shell=True)
-        #     process.communicate()
-        #     process.terminate()
-        #     # subprocess.Popen('cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
-        #     # shell=True,
-        #     # )
-        # except subprocess.CalledProcessError:
-        #     warning_window("Fehler beim Öffnen der PDF Datei")
-        #     subprocess.Popen('cd "{0}" & "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
-        #     shell=True,
-        #     )
-        # try:
-
-        #     # process = subprocess.run('cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
-        #     # check=True,
-        #     # shell=True)
-        #     # process.terminate()
-        # except subprocess.CalledProcessError:
-        #     warning_window("Fehler beim Öffnen der PDF Datei")
-        #     process = subprocess.call('cd "{0}" & "{2}.pdf"'.format(folder_name,path_pdf_reader,file_name),
-        #     shell=True).terminate()
-        # y = open(stderr_file, "r")
-        # x = y.read()
-        # print(x)
-        # y.close()
-
-        # with open(stderr_file,"w") as error_file:
-        #     process = subprocess.Popen('cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
-        #     stderr=error_file,
-        #     shell=True,
-        #     )
-        #     process.poll()
-        # print(error_file)
-        # with open(stderr_file, "r") as file:
-        #     errors = file.read()
-
-        # error_file.seek(1)
-        # error_file.close()
-
-
-        # print(process.returncode)
-
-        # print(os.path.isfile(stderr_file))
-
-        # print(errors)
-
-        # stderr_file = 'Teildokument/stderr.txt'
-        # subprocess.Popen(
-        #     'cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
-        #     cwd=os.path.splitdrive(path_programm)[0],
-        #     stderr=open(stderr_file, 'w', encoding="utf8"),
-        #     shell=True,
-        # ).poll() # sumatrapdf {1}
-
-        ## read file not working
-
-
 
 def loading_animation(process):
     animation = "|/-\\"
