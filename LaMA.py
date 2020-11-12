@@ -94,6 +94,19 @@ from prepare_content_vorschau import (
     split_content_at_beispiel_umgebung,
 )
 from convert_image_to_eps import convert_image_to_eps
+from lama_colors import *
+from lama_stylesheets import (
+    StyleSheet_tabWidget,
+    StyleSheet_new_tab,
+    StyleSheet_typ2, 
+    StyleSheet_tab_widget_themen, 
+    StyleSheet_button_check_all, 
+    StyleSheet_unterkapitel_cria,
+    StyleSheet_combobox_kapitel,
+    StyleSheet_aufgaben_groupbox,
+    StyleSheet_new_checkbox,
+    StyleSheet_calender,
+)
 
 # from cria_commands import create_kapitel_cria
 
@@ -102,61 +115,20 @@ try:
 except IndexError:
     loaded_lama_file_path = ""
 
-black = colors_ui["black"]
-white = colors_ui["white"]
-gray = colors_ui["gray"]
-blue_1 = colors_ui["blue_1"]
-blue_2 = colors_ui["blue_2"]
-blue_3 = colors_ui["blue_3"]
-blue_4 = colors_ui["blue_4"]
-blue_5 = colors_ui["blue_5"]
-blue_6 = colors_ui["blue_6"]
-blue_7 = colors_ui["blue_7"]
-red = colors_ui["red"]
 
 
-def get_color(color):
-    color = "rgb({0}, {1}, {2})".format(color.red(), color.green(), color.blue())
-    return color
+
+# def get_color(color):
+#     color = "rgb({0}, {1}, {2})".format(color.red(), color.green(), color.blue())
+#     return color
 
 
-StyleSheet_tabWidget = """
-QTabBar::tab:selected {{
-background: {0}; color: {1};
-padding-right: 10px; padding-left: 10px;
-border-top: 2px solid {3};
-border-left: 2px solid {3};
-border-right: 2px solid {3};
-}}
-
-QTabBar::tab::disabled {{
-background-color: gray;
-}}
 
 
-QWidget {{color: {2};background-color: {3}}}
-
-""".format(
-    get_color(blue_2), get_color(black), get_color(white), get_color(blue_7)
-)
 
 # QWidget::disabled {{background-color: {4}}}
 
-StyleSheet_new_tab = """
-QWidget {{color: {0}; background-color:{1}}}
 
-QWidget::disabled {{background-color: lightGray}}
-""".format(
-    get_color(black), get_color(blue_2)
-)
-
-
-StyleSheet_typ2 = """
-QGroupBox {{background-color: {0}; color: {1}}}
-QLabel {{color:  {1}}}
-""".format(
-    get_color(blue_3), get_color(black)
-)
 
 ## sizePolicy = QtWidgets.QSizePolicy( ######### Breite ############, ######### Höhe ############)
 
@@ -710,22 +682,8 @@ class Ui_MainWindow(object):
         # QtWidgets.QVBoxLayout(self.groupBox_themen_klasse)
         # self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.tab_widget_themen = QtWidgets.QTabWidget(self.groupBox_themen_klasse)
-        self.tab_widget_themen.setStyleSheet(
-            """
-            QTabBar::tab:selected {{
-            background: {0}; color: {1};
-            padding-right: 10px; padding-left: 10px; padding-bottom: 5px; padding-top: 5px;
-            border-top: 2px solid {3};
-            border-left: 2px solid {3};
-            border-right: 2px solid {3};
-            }}
+        self.tab_widget_themen.setStyleSheet(StyleSheet_tab_widget_themen)
 
-            QWidget {{color: {2};background-color: {3}}}
-
-            """.format(
-                get_color(blue_2), get_color(black), get_color(white), get_color(blue_7)
-            )
-        )
         # self.tabWidget.setStyleSheet(set_color_text(white))
 
         self.tab_widget_themen.setObjectName(_fromUtf8("tab_widget_themen"))
@@ -870,6 +828,7 @@ class Ui_MainWindow(object):
             new_verticallayout.addStretch()
 
             btn_alle_kapitel = create_new_button(new_scrollareacontent,"alle Kapitel der {}. Klasse auswählen".format(klasse[1]),partial(self.btn_alle_kapitel_clicked, klasse))
+            btn_alle_kapitel.setStyleSheet(StyleSheet_button_check_all)
             new_verticallayout.addWidget(btn_alle_kapitel)
             # new_verticallayout.addItem(spacerItem_cria)
 
@@ -896,9 +855,7 @@ class Ui_MainWindow(object):
         self.scrollArea_unterkapitel_cria.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.scrollArea_unterkapitel_cria.setWidgetResizable(True)
         self.scrollArea_unterkapitel_cria.setObjectName("scrollArea_unterkapitel")
-        self.scrollArea_unterkapitel_cria.setStyleSheet(
-            "background-color: {}".format(get_color(blue_2))
-        )
+        self.scrollArea_unterkapitel_cria.setStyleSheet(StyleSheet_unterkapitel_cria)
         self.scrollAreaWidgetContents_cria = QtWidgets.QWidget()
         self.scrollAreaWidgetContents_cria.setGeometry(QtCore.QRect(0, 0, 320, 279))
         self.scrollAreaWidgetContents_cria.setObjectName(
@@ -1057,13 +1014,7 @@ class Ui_MainWindow(object):
             new_verticallayout.setObjectName("{}".format(new_verticallayout))
 
             combobox_kapitel = create_new_combobox(new_scrollareacontent)
-            selection_background_color = get_color(blue_7)
-            selection_text_color = get_color(white)
-            combobox_kapitel.setStyleSheet(
-                "background-color: {0};selection-background-color: {1}; selection-color: {2}".format(
-                    get_color(white), selection_background_color, selection_text_color
-                )
-            )
+            combobox_kapitel.setStyleSheet(StyleSheet_combobox_kapitel)
             combobox_kapitel.setMinimumHeight(25)
 
             self.dict_widget_variables[
@@ -1594,6 +1545,7 @@ class Ui_MainWindow(object):
         self.dateEdit.setCalendarPopup(True)
         self.dateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
         self.dateEdit.setObjectName("dateEdit")
+        self.dateEdit.setStyleSheet(StyleSheet_calender)
         self.verticalLayout_5.addWidget(self.dateEdit)
         self.gridLayout_5.addWidget(self.groupBox_datum, 0, 1, 3, 1)
         # self.groupBox_datum.setMaximumSize(QtCore.QSize(140, 16777215))
@@ -2352,9 +2304,7 @@ class Ui_MainWindow(object):
                     klasse,
                 ),
             )
-            button_check_all.setStyleSheet(
-                "background-color: {}; ".format(get_color(blue_3))
-            )
+            button_check_all.setStyleSheet(StyleSheet_button_check_all)
             button_check_all.setSizePolicy(SizePolicy_fixed)
 
         gridlayout_scrollarea.setRowStretch(row, 1)
@@ -2396,9 +2346,7 @@ class Ui_MainWindow(object):
                     self.button_all_checkboxes_pressed, chosen_dictionary, "gk", mode
                 ),
             )
-            button_check_all.setStyleSheet(
-                "background-color: {}; ".format(get_color(blue_3))
-            )
+            button_check_all.setStyleSheet(StyleSheet_button_check_all)
             button_check_all.setSizePolicy(SizePolicy_fixed)
 
             gridLayout_scrollarea.addWidget(
@@ -2424,14 +2372,8 @@ class Ui_MainWindow(object):
         for all in chosen_dictionary:
             new_checkbox = create_new_checkbox(parent, dict_gk[all])
             new_checkbox.setFocusPolicy(QtCore.Qt.NoFocus)
-            background_color = get_color(blue_7)
-            new_checkbox.setStyleSheet(
-                """QToolTip {{ color: white; background-color: {}; border: 0px; }}       
-            QCheckBox {{padding-right: 10px, padding-bottom: 10px}}
-            """.format(
-                    background_color
-                )
-            )
+            # background_color = get_color(blue_7)
+            new_checkbox.setStyleSheet(StyleSheet_new_checkbox)
             layout.addWidget(new_checkbox, row, column, 1, 1)
             new_checkbox.stateChanged.connect(
                 partial(self.checkbox_checked, mode, "gk")
@@ -2610,7 +2552,7 @@ class Ui_MainWindow(object):
                 button_check_all_unterkapitel = create_new_button(
                     self.scrollAreaWidgetContents_cria, "alle auswählen", None
                 )
-                # button_check_all_unterkapitel.setStyleSheet("background-color: rgb(240, 240, 240);")
+                button_check_all_unterkapitel.setStyleSheet(StyleSheet_button_check_all)
                 button_check_all_unterkapitel.clicked.connect(
                     partial(self.btn_alle_unterkapitel_clicked_cria, klasse, kapitel)
                 )
@@ -5244,12 +5186,7 @@ class Ui_MainWindow(object):
             )
 
         if (index % 2) == 1 and (typ == 1 or typ == None):
-            background_color = get_color(blue_1)
-            new_groupbox.setStyleSheet(
-                _fromUtf8(
-                    "QGroupBox {{background-color: {0};}} ".format(background_color)
-                )
-            )
+            new_groupbox.setStyleSheet(StyleSheet_aufgaben_groupbox)
         if typ == 2:
             new_groupbox.setStyleSheet(StyleSheet_typ2)
 
@@ -5979,7 +5916,9 @@ class Ui_MainWindow(object):
                 if listWidget_mode == "feedback":
                     pass
                 else:
-                    item.setBackground(blue_3)
+                    # local_item_background_color = blue_4
+                    # # local_item_background_color = blue_3
+                    # item.setBackground(local_item_background_color)
                     item.setToolTip("lokal gespeichert")
                     listWidget.addItem(item)
 
@@ -5993,7 +5932,7 @@ class Ui_MainWindow(object):
                     listWidget.addItem(item)
 
             elif re.search("\[.+\]", name) != None:
-                item.setForeground(QtGui.QColor(108, 159, 103))
+                # item.setForeground(QtGui.QColor(108, 159, 103))
                 item.setToolTip("Variation")
                 listWidget.addItem(item)
             else:
@@ -6846,20 +6785,21 @@ if __name__ == "__main__":
     palette.setColor(QtGui.QPalette.HighlightedText, white)
 
     ### Dark Mode
-    # palette_dark_mode = QtGui.QPalette()
-    # palette_dark_mode.setColor(QtGui.QPalette.Window, QtGui.QColor(53, 53, 53))  # Window background
-    # palette_dark_mode.setColor(QtGui.QPalette.WindowText, white)
-    # palette_dark_mode.setColor(QtGui.QPalette.Text, white)
-    # palette_dark_mode.setColor(QtGui.QPalette.Base, QtGui.QColor(53, 53, 53))
-    # palette_dark_mode.setColor(QtGui.QPalette.ToolTipBase, blue_7)
-    # palette_dark_mode.setColor(QtGui.QPalette.Button, QtGui.QColor(53, 53, 53))
-    # palette_dark_mode.setColor(QtGui.QPalette.ButtonText, white)
-    # palette_dark_mode.setColor(QtGui.QPalette.HighlightedText, white)
-    # palette_dark_mode.setColor(QtGui.QPalette.Highlight, blue_7)
+    palette_dark_mode = QtGui.QPalette()
+    palette_dark_mode.setColor(QtGui.QPalette.Window, QtGui.QColor(53, 53, 53))  # Window background
+    palette_dark_mode.setColor(QtGui.QPalette.WindowText, white)
+    palette_dark_mode.setColor(QtGui.QPalette.Text, white)
+    palette_dark_mode.setColor(QtGui.QPalette.Base, dark_gray)
+    palette_dark_mode.setColor(QtGui.QPalette.ToolTipBase, blue_7)
+    palette_dark_mode.setColor(QtGui.QPalette.Button, QtGui.QColor(53, 53, 53))
+    palette_dark_mode.setColor(QtGui.QPalette.ButtonText, white)
+    palette_dark_mode.setColor(QtGui.QPalette.HighlightedText, white)
+    palette_dark_mode.setColor(QtGui.QPalette.Highlight, blue_7)
 
-    app.setPalette(palette)
+    app.setPalette(palette_dark_mode)
 
     MainWindow = QMainWindow()
+    # MainWindow.setWindowFlags(QtCore.Qt.FramelessWindowHint)
     screen_resolution = app.desktop().screenGeometry()
     screen_width, screen_height = screen_resolution.width(), screen_resolution.height()
 

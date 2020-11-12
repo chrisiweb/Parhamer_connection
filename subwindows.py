@@ -1353,6 +1353,7 @@ class Ui_Dialog_setup(object):
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
         Dialog.setWindowTitle("Einstellungen")
+        row=0
         # self.Dialog.setMinimumWidth(400)
         Dialog.setWindowIcon(QtGui.QIcon(logo_path))
         gridlayout_setup = create_new_gridlayout(Dialog)
@@ -1374,7 +1375,8 @@ class Ui_Dialog_setup(object):
             self.lama_settings['start_program'] = 0
         horizontalLayout_start_program.addWidget(self.combobox_start_program)
 
-        gridlayout_setup.addWidget(groupbox_start_program, 0,0,1,1)
+        gridlayout_setup.addWidget(groupbox_start_program, row,0,1,1)
+        row +=1
 
         groupbox_path_pdf = create_new_groupbox(Dialog, "PDF Reader")
         groupbox_path_pdf.setSizePolicy(SizePolicy_fixed_height)
@@ -1394,15 +1396,18 @@ class Ui_Dialog_setup(object):
         self.button_search_pdf_reader = create_new_button(groupbox_path_pdf, "Durchsuchen", self.search_pdf_reader)
         horizontallayout_path_pdf.addWidget(self.button_search_pdf_reader)
 
-        gridlayout_setup.addWidget(groupbox_path_pdf,1,0,1,1)
+        gridlayout_setup.addWidget(groupbox_path_pdf,row,0,1,1)
+        row +=1
 
         groupbox_database = create_new_groupbox(Dialog, "Datenbank")
+        groupbox_database.setSizePolicy(SizePolicy_fixed_height)
         horizontalLayout_database = create_new_horizontallayout(groupbox_database)
 
         label_database = create_new_label(Dialog, "Datenbank automatisch aktualisieren:")
         horizontalLayout_database.addWidget(label_database)
         self.combobox_database = create_new_combobox(groupbox_database)
         horizontalLayout_database.addWidget(self.combobox_database)
+        
 
         add_new_option(self.combobox_database, 0, "jedes Mal beim Öffnen von LaMA")
         add_new_option(self.combobox_database, 1, "wöchentlich")
@@ -1415,13 +1420,19 @@ class Ui_Dialog_setup(object):
             self.lama_settings['database'] = 2
             self.combobox_database.setCurrentIndex(2)
         
-        gridlayout_setup.addWidget(groupbox_database, 2,0,1,1)
+        gridlayout_setup.addWidget(groupbox_database, row,0,1,1)
+        row+=1
+
+
+        gridlayout_setup.setRowStretch(row, 1)
+        row +=1
 
 
         self.buttonBox_setup = QtWidgets.QDialogButtonBox(self.Dialog)
         self.buttonBox_setup.setStandardButtons(
             QtWidgets.QDialogButtonBox.Save | QtWidgets.QDialogButtonBox.Cancel
         )
+
 
         buttonS = self.buttonBox_setup.button(QtWidgets.QDialogButtonBox.Save)
         buttonS.setText('Speichern')
@@ -1430,8 +1441,9 @@ class Ui_Dialog_setup(object):
         self.buttonBox_setup.rejected.connect(self.reject_dialog)
         self.buttonBox_setup.accepted.connect(self.save_setting)
 
+        gridlayout_setup.addWidget(self.buttonBox_setup,row,0,1,1)
 
-        gridlayout_setup.addWidget(self.buttonBox_setup,5,0,1,1)
+        
 
     def search_pdf_reader(self):
         list_filename = QtWidgets.QFileDialog.getOpenFileName(

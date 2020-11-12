@@ -19,6 +19,7 @@ lama_settings_file = os.path.join(
 colors_ui = {
     "black": QtGui.QColor(0, 0, 0),
     "white": QtGui.QColor(255, 255, 255),
+    "dark_gray": QtGui.QColor(53, 53, 53),
     "gray": QtGui.QColor(214, 214, 214),
     "blue_1": QtGui.QColor(245, 245, 255),
     "blue_2": QtGui.QColor(224, 233, 232),
