@@ -139,20 +139,44 @@ QLabel {{color:  {1}}}
 StyleSheet_new_checkbox =  """
 QToolTip {{ 
 color: {0}; background-color: {1}; border: 0px; 
-}}       
+}} 
+
 QCheckBox {{
-padding-right: 10px; padding-bottom: 10px; color: {0}
+padding-right: 10px; padding-bottom: 10px; color: {0}; 
 }}
 
+QCheckBox::indicator {{
+    width: 13px;
+    height: 13px;
+}}
 
+QCheckBox::indicator:unchecked {{
+    color: white;background-color: white
+}}
 
+QCheckBox::indicator:unchecked:hover{{
+    color: white;background-color: white
+}}
+
+QCheckBox::indicator:unchecked:pressed {{
+    color: red;background-color: red
+}}
+
+QCheckBox::indicator:checked {{
+    color: white;background-color: blue
+}}
 """.format(
     get_color(white),
-    get_color(dark_gray)
+    get_color(dark_gray),
 )
+ 
+
 # QCheckBox::indicator {{
 #     border: 1px solid {0} ; color: white;
 # }}
+
+
+
 
 # StyleSheet_new_checkbox =  """
 # QToolTip {{ 

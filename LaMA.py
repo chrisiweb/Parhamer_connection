@@ -6799,7 +6799,7 @@ if __name__ == "__main__":
     app.setPalette(palette_dark_mode)
 
     MainWindow = QMainWindow()
-    # MainWindow.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+    #MainWindow.setWindowFlags(QtCore.Qt.FramelessWindowHint)
     screen_resolution = app.desktop().screenGeometry()
     screen_width, screen_height = screen_resolution.width(), screen_resolution.height()
 
