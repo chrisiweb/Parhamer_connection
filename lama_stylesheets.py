@@ -50,7 +50,7 @@ StyleSheet_button_check_all = "background-color: {}; ".format(get_color(blue_3))
 StyleSheet_unterkapitel_cria = "background-color: {}".format(get_color(blue_2))
 
 StyleSheet_combobox_kapitel = "background-color: {0};selection-background-color: {1}; selection-color: {2}".format(
-    get_color(white), selection_background_color, selection_text_color
+    get_color(white), get_color(blue_7), get_color(white)
 )
 
 StyleSheet_aufgaben_groupbox = "QGroupBox {{background-color: {0};}} ".format(get_color(blue_1))

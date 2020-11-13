@@ -30,7 +30,7 @@ from create_new_widgets import (
     create_new_groupbox,
     add_new_option,
 )
-from standard_dialog_windows import critical_window
+from standard_dialog_windows import critical_window, information_window
 from waitingspinnerwidget import QtWaitingSpinner
 from predefined_size_policy import SizePolicy_fixed, SizePolicy_fixed_height
 from work_with_content import prepare_content_for_hide_show_items
@@ -1431,6 +1431,7 @@ class Ui_Dialog_setup(object):
         label_display = create_new_label(Dialog, "Darstellung:")
         horizontallayout_display.addWidget(label_display)
         self.combobox_display = create_new_combobox(Dialog)
+        # self.combobox_display.currentIndexChanged.connect(self.combobox_display_changed)
         horizontallayout_display.addWidget(self.combobox_display)
 
         add_new_option(self.combobox_display, 0, "Standard")
@@ -1464,6 +1465,9 @@ class Ui_Dialog_setup(object):
         gridlayout_setup.addWidget(self.buttonBox_setup,row,0,1,1)
 
         
+    # def combobox_display_changed(self):
+    #     information_window("Die Darstellung wird erst nach dem Neustart von LaMA übernommen.")
+        
 
     def search_pdf_reader(self):
         list_filename = QtWidgets.QFileDialog.getOpenFileName(
@@ -1489,6 +1493,8 @@ class Ui_Dialog_setup(object):
         return dict_
 
     def save_setting(self):
+        if self.MainWindow.display_mode != self.combobox_display.currentIndex():
+            information_window("Die Änderung der Darstellung wird erst nach dem Neustart von LaMA übernommen.")
         self.lama_settings = self.save_settings_to_dict()
         with open(lama_settings_file, "w+", encoding="utf8") as f:
             json.dump(self.lama_settings, f, ensure_ascii=False)

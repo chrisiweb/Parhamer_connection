@@ -231,9 +231,10 @@ class Ui_MainWindow(object):
             self.lama_settings = {}        
 
         try: 
-            self.lama_settings["display"]
+            self.display_mode = self.lama_settings["display"]
         except KeyError:
             self.lama_settings["display"] = 0
+            self.display_mode = 0
 
         self.dict_titlepage = check_format_titlepage_save("titlepage_save")
 
@@ -675,7 +676,7 @@ class Ui_MainWindow(object):
         # QtWidgets.QVBoxLayout(self.groupBox_themen_klasse)
         # self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.tab_widget_themen = QtWidgets.QTabWidget(self.groupBox_themen_klasse)
-        if self.lama_settings['display'] == 0:
+        if self.display_mode == 0:
             stylesheet = StyleSheet_tab_widget_themen
         else:
             stylesheet = StyleSheet_tab_widget_themen_dark_mode
@@ -696,7 +697,7 @@ class Ui_MainWindow(object):
         # self.gridLayout_11.setObjectName(_fromUtf8("gridLayout_11"))
         self.tab_widget_gk = QtWidgets.QTabWidget(self.groupBox_gk)
 
-        if self.lama_settings['display'] == 0:
+        if self.display_mode == 0:
             stylesheet = StyleSheet_tabWidget
         else:
             stylesheet = StyleSheet_tabWidget_dark_mode        
@@ -781,7 +782,7 @@ class Ui_MainWindow(object):
         self.tabWidget_klassen_cria = QtWidgets.QTabWidget(
             self.groupBox_schulstufe_cria
         )
-        if self.lama_settings['display'] == 0:
+        if self.display_mode == 0:
             stylesheet = StyleSheet_tabWidget
         else:
             stylesheet = StyleSheet_tabWidget_dark_mode
@@ -799,7 +800,7 @@ class Ui_MainWindow(object):
                 self.tabWidget_klassen_cria, "{}. Klasse".format(klasse[1])
             )
             
-            if self.lama_settings['display'] == 0:
+            if self.display_mode == 0:
                 stylesheet = StyleSheet_new_tab
             else:
                 stylesheet = StyleSheet_new_tab_dark_mode            
@@ -838,7 +839,7 @@ class Ui_MainWindow(object):
             new_verticallayout.addStretch()
 
             btn_alle_kapitel = create_new_button(new_scrollareacontent,"alle Kapitel der {}. Klasse auswählen".format(klasse[1]),partial(self.btn_alle_kapitel_clicked, klasse))
-            if self.lama_settings['display'] == 0:
+            if self.display_mode == 0:
                 stylesheet = StyleSheet_button_check_all
             else:
                 stylesheet = StyleSheet_button_check_all_dark_mode
@@ -869,7 +870,7 @@ class Ui_MainWindow(object):
         self.scrollArea_unterkapitel_cria.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.scrollArea_unterkapitel_cria.setWidgetResizable(True)
         self.scrollArea_unterkapitel_cria.setObjectName("scrollArea_unterkapitel")
-        if self.lama_settings['display'] == 0:
+        if self.display_mode == 0:
             stylesheet = StyleSheet_unterkapitel_cria
         else:
             stylesheet = StyleSheet_unterkapitel_cria_dark_mode
@@ -974,7 +975,7 @@ class Ui_MainWindow(object):
         self.gridLayout_11_cr.setObjectName(_fromUtf8("gridLayout_11_cr"))
         self.tab_widget_gk_cr = QtWidgets.QTabWidget(self.groupBox_grundkompetenzen_cr)
 
-        if self.lama_settings['display'] == 0:
+        if self.display_mode == 0:
             stylesheet = StyleSheet_tabWidget
         else:
             stylesheet = StyleSheet_tabWidget_dark_mode
@@ -1002,7 +1003,7 @@ class Ui_MainWindow(object):
         self.gridLayout_11_cr_cria.setObjectName(_fromUtf8("gridLayout_11_cr_cria"))
         self.tab_widget_cr_cria = QtWidgets.QTabWidget(self.groupBox_themengebiete_cria)
         # self.tab_widget_gk_cr.setStyleSheet(_fromUtf8("background-color: rgb(217, 255, 215);")
-        if self.lama_settings['display'] == 0:
+        if self.display_mode == 0:
             stylesheet = StyleSheet_tabWidget
         else:
             stylesheet = StyleSheet_tabWidget_dark_mode
@@ -1023,7 +1024,7 @@ class Ui_MainWindow(object):
             new_tab = add_new_tab(
                 self.tab_widget_cr_cria, "{}. Klasse".format(klasse[1])
             )
-            if self.lama_settings['display'] == 0:
+            if self.display_mode == 0:
                 stylesheet = StyleSheet_new_tab
             else:
                 stylesheet = StyleSheet_new_tab_dark_mode
@@ -1044,7 +1045,7 @@ class Ui_MainWindow(object):
             new_verticallayout.setObjectName("{}".format(new_verticallayout))
 
             combobox_kapitel = create_new_combobox(new_scrollareacontent)
-            if self.lama_settings['display'] == 0:
+            if self.display_mode == 0:
                 stylesheet = StyleSheet_combobox_kapitel
             else:
                 stylesheet = StyleSheet_combobox_kapitel_dark_mode
@@ -1579,8 +1580,8 @@ class Ui_MainWindow(object):
         self.dateEdit.setCalendarPopup(True)
         self.dateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
         self.dateEdit.setObjectName("dateEdit")
-        if self.lama_settings['display'] == 1:
-            self.dateEdit.setStyleSheet(StyleSheet_calender)
+        if self.display_mode == 1:
+            self.dateEdit.setStyleSheet(StyleSheet_calender_dark_mode)
         self.verticalLayout_5.addWidget(self.dateEdit)
         self.gridLayout_5.addWidget(self.groupBox_datum, 0, 1, 3, 1)
         # self.groupBox_datum.setMaximumSize(QtCore.QSize(140, 16777215))
@@ -2308,7 +2309,7 @@ class Ui_MainWindow(object):
         #     tab_widget, "{}. Klasse".format(klasse[1])
         # )  # self.tab_widget_gk self.tab_widget_gk_cr
         new_tab = add_new_tab(tab_widget, "Zusatzthemen")
-        if self.lama_settings['display'] == 0:
+        if self.display_mode == 0:
             stylesheet = StyleSheet_new_tab
         else:
             stylesheet = StyleSheet_new_tab_dark_mode
@@ -2343,7 +2344,7 @@ class Ui_MainWindow(object):
                     klasse,
                 ),
             )
-            if self.lama_settings['display'] == 0:
+            if self.display_mode == 0:
                 stylesheet = StyleSheet_button_check_all
             else:
                 stylesheet = StyleSheet_button_check_all_dark_mode
@@ -2363,7 +2364,7 @@ class Ui_MainWindow(object):
         new_tab = add_new_tab(
             tab_widget, titel
         )  # self.tab_widget_gk self.tab_widget_gk_cr
-        if self.lama_settings['display'] == 0:
+        if self.display_mode == 0:
             stylesheet = StyleSheet_new_tab
         else:
             stylesheet = StyleSheet_new_tab_dark_mode
@@ -2393,7 +2394,7 @@ class Ui_MainWindow(object):
                     self.button_all_checkboxes_pressed, chosen_dictionary, "gk", mode
                 ),
             )
-            if self.lama_settings['display'] == 0:
+            if self.display_mode == 0:
                 stylesheet = StyleSheet_button_check_all
             else:
                 stylesheet = StyleSheet_button_check_all_dark_mode
@@ -2424,7 +2425,7 @@ class Ui_MainWindow(object):
             new_checkbox = create_new_checkbox(parent, dict_gk[all])
             new_checkbox.setFocusPolicy(QtCore.Qt.NoFocus)
             # background_color = get_color(blue_7)
-            if self.lama_settings['display'] == 0:
+            if self.display_mode == 0:
                 stylesheet = StyleSheet_new_checkbox
             else:
                 stylesheet = StyleSheet_new_checkbox_dark_mode
@@ -2607,7 +2608,7 @@ class Ui_MainWindow(object):
                 button_check_all_unterkapitel = create_new_button(
                     self.scrollAreaWidgetContents_cria, "alle auswählen", None
                 )
-                if self.lama_settings['display'] == 0:
+                if self.display_mode == 0:
                     stylesheet = StyleSheet_button_check_all
                 else:
                     stylesheet = StyleSheet_button_check_all_dark_mode
@@ -5245,13 +5246,13 @@ class Ui_MainWindow(object):
             )
 
         if (index % 2) == 1 and (typ == 1 or typ == None):
-            if self.lama_settings['display'] == 0:
+            if self.display_mode == 0:
                 stylesheet = StyleSheet_aufgaben_groupbox
             else:
                 stylesheet = StyleSheet_aufgaben_groupbox_dark_mode
             new_groupbox.setStyleSheet(stylesheet)
         if typ == 2:
-            if self.lama_settings['display'] == 0:
+            if self.display_mode == 0:
                 stylesheet = StyleSheet_typ2
             else:
                 stylesheet = StyleSheet_typ2_dark_mode
