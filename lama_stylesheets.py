@@ -48,6 +48,7 @@ QWidget {{color: {0}; background-color:{1}}}
 QWidget::disabled {{background-color: lightGray}}
 
 QButton {{background-color: {2}; color{0}}}
+
 """.format(
     get_color(white), get_color(blue_7), get_color(dark_gray)
 )
@@ -140,12 +141,18 @@ QToolTip {{
 color: {0}; background-color: {1}; border: 0px; 
 }}       
 QCheckBox {{
-padding-right: 10px, padding-bottom: 10px
+padding-right: 10px; padding-bottom: 10px; color: {0}
 }}
+
+
+
 """.format(
     get_color(white),
     get_color(dark_gray)
 )
+# QCheckBox::indicator {{
+#     border: 1px solid {0} ; color: white;
+# }}
 
 # StyleSheet_new_checkbox =  """
 # QToolTip {{ 
@@ -165,3 +172,7 @@ QCalendarWidget QTableView
     alternate-background-color: {};
 }}
 """.format(get_color(blue_5))
+
+StyleSheet_ausgleichspunkte = "color: white"
+
+# StyleSheet_ausgleichspunkte = "color: black"

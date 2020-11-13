@@ -35,6 +35,7 @@ from waitingspinnerwidget import QtWaitingSpinner
 from predefined_size_policy import SizePolicy_fixed, SizePolicy_fixed_height
 from work_with_content import prepare_content_for_hide_show_items
 from sort_items import sorted_gks
+from lama_stylesheets import StyleSheet_tabWidget, StyleSheet_ausgleichspunkte
 
 dict_gk = config_loader(config_file, "dict_gk")
 ag_beschreibung = config_loader(config_file, "ag_beschreibung")
@@ -68,19 +69,19 @@ def get_color(color):
     return color
 
 
-StyleSheet_tabWidget = """
-QTabBar::tab:selected {{
-background: {0}; color: {1};
-padding-right: 10px; padding-left: 10px;
-border-top: 2px solid {3};
-border-left: 2px solid {3};
-border-right: 2px solid {3};
-}}
+# StyleSheet_tabWidget = """
+# QTabBar::tab:selected {{
+# background: {0}; color: {1};
+# padding-right: 10px; padding-left: 10px;
+# border-top: 2px solid {3};
+# border-left: 2px solid {3};
+# border-right: 2px solid {3};
+# }}
 
-QWidget {{color: {2};background-color: {3}}}
-""".format(
-    get_color(blue_2), get_color(black), get_color(white), get_color(blue_7)
-)
+# QWidget {{color: {2};background-color: {3}}}
+# """.format(
+#     get_color(blue_2), get_color(black), get_color(white), get_color(blue_7)
+# )
 
 
 class Ui_Dialog_choose_type(object):
@@ -901,7 +902,7 @@ class Ui_Dialog_ausgleichspunkte(object):
 
     def checkbox_clicked(self, checkbox, checkbox_label):
         if checkbox.isChecked() == True:
-            checkbox_label.setStyleSheet("color: black")
+            checkbox_label.setStyleSheet(StyleSheet_ausgleichspunkte)
         else:
             checkbox_label.setStyleSheet("color: gray")
 
