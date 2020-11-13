@@ -1346,6 +1346,7 @@ class Ui_Dialog_setup(object):
                 'start_program' : 0,
                 'pdf_reader' : "",
                 'database' : 2,
+                'display' : 0,
             }
         # self.beispieldaten_dateipfad_cria = MainWindow.beispieldaten_dateipfad_cria
         # self.beispieldaten_dateipfad_1 = MainWindow.beispieldaten_dateipfad_1
@@ -1402,12 +1403,12 @@ class Ui_Dialog_setup(object):
 
         groupbox_database = create_new_groupbox(Dialog, "Datenbank")
         groupbox_database.setSizePolicy(SizePolicy_fixed_height)
-        horizontalLayout_database = create_new_horizontallayout(groupbox_database)
+        horizontallayout_database = create_new_horizontallayout(groupbox_database)
 
         label_database = create_new_label(Dialog, "Datenbank automatisch aktualisieren:")
-        horizontalLayout_database.addWidget(label_database)
+        horizontallayout_database.addWidget(label_database)
         self.combobox_database = create_new_combobox(groupbox_database)
-        horizontalLayout_database.addWidget(self.combobox_database)
+        horizontallayout_database.addWidget(self.combobox_database)
         
 
         add_new_option(self.combobox_database, 0, "jedes Mal beim Öffnen von LaMA")
@@ -1424,6 +1425,24 @@ class Ui_Dialog_setup(object):
         gridlayout_setup.addWidget(groupbox_database, row,0,1,1)
         row+=1
 
+        groupbox_display = create_new_groupbox(Dialog, "Anzeige")
+        horizontallayout_display = create_new_horizontallayout(groupbox_display)
+
+        label_display = create_new_label(Dialog, "Darstellung:")
+        horizontallayout_display.addWidget(label_display)
+        self.combobox_display = create_new_combobox(Dialog)
+        horizontallayout_display.addWidget(self.combobox_display)
+
+        add_new_option(self.combobox_display, 0, "Standard")
+        add_new_option(self.combobox_display, 1, "Dark Mode")
+
+        try:
+            self.combobox_display.setCurrentIndex(self.lama_settings['display'])
+        except:
+            self.lama_settings['display'] = 0
+        
+        gridlayout_setup.addWidget(groupbox_display, row, 0,1,1)
+        row +=1
 
         gridlayout_setup.setRowStretch(row, 1)
         row +=1
@@ -1465,6 +1484,7 @@ class Ui_Dialog_setup(object):
         dict_['start_program'] = self.combobox_start_program.currentIndex()
         dict_['pdf_reader'] = self.lineedit_pdf_reader.text()
         dict_['database'] = self.combobox_database.currentIndex()
+        dict_['display'] = self.combobox_display.currentIndex()
 
         return dict_
 
