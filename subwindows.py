@@ -1347,6 +1347,7 @@ class Ui_Dialog_setup(object):
                 'pdf_reader' : "",
                 'database' : 2,
                 'display' : 0,
+                'autosave' : 2,
             }
         # self.beispieldaten_dateipfad_cria = MainWindow.beispieldaten_dateipfad_cria
         # self.beispieldaten_dateipfad_1 = MainWindow.beispieldaten_dateipfad_1
@@ -1418,7 +1419,7 @@ class Ui_Dialog_setup(object):
 
         try:
             self.combobox_database.setCurrentIndex(self.lama_settings['database'])
-        except:
+        except KeyError:
             self.lama_settings['database'] = 2
             self.combobox_database.setCurrentIndex(2)
         
@@ -1439,11 +1440,32 @@ class Ui_Dialog_setup(object):
 
         try:
             self.combobox_display.setCurrentIndex(self.lama_settings['display'])
-        except:
+        except KeyError:
             self.lama_settings['display'] = 0
         
         gridlayout_setup.addWidget(groupbox_display, row, 0,1,1)
         row +=1
+
+
+        groupbox_autosave = create_new_groupbox(Dialog, "Autosave")
+        horizontallayout_autosave = create_new_horizontallayout(groupbox_autosave)
+
+        label_autosave = create_new_label(Dialog, "Intervall:")
+        horizontallayout_autosave.addWidget(label_autosave)
+
+        self.spinbox_autosave = create_new_spinbox(Dialog, value=2)
+        try:
+            self.spinbox_autosave.setValue(self.lama_settings['autosave'])
+        except KeyError:
+            self.lama_settings['autosave'] = 2
+        self.spinbox_autosave.setSizePolicy(SizePolicy_fixed)
+        horizontallayout_autosave.addWidget(self.spinbox_autosave)
+
+        label_autosave_2 = create_new_label(Dialog, "Minuten")
+        horizontallayout_autosave.addWidget(label_autosave_2)
+
+        gridlayout_setup.addWidget(groupbox_autosave, row,0,1,1)
+        row+=1
 
         gridlayout_setup.setRowStretch(row, 1)
         row +=1
@@ -1489,6 +1511,7 @@ class Ui_Dialog_setup(object):
         dict_['pdf_reader'] = self.lineedit_pdf_reader.text()
         dict_['database'] = self.combobox_database.currentIndex()
         dict_['display'] = self.combobox_display.currentIndex()
+        dict_['autosave'] = self.spinbox_autosave.value()
 
         return dict_
 

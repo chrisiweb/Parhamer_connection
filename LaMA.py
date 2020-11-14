@@ -4733,13 +4733,13 @@ class Ui_MainWindow(object):
 
         QtWidgets.QApplication.restoreOverrideCursor()
 
-    def sage_save(self, path_create_tex_file=False):  # path_file
+    def sage_save(self, path_create_tex_file=False, autosave = False):  # path_file
         try:
             self.saved_file_path
         except AttributeError:
             self.saved_file_path = path_programm
 
-        if path_create_tex_file == False:
+        if path_create_tex_file == False and autosave == False:
             path_backup_file = QtWidgets.QFileDialog.getSaveFileName(
                 None,
                 "Speichern unter",
@@ -4751,14 +4751,18 @@ class Ui_MainWindow(object):
             self.collect_all_infos_for_creating_file()
             save_file = path_backup_file[0]
 
+        elif autosave != False:
+            save_file = autosave
+
         else:
             name, extension = os.path.splitext(path_create_tex_file)
             path_create_tex_file = name + "_autosave.lama"
             save_file = path_create_tex_file
 
-        self.update_gui("widgets_sage")
+        if autosave == False:
+            self.update_gui("widgets_sage")
 
-        self.saved_file_path = save_file
+            self.saved_file_path = save_file
 
         with open(save_file, "w+", encoding="utf8") as saved_file:
             json.dump(self.dict_all_infos_for_file, saved_file, ensure_ascii=False)
@@ -5727,6 +5731,18 @@ class Ui_MainWindow(object):
     def lineEdit_number_changed(self, list_mode):
         self.adapt_choosing_list(list_mode)
 
+    def check_for_autosave(self):
+        try:
+            print(self.lama_settings['autosave'])
+        except KeyError:
+            self.lama_settings['autosave'] = 2
+        
+        self.collect_all_infos_for_creating_file()
+        autosave_file = os.path.join(path_programm, "Teildokument", "autosave.lama")
+        time_tag = modification_date(autosave_file).strftime("%H%M")
+        print(time_tag)
+        self.sage_save(autosave=autosave_file)
+
     def nummer_clicked(self, item):
         if "(Entwurf)" in item.text():
             aufgabe = item.text().replace(" (Entwurf)", "")
@@ -5759,6 +5775,7 @@ class Ui_MainWindow(object):
         self.build_aufgaben_schularbeit(aufgabe)  # aufgabe, aufgaben_verteilung
         self.lineEdit_number.setText("")
         self.lineEdit_number.setFocus()
+        self.check_for_autosave()
 
 
     def nummer_clicked_fb(self, item):
