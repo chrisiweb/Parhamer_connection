@@ -1554,6 +1554,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_default_pkt.setObjectName("verticalLayout_default_pkt")
         self.spinBox_default_pkt = SpinBox_noWheel(self.groupBox_default_pkt)
         self.spinBox_default_pkt.setValue(1)
+        self.spinBox_default_pkt.setToolTip("0 = Punkte ausblenden")
         self.spinBox_default_pkt.setObjectName("spinBox_default_pkt")
         self.verticalLayout_default_pkt.addWidget(self.spinBox_default_pkt)
         self.spinBox_default_pkt.valueChanged.connect(self.update_default_pkt)
@@ -5236,6 +5237,7 @@ class Ui_MainWindow(object):
         spinbox_pkt.valueChanged.connect(
             partial(self.spinbox_pkt_changed, aufgabe, spinbox_pkt)
         )
+        spinbox_pkt.setToolTip("0 = Punkte ausblenden")
         self.dict_variablen_punkte[aufgabe] = spinbox_pkt
 
         horizontalLayout_groupbox_pkt.addWidget(spinbox_pkt)
@@ -6275,7 +6277,11 @@ class Ui_MainWindow(object):
         else:
             start = ""
 
-        if "langesbeispiel" in split_content[0]:
+        if spinbox_pkt == 0:
+            split_content[0] = "\\begin{enumerate}\item[\\stepcounter{number}\\thenumber.] "
+            split_content[-1] = "\end{enumerate}"
+
+        elif "langesbeispiel" in split_content[0]:
             split_content[
                 0
             ] = "{0}\\begin{{langesbeispiel}} \item[{1}] %PUNKTE DES BEISPIELS".format(
@@ -6405,15 +6411,16 @@ class Ui_MainWindow(object):
 
         dict_vorschau["index"] = int(index / 2)
 
-        if maximum > 2:
-            dict_vorschau["comment"] = " %Gruppen: 0=A, 1=B, 2=C, ..."
-        else:
-            dict_vorschau["comment"] = ""
+        # if maximum > 2:
+        #     dict_vorschau["comment"] = " %Gruppen: 0=A, 1=B, 2=C, ..."
+        # else:
+        #     dict_vorschau["comment"] = ""
 
-        if ausgabetyp == "vorschau" or ausgabetyp == "schularbeit":
-            dict_vorschau["pagestyle"] = "empty"
-        else:
-            dict_vorschau["pagestyle"] = "plain"
+        dict_vorschau["pagestyle"] = "plain"
+        # if ausgabetyp == "vorschau" or ausgabetyp == "schularbeit":
+        #     dict_vorschau["pagestyle"] = "plain"
+        # else:
+        #     dict_vorschau["pagestyle"] = "empty"
 
         dict_vorschau["titlepage"] = get_titlepage_vorschau(
             self, dict_titlepage, ausgabetyp, maximum, index
@@ -6443,22 +6450,22 @@ class Ui_MainWindow(object):
             "\\usepackage[T1]{{fontenc}}\n"
             "\\usepackage[utf8]{{inputenc}}\n"
             "\\usepackage[ngerman]{{babel}}\n"
-            "\\usepackage[solution_{2}]{{srdp-mathematik}} % solution_on/off\n"
-            "\setcounter{{Zufall}}{{{3}}}{4}\n\n\n"
-            "\pagestyle{{{5}}} %PAGESTYLE: empty, plain\n"
-            "{6}"  # "\onehalfspacing %Zeilenabstand\n"
+            "\\usepackage[solution_{2}, random={3}]{{srdp-mathematik}} % solution_on/off, random=0,1,2,...\n\n"
+            # "\setcounter{{Zufall}}{{{3}}}\n\n\n"
+            "\pagestyle{{{4}}} %PAGESTYLE: empty, plain\n"
+            "{5}"  # "\onehalfspacing %Zeilenabstand\n"
             "\setcounter{{secnumdepth}}{{-1}} % keine Nummerierung der Ueberschriften\n\n\n\n"
             "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"
             "%%%%%%%%%%%%%%%%%% DOKUMENT - ANFANG %%%%%%%%%%%%%%%%%%\n"
             "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n\n"
             "\\begin{{document}}\n"
-            "{7}"
-            "{8}".format(
+            "{6}"
+            "{7}".format(
                 documentclass,
                 geometry,
                 dict_vorschau["solution"],
                 dict_vorschau["index"],
-                dict_vorschau["comment"],
+                # dict_vorschau["comment"],
                 dict_vorschau["pagestyle"],
                 spacing,
                 dict_vorschau["titlepage"],
@@ -6474,7 +6481,6 @@ class Ui_MainWindow(object):
             content = edit_content_vorschau(self, aufgabe, ausgabetyp)
 
             split_content = split_content_at_beispiel_umgebung(content)
-
             if split_content == False:
                 text = "".join(content)
                 critical_window(
