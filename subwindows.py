@@ -1348,6 +1348,7 @@ class Ui_Dialog_setup(object):
                 'database' : 2,
                 'display' : 0,
                 'autosave' : 2,
+                'quelle' : '',
             }
         # self.beispieldaten_dateipfad_cria = MainWindow.beispieldaten_dateipfad_cria
         # self.beispieldaten_dateipfad_1 = MainWindow.beispieldaten_dateipfad_1
@@ -1381,12 +1382,12 @@ class Ui_Dialog_setup(object):
         gridlayout_setup.addWidget(groupbox_start_program, row,0,1,1)
         row +=1
 
-        groupbox_path_pdf = create_new_groupbox(Dialog, "PDF Reader")
+        groupbox_path_pdf = create_new_groupbox(Dialog, "Dateipfad PDF Reader")
         groupbox_path_pdf.setSizePolicy(SizePolicy_fixed_height)
         horizontallayout_path_pdf = create_new_horizontallayout(groupbox_path_pdf)
 
-        self.label_pdf_reader = create_new_label(Dialog,"Dateipfad:")
-        horizontallayout_path_pdf.addWidget(self.label_pdf_reader)
+        # label_pdf_reader = create_new_label(Dialog,"Dateipfad:")
+        # horizontallayout_path_pdf.addWidget(label_pdf_reader)
 
         self.lineedit_pdf_reader = create_new_lineedit(groupbox_path_pdf)
         horizontallayout_path_pdf.addWidget(self.lineedit_pdf_reader)
@@ -1402,12 +1403,12 @@ class Ui_Dialog_setup(object):
         gridlayout_setup.addWidget(groupbox_path_pdf,row,0,1,1)
         row +=1
 
-        groupbox_database = create_new_groupbox(Dialog, "Datenbank")
+        groupbox_database = create_new_groupbox(Dialog, "Automatische Aktualisierung der Datenbank")
         groupbox_database.setSizePolicy(SizePolicy_fixed_height)
         horizontallayout_database = create_new_horizontallayout(groupbox_database)
 
-        label_database = create_new_label(Dialog, "Datenbank automatisch aktualisieren:")
-        horizontallayout_database.addWidget(label_database)
+        # label_database = create_new_label(Dialog, "Datenbank automatisch aktualisieren:")
+        # horizontallayout_database.addWidget(label_database)
         self.combobox_database = create_new_combobox(groupbox_database)
         horizontallayout_database.addWidget(self.combobox_database)
         
@@ -1426,11 +1427,49 @@ class Ui_Dialog_setup(object):
         gridlayout_setup.addWidget(groupbox_database, row,0,1,1)
         row+=1
 
-        groupbox_display = create_new_groupbox(Dialog, "Anzeige")
+
+        groupbox_autosave = create_new_groupbox(Dialog, "Autosave Intervall")
+        groupbox_autosave.setToolTip("0 = Autosave deaktivieren")
+        horizontallayout_autosave = create_new_horizontallayout(groupbox_autosave)
+
+        # label_autosave = create_new_label(Dialog, "Intervall:")
+        # horizontallayout_autosave.addWidget(label_autosave)
+
+        self.spinbox_autosave = create_new_spinbox(Dialog, value=2)
+        try:
+            self.spinbox_autosave.setValue(self.lama_settings['autosave'])
+        except KeyError:
+            self.lama_settings['autosave'] = 2
+        self.spinbox_autosave.setSizePolicy(SizePolicy_fixed)
+        horizontallayout_autosave.addWidget(self.spinbox_autosave)
+
+        label_autosave_2 = create_new_label(Dialog, "Minuten")
+        horizontallayout_autosave.addWidget(label_autosave_2)
+
+        gridlayout_setup.addWidget(groupbox_autosave, row,0,1,1)
+        row+=1
+
+
+        groupbox_quelle = create_new_groupbox(Dialog, "Quelle Standardeingabe")
+        horizontallayout_quelle = create_new_horizontallayout(groupbox_quelle)
+
+        self.lineedit_quelle = create_new_lineedit(Dialog)
+        try:
+            self.lineedit_quelle.setText(self.lama_settings['quelle'])
+        except KeyError:
+            self.lama_settings['quelle'] = ""        
+
+        horizontallayout_quelle.addWidget(self.lineedit_quelle)
+
+        gridlayout_setup.addWidget(groupbox_quelle, row,0,1,1)
+        row +=1
+
+
+        groupbox_display = create_new_groupbox(Dialog, "Anzeigemodus")
         horizontallayout_display = create_new_horizontallayout(groupbox_display)
 
-        label_display = create_new_label(Dialog, "Darstellung:")
-        horizontallayout_display.addWidget(label_display)
+        # label_display = create_new_label(Dialog, "Darstellung:")
+        # horizontallayout_display.addWidget(label_display)
         self.combobox_display = create_new_combobox(Dialog)
         # self.combobox_display.currentIndexChanged.connect(self.combobox_display_changed)
         horizontallayout_display.addWidget(self.combobox_display)
@@ -1446,27 +1485,6 @@ class Ui_Dialog_setup(object):
         gridlayout_setup.addWidget(groupbox_display, row, 0,1,1)
         row +=1
 
-
-        groupbox_autosave = create_new_groupbox(Dialog, "Autosave")
-        groupbox_autosave.setToolTip("0 = Autosave deaktivieren")
-        horizontallayout_autosave = create_new_horizontallayout(groupbox_autosave)
-
-        label_autosave = create_new_label(Dialog, "Intervall:")
-        horizontallayout_autosave.addWidget(label_autosave)
-
-        self.spinbox_autosave = create_new_spinbox(Dialog, value=2)
-        try:
-            self.spinbox_autosave.setValue(self.lama_settings['autosave'])
-        except KeyError:
-            self.lama_settings['autosave'] = 2
-        self.spinbox_autosave.setSizePolicy(SizePolicy_fixed)
-        horizontallayout_autosave.addWidget(self.spinbox_autosave)
-
-        label_autosave_2 = create_new_label(Dialog, "Minuten")
-        horizontallayout_autosave.addWidget(label_autosave_2)
-
-        gridlayout_setup.addWidget(groupbox_autosave, row,0,1,1)
-        row+=1
 
         gridlayout_setup.setRowStretch(row, 1)
         row +=1
@@ -1513,6 +1531,7 @@ class Ui_Dialog_setup(object):
         dict_['database'] = self.combobox_database.currentIndex()
         dict_['display'] = self.combobox_display.currentIndex()
         dict_['autosave'] = self.spinbox_autosave.value()
+        dict_['quelle'] = self.lineedit_quelle.text()
 
         return dict_
 
