@@ -1448,6 +1448,7 @@ class Ui_Dialog_setup(object):
 
 
         groupbox_autosave = create_new_groupbox(Dialog, "Autosave")
+        groupbox_autosave.setToolTip("0 = Autosave deaktivieren")
         horizontallayout_autosave = create_new_horizontallayout(groupbox_autosave)
 
         label_autosave = create_new_label(Dialog, "Intervall:")

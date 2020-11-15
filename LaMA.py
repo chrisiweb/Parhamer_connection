@@ -13,7 +13,8 @@ import sys
 import os
 from pathlib import Path
 import datetime
-from datetime import date
+# from datetime import date, datetime, timedelta
+import time
 import json
 import subprocess
 import shutil
@@ -5733,15 +5734,28 @@ class Ui_MainWindow(object):
 
     def check_for_autosave(self):
         try:
-            print(self.lama_settings['autosave'])
+            intervall = self.lama_settings['autosave']
         except KeyError:
             self.lama_settings['autosave'] = 2
-        
+            intervall = 2
+
+        if intervall == 0:
+            return
+
         self.collect_all_infos_for_creating_file()
         autosave_file = os.path.join(path_programm, "Teildokument", "autosave.lama")
-        time_tag = modification_date(autosave_file).strftime("%H%M")
-        print(time_tag)
-        self.sage_save(autosave=autosave_file)
+        modification = modification_date(autosave_file).strftime("%y%m%d-%H%M")
+        date, time_tag = modification.split("-")
+        day_time = datetime.datetime.now()
+
+        day_time = day_time - datetime.timedelta(minutes=intervall)
+        today, now_minus_intervall  = day_time.strftime("%y%m%d-%H%M").split("-")
+
+        if date != today:
+            self.sage_save(autosave=autosave_file)
+        elif now_minus_intervall>time_tag:
+            self.sage_save(autosave=autosave_file)
+
 
     def nummer_clicked(self, item):
         if "(Entwurf)" in item.text():
