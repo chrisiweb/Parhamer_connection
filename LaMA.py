@@ -1353,6 +1353,12 @@ class Ui_MainWindow(object):
         self.gridLayout_18.setObjectName(_fromUtf8("gridLayout_18"))
         self.lineEdit_quelle = QtWidgets.QLineEdit(self.groupBox_quelle)
         self.lineEdit_quelle.setObjectName(_fromUtf8("lineEdit_quelle"))
+        try:
+            quelle = self.lama_settings['quelle']
+        except KeyError:
+            quelle = ""
+
+        self.lineEdit_quelle.setText(quelle)
         self.gridLayout_18.addWidget(self.lineEdit_quelle, 0, 0, 1, 1)
         self.gridLayout.addWidget(self.groupBox_quelle, 7, 1, 1, 5, QtCore.Qt.AlignTop)
         self.groupBox_quelle.setTitle(
@@ -1371,7 +1377,7 @@ class Ui_MainWindow(object):
         self.pushButton_save.setText(_translate("MainWindow", "Speichern", None))
         # self.pushButton_save.setShortcut(_translate("MainWindow", "Return", None))
         self.pushButton_save.hide()
-
+        self.lineEdit_titel.setFocus()
         self.tab_widget_gk.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -2869,7 +2875,11 @@ class Ui_MainWindow(object):
             self.lineEdit_titel.setText(_translate("MainWindow", "###", None))
         else:
             self.lineEdit_titel.setText(_translate("MainWindow", "", None))
-        self.lineEdit_quelle.setText(_translate("MainWindow", "", None))
+        try:
+            quelle = self.lama_settings['quelle']
+        except KeyError:
+            quelle = ""
+        self.lineEdit_quelle.setText(_translate("MainWindow", quelle, None))
 
         if variation == False:
             self.plainTextEdit.setPlainText(_translate("MainWindow", "", None))
@@ -5758,16 +5768,19 @@ class Ui_MainWindow(object):
 
         self.collect_all_infos_for_creating_file()
         autosave_file = os.path.join(path_programm, "Teildokument", "autosave.lama")
-        modification = modification_date(autosave_file).strftime("%y%m%d-%H%M")
-        date, time_tag = modification.split("-")
-        day_time = datetime.datetime.now()
+        try: 
+            modification = modification_date(autosave_file).strftime("%y%m%d-%H%M")
+            date, time_tag = modification.split("-")
+            day_time = datetime.datetime.now()
 
-        day_time = day_time - datetime.timedelta(minutes=intervall)
-        today, now_minus_intervall  = day_time.strftime("%y%m%d-%H%M").split("-")
+            day_time = day_time - datetime.timedelta(minutes=intervall)
+            today, now_minus_intervall  = day_time.strftime("%y%m%d-%H%M").split("-")
 
-        if date != today:
-            self.sage_save(autosave=autosave_file)
-        elif now_minus_intervall>time_tag:
+            if date != today:
+                self.sage_save(autosave=autosave_file)
+            elif now_minus_intervall>time_tag:
+                self.sage_save(autosave=autosave_file)
+        except FileNotFoundError:
             self.sage_save(autosave=autosave_file)
 
 
