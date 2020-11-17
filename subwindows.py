@@ -32,7 +32,7 @@ from create_new_widgets import (
 )
 from standard_dialog_windows import critical_window, information_window
 from waitingspinnerwidget import QtWaitingSpinner
-from predefined_size_policy import SizePolicy_fixed, SizePolicy_fixed_height
+from predefined_size_policy import SizePolicy_fixed, SizePolicy_fixed_height, SizePolicy_maximum
 from work_with_content import prepare_content_for_hide_show_items
 from sort_items import sorted_gks
 from lama_stylesheets import StyleSheet_tabWidget, StyleSheet_ausgleichspunkte
@@ -784,10 +784,12 @@ class Ui_Dialog_ausgleichspunkte(object):
     def setupUi(
         self,
         Dialog,
+        content,
         aufgabenstellung_split_text,
         list_sage_ausgleichspunkte_chosen,
         list_sage_hide_show_items_chosen,
     ):
+        self.content = content
         self.aufgabenstellung_split_text = aufgabenstellung_split_text
         self.hide_show_items_split_text = prepare_content_for_hide_show_items(
             aufgabenstellung_split_text
@@ -804,13 +806,14 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.Dialog.resize(600, 400)
         self.Dialog.setWindowIcon(QtGui.QIcon(logo_path))
 
-        verticallayout_titlepage = create_new_verticallayout(Dialog)
+        gridlayout_titlepage = create_new_gridlayout(Dialog)
         # self.gridLayout_2 = QtWidgets.QGridLayout(Dialog)
         # self.gridLayout_2.setObjectName("gridLayout_2")
         self.combobox_edit = create_new_combobox(Dialog)
-        verticallayout_titlepage.addWidget(self.combobox_edit)
+        gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,4)
         self.combobox_edit.addItem("Ausgleichspunkte anpassen")
         self.combobox_edit.addItem("Aufgabenstellungen ein-/ausblenden")
+        self.combobox_edit.addItem("Individuell bearbeiten")
         self.combobox_edit.currentIndexChanged.connect(self.combobox_edit_changed)
         self.scrollArea = QtWidgets.QScrollArea(Dialog)
         self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
@@ -838,31 +841,87 @@ class Ui_Dialog_ausgleichspunkte(object):
         row = self.build_checkboxes_for_content()
 
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-        verticallayout_titlepage.addWidget(self.scrollArea)
-        # self.buttonBox = QtWidgets.QDialogButtonBox(self.Dialog)
-        self.buttonBox = QtWidgets.QDialogButtonBox(self.Dialog)
-        self.buttonBox.setObjectName("buttonBox")
-        self.buttonBox.setStandardButtons(
-            QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel
-        )
+        gridlayout_titlepage.addWidget(self.scrollArea, 2,0,1,4)
 
-        buttonX = self.buttonBox.button(QtWidgets.QDialogButtonBox.Cancel)
-        buttonX.setText("Abbrechen")
-        self.buttonBox.rejected.connect(self.Dialog.reject)
-        verticallayout_titlepage.addWidget(self.buttonBox)
-        self.buttonBox.accepted.connect(
-            partial(self.pushButton_OK_pressed, list_sage_ausgleichspunkte_chosen)
-        )
+
+        self.plainTextEdit_content = QtWidgets.QPlainTextEdit(self.scrollAreaWidgetContents)
+        self.plainTextEdit_content.setObjectName(_fromUtf8("plainTextEdit_content"))
+        gridlayout_titlepage.addWidget(self.plainTextEdit_content, 1,0,1,4)
+        self.plainTextEdit_content.hide()
+
+        self.button_OK = create_new_button(Dialog, "Ok", partial(self.pushButton_OK_pressed, list_sage_ausgleichspunkte_chosen))
+        self.button_OK.setSizePolicy(SizePolicy_maximum)
+        gridlayout_titlepage.addWidget(self.button_OK, 3,2,1,1)
+
+        self.button_cancel = create_new_button(Dialog, "Abbrechen", Dialog.reject)
+        self.button_cancel.setSizePolicy(SizePolicy_maximum)
+        gridlayout_titlepage.addWidget(self.button_cancel, 3,3,1,1)
+
+        self.button_save = create_new_button(Dialog, "Als Variation speichern", self.button_save_pressed)
+        self.button_save.setSizePolicy(SizePolicy_maximum)
+        gridlayout_titlepage.addWidget(self.button_save, 3, 0, 1,1)
+        self.button_save.hide()
+
+        self.button_restore_default = create_new_button(Dialog, "Original widerherstellen", self.button_restore_default_pressed)
+        self.button_restore_default.setSizePolicy(SizePolicy_maximum)
+        gridlayout_titlepage.addWidget(self.button_restore_default, 3,1,1,1)
+        self.button_restore_default.hide()
+        # self.buttonBox = QtWidgets.QDialogButtonBox(self.Dialog)
+        # self.buttonBox = QtWidgets.QDialogButtonBox(self.Dialog)
+        # self.buttonBox.setObjectName("buttonBox")
+        # self.buttonBox.setStandardButtons(
+        #     QtWidgets.QDialogButtonBox.NoRole | QtWidgets.QDialogButtonBox.RestoreDefaults |QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel
+        # )
+
+        # button_save = self.buttonBox.button(QtWidgets.QDialogButtonBox.NoRole)
+        # button_save.setText("Als Variation speichern")
+        # button_save.clicked.connect(self.button_save_pressed)
+
+        # buttonX = self.buttonBox.button(QtWidgets.QDialogButtonBox.Cancel)
+        # buttonX.setText("Abbrechen")
+        # self.buttonBox.rejected.connect(self.Dialog.reject)
+        # gridlayout_titlepage.addWidget(self.buttonBox,2,0,1,1)
+        # self.buttonBox.accepted.connect(
+        #     partial(self.pushButton_OK_pressed, list_sage_ausgleichspunkte_chosen)
+        # )
         # # self.retranslateUi(self.Dialog)
         QtCore.QMetaObject.connectSlotsByName(self.Dialog)
 
     def combobox_edit_changed(self):
         for i in reversed(range(1, self.gridLayout.count())):
             self.gridLayout.itemAt(i).widget().setParent(None)
-        if self.combobox_edit.currentIndex() == 0:
+        if self.combobox_edit.currentIndex() == 0 or self.combobox_edit.currentIndex() == 1:
+            self.scrollArea.show()
+            self.plainTextEdit_content.hide()
             self.build_checkboxes_for_content()
-        if self.combobox_edit.currentIndex() == 1:
-            self.build_checkboxes_for_content()
+            self.button_save.hide()
+            self.button_restore_default.hide()
+
+        elif self.combobox_edit.currentIndex() == 2:
+            self.scrollArea.hide()
+            self.plainTextEdit_content.show()
+            self.build_editable_content()
+            self.button_save.show()
+            self.button_restore_default.show()
+
+    def button_restore_default_pressed(self):
+        print('restore default')
+
+    def button_save_pressed(self):
+        print('save')
+
+
+    def build_editable_content(self):
+        # print(self.aufgabenstellung_split_text)
+        self.plainTextEdit_content.insertPlainText(self.content)
+
+        # for line in conten:
+        #     self.plainTextEdit_content.appendPlainText(line)
+
+        # self.label_einleitung.hide()
+        # self.label_solution.hide()
+
+
 
     def build_checkboxes_for_content(self):
         row = 1

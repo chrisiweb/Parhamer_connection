@@ -5610,6 +5610,7 @@ class Ui_MainWindow(object):
         self.ui = Ui_Dialog_ausgleichspunkte()
         self.ui.setupUi(
             self.Dialog,
+            content,
             split_content,
             list_sage_ausgleichspunkte_chosen,
             list_sage_hide_show_items_chosen,
