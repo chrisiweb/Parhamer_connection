@@ -1227,7 +1227,7 @@ class Ui_MainWindow(object):
 
         self.groupBox_punkte = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_punkte.setObjectName(_fromUtf8("groupBox_punkte"))
-        self.groupBox_punkte.setSizePolicy(SizePolicy_fixed_height)
+        self.groupBox_punkte.setSizePolicy(SizePolicy_minimum_fixed)
         # self.groupBox_punkte.setMaximumSize(80, 60)
         self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_punkte)
         self.gridLayout_6.setObjectName(_fromUtf8("gridLayout_6"))
@@ -1547,13 +1547,14 @@ class Ui_MainWindow(object):
 
         self.groupBox_default_pkt = QtWidgets.QGroupBox(self.groupBox_sage)
         self.groupBox_default_pkt.setObjectName("groupBox_default_pkt")
-        self.groupBox_default_pkt.setSizePolicy(SizePolicy_fixed_height)
+        # self.groupBox_default_pkt.setSizePolicy(SizePolicy_fixed_height)
         # self.groupBox_default_pkt.setMaximumSize(QtCore.QSize(120, 16777215))
         self.verticalLayout_default_pkt = QtWidgets.QVBoxLayout(
             self.groupBox_default_pkt
         )
         self.verticalLayout_default_pkt.setObjectName("verticalLayout_default_pkt")
         self.spinBox_default_pkt = SpinBox_noWheel(self.groupBox_default_pkt)
+        self.spinBox_default_pkt.setSizePolicy(SizePolicy_minimum_fixed)
         self.spinBox_default_pkt.setValue(1)
         self.spinBox_default_pkt.setToolTip("0 = Punkte ausblenden")
         self.spinBox_default_pkt.setObjectName("spinBox_default_pkt")
@@ -1563,18 +1564,21 @@ class Ui_MainWindow(object):
 
         self.groupBox_klasse = QtWidgets.QGroupBox(self.groupBox_sage)
         self.groupBox_klasse.setObjectName("groupBox_klasse")
-        self.groupBox_klasse.setSizePolicy(SizePolicy_fixed_height)
+        self.groupBox_klasse.setSizePolicy(SizePolicy_minimum_fixed)
         # self.groupBox_klasse.setMaximumSize(QtCore.QSize(200, 16777215))
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.groupBox_klasse)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.lineEdit_klasse = QtWidgets.QLineEdit(self.groupBox_klasse)
         self.lineEdit_klasse.setObjectName("lineEdit_klasse")
+        self.lineEdit_klasse.setSizePolicy(SizePolicy_minimum_fixed)
         self.verticalLayout_4.addWidget(self.lineEdit_klasse)
         self.gridLayout_5.addWidget(self.groupBox_klasse, 0, 2, 3, 1)
         # self.groupBox_klasse.setMaximumSize(QtCore.QSize(90, 16777215))
         self.groupBox_datum = QtWidgets.QGroupBox(self.groupBox_sage)
         self.groupBox_datum.setObjectName("groupBox_datum")
-        self.groupBox_datum.setStyleSheet("padding-right: 10px")
+        # self.groupBox_datum.setMinimumWidth(20)
+        # self.groupBox_datum.setStyleSheet("padding-left: 10px")
+        # self.groupBox_datum.setSizePolicy(SizePolicy_fixed)
         self.groupBox_datum.setSizePolicy(SizePolicy_fixed_height)
         self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.groupBox_datum)
         self.verticalLayout_5.setObjectName("verticalLayout_5")
@@ -1584,12 +1588,22 @@ class Ui_MainWindow(object):
         self.dateEdit.setObjectName("dateEdit")
         if self.display_mode == 1:
             self.dateEdit.setStyleSheet(StyleSheet_calender_dark_mode)
+        # self.dateEdit.setStyleSheet("""
+        # QDateEdit {{
+        #     border: 2px solid red;
+        # }}
+        # """)
+
         self.verticalLayout_5.addWidget(self.dateEdit)
         self.gridLayout_5.addWidget(self.groupBox_datum, 0, 1, 3, 1)
         # self.groupBox_datum.setMaximumSize(QtCore.QSize(140, 16777215))
         self.groupBox_nummer = QtWidgets.QGroupBox(self.groupBox_sage)
         self.groupBox_nummer.setObjectName("groupBox_nummer")
-        self.groupBox_nummer.setSizePolicy(SizePolicy_fixed_height)
+        self.groupBox_nummer.setSizePolicy(SizePolicy_minimum_fixed)
+        self.groupBox_nummer.setSizePolicy(
+            QtWidgets.QSizePolicy(
+                QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed
+        ))
         self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.groupBox_nummer)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
         self.spinBox_nummer = QtWidgets.QSpinBox(self.groupBox_nummer)

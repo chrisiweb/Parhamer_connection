@@ -34,3 +34,7 @@ SizePolicy_minimum_width = QtWidgets.QSizePolicy(
     QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
 )
 
+SizePolicy_minimum_fixed =QtWidgets.QSizePolicy(
+    QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed
+)
+
