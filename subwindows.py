@@ -30,7 +30,7 @@ from create_new_widgets import (
     create_new_groupbox,
     add_new_option,
 )
-from standard_dialog_windows import critical_window, information_window
+from standard_dialog_windows import critical_window, information_window, question_window
 from waitingspinnerwidget import QtWaitingSpinner
 from predefined_size_policy import SizePolicy_fixed, SizePolicy_fixed_height, SizePolicy_maximum
 from work_with_content import prepare_content_for_hide_show_items
@@ -810,7 +810,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         # self.gridLayout_2 = QtWidgets.QGridLayout(Dialog)
         # self.gridLayout_2.setObjectName("gridLayout_2")
         self.combobox_edit = create_new_combobox(Dialog)
-        gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,4)
+        gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,5)
         self.combobox_edit.addItem("Ausgleichspunkte anpassen")
         self.combobox_edit.addItem("Aufgabenstellungen ein-/ausblenden")
         self.combobox_edit.addItem("Individuell bearbeiten")
@@ -841,30 +841,30 @@ class Ui_Dialog_ausgleichspunkte(object):
         row = self.build_checkboxes_for_content()
 
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-        gridlayout_titlepage.addWidget(self.scrollArea, 2,0,1,4)
+        gridlayout_titlepage.addWidget(self.scrollArea, 2,0,1,5)
 
 
         self.plainTextEdit_content = QtWidgets.QPlainTextEdit(self.scrollAreaWidgetContents)
         self.plainTextEdit_content.setObjectName(_fromUtf8("plainTextEdit_content"))
-        gridlayout_titlepage.addWidget(self.plainTextEdit_content, 1,0,1,4)
+        gridlayout_titlepage.addWidget(self.plainTextEdit_content, 1,0,1,5)
         self.plainTextEdit_content.hide()
 
         self.button_OK = create_new_button(Dialog, "Ok", partial(self.pushButton_OK_pressed, list_sage_ausgleichspunkte_chosen))
         self.button_OK.setSizePolicy(SizePolicy_maximum)
-        gridlayout_titlepage.addWidget(self.button_OK, 3,2,1,1)
+        gridlayout_titlepage.addWidget(self.button_OK, 3,3,1,1)
 
         self.button_cancel = create_new_button(Dialog, "Abbrechen", Dialog.reject)
         self.button_cancel.setSizePolicy(SizePolicy_maximum)
-        gridlayout_titlepage.addWidget(self.button_cancel, 3,3,1,1)
+        gridlayout_titlepage.addWidget(self.button_cancel, 3,4,1,1)
 
         self.button_save = create_new_button(Dialog, "Als Variation speichern", self.button_save_pressed)
         self.button_save.setSizePolicy(SizePolicy_maximum)
-        gridlayout_titlepage.addWidget(self.button_save, 3, 0, 1,1)
+        gridlayout_titlepage.addWidget(self.button_save, 3, 1, 1,1)
         self.button_save.hide()
 
-        self.button_restore_default = create_new_button(Dialog, "Original widerherstellen", self.button_restore_default_pressed)
+        self.button_restore_default = create_new_button(Dialog, "Original wiederherstellen", self.button_restore_default_pressed)
         self.button_restore_default.setSizePolicy(SizePolicy_maximum)
-        gridlayout_titlepage.addWidget(self.button_restore_default, 3,1,1,1)
+        gridlayout_titlepage.addWidget(self.button_restore_default, 3,2,1,1)
         self.button_restore_default.hide()
         # self.buttonBox = QtWidgets.QDialogButtonBox(self.Dialog)
         # self.buttonBox = QtWidgets.QDialogButtonBox(self.Dialog)
@@ -905,7 +905,10 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.button_restore_default.show()
 
     def button_restore_default_pressed(self):
-        print('restore default')
+        self.plainTextEdit_content.clear()
+        self.plainTextEdit_content.insertPlainText(self.content)
+        information_window("Die originale Aufgabe wurde wiederhergestellt.",titel="Original wiederhergestellt")
+
 
     def button_save_pressed(self):
         print('save')
