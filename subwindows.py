@@ -35,7 +35,7 @@ from waitingspinnerwidget import QtWaitingSpinner
 from predefined_size_policy import SizePolicy_fixed, SizePolicy_fixed_height, SizePolicy_maximum
 from work_with_content import prepare_content_for_hide_show_items
 from sort_items import sorted_gks
-from lama_stylesheets import StyleSheet_tabWidget, StyleSheet_ausgleichspunkte
+from lama_stylesheets import StyleSheet_tabWidget, StyleSheet_ausgleichspunkte, StyleSheet_ausgleichspunkte_dark_mode
 
 dict_gk = config_loader(config_file, "dict_gk")
 ag_beschreibung = config_loader(config_file, "ag_beschreibung")
@@ -963,8 +963,23 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.gridLayout.setRowStretch(row, 1)
 
     def checkbox_clicked(self, checkbox, checkbox_label):
+        try: 
+            with open(lama_settings_file, "r", encoding="utf8") as f:
+                self.lama_settings = json.load(f)
+        except FileNotFoundError:
+            self.lama_settings = {}
+        
+        try:
+            display_settings = self.lama_settings["display"]
+            if  display_settings == 1:
+                stylesheet = StyleSheet_ausgleichspunkte_dark_mode
+            else:
+                stylesheet = StyleSheet_ausgleichspunkte
+        except KeyError:
+            stylesheet = StyleSheet_ausgleichspunkte
+
         if checkbox.isChecked() == True:
-            checkbox_label.setStyleSheet(StyleSheet_ausgleichspunkte)
+            checkbox_label.setStyleSheet(stylesheet)
         else:
             checkbox_label.setStyleSheet("color: gray")
 
