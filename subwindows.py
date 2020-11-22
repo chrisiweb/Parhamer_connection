@@ -15,6 +15,7 @@ from config import (
     logo_path,
     logo_cria_button_path,
     is_empty,
+    still_to_define,
 )
 from translate import _fromUtf8, _translate
 from create_new_widgets import (
@@ -22,6 +23,7 @@ from create_new_widgets import (
     create_new_horizontallayout,
     create_new_gridlayout,
     create_new_button,
+    create_standard_button,
     create_new_label,
     create_new_checkbox,
     create_new_combobox,
@@ -810,7 +812,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         # self.gridLayout_2 = QtWidgets.QGridLayout(Dialog)
         # self.gridLayout_2.setObjectName("gridLayout_2")
         self.combobox_edit = create_new_combobox(Dialog)
-        gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,5)
+        gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,4)
         self.combobox_edit.addItem("Ausgleichspunkte anpassen")
         self.combobox_edit.addItem("Aufgabenstellungen ein-/ausblenden")
         self.combobox_edit.addItem("Individuell bearbeiten")
@@ -841,21 +843,21 @@ class Ui_Dialog_ausgleichspunkte(object):
         row = self.build_checkboxes_for_content()
 
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-        gridlayout_titlepage.addWidget(self.scrollArea, 2,0,1,5)
+        gridlayout_titlepage.addWidget(self.scrollArea, 2,0,1,6)
 
 
         self.plainTextEdit_content = QtWidgets.QPlainTextEdit(self.scrollAreaWidgetContents)
         self.plainTextEdit_content.setObjectName(_fromUtf8("plainTextEdit_content"))
-        gridlayout_titlepage.addWidget(self.plainTextEdit_content, 1,0,1,5)
+        gridlayout_titlepage.addWidget(self.plainTextEdit_content, 1,0,1,6)
         self.plainTextEdit_content.hide()
 
         self.button_OK = create_new_button(Dialog, "Ok", partial(self.pushButton_OK_pressed, list_sage_ausgleichspunkte_chosen))
         self.button_OK.setSizePolicy(SizePolicy_maximum)
-        gridlayout_titlepage.addWidget(self.button_OK, 3,3,1,1)
+        gridlayout_titlepage.addWidget(self.button_OK, 3,4,1,1)
 
         self.button_cancel = create_new_button(Dialog, "Abbrechen", Dialog.reject)
         self.button_cancel.setSizePolicy(SizePolicy_maximum)
-        gridlayout_titlepage.addWidget(self.button_cancel, 3,4,1,1)
+        gridlayout_titlepage.addWidget(self.button_cancel, 3,5,1,1)
 
         self.button_save = create_new_button(Dialog, "Als Variation speichern", self.button_save_pressed)
         self.button_save.setSizePolicy(SizePolicy_maximum)
@@ -866,6 +868,12 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.button_restore_default.setSizePolicy(SizePolicy_maximum)
         gridlayout_titlepage.addWidget(self.button_restore_default, 3,2,1,1)
         self.button_restore_default.hide()
+
+        self.button_undo = create_standard_button(Dialog, "", still_to_define,QtWidgets.QStyle.SP_FileDialogBack)
+        gridlayout_titlepage.addWidget(self.button_undo, 0,4,1,1) #QtCore.Qt.AlignLeft
+
+        self.button_redo = create_standard_button(Dialog, "", still_to_define,QtWidgets.QStyle.SP_ArrowForward)
+        gridlayout_titlepage.addWidget(self.button_redo, 0,4,1,1)
         # self.buttonBox = QtWidgets.QDialogButtonBox(self.Dialog)
         # self.buttonBox = QtWidgets.QDialogButtonBox(self.Dialog)
         # self.buttonBox.setObjectName("buttonBox")
@@ -911,6 +919,7 @@ class Ui_Dialog_ausgleichspunkte(object):
 
 
     def button_save_pressed(self):
+        # self.plainTextEdit_content.undo     
         print('save')
 
 

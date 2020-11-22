@@ -5320,7 +5320,7 @@ class Ui_MainWindow(object):
             new_groupbox,
             "",
             partial(self.btn_delete_pressed, aufgabe),
-            QtWidgets.QStyle.SP_TitleBarCloseButton,
+            QtWidgets.QStyle.SP_DialogCancelButton,
         )
         gridLayout_gB.addWidget(button_delete, 0, 5, 2, 1)
 
@@ -6927,7 +6927,7 @@ if __name__ == "__main__":
     palette_dark_mode.setColor(QtGui.QPalette.Button, QtGui.QColor(53, 53, 53))
     palette_dark_mode.setColor(QtGui.QPalette.ButtonText, white)
     palette_dark_mode.setColor(QtGui.QPalette.HighlightedText, white)
-    palette_dark_mode.setColor(QtGui.QPalette.Highlight, blue_7)
+    palette_dark_mode.setColor(QtGui.QPalette.Highlight, blue_6)
 
     try: 
         with open(lama_settings_file, "r", encoding="utf8") as f:

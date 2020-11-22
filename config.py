@@ -26,11 +26,11 @@ colors_ui = {
     "blue_3": QtGui.QColor(194, 208, 212),  # 211, 224, 223
     "blue_4": QtGui.QColor(168, 189, 194),
     "blue_5": QtGui.QColor(88, 111, 124),
-    "blue_6": QtGui.QColor(47, 69, 80),
+    "blue_6": QtGui.QColor(83, 122, 141),
     "blue_7": QtGui.QColor(47, 69, 80),
     "red": QtGui.QColor(195, 58, 63),
 }
-
+    # "blue_6": QtGui.QColor(68, 92, 136),
 
 def get_color(color):
     color = "rgb({0}, {1}, {2})".format(color.red(), color.green(), color.blue())

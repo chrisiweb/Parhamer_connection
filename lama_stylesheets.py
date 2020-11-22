@@ -152,7 +152,7 @@ StyleSheet_typ2_dark_mode = """
 QGroupBox {{background-color: {0}; color: {1}}}
 QLabel {{color:  {1}}}
 """.format(
-    get_color(blue_5), get_color(white)
+    get_color(blue_6), get_color(white)
 )
 
 
