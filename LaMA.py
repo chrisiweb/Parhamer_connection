@@ -5567,6 +5567,7 @@ class Ui_MainWindow(object):
 
         try:
             split_content, index_end = split_aufgaben_content(content)
+            print(split_content)
             split_content = split_content[:index_end]
         except Exception as e1:
             try:
@@ -5581,6 +5582,7 @@ class Ui_MainWindow(object):
                     'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!',
                 )
                 return
+        
         if aufgabe in self.dict_sage_ausgleichspunkte_chosen.keys():
             list_sage_ausgleichspunkte_chosen = self.dict_sage_ausgleichspunkte_chosen[
                 aufgabe
@@ -6903,7 +6905,7 @@ if __name__ == "__main__":
     palette.setColor(QtGui.QPalette.AlternateBase, blue_2)
     palette.setColor(QtGui.QPalette.ToolTipBase, white)
     palette.setColor(QtGui.QPalette.ToolTipText, QtCore.Qt.white)
-    palette.setColor(QtGui.QPalette.Text, blue_6)
+    palette.setColor(QtGui.QPalette.Text, black)
     palette.setColor(QtGui.QPalette.Button, blue_3)  # blue_4
 
     # palette.setColor(QtGui.QPalette.Inactive,QtGui.QPalette.WindowText, gray)
