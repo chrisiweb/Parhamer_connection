@@ -786,12 +786,12 @@ class Ui_Dialog_ausgleichspunkte(object):
     def setupUi(
         self,
         Dialog,
-        content,
+        content_no_environment,
         aufgabenstellung_split_text,
         list_sage_ausgleichspunkte_chosen,
         list_sage_hide_show_items_chosen,
     ):
-        self.content = content
+        self.content_no_environment = content_no_environment
         self.aufgabenstellung_split_text = aufgabenstellung_split_text
         self.hide_show_items_split_text = prepare_content_for_hide_show_items(
             aufgabenstellung_split_text
@@ -942,7 +942,7 @@ class Ui_Dialog_ausgleichspunkte(object):
 
     def button_restore_default_pressed(self):
         self.plainTextEdit_content.clear()
-        self.plainTextEdit_content.insertPlainText(self.content)
+        self.plainTextEdit_content.insertPlainText(self.content_no_environment)
         information_window("Die originale Aufgabe wurde wiederhergestellt.",titel="Original wiederhergestellt")
 
     def button_undo_pressed(self):
@@ -961,7 +961,7 @@ class Ui_Dialog_ausgleichspunkte(object):
 
     def build_editable_content(self):
         # print(self.aufgabenstellung_split_text)
-        self.plainTextEdit_content.insertPlainText(self.content)
+        self.plainTextEdit_content.insertPlainText(self.content_no_environment)
 
         # for line in conten:
         #     self.plainTextEdit_content.appendPlainText(line)
@@ -1080,7 +1080,7 @@ class Ui_Dialog_ausgleichspunkte(object):
 
     def pushButton_OK_pressed(self, list_sage_ausgleichspunkte_chosen):
         print(self.plainTextEdit_content.toPlainText())
-        if self.content == self.plainTextEdit_content.toPlainText():
+        if self.content_no_environment == self.plainTextEdit_content.toPlainText():
             print(True)
         else:
             print(False)

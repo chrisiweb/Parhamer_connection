@@ -48,6 +48,22 @@ def get_subitem(string):
     else:
         return "SUBitem" + string
 
+def split_content_no_environment(content):
+    split_content = content.splitlines()
+    # split_content = content.split('\\begin{beispiel}')
+    # print(split_content)
+    for i, line in enumerate(split_content):
+        if '\\begin{langesbeispiel}' in line or '\\begin{beispiel}' in line:
+            split_content = split_content[i+1:]
+            break
+
+    for i, line in enumerate(split_content):
+        if '\\end{langesbeispiel}' in line or '\\end{beispiel}' in line:
+            split_content = split_content[:i]
+            break
+    
+    content_no_environment = merge_list_to_string(split_content)
+    return content_no_environment
 
 def split_aufgaben_content_new_format(content):
     ## mode ='ausgleichspunkte', 'show_hide_items'

@@ -82,6 +82,7 @@ from standard_dialog_windows import (
 from predefined_size_policy import *
 from work_with_content import (
     collect_content,
+    split_content_no_environment,
     split_aufgaben_content_new_format,
     split_aufgaben_content,
     edit_content_quiz,
@@ -5562,12 +5563,16 @@ class Ui_MainWindow(object):
 
         QtWidgets.QApplication.restoreOverrideCursor()
 
+      
+
+
     def pushButton_ausgleich_pressed(self, aufgabe):
         content = collect_content(self, aufgabe)
 
+        content_no_environment = split_content_no_environment(content)
+
         try:
             split_content, index_end = split_aufgaben_content(content)
-            print(split_content)
             split_content = split_content[:index_end]
         except Exception as e1:
             try:
@@ -5612,7 +5617,7 @@ class Ui_MainWindow(object):
         self.ui = Ui_Dialog_ausgleichspunkte()
         self.ui.setupUi(
             self.Dialog,
-            content,
+            content_no_environment,
             split_content,
             list_sage_ausgleichspunkte_chosen,
             list_sage_hide_show_items_chosen,

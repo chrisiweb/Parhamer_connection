@@ -442,19 +442,23 @@ list_klassen:
 
 
 dict_k1_name:
-    "BZ" : "Bruchzahlen"
+    "NZ" : "Natürliche Zahlen"
+    "RNZ" : "Rechnen mit natürlichen Zahlen"
     "DZ" : "Dezimalzahlen"
+    "BZ" : "Bruchzahlen"
+    "ZM" : "Zeitmessung" 
+    "ST" : "Statisitk"
+    "GU" : "Gleichungen und Ungleichungen"
     # "EG" : "Einführung in der Geometrie"
     "GG" : "Geometrische Grundbegriffe"
-    "GU" : "Gleichungen und Ungleichungen"
     "KR" : "Kreis"
-    "MZ" : "Maßstaebliches Zeichnen"
-    "NZ" : "Natürliche Zahlen"
-    "QW" : "Quader und Würfel"
-    "RNZ" : "Rechnen mit natürlichen Zahlen"
     "RQ" : "Rechteck und Quadrat"
-    "ST" : "Statisitk"
-    "ZM" : "Zeitmessung"    
+    "MZ" : "Maßstaebliches Zeichnen"
+    "QW" : "Quader und Würfel"
+    
+    
+    
+       
 
 
 dict_k1:
@@ -471,12 +475,12 @@ dict_k1:
         - "di"
         - "vg"
     "GG":
+        - "ssg"
+        - "lg"
         - "am"
         - "ew"
-        - "lg"
         - "mzw"
         - "syf"
-        - "ssg"
     "GU":
         - "gl"
         - "ug"
@@ -489,26 +493,26 @@ dict_k1:
         - "zm"
     "NZ":
         - "ef"
+        - "dzs"
+        - "rvz"
+        - "odz"
         - "zs"
         - "azs"
-        - "dzs"
-        - "odz"
-        - "rvz"
     "QW":
         - "bqw"
         - "glkf"
+        - "sch"
         - "no"
         - "ri"
-        - "sch"
     "RNZ":
         - "as"
-        - "di"
         - "mu"
+        - "di"        
         - "vg"
     "RQ":
         - "eko"
-        - "fl"
         - "um"
+        - "fl"
     "ST":
         - "mw"
         - "tgd"
