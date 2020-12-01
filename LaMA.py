@@ -5612,7 +5612,9 @@ class Ui_MainWindow(object):
             None,
             QtCore.Qt.WindowSystemMenuHint
             | QtCore.Qt.WindowTitleHint
-            | QtCore.Qt.WindowCloseButtonHint,
+            | QtCore.Qt.WindowCloseButtonHint
+            | QtCore.Qt.WindowMaximizeButtonHint
+            | QtCore.Qt.WindowMinimizeButtonHint,
         )
         self.ui = Ui_Dialog_ausgleichspunkte()
         self.ui.setupUi(

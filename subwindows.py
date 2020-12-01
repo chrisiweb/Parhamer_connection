@@ -847,7 +847,7 @@ class Ui_Dialog_ausgleichspunkte(object):
 
 
         self.plainTextEdit_content = QtWidgets.QPlainTextEdit(self.scrollAreaWidgetContents)
-        self.plainTextEdit_content.setStyleSheet("background-color: {}".format(get_color(gray)))
+        self.plainTextEdit_content.setStyleSheet("background-color: {}".format(get_color(blue_2)))
         self.plainTextEdit_content.setObjectName(_fromUtf8("plainTextEdit_content"))
         self.gridlayout_titlepage.addWidget(self.plainTextEdit_content, 1,0,1,5)
         self.plainTextEdit_content.hide()
@@ -879,7 +879,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.button_undo.setSizePolicy(SizePolicy_maximum)
         self.button_undo.setToolTip("Rückgängig (Strg+Z)")
         self.button_undo.setShortcut("Ctrl+Z")
-        self.gridlayout_titlepage.addWidget(self.button_undo, 0,4,1,1, QtCore.Qt.AlignLeft)
+        self.gridlayout_titlepage.addWidget(self.button_undo, 0,3,1,1, QtCore.Qt.AlignLeft)
         self.button_undo.hide()
 
 
@@ -891,9 +891,30 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.button_redo.setToolTip("Wiederherstellen (Strg+Y)")
         self.button_redo.setShortcut("Ctrl+Y")
         # self.button_redo = create_standard_button(Dialog, "", still_to_define,QtWidgets.QStyle.SP_ArrowForward)
-        self.gridlayout_titlepage.addWidget(self.button_redo, 0,4,1,1, QtCore.Qt.AlignRight)
+        self.gridlayout_titlepage.addWidget(self.button_redo, 0,3,1,1, QtCore.Qt.AlignRight)
         self.button_redo.hide()
         self.plainTextEdit_content.setUndoRedoEnabled(True)
+
+        
+        path_zoom_in = os.path.join(path_programm, "_database", "_config", "icon", "zoom-in.png")
+        self.button_zoom_in = create_new_button(Dialog, "", self.plainTextEdit_content.zoomIn)
+        self.button_zoom_in.setIcon(QtGui.QIcon(path_zoom_in))
+        self.button_zoom_in.setSizePolicy(SizePolicy_maximum)
+        self.gridlayout_titlepage.addWidget(self.button_zoom_in,0,4,1,1, QtCore.Qt.AlignLeft)
+        self.button_zoom_in.setShortcut("Ctrl++")
+        self.button_zoom_in.hide()
+
+        path_zoom_out = os.path.join(path_programm, "_database", "_config", "icon", "zoom-out.png")
+        self.button_zoom_out = create_new_button(Dialog, "", self.plainTextEdit_content.zoomOut)
+        self.button_zoom_out.setIcon(QtGui.QIcon(path_zoom_out))
+        self.button_zoom_out.setSizePolicy(SizePolicy_maximum)
+        self.gridlayout_titlepage.addWidget(self.button_zoom_out,0,4,1,1, QtCore.Qt.AlignRight)
+        self.button_zoom_out.setShortcut("Ctrl+-")
+        self.button_zoom_out.hide()
+
+        # self.spinbox_font_size = create_new_spinbox(Dialog, value=12)
+        # self.gridlayout_titlepage.addWidget(self.spinbox_font_size, 0,5,1,1)
+        # self.spinbox_font_size.valueChanged.connect(self.font_size_changed)
         # self.buttonBox = QtWidgets.QDialogButtonBox(self.Dialog)
         # self.buttonBox = QtWidgets.QDialogButtonBox(self.Dialog)
         # self.buttonBox.setObjectName("buttonBox")
@@ -927,9 +948,11 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.build_checkboxes_for_content()
             self.button_save.hide()
             self.button_restore_default.hide()
+            self.button_zoom_in.hide()
+            self.button_zoom_out.hide()
 
         elif self.combobox_edit.currentIndex() == 2:
-            self.gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,4)
+            self.gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,3)
             # self.gridlayout_titlepage.update()
             self.button_undo.show()
             # self.button_undo.setEnabled(False)
@@ -939,6 +962,8 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.build_editable_content()
             self.button_save.show()
             self.button_restore_default.show()
+            self.button_zoom_in.show()
+            self.button_zoom_out.show()
 
     def button_restore_default_pressed(self):
         self.plainTextEdit_content.clear()
@@ -947,8 +972,21 @@ class Ui_Dialog_ausgleichspunkte(object):
 
     def button_undo_pressed(self):
         self.plainTextEdit_content.undo()
+        # print(self.plainTextEdit_content.toPlainText())
+        # print(is_empty(self.plainTextEdit_content.toPlainText()))
         if is_empty(self.plainTextEdit_content.toPlainText()) == True:
             self.plainTextEdit_content.redo()
+    
+    # def zoom_in(self):
+    #     # value = self.spinbox_font_size.value()
+    #     self.plainTextEdit_content.zoomIn()
+        # self.plainTextEdit_content.selectAll()
+        # self.plainTextEdit_content.setFontPointSize(32)
+#         ui->textEdit->selectAll();
+# ui->textEdit->setFontPointSize(32);
+        # print(self.plainTextEdit_content.styleSheet())
+        # self.plainTextEdit_content.setStyleSheet(self.plainTextEdit_content.styleSheet().replace("12", "20"))
+        # print(self.plainTextEdit_content.styleSheet())
     
     def button_redo_pressed(self):
         self.plainTextEdit_content.redo()
@@ -1079,7 +1117,6 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.checkbox_clicked(checkbox, checkbox_label)
 
     def pushButton_OK_pressed(self, list_sage_ausgleichspunkte_chosen):
-        print(self.plainTextEdit_content.toPlainText())
         if self.content_no_environment == self.plainTextEdit_content.toPlainText():
             print(True)
         else:
