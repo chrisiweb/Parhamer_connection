@@ -32,7 +32,7 @@ from create_new_widgets import (
     create_new_groupbox,
     add_new_option,
 )
-from standard_dialog_windows import critical_window, information_window, question_window
+from standard_dialog_windows import critical_window, information_window, question_window, warning_window
 from waitingspinnerwidget import QtWaitingSpinner
 from predefined_size_policy import SizePolicy_fixed, SizePolicy_fixed_height, SizePolicy_maximum
 from work_with_content import prepare_content_for_hide_show_items
@@ -797,7 +797,8 @@ class Ui_Dialog_ausgleichspunkte(object):
             aufgabenstellung_split_text
         )
         self.list_sage_ausgleichspunkte_chosen = list_sage_ausgleichspunkte_chosen
-
+        self.change_detected = False
+        self.change_detected_individual = False
         self.list_sage_hide_show_items_chosen = list_sage_hide_show_items_chosen
         self.dict_widget_variables_ausgleichspunkte = {}
         self.dict_widget_variables_hide_show_items = {}
@@ -849,7 +850,11 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.plainTextEdit_content = QtWidgets.QPlainTextEdit(self.scrollAreaWidgetContents)
         self.plainTextEdit_content.setStyleSheet("background-color: {}".format(get_color(blue_2)))
         self.plainTextEdit_content.setObjectName(_fromUtf8("plainTextEdit_content"))
+        self.plainTextEdit_content.textChanged.connect(self.plainTextEdit_content_changed)
+        self.plainTextEdit_content.setUndoRedoEnabled(False)
+        self.plainTextEdit_content.insertPlainText(self.content_no_environment)
         self.gridlayout_titlepage.addWidget(self.plainTextEdit_content, 1,0,1,5)
+        self.plainTextEdit_content.setUndoRedoEnabled(True)
         self.plainTextEdit_content.hide()
 
         self.button_save = create_new_button(Dialog, "Als Variation speichern", self.button_save_pressed)
@@ -893,7 +898,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         # self.button_redo = create_standard_button(Dialog, "", still_to_define,QtWidgets.QStyle.SP_ArrowForward)
         self.gridlayout_titlepage.addWidget(self.button_redo, 0,3,1,1, QtCore.Qt.AlignRight)
         self.button_redo.hide()
-        self.plainTextEdit_content.setUndoRedoEnabled(True)
+       
 
         
         path_zoom_in = os.path.join(path_programm, "_database", "_config", "icon", "zoom-in.png")
@@ -936,10 +941,20 @@ class Ui_Dialog_ausgleichspunkte(object):
         # # self.retranslateUi(self.Dialog)
         QtCore.QMetaObject.connectSlotsByName(self.Dialog)
 
+    def change_detected_warning(self):
+        response = question_window("Es wurden bereits nicht gespeicherte Änderungen an der Aufgabe vorgenommen.",
+        "Sind Sie sicher, dass Sie diese Änderungen verwerfen wollen?","Änderung der Aufgabe")
+        return response
+        
     def combobox_edit_changed(self):
         for i in reversed(range(1, self.gridLayout.count())):
             self.gridLayout.itemAt(i).widget().setParent(None)
         if self.combobox_edit.currentIndex() == 0 or self.combobox_edit.currentIndex() == 1:
+            if self.change_detected_individual == True:
+                rsp = self.change_detected_warning()
+                if rsp == False:
+                    return
+                self.change_detected_individual=False
             self.gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,5)
             self.button_undo.hide()
             self.button_redo.hide()
@@ -952,6 +967,11 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.button_zoom_out.hide()
 
         elif self.combobox_edit.currentIndex() == 2:
+            if self.change_detected == True:
+                rsp = self.change_detected_warning()
+                if rsp == False:
+                    return
+                self.change_detected=False
             self.gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,3)
             # self.gridlayout_titlepage.update()
             self.button_undo.show()
@@ -959,16 +979,20 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.button_redo.show()
             self.scrollArea.hide()
             self.plainTextEdit_content.show()
-            self.build_editable_content()
+            # self.build_editable_content()
             self.button_save.show()
             self.button_restore_default.show()
             self.button_zoom_in.show()
             self.button_zoom_out.show()
 
+    def plainTextEdit_content_changed(self):
+        self.change_detected_individual = True
     def button_restore_default_pressed(self):
-        self.plainTextEdit_content.clear()
-        self.plainTextEdit_content.insertPlainText(self.content_no_environment)
-        information_window("Die originale Aufgabe wurde wiederhergestellt.",titel="Original wiederhergestellt")
+        rsp = question_window("Sind Sie sicher, dass sie die originale Aufgabe wiederherstellen wollen?")
+        if rsp == True:
+            self.plainTextEdit_content.clear()
+            self.plainTextEdit_content.insertPlainText(self.content_no_environment)
+            information_window("Die originale Aufgabe wurde wiederhergestellt.",titel="Original wiederhergestellt")
 
     def button_undo_pressed(self):
         self.plainTextEdit_content.undo()
@@ -1042,10 +1066,11 @@ class Ui_Dialog_ausgleichspunkte(object):
                 item_number += 1
 
         self.gridLayout.addWidget(self.label_solution, row, 1, 1, 3, QtCore.Qt.AlignTop)
-
+        row += 1
         self.gridLayout.setRowStretch(row, 1)
 
     def checkbox_clicked(self, checkbox, checkbox_label):
+        self.change_detected = True
         try: 
             with open(lama_settings_file, "r", encoding="utf8") as f:
                 self.lama_settings = json.load(f)
@@ -1071,6 +1096,7 @@ class Ui_Dialog_ausgleichspunkte(object):
 
         checkbox = create_new_checkbox(self.scrollAreaWidgetContents, "")
         checkbox.setSizePolicy(SizePolicy_fixed)
+
         self.gridLayout.addWidget(checkbox, row, 0, 1, 1, QtCore.Qt.AlignTop)
 
         if "\\fbox{A}" in linetext:
@@ -1117,10 +1143,10 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.checkbox_clicked(checkbox, checkbox_label)
 
     def pushButton_OK_pressed(self, list_sage_ausgleichspunkte_chosen):
-        if self.content_no_environment == self.plainTextEdit_content.toPlainText():
-            print(True)
-        else:
-            print(False)
+        # if self.content_no_environment == self.plainTextEdit_content.toPlainText():
+        #     print(True)
+        # else:
+        #     print(False)
             
         self.list_sage_ausgleichspunkte_chosen = []
         for linetext in list(self.dict_widget_variables_ausgleichspunkte.keys()):

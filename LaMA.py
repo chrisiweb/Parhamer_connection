@@ -5361,7 +5361,7 @@ class Ui_MainWindow(object):
             pushbutton_ausgleich.setStyleSheet("padding: 6px")
             pushbutton_ausgleich.setSizePolicy(SizePolicy_fixed)
             # pushbutton_ausgleich.setMaximumSize(QtCore.QSize(220, 30))
-            gridLayout_gB.addWidget(pushbutton_ausgleich, 1, 2, 1, 1)
+            gridLayout_gB.addWidget(pushbutton_ausgleich, 1, 3, 1, 3)
 
             # pushbutton_aufgabe_bearbeiten = create_new_button(groupbox_pkt, 'Aufgabe bearbeiten', still_to_define)
             # gridLayout_gB.addWidget(pushbutton_aufgabe_bearbeiten, 0,1,1,1)
