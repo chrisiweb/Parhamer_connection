@@ -5370,18 +5370,19 @@ class Ui_MainWindow(object):
             # )
             # # label_ausgleichspkt.setSizePolicy(SizePolicy_min)
             # label_ausgleichspkt.setToolTip("Anzahl der Ausgleichspunkte")
+            
             # gridLayout_gB.addWidget(label_ausgleichspkt, 2, 2, 1, 1, QtCore.Qt.AlignCenter)
             
-
-        pushbutton_ausgleich = create_new_button(
-            new_groupbox,
-            "Aufgabe bearbeiten...",
-            partial(self.pushButton_ausgleich_pressed, aufgabe),
-        )
-        pushbutton_ausgleich.setStyleSheet("padding: 6px")
-        pushbutton_ausgleich.setSizePolicy(SizePolicy_fixed)
-        # pushbutton_ausgleich.setMaximumSize(QtCore.QSize(220, 30))
-        gridLayout_gB.addWidget(pushbutton_ausgleich, 2, 3, 1, 3)
+        if typ == 2:
+            pushbutton_ausgleich = create_new_button(
+                new_groupbox,
+                "Aufgabe bearbeiten...",
+                partial(self.pushButton_ausgleich_pressed, aufgabe),
+            )
+            pushbutton_ausgleich.setStyleSheet("padding: 6px")
+            pushbutton_ausgleich.setSizePolicy(SizePolicy_fixed)
+            # pushbutton_ausgleich.setMaximumSize(QtCore.QSize(220, 30))
+            gridLayout_gB.addWidget(pushbutton_ausgleich, 2, 3, 1, 3)
 
             # pushbutton_aufgabe_bearbeiten = create_new_button(groupbox_pkt, 'Aufgabe bearbeiten', still_to_define)
             # gridLayout_gB.addWidget(pushbutton_aufgabe_bearbeiten, 0,1,1,1)

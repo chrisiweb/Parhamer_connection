@@ -814,7 +814,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,5)
         self.combobox_edit.addItem("Ausgleichspunkte anpassen")
         self.combobox_edit.addItem("Aufgabenstellungen ein-/ausblenden")
-        self.combobox_edit.addItem("Individuell bearbeiten")
+        # self.combobox_edit.addItem("Individuell bearbeiten")
         self.combobox_edit.currentIndexChanged.connect(self.combobox_edit_changed)
         self.scrollArea = QtWidgets.QScrollArea(Dialog)
         self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
@@ -1072,7 +1072,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.gridLayout.setRowStretch(row, 1)
 
     def checkbox_changed(self):
-        print('changed')
+        # print('changed')
         self.change_detected = True
 
     def checkbox_clicked(self, checkbox, checkbox_label):
