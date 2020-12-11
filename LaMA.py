@@ -5246,15 +5246,16 @@ class Ui_MainWindow(object):
             label = "{0}".format(aufgabe)
 
         label_aufgabe = create_new_label(new_groupbox, label, True)
-        gridLayout_gB.addWidget(label_aufgabe, 0, 0, 1, 1)
+        gridLayout_gB.addWidget(label_aufgabe, 1, 0, 1, 1)
 
         label_titel = create_new_label(
             new_groupbox, "Titel: {}".format(aufgaben_infos[2]), True
         )
-        gridLayout_gB.addWidget(label_titel, 1, 0, 1, 1)
+        gridLayout_gB.addWidget(label_titel, 2, 0, 1, 1)
 
         groupbox_pkt = create_new_groupbox(new_groupbox, "Punkte")
-        gridLayout_gB.addWidget(groupbox_pkt, 0, 1, 2, 1, QtCore.Qt.AlignRight)
+        groupbox_pkt.setSizePolicy(SizePolicy_fixed)
+        gridLayout_gB.addWidget(groupbox_pkt, 0, 1, 3, 1, QtCore.Qt.AlignRight)
 
         punkte = self.dict_alle_aufgaben_sage[aufgabe][0]
 
@@ -5325,43 +5326,62 @@ class Ui_MainWindow(object):
         )
         gridLayout_gB.addWidget(button_delete, 0, 5, 2, 1)
 
-        groupbox_abstand = create_new_groupbox(new_groupbox, "Abstand (cm)")
-        groupbox_abstand.setSizePolicy(SizePolicy_fixed)
-        groupbox_abstand.setToolTip("Neue Seite: Abstand=99")
+        groupbox_abstand_ausgleich = create_new_groupbox(new_groupbox, "Abstand (cm)  ")
+        groupbox_abstand_ausgleich.setSizePolicy(SizePolicy_fixed)
         # groupbox_abstand.setMaximumSize(QtCore.QSize(100, 16777215))
-        gridLayout_gB.addWidget(groupbox_abstand, 0, 2, 2, 1)
+        gridLayout_gB.addWidget(groupbox_abstand_ausgleich, 0, 2, 3, 1)
 
-        verticalLayout_abstand = QtWidgets.QVBoxLayout(groupbox_abstand)
+        verticalLayout_abstand = QtWidgets.QVBoxLayout(groupbox_abstand_ausgleich)
         verticalLayout_abstand.setObjectName("verticalLayout_abstand")
 
-        if self.chosen_program == "lama" and typ == 2:
-            groupbox_abstand.hide()
-
         abstand = self.dict_alle_aufgaben_sage[aufgabe][1]
-        spinbox_abstand = create_new_spinbox(groupbox_abstand)
+        spinbox_abstand = create_new_spinbox(groupbox_abstand_ausgleich)
         spinbox_abstand.setValue(abstand)
         spinbox_abstand.valueChanged.connect(
             partial(self.spinbox_abstand_changed, aufgabe, spinbox_abstand)
         )
         verticalLayout_abstand.addWidget(spinbox_abstand)
 
-        if typ == 2:
-            label_ausgleichspkt = create_new_label(
-                groupbox_pkt,
-                "Ausgleichspunkte: {}".format(self.dict_alle_aufgaben_sage[aufgabe][3]),
-            )
-            gridLayout_gB.addWidget(label_ausgleichspkt, 0, 2, 1, 1)
-            self.dict_variablen_label[aufgabe] = label_ausgleichspkt
 
-            pushbutton_ausgleich = create_new_button(
-                new_groupbox,
-                "Aufgabe bearbeiten...",
-                partial(self.pushButton_ausgleich_pressed, aufgabe),
+        if typ == 2:
+            groupbox_abstand_ausgleich.setTitle("Ausgleichspkte")
+            spinbox_abstand.hide()
+
+            label_ausgleichspkt = create_new_label(
+                groupbox_abstand_ausgleich,
+                "{}".format(self.dict_alle_aufgaben_sage[aufgabe][3]),
             )
-            pushbutton_ausgleich.setStyleSheet("padding: 6px")
-            pushbutton_ausgleich.setSizePolicy(SizePolicy_fixed)
-            # pushbutton_ausgleich.setMaximumSize(QtCore.QSize(220, 30))
-            gridLayout_gB.addWidget(pushbutton_ausgleich, 1, 3, 1, 3)
+            label_ausgleichspkt.setStyleSheet("padding-top: 5px; padding-bottom: 5px;")
+            verticalLayout_abstand.addWidget(label_ausgleichspkt)
+
+            self.dict_variablen_label[aufgabe] = label_ausgleichspkt
+        else:
+            groupbox_abstand_ausgleich.setToolTip("Neue Seite: Abstand=99")
+
+            # label_ausgleichspkt.setSizePolicy(SizePolicy_min)
+            # label_ausgleichspkt.setToolTip("Anzahl der Ausgleichspunkte")            
+
+            #groupbox_abstand.hide()
+
+        # if typ == 2:
+            # label_ausgleichspkt = create_new_label(
+            #     groupbox_pkt,
+            #     "AP: {}".format(self.dict_alle_aufgaben_sage[aufgabe][3]),
+            # )
+            # # label_ausgleichspkt.setSizePolicy(SizePolicy_min)
+            # label_ausgleichspkt.setToolTip("Anzahl der Ausgleichspunkte")
+            # gridLayout_gB.addWidget(label_ausgleichspkt, 2, 2, 1, 1, QtCore.Qt.AlignCenter)
+            
+
+        pushbutton_ausgleich = create_new_button(
+            new_groupbox,
+            "Aufgabe bearbeiten...",
+            partial(self.pushButton_ausgleich_pressed, aufgabe),
+        )
+        pushbutton_ausgleich.setStyleSheet("padding: 6px")
+        pushbutton_ausgleich.setSizePolicy(SizePolicy_fixed)
+        # pushbutton_ausgleich.setMaximumSize(QtCore.QSize(220, 30))
+        gridLayout_gB.addWidget(pushbutton_ausgleich, 2, 3, 1, 3)
 
             # pushbutton_aufgabe_bearbeiten = create_new_button(groupbox_pkt, 'Aufgabe bearbeiten', still_to_define)
             # gridLayout_gB.addWidget(pushbutton_aufgabe_bearbeiten, 0,1,1,1)
@@ -5642,7 +5662,7 @@ class Ui_MainWindow(object):
         self.dict_variablen_label[aufgabe].setText(
             _translate(
                 "MainWindow",
-                "Ausgleichspunkte: {}".format(
+                "{}".format(
                     len(self.ui.list_sage_ausgleichspunkte_chosen)
                 ),
                 None,

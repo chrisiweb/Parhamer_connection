@@ -797,8 +797,6 @@ class Ui_Dialog_ausgleichspunkte(object):
             aufgabenstellung_split_text
         )
         self.list_sage_ausgleichspunkte_chosen = list_sage_ausgleichspunkte_chosen
-        self.change_detected = False
-        self.change_detected_individual = False
         self.list_sage_hide_show_items_chosen = list_sage_hide_show_items_chosen
         self.dict_widget_variables_ausgleichspunkte = {}
         self.dict_widget_variables_hide_show_items = {}
@@ -939,6 +937,8 @@ class Ui_Dialog_ausgleichspunkte(object):
         #     partial(self.pushButton_OK_pressed, list_sage_ausgleichspunkte_chosen)
         # )
         # # self.retranslateUi(self.Dialog)
+        self.change_detected = False
+        self.change_detected_individual = False
         QtCore.QMetaObject.connectSlotsByName(self.Dialog)
 
     def change_detected_warning(self):
@@ -950,11 +950,12 @@ class Ui_Dialog_ausgleichspunkte(object):
         for i in reversed(range(1, self.gridLayout.count())):
             self.gridLayout.itemAt(i).widget().setParent(None)
         if self.combobox_edit.currentIndex() == 0 or self.combobox_edit.currentIndex() == 1:
-            if self.change_detected_individual == True:
-                rsp = self.change_detected_warning()
-                if rsp == False:
-                    return
-                self.change_detected_individual=False
+            # print('change_individual')
+            # if self.change_detected_individual == True:
+            #     rsp = self.change_detected_warning()
+            #     if rsp == False:
+            #         return
+            #     self.change_detected_individual=False
             self.gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,5)
             self.button_undo.hide()
             self.button_redo.hide()
@@ -1048,8 +1049,9 @@ class Ui_Dialog_ausgleichspunkte(object):
                     )
                     if checkbox != None:
                         self.dict_widget_variables_ausgleichspunkte[linetext] = checkbox
-
+                        checkbox.clicked.connect(self.checkbox_changed)
                     row += 1
+                    
         elif self.combobox_edit.currentIndex() == 1:
             item_number = 0
             for linetext in self.hide_show_items_split_text:
@@ -1069,8 +1071,12 @@ class Ui_Dialog_ausgleichspunkte(object):
         row += 1
         self.gridLayout.setRowStretch(row, 1)
 
-    def checkbox_clicked(self, checkbox, checkbox_label):
+    def checkbox_changed(self):
+        print('changed')
         self.change_detected = True
+
+    def checkbox_clicked(self, checkbox, checkbox_label):
+        self.checkbox_changed()
         try: 
             with open(lama_settings_file, "r", encoding="utf8") as f:
                 self.lama_settings = json.load(f)
