@@ -86,6 +86,9 @@ def get_color(color):
 # )
 
 
+
+
+
 class Ui_Dialog_choose_type(object):
     def setupUi(self, Dialog):
         self.Dialog = Dialog

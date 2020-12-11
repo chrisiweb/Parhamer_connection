@@ -105,7 +105,7 @@ try:
 except IndexError:
     loaded_lama_file_path = ""
 
-
+print(sys.platform)
 
 
 # def get_color(color):
@@ -215,6 +215,21 @@ class Ui_MainWindow(object):
     global dict_picture_path  # , set_chosen_gk #, list_sage_examples#, dict_alle_aufgaben_sage
 
     def __init__(self):
+        path_programm = ""
+        print(config_file)
+        # if path_programm == False:
+        #     msg = QtWidgets.QMessageBox()
+        #     # msg.setIcon(QtWidgets.QMessageBox.Question)
+        #     msg.setWindowIcon(QtGui.QIcon(logo_path))
+        #     msg.setText("Wählen Sie alle Grafiken, die Sie konvertieren möchten.")
+        #     # msg.setInformativeText('Möchten Sie das neue Update installieren?')
+        #     msg.setWindowTitle("Grafik(en) konvertieren")
+        #     msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+        #     button_durchsuchen = msg.button(QtWidgets.QMessageBox.Yes)
+        #     button_durchsuchen.setText("Durchsuchen...")
+        #     buttonN = msg.button(QtWidgets.QMessageBox.No)
+        #     buttonN.setText("Abbrechen")
+        #     ret = msg.exec_()
         self.dict_alle_aufgaben_sage = {}
         self.list_alle_aufgaben_sage = []
         self.dict_widget_variables = {}

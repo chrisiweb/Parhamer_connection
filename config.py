@@ -3,9 +3,27 @@ import yaml
 import sys
 import os
 import re
+from define_database import Ui_DefineDatabaseWindow
 
-path_programm = os.path.dirname(sys.argv[0])
-if sys.platform.startswith("darwin"):
+
+if sys.platform.startswith("win"):
+    app = QtWidgets.QApplication(sys.argv)
+    DefineDatabaseWindow = QtWidgets.QMainWindow()
+    ui = Ui_DefineDatabaseWindow()
+    ui.setupUi(DefineDatabaseWindow)
+    DefineDatabaseWindow.show()
+    rsp = app.exec_()
+    print(rsp)
+    # if rsp == False:
+    #     sys.exit(0)
+    # if rsp == True:
+    #     print('accepted')
+
+    path_programm = os.path.dirname(sys.argv[0])
+    print(path_programm)
+    # path_programm = ""
+
+elif sys.platform.startswith("darwin"):
     if path_programm is "":
         path_programm = "."
 
