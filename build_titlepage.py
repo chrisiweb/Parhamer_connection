@@ -52,7 +52,7 @@ def check_if_hide_all_exists(dict_titlepage):
         dict_titlepage["hide_all"]
     except KeyError:
         dict_titlepage["hide_all"] = False
-        titlepage_save = os.path.join(path_programm, "Teildokument", "titlepage_save")
+        titlepage_save = os.path.join(path_localappdata_lama, "Teildokument", "titlepage_save")
         with open(titlepage_save, "w+", encoding="utf8") as f:
             json.dump(dict_titlepage, f)
     return dict_titlepage
@@ -147,7 +147,7 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, index):
     else:
         if dict_titlepage["logo"] == True:
             logo_name = os.path.basename(dict_titlepage["logo_path"])
-            logo_titlepage_path = os.path.join(path_programm, "Teildokument", logo_name)
+            logo_titlepage_path = os.path.join(path_localappdata_lama, "Teildokument", logo_name)
 
             if os.path.isfile(logo_titlepage_path):
                 logo_input = (

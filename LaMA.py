@@ -26,26 +26,26 @@ import yaml
 from PIL import Image  ## pillow
 import smtplib
 import urllib.request
+from save_titlepage import create_file_titlepage, check_format_titlepage_save
 
-
-
-from config import (
-    colors_ui,
-    get_color,
-    config_file,
-    config_loader,
-    path_programm,
-    lama_settings_file,
-    logo_path,
-    logo_cria_path,
-    SpinBox_noWheel,
-    ClickLabel,
-    bring_to_front,
-    is_empty,
-    shorten_gk,
-    split_section,
-    still_to_define
-)
+from config import *
+# (
+#     colors_ui,
+#     get_color,
+#     config_file,
+#     config_loader,
+#     path_programm,
+#     lama_settings_file,
+#     logo_path,
+#     logo_cria_path,
+#     SpinBox_noWheel,
+#     ClickLabel,
+#     bring_to_front,
+#     is_empty,
+#     shorten_gk,
+#     split_section,
+#     still_to_define
+# )
 from create_new_widgets import *
 from list_of_widgets import (
     widgets_search,
@@ -105,9 +105,6 @@ try:
 except IndexError:
     loaded_lama_file_path = ""
 
-print(sys.platform)
-
-
 # def get_color(color):
 #     color = "rgb({0}, {1}, {2})".format(color.red(), color.green(), color.blue())
 #     return color
@@ -122,61 +119,31 @@ print(sys.platform)
 
 ## sizePolicy = QtWidgets.QSizePolicy( ######### Breite ############, ######### Höhe ############)
 
-print("Loading...")
+# print("Loading...")
 
 ### config_loader, path_programm, logo_path, SpinBox_noWheel
-
-
-ag_beschreibung = config_loader(config_file, "ag_beschreibung")
-an_beschreibung = config_loader(config_file, "an_beschreibung")
-fa_beschreibung = config_loader(config_file, "fa_beschreibung")
-ws_beschreibung = config_loader(config_file, "ws_beschreibung")
-list_topics = [
-    list(ag_beschreibung.keys()),
-    list(an_beschreibung.keys()),
-    list(fa_beschreibung.keys()),
-    list(ws_beschreibung.keys()),
-]
-
-zusatzthemen_beschreibung = config_loader(config_file, "zusatzthemen_beschreibung")
-k5_beschreibung = config_loader(config_file, "k5_beschreibung")
-k6_beschreibung = config_loader(config_file, "k6_beschreibung")
-k7_beschreibung = config_loader(config_file, "k7_beschreibung")
-k8_beschreibung = config_loader(config_file, "k8_beschreibung")
-
-dict_gk = config_loader(config_file, "dict_gk")
-Klassen = config_loader(config_file, "Klassen")
-list_klassen = config_loader(config_file, "list_klassen")
-dict_aufgabenformate = config_loader(config_file, "dict_aufgabenformate")
-
-
-for klasse in list_klassen:
-    exec('dict_{0} = config_loader(config_file,"dict_{0}")'.format(klasse))
-    exec('dict_{0}_name = config_loader(config_file,"dict_{0}_name")'.format(klasse))
-
-dict_unterkapitel = config_loader(config_file, "dict_unterkapitel")
 
 
 dict_picture_path = {}
 
 
-def create_file_titlepage(titlepage_save):
-    if os.path.isfile(titlepage_save):
-        with open(titlepage_save, encoding="utf8") as f:
-            titlepage = json.load(f)
-    else:
-        titlepage = {
-            "logo": False,
-            "logo_path": False,
-            "titel": True,
-            "datum": True,
-            "klasse": True,
-            "name": True,
-            "note": False,
-            "unterschrift": False,
-            "hide_all": False,
-        }
-    return titlepage
+# def create_file_titlepage(titlepage_save):
+#     if os.path.isfile(titlepage_save):
+#         with open(titlepage_save, encoding="utf8") as f:
+#             titlepage = json.load(f)
+#     else:
+#         titlepage = {
+#             "logo": False,
+#             "logo_path": False,
+#             "titel": True,
+#             "datum": True,
+#             "klasse": True,
+#             "name": True,
+#             "note": False,
+#             "unterschrift": False,
+#             "hide_all": False,
+#         }
+#     return titlepage
 
 
 # def simplify_string(string):
@@ -184,39 +151,39 @@ def create_file_titlepage(titlepage_save):
 #     return string
 
 
-def check_format_titlepage_save(filename):
-    path = os.path.join(path_programm, "Teildokument", filename)
-    try:
-        titlepage = create_file_titlepage(path)
-    except json.decoder.JSONDecodeError:
-        print(
-            'The file "{}" has an invalid format. The standard was restored!'.format(
-                filename
-            )
-        )
-        titlepage = {
-            "logo": False,
-            "logo_path": False,
-            "titel": True,
-            "datum": True,
-            "klasse": True,
-            "name": True,
-            "note": False,
-            "unterschrift": False,
-            "hide_all": False,
-        }
-        with open(path, "w+", encoding="utf8") as f:
-            json.dump(titlepage, f, ensure_ascii=False)
+# def check_format_titlepage_save(filename):
+#     path = os.path.join(path_programm, "Teildokument", filename)
+#     try:
+#         titlepage = create_file_titlepage(path)
+#     except json.decoder.JSONDecodeError:
+#         print(
+#             'The file "{}" has an invalid format. The standard was restored!'.format(
+#                 filename
+#             )
+#         )
+#         titlepage = {
+#             "logo": False,
+#             "logo_path": False,
+#             "titel": True,
+#             "datum": True,
+#             "klasse": True,
+#             "name": True,
+#             "note": False,
+#             "unterschrift": False,
+#             "hide_all": False,
+#         }
+#         with open(path, "w+", encoding="utf8") as f:
+#             json.dump(titlepage, f, ensure_ascii=False)
 
-    return titlepage
+#     return titlepage
 
 
 class Ui_MainWindow(object):
     global dict_picture_path  # , set_chosen_gk #, list_sage_examples#, dict_alle_aufgaben_sage
 
     def __init__(self):
-        path_programm = ""
-        print(config_file)
+        # path_programm = ""
+        # print(config_file)
         # if path_programm == False:
         #     msg = QtWidgets.QMessageBox()
         #     # msg.setIcon(QtWidgets.QMessageBox.Question)
@@ -256,7 +223,10 @@ class Ui_MainWindow(object):
         self.dict_titlepage = check_format_titlepage_save("titlepage_save")
 
         self.dict_titlepage_cria = check_format_titlepage_save("titlepage_save_cria")
-
+         
+        path_teildokument = os.path.join(path_programm, "Teildokument")
+        if not os.path.isdir(path_teildokument):
+            os.mkdir(path_teildokument)
         app.aboutToQuit.connect(self.close_app)
 
     def setupUi(self, MainWindow):
@@ -2154,9 +2124,9 @@ class Ui_MainWindow(object):
 
         try:
             if self.chosen_program == "lama":
-                log_file = os.path.join(path_programm, "Teildokument", "log_file_1")
+                log_file = os.path.join(path_localappdata_lama, "Teildokument","log_file_1")
             if self.chosen_program == "cria":
-                log_file = os.path.join(path_programm, "Teildokument", "log_file_cria")
+                log_file = os.path.join(path_localappdata_lama, "Teildokument","log_file_cria")
             self.label_update.setText(
                 _translate(
                     "MainWindow",
@@ -3245,7 +3215,7 @@ class Ui_MainWindow(object):
                 log_file = "log_file_cria"
             else:
                 log_file = "log_file_%s" % self.label_aufgabentyp.text()[-1]
-            path_log_file = os.path.join(path_programm, "Teildokument", log_file)
+            path_log_file = os.path.join(path_localappdata_lama, "Teildokument",log_file)
             self.label_update.setText(
                 _translate(
                     "MainWindow",
@@ -4592,7 +4562,7 @@ class Ui_MainWindow(object):
     def define_beispieldaten_dateipfad(self, typ):
 
         log_file = os.path.join(
-            path_programm, "Teildokument", "log_file_{}".format(typ)
+            path_localappdata_lama,"Teildokument", "log_file_{}".format(typ)
         )
 
         beispieldaten_dateipfad = self.get_beispieldaten_dateipfad(log_file)
@@ -4910,19 +4880,19 @@ class Ui_MainWindow(object):
             if self.chosen_program == "lama":
                 self.dict_titlepage = dict_titlepage
                 titlepage_save = os.path.join(
-                    path_programm, "Teildokument", "titlepage_save"
+                    path_localappdata_lama,"Teildokument", "titlepage_save"
                 )
             if self.chosen_program == "cria":
                 self.dict_titlepage_cria = dict_titlepage
                 titlepage_save = os.path.join(
-                    path_programm, "Teildokument", "titlepage_save_cria"
+                    path_localappdata_lama,"Teildokument", "titlepage_save_cria"
                 )
 
             try:
                 with open(titlepage_save, "w+", encoding="utf8") as f:
                     json.dump(dict_titlepage, f, ensure_ascii=False)
             except FileNotFoundError:
-                os.makedirs(os.path.join(path_programm, "Teildokument"))
+                os.makedirs(os.path.join(path_localappdata_lama, "Teildokument"))
                 with open(titlepage_save, "w+", encoding="utf8") as f:
                     json.dump(dict_titlepage, f, ensure_ascii=False)
 
@@ -5813,7 +5783,7 @@ class Ui_MainWindow(object):
             return
 
         self.collect_all_infos_for_creating_file()
-        autosave_file = os.path.join(path_programm, "Teildokument", "autosave.lama")
+        autosave_file = os.path.join(path_localappdata_lama,"Teildokument", "autosave.lama")
         try: 
             modification = modification_date(autosave_file).strftime("%y%m%d-%H%M")
             date, time_tag = modification.split("-")

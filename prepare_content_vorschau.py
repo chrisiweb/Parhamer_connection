@@ -1,6 +1,6 @@
 import os
 import shutil
-from config import path_programm, is_empty
+from config import path_programm, path_localappdata_lama, is_empty
 from work_with_content import collect_content
 from standard_dialog_windows import warning_window
 
@@ -84,7 +84,7 @@ def edit_content_hide_show_items(self, aufgabe, content):
 
 def copy_logo_to_target_path(self, logo_path):
     logo_name = os.path.basename(logo_path)
-    logo_titlepage_path = os.path.join(path_programm, "Teildokument", logo_name)
+    logo_titlepage_path = os.path.join(path_localappdata_lama, "Teildokument",logo_name)
     if os.path.isfile(logo_titlepage_path):
         shutil.copy(
             logo_titlepage_path,

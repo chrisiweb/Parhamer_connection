@@ -5,7 +5,7 @@ import datetime
 from datetime import date
 import json
 from functools import partial
-from config import config_file, config_loader, logo_path, path_programm
+from config import config_file, config_loader, logo_path, path_programm, path_localappdata_lama
 from translate import _fromUtf8, _translate
 from sort_items import natural_keys, lama_order
 from subwindows import Ui_Dialog_processing
@@ -52,7 +52,7 @@ def save_log_file(self, log_file, beispieldaten_dateipfad):
         with open(log_file, "w+", encoding="utf8") as f:
             json.dump(beispieldaten_dateipfad, f, ensure_ascii=False)
     except FileNotFoundError:
-        os.makedirs(os.path.join(path_programm, "Teildokument"))
+        os.makedirs(os.path.join(path_localappdata_lama, "Teildokument"))
         with open(log_file, "w+", encoding="utf8") as f:
             json.dump(beispieldaten_dateipfad, f, ensure_ascii=False)
 
@@ -87,7 +87,7 @@ def collect_all_exisiting_files(self, selected_program):
 
             #########
             log_file = os.path.join(
-                path_programm, "Teildokument", "log_file_%s" % selected_aufgabentyp
+                path_localappdata_lama, "Teildokument","log_file_%s" % selected_aufgabentyp
             )
 
             save_log_file(self, log_file, beispieldaten_dateipfad)
@@ -107,7 +107,7 @@ def collect_all_exisiting_files(self, selected_program):
             dateipfad = os.path.join(path_programm, "Lokaler_Ordner", klasse)
             search_files(dateipfad, beispieldaten_dateipfad)
 
-        log_file = os.path.join(path_programm, "Teildokument", "log_file_cria")
+        log_file = os.path.join(path_localappdata_lama, "Teildokument", "log_file_cria")
 
         save_log_file(self, log_file, beispieldaten_dateipfad)
 

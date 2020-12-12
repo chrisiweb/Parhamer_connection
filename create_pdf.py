@@ -16,6 +16,7 @@ from config import (
     logo_path,
     logo_cria_button_path,
     path_programm,
+    path_localappdata_lama,
     is_empty,
     split_section,
 )
@@ -129,12 +130,11 @@ def prepare_tex_for_pdf(self):
     # print(self.lama_settings)
     if self.chosen_program == "lama":
         log_file = os.path.join(
-            path_programm,
-            "Teildokument",
+            path_localappdata_lama, "Teildokument",
             "log_file_%s" % self.label_aufgabentyp.text()[-1],
         )
     if self.chosen_program == "cria":
-        log_file = os.path.join(path_programm, "Teildokument", "log_file_cria")
+        log_file = os.path.join(path_localappdata_lama,"Teildokument","log_file_cria")
 
     if not os.path.isfile(log_file):
         refresh_ddb(self)  # self.label_aufgabentyp.text()[-1]
@@ -223,7 +223,7 @@ def prepare_tex_for_pdf(self):
     #########################################
 
     path_tabu_pkg = os.path.join(path_programm, "_database", "_config", "tabu.sty")
-    copy_path_tabu_pkg = os.path.join(path_programm, "Teildokument", "tabu.sty")
+    copy_path_tabu_pkg = os.path.join(path_localappdata_lama,"Teildokument","tabu.sty")
     if os.path.isfile(copy_path_tabu_pkg):
         pass
     else:
@@ -234,7 +234,7 @@ def prepare_tex_for_pdf(self):
         path_programm, "_database", "_config", "srdp-mathematik.sty"
     )
     copy_path_srdp_pkg = os.path.join(
-        path_programm, "Teildokument", "srdp-mathematik.sty"
+        path_localappdata_lama,"Teildokument","srdp-mathematik.sty"
     )
     if os.path.isfile(copy_path_srdp_pkg):
         pass
@@ -259,10 +259,11 @@ def prepare_tex_for_pdf(self):
             path_programm, "Teildokument", "Teildokument_cria.tex"
         )
 
-    try:
-        file = open(filename_teildokument, "w", encoding="utf8")
-    except FileNotFoundError:
-        os.makedirs(filename_teildokument)  # If dir is not found make it recursivly
+    # try:
+    file = open(filename_teildokument, "w", encoding="utf8")
+    # except FileNotFoundError:
+    #     os.makedirs(filename_teildokument)  # If dir is not found make it recursivly
+
     file.write(
         "\documentclass[a4paper,12pt]{report}\n\n"
         "\\usepackage{geometry}\n"
@@ -703,6 +704,13 @@ def build_pdf_file(folder_name, file_name, latex_output_file):
 
 
 def open_pdf_file(folder_name, file_name):
+    drive_programm = os.path.splitdrive(path_programm)[0]
+    drive_database = os.path.splitdrive(path_localappdata_lama)[0]
+    if drive_programm.upper() != drive_database.upper():
+        drive = drive_database.upper()
+    else:
+        drive = ""
+
     try:
         with open(lama_settings_file, "r", encoding="utf8") as f:
             lama_settings = json.load(f)
@@ -712,7 +720,7 @@ def open_pdf_file(folder_name, file_name):
 
     file_path = os.path.join(folder_name, file_name)
 
-
+    
 
     if sys.platform.startswith("linux"):
         file_path = file_path + ".pdf"
@@ -746,10 +754,14 @@ def open_pdf_file(folder_name, file_name):
         else:
             path_pdf_reader = '"{}"'.format(path_pdf_reader) 
 
-        subprocess.Popen(
-            'cd "{0}" & {1} "{2}.pdf"'.format(folder_name,path_pdf_reader, file_name),
-            shell = True).poll()
-        
+        if is_empty(drive):
+            subprocess.Popen(
+                'cd "{0}" & {1} {2}.pdf'.format(folder_name,path_pdf_reader, file_name),
+                shell = True).poll()
+        else:
+            subprocess.Popen(
+                '{0} cd "{1}" & {2} {3}.pdf'.format(drive, folder_name,path_pdf_reader, file_name),
+                shell = True).poll()            
 
 def loading_animation(process):
     animation = "|/-\\"
@@ -795,7 +807,7 @@ def create_pdf(path_file, index, maximum, typ=0):
     print("Pdf-Datei wird erstellt. Bitte warten...")
 
     latex_output_file = open(
-        "{0}/Teildokument/temp.txt".format(path_programm),
+        "{0}/Teildokument/temp.txt".format(path_localappdata_lama),
         "w",
         encoding="utf8",
         errors="ignore",
@@ -823,7 +835,7 @@ def create_pdf(path_file, index, maximum, typ=0):
     Dialog.exec()
 
     latex_output_file = open(
-        "{0}/Teildokument/temp.txt".format(path_programm),
+        "{0}/Teildokument/temp.txt".format(path_localappdata_lama),
         "r",
         encoding="utf8",
         errors="ignore",

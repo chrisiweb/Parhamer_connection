@@ -12,6 +12,7 @@ from config import (
     colors_ui,
     get_color,
     path_programm,
+    path_localappdata_lama,
     logo_path,
     logo_cria_button_path,
     is_empty,
@@ -738,9 +739,12 @@ class Ui_Dialog_titlepage(object):
         self.cb_titlepage_logo.setText("Logo ({})".format(logo_name))
         dict_titlepage["logo_path"] = "{}".format(logo_titlepage_path[0][0])
         copy_logo_titlepage_path = os.path.join(
-            path_programm, "Teildokument", logo_name
+            path_localappdata_lama, "Teildokument", logo_name
         )
-        shutil.copy(logo_titlepage_path[0][0], copy_logo_titlepage_path)
+        try:
+            shutil.copy(logo_titlepage_path[0][0], copy_logo_titlepage_path)
+        except shutil.SameFileError:
+            pass
 
         return dict_titlepage
 

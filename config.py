@@ -3,35 +3,59 @@ import yaml
 import sys
 import os
 import re
-from define_database import Ui_DefineDatabaseWindow
+from define_database import Ui_define_database
 
 
 if sys.platform.startswith("win"):
-    app = QtWidgets.QApplication(sys.argv)
-    DefineDatabaseWindow = QtWidgets.QMainWindow()
-    ui = Ui_DefineDatabaseWindow()
-    ui.setupUi(DefineDatabaseWindow)
-    DefineDatabaseWindow.show()
-    rsp = app.exec_()
-    print(rsp)
-    # if rsp == False:
-    #     sys.exit(0)
-    # if rsp == True:
-    #     print('accepted')
+    path_localappdata = os.getenv('LOCALAPPDATA')
+    path_localappdata_lama = os.path.join(path_localappdata, "LaMA")
+    file_path_database = os.path.join(path_localappdata_lama ,"file_path_database.txt")
+    try:
+        with open(file_path_database, "r") as file:
+            path = file.read()
+    except FileNotFoundError:
+        path = os.path.dirname(file_path_database)
+        if os.path.isdir(path) == False:    
+            os.mkdir(path)
 
-    path_programm = os.path.dirname(sys.argv[0])
-    print(path_programm)
+        app = QtWidgets.QApplication(sys.argv)
+        define_database = QtWidgets.QWidget()
+        ui = Ui_define_database()
+        ui.setupUi(define_database)
+        define_database.show()
+        app.exec_()
+
+        with open(file_path_database, "r") as file:
+            path = file.read()
+
+    print("Loading...")
+    # print(path)
+    path_programm = os.path.dirname(path)
+
+    # if os.path.isdir(file_path_database):
+    #     print(True)
+    # else:
+    #     os.makedir(file_path_database)
+    #     print(False)
+
+
+
+
+
+    # path_programm = os.path.dirname(sys.argv[0])
+    # print(path_programm)
     # path_programm = ""
 
 elif sys.platform.startswith("darwin"):
     if path_programm is "":
         path_programm = "."
+    path_localappdata_lama = path_programm
 
 config_file = os.path.join(path_programm, "_database", "_config", "config.yml")
 
 
 lama_settings_file = os.path.join(
-            path_programm, "Teildokument", "lama_settings"
+            path_localappdata_lama, "Teildokument", "lama_settings"
         )
         
 colors_ui = {
@@ -142,3 +166,31 @@ def split_section(section, chosen_program):
 
 def still_to_define():
     print('still to define')
+
+ag_beschreibung = config_loader(config_file, "ag_beschreibung")
+an_beschreibung = config_loader(config_file, "an_beschreibung")
+fa_beschreibung = config_loader(config_file, "fa_beschreibung")
+ws_beschreibung = config_loader(config_file, "ws_beschreibung")
+list_topics = [
+    list(ag_beschreibung.keys()),
+    list(an_beschreibung.keys()),
+    list(fa_beschreibung.keys()),
+    list(ws_beschreibung.keys()),
+]
+
+zusatzthemen_beschreibung = config_loader(config_file, "zusatzthemen_beschreibung")
+k5_beschreibung = config_loader(config_file, "k5_beschreibung")
+k6_beschreibung = config_loader(config_file, "k6_beschreibung")
+k7_beschreibung = config_loader(config_file, "k7_beschreibung")
+k8_beschreibung = config_loader(config_file, "k8_beschreibung")
+
+dict_gk = config_loader(config_file, "dict_gk")
+Klassen = config_loader(config_file, "Klassen")
+list_klassen = config_loader(config_file, "list_klassen")
+dict_aufgabenformate = config_loader(config_file, "dict_aufgabenformate")
+
+for klasse in list_klassen:
+    exec('dict_{0} = config_loader(config_file,"dict_{0}")'.format(klasse))
+    exec('dict_{0}_name = config_loader(config_file,"dict_{0}_name")'.format(klasse))
+
+dict_unterkapitel = config_loader(config_file, "dict_unterkapitel")
