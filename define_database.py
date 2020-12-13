@@ -13,7 +13,7 @@ import os
 from predefined_size_policy import SizePolicy_fixed
 
 
-print(os.getenv("ProgramFiles"))
+# print(os.getenv("ProgramFiles"))
 logo_path = os.path.join(os.getenv("ProgramFiles"), "LaMA", "LaMA_icon_logo.png")
 # path_localappdata_lama = os.path.join(path_localappdata, "LaMA")
 # file_path_database = os.path.join(path_localappdata_lama ,"file_path_database.txt")
@@ -97,7 +97,9 @@ Installationsguide auf lama.schule oder wenden Sie sich an helpme.lama@gmail.com
                 self.label_define_database_2.setToolTip("")
             else:
                 self.buttonBox_define_database.button(QtWidgets.QDialogButtonBox.Save).setEnabled(False)
-                self.label_define_database_2.setStyleSheet("color: red")
+                self.label_define_database_2.setStyleSheet("""
+                color: red
+                """)
                 self.label_define_database_2.setText(self.path_database + " (!)")
                 self.label_define_database_2.setToolTip('Die Datei "_config.yml" konnte nicht gefunden werden!')
         # QFileDialog.getFolder(

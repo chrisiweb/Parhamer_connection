@@ -4,7 +4,7 @@
 __version__ = "v2.2.1"
 __lastupdate__ = "11/20"
 ####################
-
+print("Loading...")
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QApplication
 import time

@@ -28,7 +28,7 @@ if sys.platform.startswith("win"):
         with open(file_path_database, "r") as file:
             path = file.read()
 
-    print("Loading...")
+    
     # print(path)
     path_programm = os.path.dirname(path)
 
