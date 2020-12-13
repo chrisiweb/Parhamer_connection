@@ -111,8 +111,6 @@ except IndexError:
 
 
 
-
-
 # QWidget::disabled {{background-color: {4}}}
 
 
