@@ -27,6 +27,8 @@ if sys.platform.startswith("win"):
 
         with open(file_path_database, "r") as file:
             path = file.read()
+        
+        print("Loading LaMA...")
 
     
     # print(path)

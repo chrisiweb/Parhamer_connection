@@ -821,7 +821,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,5)
         self.combobox_edit.addItem("Ausgleichspunkte anpassen")
         self.combobox_edit.addItem("Aufgabenstellungen ein-/ausblenden")
-        # self.combobox_edit.addItem("Individuell bearbeiten")
+        self.combobox_edit.addItem("Individuell bearbeiten")
         self.combobox_edit.currentIndexChanged.connect(self.combobox_edit_changed)
         self.scrollArea = QtWidgets.QScrollArea(Dialog)
         self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
@@ -944,25 +944,78 @@ class Ui_Dialog_ausgleichspunkte(object):
         #     partial(self.pushButton_OK_pressed, list_sage_ausgleichspunkte_chosen)
         # )
         # # self.retranslateUi(self.Dialog)
-        self.change_detected = False
-        self.change_detected_individual = False
+        self.change_detected_0 = False
+        self.change_detected_1 = False
+        self.change_detected_2 = False
         QtCore.QMetaObject.connectSlotsByName(self.Dialog)
 
     def change_detected_warning(self):
         response = question_window("Es wurden bereits nicht gespeicherte Änderungen an der Aufgabe vorgenommen.",
         "Sind Sie sicher, dass Sie diese Änderungen verwerfen wollen?","Änderung der Aufgabe")
         return response
-        
+
+    def check_for_change(self):
+        for index in [0,1,2]:
+            change_detected = eval("self.change_detected_{}".format(index))
+            if change_detected == True:
+                return index
+
+                # rsp = self.change_detected_warning()
+                # if rsp == False:
+                #     self.combobox_edit.setCurrentIndex(index)
+                #     return rsp
+                # else:
+                #     change_detected = False  
+                #     return rsp          
+        # _list = [0,1,2]
+        # _list.remove(index)
+        # print(_list)
+        # print(index)
     def combobox_edit_changed(self):
+        print(self.change_detected_0)
+        print(self.change_detected_1)
+        print(self.change_detected_2)
+        index = self.check_for_change()
+        print(index)
+        if index != None:
+            if index != self.combobox_edit.currentIndex():
+                response = self.change_detected_warning()
+                if response == False:
+                    self.combobox_edit.setCurrentIndex(index)
+                    return
+                else:
+                    self.change_detected_0=False
+                    self.change_detected_1=False
+                    self.change_detected_2=False
+            else:
+                return
+                # self.combobox_edit.setCurrentIndex(index)
+        # index_changed = self.check_for_change()
+        # print(index_changed)
+        # if self.combobox_edit.currentIndex() != index_changed:
+        #     print(index_changed)
+        #     if index_changed != None:
+        #         response  = self.change_detected_warning()
+        #         if response == False:
+        #             self.combobox_edit.setCurrentIndex(index_changed)
+        #             return
+        #         else:
+        #             x = eval("self.change_detected_{}".format(index_changed))
+        #             x = False
         for i in reversed(range(1, self.gridLayout.count())):
             self.gridLayout.itemAt(i).widget().setParent(None)
         if self.combobox_edit.currentIndex() == 0 or self.combobox_edit.currentIndex() == 1:
-            # print('change_individual')
-            # if self.change_detected_individual == True:
+
+
+            # print(self.change_detected_2)
+            # # print('change_2')
+            # if self.change_detected_2 == True:
             #     rsp = self.change_detected_warning()
             #     if rsp == False:
+            #         self.combobox_edit.setCurrentIndex(2)
             #         return
-            #     self.change_detected_individual=False
+            #     else:
+            #         self.change_detected_2=False
             self.gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,5)
             self.button_undo.hide()
             self.button_redo.hide()
@@ -975,11 +1028,11 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.button_zoom_out.hide()
 
         elif self.combobox_edit.currentIndex() == 2:
-            if self.change_detected == True:
-                rsp = self.change_detected_warning()
-                if rsp == False:
-                    return
-                self.change_detected=False
+            # if self.change_detected_0 == True:
+            #     rsp = self.change_detected_warning()
+            #     if rsp == False:
+            #         return
+            #     self.change_detected=False
             self.gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,3)
             # self.gridlayout_titlepage.update()
             self.button_undo.show()
@@ -994,7 +1047,7 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.button_zoom_out.show()
 
     def plainTextEdit_content_changed(self):
-        self.change_detected_individual = True
+        self.change_detected_2 = True
     def button_restore_default_pressed(self):
         rsp = question_window("Sind Sie sicher, dass sie die originale Aufgabe wiederherstellen wollen?")
         if rsp == True:
@@ -1055,8 +1108,10 @@ class Ui_Dialog_ausgleichspunkte(object):
                         linetext, row
                     )
                     if checkbox != None:
+                        checkbox.clicked.connect(partial(self.checkbox_changed, 0))
+                        checkbox_label.clicked.connect(partial(self.checkbox_changed, 0))
                         self.dict_widget_variables_ausgleichspunkte[linetext] = checkbox
-                        checkbox.clicked.connect(self.checkbox_changed)
+ 
                     row += 1
                     
         elif self.combobox_edit.currentIndex() == 1:
@@ -1078,12 +1133,14 @@ class Ui_Dialog_ausgleichspunkte(object):
         row += 1
         self.gridLayout.setRowStretch(row, 1)
 
-    def checkbox_changed(self):
-        # print('changed')
-        self.change_detected = True
+    def checkbox_changed(self, index):
+        if index==0:
+            self.change_detected_0 = True
+        elif index == 1:
+            self.change_detected_1 = True
 
     def checkbox_clicked(self, checkbox, checkbox_label):
-        self.checkbox_changed()
+        self.checkbox_changed(1)
         try: 
             with open(lama_settings_file, "r", encoding="utf8") as f:
                 self.lama_settings = json.load(f)
