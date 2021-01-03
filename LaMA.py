@@ -3506,15 +3506,25 @@ class Ui_MainWindow(object):
                 self.tab_widget_gk_cr.setCurrentIndex(index)
 
             elif typ == 2:
-                for gk in dict_collected_data["thema"]:
+                for i, gk in enumerate(dict_collected_data["thema"]):
                     short_gk = shorten_gk(gk)
-                    checkbox_gk = "checkbox_creator_gk_{}".format(short_gk)
+                    if short_gk in zusatzthemen_beschreibung:
+                        checkbox_gk = "checkbox_creator_themen_{}".format(short_gk)
+                        if i == 0:
+                            index = list_comboBox_gk.index("Zusatzthemen")
+                    else:                   
+                        checkbox_gk = "checkbox_creator_gk_{}".format(short_gk)
+                        if i == 0:
+                            index = list_comboBox_gk.index(gk.split(" ")[0].replace("-L",""))
+                        # index = list_comboBox_gk.index(gk.split(" ")[0].replace("-L",""))
+
                     self.dict_widget_variables[checkbox_gk].setChecked(True)
-                self.tab_widget_gk_cr.setCurrentIndex(
-                    list_comboBox_gk.index(
-                        dict_collected_data["thema"][0].split(" ")[0]
-                    )
-                )
+                self.tab_widget_gk_cr.setCurrentIndex(index)
+                # self.tab_widget_gk_cr.setCurrentIndex(
+                #     list_comboBox_gk.index(
+                #         dict_collected_data["thema"][0].split(" ")[0]
+                #     )
+                # )
 
             self.groupBox_grundkompetenzen_cr.setEnabled(False)
 
@@ -4720,7 +4730,7 @@ class Ui_MainWindow(object):
         
         try:
             self.dict_sage_individual_change = self.dict_all_infos_for_file[
-                "dict_índividual_change"
+                "dict_individual_change"
             ]
         except KeyError:
             self.dict_sage_individual_change = {}
@@ -5029,6 +5039,8 @@ class Ui_MainWindow(object):
             del self.dict_sage_ausgleichspunkte_chosen[aufgabe]
         if aufgabe in self.dict_sage_hide_show_items_chosen:
             del self.dict_sage_hide_show_items_chosen[aufgabe]
+        if aufgabe in self.dict_sage_individual_change:
+            del self.dict_sage_individual_change[aufgabe]
 
     def btn_delete_pressed(self, aufgabe):
         index = self.list_alle_aufgaben_sage.index(aufgabe)
@@ -5603,6 +5615,7 @@ class Ui_MainWindow(object):
                         'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!',
                     )
                     return
+
             
             if aufgabe in self.dict_sage_ausgleichspunkte_chosen.keys():
                 list_sage_ausgleichspunkte_chosen = self.dict_sage_ausgleichspunkte_chosen[
@@ -5625,9 +5638,14 @@ class Ui_MainWindow(object):
             else:
                 list_sage_hide_show_items_chosen = []
 
+            if aufgabe in self.dict_sage_individual_change.keys():
+                list_sage_individual_change = self.dict_sage_individual_change[aufgabe]
+            else:
+                list_sage_individual_change = []
         else:
             list_sage_hide_show_items_chosen = []
             list_sage_ausgleichspunkte_chosen = []
+            list_sage_individual_change =  []
             split_content = None
 
         self.Dialog = QtWidgets.QDialog(
@@ -5647,6 +5665,7 @@ class Ui_MainWindow(object):
             split_content,
             list_sage_ausgleichspunkte_chosen,
             list_sage_hide_show_items_chosen,
+            list_sage_individual_change,
         )
 
         self.Dialog.exec_()
@@ -5658,6 +5677,10 @@ class Ui_MainWindow(object):
         self.dict_sage_hide_show_items_chosen[
             aufgabe
         ] = self.ui.list_sage_hide_show_items_chosen
+
+        self.dict_sage_individual_change[
+            aufgabe
+        ] = self.ui.list_sage_individual_change
 
         self.dict_alle_aufgaben_sage[aufgabe][3] = len(
             self.ui.list_sage_ausgleichspunkte_chosen

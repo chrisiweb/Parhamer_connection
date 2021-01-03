@@ -799,6 +799,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         aufgabenstellung_split_text,
         list_sage_ausgleichspunkte_chosen,
         list_sage_hide_show_items_chosen,
+        list_sage_individual_change,
     ):
         self.content_no_environment = content_no_environment
         if typ==2:
@@ -808,6 +809,7 @@ class Ui_Dialog_ausgleichspunkte(object):
             )
             self.list_sage_ausgleichspunkte_chosen = list_sage_ausgleichspunkte_chosen
             self.list_sage_hide_show_items_chosen = list_sage_hide_show_items_chosen
+            self.list_sage_individual_change = list_sage_individual_change
             self.dict_widget_variables_ausgleichspunkte = {}
             self.dict_widget_variables_hide_show_items = {}
 
@@ -894,7 +896,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         if typ ==2:
             self.button_restore_default.hide()
 
-        self.button_OK = create_new_button(Dialog, "Ok", partial(self.pushButton_OK_pressed, list_sage_ausgleichspunkte_chosen))
+        self.button_OK = create_new_button(Dialog, "OK", self.pushButton_OK_pressed)
         self.button_OK.setSizePolicy(SizePolicy_maximum)
         self.gridlayout_titlepage.addWidget(self.button_OK, 3,3,1,1)
 
@@ -1190,11 +1192,36 @@ class Ui_Dialog_ausgleichspunkte(object):
         if self.combobox_edit.currentIndex() == 1:
             self.checkbox_clicked(checkbox, checkbox_label)
 
-    def pushButton_OK_pressed(self, list_sage_ausgleichspunkte_chosen):
+    def check_if_already_changed(self):
+        print(self.list_sage_ausgleichspunkte_chosen)
+        print(self.list_sage_hide_show_items_chosen)
+        print(self.list_sage_individual_change)
+        list_changes = [self.list_sage_ausgleichspunkte_chosen, self.list_sage_hide_show_items_chosen, self.list_sage_individual_change]
+
+        for i, all in enumerate(list_changes):
+            if not is_empty(all):
+                print(True, i)
+                return True
+        return False
+    
+
+    def pushButton_OK_pressed(self):
+        change_detected = self.check_if_already_changed()
+        print(change_detected)
+
+        if change_detected == True:
+            response = question_window("Es wurden bereits Änderungen an der Aufgabe gespeichert.",
+            "Sind Sie sicher, dass Sie diese Änderungen verwerfen wollen?","Änderung der Aufgabe")
+            if response == False:
+                return
+
+        print('save')                 
         # if self.content_no_environment == self.plainTextEdit_content.toPlainText():
-        #     print(True)
+        #     print('no change')
+
         # else:
-        #     print(False)
+        #     print('change detected')
+            # print(self.plainTextEdit_content.toPlainText())
             
         self.list_sage_ausgleichspunkte_chosen = []
         for linetext in list(self.dict_widget_variables_ausgleichspunkte.keys()):
