@@ -203,6 +203,7 @@ class Ui_MainWindow(object):
         self.dict_variablen_label = {}
         self.dict_sage_ausgleichspunkte_chosen = {}
         self.dict_sage_hide_show_items_chosen = {}
+        self.dict_sage_individual_change = {}
         self.dict_chosen_topics = {}
         self.list_copy_images = []
 
@@ -4716,6 +4717,13 @@ class Ui_MainWindow(object):
             ]
         except KeyError:
             self.dict_sage_hide_show_items_chosen = {}
+        
+        try:
+            self.dict_sage_individual_change = self.dict_all_infos_for_file[
+                "dict_índividual_change"
+            ]
+        except KeyError:
+            self.dict_sage_individual_change = {}
 
         self.list_copy_images = self.dict_all_infos_for_file["data_gesamt"][
             "copy_images"
@@ -5575,43 +5583,53 @@ class Ui_MainWindow(object):
 
         content_no_environment = split_content_no_environment(content)
 
-        try:
-            split_content, index_end = split_aufgaben_content(content)
-            split_content = split_content[:index_end]
-        except Exception as e1:
+        # print(aufgabe)
+        typ = self.get_aufgabentyp(aufgabe)
+        # return
+        if typ == 2:
             try:
-                split_content = split_aufgaben_content_new_format(content)
-            except Exception as e2:
-                split_content = None
-            if split_content == None:
-                warning_window(
-                    "Es ist ein Fehler bei der Anzeige der Aufgabe {} aufgetreten! (Die Aufgabe kann voraussichtlich dennoch verwendet und individuell in der TeX-Datei bearbeitet werden.)\n".format(
-                        aufgabe
-                    ),
-                    'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!',
-                )
-                return
-        
-        if aufgabe in self.dict_sage_ausgleichspunkte_chosen.keys():
-            list_sage_ausgleichspunkte_chosen = self.dict_sage_ausgleichspunkte_chosen[
-                aufgabe
-            ]
-        else:
-            list_sage_ausgleichspunkte_chosen = []
-            for all in split_content:
-                if "\\fbox{A}" in all:
-                    x = all.replace("\\fbox{A}", "")
-                    list_sage_ausgleichspunkte_chosen.append(x)
-                if "\\ASubitem" in all:
-                    x = all.replace("\\ASubitem", "")
-                    list_sage_ausgleichspunkte_chosen.append(x)
+                split_content, index_end = split_aufgaben_content(content)
+                split_content = split_content[:index_end]
+            except Exception as e1:
+                try:
+                    split_content = split_aufgaben_content_new_format(content)
+                except Exception as e2:
+                    split_content = None
+                if split_content == None:
+                    warning_window(
+                        "Es ist ein Fehler bei der Anzeige der Aufgabe {} aufgetreten! (Die Aufgabe kann voraussichtlich dennoch verwendet und individuell in der TeX-Datei bearbeitet werden.)\n".format(
+                            aufgabe
+                        ),
+                        'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!',
+                    )
+                    return
+            
+            if aufgabe in self.dict_sage_ausgleichspunkte_chosen.keys():
+                list_sage_ausgleichspunkte_chosen = self.dict_sage_ausgleichspunkte_chosen[
+                    aufgabe
+                ]
+            else:
+                list_sage_ausgleichspunkte_chosen = []
+                for all in split_content:
+                    if "\\fbox{A}" in all:
+                        x = all.replace("\\fbox{A}", "")
+                        list_sage_ausgleichspunkte_chosen.append(x)
+                    if "\\ASubitem" in all:
+                        x = all.replace("\\ASubitem", "")
+                        list_sage_ausgleichspunkte_chosen.append(x)
 
-        if aufgabe in self.dict_sage_hide_show_items_chosen.keys():
-            list_sage_hide_show_items_chosen = self.dict_sage_hide_show_items_chosen[
-                aufgabe
-            ]
+            if aufgabe in self.dict_sage_hide_show_items_chosen.keys():
+                list_sage_hide_show_items_chosen = self.dict_sage_hide_show_items_chosen[
+                    aufgabe
+                ]
+            else:
+                list_sage_hide_show_items_chosen = []
+
         else:
             list_sage_hide_show_items_chosen = []
+            list_sage_ausgleichspunkte_chosen = []
+            split_content = None
+
         self.Dialog = QtWidgets.QDialog(
             None,
             QtCore.Qt.WindowSystemMenuHint
@@ -5623,6 +5641,8 @@ class Ui_MainWindow(object):
         self.ui = Ui_Dialog_ausgleichspunkte()
         self.ui.setupUi(
             self.Dialog,
+            aufgabe,
+            typ,
             content_no_environment,
             split_content,
             list_sage_ausgleichspunkte_chosen,
@@ -6267,6 +6287,10 @@ class Ui_MainWindow(object):
         ] = self.dict_sage_hide_show_items_chosen
 
         ### end ###
+        
+        self.dict_all_infos_for_file[
+            "dict_individual_change"
+        ] = self.dict_sage_individual_change
 
         ### include basic data of test ###
         if self.combobox_beurteilung.currentIndex() == 0:

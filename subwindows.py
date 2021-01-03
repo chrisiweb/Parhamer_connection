@@ -793,20 +793,23 @@ class Ui_Dialog_ausgleichspunkte(object):
     def setupUi(
         self,
         Dialog,
+        aufgabe,
+        typ,
         content_no_environment,
         aufgabenstellung_split_text,
         list_sage_ausgleichspunkte_chosen,
         list_sage_hide_show_items_chosen,
     ):
         self.content_no_environment = content_no_environment
-        self.aufgabenstellung_split_text = aufgabenstellung_split_text
-        self.hide_show_items_split_text = prepare_content_for_hide_show_items(
-            aufgabenstellung_split_text
-        )
-        self.list_sage_ausgleichspunkte_chosen = list_sage_ausgleichspunkte_chosen
-        self.list_sage_hide_show_items_chosen = list_sage_hide_show_items_chosen
-        self.dict_widget_variables_ausgleichspunkte = {}
-        self.dict_widget_variables_hide_show_items = {}
+        if typ==2:
+            self.aufgabenstellung_split_text = aufgabenstellung_split_text
+            self.hide_show_items_split_text = prepare_content_for_hide_show_items(
+                aufgabenstellung_split_text
+            )
+            self.list_sage_ausgleichspunkte_chosen = list_sage_ausgleichspunkte_chosen
+            self.list_sage_hide_show_items_chosen = list_sage_hide_show_items_chosen
+            self.dict_widget_variables_ausgleichspunkte = {}
+            self.dict_widget_variables_hide_show_items = {}
 
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
@@ -818,59 +821,78 @@ class Ui_Dialog_ausgleichspunkte(object):
         # self.gridLayout_2 = QtWidgets.QGridLayout(Dialog)
         # self.gridLayout_2.setObjectName("gridLayout_2")
         self.combobox_edit = create_new_combobox(Dialog)
-        self.gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,5)
-        self.combobox_edit.addItem("Ausgleichspunkte anpassen")
-        self.combobox_edit.addItem("Aufgabenstellungen ein-/ausblenden")
+        if typ == 2:
+            self.gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,5)
+        else:
+            self.gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,3)
+
+        if typ == 2:
+            self.combobox_edit.addItem("Ausgleichspunkte anpassen")
+            self.combobox_edit.addItem("Aufgabenstellungen ein-/ausblenden")
         self.combobox_edit.addItem("Individuell bearbeiten")
-        self.combobox_edit.currentIndexChanged.connect(self.combobox_edit_changed)
-        self.scrollArea = QtWidgets.QScrollArea(Dialog)
-        self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.scrollArea.setWidgetResizable(True)
-        self.scrollArea.setObjectName("scrollArea")
-        self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 600, 500))
-        self.scrollArea.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
-        self.gridLayout = QtWidgets.QGridLayout(self.scrollAreaWidgetContents)
-        self.gridLayout.setObjectName("gridLayout")
-        self.label_einleitung = QtWidgets.QLabel(self.scrollAreaWidgetContents)
-        self.label_einleitung.setWordWrap(True)
-        self.label_einleitung.setObjectName("label_einleitung")
-        self.label_einleitung.setText(
-            "[...] EINFÜHRUNGSTEXT [...] \n\nAufgabenstellung:\n"
-        )
-        self.gridLayout.addWidget(self.label_einleitung, 0, 1, 1, 3, QtCore.Qt.AlignTop)
+        if typ !=2:
+            self.combobox_edit.setEnabled(False)
+            self.combobox_edit.setStyleSheet("color: black")
 
-        self.label_solution = QtWidgets.QLabel(self.scrollAreaWidgetContents)
-        self.label_solution.setWordWrap(True)
-        self.label_solution.setObjectName("label_solution")
-        self.label_solution.setText("\nLösungserwartung:\n[...]")
-
-        row = self.build_checkboxes_for_content()
-
-        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-        self.gridlayout_titlepage.addWidget(self.scrollArea, 2,0,1,5)
+        if typ ==2:
+            self.combobox_edit.currentIndexChanged.connect(self.combobox_edit_changed)
+            self.scrollArea = QtWidgets.QScrollArea(Dialog)
+            self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
+            self.scrollArea.setWidgetResizable(True)
+            self.scrollArea.setObjectName("scrollArea")
+            self.scrollAreaWidgetContents = QtWidgets.QWidget()
+            self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 600, 500))
+            self.scrollArea.setFrameShape(QtWidgets.QFrame.StyledPanel)
+            self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
 
 
-        self.plainTextEdit_content = QtWidgets.QPlainTextEdit(self.scrollAreaWidgetContents)
+            self.gridLayout = QtWidgets.QGridLayout(self.scrollAreaWidgetContents)
+            self.gridLayout.setObjectName("gridLayout")
+            self.label_einleitung = QtWidgets.QLabel(self.scrollAreaWidgetContents)
+            self.label_einleitung.setWordWrap(True)
+            self.label_einleitung.setObjectName("label_einleitung")
+            self.label_einleitung.setText(
+                "[...] EINFÜHRUNGSTEXT [...] \n\nAufgabenstellung:\n"
+            )
+            self.gridLayout.addWidget(self.label_einleitung, 0, 1, 1, 3, QtCore.Qt.AlignTop)
+
+            self.label_solution = QtWidgets.QLabel(self.scrollAreaWidgetContents)
+            self.label_solution.setWordWrap(True)
+            self.label_solution.setObjectName("label_solution")
+            self.label_solution.setText("\nLösungserwartung:\n[...]")
+
+            row = self.build_checkboxes_for_content()
+
+            self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+            self.gridlayout_titlepage.addWidget(self.scrollArea, 2,0,1,5)
+
+        # self.scrollArea.hide()
+
+        self.plainTextEdit_content = QtWidgets.QPlainTextEdit()
         self.plainTextEdit_content.setStyleSheet("background-color: {}".format(get_color(blue_2)))
         self.plainTextEdit_content.setObjectName(_fromUtf8("plainTextEdit_content"))
         self.plainTextEdit_content.textChanged.connect(self.plainTextEdit_content_changed)
         self.plainTextEdit_content.setUndoRedoEnabled(False)
         self.plainTextEdit_content.insertPlainText(self.content_no_environment)
+        self.plainTextEdit_content.moveCursor(QtGui.QTextCursor.Start)
+        self.plainTextEdit_content.ensureCursorVisible()
+        # self.plainTextEdit_content_changed.verticalScrollBar().setValue(0)
         self.gridlayout_titlepage.addWidget(self.plainTextEdit_content, 1,0,1,5)
         self.plainTextEdit_content.setUndoRedoEnabled(True)
-        self.plainTextEdit_content.hide()
+        if typ == 2:
+            self.plainTextEdit_content.hide()
 
         self.button_save = create_new_button(Dialog, "Als Variation speichern", self.button_save_pressed)
         self.button_save.setSizePolicy(SizePolicy_maximum)
         self.gridlayout_titlepage.addWidget(self.button_save, 3, 0, 1,1)
-        self.button_save.hide()
+        if typ ==2:
+            self.button_save.hide()
 
         self.button_restore_default = create_new_button(Dialog, "Original wiederherstellen", self.button_restore_default_pressed)
         self.button_restore_default.setSizePolicy(SizePolicy_maximum)
         self.gridlayout_titlepage.addWidget(self.button_restore_default, 3,1,1,1)
-        self.button_restore_default.hide()
+        if typ ==2:
+            self.button_restore_default.hide()
 
         self.button_OK = create_new_button(Dialog, "Ok", partial(self.pushButton_OK_pressed, list_sage_ausgleichspunkte_chosen))
         self.button_OK.setSizePolicy(SizePolicy_maximum)
@@ -890,7 +912,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.button_undo.setToolTip("Rückgängig (Strg+Z)")
         self.button_undo.setShortcut("Ctrl+Z")
         self.gridlayout_titlepage.addWidget(self.button_undo, 0,3,1,1, QtCore.Qt.AlignLeft)
-        self.button_undo.hide()
+
 
 
         path_redo = os.path.join(path_programm, "_database", "_config", "icon", "redo-arrow.png")
@@ -902,7 +924,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.button_redo.setShortcut("Ctrl+Y")
         # self.button_redo = create_standard_button(Dialog, "", still_to_define,QtWidgets.QStyle.SP_ArrowForward)
         self.gridlayout_titlepage.addWidget(self.button_redo, 0,3,1,1, QtCore.Qt.AlignRight)
-        self.button_redo.hide()
+
        
 
         
@@ -912,7 +934,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.button_zoom_in.setSizePolicy(SizePolicy_maximum)
         self.gridlayout_titlepage.addWidget(self.button_zoom_in,0,4,1,1, QtCore.Qt.AlignLeft)
         self.button_zoom_in.setShortcut("Ctrl++")
-        self.button_zoom_in.hide()
+        
 
         path_zoom_out = os.path.join(path_programm, "_database", "_config", "icon", "zoom-out.png")
         self.button_zoom_out = create_new_button(Dialog, "", self.plainTextEdit_content.zoomOut)
@@ -920,30 +942,14 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.button_zoom_out.setSizePolicy(SizePolicy_maximum)
         self.gridlayout_titlepage.addWidget(self.button_zoom_out,0,4,1,1, QtCore.Qt.AlignRight)
         self.button_zoom_out.setShortcut("Ctrl+-")
-        self.button_zoom_out.hide()
+        
 
-        # self.spinbox_font_size = create_new_spinbox(Dialog, value=12)
-        # self.gridlayout_titlepage.addWidget(self.spinbox_font_size, 0,5,1,1)
-        # self.spinbox_font_size.valueChanged.connect(self.font_size_changed)
-        # self.buttonBox = QtWidgets.QDialogButtonBox(self.Dialog)
-        # self.buttonBox = QtWidgets.QDialogButtonBox(self.Dialog)
-        # self.buttonBox.setObjectName("buttonBox")
-        # self.buttonBox.setStandardButtons(
-        #     QtWidgets.QDialogButtonBox.NoRole | QtWidgets.QDialogButtonBox.RestoreDefaults |QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel
-        # )
-        # self.gridlayout_titlepage.setRowStretch(0, 1)
-        # button_save = self.buttonBox.button(QtWidgets.QDialogButtonBox.NoRole)
-        # button_save.setText("Als Variation speichern")
-        # button_save.clicked.connect(self.button_save_pressed)
+        if typ==2:        
+            self.button_undo.hide()
+            self.button_redo.hide()
+            self.button_zoom_in.hide()
+            self.button_zoom_out.hide()
 
-        # buttonX = self.buttonBox.button(QtWidgets.QDialogButtonBox.Cancel)
-        # buttonX.setText("Abbrechen")
-        # self.buttonBox.rejected.connect(self.Dialog.reject)
-        # gridlayout_titlepage.addWidget(self.buttonBox,2,0,1,1)
-        # self.buttonBox.accepted.connect(
-        #     partial(self.pushButton_OK_pressed, list_sage_ausgleichspunkte_chosen)
-        # )
-        # # self.retranslateUi(self.Dialog)
         self.change_detected_0 = False
         self.change_detected_1 = False
         self.change_detected_2 = False
@@ -957,7 +963,7 @@ class Ui_Dialog_ausgleichspunkte(object):
     def check_for_change(self):
         for index in [0,1,2]:
             change_detected = eval("self.change_detected_{}".format(index))
-            if change_detected == True:
+            if change_detected == True:  
                 return index
 
                 # rsp = self.change_detected_warning()
@@ -972,11 +978,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         # print(_list)
         # print(index)
     def combobox_edit_changed(self):
-        print(self.change_detected_0)
-        print(self.change_detected_1)
-        print(self.change_detected_2)
         index = self.check_for_change()
-        print(index)
         if index != None:
             if index != self.combobox_edit.currentIndex():
                 response = self.change_detected_warning()
@@ -984,38 +986,19 @@ class Ui_Dialog_ausgleichspunkte(object):
                     self.combobox_edit.setCurrentIndex(index)
                     return
                 else:
+                    if index == 2:
+                        self.plainTextEdit_content.clear()
+                        self.plainTextEdit_content.insertPlainText(self.content_no_environment)  
                     self.change_detected_0=False
                     self.change_detected_1=False
                     self.change_detected_2=False
             else:
                 return
-                # self.combobox_edit.setCurrentIndex(index)
-        # index_changed = self.check_for_change()
-        # print(index_changed)
-        # if self.combobox_edit.currentIndex() != index_changed:
-        #     print(index_changed)
-        #     if index_changed != None:
-        #         response  = self.change_detected_warning()
-        #         if response == False:
-        #             self.combobox_edit.setCurrentIndex(index_changed)
-        #             return
-        #         else:
-        #             x = eval("self.change_detected_{}".format(index_changed))
-        #             x = False
+
         for i in reversed(range(1, self.gridLayout.count())):
             self.gridLayout.itemAt(i).widget().setParent(None)
         if self.combobox_edit.currentIndex() == 0 or self.combobox_edit.currentIndex() == 1:
 
-
-            # print(self.change_detected_2)
-            # # print('change_2')
-            # if self.change_detected_2 == True:
-            #     rsp = self.change_detected_warning()
-            #     if rsp == False:
-            #         self.combobox_edit.setCurrentIndex(2)
-            #         return
-            #     else:
-            #         self.change_detected_2=False
             self.gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,5)
             self.button_undo.hide()
             self.button_redo.hide()
@@ -1028,11 +1011,6 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.button_zoom_out.hide()
 
         elif self.combobox_edit.currentIndex() == 2:
-            # if self.change_detected_0 == True:
-            #     rsp = self.change_detected_warning()
-            #     if rsp == False:
-            #         return
-            #     self.change_detected=False
             self.gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,3)
             # self.gridlayout_titlepage.update()
             self.button_undo.show()
