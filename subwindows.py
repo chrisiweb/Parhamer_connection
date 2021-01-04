@@ -801,7 +801,10 @@ class Ui_Dialog_ausgleichspunkte(object):
         list_sage_hide_show_items_chosen,
         list_sage_individual_change,
     ):
+        # print(list_sage_individual_change)
         self.content_no_environment = content_no_environment
+        self.list_sage_individual_change = list_sage_individual_change
+        self.typ = typ
         if typ==2:
             self.aufgabenstellung_split_text = aufgabenstellung_split_text
             self.hide_show_items_split_text = prepare_content_for_hide_show_items(
@@ -809,7 +812,7 @@ class Ui_Dialog_ausgleichspunkte(object):
             )
             self.list_sage_ausgleichspunkte_chosen = list_sage_ausgleichspunkte_chosen
             self.list_sage_hide_show_items_chosen = list_sage_hide_show_items_chosen
-            self.list_sage_individual_change = list_sage_individual_change
+            # print(list_sage_individual_change)
             self.dict_widget_variables_ausgleichspunkte = {}
             self.dict_widget_variables_hide_show_items = {}
 
@@ -875,7 +878,10 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.plainTextEdit_content.setObjectName(_fromUtf8("plainTextEdit_content"))
         self.plainTextEdit_content.textChanged.connect(self.plainTextEdit_content_changed)
         self.plainTextEdit_content.setUndoRedoEnabled(False)
-        self.plainTextEdit_content.insertPlainText(self.content_no_environment)
+        if self.list_sage_individual_change != []:
+            self.plainTextEdit_content.insertPlainText(self.list_sage_individual_change[0])
+        else:
+            self.plainTextEdit_content.insertPlainText(self.content_no_environment)
         self.plainTextEdit_content.moveCursor(QtGui.QTextCursor.Start)
         self.plainTextEdit_content.ensureCursorVisible()
         # self.plainTextEdit_content_changed.verticalScrollBar().setValue(0)
@@ -1192,59 +1198,66 @@ class Ui_Dialog_ausgleichspunkte(object):
         if self.combobox_edit.currentIndex() == 1:
             self.checkbox_clicked(checkbox, checkbox_label)
 
-    def check_if_already_changed(self):
-        print(self.list_sage_ausgleichspunkte_chosen)
-        print(self.list_sage_hide_show_items_chosen)
-        print(self.list_sage_individual_change)
+    def check_if_saved_changes_exist(self):
+        # print(self.list_sage_ausgleichspunkte_chosen)
+        # print(self.list_sage_hide_show_items_chosen)
+        # print(self.list_sage_individual_change)
         list_changes = [self.list_sage_ausgleichspunkte_chosen, self.list_sage_hide_show_items_chosen, self.list_sage_individual_change]
 
         for i, all in enumerate(list_changes):
             if not is_empty(all):
-                print(True, i)
+                # print(True, i)
                 return True
         return False
     
 
     def pushButton_OK_pressed(self):
-        change_detected = self.check_if_already_changed()
-        print(change_detected)
-
-        if change_detected == True:
-            response = question_window("Es wurden bereits Änderungen an der Aufgabe gespeichert.",
-            "Sind Sie sicher, dass Sie diese Änderungen verwerfen wollen?","Änderung der Aufgabe")
-            if response == False:
-                return
-
-        print('save')                 
-        # if self.content_no_environment == self.plainTextEdit_content.toPlainText():
-        #     print('no change')
-
-        # else:
-        #     print('change detected')
-            # print(self.plainTextEdit_content.toPlainText())
+        # self.combobox_edit.currentIndex())
+        if self.typ == 2:
+            change_detected = self.check_if_saved_changes_exist()
+            # print(change_detected)
             
-        self.list_sage_ausgleichspunkte_chosen = []
-        for linetext in list(self.dict_widget_variables_ausgleichspunkte.keys()):
-            if (
-                self.dict_widget_variables_ausgleichspunkte[linetext].isChecked()
-                == True
-            ):
-                self.list_sage_ausgleichspunkte_chosen.append(
-                    linetext.replace("\\fbox{A}", "").replace("\\ASubitem", "")
-                )
+            if change_detected == True:
+                response = question_window("Es wurden bereits Änderungen an der Aufgabe gespeichert.",
+                "Sind Sie sicher, dass Sie diese Änderungen verwerfen wollen?","Änderung der Aufgabe")
+                if response == False:
+                    return
 
-        self.list_sage_hide_show_items_chosen = []
-        for linetext in list(self.dict_widget_variables_hide_show_items.keys()):
-            if (
-                self.dict_widget_variables_hide_show_items[linetext].isChecked()
-                == False
-            ):
-                self.list_sage_hide_show_items_chosen.append(
-                    linetext.replace("\\fbox{A}", "")
-                )
+        self.list_sage_ausgleichspunkte_chosen = []
+        self.list_sage_hide_show_items_chosen = []   
+        self.list_sage_individual_change = []
+
+        # print(self.plainTextEdit_content.toPlainText())
+
+        if self.combobox_edit.currentIndex() == 2 or self.typ != 2:
+            if self.content_no_environment != self.plainTextEdit_content.toPlainText():
+                self.list_sage_individual_change.append(self.plainTextEdit_content.toPlainText())
+
+        elif self.combobox_edit.currentIndex() == 0:
+            for linetext in list(self.dict_widget_variables_ausgleichspunkte.keys()):
+                if (
+                    self.dict_widget_variables_ausgleichspunkte[linetext].isChecked()
+                    == True
+                ):
+                    self.list_sage_ausgleichspunkte_chosen.append(
+                        linetext.replace("\\fbox{A}", "").replace("\\ASubitem", "")
+                    )
+
+        elif self.combobox_edit.currentIndex() == 1:
+            for linetext in list(self.dict_widget_variables_hide_show_items.keys()):
+                if (
+                    self.dict_widget_variables_hide_show_items[linetext].isChecked()
+                    == False
+                ):
+                    self.list_sage_hide_show_items_chosen.append(
+                        linetext.replace("\\fbox{A}", "")
+                    )
+
+
 
         list_sage_ausgleichspunkte_chosen = self.list_sage_ausgleichspunkte_chosen
         list_sage_hide_show_items_chosen = self.list_sage_hide_show_items_chosen
+        list_sage_individual_change = self.list_sage_individual_change
 
         self.Dialog.reject()
 

@@ -5643,9 +5643,13 @@ class Ui_MainWindow(object):
             else:
                 list_sage_individual_change = []
         else:
+            if aufgabe in self.dict_sage_individual_change.keys():
+                list_sage_individual_change = self.dict_sage_individual_change[aufgabe]
+            else:
+                list_sage_individual_change = []
             list_sage_hide_show_items_chosen = []
             list_sage_ausgleichspunkte_chosen = []
-            list_sage_individual_change =  []
+            # list_sage_individual_change =  []
             split_content = None
 
         self.Dialog = QtWidgets.QDialog(
@@ -5670,31 +5674,34 @@ class Ui_MainWindow(object):
 
         self.Dialog.exec_()
 
-        self.dict_sage_ausgleichspunkte_chosen[
-            aufgabe
-        ] = self.ui.list_sage_ausgleichspunkte_chosen
-
-        self.dict_sage_hide_show_items_chosen[
-            aufgabe
-        ] = self.ui.list_sage_hide_show_items_chosen
-
         self.dict_sage_individual_change[
             aufgabe
         ] = self.ui.list_sage_individual_change
+        # print(self.ui.list_sage_individual_change)
+        # print(self.dict_sage_individual_change)
 
-        self.dict_alle_aufgaben_sage[aufgabe][3] = len(
-            self.ui.list_sage_ausgleichspunkte_chosen
-        )
+        if typ == 2:
+            self.dict_sage_ausgleichspunkte_chosen[
+                aufgabe
+            ] = self.ui.list_sage_ausgleichspunkte_chosen
 
-        self.dict_variablen_label[aufgabe].setText(
-            _translate(
-                "MainWindow",
-                "{}".format(
-                    len(self.ui.list_sage_ausgleichspunkte_chosen)
-                ),
-                None,
+            self.dict_sage_hide_show_items_chosen[
+                aufgabe
+            ] = self.ui.list_sage_hide_show_items_chosen
+
+            self.dict_alle_aufgaben_sage[aufgabe][3] = len(
+                self.ui.list_sage_ausgleichspunkte_chosen
             )
-        )
+
+            self.dict_variablen_label[aufgabe].setText(
+                _translate(
+                    "MainWindow",
+                    "{}".format(
+                        len(self.ui.list_sage_ausgleichspunkte_chosen)
+                    ),
+                    None,
+                )
+            )
         self.update_punkte()
 
     def comboBox_at_sage_changed(self):

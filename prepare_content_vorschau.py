@@ -1,9 +1,31 @@
 import os
 import shutil
 from config import path_programm, path_localappdata_lama, is_empty
-from work_with_content import collect_content
+from work_with_content import collect_content #, split_content_no_environment
 from standard_dialog_windows import warning_window
 
+
+def edit_content_individual(self, aufgabe, content):
+    # print(content)
+    for i, line in enumerate(content):
+        if "\\begin{beispiel}" in line or "\\begin{langesbeispiel}" in line:
+            start_index = i
+        elif "\\end{beispiel}" in line or "\\end{langesbeispiel}" in line:
+            end_index = i
+    # print(start_index)
+    # print(end_index)
+    text = self.dict_all_infos_for_file["dict_individual_change"][aufgabe]
+    # print(text)
+    # split_text = text.splitlines()
+    # print(text)
+    # print(split_text)
+    # print(content[:start_index+1])
+    # print(content[end_index:])
+    content = content[:start_index+1] + text + content[end_index:]
+    # split_text = split_content_no_environment(text)
+    # print(split_text)
+    # print(content)
+    return content
 
 def edit_content_ausgleichspunkte(self, aufgabe, content):
     content = [
@@ -139,8 +161,15 @@ def split_content_at_beispiel_umgebung(content):
 
 def edit_content_vorschau(self, aufgabe, ausgabetyp):
     content = collect_content(self, aufgabe, readlines=True)
+    # print(content)
+    if aufgabe in self.dict_all_infos_for_file["dict_individual_change"]:
+        if not is_empty(self.dict_all_infos_for_file["dict_individual_change"][aufgabe]):
+            # print(aufgabe)
+            # print(self.dict_all_infos_for_file["dict_individual_change"])
+            content = edit_content_individual(self, aufgabe, content)
+            # content = self.dict_all_infos_for_file["dict_individual_change"][aufgabe] 
 
-    if self.chosen_program == "lama":
+    elif self.chosen_program == "lama":
         typ = self.get_aufgabentyp(aufgabe)
 
         if aufgabe in self.dict_all_infos_for_file["dict_ausgleichspunkte"].keys():
@@ -148,6 +177,8 @@ def edit_content_vorschau(self, aufgabe, ausgabetyp):
 
         if aufgabe in self.dict_all_infos_for_file["dict_hide_show_items"].keys():
             content = edit_content_hide_show_items(self, aufgabe, content)
+
+        
 
     if (
         ausgabetyp == "schularbeit"
