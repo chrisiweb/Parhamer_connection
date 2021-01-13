@@ -168,6 +168,7 @@ def edit_content_vorschau(self, aufgabe, ausgabetyp):
             # print(self.dict_all_infos_for_file["dict_individual_change"])
             content = edit_content_individual(self, aufgabe, content)
             # content = self.dict_all_infos_for_file["dict_individual_change"][aufgabe] 
+            # print(content)
 
     elif self.chosen_program == "lama":
         typ = self.get_aufgabentyp(aufgabe)

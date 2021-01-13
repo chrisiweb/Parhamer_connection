@@ -881,6 +881,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         if self.list_sage_individual_change != []:
             self.plainTextEdit_content.insertPlainText(self.list_sage_individual_change[0])
         else:
+            print(self.content_no_environment)
             self.plainTextEdit_content.insertPlainText(self.content_no_environment)
         self.plainTextEdit_content.moveCursor(QtGui.QTextCursor.Start)
         self.plainTextEdit_content.ensureCursorVisible()
@@ -890,17 +891,20 @@ class Ui_Dialog_ausgleichspunkte(object):
         if typ == 2:
             self.plainTextEdit_content.hide()
 
-        self.button_save = create_new_button(Dialog, "Als Variation speichern", self.button_save_pressed)
-        self.button_save.setSizePolicy(SizePolicy_maximum)
-        self.gridlayout_titlepage.addWidget(self.button_save, 3, 0, 1,1)
-        if typ ==2:
-            self.button_save.hide()
 
         self.button_restore_default = create_new_button(Dialog, "Original wiederherstellen", self.button_restore_default_pressed)
         self.button_restore_default.setSizePolicy(SizePolicy_maximum)
-        self.gridlayout_titlepage.addWidget(self.button_restore_default, 3,1,1,1)
+        self.gridlayout_titlepage.addWidget(self.button_restore_default, 3,0,1,1)
         if typ ==2:
             self.button_restore_default.hide()
+
+        self.button_save = create_new_button(Dialog, "Als Variation speichern", self.button_save_pressed)
+        self.button_save.setSizePolicy(SizePolicy_maximum)
+        self.gridlayout_titlepage.addWidget(self.button_save, 3, 1, 1,1)
+        ### Variationsbutton ausblenden, da derzeit nicht funktionsfähig
+        self.button_save.hide()
+        if typ ==2:
+            self.button_save.hide()
 
         self.button_OK = create_new_button(Dialog, "OK", self.pushButton_OK_pressed)
         self.button_OK.setSizePolicy(SizePolicy_maximum)
@@ -1258,7 +1262,6 @@ class Ui_Dialog_ausgleichspunkte(object):
         list_sage_ausgleichspunkte_chosen = self.list_sage_ausgleichspunkte_chosen
         list_sage_hide_show_items_chosen = self.list_sage_hide_show_items_chosen
         list_sage_individual_change = self.list_sage_individual_change
-
         self.Dialog.reject()
 
 

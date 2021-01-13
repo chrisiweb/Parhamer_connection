@@ -5043,6 +5043,17 @@ class Ui_MainWindow(object):
             del self.dict_sage_individual_change[aufgabe]
 
     def btn_delete_pressed(self, aufgabe):
+        try:
+            self.dict_sage_individual_change[aufgabe]
+            if not is_empty(self.dict_sage_individual_change[aufgabe]):
+                response = question_window(
+                "Diese Aufgabe wurde abgeändert!\n\nWenn Sie diese Aufgabe löschen, werden auch alle Änderungen, die an dieser Aufgabe vorgenommen wurden, gelöscht.",
+                "Sind Sie sicher, dass Sie diese Aufgaben entfernen möchten?",
+                "Aufgabe entfernen?")
+                if response == False:
+                    return
+        except KeyError:
+            pass  
         index = self.list_alle_aufgaben_sage.index(aufgabe)
 
         if index + 1 == len(self.list_alle_aufgaben_sage):

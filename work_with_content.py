@@ -62,7 +62,11 @@ def split_content_no_environment(content):
             split_content = split_content[:i]
             break
     
+    # print(split_content[0])
+    split_content[0] = re.sub(r"[\t]*","", split_content[0]) 
+    # print(string)
     content_no_environment = merge_list_to_string(split_content)
+    # print(content_no_environment)
     return content_no_environment
 
 def split_aufgaben_content_new_format(content):
@@ -195,7 +199,7 @@ def merge_list_to_string(list_):
         if item_short.isspace() == True or not item_short:
             combined_string = combined_string + all
         else:
-            combined_string = combined_string + all + "\n\n"
+            combined_string = combined_string + all + "\n"
     return combined_string
 
 
