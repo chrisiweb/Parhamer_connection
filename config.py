@@ -7,46 +7,37 @@ from define_database import Ui_define_database
 
 
 if sys.platform.startswith("win"):
-    path_localappdata = os.getenv('LOCALAPPDATA')
-    path_localappdata_lama = os.path.join(path_localappdata, "LaMA")
-    file_path_database = os.path.join(path_localappdata_lama ,"file_path_database.txt")
-    try:
-        with open(file_path_database, "r") as file:
-            path = file.read()
-    except FileNotFoundError:
-        path = os.path.dirname(file_path_database)
-        if os.path.isdir(path) == False:    
-            os.mkdir(path)
+    ##### NOT IN USE ! (Working!) - Activate when installer is used!
+    # path_localappdata = os.getenv('LOCALAPPDATA')
+    # path_localappdata_lama = os.path.join(path_localappdata, "LaMA")
+    # file_path_database = os.path.join(path_localappdata_lama ,"file_path_database.txt")
+    # try:
+    #     with open(file_path_database, "r") as file:
+    #         path = file.read()
+    # except FileNotFoundError:
+    #     path = os.path.dirname(file_path_database)
+    #     if os.path.isdir(path) == False:    
+    #         os.mkdir(path)
 
-        app = QtWidgets.QApplication(sys.argv)
-        define_database = QtWidgets.QWidget()
-        ui = Ui_define_database()
-        ui.setupUi(define_database)
-        define_database.show()
-        app.exec_()
+    #     app = QtWidgets.QApplication(sys.argv)
+    #     define_database = QtWidgets.QWidget()
+    #     ui = Ui_define_database()
+    #     ui.setupUi(define_database)
+    #     define_database.show()
+    #     app.exec_()
 
-        with open(file_path_database, "r") as file:
-            path = file.read()
+    #     with open(file_path_database, "r") as file:
+    #         path = file.read()
         
-        print("Loading LaMA...")
-
-    
-    # print(path)
-    path_programm = os.path.dirname(path)
-
-    # if os.path.isdir(file_path_database):
-    #     print(True)
-    # else:
-    #     os.makedir(file_path_database)
-    #     print(False)
+    #     print("Loading LaMA...")
 
 
 
 
+    ## OLD VERSION!!
+    path_programm = os.path.dirname(sys.argv[0])
+    path_localappdata_lama = path_programm
 
-    # path_programm = os.path.dirname(sys.argv[0])
-    # print(path_programm)
-    # path_programm = ""
 
 elif sys.platform.startswith("darwin"):
     if path_programm is "":

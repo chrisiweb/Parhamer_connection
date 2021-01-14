@@ -2,7 +2,7 @@ import os
 import datetime
 from datetime import date
 import json
-from config import path_programm
+from config import path_programm, path_localappdata_lama
 
 
 def get_datum(self):
