@@ -8,7 +8,7 @@ from functools import partial
 from config import config_file, config_loader, logo_path, path_programm, path_localappdata_lama
 from translate import _fromUtf8, _translate
 from sort_items import natural_keys, lama_order
-from subwindows import Ui_Dialog_processing
+from processing_window import Ui_Dialog_processing
 
 
 list_klassen = config_loader(config_file, "list_klassen")

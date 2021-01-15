@@ -34,11 +34,13 @@ from create_new_widgets import (
     add_new_option,
 )
 from standard_dialog_windows import critical_window, information_window, question_window, warning_window
-from waitingspinnerwidget import QtWaitingSpinner
+# from waitingspinnerwidget import QtWaitingSpinner
 from predefined_size_policy import SizePolicy_fixed, SizePolicy_fixed_height, SizePolicy_maximum
 from work_with_content import prepare_content_for_hide_show_items
 from sort_items import sorted_gks
 from lama_stylesheets import StyleSheet_tabWidget, StyleSheet_ausgleichspunkte, StyleSheet_ausgleichspunkte_dark_mode
+from create_pdf import create_pdf
+
 
 dict_gk = config_loader(config_file, "dict_gk")
 ag_beschreibung = config_loader(config_file, "ag_beschreibung")
@@ -144,55 +146,6 @@ class Ui_Dialog_choose_type(object):
         self.chosen_program = chosen_program
         self.Dialog.accept()
 
-
-class Ui_Dialog_processing(object):
-    def setupUi(self, Dialog, text):
-        self.Dialog = Dialog
-        self.Dialog.setObjectName("Dialog")
-        Dialog.setWindowFlags(
-            QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint
-        )
-        Dialog.setWindowTitle("Lade...")
-        Dialog.setStyleSheet(
-            "background-color: {}; color: white".format(get_color(blue_7))
-        )
-        # Dialog.setSizePolicy(SizePolicy_fixed)
-        # Dialog.setFixedSize(Dialog.size())
-        pixmap = QtGui.QPixmap(logo_path)
-        Dialog.setWindowIcon(QtGui.QIcon(logo_path))
-        # Dialog.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed))
-        horizontalLayout = QtWidgets.QHBoxLayout(Dialog)
-        horizontalLayout.setObjectName("horizontal")
-        horizontalLayout.setSizeConstraint(QtWidgets.QHBoxLayout.SetFixedSize)
-
-        pixmap = QtGui.QPixmap(logo_cria_button_path)
-        # Dialog.setPixmap(pixmap.scaled(110, 110, QtCore.Qt.KeepAspectRatio))
-        image = QtWidgets.QLabel(Dialog)
-        image.setObjectName("image")
-        image.setPixmap(pixmap.scaled(30, 30, QtCore.Qt.KeepAspectRatio))
-
-        label = QtWidgets.QLabel(Dialog)
-        label.setObjectName("label")
-        label.setText(text)
-        label.setStyleSheet("padding: 20px")
-        label_spinner = QtWidgets.QLabel(Dialog)
-        label.setObjectName("label_spinner")
-        label_spinner.setFixedSize(30, 30)
-        spinner = QtWaitingSpinner(label_spinner)
-        spinner.setRoundness(70.0)
-        # spinner.setMinimumTrailOpacity(10.0)
-        # spinner.setTrailFadePercentage(60.0)
-        spinner.setNumberOfLines(15)
-        spinner.setLineLength(8)
-        # spinner.setLineWidth(5)
-        spinner.setInnerRadius(5)
-        # spinner.setRevolutionsPerSecond(2)
-        spinner.setColor(QtCore.Qt.white)
-        spinner.start()  # starts spinning
-        label.setAlignment(QtCore.Qt.AlignCenter)
-        horizontalLayout.addWidget(image)
-        horizontalLayout.addWidget(label)
-        horizontalLayout.addWidget(label_spinner)
 
 
 class Ui_Dialog_variation(object):
@@ -891,7 +844,7 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.plainTextEdit_content.hide()
 
 
-        self.button_preview = create_new_button(Dialog, "Vorschau", self.button_preview_pressed)
+        self.button_preview = create_new_button(Dialog, "Vorschau", partial(self.button_preview_pressed, typ))
         self.button_preview.setSizePolicy(SizePolicy_maximum)
         self.gridlayout_titlepage.addWidget(self.button_preview, 3, 0, 1,1)
         if typ ==2:
@@ -1076,13 +1029,50 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.plainTextEdit_content.redo()
 
 
-    def button_preview_pressed(self):
+    def button_preview_pressed(self, typ):
         print('preview')
-        # filename_preview = os.path.join(
-        #         path_programm, "Teildokument", "preview.tex"
-        #     )
-        # with open(filenam_preview, encoding="utf8") as file:
+        print(typ)
 
+        if typ == 2:
+            begin_beispiel = "\\begin{langesbeispiel}\item[0]"
+            end_beispiel = "\\end{langesbeispiel}"
+        else:
+            begin_beispiel = "\\begin{beispiel}{0}"
+            end_beipspiel = "\\end{beispiel}"
+        filename_preview = os.path.join(
+                path_programm, "Teildokument", "preview.tex"
+            )
+        with open(filename_preview, "w+" ,encoding="utf8") as file:
+            file.write(
+                "\documentclass[a4paper,12pt]{{report}}\n\n"
+                "\\usepackage{{geometry}}\n"
+                "\geometry{{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}}\n\n"
+                "\\usepackage{{lmodern}}\n"
+                "\\usepackage[T1]{{fontenc}}\n"
+                "\\usepackage[utf8]{{inputenc}}\n"
+                "\\usepackage[ngerman]{{babel}}\n"
+                "\\usepackage[solution_on]{{srdp-mathematik}}% solution_on/off, random=0,1,2,...\n\n"
+                # "\setcounter{{Zufall}}{{{3}}}\n\n\n"
+                "\pagestyle{{empty}} %PAGESTYLE: empty, plain\n"
+                "\onehalfspacing %Zeilenabstand\n"
+                "\setcounter{{secnumdepth}}{{-1}} % keine Nummerierung der Ueberschriften\n\n\n\n"
+                "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"
+                "%%%%%%%%%%%%%%%%%% DOKUMENT - ANFANG %%%%%%%%%%%%%%%%%%\n"
+                "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n\n"
+                "\\begin{{document}}\n"
+                "{0}"
+                "{1}"
+                "{2}"
+                "\n\end{{document}}".format(
+                    begin_beispiel,
+                    self.plainTextEdit_content.toPlainText(),
+                    end_beispiel,
+                    )
+                    
+            )
+
+        create_pdf("preview",0,0)
+        
 
     def button_save_pressed(self):
         # self.plainTextEdit_content.undo     
