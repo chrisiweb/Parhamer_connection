@@ -869,7 +869,7 @@ class Ui_Dialog_ausgleichspunkte(object):
             row = self.build_checkboxes_for_content()
 
             self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-            self.gridlayout_titlepage.addWidget(self.scrollArea, 2,0,1,5)
+            self.gridlayout_titlepage.addWidget(self.scrollArea, 2,0,1,6)
 
         # self.scrollArea.hide()
 
@@ -881,38 +881,45 @@ class Ui_Dialog_ausgleichspunkte(object):
         if self.list_sage_individual_change != []:
             self.plainTextEdit_content.insertPlainText(self.list_sage_individual_change[0])
         else:
-            print(self.content_no_environment)
             self.plainTextEdit_content.insertPlainText(self.content_no_environment)
         self.plainTextEdit_content.moveCursor(QtGui.QTextCursor.Start)
         self.plainTextEdit_content.ensureCursorVisible()
         # self.plainTextEdit_content_changed.verticalScrollBar().setValue(0)
-        self.gridlayout_titlepage.addWidget(self.plainTextEdit_content, 1,0,1,5)
+        self.gridlayout_titlepage.addWidget(self.plainTextEdit_content, 1,0,1,6)
         self.plainTextEdit_content.setUndoRedoEnabled(True)
         if typ == 2:
             self.plainTextEdit_content.hide()
 
 
+        self.button_preview = create_new_button(Dialog, "Vorschau", self.button_preview_pressed)
+        self.button_preview.setSizePolicy(SizePolicy_maximum)
+        self.gridlayout_titlepage.addWidget(self.button_preview, 3, 0, 1,1)
+        if typ ==2:
+            self.button_preview.hide()
+
         self.button_restore_default = create_new_button(Dialog, "Original wiederherstellen", self.button_restore_default_pressed)
         self.button_restore_default.setSizePolicy(SizePolicy_maximum)
-        self.gridlayout_titlepage.addWidget(self.button_restore_default, 3,0,1,1)
+        self.gridlayout_titlepage.addWidget(self.button_restore_default, 3,1,1,1)
         if typ ==2:
             self.button_restore_default.hide()
 
         self.button_save = create_new_button(Dialog, "Als Variation speichern", self.button_save_pressed)
         self.button_save.setSizePolicy(SizePolicy_maximum)
-        self.gridlayout_titlepage.addWidget(self.button_save, 3, 1, 1,1)
+        self.gridlayout_titlepage.addWidget(self.button_save, 3, 2, 1,1)
         ### Variationsbutton ausblenden, da derzeit nicht funktionsfähig
         self.button_save.hide()
         if typ ==2:
             self.button_save.hide()
 
+
+
         self.button_OK = create_new_button(Dialog, "OK", self.pushButton_OK_pressed)
         self.button_OK.setSizePolicy(SizePolicy_maximum)
-        self.gridlayout_titlepage.addWidget(self.button_OK, 3,3,1,1)
+        self.gridlayout_titlepage.addWidget(self.button_OK, 3,4,1,1)
 
         self.button_cancel = create_new_button(Dialog, "Abbrechen", Dialog.reject)
         self.button_cancel.setSizePolicy(SizePolicy_maximum)
-        self.gridlayout_titlepage.addWidget(self.button_cancel, 3,4,1,1)
+        self.gridlayout_titlepage.addWidget(self.button_cancel, 3,5,1,1)
 
 
 
@@ -923,7 +930,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.button_undo.setSizePolicy(SizePolicy_maximum)
         self.button_undo.setToolTip("Rückgängig (Strg+Z)")
         self.button_undo.setShortcut("Ctrl+Z")
-        self.gridlayout_titlepage.addWidget(self.button_undo, 0,3,1,1, QtCore.Qt.AlignLeft)
+        self.gridlayout_titlepage.addWidget(self.button_undo, 0,4,1,1, QtCore.Qt.AlignLeft)
 
 
 
@@ -935,7 +942,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.button_redo.setToolTip("Wiederherstellen (Strg+Y)")
         self.button_redo.setShortcut("Ctrl+Y")
         # self.button_redo = create_standard_button(Dialog, "", still_to_define,QtWidgets.QStyle.SP_ArrowForward)
-        self.gridlayout_titlepage.addWidget(self.button_redo, 0,3,1,1, QtCore.Qt.AlignRight)
+        self.gridlayout_titlepage.addWidget(self.button_redo, 0,4,1,1, QtCore.Qt.AlignRight)
 
        
 
@@ -944,7 +951,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.button_zoom_in = create_new_button(Dialog, "", self.plainTextEdit_content.zoomIn)
         self.button_zoom_in.setIcon(QtGui.QIcon(path_zoom_in))
         self.button_zoom_in.setSizePolicy(SizePolicy_maximum)
-        self.gridlayout_titlepage.addWidget(self.button_zoom_in,0,4,1,1, QtCore.Qt.AlignLeft)
+        self.gridlayout_titlepage.addWidget(self.button_zoom_in,0,5,1,1, QtCore.Qt.AlignLeft)
         self.button_zoom_in.setShortcut("Ctrl++")
         
 
@@ -952,7 +959,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.button_zoom_out = create_new_button(Dialog, "", self.plainTextEdit_content.zoomOut)
         self.button_zoom_out.setIcon(QtGui.QIcon(path_zoom_out))
         self.button_zoom_out.setSizePolicy(SizePolicy_maximum)
-        self.gridlayout_titlepage.addWidget(self.button_zoom_out,0,4,1,1, QtCore.Qt.AlignRight)
+        self.gridlayout_titlepage.addWidget(self.button_zoom_out,0,5,1,1, QtCore.Qt.AlignRight)
         self.button_zoom_out.setShortcut("Ctrl+-")
         
 
@@ -1018,6 +1025,7 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.plainTextEdit_content.hide()
             self.build_checkboxes_for_content()
             self.button_save.hide()
+            self.button_preview.hide()
             self.button_restore_default.hide()
             self.button_zoom_in.hide()
             self.button_zoom_out.hide()
@@ -1031,7 +1039,8 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.scrollArea.hide()
             self.plainTextEdit_content.show()
             # self.build_editable_content()
-            self.button_save.show()
+            # self.button_save.show()
+            self.button_preview.show()
             self.button_restore_default.show()
             self.button_zoom_in.show()
             self.button_zoom_out.show()
@@ -1065,6 +1074,14 @@ class Ui_Dialog_ausgleichspunkte(object):
     
     def button_redo_pressed(self):
         self.plainTextEdit_content.redo()
+
+
+    def button_preview_pressed(self):
+        print('preview')
+        # filename_preview = os.path.join(
+        #         path_programm, "Teildokument", "preview.tex"
+        #     )
+        # with open(filenam_preview, encoding="utf8") as file:
 
 
     def button_save_pressed(self):

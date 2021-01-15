@@ -63,8 +63,12 @@ def split_content_no_environment(content):
             break
     
     # print(split_content[0])
+    # for i, all in enumerate(split_content):
+    #     print(all)
+    #     print(i)
+    #     split_content[i] = re.sub(r"[\t]*","", all) 
     split_content[0] = re.sub(r"[\t]*","", split_content[0]) 
-    # print(string)
+    # print(split_content)
     content_no_environment = merge_list_to_string(split_content)
     # print(content_no_environment)
     return content_no_environment
