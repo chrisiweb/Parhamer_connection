@@ -1522,6 +1522,7 @@ class Ui_MainWindow(object):
         self.combobox_beurteilung = create_new_combobox(self.groupBox_sage)
         add_new_option(self.combobox_beurteilung, 0, "Notenschlüssel")
         add_new_option(self.combobox_beurteilung, 1, "Beurteilungsraster")
+        add_new_option(self.combobox_beurteilung, 2, "keine Auswahl")
         self.combobox_beurteilung.currentIndexChanged.connect(self.notenanzeige_changed)
         # self.combobox_beurteilung.setMinimumContentsLength(1)
         self.gridLayout_5.addWidget(self.combobox_beurteilung, 1, 4, 1, 2)
@@ -4706,8 +4707,11 @@ class Ui_MainWindow(object):
         if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "ns":
             self.combobox_beurteilung.setCurrentIndex(0)
 
-        if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "br":
+        elif self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "br":
             self.combobox_beurteilung.setCurrentIndex(1)
+        
+        elif self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "none":
+            self.combobox_beurteilung.setCurrentIndex(2)
 
         year = self.dict_all_infos_for_file["data_gesamt"]["Datum"][0]
         month = self.dict_all_infos_for_file["data_gesamt"]["Datum"][1]
@@ -4919,6 +4923,9 @@ class Ui_MainWindow(object):
         if self.combobox_beurteilung.currentIndex() == 1:
             self.groupBox_notenschl.hide()
             self.groupBox_beurteilungsraster.show()
+        if self.combobox_beurteilung.currentIndex() == 2:
+            self.groupBox_notenschl.hide()
+            self.groupBox_beurteilungsraster.hide()
 
         self.update_punkte()
 
@@ -6336,8 +6343,10 @@ class Ui_MainWindow(object):
         ### include basic data of test ###
         if self.combobox_beurteilung.currentIndex() == 0:
             beurteilung = "ns"
-        if self.combobox_beurteilung.currentIndex() == 1:
+        elif self.combobox_beurteilung.currentIndex() == 1:
             beurteilung = "br"
+        elif self.combobox_beurteilung.currentIndex() == 2:
+            beurteilung = "none"
 
         dict_data_gesamt = {
             "program": self.chosen_program,
