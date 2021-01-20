@@ -782,7 +782,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         if typ == 2:
             self.gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,5)
         else:
-            self.gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,3)
+            self.gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,4)
 
         if typ == 2:
             self.combobox_edit.addItem("Ausgleichspunkte anpassen")
@@ -984,7 +984,7 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.button_zoom_out.hide()
 
         elif self.combobox_edit.currentIndex() == 2:
-            self.gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,3)
+            self.gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,4)
             # self.gridlayout_titlepage.update()
             self.button_undo.show()
             # self.button_undo.setEnabled(False)
@@ -1030,15 +1030,12 @@ class Ui_Dialog_ausgleichspunkte(object):
 
 
     def button_preview_pressed(self, typ):
-        print('preview')
-        print(typ)
-
         if typ == 2:
             begin_beispiel = "\\begin{langesbeispiel}\item[0]"
             end_beispiel = "\\end{langesbeispiel}"
         else:
             begin_beispiel = "\\begin{beispiel}{0}"
-            end_beipspiel = "\\end{beispiel}"
+            end_beispiel = "\\end{beispiel}"
         filename_preview = os.path.join(
                 path_programm, "Teildokument", "preview.tex"
             )

@@ -5697,7 +5697,7 @@ class Ui_MainWindow(object):
         ] = self.ui.list_sage_individual_change
         # print(self.ui.list_sage_individual_change)
         # print(self.dict_sage_individual_change)
-        print(self.dict_alle_aufgaben_sage)
+        # print(self.dict_alle_aufgaben_sage)
         if typ == 2:
             self.dict_sage_ausgleichspunkte_chosen[
                 aufgabe
