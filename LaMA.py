@@ -5688,6 +5688,7 @@ class Ui_MainWindow(object):
             list_sage_ausgleichspunkte_chosen,
             list_sage_hide_show_items_chosen,
             list_sage_individual_change,
+            self.display_mode,
         )
 
         self.Dialog.exec_()

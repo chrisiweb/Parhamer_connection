@@ -38,7 +38,13 @@ from standard_dialog_windows import critical_window, information_window, questio
 from predefined_size_policy import SizePolicy_fixed, SizePolicy_fixed_height, SizePolicy_maximum
 from work_with_content import prepare_content_for_hide_show_items
 from sort_items import sorted_gks
-from lama_stylesheets import StyleSheet_tabWidget, StyleSheet_ausgleichspunkte, StyleSheet_ausgleichspunkte_dark_mode
+from lama_stylesheets import (
+    StyleSheet_tabWidget,
+    StyleSheet_ausgleichspunkte,
+    StyleSheet_ausgleichspunkte_dark_mode,
+    StyleSheet_subwindow_ausgleichspunkte,
+    StyleSheet_subwindow_ausgleichspunkte_dark_mode,
+)
 from create_pdf import create_pdf
 
 
@@ -753,6 +759,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         list_sage_ausgleichspunkte_chosen,
         list_sage_hide_show_items_chosen,
         list_sage_individual_change,
+        display_mode
     ):
         # print(list_sage_individual_change)
         self.content_no_environment = content_no_environment
@@ -771,7 +778,7 @@ class Ui_Dialog_ausgleichspunkte(object):
 
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
-        self.Dialog.setWindowTitle("Ausgleichspunkte anpassen")
+        self.Dialog.setWindowTitle("Aufgabe bearbeiten")
         self.Dialog.resize(600, 400)
         self.Dialog.setWindowIcon(QtGui.QIcon(logo_path))
 
@@ -790,7 +797,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.combobox_edit.addItem("Individuell bearbeiten")
         if typ !=2:
             self.combobox_edit.setEnabled(False)
-            self.combobox_edit.setStyleSheet("color: black")
+            # self.combobox_edit.setStyleSheet("color: black")
 
         if typ ==2:
             self.combobox_edit.currentIndexChanged.connect(self.combobox_edit_changed)
@@ -827,7 +834,11 @@ class Ui_Dialog_ausgleichspunkte(object):
         # self.scrollArea.hide()
 
         self.plainTextEdit_content = QtWidgets.QPlainTextEdit()
-        self.plainTextEdit_content.setStyleSheet("background-color: {}".format(get_color(blue_2)))
+        if display_mode == 0:
+            background_color = StyleSheet_subwindow_ausgleichspunkte
+        else:
+            background_color = StyleSheet_subwindow_ausgleichspunkte_dark_mode
+        self.plainTextEdit_content.setStyleSheet(background_color)
         self.plainTextEdit_content.setObjectName(_fromUtf8("plainTextEdit_content"))
         self.plainTextEdit_content.textChanged.connect(self.plainTextEdit_content_changed)
         self.plainTextEdit_content.setUndoRedoEnabled(False)
@@ -846,6 +857,8 @@ class Ui_Dialog_ausgleichspunkte(object):
 
         self.button_preview = create_new_button(Dialog, "Vorschau", partial(self.button_preview_pressed, typ))
         self.button_preview.setSizePolicy(SizePolicy_maximum)
+        self.button_preview.setShortcut("Ctrl+Return")
+        self.button_preview.setToolTip("Strg+Enter")
         self.gridlayout_titlepage.addWidget(self.button_preview, 3, 0, 1,1)
         if typ ==2:
             self.button_preview.hide()

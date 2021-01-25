@@ -78,6 +78,8 @@ padding-right: 10px, padding-bottom: 10px
 
 StyleSheet_ausgleichspunkte = "color: black"
 
+StyleSheet_subwindow_ausgleichspunkte = "background-color: {}".format(get_color(blue_2))
+StyleSheet_subwindow_ausgleichspunkte_dark_mode = "background-color: {}".format(get_color(blue_7))
 
 StyleSheet_tabWidget_dark_mode = """
 QTabBar::tab:selected {{
