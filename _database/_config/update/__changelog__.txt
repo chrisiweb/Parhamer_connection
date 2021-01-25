@@ -1,3 +1,9 @@
+v2.3.0
+ - new function: individual edit of examples
+ - new settings: autosave, standard source, dark mode
+ - option do not show "notenschluessel" added
+ - bug fix: save new examples in cria 
+
 v2.2.1
  - bug fix: Path of PDF-Reader with space returns error
 

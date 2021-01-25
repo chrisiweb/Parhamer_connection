@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__ = "v2.2.1"
-__lastupdate__ = "11/20"
+__version__ = "v2.3.0"
+__lastupdate__ = "01/21"
 ####################
 print("Loading...")
 from PyQt5 import QtCore, QtWidgets, QtGui
