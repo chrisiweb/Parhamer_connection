@@ -3776,7 +3776,7 @@ class Ui_MainWindow(object):
         ):
             return "Es wurde kein Aufgabenformat ausgewählt."
 
-        if is_empty(self.lineEdit_titel.text()) == True:
+        if is_empty(self.lineEdit_titel.text().replace("###","")) == True or self.lineEdit_titel.text().replace("###","").isspace():
             return "Bitte geben Sie einen Titel ein."
 
         if is_empty(self.plainTextEdit.toPlainText()) == True:
