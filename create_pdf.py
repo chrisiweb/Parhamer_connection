@@ -330,6 +330,7 @@ def prepare_tex_for_pdf(self):
         file.write("\\usepackage[solution_off]{srdp-mathematik} % solution_on/off\n")
     file.write(
         "\setcounter{Zufall}{0}\n\n\n"
+        "\\usepackage{bookmark}"
         "\pagestyle{empty} %PAGESTYLE: empty, plain, fancy\n"
         "\onehalfspacing %Zeilenabstand\n"
         "\setcounter{secnumdepth}{-1} % keine Nummerierung der Ueberschriften\n\n\n\n"
