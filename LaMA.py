@@ -3,7 +3,7 @@
 #### Version number ###
 __version__ = "v2.3.0"
 __lastupdate__ = "01/21"
-################### test
+###################
 print("Loading...")
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QApplication
