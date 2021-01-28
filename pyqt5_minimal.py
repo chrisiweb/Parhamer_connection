@@ -7,32 +7,19 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from create_new_widgets import create_new_gridlayout ,create_new_label
 
 
 class Ui_WelcomeWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        # MainWindow.resize(273, 131)
+        MainWindow.resize(273, 131)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        # self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
-        # self.verticalLayout.setObjectName("verticalLayout")
-        # self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        # self.pushButton.setObjectName("pushButton")
-        # self.verticalLayout.addWidget(self.pushButton)
-        self.gridlayout = create_new_gridlayout(self.centralwidget)
-
-        self.label_1 = create_new_label(self.centralwidget,
-        """
-        Herzlich Willkommen!
-        
-
-        
-        """"
-        )
-
-
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton.setObjectName("pushButton")
+        self.verticalLayout.addWidget(self.pushButton)
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
