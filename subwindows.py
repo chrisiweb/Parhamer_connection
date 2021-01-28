@@ -96,7 +96,44 @@ def get_color(color):
 
 
 
+class Ui_Dialog_Welcome_Window(object):
+    def setupUi(self, Dialog):
+        self.Dialog = Dialog
+        self.Dialog.setObjectName("Dialog")        
+        Dialog.setWindowTitle("Herzlich Willkommen bei LaMA")
+        self.gridLayout = create_new_gridlayout(self.Dialog)
 
+        self.label_1 = create_new_label(Dialog, """
+Herlich Willkommen!
+
+Es freut uns sehr, dass Sie sich für das Programm LaMA interessieren!
+Um starten zu können, muss LaMA zu Beginn konfiguriert werden. Dazu muss die Aufgabendatenbank heruntergeladen werden.
+
+Möchten Sie die Konfiguration beginnen und die Datenbank herunterladen?
+        """)
+
+        self.gridLayout.addWidget(self.label_1, 0,0,1,1)
+
+        self.buttonBox_welcome = QtWidgets.QDialogButtonBox(self.Dialog)
+        self.buttonBox_welcome.setStandardButtons(
+            QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel
+        )
+
+        # buttonS = self.buttonBox_titlepage.button(QtWidgets.QDialogButtonBox.Save)
+        # buttonS.setText('Speichern')
+        buttonX = self.buttonBox_welcome.button(QtWidgets.QDialogButtonBox.Cancel)
+        buttonX.setText("Abbrechen")
+        self.buttonBox_welcome.setObjectName("buttonBox_variation")
+        self.buttonBox_welcome.rejected.connect(self.cancel_pressed)
+        self.buttonBox_welcome.accepted.connect(self.start_download)
+
+        self.gridLayout.addWidget(self.buttonBox_welcome, 1,0,1,1)
+
+    def cancel_pressed(self):
+        self.Dialog.reject()
+
+    def start_download(self):
+        self.Dialog.accept()      
 
 class Ui_Dialog_choose_type(object):
     def setupUi(self, Dialog):

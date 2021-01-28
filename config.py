@@ -38,6 +38,8 @@ if sys.platform.startswith("win"):
     #####
     programdata = os.getenv('PROGRAMDATA')
     path_programm = os.path.join(programdata, "LaMA")
+    if not os.path.isdir(path_programm):
+        os.mkdir(path_programm)
     path_localappdata_lama = path_programm
 
     # ## OLD VERSION!!
@@ -51,8 +53,8 @@ elif sys.platform.startswith("darwin"):
         path_programm = "."
     path_localappdata_lama = path_programm
 
-config_file = os.path.join(path_programm, "_database", "_config", "config.yml")
-
+# config_file = os.path.join(path_programm, "_database", "_config", "config.yml")
+config_file = os.path.join(os.path.dirname(sys.argv[0]), "config.yml")
 
 lama_settings_file = os.path.join(
             path_localappdata_lama, "Teildokument", "lama_settings"
@@ -80,6 +82,9 @@ def get_color(color):
 
 
 def config_loader(pathToFile, parameter):
+    config_file = yaml.safe_load(open(pathToFile, encoding="utf8"))
+    return config_file[parameter]
+    #######
     try:
         config_file = yaml.safe_load(open(pathToFile, encoding="utf8"))
         return config_file[parameter]
@@ -90,6 +95,7 @@ def config_loader(pathToFile, parameter):
         ui.setupUi(MainWindow)
         MainWindow.show()
         sys.exit(app.exec_())
+
         print("File not Found!")
         print("Downloading database")
         path_programdata = os.getenv('PROGRAMDATA')

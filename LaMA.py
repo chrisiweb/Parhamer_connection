@@ -44,6 +44,7 @@ from list_of_widgets import (
     list_widgets,
 )
 from subwindows import (
+    Ui_Dialog_Welcome_Window,
     Ui_Dialog_choose_type,
     Ui_Dialog_titlepage,
     Ui_Dialog_random_quiz,
@@ -83,6 +84,8 @@ from prepare_content_vorschau import (
 from convert_image_to_eps import convert_image_to_eps
 from lama_colors import *
 from lama_stylesheets import *
+from processing_window import Ui_Dialog_processing
+
 
 try:
     loaded_lama_file_path = sys.argv[1]
@@ -93,10 +96,68 @@ except IndexError:
 dict_picture_path = {}
 
 
+class Worker_DownloadDatabase(QtCore.QObject):
+    finished = QtCore.pyqtSignal()
+
+    @QtCore.pyqtSlot()
+    def task(self, database):
+        try:
+            git.Repo.clone_from("https://github.com/chrisiweb/lama_latest_update.git", database)
+        except git.exc.GitCommandError:
+            critical_window("Die Datenbank konnte nicht heruntergeladen werden. Stellen Sie sicher, dass eine Internetverbindung besteht.")
+        # process = build_pdf_file(folder_name, file_name, latex_output_file)
+        # process.poll()
+        # latex_output_file.close()
+
+        # loading_animation(process)
+
+        # process.wait()
+
+        self.finished.emit()       
+
+
 class Ui_MainWindow(object):
     global dict_picture_path  # , set_chosen_gk #, list_sage_examples#, dict_alle_aufgaben_sage
 
     def __init__(self):
+        path_programdata = os.getenv('PROGRAMDATA')
+        database = os.path.join(path_programdata, "LaMA", "_database")    
+        if not os.path.isdir(database):
+            Dialog_Welcome = QtWidgets.QDialog(
+                None,
+                QtCore.Qt.WindowSystemMenuHint
+                | QtCore.Qt.WindowTitleHint
+                | QtCore.Qt.WindowCloseButtonHint,
+            )
+            ui = Ui_Dialog_Welcome_Window()
+            ui.setupUi(Dialog_Welcome)
+
+            bring_to_front(Dialog_Welcome)
+
+            # self.Dialog.setFixedSize(self.Dialog.size())
+            rsp = Dialog_Welcome.exec_()
+            if rsp == 0:
+                sys.exit(0)
+            elif rsp == 1:
+                text = "Die Datenbank wird heruntergeladen.\n\nDies kann einige Minuten dauern ..."
+                Dialog = QtWidgets.QDialog()
+                ui = Ui_Dialog_processing()
+                ui.setupUi(Dialog, text, False)
+
+                thread = QtCore.QThread(Dialog)
+                worker = Worker_DownloadDatabase()
+                worker.finished.connect(Dialog.close)
+                worker.moveToThread(thread)
+                rsp = thread.started.connect(partial(worker.task, database))
+                thread.start()
+                thread.exit()
+                Dialog.exec()
+                print(rsp)
+                # print('Start')
+                # 
+                # print('finished')
+
+
         self.dict_alle_aufgaben_sage = {}
         self.list_alle_aufgaben_sage = []
         self.dict_widget_variables = {}
