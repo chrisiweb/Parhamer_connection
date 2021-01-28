@@ -7,13 +7,14 @@ __lastupdate__ = "01/21"
 print("Loading...")
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QApplication
+import git
+from git import Repo, remote
 import time
 import threading
 import sys
 import os
 from pathlib import Path
 import datetime
-# from datetime import date, datetime, timedelta
 import time
 import json
 import subprocess
@@ -29,23 +30,7 @@ import urllib.request
 from save_titlepage import create_file_titlepage, check_format_titlepage_save
 
 from config import *
-# (
-#     colors_ui,
-#     get_color,
-#     config_file,
-#     config_loader,
-#     path_programm,
-#     lama_settings_file,
-#     logo_path,
-#     logo_cria_path,
-#     SpinBox_noWheel,
-#     ClickLabel,
-#     bring_to_front,
-#     is_empty,
-#     shorten_gk,
-#     split_section,
-#     still_to_define
-# )
+
 from create_new_widgets import *
 from list_of_widgets import (
     widgets_search,
@@ -98,103 +83,20 @@ from prepare_content_vorschau import (
 from convert_image_to_eps import convert_image_to_eps
 from lama_colors import *
 from lama_stylesheets import *
-# from cria_commands import create_kapitel_cria
 
 try:
     loaded_lama_file_path = sys.argv[1]
 except IndexError:
     loaded_lama_file_path = ""
 
-# def get_color(color):
-#     color = "rgb({0}, {1}, {2})".format(color.red(), color.green(), color.blue())
-#     return color
-
-
-
-# QWidget::disabled {{background-color: {4}}}
-
-
-
-## sizePolicy = QtWidgets.QSizePolicy( ######### Breite ############, ######### Höhe ############)
-
-# print("Loading...")
-
-### config_loader, path_programm, logo_path, SpinBox_noWheel
-
 
 dict_picture_path = {}
-
-
-# def create_file_titlepage(titlepage_save):
-#     if os.path.isfile(titlepage_save):
-#         with open(titlepage_save, encoding="utf8") as f:
-#             titlepage = json.load(f)
-#     else:
-#         titlepage = {
-#             "logo": False,
-#             "logo_path": False,
-#             "titel": True,
-#             "datum": True,
-#             "klasse": True,
-#             "name": True,
-#             "note": False,
-#             "unterschrift": False,
-#             "hide_all": False,
-#         }
-#     return titlepage
-
-
-# def simplify_string(string):
-#     string=string.replace(" ", "").replace(".", "").replace("-", "_")
-#     return string
-
-
-# def check_format_titlepage_save(filename):
-#     path = os.path.join(path_programm, "Teildokument", filename)
-#     try:
-#         titlepage = create_file_titlepage(path)
-#     except json.decoder.JSONDecodeError:
-#         print(
-#             'The file "{}" has an invalid format. The standard was restored!'.format(
-#                 filename
-#             )
-#         )
-#         titlepage = {
-#             "logo": False,
-#             "logo_path": False,
-#             "titel": True,
-#             "datum": True,
-#             "klasse": True,
-#             "name": True,
-#             "note": False,
-#             "unterschrift": False,
-#             "hide_all": False,
-#         }
-#         with open(path, "w+", encoding="utf8") as f:
-#             json.dump(titlepage, f, ensure_ascii=False)
-
-#     return titlepage
 
 
 class Ui_MainWindow(object):
     global dict_picture_path  # , set_chosen_gk #, list_sage_examples#, dict_alle_aufgaben_sage
 
     def __init__(self):
-        # path_programm = ""
-        # print(config_file)
-        # if path_programm == False:
-        #     msg = QtWidgets.QMessageBox()
-        #     # msg.setIcon(QtWidgets.QMessageBox.Question)
-        #     msg.setWindowIcon(QtGui.QIcon(logo_path))
-        #     msg.setText("Wählen Sie alle Grafiken, die Sie konvertieren möchten.")
-        #     # msg.setInformativeText('Möchten Sie das neue Update installieren?')
-        #     msg.setWindowTitle("Grafik(en) konvertieren")
-        #     msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-        #     button_durchsuchen = msg.button(QtWidgets.QMessageBox.Yes)
-        #     button_durchsuchen.setText("Durchsuchen...")
-        #     buttonN = msg.button(QtWidgets.QMessageBox.No)
-        #     buttonN.setText("Abbrechen")
-        #     ret = msg.exec_()
         self.dict_alle_aufgaben_sage = {}
         self.list_alle_aufgaben_sage = []
         self.dict_widget_variables = {}
@@ -478,8 +380,17 @@ class Ui_MainWindow(object):
             MainWindow, self.menuHelp, "LaMA unterstützen", self.show_support
         )
 
+        self.actionPUSH = add_action(
+            MainWindow, self.menuOptionen, 'PUSH', self.git_push
+            ) 
 
+        self.actionPULL = add_action(
+            MainWindow, self.menuOptionen, 'PULL', self.git_pull
+            )
 
+        self.actionCHECK = add_action(
+            MainWindow, self.menuOptionen, 'CHANGES?', self.git_check_changes
+            )            
       
         self.menuBar.addAction(self.menuDatei.menuAction())
         self.menuBar.addAction(self.menuDateityp.menuAction())
@@ -3100,6 +3011,47 @@ class Ui_MainWindow(object):
         if response == 1:
             self.lama_settings = ui.lama_settings
 
+
+    def git_pull(self):
+        # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        path_programdata = os.getenv('PROGRAMDATA')
+        database = os.path.join(path_programdata, "LaMA", "_database")
+        repo = git.Repo(database)
+        print('pull')
+        # repo.git.add(A=True)
+        # repo.git.fetch('--all')
+        # 
+        repo.git.reset('--hard')
+        repo.git.clean('-xdf')
+        o = repo.remotes.origin        
+        o.pull()
+        print('done')
+        # QtWidgets.QApplication.restoreOverrideCursor()
+
+    def git_push(self):
+        # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        path_programdata = os.getenv('PROGRAMDATA')
+        database = os.path.join(path_programdata, "LaMA", "_database")
+        repo = git.Repo(database)
+        print('push')
+        repo.git.add(A=True)
+        repo.index.commit('new commit')
+        o = repo.remotes.origin
+        o.push()
+        print('done')
+        # QtWidgets.QApplication.restoreOverrideCursor()
+
+    def git_check_changes(self):
+        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        path_programdata = os.getenv('PROGRAMDATA')
+        database = os.path.join(path_programdata, "LaMA", "_database")
+        repo = git.Repo(database)
+        # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        if repo.is_dirty(untracked_files=True):
+            print('changes detected')
+        else:
+            print('no changes found')
+        QtWidgets.QApplication.restoreOverrideCursor()        
 
 
     def show_info(self):

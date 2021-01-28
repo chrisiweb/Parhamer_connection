@@ -1,8 +1,11 @@
 from PyQt5 import QtCore, QtWidgets, QtGui
 import yaml
 import sys
+import git
+from git import Repo
 import os
 import re
+from pyqt5_minimal import Ui_WelcomeWindow
 from define_database import Ui_define_database
 
 
@@ -32,11 +35,14 @@ if sys.platform.startswith("win"):
     #     print("Loading LaMA...")
 
 
-
-
-    ## OLD VERSION!!
-    path_programm = os.path.dirname(sys.argv[0])
+    #####
+    programdata = os.getenv('PROGRAMDATA')
+    path_programm = os.path.join(programdata, "LaMA")
     path_localappdata_lama = path_programm
+
+    # ## OLD VERSION!!
+    # path_programm = os.path.dirname(sys.argv[0])
+    # path_localappdata_lama = path_programm
 
 
 elif sys.platform.startswith("darwin"):
@@ -78,7 +84,23 @@ def config_loader(pathToFile, parameter):
         config_file = yaml.safe_load(open(pathToFile, encoding="utf8"))
         return config_file[parameter]
     except FileNotFoundError:
+        app = QtWidgets.QApplication(sys.argv)
+        MainWindow = QtWidgets.QMainWindow()
+        ui = Ui_WelcomeWindow()
+        ui.setupUi(MainWindow)
+        MainWindow.show()
+        sys.exit(app.exec_())
         print("File not Found!")
+        print("Downloading database")
+        path_programdata = os.getenv('PROGRAMDATA')
+        database = os.path.join(path_programdata, "LaMA", "_database")
+        # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        try:
+            git.Repo.clone_from("https://github.com/chrisiweb/lama_latest_update.git", database)
+        except git.exc.GitCommandError:
+            print('Datenbank existiert bereits!')
+        print('Download finished')
+        # QtWidgets.QApplication.restoreOverrideCursor()
         if sys.platform.startswith("linux") or sys.platform.startswith("darwin"):
             root = "."
         else:
@@ -88,8 +110,12 @@ def config_loader(pathToFile, parameter):
         # if not os.path.exists(config_path):
         #     print("No worries, we'll create the structure for you.")
         #     os.makedirs(config_path)
-        print('Die Konfigurationsdatei "config.yml" konnte nicht gefunden werden. Stellen Sie sicher, dass sich der Ordner "_database" und das Programm LaMA im selben Ordner befinden.')
-        sys.exit()    
+        try:
+            config_file = yaml.safe_load(open(pathToFile, encoding="utf8"))
+            return config_file[parameter]
+        except FileNotFoundError:
+            print('Die Konfigurationsdatei "config.yml" konnte nicht gefunden werden. Stellen Sie sicher, dass sich der Ordner "_database" und das Programm LaMA im selben Ordner befinden.')
+            sys.exit()    
     
 
 
