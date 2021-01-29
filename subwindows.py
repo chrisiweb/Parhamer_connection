@@ -1880,3 +1880,41 @@ class Ui_Dialog_setup(object):
         self.Dialog.accept()
     
 
+class Ui_Dialog_setup(object):
+    def setupUi(self, Dialog):
+        self.Dialog = Dialog
+        self.Dialog.setObjectName("Dialog")
+        Dialog.setWindowTitle("Entwicklermodus aktivieren")
+        row=0
+        # self.Dialog.setMinimumWidth(400)
+        Dialog.setWindowIcon(QtGui.QIcon(logo_path))
+        gridlayout_admin = create_new_gridlayout(Dialog)
+
+        label_admin = create_new_label(Dialog, "Bitte geben Sie das Passwort ein, um den Entwicklermodus zu aktivieren")
+        gridlayout_admin.addWidget(label_admin, 0, 0, 1,2)
+
+        lineedit_admin = create_new_lineedit(Dialog)
+        lineedit_admin.setEchoMode(QtWidgets.QLineEdit.Password)
+        gridlayout_admin.addWidget(lineedit_admin, 1,0,1,2)
+
+        self.buttonBox_admin = QtWidgets.QDialogButtonBox(Dialog)
+        self.buttonBox_admin.setStandardButtons(
+            QtWidgets.QDialogButtonBox.Save | QtWidgets.QDialogButtonBox.Cancel
+        )
+
+
+        buttonS = self.buttonBox_admin.button(QtWidgets.QDialogButtonBox.Save)
+        buttonS.setText('Speichern')
+        buttonX = self.buttonBox_admin.button(QtWidgets.QDialogButtonBox.Cancel)
+        buttonX.setText("Abbrechen")
+        self.buttonBox_admin.rejected.connect(self.reject_dialog)
+        self.buttonBox_admin.accepted.connect(self.save_password)
+
+        gridlayout_admin.addWidget(self.buttonBox_admin, 3,1,1,1)
+    
+    def reject_dialog(self):
+        self.Dialog.reject()
+    
+    def save_password(self):
+        print('save')
+

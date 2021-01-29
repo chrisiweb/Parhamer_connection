@@ -9,6 +9,8 @@ from config import config_file, config_loader, logo_path, path_programm, path_lo
 from translate import _fromUtf8, _translate
 from sort_items import natural_keys, lama_order
 from processing_window import Ui_Dialog_processing
+import git
+from git import Repo, remote
 
 
 list_klassen = config_loader(config_file, "list_klassen")
@@ -129,12 +131,31 @@ class Worker_RefreshDDB(QtCore.QObject):
         self.finished.emit()
 
 
+
+def git_pull():
+    # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+    path_programdata = os.getenv('PROGRAMDATA')
+    database = os.path.join(path_programdata, "LaMA", "_database")
+    repo = git.Repo(database)
+    print('pull')
+    # repo.git.add(A=True)
+    # repo.git.fetch('--all')
+    # 
+    repo.git.reset('--hard')
+    repo.git.clean('-xdf')
+    o = repo.remotes.origin        
+    o.pull()
+    print('done')
+    # QtWidgets.QApplication.restoreOverrideCursor()
+
+
 def refresh_ddb(self, selected_program=False):
     if selected_program == False:
         selected_program = self.chosen_program
 
     QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-
+    
+    git_pull()
     # msg = QtWidgets.QMessageBox()
     # msg.setWindowIcon(QtGui.QIcon(logo_path))
     # msg.setWindowTitle("Refresh Database")

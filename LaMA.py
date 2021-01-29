@@ -319,6 +319,7 @@ Sollte das Problem weiterhin bestehen, melden Sie sich unter lama.helpme@gmail.c
         self.menuUpdate = QtWidgets.QMenu(self.menuHelp)
         self.menuUpdate.setObjectName(_fromUtf8("menuUpdate"))
         self.menuUpdate.setTitle("Update...")
+
         self.menuBild_einbinden = QtWidgets.QMenu(self.menuBar)
         self.menuBild_einbinden.setObjectName(_fromUtf8("menuBild_einbinden"))
         MainWindow.setMenuBar(self.menuBar)
@@ -437,6 +438,7 @@ Sollte das Problem weiterhin bestehen, melden Sie sich unter lama.helpme@gmail.c
             MainWindow, self.menuUpdate, '"srdp-mathematik.sty" aktualisieren', self.update_srdpmathematik
             )
 
+        self.menuOptionen.addAction(self.menuUpdate.menuAction())
         self.actionInfo = add_action(
             MainWindow, self.menuHelp, "Über LaMA", self.show_info
         )
@@ -455,14 +457,18 @@ Sollte das Problem weiterhin bestehen, melden Sie sich unter lama.helpme@gmail.c
         self.actionCHECK = add_action(
             MainWindow, self.menuOptionen, 'CHANGES?', self.git_check_changes
             )            
-      
+
+        self.actionAdmin = add_action(
+            MainWindow, self.menuOptionen, 'Entwicklermodus', self.activate_admin
+            ) 
+
         self.menuBar.addAction(self.menuDatei.menuAction())
         self.menuBar.addAction(self.menuDateityp.menuAction())
         self.menuBar.addAction(self.menuSage.menuAction())
         self.menuBar.addAction(self.menuNeu.menuAction())
         self.menuBar.addAction(self.menuFeedback.menuAction())
         self.menuBar.addAction(self.menuOptionen.menuAction())
-        self.menuOptionen.addAction(self.menuUpdate.menuAction())
+
         self.menuBar.addAction(self.menuHelp.menuAction())
 
 
@@ -3060,6 +3066,21 @@ Sollte das Problem weiterhin bestehen, melden Sie sich unter lama.helpme@gmail.c
             self.sage_save()
         else:
             sys.exit(0)
+
+    def activate_admin(self):
+        Dialog = QtWidgets.QDialog(
+            None,
+            QtCore.Qt.WindowSystemMenuHint
+            | QtCore.Qt.WindowTitleHint
+            | QtCore.Qt.WindowCloseButtonHint,
+        )
+        ui = Ui_Dialog_setup()
+        ui.setupUi(Dialog)
+        # self.Dialog.show()
+        response = Dialog.exec()
+        print(response)
+        # if response == 1:
+        #     self.lama_settings = ui.lama_settings        
 
     def open_setup(self):
         Dialog = QtWidgets.QDialog(
