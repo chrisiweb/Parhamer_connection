@@ -46,6 +46,7 @@ from lama_stylesheets import (
     StyleSheet_subwindow_ausgleichspunkte_dark_mode,
 )
 from create_pdf import create_pdf
+import bcrypt
 
 
 dict_gk = config_loader(config_file, "dict_gk")
@@ -1893,9 +1894,9 @@ class Ui_Dialog_admin(object):
         label_admin = create_new_label(Dialog, "Bitte geben Sie das Passwort ein, um den Entwicklermodus zu aktivieren")
         gridlayout_admin.addWidget(label_admin, 0, 0, 1,2)
 
-        lineedit_admin = create_new_lineedit(Dialog)
-        lineedit_admin.setEchoMode(QtWidgets.QLineEdit.Password)
-        gridlayout_admin.addWidget(lineedit_admin, 1,0,1,2)
+        self.lineedit_admin = create_new_lineedit(Dialog)
+        self.lineedit_admin.setEchoMode(QtWidgets.QLineEdit.Password)
+        gridlayout_admin.addWidget(self.lineedit_admin, 1,0,1,2)
 
 
         checkbox_admin = create_new_checkbox(Dialog, "Passwort speichern", True)
@@ -1920,5 +1921,18 @@ class Ui_Dialog_admin(object):
         self.Dialog.reject()
     
     def save_password(self):
+        password = b"ABCabc123!"
+        hashed = bcrypt.hashpw(password, bcrypt.gensalt())
+        path_programdata = os.getenv('PROGRAMDATA')
+        pw_file = os.path.join(path_programdata, "LaMA", "_database", "_config" ,"admin_login.txt")
+        with open(pw_file, "rb") as file:
+            hashed_pw = file.read()
+        print(hashed_pw)
+        password = self.lineedit_admin.text().encode('utf-8')
+
+        if bcrypt.checkpw(password, hashed_pw):
+            print(True)
+        else:
+            print(False)
         print('save')
 
