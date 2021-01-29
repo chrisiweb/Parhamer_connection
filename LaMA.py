@@ -103,15 +103,9 @@ class Worker_DownloadDatabase(QtCore.QObject):
     def task(self, database):
         try:
             git.Repo.clone_from("https://github.com/chrisiweb/lama_latest_update.git", database)
+            self.download_successfull = True
         except git.exc.GitCommandError:
-            critical_window("Die Datenbank konnte nicht heruntergeladen werden. Stellen Sie sicher, dass eine Internetverbindung besteht.")
-        # process = build_pdf_file(folder_name, file_name, latex_output_file)
-        # process.poll()
-        # latex_output_file.close()
-
-        # loading_animation(process)
-
-        # process.wait()
+            self.download_successfull = False
 
         self.finished.emit()       
 
@@ -152,10 +146,19 @@ class Ui_MainWindow(object):
                 thread.start()
                 thread.exit()
                 Dialog.exec()
-                print(rsp)
-                # print('Start')
-                # 
-                # print('finished')
+                if worker.download_successfull == False:
+                    critical_window("""
+Datenbank konnte nicht heruntergeladen werden. Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.
+
+Sollte das Problem weiterhin bestehen, melden Sie sich unter lama.helpme@gmail.com
+""")
+                    sys.exit()
+                elif worker.download_successfull == True:
+                    information_window(
+"""Die Datenbank wurde erfolgreich heruntergeladen. LaMA kann ab sofort verwendet werden!
+"""
+                )
+
 
 
         self.dict_alle_aufgaben_sage = {}
