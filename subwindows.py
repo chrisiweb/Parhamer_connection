@@ -1880,7 +1880,7 @@ class Ui_Dialog_setup(object):
         self.Dialog.accept()
     
 
-class Ui_Dialog_setup(object):
+class Ui_Dialog_admin(object):
     def setupUi(self, Dialog):
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
@@ -1897,6 +1897,10 @@ class Ui_Dialog_setup(object):
         lineedit_admin.setEchoMode(QtWidgets.QLineEdit.Password)
         gridlayout_admin.addWidget(lineedit_admin, 1,0,1,2)
 
+
+        checkbox_admin = create_new_checkbox(Dialog, "Passwort speichern", True)
+        gridlayout_admin.addWidget(checkbox_admin, 2,0,1,1)
+
         self.buttonBox_admin = QtWidgets.QDialogButtonBox(Dialog)
         self.buttonBox_admin.setStandardButtons(
             QtWidgets.QDialogButtonBox.Save | QtWidgets.QDialogButtonBox.Cancel
@@ -1910,7 +1914,7 @@ class Ui_Dialog_setup(object):
         self.buttonBox_admin.rejected.connect(self.reject_dialog)
         self.buttonBox_admin.accepted.connect(self.save_password)
 
-        gridlayout_admin.addWidget(self.buttonBox_admin, 3,1,1,1)
+        gridlayout_admin.addWidget(self.buttonBox_admin, 2,1,1,1)
     
     def reject_dialog(self):
         self.Dialog.reject()

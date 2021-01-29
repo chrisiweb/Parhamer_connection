@@ -53,6 +53,7 @@ from subwindows import (
     Ui_Dialog_speichern,
     Ui_Dialog_variation,
     Ui_Dialog_setup,
+    Ui_Dialog_admin,
 )
 from translate import _fromUtf8, _translate
 from sort_items import natural_keys, sorted_gks
@@ -3074,7 +3075,7 @@ Sollte das Problem weiterhin bestehen, melden Sie sich unter lama.helpme@gmail.c
             | QtCore.Qt.WindowTitleHint
             | QtCore.Qt.WindowCloseButtonHint,
         )
-        ui = Ui_Dialog_setup()
+        ui = Ui_Dialog_admin()
         ui.setupUi(Dialog)
         # self.Dialog.show()
         response = Dialog.exec()
