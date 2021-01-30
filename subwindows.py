@@ -1936,3 +1936,11 @@ class Ui_Dialog_admin(object):
             print(False)
         print('save')
 
+        path_localappdata = os.getenv('LOCALAPPDATA')
+        path_localappdata_lama = os.path.join(path_localappdata, "LaMA")
+
+        if not os.path.exists(path_localappdata_lama):
+            print('does not exist')
+        else:
+            print(path_localappdata_lama)
+            print('exists')

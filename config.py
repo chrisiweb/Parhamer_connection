@@ -49,7 +49,7 @@ if sys.platform.startswith("win"):
 
 elif sys.platform.startswith("darwin"):
     path_programm=os.path.dirname(sys.argv[0])
-    if path_programm is "":
+    if path_programm == "":
         path_programm = "."
     path_localappdata_lama = path_programm
 
