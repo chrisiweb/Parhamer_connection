@@ -161,6 +161,7 @@ def refresh_ddb(self, selected_program=False):
         database = os.path.join(path_programdata, "LaMA", "_database")
         repo = git.Repo(database)
         if repo.is_dirty(untracked_files=True):
+            QtWidgets.QApplication.restoreOverrideCursor()
             response = question_window("Es wurden bereits lokale Änderungen an der Datenbank vorgenommen!\nSind Sie sicher, dass Sie die Datenbank zurücksetzen und alle lokalen Änderungen unwiderruflich löschen möchten?"
             )
             if response == False:
