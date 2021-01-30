@@ -53,7 +53,8 @@ from subwindows import (
     Ui_Dialog_speichern,
     Ui_Dialog_variation,
     Ui_Dialog_setup,
-    Ui_Dialog_admin,
+    Ui_Dialog_developer,
+    read_credentials,
 )
 from translate import _fromUtf8, _translate
 from sort_items import natural_keys, sorted_gks
@@ -86,6 +87,7 @@ from convert_image_to_eps import convert_image_to_eps
 from lama_colors import *
 from lama_stylesheets import *
 from processing_window import Ui_Dialog_processing
+import bcrypt
 
 
 try:
@@ -173,6 +175,19 @@ Sollte das Problem weiterhin bestehen, melden Sie sich unter lama.helpme@gmail.c
         self.dict_sage_individual_change = {}
         self.dict_chosen_topics = {}
         self.list_copy_images = []
+
+        hashed_pw = read_credentials()
+        path_lama_developer_credentials = os.path.join(os.getenv('LOCALAPPDATA'), "LaMA", "credentials")
+        lama_developer_credentials = os.path.join(path_lama_developer_credentials, "developer_credentials.txt")
+        self.developer_mode_active = False
+        if os.path.isfile(lama_developer_credentials):
+            with open(lama_developer_credentials, "rb") as file:
+                password = file.read()
+            if bcrypt.checkpw(password, hashed_pw):
+                self.developer_mode_active = True
+        print(self.developer_mode_active)   
+        # with open(lama)
+        # self.developer_mode_active = False
 
         try: 
             with open(lama_settings_file, "r", encoding="utf8") as f:
@@ -459,8 +474,13 @@ Sollte das Problem weiterhin bestehen, melden Sie sich unter lama.helpme@gmail.c
             MainWindow, self.menuOptionen, 'CHANGES?', self.git_check_changes
             )            
 
-        self.actionAdmin = add_action(
-            MainWindow, self.menuOptionen, 'Entwicklermodus', self.activate_admin
+        if self.developer_mode_active == True:
+            label = "Entwicklermodus (aktiv)"
+        else:
+            label = "Entwicklermodus"
+        
+        self.actionDeveloper = add_action(
+            MainWindow, self.menuOptionen, label, self.activate_developermode
             ) 
 
         self.menuBar.addAction(self.menuDatei.menuAction())
@@ -3068,20 +3088,43 @@ Sollte das Problem weiterhin bestehen, melden Sie sich unter lama.helpme@gmail.c
         else:
             sys.exit(0)
 
-    def activate_admin(self):
-        Dialog = QtWidgets.QDialog(
-            None,
-            QtCore.Qt.WindowSystemMenuHint
-            | QtCore.Qt.WindowTitleHint
-            | QtCore.Qt.WindowCloseButtonHint,
-        )
-        ui = Ui_Dialog_admin()
-        ui.setupUi(Dialog)
-        # self.Dialog.show()
-        response = Dialog.exec()
-        print(response)
-        # if response == 1:
-        #     self.lama_settings = ui.lama_settings        
+    def developer_mode_changed(self):
+        if self.developer_mode_active == False:
+            self.actionDeveloper.setText("Entwicklermodus")
+
+        elif self.developer_mode_active == True:
+            self.actionDeveloper.setText("Entwicklermodus (aktiv)")
+
+    def activate_developermode(self):
+        if self.developer_mode_active == True:
+            response = question_window("Sind Sie sicher, dass Sie den Entwicklermodus deaktivieren möchten?")
+            if response == False:
+                return
+            path_lama_developer_credentials = os.path.join(os.getenv('LOCALAPPDATA'), "LaMA", "credentials")
+            lama_developer_credentials = os.path.join(path_lama_developer_credentials, "developer_credentials.txt")
+            if os.path.isfile(lama_developer_credentials):
+                os.remove(lama_developer_credentials)
+            self.developer_mode_active = False
+            self.developer_mode_changed()
+            information_window("Der Entwicklermodus wurde deaktiviert.")            
+        else:
+            Dialog = QtWidgets.QDialog(
+                None,
+                QtCore.Qt.WindowSystemMenuHint
+                | QtCore.Qt.WindowTitleHint
+                | QtCore.Qt.WindowCloseButtonHint,
+            )
+            ui = Ui_Dialog_developer()
+            ui.setupUi(Dialog)
+            # self.Dialog.show()
+            response = Dialog.exec()
+
+            if response == 1:
+                self.developer_mode_active = ui.developer_mode_active
+                self.developer_mode_changed()
+                information_window("Der Entwicklermodus wurde erfolgreich aktiviert.")
+            # if response == 1:
+            #     self.lama_settings = ui.lama_settings        
 
     def open_setup(self):
         Dialog = QtWidgets.QDialog(

@@ -1881,68 +1881,84 @@ class Ui_Dialog_setup(object):
         self.Dialog.accept()
     
 
-class Ui_Dialog_admin(object):
+class Ui_Dialog_developer(object):
     def setupUi(self, Dialog):
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
+        self.developer_mode_active = False
         Dialog.setWindowTitle("Entwicklermodus aktivieren")
         row=0
         # self.Dialog.setMinimumWidth(400)
         Dialog.setWindowIcon(QtGui.QIcon(logo_path))
-        gridlayout_admin = create_new_gridlayout(Dialog)
+        gridlayout_developer = create_new_gridlayout(Dialog)
 
-        label_admin = create_new_label(Dialog, "Bitte geben Sie das Passwort ein, um den Entwicklermodus zu aktivieren")
-        gridlayout_admin.addWidget(label_admin, 0, 0, 1,2)
+        label_developer = create_new_label(Dialog, "Bitte geben Sie das Passwort ein, um den Entwicklermodus zu aktivieren")
+        gridlayout_developer.addWidget(label_developer, 0, 0, 1,2)
 
-        self.lineedit_admin = create_new_lineedit(Dialog)
-        self.lineedit_admin.setEchoMode(QtWidgets.QLineEdit.Password)
-        gridlayout_admin.addWidget(self.lineedit_admin, 1,0,1,2)
+        self.lineedit_developer = create_new_lineedit(Dialog)
+        self.lineedit_developer.setEchoMode(QtWidgets.QLineEdit.Password)
+        gridlayout_developer.addWidget(self.lineedit_developer, 1,0,1,2)
 
 
-        checkbox_admin = create_new_checkbox(Dialog, "Passwort speichern", True)
-        gridlayout_admin.addWidget(checkbox_admin, 2,0,1,1)
+        self.checkbox_developer = create_new_checkbox(Dialog, "Passwort speichern", True)
+        gridlayout_developer.addWidget(self.checkbox_developer, 2,0,1,1)
 
-        self.buttonBox_admin = QtWidgets.QDialogButtonBox(Dialog)
-        self.buttonBox_admin.setStandardButtons(
+        self.buttonBox_developer = QtWidgets.QDialogButtonBox(Dialog)
+        self.buttonBox_developer.setStandardButtons(
             QtWidgets.QDialogButtonBox.Save | QtWidgets.QDialogButtonBox.Cancel
         )
 
 
-        buttonS = self.buttonBox_admin.button(QtWidgets.QDialogButtonBox.Save)
+        buttonS = self.buttonBox_developer.button(QtWidgets.QDialogButtonBox.Save)
         buttonS.setText('Speichern')
-        buttonX = self.buttonBox_admin.button(QtWidgets.QDialogButtonBox.Cancel)
+        buttonX = self.buttonBox_developer.button(QtWidgets.QDialogButtonBox.Cancel)
         buttonX.setText("Abbrechen")
-        self.buttonBox_admin.rejected.connect(self.reject_dialog)
-        self.buttonBox_admin.accepted.connect(self.save_password)
+        self.buttonBox_developer.rejected.connect(self.reject_dialog)
+        self.buttonBox_developer.accepted.connect(self.save_password)
 
-        gridlayout_admin.addWidget(self.buttonBox_admin, 2,1,1,1)
+        gridlayout_developer.addWidget(self.buttonBox_developer, 2,1,1,1)
     
     def reject_dialog(self):
         self.Dialog.reject()
-    
+
+
     def save_password(self):
-        password = b"ABCabc123!"
-        hashed = bcrypt.hashpw(password, bcrypt.gensalt())
-        path_programdata = os.getenv('PROGRAMDATA')
-        pw_file = os.path.join(path_programdata, "LaMA", "_database", "_config" ,"admin_login.txt")
-        with open(pw_file, "rb") as file:
-            hashed_pw = file.read()
+        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        # password = b"ABCabc123!"
+        # hashed = bcrypt.hashpw(password, bcrypt.gensalt())
 
-        password = self.lineedit_admin.text().encode('utf-8')
-        if bcrypt.checkpw(password, hashed_pw):  
-            path_localappdata = os.getenv('LOCALAPPDATA')
-            path_lama_developer_credentials = os.path.join(path_localappdata, "LaMA", "credentials")
-            lama_developer_credentials = os.path.join(path_lama_developer_credentials, "developer_credentials.txt")
-            if not os.path.exists(path_lama_developer_credentials):
-                os.makedirs(path_lama_developer_credentials)
+        hashed_pw = read_credentials()
 
-            with open(lama_developer_credentials, "wb") as file:
-                file.write(password)
+        password = self.lineedit_developer.text().encode('utf-8')
+         
+        if bcrypt.checkpw(password, hashed_pw):
+            if self.checkbox_developer.isChecked():
+                path_lama_developer_credentials = os.path.join(os.getenv('LOCALAPPDATA'), "LaMA", "credentials")
+                lama_developer_credentials = os.path.join(path_lama_developer_credentials, "developer_credentials.txt")
+                if not os.path.exists(path_lama_developer_credentials):
+                    os.makedirs(path_lama_developer_credentials)
+
+                with open(lama_developer_credentials, "wb") as file:
+                    file.write(password)
             
-            print('save')
+            self.developer_mode_active = True
+            QtWidgets.QApplication.restoreOverrideCursor()
+            self.Dialog.accept()
         else:
+            QtWidgets.QApplication.restoreOverrideCursor()
             critical_window("Das eingegeben Passwort ist nicht korrekt.")
-            self.Dialog.reject()        
+            # self.Dialog.reject() 
+
+
+def read_credentials():
+    path_programdata = os.getenv('PROGRAMDATA')
+    pw_file = os.path.join(path_programdata, "LaMA", "_database", "_config" ,"developer_credentials.txt")
+    with open(pw_file, "rb") as file:
+        hashed_pw = file.read()
+    
+    return hashed_pw
+
+
 
 
 
