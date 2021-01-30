@@ -360,6 +360,15 @@ Sollte das Problem weiterhin bestehen, melden Sie sich unter lama.helpme@gmail.c
         )
         self.actionRefresh_Database.setShortcut("F5")
 
+        self.actionPush_Database = add_action(
+            MainWindow,
+            self.menuDatei,
+            "Datenbank hochladen (Entwicklermodus)",
+            self.action_push_database
+        )
+        if self.developer_mode_active == False:
+            self.actionPush_Database.setVisible(False)
+
         self.menuDatei.addSeparator()
 
         self.actionLoad = add_action(
@@ -3091,9 +3100,11 @@ Sollte das Problem weiterhin bestehen, melden Sie sich unter lama.helpme@gmail.c
     def developer_mode_changed(self):
         if self.developer_mode_active == False:
             self.actionDeveloper.setText("Entwicklermodus")
+            self.actionPush_Database.setVisible(False)
 
         elif self.developer_mode_active == True:
             self.actionDeveloper.setText("Entwicklermodus (aktiv)")
+            self.actionPush_Database.setVisible(True)
 
     def activate_developermode(self):
         if self.developer_mode_active == True:
@@ -4649,6 +4660,27 @@ Sollte das Problem weiterhin bestehen, melden Sie sich unter lama.helpme@gmail.c
         if self.cb_drafts_sage.isChecked() == True:
             self.add_drafts_to_beispieldaten()
         self.adapt_choosing_list("sage")
+    
+    def action_push_database(self):
+        path_programdata = os.getenv('PROGRAMDATA')
+        database = os.path.join(path_programdata, "LaMA", "_database")
+        repo = git.Repo(database)
+        if not repo.is_dirty(untracked_files=True):
+            information_window("Es wurden keine Änderungen an der Datenbank vorgenommen.")
+            return
+
+        response = question_window("Sind Sie sicher, dass Sie die Datenbank hochladen möchten?")
+        if response == False:
+            return
+
+        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))       
+        repo.git.add(A=True)
+        repo.index.commit('new commit')
+        o = repo.remotes.origin
+        o.push()
+        QtWidgets.QApplication.restoreOverrideCursor()
+        information_window("Die Datenbank wurde erfolgreich hochgeladen.")
+
 
     def define_beispieldaten_dateipfad(self, typ):
 

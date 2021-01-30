@@ -9,6 +9,7 @@ from config import config_file, config_loader, logo_path, path_programm, path_lo
 from translate import _fromUtf8, _translate
 from sort_items import natural_keys, lama_order
 from processing_window import Ui_Dialog_processing
+from standard_dialog_windows import question_window
 import git
 from git import Repo, remote
 
@@ -154,6 +155,16 @@ def refresh_ddb(self, selected_program=False):
         selected_program = self.chosen_program
 
     QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+    
+    if self.developer_mode_active == True:
+        path_programdata = os.getenv('PROGRAMDATA')
+        database = os.path.join(path_programdata, "LaMA", "_database")
+        repo = git.Repo(database)
+        if repo.is_dirty(untracked_files=True):
+            response = question_window("Es wurden bereits lokale Änderungen an der Datenbank vorgenommen!\nSind Sie sicher, dass Sie die Datenbank zurücksetzen und alle lokalen Änderungen unwiderruflich löschen möchten?"
+            )
+            if response == False:
+                return
     
     git_pull()
     # msg = QtWidgets.QMessageBox()
