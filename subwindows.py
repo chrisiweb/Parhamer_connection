@@ -1927,20 +1927,23 @@ class Ui_Dialog_admin(object):
         pw_file = os.path.join(path_programdata, "LaMA", "_database", "_config" ,"admin_login.txt")
         with open(pw_file, "rb") as file:
             hashed_pw = file.read()
-        print(hashed_pw)
+
         password = self.lineedit_admin.text().encode('utf-8')
+        if bcrypt.checkpw(password, hashed_pw):  
+            path_localappdata = os.getenv('LOCALAPPDATA')
+            path_lama_developer_credentials = os.path.join(path_localappdata, "LaMA", "credentials")
+            lama_developer_credentials = os.path.join(path_lama_developer_credentials, "developer_credentials.txt")
+            if not os.path.exists(path_lama_developer_credentials):
+                os.makedirs(path_lama_developer_credentials)
 
-        if bcrypt.checkpw(password, hashed_pw):
-            print(True)
+            with open(lama_developer_credentials, "wb") as file:
+                file.write(password)
+            
+            print('save')
         else:
-            print(False)
-        print('save')
+            critical_window("Das eingegeben Passwort ist nicht korrekt.")
+            self.Dialog.reject()        
 
-        path_localappdata = os.getenv('LOCALAPPDATA')
-        path_localappdata_lama = os.path.join(path_localappdata, "LaMA")
 
-        if not os.path.exists(path_localappdata_lama):
-            print('does not exist')
-        else:
-            print(path_localappdata_lama)
-            print('exists')
+
+        
