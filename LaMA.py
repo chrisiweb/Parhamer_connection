@@ -105,12 +105,11 @@ class Worker_DownloadDatabase(QtCore.QObject):
     @QtCore.pyqtSlot()
     def task(self, database):
         try:
-            username = "chrisiweb"
+            # username = "chrisiweb"
             #lama-contributor
-            # password = "cf08a3d1fc8a390fc06d42b42ec009302cb8f8ea"
-            password = "1f39f43c5dd997454f9ed16e9d0ef292d201e90a"
-            remote = f"https://{username}:{password}@github.com/chrisiweb/lama_latest_update.git"
-            # remote = "https://github.com/chrisiweb/lama_latest_update.git"
+            # password = "access token"
+            # remote = f"https://{username}:{password}@github.com/chrisiweb/lama_latest_update.git"
+            remote = "https://github.com/chrisiweb/lama_latest_update.git"
             git.Repo.clone_from(remote, database)
             self.download_successfull = True
         except git.exc.GitCommandError:
