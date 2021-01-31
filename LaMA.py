@@ -105,7 +105,13 @@ class Worker_DownloadDatabase(QtCore.QObject):
     @QtCore.pyqtSlot()
     def task(self, database):
         try:
-            git.Repo.clone_from("https://github.com/chrisiweb/lama_latest_update.git", database)
+            username = "chrisiweb"
+            #lama-contributor
+            # password = "cf08a3d1fc8a390fc06d42b42ec009302cb8f8ea"
+            password = "1f39f43c5dd997454f9ed16e9d0ef292d201e90a"
+            remote = f"https://{username}:{password}@github.com/chrisiweb/lama_latest_update.git"
+            # remote = "https://github.com/chrisiweb/lama_latest_update.git"
+            git.Repo.clone_from(remote, database)
             self.download_successfull = True
         except git.exc.GitCommandError:
             self.download_successfull = False
@@ -481,7 +487,11 @@ Sollte das Problem weiterhin bestehen, melden Sie sich unter lama.helpme@gmail.c
 
         self.actionCHECK = add_action(
             MainWindow, self.menuOptionen, 'CHANGES?', self.git_check_changes
-            )            
+            )   
+
+        self.actionPULLREQUEST = add_action(
+            MainWindow, self.menuOptionen, "PULLREQUEST", self.git_pull_request
+        )         
 
         if self.developer_mode_active == True:
             label = "Entwicklermodus (aktiv)"
@@ -3193,6 +3203,13 @@ Sollte das Problem weiterhin bestehen, melden Sie sich unter lama.helpme@gmail.c
             print('no changes found')
         QtWidgets.QApplication.restoreOverrideCursor()        
 
+    def git_pull_request(self):
+        # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        path_programdata = os.getenv('PROGRAMDATA')
+        database = os.path.join(path_programdata, "LaMA", "_database")
+        repo = git.Repo(database) 
+
+        repo.create_pull(title='Test')      
 
     def show_info(self):
         QtWidgets.QApplication.restoreOverrideCursor()
@@ -6946,6 +6963,7 @@ Sollte das Problem weiterhin bestehen, melden Sie sich unter lama.helpme@gmail.c
             fbpassword_check = []
             fbpassword_check.append(f.read().replace(" ", "").replace("\n", ""))
             gmail_password = fbpassword_check[0]
+            print(gmail_password)
         except FileNotFoundError:
             pw_msg = QtWidgets.QInputDialog(
                 None,
