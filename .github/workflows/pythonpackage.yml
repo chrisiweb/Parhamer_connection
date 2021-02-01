@@ -25,6 +25,7 @@ jobs:
         pip install pyqt5
         pip install pyyaml
         pip install pillow
+        pip install gitpython
     - name: Build with pyinstaller
       if: matrix.os != 'windows-latest'
       run: |  
