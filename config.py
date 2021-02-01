@@ -1,9 +1,10 @@
 from PyQt5 import QtCore, QtWidgets, QtGui
 import yaml
 import sys
-import git
-from git import Repo
 import os
+os.environ["GIT_PYTHON_REFRESH"] = "quiet"
+import git
+from git import Repo, remote
 import re
 from pyqt5_minimal import Ui_WelcomeWindow
 from define_database import Ui_define_database
