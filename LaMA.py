@@ -7,6 +7,8 @@ __lastupdate__ = "01/21"
 print("Loading...")
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QApplication
+import git
+from git import Repo, remote
 import time
 import threading
 import sys
@@ -86,9 +88,7 @@ from lama_colors import *
 from lama_stylesheets import *
 from processing_window import Ui_Dialog_processing
 import bcrypt
-os.environ["GIT_PYTHON_REFRESH"] = "quiet"
-import git
-from git import Repo, remote
+
 
 try:
     loaded_lama_file_path = sys.argv[1]

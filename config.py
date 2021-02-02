@@ -2,7 +2,6 @@ from PyQt5 import QtCore, QtWidgets, QtGui
 import yaml
 import sys
 import os
-os.environ["GIT_PYTHON_REFRESH"] = "quiet"
 import git
 from git import Repo, remote
 import re

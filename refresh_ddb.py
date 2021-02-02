@@ -10,7 +10,6 @@ from translate import _fromUtf8, _translate
 from sort_items import natural_keys, lama_order
 from processing_window import Ui_Dialog_processing
 from standard_dialog_windows import question_window
-os.environ["GIT_PYTHON_REFRESH"] = "quiet"
 import git
 from git import Repo, remote
 
