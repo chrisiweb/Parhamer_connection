@@ -10,7 +10,7 @@ from translate import _fromUtf8, _translate
 from sort_items import natural_keys, lama_order
 from processing_window import Ui_Dialog_processing
 from standard_dialog_windows import question_window
-from git_sync import git_reset_repo_to_main
+from git_sync import git_reset_repo_to_origin
 from standard_dialog_windows import warning_window, information_window
 # import git
 # from git import Repo, remote
@@ -122,7 +122,9 @@ class Worker_RefreshDDB(QtCore.QObject):
 
     @QtCore.pyqtSlot()
     def task(self, Ui_Mainwindow, ui, selected_program):
-        Ui_Mainwindow.reset_successfull = git_reset_repo_to_main(database)
+
+        ### RESET LOKAL REPO TO ORIGIN
+        Ui_Mainwindow.reset_successfull = git_reset_repo_to_origin(database)
 
         ui.label.setText("Datenbank wird aktualisiert. Bitte warten ...")
 
@@ -189,7 +191,7 @@ def refresh_ddb(self, selected_program=False):
     # msg.show()
     # QApplication.processEvents()
 
-    text = "Neuester Stand der Datenbank wird heruntergeladen. Bitte warten..."
+    text = "Neuester Stand der Datenbank wird heruntergeladen. Bitte warten ..."
     Dialog = QtWidgets.QDialog()
     ui = Ui_Dialog_processing()
     ui.setupUi(Dialog, text)

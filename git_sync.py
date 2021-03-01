@@ -1,4 +1,5 @@
 import shutil
+import os
 from dulwich import porcelain, index
 from dulwich.objectspec import parse_tree
 import stat
@@ -31,7 +32,7 @@ def list_all_files(store, treeid, base=None, list_of_all_files=None):
     return _list
 
 
-def git_reset_repo_to_main(database):
+def git_reset_repo_to_origin(database):
     try:
         repo = porcelain.Repo(database)
         porcelain.fetch(repo)
