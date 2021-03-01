@@ -10,8 +10,8 @@ from translate import _fromUtf8, _translate
 from sort_items import natural_keys, lama_order
 from processing_window import Ui_Dialog_processing
 from standard_dialog_windows import question_window
-from git_sync import git_reset_repo_to_origin
-from standard_dialog_windows import warning_window, information_window
+from git_sync import git_reset_repo_to_origin, check_for_changes
+from standard_dialog_windows import warning_window, information_window, question_window
 # import git
 # from git import Repo, remote
 
@@ -121,10 +121,13 @@ class Worker_RefreshDDB(QtCore.QObject):
     finished = QtCore.pyqtSignal()
 
     @QtCore.pyqtSlot()
-    def task(self, Ui_Mainwindow, ui, selected_program):
+    def task(self, Ui_Mainwindow, ui, selected_program, skip_download=False):
 
         ### RESET LOKAL REPO TO ORIGIN
-        Ui_Mainwindow.reset_successfull = git_reset_repo_to_origin(database)
+        if skip_download == False:
+            Ui_Mainwindow.reset_successfull = git_reset_repo_to_origin(database)
+        else:
+            Ui_Mainwindow.reset_successfull = True
 
         ui.label.setText("Datenbank wird aktualisiert. Bitte warten ...")
 
@@ -169,10 +172,15 @@ def refresh_ddb(self, selected_program=False):
     # path_programdata = os.getenv('PROGRAMDATA')
     # database = os.path.join(path_programdata, "LaMA", "_database") 
 
-    if self.developer_mode_active == True:
+    # if self.developer_mode_active == True:
+    #     repo = porcelain.open_repo(database)
+    #     status = porcelain.status(repo)
+    #     if status.unstaged!=[] or status.untracked != []:
+            
+    #         return
         # path_programdata = os.getenv('PROGRAMDATA')
         # database = os.path.join(path_programdata, "LaMA", "_database")
-        print('developer mode still to define')
+        # print('developer mode still to define')
         # repo = git.Repo(database)
         # if repo.is_dirty(untracked_files=True):
         #     QtWidgets.QApplication.restoreOverrideCursor()
@@ -180,7 +188,29 @@ def refresh_ddb(self, selected_program=False):
         #     )
         #     if response == False:
         #         return
-    
+    skip_download=False
+    if self.developer_mode_active == True:
+        modified_files, new_files = check_for_changes(database)
+        # repo = porcelain.open_repo(database)
+        # status = porcelain.status(repo)
+        # if status.unstaged !=[] or status.untracked != []:
+        if modified_files !=[] or new_files != []:
+            # modified = b", ".join(modified_files).decode()
+            # new = ", ".join(new_files)
+            response= question_window("""
+Es befinden sich lokale Änderungen in Ihrer Datenbank. Durch das Aktualisieren der Datenbank werden alle lokalen Änderungen UNWIEDERRUFLICH gelöscht!
+
+Lokale Änderungen können durch "Datei - Datenbank hochladen" online gespeichert werden. 
+
+Möchten Sie die lokalen Änderungen unwiederruflich löschen oder das Herunterladen der aktuellen Datenbank überspringen? 
+            """, titel="Lokale Änderungen löschen?", detailed_text="""
+Geänderte/Gelöschte Dateien: {0}
+Neu erstellte Dateien: {1}            
+            """.format(modified_files, new_files), buttontext_yes="Lokale Änderungen löschen", buttontext_no="Herunterladen überspringen")
+            print(response)
+            if response == False:
+                skip_download=True
+
 
     # msg = QtWidgets.QMessageBox()
     # msg.setWindowIcon(QtGui.QIcon(logo_path))
@@ -200,7 +230,7 @@ def refresh_ddb(self, selected_program=False):
     worker = Worker_RefreshDDB()
     worker.finished.connect(Dialog.close)
     worker.moveToThread(thread)
-    thread.started.connect(partial(worker.task, self, ui, selected_program))
+    thread.started.connect(partial(worker.task, self, ui, selected_program, skip_download))
     thread.start()
     thread.exit()
     Dialog.exec()
