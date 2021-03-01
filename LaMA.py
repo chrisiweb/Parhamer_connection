@@ -7,8 +7,8 @@ __lastupdate__ = "01/21"
 print("Loading...")
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QApplication
-import git
-from git import Repo, remote
+# import git
+# from git import Repo, remote
 import time
 import threading
 import sys
@@ -26,8 +26,11 @@ from functools import partial
 import yaml
 from PIL import Image  ## pillow
 import smtplib
-import urllib.request
+from urllib.request import urlopen
+from urllib.error import URLError
 from save_titlepage import create_file_titlepage, check_format_titlepage_save
+
+from git_sync import git_clone_repo
 
 from config import *
 
@@ -88,6 +91,8 @@ from lama_colors import *
 from lama_stylesheets import *
 from processing_window import Ui_Dialog_processing
 import bcrypt
+# import pygit2
+
 
 
 try:
@@ -104,68 +109,87 @@ class Worker_DownloadDatabase(QtCore.QObject):
 
     @QtCore.pyqtSlot()
     def task(self, database):
-        try:
-            # username = "chrisiweb"
-            #lama-contributor
-            # password = "access token"
-            # remote = f"https://{username}:{password}@github.com/chrisiweb/lama_latest_update.git"
-            remote = "https://github.com/chrisiweb/lama_latest_update.git"
-            git.Repo.clone_from(remote, database)
-            self.download_successfull = True
-        except git.exc.GitCommandError:
-            self.download_successfull = False
+        
+        # pygit2.clone_repository()
+        # try:
+        self.download_successfull = git_clone_repo(database)
+        #     # username = "chrisiweb"
+        #     #lama-contributor
+        #     # password = "access token"
+        #     # remote = f"https://{username}:{password}@github.com/chrisiweb/lama_latest_update.git"
+        #     remote = "https://github.com/chrisiweb/lama_latest_update.git"
+        #     git.Repo.clone_from(remote, database)
+
+        
+        # except git.exc.GitCommandError:
+        #     self.download_successfull = False
 
         self.finished.emit()       
 
+
+def check_internet_connection():
+    try:
+        urlopen('http://216.58.192.142', timeout=1) ## IP for google
+        return True
+    except URLError:
+        return False
 
 class Ui_MainWindow(object):
     global dict_picture_path  # , set_chosen_gk #, list_sage_examples#, dict_alle_aufgaben_sage
 
     def __init__(self):
-        path_programdata = os.getenv('PROGRAMDATA')
-        database = os.path.join(path_programdata, "LaMA", "_database")    
+        # path_programdata = os.getenv('PROGRAMDATA')
+        # database = os.path.join(path_programdata, "LaMA", "_database")    
         if not os.path.isdir(database):
-            Dialog_Welcome = QtWidgets.QDialog(
-                None,
-                QtCore.Qt.WindowSystemMenuHint
-                | QtCore.Qt.WindowTitleHint
-                | QtCore.Qt.WindowCloseButtonHint,
-            )
-            ui = Ui_Dialog_Welcome_Window()
-            ui.setupUi(Dialog_Welcome)
-
-            bring_to_front(Dialog_Welcome)
-
-            # self.Dialog.setFixedSize(self.Dialog.size())
-            rsp = Dialog_Welcome.exec_()
-            if rsp == 0:
-                sys.exit(0)
-            elif rsp == 1:
-                text = "Die Datenbank wird heruntergeladen.\n\nDies kann einige Minuten dauern ..."
-                Dialog = QtWidgets.QDialog()
-                ui = Ui_Dialog_processing()
-                ui.setupUi(Dialog, text, False)
-
-                thread = QtCore.QThread(Dialog)
-                worker = Worker_DownloadDatabase()
-                worker.finished.connect(Dialog.close)
-                worker.moveToThread(thread)
-                rsp = thread.started.connect(partial(worker.task, database))
-                thread.start()
-                thread.exit()
-                Dialog.exec()
-                if worker.download_successfull == False:
-                    critical_window("""
-Datenbank konnte nicht heruntergeladen werden. Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.
-
-Sollte das Problem weiterhin bestehen, melden Sie sich unter lama.helpme@gmail.com
-""")
-                    sys.exit()
-                elif worker.download_successfull == True:
-                    information_window(
-"""Die Datenbank wurde erfolgreich heruntergeladen. LaMA kann ab sofort verwendet werden!
-"""
+            while True:
+                Dialog_Welcome = QtWidgets.QDialog(
+                    None,
+                    QtCore.Qt.WindowSystemMenuHint
+                    | QtCore.Qt.WindowTitleHint
+                    | QtCore.Qt.WindowCloseButtonHint,
                 )
+                ui = Ui_Dialog_Welcome_Window()
+                ui.setupUi(Dialog_Welcome)
+
+                bring_to_front(Dialog_Welcome)
+
+                # self.Dialog.setFixedSize(self.Dialog.size())
+                rsp = Dialog_Welcome.exec_()
+                if rsp == 0:
+                    sys.exit(0)
+                elif rsp == 1:
+                    # internet_on = check_internet_connection()
+                    # if internet_on == False:
+                    #     warning_window("Kein Internet")
+                    #     sys.exit(0)
+                    
+
+                    text = "Die Datenbank wird heruntergeladen.\n\nDies kann einige Minuten dauern ..."
+                    Dialog = QtWidgets.QDialog()
+                    ui = Ui_Dialog_processing()
+                    ui.setupUi(Dialog, text, False)
+
+                    thread = QtCore.QThread(Dialog)
+                    worker = Worker_DownloadDatabase()
+                    worker.finished.connect(Dialog.close)
+                    worker.moveToThread(thread)
+                    rsp = thread.started.connect(partial(worker.task, database))
+                    thread.start()
+                    thread.exit()
+                    Dialog.exec()
+                    if worker.download_successfull == False:
+                        bring_to_front(critical_window("""
+    Datenbank konnte nicht heruntergeladen werden. Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.
+
+    Sollte das Problem weiterhin bestehen, melden Sie sich unter lama.helpme@gmail.com
+    """))
+                        continue
+                    elif worker.download_successfull == True:
+                        information_window(
+    """Die Datenbank wurde erfolgreich heruntergeladen. LaMA kann ab sofort verwendet werden!
+    """
+                        )
+                        break
 
 
 
@@ -3170,10 +3194,10 @@ Sollte das Problem weiterhin bestehen, melden Sie sich unter lama.helpme@gmail.c
         # repo.git.add(A=True)
         # repo.git.fetch('--all')
         # 
-        repo.git.reset('--hard')
+        # repo.git.reset('--hard')
         repo.git.clean('-xdf')
-        o = repo.remotes.origin        
-        o.pull()
+        # o = repo.remotes.origin        
+        # o.pull()
         print('done')
         # QtWidgets.QApplication.restoreOverrideCursor()
 

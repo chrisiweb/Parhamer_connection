@@ -2,8 +2,8 @@ from PyQt5 import QtCore, QtWidgets, QtGui
 import yaml
 import sys
 import os
-import git
-from git import Repo, remote
+# import git
+# from git import Repo, remote
 import re
 from pyqt5_minimal import Ui_WelcomeWindow
 from define_database import Ui_define_database
@@ -55,6 +55,9 @@ elif sys.platform.startswith("darwin"):
 
 # config_file = os.path.join(path_programm, "_database", "_config", "config.yml")
 config_file = os.path.join(os.path.dirname(sys.argv[0]), "config.yml")
+
+        
+database = os.path.join(path_programm, "_database")
 
 lama_settings_file = os.path.join(
             path_localappdata_lama, "Teildokument", "lama_settings"

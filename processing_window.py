@@ -38,12 +38,12 @@ class Ui_Dialog_processing(object):
             image.setObjectName("image")
             image.setPixmap(pixmap.scaled(30, 30, QtCore.Qt.KeepAspectRatio))
 
-        label = QtWidgets.QLabel(Dialog)
-        label.setObjectName("label")
-        label.setText(text)
-        label.setStyleSheet("padding: 20px")
+        self.label = QtWidgets.QLabel(Dialog)
+        self.label.setObjectName("label")
+        self.label.setText(text)
+        self.label.setStyleSheet("padding: 20px")
         label_spinner = QtWidgets.QLabel(Dialog)
-        label.setObjectName("label_spinner")
+        self.label.setObjectName("label_spinner")
         label_spinner.setFixedSize(30, 30)
         spinner = QtWaitingSpinner(label_spinner)
         spinner.setRoundness(70.0)
@@ -56,8 +56,8 @@ class Ui_Dialog_processing(object):
         # spinner.setRevolutionsPerSecond(2)
         spinner.setColor(QtCore.Qt.white)
         spinner.start()  # starts spinning
-        label.setAlignment(QtCore.Qt.AlignCenter)
+        self.label.setAlignment(QtCore.Qt.AlignCenter)
         if icon == True:
             horizontalLayout.addWidget(image)
-        horizontalLayout.addWidget(label)
+        horizontalLayout.addWidget(self.label)
         horizontalLayout.addWidget(label_spinner)
