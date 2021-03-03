@@ -127,7 +127,7 @@ class Worker_RefreshDDB(QtCore.QObject):
         if skip_download == False:
             Ui_Mainwindow.reset_successfull = git_reset_repo_to_origin(database)
         else:
-            Ui_Mainwindow.reset_successfull = True
+            Ui_Mainwindow.reset_successfull = 'skip_download'
 
         ui.label.setText("Datenbank wird aktualisiert. Bitte warten ...")
 
@@ -190,13 +190,17 @@ def refresh_ddb(self, selected_program=False):
         #         return
     skip_download=False
     if self.developer_mode_active == True:
+        
         modified_files, new_files = check_for_changes(database)
         # repo = porcelain.open_repo(database)
         # status = porcelain.status(repo)
         # if status.unstaged !=[] or status.untracked != []:
         if modified_files !=[] or new_files != []:
-            # modified = b", ".join(modified_files).decode()
-            # new = ", ".join(new_files)
+            QtWidgets.QApplication.restoreOverrideCursor()
+            modified = b", ".join(modified_files)
+            modified = modified.decode()
+            new = ", ".join(new_files)
+
             response= question_window("""
 Es befinden sich lokale Änderungen in Ihrer Datenbank. Durch das Aktualisieren der Datenbank werden alle lokalen Änderungen UNWIEDERRUFLICH gelöscht!
 
@@ -204,13 +208,13 @@ Lokale Änderungen können durch "Datei - Datenbank hochladen" online gespeicher
 
 Möchten Sie die lokalen Änderungen unwiederruflich löschen oder das Herunterladen der aktuellen Datenbank überspringen? 
             """, titel="Lokale Änderungen löschen?", detailed_text="""
-Geänderte/Gelöschte Dateien: {0}
+Geänderte/Gelöschte Dateien: {0} \n\n
 Neu erstellte Dateien: {1}            
-            """.format(modified_files, new_files), buttontext_yes="Lokale Änderungen löschen", buttontext_no="Herunterladen überspringen")
-            print(response)
-            if response == False:
-                skip_download=True
+            """.format(modified, new), buttontext_yes="Herunterladen überspringen", buttontext_no="Lokale Änderungen löschen")
 
+            if response == True:
+                skip_download=True
+            QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
     # msg = QtWidgets.QMessageBox()
     # msg.setWindowIcon(QtGui.QIcon(logo_path))
@@ -243,6 +247,10 @@ Neu erstellte Dateien: {1}
 Der neueste Stand der Datenbank konnte nicht heruntergeladen werden. Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.
 """
         )
+    elif self.reset_successfull == 'skip_download':
+        information_window("""
+Die Datenbank wurde lokal aktualisiert, aber das Herunterladen der aktuellen Datenbank übersprungen. (Lokale Änderungen wurden beibehalten)
+        """)
 
     else:
         information_window("""
