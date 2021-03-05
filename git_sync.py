@@ -1,13 +1,17 @@
 import shutil
 import os
+from config import database, path_localappdata_lama
 from dulwich import porcelain, index
 from dulwich.objectspec import parse_tree
 import stat
 import posixpath
 from urllib3.exceptions import MaxRetryError
+from datetime import datetime
+from standard_dialog_windows import information_window
+from time import sleep
 
 
-def git_clone_repo(database):
+def git_clone_repo():
     try:
         porcelain.clone("https://github.com/chrisiweb/lama_latest_update.git", database)
         return True
@@ -32,7 +36,7 @@ def list_all_files(store, treeid, base=None, list_of_all_files=None):
     return _list
 
 
-def git_reset_repo_to_origin(database):
+def git_reset_repo_to_origin():
     try:
         repo = porcelain.Repo(database)
         porcelain.fetch(repo)
@@ -67,63 +71,121 @@ def git_reset_repo_to_origin(database):
         return False
 
 
-def git_push_to_origin(database):
+
+
+def create_dir_if_not_existing(path):
+    if os.path.isdir(path) == False:
+        os.mkdir(path)
+
+def copy_all_changed_files(staged_files):
+    git_temp = os.path.join(database,".git", "git_temp")
+    git_temp_add = os.path.join(git_temp, "add")
+    git_temp_modify = os.path.join(git_temp, "modify")
+    if os.path.isdir(git_temp) == False:
+        create_dir_if_not_existing(git_temp)
+        create_dir_if_not_existing(git_temp_add)
+        create_dir_if_not_existing(git_temp_modify)
+
+    with open(os.path.join(database, ".git", "git_temp", "staged_files"), "w") as file:
+        file.write(str(staged_files))
+
+    if staged_files['add'] != []:
+        for all in staged_files['add']:
+            filename=os.path.basename(all)
+            shutil.copyfile(os.path.join(database,all.decode()), os.path.join(git_temp_add, filename.decode()))
+    # if staged_files['delete'] != []:
+    #     for all in staged_files['delete']:
+    #         filename=os.path.basename(all)
+    #         shutil.copyfile(os.path.join(path_programm,"_database" ,all.decode()), os.path.join(git_temp_delete, filename.decode()))
+    if staged_files['modify'] != []:
+        for all in staged_files['modify']:
+            filename=os.path.basename(all)
+            shutil.copyfile(os.path.join(database,all.decode()), os.path.join(git_temp_modify, filename.decode()))
+
+
+def restore_all_changes():
+    with open(os.path.join(database, ".git", "git_temp", "staged_files"), "r") as file:
+        staged_files = file.read()
+    staged_files = eval(staged_files)
+
+    git_temp = os.path.join(database,".git", "git_temp")
+    git_temp_add = os.path.join(git_temp, "add")
+    git_temp_modify = os.path.join(git_temp, "modify")
+
+    for all in staged_files['add']:
+        filename=os.path.basename(all)
+        backup_path = os.path.join(git_temp_add, filename.decode())
+        move_path = os.path.join(database, all.decode())
+        shutil.move(backup_path, move_path)
+
+    for all in staged_files['delete']:
+        remove_path = os.path.join(database, all.decode())
+        os.remove(remove_path)
+
+    for all in staged_files['modify']:
+        filename=os.path.basename(all)
+        backup_path = os.path.join(git_temp_modify, filename.decode())
+        move_path = os.path.join(database, all.decode())
+        shutil.move(backup_path, move_path)
+
+
+def git_push_to_origin(ui):
+        local_appdata = os.getenv('LOCALAPPDATA')
+        access_token_file = os.path.join(os.getenv('LOCALAPPDATA'),"LaMA", "credentials","access_token.txt")
+        credentials_file = os.path.join(os.getenv('LOCALAPPDATA'),"LaMA", "credentials","developer_credentials.txt")
+        with open(credentials_file, "r", encoding="utf-8") as f:
+            credentials = f.read()
+        access_token = credentials + "5f96d9808ebbc5adbf2b56b1f8aaf4"
+
         repo = porcelain.open_repo(database)
         path_origin = os.path.join(database, ".git", "refs","remotes","origin", "master")
         path_head = os.path.join(database, ".git", "refs","heads","master")
-
+        
         status = porcelain.status(repo)
         repo.stage(status.unstaged + status.untracked)
+
         if status.unstaged==[] and status.untracked == []:
-            print('No changes detected!')
-            return
-        # repo.stage(status.unstaged + status.untracked)
-        status = porcelain.status(repo)
-        print(status.staged)
-
-        print('copy files')
-        self.copy_all_changed_files(status.staged)
-        print('reset to origin/master')
+            # information_window("Es wurden keine Änderungen gefunden.")
+            return False
         
-        self.pushButton_pull_clicked()
-        # porcelain.fetch(repo)
-        # porcelain.reset(repo, "hard", treeish=b"refs/remotes/origin/master")
+        try:
+            ui.label.setText("Datenbank hochladen ... (1%)")
+
+            status = porcelain.status(repo)
+            ui.label.setText("Datenbank hochladen ... (21%)")
+
+            copy_all_changed_files(status.staged)
+            ui.label.setText("Datenbank hochladen ... (22%)")
+
+            git_reset_repo_to_origin()
+            ui.label.setText("Datenbank hochladen ... (53%)")
+
+            restore_all_changes()
+            shutil.copyfile(path_origin, path_head)
+            ui.label.setText("Datenbank hochladen ... (54%)")
+
+
+            status = porcelain.status(repo)
+            repo.stage(status.unstaged + status.untracked)
+            ui.label.setText("Datenbank hochladen ... (84%)")
+
+
+            time_tag = datetime.now().strftime("%Y-%m-%d (%H:%M:%S)")
+            porcelain.commit(repo, message="New LaMA Upload {}".format(time_tag))
+
+            ui.label.setText("Datenbank hochladen ... (85%)")
+
+            porcelain.push(repo,"https://lama-contributor:{}@github.com/chrisiweb/lama_latest_update.git".format(access_token),"master")
+            ui.label.setText("Datenbank hochladen ... (100%)")
+            repo.close()
+
+            sleep(1)
         
-        # porcelain.clean(repo=repo, target_dir=database)
-        print('restore all changes')
+        except Exception as e:
+            return "error"
 
-        self.restore_all_changes()
+        return True
 
-        # porcelain.add(self.repo,paths=database)
-        shutil.copyfile(path_origin, path_head)
-        print('add --all')
-        status = porcelain.status(repo)
-        print(status)
-        repo.stage(status.unstaged + status.untracked)
-        status = porcelain.status(repo)
-        print(status)
-        print('commit')
-        time_tag = datetime.now().strftime("%Y-%m-%d (%H:%M:%S)")
-        porcelain.commit(repo, message="New LaMA Upload {}".format(time_tag))
-        # shutil.copyfile(path_origin, path_head)
-        # porcelain.pull(repo, "https://github.com/chrisiweb/lama_latest_update.git","master")
-        # shutil.copyfile(path_origin, path_head)
-        # try:
-        # status = porcelain.status(repo)
-        porcelain.push(repo,"https://chrisiweb:Ewyc&gEwym0@github.com/chrisiweb/lama_latest_update.git","master") #force=True
-
-        # print('pull') 
-        # porcelain.pull(repo, "https://github.com/chrisiweb/lama_latest_update.git", "master")
-        # except porcelain.DivergedBranches:
-        #     print('diverged branches')
-        #     porcelain.pull(repo, "https://github.com/chrisiweb/lama_latest_update.git","master")
-        #     porcelain.push(repo,"https://chrisiweb:Ewyc&gEwym0@github.com/chrisiweb/lama_latest_update.git","master")
-        repo.close()
-        # self.repo.git.add(A=True)
-        # self.repo.index.commit('new commit')
-        # o = self.repo.remotes.origin
-        # o.push()
-        print('done')
 
 def check_for_changes(database):
     repo = porcelain.open_repo(database)

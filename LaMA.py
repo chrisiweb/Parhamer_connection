@@ -30,7 +30,7 @@ from urllib.request import urlopen
 from urllib.error import URLError
 from save_titlepage import create_file_titlepage, check_format_titlepage_save
 
-from git_sync import git_clone_repo
+from git_sync import git_clone_repo, git_push_to_origin
 
 from config import *
 
@@ -108,23 +108,19 @@ class Worker_DownloadDatabase(QtCore.QObject):
     finished = QtCore.pyqtSignal()
 
     @QtCore.pyqtSlot()
-    def task(self, database):
-        
-        # pygit2.clone_repository()
-        # try:
-        self.download_successfull = git_clone_repo(database)
-        #     # username = "chrisiweb"
-        #     #lama-contributor
-        #     # password = "access token"
-        #     # remote = f"https://{username}:{password}@github.com/chrisiweb/lama_latest_update.git"
-        #     remote = "https://github.com/chrisiweb/lama_latest_update.git"
-        #     git.Repo.clone_from(remote, database)
-
-        
-        # except git.exc.GitCommandError:
-        #     self.download_successfull = False
-
+    def task(self):
+        self.download_successfull = git_clone_repo()
         self.finished.emit()       
+
+
+class Worker_PushDatabase(QtCore.QObject):
+    finished = QtCore.pyqtSignal()
+
+    @QtCore.pyqtSlot()
+    def task(self, ui):
+        self.changes_found = git_push_to_origin(ui)
+
+        self.finished.emit()
 
 
 def check_internet_connection():
@@ -173,7 +169,7 @@ class Ui_MainWindow(object):
                     worker = Worker_DownloadDatabase()
                     worker.finished.connect(Dialog.close)
                     worker.moveToThread(thread)
-                    rsp = thread.started.connect(partial(worker.task, database))
+                    rsp = thread.started.connect(worker.task)
                     thread.start()
                     thread.exit()
                     Dialog.exec()
@@ -500,21 +496,21 @@ class Ui_MainWindow(object):
             MainWindow, self.menuHelp, "LaMA unterstützen", self.show_support
         )
 
-        self.actionPUSH = add_action(
-            MainWindow, self.menuOptionen, 'PUSH', self.git_push
-            ) 
+        # self.actionPUSH = add_action(
+        #     MainWindow, self.menuOptionen, 'PUSH', self.action_push_database
+        #     ) 
 
-        self.actionPULL = add_action(
-            MainWindow, self.menuOptionen, 'PULL', self.git_pull
-            )
+        # self.actionPULL = add_action(
+        #     MainWindow, self.menuOptionen, 'PULL', self.git_pull
+        #     )
 
-        self.actionCHECK = add_action(
-            MainWindow, self.menuOptionen, 'CHANGES?', self.git_check_changes
-            )   
+        # self.actionCHECK = add_action(
+        #     MainWindow, self.menuOptionen, 'CHANGES?', self.git_check_changes
+        #     )   
 
-        self.actionPULLREQUEST = add_action(
-            MainWindow, self.menuOptionen, "PULLREQUEST", self.git_pull_request
-        )         
+        # self.actionPULLREQUEST = add_action(
+        #     MainWindow, self.menuOptionen, "PULLREQUEST", self.git_pull_request
+        # )         
 
         if self.developer_mode_active == True:
             label = "Entwicklermodus (aktiv)"
@@ -3185,34 +3181,34 @@ class Ui_MainWindow(object):
             self.lama_settings = ui.lama_settings
 
 
-    def git_pull(self):
-        # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        path_programdata = os.getenv('PROGRAMDATA')
-        database = os.path.join(path_programdata, "LaMA", "_database")
-        repo = git.Repo(database)
-        print('pull')
-        # repo.git.add(A=True)
-        # repo.git.fetch('--all')
-        # 
-        # repo.git.reset('--hard')
-        repo.git.clean('-xdf')
-        # o = repo.remotes.origin        
-        # o.pull()
-        print('done')
+    # def git_pull(self):
+    #     # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+    #     path_programdata = os.getenv('PROGRAMDATA')
+    #     database = os.path.join(path_programdata, "LaMA", "_database")
+    #     repo = git.Repo(database)
+    #     print('pull')
+    #     # repo.git.add(A=True)
+    #     # repo.git.fetch('--all')
+    #     # 
+    #     # repo.git.reset('--hard')
+    #     repo.git.clean('-xdf')
+    #     # o = repo.remotes.origin        
+    #     # o.pull()
+    #     print('done')
         # QtWidgets.QApplication.restoreOverrideCursor()
 
-    def git_push(self):
-        # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        path_programdata = os.getenv('PROGRAMDATA')
-        database = os.path.join(path_programdata, "LaMA", "_database")
-        repo = git.Repo(database)
-        print('push')
-        repo.git.add(A=True)
-        repo.index.commit('new commit')
-        o = repo.remotes.origin
-        o.push()
-        print('done')
-        # QtWidgets.QApplication.restoreOverrideCursor()
+    # def git_push(self):
+    #     # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+    #     path_programdata = os.getenv('PROGRAMDATA')
+    #     database = os.path.join(path_programdata, "LaMA", "_database")
+    #     repo = git.Repo(database)
+    #     print('push')
+    #     repo.git.add(A=True)
+    #     repo.index.commit('new commit')
+    #     o = repo.remotes.origin
+    #     o.push()
+    #     print('done')
+    #     # QtWidgets.QApplication.restoreOverrideCursor()
 
     def git_check_changes(self):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
@@ -4702,24 +4698,44 @@ class Ui_MainWindow(object):
         self.adapt_choosing_list("sage")
     
     def action_push_database(self):
-        path_programdata = os.getenv('PROGRAMDATA')
-        database = os.path.join(path_programdata, "LaMA", "_database")
-        repo = git.Repo(database)
-        if not repo.is_dirty(untracked_files=True):
-            information_window("Es wurden keine Änderungen an der Datenbank vorgenommen.")
-            return
+        text = "Änderungen überprüfen ..."
+        Dialog = QtWidgets.QDialog()
+        ui = Ui_Dialog_processing()
+        ui.setupUi(Dialog, text)
 
-        response = question_window("Sind Sie sicher, dass Sie die Datenbank hochladen möchten?")
-        if response == False:
-            return
+        thread = QtCore.QThread(Dialog)
+        worker = Worker_PushDatabase()
+        worker.finished.connect(Dialog.close)
+        worker.moveToThread(thread)
+        rsp = thread.started.connect(partial(worker.task, ui))
+        thread.start()
+        thread.exit()
+        Dialog.exec()
+        
+        if worker.changes_found == False:
+            information_window("Es wurden keine Änderungen gefunden.")
+        elif worker.changes_found == 'error':
+            critical_window("Es ist ein Fehler aufgetreten. Die Datenbank konnte nicht hochgeladen werden. Bitte versuchen Sie es später erneut.")
+        else:
+            information_window("Die Datenbank wurde erfolgreich hochgeladen.")
+        # path_programdata = os.getenv('PROGRAMDATA')
+        # database = os.path.join(path_programdata, "LaMA", "_database")
+        # repo = git.Repo(database)
+        # if not repo.is_dirty(untracked_files=True):
+        #     information_window("Es wurden keine Änderungen an der Datenbank vorgenommen.")
+        #     return
 
-        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))       
-        repo.git.add(A=True)
-        repo.index.commit('new commit')
-        o = repo.remotes.origin
-        o.push()
-        QtWidgets.QApplication.restoreOverrideCursor()
-        information_window("Die Datenbank wurde erfolgreich hochgeladen.")
+        # response = question_window("Sind Sie sicher, dass Sie die Datenbank hochladen möchten?")
+        # if response == False:
+        #     return
+
+        # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))       
+        # repo.git.add(A=True)
+        # repo.index.commit('new commit')
+        # o = repo.remotes.origin
+        # o.push()
+        # QtWidgets.QApplication.restoreOverrideCursor()
+        # information_window("Die Datenbank wurde erfolgreich hochgeladen.")
 
 
     def define_beispieldaten_dateipfad(self, typ):

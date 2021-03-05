@@ -122,15 +122,13 @@ class Worker_RefreshDDB(QtCore.QObject):
 
     @QtCore.pyqtSlot()
     def task(self, Ui_Mainwindow, ui, selected_program, skip_download=False):
-
         ### RESET LOKAL REPO TO ORIGIN
         if skip_download == False:
-            Ui_Mainwindow.reset_successfull = git_reset_repo_to_origin(database)
+            Ui_Mainwindow.reset_successfull = git_reset_repo_to_origin()
+
+            ui.label.setText("Datenbank wird aktualisiert. Bitte warten ...")
         else:
             Ui_Mainwindow.reset_successfull = 'skip_download'
-
-        ui.label.setText("Datenbank wird aktualisiert. Bitte warten ...")
-
         collect_all_exisiting_files(Ui_Mainwindow, selected_program)
 
      
@@ -214,6 +212,7 @@ Neu erstellte Dateien: {1}
 
             if response == True:
                 skip_download=True
+                
             QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
     # msg = QtWidgets.QMessageBox()
@@ -225,7 +224,10 @@ Neu erstellte Dateien: {1}
     # msg.show()
     # QApplication.processEvents()
 
-    text = "Neuester Stand der Datenbank wird heruntergeladen. Bitte warten ..."
+    if skip_download == False:
+        text = "Neuester Stand der Datenbank wird heruntergeladen. Bitte warten ..."
+    else:
+        text = "Datenbank wird aktualisiert. Bitte warten ..."
     Dialog = QtWidgets.QDialog()
     ui = Ui_Dialog_processing()
     ui.setupUi(Dialog, text)
@@ -249,7 +251,7 @@ Der neueste Stand der Datenbank konnte nicht heruntergeladen werden. Stellen Sie
         )
     elif self.reset_successfull == 'skip_download':
         information_window("""
-Die Datenbank wurde lokal aktualisiert, aber das Herunterladen der aktuellen Datenbank übersprungen. (Lokale Änderungen wurden beibehalten)
+Die Datenbank wurde lokal aktualisiert ohne sie durch die Online-Datenbank zu überschreiben. (Lokale Änderungen wurden somit beibehalten.)
         """)
 
     else:
