@@ -25,7 +25,7 @@ jobs:
         pip install pyqt5
         pip install pyyaml
         pip install pillow
-        pip install gitpython
+        pip install dulwich
         pip install bcrypt
     - name: Build with pyinstaller
       if: matrix.os != 'windows-latest'
