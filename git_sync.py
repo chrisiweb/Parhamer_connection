@@ -135,7 +135,7 @@ def git_push_to_origin(ui):
         credentials_file = os.path.join(os.getenv('LOCALAPPDATA'),"LaMA", "credentials","developer_credentials.txt")
         with open(credentials_file, "r", encoding="utf-8") as f:
             credentials = f.read()
-        access_token = credentials + "5f96d9808ebbc5adbf2b56b1f8aaf4"
+        access_token = credentials + "fb108a54304efc048194479ec86912"
 
         repo = porcelain.open_repo(database)
         path_origin = os.path.join(database, ".git", "refs","remotes","origin", "master")
@@ -182,6 +182,7 @@ def git_push_to_origin(ui):
             sleep(1)
         
         except Exception as e:
+            print(e)
             return "error"
 
         return True

@@ -1924,13 +1924,12 @@ class Ui_Dialog_developer(object):
 
     def save_password(self):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        # password = b"ABCabc123!"
-        # hashed = bcrypt.hashpw(password, bcrypt.gensalt())
+
 
         hashed_pw = read_credentials()
-
+        # print(hashed_pw)
         password = self.lineedit_developer.text().encode('utf-8')
-         
+        # print(password)
         if bcrypt.checkpw(password, hashed_pw):
             if self.checkbox_developer.isChecked():
                 path_lama_developer_credentials = os.path.join(os.getenv('LOCALAPPDATA'), "LaMA", "credentials")
