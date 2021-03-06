@@ -26,11 +26,11 @@ from functools import partial
 import yaml
 from PIL import Image  ## pillow
 import smtplib
-from urllib.request import urlopen
-from urllib.error import URLError
+# from urllib.request import urlopen
+# from urllib.error import URLError
 from save_titlepage import create_file_titlepage, check_format_titlepage_save
 
-from git_sync import git_clone_repo, git_push_to_origin
+from git_sync import git_clone_repo, git_push_to_origin, check_internet_connection
 
 from config import *
 
@@ -123,12 +123,7 @@ class Worker_PushDatabase(QtCore.QObject):
         self.finished.emit()
 
 
-def check_internet_connection():
-    try:
-        urlopen('http://216.58.192.142', timeout=1) ## IP for google
-        return True
-    except URLError:
-        return False
+
 
 class Ui_MainWindow(object):
     global dict_picture_path  # , set_chosen_gk #, list_sage_examples#, dict_alle_aufgaben_sage
@@ -4209,10 +4204,11 @@ class Ui_MainWindow(object):
                             max_integer_file = int(file_integer)
 
         except FileNotFoundError:
-            critical_window(
-                'Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und\nmuss zuerst für Sie freigegeben werden.',
-                "Derzeit können keine neuen Aufgaben eingegeben werden.\nBitte melden Sie sich unter lama.helpme@gmail.com!",
-            )
+            print('No Beispieleinreichordner')
+            # critical_window(
+            #     'Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und\nmuss zuerst für Sie freigegeben werden.',
+            #     "Derzeit können keine neuen Aufgaben eingegeben werden.\nBitte melden Sie sich unter lama.helpme@gmail.com!",
+            # )
 
         return max_integer_file
 
@@ -4620,7 +4616,9 @@ class Ui_MainWindow(object):
         abs_path_file = os.path.join(save_dateipfad, file_name)
 
         section = self.create_section(typ_save)
-
+        print(self.max_integer_file)
+        print(abs_path_file)
+        return
         with open(abs_path_file, "w", encoding="utf8") as file:
             file.write(section + "\n\n")
             if self.chosen_program == "cria":
@@ -4698,7 +4696,12 @@ class Ui_MainWindow(object):
         self.adapt_choosing_list("sage")
     
     def action_push_database(self):
-        text = "Änderungen überprüfen ..."
+        if check_internet_connection()==False:
+            critical_window("""
+Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.
+            """, titel="Keine Internetverbindung")
+            return
+        text = "Änderungen überprüfen ..." 
         Dialog = QtWidgets.QDialog()
         ui = Ui_Dialog_processing()
         ui.setupUi(Dialog, text)

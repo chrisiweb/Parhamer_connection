@@ -10,8 +10,8 @@ from translate import _fromUtf8, _translate
 from sort_items import natural_keys, lama_order
 from processing_window import Ui_Dialog_processing
 from standard_dialog_windows import question_window
-from git_sync import git_reset_repo_to_origin, check_for_changes
-from standard_dialog_windows import warning_window, information_window, question_window
+from git_sync import git_reset_repo_to_origin, check_for_changes, check_internet_connection
+from standard_dialog_windows import warning_window, information_window, question_window, critical_window
 # import git
 # from git import Repo, remote
 
@@ -226,6 +226,14 @@ Neu erstellte Dateien: {1}
 
     if skip_download == False:
         text = "Neuester Stand der Datenbank wird heruntergeladen. Bitte warten ..."
+        if check_internet_connection()==False:
+            QtWidgets.QApplication.restoreOverrideCursor()
+            critical_window("""
+Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.
+            """, titel="Keine Internetverbindung")
+            QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+            skip_download = True
+            
     else:
         text = "Datenbank wird aktualisiert. Bitte warten ..."
     Dialog = QtWidgets.QDialog()
@@ -250,9 +258,15 @@ Der neueste Stand der Datenbank konnte nicht heruntergeladen werden. Stellen Sie
 """
         )
     elif self.reset_successfull == 'skip_download':
-        information_window("""
+        if self.developer_mode_active == True:
+            text = """
 Die Datenbank wurde lokal aktualisiert ohne sie durch die Online-Datenbank zu überschreiben. (Lokale Änderungen wurden somit beibehalten.)
-        """)
+            """
+#         else:
+#             text = """
+# Die Datenbank wurde offline aktualisiert. Um den aktuellen Stand der Datenbank herunterladen, stellen Sie zuvor eine Verbindung zum Internet her und versuchen Sie es erneut.
+#             """
+            information_window(text)
 
     else:
         information_window("""
