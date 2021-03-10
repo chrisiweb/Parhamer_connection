@@ -5,6 +5,8 @@ __version__ = "v2.3.0"
 __lastupdate__ = "01/21"
 ##################
 print("Loading...")
+import start_window
+from config_start import path_programm, path_localappdata_lama, lama_settings_file, database
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QApplication
 # import git
@@ -32,7 +34,6 @@ from save_titlepage import create_file_titlepage, check_format_titlepage_save
 
 from git_sync import git_clone_repo, git_push_to_origin, check_internet_connection
 
-from config_start import path_programm, path_localappdata_lama, lama_settings_file, database
 from config import *
 
 from create_new_widgets import *

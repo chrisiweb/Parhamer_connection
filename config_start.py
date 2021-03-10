@@ -2,6 +2,7 @@ import sys
 import os
 
 
+
 if sys.platform.startswith("win"):
     ##### NOT IN USE ! (Working!) - Activate when installer is used!
     # path_localappdata = os.getenv('LOCALAPPDATA')
@@ -51,3 +52,5 @@ database = os.path.join(path_programm, "_database")
 lama_settings_file = os.path.join(
             path_localappdata_lama, "Teildokument", "lama_settings"
         )
+
+
