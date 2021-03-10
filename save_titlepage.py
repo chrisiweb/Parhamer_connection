@@ -1,6 +1,6 @@
 import os
 import json
-from config import path_programm, path_localappdata_lama
+from config_start import path_programm, path_localappdata_lama
 
 def create_file_titlepage(titlepage_save):
     if os.path.isfile(titlepage_save):

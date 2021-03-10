@@ -5,7 +5,8 @@ import datetime
 from datetime import date
 import json
 from functools import partial
-from config import config_file, config_loader, logo_path, path_programm, path_localappdata_lama, database
+from config_start import path_programm, path_localappdata_lama, database
+from config import config_file, config_loader, logo_path
 from translate import _fromUtf8, _translate
 from sort_items import natural_keys, lama_order
 from processing_window import Ui_Dialog_processing

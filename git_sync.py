@@ -1,6 +1,6 @@
 import shutil
 import os
-from config import database, path_localappdata_lama
+from config_start import database, path_localappdata_lama
 from dulwich import porcelain, index
 from dulwich.objectspec import parse_tree
 import stat

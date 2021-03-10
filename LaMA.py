@@ -32,6 +32,7 @@ from save_titlepage import create_file_titlepage, check_format_titlepage_save
 
 from git_sync import git_clone_repo, git_push_to_origin, check_internet_connection
 
+from config_start import path_programm, path_localappdata_lama, lama_settings_file, database
 from config import *
 
 from create_new_widgets import *
@@ -91,7 +92,7 @@ from lama_colors import *
 from lama_stylesheets import *
 from processing_window import Ui_Dialog_processing
 import bcrypt
-# import pygit2
+
 
 
 

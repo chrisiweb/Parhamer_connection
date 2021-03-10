@@ -7,16 +7,14 @@ import re
 import json
 import subprocess
 from functools import partial
+from config_start import path_programm, path_localappdata_lama, lama_settings_file
 from config import (
     colors_ui,
-    lama_settings_file,
     get_color,
     config_file,
     config_loader,
     logo_path,
     logo_cria_button_path,
-    path_programm,
-    path_localappdata_lama,
     is_empty,
     split_section,
 )

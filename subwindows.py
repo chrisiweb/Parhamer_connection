@@ -5,14 +5,12 @@ import json
 import re
 from string import ascii_lowercase
 from functools import partial
+from config_start import path_programm, path_localappdata_lama, lama_settings_file
 from config import (
     config_loader,
-    lama_settings_file,
     config_file,
     colors_ui,
     get_color,
-    path_programm,
-    path_localappdata_lama,
     logo_path,
     logo_cria_button_path,
     is_empty,
