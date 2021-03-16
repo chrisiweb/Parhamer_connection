@@ -103,8 +103,6 @@ except IndexError:
     loaded_lama_file_path = ""
 
 
-dict_picture_path = {}
-
 
 class Worker_DownloadDatabase(QtCore.QObject):
     finished = QtCore.pyqtSignal()
@@ -128,64 +126,9 @@ class Worker_PushDatabase(QtCore.QObject):
 
 
 class Ui_MainWindow(object):
-    global dict_picture_path  # , set_chosen_gk #, list_sage_examples#, dict_alle_aufgaben_sage
+    # global dict_picture_path  # , set_chosen_gk #, list_sage_examples#, dict_alle_aufgaben_sage
 
     def __init__(self):
-        # path_programdata = os.getenv('PROGRAMDATA')
-        # database = os.path.join(path_programdata, "LaMA", "_database")    
-        if not os.path.isdir(database):
-            while True:
-                Dialog_Welcome = QtWidgets.QDialog(
-                    None,
-                    QtCore.Qt.WindowSystemMenuHint
-                    | QtCore.Qt.WindowTitleHint
-                    | QtCore.Qt.WindowCloseButtonHint,
-                )
-                ui = Ui_Dialog_Welcome_Window()
-                ui.setupUi(Dialog_Welcome)
-
-                bring_to_front(Dialog_Welcome)
-
-                # self.Dialog.setFixedSize(self.Dialog.size())
-                rsp = Dialog_Welcome.exec_()
-                if rsp == 0:
-                    sys.exit(0)
-                elif rsp == 1:
-                    # internet_on = check_internet_connection()
-                    # if internet_on == False:
-                    #     warning_window("Kein Internet")
-                    #     sys.exit(0)
-                    
-
-                    text = "Die Datenbank wird heruntergeladen.\n\nDies kann einige Minuten dauern ..."
-                    Dialog = QtWidgets.QDialog()
-                    ui = Ui_Dialog_processing()
-                    ui.setupUi(Dialog, text, False)
-
-                    thread = QtCore.QThread(Dialog)
-                    worker = Worker_DownloadDatabase()
-                    worker.finished.connect(Dialog.close)
-                    worker.moveToThread(thread)
-                    rsp = thread.started.connect(worker.task)
-                    thread.start()
-                    thread.exit()
-                    Dialog.exec()
-                    if worker.download_successfull == False:
-                        bring_to_front(critical_window("""
-    Datenbank konnte nicht heruntergeladen werden. Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.
-
-    Sollte das Problem weiterhin bestehen, melden Sie sich unter lama.helpme@gmail.com
-    """))
-                        continue
-                    elif worker.download_successfull == True:
-                        information_window(
-    """Die Datenbank wurde erfolgreich heruntergeladen. LaMA kann ab sofort verwendet werden!
-    """
-                        )
-                        break
-
-
-
         self.dict_alle_aufgaben_sage = {}
         self.list_alle_aufgaben_sage = []
         self.dict_widget_variables = {}
@@ -197,6 +140,7 @@ class Ui_MainWindow(object):
         self.dict_sage_individual_change = {}
         self.dict_chosen_topics = {}
         self.list_copy_images = []
+        self.dict_picture_path = {}
 
         hashed_pw = read_credentials()
         path_lama_developer_credentials = os.path.join(os.getenv('LOCALAPPDATA'), "LaMA", "credentials")
@@ -207,7 +151,7 @@ class Ui_MainWindow(object):
                 password = file.read()
             if bcrypt.checkpw(password, hashed_pw):
                 self.developer_mode_active = True
-        print(self.developer_mode_active)   
+        # print(self.developer_mode_active)   
         # with open(lama)
         # self.developer_mode_active = False
 
@@ -2852,8 +2796,6 @@ class Ui_MainWindow(object):
 
     def suchfenster_reset(self, variation=False):
 
-        global dict_picture_path
-
         self.uncheck_all_checkboxes("gk")
 
         self.uncheck_all_checkboxes("themen")
@@ -3241,6 +3183,21 @@ class Ui_MainWindow(object):
             titel="Über LaMA - LaTeX Mathematik Assistent",
         )
 
+    def copy_srdpmathematik(self, path_new_package, possible_locations):
+        for path in possible_locations:
+            for root, dirs, files in os.walk(path):
+                for file in files:
+                    if file == "srdp-mathematik.sty":
+                        path_file = os.path.join(root, file)
+                        try:
+                            shutil.copy2(path_new_package, path_file)
+                            return True
+                        except PermissionError:
+                            warning_window("Das Update konnte leider nicht durchgeführt werden, da notwendige Berechtigungen fehlen. Starten Sie LaMA erneut als Administrator (Rechtsklick -> 'Als Administrator ausführen') und versuchen Sie es erneut.")
+                            return False
+        return False
+
+
     def update_srdpmathematik(self):
         response = question_window('Sind Sie sicher, dass Sie das Paket "srdp-mathematik.sty" aktualisieren möchten?')
         
@@ -3268,6 +3225,11 @@ class Ui_MainWindow(object):
         # mac_path = os.path.join(path_home, "Library","texmf","tex","latex","srdp-mathematik.sty")
         # print(mac_path)
         # print(os.path.isfile(mac_path))
+        
+        paket_teildokument = os.path.join(path_programm, "Teildokument", "srdp-mathematik.sty")
+        if os.path.isfile(paket_teildokument):
+            os.remove(paket_teildokument)
+
 
         if sys.platform.startswith("darwin") or sys.platform.startswith("linux"):
             possible_locations = [
@@ -3277,24 +3239,20 @@ class Ui_MainWindow(object):
             possible_locations = [
                 os.path.join("c:\\","Program Files","MiKTeX 2.9"),
                 os.path.join("c:\\","Program Files (x86)","MiKTeX 2.9"),
-                os.path.join(path_home, "AppData", "Roaming", "MiKTeX")
+                os.path.join(path_home, "AppData", "Roaming", "MiKTeX"),
+                os.path.join(path_home, "AppData", "Local", "Programs", "MiKTeX"),
+                os.path.join(path_home, "AppData"),
                 # os.path.join(
                 # "C:\Users\Christoph\AppData\Roaming\MiKTeX\2.9\tex\latex\srdp-mathematik\srdp-mathematik.sty
             ]
 
-        update_successfull=False
-        for path in possible_locations:
-            for root, dirs, files in os.walk(path):
-                for file in files:
-                    if file == "srdp-mathematik.sty":
-                        path_file = os.path.join(root, file)
-                        try:
-                            shutil.copy2(path_new_package, path_file)
-                        except PermissionError:
-                            warning_window("Das Update konnte leider nicht durchgeführt werden, da notwendige Berechtigungen fehlen. Starten Sie LaMA erneut als Administrator (Rechtsklick -> 'Als Administrator ausführen') und versuchen Sie es erneut.")
-                            return
-                        update_successfull=True
+        # update_successfull=False
+        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
+        update_successfull = self.copy_srdpmathematik(path_new_package, possible_locations)
+
+        QtWidgets.QApplication.restoreOverrideCursor()
+        
         if update_successfull == False:
             critical_window("Das Update konnte leider nicht durchgeführt werden. Aktualisieren Sie das Paket manuell oder wenden Sie sich an lama.helpme@gmail.com für Unterstützung.")
             return
@@ -3772,17 +3730,17 @@ class Ui_MainWindow(object):
             return
         self.saved_file_path = os.path.dirname(list_filename[0][0])
 
-        i = len(dict_picture_path)
+        i = len(self.dict_picture_path)
 
         self.label_bild_leer.hide()
         for all in list_filename[0]:
             head, tail = os.path.split(all)
 
-            if tail in dict_picture_path.keys():
+            if tail in self.dict_picture_path.keys():
                 pass
             else:
                 head, tail = os.path.split(all)
-                dict_picture_path[tail] = all
+                self.dict_picture_path[tail] = all
                 label_picture = create_new_label(
                     self.scrollAreaWidgetContents_bilder, tail, False, True
                 )
@@ -3794,9 +3752,9 @@ class Ui_MainWindow(object):
                 self.verticalLayout.addWidget(label_picture)
 
     def del_picture(self, picture):
-        del dict_picture_path[self.dict_widget_variables[picture].text()]
+        del self.dict_picture_path[self.dict_widget_variables[picture].text()]
         self.dict_widget_variables[picture].hide()
-        if len(dict_picture_path) == 0:
+        if len(self.dict_picture_path) == 0:
             self.label_bild_leer.show()
 
         del self.dict_widget_variables[picture]
@@ -3877,7 +3835,7 @@ class Ui_MainWindow(object):
 
     def check_included_attached_image_ratio(self):
         included = self.get_number_of_included_images()
-        attached = len(dict_picture_path)
+        attached = len(self.dict_picture_path)
         return included, attached
 
     def check_entry_creator(self):
@@ -3963,8 +3921,8 @@ class Ui_MainWindow(object):
         return titel_themen, themen
 
     def create_information_bilder(self):
-        if dict_picture_path != {}:
-            bilder = ", ".join(dict_picture_path)
+        if self.dict_picture_path != {}:
+            bilder = ", ".join(self.dict_picture_path)
             bilder = "\n\nBilder: {}".format(bilder)
         else:
             bilder = ""
@@ -4262,7 +4220,7 @@ class Ui_MainWindow(object):
 
     def replace_image_name(self, typ_save):
         textBox_Entry = self.plainTextEdit.toPlainText()
-        for old_image_name in dict_picture_path:
+        for old_image_name in self.dict_picture_path:
             string = "{" + old_image_name + "}"
 
             new_image_name = self.edit_image_name(typ_save, old_image_name)
@@ -4285,7 +4243,7 @@ class Ui_MainWindow(object):
         return [True, textBox_Entry]
 
     def copy_image_save(self, typ_save, parent_image_path):
-        for old_image_path in list(dict_picture_path.values()):
+        for old_image_path in list(self.dict_picture_path.values()):
             old_image_name = os.path.basename(old_image_path)
             new_image_name = self.edit_image_name(typ_save, old_image_name)
             # print(new_image_name)

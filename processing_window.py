@@ -14,9 +14,7 @@ class Ui_Dialog_processing(object):
     def setupUi(self, Dialog, text, icon=True):
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
-        Dialog.setWindowFlags(
-            QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint
-        )
+
         Dialog.setWindowTitle("Lade...")
         Dialog.setStyleSheet(
             "background-color: {}; color: white".format(get_color(blue_7))
@@ -26,6 +24,11 @@ class Ui_Dialog_processing(object):
         if icon == True:
             pixmap = QtGui.QPixmap(logo_path)
             Dialog.setWindowIcon(QtGui.QIcon(logo_path))
+            Dialog.setWindowFlags(
+                QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint
+            )
+        else:
+            Dialog.setWindowFlags(QtCore.Qt.Dialog | QtCore.Qt.CustomizeWindowHint | QtCore.Qt.WindowTitleHint)
         # Dialog.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed))
         horizontalLayout = QtWidgets.QHBoxLayout(Dialog)
         horizontalLayout.setObjectName("horizontal")
