@@ -3116,6 +3116,21 @@ class Ui_MainWindow(object):
             titel="Über LaMA - LaTeX Mathematik Assistent",
         )
 
+    def copy_srdpmathematik(self, path_new_package, possible_locations):
+        for path in possible_locations:
+            for root, dirs, files in os.walk(path):
+                for file in files:
+                    if file == "srdp-mathematik.sty":
+                        path_file = os.path.join(root, file)
+                        try:
+                            shutil.copy2(path_new_package, path_file)
+                            return True
+                        except PermissionError:
+                            warning_window("Das Update konnte leider nicht durchgeführt werden, da notwendige Berechtigungen fehlen. Starten Sie LaMA erneut als Administrator (Rechtsklick -> 'Als Administrator ausführen') und versuchen Sie es erneut.")
+                            return False
+        return False
+
+
     def update_srdpmathematik(self):
         response = question_window('Sind Sie sicher, dass Sie das Paket "srdp-mathematik.sty" aktualisieren möchten?')
         
@@ -3143,6 +3158,11 @@ class Ui_MainWindow(object):
         # mac_path = os.path.join(path_home, "Library","texmf","tex","latex","srdp-mathematik.sty")
         # print(mac_path)
         # print(os.path.isfile(mac_path))
+        
+        paket_teildokument = os.path.join(path_programm, "Teildokument", "srdp-mathematik.sty")
+        if os.path.isfile(paket_teildokument):
+            os.remove(paket_teildokument)
+
 
         if sys.platform.startswith("darwin") or sys.platform.startswith("linux"):
             possible_locations = [
@@ -3152,24 +3172,20 @@ class Ui_MainWindow(object):
             possible_locations = [
                 os.path.join("c:\\","Program Files","MiKTeX 2.9"),
                 os.path.join("c:\\","Program Files (x86)","MiKTeX 2.9"),
-                os.path.join(path_home, "AppData", "Roaming", "MiKTeX")
+                os.path.join(path_home, "AppData", "Roaming", "MiKTeX"),
+                os.path.join(path_home, "AppData", "Local", "Programs", "MiKTeX"),
+                os.path.join(path_home, "AppData"),
                 # os.path.join(
                 # "C:\Users\Christoph\AppData\Roaming\MiKTeX\2.9\tex\latex\srdp-mathematik\srdp-mathematik.sty
             ]
 
-        update_successfull=False
-        for path in possible_locations:
-            for root, dirs, files in os.walk(path):
-                for file in files:
-                    if file == "srdp-mathematik.sty":
-                        path_file = os.path.join(root, file)
-                        try:
-                            shutil.copy2(path_new_package, path_file)
-                        except PermissionError:
-                            warning_window("Das Update konnte leider nicht durchgeführt werden, da notwendige Berechtigungen fehlen. Starten Sie LaMA erneut als Administrator (Rechtsklick -> 'Als Administrator ausführen') und versuchen Sie es erneut.")
-                            return
-                        update_successfull=True
+        # update_successfull=False
+        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
+        update_successfull = self.copy_srdpmathematik(path_new_package, possible_locations)
+
+        QtWidgets.QApplication.restoreOverrideCursor()
+        
         if update_successfull == False:
             critical_window("Das Update konnte leider nicht durchgeführt werden. Aktualisieren Sie das Paket manuell oder wenden Sie sich an lama.helpme@gmail.com für Unterstützung.")
             return
