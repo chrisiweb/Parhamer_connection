@@ -4089,26 +4089,26 @@ class Ui_MainWindow(object):
                 max_int = int(split_file[1])
                 if max_int > max_integer_file:
                     max_integer_file = max_int
-        path_beispieleinreichung = self.get_path_beispieleinreichung()
-        for path, dirs, files in os.walk(path_beispieleinreichung):
-            for all in files:
-                if re.match("{}\[.+\].tex".format(variation_of), all):
-                    split_file = re.split("\[|\]", all)
-                    max_int = int(split_file[1])
-                    if max_int > max_integer_file:
-                        max_integer_file = max_int
+        # path_beispieleinreichung = self.get_path_beispieleinreichung()
+        # for path, dirs, files in os.walk(path_beispieleinreichung):
+        #     for all in files:
+        #         if re.match("{}\[.+\].tex".format(variation_of), all):
+        #             split_file = re.split("\[|\]", all)
+        #             max_int = int(split_file[1])
+        #             if max_int > max_integer_file:
+        #                 max_integer_file = max_int
         return max_integer_file
 
-    def check_files_beispieleinreichung_variation(self, max_integer_file):
-        path = self.get_path_beispieleinreichung()
+    # def check_files_beispieleinreichung_variation(self, max_integer_file):
+    #     path = self.get_path_beispieleinreichung()
 
     def get_max_integer_file(self, typ_save, path):
         max_integer_file = self.check_files_path(typ_save, path)
         
-        if typ_save[0] != "local" and typ_save != ['admin',1]:
-            max_integer_file = self.check_files_beispieleinreichung(
-                typ_save, max_integer_file
-            )
+        # if typ_save[0] != "local" and typ_save != ['admin',1]:
+        #     max_integer_file = self.check_files_beispieleinreichung(
+        #         typ_save, max_integer_file
+        #     )
 
         return max_integer_file
 
@@ -4131,46 +4131,46 @@ class Ui_MainWindow(object):
 
         return max_integer_file
 
-    def get_path_beispieleinreichung(self):
-        list_path = [path_programm, "Beispieleinreichung"]
-        if self.chosen_program == "cria":
-            highest_grade = self.get_highest_grade()
-            list_path.append(highest_grade)
+    # def get_path_beispieleinreichung(self):
+    #     list_path = [path_programm, "Beispieleinreichung"]
+    #     if self.chosen_program == "cria":
+    #         highest_grade = self.get_highest_grade()
+    #         list_path.append(highest_grade)
 
-        path = self.create_path_from_list(list_path)
-        return path
+    #     path = self.create_path_from_list(list_path)
+    #     return path
 
-    def check_files_beispieleinreichung(self, typ_save, max_integer_file):
-        path = self.get_path_beispieleinreichung()
+    # def check_files_beispieleinreichung(self, typ_save, max_integer_file):
+    #     path = self.get_path_beispieleinreichung()
 
-        if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-            typ = 1
-            name = self.list_selected_topics_creator[0]
+    #     if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+    #         typ = 1
+    #         name = self.list_selected_topics_creator[0]
 
-        if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
-            typ = 2
-        try:
-            for all in os.listdir(path):
-                if all.endswith(".tex"):
-                    file_integer = self.get_integer(all)
-                    if self.chosen_program == "cria":
-                        if int(file_integer) > max_integer_file:
-                            max_integer_file = int(file_integer)
-                    elif typ == 1 and name in all:
-                        if int(file_integer) > max_integer_file:
-                            max_integer_file = int(file_integer)
-                    elif typ == 2 and self.get_aufgabentyp(all)==2:
-                        if int(file_integer) > max_integer_file:
-                            max_integer_file = int(file_integer)
+    #     if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
+    #         typ = 2
+    #     try:
+    #         for all in os.listdir(path):
+    #             if all.endswith(".tex"):
+    #                 file_integer = self.get_integer(all)
+    #                 if self.chosen_program == "cria":
+    #                     if int(file_integer) > max_integer_file:
+    #                         max_integer_file = int(file_integer)
+    #                 elif typ == 1 and name in all:
+    #                     if int(file_integer) > max_integer_file:
+    #                         max_integer_file = int(file_integer)
+    #                 elif typ == 2 and self.get_aufgabentyp(all)==2:
+    #                     if int(file_integer) > max_integer_file:
+    #                         max_integer_file = int(file_integer)
 
-        except FileNotFoundError:
-            print('No Beispieleinreichordner')
-            # critical_window(
-            #     'Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und\nmuss zuerst für Sie freigegeben werden.',
-            #     "Derzeit können keine neuen Aufgaben eingegeben werden.\nBitte melden Sie sich unter lama.helpme@gmail.com!",
-            # )
+    #     except FileNotFoundError:
+    #         print('No Beispieleinreichordner')
+    #         # critical_window(
+    #         #     'Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und\nmuss zuerst für Sie freigegeben werden.',
+    #         #     "Derzeit können keine neuen Aufgaben eingegeben werden.\nBitte melden Sie sich unter lama.helpme@gmail.com!",
+    #         # )
 
-        return max_integer_file
+    #     return max_integer_file
 
     def edit_image_name(self, typ_save, name):
         if typ_save[0] == "local":
@@ -4562,7 +4562,10 @@ class Ui_MainWindow(object):
 
         list_path = self.get_parent_folder(typ_save)
         if typ_save[0] == "user":
-            list_path[1] = "Beispieleinreichung"
+            critical_window("Aufgabeneingabe derzeit nicht möglich")
+            # print('user save not working')
+            return
+            # list_path[1] = "Beispieleinreichung"
         list_path.append("Bilder")
         parent_image_path = self.create_path_from_list(list_path)
 
@@ -4570,15 +4573,15 @@ class Ui_MainWindow(object):
 
         file_name = self.create_file_name(typ_save)
 
-        if typ_save[0] == "user":
-            save_dateipfad = self.get_path_beispieleinreichung()
+        # if typ_save[0] == "user":
+        #     save_dateipfad = self.get_path_beispieleinreichung()
 
         abs_path_file = os.path.join(save_dateipfad, file_name)
 
         section = self.create_section(typ_save)
         print(self.max_integer_file)
         print(abs_path_file)
-        return
+        # return
         with open(abs_path_file, "w", encoding="utf8") as file:
             file.write(section + "\n\n")
             if self.chosen_program == "cria":
