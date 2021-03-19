@@ -3865,8 +3865,14 @@ class Ui_MainWindow(object):
         if is_empty(self.plainTextEdit.toPlainText()) == True:
             return 'Bitte geben Sie den LaTeX-Quelltext der Aufgabe im Bereich "Aufgabeneingabe" ein.'
 
+        # print(self.check_for_admin_mode())
+        # print(len(self.lineEdit_quelle.text()))
         if is_empty(self.lineEdit_quelle.text()) == True:
             return "Bitte geben Sie die Quelle an."
+
+        elif self.check_for_admin_mode() == "user" and len(self.lineEdit_quelle.text()) != 6:
+            return 'Bitte geben Sie als Quelle ihren Vornamen und Nachnamen im Format "VorNac" (6 Zeichen!) ein.'
+
 
         included, attached = self.check_included_attached_image_ratio()
         if included != attached:
