@@ -5,7 +5,7 @@ import json
 import re
 from string import ascii_lowercase
 from functools import partial
-from config_start import path_programm, path_localappdata_lama, lama_settings_file
+from config_start import path_programm, path_localappdata_lama, lama_settings_file, lama_developer_credentials
 from config import (
     config_loader,
     config_file,
@@ -1930,10 +1930,10 @@ class Ui_Dialog_developer(object):
         # print(password)
         if bcrypt.checkpw(password, hashed_pw):
             if self.checkbox_developer.isChecked():
-                path_lama_developer_credentials = os.path.join(os.getenv('LOCALAPPDATA'), "LaMA", "credentials")
-                lama_developer_credentials = os.path.join(path_lama_developer_credentials, "developer_credentials.txt")
-                if not os.path.exists(path_lama_developer_credentials):
-                    os.makedirs(path_lama_developer_credentials)
+                # path_lama_developer_credentials = os.path.join(os.getenv('LOCALAPPDATA'), "LaMA", "credentials")
+                # lama_developer_credentials = os.path.join(path_lama_developer_credentials, "developer_credentials.txt")
+                # if not os.path.exists(path_lama_developer_credentials):
+                #     os.makedirs(path_lama_developer_credentials)
 
                 with open(lama_developer_credentials, "wb") as file:
                     file.write(password)

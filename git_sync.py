@@ -1,6 +1,6 @@
 import shutil
 import os
-from config_start import database, path_localappdata_lama
+from config_start import database, path_localappdata_lama, lama_developer_credentials
 from dulwich import porcelain, index
 from dulwich.objectspec import parse_tree
 import stat
@@ -139,10 +139,9 @@ def restore_all_changes():
 
 
 def git_push_to_origin(ui):
-        local_appdata = os.getenv('LOCALAPPDATA')
-        access_token_file = os.path.join(os.getenv('LOCALAPPDATA'),"LaMA", "credentials","access_token.txt")
-        credentials_file = os.path.join(os.getenv('LOCALAPPDATA'),"LaMA", "credentials","developer_credentials.txt")
-        with open(credentials_file, "r", encoding="utf-8") as f:
+        # local_appdata = os.getenv('LOCALAPPDATA')
+        # credentials_file = os.path.join(os.getenv('LOCALAPPDATA'),"LaMA", "credentials","developer_credentials.txt")
+        with open(lama_developer_credentials, "r", encoding="utf-8") as f:
             credentials = f.read()
         access_token = credentials + "fb108a54304efc048194479ec86912"
 
