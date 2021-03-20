@@ -6,7 +6,7 @@ __lastupdate__ = "01/21"
 ##################
 print("Loading...")
 import start_window
-from config_start import path_programm, path_localappdata_lama, lama_settings_file, database
+from config_start import path_programm, path_localappdata_lama, lama_settings_file, database, lama_developer_credentials
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QApplication
 # import git
@@ -143,14 +143,19 @@ class Ui_MainWindow(object):
         self.dict_picture_path = {}
 
         hashed_pw = read_credentials()
-        path_lama_developer_credentials = os.path.join(os.getenv('LOCALAPPDATA'), "LaMA", "credentials")
-        lama_developer_credentials = os.path.join(path_lama_developer_credentials, "developer_credentials.txt")
         self.developer_mode_active = False
+
+        # if sys.platform.startswith("win"):
+            # path_lama_developer_credentials = os.path.join(os.getenv('LOCALAPPDATA'), "LaMA", "credentials")
+            # lama_developer_credentials = os.path.join(path_lama_developer_credentials, "developer_credentials.txt")
+            
         if os.path.isfile(lama_developer_credentials):
             with open(lama_developer_credentials, "rb") as file:
                 password = file.read()
             if bcrypt.checkpw(password, hashed_pw):
                 self.developer_mode_active = True
+        # elif sys.platform.startswith("darwin"):
+
         # print(self.developer_mode_active)   
         # with open(lama)
         # self.developer_mode_active = False

@@ -1,6 +1,6 @@
 import sys
 import os
-
+from pathlib import Path
 
 
 if sys.platform.startswith("win"):
@@ -36,6 +36,8 @@ if sys.platform.startswith("win"):
         os.mkdir(path_programm)
     path_localappdata_lama = path_programm
 
+    path_lama_developer_credentials = os.path.join(os.getenv('LOCALAPPDATA'), "LaMA", "credentials")
+    lama_developer_credentials = os.path.join(path_lama_developer_credentials, "developer_credentials.txt")
     # ## OLD VERSION!!
     # path_programm = os.path.dirname(sys.argv[0])
     # path_localappdata_lama = path_programm
@@ -45,7 +47,20 @@ elif sys.platform.startswith("darwin"):
     path_programm=os.path.dirname(sys.argv[0])
     if path_programm == "":
         path_programm = "."
+    
+    path_programm = os.path.join(path_programm, "LaMA_programdata")
+    if not os.path.isdir(path_programm):
+        os.mkdir(path_programm)
+    
     path_localappdata_lama = path_programm
+
+    # path_home=Path.home()
+
+    path_lama_developer_credentials = os.path.join(Path.home(), "Library", "LaMA","credentials")
+    if not os.path.isdir(path_lama_developer_credentials):
+        os.makedirs(path_lama_developer_credentials)
+        
+    lama_developer_credentials = os.path.join(path_lama_developer_credentials, "developer_credentials.txt")
 
 database = os.path.join(path_programm, "_database")
 
