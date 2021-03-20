@@ -1948,8 +1948,8 @@ class Ui_Dialog_developer(object):
 
 
 def read_credentials():
-    path_programdata = os.getenv('PROGRAMDATA')
-    pw_file = os.path.join(path_programdata, "LaMA", "_database", "_config" ,"developer_credentials.txt")
+    #path_programdata = os.getenv('PROGRAMDATA')
+    pw_file = os.path.join(path_programm, "_database", "_config" ,"developer_credentials.txt")
     with open(pw_file, "rb") as file:
         hashed_pw = file.read()
     

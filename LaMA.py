@@ -143,14 +143,17 @@ class Ui_MainWindow(object):
         self.dict_picture_path = {}
 
         hashed_pw = read_credentials()
-        path_lama_developer_credentials = os.path.join(os.getenv('LOCALAPPDATA'), "LaMA", "credentials")
-        lama_developer_credentials = os.path.join(path_lama_developer_credentials, "developer_credentials.txt")
         self.developer_mode_active = False
-        if os.path.isfile(lama_developer_credentials):
-            with open(lama_developer_credentials, "rb") as file:
-                password = file.read()
-            if bcrypt.checkpw(password, hashed_pw):
-                self.developer_mode_active = True
+
+        if sys.platform.startswith("win"):
+            path_lama_developer_credentials = os.path.join(os.getenv('LOCALAPPDATA'), "LaMA", "credentials")
+            lama_developer_credentials = os.path.join(path_lama_developer_credentials, "developer_credentials.txt")
+            
+            if os.path.isfile(lama_developer_credentials):
+                with open(lama_developer_credentials, "rb") as file:
+                    password = file.read()
+                if bcrypt.checkpw(password, hashed_pw):
+                    self.developer_mode_active = True
         # print(self.developer_mode_active)   
         # with open(lama)
         # self.developer_mode_active = False
