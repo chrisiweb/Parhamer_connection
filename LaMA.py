@@ -6441,21 +6441,21 @@ class Ui_MainWindow(object):
             start = ""
 
         if spinbox_pkt == 0:
-            split_content[0] = "\\begin{enumerate}\item[\\stepcounter{number}\\thenumber.] "
+            split_content[0] = "\\begin{{enumerate}}\item[\\stepcounter{{number}}\\thenumber.] % Aufgabe: {0}".format(aufgabe)
             split_content[-1] = "\end{enumerate}"
 
         elif "langesbeispiel" in split_content[0]:
             split_content[
                 0
-            ] = "{0}\\begin{{langesbeispiel}} \item[{1}] %PUNKTE DES BEISPIELS".format(
-                start, spinbox_pkt
+            ] = "{0}\\begin{{langesbeispiel}} \item[{1}] % Aufgabe: {2}".format(
+                start, spinbox_pkt, aufgabe
             )
 
         elif "beispiel" in split_content[0]:
             split_content[
                 0
-            ] = "{0}\\begin{{beispiel}}{1}{{{2}}} %PUNKTE DES BEISPIELS\n".format(
-                start, grundkompetenz, spinbox_pkt
+            ] = "{0}\\begin{{beispiel}}{1}{{{2}}} % Aufgabe: {3}\n".format(
+                start, grundkompetenz, spinbox_pkt, aufgabe
             )
 
         spinbox_abstand = self.dict_alle_aufgaben_sage[aufgabe][1]

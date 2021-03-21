@@ -18,7 +18,7 @@ if sys.platform.startswith("win"):
     logo_path = os.path.join(os.getenv("ProgramFiles"), "LaMA", "LaMA_icon_logo.png")
 elif sys.platform.startswith("darwin"):
     path_programm=os.path.dirname(sys.argv[0])
-    if path_programm is "":
+    if path_programm == "":
         path_programm = "."
     logo_path = os.path.join(path_programm,'_database','_config','icon','LaMa_icon_logo.png')
 # path_localappdata_lama = os.path.join(path_localappdata, "LaMA")
