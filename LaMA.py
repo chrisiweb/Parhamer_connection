@@ -3130,6 +3130,12 @@ class Ui_MainWindow(object):
                             return False
         return False
 
+    def delete_srdpmathematik_in_teildokument(self):
+        srdpmathematik_path = os.path.join(path_programm, "Teildokument", "srdp-mathematik.sty")
+
+        if os.path.isfile(srdpmathematik_path):
+            os.remove(srdpmathematik_path)
+
 
     def update_srdpmathematik(self):
         response = question_window('Sind Sie sicher, dass Sie das Paket "srdp-mathematik.sty" aktualisieren möchten?')
@@ -3183,6 +3189,8 @@ class Ui_MainWindow(object):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
         update_successfull = self.copy_srdpmathematik(path_new_package, possible_locations)
+
+        self.delete_srdpmathematik_in_teildokument()
 
         QtWidgets.QApplication.restoreOverrideCursor()
         
