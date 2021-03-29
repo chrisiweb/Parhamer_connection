@@ -6,6 +6,6 @@
 *.pdf
 *.ps
 *.synctex
-*.pyc
+__pycache__/
 Teildokument/
 
