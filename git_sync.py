@@ -7,7 +7,7 @@ import stat
 import posixpath
 from urllib3.exceptions import MaxRetryError
 from datetime import datetime
-from standard_dialog_windows import information_window
+# from standard_dialog_windows import information_window
 from time import sleep
 from urllib.request import urlopen
 from urllib.error import URLError

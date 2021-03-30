@@ -54,8 +54,8 @@ from define_database import Ui_define_database
 #         path_programm = "."
 #     path_localappdata_lama = path_programm
 
-# config_file = os.path.join(path_programm, "_database", "_config", "config.yml")
-config_file = os.path.join(os.path.dirname(sys.argv[0]), "config.yml")  
+config_file = os.path.join(path_programm, "_database", "_config", "config.yml")
+# config_file = os.path.join(os.path.dirname(sys.argv[0]), "config.yml")  
 
         
 colors_ui = {
