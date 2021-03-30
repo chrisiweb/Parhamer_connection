@@ -4572,17 +4572,23 @@ class Ui_MainWindow(object):
             textBox_Entry = response[1]
 
         list_path = self.get_parent_folder(typ_save)
-        if typ_save[0] == "user":
-            critical_window("Aufgabeneingabe derzeit nicht möglich")
-            # print('user save not working')
-            return
+        # if typ_save[0] == "user":
+        #     critical_window("Aufgabeneingabe derzeit nicht möglich")
+        #     # print('user save not working')
+        #     return
             # list_path[1] = "Beispieleinreichung"
         list_path.append("Bilder")
         parent_image_path = self.create_path_from_list(list_path)
 
-        self.copy_image_save(typ_save, parent_image_path)
+        if typ_save[0] == "user":
+            critical_window("Bilder werden nicht kopiert")
+        else:
+            self.copy_image_save(typ_save, parent_image_path)
 
-        file_name = self.create_file_name(typ_save)
+        if typ_save[0] == "user":
+            file_name ="new_file.tex"
+        else:
+            file_name = self.create_file_name(typ_save)
 
         # if typ_save[0] == "user":
         #     save_dateipfad = self.get_path_beispieleinreichung()
@@ -4592,7 +4598,10 @@ class Ui_MainWindow(object):
         section = self.create_section(typ_save)
         print(self.max_integer_file)
         print(abs_path_file)
-        # return
+        print(typ_save)
+        if typ_save[0] == "user":
+            critical_window("save not yet defined")
+            return
         with open(abs_path_file, "w", encoding="utf8") as file:
             file.write(section + "\n\n")
             if self.chosen_program == "cria":
