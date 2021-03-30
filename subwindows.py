@@ -1875,7 +1875,7 @@ class Ui_Dialog_setup(object):
         self.lama_settings = self.save_settings_to_dict()
         with open(lama_settings_file, "w+", encoding="utf8") as f:
             json.dump(self.lama_settings, f, ensure_ascii=False)
-
+        self.MainWindow.lineEdit_quelle.setText(self.lineedit_quelle.text())
         self.Dialog.accept()
     
 
