@@ -4664,8 +4664,8 @@ class Ui_MainWindow(object):
             self.action_push_database(admin=False, specific_file=os.path.join("drafts",file_name))
 
         QtWidgets.QApplication.restoreOverrideCursor()
-        if typ_save[0] != "user":
-            information_window(text, "", window_title, information)
+
+        information_window(text, "", window_title, information)
 
 
         self.suchfenster_reset()
@@ -4716,8 +4716,10 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             information_window("Es wurden keine Änderungen gefunden.")
         elif worker.changes_found == 'error':
             critical_window("Es ist ein Fehler aufgetreten. Die Datenbank konnte nicht hochgeladen werden. Bitte versuchen Sie es später erneut.")
-        else:
+        elif admin == True:
             information_window("Die Datenbank wurde erfolgreich hochgeladen.")
+        # else:
+        #     information_window("Die Aufgabe wurde erfolg")
         # path_programdata = os.getenv('PROGRAMDATA')
         # database = os.path.join(path_programdata, "LaMA", "_database")
         # repo = git.Repo(database)
