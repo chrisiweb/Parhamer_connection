@@ -333,6 +333,7 @@ class Ui_MainWindow(object):
         )
         self.actionRefresh_Database.setShortcut("F5")
 
+        self.menuDatei.addSeparator()
         self.actionPush_Database = add_action(
             MainWindow,
             self.menuDatei,
