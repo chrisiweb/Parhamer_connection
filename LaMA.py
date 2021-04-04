@@ -93,6 +93,7 @@ from lama_colors import *
 from lama_stylesheets import *
 from processing_window import Ui_Dialog_processing
 import bcrypt
+#import base64
 
 
 
