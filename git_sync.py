@@ -138,7 +138,7 @@ def restore_all_changes():
         shutil.move(backup_path, move_path)
 
 
-def git_push_to_origin(ui):
+def git_push_to_origin(ui, admin, specific_file):
         # local_appdata = os.getenv('LOCALAPPDATA')
         # credentials_file = os.path.join(os.getenv('LOCALAPPDATA'),"LaMA", "credentials","developer_credentials.txt")
         with open(lama_developer_credentials, "r", encoding="utf-8") as f:
@@ -152,39 +152,49 @@ def git_push_to_origin(ui):
         status = porcelain.status(repo)
         repo.stage(status.unstaged + status.untracked)
 
-        if status.unstaged==[] and status.untracked == []:
+        if status.unstaged==[] and status.untracked == [] and admin == True:
             # information_window("Es wurden keine Änderungen gefunden.")
             return False
         
         try:
-            ui.label.setText("Datenbank hochladen ... (1%)")
+            if admin == True:
+                ui.label.setText("Datenbank hochladen ... (1%)")
 
-            status = porcelain.status(repo)
-            ui.label.setText("Datenbank hochladen ... (21%)")
+                status = porcelain.status(repo)
+                ui.label.setText("Datenbank hochladen ... (21%)")
 
-            copy_all_changed_files(status.staged)
-            ui.label.setText("Datenbank hochladen ... (22%)")
+                copy_all_changed_files(status.staged)
+                ui.label.setText("Datenbank hochladen ... (22%)")
 
-            git_reset_repo_to_origin()
-            ui.label.setText("Datenbank hochladen ... (53%)")
+                git_reset_repo_to_origin()
+                ui.label.setText("Datenbank hochladen ... (53%)")
 
-            restore_all_changes()
-            shutil.copyfile(path_origin, path_head)
-            ui.label.setText("Datenbank hochladen ... (54%)")
-
-
-            status = porcelain.status(repo)
-            repo.stage(status.unstaged + status.untracked)
-            ui.label.setText("Datenbank hochladen ... (84%)")
+                restore_all_changes()
+                shutil.copyfile(path_origin, path_head)
+                ui.label.setText("Datenbank hochladen ... (54%)")
 
 
-            time_tag = datetime.now().strftime("%Y-%m-%d (%H:%M:%S)")
-            porcelain.commit(repo, message="New LaMA Upload {}".format(time_tag))
+                status = porcelain.status(repo)
+                repo.stage(status.unstaged + status.untracked)
+                ui.label.setText("Datenbank hochladen ... (84%)")
 
-            ui.label.setText("Datenbank hochladen ... (85%)")
 
-            porcelain.push(repo,"https://lama-contributor:{}@github.com/chrisiweb/lama_latest_update.git".format(access_token),"master")
-            ui.label.setText("Datenbank hochladen ... (100%)")
+                time_tag = datetime.now().strftime("%Y-%m-%d (%H:%M:%S)")
+                porcelain.commit(repo, message="New LaMA Upload {}".format(time_tag))
+
+                ui.label.setText("Datenbank hochladen ... (85%)")
+
+                porcelain.push(repo,"https://lama-contributor:{}@github.com/chrisiweb/lama_latest_update.git".format(access_token),"master")
+                ui.label.setText("Datenbank hochladen ... (100%)")
+            else: 
+                file_path = os.path.join(database, specific_file)
+                porcelain.add(repo, paths= file_path)
+                ui.label.setText("Aufgabe wird hochgeladen ... (27%)")
+                file_name = os.path.basename(specific_file)
+                porcelain.commit(repo, message="Upload {}".format(file_name))
+                ui.label.setText("Aufgabe wird hochgeladen ... (84%)")
+                porcelain.push(repo,"https://lama-contributor:{}@github.com/chrisiweb/lama_latest_update.git".format(access_token),"master")
+                ui.label.setText("Aufgabe wird hochgeladen ... (100%)")
             repo.close()
 
             sleep(1)

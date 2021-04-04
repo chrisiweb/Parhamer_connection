@@ -117,8 +117,8 @@ class Worker_PushDatabase(QtCore.QObject):
     finished = QtCore.pyqtSignal()
 
     @QtCore.pyqtSlot()
-    def task(self, ui):
-        self.changes_found = git_push_to_origin(ui)
+    def task(self, ui, admin, specific_file):
+        self.changes_found = git_push_to_origin(ui , admin, specific_file)
 
         self.finished.emit()
 
@@ -337,7 +337,7 @@ class Ui_MainWindow(object):
             MainWindow,
             self.menuDatei,
             "Datenbank hochladen (Entwicklermodus)",
-            self.action_push_database
+            partial(self.action_push_database, True, None)
         )
         if self.developer_mode_active == False:
             self.actionPush_Database.setVisible(False)
@@ -4596,7 +4596,7 @@ class Ui_MainWindow(object):
 
         if typ_save[0] == "user":
             save_dateipfad = self.get_path_beispieleinreichung()
-
+        
         abs_path_file = os.path.join(save_dateipfad, file_name)
 
         section = self.create_section(typ_save)
@@ -4660,10 +4660,14 @@ class Ui_MainWindow(object):
             list_information[6],
         )
 
-        QtWidgets.QApplication.restoreOverrideCursor()
-        information_window(text, "", window_title, information)
+        if typ_save[0] == "user":
+            self.action_push_database(admin=False, specific_file=os.path.join("drafts",file_name))
 
-        
+        QtWidgets.QApplication.restoreOverrideCursor()
+        if typ_save[0] != "user":
+            information_window(text, "", window_title, information)
+
+
         self.suchfenster_reset()
 
     ##################################################################
@@ -4684,13 +4688,17 @@ class Ui_MainWindow(object):
             self.add_drafts_to_beispieldaten()
         self.adapt_choosing_list("sage")
     
-    def action_push_database(self):
+    def action_push_database(self, admin=True, specific_file=None):
         if check_internet_connection()==False:
             critical_window("""
 Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.
             """, titel="Keine Internetverbindung")
             return
-        text = "Änderungen überprüfen ..." 
+        
+        if admin == True: 
+            text = "Änderungen überprüfen ..."
+        else:
+            text = "Aufgabe wird hochgeladen ... (1%)" 
         Dialog = QtWidgets.QDialog()
         ui = Ui_Dialog_processing()
         ui.setupUi(Dialog, text)
@@ -4699,7 +4707,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         worker = Worker_PushDatabase()
         worker.finished.connect(Dialog.close)
         worker.moveToThread(thread)
-        rsp = thread.started.connect(partial(worker.task, ui))
+        rsp = thread.started.connect(partial(worker.task, ui, admin, specific_file))
         thread.start()
         thread.exit()
         Dialog.exec()
