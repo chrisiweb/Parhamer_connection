@@ -231,7 +231,9 @@ class Ui_MainWindow(object):
             self.lama_settings["database"] = 2
 
         if self.lama_settings["database"] == 0:
-            refresh_ddb(self) 
+            QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+            refresh_ddb(self)
+            QtWidgets.QApplication.restoreOverrideCursor() 
  
         if self.chosen_program == "cria":
             self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
@@ -3476,7 +3478,7 @@ class Ui_MainWindow(object):
     #         self.spinBox_punkte.setValue(0)
 
     def add_drafts_to_beispieldaten(self):
-        drafts_path = os.path.join(path_programm, "Beispieleinreichung")
+        drafts_path = os.path.join(database, "drafts")
         beispieldaten_dateipfad_draft = search_files(drafts_path)
         for section in beispieldaten_dateipfad_draft.keys():
             path = beispieldaten_dateipfad_draft[section]
@@ -3490,7 +3492,7 @@ class Ui_MainWindow(object):
                 self.beispieldaten_dateipfad_cria[section] = path
 
     def delete_drafts_from_beispieldaten(self):
-        drafts_path = os.path.join(path_programm, "Beispieleinreichung")
+        drafts_path = os.path.join(database, "drafts")
         beispieldaten_dateipfad_draft = search_files(drafts_path)
         for section in beispieldaten_dateipfad_draft.keys():
             path = beispieldaten_dateipfad_draft[section]
@@ -4100,26 +4102,26 @@ class Ui_MainWindow(object):
                 max_int = int(split_file[1])
                 if max_int > max_integer_file:
                     max_integer_file = max_int
-        # path_beispieleinreichung = self.get_path_beispieleinreichung()
-        # for path, dirs, files in os.walk(path_beispieleinreichung):
-        #     for all in files:
-        #         if re.match("{}\[.+\].tex".format(variation_of), all):
-        #             split_file = re.split("\[|\]", all)
-        #             max_int = int(split_file[1])
-        #             if max_int > max_integer_file:
-        #                 max_integer_file = max_int
+        path_beispieleinreichung = self.get_path_beispieleinreichung()
+        for path, dirs, files in os.walk(path_beispieleinreichung):
+            for all in files:
+                if re.match("{}\[.+\].tex".format(variation_of), all):
+                    split_file = re.split("\[|\]", all)
+                    max_int = int(split_file[1])
+                    if max_int > max_integer_file:
+                        max_integer_file = max_int
         return max_integer_file
 
-    # def check_files_beispieleinreichung_variation(self, max_integer_file):
-    #     path = self.get_path_beispieleinreichung()
+    def check_files_beispieleinreichung_variation(self, max_integer_file):
+        path = self.get_path_beispieleinreichung()
 
     def get_max_integer_file(self, typ_save, path):
         max_integer_file = self.check_files_path(typ_save, path)
         
-        # if typ_save[0] != "local" and typ_save != ['admin',1]:
-        #     max_integer_file = self.check_files_beispieleinreichung(
-        #         typ_save, max_integer_file
-        #     )
+        if typ_save[0] != "local" and typ_save != ['admin',1]:
+            max_integer_file = self.check_files_beispieleinreichung(
+                typ_save, max_integer_file
+            )
 
         return max_integer_file
 
@@ -4142,46 +4144,46 @@ class Ui_MainWindow(object):
 
         return max_integer_file
 
-    # def get_path_beispieleinreichung(self):
-    #     list_path = [path_programm, "Beispieleinreichung"]
-    #     if self.chosen_program == "cria":
-    #         highest_grade = self.get_highest_grade()
-    #         list_path.append(highest_grade)
+    def get_path_beispieleinreichung(self):
+        list_path = [database, 'drafts'] 
+        if self.chosen_program == "cria":
+            highest_grade = self.get_highest_grade()
+            list_path.append(highest_grade)
 
-    #     path = self.create_path_from_list(list_path)
-    #     return path
+        path = self.create_path_from_list(list_path)
+        return path
 
-    # def check_files_beispieleinreichung(self, typ_save, max_integer_file):
-    #     path = self.get_path_beispieleinreichung()
+    def check_files_beispieleinreichung(self, typ_save, max_integer_file):
+        path = self.get_path_beispieleinreichung()
 
-    #     if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-    #         typ = 1
-    #         name = self.list_selected_topics_creator[0]
+        if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+            typ = 1
+            name = self.list_selected_topics_creator[0]
 
-    #     if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
-    #         typ = 2
-    #     try:
-    #         for all in os.listdir(path):
-    #             if all.endswith(".tex"):
-    #                 file_integer = self.get_integer(all)
-    #                 if self.chosen_program == "cria":
-    #                     if int(file_integer) > max_integer_file:
-    #                         max_integer_file = int(file_integer)
-    #                 elif typ == 1 and name in all:
-    #                     if int(file_integer) > max_integer_file:
-    #                         max_integer_file = int(file_integer)
-    #                 elif typ == 2 and self.get_aufgabentyp(all)==2:
-    #                     if int(file_integer) > max_integer_file:
-    #                         max_integer_file = int(file_integer)
+        if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
+            typ = 2
+        try:
+            for all in os.listdir(path):
+                if all.endswith(".tex"):
+                    file_integer = self.get_integer(all)
+                    if self.chosen_program == "cria":
+                        if int(file_integer) > max_integer_file:
+                            max_integer_file = int(file_integer)
+                    elif typ == 1 and name in all:
+                        if int(file_integer) > max_integer_file:
+                            max_integer_file = int(file_integer)
+                    elif typ == 2 and self.get_aufgabentyp(all)==2:
+                        if int(file_integer) > max_integer_file:
+                            max_integer_file = int(file_integer)
 
-    #     except FileNotFoundError:
-    #         print('No Beispieleinreichordner')
-    #         # critical_window(
-    #         #     'Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und\nmuss zuerst für Sie freigegeben werden.',
-    #         #     "Derzeit können keine neuen Aufgaben eingegeben werden.\nBitte melden Sie sich unter lama.helpme@gmail.com!",
-    #         # )
+        except FileNotFoundError:
+            print('No Beispieleinreichordner')
+            # critical_window(
+            #     'Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und\nmuss zuerst für Sie freigegeben werden.',
+            #     "Derzeit können keine neuen Aufgaben eingegeben werden.\nBitte melden Sie sich unter lama.helpme@gmail.com!",
+            # )
 
-    #     return max_integer_file
+        return max_integer_file
 
     def edit_image_name(self, typ_save, name):
         if typ_save[0] == "local":
@@ -4240,7 +4242,7 @@ class Ui_MainWindow(object):
             elif typ_save == ["admin", 1]:
                 path = "../_database_inoffiziell/Bilder/"
             elif typ_save[0] == "user":
-                path = "../Beispieleinreichung/Bilder/"
+                path = "../_database/drafts/Bilder/"
             elif typ_save[0] == "local":
                 path = "../Lokaler_Ordner/Bilder/"
 
@@ -4573,25 +4575,27 @@ class Ui_MainWindow(object):
 
         list_path = self.get_parent_folder(typ_save)
         # if typ_save[0] == "user":
-        #     critical_window("Aufgabeneingabe derzeit nicht möglich")
-        #     # print('user save not working')
-        #     return
-            # list_path[1] = "Beispieleinreichung"
+        # #     critical_window("Aufgabeneingabe derzeit nicht möglich")
+        # #     # print('user save not working')
+        # #     return
+        #     list_path[1] = "Beispieleinreichung"
+        # print(list_path)
+
         list_path.append("Bilder")
         parent_image_path = self.create_path_from_list(list_path)
 
-        if typ_save[0] == "user":
-            critical_window("Bilder werden nicht kopiert")
-        else:
-            self.copy_image_save(typ_save, parent_image_path)
-
-        if typ_save[0] == "user":
-            file_name ="new_file.tex"
-        else:
-            file_name = self.create_file_name(typ_save)
+        # if typ_save[0] == "user":
+        #     critical_window("Bilder werden nicht kopiert")
+        # else:
+        self.copy_image_save(typ_save, parent_image_path)
 
         # if typ_save[0] == "user":
-        #     save_dateipfad = self.get_path_beispieleinreichung()
+        #     file_name ="new_file.tex"
+        # else:
+        file_name = self.create_file_name(typ_save)
+
+        if typ_save[0] == "user":
+            save_dateipfad = self.get_path_beispieleinreichung()
 
         abs_path_file = os.path.join(save_dateipfad, file_name)
 
@@ -4599,9 +4603,10 @@ class Ui_MainWindow(object):
         print(self.max_integer_file)
         print(abs_path_file)
         print(typ_save)
-        if typ_save[0] == "user":
-            critical_window("save not yet defined")
-            return
+        # if typ_save[0] == "user":
+        #     critical_window("save not yet defined")
+        #     return
+        # return
         with open(abs_path_file, "w", encoding="utf8") as file:
             file.write(section + "\n\n")
             if self.chosen_program == "cria":
@@ -4658,6 +4663,7 @@ class Ui_MainWindow(object):
         QtWidgets.QApplication.restoreOverrideCursor()
         information_window(text, "", window_title, information)
 
+        
         self.suchfenster_reset()
 
     ##################################################################
@@ -6188,7 +6194,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         path, filename = os.path.split(abs_path)
         parent_folder = os.path.basename(path)
 
-        if parent_folder != "Beispieleinreichung":
+        if parent_folder != "drafts":
             typ = None
         elif re.search("[A-Z]", filename) == None:
             typ = 2
@@ -6198,7 +6204,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         return typ
 
     def get_beispieldaten_dateipfad_draft(self, typ):
-        drafts_path = os.path.join(path_programm, "Beispieleinreichung")
+        drafts_path = os.path.join(database, "drafts")
         list_section = []
         list_path = []
         beispieldaten_dateipfad_draft = search_files(drafts_path)
@@ -6264,7 +6270,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             try:
                 path = beispieldaten_dateipfad[section]
             except KeyError:
-                drafts_path = os.path.join(path_programm, "Beispieleinreichung")
+                drafts_path = os.path.join(database, "drafts")
                 beispieldaten_dateipfad_draft = search_files(drafts_path)
                 path = beispieldaten_dateipfad_draft[section]
 
@@ -6288,7 +6294,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                     item.setToolTip("lokal gespeichert")
                     listWidget.addItem(item)
 
-            elif "Beispieleinreichung" in path:
+            elif "drafts" in path:
                 if listWidget_mode == "feedback":
                     pass
                 else:
