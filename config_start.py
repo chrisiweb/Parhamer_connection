@@ -62,6 +62,7 @@ elif sys.platform.startswith("darwin"):
         
     lama_developer_credentials = os.path.join(path_lama_developer_credentials, "developer_credentials.txt")
 
+lama_user_credentials = 'ghp_PwshmR'
 database = os.path.join(path_programm, "_database")
 
 lama_settings_file = os.path.join(

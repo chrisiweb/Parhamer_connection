@@ -155,6 +155,7 @@ class Ui_MainWindow(object):
                 password = file.read()
             if bcrypt.checkpw(password, hashed_pw):
                 self.developer_mode_active = True
+        
         # elif sys.platform.startswith("darwin"):
 
         # print(self.developer_mode_active)   

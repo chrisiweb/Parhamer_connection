@@ -1,6 +1,6 @@
 import shutil
 import os
-from config_start import database, path_localappdata_lama, lama_developer_credentials
+from config_start import database, path_localappdata_lama, lama_developer_credentials, lama_user_credentials
 from dulwich import porcelain, index
 from dulwich.objectspec import parse_tree
 import stat
@@ -137,13 +137,34 @@ def restore_all_changes():
         move_path = os.path.join(database, all.decode())
         shutil.move(backup_path, move_path)
 
+def get_access_token(mode):
+    credential_path = os.path.join(database, "_config")
+    if mode == 'developer':
+        _file_1 = lama_developer_credentials
+        with open(_file_1, "r", encoding="utf-8") as f:
+            credentials_1 = f.read()
+        _center_ = "fb108a5430"
+        _file_2 = os.path.join(credential_path, "developer_credentials.txt")
 
+    if mode == 'user':
+        credentials_1 = lama_user_credentials
+        _center_ = "WSPUnRFoMX"
+        _file_2 = os.path.join(credential_path, "user_credentials.txt")
+
+
+    with open(_file_2, "r", encoding="utf-8") as f:
+        credentials_2 = f.read()
+    access_token = credentials_1 + _center_ + credentials_2
+
+    return access_token 
 def git_push_to_origin(ui, admin, specific_file):
         # local_appdata = os.getenv('LOCALAPPDATA')
         # credentials_file = os.path.join(os.getenv('LOCALAPPDATA'),"LaMA", "credentials","developer_credentials.txt")
-        with open(lama_developer_credentials, "r", encoding="utf-8") as f:
-            credentials = f.read()
-        access_token = credentials + "fb108a54304efc048194479ec86912"
+
+        if admin == True:
+            access_token = get_access_token('developer')
+        else:
+            access_token = get_access_token('user')
 
         repo = porcelain.open_repo(database)
         path_origin = os.path.join(database, ".git", "refs","remotes","origin", "master")
@@ -193,7 +214,7 @@ def git_push_to_origin(ui, admin, specific_file):
                 file_name = os.path.basename(specific_file)
                 porcelain.commit(repo, message="Upload {}".format(file_name))
                 ui.label.setText("Aufgabe wird hochgeladen ... (84%)")
-                porcelain.push(repo,"https://lama-contributor:{}@github.com/chrisiweb/lama_latest_update.git".format(access_token),"master")
+                porcelain.push(repo,"https://lama-user:{}@github.com/chrisiweb/lama_latest_update.git".format(access_token),"master")
                 ui.label.setText("Aufgabe wird hochgeladen ... (100%)")
             repo.close()
 
