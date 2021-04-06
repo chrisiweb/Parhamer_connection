@@ -10,7 +10,7 @@
 %
 
 \NeedsTeXFormat{LaTeX2e}[1996/12/26]
-\ProvidesPackage{srdp-mathematik}[2020/04/03 v1.6 Standard-Schularbeitsformate]
+\ProvidesPackage{srdp-mathematik}[2021/03/18 v1.8 Standard-Schularbeitsformate]
 
 
 \usepackage{color}
@@ -53,7 +53,6 @@
 \renewcommand{\vec}[1]{\vv{#1}}
 \usepackage{graphicx}
 \usepackage{setspace}
-%\usepackage{enumerate}
 \usepackage[inline, shortlabels]{enumitem}
 \usepackage{xparse}
 \usepackage{eurosym, xspace}
@@ -122,11 +121,6 @@
 \newcommand{\info}[2][]{\ifthenelse{\theinfo=1}{
 \color[rgb]{0,0,1}{#2}\color[rgb]{0,0,0}
 }{#1}}
-
-
-%\NewEnviron{antwort}[1][hallo]{\textcolor{red}{\BODY}}
-%\NewEnviron{antwort}[2][]{\ifthenelse{\theAntworten=1}{\color[rgb]{1,0,0}#1\color[rgb]{0,0,0}}{#2}}
-%\newenvironment{antwort}[2][]{\color[rgb]{1,0,0}{#1}}{\color[rgb]{0,0,0}}
 
 
 
@@ -297,7 +291,6 @@
 %
 
 %%%%%%%%%%%%%%%%%%%% INTEGRAL BEFEHL
-%\newcommand{\dx}{\,\text{d}x}
 \newcommand{\dx}[1][x]{\,\text{d}#1}
 \newcommand{\dint}{\displaystyle\int}
 
@@ -317,15 +310,15 @@
 %%%%%%%%%%%% NOTENSCHLUESSEL  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %
-\newcommand{\notenschluessel}[4]{
+\newcommand{\notenschluessel}[5][]{
 \vfill
 \STautoround{3}\renewcommand{\arraystretch}{0}\tiny
 \begin{spreadtab}[\STsavecell\gutgenau{b2} \STsavecell\befriedigendgenau{c2} \STsavecell\genuegendgenau{d2} \STsavecell\nichtgenuegendgenau{e2} 
 \STsavecell\gut{b3}  \STsavecell\befriedigend{c3} \STsavecell\genuegend{d3} \STsavecell\nichtgenuegend{e3}  
 \STsavecell\gutpluseins{b4} \STsavecell\befriedigendpluseins{c4}  \STsavecell\genuegendpluseins{d4} \STsavecell\nichtgenuegendpluseins{e4} \STsavecell\gutminuseins{b5} \STsavecell\befriedigendminuseins{c5} \STsavecell\genuegendminuseins{d5} \STsavecell\nichtgenuegendminuseins{e5}]{{tabular}{ccccc}}
  \SThidecol\thepunkte &\SThidecol 1 &\SThidecol2 &\SThidecol 3 &\SThidecol 4 \\ 
- & a1*#1 &a1*#2 & a1*#3 & a1*#4 \\
- &trunc(a1*#1,0) & trunc(a1*#2,0) &trunc(a1*#3,0) &trunc(a1*#4,0) \\
+ & a1*#2 &a1*#3 & a1*#4 & a1*#5 \\
+ &trunc(a1*#2,0) & trunc(a1*#3,0) &trunc(a1*#4,0) &trunc(a1*#5,0) \\
  &b3+1 &c3+1 &d3+1 & e3+1\\
  &b3-1 &c3-1 &d3-1 & e3-1\\
 \end{spreadtab}
@@ -336,21 +329,21 @@ Erreichte Punkte & Prozent & Gesamt & \multicolumn{2}{c|}{Note} \\
 && \multirow{2}{*}{\thepunkte} && \\  
 &&&& \\ \hline \hline
 \scriptsize{Sehr gut} & \scriptsize{Gut} & \scriptsize{Befriedigend} & \scriptsize{Gen\"ugend} & \scriptsize{Nicht gen\"ugend} \\
-\scriptsize{\thepunkte ~ - \ifdim\gut pt=\gutgenau pt \gut\else\gutpluseins\fi}& \scriptsize{\ifdim\gut pt=\gutgenau pt \gutminuseins\else\gut\fi ~ - \ifdim\befriedigend pt=\befriedigendgenau pt \befriedigend\else\befriedigendpluseins\fi} & \scriptsize{\ifdim\befriedigend pt=\befriedigendgenau pt \befriedigendminuseins\else\befriedigend\fi ~ - \ifdim\genuegend pt=\genuegendgenau pt \genuegend\else\genuegendpluseins\fi} & \scriptsize{\ifdim\genuegend pt=\genuegendgenau pt \genuegendminuseins\else\genuegend\fi ~ - \ifdim\nichtgenuegend pt=\nichtgenuegendgenau pt \nichtgenuegend\else\nichtgenuegendpluseins\fi} & \scriptsize{unter \ifdim\nichtgenuegend pt=\nichtgenuegendgenau pt \nichtgenuegend\else\nichtgenuegendpluseins\fi} \\ \hline
+\scriptsize{\thepunkte ~ - \ifdim\gut pt=\gutgenau pt \gut\else\gutpluseins\fi}& \scriptsize{\ifdim\gut pt=\gutgenau pt \gutminuseins\else\gut\fi \ifthenelse{\equal{#1}{1/2}}{,5}{} ~ - \ifdim\befriedigend pt=\befriedigendgenau pt \befriedigend\else\befriedigendpluseins\fi} & \scriptsize{\ifdim\befriedigend pt=\befriedigendgenau pt \befriedigendminuseins\else\befriedigend\fi \ifthenelse{\equal{#1}{1/2}}{,5}{} ~ - \ifdim\genuegend pt=\genuegendgenau pt \genuegend\else\genuegendpluseins\fi} & \scriptsize{\ifdim\genuegend pt=\genuegendgenau pt \genuegendminuseins\else\genuegend\fi \ifthenelse{\equal{#1}{1/2}}{,5}{} ~ - \ifdim\nichtgenuegend pt=\nichtgenuegendgenau pt \nichtgenuegend\else\nichtgenuegendpluseins\fi} & \scriptsize{unter \ifdim\nichtgenuegend pt=\nichtgenuegendgenau pt \nichtgenuegend\else\nichtgenuegendpluseins\fi} \\ \hline
 \end{tabular}
 \end{center}\STautoround{}\normalsize}
 
-\newcommand{\notenschluesselop}[4]{
+\newcommand{\notenschluesselop}[5][]{
 \vfill
 \STautoround{3}\renewcommand{\arraystretch}{0}\tiny
 \begin{spreadtab}[\STsavecell\gutgenau{b2} \STsavecell\befriedigendgenau{c2} \STsavecell\genuegendgenau{d2}
 \STsavecell\gut{b3}  \STsavecell\befriedigend{c3} \STsavecell\genuegend{d3} \STsavecell\nichtgenuegend{e3}  
 \STsavecell\gutpluseins{b4} \STsavecell\befriedigendpluseins{c4}  \STsavecell\genuegendpluseins{d4} \STsavecell\gutminuseins{b5} \STsavecell\befriedigendminuseins{c5} \STsavecell\genuegendminuseins{d5}]{{tabular}{ccccc}}
  \SThidecol \thepunkte &\SThidecol 1 &\SThidecol 2 &\SThidecol 3 &\SThidecol 4 \\ 
- & a1*#1 &a1*#2 & a1*#3 & a1*#4 \\
- &trunc(a1*#1,0) & trunc(a1*#2,0) &trunc(a1*#3,0) &trunc(a1*#4,0) \\
- &b3+1 &c3+1 &d3+1 &\\
- &b3-1 &c3-1 &d3-1 &\\
+ & a1*#2 &a1*#3 & a1*#4 & a1*#5 \\
+ &trunc(a1*#2,0) & trunc(a1*#3,0) &trunc(a1*#4,0) &trunc(a1*#5,0) \\
+ &b3+1 &c3+1 &d3+1 & e3+1\\
+ &b3-1 &c3-1 &d3-1 & e3-1\\
 \end{spreadtab}
 \footnotesize\renewcommand{\arraystretch}{1}
 \begin{center}
@@ -359,7 +352,7 @@ Erreichte Punkte &Gesamt&\multicolumn{2}{c}{Note}& \\
 &\multirow{2}{*}{\thepunkte} &&& \\  
 &&&& \\ \hline \hline
 \scriptsize{Sehr gut} & \scriptsize{Gut} & \scriptsize{Befriedigend} & \scriptsize{Gen\"ugend} & \scriptsize{Nicht gen\"ugend} \\
-\scriptsize{\thepunkte ~ - \ifdim\gut pt=\gutgenau pt \gut\else\gutpluseins\fi}& \scriptsize{\ifdim\gut pt=\gutgenau pt \gutminuseins\else\gut\fi ~ - \ifdim\befriedigend pt=\befriedigendgenau pt \befriedigend\else\befriedigendpluseins\fi} & \scriptsize{\ifdim\befriedigend pt=\befriedigendgenau pt \befriedigendminuseins\else\befriedigend\fi ~ - \ifdim\genuegend pt=\genuegendgenau pt \genuegend\else\genuegendpluseins\fi} & \scriptsize{\ifdim\genuegend pt=\genuegendgenau pt \genuegendminuseins\else\genuegend\fi ~ - \nichtgenuegend} & \scriptsize{unter \nichtgenuegend} \\ \hline
+\scriptsize{\thepunkte ~ - \ifdim\gut pt=\gutgenau pt \gut\else\gutpluseins\fi}& \scriptsize{\ifdim\gut pt=\gutgenau pt \gutminuseins\else\gut\fi \ifthenelse{\equal{#1}{1/2}}{,5}{} ~ - \ifdim\befriedigend pt=\befriedigendgenau pt \befriedigend\else\befriedigendpluseins\fi} & \scriptsize{\ifdim\befriedigend pt=\befriedigendgenau pt \befriedigendminuseins\else\befriedigend\fi \ifthenelse{\equal{#1}{1/2}}{,5}{} ~ - \ifdim\genuegend pt=\genuegendgenau pt \genuegend\else\genuegendpluseins\fi} & \scriptsize{\ifdim\genuegend pt=\genuegendgenau pt \genuegendminuseins\else\genuegend\fi \ifthenelse{\equal{#1}{1/2}}{,5}{} ~ - \ifdim\nichtgenuegend pt=\nichtgenuegendgenau pt \nichtgenuegend\else\nichtgenuegendpluseins\fi} & \scriptsize{unter \ifdim\nichtgenuegend pt=\nichtgenuegendgenau pt \nichtgenuegend\else\nichtgenuegendpluseins\fi} \\ \hline
 \end{tabular}
 \end{center}\STautoround{}\normalsize}
 
@@ -721,20 +714,21 @@ Complete the following sentence by putting a cross next to one of the given poss
 \newcommand\multiplechoice[2][5]{ %Anzahl der Antwortmoeglichkeiten, Standard: 5
   \bgroup
   \jeroen@set@keys{#2}%%
-	
+
 \centering 
 \tabulinesep=3mm
 \pgfmathsetseed{\theZufall}
 \declarenumlist{group}{1}{#1}
 \pgfmathrandomitem\z{group}\setcounter{antworta}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antwortb}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antwortc}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antwortd}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antworte}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antwortf}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antwortg}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antworth}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antworti}{\z}\prunelist{group}
+\ifthenelse{\numexpr#1 > 1}{\pgfmathrandomitem\z{group}\setcounter{antwortb}{\z}\prunelist{group}}{}
+\ifthenelse{\numexpr#1 > 2}{\pgfmathrandomitem\z{group}\setcounter{antwortc}{\z}\prunelist{group}}{}
+\ifthenelse{\numexpr#1 > 3}{\pgfmathrandomitem\z{group}\setcounter{antwortd}{\z}\prunelist{group}}{}
+\ifthenelse{\numexpr#1 > 4}{\pgfmathrandomitem\z{group}\setcounter{antworte}{\z}\prunelist{group}}{}
+\ifthenelse{\numexpr#1 > 5}{\pgfmathrandomitem\z{group}\setcounter{antwortf}{\z}\prunelist{group}}{}
+\ifthenelse{\numexpr#1 > 6}{\pgfmathrandomitem\z{group}\setcounter{antwortg}{\z}\prunelist{group}}{}
+\ifthenelse{\numexpr#1 > 7}{\pgfmathrandomitem\z{group}\setcounter{antworth}{\z}\prunelist{group}}{}
+\ifthenelse{\numexpr#1 > 8}{\pgfmathrandomitem\z{group}\setcounter{antworti}{\z}\prunelist{group}}{}
+
 
 \begin{tabu}{|T|c|}
 \hline
@@ -773,14 +767,14 @@ Complete the following sentence by putting a cross next to one of the given poss
 	\pgfmathsetseed{\theZufall}
 \declarenumlist{group}{1}{#1}
 \pgfmathrandomitem\z{group}\setcounter{antworta}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antwortb}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antwortc}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antwortd}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antworte}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antwortf}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antwortg}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antworth}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antworti}{\z}\prunelist{group}
+\ifthenelse{\numexpr#1 > 1}{\pgfmathrandomitem\z{group}\setcounter{antwortb}{\z}\prunelist{group}}{}
+\ifthenelse{\numexpr#1 > 2}{\pgfmathrandomitem\z{group}\setcounter{antwortc}{\z}\prunelist{group}}{}
+\ifthenelse{\numexpr#1 > 3}{\pgfmathrandomitem\z{group}\setcounter{antwortd}{\z}\prunelist{group}}{}
+\ifthenelse{\numexpr#1 > 4}{\pgfmathrandomitem\z{group}\setcounter{antworte}{\z}\prunelist{group}}{}
+\ifthenelse{\numexpr#1 > 5}{\pgfmathrandomitem\z{group}\setcounter{antwortf}{\z}\prunelist{group}}{}
+\ifthenelse{\numexpr#1 > 6}{\pgfmathrandomitem\z{group}\setcounter{antwortg}{\z}\prunelist{group}}{}
+\ifthenelse{\numexpr#1 > 7}{\pgfmathrandomitem\z{group}\setcounter{antworth}{\z}\prunelist{group}}{}
+\ifthenelse{\numexpr#1 > 8}{\pgfmathrandomitem\z{group}\setcounter{antworti}{\z}\prunelist{group}}{}
 
 \centering 
 \tabulinesep=3mm
@@ -838,20 +832,20 @@ Complete the following sentence by putting a cross next to one of the given poss
 \newcommand\rfmultiplechoice[3][5]{ %Anzahl der Antwortmoeglichkeiten, Standard: 5
   \bgroup
   \jeroen@set@keys{#3}%%
-\setcounter{counter}{0}	
+\setcounter{counter}{0}\setcounter{acheck}{0}\setcounter{bcheck}{0}\setcounter{ccheck}{0}\setcounter{dcheck}{0}\setcounter{echeck}{0}\setcounter{fcheck}{0}\setcounter{gcheck}{0}\setcounter{hcheck}{0}\setcounter{icheck}{0}
 \centering 
 \tabulinesep=3mm
 \pgfmathsetseed{\theZufall}
 \declarenumlist{group}{1}{#1}
 \pgfmathrandomitem\z{group}\setcounter{antworta}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antwortb}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antwortc}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antwortd}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antworte}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antwortf}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antwortg}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antworth}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antworti}{\z}\prunelist{group}
+\ifthenelse{\numexpr#1 > 1}{\pgfmathrandomitem\z{group}\setcounter{antwortb}{\z}\prunelist{group}}{}
+\ifthenelse{\numexpr#1 > 2}{\pgfmathrandomitem\z{group}\setcounter{antwortc}{\z}\prunelist{group}}{}
+\ifthenelse{\numexpr#1 > 3}{\pgfmathrandomitem\z{group}\setcounter{antwortd}{\z}\prunelist{group}}{}
+\ifthenelse{\numexpr#1 > 4}{\pgfmathrandomitem\z{group}\setcounter{antworte}{\z}\prunelist{group}}{}
+\ifthenelse{\numexpr#1 > 5}{\pgfmathrandomitem\z{group}\setcounter{antwortf}{\z}\prunelist{group}}{}
+\ifthenelse{\numexpr#1 > 6}{\pgfmathrandomitem\z{group}\setcounter{antwortg}{\z}\prunelist{group}}{}
+\ifthenelse{\numexpr#1 > 7}{\pgfmathrandomitem\z{group}\setcounter{antworth}{\z}\prunelist{group}}{}
+\ifthenelse{\numexpr#1 > 8}{\pgfmathrandomitem\z{group}\setcounter{antworti}{\z}\prunelist{group}}{}
 
 %\begin{minipage}{0.85\linewidth}
 \begin{tabu}{|A|c|c|}%
@@ -919,15 +913,14 @@ Complete the following sentence by putting a cross next to one of the given poss
 \tabulinesep=3mm
 \pgfmathsetseed{\theZufall}
 \declarenumlist{group}{1}{#1}
-\pgfmathrandomitem\z{group}\setcounter{antworta}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antwortb}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antwortc}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antwortd}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antworte}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antwortf}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antwortg}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antworth}{\z}\prunelist{group}
-\pgfmathrandomitem\z{group}\setcounter{antworti}{\z}\prunelist{group}
+\ifthenelse{\numexpr#1 > 1}{\pgfmathrandomitem\z{group}\setcounter{antwortb}{\z}\prunelist{group}}{}
+\ifthenelse{\numexpr#1 > 2}{\pgfmathrandomitem\z{group}\setcounter{antwortc}{\z}\prunelist{group}}{}
+\ifthenelse{\numexpr#1 > 3}{\pgfmathrandomitem\z{group}\setcounter{antwortd}{\z}\prunelist{group}}{}
+\ifthenelse{\numexpr#1 > 4}{\pgfmathrandomitem\z{group}\setcounter{antworte}{\z}\prunelist{group}}{}
+\ifthenelse{\numexpr#1 > 5}{\pgfmathrandomitem\z{group}\setcounter{antwortf}{\z}\prunelist{group}}{}
+\ifthenelse{\numexpr#1 > 6}{\pgfmathrandomitem\z{group}\setcounter{antwortg}{\z}\prunelist{group}}{}
+\ifthenelse{\numexpr#1 > 7}{\pgfmathrandomitem\z{group}\setcounter{antworth}{\z}\prunelist{group}}{}
+\ifthenelse{\numexpr#1 > 8}{\pgfmathrandomitem\z{group}\setcounter{antworti}{\z}\prunelist{group}}{}
 
 %\begin{minipage}{0.85\linewidth}
 \begin{tabu}{|A|c|c|}%

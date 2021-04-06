@@ -330,8 +330,8 @@ def prepare_tex_for_pdf(self):
         file.write("\\usepackage[solution_off]{srdp-mathematik} % solution_on/off\n")
     file.write(
         "\setcounter{Zufall}{0}\n\n\n"
-        "\\usepackage{bookmark}"
-        "\pagestyle{empty} %PAGESTYLE: empty, plain, fancy\n"
+        "\\usepackage{bookmark}\n"
+        "\pagestyle{plain} %PAGESTYLE: empty, plain, fancy\n"
         "\onehalfspacing %Zeilenabstand\n"
         "\setcounter{secnumdepth}{-1} % keine Nummerierung der Ueberschriften\n\n\n\n"
         "%\n"
@@ -510,10 +510,11 @@ def prepare_tex_for_pdf(self):
             self.cb_k5.isChecked()
             or self.cb_k6.isChecked()
             or self.cb_k7.isChecked()
-            or self.cb_k8.isChecked() == True
-            or self.cb_mat.isChecked() == True
+            or self.cb_k8.isChecked()
+            # or self.cb_mat.isChecked() OLD SECTION - MAT -
             or self.cb_univie.isChecked()
         ):
+
             if suchbegriffe == []:
                 dict_gesammeltedateien = beispieldaten_dateipfad
             for all_formats in list(Klassen.keys()):
@@ -522,11 +523,19 @@ def prepare_tex_for_pdf(self):
                     selected_klassen.append(all_formats.upper())
                     suchbegriffe.append(all_formats.upper())
 
+  
             for all in list(dict_gesammeltedateien):
                 if not any(
                     all_formats.upper() in all for all_formats in selected_klassen
                 ):
                     del dict_gesammeltedateien[all]
+
+        #### NEW SECTION [MAT]
+        if self.cb_mat.isChecked():
+            for all in list(dict_gesammeltedateien):
+                if not "MAT" in all:
+                    del dict_gesammeltedateien[all]
+        #################
 
     dict_number_of_variations = get_number_of_variations(self, dict_gesammeltedateien)
 
@@ -632,7 +641,7 @@ def prepare_tex_for_pdf(self):
                 input_string = "ENTWURF\\vspace{-0.5cm}" + input_string
 
             file.write(input_string)
-    file.write('\shorthandoff{"}\n' "\end{document}")
+    file.write('\shorthandoff{"}\n\n' "\end{document}")
 
     file.close()
 

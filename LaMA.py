@@ -935,6 +935,7 @@ class Ui_MainWindow(object):
         self.groupBox_variation_cr = create_new_groupbox(
             self.centralwidget, "Aufgabenvariation"
         )
+        self.groupBox_variation_cr.setMaximumWidth(500)
         self.verticalLayout_variation = create_new_verticallayout(
             self.groupBox_variation_cr
         )
@@ -1101,8 +1102,9 @@ class Ui_MainWindow(object):
         self.groupBox_ausgew_gk_cr = create_new_groupbox(
             self.centralwidget, "Ausgewählte Grundkompetenzen"
         )
+
         self.groupBox_ausgew_gk_cr.setSizePolicy(SizePolicy_fixed_height)
-        # self.groupBox_ausgew_gk_cr.setMaximumWidth(500)
+        self.groupBox_ausgew_gk_cr.setMaximumWidth(500)
 
         self.verticalLayout_2 = create_new_verticallayout(self.groupBox_ausgew_gk_cr)
 
@@ -1119,7 +1121,7 @@ class Ui_MainWindow(object):
         self.groupBox_bilder = create_new_groupbox(
             self.centralwidget, "Bilder (klicken, um Bilder zu entfernen)"
         )
-        # self.groupBox_bilder.setMaximumWidth(500)
+        self.groupBox_bilder.setMaximumWidth(500)
         self.groupBox_bilder.setSizePolicy(SizePolicy_maximum_height)
         self.gridLayout_13 = QtWidgets.QGridLayout(self.groupBox_bilder)
         self.gridLayout_13.setObjectName(_fromUtf8("gridLayout_13"))
@@ -1277,7 +1279,7 @@ class Ui_MainWindow(object):
         self.comboBox_klassen_cr.setObjectName(_fromUtf8("comboBox_klassen_cr"))
         self.comboBox_klassen_cr.addItem("-")
         for all in Klassen:
-            if all != "univie":
+            if all != "univie" and all != "mat":
                 self.comboBox_klassen_cr.addItem(Klassen[all])
 
         self.gridLayout_8.addWidget(self.comboBox_klassen_cr, 0, 0, 1, 1)
@@ -1285,7 +1287,10 @@ class Ui_MainWindow(object):
 
         self.groupBox_klassen_cr.hide()
 
-        self.gridLayout.setRowStretch(5, 1)
+        self.cb_matura_tag = create_new_checkbox(self.centralwidget, "Matura")
+        self.gridLayout.addWidget(self.cb_matura_tag, 0,5,1,1)
+        self.cb_matura_tag.hide()
+        self.gridLayout.setRowStretch(6, 1)
 
         self.groupBox_titel_cr = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_titel_cr.setObjectName(_fromUtf8("groupBox_titel_cr"))
@@ -1295,6 +1300,7 @@ class Ui_MainWindow(object):
         self.gridLayout_14.setObjectName(_fromUtf8("gridLayout_14"))
         self.lineEdit_titel = QtWidgets.QLineEdit(self.groupBox_titel_cr)
         self.lineEdit_titel.setObjectName(_fromUtf8("lineEdit_titel"))
+        self.lineEdit_titel.textChanged.connect(self.check_admin_entry)
         self.gridLayout_14.addWidget(self.lineEdit_titel, 0, 0, 1, 1)
         self.gridLayout.addWidget(self.groupBox_titel_cr, 1, 1, 1, 5)
         self.groupBox_titel_cr.setTitle(_translate("MainWindow", "Titel", None))
@@ -2275,6 +2281,13 @@ class Ui_MainWindow(object):
                 else:
                     file_path = os.path.dirname(self.saved_file_path).replace("/", "\\")
                     subprocess.Popen('explorer "{}"'.format(file_path))
+
+    def check_admin_entry(self):
+        if "###" in self.lineEdit_titel.text():
+            self.cb_matura_tag.show()
+        else:
+            self.cb_matura_tag.hide()
+            self.cb_matura_tag.setChecked(False)
 
     def click_label_to_check(self, new_checkbox):
         if new_checkbox.isChecked() == False:
@@ -4257,7 +4270,10 @@ class Ui_MainWindow(object):
                 ]
                 klasse = klasse.upper()
             else:
-                klasse = ""
+                klasse = "K?"
+            
+            if self.cb_matura_tag.isChecked():
+                klasse = klasse + "[MAT]"
 
         # if klasse == None:
         #     klasse = ""
@@ -6978,6 +6994,9 @@ class Ui_MainWindow(object):
         if chosen_gui == widgets_search:
             if self.label_aufgabentyp.text()[-1] == str(1):
                 self.combobox_searchtype.hide()
+        
+
+        
         # if chosen_type == str(2):
         #     self.label_aufgabentyp.setText(
         #         _translate("MainWindow", "Aufgabentyp: Typ 1", None)
@@ -6995,6 +7014,12 @@ class Ui_MainWindow(object):
             self.adapt_choosing_list("feedback")
             # self.listWidget_fb.itemClicked.connect(self.nummer_clicked_fb)
             # self.listWidget_fb_cria.itemClicked.connect(self.nummer_clicked_fb)
+ 
+        
+        if chosen_gui == widgets_create and "###" in self.lineEdit_titel.text():
+            self.cb_matura_tag.show()
+        else:
+            self.cb_matura_tag.hide()
 
 
 if __name__ == "__main__":
