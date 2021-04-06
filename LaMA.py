@@ -590,7 +590,7 @@ class Ui_MainWindow(object):
         self.cb_drafts = create_new_checkbox(self.centralwidget, "Entwürfe")
         self.horizontalLayout_2.addWidget(self.cb_drafts)
         self.cb_drafts.setToolTip(
-            'Es werden auch jene Aufgaben durchsucht, die sich im "Beispieleinreichung"-Ordner befinden,\njedoch bisher noch nicht auf Fehler überprüft und in die Datenbank aufgenommen wurden.'
+            'Es werden auch eingereichte Aufgaben durchsucht, die bisher noch nicht auf Fehler überprüft\nund in die Datenbank aufgenommen wurden.'
         )
         self.cb_drafts.toggled.connect(self.cb_drafts_enabled)
 
@@ -4180,7 +4180,7 @@ class Ui_MainWindow(object):
                             max_integer_file = int(file_integer)
 
         except FileNotFoundError:
-            print('No Beispieleinreichordner')
+            print('Der "drafts"-Ordner konnte nicht gefunden werden.')
             # critical_window(
             #     'Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und\nmuss zuerst für Sie freigegeben werden.',
             #     "Derzeit können keine neuen Aufgaben eingegeben werden.\nBitte melden Sie sich unter lama.helpme@gmail.com!",

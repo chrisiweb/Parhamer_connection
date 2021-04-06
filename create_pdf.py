@@ -7,7 +7,7 @@ import re
 import json
 import subprocess
 from functools import partial
-from config_start import path_programm, path_localappdata_lama, lama_settings_file
+from config_start import path_programm, database, path_localappdata_lama, lama_settings_file
 from config import (
     colors_ui,
     get_color,
@@ -211,7 +211,7 @@ def prepare_tex_for_pdf(self):
 
     if self.cb_drafts.isChecked():
         QtWidgets.QApplication.restoreOverrideCursor()
-        drafts_path = os.path.join(path_programm, "Beispieleinreichung")
+        drafts_path = os.path.join(database, "drafts")
 
         if self.chosen_program == "lama":
             for all in os.listdir(drafts_path):
@@ -246,11 +246,11 @@ def prepare_tex_for_pdf(self):
 
             if self.cb_drafts.isChecked():
                 QtWidgets.QApplication.restoreOverrideCursor()
-                drafts_path = os.path.join(path_programm, "Beispieleinreichung")
+                drafts_path = os.path.join(database, "drafts")
                 for klasse in list_klassen:
                     try:
                         drafts_path = os.path.join(
-                            path_programm, "Beispieleinreichung", klasse
+                            database, "drafts", klasse
                         )
                         for all in os.listdir(drafts_path):
                             file = open(os.path.join(drafts_path, all), encoding="utf8")

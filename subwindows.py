@@ -5,7 +5,7 @@ import json
 import re
 from string import ascii_lowercase
 from functools import partial
-from config_start import path_programm, path_localappdata_lama, lama_settings_file, lama_developer_credentials
+from config_start import path_programm, database, path_localappdata_lama, lama_settings_file, lama_developer_credentials
 from config import (
     config_loader,
     config_file,
@@ -437,7 +437,7 @@ class Ui_Dialog_variation(object):
             try:
                 path = beispieldaten_dateipfad[section]
             except KeyError:
-                drafts_path = os.path.join(path_programm, "Beispieleinreichung")
+                drafts_path = os.path.join(database, "drafts")
                 beispieldaten_dateipfad_draft = search_files(drafts_path)
                 path = beispieldaten_dateipfad_draft[section]
 
@@ -446,7 +446,7 @@ class Ui_Dialog_variation(object):
 
             item.setText(name)
 
-            if name.startswith("_L_") or "Beispieleinreichung" in path:
+            if name.startswith("_L_") or "drafts" in path:
                 pass
             elif re.search("\[.+\]", name) != None:
                 pass
