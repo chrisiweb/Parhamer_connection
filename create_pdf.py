@@ -330,7 +330,7 @@ def prepare_tex_for_pdf(self):
         file.write("\\usepackage[solution_off]{srdp-mathematik} % solution_on/off\n")
     file.write(
         "\setcounter{Zufall}{0}\n\n\n"
-        "\\usepackage{bookmark}\n"
+        "\\usepackage[atend]{bookmark}\n"
         "\pagestyle{plain} %PAGESTYLE: empty, plain, fancy\n"
         "\onehalfspacing %Zeilenabstand\n"
         "\setcounter{secnumdepth}{-1} % keine Nummerierung der Ueberschriften\n\n\n\n"
@@ -557,6 +557,7 @@ def prepare_tex_for_pdf(self):
     green = "green!40!black!60!"
     file = open(filename_teildokument, "a", encoding="utf8")
     file.write("\n \\scriptsize Suchbegriffe: ")
+
     if self.chosen_program == "lama":
         for all in suchbegriffe:
             if all == suchbegriffe[-1]:
@@ -566,7 +567,7 @@ def prepare_tex_for_pdf(self):
         file.write("\\normalsize \n \n")
         for key, value in dict_gesammeltedateien.items():
             value = value.replace("\\", "/")
-            file = open(filename_teildokument, "a", encoding="utf8")
+            # file = open(filename_teildokument, "a", encoding="utf8")
 
             if chosen_aufgabenformat == "Typ1Aufgaben":
                 input_string = '\input{"' + value + '"}\n\hrule\leer\n\n'
@@ -612,7 +613,7 @@ def prepare_tex_for_pdf(self):
 
         for key, value in dict_gesammeltedateien.items():
             value = value.replace("\\", "/")
-            file = open(filename_teildokument, "a", encoding="utf8")
+            # file = open(filename_teildokument, "a", encoding="utf8")
 
             input_string = '\input{"' + value + '"}\n\hrule\leer\n\n'
 
