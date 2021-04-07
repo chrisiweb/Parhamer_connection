@@ -636,8 +636,7 @@ def prepare_tex_for_pdf(self):
                 input_string = input_string.replace("}\n", "}}\n")
                 input_string = "\\textcolor{{{0}}}{{".format(green) + input_string
 
-            # if key.startswith("ENTWURF"):
-            #     input_string = 'ENTWURF\\vspace{-0.5cm}' + input_string
+
             if key.startswith("ENTWURF"):
                 input_string = "ENTWURF\\vspace{-0.5cm}" + input_string
 
