@@ -642,7 +642,7 @@ def prepare_tex_for_pdf(self):
                 input_string = "ENTWURF\\vspace{-0.5cm}" + input_string
 
             file.write(input_string)
-    file.write('\shorthandoff{"}\n\n' "\end{document}")
+    file.write('\shorthandoff{"}\n' "\end{document}")
 
     file.close()
 
