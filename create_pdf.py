@@ -831,7 +831,10 @@ def open_pdf_file(folder_name, file_name):
             path_pdf_reader = ""
         else:
             path_pdf_reader = '"{}"'.format(path_pdf_reader) 
-
+        print(folder_name)
+        print(path_pdf_reader)
+        print(file_name)
+        print(path_programm)
         if is_empty(drive):
             subprocess.Popen(
                 'cd "{0}" & {1} {2}.pdf'.format(folder_name,path_pdf_reader, file_name),
