@@ -859,7 +859,7 @@ def open_pdf_file(folder_name, file_name):
         # else:
         #     print('not empty drive')
         subprocess.Popen(
-            '{0} cd "{1}" & {2} {3}.pdf'.format(drive, folder_name,path_pdf_reader, file_name),
+            '{0} cd "{1}" & {3}.pdf'.format(drive, folder_name,path_pdf_reader, file_name),
             shell = True).poll()            
 
 def loading_animation(process):
