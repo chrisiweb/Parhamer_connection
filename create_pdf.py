@@ -850,7 +850,10 @@ def open_pdf_file(folder_name, file_name):
         print(drive)
         print(sys.argv)
         
-
+        if is_empty(drive):
+            terminal_command = 'cd "{0}" & {1} {2}.pdf'.format(folder_name,path_pdf_reader, file_name)
+        else:
+            terminal_command = "{} &".format(drive) + terminal_command
         # if is_empty(drive):
         #     print('empty drive')
         #     subprocess.Popen(
@@ -859,7 +862,7 @@ def open_pdf_file(folder_name, file_name):
         # else:
         #     print('not empty drive')
         subprocess.Popen(
-            '{0} cd "{1}" & {3}.pdf'.format(drive, folder_name,path_pdf_reader, file_name),
+            terminal_command,
             shell = True).poll()            
 
 def loading_animation(process):
