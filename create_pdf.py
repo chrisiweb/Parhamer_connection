@@ -791,7 +791,7 @@ def open_pdf_file(folder_name, file_name):
 
     try:
         loaded_lama_file_path = sys.argv[1]
-        loaded_lama_file_path_drive = os.path.splitdrive(loaded_lama_file_path_drive)[0]
+        loaded_lama_file_path_drive = os.path.splitdrive(loaded_lama_file_path)[0]
         if drive_programm.upper() != loaded_lama_file_path.upper():
             drive = loaded_lama_file_path_drive.upper()
         print('different drive')
