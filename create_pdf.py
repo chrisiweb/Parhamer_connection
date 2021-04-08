@@ -782,7 +782,7 @@ def build_pdf_file(folder_name, file_name, latex_output_file):
 
 
 def open_pdf_file(folder_name, file_name):
-    # drive_programm = os.path.splitdrive(path_programm)[0]
+    drive_programm = os.path.splitdrive(path_programm)[0]
     # drive_database = os.path.splitdrive(path_localappdata_lama)[0]
     # if drive_programm.upper() != drive_database.upper():
     #     drive = drive_database.upper()
@@ -792,7 +792,7 @@ def open_pdf_file(folder_name, file_name):
     try:
         loaded_lama_file_path = sys.argv[1]
         loaded_lama_file_path_drive = os.path.splitdrive(loaded_lama_file_path)[0]
-        if drive_programm.upper() != loaded_lama_file_path.upper():
+        if drive_programm.upper() != loaded_lama_file_path_drive.upper():
             drive = loaded_lama_file_path_drive.upper()
         print('different drive')
     except IndexError:
