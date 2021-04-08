@@ -835,11 +835,15 @@ def open_pdf_file(folder_name, file_name):
         print(path_pdf_reader)
         print(file_name)
         print(path_programm)
+        print(drive)
+        print(sys.argv)
         if is_empty(drive):
+            print('empty drive')
             subprocess.Popen(
                 'cd "{0}" & {1} {2}.pdf'.format(folder_name,path_pdf_reader, file_name),
                 shell = True).poll()
         else:
+            print('not empty drive')
             subprocess.Popen(
                 '{0} cd "{1}" & {2} {3}.pdf'.format(drive, folder_name,path_pdf_reader, file_name),
                 shell = True).poll()            
