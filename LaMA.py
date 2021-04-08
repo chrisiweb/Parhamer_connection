@@ -3565,7 +3565,8 @@ class Ui_MainWindow(object):
                 #     )
                 # )
 
-            self.groupBox_grundkompetenzen_cr.setEnabled(False)
+            if typ == 1:
+                self.groupBox_grundkompetenzen_cr.setEnabled(False)
 
             self.comboBox_aufgabentyp_cr.setCurrentIndex(typ - 1)
             self.groupBox_aufgabentyp.setEnabled(False)
