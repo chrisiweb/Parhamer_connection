@@ -849,10 +849,10 @@ def open_pdf_file(folder_name, file_name):
         print(path_programm)
         print(drive)
         print(sys.argv)
+
+        terminal_command = 'cd "{0}" & {1} {2}.pdf'.format(folder_name,path_pdf_reader, file_name)
         
-        if is_empty(drive):
-            terminal_command = 'cd "{0}" & {1} {2}.pdf'.format(folder_name,path_pdf_reader, file_name)
-        else:
+        if not is_empty(drive):
             terminal_command = "{} &".format(drive) + terminal_command
         # if is_empty(drive):
         #     print('empty drive')
