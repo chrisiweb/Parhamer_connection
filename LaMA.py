@@ -2920,6 +2920,7 @@ class Ui_MainWindow(object):
         self.dict_alle_aufgaben_sage = {}
         self.dict_variablen_label = {}
         self.dict_variablen_punkte = {}
+        self.list_copy_images = []
         for i in reversed(range(self.gridLayout_8.count())):
             self.delete_widget(self.gridLayout_8, i)
 
