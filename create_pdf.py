@@ -782,12 +782,24 @@ def build_pdf_file(folder_name, file_name, latex_output_file):
 
 
 def open_pdf_file(folder_name, file_name):
-    drive_programm = os.path.splitdrive(path_programm)[0]
-    drive_database = os.path.splitdrive(path_localappdata_lama)[0]
-    if drive_programm.upper() != drive_database.upper():
-        drive = drive_database.upper()
-    else:
+    # drive_programm = os.path.splitdrive(path_programm)[0]
+    # drive_database = os.path.splitdrive(path_localappdata_lama)[0]
+    # if drive_programm.upper() != drive_database.upper():
+    #     drive = drive_database.upper()
+    # else:
+    #     drive = ""
+
+    try:
+        loaded_lama_file_path = sys.argv[1]
+        loaded_lama_file_path_drive = os.path.splitdrive(loaded_lama_file_path_drive)[0]
+        if drive_programm.upper() != loaded_lama_file_path.upper():
+            drive = loaded_lama_file_path_drive.upper()
+        print('different drive')
+    except IndexError:
         drive = ""
+        print('same drive')
+
+    print('drive:' + drive)
 
     try:
         with open(lama_settings_file, "r", encoding="utf8") as f:
@@ -837,16 +849,18 @@ def open_pdf_file(folder_name, file_name):
         print(path_programm)
         print(drive)
         print(sys.argv)
-        if is_empty(drive):
-            print('empty drive')
-            subprocess.Popen(
-                'cd "{0}" & {1} {2}.pdf'.format(folder_name,path_pdf_reader, file_name),
-                shell = True).poll()
-        else:
-            print('not empty drive')
-            subprocess.Popen(
-                '{0} cd "{1}" & {2} {3}.pdf'.format(drive, folder_name,path_pdf_reader, file_name),
-                shell = True).poll()            
+        
+
+        # if is_empty(drive):
+        #     print('empty drive')
+        #     subprocess.Popen(
+        #         'cd "{0}" & {1} {2}.pdf'.format(folder_name,path_pdf_reader, file_name),
+        #         shell = True).poll()
+        # else:
+        #     print('not empty drive')
+        subprocess.Popen(
+            '{0} cd "{1}" & {2} {3}.pdf'.format(drive, folder_name,path_pdf_reader, file_name),
+            shell = True).poll()            
 
 def loading_animation(process):
     animation = "|/-\\"
