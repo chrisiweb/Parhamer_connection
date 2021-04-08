@@ -794,12 +794,9 @@ def open_pdf_file(folder_name, file_name):
         loaded_lama_file_path_drive = os.path.splitdrive(loaded_lama_file_path)[0]
         # if drive_programm.upper() != loaded_lama_file_path_drive.upper():
         drive = drive_programm.upper()
-        print('different drive')
     except IndexError:
         drive = ""
-        print('same drive')
 
-    print('drive:' + drive)
 
     try:
         with open(lama_settings_file, "r", encoding="utf8") as f:
@@ -843,12 +840,12 @@ def open_pdf_file(folder_name, file_name):
             path_pdf_reader = ""
         else:
             path_pdf_reader = '"{}"'.format(path_pdf_reader) 
-        print(folder_name)
-        print(path_pdf_reader)
-        print(file_name)
-        print(path_programm)
-        print(drive)
-        print(sys.argv)
+        # print(folder_name)
+        # print(path_pdf_reader)
+        # print(file_name)
+        # print(path_programm)
+        # print(drive)
+        # print(sys.argv)
 
         terminal_command = 'cd "{0}" & {1} {2}.pdf'.format(folder_name,path_pdf_reader, file_name)
         
