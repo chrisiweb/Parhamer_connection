@@ -389,7 +389,7 @@ def prepare_tex_for_pdf(self):
                     if all in element:
                         if (
                             self.cb_show_variation.isChecked() == False
-                            and re.search("[0-9]\[.+\]", element) != None
+                            and re.search("[0-9]\[[0-9]+\]", element) != None
                         ):
                             pass
                         else:
@@ -422,7 +422,7 @@ def prepare_tex_for_pdf(self):
                         if thema in all:
                             if (
                                 self.cb_show_variation.isChecked() == False
-                                and re.search("[0-9]\[.+\]", all) != None
+                                and re.search("[0-9]\[[0-9]+\]", all) != None
                             ):
                                 pass
                             else:
@@ -441,7 +441,7 @@ def prepare_tex_for_pdf(self):
                 for all in beispieldaten_temporary[:]:
                     if (
                         self.cb_show_variation.isChecked() == False
-                        and re.search("[0-9]\[.+\]", all) != None
+                        and re.search("[0-9]\[[0-9]+\]", all) != None
                     ):
                         beispieldaten_temporary.remove(all)
                     elif thema not in all:
@@ -536,7 +536,7 @@ def prepare_tex_for_pdf(self):
                 if not "MAT" in all:
                     del dict_gesammeltedateien[all]
         #################
-    print(dict_gesammeltedateien)
+
     dict_number_of_variations = get_number_of_variations(self, dict_gesammeltedateien)
 
     ##############################
@@ -588,7 +588,7 @@ def prepare_tex_for_pdf(self):
                 )
 
             if (
-                re.search("[0-9]\[.+\]", key) != None
+                re.search("[0-9]\[[0-9]+\]", key) != None
                 and self.cb_show_variation.isChecked() == True
             ):
                 input_string = input_string.replace("}\n", "}}\n")
@@ -630,7 +630,7 @@ def prepare_tex_for_pdf(self):
                 )
 
             if (
-                re.search("[0-9]\[.+\]", key) != None
+                re.search("[0-9]\[[0-9]+\]", key) != None
                 and self.cb_show_variation.isChecked() == True
             ):
                 input_string = input_string.replace("}\n", "}}\n")
