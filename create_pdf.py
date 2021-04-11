@@ -171,23 +171,8 @@ def refresh_ddb_according_to_intervall(self, log_file):
     )
     # print('refreshed')      
 
-def prepare_tex_for_pdf(self):
-    QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-
+def collect_suchbegriffe(self):
     chosen_aufgabenformat = "Typ%sAufgaben" % self.label_aufgabentyp.text()[-1]
-    # print(self.lama_settings)
-    if self.chosen_program == "lama":
-        log_file = os.path.join(
-            path_localappdata_lama, "Teildokument",
-            "log_file_%s" % self.label_aufgabentyp.text()[-1],
-        )
-    if self.chosen_program == "cria":
-        log_file = os.path.join(path_localappdata_lama,"Teildokument","log_file_cria")
-
-    if not os.path.isfile(log_file):
-        refresh_ddb(self)  # self.label_aufgabentyp.text()[-1]
-    else:  ##  Automatic update per week/month/...
-        refresh_ddb_according_to_intervall(self, log_file)
 
     suchbegriffe = []
 
@@ -204,275 +189,11 @@ def prepare_tex_for_pdf(self):
                         thema = widget.split("_")[-1]
                         suchbegriffe.append(thema.upper())
 
-    with open(log_file, encoding="utf8") as f:
-        beispieldaten_dateipfad = json.load(f)
-        # beispieldaten_dateipfad=eval(beispieldaten_dateipfad)
-        beispieldaten = list(beispieldaten_dateipfad.keys())
-
-    if self.cb_drafts.isChecked():
-        QtWidgets.QApplication.restoreOverrideCursor()
-        drafts_path = os.path.join(database, "drafts")
-
-        if self.chosen_program == "lama":
-            for all in os.listdir(drafts_path):
-                if all.endswith(".tex") or all.endswith(".ltx"):
-                    pattern = re.compile("[A-Z][A-Z]")
-                    if int(self.label_aufgabentyp.text()[-1]) == 1:
-                        if pattern.match(all):
-                            file = open(os.path.join(drafts_path, all), encoding="utf8")
-                            for i, line in enumerate(file):
-                                if not line == "\n":
-                                    # line=line.replace('\section{', 'section{ENTWURF ')
-                                    beispieldaten_dateipfad[
-                                        "ENTWURF " + line
-                                    ] = os.path.join(drafts_path, all)
-                                    beispieldaten.append(line)
-                                    break
-                            file.close()
-                    if int(self.label_aufgabentyp.text()[-1]) == 2:
-                        if not pattern.match(all):
-                            file = open(os.path.join(drafts_path, all), encoding="utf8")
-                            for i, line in enumerate(file):
-                                if not line == "\n":
-                                    # line=line.replace('\section{', 'section{ENTWURF ')
-                                    beispieldaten_dateipfad[
-                                        "ENTWURF " + line
-                                    ] = os.path.join(drafts_path, all)
-                                    beispieldaten.append(line)
-                                    break
-                            file.close()
-
-        elif self.chosen_program == "cria":
-
-            if self.cb_drafts.isChecked():
-                QtWidgets.QApplication.restoreOverrideCursor()
-                drafts_path = os.path.join(database, "drafts")
-                for klasse in list_klassen:
-                    try:
-                        drafts_path = os.path.join(
-                            database, "drafts", klasse
-                        )
-                        for all in os.listdir(drafts_path):
-                            file = open(os.path.join(drafts_path, all), encoding="utf8")
-                            for i, line in enumerate(file):
-                                if not line == "\n":
-                                    # line=line.replace('\section{', 'section{ENTWURF ')
-                                    beispieldaten_dateipfad[
-                                        "ENTWURF " + line
-                                    ] = os.path.join(drafts_path, all)
-                                    beispieldaten.append(line)
-                                    break
-                            file.close()
-                    except FileNotFoundError:
-                        pass
-
-    ######################################################
-    ########### work around ####################
-    #########################################
-
-    path_tabu_pkg = os.path.join(path_programm, "_database", "_config", "tabu.sty")
-    copy_path_tabu_pkg = os.path.join(path_localappdata_lama,"Teildokument","tabu.sty")
-    if os.path.isfile(copy_path_tabu_pkg):
-        pass
-    else:
-        shutil.copy2(path_tabu_pkg, copy_path_tabu_pkg)
-
-    ###################################################
-    path_srdp_pkg = os.path.join(
-        path_programm, "_database", "_config", "srdp-mathematik.sty"
-    )
-    copy_path_srdp_pkg = os.path.join(
-        path_localappdata_lama,"Teildokument","srdp-mathematik.sty"
-    )
-    if os.path.isfile(copy_path_srdp_pkg):
-        pass
-    else:
-        shutil.copy2(path_srdp_pkg, copy_path_srdp_pkg)
-
-    ########################################################
-
-    if self.chosen_program == "lama":
-
-        filename_teildokument = os.path.join(
-            path_programm,
-            "Teildokument",
-            "Teildokument_%s.tex" % self.label_aufgabentyp.text()[-1],
-        )
-
-    elif self.chosen_program == "cria":
+    if self.chosen_program == "cria":
         for all in self.dict_chosen_topics.values():
             suchbegriffe.append(all)
 
-        filename_teildokument = os.path.join(
-            path_programm, "Teildokument", "Teildokument_cria.tex"
-        )
 
-    # try:
-    file = open(filename_teildokument, "w", encoding="utf8")
-    # except FileNotFoundError:
-    #     os.makedirs(filename_teildokument)  # If dir is not found make it recursivly
-
-    file.write(
-        "\documentclass[a4paper,12pt]{report}\n\n"
-        "\\usepackage{geometry}\n"
-        "\geometry{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}\n\n"
-        "\\usepackage{lmodern}\n"
-        "\\usepackage[T1]{fontenc}\n"
-        "\\usepackage{eurosym}\n"
-        "\\usepackage[utf8]{inputenc}\n"
-        "\\usepackage[ngerman]{babel}\n"
-    )
-    if self.cb_solution.isChecked() == True:
-        file.write("\\usepackage[solution_on]{srdp-mathematik} % solution_on/off\n")
-    else:
-        file.write("\\usepackage[solution_off]{srdp-mathematik} % solution_on/off\n")
-    file.write(
-        "\setcounter{Zufall}{0}\n\n\n"
-        "\\usepackage{bookmark}"
-        "\pagestyle{empty} %PAGESTYLE: empty, plain, fancy\n"
-        "\onehalfspacing %Zeilenabstand\n"
-        "\setcounter{secnumdepth}{-1} % keine Nummerierung der Ueberschriften\n\n\n\n"
-        "%\n"
-        "%\n"
-        "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DOKUMENT - ANFANG %%%%%%%%%%%%%%%%%%%"
-        "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"
-        "%\n"
-        "%\n"
-        "\\begin{document}\n"
-        '\shorthandoff{"}\n'
-    )
-    file.close()
-
-    #### Typ1 ####
-    # 	if self.combobox_searchtype.currentText()=='Alle Dateien ausgeben, die alle Suchkriterien enthalten':
-    #######
-
-    gesammeltedateien = []
-    if self.chosen_program == "lama":
-        if (
-            self.combobox_searchtype.currentText()
-            == "Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten"
-            and chosen_aufgabenformat == "Typ2Aufgaben"
-        ):
-            # liste_kompetenzbereiche = {}
-            # gkliste = []
-            # r = 1
-            for all in list(beispieldaten_dateipfad.keys()):
-                info = split_section(all, self.chosen_program)
-                gk_liste = info[2].split(", ")
-
-                not_included_items = check_gks_not_included(gk_liste, suchbegriffe)
-
-
-                if not_included_items == None:
-                    if (
-                        self.cb_show_variation.isChecked() == False
-                        and re.search("[0-9]\[.+\]", all) != None
-                    ):
-                        pass
-                    else:
-                        gesammeltedateien.append(all)
-
-
-            gesammeltedateien = sorted(gesammeltedateien)
-
-        if (
-            self.combobox_searchtype.currentText()
-            == "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten"
-            or chosen_aufgabenformat == "Typ1Aufgaben"
-        ):
-            gesammeltedateien = []
-            for all in suchbegriffe:
-                for element in list(beispieldaten_dateipfad.keys())[:]:
-                    if all in element:
-                        if (
-                            self.cb_show_variation.isChecked() == False
-                            and re.search("[0-9]\[.+\]", element) != None
-                        ):
-                            pass
-                        else:
-                            gesammeltedateien.append(element)
-
-
-        if not len(self.entry_suchbegriffe.text()) == 0:
-            suchbegriffe.append(self.entry_suchbegriffe.text())
-            if (
-                self.combobox_searchtype.currentText()
-                == "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten"
-                or chosen_aufgabenformat == "Typ1Aufgaben"
-            ):
-                if len(gesammeltedateien) == 0 and len(suchbegriffe) != 0:
-                    gesammeltedateien = list(beispieldaten_dateipfad.keys())
-            for all in gesammeltedateien[:]:
-                if self.entry_suchbegriffe.text().lower() not in all.lower():
-                    gesammeltedateien.remove(all)
-
-    if self.chosen_program == "cria":
-        if (
-            self.combobox_searchtype.currentText()
-            == "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten"
-        ):
-            for item in suchbegriffe:
-                klasse = item[0].upper()
-                thema = item[1] + "." + item[2]
-                for all in list(beispieldaten_dateipfad.keys()):
-                    if klasse in all:
-                        if thema in all:
-                            if (
-                                self.cb_show_variation.isChecked() == False
-                                and re.search("[0-9]\[.+\]", all) != None
-                            ):
-                                pass
-                            else:
-                                gesammeltedateien.append(all)
-
-        if (
-            self.combobox_searchtype.currentText()
-            == "Alle Dateien ausgeben, die alle Suchkriterien enthalten"
-        ):
-
-            beispieldaten_temporary = list(beispieldaten_dateipfad.keys())
-            for item in suchbegriffe:
-
-                klasse = item[0].upper()
-                thema = item[1] + "." + item[2]
-                for all in beispieldaten_temporary[:]:
-                    if (
-                        self.cb_show_variation.isChecked() == False
-                        and re.search("[0-9]\[.+\]", all) != None
-                    ):
-                        beispieldaten_temporary.remove(all)
-                    elif thema not in all:
-                        beispieldaten_temporary.remove(all)
-                    elif klasse not in all:
-                        beispieldaten_temporary.remove(all)
-
-            gesammeltedateien = beispieldaten_temporary
-
-        if not len(self.entry_suchbegriffe.text()) == 0:
-            suchbegriffe.append(self.entry_suchbegriffe.text())
-            for all in gesammeltedateien[:]:
-                if not len(self.entry_suchbegriffe.text()) == 0:
-
-                    if self.entry_suchbegriffe.text().lower() not in all.lower():
-                        gesammeltedateien.remove(all)
-    # if not len(self.entry_suchbegriffe.text())==0:
-    # 	suchbegriffe.append(self.entry_suchbegriffe.text())
-
-    if self.chosen_program == "lama" and chosen_aufgabenformat == "Typ2Aufgaben":
-        gesammeltedateien.sort(key=typ2_order)
-    else:
-        gesammeltedateien.sort(key=natural_keys)
-
-    dict_gesammeltedateien = {}
-
-    for all in gesammeltedateien:
-        dict_gesammeltedateien[all] = beispieldaten_dateipfad[all]
-
-    #### typ1 ###
-    # ###############################################
-    # #### Auswahl der gesuchten Antwortformate ####
-    # ###############################################
     if chosen_aufgabenformat == "Typ1Aufgaben" or self.chosen_program == "cria":
         if (
             self.cb_af_mc.isChecked()
@@ -480,186 +201,528 @@ def prepare_tex_for_pdf(self):
             or self.cb_af_zo.isChecked()
             or self.cb_af_rf.isChecked()
             or self.cb_af_ta.isChecked()
-            or self.cb_af_oa.isChecked() == True
+            or self.cb_af_oa.isChecked()
         ):
-            if suchbegriffe == []:
-                dict_gesammeltedateien = beispieldaten_dateipfad
             for all_formats in list(dict_aufgabenformate.keys()):
                 x = eval("self.cb_af_" + all_formats)
-                if x.isChecked() == False:
-                    for all in list(dict_gesammeltedateien):
-                        if all_formats.upper() in all:
-                            del dict_gesammeltedateien[all]
 
-                        # if all_formats in all:
-                        # del dict_gesammeltedateien[all]
-
-                if x.isChecked() == True:
+                if x.isChecked():
                     suchbegriffe.append(all_formats)
-    ########################################################
 
-    ###############################################
-    #### Auswahl der gesuchten Klassen #########
-    ###############################################
+
+    if not len(self.entry_suchbegriffe.text()) == 0:
+        suchbegriffe.append(self.entry_suchbegriffe.text())
+
 
     if self.chosen_program == "lama":
-        selected_klassen = []
         if (
             self.cb_k5.isChecked()
             or self.cb_k6.isChecked()
             or self.cb_k7.isChecked()
-            or self.cb_k8.isChecked() == True
-            or self.cb_mat.isChecked() == True
+            or self.cb_k8.isChecked()
+            or self.cb_mat.isChecked()
             or self.cb_univie.isChecked()
         ):
-            if suchbegriffe == []:
-                dict_gesammeltedateien = beispieldaten_dateipfad
             for all_formats in list(Klassen.keys()):
                 x = eval("self.cb_" + all_formats)
                 if x.isChecked() == True:
-                    selected_klassen.append(all_formats.upper())
                     suchbegriffe.append(all_formats.upper())
 
-            for all in list(dict_gesammeltedateien):
-                if not any(
-                    all_formats.upper() in all for all_formats in selected_klassen
-                ):
-                    del dict_gesammeltedateien[all]
+    return suchbegriffe
 
-    dict_number_of_variations = get_number_of_variations(self, dict_gesammeltedateien)
+def prepare_tex_for_pdf(self):
 
-    ##############################
-    if not dict_gesammeltedateien:
-        QtWidgets.QApplication.restoreOverrideCursor()
-        msg = QtWidgets.QMessageBox()
-        msg.setIcon(QtWidgets.QMessageBox.Warning)
-        msg.setWindowIcon(QtGui.QIcon(logo_path))
-        msg.setText("Es wurden keine passenden Aufgaben gefunden!")
-        msg.setInformativeText("Es wird keine Datei ausgegeben.")
-        msg.setWindowTitle("Warnung")
-        # msg.setDetailedText("The details are as follows:")
-        msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
-        retval = msg.exec_()
-        return
+    suchbegriffe = collect_suchbegriffe(self)
+    print(suchbegriffe)
+    # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
-    beispieldaten.sort(key=natural_keys)
-    green = "green!40!black!60!"
-    file = open(filename_teildokument, "a", encoding="utf8")
-    file.write("\n \\scriptsize Suchbegriffe: ")
-    if self.chosen_program == "lama":
-        for all in suchbegriffe:
-            if all == suchbegriffe[-1]:
-                file.write(all)
-            else:
-                file.write(all + ", ")
-        file.write("\\normalsize \n \n")
-        for key, value in dict_gesammeltedateien.items():
-            value = value.replace("\\", "/")
-            file = open(filename_teildokument, "a", encoding="utf8")
+    # chosen_aufgabenformat = "Typ%sAufgaben" % self.label_aufgabentyp.text()[-1]
+    # # print(self.lama_settings)
+    # if self.chosen_program == "lama":
+    #     log_file = os.path.join(
+    #         path_localappdata_lama, "Teildokument",
+    #         "log_file_%s" % self.label_aufgabentyp.text()[-1],
+    #     )
+    # if self.chosen_program == "cria":
+    #     log_file = os.path.join(path_localappdata_lama,"Teildokument","log_file_cria")
 
-            if chosen_aufgabenformat == "Typ1Aufgaben":
-                input_string = '\input{"' + value + '"}\n\hrule\leer\n\n'
-            elif chosen_aufgabenformat == "Typ2Aufgaben":
-                input_string = '\input{"' + value + '"}\n\\newpage\n\n'
+    # if not os.path.isfile(log_file):
+    #     refresh_ddb(self)  # self.label_aufgabentyp.text()[-1]
+    # else:  ##  Automatic update per week/month/...
+    #     refresh_ddb_according_to_intervall(self, log_file)
 
-            if (
-                key in dict_number_of_variations
-                and self.cb_show_variation.isChecked() == False
-            ):
-                anzahl = dict_number_of_variations[key]
-                input_string = (
-                    "\\begin{{minipage}}{{\\textwidth}}\\textcolor{{{0}}}{{\\fbox{{Anzahl der vorhandenen Variationen: {1}}}}}\\vspace{{-0.5cm}}".format(
-                        green, anzahl
-                    )
-                    + input_string
-                    + "\end{minipage}\n"
-                )
+    # suchbegriffe = []
 
-            if (
-                re.search("[0-9]\[.+\]", key) != None
-                and self.cb_show_variation.isChecked() == True
-            ):
-                input_string = input_string.replace("}\n", "}}\n")
-                input_string = "\\textcolor{{{0}}}{{".format(green) + input_string
+    # if self.chosen_program == "lama":
+    #     for widget in self.dict_widget_variables:
+    #         if widget.startswith("checkbox_search_"):
+    #             if self.dict_widget_variables[widget].isChecked() == True:
+    #                 if "gk" in widget:
+    #                     gk = widget.split("_")[-1]
+    #                     suchbegriffe.append(dict_gk[gk])
 
-            if key.startswith("ENTWURF"):
-                input_string = "ENTWURF\\vspace{-0.5cm}" + input_string
+    #                 if "themen" in widget:
+    #                     klasse = widget.split("_")[-2]
+    #                     thema = widget.split("_")[-1]
+    #                     suchbegriffe.append(thema.upper())
 
-            file.write(input_string)
 
-    if self.chosen_program == "cria":
-        for all in suchbegriffe:
-            if isinstance(all, list):
-                item = all[1] + "." + all[2] + " (" + all[0][1] + ".)"
-            else:
-                item = all.upper()
-            if all == suchbegriffe[-1]:
-                file.write(item)
-            else:
-                file.write(item + ", ")
-        file.write("\\normalsize \n \n")
+    # with open(log_file, encoding="utf8") as f:
+    #     beispieldaten_dateipfad = json.load(f)
+    #     # beispieldaten_dateipfad=eval(beispieldaten_dateipfad)
+    #     beispieldaten = list(beispieldaten_dateipfad.keys())
 
-        for key, value in dict_gesammeltedateien.items():
-            value = value.replace("\\", "/")
-            file = open(filename_teildokument, "a", encoding="utf8")
+    # if self.cb_drafts.isChecked():
+    #     QtWidgets.QApplication.restoreOverrideCursor()
+    #     drafts_path = os.path.join(database, "drafts")
 
-            input_string = '\input{"' + value + '"}\n\hrule\leer\n\n'
+    #     if self.chosen_program == "lama":
+    #         for all in os.listdir(drafts_path):
+    #             if all.endswith(".tex") or all.endswith(".ltx"):
+    #                 pattern = re.compile("[A-Z][A-Z]")
+    #                 if int(self.label_aufgabentyp.text()[-1]) == 1:
+    #                     if pattern.match(all):
+    #                         file = open(os.path.join(drafts_path, all), encoding="utf8")
+    #                         for i, line in enumerate(file):
+    #                             if not line == "\n":
+    #                                 # line=line.replace('\section{', 'section{ENTWURF ')
+    #                                 beispieldaten_dateipfad[
+    #                                     "ENTWURF " + line
+    #                                 ] = os.path.join(drafts_path, all)
+    #                                 beispieldaten.append(line)
+    #                                 break
+    #                         file.close()
+    #                 if int(self.label_aufgabentyp.text()[-1]) == 2:
+    #                     if not pattern.match(all):
+    #                         file = open(os.path.join(drafts_path, all), encoding="utf8")
+    #                         for i, line in enumerate(file):
+    #                             if not line == "\n":
+    #                                 # line=line.replace('\section{', 'section{ENTWURF ')
+    #                                 beispieldaten_dateipfad[
+    #                                     "ENTWURF " + line
+    #                                 ] = os.path.join(drafts_path, all)
+    #                                 beispieldaten.append(line)
+    #                                 break
+    #                         file.close()
 
-            if (
-                key in dict_number_of_variations
-                and self.cb_show_variation.isChecked() == False
-            ):
-                anzahl = dict_number_of_variations[key]
-                input_string = (
-                    "\\textcolor{{{0}}}{{\\fbox{{Anzahl der vorhandenen Variationen: {1}}}}}\\vspace{{-0.5cm}}".format(
-                        green, anzahl
-                    )
-                    + input_string
-                )
+    #     elif self.chosen_program == "cria":
 
-            if (
-                re.search("[0-9]\[.+\]", key) != None
-                and self.cb_show_variation.isChecked() == True
-            ):
-                input_string = input_string.replace("}\n", "}}\n")
-                input_string = "\\textcolor{{{0}}}{{".format(green) + input_string
+    #         if self.cb_drafts.isChecked():
+    #             QtWidgets.QApplication.restoreOverrideCursor()
+    #             drafts_path = os.path.join(database, "drafts")
+    #             for klasse in list_klassen:
+    #                 try:
+    #                     drafts_path = os.path.join(
+    #                         database, "drafts", klasse
+    #                     )
+    #                     for all in os.listdir(drafts_path):
+    #                         file = open(os.path.join(drafts_path, all), encoding="utf8")
+    #                         for i, line in enumerate(file):
+    #                             if not line == "\n":
+    #                                 # line=line.replace('\section{', 'section{ENTWURF ')
+    #                                 beispieldaten_dateipfad[
+    #                                     "ENTWURF " + line
+    #                                 ] = os.path.join(drafts_path, all)
+    #                                 beispieldaten.append(line)
+    #                                 break
+    #                         file.close()
+    #                 except FileNotFoundError:
+    #                     pass
 
-            # if key.startswith("ENTWURF"):
-            #     input_string = 'ENTWURF\\vspace{-0.5cm}' + input_string
-            if key.startswith("ENTWURF"):
-                input_string = "ENTWURF\\vspace{-0.5cm}" + input_string
+    # ######################################################
+    # ########### work around ####################
+    # #########################################
 
-            file.write(input_string)
-    file.write('\shorthandoff{"}\n' "\end{document}")
+    # path_tabu_pkg = os.path.join(path_programm, "_database", "_config", "tabu.sty")
+    # copy_path_tabu_pkg = os.path.join(path_localappdata_lama,"Teildokument","tabu.sty")
+    # if os.path.isfile(copy_path_tabu_pkg):
+    #     pass
+    # else:
+    #     shutil.copy2(path_tabu_pkg, copy_path_tabu_pkg)
 
-    file.close()
+    # ###################################################
+    # path_srdp_pkg = os.path.join(
+    #     path_programm, "_database", "_config", "srdp-mathematik.sty"
+    # )
+    # copy_path_srdp_pkg = os.path.join(
+    #     path_localappdata_lama,"Teildokument","srdp-mathematik.sty"
+    # )
+    # if os.path.isfile(copy_path_srdp_pkg):
+    #     pass
+    # else:
+    #     shutil.copy2(path_srdp_pkg, copy_path_srdp_pkg)
 
-    QtWidgets.QApplication.restoreOverrideCursor()
-    msg = QtWidgets.QMessageBox()
-    msg.setIcon(QtWidgets.QMessageBox.Question)
-    msg.setWindowIcon(QtGui.QIcon(logo_path))
-    msg.setText(
-        "Insgesamt wurden "
-        + str(len(dict_gesammeltedateien))
-        + " Aufgaben gefunden.\n "
-    )
-    msg.setInformativeText("Soll die PDF Datei erstellt werden?")
-    msg.setWindowTitle("Datei ausgeben?")
-    msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-    buttonY = msg.button(QtWidgets.QMessageBox.Yes)
-    buttonY.setText("Ja")
-    buttonN = msg.button(QtWidgets.QMessageBox.No)
-    buttonN.setText("Nein")
-    msg.setDefaultButton(QtWidgets.QMessageBox.Yes)
-    ret = msg.exec_()
+    # ########################################################
 
-    if ret == QtWidgets.QMessageBox.Yes:
-        if self.chosen_program == "lama":
-            typ = self.label_aufgabentyp.text()[-1]
-        elif self.chosen_program == "cria":
-            typ = "cria"
+    # if self.chosen_program == "lama":
 
-        create_pdf("Teildokument", 0, 0, typ)
+    #     filename_teildokument = os.path.join(
+    #         path_programm,
+    #         "Teildokument",
+    #         "Teildokument_%s.tex" % self.label_aufgabentyp.text()[-1],
+    #     )
+
+    # if self.chosen_program == "cria":
+    #     for all in self.dict_chosen_topics.values():
+    #         suchbegriffe.append(all)
+
+    #     filename_teildokument = os.path.join(
+    #         path_programm, "Teildokument", "Teildokument_cria.tex"
+    #     )
+
+    # # try:
+    # file = open(filename_teildokument, "w", encoding="utf8")
+    # # except FileNotFoundError:
+    # #     os.makedirs(filename_teildokument)  # If dir is not found make it recursivly
+
+    # file.write(
+    #     "\documentclass[a4paper,12pt]{report}\n\n"
+    #     "\\usepackage{geometry}\n"
+    #     "\geometry{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}\n\n"
+    #     "\\usepackage{lmodern}\n"
+    #     "\\usepackage[T1]{fontenc}\n"
+    #     "\\usepackage{eurosym}\n"
+    #     "\\usepackage[utf8]{inputenc}\n"
+    #     "\\usepackage[ngerman]{babel}\n"
+    # )
+    # if self.cb_solution.isChecked() == True:
+    #     file.write("\\usepackage[solution_on]{srdp-mathematik} % solution_on/off\n")
+    # else:
+    #     file.write("\\usepackage[solution_off]{srdp-mathematik} % solution_on/off\n")
+    # file.write(
+    #     "\setcounter{Zufall}{0}\n\n\n"
+    #     "\\usepackage{bookmark}"
+    #     "\pagestyle{empty} %PAGESTYLE: empty, plain, fancy\n"
+    #     "\onehalfspacing %Zeilenabstand\n"
+    #     "\setcounter{secnumdepth}{-1} % keine Nummerierung der Ueberschriften\n\n\n\n"
+    #     "%\n"
+    #     "%\n"
+    #     "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DOKUMENT - ANFANG %%%%%%%%%%%%%%%%%%%"
+    #     "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"
+    #     "%\n"
+    #     "%\n"
+    #     "\\begin{document}\n"
+    #     '\shorthandoff{"}\n'
+    # )
+    # file.close()
+
+    # #### Typ1 ####
+    # # 	if self.combobox_searchtype.currentText()=='Alle Dateien ausgeben, die alle Suchkriterien enthalten':
+    # #######
+
+    # gesammeltedateien = []
+    # if self.chosen_program == "lama":
+    #     if (
+    #         self.combobox_searchtype.currentText()
+    #         == "Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten"
+    #         and chosen_aufgabenformat == "Typ2Aufgaben"
+    #     ):
+    #         # liste_kompetenzbereiche = {}
+    #         # gkliste = []
+    #         # r = 1
+    #         for all in list(beispieldaten_dateipfad.keys()):
+    #             info = split_section(all, self.chosen_program)
+    #             gk_liste = info[2].split(", ")
+
+    #             not_included_items = check_gks_not_included(gk_liste, suchbegriffe)
+
+
+    #             if not_included_items == None:
+    #                 if (
+    #                     self.cb_show_variation.isChecked() == False
+    #                     and re.search("[0-9]\[.+\]", all) != None
+    #                 ):
+    #                     pass
+    #                 else:
+    #                     gesammeltedateien.append(all)
+
+
+    #         gesammeltedateien = sorted(gesammeltedateien)
+
+    #     if (
+    #         self.combobox_searchtype.currentText()
+    #         == "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten"
+    #         or chosen_aufgabenformat == "Typ1Aufgaben"
+    #     ):
+    #         gesammeltedateien = []
+    #         for all in suchbegriffe:
+    #             for element in list(beispieldaten_dateipfad.keys())[:]:
+    #                 if all in element:
+    #                     if (
+    #                         self.cb_show_variation.isChecked() == False
+    #                         and re.search("[0-9]\[.+\]", element) != None
+    #                     ):
+    #                         pass
+    #                     else:
+    #                         gesammeltedateien.append(element)
+
+
+    # if not len(self.entry_suchbegriffe.text()) == 0:
+    #     suchbegriffe.append(self.entry_suchbegriffe.text())
+    #         if (
+    #             self.combobox_searchtype.currentText()
+    #             == "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten"
+    #             or chosen_aufgabenformat == "Typ1Aufgaben"
+    #         ):
+    #             if len(gesammeltedateien) == 0 and len(suchbegriffe) != 0:
+    #                 gesammeltedateien = list(beispieldaten_dateipfad.keys())
+    #         for all in gesammeltedateien[:]:
+    #             if self.entry_suchbegriffe.text().lower() not in all.lower():
+    #                 gesammeltedateien.remove(all)
+
+    # if self.chosen_program == "cria":
+    #     if (
+    #         self.combobox_searchtype.currentText()
+    #         == "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten"
+    #     ):
+    #         for item in suchbegriffe:
+    #             klasse = item[0].upper()
+    #             thema = item[1] + "." + item[2]
+    #             for all in list(beispieldaten_dateipfad.keys()):
+    #                 if klasse in all:
+    #                     if thema in all:
+    #                         if (
+    #                             self.cb_show_variation.isChecked() == False
+    #                             and re.search("[0-9]\[.+\]", all) != None
+    #                         ):
+    #                             pass
+    #                         else:
+    #                             gesammeltedateien.append(all)
+
+    #     if (
+    #         self.combobox_searchtype.currentText()
+    #         == "Alle Dateien ausgeben, die alle Suchkriterien enthalten"
+    #     ):
+
+    #         beispieldaten_temporary = list(beispieldaten_dateipfad.keys())
+    #         for item in suchbegriffe:
+
+    #             klasse = item[0].upper()
+    #             thema = item[1] + "." + item[2]
+    #             for all in beispieldaten_temporary[:]:
+    #                 if (
+    #                     self.cb_show_variation.isChecked() == False
+    #                     and re.search("[0-9]\[.+\]", all) != None
+    #                 ):
+    #                     beispieldaten_temporary.remove(all)
+    #                 elif thema not in all:
+    #                     beispieldaten_temporary.remove(all)
+    #                 elif klasse not in all:
+    #                     beispieldaten_temporary.remove(all)
+
+    #         gesammeltedateien = beispieldaten_temporary
+
+    #     if not len(self.entry_suchbegriffe.text()) == 0:
+    #         suchbegriffe.append(self.entry_suchbegriffe.text())
+    #         for all in gesammeltedateien[:]:
+    #             if not len(self.entry_suchbegriffe.text()) == 0:
+
+    #                 if self.entry_suchbegriffe.text().lower() not in all.lower():
+    #                     gesammeltedateien.remove(all)
+    # # if not len(self.entry_suchbegriffe.text())==0:
+    # # 	suchbegriffe.append(self.entry_suchbegriffe.text())
+
+    # if self.chosen_program == "lama" and chosen_aufgabenformat == "Typ2Aufgaben":
+    #     gesammeltedateien.sort(key=typ2_order)
+    # else:
+    #     gesammeltedateien.sort(key=natural_keys)
+
+    # dict_gesammeltedateien = {}
+
+    # for all in gesammeltedateien:
+    #     dict_gesammeltedateien[all] = beispieldaten_dateipfad[all]
+
+    # #### typ1 ###
+    # # ###############################################
+    # # #### Auswahl der gesuchten Antwortformate ####
+    # # ###############################################
+    # if chosen_aufgabenformat == "Typ1Aufgaben" or self.chosen_program == "cria":
+    #     if (
+    #         self.cb_af_mc.isChecked()
+    #         or self.cb_af_lt.isChecked()
+    #         or self.cb_af_zo.isChecked()
+    #         or self.cb_af_rf.isChecked()
+    #         or self.cb_af_ta.isChecked()
+    #         or self.cb_af_oa.isChecked() == True
+    #     ):
+    # #         if suchbegriffe == []:
+    # #             dict_gesammeltedateien = beispieldaten_dateipfad
+    #         for all_formats in list(dict_aufgabenformate.keys()):
+    #             x = eval("self.cb_af_" + all_formats)
+    # #             if x.isChecked() == False:
+    # #                 for all in list(dict_gesammeltedateien):
+    # #                     if all_formats.upper() in all:
+    # #                         del dict_gesammeltedateien[all]
+
+    # #                     # if all_formats in all:
+    # #                     # del dict_gesammeltedateien[all]
+
+    #             if x.isChecked() == True:
+    #                 suchbegriffe.append(all_formats)
+    # ########################################################
+
+    # ###############################################
+    # #### Auswahl der gesuchten Klassen #########
+    # ###############################################
+
+    # if self.chosen_program == "lama":
+    # #     selected_klassen = []
+    #     if (
+    #         self.cb_k5.isChecked()
+    #         or self.cb_k6.isChecked()
+    #         or self.cb_k7.isChecked()
+    #         or self.cb_k8.isChecked()
+    #         or self.cb_mat.isChecked()
+    #         or self.cb_univie.isChecked()
+    #     ):
+    # #         if suchbegriffe == []:
+    # #             dict_gesammeltedateien = beispieldaten_dateipfad
+    #         for all_formats in list(Klassen.keys()):
+    #             x = eval("self.cb_" + all_formats)
+    #             if x.isChecked() == True:
+    #                 # selected_klassen.append(all_formats.upper())
+    #                 suchbegriffe.append(all_formats.upper())
+
+    #         for all in list(dict_gesammeltedateien):
+    #             if not any(
+    #                 all_formats.upper() in all for all_formats in selected_klassen
+    #             ):
+    #                 del dict_gesammeltedateien[all]
+
+    # dict_number_of_variations = get_number_of_variations(self, dict_gesammeltedateien)
+    # print(suchbegriffe)
+    # ##############################
+    # if not dict_gesammeltedateien:
+    #     QtWidgets.QApplication.restoreOverrideCursor()
+    #     msg = QtWidgets.QMessageBox()
+    #     msg.setIcon(QtWidgets.QMessageBox.Warning)
+    #     msg.setWindowIcon(QtGui.QIcon(logo_path))
+    #     msg.setText("Es wurden keine passenden Aufgaben gefunden!")
+    #     msg.setInformativeText("Es wird keine Datei ausgegeben.")
+    #     msg.setWindowTitle("Warnung")
+    #     # msg.setDetailedText("The details are as follows:")
+    #     msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+    #     retval = msg.exec_()
+    #     return
+
+    # beispieldaten.sort(key=natural_keys)
+    # green = "green!40!black!60!"
+    # file = open(filename_teildokument, "a", encoding="utf8")
+    # file.write("\n \\scriptsize Suchbegriffe: ")
+    # if self.chosen_program == "lama":
+    #     for all in suchbegriffe:
+    #         if all == suchbegriffe[-1]:
+    #             file.write(all)
+    #         else:
+    #             file.write(all + ", ")
+    #     file.write("\\normalsize \n \n")
+    #     for key, value in dict_gesammeltedateien.items():
+    #         value = value.replace("\\", "/")
+    #         file = open(filename_teildokument, "a", encoding="utf8")
+
+    #         if chosen_aufgabenformat == "Typ1Aufgaben":
+    #             input_string = '\input{"' + value + '"}\n\hrule\leer\n\n'
+    #         elif chosen_aufgabenformat == "Typ2Aufgaben":
+    #             input_string = '\input{"' + value + '"}\n\\newpage\n\n'
+
+    #         if (
+    #             key in dict_number_of_variations
+    #             and self.cb_show_variation.isChecked() == False
+    #         ):
+    #             anzahl = dict_number_of_variations[key]
+    #             input_string = (
+    #                 "\\begin{{minipage}}{{\\textwidth}}\\textcolor{{{0}}}{{\\fbox{{Anzahl der vorhandenen Variationen: {1}}}}}\\vspace{{-0.5cm}}".format(
+    #                     green, anzahl
+    #                 )
+    #                 + input_string
+    #                 + "\end{minipage}\n"
+    #             )
+
+    #         if (
+    #             re.search("[0-9]\[.+\]", key) != None
+    #             and self.cb_show_variation.isChecked() == True
+    #         ):
+    #             input_string = input_string.replace("}\n", "}}\n")
+    #             input_string = "\\textcolor{{{0}}}{{".format(green) + input_string
+
+    #         if key.startswith("ENTWURF"):
+    #             input_string = "ENTWURF\\vspace{-0.5cm}" + input_string
+
+    #         file.write(input_string)
+
+    # if self.chosen_program == "cria":
+    #     for all in suchbegriffe:
+    #         if isinstance(all, list):
+    #             item = all[1] + "." + all[2] + " (" + all[0][1] + ".)"
+    #         else:
+    #             item = all.upper()
+    #         if all == suchbegriffe[-1]:
+    #             file.write(item)
+    #         else:
+    #             file.write(item + ", ")
+    #     file.write("\\normalsize \n \n")
+
+    #     for key, value in dict_gesammeltedateien.items():
+    #         value = value.replace("\\", "/")
+    #         file = open(filename_teildokument, "a", encoding="utf8")
+
+    #         input_string = '\input{"' + value + '"}\n\hrule\leer\n\n'
+
+    #         if (
+    #             key in dict_number_of_variations
+    #             and self.cb_show_variation.isChecked() == False
+    #         ):
+    #             anzahl = dict_number_of_variations[key]
+    #             input_string = (
+    #                 "\\textcolor{{{0}}}{{\\fbox{{Anzahl der vorhandenen Variationen: {1}}}}}\\vspace{{-0.5cm}}".format(
+    #                     green, anzahl
+    #                 )
+    #                 + input_string
+    #             )
+
+    #         if (
+    #             re.search("[0-9]\[.+\]", key) != None
+    #             and self.cb_show_variation.isChecked() == True
+    #         ):
+    #             input_string = input_string.replace("}\n", "}}\n")
+    #             input_string = "\\textcolor{{{0}}}{{".format(green) + input_string
+
+    #         # if key.startswith("ENTWURF"):
+    #         #     input_string = 'ENTWURF\\vspace{-0.5cm}' + input_string
+    #         if key.startswith("ENTWURF"):
+    #             input_string = "ENTWURF\\vspace{-0.5cm}" + input_string
+
+    #         file.write(input_string)
+    # file.write('\shorthandoff{"}\n' "\end{document}")
+
+    # file.close()
+
+    # QtWidgets.QApplication.restoreOverrideCursor()
+    # msg = QtWidgets.QMessageBox()
+    # msg.setIcon(QtWidgets.QMessageBox.Question)
+    # msg.setWindowIcon(QtGui.QIcon(logo_path))
+    # msg.setText(
+    #     "Insgesamt wurden "
+    #     + str(len(dict_gesammeltedateien))
+    #     + " Aufgaben gefunden.\n "
+    # )
+    # msg.setInformativeText("Soll die PDF Datei erstellt werden?")
+    # msg.setWindowTitle("Datei ausgeben?")
+    # msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+    # buttonY = msg.button(QtWidgets.QMessageBox.Yes)
+    # buttonY.setText("Ja")
+    # buttonN = msg.button(QtWidgets.QMessageBox.No)
+    # buttonN.setText("Nein")
+    # msg.setDefaultButton(QtWidgets.QMessageBox.Yes)
+    # ret = msg.exec_()
+
+    # if ret == QtWidgets.QMessageBox.Yes:
+    #     if self.chosen_program == "lama":
+    #         typ = self.label_aufgabentyp.text()[-1]
+    #     elif self.chosen_program == "cria":
+    #         typ = "cria"
+
+    #     create_pdf("Teildokument", 0, 0, typ)
 
 
 def extract_error_from_output(latex_output):

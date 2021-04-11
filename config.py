@@ -8,6 +8,7 @@ import os
 import re
 from pyqt5_minimal import Ui_WelcomeWindow
 from define_database import Ui_define_database
+from tinydb import TinyDB, Query
 
 
 # if sys.platform.startswith("win"):
@@ -56,7 +57,8 @@ from define_database import Ui_define_database
 
 config_file = os.path.join(path_programm, "_database", "_config", "config.yml")
 # config_file = os.path.join(os.path.dirname(sys.argv[0]), "config.yml")  
-
+db = TinyDB('_database/db.json')
+_file_ = Query()
         
 colors_ui = {
     "black": QtGui.QColor(0, 0, 0),
