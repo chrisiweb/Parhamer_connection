@@ -56,9 +56,10 @@ from tinydb import TinyDB, Query
 #     path_localappdata_lama = path_programm
 
 config_file = os.path.join(path_programm, "_database", "_config", "config.yml")
-# config_file = os.path.join(os.path.dirname(sys.argv[0]), "config.yml")  
-db = TinyDB('_database/db.json')
-_file_ = Query()
+# config_file = os.path.join(os.path.dirname(sys.argv[0]), "config.yml") 
+path_database = os.path.join(path_programm, "_database") 
+# database_lama_1 = TinyDB(path_database, "db.json")
+# _file_ = Query()
         
 colors_ui = {
     "black": QtGui.QColor(0, 0, 0),

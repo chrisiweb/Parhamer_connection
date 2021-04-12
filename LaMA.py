@@ -95,7 +95,7 @@ from processing_window import Ui_Dialog_processing
 import bcrypt
 # import tinydb
 
-
+import database_commands
 
 try:
     loaded_lama_file_path = sys.argv[1]
