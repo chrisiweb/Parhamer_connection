@@ -53,7 +53,7 @@ def create_list_from_section(section):
 	return list_collected_data
 
 
-def add_file(name, gk, titel, af, quelle, content, klasse = 'K?', bilder=None):
+def add_file(name, gk, titel, af, quelle, content, klasse = 'K?', info =None, bilder=None):
     db.insert({
         'name' : name,
         'gk' : gk,
@@ -62,7 +62,7 @@ def add_file(name, gk, titel, af, quelle, content, klasse = 'K?', bilder=None):
         'quelle' : quelle,
         'content' : content,
         'klasse' : klasse,
-        'zusatz' : zusatz,
+        'info' : info,
         'bilder' : bilder,
     })
 
@@ -72,7 +72,7 @@ def write_to_database(folder_path):
         for all in os.listdir(folder_path):
             name = os.path.splitext(all)[0]
             if os.path.splitext(all)[1] != '.tex':
-                print('continued:' +all)
+                # print('continued:' +all)
                 continue 
             print(all)
             file_path = os.path.join(folder_path, all)
@@ -81,13 +81,29 @@ def write_to_database(folder_path):
             section = get_section_from_content(content)
             
             _list = create_list_from_section(section)
-            print(_list)
-            if len(_list) == 5:
-                klasse = None
+            # print(_list)
+            
+            klasse = None
+            info = None
+            if len(_list) != 5:
+                x= re.search('K.',_list[2])
+                if x != None:
+                    klasse = x.group()
+                
+                for string in ['MAT', 'UNIVIE']:
+                    if len(_list)==6 and string in _list[2]:
+                        info = string
+                    elif len(_list)==7 and string in _list[3]:
+                        info = string 
+
+
+            # else:
+            #     if "MAT" in _list[-4]:
+
             # elif         
 
-            print(len(_list))
-            # add_file(name, _list[0], _list[-3], _list[-2], _list[-1], rest_content, _list[2])
+            # print(len(_list))
+            add_file(name, _list[0], _list[-3], _list[-2], _list[-1], rest_content, klasse, info)
     except FileNotFoundError:
         print('not found' + folder_path)
 
@@ -102,10 +118,13 @@ dict_gk = config_loader(config_file, 'dict_gk')
 ##### write all files to database - working ###
 ######################################
 
-# for all in dict_gk.values():
-#     gk = all.split(" ")[0].split("-L")[0]
-folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen","FA", "FA 1.2", "Einzelbeispiele")
-# folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen",gk, all, "Einzelbeispiele")
-write_to_database(folder_path)
+for all in dict_gk.values():
+    gk = all.split(" ")[0].split("-L")[0]
+    # folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen","AG", "AG 1.1", "Einzelbeispiele")
+    folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen",gk, all, "Einzelbeispiele")
+    #####
+    # folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen","FA", "FA 1.2", "Einzelbeispiele")
+    # folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen",gk, all, "Einzelbeispiele")
+    write_to_database(folder_path)
 
 print('done')
