@@ -1930,10 +1930,10 @@ class Ui_Dialog_developer(object):
         # print(password)
         if bcrypt.checkpw(password, hashed_pw):
             if self.checkbox_developer.isChecked():
-                # path_lama_developer_credentials = os.path.join(os.getenv('LOCALAPPDATA'), "LaMA", "credentials")
+                path_lama_developer_credentials = os.path.join(os.getenv('LOCALAPPDATA'), "LaMA", "credentials")
                 # lama_developer_credentials = os.path.join(path_lama_developer_credentials, "developer_credentials.txt")
-                # if not os.path.exists(path_lama_developer_credentials):
-                #     os.makedirs(path_lama_developer_credentials)
+                if not os.path.exists(path_lama_developer_credentials):
+                    os.makedirs(path_lama_developer_credentials)
 
                 with open(lama_developer_credentials, "wb") as file:
                     file.write(password)
