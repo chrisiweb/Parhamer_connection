@@ -17,6 +17,7 @@ from config import (
     logo_cria_button_path,
     is_empty,
     split_section,
+    preamble,
 )
 import json
 import shutil
@@ -28,6 +29,9 @@ from sort_items import natural_keys, lama_order, typ2_order
 from standard_dialog_windows import question_window, warning_window
 from processing_window import Ui_Dialog_processing
 import webbrowser
+from tinydb import Query, TinyDB
+from database_commands import database_lama_1
+
 
 
 ag_beschreibung = config_loader(config_file, "ag_beschreibung")
@@ -234,6 +238,11 @@ def prepare_tex_for_pdf(self):
 
     suchbegriffe = collect_suchbegriffe(self)
     print(suchbegriffe)
+    # path_database = os.path.join(path_programm, "_database", "database_lama_1.json")
+    # database_lama_1 = TinyDB(path_database)
+    _file_ = Query()
+
+    print(database_lama_1.search(_file_.gk == 'AG 1.1'))
     # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
     # chosen_aufgabenformat = "Typ%sAufgaben" % self.label_aufgabentyp.text()[-1]

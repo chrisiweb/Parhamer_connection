@@ -53,8 +53,8 @@ def create_list_from_section(section):
 	return list_collected_data
 
 
-def add_file(name, gk, titel, af, quelle, content, klasse = 'K?', info =None, bilder=None):
-    db.insert({
+def add_file(database, name, gk, titel, af, quelle, content, klasse = 'K?', info =None, bilder=None):
+    database.insert({
         'name' : name,
         'gk' : gk,
         'titel' : titel,
@@ -103,13 +103,13 @@ def write_to_database(folder_path):
             # elif         
 
             # print(len(_list))
-            add_file(name, _list[0], _list[-3], _list[-2], _list[-1], rest_content, klasse, info)
+            add_file(database_lama_1, name, _list[0], _list[-3], _list[-2], _list[-1], rest_content, klasse, info)
     except FileNotFoundError:
         print('not found' + folder_path)
 
 
 path_database = os.path.join(path_programm, "_database", "database_lama_1.json")
-db = TinyDB(path_database)
+database_lama_1 = TinyDB(path_database)
 
 dict_gk = config_loader(config_file, 'dict_gk')
 
@@ -118,13 +118,15 @@ dict_gk = config_loader(config_file, 'dict_gk')
 ##### write all files to database - working ###
 ######################################
 
-for all in dict_gk.values():
-    gk = all.split(" ")[0].split("-L")[0]
-    # folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen","AG", "AG 1.1", "Einzelbeispiele")
-    folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen",gk, all, "Einzelbeispiele")
-    #####
-    # folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen","FA", "FA 1.2", "Einzelbeispiele")
-    # folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen",gk, all, "Einzelbeispiele")
-    write_to_database(folder_path)
+# for all in dict_gk.values():
+#     gk = all.split(" ")[0].split("-L")[0]
+#     ###### Laptop
+#     # folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen","AG", "AG 1.1", "Einzelbeispiele")
+#     # folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen",gk, all, "Einzelbeispiele")
+#     ##### PC
+#     # folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen","FA", "FA 1.2", "Einzelbeispiele")
+#     folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen",gk, all, "Einzelbeispiele")
+#     #######
+#     write_to_database(folder_path)
 
 print('done')
