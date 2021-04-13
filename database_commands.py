@@ -76,14 +76,16 @@ def create_list_from_section(section):
 	return list_collected_data
 
 
-def add_file(database, name, gk, titel, af, quelle, content, klasse = 'K?', info =None, bilder=None):
+def add_file(database, name, themen, titel, af, quelle, content, punkte, pagebreak, klasse, info = None, bilder=None):
     database.insert({
         'name' : name,
-        'gk' : gk,
+        'themen' : themen,
         'titel' : titel,
         'af' : af,
         'quelle' : quelle,
         'content' : content,
+        'punkte' : punkte,
+        'pagebreak' : pagebreak,
         'klasse' : klasse,
         'info' : info,
         'bilder' : bilder,
@@ -91,17 +93,27 @@ def add_file(database, name, gk, titel, af, quelle, content, klasse = 'K?', info
 
 def get_default_info(content):
     if 'langesbeispiel' in content:
-        typ = 'langesbeispiel'
+        pagebreak = True
         punkte = int(re.split('begin{langesbeispiel}.*item\[(..?)\]', content)[1])
     elif 'beispiel' in content:
-        typ = 'beispiel'
+        pagebreak = False
         punkte = int(re.split('begin{beispiel}.*{(..?)}', content)[1])
     
-    return typ, punkte
+    return pagebreak, punkte
 
+def create_gk_list(string):
+    gk_list = string.split(', ')
+    return gk_list
 
+def search_for_images(content):
+    image = re.search('includegraphics{(.*.eps)}', content)
+    if image != None:
+        print(image.group())
+    # if 'includegraphics' in content:
+    #     print(content)
 
 def write_to_database(folder_path):
+    typ=2
     try:
         for all in os.listdir(folder_path):
             name = os.path.splitext(all)[0]
@@ -111,36 +123,56 @@ def write_to_database(folder_path):
             file_path = os.path.join(folder_path, all)
             content = collect_content(file_path)
 
-            typ, punkte = get_default_info(content)
+            pagebreak, punkte = get_default_info(content)
             rest_content = get_rest_from_content(content)
             section = get_section_from_content(content)
             
             _list = create_list_from_section(section)
             
-
-            
+            print(_list)
+                     
             klasse = None
             info = None
-            if len(_list) != 5:
-                x= re.search('K.',_list[2])
+            if typ == 1:
+                themen = _list[0]
+                titel = _list[-3]
+                af = _list[-2]
+                quelle = _list[-1]
+                if len(_list) != 5:
+                    x= re.search('K.',_list[2])
+                    if x != None:
+                        klasse = x.group()
+                    
+                    for string in ['MAT', 'UNIVIE']:
+                        if len(_list)==6 and string in _list[2]:
+                            info = string
+                        elif len(_list)==7 and string in _list[3]:
+                            info = string
+            elif typ == 2:
+                themen = create_gk_list(_list[-3])
+                titel = _list[-2]
+                quelle = _list[-1]
+                af = None
+
+                if 'MAT' in _list[1]:
+                    info = 'MAT'
+                x= re.search('K.',_list[1])
                 if x != None:
                     klasse = x.group()
-                
-                for string in ['MAT', 'UNIVIE']:
-                    if len(_list)==6 and string in _list[2]:
-                        info = string
-                    elif len(_list)==7 and string in _list[3]:
-                        info = string 
 
 
-
-            add_file(database_lama_1, name, _list[0], _list[-3], _list[-2], _list[-1], rest_content, klasse, info)
+            search_for_images(rest_content)
+            # break
+            #add_file(database_lama_2, name, themen, titel, af, quelle, rest_content, punkte, pagebreak, klasse, info)
     except FileNotFoundError:
         print('not found' + folder_path)
 
 
-path_database = os.path.join(path_programm, "_database", "database_lama_1.json")
-database_lama_1 = TinyDB(path_database)
+# path_database = os.path.join(path_programm, "_database", "database_lama_1.json")
+# database_lama_1 = TinyDB(path_database)
+
+path_database = os.path.join(path_programm, "_database", "database_lama_2.json")
+database_lama_2 = TinyDB(path_database)
 
 dict_gk = config_loader(config_file, 'dict_gk')
 
@@ -156,17 +188,22 @@ dict_gk = config_loader(config_file, 'dict_gk')
 # for all in dict_gk.values():
 #     gk = all.split(" ")[0].split("-L")[0]
 #     ###### Laptop
-folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen","WS", "WS 1.1", "Einzelbeispiele")
+# folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen","WS", "WS 1.1", "Einzelbeispiele")
 #     # folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen",gk, all, "Einzelbeispiele")
 #     ##### PC
-#     # folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen","FA", "FA 1.2", "Einzelbeispiele")
-#     folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen",gk, all, "Einzelbeispiele")
-#     #######
+# folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen","WS", "WS 1.1", "Einzelbeispiele")
+# #     folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen",gk, all, "Einzelbeispiele")
+# #     #######
+######## typ 2 ############
+folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ2Aufgaben", "Einzelbeispiele")
+#############################
+
 write_to_database(folder_path)
 
 
 
 _file_=Query()
+
 
 # print(database_lama_1.search(_file_.name == "AG-L 3.6 - 1"))
 
