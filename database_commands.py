@@ -41,10 +41,33 @@ def get_section_from_content(content):
     except UnboundLocalError:
         return
 
+def cut_begin_beispiel(content):
+    if 'langesbeispiel' in content:
+        content = re.split("begin{langesbeispiel}.*\n", content)[-1].lstrip()
+    elif 'beispiel' in content:   
+        content = re.split("begin{beispiel}.*\n", content)[-1].lstrip()
+
+    return content
+
+def cut_end_beispiel(content):
+    if 'langesbeispiel' in content:
+        content = content.split("\\end{langesbeispiel}")[0].rstrip()
+    elif 'beispiel' in content:
+        content = content.split("\\end{beispiel}")[0].rstrip()
+
+
+    return content
+
+
 def get_rest_from_content(content):
     rest = content.split("\\begin{", 1)
     rest = "\\begin{" + rest[1]
-    
+
+    # rest = re.split("begin{beispiel}.*{..?}", rest)[-1].lstrip()
+    rest = cut_begin_beispiel(rest)
+
+    rest = cut_end_beispiel(rest)
+
     return rest
 
 def create_list_from_section(section):
@@ -66,22 +89,35 @@ def add_file(database, name, gk, titel, af, quelle, content, klasse = 'K?', info
         'bilder' : bilder,
     })
 
+def get_default_info(content):
+    if 'langesbeispiel' in content:
+        typ = 'langesbeispiel'
+        punkte = int(re.split('begin{langesbeispiel}.*item\[(..?)\]', content)[1])
+    elif 'beispiel' in content:
+        typ = 'beispiel'
+        punkte = int(re.split('begin{beispiel}.*{(..?)}', content)[1])
+    
+    return typ, punkte
+
+
 
 def write_to_database(folder_path):
     try:
         for all in os.listdir(folder_path):
             name = os.path.splitext(all)[0]
             if os.path.splitext(all)[1] != '.tex':
-                # print('continued:' +all)
                 continue 
-            print(all)
+
             file_path = os.path.join(folder_path, all)
             content = collect_content(file_path)
+
+            typ, punkte = get_default_info(content)
             rest_content = get_rest_from_content(content)
             section = get_section_from_content(content)
             
             _list = create_list_from_section(section)
-            # print(_list)
+            
+
             
             klasse = None
             info = None
@@ -97,12 +133,7 @@ def write_to_database(folder_path):
                         info = string 
 
 
-            # else:
-            #     if "MAT" in _list[-4]:
 
-            # elif         
-
-            # print(len(_list))
             add_file(database_lama_1, name, _list[0], _list[-3], _list[-2], _list[-1], rest_content, klasse, info)
     except FileNotFoundError:
         print('not found' + folder_path)
@@ -114,6 +145,10 @@ database_lama_1 = TinyDB(path_database)
 dict_gk = config_loader(config_file, 'dict_gk')
 
 
+
+
+
+
 ########################################
 ##### write all files to database - working ###
 ######################################
@@ -121,12 +156,18 @@ dict_gk = config_loader(config_file, 'dict_gk')
 # for all in dict_gk.values():
 #     gk = all.split(" ")[0].split("-L")[0]
 #     ###### Laptop
-#     # folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen","AG", "AG 1.1", "Einzelbeispiele")
+folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen","WS", "WS 1.1", "Einzelbeispiele")
 #     # folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen",gk, all, "Einzelbeispiele")
 #     ##### PC
 #     # folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen","FA", "FA 1.2", "Einzelbeispiele")
 #     folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen",gk, all, "Einzelbeispiele")
 #     #######
-#     write_to_database(folder_path)
+write_to_database(folder_path)
+
+
+
+_file_=Query()
+
+# print(database_lama_1.search(_file_.name == "AG-L 3.6 - 1"))
 
 print('done')
