@@ -118,8 +118,7 @@ def search_for_images(content):
     # if 'includegraphics' in content:
     #     print(content)
 
-def write_to_database(folder_path, klasse=None):
-    typ=0
+def write_to_database(folder_path, typ,klasse=None):
     try:
         for all in os.listdir(folder_path):
             print(all)
@@ -198,12 +197,13 @@ def write_to_database(folder_path, klasse=None):
 path_database = os.path.join(path_programm, "_database", "_database.json")
 _database = TinyDB(path_database)
 # _database.drop_table('table_lama_2')
+# _database.drop_tables()
 
 # # table_lama = _database.table('table_lama_1')
-table_lama = _database.table('table_lama_2')
+# table_lama = _database.table('table_lama_2')
 # # table_lama = _database.table('table_cria')
 
-# dict_gk = config_loader(config_file, 'dict_gk')
+dict_gk = config_loader(config_file, 'dict_gk')
 
 
 
@@ -213,37 +213,37 @@ table_lama = _database.table('table_lama_2')
 ########################################
 ##### write all files to database - working ###
 ######################################
-
+# table_lama = _database.table('table_lama_1')
 # for all in dict_gk.values():
 #     gk = all.split(" ")[0].split("-L")[0]
-#     ###### Laptop
-    # folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen","WS", "WS 1.1", "Einzelbeispiele")
-    # folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen",gk, all, "Einzelbeispiele")
-#     ##### PC
-# folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen","WS", "WS 1.1", "Einzelbeispiele")
-# #     folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen",gk, all, "Einzelbeispiele")
-# #     #######
-    # write_to_database(folder_path)
-######## typ 2 ############
+# #     ###### Laptop
+#     # folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen","WS", "WS 1.1", "Einzelbeispiele")
+#     folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen",gk, all, "Einzelbeispiele")
+# #     ##### PC
+# # folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen","WS", "WS 1.1", "Einzelbeispiele")
+# # #     folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen",gk, all, "Einzelbeispiele")
+# # #     #######
+#     write_to_database(folder_path, 1)
+# ######## typ 2 ############
+# table_lama = _database.table('table_lama_2')
 # folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ2Aufgaben", "Einzelbeispiele")
-# # folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ2Aufgaben", "Einzelbeispiele")
-# write_to_database(folder_path)
-#############################
+# # # folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ2Aufgaben", "Einzelbeispiele")
+# write_to_database(folder_path, 2)
+# #############################
 
-
-
-######## cria ############
+# ######## cria ############
+# table_lama = _database.table('table_cria')
 # for all in ['k1','k2','k3','k4']:
 #     folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database",all, "Einzelbeispiele")
-#     write_to_database(folder_path, all)
-# folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ2Aufgaben", "Einzelbeispiele")
-#############################
+#     write_to_database(folder_path, 0,all)
+
+# #############################
+# ####################################
 
 
 
 
-
-_file_=Query()
+# _file_=Query()
 
 
 # print(database_lama_1.search(_file_.name == "AG-L 3.6 - 1"))

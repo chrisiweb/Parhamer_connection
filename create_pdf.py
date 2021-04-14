@@ -30,7 +30,7 @@ from standard_dialog_windows import question_window, warning_window
 from processing_window import Ui_Dialog_processing
 import webbrowser
 from tinydb import Query, TinyDB
-from database_commands import database_lama_1
+from database_commands import _database
 
 
 
@@ -242,7 +242,8 @@ def prepare_tex_for_pdf(self):
     # database_lama_1 = TinyDB(path_database)
     _file_ = Query()
 
-    print(database_lama_1.search(_file_.gk == 'AG 1.1'))
+    # print(_database.search(_file_.gk == 'AG 1.1'))
+    
     # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
     # chosen_aufgabenformat = "Typ%sAufgaben" % self.label_aufgabentyp.text()[-1]
