@@ -234,16 +234,34 @@ def collect_suchbegriffe(self):
 
     return suchbegriffe
 
+def get_program(self):
+    if self.chosen_program == 'cria':
+        return 'cria'
+    elif int(self.label_aufgabentyp.text()[-1])==1:
+        return 'lama_1'
+    else:
+        return 'lama_2'
+
+
 def prepare_tex_for_pdf(self):
 
     suchbegriffe = collect_suchbegriffe(self)
     print(suchbegriffe)
+    current_program = get_program(self)
+    print(current_program)
     # path_database = os.path.join(path_programm, "_database", "database_lama_1.json")
     # database_lama_1 = TinyDB(path_database)
+    table_lama = _database.table('table_lama_1')
     _file_ = Query()
 
+    # print(table_lama.search((_file_.themen== 'AG 1.1') | (_file_.themen== 'AG 2.1')))
+    # for all in table_lama.search(_file_.themen == 'AG 1.1'):
+    #     print(all)
+
+    print(table_lama.search(_file_.themen.any(suchbegriffe)))
+
     # print(_database.search(_file_.gk == 'AG 1.1'))
-    
+
     # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
     # chosen_aufgabenformat = "Typ%sAufgaben" % self.label_aufgabentyp.text()[-1]

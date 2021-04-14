@@ -138,7 +138,7 @@ def write_to_database(folder_path, typ,klasse=None):
                               
             info = None
             if typ == 1:
-                themen = _list[0]
+                themen = [_list[0]]
                 titel = _list[-3]
                 af = _list[-2]
                 quelle = _list[-1]
@@ -196,7 +196,7 @@ def write_to_database(folder_path, typ,klasse=None):
 
 path_database = os.path.join(path_programm, "_database", "_database.json")
 _database = TinyDB(path_database)
-# _database.drop_table('table_lama_2')
+# _database.drop_table('table_lama_1')
 # _database.drop_tables()
 
 # # table_lama = _database.table('table_lama_1')
