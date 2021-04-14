@@ -131,9 +131,7 @@ def write_to_database(folder_path):
 
             pagebreak, punkte = get_default_info(content)
             rest_content = get_rest_from_content(content)
-            if 'includegraphics' in rest_content:
-                print(rest_content)
-                break
+
             section = get_section_from_content(content)
             
             _list = create_list_from_section(section)
