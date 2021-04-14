@@ -106,7 +106,7 @@ def create_gk_list(string):
     return gk_list
 
 def search_for_images(content):
-    image_path_list = re.findall('includegraphics{(.*.eps)}', content)
+    image_path_list = re.findall('includegraphics.*{(.*.eps)}', content)
     image_list = []
     for all in image_path_list:
         file_name = os.path.basename(all)
@@ -118,10 +118,11 @@ def search_for_images(content):
     # if 'includegraphics' in content:
     #     print(content)
 
-def write_to_database(folder_path):
-    typ=2
+def write_to_database(folder_path, klasse=None):
+    typ=0
     try:
         for all in os.listdir(folder_path):
+            print(all)
             name = os.path.splitext(all)[0]
             if os.path.splitext(all)[1] != '.tex':
                 continue 
@@ -135,16 +136,14 @@ def write_to_database(folder_path):
             section = get_section_from_content(content)
             
             _list = create_list_from_section(section)
-            
-            print(_list)
-                     
-            klasse = None
+                              
             info = None
             if typ == 1:
                 themen = _list[0]
                 titel = _list[-3]
                 af = _list[-2]
                 quelle = _list[-1]
+                klasse = None
                 if len(_list) != 5:
                     x= re.search('K.',_list[2])
                     if x != None:
@@ -160,13 +159,21 @@ def write_to_database(folder_path):
                 titel = _list[-2]
                 quelle = _list[-1]
                 af = None
+                klasse = None
 
                 if 'MAT' in _list[1]:
                     info = 'MAT'
                 x= re.search('K.',_list[1])
                 if x != None:
                     klasse = x.group()
+            elif typ == 0:
 
+                themen = create_gk_list(_list[1])
+                titel = _list[-3]
+                af = _list[-2]
+                quelle = _list[-1]
+
+                # break
 
             image_list = search_for_images(rest_content)
             if image_list != []:
@@ -174,7 +181,7 @@ def write_to_database(folder_path):
             else:
                 bilder = None
             # break
-            #add_file(database_lama_2, name, themen, titel, af, quelle, rest_content, punkte, pagebreak, klasse, info, bilder)
+            add_file(table_lama, name, themen, titel, af, quelle, rest_content, punkte, pagebreak, klasse, info, bilder)
     except FileNotFoundError:
         print('not found' + folder_path)
 
@@ -182,10 +189,21 @@ def write_to_database(folder_path):
 # path_database = os.path.join(path_programm, "_database", "database_lama_1.json")
 # database_lama_1 = TinyDB(path_database)
 
-path_database = os.path.join(path_programm, "_database", "database_lama_2.json")
-database_lama_2 = TinyDB(path_database)
+# path_database = os.path.join(path_programm, "_database", "database_lama_2.json")
+# database_lama_2 = TinyDB(path_database)
 
-dict_gk = config_loader(config_file, 'dict_gk')
+# path_database = os.path.join(path_programm, "_database", "database_cria.json")
+# database_cria = TinyDB(path_database)
+
+path_database = os.path.join(path_programm, "_database", "_database.json")
+_database = TinyDB(path_database)
+# _database.drop_table('table_lama_2')
+
+# # table_lama = _database.table('table_lama_1')
+table_lama = _database.table('table_lama_2')
+# # table_lama = _database.table('table_cria')
+
+# dict_gk = config_loader(config_file, 'dict_gk')
 
 
 
@@ -199,18 +217,29 @@ dict_gk = config_loader(config_file, 'dict_gk')
 # for all in dict_gk.values():
 #     gk = all.split(" ")[0].split("-L")[0]
 #     ###### Laptop
-# folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen","WS", "WS 1.1", "Einzelbeispiele")
-#     # folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen",gk, all, "Einzelbeispiele")
+    # folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen","WS", "WS 1.1", "Einzelbeispiele")
+    # folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen",gk, all, "Einzelbeispiele")
 #     ##### PC
 # folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen","WS", "WS 1.1", "Einzelbeispiele")
 # #     folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen",gk, all, "Einzelbeispiele")
 # #     #######
+    # write_to_database(folder_path)
 ######## typ 2 ############
-folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ2Aufgaben", "Einzelbeispiele")
+# folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ2Aufgaben", "Einzelbeispiele")
+# # folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ2Aufgaben", "Einzelbeispiele")
+# write_to_database(folder_path)
+#############################
+
+
+
+######## cria ############
+# for all in ['k1','k2','k3','k4']:
+#     folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database",all, "Einzelbeispiele")
+#     write_to_database(folder_path, all)
 # folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ2Aufgaben", "Einzelbeispiele")
 #############################
 
-write_to_database(folder_path)
+
 
 
 
