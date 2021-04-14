@@ -106,9 +106,15 @@ def create_gk_list(string):
     return gk_list
 
 def search_for_images(content):
-    image = re.search('includegraphics{(.*.eps)}', content)
-    if image != None:
-        print(image.group())
+    image_path_list = re.findall('includegraphics{(.*.eps)}', content)
+    image_list = []
+    for all in image_path_list:
+        file_name = os.path.basename(all)
+        image_list.append(file_name)
+    
+    return image_list
+    # if image != None:
+    #     print(image.group())
     # if 'includegraphics' in content:
     #     print(content)
 
@@ -125,6 +131,9 @@ def write_to_database(folder_path):
 
             pagebreak, punkte = get_default_info(content)
             rest_content = get_rest_from_content(content)
+            if 'includegraphics' in rest_content:
+                print(rest_content)
+                break
             section = get_section_from_content(content)
             
             _list = create_list_from_section(section)
@@ -161,9 +170,13 @@ def write_to_database(folder_path):
                     klasse = x.group()
 
 
-            search_for_images(rest_content)
+            image_list = search_for_images(rest_content)
+            if image_list != []:
+                bilder = image_list
+            else:
+                bilder = None
             # break
-            #add_file(database_lama_2, name, themen, titel, af, quelle, rest_content, punkte, pagebreak, klasse, info)
+            #add_file(database_lama_2, name, themen, titel, af, quelle, rest_content, punkte, pagebreak, klasse, info, bilder)
     except FileNotFoundError:
         print('not found' + folder_path)
 
@@ -195,7 +208,8 @@ dict_gk = config_loader(config_file, 'dict_gk')
 # #     folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen",gk, all, "Einzelbeispiele")
 # #     #######
 ######## typ 2 ############
-folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ2Aufgaben", "Einzelbeispiele")
+folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ2Aufgaben", "Einzelbeispiele")
+# folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ2Aufgaben", "Einzelbeispiele")
 #############################
 
 write_to_database(folder_path)
