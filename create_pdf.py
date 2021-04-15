@@ -181,8 +181,9 @@ def collect_suchbegriffe(self):
     suchbegriffe = {
         'themen':[],
         'af' : [],
-        'klassen' : [],
-        'titelsuche' : []
+        'klasse' : [],
+        'titelsuche' : '',
+        'info' : []
         }
 
     if self.chosen_program == "lama":
@@ -192,19 +193,19 @@ def collect_suchbegriffe(self):
                     if "gk" in widget:
                         gk = widget.split("_")[-1]
                         suchbegriffe['themen'].append(dict_gk[gk])
-                        # suchbegriffe.append(dict_gk[gk])
 
                     if "themen" in widget:
                         klasse = widget.split("_")[-2]
                         thema = widget.split("_")[-1]
-                        suchbegriffe['themen'].append(thema.upper())
-                        # suchbegriffe.append(thema.upper())
+                        suchbegriffe['themen'].append(thema)
+
 
     if self.chosen_program == "cria":
+        print(self.dict_chosen_topics)
         for all in self.dict_chosen_topics.values():
-            suchbegriffe['themen'].append(all)
-            # pass
-            # suchbegriffe.append(all)
+            string  = all[1]+'.'+all[2]
+            suchbegriffe['themen'].append(string)
+
 
 
     if chosen_aufgabenformat == "Typ1Aufgaben" or self.chosen_program == "cria":
@@ -221,14 +222,12 @@ def collect_suchbegriffe(self):
 
                 if x.isChecked():
                     suchbegriffe['af'].append(all_formats)
-                    # suchbegriffe.append(all_formats)
-                    # pass
+
 
 
     if not len(self.entry_suchbegriffe.text()) == 0:
-        suchbegriffe['titelsuche'].append(self.entry_suchbegriffe.text())
-        # suchbegriffe.append(self.entry_suchbegriffe.text())
-        # pass
+        suchbegriffe['titelsuche'] = self.entry_suchbegriffe.text()
+
 
 
     if self.chosen_program == "lama":
@@ -243,9 +242,16 @@ def collect_suchbegriffe(self):
             for all_formats in list(Klassen.keys()):
                 x = eval("self.cb_" + all_formats)
                 if x.isChecked() == True:
-                    suchbegriffe['klassen'].append(all_formats.upper())
-                    # suchbegriffe.append(all_formats.upper())
-                    pass
+                    if all_formats == 'mat' or all_formats == 'univie':
+                        suchbegriffe['info'].append(all_formats)
+                    else:
+                        suchbegriffe['klasse'].append(all_formats)
+
+        # if self.cb_mat.isChecked():
+        #     suchbegriffe['info'].append('mat')
+        # if self.cb_univie.isChecked():
+        #     suchbegriffe['info'].append('univie')
+
 
     return suchbegriffe
 
@@ -258,22 +264,81 @@ def get_program(self):
         return 'lama_2'
 
 
+def search_in_database(suchbegriffe):
+    table_lama = _database.table('table_cria')
+    _file_ = Query()    
+
+    string_in_list_af = lambda s: True if (s in suchbegriffe['af'] or is_empty(suchbegriffe['af'])) else False
+    string_in_list_klasse = lambda s: True if (s in suchbegriffe['klasse'] or is_empty(suchbegriffe['klasse'])) else False
+    string_in_list_info = lambda s: True if (s in suchbegriffe['info'] or is_empty(suchbegriffe['info'])) else False
+    lineedit_in_titel = lambda s: True if (suchbegriffe['titelsuche'].lower() in s.lower() or is_empty(suchbegriffe['titelsuche'])) else False 
+
+    if suchbegriffe['themen'] != []:
+        gesammeltedateien = table_lama.search(
+            (_file_.themen.any(suchbegriffe['themen'])) &
+            (_file_.af.test(string_in_list_af)) &
+            (_file_.klasse.test(string_in_list_klasse)) &
+            (_file_.info.test(string_in_list_info)) &
+            (_file_.titel.test(lineedit_in_titel))
+        )
+    else:
+        gesammeltedateien = table_lama.search(
+            (_file_.af.test(string_in_list_af)) &
+            (_file_.klasse.test(string_in_list_klasse)) &
+            (_file_.info.test(string_in_list_info))
+        )        
+
+    return gesammeltedateien
+
+
+
 def prepare_tex_for_pdf(self):
 
     suchbegriffe = collect_suchbegriffe(self)
     print(suchbegriffe)
     current_program = get_program(self)
     print(current_program)
+
+    # string_in_list_klassen = lambda s: s in suchbegriffe['klassen']
+    # table_lama = _database.table('table_lama_1')
+    # _file_ = Query()
+    
+    # print(suchbegriffe['klassen'])
+    # string_in_list_klassen = lambda s: s in suchbegriffe['klassen']
+    # print(table_lama.search(_file_.klasse == 'k5'))
+
+    # print(table_lama.search(_file_.klasse.test(string_in_list_klassen)))
+    # _file_.klasse
+
+    gesammeltedateien = search_in_database(suchbegriffe)
+    print(gesammeltedateien)
     # path_database = os.path.join(path_programm, "_database", "database_lama_1.json")
     # database_lama_1 = TinyDB(path_database)
-    table_lama = _database.table('table_lama_1')
-    _file_ = Query()
-
+    # table_lama = _database.table('table_lama_1')
+   
+    
+    # test_func = [item for item in suchbegriffe['af'] ]
     # print(table_lama.search((_file_.themen== 'AG 1.1') | (_file_.themen== 'AG 2.1')))
     # for all in table_lama.search(_file_.themen == 'AG 1.1'):
     #     print(all)
 
-    print(table_lama.search(_file_.themen.any(suchbegriffe)))
+    # gesammeltedateien = []
+
+    # print(table_lama.search(_file_.name == 'AG 1.1 - 1'))
+    # print(loop_trough_list(suchbegriffe['af']))
+
+    # print(table_lama.search(_file_.af == suchbegriffe['af']))
+
+
+    # response = loop_trough_list(suchbegriffe['af'], _file_.af)
+    # print(response)
+    # print(table_lama.search(_file_.af.test(string_in_list_af))) #all for all in suchbegriffe['af']
+    # print(table_lama.search((_file_.themen.any(suchbegriffe['themen'])) & (_file_.themen.any(suchbegriffe['af'])) ))
+        # _file_.themen.any(suchbegriffe['themen'])
+        # ))
+        # gesammeltedateien.append(all['name'])
+
+    
 
     # print(_database.search(_file_.gk == 'AG 1.1'))
 

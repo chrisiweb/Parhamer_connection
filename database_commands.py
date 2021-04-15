@@ -140,19 +140,19 @@ def write_to_database(folder_path, typ,klasse=None):
             if typ == 1:
                 themen = [_list[0]]
                 titel = _list[-3]
-                af = _list[-2]
+                af = _list[-2].lower()
                 quelle = _list[-1]
                 klasse = None
                 if len(_list) != 5:
                     x= re.search('K.',_list[2])
                     if x != None:
-                        klasse = x.group()
+                        klasse = x.group().lower()
                     
                     for string in ['MAT', 'UNIVIE']:
                         if len(_list)==6 and string in _list[2]:
-                            info = string
+                            info = string.lower()
                         elif len(_list)==7 and string in _list[3]:
-                            info = string
+                            info = string.lower()
             elif typ == 2:
                 themen = create_gk_list(_list[-3])
                 titel = _list[-2]
@@ -161,15 +161,15 @@ def write_to_database(folder_path, typ,klasse=None):
                 klasse = None
 
                 if 'MAT' in _list[1]:
-                    info = 'MAT'
+                    info = 'mat'
                 x= re.search('K.',_list[1])
                 if x != None:
-                    klasse = x.group()
+                    klasse = x.group().lower()
             elif typ == 0:
 
                 themen = create_gk_list(_list[1])
                 titel = _list[-3]
-                af = _list[-2]
+                af = _list[-2].lower()
                 quelle = _list[-1]
 
                 # break
