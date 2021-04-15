@@ -264,8 +264,9 @@ def get_program(self):
         return 'lama_2'
 
 
-def search_in_database(suchbegriffe):
-    table_lama = _database.table('table_cria')
+def search_in_database(self,current_program, suchbegriffe):
+    table = 'table_' + current_program
+    table_lama = _database.table(table)
     _file_ = Query()    
 
     string_in_list_af = lambda s: True if (s in suchbegriffe['af'] or is_empty(suchbegriffe['af'])) else False
@@ -273,7 +274,9 @@ def search_in_database(suchbegriffe):
     string_in_list_info = lambda s: True if (s in suchbegriffe['info'] or is_empty(suchbegriffe['info'])) else False
     lineedit_in_titel = lambda s: True if (suchbegriffe['titelsuche'].lower() in s.lower() or is_empty(suchbegriffe['titelsuche'])) else False 
 
-    if suchbegriffe['themen'] != []:
+    if current_program == 'lama_2':
+        print(self.combobox_searchtype.current )
+    elif suchbegriffe['themen'] != []:
         gesammeltedateien = table_lama.search(
             (_file_.themen.any(suchbegriffe['themen'])) &
             (_file_.af.test(string_in_list_af)) &
@@ -310,8 +313,8 @@ def prepare_tex_for_pdf(self):
     # print(table_lama.search(_file_.klasse.test(string_in_list_klassen)))
     # _file_.klasse
 
-    gesammeltedateien = search_in_database(suchbegriffe)
-    print(gesammeltedateien)
+    gesammeltedateien = search_in_database(self, current_program, suchbegriffe)
+    # print(gesammeltedateien)
     # path_database = os.path.join(path_programm, "_database", "database_lama_1.json")
     # database_lama_1 = TinyDB(path_database)
     # table_lama = _database.table('table_lama_1')
