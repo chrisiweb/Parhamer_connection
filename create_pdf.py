@@ -178,7 +178,12 @@ def refresh_ddb_according_to_intervall(self, log_file):
 def collect_suchbegriffe(self):
     chosen_aufgabenformat = "Typ%sAufgaben" % self.label_aufgabentyp.text()[-1]
 
-    suchbegriffe = []
+    suchbegriffe = {
+        'themen':[],
+        'af' : [],
+        'klassen' : [],
+        'titelsuche' : []
+        }
 
     if self.chosen_program == "lama":
         for widget in self.dict_widget_variables:
@@ -186,16 +191,20 @@ def collect_suchbegriffe(self):
                 if self.dict_widget_variables[widget].isChecked() == True:
                     if "gk" in widget:
                         gk = widget.split("_")[-1]
-                        suchbegriffe.append(dict_gk[gk])
+                        suchbegriffe['themen'].append(dict_gk[gk])
+                        # suchbegriffe.append(dict_gk[gk])
 
                     if "themen" in widget:
                         klasse = widget.split("_")[-2]
                         thema = widget.split("_")[-1]
-                        suchbegriffe.append(thema.upper())
+                        suchbegriffe['themen'].append(thema.upper())
+                        # suchbegriffe.append(thema.upper())
 
     if self.chosen_program == "cria":
         for all in self.dict_chosen_topics.values():
-            suchbegriffe.append(all)
+            suchbegriffe['themen'].append(all)
+            # pass
+            # suchbegriffe.append(all)
 
 
     if chosen_aufgabenformat == "Typ1Aufgaben" or self.chosen_program == "cria":
@@ -211,11 +220,15 @@ def collect_suchbegriffe(self):
                 x = eval("self.cb_af_" + all_formats)
 
                 if x.isChecked():
-                    suchbegriffe.append(all_formats)
+                    suchbegriffe['af'].append(all_formats)
+                    # suchbegriffe.append(all_formats)
+                    # pass
 
 
     if not len(self.entry_suchbegriffe.text()) == 0:
-        suchbegriffe.append(self.entry_suchbegriffe.text())
+        suchbegriffe['titelsuche'].append(self.entry_suchbegriffe.text())
+        # suchbegriffe.append(self.entry_suchbegriffe.text())
+        # pass
 
 
     if self.chosen_program == "lama":
@@ -230,7 +243,9 @@ def collect_suchbegriffe(self):
             for all_formats in list(Klassen.keys()):
                 x = eval("self.cb_" + all_formats)
                 if x.isChecked() == True:
-                    suchbegriffe.append(all_formats.upper())
+                    suchbegriffe['klassen'].append(all_formats.upper())
+                    # suchbegriffe.append(all_formats.upper())
+                    pass
 
     return suchbegriffe
 
