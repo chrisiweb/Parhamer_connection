@@ -203,7 +203,7 @@ def collect_suchbegriffe(self):
     if self.chosen_program == "cria":
         print(self.dict_chosen_topics)
         for all in self.dict_chosen_topics.values():
-            string  = all[1]+'.'+all[2]
+            string  = '.'.join(all)
             suchbegriffe['themen'].append(string)
 
 
@@ -274,8 +274,11 @@ def search_in_database(self,current_program, suchbegriffe):
     string_in_list_info = lambda s: True if (s in suchbegriffe['info'] or is_empty(suchbegriffe['info'])) else False
     lineedit_in_titel = lambda s: True if (suchbegriffe['titelsuche'].lower() in s.lower() or is_empty(suchbegriffe['titelsuche'])) else False 
 
+    if current_program == 'cria':
+        pass
     if current_program == 'lama_2':
-        print(self.combobox_searchtype.current )
+        print(self.combobox_searchtype.currentIndex())
+        gesammeltedateien = []
     elif suchbegriffe['themen'] != []:
         gesammeltedateien = table_lama.search(
             (_file_.themen.any(suchbegriffe['themen'])) &

@@ -166,14 +166,15 @@ def write_to_database(folder_path, typ,klasse=None):
                 if x != None:
                     klasse = x.group().lower()
             elif typ == 0:
-
+                print(_list)
                 themen = create_gk_list(_list[1])
+                print(themen)
+                themen = [klasse + '.' + x for x in themen]
+                print(themen)
                 titel = _list[-3]
                 af = _list[-2].lower()
                 quelle = _list[-1]
-
-                # break
-
+ 
             image_list = search_for_images(rest_content)
             if image_list != []:
                 bilder = image_list
@@ -232,10 +233,11 @@ dict_gk = config_loader(config_file, 'dict_gk')
 # #############################
 
 # ######## cria ############
-# table_lama = _database.table('table_cria')
-# for all in ['k1','k2','k3','k4']:
-#     folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database",all, "Einzelbeispiele")
-#     write_to_database(folder_path, 0,all)
+table_lama = _database.table('table_cria')
+for all in ['k1','k2','k3','k4']:
+    # folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database",all, "Einzelbeispiele")
+    folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database",all, "Einzelbeispiele")
+    write_to_database(folder_path, 0,all)
 
 # #############################
 # ####################################
