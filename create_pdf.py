@@ -31,6 +31,7 @@ from processing_window import Ui_Dialog_processing
 import webbrowser
 from tinydb import Query, TinyDB
 from database_commands import _database
+from tex_minimal import *
 
 
 
@@ -356,32 +357,13 @@ def prepare_tex_for_pdf(self):
     print(suchbegriffe)
     current_program = get_program(self)
     print(current_program)
-    # suchbegriffe = {
-    #     'themen':[],
-    #     'af' : [],
-    #     'klasse' : [],
-    #     'titelsuche' : '',
-    #     'info' : []
-    #     }
-    # string_in_list_klassen = lambda s: s in suchbegriffe['klassen']
-    # table_lama = _database.table('table_lama_1')
-    # _file_ = Query()
-    
-    # print(suchbegriffe['klassen'])
-    # string_in_list_klassen = lambda s: s in suchbegriffe['klassen']
-    # print(table_lama.search(_file_.klasse == 'k5'))
 
-    # print(table_lama.search(_file_.klasse.test(string_in_list_klassen)))
-    # _file_.klasse
     
     gesammeltedateien = search_in_database(self, current_program, suchbegriffe)
     for file in gesammeltedateien:
         print(file['name'], file['themen'], file['klasse'], file['info'], file['titel'], file['af'], file['draft'])
 
 
-
-
-    # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
     # chosen_aufgabenformat = "Typ%sAufgaben" % self.label_aufgabentyp.text()[-1]
     # # print(self.lama_settings)
@@ -476,51 +458,52 @@ def prepare_tex_for_pdf(self):
     #                 except FileNotFoundError:
     #                     pass
 
-    # ######################################################
-    # ########### work around ####################
-    # #########################################
+    ######################################################
+    ########### work around ####################
+    #########################################
 
-    # path_tabu_pkg = os.path.join(path_programm, "_database", "_config", "tabu.sty")
-    # copy_path_tabu_pkg = os.path.join(path_localappdata_lama,"Teildokument","tabu.sty")
-    # if os.path.isfile(copy_path_tabu_pkg):
-    #     pass
-    # else:
-    #     shutil.copy2(path_tabu_pkg, copy_path_tabu_pkg)
+    path_tabu_pkg = os.path.join(path_programm, "_database", "_config", "tabu.sty")
+    copy_path_tabu_pkg = os.path.join(path_localappdata_lama,"Teildokument","tabu.sty")
+    if os.path.isfile(copy_path_tabu_pkg):
+        pass
+    else:
+        shutil.copy2(path_tabu_pkg, copy_path_tabu_pkg)
 
-    # ###################################################
-    # path_srdp_pkg = os.path.join(
-    #     path_programm, "_database", "_config", "srdp-mathematik.sty"
-    # )
-    # copy_path_srdp_pkg = os.path.join(
-    #     path_localappdata_lama,"Teildokument","srdp-mathematik.sty"
-    # )
-    # if os.path.isfile(copy_path_srdp_pkg):
-    #     pass
-    # else:
-    #     shutil.copy2(path_srdp_pkg, copy_path_srdp_pkg)
+    ###################################################
+    path_srdp_pkg = os.path.join(
+        path_programm, "_database", "_config", "srdp-mathematik.sty"
+    )
+    copy_path_srdp_pkg = os.path.join(
+        path_localappdata_lama,"Teildokument","srdp-mathematik.sty"
+    )
+    if os.path.isfile(copy_path_srdp_pkg):
+        pass
+    else:
+        shutil.copy2(path_srdp_pkg, copy_path_srdp_pkg)
 
-    # ########################################################
+    ########################################################
 
-    # if self.chosen_program == "lama":
+    if self.chosen_program == "lama":
 
-    #     filename_teildokument = os.path.join(
-    #         path_programm,
-    #         "Teildokument",
-    #         "Teildokument_%s.tex" % self.label_aufgabentyp.text()[-1],
-    #     )
+        filename_teildokument = os.path.join(
+            path_programm,
+            "Teildokument",
+            "Teildokument_%s.tex" % self.label_aufgabentyp.text()[-1],
+        )
 
-    # if self.chosen_program == "cria":
-    #     for all in self.dict_chosen_topics.values():
-    #         suchbegriffe.append(all)
+    if self.chosen_program == "cria":
+        # for all in self.dict_chosen_topics.values():
+        #     suchbegriffe.append(all)
 
-    #     filename_teildokument = os.path.join(
-    #         path_programm, "Teildokument", "Teildokument_cria.tex"
-    #     )
+        filename_teildokument = os.path.join(
+            path_programm, "Teildokument", "Teildokument_cria.tex"
+        )
 
-    # # try:
+
+    construct_tex_file(filename_teildokument, gesammeltedateien)
+
     # file = open(filename_teildokument, "w", encoding="utf8")
-    # # except FileNotFoundError:
-    # #     os.makedirs(filename_teildokument)  # If dir is not found make it recursivly
+
 
     # file.write(
     #     "\documentclass[a4paper,12pt]{report}\n\n"
@@ -844,7 +827,7 @@ def prepare_tex_for_pdf(self):
 
     # file.close()
 
-    # QtWidgets.QApplication.restoreOverrideCursor()
+    QtWidgets.QApplication.restoreOverrideCursor()
     # msg = QtWidgets.QMessageBox()
     # msg.setIcon(QtWidgets.QMessageBox.Question)
     # msg.setWindowIcon(QtGui.QIcon(logo_path))
@@ -870,6 +853,55 @@ def prepare_tex_for_pdf(self):
     #         typ = "cria"
 
     #     create_pdf("Teildokument", 0, 0, typ)
+
+
+def construct_tex_file(file_name, gesammeltedateien):
+    with open(file_name, "w", encoding="utf8") as file:
+        file.write(tex_preamble)
+        for all in gesammeltedateien:
+            if 'mat' == all['info']:
+                add_on = ' ({})'.format(all['quelle'])
+            else:
+                add_on = ''
+
+            file.write('\section{{{0} - {1}{2}}}\n\n'.format(all['name'], all['titel'], add_on))
+            if all['pagebreak']==False:
+                file.write(begin_beispiel(all['themen'], all['punkte']))
+                file.write(all['content'])
+                file.write(end_beispiel)
+            elif all['pagebreak']==True:
+                file.write(begin_beispiel_lang(all['punkte']))
+                file.write(all['content'])
+                file.write(end_beispiel_lang)               
+               
+                            
+            file.write("\n")
+            info_box = create_info_box(all)
+            file.write(info_box)
+            file.write("\n\n")
+        file.write(tex_end)
+
+
+def create_info_box(_file):
+    titel = _file['titel']
+    gk = ', '.join(_file['themen'])
+    af = _file['af']
+    klasse = _file['klasse']
+    quelle = _file['quelle']
+    bilder = _file['bilder']
+
+    info_box = """
+\info{{\\fbox{{\\begin{{minipage}}{{0.98\\textwidth}}
+Titel: {0}\\\\
+Grundkompetenz(en): {1}\\\\
+Aufgabenformat: {2}\\\\
+Klasse: {3}\\\\
+Quelle: {4}\\\\
+Bilder: {5}
+\end{{minipage}}}}}}
+""".format(titel, gk, af, klasse, quelle, bilder)
+
+    return info_box
 
 
 def extract_error_from_output(latex_output):
