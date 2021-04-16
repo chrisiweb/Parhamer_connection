@@ -89,6 +89,7 @@ def add_file(database, name, themen, titel, af, quelle, content, punkte, pagebre
         'klasse' : klasse,
         'info' : info,
         'bilder' : bilder,
+        'draft' : False,
     })
 
 def get_default_info(content):
@@ -200,7 +201,7 @@ _database = TinyDB(path_database)
 # _database.drop_table('table_lama_1')
 # _database.drop_tables()
 
-# # table_lama = _database.table('table_lama_1')
+# table_lama = _database.table('table_1')
 # table_lama = _database.table('table_lama_2')
 # # table_lama = _database.table('table_cria')
 
@@ -233,11 +234,12 @@ dict_gk = config_loader(config_file, 'dict_gk')
 # #############################
 
 # ######## cria ############
-table_lama = _database.table('table_cria')
-for all in ['k1','k2','k3','k4']:
-    # folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database",all, "Einzelbeispiele")
-    folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database",all, "Einzelbeispiele")
-    write_to_database(folder_path, 0,all)
+# table_lama = _database.table('table_cria')
+# table_lama.truncate()
+# for all in ['k1','k2','k3','k4']:
+#     folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database",all, "Einzelbeispiele")
+#     # folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database",all, "Einzelbeispiele")
+#     write_to_database(folder_path, 0,all)
 
 # #############################
 # ####################################

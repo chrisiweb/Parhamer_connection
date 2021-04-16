@@ -274,25 +274,46 @@ def search_in_database(self,current_program, suchbegriffe):
     string_in_list_info = lambda s: True if (s in suchbegriffe['info'] or is_empty(suchbegriffe['info'])) else False
     lineedit_in_titel = lambda s: True if (suchbegriffe['titelsuche'].lower() in s.lower() or is_empty(suchbegriffe['titelsuche'])) else False 
 
-    if current_program == 'cria':
-        pass
-    if current_program == 'lama_2':
+    gesammeltedateien = []
+
+    if current_program == 'lama_1' or current_program == 'cria':
+        if suchbegriffe['themen'] != []:
+            gesammeltedateien = table_lama.search(
+                (_file_.themen.any(suchbegriffe['themen'])) &
+                (_file_.af.test(string_in_list_af)) &
+                (_file_.klasse.test(string_in_list_klasse)) &
+                (_file_.info.test(string_in_list_info)) &
+                (_file_.titel.test(lineedit_in_titel))
+            )
+        else:
+            gesammeltedateien = table_lama.search(
+                (_file_.af.test(string_in_list_af)) &
+                (_file_.klasse.test(string_in_list_klasse)) &
+                (_file_.info.test(string_in_list_info))
+            )   
+    elif current_program == 'lama_2':
+        # def gk_in_list():
+        #     for all in  
         print(self.combobox_searchtype.currentIndex())
-        gesammeltedateien = []
-    elif suchbegriffe['themen'] != []:
-        gesammeltedateien = table_lama.search(
-            (_file_.themen.any(suchbegriffe['themen'])) &
-            (_file_.af.test(string_in_list_af)) &
-            (_file_.klasse.test(string_in_list_klasse)) &
-            (_file_.info.test(string_in_list_info)) &
-            (_file_.titel.test(lineedit_in_titel))
-        )
-    else:
-        gesammeltedateien = table_lama.search(
-            (_file_.af.test(string_in_list_af)) &
-            (_file_.klasse.test(string_in_list_klasse)) &
-            (_file_.info.test(string_in_list_info))
-        )        
+        if self.combobox_searchtype.currentIndex()==0:
+            gesammeltedateien = table_lama.search(
+                (_file_.themen.any(suchbegriffe['themen'])) &
+                (_file_.af.test(string_in_list_af)) &
+                (_file_.klasse.test(string_in_list_klasse)) &
+                (_file_.info.test(string_in_list_info)) &
+                (_file_.titel.test(lineedit_in_titel))
+            )
+        elif self.combobox_searchtype.currentIndex()==1:
+            gesammeltedateien = table_lama.search(
+                (_file_.themen.all(suchbegriffe['themen'])) &
+                (_file_.af.test(string_in_list_af)) &
+                (_file_.klasse.test(string_in_list_klasse)) &
+                (_file_.info.test(string_in_list_info)) &
+                (_file_.titel.test(lineedit_in_titel))
+            )
+        
+        
+        
 
     return gesammeltedateien
 
@@ -317,7 +338,7 @@ def prepare_tex_for_pdf(self):
     # _file_.klasse
 
     gesammeltedateien = search_in_database(self, current_program, suchbegriffe)
-    # print(gesammeltedateien)
+    print(gesammeltedateien)
     # path_database = os.path.join(path_programm, "_database", "database_lama_1.json")
     # database_lama_1 = TinyDB(path_database)
     # table_lama = _database.table('table_lama_1')

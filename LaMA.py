@@ -2803,12 +2803,30 @@ class Ui_MainWindow(object):
             if all.startswith(name) or all.startswith(name_creator):
                 self.dict_widget_variables[all].setChecked(False)
 
-    def suchfenster_reset(self, variation=False):
+    def uncheck_all_af_checkboxes(self):
+        self.cb_af_rf.setChecked(False)
+        self.cb_af_ko.setChecked(False)
+        self.cb_af_lt.setChecked(False)
+        self.cb_af_mc.setChecked(False)
+        self.cb_af_oa.setChecked(False)
+        self.cb_af_ta.setChecked(False)
+        self.cb_af_zo.setChecked(False)
 
+    def uncheck_all_klassen_checkboxes(self):
+        self.cb_k5.setChecked(False)
+        self.cb_k6.setChecked(False)
+        self.cb_k7.setChecked(False)
+        self.cb_k8.setChecked(False)
+        self.cb_mat.setChecked(False)
+        self.cb_univie.setChecked(False)
+
+    def suchfenster_reset(self, variation=False):
         self.uncheck_all_checkboxes("gk")
 
         self.uncheck_all_checkboxes("themen")
-
+        
+        self.uncheck_all_af_checkboxes()
+        self.uncheck_all_klassen_checkboxes()
         ### LaMA Cria
         # for klasse in list_klassen:
         #     self.dict_widget_variables['combobox_kapitel_creator_cria_{}'.format(klasse)].setCurrentIndex(0)
