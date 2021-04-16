@@ -252,7 +252,7 @@ def collect_suchbegriffe(self):
         # if self.cb_univie.isChecked():
         #     suchbegriffe['info'].append('univie')
 
-
+    
     return suchbegriffe
 
 def get_program(self):
@@ -262,6 +262,7 @@ def get_program(self):
         return 'lama_1'
     else:
         return 'lama_2'
+
 
 
 def search_in_database(self,current_program, suchbegriffe):
@@ -274,6 +275,16 @@ def search_in_database(self,current_program, suchbegriffe):
     string_in_list_info = lambda s: True if (s in suchbegriffe['info'] or is_empty(suchbegriffe['info'])) else False
     lineedit_in_titel = lambda s: True if (suchbegriffe['titelsuche'].lower() in s.lower() or is_empty(suchbegriffe['titelsuche'])) else False 
 
+    def include_drafts(value):
+        if value == False:
+            return True
+        else:
+            if self.cb_drafts.isChecked():
+                return True
+            else:
+                return False
+   
+
     gesammeltedateien = []
 
     if current_program == 'lama_1' or current_program == 'cria':
@@ -283,33 +294,40 @@ def search_in_database(self,current_program, suchbegriffe):
                 (_file_.af.test(string_in_list_af)) &
                 (_file_.klasse.test(string_in_list_klasse)) &
                 (_file_.info.test(string_in_list_info)) &
-                (_file_.titel.test(lineedit_in_titel))
+                (_file_.titel.test(lineedit_in_titel)) &
+                (_file_.draft.test(include_drafts))
             )
         else:
             gesammeltedateien = table_lama.search(
                 (_file_.af.test(string_in_list_af)) &
                 (_file_.klasse.test(string_in_list_klasse)) &
-                (_file_.info.test(string_in_list_info))
+                (_file_.info.test(string_in_list_info)) &
+                (_file_.titel.test(lineedit_in_titel)) &
+                (_file_.draft.test(include_drafts))
             )   
     elif current_program == 'lama_2':
-        # def gk_in_list():
-        #     for all in  
-        print(self.combobox_searchtype.currentIndex())
+        def gk_in_list(value):
+            for all in value:
+                if all not in suchbegriffe['themen']:
+                    return False
+            return True
+
         if self.combobox_searchtype.currentIndex()==0:
             gesammeltedateien = table_lama.search(
                 (_file_.themen.any(suchbegriffe['themen'])) &
-                (_file_.af.test(string_in_list_af)) &
                 (_file_.klasse.test(string_in_list_klasse)) &
                 (_file_.info.test(string_in_list_info)) &
-                (_file_.titel.test(lineedit_in_titel))
+                (_file_.titel.test(lineedit_in_titel)) &
+                (_file_.draft.test(include_drafts))
             )
+
         elif self.combobox_searchtype.currentIndex()==1:
             gesammeltedateien = table_lama.search(
-                (_file_.themen.all(suchbegriffe['themen'])) &
-                (_file_.af.test(string_in_list_af)) &
+                (_file_.themen.test(gk_in_list)) &
                 (_file_.klasse.test(string_in_list_klasse)) &
                 (_file_.info.test(string_in_list_info)) &
-                (_file_.titel.test(lineedit_in_titel))
+                (_file_.titel.test(lineedit_in_titel)) &
+                (_file_.draft.test(include_drafts))
             )
         
         
@@ -317,15 +335,34 @@ def search_in_database(self,current_program, suchbegriffe):
 
     return gesammeltedateien
 
-
+def check_if_suchbegriffe_is_empty(suchbegriffe):
+    _list = ['themen', 'af', 'klasse', 'titelsuche' ,'info']
+    for all in _list:
+        if not is_empty(suchbegriffe[all]):
+            return False
+    return True
 
 def prepare_tex_for_pdf(self):
-
+    QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
     suchbegriffe = collect_suchbegriffe(self)
+
+    response = check_if_suchbegriffe_is_empty(suchbegriffe)
+
+    if response == True:
+        warning_window("Bitte wählen Sie zumindest ein Suchkriterium aus.")
+        return
+
+
     print(suchbegriffe)
     current_program = get_program(self)
     print(current_program)
-
+    # suchbegriffe = {
+    #     'themen':[],
+    #     'af' : [],
+    #     'klasse' : [],
+    #     'titelsuche' : '',
+    #     'info' : []
+    #     }
     # string_in_list_klassen = lambda s: s in suchbegriffe['klassen']
     # table_lama = _database.table('table_lama_1')
     # _file_ = Query()
@@ -336,38 +373,13 @@ def prepare_tex_for_pdf(self):
 
     # print(table_lama.search(_file_.klasse.test(string_in_list_klassen)))
     # _file_.klasse
-
+    
     gesammeltedateien = search_in_database(self, current_program, suchbegriffe)
-    print(gesammeltedateien)
-    # path_database = os.path.join(path_programm, "_database", "database_lama_1.json")
-    # database_lama_1 = TinyDB(path_database)
-    # table_lama = _database.table('table_lama_1')
-   
-    
-    # test_func = [item for item in suchbegriffe['af'] ]
-    # print(table_lama.search((_file_.themen== 'AG 1.1') | (_file_.themen== 'AG 2.1')))
-    # for all in table_lama.search(_file_.themen == 'AG 1.1'):
-    #     print(all)
-
-    # gesammeltedateien = []
-
-    # print(table_lama.search(_file_.name == 'AG 1.1 - 1'))
-    # print(loop_trough_list(suchbegriffe['af']))
-
-    # print(table_lama.search(_file_.af == suchbegriffe['af']))
+    for file in gesammeltedateien:
+        print(file['name'], file['themen'], file['klasse'], file['info'], file['titel'], file['af'], file['draft'])
 
 
-    # response = loop_trough_list(suchbegriffe['af'], _file_.af)
-    # print(response)
-    # print(table_lama.search(_file_.af.test(string_in_list_af))) #all for all in suchbegriffe['af']
-    # print(table_lama.search((_file_.themen.any(suchbegriffe['themen'])) & (_file_.themen.any(suchbegriffe['af'])) ))
-        # _file_.themen.any(suchbegriffe['themen'])
-        # ))
-        # gesammeltedateien.append(all['name'])
 
-    
-
-    # print(_database.search(_file_.gk == 'AG 1.1'))
 
     # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
