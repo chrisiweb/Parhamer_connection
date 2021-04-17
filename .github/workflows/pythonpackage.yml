@@ -27,10 +27,11 @@ jobs:
         pip install pillow
         pip install dulwich
         pip install bcrypt
+        pip install tinydb
     - name: Build with pyinstaller
       if: matrix.os != 'windows-latest'
       run: |  
-        pyinstaller -F --noconsole -i icon_lama.icns LaMA.py        
+        pyinstaller -F -w -i icon_lama.icns LaMA.py        
     - name: Build with pyinstaller Windows
       if: matrix.os == 'windows-latest'
       run: |  
