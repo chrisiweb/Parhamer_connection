@@ -25,7 +25,7 @@ import datetime
 import time
 from datetime import date
 from refresh_ddb import refresh_ddb, modification_date
-from sort_items import natural_keys, lama_order, typ2_order
+from sort_items import natural_keys, lama_order, typ2_order, order_gesammeltedateien
 from standard_dialog_windows import question_window, warning_window
 from processing_window import Ui_Dialog_processing
 import webbrowser
@@ -353,15 +353,21 @@ def prepare_tex_for_pdf(self):
         warning_window("Bitte wählen Sie zumindest ein Suchkriterium aus.")
         return
 
-
-    print(suchbegriffe)
     current_program = get_program(self)
-    print(current_program)
+
 
     
     gesammeltedateien = search_in_database(self, current_program, suchbegriffe)
-    for file in gesammeltedateien:
-        print(file['name'], file['themen'], file['klasse'], file['info'], file['titel'], file['af'], file['draft'])
+    gesammeltedateien.sort(key=order_gesammeltedateien)
+
+
+    # for file in gesammeltedateien:
+    #     rsp =check_if_variation(file['name'])
+    #     print(file['name'] + ': ' + str(rsp))
+        # list_gesammeltedateien.append(file)
+
+        # print(file['name'], file['themen'], file['klasse'], file['info'], file['titel'], file['af'], file['draft'])
+
 
 
 
@@ -499,8 +505,12 @@ def prepare_tex_for_pdf(self):
             path_programm, "Teildokument", "Teildokument_cria.tex"
         )
 
+    if self.cb_show_variation.isChecked():
+        variation = True
+    else:
+        variation = False
 
-    construct_tex_file(filename_teildokument, gesammeltedateien)
+    construct_tex_file(filename_teildokument, gesammeltedateien, variation)
 
     # file = open(filename_teildokument, "w", encoding="utf8")
 
@@ -827,44 +837,68 @@ def prepare_tex_for_pdf(self):
 
     # file.close()
 
+
+    number_of_files = get_output_size(gesammeltedateien, variation)
+
     QtWidgets.QApplication.restoreOverrideCursor()
-    # msg = QtWidgets.QMessageBox()
-    # msg.setIcon(QtWidgets.QMessageBox.Question)
-    # msg.setWindowIcon(QtGui.QIcon(logo_path))
-    # msg.setText(
-    #     "Insgesamt wurden "
-    #     + str(len(dict_gesammeltedateien))
-    #     + " Aufgaben gefunden.\n "
-    # )
-    # msg.setInformativeText("Soll die PDF Datei erstellt werden?")
-    # msg.setWindowTitle("Datei ausgeben?")
-    # msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-    # buttonY = msg.button(QtWidgets.QMessageBox.Yes)
-    # buttonY.setText("Ja")
-    # buttonN = msg.button(QtWidgets.QMessageBox.No)
-    # buttonN.setText("Nein")
-    # msg.setDefaultButton(QtWidgets.QMessageBox.Yes)
-    # ret = msg.exec_()
+    msg = QtWidgets.QMessageBox()
+    msg.setIcon(QtWidgets.QMessageBox.Question)
+    msg.setWindowIcon(QtGui.QIcon(logo_path))
+    msg.setText(
+        "Insgesamt wurden "
+        + str(number_of_files)
+        + " Aufgaben gefunden.\n "
+    )
+    msg.setInformativeText("Soll die PDF Datei erstellt werden?")
+    msg.setWindowTitle("Datei ausgeben?")
+    msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+    buttonY = msg.button(QtWidgets.QMessageBox.Yes)
+    buttonY.setText("Ja")
+    buttonN = msg.button(QtWidgets.QMessageBox.No)
+    buttonN.setText("Nein")
+    msg.setDefaultButton(QtWidgets.QMessageBox.Yes)
+    ret = msg.exec_()
 
-    # if ret == QtWidgets.QMessageBox.Yes:
-    #     if self.chosen_program == "lama":
-    #         typ = self.label_aufgabentyp.text()[-1]
-    #     elif self.chosen_program == "cria":
-    #         typ = "cria"
+    if ret == QtWidgets.QMessageBox.Yes:
+        if self.chosen_program == "lama":
+            typ = self.label_aufgabentyp.text()[-1]
+        elif self.chosen_program == "cria":
+            typ = "cria"
 
-    #     create_pdf("Teildokument", 0, 0, typ)
+        create_pdf("Teildokument", 0, 0, typ)
 
+def get_output_size(gesammeltedateien, variation):
+    if variation == True:
+        return len(gesammeltedateien)
+    number = 0
+    for all in gesammeltedateien:
+        if check_if_variation(all['name']) == False:
+            number += 1
+    return number
 
-def construct_tex_file(file_name, gesammeltedateien):
+def check_if_variation(name):
+    if re.match(".*\[.+\]", name):
+        return True
+    else:
+        return False
+
+def construct_tex_file(file_name, gesammeltedateien, variation):
     with open(file_name, "w", encoding="utf8") as file:
         file.write(tex_preamble)
         for all in gesammeltedateien:
+            if variation == False and check_if_variation(all['name']) == True:
+                continue
             if 'mat' == all['info']:
                 add_on = ' ({})'.format(all['quelle'])
             else:
                 add_on = ''
 
-            file.write('\section{{{0} - {1}{2}}}\n\n'.format(all['name'], all['titel'], add_on))
+            if all['draft']==True:
+                draft = '\\textsc{Entwurf:} '
+            else:
+                draft = ''
+
+            file.write('\section{{{0}{1} - {2}{3}}}\n\n'.format(draft, all['name'], all['titel'], add_on))
             if all['pagebreak']==False:
                 file.write(begin_beispiel(all['themen'], all['punkte']))
                 file.write(all['content'])
@@ -878,6 +912,8 @@ def construct_tex_file(file_name, gesammeltedateien):
             file.write("\n")
             info_box = create_info_box(all)
             file.write(info_box)
+            file.write("\n")
+            file.write("\hrulefill")
             file.write("\n\n")
         file.write(tex_end)
 
