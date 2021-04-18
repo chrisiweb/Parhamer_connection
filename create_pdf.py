@@ -1009,7 +1009,7 @@ def extract_error_from_output(latex_output):
 def build_pdf_file(folder_name, file_name, latex_output_file):
     if sys.platform.startswith("linux") or sys.platform.startswith("darwin"):
         process = subprocess.Popen(
-            'cd "{0}" ; latex -interaction=nonstopmode --synctex=-1 "{1}.tex" ; dvips "{1}.dvi" ; ps2pdf -dNOSAFER "{1}.ps"'.format(
+            'cd "{0}" ; latex -interaction=nonstopmode --synctex=-1 "{1}.tex" ; latex -interaction=nonstopmode --synctex=-1 "{1}.tex" ; dvips "{1}.dvi" ; ps2pdf -dNOSAFER "{1}.ps"'.format(
                 folder_name, file_name
             ),
             stdout=latex_output_file,
@@ -1026,11 +1026,11 @@ def build_pdf_file(folder_name, file_name, latex_output_file):
             drive = ""
 
         if is_empty(drive):
-            terminal_command = 'cd "{0}" & latex -interaction=nonstopmode --synctex=-1 "{1}.tex"& dvips "{1}.dvi" & ps2pdf -dNOSAFER "{1}.ps"'.format(
+            terminal_command = 'cd "{0}" & latex -interaction=nonstopmode --synctex=-1 "{1}.tex" & latex -interaction=nonstopmode --synctex=-1 "{1}.tex" & dvips "{1}.dvi" & ps2pdf -dNOSAFER "{1}.ps"'.format(
                 folder_name, file_name
             )
         else:
-            terminal_command = '{0} & cd "{1}" & latex -interaction=nonstopmode --synctex=-1 "{2}.tex"& dvips "{2}.dvi" & ps2pdf -dNOSAFER "{2}.ps"'.format(
+            terminal_command = '{0} & cd "{1}" & latex -interaction=nonstopmode --synctex=-1 "{2}.tex" & latex -interaction=nonstopmode --synctex=-1 "{1}.tex" & dvips "{2}.dvi" & ps2pdf -dNOSAFER "{2}.ps"'.format(
                 drive, folder_name, file_name
             )
 
@@ -1045,9 +1045,9 @@ def build_pdf_file(folder_name, file_name, latex_output_file):
 
 def open_pdf_file(folder_name, file_name):
     drive_programm = os.path.splitdrive(path_programm)[0]
-    print(drive_programm)
+    # print(drive_programm)
     drive_database = os.path.splitdrive(path_localappdata_lama)[0]
-    print(drive_database)
+    # print(drive_database)
     drive_location = os.path.splitdrive(sys.argv[0])[0]
 
     if drive_location.upper() != drive_database.upper():
