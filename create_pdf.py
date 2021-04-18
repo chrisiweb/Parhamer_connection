@@ -118,9 +118,17 @@ class Worker_CreatePDF(QtCore.QObject):
         self.finished.emit()
 
 
-def get_number_of_variations(gesammeltedateien):
+def get_number_of_variations(file_name, gesammeltedateien):
+    counter = 0
     for all in gesammeltedateien:
-        print(all)
+        if file_name in all['name']:
+            print(file_name)
+            counter += 1
+
+    return counter
+
+    # for all in gesammeltedateien:
+    #     print(all['name'])
     # dict_number_of_variations = {}
     # for key, value in dict_gesammeltedateien.items():
     #     dirname = os.path.dirname(value)
@@ -902,7 +910,13 @@ def construct_tex_file(file_name, gesammeltedateien, variation):
 
             green = "green!40!black!60!"
             if variation == True:
-                file.write("{{\color{{{0}}}".format(green)) 
+                file.write("{{\color{{{0}}}".format(green))
+            else:
+                number_of_variations = get_number_of_variations(all['name'], gesammeltedateien)
+                print(number_of_variations)
+
+                # file.write("\\textcolor{{{0}}}{{\\fbox{{Anzahl der vorhandenen Variationen: {1}}}}}\\vspace{{-0.5cm}}".format(green, number_of_variations))
+
             #     dict_number_of_variations = get_number_of_variations(gesammeltedateien)                
                 # anzahl = dict_number_of_variations[key]
                 # input_string = (
