@@ -118,20 +118,22 @@ class Worker_CreatePDF(QtCore.QObject):
         self.finished.emit()
 
 
-def get_number_of_variations(self, dict_gesammeltedateien):
-    dict_number_of_variations = {}
-    for key, value in dict_gesammeltedateien.items():
-        dirname = os.path.dirname(value)
-        filename = os.path.basename(value)
-        filename = os.path.splitext(filename)[0]
-        counter = 0
-        for all in os.listdir(dirname):
-            if re.match("{}\[.+\].tex".format(filename), all):
-                counter += 1
-        if counter != 0:
-            dict_number_of_variations[key] = counter
+def get_number_of_variations(gesammeltedateien):
+    for all in gesammeltedateien:
+        print(all)
+    # dict_number_of_variations = {}
+    # for key, value in dict_gesammeltedateien.items():
+    #     dirname = os.path.dirname(value)
+    #     filename = os.path.basename(value)
+    #     filename = os.path.splitext(filename)[0]
+    #     counter = 0
+    #     for all in os.listdir(dirname):
+    #         if re.match("{}\[.+\].tex".format(filename), all):
+    #             counter += 1
+    #     if counter != 0:
+    #         dict_number_of_variations[key] = counter
 
-    return dict_number_of_variations
+    # return dict_number_of_variations
 
 
 def check_gks_not_included(gk_liste, suchbegriffe):
@@ -898,11 +900,22 @@ def construct_tex_file(file_name, gesammeltedateien, variation):
             else:
                 draft = ''
 
+            green = "green!40!black!60!"
+            if variation == True:
+                file.write("{{\color{{{0}}}".format(green)) 
+            #     dict_number_of_variations = get_number_of_variations(gesammeltedateien)                
+                # anzahl = dict_number_of_variations[key]
+                # input_string = (
+                #     "\\textcolor{{{0}}}{{\\fbox{{Anzahl der vorhandenen Variationen: {1}}}}}\\vspace{{-0.5cm}}".format(
+                #         "green!40!black!60!", anzahl
+                #     )                
             file.write('\section{{{0}{1} - {2}{3}}}\n\n'.format(draft, all['name'], all['titel'], add_on))
             if all['pagebreak']==False:
                 file.write(begin_beispiel(all['themen'], all['punkte']))
                 file.write(all['content'])
                 file.write(end_beispiel)
+            if variation == True:
+                file.write("}")
             elif all['pagebreak']==True:
                 file.write(begin_beispiel_lang(all['punkte']))
                 file.write(all['content'])
@@ -1032,8 +1045,12 @@ def build_pdf_file(folder_name, file_name, latex_output_file):
 
 def open_pdf_file(folder_name, file_name):
     drive_programm = os.path.splitdrive(path_programm)[0]
+    print(drive_programm)
     drive_database = os.path.splitdrive(path_localappdata_lama)[0]
-    if drive_programm.upper() != drive_database.upper():
+    print(drive_database)
+    drive_location = os.path.splitdrive(sys.argv[0])[0]
+
+    if drive_location.upper() != drive_database.upper():
         drive = drive_database.upper()
     else:
         drive = ""
@@ -1074,6 +1091,11 @@ def open_pdf_file(folder_name, file_name):
             )
          
     else:
+        print('reader:' + path_pdf_reader)
+        print(folder_name)
+        print(file_name)
+        print(drive)
+
         if os.path.isfile(path_pdf_reader) == False:
             if is_empty(path_pdf_reader)== False:
                 warning_window("Der ausgewählte Pfad des Pdf-Readers zum Öffnen der Dateien ist fehlerhaft. Bitte korrigieren oder löschen Sie diesen.")
@@ -1082,10 +1104,12 @@ def open_pdf_file(folder_name, file_name):
             path_pdf_reader = '"{}"'.format(path_pdf_reader) 
 
         if is_empty(drive):
+            print("open1")
             subprocess.Popen(
                 'cd "{0}" & {1} {2}.pdf'.format(folder_name,path_pdf_reader, file_name),
                 shell = True).poll()
         else:
+            print('open2')
             subprocess.Popen(
                 '{0} cd "{1}" & {2} {3}.pdf'.format(drive, folder_name,path_pdf_reader, file_name),
                 shell = True).poll()            
