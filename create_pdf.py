@@ -1030,7 +1030,7 @@ def build_pdf_file(folder_name, file_name, latex_output_file):
                 folder_name, file_name
             )
         else:
-            terminal_command = '{0} & cd "{1}" & latex -interaction=nonstopmode --synctex=-1 "{2}.tex" & latex -interaction=nonstopmode --synctex=-1 "{1}.tex" & dvips "{2}.dvi" & ps2pdf -dNOSAFER "{2}.ps"'.format(
+            terminal_command = '{0} & cd "{1}" & latex -interaction=nonstopmode --synctex=-1 "{2}.tex" & latex -interaction=nonstopmode --synctex=-1 "{2}.tex" & dvips "{2}.dvi" & ps2pdf -dNOSAFER "{2}.ps"'.format(
                 drive, folder_name, file_name
             )
 
