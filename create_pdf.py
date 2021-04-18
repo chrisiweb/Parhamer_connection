@@ -1091,11 +1091,6 @@ def open_pdf_file(folder_name, file_name):
             )
          
     else:
-        print('reader:' + path_pdf_reader)
-        print(folder_name)
-        print(file_name)
-        print(drive)
-
         if os.path.isfile(path_pdf_reader) == False:
             if is_empty(path_pdf_reader)== False:
                 warning_window("Der ausgewählte Pfad des Pdf-Readers zum Öffnen der Dateien ist fehlerhaft. Bitte korrigieren oder löschen Sie diesen.")
@@ -1104,12 +1099,11 @@ def open_pdf_file(folder_name, file_name):
             path_pdf_reader = '"{}"'.format(path_pdf_reader) 
 
         if is_empty(drive):
-            print("open1")
             subprocess.Popen(
                 'cd "{0}" & {1} {2}.pdf'.format(folder_name,path_pdf_reader, file_name),
                 shell = True).poll()
         else:
-            print('open2')
+            drive = "{} &".format(drive)
             subprocess.Popen(
                 '{0} cd "{1}" & {2} {3}.pdf'.format(drive, folder_name,path_pdf_reader, file_name),
                 shell = True).poll()            
