@@ -124,7 +124,7 @@ def get_number_of_variations(file_name, gesammeltedateien):
         if file_name in all['name']:
             print(file_name)
             counter += 1
-
+    counter -= 1
     return counter
 
     # for all in gesammeltedateien:
@@ -212,7 +212,7 @@ def collect_suchbegriffe(self):
 
 
     if self.chosen_program == "cria":
-        print(self.dict_chosen_topics)
+        # print(self.dict_chosen_topics)
         for all in self.dict_chosen_topics.values():
             string  = '.'.join(all)
             suchbegriffe['themen'].append(string)
@@ -910,25 +910,21 @@ def construct_tex_file(file_name, gesammeltedateien, variation):
 
             green = "green!40!black!60!"
             if variation == True:
-                file.write("{{\color{{{0}}}".format(green))
+                if check_if_variation(all['name']) == True:
+                    file.write("{{\color{{{0}}}".format(green))
             else:
                 number_of_variations = get_number_of_variations(all['name'], gesammeltedateien)
-                print(number_of_variations)
 
-                # file.write("\\textcolor{{{0}}}{{\\fbox{{Anzahl der vorhandenen Variationen: {1}}}}}\\vspace{{-0.5cm}}".format(green, number_of_variations))
+                if number_of_variations != 0:
+                    file.write("{{\color{{{0}}}{{\\fbox{{Anzahl weiterer Variationen dieser Aufgabe: {1}}}}}}}\\vspace{{-0.5cm}}\n\n".format(green, number_of_variations))
 
-            #     dict_number_of_variations = get_number_of_variations(gesammeltedateien)                
-                # anzahl = dict_number_of_variations[key]
-                # input_string = (
-                #     "\\textcolor{{{0}}}{{\\fbox{{Anzahl der vorhandenen Variationen: {1}}}}}\\vspace{{-0.5cm}}".format(
-                #         "green!40!black!60!", anzahl
-                #     )                
+              
             file.write('\section{{{0}{1} - {2}{3}}}\n\n'.format(draft, all['name'], all['titel'], add_on))
             if all['pagebreak']==False:
                 file.write(begin_beispiel(all['themen'], all['punkte']))
                 file.write(all['content'])
                 file.write(end_beispiel)
-            if variation == True:
+            if variation == True and check_if_variation(all['name']) == True:
                 file.write("}")
             elif all['pagebreak']==True:
                 file.write(begin_beispiel_lang(all['punkte']))
