@@ -123,7 +123,6 @@ def write_to_database(folder_path, typ,klasse=None):
     try:
         for all in os.listdir(folder_path):
             print(all)
-            name = os.path.splitext(all)[0]
             if os.path.splitext(all)[1] != '.tex':
                 continue 
 
@@ -139,6 +138,7 @@ def write_to_database(folder_path, typ,klasse=None):
                               
             info = None
             if typ == 1:
+                name = os.path.splitext(all)[0]
                 themen = [_list[0]]
                 titel = _list[-3]
                 af = _list[-2].lower()
@@ -155,6 +155,7 @@ def write_to_database(folder_path, typ,klasse=None):
                         elif len(_list)==7 and string in _list[3]:
                             info = string.lower()
             elif typ == 2:
+                name = os.path.splitext(all)[0]
                 themen = create_gk_list(_list[-3])
                 titel = _list[-2]
                 quelle = _list[-1]
@@ -167,6 +168,7 @@ def write_to_database(folder_path, typ,klasse=None):
                 if x != None:
                     klasse = x.group().lower()
             elif typ == 0:
+                name = klasse + '.' + os.path.splitext(all)[0]
                 print(_list)
                 themen = create_gk_list(_list[1])
                 print(themen)
@@ -198,7 +200,7 @@ def write_to_database(folder_path, typ,klasse=None):
 
 path_database = os.path.join(path_programm, "_database", "_database.json")
 _database = TinyDB(path_database)
-# _database.drop_table('table_lama_1')
+# _database.drop_table('table_cria')
 # _database.drop_tables()
 
 # table_lama = _database.table('table_1')
@@ -237,8 +239,8 @@ dict_gk = config_loader(config_file, 'dict_gk')
 # table_lama = _database.table('table_cria')
 # table_lama.truncate()
 # for all in ['k1','k2','k3','k4']:
-#     folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database",all, "Einzelbeispiele")
-#     # folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database",all, "Einzelbeispiele")
+#     # folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database",all, "Einzelbeispiele")
+#     folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database",all, "Einzelbeispiele")
 #     write_to_database(folder_path, 0,all)
 
 # #############################
