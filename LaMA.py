@@ -71,7 +71,7 @@ from subwindows import (
 )
 from translate import _fromUtf8, _translate
 from sort_items import natural_keys, sorted_gks, order_gesammeltedateien
-from create_pdf import prepare_tex_for_pdf, create_pdf
+from create_pdf import prepare_tex_for_pdf, create_pdf, check_if_variation
 from refresh_ddb import modification_date, refresh_ddb, search_files
 from standard_dialog_windows import (
     warning_window,
@@ -6103,6 +6103,8 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             self.sage_save(autosave=autosave_file)
 
     def nummer_clicked(self, item):
+        print(item)
+        return
         if "(Entwurf)" in item.text():
             aufgabe = item.text().replace(" (Entwurf)", "")
             # draft=True
@@ -6379,11 +6381,30 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
     def add_items_to_listwidget(
         self,
-        list_beispieldaten_sections,
-        beispieldaten_dateipfad,
+        typ,
         listWidget,
-        listWidget_mode,
+        filtered_items
     ):
+        
+        for _file_ in filtered_items:
+            if typ == 'cria':
+                name = _file_["name"].split('.')[-1]
+            else:
+                name = _file_["name"]
+
+            item = QtWidgets.QListWidgetItem()
+            item.setText(name)
+
+            if _file_['draft']==True:
+                item.setBackground(blue_5)
+                item.setForeground(white)
+                item.setToolTip("Entwurf")
+
+            if check_if_variation(_file_['name']) == True:
+                item.setToolTip("Variation")                    
+            
+            listWidget.addItem(item)
+        return
         for section in list_beispieldaten_sections:
             try:
                 path = beispieldaten_dateipfad[section]
@@ -6401,6 +6422,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             #     item.setText(name + ' (lokal)')
             # else:
             item.setText(name)
+
 
             if name.startswith("_L_"):
                 if listWidget_mode == "feedback":
@@ -6608,11 +6630,15 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
         filtered_items.sort(key=order_gesammeltedateien)
 
-        for item in filtered_items:
-            if typ == 'cria':
-                listWidget.addItem(item["name"].split('.')[-1])
-            else:
-                listWidget.addItem(item["name"])
+        self.add_items_to_listwidget(typ, listWidget, filtered_items)
+        #     list_beispieldaten_sections, beispieldaten_dateipfad, listWidget, list_mode
+        # )
+
+        # for item in filtered_items:
+        #     if typ == 'cria':
+        #         listWidget.addItem(item["name"].split('.')[-1])
+        #     else:
+        #         listWidget.addItem(item["name"])
 
         QtWidgets.QApplication.restoreOverrideCursor()
 

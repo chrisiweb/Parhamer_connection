@@ -247,11 +247,17 @@ dict_gk = config_loader(config_file, 'dict_gk')
 # ####################################
 
 
+def create_local_database():
+    path_local_database = os.path.join(path_programm, "_database", "_local_database.json")
+    _local_database = TinyDB(path_local_database)
+#     # _local_database.table('table_1')
+#     # table_lama = _database.table('table_lama_2')
+#     table_lama = _local_database.table('table_cria')
+#     for all in ['k3','k4']:
+#         # folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database",all, "Einzelbeispiele")
+#         folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database",all, "Einzelbeispiele")
+#         write_to_database(folder_path, 0,all)
 
 
-# _file_=Query()
-
-
-# print(database_lama_1.search(_file_.name == "AG-L 3.6 - 1"))
-
+create_local_database()
 print('done')
