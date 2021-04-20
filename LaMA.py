@@ -6195,54 +6195,74 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             "dict_{}".format(list_klassen[self.comboBox_klassen.currentIndex()])
         )
 
-        if list_mode == "sage":
-            dict_klasse = eval(
-                "dict_{}".format(list_klassen[self.comboBox_klassen.currentIndex()])
-            )
-            self.comboBox_unterkapitel.clear()
 
-            kapitel_shortcut = list(dict_klasse.keys())[
-                self.comboBox_kapitel.currentIndex() - 1
-            ]
+        klasse = self.get_klasse(list_mode)
+        if list_mode == 'sage':  
+            chosen_kapitel = self.comboBox_kapitel.currentText()
+            combobox_unterkapitel = self.comboBox_unterkapitel
+        elif list_mode == 'feedback':
+            chosen_kapitel = self.comboBox_kapitel_fb_cria.currentText()
+            combobox_unterkapitel = self.comboBox_unterkapitel_fb_cria
 
-            # self.comboBox_unterkapitel.clear()
-            self.comboBox_unterkapitel.addItem("")
+        chosen_kapitel = self.extract_topic_abbr(chosen_kapitel)
 
-        if list_mode == "feedback":
-            dict_klasse = eval(
-                "dict_{}".format(
-                    list_klassen[self.comboBox_klassen_fb_cria.currentIndex()]
-                )
-            )
-            self.comboBox_unterkapitel_fb_cria.clear()
+        combobox_unterkapitel.clear()
 
-            kapitel_shortcut = list(dict_klasse.keys())[
-                self.comboBox_kapitel_fb_cria.currentIndex() - 1
-            ]
-            self.comboBox_unterkapitel_fb_cria.addItem("")
+        if not is_empty(chosen_kapitel):
+            list_unterkapitel = dict_klasse[chosen_kapitel]
+            combobox_unterkapitel.addItem("")
+            for all in list_unterkapitel:
+                combobox_unterkapitel.addItem(dict_unterkapitel[all] + " (" + all + ")")
 
-        index = 1
-        for all in dict_klasse[kapitel_shortcut]:
-            if list_mode == "sage":
-                self.comboBox_unterkapitel.addItem(
-                    dict_unterkapitel[all] + " (" + all + ")"
-                )
 
-            if list_mode == "feedback":
-                self.comboBox_unterkapitel_fb_cria.addItem(
-                    dict_unterkapitel[all] + " (" + all + ")"
-                )
+        # if list_mode == "sage":
+        #     dict_klasse = eval(
+        #         "dict_{}".format(list_klassen[self.comboBox_klassen.currentIndex()])
+        #     )
+        #     self.comboBox_unterkapitel.clear()
 
-            index += 1
+        #     kapitel_shortcut = list(dict_klasse.keys())[
+        #         self.comboBox_kapitel.currentIndex() - 1
+        #     ]
 
-        if list_mode == "sage":
-            if self.comboBox_kapitel.currentIndex() == 0:
-                self.comboBox_unterkapitel.clear()
-        if list_mode == "feedback":
-            if self.comboBox_kapitel_fb_cria.currentIndex() == 0:
-                self.comboBox_unterkapitel_fb_cria.clear()
+        #     # self.comboBox_unterkapitel.clear()
+        #     self.comboBox_unterkapitel.addItem("")
 
-        self.adapt_choosing_list(list_mode)
+        # if list_mode == "feedback":
+        #     dict_klasse = eval(
+        #         "dict_{}".format(
+        #             list_klassen[self.comboBox_klassen_fb_cria.currentIndex()]
+        #         )
+        #     )
+        #     self.comboBox_unterkapitel_fb_cria.clear()
+
+        #     kapitel_shortcut = list(dict_klasse.keys())[
+        #         self.comboBox_kapitel_fb_cria.currentIndex() - 1
+        #     ]
+        #     self.comboBox_unterkapitel_fb_cria.addItem("")
+
+        # index = 1
+        # for all in dict_klasse[kapitel_shortcut]:
+        #     if list_mode == "sage":
+        #         self.comboBox_unterkapitel.addItem(
+        #             dict_unterkapitel[all] + " (" + all + ")"
+        #         )
+
+        #     if list_mode == "feedback":
+        #         self.comboBox_unterkapitel_fb_cria.addItem(
+        #             dict_unterkapitel[all] + " (" + all + ")"
+        #         )
+
+        #     index += 1
+
+        # if list_mode == "sage":
+        #     if self.comboBox_kapitel.currentIndex() == 0:
+        #         self.comboBox_unterkapitel.clear()
+        # if list_mode == "feedback":
+        #     if self.comboBox_kapitel_fb_cria.currentIndex() == 0:
+        #         self.comboBox_unterkapitel_fb_cria.clear()
+
+        # self.adapt_choosing_list(list_mode)
 
     def comboBox_unterkapitel_changed(self, list_mode):
         self.adapt_choosing_list(list_mode)
@@ -6528,7 +6548,6 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             typ = "lama_2"
 
         filter_string = self.get_filter_string(list_mode)
-        # print(filter_string)
 
         if list_mode == "sage":
             line_entry = self.lineEdit_number.text()
@@ -6593,7 +6612,6 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         #         beispieldaten_dateipfad = self.beispieldaten_dateipfad_2
 
         # list_beispieldaten_sections = list(beispieldaten_dateipfad.keys())
-
         # if self.chosen_program == "lama":
         #     if list_mode == "sage":
         #         combobox_gk = self.comboBox_gk.currentText()
