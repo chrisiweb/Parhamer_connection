@@ -101,6 +101,7 @@ from lama_colors import *
 from lama_stylesheets import *
 from processing_window import Ui_Dialog_processing
 import bcrypt
+
 # import tinydb
 
 from database_commands import _database
@@ -5652,9 +5653,11 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
         return new_groupbox
 
-    def get_klasse(self, aufgabe):
-        klasse = list_klassen[self.comboBox_klassen.currentIndex()]
-
+    def get_klasse(self, mode="sage"):
+        if mode == "sage":
+            klasse = list_klassen[self.comboBox_klassen.currentIndex()]
+        elif mode == "feedback":
+            klasse = list_klassen[self.comboBox_klassen_fb_cria.currentIndex()]
         return klasse
 
     def collect_all_infos_aufgabe(self, aufgabe):
@@ -5779,7 +5782,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         return klasse, aufgabe
 
     def build_klasse_aufgabe(self, aufgabe):
-        klasse = self.get_klasse(aufgabe)
+        klasse = self.get_klasse()
         if "_L_" in aufgabe:
             klasse_aufgabe = klasse + aufgabe
         else:
@@ -6451,9 +6454,8 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         else:
             return
 
-
     def get_filter_string(self, list_mode):
-        if self.chosen_program == 'cria':
+        if self.chosen_program == "cria":
             if list_mode == "sage":
                 string_0 = self.comboBox_klassen.currentText()
                 string_1 = self.comboBox_kapitel.currentText()
@@ -6462,15 +6464,17 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                 string_0 = self.comboBox_klassen_fb_cria.currentText()
                 string_1 = self.comboBox_kapitel_fb_cria.currentText()
                 string_2 = self.comboBox_unterkapitel_fb_cria.currentText()
-            filter_string = 'k'+string_0[0]
+            filter_string = "k" + string_0[0]
 
             if not is_empty(string_1):
-                filter_string = filter_string + '.' + self.extract_topic_abbr(string_1)
+                filter_string = filter_string + "." + self.extract_topic_abbr(string_1)
                 if not is_empty(string_2):
-                    filter_string = filter_string + '.' + self.extract_topic_abbr(string_2)
+                    filter_string = (
+                        filter_string + "." + self.extract_topic_abbr(string_2)
+                    )
             return filter_string
 
-        if self.chosen_program == 'lama':
+        if self.chosen_program == "lama":
             if list_mode == "sage":
                 string_0 = self.comboBox_gk.currentText()
                 topic = self.extract_topic_abbr(self.comboBox_gk_num.currentText())
@@ -6478,7 +6482,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                     string_1 = topic
                 else:
                     string_1 = self.comboBox_gk_num.currentText()
-            elif list_mode == 'feedback':
+            elif list_mode == "feedback":
                 string_0 = self.comboBox_fb.currentText()
                 topic = self.extract_topic_abbr(self.comboBox_fb_num.currentText())
                 if topic != None:
@@ -6488,15 +6492,14 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
             if not is_empty(string_0):
                 filter_string = string_0
-                if not is_empty (string_1):
+                if not is_empty(string_1):
                     filter_string = filter_string + " " + string_1
                 return filter_string
             else:
-                return ''
-            
-
+                return ""
 
     def adapt_choosing_list(self, list_mode):
+        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         if list_mode == "sage":
             listWidget = self.listWidget
         if list_mode == "feedback":
@@ -6512,21 +6515,20 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                 return
         listWidget.clear()
         if self.chosen_program == "cria":
-            typ = 'cria'
- 
+            typ = "cria"
+
         elif (
             self.comboBox_at_sage.currentText() == "Typ 1" and list_mode == "sage"
         ) or (self.comboBox_at_fb.currentText() == "Typ 1" and list_mode == "feedback"):
-            typ = 'lama_1'
+            typ = "lama_1"
 
         elif (
             self.comboBox_at_sage.currentText() == "Typ 2" and list_mode == "sage"
         ) or (self.comboBox_at_fb.currentText() == "Typ 2" and list_mode == "feedback"):
-            typ = 'lama_2'
+            typ = "lama_2"
 
         filter_string = self.get_filter_string(list_mode)
         # print(filter_string)
-
 
         if list_mode == "sage":
             line_entry = self.lineEdit_number.text()
@@ -6536,33 +6538,40 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             elif self.chosen_program == "cria":
                 line_entry = self.lineEdit_number_fb_cria.text()
 
-        # _filter = [filter_string, line_entry]
 
-        print(filter_string)
-        print(line_entry)
-        # return
-        table = 'table_' + typ
+        table = "table_" + typ
         table_lama = _database.table(table)
         _file_ = Query()
 
-        if typ == 'lama_1' or typ == 'lama_2':
-            string_included_lama = lambda s: (filter_string in s) and (s.split(' - ')[-1].startswith(line_entry))
+        if typ == "lama_1" or typ == "lama_2":
+            string_included_lama = lambda s: (filter_string in s) and (
+                s.split(" - ")[-1].startswith(line_entry)
+            )
             filtered_items = table_lama.search(_file_.name.test(string_included_lama))
-        elif typ == 'cria':
-            filtered_items = table_lama.all()
-            # string_included_cria = lambda s: s.startswith(line_entry)
-        #     themen_included_cria = lambda s: filter_string in s
-        #     filtered_items = table_lama.search(
-        #         (_file_.name.test(string_included_cria)) &
-        #         (_file_.themen.test(themen_included_cria))
-        #         )
-        
-        # print(filtered_items)
+        elif typ == "cria":
+            klasse = self.get_klasse(list_mode)
+
+            string_included_cria = lambda s: s.split(".")[-1].startswith(line_entry)
+
+            def themen_included_cria(value):
+                for all in value:
+                    return True if filter_string in all else False
+
+            filtered_items = table_lama.search(
+                (_file_.name.search("{}\..+".format(klasse)))
+                & (_file_.themen.test(themen_included_cria))
+                & (_file_.name.test(string_included_cria))
+            )
+
         filtered_items.sort(key=order_gesammeltedateien)
-        
+
         for item in filtered_items:
-            listWidget.addItem(item['name'])         
-        return
+            if typ == 'cria':
+                listWidget.addItem(item["name"].split('.')[-1])
+            else:
+                listWidget.addItem(item["name"])
+
+        QtWidgets.QApplication.restoreOverrideCursor()
 
         # if self.chosen_program == "cria":
         #     typ = None
@@ -6605,9 +6614,9 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         #         # combobox_gk = self.comboBox_fb.currentText()
         #         # combobox_gk_num = self.comboBox_fb_num.currentText()
 
-            # list_beispieldaten_sections = self.adjust_beispieldaten_combobox_lama(
-            #     list_beispieldaten_sections, combobox_gk, combobox_gk_num,
-            # )
+        # list_beispieldaten_sections = self.adjust_beispieldaten_combobox_lama(
+        #     list_beispieldaten_sections, combobox_gk, combobox_gk_num,
+        # )
 
         # if self.chosen_program == "cria":
         #     if list_mode == "sage":
