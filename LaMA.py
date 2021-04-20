@@ -6158,51 +6158,75 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
     def comboBox_klassen_changed(self, list_mode):
         if list_mode == "sage":
-            dict_klasse_name = eval(
-                "dict_{}_name".format(
-                    list_klassen[self.comboBox_klassen.currentIndex()]
-                )
+            combobox_klassen = self.comboBox_klassen
+            combobox_kapitel = self.comboBox_kapitel
+            combobox_unterkapitel = self.comboBox_unterkapitel
+        elif list_mode == "feedback":
+            combobox_klassen = self.comboBox_klassen_fb_cria
+            combobox_kapitel = self.comboBox_kapitel_fb_cria
+            combobox_unterkapitel = self.comboBox_unterkapitel_fb_cria            
+
+            self.label_example.setText("Ausgewählte Aufgabe: -")
+
+        dict_klasse_name = eval(
+            "dict_{}_name".format(
+                list_klassen[combobox_klassen.currentIndex()]
             )
-            self.comboBox_kapitel.clear()
-            self.comboBox_unterkapitel.clear()
-            self.comboBox_kapitel.addItem("")
-        if list_mode == "feedback":
-            self.label_example.setText(
-                _translate("MainWindow", "Ausgewählte Aufgabe: -", None)
-            )
-            dict_klasse_name = eval(
-                "dict_{}_name".format(
-                    list_klassen[self.comboBox_klassen_fb_cria.currentIndex()]
-                )
-            )
-            self.listWidget_fb_cria.clear()
-            self.comboBox_kapitel_fb_cria.clear()
-            self.comboBox_unterkapitel_fb_cria.clear()
-            self.comboBox_kapitel_fb_cria.addItem("")
+        )
+
+        combobox_kapitel.clear()
+        combobox_unterkapitel.clear()
+        combobox_kapitel.addItem("")
+
 
         for all in dict_klasse_name.keys():
-            if list_mode == "sage":
-                self.comboBox_kapitel.addItem(dict_klasse_name[all] + " (" + all + ")")
-            if list_mode == "feedback":
-                self.comboBox_kapitel_fb_cria.addItem(
-                    dict_klasse_name[all] + " (" + all + ")"
-                )
+            combobox_kapitel.addItem(dict_klasse_name[all] + " (" + all + ")")
+
+        # if list_mode == "sage":
+        #     dict_klasse_name = eval(
+        #         "dict_{}_name".format(
+        #             list_klassen[self.comboBox_klassen.currentIndex()]
+        #         )
+        #     )
+        #     self.comboBox_kapitel.clear()
+        #     self.comboBox_unterkapitel.clear()
+        #     self.comboBox_kapitel.addItem("")
+        # if list_mode == "feedback":
+
+        #     dict_klasse_name = eval(
+        #         "dict_{}_name".format(
+        #             list_klassen[self.comboBox_klassen_fb_cria.currentIndex()]
+        #         )
+        #     )
+        #     self.listWidget_fb_cria.clear()
+        #     self.comboBox_kapitel_fb_cria.clear()
+        #     self.comboBox_unterkapitel_fb_cria.clear()
+        #     self.comboBox_kapitel_fb_cria.addItem("")
+
+        # for all in dict_klasse_name.keys():
+        #     if list_mode == "sage":
+        #         self.comboBox_kapitel.addItem(dict_klasse_name[all] + " (" + all + ")")
+        #     if list_mode == "feedback":
+        #         self.comboBox_kapitel_fb_cria.addItem(
+        #             dict_klasse_name[all] + " (" + all + ")"
+        #         )
 
         # self.adapt_choosing_list(list_mode)
 
     def comboBox_kapitel_changed(self, list_mode):
-        dict_klasse = eval(
-            "dict_{}".format(list_klassen[self.comboBox_klassen.currentIndex()])
-        )
-
-
         klasse = self.get_klasse(list_mode)
-        if list_mode == 'sage':  
+        if list_mode == 'sage': 
+            combobox_klassen = self.comboBox_klassen
             chosen_kapitel = self.comboBox_kapitel.currentText()
             combobox_unterkapitel = self.comboBox_unterkapitel
         elif list_mode == 'feedback':
+            combobox_klassen = self.comboBox_klassen_fb_cria
             chosen_kapitel = self.comboBox_kapitel_fb_cria.currentText()
             combobox_unterkapitel = self.comboBox_unterkapitel_fb_cria
+
+        dict_klasse = eval(
+            "dict_{}".format(list_klassen[combobox_klassen.currentIndex()])
+        )
 
         chosen_kapitel = self.extract_topic_abbr(chosen_kapitel)
 
