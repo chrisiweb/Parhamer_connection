@@ -104,7 +104,7 @@ import bcrypt
 
 # import tinydb
 
-from database_commands import _database
+from database_commands import _database, _local_database
 
 try:
     loaded_lama_file_path = sys.argv[1]
@@ -6103,7 +6103,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             self.sage_save(autosave=autosave_file)
 
     def nummer_clicked(self, item):
-        print(item)
+        print(item.text())
         return
         if "(Entwurf)" in item.text():
             aufgabe = item.text().replace(" (Entwurf)", "")
@@ -6184,6 +6184,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         for all in dict_klasse_name.keys():
             combobox_kapitel.addItem(dict_klasse_name[all] + " (" + all + ")")
 
+        self.adapt_choosing_list(list_mode)
         # if list_mode == "sage":
         #     dict_klasse_name = eval(
         #         "dict_{}_name".format(
@@ -6379,11 +6380,16 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                 list_.remove(section)
         return list_
 
+    # def add_local_items_to_listwidget(self, typ, listWidget, filter_items):
+    #     for _file_ in filter_items:
+    #         item = QtWidgets.QListWidgetItem()
+
     def add_items_to_listwidget(
         self,
         typ,
         listWidget,
-        filtered_items
+        filtered_items,
+        local = False,
     ):
         
         for _file_ in filtered_items:
@@ -6392,13 +6398,20 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             else:
                 name = _file_["name"]
 
-            item = QtWidgets.QListWidgetItem()
-            item.setText(name)
 
-            if _file_['draft']==True:
+            item = QtWidgets.QListWidgetItem()
+
+            if local == True:
+                name = name + " (lokal)"
+                # item.setBackground(blue_4)
+                # item.setToolTip("lokal gespeichert")
+
+            elif _file_['draft']==True:
                 item.setBackground(blue_5)
                 item.setForeground(white)
                 item.setToolTip("Entwurf")
+
+            item.setText(name)
 
             if check_if_variation(_file_['name']) == True:
                 item.setToolTip("Variation")                    
@@ -6564,6 +6577,33 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             else:
                 return ""
 
+    def filter_items(self, table_lama,typ, list_mode, filter_string, line_entry):
+        _file_ = Query()
+
+        if typ == "lama_1" or typ == "lama_2":
+            string_included_lama = lambda s: (filter_string in s) and (
+                s.split(" - ")[-1].startswith(line_entry)
+            )
+            filtered_items = table_lama.search(_file_.name.test(string_included_lama))
+        elif typ == "cria":
+            klasse = self.get_klasse(list_mode)
+
+            string_included_cria = lambda s: s.split(".")[-1].startswith(line_entry)
+
+            def themen_included_cria(value):
+                for all in value:
+                    return True if filter_string in all else False
+
+            filtered_items = table_lama.search(
+                (_file_.name.search("{}\..+".format(klasse)))
+                & (_file_.themen.test(themen_included_cria))
+                & (_file_.name.test(string_included_cria))
+            )
+
+        filtered_items.sort(key=order_gesammeltedateien)
+
+        return filtered_items
+
     def adapt_choosing_list(self, list_mode):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         if list_mode == "sage":
@@ -6604,33 +6644,21 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                 line_entry = self.lineEdit_number_fb_cria.text()
 
 
+
+
         table = "table_" + typ
+        if list_mode == "sage":
+            table_lama = _local_database.table(table)
+            filtered_items = self.filter_items(table_lama, typ, list_mode, filter_string, line_entry)
+
+            self.add_items_to_listwidget(typ, listWidget, filtered_items, local=True)
+
+        
         table_lama = _database.table(table)
-        _file_ = Query()
-
-        if typ == "lama_1" or typ == "lama_2":
-            string_included_lama = lambda s: (filter_string in s) and (
-                s.split(" - ")[-1].startswith(line_entry)
-            )
-            filtered_items = table_lama.search(_file_.name.test(string_included_lama))
-        elif typ == "cria":
-            klasse = self.get_klasse(list_mode)
-
-            string_included_cria = lambda s: s.split(".")[-1].startswith(line_entry)
-
-            def themen_included_cria(value):
-                for all in value:
-                    return True if filter_string in all else False
-
-            filtered_items = table_lama.search(
-                (_file_.name.search("{}\..+".format(klasse)))
-                & (_file_.themen.test(themen_included_cria))
-                & (_file_.name.test(string_included_cria))
-            )
-
-        filtered_items.sort(key=order_gesammeltedateien)
-
+        filtered_items = self.filter_items(table_lama, typ, list_mode, filter_string, line_entry)
         self.add_items_to_listwidget(typ, listWidget, filtered_items)
+
+
         #     list_beispieldaten_sections, beispieldaten_dateipfad, listWidget, list_mode
         # )
 
