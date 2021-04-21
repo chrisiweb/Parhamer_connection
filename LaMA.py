@@ -5170,7 +5170,6 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         self.update_punkte()
 
     def get_aufgabentyp(self, aufgabe):
-        aufgabe = aufgabe.replace("_L_", "")
         if self.chosen_program == "cria":
             typ = None
         elif re.search("[A-Z]", aufgabe) == None:
@@ -5192,6 +5191,8 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         return [num_typ1, num_typ2]
 
     def sage_aufgabe_add(self, aufgabe):
+        print(aufgabe)
+        return
         if self.chosen_program == "lama":
 
             old_num_typ1, old_num_typ2 = self.get_aufgabenverteilung()
@@ -6103,33 +6104,34 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             self.sage_save(autosave=autosave_file)
 
     def nummer_clicked(self, item):
-        print(item.text())
-        return
-        if "(Entwurf)" in item.text():
-            aufgabe = item.text().replace(" (Entwurf)", "")
-            # draft=True
-        elif "(lokal)" in item.text():
+        # aufgabe = item.text()
+        # return
+        # if "(Entwurf)" in item.text():
+        #     aufgabe = item.text().replace(" (Entwurf)", "")
+        #     # draft=True
+        if "(lokal)" in item.text():
             aufgabe = item.text().replace(" (lokal)", "")
-            # draft=False
+        #     # draft=False
         else:
             aufgabe = item.text()
-            # draft=False
+        #     # draft=False
 
-        if self.chosen_program == "cria":
-            aufgabe = self.build_klasse_aufgabe(aufgabe)
+        # if self.chosen_program == "cria":
+        #     aufgabe = self.build_klasse_aufgabe(aufgabe)
 
         if aufgabe in self.list_alle_aufgaben_sage:
             return
 
-        try:
-            collect_content(self, aufgabe)
-        except FileNotFoundError:
-            warning_window(
-                'Die Datei konnte nicht gefunden werden.\nBitte wählen Sie "Refresh Database" (F5) und versuchen Sie es erneut.'
-            )
-            return
-
+        # try:
+        #     collect_content(self, aufgabe)
+        # except FileNotFoundError:
+        #     warning_window(
+        #         'Die Datei konnte nicht gefunden werden.\nBitte wählen Sie "Refresh Database" (F5) und versuchen Sie es erneut.'
+        #     )
+        #     return
+        
         self.sage_aufgabe_add(aufgabe)
+        return
         infos = self.collect_all_infos_aufgabe(aufgabe)
         self.dict_alle_aufgaben_sage[aufgabe] = infos
 
@@ -6416,7 +6418,11 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             if check_if_variation(_file_['name']) == True:
                 item.setToolTip("Variation")                    
             
-            listWidget.addItem(item)
+
+            if _file_['draft']==True and not self.cb_drafts_sage.isChecked():
+                continue
+            else:
+                listWidget.addItem(item)
         return
         for section in list_beispieldaten_sections:
             try:
