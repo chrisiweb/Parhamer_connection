@@ -8,6 +8,24 @@ from config import config_loader, config_file
 # from config import database_lama_1, _file_
 
 
+def get_aufgabe(aufgabe, typ):
+    if typ==None:
+        typ = 'cria'
+    elif typ == 1:
+        typ = 'lama_1'
+    elif typ == 2:
+        typ = 'lama_2'
+    table = "table_" + typ
+    
+    if " (lokal)" in aufgabe:
+        aufgabe = aufgabe.replace(" (lokal)","")
+        table_lama = _local_database.table(table)
+    else:
+        table_lama = _database.table(table)
+
+    _file_ = Query()
+
+    return table_lama.get(_file_.name == aufgabe) 
 
 
 # class WriteFilesToDatabase:
@@ -118,6 +136,7 @@ def search_for_images(content):
     #     print(image.group())
     # if 'includegraphics' in content:
     #     print(content)
+
 
 def write_to_database(folder_path, typ,klasse=None):
     try:
@@ -263,10 +282,12 @@ dict_gk = config_loader(config_file, 'dict_gk')
 # _local_database = TinyDB(path_local_database)
 
 
-# table_lama = _local_database.table('table_lama_1')
+table_lama = _local_database.table('table_cria')
+table_lama.update({'abstand' : 0})
 # table_lama = _local_database.table('table_cria')
 # # # table_lama.truncate()
 # create_local_database()
+
 
 
 print('done')

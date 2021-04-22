@@ -104,7 +104,7 @@ import bcrypt
 
 # import tinydb
 
-from database_commands import _database, _local_database
+from database_commands import _database, _local_database, get_aufgabe
 
 try:
     loaded_lama_file_path = sys.argv[1]
@@ -5170,6 +5170,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         self.update_punkte()
 
     def get_aufgabentyp(self, aufgabe):
+        print(aufgabe)
         if self.chosen_program == "cria":
             typ = None
         elif re.search("[A-Z]", aufgabe) == None:
@@ -5191,8 +5192,6 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         return [num_typ1, num_typ2]
 
     def sage_aufgabe_add(self, aufgabe):
-        print(aufgabe)
-        return
         if self.chosen_program == "lama":
 
             old_num_typ1, old_num_typ2 = self.get_aufgabenverteilung()
@@ -5208,6 +5207,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
         num_typ1, num_typ2 = self.get_aufgabenverteilung()
         num_total = len(self.list_alle_aufgaben_sage)
+        
 
         if self.chosen_program == "lama":
             label = "Anzahl der Aufgaben: {0}\n(Typ1: {1} / Typ2: {2})".format(
@@ -5323,7 +5323,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         self.button_was_deleted = True
 
     def spinbox_pkt_changed(self, aufgabe, spinbox_pkt):
-        self.dict_alle_aufgaben_sage[aufgabe][0] = spinbox_pkt.value()
+        # self.dict_alle_aufgaben_sage[aufgabe][0] = spinbox_pkt.value()
         self.update_punkte()
 
     def spinbox_abstand_changed(self, aufgabe, spinbox_abstand):
@@ -5359,16 +5359,17 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         pkt_ausgleich = 0
         gesamtpunkte = 0
         for all in self.dict_variablen_punkte:
-            typ = self.get_aufgabentyp(all)
-            if typ == None:
-                gesamtpunkte += self.dict_variablen_punkte[all].value()
-            elif typ == 1:
-                pkt_typ1 += self.dict_variablen_punkte[all].value()
-                gesamtpunkte += self.dict_variablen_punkte[all].value()
-            elif typ == 2:
-                pkt_typ2 += self.dict_variablen_punkte[all].value()
-                pkt_ausgleich += self.dict_alle_aufgaben_sage[all][3]
-                gesamtpunkte += self.dict_variablen_punkte[all].value()
+            print(all)
+            # typ = self.get_aufgabentyp(all)
+            # if typ == None:
+            #     gesamtpunkte += self.dict_variablen_punkte[all].value()
+            # elif typ == 1:
+            #     pkt_typ1 += self.dict_variablen_punkte[all].value()
+            #     gesamtpunkte += self.dict_variablen_punkte[all].value()
+            # elif typ == 2:
+            #     pkt_typ2 += self.dict_variablen_punkte[all].value()
+            #     pkt_ausgleich += self.dict_alle_aufgaben_sage[all][3]
+            #     gesamtpunkte += self.dict_variablen_punkte[all].value()
 
         return [gesamtpunkte, pkt_typ1, pkt_typ2]
 
@@ -5467,13 +5468,18 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                 )
                 self.dict_alle_aufgaben_sage[all][0] = self.spinBox_default_pkt.value()
 
-    def create_neue_aufgaben_box(self, index, aufgabe, aufgaben_infos):
-        typ = self.get_aufgabentyp(aufgabe)
-        aufgaben_verteilung = self.get_aufgabenverteilung()
-        if self.chosen_program == "cria":
-            klasse, aufgaben_nummer = self.split_klasse_aufgabe(aufgabe)
-            klasse = klasse[1]
+    def count_ausgleichspunkte(self, content):
+        print(content)
 
+    def create_neue_aufgaben_box(self, index, aufgabe, aufgabe_total):
+        typ = self.get_aufgabentyp(aufgabe)
+        print(typ)
+        aufgaben_verteilung = self.get_aufgabenverteilung()
+
+        if self.chosen_program == "cria":          
+            klasse, aufgaben_nummer = aufgabe.split(".")
+            klasse = klasse[0]
+            
             new_groupbox = create_new_groupbox(
                 self.scrollAreaWidgetContents_2, "{0}. Aufgabe".format(index + 1)
             )
@@ -5487,26 +5493,21 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         gridLayout_gB.setObjectName("gridLayout_gB")
 
         if typ == None:
-            try:
-                aufgabenformat = (
-                    " (" + dict_aufgabenformate[aufgaben_infos[3].lower() + ")"]
-                )
-            except KeyError:
-                aufgabenformat = ""
-            if "_L_" in aufgaben_nummer:
-                x = aufgaben_nummer.replace("_L_", "")
-                label = "{0}. Klasse - {1} (lokal){2}".format(klasse, x, aufgabenformat)
-            else:
-                label = "{0}. Klasse - {1}{2}".format(
-                    klasse, aufgaben_nummer, aufgabenformat
-                )
+            aufgabenformat = (
+                " (" + aufgabe_total['af'].upper() + ")"
+            )
+
+            
+            # if "_L_" in aufgaben_nummer:
+            #     x = aufgaben_nummer.replace("_L_", "")
+            #     label = "{0}. Klasse - {1} (lokal){2}".format(klasse, x, aufgabenformat)
+            # else:
+            label = "{0}. Klasse - {1}{2}".format(klasse, aufgaben_nummer, aufgabenformat)
         elif typ == 1:
-            try:
-                aufgabenformat = (
-                    " (" + dict_aufgabenformate[aufgaben_infos[3].lower()] + ")"
-                )
-            except KeyError:
-                aufgabenformat = ""
+            aufgabenformat = (
+                " (" + aufgabe_total['af'].upper() + ")"
+            )
+
             label = "{0}{1}".format(aufgabe, aufgabenformat)
         elif typ == 2:
             label = "{0}".format(aufgabe)
@@ -5515,7 +5516,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         gridLayout_gB.addWidget(label_aufgabe, 1, 0, 1, 1)
 
         label_titel = create_new_label(
-            new_groupbox, "Titel: {}".format(aufgaben_infos[2]), True
+            new_groupbox, "Titel: {}".format(aufgabe_total['titel']), True
         )
         gridLayout_gB.addWidget(label_titel, 2, 0, 1, 1)
 
@@ -5523,7 +5524,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         groupbox_pkt.setSizePolicy(SizePolicy_fixed)
         gridLayout_gB.addWidget(groupbox_pkt, 0, 1, 3, 1, QtCore.Qt.AlignRight)
 
-        punkte = self.dict_alle_aufgaben_sage[aufgabe][0]
+        punkte = aufgabe_total['punkte']
 
         horizontalLayout_groupbox_pkt = QtWidgets.QHBoxLayout(groupbox_pkt)
         horizontalLayout_groupbox_pkt.setObjectName(
@@ -5600,7 +5601,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         verticalLayout_abstand = QtWidgets.QVBoxLayout(groupbox_abstand_ausgleich)
         verticalLayout_abstand.setObjectName("verticalLayout_abstand")
 
-        abstand = self.dict_alle_aufgaben_sage[aufgabe][1]
+        abstand = aufgabe_total['abstand']
         spinbox_abstand = create_new_spinbox(groupbox_abstand_ausgleich)
         spinbox_abstand.setValue(abstand)
         spinbox_abstand.valueChanged.connect(
@@ -5611,10 +5612,10 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         if typ == 2:
             groupbox_abstand_ausgleich.setTitle("Ausgleichspkte")
             spinbox_abstand.hide()
-
+            self.count_ausgleichspunkte(aufgabe_total['content'])
             label_ausgleichspkt = create_new_label(
                 groupbox_abstand_ausgleich,
-                "{}".format(self.dict_alle_aufgaben_sage[aufgabe][3]),
+                "test",
             )
             label_ausgleichspkt.setStyleSheet("padding-top: 5px; padding-bottom: 5px;")
             verticalLayout_abstand.addWidget(label_ausgleichspkt)
@@ -5663,7 +5664,8 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
     def collect_all_infos_aufgabe(self, aufgabe):
         typ = self.get_aufgabentyp(aufgabe)
-
+        print(typ) # 1, 2, None
+        return
         if typ == None:
             punkte = self.get_punkte_aufgabe(aufgabe)
             klasse, aufgabe = self.split_klasse_aufgabe(aufgabe)
@@ -5818,9 +5820,12 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
         for item in self.list_alle_aufgaben_sage[start_value:]:
             index_item = self.list_alle_aufgaben_sage.index(item)
-            item_infos = self.collect_all_infos_aufgabe(item)
+
+            typ = self.get_aufgabentyp(aufgabe)
+            aufgabe_total = get_aufgabe(aufgabe, typ)
+            # item_infos = self.collect_all_infos_aufgabe(item)
             neue_aufgaben_box = self.create_neue_aufgaben_box(
-                index_item, item, item_infos
+                index_item, item, aufgabe_total
             )
             self.gridLayout_8.addWidget(neue_aufgaben_box, index_item, 0, 1, 1)
             index_item + 1
@@ -5829,7 +5834,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
         )
         self.gridLayout_8.addItem(self.spacerItem, index_item + 1, 0, 1, 1)
-
+        return
         self.add_image_path_to_list(aufgabe)
 
         self.update_punkte()
@@ -6109,11 +6114,16 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         # if "(Entwurf)" in item.text():
         #     aufgabe = item.text().replace(" (Entwurf)", "")
         #     # draft=True
-        if "(lokal)" in item.text():
-            aufgabe = item.text().replace(" (lokal)", "")
-        #     # draft=False
-        else:
-            aufgabe = item.text()
+        # if "(lokal)" in item.text():
+        #     aufgabe = item.text().replace(" (lokal)", "")
+        # #     # draft=False
+        # else:
+        aufgabe = item.text()
+
+        if self.chosen_program == 'cria':
+            klasse = self.get_klasse('sage')
+            aufgabe = klasse + "." + aufgabe
+        
         #     # draft=False
 
         # if self.chosen_program == "cria":
@@ -6131,9 +6141,12 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         #     return
         
         self.sage_aufgabe_add(aufgabe)
-        return
-        infos = self.collect_all_infos_aufgabe(aufgabe)
-        self.dict_alle_aufgaben_sage[aufgabe] = infos
+
+        # infos = self.collect_all_infos_aufgabe(aufgabe)
+
+        # print(infos)
+
+        # self.dict_alle_aufgaben_sage[aufgabe] = infos
 
         self.build_aufgaben_schularbeit(aufgabe)  # aufgabe, aufgaben_verteilung
         self.lineEdit_number.setText("")
