@@ -4664,9 +4664,9 @@ class Ui_MainWindow(object):
         abs_path_file = os.path.join(save_dateipfad, file_name)
 
         section = self.create_section(typ_save)
-        print(self.max_integer_file)
-        print(abs_path_file)
-        print(typ_save)
+        # print(self.max_integer_file)
+        # print(abs_path_file)
+        # print(typ_save)
         # if typ_save[0] == "user":
         #     critical_window("save not yet defined")
         #     return
@@ -5170,7 +5170,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         self.update_punkte()
 
     def get_aufgabentyp(self, aufgabe):
-        print(aufgabe)
+        # print(aufgabe)
         if self.chosen_program == "cria":
             typ = None
         elif re.search("[A-Z]", aufgabe) == None:
@@ -5473,7 +5473,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
     def create_neue_aufgaben_box(self, index, aufgabe, aufgabe_total):
         typ = self.get_aufgabentyp(aufgabe)
-        print(typ)
+        # print(typ)
         aufgaben_verteilung = self.get_aufgabenverteilung()
 
         if self.chosen_program == "cria":          
@@ -5817,12 +5817,12 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
         for i in reversed(range(start_value, self.gridLayout_8.count() + 1)):
             self.delete_widget(self.gridLayout_8, i)
-
+        print(self.list_alle_aufgaben_sage)
         for item in self.list_alle_aufgaben_sage[start_value:]:
+            print(item)
             index_item = self.list_alle_aufgaben_sage.index(item)
-
-            typ = self.get_aufgabentyp(aufgabe)
-            aufgabe_total = get_aufgabe(aufgabe, typ)
+            typ = self.get_aufgabentyp(item)
+            aufgabe_total = get_aufgabe(item, typ)
             # item_infos = self.collect_all_infos_aufgabe(item)
             neue_aufgaben_box = self.create_neue_aufgaben_box(
                 index_item, item, aufgabe_total
