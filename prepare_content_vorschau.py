@@ -161,7 +161,9 @@ def split_content_at_beispiel_umgebung(content):
 
 
 def edit_content_vorschau(self, aufgabe, ausgabetyp):
+
     content = collect_content(self, aufgabe, readlines=True)
+    return content
     # print(content)
     if aufgabe in self.dict_all_infos_for_file["dict_individual_change"]:
         if not is_empty(self.dict_all_infos_for_file["dict_individual_change"][aufgabe]):

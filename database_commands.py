@@ -8,7 +8,17 @@ from config import config_loader, config_file
 # from config import database_lama_1, _file_
 
 
-def get_aufgabe(aufgabe, typ):
+def get_aufgabentyp(chosen_program , aufgabe):
+    # print(aufgabe)
+    if chosen_program == "cria":
+        typ = None
+    elif re.search("[A-Z]", aufgabe) == None:
+        typ = 2
+    else:
+        typ = 1
+    return typ
+
+def get_aufgabe_total(aufgabe, typ):
     if typ==None:
         typ = 'cria'
     elif typ == 1:

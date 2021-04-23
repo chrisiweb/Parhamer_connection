@@ -104,7 +104,8 @@ import bcrypt
 
 # import tinydb
 
-from database_commands import _database, _local_database, get_aufgabe
+from database_commands import _database, _local_database, get_aufgabe_total, get_aufgabentyp
+from tex_minimal import *
 
 try:
     loaded_lama_file_path = sys.argv[1]
@@ -140,6 +141,7 @@ class Ui_MainWindow(object):
         self.dict_widget_variables = {}
         self.list_selected_topics_creator = []
         self.dict_variablen_punkte = {}
+        self.dict_variablen_abstand = {}
         self.dict_variablen_label = {}
         self.dict_sage_ausgleichspunkte_chosen = {}
         self.dict_sage_hide_show_items_chosen = {}
@@ -2966,6 +2968,7 @@ class Ui_MainWindow(object):
         self.dict_alle_aufgaben_sage = {}
         self.dict_variablen_label = {}
         self.dict_variablen_punkte = {}
+        self.dict_variablen_abstand = {}
         self.update_punkte()
         self.list_copy_images = []
         for i in reversed(range(self.gridLayout_8.count())):
@@ -3503,7 +3506,7 @@ class Ui_MainWindow(object):
                         return
                     else:
                         for aufgabe in self.list_alle_aufgaben_sage[:]:
-                            typ = self.get_aufgabentyp(aufgabe)
+                            typ = get_aufgabentyp(self.chosen_program, aufgabe)
                             if typ == 2:
                                 self.btn_delete_pressed(aufgabe)
 
@@ -3601,7 +3604,7 @@ class Ui_MainWindow(object):
     def collect_data_aufgabe(self, aufgabe):
         content = collect_content(self, aufgabe)
 
-        section = get_section_from_content(content)
+        section = get_section_from_content(self, content)
 
         if section == None:
             warning_window(
@@ -3621,7 +3624,7 @@ class Ui_MainWindow(object):
         for all in list_collected_data:
             if re.match("K[0-9]", all) or all == "MAT":
                 dict_collected_data["klasse"] = all
-        typ = self.get_aufgabentyp(aufgabe)
+        typ = get_aufgabentyp(self.chosen_program, aufgabe)
         info = self.collect_all_infos_aufgabe(aufgabe)
 
         if typ == None:
@@ -3646,7 +3649,7 @@ class Ui_MainWindow(object):
 
     def set_infos_chosen_variation(self, dict_collected_data):
         aufgabe = dict_collected_data["aufgabe"]
-        typ = self.get_aufgabentyp(aufgabe)
+        typ = get_aufgabentyp(self.chosen_program, aufgabe)
 
         if self.chosen_program == "lama":
             list_comboBox_gk = ["AG", "FA", "AN", "WS", "Zusatzthemen"]
@@ -4245,7 +4248,7 @@ class Ui_MainWindow(object):
                     elif typ == 1 and name in all:
                         if int(file_integer) > max_integer_file:
                             max_integer_file = int(file_integer)
-                    elif typ == 2 and self.get_aufgabentyp(all) == 2:
+                    elif typ == 2 and get_aufgabentyp(self.chosen_program, all) == 2:
                         if int(file_integer) > max_integer_file:
                             max_integer_file = int(file_integer)
 
@@ -4821,7 +4824,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         return beispieldaten_dateipfad
 
     def check_if_file_exists(self, aufgabe):  # aufgabe
-        typ = self.get_aufgabentyp(aufgabe)
+        typ = get_aufgabentyp(self.chosen_program, aufgabe)
 
         if typ == 1:
             list_paths = self.beispieldaten_dateipfad_1.values()
@@ -5170,21 +5173,21 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
         self.update_punkte()
 
-    def get_aufgabentyp(self, aufgabe):
-        # print(aufgabe)
-        if self.chosen_program == "cria":
-            typ = None
-        elif re.search("[A-Z]", aufgabe) == None:
-            typ = 2
-        else:
-            typ = 1
-        return typ
+    # def get_aufgabentyp(self, aufgabe):
+    #     # print(aufgabe)
+    #     if self.chosen_program == "cria":
+    #         typ = None
+    #     elif re.search("[A-Z]", aufgabe) == None:
+    #         typ = 2
+    #     else:
+    #         typ = 1
+    #     return typ
 
     def get_aufgabenverteilung(self):
         num_typ1 = 0
         num_typ2 = 0
         for all in self.list_alle_aufgaben_sage:
-            typ = self.get_aufgabentyp(all)
+            typ = get_aufgabentyp(self.chosen_program , all)
             if typ == 1:
                 num_typ1 += 1
             if typ == 2:
@@ -5197,7 +5200,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
             old_num_typ1, old_num_typ2 = self.get_aufgabenverteilung()
 
-            typ = self.get_aufgabentyp(aufgabe)
+            typ = get_aufgabentyp(self.chosen_program, aufgabe)
             if typ == 1:
                 self.list_alle_aufgaben_sage.insert(old_num_typ1, aufgabe)
             if typ == 2:
@@ -5285,10 +5288,10 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         self.build_aufgaben_schularbeit(aufgabe)
 
     def erase_aufgabe(self, aufgabe):
-        del self.dict_alle_aufgaben_sage[aufgabe]
         del self.dict_variablen_punkte[aufgabe]
+        del self.dict_variablen_abstand[aufgabe]
         self.list_alle_aufgaben_sage.remove(aufgabe)
-        if self.get_aufgabentyp(aufgabe) == 2:
+        if get_aufgabentyp(self.chosen_program, aufgabe) == 2:
             del self.dict_variablen_label[aufgabe]
         if aufgabe in self.dict_sage_ausgleichspunkte_chosen:
             del self.dict_sage_ausgleichspunkte_chosen[aufgabe]
@@ -5346,7 +5349,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
         if self.listWidget.currentItem() != None:
             aufgabe = self.listWidget.currentItem().text()
-            typ = self.get_aufgabentyp(aufgabe)
+            typ = get_aufgabentyp(self.chosen_program, aufgabe)
             if typ == 2 or typ == None:
                 self.scrollArea_chosen.verticalScrollBar().setValue(pos_maximum)
             elif typ == 1:
@@ -5359,7 +5362,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         pkt_typ2 = 0
         gesamtpunkte = 0
         for all in self.dict_variablen_punkte:
-            typ = self.get_aufgabentyp(all)
+            typ = get_aufgabentyp(self.chosen_program, all)
             if typ == None:
                 gesamtpunkte += self.dict_variablen_punkte[all].value()
             elif typ == 1:
@@ -5408,8 +5411,11 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
     def get_number_ausgleichspunkte_gesamt(self):
         number_ausgleichspkt_gesamt = 0
         for aufgabe in self.list_alle_aufgaben_sage:
-            if self.get_aufgabentyp(aufgabe) == 2:
-                number_ausgleichspkt_gesamt += self.dict_alle_aufgaben_sage[aufgabe][3]
+            typ = get_aufgabentyp(self.chosen_program, aufgabe)
+            if typ == 2:
+                collect_content(self, aufgabe)
+                number = self.count_ausgleichspunkte(aufgabe_total['content'])
+                number_ausgleichspkt_gesamt += number
 
         return number_ausgleichspkt_gesamt
 
@@ -5460,13 +5466,16 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
     def update_default_pkt(self):
         for all in self.dict_variablen_punkte:
-            if self.get_aufgabentyp(all) == 1:
+            if get_aufgabentyp(self.chosen_program, all) == 1:
                 self.dict_variablen_punkte[all].setValue(
                     self.spinBox_default_pkt.value()
                 )
 
     def get_punkte_aufgabe_sage(self, aufgabe):
         return self.dict_variablen_punkte[aufgabe].value()
+
+    def get_abstand_aufgabe_sage(self, aufgabe):
+        return self.dict_variablen_abstand[aufgabe].value()
 
 
     def count_ausgleichspunkte(self, content):
@@ -5477,7 +5486,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         return number
 
     def create_neue_aufgaben_box(self, index, aufgabe, aufgabe_total):
-        typ = self.get_aufgabentyp(aufgabe)
+        typ = get_aufgabentyp(self.chosen_program, aufgabe)
 
         aufgaben_verteilung = self.get_aufgabenverteilung()
 
@@ -5606,6 +5615,8 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         abstand = aufgabe_total['abstand']
         spinbox_abstand = create_new_spinbox(groupbox_abstand_ausgleich)
         spinbox_abstand.setValue(abstand)
+        self.dict_variablen_abstand[aufgabe] = spinbox_abstand
+
         spinbox_abstand.valueChanged.connect(
             partial(self.spinbox_abstand_changed, aufgabe, spinbox_abstand)
         )
@@ -5666,7 +5677,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         return klasse
 
     def collect_all_infos_aufgabe(self, aufgabe):
-        typ = self.get_aufgabentyp(aufgabe)
+        typ = get_aufgabentyp(self.chosen_program, aufgabe)
         print(typ) # 1, 2, None
         return
         if typ == None:
@@ -5706,7 +5717,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
         return [punkte, 0, titel, typ_info]
 
-    def get_punkte_aufgabe(self, aufgabe):
+    def get_punkte_aufgabe(aufgabe):
         content = collect_content(self, aufgabe)
         start = re.findall("begin{beispiel}.*\{[0-9][0-9]?\}", content)
         typ = "beispiel"
@@ -5738,7 +5749,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         return dateipfad
 
     def get_dateipfad_aufgabe(self, aufgabe, draft=False):
-        typ = self.get_aufgabentyp(aufgabe)
+        typ = get_aufgabentyp(self.chosen_program, aufgabe)
         klasse = None
 
         if self.chosen_program == "cria":
@@ -5758,7 +5769,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         return dateipfad
 
     def get_number_ausgleichspunkte(self, aufgabe):
-        typ = self.get_aufgabentyp(aufgabe)
+        typ = get_aufgabentyp(self.chosen_program, aufgabe)
 
         if typ == 2:
             content = collect_content(self, aufgabe)
@@ -5796,8 +5807,8 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         return klasse_aufgabe
 
     def add_image_path_to_list(self, aufgabe):
-        typ = self.get_aufgabentyp(aufgabe)
-        aufgabe_total = get_aufgabe(aufgabe, typ)
+        typ = get_aufgabentyp(self.chosen_program, aufgabe)
+        aufgabe_total = get_aufgabe_total(aufgabe, typ)
         content = aufgabe_total['content']
 
         if "\\includegraphics" in content:
@@ -5825,8 +5836,8 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
         for item in self.list_alle_aufgaben_sage[start_value:]:
             index_item = self.list_alle_aufgaben_sage.index(item)
-            typ = self.get_aufgabentyp(item)
-            aufgabe_total = get_aufgabe(item, typ)
+            typ = get_aufgabentyp(self.chosen_program, item)
+            aufgabe_total = get_aufgabe_total(item, typ)
             # item_infos = self.collect_all_infos_aufgabe(item)
             neue_aufgaben_box = self.create_neue_aufgaben_box(
                 index_item, item, aufgabe_total
@@ -5863,7 +5874,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         content_no_environment = split_content_no_environment(content)
 
         # print(aufgabe)
-        typ = self.get_aufgabentyp(aufgabe)
+        typ = get_aufgabentyp(self.chosen_program, aufgabe)
         # return
         if typ == 2:
             try:
@@ -6682,100 +6693,8 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         self.add_items_to_listwidget(typ, listWidget, filtered_items)
 
 
-        #     list_beispieldaten_sections, beispieldaten_dateipfad, listWidget, list_mode
-        # )
-
-        # for item in filtered_items:
-        #     if typ == 'cria':
-        #         listWidget.addItem(item["name"].split('.')[-1])
-        #     else:
-        #         listWidget.addItem(item["name"])
-
         QtWidgets.QApplication.restoreOverrideCursor()
 
-        # if self.chosen_program == "cria":
-        #     typ = None
-        #     beispieldaten_dateipfad = self.beispieldaten_dateipfad_cria
-        # else:
-        #     if (
-        #         self.comboBox_at_sage.currentText() == "Typ 1" and list_mode == "sage"
-        #     ) or (
-        #         self.comboBox_at_fb.currentText() == "Typ 1" and list_mode == "feedback"
-        #     ):
-        #         typ = 1
-        #         beispieldaten_dateipfad = self.beispieldaten_dateipfad_1
-        #     elif (
-        #         self.comboBox_at_sage.currentText() == "Typ 2" and list_mode == "sage"
-        #     ) or (
-        #         self.comboBox_at_fb.currentText() == "Typ 2" and list_mode == "feedback"
-        #     ):
-        #         typ = 2
-        #         beispieldaten_dateipfad = self.beispieldaten_dateipfad_2
-
-        # list_beispieldaten_sections = list(beispieldaten_dateipfad.keys())
-        # if self.chosen_program == "lama":
-        #     if list_mode == "sage":
-        #         combobox_gk = self.comboBox_gk.currentText()
-        #         result = re.findall("\(([a-z]+)\)", self.comboBox_gk_num.currentText())
-        #         if not is_empty(result):
-        #             combobox_gk_num = result[-1]
-        #         else:
-        #             combobox_gk_num = self.comboBox_gk_num.currentText()
-
-        #     elif list_mode == "feedback":
-        #         combobox_gk = self.comboBox_fb.currentText()
-        #         result = re.findall("\(([a-z]+)\)", self.comboBox_fb_num.currentText())
-        #         if not is_empty(result):
-        #             combobox_gk_num = result[-1]
-        #         else:
-        #             combobox_gk_num = self.comboBox_fb_num.currentText()
-
-        #         # combobox_gk = self.comboBox_fb.currentText()
-        #         # combobox_gk_num = self.comboBox_fb_num.currentText()
-
-        # list_beispieldaten_sections = self.adjust_beispieldaten_combobox_lama(
-        #     list_beispieldaten_sections, combobox_gk, combobox_gk_num,
-        # )
-
-        # if self.chosen_program == "cria":
-        #     if list_mode == "sage":
-        #         combobox_klasse = self.comboBox_klassen.currentText()
-        #         combobox_kapitel = self.comboBox_kapitel.currentText()
-        #         combobox_unterkapitel = self.comboBox_unterkapitel.currentText()
-        #     elif list_mode == "feedback":
-        #         combobox_klasse = self.comboBox_klassen_fb_cria.currentText()
-        #         combobox_kapitel = self.comboBox_kapitel_fb_cria.currentText()
-        #         combobox_unterkapitel = self.comboBox_unterkapitel_fb_cria.currentText()
-
-        #     list_beispieldaten_sections = self.adjust_beispieldaten_combobox_cria(
-        #         list_beispieldaten_sections,
-        #         combobox_klasse,
-        #         combobox_kapitel,
-        #         combobox_unterkapitel,
-        #     )
-
-        # if list_mode == "sage":
-        #     line_entry = self.lineEdit_number.text()
-        # elif list_mode == "feedback":
-        #     if self.chosen_program == "lama":
-        #         line_entry = self.lineEdit_number_fb.text()
-        #     elif self.chosen_program == "cria":
-        #         line_entry = self.lineEdit_number_fb_cria.text()
-
-        # if is_empty(line_entry) == False:
-        #     list_beispieldaten_sections = self.search_for_number(
-        #         list_beispieldaten_sections, line_entry, list_mode
-        #     )
-
-        # list_beispieldaten_sections = sorted_gks(
-        #     list_beispieldaten_sections, self.chosen_program
-        # )
-
-        # listWidget.clear()
-
-        # self.add_items_to_listwidget(
-        #     list_beispieldaten_sections, beispieldaten_dateipfad, listWidget, list_mode
-        # )
 
     def collect_all_infos_for_creating_file(self):
         self.dict_all_infos_for_file = {}
@@ -6784,9 +6703,9 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             "list_alle_aufgaben"
         ] = self.list_alle_aufgaben_sage
 
-        self.dict_all_infos_for_file[
-            "dict_alle_aufgaben"
-        ] = self.dict_alle_aufgaben_sage
+        # self.dict_all_infos_for_file[
+        #     "dict_alle_aufgaben"
+        # ] = self.dict_alle_aufgaben_sage
 
         ### include dictionary of changed 'ausgleichspunkte' ###
         self.dict_all_infos_for_file[
@@ -6841,7 +6760,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
         if self.chosen_program == "lama":
             for aufgabe in self.list_alle_aufgaben_sage:
-                typ = self.get_aufgabentyp(aufgabe)
+                typ = get_aufgabentyp(self.chosen_program, aufgabe)
                 if typ == 1:
                     beispieldaten_dateipfad = self.beispieldaten_dateipfad_1
                 elif typ == 2:
@@ -6867,60 +6786,94 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         return dict_gesammeltedateien
 
     def add_content_to_tex_file(
-        self, aufgabe, split_content, filename_vorschau, first_typ2
+        self, aufgabe, aufgabe_total, filename_vorschau, first_typ2
     ):
-        if self.get_aufgabentyp(aufgabe) == 1:
-            gk = aufgabe.replace("_L_", "")
-            grundkompetenz = "[" + gk.split("-")[0].strip() + "]"
-        else:
-            grundkompetenz = ""
+        # return
+        # if get_aufgabentyp(self.chosen_program, aufgabe) == 1:
+        #     gk = aufgabe.replace("_L_", "")
+        #     grundkompetenz = "[" + gk.split("-")[0].strip() + "]"
+        # else:
+        #     grundkompetenz = ""
 
-        path_aufgabe = self.get_dateipfad_aufgabe(aufgabe)
+        # path_aufgabe = self.get_dateipfad_aufgabe(aufgabe)
 
-        spinbox_pkt = self.dict_alle_aufgaben_sage[aufgabe][0]
+        # return
+        # spinbox_pkt = self.dict_alle_aufgaben_sage[aufgabe][0]
 
-        if self.get_aufgabentyp(aufgabe) == 2:
+        if get_aufgabentyp(self.chosen_program, aufgabe) == 2:
             if first_typ2 == False:
-                start = "\\newpage \n\n\subsubsection{Typ 2 Aufgaben}\n\n"
+                header = "\\newpage \n\n\subsubsection{Typ 2 Aufgaben}\n\n"
                 first_typ2 = True
             else:
-                start = "\\newpage\n\n"
+                header = "\\newpage\n\n"
         else:
-            start = ""
+            header = ""
 
-        if spinbox_pkt == 0:
-            split_content[
-                0
-            ] = "\\begin{enumerate}\item[\\stepcounter{number}\\thenumber.] "
-            split_content[-1] = "\end{enumerate}"
+        punkte = self.get_punkte_aufgabe_sage(aufgabe)
+        abstand = self.get_abstand_aufgabe_sage(aufgabe)
+        if punkte == 0:
+            begin = "\\begin{enumerate}\item[\\stepcounter{number}\\thenumber.]"
+            end = "\end{enumerate}"
+        elif aufgabe_total['pagebreak'] == False:
+            begin = begin_beispiel(aufgabe_total['themen'],punkte)
+            end = end_beispiel
+        elif aufgabe_total['pagebreak'] == True:
+            begin =  begin_beispiel_lang(punkte)
+            end = end_beispiel_lang
 
-        elif "langesbeispiel" in split_content[0]:
-            split_content[
-                0
-            ] = "{0}\\begin{{langesbeispiel}} \item[{1}] %PUNKTE DES BEISPIELS".format(
-                start, spinbox_pkt
-            )
+        if abstand == 99:
+            vspace  = "\\newpage \n\n"
+        elif abstand == 0:
+            vspace = ""
+        else:
+            vspace = "\\vspace{{{0}cm}} \n\n".format(abstand)
 
-        elif "beispiel" in split_content[0]:
-            split_content[
-                0
-            ] = "{0}\\begin{{beispiel}}{1}{{{2}}} %PUNKTE DES BEISPIELS\n".format(
-                start, grundkompetenz, spinbox_pkt
-            )
 
-        spinbox_abstand = self.dict_alle_aufgaben_sage[aufgabe][1]
-        if spinbox_abstand != 0:
-            if spinbox_abstand == 99:
-                split_content[2] = split_content[2] + "\\newpage \n\n"
-            else:
-                split_content[2] = split_content[2] + "\\vspace{{{0}cm}} \n\n".format(
-                    spinbox_abstand
-                )
 
         with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
-            for all in split_content:
-                vorschau.write(all + "\n")
+            vorschau.write(header)
+            vorschau.write(begin)
+            vorschau.write(aufgabe_total['content'])
+            vorschau.write(vspace)
+            vorschau.write(end)
             vorschau.write("\n\n")
+            # if aufgabe_total['pagebreak'] == False:
+            #     vorschau.write()
+            # elif aufgabe_total['pagebreak'] == True:
+            #     vorschau.write(begin_beispiel_lang(punkte))
+        # if spinbox_pkt == 0:
+        #     split_content[
+        #         0
+        #     ] = "\\begin{enumerate}\item[\\stepcounter{number}\\thenumber.] "
+        #     split_content[-1] = "\end{enumerate}"
+
+        # elif "langesbeispiel" in split_content[0]:
+        #     split_content[
+        #         0
+        #     ] = "{0}\\begin{{langesbeispiel}} \item[{1}] %PUNKTE DES BEISPIELS".format(
+        #         start, spinbox_pkt
+        #     )
+
+        # elif "beispiel" in split_content[0]:
+        #     split_content[
+        #         0
+        #     ] = "{0}\\begin{{beispiel}}{1}{{{2}}} %PUNKTE DES BEISPIELS\n".format(
+        #         start, grundkompetenz, spinbox_pkt
+        #     )
+
+        # spinbox_abstand = self.dict_alle_aufgaben_sage[aufgabe][1]
+        # if spinbox_abstand != 0:
+        #     if spinbox_abstand == 99:
+        #         split_content[2] = split_content[2] + "\\newpage \n\n"
+        #     else:
+        #         split_content[2] = split_content[2] + "\\vspace{{{0}cm}} \n\n".format(
+        #             spinbox_abstand
+        #         )
+
+        # with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
+        #     for all in split_content:
+        #         vorschau.write(all + "\n")
+        #     vorschau.write("\n\n")
 
         return first_typ2
 
@@ -6928,6 +6881,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         self, ausgabetyp, index=0, maximum=0, pdf=True, lama=True
     ):
         self.collect_all_infos_for_creating_file()
+        print(self.dict_all_infos_for_file)
 
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
@@ -7092,25 +7046,31 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
         first_typ2 = False
         aufgaben_nummer = 1
+        
         for aufgabe in self.list_alle_aufgaben_sage:
-            content = edit_content_vorschau(self, aufgabe, ausgabetyp)
+            typ = get_aufgabentyp(self.chosen_program, aufgabe)
+            aufgabe_total = get_aufgabe_total(aufgabe, typ)
+            # content = collect_content(self, aufgabe)
 
-            split_content = split_content_at_beispiel_umgebung(content)
-            if split_content == False:
-                text = "".join(content)
-                critical_window(
-                    'Es ist ein Fehler beim Erstellen der Datei aufgetreten, da die Formatierung der Aufgabe "{}" fehlerhaft ist.'.format(
-                        aufgabe
-                    ),
-                    'Bitte überprüfen Sie die Formatierung der Aufgabe oder informieren Sie das LaMA-Team via "Feedback & Fehler".',
-                    detailed_text='Fehlerhafter LaTeX-Aufgabentext:\n\n"""\n'
-                    + text
-                    + '\n"""',
-                )
-                QtWidgets.QApplication.restoreOverrideCursor()
-                return
+            # content = edit_content_vorschau(self, aufgabe, ausgabetyp)
+
+            # split_content = split_content_at_beispiel_umgebung(content)
+            # if split_content == False:
+            #     text = "".join(content)
+            #     critical_window(
+            #         'Es ist ein Fehler beim Erstellen der Datei aufgetreten, da die Formatierung der Aufgabe "{}" fehlerhaft ist.'.format(
+            #             aufgabe
+            #         ),
+            #         'Bitte überprüfen Sie die Formatierung der Aufgabe oder informieren Sie das LaMA-Team via "Feedback & Fehler".',
+            #         detailed_text='Fehlerhafter LaTeX-Aufgabentext:\n\n"""\n'
+            #         + text
+            #         + '\n"""',
+            #     )
+            #     QtWidgets.QApplication.restoreOverrideCursor()
+            #     return
 
             if self.comboBox_pruefungstyp.currentText() == "Quiz":
+
                 with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
                     for i in range(2):
                         vorschau.write(
@@ -7139,7 +7099,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                 aufgaben_nummer += 1
             else:
                 first_typ2 = self.add_content_to_tex_file(
-                    aufgabe, split_content, filename_vorschau, first_typ2
+                    aufgabe, aufgabe_total, filename_vorschau, first_typ2
                 )
 
         if (
