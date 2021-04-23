@@ -894,7 +894,7 @@ def check_if_variation(name):
 
 def construct_tex_file(file_name, gesammeltedateien, variation):
     with open(file_name, "w", encoding="utf8") as file:
-        file.write(tex_preamble)
+        file.write(tex_preamble(bookmark=True))
         for all in gesammeltedateien:
             if variation == False and check_if_variation(all['name']) == True:
                 continue
