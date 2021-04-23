@@ -108,6 +108,7 @@ def add_file(database, name, themen, titel, af, quelle, content, punkte, pagebre
         'info' : info,
         'bilder' : bilder,
         'draft' : False,
+        'abstand' : 0,
     })
 
 def get_default_info(content):
@@ -282,8 +283,8 @@ dict_gk = config_loader(config_file, 'dict_gk')
 # _local_database = TinyDB(path_local_database)
 
 
-table_lama = _local_database.table('table_cria')
-table_lama.update({'abstand' : 0})
+# table_lama = _local_database.table('table_lama_2')
+# table_lama.update({'abstand' : 0})
 # table_lama = _local_database.table('table_cria')
 # # # table_lama.truncate()
 # create_local_database()

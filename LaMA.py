@@ -2966,6 +2966,7 @@ class Ui_MainWindow(object):
         self.dict_alle_aufgaben_sage = {}
         self.dict_variablen_label = {}
         self.dict_variablen_punkte = {}
+        self.update_punkte()
         self.list_copy_images = []
         for i in reversed(range(self.gridLayout_8.count())):
             self.delete_widget(self.gridLayout_8, i)
@@ -5356,20 +5357,17 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
     def get_punkteverteilung(self):
         pkt_typ1 = 0
         pkt_typ2 = 0
-        pkt_ausgleich = 0
         gesamtpunkte = 0
         for all in self.dict_variablen_punkte:
-            print(all)
-            # typ = self.get_aufgabentyp(all)
-            # if typ == None:
-            #     gesamtpunkte += self.dict_variablen_punkte[all].value()
-            # elif typ == 1:
-            #     pkt_typ1 += self.dict_variablen_punkte[all].value()
-            #     gesamtpunkte += self.dict_variablen_punkte[all].value()
-            # elif typ == 2:
-            #     pkt_typ2 += self.dict_variablen_punkte[all].value()
-            #     pkt_ausgleich += self.dict_alle_aufgaben_sage[all][3]
-            #     gesamtpunkte += self.dict_variablen_punkte[all].value()
+            typ = self.get_aufgabentyp(all)
+            if typ == None:
+                gesamtpunkte += self.dict_variablen_punkte[all].value()
+            elif typ == 1:
+                pkt_typ1 += self.dict_variablen_punkte[all].value()
+                gesamtpunkte += self.dict_variablen_punkte[all].value()
+            elif typ == 2:
+                pkt_typ2 += self.dict_variablen_punkte[all].value()
+                gesamtpunkte += self.dict_variablen_punkte[all].value()
 
         return [gesamtpunkte, pkt_typ1, pkt_typ2]
 
@@ -5466,7 +5464,10 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                 self.dict_variablen_punkte[all].setValue(
                     self.spinBox_default_pkt.value()
                 )
-                self.dict_alle_aufgaben_sage[all][0] = self.spinBox_default_pkt.value()
+
+    def get_punkte_aufgabe_sage(self, aufgabe):
+        return self.dict_variablen_punkte[aufgabe].value()
+
 
     def count_ausgleichspunkte(self, content):
         number = content.count("\ASubitem")
@@ -5477,12 +5478,12 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
     def create_neue_aufgaben_box(self, index, aufgabe, aufgabe_total):
         typ = self.get_aufgabentyp(aufgabe)
-        # print(typ)
+
         aufgaben_verteilung = self.get_aufgabenverteilung()
 
         if self.chosen_program == "cria":          
             klasse, aufgaben_nummer = aufgabe.split(".")
-            klasse = klasse[0]
+            klasse = klasse[1]
             
             new_groupbox = create_new_groupbox(
                 self.scrollAreaWidgetContents_2, "{0}. Aufgabe".format(index + 1)
@@ -5501,12 +5502,9 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                 " (" + aufgabe_total['af'].upper() + ")"
             )
 
-            
-            # if "_L_" in aufgaben_nummer:
-            #     x = aufgaben_nummer.replace("_L_", "")
-            #     label = "{0}. Klasse - {1} (lokal){2}".format(klasse, x, aufgabenformat)
-            # else:
+
             label = "{0}. Klasse - {1}{2}".format(klasse, aufgaben_nummer, aufgabenformat)
+            
         elif typ == 1:
             aufgabenformat = (
                 " (" + aufgabe_total['af'].upper() + ")"
@@ -5798,7 +5796,9 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         return klasse_aufgabe
 
     def add_image_path_to_list(self, aufgabe):
-        content = collect_content(self, aufgabe)
+        typ = self.get_aufgabentyp(aufgabe)
+        aufgabe_total = get_aufgabe(aufgabe, typ)
+        content = aufgabe_total['content']
 
         if "\\includegraphics" in content:
             matches = re.findall("/Bilder/(.+.eps)}", content)
@@ -5838,7 +5838,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
         )
         self.gridLayout_8.addItem(self.spacerItem, index_item + 1, 0, 1, 1)
-        return
+
         self.add_image_path_to_list(aufgabe)
 
         self.update_punkte()
