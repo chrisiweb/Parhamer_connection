@@ -5469,7 +5469,11 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                 self.dict_alle_aufgaben_sage[all][0] = self.spinBox_default_pkt.value()
 
     def count_ausgleichspunkte(self, content):
-        print(content)
+        number = content.count("\ASubitem")
+        number = number + content.count("\Aitem")
+        number = number + content.count("fbox{A}")
+
+        return number
 
     def create_neue_aufgaben_box(self, index, aufgabe, aufgabe_total):
         typ = self.get_aufgabentyp(aufgabe)
@@ -5609,13 +5613,14 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         )
         verticalLayout_abstand.addWidget(spinbox_abstand)
 
+        num_ap = self.count_ausgleichspunkte(aufgabe_total['content'])
         if typ == 2:
             groupbox_abstand_ausgleich.setTitle("Ausgleichspkte")
             spinbox_abstand.hide()
             self.count_ausgleichspunkte(aufgabe_total['content'])
             label_ausgleichspkt = create_new_label(
                 groupbox_abstand_ausgleich,
-                "test",
+                str(num_ap),
             )
             label_ausgleichspkt.setStyleSheet("padding-top: 5px; padding-bottom: 5px;")
             verticalLayout_abstand.addWidget(label_ausgleichspkt)
@@ -5817,9 +5822,8 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
         for i in reversed(range(start_value, self.gridLayout_8.count() + 1)):
             self.delete_widget(self.gridLayout_8, i)
-        print(self.list_alle_aufgaben_sage)
+
         for item in self.list_alle_aufgaben_sage[start_value:]:
-            print(item)
             index_item = self.list_alle_aufgaben_sage.index(item)
             typ = self.get_aufgabentyp(item)
             aufgabe_total = get_aufgabe(item, typ)
