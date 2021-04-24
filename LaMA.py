@@ -104,7 +104,12 @@ import bcrypt
 
 # import tinydb
 
-from database_commands import _database, _local_database, get_aufgabe_total, get_aufgabentyp
+from database_commands import (
+    _database,
+    _local_database,
+    get_aufgabe_total,
+    get_aufgabentyp,
+)
 from tex_minimal import *
 
 try:
@@ -5187,7 +5192,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         num_typ1 = 0
         num_typ2 = 0
         for all in self.list_alle_aufgaben_sage:
-            typ = get_aufgabentyp(self.chosen_program , all)
+            typ = get_aufgabentyp(self.chosen_program, all)
             if typ == 1:
                 num_typ1 += 1
             if typ == 2:
@@ -5211,7 +5216,6 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
         num_typ1, num_typ2 = self.get_aufgabenverteilung()
         num_total = len(self.list_alle_aufgaben_sage)
-        
 
         if self.chosen_program == "lama":
             label = "Anzahl der Aufgaben: {0}\n(Typ1: {1} / Typ2: {2})".format(
@@ -5414,7 +5418,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             typ = get_aufgabentyp(self.chosen_program, aufgabe)
             if typ == 2:
                 collect_content(self, aufgabe)
-                number = self.count_ausgleichspunkte(aufgabe_total['content'])
+                number = self.count_ausgleichspunkte(aufgabe_total["content"])
                 number_ausgleichspkt_gesamt += number
 
         return number_ausgleichspkt_gesamt
@@ -5477,7 +5481,6 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
     def get_abstand_aufgabe_sage(self, aufgabe):
         return self.dict_variablen_abstand[aufgabe].value()
 
-
     def count_ausgleichspunkte(self, content):
         number = content.count("\ASubitem")
         number = number + content.count("\Aitem")
@@ -5490,10 +5493,10 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
         aufgaben_verteilung = self.get_aufgabenverteilung()
 
-        if self.chosen_program == "cria":          
+        if self.chosen_program == "cria":
             klasse, aufgaben_nummer = aufgabe.split(".")
             klasse = klasse[1]
-            
+
             new_groupbox = create_new_groupbox(
                 self.scrollAreaWidgetContents_2, "{0}. Aufgabe".format(index + 1)
             )
@@ -5507,17 +5510,14 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         gridLayout_gB.setObjectName("gridLayout_gB")
 
         if typ == None:
-            aufgabenformat = (
-                " (" + aufgabe_total['af'].upper() + ")"
+            aufgabenformat = " (" + aufgabe_total["af"].upper() + ")"
+
+            label = "{0}. Klasse - {1}{2}".format(
+                klasse, aufgaben_nummer, aufgabenformat
             )
 
-
-            label = "{0}. Klasse - {1}{2}".format(klasse, aufgaben_nummer, aufgabenformat)
-            
         elif typ == 1:
-            aufgabenformat = (
-                " (" + aufgabe_total['af'].upper() + ")"
-            )
+            aufgabenformat = " (" + aufgabe_total["af"].upper() + ")"
 
             label = "{0}{1}".format(aufgabe, aufgabenformat)
         elif typ == 2:
@@ -5527,7 +5527,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         gridLayout_gB.addWidget(label_aufgabe, 1, 0, 1, 1)
 
         label_titel = create_new_label(
-            new_groupbox, "Titel: {}".format(aufgabe_total['titel']), True
+            new_groupbox, "Titel: {}".format(aufgabe_total["titel"]), True
         )
         gridLayout_gB.addWidget(label_titel, 2, 0, 1, 1)
 
@@ -5535,7 +5535,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         groupbox_pkt.setSizePolicy(SizePolicy_fixed)
         gridLayout_gB.addWidget(groupbox_pkt, 0, 1, 3, 1, QtCore.Qt.AlignRight)
 
-        punkte = aufgabe_total['punkte']
+        punkte = aufgabe_total["punkte"]
 
         horizontalLayout_groupbox_pkt = QtWidgets.QHBoxLayout(groupbox_pkt)
         horizontalLayout_groupbox_pkt.setObjectName(
@@ -5612,7 +5612,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         verticalLayout_abstand = QtWidgets.QVBoxLayout(groupbox_abstand_ausgleich)
         verticalLayout_abstand.setObjectName("verticalLayout_abstand")
 
-        abstand = aufgabe_total['abstand']
+        abstand = aufgabe_total["abstand"]
         spinbox_abstand = create_new_spinbox(groupbox_abstand_ausgleich)
         spinbox_abstand.setValue(abstand)
         self.dict_variablen_abstand[aufgabe] = spinbox_abstand
@@ -5622,11 +5622,11 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         )
         verticalLayout_abstand.addWidget(spinbox_abstand)
 
-        num_ap = self.count_ausgleichspunkte(aufgabe_total['content'])
+        num_ap = self.count_ausgleichspunkte(aufgabe_total["content"])
         if typ == 2:
             groupbox_abstand_ausgleich.setTitle("Ausgleichspkte")
             spinbox_abstand.hide()
-            self.count_ausgleichspunkte(aufgabe_total['content'])
+            self.count_ausgleichspunkte(aufgabe_total["content"])
             label_ausgleichspkt = create_new_label(
                 groupbox_abstand_ausgleich,
                 str(num_ap),
@@ -5678,7 +5678,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
     def collect_all_infos_aufgabe(self, aufgabe):
         typ = get_aufgabentyp(self.chosen_program, aufgabe)
-        print(typ) # 1, 2, None
+        print(typ)  # 1, 2, None
         return
         if typ == None:
             punkte = self.get_punkte_aufgabe(aufgabe)
@@ -5809,7 +5809,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
     def add_image_path_to_list(self, aufgabe):
         typ = get_aufgabentyp(self.chosen_program, aufgabe)
         aufgabe_total = get_aufgabe_total(aufgabe, typ)
-        content = aufgabe_total['content']
+        content = aufgabe_total["content"]
 
         if "\\includegraphics" in content:
             matches = re.findall("/Bilder/(.+.eps)}", content)
@@ -6135,10 +6135,10 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         # else:
         aufgabe = item.text()
 
-        if self.chosen_program == 'cria':
-            klasse = self.get_klasse('sage')
+        if self.chosen_program == "cria":
+            klasse = self.get_klasse("sage")
             aufgabe = klasse + "." + aufgabe
-        
+
         #     # draft=False
 
         # if self.chosen_program == "cria":
@@ -6154,7 +6154,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         #         'Die Datei konnte nicht gefunden werden.\nBitte wählen Sie "Refresh Database" (F5) und versuchen Sie es erneut.'
         #     )
         #     return
-        
+
         self.sage_aufgabe_add(aufgabe)
 
         # infos = self.collect_all_infos_aufgabe(aufgabe)
@@ -6196,20 +6196,17 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         elif list_mode == "feedback":
             combobox_klassen = self.comboBox_klassen_fb_cria
             combobox_kapitel = self.comboBox_kapitel_fb_cria
-            combobox_unterkapitel = self.comboBox_unterkapitel_fb_cria            
+            combobox_unterkapitel = self.comboBox_unterkapitel_fb_cria
 
             self.label_example.setText("Ausgewählte Aufgabe: -")
 
         dict_klasse_name = eval(
-            "dict_{}_name".format(
-                list_klassen[combobox_klassen.currentIndex()]
-            )
+            "dict_{}_name".format(list_klassen[combobox_klassen.currentIndex()])
         )
 
         combobox_kapitel.clear()
         combobox_unterkapitel.clear()
         combobox_kapitel.addItem("")
-
 
         for all in dict_klasse_name.keys():
             combobox_kapitel.addItem(dict_klasse_name[all] + " (" + all + ")")
@@ -6248,11 +6245,11 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
     def comboBox_kapitel_changed(self, list_mode):
         klasse = self.get_klasse(list_mode)
-        if list_mode == 'sage': 
+        if list_mode == "sage":
             combobox_klassen = self.comboBox_klassen
             chosen_kapitel = self.comboBox_kapitel.currentText()
             combobox_unterkapitel = self.comboBox_unterkapitel
-        elif list_mode == 'feedback':
+        elif list_mode == "feedback":
             combobox_klassen = self.comboBox_klassen_fb_cria
             chosen_kapitel = self.comboBox_kapitel_fb_cria.currentText()
             combobox_unterkapitel = self.comboBox_unterkapitel_fb_cria
@@ -6270,7 +6267,6 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             combobox_unterkapitel.addItem("")
             for all in list_unterkapitel:
                 combobox_unterkapitel.addItem(dict_unterkapitel[all] + " (" + all + ")")
-
 
         # if list_mode == "sage":
         #     dict_klasse = eval(
@@ -6419,15 +6415,14 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         typ,
         listWidget,
         filtered_items,
-        local = False,
+        local=False,
     ):
-        
+
         for _file_ in filtered_items:
-            if typ == 'cria':
-                name = _file_["name"].split('.')[-1]
+            if typ == "cria":
+                name = _file_["name"].split(".")[-1]
             else:
                 name = _file_["name"]
-
 
             item = QtWidgets.QListWidgetItem()
 
@@ -6436,18 +6431,17 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                 # item.setBackground(blue_4)
                 # item.setToolTip("lokal gespeichert")
 
-            elif _file_['draft']==True:
+            elif _file_["draft"] == True:
                 item.setBackground(blue_5)
                 item.setForeground(white)
                 item.setToolTip("Entwurf")
 
             item.setText(name)
 
-            if check_if_variation(_file_['name']) == True:
-                item.setToolTip("Variation")                    
-            
+            if check_if_variation(_file_["name"]) == True:
+                item.setToolTip("Variation")
 
-            if _file_['draft']==True and not self.cb_drafts_sage.isChecked():
+            if _file_["draft"] == True and not self.cb_drafts_sage.isChecked():
                 continue
             else:
                 listWidget.addItem(item)
@@ -6469,7 +6463,6 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             #     item.setText(name + ' (lokal)')
             # else:
             item.setText(name)
-
 
             if name.startswith("_L_"):
                 if listWidget_mode == "feedback":
@@ -6611,7 +6604,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             else:
                 return ""
 
-    def filter_items(self, table_lama,typ, list_mode, filter_string, line_entry):
+    def filter_items(self, table_lama, typ, list_mode, filter_string, line_entry):
         _file_ = Query()
 
         if typ == "lama_1" or typ == "lama_2":
@@ -6677,24 +6670,22 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             elif self.chosen_program == "cria":
                 line_entry = self.lineEdit_number_fb_cria.text()
 
-
-
-
         table = "table_" + typ
         if list_mode == "sage":
             table_lama = _local_database.table(table)
-            filtered_items = self.filter_items(table_lama, typ, list_mode, filter_string, line_entry)
+            filtered_items = self.filter_items(
+                table_lama, typ, list_mode, filter_string, line_entry
+            )
 
             self.add_items_to_listwidget(typ, listWidget, filtered_items, local=True)
 
-        
         table_lama = _database.table(table)
-        filtered_items = self.filter_items(table_lama, typ, list_mode, filter_string, line_entry)
+        filtered_items = self.filter_items(
+            table_lama, typ, list_mode, filter_string, line_entry
+        )
         self.add_items_to_listwidget(typ, listWidget, filtered_items)
 
-
         QtWidgets.QApplication.restoreOverrideCursor()
-
 
     def collect_all_infos_for_creating_file(self):
         self.dict_all_infos_for_file = {}
@@ -6814,26 +6805,24 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         if punkte == 0:
             begin = "\\begin{enumerate}\item[\\stepcounter{number}\\thenumber.]"
             end = "\end{enumerate}"
-        elif aufgabe_total['pagebreak'] == False:
-            begin = begin_beispiel(aufgabe_total['themen'],punkte)
+        elif aufgabe_total["pagebreak"] == False:
+            begin = begin_beispiel(aufgabe_total["themen"], punkte)
             end = end_beispiel
-        elif aufgabe_total['pagebreak'] == True:
-            begin =  begin_beispiel_lang(punkte)
+        elif aufgabe_total["pagebreak"] == True:
+            begin = begin_beispiel_lang(punkte)
             end = end_beispiel_lang
 
         if abstand == 99:
-            vspace  = "\\newpage \n\n"
+            vspace = "\\newpage \n\n"
         elif abstand == 0:
             vspace = ""
         else:
             vspace = "\\vspace{{{0}cm}} \n\n".format(abstand)
 
-
-
         with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
             vorschau.write(header)
             vorschau.write(begin)
-            vorschau.write(aufgabe_total['content'])
+            vorschau.write(aufgabe_total["content"])
             vorschau.write(vspace)
             vorschau.write(end)
             vorschau.write("\n\n")
@@ -6881,7 +6870,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         self, ausgabetyp, index=0, maximum=0, pdf=True, lama=True
     ):
         self.collect_all_infos_for_creating_file()
-        print(self.dict_all_infos_for_file)
+        # print(self.dict_all_infos_for_file)
 
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
@@ -6954,44 +6943,49 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             dict_titlepage = self.dict_titlepage_cria
 
         if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Quiz":
-            documentclass = "\documentclass[18pt]{beamer}\n\n"
-            geometry = (
-                "\let\oldframe\\frame"
-                "\\renewcommand\\frame[1][allowframebreaks, c]{\oldframe[#1]}\n"
-                "\\usetheme{Boadilla}\n"
-                "\\usecolortheme{seahorse}\n"
-                "\date{}\n"
-            )
-            spacing = ""
+            beamer_mode = True
         else:
-            documentclass = "\documentclass[a4paper,12pt]{report}\n\n"
-            geometry = (
-                "\geometry{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}\n\n"
-            )
-            spacing = "\onehalfspacing %Zeilenabstand\n"
+            beamer_mode = False
+        #     documentclass = "\documentclass[18pt]{beamer}\n\n"
+        #     geometry = (
+        #         "\let\oldframe\\frame"
+        #         "\\renewcommand\\frame[1][allowframebreaks, c]{\oldframe[#1]}\n"
+        #         "\\usetheme{Boadilla}\n"
+        #         "\\usecolortheme{seahorse}\n"
+        #         "\date{}\n"
+        #     )
+        #     spacing = ""
+        # else:
+        #     documentclass = "\documentclass[a4paper,12pt]{report}\n\n"
+        #     geometry = (
+        #         "\geometry{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}\n\n"
+        #     )
+        #     spacing = "\onehalfspacing %Zeilenabstand\n"
 
         dict_vorschau = {}
         if (ausgabetyp == "vorschau" and self.cb_solution_sage.isChecked() == True) or (
             ausgabetyp == "schularbeit" and index % 2 == 0
         ):
-            dict_vorschau["solution"] = "on"
+            solution = "solution_on"
+            # dict_vorschau["solution"] = "on"
         else:
-            dict_vorschau["solution"] = "off"
+            solution = "solution_off"
+            # dict_vorschau["solution"] = "off"
 
-        dict_vorschau["index"] = int(index / 2)
+        current_index = int(index / 2)
 
         # if maximum > 2:
         #     dict_vorschau["comment"] = " %Gruppen: 0=A, 1=B, 2=C, ..."
         # else:
         #     dict_vorschau["comment"] = ""
 
-        dict_vorschau["pagestyle"] = "plain"
+        # dict_vorschau["pagestyle"] = "plain"
         # if ausgabetyp == "vorschau" or ausgabetyp == "schularbeit":
         #     dict_vorschau["pagestyle"] = "plain"
         # else:
         #     dict_vorschau["pagestyle"] = "empty"
 
-        dict_vorschau["titlepage"] = get_titlepage_vorschau(
+        str_titlepage = get_titlepage_vorschau(
             self, dict_titlepage, ausgabetyp, maximum, index
         )
 
@@ -7009,44 +7003,48 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
         vorschau = open(filename_vorschau, "w+", encoding="utf8")
 
-        vorschau.write(
-            "{0}"
-            "\\usepackage{{geometry}}\n"
-            "{1}"
-            # "\documentclass[a4paper,12pt]{{report}}\n\n" #documentclass
-            # "\geometry{{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}}\n\n"
-            "\\usepackage{{lmodern}}\n"
-            "\\usepackage[T1]{{fontenc}}\n"
-            "\\usepackage[utf8]{{inputenc}}\n"
-            "\\usepackage[ngerman]{{babel}}\n"
-            "\\usepackage[solution_{2}, random={3}]{{srdp-mathematik}} % solution_on/off, random=0,1,2,...\n\n"
-            # "\setcounter{{Zufall}}{{{3}}}\n\n\n"
-            "\pagestyle{{{4}}} %PAGESTYLE: empty, plain\n"
-            "{5}"  # "\onehalfspacing %Zeilenabstand\n"
-            "\setcounter{{secnumdepth}}{{-1}} % keine Nummerierung der Ueberschriften\n\n\n\n"
-            "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"
-            "%%%%%%%%%%%%%%%%%% DOKUMENT - ANFANG %%%%%%%%%%%%%%%%%%\n"
-            "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n\n"
-            "\\begin{{document}}\n"
-            "{6}"
-            "{7}".format(
-                documentclass,
-                geometry,
-                dict_vorschau["solution"],
-                dict_vorschau["index"],
-                # dict_vorschau["comment"],
-                dict_vorschau["pagestyle"],
-                spacing,
-                dict_vorschau["titlepage"],
-                header,
-            )
-        )
+        with open(filename_vorschau, "w+", encoding="utf8") as vorschau:
+            vorschau.write(tex_preamble(solution=solution, beamer_mode=beamer_mode))
+            vorschau.write(str_titlepage)
+            vorschau.write(header)
+        # vorschau.write(
+        #     "{0}"
+        #     "\\usepackage{{geometry}}\n"
+        #     "{1}"
+        #     # "\documentclass[a4paper,12pt]{{report}}\n\n" #documentclass
+        #     # "\geometry{{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}}\n\n"
+        #     "\\usepackage{{lmodern}}\n"
+        #     "\\usepackage[T1]{{fontenc}}\n"
+        #     "\\usepackage[utf8]{{inputenc}}\n"
+        #     "\\usepackage[ngerman]{{babel}}\n"
+        #     "\\usepackage[solution_{2}, random={3}]{{srdp-mathematik}} % solution_on/off, random=0,1,2,...\n\n"
+        #     # "\setcounter{{Zufall}}{{{3}}}\n\n\n"
+        #     "\pagestyle{{{4}}} %PAGESTYLE: empty, plain\n"
+        #     "{5}"  # "\onehalfspacing %Zeilenabstand\n"
+        #     "\setcounter{{secnumdepth}}{{-1}} % keine Nummerierung der Ueberschriften\n\n\n\n"
+        #     "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"
+        #     "%%%%%%%%%%%%%%%%%% DOKUMENT - ANFANG %%%%%%%%%%%%%%%%%%\n"
+        #     "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n\n"
+        #     "\\begin{{document}}\n"
+        #     "{6}"
+        #     "{7}".format(
+        #         documentclass,
+        #         geometry,
+        #         dict_vorschau["solution"],
+        #         dict_vorschau["index"],
+        #         # dict_vorschau["comment"],
+        #         dict_vorschau["pagestyle"],
+        #         spacing,
+        #         dict_vorschau["titlepage"],
+        #         header,
+        #     )
+        # )
 
-        vorschau.close()
+        # vorschau.close()
 
         first_typ2 = False
         aufgaben_nummer = 1
-        
+
         for aufgabe in self.list_alle_aufgaben_sage:
             typ = get_aufgabentyp(self.chosen_program, aufgabe)
             aufgabe_total = get_aufgabe_total(aufgabe, typ)
@@ -7125,10 +7123,11 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                     )
 
         with open(filename_vorschau, "a", encoding="utf8") as vorschau:
-            vorschau.write("\n\n\end{document}")
+            vorschau.write("\n\n")
+            vorschau.write(tex_end)
 
         if ausgabetyp == "schularbeit":
-            if dict_titlepage["logo"] == True:
+            if dict_titlepage["logo"] == True and dict_titlepage["hide_all"] == False:
                 success = copy_logo_to_target_path(self, dict_titlepage["logo_path"])
                 if success == False:
                     warning_window(
