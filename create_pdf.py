@@ -360,6 +360,7 @@ def prepare_tex_for_pdf(self):
     response = check_if_suchbegriffe_is_empty(suchbegriffe)
 
     if response == True:
+        QtWidgets.QApplication.restoreOverrideCursor()
         warning_window("Bitte wählen Sie zumindest ein Suchkriterium aus.")
         return
 
@@ -851,6 +852,12 @@ def prepare_tex_for_pdf(self):
     number_of_files = get_output_size(gesammeltedateien, variation)
 
     QtWidgets.QApplication.restoreOverrideCursor()
+    if number_of_files == 0:
+        warning_window("Es konnten keine Aufgaben mit angegebenen Suchkriterien gefunden werden!")
+        return
+        
+
+    
     msg = QtWidgets.QMessageBox()
     msg.setIcon(QtWidgets.QMessageBox.Question)
     msg.setWindowIcon(QtGui.QIcon(logo_path))
