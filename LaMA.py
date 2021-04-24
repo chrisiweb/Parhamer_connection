@@ -6826,43 +6826,6 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             vorschau.write(vspace)
             vorschau.write(end)
             vorschau.write("\n\n")
-            # if aufgabe_total['pagebreak'] == False:
-            #     vorschau.write()
-            # elif aufgabe_total['pagebreak'] == True:
-            #     vorschau.write(begin_beispiel_lang(punkte))
-        # if spinbox_pkt == 0:
-        #     split_content[
-        #         0
-        #     ] = "\\begin{enumerate}\item[\\stepcounter{number}\\thenumber.] "
-        #     split_content[-1] = "\end{enumerate}"
-
-        # elif "langesbeispiel" in split_content[0]:
-        #     split_content[
-        #         0
-        #     ] = "{0}\\begin{{langesbeispiel}} \item[{1}] %PUNKTE DES BEISPIELS".format(
-        #         start, spinbox_pkt
-        #     )
-
-        # elif "beispiel" in split_content[0]:
-        #     split_content[
-        #         0
-        #     ] = "{0}\\begin{{beispiel}}{1}{{{2}}} %PUNKTE DES BEISPIELS\n".format(
-        #         start, grundkompetenz, spinbox_pkt
-        #     )
-
-        # spinbox_abstand = self.dict_alle_aufgaben_sage[aufgabe][1]
-        # if spinbox_abstand != 0:
-        #     if spinbox_abstand == 99:
-        #         split_content[2] = split_content[2] + "\\newpage \n\n"
-        #     else:
-        #         split_content[2] = split_content[2] + "\\vspace{{{0}cm}} \n\n".format(
-        #             spinbox_abstand
-        #         )
-
-        # with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
-        #     for all in split_content:
-        #         vorschau.write(all + "\n")
-        #     vorschau.write("\n\n")
 
         return first_typ2
 
@@ -6870,7 +6833,6 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         self, ausgabetyp, index=0, maximum=0, pdf=True, lama=True
     ):
         self.collect_all_infos_for_creating_file()
-        # print(self.dict_all_infos_for_file)
 
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
@@ -6891,8 +6853,6 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                 "ß": "ss",
             }
             if index == 0:
-
-                # self.saved_file_path=path_programm
 
                 self.chosen_path_schularbeit_erstellen = (
                     QtWidgets.QFileDialog.getSaveFileName(
@@ -6929,7 +6889,6 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                         filename = filename.replace(character, dict_umlaute[character])
                 filename_vorschau = os.path.join(dirname, filename)
 
-                # filename_vorschau=self.chosen_path_schularbeit_erstellen[0]
 
         self.dict_gruppen = {0: "A", 1: "B", 2: "C", 3: "D", 4: "E", 5: "F"}
 
@@ -6946,44 +6905,20 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             beamer_mode = True
         else:
             beamer_mode = False
-        #     documentclass = "\documentclass[18pt]{beamer}\n\n"
-        #     geometry = (
-        #         "\let\oldframe\\frame"
-        #         "\\renewcommand\\frame[1][allowframebreaks, c]{\oldframe[#1]}\n"
-        #         "\\usetheme{Boadilla}\n"
-        #         "\\usecolortheme{seahorse}\n"
-        #         "\date{}\n"
-        #     )
-        #     spacing = ""
-        # else:
-        #     documentclass = "\documentclass[a4paper,12pt]{report}\n\n"
-        #     geometry = (
-        #         "\geometry{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}\n\n"
-        #     )
-        #     spacing = "\onehalfspacing %Zeilenabstand\n"
+ 
 
         dict_vorschau = {}
         if (ausgabetyp == "vorschau" and self.cb_solution_sage.isChecked() == True) or (
             ausgabetyp == "schularbeit" and index % 2 == 0
         ):
             solution = "solution_on"
-            # dict_vorschau["solution"] = "on"
+
         else:
             solution = "solution_off"
-            # dict_vorschau["solution"] = "off"
+
 
         current_index = int(index / 2)
 
-        # if maximum > 2:
-        #     dict_vorschau["comment"] = " %Gruppen: 0=A, 1=B, 2=C, ..."
-        # else:
-        #     dict_vorschau["comment"] = ""
-
-        # dict_vorschau["pagestyle"] = "plain"
-        # if ausgabetyp == "vorschau" or ausgabetyp == "schularbeit":
-        #     dict_vorschau["pagestyle"] = "plain"
-        # else:
-        #     dict_vorschau["pagestyle"] = "empty"
 
         str_titlepage = get_titlepage_vorschau(
             self, dict_titlepage, ausgabetyp, maximum, index
@@ -7007,40 +6942,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             vorschau.write(tex_preamble(solution=solution, beamer_mode=beamer_mode))
             vorschau.write(str_titlepage)
             vorschau.write(header)
-        # vorschau.write(
-        #     "{0}"
-        #     "\\usepackage{{geometry}}\n"
-        #     "{1}"
-        #     # "\documentclass[a4paper,12pt]{{report}}\n\n" #documentclass
-        #     # "\geometry{{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}}\n\n"
-        #     "\\usepackage{{lmodern}}\n"
-        #     "\\usepackage[T1]{{fontenc}}\n"
-        #     "\\usepackage[utf8]{{inputenc}}\n"
-        #     "\\usepackage[ngerman]{{babel}}\n"
-        #     "\\usepackage[solution_{2}, random={3}]{{srdp-mathematik}} % solution_on/off, random=0,1,2,...\n\n"
-        #     # "\setcounter{{Zufall}}{{{3}}}\n\n\n"
-        #     "\pagestyle{{{4}}} %PAGESTYLE: empty, plain\n"
-        #     "{5}"  # "\onehalfspacing %Zeilenabstand\n"
-        #     "\setcounter{{secnumdepth}}{{-1}} % keine Nummerierung der Ueberschriften\n\n\n\n"
-        #     "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"
-        #     "%%%%%%%%%%%%%%%%%% DOKUMENT - ANFANG %%%%%%%%%%%%%%%%%%\n"
-        #     "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n\n"
-        #     "\\begin{{document}}\n"
-        #     "{6}"
-        #     "{7}".format(
-        #         documentclass,
-        #         geometry,
-        #         dict_vorschau["solution"],
-        #         dict_vorschau["index"],
-        #         # dict_vorschau["comment"],
-        #         dict_vorschau["pagestyle"],
-        #         spacing,
-        #         dict_vorschau["titlepage"],
-        #         header,
-        #     )
-        # )
 
-        # vorschau.close()
 
         first_typ2 = False
         aufgaben_nummer = 1
@@ -7048,24 +6950,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         for aufgabe in self.list_alle_aufgaben_sage:
             typ = get_aufgabentyp(self.chosen_program, aufgabe)
             aufgabe_total = get_aufgabe_total(aufgabe, typ)
-            # content = collect_content(self, aufgabe)
 
-            # content = edit_content_vorschau(self, aufgabe, ausgabetyp)
-
-            # split_content = split_content_at_beispiel_umgebung(content)
-            # if split_content == False:
-            #     text = "".join(content)
-            #     critical_window(
-            #         'Es ist ein Fehler beim Erstellen der Datei aufgetreten, da die Formatierung der Aufgabe "{}" fehlerhaft ist.'.format(
-            #             aufgabe
-            #         ),
-            #         'Bitte überprüfen Sie die Formatierung der Aufgabe oder informieren Sie das LaMA-Team via "Feedback & Fehler".',
-            #         detailed_text='Fehlerhafter LaTeX-Aufgabentext:\n\n"""\n'
-            #         + text
-            #         + '\n"""',
-            #     )
-            #     QtWidgets.QApplication.restoreOverrideCursor()
-            #     return
 
             if self.comboBox_pruefungstyp.currentText() == "Quiz":
 
@@ -7093,7 +6978,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                         vorschau.write(
                             "\\begin{frame}\n" + content + "\n\\end{frame}\n\n"
                         )
-                        # vorschau.write("\n\n\\framebreak\n\n")
+
                 aufgaben_nummer += 1
             else:
                 first_typ2 = self.add_content_to_tex_file(
