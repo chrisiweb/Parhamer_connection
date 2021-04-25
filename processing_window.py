@@ -7,6 +7,7 @@ from config import (
     logo_cria_button_path,
 )
 from waitingspinnerwidget import QtWaitingSpinner
+from functools import partial
 
 blue_7 = colors_ui["blue_7"]
 
@@ -64,3 +65,19 @@ class Ui_Dialog_processing(object):
             horizontalLayout.addWidget(image)
         horizontalLayout.addWidget(self.label)
         horizontalLayout.addWidget(label_spinner)
+
+def working_window(worker, text, *args):
+    Dialog = QtWidgets.QDialog()
+    ui = Ui_Dialog_processing()
+    ui.setupUi(Dialog, text)
+
+    thread = QtCore.QThread(Dialog)
+    # worker = Worker_RefreshDDB()
+    worker.finished.connect(Dialog.close)
+    worker.moveToThread(thread)
+    thread.started.connect(partial(worker.task, *args))
+    thread.start()
+    thread.exit()
+    Dialog.exec()
+
+    

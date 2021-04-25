@@ -620,14 +620,14 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addLayout(self.horizontalLayout_2, 5, 1, 1, 1)
 
-        self.horizontalLayout = QtWidgets.QHBoxLayout()
-        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
+        # self.horizontalLayout = QtWidgets.QHBoxLayout()
+        # self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
 
-        self.label_update = create_new_label(self.centralwidget, "")
-        self.label_update.setMaximumHeight(18)
-        self.horizontalLayout.addWidget(self.label_update)
+        # self.label_update = create_new_label(self.centralwidget, "")
+        # self.label_update.setMaximumHeight(18)
+        # self.horizontalLayout.addWidget(self.label_update)
 
-        self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
+        # self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
 
         self.horizontalLayout_combobox = create_new_horizontallayout()
         # QtWidgets.QHBoxLayout()
@@ -639,25 +639,25 @@ class Ui_MainWindow(object):
             self.centralwidget, "Aufgabentyp: Typ 1"
         )
         self.horizontalLayout_combobox.addWidget(self.label_aufgabentyp)
-
+        self.label_aufgabentyp.setMaximumHeight(18)
         self.combobox_searchtype = create_new_combobox(self.centralwidget)
         self.combobox_searchtype.setMinimumContentsLength(1)
 
         add_new_option(
             self.combobox_searchtype,
             0,
-            "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten",
+            "Alle Dateien ausgeben, die zumindest ein Themengebiet enthalten",
         )
         if self.chosen_program == "lama":
-            label = "Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten"
+            label = "Alle Dateien ausgeben, die ausschließlich diese Themengebiete enthalten"
         if self.chosen_program == "cria":
-            label = "Alle Dateien ausgeben, die alle Suchkriterien enthalten"
+            label = "Alle Dateien ausgeben, die alle Themengebiete enthalten"
 
         add_new_option(self.combobox_searchtype, 1, label)
 
         self.horizontalLayout_combobox.addWidget(self.combobox_searchtype)
 
-        self.gridLayout.addLayout(self.horizontalLayout_combobox, 0, 1, 1, 1)
+        self.gridLayout.addLayout(self.horizontalLayout_combobox, 0, 0, 1, 1)
         self.combobox_searchtype.hide()
 
         self.groupBox_themen_klasse = create_new_groupbox(
@@ -2144,33 +2144,33 @@ class Ui_MainWindow(object):
         # self.cb_solution.setText(_translate("MainWindow", "Lösungen anzeigen", None))
         # self.cb_drafts.setText(_translate("MainWindow", "Entwürfe anzeigen", None))
 
-        try:
-            if self.chosen_program == "lama":
-                log_file = os.path.join(
-                    path_localappdata_lama, "Teildokument", "log_file_1"
-                )
-            if self.chosen_program == "cria":
-                log_file = os.path.join(
-                    path_localappdata_lama, "Teildokument", "log_file_cria"
-                )
-            self.label_update.setText(
-                _translate(
-                    "MainWindow",
-                    "Letztes Update: "
-                    + modification_date(log_file).strftime("%d.%m.%y - %H:%M"),
-                    None,
-                )
-            )
-        except FileNotFoundError:
-            self.label_update.setText(
-                _translate("MainWindow", "Letztes Update: ---", None)
-            )
+        # try:
+        #     if self.chosen_program == "lama":
+        #         log_file = os.path.join(
+        #             path_localappdata_lama, "Teildokument", "log_file_1"
+        #         )
+        #     if self.chosen_program == "cria":
+        #         log_file = os.path.join(
+        #             path_localappdata_lama, "Teildokument", "log_file_cria"
+        #         )
+        #     self.label_update.setText(
+        #         _translate(
+        #             "MainWindow",
+        #             "Letztes Update: "
+        #             + modification_date(log_file).strftime("%d.%m.%y - %H:%M"),
+        #             None,
+        #         )
+        #     )
+        # except FileNotFoundError:
+        #     self.label_update.setText(
+        #         _translate("MainWindow", "Letztes Update: ---", None)
+        #     )
 
         self.combobox_searchtype.setItemText(
             0,
             _translate(
                 "MainWindow",
-                "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten",
+                "Alle Dateien ausgeben, die zumindest ein Themengebiet enthalten",
                 None,
             ),
         )
@@ -3038,7 +3038,7 @@ class Ui_MainWindow(object):
                 1,
                 _translate(
                     "MainWindow",
-                    "Alle Dateien ausgeben, die alle Suchkriterien enthalten",
+                    "Alle Dateien ausgeben, die alle Themengebiete enthalten",
                     None,
                 ),
             )
@@ -3077,7 +3077,7 @@ class Ui_MainWindow(object):
                 1,
                 _translate(
                     "MainWindow",
-                    "Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten",
+                    "Alle Dateien ausgeben, die ausschließlich diese Themengebiete enthalten",
                     None,
                 ),
             )
@@ -3373,27 +3373,27 @@ class Ui_MainWindow(object):
         # msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
         # msg.exec_()
 
-    def refresh_label_update(self):
-        try:
-            if self.chosen_program == "cria":
-                log_file = "log_file_cria"
-            else:
-                log_file = "log_file_%s" % self.label_aufgabentyp.text()[-1]
-            path_log_file = os.path.join(
-                path_localappdata_lama, "Teildokument", log_file
-            )
-            self.label_update.setText(
-                _translate(
-                    "MainWindow",
-                    "Letztes Update: "
-                    + modification_date(path_log_file).strftime("%d.%m.%y - %H:%M"),
-                    None,
-                )
-            )
-        except FileNotFoundError:
-            self.label_update.setText(
-                _translate("MainWindow", "Letztes Update: ---", None)
-            )
+    # def refresh_label_update(self):
+    #     try:
+    #         if self.chosen_program == "cria":
+    #             log_file = "log_file_cria"
+    #         else:
+    #             log_file = "log_file_%s" % self.label_aufgabentyp.text()[-1]
+    #         path_log_file = os.path.join(
+    #             path_localappdata_lama, "Teildokument", log_file
+    #         )
+    #         self.label_update.setText(
+    #             _translate(
+    #                 "MainWindow",
+    #                 "Letztes Update: "
+    #                 + modification_date(path_log_file).strftime("%d.%m.%y - %H:%M"),
+    #                 None,
+    #             )
+    #         )
+    #     except FileNotFoundError:
+    #         self.label_update.setText(
+    #             _translate("MainWindow", "Letztes Update: ---", None)
+    #         )
 
     def chosen_aufgabenformat_typ(self):
         chosen_type = self.label_aufgabentyp.text()[-1]
@@ -3403,14 +3403,14 @@ class Ui_MainWindow(object):
             )
             self.groupBox_af.show()
             self.combobox_searchtype.hide()
-            self.refresh_label_update()
+            # self.refresh_label_update()
         elif chosen_type == str(1):
             self.label_aufgabentyp.setText(
                 _translate("MainWindow", "Aufgabentyp: Typ 2", None)
             )
             self.groupBox_af.hide()
             self.combobox_searchtype.show()
-            self.refresh_label_update()
+            # self.refresh_label_update()
 
     # def chosen_aufgabenformat_typ2(self):
     #     self.label_aufgabentyp.setText(
@@ -4749,17 +4749,17 @@ class Ui_MainWindow(object):
 
     def action_refreshddb_selected(self):
         refresh_ddb(self)
-        if self.chosen_program == "lama":
-            self.beispieldaten_dateipfad_1 = self.define_beispieldaten_dateipfad(1)
-            self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)
-        elif self.chosen_program == "cria":
-            self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
-                "cria"
-            )
+        # if self.chosen_program == "lama":
+        #     self.beispieldaten_dateipfad_1 = self.define_beispieldaten_dateipfad(1)
+        #     self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)
+        # elif self.chosen_program == "cria":
+        #     self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
+        #         "cria"
+        #     )
 
-        self.refresh_label_update()
-        if self.cb_drafts_sage.isChecked() == True:
-            self.add_drafts_to_beispieldaten()
+        # self.refresh_label_update()
+        # if self.cb_drafts_sage.isChecked() == True:
+        #     self.add_drafts_to_beispieldaten()
         self.adapt_choosing_list("sage")
 
     def action_push_database(self, admin=True, specific_file=None):
@@ -5311,7 +5311,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                 response = question_window(
                     "Diese Aufgabe wurde abgeändert!\n\nWenn Sie diese Aufgabe löschen, werden auch alle Änderungen, die an dieser Aufgabe vorgenommen wurden, gelöscht.",
                     "Sind Sie sicher, dass Sie diese Aufgaben entfernen möchten?",
-                    "Aufgabe entfernen?",
+                    "Aufgabe entfernen?", default= "no"
                 )
                 if response == False:
                     return
