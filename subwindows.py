@@ -193,9 +193,9 @@ class Ui_Dialog_choose_type(object):
 class Ui_Dialog_variation(object):
     def setupUi(self, Dialog, MainWindow):
         self.MainWindow = MainWindow
-        self.beispieldaten_dateipfad_cria = MainWindow.beispieldaten_dateipfad_cria
-        self.beispieldaten_dateipfad_1 = MainWindow.beispieldaten_dateipfad_1
-        self.beispieldaten_dateipfad_2 = MainWindow.beispieldaten_dateipfad_2
+        # self.beispieldaten_dateipfad_cria = MainWindow.beispieldaten_dateipfad_cria
+        # self.beispieldaten_dateipfad_1 = MainWindow.beispieldaten_dateipfad_1
+        # self.beispieldaten_dateipfad_2 = MainWindow.beispieldaten_dateipfad_2
 
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
@@ -486,7 +486,8 @@ class Ui_Dialog_variation(object):
 
     def adapt_choosing_list(self):
         self.listWidget.clear()
-
+        # self.filtered_items()
+        return
         if self.MainWindow.chosen_program == "cria":
             typ = None
             beispieldaten_dateipfad = self.beispieldaten_dateipfad_cria

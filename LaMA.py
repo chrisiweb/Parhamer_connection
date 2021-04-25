@@ -3607,6 +3607,11 @@ class Ui_MainWindow(object):
     #############################################################
 
     def collect_data_aufgabe(self, aufgabe):
+        print(aufgabe)
+        
+        aufgabe_total = get_aufgabe_total(aufgabe)
+        print(aufgabe_total)
+        return
         content = collect_content(self, aufgabe)
 
         section = get_section_from_content(self, content)
@@ -3791,7 +3796,13 @@ class Ui_MainWindow(object):
                 self.button_variation_cr.setText(
                     "Variation von: {}".format(self.chosen_variation.upper())
                 )
-                dict_collected_data = self.collect_data_aufgabe(self.chosen_variation)
+                typ = get_aufgabentyp(self.chosen_program, self.chosen_variation)
+                print(typ)
+                print(self.chosen_variation)
+                print(get_aufgabe_total(self.chosen_variation, typ))
+                return
+                # print(get_aufgabe_total(aufgabe, ))
+                # dict_collected_data = self.collect_data_aufgabe(self.chosen_variation)
             else:
                 self.suchfenster_reset(True)
                 self.reset_variation()
@@ -4586,12 +4597,15 @@ class Ui_MainWindow(object):
             list_information[6],
         )
 
+
         ##### Show Dialog "Saving file"
         try:
             self.chosen_variation
         except AttributeError:
             self.chosen_variation = None
 
+        print(self.chosen_variation)
+        return
         Dialog_speichern = self.open_dialogwindow_save(information)
 
         response = Dialog_speichern.exec()
