@@ -22,6 +22,7 @@ class Ui_Dialog_processing(object):
         )
         # Dialog.setSizePolicy(SizePolicy_fixed)
         # Dialog.setFixedSize(Dialog.size())
+        # Dialog.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         if icon == True:
             pixmap = QtGui.QPixmap(logo_path)
             Dialog.setWindowIcon(QtGui.QIcon(logo_path))

@@ -27,7 +27,7 @@ from datetime import date
 from refresh_ddb import refresh_ddb, modification_date
 from sort_items import natural_keys, lama_order, typ2_order, order_gesammeltedateien
 from standard_dialog_windows import question_window, warning_window
-from processing_window import Ui_Dialog_processing
+from processing_window import Ui_Dialog_processing, working_window
 import webbrowser
 from tinydb import Query, TinyDB
 from database_commands import _database
@@ -1181,20 +1181,22 @@ def create_pdf(path_file, index, maximum, typ=0):
         rest = " ({0}|{1})".format(index + 1, maximum)
 
     text = "Die PDF Datei wird erstellt..." + rest
-    Dialog = QtWidgets.QDialog()
-    ui = Ui_Dialog_processing()
-    ui.setupUi(Dialog, text)
+    
+    working_window(Worker_CreatePDF(), text, folder_name, file_name, latex_output_file)
+    # Dialog = QtWidgets.QDialog()
+    # ui = Ui_Dialog_processing()
+    # ui.setupUi(Dialog, text)
 
-    thread = QtCore.QThread(Dialog)
-    worker = Worker_CreatePDF()
-    worker.finished.connect(Dialog.close)
-    worker.moveToThread(thread)
-    thread.started.connect(
-        partial(worker.task, folder_name, file_name, latex_output_file)
-    )
-    thread.start()
-    thread.exit()
-    Dialog.exec()
+    # thread = QtCore.QThread(Dialog)
+    # worker = Worker_CreatePDF()
+    # worker.finished.connect(Dialog.close)
+    # worker.moveToThread(thread)
+    # thread.started.connect(
+    #     partial(worker.task, folder_name, file_name, latex_output_file)
+    # )
+    # thread.start()
+    # thread.exit()
+    # Dialog.exec()
 
     latex_output_file = open(
         "{0}/Teildokument/temp.txt".format(path_localappdata_lama),
