@@ -5688,6 +5688,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             klasse = list_klassen[self.comboBox_klassen.currentIndex()]
         elif mode == "feedback":
             klasse = list_klassen[self.comboBox_klassen_fb_cria.currentIndex()]
+
         return klasse
 
     def collect_all_infos_aufgabe(self, aufgabe):
@@ -6618,7 +6619,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             else:
                 return ""
 
-    def filter_items(self, table_lama, typ, list_mode, filter_string, line_entry):
+    def filter_items(self, table_lama, typ, list_mode, filter_string, line_entry, klasse=None):
         _file_ = Query()
 
         if typ == "lama_1" or typ == "lama_2":
@@ -6627,7 +6628,8 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             )
             filtered_items = table_lama.search(_file_.name.test(string_included_lama))
         elif typ == "cria":
-            klasse = self.get_klasse(list_mode)
+            if list_mode != "creator":
+                klasse = self.get_klasse(list_mode)
 
             string_included_cria = lambda s: s.split(".")[-1].startswith(line_entry)
 
@@ -6649,7 +6651,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         if list_mode == "sage":
             listWidget = self.listWidget
-        if list_mode == "feedback":
+        elif list_mode == "feedback":
             if self.chosen_program == "lama":
                 listWidget = self.listWidget_fb
             elif self.chosen_program == "cria":
