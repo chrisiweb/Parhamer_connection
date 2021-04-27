@@ -428,33 +428,6 @@ class Ui_Dialog_variation(object):
 
         self.adapt_choosing_list()
 
-    # def comboBox_unterkapitel_changed(self):
-    #     self.adapt_choosing_list()
-
-    # def add_items_to_listwidget(
-    #     self, list_beispieldaten_sections, beispieldaten_dateipfad
-    # ):
-    #     self.no_choice = "-- keine Auswahl --"
-    #     self.listWidget.addItem(self.no_choice)
-    #     for section in list_beispieldaten_sections:
-    #         try:
-    #             path = beispieldaten_dateipfad[section]
-    #         except KeyError:
-    #             drafts_path = os.path.join(database, "drafts")
-    #             beispieldaten_dateipfad_draft = search_files(drafts_path)
-    #             path = beispieldaten_dateipfad_draft[section]
-
-    #         name, extension = os.path.splitext(os.path.basename(path))
-    #         item = QtWidgets.QListWidgetItem()
-
-    #         item.setText(name)
-
-    #         if name.startswith("_L_") or "drafts" in path:
-    #             pass
-    #         elif re.search("\[.+\]", name) != None:
-    #             pass
-    #         else:
-    #             self.listWidget.addItem(item)
 
     def delete_zeros_at_beginning(self, string):
         while string.startswith("0"):
@@ -487,74 +460,6 @@ class Ui_Dialog_variation(object):
 
         return list_
 
-
-    # def filter_items(self, table_lama, typ, filter_string, line_entry, klasse)
-    #     _file_ = Query()
-
-    #     if typ == "lama_1" or typ == "lama_2":
-    #         string_included_lama = lambda s: (filter_string in s) and (
-    #             s.split(" - ")[-1].startswith(line_entry)
-    #         )
-    #         filtered_items = table_lama.search(_file_.name.test(string_included_lama))
-    #     elif typ == "cria":
-
-    #         string_included_cria = lambda s: s.split(".")[-1].startswith(line_entry)
-
-    #         def themen_included_cria(value):
-    #             for all in value:
-    #                 return True if filter_string in all else False
-
-    #         filtered_items = table_lama.search(
-    #             (_file_.name.search("{}\..+".format(klasse)))
-    #             & (_file_.themen.test(themen_included_cria))
-    #             & (_file_.name.test(string_included_cria))
-    #         )
-
-    #     filtered_items.sort(key=order_gesammeltedateien)
-
-    #     return filtered_items
-
-### to adapt
-    # def extract_topic_abbr(self, topic):
-    #     x = re.search("\(([a-zA-Z0-9]+)\)", topic)
-    #     if x != None:
-    #         return x.group(1)
-    #     else:
-    #         return
-
-    # def get_filter_string_variation(self, chosen_program):
-    #     if chosen_program == "cria":
-    #         string_0 = self.comboBox_klassen.currentText()
-    #         string_1 = self.comboBox_kapitel.currentText()
-    #         string_2 = self.comboBox_unterkapitel.currentText()
-
-    #         filter_string = "k" + string_0[0]
-
-    #         if not is_empty(string_1):
-    #             filter_string = filter_string + "." + self.extract_topic_abbr(string_1)
-    #             if not is_empty(string_2):
-    #                 filter_string = (
-    #                     filter_string + "." + self.extract_topic_abbr(string_2)
-    #                 )
-    #         return filter_string
-
-    #     if self.chosen_program == "lama":
-    #         if list_mode == "sage":
-    #             string_0 = self.comboBox_gk.currentText()
-    #             topic = self.extract_topic_abbr(self.comboBox_gk_num.currentText())
-    #             if topic != None:
-    #                 string_1 = topic
-    #             else:
-    #                 string_1 = self.comboBox_gk_num.currentText()
-
-
-    #         if not is_empty(string_0):
-    #             filter_string = string_0
-    #             if not is_empty(string_1):
-    #                 filter_string = filter_string + " " + string_1
-    #             return filter_string
-    #         else:
-    #             return ""
 
     def add_items_to_listwidget(self, typ, filtered_items, local = False):
         self.no_choice = "-- keine Auswahl --"
@@ -619,70 +524,6 @@ class Ui_Dialog_variation(object):
             
             self.add_items_to_listwidget(typ, filtered_items, local)
         
-
-        # table_lama = _database.table(table)
-        # filtered_items = filter_items(
-        #     self, table_lama, typ, 'creator', filter_string, line_entry,klasse
-        # )
-        # self.add_items_to_listwidget(typ, filter_items)        
-        
-
-        # filter_items(self, table_lama, typ, 'creator', filter_string, line_entry,klasse)
-        
-
-
-        return
-        if self.MainWindow.chosen_program == "cria":
-            typ = None
-            beispieldaten_dateipfad = self.beispieldaten_dateipfad_cria
-        else:
-            if self.comboBox_at_sage.currentText() == "Typ 1":
-                typ = 1
-                beispieldaten_dateipfad = self.beispieldaten_dateipfad_1
-            elif self.comboBox_at_sage.currentText() == "Typ 2":
-                typ = 2
-                beispieldaten_dateipfad = self.beispieldaten_dateipfad_2
-
-        list_beispieldaten_sections = list(beispieldaten_dateipfad.keys())
-
-        if self.MainWindow.chosen_program == "lama":
-            combobox_gk = self.comboBox_gk.currentText()
-            result = re.findall("\(([a-z]+)\)", self.comboBox_gk_num.currentText())
-            if not is_empty(result):
-                combobox_gk_num = result[-1]
-            else:
-                combobox_gk_num = self.comboBox_gk_num.currentText()
-
-            list_beispieldaten_sections = self.MainWindow.adjust_beispieldaten_combobox_lama(
-                list_beispieldaten_sections, combobox_gk, combobox_gk_num,
-            )
-
-        if self.MainWindow.chosen_program == "cria":
-            combobox_klasse = self.comboBox_klassen.currentText()
-            combobox_kapitel = self.comboBox_kapitel.currentText()
-            combobox_unterkapitel = self.comboBox_unterkapitel.currentText()
-
-            list_beispieldaten_sections = self.MainWindow.adjust_beispieldaten_combobox_cria(
-                list_beispieldaten_sections,
-                combobox_klasse,
-                combobox_kapitel,
-                combobox_unterkapitel,
-            )
-
-        line_entry = self.lineEdit_number.text()
-
-        if is_empty(line_entry) == False:
-            list_beispieldaten_sections = self.search_for_number(
-                list_beispieldaten_sections, line_entry
-            )
-
-        list_beispieldaten_sections = sorted_gks(
-            list_beispieldaten_sections, self.MainWindow.chosen_program
-        )
-
-        self.add_items_to_listwidget(
-            list_beispieldaten_sections, beispieldaten_dateipfad
-        )
 
 
 class Ui_Dialog_random_quiz(object):
