@@ -461,10 +461,7 @@ class Ui_Dialog_variation(object):
         return list_
 
 
-    def add_items_to_listwidget(self, typ, filtered_items, local = False):
-        self.no_choice = "-- keine Auswahl --"
-        self.listWidget.addItem(self.no_choice)
-        
+    def add_items_to_listwidget(self, typ, filtered_items, local = False):      
         for _file_ in filtered_items:
             if typ == "cria":
                 name = _file_["name"].split(".")[-1]
@@ -491,7 +488,6 @@ class Ui_Dialog_variation(object):
                 self.listWidget.addItem(item)
 
     def adapt_choosing_list(self):
-        self.listWidget.clear()
         chosen_program = self.MainWindow.chosen_program
         klasse = None
         if chosen_program == "cria":
@@ -500,7 +496,7 @@ class Ui_Dialog_variation(object):
         elif self.comboBox_at_sage.currentIndex()==0:
             typ = "lama_1"
 
-        elif self.comboBox_at_sage.CurrentIndex()==1:
+        elif self.comboBox_at_sage.currentIndex()==1:
             typ = "lama_2"
 
         filter_string = get_filter_string(self, 'sage')        
@@ -510,7 +506,9 @@ class Ui_Dialog_variation(object):
 
         table = "table_" + typ
 
-
+        self.listWidget.clear()
+        self.no_choice = "-- keine Auswahl --"
+        self.listWidget.addItem(self.no_choice)
         for database in [_local_database, _database]:
             table_lama = database.table(table)
             if database == _local_database:

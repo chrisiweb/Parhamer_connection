@@ -3658,7 +3658,13 @@ class Ui_MainWindow(object):
 
         return dict_collected_data
 
-    def set_infos_chosen_variation(self, dict_collected_data):
+    def set_infos_chosen_variation(self, aufgabe_total):
+        print(aufgabe_total)
+        # x= self.split_klasse_aufgabe()
+        # print(x)
+        # typ = get_aufgabentyp(self.chosen_program,)
+        # print(typ)
+        return
         aufgabe = dict_collected_data["aufgabe"]
         typ = get_aufgabentyp(self.chosen_program, aufgabe)
 
@@ -3798,10 +3804,10 @@ class Ui_MainWindow(object):
                     "Variation von: {}".format(self.chosen_variation.upper())
                 )
                 typ = get_aufgabentyp(self.chosen_program, self.chosen_variation)
-                print(typ)
-                print(self.chosen_variation)
-                print(get_aufgabe_total(self.chosen_variation, typ))
-                return
+                # print(typ)
+                # print(self.chosen_variation)
+                aufgabe_total_original = get_aufgabe_total(self.chosen_variation, typ)
+                # return
                 # print(get_aufgabe_total(aufgabe, ))
                 # dict_collected_data = self.collect_data_aufgabe(self.chosen_variation)
             else:
@@ -3812,7 +3818,7 @@ class Ui_MainWindow(object):
         if response == 0:
             return
 
-        self.set_infos_chosen_variation(dict_collected_data)
+        self.set_infos_chosen_variation(aufgabe_total_original)
 
     def add_picture(self):
         try:
