@@ -3804,12 +3804,9 @@ class Ui_MainWindow(object):
                     "Variation von: {}".format(self.chosen_variation.upper())
                 )
                 typ = get_aufgabentyp(self.chosen_program, self.chosen_variation)
-                # print(typ)
-                # print(self.chosen_variation)
+
                 aufgabe_total_original = get_aufgabe_total(self.chosen_variation, typ)
-                # return
-                # print(get_aufgabe_total(aufgabe, ))
-                # dict_collected_data = self.collect_data_aufgabe(self.chosen_variation)
+
             else:
                 self.suchfenster_reset(True)
                 self.reset_variation()

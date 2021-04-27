@@ -337,7 +337,7 @@ class Ui_Dialog_variation(object):
             elif self.MainWindow.chosen_program == "cria":
                 klasse = list_klassen[self.comboBox_klassen.currentIndex()]
                 self.chosen_variation = (
-                    klasse + "_" + self.listWidget.selectedItems()[0].text()
+                    klasse + "." + self.listWidget.selectedItems()[0].text()
                 )
             else:
                 self.chosen_variation = self.listWidget.selectedItems()[0].text()
