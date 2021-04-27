@@ -43,7 +43,7 @@ from lama_stylesheets import (
     StyleSheet_subwindow_ausgleichspunkte,
     StyleSheet_subwindow_ausgleichspunkte_dark_mode,
 )
-from create_pdf import create_pdf
+from create_pdf import create_pdf, check_if_variation
 import bcrypt
 from database_commands import _database, _local_database
 from filter_commands import get_filter_string, filter_items
@@ -431,30 +431,30 @@ class Ui_Dialog_variation(object):
     # def comboBox_unterkapitel_changed(self):
     #     self.adapt_choosing_list()
 
-    def add_items_to_listwidget(
-        self, list_beispieldaten_sections, beispieldaten_dateipfad
-    ):
-        self.no_choice = "-- keine Auswahl --"
-        self.listWidget.addItem(self.no_choice)
-        for section in list_beispieldaten_sections:
-            try:
-                path = beispieldaten_dateipfad[section]
-            except KeyError:
-                drafts_path = os.path.join(database, "drafts")
-                beispieldaten_dateipfad_draft = search_files(drafts_path)
-                path = beispieldaten_dateipfad_draft[section]
+    # def add_items_to_listwidget(
+    #     self, list_beispieldaten_sections, beispieldaten_dateipfad
+    # ):
+    #     self.no_choice = "-- keine Auswahl --"
+    #     self.listWidget.addItem(self.no_choice)
+    #     for section in list_beispieldaten_sections:
+    #         try:
+    #             path = beispieldaten_dateipfad[section]
+    #         except KeyError:
+    #             drafts_path = os.path.join(database, "drafts")
+    #             beispieldaten_dateipfad_draft = search_files(drafts_path)
+    #             path = beispieldaten_dateipfad_draft[section]
 
-            name, extension = os.path.splitext(os.path.basename(path))
-            item = QtWidgets.QListWidgetItem()
+    #         name, extension = os.path.splitext(os.path.basename(path))
+    #         item = QtWidgets.QListWidgetItem()
 
-            item.setText(name)
+    #         item.setText(name)
 
-            if name.startswith("_L_") or "drafts" in path:
-                pass
-            elif re.search("\[.+\]", name) != None:
-                pass
-            else:
-                self.listWidget.addItem(item)
+    #         if name.startswith("_L_") or "drafts" in path:
+    #             pass
+    #         elif re.search("\[.+\]", name) != None:
+    #             pass
+    #         else:
+    #             self.listWidget.addItem(item)
 
     def delete_zeros_at_beginning(self, string):
         while string.startswith("0"):
@@ -556,25 +556,81 @@ class Ui_Dialog_variation(object):
     #         else:
     #             return ""
 
+    def add_items_to_listwidget(self, typ, filtered_items, local = False):
+        self.no_choice = "-- keine Auswahl --"
+        self.listWidget.addItem(self.no_choice)
+        
+        for _file_ in filtered_items:
+            if typ == "cria":
+                name = _file_["name"].split(".")[-1]
+            else:
+                name = _file_["name"]
+
+            item = QtWidgets.QListWidgetItem()
+
+            if local == True:
+                name = name + " (lokal)"
+            #     # item.setBackground(blue_4)
+            #     # item.setToolTip("lokal gespeichert")
+
+            # elif _file_["draft"] == True:
+            #     item.setBackground(blue_5)
+            #     item.setForeground(white)
+            #     item.setToolTip("Entwurf")
+
+            item.setText(name)
+
+            if check_if_variation(_file_["name"]) == True:
+                continue
+            else:
+                self.listWidget.addItem(item)
+
     def adapt_choosing_list(self):
         self.listWidget.clear()
         chosen_program = self.MainWindow.chosen_program
+        klasse = None
         if chosen_program == "cria":
             typ = "cria"
+            klasse = list_klassen[self.comboBox_klassen.currentIndex()]
         elif self.comboBox_at_sage.currentIndex()==0:
             typ = "lama_1"
 
         elif self.comboBox_at_sage.CurrentIndex()==1:
             typ = "lama_2"
-        
-        table = "table_" + typ
-        table_lama = _local_database.table(table)
 
-        # print(table_lama.all())
-        filter_string = get_filter_string(self, 'sage')
-        print(filter_string)
-        return
-        self.MainWindow.filter_items(table_lama, typ, "creator",)
+        filter_string = get_filter_string(self, 'sage')        
+
+        line_entry = self.lineEdit_number.text()
+
+
+        table = "table_" + typ
+
+
+        for database in [_local_database, _database]:
+            table_lama = database.table(table)
+            if database == _local_database:
+                local = True
+            else:
+                local = False
+
+            filtered_items = filter_items(
+                self, table_lama, typ, 'creator', filter_string, line_entry,klasse
+            )
+            
+            self.add_items_to_listwidget(typ, filtered_items, local)
+        
+
+        # table_lama = _database.table(table)
+        # filtered_items = filter_items(
+        #     self, table_lama, typ, 'creator', filter_string, line_entry,klasse
+        # )
+        # self.add_items_to_listwidget(typ, filter_items)        
+        
+
+        # filter_items(self, table_lama, typ, 'creator', filter_string, line_entry,klasse)
+        
+
+
         return
         if self.MainWindow.chosen_program == "cria":
             typ = None

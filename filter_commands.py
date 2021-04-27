@@ -5,9 +5,6 @@ from sort_items import order_gesammeltedateien
 
 
 def get_filter_string(self, list_mode):
-    print(self.chosen_program)
-    print(self)
-    print(self.comboBox_gk.currentText())
     if self.chosen_program == "cria":
         if list_mode == "sage":
             string_0 = self.comboBox_klassen.currentText()
@@ -59,6 +56,7 @@ def filter_items(self, table_lama, typ, list_mode, filter_string, line_entry, kl
             s.split(" - ")[-1].startswith(line_entry)
         )
         filtered_items = table_lama.search(_file_.name.test(string_included_lama))
+        
     elif typ == "cria":
         if list_mode != "creator":
             klasse = self.get_klasse(list_mode)
@@ -78,3 +76,4 @@ def filter_items(self, table_lama, typ, list_mode, filter_string, line_entry, kl
     filtered_items.sort(key=order_gesammeltedateien)
 
     return filtered_items
+
