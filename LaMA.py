@@ -3660,19 +3660,16 @@ class Ui_MainWindow(object):
 
     def set_infos_chosen_variation(self, aufgabe_total):
         print(aufgabe_total)
-        # x= self.split_klasse_aufgabe()
-        # print(x)
-        # typ = get_aufgabentyp(self.chosen_program,)
-        # print(typ)
-        return
-        aufgabe = dict_collected_data["aufgabe"]
+        aufgabe = aufgabe_total['name']
+
+
         typ = get_aufgabentyp(self.chosen_program, aufgabe)
 
         if self.chosen_program == "lama":
             list_comboBox_gk = ["AG", "FA", "AN", "WS", "Zusatzthemen"]
 
             if typ == 1:
-                gk, nummer = aufgabe.split(" - ")
+                gk = aufgabe_total['themen'][0]
                 short_gk = shorten_gk(gk)
                 if short_gk in zusatzthemen_beschreibung:
                     checkbox_gk = "checkbox_creator_themen_{}".format(short_gk)
@@ -3680,12 +3677,13 @@ class Ui_MainWindow(object):
                 else:
                     checkbox_gk = "checkbox_creator_gk_{}".format(short_gk)
                     index = list_comboBox_gk.index(gk.split(" ")[0].replace("-L", ""))
-
+        
                 self.dict_widget_variables[checkbox_gk].setChecked(True)
                 self.tab_widget_gk_cr.setCurrentIndex(index)
 
+                self.groupBox_grundkompetenzen_cr.setEnabled(False)
             elif typ == 2:
-                for i, gk in enumerate(dict_collected_data["thema"]):
+                for i, gk in enumerate(aufgabe_total['themen']):
                     short_gk = shorten_gk(gk)
                     if short_gk in zusatzthemen_beschreibung:
                         checkbox_gk = "checkbox_creator_themen_{}".format(short_gk)
@@ -3701,18 +3699,20 @@ class Ui_MainWindow(object):
 
                     self.dict_widget_variables[checkbox_gk].setChecked(True)
                 self.tab_widget_gk_cr.setCurrentIndex(index)
+
+
                 # self.tab_widget_gk_cr.setCurrentIndex(
                 #     list_comboBox_gk.index(
                 #         dict_collected_data["thema"][0].split(" ")[0]
                 #     )
                 # )
 
-            self.groupBox_grundkompetenzen_cr.setEnabled(False)
-
             self.comboBox_aufgabentyp_cr.setCurrentIndex(typ - 1)
             self.groupBox_aufgabentyp.setEnabled(False)
 
         elif self.chosen_program == "cria":
+            print(aufgabe)
+            return
             klasse = dict_collected_data["klasse"].lower()
             index = list_klassen.index(klasse)
             self.tab_widget_cr_cria.setCurrentIndex(index)
