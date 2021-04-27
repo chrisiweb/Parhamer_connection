@@ -45,6 +45,8 @@ from lama_stylesheets import (
 )
 from create_pdf import create_pdf
 import bcrypt
+from database_commands import _database, _local_database
+from filter_commands import get_filter_string, filter_items
 
 
 dict_gk = config_loader(config_file, "dict_gk")
@@ -193,6 +195,7 @@ class Ui_Dialog_choose_type(object):
 class Ui_Dialog_variation(object):
     def setupUi(self, Dialog, MainWindow):
         self.MainWindow = MainWindow
+        self.chosen_program = self.MainWindow.chosen_program
         # self.beispieldaten_dateipfad_cria = MainWindow.beispieldaten_dateipfad_cria
         # self.beispieldaten_dateipfad_1 = MainWindow.beispieldaten_dateipfad_1
         # self.beispieldaten_dateipfad_2 = MainWindow.beispieldaten_dateipfad_2
@@ -512,15 +515,19 @@ class Ui_Dialog_variation(object):
     #     return filtered_items
 
 ### to adapt
-    # def get_filter_string(self):
-    #     if self.chosen_program == "cria":
+    # def extract_topic_abbr(self, topic):
+    #     x = re.search("\(([a-zA-Z0-9]+)\)", topic)
+    #     if x != None:
+    #         return x.group(1)
+    #     else:
+    #         return
+
+    # def get_filter_string_variation(self, chosen_program):
+    #     if chosen_program == "cria":
     #         string_0 = self.comboBox_klassen.currentText()
     #         string_1 = self.comboBox_kapitel.currentText()
     #         string_2 = self.comboBox_unterkapitel.currentText()
-    #         elif list_mode == "feedback":
-    #             string_0 = self.comboBox_klassen_fb_cria.currentText()
-    #             string_1 = self.comboBox_kapitel_fb_cria.currentText()
-    #             string_2 = self.comboBox_unterkapitel_fb_cria.currentText()
+
     #         filter_string = "k" + string_0[0]
 
     #         if not is_empty(string_1):
@@ -539,13 +546,7 @@ class Ui_Dialog_variation(object):
     #                 string_1 = topic
     #             else:
     #                 string_1 = self.comboBox_gk_num.currentText()
-    #         elif list_mode == "feedback":
-    #             string_0 = self.comboBox_fb.currentText()
-    #             topic = self.extract_topic_abbr(self.comboBox_fb_num.currentText())
-    #             if topic != None:
-    #                 string_1 = topic
-    #             else:
-    #                 string_1 = self.comboBox_gk_num.currentText()
+
 
     #         if not is_empty(string_0):
     #             filter_string = string_0
@@ -557,8 +558,8 @@ class Ui_Dialog_variation(object):
 
     def adapt_choosing_list(self):
         self.listWidget.clear()
-
-        if self.MainWindow.chosen_program == "cria":
+        chosen_program = self.MainWindow.chosen_program
+        if chosen_program == "cria":
             typ = "cria"
         elif self.comboBox_at_sage.currentIndex()==0:
             typ = "lama_1"
@@ -569,6 +570,10 @@ class Ui_Dialog_variation(object):
         table = "table_" + typ
         table_lama = _local_database.table(table)
 
+        # print(table_lama.all())
+        filter_string = get_filter_string(self, 'sage')
+        print(filter_string)
+        return
         self.MainWindow.filter_items(table_lama, typ, "creator",)
         return
         if self.MainWindow.chosen_program == "cria":

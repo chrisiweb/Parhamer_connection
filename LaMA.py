@@ -111,6 +111,7 @@ from database_commands import (
     get_aufgabentyp,
 )
 from tex_minimal import *
+from filter_commands import get_filter_string, filter_items
 
 try:
     loaded_lama_file_path = sys.argv[1]
@@ -6273,7 +6274,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             "dict_{}".format(list_klassen[combobox_klassen.currentIndex()])
         )
 
-        chosen_kapitel = self.extract_topic_abbr(chosen_kapitel)
+        chosen_kapitel = extract_topic_abbr(chosen_kapitel)
 
         combobox_unterkapitel.clear()
 
@@ -6568,84 +6569,79 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
         return list_beispieldaten_sections
 
-    def extract_topic_abbr(self, topic):
-        x = re.search("\(([a-zA-Z0-9]+)\)", topic)
-        if x != None:
-            return x.group(1)
-        else:
-            return
 
-    def get_filter_string(self, list_mode):
-        if self.chosen_program == "cria":
-            if list_mode == "sage":
-                string_0 = self.comboBox_klassen.currentText()
-                string_1 = self.comboBox_kapitel.currentText()
-                string_2 = self.comboBox_unterkapitel.currentText()
-            elif list_mode == "feedback":
-                string_0 = self.comboBox_klassen_fb_cria.currentText()
-                string_1 = self.comboBox_kapitel_fb_cria.currentText()
-                string_2 = self.comboBox_unterkapitel_fb_cria.currentText()
-            filter_string = "k" + string_0[0]
 
-            if not is_empty(string_1):
-                filter_string = filter_string + "." + self.extract_topic_abbr(string_1)
-                if not is_empty(string_2):
-                    filter_string = (
-                        filter_string + "." + self.extract_topic_abbr(string_2)
-                    )
-            return filter_string
+    # def get_filter_string(self, list_mode):
+    #     if self.chosen_program == "cria":
+    #         if list_mode == "sage":
+    #             string_0 = self.comboBox_klassen.currentText()
+    #             string_1 = self.comboBox_kapitel.currentText()
+    #             string_2 = self.comboBox_unterkapitel.currentText()
+    #         elif list_mode == "feedback":
+    #             string_0 = self.comboBox_klassen_fb_cria.currentText()
+    #             string_1 = self.comboBox_kapitel_fb_cria.currentText()
+    #             string_2 = self.comboBox_unterkapitel_fb_cria.currentText()
+    #         filter_string = "k" + string_0[0]
 
-        if self.chosen_program == "lama":
-            if list_mode == "sage":
-                string_0 = self.comboBox_gk.currentText()
-                topic = self.extract_topic_abbr(self.comboBox_gk_num.currentText())
-                if topic != None:
-                    string_1 = topic
-                else:
-                    string_1 = self.comboBox_gk_num.currentText()
-            elif list_mode == "feedback":
-                string_0 = self.comboBox_fb.currentText()
-                topic = self.extract_topic_abbr(self.comboBox_fb_num.currentText())
-                if topic != None:
-                    string_1 = topic
-                else:
-                    string_1 = self.comboBox_gk_num.currentText()
+    #         if not is_empty(string_1):
+    #             filter_string = filter_string + "." + extract_topic_abbr(string_1)
+    #             if not is_empty(string_2):
+    #                 filter_string = (
+    #                     filter_string + "." + extract_topic_abbr(string_2)
+    #                 )
+    #         return filter_string
 
-            if not is_empty(string_0):
-                filter_string = string_0
-                if not is_empty(string_1):
-                    filter_string = filter_string + " " + string_1
-                return filter_string
-            else:
-                return ""
+    #     if self.chosen_program == "lama":
+    #         if list_mode == "sage":
+    #             string_0 = self.comboBox_gk.currentText()
+    #             topic = extract_topic_abbr(self.comboBox_gk_num.currentText())
+    #             if topic != None:
+    #                 string_1 = topic
+    #             else:
+    #                 string_1 = self.comboBox_gk_num.currentText()
+    #         elif list_mode == "feedback":
+    #             string_0 = self.comboBox_fb.currentText()
+    #             topic = extract_topic_abbr(self.comboBox_fb_num.currentText())
+    #             if topic != None:
+    #                 string_1 = topic
+    #             else:
+    #                 string_1 = self.comboBox_gk_num.currentText()
 
-    def filter_items(self, table_lama, typ, list_mode, filter_string, line_entry, klasse=None):
-        _file_ = Query()
+    #         if not is_empty(string_0):
+    #             filter_string = string_0
+    #             if not is_empty(string_1):
+    #                 filter_string = filter_string + " " + string_1
+    #             return filter_string
+    #         else:
+    #             return ""
 
-        if typ == "lama_1" or typ == "lama_2":
-            string_included_lama = lambda s: (filter_string in s) and (
-                s.split(" - ")[-1].startswith(line_entry)
-            )
-            filtered_items = table_lama.search(_file_.name.test(string_included_lama))
-        elif typ == "cria":
-            if list_mode != "creator":
-                klasse = self.get_klasse(list_mode)
+    # def filter_items(self, table_lama, typ, list_mode, filter_string, line_entry, klasse=None):
+    #     _file_ = Query()
 
-            string_included_cria = lambda s: s.split(".")[-1].startswith(line_entry)
+    #     if typ == "lama_1" or typ == "lama_2":
+    #         string_included_lama = lambda s: (filter_string in s) and (
+    #             s.split(" - ")[-1].startswith(line_entry)
+    #         )
+    #         filtered_items = table_lama.search(_file_.name.test(string_included_lama))
+    #     elif typ == "cria":
+    #         if list_mode != "creator":
+    #             klasse = self.get_klasse(list_mode)
 
-            def themen_included_cria(value):
-                for all in value:
-                    return True if filter_string in all else False
+    #         string_included_cria = lambda s: s.split(".")[-1].startswith(line_entry)
 
-            filtered_items = table_lama.search(
-                (_file_.name.search("{}\..+".format(klasse)))
-                & (_file_.themen.test(themen_included_cria))
-                & (_file_.name.test(string_included_cria))
-            )
+    #         def themen_included_cria(value):
+    #             for all in value:
+    #                 return True if filter_string in all else False
 
-        filtered_items.sort(key=order_gesammeltedateien)
+    #         filtered_items = table_lama.search(
+    #             (_file_.name.search("{}\..+".format(klasse)))
+    #             & (_file_.themen.test(themen_included_cria))
+    #             & (_file_.name.test(string_included_cria))
+    #         )
 
-        return filtered_items
+    #     filtered_items.sort(key=order_gesammeltedateien)
+
+    #     return filtered_items
 
     def adapt_choosing_list(self, list_mode):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
@@ -6676,7 +6672,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         ) or (self.comboBox_at_fb.currentText() == "Typ 2" and list_mode == "feedback"):
             typ = "lama_2"
 
-        filter_string = self.get_filter_string(list_mode)
+        filter_string = get_filter_string(self, list_mode)
 
         if list_mode == "sage":
             line_entry = self.lineEdit_number.text()
@@ -6689,15 +6685,15 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         table = "table_" + typ
         if list_mode == "sage":
             table_lama = _local_database.table(table)
-            filtered_items = self.filter_items(
-                table_lama, typ, list_mode, filter_string, line_entry
+            filtered_items = filter_items(
+                self, table_lama, typ, list_mode, filter_string, line_entry
             )
 
             self.add_items_to_listwidget(typ, listWidget, filtered_items, local=True)
 
         table_lama = _database.table(table)
-        filtered_items = self.filter_items(
-            table_lama, typ, list_mode, filter_string, line_entry
+        filtered_items = filter_items(
+            self, table_lama, typ, list_mode, filter_string, line_entry
         )
         self.add_items_to_listwidget(typ, listWidget, filtered_items)
 

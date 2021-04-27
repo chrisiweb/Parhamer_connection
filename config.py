@@ -174,6 +174,13 @@ def is_empty(structure):
         return True
 
 
+def extract_topic_abbr(topic):
+    x = re.search("\(([a-zA-Z0-9]+)\)", topic)
+    if x != None:
+        return x.group(1)
+    else:
+        return
+
 def shorten_gk(gk):
     gk = gk.lower().replace(" ", "").replace(".", "").replace("-l", "")
     return gk

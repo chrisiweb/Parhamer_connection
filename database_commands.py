@@ -38,14 +38,17 @@ def get_aufgabe_total(aufgabe, typ):
     return table_lama.get(_file_.name == aufgabe) 
 
 
+
+
+
 # class WriteFilesToDatabase:
 #     def __init__(self):
 #         print('test')
 
 # WriteFilesToDatabase()
 
-
-
+##################################################################################
+##################################################################################
 def collect_content(path):
     with open(path, "r", encoding="utf8") as f:
         content = f.read()
