@@ -3659,9 +3659,7 @@ class Ui_MainWindow(object):
         return dict_collected_data
 
     def set_infos_chosen_variation(self, aufgabe_total):
-        print(aufgabe_total)
         aufgabe = aufgabe_total['name']
-
 
         typ = get_aufgabentyp(self.chosen_program, aufgabe)
 
@@ -3695,30 +3693,30 @@ class Ui_MainWindow(object):
                             index = list_comboBox_gk.index(
                                 gk.split(" ")[0].replace("-L", "")
                             )
-                        # index = list_comboBox_gk.index(gk.split(" ")[0].replace("-L",""))
 
                     self.dict_widget_variables[checkbox_gk].setChecked(True)
                 self.tab_widget_gk_cr.setCurrentIndex(index)
 
 
-                # self.tab_widget_gk_cr.setCurrentIndex(
-                #     list_comboBox_gk.index(
-                #         dict_collected_data["thema"][0].split(" ")[0]
-                #     )
-                # )
-
             self.comboBox_aufgabentyp_cr.setCurrentIndex(typ - 1)
             self.groupBox_aufgabentyp.setEnabled(False)
 
+            klasse = aufgabe_total['klasse']
+
+            if klasse != None:
+                full_klasse = Klassen[klasse]
+                index = self.comboBox_klassen_cr.findText(full_klasse)
+
+                self.comboBox_klassen_cr.setCurrentIndex(index)
+
         elif self.chosen_program == "cria":
-            print(aufgabe)
-            return
-            klasse = dict_collected_data["klasse"].lower()
+            klasse, nummer = aufgabe.split('.')
+
             index = list_klassen.index(klasse)
             self.tab_widget_cr_cria.setCurrentIndex(index)
 
-            for thema in dict_collected_data["thema"]:
-                kapitel, unterkapitel = thema.split(".")
+            for thema in aufgabe_total['themen']:
+                klasse_thema ,kapitel, unterkapitel = thema.split(".")
 
                 combobox_thema = "combobox_kapitel_creator_cria_{}".format(klasse)
                 dict_klasse_name = eval("dict_{}_name".format(klasse))
@@ -3735,47 +3733,26 @@ class Ui_MainWindow(object):
 
                 self.groupBox_themengebiete_cria.setEnabled(False)
 
-        punkte = self.get_punkte_aufgabe(aufgabe)
 
-        self.spinBox_punkte.setValue(punkte)
-        if dict_collected_data["aufgabenformat"] != None:
-            try:
-                full_aufgabenformat = dict_aufgabenformate[
-                    dict_collected_data["aufgabenformat"].lower()
-                ]
-                index = self.comboBox_af.findText(full_aufgabenformat)
-                self.comboBox_af.setEnabled(False)
-            except AttributeError:
-                warning_window(
-                    'Die gewählte Aufgabe {} ist fehlerhaft.\nBitte melden Sie diese unter "Feedback & Fehler".\nVielen Dank!'.format(
-                        aufgabe
-                    )
-                )
-                index = 0
+        self.spinBox_punkte.setValue(aufgabe_total['punkte'])
+
+        if aufgabe_total['af'] != None:
+            af = aufgabe_total['af']
+            full_aufgabenformat = dict_aufgabenformate[af]
+
+            index = self.comboBox_af.findText(full_aufgabenformat)
+            self.comboBox_af.setEnabled(False)
+
             self.comboBox_af.setCurrentIndex(index)
         else:
             self.comboBox_af.setCurrentIndex(0)
 
-        if dict_collected_data["klasse"] != None and typ != None:
-            try:
-                full_klasse = Klassen[dict_collected_data["klasse"].lower()]
-                index = self.comboBox_klassen_cr.findText(full_klasse)
-            except AttributeError:
-                warning_window(
-                    'Die gewählte Aufgabe {} ist fehlerhaft.\nBitte melden Sie diese unter "Feedback & Fehler".\nVielen Dank!'.format(
-                        aufgabe
-                    )
-                )
-                index = 0
-            self.comboBox_klassen_cr.setCurrentIndex(index)
-        else:
-            self.comboBox_klassen_cr.setCurrentIndex(0)
 
         if self.lineEdit_titel.text().startswith("###"):
-            self.lineEdit_titel.setText("### " + dict_collected_data["titel"])
+            self.lineEdit_titel.setText("### " + aufgabe_total['titel'])
         else:
-            self.lineEdit_titel.setText(dict_collected_data["titel"])
-        # self.lineEdit_quelle.setText(dict_collected_data["quelle"])
+            self.lineEdit_titel.setText(aufgabe_total['titel'])
+
 
     def reset_variation(self):
         self.button_variation_cr.setText("Variation vorhandender Aufgabe...")
