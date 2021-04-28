@@ -107,7 +107,7 @@ def create_list_from_section(section):
 	return list_collected_data
 
 
-def add_file(database, name, themen, titel, af, quelle, content, punkte, pagebreak, klasse, info = None, bilder=None):
+def add_file(database, name, themen, titel, af, quelle, content, punkte, pagebreak, klasse, info = None, bilder=None, draft = False, abstand = 0):
     database.insert({
         'name' : name,
         'themen' : themen,
@@ -120,8 +120,8 @@ def add_file(database, name, themen, titel, af, quelle, content, punkte, pagebre
         'klasse' : klasse,
         'info' : info,
         'bilder' : bilder,
-        'draft' : False,
-        'abstand' : 0,
+        'draft' : draft,
+        'abstand' : abstand,
     })
 
 def get_default_info(content):

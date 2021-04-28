@@ -4189,15 +4189,16 @@ class Ui_MainWindow(object):
     def check_files_beispieleinreichung_variation(self, max_integer_file):
         path = self.get_path_beispieleinreichung()
 
-    def get_max_integer_file(self, typ_save, path):
-        max_integer_file = self.check_files_path(typ_save, path)
+    def get_max_integer_file(self, typ_save):
+        print(typ_save)
+        # max_integer_file = self.check_files_path(typ_save, path)
 
-        if typ_save[0] != "local" and typ_save != ["admin", 1]:
-            max_integer_file = self.check_files_beispieleinreichung(
-                typ_save, max_integer_file
-            )
+        # if typ_save[0] != "local" and typ_save != ["admin", 1]:
+        #     max_integer_file = self.check_files_beispieleinreichung(
+        #         typ_save, max_integer_file
+        #     )
 
-        return max_integer_file
+        # return max_integer_file
 
     def check_files_path(self, typ_save, path):
         max_integer_file = 0
@@ -4402,35 +4403,24 @@ class Ui_MainWindow(object):
         #     klasse = ""
         return klasse
 
-    def get_themen_section(self):
-        if self.chosen_program == "cria":
-            themen_auswahl = []
+    def get_themen_auswahl(self):
+        themen_auswahl = []
+        if self.chosen_program == "cria":       
             for all in self.list_selected_topics_creator:
-                thema = all[1] + "." + all[2]
+                thema = all[0] + "." + all[1] + "." + all[2]
                 if thema not in themen_auswahl:
                     themen_auswahl.append(thema)
-            themen = ", ".join(sorted(themen_auswahl))
 
         elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-            # themen, _ = self.split_thema_klasse(self.list_selected_topics_creator[0])
-            # if themen == None:  # Typ1 - GK
-            themen = self.list_selected_topics_creator[0]
-            # else:  # Typ1 - Zusatzthemen
-            # themen = themen.upper()
+            themen_auswahl.append(self.list_selected_topics_creator[0])
 
-        elif (
-            self.comboBox_aufgabentyp_cr.currentText() == "Typ 2"
-        ):  # Typ2 - GK & Zusatzthemen
-            # list_ = []
-            # for all in self.list_selected_topics_creator:
-            # thema, _ = self.split_thema_klasse(all)
-            # if thema == None:
-            # list_.append(all)
-            # else:
-            # list_.append(thema.upper())
-            themen = ", ".join(self.list_selected_topics_creator)
+        elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
 
-        return themen
+            for all in self.list_selected_topics_creator:
+                themen_auswahl.append(all)
+
+
+        return themen_auswahl
 
     def create_section_string(self, list_):
         section_string = str(list_[0])
@@ -4549,6 +4539,8 @@ class Ui_MainWindow(object):
         string = ", ".join(list_)
         return string
 
+
+
     def button_speichern_pressed(self):
         # self.creator_mode = "user"
         self.local_save = False
@@ -4592,7 +4584,7 @@ class Ui_MainWindow(object):
         response = Dialog_speichern.exec()
         if response == 0:
             return
-        return
+
         typ_save = self.ui_save.get_output()
 
         if self.creator_mode == "user":
@@ -4615,18 +4607,38 @@ class Ui_MainWindow(object):
                 if response == 0:
                     return
                 typ_save = self.ui_save.get_output()
+        print(typ_save)
+        print(self.chosen_variation)
+        print(list_information)
 
+        print(self.get_themen_auswahl())
+
+        if typ_save[0] == 'local':
+            database = _local_database
+        else:
+            database = _database
+        
+        if self.chosen_program == 'cria':
+            typ = 'cria'
+        else:
+            typ_index = self.comboBox_aufgabentyp_cr.currentIndex() + 1
+            typ = 'lama_{}'.format(typ_index) 
+        table = 'table_' + typ
+        table_lama = database.table(table) 
+
+        # database = 
+        return
         if self.chosen_variation == None:
-            save_dateipfad = self.create_aufgabenpfad(typ_save)
+            # save_dateipfad = self.create_aufgabenpfad(typ_save)
 
-            self.max_integer_file = self.get_max_integer_file(typ_save, save_dateipfad)
+            self.max_integer_file = self.get_max_integer_file(typ_save)
 
         else:
             dateipfad = self.get_dateipfad_aufgabe(self.chosen_variation)
             save_dateipfad = os.path.dirname(dateipfad)
 
             self.max_integer_file = self.get_max_integer_file_variation(save_dateipfad)
-
+        return
         ############################################################################
 
         response = self.replace_image_name(typ_save)
