@@ -4585,14 +4585,14 @@ class Ui_MainWindow(object):
         except AttributeError:
             self.chosen_variation = None
 
-        print(self.chosen_variation)
-        return
+        # print(self.chosen_variation)
+        # return
         Dialog_speichern = self.open_dialogwindow_save(information)
 
         response = Dialog_speichern.exec()
         if response == 0:
             return
-
+        return
         typ_save = self.ui_save.get_output()
 
         if self.creator_mode == "user":
