@@ -4089,76 +4089,76 @@ class Ui_MainWindow(object):
                 list_path.append("_database")
         return list_path
 
-    def create_aufgabenpfad(self, typ_save):
-        list_path = self.get_parent_folder(typ_save)
+    # def create_aufgabenpfad(self, typ_save):
+    #     list_path = self.get_parent_folder(typ_save)
 
-        ####
-        if self.chosen_program == "lama":
-            if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-                list_path.append("Typ1Aufgaben")
-            if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
-                list_path.append("Typ2Aufgaben")
-        elif self.chosen_program == "cria":
-            highest_grade = self.get_highest_grade()
-            list_path.append(highest_grade)
+    #     ####
+    #     if self.chosen_program == "lama":
+    #         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+    #             list_path.append("Typ1Aufgaben")
+    #         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
+    #             list_path.append("Typ2Aufgaben")
+    #     elif self.chosen_program == "cria":
+    #         highest_grade = self.get_highest_grade()
+    #         list_path.append(highest_grade)
 
-        #####
+    #     #####
 
-        if self.chosen_program == "lama" and self.local_save == False:
-            if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-                if (
-                    self.list_selected_topics_creator[0].lower()
-                    in zusatzthemen_beschreibung
-                ):
-                    list_path.append("Zusatzthemen")
-                else:
-                    list_path.append("_Grundkompetenzen")
-                # _, klasse = self.split_thema_klasse(
-                #     self.list_selected_topics_creator[0]
-                # )
-                # if klasse == None:
-                #     list_path.append("_Grundkompetenzen")
-                # else:
-                #     list_path.append("{}.Klasse".format(klasse))
-            elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
-                list_path.append("Einzelbeispiele")
+    #     if self.chosen_program == "lama" and self.local_save == False:
+    #         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+    #             if (
+    #                 self.list_selected_topics_creator[0].lower()
+    #                 in zusatzthemen_beschreibung
+    #             ):
+    #                 list_path.append("Zusatzthemen")
+    #             else:
+    #                 list_path.append("_Grundkompetenzen")
+    #             # _, klasse = self.split_thema_klasse(
+    #             #     self.list_selected_topics_creator[0]
+    #             # )
+    #             # if klasse == None:
+    #             #     list_path.append("_Grundkompetenzen")
+    #             # else:
+    #             #     list_path.append("{}.Klasse".format(klasse))
+    #         elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
+    #             list_path.append("Einzelbeispiele")
 
-        elif self.chosen_program == "cria" and self.local_save == False:
-            list_path.append("Einzelbeispiele")
+    #     elif self.chosen_program == "cria" and self.local_save == False:
+    #         list_path.append("Einzelbeispiele")
 
-        #####
+    #     #####
 
-        if self.chosen_program == "lama" and self.local_save == False:
-            if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-                thema = self.list_selected_topics_creator[0]
+    #     if self.chosen_program == "lama" and self.local_save == False:
+    #         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+    #             thema = self.list_selected_topics_creator[0]
 
-                if thema.lower() in zusatzthemen_beschreibung:
-                    list_path.append(thema)
-                else:
-                    list_path.append(self.list_selected_topics_creator[0][:2])
-                    list_path.append(self.list_selected_topics_creator[0])
-                    list_path.append("Einzelbeispiele")
-                # thema, klasse = self.split_thema_klasse(
-                #     self.list_selected_topics_creator[0]
-                # )
-                # if klasse == None:
-                #     list_path.append(self.list_selected_topics_creator[0][:2])
-                #     list_path.append(self.list_selected_topics_creator[0])
-                #     list_path.append("Einzelbeispiele")
-                # else:
+    #             if thema.lower() in zusatzthemen_beschreibung:
+    #                 list_path.append(thema)
+    #             else:
+    #                 list_path.append(self.list_selected_topics_creator[0][:2])
+    #                 list_path.append(self.list_selected_topics_creator[0])
+    #                 list_path.append("Einzelbeispiele")
+    #             # thema, klasse = self.split_thema_klasse(
+    #             #     self.list_selected_topics_creator[0]
+    #             # )
+    #             # if klasse == None:
+    #             #     list_path.append(self.list_selected_topics_creator[0][:2])
+    #             #     list_path.append(self.list_selected_topics_creator[0])
+    #             #     list_path.append("Einzelbeispiele")
+    #             # else:
 
-        #####
-        path = self.create_path_from_list(list_path)
+    #     #####
+    #     path = self.create_path_from_list(list_path)
 
-        return path
+    #     return path
 
-    def get_integer(self, file_name):
-        file_integer = file_name.rsplit("-", 1)[-1]
-        file_integer = file_integer.replace(".tex", "").strip()
-        file_integer = file_integer.split("[")[0]
-        file_integer = file_integer.replace("i.", "")
-        file_integer = file_integer.replace("_L_", "")
-        return file_integer
+    # def get_integer(self, file_name):
+    #     file_integer = file_name.rsplit("-", 1)[-1]
+    #     file_integer = file_integer.replace(".tex", "").strip()
+    #     file_integer = file_integer.split("[")[0]
+    #     file_integer = file_integer.replace("i.", "")
+    #     file_integer = file_integer.replace("_L_", "")
+    #     return file_integer
 
     # def get_max_integer_file_variation(self, save_dateipfad):
     #     max_integer_file = 0
@@ -4287,10 +4287,10 @@ class Ui_MainWindow(object):
     #     return max_integer_file
 
     def edit_image_name(self, typ_save, name):
-        if typ_save[0] == "local":
-            local = "_L_"
-        else:
-            local = ""
+        # if typ_save[0] == "local":
+        #     local = "_L_"
+        # else:
+        #     local = ""
 
         if self.chosen_variation == None:
             number = self.max_integer + 1
@@ -4415,33 +4415,33 @@ class Ui_MainWindow(object):
 
         # return name
 
-    def get_klasse_section(self):
-        if self.chosen_program == "cria":
-            klasse = self.get_highest_grade().upper()
-        if self.chosen_program == "lama":
-            if self.comboBox_klassen_cr.currentIndex() != 0:
-                #     _, klasse = self.split_thema_klasse(
-                #         self.list_selected_topics_creator[0]
-                #     )
-                #     if klasse != None:
-                #         temp_list = []
-                #         for all in self.list_selected_topics_creator:
-                #             temp_themen, temp_klasse = self.split_thema_klasse(all)
-                #             if int(temp_klasse) > int(klasse):
-                #                 klasse = temp_klasse
-                #             temp_list.append(temp_themen)
-                #         klasse = "K" + klasse
-                # else:
-                klasse = list(Klassen.keys())[
-                    self.comboBox_klassen_cr.currentIndex() - 1
-                ]
-                klasse = klasse.upper()
-            else:
-                klasse = ""
+    # def get_klasse_section(self):
+    #     if self.chosen_program == "cria":
+    #         klasse = self.get_highest_grade().upper()
+    #     if self.chosen_program == "lama":
+    #         if self.comboBox_klassen_cr.currentIndex() != 0:
+    #             #     _, klasse = self.split_thema_klasse(
+    #             #         self.list_selected_topics_creator[0]
+    #             #     )
+    #             #     if klasse != None:
+    #             #         temp_list = []
+    #             #         for all in self.list_selected_topics_creator:
+    #             #             temp_themen, temp_klasse = self.split_thema_klasse(all)
+    #             #             if int(temp_klasse) > int(klasse):
+    #             #                 klasse = temp_klasse
+    #             #             temp_list.append(temp_themen)
+    #             #         klasse = "K" + klasse
+    #             # else:
+    #             klasse = list(Klassen.keys())[
+    #                 self.comboBox_klassen_cr.currentIndex() - 1
+    #             ]
+    #             klasse = klasse.upper()
+    #         else:
+    #             klasse = ""
 
-        # if klasse == None:
-        #     klasse = ""
-        return klasse
+    #     # if klasse == None:
+    #     #     klasse = ""
+    #     return klasse
 
     def get_themen_auswahl(self):
         themen_auswahl = []
@@ -4461,12 +4461,12 @@ class Ui_MainWindow(object):
 
         return themen_auswahl
 
-    def create_section_string(self, list_):
-        section_string = str(list_[0])
-        for all in list_[1:]:
-            section_string = section_string + " - " + str(all)
+    # def create_section_string(self, list_):
+    #     section_string = str(list_[0])
+    #     for all in list_[1:]:
+    #         section_string = section_string + " - " + str(all)
 
-        return section_string
+    #     return section_string
 
     # def create_section(self, typ_save):
     #     if self.chosen_variation != None:
@@ -6494,20 +6494,20 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
         return typ
 
-    def get_beispieldaten_dateipfad_draft(self, typ):
-        drafts_path = os.path.join(database, "drafts")
-        list_section = []
-        list_path = []
-        beispieldaten_dateipfad_draft = search_files(drafts_path)
+    # def get_beispieldaten_dateipfad_draft(self, typ):
+    #     drafts_path = os.path.join(database, "drafts")
+    #     list_section = []
+    #     list_path = []
+    #     beispieldaten_dateipfad_draft = search_files(drafts_path)
 
-        for section in beispieldaten_dateipfad_draft.keys():
-            path = beispieldaten_dateipfad_draft[section]
-            aufgabentyp = self.get_aufgabentyp_from_path(path)
-            if aufgabentyp == typ:
-                list_section.append(section)
-                list_path.append(path)
+    #     for section in beispieldaten_dateipfad_draft.keys():
+    #         path = beispieldaten_dateipfad_draft[section]
+    #         aufgabentyp = self.get_aufgabentyp_from_path(path)
+    #         if aufgabentyp == typ:
+    #             list_section.append(section)
+    #             list_path.append(path)
 
-        return list_section, list_path
+    #     return list_section, list_path
 
     def delete_item_without_string_from_list(self, string, list_):
         for section in list_[:]:
@@ -6590,112 +6590,112 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             else:
                 listWidget.addItem(item)
         return
-        for section in list_beispieldaten_sections:
-            try:
-                path = beispieldaten_dateipfad[section]
-            except KeyError:
-                drafts_path = os.path.join(database, "drafts")
-                beispieldaten_dateipfad_draft = search_files(drafts_path)
-                path = beispieldaten_dateipfad_draft[section]
+        # for section in list_beispieldaten_sections:
+        #     try:
+        #         path = beispieldaten_dateipfad[section]
+        #     except KeyError:
+        #         drafts_path = os.path.join(database, "drafts")
+        #         beispieldaten_dateipfad_draft = search_files(drafts_path)
+        #         path = beispieldaten_dateipfad_draft[section]
 
-            name, extension = os.path.splitext(os.path.basename(path))
-            item = QtWidgets.QListWidgetItem()
+        #     name, extension = os.path.splitext(os.path.basename(path))
+        #     item = QtWidgets.QListWidgetItem()
 
-            # if "Beispieleinreichung" in path:
-            #     item.setText(name + ' (Entwurf)')
-            # elif "Lokaler_Ordner" in path:
-            #     item.setText(name + ' (lokal)')
-            # else:
-            item.setText(name)
+        #     # if "Beispieleinreichung" in path:
+        #     #     item.setText(name + ' (Entwurf)')
+        #     # elif "Lokaler_Ordner" in path:
+        #     #     item.setText(name + ' (lokal)')
+        #     # else:
+        #     item.setText(name)
 
-            if name.startswith("_L_"):
-                if listWidget_mode == "feedback":
-                    pass
-                else:
-                    # local_item_background_color = blue_4
-                    # # local_item_background_color = blue_3
-                    # item.setBackground(local_item_background_color)
-                    item.setToolTip("lokal gespeichert")
-                    listWidget.addItem(item)
+        #     if name.startswith("_L_"):
+        #         if listWidget_mode == "feedback":
+        #             pass
+        #         else:
+        #             # local_item_background_color = blue_4
+        #             # # local_item_background_color = blue_3
+        #             # item.setBackground(local_item_background_color)
+        #             item.setToolTip("lokal gespeichert")
+        #             listWidget.addItem(item)
 
-            elif "drafts" in path:
-                if listWidget_mode == "feedback":
-                    pass
-                else:
-                    item.setBackground(blue_5)
-                    item.setForeground(white)
-                    item.setToolTip("Entwurf")
-                    listWidget.addItem(item)
+        #     elif "drafts" in path:
+        #         if listWidget_mode == "feedback":
+        #             pass
+        #         else:
+        #             item.setBackground(blue_5)
+        #             item.setForeground(white)
+        #             item.setToolTip("Entwurf")
+        #             listWidget.addItem(item)
 
-            elif re.search("\[.+\]", name) != None:
-                # item.setForeground(QtGui.QColor(108, 159, 103))
-                item.setToolTip("Variation")
-                listWidget.addItem(item)
-            else:
-                listWidget.addItem(item)
-            # item.setToolTip(path)
+        #     elif re.search("\[.+\]", name) != None:
+        #         # item.setForeground(QtGui.QColor(108, 159, 103))
+        #         item.setToolTip("Variation")
+        #         listWidget.addItem(item)
+        #     else:
+        #         listWidget.addItem(item)
+        #     # item.setToolTip(path)
 
-        listWidget.setFocusPolicy(QtCore.Qt.ClickFocus)
+        # listWidget.setFocusPolicy(QtCore.Qt.ClickFocus)
 
     def get_string_in_parantheses(self, string):
         kapitel = re.findall("\((..?.)\)", string)
         return kapitel[-1]
 
-    def adjust_beispieldaten_combobox_lama(
-        self, list_beispieldaten_sections, combobox_gk, combobox_gk_num
-    ):
-        if combobox_gk == "Zusatzthemen":
-            if is_empty(combobox_gk_num) == True:
-                for section in list_beispieldaten_sections[:]:
-                    section_split = split_section(section, self.chosen_program)
-                    thema = section_split[0]
-                    if thema.lower() not in zusatzthemen_beschreibung:
-                        list_beispieldaten_sections.remove(section)
-            else:
-                list_beispieldaten_sections = self.delete_item_without_string_from_list(
-                    combobox_gk_num.upper(), list_beispieldaten_sections
-                )
+    # def adjust_beispieldaten_combobox_lama(
+    #     self, list_beispieldaten_sections, combobox_gk, combobox_gk_num
+    # ):
+    #     if combobox_gk == "Zusatzthemen":
+    #         if is_empty(combobox_gk_num) == True:
+    #             for section in list_beispieldaten_sections[:]:
+    #                 section_split = split_section(section, self.chosen_program)
+    #                 thema = section_split[0]
+    #                 if thema.lower() not in zusatzthemen_beschreibung:
+    #                     list_beispieldaten_sections.remove(section)
+    #         else:
+    #             list_beispieldaten_sections = self.delete_item_without_string_from_list(
+    #                 combobox_gk_num.upper(), list_beispieldaten_sections
+    #             )
 
-        elif is_empty(combobox_gk) == False:
+    #     elif is_empty(combobox_gk) == False:
 
-            if is_empty(combobox_gk_num) == True:
-                string = combobox_gk
-            else:
-                short_gk = shorten_gk(combobox_gk.lower() + combobox_gk_num)
-                string = dict_gk[short_gk]
+    #         if is_empty(combobox_gk_num) == True:
+    #             string = combobox_gk
+    #         else:
+    #             short_gk = shorten_gk(combobox_gk.lower() + combobox_gk_num)
+    #             string = dict_gk[short_gk]
 
-            list_beispieldaten_sections = self.delete_item_without_string_from_list(
-                string, list_beispieldaten_sections
-            )
-        return list_beispieldaten_sections
+    #         list_beispieldaten_sections = self.delete_item_without_string_from_list(
+    #             string, list_beispieldaten_sections
+    #         )
+    #     return list_beispieldaten_sections
 
-    def adjust_beispieldaten_combobox_cria(
-        self,
-        list_beispieldaten_sections,
-        combobox_klasse,
-        combobox_kapitel,
-        combobox_unterkapitel,
-    ):
-        klasse = "K" + combobox_klasse[0]
-        for section in list_beispieldaten_sections[:]:
-            info = split_section(section, self.chosen_program)
-            if klasse not in info[0]:
-                list_beispieldaten_sections.remove(section)
+    # def adjust_beispieldaten_combobox_cria(
+    #     self,
+    #     list_beispieldaten_sections,
+    #     combobox_klasse,
+    #     combobox_kapitel,
+    #     combobox_unterkapitel,
+    # ):
+    #     klasse = "K" + combobox_klasse[0]
+    #     for section in list_beispieldaten_sections[:]:
+    #         info = split_section(section, self.chosen_program)
+    #         if klasse not in info[0]:
+    #             list_beispieldaten_sections.remove(section)
 
-        if is_empty(combobox_kapitel) == False:
-            kapitel = self.get_string_in_parantheses(combobox_kapitel)
-            if is_empty(combobox_unterkapitel) == True:
-                list_beispieldaten_sections = self.delete_item_without_string_from_list(
-                    kapitel, list_beispieldaten_sections
-                )
-            else:
-                unterkapitel = self.get_string_in_parantheses(combobox_unterkapitel)
-                string = kapitel + "." + unterkapitel
-                list_beispieldaten_sections = self.delete_item_without_string_from_list(
-                    string, list_beispieldaten_sections
-                )
+    #     if is_empty(combobox_kapitel) == False:
+    #         kapitel = self.get_string_in_parantheses(combobox_kapitel)
+    #         if is_empty(combobox_unterkapitel) == True:
+    #             list_beispieldaten_sections = self.delete_item_without_string_from_list(
+    #                 kapitel, list_beispieldaten_sections
+    #             )
+    #         else:
+    #             unterkapitel = self.get_string_in_parantheses(combobox_unterkapitel)
+    #             string = kapitel + "." + unterkapitel
+    #             list_beispieldaten_sections = self.delete_item_without_string_from_list(
+    #                 string, list_beispieldaten_sections
+    #             )
 
-        return list_beispieldaten_sections
+    #     return list_beispieldaten_sections
 
     def adapt_choosing_list(self, list_mode):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
