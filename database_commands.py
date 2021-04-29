@@ -107,7 +107,7 @@ def create_list_from_section(section):
 	return list_collected_data
 
 
-def add_file(database, name, themen, titel, af, quelle, content, punkte, pagebreak, klasse, info = None, bilder=None, draft = False, abstand = 0):
+def add_file(database, name, themen, titel, af, quelle, content, punkte, pagebreak, klasse, info = None, bilder=[], draft = False, abstand = 0):
     database.insert({
         'name' : name,
         'themen' : themen,
@@ -215,7 +215,7 @@ def write_to_database(folder_path, typ,klasse=None):
             if image_list != []:
                 bilder = image_list
             else:
-                bilder = None
+                bilder = []
             # break
             add_file(table_lama, name, themen, titel, af, quelle, rest_content, punkte, pagebreak, klasse, info, bilder)
     except FileNotFoundError:
