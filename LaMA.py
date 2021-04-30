@@ -94,7 +94,6 @@ from prepare_content_vorschau import (
     edit_content_vorschau,
     copy_logo_to_target_path,
     copy_included_images,
-    split_content_at_beispiel_umgebung,
 )
 from convert_image_to_eps import convert_image_to_eps
 from lama_colors import *
