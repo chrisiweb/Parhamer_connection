@@ -72,7 +72,7 @@ from subwindows import (
 from translate import _fromUtf8, _translate
 from sort_items import natural_keys, sorted_gks, order_gesammeltedateien
 from create_pdf import prepare_tex_for_pdf, create_pdf, check_if_variation
-from refresh_ddb import modification_date, refresh_ddb, search_files
+from refresh_ddb import modification_date, refresh_ddb
 from standard_dialog_windows import (
     warning_window,
     question_window,
@@ -252,16 +252,16 @@ class Ui_MainWindow(object):
             refresh_ddb(self)
             QtWidgets.QApplication.restoreOverrideCursor()
 
-        if self.chosen_program == "cria":
-            self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
-                "cria"
-            )
-            self.beispieldaten_dateipfad_1 = None
-            self.beispieldaten_dateipfad_2 = None
-        else:
-            self.beispieldaten_dateipfad_1 = self.define_beispieldaten_dateipfad(1)
-            self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)
-            self.beispieldaten_dateipfad_cria = None
+        # if self.chosen_program == "cria":
+        #     self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
+        #         "cria"
+        #     )
+        #     self.beispieldaten_dateipfad_1 = None
+        #     self.beispieldaten_dateipfad_2 = None
+        # else:
+        #     self.beispieldaten_dateipfad_1 = self.define_beispieldaten_dateipfad(1)
+        #     self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)
+        #     self.beispieldaten_dateipfad_cria = None
 
         ########################
         self.MainWindow = MainWindow
@@ -2268,7 +2268,7 @@ class Ui_MainWindow(object):
     def open_dialogwindow_erstellen(
         self,
         dict_titlepage,
-    ):  # , dict_gesammeltedateien
+    ):
         self.Dialog = QtWidgets.QDialog(
             None,
             QtCore.Qt.WindowSystemMenuHint
@@ -3016,10 +3016,10 @@ class Ui_MainWindow(object):
         if self.chosen_program == "lama":
             self.chosen_program = "cria"
 
-            if self.beispieldaten_dateipfad_cria == None:
-                self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
-                    "cria"
-                )
+            # if self.beispieldaten_dateipfad_cria == None:
+            #     self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
+            #         "cria"
+            #     )
 
             self.gridLayout.addWidget(self.groupBox_af, 3, 0, 1, 1)
             self.gridLayout.addWidget(self.groupBox_punkte, 0, 1, 1, 1)
@@ -3055,19 +3055,19 @@ class Ui_MainWindow(object):
             self.label_gesamtbeispiele.setText(
                 _translate("MainWindow", "Anzahl der Aufgaben: 0", None)
             )
-            self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
-                "cria"
-            )
+            # self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
+            #     "cria"
+            # )
 
         elif self.chosen_program == "cria":
             self.chosen_program = "lama"
 
-            if (
-                self.beispieldaten_dateipfad_1 == None
-                or self.beispieldaten_dateipfad_2 == None
-            ):
-                self.beispieldaten_dateipfad_1 = self.define_beispieldaten_dateipfad(1)
-                self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)
+            # if (
+            #     self.beispieldaten_dateipfad_1 == None
+            #     or self.beispieldaten_dateipfad_2 == None
+            # ):
+            #     self.beispieldaten_dateipfad_1 = self.define_beispieldaten_dateipfad(1)
+            #     self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)
 
             self.gridLayout.addWidget(self.groupBox_af, 4, 0, 1, 1)
             self.gridLayout.addWidget(self.groupBox_punkte, 0, 2, 1, 1)
@@ -3107,8 +3107,8 @@ class Ui_MainWindow(object):
         if self.lama_settings["database"] == 0:
             refresh_ddb(self)
         self.update_gui("widgets_search")
-        self.beispieldaten_dateipfad_1 = self.define_beispieldaten_dateipfad(1)
-        self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)
+        # self.beispieldaten_dateipfad_1 = self.define_beispieldaten_dateipfad(1)
+        # self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)
 
     def close_app(self):
         if self.list_alle_aufgaben_sage == []:
@@ -3555,36 +3555,36 @@ class Ui_MainWindow(object):
     #     elif self.comboBox_aufgabentyp_cr.currentIndex() == 1:
     #         self.spinBox_punkte.setValue(0)
 
-    def add_drafts_to_beispieldaten(self):
-        drafts_path = os.path.join(database, "drafts")
-        beispieldaten_dateipfad_draft = search_files(drafts_path)
-        for section in beispieldaten_dateipfad_draft.keys():
-            path = beispieldaten_dateipfad_draft[section]
-            aufgabentyp = self.get_aufgabentyp_from_path(path)
-            if self.chosen_program == "lama":
-                if aufgabentyp == 1:
-                    self.beispieldaten_dateipfad_1[section] = path
-                elif aufgabentyp == 2:
-                    self.beispieldaten_dateipfad_2[section] = path
-            elif self.chosen_program == "cria" and aufgabentyp == None:
-                self.beispieldaten_dateipfad_cria[section] = path
+    # def add_drafts_to_beispieldaten(self):
+    #     drafts_path = os.path.join(database, "drafts")
+    #     beispieldaten_dateipfad_draft = search_files(drafts_path)
+    #     for section in beispieldaten_dateipfad_draft.keys():
+    #         path = beispieldaten_dateipfad_draft[section]
+    #         aufgabentyp = self.get_aufgabentyp_from_path(path)
+    #         if self.chosen_program == "lama":
+    #             if aufgabentyp == 1:
+    #                 self.beispieldaten_dateipfad_1[section] = path
+    #             elif aufgabentyp == 2:
+    #                 self.beispieldaten_dateipfad_2[section] = path
+    #         elif self.chosen_program == "cria" and aufgabentyp == None:
+    #             self.beispieldaten_dateipfad_cria[section] = path
 
-    def delete_drafts_from_beispieldaten(self):
-        drafts_path = os.path.join(database, "drafts")
-        beispieldaten_dateipfad_draft = search_files(drafts_path)
-        for section in beispieldaten_dateipfad_draft.keys():
-            path = beispieldaten_dateipfad_draft[section]
-            aufgabentyp = self.get_aufgabentyp_from_path(path)
-            if self.chosen_program == "lama":
-                if section in self.beispieldaten_dateipfad_1:
-                    del self.beispieldaten_dateipfad_1[section]
-                elif section in self.beispieldaten_dateipfad_2:
-                    del self.beispieldaten_dateipfad_2[section]
-            elif (
-                self.chosen_program == "cria"
-                and section in self.beispieldaten_dateipfad_cria
-            ):
-                del self.beispieldaten_dateipfad_cria[section]
+    # def delete_drafts_from_beispieldaten(self):
+    #     drafts_path = os.path.join(database, "drafts")
+    #     beispieldaten_dateipfad_draft = search_files(drafts_path)
+    #     for section in beispieldaten_dateipfad_draft.keys():
+    #         path = beispieldaten_dateipfad_draft[section]
+    #         aufgabentyp = self.get_aufgabentyp_from_path(path)
+    #         if self.chosen_program == "lama":
+    #             if section in self.beispieldaten_dateipfad_1:
+    #                 del self.beispieldaten_dateipfad_1[section]
+    #             elif section in self.beispieldaten_dateipfad_2:
+    #                 del self.beispieldaten_dateipfad_2[section]
+    #         elif (
+    #             self.chosen_program == "cria"
+    #             and section in self.beispieldaten_dateipfad_cria
+    #         ):
+    #             del self.beispieldaten_dateipfad_cria[section]
 
     def cb_drafts_sage_enabled(self):
         if self.cb_drafts_sage.isChecked() == True:
@@ -3594,10 +3594,10 @@ class Ui_MainWindow(object):
                 titel="Warnung - Here be dragons!",
             )
 
-            self.add_drafts_to_beispieldaten()
+            # self.add_drafts_to_beispieldaten()
 
-        if self.cb_drafts_sage.isChecked() == False:
-            self.delete_drafts_from_beispieldaten()
+        # if self.cb_drafts_sage.isChecked() == False:
+        #     self.delete_drafts_from_beispieldaten()
 
         self.adapt_choosing_list("sage")
 
@@ -3608,56 +3608,56 @@ class Ui_MainWindow(object):
     ################### Befehle Creator ###########################
     #############################################################
 
-    def collect_data_aufgabe(self, aufgabe):
-        print(aufgabe)
+    # def collect_data_aufgabe(self, aufgabe):
+    #     print(aufgabe)
 
-        aufgabe_total = get_aufgabe_total(aufgabe)
-        print(aufgabe_total)
-        return
-        content = collect_content(self, aufgabe)
+    #     aufgabe_total = get_aufgabe_total(aufgabe)
+    #     print(aufgabe_total)
+    #     return
+    #     content = collect_content(self, aufgabe)
 
-        section = get_section_from_content(self, content)
+    #     section = get_section_from_content(self, content)
 
-        if section == None:
-            warning_window(
-                'Die gewählte Aufgabe {} ist fehlerhaft.\nBitte melden Sie diese unter "Feedback & Fehler".\nVielen Dank!'.format(
-                    aufgabe
-                )
-            )
-            return
+    #     if section == None:
+    #         warning_window(
+    #             'Die gewählte Aufgabe {} ist fehlerhaft.\nBitte melden Sie diese unter "Feedback & Fehler".\nVielen Dank!'.format(
+    #                 aufgabe
+    #             )
+    #         )
+    #         return
 
-        list_collected_data = re.split("{| - |}", section)[1:-1]
+    #     list_collected_data = re.split("{| - |}", section)[1:-1]
 
-        dict_collected_data = {}
+    #     dict_collected_data = {}
 
-        dict_collected_data["aufgabe"] = aufgabe
+    #     dict_collected_data["aufgabe"] = aufgabe
 
-        dict_collected_data["klasse"] = None
-        for all in list_collected_data:
-            if re.match("K[0-9]", all) or all == "MAT":
-                dict_collected_data["klasse"] = all
-        typ = get_aufgabentyp(self.chosen_program, aufgabe)
-        info = self.collect_all_infos_aufgabe(aufgabe)
+    #     dict_collected_data["klasse"] = None
+    #     for all in list_collected_data:
+    #         if re.match("K[0-9]", all) or all == "MAT":
+    #             dict_collected_data["klasse"] = all
+    #     typ = get_aufgabentyp(self.chosen_program, aufgabe)
+    #     info = self.collect_all_infos_aufgabe(aufgabe)
 
-        if typ == None:
-            themen = list_collected_data[1].split(", ")
-            dict_collected_data["thema"] = themen
-        elif typ == 1:
-            dict_collected_data["thema"] = [list_collected_data[0]]
-        elif typ == 2:
-            gks = list_collected_data[-3].split(", ")
-            dict_collected_data["thema"] = gks
-            # dict_collected_data['titel']=  list_collected_data[-]
+    #     if typ == None:
+    #         themen = list_collected_data[1].split(", ")
+    #         dict_collected_data["thema"] = themen
+    #     elif typ == 1:
+    #         dict_collected_data["thema"] = [list_collected_data[0]]
+    #     elif typ == 2:
+    #         gks = list_collected_data[-3].split(", ")
+    #         dict_collected_data["thema"] = gks
+    #         # dict_collected_data['titel']=  list_collected_data[-]
 
-        dict_collected_data["titel"] = info[2]
+    #     dict_collected_data["titel"] = info[2]
 
-        if isinstance(info[3], int):
-            dict_collected_data["aufgabenformat"] = None
-        else:
-            dict_collected_data["aufgabenformat"] = info[3]
-        dict_collected_data["quelle"] = list_collected_data[-1]
+    #     if isinstance(info[3], int):
+    #         dict_collected_data["aufgabenformat"] = None
+    #     else:
+    #         dict_collected_data["aufgabenformat"] = info[3]
+    #     dict_collected_data["quelle"] = list_collected_data[-1]
 
-        return dict_collected_data
+    #     return dict_collected_data
 
     def set_infos_chosen_variation(self, aufgabe_total):
         aufgabe = aufgabe_total["name"]
@@ -4960,15 +4960,15 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         # QtWidgets.QApplication.restoreOverrideCursor()
         # information_window("Die Datenbank wurde erfolgreich hochgeladen.")
 
-    def define_beispieldaten_dateipfad(self, typ):
+    # def define_beispieldaten_dateipfad(self, typ):
 
-        log_file = os.path.join(
-            path_localappdata_lama, "Teildokument", "log_file_{}".format(typ)
-        )
+    #     log_file = os.path.join(
+    #         path_localappdata_lama, "Teildokument", "log_file_{}".format(typ)
+    #     )
 
-        beispieldaten_dateipfad = self.get_beispieldaten_dateipfad(log_file)
+    #     beispieldaten_dateipfad = self.get_beispieldaten_dateipfad(log_file)
 
-        return beispieldaten_dateipfad
+    #     return beispieldaten_dateipfad
 
     def check_if_file_exists(self, aufgabe):  # aufgabe
         typ = get_aufgabentyp(self.chosen_program, aufgabe)
@@ -5191,6 +5191,8 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
     def define_titlepage(self):
         if self.comboBox_pruefungstyp.currentText() == "Quiz":
+            print('not yet working')
+            return
             Dialog = QtWidgets.QDialog(
                 None,
                 QtCore.Qt.WindowSystemMenuHint
@@ -5820,110 +5822,110 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
         return klasse
 
-    def collect_all_infos_aufgabe(self, aufgabe):
-        typ = get_aufgabentyp(self.chosen_program, aufgabe)
-        print(typ)  # 1, 2, None
-        return
-        if typ == None:
-            punkte = self.get_punkte_aufgabe(aufgabe)
-            klasse, aufgabe = self.split_klasse_aufgabe(aufgabe)
-            name = aufgabe + ".tex"
-            for all in self.beispieldaten_dateipfad_cria:
-                if klasse.upper() in all:
-                    filename = os.path.basename(self.beispieldaten_dateipfad_cria[all])
-                    if name == filename:
-                        info = split_section(all, self.chosen_program)
-                        titel = info[3]
-                        typ_info = info[4]  # Aufgabenformat
+    # def collect_all_infos_aufgabe(self, aufgabe):
+    #     typ = get_aufgabentyp(self.chosen_program, aufgabe)
+    #     print(typ)  # 1, 2, None
+    #     return
+    #     if typ == None:
+    #         punkte = self.get_punkte_aufgabe(aufgabe)
+    #         klasse, aufgabe = self.split_klasse_aufgabe(aufgabe)
+    #         name = aufgabe + ".tex"
+    #         for all in self.beispieldaten_dateipfad_cria:
+    #             if klasse.upper() in all:
+    #                 filename = os.path.basename(self.beispieldaten_dateipfad_cria[all])
+    #                 if name == filename:
+    #                     info = split_section(all, self.chosen_program)
+    #                     titel = info[3]
+    #                     typ_info = info[4]  # Aufgabenformat
 
-        elif typ == 1:
-            name = aufgabe + ".tex"
-            for all in self.beispieldaten_dateipfad_1:
-                filename = os.path.basename(self.beispieldaten_dateipfad_1[all])
-                if name == filename:
-                    x = all.split(" - ")
-                    titel = x[-3]
-                    typ_info = x[-2]  # Aufgabenformat
-            punkte = self.spinBox_default_pkt.value()
+    #     elif typ == 1:
+    #         name = aufgabe + ".tex"
+    #         for all in self.beispieldaten_dateipfad_1:
+    #             filename = os.path.basename(self.beispieldaten_dateipfad_1[all])
+    #             if name == filename:
+    #                 x = all.split(" - ")
+    #                 titel = x[-3]
+    #                 typ_info = x[-2]  # Aufgabenformat
+    #         punkte = self.spinBox_default_pkt.value()
 
-        elif typ == 2:
-            name = aufgabe + ".tex"
-            for all in self.beispieldaten_dateipfad_2:
-                filename = os.path.basename(self.beispieldaten_dateipfad_2[all])
-                if name == filename:
-                    x = all.split(" - ")
-                    titel = x[-2]
-                    typ_info = self.get_number_ausgleichspunkte(
-                        aufgabe
-                    )  # Ausgleichspunkte
+    #     elif typ == 2:
+    #         name = aufgabe + ".tex"
+    #         for all in self.beispieldaten_dateipfad_2:
+    #             filename = os.path.basename(self.beispieldaten_dateipfad_2[all])
+    #             if name == filename:
+    #                 x = all.split(" - ")
+    #                 titel = x[-2]
+    #                 typ_info = self.get_number_ausgleichspunkte(
+    #                     aufgabe
+    #                 )  # Ausgleichspunkte
 
-            punkte = self.get_punkte_aufgabe(aufgabe)
+    #         punkte = self.get_punkte_aufgabe(aufgabe)
 
-        return [punkte, 0, titel, typ_info]
+    #     return [punkte, 0, titel, typ_info]
 
-    def get_punkte_aufgabe(aufgabe):
-        content = collect_content(self, aufgabe)
-        start = re.findall("begin{beispiel}.*\{[0-9][0-9]?\}", content)
-        typ = "beispiel"
-        if start == []:
-            start = re.findall("begin{langesbeispiel}.*\\\item\[[0-9][0-9]?\]", content)
-            typ = "langesbeispiel"
-        try:
-            if typ == "langesbeispiel":
-                punkte = int(re.findall(r"\[([0-9][0-9]?)\]", start[0])[0])
-            else:
-                punkte = int(re.findall(r"\{([0-9][0-9]?)\}", start[0])[0])
+    # def get_punkte_aufgabe(aufgabe):
+    #     content = collect_content(self, aufgabe)
+    #     start = re.findall("begin{beispiel}.*\{[0-9][0-9]?\}", content)
+    #     typ = "beispiel"
+    #     if start == []:
+    #         start = re.findall("begin{langesbeispiel}.*\\\item\[[0-9][0-9]?\]", content)
+    #         typ = "langesbeispiel"
+    #     try:
+    #         if typ == "langesbeispiel":
+    #             punkte = int(re.findall(r"\[([0-9][0-9]?)\]", start[0])[0])
+    #         else:
+    #             punkte = int(re.findall(r"\{([0-9][0-9]?)\}", start[0])[0])
 
-            return punkte
-        except IndexError:
-            return 0
+    #         return punkte
+    #     except IndexError:
+    #         return 0
 
-    def get_dateipfad_from_filename(self, list_path, filename, klasse=None):
-        if self.chosen_program == "cria":
-            for path in list_path:
-                if klasse.lower() in path.lower():
-                    if filename == os.path.basename(path):
-                        dateipfad = path
-                        break
-        elif self.chosen_program == "lama":
-            for path in list_path:
-                if filename == os.path.basename(path):
-                    dateipfad = path
-                    break
-        return dateipfad
+    # def get_dateipfad_from_filename(self, list_path, filename, klasse=None):
+    #     if self.chosen_program == "cria":
+    #         for path in list_path:
+    #             if klasse.lower() in path.lower():
+    #                 if filename == os.path.basename(path):
+    #                     dateipfad = path
+    #                     break
+    #     elif self.chosen_program == "lama":
+    #         for path in list_path:
+    #             if filename == os.path.basename(path):
+    #                 dateipfad = path
+    #                 break
+    #     return dateipfad
 
-    def get_dateipfad_aufgabe(self, aufgabe, draft=False):
-        typ = get_aufgabentyp(self.chosen_program, aufgabe)
-        klasse = None
+    # def get_dateipfad_aufgabe(self, aufgabe, draft=False):
+    #     typ = get_aufgabentyp(self.chosen_program, aufgabe)
+    #     klasse = None
 
-        if self.chosen_program == "cria":
-            list_path = self.beispieldaten_dateipfad_cria.values()
-            klasse, aufgabe = self.split_klasse_aufgabe(aufgabe)
-            filename = aufgabe + ".tex"
+    #     if self.chosen_program == "cria":
+    #         list_path = self.beispieldaten_dateipfad_cria.values()
+    #         klasse, aufgabe = self.split_klasse_aufgabe(aufgabe)
+    #         filename = aufgabe + ".tex"
 
-        if self.chosen_program == "lama":
-            if typ == 1:
-                list_path = self.beispieldaten_dateipfad_1.values()
-            elif typ == 2:
-                list_path = self.beispieldaten_dateipfad_2.values()
-            filename = aufgabe + ".tex"
+    #     if self.chosen_program == "lama":
+    #         if typ == 1:
+    #             list_path = self.beispieldaten_dateipfad_1.values()
+    #         elif typ == 2:
+    #             list_path = self.beispieldaten_dateipfad_2.values()
+    #         filename = aufgabe + ".tex"
 
-        dateipfad = self.get_dateipfad_from_filename(list_path, filename, klasse)
+    #     dateipfad = self.get_dateipfad_from_filename(list_path, filename, klasse)
 
-        return dateipfad
+    #     return dateipfad
 
-    def get_number_ausgleichspunkte(self, aufgabe):
-        typ = get_aufgabentyp(self.chosen_program, aufgabe)
+    # def get_number_ausgleichspunkte(self, aufgabe):
+    #     typ = get_aufgabentyp(self.chosen_program, aufgabe)
 
-        if typ == 2:
-            content = collect_content(self, aufgabe)
+    #     if typ == 2:
+    #         content = collect_content(self, aufgabe)
 
-            number_ausgleichspunkte = content.count("\\fbox{A}")
-            number_ausgleichspunkte = number_ausgleichspunkte + content.count(
-                "\\ASubitem"
-            )
+    #         number_ausgleichspunkte = content.count("\\fbox{A}")
+    #         number_ausgleichspunkte = number_ausgleichspunkte + content.count(
+    #             "\\ASubitem"
+    #         )
 
-            return number_ausgleichspunkte
+    #         return number_ausgleichspunkte
 
     def delete_all_widgets(self, layout, start=0):
         for i in reversed(range(start, layout.count())):
@@ -6464,35 +6466,35 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
     def comboBox_unterkapitel_changed(self, list_mode):
         self.adapt_choosing_list(list_mode)
 
-    def get_beispieldaten_dateipfad(self, log_file):
-        try:
-            with open(log_file, encoding="utf8") as f:
-                dictionary = json.load(f)
-        except FileNotFoundError:
-            refresh_ddb(self)
-            with open(log_file, encoding="utf8") as f:
-                dictionary = json.load(f)
+    # def get_beispieldaten_dateipfad(self, log_file):
+    #     try:
+    #         with open(log_file, encoding="utf8") as f:
+    #             dictionary = json.load(f)
+    #     except FileNotFoundError:
+    #         refresh_ddb(self)
+    #         with open(log_file, encoding="utf8") as f:
+    #             dictionary = json.load(f)
 
-        return dictionary
+    #     return dictionary
 
-    def get_name_from_path(self, path):
-        path, filename = os.path.split(path)
-        filename, extension = os.path.splitext(filename)
+    # def get_name_from_path(self, path):
+    #     path, filename = os.path.split(path)
+    #     filename, extension = os.path.splitext(filename)
 
-        return filename
+    #     return filename
 
-    def get_aufgabentyp_from_path(self, abs_path):
-        path, filename = os.path.split(abs_path)
-        parent_folder = os.path.basename(path)
+    # def get_aufgabentyp_from_path(self, abs_path):
+    #     path, filename = os.path.split(abs_path)
+    #     parent_folder = os.path.basename(path)
 
-        if parent_folder != "drafts":
-            typ = None
-        elif re.search("[A-Z]", filename) == None:
-            typ = 2
-        else:
-            typ = 1
+    #     if parent_folder != "drafts":
+    #         typ = None
+    #     elif re.search("[A-Z]", filename) == None:
+    #         typ = 2
+    #     else:
+    #         typ = 1
 
-        return typ
+    #     return typ
 
     # def get_beispieldaten_dateipfad_draft(self, typ):
     #     drafts_path = os.path.join(database, "drafts")
@@ -6509,12 +6511,12 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
     #     return list_section, list_path
 
-    def delete_item_without_string_from_list(self, string, list_):
-        for section in list_[:]:
-            if string not in section:
-                list_.remove(section)
+    # def delete_item_without_string_from_list(self, string, list_):
+    #     for section in list_[:]:
+    #         if string not in section:
+    #             list_.remove(section)
 
-        return list_
+    #     return list_
 
     # def split_section(self, section):
     #     section = re.split(" - |{|}", section)
@@ -6529,26 +6531,26 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             string = string[1:]
         return string
 
-    def search_for_number(self, list_, line_entry, list_mode):
-        for section in list_[:]:
-            info = split_section(section, self.chosen_program)
-            if self.chosen_program == "lama":
-                if list_mode == "sage":
-                    combobox_at = self.comboBox_at_sage.currentText()
-                elif list_mode == "feedback":
-                    combobox_at = self.comboBox_at_fb.currentText()
+    # def search_for_number(self, list_, line_entry, list_mode):
+    #     for section in list_[:]:
+    #         info = split_section(section, self.chosen_program)
+    #         if self.chosen_program == "lama":
+    #             if list_mode == "sage":
+    #                 combobox_at = self.comboBox_at_sage.currentText()
+    #             elif list_mode == "feedback":
+    #                 combobox_at = self.comboBox_at_fb.currentText()
 
-                if combobox_at == "Typ 1":
-                    number = self.delete_zeros_at_beginning(info[2])
-                if combobox_at == "Typ 2":
-                    number = self.delete_zeros_at_beginning(info[0])
+    #             if combobox_at == "Typ 1":
+    #                 number = self.delete_zeros_at_beginning(info[2])
+    #             if combobox_at == "Typ 2":
+    #                 number = self.delete_zeros_at_beginning(info[0])
 
-            elif self.chosen_program == "cria":
-                number = self.delete_zeros_at_beginning(info[2])
-            number = number.replace("i.", "")
-            if not number.startswith(line_entry):
-                list_.remove(section)
-        return list_
+    #         elif self.chosen_program == "cria":
+    #             number = self.delete_zeros_at_beginning(info[2])
+    #         number = number.replace("i.", "")
+    #         if not number.startswith(line_entry):
+    #             list_.remove(section)
+    #     return list_
 
     # def add_local_items_to_listwidget(self, typ, listWidget, filter_items):
     #     for _file_ in filter_items:
@@ -6637,9 +6639,9 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
         # listWidget.setFocusPolicy(QtCore.Qt.ClickFocus)
 
-    def get_string_in_parantheses(self, string):
-        kapitel = re.findall("\((..?.)\)", string)
-        return kapitel[-1]
+    # def get_string_in_parantheses(self, string):
+    #     kapitel = re.findall("\((..?.)\)", string)
+    #     return kapitel[-1]
 
     # def adjust_beispieldaten_combobox_lama(
     #     self, list_beispieldaten_sections, combobox_gk, combobox_gk_num
@@ -6812,35 +6814,35 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
         self.dict_all_infos_for_file["data_gesamt"] = dict_data_gesamt
 
-    def get_dict_gesammeltedateien(self):
-        dict_gesammeltedateien = {}
+    # def get_dict_gesammeltedateien(self):
+    #     dict_gesammeltedateien = {}
 
-        if self.chosen_program == "lama":
-            for aufgabe in self.list_alle_aufgaben_sage:
-                typ = get_aufgabentyp(self.chosen_program, aufgabe)
-                if typ == 1:
-                    beispieldaten_dateipfad = self.beispieldaten_dateipfad_1
-                elif typ == 2:
-                    beispieldaten_dateipfad = self.beispieldaten_dateipfad_2
+    #     if self.chosen_program == "lama":
+    #         for aufgabe in self.list_alle_aufgaben_sage:
+    #             typ = get_aufgabentyp(self.chosen_program, aufgabe)
+    #             if typ == 1:
+    #                 beispieldaten_dateipfad = self.beispieldaten_dateipfad_1
+    #             elif typ == 2:
+    #                 beispieldaten_dateipfad = self.beispieldaten_dateipfad_2
 
-                for path in beispieldaten_dateipfad.values():
-                    name = self.get_name_from_path(path)
+    #             for path in beispieldaten_dateipfad.values():
+    #                 name = self.get_name_from_path(path)
 
-                    if aufgabe == name:
-                        dict_gesammeltedateien[aufgabe] = path
-                        break
+    #                 if aufgabe == name:
+    #                     dict_gesammeltedateien[aufgabe] = path
+    #                     break
 
-        if self.chosen_program == "cria":
-            beispieldaten_dateipfad = self.beispieldaten_dateipfad_cria
+    #     if self.chosen_program == "cria":
+    #         beispieldaten_dateipfad = self.beispieldaten_dateipfad_cria
 
-            for item in self.list_alle_aufgaben_sage:
-                klasse, aufgabe = self.split_klasse_aufgabe(item)
-                for path in beispieldaten_dateipfad.values():
-                    name = self.get_name_from_path(path)
-                    if (klasse in path) and (aufgabe == name):
-                        dict_gesammeltedateien[aufgabe] = path
+    #         for item in self.list_alle_aufgaben_sage:
+    #             klasse, aufgabe = self.split_klasse_aufgabe(item)
+    #             for path in beispieldaten_dateipfad.values():
+    #                 name = self.get_name_from_path(path)
+    #                 if (klasse in path) and (aufgabe == name):
+    #                     dict_gesammeltedateien[aufgabe] = path
 
-        return dict_gesammeltedateien
+    #     return dict_gesammeltedateien
 
     def add_content_to_tex_file(
         self, aufgabe, aufgabe_total, filename_vorschau, first_typ2
@@ -6901,8 +6903,6 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         self.collect_all_infos_for_creating_file()
 
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-
-        dict_gesammeltedateien = self.get_dict_gesammeltedateien()
 
         if ausgabetyp == "vorschau":
             filename_vorschau = os.path.join(
