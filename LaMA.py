@@ -109,8 +109,11 @@ from database_commands import (
     _local_database,
     get_aufgabe_total,
     get_aufgabentyp,
-    add_file
+    add_file,
+    get_table,
+    update_data
 )
+
 from tex_minimal import *
 from filter_commands import get_filter_string, filter_items
 
@@ -4305,21 +4308,21 @@ class Ui_MainWindow(object):
         if self.chosen_variation != None:
             pattern = "{}\[.*\]".format(self.chosen_variation)
             all_files = table_lama.search(_file_.name.matches(pattern))
-        elif typ == "lama_1":
+        elif typ == 1:
             all_files = table_lama.search(_file_.name.matches(self.themen_auswahl[0]))
-        elif typ == "cria":
+        elif typ == None:
             klasse = self.get_highest_grade_cr()
             all_files = table_lama.search(_file_.name.matches(klasse))
-        elif typ == "lama_2":
+        elif typ == 2:
             all_files = table_lama.all()
 
         for all in all_files:
             name = all["name"]
-            if typ == "lama_1":
+            if typ == 1:
                 num = all["name"].split(" - ")[-1]
-            elif typ == "cria":
+            elif typ == None:
                 num = all["name"].split(".")[-1]
-            elif typ == "lama_2":
+            elif typ == 2:
                 num = all["name"]
 
             if self.chosen_variation == None:
@@ -4685,10 +4688,13 @@ class Ui_MainWindow(object):
         return string
 
     def get_all_infos_new_file(self, typ, typ_save):
-        name = self.create_file_name(typ, self.max_integer)
-        themen = self.themen_auswahl
+        if typ_save == 'editor':
+            name = None
+        else:
+            name = self.create_file_name(typ, self.max_integer)
+        themen = self.get_themen_auswahl()
         titel = self.lineEdit_titel.text()
-        if typ == "lama_2":
+        if typ == 2:
             af = None
         else:
             af = list(dict_aufgabenformate.keys())[
@@ -4699,12 +4705,12 @@ class Ui_MainWindow(object):
         quelle = self.lineEdit_quelle.text()
         content = self.plainTextEdit.toPlainText()
         punkte = self.spinBox_punkte.value()
-        if typ == "lama_1":
+        if typ == 1:
             pagebreak = False
         else:
             pagebreak = True
 
-        if typ == "cria":
+        if typ == None:
             klasse = self.get_highest_grade_cr()
         elif self.comboBox_klassen_cr.currentIndex() == 0:
             klasse = None
@@ -4717,7 +4723,7 @@ class Ui_MainWindow(object):
         for all in self.dict_picture_path.keys():
             bilder.append(all)
 
-        if typ_save[0] == "user":
+        if typ_save == "user":
             draft = True
         else:
             draft = False
@@ -4742,6 +4748,64 @@ class Ui_MainWindow(object):
 
     def button_save_edit_pressed(self):
         print(self.chosen_file_to_edit)
+        name = self.chosen_file_to_edit
+        typ = get_aufgabentyp(self.chosen_program, name)
+        
+        (
+            _,
+            themen,
+            titel,
+            af,
+            quelle,
+            content,
+            punkte,
+            pagebreak,
+            klasse,
+            info,
+            bilder,
+            draft,
+            abstand,
+        ) = self.get_all_infos_new_file(typ, 'editor')
+
+        # print(name)
+        # print(themen)
+        # print(titel)
+        # print(af)
+        # print(quelle),
+        # print(content)
+        # print(punkte)
+        # print(pagebreak)
+        # print(klasse)
+        # print(info)
+        # print(bilder)
+        # print(draft)
+        # print(abstand)
+        # print(self.list_selected_topics_creator)
+        # print(self.spinBox_punkte.value())
+        # print(self.comboBox_af.curren)
+        # aufgabe_total = get_aufgabe_total(self.chosen_file_to_edit, typ)
+        # print(aufgabe_total)
+
+        # for all in aufgabe_total:
+        #     print(all)
+        # lama_table = get_table(self.chosen_file_to_edit, typ)
+        # update_data(self.chosen_file_to_edit, typ, "themen", self.lineEdit_titel.text())
+
+        update_data(self.chosen_file_to_edit, typ, "themen", themen)
+        update_data(self.chosen_file_to_edit, typ, "titel", titel)
+        update_data(self.chosen_file_to_edit, typ, "af", af)
+        update_data(self.chosen_file_to_edit, typ, "quelle", quelle)
+        update_data(self.chosen_file_to_edit, typ, "content", content)
+        update_data(self.chosen_file_to_edit, typ, "punkte", punkte)
+        update_data(self.chosen_file_to_edit, typ, "pagebreak", pagebreak)
+        update_data(self.chosen_file_to_edit, typ, "klasse", klasse)
+        update_data(self.chosen_file_to_edit, typ, "info", info)
+        update_data(self.chosen_file_to_edit, typ, "bilder", bilder)
+        update_data(self.chosen_file_to_edit, typ, "draft", draft)
+        update_data(self.chosen_file_to_edit, typ, "abstand", abstand)
+
+        self.suchfenster_reset(True)
+        self.reset_edit_file()
         print('done')
 
     def button_speichern_pressed(self):
@@ -4821,11 +4885,12 @@ class Ui_MainWindow(object):
             database = _database
 
         if self.chosen_program == "cria":
-            typ = "cria"
+            typ = None
+            typ_name = "cria"
         else:
-            typ_index = self.comboBox_aufgabentyp_cr.currentIndex() + 1
-            typ = "lama_{}".format(typ_index)
-        table = "table_" + typ
+            typ = self.comboBox_aufgabentyp_cr.currentIndex() + 1
+            typ_name = "lama_{}".format(typ)
+        table = "table_" + typ_name
         table_lama = database.table(table)
 
         # database =
@@ -4877,7 +4942,7 @@ class Ui_MainWindow(object):
             bilder,
             draft,
             abstand,
-        ) = self.get_all_infos_new_file(typ, typ_save)
+        ) = self.get_all_infos_new_file(typ, typ_save[0])
 
         add_file(table_lama, name, themen, titel, af, quelle, content, punkte, pagebreak, klasse, info, bilder, draft, abstand)
         # name = self.create_file_name(typ, max_integer)

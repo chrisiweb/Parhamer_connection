@@ -1,10 +1,12 @@
 from tinydb import TinyDB, Query
+from tinydb.operations import set
 import os
 import sys
 import re
 import yaml
 from config_start import path_programm
 from config import config_loader, config_file
+
 # from config import database_lama_1, _file_
 
 
@@ -18,7 +20,7 @@ def get_aufgabentyp(chosen_program , aufgabe):
         typ = 1
     return typ
 
-def get_aufgabe_total(aufgabe, typ):
+def get_table(aufgabe, typ):
     if typ==None:
         typ = 'cria'
     elif typ == 1:
@@ -29,16 +31,36 @@ def get_aufgabe_total(aufgabe, typ):
     
     if " (lokal)" in aufgabe:
         aufgabe = aufgabe.replace(" (lokal)","")
-        table_lama = _local_database.table(table)
+        return _local_database.table(table)
     else:
-        table_lama = _database.table(table)
+        return _database.table(table)
+
+def get_aufgabe_total(aufgabe, typ):
+    table_lama = get_table(aufgabe, typ)
+    # if typ==None:
+    #     typ = 'cria'
+    # elif typ == 1:
+    #     typ = 'lama_1'
+    # elif typ == 2:
+    #     typ = 'lama_2'
+    # table = "table_" + typ
+    
+    # if " (lokal)" in aufgabe:
+    #     aufgabe = aufgabe.replace(" (lokal)","")
+    #     table_lama = _local_database.table(table)
+    # else:
+    #     table_lama = _database.table(table)
 
     _file_ = Query()
 
     return table_lama.get(_file_.name == aufgabe) 
 
 
-
+def update_data(aufgabe,typ, key, value):
+    lama_table = get_table(aufgabe, typ)
+    aufgabe = aufgabe.replace(" (lokal)","")
+    _file_ = Query()
+    lama_table.update(set(key, value), _file_.name == aufgabe)
 
 
 # class WriteFilesToDatabase:
