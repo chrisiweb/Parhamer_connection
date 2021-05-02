@@ -109,7 +109,7 @@ widgets_edit = [
     "groupBox_aufgabenformat",
     "groupBox_beispieleingabe",
     "groupBox_quelle",
-    "pushButton_save",
+    "pushButton_save_edit",
 ]  #'actionRefresh_Database'
 
 ################# LaMA Cria

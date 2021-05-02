@@ -974,12 +974,14 @@ class Ui_MainWindow(object):
         ##################### CREATOR #########################################
         self.groupBox_aufgabentyp = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_aufgabentyp.setObjectName(_fromUtf8("groupBox_aufgabentyp"))
+        self.groupBox_aufgabentyp.setSizePolicy(SizePolicy_fixed)
         self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBox_aufgabentyp)
         self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
 
         self.groupBox_variation_cr = create_new_groupbox(
             self.centralwidget, "Aufgabenvariation"
         )
+        self.groupBox_variation_cr.setMaximumWidth(500)
         self.verticalLayout_variation = create_new_verticallayout(
             self.groupBox_variation_cr
         )
@@ -1165,7 +1167,7 @@ class Ui_MainWindow(object):
             self.centralwidget, "Ausgewählte Grundkompetenzen"
         )
         self.groupBox_ausgew_gk_cr.setSizePolicy(SizePolicy_fixed_height)
-        # self.groupBox_ausgew_gk_cr.setMaximumWidth(500)
+        self.groupBox_ausgew_gk_cr.setMaximumWidth(500)
 
         self.verticalLayout_2 = create_new_verticallayout(self.groupBox_ausgew_gk_cr)
 
@@ -1182,7 +1184,7 @@ class Ui_MainWindow(object):
         self.groupBox_bilder = create_new_groupbox(
             self.centralwidget, "Bilder (klicken, um Bilder zu entfernen)"
         )
-        # self.groupBox_bilder.setMaximumWidth(500)
+        self.groupBox_bilder.setMaximumWidth(500)
         self.groupBox_bilder.setSizePolicy(SizePolicy_maximum_height)
         self.gridLayout_13 = QtWidgets.QGridLayout(self.groupBox_bilder)
         self.gridLayout_13.setObjectName(_fromUtf8("gridLayout_13"))
@@ -1256,7 +1258,7 @@ class Ui_MainWindow(object):
         # self.groupBox_aufgabentyp.setMaximumSize(100, 60)
         self.comboBox_aufgabentyp_cr = QtWidgets.QComboBox(self.groupBox_aufgabentyp)
         self.comboBox_aufgabentyp_cr.setObjectName(_fromUtf8("comboBox_aufgabentyp_cr"))
-        self.comboBox_aufgabentyp_cr.setSizePolicy(SizePolicy_fixed)
+        # self.comboBox_aufgabentyp_cr.setSizePolicy(SizePolicy_fixed)
         self.comboBox_aufgabentyp_cr.addItem(_fromUtf8(""))
         self.comboBox_aufgabentyp_cr.addItem(_fromUtf8(""))
         # self.comboBox_aufgabentyp_cr.currentIndexChanged.connect(self.comboBox_aufgabentyp_cr_changed)
@@ -1274,8 +1276,9 @@ class Ui_MainWindow(object):
         self.groupBox_aufgabentyp.hide()
 
         self.groupBox_punkte = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBox_punkte.setSizePolicy(SizePolicy_fixed)
         self.groupBox_punkte.setObjectName(_fromUtf8("groupBox_punkte"))
-        self.groupBox_punkte.setSizePolicy(SizePolicy_minimum_fixed)
+        # self.groupBox_punkte.setSizePolicy(SizePolicy_fixed)
         # self.groupBox_punkte.setMaximumSize(80, 60)
         self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_punkte)
         self.gridLayout_6.setObjectName(_fromUtf8("gridLayout_6"))
@@ -1290,7 +1293,7 @@ class Ui_MainWindow(object):
 
         self.groupBox_aufgabenformat = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_aufgabenformat.setObjectName(_fromUtf8("groupBox_aufgabenformat"))
-        self.groupBox_aufgabenformat.setSizePolicy(SizePolicy_fixed_height)
+        self.groupBox_aufgabenformat.setSizePolicy(SizePolicy_fixed)
         # self.groupBox_aufgabenformat.setSizePolicy(SizePolicy_minimum)
         # self.groupBox_aufgabenformat.setMaximumWidth(300)
         self.gridLayout_7 = QtWidgets.QGridLayout(self.groupBox_aufgabenformat)
@@ -1333,7 +1336,7 @@ class Ui_MainWindow(object):
         self.groupBox_klassen_cr = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_klassen_cr.setObjectName(_fromUtf8("groupBox_klassen_cr"))
         self.groupBox_klassen_cr.setTitle(_translate("MainWindow", "Klasse", None))
-        # self.groupBox_klassen_cr.setMaximumSize(100, 60)
+        self.groupBox_klassen_cr.setSizePolicy(SizePolicy_fixed)
         self.gridLayout_8 = QtWidgets.QGridLayout(self.groupBox_klassen_cr)
         self.gridLayout_8.setObjectName(_fromUtf8("gridLayout_8"))
         self.comboBox_klassen_cr = QtWidgets.QComboBox(self.groupBox_klassen_cr)
@@ -1359,7 +1362,7 @@ class Ui_MainWindow(object):
         self.lineEdit_titel = QtWidgets.QLineEdit(self.groupBox_titel_cr)
         self.lineEdit_titel.setObjectName(_fromUtf8("lineEdit_titel"))
         self.gridLayout_14.addWidget(self.lineEdit_titel, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_titel_cr, 1, 1, 1, 5)
+        self.gridLayout.addWidget(self.groupBox_titel_cr, 1, 1, 1, 6)
         self.groupBox_titel_cr.setTitle(_translate("MainWindow", "Titel", None))
         self.groupBox_titel_cr.hide()
 
@@ -1379,7 +1382,7 @@ class Ui_MainWindow(object):
         self.plainTextEdit.setObjectName(_fromUtf8("plainTextEdit"))
         self.plainTextEdit.setTabChangesFocus(True)
         self.gridLayout_10.addWidget(self.plainTextEdit, 1, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_beispieleingabe, 2, 1, 5, 5)
+        self.gridLayout.addWidget(self.groupBox_beispieleingabe, 2, 1, 5, 6)
         self.groupBox_beispieleingabe.setTitle(
             _translate("MainWindow", "Aufgabeneingabe", None)
         )
@@ -1408,7 +1411,7 @@ class Ui_MainWindow(object):
 
         self.lineEdit_quelle.setText(quelle)
         self.gridLayout_18.addWidget(self.lineEdit_quelle, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_quelle, 7, 1, 1, 5, QtCore.Qt.AlignTop)
+        self.gridLayout.addWidget(self.groupBox_quelle, 7, 1, 1, 6, QtCore.Qt.AlignTop)
         self.groupBox_quelle.setTitle(
             _translate(
                 "MainWindow",
@@ -1418,14 +1421,25 @@ class Ui_MainWindow(object):
         )
         self.groupBox_quelle.hide()
 
-
+        
         self.pushButton_save = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_save.setObjectName(_fromUtf8("pushButton_save"))
         self.pushButton_save.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.gridLayout.addWidget(self.pushButton_save, 8, 5, 1, 1)
+        self.pushButton_save.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout.addWidget(self.pushButton_save, 8, 6, 1, 1)
         self.pushButton_save.setText(_translate("MainWindow", "Speichern", None))
+
         # self.pushButton_save.setShortcut(_translate("MainWindow", "Return", None))
         self.pushButton_save.hide()
+
+        self.pushButton_save_edit = create_new_button(self.centralwidget, "Änderung speichern", self.button_save_edit_pressed)
+        self.pushButton_save_edit.setSizePolicy(SizePolicy_fixed)
+        self.pushButton_save_edit.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.gridLayout.addWidget(self.pushButton_save_edit, 8, 6, 1, 1)
+
+        self.pushButton_save_edit.hide()
+
+
         self.lineEdit_titel.setFocus()
         self.tab_widget_gk.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -2958,6 +2972,7 @@ class Ui_MainWindow(object):
         
         if self.chosen_gui == 'widgets_edit':
             self.enable_widgets_editor(False)
+            self.plainTextEdit.clear()
             self.lineEdit_quelle.clear()
         else:
             self.enable_widgets_editor(True)
@@ -3828,10 +3843,11 @@ class Ui_MainWindow(object):
 
     def reset_edit_file(self):
         self.button_choose_file.setText("Aufgabe suchen...")
-        self.groupBox_grundkompetenzen_cr.setEnabled(True)
-        self.groupBox_aufgabentyp.setEnabled(True)
-        self.comboBox_af.setEnabled(True)
-        self.groupBox_themengebiete_cria.setEnabled(True)
+        self.enable_widgets_editor(False)
+        # self.groupBox_grundkompetenzen_cr.setEnabled(True)
+        # self.groupBox_aufgabentyp.setEnabled(True)
+        # self.comboBox_af.setEnabled(True)
+        # self.groupBox_themengebiete_cria.setEnabled(True)
 
     def button_variation_cr_pressed(self, mode = 'creator'):
         Dialog = QtWidgets.QDialog(
@@ -3861,11 +3877,13 @@ class Ui_MainWindow(object):
             elif mode == 'editor':
                 self.chosen_file_to_edit = ui.chosen_variation
                 _file_ = self.chosen_file_to_edit
+                print(self.chosen_file_to_edit)
                 if self.chosen_file_to_edit != None:
                     self.button_choose_file.setText(
                         "Gewählte Aufgabe: {}".format(self.chosen_file_to_edit.upper())
                     )
                 else:
+                    print('no selection')
                     self.suchfenster_reset(True)
                     self.reset_edit_file()
                     return
@@ -4722,6 +4740,10 @@ class Ui_MainWindow(object):
             abstand,
         )
 
+    def button_save_edit_pressed(self):
+        print(self.chosen_file_to_edit)
+        print('done')
+
     def button_speichern_pressed(self):
         # self.creator_mode = "user"
         self.local_save = False
@@ -4787,9 +4809,9 @@ class Ui_MainWindow(object):
                 if response == 0:
                     return
                 typ_save = self.ui_save.get_output()
-        print(typ_save)
-        print(self.chosen_variation)
-        print(list_information)
+        # print(typ_save)
+        # print(self.chosen_variation)
+        # print(list_information)
 
         self.themen_auswahl = self.get_themen_auswahl()
 
@@ -5066,7 +5088,8 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         self.groupBox_aufgabenformat.setEnabled(enabled)
         self.groupBox_beispieleingabe.setEnabled(enabled)
         self.groupBox_quelle.setEnabled(enabled)
-        # self.groupBox_aufgabentyp.setEnabled(enabled)
+        self.pushButton_save_edit.setEnabled(enabled)
+        self.groupBox_aufgabentyp.setEnabled(False)
       
 
     def action_edit_files(self):
