@@ -50,6 +50,7 @@ from list_of_widgets import (
     widgets_create,
     widgets_sage,
     widgets_feedback,
+    widgets_edit,
     widgets_search_cria,
     widgets_sage_cria,
     widgets_create_cria,
@@ -251,6 +252,11 @@ class Ui_MainWindow(object):
             refresh_ddb(self)
             QtWidgets.QApplication.restoreOverrideCursor()
 
+        
+        self.chosen_gui = 'widgets_search'
+        if self.chosen_program == 'cria':
+            self.chosen_gui = self.chosen_gui + '_cria'
+
         # if self.chosen_program == "cria":
         #     self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
         #         "cria"
@@ -324,6 +330,10 @@ class Ui_MainWindow(object):
         self.menuUpdate = QtWidgets.QMenu(self.menuHelp)
         self.menuUpdate.setObjectName(_fromUtf8("menuUpdate"))
         self.menuUpdate.setTitle("Update...")
+        self.menuDeveloper = QtWidgets.QMenu(self.menuBar)
+        self.menuDeveloper.setObjectName(_fromUtf8("menuDeveloper"))
+        # self.menuDeveloper.setStyleSheet("background-color: {};".format(get_color(blue_4)))
+        
 
         self.menuBild_einbinden = QtWidgets.QMenu(self.menuBar)
         self.menuBild_einbinden.setObjectName(_fromUtf8("menuBild_einbinden"))
@@ -350,14 +360,26 @@ class Ui_MainWindow(object):
         self.actionRefresh_Database.setShortcut("F5")
 
         self.menuDatei.addSeparator()
+
+        self.actionEdit_Files = add_action(
+            MainWindow,
+            self.menuDeveloper,
+            "Aufgaben bearbeiten",
+            self.action_edit_files
+        )
+
+        self.menuDeveloper.addSeparator()
+
         self.actionPush_Database = add_action(
             MainWindow,
-            self.menuDatei,
-            "Datenbank hochladen (Entwicklermodus)",
+            self.menuDeveloper,
+            "Datenbank hochladen",
             partial(self.action_push_database, True, None),
         )
-        if self.developer_mode_active == False:
-            self.actionPush_Database.setVisible(False)
+
+
+        # if self.developer_mode_active == False:
+        #     self.actionPush_Database.setVisible(False)
 
         self.menuDatei.addSeparator()
 
@@ -496,8 +518,12 @@ class Ui_MainWindow(object):
         self.menuBar.addAction(self.menuFeedback.menuAction())
         self.menuBar.addAction(self.menuOptionen.menuAction())
 
+        if self.developer_mode_active == True:
+            self.menuBar.addAction(self.menuDeveloper.menuAction())
+
         self.menuBar.addAction(self.menuHelp.menuAction())
 
+   
         self.groupBox_ausgew_gk = create_new_groupbox(
             self.centralwidget, "Ausgewählte Grundkompetenzen"
         )
@@ -969,6 +995,24 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.groupBox_variation_cr, 0, 0, 1, 1)
         self.groupBox_variation_cr.hide()
 
+        self.groupBox_choose_file = create_new_groupbox(
+            self.centralwidget, "Aufgabe auswählen"
+        )
+        self.verticalLayout_choose_file = create_new_verticallayout(
+            self.groupBox_choose_file
+        )
+
+        self.button_choose_file = create_new_button(
+            self.groupBox_choose_file,
+            "Aufgabe suchen...",
+            partial(self.button_variation_cr_pressed, 'editor'),
+        )
+        self.button_choose_file.setMinimumWidth(0)
+        self.verticalLayout_choose_file.addWidget(self.button_choose_file)
+
+        self.gridLayout.addWidget(self.groupBox_choose_file, 0, 0, 1, 1)
+        self.groupBox_choose_file.hide()
+
         self.groupBox_grundkompetenzen_cr = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_grundkompetenzen_cr.setFocusPolicy(QtCore.Qt.NoFocus)
         # self.groupBox_grundkompetenzen_cr.setMaximumSize(QtCore.QSize(350, 16777215))
@@ -1373,6 +1417,7 @@ class Ui_MainWindow(object):
             )
         )
         self.groupBox_quelle.hide()
+
 
         self.pushButton_save = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_save.setObjectName(_fromUtf8("pushButton_save"))
@@ -2132,6 +2177,7 @@ class Ui_MainWindow(object):
         self.menuNeu.setTitle(_translate("MainWindow", "Aufgabe hinzufügen", None))
         self.menuSage.setTitle(_translate("MainWindow", "Erstellen", None))
         self.menuSuche.setTitle(_translate("MainWindow", "Aufgabensuche", None))
+        self.menuDeveloper.setTitle(_translate("MainWindow", "Entwicklermodus", None))
         self.menuBild_einbinden.setTitle(
             _translate("MainWindow", "Bild einfügen", None)
         )
@@ -2904,14 +2950,22 @@ class Ui_MainWindow(object):
             self.lineEdit_titel.setText(_translate("MainWindow", "###", None))
         else:
             self.lineEdit_titel.setText(_translate("MainWindow", "", None))
-        try:
-            quelle = self.lama_settings["quelle"]
-        except KeyError:
-            quelle = ""
-        self.lineEdit_quelle.setText(_translate("MainWindow", quelle, None))
+        
+
 
         if variation == False:
             self.plainTextEdit.setPlainText(_translate("MainWindow", "", None))
+        
+        if self.chosen_gui == 'widgets_edit':
+            self.enable_widgets_editor(False)
+            self.lineEdit_quelle.clear()
+        else:
+            self.enable_widgets_editor(True)
+            try:
+                quelle = self.lama_settings["quelle"]
+            except KeyError:
+                quelle = ""
+            self.lineEdit_quelle.setText(_translate("MainWindow", quelle, None))
 
     def reset_sage(self, question_reset=True):
         if question_reset == True and not is_empty(self.list_alle_aufgaben_sage):
@@ -3135,11 +3189,14 @@ class Ui_MainWindow(object):
     def developer_mode_changed(self):
         if self.developer_mode_active == False:
             self.actionDeveloper.setText("Entwicklermodus")
-            self.actionPush_Database.setVisible(False)
+            # self.actionPush_Database.setVisible(False)
+            self.menuBar.removeAction(self.menuDeveloper.menuAction())
+            
 
         elif self.developer_mode_active == True:
             self.actionDeveloper.setText("Entwicklermodus (aktiv)")
-            self.actionPush_Database.setVisible(True)
+            # self.actionPush_Database.setVisible(True)
+            self.menuBar.addAction(self.menuDeveloper.menuAction())
 
     def activate_developermode(self):
         if self.developer_mode_active == True:
@@ -3658,7 +3715,7 @@ class Ui_MainWindow(object):
 
     #     return dict_collected_data
 
-    def set_infos_chosen_variation(self, aufgabe_total):
+    def set_infos_chosen_variation(self, aufgabe_total, mode):
         aufgabe = aufgabe_total["name"]
 
         typ = get_aufgabentyp(self.chosen_program, aufgabe)
@@ -3670,16 +3727,18 @@ class Ui_MainWindow(object):
                 gk = aufgabe_total["themen"][0]
                 short_gk = shorten_gk(gk)
                 if short_gk in zusatzthemen_beschreibung:
-                    checkbox_gk = "checkbox_creator_themen_{}".format(short_gk)
+                    checkbox_gk = "checkbox_creator_themen_{1}".format(short_gk)
+
                     index = list_comboBox_gk.index("Zusatzthemen")
                 else:
-                    checkbox_gk = "checkbox_creator_gk_{}".format(short_gk)
-                    index = list_comboBox_gk.index(gk.split(" ")[0].replace("-L", ""))
+                    checkbox_gk = "checkbox_creator_gk_{0}".format(short_gk)
+                    index = list_comboBox_gk.index(gk.split(" ")[0])
 
                 self.dict_widget_variables[checkbox_gk].setChecked(True)
                 self.tab_widget_gk_cr.setCurrentIndex(index)
 
-                self.groupBox_grundkompetenzen_cr.setEnabled(False)
+                if mode == 'creator':
+                    self.groupBox_grundkompetenzen_cr.setEnabled(False)
             elif typ == 2:
                 for i, gk in enumerate(aufgabe_total["themen"]):
                     short_gk = shorten_gk(gk)
@@ -3691,7 +3750,7 @@ class Ui_MainWindow(object):
                         checkbox_gk = "checkbox_creator_gk_{}".format(short_gk)
                         if i == 0:
                             index = list_comboBox_gk.index(
-                                gk.split(" ")[0].replace("-L", "")
+                                gk.split(" ")[0]
                             )
 
                     self.dict_widget_variables[checkbox_gk].setChecked(True)
@@ -3703,10 +3762,13 @@ class Ui_MainWindow(object):
             klasse = aufgabe_total["klasse"]
 
             if klasse != None:
-                full_klasse = Klassen[klasse]
-                index = self.comboBox_klassen_cr.findText(full_klasse)
+                try:
+                    full_klasse = Klassen[klasse]
+                    index = self.comboBox_klassen_cr.findText(full_klasse)              
 
-                self.comboBox_klassen_cr.setCurrentIndex(index)
+                    self.comboBox_klassen_cr.setCurrentIndex(index)
+                except KeyError:
+                    pass
 
         elif self.chosen_program == "cria":
             klasse, nummer = aufgabe.split(".")
@@ -3717,7 +3779,7 @@ class Ui_MainWindow(object):
             for thema in aufgabe_total["themen"]:
                 klasse_thema, kapitel, unterkapitel = thema.split(".")
 
-                combobox_thema = "combobox_kapitel_creator_cria_{}".format(klasse)
+                combobox_thema = "combobox_kapitel_{0}_cria_{1}".format(mode, klasse)
                 dict_klasse_name = eval("dict_{}_name".format(klasse))
                 thema_name = dict_klasse_name[kapitel]
                 index = self.dict_widget_variables[combobox_thema].findText(
@@ -3725,12 +3787,12 @@ class Ui_MainWindow(object):
                 )
                 self.dict_widget_variables[combobox_thema].setCurrentIndex(index)
 
-                checkbox_thema = "checkbox_unterkapitel_creator_{0}_{1}_{2}".format(
-                    klasse, kapitel, unterkapitel
+                checkbox_thema = "checkbox_unterkapitel_{0}_{1}_{2}_{3}".format(
+                    mode, klasse, kapitel, unterkapitel
                 )
                 self.dict_widget_variables[checkbox_thema].setChecked(True)
-
-                self.groupBox_themengebiete_cria.setEnabled(False)
+                if mode == 'creator':
+                    self.groupBox_themengebiete_cria.setEnabled(False)
 
         self.spinBox_punkte.setValue(aufgabe_total["punkte"])
 
@@ -3739,16 +3801,23 @@ class Ui_MainWindow(object):
             full_aufgabenformat = dict_aufgabenformate[af]
 
             index = self.comboBox_af.findText(full_aufgabenformat)
-            self.comboBox_af.setEnabled(False)
+
+            if mode == 'creator':
+                self.comboBox_af.setEnabled(False)
 
             self.comboBox_af.setCurrentIndex(index)
         else:
             self.comboBox_af.setCurrentIndex(0)
 
-        if self.lineEdit_titel.text().startswith("###"):
+        if self.lineEdit_titel.text().startswith("###") and mode == 'creator':
             self.lineEdit_titel.setText("### " + aufgabe_total["titel"])
         else:
             self.lineEdit_titel.setText(aufgabe_total["titel"])
+
+        if mode == 'editor':
+            self.plainTextEdit.clear()
+            self.plainTextEdit.insertPlainText(aufgabe_total['content'])
+            self.lineEdit_quelle.setText(aufgabe_total["quelle"])
 
     def reset_variation(self):
         self.button_variation_cr.setText("Variation vorhandender Aufgabe...")
@@ -3757,7 +3826,14 @@ class Ui_MainWindow(object):
         self.comboBox_af.setEnabled(True)
         self.groupBox_themengebiete_cria.setEnabled(True)
 
-    def button_variation_cr_pressed(self):
+    def reset_edit_file(self):
+        self.button_choose_file.setText("Aufgabe suchen...")
+        self.groupBox_grundkompetenzen_cr.setEnabled(True)
+        self.groupBox_aufgabentyp.setEnabled(True)
+        self.comboBox_af.setEnabled(True)
+        self.groupBox_themengebiete_cria.setEnabled(True)
+
+    def button_variation_cr_pressed(self, mode = 'creator'):
         Dialog = QtWidgets.QDialog(
             None,
             QtCore.Qt.WindowSystemMenuHint
@@ -3771,24 +3847,37 @@ class Ui_MainWindow(object):
 
         if response == 1:
             self.suchfenster_reset(True)
-            self.chosen_variation = ui.chosen_variation
-            if self.chosen_variation != None:
-                self.button_variation_cr.setText(
-                    "Variation von: {}".format(self.chosen_variation.upper())
-                )
-                typ = get_aufgabentyp(self.chosen_program, self.chosen_variation)
+            if mode == 'creator':
+                self.chosen_variation = ui.chosen_variation
+                _file_ = self.chosen_variation
+                if self.chosen_variation != None:
+                    self.button_variation_cr.setText(
+                        "Variation von: {}".format(self.chosen_variation.upper())
+                    )
+                else:
+                    self.suchfenster_reset(True)
+                    self.reset_variation()
+                    return
+            elif mode == 'editor':
+                self.chosen_file_to_edit = ui.chosen_variation
+                _file_ = self.chosen_file_to_edit
+                if self.chosen_file_to_edit != None:
+                    self.button_choose_file.setText(
+                        "Gewählte Aufgabe: {}".format(self.chosen_file_to_edit.upper())
+                    )
+                else:
+                    self.suchfenster_reset(True)
+                    self.reset_edit_file()
+                    return
+            typ = get_aufgabentyp(self.chosen_program, _file_)
+            aufgabe_total_original = get_aufgabe_total(_file_, typ)
+            self.enable_widgets_editor(True)
 
-                aufgabe_total_original = get_aufgabe_total(self.chosen_variation, typ)
-
-            else:
-                self.suchfenster_reset(True)
-                self.reset_variation()
-                return
 
         if response == 0:
             return
 
-        self.set_infos_chosen_variation(aufgabe_total_original)
+        self.set_infos_chosen_variation(aufgabe_total_original, mode)
 
     def add_picture(self):
         try:
@@ -4968,6 +5057,25 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
     #     beispieldaten_dateipfad = self.get_beispieldaten_dateipfad(log_file)
 
     #     return beispieldaten_dateipfad
+    def enable_widgets_editor(self, enabled):
+        self.groupBox_ausgew_gk_cr.setEnabled(enabled)
+        self.groupBox_titel_cr.setEnabled(enabled)
+        self.groupBox_grundkompetenzen_cr.setEnabled(enabled)
+        self.groupBox_punkte.setEnabled(enabled)
+        self.groupBox_klassen_cr.setEnabled(enabled)
+        self.groupBox_aufgabenformat.setEnabled(enabled)
+        self.groupBox_beispieleingabe.setEnabled(enabled)
+        self.groupBox_quelle.setEnabled(enabled)
+        # self.groupBox_aufgabentyp.setEnabled(enabled)
+      
+
+    def action_edit_files(self):
+        self.update_gui('widgets_edit')
+        self.suchfenster_reset()
+        # self.enable_widgets_editor(False)
+
+
+
 
     def check_if_file_exists(self, aufgabe):  # aufgabe
         typ = get_aufgabentyp(self.chosen_program, aufgabe)
@@ -7304,14 +7412,16 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
     def update_gui(self, chosen_gui):
         if self.chosen_program == "cria":
-            chosen_gui = eval(chosen_gui + "_cria")
+            chosen_gui = chosen_gui + "_cria"
+            chosen_gui_list = eval(chosen_gui + "_cria")
         else:
-            chosen_gui = eval(chosen_gui)
+            chosen_gui_list = eval(chosen_gui)
 
+        self.chosen_gui = chosen_gui
         MainWindow.setMenuBar(self.menuBar)
         list_delete = []
         for item in list_widgets:
-            if item != chosen_gui:
+            if item != chosen_gui_list:
                 list_delete += item
         for all in list_delete:
             if "action" in all:
@@ -7320,7 +7430,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                 exec("self.menuBar.removeAction(self.%s.menuAction())" % all)
             else:
                 exec("self.%s.hide()" % all)
-        for all in chosen_gui:
+        for all in chosen_gui_list:
             if "action" in all:
                 exec("self.%s.setVisible(True)" % all)
             elif "menu" in all:
@@ -7328,9 +7438,10 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             else:
                 exec("self.%s.show()" % all)
 
-        if chosen_gui == widgets_search:
+        if chosen_gui == 'widgets_search':
             if self.label_aufgabentyp.text()[-1] == str(1):
                 self.combobox_searchtype.hide()
+
         # if chosen_type == str(2):
         #     self.label_aufgabentyp.setText(
         #         _translate("MainWindow", "Aufgabentyp: Typ 1", None)
@@ -7339,16 +7450,20 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         #     self.combobox_searchtype.hide()
         #     self.refresh_label_update()
         #     self.chosen_aufgabenformat_typ()
-        if chosen_gui == widgets_sage or chosen_gui == widgets_sage_cria:
+        if chosen_gui == 'widgets_sage' or chosen_gui == 'widgets_sage_cria':
             MainWindow.setTabOrder(self.spinBox_nummer, self.dateEdit)
             MainWindow.setTabOrder(self.dateEdit, self.lineEdit_klasse)
             self.adapt_choosing_list("sage")
             # self.listWidget.itemClicked.connect(self.nummer_clicked)
-        if chosen_gui == widgets_feedback or chosen_gui == widgets_feedback_cria:
+        if chosen_gui == 'widgets_feedback' or chosen_gui == 'widgets_feedback_cria':
             self.adapt_choosing_list("feedback")
+        
+        if self.developer_mode_active == False:
+            self.menuBar.removeAction(self.menuDeveloper.menuAction())
             # self.listWidget_fb.itemClicked.connect(self.nummer_clicked_fb)
             # self.listWidget_fb_cria.itemClicked.connect(self.nummer_clicked_fb)
 
+        
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
