@@ -6,9 +6,16 @@ __lastupdate__ = "01/21"
 ##################
 print("Loading...")
 import start_window
-from config_start import path_programm, path_localappdata_lama, lama_settings_file, database, lama_developer_credentials
+from config_start import (
+    path_programm,
+    path_localappdata_lama,
+    lama_settings_file,
+    database,
+    lama_developer_credentials,
+)
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QApplication
+
 # import git
 # from git import Repo, remote
 import time
@@ -28,6 +35,7 @@ from functools import partial
 import yaml
 from PIL import Image  ## pillow
 import smtplib
+
 # from urllib.request import urlopen
 # from urllib.error import URLError
 from save_titlepage import create_file_titlepage, check_format_titlepage_save
@@ -42,6 +50,7 @@ from list_of_widgets import (
     widgets_create,
     widgets_sage,
     widgets_feedback,
+    widgets_edit,
     widgets_search_cria,
     widgets_sage_cria,
     widgets_create_cria,
@@ -62,9 +71,9 @@ from subwindows import (
     read_credentials,
 )
 from translate import _fromUtf8, _translate
-from sort_items import natural_keys, sorted_gks
-from create_pdf import prepare_tex_for_pdf, create_pdf
-from refresh_ddb import modification_date, refresh_ddb, search_files
+from sort_items import natural_keys, sorted_gks, order_gesammeltedateien
+from create_pdf import prepare_tex_for_pdf, create_pdf, check_if_variation
+from refresh_ddb import modification_date, refresh_ddb
 from standard_dialog_windows import (
     warning_window,
     question_window,
@@ -86,23 +95,32 @@ from prepare_content_vorschau import (
     edit_content_vorschau,
     copy_logo_to_target_path,
     copy_included_images,
-    split_content_at_beispiel_umgebung,
 )
 from convert_image_to_eps import convert_image_to_eps
 from lama_colors import *
 from lama_stylesheets import *
 from processing_window import Ui_Dialog_processing
 import bcrypt
-#import base64
 
+from tinydb import Query
 
+from database_commands import (
+    _database,
+    _local_database,
+    get_aufgabe_total,
+    get_aufgabentyp,
+    add_file,
+    get_table,
+    update_data
+)
 
+from tex_minimal import *
+from filter_commands import get_filter_string, filter_items
 
 try:
     loaded_lama_file_path = sys.argv[1]
 except IndexError:
     loaded_lama_file_path = ""
-
 
 
 class Worker_DownloadDatabase(QtCore.QObject):
@@ -111,7 +129,7 @@ class Worker_DownloadDatabase(QtCore.QObject):
     @QtCore.pyqtSlot()
     def task(self):
         self.download_successfull = git_clone_repo()
-        self.finished.emit()       
+        self.finished.emit()
 
 
 class Worker_PushDatabase(QtCore.QObject):
@@ -119,11 +137,9 @@ class Worker_PushDatabase(QtCore.QObject):
 
     @QtCore.pyqtSlot()
     def task(self, ui, admin, specific_file):
-        self.changes_found = git_push_to_origin(ui , admin, specific_file)
+        self.changes_found = git_push_to_origin(ui, admin, specific_file)
 
         self.finished.emit()
-
-
 
 
 class Ui_MainWindow(object):
@@ -135,6 +151,7 @@ class Ui_MainWindow(object):
         self.dict_widget_variables = {}
         self.list_selected_topics_creator = []
         self.dict_variablen_punkte = {}
+        self.dict_variablen_abstand = {}
         self.dict_variablen_label = {}
         self.dict_sage_ausgleichspunkte_chosen = {}
         self.dict_sage_hide_show_items_chosen = {}
@@ -147,28 +164,28 @@ class Ui_MainWindow(object):
         self.developer_mode_active = False
 
         # if sys.platform.startswith("win"):
-            # path_lama_developer_credentials = os.path.join(os.getenv('LOCALAPPDATA'), "LaMA", "credentials")
-            # lama_developer_credentials = os.path.join(path_lama_developer_credentials, "developer_credentials.txt")
-            
+        # path_lama_developer_credentials = os.path.join(os.getenv('LOCALAPPDATA'), "LaMA", "credentials")
+        # lama_developer_credentials = os.path.join(path_lama_developer_credentials, "developer_credentials.txt")
+
         if os.path.isfile(lama_developer_credentials):
             with open(lama_developer_credentials, "rb") as file:
                 password = file.read()
             if bcrypt.checkpw(password, hashed_pw):
                 self.developer_mode_active = True
-        
+
         # elif sys.platform.startswith("darwin"):
 
-        # print(self.developer_mode_active)   
+        # print(self.developer_mode_active)
         # with open(lama)
         # self.developer_mode_active = False
 
-        try: 
+        try:
             with open(lama_settings_file, "r", encoding="utf8") as f:
                 self.lama_settings = json.load(f)
         except FileNotFoundError:
-            self.lama_settings = {}        
+            self.lama_settings = {}
 
-        try: 
+        try:
             self.display_mode = self.lama_settings["display"]
         except KeyError:
             self.lama_settings["display"] = 0
@@ -177,7 +194,7 @@ class Ui_MainWindow(object):
         self.dict_titlepage = check_format_titlepage_save("titlepage_save")
 
         self.dict_titlepage_cria = check_format_titlepage_save("titlepage_save_cria")
-         
+
         path_teildokument = os.path.join(path_programm, "Teildokument")
         if not os.path.isdir(path_teildokument):
             os.mkdir(path_teildokument)
@@ -185,11 +202,11 @@ class Ui_MainWindow(object):
 
     def setupUi(self, MainWindow):
         self.check_for_update()
-        try: 
+        try:
             self.lama_settings["start_program"]
         except KeyError:
             self.lama_settings["start_program"] = 0
-        if loaded_lama_file_path == "" and self.lama_settings["start_program"]==0:
+        if loaded_lama_file_path == "" and self.lama_settings["start_program"] == 0:
             ########## Dialog: Choose program ####
 
             self.Dialog = QtWidgets.QDialog(
@@ -222,31 +239,37 @@ class Ui_MainWindow(object):
                 )
                 return
         elif self.lama_settings["start_program"] == 1:
-            self.chosen_program= 'cria'
+            self.chosen_program = "cria"
         elif self.lama_settings["start_program"] == 2:
-            self.chosen_program = 'lama'
+            self.chosen_program = "lama"
 
-
-        try: 
+        try:
             self.lama_settings["database"]
         except KeyError:
             self.lama_settings["database"] = 2
 
         if self.lama_settings["database"] == 0:
-            QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-            refresh_ddb(self)
-            QtWidgets.QApplication.restoreOverrideCursor() 
- 
-        if self.chosen_program == "cria":
-            self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
-                "cria"
+            QtWidgets.QApplication.setOverrideCursor(
+                QtGui.QCursor(QtCore.Qt.WaitCursor)
             )
-            self.beispieldaten_dateipfad_1 = None
-            self.beispieldaten_dateipfad_2 = None
-        else:
-            self.beispieldaten_dateipfad_1 = self.define_beispieldaten_dateipfad(1)
-            self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)
-            self.beispieldaten_dateipfad_cria = None
+            refresh_ddb(self)
+            QtWidgets.QApplication.restoreOverrideCursor()
+
+        
+        self.chosen_gui = 'widgets_search'
+        if self.chosen_program == 'cria':
+            self.chosen_gui = self.chosen_gui + '_cria'
+
+        # if self.chosen_program == "cria":
+        #     self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
+        #         "cria"
+        #     )
+        #     self.beispieldaten_dateipfad_1 = None
+        #     self.beispieldaten_dateipfad_2 = None
+        # else:
+        #     self.beispieldaten_dateipfad_1 = self.define_beispieldaten_dateipfad(1)
+        #     self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)
+        #     self.beispieldaten_dateipfad_cria = None
 
         ########################
         self.MainWindow = MainWindow
@@ -310,6 +333,10 @@ class Ui_MainWindow(object):
         self.menuUpdate = QtWidgets.QMenu(self.menuHelp)
         self.menuUpdate.setObjectName(_fromUtf8("menuUpdate"))
         self.menuUpdate.setTitle("Update...")
+        self.menuDeveloper = QtWidgets.QMenu(self.menuBar)
+        self.menuDeveloper.setObjectName(_fromUtf8("menuDeveloper"))
+        # self.menuDeveloper.setStyleSheet("background-color: {};".format(get_color(blue_4)))
+        
 
         self.menuBild_einbinden = QtWidgets.QMenu(self.menuBar)
         self.menuBild_einbinden.setObjectName(_fromUtf8("menuBild_einbinden"))
@@ -336,14 +363,26 @@ class Ui_MainWindow(object):
         self.actionRefresh_Database.setShortcut("F5")
 
         self.menuDatei.addSeparator()
+
+        self.actionEdit_Files = add_action(
+            MainWindow,
+            self.menuDeveloper,
+            "Aufgaben bearbeiten",
+            self.action_edit_files
+        )
+
+        self.menuDeveloper.addSeparator()
+
         self.actionPush_Database = add_action(
             MainWindow,
-            self.menuDatei,
-            "Datenbank hochladen (Entwicklermodus)",
-            partial(self.action_push_database, True, None)
+            self.menuDeveloper,
+            "Datenbank hochladen",
+            partial(self.action_push_database, True, None),
         )
-        if self.developer_mode_active == False:
-            self.actionPush_Database.setVisible(False)
+
+
+        # if self.developer_mode_active == False:
+        #     self.actionPush_Database.setVisible(False)
 
         self.menuDatei.addSeparator()
 
@@ -432,12 +471,15 @@ class Ui_MainWindow(object):
         )
 
         self.actionEinstellungen = add_action(
-            MainWindow, self.menuOptionen, 'LaMA konfigurieren ...', self.open_setup
-            )  
+            MainWindow, self.menuOptionen, "LaMA konfigurieren ...", self.open_setup
+        )
 
         self.actionUpdate_srdpmathematik = add_action(
-            MainWindow, self.menuUpdate, '"srdp-mathematik.sty" aktualisieren', self.update_srdpmathematik
-            )
+            MainWindow,
+            self.menuUpdate,
+            '"srdp-mathematik.sty" aktualisieren',
+            self.update_srdpmathematik,
+        )
 
         self.menuOptionen.addAction(self.menuUpdate.menuAction())
         self.actionInfo = add_action(
@@ -449,7 +491,7 @@ class Ui_MainWindow(object):
 
         # self.actionPUSH = add_action(
         #     MainWindow, self.menuOptionen, 'PUSH', self.action_push_database
-        #     ) 
+        #     )
 
         # self.actionPULL = add_action(
         #     MainWindow, self.menuOptionen, 'PULL', self.git_pull
@@ -457,20 +499,20 @@ class Ui_MainWindow(object):
 
         # self.actionCHECK = add_action(
         #     MainWindow, self.menuOptionen, 'CHANGES?', self.git_check_changes
-        #     )   
+        #     )
 
         # self.actionPULLREQUEST = add_action(
         #     MainWindow, self.menuOptionen, "PULLREQUEST", self.git_pull_request
-        # )         
+        # )
 
         if self.developer_mode_active == True:
             label = "Entwicklermodus (aktiv)"
         else:
             label = "Entwicklermodus"
-        
+
         self.actionDeveloper = add_action(
             MainWindow, self.menuOptionen, label, self.activate_developermode
-            ) 
+        )
 
         self.menuBar.addAction(self.menuDatei.menuAction())
         self.menuBar.addAction(self.menuDateityp.menuAction())
@@ -479,9 +521,12 @@ class Ui_MainWindow(object):
         self.menuBar.addAction(self.menuFeedback.menuAction())
         self.menuBar.addAction(self.menuOptionen.menuAction())
 
+        if self.developer_mode_active == True:
+            self.menuBar.addAction(self.menuDeveloper.menuAction())
+
         self.menuBar.addAction(self.menuHelp.menuAction())
 
-
+   
         self.groupBox_ausgew_gk = create_new_groupbox(
             self.centralwidget, "Ausgewählte Grundkompetenzen"
         )
@@ -590,7 +635,7 @@ class Ui_MainWindow(object):
         self.cb_drafts = create_new_checkbox(self.centralwidget, "Entwürfe")
         self.horizontalLayout_2.addWidget(self.cb_drafts)
         self.cb_drafts.setToolTip(
-            'Es werden auch eingereichte Aufgaben durchsucht, die bisher noch nicht auf Fehler überprüft\nund in die Datenbank aufgenommen wurden.'
+            "Es werden auch eingereichte Aufgaben durchsucht, die bisher noch nicht auf Fehler überprüft\nund in die Datenbank aufgenommen wurden."
         )
         self.cb_drafts.toggled.connect(self.cb_drafts_enabled)
 
@@ -605,14 +650,14 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addLayout(self.horizontalLayout_2, 5, 1, 1, 1)
 
-        self.horizontalLayout = QtWidgets.QHBoxLayout()
-        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
+        # self.horizontalLayout = QtWidgets.QHBoxLayout()
+        # self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
 
-        self.label_update = create_new_label(self.centralwidget, "")
-        self.label_update.setMaximumHeight(18)
-        self.horizontalLayout.addWidget(self.label_update)
+        # self.label_update = create_new_label(self.centralwidget, "")
+        # self.label_update.setMaximumHeight(18)
+        # self.horizontalLayout.addWidget(self.label_update)
 
-        self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
+        # self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
 
         self.horizontalLayout_combobox = create_new_horizontallayout()
         # QtWidgets.QHBoxLayout()
@@ -624,25 +669,25 @@ class Ui_MainWindow(object):
             self.centralwidget, "Aufgabentyp: Typ 1"
         )
         self.horizontalLayout_combobox.addWidget(self.label_aufgabentyp)
-
+        self.label_aufgabentyp.setMaximumHeight(18)
         self.combobox_searchtype = create_new_combobox(self.centralwidget)
         self.combobox_searchtype.setMinimumContentsLength(1)
 
         add_new_option(
             self.combobox_searchtype,
             0,
-            "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten",
+            "Alle Dateien ausgeben, die zumindest ein Themengebiet enthalten",
         )
         if self.chosen_program == "lama":
-            label = "Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten"
+            label = "Alle Dateien ausgeben, die ausschließlich diese Themengebiete enthalten"
         if self.chosen_program == "cria":
-            label = "Alle Dateien ausgeben, die alle Suchkriterien enthalten"
+            label = "Alle Dateien ausgeben, die alle Themengebiete enthalten"
 
         add_new_option(self.combobox_searchtype, 1, label)
 
         self.horizontalLayout_combobox.addWidget(self.combobox_searchtype)
 
-        self.gridLayout.addLayout(self.horizontalLayout_combobox, 0, 1, 1, 1)
+        self.gridLayout.addLayout(self.horizontalLayout_combobox, 0, 0, 1, 1)
         self.combobox_searchtype.hide()
 
         self.groupBox_themen_klasse = create_new_groupbox(
@@ -677,7 +722,7 @@ class Ui_MainWindow(object):
         if self.display_mode == 0:
             stylesheet = StyleSheet_tabWidget
         else:
-            stylesheet = StyleSheet_tabWidget_dark_mode        
+            stylesheet = StyleSheet_tabWidget_dark_mode
         self.tab_widget_gk.setStyleSheet(stylesheet)
         # self.tab_widget_gk.setStyleSheet(_fromUtf8("color: {0}".format(white)))
         # self.tab_widget_gk.setStyleSheet("QToolTip { color: white; background-color: rgb(47, 69, 80); border: 0px; }")
@@ -776,11 +821,11 @@ class Ui_MainWindow(object):
             new_tab = add_new_tab(
                 self.tabWidget_klassen_cria, "{}. Klasse".format(klasse[1])
             )
-            
+
             if self.display_mode == 0:
                 stylesheet = StyleSheet_new_tab
             else:
-                stylesheet = StyleSheet_new_tab_dark_mode            
+                stylesheet = StyleSheet_new_tab_dark_mode
             new_tab.setStyleSheet(stylesheet)
             new_gridlayout = QtWidgets.QGridLayout(new_tab)
             new_gridlayout.setObjectName("{}".format(new_gridlayout))
@@ -815,7 +860,11 @@ class Ui_MainWindow(object):
 
             new_verticallayout.addStretch()
 
-            btn_alle_kapitel = create_new_button(new_scrollareacontent,"alle Kapitel der {}. Klasse auswählen".format(klasse[1]),partial(self.btn_alle_kapitel_clicked, klasse))
+            btn_alle_kapitel = create_new_button(
+                new_scrollareacontent,
+                "alle Kapitel der {}. Klasse auswählen".format(klasse[1]),
+                partial(self.btn_alle_kapitel_clicked, klasse),
+            )
             if self.display_mode == 0:
                 stylesheet = StyleSheet_button_check_all
             else:
@@ -876,7 +925,9 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.groupBox_schulstufe_cria, 1, 0, 2, 1)
         self.groupBox_ausgew_themen_cria = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_ausgew_themen_cria.setObjectName("groupBox_ausgew_themen_cria")
-        self.gridLayout_12_cria = QtWidgets.QGridLayout(self.groupBox_ausgew_themen_cria)
+        self.gridLayout_12_cria = QtWidgets.QGridLayout(
+            self.groupBox_ausgew_themen_cria
+        )
         self.gridLayout_12_cria.setObjectName("gridLayout_12_cria")
         self.scrollArea_ausgew_themen_cria = QtWidgets.QScrollArea(
             self.groupBox_ausgew_themen_cria
@@ -886,12 +937,18 @@ class Ui_MainWindow(object):
         self.scrollArea_ausgew_themen_cria.setObjectName("scrollArea_ausgew_themen")
 
         self.scrollAreaWidgetContents_ausgew_themen_cria = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_ausgew_themen_cria.setGeometry(QtCore.QRect(0, 0, 320, 279))
+        self.scrollAreaWidgetContents_ausgew_themen_cria.setGeometry(
+            QtCore.QRect(0, 0, 320, 279)
+        )
         self.scrollAreaWidgetContents_ausgew_themen_cria.setObjectName(
             "scrollAreaWidgetContents_ausgew_themen_cria"
         )
-        self.scrollArea_ausgew_themen_cria.setWidget(self.scrollAreaWidgetContents_ausgew_themen_cria)
-        self.gridLayout_12_cria.addWidget(self.scrollArea_ausgew_themen_cria, 0, 0, 1, 1)
+        self.scrollArea_ausgew_themen_cria.setWidget(
+            self.scrollAreaWidgetContents_ausgew_themen_cria
+        )
+        self.gridLayout_12_cria.addWidget(
+            self.scrollArea_ausgew_themen_cria, 0, 0, 1, 1
+        )
         self.verticalLayout_2_cria = QtWidgets.QVBoxLayout(
             self.scrollAreaWidgetContents_ausgew_themen_cria
         )
@@ -920,12 +977,14 @@ class Ui_MainWindow(object):
         ##################### CREATOR #########################################
         self.groupBox_aufgabentyp = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_aufgabentyp.setObjectName(_fromUtf8("groupBox_aufgabentyp"))
+        self.groupBox_aufgabentyp.setSizePolicy(SizePolicy_fixed)
         self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBox_aufgabentyp)
         self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
 
         self.groupBox_variation_cr = create_new_groupbox(
             self.centralwidget, "Aufgabenvariation"
         )
+        self.groupBox_variation_cr.setMaximumWidth(500)
         self.verticalLayout_variation = create_new_verticallayout(
             self.groupBox_variation_cr
         )
@@ -940,6 +999,24 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addWidget(self.groupBox_variation_cr, 0, 0, 1, 1)
         self.groupBox_variation_cr.hide()
+
+        self.groupBox_choose_file = create_new_groupbox(
+            self.centralwidget, "Aufgabe auswählen"
+        )
+        self.verticalLayout_choose_file = create_new_verticallayout(
+            self.groupBox_choose_file
+        )
+
+        self.button_choose_file = create_new_button(
+            self.groupBox_choose_file,
+            "Aufgabe suchen...",
+            partial(self.button_variation_cr_pressed, 'editor'),
+        )
+        self.button_choose_file.setMinimumWidth(0)
+        self.verticalLayout_choose_file.addWidget(self.button_choose_file)
+
+        self.gridLayout.addWidget(self.groupBox_choose_file, 0, 0, 1, 1)
+        self.groupBox_choose_file.hide()
 
         self.groupBox_grundkompetenzen_cr = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_grundkompetenzen_cr.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -1093,7 +1170,7 @@ class Ui_MainWindow(object):
             self.centralwidget, "Ausgewählte Grundkompetenzen"
         )
         self.groupBox_ausgew_gk_cr.setSizePolicy(SizePolicy_fixed_height)
-        # self.groupBox_ausgew_gk_cr.setMaximumWidth(500)
+        self.groupBox_ausgew_gk_cr.setMaximumWidth(500)
 
         self.verticalLayout_2 = create_new_verticallayout(self.groupBox_ausgew_gk_cr)
 
@@ -1110,7 +1187,7 @@ class Ui_MainWindow(object):
         self.groupBox_bilder = create_new_groupbox(
             self.centralwidget, "Bilder (klicken, um Bilder zu entfernen)"
         )
-        # self.groupBox_bilder.setMaximumWidth(500)
+        self.groupBox_bilder.setMaximumWidth(500)
         self.groupBox_bilder.setSizePolicy(SizePolicy_maximum_height)
         self.gridLayout_13 = QtWidgets.QGridLayout(self.groupBox_bilder)
         self.gridLayout_13.setObjectName(_fromUtf8("gridLayout_13"))
@@ -1184,7 +1261,7 @@ class Ui_MainWindow(object):
         # self.groupBox_aufgabentyp.setMaximumSize(100, 60)
         self.comboBox_aufgabentyp_cr = QtWidgets.QComboBox(self.groupBox_aufgabentyp)
         self.comboBox_aufgabentyp_cr.setObjectName(_fromUtf8("comboBox_aufgabentyp_cr"))
-        self.comboBox_aufgabentyp_cr.setSizePolicy(SizePolicy_fixed)
+        # self.comboBox_aufgabentyp_cr.setSizePolicy(SizePolicy_fixed)
         self.comboBox_aufgabentyp_cr.addItem(_fromUtf8(""))
         self.comboBox_aufgabentyp_cr.addItem(_fromUtf8(""))
         # self.comboBox_aufgabentyp_cr.currentIndexChanged.connect(self.comboBox_aufgabentyp_cr_changed)
@@ -1202,8 +1279,9 @@ class Ui_MainWindow(object):
         self.groupBox_aufgabentyp.hide()
 
         self.groupBox_punkte = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBox_punkte.setSizePolicy(SizePolicy_fixed)
         self.groupBox_punkte.setObjectName(_fromUtf8("groupBox_punkte"))
-        self.groupBox_punkte.setSizePolicy(SizePolicy_minimum_fixed)
+        # self.groupBox_punkte.setSizePolicy(SizePolicy_fixed)
         # self.groupBox_punkte.setMaximumSize(80, 60)
         self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_punkte)
         self.gridLayout_6.setObjectName(_fromUtf8("gridLayout_6"))
@@ -1218,7 +1296,7 @@ class Ui_MainWindow(object):
 
         self.groupBox_aufgabenformat = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_aufgabenformat.setObjectName(_fromUtf8("groupBox_aufgabenformat"))
-        self.groupBox_aufgabenformat.setSizePolicy(SizePolicy_fixed_height)
+        self.groupBox_aufgabenformat.setSizePolicy(SizePolicy_fixed)
         # self.groupBox_aufgabenformat.setSizePolicy(SizePolicy_minimum)
         # self.groupBox_aufgabenformat.setMaximumWidth(300)
         self.gridLayout_7 = QtWidgets.QGridLayout(self.groupBox_aufgabenformat)
@@ -1261,7 +1339,7 @@ class Ui_MainWindow(object):
         self.groupBox_klassen_cr = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_klassen_cr.setObjectName(_fromUtf8("groupBox_klassen_cr"))
         self.groupBox_klassen_cr.setTitle(_translate("MainWindow", "Klasse", None))
-        # self.groupBox_klassen_cr.setMaximumSize(100, 60)
+        self.groupBox_klassen_cr.setSizePolicy(SizePolicy_fixed)
         self.gridLayout_8 = QtWidgets.QGridLayout(self.groupBox_klassen_cr)
         self.gridLayout_8.setObjectName(_fromUtf8("gridLayout_8"))
         self.comboBox_klassen_cr = QtWidgets.QComboBox(self.groupBox_klassen_cr)
@@ -1287,7 +1365,7 @@ class Ui_MainWindow(object):
         self.lineEdit_titel = QtWidgets.QLineEdit(self.groupBox_titel_cr)
         self.lineEdit_titel.setObjectName(_fromUtf8("lineEdit_titel"))
         self.gridLayout_14.addWidget(self.lineEdit_titel, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_titel_cr, 1, 1, 1, 5)
+        self.gridLayout.addWidget(self.groupBox_titel_cr, 1, 1, 1, 6)
         self.groupBox_titel_cr.setTitle(_translate("MainWindow", "Titel", None))
         self.groupBox_titel_cr.hide()
 
@@ -1307,7 +1385,7 @@ class Ui_MainWindow(object):
         self.plainTextEdit.setObjectName(_fromUtf8("plainTextEdit"))
         self.plainTextEdit.setTabChangesFocus(True)
         self.gridLayout_10.addWidget(self.plainTextEdit, 1, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_beispieleingabe, 2, 1, 5, 5)
+        self.gridLayout.addWidget(self.groupBox_beispieleingabe, 2, 1, 5, 6)
         self.groupBox_beispieleingabe.setTitle(
             _translate("MainWindow", "Aufgabeneingabe", None)
         )
@@ -1330,13 +1408,13 @@ class Ui_MainWindow(object):
         self.lineEdit_quelle = QtWidgets.QLineEdit(self.groupBox_quelle)
         self.lineEdit_quelle.setObjectName(_fromUtf8("lineEdit_quelle"))
         try:
-            quelle = self.lama_settings['quelle']
+            quelle = self.lama_settings["quelle"]
         except KeyError:
             quelle = ""
 
         self.lineEdit_quelle.setText(quelle)
         self.gridLayout_18.addWidget(self.lineEdit_quelle, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_quelle, 7, 1, 1, 5, QtCore.Qt.AlignTop)
+        self.gridLayout.addWidget(self.groupBox_quelle, 7, 1, 1, 6, QtCore.Qt.AlignTop)
         self.groupBox_quelle.setTitle(
             _translate(
                 "MainWindow",
@@ -1346,13 +1424,25 @@ class Ui_MainWindow(object):
         )
         self.groupBox_quelle.hide()
 
+        
         self.pushButton_save = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_save.setObjectName(_fromUtf8("pushButton_save"))
         self.pushButton_save.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.gridLayout.addWidget(self.pushButton_save, 8, 5, 1, 1)
+        self.pushButton_save.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout.addWidget(self.pushButton_save, 8, 6, 1, 1)
         self.pushButton_save.setText(_translate("MainWindow", "Speichern", None))
+
         # self.pushButton_save.setShortcut(_translate("MainWindow", "Return", None))
         self.pushButton_save.hide()
+
+        self.pushButton_save_edit = create_new_button(self.centralwidget, "Änderung speichern", self.button_save_edit_pressed)
+        self.pushButton_save_edit.setSizePolicy(SizePolicy_fixed)
+        self.pushButton_save_edit.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.gridLayout.addWidget(self.pushButton_save_edit, 8, 6, 1, 1)
+
+        self.pushButton_save_edit.hide()
+
+
         self.lineEdit_titel.setFocus()
         self.tab_widget_gk.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -1586,7 +1676,8 @@ class Ui_MainWindow(object):
         self.groupBox_nummer.setSizePolicy(
             QtWidgets.QSizePolicy(
                 QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed
-        ))
+            )
+        )
         self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.groupBox_nummer)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
         self.spinBox_nummer = QtWidgets.QSpinBox(self.groupBox_nummer)
@@ -1629,7 +1720,9 @@ class Ui_MainWindow(object):
         self.gridLayout_8 = QtWidgets.QGridLayout(self.scrollAreaWidgetContents_2)
         self.gridLayout_8.setObjectName("gridLayout_8")
         self.scrollArea_chosen.setWidget(self.scrollAreaWidgetContents_2)
-        self.scrollArea_chosen.verticalScrollBar().rangeChanged.connect(self.change_scrollbar_position)
+        self.scrollArea_chosen.verticalScrollBar().rangeChanged.connect(
+            self.change_scrollbar_position
+        )
         # self.scrollArea_chosen.verticalScrollBar().rangeChanged.connect(
         #     lambda: self.scrollArea_chosen.verticalScrollBar().setValue(
         #         self.scrollArea_chosen.verticalScrollBar().maximum()
@@ -1901,7 +1994,8 @@ class Ui_MainWindow(object):
             self.comboBox_klassen_fb_cria.addItem("")
 
             self.comboBox_klassen_fb_cria.setItemText(
-                i, _translate("MainWindow", all[1] + ". Klasse", None),
+                i,
+                _translate("MainWindow", all[1] + ". Klasse", None),
             )
             i += 1
 
@@ -2100,6 +2194,7 @@ class Ui_MainWindow(object):
         self.menuNeu.setTitle(_translate("MainWindow", "Aufgabe hinzufügen", None))
         self.menuSage.setTitle(_translate("MainWindow", "Erstellen", None))
         self.menuSuche.setTitle(_translate("MainWindow", "Aufgabensuche", None))
+        self.menuDeveloper.setTitle(_translate("MainWindow", "Entwicklermodus", None))
         self.menuBild_einbinden.setTitle(
             _translate("MainWindow", "Bild einfügen", None)
         )
@@ -2113,29 +2208,33 @@ class Ui_MainWindow(object):
         # self.cb_solution.setText(_translate("MainWindow", "Lösungen anzeigen", None))
         # self.cb_drafts.setText(_translate("MainWindow", "Entwürfe anzeigen", None))
 
-        try:
-            if self.chosen_program == "lama":
-                log_file = os.path.join(path_localappdata_lama, "Teildokument","log_file_1")
-            if self.chosen_program == "cria":
-                log_file = os.path.join(path_localappdata_lama, "Teildokument","log_file_cria")
-            self.label_update.setText(
-                _translate(
-                    "MainWindow",
-                    "Letztes Update: "
-                    + modification_date(log_file).strftime("%d.%m.%y - %H:%M"),
-                    None,
-                )
-            )
-        except FileNotFoundError:
-            self.label_update.setText(
-                _translate("MainWindow", "Letztes Update: ---", None)
-            )
+        # try:
+        #     if self.chosen_program == "lama":
+        #         log_file = os.path.join(
+        #             path_localappdata_lama, "Teildokument", "log_file_1"
+        #         )
+        #     if self.chosen_program == "cria":
+        #         log_file = os.path.join(
+        #             path_localappdata_lama, "Teildokument", "log_file_cria"
+        #         )
+        #     self.label_update.setText(
+        #         _translate(
+        #             "MainWindow",
+        #             "Letztes Update: "
+        #             + modification_date(log_file).strftime("%d.%m.%y - %H:%M"),
+        #             None,
+        #         )
+        #     )
+        # except FileNotFoundError:
+        #     self.label_update.setText(
+        #         _translate("MainWindow", "Letztes Update: ---", None)
+        #     )
 
         self.combobox_searchtype.setItemText(
             0,
             _translate(
                 "MainWindow",
-                "Alle Dateien ausgeben, die zumindest ein Suchkriterium enthalten",
+                "Alle Dateien ausgeben, die zumindest ein Themengebiet enthalten",
                 None,
             ),
         )
@@ -2229,8 +2328,9 @@ class Ui_MainWindow(object):
             self.update_gui("widgets_search")
 
     def open_dialogwindow_erstellen(
-        self, dict_titlepage,
-    ):  # , dict_gesammeltedateien
+        self,
+        dict_titlepage,
+    ):
         self.Dialog = QtWidgets.QDialog(
             None,
             QtCore.Qt.WindowSystemMenuHint
@@ -2579,7 +2679,7 @@ class Ui_MainWindow(object):
                 for unterkapitel in dict_klasse[kapitel]:
                     checkbox = create_new_checkbox(
                         self.scrollAreaWidgetContents_cria,
-                        dict_unterkapitel[unterkapitel] + " ("+unterkapitel + ")",
+                        dict_unterkapitel[unterkapitel] + " (" + unterkapitel + ")",
                     )
                     checkbox.stateChanged.connect(
                         partial(
@@ -2645,8 +2745,7 @@ class Ui_MainWindow(object):
             all_checked = True
         else:
             all_checked = False
-        
-           
+
         for kapitel in dict_klasse_name:
             first_checkbox = "checkbox_unterkapitel_{0}_{1}_{2}".format(
                 klasse, kapitel, dict_klasse[kapitel][0]
@@ -2804,12 +2903,30 @@ class Ui_MainWindow(object):
             if all.startswith(name) or all.startswith(name_creator):
                 self.dict_widget_variables[all].setChecked(False)
 
-    def suchfenster_reset(self, variation=False):
+    def uncheck_all_af_checkboxes(self):
+        self.cb_af_rf.setChecked(False)
+        self.cb_af_ko.setChecked(False)
+        self.cb_af_lt.setChecked(False)
+        self.cb_af_mc.setChecked(False)
+        self.cb_af_oa.setChecked(False)
+        self.cb_af_ta.setChecked(False)
+        self.cb_af_zo.setChecked(False)
 
+    def uncheck_all_klassen_checkboxes(self):
+        self.cb_k5.setChecked(False)
+        self.cb_k6.setChecked(False)
+        self.cb_k7.setChecked(False)
+        self.cb_k8.setChecked(False)
+        self.cb_mat.setChecked(False)
+        self.cb_univie.setChecked(False)
+
+    def suchfenster_reset(self, variation=False):
         self.uncheck_all_checkboxes("gk")
 
         self.uncheck_all_checkboxes("themen")
 
+        self.uncheck_all_af_checkboxes()
+        self.uncheck_all_klassen_checkboxes()
         ### LaMA Cria
         # for klasse in list_klassen:
         #     self.dict_widget_variables['combobox_kapitel_creator_cria_{}'.format(klasse)].setCurrentIndex(0)
@@ -2850,14 +2967,23 @@ class Ui_MainWindow(object):
             self.lineEdit_titel.setText(_translate("MainWindow", "###", None))
         else:
             self.lineEdit_titel.setText(_translate("MainWindow", "", None))
-        try:
-            quelle = self.lama_settings['quelle']
-        except KeyError:
-            quelle = ""
-        self.lineEdit_quelle.setText(_translate("MainWindow", quelle, None))
+        
+
 
         if variation == False:
             self.plainTextEdit.setPlainText(_translate("MainWindow", "", None))
+        
+        if self.chosen_gui == 'widgets_edit':
+            self.enable_widgets_editor(False)
+            self.plainTextEdit.clear()
+            self.lineEdit_quelle.clear()
+        else:
+            self.enable_widgets_editor(True)
+            try:
+                quelle = self.lama_settings["quelle"]
+            except KeyError:
+                quelle = ""
+            self.lineEdit_quelle.setText(_translate("MainWindow", quelle, None))
 
     def reset_sage(self, question_reset=True):
         if question_reset == True and not is_empty(self.list_alle_aufgaben_sage):
@@ -2920,6 +3046,8 @@ class Ui_MainWindow(object):
         self.dict_alle_aufgaben_sage = {}
         self.dict_variablen_label = {}
         self.dict_variablen_punkte = {}
+        self.dict_variablen_abstand = {}
+        self.update_punkte()
         self.list_copy_images = []
         for i in reversed(range(self.gridLayout_8.count())):
             self.delete_widget(self.gridLayout_8, i)
@@ -2959,10 +3087,10 @@ class Ui_MainWindow(object):
         if self.chosen_program == "lama":
             self.chosen_program = "cria"
 
-            if self.beispieldaten_dateipfad_cria == None:
-                self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
-                    "cria"
-                )
+            # if self.beispieldaten_dateipfad_cria == None:
+            #     self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
+            #         "cria"
+            #     )
 
             self.gridLayout.addWidget(self.groupBox_af, 3, 0, 1, 1)
             self.gridLayout.addWidget(self.groupBox_punkte, 0, 1, 1, 1)
@@ -2983,7 +3111,7 @@ class Ui_MainWindow(object):
                 1,
                 _translate(
                     "MainWindow",
-                    "Alle Dateien ausgeben, die alle Suchkriterien enthalten",
+                    "Alle Dateien ausgeben, die alle Themengebiete enthalten",
                     None,
                 ),
             )
@@ -2998,19 +3126,19 @@ class Ui_MainWindow(object):
             self.label_gesamtbeispiele.setText(
                 _translate("MainWindow", "Anzahl der Aufgaben: 0", None)
             )
-            self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
-                "cria"
-            )
+            # self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
+            #     "cria"
+            # )
 
         elif self.chosen_program == "cria":
             self.chosen_program = "lama"
 
-            if (
-                self.beispieldaten_dateipfad_1 == None
-                or self.beispieldaten_dateipfad_2 == None
-            ):
-                self.beispieldaten_dateipfad_1 = self.define_beispieldaten_dateipfad(1)
-                self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)
+            # if (
+            #     self.beispieldaten_dateipfad_1 == None
+            #     or self.beispieldaten_dateipfad_2 == None
+            # ):
+            #     self.beispieldaten_dateipfad_1 = self.define_beispieldaten_dateipfad(1)
+            #     self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)
 
             self.gridLayout.addWidget(self.groupBox_af, 4, 0, 1, 1)
             self.gridLayout.addWidget(self.groupBox_punkte, 0, 2, 1, 1)
@@ -3022,7 +3150,7 @@ class Ui_MainWindow(object):
                 1,
                 _translate(
                     "MainWindow",
-                    "Alle Dateien ausgeben, die ausschließlich diese Suchkriterien enthalten",
+                    "Alle Dateien ausgeben, die ausschließlich diese Themengebiete enthalten",
                     None,
                 ),
             )
@@ -3047,11 +3175,11 @@ class Ui_MainWindow(object):
 
         MainWindow.setWindowTitle(program_name)
         MainWindow.setWindowIcon(QtGui.QIcon(icon))
-        if self.lama_settings["database"]==0:
+        if self.lama_settings["database"] == 0:
             refresh_ddb(self)
         self.update_gui("widgets_search")
-        self.beispieldaten_dateipfad_1 = self.define_beispieldaten_dateipfad(1)
-        self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)
+        # self.beispieldaten_dateipfad_1 = self.define_beispieldaten_dateipfad(1)
+        # self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)
 
     def close_app(self):
         if self.list_alle_aufgaben_sage == []:
@@ -3079,24 +3207,33 @@ class Ui_MainWindow(object):
     def developer_mode_changed(self):
         if self.developer_mode_active == False:
             self.actionDeveloper.setText("Entwicklermodus")
-            self.actionPush_Database.setVisible(False)
+            # self.actionPush_Database.setVisible(False)
+            self.menuBar.removeAction(self.menuDeveloper.menuAction())
+            
 
         elif self.developer_mode_active == True:
             self.actionDeveloper.setText("Entwicklermodus (aktiv)")
-            self.actionPush_Database.setVisible(True)
+            # self.actionPush_Database.setVisible(True)
+            self.menuBar.addAction(self.menuDeveloper.menuAction())
 
     def activate_developermode(self):
         if self.developer_mode_active == True:
-            response = question_window("Sind Sie sicher, dass Sie den Entwicklermodus deaktivieren möchten?")
+            response = question_window(
+                "Sind Sie sicher, dass Sie den Entwicklermodus deaktivieren möchten?"
+            )
             if response == False:
                 return
-            path_lama_developer_credentials = os.path.join(os.getenv('LOCALAPPDATA'), "LaMA", "credentials")
-            lama_developer_credentials = os.path.join(path_lama_developer_credentials, "developer_credentials.txt")
+            path_lama_developer_credentials = os.path.join(
+                os.getenv("LOCALAPPDATA"), "LaMA", "credentials"
+            )
+            lama_developer_credentials = os.path.join(
+                path_lama_developer_credentials, "developer_credentials.txt"
+            )
             if os.path.isfile(lama_developer_credentials):
                 os.remove(lama_developer_credentials)
             self.developer_mode_active = False
             self.developer_mode_changed()
-            information_window("Der Entwicklermodus wurde deaktiviert.")            
+            information_window("Der Entwicklermodus wurde deaktiviert.")
         else:
             Dialog = QtWidgets.QDialog(
                 None,
@@ -3114,7 +3251,7 @@ class Ui_MainWindow(object):
                 self.developer_mode_changed()
                 information_window("Der Entwicklermodus wurde erfolgreich aktiviert.")
             # if response == 1:
-            #     self.lama_settings = ui.lama_settings        
+            #     self.lama_settings = ui.lama_settings
 
     def open_setup(self):
         Dialog = QtWidgets.QDialog(
@@ -3130,7 +3267,6 @@ class Ui_MainWindow(object):
         if response == 1:
             self.lama_settings = ui.lama_settings
 
-
     # def git_pull(self):
     #     # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
     #     path_programdata = os.getenv('PROGRAMDATA')
@@ -3139,13 +3275,13 @@ class Ui_MainWindow(object):
     #     print('pull')
     #     # repo.git.add(A=True)
     #     # repo.git.fetch('--all')
-    #     # 
+    #     #
     #     # repo.git.reset('--hard')
     #     repo.git.clean('-xdf')
-    #     # o = repo.remotes.origin        
+    #     # o = repo.remotes.origin
     #     # o.pull()
     #     print('done')
-        # QtWidgets.QApplication.restoreOverrideCursor()
+    # QtWidgets.QApplication.restoreOverrideCursor()
 
     # def git_push(self):
     #     # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
@@ -3162,23 +3298,23 @@ class Ui_MainWindow(object):
 
     def git_check_changes(self):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        path_programdata = os.getenv('PROGRAMDATA')
+        path_programdata = os.getenv("PROGRAMDATA")
         database = os.path.join(path_programdata, "LaMA", "_database")
         repo = git.Repo(database)
         # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         if repo.is_dirty(untracked_files=True):
-            print('changes detected')
+            print("changes detected")
         else:
-            print('no changes found')
-        QtWidgets.QApplication.restoreOverrideCursor()        
+            print("no changes found")
+        QtWidgets.QApplication.restoreOverrideCursor()
 
     def git_pull_request(self):
         # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        path_programdata = os.getenv('PROGRAMDATA')
+        path_programdata = os.getenv("PROGRAMDATA")
         database = os.path.join(path_programdata, "LaMA", "_database")
-        repo = git.Repo(database) 
+        repo = git.Repo(database)
 
-        repo.create_pull(title='Test')      
+        repo.create_pull(title="Test")
 
     def show_info(self):
         QtWidgets.QApplication.restoreOverrideCursor()
@@ -3204,17 +3340,20 @@ class Ui_MainWindow(object):
                             shutil.copy2(path_new_package, path_file)
                             return True
                         except PermissionError:
-                            warning_window("Das Update konnte leider nicht durchgeführt werden, da notwendige Berechtigungen fehlen. Starten Sie LaMA erneut als Administrator (Rechtsklick -> 'Als Administrator ausführen') und versuchen Sie es erneut.")
+                            warning_window(
+                                "Das Update konnte leider nicht durchgeführt werden, da notwendige Berechtigungen fehlen. Starten Sie LaMA erneut als Administrator (Rechtsklick -> 'Als Administrator ausführen') und versuchen Sie es erneut."
+                            )
                             return False
         return False
 
-
     def update_srdpmathematik(self):
-        response = question_window('Sind Sie sicher, dass Sie das Paket "srdp-mathematik.sty" aktualisieren möchten?')
-        
-        if response==False:
+        response = question_window(
+            'Sind Sie sicher, dass Sie das Paket "srdp-mathematik.sty" aktualisieren möchten?'
+        )
+
+        if response == False:
             return
-        
+
         ### get version from webpage
         # uf = urllib.request.urlopen("https://chrisiweb.github.io/lama_latest_update/")
         # html = uf.read()
@@ -3226,30 +3365,33 @@ class Ui_MainWindow(object):
         # print(version)
 
         # print(path_programm)
-        path_home=Path.home()
-        path_new_package = os.path.join(path_programm, "_database", "_config", "srdp-mathematik.sty")
-        if os.path.isfile(path_new_package)==False:
-            warning_window("Das neue srdp-mathematik-Paket konnte nicht gefunden werden. Bitte versuchen Sie es später erneut.")
+        path_home = Path.home()
+        path_new_package = os.path.join(
+            path_programm, "_database", "_config", "srdp-mathematik.sty"
+        )
+        if os.path.isfile(path_new_package) == False:
+            warning_window(
+                "Das neue srdp-mathematik-Paket konnte nicht gefunden werden. Bitte versuchen Sie es später erneut."
+            )
             return
 
         # print(path_home)
         # mac_path = os.path.join(path_home, "Library","texmf","tex","latex","srdp-mathematik.sty")
         # print(mac_path)
         # print(os.path.isfile(mac_path))
-        
-        paket_teildokument = os.path.join(path_programm, "Teildokument", "srdp-mathematik.sty")
+
+        paket_teildokument = os.path.join(
+            path_programm, "Teildokument", "srdp-mathematik.sty"
+        )
         if os.path.isfile(paket_teildokument):
             os.remove(paket_teildokument)
 
-
         if sys.platform.startswith("darwin") or sys.platform.startswith("linux"):
-            possible_locations = [
-                os.path.join(path_home, "Library","texmf")
-            ]
+            possible_locations = [os.path.join(path_home, "Library", "texmf")]
         else:
             possible_locations = [
-                os.path.join("c:\\","Program Files","MiKTeX 2.9"),
-                os.path.join("c:\\","Program Files (x86)","MiKTeX 2.9"),
+                os.path.join("c:\\", "Program Files", "MiKTeX 2.9"),
+                os.path.join("c:\\", "Program Files (x86)", "MiKTeX 2.9"),
                 os.path.join(path_home, "AppData", "Roaming", "MiKTeX"),
                 os.path.join(path_home, "AppData", "Local", "Programs", "MiKTeX"),
                 os.path.join(path_home, "AppData"),
@@ -3260,12 +3402,16 @@ class Ui_MainWindow(object):
         # update_successfull=False
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
-        update_successfull = self.copy_srdpmathematik(path_new_package, possible_locations)
+        update_successfull = self.copy_srdpmathematik(
+            path_new_package, possible_locations
+        )
 
         QtWidgets.QApplication.restoreOverrideCursor()
-        
+
         if update_successfull == False:
-            critical_window("Das Update konnte leider nicht durchgeführt werden. Aktualisieren Sie das Paket manuell oder wenden Sie sich an lama.helpme@gmail.com für Unterstützung.")
+            critical_window(
+                "Das Update konnte leider nicht durchgeführt werden. Aktualisieren Sie das Paket manuell oder wenden Sie sich an lama.helpme@gmail.com für Unterstützung."
+            )
             return
         if update_successfull == True:
             information_window("Das Paket wurde erfolgreich aktualisiert.")
@@ -3303,25 +3449,27 @@ class Ui_MainWindow(object):
         # msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
         # msg.exec_()
 
-    def refresh_label_update(self):
-        try:
-            if self.chosen_program == "cria":
-                log_file = "log_file_cria"
-            else:
-                log_file = "log_file_%s" % self.label_aufgabentyp.text()[-1]
-            path_log_file = os.path.join(path_localappdata_lama, "Teildokument",log_file)
-            self.label_update.setText(
-                _translate(
-                    "MainWindow",
-                    "Letztes Update: "
-                    + modification_date(path_log_file).strftime("%d.%m.%y - %H:%M"),
-                    None,
-                )
-            )
-        except FileNotFoundError:
-            self.label_update.setText(
-                _translate("MainWindow", "Letztes Update: ---", None)
-            )
+    # def refresh_label_update(self):
+    #     try:
+    #         if self.chosen_program == "cria":
+    #             log_file = "log_file_cria"
+    #         else:
+    #             log_file = "log_file_%s" % self.label_aufgabentyp.text()[-1]
+    #         path_log_file = os.path.join(
+    #             path_localappdata_lama, "Teildokument", log_file
+    #         )
+    #         self.label_update.setText(
+    #             _translate(
+    #                 "MainWindow",
+    #                 "Letztes Update: "
+    #                 + modification_date(path_log_file).strftime("%d.%m.%y - %H:%M"),
+    #                 None,
+    #             )
+    #         )
+    #     except FileNotFoundError:
+    #         self.label_update.setText(
+    #             _translate("MainWindow", "Letztes Update: ---", None)
+    #         )
 
     def chosen_aufgabenformat_typ(self):
         chosen_type = self.label_aufgabentyp.text()[-1]
@@ -3331,14 +3479,14 @@ class Ui_MainWindow(object):
             )
             self.groupBox_af.show()
             self.combobox_searchtype.hide()
-            self.refresh_label_update()
+            # self.refresh_label_update()
         elif chosen_type == str(1):
             self.label_aufgabentyp.setText(
                 _translate("MainWindow", "Aufgabentyp: Typ 2", None)
             )
             self.groupBox_af.hide()
             self.combobox_searchtype.show()
-            self.refresh_label_update()
+            # self.refresh_label_update()
 
     # def chosen_aufgabenformat_typ2(self):
     #     self.label_aufgabentyp.setText(
@@ -3439,7 +3587,7 @@ class Ui_MainWindow(object):
                         return
                     else:
                         for aufgabe in self.list_alle_aufgaben_sage[:]:
-                            typ = self.get_aufgabentyp(aufgabe)
+                            typ = get_aufgabentyp(self.chosen_program, aufgabe)
                             if typ == 2:
                                 self.btn_delete_pressed(aufgabe)
 
@@ -3481,36 +3629,36 @@ class Ui_MainWindow(object):
     #     elif self.comboBox_aufgabentyp_cr.currentIndex() == 1:
     #         self.spinBox_punkte.setValue(0)
 
-    def add_drafts_to_beispieldaten(self):
-        drafts_path = os.path.join(database, "drafts")
-        beispieldaten_dateipfad_draft = search_files(drafts_path)
-        for section in beispieldaten_dateipfad_draft.keys():
-            path = beispieldaten_dateipfad_draft[section]
-            aufgabentyp = self.get_aufgabentyp_from_path(path)
-            if self.chosen_program == "lama":
-                if aufgabentyp == 1:
-                    self.beispieldaten_dateipfad_1[section] = path
-                elif aufgabentyp == 2:
-                    self.beispieldaten_dateipfad_2[section] = path
-            elif self.chosen_program == "cria" and aufgabentyp == None:
-                self.beispieldaten_dateipfad_cria[section] = path
+    # def add_drafts_to_beispieldaten(self):
+    #     drafts_path = os.path.join(database, "drafts")
+    #     beispieldaten_dateipfad_draft = search_files(drafts_path)
+    #     for section in beispieldaten_dateipfad_draft.keys():
+    #         path = beispieldaten_dateipfad_draft[section]
+    #         aufgabentyp = self.get_aufgabentyp_from_path(path)
+    #         if self.chosen_program == "lama":
+    #             if aufgabentyp == 1:
+    #                 self.beispieldaten_dateipfad_1[section] = path
+    #             elif aufgabentyp == 2:
+    #                 self.beispieldaten_dateipfad_2[section] = path
+    #         elif self.chosen_program == "cria" and aufgabentyp == None:
+    #             self.beispieldaten_dateipfad_cria[section] = path
 
-    def delete_drafts_from_beispieldaten(self):
-        drafts_path = os.path.join(database, "drafts")
-        beispieldaten_dateipfad_draft = search_files(drafts_path)
-        for section in beispieldaten_dateipfad_draft.keys():
-            path = beispieldaten_dateipfad_draft[section]
-            aufgabentyp = self.get_aufgabentyp_from_path(path)
-            if self.chosen_program == "lama":
-                if section in self.beispieldaten_dateipfad_1:
-                    del self.beispieldaten_dateipfad_1[section]
-                elif section in self.beispieldaten_dateipfad_2:
-                    del self.beispieldaten_dateipfad_2[section]
-            elif (
-                self.chosen_program == "cria"
-                and section in self.beispieldaten_dateipfad_cria
-            ):
-                del self.beispieldaten_dateipfad_cria[section]
+    # def delete_drafts_from_beispieldaten(self):
+    #     drafts_path = os.path.join(database, "drafts")
+    #     beispieldaten_dateipfad_draft = search_files(drafts_path)
+    #     for section in beispieldaten_dateipfad_draft.keys():
+    #         path = beispieldaten_dateipfad_draft[section]
+    #         aufgabentyp = self.get_aufgabentyp_from_path(path)
+    #         if self.chosen_program == "lama":
+    #             if section in self.beispieldaten_dateipfad_1:
+    #                 del self.beispieldaten_dateipfad_1[section]
+    #             elif section in self.beispieldaten_dateipfad_2:
+    #                 del self.beispieldaten_dateipfad_2[section]
+    #         elif (
+    #             self.chosen_program == "cria"
+    #             and section in self.beispieldaten_dateipfad_cria
+    #         ):
+    #             del self.beispieldaten_dateipfad_cria[section]
 
     def cb_drafts_sage_enabled(self):
         if self.cb_drafts_sage.isChecked() == True:
@@ -3520,10 +3668,10 @@ class Ui_MainWindow(object):
                 titel="Warnung - Here be dragons!",
             )
 
-            self.add_drafts_to_beispieldaten()
+            # self.add_drafts_to_beispieldaten()
 
-        if self.cb_drafts_sage.isChecked() == False:
-            self.delete_drafts_from_beispieldaten()
+        # if self.cb_drafts_sage.isChecked() == False:
+        #     self.delete_drafts_from_beispieldaten()
 
         self.adapt_choosing_list("sage")
 
@@ -3534,107 +3682,122 @@ class Ui_MainWindow(object):
     ################### Befehle Creator ###########################
     #############################################################
 
-    def collect_data_aufgabe(self, aufgabe):
-        content = collect_content(self, aufgabe)
+    # def collect_data_aufgabe(self, aufgabe):
+    #     print(aufgabe)
 
-        section = get_section_from_content(content)
+    #     aufgabe_total = get_aufgabe_total(aufgabe)
+    #     print(aufgabe_total)
+    #     return
+    #     content = collect_content(self, aufgabe)
 
-        if section == None:
-            warning_window(
-                'Die gewählte Aufgabe {} ist fehlerhaft.\nBitte melden Sie diese unter "Feedback & Fehler".\nVielen Dank!'.format(
-                    aufgabe
-                )
-            )
-            return
+    #     section = get_section_from_content(self, content)
 
-        list_collected_data = re.split("{| - |}", section)[1:-1]
+    #     if section == None:
+    #         warning_window(
+    #             'Die gewählte Aufgabe {} ist fehlerhaft.\nBitte melden Sie diese unter "Feedback & Fehler".\nVielen Dank!'.format(
+    #                 aufgabe
+    #             )
+    #         )
+    #         return
 
-        dict_collected_data = {}
+    #     list_collected_data = re.split("{| - |}", section)[1:-1]
 
-        dict_collected_data["aufgabe"] = aufgabe
+    #     dict_collected_data = {}
 
-        dict_collected_data["klasse"] = None
-        for all in list_collected_data:
-            if re.match("K[0-9]", all) or all == "MAT":
-                dict_collected_data["klasse"] = all
-        typ = self.get_aufgabentyp(aufgabe)
-        info = self.collect_all_infos_aufgabe(aufgabe)
+    #     dict_collected_data["aufgabe"] = aufgabe
 
-        if typ == None:
-            themen = list_collected_data[1].split(", ")
-            dict_collected_data["thema"] = themen
-        elif typ == 1:
-            dict_collected_data["thema"] = [list_collected_data[0]]
-        elif typ == 2:
-            gks = list_collected_data[-3].split(", ")
-            dict_collected_data["thema"] = gks
-            # dict_collected_data['titel']=  list_collected_data[-]
+    #     dict_collected_data["klasse"] = None
+    #     for all in list_collected_data:
+    #         if re.match("K[0-9]", all) or all == "MAT":
+    #             dict_collected_data["klasse"] = all
+    #     typ = get_aufgabentyp(self.chosen_program, aufgabe)
+    #     info = self.collect_all_infos_aufgabe(aufgabe)
 
-        dict_collected_data["titel"] = info[2]
+    #     if typ == None:
+    #         themen = list_collected_data[1].split(", ")
+    #         dict_collected_data["thema"] = themen
+    #     elif typ == 1:
+    #         dict_collected_data["thema"] = [list_collected_data[0]]
+    #     elif typ == 2:
+    #         gks = list_collected_data[-3].split(", ")
+    #         dict_collected_data["thema"] = gks
+    #         # dict_collected_data['titel']=  list_collected_data[-]
 
-        if isinstance(info[3], int):
-            dict_collected_data["aufgabenformat"] = None
-        else:
-            dict_collected_data["aufgabenformat"] = info[3]
-        dict_collected_data["quelle"] = list_collected_data[-1]
+    #     dict_collected_data["titel"] = info[2]
 
-        return dict_collected_data
+    #     if isinstance(info[3], int):
+    #         dict_collected_data["aufgabenformat"] = None
+    #     else:
+    #         dict_collected_data["aufgabenformat"] = info[3]
+    #     dict_collected_data["quelle"] = list_collected_data[-1]
 
-    def set_infos_chosen_variation(self, dict_collected_data):
-        aufgabe = dict_collected_data["aufgabe"]
-        typ = self.get_aufgabentyp(aufgabe)
+    #     return dict_collected_data
+
+    def set_infos_chosen_variation(self, aufgabe_total, mode):
+        aufgabe = aufgabe_total["name"]
+
+        typ = get_aufgabentyp(self.chosen_program, aufgabe)
 
         if self.chosen_program == "lama":
             list_comboBox_gk = ["AG", "FA", "AN", "WS", "Zusatzthemen"]
 
             if typ == 1:
-                gk, nummer = aufgabe.split(" - ")
+                gk = aufgabe_total["themen"][0]
                 short_gk = shorten_gk(gk)
                 if short_gk in zusatzthemen_beschreibung:
-                    checkbox_gk = "checkbox_creator_themen_{}".format(short_gk)
+                    checkbox_gk = "checkbox_creator_themen_{1}".format(short_gk)
+
                     index = list_comboBox_gk.index("Zusatzthemen")
                 else:
-                    checkbox_gk = "checkbox_creator_gk_{}".format(short_gk)
-                    index = list_comboBox_gk.index(gk.split(" ")[0].replace("-L",""))
+                    checkbox_gk = "checkbox_creator_gk_{0}".format(short_gk)
+                    index = list_comboBox_gk.index(gk.split(" ")[0])
 
                 self.dict_widget_variables[checkbox_gk].setChecked(True)
                 self.tab_widget_gk_cr.setCurrentIndex(index)
 
+                if mode == 'creator':
+                    self.groupBox_grundkompetenzen_cr.setEnabled(False)
             elif typ == 2:
-                for i, gk in enumerate(dict_collected_data["thema"]):
+                for i, gk in enumerate(aufgabe_total["themen"]):
                     short_gk = shorten_gk(gk)
                     if short_gk in zusatzthemen_beschreibung:
                         checkbox_gk = "checkbox_creator_themen_{}".format(short_gk)
                         if i == 0:
                             index = list_comboBox_gk.index("Zusatzthemen")
-                    else:                   
+                    else:
                         checkbox_gk = "checkbox_creator_gk_{}".format(short_gk)
                         if i == 0:
-                            index = list_comboBox_gk.index(gk.split(" ")[0].replace("-L",""))
-                        # index = list_comboBox_gk.index(gk.split(" ")[0].replace("-L",""))
+                            index = list_comboBox_gk.index(
+                                gk.split(" ")[0]
+                            )
 
                     self.dict_widget_variables[checkbox_gk].setChecked(True)
                 self.tab_widget_gk_cr.setCurrentIndex(index)
-                # self.tab_widget_gk_cr.setCurrentIndex(
-                #     list_comboBox_gk.index(
-                #         dict_collected_data["thema"][0].split(" ")[0]
-                #     )
-                # )
-
-            self.groupBox_grundkompetenzen_cr.setEnabled(False)
 
             self.comboBox_aufgabentyp_cr.setCurrentIndex(typ - 1)
             self.groupBox_aufgabentyp.setEnabled(False)
 
+            klasse = aufgabe_total["klasse"]
+
+            if klasse != None:
+                try:
+                    full_klasse = Klassen[klasse]
+                    index = self.comboBox_klassen_cr.findText(full_klasse)              
+
+                    self.comboBox_klassen_cr.setCurrentIndex(index)
+                except KeyError:
+                    pass
+
         elif self.chosen_program == "cria":
-            klasse = dict_collected_data["klasse"].lower()
+            klasse, nummer = aufgabe.split(".")
+
             index = list_klassen.index(klasse)
             self.tab_widget_cr_cria.setCurrentIndex(index)
 
-            for thema in dict_collected_data["thema"]:
-                kapitel, unterkapitel = thema.split(".")
+            for thema in aufgabe_total["themen"]:
+                klasse_thema, kapitel, unterkapitel = thema.split(".")
 
-                combobox_thema = "combobox_kapitel_creator_cria_{}".format(klasse)
+                combobox_thema = "combobox_kapitel_{0}_cria_{1}".format(mode, klasse)
                 dict_klasse_name = eval("dict_{}_name".format(klasse))
                 thema_name = dict_klasse_name[kapitel]
                 index = self.dict_widget_variables[combobox_thema].findText(
@@ -3642,54 +3805,37 @@ class Ui_MainWindow(object):
                 )
                 self.dict_widget_variables[combobox_thema].setCurrentIndex(index)
 
-                checkbox_thema = "checkbox_unterkapitel_creator_{0}_{1}_{2}".format(
-                    klasse, kapitel, unterkapitel
+                checkbox_thema = "checkbox_unterkapitel_{0}_{1}_{2}_{3}".format(
+                    mode, klasse, kapitel, unterkapitel
                 )
                 self.dict_widget_variables[checkbox_thema].setChecked(True)
+                if mode == 'creator':
+                    self.groupBox_themengebiete_cria.setEnabled(False)
 
-                self.groupBox_themengebiete_cria.setEnabled(False)
+        self.spinBox_punkte.setValue(aufgabe_total["punkte"])
 
-        punkte = self.get_punkte_aufgabe(aufgabe)
+        if aufgabe_total["af"] != None:
+            af = aufgabe_total["af"]
+            full_aufgabenformat = dict_aufgabenformate[af]
 
-        self.spinBox_punkte.setValue(punkte)
-        if dict_collected_data["aufgabenformat"] != None:
-            try:
-                full_aufgabenformat = dict_aufgabenformate[
-                    dict_collected_data["aufgabenformat"].lower()
-                ]
-                index = self.comboBox_af.findText(full_aufgabenformat)
+            index = self.comboBox_af.findText(full_aufgabenformat)
+
+            if mode == 'creator':
                 self.comboBox_af.setEnabled(False)
-            except AttributeError:
-                warning_window(
-                    'Die gewählte Aufgabe {} ist fehlerhaft.\nBitte melden Sie diese unter "Feedback & Fehler".\nVielen Dank!'.format(
-                        aufgabe
-                    )
-                )
-                index = 0
+
             self.comboBox_af.setCurrentIndex(index)
         else:
             self.comboBox_af.setCurrentIndex(0)
 
-        if dict_collected_data["klasse"] != None and typ != None:
-            try:
-                full_klasse = Klassen[dict_collected_data["klasse"].lower()]
-                index = self.comboBox_klassen_cr.findText(full_klasse)
-            except AttributeError:
-                warning_window(
-                    'Die gewählte Aufgabe {} ist fehlerhaft.\nBitte melden Sie diese unter "Feedback & Fehler".\nVielen Dank!'.format(
-                        aufgabe
-                    )
-                )
-                index = 0
-            self.comboBox_klassen_cr.setCurrentIndex(index)
+        if self.lineEdit_titel.text().startswith("###") and mode == 'creator':
+            self.lineEdit_titel.setText("### " + aufgabe_total["titel"])
         else:
-            self.comboBox_klassen_cr.setCurrentIndex(0)
+            self.lineEdit_titel.setText(aufgabe_total["titel"])
 
-        if self.lineEdit_titel.text().startswith("###"):
-            self.lineEdit_titel.setText("### " + dict_collected_data["titel"])
-        else:
-            self.lineEdit_titel.setText(dict_collected_data["titel"])
-        # self.lineEdit_quelle.setText(dict_collected_data["quelle"])
+        if mode == 'editor':
+            self.plainTextEdit.clear()
+            self.plainTextEdit.insertPlainText(aufgabe_total['content'])
+            self.lineEdit_quelle.setText(aufgabe_total["quelle"])
 
     def reset_variation(self):
         self.button_variation_cr.setText("Variation vorhandender Aufgabe...")
@@ -3698,7 +3844,15 @@ class Ui_MainWindow(object):
         self.comboBox_af.setEnabled(True)
         self.groupBox_themengebiete_cria.setEnabled(True)
 
-    def button_variation_cr_pressed(self):
+    def reset_edit_file(self):
+        self.button_choose_file.setText("Aufgabe suchen...")
+        self.enable_widgets_editor(False)
+        # self.groupBox_grundkompetenzen_cr.setEnabled(True)
+        # self.groupBox_aufgabentyp.setEnabled(True)
+        # self.comboBox_af.setEnabled(True)
+        # self.groupBox_themengebiete_cria.setEnabled(True)
+
+    def button_variation_cr_pressed(self, mode = 'creator'):
         Dialog = QtWidgets.QDialog(
             None,
             QtCore.Qt.WindowSystemMenuHint
@@ -3712,22 +3866,39 @@ class Ui_MainWindow(object):
 
         if response == 1:
             self.suchfenster_reset(True)
-            self.chosen_variation = ui.chosen_variation
-            if self.chosen_variation != None:
-                self.button_variation_cr.setText(
-                    "Variation von: {}".format(self.chosen_variation.upper())
-                )
-                dict_collected_data = self.collect_data_aufgabe(self.chosen_variation)
-            else:
-                self.suchfenster_reset(True)
-                self.reset_variation()
-                return
+            if mode == 'creator':
+                self.chosen_variation = ui.chosen_variation
+                _file_ = self.chosen_variation
+                if self.chosen_variation != None:
+                    self.button_variation_cr.setText(
+                        "Variation von: {}".format(self.chosen_variation.upper())
+                    )
+                else:
+                    self.suchfenster_reset(True)
+                    self.reset_variation()
+                    return
+            elif mode == 'editor':
+                self.chosen_file_to_edit = ui.chosen_variation
+                _file_ = self.chosen_file_to_edit
+                if self.chosen_file_to_edit != None:
+                    self.button_choose_file.setText(
+                        "Gewählte Aufgabe: {}".format(self.chosen_file_to_edit.upper())
+                    )
+                else:
+                    self.suchfenster_reset(True)
+                    self.reset_edit_file()
+                    return
+            typ = get_aufgabentyp(self.chosen_program, _file_)
+            _file_ = _file_.replace(" (lokal)", "")
+            aufgabe_total_original = get_aufgabe_total(_file_, typ)
+
+            self.enable_widgets_editor(True)
+
 
         if response == 0:
             return
 
-        self.set_infos_chosen_variation(dict_collected_data)
-
+        self.set_infos_chosen_variation(aufgabe_total_original, mode)
 
     def add_picture(self):
         try:
@@ -3870,7 +4041,10 @@ class Ui_MainWindow(object):
         ):
             return "Es wurde kein Aufgabenformat ausgewählt."
 
-        if is_empty(self.lineEdit_titel.text().replace("###","")) == True or self.lineEdit_titel.text().replace("###","").isspace():
+        if (
+            is_empty(self.lineEdit_titel.text().replace("###", "")) == True
+            or self.lineEdit_titel.text().replace("###", "").isspace()
+        ):
             return "Bitte geben Sie einen Titel ein."
 
         if is_empty(self.plainTextEdit.toPlainText()) == True:
@@ -3881,9 +4055,11 @@ class Ui_MainWindow(object):
         if is_empty(self.lineEdit_quelle.text()) == True:
             return "Bitte geben Sie die Quelle an."
 
-        elif self.check_for_admin_mode() == "user" and len(self.lineEdit_quelle.text()) != 6:
+        elif (
+            self.check_for_admin_mode() == "user"
+            and len(self.lineEdit_quelle.text()) != 6
+        ):
             return 'Bitte geben Sie als Quelle ihren Vornamen und Nachnamen im Format "VorNac" (6 Zeichen!) ein.'
-
 
         included, attached = self.check_included_attached_image_ratio()
         if included != attached:
@@ -3986,13 +4162,13 @@ class Ui_MainWindow(object):
         # self.ui_save.label.setStyleSheet("padding: 10px")
         return Dialog_speichern
 
-    def get_highest_grade(self):
-        highest_grade = 1
-        for all in self.list_selected_topics_creator:
-            if int(all[0][1]) > int(highest_grade):
-                highest_grade = all[0][1]
-        klasse = "k{}".format(highest_grade)
-        return klasse
+    # def get_highest_grade(self):
+    #     highest_grade = 1
+    #     for all in self.list_selected_topics_creator:
+    #         if int(all[0][1]) > int(highest_grade):
+    #             highest_grade = all[0][1]
+    #     klasse = "k{}".format(highest_grade)
+    #     return klasse
 
     # def split_thema_klasse(self, thema):
     #     if re.search("\(.\.\)", thema) != None:
@@ -4022,197 +4198,224 @@ class Ui_MainWindow(object):
                 list_path.append("_database")
         return list_path
 
-    def create_aufgabenpfad(self, typ_save):
-        list_path = self.get_parent_folder(typ_save)
+    # def create_aufgabenpfad(self, typ_save):
+    #     list_path = self.get_parent_folder(typ_save)
 
-        ####
-        if self.chosen_program == "lama":
-            if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-                list_path.append("Typ1Aufgaben")
-            if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
-                list_path.append("Typ2Aufgaben")
-        elif self.chosen_program == "cria":
-            highest_grade = self.get_highest_grade()
-            list_path.append(highest_grade)
+    #     ####
+    #     if self.chosen_program == "lama":
+    #         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+    #             list_path.append("Typ1Aufgaben")
+    #         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
+    #             list_path.append("Typ2Aufgaben")
+    #     elif self.chosen_program == "cria":
+    #         highest_grade = self.get_highest_grade()
+    #         list_path.append(highest_grade)
 
-        #####
+    #     #####
 
-        if self.chosen_program == "lama" and self.local_save == False:
-            if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-                if (
-                    self.list_selected_topics_creator[0].lower()
-                    in zusatzthemen_beschreibung
-                ):
-                    list_path.append("Zusatzthemen")
-                else:
-                    list_path.append("_Grundkompetenzen")
-                # _, klasse = self.split_thema_klasse(
-                #     self.list_selected_topics_creator[0]
-                # )
-                # if klasse == None:
-                #     list_path.append("_Grundkompetenzen")
-                # else:
-                #     list_path.append("{}.Klasse".format(klasse))
-            elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
-                list_path.append("Einzelbeispiele")
+    #     if self.chosen_program == "lama" and self.local_save == False:
+    #         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+    #             if (
+    #                 self.list_selected_topics_creator[0].lower()
+    #                 in zusatzthemen_beschreibung
+    #             ):
+    #                 list_path.append("Zusatzthemen")
+    #             else:
+    #                 list_path.append("_Grundkompetenzen")
+    #             # _, klasse = self.split_thema_klasse(
+    #             #     self.list_selected_topics_creator[0]
+    #             # )
+    #             # if klasse == None:
+    #             #     list_path.append("_Grundkompetenzen")
+    #             # else:
+    #             #     list_path.append("{}.Klasse".format(klasse))
+    #         elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
+    #             list_path.append("Einzelbeispiele")
 
-        elif self.chosen_program == "cria" and self.local_save == False:
-            list_path.append("Einzelbeispiele")
+    #     elif self.chosen_program == "cria" and self.local_save == False:
+    #         list_path.append("Einzelbeispiele")
 
-        #####
+    #     #####
 
-        if self.chosen_program == "lama" and self.local_save == False:
-            if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-                thema = self.list_selected_topics_creator[0]
+    #     if self.chosen_program == "lama" and self.local_save == False:
+    #         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+    #             thema = self.list_selected_topics_creator[0]
 
-                if thema.lower() in zusatzthemen_beschreibung:
-                    list_path.append(thema)
-                else:
-                    list_path.append(self.list_selected_topics_creator[0][:2])
-                    list_path.append(self.list_selected_topics_creator[0])
-                    list_path.append("Einzelbeispiele")
-                # thema, klasse = self.split_thema_klasse(
-                #     self.list_selected_topics_creator[0]
-                # )
-                # if klasse == None:
-                #     list_path.append(self.list_selected_topics_creator[0][:2])
-                #     list_path.append(self.list_selected_topics_creator[0])
-                #     list_path.append("Einzelbeispiele")
-                # else:
+    #             if thema.lower() in zusatzthemen_beschreibung:
+    #                 list_path.append(thema)
+    #             else:
+    #                 list_path.append(self.list_selected_topics_creator[0][:2])
+    #                 list_path.append(self.list_selected_topics_creator[0])
+    #                 list_path.append("Einzelbeispiele")
+    #             # thema, klasse = self.split_thema_klasse(
+    #             #     self.list_selected_topics_creator[0]
+    #             # )
+    #             # if klasse == None:
+    #             #     list_path.append(self.list_selected_topics_creator[0][:2])
+    #             #     list_path.append(self.list_selected_topics_creator[0])
+    #             #     list_path.append("Einzelbeispiele")
+    #             # else:
 
-        #####
-        path = self.create_path_from_list(list_path)
+    #     #####
+    #     path = self.create_path_from_list(list_path)
 
-        return path
+    #     return path
 
-    def get_integer(self, file_name):
-        file_integer = file_name.rsplit("-", 1)[-1]
-        file_integer = file_integer.replace(".tex", "").strip()
-        file_integer = file_integer.split("[")[0]
-        file_integer = file_integer.replace("i.","")
-        file_integer = file_integer.replace("_L_","")
-        return file_integer
+    # def get_integer(self, file_name):
+    #     file_integer = file_name.rsplit("-", 1)[-1]
+    #     file_integer = file_integer.replace(".tex", "").strip()
+    #     file_integer = file_integer.split("[")[0]
+    #     file_integer = file_integer.replace("i.", "")
+    #     file_integer = file_integer.replace("_L_", "")
+    #     return file_integer
 
-    def get_max_integer_file_variation(self, save_dateipfad):
-        max_integer_file = 0
-        if self.chosen_program == "cria":
-            variation_of = self.chosen_variation.split("_")[1]
-        else:
-            variation_of = self.chosen_variation
+    # def get_max_integer_file_variation(self, save_dateipfad):
+    #     max_integer_file = 0
+    #     if self.chosen_program == "cria":
+    #         variation_of = self.chosen_variation.split("_")[1]
+    #     else:
+    #         variation_of = self.chosen_variation
 
-        for file in os.listdir(save_dateipfad):
-            if re.match("{}\[.+\].tex".format(variation_of), file):
-                split_file = re.split("\[|\]", file)
-                max_int = int(split_file[1])
-                if max_int > max_integer_file:
-                    max_integer_file = max_int
-        path_beispieleinreichung = self.get_path_beispieleinreichung()
-        for path, dirs, files in os.walk(path_beispieleinreichung):
-            for all in files:
-                if re.match("{}\[.+\].tex".format(variation_of), all):
-                    split_file = re.split("\[|\]", all)
-                    max_int = int(split_file[1])
-                    if max_int > max_integer_file:
-                        max_integer_file = max_int
-        return max_integer_file
+    #     for file in os.listdir(save_dateipfad):
+    #         if re.match("{}\[.+\].tex".format(variation_of), file):
+    #             split_file = re.split("\[|\]", file)
+    #             max_int = int(split_file[1])
+    #             if max_int > max_integer_file:
+    #                 max_integer_file = max_int
+    #     path_beispieleinreichung = self.get_path_beispieleinreichung()
+    #     for path, dirs, files in os.walk(path_beispieleinreichung):
+    #         for all in files:
+    #             if re.match("{}\[.+\].tex".format(variation_of), all):
+    #                 split_file = re.split("\[|\]", all)
+    #                 max_int = int(split_file[1])
+    #                 if max_int > max_integer_file:
+    #                     max_integer_file = max_int
+    #     return max_integer_file
 
-    def check_files_beispieleinreichung_variation(self, max_integer_file):
-        path = self.get_path_beispieleinreichung()
+    # def check_files_beispieleinreichung_variation(self, max_integer_file):
+    #     path = self.get_path_beispieleinreichung()
 
-    def get_max_integer_file(self, typ_save, path):
-        max_integer_file = self.check_files_path(typ_save, path)
-        
-        if typ_save[0] != "local" and typ_save != ['admin',1]:
-            max_integer_file = self.check_files_beispieleinreichung(
-                typ_save, max_integer_file
-            )
+    def get_highest_grade_cr(self):
+        klasse = 1
+        for all in self.themen_auswahl:
+            if int(all[1]) > klasse:
+                klasse = int(all[1])
+        return "k{}".format(klasse)
 
-        return max_integer_file
+    def get_max_integer(self, table_lama, typ):
+        max_integer = 0
+        _file_ = Query()
+        if self.chosen_variation != None:
+            pattern = "{}\[.*\]".format(self.chosen_variation)
+            all_files = table_lama.search(_file_.name.matches(pattern))
+        elif typ == 1:
+            all_files = table_lama.search(_file_.name.matches(self.themen_auswahl[0]))
+        elif typ == None:
+            klasse = self.get_highest_grade_cr()
+            all_files = table_lama.search(_file_.name.matches(klasse))
+        elif typ == 2:
+            all_files = table_lama.all()
 
-    def check_files_path(self, typ_save, path):
-        max_integer_file = 0
+        for all in all_files:
+            name = all["name"]
+            if typ == 1:
+                num = all["name"].split(" - ")[-1]
+            elif typ == None:
+                num = all["name"].split(".")[-1]
+            elif typ == 2:
+                num = all["name"]
 
-        if not os.path.exists(path):
-            try:
-                os.makedirs(path)
-                print('Creating "{}" for you.'.format(path))
-            except PermissionError:
-                return max_integer_file
+            if self.chosen_variation == None:
+                num = int(num.split("[")[0])
+            else:
+                num = re.search("\[(.*)\]", num)
+                num = int(num.group(1))
 
-          
-        for all in os.listdir(path):
-            if all.endswith(".tex"):
-                file_integer = self.get_integer(all)
-                if int(file_integer) > max_integer_file:
-                    max_integer_file = int(file_integer)
+            if num > max_integer:
+                max_integer = num
 
-        return max_integer_file
+        return max_integer
 
-    def get_path_beispieleinreichung(self):
-        list_path = [database, 'drafts'] 
-        if self.chosen_program == "cria":
-            highest_grade = self.get_highest_grade()
-            list_path.append(highest_grade)
+    # def check_files_path(self, typ_save, path):
+    #     max_integer_file = 0
 
-        path = self.create_path_from_list(list_path)
-        return path
+    #     if not os.path.exists(path):
+    #         try:
+    #             os.makedirs(path)
+    #             print('Creating "{}" for you.'.format(path))
+    #         except PermissionError:
+    #             return max_integer_file
 
-    def check_files_beispieleinreichung(self, typ_save, max_integer_file):
-        path = self.get_path_beispieleinreichung()
+    #     for all in os.listdir(path):
+    #         if all.endswith(".tex"):
+    #             file_integer = self.get_integer(all)
+    #             if int(file_integer) > max_integer_file:
+    #                 max_integer_file = int(file_integer)
 
-        if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-            typ = 1
-            name = self.list_selected_topics_creator[0]
+    #     return max_integer_file
 
-        if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
-            typ = 2
-        try:
-            for all in os.listdir(path):
-                if all.endswith(".tex"):
-                    file_integer = self.get_integer(all)
-                    if self.chosen_program == "cria":
-                        if int(file_integer) > max_integer_file:
-                            max_integer_file = int(file_integer)
-                    elif typ == 1 and name in all:
-                        if int(file_integer) > max_integer_file:
-                            max_integer_file = int(file_integer)
-                    elif typ == 2 and self.get_aufgabentyp(all)==2:
-                        if int(file_integer) > max_integer_file:
-                            max_integer_file = int(file_integer)
+    # def get_path_beispieleinreichung(self):
+    #     list_path = [database, "drafts"]
+    #     if self.chosen_program == "cria":
+    #         highest_grade = self.get_highest_grade()
+    #         list_path.append(highest_grade)
 
-        except FileNotFoundError:
-            print('Der "drafts"-Ordner konnte nicht gefunden werden.')
-            # critical_window(
-            #     'Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und\nmuss zuerst für Sie freigegeben werden.',
-            #     "Derzeit können keine neuen Aufgaben eingegeben werden.\nBitte melden Sie sich unter lama.helpme@gmail.com!",
-            # )
+    #     path = self.create_path_from_list(list_path)
+    #     return path
 
-        return max_integer_file
+    # def check_files_beispieleinreichung(self, typ_save, max_integer_file):
+    #     path = self.get_path_beispieleinreichung()
+
+    #     if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+    #         typ = 1
+    #         name = self.list_selected_topics_creator[0]
+
+    #     if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
+    #         typ = 2
+    #     try:
+    #         for all in os.listdir(path):
+    #             if all.endswith(".tex"):
+    #                 file_integer = self.get_integer(all)
+    #                 if self.chosen_program == "cria":
+    #                     if int(file_integer) > max_integer_file:
+    #                         max_integer_file = int(file_integer)
+    #                 elif typ == 1 and name in all:
+    #                     if int(file_integer) > max_integer_file:
+    #                         max_integer_file = int(file_integer)
+    #                 elif typ == 2 and get_aufgabentyp(self.chosen_program, all) == 2:
+    #                     if int(file_integer) > max_integer_file:
+    #                         max_integer_file = int(file_integer)
+
+    #     except FileNotFoundError:
+    #         print('Der "drafts"-Ordner konnte nicht gefunden werden.')
+    #         # critical_window(
+    #         #     'Der Ordner "Beispieleinreichung" konnte nicht gefunden werden und\nmuss zuerst für Sie freigegeben werden.',
+    #         #     "Derzeit können keine neuen Aufgaben eingegeben werden.\nBitte melden Sie sich unter lama.helpme@gmail.com!",
+    #         # )
+
+    #     return max_integer_file
 
     def edit_image_name(self, typ_save, name):
-        if typ_save[0] == "local":
-            local = "_L_"
-        else:
-            local = ""
-        
+        # if typ_save[0] == "local":
+        #     local = "_L_"
+        # else:
+        #     local = ""
+
         if self.chosen_variation == None:
-            number = self.max_integer_file + 1
+            number = self.max_integer + 1
         else:
             list_ = re.split(" - |_", self.chosen_variation)
             variation_number = list_[-1]
             # _,variation_number = self.chosen_variation.split(" - ")
-            number = "{0}[{1}]".format(variation_number, self.max_integer_file + 1) 
-            # print(number)               
+            number = "{0}[{1}]".format(variation_number, self.max_integer + 1)
+            # print(number)
 
-        if typ_save == ['admin', 1]:
-            number = "i."+str(number)
- 
+        if typ_save == ["admin", 1]:
+            number = "i." + str(number)
 
         if self.chosen_program == "cria":
             highest_grade = self.get_highest_grade()
-            name = "{0}{1}_{2}_{3}".format(
-                local, highest_grade, number, name
-            )
+            name = "{0}{1}_{2}_{3}".format(local, highest_grade, number, name)
 
         elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
             # thema, klasse = self.split_thema_klasse(
@@ -4220,9 +4423,7 @@ class Ui_MainWindow(object):
             # )
             # if thema == None:
             thema = shorten_gk(self.list_selected_topics_creator[0]).upper()
-            name = "{0}{1}_{2}_{3}".format(
-                local, thema, number, name
-            )
+            name = "{0}{1}_{2}_{3}".format(local, thema, number, name)
             # print(self.chosen_variation)
             # print(name)
             # else:
@@ -4246,7 +4447,7 @@ class Ui_MainWindow(object):
             elif typ_save == ["admin", 1]:
                 path = "../_database_inoffiziell/Bilder/"
             elif typ_save[0] == "user":
-                path = "../_database/drafts/Bilder/"
+                path = "../_database/Bilder/"
             elif typ_save[0] == "local":
                 path = "../Lokaler_Ordner/Bilder/"
 
@@ -4281,204 +4482,202 @@ class Ui_MainWindow(object):
                     )
                     return
 
-    def create_file_name(self, typ_save):
-        number = self.max_integer_file + 1
-        if typ_save == ['admin', 1] and self.chosen_variation == None:
-            number = "i."+str(number)
-            
-        if self.chosen_variation != None:
-            if self.chosen_program == "cria":
-                klasse, filenumber = self.chosen_variation.split("_")
-                name = "{0}[{1}].tex".format(filenumber, number)
-            else:
-                name = "{0}[{1}].tex".format(self.chosen_variation, number)
-        elif self.chosen_program == "cria":
-            name = "{0}.tex".format(number)
-        elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-            # thema, klasse = self.split_thema_klasse(
-            #     self.list_selected_topics_creator[0]
-            # )
-            # if thema == None:
-            name = "{0} - {1}.tex".format(
-                self.list_selected_topics_creator[0], number
-            )
-            # else:
-            #     name = "K{0} - {1} - {2}.tex".format(klasse, thema.upper(), number)
-        else:
-            name = "{0}.tex".format(number)
+    def create_file_name(self, typ, max_integer):
+        number = max_integer + 1
 
-        if self.local_save == True:
-            name = "_L_" + name
+        if self.chosen_variation != None:
+            name = self.chosen_variation + "[{}]".format(number)
+        elif typ == "cria":
+            klasse = self.get_highest_grade_cr()
+            name = "{0}.{1}".format(klasse, number)
+        elif typ == "lama_1":
+            name = "{0} - {1}".format(self.themen_auswahl[0], number)
+        elif typ == "lama_2":
+            name = str(number)
 
         return name
 
-    def get_klasse_section(self):
-        if self.chosen_program == "cria":
-            klasse = self.get_highest_grade().upper()
-        if self.chosen_program == "lama":
-            if self.comboBox_klassen_cr.currentIndex() != 0:
-            #     _, klasse = self.split_thema_klasse(
-            #         self.list_selected_topics_creator[0]
-            #     )
-            #     if klasse != None:
-            #         temp_list = []
-            #         for all in self.list_selected_topics_creator:
-            #             temp_themen, temp_klasse = self.split_thema_klasse(all)
-            #             if int(temp_klasse) > int(klasse):
-            #                 klasse = temp_klasse
-            #             temp_list.append(temp_themen)
-            #         klasse = "K" + klasse
-            # else:
-                klasse = list(Klassen.keys())[
-                    self.comboBox_klassen_cr.currentIndex() - 1
-                ]
-                klasse = klasse.upper()
-            else:
-                klasse = ""
+        # if typ_save == ["admin", 1] and self.chosen_variation == None:
+        #     number = "i." + str(number)
 
-        # if klasse == None:
-        #     klasse = ""
-        return klasse
+        # if self.chosen_variation != None:
+        #     if self.chosen_program == "cria":
+        #         klasse, filenumber = self.chosen_variation.split("_")
+        #         name = "{0}[{1}].tex".format(filenumber, number)
+        #     else:
+        #         name = "{0}[{1}].tex".format(self.chosen_variation, number)
+        # elif self.chosen_program == "cria":
+        #     name = "{0}.tex".format(number)
+        # elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+        #     # thema, klasse = self.split_thema_klasse(
+        #     #     self.list_selected_topics_creator[0]
+        #     # )
+        #     # if thema == None:
+        #     name = "{0} - {1}.tex".format(self.list_selected_topics_creator[0], number)
+        #     # else:
+        #     #     name = "K{0} - {1} - {2}.tex".format(klasse, thema.upper(), number)
+        # else:
+        #     name = "{0}.tex".format(number)
 
-    def get_themen_section(self):
+        # if self.local_save == True:
+        #     name = "_L_" + name
+
+        # return name
+
+    # def get_klasse_section(self):
+    #     if self.chosen_program == "cria":
+    #         klasse = self.get_highest_grade().upper()
+    #     if self.chosen_program == "lama":
+    #         if self.comboBox_klassen_cr.currentIndex() != 0:
+    #             #     _, klasse = self.split_thema_klasse(
+    #             #         self.list_selected_topics_creator[0]
+    #             #     )
+    #             #     if klasse != None:
+    #             #         temp_list = []
+    #             #         for all in self.list_selected_topics_creator:
+    #             #             temp_themen, temp_klasse = self.split_thema_klasse(all)
+    #             #             if int(temp_klasse) > int(klasse):
+    #             #                 klasse = temp_klasse
+    #             #             temp_list.append(temp_themen)
+    #             #         klasse = "K" + klasse
+    #             # else:
+    #             klasse = list(Klassen.keys())[
+    #                 self.comboBox_klassen_cr.currentIndex() - 1
+    #             ]
+    #             klasse = klasse.upper()
+    #         else:
+    #             klasse = ""
+
+    #     # if klasse == None:
+    #     #     klasse = ""
+    #     return klasse
+
+    def get_themen_auswahl(self):
+        themen_auswahl = []
         if self.chosen_program == "cria":
-            themen_auswahl = []
             for all in self.list_selected_topics_creator:
-                thema = all[1] + "." + all[2]
+                thema = all[0] + "." + all[1] + "." + all[2]
                 if thema not in themen_auswahl:
                     themen_auswahl.append(thema)
-            themen = ", ".join(sorted(themen_auswahl))
 
         elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-            # themen, _ = self.split_thema_klasse(self.list_selected_topics_creator[0])
-            # if themen == None:  # Typ1 - GK
-            themen = self.list_selected_topics_creator[0]
-            # else:  # Typ1 - Zusatzthemen
-                # themen = themen.upper()
-
-        elif (
-            self.comboBox_aufgabentyp_cr.currentText() == "Typ 2"
-        ):  # Typ2 - GK & Zusatzthemen
-            # list_ = []
-            # for all in self.list_selected_topics_creator:
-                # thema, _ = self.split_thema_klasse(all)
-                # if thema == None:
-                # list_.append(all)
-                # else:
-                    # list_.append(thema.upper())
-            themen = ", ".join(self.list_selected_topics_creator)
-
-        return themen
-
-    def create_section_string(self, list_):
-        section_string = str(list_[0])
-        for all in list_[1:]:
-            section_string = section_string + " - " + str(all)
-
-        return section_string
-
-    def create_section(self, typ_save):
-        if self.chosen_variation != None:
-            if self.chosen_program == "lama":
-                x = self.chosen_variation.split(" - ")
-            else:
-                x = self.chosen_variation.split("_")
-            variation_nummer = x[-1]
-
-            nummer = "{0}[{1}]".format(variation_nummer, self.max_integer_file + 1)
-
-        else:
-            nummer = self.max_integer_file + 1
-            if typ_save == ['admin', 1]:
-                nummer = "i."+str(nummer)
-
-
-        klasse = self.get_klasse_section()
-
-        themen = self.get_themen_section()
-
-        titel = self.create_information_titel().replace(" - ", "-")
-        try:
-            aufgabenformat = list(dict_aufgabenformate.keys())[
-                list(dict_aufgabenformate.values()).index(
-                    self.comboBox_af.currentText()
-                )
-            ]
-            aufgabenformat = aufgabenformat.upper()
-        except ValueError:
-            aufgabenformat = ""
-        quelle = self.lineEdit_quelle.text().replace(" - ", "-")
-
-        if self.chosen_program == "cria":
-            list_section = [
-                klasse,
-                themen,
-                nummer,
-                titel,
-                aufgabenformat,
-                quelle,
-            ]  # Unterstufe
-
-        elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-            # thema, _ = self.split_thema_klasse(self.list_selected_topics_creator[0])
-
-            if klasse == "":
-                list_section = [
-                    themen,
-                    nummer,
-                    titel,
-                    aufgabenformat,
-                    quelle,
-                ]  # Typ1 - GK (ohne Klasse)
-            else:
-                list_section = [
-                    themen,
-                    nummer,
-                    klasse,
-                    titel,
-                    aufgabenformat,
-                    quelle,
-                ]  # Typ1 - GK (mit Klasse)
-
-            # else:
-            #     list_section = [
-            #         klasse,
-            #         themen,
-            #         nummer,
-            #         titel,
-            #         aufgabenformat,
-            #         quelle,
-            #     ]  # Typ1 - Zusatzthemen
+            themen_auswahl.append(self.list_selected_topics_creator[0])
 
         elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
-            if klasse == "":
-                list_section = [
-                    nummer,
-                    themen,
-                    titel,
-                    quelle,
-                ]  # Typ2 - GK (ohne Klasse)
-            else:
-                list_section = [
-                    nummer,
-                    klasse,
-                    themen,
-                    titel,
-                    quelle,
-                ]  # Typ2 - GK (mit Klasse) bzw. nur Zusatzthemen
 
-        section = self.create_section_string(list_section)
+            for all in self.list_selected_topics_creator:
+                themen_auswahl.append(all)
 
-        if self.local_save == True:
-            local = "*Lokal* "
-        else:
-            local = ""
+        return themen_auswahl
 
-        section = local + section
+    # def create_section_string(self, list_):
+    #     section_string = str(list_[0])
+    #     for all in list_[1:]:
+    #         section_string = section_string + " - " + str(all)
 
-        section = "\section{" + section + "}"
+    #     return section_string
 
-        return section
+    # def create_section(self, typ_save):
+    #     if self.chosen_variation != None:
+    #         if self.chosen_program == "lama":
+    #             x = self.chosen_variation.split(" - ")
+    #         else:
+    #             x = self.chosen_variation.split("_")
+    #         variation_nummer = x[-1]
+
+    #         nummer = "{0}[{1}]".format(variation_nummer, self.max_integer + 1)
+
+    #     else:
+    #         nummer = self.max_integer + 1
+    #         if typ_save == ["admin", 1]:
+    #             nummer = "i." + str(nummer)
+
+    #     klasse = self.get_klasse_section()
+
+    #     themen = self.get_themen_section()
+
+    #     titel = self.create_information_titel().replace(" - ", "-")
+    #     try:
+    #         aufgabenformat = list(dict_aufgabenformate.keys())[
+    #             list(dict_aufgabenformate.values()).index(
+    #                 self.comboBox_af.currentText()
+    #             )
+    #         ]
+    #         aufgabenformat = aufgabenformat.upper()
+    #     except ValueError:
+    #         aufgabenformat = ""
+    #     quelle = self.lineEdit_quelle.text().replace(" - ", "-")
+
+    #     if self.chosen_program == "cria":
+    #         list_section = [
+    #             klasse,
+    #             themen,
+    #             nummer,
+    #             titel,
+    #             aufgabenformat,
+    #             quelle,
+    #         ]  # Unterstufe
+
+    #     elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+    #         # thema, _ = self.split_thema_klasse(self.list_selected_topics_creator[0])
+
+    #         if klasse == "":
+    #             list_section = [
+    #                 themen,
+    #                 nummer,
+    #                 titel,
+    #                 aufgabenformat,
+    #                 quelle,
+    #             ]  # Typ1 - GK (ohne Klasse)
+    #         else:
+    #             list_section = [
+    #                 themen,
+    #                 nummer,
+    #                 klasse,
+    #                 titel,
+    #                 aufgabenformat,
+    #                 quelle,
+    #             ]  # Typ1 - GK (mit Klasse)
+
+    #         # else:
+    #         #     list_section = [
+    #         #         klasse,
+    #         #         themen,
+    #         #         nummer,
+    #         #         titel,
+    #         #         aufgabenformat,
+    #         #         quelle,
+    #         #     ]  # Typ1 - Zusatzthemen
+
+    #     elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
+    #         if klasse == "":
+    #             list_section = [
+    #                 nummer,
+    #                 themen,
+    #                 titel,
+    #                 quelle,
+    #             ]  # Typ2 - GK (ohne Klasse)
+    #         else:
+    #             list_section = [
+    #                 nummer,
+    #                 klasse,
+    #                 themen,
+    #                 titel,
+    #                 quelle,
+    #             ]  # Typ2 - GK (mit Klasse) bzw. nur Zusatzthemen
+
+    #     section = self.create_section_string(list_section)
+
+    #     if self.local_save == True:
+    #         local = "*Lokal* "
+    #     else:
+    #         local = ""
+
+    #     section = local + section
+
+    #     section = "\section{" + section + "}"
+
+    #     return section
 
     def define_themen_string_cria(self):
         list_ = [
@@ -4487,6 +4686,119 @@ class Ui_MainWindow(object):
         ]
         string = ", ".join(list_)
         return string
+
+    def get_all_infos_new_file(self, typ, typ_save):
+        if typ_save == 'editor':
+            name = None
+        else:
+            name = self.create_file_name(typ, self.max_integer)
+        themen = self.get_themen_auswahl()
+        titel = self.lineEdit_titel.text()
+        if typ == 2:
+            af = None
+        else:
+            af = list(dict_aufgabenformate.keys())[
+                list(dict_aufgabenformate.values()).index(
+                    self.comboBox_af.currentText()
+                )
+            ]
+        quelle = self.lineEdit_quelle.text()
+        content = self.plainTextEdit.toPlainText()
+        punkte = self.spinBox_punkte.value()
+        if typ == 1:
+            pagebreak = False
+        else:
+            pagebreak = True
+
+        if typ == None:
+            klasse = self.get_highest_grade_cr()
+        elif self.comboBox_klassen_cr.currentIndex() == 0:
+            klasse = None
+        else:
+            klasse = list(Klassen.keys())[self.comboBox_klassen_cr.currentIndex() - 1]
+
+        info = None  ## yet to define
+
+        bilder = []
+        for all in self.dict_picture_path.keys():
+            bilder.append(all)
+
+        if typ_save == "user":
+            draft = True
+        else:
+            draft = False
+
+        abstand = 0
+
+        return (
+            name,
+            themen,
+            titel,
+            af,
+            quelle,
+            content,
+            punkte,
+            pagebreak,
+            klasse,
+            info,
+            bilder,
+            draft,
+            abstand,
+        )
+
+    def button_save_edit_pressed(self):
+        rsp = question_window("Sind Sie sicher, dass Sie die Änderungen speichern wollen?")
+        if rsp == False:
+            return
+        name = self.chosen_file_to_edit
+        typ = get_aufgabentyp(self.chosen_program, name)
+        
+        (
+            _,
+            themen,
+            titel,
+            af,
+            quelle,
+            content,
+            punkte,
+            pagebreak,
+            klasse,
+            info,
+            bilder,
+            draft,
+            abstand,
+        ) = self.get_all_infos_new_file(typ, 'editor')
+
+        aufgabe = self.chosen_file_to_edit
+        lama_table = get_table(aufgabe, typ)
+
+        aufgabe = aufgabe.replace(" (lokal)","")
+        _file_ = Query()
+        
+        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        lama_table.update_multiple([
+           ({"themen" :themen}, _file_.name == aufgabe),
+           ({"titel" :titel}, _file_.name == aufgabe),
+           ({"af" :af}, _file_.name == aufgabe),
+           ({"quelle" :quelle}, _file_.name == aufgabe),
+           ({"content" :content}, _file_.name == aufgabe),
+           ({"punkte" :punkte}, _file_.name == aufgabe),
+           ({"pagebreak" :pagebreak}, _file_.name == aufgabe),
+           ({"klasse" :klasse}, _file_.name == aufgabe),
+           ({"info" :info}, _file_.name == aufgabe),
+           ({"bilder" :bilder}, _file_.name == aufgabe),
+           ({"draft" :draft}, _file_.name == aufgabe),
+           ({"abstand" :abstand}, _file_.name == aufgabe),
+        ])
+        QtWidgets.QApplication.restoreOverrideCursor()
+
+
+        information_window("Die Änderungen wurden erfolgreich gespeichert.")
+
+        self.suchfenster_reset(True)
+        self.reset_edit_file()
+
+        
 
     def button_speichern_pressed(self):
         # self.creator_mode = "user"
@@ -4523,6 +4835,8 @@ class Ui_MainWindow(object):
         except AttributeError:
             self.chosen_variation = None
 
+        # print(self.chosen_variation)
+        # return
         Dialog_speichern = self.open_dialogwindow_save(information)
 
         response = Dialog_speichern.exec()
@@ -4551,17 +4865,38 @@ class Ui_MainWindow(object):
                 if response == 0:
                     return
                 typ_save = self.ui_save.get_output()
+        # print(typ_save)
+        # print(self.chosen_variation)
+        # print(list_information)
 
-        if self.chosen_variation == None:
-            save_dateipfad = self.create_aufgabenpfad(typ_save)
+        self.themen_auswahl = self.get_themen_auswahl()
 
-            self.max_integer_file = self.get_max_integer_file(typ_save, save_dateipfad)
-
+        if typ_save[0] == "local":
+            database = _local_database
         else:
-            dateipfad = self.get_dateipfad_aufgabe(self.chosen_variation)
-            save_dateipfad = os.path.dirname(dateipfad)
+            database = _database
 
-            self.max_integer_file = self.get_max_integer_file_variation(save_dateipfad)
+        if self.chosen_program == "cria":
+            typ = None
+            typ_name = "cria"
+        else:
+            typ = self.comboBox_aufgabentyp_cr.currentIndex() + 1
+            typ_name = "lama_{}".format(typ)
+        table = "table_" + typ_name
+        table_lama = database.table(table)
+
+        # database =
+        # if self.chosen_variation == None:
+        # save_dateipfad = self.create_aufgabenpfad(typ_save)
+
+        self.max_integer = self.get_max_integer(table_lama, typ)
+
+        # else:
+        #     dateipfad = self.get_dateipfad_aufgabe(self.chosen_variation)
+        #     save_dateipfad = os.path.dirname(dateipfad)
+
+        #     self.max_integer_file = self.get_max_integer_file_variation(save_dateipfad)
+        print(self.max_integer)
 
         ############################################################################
 
@@ -4578,64 +4913,106 @@ class Ui_MainWindow(object):
             textBox_Entry = response[1]
 
         list_path = self.get_parent_folder(typ_save)
-        # if typ_save[0] == "user":
-        # #     critical_window("Aufgabeneingabe derzeit nicht möglich")
-        # #     # print('user save not working')
-        # #     return
-        #     list_path[1] = "Beispieleinreichung"
-        # print(list_path)
 
         list_path.append("Bilder")
         parent_image_path = self.create_path_from_list(list_path)
 
-        # if typ_save[0] == "user":
-        #     critical_window("Bilder werden nicht kopiert")
-        # else:
         self.copy_image_save(typ_save, parent_image_path)
 
-        # if typ_save[0] == "user":
-        #     file_name ="new_file.tex"
+        ###################################################################################
+        (
+            name,
+            themen,
+            titel,
+            af,
+            quelle,
+            content,
+            punkte,
+            pagebreak,
+            klasse,
+            info,
+            bilder,
+            draft,
+            abstand,
+        ) = self.get_all_infos_new_file(typ, typ_save[0])
+
+        add_file(table_lama, name, themen, titel, af, quelle, content, punkte, pagebreak, klasse, info, bilder, draft, abstand)
+        # name = self.create_file_name(typ, max_integer)
+        # themen = self.themen_auswahl
+        # titel = self.lineEdit_titel.text()
+        # if typ == 'lama_2':
+        #     af = None
         # else:
-        file_name = self.create_file_name(typ_save)
+        #     af = list(dict_aufgabenformate.keys())[
+        #             list(dict_aufgabenformate.values()).index(
+        #                 self.comboBox_af.currentText()
+        #             )
+        #         ]
+        # quelle = self.lineEdit_quelle.text()
+        # content = self.plainTextEdit.toPlainText()
+        # punkte = self.spinBox_punkte.value()
+        # if typ == 'lama_1':
+        #     pagebreak = False
+        # else:
+        #     pagebreak = True
 
-        if typ_save[0] == "user":
-            save_dateipfad = self.get_path_beispieleinreichung()
-        
-        abs_path_file = os.path.join(save_dateipfad, file_name)
+        # if typ == 'cria':
+        #     klasse = self.get_highest_grade_cr()
+        # elif self.comboBox_klassen_cr.currentIndex() == 0:
+        #     klasse = None
+        # else:
+        #     klasse = list(Klassen.keys())[
+        #         self.comboBox_klassen_cr.currentIndex() - 1
+        #     ]
 
-        section = self.create_section(typ_save)
-        print(self.max_integer_file)
-        print(abs_path_file)
-        print(typ_save)
+        # print(name)
+        # print(themen)
+        # print(titel)
+        # print(af)
+        # print(quelle)
+        # print(content)
+        # print(punkte)
+        # print(klasse)
+
+        # return
+        # if typ_save[0] == "user":
+        #     save_dateipfad = self.get_path_beispieleinreichung()
+
+        # abs_path_file = os.path.join(save_dateipfad, file_name)
+
+        # section = self.create_section(typ_save)
+        # print(self.max_integer_file)
+        # print(abs_path_file)
+        # print(typ_save)
         # if typ_save[0] == "user":
         #     critical_window("save not yet defined")
         #     return
         # return
-        with open(abs_path_file, "w", encoding="utf8") as file:
-            file.write(section + "\n\n")
-            if self.chosen_program == "cria":
-                string_themen = self.define_themen_string_cria()
-                file.write(
-                    "\\begin{{langesbeispiel}}\item[{0}] %PUNKTE DER AUFGABE\n{1}\n\n\\antwort{{Themen: {2}}}\n\\end{{langesbeispiel}}".format(
-                        self.spinBox_punkte.value(), textBox_Entry, string_themen
-                    )
-                )
-            elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
-                file.write(
-                    "\\begin{{beispiel}}[{0}]{{{1}}}\n{2}\n\\end{{beispiel}}".format(
-                        self.list_selected_topics_creator[0],
-                        self.spinBox_punkte.value(),
-                        textBox_Entry,
-                    )
-                )
-            else:
-                file.write(
-                    "\\begin{{langesbeispiel}}\item[{0}] %PUNKTE DER AUFGABE\n{1}\n\n\\antwort{{GK/Themen: {2}}}\n\\end{{langesbeispiel}}".format(
-                        self.spinBox_punkte.value(),
-                        textBox_Entry,
-                        ", ".join(self.list_selected_topics_creator),
-                    )
-                )
+        # with open(abs_path_file, "w", encoding="utf8") as file:
+        #     file.write(section + "\n\n")
+        #     if self.chosen_program == "cria":
+        #         string_themen = self.define_themen_string_cria()
+        #         file.write(
+        #             "\\begin{{langesbeispiel}}\item[{0}] %PUNKTE DER AUFGABE\n{1}\n\n\\antwort{{Themen: {2}}}\n\\end{{langesbeispiel}}".format(
+        #                 self.spinBox_punkte.value(), textBox_Entry, string_themen
+        #             )
+        #         )
+        #     elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+        #         file.write(
+        #             "\\begin{{beispiel}}[{0}]{{{1}}}\n{2}\n\\end{{beispiel}}".format(
+        #                 self.list_selected_topics_creator[0],
+        #                 self.spinBox_punkte.value(),
+        #                 textBox_Entry,
+        #             )
+        #         )
+        #     else:
+        #         file.write(
+        #             "\\begin{{langesbeispiel}}\item[{0}] %PUNKTE DER AUFGABE\n{1}\n\n\\antwort{{GK/Themen: {2}}}\n\\end{{langesbeispiel}}".format(
+        #                 self.spinBox_punkte.value(),
+        #                 textBox_Entry,
+        #                 ", ".join(self.list_selected_topics_creator),
+        #             )
+        #         )
 
         titel = list_information[1]
 
@@ -4665,12 +5042,14 @@ class Ui_MainWindow(object):
         )
 
         if typ_save[0] == "user":
-            self.action_push_database(admin=False, specific_file=os.path.join("drafts",file_name))
+            database_file = "_database.json"
+            self.action_push_database(
+                admin=False, specific_file=os.path.join(database_file)
+            )
 
         QtWidgets.QApplication.restoreOverrideCursor()
 
         information_window(text, "", window_title, information)
-
 
         self.suchfenster_reset()
 
@@ -4679,30 +5058,33 @@ class Ui_MainWindow(object):
 
     def action_refreshddb_selected(self):
         refresh_ddb(self)
-        if self.chosen_program == "lama":
-            self.beispieldaten_dateipfad_1 = self.define_beispieldaten_dateipfad(1)
-            self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)
-        elif self.chosen_program == "cria":
-            self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
-                "cria"
-            )
+        # if self.chosen_program == "lama":
+        #     self.beispieldaten_dateipfad_1 = self.define_beispieldaten_dateipfad(1)
+        #     self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)
+        # elif self.chosen_program == "cria":
+        #     self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
+        #         "cria"
+        #     )
 
-        self.refresh_label_update()
-        if self.cb_drafts_sage.isChecked() == True:
-            self.add_drafts_to_beispieldaten()
+        # self.refresh_label_update()
+        # if self.cb_drafts_sage.isChecked() == True:
+        #     self.add_drafts_to_beispieldaten()
         self.adapt_choosing_list("sage")
-    
+
     def action_push_database(self, admin=True, specific_file=None):
-        if check_internet_connection()==False:
-            critical_window("""
+        if check_internet_connection() == False:
+            critical_window(
+                """
 Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.
-            """, titel="Keine Internetverbindung")
+            """,
+                titel="Keine Internetverbindung",
+            )
             return
-        
-        if admin == True: 
+
+        if admin == True:
             text = "Änderungen überprüfen ..."
         else:
-            text = "Aufgabe wird hochgeladen ... (1%)" 
+            text = "Aufgabe wird hochgeladen ... (1%)"
         Dialog = QtWidgets.QDialog()
         ui = Ui_Dialog_processing()
         ui.setupUi(Dialog, text)
@@ -4715,11 +5097,13 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         thread.start()
         thread.exit()
         Dialog.exec()
-        
+
         if worker.changes_found == False:
             information_window("Es wurden keine Änderungen gefunden.")
-        elif worker.changes_found == 'error':
-            critical_window("Es ist ein Fehler aufgetreten. Die Datenbank konnte nicht hochgeladen werden. Bitte versuchen Sie es später erneut.")
+        elif worker.changes_found == "error":
+            critical_window(
+                "Es ist ein Fehler aufgetreten. Die Datenbank konnte nicht hochgeladen werden. Bitte versuchen Sie es später erneut."
+            )
         elif admin == True:
             information_window("Die Datenbank wurde erfolgreich hochgeladen.")
         # else:
@@ -4735,7 +5119,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         # if response == False:
         #     return
 
-        # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))       
+        # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         # repo.git.add(A=True)
         # repo.index.commit('new commit')
         # o = repo.remotes.origin
@@ -4743,19 +5127,38 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         # QtWidgets.QApplication.restoreOverrideCursor()
         # information_window("Die Datenbank wurde erfolgreich hochgeladen.")
 
+    # def define_beispieldaten_dateipfad(self, typ):
 
-    def define_beispieldaten_dateipfad(self, typ):
+    #     log_file = os.path.join(
+    #         path_localappdata_lama, "Teildokument", "log_file_{}".format(typ)
+    #     )
 
-        log_file = os.path.join(
-            path_localappdata_lama,"Teildokument", "log_file_{}".format(typ)
-        )
+    #     beispieldaten_dateipfad = self.get_beispieldaten_dateipfad(log_file)
 
-        beispieldaten_dateipfad = self.get_beispieldaten_dateipfad(log_file)
+    #     return beispieldaten_dateipfad
+    def enable_widgets_editor(self, enabled):
+        self.groupBox_ausgew_gk_cr.setEnabled(enabled)
+        self.groupBox_titel_cr.setEnabled(enabled)
+        self.groupBox_grundkompetenzen_cr.setEnabled(enabled)
+        self.groupBox_punkte.setEnabled(enabled)
+        self.groupBox_klassen_cr.setEnabled(enabled)
+        self.groupBox_aufgabenformat.setEnabled(enabled)
+        self.groupBox_beispieleingabe.setEnabled(enabled)
+        self.groupBox_quelle.setEnabled(enabled)
+        self.pushButton_save_edit.setEnabled(enabled)
+        self.groupBox_aufgabentyp.setEnabled(False)
+      
 
-        return beispieldaten_dateipfad
+    def action_edit_files(self):
+        self.update_gui('widgets_edit')
+        self.suchfenster_reset()
+        # self.enable_widgets_editor(False)
+
+
+
 
     def check_if_file_exists(self, aufgabe):  # aufgabe
-        typ = self.get_aufgabentyp(aufgabe)
+        typ = get_aufgabentyp(self.chosen_program, aufgabe)
 
         if typ == 1:
             list_paths = self.beispieldaten_dateipfad_1.values()
@@ -4884,7 +5287,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
         elif self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "br":
             self.combobox_beurteilung.setCurrentIndex(1)
-        
+
         elif self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "none":
             self.combobox_beurteilung.setCurrentIndex(2)
 
@@ -4906,7 +5309,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             ]
         except KeyError:
             self.dict_sage_hide_show_items_chosen = {}
-        
+
         try:
             self.dict_sage_individual_change = self.dict_all_infos_for_file[
                 "dict_individual_change"
@@ -4939,7 +5342,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
         QtWidgets.QApplication.restoreOverrideCursor()
 
-    def sage_save(self, path_create_tex_file=False, autosave = False):  # path_file
+    def sage_save(self, path_create_tex_file=False, autosave=False):  # path_file
         try:
             self.saved_file_path
         except AttributeError:
@@ -4975,6 +5378,8 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
     def define_titlepage(self):
         if self.comboBox_pruefungstyp.currentText() == "Quiz":
+            print('not yet working')
+            return
             Dialog = QtWidgets.QDialog(
                 None,
                 QtCore.Qt.WindowSystemMenuHint
@@ -5011,7 +5416,8 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                 number_examples = len(random_list)
                 warning_window(
                     "Es sind insgesamt weniger Aufgaben enthalten ({0}), als die ausgwählte Anzahl der Aufgaben ({1}).".format(
-                        len(random_list), ui.random_quiz_response[0],
+                        len(random_list),
+                        ui.random_quiz_response[0],
                     ),
                     "Es werden alle vorhandenen Aufgaben in zufälliger Reihenfolge ausgegeben.",
                     "Anzahl der Aufgaben",
@@ -5054,7 +5460,6 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             # for all in self.list_alle_aufgaben_sage:
             #     self.build_aufgaben_schularbeit(all)
 
-
         else:
             if self.chosen_program == "lama":
                 dict_titlepage = self.dict_titlepage
@@ -5075,12 +5480,12 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             if self.chosen_program == "lama":
                 self.dict_titlepage = dict_titlepage
                 titlepage_save = os.path.join(
-                    path_localappdata_lama,"Teildokument", "titlepage_save"
+                    path_localappdata_lama, "Teildokument", "titlepage_save"
                 )
             if self.chosen_program == "cria":
                 self.dict_titlepage_cria = dict_titlepage
                 titlepage_save = os.path.join(
-                    path_localappdata_lama,"Teildokument", "titlepage_save_cria"
+                    path_localappdata_lama, "Teildokument", "titlepage_save_cria"
                 )
 
             try:
@@ -5104,21 +5509,21 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
         self.update_punkte()
 
-    def get_aufgabentyp(self, aufgabe):
-        aufgabe = aufgabe.replace("_L_", "")
-        if self.chosen_program == "cria":
-            typ = None
-        elif re.search("[A-Z]", aufgabe) == None:
-            typ = 2
-        else:
-            typ = 1
-        return typ
+    # def get_aufgabentyp(self, aufgabe):
+    #     # print(aufgabe)
+    #     if self.chosen_program == "cria":
+    #         typ = None
+    #     elif re.search("[A-Z]", aufgabe) == None:
+    #         typ = 2
+    #     else:
+    #         typ = 1
+    #     return typ
 
     def get_aufgabenverteilung(self):
         num_typ1 = 0
         num_typ2 = 0
         for all in self.list_alle_aufgaben_sage:
-            typ = self.get_aufgabentyp(all)
+            typ = get_aufgabentyp(self.chosen_program, all)
             if typ == 1:
                 num_typ1 += 1
             if typ == 2:
@@ -5131,7 +5536,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
             old_num_typ1, old_num_typ2 = self.get_aufgabenverteilung()
 
-            typ = self.get_aufgabentyp(aufgabe)
+            typ = get_aufgabentyp(self.chosen_program, aufgabe)
             if typ == 1:
                 self.list_alle_aufgaben_sage.insert(old_num_typ1, aufgabe)
             if typ == 2:
@@ -5150,7 +5555,13 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         if self.chosen_program == "cria":
             label = "Anzahl der Aufgaben: {0}".format(num_total)
 
-        self.label_gesamtbeispiele.setText(_translate("MainWindow", label, None,))
+        self.label_gesamtbeispiele.setText(
+            _translate(
+                "MainWindow",
+                label,
+                None,
+            )
+        )
 
     def adapt_label_gesamtbeispiele(self):
         list_sage_examples_typ1 = []
@@ -5212,10 +5623,10 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         self.build_aufgaben_schularbeit(aufgabe)
 
     def erase_aufgabe(self, aufgabe):
-        del self.dict_alle_aufgaben_sage[aufgabe]
         del self.dict_variablen_punkte[aufgabe]
+        del self.dict_variablen_abstand[aufgabe]
         self.list_alle_aufgaben_sage.remove(aufgabe)
-        if self.get_aufgabentyp(aufgabe) == 2:
+        if get_aufgabentyp(self.chosen_program, aufgabe) == 2:
             del self.dict_variablen_label[aufgabe]
         if aufgabe in self.dict_sage_ausgleichspunkte_chosen:
             del self.dict_sage_ausgleichspunkte_chosen[aufgabe]
@@ -5229,13 +5640,15 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             self.dict_sage_individual_change[aufgabe]
             if not is_empty(self.dict_sage_individual_change[aufgabe]):
                 response = question_window(
-                "Diese Aufgabe wurde abgeändert!\n\nWenn Sie diese Aufgabe löschen, werden auch alle Änderungen, die an dieser Aufgabe vorgenommen wurden, gelöscht.",
-                "Sind Sie sicher, dass Sie diese Aufgaben entfernen möchten?",
-                "Aufgabe entfernen?")
+                    "Diese Aufgabe wurde abgeändert!\n\nWenn Sie diese Aufgabe löschen, werden auch alle Änderungen, die an dieser Aufgabe vorgenommen wurden, gelöscht.",
+                    "Sind Sie sicher, dass Sie diese Aufgaben entfernen möchten?",
+                    "Aufgabe entfernen?",
+                    default="no",
+                )
                 if response == False:
                     return
         except KeyError:
-            pass  
+            pass
         index = self.list_alle_aufgaben_sage.index(aufgabe)
 
         if index + 1 == len(self.list_alle_aufgaben_sage):
@@ -5245,12 +5658,12 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         else:
             self.erase_aufgabe(aufgabe)
             self.build_aufgaben_schularbeit(self.list_alle_aufgaben_sage[index])
-        
+
         self.update_punkte()
         self.button_was_deleted = True
 
     def spinbox_pkt_changed(self, aufgabe, spinbox_pkt):
-        self.dict_alle_aufgaben_sage[aufgabe][0] = spinbox_pkt.value()
+        # self.dict_alle_aufgaben_sage[aufgabe][0] = spinbox_pkt.value()
         self.update_punkte()
 
     def spinbox_abstand_changed(self, aufgabe, spinbox_abstand):
@@ -5261,18 +5674,18 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         try:
             if self.button_was_deleted == True:
                 self.button_was_deleted = False
-                return   
+                return
         except AttributeError:
             pass
 
         pos_maximum = self.scrollArea_chosen.verticalScrollBar().maximum()
         height_aufgabe = 110
         num_typ2 = self.get_aufgabenverteilung()[1]
-        pos_end_typ1 = pos_maximum - height_aufgabe*num_typ2
+        pos_end_typ1 = pos_maximum - height_aufgabe * num_typ2
 
         if self.listWidget.currentItem() != None:
             aufgabe = self.listWidget.currentItem().text()
-            typ = self.get_aufgabentyp(aufgabe)
+            typ = get_aufgabentyp(self.chosen_program, aufgabe)
             if typ == 2 or typ == None:
                 self.scrollArea_chosen.verticalScrollBar().setValue(pos_maximum)
             elif typ == 1:
@@ -5280,16 +5693,12 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         else:
             self.scrollArea_chosen.verticalScrollBar().setValue(pos_maximum)
 
-        
-
-
     def get_punkteverteilung(self):
         pkt_typ1 = 0
         pkt_typ2 = 0
-        pkt_ausgleich = 0
         gesamtpunkte = 0
         for all in self.dict_variablen_punkte:
-            typ = self.get_aufgabentyp(all)
+            typ = get_aufgabentyp(self.chosen_program, all)
             if typ == None:
                 gesamtpunkte += self.dict_variablen_punkte[all].value()
             elif typ == 1:
@@ -5297,7 +5706,6 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                 gesamtpunkte += self.dict_variablen_punkte[all].value()
             elif typ == 2:
                 pkt_typ2 += self.dict_variablen_punkte[all].value()
-                pkt_ausgleich += self.dict_alle_aufgaben_sage[all][3]
                 gesamtpunkte += self.dict_variablen_punkte[all].value()
 
         return [gesamtpunkte, pkt_typ1, pkt_typ2]
@@ -5339,8 +5747,11 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
     def get_number_ausgleichspunkte_gesamt(self):
         number_ausgleichspkt_gesamt = 0
         for aufgabe in self.list_alle_aufgaben_sage:
-            if self.get_aufgabentyp(aufgabe) == 2:
-                number_ausgleichspkt_gesamt += self.dict_alle_aufgaben_sage[aufgabe][3]
+            typ = get_aufgabentyp(self.chosen_program, aufgabe)
+            if typ == 2:
+                collect_content(self, aufgabe)
+                number = self.count_ausgleichspunkte(aufgabe_total["content"])
+                number_ausgleichspkt_gesamt += number
 
         return number_ausgleichspkt_gesamt
 
@@ -5374,15 +5785,15 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         if self.combobox_beurteilung.currentIndex() == 1:
             self.update_beurteilungsraster()
 
-        if self.chosen_program == 'cria':
-            self.label_gesamtbeispiele.setText("Anzahl der Aufgaben: {0}"
-                .format(num_total)
+        if self.chosen_program == "cria":
+            self.label_gesamtbeispiele.setText(
+                "Anzahl der Aufgaben: {0}".format(num_total)
             )
-        if self.chosen_program == 'lama':
-            self.label_gesamtbeispiele.setText("Anzahl der Aufgaben: {0}\n(Typ1: {1} / Typ2: {2})"
-                .format(
+        if self.chosen_program == "lama":
+            self.label_gesamtbeispiele.setText(
+                "Anzahl der Aufgaben: {0}\n(Typ1: {1} / Typ2: {2})".format(
                     num_total, num_typ1, num_typ2
-                    )
+                )
             )
 
         self.label_gesamtpunkte.setText(
@@ -5391,17 +5802,31 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
     def update_default_pkt(self):
         for all in self.dict_variablen_punkte:
-            if self.get_aufgabentyp(all) == 1:
+            if get_aufgabentyp(self.chosen_program, all) == 1:
                 self.dict_variablen_punkte[all].setValue(
                     self.spinBox_default_pkt.value()
                 )
-                self.dict_alle_aufgaben_sage[all][0] = self.spinBox_default_pkt.value()
 
-    def create_neue_aufgaben_box(self, index, aufgabe, aufgaben_infos):
-        typ = self.get_aufgabentyp(aufgabe)
+    def get_punkte_aufgabe_sage(self, aufgabe):
+        return self.dict_variablen_punkte[aufgabe].value()
+
+    def get_abstand_aufgabe_sage(self, aufgabe):
+        return self.dict_variablen_abstand[aufgabe].value()
+
+    def count_ausgleichspunkte(self, content):
+        number = content.count("\ASubitem")
+        number = number + content.count("\Aitem")
+        number = number + content.count("fbox{A}")
+
+        return number
+
+    def create_neue_aufgaben_box(self, index, aufgabe, aufgabe_total):
+        typ = get_aufgabentyp(self.chosen_program, aufgabe)
+
         aufgaben_verteilung = self.get_aufgabenverteilung()
+
         if self.chosen_program == "cria":
-            klasse, aufgaben_nummer = self.split_klasse_aufgabe(aufgabe)
+            klasse, aufgaben_nummer = aufgabe.split(".")
             klasse = klasse[1]
 
             new_groupbox = create_new_groupbox(
@@ -5417,26 +5842,15 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         gridLayout_gB.setObjectName("gridLayout_gB")
 
         if typ == None:
-            try:
-                aufgabenformat = (
-                    " (" + dict_aufgabenformate[aufgaben_infos[3].lower() + ")"]
-                )
-            except KeyError:
-                aufgabenformat = ""
-            if "_L_" in aufgaben_nummer:
-                x = aufgaben_nummer.replace("_L_", "")
-                label = "{0}. Klasse - {1} (lokal){2}".format(klasse, x, aufgabenformat)
-            else:
-                label = "{0}. Klasse - {1}{2}".format(
-                    klasse, aufgaben_nummer, aufgabenformat
-                )
+            aufgabenformat = " (" + aufgabe_total["af"].upper() + ")"
+
+            label = "{0}. Klasse - {1}{2}".format(
+                klasse, aufgaben_nummer, aufgabenformat
+            )
+
         elif typ == 1:
-            try:
-                aufgabenformat = (
-                    " (" + dict_aufgabenformate[aufgaben_infos[3].lower()] + ")"
-                )
-            except KeyError:
-                aufgabenformat = ""
+            aufgabenformat = " (" + aufgabe_total["af"].upper() + ")"
+
             label = "{0}{1}".format(aufgabe, aufgabenformat)
         elif typ == 2:
             label = "{0}".format(aufgabe)
@@ -5445,7 +5859,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         gridLayout_gB.addWidget(label_aufgabe, 1, 0, 1, 1)
 
         label_titel = create_new_label(
-            new_groupbox, "Titel: {}".format(aufgaben_infos[2]), True
+            new_groupbox, "Titel: {}".format(aufgabe_total["titel"]), True
         )
         gridLayout_gB.addWidget(label_titel, 2, 0, 1, 1)
 
@@ -5453,7 +5867,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         groupbox_pkt.setSizePolicy(SizePolicy_fixed)
         gridLayout_gB.addWidget(groupbox_pkt, 0, 1, 3, 1, QtCore.Qt.AlignRight)
 
-        punkte = self.dict_alle_aufgaben_sage[aufgabe][0]
+        punkte = aufgabe_total["punkte"]
 
         horizontalLayout_groupbox_pkt = QtWidgets.QHBoxLayout(groupbox_pkt)
         horizontalLayout_groupbox_pkt.setObjectName(
@@ -5530,22 +5944,24 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         verticalLayout_abstand = QtWidgets.QVBoxLayout(groupbox_abstand_ausgleich)
         verticalLayout_abstand.setObjectName("verticalLayout_abstand")
 
-        abstand = self.dict_alle_aufgaben_sage[aufgabe][1]
+        abstand = aufgabe_total["abstand"]
         spinbox_abstand = create_new_spinbox(groupbox_abstand_ausgleich)
         spinbox_abstand.setValue(abstand)
+        self.dict_variablen_abstand[aufgabe] = spinbox_abstand
+
         spinbox_abstand.valueChanged.connect(
             partial(self.spinbox_abstand_changed, aufgabe, spinbox_abstand)
         )
         verticalLayout_abstand.addWidget(spinbox_abstand)
 
-
+        num_ap = self.count_ausgleichspunkte(aufgabe_total["content"])
         if typ == 2:
             groupbox_abstand_ausgleich.setTitle("Ausgleichspkte")
             spinbox_abstand.hide()
-
+            self.count_ausgleichspunkte(aufgabe_total["content"])
             label_ausgleichspkt = create_new_label(
                 groupbox_abstand_ausgleich,
-                "{}".format(self.dict_alle_aufgaben_sage[aufgabe][3]),
+                str(num_ap),
             )
             label_ausgleichspkt.setStyleSheet("padding-top: 5px; padding-bottom: 5px;")
             verticalLayout_abstand.addWidget(label_ausgleichspkt)
@@ -5555,20 +5971,20 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             groupbox_abstand_ausgleich.setToolTip("Neue Seite: Abstand=99")
 
             # label_ausgleichspkt.setSizePolicy(SizePolicy_min)
-            # label_ausgleichspkt.setToolTip("Anzahl der Ausgleichspunkte")            
+            # label_ausgleichspkt.setToolTip("Anzahl der Ausgleichspunkte")
 
-            #groupbox_abstand.hide()
+            # groupbox_abstand.hide()
 
         # if typ == 2:
-            # label_ausgleichspkt = create_new_label(
-            #     groupbox_pkt,
-            #     "AP: {}".format(self.dict_alle_aufgaben_sage[aufgabe][3]),
-            # )
-            # # label_ausgleichspkt.setSizePolicy(SizePolicy_min)
-            # label_ausgleichspkt.setToolTip("Anzahl der Ausgleichspunkte")
-            
-            # gridLayout_gB.addWidget(label_ausgleichspkt, 2, 2, 1, 1, QtCore.Qt.AlignCenter)
-            
+        # label_ausgleichspkt = create_new_label(
+        #     groupbox_pkt,
+        #     "AP: {}".format(self.dict_alle_aufgaben_sage[aufgabe][3]),
+        # )
+        # # label_ausgleichspkt.setSizePolicy(SizePolicy_min)
+        # label_ausgleichspkt.setToolTip("Anzahl der Ausgleichspunkte")
+
+        # gridLayout_gB.addWidget(label_ausgleichspkt, 2, 2, 1, 1, QtCore.Qt.AlignCenter)
+
         # if typ == 2:
         pushbutton_ausgleich = create_new_button(
             new_groupbox,
@@ -5580,119 +5996,123 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         # pushbutton_ausgleich.setMaximumSize(QtCore.QSize(220, 30))
         gridLayout_gB.addWidget(pushbutton_ausgleich, 2, 3, 1, 3)
 
-            # pushbutton_aufgabe_bearbeiten = create_new_button(groupbox_pkt, 'Aufgabe bearbeiten', still_to_define)
-            # gridLayout_gB.addWidget(pushbutton_aufgabe_bearbeiten, 0,1,1,1)
+        # pushbutton_aufgabe_bearbeiten = create_new_button(groupbox_pkt, 'Aufgabe bearbeiten', still_to_define)
+        # gridLayout_gB.addWidget(pushbutton_aufgabe_bearbeiten, 0,1,1,1)
 
         return new_groupbox
 
-    def get_klasse(self, aufgabe):
-        klasse = list_klassen[self.comboBox_klassen.currentIndex()]
+    def get_klasse(self, mode="sage"):
+        if mode == "sage":
+            klasse = list_klassen[self.comboBox_klassen.currentIndex()]
+        elif mode == "feedback":
+            klasse = list_klassen[self.comboBox_klassen_fb_cria.currentIndex()]
 
         return klasse
 
-    def collect_all_infos_aufgabe(self, aufgabe):
-        typ = self.get_aufgabentyp(aufgabe)
+    # def collect_all_infos_aufgabe(self, aufgabe):
+    #     typ = get_aufgabentyp(self.chosen_program, aufgabe)
+    #     print(typ)  # 1, 2, None
+    #     return
+    #     if typ == None:
+    #         punkte = self.get_punkte_aufgabe(aufgabe)
+    #         klasse, aufgabe = self.split_klasse_aufgabe(aufgabe)
+    #         name = aufgabe + ".tex"
+    #         for all in self.beispieldaten_dateipfad_cria:
+    #             if klasse.upper() in all:
+    #                 filename = os.path.basename(self.beispieldaten_dateipfad_cria[all])
+    #                 if name == filename:
+    #                     info = split_section(all, self.chosen_program)
+    #                     titel = info[3]
+    #                     typ_info = info[4]  # Aufgabenformat
 
-        if typ == None:
-            punkte = self.get_punkte_aufgabe(aufgabe)
-            klasse, aufgabe = self.split_klasse_aufgabe(aufgabe)
-            name = aufgabe + ".tex"
-            for all in self.beispieldaten_dateipfad_cria:
-                if klasse.upper() in all:
-                    filename = os.path.basename(self.beispieldaten_dateipfad_cria[all])
-                    if name == filename:
-                        info = split_section(all, self.chosen_program)
-                        titel = info[3]
-                        typ_info = info[4]  # Aufgabenformat
+    #     elif typ == 1:
+    #         name = aufgabe + ".tex"
+    #         for all in self.beispieldaten_dateipfad_1:
+    #             filename = os.path.basename(self.beispieldaten_dateipfad_1[all])
+    #             if name == filename:
+    #                 x = all.split(" - ")
+    #                 titel = x[-3]
+    #                 typ_info = x[-2]  # Aufgabenformat
+    #         punkte = self.spinBox_default_pkt.value()
 
-        elif typ == 1:
-            name = aufgabe + ".tex"
-            for all in self.beispieldaten_dateipfad_1:
-                filename = os.path.basename(self.beispieldaten_dateipfad_1[all])
-                if name == filename:
-                    x = all.split(" - ")
-                    titel = x[-3]
-                    typ_info = x[-2]  # Aufgabenformat
-            punkte = self.spinBox_default_pkt.value()
+    #     elif typ == 2:
+    #         name = aufgabe + ".tex"
+    #         for all in self.beispieldaten_dateipfad_2:
+    #             filename = os.path.basename(self.beispieldaten_dateipfad_2[all])
+    #             if name == filename:
+    #                 x = all.split(" - ")
+    #                 titel = x[-2]
+    #                 typ_info = self.get_number_ausgleichspunkte(
+    #                     aufgabe
+    #                 )  # Ausgleichspunkte
 
-        elif typ == 2:
-            name = aufgabe + ".tex"
-            for all in self.beispieldaten_dateipfad_2:
-                filename = os.path.basename(self.beispieldaten_dateipfad_2[all])
-                if name == filename:
-                    x = all.split(" - ")
-                    titel = x[-2]
-                    typ_info = self.get_number_ausgleichspunkte(
-                        aufgabe
-                    )  # Ausgleichspunkte
+    #         punkte = self.get_punkte_aufgabe(aufgabe)
 
-            punkte = self.get_punkte_aufgabe(aufgabe)
+    #     return [punkte, 0, titel, typ_info]
 
-        return [punkte, 0, titel, typ_info]
+    # def get_punkte_aufgabe(aufgabe):
+    #     content = collect_content(self, aufgabe)
+    #     start = re.findall("begin{beispiel}.*\{[0-9][0-9]?\}", content)
+    #     typ = "beispiel"
+    #     if start == []:
+    #         start = re.findall("begin{langesbeispiel}.*\\\item\[[0-9][0-9]?\]", content)
+    #         typ = "langesbeispiel"
+    #     try:
+    #         if typ == "langesbeispiel":
+    #             punkte = int(re.findall(r"\[([0-9][0-9]?)\]", start[0])[0])
+    #         else:
+    #             punkte = int(re.findall(r"\{([0-9][0-9]?)\}", start[0])[0])
 
-    def get_punkte_aufgabe(self, aufgabe):
-        content = collect_content(self, aufgabe)
-        start = re.findall("begin{beispiel}.*\{[0-9][0-9]?\}", content)
-        typ = "beispiel"
-        if start == []:
-            start = re.findall("begin{langesbeispiel}.*\\\item\[[0-9][0-9]?\]", content)
-            typ = "langesbeispiel"
-        try:
-            if typ == "langesbeispiel":
-                punkte = int(re.findall(r"\[([0-9][0-9]?)\]", start[0])[0])
-            else:
-                punkte = int(re.findall(r"\{([0-9][0-9]?)\}", start[0])[0])
+    #         return punkte
+    #     except IndexError:
+    #         return 0
 
-            return punkte
-        except IndexError:
-            return 0
+    # def get_dateipfad_from_filename(self, list_path, filename, klasse=None):
+    #     if self.chosen_program == "cria":
+    #         for path in list_path:
+    #             if klasse.lower() in path.lower():
+    #                 if filename == os.path.basename(path):
+    #                     dateipfad = path
+    #                     break
+    #     elif self.chosen_program == "lama":
+    #         for path in list_path:
+    #             if filename == os.path.basename(path):
+    #                 dateipfad = path
+    #                 break
+    #     return dateipfad
 
-    def get_dateipfad_from_filename(self, list_path, filename, klasse=None):
-        if self.chosen_program == "cria":
-            for path in list_path:
-                if klasse.lower() in path.lower():
-                    if filename == os.path.basename(path):
-                        dateipfad = path
-                        break
-        elif self.chosen_program == "lama":
-            for path in list_path:
-                if filename == os.path.basename(path):
-                    dateipfad = path
-                    break
-        return dateipfad
+    # def get_dateipfad_aufgabe(self, aufgabe, draft=False):
+    #     typ = get_aufgabentyp(self.chosen_program, aufgabe)
+    #     klasse = None
 
-    def get_dateipfad_aufgabe(self, aufgabe, draft=False):
-        typ = self.get_aufgabentyp(aufgabe)
-        klasse = None
+    #     if self.chosen_program == "cria":
+    #         list_path = self.beispieldaten_dateipfad_cria.values()
+    #         klasse, aufgabe = self.split_klasse_aufgabe(aufgabe)
+    #         filename = aufgabe + ".tex"
 
-        if self.chosen_program == "cria":
-            list_path = self.beispieldaten_dateipfad_cria.values()
-            klasse, aufgabe = self.split_klasse_aufgabe(aufgabe)
-            filename = aufgabe + ".tex"
+    #     if self.chosen_program == "lama":
+    #         if typ == 1:
+    #             list_path = self.beispieldaten_dateipfad_1.values()
+    #         elif typ == 2:
+    #             list_path = self.beispieldaten_dateipfad_2.values()
+    #         filename = aufgabe + ".tex"
 
-        if self.chosen_program == "lama":
-            if typ == 1:
-                list_path = self.beispieldaten_dateipfad_1.values()
-            elif typ == 2:
-                list_path = self.beispieldaten_dateipfad_2.values()
-            filename = aufgabe + ".tex"
+    #     dateipfad = self.get_dateipfad_from_filename(list_path, filename, klasse)
 
-        dateipfad = self.get_dateipfad_from_filename(list_path, filename, klasse)
+    #     return dateipfad
 
-        return dateipfad
+    # def get_number_ausgleichspunkte(self, aufgabe):
+    #     typ = get_aufgabentyp(self.chosen_program, aufgabe)
 
-    def get_number_ausgleichspunkte(self, aufgabe):
-        typ = self.get_aufgabentyp(aufgabe)
+    #     if typ == 2:
+    #         content = collect_content(self, aufgabe)
 
-        if typ == 2:
-            content = collect_content(self, aufgabe)
+    #         number_ausgleichspunkte = content.count("\\fbox{A}")
+    #         number_ausgleichspunkte = number_ausgleichspunkte + content.count(
+    #             "\\ASubitem"
+    #         )
 
-            number_ausgleichspunkte = content.count("\\fbox{A}")
-            number_ausgleichspunkte = number_ausgleichspunkte + content.count(
-                "\\ASubitem"
-            )
-
-            return number_ausgleichspunkte
+    #         return number_ausgleichspunkte
 
     def delete_all_widgets(self, layout, start=0):
         for i in reversed(range(start, layout.count())):
@@ -5712,7 +6132,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         return klasse, aufgabe
 
     def build_klasse_aufgabe(self, aufgabe):
-        klasse = self.get_klasse(aufgabe)
+        klasse = self.get_klasse()
         if "_L_" in aufgabe:
             klasse_aufgabe = klasse + aufgabe
         else:
@@ -5720,7 +6140,9 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         return klasse_aufgabe
 
     def add_image_path_to_list(self, aufgabe):
-        content = collect_content(self, aufgabe)
+        typ = get_aufgabentyp(self.chosen_program, aufgabe)
+        aufgabe_total = get_aufgabe_total(aufgabe, typ)
+        content = aufgabe_total["content"]
 
         if "\\includegraphics" in content:
             matches = re.findall("/Bilder/(.+.eps)}", content)
@@ -5745,16 +6167,16 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         for i in reversed(range(start_value, self.gridLayout_8.count() + 1)):
             self.delete_widget(self.gridLayout_8, i)
 
-
         for item in self.list_alle_aufgaben_sage[start_value:]:
             index_item = self.list_alle_aufgaben_sage.index(item)
-            item_infos = self.collect_all_infos_aufgabe(item)
+            typ = get_aufgabentyp(self.chosen_program, item)
+            aufgabe_total = get_aufgabe_total(item, typ)
+            # item_infos = self.collect_all_infos_aufgabe(item)
             neue_aufgaben_box = self.create_neue_aufgaben_box(
-                index_item, item, item_infos
+                index_item, item, aufgabe_total
             )
             self.gridLayout_8.addWidget(neue_aufgaben_box, index_item, 0, 1, 1)
             index_item + 1
-
 
         self.spacerItem = QtWidgets.QSpacerItem(
             20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
@@ -5765,7 +6187,6 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
         self.update_punkte()
 
-            
         # pos_value = self.scrollArea_chosen.verticalScrollBar().value()
         # pos_maximum = self.scrollArea_chosen.verticalScrollBar().maximum()
         # print(pos_maximum)
@@ -5775,13 +6196,10 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         # # pos_end_typ1 = pos_maximum - height_aufgabe*num_typ2 + 400
         # self.scrollbar_position = [pos_value, pos_end_typ1]
         # self.scrollArea_chosen.verticalScrollBar().setValue(pos_maximum)
-        
+
         # print(self.scrollbar_position)
 
         QtWidgets.QApplication.restoreOverrideCursor()
-
-      
-
 
     def pushButton_ausgleich_pressed(self, aufgabe):
         content = collect_content(self, aufgabe)
@@ -5789,7 +6207,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         content_no_environment = split_content_no_environment(content)
 
         # print(aufgabe)
-        typ = self.get_aufgabentyp(aufgabe)
+        typ = get_aufgabentyp(self.chosen_program, aufgabe)
         # return
         if typ == 2:
             try:
@@ -5809,11 +6227,10 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                     )
                     return
 
-            
             if aufgabe in self.dict_sage_ausgleichspunkte_chosen.keys():
-                list_sage_ausgleichspunkte_chosen = self.dict_sage_ausgleichspunkte_chosen[
-                    aufgabe
-                ]
+                list_sage_ausgleichspunkte_chosen = (
+                    self.dict_sage_ausgleichspunkte_chosen[aufgabe]
+                )
             else:
                 list_sage_ausgleichspunkte_chosen = []
                 for all in split_content:
@@ -5825,9 +6242,9 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                         list_sage_ausgleichspunkte_chosen.append(x)
 
             if aufgabe in self.dict_sage_hide_show_items_chosen.keys():
-                list_sage_hide_show_items_chosen = self.dict_sage_hide_show_items_chosen[
-                    aufgabe
-                ]
+                list_sage_hide_show_items_chosen = (
+                    self.dict_sage_hide_show_items_chosen[aufgabe]
+                )
             else:
                 list_sage_hide_show_items_chosen = []
 
@@ -5868,9 +6285,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
         self.Dialog.exec_()
 
-        self.dict_sage_individual_change[
-            aufgabe
-        ] = self.ui.list_sage_individual_change
+        self.dict_sage_individual_change[aufgabe] = self.ui.list_sage_individual_change
         # print(self.ui.list_sage_individual_change)
         # print(self.dict_sage_individual_change)
         # print(self.dict_alle_aufgaben_sage)
@@ -5890,9 +6305,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             self.dict_variablen_label[aufgabe].setText(
                 _translate(
                     "MainWindow",
-                    "{}".format(
-                        len(self.ui.list_sage_ausgleichspunkte_chosen)
-                    ),
+                    "{}".format(len(self.ui.list_sage_ausgleichspunkte_chosen)),
                     None,
                 )
             )
@@ -6016,66 +6429,77 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
     def check_for_autosave(self):
         try:
-            intervall = self.lama_settings['autosave']
+            intervall = self.lama_settings["autosave"]
         except KeyError:
-            self.lama_settings['autosave'] = 2
+            self.lama_settings["autosave"] = 2
             intervall = 2
 
         if intervall == 0:
             return
 
         self.collect_all_infos_for_creating_file()
-        autosave_file = os.path.join(path_localappdata_lama,"Teildokument", "autosave.lama")
-        try: 
+        autosave_file = os.path.join(
+            path_localappdata_lama, "Teildokument", "autosave.lama"
+        )
+        try:
             modification = modification_date(autosave_file).strftime("%y%m%d-%H%M")
             date, time_tag = modification.split("-")
             day_time = datetime.datetime.now()
 
             day_time = day_time - datetime.timedelta(minutes=intervall)
-            today, now_minus_intervall  = day_time.strftime("%y%m%d-%H%M").split("-")
+            today, now_minus_intervall = day_time.strftime("%y%m%d-%H%M").split("-")
 
             if date != today:
                 self.sage_save(autosave=autosave_file)
-            elif now_minus_intervall>time_tag:
+            elif now_minus_intervall > time_tag:
                 self.sage_save(autosave=autosave_file)
         except FileNotFoundError:
             self.sage_save(autosave=autosave_file)
 
-
     def nummer_clicked(self, item):
-        if "(Entwurf)" in item.text():
-            aufgabe = item.text().replace(" (Entwurf)", "")
-            # draft=True
-        elif "(lokal)" in item.text():
-            aufgabe = item.text().replace(" (lokal)", "")
-            # draft=False
-        else:
-            aufgabe = item.text()
-            # draft=False
+        # aufgabe = item.text()
+        # return
+        # if "(Entwurf)" in item.text():
+        #     aufgabe = item.text().replace(" (Entwurf)", "")
+        #     # draft=True
+        # if "(lokal)" in item.text():
+        #     aufgabe = item.text().replace(" (lokal)", "")
+        # #     # draft=False
+        # else:
+        aufgabe = item.text()
 
         if self.chosen_program == "cria":
-            aufgabe = self.build_klasse_aufgabe(aufgabe)
+            klasse = self.get_klasse("sage")
+            aufgabe = klasse + "." + aufgabe
+
+        #     # draft=False
+
+        # if self.chosen_program == "cria":
+        #     aufgabe = self.build_klasse_aufgabe(aufgabe)
 
         if aufgabe in self.list_alle_aufgaben_sage:
             return
 
-        try:
-            collect_content(self, aufgabe)
-        except FileNotFoundError:
-            warning_window(
-                'Die Datei konnte nicht gefunden werden.\nBitte wählen Sie "Refresh Database" (F5) und versuchen Sie es erneut.'
-            )
-            return
+        # try:
+        #     collect_content(self, aufgabe)
+        # except FileNotFoundError:
+        #     warning_window(
+        #         'Die Datei konnte nicht gefunden werden.\nBitte wählen Sie "Refresh Database" (F5) und versuchen Sie es erneut.'
+        #     )
+        #     return
 
         self.sage_aufgabe_add(aufgabe)
-        infos = self.collect_all_infos_aufgabe(aufgabe)
-        self.dict_alle_aufgaben_sage[aufgabe] = infos
+
+        # infos = self.collect_all_infos_aufgabe(aufgabe)
+
+        # print(infos)
+
+        # self.dict_alle_aufgaben_sage[aufgabe] = infos
 
         self.build_aufgaben_schularbeit(aufgabe)  # aufgabe, aufgaben_verteilung
         self.lineEdit_number.setText("")
         self.lineEdit_number.setFocus()
         self.check_for_autosave()
-
 
     def nummer_clicked_fb(self, item):
         if self.chosen_program == "lama":
@@ -6090,7 +6514,8 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                 _translate(
                     "MainWindow",
                     "Ausgewählte Aufgabe: {0} ({1})".format(
-                        item.text(), self.comboBox_klassen_fb_cria.currentText(),
+                        item.text(),
+                        self.comboBox_klassen_fb_cria.currentText(),
                     ),
                     None,
                 )
@@ -6098,146 +6523,187 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
     def comboBox_klassen_changed(self, list_mode):
         if list_mode == "sage":
-            dict_klasse_name = eval(
-                "dict_{}_name".format(
-                    list_klassen[self.comboBox_klassen.currentIndex()]
-                )
-            )
-            self.comboBox_kapitel.clear()
-            self.comboBox_unterkapitel.clear()
-            self.comboBox_kapitel.addItem("")
-        if list_mode == "feedback":
-            self.label_example.setText(
-                _translate("MainWindow", "Ausgewählte Aufgabe: -", None)
-            )
-            dict_klasse_name = eval(
-                "dict_{}_name".format(
-                    list_klassen[self.comboBox_klassen_fb_cria.currentIndex()]
-                )
-            )
-            self.listWidget_fb_cria.clear()
-            self.comboBox_kapitel_fb_cria.clear()
-            self.comboBox_unterkapitel_fb_cria.clear()
-            self.comboBox_kapitel_fb_cria.addItem("")
+            combobox_klassen = self.comboBox_klassen
+            combobox_kapitel = self.comboBox_kapitel
+            combobox_unterkapitel = self.comboBox_unterkapitel
+        elif list_mode == "feedback":
+            combobox_klassen = self.comboBox_klassen_fb_cria
+            combobox_kapitel = self.comboBox_kapitel_fb_cria
+            combobox_unterkapitel = self.comboBox_unterkapitel_fb_cria
+
+            self.label_example.setText("Ausgewählte Aufgabe: -")
+
+        dict_klasse_name = eval(
+            "dict_{}_name".format(list_klassen[combobox_klassen.currentIndex()])
+        )
+
+        combobox_kapitel.clear()
+        combobox_unterkapitel.clear()
+        combobox_kapitel.addItem("")
 
         for all in dict_klasse_name.keys():
-            if list_mode == "sage":
-                self.comboBox_kapitel.addItem(dict_klasse_name[all] + " (" + all + ")")
-            if list_mode == "feedback":
-                self.comboBox_kapitel_fb_cria.addItem(
-                    dict_klasse_name[all] + " (" + all + ")"
-                )
+            combobox_kapitel.addItem(dict_klasse_name[all] + " (" + all + ")")
+
+        self.adapt_choosing_list(list_mode)
+        # if list_mode == "sage":
+        #     dict_klasse_name = eval(
+        #         "dict_{}_name".format(
+        #             list_klassen[self.comboBox_klassen.currentIndex()]
+        #         )
+        #     )
+        #     self.comboBox_kapitel.clear()
+        #     self.comboBox_unterkapitel.clear()
+        #     self.comboBox_kapitel.addItem("")
+        # if list_mode == "feedback":
+
+        #     dict_klasse_name = eval(
+        #         "dict_{}_name".format(
+        #             list_klassen[self.comboBox_klassen_fb_cria.currentIndex()]
+        #         )
+        #     )
+        #     self.listWidget_fb_cria.clear()
+        #     self.comboBox_kapitel_fb_cria.clear()
+        #     self.comboBox_unterkapitel_fb_cria.clear()
+        #     self.comboBox_kapitel_fb_cria.addItem("")
+
+        # for all in dict_klasse_name.keys():
+        #     if list_mode == "sage":
+        #         self.comboBox_kapitel.addItem(dict_klasse_name[all] + " (" + all + ")")
+        #     if list_mode == "feedback":
+        #         self.comboBox_kapitel_fb_cria.addItem(
+        #             dict_klasse_name[all] + " (" + all + ")"
+        #         )
 
         # self.adapt_choosing_list(list_mode)
 
     def comboBox_kapitel_changed(self, list_mode):
+        klasse = self.get_klasse(list_mode)
+        if list_mode == "sage":
+            combobox_klassen = self.comboBox_klassen
+            chosen_kapitel = self.comboBox_kapitel.currentText()
+            combobox_unterkapitel = self.comboBox_unterkapitel
+        elif list_mode == "feedback":
+            combobox_klassen = self.comboBox_klassen_fb_cria
+            chosen_kapitel = self.comboBox_kapitel_fb_cria.currentText()
+            combobox_unterkapitel = self.comboBox_unterkapitel_fb_cria
+
         dict_klasse = eval(
-            "dict_{}".format(list_klassen[self.comboBox_klassen.currentIndex()])
+            "dict_{}".format(list_klassen[combobox_klassen.currentIndex()])
         )
 
-        if list_mode == "sage":
-            dict_klasse = eval(
-                "dict_{}".format(list_klassen[self.comboBox_klassen.currentIndex()])
-            )
-            self.comboBox_unterkapitel.clear()
+        chosen_kapitel = extract_topic_abbr(chosen_kapitel)
 
-            kapitel_shortcut = list(dict_klasse.keys())[
-                self.comboBox_kapitel.currentIndex() - 1
-            ]
+        combobox_unterkapitel.clear()
 
-            # self.comboBox_unterkapitel.clear()
-            self.comboBox_unterkapitel.addItem("")
+        if not is_empty(chosen_kapitel):
+            list_unterkapitel = dict_klasse[chosen_kapitel]
+            combobox_unterkapitel.addItem("")
+            for all in list_unterkapitel:
+                combobox_unterkapitel.addItem(dict_unterkapitel[all] + " (" + all + ")")
 
-        if list_mode == "feedback":
-            dict_klasse = eval(
-                "dict_{}".format(
-                    list_klassen[self.comboBox_klassen_fb_cria.currentIndex()]
-                )
-            )
-            self.comboBox_unterkapitel_fb_cria.clear()
+        # if list_mode == "sage":
+        #     dict_klasse = eval(
+        #         "dict_{}".format(list_klassen[self.comboBox_klassen.currentIndex()])
+        #     )
+        #     self.comboBox_unterkapitel.clear()
 
-            kapitel_shortcut = list(dict_klasse.keys())[
-                self.comboBox_kapitel_fb_cria.currentIndex() - 1
-            ]
-            self.comboBox_unterkapitel_fb_cria.addItem("")
+        #     kapitel_shortcut = list(dict_klasse.keys())[
+        #         self.comboBox_kapitel.currentIndex() - 1
+        #     ]
 
-        index = 1
-        for all in dict_klasse[kapitel_shortcut]:
-            if list_mode == "sage":
-                self.comboBox_unterkapitel.addItem(
-                    dict_unterkapitel[all] + " (" + all + ")"
-                )
+        #     # self.comboBox_unterkapitel.clear()
+        #     self.comboBox_unterkapitel.addItem("")
 
-            if list_mode == "feedback":
-                self.comboBox_unterkapitel_fb_cria.addItem(
-                    dict_unterkapitel[all] + " (" + all + ")"
-                )
+        # if list_mode == "feedback":
+        #     dict_klasse = eval(
+        #         "dict_{}".format(
+        #             list_klassen[self.comboBox_klassen_fb_cria.currentIndex()]
+        #         )
+        #     )
+        #     self.comboBox_unterkapitel_fb_cria.clear()
 
-            index += 1
+        #     kapitel_shortcut = list(dict_klasse.keys())[
+        #         self.comboBox_kapitel_fb_cria.currentIndex() - 1
+        #     ]
+        #     self.comboBox_unterkapitel_fb_cria.addItem("")
 
-        if list_mode == "sage":
-            if self.comboBox_kapitel.currentIndex() == 0:
-                self.comboBox_unterkapitel.clear()
-        if list_mode == "feedback":
-            if self.comboBox_kapitel_fb_cria.currentIndex() == 0:
-                self.comboBox_unterkapitel_fb_cria.clear()
+        # index = 1
+        # for all in dict_klasse[kapitel_shortcut]:
+        #     if list_mode == "sage":
+        #         self.comboBox_unterkapitel.addItem(
+        #             dict_unterkapitel[all] + " (" + all + ")"
+        #         )
 
-        self.adapt_choosing_list(list_mode)
+        #     if list_mode == "feedback":
+        #         self.comboBox_unterkapitel_fb_cria.addItem(
+        #             dict_unterkapitel[all] + " (" + all + ")"
+        #         )
+
+        #     index += 1
+
+        # if list_mode == "sage":
+        #     if self.comboBox_kapitel.currentIndex() == 0:
+        #         self.comboBox_unterkapitel.clear()
+        # if list_mode == "feedback":
+        #     if self.comboBox_kapitel_fb_cria.currentIndex() == 0:
+        #         self.comboBox_unterkapitel_fb_cria.clear()
+
+        # self.adapt_choosing_list(list_mode)
 
     def comboBox_unterkapitel_changed(self, list_mode):
         self.adapt_choosing_list(list_mode)
 
-    def get_beispieldaten_dateipfad(self, log_file):
-        try:
-            with open(log_file, encoding="utf8") as f:
-                dictionary = json.load(f)
-        except FileNotFoundError:
-            refresh_ddb(self)
-            with open(log_file, encoding="utf8") as f:
-                dictionary = json.load(f)
+    # def get_beispieldaten_dateipfad(self, log_file):
+    #     try:
+    #         with open(log_file, encoding="utf8") as f:
+    #             dictionary = json.load(f)
+    #     except FileNotFoundError:
+    #         refresh_ddb(self)
+    #         with open(log_file, encoding="utf8") as f:
+    #             dictionary = json.load(f)
 
-        return dictionary
+    #     return dictionary
 
-    def get_name_from_path(self, path):
-        path, filename = os.path.split(path)
-        filename, extension = os.path.splitext(filename)
+    # def get_name_from_path(self, path):
+    #     path, filename = os.path.split(path)
+    #     filename, extension = os.path.splitext(filename)
 
-        return filename
+    #     return filename
 
-    def get_aufgabentyp_from_path(self, abs_path):
-        path, filename = os.path.split(abs_path)
-        parent_folder = os.path.basename(path)
+    # def get_aufgabentyp_from_path(self, abs_path):
+    #     path, filename = os.path.split(abs_path)
+    #     parent_folder = os.path.basename(path)
 
-        if parent_folder != "drafts":
-            typ = None
-        elif re.search("[A-Z]", filename) == None:
-            typ = 2
-        else:
-            typ = 1
+    #     if parent_folder != "drafts":
+    #         typ = None
+    #     elif re.search("[A-Z]", filename) == None:
+    #         typ = 2
+    #     else:
+    #         typ = 1
 
-        return typ
+    #     return typ
 
-    def get_beispieldaten_dateipfad_draft(self, typ):
-        drafts_path = os.path.join(database, "drafts")
-        list_section = []
-        list_path = []
-        beispieldaten_dateipfad_draft = search_files(drafts_path)
+    # def get_beispieldaten_dateipfad_draft(self, typ):
+    #     drafts_path = os.path.join(database, "drafts")
+    #     list_section = []
+    #     list_path = []
+    #     beispieldaten_dateipfad_draft = search_files(drafts_path)
 
-        for section in beispieldaten_dateipfad_draft.keys():
-            path = beispieldaten_dateipfad_draft[section]
-            aufgabentyp = self.get_aufgabentyp_from_path(path)
-            if aufgabentyp == typ:
-                list_section.append(section)
-                list_path.append(path)
+    #     for section in beispieldaten_dateipfad_draft.keys():
+    #         path = beispieldaten_dateipfad_draft[section]
+    #         aufgabentyp = self.get_aufgabentyp_from_path(path)
+    #         if aufgabentyp == typ:
+    #             list_section.append(section)
+    #             list_path.append(path)
 
-        return list_section, list_path
+    #     return list_section, list_path
 
-    def delete_item_without_string_from_list(self, string, list_):
-        for section in list_[:]:
-            if string not in section:
-                list_.remove(section)
+    # def delete_item_without_string_from_list(self, string, list_):
+    #     for section in list_[:]:
+    #         if string not in section:
+    #             list_.remove(section)
 
-        return list_
+    #     return list_
 
     # def split_section(self, section):
     #     section = re.split(" - |{|}", section)
@@ -6252,145 +6718,179 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             string = string[1:]
         return string
 
-    def search_for_number(self, list_, line_entry, list_mode):
-        for section in list_[:]:
-            info = split_section(section, self.chosen_program)
-            if self.chosen_program == "lama":
-                if list_mode == "sage":
-                    combobox_at = self.comboBox_at_sage.currentText()
-                elif list_mode == "feedback":
-                    combobox_at = self.comboBox_at_fb.currentText()
+    # def search_for_number(self, list_, line_entry, list_mode):
+    #     for section in list_[:]:
+    #         info = split_section(section, self.chosen_program)
+    #         if self.chosen_program == "lama":
+    #             if list_mode == "sage":
+    #                 combobox_at = self.comboBox_at_sage.currentText()
+    #             elif list_mode == "feedback":
+    #                 combobox_at = self.comboBox_at_fb.currentText()
 
-                if combobox_at == "Typ 1":
-                    number = self.delete_zeros_at_beginning(info[2])
-                if combobox_at == "Typ 2":
-                    number = self.delete_zeros_at_beginning(info[0])
+    #             if combobox_at == "Typ 1":
+    #                 number = self.delete_zeros_at_beginning(info[2])
+    #             if combobox_at == "Typ 2":
+    #                 number = self.delete_zeros_at_beginning(info[0])
 
-            elif self.chosen_program == "cria":
-                number = self.delete_zeros_at_beginning(info[2])
-            number = number.replace("i.","")
-            if not number.startswith(line_entry):
-                list_.remove(section)
-        return list_
+    #         elif self.chosen_program == "cria":
+    #             number = self.delete_zeros_at_beginning(info[2])
+    #         number = number.replace("i.", "")
+    #         if not number.startswith(line_entry):
+    #             list_.remove(section)
+    #     return list_
+
+    # def add_local_items_to_listwidget(self, typ, listWidget, filter_items):
+    #     for _file_ in filter_items:
+    #         item = QtWidgets.QListWidgetItem()
 
     def add_items_to_listwidget(
         self,
-        list_beispieldaten_sections,
-        beispieldaten_dateipfad,
+        typ,
         listWidget,
-        listWidget_mode,
+        filtered_items,
+        local=False,
     ):
-        for section in list_beispieldaten_sections:
-            try:
-                path = beispieldaten_dateipfad[section]
-            except KeyError:
-                drafts_path = os.path.join(database, "drafts")
-                beispieldaten_dateipfad_draft = search_files(drafts_path)
-                path = beispieldaten_dateipfad_draft[section]
 
-            name, extension = os.path.splitext(os.path.basename(path))
+        for _file_ in filtered_items:
+            if typ == "cria":
+                name = _file_["name"].split(".")[-1]
+            else:
+                name = _file_["name"]
+
             item = QtWidgets.QListWidgetItem()
 
-            # if "Beispieleinreichung" in path:
-            #     item.setText(name + ' (Entwurf)')
-            # elif "Lokaler_Ordner" in path:
-            #     item.setText(name + ' (lokal)')
-            # else:
+            if local == True:
+                name = name + " (lokal)"
+                # item.setBackground(blue_4)
+                # item.setToolTip("lokal gespeichert")
+
+            elif _file_["draft"] == True:
+                item.setBackground(blue_5)
+                item.setForeground(white)
+                item.setToolTip("Entwurf")
+
             item.setText(name)
 
-            if name.startswith("_L_"):
-                if listWidget_mode == "feedback":
-                    pass
-                else:
-                    # local_item_background_color = blue_4
-                    # # local_item_background_color = blue_3
-                    # item.setBackground(local_item_background_color)
-                    item.setToolTip("lokal gespeichert")
-                    listWidget.addItem(item)
-
-            elif "drafts" in path:
-                if listWidget_mode == "feedback":
-                    pass
-                else:
-                    item.setBackground(blue_5)
-                    item.setForeground(white)
-                    item.setToolTip("Entwurf")
-                    listWidget.addItem(item)
-
-            elif re.search("\[.+\]", name) != None:
-                # item.setForeground(QtGui.QColor(108, 159, 103))
+            if check_if_variation(_file_["name"]) == True:
                 item.setToolTip("Variation")
-                listWidget.addItem(item)
+
+            if _file_["draft"] == True and not self.cb_drafts_sage.isChecked():
+                continue
             else:
                 listWidget.addItem(item)
-            # item.setToolTip(path)
+        return
+        # for section in list_beispieldaten_sections:
+        #     try:
+        #         path = beispieldaten_dateipfad[section]
+        #     except KeyError:
+        #         drafts_path = os.path.join(database, "drafts")
+        #         beispieldaten_dateipfad_draft = search_files(drafts_path)
+        #         path = beispieldaten_dateipfad_draft[section]
 
-        listWidget.setFocusPolicy(QtCore.Qt.ClickFocus)
+        #     name, extension = os.path.splitext(os.path.basename(path))
+        #     item = QtWidgets.QListWidgetItem()
 
-    def get_string_in_parantheses(self, string):
-        kapitel = re.findall("\((..?.)\)", string)
-        return kapitel[-1]
+        #     # if "Beispieleinreichung" in path:
+        #     #     item.setText(name + ' (Entwurf)')
+        #     # elif "Lokaler_Ordner" in path:
+        #     #     item.setText(name + ' (lokal)')
+        #     # else:
+        #     item.setText(name)
 
-    def adjust_beispieldaten_combobox_lama(
-        self, list_beispieldaten_sections, combobox_gk, combobox_gk_num
-    ):
-        if combobox_gk == "Zusatzthemen":
-            if is_empty(combobox_gk_num) == True:
-                for section in list_beispieldaten_sections[:]:
-                    section_split = split_section(section, self.chosen_program)
-                    thema = section_split[0]
-                    if thema.lower() not in zusatzthemen_beschreibung:
-                        list_beispieldaten_sections.remove(section)
-            else:
-                list_beispieldaten_sections = self.delete_item_without_string_from_list(
-                    combobox_gk_num.upper(), list_beispieldaten_sections
-                )
+        #     if name.startswith("_L_"):
+        #         if listWidget_mode == "feedback":
+        #             pass
+        #         else:
+        #             # local_item_background_color = blue_4
+        #             # # local_item_background_color = blue_3
+        #             # item.setBackground(local_item_background_color)
+        #             item.setToolTip("lokal gespeichert")
+        #             listWidget.addItem(item)
 
-        elif is_empty(combobox_gk) == False:
+        #     elif "drafts" in path:
+        #         if listWidget_mode == "feedback":
+        #             pass
+        #         else:
+        #             item.setBackground(blue_5)
+        #             item.setForeground(white)
+        #             item.setToolTip("Entwurf")
+        #             listWidget.addItem(item)
 
-            if is_empty(combobox_gk_num) == True:
-                string = combobox_gk
-            else:
-                short_gk = shorten_gk(combobox_gk.lower() + combobox_gk_num)
-                string = dict_gk[short_gk]
+        #     elif re.search("\[.+\]", name) != None:
+        #         # item.setForeground(QtGui.QColor(108, 159, 103))
+        #         item.setToolTip("Variation")
+        #         listWidget.addItem(item)
+        #     else:
+        #         listWidget.addItem(item)
+        #     # item.setToolTip(path)
 
-            list_beispieldaten_sections = self.delete_item_without_string_from_list(
-                string, list_beispieldaten_sections
-            )
-        return list_beispieldaten_sections
+        # listWidget.setFocusPolicy(QtCore.Qt.ClickFocus)
 
-    def adjust_beispieldaten_combobox_cria(
-        self,
-        list_beispieldaten_sections,
-        combobox_klasse,
-        combobox_kapitel,
-        combobox_unterkapitel,
-    ):
-        klasse = "K" + combobox_klasse[0]
-        for section in list_beispieldaten_sections[:]:
-            info = split_section(section, self.chosen_program)
-            if klasse not in info[0]:
-                list_beispieldaten_sections.remove(section)
+    # def get_string_in_parantheses(self, string):
+    #     kapitel = re.findall("\((..?.)\)", string)
+    #     return kapitel[-1]
 
-        if is_empty(combobox_kapitel) == False:
-            kapitel = self.get_string_in_parantheses(combobox_kapitel)
-            if is_empty(combobox_unterkapitel) == True:
-                list_beispieldaten_sections = self.delete_item_without_string_from_list(
-                    kapitel, list_beispieldaten_sections
-                )
-            else:
-                unterkapitel = self.get_string_in_parantheses(combobox_unterkapitel)
-                string = kapitel + "." + unterkapitel
-                list_beispieldaten_sections = self.delete_item_without_string_from_list(
-                    string, list_beispieldaten_sections
-                )
+    # def adjust_beispieldaten_combobox_lama(
+    #     self, list_beispieldaten_sections, combobox_gk, combobox_gk_num
+    # ):
+    #     if combobox_gk == "Zusatzthemen":
+    #         if is_empty(combobox_gk_num) == True:
+    #             for section in list_beispieldaten_sections[:]:
+    #                 section_split = split_section(section, self.chosen_program)
+    #                 thema = section_split[0]
+    #                 if thema.lower() not in zusatzthemen_beschreibung:
+    #                     list_beispieldaten_sections.remove(section)
+    #         else:
+    #             list_beispieldaten_sections = self.delete_item_without_string_from_list(
+    #                 combobox_gk_num.upper(), list_beispieldaten_sections
+    #             )
 
-        return list_beispieldaten_sections
+    #     elif is_empty(combobox_gk) == False:
+
+    #         if is_empty(combobox_gk_num) == True:
+    #             string = combobox_gk
+    #         else:
+    #             short_gk = shorten_gk(combobox_gk.lower() + combobox_gk_num)
+    #             string = dict_gk[short_gk]
+
+    #         list_beispieldaten_sections = self.delete_item_without_string_from_list(
+    #             string, list_beispieldaten_sections
+    #         )
+    #     return list_beispieldaten_sections
+
+    # def adjust_beispieldaten_combobox_cria(
+    #     self,
+    #     list_beispieldaten_sections,
+    #     combobox_klasse,
+    #     combobox_kapitel,
+    #     combobox_unterkapitel,
+    # ):
+    #     klasse = "K" + combobox_klasse[0]
+    #     for section in list_beispieldaten_sections[:]:
+    #         info = split_section(section, self.chosen_program)
+    #         if klasse not in info[0]:
+    #             list_beispieldaten_sections.remove(section)
+
+    #     if is_empty(combobox_kapitel) == False:
+    #         kapitel = self.get_string_in_parantheses(combobox_kapitel)
+    #         if is_empty(combobox_unterkapitel) == True:
+    #             list_beispieldaten_sections = self.delete_item_without_string_from_list(
+    #                 kapitel, list_beispieldaten_sections
+    #             )
+    #         else:
+    #             unterkapitel = self.get_string_in_parantheses(combobox_unterkapitel)
+    #             string = kapitel + "." + unterkapitel
+    #             list_beispieldaten_sections = self.delete_item_without_string_from_list(
+    #                 string, list_beispieldaten_sections
+    #             )
+
+    #     return list_beispieldaten_sections
 
     def adapt_choosing_list(self, list_mode):
+        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         if list_mode == "sage":
             listWidget = self.listWidget
-        if list_mode == "feedback":
+        elif list_mode == "feedback":
             if self.chosen_program == "lama":
                 listWidget = self.listWidget_fb
             elif self.chosen_program == "cria":
@@ -6400,70 +6900,22 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                 self.comboBox_fb.clear()
                 self.comboBox_fb_num.clear()
                 self.lineEdit_number_fb.clear()
-                listWidget.clear()
                 return
-
+        listWidget.clear()
         if self.chosen_program == "cria":
-            typ = None
-            beispieldaten_dateipfad = self.beispieldaten_dateipfad_cria
-        else:
-            if (
-                self.comboBox_at_sage.currentText() == "Typ 1" and list_mode == "sage"
-            ) or (
-                self.comboBox_at_fb.currentText() == "Typ 1" and list_mode == "feedback"
-            ):
-                typ = 1
-                beispieldaten_dateipfad = self.beispieldaten_dateipfad_1
-            elif (
-                self.comboBox_at_sage.currentText() == "Typ 2" and list_mode == "sage"
-            ) or (
-                self.comboBox_at_fb.currentText() == "Typ 2" and list_mode == "feedback"
-            ):
-                typ = 2
-                beispieldaten_dateipfad = self.beispieldaten_dateipfad_2
+            typ = "cria"
 
-        list_beispieldaten_sections = list(beispieldaten_dateipfad.keys())
+        elif (
+            self.comboBox_at_sage.currentText() == "Typ 1" and list_mode == "sage"
+        ) or (self.comboBox_at_fb.currentText() == "Typ 1" and list_mode == "feedback"):
+            typ = "lama_1"
 
-        if self.chosen_program == "lama":
-            if list_mode == "sage":
-                combobox_gk = self.comboBox_gk.currentText()
-                result = re.findall("\(([a-z]+)\)", self.comboBox_gk_num.currentText())
-                if not is_empty(result):
-                    combobox_gk_num = result[-1]
-                else:
-                    combobox_gk_num = self.comboBox_gk_num.currentText()
+        elif (
+            self.comboBox_at_sage.currentText() == "Typ 2" and list_mode == "sage"
+        ) or (self.comboBox_at_fb.currentText() == "Typ 2" and list_mode == "feedback"):
+            typ = "lama_2"
 
-            elif list_mode == "feedback":
-                combobox_gk = self.comboBox_fb.currentText()
-                result = re.findall("\(([a-z]+)\)", self.comboBox_fb_num.currentText())
-                if not is_empty(result):
-                    combobox_gk_num = result[-1]
-                else:
-                    combobox_gk_num = self.comboBox_fb_num.currentText()
-
-                # combobox_gk = self.comboBox_fb.currentText()
-                # combobox_gk_num = self.comboBox_fb_num.currentText()
-
-            list_beispieldaten_sections = self.adjust_beispieldaten_combobox_lama(
-                list_beispieldaten_sections, combobox_gk, combobox_gk_num,
-            )
-
-        if self.chosen_program == "cria":
-            if list_mode == "sage":
-                combobox_klasse = self.comboBox_klassen.currentText()
-                combobox_kapitel = self.comboBox_kapitel.currentText()
-                combobox_unterkapitel = self.comboBox_unterkapitel.currentText()
-            elif list_mode == "feedback":
-                combobox_klasse = self.comboBox_klassen_fb_cria.currentText()
-                combobox_kapitel = self.comboBox_kapitel_fb_cria.currentText()
-                combobox_unterkapitel = self.comboBox_unterkapitel_fb_cria.currentText()
-
-            list_beispieldaten_sections = self.adjust_beispieldaten_combobox_cria(
-                list_beispieldaten_sections,
-                combobox_klasse,
-                combobox_kapitel,
-                combobox_unterkapitel,
-            )
+        filter_string = get_filter_string(self, list_mode)
 
         if list_mode == "sage":
             line_entry = self.lineEdit_number.text()
@@ -6473,20 +6925,22 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             elif self.chosen_program == "cria":
                 line_entry = self.lineEdit_number_fb_cria.text()
 
-        if is_empty(line_entry) == False:
-            list_beispieldaten_sections = self.search_for_number(
-                list_beispieldaten_sections, line_entry, list_mode
+        table = "table_" + typ
+        if list_mode == "sage":
+            table_lama = _local_database.table(table)
+            filtered_items = filter_items(
+                self, table_lama, typ, list_mode, filter_string, line_entry
             )
 
-        list_beispieldaten_sections = sorted_gks(
-            list_beispieldaten_sections, self.chosen_program
-        )
+            self.add_items_to_listwidget(typ, listWidget, filtered_items, local=True)
 
-        listWidget.clear()
-
-        self.add_items_to_listwidget(
-            list_beispieldaten_sections, beispieldaten_dateipfad, listWidget, list_mode
+        table_lama = _database.table(table)
+        filtered_items = filter_items(
+            self, table_lama, typ, list_mode, filter_string, line_entry
         )
+        self.add_items_to_listwidget(typ, listWidget, filtered_items)
+
+        QtWidgets.QApplication.restoreOverrideCursor()
 
     def collect_all_infos_for_creating_file(self):
         self.dict_all_infos_for_file = {}
@@ -6495,9 +6949,9 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             "list_alle_aufgaben"
         ] = self.list_alle_aufgaben_sage
 
-        self.dict_all_infos_for_file[
-            "dict_alle_aufgaben"
-        ] = self.dict_alle_aufgaben_sage
+        # self.dict_all_infos_for_file[
+        #     "dict_alle_aufgaben"
+        # ] = self.dict_alle_aufgaben_sage
 
         ### include dictionary of changed 'ausgleichspunkte' ###
         self.dict_all_infos_for_file[
@@ -6511,7 +6965,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         ] = self.dict_sage_hide_show_items_chosen
 
         ### end ###
-        
+
         self.dict_all_infos_for_file[
             "dict_individual_change"
         ] = self.dict_sage_individual_change
@@ -6547,88 +7001,85 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
         self.dict_all_infos_for_file["data_gesamt"] = dict_data_gesamt
 
-    def get_dict_gesammeltedateien(self):
-        dict_gesammeltedateien = {}
+    # def get_dict_gesammeltedateien(self):
+    #     dict_gesammeltedateien = {}
 
-        if self.chosen_program == "lama":
-            for aufgabe in self.list_alle_aufgaben_sage:
-                typ = self.get_aufgabentyp(aufgabe)
-                if typ == 1:
-                    beispieldaten_dateipfad = self.beispieldaten_dateipfad_1
-                elif typ == 2:
-                    beispieldaten_dateipfad = self.beispieldaten_dateipfad_2
+    #     if self.chosen_program == "lama":
+    #         for aufgabe in self.list_alle_aufgaben_sage:
+    #             typ = get_aufgabentyp(self.chosen_program, aufgabe)
+    #             if typ == 1:
+    #                 beispieldaten_dateipfad = self.beispieldaten_dateipfad_1
+    #             elif typ == 2:
+    #                 beispieldaten_dateipfad = self.beispieldaten_dateipfad_2
 
-                for path in beispieldaten_dateipfad.values():
-                    name = self.get_name_from_path(path)
+    #             for path in beispieldaten_dateipfad.values():
+    #                 name = self.get_name_from_path(path)
 
-                    if aufgabe == name:
-                        dict_gesammeltedateien[aufgabe] = path
-                        break
+    #                 if aufgabe == name:
+    #                     dict_gesammeltedateien[aufgabe] = path
+    #                     break
 
-        if self.chosen_program == "cria":
-            beispieldaten_dateipfad = self.beispieldaten_dateipfad_cria
+    #     if self.chosen_program == "cria":
+    #         beispieldaten_dateipfad = self.beispieldaten_dateipfad_cria
 
-            for item in self.list_alle_aufgaben_sage:
-                klasse, aufgabe = self.split_klasse_aufgabe(item)
-                for path in beispieldaten_dateipfad.values():
-                    name = self.get_name_from_path(path)
-                    if (klasse in path) and (aufgabe == name):
-                        dict_gesammeltedateien[aufgabe] = path
+    #         for item in self.list_alle_aufgaben_sage:
+    #             klasse, aufgabe = self.split_klasse_aufgabe(item)
+    #             for path in beispieldaten_dateipfad.values():
+    #                 name = self.get_name_from_path(path)
+    #                 if (klasse in path) and (aufgabe == name):
+    #                     dict_gesammeltedateien[aufgabe] = path
 
-        return dict_gesammeltedateien
+    #     return dict_gesammeltedateien
 
     def add_content_to_tex_file(
-        self, aufgabe, split_content, filename_vorschau, first_typ2
+        self, aufgabe, aufgabe_total, filename_vorschau, first_typ2
     ):
-        if self.get_aufgabentyp(aufgabe) == 1:
-            gk = aufgabe.replace("_L_", "")
-            grundkompetenz = "[" + gk.split("-")[0].strip() + "]"
-        else:
-            grundkompetenz = ""
+        # return
+        # if get_aufgabentyp(self.chosen_program, aufgabe) == 1:
+        #     gk = aufgabe.replace("_L_", "")
+        #     grundkompetenz = "[" + gk.split("-")[0].strip() + "]"
+        # else:
+        #     grundkompetenz = ""
 
-        path_aufgabe = self.get_dateipfad_aufgabe(aufgabe)
+        # path_aufgabe = self.get_dateipfad_aufgabe(aufgabe)
 
-        spinbox_pkt = self.dict_alle_aufgaben_sage[aufgabe][0]
+        # return
+        # spinbox_pkt = self.dict_alle_aufgaben_sage[aufgabe][0]
 
-        if self.get_aufgabentyp(aufgabe) == 2:
+        if get_aufgabentyp(self.chosen_program, aufgabe) == 2:
             if first_typ2 == False:
-                start = "\\newpage \n\n\subsubsection{Typ 2 Aufgaben}\n\n"
+                header = "\\newpage \n\n\subsubsection{Typ 2 Aufgaben}\n\n"
                 first_typ2 = True
             else:
-                start = "\\newpage\n\n"
+                header = "\\newpage\n\n"
         else:
-            start = ""
+            header = ""
 
-        if spinbox_pkt == 0:
-            split_content[0] = "\\begin{enumerate}\item[\\stepcounter{number}\\thenumber.] "
-            split_content[-1] = "\end{enumerate}"
+        punkte = self.get_punkte_aufgabe_sage(aufgabe)
+        abstand = self.get_abstand_aufgabe_sage(aufgabe)
+        if punkte == 0:
+            begin = "\\begin{enumerate}\item[\\stepcounter{number}\\thenumber.]"
+            end = "\end{enumerate}"
+        elif aufgabe_total["pagebreak"] == False:
+            begin = begin_beispiel(aufgabe_total["themen"], punkte)
+            end = end_beispiel
+        elif aufgabe_total["pagebreak"] == True:
+            begin = begin_beispiel_lang(punkte)
+            end = end_beispiel_lang
 
-        elif "langesbeispiel" in split_content[0]:
-            split_content[
-                0
-            ] = "{0}\\begin{{langesbeispiel}} \item[{1}] %PUNKTE DES BEISPIELS".format(
-                start, spinbox_pkt
-            )
-
-        elif "beispiel" in split_content[0]:
-            split_content[
-                0
-            ] = "{0}\\begin{{beispiel}}{1}{{{2}}} %PUNKTE DES BEISPIELS\n".format(
-                start, grundkompetenz, spinbox_pkt
-            )
-
-        spinbox_abstand = self.dict_alle_aufgaben_sage[aufgabe][1]
-        if spinbox_abstand != 0:
-            if spinbox_abstand == 99:
-                split_content[2] = split_content[2] + "\\newpage \n\n"
-            else:
-                split_content[2] = split_content[2] + "\\vspace{{{0}cm}} \n\n".format(
-                    spinbox_abstand
-                )
+        if abstand == 99:
+            vspace = "\\newpage \n\n"
+        elif abstand == 0:
+            vspace = ""
+        else:
+            vspace = "\\vspace{{{0}cm}} \n\n".format(abstand)
 
         with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
-            for all in split_content:
-                vorschau.write(all + "\n")
+            vorschau.write(header)
+            vorschau.write(begin)
+            vorschau.write(aufgabe_total["content"])
+            vorschau.write(vspace)
+            vorschau.write(end)
             vorschau.write("\n\n")
 
         return first_typ2
@@ -6639,8 +7090,6 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         self.collect_all_infos_for_creating_file()
 
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-
-        dict_gesammeltedateien = self.get_dict_gesammeltedateien()
 
         if ausgabetyp == "vorschau":
             filename_vorschau = os.path.join(
@@ -6658,13 +7107,13 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             }
             if index == 0:
 
-                # self.saved_file_path=path_programm
-
-                self.chosen_path_schularbeit_erstellen = QtWidgets.QFileDialog.getSaveFileName(
-                    None,
-                    "Speicherort wählen",
-                    os.path.dirname(self.saved_file_path),
-                    "TeX Dateien (*.tex);; Alle Dateien (*.*)",
+                self.chosen_path_schularbeit_erstellen = (
+                    QtWidgets.QFileDialog.getSaveFileName(
+                        None,
+                        "Speicherort wählen",
+                        os.path.dirname(self.saved_file_path),
+                        "TeX Dateien (*.tex);; Alle Dateien (*.*)",
+                    )
                 )
 
                 if self.chosen_path_schularbeit_erstellen[0] == "":
@@ -6693,8 +7142,6 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                         filename = filename.replace(character, dict_umlaute[character])
                 filename_vorschau = os.path.join(dirname, filename)
 
-                # filename_vorschau=self.chosen_path_schularbeit_erstellen[0]
-
         self.dict_gruppen = {0: "A", 1: "B", 2: "C", 3: "D", 4: "E", 5: "F"}
 
         if filename_vorschau == "":
@@ -6707,44 +7154,22 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             dict_titlepage = self.dict_titlepage_cria
 
         if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Quiz":
-            documentclass = "\documentclass[18pt]{beamer}\n\n"
-            geometry = (
-                "\let\oldframe\\frame"
-                "\\renewcommand\\frame[1][allowframebreaks, c]{\oldframe[#1]}\n"
-                "\\usetheme{Boadilla}\n"
-                "\\usecolortheme{seahorse}\n"
-                "\date{}\n"
-            )
-            spacing = ""
+            beamer_mode = True
         else:
-            documentclass = "\documentclass[a4paper,12pt]{report}\n\n"
-            geometry = (
-                "\geometry{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}\n\n"
-            )
-            spacing = "\onehalfspacing %Zeilenabstand\n"
+            beamer_mode = False
 
         dict_vorschau = {}
         if (ausgabetyp == "vorschau" and self.cb_solution_sage.isChecked() == True) or (
             ausgabetyp == "schularbeit" and index % 2 == 0
         ):
-            dict_vorschau["solution"] = "on"
+            solution = "solution_on"
+
         else:
-            dict_vorschau["solution"] = "off"
+            solution = "solution_off"
 
-        dict_vorschau["index"] = int(index / 2)
+        current_index = int(index / 2)
 
-        # if maximum > 2:
-        #     dict_vorschau["comment"] = " %Gruppen: 0=A, 1=B, 2=C, ..."
-        # else:
-        #     dict_vorschau["comment"] = ""
-
-        dict_vorschau["pagestyle"] = "plain"
-        # if ausgabetyp == "vorschau" or ausgabetyp == "schularbeit":
-        #     dict_vorschau["pagestyle"] = "plain"
-        # else:
-        #     dict_vorschau["pagestyle"] = "empty"
-
-        dict_vorschau["titlepage"] = get_titlepage_vorschau(
+        str_titlepage = get_titlepage_vorschau(
             self, dict_titlepage, ausgabetyp, maximum, index
         )
 
@@ -6762,62 +7187,20 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
         vorschau = open(filename_vorschau, "w+", encoding="utf8")
 
-        vorschau.write(
-            "{0}"
-            "\\usepackage{{geometry}}\n"
-            "{1}"
-            # "\documentclass[a4paper,12pt]{{report}}\n\n" #documentclass
-            # "\geometry{{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}}\n\n"
-            "\\usepackage{{lmodern}}\n"
-            "\\usepackage[T1]{{fontenc}}\n"
-            "\\usepackage[utf8]{{inputenc}}\n"
-            "\\usepackage[ngerman]{{babel}}\n"
-            "\\usepackage[solution_{2}, random={3}]{{srdp-mathematik}} % solution_on/off, random=0,1,2,...\n\n"
-            # "\setcounter{{Zufall}}{{{3}}}\n\n\n"
-            "\pagestyle{{{4}}} %PAGESTYLE: empty, plain\n"
-            "{5}"  # "\onehalfspacing %Zeilenabstand\n"
-            "\setcounter{{secnumdepth}}{{-1}} % keine Nummerierung der Ueberschriften\n\n\n\n"
-            "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"
-            "%%%%%%%%%%%%%%%%%% DOKUMENT - ANFANG %%%%%%%%%%%%%%%%%%\n"
-            "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n\n"
-            "\\begin{{document}}\n"
-            "{6}"
-            "{7}".format(
-                documentclass,
-                geometry,
-                dict_vorschau["solution"],
-                dict_vorschau["index"],
-                # dict_vorschau["comment"],
-                dict_vorschau["pagestyle"],
-                spacing,
-                dict_vorschau["titlepage"],
-                header,
-            )
-        )
-
-        vorschau.close()
+        with open(filename_vorschau, "w+", encoding="utf8") as vorschau:
+            vorschau.write(tex_preamble(solution=solution, beamer_mode=beamer_mode))
+            vorschau.write(str_titlepage)
+            vorschau.write(header)
 
         first_typ2 = False
         aufgaben_nummer = 1
-        for aufgabe in self.list_alle_aufgaben_sage:
-            content = edit_content_vorschau(self, aufgabe, ausgabetyp)
 
-            split_content = split_content_at_beispiel_umgebung(content)
-            if split_content == False:
-                text = "".join(content)
-                critical_window(
-                    'Es ist ein Fehler beim Erstellen der Datei aufgetreten, da die Formatierung der Aufgabe "{}" fehlerhaft ist.'.format(
-                        aufgabe
-                    ),
-                    'Bitte überprüfen Sie die Formatierung der Aufgabe oder informieren Sie das LaMA-Team via "Feedback & Fehler".',
-                    detailed_text='Fehlerhafter LaTeX-Aufgabentext:\n\n"""\n'
-                    + text
-                    + '\n"""',
-                )
-                QtWidgets.QApplication.restoreOverrideCursor()
-                return
+        for aufgabe in self.list_alle_aufgaben_sage:
+            typ = get_aufgabentyp(self.chosen_program, aufgabe)
+            aufgabe_total = get_aufgabe_total(aufgabe, typ)
 
             if self.comboBox_pruefungstyp.currentText() == "Quiz":
+
                 with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
                     for i in range(2):
                         vorschau.write(
@@ -6842,11 +7225,11 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                         vorschau.write(
                             "\\begin{frame}\n" + content + "\n\\end{frame}\n\n"
                         )
-                        # vorschau.write("\n\n\\framebreak\n\n")
+
                 aufgaben_nummer += 1
             else:
                 first_typ2 = self.add_content_to_tex_file(
-                    aufgabe, split_content, filename_vorschau, first_typ2
+                    aufgabe, aufgabe_total, filename_vorschau, first_typ2
                 )
 
         if (
@@ -6872,10 +7255,11 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                     )
 
         with open(filename_vorschau, "a", encoding="utf8") as vorschau:
-            vorschau.write("\n\n\end{document}")
+            vorschau.write("\n\n")
+            vorschau.write(tex_end)
 
         if ausgabetyp == "schularbeit":
-            if dict_titlepage["logo"] == True:
+            if dict_titlepage["logo"] == True and dict_titlepage["hide_all"] == False:
                 success = copy_logo_to_target_path(self, dict_titlepage["logo_path"])
                 if success == False:
                     warning_window(
@@ -6959,7 +7343,10 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         self.lineEdit_email.setText(_translate("MainWindow", "", None))
 
     def pushButton_send_pressed(self):
-        if self.comboBox_at_fb.currentText() == "Allgemeine Rückmeldung" or self.comboBox_at_fb_cria.currentText()  == "Allgemeine Rückmeldung":
+        if (
+            self.comboBox_at_fb.currentText() == "Allgemeine Rückmeldung"
+            or self.comboBox_at_fb_cria.currentText() == "Allgemeine Rückmeldung"
+        ):
             example = "Allgemeiner Bug Report"
             if self.plainTextEdit_fb.toPlainText() == "":
                 warning_window(
@@ -7032,7 +7419,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             )
             server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
             server.ehlo()
-            server.login(gmail_user,gmail_password)
+            server.login(gmail_user, gmail_password)
             server.sendmail(
                 "lamabugfix@gmail.com", "lama.helpme@gmail.com", content.encode("utf8")
             )
@@ -7063,7 +7450,9 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             QtWidgets.QApplication.restoreOverrideCursor()
 
             if "smtplib.SMTPAuthenticationError" in str(sys.exc_info()[0]):
-                text = "Bitte kontaktieren Sie den Support unter:\nlama.helpme@gmail.com"
+                text = (
+                    "Bitte kontaktieren Sie den Support unter:\nlama.helpme@gmail.com"
+                )
 
             else:
                 text = "Überprüfen Sie Ihre Internetverbindung oder kontaktieren Sie den Support für nähere Informationen unter:\nlama.helpme@gmail.com"
@@ -7072,8 +7461,8 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                 "Das Feedback konnte leider nicht gesendet werden!",
                 text,
                 "Fehler beim Senden",
-                "Fehlermeldung:\n" + str(sys.exc_info()))
-
+                "Fehlermeldung:\n" + str(sys.exc_info()),
+            )
 
     #######################################################################
     ##########################################################################
@@ -7103,14 +7492,16 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
     def update_gui(self, chosen_gui):
         if self.chosen_program == "cria":
-            chosen_gui = eval(chosen_gui + "_cria")
+            chosen_gui = chosen_gui + "_cria"
+            chosen_gui_list = eval(chosen_gui + "_cria")
         else:
-            chosen_gui = eval(chosen_gui)
+            chosen_gui_list = eval(chosen_gui)
 
+        self.chosen_gui = chosen_gui
         MainWindow.setMenuBar(self.menuBar)
         list_delete = []
         for item in list_widgets:
-            if item != chosen_gui:
+            if item != chosen_gui_list:
                 list_delete += item
         for all in list_delete:
             if "action" in all:
@@ -7119,7 +7510,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                 exec("self.menuBar.removeAction(self.%s.menuAction())" % all)
             else:
                 exec("self.%s.hide()" % all)
-        for all in chosen_gui:
+        for all in chosen_gui_list:
             if "action" in all:
                 exec("self.%s.setVisible(True)" % all)
             elif "menu" in all:
@@ -7127,9 +7518,10 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             else:
                 exec("self.%s.show()" % all)
 
-        if chosen_gui == widgets_search:
+        if chosen_gui == 'widgets_search':
             if self.label_aufgabentyp.text()[-1] == str(1):
                 self.combobox_searchtype.hide()
+
         # if chosen_type == str(2):
         #     self.label_aufgabentyp.setText(
         #         _translate("MainWindow", "Aufgabentyp: Typ 1", None)
@@ -7138,16 +7530,20 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         #     self.combobox_searchtype.hide()
         #     self.refresh_label_update()
         #     self.chosen_aufgabenformat_typ()
-        if chosen_gui == widgets_sage or chosen_gui == widgets_sage_cria:
+        if chosen_gui == 'widgets_sage' or chosen_gui == 'widgets_sage_cria':
             MainWindow.setTabOrder(self.spinBox_nummer, self.dateEdit)
             MainWindow.setTabOrder(self.dateEdit, self.lineEdit_klasse)
             self.adapt_choosing_list("sage")
             # self.listWidget.itemClicked.connect(self.nummer_clicked)
-        if chosen_gui == widgets_feedback or chosen_gui == widgets_feedback_cria:
+        if chosen_gui == 'widgets_feedback' or chosen_gui == 'widgets_feedback_cria':
             self.adapt_choosing_list("feedback")
+        
+        if self.developer_mode_active == False:
+            self.menuBar.removeAction(self.menuDeveloper.menuAction())
             # self.listWidget_fb.itemClicked.connect(self.nummer_clicked_fb)
             # self.listWidget_fb_cria.itemClicked.connect(self.nummer_clicked_fb)
 
+        
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
@@ -7183,7 +7579,9 @@ if __name__ == "__main__":
 
     ### Dark Mode
     palette_dark_mode = QtGui.QPalette()
-    palette_dark_mode.setColor(QtGui.QPalette.Window, QtGui.QColor(53, 53, 53))  # Window background
+    palette_dark_mode.setColor(
+        QtGui.QPalette.Window, QtGui.QColor(53, 53, 53)
+    )  # Window background
     palette_dark_mode.setColor(QtGui.QPalette.WindowText, white)
     palette_dark_mode.setColor(QtGui.QPalette.Text, white)
     palette_dark_mode.setColor(QtGui.QPalette.Base, dark_gray)
@@ -7193,18 +7591,16 @@ if __name__ == "__main__":
     palette_dark_mode.setColor(QtGui.QPalette.HighlightedText, white)
     palette_dark_mode.setColor(QtGui.QPalette.Highlight, blue_6)
 
-    try: 
+    try:
         with open(lama_settings_file, "r", encoding="utf8") as f:
             _dict = json.load(f)
-        display_mode = _dict['display']
+        display_mode = _dict["display"]
         if display_mode == 1:
             app.setPalette(palette_dark_mode)
         else:
-            app.setPalette(palette)    
-    except Exception:
             app.setPalette(palette)
-    
-    
+    except Exception:
+        app.setPalette(palette)
 
     MainWindow = QMainWindow()
     # MainWindow.setWindowFlags(QtCore.Qt.FramelessWindowHint)

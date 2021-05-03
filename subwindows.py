@@ -43,8 +43,10 @@ from lama_stylesheets import (
     StyleSheet_subwindow_ausgleichspunkte,
     StyleSheet_subwindow_ausgleichspunkte_dark_mode,
 )
-from create_pdf import create_pdf
+from create_pdf import create_pdf, check_if_variation
 import bcrypt
+from database_commands import _database, _local_database
+from filter_commands import get_filter_string, filter_items
 
 
 dict_gk = config_loader(config_file, "dict_gk")
@@ -193,9 +195,10 @@ class Ui_Dialog_choose_type(object):
 class Ui_Dialog_variation(object):
     def setupUi(self, Dialog, MainWindow):
         self.MainWindow = MainWindow
-        self.beispieldaten_dateipfad_cria = MainWindow.beispieldaten_dateipfad_cria
-        self.beispieldaten_dateipfad_1 = MainWindow.beispieldaten_dateipfad_1
-        self.beispieldaten_dateipfad_2 = MainWindow.beispieldaten_dateipfad_2
+        self.chosen_program = self.MainWindow.chosen_program
+        # self.beispieldaten_dateipfad_cria = MainWindow.beispieldaten_dateipfad_cria
+        # self.beispieldaten_dateipfad_1 = MainWindow.beispieldaten_dateipfad_1
+        # self.beispieldaten_dateipfad_2 = MainWindow.beispieldaten_dateipfad_2
 
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
@@ -334,7 +337,7 @@ class Ui_Dialog_variation(object):
             elif self.MainWindow.chosen_program == "cria":
                 klasse = list_klassen[self.comboBox_klassen.currentIndex()]
                 self.chosen_variation = (
-                    klasse + "_" + self.listWidget.selectedItems()[0].text()
+                    klasse + "." + self.listWidget.selectedItems()[0].text()
                 )
             else:
                 self.chosen_variation = self.listWidget.selectedItems()[0].text()
@@ -425,33 +428,6 @@ class Ui_Dialog_variation(object):
 
         self.adapt_choosing_list()
 
-    # def comboBox_unterkapitel_changed(self):
-    #     self.adapt_choosing_list()
-
-    def add_items_to_listwidget(
-        self, list_beispieldaten_sections, beispieldaten_dateipfad
-    ):
-        self.no_choice = "-- keine Auswahl --"
-        self.listWidget.addItem(self.no_choice)
-        for section in list_beispieldaten_sections:
-            try:
-                path = beispieldaten_dateipfad[section]
-            except KeyError:
-                drafts_path = os.path.join(database, "drafts")
-                beispieldaten_dateipfad_draft = search_files(drafts_path)
-                path = beispieldaten_dateipfad_draft[section]
-
-            name, extension = os.path.splitext(os.path.basename(path))
-            item = QtWidgets.QListWidgetItem()
-
-            item.setText(name)
-
-            if name.startswith("_L_") or "drafts" in path:
-                pass
-            elif re.search("\[.+\]", name) != None:
-                pass
-            else:
-                self.listWidget.addItem(item)
 
     def delete_zeros_at_beginning(self, string):
         while string.startswith("0"):
@@ -484,60 +460,68 @@ class Ui_Dialog_variation(object):
 
         return list_
 
-    def adapt_choosing_list(self):
-        self.listWidget.clear()
 
-        if self.MainWindow.chosen_program == "cria":
-            typ = None
-            beispieldaten_dateipfad = self.beispieldaten_dateipfad_cria
-        else:
-            if self.comboBox_at_sage.currentText() == "Typ 1":
-                typ = 1
-                beispieldaten_dateipfad = self.beispieldaten_dateipfad_1
-            elif self.comboBox_at_sage.currentText() == "Typ 2":
-                typ = 2
-                beispieldaten_dateipfad = self.beispieldaten_dateipfad_2
-
-        list_beispieldaten_sections = list(beispieldaten_dateipfad.keys())
-
-        if self.MainWindow.chosen_program == "lama":
-            combobox_gk = self.comboBox_gk.currentText()
-            result = re.findall("\(([a-z]+)\)", self.comboBox_gk_num.currentText())
-            if not is_empty(result):
-                combobox_gk_num = result[-1]
+    def add_items_to_listwidget(self, typ, filtered_items, local = False):      
+        for _file_ in filtered_items:
+            if typ == "cria":
+                name = _file_["name"].split(".")[-1]
             else:
-                combobox_gk_num = self.comboBox_gk_num.currentText()
+                name = _file_["name"]
 
-            list_beispieldaten_sections = self.MainWindow.adjust_beispieldaten_combobox_lama(
-                list_beispieldaten_sections, combobox_gk, combobox_gk_num,
-            )
+            item = QtWidgets.QListWidgetItem()
 
-        if self.MainWindow.chosen_program == "cria":
-            combobox_klasse = self.comboBox_klassen.currentText()
-            combobox_kapitel = self.comboBox_kapitel.currentText()
-            combobox_unterkapitel = self.comboBox_unterkapitel.currentText()
+            if local == True:
+                name = name + " (lokal)"
+            #     # item.setBackground(blue_4)
+            #     # item.setToolTip("lokal gespeichert")
 
-            list_beispieldaten_sections = self.MainWindow.adjust_beispieldaten_combobox_cria(
-                list_beispieldaten_sections,
-                combobox_klasse,
-                combobox_kapitel,
-                combobox_unterkapitel,
-            )
+            # elif _file_["draft"] == True:
+            #     item.setBackground(blue_5)
+            #     item.setForeground(white)
+            #     item.setToolTip("Entwurf")
+
+            item.setText(name)
+
+            if check_if_variation(_file_["name"]) == True:
+                continue
+            else:
+                self.listWidget.addItem(item)
+
+    def adapt_choosing_list(self):
+        chosen_program = self.MainWindow.chosen_program
+        klasse = None
+        if chosen_program == "cria":
+            typ = "cria"
+            klasse = list_klassen[self.comboBox_klassen.currentIndex()]
+        elif self.comboBox_at_sage.currentIndex()==0:
+            typ = "lama_1"
+
+        elif self.comboBox_at_sage.currentIndex()==1:
+            typ = "lama_2"
+
+        filter_string = get_filter_string(self, 'sage')        
 
         line_entry = self.lineEdit_number.text()
 
-        if is_empty(line_entry) == False:
-            list_beispieldaten_sections = self.search_for_number(
-                list_beispieldaten_sections, line_entry
+
+        table = "table_" + typ
+
+        self.listWidget.clear()
+        self.no_choice = "-- keine Auswahl --"
+        self.listWidget.addItem(self.no_choice)
+        for database in [_local_database, _database]:
+            table_lama = database.table(table)
+            if database == _local_database:
+                local = True
+            else:
+                local = False
+
+            filtered_items = filter_items(
+                self, table_lama, typ, 'creator', filter_string, line_entry,klasse
             )
-
-        list_beispieldaten_sections = sorted_gks(
-            list_beispieldaten_sections, self.MainWindow.chosen_program
-        )
-
-        self.add_items_to_listwidget(
-            list_beispieldaten_sections, beispieldaten_dateipfad
-        )
+            
+            self.add_items_to_listwidget(typ, filtered_items, local)
+        
 
 
 class Ui_Dialog_random_quiz(object):

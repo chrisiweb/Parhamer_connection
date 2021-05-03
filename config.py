@@ -8,6 +8,7 @@ import os
 import re
 from pyqt5_minimal import Ui_WelcomeWindow
 from define_database import Ui_define_database
+from tinydb import TinyDB, Query
 
 
 # if sys.platform.startswith("win"):
@@ -55,8 +56,11 @@ from define_database import Ui_define_database
 #     path_localappdata_lama = path_programm
 
 config_file = os.path.join(path_programm, "_database", "_config", "config.yml")
-# config_file = os.path.join(os.path.dirname(sys.argv[0]), "config.yml")  
-
+# config_file = os.path.join(os.path.dirname(sys.argv[0]), "config.yml") 
+path_database = os.path.join(path_programm, "_database") 
+preamble = os.path.join(path_database, "preamble.tex")
+# database_lama_1 = TinyDB(path_database, "db.json")
+# _file_ = Query()
         
 colors_ui = {
     "black": QtGui.QColor(0, 0, 0),
@@ -169,6 +173,13 @@ def is_empty(structure):
     else:
         return True
 
+
+def extract_topic_abbr(topic):
+    x = re.search("\(([a-zA-Z0-9]+)\)", topic)
+    if x != None:
+        return x.group(1)
+    else:
+        return
 
 def shorten_gk(gk):
     gk = gk.lower().replace(" ", "").replace(".", "").replace("-l", "")

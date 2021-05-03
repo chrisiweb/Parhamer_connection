@@ -1,14 +1,15 @@
 import re
+from database_commands import get_aufgabe_total, get_aufgabentyp
 
 
 def collect_content(self, aufgabe, readlines=False):
-    selected_path = self.get_dateipfad_aufgabe(aufgabe)
+    typ = get_aufgabentyp(self.chosen_program, aufgabe)
+    aufgabe_total = get_aufgabe_total(aufgabe, typ)
 
-    with open(selected_path, "r", encoding="utf8") as f:
-        if readlines == False:
-            content = f.read()
-        if readlines == True:
-            content = f.readlines()
+    content  = aufgabe_total['content']
+
+    if readlines == True:
+        content = content.split("\n")
 
     return content
 

@@ -133,35 +133,37 @@ def edit_content_image_path(content):
     return content
 
 
-def split_content_at_beispiel_umgebung(content):
-    for line in content:
-        if "begin{beispiel}" in line:
-            beginning = line
-            start = content.index(line) + 1
-            beispiel_typ = "beispiel"
-        if "begin{langesbeispiel}" in line:
-            beginning = line
-            start = content.index(line) + 1
-            beispiel_typ = "langesbeispiel"
+# def split_content_at_beispiel_umgebung(content):
+#     for line in content:
+#         if "begin{beispiel}" in line:
+#             beginning = line
+#             start = content.index(line) + 1
+#             beispiel_typ = "beispiel"
+#         if "begin{langesbeispiel}" in line:
+#             beginning = line
+#             start = content.index(line) + 1
+#             beispiel_typ = "langesbeispiel"
 
-        if "end{beispiel}" in line or "end{langesbeispiel}" in line:
-            ending = line
-            end = content.index(line)
+#         if "end{beispiel}" in line or "end{langesbeispiel}" in line:
+#             ending = line
+#             end = content.index(line)
 
-    try:
-        content = content[start:end]
-        joined_content = "".join(content)
-        list_ = []
-        list_.append(beginning)
-        list_.append(joined_content)
-        list_.append(ending)
-        return list_
-    except UnboundLocalError:
-        return False
+#     try:
+#         content = content[start:end]
+#         joined_content = "".join(content)
+#         list_ = []
+#         list_.append(beginning)
+#         list_.append(joined_content)
+#         list_.append(ending)
+#         return list_
+#     except UnboundLocalError:
+#         return False
 
 
 def edit_content_vorschau(self, aufgabe, ausgabetyp):
+
     content = collect_content(self, aufgabe, readlines=True)
+    return content
     # print(content)
     if aufgabe in self.dict_all_infos_for_file["dict_individual_change"]:
         if not is_empty(self.dict_all_infos_for_file["dict_individual_change"][aufgabe]):

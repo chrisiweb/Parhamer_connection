@@ -196,6 +196,8 @@ def git_push_to_origin(ui, admin, specific_file):
 
 
                 status = porcelain.status(repo)
+                ui.label.setText("Datenbank hochladen ... (79%)")
+                
                 repo.stage(status.unstaged + status.untracked)
                 ui.label.setText("Datenbank hochladen ... (84%)")
 

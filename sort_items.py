@@ -1,6 +1,6 @@
 import re
 import os
-from config import split_section
+from config import split_section, dict_gk
 
 
 def atoi(text):
@@ -9,6 +9,46 @@ def atoi(text):
 
 def natural_keys(text):
     return [atoi(c) for c in re.split("(\d+)", text)]
+
+
+def get_typ(string):
+    if re.match("[A-Z]", string):
+        return 'lama_1'
+    elif re.match("k[0-9]\.", string):
+        return 'cria'
+    else:
+        return 'lama_2'
+    
+
+def order_gesammeltedateien(text):
+    typ = get_typ(text['name'])
+    # print(text['name'])
+    # get_typ(text['name'])
+    # return 0
+
+    # ###### typ_1 working
+    # if re.match
+    if typ == 'lama_1':
+        for i, gk  in enumerate(dict_gk.values()):
+            if gk in text['name']:
+                _list = [i]
+                num = text['name'].split(" - ")[-1]
+    elif typ == 'cria':
+        num = text['name'].split('.')[-1]
+        _list = []
+
+    elif typ == 'lama_2':
+        num = text['name']
+        _list = []
+
+    if re.match("[0-9]+\[.+\]", num):
+        split_number = re.split("\[|\]", num)
+        _list.append(int(split_number[0]))
+        _list.append(int(split_number[1]))
+    else:
+        _list.append(int(num))
+    return _list
+
 
 
 def sorted_gks(list_, chosen_program):
