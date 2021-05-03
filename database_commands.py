@@ -63,6 +63,9 @@ def update_data(aufgabe,typ, key, value):
     lama_table.update(set(key, value), _file_.name == aufgabe)
 
 
+# def multiple_update_date(aufgabe, typ, _list):
+
+
 # class WriteFilesToDatabase:
 #     def __init__(self):
 #         print('test')

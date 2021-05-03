@@ -102,7 +102,7 @@ from lama_stylesheets import *
 from processing_window import Ui_Dialog_processing
 import bcrypt
 
-# import tinydb
+from tinydb import Query
 
 from database_commands import (
     _database,
@@ -3880,18 +3880,18 @@ class Ui_MainWindow(object):
             elif mode == 'editor':
                 self.chosen_file_to_edit = ui.chosen_variation
                 _file_ = self.chosen_file_to_edit
-                print(self.chosen_file_to_edit)
                 if self.chosen_file_to_edit != None:
                     self.button_choose_file.setText(
                         "Gewählte Aufgabe: {}".format(self.chosen_file_to_edit.upper())
                     )
                 else:
-                    print('no selection')
                     self.suchfenster_reset(True)
                     self.reset_edit_file()
                     return
             typ = get_aufgabentyp(self.chosen_program, _file_)
+            _file_ = _file_.replace(" (lokal)", "")
             aufgabe_total_original = get_aufgabe_total(_file_, typ)
+
             self.enable_widgets_editor(True)
 
 
@@ -4747,7 +4747,9 @@ class Ui_MainWindow(object):
         )
 
     def button_save_edit_pressed(self):
-        print(self.chosen_file_to_edit)
+        rsp = question_window("Sind Sie sicher, dass Sie die Änderungen speichern wollen?")
+        if rsp == False:
+            return
         name = self.chosen_file_to_edit
         typ = get_aufgabentyp(self.chosen_program, name)
         
@@ -4767,46 +4769,36 @@ class Ui_MainWindow(object):
             abstand,
         ) = self.get_all_infos_new_file(typ, 'editor')
 
-        # print(name)
-        # print(themen)
-        # print(titel)
-        # print(af)
-        # print(quelle),
-        # print(content)
-        # print(punkte)
-        # print(pagebreak)
-        # print(klasse)
-        # print(info)
-        # print(bilder)
-        # print(draft)
-        # print(abstand)
-        # print(self.list_selected_topics_creator)
-        # print(self.spinBox_punkte.value())
-        # print(self.comboBox_af.curren)
-        # aufgabe_total = get_aufgabe_total(self.chosen_file_to_edit, typ)
-        # print(aufgabe_total)
+        aufgabe = self.chosen_file_to_edit
+        lama_table = get_table(aufgabe, typ)
 
-        # for all in aufgabe_total:
-        #     print(all)
-        # lama_table = get_table(self.chosen_file_to_edit, typ)
-        # update_data(self.chosen_file_to_edit, typ, "themen", self.lineEdit_titel.text())
+        aufgabe = aufgabe.replace(" (lokal)","")
+        _file_ = Query()
+        
+        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        lama_table.update_multiple([
+           ({"themen" :themen}, _file_.name == aufgabe),
+           ({"titel" :titel}, _file_.name == aufgabe),
+           ({"af" :af}, _file_.name == aufgabe),
+           ({"quelle" :quelle}, _file_.name == aufgabe),
+           ({"content" :content}, _file_.name == aufgabe),
+           ({"punkte" :punkte}, _file_.name == aufgabe),
+           ({"pagebreak" :pagebreak}, _file_.name == aufgabe),
+           ({"klasse" :klasse}, _file_.name == aufgabe),
+           ({"info" :info}, _file_.name == aufgabe),
+           ({"bilder" :bilder}, _file_.name == aufgabe),
+           ({"draft" :draft}, _file_.name == aufgabe),
+           ({"abstand" :abstand}, _file_.name == aufgabe),
+        ])
+        QtWidgets.QApplication.restoreOverrideCursor()
 
-        update_data(self.chosen_file_to_edit, typ, "themen", themen)
-        update_data(self.chosen_file_to_edit, typ, "titel", titel)
-        update_data(self.chosen_file_to_edit, typ, "af", af)
-        update_data(self.chosen_file_to_edit, typ, "quelle", quelle)
-        update_data(self.chosen_file_to_edit, typ, "content", content)
-        update_data(self.chosen_file_to_edit, typ, "punkte", punkte)
-        update_data(self.chosen_file_to_edit, typ, "pagebreak", pagebreak)
-        update_data(self.chosen_file_to_edit, typ, "klasse", klasse)
-        update_data(self.chosen_file_to_edit, typ, "info", info)
-        update_data(self.chosen_file_to_edit, typ, "bilder", bilder)
-        update_data(self.chosen_file_to_edit, typ, "draft", draft)
-        update_data(self.chosen_file_to_edit, typ, "abstand", abstand)
+
+        information_window("Die Änderungen wurden erfolgreich gespeichert.")
 
         self.suchfenster_reset(True)
         self.reset_edit_file()
-        print('done')
+
+        
 
     def button_speichern_pressed(self):
         # self.creator_mode = "user"
