@@ -2373,7 +2373,7 @@ class Ui_MainWindow(object):
                     subprocess.Popen('explorer "{}"'.format(file_path))
 
     def check_admin_entry(self):
-        if "###" in self.lineEdit_titel.text():
+        if "###" in self.lineEdit_titel.text() or self.chosen_gui == "widgets_edit":
             self.cb_matura_tag.show()
         else:
             self.cb_matura_tag.hide()
@@ -2996,6 +2996,8 @@ class Ui_MainWindow(object):
             except KeyError:
                 quelle = ""
             self.lineEdit_quelle.setText(_translate("MainWindow", quelle, None))
+
+        self.cb_matura_tag.setChecked(False)
 
     def reset_sage(self, question_reset=True):
         if question_reset == True and not is_empty(self.list_alle_aufgaben_sage):
@@ -3855,6 +3857,10 @@ class Ui_MainWindow(object):
             self.lineEdit_titel.setText(aufgabe_total["titel"])
 
         if mode == 'editor':
+            if aufgabe_total["info"] == 'mat':
+                self.cb_matura_tag.setChecked(True)
+            # else:
+            #     self.cb_matura_tag.setChecked(False)
             self.plainTextEdit.clear()
             self.plainTextEdit.insertPlainText(aufgabe_total['content'])
             self.lineEdit_quelle.setText(aufgabe_total["quelle"])
@@ -4739,7 +4745,10 @@ class Ui_MainWindow(object):
         else:
             klasse = list(Klassen.keys())[self.comboBox_klassen_cr.currentIndex() - 1]
 
-        info = None  ## yet to define
+        if self.cb_matura_tag.isChecked():
+            info = 'mat'
+        else:
+            info = None
 
         bilder = []
         for all in self.dict_picture_path.keys():
@@ -5168,6 +5177,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         self.groupBox_beispieleingabe.setEnabled(enabled)
         self.groupBox_quelle.setEnabled(enabled)
         self.pushButton_save_edit.setEnabled(enabled)
+        self.cb_matura_tag.setEnabled(enabled)
         self.groupBox_aufgabentyp.setEnabled(False)
       
 
@@ -7564,8 +7574,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             # self.listWidget_fb.itemClicked.connect(self.nummer_clicked_fb)
             # self.listWidget_fb_cria.itemClicked.connect(self.nummer_clicked_fb)
  
-        
-        if chosen_gui == widgets_create and "###" in self.lineEdit_titel.text():
+        if (chosen_gui == "widgets_create" and "###" in self.lineEdit_titel.text()) or (chosen_gui == "widgets_edit"):
             self.cb_matura_tag.show()
         else:
             self.cb_matura_tag.hide()
