@@ -14,7 +14,7 @@ Für mehr Details siehe  <https://wiki.debian.org/Latex> (engl.)
 2. LaTeX-packet *srdp-mathematik* installieren
 3. *LaTeX File Assistent* runterladen
 4. Python3 installieren
-5. PyYaml installieren
+5. PyYaml installieren.
 6. PyQt5 installieren
 
 ### Windows

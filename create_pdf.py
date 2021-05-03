@@ -1025,6 +1025,15 @@ def extract_error_from_output(latex_output):
 
 def build_pdf_file(folder_name, file_name, latex_output_file):
     if sys.platform.startswith("linux") or sys.platform.startswith("darwin"):
+        if "Teildokument" in file_name:
+            terminal_command = 'cd "{0}" ; latex -interaction=nonstopmode --synctex=-1 "{1}.tex" ; latex -interaction=nonstopmode --synctex=-1 "{1}.tex" ; dvips "{1}.dvi" ; ps2pdf -dNOSAFER "{1}.ps"'.format(
+                folder_name, file_name
+            )        
+        else:
+            terminal_command = 'cd "{0}" ; latex -interaction=nonstopmode --synctex=-1 "{1}.tex" ; dvips "{1}.dvi" ; ps2pdf -dNOSAFER "{1}.ps"'.format(
+                folder_name, file_name
+            )
+         
         process = subprocess.Popen(
             'cd "{0}" ; latex -interaction=nonstopmode --synctex=-1 "{1}.tex" ; latex -interaction=nonstopmode --synctex=-1 "{1}.tex" ; dvips "{1}.dvi" ; ps2pdf -dNOSAFER "{1}.ps"'.format(
                 folder_name, file_name
@@ -1071,6 +1080,7 @@ def open_pdf_file(folder_name, file_name):
         drive = drive_database.upper()
     else:
         drive = ""
+
 
     try:
         with open(lama_settings_file, "r", encoding="utf8") as f:

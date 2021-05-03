@@ -1169,6 +1169,7 @@ class Ui_MainWindow(object):
         self.groupBox_ausgew_gk_cr = create_new_groupbox(
             self.centralwidget, "Ausgewählte Grundkompetenzen"
         )
+
         self.groupBox_ausgew_gk_cr.setSizePolicy(SizePolicy_fixed_height)
         self.groupBox_ausgew_gk_cr.setMaximumWidth(500)
 
@@ -1346,7 +1347,7 @@ class Ui_MainWindow(object):
         self.comboBox_klassen_cr.setObjectName(_fromUtf8("comboBox_klassen_cr"))
         self.comboBox_klassen_cr.addItem("-")
         for all in Klassen:
-            if all != "univie":
+            if all != "univie" and all != "mat":
                 self.comboBox_klassen_cr.addItem(Klassen[all])
 
         self.gridLayout_8.addWidget(self.comboBox_klassen_cr, 0, 0, 1, 1)
@@ -1354,7 +1355,10 @@ class Ui_MainWindow(object):
 
         self.groupBox_klassen_cr.hide()
 
-        self.gridLayout.setRowStretch(5, 1)
+        self.cb_matura_tag = create_new_checkbox(self.centralwidget, "Matura")
+        self.gridLayout.addWidget(self.cb_matura_tag, 0,5,1,1)
+        self.cb_matura_tag.hide()
+        self.gridLayout.setRowStretch(6, 1)
 
         self.groupBox_titel_cr = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_titel_cr.setObjectName(_fromUtf8("groupBox_titel_cr"))
@@ -1364,6 +1368,7 @@ class Ui_MainWindow(object):
         self.gridLayout_14.setObjectName(_fromUtf8("gridLayout_14"))
         self.lineEdit_titel = QtWidgets.QLineEdit(self.groupBox_titel_cr)
         self.lineEdit_titel.setObjectName(_fromUtf8("lineEdit_titel"))
+        self.lineEdit_titel.textChanged.connect(self.check_admin_entry)
         self.gridLayout_14.addWidget(self.lineEdit_titel, 0, 0, 1, 1)
         self.gridLayout.addWidget(self.groupBox_titel_cr, 1, 1, 1, 6)
         self.groupBox_titel_cr.setTitle(_translate("MainWindow", "Titel", None))
@@ -2367,6 +2372,13 @@ class Ui_MainWindow(object):
                     file_path = os.path.dirname(self.saved_file_path).replace("/", "\\")
                     subprocess.Popen('explorer "{}"'.format(file_path))
 
+    def check_admin_entry(self):
+        if "###" in self.lineEdit_titel.text():
+            self.cb_matura_tag.show()
+        else:
+            self.cb_matura_tag.hide()
+            self.cb_matura_tag.setChecked(False)
+
     def click_label_to_check(self, new_checkbox):
         if new_checkbox.isChecked() == False:
             new_checkbox.setChecked(True)
@@ -3340,11 +3352,16 @@ class Ui_MainWindow(object):
                             shutil.copy2(path_new_package, path_file)
                             return True
                         except PermissionError:
-                            warning_window(
-                                "Das Update konnte leider nicht durchgeführt werden, da notwendige Berechtigungen fehlen. Starten Sie LaMA erneut als Administrator (Rechtsklick -> 'Als Administrator ausführen') und versuchen Sie es erneut."
-                            )
+                            warning_window("Das Update konnte leider nicht durchgeführt werden, da notwendige Berechtigungen fehlen. Starten Sie LaMA erneut als Administrator (Rechtsklick -> 'Als Administrator ausführen') und versuchen Sie es erneut.")
                             return False
         return False
+
+    def delete_srdpmathematik_in_teildokument(self):
+        srdpmathematik_path = os.path.join(path_programm, "Teildokument", "srdp-mathematik.sty")
+
+        if os.path.isfile(srdpmathematik_path):
+            os.remove(srdpmathematik_path)
+
 
     def update_srdpmathematik(self):
         response = question_window(
@@ -3379,6 +3396,11 @@ class Ui_MainWindow(object):
         # mac_path = os.path.join(path_home, "Library","texmf","tex","latex","srdp-mathematik.sty")
         # print(mac_path)
         # print(os.path.isfile(mac_path))
+        
+        paket_teildokument = os.path.join(path_programm, "Teildokument", "srdp-mathematik.sty")
+        if os.path.isfile(paket_teildokument):
+            os.remove(paket_teildokument)
+
 
         paket_teildokument = os.path.join(
             path_programm, "Teildokument", "srdp-mathematik.sty"
@@ -3390,8 +3412,8 @@ class Ui_MainWindow(object):
             possible_locations = [os.path.join(path_home, "Library", "texmf")]
         else:
             possible_locations = [
-                os.path.join("c:\\", "Program Files", "MiKTeX 2.9"),
-                os.path.join("c:\\", "Program Files (x86)", "MiKTeX 2.9"),
+                os.path.join("c:\\","Program Files","MiKTeX 2.9"),
+                os.path.join("c:\\","Program Files (x86)","MiKTeX 2.9"),
                 os.path.join(path_home, "AppData", "Roaming", "MiKTeX"),
                 os.path.join(path_home, "AppData", "Local", "Programs", "MiKTeX"),
                 os.path.join(path_home, "AppData"),
@@ -3402,12 +3424,12 @@ class Ui_MainWindow(object):
         # update_successfull=False
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
-        update_successfull = self.copy_srdpmathematik(
-            path_new_package, possible_locations
-        )
+        update_successfull = self.copy_srdpmathematik(path_new_package, possible_locations)
+
+        self.delete_srdpmathematik_in_teildokument()
 
         QtWidgets.QApplication.restoreOverrideCursor()
-
+        
         if update_successfull == False:
             critical_window(
                 "Das Update konnte leider nicht durchgeführt werden. Aktualisieren Sie das Paket manuell oder wenden Sie sich an lama.helpme@gmail.com für Unterstützung."
@@ -7521,7 +7543,6 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         if chosen_gui == 'widgets_search':
             if self.label_aufgabentyp.text()[-1] == str(1):
                 self.combobox_searchtype.hide()
-
         # if chosen_type == str(2):
         #     self.label_aufgabentyp.setText(
         #         _translate("MainWindow", "Aufgabentyp: Typ 1", None)
@@ -7542,6 +7563,12 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             self.menuBar.removeAction(self.menuDeveloper.menuAction())
             # self.listWidget_fb.itemClicked.connect(self.nummer_clicked_fb)
             # self.listWidget_fb_cria.itemClicked.connect(self.nummer_clicked_fb)
+ 
+        
+        if chosen_gui == widgets_create and "###" in self.lineEdit_titel.text():
+            self.cb_matura_tag.show()
+        else:
+            self.cb_matura_tag.hide()
 
         
 
