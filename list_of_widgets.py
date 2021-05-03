@@ -94,6 +94,7 @@ widgets_edit = [
     "menuBild_einbinden",
     "menuSuche",
     "menuSage",
+    "menuNeu",
     "menuFeedback",
     "menuOptionen",
     "menuHelp",

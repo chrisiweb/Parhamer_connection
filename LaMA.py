@@ -992,7 +992,7 @@ class Ui_MainWindow(object):
         self.button_variation_cr = create_new_button(
             self.groupBox_variation_cr,
             "Variation vorhandender Aufgabe...",
-            self.button_variation_cr_pressed,
+            partial(self.button_variation_cr_pressed, 'creator'),
         )
         self.button_variation_cr.setMinimumWidth(0)
         self.verticalLayout_variation.addWidget(self.button_variation_cr)
