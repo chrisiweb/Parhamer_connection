@@ -2,7 +2,7 @@ widgets_search = [
     "actionReset",
     "actionLoad",
     "actionSave",
-    "menuDateityp",
+    # "menuDateityp",
     "menuSage",
     "menuNeu",
     "menuFeedback",
@@ -12,6 +12,7 @@ widgets_search = [
     # "label_update",
     "combobox_searchtype",
     "label_aufgabentyp",
+    "combobox_aufgabentyp",
     "groupBox_ausgew_gk",
     "groupBox_af",
     "groupBox_gk",
@@ -27,7 +28,7 @@ widgets_search = [
 
 widgets_create = [
     "actionReset",
-    "menuBild_einbinden",
+    # "menuBild_einbinden",
     "menuSuche",
     "menuSage",
     "menuFeedback",
@@ -91,7 +92,7 @@ widgets_feedback = [
 
 widgets_edit = [
     "actionReset",
-    "menuBild_einbinden",
+    # "menuBild_einbinden",
     "menuSuche",
     "menuSage",
     "menuNeu",
@@ -160,7 +161,7 @@ widgets_sage_cria = [
 
 widgets_create_cria = [
     "actionReset",
-    "menuBild_einbinden",
+    # "menuBild_einbinden",
     "menuSuche",
     "menuSage",
     "menuFeedback",

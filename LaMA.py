@@ -313,8 +313,8 @@ class Ui_MainWindow(object):
         self.menuBar = QtWidgets.QMenuBar(MainWindow)
         self.menuBar.setGeometry(QtCore.QRect(0, 0, 950, 21))
         self.menuBar.setObjectName(_fromUtf8("menuBar"))
-        self.menuDateityp = QtWidgets.QMenu(self.menuBar)
-        self.menuDateityp.setObjectName(_fromUtf8("menuDateityp"))
+        # self.menuDateityp = QtWidgets.QMenu(self.menuBar)
+        # self.menuDateityp.setObjectName(_fromUtf8("menuDateityp"))
         self.menuDatei = QtWidgets.QMenu(self.menuBar)
         self.menuDatei.setObjectName(_fromUtf8("menuDatei"))
         self.menuNeu = QtWidgets.QMenu(self.menuBar)
@@ -338,8 +338,8 @@ class Ui_MainWindow(object):
         # self.menuDeveloper.setStyleSheet("background-color: {};".format(get_color(blue_4)))
         
 
-        self.menuBild_einbinden = QtWidgets.QMenu(self.menuBar)
-        self.menuBild_einbinden.setObjectName(_fromUtf8("menuBild_einbinden"))
+        # self.menuBild_einbinden = QtWidgets.QMenu(self.menuBar)
+        # self.menuBild_einbinden.setObjectName(_fromUtf8("menuBild_einbinden"))
         MainWindow.setMenuBar(self.menuBar)
         self.actionReset = add_action(
             MainWindow, self.menuDatei, "Reset", self.suchfenster_reset
@@ -419,21 +419,21 @@ class Ui_MainWindow(object):
 
         self.actionExit = add_action(MainWindow, self.menuDatei, "Exit", self.close_app)
 
-        self.actionAufgaben_Typ1 = add_action(
-            MainWindow,
-            self.menuDateityp,
-            "Typ1 Aufgaben",
-            self.chosen_aufgabenformat_typ,
-        )
-        self.actionAufgaben_Typ1.setShortcut("Ctrl+1")
+        # self.actionAufgaben_Typ1 = add_action(
+        #     MainWindow,
+        #     self.menuDateityp,
+        #     "Typ1 Aufgaben",
+        #     self.chosen_aufgabenformat_typ,
+        # )
+        # self.actionAufgaben_Typ1.setShortcut("Ctrl+1")
 
-        self.actionAufgaben_Typ2 = add_action(
-            MainWindow,
-            self.menuDateityp,
-            "Typ2 Aufgaben",
-            self.chosen_aufgabenformat_typ,
-        )
-        self.actionAufgaben_Typ2.setShortcut("Ctrl+2")
+        # self.actionAufgaben_Typ2 = add_action(
+        #     MainWindow,
+        #     self.menuDateityp,
+        #     "Typ2 Aufgaben",
+        #     self.chosen_aufgabenformat_typ,
+        # )
+        # self.actionAufgaben_Typ2.setShortcut("Ctrl+2")
 
         self.actionSuche = add_action(
             MainWindow,
@@ -459,9 +459,9 @@ class Ui_MainWindow(object):
         )
         self.actionNeu.setShortcut("F3")
 
-        self.actionBild_einbinden = add_action(
-            MainWindow, self.menuBild_einbinden, "Durchsuchen...", self.add_picture
-        )
+        # self.actionBild_einbinden = add_action(
+        #     MainWindow, self.menuBild_einbinden, "Durchsuchen...", self.btn_add_image_pressed
+        # )
 
         self.actionFeedback = add_action(
             MainWindow,
@@ -515,7 +515,7 @@ class Ui_MainWindow(object):
         )
 
         self.menuBar.addAction(self.menuDatei.menuAction())
-        self.menuBar.addAction(self.menuDateityp.menuAction())
+        # self.menuBar.addAction(self.menuDateityp.menuAction())
         self.menuBar.addAction(self.menuSage.menuAction())
         self.menuBar.addAction(self.menuNeu.menuAction())
         self.menuBar.addAction(self.menuFeedback.menuAction())
@@ -659,20 +659,30 @@ class Ui_MainWindow(object):
 
         # self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
 
-        self.horizontalLayout_combobox = create_new_horizontallayout()
+        self.horizontalLayout_aufgabentyp = create_new_horizontallayout()
         # QtWidgets.QHBoxLayout()
         # self.horizontalLayout_combobox.setObjectName(
         # _fromUtf8("horizontalLayout_combobox")
         # )
 
         self.label_aufgabentyp = create_new_label(
-            self.centralwidget, "Aufgabentyp: Typ 1"
+            self.centralwidget, "Aufgabentyp:"
         )
-        self.horizontalLayout_combobox.addWidget(self.label_aufgabentyp)
+        self.combobox_aufgabentyp = create_new_combobox(self.centralwidget)
+        add_new_option(self.combobox_aufgabentyp, 0, "Typ1")
+        add_new_option(self.combobox_aufgabentyp, 1, "Typ2")
+        self.combobox_aufgabentyp.currentIndexChanged.connect(self.chosen_aufgabenformat_typ)
+        self.horizontalLayout_aufgabentyp.addWidget(self.label_aufgabentyp)
+        self.horizontalLayout_aufgabentyp.addWidget(self.combobox_aufgabentyp)
+        self.horizontalLayout_aufgabentyp.addStretch()
         self.label_aufgabentyp.setMaximumHeight(18)
         self.combobox_searchtype = create_new_combobox(self.centralwidget)
         self.combobox_searchtype.setMinimumContentsLength(1)
 
+        self.gridLayout.addLayout(self.horizontalLayout_aufgabentyp, 0, 0, 1, 1)
+
+
+        self.horizontalLayout_combobox = create_new_horizontallayout()
         add_new_option(
             self.combobox_searchtype,
             0,
@@ -687,7 +697,8 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_combobox.addWidget(self.combobox_searchtype)
 
-        self.gridLayout.addLayout(self.horizontalLayout_combobox, 0, 0, 1, 1)
+        self.gridLayout.addLayout(self.horizontalLayout_combobox, 0, 1, 1, 1)
+        
         self.combobox_searchtype.hide()
 
         self.groupBox_themen_klasse = create_new_groupbox(
@@ -1218,6 +1229,9 @@ class Ui_MainWindow(object):
         self.label_bild_leer.setText(_translate("MainWindow", "", None))
         self.label_bild_leer.setFocusPolicy(QtCore.Qt.NoFocus)
         self.gridLayout.addWidget(self.groupBox_bilder, 7, 0, 2, 1)
+
+        self.btn_add_image = create_new_button(self.groupBox_bilder, "Hinzufügen", self.btn_add_image_pressed)
+        self.verticalLayout.addWidget(self.btn_add_image)
         self.groupBox_bilder.hide()
 
         #### CREATE CHECKBOXES ####
@@ -1280,7 +1294,6 @@ class Ui_MainWindow(object):
         self.groupBox_aufgabentyp.hide()
 
         self.groupBox_punkte = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBox_punkte.setSizePolicy(SizePolicy_fixed)
         self.groupBox_punkte.setObjectName(_fromUtf8("groupBox_punkte"))
         # self.groupBox_punkte.setSizePolicy(SizePolicy_fixed)
         # self.groupBox_punkte.setMaximumSize(80, 60)
@@ -1289,7 +1302,8 @@ class Ui_MainWindow(object):
         self.spinBox_punkte = QtWidgets.QSpinBox(self.groupBox_punkte)
         self.spinBox_punkte.setProperty("value", 1)
         self.spinBox_punkte.setObjectName(_fromUtf8("spinBox_punkte"))
-        # self.spinBox_punkte.setSizePolicy(SizePolicy_minimum_height)
+
+        self.spinBox_punkte.setSizePolicy(SizePolicy_fixed)
         self.gridLayout_6.addWidget(self.spinBox_punkte, 0, 0, 1, 1)
 
         self.groupBox_punkte.setTitle(_translate("MainWindow", "Punkte", None))
@@ -1954,7 +1968,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_fb.addWidget(self.listWidget_fb)
         self.listWidget_fb.itemClicked.connect(self.nummer_clicked_fb)
 
-        self.gridLayout.addWidget(self.groupBox_alle_aufgaben_fb, 0, 0, 6, 1)
+        self.gridLayout.addWidget(self.groupBox_alle_aufgaben_fb, 0, 0, 7, 1)
         self.groupBox_alle_aufgaben_fb.setTitle(
             _translate("MainWindow", "Aufgaben", None)
         )
@@ -1978,7 +1992,8 @@ class Ui_MainWindow(object):
         self.comboBox_at_fb_cria.hide()
 
         self.groupBox_alle_aufgaben_fb_cria = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBox_alle_aufgaben_fb_cria.setMinimumWidth(100)
+        # self.groupBox_alle_aufgaben_fb_cria.setMinimumWidth(100)
+        self.groupBox_alle_aufgaben_fb_cria.setMaximumWidth(250)
         # self.groupBox_alle_aufgaben_fb_cria.setMinimumSize(QtCore.QSize(140, 16777215))
         # self.groupBox_alle_aufgaben_fb_cria.setMaximumSize(QtCore.QSize(200, 16777215))
         self.groupBox_alle_aufgaben_fb_cria.setObjectName(
@@ -2049,7 +2064,7 @@ class Ui_MainWindow(object):
         self.listWidget_fb_cria.setObjectName("listWidget_fb_cria")
         self.verticalLayout_fb_cria.addWidget(self.listWidget_fb_cria)
         self.listWidget_fb_cria.itemClicked.connect(self.nummer_clicked_fb)
-        self.gridLayout.addWidget(self.groupBox_alle_aufgaben_fb_cria, 1, 0, 5, 1)
+        self.gridLayout.addWidget(self.groupBox_alle_aufgaben_fb_cria, 1, 0, 6, 1)
         self.groupBox_alle_aufgaben_fb_cria.setTitle(
             _translate("MainWindow", "Aufgaben", None)
         )
@@ -2139,13 +2154,13 @@ class Ui_MainWindow(object):
             _translate("MainWindow", "E-Mail Adresse für Nachfragen (optional)", None)
         )
         self.verticalLayout_email.addWidget(self.lineEdit_email)
-        self.gridLayout.addWidget(self.groupBox_email, 4, 1, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_email, 5, 1, 1, 1)
         self.groupBox_email.hide()
 
         self.pushButton_send = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_send.setObjectName(_fromUtf8("pushButton_send"))
         self.gridLayout.addWidget(
-            self.pushButton_send, 5, 1, 1, 1, QtCore.Qt.AlignRight
+            self.pushButton_send, 6, 1, 1, 1, QtCore.Qt.AlignRight
         )
         self.pushButton_send.setText(_translate("MainWindow", "Senden", None))
         self.pushButton_send.clicked.connect(self.pushButton_send_pressed)
@@ -2194,15 +2209,15 @@ class Ui_MainWindow(object):
         ##############################################################################################
 
     def retranslateUi(self, MainWindow):
-        self.menuDateityp.setTitle(_translate("MainWindow", "Aufgabentyp", None))
+        # self.menuDateityp.setTitle(_translate("MainWindow", "Aufgabentyp", None))
         self.menuDatei.setTitle(_translate("MainWindow", "Datei", None))
         self.menuNeu.setTitle(_translate("MainWindow", "Aufgabe hinzufügen", None))
         self.menuSage.setTitle(_translate("MainWindow", "Erstellen", None))
         self.menuSuche.setTitle(_translate("MainWindow", "Aufgabensuche", None))
         self.menuDeveloper.setTitle(_translate("MainWindow", "Entwicklermodus", None))
-        self.menuBild_einbinden.setTitle(
-            _translate("MainWindow", "Bild einfügen", None)
-        )
+        # self.menuBild_einbinden.setTitle(
+        #     _translate("MainWindow", "Bild einfügen", None)
+        # )
         self.menuFeedback.setTitle(_translate("MainWindow", "Feedback && Fehler", None))
 
         self.menuHelp.setTitle(_translate("MainWindow", "?", None))
@@ -3496,18 +3511,19 @@ class Ui_MainWindow(object):
     #         )
 
     def chosen_aufgabenformat_typ(self):
-        chosen_type = self.label_aufgabentyp.text()[-1]
-        if chosen_type == str(2):
-            self.label_aufgabentyp.setText(
-                _translate("MainWindow", "Aufgabentyp: Typ 1", None)
-            )
+        # chosen_type = self.label_aufgabentyp.text()[-1]
+        chosen_type = self.combobox_aufgabentyp.currentIndex()+1
+        if chosen_type == 1:
+            # self.label_aufgabentyp.setText(
+            #     _translate("MainWindow", "Aufgabentyp: Typ 1", None)
+            # )
             self.groupBox_af.show()
             self.combobox_searchtype.hide()
             # self.refresh_label_update()
-        elif chosen_type == str(1):
-            self.label_aufgabentyp.setText(
-                _translate("MainWindow", "Aufgabentyp: Typ 2", None)
-            )
+        elif chosen_type == 2:
+            # self.label_aufgabentyp.setText(
+            #     _translate("MainWindow", "Aufgabentyp: Typ 2", None)
+            # )
             self.groupBox_af.hide()
             self.combobox_searchtype.show()
             # self.refresh_label_update()
@@ -3928,7 +3944,7 @@ class Ui_MainWindow(object):
 
         self.set_infos_chosen_variation(aufgabe_total_original, mode)
 
-    def add_picture(self):
+    def btn_add_image_pressed(self):
         try:
             self.saved_file_path
         except AttributeError:
@@ -3954,12 +3970,14 @@ class Ui_MainWindow(object):
                 label_picture = create_new_label(
                     self.scrollAreaWidgetContents_bilder, tail, False, True
                 )
+
                 label_picture_name = "label_bild_creator_{}".format(tail)
                 self.dict_widget_variables[label_picture_name] = label_picture
                 label_picture.clicked.connect(
                     partial(self.del_picture, label_picture_name)
                 )
                 self.verticalLayout.addWidget(label_picture)
+        self.verticalLayout.addWidget(self.btn_add_image)
 
     def del_picture(self, picture):
         del self.dict_picture_path[self.dict_widget_variables[picture].text()]
@@ -7525,9 +7543,9 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
     def update_gui(self, chosen_gui):
         if self.chosen_program == "cria":
             chosen_gui = chosen_gui + "_cria"
-            chosen_gui_list = eval(chosen_gui + "_cria")
-        else:
-            chosen_gui_list = eval(chosen_gui)
+        #     chosen_gui_list = eval(chosen_gui)
+        # else:
+        chosen_gui_list = eval(chosen_gui)
 
         self.chosen_gui = chosen_gui
         MainWindow.setMenuBar(self.menuBar)
@@ -7551,7 +7569,8 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                 exec("self.%s.show()" % all)
 
         if chosen_gui == 'widgets_search':
-            if self.label_aufgabentyp.text()[-1] == str(1):
+            # if self.label_aufgabentyp.text()[-1] == str(1):
+            if self.combobox_aufgabentyp.currentIndex() == 0:
                 self.combobox_searchtype.hide()
         # if chosen_type == str(2):
         #     self.label_aufgabentyp.setText(
