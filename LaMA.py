@@ -1028,6 +1028,7 @@ class Ui_MainWindow(object):
         self.groupBox_choose_file = create_new_groupbox(
             self.centralwidget, "Aufgabe auswählen"
         )
+        self.groupBox_choose_file.setMaximumWidth(500)
         self.verticalLayout_choose_file = create_new_verticallayout(
             self.groupBox_choose_file
         )
@@ -1406,6 +1407,7 @@ class Ui_MainWindow(object):
         self.groupBox_beispieleingabe.setObjectName(
             _fromUtf8("groupBox_beispieleingabe")
         )
+        # self.groupBox_beispieleingabe.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding))
         self.gridLayout_10 = QtWidgets.QGridLayout(self.groupBox_beispieleingabe)
         self.gridLayout_10.setObjectName(_fromUtf8("gridLayout_10"))
         self.label = QtWidgets.QLabel(self.groupBox_beispieleingabe)
@@ -1418,7 +1420,7 @@ class Ui_MainWindow(object):
         self.plainTextEdit.setObjectName(_fromUtf8("plainTextEdit"))
         self.plainTextEdit.setTabChangesFocus(True)
         self.gridLayout_10.addWidget(self.plainTextEdit, 1, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_beispieleingabe, 2, 1, 5, 6)
+        self.gridLayout.addWidget(self.groupBox_beispieleingabe, 2, 1, 5, 8)
         self.groupBox_beispieleingabe.setTitle(
             _translate("MainWindow", "Aufgabeneingabe", None)
         )
@@ -1435,7 +1437,7 @@ class Ui_MainWindow(object):
         self.groupBox_quelle.setObjectName(_fromUtf8("groupBox_quelle"))
         # self.groupBox_quelle.setMaximumSize(QtCore.QSize(16777215, 60))
         # self.groupBox_quelle.setMaximumHeight(60)
-        self.groupBox_quelle.setSizePolicy(SizePolicy_fixed_height)
+        # self.groupBox_quelle.setSizePolicy(SizePolicy_fixed_height)
         self.gridLayout_18 = QtWidgets.QGridLayout(self.groupBox_quelle)
         self.gridLayout_18.setObjectName(_fromUtf8("gridLayout_18"))
         self.lineEdit_quelle = QtWidgets.QLineEdit(self.groupBox_quelle)
@@ -1462,7 +1464,7 @@ class Ui_MainWindow(object):
         self.pushButton_save.setObjectName(_fromUtf8("pushButton_save"))
         self.pushButton_save.setFocusPolicy(QtCore.Qt.NoFocus)
         self.pushButton_save.setSizePolicy(SizePolicy_fixed)
-        self.gridLayout.addWidget(self.pushButton_save, 8, 6, 1, 1)
+        self.gridLayout.addWidget(self.pushButton_save, 8, 7, 1, 1)
         self.pushButton_save.setText(_translate("MainWindow", "Speichern", None))
 
         # self.pushButton_save.setShortcut(_translate("MainWindow", "Return", None))
@@ -2402,7 +2404,7 @@ class Ui_MainWindow(object):
                     subprocess.Popen('explorer "{}"'.format(file_path))
 
     def check_admin_entry(self):
-        if "###" in self.lineEdit_titel.text() or self.chosen_gui == "widgets_edit":
+        if "###" in self.lineEdit_titel.text() or (self.chosen_gui == "widgets_edit" and self.developer_mode_active == True):
             self.cb_matura_tag.show()
         else:
             self.cb_matura_tag.hide()
