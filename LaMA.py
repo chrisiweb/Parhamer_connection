@@ -341,18 +341,10 @@ class Ui_MainWindow(object):
         # self.menuBild_einbinden = QtWidgets.QMenu(self.menuBar)
         # self.menuBild_einbinden.setObjectName(_fromUtf8("menuBild_einbinden"))
         MainWindow.setMenuBar(self.menuBar)
-        self.actionReset = add_action(
-            MainWindow, self.menuDatei, "Reset", self.suchfenster_reset
-        )
-        self.actionReset.setShortcut("F4")
 
         # self.actionReset_creator = add_action(self.menuDatei, "Reset", self.suchfenster_reset)
         # self.actionReset.setShortcut("F4")
 
-        self.actionReset_sage = add_action(
-            MainWindow, self.menuDatei, "Reset Datei", partial(self.reset_sage, True)
-        )
-        self.actionReset_sage.setVisible(False)
 
         self.actionRefresh_Database = add_action(
             MainWindow,
@@ -362,14 +354,8 @@ class Ui_MainWindow(object):
         )
         self.actionRefresh_Database.setShortcut("F5")
 
-        self.menuDatei.addSeparator()
+        # self.menuDatei.addSeparator()
 
-        self.actionEdit_Files = add_action(
-            MainWindow,
-            self.menuDeveloper,
-            "Aufgaben bearbeiten",
-            self.action_edit_files
-        )
 
         self.menuDeveloper.addSeparator()
 
@@ -384,16 +370,6 @@ class Ui_MainWindow(object):
         # if self.developer_mode_active == False:
         #     self.actionPush_Database.setVisible(False)
 
-        self.menuDatei.addSeparator()
-
-        self.actionLoad = add_action(
-            MainWindow, self.menuDatei, "Öffnen", self.sage_load
-        )
-        self.actionLoad.setShortcut("Ctrl+O")
-        self.actionSave = add_action(
-            MainWindow, self.menuDatei, "Speichern", self.sage_save
-        )
-        self.actionSave.setShortcut("Ctrl+S")
 
         self.menuDatei.addSeparator()
 
@@ -443,13 +419,42 @@ class Ui_MainWindow(object):
         )
         self.actionSuche.setShortcut("F1")
 
+        self.menuSuche.addSeparator()
+
+        self.actionReset = add_action(
+            MainWindow, self.menuSuche, "Reset", self.suchfenster_reset
+        )
+        self.actionReset.setShortcut("F4")
+
         self.actionSage = add_action(
             MainWindow,
             self.menuSage,
-            "Neue Datei erstellen...",
+            "Neue Prüfung erstellen...",
             partial(self.update_gui, "widgets_sage"),
         )
         self.actionSage.setShortcut("F2")
+
+
+        self.menuSage.addSeparator()
+
+        self.actionSave = add_action(
+            MainWindow, self.menuSage, "Prüfung speichern", self.sage_save
+        )
+        self.actionSave.setShortcut("Ctrl+S")
+
+        self.actionLoad = add_action(
+            MainWindow, self.menuSage, "Prüfung öffnen", self.sage_load
+        )
+        self.actionLoad.setShortcut("Ctrl+O")
+
+        self.menuSage.addSeparator()
+
+        self.actionReset_sage = add_action(
+            MainWindow, self.menuSage, "Reset Prüfung", partial(self.reset_sage, True)
+        )
+        self.actionReset_sage.setVisible(False)
+
+
 
         self.actionNeu = add_action(
             MainWindow,
@@ -459,6 +464,14 @@ class Ui_MainWindow(object):
         )
         self.actionNeu.setShortcut("F3")
 
+        # self.menuNeu.addSeparator()        
+
+        self.actionEdit_Files = add_action(
+            MainWindow,
+            self.menuNeu,
+            "Aufgabe bearbeiten",
+            self.action_edit_files
+        )
         # self.actionBild_einbinden = add_action(
         #     MainWindow, self.menuBild_einbinden, "Durchsuchen...", self.btn_add_image_pressed
         # )
@@ -515,6 +528,7 @@ class Ui_MainWindow(object):
         )
 
         self.menuBar.addAction(self.menuDatei.menuAction())
+        self.menuBar.addAction(self.menuSuche.menuAction())
         # self.menuBar.addAction(self.menuDateityp.menuAction())
         self.menuBar.addAction(self.menuSage.menuAction())
         self.menuBar.addAction(self.menuNeu.menuAction())
@@ -2211,9 +2225,9 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         # self.menuDateityp.setTitle(_translate("MainWindow", "Aufgabentyp", None))
         self.menuDatei.setTitle(_translate("MainWindow", "Datei", None))
-        self.menuNeu.setTitle(_translate("MainWindow", "Aufgabe hinzufügen", None))
-        self.menuSage.setTitle(_translate("MainWindow", "Erstellen", None))
-        self.menuSuche.setTitle(_translate("MainWindow", "Aufgabensuche", None))
+        self.menuNeu.setTitle(_translate("MainWindow", "Aufgabe", None))
+        self.menuSage.setTitle(_translate("MainWindow", "Prüfung", None))
+        self.menuSuche.setTitle(_translate("MainWindow", "Suche", None))
         self.menuDeveloper.setTitle(_translate("MainWindow", "Entwicklermodus", None))
         # self.menuBild_einbinden.setTitle(
         #     _translate("MainWindow", "Bild einfügen", None)
@@ -5247,12 +5261,14 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             return
 
     def sage_load(self, external_file_loaded):
+        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        self.update_gui("widgets_sage")
         if external_file_loaded == False:
             try:
                 os.path.dirname(self.saved_file_path)
             except AttributeError:
                 self.saved_file_path = path_programm
-
+            QtWidgets.QApplication.restoreOverrideCursor()
             path_backup_file = QtWidgets.QFileDialog.getOpenFileName(
                 None,
                 "Öffnen",
@@ -5285,7 +5301,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
         self.dict_all_infos_for_file = self.load_file(self.saved_file_path)
 
-        self.update_gui("widgets_sage")
+        # self.update_gui("widgets_sage")
 
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
@@ -5393,6 +5409,8 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         QtWidgets.QApplication.restoreOverrideCursor()
 
     def sage_save(self, path_create_tex_file=False, autosave=False):  # path_file
+        if autosave == False:
+            self.update_gui("widgets_sage")
         try:
             self.saved_file_path
         except AttributeError:
@@ -5419,7 +5437,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             save_file = path_create_tex_file
 
         if autosave == False:
-            self.update_gui("widgets_sage")
+            # self.update_gui("widgets_sage")
 
             self.saved_file_path = save_file
 
@@ -6220,7 +6238,8 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         for item in self.list_alle_aufgaben_sage[start_value:]:
             index_item = self.list_alle_aufgaben_sage.index(item)
             typ = get_aufgabentyp(self.chosen_program, item)
-            aufgabe_total = get_aufgabe_total(item, typ)
+            aufgabe_total = get_aufgabe_total(item.replace(' (lokal)',''), typ)
+
             # item_infos = self.collect_all_infos_aufgabe(item)
             neue_aufgaben_box = self.create_neue_aufgaben_box(
                 index_item, item, aufgabe_total
@@ -6233,7 +6252,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         )
         self.gridLayout_8.addItem(self.spacerItem, index_item + 1, 0, 1, 1)
 
-        self.add_image_path_to_list(aufgabe)
+        self.add_image_path_to_list(aufgabe.replace(' (lokal)',''))
 
         self.update_punkte()
 

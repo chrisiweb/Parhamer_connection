@@ -510,6 +510,8 @@ class Ui_Dialog_variation(object):
         self.no_choice = "-- keine Auswahl --"
         self.listWidget.addItem(self.no_choice)
         for database in [_local_database, _database]:
+            if self.MainWindow.developer_mode_active == False and database == _database:
+                continue
             table_lama = database.table(table)
             if database == _local_database:
                 local = True
