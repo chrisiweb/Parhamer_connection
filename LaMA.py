@@ -679,11 +679,12 @@ class Ui_MainWindow(object):
             self.centralwidget, "Aufgabentyp:"
         )
         self.combobox_aufgabentyp = create_new_combobox(self.centralwidget)
+        # self.combobox_aufgabentyp.setSizePolicy(SizePolicy_fixed)
         add_new_option(self.combobox_aufgabentyp, 0, "Typ1")
         add_new_option(self.combobox_aufgabentyp, 1, "Typ2")
         self.combobox_aufgabentyp.currentIndexChanged.connect(self.chosen_aufgabenformat_typ)
         self.horizontalLayout_aufgabentyp.addWidget(self.label_aufgabentyp)
-        self.horizontalLayout_aufgabentyp.addWidget(self.combobox_aufgabentyp)
+        self.horizontalLayout_aufgabentyp.addWidget(self.combobox_aufgabentyp, QtCore.Qt.AlignLeft)
         # self.horizontalLayout_aufgabentyp.addStretch() ## problem with creator gui
         self.label_aufgabentyp.setMaximumHeight(18)
 
