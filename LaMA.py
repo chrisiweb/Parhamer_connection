@@ -673,7 +673,7 @@ class Ui_MainWindow(object):
 
         # self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
 
-        # self.horizontalLayout_aufgabentyp = create_new_horizontallayout()
+        self.horizontalLayout_aufgabentyp = create_new_horizontallayout()
 
         self.label_aufgabentyp = create_new_label(
             self.centralwidget, "Aufgabentyp:"
@@ -682,12 +682,12 @@ class Ui_MainWindow(object):
         add_new_option(self.combobox_aufgabentyp, 0, "Typ1")
         add_new_option(self.combobox_aufgabentyp, 1, "Typ2")
         self.combobox_aufgabentyp.currentIndexChanged.connect(self.chosen_aufgabenformat_typ)
-        # self.horizontalLayout_aufgabentyp.addWidget(self.label_aufgabentyp)
-        # self.horizontalLayout_aufgabentyp.addWidget(self.combobox_aufgabentyp)
-        # self.horizontalLayout_aufgabentyp.addStretch()
-        # self.label_aufgabentyp.setMaximumHeight(18)
+        self.horizontalLayout_aufgabentyp.addWidget(self.label_aufgabentyp)
+        self.horizontalLayout_aufgabentyp.addWidget(self.combobox_aufgabentyp)
+        # self.horizontalLayout_aufgabentyp.addStretch() ## problem with creator gui
+        self.label_aufgabentyp.setMaximumHeight(18)
 
-        # self.gridLayout.addLayout(self.horizontalLayout_aufgabentyp, 0, 0, 1, 1)
+        self.gridLayout.addLayout(self.horizontalLayout_aufgabentyp, 0, 0, 1, 1)
 
         self.combobox_searchtype = create_new_combobox(self.centralwidget)
         self.combobox_searchtype.setMinimumContentsLength(1)
