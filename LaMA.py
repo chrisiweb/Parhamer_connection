@@ -673,11 +673,7 @@ class Ui_MainWindow(object):
 
         # self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
 
-        self.horizontalLayout_aufgabentyp = create_new_horizontallayout()
-        # QtWidgets.QHBoxLayout()
-        # self.horizontalLayout_combobox.setObjectName(
-        # _fromUtf8("horizontalLayout_combobox")
-        # )
+        # self.horizontalLayout_aufgabentyp = create_new_horizontallayout()
 
         self.label_aufgabentyp = create_new_label(
             self.centralwidget, "Aufgabentyp:"
@@ -686,15 +682,15 @@ class Ui_MainWindow(object):
         add_new_option(self.combobox_aufgabentyp, 0, "Typ1")
         add_new_option(self.combobox_aufgabentyp, 1, "Typ2")
         self.combobox_aufgabentyp.currentIndexChanged.connect(self.chosen_aufgabenformat_typ)
-        self.horizontalLayout_aufgabentyp.addWidget(self.label_aufgabentyp)
-        self.horizontalLayout_aufgabentyp.addWidget(self.combobox_aufgabentyp)
-        self.horizontalLayout_aufgabentyp.addStretch()
-        self.label_aufgabentyp.setMaximumHeight(18)
+        # self.horizontalLayout_aufgabentyp.addWidget(self.label_aufgabentyp)
+        # self.horizontalLayout_aufgabentyp.addWidget(self.combobox_aufgabentyp)
+        # self.horizontalLayout_aufgabentyp.addStretch()
+        # self.label_aufgabentyp.setMaximumHeight(18)
+
+        # self.gridLayout.addLayout(self.horizontalLayout_aufgabentyp, 0, 0, 1, 1)
+
         self.combobox_searchtype = create_new_combobox(self.centralwidget)
         self.combobox_searchtype.setMinimumContentsLength(1)
-
-        self.gridLayout.addLayout(self.horizontalLayout_aufgabentyp, 0, 0, 1, 1)
-
 
         self.horizontalLayout_combobox = create_new_horizontallayout()
         add_new_option(
@@ -1310,7 +1306,7 @@ class Ui_MainWindow(object):
 
         self.groupBox_punkte = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_punkte.setObjectName(_fromUtf8("groupBox_punkte"))
-        # self.groupBox_punkte.setSizePolicy(SizePolicy_fixed)
+        self.groupBox_punkte.setSizePolicy(SizePolicy_fixed)
         # self.groupBox_punkte.setMaximumSize(80, 60)
         self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_punkte)
         self.gridLayout_6.setObjectName(_fromUtf8("gridLayout_6"))
@@ -1420,7 +1416,7 @@ class Ui_MainWindow(object):
         self.plainTextEdit.setObjectName(_fromUtf8("plainTextEdit"))
         self.plainTextEdit.setTabChangesFocus(True)
         self.gridLayout_10.addWidget(self.plainTextEdit, 1, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_beispieleingabe, 2, 1, 5, 8)
+        self.gridLayout.addWidget(self.groupBox_beispieleingabe, 2, 1, 5, 6)
         self.groupBox_beispieleingabe.setTitle(
             _translate("MainWindow", "Aufgabeneingabe", None)
         )
@@ -1464,7 +1460,7 @@ class Ui_MainWindow(object):
         self.pushButton_save.setObjectName(_fromUtf8("pushButton_save"))
         self.pushButton_save.setFocusPolicy(QtCore.Qt.NoFocus)
         self.pushButton_save.setSizePolicy(SizePolicy_fixed)
-        self.gridLayout.addWidget(self.pushButton_save, 8, 7, 1, 1)
+        self.gridLayout.addWidget(self.pushButton_save, 8, 6, 1, 1)
         self.pushButton_save.setText(_translate("MainWindow", "Speichern", None))
 
         # self.pushButton_save.setShortcut(_translate("MainWindow", "Return", None))
