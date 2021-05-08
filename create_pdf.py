@@ -122,7 +122,7 @@ def get_number_of_variations(file_name, gesammeltedateien):
     counter = 0
     for all in gesammeltedateien:
         if file_name in all['name']:
-            print(file_name)
+            # print(file_name)
             counter += 1
     counter -= 1
     return counter
@@ -187,7 +187,7 @@ def refresh_ddb_according_to_intervall(self, log_file):
     # print('refreshed')      
 
 def collect_suchbegriffe(self):
-    chosen_aufgabenformat = "Typ%sAufgaben" % self.label_aufgabentyp.text()[-1]
+    chosen_aufgabenformat = "Typ%sAufgaben".format(self.combobox_aufgabentyp.currentIndex()+1) #self.label_aufgabentyp.text()[-1]
 
     suchbegriffe = {
         'themen':[],
@@ -269,16 +269,18 @@ def collect_suchbegriffe(self):
 def get_program(self):
     if self.chosen_program == 'cria':
         return 'cria'
-    elif int(self.label_aufgabentyp.text()[-1])==1:
+    elif self.combobox_aufgabentyp.currentIndex()==0:
+    # elif int(self.label_aufgabentyp.text()[-1])==1:
         return 'lama_1'
     else:
         return 'lama_2'
 
 
 
-def search_in_database(self,current_program, suchbegriffe):
+def search_in_database(self,current_program, database,suchbegriffe):
+    print('search')
     table = 'table_' + current_program
-    table_lama = _database.table(table)
+    table_lama = database.table(table)
     _file_ = Query()    
 
     string_in_list_af = lambda s: True if (s in suchbegriffe['af'] or is_empty(suchbegriffe['af'])) else False
@@ -297,7 +299,6 @@ def search_in_database(self,current_program, suchbegriffe):
    
 
     gesammeltedateien = []
-
     if current_program == 'lama_1' or current_program == 'cria':
         if suchbegriffe['themen'] != []:
             gesammeltedateien = table_lama.search(
@@ -368,9 +369,8 @@ def prepare_tex_for_pdf(self):
 
 
     
-    gesammeltedateien = search_in_database(self, current_program, suchbegriffe)
+    gesammeltedateien = search_in_database(self, current_program,_database ,suchbegriffe)
     gesammeltedateien.sort(key=order_gesammeltedateien)
-
 
     # for file in gesammeltedateien:
     #     rsp =check_if_variation(file['name'])
@@ -505,7 +505,7 @@ def prepare_tex_for_pdf(self):
         filename_teildokument = os.path.join(
             path_programm,
             "Teildokument",
-            "Teildokument_%s.tex" % self.label_aufgabentyp.text()[-1],
+            "Teildokument_{}.tex".format(self.combobox_aufgabentyp.currentIndex()+1) ,
         )
 
     if self.chosen_program == "cria":
@@ -878,7 +878,7 @@ def prepare_tex_for_pdf(self):
 
     if ret == QtWidgets.QMessageBox.Yes:
         if self.chosen_program == "lama":
-            typ = self.label_aufgabentyp.text()[-1]
+            typ = str(self.combobox_aufgabentyp.currentIndex()+1)#self.label_aufgabentyp.text()[-1]
         elif self.chosen_program == "cria":
             typ = "cria"
 

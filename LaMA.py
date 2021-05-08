@@ -7280,8 +7280,12 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         aufgaben_nummer = 1
 
         for aufgabe in self.list_alle_aufgaben_sage:
-            typ = get_aufgabentyp(self.chosen_program, aufgabe)
-            aufgabe_total = get_aufgabe_total(aufgabe, typ)
+            name = aufgabe.replace(" (lokal)", "")
+            typ = get_aufgabentyp(self.chosen_program, name)
+            aufgabe_total = get_aufgabe_total(name, typ)
+            print(aufgabe)
+            print(aufgabe_total)
+    
 
             if self.comboBox_pruefungstyp.currentText() == "Quiz":
 
