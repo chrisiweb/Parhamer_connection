@@ -460,7 +460,7 @@ class Ui_MainWindow(object):
             MainWindow,
             self.menuNeu,
             "Neue Aufgabe zur Datenbank hinzufügen...",
-            partial(self.update_gui, "widgets_create"),
+            self.action_add_file,
         )
         self.actionNeu.setShortcut("F3")
 
@@ -3020,6 +3020,8 @@ class Ui_MainWindow(object):
         
         if self.chosen_gui == 'widgets_edit':
             self.enable_widgets_editor(False)
+            self.button_choose_file.setText("Aufgabe suchen...")
+            # "Aufgabe auswählen"
             self.plainTextEdit.clear()
             self.lineEdit_quelle.clear()
         else:
@@ -3808,7 +3810,7 @@ class Ui_MainWindow(object):
                     index = list_comboBox_gk.index("Zusatzthemen")
                 else:
                     checkbox_gk = "checkbox_creator_gk_{0}".format(short_gk)
-                    index = list_comboBox_gk.index(gk.split(" ")[0])
+                    index = list_comboBox_gk.index(gk.split(" ")[0].replace("-L",""))
 
                 self.dict_widget_variables[checkbox_gk].setChecked(True)
                 self.tab_widget_gk_cr.setCurrentIndex(index)
@@ -5214,13 +5216,22 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         self.groupBox_quelle.setEnabled(enabled)
         self.pushButton_save_edit.setEnabled(enabled)
         self.cb_matura_tag.setEnabled(enabled)
-        self.groupBox_aufgabentyp.setEnabled(False)
+        self.groupBox_aufgabentyp.setEnabled(enabled)
       
+    def action_add_file(self):
+        self.update_gui("widgets_create")   
+        self.suchfenster_reset()
+        self.enable_widgets_editor(True) 
 
     def action_edit_files(self):
         self.update_gui('widgets_edit')
+        # try:
+        #     if self.chosen_file_to_edit == None:
+        #         self.enable_widgets_editor(False)
+        # except AttributeError:
+        #     self.enable_widgets_editor(False)
         self.suchfenster_reset()
-        # self.enable_widgets_editor(False)
+        self.enable_widgets_editor(False)
 
 
 
