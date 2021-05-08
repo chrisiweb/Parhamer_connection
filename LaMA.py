@@ -679,13 +679,18 @@ class Ui_MainWindow(object):
             self.centralwidget, "Aufgabentyp:"
         )
         self.combobox_aufgabentyp = create_new_combobox(self.centralwidget)
-        # self.combobox_aufgabentyp.setSizePolicy(SizePolicy_fixed)
+        self.combobox_aufgabentyp.setSizePolicy(SizePolicy_fixed)
         add_new_option(self.combobox_aufgabentyp, 0, "Typ1")
         add_new_option(self.combobox_aufgabentyp, 1, "Typ2")
         self.combobox_aufgabentyp.currentIndexChanged.connect(self.chosen_aufgabenformat_typ)
         self.horizontalLayout_aufgabentyp.addWidget(self.label_aufgabentyp)
         self.horizontalLayout_aufgabentyp.addWidget(self.combobox_aufgabentyp, QtCore.Qt.AlignLeft)
-        # self.horizontalLayout_aufgabentyp.addStretch() ## problem with creator gui
+        
+        # self.horizontalspacer_at = QtWidgets.QSpacerItem(
+        #     40, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        # )
+        # self.horizontalLayout_aufgabentyp.addSpacerItem(self.horizontalspacer_at)
+        self.horizontalLayout_aufgabentyp.addStretch() ## problem with creator gui
         self.label_aufgabentyp.setMaximumHeight(18)
 
         self.gridLayout.addLayout(self.horizontalLayout_aufgabentyp, 0, 0, 1, 1)
@@ -1073,7 +1078,7 @@ class Ui_MainWindow(object):
         self.groupBox_themengebiete_cria.setObjectName(
             _fromUtf8("groupBox_themengebiete_cria")
         )
-
+        self.groupBox_themengebiete_cria.setMaximumWidth(500)
         self.gridLayout_11_cr_cria = QtWidgets.QGridLayout(
             self.groupBox_themengebiete_cria
         )
@@ -7576,6 +7581,8 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                 exec("self.%s.setVisible(False)" % all)
             elif "menu" in all:
                 exec("self.menuBar.removeAction(self.%s.menuAction())" % all)
+            elif "layout" in all.lower():
+                exec("self.%s.setParent(None)" % all)
             else:
                 exec("self.%s.hide()" % all)
         for all in chosen_gui_list:
@@ -7583,6 +7590,8 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                 exec("self.%s.setVisible(True)" % all)
             elif "menu" in all:
                 exec("self.menuBar.addAction(self.%s.menuAction())" % all)
+            elif "layout" in all.lower():
+                exec("self.gridLayout.addLayout(self.{}, 0, 0, 1, 1)".format(all))
             else:
                 exec("self.%s.show()" % all)
 

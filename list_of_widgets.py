@@ -10,6 +10,7 @@ widgets_search = [
     # "menuHelp",
     # "menuDeveloper",
     # "label_update",
+    "horizontalLayout_aufgabentyp",
     "combobox_searchtype",
     "label_aufgabentyp",
     "combobox_aufgabentyp",
