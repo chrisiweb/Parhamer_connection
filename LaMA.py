@@ -6,6 +6,8 @@ __lastupdate__ = "01/21"
 ##################
 print("Loading...")
 import start_window
+import splash_screen
+from splash_screen import SplashWindow
 from config_start import (
     path_programm,
     path_localappdata_lama,
@@ -7711,7 +7713,8 @@ if __name__ == "__main__":
 
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
-
+    SplashWindow.hide()
     MainWindow.show()
 
     sys.exit(app.exec_())
+    # sys.exit()
