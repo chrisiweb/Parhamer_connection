@@ -6,8 +6,9 @@ __lastupdate__ = "01/21"
 ##################
 print("Loading...")
 import start_window
-import splash_screen
-from splash_screen import SplashWindow
+import time
+# import splash_screen
+# from splash_screen import SplashWindow
 from config_start import (
     path_programm,
     path_localappdata_lama,
@@ -20,23 +21,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 
 # import git
 # from git import Repo, remote
-import time
-import threading
-import sys
-import os
-from pathlib import Path
-import datetime
-import time
-import json
-import subprocess
-import shutil
-import re
-import random
-import functools
-from functools import partial
-import yaml
-from PIL import Image  ## pillow
-import smtplib
+
 
 # from urllib.request import urlopen
 # from urllib.error import URLError
@@ -7646,6 +7631,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+
     app.setStyle("Fusion")
     app.setStyleSheet(
         """QToolTip {{ color: white; background-color: {0}; border: 0px; }}
@@ -7653,6 +7639,54 @@ if __name__ == "__main__":
             get_color(blue_7)
         )
     )
+    logo = os.path.join(
+        path_programm, "_database", "_config", "icon", "LaMA_logo_full.png"
+    )
+    splash_pix = QtGui.QPixmap(logo)
+
+    splash = QtWidgets.QSplashScreen(splash_pix, QtCore.Qt.WindowStaysOnTopHint)
+    splash.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint | QtCore.Qt.FramelessWindowHint)
+    splash.setEnabled(False)
+    # splash = QSplashScreen(splash_pix)
+    # adding progress bar
+    progressBar = QtWidgets.QProgressBar(splash)
+    progressBar.setMaximum(10)
+    progressBar.setGeometry(0, splash_pix.height() - 50, splash_pix.width(), 20)
+
+    # splash.setMask(splash_pix.mask())
+
+    splash.show()
+    splash.showMessage("<h1><font color='green'>Welcome BeeMan!</font></h1>", QtCore.Qt.AlignTop | QtCore.Qt.AlignCenter, QtCore.Qt.black)
+    
+    for i in range(1, 11):
+        progressBar.setValue(i)
+        t = time.time()
+        while time.time() < t + 0.1:
+           app.processEvents()
+
+    # Simulate something that takes time
+    import threading
+    import sys
+    import os
+    from pathlib import Path
+    import datetime
+    import json
+    import subprocess
+    import shutil
+    import re
+    import random
+    import functools
+    from functools import partial
+    import yaml
+    from PIL import Image  ## pillow
+    import smtplib
+
+    # form = Form()
+    # form.show()
+    
+
+
+
     # font = QtGui.QFont("Calibri Light", 9)
     # app.setFont(font)
     palette = QtGui.QPalette()
@@ -7713,8 +7747,8 @@ if __name__ == "__main__":
 
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
-    SplashWindow.hide()
-    MainWindow.show()
 
+    MainWindow.show()
+    splash.finish(MainWindow)
     sys.exit(app.exec_())
     # sys.exit()
