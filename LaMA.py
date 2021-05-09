@@ -6,7 +6,9 @@ __lastupdate__ = "01/21"
 ##################
 print("Loading...")
 import start_window
-import time
+from config import *
+from lama_colors import *
+# import time
 # import splash_screen
 # from splash_screen import SplashWindow
 from config_start import (
@@ -18,6 +20,8 @@ from config_start import (
 )
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QApplication
+import sys
+import os
 
 # import git
 # from git import Repo, remote
@@ -25,89 +29,9 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 
 # from urllib.request import urlopen
 # from urllib.error import URLError
-from save_titlepage import create_file_titlepage, check_format_titlepage_save
 
-from git_sync import git_clone_repo, git_push_to_origin, check_internet_connection
 
-from config import *
 
-from create_new_widgets import *
-from list_of_widgets import (
-    widgets_search,
-    widgets_create,
-    widgets_sage,
-    widgets_feedback,
-    widgets_edit,
-    widgets_search_cria,
-    widgets_sage_cria,
-    widgets_create_cria,
-    widgets_feedback_cria,
-    list_widgets,
-)
-from subwindows import (
-    Ui_Dialog_Welcome_Window,
-    Ui_Dialog_choose_type,
-    Ui_Dialog_titlepage,
-    Ui_Dialog_random_quiz,
-    Ui_Dialog_ausgleichspunkte,
-    Ui_Dialog_erstellen,
-    Ui_Dialog_speichern,
-    Ui_Dialog_variation,
-    Ui_Dialog_setup,
-    Ui_Dialog_developer,
-    read_credentials,
-)
-from translate import _fromUtf8, _translate
-from sort_items import natural_keys, sorted_gks, order_gesammeltedateien
-from create_pdf import prepare_tex_for_pdf, create_pdf, check_if_variation
-from refresh_ddb import modification_date, refresh_ddb
-from standard_dialog_windows import (
-    warning_window,
-    question_window,
-    critical_window,
-    information_window,
-    custom_window,
-)
-from predefined_size_policy import *
-from work_with_content import (
-    collect_content,
-    split_content_no_environment,
-    split_aufgaben_content_new_format,
-    split_aufgaben_content,
-    edit_content_quiz,
-    get_section_from_content,
-)
-from build_titlepage import get_titlepage_vorschau
-from prepare_content_vorschau import (
-    edit_content_vorschau,
-    copy_logo_to_target_path,
-    copy_included_images,
-)
-from convert_image_to_eps import convert_image_to_eps
-from lama_colors import *
-from lama_stylesheets import *
-from processing_window import Ui_Dialog_processing
-import bcrypt
-
-from tinydb import Query
-
-from database_commands import (
-    _database,
-    _local_database,
-    get_aufgabe_total,
-    get_aufgabentyp,
-    add_file,
-    get_table,
-    update_data
-)
-
-from tex_minimal import *
-from filter_commands import get_filter_string, filter_items
-
-try:
-    loaded_lama_file_path = sys.argv[1]
-except IndexError:
-    loaded_lama_file_path = ""
 
 
 class Worker_DownloadDatabase(QtCore.QObject):
@@ -2555,7 +2479,7 @@ class Ui_MainWindow(object):
         for all in chosen_dictionary:
             new_checkbox = create_new_checkbox(parent, dict_gk[all])
             new_checkbox.setFocusPolicy(QtCore.Qt.NoFocus)
-            # background_color = get_color(blue_7)
+            # background_color = get_color(s)
             if self.display_mode == 0:
                 stylesheet = StyleSheet_new_checkbox
             else:
@@ -7639,52 +7563,6 @@ if __name__ == "__main__":
             get_color(blue_7)
         )
     )
-    logo = os.path.join(
-        path_programm, "_database", "_config", "icon", "LaMA_logo_full.png"
-    )
-    splash_pix = QtGui.QPixmap(logo)
-
-    splash = QtWidgets.QSplashScreen(splash_pix, QtCore.Qt.WindowStaysOnTopHint)
-    splash.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint | QtCore.Qt.FramelessWindowHint)
-    splash.setEnabled(False)
-    # splash = QSplashScreen(splash_pix)
-    # adding progress bar
-    progressBar = QtWidgets.QProgressBar(splash)
-    progressBar.setMaximum(10)
-    progressBar.setGeometry(0, splash_pix.height() - 50, splash_pix.width(), 20)
-
-    # splash.setMask(splash_pix.mask())
-
-    splash.show()
-    splash.showMessage("<h1><font color='green'>Welcome BeeMan!</font></h1>", QtCore.Qt.AlignTop | QtCore.Qt.AlignCenter, QtCore.Qt.black)
-    
-    for i in range(1, 11):
-        progressBar.setValue(i)
-        t = time.time()
-        while time.time() < t + 0.1:
-           app.processEvents()
-
-    # Simulate something that takes time
-    import threading
-    import sys
-    import os
-    from pathlib import Path
-    import datetime
-    import json
-    import subprocess
-    import shutil
-    import re
-    import random
-    import functools
-    from functools import partial
-    import yaml
-    from PIL import Image  ## pillow
-    import smtplib
-
-    # form = Form()
-    # form.show()
-    
-
 
 
     # font = QtGui.QFont("Calibri Light", 9)
@@ -7735,6 +7613,182 @@ if __name__ == "__main__":
     except Exception:
         app.setPalette(palette)
 
+
+    logo = os.path.join(
+        path_programm, "_database", "_config", "icon", "LaMA_logo_full.png"
+    )
+    splash_pix = QtGui.QPixmap(logo)
+    
+    splash = QtWidgets.QSplashScreen(splash_pix, QtCore.Qt.WindowStaysOnTopHint)
+    # splash.setGeometry(0,0,500,210)
+    splash.setFixedHeight(220)
+    splash.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint | QtCore.Qt.FramelessWindowHint)
+    splash.setEnabled(False)
+    # splash = QSplashScreen(splash_pix)
+    # adding progress bar
+    progressBar = QtWidgets.QProgressBar(splash)
+    progressBar.setMaximum(100)
+    progressBar.setGeometry(25, splash_pix.height() - 10, splash_pix.width() - 50, 20)
+
+    # splash.setMask(splash_pix.mask())
+
+    splash.show()
+    # splash.showMessage("<h1><font color='green'>Welcome BeeMan!</font></h1>")
+    
+    i=0
+    def step_progressbar(i,end=False):
+        if end != False:
+            for n in range(i, end):
+                print(n)
+                progressBar.setValue(n)
+        else:
+            progressBar.setValue(i)
+
+        i +=1
+        return i
+    # for i in range(1, 11):
+    #     print(i)
+    #     progressBar.setValue(i)
+    #     t = time.time()
+    #     while time.time() < t + 0.1:
+    app.processEvents()
+
+    # Simulate something that takes time
+    import threading
+    i = step_progressbar(i)
+    import os
+    i = step_progressbar(i)
+    from pathlib import Path
+    i = step_progressbar(i)
+    import datetime
+    i = step_progressbar(i)
+    import json
+    i = step_progressbar(i)
+    import subprocess
+    i = step_progressbar(i)
+    import shutil
+    i = step_progressbar(i)
+    import re
+    i = step_progressbar(i)
+    import random
+    i = step_progressbar(i)
+    import functools
+    i = step_progressbar(i)
+    from functools import partial
+    i = step_progressbar(i)
+    import yaml
+    i = step_progressbar(i)
+    from PIL import Image  ## pillow
+    i = step_progressbar(i)
+    import smtplib
+    i = step_progressbar(i)
+    from save_titlepage import create_file_titlepage, check_format_titlepage_save
+    i = step_progressbar(i)
+    from git_sync import git_clone_repo, git_push_to_origin, check_internet_connection
+    i = step_progressbar(i)
+    print(' create widgets')
+    from create_new_widgets import *
+    i = step_progressbar(i)
+    print('list widgets')
+    from list_of_widgets import (
+        widgets_search,
+        widgets_create,
+        widgets_sage,
+        widgets_feedback,
+        widgets_edit,
+        widgets_search_cria,
+        widgets_sage_cria,
+        widgets_create_cria,
+        widgets_feedback_cria,
+        list_widgets,
+    )
+    i = step_progressbar(i, i+10)
+    print('subwindows')
+    from subwindows import (
+        Ui_Dialog_Welcome_Window,
+        Ui_Dialog_choose_type,
+        Ui_Dialog_titlepage,
+        Ui_Dialog_random_quiz,
+        Ui_Dialog_ausgleichspunkte,
+        Ui_Dialog_erstellen,
+        Ui_Dialog_speichern,
+        Ui_Dialog_variation,
+        Ui_Dialog_setup,
+        Ui_Dialog_developer,
+        read_credentials,
+    )
+    i = step_progressbar(i)
+    print('translate')
+    from translate import _fromUtf8, _translate
+    i = step_progressbar(i)
+    from sort_items import natural_keys, sorted_gks, order_gesammeltedateien
+    i = step_progressbar(i)
+    from create_pdf import prepare_tex_for_pdf, create_pdf, check_if_variation
+    i = step_progressbar(i)
+    from refresh_ddb import modification_date, refresh_ddb
+    i = step_progressbar(i)
+    from standard_dialog_windows import (
+        warning_window,
+        question_window,
+        critical_window,
+        information_window,
+        custom_window,
+    )
+    i = step_progressbar(i)
+    from predefined_size_policy import *
+    i = step_progressbar(i)
+    from work_with_content import (
+        collect_content,
+        split_content_no_environment,
+        split_aufgaben_content_new_format,
+        split_aufgaben_content,
+        edit_content_quiz,
+        get_section_from_content,
+    )
+    i = step_progressbar(i)
+    from build_titlepage import get_titlepage_vorschau
+    i = step_progressbar(i)
+    from prepare_content_vorschau import (
+        edit_content_vorschau,
+        copy_logo_to_target_path,
+        copy_included_images,
+    )
+    i = step_progressbar(i)
+    from convert_image_to_eps import convert_image_to_eps
+    i = step_progressbar(i)
+    from lama_stylesheets import *
+    i = step_progressbar(i)
+    from processing_window import Ui_Dialog_processing
+    i = step_progressbar(i)
+    import bcrypt
+    i = step_progressbar(i)
+
+    from tinydb import Query
+    i = step_progressbar(i)
+
+    from database_commands import (
+        _database,
+        _local_database,
+        get_aufgabe_total,
+        get_aufgabentyp,
+        add_file,
+        get_table,
+        update_data
+    )
+    i = step_progressbar(i)
+    from tex_minimal import *
+    from filter_commands import get_filter_string, filter_items
+    # form = Form()
+    # form.show()
+    
+    try:
+        loaded_lama_file_path = sys.argv[1]
+    except IndexError:
+        loaded_lama_file_path = ""
+
+
+
+
     MainWindow = QMainWindow()
     # MainWindow.setWindowFlags(QtCore.Qt.FramelessWindowHint)
     screen_resolution = app.desktop().screenGeometry()
@@ -7747,8 +7801,8 @@ if __name__ == "__main__":
 
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
-
-    MainWindow.show()
     splash.finish(MainWindow)
+    MainWindow.show()
+    
     sys.exit(app.exec_())
     # sys.exit()
