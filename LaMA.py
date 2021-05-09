@@ -7621,7 +7621,7 @@ if __name__ == "__main__":
     
     splash = QtWidgets.QSplashScreen(splash_pix, QtCore.Qt.WindowStaysOnTopHint)
     # splash.setGeometry(0,0,500,210)
-    splash.setFixedHeight(220)
+    splash.setFixedHeight(240)
     splash.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint | QtCore.Qt.FramelessWindowHint)
     splash.setEnabled(False)
     # splash = QSplashScreen(splash_pix)
@@ -7633,10 +7633,10 @@ if __name__ == "__main__":
     # splash.setMask(splash_pix.mask())
 
     splash.show()
-    # splash.showMessage("<h1><font color='green'>Welcome BeeMan!</font></h1>")
 
-    def step_progressbar(i):
+    def step_progressbar(i, text):
         progressBar.setValue(i)
+        splash.showMessage("Loading {}...".format(text), QtCore.Qt.AlignBottom | QtCore.Qt.AlignCenter)
         time.sleep(0.03)
         return i+1
 
@@ -7649,42 +7649,39 @@ if __name__ == "__main__":
     app.processEvents()
 
     # Simulate something that takes time
+    i = step_progressbar(i, "threading")
     import threading
-    i = step_progressbar(i)
-    import os
-    i = step_progressbar(i)
+    i = step_progressbar(i, "pathlib")
     from pathlib import Path
-    i = step_progressbar(i)
+    i = step_progressbar(i, "datetime")
     import datetime
-    i = step_progressbar(i)
+    i = step_progressbar(i, "json")
     import json
-    i = step_progressbar(i)
+    i = step_progressbar(i, "subprocess")
     import subprocess
-    i = step_progressbar(i)
+    i = step_progressbar(i, "shutil")
     import shutil
-    i = step_progressbar(i)
+    i = step_progressbar(i, "re")
     import re
-    i = step_progressbar(i)
+    i = step_progressbar(i, "random")
     import random
-    i = step_progressbar(i)
+    i = step_progressbar(i, "functools")
     import functools
-    i = step_progressbar(i)
+    i = step_progressbar(i, "partial")
     from functools import partial
-    i = step_progressbar(i)
+    i = step_progressbar(i, "yaml")
     import yaml
-    i = step_progressbar(i)
+    i = step_progressbar(i, "pillow")
     from PIL import Image  ## pillow
-    i = step_progressbar(i)
+    i = step_progressbar(i, "smtplib")
     import smtplib
-    i = step_progressbar(i)
+    i = step_progressbar(i, "save_titlepage")
     from save_titlepage import create_file_titlepage, check_format_titlepage_save
-    i = step_progressbar(i)
+    i = step_progressbar(i, "git_sync")
     from git_sync import git_clone_repo, git_push_to_origin, check_internet_connection
-    i = step_progressbar(i)
-    print(' create widgets')
+    i = step_progressbar(i, "create_new_widgets")
     from create_new_widgets import *
-    i = step_progressbar(i)
-    print('list widgets')
+    i = step_progressbar(i, "list_of_widgets")
     from list_of_widgets import (
         widgets_search,
         widgets_create,
@@ -7697,8 +7694,7 @@ if __name__ == "__main__":
         widgets_feedback_cria,
         list_widgets,
     )
-    i = step_progressbar(i)
-    print('subwindows')
+    i = step_progressbar(i, "subwindows")
     from subwindows import (
         Ui_Dialog_Welcome_Window,
         Ui_Dialog_choose_type,
@@ -7712,16 +7708,15 @@ if __name__ == "__main__":
         Ui_Dialog_developer,
         read_credentials,
     )
-    i = step_progressbar(i)
-    print('translate')
+    i = step_progressbar(i, "translate")
     from translate import _fromUtf8, _translate
-    i = step_progressbar(i)
+    i = step_progressbar(i, "sort_items")
     from sort_items import natural_keys, sorted_gks, order_gesammeltedateien
-    i = step_progressbar(i)
+    i = step_progressbar(i, "create_pdf")
     from create_pdf import prepare_tex_for_pdf, create_pdf, check_if_variation
-    i = step_progressbar(i)
+    i = step_progressbar(i, "refresh_ddb")
     from refresh_ddb import modification_date, refresh_ddb
-    i = step_progressbar(i)
+    i = step_progressbar(i, "standard_dialog_windows")
     from standard_dialog_windows import (
         warning_window,
         question_window,
@@ -7729,9 +7724,9 @@ if __name__ == "__main__":
         information_window,
         custom_window,
     )
-    i = step_progressbar(i)
+    i = step_progressbar(i, "predefined_size_policy")
     from predefined_size_policy import *
-    i = step_progressbar(i)
+    i = step_progressbar(i, "work_with_content")
     from work_with_content import (
         collect_content,
         split_content_no_environment,
@@ -7740,26 +7735,26 @@ if __name__ == "__main__":
         edit_content_quiz,
         get_section_from_content,
     )
-    i = step_progressbar(i)
+    i = step_progressbar(i, "build_titlepage")
     from build_titlepage import get_titlepage_vorschau
-    i = step_progressbar(i)
+    i = step_progressbar(i, "prepare_content_vorschau")
     from prepare_content_vorschau import (
         edit_content_vorschau,
         copy_logo_to_target_path,
         copy_included_images,
     )
-    i = step_progressbar(i)
+    i = step_progressbar(i, "convert_image_to_eps")
     from convert_image_to_eps import convert_image_to_eps
-    i = step_progressbar(i)
+    i = step_progressbar(i, "lama_stylesheets")
     from lama_stylesheets import *
-    i = step_progressbar(i)
+    i = step_progressbar(i, "processing_window")
     from processing_window import Ui_Dialog_processing
-    i = step_progressbar(i)
+    i = step_progressbar(i, "bcrpyt")
     import bcrypt
-    i = step_progressbar(i)
+    i = step_progressbar(i, "tinydb")
 
     from tinydb import Query
-    i = step_progressbar(i)
+    i = step_progressbar(i, "database_commands")
 
     from database_commands import (
         _database,
@@ -7770,11 +7765,11 @@ if __name__ == "__main__":
         get_table,
         update_data
     )
-    i = step_progressbar(i)
+    i = step_progressbar(i, "tex_minimal")
     from tex_minimal import *
-    i = step_progressbar(i)
+    i = step_progressbar(i, "filter_comands")
     from filter_commands import get_filter_string, filter_items
-    i = step_progressbar(i)
+    i = step_progressbar(i, "MainWindow")
     # form = Form()
     # form.show()
     
@@ -7784,7 +7779,7 @@ if __name__ == "__main__":
         loaded_lama_file_path = ""
 
 
-    i = step_progressbar(i)
+    i = step_progressbar(i, "MainWindow")
 
     MainWindow = QMainWindow()
     # MainWindow.setWindowFlags(QtCore.Qt.FramelessWindowHint)
@@ -7795,10 +7790,10 @@ if __name__ == "__main__":
         30, 30, round(screen_width * 0.5), round(screen_height * 0.8)
     )
     MainWindow.move(30, 30)
-    i = step_progressbar(i)
+    i = step_progressbar(i, "MainWindow")
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
-    i = step_progressbar(i)
+    i = step_progressbar(i, "MainWindow")
     print(i)
     splash.finish(MainWindow)
     MainWindow.show()
