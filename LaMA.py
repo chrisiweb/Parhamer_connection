@@ -8,7 +8,7 @@ print("Loading...")
 import start_window
 from config import *
 from lama_colors import *
-# import time
+import time
 # import splash_screen
 # from splash_screen import SplashWindow
 from config_start import (
@@ -7627,25 +7627,20 @@ if __name__ == "__main__":
     # splash = QSplashScreen(splash_pix)
     # adding progress bar
     progressBar = QtWidgets.QProgressBar(splash)
-    progressBar.setMaximum(100)
+    progressBar.setMaximum(40)
     progressBar.setGeometry(25, splash_pix.height() - 10, splash_pix.width() - 50, 20)
 
     # splash.setMask(splash_pix.mask())
 
     splash.show()
     # splash.showMessage("<h1><font color='green'>Welcome BeeMan!</font></h1>")
-    
-    i=0
-    def step_progressbar(i,end=False):
-        if end != False:
-            for n in range(i, end):
-                print(n)
-                progressBar.setValue(n)
-        else:
-            progressBar.setValue(i)
 
-        i +=1
-        return i
+    def step_progressbar(i):
+        progressBar.setValue(i)
+        time.sleep(0.03)
+        return i+1
+
+    i=0
     # for i in range(1, 11):
     #     print(i)
     #     progressBar.setValue(i)
@@ -7702,7 +7697,7 @@ if __name__ == "__main__":
         widgets_feedback_cria,
         list_widgets,
     )
-    i = step_progressbar(i, i+10)
+    i = step_progressbar(i)
     print('subwindows')
     from subwindows import (
         Ui_Dialog_Welcome_Window,
@@ -7777,7 +7772,9 @@ if __name__ == "__main__":
     )
     i = step_progressbar(i)
     from tex_minimal import *
+    i = step_progressbar(i)
     from filter_commands import get_filter_string, filter_items
+    i = step_progressbar(i)
     # form = Form()
     # form.show()
     
@@ -7787,7 +7784,7 @@ if __name__ == "__main__":
         loaded_lama_file_path = ""
 
 
-
+    i = step_progressbar(i)
 
     MainWindow = QMainWindow()
     # MainWindow.setWindowFlags(QtCore.Qt.FramelessWindowHint)
@@ -7798,9 +7795,11 @@ if __name__ == "__main__":
         30, 30, round(screen_width * 0.5), round(screen_height * 0.8)
     )
     MainWindow.move(30, 30)
-
+    i = step_progressbar(i)
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
+    i = step_progressbar(i)
+    print(i)
     splash.finish(MainWindow)
     MainWindow.show()
     
