@@ -192,5 +192,3 @@ if not os.path.isdir(database):
     Dialog.show()
 
     app.exec()
-else:
-    print(True)

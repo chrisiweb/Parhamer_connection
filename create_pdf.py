@@ -278,7 +278,6 @@ def get_program(self):
 
 
 def search_in_database(self,current_program, database,suchbegriffe):
-    print('search')
     table = 'table_' + current_program
     table_lama = database.table(table)
     _file_ = Query()    

@@ -3774,7 +3774,7 @@ class Ui_MainWindow(object):
             for thema in aufgabe_total["themen"]:
                 klasse_thema, kapitel, unterkapitel = thema.split(".")
 
-                combobox_thema = "combobox_kapitel_{0}_cria_{1}".format(mode, klasse)
+                combobox_thema = "combobox_kapitel_creator_cria_{}".format(klasse)
                 dict_klasse_name = eval("dict_{}_name".format(klasse))
                 thema_name = dict_klasse_name[kapitel]
                 index = self.dict_widget_variables[combobox_thema].findText(
@@ -3782,8 +3782,8 @@ class Ui_MainWindow(object):
                 )
                 self.dict_widget_variables[combobox_thema].setCurrentIndex(index)
 
-                checkbox_thema = "checkbox_unterkapitel_{0}_{1}_{2}_{3}".format(
-                    mode, klasse, kapitel, unterkapitel
+                checkbox_thema = "checkbox_unterkapitel_creator_{0}_{1}_{2}".format(
+                    klasse, kapitel, unterkapitel
                 )
                 self.dict_widget_variables[checkbox_thema].setChecked(True)
                 if mode == 'creator':
@@ -3828,6 +3828,7 @@ class Ui_MainWindow(object):
     def reset_edit_file(self):
         self.button_choose_file.setText("Aufgabe suchen...")
         self.enable_widgets_editor(False)
+        self.plainTextEdit.clear()
         # self.groupBox_grundkompetenzen_cr.setEnabled(True)
         # self.groupBox_aufgabentyp.setEnabled(True)
         # self.comboBox_af.setEnabled(True)
@@ -4888,7 +4889,7 @@ class Ui_MainWindow(object):
         #     save_dateipfad = os.path.dirname(dateipfad)
 
         #     self.max_integer_file = self.get_max_integer_file_variation(save_dateipfad)
-        print(self.max_integer)
+        # print(self.max_integer)
 
         ############################################################################
 
@@ -7208,8 +7209,8 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             name = aufgabe.replace(" (lokal)", "")
             typ = get_aufgabentyp(self.chosen_program, name)
             aufgabe_total = get_aufgabe_total(name, typ)
-            print(aufgabe)
-            print(aufgabe_total)
+            # print(aufgabe)
+            # print(aufgabe_total)
     
 
             if self.comboBox_pruefungstyp.currentText() == "Quiz":
@@ -7408,7 +7409,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             fbpassword_check = []
             fbpassword_check.append(f.read().replace(" ", "").replace("\n", ""))
             gmail_password = fbpassword_check[0]
-            print(gmail_password)
+            # print(gmail_password)
         except FileNotFoundError:
             pw_msg = QtWidgets.QInputDialog(
                 None,
@@ -7650,7 +7651,7 @@ if __name__ == "__main__":
 
     def step_progressbar(i, text):
         progressBar.setValue(i)
-        splash.showMessage("Loading {}...".format(text), QtCore.Qt.AlignBottom | QtCore.Qt.AlignCenter)
+        splash.showMessage("{}.py".format(text), QtCore.Qt.AlignBottom | QtCore.Qt.AlignCenter)
         time.sleep(0.03)
         return i+1
 
@@ -7786,7 +7787,7 @@ if __name__ == "__main__":
     from tex_minimal import *
     i = step_progressbar(i, "filter_comands")
     from filter_commands import get_filter_string, filter_items
-    i = step_progressbar(i, "MainWindow")
+    i = step_progressbar(i, "mainwindow")
     # form = Form()
     # form.show()
     
@@ -7796,7 +7797,7 @@ if __name__ == "__main__":
         loaded_lama_file_path = ""
 
 
-    i = step_progressbar(i, "MainWindow")
+    i = step_progressbar(i, "mainwindow")
 
     MainWindow = QMainWindow()
     # MainWindow.setWindowFlags(QtCore.Qt.FramelessWindowHint)
@@ -7807,7 +7808,7 @@ if __name__ == "__main__":
         30, 30, round(screen_width * 0.5), round(screen_height * 0.8)
     )
     MainWindow.move(30, 30)
-    i = step_progressbar(i, "MainWindow")
+    i = step_progressbar(i, "mainwindow")
     ui = Ui_MainWindow()
 
     splash.finish(MainWindow)
