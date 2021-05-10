@@ -7621,14 +7621,14 @@ if __name__ == "__main__":
     
     splash = QtWidgets.QSplashScreen(splash_pix, QtCore.Qt.WindowStaysOnTopHint)
     # splash.setGeometry(0,0,500,210)
-    splash.setFixedHeight(240)
+    splash.setFixedHeight(160)
     splash.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint | QtCore.Qt.FramelessWindowHint)
     splash.setEnabled(False)
     # splash = QSplashScreen(splash_pix)
     # adding progress bar
     progressBar = QtWidgets.QProgressBar(splash)
     progressBar.setMaximum(40)
-    progressBar.setGeometry(25, splash_pix.height() - 10, splash_pix.width() - 50, 20)
+    progressBar.setGeometry(25, splash_pix.height() - 4, splash_pix.width() - 50, 20)
 
     # splash.setMask(splash_pix.mask())
 
@@ -7647,6 +7647,8 @@ if __name__ == "__main__":
     #     t = time.time()
     #     while time.time() < t + 0.1:
     app.processEvents()
+    
+
 
     # Simulate something that takes time
     i = step_progressbar(i, "threading")
@@ -7792,10 +7794,11 @@ if __name__ == "__main__":
     MainWindow.move(30, 30)
     i = step_progressbar(i, "MainWindow")
     ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    i = step_progressbar(i, "MainWindow")
     print(i)
     splash.finish(MainWindow)
+    ui.setupUi(MainWindow)
+    # i = step_progressbar(i, "MainWindow")
+    # print(i)
     MainWindow.show()
     
     sys.exit(app.exec_())
