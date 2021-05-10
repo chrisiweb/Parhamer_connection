@@ -328,6 +328,7 @@ class Ui_MainWindow(object):
             "Aufgaben suchen...",
             partial(self.update_gui, "widgets_search"),
         )
+        self.actionSuche.setVisible(False)
         self.actionSuche.setShortcut("F1")
 
         self.menuSuche.addSeparator()
@@ -439,7 +440,7 @@ class Ui_MainWindow(object):
         )
 
         self.menuBar.addAction(self.menuDatei.menuAction())
-        # self.menuBar.addAction(self.menuSuche.menuAction())
+        self.menuBar.addAction(self.menuSuche.menuAction())
         # self.menuBar.addAction(self.menuDateityp.menuAction())
         self.menuBar.addAction(self.menuSage.menuAction())
         self.menuBar.addAction(self.menuNeu.menuAction())
