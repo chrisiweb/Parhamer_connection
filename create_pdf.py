@@ -1038,7 +1038,7 @@ def extract_error_from_output(latex_output):
 def build_pdf_file(folder_name, file_name, latex_output_file):
     if sys.platform.startswith("linux") or sys.platform.startswith("darwin"):
         if "Teildokument" in file_name:
-            terminal_command = 'cd "{0}" ; latex -interaction=nonstopmode --synctex=-1 "{1}.tex" ; latex -interaction=nonstopmode --synctex=-1 "{1}.tex" ; dvips "{1}.dvi" ; ps2pdf -dNOSAFER "{1}.ps"'.format(
+            terminal_command = 'cd "{0}" ; latex -interaction=nonstopmode --synctex=-1 "{1}.tex" ; dvips "{1}.dvi" ; ps2pdf -dNOSAFER "{1}.ps"'.format(
                 folder_name, file_name
             )        
         else:
@@ -1047,7 +1047,7 @@ def build_pdf_file(folder_name, file_name, latex_output_file):
             )
          
         process = subprocess.Popen(
-            'cd "{0}" ; latex -interaction=nonstopmode --synctex=-1 "{1}.tex" ; latex -interaction=nonstopmode --synctex=-1 "{1}.tex" ; dvips "{1}.dvi" ; ps2pdf -dNOSAFER "{1}.ps"'.format(
+            'cd "{0}" ; latex -interaction=nonstopmode --synctex=-1 "{1}.tex" ; dvips "{1}.dvi" ; ps2pdf -dNOSAFER "{1}.ps"'.format(
                 folder_name, file_name
             ),
             stdout=latex_output_file,

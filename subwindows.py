@@ -461,7 +461,9 @@ class Ui_Dialog_variation(object):
         return list_
 
 
-    def add_items_to_listwidget(self, typ, filtered_items, local = False):      
+    def add_items_to_listwidget_creator(self, typ, filtered_items, local = False):
+        mode = self.MainWindow.chosen_gui
+ 
         for _file_ in filtered_items:
             if typ == "cria":
                 name = _file_["name"].split(".")[-1]
@@ -482,7 +484,7 @@ class Ui_Dialog_variation(object):
 
             item.setText(name)
 
-            if check_if_variation(_file_["name"]) == True:
+            if check_if_variation(_file_["name"]) == True and (mode == 'widgets_create' or mode == 'widgets_create_cria'):
                 continue
             else:
                 self.listWidget.addItem(item)
@@ -522,7 +524,7 @@ class Ui_Dialog_variation(object):
                 self, table_lama, typ, 'creator', filter_string, line_entry,klasse
             )
             
-            self.add_items_to_listwidget(typ, filtered_items, local)
+            self.add_items_to_listwidget_creator(typ, filtered_items, local)
         
 
 
