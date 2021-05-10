@@ -899,6 +899,19 @@ def check_if_variation(name):
     else:
         return False
 
+def create_tex(file_path, content):
+    try:
+        with open(file_path, "w", encoding="utf8") as file:
+            file.write(tex_preamble())
+            file.write(begin_beispiel_lang())
+            file.write(content)
+            file.write(end_beispiel_lang)
+            file.write(tex_end)
+        return True
+    except Exception as e:
+        return e
+
+
 def construct_tex_file(file_name, gesammeltedateien, variation):
     with open(file_name, "w", encoding="utf8") as file:
         file.write(tex_preamble(bookmark=True))
@@ -1163,7 +1176,7 @@ def delete_unneeded_files(folder_name, file_name):
     try_to_delete_file("{0}.ps".format(file_path))
 
 
-def create_pdf(path_file, index, maximum, typ=0):
+def create_pdf(path_file, index=0, maximum=0, typ=0):
     QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
     if path_file == "Teildokument":
         folder_name = "{0}/Teildokument".format(path_programm)

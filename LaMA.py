@@ -439,7 +439,7 @@ class Ui_MainWindow(object):
         )
 
         self.menuBar.addAction(self.menuDatei.menuAction())
-        self.menuBar.addAction(self.menuSuche.menuAction())
+        # self.menuBar.addAction(self.menuSuche.menuAction())
         # self.menuBar.addAction(self.menuDateityp.menuAction())
         self.menuBar.addAction(self.menuSage.menuAction())
         self.menuBar.addAction(self.menuNeu.menuAction())
@@ -1387,8 +1387,14 @@ class Ui_MainWindow(object):
         self.pushButton_save_edit.setSizePolicy(SizePolicy_fixed)
         self.pushButton_save_edit.setFocusPolicy(QtCore.Qt.NoFocus)
         self.gridLayout.addWidget(self.pushButton_save_edit, 8, 6, 1, 1)
-
         self.pushButton_save_edit.hide()
+
+        self.pushButton_vorschau_edit = create_new_button(self.centralwidget, "Vorschau", self.button_vorschau_edit_pressed)
+        self.pushButton_vorschau_edit.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout.addWidget(self.pushButton_vorschau_edit, 8,5,1,1)
+        self.pushButton_vorschau_edit.hide()
+
+        
 
 
         self.lineEdit_titel.setFocus()
@@ -4778,7 +4784,13 @@ class Ui_MainWindow(object):
         self.suchfenster_reset(True)
         self.reset_edit_file()
 
-        
+    def button_vorschau_edit_pressed(self):
+        content = self.plainTextEdit.toPlainText()
+        file_path = os.path.join(
+            path_localappdata_lama, "Teildokument", "preview.tex"
+            ) 
+        rsp = create_tex(file_path, content) 
+        create_pdf("preview")
 
     def button_speichern_pressed(self):
         # self.creator_mode = "user"
@@ -5126,8 +5138,10 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         self.groupBox_beispieleingabe.setEnabled(enabled)
         self.groupBox_quelle.setEnabled(enabled)
         self.pushButton_save_edit.setEnabled(enabled)
+        self.pushButton_vorschau_edit.setEnabled(enabled)
         self.cb_matura_tag.setEnabled(enabled)
         self.groupBox_aufgabentyp.setEnabled(enabled)
+        self.groupBox_themengebiete_cria.setEnabled(enabled)
       
     def action_add_file(self):
         self.update_gui("widgets_create")   
@@ -7693,6 +7707,7 @@ if __name__ == "__main__":
         widgets_search_cria,
         widgets_sage_cria,
         widgets_create_cria,
+        widgets_edit_cria,
         widgets_feedback_cria,
         list_widgets,
     )
@@ -7715,7 +7730,7 @@ if __name__ == "__main__":
     i = step_progressbar(i, "sort_items")
     from sort_items import natural_keys, sorted_gks, order_gesammeltedateien
     i = step_progressbar(i, "create_pdf")
-    from create_pdf import prepare_tex_for_pdf, create_pdf, check_if_variation
+    from create_pdf import prepare_tex_for_pdf, create_tex, create_pdf, check_if_variation
     i = step_progressbar(i, "refresh_ddb")
     from refresh_ddb import modification_date, refresh_ddb
     i = step_progressbar(i, "standard_dialog_windows")
