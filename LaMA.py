@@ -923,7 +923,7 @@ class Ui_MainWindow(object):
         self.groupBox_variation_cr = create_new_groupbox(
             self.centralwidget, "Aufgabenvariation"
         )
-        self.groupBox_variation_cr.setMaximumWidth(500)
+        self.groupBox_variation_cr.setMaximumWidth(350)
         self.verticalLayout_variation = create_new_verticallayout(
             self.groupBox_variation_cr
         )
@@ -942,7 +942,7 @@ class Ui_MainWindow(object):
         self.groupBox_choose_file = create_new_groupbox(
             self.centralwidget, "Aufgabe auswählen"
         )
-        self.groupBox_choose_file.setMaximumWidth(500)
+        self.groupBox_choose_file.setMaximumWidth(350)
         self.verticalLayout_choose_file = create_new_verticallayout(
             self.groupBox_choose_file
         )
@@ -964,7 +964,7 @@ class Ui_MainWindow(object):
         self.groupBox_grundkompetenzen_cr.setObjectName(
             _fromUtf8("groupBox_grundkompetenzen_cr")
         )
-        self.groupBox_grundkompetenzen_cr.setMaximumWidth(500)
+        self.groupBox_grundkompetenzen_cr.setMaximumWidth(350)
         self.gridLayout_11_cr = QtWidgets.QGridLayout(self.groupBox_grundkompetenzen_cr)
         self.gridLayout_11_cr.setObjectName(_fromUtf8("gridLayout_11_cr"))
         self.tab_widget_gk_cr = QtWidgets.QTabWidget(self.groupBox_grundkompetenzen_cr)
@@ -990,7 +990,7 @@ class Ui_MainWindow(object):
         self.groupBox_themengebiete_cria.setObjectName(
             _fromUtf8("groupBox_themengebiete_cria")
         )
-        self.groupBox_themengebiete_cria.setMaximumWidth(500)
+        self.groupBox_themengebiete_cria.setMaximumWidth(350)
         self.gridLayout_11_cr_cria = QtWidgets.QGridLayout(
             self.groupBox_themengebiete_cria
         )
@@ -1111,7 +1111,7 @@ class Ui_MainWindow(object):
         )
 
         self.groupBox_ausgew_gk_cr.setSizePolicy(SizePolicy_fixed_height)
-        self.groupBox_ausgew_gk_cr.setMaximumWidth(500)
+        self.groupBox_ausgew_gk_cr.setMaximumWidth(350)
 
         self.verticalLayout_2 = create_new_verticallayout(self.groupBox_ausgew_gk_cr)
 
@@ -1128,7 +1128,7 @@ class Ui_MainWindow(object):
         self.groupBox_bilder = create_new_groupbox(
             self.centralwidget, "Bilder (klicken, um Bilder zu entfernen)"
         )
-        self.groupBox_bilder.setMaximumWidth(500)
+        self.groupBox_bilder.setMaximumWidth(350)
         self.groupBox_bilder.setSizePolicy(SizePolicy_maximum_height)
         self.gridLayout_13 = QtWidgets.QGridLayout(self.groupBox_bilder)
         self.gridLayout_13.setObjectName(_fromUtf8("gridLayout_13"))
@@ -1390,14 +1390,18 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.pushButton_save_edit, 8, 6, 1, 1)
         self.pushButton_save_edit.hide()
 
+        self.pushButton_save_as_variation_edit = create_new_button(self.centralwidget, "Als Variation einer anderen Aufgabe speichern", self.pushButton_save_as_variation_edit)
+        self.pushButton_save_as_variation_edit.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout.addWidget(self.pushButton_save_as_variation_edit, 8,5,1,1)
+        self.pushButton_save_as_variation_edit.hide()
+
+
         self.pushButton_vorschau_edit = create_new_button(self.centralwidget, "Vorschau", self.button_vorschau_edit_pressed)
         self.pushButton_vorschau_edit.setSizePolicy(SizePolicy_fixed)
-        self.gridLayout.addWidget(self.pushButton_vorschau_edit, 8,5,1,1)
+        self.gridLayout.addWidget(self.pushButton_vorschau_edit, 8,4,1,1)
         self.pushButton_vorschau_edit.hide()
 
         
-
-
         self.lineEdit_titel.setFocus()
         self.tab_widget_gk.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -4794,6 +4798,11 @@ class Ui_MainWindow(object):
         rsp = create_tex(file_path, content) 
         create_pdf("preview")
 
+    def pushButton_save_as_variation_edit(self):
+        print('variation')
+        print(self.chosen_file_to_edit)
+
+
     def button_speichern_pressed(self):
         # self.creator_mode = "user"
         self.local_save = False
@@ -5134,6 +5143,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         self.groupBox_ausgew_gk_cr.setEnabled(enabled)
         self.groupBox_titel_cr.setEnabled(enabled)
         self.groupBox_grundkompetenzen_cr.setEnabled(enabled)
+        self.groupBox_bilder.setEnabled(enabled)
         self.groupBox_punkte.setEnabled(enabled)
         self.groupBox_klassen_cr.setEnabled(enabled)
         self.groupBox_aufgabenformat.setEnabled(enabled)
@@ -5141,6 +5151,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         self.groupBox_quelle.setEnabled(enabled)
         self.pushButton_save_edit.setEnabled(enabled)
         self.pushButton_vorschau_edit.setEnabled(enabled)
+        self.pushButton_save_as_variation_edit.setEnabled(enabled)
         self.cb_matura_tag.setEnabled(enabled)
         self.groupBox_aufgabentyp.setEnabled(enabled)
         self.groupBox_themengebiete_cria.setEnabled(enabled)
