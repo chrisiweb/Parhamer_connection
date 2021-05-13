@@ -307,20 +307,38 @@ dict_gk = config_loader(config_file, 'dict_gk')
 # ####################################
 
 
-
-# def create_local_database():
-#     folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen","WS", "WS 1.1", "Einzelbeispiele")
-# #     # folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen","WS", "WS 1.1", "Einzelbeispiele")
-#     write_to_database(folder_path,1)
-    # for all in ['k3','k4']:
-    #     # folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database",all, "Einzelbeispiele")
-    #     folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database",all, "Einzelbeispiele")
-    #     write_to_database(folder_path,0,all)
+########################################
+##### create dummy local_database - working ###
+######################################
+# def create_local_database(typ):
+#     if typ == 1:
+#         folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen","WS", "WS 1.1", "Einzelbeispiele")
+#     #     # folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen","WS", "WS 1.1", "Einzelbeispiele")
+#         write_to_database(folder_path,1)
+#     elif typ == 2:
+#         folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen","WS", "WS 1.1", "Einzelbeispiele")
+#     #     # folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen","WS", "WS 1.1", "Einzelbeispiele")
+#         write_to_database(folder_path,2)
+#     elif typ == 0:        
+#         for all in ['k3','k4']:
+#             # folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database",all, "Einzelbeispiele")
+#             folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database",all, "Einzelbeispiele")
+#             write_to_database(folder_path,0,all)
 
 # path_local_database = os.path.join(path_programm, "_database", "_local_database.json")
 # _local_database = TinyDB(path_local_database)
 
 
+# table_lama = _local_database.table('table_lama_1')
+# create_local_database(1)
+
+# # table_lama = _local_database.table('table_lama_2')
+# # create_local_database()
+
+# table_lama = _local_database.table('table_cria')
+# create_local_database(0)
+
+############################################################
 # table_lama = _local_database.table('table_lama_2')
 # table_lama.update({'abstand' : 0})
 # table_lama = _local_database.table('table_cria')

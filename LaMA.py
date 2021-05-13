@@ -3854,8 +3854,13 @@ class Ui_MainWindow(object):
             | QtCore.Qt.WindowCloseButtonHint,
         )
         ui = Ui_Dialog_variation()
-        ui.setupUi(Dialog, self)
-        # self.Dialog.show()
+
+        if mode == "creator":
+            show_variations = False
+        elif mode == "editor":
+            show_variations = True
+        ui.setupUi(Dialog, self, show_variations)
+
         response = Dialog.exec()
 
         if response == 1:
@@ -4806,8 +4811,72 @@ class Ui_MainWindow(object):
         create_pdf("preview")
 
     def pushButton_save_as_variation_edit(self):
-        print('variation')
-        print(self.chosen_file_to_edit)
+        Dialog = QtWidgets.QDialog(
+            None,
+            QtCore.Qt.WindowSystemMenuHint
+            | QtCore.Qt.WindowTitleHint
+            | QtCore.Qt.WindowCloseButtonHint,
+        )
+        ui = Ui_Dialog_variation()
+        ui.setupUi(Dialog, self, False)
+        # self.Dialog.show()
+        response = Dialog.exec()
+
+        if response == 0:
+            return
+        
+        self.chosen_variation = ui.chosen_variation
+
+        if self.chosen_variation == None:
+            self.pushButton_save_as_variation_edit.setText("Als Variation einer anderen Aufgabe speichern")
+            return
+        
+        # self.pushButton_save_as_variation_edit.setText("")
+
+        if "local" in self.chosen_variation:
+            database = _local_database
+        else:
+            database = _database
+
+
+
+        # if typ_save[0] == "local":
+        #     database = _local_database
+        # else:
+        #     database = _database
+
+        if self.chosen_program == "cria":
+            typ = None
+            typ_name = "cria"
+        else:
+            typ = self.comboBox_aufgabentyp_cr.currentIndex() + 1
+            typ_name = "lama_{}".format(typ)
+        
+        table = "table_" + typ_name
+        table_lama = database.table(table)
+
+        # database =
+        # if self.chosen_variation == None:
+        # save_dateipfad = self.create_aufgabenpfad(typ_save)
+        
+        max_integer = self.get_max_integer(table_lama, typ)
+
+        name = self.create_file_name(typ, max_integer)
+
+        _file_ = Query()
+        table_lama.update({'name' : name}, _file_.name == self.chosen_file_to_edit)
+        # print(self.chosen_file_to_edit)
+        # print(name)
+        information_window("Die Änderungen wurden erfolgreich gespeichert.")
+
+        self.suchfenster_reset(True)
+        self.reset_edit_file()
+
+        # aufgabe = self.chosen_file_to_edit
+        # print(self.chosen_file_to_edit)
+        # typ = get_aufgabentyp(self.chosen_program, aufgabe)
+        # aufgabe_total = get_aufgabe_total(aufgabe, typ)
+        # print(aufgabe_total)
 
 
     def button_speichern_pressed(self):

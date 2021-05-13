@@ -193,9 +193,11 @@ class Ui_Dialog_choose_type(object):
 
 
 class Ui_Dialog_variation(object):
-    def setupUi(self, Dialog, MainWindow):
+    def setupUi(self, Dialog, MainWindow, show_variations = False):
         self.MainWindow = MainWindow
         self.chosen_program = self.MainWindow.chosen_program
+
+        self.show_variations = show_variations
         # self.beispieldaten_dateipfad_cria = MainWindow.beispieldaten_dateipfad_cria
         # self.beispieldaten_dateipfad_1 = MainWindow.beispieldaten_dateipfad_1
         # self.beispieldaten_dateipfad_2 = MainWindow.beispieldaten_dateipfad_2
@@ -462,8 +464,8 @@ class Ui_Dialog_variation(object):
 
 
     def add_items_to_listwidget_creator(self, typ, filtered_items, local = False):
-        mode = self.MainWindow.chosen_gui
- 
+        # mode = self.MainWindow.chosen_gui
+        print(local)
         for _file_ in filtered_items:
             if typ == "cria":
                 name = _file_["name"].split(".")[-1]
@@ -484,7 +486,7 @@ class Ui_Dialog_variation(object):
 
             item.setText(name)
 
-            if check_if_variation(_file_["name"]) == True and (mode == 'widgets_create' or mode == 'widgets_create_cria'):
+            if check_if_variation(_file_["name"]) == True and self.show_variations==False:
                 continue
             else:
                 self.listWidget.addItem(item)
