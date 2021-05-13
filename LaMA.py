@@ -1373,33 +1373,40 @@ class Ui_MainWindow(object):
         )
         self.groupBox_quelle.hide()
 
+
+        self.horizontalLayout_buttons = create_new_horizontallayout()
+        self.gridLayout.addLayout(self.horizontalLayout_buttons, 8, 1, 1, 6)
         
+        self.horizontalLayout_buttons.addStretch()
         self.pushButton_save = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_save.setObjectName(_fromUtf8("pushButton_save"))
         self.pushButton_save.setFocusPolicy(QtCore.Qt.NoFocus)
         self.pushButton_save.setSizePolicy(SizePolicy_fixed)
-        self.gridLayout.addWidget(self.pushButton_save, 8, 6, 1, 1)
+        self.horizontalLayout_buttons.addWidget(self.pushButton_save)
         self.pushButton_save.setText(_translate("MainWindow", "Speichern", None))
 
-        # self.pushButton_save.setShortcut(_translate("MainWindow", "Return", None))
+        # # self.pushButton_save.setShortcut(_translate("MainWindow", "Return", None))
         self.pushButton_save.hide()
-
-        self.pushButton_save_edit = create_new_button(self.centralwidget, "Änderung speichern", self.button_save_edit_pressed)
-        self.pushButton_save_edit.setSizePolicy(SizePolicy_fixed)
-        self.pushButton_save_edit.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.gridLayout.addWidget(self.pushButton_save_edit, 8, 6, 1, 1)
-        self.pushButton_save_edit.hide()
-
-        self.pushButton_save_as_variation_edit = create_new_button(self.centralwidget, "Als Variation einer anderen Aufgabe speichern", self.pushButton_save_as_variation_edit)
-        self.pushButton_save_as_variation_edit.setSizePolicy(SizePolicy_fixed)
-        self.gridLayout.addWidget(self.pushButton_save_as_variation_edit, 8,5,1,1)
-        self.pushButton_save_as_variation_edit.hide()
 
 
         self.pushButton_vorschau_edit = create_new_button(self.centralwidget, "Vorschau", self.button_vorschau_edit_pressed)
         self.pushButton_vorschau_edit.setSizePolicy(SizePolicy_fixed)
-        self.gridLayout.addWidget(self.pushButton_vorschau_edit, 8,4,1,1)
+        self.horizontalLayout_buttons.addWidget(self.pushButton_vorschau_edit)
         self.pushButton_vorschau_edit.hide()
+
+        self.pushButton_save_as_variation_edit = create_new_button(self.centralwidget, "Als Variation einer anderen Aufgabe speichern", self.pushButton_save_as_variation_edit)
+        self.pushButton_save_as_variation_edit.setSizePolicy(SizePolicy_fixed)
+        self.horizontalLayout_buttons.addWidget(self.pushButton_save_as_variation_edit)
+        self.pushButton_save_as_variation_edit.hide()
+
+        self.pushButton_save_edit = create_new_button(self.centralwidget, "Änderung speichern", self.button_save_edit_pressed)
+        self.pushButton_save_edit.setSizePolicy(SizePolicy_fixed)
+        self.pushButton_save_edit.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.horizontalLayout_buttons.addWidget(self.pushButton_save_edit)
+        self.pushButton_save_edit.hide()
+
+
+
 
         
         self.lineEdit_titel.setFocus()
