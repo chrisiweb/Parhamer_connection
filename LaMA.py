@@ -224,6 +224,7 @@ class Ui_MainWindow(object):
         self.menuBar = QtWidgets.QMenuBar(MainWindow)
         self.menuBar.setGeometry(QtCore.QRect(0, 0, 950, 21))
         self.menuBar.setObjectName(_fromUtf8("menuBar"))
+        self.menuBar.setStyleSheet("QMenu::item:disabled{color: gray}")
         # self.menuDateityp = QtWidgets.QMenu(self.menuBar)
         # self.menuDateityp.setObjectName(_fromUtf8("menuDateityp"))
         self.menuDatei = QtWidgets.QMenu(self.menuBar)
@@ -276,7 +277,7 @@ class Ui_MainWindow(object):
             "Datenbank hochladen",
             partial(self.action_push_database, True, None),
         )
-
+        # self.actionPush_Database.setEnabled(False)
 
         # if self.developer_mode_active == False:
         #     self.actionPush_Database.setVisible(False)
@@ -328,7 +329,8 @@ class Ui_MainWindow(object):
             "Aufgaben suchen...",
             partial(self.update_gui, "widgets_search"),
         )
-        self.actionSuche.setVisible(False)
+        # self.actionSuche.setVisible(False)
+        self.actionSuche.setEnabled(False)
         self.actionSuche.setShortcut("F1")
 
         self.menuSuche.addSeparator()
@@ -352,11 +354,13 @@ class Ui_MainWindow(object):
         self.actionSave = add_action(
             MainWindow, self.menuSage, "Prüfung speichern", self.sage_save
         )
+        self.actionSave.setEnabled(False)
         self.actionSave.setShortcut("Ctrl+S")
 
         self.actionLoad = add_action(
-            MainWindow, self.menuSage, "Prüfung öffnen", self.sage_load
+            MainWindow, self.menuSage, "Prüfung laden", self.sage_load
         )
+        # self.actionLoad.setEnabled(False)
         self.actionLoad.setShortcut("Ctrl+O")
 
         self.menuSage.addSeparator()
@@ -364,7 +368,8 @@ class Ui_MainWindow(object):
         self.actionReset_sage = add_action(
             MainWindow, self.menuSage, "Reset Prüfung", partial(self.reset_sage, True)
         )
-        self.actionReset_sage.setVisible(False)
+        self.actionReset_sage.setEnabled(False)
+        # self.actionReset_sage.setVisible(False)
 
 
 
@@ -3274,25 +3279,25 @@ class Ui_MainWindow(object):
     #     print('done')
     #     # QtWidgets.QApplication.restoreOverrideCursor()
 
-    def git_check_changes(self):
-        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        path_programdata = os.getenv("PROGRAMDATA")
-        database = os.path.join(path_programdata, "LaMA", "_database")
-        repo = git.Repo(database)
-        # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        if repo.is_dirty(untracked_files=True):
-            print("changes detected")
-        else:
-            print("no changes found")
-        QtWidgets.QApplication.restoreOverrideCursor()
+    # def git_check_changes(self):
+    #     QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+    #     path_programdata = os.getenv("PROGRAMDATA")
+    #     database = os.path.join(path_programdata, "LaMA", "_database")
+    #     repo = git.Repo(database)
+    #     # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+    #     if repo.is_dirty(untracked_files=True):
+    #         print("changes detected")
+    #     else:
+    #         print("no changes found")
+    #     QtWidgets.QApplication.restoreOverrideCursor()
 
-    def git_pull_request(self):
-        # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        path_programdata = os.getenv("PROGRAMDATA")
-        database = os.path.join(path_programdata, "LaMA", "_database")
-        repo = git.Repo(database)
+    # def git_pull_request(self):
+    #     # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+    #     path_programdata = os.getenv("PROGRAMDATA")
+    #     database = os.path.join(path_programdata, "LaMA", "_database")
+    #     repo = git.Repo(database)
 
-        repo.create_pull(title="Test")
+    #     repo.create_pull(title="Test")
 
     def show_info(self):
         QtWidgets.QApplication.restoreOverrideCursor()
@@ -4416,7 +4421,7 @@ class Ui_MainWindow(object):
 
         if self.chosen_program == "cria":
             highest_grade = self.get_highest_grade()
-            name = "{0}{1}_{2}_{3}".format(local, highest_grade, number, name)
+            name = "{0}_{1}_{2}".format(highest_grade, number, name)
 
         elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
             # thema, klasse = self.split_thema_klasse(
@@ -4424,7 +4429,7 @@ class Ui_MainWindow(object):
             # )
             # if thema == None:
             thema = shorten_gk(self.list_selected_topics_creator[0]).upper()
-            name = "{0}{1}_{2}_{3}".format(local, thema, number, name)
+            name = "{0}_{1}_{2}".format(thema, number, name)
             # print(self.chosen_variation)
             # print(name)
             # else:
@@ -4433,7 +4438,7 @@ class Ui_MainWindow(object):
             #     )
 
         elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
-            name = "{0}{1}_{2}".format(local, number, name)
+            name = "{0}_{1}".format(number, name)
 
         return name
 
@@ -5846,7 +5851,8 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         for aufgabe in self.list_alle_aufgaben_sage:
             typ = get_aufgabentyp(self.chosen_program, aufgabe)
             if typ == 2:
-                collect_content(self, aufgabe)
+                # collect_content(self, aufgabe)
+                aufgabe_total = get_aufgabe_total(aufgabe, 'lama_2')
                 number = self.count_ausgleichspunkte(aufgabe_total["content"])
                 number_ausgleichspkt_gesamt += number
 
@@ -7607,18 +7613,20 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                 list_delete += item
         for all in list_delete:
             if "action" in all:
-                exec("self.%s.setVisible(False)" % all)
-            elif "menu" in all:
-                exec("self.menuBar.removeAction(self.%s.menuAction())" % all)
+                exec("self.%s.setEnabled(False)" % all)
+                # exec("self.%s.setVisible(False)" % all)
+            # elif "menu" in all:
+            #     exec("self.menuBar.removeAction(self.%s.menuAction())" % all)
             elif "layout" in all.lower():
                 exec("self.%s.setParent(None)" % all)
             else:
                 exec("self.%s.hide()" % all)
         for all in chosen_gui_list:
             if "action" in all:
-                exec("self.%s.setVisible(True)" % all)
-            elif "menu" in all:
-                exec("self.menuBar.addAction(self.%s.menuAction())" % all)
+                exec("self.%s.setEnabled(True)" % all)
+                # exec("self.%s.setVisible(True)" % all)
+            # elif "menu" in all:
+            #     exec("self.menuBar.addAction(self.%s.menuAction())" % all)
             elif "layout" in all.lower():
                 exec("self.gridLayout.addLayout(self.{}, 0, 0, 1, 1)".format(all))
             else:
@@ -7684,6 +7692,7 @@ if __name__ == "__main__":
     palette.setColor(
         QtGui.QPalette.Disabled, QtGui.QPalette.WindowText, QtCore.Qt.darkGray
     )
+
     # palette.setColor(QtGui.QPalette.Disabled,QtGui.QPalette.Base, QtCore.Qt.gray)
     # palette.setColor(QtGui.QPalette.ButtonText, QtCore.Qt.white)
     # palette.setColor(QtGui.QPalette.BrightText, QtCore.Qt.red)
