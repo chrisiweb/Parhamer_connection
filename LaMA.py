@@ -7810,19 +7810,40 @@ if __name__ == "__main__":
         list_widgets,
     )
     i = step_progressbar(i, "subwindows")
-    from subwindows import (
-        Ui_Dialog_Welcome_Window,
-        Ui_Dialog_choose_type,
-        Ui_Dialog_titlepage,
-        Ui_Dialog_random_quiz,
-        Ui_Dialog_ausgleichspunkte,
-        Ui_Dialog_erstellen,
-        Ui_Dialog_speichern,
-        Ui_Dialog_variation,
-        Ui_Dialog_setup,
-        Ui_Dialog_developer,
-        read_credentials,
-    )
+    from subwindows import Ui_Dialog_Welcome_Window
+    i = step_progressbar(i, "subwindows")
+    from subwindows import Ui_Dialog_choose_type
+    i = step_progressbar(i, "subwindows")
+    from subwindows import Ui_Dialog_titlepage
+    i = step_progressbar(i, "subwindows")
+    from subwindows import Ui_Dialog_random_quiz
+    i = step_progressbar(i, "subwindows")
+    from subwindows import Ui_Dialog_ausgleichspunkte
+    i = step_progressbar(i, "subwindows")
+    from subwindows import Ui_Dialog_erstellen
+    i = step_progressbar(i, "subwindows")
+    from subwindows import Ui_Dialog_speichern
+    i = step_progressbar(i, "subwindows")
+    from subwindows import Ui_Dialog_variation
+    i = step_progressbar(i, "subwindows")
+    from subwindows import Ui_Dialog_setup
+    i = step_progressbar(i, "subwindows")
+    from subwindows import Ui_Dialog_developer
+    i = step_progressbar(i, "subwindows")
+    from subwindows import read_credentials
+    # from subwindows import (
+        # Ui_Dialog_Welcome_Window,
+        # Ui_Dialog_choose_type,
+        # Ui_Dialog_titlepage,
+        # Ui_Dialog_random_quiz,
+        # Ui_Dialog_ausgleichspunkte,
+        # Ui_Dialog_erstellen,
+        # Ui_Dialog_speichern,
+        # Ui_Dialog_variation,
+        # Ui_Dialog_setup,
+        # Ui_Dialog_developer,
+        # read_credentials,
+    # )
     i = step_progressbar(i, "translate")
     from translate import _fromUtf8, _translate
     i = step_progressbar(i, "sort_items")
