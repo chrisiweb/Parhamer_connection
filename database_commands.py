@@ -1,9 +1,7 @@
 from tinydb import TinyDB, Query
 from tinydb.operations import set
 import os
-import sys
 import re
-import yaml
 from config_start import path_programm
 from config import config_loader, config_file
 

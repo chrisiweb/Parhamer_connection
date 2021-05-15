@@ -1,37 +1,30 @@
-from PyQt5 import QtCore, QtWidgets, QtGui
-from PyQt5.QtWidgets import QMainWindow, QApplication
+from PyQt5.QtGui import QCursor, QIcon
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, Qt, 
+from PyQt5.QtWidgets import QApplication, QMessageBox,
 import sys
 import os
-import signal
 import re
 import json
 import subprocess
-from functools import partial
-from config_start import path_programm, database, path_localappdata_lama, lama_settings_file
+from config_start import path_programm, path_localappdata_lama, lama_settings_file
 from config import (
-    colors_ui,
-    get_color,
     config_file,
     config_loader,
     logo_path,
-    logo_cria_button_path,
     is_empty,
-    split_section,
-    preamble,
 )
 import json
 import shutil
-import datetime
-import time
-from datetime import date
+from datetime import date, timedelta 
+from time import sleep
 from refresh_ddb import refresh_ddb, modification_date
-from sort_items import natural_keys, lama_order, typ2_order, order_gesammeltedateien
+from sort_items import order_gesammeltedateien
 from standard_dialog_windows import question_window, warning_window
-from processing_window import Ui_Dialog_processing, working_window
+from processing_window import working_window
 import webbrowser
-from tinydb import Query, TinyDB
+from tinydb import Query
 from database_commands import _database
-from tex_minimal import *
+from tex_minimal import tex_preamble, tex_end, begin_beispiel, end_beispiel, begin_beispiel_lang, end_beispiel_lang
 
 
 
@@ -52,10 +45,10 @@ list_klassen = config_loader(config_file, "list_klassen")
 dict_aufgabenformate = config_loader(config_file, "dict_aufgabenformate")
 
 
-class Worker_CreatePDF(QtCore.QObject):
-    finished = QtCore.pyqtSignal()
+class Worker_CreatePDF(QObject):
+    finished = pyqtSignal()
 
-    @QtCore.pyqtSlot()
+    @pyqtSlot()
     def task(self, folder_name, file_name, latex_output_file):
         process = build_pdf_file(folder_name, file_name, latex_output_file)
         process.poll()
@@ -97,8 +90,8 @@ def refresh_ddb_according_to_intervall(self, log_file):
         self.lama_settings['database']=2
 
     if self.lama_settings['database']==1:
-        today = datetime.date.today()
-        week_ago = today - datetime.timedelta(days=7)
+        today = date.today()
+        week_ago = today - timedelta(days=7)
         week_ago = week_ago.strftime("%y%m%d")
         date_logfile = modification_date(log_file).strftime("%y%m%d")
         # print('week')
@@ -106,7 +99,7 @@ def refresh_ddb_according_to_intervall(self, log_file):
             refresh_ddb(self)
 
     elif self.lama_settings['database'] == 2:
-        month_today = datetime.date.today().strftime("%m")
+        month_today = date.today().strftime("%m")
         month_update_log_file = modification_date(log_file).strftime("%m")
         # print('month')
         if month_today != month_update_log_file:
@@ -290,13 +283,13 @@ def check_if_suchbegriffe_is_empty(suchbegriffe):
     return True
 
 def prepare_tex_for_pdf(self):
-    QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+    QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
     suchbegriffe = collect_suchbegriffe(self)
 
     response = check_if_suchbegriffe_is_empty(suchbegriffe)
 
     if response == True:
-        QtWidgets.QApplication.restoreOverrideCursor()
+        QApplication.restoreOverrideCursor()
         warning_window("Bitte wählen Sie zumindest ein Suchkriterium aus.")
         return
 
@@ -359,16 +352,16 @@ def prepare_tex_for_pdf(self):
 
     number_of_files = get_output_size(gesammeltedateien, variation)
 
-    QtWidgets.QApplication.restoreOverrideCursor()
+    QApplication.restoreOverrideCursor()
     if number_of_files == 0:
         warning_window("Es konnten keine Aufgaben mit angegebenen Suchkriterien gefunden werden!")
         return
         
 
     
-    msg = QtWidgets.QMessageBox()
-    msg.setIcon(QtWidgets.QMessageBox.Question)
-    msg.setWindowIcon(QtGui.QIcon(logo_path))
+    msg = QMessageBox()
+    msg.setIcon(QMessageBox.Question)
+    msg.setWindowIcon(QIcon(logo_path))
     msg.setText(
         "Insgesamt wurden "
         + str(number_of_files)
@@ -376,15 +369,15 @@ def prepare_tex_for_pdf(self):
     )
     msg.setInformativeText("Soll die PDF Datei erstellt werden?")
     msg.setWindowTitle("Datei ausgeben?")
-    msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-    buttonY = msg.button(QtWidgets.QMessageBox.Yes)
+    msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+    buttonY = msg.button(QMessageBox.Yes)
     buttonY.setText("Ja")
-    buttonN = msg.button(QtWidgets.QMessageBox.No)
+    buttonN = msg.button(QMessageBox.No)
     buttonN.setText("Nein")
-    msg.setDefaultButton(QtWidgets.QMessageBox.Yes)
+    msg.setDefaultButton(QMessageBox.Yes)
     ret = msg.exec_()
 
-    if ret == QtWidgets.QMessageBox.Yes:
+    if ret == QMessageBox.Yes:
         if self.chosen_program == "lama":
             typ = str(self.combobox_aufgabentyp.currentIndex()+1)#self.label_aufgabentyp.text()[-1]
         elif self.chosen_program == "cria":
@@ -530,7 +523,7 @@ def extract_error_from_output(latex_output):
         except UnboundLocalError:
             detailed_text = "Undefined Error"
 
-        QtWidgets.QApplication.restoreOverrideCursor()
+        QApplication.restoreOverrideCursor()
         response = question_window(
             "Es ist ein Fehler beim Erstellen der PDF-Datei aufgetreten. Dadurch konnte die PDF-Datei nicht vollständig erzeugt werden.\n\n"
             + "Dies kann viele unterschiedliche Ursachen haben (siehe Details).\n"
@@ -665,7 +658,7 @@ def loading_animation(process):
             break
         print(animation[idx % len(animation)], end="\r")
         idx += 1
-        time.sleep(0.1)
+        sleep(0.1)
 
 
 def try_to_delete_file(file):
@@ -685,7 +678,7 @@ def delete_unneeded_files(folder_name, file_name):
 
 
 def create_pdf(path_file, index=0, maximum=0, typ=0):
-    QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+    QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
     if path_file == "Teildokument":
         folder_name = "{0}/Teildokument".format(path_programm)
         file_name = path_file + "_" + typ
@@ -739,5 +732,5 @@ def create_pdf(path_file, index=0, maximum=0, typ=0):
     except Exception as e:
         print("Error: " + str(e))
         return
-    QtWidgets.QApplication.restoreOverrideCursor()
+    QApplication.restoreOverrideCursor()
 

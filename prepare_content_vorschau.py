@@ -1,6 +1,6 @@
 import os
 import shutil
-from config_start import path_programm, database, path_localappdata_lama
+from config_start import database, path_localappdata_lama
 from config import is_empty
 from work_with_content import collect_content #, split_content_no_environment
 from standard_dialog_windows import warning_window

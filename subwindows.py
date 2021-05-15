@@ -23,7 +23,6 @@ from create_new_widgets import (
     create_new_horizontallayout,
     create_new_gridlayout,
     create_new_button,
-    create_standard_button,
     create_new_label,
     create_new_checkbox,
     create_new_combobox,
@@ -36,7 +35,6 @@ from standard_dialog_windows import critical_window, information_window, questio
 # from waitingspinnerwidget import QtWaitingSpinner
 from predefined_size_policy import SizePolicy_fixed, SizePolicy_fixed_height, SizePolicy_maximum
 from work_with_content import prepare_content_for_hide_show_items
-from sort_items import sorted_gks
 from lama_stylesheets import (
     StyleSheet_tabWidget,
     StyleSheet_ausgleichspunkte,

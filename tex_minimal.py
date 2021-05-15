@@ -1,14 +1,3 @@
-import os
-from config_start import database
-
-
-# tex_preamble = os.path.join(database, "_config", 'preamble.tex')
-
-# with open(tex_preamble, "r", encoding='utf-8') as f:
-#     tex_preamble = f.read()
-
-
-
 def tex_preamble(
     solution = "solution_on",
     random = 0,
