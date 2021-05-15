@@ -14,17 +14,6 @@ def collect_content(self, aufgabe, readlines=False):
     return content
 
 
-def get_section_from_content(content):
-    split_content = content.split("\n")
-    for all in split_content:
-        if "section" in all:
-            section = all
-            break
-    try:
-        return section
-    except UnboundLocalError:
-        return
-
 
 def split_all_items_of_list(chosen_list, string):
     temporary_list = []

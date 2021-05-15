@@ -1,6 +1,6 @@
 from PyQt5.QtGui import QCursor, QIcon
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, Qt, 
-from PyQt5.QtWidgets import QApplication, QMessageBox,
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, Qt
+from PyQt5.QtWidgets import QApplication, QMessageBox
 import sys
 import os
 import re

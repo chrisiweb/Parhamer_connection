@@ -6630,7 +6630,7 @@ if __name__ == "__main__":
     # splash = QSplashScreen(splash_pix)
     # adding progress bar
     progressBar = QtWidgets.QProgressBar(splash)
-    progressBar.setMaximum(40)
+    progressBar.setMaximum(46)
     progressBar.setGeometry(25, splash_pix.height() - 4, splash_pix.width() - 50, 20)
 
     # splash.setMask(splash_pix.mask())
@@ -6700,8 +6700,8 @@ if __name__ == "__main__":
         widgets_feedback_cria,
         list_widgets,
     )
-    i = step_progressbar(i, "subwindows")
-    from subwindows import Ui_Dialog_Welcome_Window
+    # i = step_progressbar(i, "subwindows")
+    # from subwindows import Ui_Dialog_Welcome_Window
     i = step_progressbar(i, "subwindows")
     from subwindows import Ui_Dialog_choose_type
     i = step_progressbar(i, "subwindows")
@@ -6737,8 +6737,6 @@ if __name__ == "__main__":
     # )
     i = step_progressbar(i, "translate")
     from translate import _fromUtf8, _translate
-    i = step_progressbar(i, "sort_items")
-    from sort_items import natural_keys, sorted_gks, order_gesammeltedateien
     i = step_progressbar(i, "create_pdf")
     from create_pdf import prepare_tex_for_pdf, create_tex, create_pdf, check_if_variation
     i = step_progressbar(i, "refresh_ddb")
@@ -6760,13 +6758,11 @@ if __name__ == "__main__":
         split_aufgaben_content_new_format,
         split_aufgaben_content,
         edit_content_quiz,
-        get_section_from_content,
     )
     i = step_progressbar(i, "build_titlepage")
     from build_titlepage import get_titlepage_vorschau
     i = step_progressbar(i, "prepare_content_vorschau")
     from prepare_content_vorschau import (
-        edit_content_vorschau,
         copy_logo_to_target_path,
         copy_included_images,
     )
@@ -6817,6 +6813,7 @@ if __name__ == "__main__":
     )
     MainWindow.move(30, 30)
     i = step_progressbar(i, "mainwindow")
+    print(i)
     ui = Ui_MainWindow()
 
     splash.finish(MainWindow)
