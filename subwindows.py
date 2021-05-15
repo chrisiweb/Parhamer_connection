@@ -1,11 +1,13 @@
-from PyQt5 import QtCore, QtWidgets, QtGui
+from PyQt5 import QtWidgets
+from PyQt5.QtGui import QIcon, QCursor, QTextCursor
+from PyQt5.QtCore import Qt, QSize, QRect, QMetaObject, QCoreApplication
 import os
 import shutil
-import json
+from json import load, dump
 import re
 from string import ascii_lowercase
 from functools import partial
-from config_start import path_programm, database, path_localappdata_lama, lama_settings_file, lama_developer_credentials
+from config_start import path_programm,path_localappdata_lama, lama_settings_file, lama_developer_credentials
 from config import (
     config_loader,
     config_file,
@@ -14,7 +16,6 @@ from config import (
     logo_path,
     logo_cria_button_path,
     is_empty,
-    still_to_define,
 )
 from translate import _fromUtf8, _translate
 from create_new_widgets import (
@@ -143,7 +144,7 @@ class Ui_Dialog_choose_type(object):
         Dialog.setWindowTitle(
             _translate("Titelplatt anpassen", "Programm auswählen", None)
         )
-        Dialog.setWindowIcon(QtGui.QIcon(logo_path))
+        Dialog.setWindowIcon(QIcon(logo_path))
 
         # Dialog.setStyleSheet("QToolTip { color: white; background-color: rgb(47, 69, 80); border: 0px; }")
         Dialog.setSizePolicy(SizePolicy_fixed)
@@ -153,20 +154,20 @@ class Ui_Dialog_choose_type(object):
         self.btn_lama_cria = QtWidgets.QPushButton()
         self.btn_lama_cria.setObjectName(_fromUtf8("btn_lama_cria"))
         # self.btn_lama_cria.setText("LaMA Cria (Unterstufe)")
-        self.btn_lama_cria.setIcon(QtGui.QIcon(logo_cria_button_path))
-        self.btn_lama_cria.setIconSize(QtCore.QSize(120, 120))
+        self.btn_lama_cria.setIcon(QIcon(logo_cria_button_path))
+        self.btn_lama_cria.setIconSize(QSize(120, 120))
         self.btn_lama_cria.setFixedSize(120, 120)
         self.btn_lama_cria.setStyleSheet(
             _fromUtf8("background-color: rgb(63, 169, 245);")
         )
         self.btn_lama_cria.setAutoDefault(False)
         self.btn_lama_cria.setShortcut("F1")
-        self.gridLayout.addWidget(self.btn_lama_cria, 0, 0, 1, 1, QtCore.Qt.AlignCenter)
+        self.gridLayout.addWidget(self.btn_lama_cria, 0, 0, 1, 1, Qt.AlignCenter)
         self.label_lama_cria = QtWidgets.QLabel()
         self.label_lama_cria.setObjectName(_fromUtf8("label_lama_cria"))
         self.label_lama_cria.setText("LaMA Cria (Unterstufe)")
         self.gridLayout.addWidget(
-            self.label_lama_cria, 1, 0, 1, 1, QtCore.Qt.AlignCenter
+            self.label_lama_cria, 1, 0, 1, 1, Qt.AlignCenter
         )
         # self.btn_lama_cria.setMaximumWidth(130)
         self.btn_lama_cria.clicked.connect(partial(self.choose_button_pressed, "cria"))
@@ -174,17 +175,17 @@ class Ui_Dialog_choose_type(object):
         self.btn_lama = QtWidgets.QPushButton()
         self.btn_lama.setObjectName(_fromUtf8("btn_lama"))
         # self.btn_lama.setText("LaMA (Oberstufe)")
-        self.btn_lama.setIcon(QtGui.QIcon(logo_path))
-        self.btn_lama.setIconSize(QtCore.QSize(120, 120))
+        self.btn_lama.setIcon(QIcon(logo_path))
+        self.btn_lama.setIconSize(QSize(120, 120))
         self.btn_lama.setShortcut("F2")
         self.btn_lama.setFixedSize(120, 120)
         self.btn_lama.setAutoDefault(False)
-        self.gridLayout.addWidget(self.btn_lama, 0, 1, 1, 1, QtCore.Qt.AlignCenter)
+        self.gridLayout.addWidget(self.btn_lama, 0, 1, 1, 1, Qt.AlignCenter)
         self.btn_lama.clicked.connect(partial(self.choose_button_pressed, "lama"))
         self.label_lama = QtWidgets.QLabel()
         self.label_lama.setObjectName(_fromUtf8("label_lama"))
         self.label_lama.setText("LaMA (Oberstufe)")
-        self.gridLayout.addWidget(self.label_lama, 1, 1, 1, 1, QtCore.Qt.AlignCenter)
+        self.gridLayout.addWidget(self.label_lama, 1, 1, 1, 1, Qt.AlignCenter)
 
     def choose_button_pressed(self, chosen_program):
         self.chosen_program = chosen_program
@@ -205,7 +206,7 @@ class Ui_Dialog_variation(object):
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
         Dialog.setWindowTitle("Vorhandene Aufgabe auswählen")
-        Dialog.setWindowIcon(QtGui.QIcon(logo_path))
+        Dialog.setWindowIcon(QIcon(logo_path))
         verticalLayout_variation = create_new_verticallayout(Dialog)
 
         self.groupBox_alle_aufgaben = QtWidgets.QGroupBox()
@@ -231,7 +232,7 @@ class Ui_Dialog_variation(object):
             self.comboBox_at_sage.currentIndexChanged.connect(
                 self.comboBox_at_sage_changed
             )
-            self.comboBox_at_sage.setFocusPolicy(QtCore.Qt.ClickFocus)
+            self.comboBox_at_sage.setFocusPolicy(Qt.ClickFocus)
 
             # self.comboBox_at_sage.hide()
 
@@ -244,12 +245,12 @@ class Ui_Dialog_variation(object):
                 self.comboBox_gk.setItemText(index, _translate("MainWindow", all, None))
                 index += 1
             self.comboBox_gk.currentIndexChanged.connect(self.comboBox_gk_changed)
-            self.comboBox_gk.setFocusPolicy(QtCore.Qt.ClickFocus)
+            self.comboBox_gk.setFocusPolicy(Qt.ClickFocus)
             self.verticalLayout_sage.addWidget(self.comboBox_gk)
             self.comboBox_gk_num = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
             self.comboBox_gk_num.setObjectName("comboBox_gk_num")
             self.comboBox_gk_num.currentIndexChanged.connect(self.adapt_choosing_list)
-            self.comboBox_gk_num.setFocusPolicy(QtCore.Qt.ClickFocus)
+            self.comboBox_gk_num.setFocusPolicy(Qt.ClickFocus)
             self.verticalLayout_sage.addWidget(self.comboBox_gk_num)
 
         ##### ComboBox LaMA Cria ####
@@ -270,7 +271,7 @@ class Ui_Dialog_variation(object):
                 self.comboBox_klassen_changed
             )
 
-            self.comboBox_klassen.setFocusPolicy(QtCore.Qt.ClickFocus)
+            self.comboBox_klassen.setFocusPolicy(Qt.ClickFocus)
             self.verticalLayout_sage.addWidget(self.comboBox_klassen)
 
             self.comboBox_kapitel = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
@@ -278,7 +279,7 @@ class Ui_Dialog_variation(object):
             self.comboBox_kapitel.currentIndexChanged.connect(
                 self.comboBox_kapitel_changed
             )
-            self.comboBox_kapitel.setFocusPolicy(QtCore.Qt.ClickFocus)
+            self.comboBox_kapitel.setFocusPolicy(Qt.ClickFocus)
             self.verticalLayout_sage.addWidget(self.comboBox_kapitel)
 
             self.comboBox_unterkapitel = QtWidgets.QComboBox(
@@ -288,12 +289,12 @@ class Ui_Dialog_variation(object):
             self.comboBox_unterkapitel.currentIndexChanged.connect(
                 self.adapt_choosing_list
             )
-            self.comboBox_unterkapitel.setFocusPolicy(QtCore.Qt.ClickFocus)
+            self.comboBox_unterkapitel.setFocusPolicy(Qt.ClickFocus)
             self.verticalLayout_sage.addWidget(self.comboBox_unterkapitel)
 
         self.lineEdit_number = QtWidgets.QLineEdit(self.groupBox_alle_aufgaben)
         self.lineEdit_number.setObjectName("lineEdit_number")
-        # self.lineEdit_number.setValidator(QtGui.QIntValidator())
+        # self.lineEdit_number.setValidator(QIntValidator())
         self.lineEdit_number.textChanged.connect(self.adapt_choosing_list)
         self.verticalLayout_sage.addWidget(self.lineEdit_number)
         self.listWidget = QtWidgets.QListWidget(self.groupBox_alle_aufgaben)
@@ -535,7 +536,7 @@ class Ui_Dialog_random_quiz(object):
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
         Dialog.setWindowTitle("Zufälliges Quiz")
-        Dialog.setWindowIcon(QtGui.QIcon(logo_path))
+        Dialog.setWindowIcon(QIcon(logo_path))
         self.gridlayout_random_quiz = QtWidgets.QGridLayout(Dialog)
         self.gridlayout_random_quiz.setObjectName("gridlayout_random_quiz")
 
@@ -607,10 +608,10 @@ class Ui_Dialog_titlepage(object):
             _translate("Titelplatt anpassen", "Titelplatt anpassen", None)
         )
         # self.Dialog.resize(600, 400)
-        # self.Dialog.setWindowIcon(QtGui.QIcon(logo_path))
+        # self.Dialog.setWindowIcon(QIcon(logo_path))
         # Dialog.setObjectName("Dialog")
         # Dialog.resize(468, 208)
-        Dialog.setWindowIcon(QtGui.QIcon(logo_path))
+        Dialog.setWindowIcon(QIcon(logo_path))
         self.verticalLayout_titlepage = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout_titlepage.setObjectName("verticalLayout_titlepage")
 
@@ -806,7 +807,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.Dialog.setObjectName("Dialog")
         self.Dialog.setWindowTitle("Aufgabe bearbeiten")
         self.Dialog.resize(600, 400)
-        self.Dialog.setWindowIcon(QtGui.QIcon(logo_path))
+        self.Dialog.setWindowIcon(QIcon(logo_path))
 
         self.gridlayout_titlepage = create_new_gridlayout(Dialog)
         # self.gridLayout_2 = QtWidgets.QGridLayout(Dialog)
@@ -832,7 +833,7 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.scrollArea.setWidgetResizable(True)
             self.scrollArea.setObjectName("scrollArea")
             self.scrollAreaWidgetContents = QtWidgets.QWidget()
-            self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 600, 500))
+            self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 600, 500))
             self.scrollArea.setFrameShape(QtWidgets.QFrame.StyledPanel)
             self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
 
@@ -845,7 +846,7 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.label_einleitung.setText(
                 "[...] EINFÜHRUNGSTEXT [...] \n\nAufgabenstellung:\n"
             )
-            self.gridLayout.addWidget(self.label_einleitung, 0, 1, 1, 3, QtCore.Qt.AlignTop)
+            self.gridLayout.addWidget(self.label_einleitung, 0, 1, 1, 3, Qt.AlignTop)
 
             self.label_solution = QtWidgets.QLabel(self.scrollAreaWidgetContents)
             self.label_solution.setWordWrap(True)
@@ -872,7 +873,7 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.plainTextEdit_content.insertPlainText(self.list_sage_individual_change[0])
         else:
             self.plainTextEdit_content.insertPlainText(self.content_no_environment)
-        self.plainTextEdit_content.moveCursor(QtGui.QTextCursor.Start)
+        self.plainTextEdit_content.moveCursor(QTextCursor.Start)
         self.plainTextEdit_content.ensureCursorVisible()
         # self.plainTextEdit_content_changed.verticalScrollBar().setValue(0)
         self.gridlayout_titlepage.addWidget(self.plainTextEdit_content, 1,0,1,6)
@@ -916,42 +917,42 @@ class Ui_Dialog_ausgleichspunkte(object):
 
 
         path_undo = os.path.join(path_programm, "_database", "_config", "icon", "undo-arrow.png")
-        # self.button_undo = create_standard_button(Dialog, "", still_to_define,QtGui.QIcon(path_undo))
+        # self.button_undo = create_standard_button(Dialog, "", still_to_define,QIcon(path_undo))
         self.button_undo = create_new_button(Dialog, "", self.button_undo_pressed)
-        self.button_undo.setIcon(QtGui.QIcon(path_undo))
+        self.button_undo.setIcon(QIcon(path_undo))
         self.button_undo.setSizePolicy(SizePolicy_maximum)
         self.button_undo.setToolTip("Rückgängig (Strg+Z)")
         self.button_undo.setShortcut("Ctrl+Z")
-        self.gridlayout_titlepage.addWidget(self.button_undo, 0,4,1,1, QtCore.Qt.AlignLeft)
+        self.gridlayout_titlepage.addWidget(self.button_undo, 0,4,1,1, Qt.AlignLeft)
 
 
 
         path_redo = os.path.join(path_programm, "_database", "_config", "icon", "redo-arrow.png")
-        # self.button_undo = create_standard_button(Dialog, "", still_to_define,QtGui.QIcon(path_undo))
+        # self.button_undo = create_standard_button(Dialog, "", still_to_define,QIcon(path_undo))
         self.button_redo = create_new_button(Dialog, "", self.button_redo_pressed)
-        self.button_redo.setIcon(QtGui.QIcon(path_redo))
+        self.button_redo.setIcon(QIcon(path_redo))
         self.button_redo.setSizePolicy(SizePolicy_maximum)
         self.button_redo.setToolTip("Wiederherstellen (Strg+Y)")
         self.button_redo.setShortcut("Ctrl+Y")
         # self.button_redo = create_standard_button(Dialog, "", still_to_define,QtWidgets.QStyle.SP_ArrowForward)
-        self.gridlayout_titlepage.addWidget(self.button_redo, 0,4,1,1, QtCore.Qt.AlignRight)
+        self.gridlayout_titlepage.addWidget(self.button_redo, 0,4,1,1, Qt.AlignRight)
 
        
 
         
         path_zoom_in = os.path.join(path_programm, "_database", "_config", "icon", "zoom-in.png")
         self.button_zoom_in = create_new_button(Dialog, "", self.plainTextEdit_content.zoomIn)
-        self.button_zoom_in.setIcon(QtGui.QIcon(path_zoom_in))
+        self.button_zoom_in.setIcon(QIcon(path_zoom_in))
         self.button_zoom_in.setSizePolicy(SizePolicy_maximum)
-        self.gridlayout_titlepage.addWidget(self.button_zoom_in,0,5,1,1, QtCore.Qt.AlignLeft)
+        self.gridlayout_titlepage.addWidget(self.button_zoom_in,0,5,1,1, Qt.AlignLeft)
         self.button_zoom_in.setShortcut("Ctrl++")
         
 
         path_zoom_out = os.path.join(path_programm, "_database", "_config", "icon", "zoom-out.png")
         self.button_zoom_out = create_new_button(Dialog, "", self.plainTextEdit_content.zoomOut)
-        self.button_zoom_out.setIcon(QtGui.QIcon(path_zoom_out))
+        self.button_zoom_out.setIcon(QIcon(path_zoom_out))
         self.button_zoom_out.setSizePolicy(SizePolicy_maximum)
-        self.gridlayout_titlepage.addWidget(self.button_zoom_out,0,5,1,1, QtCore.Qt.AlignRight)
+        self.gridlayout_titlepage.addWidget(self.button_zoom_out,0,5,1,1, Qt.AlignRight)
         self.button_zoom_out.setShortcut("Ctrl+-")
         
 
@@ -964,7 +965,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.change_detected_0 = False
         self.change_detected_1 = False
         self.change_detected_2 = False
-        QtCore.QMetaObject.connectSlotsByName(self.Dialog)
+        QMetaObject.connectSlotsByName(self.Dialog)
 
     def change_detected_warning(self):
         response = question_window("Es wurden bereits nicht gespeicherte Änderungen an der Aufgabe vorgenommen.",
@@ -1162,7 +1163,7 @@ class Ui_Dialog_ausgleichspunkte(object):
                 row += 1
                 item_number += 1
 
-        self.gridLayout.addWidget(self.label_solution, row, 1, 1, 3, QtCore.Qt.AlignTop)
+        self.gridLayout.addWidget(self.label_solution, row, 1, 1, 3, Qt.AlignTop)
         row += 1
         self.gridLayout.setRowStretch(row, 1)
 
@@ -1176,7 +1177,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.checkbox_changed(1)
         try: 
             with open(lama_settings_file, "r", encoding="utf8") as f:
-                self.lama_settings = json.load(f)
+                self.lama_settings = load(f)
         except FileNotFoundError:
             self.lama_settings = {}
         
@@ -1200,7 +1201,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         checkbox = create_new_checkbox(self.scrollAreaWidgetContents, "")
         checkbox.setSizePolicy(SizePolicy_fixed)
 
-        self.gridLayout.addWidget(checkbox, row, 0, 1, 1, QtCore.Qt.AlignTop)
+        self.gridLayout.addWidget(checkbox, row, 0, 1, 1, Qt.AlignTop)
 
         if "\\fbox{A}" in linetext:
             linetext = linetext.replace("\\fbox{A}", "")
@@ -1234,7 +1235,7 @@ class Ui_Dialog_ausgleichspunkte(object):
 
         checkbox_label.setText(linetext)
 
-        self.gridLayout.addWidget(checkbox_label, row, 1, 1, 2, QtCore.Qt.AlignTop)
+        self.gridLayout.addWidget(checkbox_label, row, 1, 1, 2, Qt.AlignTop)
         return checkbox, checkbox_label
 
     def checkbox_label_clicked(self, checkbox, checkbox_label):
@@ -1339,7 +1340,7 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
         self.Dialog = Dialog
         Dialog.setObjectName("Dialog")
         Dialog.resize(468, 208)
-        Dialog.setWindowIcon(QtGui.QIcon(logo_path))
+        Dialog.setWindowIcon(QIcon(logo_path))
         self.gridLayout = QtWidgets.QGridLayout(Dialog)
         self.gridLayout.setObjectName("gridLayout")
         self.pushButton_sw_save = QtWidgets.QPushButton(Dialog)
@@ -1358,15 +1359,15 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
         self.label_sw_num_ges.setObjectName("label_sw_num_ges")
         self.gridLayout_2.addWidget(self.label_sw_num_ges, 6, 0, 1, 1)
         self.label_sw_num_1 = QtWidgets.QLabel(self.groupBox_sw_data)
-        self.label_sw_num_1.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.label_sw_num_1.setLayoutDirection(Qt.LeftToRight)
         self.label_sw_num_1.setObjectName("label_sw_num_1")
         self.gridLayout_2.addWidget(
-            self.label_sw_num_1, 3, 0, 1, 1, QtCore.Qt.AlignLeft
+            self.label_sw_num_1, 3, 0, 1, 1, Qt.AlignLeft
         )
         self.label_sw_num_2 = QtWidgets.QLabel(self.groupBox_sw_data)
         self.label_sw_num_2.setObjectName("label_sw_num_2")
         self.gridLayout_2.addWidget(
-            self.label_sw_num_2, 4, 0, 1, 1, QtCore.Qt.AlignLeft
+            self.label_sw_num_2, 4, 0, 1, 1, Qt.AlignLeft
         )
         self.label_sw_pkt_ges = QtWidgets.QLabel(self.groupBox_sw_data)
         self.label_sw_pkt_ges.setObjectName("label_sw_pkt_ges")
@@ -1461,7 +1462,7 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
             self.label_sw_pkt_2.hide()
             self.label_sw_pkt_2_int.hide()
 
-        QtCore.QMetaObject.connectSlotsByName(Dialog)
+        QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
         datum = (
@@ -1471,7 +1472,7 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
             + "."
             + str(self.data_gesamt["Datum"][0])
         )
-        _translate = QtCore.QCoreApplication.translate
+        _translate = QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Erstellen", "Erstellen"))
         self.radioButton_sw_ns.setText(_translate("Dialog", "Notenschlüssel"))
         self.pushButton_sw_save.setText(_translate("Dialog", "Speichern"))
@@ -1545,7 +1546,7 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
         Dialog.setStyleSheet(
             "color: white; background-color: {0}".format(get_color(blue_7))
         )
-        Dialog.setWindowIcon(QtGui.QIcon(logo_path))
+        Dialog.setWindowIcon(QIcon(logo_path))
         gridlayout = create_new_gridlayout(Dialog)
         label_question = create_new_label(
             Dialog,
@@ -1561,7 +1562,7 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
             self.cb_confirm = create_new_checkbox(Dialog, "")
             self.cb_confirm.setSizePolicy(SizePolicy_fixed)
             self.cb_confirm.setStyleSheet("background-color: white; color: black;")
-            gridlayout.addWidget(self.cb_confirm, 2, 0, 1, 1, QtCore.Qt.AlignTop)
+            gridlayout.addWidget(self.cb_confirm, 2, 0, 1, 1, Qt.AlignTop)
             self.label_checkbox = create_new_label(
                 Dialog,
                 "Hiermit bestätige ich, dass ich die eingegebene Aufgabe eigenständig und\nunter Berücksichtigung des Urheberrechtsgesetzes verfasst habe.\n"
@@ -1571,7 +1572,7 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
                 True,
             )
             self.label_checkbox.setStyleSheet("padding-bottom: 20px;")
-            gridlayout.addWidget(self.label_checkbox, 2, 1, 1, 1, QtCore.Qt.AlignTop)
+            gridlayout.addWidget(self.label_checkbox, 2, 1, 1, 1, Qt.AlignTop)
             self.label_checkbox.clicked.connect(self.label_checkbox_clicked)
 
         if self.creator_mode == "admin":
@@ -1664,7 +1665,7 @@ class Ui_Dialog_setup(object):
         self.MainWindow = MainWindow
         try: 
             with open(lama_settings_file, "r", encoding="utf8") as f:
-                self.lama_settings = json.load(f)
+                self.lama_settings = load(f)
         except FileNotFoundError:
             self.lama_settings = {
                 'start_program' : 0,
@@ -1683,7 +1684,7 @@ class Ui_Dialog_setup(object):
         Dialog.setWindowTitle("Einstellungen")
         row=0
         # self.Dialog.setMinimumWidth(400)
-        Dialog.setWindowIcon(QtGui.QIcon(logo_path))
+        Dialog.setWindowIcon(QIcon(logo_path))
         gridlayout_setup = create_new_gridlayout(Dialog)
 
         groupbox_start_program = create_new_groupbox(Dialog, "Auswahl beim Programmstart")
@@ -1864,7 +1865,7 @@ class Ui_Dialog_setup(object):
             information_window("Die Änderung der Darstellung wird erst nach dem Neustart von LaMA übernommen.")
         self.lama_settings = self.save_settings_to_dict()
         with open(lama_settings_file, "w+", encoding="utf8") as f:
-            json.dump(self.lama_settings, f, ensure_ascii=False)
+            dump(self.lama_settings, f, ensure_ascii=False)
         self.MainWindow.lineEdit_quelle.setText(self.lineedit_quelle.text())
         self.Dialog.accept()
     
@@ -1877,7 +1878,7 @@ class Ui_Dialog_developer(object):
         Dialog.setWindowTitle("Entwicklermodus aktivieren")
         row=0
         # self.Dialog.setMinimumWidth(400)
-        Dialog.setWindowIcon(QtGui.QIcon(logo_path))
+        Dialog.setWindowIcon(QIcon(logo_path))
         gridlayout_developer = create_new_gridlayout(Dialog)
 
         label_developer = create_new_label(Dialog, "Bitte geben Sie das Passwort ein, um den Entwicklermodus zu aktivieren")
@@ -1911,7 +1912,7 @@ class Ui_Dialog_developer(object):
 
 
     def save_password(self):
-        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        QtWidgets.QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
 
 
         hashed_pw = read_credentials()

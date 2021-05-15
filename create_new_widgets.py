@@ -1,4 +1,5 @@
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtWidgets
+from PyQt5.QtCore import Qt
 from config import SpinBox_noWheel, ClickLabel
 from translate import _fromUtf8, _translate
 from predefined_size_policy import SizePolicy_fixed
@@ -90,8 +91,8 @@ def create_new_button(parent, text, command):
 def create_standard_button(parent, text, command, icon=""):
     new_standard_button = create_new_button(parent, "", command)
     new_standard_button.setSizePolicy(SizePolicy_fixed)
-    # new_standard_button.setMaximumSize(QtCore.QSize(30, 30))
-    new_standard_button.setFocusPolicy(QtCore.Qt.ClickFocus)
+    # new_standard_button.setMaximumSize(QSize(30, 30))
+    new_standard_button.setFocusPolicy(Qt.ClickFocus)
     # new_standard_button.setStyleSheet(_fromUtf8("background-color: light gray"))
     new_standard_button.setIcon(QtWidgets.QApplication.style().standardIcon(icon))
 
@@ -119,7 +120,7 @@ def create_new_combobox(parent):
 def create_new_radiobutton(parent, text):
     new_radiobutton = QtWidgets.QRadioButton(parent)
     new_radiobutton.setObjectName("{}".format(new_radiobutton))
-    new_radiobutton.setFocusPolicy(QtCore.Qt.ClickFocus)
+    new_radiobutton.setFocusPolicy(Qt.ClickFocus)
     new_radiobutton.setText(_translate("MainWindow", text, None))
 
     return new_radiobutton

@@ -1,4 +1,4 @@
-import re
+from re import sub, split
 from database_commands import get_aufgabe_total, get_aufgabentyp
 
 
@@ -69,8 +69,8 @@ def split_content_no_environment(content):
         if "\\leer" in all:
             split_content[i] = all.replace("\\leer","\\leer\n")
         # print(all)
-        # split_content[i] = re.sub(r"[\t]*","", all) 
-    split_content[0] = re.sub(r"[\t]*","", split_content[0]) 
+        # split_content[i] = sub(r"[\t]*","", all) 
+    split_content[0] = sub(r"[\t]*","", split_content[0]) 
     # print(split_content)
     content_no_environment = merge_list_to_string(split_content)
     # print(content_no_environment)
@@ -142,7 +142,7 @@ def split_aufgaben_content_new_format(content):
 
 def split_aufgaben_content(content):
     ## mode ='ausgleichspunkte', 'show_hide_items'
-    x = re.split("Aufgabenstellung:}|Lösungserwartung:}", content)
+    x = split("Aufgabenstellung:}|Lösungserwartung:}", content)
     try:
         aufgabenstellung = x[1].replace("\t", "")
     except IndexError:

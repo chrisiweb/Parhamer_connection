@@ -1,40 +1,40 @@
-from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import QSizePolicy
 
-SizePolicy_fixed = QtWidgets.QSizePolicy(
-    QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed
+SizePolicy_fixed = QSizePolicy(
+    QSizePolicy.Fixed, QSizePolicy.Fixed
 )
-SizePolicy_fixed_height = QtWidgets.QSizePolicy(
-    QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed
+SizePolicy_fixed_height = QSizePolicy(
+    QSizePolicy.Expanding, QSizePolicy.Fixed
 )
-SizePolicy_fixed_width = QtWidgets.QSizePolicy(
-    QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding
+SizePolicy_fixed_width = QSizePolicy(
+    QSizePolicy.Fixed, QSizePolicy.Expanding
 )
-SizePolicy_preferred = QtWidgets.QSizePolicy(
-    QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred
+SizePolicy_preferred = QSizePolicy(
+    QSizePolicy.Preferred, QSizePolicy.Preferred
 )
-SizePolicy_preferred_width = QtWidgets.QSizePolicy(
-    QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding
+SizePolicy_preferred_width = QSizePolicy(
+    QSizePolicy.Preferred, QSizePolicy.Expanding
 )
-SizePolicy_maximum = QtWidgets.QSizePolicy(
-    QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum
+SizePolicy_maximum = QSizePolicy(
+    QSizePolicy.Maximum, QSizePolicy.Maximum
 )
-SizePolicy_maximum_height = QtWidgets.QSizePolicy(
-    QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum
+SizePolicy_maximum_height = QSizePolicy(
+    QSizePolicy.Expanding, QSizePolicy.Maximum
 )
-SizePolicy_maximum_width = QtWidgets.QSizePolicy(
-    QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Expanding
+SizePolicy_maximum_width = QSizePolicy(
+    QSizePolicy.Maximum, QSizePolicy.Expanding
 )
-SizePolicy_minimum = QtWidgets.QSizePolicy(
-    QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+SizePolicy_minimum = QSizePolicy(
+    QSizePolicy.Minimum, QSizePolicy.Minimum
 )
-SizePolicy_minimum_height = QtWidgets.QSizePolicy(
-    QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+SizePolicy_minimum_height = QSizePolicy(
+    QSizePolicy.Expanding, QSizePolicy.Minimum
 )
-SizePolicy_minimum_width = QtWidgets.QSizePolicy(
-    QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+SizePolicy_minimum_width = QSizePolicy(
+    QSizePolicy.Minimum, QSizePolicy.Expanding
 )
 
-SizePolicy_minimum_fixed =QtWidgets.QSizePolicy(
-    QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed
+SizePolicy_minimum_fixed =QSizePolicy(
+    QSizePolicy.Minimum, QSizePolicy.Fixed
 )
 
