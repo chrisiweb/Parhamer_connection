@@ -3,6 +3,8 @@ from database_commands import get_aufgabe_total, get_aufgabentyp
 
 
 def collect_content(self, aufgabe, readlines=False):
+    aufgabe = aufgabe.replace(" (lokal)","")
+
     typ = get_aufgabentyp(self.chosen_program, aufgabe)
     aufgabe_total = get_aufgabe_total(aufgabe, typ)
 
@@ -38,32 +40,32 @@ def get_subitem(string):
     else:
         return "SUBitem" + string
 
-def split_content_no_environment(content):
-    split_content = content.splitlines()
-    # split_content = content.split('\\begin{beispiel}')
-    # print(split_content)
-    for i, line in enumerate(split_content):
-        if '\\begin{langesbeispiel}' in line or '\\begin{beispiel}' in line:
-            split_content = split_content[i+1:]
-            break
+# def split_content_no_environment(content):
+#     split_content = content.splitlines()
+#     # split_content = content.split('\\begin{beispiel}')
+#     # print(split_content)
+#     for i, line in enumerate(split_content):
+#         if '\\begin{langesbeispiel}' in line or '\\begin{beispiel}' in line:
+#             split_content = split_content[i+1:]
+#             break
 
-    for i, line in enumerate(split_content):
-        if '\\end{langesbeispiel}' in line or '\\end{beispiel}' in line:
-            split_content = split_content[:i]
-            break
+#     for i, line in enumerate(split_content):
+#         if '\\end{langesbeispiel}' in line or '\\end{beispiel}' in line:
+#             split_content = split_content[:i]
+#             break
     
-    # print(split_content[0])
-    # print(split_content)
-    for i, all in enumerate(split_content):
-        if "\\leer" in all:
-            split_content[i] = all.replace("\\leer","\\leer\n")
-        # print(all)
-        # split_content[i] = sub(r"[\t]*","", all) 
-    split_content[0] = sub(r"[\t]*","", split_content[0]) 
-    # print(split_content)
-    content_no_environment = merge_list_to_string(split_content)
-    # print(content_no_environment)
-    return content_no_environment
+#     # print(split_content[0])
+#     # print(split_content)
+#     for i, all in enumerate(split_content):
+#         if "\\leer" in all:
+#             split_content[i] = all.replace("\\leer","\\leer\n")
+#         # print(all)
+#         # split_content[i] = sub(r"[\t]*","", all) 
+#     split_content[0] = sub(r"[\t]*","", split_content[0]) 
+#     # print(split_content)
+#     content_no_environment = merge_list_to_string(split_content)
+#     # print(content_no_environment)
+#     return content_no_environment
 
 def split_aufgaben_content_new_format(content):
     ## mode ='ausgleichspunkte', 'show_hide_items'

@@ -4241,7 +4241,11 @@ class Ui_MainWindow(object):
             path_localappdata_lama, "Teildokument", "preview.tex"
             ) 
         rsp = create_tex(file_path, content) 
-        create_pdf("preview")
+    
+        if rsp == True:
+            create_pdf("preview")
+        else:
+            critical_window("Die PDF Datei konnte nicht erstellt werden", detailed_text= rsp)
 
     def pushButton_save_as_variation_edit(self):
         Dialog = QtWidgets.QDialog(
@@ -5490,65 +5494,68 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
     def pushButton_ausgleich_pressed(self, aufgabe):
         content = collect_content(self, aufgabe)
 
-        content_no_environment = split_content_no_environment(content)
+        # content_no_environment = split_content_no_environment(content)
 
+        # print(content_no_environment)
+        # return
         # print(aufgabe)
         typ = get_aufgabentyp(self.chosen_program, aufgabe)
         # return
         if typ == 2:
-            try:
-                split_content, index_end = split_aufgaben_content(content)
-                split_content = split_content[:index_end]
-            except Exception as e1:
-                try:
-                    split_content = split_aufgaben_content_new_format(content)
-                except Exception as e2:
-                    split_content = None
-                if split_content == None:
-                    warning_window(
-                        "Es ist ein Fehler bei der Anzeige der Aufgabe {} aufgetreten! (Die Aufgabe kann voraussichtlich dennoch verwendet und individuell in der TeX-Datei bearbeitet werden.)\n".format(
-                            aufgabe
-                        ),
-                        'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!',
-                    )
-                    return
+            print('typ2')
+            # try:
+            #     split_content, index_end = split_aufgaben_content(content)
+            #     split_content = split_content[:index_end]
+            # except Exception as e1:
+            #     try:
+            #         split_content = split_aufgaben_content_new_format(content)
+            #     except Exception as e2:
+            #         split_content = None
+            #     if split_content == None:
+            #         warning_window(
+            #             "Es ist ein Fehler bei der Anzeige der Aufgabe {} aufgetreten! (Die Aufgabe kann voraussichtlich dennoch verwendet und individuell in der TeX-Datei bearbeitet werden.)\n".format(
+            #                 aufgabe
+            #             ),
+            #             'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!',
+            #         )
+            #         return
 
-            if aufgabe in self.dict_sage_ausgleichspunkte_chosen.keys():
-                list_sage_ausgleichspunkte_chosen = (
-                    self.dict_sage_ausgleichspunkte_chosen[aufgabe]
-                )
-            else:
-                list_sage_ausgleichspunkte_chosen = []
-                for all in split_content:
-                    if "\\fbox{A}" in all:
-                        x = all.replace("\\fbox{A}", "")
-                        list_sage_ausgleichspunkte_chosen.append(x)
-                    if "\\ASubitem" in all:
-                        x = all.replace("\\ASubitem", "")
-                        list_sage_ausgleichspunkte_chosen.append(x)
+            # if aufgabe in self.dict_sage_ausgleichspunkte_chosen.keys():
+            #     list_sage_ausgleichspunkte_chosen = (
+            #         self.dict_sage_ausgleichspunkte_chosen[aufgabe]
+            #     )
+            # else:
+            #     list_sage_ausgleichspunkte_chosen = []
+            #     for all in split_content:
+            #         if "\\fbox{A}" in all:
+            #             x = all.replace("\\fbox{A}", "")
+            #             list_sage_ausgleichspunkte_chosen.append(x)
+            #         if "\\ASubitem" in all:
+            #             x = all.replace("\\ASubitem", "")
+            #             list_sage_ausgleichspunkte_chosen.append(x)
 
-            if aufgabe in self.dict_sage_hide_show_items_chosen.keys():
-                list_sage_hide_show_items_chosen = (
-                    self.dict_sage_hide_show_items_chosen[aufgabe]
-                )
-            else:
-                list_sage_hide_show_items_chosen = []
+            # if aufgabe in self.dict_sage_hide_show_items_chosen.keys():
+            #     list_sage_hide_show_items_chosen = (
+            #         self.dict_sage_hide_show_items_chosen[aufgabe]
+            #     )
+            # else:
+            #     list_sage_hide_show_items_chosen = []
 
-            if aufgabe in self.dict_sage_individual_change.keys():
-                list_sage_individual_change = self.dict_sage_individual_change[aufgabe]
-            else:
-                list_sage_individual_change = []
+            # if aufgabe in self.dict_sage_individual_change.keys():
+            #     list_sage_individual_change = self.dict_sage_individual_change[aufgabe]
+            # else:
+            #     list_sage_individual_change = []
         else:
             if aufgabe in self.dict_sage_individual_change.keys():
-                list_sage_individual_change = self.dict_sage_individual_change[aufgabe]
+                sage_individual_change = self.dict_sage_individual_change[aufgabe]
             else:
-                list_sage_individual_change = []
+                sage_individual_change = None
             list_sage_hide_show_items_chosen = []
             list_sage_ausgleichspunkte_chosen = []
             # list_sage_individual_change =  []
             split_content = None
 
-        self.Dialog = QtWidgets.QDialog(
+        Dialog = QtWidgets.QDialog(
             None,
             QtCore.Qt.WindowSystemMenuHint
             | QtCore.Qt.WindowTitleHint
@@ -5556,22 +5563,24 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             | QtCore.Qt.WindowMaximizeButtonHint
             | QtCore.Qt.WindowMinimizeButtonHint,
         )
-        self.ui = Ui_Dialog_ausgleichspunkte()
-        self.ui.setupUi(
-            self.Dialog,
+        ui = Ui_Dialog_ausgleichspunkte()
+        ui.setupUi(
+            Dialog,
             aufgabe,
             typ,
-            content_no_environment,
+            content,
             split_content,
             list_sage_ausgleichspunkte_chosen,
             list_sage_hide_show_items_chosen,
-            list_sage_individual_change,
+            sage_individual_change,
             self.display_mode,
         )
 
-        self.Dialog.exec_()
+        Dialog.exec_()
 
-        self.dict_sage_individual_change[aufgabe] = self.ui.list_sage_individual_change
+        if ui.sage_individual_change != None:
+            self.dict_sage_individual_change[aufgabe] = ui.sage_individual_change
+
         # print(self.ui.list_sage_individual_change)
         # print(self.dict_sage_individual_change)
         # print(self.dict_alle_aufgaben_sage)
@@ -6041,6 +6050,14 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         # return
         # spinbox_pkt = self.dict_alle_aufgaben_sage[aufgabe][0]
 
+        # print(aufgabe)
+        # print(self.dict_sage_individual_change)
+        # if aufgabe in self.dict_sage_individual_change:
+        #     print(True)
+        #     print(self.dict_sage_individual_change[aufgabe])
+        # else:
+        #     print(False)
+
         if get_aufgabentyp(self.chosen_program, aufgabe) == 2:
             if first_typ2 == False:
                 header = "\\newpage \n\n\subsubsection{Typ 2 Aufgaben}\n\n"
@@ -6069,10 +6086,14 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         else:
             vspace = "\\vspace{{{0}cm}} \n\n".format(abstand)
 
+        
         with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
             vorschau.write(header)
             vorschau.write(begin)
-            vorschau.write(aufgabe_total["content"])
+            if aufgabe in self.dict_sage_individual_change:
+                vorschau.write(self.dict_sage_individual_change[aufgabe])
+            else:
+                vorschau.write(aufgabe_total["content"])
             vorschau.write(vspace)
             vorschau.write(end)
             vorschau.write("\n\n")
@@ -6754,7 +6775,6 @@ if __name__ == "__main__":
     i = step_progressbar(i, "work_with_content")
     from work_with_content import (
         collect_content,
-        split_content_no_environment,
         split_aufgaben_content_new_format,
         split_aufgaben_content,
         edit_content_quiz,

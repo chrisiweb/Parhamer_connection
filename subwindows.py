@@ -42,7 +42,7 @@ from lama_stylesheets import (
     StyleSheet_subwindow_ausgleichspunkte,
     StyleSheet_subwindow_ausgleichspunkte_dark_mode,
 )
-from create_pdf import create_pdf, check_if_variation
+from create_pdf import create_tex, create_pdf, check_if_variation
 import bcrypt
 from database_commands import _database, _local_database
 from filter_commands import get_filter_string, filter_items
@@ -779,16 +779,16 @@ class Ui_Dialog_ausgleichspunkte(object):
         Dialog,
         aufgabe,
         typ,
-        content_no_environment,
+        content,
         aufgabenstellung_split_text,
         list_sage_ausgleichspunkte_chosen,
         list_sage_hide_show_items_chosen,
-        list_sage_individual_change,
+        sage_individual_change,
         display_mode
     ):
-        # print(list_sage_individual_change)
-        self.content_no_environment = content_no_environment
-        self.list_sage_individual_change = list_sage_individual_change
+        # print(sage_individual_change)
+        self.content = content
+        self.sage_individual_change = sage_individual_change
         self.typ = typ
         if typ==2:
             self.aufgabenstellung_split_text = aufgabenstellung_split_text
@@ -797,7 +797,7 @@ class Ui_Dialog_ausgleichspunkte(object):
             )
             self.list_sage_ausgleichspunkte_chosen = list_sage_ausgleichspunkte_chosen
             self.list_sage_hide_show_items_chosen = list_sage_hide_show_items_chosen
-            # print(list_sage_individual_change)
+            # print(sage_individual_change)
             self.dict_widget_variables_ausgleichspunkte = {}
             self.dict_widget_variables_hide_show_items = {}
 
@@ -867,10 +867,10 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.plainTextEdit_content.setObjectName(_fromUtf8("plainTextEdit_content"))
         self.plainTextEdit_content.textChanged.connect(self.plainTextEdit_content_changed)
         self.plainTextEdit_content.setUndoRedoEnabled(False)
-        if self.list_sage_individual_change != []:
-            self.plainTextEdit_content.insertPlainText(self.list_sage_individual_change[0])
+        if self.sage_individual_change != None:
+            self.plainTextEdit_content.insertPlainText(self.sage_individual_change)
         else:
-            self.plainTextEdit_content.insertPlainText(self.content_no_environment)
+            self.plainTextEdit_content.insertPlainText(self.content)
         self.plainTextEdit_content.moveCursor(QTextCursor.Start)
         self.plainTextEdit_content.ensureCursorVisible()
         # self.plainTextEdit_content_changed.verticalScrollBar().setValue(0)
@@ -880,7 +880,7 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.plainTextEdit_content.hide()
 
 
-        self.button_preview = create_new_button(Dialog, "Vorschau", partial(self.button_preview_pressed, typ))
+        self.button_preview = create_new_button(Dialog, "Vorschau", self.button_preview_pressed)
         self.button_preview.setSizePolicy(SizePolicy_maximum)
         self.button_preview.setShortcut("Ctrl+Return")
         self.button_preview.setToolTip("Strg+Enter")
@@ -998,7 +998,7 @@ class Ui_Dialog_ausgleichspunkte(object):
                 else:
                     if index == 2:
                         self.plainTextEdit_content.clear()
-                        self.plainTextEdit_content.insertPlainText(self.content_no_environment)  
+                        self.plainTextEdit_content.insertPlainText(self.content)  
                     self.change_detected_0=False
                     self.change_detected_1=False
                     self.change_detected_2=False
@@ -1042,7 +1042,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         rsp = question_window("Sind Sie sicher, dass sie die originale Aufgabe wiederherstellen wollen?")
         if rsp == True:
             self.plainTextEdit_content.clear()
-            self.plainTextEdit_content.insertPlainText(self.content_no_environment)
+            self.plainTextEdit_content.insertPlainText(self.content)
             information_window("Die originale Aufgabe wurde wiederhergestellt.",titel="Original wiederhergestellt")
 
     def button_undo_pressed(self):
@@ -1068,45 +1068,56 @@ class Ui_Dialog_ausgleichspunkte(object):
 
 
     def button_preview_pressed(self, typ):
-        if typ == 2:
-            begin_beispiel = "\\begin{langesbeispiel}\item[0]"
-            end_beispiel = "\\end{langesbeispiel}"
-        else:
-            begin_beispiel = "\\begin{beispiel}{0}"
-            end_beispiel = "\\end{beispiel}"
-        filename_preview = os.path.join(
-                path_programm, "Teildokument", "preview.tex"
+        file_path = os.path.join(
+            path_localappdata_lama, "Teildokument", "preview.tex"
             )
-        with open(filename_preview, "w+" ,encoding="utf8") as file:
-            file.write(
-                "\documentclass[a4paper,12pt]{{report}}\n\n"
-                "\\usepackage{{geometry}}\n"
-                "\geometry{{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}}\n\n"
-                "\\usepackage{{lmodern}}\n"
-                "\\usepackage[T1]{{fontenc}}\n"
-                "\\usepackage[utf8]{{inputenc}}\n"
-                "\\usepackage[ngerman]{{babel}}\n"
-                "\\usepackage[solution_on]{{srdp-mathematik}}% solution_on/off, random=0,1,2,...\n\n"
-                # "\setcounter{{Zufall}}{{{3}}}\n\n\n"
-                "\pagestyle{{empty}} %PAGESTYLE: empty, plain\n"
-                "\onehalfspacing %Zeilenabstand\n"
-                "\setcounter{{secnumdepth}}{{-1}} % keine Nummerierung der Ueberschriften\n\n\n\n"
-                "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"
-                "%%%%%%%%%%%%%%%%%% DOKUMENT - ANFANG %%%%%%%%%%%%%%%%%%\n"
-                "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n\n"
-                "\\begin{{document}}\n"
-                "{0}"
-                "{1}"
-                "{2}"
-                "\n\end{{document}}".format(
-                    begin_beispiel,
-                    self.plainTextEdit_content.toPlainText(),
-                    end_beispiel,
-                    )
-                    
-            )
+        
+        rsp = create_tex(file_path, self.plainTextEdit_content.toPlainText())
 
-        create_pdf("preview",0,0)
+        if rsp == True:
+            create_pdf("preview")
+        else:
+            critical_window("Die PDF Datei konnte nicht erstellt werden", detailed_text= rsp)
+
+        # if typ == 2:
+        #     begin_beispiel = "\\begin{langesbeispiel}\item[0]"
+        #     end_beispiel = "\\end{langesbeispiel}"
+        # else:
+        #     begin_beispiel = "\\begin{beispiel}{0}"
+        #     end_beispiel = "\\end{beispiel}"
+        # filename_preview = os.path.join(
+        #         path_programm, "Teildokument", "preview.tex"
+        #     )
+        # with open(filename_preview, "w+" ,encoding="utf8") as file:
+        #     file.write(
+        #         "\documentclass[a4paper,12pt]{{report}}\n\n"
+        #         "\\usepackage{{geometry}}\n"
+        #         "\geometry{{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}}\n\n"
+        #         "\\usepackage{{lmodern}}\n"
+        #         "\\usepackage[T1]{{fontenc}}\n"
+        #         "\\usepackage[utf8]{{inputenc}}\n"
+        #         "\\usepackage[ngerman]{{babel}}\n"
+        #         "\\usepackage[solution_on]{{srdp-mathematik}}% solution_on/off, random=0,1,2,...\n\n"
+        #         # "\setcounter{{Zufall}}{{{3}}}\n\n\n"
+        #         "\pagestyle{{empty}} %PAGESTYLE: empty, plain\n"
+        #         "\onehalfspacing %Zeilenabstand\n"
+        #         "\setcounter{{secnumdepth}}{{-1}} % keine Nummerierung der Ueberschriften\n\n\n\n"
+        #         "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"
+        #         "%%%%%%%%%%%%%%%%%% DOKUMENT - ANFANG %%%%%%%%%%%%%%%%%%\n"
+        #         "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n\n"
+        #         "\\begin{{document}}\n"
+        #         "{0}"
+        #         "{1}"
+        #         "{2}"
+        #         "\n\end{{document}}".format(
+        #             begin_beispiel,
+        #             self.plainTextEdit_content.toPlainText(),
+        #             end_beispiel,
+        #             )
+                    
+        #     )
+
+        # create_pdf("preview",0,0)
         
 
     def button_save_pressed(self):
@@ -1116,7 +1127,7 @@ class Ui_Dialog_ausgleichspunkte(object):
 
     def build_editable_content(self):
         # print(self.aufgabenstellung_split_text)
-        self.plainTextEdit_content.insertPlainText(self.content_no_environment)
+        self.plainTextEdit_content.insertPlainText(self.content)
 
         # for line in conten:
         #     self.plainTextEdit_content.appendPlainText(line)
@@ -1247,8 +1258,8 @@ class Ui_Dialog_ausgleichspunkte(object):
     def check_if_saved_changes_exist(self):
         # print(self.list_sage_ausgleichspunkte_chosen)
         # print(self.list_sage_hide_show_items_chosen)
-        # print(self.list_sage_individual_change)
-        list_changes = [self.list_sage_ausgleichspunkte_chosen, self.list_sage_hide_show_items_chosen, self.list_sage_individual_change]
+        # print(self.sage_individual_change)
+        list_changes = [self.list_sage_ausgleichspunkte_chosen, self.list_sage_hide_show_items_chosen, self.sage_individual_change]
 
         for i, all in enumerate(list_changes):
             if not is_empty(all):
@@ -1271,13 +1282,13 @@ class Ui_Dialog_ausgleichspunkte(object):
 
         self.list_sage_ausgleichspunkte_chosen = []
         self.list_sage_hide_show_items_chosen = []   
-        self.list_sage_individual_change = []
+        # self.sage_individual_change = []
 
         # print(self.plainTextEdit_content.toPlainText())
 
         if self.combobox_edit.currentIndex() == 2 or self.typ != 2:
-            if self.content_no_environment != self.plainTextEdit_content.toPlainText():
-                self.list_sage_individual_change.append(self.plainTextEdit_content.toPlainText())
+            if self.content != self.plainTextEdit_content.toPlainText():
+                self.sage_individual_change = self.plainTextEdit_content.toPlainText()
 
         elif self.combobox_edit.currentIndex() == 0:
             for linetext in list(self.dict_widget_variables_ausgleichspunkte.keys()):
@@ -1299,11 +1310,11 @@ class Ui_Dialog_ausgleichspunkte(object):
                         linetext.replace("\\fbox{A}", "")
                     )
 
+        # print(self.sage_individual_change)
 
-
-        list_sage_ausgleichspunkte_chosen = self.list_sage_ausgleichspunkte_chosen
-        list_sage_hide_show_items_chosen = self.list_sage_hide_show_items_chosen
-        list_sage_individual_change = self.list_sage_individual_change
+        # list_sage_ausgleichspunkte_chosen = self.list_sage_ausgleichspunkte_chosen
+        # list_sage_hide_show_items_chosen = self.list_sage_hide_show_items_chosen
+        # sage_individual_change = self.sage_individual_change
         self.Dialog.reject()
 
 
