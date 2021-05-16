@@ -1551,8 +1551,8 @@ class Ui_MainWindow(object):
         ]
         # self.comboBox_pruefungstyp.setEditable(True)
 
-        if self.chosen_program == "lama":
-            list_comboBox_pruefungstyp.append("Quiz")
+        # if self.chosen_program == "lama":
+        #     list_comboBox_pruefungstyp.append("Quiz")
 
         list_comboBox_pruefungstyp.append("Benutzerdefiniert")
 
@@ -5074,7 +5074,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         self.update_punkte()
 
     def spinbox_abstand_changed(self, aufgabe, spinbox_abstand):
-        self.dict_alle_aufgaben_sage[aufgabe][1] = spinbox_abstand.value()
+        # self.dict_alle_aufgaben_sage[aufgabe][1] = spinbox_abstand.value()
         self.update_punkte()
 
     def change_scrollbar_position(self):
@@ -5503,58 +5503,58 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         # return
         if typ == 2:
             print('typ2')
-            # try:
-            #     split_content, index_end = split_aufgaben_content(content)
-            #     split_content = split_content[:index_end]
-            # except Exception as e1:
-            #     try:
-            #         split_content = split_aufgaben_content_new_format(content)
-            #     except Exception as e2:
-            #         split_content = None
-            #     if split_content == None:
-            #         warning_window(
-            #             "Es ist ein Fehler bei der Anzeige der Aufgabe {} aufgetreten! (Die Aufgabe kann voraussichtlich dennoch verwendet und individuell in der TeX-Datei bearbeitet werden.)\n".format(
-            #                 aufgabe
-            #             ),
-            #             'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!',
-            #         )
-            #         return
 
-            # if aufgabe in self.dict_sage_ausgleichspunkte_chosen.keys():
-            #     list_sage_ausgleichspunkte_chosen = (
-            #         self.dict_sage_ausgleichspunkte_chosen[aufgabe]
-            #     )
-            # else:
-            #     list_sage_ausgleichspunkte_chosen = []
-            #     for all in split_content:
-            #         if "\\fbox{A}" in all:
-            #             x = all.replace("\\fbox{A}", "")
-            #             list_sage_ausgleichspunkte_chosen.append(x)
-            #         if "\\ASubitem" in all:
-            #             x = all.replace("\\ASubitem", "")
-            #             list_sage_ausgleichspunkte_chosen.append(x)
+            try:
+                split_content, index_end = split_aufgaben_content(content)
+                split_content = split_content[:index_end]
+            except Exception as e1:
+                try:
+                    split_content = split_aufgaben_content_new_format(content)
+                except Exception as e2:
+                    split_content = None
+                if split_content == None:
+                    warning_window(
+                        "Es ist ein Fehler bei der Anzeige der Aufgabe {} aufgetreten! (Die Aufgabe kann voraussichtlich dennoch verwendet und individuell in der TeX-Datei bearbeitet werden.)\n".format(
+                            aufgabe
+                        ),
+                        'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!',
+                    )
+                    return
 
-            # if aufgabe in self.dict_sage_hide_show_items_chosen.keys():
-            #     list_sage_hide_show_items_chosen = (
-            #         self.dict_sage_hide_show_items_chosen[aufgabe]
-            #     )
-            # else:
-            #     list_sage_hide_show_items_chosen = []
-
-            # if aufgabe in self.dict_sage_individual_change.keys():
-            #     list_sage_individual_change = self.dict_sage_individual_change[aufgabe]
-            # else:
-            #     list_sage_individual_change = []
-        else:
-            if aufgabe in self.dict_sage_individual_change.keys():
-                sage_individual_change = self.dict_sage_individual_change[aufgabe]
+            if aufgabe in self.dict_sage_ausgleichspunkte_chosen.keys():
+                list_sage_ausgleichspunkte_chosen = (
+                    self.dict_sage_ausgleichspunkte_chosen[aufgabe]
+                )
             else:
-                sage_individual_change = None
+                list_sage_ausgleichspunkte_chosen = []
+                for index, all in enumerate(split_content):
+                    if "\\fbox{A}" in all or "\\ASubitem" in all:
+                        list_sage_ausgleichspunkte_chosen.append(index)
+                    # if "\\fbox{A}" in all:
+                    #     x = all.replace("\\fbox{A}", "")
+                    #     list_sage_ausgleichspunkte_chosen.append(x)
+                    # if "\\ASubitem" in all:
+                    #     x = all.replace("\\ASubitem", "")
+                    #     list_sage_ausgleichspunkte_chosen.append(x)
+
+            if aufgabe in self.dict_sage_hide_show_items_chosen.keys():
+                list_sage_hide_show_items_chosen = (
+                    self.dict_sage_hide_show_items_chosen[aufgabe]
+                )
+            else:
+                list_sage_hide_show_items_chosen = []
+
+        else:
             list_sage_hide_show_items_chosen = []
             list_sage_ausgleichspunkte_chosen = []
-            # list_sage_individual_change =  []
             split_content = None
 
+        if aufgabe in self.dict_sage_individual_change.keys():
+            sage_individual_change = self.dict_sage_individual_change[aufgabe]
+        else:
+            sage_individual_change = None
+
+        print(sage_individual_change)
         Dialog = QtWidgets.QDialog(
             None,
             QtCore.Qt.WindowSystemMenuHint
@@ -5581,29 +5581,26 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         if ui.sage_individual_change != None:
             self.dict_sage_individual_change[aufgabe] = ui.sage_individual_change
 
+        print(ui.list_sage_ausgleichspunkte_chosen)
+        print(ui.list_sage_hide_show_items_chosen)
         # print(self.ui.list_sage_individual_change)
         # print(self.dict_sage_individual_change)
         # print(self.dict_alle_aufgaben_sage)
         if typ == 2:
             self.dict_sage_ausgleichspunkte_chosen[
                 aufgabe
-            ] = self.ui.list_sage_ausgleichspunkte_chosen
+            ] = ui.list_sage_ausgleichspunkte_chosen
 
             self.dict_sage_hide_show_items_chosen[
                 aufgabe
-            ] = self.ui.list_sage_hide_show_items_chosen
+            ] = ui.list_sage_hide_show_items_chosen
 
-            self.dict_alle_aufgaben_sage[aufgabe][3] = len(
-                self.ui.list_sage_ausgleichspunkte_chosen
-            )
+            # self.dict_alle_aufgaben_sage[aufgabe][3] = len(
+            #     ui.list_sage_ausgleichspunkte_chosen
+            # )
 
-            self.dict_variablen_label[aufgabe].setText(
-                _translate(
-                    "MainWindow",
-                    "{}".format(len(self.ui.list_sage_ausgleichspunkte_chosen)),
-                    None,
-                )
-            )
+            self.dict_variablen_label[aufgabe].setText("{}".format(len(ui.list_sage_ausgleichspunkte_chosen)))
+
         self.update_punkte()
 
     def comboBox_at_sage_changed(self):
@@ -6005,58 +6002,10 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
         self.dict_all_infos_for_file["data_gesamt"] = dict_data_gesamt
 
-    # def get_dict_gesammeltedateien(self):
-    #     dict_gesammeltedateien = {}
-
-    #     if self.chosen_program == "lama":
-    #         for aufgabe in self.list_alle_aufgaben_sage:
-    #             typ = get_aufgabentyp(self.chosen_program, aufgabe)
-    #             if typ == 1:
-    #                 beispieldaten_dateipfad = self.beispieldaten_dateipfad_1
-    #             elif typ == 2:
-    #                 beispieldaten_dateipfad = self.beispieldaten_dateipfad_2
-
-    #             for path in beispieldaten_dateipfad.values():
-    #                 name = self.get_name_from_path(path)
-
-    #                 if aufgabe == name:
-    #                     dict_gesammeltedateien[aufgabe] = path
-    #                     break
-
-    #     if self.chosen_program == "cria":
-    #         beispieldaten_dateipfad = self.beispieldaten_dateipfad_cria
-
-    #         for item in self.list_alle_aufgaben_sage:
-    #             klasse, aufgabe = self.split_klasse_aufgabe(item)
-    #             for path in beispieldaten_dateipfad.values():
-    #                 name = self.get_name_from_path(path)
-    #                 if (klasse in path) and (aufgabe == name):
-    #                     dict_gesammeltedateien[aufgabe] = path
-
-    #     return dict_gesammeltedateien
 
     def add_content_to_tex_file(
         self, aufgabe, aufgabe_total, filename_vorschau, first_typ2
     ):
-        # return
-        # if get_aufgabentyp(self.chosen_program, aufgabe) == 1:
-        #     gk = aufgabe.replace("_L_", "")
-        #     grundkompetenz = "[" + gk.split("-")[0].strip() + "]"
-        # else:
-        #     grundkompetenz = ""
-
-        # path_aufgabe = self.get_dateipfad_aufgabe(aufgabe)
-
-        # return
-        # spinbox_pkt = self.dict_alle_aufgaben_sage[aufgabe][0]
-
-        # print(aufgabe)
-        # print(self.dict_sage_individual_change)
-        # if aufgabe in self.dict_sage_individual_change:
-        #     print(True)
-        #     print(self.dict_sage_individual_change[aufgabe])
-        # else:
-        #     print(False)
 
         if get_aufgabentyp(self.chosen_program, aufgabe) == 2:
             if first_typ2 == False:
@@ -6174,7 +6123,6 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         else:
             beamer_mode = False
 
-        dict_vorschau = {}
         if (ausgabetyp == "vorschau" and self.cb_solution_sage.isChecked() == True) or (
             ausgabetyp == "schularbeit" and index % 2 == 0
         ):

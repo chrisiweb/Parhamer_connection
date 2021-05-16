@@ -811,11 +811,14 @@ class Ui_Dialog_ausgleichspunkte(object):
         # self.gridLayout_2 = QtWidgets.QGridLayout(Dialog)
         # self.gridLayout_2.setObjectName("gridLayout_2")
         self.combobox_edit = create_new_combobox(Dialog)
+        self.combobox_edit.setSizePolicy(SizePolicy_fixed)
         if typ == 2:
             self.gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,5)
         else:
             self.gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,4)
 
+        # self.gridlayout_titlepage.setColumnStretch(1,0)
+        # self.gridlayout_titlepage.addItem(QtWidgets.QSpacerItem(10, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum),0,3,1,1)
         if typ == 2:
             self.combobox_edit.addItem("Ausgleichspunkte anpassen")
             self.combobox_edit.addItem("Aufgabenstellungen ein-/ausblenden")
@@ -987,6 +990,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         # _list.remove(index)
         # print(_list)
         # print(index)
+
     def combobox_edit_changed(self):
         index = self.check_for_change()
         if index != None:
@@ -1140,7 +1144,7 @@ class Ui_Dialog_ausgleichspunkte(object):
     def build_checkboxes_for_content(self):
         row = 1
         if self.combobox_edit.currentIndex() == 0:
-            for linetext in self.aufgabenstellung_split_text:
+            for index, linetext in enumerate(self.aufgabenstellung_split_text):
                 if (
                     "GRAFIK" in linetext
                     or is_empty(linetext.replace("ITEM", "").strip()) == True
@@ -1148,29 +1152,34 @@ class Ui_Dialog_ausgleichspunkte(object):
                     checkbox = None
                 else:
                     checkbox, checkbox_label = self.create_checkbox_ausgleich(
-                        linetext, row
+                        linetext, row, index
                     )
+                    # print(checkbox)
                     if checkbox != None:
                         checkbox.clicked.connect(partial(self.checkbox_changed, 0))
-                        checkbox_label.clicked.connect(partial(self.checkbox_changed, 0))
+                        # checkbox_label.clicked.connect(partial(self.checkbox_changed, 0))
                         self.dict_widget_variables_ausgleichspunkte[linetext] = checkbox
- 
-                    row += 1
+
+                        print(index)
+                        print(self.list_sage_ausgleichspunkte_chosen)
+                        if index in self.list_sage_ausgleichspunkte_chosen:
+                            print(index)
+                            print(linetext)
+                    #     if index in self.list_sage_ausgleichspunkte_chosen:
+                    #         checkbox.setChecked(True) 
+                row += 1
                     
         elif self.combobox_edit.currentIndex() == 1:
-            item_number = 0
-            for linetext in self.hide_show_items_split_text:
+            for index, linetext in enumerate(self.hide_show_items_split_text):
                 checkbox, checkbox_label = self.create_checkbox_ausgleich(
-                    linetext, row, item_number
+                    linetext, row, index
                 )
                 if checkbox != None:
                     checkbox.clicked.connect(
                         partial(self.checkbox_clicked, checkbox, checkbox_label)
                     )
                     self.dict_widget_variables_hide_show_items[linetext] = checkbox
-
                 row += 1
-                item_number += 1
 
         self.gridLayout.addWidget(self.label_solution, row, 1, 1, 3, Qt.AlignTop)
         row += 1
@@ -1181,6 +1190,7 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.change_detected_0 = True
         elif index == 1:
             self.change_detected_1 = True
+        print(self.list_sage_ausgleichspunkte_chosen)
 
     def checkbox_clicked(self, checkbox, checkbox_label):
         self.checkbox_changed(1)
@@ -1203,14 +1213,14 @@ class Ui_Dialog_ausgleichspunkte(object):
             checkbox_label.setStyleSheet(stylesheet)
         else:
             checkbox_label.setStyleSheet("color: gray")
+        print(self.list_sage_hide_show_items_chosen)
 
-    def create_checkbox_ausgleich(self, linetext, row, item_number=None):
+    def create_checkbox_ausgleich(self, linetext, row, index):
         checkbox_label = create_new_label(self.scrollAreaWidgetContents, "", True, True)
 
         checkbox = create_new_checkbox(self.scrollAreaWidgetContents, "")
         checkbox.setSizePolicy(SizePolicy_fixed)
 
-        self.gridLayout.addWidget(checkbox, row, 0, 1, 1, Qt.AlignTop)
 
         if "\\fbox{A}" in linetext:
             linetext = linetext.replace("\\fbox{A}", "")
@@ -1218,15 +1228,15 @@ class Ui_Dialog_ausgleichspunkte(object):
             linetext = linetext.replace("\\ASubitem", "")
 
 
-        if self.combobox_edit.currentIndex() == 0:
-            if linetext in self.list_sage_ausgleichspunkte_chosen:
-                checkbox.setChecked(True)
-        if self.combobox_edit.currentIndex() == 1:
-            if linetext in self.list_sage_hide_show_items_chosen:
-                checkbox.setChecked(False)
-                checkbox_label.setStyleSheet("color: gray")
-            else:
-                checkbox.setChecked(True)
+        # if self.combobox_edit.currentIndex() == 0:
+        #     if index in self.list_sage_ausgleichspunkte_chosen:
+        #         checkbox.setChecked(True)
+        # if self.combobox_edit.currentIndex() == 1:
+        #     if index in self.list_sage_hide_show_items_chosen:
+        #         checkbox.setChecked(False)
+        #         checkbox_label.setStyleSheet("color: gray")
+        #     else:
+        #         checkbox.setChecked(True)
 
         checkbox_label.clicked.connect(
             partial(self.checkbox_label_clicked, checkbox, checkbox_label)
@@ -1240,10 +1250,11 @@ class Ui_Dialog_ausgleichspunkte(object):
             .strip()
         )
         if self.combobox_edit.currentIndex() == 1:
-            linetext = ascii_lowercase[item_number] + ")\n" + linetext
+            linetext = ascii_lowercase[index] + ")\n" + linetext
 
         checkbox_label.setText(linetext)
 
+        self.gridLayout.addWidget(checkbox, row, 0, 1, 1, Qt.AlignTop)
         self.gridLayout.addWidget(checkbox_label, row, 1, 1, 2, Qt.AlignTop)
         return checkbox, checkbox_label
 
@@ -1291,24 +1302,26 @@ class Ui_Dialog_ausgleichspunkte(object):
                 self.sage_individual_change = self.plainTextEdit_content.toPlainText()
 
         elif self.combobox_edit.currentIndex() == 0:
-            for linetext in list(self.dict_widget_variables_ausgleichspunkte.keys()):
+            for index, linetext in enumerate(list(self.dict_widget_variables_ausgleichspunkte.keys())):
                 if (
                     self.dict_widget_variables_ausgleichspunkte[linetext].isChecked()
                     == True
                 ):
-                    self.list_sage_ausgleichspunkte_chosen.append(
-                        linetext.replace("\\fbox{A}", "").replace("\\ASubitem", "")
-                    )
+                    self.list_sage_ausgleichspunkte_chosen.append(index)
+                #     self.list_sage_ausgleichspunkte_chosen.append(
+                #         linetext.replace("\\fbox{A}", "").replace("\\ASubitem", "")
+                #     )
 
         elif self.combobox_edit.currentIndex() == 1:
-            for linetext in list(self.dict_widget_variables_hide_show_items.keys()):
+            for index, linetext in enumerate(list(self.dict_widget_variables_hide_show_items.keys())):
                 if (
                     self.dict_widget_variables_hide_show_items[linetext].isChecked()
                     == False
                 ):
-                    self.list_sage_hide_show_items_chosen.append(
-                        linetext.replace("\\fbox{A}", "")
-                    )
+                    self.list_sage_hide_show_items_chosen.append(index)
+                    # self.list_sage_hide_show_items_chosen.append(
+                    #     linetext.replace("\\fbox{A}", "")
+                    # )
 
         # print(self.sage_individual_change)
 
