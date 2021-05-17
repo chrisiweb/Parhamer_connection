@@ -786,7 +786,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         sage_individual_change,
         display_mode
     ):
-        # print(sage_individual_change)
+        print(list_sage_ausgleichspunkte_chosen)
         self.content = content
         self.sage_individual_change = sage_individual_change
         self.typ = typ
@@ -967,6 +967,12 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.change_detected_1 = False
         self.change_detected_2 = False
         QMetaObject.connectSlotsByName(self.Dialog)
+
+        if typ == 2:
+            if not is_empty(list_sage_hide_show_items_chosen):
+                self.combobox_edit.setCurrentIndex(1)
+            elif sage_individual_change != None:
+                self.combobox_edit.setCurrentIndex(2)
 
     def change_detected_warning(self):
         response = question_window("Es wurden bereits nicht gespeicherte Änderungen an der Aufgabe vorgenommen.",
@@ -1224,11 +1230,6 @@ class Ui_Dialog_ausgleichspunkte(object):
         checkbox.setSizePolicy(SizePolicy_fixed)
 
 
-        # if "\\fbox{A}" in linetext:
-        #     linetext = linetext.replace("\\fbox{A}", "")
-        # if "\\ASubitem" in linetext:
-        #     linetext = linetext.replace("\\ASubitem", "")
-
 
         # if self.combobox_edit.currentIndex() == 0:
         #     if index in self.list_sage_ausgleichspunkte_chosen:
@@ -1262,11 +1263,18 @@ class Ui_Dialog_ausgleichspunkte(object):
             partial(self.checkbox_label_clicked, checkbox, checkbox_label)
         )
 
+        # if "\\fbox{A}" in linetext:
+        #     linetext = linetext.replace("\\fbox{A}", "")
+        # if "\\ASubitem" in linetext:
+        #     linetext = linetext.replace("\\ASubitem", "")
+
         linetext = (
             linetext.replace("ITEM", "")
             .replace("SUBitem", "")
             .replace("{", "")
             .replace("}", "")
+            .replace("\\fbox{A}", "")
+            .replace("\\ASubitem", "")
             .strip()
         )
         # if self.combobox_edit.currentIndex() == 1:
@@ -1290,13 +1298,24 @@ class Ui_Dialog_ausgleichspunkte(object):
         # print(self.list_sage_ausgleichspunkte_chosen)
         # print(self.list_sage_hide_show_items_chosen)
         # print(self.sage_individual_change)
-        list_changes = [self.list_sage_ausgleichspunkte_chosen, self.list_sage_hide_show_items_chosen, self.sage_individual_change]
+        # list_changes = [self.list_sage_ausgleichspunkte_chosen, self.list_sage_hide_show_items_chosen, self.sage_individual_change]
 
-        for i, all in enumerate(list_changes):
-            if not is_empty(all):
-                # print(True, i)
-                return True
-        return False
+        if not is_empty(self.list_sage_ausgleichspunkte_chosen):
+            for index in self.list_sage_ausgleichspunkte_chosen:
+                if "\\fbox{A}" in self.aufgabenstellung_split_text[index] or "\\ASubitem" in self.aufgabenstellung_split_text[index]:
+                    continue
+                else:
+                    return True
+            return False
+        elif is_empty(self.list_sage_ausgleichspunkte_chosen):
+            for all in self.aufgabenstellung_split_text:
+                if "\\fbox{A}" in all or "\\ASubitem" in all:
+                    return True
+        elif not is_empty(self.list_sage_hide_show_items_chosen):
+            return True
+        elif self.sage_individual_change != None:
+            return True
+        return False      
     
 
     def pushButton_OK_pressed(self):
@@ -1323,7 +1342,6 @@ class Ui_Dialog_ausgleichspunkte(object):
 
         elif self.combobox_edit.currentIndex() == 0:
             for index, linetext in enumerate(self.aufgabenstellung_split_text):  #list(self.dict_widget_variables_ausgleichspunkte.keys())
-                print(index)
                 try:
                     if (
                         self.dict_widget_variables_ausgleichspunkte[linetext].isChecked()

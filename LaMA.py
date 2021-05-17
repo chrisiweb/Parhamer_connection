@@ -5502,8 +5502,6 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         typ = get_aufgabentyp(self.chosen_program, aufgabe)
         # return
         if typ == 2:
-            print('typ2')
-
             try:
                 split_content, index_end = split_aufgaben_content(content)
                 split_content = split_content[:index_end]
