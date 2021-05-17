@@ -1150,21 +1150,22 @@ class Ui_Dialog_ausgleichspunkte(object):
                     or is_empty(linetext.replace("ITEM", "").strip()) == True
                 ) and self.combobox_edit.currentIndex() == 0:  #
                     checkbox = None
+                    print(str(index) + 'empty')
                 else:
                     checkbox, checkbox_label = self.create_checkbox_ausgleich(
                         linetext, row, index
                     )
                     # print(checkbox)
-                    if checkbox != None:
-                        checkbox.clicked.connect(partial(self.checkbox_changed, 0))
-                        # checkbox_label.clicked.connect(partial(self.checkbox_changed, 0))
-                        self.dict_widget_variables_ausgleichspunkte[linetext] = checkbox
+                    # if checkbox != None:
+                    #     checkbox.clicked.connect(partial(self.checkbox_changed, 0))
+                    #     # checkbox_label.clicked.connect(partial(self.checkbox_changed, 0))
+                    #     self.dict_widget_variables_ausgleichspunkte[linetext] = checkbox
 
-                        print(index)
-                        print(self.list_sage_ausgleichspunkte_chosen)
-                        if index in self.list_sage_ausgleichspunkte_chosen:
-                            print(index)
-                            print(linetext)
+                        # print(index)
+                        # print(self.list_sage_ausgleichspunkte_chosen)
+                        # if index in self.list_sage_ausgleichspunkte_chosen:
+                        #     print(index)
+                        #     print(linetext)
                     #     if index in self.list_sage_ausgleichspunkte_chosen:
                     #         checkbox.setChecked(True) 
                 row += 1
@@ -1216,16 +1217,17 @@ class Ui_Dialog_ausgleichspunkte(object):
         print(self.list_sage_hide_show_items_chosen)
 
     def create_checkbox_ausgleich(self, linetext, row, index):
+        print(index)
         checkbox_label = create_new_label(self.scrollAreaWidgetContents, "", True, True)
 
         checkbox = create_new_checkbox(self.scrollAreaWidgetContents, "")
         checkbox.setSizePolicy(SizePolicy_fixed)
 
 
-        if "\\fbox{A}" in linetext:
-            linetext = linetext.replace("\\fbox{A}", "")
-        if "\\ASubitem" in linetext:
-            linetext = linetext.replace("\\ASubitem", "")
+        # if "\\fbox{A}" in linetext:
+        #     linetext = linetext.replace("\\fbox{A}", "")
+        # if "\\ASubitem" in linetext:
+        #     linetext = linetext.replace("\\ASubitem", "")
 
 
         # if self.combobox_edit.currentIndex() == 0:
@@ -1238,6 +1240,14 @@ class Ui_Dialog_ausgleichspunkte(object):
         #     else:
         #         checkbox.setChecked(True)
 
+
+        checkbox.clicked.connect(partial(self.checkbox_changed, 0))
+
+        self.dict_widget_variables_ausgleichspunkte[linetext] = checkbox
+
+        if index in self.list_sage_ausgleichspunkte_chosen:
+            checkbox.setChecked(True)
+
         checkbox_label.clicked.connect(
             partial(self.checkbox_label_clicked, checkbox, checkbox_label)
         )
@@ -1249,8 +1259,8 @@ class Ui_Dialog_ausgleichspunkte(object):
             .replace("}", "")
             .strip()
         )
-        if self.combobox_edit.currentIndex() == 1:
-            linetext = ascii_lowercase[index] + ")\n" + linetext
+        # if self.combobox_edit.currentIndex() == 1:
+        #     linetext = ascii_lowercase[index] + ")\n" + linetext
 
         checkbox_label.setText(linetext)
 
@@ -1302,12 +1312,17 @@ class Ui_Dialog_ausgleichspunkte(object):
                 self.sage_individual_change = self.plainTextEdit_content.toPlainText()
 
         elif self.combobox_edit.currentIndex() == 0:
-            for index, linetext in enumerate(list(self.dict_widget_variables_ausgleichspunkte.keys())):
-                if (
-                    self.dict_widget_variables_ausgleichspunkte[linetext].isChecked()
-                    == True
-                ):
-                    self.list_sage_ausgleichspunkte_chosen.append(index)
+            for index, linetext in enumerate(self.aufgabenstellung_split_text):  #list(self.dict_widget_variables_ausgleichspunkte.keys())
+                print(index)
+                try:
+                    if (
+                        self.dict_widget_variables_ausgleichspunkte[linetext].isChecked()
+                        == True
+                    ):
+                        self.list_sage_ausgleichspunkte_chosen.append(index)
+                        print(str(index)+'checked')
+                except KeyError:
+                    pass
                 #     self.list_sage_ausgleichspunkte_chosen.append(
                 #         linetext.replace("\\fbox{A}", "").replace("\\ASubitem", "")
                 #     )
