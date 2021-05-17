@@ -1172,15 +1172,18 @@ class Ui_Dialog_ausgleichspunkte(object):
                     
         elif self.combobox_edit.currentIndex() == 1:
             for index, linetext in enumerate(self.hide_show_items_split_text):
-                checkbox, checkbox_label = self.create_checkbox_ausgleich(
-                    linetext, row, index
-                )
-                if checkbox != None:
-                    checkbox.clicked.connect(
-                        partial(self.checkbox_clicked, checkbox, checkbox_label)
+                if is_empty(linetext.replace("ITEM", "").strip()) == False:
+
+            #     print(linetext)
+                    checkbox, checkbox_label = self.create_checkbox_ausgleich(
+                        linetext, row, index
                     )
-                    self.dict_widget_variables_hide_show_items[linetext] = checkbox
-                row += 1
+                # if checkbox != None:
+                #     checkbox.clicked.connect(
+                #         partial(self.checkbox_clicked, checkbox, checkbox_label)
+                #     )
+                    # self.dict_widget_variables_hide_show_items[linetext] = checkbox
+                    row += 1
 
         self.gridLayout.addWidget(self.label_solution, row, 1, 1, 3, Qt.AlignTop)
         row += 1
@@ -1191,7 +1194,6 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.change_detected_0 = True
         elif index == 1:
             self.change_detected_1 = True
-        print(self.list_sage_ausgleichspunkte_chosen)
 
     def checkbox_clicked(self, checkbox, checkbox_label):
         self.checkbox_changed(1)
@@ -1214,10 +1216,8 @@ class Ui_Dialog_ausgleichspunkte(object):
             checkbox_label.setStyleSheet(stylesheet)
         else:
             checkbox_label.setStyleSheet("color: gray")
-        print(self.list_sage_hide_show_items_chosen)
 
     def create_checkbox_ausgleich(self, linetext, row, index):
-        print(index)
         checkbox_label = create_new_label(self.scrollAreaWidgetContents, "", True, True)
 
         checkbox = create_new_checkbox(self.scrollAreaWidgetContents, "")
@@ -1243,10 +1243,20 @@ class Ui_Dialog_ausgleichspunkte(object):
 
         checkbox.clicked.connect(partial(self.checkbox_changed, 0))
 
-        self.dict_widget_variables_ausgleichspunkte[linetext] = checkbox
 
-        if index in self.list_sage_ausgleichspunkte_chosen:
-            checkbox.setChecked(True)
+        if self.combobox_edit.currentIndex() == 0:
+            self.dict_widget_variables_ausgleichspunkte[linetext] = checkbox
+            if index in self.list_sage_ausgleichspunkte_chosen:
+                checkbox.setChecked(True)
+
+        if self.combobox_edit.currentIndex() == 1:
+            self.dict_widget_variables_hide_show_items[linetext] = checkbox
+            if index in self.list_sage_hide_show_items_chosen:
+                checkbox.setChecked(False)
+                checkbox_label.setStyleSheet("color: gray")
+            else:
+                checkbox.setChecked(True)
+
 
         checkbox_label.clicked.connect(
             partial(self.checkbox_label_clicked, checkbox, checkbox_label)
@@ -1320,7 +1330,6 @@ class Ui_Dialog_ausgleichspunkte(object):
                         == True
                     ):
                         self.list_sage_ausgleichspunkte_chosen.append(index)
-                        print(str(index)+'checked')
                 except KeyError:
                     pass
                 #     self.list_sage_ausgleichspunkte_chosen.append(
@@ -1328,12 +1337,15 @@ class Ui_Dialog_ausgleichspunkte(object):
                 #     )
 
         elif self.combobox_edit.currentIndex() == 1:
-            for index, linetext in enumerate(list(self.dict_widget_variables_hide_show_items.keys())):
-                if (
-                    self.dict_widget_variables_hide_show_items[linetext].isChecked()
-                    == False
-                ):
-                    self.list_sage_hide_show_items_chosen.append(index)
+            for index, linetext in enumerate(self.hide_show_items_split_text): #list(self.dict_widget_variables_hide_show_items.keys())
+                try:
+                    if (
+                        self.dict_widget_variables_hide_show_items[linetext].isChecked()
+                        == False
+                    ):
+                        self.list_sage_hide_show_items_chosen.append(index)
+                except KeyError:
+                    pass
                     # self.list_sage_hide_show_items_chosen.append(
                     #     linetext.replace("\\fbox{A}", "")
                     # )
