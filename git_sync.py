@@ -44,37 +44,43 @@ def list_all_files(store, treeid, base=None, list_of_all_files=None):
             list_all_files(store, sha, name, list_of_all_files=_list)
     return _list
 
+def resolve_divergence():
+    head = os.path.join(database, '.git', 'refs', 'heads', 'master')
+    origin = os.path.join(database, '.git', 'refs', 'remotes', 'origin', 'master')
+    shutil.copyfile(origin, head)
 
 def git_reset_repo_to_origin():
     try:
         repo = porcelain.Repo(database)
         porcelain.fetch(repo)
 
-        tree_head_id = repo[repo[b'refs/heads/master'].tree].id
-        tree_origin_master_id = repo[repo[b'refs/remotes/origin/master'].tree].id
+        # tree_head_id = repo[repo[b'refs/heads/master'].tree].id
+        # tree_origin_master_id = repo[repo[b'refs/remotes/origin/master'].tree].id
 
-        store=repo.object_store
-        list_all_files_head = list_all_files(store, tree_head_id)
-        list_all_files_origin_master = list_all_files(store, tree_origin_master_id)
+        # store=repo.object_store
+        # list_all_files_head = list_all_files(store, tree_head_id)
+        # list_all_files_origin_master = list_all_files(store, tree_origin_master_id)
 
-        deleted_files = list(set(list_all_files_head)-set(list_all_files_origin_master))
+        # deleted_files = list(set(list_all_files_head)-set(list_all_files_origin_master))
 
         porcelain.reset(repo, "hard", treeish=b"refs/remotes/origin/master")
 
         porcelain.clean(repo=repo, target_dir=database)
 
+        resolve_divergence()
 
-        if deleted_files !=[]:
-            for all in deleted_files:
-                file_path = os.path.join(database, all.decode('utf-8'))
-                os.remove(file_path)
 
-            status=porcelain.status(repo) 
+        # if deleted_files !=[]:
+        #     for all in deleted_files:
+        #         file_path = os.path.join(database, all.decode('utf-8'))
+        #         os.remove(file_path)
 
-            repo.stage(status.unstaged)
+        #     status=porcelain.status(repo) 
 
-            porcelain.commit(repo, message="delete files")
-        return True
+        #     repo.stage(status.unstaged)
+
+        #     porcelain.commit(repo, message="delete files")
+        # return True
 
     except MaxRetryError:
         return False
@@ -157,7 +163,25 @@ def get_access_token(mode):
     access_token = credentials_1 + _center_ + credentials_2
 
     return access_token 
-def git_push_to_origin(ui, admin, specific_file):
+
+
+def check_branches():
+    repo = porcelain.open_repo(database)
+    porcelain.fetch(repo)
+
+    head_id = repo[b'refs/heads/master'].id
+    origin_id = repo[b'refs/remotes/origin/master'].id
+    print(head_id)
+    print(origin_id)
+    try:
+        porcelain.check_diverged(repo, origin_id, head_id)
+        repo.close()
+        return True
+    except porcelain.DivergedBranches:
+        repo.close()
+        return False
+
+def git_push_to_origin(ui, admin, file_list, message):
         # local_appdata = os.getenv('LOCALAPPDATA')
         # credentials_file = os.path.join(os.getenv('LOCALAPPDATA'),"LaMA", "credentials","developer_credentials.txt")
 
@@ -166,10 +190,12 @@ def git_push_to_origin(ui, admin, specific_file):
         else:
             access_token = get_access_token('user')
 
+        # path_origin = os.path.join(database, ".git", "refs","remotes","origin", "master")
+        # path_head = os.path.join(database, ".git", "refs","heads","master")
+        ff_possible = check_branches()
+
+
         repo = porcelain.open_repo(database)
-        path_origin = os.path.join(database, ".git", "refs","remotes","origin", "master")
-        path_head = os.path.join(database, ".git", "refs","heads","master")
-        
         status = porcelain.status(repo)
         repo.stage(status.unstaged + status.untracked)
 
@@ -177,54 +203,78 @@ def git_push_to_origin(ui, admin, specific_file):
             # information_window("Es wurden keine Änderungen gefunden.")
             return False
         
-        try:
-            if admin == True:
-                ui.label.setText("Datenbank hochladen ... (1%)")
 
-                status = porcelain.status(repo)
-                ui.label.setText("Datenbank hochladen ... (21%)")
-
-                copy_all_changed_files(status.staged)
-                ui.label.setText("Datenbank hochladen ... (22%)")
-
-                git_reset_repo_to_origin()
-                ui.label.setText("Datenbank hochladen ... (53%)")
-
-                restore_all_changes()
-                shutil.copyfile(path_origin, path_head)
-                ui.label.setText("Datenbank hochladen ... (54%)")
-
-
-                status = porcelain.status(repo)
-                ui.label.setText("Datenbank hochladen ... (79%)")
-                
-                repo.stage(status.unstaged + status.untracked)
-                ui.label.setText("Datenbank hochladen ... (84%)")
-
-
-                time_tag = datetime.now().strftime("%Y-%m-%d (%H:%M:%S)")
-                porcelain.commit(repo, message="New LaMA Upload {}".format(time_tag))
-
-                ui.label.setText("Datenbank hochladen ... (85%)")
-
-                porcelain.push(repo,"https://lama-contributor:{}@github.com/chrisiweb/lama_latest_update.git".format(access_token),"master")
-                ui.label.setText("Datenbank hochladen ... (100%)")
-            else: 
-                file_path = os.path.join(database, specific_file)
-                porcelain.add(repo, paths= file_path)
-                ui.label.setText("Aufgabe wird hochgeladen ... (27%)")
-                file_name = os.path.basename(specific_file)
-                porcelain.commit(repo, message="Upload {}".format(file_name))
-                ui.label.setText("Aufgabe wird hochgeladen ... (84%)")
-                porcelain.push(repo,"https://lama-user:{}@github.com/chrisiweb/lama_latest_update.git".format(access_token),"master")
-                ui.label.setText("Aufgabe wird hochgeladen ... (100%)")
-            repo.close()
-
-            sleep(1)
         
-        except Exception as e:
-            print(e)
-            return "error"
+        print(ff_possible)
+        # if ff_possible == False:
+        #     return 'error'
+
+        
+        for file in file_list:
+            file_path = os.path.join(database, file)
+            porcelain.add(repo, paths= file_path)
+
+        ui.label.setText("Aufgabe wird hochgeladen ... (27%)")
+
+        if admin == True:
+            mode = 'Administrator'
+        else:
+            mode = 'User'
+
+        porcelain.commit(repo, message="New Update ({0}) - {1}".format(mode, message))
+        ui.label.setText("Aufgabe wird hochgeladen ... (84%)")
+        porcelain.push(repo,"https://lama-user:{}@github.com/chrisiweb/lama_latest_update.git".format(access_token),"master")
+        ui.label.setText("Aufgabe wird hochgeladen ... (100%)")        
+
+        #### working all - problem diverging branches
+        # try:
+        #     if admin == True:
+        #         ui.label.setText("Datenbank hochladen ... (1%)")
+
+        #         status = porcelain.status(repo)
+        #         ui.label.setText("Datenbank hochladen ... (21%)")
+
+        #         copy_all_changed_files(status.staged)
+        #         ui.label.setText("Datenbank hochladen ... (22%)")
+
+        #         git_reset_repo_to_origin()
+        #         ui.label.setText("Datenbank hochladen ... (53%)")
+
+        #         restore_all_changes()
+        #         shutil.copyfile(path_origin, path_head)
+        #         ui.label.setText("Datenbank hochladen ... (54%)")
+
+
+        #         status = porcelain.status(repo)
+        #         ui.label.setText("Datenbank hochladen ... (79%)")
+                
+        #         repo.stage(status.unstaged + status.untracked)
+        #         ui.label.setText("Datenbank hochladen ... (84%)")
+
+
+        #         time_tag = datetime.now().strftime("%Y-%m-%d (%H:%M:%S)")
+        #         porcelain.commit(repo, message="New LaMA Upload {}".format(time_tag))
+
+        #         ui.label.setText("Datenbank hochladen ... (85%)")
+
+        #         porcelain.push(repo,"https://lama-contributor:{}@github.com/chrisiweb/lama_latest_update.git".format(access_token),"master")
+        #         ui.label.setText("Datenbank hochladen ... (100%)")
+        #     else: 
+        #         file_path = os.path.join(database, specific_file)
+        #         porcelain.add(repo, paths= file_path)
+        #         ui.label.setText("Aufgabe wird hochgeladen ... (27%)")
+        #         file_name = os.path.basename(specific_file)
+        #         porcelain.commit(repo, message="Upload {}".format(file_name))
+        #         ui.label.setText("Aufgabe wird hochgeladen ... (84%)")
+        #         porcelain.push(repo,"https://lama-user:{}@github.com/chrisiweb/lama_latest_update.git".format(access_token),"master")
+        #         ui.label.setText("Aufgabe wird hochgeladen ... (100%)")
+        #     repo.close()
+
+        #     sleep(1)
+        
+        # except Exception as e:
+        #     print(e)
+        #     return "error"
 
         return True
 

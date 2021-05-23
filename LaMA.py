@@ -5,6 +5,8 @@ __version__ = "v2.3.0"
 __lastupdate__ = "01/21"
 ##################
 print("Loading...")
+from git_sync import git_reset_repo_to_origin
+from standard_dialog_windows import question_window
 import start_window
 from config import *
 from lama_colors import *
@@ -47,8 +49,8 @@ class Worker_PushDatabase(QtCore.QObject):
     finished = QtCore.pyqtSignal()
 
     @QtCore.pyqtSlot()
-    def task(self, ui, admin, specific_file):
-        self.changes_found = git_push_to_origin(ui, admin, specific_file)
+    def task(self, ui, admin, file_list, message):
+        self.changes_found = git_push_to_origin(ui, admin, file_list, message)
 
         self.finished.emit()
 
@@ -275,7 +277,7 @@ class Ui_MainWindow(object):
             MainWindow,
             self.menuDeveloper,
             "Datenbank hochladen",
-            partial(self.action_push_database, True, None),
+            partial(self.action_push_database, True, ["_database.json"]),
         )
         # self.actionPush_Database.setEnabled(False)
 
@@ -3704,6 +3706,9 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.btn_add_image)
 
     def del_picture(self, picture):
+        rsp = question_window('Sind Sie sicher, dass Sie die Grafik "{}" entfernen möchten?'.format(self.dict_picture_path[self.dict_widget_variables[picture].text()]))
+        if rsp == False:
+            return
         del self.dict_picture_path[self.dict_widget_variables[picture].text()]
         self.dict_widget_variables[picture].hide()
         if len(self.dict_picture_path) == 0:
@@ -4057,6 +4062,7 @@ class Ui_MainWindow(object):
         return [True, textBox_Entry]
 
     def copy_image_save(self, typ_save, parent_image_path):
+        list_images = []
         for old_image_path in list(self.dict_picture_path.values()):
             old_image_name = os.path.basename(old_image_path)
             new_image_name = self.edit_image_name(typ_save, old_image_name)
@@ -4070,25 +4076,26 @@ class Ui_MainWindow(object):
                     os.mkdir(new_image_path)
                     shutil.copy(old_image_path, new_image_path)
                 except FileNotFoundError:
-                    warning_window(
-                        'Die Grafik mit dem Dateinamen "{}" konnte im Aufgabentext nicht gefunden werden.'.format(
-                            old_image_name
-                        ),
-                        "Bitte versichern Sie sich, dass der Dateiname korrekt geschrieben ist und Sie die richtige Grafik eingefügt haben.",
-                    )
-                    return
+                    # warning_window(
+                    #     'Die Grafik mit dem Dateinamen "{}" konnte im Aufgabentext nicht gefunden werden.'.format(
+                    #         old_image_name
+                    #     ),
+                    #     "Bitte versichern Sie sich, dass der Dateiname korrekt geschrieben ist und Sie die richtige Grafik eingefügt haben.",
+                    # )
+                    return None, old_image_name
+            list_images.append(new_image_name)
+        return list_images, None
 
     def create_file_name(self, typ, max_integer):
         number = max_integer + 1
-
         if self.chosen_variation != None:
             name = self.chosen_variation + "[{}]".format(number)
-        elif typ == "cria":
+        elif typ == None:
             klasse = self.get_highest_grade_cr()
             name = "{0}.{1}".format(klasse, number)
-        elif typ == "lama_1":
+        elif typ == 1:
             name = "{0} - {1}".format(self.themen_auswahl[0], number)
-        elif typ == "lama_2":
+        elif typ == 2:
             name = str(number)
 
         return name
@@ -4412,17 +4419,31 @@ class Ui_MainWindow(object):
                 "Bitte versichern Sie sich, dass der Dateiname korrekt geschrieben ist und Sie die richtige Grafik eingefügt haben.",
             )
             return
-        else:
-            textBox_Entry = response[1]
+        # else:
+        #     textBox_Entry = response[1]
 
         list_path = self.get_parent_folder(typ_save)
 
         list_path.append("Bilder")
         parent_image_path = self.create_path_from_list(list_path)
 
-        self.copy_image_save(typ_save, parent_image_path)
+        list_images_new_names, error = self.copy_image_save(typ_save, parent_image_path)
+
+        if list_images_new_names == None:
+            warning_window(
+                'Die Grafik mit dem Dateinamen "{}" konnte im Aufgabentext nicht gefunden werden.'.format(
+                    error
+                ),
+                "Bitte versichern Sie sich, dass der Dateiname korrekt geschrieben ist und Sie die richtige Grafik eingefügt haben.",
+            )
+            return
 
         ###################################################################################
+
+        rsp = check_branches()
+        if rsp == False:
+            git_reset_repo_to_origin()
+
         (
             name,
             themen,
@@ -4469,11 +4490,13 @@ class Ui_MainWindow(object):
             list_information[6],
         )
 
-        if typ_save[0] == "user":
-            database_file = "_database.json"
-            self.action_push_database(
-                admin=False, specific_file=os.path.join(database_file)
-            )
+        if typ_save[0] != "local":
+            file_list = ["_database.json"]
+            for image in list_images_new_names:
+                name = os.path.join("Bilder", image)
+                file_list.append(name)
+
+            self.action_push_database(False, file_list, message= "Neu: {}".format(name))
 
         QtWidgets.QApplication.restoreOverrideCursor()
 
@@ -4489,7 +4512,7 @@ class Ui_MainWindow(object):
 
         self.adapt_choosing_list("sage")
 
-    def action_push_database(self, admin=True, specific_file=None):
+    def action_push_database(self, admin, file_list, message = None):
         if check_internet_connection() == False:
             critical_window(
                 """
@@ -4511,7 +4534,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         worker = Worker_PushDatabase()
         worker.finished.connect(Dialog.close)
         worker.moveToThread(thread)
-        rsp = thread.started.connect(partial(worker.task, ui, admin, specific_file))
+        rsp = thread.started.connect(partial(worker.task, ui, admin, file_list, message))
         thread.start()
         thread.exit()
         Dialog.exec()
@@ -6650,7 +6673,7 @@ if __name__ == "__main__":
     i = step_progressbar(i, "save_titlepage")
     from save_titlepage import create_file_titlepage, check_format_titlepage_save
     i = step_progressbar(i, "git_sync")
-    from git_sync import git_clone_repo, git_push_to_origin, check_internet_connection
+    from git_sync import git_clone_repo, git_push_to_origin, check_internet_connection, check_branches
     i = step_progressbar(i, "create_new_widgets")
     from create_new_widgets import *
     i = step_progressbar(i, "list_of_widgets")
