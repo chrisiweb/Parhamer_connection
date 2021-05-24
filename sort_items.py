@@ -22,6 +22,7 @@ def get_typ(string):
 
 def order_gesammeltedateien(text):
     typ = get_typ(text['name'])
+    name = text['name'].replace('i.','')
     # print(text['name'])
     # get_typ(text['name'])
     # return 0
@@ -30,15 +31,15 @@ def order_gesammeltedateien(text):
     # if re.match
     if typ == 'lama_1':
         for i, gk  in enumerate(dict_gk.values()):
-            if gk in text['name']:
+            if gk in name:
                 _list = [i]
-                num = text['name'].split(" - ")[-1]
+                num = name.split(" - ")[-1]
     elif typ == 'cria':
-        num = text['name'].split('.')[-1]
+        num = name.split('.')[-1]
         _list = []
 
     elif typ == 'lama_2':
-        num = text['name']
+        num = name
         _list = []
 
     if re.match("[0-9]+\[.+\]", num):
@@ -47,6 +48,7 @@ def order_gesammeltedateien(text):
         _list.append(int(split_number[1]))
     else:
         _list.append(int(num))
+    print(_list)
     return _list
 
 

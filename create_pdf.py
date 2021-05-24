@@ -23,7 +23,7 @@ from standard_dialog_windows import question_window, warning_window
 from processing_window import working_window
 import webbrowser
 from tinydb import Query
-from database_commands import _database
+from database_commands import _database, _database_addon
 from tex_minimal import tex_preamble, tex_end, begin_beispiel, end_beispiel, begin_beispiel_lang, end_beispiel_lang
 
 
@@ -298,7 +298,16 @@ def prepare_tex_for_pdf(self):
 
     
     gesammeltedateien = search_in_database(self, current_program,_database ,suchbegriffe)
+    # print(gesammeltedateien)
+    gesammeltedateien_addon = search_in_database(self, current_program,_database_addon ,suchbegriffe)
+    for all in gesammeltedateien_addon:
+        gesammeltedateien.append(all)
+    # print(gesammeltedateien_addon)    
+
     gesammeltedateien.sort(key=order_gesammeltedateien)
+    
+    # print(gesammeltedateien)
+    # return
 
 
     ######################################################

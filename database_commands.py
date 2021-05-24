@@ -262,9 +262,11 @@ def write_to_database(folder_path, typ,klasse=None):
 # database_cria = TinyDB(path_database)
 
 path_database = os.path.join(path_programm, "_database", "_database.json")
-path_local_database = os.path.join(path_programm, "_database", "_local_database.json")
 _database = TinyDB(path_database)
+path_local_database = os.path.join(path_programm, "_database", "_local_database.json")
 _local_database = TinyDB(path_local_database)
+path_database_addon = os.path.join(path_programm, "_database", "_database_addon.json")
+_database_addon = TinyDB(path_database_addon)
 # _database.drop_table('table_cria')
 # _database.drop_tables()
 
@@ -278,34 +280,42 @@ dict_gk = config_loader(config_file, 'dict_gk')
 
 
 
-
-########################################
-##### write all files to database - working ###
-######################################
+# ########################################
+# ##### write all files to database - working ###
+# ######################################
 # table_lama = _database.table('table_lama_1')
 # for all in dict_gk.values():
 #     gk = all.split(" ")[0].split("-L")[0]
 # #     ###### Laptop
 #     # folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen","WS", "WS 1.1", "Einzelbeispiele")
-#     folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen",gk, all, "Einzelbeispiele")
+#     # folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database_inoffiziell","Typ1Aufgaben", "_Grundkompetenzen",gk, all, "Einzelbeispiele")
 # #     ##### PC
 # # folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen","WS", "WS 1.1", "Einzelbeispiele")
-# # #     folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ1Aufgaben", "_Grundkompetenzen",gk, all, "Einzelbeispiele")
+#     folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database_inoffiziell","Typ1Aufgaben", "_Grundkompetenzen",gk, all, "Einzelbeispiele")
 # # #     #######
 #     write_to_database(folder_path, 1)
+
+# ############# ZUSATZTHEMEN
+# dict_zusatzthemen = config_loader(config_file, 'zusatzthemen_beschreibung')
+# for all in dict_zusatzthemen.keys():
+#     # folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database_inoffiziell","Typ1Aufgaben", "Zusatzthemen", all.upper())
+#     folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database_inoffiziell","Typ1Aufgaben", "Zusatzthemen", all.upper())
+#     write_to_database(folder_path, 1)
+
+
 # ######## typ 2 ############
 # table_lama = _database.table('table_lama_2')
-# folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ2Aufgaben", "Einzelbeispiele")
-# # # folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database","Typ2Aufgaben", "Einzelbeispiele")
+# # folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database_inoffiziell","Typ2Aufgaben", "Einzelbeispiele")
+# folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database_inoffiziell","Typ2Aufgaben", "Einzelbeispiele")
 # write_to_database(folder_path, 2)
-# #############################
+# # #############################
 
-# ######## cria ############
+# # ######## cria ############
 # table_lama = _database.table('table_cria')
 # table_lama.truncate()
 # for all in ['k1','k2','k3','k4']:
 #     # folder_path = os.path.join("C:/","Users","Christoph", "Dropbox", "_LaMA_Aufgabensammlung", "_database",all, "Einzelbeispiele")
-#     folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database",all, "Einzelbeispiele")
+#     folder_path = os.path.join("D:/", "Dropbox", "_LaMA_Aufgabensammlung", "_database_inoffiziell",all, "Einzelbeispiele")
 #     write_to_database(folder_path, 0,all)
 
 # #############################

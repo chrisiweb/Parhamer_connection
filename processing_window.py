@@ -45,7 +45,7 @@ class Ui_Dialog_processing(object):
 
         self.label = QtWidgets.QLabel(Dialog)
         self.label.setObjectName("label")
-        self.label.setText("{} (1%)".format(worker_text))
+        self.label.setText(worker_text)
         self.label.setStyleSheet("padding: 20px")
         label_spinner = QtWidgets.QLabel(Dialog)
         self.label.setObjectName("label_spinner")
