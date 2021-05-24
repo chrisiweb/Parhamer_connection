@@ -12,7 +12,7 @@ from functools import partial
 blue_7 = colors_ui["blue_7"]
 
 class Ui_Dialog_processing(object):
-    def setupUi(self, Dialog, text, icon=True):
+    def setupUi(self, Dialog, worker_text, icon=True):
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
 
@@ -45,7 +45,7 @@ class Ui_Dialog_processing(object):
 
         self.label = QtWidgets.QLabel(Dialog)
         self.label.setObjectName("label")
-        self.label.setText(text)
+        self.label.setText("{} (1%)".format(worker_text))
         self.label.setStyleSheet("padding: 20px")
         label_spinner = QtWidgets.QLabel(Dialog)
         self.label.setObjectName("label_spinner")

@@ -1,3 +1,4 @@
+from PyQt5.sip import delete
 from tinydb import TinyDB, Query
 from tinydb.operations import set
 import os
@@ -60,6 +61,12 @@ def update_data(aufgabe,typ, key, value):
     _file_ = Query()
     lama_table.update(set(key, value), _file_.name == aufgabe)
 
+
+def delete_file(aufgabe, typ):
+    lama_table = get_table(aufgabe, typ)
+    aufgabe = aufgabe.replace(" (lokal)","")
+    _file_ = Query()
+    lama_table.remove(_file_.name == aufgabe)
 
 # def multiple_update_date(aufgabe, typ, _list):
 

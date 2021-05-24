@@ -171,8 +171,8 @@ def check_branches():
 
     head_id = repo[b'refs/heads/master'].id
     origin_id = repo[b'refs/remotes/origin/master'].id
-    print(head_id)
-    print(origin_id)
+    # print(head_id)
+    # print(origin_id)
     try:
         porcelain.check_diverged(repo, origin_id, head_id)
         repo.close()
@@ -181,7 +181,7 @@ def check_branches():
         repo.close()
         return False
 
-def git_push_to_origin(ui, admin, file_list, message):
+def git_push_to_origin(ui, admin, file_list, message, worker_text):
         # local_appdata = os.getenv('LOCALAPPDATA')
         # credentials_file = os.path.join(os.getenv('LOCALAPPDATA'),"LaMA", "credentials","developer_credentials.txt")
 
@@ -196,16 +196,17 @@ def git_push_to_origin(ui, admin, file_list, message):
 
 
         repo = porcelain.open_repo(database)
-        status = porcelain.status(repo)
-        repo.stage(status.unstaged + status.untracked)
+        if admin == True:
+            status = porcelain.status(repo)
+            repo.stage(status.unstaged + status.untracked)
 
-        if status.unstaged==[] and status.untracked == [] and admin == True:
-            # information_window("Es wurden keine Änderungen gefunden.")
-            return False
+            if status.unstaged==[] and status.untracked == []:
+                # information_window("Es wurden keine Änderungen gefunden.")
+                return False
         
 
         
-        print(ff_possible)
+        # print(ff_possible)
         # if ff_possible == False:
         #     return 'error'
 
@@ -214,7 +215,7 @@ def git_push_to_origin(ui, admin, file_list, message):
             file_path = os.path.join(database, file)
             porcelain.add(repo, paths= file_path)
 
-        ui.label.setText("Aufgabe wird hochgeladen ... (27%)")
+        ui.label.setText("{} (27%)".format(worker_text))
 
         if admin == True:
             mode = 'Administrator'
@@ -222,9 +223,9 @@ def git_push_to_origin(ui, admin, file_list, message):
             mode = 'User'
 
         porcelain.commit(repo, message="New Update ({0}) - {1}".format(mode, message))
-        ui.label.setText("Aufgabe wird hochgeladen ... (84%)")
+        ui.label.setText("{} (84%)".format(worker_text))
         porcelain.push(repo,"https://lama-user:{}@github.com/chrisiweb/lama_latest_update.git".format(access_token),"master")
-        ui.label.setText("Aufgabe wird hochgeladen ... (100%)")        
+        ui.label.setText("{} (100%)".format(worker_text))        
 
         #### working all - problem diverging branches
         # try:

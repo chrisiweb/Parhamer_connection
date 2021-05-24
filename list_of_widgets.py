@@ -134,6 +134,7 @@ widgets_edit = [
     "groupBox_quelle",
     "pushButton_save_edit",
     "pushButton_vorschau_edit",
+    "pushButton_delete_file",
     "pushButton_save_as_variation_edit",
 ]  #'actionRefresh_Database'
 

@@ -49,8 +49,8 @@ class Worker_PushDatabase(QtCore.QObject):
     finished = QtCore.pyqtSignal()
 
     @QtCore.pyqtSlot()
-    def task(self, ui, admin, file_list, message):
-        self.changes_found = git_push_to_origin(ui, admin, file_list, message)
+    def task(self, ui, admin, file_list, message, worker_text):
+        self.changes_found = git_push_to_origin(ui, admin, file_list, message, worker_text)
 
         self.finished.emit()
 
@@ -1401,7 +1401,14 @@ class Ui_MainWindow(object):
         self.horizontalLayout_buttons.addWidget(self.pushButton_vorschau_edit)
         self.pushButton_vorschau_edit.hide()
 
-        self.pushButton_save_as_variation_edit = create_new_button(self.centralwidget, "Als Variation einer anderen Aufgabe speichern", self.pushButton_save_as_variation_edit)
+        self.pushButton_delete_file = create_new_button(self.centralwidget, "Aufgabe löschen", self.button_delete_file_pressed) #
+        # self.pushButton_delete_file.setStyleSheet("color: red")
+        self.pushButton_delete_file.setSizePolicy(SizePolicy_fixed)
+        self.horizontalLayout_buttons.addWidget(self.pushButton_delete_file)
+        self.pushButton_delete_file.hide()
+
+
+        self.pushButton_save_as_variation_edit = create_new_button(self.centralwidget, "Als Variation einer anderen Aufgabe speichern", self.pushButton_save_as_variation_edit_pressed)
         self.pushButton_save_as_variation_edit.setSizePolicy(SizePolicy_fixed)
         self.horizontalLayout_buttons.addWidget(self.pushButton_save_as_variation_edit)
         self.pushButton_save_as_variation_edit.hide()
@@ -1411,8 +1418,6 @@ class Ui_MainWindow(object):
         self.pushButton_save_edit.setFocusPolicy(QtCore.Qt.NoFocus)
         self.horizontalLayout_buttons.addWidget(self.pushButton_save_edit)
         self.pushButton_save_edit.hide()
-
-
 
 
         
@@ -2910,7 +2915,7 @@ class Ui_MainWindow(object):
 
         for picture in list(self.dict_widget_variables.keys())[:]:
             if picture.startswith("label_bild_creator_"):
-                self.del_picture(picture)
+                self.del_picture(picture, question=False)
 
         if self.lineEdit_titel.text().startswith("###"):
             self.lineEdit_titel.setText(_translate("MainWindow", "###", None))
@@ -3705,10 +3710,11 @@ class Ui_MainWindow(object):
                 self.verticalLayout.addWidget(label_picture)
         self.verticalLayout.addWidget(self.btn_add_image)
 
-    def del_picture(self, picture):
-        rsp = question_window('Sind Sie sicher, dass Sie die Grafik "{}" entfernen möchten?'.format(self.dict_picture_path[self.dict_widget_variables[picture].text()]))
-        if rsp == False:
-            return
+    def del_picture(self, picture, question=True):
+        if question==True:
+            rsp = question_window('Sind Sie sicher, dass Sie die Grafik "{}" entfernen möchten?'.format(self.dict_picture_path[self.dict_widget_variables[picture].text()]))
+            if rsp == False:
+                return
         del self.dict_picture_path[self.dict_widget_variables[picture].text()]
         self.dict_widget_variables[picture].hide()
         if len(self.dict_picture_path) == 0:
@@ -4213,10 +4219,9 @@ class Ui_MainWindow(object):
             abstand,
         ) = self.get_all_infos_new_file(typ, 'editor')
 
-        aufgabe = self.chosen_file_to_edit
-        lama_table = get_table(aufgabe, typ)
+        lama_table = get_table(name, typ)
 
-        aufgabe = aufgabe.replace(" (lokal)","")
+        aufgabe = name.replace(" (lokal)","")
         _file_ = Query()
         
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
@@ -4236,6 +4241,9 @@ class Ui_MainWindow(object):
         ])
         QtWidgets.QApplication.restoreOverrideCursor()
 
+        if "(lokal)" not in name:
+            file_list = ["_database.json"]
+            self.action_push_database(False, file_list, message= "Bearbeitet: {}".format(name), worker_text="Änderung hochladen ...")
 
         information_window("Die Änderungen wurden erfolgreich gespeichert.")
 
@@ -4254,7 +4262,28 @@ class Ui_MainWindow(object):
         else:
             critical_window("Die PDF Datei konnte nicht erstellt werden", detailed_text= rsp)
 
-    def pushButton_save_as_variation_edit(self):
+    def button_delete_file_pressed(self):
+        name = self.chosen_file_to_edit
+        rsp = question_window('Sind Sie sicher, dass Sie die Aufgabe "{}" endgültig und unwiderruflich löschen möchten?'.format(name))
+
+        if rsp == False:
+            return
+
+        typ = get_aufgabentyp(self.chosen_program, name)
+        delete_file(name, typ)
+
+        if "(lokal)" not in name:
+            file_list = ["_database.json"]
+            self.action_push_database(False, file_list, message= "Gelöscht: {}".format(name), worker_text="Aufgabe löschen ...")
+
+        information_window('Die Aufgabe "{}" wurde erfolgreich aus der Datenbank entfernt.'.format(name))
+
+        self.suchfenster_reset(True)
+        self.reset_edit_file()        
+
+        
+
+    def pushButton_save_as_variation_edit_pressed(self):
         Dialog = QtWidgets.QDialog(
             None,
             QtCore.Qt.WindowSystemMenuHint
@@ -4411,6 +4440,7 @@ class Ui_MainWindow(object):
         ############################################################################
 
         response = self.replace_image_name(typ_save)
+
         if response[0] == False:
             warning_window(
                 'Die Grafik mit dem Dateinamen "{}" konnte im Aufgabentext nicht gefunden werden.'.format(
@@ -4419,8 +4449,8 @@ class Ui_MainWindow(object):
                 "Bitte versichern Sie sich, dass der Dateiname korrekt geschrieben ist und Sie die richtige Grafik eingefügt haben.",
             )
             return
-        # else:
-        #     textBox_Entry = response[1]
+        else:
+            content_images_replaced = response[1]
 
         list_path = self.get_parent_folder(typ_save)
 
@@ -4439,7 +4469,12 @@ class Ui_MainWindow(object):
             return
 
         ###################################################################################
-
+        internet_on = check_internet_connection()
+        if internet_on == False:
+            critical_window("Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.",
+                titel="Keine Internetverbindung",
+            )
+            return            
         rsp = check_branches()
         if rsp == False:
             git_reset_repo_to_origin()
@@ -4460,6 +4495,7 @@ class Ui_MainWindow(object):
             abstand,
         ) = self.get_all_infos_new_file(typ, typ_save[0])
 
+        content = content_images_replaced
         add_file(table_lama, name, themen, titel, af, quelle, content, punkte, pagebreak, klasse, info, bilder, draft, abstand)
 
 
@@ -4512,29 +4548,29 @@ class Ui_MainWindow(object):
 
         self.adapt_choosing_list("sage")
 
-    def action_push_database(self, admin, file_list, message = None):
+    def action_push_database(self, admin, file_list, message = None, worker_text = "Aufgabe wird hochgeladen ..."):
         if check_internet_connection() == False:
-            critical_window(
-                """
-Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.
-            """,
+            critical_window("Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.",
                 titel="Keine Internetverbindung",
             )
             return
 
-        if admin == True:
-            text = "Änderungen überprüfen ..."
-        else:
-            text = "Aufgabe wird hochgeladen ... (1%)"
+
+        # text = worker_text + " (1%)"
+        # if admin == True:
+        #     text = "Änderungen überprüfen ..."
+        # else:
+        #     text = "Aufgabe wird hochgeladen ... (1%)"
+
         Dialog = QtWidgets.QDialog()
         ui = Ui_Dialog_processing()
-        ui.setupUi(Dialog, text)
+        ui.setupUi(Dialog, worker_text)
 
         thread = QtCore.QThread(Dialog)
         worker = Worker_PushDatabase()
         worker.finished.connect(Dialog.close)
         worker.moveToThread(thread)
-        rsp = thread.started.connect(partial(worker.task, ui, admin, file_list, message))
+        rsp = thread.started.connect(partial(worker.task, ui, admin, file_list, message, worker_text))
         thread.start()
         thread.exit()
         Dialog.exec()
@@ -4561,6 +4597,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         self.pushButton_save_edit.setEnabled(enabled)
         self.pushButton_vorschau_edit.setEnabled(enabled)
         self.pushButton_save_as_variation_edit.setEnabled(enabled)
+        self.pushButton_delete_file.setEnabled(enabled)
         self.cb_matura_tag.setEnabled(enabled)
         self.groupBox_aufgabentyp.setEnabled(enabled)
         self.groupBox_themengebiete_cria.setEnabled(enabled)
@@ -6775,6 +6812,7 @@ if __name__ == "__main__":
         get_aufgabentyp,
         add_file,
         get_table,
+        delete_file,
     )
     i = step_progressbar(i, "tex_minimal")
     from tex_minimal import *
