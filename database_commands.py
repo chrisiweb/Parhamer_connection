@@ -20,6 +20,7 @@ def get_aufgabentyp(chosen_program , aufgabe):
     return typ
 
 def get_table(aufgabe, typ):
+    print(aufgabe)
     if typ==None:
         typ = 'cria'
     elif typ == 1:
@@ -28,14 +29,15 @@ def get_table(aufgabe, typ):
         typ = 'lama_2'
     table = "table_" + typ
     
-    if " (lokal)" in aufgabe:
-        aufgabe = aufgabe.replace(" (lokal)","")
+    if "l." in aufgabe:
+        # aufgabe = aufgabe.replace(" (lokal)","")
         return _local_database.table(table)
     else:
         return _database.table(table)
 
 def get_aufgabe_total(aufgabe, typ):
     table_lama = get_table(aufgabe, typ)
+    aufgabe = aufgabe.replace(" (lokal)","")
     # if typ==None:
     #     typ = 'cria'
     # elif typ == 1:

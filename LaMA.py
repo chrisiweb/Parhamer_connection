@@ -3664,7 +3664,8 @@ class Ui_MainWindow(object):
                     self.reset_edit_file()
                     return
             typ = get_aufgabentyp(self.chosen_program, _file_)
-            _file_ = _file_.replace(" (lokal)", "")
+            # _file_ = _file_.replace(" (lokal)", "")
+            print(_file_)
             aufgabe_total_original = get_aufgabe_total(_file_, typ)
 
             self.enable_widgets_editor(True)
@@ -3672,6 +3673,7 @@ class Ui_MainWindow(object):
 
         if response == 0:
             return
+
 
         self.set_infos_chosen_variation(aufgabe_total_original, mode)
 
@@ -3954,13 +3956,13 @@ class Ui_MainWindow(object):
     def get_parent_folder(self, typ_save):
         list_path = [path_programm]
 
-        if self.local_save == True:
-            list_path.append("Lokaler_Ordner")
-        else:
-            if typ_save == ["admin", 1]:
-                list_path.append("_database_inoffiziell")
-            else:
-                list_path.append("_database")
+        # if self.local_save == True:
+        #     list_path.append("Lokaler_Ordner")
+        # else:
+        # if typ_save == ["admin", 1]:
+        #     list_path.append("_database_inoffiziell")
+        # else:
+        list_path.append("_database")
         return list_path
 
 
@@ -3986,13 +3988,13 @@ class Ui_MainWindow(object):
             all_files = table_lama.all()
 
         for all in all_files:
-            name = all["name"]
+            name = all["name"].replace('l.','')
             if typ == 1:
-                num = all["name"].split(" - ")[-1]
+                num = name.split(" - ")[-1]
             elif typ == None:
-                num = all["name"].split(".")[-1]
+                num = name.split(".")[-1]
             elif typ == 2:
-                num = all["name"]
+                num = name
 
             if self.chosen_variation == None:
                 num = int(num.split("[")[0])
@@ -4024,6 +4026,8 @@ class Ui_MainWindow(object):
 
         if typ_save == ["admin", 1]:
             number = "i." + str(number)
+        elif typ_save[0] == 'local':
+            number = "l." + str(number)
 
         if self.chosen_program == "cria":
             highest_grade = self.get_highest_grade()
@@ -4049,14 +4053,16 @@ class Ui_MainWindow(object):
             string = "{" + old_image_name + "}"
 
             new_image_name = self.edit_image_name(typ_save, old_image_name)
-            if typ_save == ["admin", 0]:
+            # if typ_save == ["admin", 0]:
+            #     path = "../_database/Bilder/"
+            # elif typ_save == ["admin", 1]:
+            #     path = "../_database_inoffiziell/Bilder/"
+            # elif typ_save[0] == "user":
+            #     path = "../_database/Bilder/"
+            if typ_save[0] == "local":
+                path = "../_database/Bilder_local/"
+            else:
                 path = "../_database/Bilder/"
-            elif typ_save == ["admin", 1]:
-                path = "../_database_inoffiziell/Bilder/"
-            elif typ_save[0] == "user":
-                path = "../_database/Bilder/"
-            elif typ_save[0] == "local":
-                path = "../Lokaler_Ordner/Bilder/"
 
             new_image_name = path + new_image_name
 
@@ -4072,14 +4078,14 @@ class Ui_MainWindow(object):
         for old_image_path in list(self.dict_picture_path.values()):
             old_image_name = os.path.basename(old_image_path)
             new_image_name = self.edit_image_name(typ_save, old_image_name)
-            # print(new_image_name)
-            # return
+
             new_image_path = os.path.join(parent_image_path, new_image_name)
+            print(new_image_path)
             try:
                 shutil.copy(old_image_path, new_image_path)
             except FileNotFoundError:
                 try:
-                    os.mkdir(new_image_path)
+                    os.mkdir(parent_image_path)
                     shutil.copy(old_image_path, new_image_path)
                 except FileNotFoundError:
                     # warning_window(
@@ -4139,6 +4145,9 @@ class Ui_MainWindow(object):
             name = None
         else:
             name = self.create_file_name(typ, self.max_integer)
+            if typ_save=='local':
+                gk, number  = name.split(' - ')
+                name = gk + ' - ' + 'l.' + number
         themen = self.get_themen_auswahl()
         titel = self.lineEdit_titel.text()
         if typ == 2:
@@ -4440,6 +4449,7 @@ class Ui_MainWindow(object):
         ############################################################################
 
         response = self.replace_image_name(typ_save)
+        print(response)
 
         if response[0] == False:
             warning_window(
@@ -4454,7 +4464,10 @@ class Ui_MainWindow(object):
 
         list_path = self.get_parent_folder(typ_save)
 
-        list_path.append("Bilder")
+        if typ_save[0] == 'local':
+            list_path.append("Bilder_local")
+        else:
+            list_path.append("Bilder")
         parent_image_path = self.create_path_from_list(list_path)
 
         list_images_new_names, error = self.copy_image_save(typ_save, parent_image_path)
