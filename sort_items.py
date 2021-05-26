@@ -57,7 +57,7 @@ def order_gesammeltedateien(text):
         _list.append(int(split_number[1]))
     else:
         _list.append(int(num))
-    print(_list)
+
     return _list
 
 

@@ -4178,9 +4178,12 @@ class Ui_MainWindow(object):
         else:
             info = None
 
-        bilder = []
-        for all in self.dict_picture_path.keys():
-            bilder.append(all)
+        if typ_save=='editor':
+            bilder = []
+            for all in self.dict_picture_path.keys():
+                bilder.append(all)
+        else:
+            bilder = None
 
         if typ_save == "user":
             draft = True
@@ -4279,6 +4282,25 @@ class Ui_MainWindow(object):
             return
 
         typ = get_aufgabentyp(self.chosen_program, name)
+
+        aufgabe_total = get_aufgabe_total(name, typ)
+        images = aufgabe_total['bilder']
+
+        
+        # image_path = os.path(path_programm, '_database')
+        # print(database)
+        if "l." in name:
+            image_path= os.path.join(database, "Bilder_local")
+        else:
+            image_path=os.path.join(database, "Bilder")
+
+        for all in images:
+            image = os.path.join(image_path, all)
+            try:
+                os.remove(image)
+            except FileNotFoundError:
+                print('Die Grafik "{}" konnte nicht gefunden werden.'.format(image))
+
         delete_file(name, typ)
 
         if "(lokal)" not in name:
@@ -4449,7 +4471,7 @@ class Ui_MainWindow(object):
         ############################################################################
 
         response = self.replace_image_name(typ_save)
-        print(response)
+        # print(response)
 
         if response[0] == False:
             warning_window(
@@ -4482,15 +4504,16 @@ class Ui_MainWindow(object):
             return
 
         ###################################################################################
-        internet_on = check_internet_connection()
-        if internet_on == False:
-            critical_window("Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.",
-                titel="Keine Internetverbindung",
-            )
-            return            
-        rsp = check_branches()
-        if rsp == False:
-            git_reset_repo_to_origin()
+        if typ_save[0] != 'local':
+            internet_on = check_internet_connection()
+            if internet_on == False:
+                critical_window("Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.",
+                    titel="Keine Internetverbindung",
+                )
+                return            
+            rsp = check_branches()
+            if rsp == False:
+                git_reset_repo_to_origin()
 
         (
             name,
@@ -4509,6 +4532,7 @@ class Ui_MainWindow(object):
         ) = self.get_all_infos_new_file(typ, typ_save[0])
 
         content = content_images_replaced
+        bilder = list_images_new_names
         add_file(table_lama, name, themen, titel, af, quelle, content, punkte, pagebreak, klasse, info, bilder, draft, abstand)
 
 
