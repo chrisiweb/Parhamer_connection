@@ -5649,7 +5649,7 @@ class Ui_MainWindow(object):
         else:
             sage_individual_change = None
 
-        print(sage_individual_change)
+        # print(sage_individual_change)
         Dialog = QtWidgets.QDialog(
             None,
             QtCore.Qt.WindowSystemMenuHint
@@ -5676,8 +5676,6 @@ class Ui_MainWindow(object):
         if ui.sage_individual_change != None:
             self.dict_sage_individual_change[aufgabe] = ui.sage_individual_change
 
-        print(ui.list_sage_ausgleichspunkte_chosen)
-        print(ui.list_sage_hide_show_items_chosen)
         # print(self.ui.list_sage_individual_change)
         # print(self.dict_sage_individual_change)
         # print(self.dict_alle_aufgaben_sage)
