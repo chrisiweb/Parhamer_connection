@@ -1,6 +1,7 @@
+import enum
 import re
 import os
-from config import split_section, dict_gk
+from config import dict_gk, zusatzthemen_beschreibung
 
 
 def atoi(text):
@@ -23,29 +24,36 @@ def get_typ(string):
 def order_gesammeltedateien(text):
     typ = get_typ(text['name'])
     name = text['name'].replace('i.','').replace('l.','')
-    # print(text['name'])
+    # print(text)
     # get_typ(text['name'])
     # return 0
 
     # ###### typ_1 working
     # if re.match
+    _list = []
     if typ == 'lama_1':
         for i, gk  in enumerate(dict_gk.values()):
             if gk in name:
-                _list = [i]
+                _list.append(i)
                 num = name.split(" - ")[-1]
+        for i, thema in enumerate(zusatzthemen_beschreibung.keys()):
+            if thema.upper() in name.upper():
+                index = 1000+i
+                _list.append(index)
+                num = name.split(" - ")[-1]
+
+
     elif typ == 'cria':
         num = name.split('.')[-1]
-        _list = []
-
+        
     elif typ == 'lama_2':
         num = name
-        _list = []
+
 
 
     if 'l.' in text['name']:
         _list.append(0)
-    if 'i.' in text['name']:
+    elif 'i.' in text['name']:
         _list.append(2)
     else:
         _list.append(1)

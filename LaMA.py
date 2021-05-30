@@ -6034,6 +6034,18 @@ class Ui_MainWindow(object):
         filtered_items = filter_items(
             self, table_lama, typ, list_mode, filter_string, line_entry
         )
+
+
+        table_lama = _database_addon.table(table)
+        filtered_items_addon = filter_items(
+            self, table_lama, typ, list_mode, filter_string, line_entry
+        )
+        for all in filtered_items_addon:
+            filtered_items.append(all)
+        
+        filtered_items.sort(key=order_gesammeltedateien)
+        # print(filtered_items)
+
         self.add_items_to_listwidget(typ, listWidget, filtered_items)
 
         QtWidgets.QApplication.restoreOverrideCursor()
@@ -6842,9 +6854,13 @@ if __name__ == "__main__":
     from tinydb import Query
     i = step_progressbar(i, "database_commands")
 
+    from sort_items import order_gesammeltedateien
+    i = step_progressbar(i, "sort_items")
+
     from database_commands import (
         _database,
         _local_database,
+        _database_addon,
         get_aufgabe_total,
         get_aufgabentyp,
         add_file,
