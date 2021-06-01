@@ -5774,6 +5774,7 @@ class Ui_MainWindow(object):
             self.comboBox_gk_num.clear()
             if self.comboBox_gk.currentText() == "":
                 return
+                
             self.comboBox_gk_num.addItem("")
             self.lineEdit_number.clear()
             # list_klassen = ["k5", "k6", "k7", "k8"]
