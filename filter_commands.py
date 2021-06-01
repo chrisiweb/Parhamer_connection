@@ -42,8 +42,8 @@ def get_filter_string(self, list_mode):
             if topic != None:
                 string_1 = topic
             else:
-                string_1 = self.comboBox_gk_num.currentText()
-
+                string_1 = self.comboBox_fb_num.currentText()
+        
         if not is_empty(string_0):
             if string_0 == 'Zusatzthemen':
                 filter_string = "zusatz_"+string_1.upper()
@@ -51,6 +51,7 @@ def get_filter_string(self, list_mode):
                 filter_string = string_0
                 if not is_empty(string_1):
                     filter_string = filter_string + " " + string_1
+            print(filter_string)
             return filter_string
         else:
             return ""
