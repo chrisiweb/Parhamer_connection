@@ -27,8 +27,7 @@ def get_table(aufgabe, typ):
     elif typ == 2:
         typ = 'lama_2'
     table = "table_" + typ
-    
-    print(aufgabe)
+
     if "l." in aufgabe:
         # aufgabe = aufgabe.replace(" (lokal)","")
         return _local_database.table(table)

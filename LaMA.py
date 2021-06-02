@@ -5599,22 +5599,25 @@ class Ui_MainWindow(object):
         typ = get_aufgabentyp(self.chosen_program, aufgabe)
         # return
         if typ == 2:
-            try:
-                split_content, index_end = split_aufgaben_content(content)
-                split_content = split_content[:index_end]
-            except Exception as e1:
-                try:
-                    split_content = split_aufgaben_content_new_format(content)
-                except Exception as e2:
-                    split_content = None
-                if split_content == None:
-                    warning_window(
-                        "Es ist ein Fehler bei der Anzeige der Aufgabe {} aufgetreten! (Die Aufgabe kann voraussichtlich dennoch verwendet und individuell in der TeX-Datei bearbeitet werden.)\n".format(
-                            aufgabe
-                        ),
-                        'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!',
-                    )
-                    return
+            split_content = self.split_content(aufgabe, content)
+
+            if split_content == False:
+                return
+            # try:
+            #     split_content, index_end = split_aufgaben_content(content)
+            #     split_content = split_content[:index_end]
+            # except Exception as e1:
+            #     try:
+            #         split_content = split_aufgaben_content_new_format(content)
+            #     except Exception:
+            #         # split_content = None
+            #         warning_window(
+            #             "Es ist ein Fehler bei der Anzeige der Aufgabe {} aufgetreten! (Die Aufgabe kann voraussichtlich dennoch verwendet und individuell in der TeX-Datei bearbeitet werden.)\n".format(
+            #                 aufgabe
+            #             ),
+            #             'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!',
+            #         )
+            #         return
 
             if aufgabe in self.dict_sage_ausgleichspunkte_chosen.keys():
                 list_sage_ausgleichspunkte_chosen = (
@@ -5676,7 +5679,6 @@ class Ui_MainWindow(object):
         if ui.sage_individual_change != None:
             self.dict_sage_individual_change[aufgabe] = ui.sage_individual_change
 
-        # print(self.ui.list_sage_individual_change)
         # print(self.dict_sage_individual_change)
         # print(self.dict_alle_aufgaben_sage)
         if typ == 2:
@@ -5691,7 +5693,8 @@ class Ui_MainWindow(object):
             # self.dict_alle_aufgaben_sage[aufgabe][3] = len(
             #     ui.list_sage_ausgleichspunkte_chosen
             # )
-
+            print(self.dict_sage_ausgleichspunkte_chosen)
+            print(self.dict_sage_hide_show_items_chosen)
             self.dict_variablen_label[aufgabe].setText("{}".format(len(ui.list_sage_ausgleichspunkte_chosen)))
 
         self.update_punkte()
@@ -6107,6 +6110,25 @@ class Ui_MainWindow(object):
 
         self.dict_all_infos_for_file["data_gesamt"] = dict_data_gesamt
 
+    def split_content(self, aufgabe, content):
+        try:
+            split_content, index_end = split_aufgaben_content(content)
+            split_content = split_content[:index_end]
+            return split_content
+        except Exception:
+            try:
+                split_content = split_aufgaben_content_new_format(content)
+                return split_content
+            except Exception:
+                # split_content = None
+                warning_window(
+                    "Es ist ein Fehler bei der Anzeige der Aufgabe {} aufgetreten! (Die Aufgabe kann voraussichtlich dennoch verwendet und individuell in der TeX-Datei bearbeitet werden.)\n".format(
+                        aufgabe
+                    ),
+                    'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!',
+                )
+                return False
+
 
     def add_content_to_tex_file(
         self, aufgabe, aufgabe_total, filename_vorschau, first_typ2
@@ -6144,8 +6166,35 @@ class Ui_MainWindow(object):
         with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
             vorschau.write(header)
             vorschau.write(begin)
+            print(aufgabe)
+            print(self.dict_sage_hide_show_items_chosen)
+            print(self.dict_sage_ausgleichspunkte_chosen)
             if aufgabe in self.dict_sage_individual_change:
                 vorschau.write(self.dict_sage_individual_change[aufgabe])
+            elif aufgabe in self.dict_sage_ausgleichspunkte_chosen:
+                split_content = self.split_content(aufgabe, aufgabe_total["content"])
+                print(split_content)
+                # for index in self.dict_sage_ausgleichspunkte_chosen[aufgabe]:
+                #     split_content[index] = split_content[index].replace("SUBitem", "")
+
+            # try:
+            #     split_content, index_end = split_aufgaben_content(content)
+            #     split_content = split_content[:index_end]
+            # except Exception as e1:
+            #     try:
+            #         split_content = split_aufgaben_content_new_format(content)
+            #     except Exception:
+            #         # split_content = None
+            #         warning_window(
+            #             "Es ist ein Fehler bei der Anzeige der Aufgabe {} aufgetreten! (Die Aufgabe kann voraussichtlich dennoch verwendet und individuell in der TeX-Datei bearbeitet werden.)\n".format(
+            #                 aufgabe
+            #             ),
+            #             'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!',
+            #         )
+            #         return
+
+
+
             else:
                 vorschau.write(aufgabe_total["content"])
             vorschau.write(vspace)
