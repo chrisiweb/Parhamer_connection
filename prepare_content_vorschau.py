@@ -36,7 +36,7 @@ def edit_content_ausgleichspunkte(self, aufgabe, split_content, full_content):
         .replace("\\Aitem", "\\item")
         for line in split_content
     ]
-    print(split_content)
+
     for all in self.dict_sage_ausgleichspunkte_chosen[aufgabe]:
         line = split_content[all]
         
@@ -51,49 +51,45 @@ def edit_content_ausgleichspunkte(self, aufgabe, split_content, full_content):
 
         full_content = full_content.replace(line, new_line)
 
-        # if line in full_content:
-        #     print(True)
-        # else:
-        #     print(False)
-    print(full_content)
+
     return full_content
 
 
-    content[all] = line
+    # content[all] = line
     # for i, line in enumerate(content):
     #     ausgleichspunkte = (
     #         ausgleichspunkte.replace("ITEM", "").replace("SUBitem", "").strip()
     #     )
 
-    return content
-    for ausgleichspunkte in self.dict_all_infos_for_file["dict_ausgleichspunkte"][
-        aufgabe
-    ]:
-        for i, line in enumerate(content):
-            ausgleichspunkte = (
-                ausgleichspunkte.replace("ITEM", "").replace("SUBitem", "").strip()
-            )
-            if ausgleichspunkte.partition("\n")[0] in line:
-                if "\\Subitem" in line:
-                    line = line.replace("\\Subitem", "\\ASubitem")
-                else:
-                    if ausgleichspunkte.startswith("{"):
-                        ausgleichspunkte = ausgleichspunkte[1:]
+    # return content
+    # for ausgleichspunkte in self.dict_all_infos_for_file["dict_ausgleichspunkte"][
+    #     aufgabe
+    # ]:
+    #     for i, line in enumerate(content):
+    #         ausgleichspunkte = (
+    #             ausgleichspunkte.replace("ITEM", "").replace("SUBitem", "").strip()
+    #         )
+    #         if ausgleichspunkte.partition("\n")[0] in line:
+    #             if "\\Subitem" in line:
+    #                 line = line.replace("\\Subitem", "\\ASubitem")
+    #             else:
+    #                 if ausgleichspunkte.startswith("{"):
+    #                     ausgleichspunkte = ausgleichspunkte[1:]
 
-                    line = line.replace(
-                        ausgleichspunkte.partition("\n")[0],
-                        "\\fbox{A} " + ausgleichspunkte.partition("\n")[0],
-                    )
-                content[i] = line
-                break
-            if i + 1 == len(content):
-                warning_window(
-                    "Leider ist ein Fehler beim Bearbeiten der Ausgleichspunkte augetreten",
-                    detailed_text="Bitte ändern Sie die Ausgleichspunkte nach dem Erstellen manuell in der LaTeX-Datei.",
-                )
-                return content
+    #                 line = line.replace(
+    #                     ausgleichspunkte.partition("\n")[0],
+    #                     "\\fbox{A} " + ausgleichspunkte.partition("\n")[0],
+    #                 )
+    #             content[i] = line
+    #             break
+    #         if i + 1 == len(content):
+    #             warning_window(
+    #                 "Leider ist ein Fehler beim Bearbeiten der Ausgleichspunkte augetreten",
+    #                 detailed_text="Bitte ändern Sie die Ausgleichspunkte nach dem Erstellen manuell in der LaTeX-Datei.",
+    #             )
+    #             return content
 
-    return content
+    # return content
 
 
 def edit_content_hide_show_items(self, aufgabe, content):
