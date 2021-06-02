@@ -1,4 +1,5 @@
 import os
+from re import split
 import shutil
 from config_start import database, path_localappdata_lama
 from config import is_empty
@@ -28,14 +29,43 @@ def edit_content_individual(self, aufgabe, content):
     # print(content)
     return content
 
-def edit_content_ausgleichspunkte(self, aufgabe, content):
-    content = [
+def edit_content_ausgleichspunkte(self, aufgabe, split_content, full_content):
+    split_content = [
         line.replace("\\fbox{A}", "")
         .replace("\\ASubitem", "\\Subitem")
         .replace("\\Aitem", "\\item")
-        for line in content
+        for line in split_content
     ]
+    print(split_content)
+    for all in self.dict_sage_ausgleichspunkte_chosen[aufgabe]:
+        line = split_content[all]
+        
+        if "SUBitem" in line:
+            new_line = line.replace("SUBitem", "\\ASubitem")
+        elif "ITEM" in line:
+            new_line = line.replace("ITEM", "\\Aitem")
+        else:
+            new_line = "\\fbox{{A}} {}".format(line)
 
+        line = line.replace("ITEM", "\\item").replace("SUBitem", "\\Subitem").strip()
+
+        full_content = full_content.replace(line, new_line)
+
+        # if line in full_content:
+        #     print(True)
+        # else:
+        #     print(False)
+    print(full_content)
+    return full_content
+
+
+    content[all] = line
+    # for i, line in enumerate(content):
+    #     ausgleichspunkte = (
+    #         ausgleichspunkte.replace("ITEM", "").replace("SUBitem", "").strip()
+    #     )
+
+    return content
     for ausgleichspunkte in self.dict_all_infos_for_file["dict_ausgleichspunkte"][
         aufgabe
     ]:

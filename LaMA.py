@@ -5,6 +5,7 @@ __version__ = "v2.3.0"
 __lastupdate__ = "01/21"
 ##################
 print("Loading...")
+from prepare_content_vorschau import edit_content_ausgleichspunkte
 from git_sync import git_reset_repo_to_origin
 from standard_dialog_windows import question_window
 import start_window
@@ -6172,8 +6173,17 @@ class Ui_MainWindow(object):
             if aufgabe in self.dict_sage_individual_change:
                 vorschau.write(self.dict_sage_individual_change[aufgabe])
             elif aufgabe in self.dict_sage_ausgleichspunkte_chosen:
+                full_content = aufgabe_total['content']
+                # print(content)
+
                 split_content = self.split_content(aufgabe, aufgabe_total["content"])
-                print(split_content)
+                content = edit_content_ausgleichspunkte(self, aufgabe, split_content, full_content)
+
+
+                # print(content)
+                # return
+                # content = "\n".join(split_content)
+                vorschau.write(content)
                 # for index in self.dict_sage_ausgleichspunkte_chosen[aufgabe]:
                 #     split_content[index] = split_content[index].replace("SUBitem", "")
 
@@ -6285,7 +6295,7 @@ class Ui_MainWindow(object):
         else:
             solution = "solution_off"
 
-        current_index = int(index / 2)
+        # current_index = int(index / 2)
 
         str_titlepage = get_titlepage_vorschau(
             self, dict_titlepage, ausgabetyp, maximum, index
@@ -6311,7 +6321,7 @@ class Ui_MainWindow(object):
             vorschau.write(header)
 
         first_typ2 = False
-        aufgaben_nummer = 1
+        # aufgaben_nummer = 1
 
         for aufgabe in self.list_alle_aufgaben_sage:
             name = aufgabe.replace(" (lokal)", "")
@@ -6321,38 +6331,38 @@ class Ui_MainWindow(object):
             # print(aufgabe_total)
     
 
-            if self.comboBox_pruefungstyp.currentText() == "Quiz":
+            # if self.comboBox_pruefungstyp.currentText() == "Quiz":
 
-                with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
-                    for i in range(2):
-                        vorschau.write(
-                            "\n\n\\setcounter{{Antworten}}{{{0}}}\n\n".format(i)
-                        )
-                        if i == 0:
-                            vorschau.write(
-                                "\\title{{Aufgabe {0}}}\maketitle\n\n".format(
-                                    aufgaben_nummer
-                                )
-                            )
-                            solution = False
-                        elif i == 1:
-                            vorschau.write(
-                                "\\title{{\\textcolor{{red}}{{Aufgabe {0} (Lösung)}}}}\maketitle\n\n".format(
-                                    aufgaben_nummer
-                                )
-                            )
-                            solution = True
+            #     with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
+            #         for i in range(2):
+            #             vorschau.write(
+            #                 "\n\n\\setcounter{{Antworten}}{{{0}}}\n\n".format(i)
+            #             )
+            #             if i == 0:
+            #                 vorschau.write(
+            #                     "\\title{{Aufgabe {0}}}\maketitle\n\n".format(
+            #                         aufgaben_nummer
+            #                     )
+            #                 )
+            #                 solution = False
+            #             elif i == 1:
+            #                 vorschau.write(
+            #                     "\\title{{\\textcolor{{red}}{{Aufgabe {0} (Lösung)}}}}\maketitle\n\n".format(
+            #                         aufgaben_nummer
+            #                     )
+            #                 )
+            #                 solution = True
 
-                        content = edit_content_quiz(split_content[1], solution)
-                        vorschau.write(
-                            "\\begin{frame}\n" + content + "\n\\end{frame}\n\n"
-                        )
+            #             content = edit_content_quiz(split_content[1], solution)
+            #             vorschau.write(
+            #                 "\\begin{frame}\n" + content + "\n\\end{frame}\n\n"
+            #             )
 
-                aufgaben_nummer += 1
-            else:
-                first_typ2 = self.add_content_to_tex_file(
-                    aufgabe, aufgabe_total, filename_vorschau, first_typ2
-                )
+            #     aufgaben_nummer += 1
+            # else:
+            first_typ2 = self.add_content_to_tex_file(
+                aufgabe, aufgabe_total, filename_vorschau, first_typ2
+            )
 
         if (
             self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
