@@ -28,9 +28,12 @@ def get_table(aufgabe, typ):
         typ = 'lama_2'
     table = "table_" + typ
     
+    print(aufgabe)
     if "l." in aufgabe:
         # aufgabe = aufgabe.replace(" (lokal)","")
         return _local_database.table(table)
+    elif "i." in aufgabe:
+        return _database_addon.table(table)
     else:
         return _database.table(table)
 

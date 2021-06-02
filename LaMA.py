@@ -2946,7 +2946,7 @@ class Ui_MainWindow(object):
     def reset_sage(self, question_reset=True):
         if question_reset == True and not is_empty(self.list_alle_aufgaben_sage):
             response = question_window(
-                "Sind Sie sicher, dass Sie das Fenster zurücksetzen wollen und die erstellte Datei löschen möchten?",
+                "Sind Sie sicher, dass Sie das Fenster zurücksetzen wollen und die erstellte Prüfung löschen möchten?",
                 titel="Datei löschen?",
             )
 
@@ -3665,7 +3665,7 @@ class Ui_MainWindow(object):
                     return
             typ = get_aufgabentyp(self.chosen_program, _file_)
             # _file_ = _file_.replace(" (lokal)", "")
-            print(_file_)
+            # print(_file_)
             aufgabe_total_original = get_aufgabe_total(_file_, typ)
 
             self.enable_widgets_editor(True)
@@ -5556,8 +5556,8 @@ class Ui_MainWindow(object):
         for item in self.list_alle_aufgaben_sage[start_value:]:
             index_item = self.list_alle_aufgaben_sage.index(item)
             typ = get_aufgabentyp(self.chosen_program, item)
-            aufgabe_total = get_aufgabe_total(item.replace(' (lokal)',''), typ)
 
+            aufgabe_total = get_aufgabe_total(item.replace(' (lokal)',''), typ)
             # item_infos = self.collect_all_infos_aufgabe(item)
             neue_aufgaben_box = self.create_neue_aufgaben_box(
                 index_item, item, aufgabe_total
@@ -5855,7 +5855,6 @@ class Ui_MainWindow(object):
 
 
         self.sage_aufgabe_add(aufgabe)
-
 
 
         self.build_aufgaben_schularbeit(aufgabe)  # aufgabe, aufgaben_verteilung
