@@ -5,6 +5,7 @@ from config_start import database, path_localappdata_lama
 from config import is_empty
 from work_with_content import collect_content #, split_content_no_environment
 from standard_dialog_windows import warning_window
+# from work_with_content import prepare_content_for_hide_show_items
 
 
 def edit_content_individual(self, aufgabe, content):
@@ -93,9 +94,30 @@ def edit_content_ausgleichspunkte(self, aufgabe, split_content, full_content):
 
 
 def edit_content_hide_show_items(self, aufgabe, split_content, full_content):
+    print(full_content)
     for all in self.dict_sage_hide_show_items_chosen[aufgabe]:
         line = split_content[all]
+        line = line.replace("ITEM", "\\item").replace("SUBitem", "\\Subitem")
         print(line)
+        if line in full_content:
+            print(True)
+    # new_content = []
+    # for i, line in enumerate(split_content):
+    #     if i not in self.dict_sage_hide_show_items_chosen[aufgabe]:
+    #         new_content.append(line)
+    
+    # for all in new_content:
+    #     new_content[all] = all.replace("ITEM", "\\item").replace("SUBitem", "\\Subitem")
+
+    # content = "".join(new_content)
+    # print(content)
+
+    # return content
+    # for all in self.dict_sage_hide_show_items_chosen[aufgabe]:
+        # line = split_content[all]
+        
+
+        # print(line)
 
     # for item in self.dict_all_infos_for_file["dict_hide_show_items"][aufgabe]:
     #     hide_item = item.split("\n")[0]

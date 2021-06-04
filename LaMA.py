@@ -6190,8 +6190,10 @@ class Ui_MainWindow(object):
             elif aufgabe in self.dict_sage_hide_show_items_chosen:
                 full_content = aufgabe_total['content']
                 split_content = self.split_content(aufgabe, aufgabe_total["content"])
-
+                split_content = prepare_content_for_hide_show_items(split_content)
                 content = edit_content_hide_show_items(self, aufgabe, split_content, full_content)
+
+                # vorschau.write(content)
                 # for index in self.dict_sage_ausgleichspunkte_chosen[aufgabe]:
                 #     split_content[index] = split_content[index].replace("SUBitem", "")
 
@@ -6897,6 +6899,7 @@ if __name__ == "__main__":
         collect_content,
         split_aufgaben_content_new_format,
         split_aufgaben_content,
+        prepare_content_for_hide_show_items,
         edit_content_quiz,
     )
     i = step_progressbar(i, "build_titlepage")
