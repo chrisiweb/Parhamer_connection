@@ -92,43 +92,47 @@ def edit_content_ausgleichspunkte(self, aufgabe, split_content, full_content):
     # return content
 
 
-def edit_content_hide_show_items(self, aufgabe, content):
-    for item in self.dict_all_infos_for_file["dict_hide_show_items"][aufgabe]:
-        hide_item = item.split("\n")[0]
-        hide_item = hide_item.replace("ITEM", "").replace("SUBitem", "").strip()
+def edit_content_hide_show_items(self, aufgabe, split_content, full_content):
+    for all in self.dict_sage_hide_show_items_chosen[aufgabe]:
+        line = split_content[all]
+        print(line)
 
-        start_index = -1
-        end_index = -1
-        for idx, line in enumerate(content):
-            if start_index == -1:
-                if hide_item in line:
-                    start_index = idx
-                    continue
-            else:
-                if "\\item" in line:
-                    end_index = idx
-                    break
-                if "\\end{aufgabenstellung}" in line:
-                    end_index = idx
-                    break
-                if "Lösungserwartung" in line:
-                    break
-        if start_index == -1 or end_index == -1:
-            warning_window(
-                "Das Ein- bzw. Ausblenden von Aufgabenstellungen in Aufgabe {} konnte leider nicht durchgeführt werden.\n"
-                "Die Aufgabe wird daher vollständig angezeigt. Bitte bearbeiten sie diese Aufgabe manuell.".format(
-                    aufgabe
-                )
-            )
-        else:
-            for i in reversed(range(start_index + 1)):
-                if "\\item" in content[i]:
-                    start_index = i
-                    break
-            for index, line in enumerate(content[start_index:end_index]):
-                content[start_index + index] = "% " + line
+    # for item in self.dict_all_infos_for_file["dict_hide_show_items"][aufgabe]:
+    #     hide_item = item.split("\n")[0]
+    #     hide_item = hide_item.replace("ITEM", "").replace("SUBitem", "").strip()
 
-    return content
+    #     start_index = -1
+    #     end_index = -1
+    #     for idx, line in enumerate(content):
+    #         if start_index == -1:
+    #             if hide_item in line:
+    #                 start_index = idx
+    #                 continue
+    #         else:
+    #             if "\\item" in line:
+    #                 end_index = idx
+    #                 break
+    #             if "\\end{aufgabenstellung}" in line:
+    #                 end_index = idx
+    #                 break
+    #             if "Lösungserwartung" in line:
+    #                 break
+    #     if start_index == -1 or end_index == -1:
+    #         warning_window(
+    #             "Das Ein- bzw. Ausblenden von Aufgabenstellungen in Aufgabe {} konnte leider nicht durchgeführt werden.\n"
+    #             "Die Aufgabe wird daher vollständig angezeigt. Bitte bearbeiten sie diese Aufgabe manuell.".format(
+    #                 aufgabe
+    #             )
+    #         )
+    #     else:
+    #         for i in reversed(range(start_index + 1)):
+    #             if "\\item" in content[i]:
+    #                 start_index = i
+    #                 break
+    #         for index, line in enumerate(content[start_index:end_index]):
+    #             content[start_index + index] = "% " + line
+
+    # return content
 
 
 def copy_logo_to_target_path(self, logo_path):

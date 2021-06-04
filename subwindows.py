@@ -786,7 +786,6 @@ class Ui_Dialog_ausgleichspunkte(object):
         sage_individual_change,
         display_mode
     ):
-        print(list_sage_ausgleichspunkte_chosen)
         self.content = content
         self.sage_individual_change = sage_individual_change
         self.typ = typ

@@ -5,7 +5,7 @@ __version__ = "v2.3.0"
 __lastupdate__ = "01/21"
 ##################
 print("Loading...")
-from prepare_content_vorschau import edit_content_ausgleichspunkte
+from prepare_content_vorschau import edit_content_ausgleichspunkte, edit_content_hide_show_items
 from git_sync import git_reset_repo_to_origin
 from standard_dialog_windows import question_window
 import start_window
@@ -5683,13 +5683,15 @@ class Ui_MainWindow(object):
         # print(self.dict_sage_individual_change)
         # print(self.dict_alle_aufgaben_sage)
         if typ == 2:
-            self.dict_sage_ausgleichspunkte_chosen[
-                aufgabe
-            ] = ui.list_sage_ausgleichspunkte_chosen
+            if not is_empty(ui.list_sage_ausgleichspunkte_chosen):
+                self.dict_sage_ausgleichspunkte_chosen[
+                    aufgabe
+                ] = ui.list_sage_ausgleichspunkte_chosen
 
-            self.dict_sage_hide_show_items_chosen[
-                aufgabe
-            ] = ui.list_sage_hide_show_items_chosen
+            if not is_empty(ui.list_sage_hide_show_items_chosen):
+                self.dict_sage_hide_show_items_chosen[
+                    aufgabe
+                ] = ui.list_sage_hide_show_items_chosen
 
             # self.dict_alle_aufgaben_sage[aufgabe][3] = len(
             #     ui.list_sage_ausgleichspunkte_chosen
@@ -6170,6 +6172,7 @@ class Ui_MainWindow(object):
             print(aufgabe)
             print(self.dict_sage_hide_show_items_chosen)
             print(self.dict_sage_ausgleichspunkte_chosen)
+            print(self.dict_sage_individual_change)
             if aufgabe in self.dict_sage_individual_change:
                 vorschau.write(self.dict_sage_individual_change[aufgabe])
             elif aufgabe in self.dict_sage_ausgleichspunkte_chosen:
@@ -6184,6 +6187,11 @@ class Ui_MainWindow(object):
                 # return
                 # content = "\n".join(split_content)
                 vorschau.write(content)
+            elif aufgabe in self.dict_sage_hide_show_items_chosen:
+                full_content = aufgabe_total['content']
+                split_content = self.split_content(aufgabe, aufgabe_total["content"])
+
+                content = edit_content_hide_show_items(self, aufgabe, split_content, full_content)
                 # for index in self.dict_sage_ausgleichspunkte_chosen[aufgabe]:
                 #     split_content[index] = split_content[index].replace("SUBitem", "")
 
