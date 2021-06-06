@@ -464,7 +464,7 @@ class Ui_Dialog_variation(object):
 
     def add_items_to_listwidget_creator(self, typ, filtered_items, local = False):
         # mode = self.MainWindow.chosen_gui
-        print(local)
+        # print(local)
         for _file_ in filtered_items:
             if typ == "cria":
                 name = _file_["name"].split(".")[-1]
@@ -1155,7 +1155,7 @@ class Ui_Dialog_ausgleichspunkte(object):
                     or is_empty(linetext.replace("ITEM", "").strip()) == True
                 ) and self.combobox_edit.currentIndex() == 0:  #
                     checkbox = None
-                    print(str(index) + 'empty')
+                    # print(str(index) + 'empty')
                 else:
                     checkbox, checkbox_label = self.create_checkbox_ausgleich(
                         linetext, row, index
@@ -1315,7 +1315,7 @@ class Ui_Dialog_ausgleichspunkte(object):
             return True
         if self.sage_individual_change != None:
             return True
-            
+
         return False      
     
 

@@ -9,25 +9,16 @@ from standard_dialog_windows import warning_window
 
 
 def edit_content_individual(self, aufgabe, content):
-    # print(content)
     for i, line in enumerate(content):
         if "\\begin{beispiel}" in line or "\\begin{langesbeispiel}" in line:
             start_index = i
         elif "\\end{beispiel}" in line or "\\end{langesbeispiel}" in line:
             end_index = i
-    # print(start_index)
-    # print(end_index)
+
     text = self.dict_all_infos_for_file["dict_individual_change"][aufgabe]
-    # print(text)
-    # split_text = text.splitlines()
-    # print(text)
-    # print(split_text)
-    # print(content[:start_index+1])
-    # print(content[end_index:])
+
     content = content[:start_index+1] + text + content[end_index:]
-    # split_text = split_content_no_environment(text)
-    # print(split_text)
-    # print(content)
+
     return content
 
 def edit_content_ausgleichspunkte(self, aufgabe, split_content, full_content):
@@ -94,7 +85,7 @@ def edit_content_ausgleichspunkte(self, aufgabe, split_content, full_content):
 
 
 def edit_content_hide_show_items(self, aufgabe, split_content, full_content):
-    print(full_content)
+    # print(full_content)
     list_content = full_content.split("\\item")
 
     for all in self.dict_sage_hide_show_items_chosen[aufgabe]:
@@ -137,15 +128,7 @@ def edit_content_hide_show_items(self, aufgabe, split_content, full_content):
 
     content = '\\item'.join(list_content)
     return content                        
-        #         print(True)
-        #         print(line)
-        #         print(lines)
-        # if line in full_content:
-        #     print(True)
-        #     print(line)
-        # else:
-        #     print(False)
-        #     print(line)
+
     
     # new_content = []
     # for i, line in enumerate(split_content):
@@ -237,33 +220,33 @@ def edit_content_vorschau(self, aufgabe, ausgabetyp):
     content = collect_content(self, aufgabe, readlines=True)
     return content
     # print(content)
-    if aufgabe in self.dict_all_infos_for_file["dict_individual_change"]:
-        if not is_empty(self.dict_all_infos_for_file["dict_individual_change"][aufgabe]):
-            # print(aufgabe)
-            # print(self.dict_all_infos_for_file["dict_individual_change"])
-            content = edit_content_individual(self, aufgabe, content)
-            # content = self.dict_all_infos_for_file["dict_individual_change"][aufgabe] 
-            # print(content)
+    # if aufgabe in self.dict_all_infos_for_file["dict_individual_change"]:
+    #     if not is_empty(self.dict_all_infos_for_file["dict_individual_change"][aufgabe]):
+    #         # print(aufgabe)
+    #         # print(self.dict_all_infos_for_file["dict_individual_change"])
+    #         content = edit_content_individual(self, aufgabe, content)
+    #         # content = self.dict_all_infos_for_file["dict_individual_change"][aufgabe] 
+    #         # print(content)
 
-    elif self.chosen_program == "lama":
-        typ = self.get_aufgabentyp(aufgabe)
+    # elif self.chosen_program == "lama":
+    #     typ = self.get_aufgabentyp(aufgabe)
 
-        if aufgabe in self.dict_all_infos_for_file["dict_ausgleichspunkte"].keys():
-            content = edit_content_ausgleichspunkte(self, aufgabe, content)
+    #     if aufgabe in self.dict_all_infos_for_file["dict_ausgleichspunkte"].keys():
+    #         content = edit_content_ausgleichspunkte(self, aufgabe, content)
 
-        if aufgabe in self.dict_all_infos_for_file["dict_hide_show_items"].keys():
-            content = edit_content_hide_show_items(self, aufgabe, content)
+    #     if aufgabe in self.dict_all_infos_for_file["dict_hide_show_items"].keys():
+    #         content = edit_content_hide_show_items(self, aufgabe, content)
 
         
 
-    if (
-        ausgabetyp == "schularbeit"
-        and is_empty(self.dict_all_infos_for_file["data_gesamt"]["copy_images"])
-        == False
-    ):
-        content = edit_content_image_path(content)
+    # if (
+    #     ausgabetyp == "schularbeit"
+    #     and is_empty(self.dict_all_infos_for_file["data_gesamt"]["copy_images"])
+    #     == False
+    # ):
+    #     content = edit_content_image_path(content)
 
-    return content
+    # return content
 
 
 def copy_included_images(self, image):

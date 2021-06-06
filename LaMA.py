@@ -4081,7 +4081,7 @@ class Ui_MainWindow(object):
             new_image_name = self.edit_image_name(typ_save, old_image_name)
 
             new_image_path = os.path.join(parent_image_path, new_image_name)
-            print(new_image_path)
+            # print(new_image_path)
             try:
                 shutil.copy(old_image_path, new_image_path)
             except FileNotFoundError:
@@ -5654,9 +5654,9 @@ class Ui_MainWindow(object):
             sage_individual_change = None
 
         # print(sage_individual_change)
-        print(list_sage_ausgleichspunkte_chosen)
-        print(list_sage_hide_show_items_chosen)
-        
+        # print(list_sage_ausgleichspunkte_chosen)
+        # print(list_sage_hide_show_items_chosen)
+
         Dialog = QtWidgets.QDialog(
             None,
             QtCore.Qt.WindowSystemMenuHint
@@ -5702,8 +5702,8 @@ class Ui_MainWindow(object):
                 del self.dict_sage_hide_show_items_chosen[aufgabe]
 
 
-            print(self.dict_sage_ausgleichspunkte_chosen)
-            print(self.dict_sage_hide_show_items_chosen)
+            # print(self.dict_sage_ausgleichspunkte_chosen)
+            # print(self.dict_sage_hide_show_items_chosen)
             self.dict_variablen_label[aufgabe].setText("{}".format(len(ui.list_sage_ausgleichspunkte_chosen)))
 
         self.update_punkte()
@@ -6175,10 +6175,10 @@ class Ui_MainWindow(object):
         with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
             vorschau.write(header)
             vorschau.write(begin)
-            print(aufgabe)
-            print(self.dict_sage_hide_show_items_chosen)
-            print(self.dict_sage_ausgleichspunkte_chosen)
-            print(self.dict_sage_individual_change)
+            # print(aufgabe)
+            # print(self.dict_sage_hide_show_items_chosen)
+            # print(self.dict_sage_ausgleichspunkte_chosen)
+            # print(self.dict_sage_individual_change)
             if aufgabe in self.dict_sage_individual_change:
                 vorschau.write(self.dict_sage_individual_change[aufgabe])
             elif aufgabe in self.dict_sage_ausgleichspunkte_chosen:
