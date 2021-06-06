@@ -5654,6 +5654,9 @@ class Ui_MainWindow(object):
             sage_individual_change = None
 
         # print(sage_individual_change)
+        print(list_sage_ausgleichspunkte_chosen)
+        print(list_sage_hide_show_items_chosen)
+        
         Dialog = QtWidgets.QDialog(
             None,
             QtCore.Qt.WindowSystemMenuHint
@@ -5687,15 +5690,18 @@ class Ui_MainWindow(object):
                 self.dict_sage_ausgleichspunkte_chosen[
                     aufgabe
                 ] = ui.list_sage_ausgleichspunkte_chosen
+            elif aufgabe in self.dict_sage_ausgleichspunkte_chosen:
+                del self.dict_sage_ausgleichspunkte_chosen[aufgabe]
+
 
             if not is_empty(ui.list_sage_hide_show_items_chosen):
                 self.dict_sage_hide_show_items_chosen[
                     aufgabe
                 ] = ui.list_sage_hide_show_items_chosen
+            elif aufgabe in self.dict_sage_hide_show_items_chosen:
+                del self.dict_sage_hide_show_items_chosen[aufgabe]
 
-            # self.dict_alle_aufgaben_sage[aufgabe][3] = len(
-            #     ui.list_sage_ausgleichspunkte_chosen
-            # )
+
             print(self.dict_sage_ausgleichspunkte_chosen)
             print(self.dict_sage_hide_show_items_chosen)
             self.dict_variablen_label[aufgabe].setText("{}".format(len(ui.list_sage_ausgleichspunkte_chosen)))

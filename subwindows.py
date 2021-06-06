@@ -1305,15 +1305,17 @@ class Ui_Dialog_ausgleichspunkte(object):
                     continue
                 else:
                     return True
-            return False
+            # return False
         elif is_empty(self.list_sage_ausgleichspunkte_chosen):
             for all in self.aufgabenstellung_split_text:
                 if "\\fbox{A}" in all or "\\ASubitem" in all:
                     return True
-        elif not is_empty(self.list_sage_hide_show_items_chosen):
+        
+        if not is_empty(self.list_sage_hide_show_items_chosen):
             return True
-        elif self.sage_individual_change != None:
+        if self.sage_individual_change != None:
             return True
+            
         return False      
     
 
