@@ -5,10 +5,11 @@ __version__ = "v2.3.0"
 __lastupdate__ = "01/21"
 ##################
 print("Loading...")
+from start_window import check_if_database_exists
+check_if_database_exists()
 from prepare_content_vorschau import edit_content_ausgleichspunkte, edit_content_hide_show_items
 from git_sync import git_reset_repo_to_origin
 from standard_dialog_windows import question_window
-import start_window
 from config import *
 from lama_colors import *
 import time
@@ -413,8 +414,10 @@ class Ui_MainWindow(object):
             '"srdp-mathematik.sty" aktualisieren',
             self.update_srdpmathematik,
         )
+        
 
         self.menuOptionen.addAction(self.menuUpdate.menuAction())
+        
         self.actionInfo = add_action(
             MainWindow, self.menuHelp, "Über LaMA", self.show_info
         )
@@ -446,6 +449,11 @@ class Ui_MainWindow(object):
         self.actionDeveloper = add_action(
             MainWindow, self.menuOptionen, label, self.activate_developermode
         )
+
+
+        # self.menuOptionen.addSeparator()
+        
+        # self.actionComplete_reset = add_action(MainWindow, self.menuOptionen, "LaMA vollständig zurücksetzen", self.complete_reset)
 
         self.menuBar.addAction(self.menuDatei.menuAction())
         self.menuBar.addAction(self.menuSuche.menuAction())
@@ -3216,6 +3224,36 @@ class Ui_MainWindow(object):
         response = Dialog.exec()
         if response == 1:
             self.lama_settings = ui.lama_settings
+
+    def complete_reset(self):
+        print('complete reset!')
+        # rsp = question_window("Sind Sie wirklich sicher, dass Sie LaMA vollständig zurücksetzen wollen?")
+        # if rsp==False:
+        #     return
+
+        # if os.path.isfile(os.path.join(database, "_local_database.json")):
+        #     delete_local_db = question_window("Möchten Sie auch alle lokal gespeicherten Aufgaben unwiderruflich löschen?")
+
+        # lama_folder = os.path.dirname(database)
+
+        # teildokument_folder = os.path.join(lama_folder, "Teildokument")
+        
+        # print(os.listdir(database))
+        # for all in os.listdir(database):
+        #     path = os.path.join(database, all)
+        #     if os.path.isdir(path):
+        #         if all != "Bilder_local":
+        #             shutil.rmtree(path, ignore_errors=True)
+        #     elif os.path.isfile(path):
+        #         if all != "_local_database.json":
+        #             os.remove(path)
+
+
+
+        # for root, dirs, files in os.walk(delete_folder):
+        #     print(root)
+
+        # print(delete_path)
 
 
     def show_info(self):

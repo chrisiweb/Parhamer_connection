@@ -175,18 +175,20 @@ class Ui_StartWindow(object):
         self.StartWindow.accept()
 
 
-if not path.isdir(database):
-    app = QApplication(sys.argv)
+def check_if_database_exists():
+    if not path.isdir(database):
+        app = QApplication(sys.argv)
 
-    Dialog = QDialog(
-        None,
-        Qt.WindowSystemMenuHint
-        | Qt.WindowTitleHint
-        | Qt.WindowCloseButtonHint,
-    )
-    Dialog.setWindowFlags(Qt.Dialog | Qt.CustomizeWindowHint | Qt.WindowTitleHint)
-    ui = Ui_StartWindow()
-    ui.setupUi(Dialog)
-    Dialog.show()
+        Dialog = QDialog(
+            None,
+            Qt.WindowSystemMenuHint
+            | Qt.WindowTitleHint
+            | Qt.WindowCloseButtonHint,
+        )
+        Dialog.setWindowFlags(Qt.Dialog | Qt.CustomizeWindowHint | Qt.WindowTitleHint)
+        ui = Ui_StartWindow()
+        ui.setupUi(Dialog)
+        Dialog.show()
 
-    app.exec()
+        app.exec()
+
