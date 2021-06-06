@@ -7008,7 +7008,7 @@ if __name__ == "__main__":
     )
     MainWindow.move(30, 30)
     i = step_progressbar(i, "mainwindow")
-    
+
     ui = Ui_MainWindow()
 
     splash.finish(MainWindow)
