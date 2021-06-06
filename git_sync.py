@@ -192,7 +192,7 @@ def git_push_to_origin(ui, admin, file_list, message, worker_text):
 
         # path_origin = os.path.join(database, ".git", "refs","remotes","origin", "master")
         # path_head = os.path.join(database, ".git", "refs","heads","master")
-        ff_possible = check_branches()
+        # ff_possible = check_branches()
 
 
         repo = porcelain.open_repo(database)
