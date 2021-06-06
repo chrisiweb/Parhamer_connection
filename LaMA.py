@@ -52,7 +52,10 @@ class Worker_PushDatabase(QtCore.QObject):
 
     @QtCore.pyqtSlot()
     def task(self, ui, admin, file_list, message, worker_text):
-        self.changes_found = git_push_to_origin(ui, admin, file_list, message, worker_text)
+        try:
+            self.changes_found = git_push_to_origin(ui, admin, file_list, message, worker_text)
+        except Exception:
+            self.changes_found = 'error'
 
         self.finished.emit()
 
@@ -272,8 +275,6 @@ class Ui_MainWindow(object):
 
         # self.menuDatei.addSeparator()
 
-
-        self.menuDeveloper.addSeparator()
 
         self.actionPush_Database = add_action(
             MainWindow,
@@ -4638,6 +4639,7 @@ class Ui_MainWindow(object):
         # else:
         #     text = "Aufgabe wird hochgeladen ... (1%)"
 
+
         Dialog = QtWidgets.QDialog()
         ui = Ui_Dialog_processing()
         ui.setupUi(Dialog, worker_text)
@@ -7006,7 +7008,7 @@ if __name__ == "__main__":
     )
     MainWindow.move(30, 30)
     i = step_progressbar(i, "mainwindow")
-    print(i)
+    
     ui = Ui_MainWindow()
 
     splash.finish(MainWindow)
