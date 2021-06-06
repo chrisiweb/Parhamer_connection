@@ -95,12 +95,58 @@ def edit_content_ausgleichspunkte(self, aufgabe, split_content, full_content):
 
 def edit_content_hide_show_items(self, aufgabe, split_content, full_content):
     print(full_content)
+    list_content = full_content.split("\\item")
+
     for all in self.dict_sage_hide_show_items_chosen[aufgabe]:
         line = split_content[all]
-        line = line.replace("ITEM", "\\item").replace("SUBitem", "\\Subitem")
-        print(line)
-        if line in full_content:
-            print(True)
+        line = line.replace("ITEM", "").replace("SUBitem", "")
+
+        _list = split("{|}", line)
+        line_start = None
+        for x in _list:
+            if x.isspace() == False:
+                line_start = x.strip()
+                break
+        
+        for x in reversed(_list):
+            if x.isspace() == False:
+                line_end = x.strip()
+                break
+
+        # print(line_start)
+        # print(list_content)
+
+        for i, lines in enumerate(list_content):
+            if line_start in lines:
+                # print(True)
+                index_start=i
+                break
+            # else:
+            #     print(False)
+                # print(lines)
+                # print(line_start)
+
+
+        # return
+        for i, lines in enumerate(list_content[index_start:]):
+            if line_end in lines:
+                index_end=index_start+i
+                break
+
+        del list_content[index_start:index_end+1]
+
+    content = '\\item'.join(list_content)
+    return content                        
+        #         print(True)
+        #         print(line)
+        #         print(lines)
+        # if line in full_content:
+        #     print(True)
+        #     print(line)
+        # else:
+        #     print(False)
+        #     print(line)
+    
     # new_content = []
     # for i, line in enumerate(split_content):
     #     if i not in self.dict_sage_hide_show_items_chosen[aufgabe]:

@@ -6193,7 +6193,8 @@ class Ui_MainWindow(object):
                 split_content = prepare_content_for_hide_show_items(split_content)
                 content = edit_content_hide_show_items(self, aufgabe, split_content, full_content)
 
-                # vorschau.write(content)
+                # print(content)
+                vorschau.write(content)
                 # for index in self.dict_sage_ausgleichspunkte_chosen[aufgabe]:
                 #     split_content[index] = split_content[index].replace("SUBitem", "")
 
@@ -6373,7 +6374,7 @@ class Ui_MainWindow(object):
             first_typ2 = self.add_content_to_tex_file(
                 aufgabe, aufgabe_total, filename_vorschau, first_typ2
             )
-
+        # return
         if (
             self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
             != "Grundkompetenzcheck"
