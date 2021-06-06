@@ -280,8 +280,9 @@ class Ui_MainWindow(object):
             MainWindow,
             self.menuDeveloper,
             "Datenbank hochladen",
-            partial(self.action_push_database, True, ["_database.json"]),
+            partial(self.action_push_database, True, ["_database.json"], "", "Änderungen werden hochgeladen ..."),
         )
+
         # self.actionPush_Database.setEnabled(False)
 
         # if self.developer_mode_active == False:
