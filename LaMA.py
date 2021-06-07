@@ -583,6 +583,8 @@ class Ui_MainWindow(object):
         )
         self.cb_drafts.toggled.connect(self.cb_drafts_enabled)
 
+        self.cb_infos = create_new_checkbox(self.centralwidget, "Aufgabeninfos")
+        self.horizontalLayout_2.addWidget(self.cb_infos)
         # self.gridLayout.addWidget(self.cb_show_variaton,5, 1,1,1)
 
         self.btn_suche = create_new_button(

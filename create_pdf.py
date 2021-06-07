@@ -362,7 +362,12 @@ def prepare_tex_for_pdf(self):
     else:
         variation = False
 
-    construct_tex_file(filename_teildokument, gesammeltedateien, variation)
+
+    if self.cb_infos.isChecked():
+        infos = "info_on"
+    else:
+        infos = "info_off"
+    construct_tex_file(filename_teildokument, gesammeltedateien, variation, infos)
 
 
     number_of_files = get_output_size(gesammeltedateien, variation)
@@ -428,9 +433,9 @@ def create_tex(file_path, content):
         return e
 
 
-def construct_tex_file(file_name, gesammeltedateien, variation):
+def construct_tex_file(file_name, gesammeltedateien, variation, infos):
     with open(file_name, "w", encoding="utf8") as file:
-        file.write(tex_preamble(bookmark=True))
+        file.write(tex_preamble(bookmark=True, info=infos))
         for all in gesammeltedateien:
             if variation == False and check_if_variation(all['name']) == True:
                 continue
@@ -480,10 +485,13 @@ def construct_tex_file(file_name, gesammeltedateien, variation):
 def create_info_box(_file):
     titel = _file['titel']
     gk = ', '.join(_file['themen'])
-    af = _file['af']
-    klasse = _file['klasse']
+    af = dict_aufgabenformate[_file['af']]
+    klasse = _file['klasse'][-1]
     quelle = _file['quelle']
-    bilder = _file['bilder']
+    if not is_empty(_file['bilder']):
+        bilder = "\\\\\nBilder: {}".format(_file['bilder'])
+    else:
+        bilder = ""
 
     info_box = """
 \info{{\\fbox{{\\begin{{minipage}}{{0.98\\textwidth}}
@@ -491,8 +499,7 @@ Titel: {0}\\\\
 Grundkompetenz(en): {1}\\\\
 Aufgabenformat: {2}\\\\
 Klasse: {3}\\\\
-Quelle: {4}\\\\
-Bilder: {5}
+Quelle: {4}{5}
 \end{{minipage}}}}}}
 """.format(titel, gk, af, klasse, quelle, bilder)
 
