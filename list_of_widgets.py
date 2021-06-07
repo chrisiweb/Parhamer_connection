@@ -25,6 +25,7 @@ widgets_search = [
     "cb_show_variation",
     "cb_solution",
     "cb_drafts",
+    "cb_infos",
     "btn_suche",
     # "label_warnung",
 ]  #'actionRefresh_Database'

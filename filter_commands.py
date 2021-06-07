@@ -51,7 +51,6 @@ def get_filter_string(self, list_mode):
                 filter_string = string_0
                 if not is_empty(string_1):
                     filter_string = filter_string + " " + string_1
-            print(filter_string)
             return filter_string
         else:
             return ""
@@ -69,7 +68,7 @@ def filter_items(self, table_lama, typ, list_mode, filter_string, line_entry, kl
                     return False    
             else:
                 string = filter_string
-            if (value.startswith(string)) and (value.split(" - ")[-1].startswith(line_entry)):
+            if (value.replace("-L","").startswith(string)) and (value.split(" - ")[-1].startswith(line_entry)):
                 return True
             else:
                 return False

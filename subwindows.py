@@ -1643,36 +1643,36 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
             gridlayout.addWidget(self.label_checkbox, 2, 1, 1, 1, Qt.AlignTop)
             self.label_checkbox.clicked.connect(self.label_checkbox_clicked)
 
-        if self.creator_mode == "admin":
-            self.combobox_in_official = create_new_combobox(Dialog)
-            self.combobox_in_official.setStyleSheet(
-                """
-            QWidget {{
-                background-color: white;
-                color: black;
-                selection-background-color: {0};
-                selection-color: white;
-            }}
+        # if self.creator_mode == "admin":
+            # self.combobox_in_official = create_new_combobox(Dialog)
+            # self.combobox_in_official.setStyleSheet(
+            #     """
+            # QWidget {{
+            #     background-color: white;
+            #     color: black;
+            #     selection-background-color: {0};
+            #     selection-color: white;
+            # }}
 
-            QComboBox::disabled {{
-               background-color: gray; color: white; 
-            }}
-            """.format(
-                    get_color(blue_7)
-                )
-            )
-            self.combobox_in_official.addItem("offizielle Aufgabe")
-            self.combobox_in_official.setEnabled(False)
+            # QComboBox::disabled {{
+            #    background-color: gray; color: white; 
+            # }}
+            # """.format(
+            #         get_color(blue_7)
+            #     )
+            # )
+            # self.combobox_in_official.addItem("offizielle Aufgabe")
+            # self.combobox_in_official.setEnabled(False)
             # self.combobox_in_official.addItem("inoffizelle Aufgabe")
-            if chosen_variation != None:
-                number = chosen_variation.split(" - ")
-                number = number[-1].split("_")[-1]
-                if "i" in number:
-                    self.combobox_in_official.setCurrentIndex(1)
-                else:
-                    self.combobox_in_official.setCurrentIndex(0)
-                self.combobox_in_official.setEnabled(False)
-            gridlayout.addWidget(self.combobox_in_official, 2, 0, 1, 1)
+            # if chosen_variation != None:
+            #     number = chosen_variation.split(" - ")
+            #     number = number[-1].split("_")[-1]
+                # if "i" in number:
+                #     self.combobox_in_official.setCurrentIndex(1)
+                # else:
+                # self.combobox_in_official.setCurrentIndex(0)
+                # self.combobox_in_official.setEnabled(False)
+            # gridlayout.addWidget(self.combobox_in_official, 2, 0, 1, 1)
 
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         if self.creator_mode == "user":
@@ -1712,7 +1712,7 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
 
     def yes_pressed(self):
         if self.creator_mode == "admin":
-            self.confirmed = ["admin", self.combobox_in_official.currentIndex()]
+            self.confirmed = ["admin", 0]
         else:
             self.confirmed = ["user", self.cb_confirm.isChecked()]
 

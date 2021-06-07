@@ -4067,9 +4067,9 @@ class Ui_MainWindow(object):
             number = "{0}[{1}]".format(variation_number, self.max_integer + 1)
             # print(number)
 
-        if typ_save == ["admin", 1]:
-            number = "i." + str(number)
-        elif typ_save[0] == 'local':
+        # if typ_save == ["admin", 1]:
+        #     number = "i." + str(number)
+        if typ_save[0] == 'local':
             number = "l." + str(number)
 
         if self.chosen_program == "cria":
@@ -4192,7 +4192,7 @@ class Ui_MainWindow(object):
                 gk, number  = name.split(' - ')
                 name = gk + ' - ' + 'l.' + number
         themen = self.get_themen_auswahl()
-        titel = self.lineEdit_titel.text()
+        titel = self.lineEdit_titel.text().replace("###","").strip()
         if typ == 2:
             af = None
         else:
