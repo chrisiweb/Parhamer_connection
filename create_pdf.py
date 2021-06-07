@@ -486,7 +486,10 @@ def create_info_box(_file):
     titel = _file['titel']
     gk = ', '.join(_file['themen'])
     af = dict_aufgabenformate[_file['af']]
-    klasse = _file['klasse'][-1]
+    if _file['klasse'] == None:
+        klasse = "-"
+    else:
+        klasse = _file['klasse'][-1]
     quelle = _file['quelle']
     if not is_empty(_file['bilder']):
         bilder = "\\\\\nBilder: {}".format(_file['bilder'])

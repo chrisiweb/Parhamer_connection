@@ -1662,7 +1662,8 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
                 )
             )
             self.combobox_in_official.addItem("offizielle Aufgabe")
-            self.combobox_in_official.addItem("inoffizelle Aufgabe")
+            self.combobox_in_official.setEnabled(False)
+            # self.combobox_in_official.addItem("inoffizelle Aufgabe")
             if chosen_variation != None:
                 number = chosen_variation.split(" - ")
                 number = number[-1].split("_")[-1]

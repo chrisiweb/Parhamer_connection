@@ -3553,7 +3553,7 @@ class Ui_MainWindow(object):
                 gk = aufgabe_total["themen"][0]
                 short_gk = shorten_gk(gk)
                 if short_gk in zusatzthemen_beschreibung:
-                    checkbox_gk = "checkbox_creator_themen_{1}".format(short_gk)
+                    checkbox_gk = "checkbox_creator_themen_{0}".format(short_gk)
 
                     index = list_comboBox_gk.index("Zusatzthemen")
                 else:
