@@ -63,11 +63,11 @@ class Worker_CreatePDF(QObject):
 
 def get_number_of_variations(file_name, gesammeltedateien):
     counter = 0
+
     for all in gesammeltedateien:
-        if file_name in all['name']:
-            # print(file_name)
-            counter += 1
-    counter -= 1
+        if re.search("{}\[.+\]".format(file_name), all['name']) != None:
+            counter +=1
+
     return counter
 
 
