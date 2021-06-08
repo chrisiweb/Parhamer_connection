@@ -74,9 +74,6 @@ def filter_items(self, table_lama, typ, list_mode, filter_string, line_entry, kl
                 return False
 
             
-        # string_included_lama = lambda s: (filter_string in s) and (
-        #     s.split(" - ")[-1].startswith(line_entry)
-        # )
         filtered_items = table_lama.search(_file_.name.test(string_included_lama))
   
     elif typ == "cria":
