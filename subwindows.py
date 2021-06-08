@@ -192,11 +192,12 @@ class Ui_Dialog_choose_type(object):
 
 
 class Ui_Dialog_variation(object):
-    def setupUi(self, Dialog, MainWindow, show_variations = False):
+    def setupUi(self, Dialog, MainWindow, show_variations, mode=None):
         self.MainWindow = MainWindow
         self.chosen_program = self.MainWindow.chosen_program
 
         self.show_variations = show_variations
+        self.mode = mode
         # self.beispieldaten_dateipfad_cria = MainWindow.beispieldaten_dateipfad_cria
         # self.beispieldaten_dateipfad_1 = MainWindow.beispieldaten_dateipfad_1
         # self.beispieldaten_dateipfad_2 = MainWindow.beispieldaten_dateipfad_2
@@ -491,6 +492,7 @@ class Ui_Dialog_variation(object):
                 self.listWidget.addItem(item)
 
     def adapt_choosing_list(self):
+        QtWidgets.QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
         chosen_program = self.MainWindow.chosen_program
         klasse = None
         if chosen_program == "cria":
@@ -513,7 +515,7 @@ class Ui_Dialog_variation(object):
         self.no_choice = "-- keine Auswahl --"
         self.listWidget.addItem(self.no_choice)
         for database in [_local_database, _database]:
-            if self.MainWindow.developer_mode_active == False and database == _database:
+            if self.MainWindow.developer_mode_active == False and database == _database and self.mode != 'creator':
                 continue
             table_lama = database.table(table)
             if database == _local_database:
@@ -526,6 +528,7 @@ class Ui_Dialog_variation(object):
             )
             
             self.add_items_to_listwidget_creator(typ, filtered_items, local)
+        QtWidgets.QApplication.restoreOverrideCursor()
         
 
 

@@ -3665,7 +3665,7 @@ class Ui_MainWindow(object):
         # self.comboBox_af.setEnabled(True)
         # self.groupBox_themengebiete_cria.setEnabled(True)
 
-    def button_variation_cr_pressed(self, mode = 'creator'):
+    def button_variation_cr_pressed(self, mode):
         Dialog = QtWidgets.QDialog(
             None,
             QtCore.Qt.WindowSystemMenuHint
@@ -3678,7 +3678,7 @@ class Ui_MainWindow(object):
             show_variations = False
         elif mode == "editor":
             show_variations = True
-        ui.setupUi(Dialog, self, show_variations)
+        ui.setupUi(Dialog, self, show_variations, mode)
 
         response = Dialog.exec()
 
