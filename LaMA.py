@@ -27,6 +27,9 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 import sys
 import os
 
+from tinydb import TinyDB, Query
+# from tinydb.operations import update
+
 # import git
 # from git import Repo, remote
 
@@ -283,6 +286,12 @@ class Ui_MainWindow(object):
             partial(self.action_push_database, True, ["_database.json"], "", "Änderungen werden hochgeladen ..."),
         )
 
+        # self.actionRewrite = add_action(
+        #     MainWindow,
+        #     self.menuDeveloper,
+        #     "ReWrite",
+        #     self.action_rewrite
+        # )
         # self.actionPush_Database.setEnabled(False)
 
         # if self.developer_mode_active == False:
@@ -4627,6 +4636,21 @@ class Ui_MainWindow(object):
         refresh_ddb(self)
 
         self.adapt_choosing_list("sage")
+
+    # def action_rewrite(self):
+    #     print('test')
+    #     _file_ = Query()
+    #     table_1 = _database.table('table_lama_1')
+    #     # print(table_1.contains(_file_.name == "AG 1.1 - 1"))
+    #     # 
+
+    #     def your_operation():
+    #         def transform(doc):
+    #             # doc['content']= re.sub(r"\t\t\t\t\t+", "\t", doc['content'])
+    #             doc['content']= re.sub(r"\t\t\t\t+", "\t", doc['content'])
+    #         return transform
+    #     table_1.update(your_operation())
+    #     print('done')
 
     def action_push_database(self, admin, file_list, message = None, worker_text = "Aufgabe wird hochgeladen ..."):
         if check_internet_connection() == False:
