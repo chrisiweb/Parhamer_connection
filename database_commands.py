@@ -264,12 +264,17 @@ def write_to_database(folder_path, typ,klasse=None):
 # path_database = os.path.join(path_programm, "_database", "database_cria.json")
 # database_cria = TinyDB(path_database)
 
+
 path_database = os.path.join(path_programm, "_database", "_database.json")
 _database = TinyDB(path_database)
 path_local_database = os.path.join(path_programm, "_database", "_local_database.json")
 _local_database = TinyDB(path_local_database)
 path_database_addon = os.path.join(path_programm, "_database", "_database_addon.json")
-_database_addon = TinyDB(path_database_addon)
+
+if os.path.isfile(path_database_addon):
+    _database_addon = TinyDB(path_database_addon)
+else:
+    _database_addon = None
 # _database.drop_table('table_cria')
 # _database.drop_tables()
 

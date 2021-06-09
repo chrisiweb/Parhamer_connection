@@ -44,8 +44,9 @@ from lama_stylesheets import (
 )
 from create_pdf import create_tex, create_pdf, check_if_variation
 import bcrypt
-from database_commands import _database, _local_database
+from database_commands import _database, _local_database, _database_addon
 from filter_commands import get_filter_string, filter_items
+from sort_items import order_gesammeltedateien
 
 
 dict_gk = config_loader(config_file, "dict_gk")
@@ -514,9 +515,16 @@ class Ui_Dialog_variation(object):
         self.listWidget.clear()
         self.no_choice = "-- keine Auswahl --"
         self.listWidget.addItem(self.no_choice)
-        for database in [_local_database, _database]:
-            if self.MainWindow.developer_mode_active == False and database == _database and self.mode != 'creator':
+        _list_database = [_local_database, _database]
+        if _database_addon != None:
+            _list_database.append(_database_addon)
+        all_filtered_items = []
+        for database in _list_database:
+            if database == _database_addon and self.mode == 'creator':
                 continue
+            elif self.MainWindow.developer_mode_active == False and database == _database and self.mode != 'creator':
+                continue
+
             table_lama = database.table(table)
             if database == _local_database:
                 local = True
@@ -526,8 +534,12 @@ class Ui_Dialog_variation(object):
             filtered_items = filter_items(
                 self, table_lama, typ, 'creator', filter_string, line_entry,klasse
             )
-            
-            self.add_items_to_listwidget_creator(typ, filtered_items, local)
+
+            all_filtered_items = all_filtered_items + filtered_items
+        
+        all_filtered_items.sort(key=order_gesammeltedateien)
+
+        self.add_items_to_listwidget_creator(typ, all_filtered_items, local)
         QtWidgets.QApplication.restoreOverrideCursor()
         
 

@@ -6112,13 +6112,13 @@ class Ui_MainWindow(object):
             self, table_lama, typ, list_mode, filter_string, line_entry
         )
 
-
-        table_lama = _database_addon.table(table)
-        filtered_items_addon = filter_items(
-            self, table_lama, typ, list_mode, filter_string, line_entry
-        )
-        for all in filtered_items_addon:
-            filtered_items.append(all)
+        if _database_addon != None:
+            table_lama = _database_addon.table(table)
+            filtered_items_addon = filter_items(
+                self, table_lama, typ, list_mode, filter_string, line_entry
+            )
+            for all in filtered_items_addon:
+                filtered_items.append(all)
         
         filtered_items.sort(key=order_gesammeltedateien)
         # print(filtered_items)
