@@ -4654,6 +4654,7 @@ class Ui_MainWindow(object):
     #     print('done')
 
     def action_push_database(self, admin, file_list, message = None, worker_text = "Aufgabe wird hochgeladen ..."):
+        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         if check_internet_connection() == False:
             critical_window("Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.",
                 titel="Keine Internetverbindung",
@@ -4676,11 +4677,11 @@ class Ui_MainWindow(object):
         worker = Worker_PushDatabase()
         worker.finished.connect(Dialog.close)
         worker.moveToThread(thread)
-        rsp = thread.started.connect(partial(worker.task, ui, admin, file_list, message, worker_text))
+        thread.started.connect(partial(worker.task, ui, admin, file_list, message, worker_text))
         thread.start()
         thread.exit()
         Dialog.exec()
-
+        QtWidgets.QApplication.restoreOverrideCursor()
         if worker.changes_found == False:
             information_window("Es wurden keine Änderungen gefunden.")
         elif worker.changes_found == "error":
@@ -4689,6 +4690,7 @@ class Ui_MainWindow(object):
             )
         elif admin == True:
             information_window("Die Datenbank wurde erfolgreich hochgeladen.")
+        
 
     def enable_widgets_editor(self, enabled):
         self.groupBox_ausgew_gk_cr.setEnabled(enabled)
