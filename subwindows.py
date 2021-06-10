@@ -522,8 +522,9 @@ class Ui_Dialog_variation(object):
         for database in _list_database:
             if database == _database_addon and self.mode == 'creator':
                 continue
-            elif self.MainWindow.developer_mode_active == False and database == _database and self.mode != 'creator':
-                continue
+            elif self.MainWindow.developer_mode_active == False and self.mode != 'creator':
+                if database == _database or database == _database_addon:
+                    continue
 
             table_lama = database.table(table)
             if database == _local_database:
