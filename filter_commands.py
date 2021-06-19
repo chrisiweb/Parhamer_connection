@@ -1,3 +1,4 @@
+import re
 from config import extract_topic_abbr, is_empty, zusatzthemen_beschreibung
 from tinydb import Query
 from sort_items import order_gesammeltedateien
@@ -55,6 +56,19 @@ def get_filter_string(self, list_mode):
         else:
             return ""
 
+def filter_number(value, line_entry):
+    if line_entry.startswith('l'):
+        number = value.split(" - ")[-1].replace("i.","")
+    elif line_entry.startswith('i'):
+        number = value.split(" - ")[-1].replace("l.","")
+    else:
+        number = value.split(" - ")[-1].replace("l.","").replace("i.","")
+    
+    if number.startswith(line_entry):
+        return True
+    else:
+        return False
+
 def filter_items(self, table_lama, typ, list_mode, filter_string, line_entry, klasse=None):
     _file_ = Query()
     if typ == "lama_1" or typ == "lama_2":
@@ -63,12 +77,12 @@ def filter_items(self, table_lama, typ, list_mode, filter_string, line_entry, kl
                 string = filter_string.replace("zusatz_","")
                 if is_empty(string):
                     for all in zusatzthemen_beschreibung.keys():
-                        if value.startswith(all.upper()):
+                        if value.startswith(all.upper()) and (filter_number(value, line_entry)==True):
                             return True
                     return False    
             else:
                 string = filter_string
-            if (value.replace("-L","").startswith(string)) and (value.split(" - ")[-1].startswith(line_entry)):
+            if (value.replace("-L","").startswith(string)) and (filter_number(value, line_entry)==True):
                 return True
             else:
                 return False
