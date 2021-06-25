@@ -4026,14 +4026,14 @@ class Ui_MainWindow(object):
                 klasse = int(all[1])
         return "k{}".format(klasse)
 
-    def get_max_integer(self, table_lama, typ):
+    def get_max_integer(self, table_lama, typ, themen_auswahl):
         max_integer = 0
         _file_ = Query()
         if self.chosen_variation != None:
             pattern = "{}\[.*\]".format(self.chosen_variation)
             all_files = table_lama.search(_file_.name.matches(pattern))
         elif typ == 1:
-            all_files = table_lama.search(_file_.name.matches(self.themen_auswahl[0]))
+            all_files = table_lama.search(_file_.name.matches(themen_auswahl))
         elif typ == None:
             klasse = self.get_highest_grade_cr()
             all_files = table_lama.search(_file_.name.matches(klasse))
@@ -4041,7 +4041,7 @@ class Ui_MainWindow(object):
             all_files = table_lama.all()
 
         for all in all_files:
-            name = all["name"].replace('l.','')
+            name = all["name"].replace('l.','').replace('i.','')
             if typ == 1:
                 num = name.split(" - ")[-1]
             elif typ == None:
@@ -4151,17 +4151,18 @@ class Ui_MainWindow(object):
             list_images.append(new_image_name)
         return list_images, None
 
-    def create_file_name(self, typ, max_integer):
+    def create_file_name(self, typ, max_integer, themen_auswahl, save_typ=''):
         number = max_integer + 1
         if self.chosen_variation != None:
             name = self.chosen_variation + "[{}]".format(number)
         elif typ == None:
             klasse = self.get_highest_grade_cr()
-            name = "{0}.{1}".format(klasse, number)
+            name = "{0}.{1}{2}".format(klasse, save_typ, number)
         elif typ == 1:
-            name = "{0} - {1}".format(self.themen_auswahl[0], number)
+            name = "{0} - {1}{2}".format(themen_auswahl, save_typ, number)
         elif typ == 2:
-            name = str(number)
+            name = "{0}{1}".format(save_typ, number)
+
 
         return name
 
@@ -4197,10 +4198,15 @@ class Ui_MainWindow(object):
         if typ_save == 'editor':
             name = None
         else:
-            name = self.create_file_name(typ, self.max_integer)
-            if typ_save=='local':
-                gk, number  = name.split(' - ')
-                name = gk + ' - ' + 'l.' + number
+            if typ_save == 'local':
+                save_typ = "l."
+            else:
+                save_typ = ""
+
+            name = self.create_file_name(typ, self.max_integer, self.themen_auswahl[0], save_typ=save_typ)
+            # if typ_save=='local':
+            #     gk, number  = name.split(' - ')
+            #     name = gk + ' - ' + 'l.' + number
         themen = self.get_themen_auswahl()
         titel = self.lineEdit_titel.text().replace("###","").strip()
         if typ == 2:
@@ -4265,7 +4271,12 @@ class Ui_MainWindow(object):
         rsp = question_window("Sind Sie sicher, dass Sie die Änderungen speichern wollen?")
         if rsp == False:
             return
+
+        
         name = self.chosen_file_to_edit
+
+        print(name)
+
         typ = get_aufgabentyp(self.chosen_program, name)
         
         (
@@ -4284,29 +4295,61 @@ class Ui_MainWindow(object):
             abstand,
         ) = self.get_all_infos_new_file(typ, 'editor')
 
+        print(themen)
+        print(typ)
         lama_table = get_table(name, typ)
+
+
+        if typ == 1:
+            if themen[0] in name:
+                new_name = name
+            else:
+                themen_auswahl = self.get_themen_auswahl()
+                max_integer = self.get_max_integer(lama_table, typ, themen_auswahl[0])
+
+                if 'l.' in name:
+                    save_typ = "l."
+                elif 'i.' in name:
+                    save_typ = "i."
+                else:
+                    save_typ = ""
+
+                new_name = self.create_file_name(typ, max_integer, themen_auswahl[0], save_typ)
+
+        # print(max_integer)
+        print(name)
+        print(new_name)
+        
 
         aufgabe = name.replace(" (lokal)","")
         _file_ = Query()
         
-        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        lama_table.update_multiple([
-           ({"themen" :themen}, _file_.name == aufgabe),
-           ({"titel" :titel}, _file_.name == aufgabe),
-           ({"af" :af}, _file_.name == aufgabe),
-           ({"quelle" :quelle}, _file_.name == aufgabe),
-           ({"content" :content}, _file_.name == aufgabe),
-           ({"punkte" :punkte}, _file_.name == aufgabe),
-           ({"pagebreak" :pagebreak}, _file_.name == aufgabe),
-           ({"klasse" :klasse}, _file_.name == aufgabe),
-           ({"info" :info}, _file_.name == aufgabe),
-           ({"bilder" :bilder}, _file_.name == aufgabe),
-           ({"draft" :draft}, _file_.name == aufgabe),
-           ({"abstand" :abstand}, _file_.name == aufgabe),
-        ])
+        # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        file_id = lama_table.get(_file_.name == aufgabe).doc_id
+
+        print(file_id)
+
+        # lama_table.update({"themen" : themen}, doc_ids=[file_id]) 
+        lama_table.update({"themen" : themen}, doc_ids=[file_id])        
+        # lama_table.update_multiple([
+        #    ({"themen" :themen}, _file_.name == aufgabe),
+        #    ({"titel" :titel}, _file_.name == aufgabe),
+        #    ({"af" :af}, _file_.name == aufgabe),
+        #    ({"quelle" :quelle}, _file_.name == aufgabe),
+        #    ({"content" :content}, _file_.name == aufgabe),
+        #    ({"punkte" :punkte}, _file_.name == aufgabe),
+        #    ({"pagebreak" :pagebreak}, _file_.name == aufgabe),
+        #    ({"klasse" :klasse}, _file_.name == aufgabe),
+        #    ({"info" :info}, _file_.name == aufgabe),
+        #    ({"bilder" :bilder}, _file_.name == aufgabe),
+        #    ({"draft" :draft}, _file_.name == aufgabe),
+        #    ({"abstand" :abstand}, _file_.name == aufgabe),
+        # ])
         QtWidgets.QApplication.restoreOverrideCursor()
 
+        return
         if "(lokal)" not in name:
+            # if "i." in name:
             file_list = ["_database.json"]
             self.action_push_database(False, file_list, message= "Bearbeitet: {}".format(name), worker_text="Änderung hochladen ...")
 
@@ -4416,9 +4459,9 @@ class Ui_MainWindow(object):
         # if self.chosen_variation == None:
         # save_dateipfad = self.create_aufgabenpfad(typ_save)
         
-        max_integer = self.get_max_integer(table_lama, typ)
+        max_integer = self.get_max_integer(table_lama, typ, self.themen_auswahl[0])
 
-        name = self.create_file_name(typ, max_integer)
+        name = self.create_file_name(typ, max_integer, self.themen_auswahl[0])
 
         _file_ = Query()
         table_lama.update({'name' : name}, _file_.name == self.chosen_file_to_edit)
@@ -4517,7 +4560,7 @@ class Ui_MainWindow(object):
         table_lama = database.table(table)
 
 
-        self.max_integer = self.get_max_integer(table_lama, typ)
+        self.max_integer = self.get_max_integer(table_lama, typ, self.themen_auswahl[0])
 
 
 
