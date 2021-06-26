@@ -4328,7 +4328,7 @@ class Ui_MainWindow(object):
         file_id = lama_table.get(_file_.name == aufgabe).doc_id
 
         print(file_id)
-
+        return
         # lama_table.update({"themen" : themen}, doc_ids=[file_id]) 
         lama_table.update({"themen" : themen}, doc_ids=[file_id])        
         # lama_table.update_multiple([
