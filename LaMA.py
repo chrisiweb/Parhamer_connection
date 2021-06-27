@@ -4268,6 +4268,14 @@ class Ui_MainWindow(object):
             abstand,
         )
 
+    def upload_single_file_change(self, name, message):
+        if "(lokal)" not in name:
+            if "i." in name:
+                chosen_ddb = ["_database_addon.json"]
+            else:
+                chosen_ddb = ["_database.json"]
+            self.action_push_database(False, chosen_ddb, message= message, worker_text="Änderung hochladen ...")
+
     def button_save_edit_pressed(self):
         rsp = question_window("Sind Sie sicher, dass Sie die Änderungen speichern wollen?")
         if rsp == False:
@@ -4362,12 +4370,14 @@ class Ui_MainWindow(object):
         # ])
         QtWidgets.QApplication.restoreOverrideCursor()
 
-        if "(lokal)" not in name:
-            if "i." in new_name:
-                chosen_ddb = ["_database_addon.json"]
-            else:
-                chosen_ddb = ["_database.json"]
-            self.action_push_database(False, chosen_ddb, message= "Bearbeitet: {}".format(name), worker_text="Änderung hochladen ...")
+        self.upload_single_file_change(name, message="Bearbeitet: {}".format(name))
+
+        # if "(lokal)" not in name:
+        #     if "i." in new_name:
+        #         chosen_ddb = ["_database_addon.json"]
+        #     else:
+        #         chosen_ddb = ["_database.json"]
+        #     self.action_push_database(False, chosen_ddb, message= "Bearbeitet: {}".format(name), worker_text="Änderung hochladen ...")
 
         information_window("Die Änderungen wurden erfolgreich gespeichert.")
 
@@ -4415,9 +4425,10 @@ class Ui_MainWindow(object):
 
         delete_file(name, typ)
 
-        if "(lokal)" not in name:
-            file_list = ["_database.json"]
-            self.action_push_database(False, file_list, message= "Gelöscht: {}".format(name), worker_text="Aufgabe löschen ...")
+        self.upload_single_file_change(name, message="Gelöscht: {}".format(name))
+        # if "(lokal)" not in name:
+        #     file_list = ["_database.json"]
+        #     self.action_push_database(False, file_list, message= "Gelöscht: {}".format(name), worker_text="Aufgabe löschen ...")
 
         information_window('Die Aufgabe "{}" wurde erfolgreich aus der Datenbank entfernt.'.format(name))
 
@@ -4486,6 +4497,9 @@ class Ui_MainWindow(object):
 
         _file_ = Query()
         table_lama.update({'name' : name}, _file_.name == self.chosen_file_to_edit)
+
+
+        self.upload_single_file_change(name, message="Gespeichert als Variation: {0} (zuvor: {1})".format(name, self.chosen_file_to_edit))
         # print(self.chosen_file_to_edit)
         # print(name)
         information_window("Die Änderungen wurden erfolgreich gespeichert.")
