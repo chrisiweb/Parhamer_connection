@@ -4029,6 +4029,7 @@ class Ui_MainWindow(object):
     def get_max_integer(self, table_lama, typ, themen_auswahl):
         max_integer = 0
         _file_ = Query()
+
         if self.chosen_variation != None:
             pattern = "{}\[.*\]".format(self.chosen_variation)
             all_files = table_lama.search(_file_.name.matches(pattern))
@@ -4295,8 +4296,8 @@ class Ui_MainWindow(object):
             abstand,
         ) = self.get_all_infos_new_file(typ, 'editor')
 
-        print(themen)
-        print(typ)
+        # print(themen)
+        # print(typ)
         lama_table = get_table(name, typ)
 
 
@@ -4317,20 +4318,34 @@ class Ui_MainWindow(object):
                 new_name = self.create_file_name(typ, max_integer, themen_auswahl[0], save_typ)
 
         # print(max_integer)
-        print(name)
-        print(new_name)
+        # print(name)
+        # print(new_name)
         
 
         aufgabe = name.replace(" (lokal)","")
         _file_ = Query()
         
-        # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+
         file_id = lama_table.get(_file_.name == aufgabe).doc_id
 
-        print(file_id)
-        return
-        # lama_table.update({"themen" : themen}, doc_ids=[file_id]) 
-        lama_table.update({"themen" : themen}, doc_ids=[file_id])        
+        print("file ID: {}".format(file_id))
+
+        lama_table.update({"name" : new_name}, doc_ids=[file_id])
+        lama_table.update({"themen" :themen}, doc_ids=[file_id])
+        lama_table.update({"titel" :titel}, doc_ids=[file_id])
+        lama_table.update({"af" :af}, doc_ids=[file_id])
+        lama_table.update({"quelle" :quelle}, doc_ids=[file_id]) 
+        lama_table.update({"content" :content}, doc_ids=[file_id])
+        lama_table.update({"punkte" :punkte}, doc_ids=[file_id])
+        lama_table.update({"pagebreak" :pagebreak}, doc_ids=[file_id])
+        lama_table.update({"klasse" :klasse}, doc_ids=[file_id])
+        lama_table.update({"info" :info}, doc_ids=[file_id])
+        lama_table.update({"bilder" :bilder}, doc_ids=[file_id])
+        lama_table.update({"draft" :draft}, doc_ids=[file_id])
+        lama_table.update({"abstand" :abstand}, doc_ids=[file_id])
+
+
         # lama_table.update_multiple([
         #    ({"themen" :themen}, _file_.name == aufgabe),
         #    ({"titel" :titel}, _file_.name == aufgabe),
@@ -4347,11 +4362,12 @@ class Ui_MainWindow(object):
         # ])
         QtWidgets.QApplication.restoreOverrideCursor()
 
-        return
         if "(lokal)" not in name:
-            # if "i." in name:
-            file_list = ["_database.json"]
-            self.action_push_database(False, file_list, message= "Bearbeitet: {}".format(name), worker_text="Änderung hochladen ...")
+            if "i." in new_name:
+                chosen_ddb = ["_database_addon.json"]
+            else:
+                chosen_ddb = ["_database.json"]
+            self.action_push_database(False, chosen_ddb, message= "Bearbeitet: {}".format(name), worker_text="Änderung hochladen ...")
 
         information_window("Die Änderungen wurden erfolgreich gespeichert.")
 
@@ -4458,10 +4474,15 @@ class Ui_MainWindow(object):
         # database =
         # if self.chosen_variation == None:
         # save_dateipfad = self.create_aufgabenpfad(typ_save)
-        
-        max_integer = self.get_max_integer(table_lama, typ, self.themen_auswahl[0])
 
-        name = self.create_file_name(typ, max_integer, self.themen_auswahl[0])
+        if self.chosen_variation != None:
+            themen_auswahl = None
+        else:
+            themen_auswahl = self.themen_auswahl[0]
+        
+        max_integer = self.get_max_integer(table_lama, typ, themen_auswahl)
+
+        name = self.create_file_name(typ, max_integer, themen_auswahl)
 
         _file_ = Query()
         table_lama.update({'name' : name}, _file_.name == self.chosen_file_to_edit)
