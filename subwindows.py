@@ -16,6 +16,7 @@ from config import (
     logo_path,
     logo_cria_button_path,
     is_empty,
+    still_to_define,
 )
 from translate import _fromUtf8, _translate
 from create_new_widgets import (
@@ -2035,4 +2036,56 @@ def read_credentials():
 
 
 
-        
+class Ui_Dialog_draft_control(object):
+    def setupUi(self, Dialog, dict_drafts):
+        print(dict_drafts)
+        self.Dialog = Dialog
+        Dialog.setObjectName("Dialog")
+        Dialog.setWindowTitle("Entwürfe prüfen")
+        Dialog.setFixedSize(300, 150)
+        Dialog.setWindowIcon(QIcon(logo_path))
+
+
+        vertical_layout = create_new_verticallayout(Dialog)
+
+        groupbox = create_new_groupbox(Dialog, "Offene Entwürfe")
+        vertical_layout.addWidget(groupbox)
+
+        gridlayout = create_new_gridlayout(groupbox)
+
+
+        label_cria = create_new_label(groupbox, "Unterstufe:")
+        gridlayout.addWidget(label_cria, 0,0,1,1)
+
+        label_cria_num = create_new_label(groupbox, "{}".format(len(dict_drafts['cria'])))
+        gridlayout.addWidget(label_cria_num, 0,1,1,1)
+
+
+        button_cria = create_new_button(groupbox, "Entwürfe prüfen", still_to_define)
+        gridlayout.addWidget(button_cria, 0,2,1,1)
+        if len(dict_drafts['cria']) == 0:
+            button_cria.setEnabled(False)
+
+
+        label_typ1 = create_new_label(groupbox, "Typ1 - Aufgaben:")
+        gridlayout.addWidget(label_typ1, 1,0,1,1)
+
+        label_typ1_num = create_new_label(groupbox, "{}".format(len(dict_drafts['lama_1'])))
+        gridlayout.addWidget(label_typ1_num, 1,1,1,1)
+
+        button_typ1 = create_new_button(groupbox, "Entwürfe prüfen", still_to_define)
+        gridlayout.addWidget(button_typ1, 1,2,1,1)
+        if len(dict_drafts['lama_1']) == 0:
+            button_typ1.setEnabled(False)
+
+        label_typ2 = create_new_label(groupbox, "Typ2 - Aufgaben:")
+        gridlayout.addWidget(label_typ2, 2,0,1,1)
+
+        label_typ2_num = create_new_label(groupbox, "{}".format(len(dict_drafts['lama_2'])))
+        gridlayout.addWidget(label_typ2_num, 2,1,1,1)
+
+
+        button_typ2 = create_new_button(groupbox, "Entwürfe prüfen", still_to_define)
+        gridlayout.addWidget(button_typ2, 2,2,1,1)
+        if len(dict_drafts['lama_2']) == 0:
+            button_typ2.setEnabled(False)

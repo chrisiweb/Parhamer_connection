@@ -110,3 +110,7 @@ def filter_items(self, table_lama, typ, list_mode, filter_string, line_entry, kl
 
     return filtered_items
 
+def get_drafts(table_lama):
+    _file_ = Query()
+
+    return table_lama.search(_file_.draft == True)

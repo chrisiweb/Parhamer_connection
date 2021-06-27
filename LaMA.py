@@ -258,6 +258,9 @@ class Ui_MainWindow(object):
         self.menuUpdate.setTitle("Update...")
         self.menuDeveloper = QtWidgets.QMenu(self.menuBar)
         self.menuDeveloper.setObjectName(_fromUtf8("menuDeveloper"))
+
+        # self.menuDraftControl = QtWidgets.QMenu(self.menuDeveloper)
+        # self.menuDraftControl.setObjectName(_fromUtf8("menuDraftControl"))
         # self.menuDeveloper.setStyleSheet("background-color: {};".format(get_color(blue_4)))
         
 
@@ -286,6 +289,28 @@ class Ui_MainWindow(object):
             "Datenbank hochladen",
             partial(self.action_push_database, True, ["_database.json"], "", "Änderungen werden hochgeladen ..."),
         )
+
+
+        self.actionPush_Database = add_action(
+            MainWindow,
+            self.menuDeveloper,
+            "Entwürfe prüfen",
+            self.draft_control,
+        )
+
+        # self.actionPush_Database = add_action(
+        #     MainWindow,
+        #     self.menuDraftControl,
+        #     "Typ1 Aufgaben",
+        #     partial(self.draft_control, 'lama_1'),
+        # )
+
+        # self.actionPush_Database = add_action(
+        #     MainWindow,
+        #     self.menuDraftControl,
+        #     "Typ2 Aufgaben",
+        #     partial(self.draft_control, 'lama_2'),
+        # )
 
         # self.actionRewrite = add_action(
         #     MainWindow,
@@ -2197,6 +2222,7 @@ class Ui_MainWindow(object):
         self.menuSage.setTitle(_translate("MainWindow", "Prüfung", None))
         self.menuSuche.setTitle(_translate("MainWindow", "Suche", None))
         self.menuDeveloper.setTitle(_translate("MainWindow", "Entwicklermodus", None))
+
         # self.menuBild_einbinden.setTitle(
         #     _translate("MainWindow", "Bild einfügen", None)
         # )
@@ -4270,10 +4296,10 @@ class Ui_MainWindow(object):
 
     def upload_single_file_change(self, name, message):
         if "(lokal)" not in name:
-            if "i." in name:
-                chosen_ddb = ["_database_addon.json"]
-            else:
-                chosen_ddb = ["_database.json"]
+            # if "i." in name:
+            #     chosen_ddb = ["_database_addon.json"]
+            # else:
+            chosen_ddb = ["_database.json"]
             self.action_push_database(False, chosen_ddb, message= message, worker_text="Änderung hochladen ...")
 
     def button_save_edit_pressed(self):
@@ -4499,7 +4525,7 @@ class Ui_MainWindow(object):
         table_lama.update({'name' : name}, _file_.name == self.chosen_file_to_edit)
 
 
-        self.upload_single_file_change(name, message="Gespeichert als Variation: {0} (zuvor: {1})".format(name, self.chosen_file_to_edit))
+        self.upload_single_file_change(name, message="Gespeichert als Variation: {0} (ehemals: {1})".format(name, self.chosen_file_to_edit))
         # print(self.chosen_file_to_edit)
         # print(name)
         information_window("Die Änderungen wurden erfolgreich gespeichert.")
@@ -4730,6 +4756,30 @@ class Ui_MainWindow(object):
     #         return transform
     #     table_1.update(your_operation())
     #     print('done')
+
+
+    def draft_control(self):
+        print('control')
+
+        dict_drafts = {}
+        for typ in ['cria', 'lama_1', 'lama_2']:
+            table = "table_" + typ
+            table_lama = _database.table(table)
+
+            result = get_drafts(table_lama)
+            dict_drafts[typ]=result
+
+        Dialog = QtWidgets.QDialog(
+            None,
+            QtCore.Qt.WindowSystemMenuHint
+            | QtCore.Qt.WindowTitleHint
+            | QtCore.Qt.WindowCloseButtonHint,
+        )
+        ui = Ui_Dialog_draft_control()
+        ui.setupUi(Dialog, dict_drafts)
+
+
+        rsp = Dialog.exec_()
 
     def action_push_database(self, admin, file_list, message = None, worker_text = "Aufgabe wird hochgeladen ..."):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
@@ -7019,6 +7069,8 @@ if __name__ == "__main__":
     i = step_progressbar(i, "subwindows")
     from subwindows import Ui_Dialog_developer
     i = step_progressbar(i, "subwindows")
+    from subwindows import Ui_Dialog_draft_control
+    i = step_progressbar(i, "subwindows")
     from subwindows import read_credentials
     # from subwindows import (
         # Ui_Dialog_Welcome_Window,
@@ -7093,7 +7145,7 @@ if __name__ == "__main__":
     i = step_progressbar(i, "tex_minimal")
     from tex_minimal import *
     i = step_progressbar(i, "filter_comands")
-    from filter_commands import get_filter_string, filter_items
+    from filter_commands import get_filter_string, filter_items, get_drafts
     i = step_progressbar(i, "mainwindow")
     # form = Form()
     # form.show()
