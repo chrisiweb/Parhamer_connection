@@ -2038,8 +2038,8 @@ def read_credentials():
 
 class Ui_Dialog_draft_control(object):
     def setupUi(self, Dialog, dict_drafts):
-        print(dict_drafts)
         self.Dialog = Dialog
+        self.dict_drafts = dict_drafts
         Dialog.setObjectName("Dialog")
         Dialog.setWindowTitle("Entwürfe prüfen")
         Dialog.setFixedSize(300, 150)
@@ -2061,7 +2061,7 @@ class Ui_Dialog_draft_control(object):
         gridlayout.addWidget(label_cria_num, 0,1,1,1)
 
 
-        button_cria = create_new_button(groupbox, "Entwürfe prüfen", still_to_define)
+        button_cria = create_new_button(groupbox, "Entwürfe prüfen", partial(self.open_edit_draft, 0))
         gridlayout.addWidget(button_cria, 0,2,1,1)
         if len(dict_drafts['cria']) == 0:
             button_cria.setEnabled(False)
@@ -2073,7 +2073,7 @@ class Ui_Dialog_draft_control(object):
         label_typ1_num = create_new_label(groupbox, "{}".format(len(dict_drafts['lama_1'])))
         gridlayout.addWidget(label_typ1_num, 1,1,1,1)
 
-        button_typ1 = create_new_button(groupbox, "Entwürfe prüfen", self.open_edit_draft)
+        button_typ1 = create_new_button(groupbox, "Entwürfe prüfen", partial(self.open_edit_draft, 1))
         gridlayout.addWidget(button_typ1, 1,2,1,1)
         if len(dict_drafts['lama_1']) == 0:
             button_typ1.setEnabled(False)
@@ -2085,13 +2085,13 @@ class Ui_Dialog_draft_control(object):
         gridlayout.addWidget(label_typ2_num, 2,1,1,1)
 
 
-        button_typ2 = create_new_button(groupbox, "Entwürfe prüfen", still_to_define)
+        button_typ2 = create_new_button(groupbox, "Entwürfe prüfen", partial(self.open_edit_draft, 2))
         gridlayout.addWidget(button_typ2, 2,2,1,1)
         if len(dict_drafts['lama_2']) == 0:
             button_typ2.setEnabled(False)
 
 
-    def open_edit_draft(self):
+    def open_edit_draft(self, typ):
         Dialog = QtWidgets.QDialog(
             None,
             Qt.WindowSystemMenuHint
@@ -2099,14 +2099,17 @@ class Ui_Dialog_draft_control(object):
             | Qt.WindowCloseButtonHint,
         )
         ui = Ui_Dialog_edit_drafts()
-        ui.setupUi(Dialog)
+        ui.setupUi(Dialog, self.dict_drafts, typ)
 
         Dialog.exec()       
 
 
 class Ui_Dialog_edit_drafts(object):
-    def setupUi(self, Dialog):
+    def setupUi(self, Dialog, dict_drafts, typ):
+        print(dict_drafts)
+        print(typ)
         Dialog.setObjectName("Dialog")
+        Dialog.setWindowIcon(QIcon(logo_path))
         Dialog.resize(567, 489)
         self.gridLayout = QtWidgets.QGridLayout(Dialog)
         self.gridLayout.setObjectName("gridLayout")
