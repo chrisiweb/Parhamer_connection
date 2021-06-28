@@ -2073,7 +2073,7 @@ class Ui_Dialog_draft_control(object):
         label_typ1_num = create_new_label(groupbox, "{}".format(len(dict_drafts['lama_1'])))
         gridlayout.addWidget(label_typ1_num, 1,1,1,1)
 
-        button_typ1 = create_new_button(groupbox, "Entwürfe prüfen", still_to_define)
+        button_typ1 = create_new_button(groupbox, "Entwürfe prüfen", self.open_edit_draft)
         gridlayout.addWidget(button_typ1, 1,2,1,1)
         if len(dict_drafts['lama_1']) == 0:
             button_typ1.setEnabled(False)
@@ -2089,3 +2089,100 @@ class Ui_Dialog_draft_control(object):
         gridlayout.addWidget(button_typ2, 2,2,1,1)
         if len(dict_drafts['lama_2']) == 0:
             button_typ2.setEnabled(False)
+
+
+    def open_edit_draft(self):
+        Dialog = QtWidgets.QDialog(
+            None,
+            Qt.WindowSystemMenuHint
+            | Qt.WindowTitleHint
+            | Qt.WindowCloseButtonHint,
+        )
+        ui = Ui_Dialog_edit_drafts()
+        ui.setupUi(Dialog)
+
+        Dialog.exec()       
+
+
+class Ui_Dialog_edit_drafts(object):
+    def setupUi(self, Dialog):
+        Dialog.setObjectName("Dialog")
+        Dialog.resize(567, 489)
+        self.gridLayout = QtWidgets.QGridLayout(Dialog)
+        self.gridLayout.setObjectName("gridLayout")
+        self.scrollArea = QtWidgets.QScrollArea(Dialog)
+        self.scrollArea.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollArea.setObjectName("scrollArea")
+        self.scrollAreaWidgetContents = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 374, 186))
+        self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.checkBox_2 = QtWidgets.QCheckBox(self.scrollAreaWidgetContents)
+        self.checkBox_2.setObjectName("checkBox_2")
+        self.verticalLayout.addWidget(self.checkBox_2)
+        self.checkBox = QtWidgets.QCheckBox(self.scrollAreaWidgetContents)
+        self.checkBox.setObjectName("checkBox")
+        self.verticalLayout.addWidget(self.checkBox)
+        self.checkBox_3 = QtWidgets.QCheckBox(self.scrollAreaWidgetContents)
+        self.checkBox_3.setObjectName("checkBox_3")
+        self.verticalLayout.addWidget(self.checkBox_3)
+        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout.addItem(spacerItem)
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+        self.gridLayout.addWidget(self.scrollArea, 0, 0, 12, 4)
+        self.pushButton = QtWidgets.QPushButton(Dialog)
+        self.pushButton.setObjectName("pushButton")
+        self.gridLayout.addWidget(self.pushButton, 2, 4, 1, 1)
+        self.pushButton_4 = QtWidgets.QPushButton(Dialog)
+        self.pushButton_4.setObjectName("pushButton_4")
+        self.gridLayout.addWidget(self.pushButton_4, 5, 4, 1, 1)
+        self.pushButton_3 = QtWidgets.QPushButton(Dialog)
+        self.pushButton_3.setObjectName("pushButton_3")
+        self.gridLayout.addWidget(self.pushButton_3, 4, 4, 1, 1)
+        self.pushButton_2 = QtWidgets.QPushButton(Dialog)
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.gridLayout.addWidget(self.pushButton_2, 3, 4, 1, 1)
+        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.gridLayout.addItem(spacerItem1, 11, 4, 1, 1)
+        self.groupBox = QtWidgets.QGroupBox(Dialog)
+        self.groupBox.setObjectName("groupBox")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.groupBox)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.comboBox = QtWidgets.QComboBox(self.groupBox)
+        self.comboBox.setObjectName("comboBox")
+        self.comboBox.addItem("")
+        self.comboBox.setItemText(0, "")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.verticalLayout_2.addWidget(self.comboBox)
+        self.plainTextEdit = QtWidgets.QPlainTextEdit(self.groupBox)
+        self.plainTextEdit.setObjectName("plainTextEdit")
+        self.verticalLayout_2.addWidget(self.plainTextEdit)
+        self.buttonBox = QtWidgets.QDialogButtonBox(self.groupBox)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Ok|QtWidgets.QDialogButtonBox.Save)
+        self.buttonBox.setObjectName("buttonBox")
+        self.verticalLayout_2.addWidget(self.buttonBox)
+        self.gridLayout.addWidget(self.groupBox, 12, 0, 1, 5)
+
+        self.retranslateUi(Dialog)
+        QMetaObject.connectSlotsByName(Dialog)
+
+    def retranslateUi(self, Dialog):
+        _translate = QCoreApplication.translate
+        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+        self.checkBox_2.setText(_translate("Dialog", "Aufgabe 1"))
+        self.checkBox.setText(_translate("Dialog", "Aufgabe 2"))
+        self.checkBox_3.setText(_translate("Dialog", "Aufgabe 3"))
+        self.pushButton.setText(_translate("Dialog", "Alle aus-/abwählen"))
+        self.pushButton_4.setText(_translate("Dialog", "button4"))
+        self.pushButton_3.setText(_translate("Dialog", "Ausgewählte Aufgaben zur\n"
+"Datenbank hinzufügen"))
+        self.pushButton_2.setText(_translate("Dialog", "Ausgewählte Aufgaben im\n"
+"LaTeX Editor öffnen"))
+        self.groupBox.setTitle(_translate("Dialog", "Aufgabe"))
+        self.comboBox.setItemText(1, _translate("Dialog", "Aufgabe 1"))
+        self.comboBox.setItemText(2, _translate("Dialog", "Aufgabe 2"))
+        self.comboBox.setItemText(3, _translate("Dialog", "Aufgabe 3"))
