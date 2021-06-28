@@ -2061,7 +2061,7 @@ class Ui_Dialog_draft_control(object):
         gridlayout.addWidget(label_cria_num, 0,1,1,1)
 
 
-        button_cria = create_new_button(groupbox, "Entwürfe prüfen", partial(self.open_edit_draft, 0))
+        button_cria = create_new_button(groupbox, "Entwürfe prüfen", partial(self.open_edit_draft, 'cria'))
         gridlayout.addWidget(button_cria, 0,2,1,1)
         if len(dict_drafts['cria']) == 0:
             button_cria.setEnabled(False)
@@ -2073,7 +2073,7 @@ class Ui_Dialog_draft_control(object):
         label_typ1_num = create_new_label(groupbox, "{}".format(len(dict_drafts['lama_1'])))
         gridlayout.addWidget(label_typ1_num, 1,1,1,1)
 
-        button_typ1 = create_new_button(groupbox, "Entwürfe prüfen", partial(self.open_edit_draft, 1))
+        button_typ1 = create_new_button(groupbox, "Entwürfe prüfen", partial(self.open_edit_draft, 'lama_1'))
         gridlayout.addWidget(button_typ1, 1,2,1,1)
         if len(dict_drafts['lama_1']) == 0:
             button_typ1.setEnabled(False)
@@ -2085,7 +2085,7 @@ class Ui_Dialog_draft_control(object):
         gridlayout.addWidget(label_typ2_num, 2,1,1,1)
 
 
-        button_typ2 = create_new_button(groupbox, "Entwürfe prüfen", partial(self.open_edit_draft, 2))
+        button_typ2 = create_new_button(groupbox, "Entwürfe prüfen", partial(self.open_edit_draft, 'lama_2'))
         gridlayout.addWidget(button_typ2, 2,2,1,1)
         if len(dict_drafts['lama_2']) == 0:
             button_typ2.setEnabled(False)
@@ -2101,13 +2101,15 @@ class Ui_Dialog_draft_control(object):
         ui = Ui_Dialog_edit_drafts()
         ui.setupUi(Dialog, self.dict_drafts, typ)
 
-        Dialog.exec()       
+        self.Dialog.accept()
+        Dialog.exec() 
 
 
 class Ui_Dialog_edit_drafts(object):
     def setupUi(self, Dialog, dict_drafts, typ):
-        print(dict_drafts)
-        print(typ)
+        self.dict_drafts = dict_drafts
+        self.typ = typ
+        self.dict_widget_variables = {}
         Dialog.setObjectName("Dialog")
         Dialog.setWindowIcon(QIcon(logo_path))
         Dialog.resize(567, 489)
@@ -2122,15 +2124,31 @@ class Ui_Dialog_edit_drafts(object):
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.checkBox_2 = QtWidgets.QCheckBox(self.scrollAreaWidgetContents)
-        self.checkBox_2.setObjectName("checkBox_2")
-        self.verticalLayout.addWidget(self.checkBox_2)
-        self.checkBox = QtWidgets.QCheckBox(self.scrollAreaWidgetContents)
-        self.checkBox.setObjectName("checkBox")
-        self.verticalLayout.addWidget(self.checkBox)
-        self.checkBox_3 = QtWidgets.QCheckBox(self.scrollAreaWidgetContents)
-        self.checkBox_3.setObjectName("checkBox_3")
-        self.verticalLayout.addWidget(self.checkBox_3)
+
+        self.groupBox = QtWidgets.QGroupBox(Dialog)
+        self.groupBox.setObjectName("groupBox")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.groupBox)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.comboBox = QtWidgets.QComboBox(self.groupBox)
+        self.comboBox.setObjectName("comboBox")
+        self.comboBox.currentIndexChanged.connect(self.comboBox_index_changed)
+        self.comboBox.addItem("")
+
+        self.verticalLayout_2.addWidget(self.comboBox)
+
+
+
+        for dict_aufgabe in self.dict_drafts[typ]:
+            self.add_draft_to_list(dict_aufgabe, self.scrollAreaWidgetContents)        
+        # self.checkBox_2 = QtWidgets.QCheckBox(self.scrollAreaWidgetContents)
+        # self.checkBox_2.setObjectName("checkBox_2")
+        # self.verticalLayout.addWidget(self.checkBox_2)
+        # self.checkBox = QtWidgets.QCheckBox(self.scrollAreaWidgetContents)
+        # self.checkBox.setObjectName("checkBox")
+        # self.verticalLayout.addWidget(self.checkBox)
+        # self.checkBox_3 = QtWidgets.QCheckBox(self.scrollAreaWidgetContents)
+        # self.checkBox_3.setObjectName("checkBox_3")
+        # self.verticalLayout.addWidget(self.checkBox_3)
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
@@ -2149,21 +2167,11 @@ class Ui_Dialog_edit_drafts(object):
         self.gridLayout.addWidget(self.pushButton_2, 3, 4, 1, 1)
         spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.gridLayout.addItem(spacerItem1, 11, 4, 1, 1)
-        self.groupBox = QtWidgets.QGroupBox(Dialog)
-        self.groupBox.setObjectName("groupBox")
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.groupBox)
-        self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.comboBox = QtWidgets.QComboBox(self.groupBox)
-        self.comboBox.setObjectName("comboBox")
-        self.comboBox.addItem("")
-        self.comboBox.setItemText(0, "")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.verticalLayout_2.addWidget(self.comboBox)
+
         self.plainTextEdit = QtWidgets.QPlainTextEdit(self.groupBox)
         self.plainTextEdit.setObjectName("plainTextEdit")
         self.verticalLayout_2.addWidget(self.plainTextEdit)
+
         self.buttonBox = QtWidgets.QDialogButtonBox(self.groupBox)
         self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Ok|QtWidgets.QDialogButtonBox.Save)
         self.buttonBox.setObjectName("buttonBox")
@@ -2176,9 +2184,9 @@ class Ui_Dialog_edit_drafts(object):
     def retranslateUi(self, Dialog):
         _translate = QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
-        self.checkBox_2.setText(_translate("Dialog", "Aufgabe 1"))
-        self.checkBox.setText(_translate("Dialog", "Aufgabe 2"))
-        self.checkBox_3.setText(_translate("Dialog", "Aufgabe 3"))
+        # self.checkBox_2.setText(_translate("Dialog", "Aufgabe 1"))
+        # self.checkBox.setText(_translate("Dialog", "Aufgabe 2"))
+        # self.checkBox_3.setText(_translate("Dialog", "Aufgabe 3"))
         self.pushButton.setText(_translate("Dialog", "Alle aus-/abwählen"))
         self.pushButton_4.setText(_translate("Dialog", "button4"))
         self.pushButton_3.setText(_translate("Dialog", "Ausgewählte Aufgaben zur\n"
@@ -2186,6 +2194,23 @@ class Ui_Dialog_edit_drafts(object):
         self.pushButton_2.setText(_translate("Dialog", "Ausgewählte Aufgaben im\n"
 "LaTeX Editor öffnen"))
         self.groupBox.setTitle(_translate("Dialog", "Aufgabe"))
-        self.comboBox.setItemText(1, _translate("Dialog", "Aufgabe 1"))
-        self.comboBox.setItemText(2, _translate("Dialog", "Aufgabe 2"))
-        self.comboBox.setItemText(3, _translate("Dialog", "Aufgabe 3"))
+        # self.comboBox.setItemText(1, _translate("Dialog", "Aufgabe 1"))
+        # self.comboBox.setItemText(2, _translate("Dialog", "Aufgabe 2"))
+        # self.comboBox.setItemText(3, _translate("Dialog", "Aufgabe 3"))
+
+    def add_draft_to_list(self, dict_aufgabe, parent):
+        name = dict_aufgabe['name']
+
+        checkbox = create_new_checkbox(parent, name)
+        self.verticalLayout.addWidget(checkbox)
+        self.comboBox.addItem(name)
+
+        self.dict_widget_variables[name]=checkbox
+        # print(self.dict_drafts)
+        # name = dict_aufgabe['name']
+        # print(name)
+        # create_new_checkbox(parent, )
+
+    def comboBox_index_changed(self):
+        print(self.dict_drafts)
+        print(self.comboBox.currentText())
