@@ -2131,7 +2131,6 @@ class Ui_Dialog_edit_drafts(object):
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.comboBox = QtWidgets.QComboBox(self.groupBox)
         self.comboBox.setObjectName("comboBox")
-        self.comboBox.currentIndexChanged.connect(self.comboBox_index_changed)
         self.comboBox.addItem("")
 
         self.verticalLayout_2.addWidget(self.comboBox)
@@ -2170,6 +2169,9 @@ class Ui_Dialog_edit_drafts(object):
 
         self.plainTextEdit = QtWidgets.QPlainTextEdit(self.groupBox)
         self.plainTextEdit.setObjectName("plainTextEdit")
+        self.plainTextEdit.setEnabled(False)
+        self.plainText_backup = [0, ""]
+        self.reset_combobox = False
         self.verticalLayout_2.addWidget(self.plainTextEdit)
 
         self.buttonBox = QtWidgets.QDialogButtonBox(self.groupBox)
@@ -2177,6 +2179,8 @@ class Ui_Dialog_edit_drafts(object):
         self.buttonBox.setObjectName("buttonBox")
         self.verticalLayout_2.addWidget(self.buttonBox)
         self.gridLayout.addWidget(self.groupBox, 12, 0, 1, 5)
+
+        self.comboBox.currentIndexChanged.connect(self.comboBox_index_changed)
 
         self.retranslateUi(Dialog)
         QMetaObject.connectSlotsByName(Dialog)
@@ -2212,5 +2216,36 @@ class Ui_Dialog_edit_drafts(object):
         # create_new_checkbox(parent, )
 
     def comboBox_index_changed(self):
-        print(self.dict_drafts)
-        print(self.comboBox.currentText())
+        if self.reset_combobox == True:
+            self.reset_combobox = False
+            return
+        if self.comboBox.currentIndex() == 0:
+            self.plainTextEdit.setEnabled(False)
+            self.plainTextEdit.setPlainText("")
+            self.plainText_backup = [0, ""]
+        
+        else:
+            dict_aufgabe = self.get_dict_aufgabe(self.comboBox.currentText())
+            print(self.plainText_backup)
+            print(self.plainTextEdit.toPlainText())
+
+            if self.plainTextEdit.toPlainText() != self.plainText_backup[1]:
+                rsp = question_window(
+                    "Es wurden bereits Änderungen an dieser Aufgabe vorgenommen. Sind Sie sicher, dass Sie diese Änderungen unwiderruflich löschen möchten?",
+                    titel="Änderungen löschen?")
+
+                if rsp == False:
+                    self.reset_combobox =True
+                    self.comboBox.setCurrentIndex(self.plainText_backup[0]) 
+                    return
+            self.plainTextEdit.setEnabled(True)
+            self.plainTextEdit.setPlainText(dict_aufgabe['content'])
+            self.plainText_backup = [self.comboBox.currentIndex(), dict_aufgabe['content']]
+
+
+
+    def get_dict_aufgabe(self, name):
+        for dict_aufgabe in self.dict_drafts[self.typ]:
+            if name == dict_aufgabe['name']:
+                return dict_aufgabe
+        return
