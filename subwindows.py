@@ -44,6 +44,7 @@ from lama_stylesheets import (
     StyleSheet_subwindow_ausgleichspunkte_dark_mode,
 )
 from create_pdf import create_tex, create_pdf, check_if_variation
+import tex_minimal
 import bcrypt
 from database_commands import _database, _local_database, _database_addon
 from filter_commands import get_filter_string, filter_items
@@ -2152,18 +2153,33 @@ class Ui_Dialog_edit_drafts(object):
         self.verticalLayout.addItem(spacerItem)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.gridLayout.addWidget(self.scrollArea, 0, 0, 12, 4)
-        self.pushButton = QtWidgets.QPushButton(Dialog)
-        self.pushButton.setObjectName("pushButton")
-        self.gridLayout.addWidget(self.pushButton, 2, 4, 1, 1)
-        self.pushButton_4 = QtWidgets.QPushButton(Dialog)
-        self.pushButton_4.setObjectName("pushButton_4")
-        self.gridLayout.addWidget(self.pushButton_4, 5, 4, 1, 1)
-        self.pushButton_3 = QtWidgets.QPushButton(Dialog)
-        self.pushButton_3.setObjectName("pushButton_3")
-        self.gridLayout.addWidget(self.pushButton_3, 4, 4, 1, 1)
-        self.pushButton_2 = QtWidgets.QPushButton(Dialog)
-        self.pushButton_2.setObjectName("pushButton_2")
-        self.gridLayout.addWidget(self.pushButton_2, 3, 4, 1, 1)
+        # self.pushButton = QtWidgets.QPushButton(Dialog)
+        # self.pushButton.setObjectName("pushButton")
+
+        self.pushButton_check_all = create_new_button(Dialog,
+        "Alle aus-/abwählen",
+        self.check_all)  
+        self.gridLayout.addWidget(self.pushButton_check_all, 2, 4, 1, 1)
+
+
+        self.pushButton_open_editor = create_new_button(Dialog,
+        "Ausgewählte Aufgabe(n) im\nLaTeX Editor öffnen",
+        self.open_editor)
+        self.gridLayout.addWidget(self.pushButton_open_editor, 3, 4, 1, 1)
+
+
+        self.pushButton_add_to_database = create_new_button(Dialog,
+        "Ausgewählte Aufgaben zur\nDatenbank hinzufügen",
+        still_to_define)
+        self.gridLayout.addWidget(self.pushButton_add_to_database, 4, 4, 1, 1)
+
+
+        self.pushButton_new = create_new_button(Dialog,
+        "NEU!",
+        still_to_define)
+        self.gridLayout.addWidget(self.pushButton_new, 5, 4, 1, 1)
+
+
         spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.gridLayout.addItem(spacerItem1, 11, 4, 1, 1)
 
@@ -2182,21 +2198,13 @@ class Ui_Dialog_edit_drafts(object):
 
         self.comboBox.currentIndexChanged.connect(self.comboBox_index_changed)
 
+
         self.retranslateUi(Dialog)
         QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
         _translate = QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
-        # self.checkBox_2.setText(_translate("Dialog", "Aufgabe 1"))
-        # self.checkBox.setText(_translate("Dialog", "Aufgabe 2"))
-        # self.checkBox_3.setText(_translate("Dialog", "Aufgabe 3"))
-        self.pushButton.setText(_translate("Dialog", "Alle aus-/abwählen"))
-        self.pushButton_4.setText(_translate("Dialog", "button4"))
-        self.pushButton_3.setText(_translate("Dialog", "Ausgewählte Aufgaben zur\n"
-"Datenbank hinzufügen"))
-        self.pushButton_2.setText(_translate("Dialog", "Ausgewählte Aufgaben im\n"
-"LaTeX Editor öffnen"))
         self.groupBox.setTitle(_translate("Dialog", "Aufgabe"))
         # self.comboBox.setItemText(1, _translate("Dialog", "Aufgabe 1"))
         # self.comboBox.setItemText(2, _translate("Dialog", "Aufgabe 2"))
@@ -2249,3 +2257,49 @@ class Ui_Dialog_edit_drafts(object):
             if name == dict_aufgabe['name']:
                 return dict_aufgabe
         return
+
+    def check_all(self):
+        first_checkbox = list(self.dict_widget_variables.values())[0]
+        if first_checkbox.isChecked() == True:
+            x = False
+        else:
+            x = True
+        for checkbox in self.dict_widget_variables.values():
+            checkbox.setChecked(x)
+    
+    def open_editor(self):
+        chosen_list = []
+        for checkbox_name in self.dict_widget_variables:
+            if self.dict_widget_variables[checkbox_name].isChecked() == True:
+                chosen_list.append(checkbox_name)
+        
+        content = self.create_content(chosen_list)
+
+        file_path = os.path.join(
+            path_localappdata_lama, "Teildokument", "draft_preview.tex"
+            ) 
+        with open(file_path, "w", encoding="utf8") as file:
+            file.write(tex_minimal.tex_preamble())
+            file.write(content)
+            file.write(tex_minimal.tex_end)
+
+        QtWidgets.QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
+        os.system(file_path)
+        QtWidgets.QApplication.restoreOverrideCursor()
+
+    def create_content(self, chosen_list):
+        # content = tex_minimal.tex_preamble
+        content = ""
+        for name in chosen_list:
+            dict_aufgabe = self.get_dict_aufgabe(name)
+
+            if dict_aufgabe['pagebreak'] == False:
+                begin =  tex_minimal.begin_beispiel()
+                end = tex_minimal.end_beispiel
+            else:
+                begin = tex_minimal.begin_beispiel_lang()
+                end = tex_minimal.end_beispiel_lang
+            
+            content = content + begin + dict_aufgabe['content'] +end + "\n\n"
+
+        return content
