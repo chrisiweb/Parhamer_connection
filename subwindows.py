@@ -48,7 +48,7 @@ from create_pdf import create_tex, create_pdf, check_if_variation
 import tex_minimal
 from processing_window import Ui_Dialog_processing
 import bcrypt
-from database_commands import _database, _local_database, _database_addon, update_data 
+from database_commands import _database, _local_database, _database_addon, update_data, delete_file 
 from filter_commands import get_filter_string, filter_items
 from sort_items import order_gesammeltedateien
 from upload_database import action_push_database
@@ -2125,7 +2125,7 @@ class Ui_Dialog_edit_drafts(object):
         self.scrollArea = QtWidgets.QScrollArea(Dialog)
         self.scrollArea.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.scrollArea.setWidgetResizable(True)
-        self.scrollArea.setFixedHeight(130)
+        self.scrollArea.setFixedHeight(150)
         # self.scrollArea.setSizePolicy(SizePolicy_fixed_height)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
@@ -2137,7 +2137,7 @@ class Ui_Dialog_edit_drafts(object):
 
         self.groupBox = QtWidgets.QGroupBox(Dialog)
         self.groupBox.setObjectName("groupBox")
-        self.groupBox.setTitle("Aufgabe")
+        self.groupBox.setTitle("Aufgabe bearbeiten")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.groupBox)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.comboBox = QtWidgets.QComboBox(self.groupBox)
@@ -2162,7 +2162,7 @@ class Ui_Dialog_edit_drafts(object):
         self.gridLayout_items.addItem(self.spacerItem, row+1, 0, 1,3)
 
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-        self.gridLayout.addWidget(self.scrollArea, 0, 0, 3, 4)
+        self.gridLayout.addWidget(self.scrollArea, 0, 0, 4, 4)
 
 
         self.pushButton_check_all = create_new_button(Dialog,
@@ -2179,16 +2179,17 @@ class Ui_Dialog_edit_drafts(object):
 
 
         self.pushButton_add_to_database = create_new_button(Dialog,
-        "Ausgewählte Aufgaben zur\nDatenbank hinzufügen",
+        "Ausgewählte Aufgabe(n) zur\nDatenbank hinzufügen",
         self.add_to_ddb)
         self.gridLayout.addWidget(self.pushButton_add_to_database, 2, 4, 1, 1)
         self.pushButton_add_to_database.setEnabled(False)
 
 
-        # self.pushButton_new = create_new_button(Dialog,
-        # "NEU!",
-        # still_to_define)
-        # self.gridLayout.addWidget(self.pushButton_new, 3, 4, 1, 1)
+        self.pushButton_delete = create_new_button(Dialog,
+        "Ausgwählte Aufgabe(n) löschen",
+        self.delete_draft)
+        self.gridLayout.addWidget(self.pushButton_delete, 3, 4, 1, 1)
+        self.pushButton_delete.setEnabled(False)
 
 
         # spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
@@ -2226,6 +2227,7 @@ class Ui_Dialog_edit_drafts(object):
             on_off = True
         self.pushButton_open_editor.setEnabled(on_off)
         self.pushButton_add_to_database.setEnabled(on_off)
+        self.pushButton_delete.setEnabled(on_off)
 
     def add_draft_to_list(self, dict_aufgabe, parent, row, column):
         name = dict_aufgabe['name']
@@ -2330,17 +2332,8 @@ class Ui_Dialog_edit_drafts(object):
 
         return content
 
-
-    def add_to_ddb(self):
+    def remove_from_list(self):
         chosen_list = self.get_chosen_list()
-
-        rsp = question_window("Sind Sie sicher, dass Sie die folgenden Aufgaben in die Datenbank aufnehmen möchten?\n\n{}".format("\n".join(chosen_list)))   
-        if rsp == False:
-            return
-
-        for aufgabe in chosen_list:
-            update_data(aufgabe, self.typ, 'draft', False)
-
         for checkbox in self.dict_widget_variables.values():
             checkbox.setParent(None)
         self.gridLayout_items.removeItem(self.spacerItem)
@@ -2365,6 +2358,19 @@ class Ui_Dialog_edit_drafts(object):
         self.spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.gridLayout_items.addItem(self.spacerItem, row+1, 0, 1,3)
 
+    def add_to_ddb(self):
+        chosen_list = self.get_chosen_list()
+
+        rsp = question_window("Sind Sie sicher, dass Sie die folgende(n) Aufgabe(n) in die Datenbank aufnehmen möchten?\n\n{}".format("\n".join(chosen_list)))   
+        if rsp == False:
+            return
+
+        for aufgabe in chosen_list:
+            update_data(aufgabe, self.typ, 'draft', False)
+
+
+        self.remove_from_list()
+
 
         chosen_ddb = ["_database.json"]    
         action_push_database(True, 
@@ -2375,6 +2381,27 @@ class Ui_Dialog_edit_drafts(object):
 
 
         information_window("Die Aufgaben\n{}\nwurden erfolgreich gespeichert.".format("\n".join(chosen_list)))
+
+
+    def delete_draft(self):
+        chosen_list = self.get_chosen_list()
+        rsp = question_window("Sind Sie sicher, dass Sie die folgende(n) Aufgabe(n) unwiderruflich löschen möchten?\n\n{}".format("\n".join(chosen_list)))
+        if rsp == False:
+            return
+
+        for aufgabe in chosen_list:
+            delete_file(aufgabe, self.typ)
+
+        self.remove_from_list()
+
+        chosen_ddb = ["_database.json"]    
+        action_push_database(True, 
+        chosen_ddb,
+        message="Entwürfe gelöscht ({})".format(", ".join(chosen_list)),
+        worker_text="Entwürfe werden gelöscht ..."
+        ) 
+
+        information_window("Die Aufgaben\n{}\nwurden erfolgreich gelöscht.".format("\n".join(chosen_list)))
 
 
     def save_changes(self):
