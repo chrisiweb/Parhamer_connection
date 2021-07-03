@@ -10,6 +10,8 @@ from functools import partial
 from config_start import path_programm,path_localappdata_lama, lama_settings_file, lama_developer_credentials
 from config import (
     config_loader,
+    dict_aufgabenformate,
+    Klassen,
     config_file,
     colors_ui,
     get_color,
@@ -2138,14 +2140,19 @@ class Ui_Dialog_edit_drafts(object):
         self.groupBox = QtWidgets.QGroupBox(Dialog)
         self.groupBox.setObjectName("groupBox")
         self.groupBox.setTitle("Aufgabe bearbeiten")
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.groupBox)
-        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.gridLayout_2 = create_new_gridlayout(self.groupBox)
+
+        self.groupBox_aufgabe = create_new_groupbox(self.groupBox, "Aufgabe")
+        self.gridLayout_2.addWidget(self.groupBox_aufgabe, 0,0,1,1)
+        self.horizontalLayout_abstand = create_new_horizontallayout(self.groupBox_aufgabe)
+
         self.comboBox = QtWidgets.QComboBox(self.groupBox)
         self.comboBox.setObjectName("comboBox")
         self.comboBox.addItem("")
 
-        self.verticalLayout_2.addWidget(self.comboBox)
-        
+        self.horizontalLayout_abstand.addWidget(self.comboBox)
+
+
         row = 0
         column = 0
         
@@ -2195,12 +2202,58 @@ class Ui_Dialog_edit_drafts(object):
         # spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         # self.gridLayout.addItem(spacerItem1, 4, 4, 1, 1)
 
+
+        self.groupBox_pkt = create_new_groupbox(self.groupBox, "Pkte")
+        self.gridLayout_2.addWidget(self.groupBox_pkt, 0,1,1,1)
+        self.horizontalLayout_pkt = create_new_horizontallayout(self.groupBox_pkt)
+        self.groupBox_pkt.setEnabled(False)
+        
+
+        self.spinBox_pkt = create_new_spinbox(self.groupBox)
+        self.horizontalLayout_pkt.addWidget(self.spinBox_pkt)
+        
+
+        self.groupBox_af = create_new_groupbox(self.groupBox, "AF")
+        self.gridLayout_2.addWidget(self.groupBox_af, 0,2,1,1)
+        self.horizontalLayout_af = create_new_horizontallayout(self.groupBox_af)
+        self.groupBox_af.setEnabled(False)
+        
+        self.comboBox_af = create_new_combobox(self.groupBox)
+        self.horizontalLayout_af.addWidget(self.comboBox_af)
+        
+
+        if self.typ == 'lama_2':
+            self.groupBox_af.hide()
+
+        for i, all in enumerate(dict_aufgabenformate.keys()):
+            if self.typ != 'cria' and i>3:
+                break
+
+            add_new_option(self.comboBox_af, i, all.upper())
+
+
+        self.groupBox_klasse = create_new_groupbox(self.groupBox, "Klasse")
+        self.gridLayout_2.addWidget(self.groupBox_klasse, 0,3,1,1)
+        if self.typ == 'cria':
+            self.groupBox_klasse.hide()
+        self.horizontalLayout_klasse = create_new_horizontallayout(self.groupBox_klasse)
+        self.groupBox_klasse.setEnabled(False)
+        
+        self.comboBox_klasse = create_new_combobox(self.groupBox)
+        self.horizontalLayout_klasse.addWidget(self.comboBox_klasse)
+
+        for i, all in enumerate(Klassen.keys()):
+            if i == 4:
+                break
+            add_new_option(self.comboBox_klasse, i, all)
+
+
         self.plainTextEdit = QtWidgets.QPlainTextEdit(self.groupBox)
         self.plainTextEdit.setObjectName("plainTextEdit")
         self.plainTextEdit.setEnabled(False)
         self.plainText_backup = [0, ""]
         self.reset_combobox = False
-        self.verticalLayout_2.addWidget(self.plainTextEdit)
+        self.gridLayout_2.addWidget(self.plainTextEdit, 1,0,1,4)
 
         self.buttonBox = QtWidgets.QDialogButtonBox(self.groupBox)
         self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Save)
@@ -2208,10 +2261,13 @@ class Ui_Dialog_edit_drafts(object):
         buttonSave = self.buttonBox.button(QtWidgets.QDialogButtonBox.Save)
         buttonSave.setText("Änderung speichern")
         buttonSave.clicked.connect(self.save_changes)
-        self.verticalLayout_2.addWidget(self.buttonBox)
+        self.gridLayout_2.addWidget(self.buttonBox, 2, 2,1,1)
         self.gridLayout.addWidget(self.groupBox, 5, 0, 1, 5)
 
+
+
         self.comboBox.currentIndexChanged.connect(self.comboBox_index_changed)
+
 
 
         # self.retranslateUi(Dialog)
