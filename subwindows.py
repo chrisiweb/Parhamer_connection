@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QIcon, QCursor, QTextCursor
-from PyQt5.QtCore import Qt, QSize, QRect, QMetaObject, QCoreApplication
+from PyQt5.QtCore import Qt, QSize, QRect, QMetaObject, QCoreApplication, QThread
 import os
 import shutil
 from json import load, dump
@@ -46,10 +46,12 @@ from lama_stylesheets import (
 )
 from create_pdf import create_tex, create_pdf, check_if_variation
 import tex_minimal
+from processing_window import Ui_Dialog_processing
 import bcrypt
 from database_commands import _database, _local_database, _database_addon, update_data 
 from filter_commands import get_filter_string, filter_items
 from sort_items import order_gesammeltedateien
+from upload_database import action_push_database
 
 
 dict_gk = config_loader(config_file, "dict_gk")
@@ -2117,6 +2119,7 @@ class Ui_Dialog_edit_drafts(object):
         Dialog.setObjectName("Dialog")
         Dialog.setWindowIcon(QIcon(logo_path))
         Dialog.resize(567, 489)
+        Dialog.setWindowTitle("Entwürfe prüfen")
         self.gridLayout = QtWidgets.QGridLayout(Dialog)
         self.gridLayout.setObjectName("gridLayout")
         self.scrollArea = QtWidgets.QScrollArea(Dialog)
@@ -2134,6 +2137,7 @@ class Ui_Dialog_edit_drafts(object):
 
         self.groupBox = QtWidgets.QGroupBox(Dialog)
         self.groupBox.setObjectName("groupBox")
+        self.groupBox.setTitle("Aufgabe")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.groupBox)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.comboBox = QtWidgets.QComboBox(self.groupBox)
@@ -2141,15 +2145,6 @@ class Ui_Dialog_edit_drafts(object):
         self.comboBox.addItem("")
 
         self.verticalLayout_2.addWidget(self.comboBox)
-
-        # def get_num_items_in_column():
-        #     num = len(self.dict_drafts[typ])
-        #     rest = num%3
-        #     print(num)
-        #     print(rest)
-            
-        
-        # get_num_items_in_column()
         
         row = 0
         column = 0
@@ -2161,23 +2156,14 @@ class Ui_Dialog_edit_drafts(object):
                 column = 0
             else:
                 column +=1        
-        # self.checkBox_2 = QtWidgets.QCheckBox(self.scrollAreaWidgetContents)
-        # self.checkBox_2.setObjectName("checkBox_2")
-        # self.verticalLayout.addWidget(self.checkBox_2)
-        # self.checkBox = QtWidgets.QCheckBox(self.scrollAreaWidgetContents)
-        # self.checkBox.setObjectName("checkBox")
-        # self.verticalLayout.addWidget(self.checkBox)
-        # self.checkBox_3 = QtWidgets.QCheckBox(self.scrollAreaWidgetContents)
-        # self.checkBox_3.setObjectName("checkBox_3")
-        # self.verticalLayout.addWidget(self.checkBox_3)
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
 
-        self.gridLayout_items.addItem(spacerItem, row+1, 0, 1,3)
+        self.spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+
+        self.gridLayout_items.addItem(self.spacerItem, row+1, 0, 1,3)
 
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.gridLayout.addWidget(self.scrollArea, 0, 0, 3, 4)
-        # self.pushButton = QtWidgets.QPushButton(Dialog)
-        # self.pushButton.setObjectName("pushButton")
+
 
         self.pushButton_check_all = create_new_button(Dialog,
         "Alle aus-/abwählen",
@@ -2216,24 +2202,20 @@ class Ui_Dialog_edit_drafts(object):
         self.verticalLayout_2.addWidget(self.plainTextEdit)
 
         self.buttonBox = QtWidgets.QDialogButtonBox(self.groupBox)
-        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Ok|QtWidgets.QDialogButtonBox.Save)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Save)
         self.buttonBox.setObjectName("buttonBox")
+        buttonSave = self.buttonBox.button(QtWidgets.QDialogButtonBox.Save)
+        buttonSave.setText("Änderung speichern")
+        buttonSave.clicked.connect(self.save_changes)
         self.verticalLayout_2.addWidget(self.buttonBox)
         self.gridLayout.addWidget(self.groupBox, 5, 0, 1, 5)
 
         self.comboBox.currentIndexChanged.connect(self.comboBox_index_changed)
 
 
-        self.retranslateUi(Dialog)
+        # self.retranslateUi(Dialog)
         QMetaObject.connectSlotsByName(Dialog)
 
-    def retranslateUi(self, Dialog):
-        _translate = QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
-        self.groupBox.setTitle(_translate("Dialog", "Aufgabe"))
-        # self.comboBox.setItemText(1, _translate("Dialog", "Aufgabe 1"))
-        # self.comboBox.setItemText(2, _translate("Dialog", "Aufgabe 2"))
-        # self.comboBox.setItemText(3, _translate("Dialog", "Aufgabe 3"))
 
     def checkbox_clicked(self):
         chosen_list = self.get_chosen_list()
@@ -2283,8 +2265,11 @@ class Ui_Dialog_edit_drafts(object):
                     self.comboBox.setCurrentIndex(self.plainText_backup[0]) 
                     return
             self.plainTextEdit.setEnabled(True)
-            self.plainTextEdit.setPlainText(dict_aufgabe['content'])
-            self.plainText_backup = [self.comboBox.currentIndex(), dict_aufgabe['content']]
+            try:
+                self.plainTextEdit.setPlainText(dict_aufgabe['content'])
+                self.plainText_backup = [self.comboBox.currentIndex(), dict_aufgabe['content']]
+            except TypeError:
+                pass
 
 
 
@@ -2303,7 +2288,8 @@ class Ui_Dialog_edit_drafts(object):
         for checkbox in self.dict_widget_variables.values():
             checkbox.setChecked(x)
         self.checkbox_clicked()
-    
+
+
     def get_chosen_list(self):
         chosen_list = []
         for checkbox_name in self.dict_widget_variables:
@@ -2329,7 +2315,6 @@ class Ui_Dialog_edit_drafts(object):
         
 
     def create_content(self, chosen_list):
-        # content = tex_minimal.tex_preamble
         content = ""
         for name in chosen_list:
             dict_aufgabe = self.get_dict_aufgabe(name)
@@ -2345,35 +2330,128 @@ class Ui_Dialog_edit_drafts(object):
 
         return content
 
-    def add_to_ddb(self):
-        print('add')
-        chosen_list = self.get_chosen_list()
-        print(chosen_list)
-        print(self.typ)
 
+    def add_to_ddb(self):
+        chosen_list = self.get_chosen_list()
+
+        rsp = question_window("Sind Sie sicher, dass Sie die folgenden Aufgaben in die Datenbank aufnehmen möchten?\n\n{}".format("\n".join(chosen_list)))   
+        if rsp == False:
+            return
+
+        for aufgabe in chosen_list:
+            update_data(aufgabe, self.typ, 'draft', False)
 
         for checkbox in self.dict_widget_variables.values():
             checkbox.setParent(None)
+        self.gridLayout_items.removeItem(self.spacerItem)
 
+        self.comboBox.clear()
+        self.comboBox.addItem("")
 
         row=0
         column=0
-        for dict_aufgabe in self.dict_drafts[self.typ]:
-            if dict_aufgabe['name'] in chosen_list:
-                print('delete')
-
-            self.add_draft_to_list(dict_aufgabe, self.scrollAreaWidgetContents, row, column)
-            if column == 2:
-                row += 1
-                column = 0
+        for dict_aufgabe in self.dict_drafts[self.typ][:]:
+            if dict_aufgabe['name'] not in chosen_list:
+                self.add_draft_to_list(dict_aufgabe, self.scrollAreaWidgetContents, row, column)
+                if column == 2:
+                    row += 1
+                    column = 0
+                else:
+                    column +=1
             else:
-                column +=1  
+                self.dict_drafts[self.typ].remove(dict_aufgabe)
+                del self.dict_widget_variables[dict_aufgabe['name']]
+
+        self.spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.gridLayout_items.addItem(self.spacerItem, row+1, 0, 1,3)
 
 
-        print(self.dict_drafts[self.typ])
-        # working!!
-        # for aufgabe in chosen_list:
-        #     update_data(aufgabe, self.typ, 'draft', False)
+        chosen_ddb = ["_database.json"]    
+        action_push_database(True, 
+        chosen_ddb,
+        message="Entwürfe geprüft ({})".format(", ".join(chosen_list)),
+        worker_text="Entwürfe werden in die Datenbank verschoben ..."
+        )
 
 
-        print('done')
+        information_window("Die Aufgaben\n{}\nwurden erfolgreich gespeichert.".format("\n".join(chosen_list)))
+
+
+    def save_changes(self):
+        name = self.comboBox.currentText()
+
+        # dict_aufgabe = self.get_dict_aufgabe(name)
+
+        # print(self.dict_drafts[self.typ])
+
+        # dict_aufgabe = self.get_dict_aufgabe(name)
+
+        self.plainText_backup = [self.comboBox.currentIndex(), self.plainTextEdit.toPlainText()]
+
+        for index, aufgabe in enumerate(self.dict_drafts[self.typ]):
+            if name == aufgabe['name']:
+                self.dict_drafts[self.typ][index]['content'] = self.plainTextEdit.toPlainText()
+                update_data(name, self.typ, 'content', self.plainTextEdit.toPlainText())
+                break
+    
+        chosen_ddb = ["_database.json"]    
+        action_push_database(True, 
+        chosen_ddb,
+        message="Inhalt von {} geändert".format(name),
+        worker_text="Geänderter Inhalt von {} wird gespeichert".format(name)
+        )
+
+        information_window("Der geänderte Inhalt von {} wurde gespeichert.".format(name))
+
+# class Worker_PushDatabase(QtCore.QObject):
+#     finished = QtCore.pyqtSignal()
+
+#     @QtCore.pyqtSlot()
+#     def task(self, ui, admin, file_list, message, worker_text):
+#         try:
+#             self.changes_found = git_push_to_origin(ui, admin, file_list, message, worker_text)
+#         except Exception as e:
+#             print(e)
+#             self.changes_found = 'error'
+
+#         self.finished.emit()
+
+
+# def action_push_database(admin, file_list, message = None, worker_text = "Aufgabe wird hochgeladen ..."):
+#     QtWidgets.QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
+#     if check_internet_connection() == False:
+#         critical_window("Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.",
+#             titel="Keine Internetverbindung",
+#         )
+#         return
+
+
+    # text = worker_text + " (1%)"
+    # if admin == True:
+    #     text = "Änderungen überprüfen ..."
+    # else:
+    #     text = "Aufgabe wird hochgeladen ... (1%)"
+
+
+
+    # Dialog = QtWidgets.QDialog()
+    # ui = Ui_Dialog_processing()
+    # ui.setupUi(Dialog, worker_text)
+
+    # thread = QThread(Dialog)
+    # worker = Worker_PushDatabase()
+    # worker.finished.connect(Dialog.close)
+    # worker.moveToThread(thread)
+    # thread.started.connect(partial(worker.task, ui, admin, file_list, message, worker_text))
+    # thread.start()
+    # thread.exit()
+    # Dialog.exec()
+    # QtWidgets.QApplication.restoreOverrideCursor()
+    # if worker.changes_found == False:
+    #     information_window("Es wurden keine Änderungen gefunden.")
+    # elif worker.changes_found == "error":
+    #     critical_window(
+    #         "Es ist ein Fehler aufgetreten. Die Datenbank konnte nicht hochgeladen werden. Bitte versuchen Sie es später erneut."
+    #     )
+    # elif admin == True:
+    #     information_window("Die Datenbank wurde erfolgreich hochgeladen.")

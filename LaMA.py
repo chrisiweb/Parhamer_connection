@@ -50,18 +50,18 @@ class Worker_DownloadDatabase(QtCore.QObject):
         self.finished.emit()
 
 
-class Worker_PushDatabase(QtCore.QObject):
-    finished = QtCore.pyqtSignal()
+# class Worker_PushDatabase(QtCore.QObject):
+#     finished = QtCore.pyqtSignal()
 
-    @QtCore.pyqtSlot()
-    def task(self, ui, admin, file_list, message, worker_text):
-        try:
-            self.changes_found = git_push_to_origin(ui, admin, file_list, message, worker_text)
-        except Exception as e:
-            print(e)
-            self.changes_found = 'error'
+#     @QtCore.pyqtSlot()
+#     def task(self, ui, admin, file_list, message, worker_text):
+#         try:
+#             self.changes_found = git_push_to_origin(ui, admin, file_list, message, worker_text)
+#         except Exception as e:
+#             print(e)
+#             self.changes_found = 'error'
 
-        self.finished.emit()
+#         self.finished.emit()
 
 
 class Ui_MainWindow(object):
@@ -287,7 +287,7 @@ class Ui_MainWindow(object):
             MainWindow,
             self.menuDeveloper,
             "Datenbank hochladen",
-            partial(self.action_push_database, True, ["_database.json"], "", "Änderungen werden hochgeladen ..."),
+            partial(action_push_database, True, ["_database.json"], "", "Änderungen werden hochgeladen ..."),
         )
 
 
@@ -4300,7 +4300,7 @@ class Ui_MainWindow(object):
             #     chosen_ddb = ["_database_addon.json"]
             # else:
             chosen_ddb = ["_database.json"]
-            self.action_push_database(False, chosen_ddb, message= message, worker_text="Änderung hochladen ...")
+            action_push_database(False, chosen_ddb, message= message, worker_text="Änderung hochladen ...")
 
     def button_save_edit_pressed(self):
         rsp = question_window("Sind Sie sicher, dass Sie die Änderungen speichern wollen?")
@@ -4403,7 +4403,7 @@ class Ui_MainWindow(object):
         #         chosen_ddb = ["_database_addon.json"]
         #     else:
         #         chosen_ddb = ["_database.json"]
-        #     self.action_push_database(False, chosen_ddb, message= "Bearbeitet: {}".format(name), worker_text="Änderung hochladen ...")
+        #     action_push_database(False, chosen_ddb, message= "Bearbeitet: {}".format(name), worker_text="Änderung hochladen ...")
 
         information_window("Die Änderungen wurden erfolgreich gespeichert.")
 
@@ -4454,7 +4454,7 @@ class Ui_MainWindow(object):
         self.upload_single_file_change(name, message="Gelöscht: {}".format(name))
         # if "(lokal)" not in name:
         #     file_list = ["_database.json"]
-        #     self.action_push_database(False, file_list, message= "Gelöscht: {}".format(name), worker_text="Aufgabe löschen ...")
+        #     action_push_database(False, file_list, message= "Gelöscht: {}".format(name), worker_text="Aufgabe löschen ...")
 
         information_window('Die Aufgabe "{}" wurde erfolgreich aus der Datenbank entfernt.'.format(name))
 
@@ -4728,7 +4728,7 @@ class Ui_MainWindow(object):
                 name = os.path.join("Bilder", image)
                 file_list.append(name)
 
-            self.action_push_database(False, file_list, message= "Neu: {}".format(name))
+            action_push_database(False, file_list, message= "Neu: {}".format(name))
 
 
         information_window(text, "", window_title, information)
@@ -4760,8 +4760,6 @@ class Ui_MainWindow(object):
 
 
     def draft_control(self):
-        print('control')
-
         dict_drafts = {}
         for typ in ['cria', 'lama_1', 'lama_2']:
             table = "table_" + typ
@@ -4780,45 +4778,45 @@ class Ui_MainWindow(object):
         ui.setupUi(Dialog, dict_drafts)
 
 
-        rsp = Dialog.exec_()
+        Dialog.exec_()
 
-    def action_push_database(self, admin, file_list, message = None, worker_text = "Aufgabe wird hochgeladen ..."):
-        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        if check_internet_connection() == False:
-            critical_window("Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.",
-                titel="Keine Internetverbindung",
-            )
-            return
-
-
-        # text = worker_text + " (1%)"
-        # if admin == True:
-        #     text = "Änderungen überprüfen ..."
-        # else:
-        #     text = "Aufgabe wird hochgeladen ... (1%)"
+    # def action_push_database(self, admin, file_list, message = None, worker_text = "Aufgabe wird hochgeladen ..."):
+    #     QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+    #     if check_internet_connection() == False:
+    #         critical_window("Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.",
+    #             titel="Keine Internetverbindung",
+    #         )
+    #         return
 
 
-        Dialog = QtWidgets.QDialog()
-        ui = Ui_Dialog_processing()
-        ui.setupUi(Dialog, worker_text)
+    #     # text = worker_text + " (1%)"
+    #     # if admin == True:
+    #     #     text = "Änderungen überprüfen ..."
+    #     # else:
+    #     #     text = "Aufgabe wird hochgeladen ... (1%)"
 
-        thread = QtCore.QThread(Dialog)
-        worker = Worker_PushDatabase()
-        worker.finished.connect(Dialog.close)
-        worker.moveToThread(thread)
-        thread.started.connect(partial(worker.task, ui, admin, file_list, message, worker_text))
-        thread.start()
-        thread.exit()
-        Dialog.exec()
-        QtWidgets.QApplication.restoreOverrideCursor()
-        if worker.changes_found == False:
-            information_window("Es wurden keine Änderungen gefunden.")
-        elif worker.changes_found == "error":
-            critical_window(
-                "Es ist ein Fehler aufgetreten. Die Datenbank konnte nicht hochgeladen werden. Bitte versuchen Sie es später erneut."
-            )
-        elif admin == True:
-            information_window("Die Datenbank wurde erfolgreich hochgeladen.")
+
+    #     Dialog = QtWidgets.QDialog()
+    #     ui = Ui_Dialog_processing()
+    #     ui.setupUi(Dialog, worker_text)
+
+    #     thread = QtCore.QThread(Dialog)
+    #     worker = Worker_PushDatabase()
+    #     worker.finished.connect(Dialog.close)
+    #     worker.moveToThread(thread)
+    #     thread.started.connect(partial(worker.task, ui, admin, file_list, message, worker_text))
+    #     thread.start()
+    #     thread.exit()
+    #     Dialog.exec()
+    #     QtWidgets.QApplication.restoreOverrideCursor()
+    #     if worker.changes_found == False:
+    #         information_window("Es wurden keine Änderungen gefunden.")
+    #     elif worker.changes_found == "error":
+    #         critical_window(
+    #             "Es ist ein Fehler aufgetreten. Die Datenbank konnte nicht hochgeladen werden. Bitte versuchen Sie es später erneut."
+    #         )
+    #     elif admin == True:
+    #         information_window("Die Datenbank wurde erfolgreich hochgeladen.")
         
 
     def enable_widgets_editor(self, enabled):
@@ -7034,6 +7032,8 @@ if __name__ == "__main__":
     i = step_progressbar(i, "git_sync")
     from git_sync import git_clone_repo, git_push_to_origin, check_internet_connection, check_branches
     i = step_progressbar(i, "create_new_widgets")
+    from upload_database import action_push_database
+    i= step_progressbar(i, "upload_database")
     from create_new_widgets import *
     i = step_progressbar(i, "list_of_widgets")
     from list_of_widgets import (
