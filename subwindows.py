@@ -18,6 +18,7 @@ from config import (
     is_empty,
     still_to_define,
 )
+from subprocess import Popen
 from translate import _fromUtf8, _translate
 from create_new_widgets import (
     create_new_verticallayout,
@@ -2097,7 +2098,9 @@ class Ui_Dialog_draft_control(object):
             None,
             Qt.WindowSystemMenuHint
             | Qt.WindowTitleHint
-            | Qt.WindowCloseButtonHint,
+            | Qt.WindowCloseButtonHint
+            | Qt.WindowMaximizeButtonHint
+            | Qt.WindowMinimizeButtonHint
         )
         ui = Ui_Dialog_edit_drafts()
         ui.setupUi(Dialog, self.dict_drafts, typ)
@@ -2119,12 +2122,15 @@ class Ui_Dialog_edit_drafts(object):
         self.scrollArea = QtWidgets.QScrollArea(Dialog)
         self.scrollArea.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.scrollArea.setWidgetResizable(True)
+        self.scrollArea.setFixedHeight(130)
+        # self.scrollArea.setSizePolicy(SizePolicy_fixed_height)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
         self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 374, 186))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
-        self.verticalLayout = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
-        self.verticalLayout.setObjectName("verticalLayout")
+        # self.verticalLayout = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
+        # self.verticalLayout.setObjectName("verticalLayout")
+        self.gridLayout_items = create_new_gridlayout(self.scrollAreaWidgetContents)
 
         self.groupBox = QtWidgets.QGroupBox(Dialog)
         self.groupBox.setObjectName("groupBox")
@@ -2136,10 +2142,25 @@ class Ui_Dialog_edit_drafts(object):
 
         self.verticalLayout_2.addWidget(self.comboBox)
 
-
-
+        # def get_num_items_in_column():
+        #     num = len(self.dict_drafts[typ])
+        #     rest = num%3
+        #     print(num)
+        #     print(rest)
+            
+        
+        # get_num_items_in_column()
+        
+        row = 0
+        column = 0
+        
         for dict_aufgabe in self.dict_drafts[typ]:
-            self.add_draft_to_list(dict_aufgabe, self.scrollAreaWidgetContents)        
+            self.add_draft_to_list(dict_aufgabe, self.scrollAreaWidgetContents, row, column)
+            if column == 2:
+                row += 1
+                column = 0
+            else:
+                column +=1        
         # self.checkBox_2 = QtWidgets.QCheckBox(self.scrollAreaWidgetContents)
         # self.checkBox_2.setObjectName("checkBox_2")
         # self.verticalLayout.addWidget(self.checkBox_2)
@@ -2150,38 +2171,42 @@ class Ui_Dialog_edit_drafts(object):
         # self.checkBox_3.setObjectName("checkBox_3")
         # self.verticalLayout.addWidget(self.checkBox_3)
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout.addItem(spacerItem)
+
+        self.gridLayout_items.addItem(spacerItem, row+1, 0, 1,3)
+
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-        self.gridLayout.addWidget(self.scrollArea, 0, 0, 12, 4)
+        self.gridLayout.addWidget(self.scrollArea, 0, 0, 3, 4)
         # self.pushButton = QtWidgets.QPushButton(Dialog)
         # self.pushButton.setObjectName("pushButton")
 
         self.pushButton_check_all = create_new_button(Dialog,
         "Alle aus-/abwählen",
         self.check_all)  
-        self.gridLayout.addWidget(self.pushButton_check_all, 2, 4, 1, 1)
+        self.gridLayout.addWidget(self.pushButton_check_all, 0, 4, 1, 1)
 
 
         self.pushButton_open_editor = create_new_button(Dialog,
         "Ausgewählte Aufgabe(n) im\nLaTeX Editor öffnen",
         self.open_editor)
-        self.gridLayout.addWidget(self.pushButton_open_editor, 3, 4, 1, 1)
+        self.gridLayout.addWidget(self.pushButton_open_editor, 1, 4, 1, 1)
+        self.pushButton_open_editor.setEnabled(False)
 
 
         self.pushButton_add_to_database = create_new_button(Dialog,
         "Ausgewählte Aufgaben zur\nDatenbank hinzufügen",
         still_to_define)
-        self.gridLayout.addWidget(self.pushButton_add_to_database, 4, 4, 1, 1)
+        self.gridLayout.addWidget(self.pushButton_add_to_database, 2, 4, 1, 1)
+        self.pushButton_add_to_database.setEnabled(False)
 
 
-        self.pushButton_new = create_new_button(Dialog,
-        "NEU!",
-        still_to_define)
-        self.gridLayout.addWidget(self.pushButton_new, 5, 4, 1, 1)
+        # self.pushButton_new = create_new_button(Dialog,
+        # "NEU!",
+        # still_to_define)
+        # self.gridLayout.addWidget(self.pushButton_new, 3, 4, 1, 1)
 
 
-        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.gridLayout.addItem(spacerItem1, 11, 4, 1, 1)
+        # spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        # self.gridLayout.addItem(spacerItem1, 4, 4, 1, 1)
 
         self.plainTextEdit = QtWidgets.QPlainTextEdit(self.groupBox)
         self.plainTextEdit.setObjectName("plainTextEdit")
@@ -2194,7 +2219,7 @@ class Ui_Dialog_edit_drafts(object):
         self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Ok|QtWidgets.QDialogButtonBox.Save)
         self.buttonBox.setObjectName("buttonBox")
         self.verticalLayout_2.addWidget(self.buttonBox)
-        self.gridLayout.addWidget(self.groupBox, 12, 0, 1, 5)
+        self.gridLayout.addWidget(self.groupBox, 5, 0, 1, 5)
 
         self.comboBox.currentIndexChanged.connect(self.comboBox_index_changed)
 
@@ -2210,11 +2235,24 @@ class Ui_Dialog_edit_drafts(object):
         # self.comboBox.setItemText(2, _translate("Dialog", "Aufgabe 2"))
         # self.comboBox.setItemText(3, _translate("Dialog", "Aufgabe 3"))
 
-    def add_draft_to_list(self, dict_aufgabe, parent):
+    def checkbox_clicked(self):
+        chosen_list = self.get_chosen_list()
+
+        if is_empty(chosen_list):
+            on_off = False
+        else:
+            on_off = True
+        self.pushButton_open_editor.setEnabled(on_off)
+        self.pushButton_add_to_database.setEnabled(on_off)
+
+    def add_draft_to_list(self, dict_aufgabe, parent, row, column):
         name = dict_aufgabe['name']
 
         checkbox = create_new_checkbox(parent, name)
-        self.verticalLayout.addWidget(checkbox)
+        checkbox.clicked.connect(self.checkbox_clicked)
+        # self.verticalLayout.addWidget(checkbox)
+        self.gridLayout_items.addWidget(checkbox, row, column, 1,1)
+
         self.comboBox.addItem(name)
 
         self.dict_widget_variables[name]=checkbox
@@ -2266,12 +2304,17 @@ class Ui_Dialog_edit_drafts(object):
             x = True
         for checkbox in self.dict_widget_variables.values():
             checkbox.setChecked(x)
+        self.checkbox_clicked()
     
-    def open_editor(self):
+    def get_chosen_list(self):
         chosen_list = []
         for checkbox_name in self.dict_widget_variables:
             if self.dict_widget_variables[checkbox_name].isChecked() == True:
                 chosen_list.append(checkbox_name)
+        return chosen_list
+
+    def open_editor(self):
+        chosen_list = self.get_chosen_list()
         
         content = self.create_content(chosen_list)
 
@@ -2283,16 +2326,16 @@ class Ui_Dialog_edit_drafts(object):
             file.write(content)
             file.write(tex_minimal.tex_end)
 
-        QtWidgets.QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
-        os.system(file_path)
-        QtWidgets.QApplication.restoreOverrideCursor()
+
+        Popen(file_path, shell = True).poll()
+        
 
     def create_content(self, chosen_list):
         # content = tex_minimal.tex_preamble
         content = ""
         for name in chosen_list:
             dict_aufgabe = self.get_dict_aufgabe(name)
-
+            content = content + "\subsubsection{{{0}}}\n".format(name)
             if dict_aufgabe['pagebreak'] == False:
                 begin =  tex_minimal.begin_beispiel()
                 end = tex_minimal.end_beispiel
@@ -2300,6 +2343,6 @@ class Ui_Dialog_edit_drafts(object):
                 begin = tex_minimal.begin_beispiel_lang()
                 end = tex_minimal.end_beispiel_lang
             
-            content = content + begin + dict_aufgabe['content'] +end + "\n\n"
+            content = content + begin + dict_aufgabe['content'] +end + "\n\n\\newpage\n\n"
 
         return content

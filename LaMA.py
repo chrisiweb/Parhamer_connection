@@ -4661,6 +4661,7 @@ class Ui_MainWindow(object):
             return
 
         ###################################################################################
+        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         if typ_save[0] != 'local':
             internet_on = check_internet_connection()
             if internet_on == False:
@@ -4720,6 +4721,7 @@ class Ui_MainWindow(object):
             list_information[6],
         )
 
+
         if typ_save[0] != "local":
             file_list = ["_database.json"]
             for image in list_images_new_names:
@@ -4728,7 +4730,6 @@ class Ui_MainWindow(object):
 
             self.action_push_database(False, file_list, message= "Neu: {}".format(name))
 
-        QtWidgets.QApplication.restoreOverrideCursor()
 
         information_window(text, "", window_title, information)
 

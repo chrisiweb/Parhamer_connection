@@ -15,7 +15,7 @@ from urllib.error import URLError
 
 def check_internet_connection():
     try:
-        urlopen('http://216.58.192.142', timeout=1) ## IP for google
+        urlopen('http://216.58.192.142') ## IP for google
         return True
     except URLError:
         return False
