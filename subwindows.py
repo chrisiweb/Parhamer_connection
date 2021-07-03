@@ -47,7 +47,7 @@ from lama_stylesheets import (
 from create_pdf import create_tex, create_pdf, check_if_variation
 import tex_minimal
 import bcrypt
-from database_commands import _database, _local_database, _database_addon
+from database_commands import _database, _local_database, _database_addon, update_data 
 from filter_commands import get_filter_string, filter_items
 from sort_items import order_gesammeltedateien
 
@@ -2194,7 +2194,7 @@ class Ui_Dialog_edit_drafts(object):
 
         self.pushButton_add_to_database = create_new_button(Dialog,
         "Ausgewählte Aufgaben zur\nDatenbank hinzufügen",
-        still_to_define)
+        self.add_to_ddb)
         self.gridLayout.addWidget(self.pushButton_add_to_database, 2, 4, 1, 1)
         self.pushButton_add_to_database.setEnabled(False)
 
@@ -2272,8 +2272,6 @@ class Ui_Dialog_edit_drafts(object):
         
         else:
             dict_aufgabe = self.get_dict_aufgabe(self.comboBox.currentText())
-            print(self.plainText_backup)
-            print(self.plainTextEdit.toPlainText())
 
             if self.plainTextEdit.toPlainText() != self.plainText_backup[1]:
                 rsp = question_window(
@@ -2346,3 +2344,36 @@ class Ui_Dialog_edit_drafts(object):
             content = content + begin + dict_aufgabe['content'] +end + "\n\n\\newpage\n\n"
 
         return content
+
+    def add_to_ddb(self):
+        print('add')
+        chosen_list = self.get_chosen_list()
+        print(chosen_list)
+        print(self.typ)
+
+
+        for checkbox in self.dict_widget_variables.values():
+            checkbox.setParent(None)
+
+
+        row=0
+        column=0
+        for dict_aufgabe in self.dict_drafts[self.typ]:
+            if dict_aufgabe['name'] in chosen_list:
+                print('delete')
+
+            self.add_draft_to_list(dict_aufgabe, self.scrollAreaWidgetContents, row, column)
+            if column == 2:
+                row += 1
+                column = 0
+            else:
+                column +=1  
+
+
+        print(self.dict_drafts[self.typ])
+        # working!!
+        # for aufgabe in chosen_list:
+        #     update_data(aufgabe, self.typ, 'draft', False)
+
+
+        print('done')
