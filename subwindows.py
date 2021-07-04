@@ -2273,7 +2273,7 @@ class Ui_Dialog_edit_drafts(object):
         # self.gridLayout_2.setColumnStretch(6,1)
 
         self.groupBox_titel= create_new_groupbox(self.groupBox, "Titel")
-        self.gridLayout_2.addWidget(self.groupBox_titel, 1,0,1,7)
+        self.gridLayout_2.addWidget(self.groupBox_titel, 1,0,1,6)
         self.horizontalLayout_titel = create_new_horizontallayout(self.groupBox_titel)
         self.groupBox_titel.setEnabled(False)
         
@@ -2289,6 +2289,14 @@ class Ui_Dialog_edit_drafts(object):
         self.lineedit_quelle = create_new_lineedit(self.groupBox_quelle)
         self.horizontalLayout_quelle.addWidget(self.lineedit_quelle)
 
+        self.groupBox_themen= create_new_groupbox(self.groupBox, "Themen")
+        self.gridLayout_2.addWidget(self.groupBox_themen, 1,6,1,1)
+        self.horizontalLayout_themen = create_new_horizontallayout(self.groupBox_themen)
+        self.groupBox_themen.setEnabled(False)
+
+        self.pushButton_themen = create_new_button(self.groupBox_themen,"Bearbeiten",self.edit_themen)
+        self.pushButton_themen.setSizePolicy(SizePolicy_fixed)
+        self.horizontalLayout_themen.addWidget(self.pushButton_themen)
 
         self.plainTextEdit = QtWidgets.QPlainTextEdit(self.groupBox)
         self.plainTextEdit.setObjectName("plainTextEdit")
@@ -2356,6 +2364,7 @@ class Ui_Dialog_edit_drafts(object):
             self.groupBox_abstand.setEnabled(False)
             self.groupBox_titel.setEnabled(False)
             self.groupBox_quelle.setEnabled(False)
+            self.groupBox_themen.setEnabled(False)
             self.plainTextEdit.setPlainText("")
             self.plainText_backup = [0, ""]
             self.spinBox_pkt.setValue(0)
@@ -2387,6 +2396,7 @@ class Ui_Dialog_edit_drafts(object):
             self.groupBox_abstand.setEnabled(True)
             self.groupBox_titel.setEnabled(True)
             self.groupBox_quelle.setEnabled(True)
+            self.groupBox_themen.setEnabled(True)
             try:
                 self.plainTextEdit.setPlainText(dict_aufgabe['content'])
                 self.plainText_backup = [self.comboBox.currentIndex(), dict_aufgabe['content']]
@@ -2576,55 +2586,65 @@ class Ui_Dialog_edit_drafts(object):
 
         information_window("Der geänderte Inhalt von {} wurde gespeichert.".format(name))
 
-# class Worker_PushDatabase(QtCore.QObject):
-#     finished = QtCore.pyqtSignal()
-
-#     @QtCore.pyqtSlot()
-#     def task(self, ui, admin, file_list, message, worker_text):
-#         try:
-#             self.changes_found = git_push_to_origin(ui, admin, file_list, message, worker_text)
-#         except Exception as e:
-#             print(e)
-#             self.changes_found = 'error'
-
-#         self.finished.emit()
+    def edit_themen(self):
+        dict_aufgabe = self.get_dict_aufgabe(self.comboBox.currentText())
+        Dialog = QtWidgets.QDialog(
+            None,
+            Qt.WindowSystemMenuHint
+            | Qt.WindowTitleHint
+            | Qt.WindowCloseButtonHint,
+        )
+        ui = Ui_Dialog_edit_themen()
+        ui.setupUi(Dialog, dict_aufgabe, self.typ)
 
 
-# def action_push_database(admin, file_list, message = None, worker_text = "Aufgabe wird hochgeladen ..."):
-#     QtWidgets.QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
-#     if check_internet_connection() == False:
-#         critical_window("Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.",
-#             titel="Keine Internetverbindung",
-#         )
-#         return
-
-
-    # text = worker_text + " (1%)"
-    # if admin == True:
-    #     text = "Änderungen überprüfen ..."
-    # else:
-    #     text = "Aufgabe wird hochgeladen ... (1%)"
+        Dialog.exec_()
 
 
 
-    # Dialog = QtWidgets.QDialog()
-    # ui = Ui_Dialog_processing()
-    # ui.setupUi(Dialog, worker_text)
+class Ui_Dialog_edit_themen(object):
+    def setupUi(self, Dialog, dict_aufgabe, typ):
+        self.Dialog = Dialog
+        self.dict_aufgabe = dict_aufgabe
+        self.typ = typ
+        Dialog.setObjectName("Dialog")
+        Dialog.setWindowTitle("Themen bearbeiten")
+        # Dialog.setFixedSize(300, 150)
+        Dialog.setWindowIcon(QIcon(logo_path))
 
-    # thread = QThread(Dialog)
-    # worker = Worker_PushDatabase()
-    # worker.finished.connect(Dialog.close)
-    # worker.moveToThread(thread)
-    # thread.started.connect(partial(worker.task, ui, admin, file_list, message, worker_text))
-    # thread.start()
-    # thread.exit()
-    # Dialog.exec()
-    # QtWidgets.QApplication.restoreOverrideCursor()
-    # if worker.changes_found == False:
-    #     information_window("Es wurden keine Änderungen gefunden.")
-    # elif worker.changes_found == "error":
-    #     critical_window(
-    #         "Es ist ein Fehler aufgetreten. Die Datenbank konnte nicht hochgeladen werden. Bitte versuchen Sie es später erneut."
-    #     )
-    # elif admin == True:
-    #     information_window("Die Datenbank wurde erfolgreich hochgeladen.")
+        self.gridLayout = create_new_gridlayout(Dialog)
+
+        self.listWidget = QtWidgets.QListWidget(Dialog)
+        self.listWidget.setObjectName("listWidget")
+        self.gridLayout.addWidget(self.listWidget, 0,0,5,1)
+
+        for all in self.dict_aufgabe['themen']:
+            self.listWidget.addItem(all)
+        # self.listWidget.itemClicked.connect(self.nummer_clicked)
+
+        self.comboBox_klassen = create_new_combobox(Dialog)
+        self.gridLayout.addWidget(self.comboBox_klassen, 0,1,1,2)
+        if self.typ == 'cria':
+            for i, all in enumerate(list_klassen):
+                add_new_option(self.comboBox_klassen, i, all)
+        else:
+            self.comboBox_klassen.hide()
+
+        self.comboBox_thema = create_new_combobox(Dialog)
+        self.gridLayout.addWidget(self.comboBox_thema, 1,1,1,2)
+
+        # if self.typ == 'cria':
+
+
+        self.comboBox_subthema = create_new_combobox(Dialog)
+        self.gridLayout.addWidget(self.comboBox_subthema, 2,1,1,2)        
+
+
+        self.label_themen = create_new_label(Dialog, "AG")
+        self.gridLayout.addWidget(self.label_themen, 3,1,1,2)
+
+        self.pushButton_add = create_new_button(Dialog, "<<", still_to_define)
+        self.gridLayout.addWidget(self.pushButton_add, 4,1,1,1)
+
+        self.pushButton_remove = create_new_button(Dialog, ">>", still_to_define)
+        self.gridLayout.addWidget(self.pushButton_remove, 4,2,1,1)       
