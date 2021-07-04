@@ -2116,7 +2116,7 @@ class Ui_Dialog_draft_control(object):
 class Ui_Dialog_edit_drafts(object):
     def setupUi(self, Dialog, dict_drafts, typ):
         self.dict_drafts = dict_drafts
-        print(dict_drafts[typ])
+        # print(dict_drafts[typ])
         self.typ = typ
         self.dict_widget_variables = {}
         Dialog.setObjectName("Dialog")
@@ -2536,22 +2536,37 @@ class Ui_Dialog_edit_drafts(object):
 
 
     def save_changes(self):
+        QtWidgets.QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
         name = self.comboBox.currentText()
 
-        # dict_aufgabe = self.get_dict_aufgabe(name)
-
-        # print(self.dict_drafts[self.typ])
-
-        # dict_aufgabe = self.get_dict_aufgabe(name)
 
         self.plainText_backup = [self.comboBox.currentIndex(), self.plainTextEdit.toPlainText()]
 
+        if self.comboBox_pagebreak.currentIndex()==0:
+            pagebreak = False
+        else:
+            pagebreak = True
+
+        dict_entries = {
+            'punkte':self.spinBox_pkt.value(),
+            'af':self.comboBox_af.currentText(),
+            'klasse':self.comboBox_klasse.currentText(),
+            'pagebreak':pagebreak,
+            'abstand':self.spinBox_abstand.value(),
+            'quelle':self.lineedit_quelle.text(),
+            'titel':self.lineedit_titel.text(),
+            'content': self.plainTextEdit.toPlainText()
+        }
+
+
         for index, aufgabe in enumerate(self.dict_drafts[self.typ]):
             if name == aufgabe['name']:
-                self.dict_drafts[self.typ][index]['content'] = self.plainTextEdit.toPlainText()
-                update_data(name, self.typ, 'content', self.plainTextEdit.toPlainText())
+                for all in dict_entries.keys():
+                    if self.dict_drafts[self.typ][index][all] != dict_entries[all]:
+                        self.dict_drafts[self.typ][index][all] = dict_entries[all]
+                        update_data(name, self.typ, all, dict_entries[all])
                 break
-    
+        QtWidgets.QApplication.restoreOverrideCursor()
         chosen_ddb = ["_database.json"]    
         action_push_database(True, 
         chosen_ddb,
