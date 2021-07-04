@@ -2116,6 +2116,7 @@ class Ui_Dialog_draft_control(object):
 class Ui_Dialog_edit_drafts(object):
     def setupUi(self, Dialog, dict_drafts, typ):
         self.dict_drafts = dict_drafts
+        print(dict_drafts[typ])
         self.typ = typ
         self.dict_widget_variables = {}
         Dialog.setObjectName("Dialog")
@@ -2209,7 +2210,7 @@ class Ui_Dialog_edit_drafts(object):
         self.groupBox_pkt.setEnabled(False)
         
 
-        self.spinBox_pkt = create_new_spinbox(self.groupBox)
+        self.spinBox_pkt = create_new_spinbox(self.groupBox_pkt)
         self.horizontalLayout_pkt.addWidget(self.spinBox_pkt)
         
 
@@ -2218,7 +2219,7 @@ class Ui_Dialog_edit_drafts(object):
         self.horizontalLayout_af = create_new_horizontallayout(self.groupBox_af)
         self.groupBox_af.setEnabled(False)
         
-        self.comboBox_af = create_new_combobox(self.groupBox)
+        self.comboBox_af = create_new_combobox(self.groupBox_af)
         self.horizontalLayout_af.addWidget(self.comboBox_af)
         
 
@@ -2239,13 +2240,54 @@ class Ui_Dialog_edit_drafts(object):
         self.horizontalLayout_klasse = create_new_horizontallayout(self.groupBox_klasse)
         self.groupBox_klasse.setEnabled(False)
         
-        self.comboBox_klasse = create_new_combobox(self.groupBox)
+        self.comboBox_klasse = create_new_combobox(self.groupBox_klasse)
         self.horizontalLayout_klasse.addWidget(self.comboBox_klasse)
-
+        add_new_option(self.comboBox_klasse, 0, "")
         for i, all in enumerate(Klassen.keys()):
             if i == 4:
                 break
-            add_new_option(self.comboBox_klasse, i, all)
+            add_new_option(self.comboBox_klasse, i+1, all)
+
+
+        self.groupBox_pagebreak = create_new_groupbox(self.groupBox, "Seitenumbr.")
+        self.gridLayout_2.addWidget(self.groupBox_pagebreak, 0,4,1,1)
+        self.groupBox_pagebreak.setEnabled(False)
+
+        self.horizontalLayout_pagebreak = create_new_horizontallayout(self.groupBox_pagebreak)
+        self.comboBox_pagebreak = create_new_combobox(self.groupBox_pagebreak)
+        self.horizontalLayout_pagebreak.addWidget(self.comboBox_pagebreak)
+        add_new_option(self.comboBox_pagebreak,0,"Nein")
+        add_new_option(self.comboBox_pagebreak,1,"Ja")
+        
+
+
+        self.groupBox_abstand = create_new_groupbox(self.groupBox, "Abstand")
+        self.gridLayout_2.addWidget(self.groupBox_abstand, 0,5,1,1)
+        self.horizontalLayout_abstand = create_new_horizontallayout(self.groupBox_abstand)
+        self.groupBox_abstand.setEnabled(False)
+        
+
+        self.spinBox_abstand = create_new_spinbox(self.groupBox)
+        self.horizontalLayout_abstand.addWidget(self.spinBox_abstand)
+
+        self.gridLayout_2.setColumnStretch(6,1)
+
+        self.groupBox_titel= create_new_groupbox(self.groupBox, "Titel")
+        self.gridLayout_2.addWidget(self.groupBox_titel, 1,0,1,3)
+        self.horizontalLayout_titel = create_new_horizontallayout(self.groupBox_titel)
+        self.groupBox_titel.setEnabled(False)
+        
+        self.lineedit_titel = create_new_lineedit(self.groupBox_titel)
+        self.horizontalLayout_titel.addWidget(self.lineedit_titel)
+
+
+        self.groupBox_quelle= create_new_groupbox(self.groupBox, "Quelle")
+        self.gridLayout_2.addWidget(self.groupBox_quelle, 1,3,1,3)
+        self.horizontalLayout_quelle = create_new_horizontallayout(self.groupBox_quelle)
+        self.groupBox_quelle.setEnabled(False)
+        
+        self.lineedit_quelle = create_new_lineedit(self.groupBox_quelle)
+        self.horizontalLayout_quelle.addWidget(self.lineedit_quelle)
 
 
         self.plainTextEdit = QtWidgets.QPlainTextEdit(self.groupBox)
@@ -2253,7 +2295,7 @@ class Ui_Dialog_edit_drafts(object):
         self.plainTextEdit.setEnabled(False)
         self.plainText_backup = [0, ""]
         self.reset_combobox = False
-        self.gridLayout_2.addWidget(self.plainTextEdit, 1,0,1,4)
+        self.gridLayout_2.addWidget(self.plainTextEdit, 2,0,1,7)
 
         self.buttonBox = QtWidgets.QDialogButtonBox(self.groupBox)
         self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Save)
@@ -2261,7 +2303,7 @@ class Ui_Dialog_edit_drafts(object):
         buttonSave = self.buttonBox.button(QtWidgets.QDialogButtonBox.Save)
         buttonSave.setText("Änderung speichern")
         buttonSave.clicked.connect(self.save_changes)
-        self.gridLayout_2.addWidget(self.buttonBox, 2, 2,1,1)
+        self.gridLayout_2.addWidget(self.buttonBox, 3, 6,1,1)
         self.gridLayout.addWidget(self.groupBox, 5, 0, 1, 5)
 
 
@@ -2309,6 +2351,15 @@ class Ui_Dialog_edit_drafts(object):
             self.plainTextEdit.setEnabled(False)
             self.plainTextEdit.setPlainText("")
             self.plainText_backup = [0, ""]
+            self.groupBox_pkt.setEnabled(False)
+            self.spinBox_pkt.setValue(0)
+            self.groupBox_af.setEnabled(False)
+            self.comboBox_af.setCurrentIndex(0)
+            self.groupBox_klasse.setEnabled(False)
+            self.comboBox_klasse.setCurrentIndex(0)
+            self.groupBox_pagebreak.setEnabled(False)
+            self.comboBox_pagebreak.setCurrentIndex(0)
+            
         
         else:
             dict_aufgabe = self.get_dict_aufgabe(self.comboBox.currentText())
