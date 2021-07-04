@@ -2230,7 +2230,7 @@ class Ui_Dialog_edit_drafts(object):
             if self.typ != 'cria' and i>3:
                 break
 
-            add_new_option(self.comboBox_af, i, all.upper())
+            add_new_option(self.comboBox_af, i, all)
 
 
         self.groupBox_klasse = create_new_groupbox(self.groupBox, "Klasse")
@@ -2270,10 +2270,10 @@ class Ui_Dialog_edit_drafts(object):
         self.spinBox_abstand = create_new_spinbox(self.groupBox)
         self.horizontalLayout_abstand.addWidget(self.spinBox_abstand)
 
-        self.gridLayout_2.setColumnStretch(6,1)
+        # self.gridLayout_2.setColumnStretch(6,1)
 
         self.groupBox_titel= create_new_groupbox(self.groupBox, "Titel")
-        self.gridLayout_2.addWidget(self.groupBox_titel, 1,0,1,3)
+        self.gridLayout_2.addWidget(self.groupBox_titel, 1,0,1,7)
         self.horizontalLayout_titel = create_new_horizontallayout(self.groupBox_titel)
         self.groupBox_titel.setEnabled(False)
         
@@ -2282,7 +2282,7 @@ class Ui_Dialog_edit_drafts(object):
 
 
         self.groupBox_quelle= create_new_groupbox(self.groupBox, "Quelle")
-        self.gridLayout_2.addWidget(self.groupBox_quelle, 1,3,1,3)
+        self.gridLayout_2.addWidget(self.groupBox_quelle, 0,6,1,1)
         self.horizontalLayout_quelle = create_new_horizontallayout(self.groupBox_quelle)
         self.groupBox_quelle.setEnabled(False)
         
@@ -2349,16 +2349,22 @@ class Ui_Dialog_edit_drafts(object):
             return
         if self.comboBox.currentIndex() == 0:
             self.plainTextEdit.setEnabled(False)
+            self.groupBox_pkt.setEnabled(False)
+            self.groupBox_af.setEnabled(False)
+            self.groupBox_klasse.setEnabled(False)
+            self.groupBox_pagebreak.setEnabled(False)
+            self.groupBox_abstand.setEnabled(False)
+            self.groupBox_titel.setEnabled(False)
+            self.groupBox_quelle.setEnabled(False)
             self.plainTextEdit.setPlainText("")
             self.plainText_backup = [0, ""]
-            self.groupBox_pkt.setEnabled(False)
             self.spinBox_pkt.setValue(0)
-            self.groupBox_af.setEnabled(False)
             self.comboBox_af.setCurrentIndex(0)
-            self.groupBox_klasse.setEnabled(False)
             self.comboBox_klasse.setCurrentIndex(0)
-            self.groupBox_pagebreak.setEnabled(False)
             self.comboBox_pagebreak.setCurrentIndex(0)
+            self.spinBox_abstand.setValue(0)
+            self.lineedit_titel.setText("")
+            self.lineedit_quelle.setText("")
             
         
         else:
@@ -2374,9 +2380,27 @@ class Ui_Dialog_edit_drafts(object):
                     self.comboBox.setCurrentIndex(self.plainText_backup[0]) 
                     return
             self.plainTextEdit.setEnabled(True)
+            self.groupBox_pkt.setEnabled(True)
+            self.groupBox_af.setEnabled(True)
+            self.groupBox_klasse.setEnabled(True)
+            self.groupBox_pagebreak.setEnabled(True)
+            self.groupBox_abstand.setEnabled(True)
+            self.groupBox_titel.setEnabled(True)
+            self.groupBox_quelle.setEnabled(True)
             try:
                 self.plainTextEdit.setPlainText(dict_aufgabe['content'])
                 self.plainText_backup = [self.comboBox.currentIndex(), dict_aufgabe['content']]
+                self.spinBox_pkt.setValue(dict_aufgabe['punkte'])
+                self.comboBox_af.setCurrentText(dict_aufgabe['af'])
+                self.comboBox_klasse.setCurrentText(dict_aufgabe['klasse'])
+                if dict_aufgabe['pagebreak'] == False:
+                    self.comboBox_pagebreak.setCurrentIndex(0)
+                else:
+                    self.comboBox_pagebreak.setCurrentIndex(1)
+
+                self.spinBox_abstand.setValue(dict_aufgabe['abstand'])
+                self.lineedit_titel.setText(dict_aufgabe['titel'])
+                self.lineedit_quelle.setText(dict_aufgabe['quelle'])
             except TypeError:
                 pass
 
