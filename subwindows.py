@@ -2622,23 +2622,45 @@ class Ui_Dialog_edit_themen(object):
             self.listWidget.addItem(all)
         # self.listWidget.itemClicked.connect(self.nummer_clicked)
 
-        self.comboBox_klassen = create_new_combobox(Dialog)
-        self.gridLayout.addWidget(self.comboBox_klassen, 0,1,1,2)
+        row=0
         if self.typ == 'cria':
-            for i, all in enumerate(list_klassen):
-                add_new_option(self.comboBox_klassen, i, all)
-        else:
-            self.comboBox_klassen.hide()
+            self.comboBox_klassen = create_new_combobox(Dialog)
+            self.gridLayout.addWidget(self.comboBox_klassen, row,1,1,2)
+            if self.typ == 'cria':
+                for i, all in enumerate(list_klassen):
+                    add_new_option(self.comboBox_klassen, i, all)
+            else:
+                self.comboBox_klassen.hide()
+            row +=1
+            
 
         self.comboBox_thema = create_new_combobox(Dialog)
-        self.gridLayout.addWidget(self.comboBox_thema, 1,1,1,2)
-
+        self.gridLayout.addWidget(self.comboBox_thema, row,1,1,2)
+        
+        if self.typ == 'cria':
+            klasse = self.comboBox_klassen.currentText()
+            dict_themen = eval("dict_{}_name".format(klasse))
+            for i, all in enumerate(dict_themen.keys()):
+                add_new_option(self.comboBox_thema, i, "{0} ({1})".format(all, dict_themen[all]))
+        else:
+            list_gk = ['AG', 'FA', 'AN', 'WS']
+            for i, all in enumerate(list_gk):
+                add_new_option(self.comboBox_thema, i, all)
+        row+=1
         # if self.typ == 'cria':
 
 
         self.comboBox_subthema = create_new_combobox(Dialog)
-        self.gridLayout.addWidget(self.comboBox_subthema, 2,1,1,2)        
+        self.gridLayout.addWidget(self.comboBox_subthema, row,1,1,2)
 
+        self.adapt_subthemen()    
+
+
+        row +=1        
+
+        if self.typ == 'cria':
+            self.comboBox_klassen.currentIndexChanged.connect(self.comboBox_changed)
+        # self.comboBox_thema.currentIndexChanged.connect(self.comboBox_changed)
 
         self.label_themen = create_new_label(Dialog, "AG")
         self.gridLayout.addWidget(self.label_themen, 3,1,1,2)
@@ -2648,3 +2670,52 @@ class Ui_Dialog_edit_themen(object):
 
         self.pushButton_remove = create_new_button(Dialog, ">>", still_to_define)
         self.gridLayout.addWidget(self.pushButton_remove, 4,2,1,1)       
+
+
+    def comboBox_changed(self):
+        if self.typ == 'cria':
+            self.comboBox_thema.clear()
+            klasse = self.comboBox_klassen.currentText()
+            dict_themen = eval("dict_{}_name".format(klasse))
+            for i, all in enumerate(dict_themen.keys()):
+            #     print(all)
+            # self.comboBox_thema.addItem("test")
+                # add_new_option(self.comboBox_thema, 0, all)
+                add_new_option(self.comboBox_thema, i, "{0} ({1})".format(all, dict_themen[all]))       
+
+        # self.adapt_subthemen()
+
+
+
+        # self.comboBox_themen_changed()
+
+    # def comboBox_themen_changed(self):
+    #     self.adapt_subthemen()
+
+    #     print('changed')
+    
+    # def comoBox_subthemen_changed(self):
+        # self.label_themen.setText()
+
+    
+    def adapt_subthemen(self):
+        if self.typ == 'cria':
+            klasse = self.comboBox_klassen.currentText()
+            print(self.comboBox_thema.currentText())
+            split = self.comboBox_thema.currentText().split(" (")
+            thema = split[0]
+
+            dict_themen = eval("dict_{0}".format(klasse))
+            list_subthemen = dict_themen[thema]
+            print(list_subthemen)
+            self.comboBox_subthema.clear()
+            for i, all in enumerate(list_subthemen):
+                add_new_option(self.comboBox_subthema, i, "{0} ({1})".format(all, dict_unterkapitel[all]) )
+        else:
+            gk = self.comboBox_thema.currentText()
+            i=0
+            for all in dict_gk.values():
+                if all.startswith(gk):
+                    add_new_option(self.comboBox_subthema, i, all[-3:])
+                    i+=1
+                

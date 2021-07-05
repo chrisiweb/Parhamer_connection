@@ -127,8 +127,8 @@ def create_new_radiobutton(parent, text):
 
 
 def add_new_option(combobox, index, item):
-    combobox.addItem(_fromUtf8(""))
-    combobox.setItemText(index, _translate("MainWindow", item, None))
+    combobox.addItem("")
+    combobox.setItemText(index, item)
 
 
 def add_new_tab(tabwidget, name):
