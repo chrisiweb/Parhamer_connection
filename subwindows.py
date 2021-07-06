@@ -50,10 +50,11 @@ from create_pdf import create_tex, create_pdf, check_if_variation
 import tex_minimal
 from processing_window import Ui_Dialog_processing
 import bcrypt
-from database_commands import _database, _local_database, _database_addon, update_data, delete_file 
+from database_commands import _database, _local_database, _database_addon, get_table, update_data, delete_file 
 from filter_commands import get_filter_string, filter_items
 from sort_items import order_gesammeltedateien
 from upload_database import action_push_database
+from tinydb import Query
 
 
 dict_gk = config_loader(config_file, "dict_gk")
@@ -2273,12 +2274,13 @@ class Ui_Dialog_edit_drafts(object):
         # self.gridLayout_2.setColumnStretch(6,1)
 
         self.groupBox_titel= create_new_groupbox(self.groupBox, "Titel")
-        self.gridLayout_2.addWidget(self.groupBox_titel, 1,0,1,6)
+        self.gridLayout_2.addWidget(self.groupBox_titel, 1,0,1,4)
         self.horizontalLayout_titel = create_new_horizontallayout(self.groupBox_titel)
         self.groupBox_titel.setEnabled(False)
         
         self.lineedit_titel = create_new_lineedit(self.groupBox_titel)
         self.horizontalLayout_titel.addWidget(self.lineedit_titel)
+        
 
 
         self.groupBox_quelle= create_new_groupbox(self.groupBox, "Quelle")
@@ -2290,9 +2292,14 @@ class Ui_Dialog_edit_drafts(object):
         self.horizontalLayout_quelle.addWidget(self.lineedit_quelle)
 
         self.groupBox_themen= create_new_groupbox(self.groupBox, "Themen")
-        self.gridLayout_2.addWidget(self.groupBox_themen, 1,6,1,1)
+        self.gridLayout_2.addWidget(self.groupBox_themen, 1,4,1,3)
         self.horizontalLayout_themen = create_new_horizontallayout(self.groupBox_themen)
         self.groupBox_themen.setEnabled(False)
+
+
+        self.label_themen = create_new_label(self.groupBox_themen, "", wordwrap=True)
+        self.horizontalLayout_themen.addWidget(self.label_themen)
+
 
         self.pushButton_themen = create_new_button(self.groupBox_themen,"Bearbeiten",self.edit_themen)
         self.pushButton_themen.setSizePolicy(SizePolicy_fixed)
@@ -2374,6 +2381,7 @@ class Ui_Dialog_edit_drafts(object):
             self.spinBox_abstand.setValue(0)
             self.lineedit_titel.setText("")
             self.lineedit_quelle.setText("")
+            self.label_themen.setText("")
             
         
         else:
@@ -2398,6 +2406,7 @@ class Ui_Dialog_edit_drafts(object):
             self.groupBox_quelle.setEnabled(True)
             self.groupBox_themen.setEnabled(True)
             try:
+                self.label_themen.setText(str(dict_aufgabe['themen']))
                 self.plainTextEdit.setPlainText(dict_aufgabe['content'])
                 self.plainText_backup = [self.comboBox.currentIndex(), dict_aufgabe['content']]
                 self.spinBox_pkt.setValue(dict_aufgabe['punkte'])
@@ -2411,6 +2420,7 @@ class Ui_Dialog_edit_drafts(object):
                 self.spinBox_abstand.setValue(dict_aufgabe['abstand'])
                 self.lineedit_titel.setText(dict_aufgabe['titel'])
                 self.lineedit_quelle.setText(dict_aufgabe['quelle'])
+
             except TypeError:
                 pass
 
@@ -2557,7 +2567,54 @@ class Ui_Dialog_edit_drafts(object):
         else:
             pagebreak = True
 
+
+        if self.typ == 'lama_1':
+            themen_auswahl = eval(self.label_themen.text())[0]
+
+    # def get_max_integer(self, table_lama, typ, themen_auswahl):
+            max_integer = 0
+            _file_ = Query()
+            table_lama = get_table(name, self.typ)
+
+        # if self.chosen_variation != None:
+        #     pattern = "{}\[.*\]".format(self.chosen_variation)
+        #     all_files = table_lama.search(_file_.name.matches(pattern))
+        # elif typ == 1:
+            # print(name)
+            # pattern = "{} - .+\[.*\]".format(themen_auswahl)
+            # print(re.match(pattern, name).match())
+
+            all_files = table_lama.search(_file_.name.matches(themen_auswahl))
+
+            for all in all_files:
+                name = all["name"].replace('l.','').replace('i.','')
+                
+                num = name.split(" - ")[-1]
+                num = int(num.split("[")[0])
+
+                if num > max_integer:
+                    max_integer = num
+        
+            name = "{0} - {1}".format(themen_auswahl, max_integer)
+        # return max_integer
+        # if typ == 1:
+        #     if themen[0] in name:
+        #         new_name = name
+        #     else:
+        #         themen_auswahl = self.get_themen_auswahl()
+        #         max_integer = self.get_max_integer(lama_table, typ, themen_auswahl[0])
+
+        #         if 'l.' in name:
+        #             save_typ = "l."
+        #         elif 'i.' in name:
+        #             save_typ = "i."
+        #         else:
+        #             save_typ = ""
+
+        #         new_name = self.create_file_name(typ, max_integer, themen_auswahl[0], save_typ)
+
         dict_entries = {
+            'themen':eval(self.label_themen.text()),
             'punkte':self.spinBox_pkt.value(),
             'af':self.comboBox_af.currentText(),
             'klasse':self.comboBox_klasse.currentText(),
@@ -2565,7 +2622,8 @@ class Ui_Dialog_edit_drafts(object):
             'abstand':self.spinBox_abstand.value(),
             'quelle':self.lineedit_quelle.text(),
             'titel':self.lineedit_titel.text(),
-            'content': self.plainTextEdit.toPlainText()
+            'content': self.plainTextEdit.toPlainText(),
+            'name': name,
         }
 
 
@@ -2586,8 +2644,22 @@ class Ui_Dialog_edit_drafts(object):
 
         information_window("Der geänderte Inhalt von {} wurde gespeichert.".format(name))
 
+        self.comboBox.setCurrentIndex(0)
+
+        print(self.dict_drafts[self.typ])
+        print('not yet finished: reset list of drafts')
+        # row = 0
+        # column = 0
+        
+        # for dict_aufgabe in self.dict_drafts[typ]:
+        #     self.add_draft_to_list(dict_aufgabe, self.scrollAreaWidgetContents, row, column)
+        #     if column == 2:
+        #         row += 1
+        #         column = 0
+        #     else:
+        #         column +=1        
+
     def edit_themen(self):
-        dict_aufgabe = self.get_dict_aufgabe(self.comboBox.currentText())
         Dialog = QtWidgets.QDialog(
             None,
             Qt.WindowSystemMenuHint
@@ -2595,17 +2667,21 @@ class Ui_Dialog_edit_drafts(object):
             | Qt.WindowCloseButtonHint,
         )
         ui = Ui_Dialog_edit_themen()
-        ui.setupUi(Dialog, dict_aufgabe, self.typ)
+        list_themen = eval(self.label_themen.text())
+        ui.setupUi(Dialog, list_themen, self.typ)
 
 
-        Dialog.exec_()
+        rsp = Dialog.exec_()
+
+        if rsp == 1:
+            self.label_themen.setText(str(ui.list_themen))
 
 
 
 class Ui_Dialog_edit_themen(object):
-    def setupUi(self, Dialog, dict_aufgabe, typ):
+    def setupUi(self, Dialog, list_themen, typ):
         self.Dialog = Dialog
-        self.dict_aufgabe = dict_aufgabe
+        self.list_themen = list_themen
         self.typ = typ
         Dialog.setObjectName("Dialog")
         Dialog.setWindowTitle("Themen bearbeiten")
@@ -2616,9 +2692,10 @@ class Ui_Dialog_edit_themen(object):
 
         self.listWidget = QtWidgets.QListWidget(Dialog)
         self.listWidget.setObjectName("listWidget")
+        self.listWidget.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
         self.gridLayout.addWidget(self.listWidget, 0,0,5,1)
 
-        for all in self.dict_aufgabe['themen']:
+        for all in list_themen:
             self.listWidget.addItem(all)
         # self.listWidget.itemClicked.connect(self.nummer_clicked)
 
@@ -2659,20 +2736,56 @@ class Ui_Dialog_edit_themen(object):
         row +=1        
 
         if self.typ == 'cria':
-            self.comboBox_klassen.currentIndexChanged.connect(self.comboBox_changed)
-        # self.comboBox_thema.currentIndexChanged.connect(self.comboBox_changed)
+            self.comboBox_klassen.currentIndexChanged.connect(self.comboBox_klassen_changed)
+        self.comboBox_thema.currentIndexChanged.connect(self.comboBox_themen_changed)
+        self.comboBox_subthema.currentIndexChanged.connect(self.comoBox_subthemen_changed)
 
-        self.label_themen = create_new_label(Dialog, "AG")
+        self.label_themen = create_new_label(Dialog,"")
         self.gridLayout.addWidget(self.label_themen, 3,1,1,2)
 
-        self.pushButton_add = create_new_button(Dialog, "<<", still_to_define)
+        self.pushButton_add = create_new_button(Dialog, "<<", self.add_thema)
         self.gridLayout.addWidget(self.pushButton_add, 4,1,1,1)
+        self.pushButton_add.setSizePolicy(SizePolicy_fixed)
 
-        self.pushButton_remove = create_new_button(Dialog, ">>", still_to_define)
-        self.gridLayout.addWidget(self.pushButton_remove, 4,2,1,1)       
+        self.pushButton_remove = create_new_button(Dialog, ">>", self.remove_thema)
+        self.gridLayout.addWidget(self.pushButton_remove, 4,2,1,1)
+        self.pushButton_remove.setSizePolicy(SizePolicy_fixed)
+
+        # self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
+        # self.buttonBox.setStandardButtons(
+        #     QtWidgets.QDialogButtonBox.Save | QtWidgets.QDialogButtonBox.Cancel
+        #     )
+        # # self.buttonBox.setObjectName("buttonBox")
+        # buttonCancel = self.buttonBox.button(QtWidgets.QDialogButtonBox.Cancel)
+        # buttonCancel.setText("Abbrechen")
+        # self.buttonBox.rejected.connect(Dialog.reject())
+        # buttonCancel.clicked.connect(Dialog.reject())
+
+        self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
+        self.buttonBox.setStandardButtons(
+            QtWidgets.QDialogButtonBox.Save | QtWidgets.QDialogButtonBox.Cancel
+        )
 
 
-    def comboBox_changed(self):
+        buttonS = self.buttonBox.button(QtWidgets.QDialogButtonBox.Save)
+        buttonS.setText('Speichern')
+        buttonX = self.buttonBox.button(QtWidgets.QDialogButtonBox.Cancel)
+        buttonX.setText("Abbrechen")
+        self.buttonBox.rejected.connect(self.reject_dialog)
+        self.buttonBox.accepted.connect(self.save_changes)
+
+
+        
+        buttonSave = self.buttonBox.button(QtWidgets.QDialogButtonBox.Save)
+        buttonSave.setText("Speichern")
+        # buttonSave.clicked.connect(self.save_changes)
+
+        self.gridLayout.addWidget(self.buttonBox, 5, 0,1,3)
+
+        self.change_label()
+
+
+    def comboBox_klassen_changed(self):
         if self.typ == 'cria':
             self.comboBox_thema.clear()
             klasse = self.comboBox_klassen.currentText()
@@ -2683,32 +2796,34 @@ class Ui_Dialog_edit_themen(object):
                 # add_new_option(self.comboBox_thema, 0, all)
                 add_new_option(self.comboBox_thema, i, "{0} ({1})".format(all, dict_themen[all]))       
 
-        # self.adapt_subthemen()
+        self.adapt_subthemen()
 
-
+        self.change_label()
 
         # self.comboBox_themen_changed()
 
-    # def comboBox_themen_changed(self):
-    #     self.adapt_subthemen()
+    def comboBox_themen_changed(self):
+        self.adapt_subthemen()
+        self.change_label()
 
-    #     print('changed')
     
-    # def comoBox_subthemen_changed(self):
-        # self.label_themen.setText()
-
+    def comoBox_subthemen_changed(self):
+        # self.label_themen.setText("")
+        self.change_label()
     
     def adapt_subthemen(self):
+        if is_empty(self.comboBox_thema.currentText()):
+            return
+        self.comboBox_subthema.clear()
         if self.typ == 'cria':
             klasse = self.comboBox_klassen.currentText()
-            print(self.comboBox_thema.currentText())
             split = self.comboBox_thema.currentText().split(" (")
             thema = split[0]
-
+            # print('thema: {}'.format(split))
             dict_themen = eval("dict_{0}".format(klasse))
+            # print(dict_themen)
             list_subthemen = dict_themen[thema]
-            print(list_subthemen)
-            self.comboBox_subthema.clear()
+            # self.comboBox_subthema.clear()
             for i, all in enumerate(list_subthemen):
                 add_new_option(self.comboBox_subthema, i, "{0} ({1})".format(all, dict_unterkapitel[all]) )
         else:
@@ -2718,4 +2833,55 @@ class Ui_Dialog_edit_themen(object):
                 if all.startswith(gk):
                     add_new_option(self.comboBox_subthema, i, all[-3:])
                     i+=1
-                
+
+    def change_label(self):
+        if self.typ == 'cria':
+            klasse = self.comboBox_klassen.currentText()
+  
+        thema = self.comboBox_thema.currentText().split(" (")[0]
+        subthema  = self.comboBox_subthema.currentText().split(" (")[0]
+
+        if self.typ == 'cria':
+            self.label_themen.setText("{0}.{1}.{2}".format(klasse, thema, subthema))
+        else:
+            self.label_themen.setText("{0} {1}".format(thema, subthema))
+
+    def add_thema(self):
+        gk = self.label_themen.text()
+
+        existing_items = self.listWidget.findItems(gk, Qt.MatchExactly)
+
+        if is_empty(existing_items):
+            self.listWidget.addItem(gk)
+
+
+        
+
+    def remove_thema(self):
+        list_selected_items = self.listWidget.selectedItems()
+        if not list_selected_items:
+            return
+
+        for item in list_selected_items:
+            self.listWidget.takeItem(self.listWidget.row(item))
+        # self.listWidget.deleteItem(selected_item)??
+
+
+
+    def save_changes(self):
+        list_themen = []
+        for index in range(self.listWidget.count()):
+            list_themen.append(self.listWidget.item(index).text())
+
+        if len(list_themen) == 0:
+            warning_window("Es muss zumindest ein Thema/eine Grudkompetenz ausgewählt werden.")
+            return
+        if len(list_themen) != 1 and self.typ == 'lama_1':
+            warning_window("Es kann nur eine Grundkompetenz ausgewählt werden.")
+            return
+        self.list_themen = list_themen
+        self.Dialog.accept()
+
+
+    def reject_dialog(self):
+        self.Dialog.reject()
