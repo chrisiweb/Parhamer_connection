@@ -68,7 +68,7 @@ class Ui_MainWindow(object):
     # global dict_picture_path  # , set_chosen_gk #, list_sage_examples#, dict_alle_aufgaben_sage
 
     def __init__(self):
-        self.dict_alle_aufgaben_sage = {}
+        # self.dict_alle_aufgaben_sage = {}
         self.list_alle_aufgaben_sage = []
         self.dict_widget_variables = {}
         self.list_selected_topics_creator = []
@@ -3050,7 +3050,7 @@ class Ui_MainWindow(object):
         }
 
         self.list_alle_aufgaben_sage = []
-        self.dict_alle_aufgaben_sage = {}
+        # self.dict_alle_aufgaben_sage = {}
         self.dict_variablen_label = {}
         self.dict_variablen_punkte = {}
         self.dict_variablen_abstand = {}
@@ -4944,9 +4944,9 @@ class Ui_MainWindow(object):
         self.list_alle_aufgaben_sage = self.dict_all_infos_for_file[
             "list_alle_aufgaben"
         ]
-        self.dict_alle_aufgaben_sage = self.dict_all_infos_for_file[
-            "dict_alle_aufgaben"
-        ]
+        # self.dict_alle_aufgaben_sage = self.dict_all_infos_for_file[
+        #     "dict_alle_aufgaben"
+        # ]
 
         for aufgabe in self.list_alle_aufgaben_sage:
             file_found = self.check_if_file_exists(aufgabe)
@@ -4962,7 +4962,7 @@ class Ui_MainWindow(object):
 
                 if response == True:
                     self.list_alle_aufgaben_sage.remove(aufgabe)
-                    del self.dict_alle_aufgaben_sage[aufgabe]
+                    # del self.dict_alle_aufgaben_sage[aufgabe]
                     QtWidgets.QApplication.setOverrideCursor(
                         QtGui.QCursor(QtCore.Qt.WaitCursor)
                     )
@@ -5367,7 +5367,6 @@ class Ui_MainWindow(object):
         self.button_was_deleted = True
 
     def spinbox_pkt_changed(self, aufgabe, spinbox_pkt):
-        # self.dict_alle_aufgaben_sage[aufgabe][0] = spinbox_pkt.value()
         self.update_punkte()
 
     def spinbox_abstand_changed(self, aufgabe, spinbox_abstand):
