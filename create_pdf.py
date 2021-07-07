@@ -510,56 +510,58 @@ Quelle: {4}{5}
 
 
 def extract_error_from_output(latex_output):
-    start = None
-    for all in latex_output:
-        if all.startswith("! LaTeX Error:"):
-            start = latex_output.index(all)
-            break
-    if start == None:
-        for all in latex_output:
-            if all.startswith("! "):
-                start = latex_output.index(all)
-                break
+    detailed_text = latex_output
 
-    if start != None:
-        list_error = latex_output[start:]
+    # print(detailed_text)
+    # for all in latex_output:
+    #     if all.startswith("! LaTeX Error:"):
+    #         start = latex_output.index(all)
+    #         break
+    # if start == None:
+    #     for all in latex_output:
+    #         if all.startswith("! "):
+    #             start = latex_output.index(all)
+    #             break
 
-        for all in list_error:
-            if all == "":
-                end = list_error.index(all)
-                break
-        try:
-            error = "".join(list_error[:end])  # .replace("\n", "")
+    # if start != None:
+    #     list_error = latex_output[start:]
 
-            if path_programm in error:
-                error_location = None
-            else:
-                error_location = "".join(latex_output[: start + end])
-                index_start = error_location.rfind(path_programm)
-                index_end = error_location[index_start:].find(".tex") + 4
+    #     for all in list_error:
+    #         if all == "":
+    #             end = list_error.index(all)
+    #             break
+    #     try:
+    #         error = "".join(list_error[:end])  # .replace("\n", "")
 
-                error_location = error_location[index_start : index_start + index_end]
+    #         if path_programm in error:
+    #             error_location = None
+    #         else:
+    #             error_location = "".join(latex_output[: start + end])
+    #             index_start = error_location.rfind(path_programm)
+    #             index_end = error_location[index_start:].find(".tex") + 4
 
-            if error_location == None:
-                detailed_text = error
-            else:
-                detailed_text = error + "\n\nFehlerhafte Datei:\n" + error_location
+    #             error_location = error_location[index_start : index_start + index_end]
 
-        except UnboundLocalError:
-            detailed_text = "Undefined Error"
+    #         if error_location == None:
+    #             detailed_text = error
+    #         else:
+    #             detailed_text = error + "\n\nFehlerhafte Datei:\n" + error_location
 
-        QApplication.restoreOverrideCursor()
-        response = question_window(
-            "Es ist ein Fehler beim Erstellen der PDF-Datei aufgetreten. Dadurch konnte die PDF-Datei nicht vollständig erzeugt werden.\n\n"
-            + "Dies kann viele unterschiedliche Ursachen haben (siehe Details).\n"
-            + "Durch das Aktualisieren der Datenbank (F5) können jedoch die meisten dieser Fehler behoben werden.\n"
-            + "Sollte der Fehler weiterhin bestehen, bitte kontaktieren Sie uns unter lama.helpme@gmail.com",
-            "Wollen Sie die fehlerhafte PDF-Datei dennoch anzeigen?",
-            "Fehler beim Erstellen der PDF-Datei",
-            "Fehlermeldung:\n" + detailed_text,
-        )
+    #     except UnboundLocalError:
+    #         detailed_text = "Undefined Error"
 
-        return response
+    QApplication.restoreOverrideCursor()
+    response = question_window(
+        "Es ist ein Fehler beim Erstellen der PDF-Datei aufgetreten. Dadurch konnte die PDF-Datei nicht vollständig erzeugt werden.\n\n"
+        + "Dies kann viele unterschiedliche Ursachen haben (siehe Details).\n"
+        + "Durch das Aktualisieren der Datenbank (F5) können jedoch die meisten dieser Fehler behoben werden.\n"
+        + "Sollte der Fehler weiterhin bestehen, bitte kontaktieren Sie uns unter lama.helpme@gmail.com",
+        "Wollen Sie die fehlerhafte PDF-Datei dennoch anzeigen?",
+        "Fehler beim Erstellen der PDF-Datei",
+        "Fehlermeldung:\n" + detailed_text,
+    )
+
+    return response
 
 
 def build_pdf_file(folder_name, file_name, latex_output_file):
@@ -740,7 +742,7 @@ def create_pdf(path_file, index=0, maximum=0, typ=0):
         encoding="utf8",
         errors="ignore",
     )
-    latex_output = latex_output_file.read().splitlines()
+    latex_output = latex_output_file.read() #.splitlines()
     latex_output_file.close()
 
     if file_name == "Schularbeit_Vorschau" or file_name.startswith("Teildokument") or file_name == "preview":
