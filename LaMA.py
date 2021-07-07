@@ -4451,7 +4451,8 @@ class Ui_MainWindow(object):
 
         delete_file(name, typ)
 
-        self.upload_single_file_change(name, message="Gelöscht: {}".format(name))
+        if "l." not in name:
+            self.upload_single_file_change(name, message="Gelöscht: {}".format(name))
         # if "(lokal)" not in name:
         #     file_list = ["_database.json"]
         #     action_push_database(False, file_list, message= "Gelöscht: {}".format(name), worker_text="Aufgabe löschen ...")
@@ -4668,6 +4669,7 @@ class Ui_MainWindow(object):
                 critical_window("Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.",
                     titel="Keine Internetverbindung",
                 )
+                QtWidgets.QApplication.restoreOverrideCursor()
                 return            
             rsp = check_branches()
             if rsp == False:

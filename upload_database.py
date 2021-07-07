@@ -23,9 +23,10 @@ def action_push_database(admin, file_list, message = None, worker_text = "Aufgab
     QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
     if check_internet_connection() == False:
         critical_window("Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.",
-            titel="Keine Internetverbindung",
+        titel="Keine Internetverbindung",
         )
-        return
+        QtWidgets.QApplication.restoreOverrideCursor()
+        return False
 
 
     Dialog = QtWidgets.QDialog()
@@ -47,5 +48,6 @@ def action_push_database(admin, file_list, message = None, worker_text = "Aufgab
         critical_window(
             "Es ist ein Fehler aufgetreten. Die Datenbank konnte nicht hochgeladen werden. Bitte versuchen Sie es später erneut."
         )
+        return False
     # elif admin == True:
     #     information_window("Die Datenbank wurde erfolgreich hochgeladen.")

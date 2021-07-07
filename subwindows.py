@@ -55,7 +55,7 @@ from filter_commands import get_filter_string, filter_items
 from sort_items import order_gesammeltedateien
 from upload_database import action_push_database
 from tinydb import Query
-
+from git_sync import check_internet_connection
 
 dict_gk = config_loader(config_file, "dict_gk")
 ag_beschreibung = config_loader(config_file, "ag_beschreibung")
@@ -2562,6 +2562,7 @@ class Ui_Dialog_edit_drafts(object):
 
 
     def save_changes(self):
+
         QtWidgets.QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
         name = self.comboBox.currentText()
 
@@ -2625,13 +2626,16 @@ class Ui_Dialog_edit_drafts(object):
 
         QtWidgets.QApplication.restoreOverrideCursor()
         chosen_ddb = ["_database.json"]    
-        action_push_database(True, 
+        response = action_push_database(True, 
         chosen_ddb,
         message="Inhalt von {} geändert".format(name),
         worker_text="Geänderter Inhalt von {} wird gespeichert".format(name)
         )
 
-        information_window("Der geänderte Inhalt von {} wurde gespeichert.".format(name))
+        if response == False:
+            return
+        else:
+            information_window("Der geänderte Inhalt von {} wurde gespeichert.".format(name))
 
         for all in self.dict_drafts[self.typ]:
             if all['name']==name:
