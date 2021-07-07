@@ -2483,6 +2483,7 @@ class Ui_Dialog_edit_drafts(object):
 
         return content
 
+
     def remove_from_list(self):
         chosen_list = self.get_chosen_list()
         for checkbox in self.dict_widget_variables.values():
@@ -2568,50 +2569,32 @@ class Ui_Dialog_edit_drafts(object):
             pagebreak = True
 
 
-        if self.typ == 'lama_1':
-            themen_auswahl = eval(self.label_themen.text())[0]
+        gk = name.split(" - ")[0]
+        themen_auswahl = eval(self.label_themen.text())[0]
 
-    # def get_max_integer(self, table_lama, typ, themen_auswahl):
+        if self.typ == 'lama_1' and gk != themen_auswahl:
+
             max_integer = 0
             _file_ = Query()
             table_lama = get_table(name, self.typ)
 
-        # if self.chosen_variation != None:
-        #     pattern = "{}\[.*\]".format(self.chosen_variation)
-        #     all_files = table_lama.search(_file_.name.matches(pattern))
-        # elif typ == 1:
-            # print(name)
-            # pattern = "{} - .+\[.*\]".format(themen_auswahl)
-            # print(re.match(pattern, name).match())
 
             all_files = table_lama.search(_file_.name.matches(themen_auswahl))
 
             for all in all_files:
-                name = all["name"].replace('l.','').replace('i.','')
+                temp_name = all["name"].replace('l.','').replace('i.','')
                 
-                num = name.split(" - ")[-1]
+                num = temp_name.split(" - ")[-1]
                 num = int(num.split("[")[0])
 
                 if num > max_integer:
                     max_integer = num
+
+            new_name = "{0} - {1}".format(themen_auswahl, max_integer+1)
         
-            name = "{0} - {1}".format(themen_auswahl, max_integer)
-        # return max_integer
-        # if typ == 1:
-        #     if themen[0] in name:
-        #         new_name = name
-        #     else:
-        #         themen_auswahl = self.get_themen_auswahl()
-        #         max_integer = self.get_max_integer(lama_table, typ, themen_auswahl[0])
+        else:
+            new_name = name
 
-        #         if 'l.' in name:
-        #             save_typ = "l."
-        #         elif 'i.' in name:
-        #             save_typ = "i."
-        #         else:
-        #             save_typ = ""
-
-        #         new_name = self.create_file_name(typ, max_integer, themen_auswahl[0], save_typ)
 
         dict_entries = {
             'themen':eval(self.label_themen.text()),
@@ -2623,7 +2606,7 @@ class Ui_Dialog_edit_drafts(object):
             'quelle':self.lineedit_quelle.text(),
             'titel':self.lineedit_titel.text(),
             'content': self.plainTextEdit.toPlainText(),
-            'name': name,
+            'name': new_name,
         }
 
 
@@ -2634,6 +2617,7 @@ class Ui_Dialog_edit_drafts(object):
                         self.dict_drafts[self.typ][index][all] = dict_entries[all]
                         update_data(name, self.typ, all, dict_entries[all])
                 break
+
         QtWidgets.QApplication.restoreOverrideCursor()
         chosen_ddb = ["_database.json"]    
         action_push_database(True, 
@@ -2644,20 +2628,24 @@ class Ui_Dialog_edit_drafts(object):
 
         information_window("Der geänderte Inhalt von {} wurde gespeichert.".format(name))
 
-        self.comboBox.setCurrentIndex(0)
-
-        print(self.dict_drafts[self.typ])
-        print('not yet finished: reset list of drafts')
-        # row = 0
-        # column = 0
+        for all in self.dict_drafts[self.typ]:
+            if all['name']==name:
+                all['themen']=eval(self.label_themen.text())
+                all['name']=new_name
         
-        # for dict_aufgabe in self.dict_drafts[typ]:
-        #     self.add_draft_to_list(dict_aufgabe, self.scrollAreaWidgetContents, row, column)
-        #     if column == 2:
-        #         row += 1
-        #         column = 0
-        #     else:
-        #         column +=1        
+        self.comboBox.setCurrentIndex(0)
+        self.dict_widget_variables[name].setText(new_name)
+
+        self.dict_widget_variables[new_name]=self.dict_widget_variables[name]
+        del self.dict_widget_variables[name]
+
+
+        self.comboBox.clear()
+        self.comboBox.addItem("")
+
+        for dict_aufgabe in self.dict_drafts[self.typ]:
+            self.comboBox.addItem(dict_aufgabe['name'])
+    
 
     def edit_themen(self):
         Dialog = QtWidgets.QDialog(
@@ -2746,10 +2734,12 @@ class Ui_Dialog_edit_themen(object):
         self.pushButton_add = create_new_button(Dialog, "<<", self.add_thema)
         self.gridLayout.addWidget(self.pushButton_add, 4,1,1,1)
         self.pushButton_add.setSizePolicy(SizePolicy_fixed)
+        self.pushButton_add.setShortcut("Return")
 
         self.pushButton_remove = create_new_button(Dialog, ">>", self.remove_thema)
         self.gridLayout.addWidget(self.pushButton_remove, 4,2,1,1)
         self.pushButton_remove.setSizePolicy(SizePolicy_fixed)
+        self.pushButton_remove.setShortcut("Del")
 
         # self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         # self.buttonBox.setStandardButtons(
