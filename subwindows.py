@@ -2358,7 +2358,7 @@ class Ui_Dialog_edit_drafts(object):
         # print(name)
         # create_new_checkbox(parent, )
 
-    def comboBox_index_changed(self):
+    def comboBox_index_changed(self):      
         if self.reset_combobox == True:
             self.reset_combobox = False
             return
@@ -2407,6 +2407,11 @@ class Ui_Dialog_edit_drafts(object):
             self.groupBox_themen.setEnabled(True)
             try:
                 self.label_themen.setText(str(dict_aufgabe['themen']))
+                if re.search("\[.*\]", self.comboBox.currentText()) != None and self.typ == 'lama_1':
+                    self.pushButton_themen.setEnabled(False)
+                else:
+                    self.pushButton_themen.setEnabled(True)
+
                 self.plainTextEdit.setPlainText(dict_aufgabe['content'])
                 self.plainText_backup = [self.comboBox.currentIndex(), dict_aufgabe['content']]
                 self.spinBox_pkt.setValue(dict_aufgabe['punkte'])
