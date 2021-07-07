@@ -473,9 +473,10 @@ class Ui_Dialog_variation(object):
 
 
     def add_items_to_listwidget_creator(self, typ, filtered_items, local = False):
-        # mode = self.MainWindow.chosen_gui
-        # print(local)
+
         for _file_ in filtered_items:
+            if self.mode == 'editor' and _file_['draft'] == True:
+                continue
             if typ == "cria":
                 name = _file_["name"].split(".")[-1]
             else:
