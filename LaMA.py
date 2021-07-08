@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #### Version number ###
 __version__ = "v2.3.0"
-__lastupdate__ = "01/21"
+__lastupdate__ = "07/21"
 ##################
 print("Loading...")
 from start_window import check_if_database_exists

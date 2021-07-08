@@ -26,7 +26,7 @@ def convert_image_to_eps(image):
             fig = fig.convert("RGB")
 
         out_fig = str(name) + ".eps"
-        fig.save(out_fig)
+        fig.save(out_fig, dpi=(300, 300))
         fig.close()
         return True
     except Exception as e:
