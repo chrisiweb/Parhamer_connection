@@ -304,9 +304,10 @@ def prepare_tex_for_pdf(self):
     # for all in _list:
     #     gesammeltedateien.append(all)
 
-    list_3 = search_in_database(self, current_program,_database_addon ,suchbegriffe)
-    for all in list_3:
-        list_2.append(all)
+    if _database_addon != None:
+        list_3 = search_in_database(self, current_program,_database_addon ,suchbegriffe)
+        for all in list_3:
+            list_2.append(all)
     # print(gesammeltedateien_addon)    
 
     list_2.sort(key=order_gesammeltedateien)
@@ -510,7 +511,20 @@ Quelle: {4}{5}
 
 
 def extract_error_from_output(latex_output):
-    detailed_text = latex_output
+    if "! Emergency stop." in latex_output or "! LaTeX Error:" in latex_output:
+        QApplication.restoreOverrideCursor()
+        response = question_window(
+            "Es ist ein Fehler beim Erstellen der PDF-Datei aufgetreten. Dadurch konnte die PDF-Datei nicht vollständig erzeugt werden.\n\n"
+            + "Dies kann viele unterschiedliche Ursachen haben (siehe Details).\n"
+            + "Durch das Aktualisieren der Datenbank (F5) können jedoch die meisten dieser Fehler behoben werden.\n"
+            + "Sollte der Fehler weiterhin bestehen, bitte kontaktieren Sie uns unter lama.helpme@gmail.com",
+            "Wollen Sie die fehlerhafte PDF-Datei dennoch anzeigen?",
+            "Fehler beim Erstellen der PDF-Datei",
+            "Fehlermeldung:\n" + latex_output,
+        )
+
+        return response
+    # detailed_text = latex_output
 
     # print(detailed_text)
     # for all in latex_output:
@@ -550,18 +564,7 @@ def extract_error_from_output(latex_output):
     #     except UnboundLocalError:
     #         detailed_text = "Undefined Error"
 
-    QApplication.restoreOverrideCursor()
-    response = question_window(
-        "Es ist ein Fehler beim Erstellen der PDF-Datei aufgetreten. Dadurch konnte die PDF-Datei nicht vollständig erzeugt werden.\n\n"
-        + "Dies kann viele unterschiedliche Ursachen haben (siehe Details).\n"
-        + "Durch das Aktualisieren der Datenbank (F5) können jedoch die meisten dieser Fehler behoben werden.\n"
-        + "Sollte der Fehler weiterhin bestehen, bitte kontaktieren Sie uns unter lama.helpme@gmail.com",
-        "Wollen Sie die fehlerhafte PDF-Datei dennoch anzeigen?",
-        "Fehler beim Erstellen der PDF-Datei",
-        "Fehlermeldung:\n" + detailed_text,
-    )
 
-    return response
 
 
 def build_pdf_file(folder_name, file_name, latex_output_file):

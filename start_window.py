@@ -3,6 +3,7 @@ from os import path
 from config_start import database
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, Qt, QThread
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QLabel, QGridLayout, QDialogButtonBox, QDialog, QMessageBox
+from PyQt5.QtGui import QIcon
 from waitingspinnerwidget import QtWaitingSpinner
 from git_sync import git_clone_repo
 # from standard_dialog_windows import information_window, critical_window
@@ -88,7 +89,7 @@ class Ui_StartWindow(object):
     **********                                                                             
     **********
     **********                                                                                                                             
-                ****                                                          LaMA ist eine Open-Source Aufgaben-Datenbank, die Mathematiklehrer_innen bei der    
+                ****                                                          LaMA ist eine Open-Source Aufgaben-Datenbank, die Mathematiklehrer\xb7innen bei der    
                 ****                            ***                       
                 ****                            ***                        Erstellung von Schularbeiten, Grundkompetenzchecks, Übungsblättern usw. unterstützen soll.
                 *********************                    
@@ -145,6 +146,7 @@ class Ui_StartWindow(object):
     Sollte das Problem weiterhin bestehen, melden Sie sich unter lama.helpme@gmail.com
                 """
                 msg = QMessageBox()
+                msg.setWindowFlags(Qt.Dialog | Qt.CustomizeWindowHint | Qt.WindowTitleHint)
                 msg.setWindowTitle("Fehler")
                 msg.setIcon(QMessageBox.Critical)
                 # msg.setWindowIcon(QtGui.QIcon(logo_path))
@@ -157,6 +159,7 @@ class Ui_StartWindow(object):
             elif worker.download_successfull == True:
                 text = "Die Datenbank wurde erfolgreich heruntergeladen. LaMA kann ab sofort verwendet werden!"
                 msg = QMessageBox()
+                msg.setWindowFlags(Qt.Dialog | Qt.CustomizeWindowHint | Qt.WindowTitleHint)
                 msg.setWindowTitle("Datenbank heruntergeladen")
                 msg.setIcon(QMessageBox.Information)
                 # msg.setWindowIcon(QtGui.QIcon(logo_path))
