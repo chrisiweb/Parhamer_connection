@@ -486,7 +486,11 @@ def construct_tex_file(file_name, gesammeltedateien, variation, infos):
 def create_info_box(_file):
     titel = _file['titel']
     gk = ', '.join(_file['themen'])
-    af = dict_aufgabenformate[_file['af']]
+    if _file['af']!=None:
+        af = dict_aufgabenformate[_file['af']]
+        af = "Aufgabenformat: {}\\\\".format(af)
+    else:
+        af = ""
     if _file['klasse'] == None:
         klasse = "-"
     else:
@@ -501,7 +505,7 @@ def create_info_box(_file):
 \info{{\\fbox{{\\begin{{minipage}}{{0.98\\textwidth}}
 Titel: {0}\\\\
 Grundkompetenz(en): {1}\\\\
-Aufgabenformat: {2}\\\\
+{2}
 Klasse: {3}\\\\
 Quelle: {4}{5}
 \end{{minipage}}}}}}
