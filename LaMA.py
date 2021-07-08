@@ -4939,35 +4939,19 @@ class Ui_MainWindow(object):
 
         # self.update_gui("widgets_sage")
 
+        for aufgabe in self.dict_all_infos_for_file['list_alle_aufgaben'][:]:
+            typ = get_aufgabentyp(self.chosen_program, aufgabe)
+            aufgabe_total  =get_aufgabe_total(aufgabe, typ)
+            if aufgabe_total == None:
+                warning_window("Die Aufgabe {} konnte nicht gefunden werden, da sie gelöscht oder umbenannt wurde. Sie wird daher ignoriert.".format(aufgabe))
+                self.dict_all_infos_for_file['list_alle_aufgaben'].remove(aufgabe)
+
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
         self.list_alle_aufgaben_sage = self.dict_all_infos_for_file[
             "list_alle_aufgaben"
         ]
-        # self.dict_alle_aufgaben_sage = self.dict_all_infos_for_file[
-        #     "dict_alle_aufgaben"
-        # ]
 
-        for aufgabe in self.list_alle_aufgaben_sage:
-            file_found = self.check_if_file_exists(aufgabe)
-            if file_found == False:
-                QtWidgets.QApplication.restoreOverrideCursor()
-                response = question_window(
-                    'Die Aufgabe "{}" konnte in der Datenbank nicht gefunden werden. Dies könnte daran liegen, dass die Datenbank veraltet ist (Tipp: Datenbank aktualisieren)'.format(
-                        aufgabe
-                    ),
-                    "Wollen Sie diese Aufgabe entfernen? (Ansonsten wird die Datei nicht geladen)",
-                    "Aufgabe nicht gefunden",
-                )
-
-                if response == True:
-                    self.list_alle_aufgaben_sage.remove(aufgabe)
-                    # del self.dict_alle_aufgaben_sage[aufgabe]
-                    QtWidgets.QApplication.setOverrideCursor(
-                        QtGui.QCursor(QtCore.Qt.WaitCursor)
-                    )
-                if response == False:
-                    return
 
         self.spinBox_nummer.setValue(self.dict_all_infos_for_file["data_gesamt"]["#"])
         self.lineEdit_klasse.setText(
@@ -5022,6 +5006,7 @@ class Ui_MainWindow(object):
         self.list_copy_images = self.dict_all_infos_for_file["data_gesamt"][
             "copy_images"
         ]
+
 
         for aufgabe in self.list_alle_aufgaben_sage:
             self.build_aufgaben_schularbeit(aufgabe)
@@ -6542,6 +6527,9 @@ class Ui_MainWindow(object):
             name = aufgabe.replace(" (lokal)", "")
             typ = get_aufgabentyp(self.chosen_program, name)
             aufgabe_total = get_aufgabe_total(name, typ)
+            if aufgabe_total == None:
+                warning_window("Die Aufgabe {} konnte nicht gefunden werden, da sie gelöscht oder umbenannt wurde. Sie wird daher beim Erstellen ignoriert.".format(name))
+                continue
             # print(aufgabe)
             # print(aufgabe_total)
     
