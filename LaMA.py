@@ -5,6 +5,7 @@ __version__ = "v2.3.0"
 __lastupdate__ = "07/21"
 ##################
 print("Loading...")
+from create_new_widgets import add_action
 from start_window import check_if_database_exists
 check_if_database_exists()
 from prepare_content_vorschau import edit_content_ausgleichspunkte, edit_content_hide_show_items
@@ -405,6 +406,11 @@ class Ui_MainWindow(object):
         self.actionLoad.setShortcut("Ctrl+O")
 
         self.menuSage.addSeparator()
+
+        self.actionRestore_sage= add_action(
+            MainWindow, self.menuSage, "", partial(self.sage_load, autosave = True)
+        )
+        self.update_label_restore_action()
 
         self.actionReset_sage = add_action(
             MainWindow, self.menuSage, "Reset Prüfung", partial(self.reset_sage, True)
@@ -2210,7 +2216,7 @@ class Ui_MainWindow(object):
         self.pushButton_titlepage.clicked.connect(self.define_titlepage)
 
         if loaded_lama_file_path != "":
-            self.sage_load(True)
+            self.sage_load(external_file_loaded = True)
 
         ############################################################################################
         ##############################################################################################
@@ -4896,10 +4902,25 @@ class Ui_MainWindow(object):
         except json.decoder.JSONDecodeError:
             return
 
-    def sage_load(self, external_file_loaded):
-        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+    def update_label_restore_action(self):
+        try:
+            autosave_file = os.path.join(
+                path_localappdata_lama, "Teildokument", "autosave.lama"
+            )
+
+            save_time = modification_date(autosave_file).strftime("%d.%m.%Y %H:%M")
+
+            self.actionRestore_sage.setText("Wiederherstellen ({})".format(save_time))
+            self.actionRestore_sage.setEnabled(True)
+        except FileNotFoundError:
+            self.actionRestore_sage.setText("Wiederherstellen")
+            self.actionRestore_sage.setEnabled(False)
+
+
+
+    def sage_load(self, external_file_loaded=False, autosave=False):
         self.update_gui("widgets_sage")
-        if external_file_loaded == False:
+        if external_file_loaded == False and autosave == False:
             try:
                 os.path.dirname(self.saved_file_path)
             except AttributeError:
@@ -4917,6 +4938,10 @@ class Ui_MainWindow(object):
 
         if external_file_loaded == True:
             self.saved_file_path = loaded_lama_file_path
+        elif autosave == True:
+            self.saved_file_path = os.path.join(
+                path_localappdata_lama, "Teildokument", "autosave.lama"
+            )
 
         loaded_file = self.load_file(self.saved_file_path)
 
@@ -5064,6 +5089,9 @@ class Ui_MainWindow(object):
 
         with open(save_file, "w+", encoding="utf8") as saved_file:
             json.dump(self.dict_all_infos_for_file, saved_file, ensure_ascii=False)
+
+        if autosave == True:
+            self.update_label_restore_action()
 
     def define_titlepage(self):
         if self.comboBox_pruefungstyp.currentText() == "Quiz":
@@ -5556,7 +5584,10 @@ class Ui_MainWindow(object):
         groupbox_pkt.setSizePolicy(SizePolicy_fixed)
         gridLayout_gB.addWidget(groupbox_pkt, 0, 1, 3, 1, QtCore.Qt.AlignRight)
 
-        punkte = aufgabe_total["punkte"]
+        if typ==1:
+            punkte = self.spinBox_default_pkt.value()
+        else:
+            punkte = aufgabe_total["punkte"]
 
         horizontalLayout_groupbox_pkt = QtWidgets.QHBoxLayout(groupbox_pkt)
         horizontalLayout_groupbox_pkt.setObjectName(
@@ -6029,13 +6060,15 @@ class Ui_MainWindow(object):
 
             day_time = day_time - datetime.timedelta(minutes=intervall)
             today, now_minus_intervall = day_time.strftime("%y%m%d-%H%M").split("-")
-
+            
             if date != today:
                 self.sage_save(autosave=autosave_file)
-            elif now_minus_intervall > time_tag:
+            elif now_minus_intervall >= time_tag:
                 self.sage_save(autosave=autosave_file)
         except FileNotFoundError:
             self.sage_save(autosave=autosave_file)
+        
+        self.update_label_restore_action()
 
     def nummer_clicked(self, item):
         aufgabe = item.text()
