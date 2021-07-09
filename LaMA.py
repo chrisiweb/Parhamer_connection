@@ -18,6 +18,7 @@ import time
 # from splash_screen import SplashWindow
 from config_start import (
     path_programm,
+    path_home,
     path_localappdata_lama,
     lama_settings_file,
     database,
@@ -3769,7 +3770,7 @@ class Ui_MainWindow(object):
         try:
             self.saved_file_path
         except AttributeError:
-            self.saved_file_path = path_programm
+            self.saved_file_path = path_home
         list_filename = QtWidgets.QFileDialog.getOpenFileNames(
             None, "Grafiken wählen", self.saved_file_path, "Grafiken (*.eps)"
         )
@@ -3831,7 +3832,7 @@ class Ui_MainWindow(object):
             try:
                 os.path.dirname(self.saved_file_path)
             except AttributeError:
-                self.saved_file_path = path_programm
+                self.saved_file_path = path_home
 
             filename = QtWidgets.QFileDialog.getOpenFileNames(
                 None,
@@ -4927,7 +4928,7 @@ class Ui_MainWindow(object):
             try:
                 os.path.dirname(self.saved_file_path)
             except AttributeError:
-                self.saved_file_path = path_programm
+                self.saved_file_path = path_home
             QtWidgets.QApplication.restoreOverrideCursor()
             path_backup_file = QtWidgets.QFileDialog.getOpenFileName(
                 None,
@@ -5055,6 +5056,7 @@ class Ui_MainWindow(object):
             self.dict_all_infos_for_file["data_gesamt"]["Notenschluessel"][3]
         )
 
+        self.no_saved_changes_sage = True
         QtWidgets.QApplication.restoreOverrideCursor()
 
     def sage_save(self, path_create_tex_file=False, autosave=False):  # path_file
@@ -5063,7 +5065,7 @@ class Ui_MainWindow(object):
         try:
             self.saved_file_path
         except AttributeError:
-            self.saved_file_path = path_programm
+            self.saved_file_path = path_home
 
         if path_create_tex_file == False and autosave == False:
             path_backup_file = QtWidgets.QFileDialog.getSaveFileName(
@@ -6843,7 +6845,7 @@ class Ui_MainWindow(object):
         try:
             self.saved_file_path
         except AttributeError:
-            self.saved_file_path = path_programm
+            self.saved_file_path = path_home
 
         if self.chosen_program == "lama":
             dict_titlepage = self.dict_titlepage

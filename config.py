@@ -7,8 +7,8 @@ import os
 # from git import Repo, remote
 import re
 from pyqt5_minimal import Ui_WelcomeWindow
-from define_database import Ui_define_database
-from tinydb import TinyDB, Query
+# from define_database import Ui_define_database
+# from tinydb import TinyDB, Query
 
 
 # if sys.platform.startswith("win"):
