@@ -85,6 +85,7 @@ class Ui_MainWindow(object):
 
         hashed_pw = read_credentials()
         self.developer_mode_active = False
+        self.no_saved_changes_sage = True
 
         # if sys.platform.startswith("win"):
         # path_lama_developer_credentials = os.path.join(os.getenv('LOCALAPPDATA'), "LaMA", "credentials")
@@ -3188,16 +3189,18 @@ class Ui_MainWindow(object):
     def close_app(self):
         if self.list_alle_aufgaben_sage == []:
             sys.exit(0)
-
-        else:
-            try:
-                if os.path.isfile(self.saved_file_path) == True:
-                    path = self.saved_file_path
-                    loaded_file = self.load_file(path)
-                    if loaded_file == self.dict_all_infos_for_file:
-                        sys.exit(0)
-            except AttributeError:
-                pass
+        
+        if self.no_saved_changes_sage == True:
+            sys.exit(0)
+        # else:
+        #     try:
+        #         if os.path.isfile(self.saved_file_path) == True:
+        #             path = self.saved_file_path
+        #             loaded_file = self.load_file(path)
+        #             if loaded_file == self.dict_all_infos_for_file:
+        #                 sys.exit(0)
+        #     except AttributeError:
+        #         pass
 
         response = question_window(
             "Möchten Sie die Änderungen speichern?", titel="Änderungen speichern?"
@@ -4910,10 +4913,10 @@ class Ui_MainWindow(object):
 
             save_time = modification_date(autosave_file).strftime("%d.%m.%Y %H:%M")
 
-            self.actionRestore_sage.setText("Wiederherstellen ({})".format(save_time))
+            self.actionRestore_sage.setText("Backup ({})".format(save_time))
             self.actionRestore_sage.setEnabled(True)
         except FileNotFoundError:
-            self.actionRestore_sage.setText("Wiederherstellen")
+            self.actionRestore_sage.setText("Backup")
             self.actionRestore_sage.setEnabled(False)
 
 
@@ -5078,14 +5081,13 @@ class Ui_MainWindow(object):
             save_file = autosave
 
         else:
-            name, extension = os.path.splitext(path_create_tex_file)
+            name, _ = os.path.splitext(path_create_tex_file)
             path_create_tex_file = name + "_autosave.lama"
             save_file = path_create_tex_file
 
         if autosave == False:
-            # self.update_gui("widgets_sage")
-
             self.saved_file_path = save_file
+            self.no_saved_changes_sage = True
 
         with open(save_file, "w+", encoding="utf8") as saved_file:
             json.dump(self.dict_all_infos_for_file, saved_file, ensure_ascii=False)
@@ -5516,6 +5518,7 @@ class Ui_MainWindow(object):
         self.label_gesamtpunkte.setText(
             _translate("MainWindow", "Gesamtpunkte: %i" % gesamtpunkte, None)
         )
+        self.no_saved_changes_sage = False
 
     def update_default_pkt(self):
         for all in self.dict_variablen_punkte:
@@ -5595,9 +5598,7 @@ class Ui_MainWindow(object):
         )
         spinbox_pkt = create_new_spinbox(groupbox_pkt)
         spinbox_pkt.setValue(punkte)
-        spinbox_pkt.valueChanged.connect(
-            partial(self.spinbox_pkt_changed, aufgabe, spinbox_pkt)
-        )
+        spinbox_pkt.valueChanged.connect(self.spinbox_pkt_changed)
         spinbox_pkt.setToolTip("0 = Punkte ausblenden")
         self.dict_variablen_punkte[aufgabe] = spinbox_pkt
 
@@ -6089,6 +6090,7 @@ class Ui_MainWindow(object):
         self.lineEdit_number.setText("")
         self.lineEdit_number.setFocus()
         self.check_for_autosave()
+        self.no_saved_changes_sage = False
 
     def nummer_clicked_fb(self, item):
         if self.chosen_program == "lama":
