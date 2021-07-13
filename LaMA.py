@@ -5,7 +5,6 @@ __version__ = "v2.3.0"
 __lastupdate__ = "07/21"
 ##################
 print("Loading...")
-from create_new_widgets import add_action
 from start_window import check_if_database_exists
 check_if_database_exists()
 from prepare_content_vorschau import edit_content_ausgleichspunkte, edit_content_hide_show_items
@@ -14,6 +13,7 @@ from standard_dialog_windows import question_window
 from config import *
 from lama_colors import *
 import time
+from create_new_widgets import add_action
 # import splash_screen
 # from splash_screen import SplashWindow
 from config_start import (
@@ -457,9 +457,16 @@ class Ui_MainWindow(object):
             MainWindow,
             self.menuUpdate,
             '"srdp-mathematik.sty" aktualisieren',
-            self.update_srdpmathematik,
+            partial(self.update_style_package, "srdp-mathematik.sty") ,
         )
         
+
+        self.actionUpdate_tabu = add_action(
+            MainWindow,
+            self.menuUpdate,
+            '"tabu.sty" aktualisieren',
+            partial(self.update_style_package, "tabu.sty"),
+        )
 
         self.menuOptionen.addAction(self.menuUpdate.menuAction())
         
@@ -3312,19 +3319,19 @@ class Ui_MainWindow(object):
         custom_window(
             "LaMA - LaTeX Mathematik Assistent %s  \n\n"
             "Authors: Christoph Weberndorfer, Matthias Konzett\n\n"
-            "License: GNU General Public License v3.0  \n\n" % __version__,
-            "Credits: David Fischer\n"
-            "Logo & Icon: Lisa Schultz\n\n"
+            "License: GNU General Public License v3.0  \n" % __version__,
+            "Logo & Icon: Lisa Schultz\n"
+            "Credits: David Fischer\n\n"
             "E-Mail-Adresse: lama.helpme@gmail.com\n"
             "Weiter Infos: lama.schule",
             titel="Über LaMA - LaTeX Mathematik Assistent",
         )
 
-    def copy_srdpmathematik(self, path_new_package, possible_locations):
+    def copy_style_package(self, package_name, path_new_package, possible_locations):
         for path in possible_locations:
             for root, dirs, files in os.walk(path):
                 for file in files:
-                    if file == "srdp-mathematik.sty":
+                    if file == package_name:
                         path_file = os.path.join(root, file)
                         try:
                             shutil.copy2(path_new_package, path_file)
@@ -3334,43 +3341,46 @@ class Ui_MainWindow(object):
                             return False
         return False
 
-    def delete_srdpmathematik_in_teildokument(self):
-        srdpmathematik_path = os.path.join(path_programm, "Teildokument", "srdp-mathematik.sty")
+    def delete_style_package_in_teildokument(self, package_name):
+        style_package_path = os.path.join(path_programm, "Teildokument", package_name)
 
-        if os.path.isfile(srdpmathematik_path):
-            os.remove(srdpmathematik_path)
+        if os.path.isfile(style_package_path):
+            os.remove(style_package_path)
 
 
-    def update_srdpmathematik(self):
+    # def reset_tabu(self):
+    #     print('reset')
+
+    def update_style_package(self, package_name):
         response = question_window(
-            'Sind Sie sicher, dass Sie das Paket "srdp-mathematik.sty" aktualisieren möchten?'
+            'Sind Sie sicher, dass Sie das Paket "{}" aktualisieren möchten?'.format(package_name)
         )
 
         if response == False:
             return
 
 
-        path_home = Path.home()
+        # path_home = Path.home()
         path_new_package = os.path.join(
-            path_programm, "_database", "_config", "srdp-mathematik.sty"
+            path_programm, "_database", "_config", package_name
         )
         if os.path.isfile(path_new_package) == False:
             warning_window(
-                "Das neue srdp-mathematik-Paket konnte nicht gefunden werden. Bitte versuchen Sie es später erneut."
+                'Das Paket "{}" konnte nicht gefunden werden. Bitte versuchen Sie es später erneut.'.format(package_name)
             )
             return
 
 
-        paket_teildokument = os.path.join(path_programm, "Teildokument", "srdp-mathematik.sty")
-        if os.path.isfile(paket_teildokument):
-            os.remove(paket_teildokument)
+        # paket_teildokument = os.path.join(path_programm, "Teildokument", package_name)
+        # if os.path.isfile(paket_teildokument):
+        #     os.remove(paket_teildokument)
 
 
-        paket_teildokument = os.path.join(
-            path_programm, "Teildokument", "srdp-mathematik.sty"
-        )
-        if os.path.isfile(paket_teildokument):
-            os.remove(paket_teildokument)
+        # paket_teildokument = os.path.join(
+        #     path_programm, "Teildokument", package_name
+        # )
+        # if os.path.isfile(paket_teildokument):
+        #     os.remove(paket_teildokument)
 
         if sys.platform.startswith("darwin") or sys.platform.startswith("linux"):
             possible_locations = [os.path.join(path_home, "Library", "texmf")]
@@ -3388,19 +3398,19 @@ class Ui_MainWindow(object):
         # update_successfull=False
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
-        update_successfull = self.copy_srdpmathematik(path_new_package, possible_locations)
+        update_successfull = self.copy_style_package(package_name, path_new_package, possible_locations)
 
-        self.delete_srdpmathematik_in_teildokument()
+        self.delete_style_package_in_teildokument(package_name)
 
         QtWidgets.QApplication.restoreOverrideCursor()
         
         if update_successfull == False:
             critical_window(
-                "Das Update konnte leider nicht durchgeführt werden. Aktualisieren Sie das Paket manuell oder wenden Sie sich an lama.helpme@gmail.com für Unterstützung."
+                'Das Update von "{}" konnte leider nicht durchgeführt werden. Aktualisieren Sie das Paket manuell oder wenden Sie sich an lama.helpme@gmail.com für Unterstützung.'.format(package_name)
             )
             return
         if update_successfull == True:
-            information_window("Das Paket wurde erfolgreich aktualisiert.")
+            information_window('Das Paket "{}" wurde erfolgreich aktualisiert.'.format(package_name))
             return
 
     def show_support(self):
@@ -5383,10 +5393,10 @@ class Ui_MainWindow(object):
         self.update_punkte()
         self.button_was_deleted = True
 
-    def spinbox_pkt_changed(self, aufgabe, spinbox_pkt):
+    def spinbox_pkt_changed(self): #, aufgabe, spinbox_abstand
         self.update_punkte()
 
-    def spinbox_abstand_changed(self, aufgabe, spinbox_abstand):
+    def spinbox_abstand_changed(self): #, aufgabe, spinbox_abstand
         # self.dict_alle_aufgaben_sage[aufgabe][1] = spinbox_abstand.value()
         self.update_punkte()
 
