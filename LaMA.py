@@ -4695,6 +4695,10 @@ class Ui_MainWindow(object):
             if rsp == False:
                 git_reset_repo_to_origin()
 
+                table_lama.clear_cache()
+                self.max_integer = self.get_max_integer(table_lama, typ, self.themen_auswahl[0])
+
+
         (
             name,
             themen,
