@@ -487,7 +487,11 @@ def create_info_box(_file):
     titel = _file['titel']
     gk = ', '.join(_file['themen'])
     if _file['af']!=None:
-        af = dict_aufgabenformate[_file['af']]
+        try:
+            af = dict_aufgabenformate[_file['af']]
+        except KeyError:
+            print('Fehler in der Datenbank (AF = {})'.format(_file['af']))
+            af = "Fehler"
         af = "Aufgabenformat: {}\\\\".format(af)
     else:
         af = ""
