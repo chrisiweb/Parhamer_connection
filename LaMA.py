@@ -3415,15 +3415,17 @@ class Ui_MainWindow(object):
 
     def show_support(self):
         QtWidgets.QApplication.restoreOverrideCursor()
-
+        link = "https://www.buymeacoffee.com/lama.schule"
         custom_window(
-            "LaMA ist gratis und soll es auch bleiben!\n",
-            "Wir freuen uns dennoch sehr über eine Unterstützung für die Weiterentwicklung von LaMA.\n\n"
-            """ 
-            Name: Matthias Konzett
-            IBAN: AT57 1921 0200 9941 7002
-            BLZ: 19210 
-            """,
+            'Eine kleinen Spende für unsere "Kaffeekassa" wird nicht benötigt um LaMA zu finanzieren.\n\nUnser Projekt ist und bleibt kostenlos und wir versuchen es auch weiterhin stetig zu verbessern und aktualisieren. Sie dient lediglich als kleine Anerkennung unserer Arbeit.\n\nVielen Dank!', 
+            """<center><a href='{}'style="color:rgb(47, 69, 80);">Buy Me A Coffee</a><\center>""".format(link),
+            # "LaMA ist gratis und soll es auch bleiben!\n",
+            # "Wir freuen uns dennoch sehr über eine Unterstützung für die Weiterentwicklung von LaMA.\n\n"
+            # """ 
+            # Name: Matthias Konzett
+            # IBAN: AT57 1921 0200 9941 7002
+            # BLZ: 19210 
+            # """,
             titel="LaMA unterstützen",
         )
 
