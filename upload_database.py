@@ -13,7 +13,7 @@ class Worker_PushDatabase(QtCore.QObject):
         try:
             self.changes_found = git_push_to_origin(ui, admin, file_list, message, worker_text)
         except Exception as e:
-            print(e)
+            print('Fehler: {}'.format(e))
             self.changes_found = 'error'
 
         self.finished.emit()

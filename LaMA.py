@@ -14,6 +14,7 @@ from config import *
 from lama_colors import *
 import time
 from create_new_widgets import add_action
+import json
 # import splash_screen
 # from splash_screen import SplashWindow
 from config_start import (
@@ -4332,7 +4333,7 @@ class Ui_MainWindow(object):
         
         name = self.chosen_file_to_edit
 
-        print(name)
+        # print(name)
 
         typ = get_aufgabentyp(self.chosen_program, name)
         
@@ -4382,10 +4383,14 @@ class Ui_MainWindow(object):
         _file_ = Query()
         
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        rsp = check_branches()
+        if rsp == False:
+            git_reset_repo_to_origin()
+            lama_table.clear_cache()
 
         file_id = lama_table.get(_file_.name == aufgabe).doc_id
 
-        print("file ID: {}".format(file_id))
+        # print("file ID: {}".format(file_id))
 
         lama_table.update({"name" : new_name}, doc_ids=[file_id])
         lama_table.update({"themen" :themen}, doc_ids=[file_id])
@@ -4456,7 +4461,11 @@ class Ui_MainWindow(object):
         aufgabe_total = get_aufgabe_total(name, typ)
         images = aufgabe_total['bilder']
 
-        
+        lama_table = get_table(name, typ)
+        rsp = check_branches()
+        if rsp == False:
+            git_reset_repo_to_origin()
+            lama_table.clear_cache()   
         # image_path = os.path(path_programm, '_database')
         # print(database)
         if "l." in name:
@@ -4470,6 +4479,8 @@ class Ui_MainWindow(object):
                 os.remove(image)
             except FileNotFoundError:
                 print('Die Grafik "{}" konnte nicht gefunden werden.'.format(image))
+
+
 
         delete_file(name, typ)
 
@@ -7002,7 +7013,7 @@ if __name__ == "__main__":
             app.setPalette(palette_dark_mode)
         else:
             app.setPalette(palette)
-    except Exception:
+    except FileNotFoundError:
         app.setPalette(palette)
 
 
@@ -7016,6 +7027,10 @@ if __name__ == "__main__":
     splash.setFixedHeight(160)
     splash.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint | QtCore.Qt.FramelessWindowHint)
     splash.setEnabled(False)
+    # splash.setStyleSheet("background-color:white; color: black")
+    splash.setPalette(palette)
+    # splash.setStyleSheet("QProgressBar::chunk {background-color: red}")
+
     # splash = QSplashScreen(splash_pix)
     # adding progress bar
     progressBar = QtWidgets.QProgressBar(splash)
@@ -7049,8 +7064,8 @@ if __name__ == "__main__":
     from pathlib import Path
     i = step_progressbar(i, "datetime")
     import datetime
-    i = step_progressbar(i, "json")
-    import json
+    # i = step_progressbar(i, "json")
+    # import json
     i = step_progressbar(i, "subprocess")
     import subprocess
     i = step_progressbar(i, "shutil")
