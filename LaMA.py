@@ -4542,6 +4542,11 @@ class Ui_MainWindow(object):
         table = "table_" + typ_name
         table_lama = database.table(table)
 
+
+        rsp = check_branches()
+        if rsp == False:
+            git_reset_repo_to_origin()
+            table_lama.clear_cache()
         # database =
         # if self.chosen_variation == None:
         # save_dateipfad = self.create_aufgabenpfad(typ_save)
