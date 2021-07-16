@@ -3416,10 +3416,15 @@ class Ui_MainWindow(object):
 
     def show_support(self):
         QtWidgets.QApplication.restoreOverrideCursor()
+        print(self.display_mode)
         link = "https://www.buymeacoffee.com/lama.schule"
+        if self.display_mode == 1:
+            color = "rgb(88, 111, 124)"
+        else:
+            color = "rgb(47, 69, 80)"
         custom_window(
             'Eine kleinen Spende für unsere "Kaffeekassa" wird nicht benötigt um LaMA zu finanzieren.\n\nUnser Projekt ist und bleibt kostenlos und wir versuchen es auch weiterhin stetig zu verbessern und aktualisieren. Sie dient lediglich als kleine Anerkennung unserer Arbeit.\n\nVielen Dank!', 
-            """<center><a href='{}'style="color:rgb(47, 69, 80);">Buy Me A Coffee</a><\center>""".format(link),
+            """<center><a href='{0}'style="color:{1};">Buy Me A Coffee</a><\center>""".format(link, color),
             # "LaMA ist gratis und soll es auch bleiben!\n",
             # "Wir freuen uns dennoch sehr über eine Unterstützung für die Weiterentwicklung von LaMA.\n\n"
             # """ 
