@@ -7009,6 +7009,8 @@ if __name__ == "__main__":
     palette_dark_mode.setColor(QtGui.QPalette.ButtonText, white)
     palette_dark_mode.setColor(QtGui.QPalette.HighlightedText, white)
     palette_dark_mode.setColor(QtGui.QPalette.Highlight, blue_6)
+    palette_dark_mode.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.Light, dark_gray)
+    # palette_dark_mode.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.Shadow, white)
 
     try:
         with open(lama_settings_file, "r", encoding="utf8") as f:

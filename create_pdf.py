@@ -116,7 +116,7 @@ def refresh_ddb_according_to_intervall(self, log_file):
     # print('refreshed')      
 
 def collect_suchbegriffe(self):
-    chosen_aufgabenformat = "Typ%sAufgaben".format(self.combobox_aufgabentyp.currentIndex()+1) #self.label_aufgabentyp.text()[-1]
+    chosen_aufgabenformat = "Typ{}Aufgaben".format(self.combobox_aufgabentyp.currentIndex()+1) #self.label_aufgabentyp.text()[-1]
 
     suchbegriffe = {
         'themen':[],
@@ -135,9 +135,9 @@ def collect_suchbegriffe(self):
                         suchbegriffe['themen'].append(dict_gk[gk])
 
                     if "themen" in widget:
-                        klasse = widget.split("_")[-2]
+                        # klasse = widget.split("_")[-2]
                         thema = widget.split("_")[-1]
-                        suchbegriffe['themen'].append(thema)
+                        suchbegriffe['themen'].append(thema.upper())
 
 
     if self.chosen_program == "cria":
@@ -145,7 +145,6 @@ def collect_suchbegriffe(self):
         for all in self.dict_chosen_topics.values():
             string  = '.'.join(all)
             suchbegriffe['themen'].append(string)
-
 
 
     if chosen_aufgabenformat == "Typ1Aufgaben" or self.chosen_program == "cria":
