@@ -1,24 +1,31 @@
 import shutil
 import os
-from config_start import database, path_localappdata_lama, lama_developer_credentials, lama_user_credentials
-from dulwich import porcelain, index
+from config_start import database, lama_developer_credentials, lama_user_credentials
+from dulwich import porcelain
 from dulwich.objectspec import parse_tree
 import stat
 import posixpath
 from urllib3.exceptions import MaxRetryError
-from datetime import datetime
+# from datetime import datetime
 # from standard_dialog_windows import information_window
-from time import sleep
-from urllib.request import urlopen
-from urllib.error import URLError
+# from time import sleep
+# from urllib.request import urlopen
+# from urllib.error import URLError
+import socket
 
 
 def check_internet_connection():
     try:
-        urlopen('http://216.58.192.142') ## IP for google
+        socket.create_connection(("1.1.1.1", 53))
         return True
-    except URLError:
+    except OSError:
         return False
+
+    # try:
+    #     urlopen('http://216.58.192.142') ## IP for google
+    #     return True
+    # except URLError:
+    #     return False
 
 def git_clone_repo():
     try:
