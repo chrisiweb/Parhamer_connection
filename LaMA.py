@@ -5,6 +5,7 @@ __version__ = "v2.3.0"
 __lastupdate__ = "07/21"
 ##################
 print("Loading...")
+# from urllib import request
 from start_window import check_if_database_exists
 check_if_database_exists()
 from prepare_content_vorschau import edit_content_ausgleichspunkte, edit_content_hide_show_items
@@ -37,7 +38,7 @@ from tinydb import TinyDB, Query
 # from git import Repo, remote
 
 
-# from urllib.request import urlopen
+from urllib.request import urlopen, urlretrieve
 # from urllib.error import URLError
 
 
@@ -2581,79 +2582,130 @@ class Ui_MainWindow(object):
     ##########################
 
     def check_for_update(self):
-        for i in range(5):
-            try:
-                version_path = os.path.join(
-                    path_programm, "_database", "_config", "update"
-                )
-                version_file = os.path.join(version_path, "__version__.txt")
-                f = open(version_file, "r")
-                break
-            except FileNotFoundError:
-                input(
-                    "Please place your config file in '{}' and hit enter. {} tries left!".format(
-                        version_path, 5 - i
-                    )
-                )
-            if i == 4:
-                print("No version set. Skipping version check!")
-                return False
-
-        update_check = []
-        update_check.append(f.read().replace(" ", "").replace("\n", ""))
-        f.close()
-        update_check.append(__version__)
-
-        if update_check[0] != update_check[1]:
-            if sys.platform.startswith("linux"):
-                information_window(
-                    "Es ist ein neues Update verfügbar.",
-                    "Es wird empfohlen die neueste Version von LaMA unter lama.schule/downloads herunterzuladen und damit die alte Version zu ersetzen.",
-                    titel="Neue Version verfügbar",
-                )
-            else:
-                ret = question_window(
-                    "Es ist eine neue Version von LaMA verfügbar.",
-                    "Möchten Sie das neue Update jetzt installieren?",
-                    "Neue Version verfügbar",
-                )
+        try:
+            link = "https://github.com/chrisiweb/lama_latest_update/blob/master/README.md"
+            f= urlopen(link)
+            url_readme_version = f.read().decode('utf-8')
+            latest_version = re.search("Aktuelle Version: \[(.+)\]", url_readme_version).group(1)
+            print(latest_version)
+            if __version__ == latest_version:
+                return
+        except Exception:
+            print('Fehler beim Überprüfen der Version. Überprüfung wird übersprungen ...')
+            return
 
 
-                if ret == True:
+        # return
+        # for i in range(5):
+        #     try:
+        #         version_path = os.path.join(
+        #             path_programm, "_database", "_config", "update"
+        #         )
+        #         version_file = os.path.join(version_path, "__version__.txt")
+        #         f = open(version_file, "r")
+        #         break
+        #     except FileNotFoundError:
+        #         input(
+        #             "Please place your config file in '{}' and hit enter. {} tries left!".format(
+        #                 version_path, 5 - i
+        #             )
+        #         )
+        #     if i == 4:
+        #         print("No version set. Skipping version check!")
+        #         return False
+
+        # update_check = []
+        # update_check.append(f.read().replace(" ", "").replace("\n", ""))
+        # f.close()
+        # update_check.append(__version__)
+
+        # if update_check[0] != update_check[1]:
+            
+        if sys.platform.startswith("linux"):
+            information_window(
+                "Es ist ein neues Update verfügbar.",
+                "Es wird empfohlen die neueste Version von LaMA unter lama.schule/downloads herunterzuladen und damit die alte Version zu ersetzen.",
+                titel="Neue Version verfügbar",
+            )
+            return
+        else:
+            ret = question_window(
+                "Es ist eine neue Version von LaMA verfügbar.",
+                "Möchten Sie das neue Update jetzt installieren?",
+                "Neue Version verfügbar",
+            )
+
+
+            if ret == True:
+                if sys.platform.startswith(
+                    "darwin"
+                ):
                     opened_file = os.path.basename(sys.argv[0])
                     name, extension = os.path.splitext(opened_file)
-                    if sys.platform.startswith("darwin"):
-                        system_folder = "update_mac"
-                    # elif sys.platform.startswith("linux"):
-                    #     system_folder="update_linux"
-                    else:
-                        system_folder = "update_windows"
+                    # print('not yet working')
                     filename_update = os.path.join(
                         path_programm,
                         "_database",
                         "_config",
                         "update",
-                        system_folder,
+                        "update_mac",
                         "update%s" % extension,
                     )
-
                     try:
-                        if sys.platform.startswith("linux") or sys.platform.startswith(
-                            "darwin"
-                        ):
-                            if extension == ".py":
-                                os.system("python3 {}".format(filename_update))
-                            else:
-                                os.system("chmod 777 {}".format(filename_update))
-                                os.system(filename_update)
+                        if extension == ".py":
+                            os.system("python3 {}".format(filename_update))
                         else:
-                            os.startfile(filename_update)
+                            os.system("chmod 777 {}".format(filename_update))
+                            os.system(filename_update)
                         sys.exit(0)
                     except Exception as e:
                         warning_window(
                             'Das neue Update von LaMA konnte leider nicht installiert werden! Bitte versuchen Sie es später erneut oder melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler".',
                             'Fehler:\n"{}"'.format(e),
                         )
+                else:
+                    print('not finished')
+                    download_link = "https://github.com/mylama/lama/releases/latest/download/LaMA.exe"
+                    path_installer = os.path.join(path_home, "Downloads", "LaMA_installer.exe")
+                    urlretrieve(download_link, path_installer)
+                    os.system(path_installer)
+                    print('done')
+
+
+                return
+                opened_file = os.path.basename(sys.argv[0])
+                name, extension = os.path.splitext(opened_file)
+                if sys.platform.startswith("darwin"):
+                    system_folder = "update_mac"
+
+                else:
+                    system_folder = "update_windows"
+                filename_update = os.path.join(
+                    path_programm,
+                    "_database",
+                    "_config",
+                    "update",
+                    system_folder,
+                    "update%s" % extension,
+                )
+
+                try:
+                    if sys.platform.startswith(
+                        "darwin"
+                    ):
+                        if extension == ".py":
+                            os.system("python3 {}".format(filename_update))
+                        else:
+                            os.system("chmod 777 {}".format(filename_update))
+                            os.system(filename_update)
+                    else:
+                        os.startfile(filename_update)
+                    sys.exit(0)
+                except Exception as e:
+                    warning_window(
+                        'Das neue Update von LaMA konnte leider nicht installiert werden! Bitte versuchen Sie es später erneut oder melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler".',
+                        'Fehler:\n"{}"'.format(e),
+                    )
 
     def create_Tooltip(self, chosen_dict):
         for all in chosen_dict:
