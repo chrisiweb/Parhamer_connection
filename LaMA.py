@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__ = "v2.3.0"
+__version__ = "v3.0.0"
 __lastupdate__ = "07/21"
 ##################
 print("Loading...")
@@ -4608,17 +4608,31 @@ class Ui_MainWindow(object):
         # if self.chosen_variation == None:
         # save_dateipfad = self.create_aufgabenpfad(typ_save)
 
-        if self.chosen_variation != None:
-            themen_auswahl = None
-        else:
-            themen_auswahl = self.themen_auswahl[0]
-        
+        # if self.chosen_variation != None:
+        themen_auswahl = None
+        # else:
+            # themen_auswahl = self.themen_auswahl[0]
+
+        # typ_variation = get_aufgabentyp(self.chosen_program, self.chosen_variation)
+
+        variation_total = get_aufgabe_total(self.chosen_variation, typ)
+        aufgabe_total = get_aufgabe_total(self.chosen_file_to_edit, typ)
+
+        if typ == 1 and aufgabe_total['themen'] != variation_total['themen']:
+            rsp = question_window("Sind Sie sicher, dass Sie die Grundkompetenz der Aufgabe von {0} auf {1} ändern möchten?".format(aufgabe_total['themen'][0], variation_total['themen'][0]))
+            if rsp == False:
+                return
+
         max_integer = self.get_max_integer(table_lama, typ, themen_auswahl)
 
         name = self.create_file_name(typ, max_integer, themen_auswahl)
 
+
         _file_ = Query()
+        if typ == 1 and aufgabe_total['themen'] != variation_total['themen']:
+            table_lama.update({'themen' : variation_total['themen']}, _file_.name == self.chosen_file_to_edit)  
         table_lama.update({'name' : name}, _file_.name == self.chosen_file_to_edit)
+ 
 
 
         self.upload_single_file_change(name, message="Gespeichert als Variation: {0} (ehemals: {1})".format(name, self.chosen_file_to_edit))
