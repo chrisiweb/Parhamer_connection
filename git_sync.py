@@ -14,6 +14,7 @@ from urllib3.exceptions import MaxRetryError
 import socket
 
 
+
 def check_internet_connection():
     try:
         socket.create_connection(("1.1.1.1", 53))

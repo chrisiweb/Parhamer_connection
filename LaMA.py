@@ -46,14 +46,22 @@ from urllib.request import urlopen, urlretrieve
 
 
 
-class Worker_DownloadDatabase(QtCore.QObject):
+# class Worker_DownloadDatabase(QtCore.QObject):
+#     finished = QtCore.pyqtSignal()
+
+#     @QtCore.pyqtSlot()
+#     def task(self):
+#         self.download_successfull = git_clone_repo()
+#         self.finished.emit()
+
+
+class Worker_CheckChangesDatabase(QtCore.QObject):
     finished = QtCore.pyqtSignal()
 
     @QtCore.pyqtSlot()
     def task(self):
-        self.download_successfull = git_clone_repo()
+        git_reset_repo_to_origin()
         self.finished.emit()
-
 
 # class Worker_PushDatabase(QtCore.QObject):
 #     finished = QtCore.pyqtSignal()
@@ -4672,6 +4680,20 @@ class Ui_MainWindow(object):
         self.reset_edit_file()
 
 
+    def worker_update_database(self):
+        text = "Die Datenbank wird auf den neuesten Stand gebracht ..."
+        Dialog_checkchanges = QtWidgets.QDialog()
+        ui = Ui_Dialog_processing()
+        ui.setupUi(Dialog_checkchanges, text)
+
+        thread = QtCore.QThread(Dialog_checkchanges)
+        worker = Worker_CheckChangesDatabase()
+        worker.finished.connect(Dialog_checkchanges.close)
+        worker.moveToThread(thread)
+        thread.started.connect(worker.task)
+        thread.start()
+        thread.exit()
+        Dialog_checkchanges.exec()
 
     def button_speichern_pressed(self):
         # self.creator_mode = "user"
@@ -4810,7 +4832,7 @@ class Ui_MainWindow(object):
                 return            
             rsp = check_branches()
             if rsp == False:
-                git_reset_repo_to_origin()
+                self.worker_update_database()
 
                 table_lama.clear_cache()
                 self.max_integer = self.get_max_integer(table_lama, typ, self.themen_auswahl[0])
