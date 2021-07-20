@@ -1,3 +1,4 @@
+# from Admin_LaMA_Check import Ui_MainWindow
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QIcon, QCursor, QTextCursor
 from PyQt5.QtCore import Qt, QSize, QRect, QMetaObject, QCoreApplication, QThread
@@ -201,12 +202,13 @@ class Ui_Dialog_choose_type(object):
 
 
 class Ui_Dialog_variation(object):
-    def setupUi(self, Dialog, MainWindow, show_variations, mode=None):
+    def setupUi(self, Dialog, MainWindow, show_variations, mode=None, chosen_file_to_edit= None):
         self.MainWindow = MainWindow
         self.chosen_program = self.MainWindow.chosen_program
 
         self.show_variations = show_variations
         self.mode = mode
+        self.chosen_file_to_edit = chosen_file_to_edit
         # self.beispieldaten_dateipfad_cria = MainWindow.beispieldaten_dateipfad_cria
         # self.beispieldaten_dateipfad_1 = MainWindow.beispieldaten_dateipfad_1
         # self.beispieldaten_dateipfad_2 = MainWindow.beispieldaten_dateipfad_2
@@ -473,7 +475,6 @@ class Ui_Dialog_variation(object):
 
 
     def add_items_to_listwidget_creator(self, typ, filtered_items, local = False):
-
         for _file_ in filtered_items:
             if self.mode == 'editor' and _file_['draft'] == True:
                 continue
@@ -496,7 +497,9 @@ class Ui_Dialog_variation(object):
 
             item.setText(name)
 
-            if check_if_variation(_file_["name"]) == True and self.show_variations==False:
+            if self.show_variations==False and check_if_variation(_file_["name"]) == True:
+                continue
+            elif self.show_variations==False and self.chosen_file_to_edit == _file_["name"]:
                 continue
             else:
                 self.listWidget.addItem(item)

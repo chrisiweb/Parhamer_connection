@@ -4562,7 +4562,7 @@ class Ui_MainWindow(object):
             | QtCore.Qt.WindowCloseButtonHint,
         )
         ui = Ui_Dialog_variation()
-        ui.setupUi(Dialog, self, False)
+        ui.setupUi(Dialog, self, show_variations=False, chosen_file_to_edit=self.chosen_file_to_edit)
         # self.Dialog.show()
         response = Dialog.exec()
 
