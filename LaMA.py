@@ -6,6 +6,7 @@ __lastupdate__ = "07/21"
 ##################
 print("Loading...")
 # from urllib import request
+from dulwich.objectspec import parse_commit_range
 from start_window import check_if_database_exists
 check_if_database_exists()
 from prepare_content_vorschau import edit_content_ausgleichspunkte, edit_content_hide_show_items
@@ -1223,13 +1224,13 @@ class Ui_MainWindow(object):
         self.groupBox_bilder.setTitle(
             _translate("MainWindow", "Bilder (klicken, um Bilder zu entfernen)", None)
         )
-
+        self.groupBox_bilder.setSizePolicy(SizePolicy_maximum_height)
         self.label_bild_leer = QtWidgets.QLabel(self.scrollAreaWidgetContents_bilder)
         self.label_bild_leer.setObjectName(_fromUtf8("label_bild_leer"))
         self.verticalLayout.addWidget(self.label_bild_leer)
         self.label_bild_leer.setText(_translate("MainWindow", "", None))
         self.label_bild_leer.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.gridLayout.addWidget(self.groupBox_bilder, 7, 0, 2, 1)
+        self.gridLayout.addWidget(self.groupBox_bilder, 7, 0, 1, 1)
 
         self.btn_add_image = create_new_button(self.groupBox_bilder, "Hinzufügen", self.btn_add_image_pressed)
         self.verticalLayout.addWidget(self.btn_add_image)
@@ -1370,10 +1371,32 @@ class Ui_MainWindow(object):
 
         self.groupBox_klassen_cr.hide()
 
+
+        self.groupBox_abstand = create_new_groupbox(self.centralwidget, "Abstand")
+        self.groupBox_abstand.setSizePolicy(SizePolicy_fixed)
+        self.groupBox_abstand.setToolTip("Abstand unter der Aufgabe (in cm)")
+        self.horizontalLayout_abstand = create_new_horizontallayout(self.groupBox_abstand)
+        self.spinBox_abstand = create_new_spinbox(self.groupBox_abstand)
+        self.horizontalLayout_abstand.addWidget(self.spinBox_abstand)
+        self.gridLayout.addWidget(self.groupBox_abstand, 0,5,1,1)
+        self.groupBox_abstand.hide()
+
+
+        self.groupBox_pagebreak = create_new_groupbox(self.centralwidget, "Seitenumbruch")
+        self.groupBox_pagebreak.setSizePolicy(SizePolicy_fixed)
+        self.horizontalLayout_pagebreak = create_new_horizontallayout(self.groupBox_pagebreak)
+        self.comboBox_pagebreak = create_new_combobox(self.groupBox_pagebreak)
+        add_new_option(self.comboBox_pagebreak, 0, "nicht möglich")
+        add_new_option(self.comboBox_pagebreak, 1, "möglich")
+        self.horizontalLayout_pagebreak.addWidget(self.comboBox_pagebreak)
+        self.gridLayout.addWidget(self.groupBox_pagebreak, 0,6,1,1)
+        self.groupBox_pagebreak.hide()
+
+
         self.cb_matura_tag = create_new_checkbox(self.centralwidget, "Matura")
-        self.gridLayout.addWidget(self.cb_matura_tag, 0,5,1,1)
+        self.gridLayout.addWidget(self.cb_matura_tag, 0,7,1,1)
         self.cb_matura_tag.hide()
-        self.gridLayout.setRowStretch(6, 1)
+        self.gridLayout.setRowStretch(7, 1)
 
         self.groupBox_titel_cr = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_titel_cr.setObjectName(_fromUtf8("groupBox_titel_cr"))
@@ -1385,7 +1408,7 @@ class Ui_MainWindow(object):
         self.lineEdit_titel.setObjectName(_fromUtf8("lineEdit_titel"))
         self.lineEdit_titel.textChanged.connect(self.check_admin_entry)
         self.gridLayout_14.addWidget(self.lineEdit_titel, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_titel_cr, 1, 1, 1, 6)
+        self.gridLayout.addWidget(self.groupBox_titel_cr, 1, 1, 1, 7)
         self.groupBox_titel_cr.setTitle(_translate("MainWindow", "Titel", None))
         self.groupBox_titel_cr.hide()
 
@@ -1406,7 +1429,7 @@ class Ui_MainWindow(object):
         self.plainTextEdit.setObjectName(_fromUtf8("plainTextEdit"))
         self.plainTextEdit.setTabChangesFocus(True)
         self.gridLayout_10.addWidget(self.plainTextEdit, 1, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_beispieleingabe, 2, 1, 5, 6)
+        self.gridLayout.addWidget(self.groupBox_beispieleingabe, 2, 1, 5, 7)
         self.groupBox_beispieleingabe.setTitle(
             _translate("MainWindow", "Aufgabeneingabe", None)
         )
@@ -1435,7 +1458,7 @@ class Ui_MainWindow(object):
 
         self.lineEdit_quelle.setText(quelle)
         self.gridLayout_18.addWidget(self.lineEdit_quelle, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_quelle, 7, 1, 1, 6, QtCore.Qt.AlignTop)
+        self.gridLayout.addWidget(self.groupBox_quelle, 7, 1, 1, 7, QtCore.Qt.AlignTop)
         self.groupBox_quelle.setTitle(
             _translate(
                 "MainWindow",
@@ -1447,7 +1470,7 @@ class Ui_MainWindow(object):
 
 
         self.horizontalLayout_buttons = create_new_horizontallayout()
-        self.gridLayout.addLayout(self.horizontalLayout_buttons, 8, 1, 1, 6)
+        self.gridLayout.addLayout(self.horizontalLayout_buttons, 8, 1, 1, 7)
         
         self.horizontalLayout_buttons.addStretch()
         self.pushButton_save = QtWidgets.QPushButton(self.centralwidget)
@@ -3159,6 +3182,7 @@ class Ui_MainWindow(object):
             _translate("MainWindow", 'Zu "{}" wechseln'.format(change_to), None)
         )
 
+        self.comboBox_pagebreak.setCurrentIndex(0)
         if self.chosen_program == "lama":
             self.chosen_program = "cria"
 
@@ -3177,6 +3201,7 @@ class Ui_MainWindow(object):
             self.cb_af_ko.show()
             self.cb_af_rf.show()
             self.cb_af_ta.show()
+            
 
             # self.comboBox_at_fb.setItemText(0, _translate("MainWindow", "Aufgabenrückmeldung", None))
             # self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Allgemeine Rückmeldung", None))
@@ -3842,7 +3867,7 @@ class Ui_MainWindow(object):
         except AttributeError:
             self.saved_file_path = path_home
         list_filename = QtWidgets.QFileDialog.getOpenFileNames(
-            None, "Grafiken wählen", self.saved_file_path, "Grafiken (*.eps)"
+            None, "Grafiken wählen", os.path.dirname(self.saved_file_path), "Grafiken (*.eps)"
         )
         if list_filename[0] == []:
             return
@@ -3943,11 +3968,13 @@ class Ui_MainWindow(object):
     def chosen_aufgabenformat_cr(self):
         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
             self.groupBox_aufgabenformat.setEnabled(True)
+            self.comboBox_pagebreak.setCurrentIndex(0)
             # self.label_keine_auswahl.hide()
             # self.comboBox_af.show()
             self.comboBox_af.removeItem(0)
         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
             self.comboBox_af.insertItem(0, "keine Auswahl nötig")
+            self.comboBox_pagebreak.setCurrentIndex(1)
             self.comboBox_af.setCurrentIndex(0)
             self.groupBox_aufgabenformat.setEnabled(False)
             # self.label_keine_auswahl.show()
@@ -4327,9 +4354,11 @@ class Ui_MainWindow(object):
         quelle = self.lineEdit_quelle.text()
         content = self.plainTextEdit.toPlainText()
         punkte = self.spinBox_punkte.value()
-        if typ == 1:
+
+
+        if self.comboBox_pagebreak.currentIndex() == 0:
             pagebreak = False
-        else:
+        elif self.comboBox_pagebreak.currentIndex() == 1:
             pagebreak = True
 
         if typ == None:
@@ -4356,7 +4385,7 @@ class Ui_MainWindow(object):
         else:
             draft = False
 
-        abstand = 0
+        abstand = self.spinBox_abstand.value()
 
         return (
             name,
@@ -4410,8 +4439,7 @@ class Ui_MainWindow(object):
             abstand,
         ) = self.get_all_infos_new_file(typ, 'editor')
 
-        # print(themen)
-        # print(typ)
+
         lama_table = get_table(name, typ)
 
 
@@ -4804,6 +4832,7 @@ class Ui_MainWindow(object):
             abstand,
         ) = self.get_all_infos_new_file(typ, typ_save[0])
 
+
         content = content_images_replaced
         bilder = list_images_new_names
         add_file(table_lama, name, themen, titel, af, quelle, content, punkte, pagebreak, klasse, info, bilder, draft, abstand)
@@ -4951,6 +4980,8 @@ class Ui_MainWindow(object):
         self.cb_matura_tag.setEnabled(enabled)
         self.groupBox_aufgabentyp.setEnabled(enabled)
         self.groupBox_themengebiete_cria.setEnabled(enabled)
+        self.groupBox_abstand.setEnabled(enabled)
+        self.groupBox_pagebreak.setEnabled(enabled)
       
     def action_add_file(self):
         self.update_gui("widgets_create")   
@@ -5174,7 +5205,7 @@ class Ui_MainWindow(object):
             path_backup_file = QtWidgets.QFileDialog.getSaveFileName(
                 None,
                 "Speichern unter",
-                self.saved_file_path,
+                os.path.dirname(self.saved_file_path),
                 "LaMA Datei (*.lama);; Alle Dateien (*.*)",
             )
             if path_backup_file[0] == "":
