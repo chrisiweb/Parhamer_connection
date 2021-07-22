@@ -4467,10 +4467,7 @@ class Ui_MainWindow(object):
 
                 new_name = self.create_file_name(typ, max_integer, themen_auswahl[0], save_typ)
 
-        # print(max_integer)
-        # print(name)
-        # print(new_name)
-        
+       
 
         aufgabe = name.replace(" (lokal)","")
         _file_ = Query()
@@ -4485,7 +4482,8 @@ class Ui_MainWindow(object):
 
         # print("file ID: {}".format(file_id))
 
-        lama_table.update({"name" : new_name}, doc_ids=[file_id])
+        if typ == 1:
+            lama_table.update({"name" : new_name}, doc_ids=[file_id])
         lama_table.update({"themen" :themen}, doc_ids=[file_id])
         lama_table.update({"titel" :titel}, doc_ids=[file_id])
         lama_table.update({"af" :af}, doc_ids=[file_id])
