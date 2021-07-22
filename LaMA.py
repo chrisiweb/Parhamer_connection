@@ -4162,7 +4162,8 @@ class Ui_MainWindow(object):
 
     def get_highest_grade_cr(self):
         klasse = 1
-        for all in self.themen_auswahl:
+        themen_auswahl = self.get_themen_auswahl()
+        for all in themen_auswahl:
             if int(all[1]) > klasse:
                 klasse = int(all[1])
         return "k{}".format(klasse)
