@@ -222,11 +222,11 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         if not is_empty(self.worker_response):
             QtWidgets.QApplication.restoreOverrideCursor()
             response= question_window("""
-        Es befinden sich lokale Änderungen in Ihrer Datenbank. Durch das Aktualisieren der Datenbank werden alle lokalen Änderungen UNWIEDERRUFLICH gelöscht!
+        Es befinden sich lokale Änderungen in Ihrer Datenbank. Durch das Aktualisieren der Datenbank werden alle lokalen Änderungen UNWIDERRUFLICH gelöscht!
 
         Lokale Änderungen können durch "Datei - Datenbank hochladen" online gespeichert werden. 
 
-        Sind Sie sicher, dass Sie die lokalen Änderungen unwiederruflich löschen möchten? 
+        Sind Sie sicher, dass Sie die lokalen Änderungen unwiderruflich löschen möchten? 
                     """, titel="Lokale Änderungen löschen?", detailed_text="""
         Geänderte/Gelöschte Dateien: {0} \n\n
         Neu erstellte Dateien: {1}            

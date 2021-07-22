@@ -55,7 +55,7 @@ from urllib.request import urlopen, urlretrieve
 #         self.finished.emit()
 
 
-class Worker_CheckChangesDatabase(QtCore.QObject):
+class Worker_UpdateDatabase(QtCore.QObject):
     finished = QtCore.pyqtSignal()
 
     @QtCore.pyqtSlot()
@@ -4478,7 +4478,7 @@ class Ui_MainWindow(object):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         rsp = check_branches()
         if rsp == False:
-            git_reset_repo_to_origin()
+            self.worker_update_database()
             lama_table.clear_cache()
 
         file_id = lama_table.get(_file_.name == aufgabe).doc_id
@@ -4557,7 +4557,7 @@ class Ui_MainWindow(object):
         lama_table = get_table(name, typ)
         rsp = check_branches()
         if rsp == False:
-            git_reset_repo_to_origin()
+            self.worker_update_database()
             lama_table.clear_cache()   
         # image_path = os.path(path_programm, '_database')
         # print(database)
@@ -4638,7 +4638,7 @@ class Ui_MainWindow(object):
 
         rsp = check_branches()
         if rsp == False:
-            git_reset_repo_to_origin()
+            self.worker_update_database()
             table_lama.clear_cache()
         # database =
         # if self.chosen_variation == None:
@@ -4687,7 +4687,7 @@ class Ui_MainWindow(object):
         ui.setupUi(Dialog_checkchanges, text)
 
         thread = QtCore.QThread(Dialog_checkchanges)
-        worker = Worker_CheckChangesDatabase()
+        worker = Worker_UpdateDatabase()
         worker.finished.connect(Dialog_checkchanges.close)
         worker.moveToThread(thread)
         thread.started.connect(worker.task)
