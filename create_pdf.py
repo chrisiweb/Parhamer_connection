@@ -437,7 +437,6 @@ def construct_tex_file(file_name, gesammeltedateien, variation, infos):
     with open(file_name, "w", encoding="utf8") as file:
         file.write(tex_preamble(bookmark=True, info=infos))
         for all in gesammeltedateien:
-            print(all['content'])
             if variation == False and check_if_variation(all['name']) == True:
                 continue
             if 'mat' == all['info']:
@@ -467,7 +466,6 @@ def construct_tex_file(file_name, gesammeltedateien, variation, infos):
                 file.write(all['content'])
                 file.write(end_beispiel)
             elif all['pagebreak']==True:
-                print(all['name'])
                 file.write(begin_beispiel_lang(all['punkte']))
                 file.write(all['content'])
                 file.write(end_beispiel_lang)
