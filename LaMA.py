@@ -3725,7 +3725,7 @@ class Ui_MainWindow(object):
                         checkbox_gk = "checkbox_creator_gk_{}".format(short_gk)
                         if i == 0:
                             index = list_comboBox_gk.index(
-                                gk.split(" ")[0]
+                                gk.split(" ")[0].replace("-L","")
                             )
 
                     self.dict_widget_variables[checkbox_gk].setChecked(True)
