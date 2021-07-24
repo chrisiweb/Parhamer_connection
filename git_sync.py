@@ -181,6 +181,10 @@ def check_branches():
     origin_id = repo[b'refs/remotes/origin/master'].id
     print(head_id)
     print(origin_id)
+    if head_id == origin_id:
+        print("branches are the same")
+    else:
+        print("branches diverge")
     try:
         porcelain.check_diverged(repo, origin_id, head_id)
         repo.close()

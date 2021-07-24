@@ -56,7 +56,7 @@ from filter_commands import get_filter_string, filter_items
 from sort_items import order_gesammeltedateien
 from upload_database import action_push_database
 from tinydb import Query
-from git_sync import check_internet_connection
+from git_sync import check_branches, git_reset_repo_to_origin
 
 dict_gk = config_loader(config_file, "dict_gk")
 ag_beschreibung = config_loader(config_file, "ag_beschreibung")
@@ -2526,6 +2526,13 @@ class Ui_Dialog_edit_drafts(object):
         if rsp == False:
             return
 
+
+        print("Checking divergencies ...")
+        rsp = check_branches()
+        if rsp == False:
+            print("Updating database ...")
+            git_reset_repo_to_origin()
+
         for aufgabe in chosen_list:
             update_data(aufgabe, self.typ, 'draft', False)
 
@@ -2550,6 +2557,12 @@ class Ui_Dialog_edit_drafts(object):
         if rsp == False:
             return
 
+        print("Checking divergencies ...")
+        rsp = check_branches()
+        if rsp == False:
+            print("Updating database ...")
+            git_reset_repo_to_origin()
+
         for aufgabe in chosen_list:
             delete_file(aufgabe, self.typ)
 
@@ -2570,6 +2583,11 @@ class Ui_Dialog_edit_drafts(object):
         QtWidgets.QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
         name = self.comboBox.currentText()
 
+        print("Checking divergencies ...")
+        rsp = check_branches()
+        if rsp == False:
+            print("Updating database ...")
+            git_reset_repo_to_origin()
 
         self.plainText_backup = [self.comboBox.currentIndex(), self.plainTextEdit.toPlainText()]
 

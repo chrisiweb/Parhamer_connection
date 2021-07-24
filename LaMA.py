@@ -301,7 +301,7 @@ class Ui_MainWindow(object):
             MainWindow,
             self.menuDeveloper,
             "Datenbank hochladen",
-            partial(action_push_database, True, ["_database.json"], "", "Änderungen werden hochgeladen ..."),
+            self.push_full_database,
         )
 
 
@@ -4931,6 +4931,16 @@ class Ui_MainWindow(object):
     #         return transform
     #     table_1.update(your_operation())
     #     print('done')
+
+    def push_full_database(self):
+        print("Checking divergencies ...")
+        rsp = check_branches()
+        if rsp == False:
+            response = question_window("Es wurden Änderungen am origin/master vorgenommen. Diese Änderungen werden unwiderruflich gelöscht. Sind Sie sicher, dass Sie die vollständige Datenbank hochladen möchten?",
+            titel="Änderungen überschreiben?")
+            if response == False:
+                return
+        action_push_database(True, ["_database.json"], "", "Änderungen werden hochgeladen ...")
 
 
     def draft_control(self):
