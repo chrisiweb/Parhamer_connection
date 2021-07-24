@@ -169,6 +169,7 @@ widgets_search_cria = [
     "cb_show_variation",
     "cb_solution",
     "cb_drafts",
+    "cb_infos",
     "btn_suche",
     "combobox_searchtype",
 ]

@@ -4474,8 +4474,10 @@ class Ui_MainWindow(object):
         _file_ = Query()
         
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        print("Checking divergencies ...")
         rsp = check_branches()
         if rsp == False:
+            print("Updating database ...")
             self.worker_update_database()
             lama_table.clear_cache()
 
@@ -4515,6 +4517,7 @@ class Ui_MainWindow(object):
         # ])
         QtWidgets.QApplication.restoreOverrideCursor()
 
+        print("Uploading file ...")
         self.upload_single_file_change(name, message="Bearbeitet: {}".format(name))
 
         # if "(lokal)" not in name:
@@ -4554,8 +4557,10 @@ class Ui_MainWindow(object):
         images = aufgabe_total['bilder']
 
         lama_table = get_table(name, typ)
+        print("Checking divergencies ...")
         rsp = check_branches()
         if rsp == False:
+            print("Updating database ...")
             self.worker_update_database()
             lama_table.clear_cache()   
         # image_path = os.path(path_programm, '_database')
@@ -4577,6 +4582,7 @@ class Ui_MainWindow(object):
         delete_file(name, typ)
 
         if "l." not in name:
+            print("Uploading file ...")
             self.upload_single_file_change(name, message="Gelöscht: {}".format(name))
         # if "(lokal)" not in name:
         #     file_list = ["_database.json"]
@@ -4634,9 +4640,10 @@ class Ui_MainWindow(object):
         table = "table_" + typ_name
         table_lama = database.table(table)
 
-
+        print("Checking divergencies ...")
         rsp = check_branches()
         if rsp == False:
+            print("Updating database ...")
             self.worker_update_database()
             table_lama.clear_cache()
         # database =
@@ -4669,7 +4676,7 @@ class Ui_MainWindow(object):
         table_lama.update({'name' : name}, _file_.name == self.chosen_file_to_edit)
  
 
-
+        print("Uploading file ...")
         self.upload_single_file_change(name, message="Gespeichert als Variation: {0} (ehemals: {1})".format(name, self.chosen_file_to_edit))
         # print(self.chosen_file_to_edit)
         # print(name)
@@ -4828,9 +4835,11 @@ class Ui_MainWindow(object):
                     titel="Keine Internetverbindung",
                 )
                 QtWidgets.QApplication.restoreOverrideCursor()
-                return            
+                return
+            print("Checking divergencies ...")            
             rsp = check_branches()
             if rsp == False:
+                print("Updating database ...")
                 self.worker_update_database()
 
                 table_lama.clear_cache()
@@ -4892,7 +4901,7 @@ class Ui_MainWindow(object):
             for image in list_images_new_names:
                 name = os.path.join("Bilder", image)
                 file_list.append(name)
-
+            print("Uploading file ...")
             action_push_database(False, file_list, message= "Neu: {}".format(name))
 
 
