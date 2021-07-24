@@ -174,7 +174,9 @@ def get_access_token(mode):
 
 
 def check_branches():
+    print('open repo')
     repo = porcelain.open_repo(database)
+    print('fetch')
     porcelain.fetch(repo)
 
     head_id = repo[b'refs/heads/master'].id
@@ -183,14 +185,20 @@ def check_branches():
     print(origin_id)
     if head_id == origin_id:
         print("branches are the same")
+        # return True
     else:
         print("branches diverge")
+        # return False
     try:
+        print('check divergence')
         porcelain.check_diverged(repo, origin_id, head_id)
+        print('close')
         repo.close()
         return True
     except porcelain.DivergedBranches:
+        print('error')
         repo.close()
+        print('close error')
         return False
 
 def git_push_to_origin(ui, admin, file_list, message, worker_text):
