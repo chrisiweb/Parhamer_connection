@@ -4226,8 +4226,8 @@ class Ui_MainWindow(object):
             number = "l." + str(number)
 
         if self.chosen_program == "cria":
-            highest_grade = self.get_highest_grade()
-            name = "{0}_{1}_{2}".format(highest_grade, number, name)
+            highest_grade = self.get_highest_grade_cr()
+            name = "{0}-{1}-{2}".format(highest_grade, number, name)
 
         elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
             # thema, klasse = self.split_thema_klasse(
@@ -4235,11 +4235,11 @@ class Ui_MainWindow(object):
             # )
             # if thema == None:
             thema = shorten_gk(self.list_selected_topics_creator[0]).upper()
-            name = "{0}_{1}_{2}".format(thema, number, name)
+            name = "{0}-{1}-{2}".format(thema, number, name)
 
 
         elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
-            name = "{0}_{1}".format(number, name)
+            name = "{0}-{1}".format(number, name)
 
         return name
 
