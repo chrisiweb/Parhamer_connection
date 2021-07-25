@@ -1,3 +1,4 @@
+from database_commands import delete_file
 import shutil
 import os
 from config_start import database, lama_developer_credentials, lama_user_credentials
@@ -62,32 +63,38 @@ def git_reset_repo_to_origin():
         repo = porcelain.Repo(database)
         porcelain.fetch(repo)
 
-        # tree_head_id = repo[repo[b'refs/heads/master'].tree].id
-        # tree_origin_master_id = repo[repo[b'refs/remotes/origin/master'].tree].id
+        tree_head_id = repo[repo[b'refs/heads/master'].tree].id
+        tree_origin_master_id = repo[repo[b'refs/remotes/origin/master'].tree].id
 
-        # store=repo.object_store
-        # list_all_files_head = list_all_files(store, tree_head_id)
-        # list_all_files_origin_master = list_all_files(store, tree_origin_master_id)
+        store=repo.object_store
+        list_all_files_head = list_all_files(store, tree_head_id)
+        list_all_files_origin_master = list_all_files(store, tree_origin_master_id)
 
-        # deleted_files = list(set(list_all_files_head)-set(list_all_files_origin_master))
+        deleted_files = list(set(list_all_files_head)-set(list_all_files_origin_master))
 
+        # print(deleted_files)
+
+        if deleted_files !=[]:
+            for all in deleted_files:
+                file_path = os.path.join(database, all.decode('utf-8'))
+                os.remove(file_path)
+
+            status=porcelain.status(repo) 
+
+            repo.stage(status.unstaged)
+
+            porcelain.commit(repo, message="delete files")
+
+
+        ###working###
         porcelain.reset(repo, "hard", treeish=b"refs/remotes/origin/master")
 
         porcelain.clean(repo=repo, target_dir=database)
 
         resolve_divergence()
+        ########
 
 
-        # if deleted_files !=[]:
-        #     for all in deleted_files:
-        #         file_path = os.path.join(database, all.decode('utf-8'))
-        #         os.remove(file_path)
-
-        #     status=porcelain.status(repo) 
-
-        #     repo.stage(status.unstaged)
-
-        #     porcelain.commit(repo, message="delete files")
         # return True
 
     except MaxRetryError:
@@ -220,7 +227,8 @@ def git_push_to_origin(ui, admin, file_list, message, worker_text):
         if admin == True:
             status = porcelain.status(repo)
             repo.stage(status.unstaged + status.untracked)
-
+            print(status.unstaged)
+            print(status.untracked)
             if status.unstaged==[] and status.untracked == []:
                 # information_window("Es wurden keine Änderungen gefunden.")
                 return False
