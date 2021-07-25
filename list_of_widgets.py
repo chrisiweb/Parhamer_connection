@@ -256,6 +256,7 @@ widgets_edit_cria = [
     "groupBox_beispieleingabe",
     "groupBox_quelle",
     "pushButton_save_edit",
+    "pushButton_delete_file",
     "pushButton_vorschau_edit",
     "pushButton_save_as_variation_edit",
 ]

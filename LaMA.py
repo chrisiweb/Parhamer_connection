@@ -3746,7 +3746,7 @@ class Ui_MainWindow(object):
                     pass
 
         elif self.chosen_program == "cria":
-            klasse, nummer = aufgabe.split(".")
+            klasse, nummer = aufgabe.split(".",1)
 
             index = list_klassen.index(klasse)
             self.tab_widget_cr_cria.setCurrentIndex(index)

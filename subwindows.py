@@ -479,7 +479,8 @@ class Ui_Dialog_variation(object):
             if self.mode == 'editor' and _file_['draft'] == True:
                 continue
             if typ == "cria":
-                name = _file_["name"].split(".")[-1]
+                name = _file_["name"].split(".", 1)[-1]
+
             else:
                 name = _file_["name"]
 
@@ -530,8 +531,12 @@ class Ui_Dialog_variation(object):
         _list_database = [_local_database, _database]
         if _database_addon != None:
             _list_database.append(_database_addon)
+        # print(_list_database)
+        # print(len(_list_database))
         all_filtered_items = []
+        # print(self.mode)
         for database in _list_database:
+            # print(database)
             if database == _database_addon and self.mode == 'creator':
                 continue
             elif self.MainWindow.developer_mode_active == False and self.mode != 'creator':
@@ -550,6 +555,7 @@ class Ui_Dialog_variation(object):
 
             all_filtered_items = all_filtered_items + filtered_items
         
+        # print(all_filtered_items)
         all_filtered_items.sort(key=order_gesammeltedateien)
 
         self.add_items_to_listwidget_creator(typ, all_filtered_items, local)
