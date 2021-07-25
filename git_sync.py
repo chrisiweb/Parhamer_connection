@@ -227,8 +227,8 @@ def git_push_to_origin(ui, admin, file_list, message, worker_text):
         if admin == True:
             status = porcelain.status(repo)
             repo.stage(status.unstaged + status.untracked)
-            print(status.unstaged)
-            print(status.untracked)
+            # print(status.unstaged)
+            # print(status.untracked)
             if status.unstaged==[] and status.untracked == []:
                 # information_window("Es wurden keine Änderungen gefunden.")
                 return False
