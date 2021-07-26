@@ -2933,7 +2933,13 @@ class Ui_MainWindow(object):
     ):  # , verticalLayout_cr_cria, combobox_kapitel, klasse, spacerItem_unterkapitel_cria
         # layout.removeItem(self.spacerItem_unterkapitel_creator_cria)
 
-        self.delete_all_widgets(layout, 1)
+        # self.delete_all_widgets(layout, 1) ### PROBLEM !!!
+        for i in range(1, layout.count()):
+            try: 
+                layout.itemAt(i).widget().hide()
+            except AttributeError:
+                pass
+
 
         text_combobox = self.dict_widget_variables[
             "combobox_kapitel_creator_cria_{}".format(klasse)
@@ -2954,7 +2960,8 @@ class Ui_MainWindow(object):
                         klasse, kapitel, unterkapitel
                     )
                 ]
-                layout.insertWidget(layout.count() - 1, checkbox)
+                # layout.insertWidget(layout.count() - 1, checkbox)
+                checkbox.show()
             else:
                 new_checkbox = create_new_checkbox(
                     parent, dict_unterkapitel[unterkapitel] + " (" + unterkapitel + ")"
@@ -3747,20 +3754,23 @@ class Ui_MainWindow(object):
 
         elif self.chosen_program == "cria":
             klasse, nummer = aufgabe.split(".",1)
-
             index = list_klassen.index(klasse)
             self.tab_widget_cr_cria.setCurrentIndex(index)
-
+            # print(self.dict_widget_variables)
             for thema in aufgabe_total["themen"]:
                 klasse_thema, kapitel, unterkapitel = thema.split(".")
-
+                # print(kapitel)
                 combobox_thema = "combobox_kapitel_creator_cria_{}".format(klasse)
                 dict_klasse_name = eval("dict_{}_name".format(klasse))
                 thema_name = dict_klasse_name[kapitel]
+
                 index = self.dict_widget_variables[combobox_thema].findText(
                     thema_name + " (" + kapitel + ")"
                 )
+                # print(index)
+                # print(self.dict_widget_variables[combobox_thema])
                 self.dict_widget_variables[combobox_thema].setCurrentIndex(index)
+                # continue
 
                 checkbox_thema = "checkbox_unterkapitel_creator_{0}_{1}_{2}".format(
                     klasse, kapitel, unterkapitel
@@ -3768,6 +3778,7 @@ class Ui_MainWindow(object):
                 self.dict_widget_variables[checkbox_thema].setChecked(True)
                 if mode == 'creator':
                     self.groupBox_themengebiete_cria.setEnabled(False)
+
 
         self.spinBox_punkte.setValue(aufgabe_total["punkte"])
 
@@ -3855,13 +3866,13 @@ class Ui_MainWindow(object):
                     self.suchfenster_reset(True)
                     self.reset_edit_file()
                     return
+
             typ = get_aufgabentyp(self.chosen_program, _file_)
             # _file_ = _file_.replace(" (lokal)", "")
             # print(_file_)
             aufgabe_total_original = get_aufgabe_total(_file_, typ)
 
             self.enable_widgets_editor(True)
-
 
         if response == 0:
             return
@@ -5898,7 +5909,11 @@ class Ui_MainWindow(object):
 
     def delete_widget(self, layout, index):
         try:
+            print(layout.itemAt(index).widget())
+            # layout.itemAt(index).widget().hide()
             layout.itemAt(index).widget().setParent(None)
+            # layout.itemAt(index).widget().deleteLater()
+            # self.dict_widget_variables = {key:val for key, val in self.dict_widget_variables.items() if val != layout.itemAt(index).widget()}
         except AttributeError:
             pass
 
