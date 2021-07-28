@@ -1112,8 +1112,9 @@ class Ui_MainWindow(object):
             new_scrollarea.setFrameShape(QtWidgets.QFrame.NoFrame)
             new_scrollarea.setFocusPolicy(QtCore.Qt.NoFocus)
             new_scrollarea.setWidgetResizable(True)
+            # new_scrollarea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
             new_scrollareacontent = QtWidgets.QWidget()
-            new_scrollareacontent.setGeometry(QtCore.QRect(0, 0, 264, 235))
+            # new_scrollareacontent.setGeometry(QtCore.QRect(0, 0, 264, 235))
             new_scrollareacontent.setObjectName("{}".format(new_scrollareacontent))
 
             new_verticallayout = QtWidgets.QVBoxLayout(new_scrollareacontent)
@@ -1126,7 +1127,7 @@ class Ui_MainWindow(object):
                 stylesheet = StyleSheet_combobox_kapitel_dark_mode
             combobox_kapitel.setStyleSheet(stylesheet)
             combobox_kapitel.setMinimumHeight(25)
-
+            # combobox_kapitel.setSizePolicy(SizePolicy_fixed)
             self.dict_widget_variables[
                 "combobox_kapitel_creator_cria_{}".format(klasse)
             ] = combobox_kapitel
@@ -4576,8 +4577,11 @@ class Ui_MainWindow(object):
             lama_table.clear_cache()   
         # image_path = os.path(path_programm, '_database')
         # print(database)
+
         if "l." in name:
             image_path= os.path.join(database, "Bilder_local")
+        elif "i." in name:
+            image_path= os.path.join(database, "Bilder_addon")
         else:
             image_path=os.path.join(database, "Bilder")
 
@@ -4589,12 +4593,16 @@ class Ui_MainWindow(object):
                 print('Die Grafik "{}" konnte nicht gefunden werden.'.format(image))
 
 
-
         delete_file(name, typ)
+
+
 
         if "l." not in name:
             print("Uploading file ...")
-            self.upload_single_file_change(name, message="Gelöscht: {}".format(name))
+            if is_empty(images):
+                self.upload_single_file_change(name, message="Gelöscht: {}".format(name))
+            else:
+                self.push_full_database()
         # if "(lokal)" not in name:
         #     file_list = ["_database.json"]
         #     action_push_database(False, file_list, message= "Gelöscht: {}".format(name), worker_text="Aufgabe löschen ...")
