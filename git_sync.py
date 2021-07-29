@@ -1,9 +1,7 @@
-from database_commands import delete_file
 import shutil
 import os
 from config_start import database, lama_developer_credentials, lama_user_credentials
 from dulwich import porcelain
-from dulwich.objectspec import parse_tree
 import stat
 import posixpath
 from urllib3.exceptions import MaxRetryError

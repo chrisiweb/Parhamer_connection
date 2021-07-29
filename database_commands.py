@@ -1,4 +1,3 @@
-from PyQt5.sip import delete
 from tinydb import TinyDB, Query
 from tinydb.operations import set
 import os
