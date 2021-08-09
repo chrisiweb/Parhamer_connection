@@ -140,21 +140,32 @@ def create_list_from_section(section):
 
 
 def add_file(database, name, themen, titel, af, quelle, content, punkte, pagebreak, klasse, info = None, bilder=[], draft = False, abstand = 0):
-    database.insert({
-        'name' : name,
-        'themen' : themen,
-        'titel' : titel,
-        'af' : af,
-        'quelle' : quelle,
-        'content' : content,
-        'punkte' : punkte,
-        'pagebreak' : pagebreak,
-        'klasse' : klasse,
-        'info' : info,
-        'bilder' : bilder,
-        'draft' : draft,
-        'abstand' : abstand,
-    })
+    i=0
+    while i<5:
+        try:
+            database.insert({
+                'name' : name,
+                'themen' : themen,
+                'titel' : titel,
+                'af' : af,
+                'quelle' : quelle,
+                'content' : content,
+                'punkte' : punkte,
+                'pagebreak' : pagebreak,
+                'klasse' : klasse,
+                'info' : info,
+                'bilder' : bilder,
+                'draft' : draft,
+                'abstand' : abstand,
+            })
+            return True
+        except AssertionError:
+            print('Error: "doc_id already exsists" - retrying ...')
+            database.clear_cache()
+            i +=1
+    return False
+
+
 
 def get_default_info(content):
     if 'langesbeispiel' in content:

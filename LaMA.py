@@ -60,7 +60,7 @@ class Worker_UpdateDatabase(QtCore.QObject):
 
     @QtCore.pyqtSlot()
     def task(self):
-        git_reset_repo_to_origin()
+        Ui_MainWindow.reset_successfull = git_reset_repo_to_origin()
         self.finished.emit()
 
 # class Worker_PushDatabase(QtCore.QObject):
@@ -4490,7 +4490,10 @@ class Ui_MainWindow(object):
         rsp = check_branches()
         if rsp == False:
             print("Updating database ...")
-            self.worker_update_database()
+            rsp = self.worker_update_database()
+            if rsp == False:
+                critical_window('Beim Synchronisieren ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass eine Internetverbindung beseteht und versuchen Sie es erneut.')
+                return
             lama_table.clear_cache()
 
         file_id = lama_table.get(_file_.name == aufgabe).doc_id
@@ -4573,7 +4576,10 @@ class Ui_MainWindow(object):
         rsp = check_branches()
         if rsp == False:
             print("Updating database ...")
-            self.worker_update_database()
+            rsp = self.worker_update_database()
+            if rsp == False:
+                critical_window('Beim Synchronisieren ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass eine Internetverbindung beseteht und versuchen Sie es erneut.')
+                return
             lama_table.clear_cache()   
         # image_path = os.path(path_programm, '_database')
         # print(database)
@@ -4663,7 +4669,10 @@ class Ui_MainWindow(object):
         rsp = check_branches()
         if rsp == False:
             print("Updating database ...")
-            self.worker_update_database()
+            rsp = self.worker_update_database()
+            if rsp == False:
+                critical_window('Beim Synchronisieren ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass eine Internetverbindung beseteht und versuchen Sie es erneut.')
+                return
             table_lama.clear_cache()
         # database =
         # if self.chosen_variation == None:
@@ -4719,6 +4728,11 @@ class Ui_MainWindow(object):
         thread.start()
         thread.exit()
         Dialog_checkchanges.exec()
+
+        if self.reset_successfull == False:
+            return False
+        else:
+            return True
 
     def button_speichern_pressed(self):
         # self.creator_mode = "user"
@@ -4859,8 +4873,10 @@ class Ui_MainWindow(object):
             rsp = check_branches()
             if rsp == False:
                 print("Updating database ...")
-                self.worker_update_database()
-
+                rsp = self.worker_update_database()
+                if rsp == False:
+                    critical_window('Beim Synchronisieren ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass eine Internetverbindung beseteht und versuchen Sie es erneut.')
+                    return
                 table_lama.clear_cache()
                 self.max_integer = self.get_max_integer(table_lama, typ, self.themen_auswahl[0])
 
@@ -4884,8 +4900,10 @@ class Ui_MainWindow(object):
 
         content = content_images_replaced
         bilder = list_images_new_names
-        add_file(table_lama, name, themen, titel, af, quelle, content, punkte, pagebreak, klasse, info, bilder, draft, abstand)
-
+        rsp = add_file(table_lama, name, themen, titel, af, quelle, content, punkte, pagebreak, klasse, info, bilder, draft, abstand)
+        if rsp == True:
+            critical_window('Beim Synchronisieren ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass eine Internetverbindung beseteht und versuchen Sie es erneut.')
+            return
 
         titel = list_information[1]
 

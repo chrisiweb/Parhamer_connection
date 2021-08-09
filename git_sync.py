@@ -4,7 +4,7 @@ from config_start import database, lama_developer_credentials, lama_user_credent
 from dulwich import porcelain
 import stat
 import posixpath
-from urllib3.exceptions import MaxRetryError
+from urllib3.exceptions import MaxRetryError, ProtocolError
 # from datetime import datetime
 # from standard_dialog_windows import information_window
 # from time import sleep
@@ -96,8 +96,12 @@ def git_reset_repo_to_origin():
         # return True
 
     except MaxRetryError:
+        print('MaxRetryError')
         return False
 
+    except ProtocolError:
+        print('ProtocolError')
+        return False
 
 
 
