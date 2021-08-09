@@ -61,6 +61,7 @@ class Worker_UpdateDatabase(QtCore.QObject):
     @QtCore.pyqtSlot()
     def task(self):
         Ui_MainWindow.reset_successfull = git_reset_repo_to_origin()
+        print(Ui_MainWindow.reset_successfull)
         self.finished.emit()
 
 # class Worker_PushDatabase(QtCore.QObject):
@@ -4493,6 +4494,7 @@ class Ui_MainWindow(object):
             rsp = self.worker_update_database()
             if rsp == False:
                 critical_window('Beim Synchronisieren ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass eine Internetverbindung beseteht und versuchen Sie es erneut.')
+                QtWidgets.QApplication.restoreOverrideCursor()
                 return
             lama_table.clear_cache()
 
@@ -4579,6 +4581,7 @@ class Ui_MainWindow(object):
             rsp = self.worker_update_database()
             if rsp == False:
                 critical_window('Beim Synchronisieren ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass eine Internetverbindung beseteht und versuchen Sie es erneut.')
+                QtWidgets.QApplication.restoreOverrideCursor()
                 return
             lama_table.clear_cache()   
         # image_path = os.path(path_programm, '_database')
@@ -4672,6 +4675,7 @@ class Ui_MainWindow(object):
             rsp = self.worker_update_database()
             if rsp == False:
                 critical_window('Beim Synchronisieren ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass eine Internetverbindung beseteht und versuchen Sie es erneut.')
+                QtWidgets.QApplication.restoreOverrideCursor()
                 return
             table_lama.clear_cache()
         # database =
@@ -4874,8 +4878,10 @@ class Ui_MainWindow(object):
             if rsp == False:
                 print("Updating database ...")
                 rsp = self.worker_update_database()
+                
                 if rsp == False:
                     critical_window('Beim Synchronisieren ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass eine Internetverbindung beseteht und versuchen Sie es erneut.')
+                    QtWidgets.QApplication.restoreOverrideCursor()
                     return
                 table_lama.clear_cache()
                 self.max_integer = self.get_max_integer(table_lama, typ, self.themen_auswahl[0])
@@ -4901,8 +4907,10 @@ class Ui_MainWindow(object):
         content = content_images_replaced
         bilder = list_images_new_names
         rsp = add_file(table_lama, name, themen, titel, af, quelle, content, punkte, pagebreak, klasse, info, bilder, draft, abstand)
-        if rsp == True:
+        QtWidgets.QApplication.restoreOverrideCursor()
+        if rsp == False:
             critical_window('Beim Synchronisieren ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass eine Internetverbindung beseteht und versuchen Sie es erneut.')
+            QtWidgets.QApplication.restoreOverrideCursor()
             return
 
         titel = list_information[1]

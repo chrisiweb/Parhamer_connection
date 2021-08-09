@@ -47,11 +47,11 @@ from lama_stylesheets import (
     StyleSheet_subwindow_ausgleichspunkte,
     StyleSheet_subwindow_ausgleichspunkte_dark_mode,
 )
-from create_pdf import create_tex, create_pdf, check_if_variation
+from create_pdf import create_tex, create_pdf, check_if_variation, create_info_box
 import tex_minimal
 from processing_window import Ui_Dialog_processing
 import bcrypt
-from database_commands import _database, _local_database, _database_addon, get_table, update_data, delete_file 
+from database_commands import _database, _local_database, _database_addon, get_aufgabe_total, get_aufgabentyp, get_table, update_data, delete_file 
 from filter_commands import get_filter_string, filter_items
 from sort_items import order_gesammeltedateien
 from upload_database import action_push_database
@@ -2474,7 +2474,7 @@ class Ui_Dialog_edit_drafts(object):
             path_localappdata_lama, "Teildokument", "draft_preview.tex"
             ) 
         with open(file_path, "w", encoding="utf8") as file:
-            file.write(tex_minimal.tex_preamble())
+            file.write(tex_minimal.tex_preamble(info="info_on"))
             file.write(content)
             file.write(tex_minimal.tex_end)
 
@@ -2483,6 +2483,7 @@ class Ui_Dialog_edit_drafts(object):
         
 
     def create_content(self, chosen_list):
+        print(chosen_list)
         content = ""
         for name in chosen_list:
             dict_aufgabe = self.get_dict_aufgabe(name)
@@ -2494,7 +2495,10 @@ class Ui_Dialog_edit_drafts(object):
                 begin = tex_minimal.begin_beispiel_lang()
                 end = tex_minimal.end_beispiel_lang
             
-            content = content + begin + dict_aufgabe['content'] +end + "\n\n\\newpage\n\n"
+            aufgabe_total = get_aufgabe_total(name, self.typ)
+            info_box = create_info_box(aufgabe_total)
+
+            content = content + begin + dict_aufgabe['content'] +end + "\n" + info_box + "\n\n\\newpage\n\n"
 
         return content
 

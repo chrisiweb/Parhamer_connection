@@ -93,7 +93,7 @@ def git_reset_repo_to_origin():
         ########
 
 
-        # return True
+        return True
 
     except MaxRetryError:
         print('MaxRetryError')
