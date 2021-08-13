@@ -117,8 +117,6 @@ class Ui_MainWindow(object):
 
         # elif sys.platform.startswith("darwin"):
 
-        # print(self.developer_mode_active)
-        # with open(lama)
         # self.developer_mode_active = False
 
         try:
@@ -3507,7 +3505,6 @@ class Ui_MainWindow(object):
 
     def show_support(self):
         QtWidgets.QApplication.restoreOverrideCursor()
-        print(self.display_mode)
         link = "https://www.buymeacoffee.com/lama.schule"
         if self.display_mode == 1:
             color = "rgb(88, 111, 124)"
@@ -3754,10 +3751,8 @@ class Ui_MainWindow(object):
             klasse, nummer = aufgabe.split(".", 1)
             index = list_klassen.index(klasse)
             self.tab_widget_cr_cria.setCurrentIndex(index)
-            # print(self.dict_widget_variables)
             for thema in aufgabe_total["themen"]:
                 klasse_thema, kapitel, unterkapitel = thema.split(".")
-                # print(kapitel)
                 combobox_thema = "combobox_kapitel_creator_cria_{}".format(klasse)
                 dict_klasse_name = eval("dict_{}_name".format(klasse))
                 thema_name = dict_klasse_name[kapitel]
@@ -3765,8 +3760,7 @@ class Ui_MainWindow(object):
                 index = self.dict_widget_variables[combobox_thema].findText(
                     thema_name + " (" + kapitel + ")"
                 )
-                # print(index)
-                # print(self.dict_widget_variables[combobox_thema])
+
                 self.dict_widget_variables[combobox_thema].setCurrentIndex(index)
                 # continue
 
@@ -3865,8 +3859,7 @@ class Ui_MainWindow(object):
                     return
 
             typ = get_aufgabentyp(self.chosen_program, _file_)
-            # _file_ = _file_.replace(" (lokal)", "")
-            # print(_file_)
+
             aufgabe_total_original = get_aufgabe_total(_file_, typ)
 
             self.enable_widgets_editor(True)
@@ -4041,8 +4034,7 @@ class Ui_MainWindow(object):
         if is_empty(self.plainTextEdit.toPlainText()) == True:
             return 'Bitte geben Sie den LaTeX-Quelltext der Aufgabe im Bereich "Aufgabeneingabe" ein.'
 
-        # print(self.check_for_admin_mode())
-        # print(len(self.lineEdit_quelle.text()))
+
         if is_empty(self.lineEdit_quelle.text()) == True:
             return "Bitte geben Sie die Quelle an."
 
@@ -4228,7 +4220,7 @@ class Ui_MainWindow(object):
             variation_number = list_[-1]
             # _,variation_number = self.chosen_variation.split(" - ")
             number = "{0}[{1}]".format(variation_number, self.max_integer + 1)
-            # print(number)
+
 
         # if typ_save == ["admin", 1]:
         #     number = "i." + str(number)
@@ -4285,7 +4277,7 @@ class Ui_MainWindow(object):
             new_image_name = self.edit_image_name(typ_save, old_image_name)
 
             new_image_path = os.path.join(parent_image_path, new_image_name)
-            # print(new_image_path)
+
             try:
                 shutil.copy(old_image_path, new_image_path)
             except FileNotFoundError:
@@ -4438,7 +4430,6 @@ class Ui_MainWindow(object):
 
         name = self.chosen_file_to_edit
 
-        # print(name)
 
         typ = get_aufgabentyp(self.chosen_program, name)
 
@@ -4497,7 +4488,6 @@ class Ui_MainWindow(object):
 
         file_id = lama_table.get(_file_.name == aufgabe).doc_id
 
-        # print("file ID: {}".format(file_id))
 
         if typ == 1:
             lama_table.update({"name": new_name}, doc_ids=[file_id])
@@ -4730,8 +4720,7 @@ class Ui_MainWindow(object):
                 name, self.chosen_file_to_edit
             ),
         )
-        # print(self.chosen_file_to_edit)
-        # print(name)
+
         information_window("Die Änderungen wurden erfolgreich gespeichert.")
 
         self.suchfenster_reset(True)
@@ -4792,8 +4781,6 @@ class Ui_MainWindow(object):
         except AttributeError:
             self.chosen_variation = None
 
-        # print(self.chosen_variation)
-        # return
         Dialog_speichern = self.open_dialogwindow_save(information)
 
         response = Dialog_speichern.exec()
@@ -4822,9 +4809,6 @@ class Ui_MainWindow(object):
                 if response == 0:
                     return
                 typ_save = self.ui_save.get_output()
-        # print(typ_save)
-        # print(self.chosen_variation)
-        # print(list_information)
 
         self.themen_auswahl = self.get_themen_auswahl()
 
@@ -4847,7 +4831,6 @@ class Ui_MainWindow(object):
         ############################################################################
 
         response = self.replace_image_name(typ_save)
-        # print(response)
 
         if response[0] == False:
             warning_window(
@@ -4995,21 +4978,6 @@ class Ui_MainWindow(object):
         refresh_ddb(self)
 
         self.adapt_choosing_list("sage")
-
-    # def action_rewrite(self):
-    #     print('test')
-    #     _file_ = Query()
-    #     table_1 = _database.table('table_lama_1')
-    #     # print(table_1.contains(_file_.name == "AG 1.1 - 1"))
-    #     #
-
-    #     def your_operation():
-    #         def transform(doc):
-    #             # doc['content']= re.sub(r"\t\t\t\t\t+", "\t", doc['content'])
-    #             doc['content']= re.sub(r"\t\t\t\t+", "\t", doc['content'])
-    #         return transform
-    #     table_1.update(your_operation())
-    #     print('done')
 
     def push_full_database(self):
         print("Checking divergencies ...")
@@ -5914,9 +5882,7 @@ class Ui_MainWindow(object):
         spinbox_abstand.setValue(abstand)
         self.dict_variablen_abstand[aufgabe] = spinbox_abstand
 
-        spinbox_abstand.valueChanged.connect(
-            partial(self.spinbox_abstand_changed, aufgabe, spinbox_abstand)
-        )
+        spinbox_abstand.valueChanged.connect(self.spinbox_abstand_changed)
         verticalLayout_abstand.addWidget(spinbox_abstand)
 
         num_ap = self.count_ausgleichspunkte(aufgabe_total["content"])
@@ -5963,7 +5929,7 @@ class Ui_MainWindow(object):
 
     def delete_widget(self, layout, index):
         try:
-            print(layout.itemAt(index).widget())
+            # print(layout.itemAt(index).widget())
             # layout.itemAt(index).widget().hide()
             layout.itemAt(index).widget().setParent(None)
             # layout.itemAt(index).widget().deleteLater()
@@ -6035,17 +6001,6 @@ class Ui_MainWindow(object):
 
         self.update_punkte()
 
-        # pos_value = self.scrollArea_chosen.verticalScrollBar().value()
-        # pos_maximum = self.scrollArea_chosen.verticalScrollBar().maximum()
-        # print(pos_maximum)
-        # # height_aufgabe = 110
-        # # print(self.get_aufgabenverteilung())
-        # # num_typ2 = self.get_aufgabenverteilung()[1]
-        # # pos_end_typ1 = pos_maximum - height_aufgabe*num_typ2 + 400
-        # self.scrollbar_position = [pos_value, pos_end_typ1]
-        # self.scrollArea_chosen.verticalScrollBar().setValue(pos_maximum)
-
-        # print(self.scrollbar_position)
 
         QtWidgets.QApplication.restoreOverrideCursor()
 
@@ -6054,11 +6009,8 @@ class Ui_MainWindow(object):
 
         # content_no_environment = split_content_no_environment(content)
 
-        # print(content_no_environment)
-        # return
-        # print(aufgabe)
         typ = get_aufgabentyp(self.chosen_program, aufgabe)
-        # return
+
         if typ == 2:
             split_content = self.split_content(aufgabe, content)
 
@@ -6113,9 +6065,6 @@ class Ui_MainWindow(object):
         else:
             sage_individual_change = None
 
-        # print(sage_individual_change)
-        # print(list_sage_ausgleichspunkte_chosen)
-        # print(list_sage_hide_show_items_chosen)
 
         Dialog = QtWidgets.QDialog(
             None,
@@ -6143,8 +6092,6 @@ class Ui_MainWindow(object):
         if ui.sage_individual_change != None:
             self.dict_sage_individual_change[aufgabe] = ui.sage_individual_change
 
-        # print(self.dict_sage_individual_change)
-        # print(self.dict_alle_aufgaben_sage)
         if typ == 2:
             if not is_empty(ui.list_sage_ausgleichspunkte_chosen):
                 self.dict_sage_ausgleichspunkte_chosen[
@@ -6160,8 +6107,6 @@ class Ui_MainWindow(object):
             elif aufgabe in self.dict_sage_hide_show_items_chosen:
                 del self.dict_sage_hide_show_items_chosen[aufgabe]
 
-            # print(self.dict_sage_ausgleichspunkte_chosen)
-            # print(self.dict_sage_hide_show_items_chosen)
             self.dict_variablen_label[aufgabe].setText(
                 "{}".format(len(ui.list_sage_ausgleichspunkte_chosen))
             )
@@ -6505,7 +6450,6 @@ class Ui_MainWindow(object):
                 filtered_items.append(all)
 
         filtered_items.sort(key=order_gesammeltedateien)
-        # print(filtered_items)
 
         self.add_items_to_listwidget(typ, listWidget, filtered_items)
 
@@ -6624,23 +6568,17 @@ class Ui_MainWindow(object):
         with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
             vorschau.write(header)
             vorschau.write(begin)
-            # print(aufgabe)
-            # print(self.dict_sage_hide_show_items_chosen)
-            # print(self.dict_sage_ausgleichspunkte_chosen)
-            # print(self.dict_sage_individual_change)
+
             if aufgabe in self.dict_sage_individual_change:
                 vorschau.write(self.dict_sage_individual_change[aufgabe])
             elif aufgabe in self.dict_sage_ausgleichspunkte_chosen:
                 full_content = aufgabe_total["content"]
-                # print(content)
 
                 split_content = self.split_content(aufgabe, aufgabe_total["content"])
                 content = edit_content_ausgleichspunkte(
                     self, aufgabe, split_content, full_content
                 )
 
-                # print(content)
-                # return
                 # content = "\n".join(split_content)
                 vorschau.write(content)
             elif aufgabe in self.dict_sage_hide_show_items_chosen:
@@ -6651,7 +6589,6 @@ class Ui_MainWindow(object):
                     self, aufgabe, split_content, full_content
                 )
 
-                # print(content)
                 vorschau.write(content)
                 # for index in self.dict_sage_ausgleichspunkte_chosen[aufgabe]:
                 #     split_content[index] = split_content[index].replace("SUBitem", "")
@@ -6799,42 +6736,12 @@ class Ui_MainWindow(object):
                     )
                 )
                 continue
-            # print(aufgabe)
-            # print(aufgabe_total)
 
-            # if self.comboBox_pruefungstyp.currentText() == "Quiz":
 
-            #     with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
-            #         for i in range(2):
-            #             vorschau.write(
-            #                 "\n\n\\setcounter{{Antworten}}{{{0}}}\n\n".format(i)
-            #             )
-            #             if i == 0:
-            #                 vorschau.write(
-            #                     "\\title{{Aufgabe {0}}}\maketitle\n\n".format(
-            #                         aufgaben_nummer
-            #                     )
-            #                 )
-            #                 solution = False
-            #             elif i == 1:
-            #                 vorschau.write(
-            #                     "\\title{{\\textcolor{{red}}{{Aufgabe {0} (Lösung)}}}}\maketitle\n\n".format(
-            #                         aufgaben_nummer
-            #                     )
-            #                 )
-            #                 solution = True
-
-            #             content = edit_content_quiz(split_content[1], solution)
-            #             vorschau.write(
-            #                 "\\begin{frame}\n" + content + "\n\\end{frame}\n\n"
-            #             )
-
-            #     aufgaben_nummer += 1
-            # else:
             first_typ2 = self.add_content_to_tex_file(
                 aufgabe, aufgabe_total, filename_vorschau, first_typ2
             )
-        # return
+
         if (
             self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
             != "Grundkompetenzcheck"
@@ -6998,7 +6905,7 @@ class Ui_MainWindow(object):
             fbpassword_check = []
             fbpassword_check.append(f.read().replace(" ", "").replace("\n", ""))
             gmail_password = fbpassword_check[0]
-            # print(gmail_password)
+
         except FileNotFoundError:
             pw_msg = QtWidgets.QInputDialog(
                 None,
@@ -7257,11 +7164,7 @@ if __name__ == "__main__":
         return i + 1
 
     i = 0
-    # for i in range(1, 11):
-    #     print(i)
-    #     progressBar.setValue(i)
-    #     t = time.time()
-    #     while time.time() < t + 0.1:
+
     app.processEvents()
 
     # Simulate something that takes time
