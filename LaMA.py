@@ -8,8 +8,12 @@ print("Loading...")
 # from urllib import request
 from dulwich.objectspec import parse_commit_range
 from start_window import check_if_database_exists
+
 check_if_database_exists()
-from prepare_content_vorschau import edit_content_ausgleichspunkte, edit_content_hide_show_items
+from prepare_content_vorschau import (
+    edit_content_ausgleichspunkte,
+    edit_content_hide_show_items,
+)
 from git_sync import git_reset_repo_to_origin
 from standard_dialog_windows import question_window
 from config import *
@@ -17,6 +21,7 @@ from lama_colors import *
 import time
 from create_new_widgets import add_action
 import json
+
 # import splash_screen
 # from splash_screen import SplashWindow
 from config_start import (
@@ -33,6 +38,7 @@ import sys
 import os
 
 from tinydb import TinyDB, Query
+
 # from tinydb.operations import update
 
 # import git
@@ -40,10 +46,8 @@ from tinydb import TinyDB, Query
 
 
 from urllib.request import urlopen, urlretrieve
+
 # from urllib.error import URLError
-
-
-
 
 
 # class Worker_DownloadDatabase(QtCore.QObject):
@@ -63,6 +67,7 @@ class Worker_UpdateDatabase(QtCore.QObject):
         Ui_MainWindow.reset_successfull = git_reset_repo_to_origin()
         print(Ui_MainWindow.reset_successfull)
         self.finished.emit()
+
 
 # class Worker_PushDatabase(QtCore.QObject):
 #     finished = QtCore.pyqtSignal()
@@ -192,10 +197,9 @@ class Ui_MainWindow(object):
             refresh_ddb(self)
             QtWidgets.QApplication.restoreOverrideCursor()
 
-        
-        self.chosen_gui = 'widgets_search'
-        if self.chosen_program == 'cria':
-            self.chosen_gui = self.chosen_gui + '_cria'
+        self.chosen_gui = "widgets_search"
+        if self.chosen_program == "cria":
+            self.chosen_gui = self.chosen_gui + "_cria"
 
         # if self.chosen_program == "cria":
         #     self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
@@ -277,7 +281,6 @@ class Ui_MainWindow(object):
         # self.menuDraftControl = QtWidgets.QMenu(self.menuDeveloper)
         # self.menuDraftControl.setObjectName(_fromUtf8("menuDraftControl"))
         # self.menuDeveloper.setStyleSheet("background-color: {};".format(get_color(blue_4)))
-        
 
         # self.menuBild_einbinden = QtWidgets.QMenu(self.menuBar)
         # self.menuBild_einbinden.setObjectName(_fromUtf8("menuBild_einbinden"))
@@ -285,7 +288,6 @@ class Ui_MainWindow(object):
 
         # self.actionReset_creator = add_action(self.menuDatei, "Reset", self.suchfenster_reset)
         # self.actionReset.setShortcut("F4")
-
 
         self.actionRefresh_Database = add_action(
             MainWindow,
@@ -297,7 +299,6 @@ class Ui_MainWindow(object):
 
         # self.menuDatei.addSeparator()
 
-
         self.actionPush_Database = add_action(
             MainWindow,
             self.menuDeveloper,
@@ -305,12 +306,8 @@ class Ui_MainWindow(object):
             self.push_full_database,
         )
 
-
         self.actionPush_Database = add_action(
-            MainWindow,
-            self.menuDeveloper,
-            "Entwürfe prüfen",
-            self.draft_control,
+            MainWindow, self.menuDeveloper, "Entwürfe prüfen", self.draft_control,
         )
 
         # self.actionPush_Database = add_action(
@@ -337,7 +334,6 @@ class Ui_MainWindow(object):
 
         # if self.developer_mode_active == False:
         #     self.actionPush_Database.setVisible(False)
-
 
         self.menuDatei.addSeparator()
 
@@ -404,7 +400,6 @@ class Ui_MainWindow(object):
         )
         self.actionSage.setShortcut("F2")
 
-
         self.menuSage.addSeparator()
 
         self.actionSave = add_action(
@@ -421,8 +416,8 @@ class Ui_MainWindow(object):
 
         self.menuSage.addSeparator()
 
-        self.actionRestore_sage= add_action(
-            MainWindow, self.menuSage, "", partial(self.sage_load, autosave = True)
+        self.actionRestore_sage = add_action(
+            MainWindow, self.menuSage, "", partial(self.sage_load, autosave=True)
         )
         self.update_label_restore_action()
 
@@ -432,8 +427,6 @@ class Ui_MainWindow(object):
         self.actionReset_sage.setEnabled(False)
         # self.actionReset_sage.setVisible(False)
 
-
-
         self.actionNeu = add_action(
             MainWindow,
             self.menuNeu,
@@ -442,13 +435,10 @@ class Ui_MainWindow(object):
         )
         self.actionNeu.setShortcut("F3")
 
-        # self.menuNeu.addSeparator()        
+        # self.menuNeu.addSeparator()
 
         self.actionEdit_Files = add_action(
-            MainWindow,
-            self.menuNeu,
-            "Aufgabe bearbeiten",
-            self.action_edit_files
+            MainWindow, self.menuNeu, "Aufgabe bearbeiten", self.action_edit_files
         )
         # self.actionBild_einbinden = add_action(
         #     MainWindow, self.menuBild_einbinden, "Durchsuchen...", self.btn_add_image_pressed
@@ -469,9 +459,8 @@ class Ui_MainWindow(object):
             MainWindow,
             self.menuUpdate,
             '"srdp-mathematik.sty" aktualisieren',
-            partial(self.update_style_package, "srdp-mathematik.sty") ,
+            partial(self.update_style_package, "srdp-mathematik.sty"),
         )
-        
 
         self.actionUpdate_tabu = add_action(
             MainWindow,
@@ -481,7 +470,7 @@ class Ui_MainWindow(object):
         )
 
         self.menuOptionen.addAction(self.menuUpdate.menuAction())
-        
+
         self.actionInfo = add_action(
             MainWindow, self.menuHelp, "Über LaMA", self.show_info
         )
@@ -514,9 +503,8 @@ class Ui_MainWindow(object):
             MainWindow, self.menuOptionen, label, self.activate_developermode
         )
 
-
         # self.menuOptionen.addSeparator()
-        
+
         # self.actionComplete_reset = add_action(MainWindow, self.menuOptionen, "LaMA vollständig zurücksetzen", self.complete_reset)
 
         self.menuBar.addAction(self.menuDatei.menuAction())
@@ -532,7 +520,6 @@ class Ui_MainWindow(object):
 
         self.menuBar.addAction(self.menuHelp.menuAction())
 
-   
         self.groupBox_ausgew_gk = create_new_groupbox(
             self.centralwidget, "Ausgewählte Grundkompetenzen"
         )
@@ -669,22 +656,24 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_aufgabentyp = create_new_horizontallayout()
 
-        self.label_aufgabentyp = create_new_label(
-            self.centralwidget, "Aufgabentyp:"
-        )
+        self.label_aufgabentyp = create_new_label(self.centralwidget, "Aufgabentyp:")
         self.combobox_aufgabentyp = create_new_combobox(self.centralwidget)
         self.combobox_aufgabentyp.setSizePolicy(SizePolicy_fixed)
         add_new_option(self.combobox_aufgabentyp, 0, "Typ1")
         add_new_option(self.combobox_aufgabentyp, 1, "Typ2")
-        self.combobox_aufgabentyp.currentIndexChanged.connect(self.chosen_aufgabenformat_typ)
+        self.combobox_aufgabentyp.currentIndexChanged.connect(
+            self.chosen_aufgabenformat_typ
+        )
         self.horizontalLayout_aufgabentyp.addWidget(self.label_aufgabentyp)
-        self.horizontalLayout_aufgabentyp.addWidget(self.combobox_aufgabentyp, QtCore.Qt.AlignLeft)
-        
+        self.horizontalLayout_aufgabentyp.addWidget(
+            self.combobox_aufgabentyp, QtCore.Qt.AlignLeft
+        )
+
         # self.horizontalspacer_at = QtWidgets.QSpacerItem(
         #     40, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
         # )
         # self.horizontalLayout_aufgabentyp.addSpacerItem(self.horizontalspacer_at)
-        self.horizontalLayout_aufgabentyp.addStretch() ## problem with creator gui
+        self.horizontalLayout_aufgabentyp.addStretch()  ## problem with creator gui
         self.label_aufgabentyp.setMaximumHeight(18)
 
         self.gridLayout.addLayout(self.horizontalLayout_aufgabentyp, 0, 0, 1, 1)
@@ -708,7 +697,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_combobox.addWidget(self.combobox_searchtype)
 
         self.gridLayout.addLayout(self.horizontalLayout_combobox, 0, 1, 1, 1)
-        
+
         self.combobox_searchtype.hide()
 
         self.groupBox_themen_klasse = create_new_groupbox(
@@ -1013,7 +1002,7 @@ class Ui_MainWindow(object):
         self.button_variation_cr = create_new_button(
             self.groupBox_variation_cr,
             "Variation vorhandender Aufgabe...",
-            partial(self.button_variation_cr_pressed, 'creator'),
+            partial(self.button_variation_cr_pressed, "creator"),
         )
         self.button_variation_cr.setMinimumWidth(0)
         self.verticalLayout_variation.addWidget(self.button_variation_cr)
@@ -1032,7 +1021,7 @@ class Ui_MainWindow(object):
         self.button_choose_file = create_new_button(
             self.groupBox_choose_file,
             "Aufgabe suchen...",
-            partial(self.button_variation_cr_pressed, 'editor'),
+            partial(self.button_variation_cr_pressed, "editor"),
         )
         self.button_choose_file.setMinimumWidth(0)
         self.verticalLayout_choose_file.addWidget(self.button_choose_file)
@@ -1242,7 +1231,9 @@ class Ui_MainWindow(object):
         self.label_bild_leer.setFocusPolicy(QtCore.Qt.NoFocus)
         self.gridLayout.addWidget(self.groupBox_bilder, 7, 0, 1, 1)
 
-        self.btn_add_image = create_new_button(self.groupBox_bilder, "Hinzufügen", self.btn_add_image_pressed)
+        self.btn_add_image = create_new_button(
+            self.groupBox_bilder, "Hinzufügen", self.btn_add_image_pressed
+        )
         self.verticalLayout.addWidget(self.btn_add_image)
         self.groupBox_bilder.hide()
 
@@ -1381,30 +1372,33 @@ class Ui_MainWindow(object):
 
         self.groupBox_klassen_cr.hide()
 
-
         self.groupBox_abstand = create_new_groupbox(self.centralwidget, "Abstand")
         self.groupBox_abstand.setSizePolicy(SizePolicy_fixed)
         self.groupBox_abstand.setToolTip("Abstand unter der Aufgabe (in cm)")
-        self.horizontalLayout_abstand = create_new_horizontallayout(self.groupBox_abstand)
+        self.horizontalLayout_abstand = create_new_horizontallayout(
+            self.groupBox_abstand
+        )
         self.spinBox_abstand = create_new_spinbox(self.groupBox_abstand)
         self.horizontalLayout_abstand.addWidget(self.spinBox_abstand)
-        self.gridLayout.addWidget(self.groupBox_abstand, 0,5,1,1)
+        self.gridLayout.addWidget(self.groupBox_abstand, 0, 5, 1, 1)
         self.groupBox_abstand.hide()
 
-
-        self.groupBox_pagebreak = create_new_groupbox(self.centralwidget, "Seitenumbruch")
+        self.groupBox_pagebreak = create_new_groupbox(
+            self.centralwidget, "Seitenumbruch"
+        )
         self.groupBox_pagebreak.setSizePolicy(SizePolicy_fixed)
-        self.horizontalLayout_pagebreak = create_new_horizontallayout(self.groupBox_pagebreak)
+        self.horizontalLayout_pagebreak = create_new_horizontallayout(
+            self.groupBox_pagebreak
+        )
         self.comboBox_pagebreak = create_new_combobox(self.groupBox_pagebreak)
         add_new_option(self.comboBox_pagebreak, 0, "nicht möglich")
         add_new_option(self.comboBox_pagebreak, 1, "möglich")
         self.horizontalLayout_pagebreak.addWidget(self.comboBox_pagebreak)
-        self.gridLayout.addWidget(self.groupBox_pagebreak, 0,6,1,1)
+        self.gridLayout.addWidget(self.groupBox_pagebreak, 0, 6, 1, 1)
         self.groupBox_pagebreak.hide()
 
-
         self.cb_matura_tag = create_new_checkbox(self.centralwidget, "Matura")
-        self.gridLayout.addWidget(self.cb_matura_tag, 0,7,1,1)
+        self.gridLayout.addWidget(self.cb_matura_tag, 0, 7, 1, 1)
         self.cb_matura_tag.hide()
         self.gridLayout.setRowStretch(7, 1)
 
@@ -1478,10 +1472,9 @@ class Ui_MainWindow(object):
         )
         self.groupBox_quelle.hide()
 
-
         self.horizontalLayout_buttons = create_new_horizontallayout()
         self.gridLayout.addLayout(self.horizontalLayout_buttons, 8, 1, 1, 7)
-        
+
         self.horizontalLayout_buttons.addStretch()
         self.pushButton_save = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_save.setObjectName(_fromUtf8("pushButton_save"))
@@ -1493,32 +1486,38 @@ class Ui_MainWindow(object):
         # # self.pushButton_save.setShortcut(_translate("MainWindow", "Return", None))
         self.pushButton_save.hide()
 
-
-        self.pushButton_vorschau_edit = create_new_button(self.centralwidget, "Vorschau", self.button_vorschau_edit_pressed)
+        self.pushButton_vorschau_edit = create_new_button(
+            self.centralwidget, "Vorschau", self.button_vorschau_edit_pressed
+        )
         self.pushButton_vorschau_edit.setSizePolicy(SizePolicy_fixed)
         self.horizontalLayout_buttons.addWidget(self.pushButton_vorschau_edit)
         self.pushButton_vorschau_edit.hide()
 
-        self.pushButton_delete_file = create_new_button(self.centralwidget, "Aufgabe löschen", self.button_delete_file_pressed) #
+        self.pushButton_delete_file = create_new_button(
+            self.centralwidget, "Aufgabe löschen", self.button_delete_file_pressed
+        )  #
         # self.pushButton_delete_file.setStyleSheet("color: red")
         self.pushButton_delete_file.setSizePolicy(SizePolicy_fixed)
         self.horizontalLayout_buttons.addWidget(self.pushButton_delete_file)
         self.pushButton_delete_file.hide()
 
-
-        self.pushButton_save_as_variation_edit = create_new_button(self.centralwidget, "Als Variation einer anderen Aufgabe speichern", self.pushButton_save_as_variation_edit_pressed)
+        self.pushButton_save_as_variation_edit = create_new_button(
+            self.centralwidget,
+            "Als Variation einer anderen Aufgabe speichern",
+            self.pushButton_save_as_variation_edit_pressed,
+        )
         self.pushButton_save_as_variation_edit.setSizePolicy(SizePolicy_fixed)
         self.horizontalLayout_buttons.addWidget(self.pushButton_save_as_variation_edit)
         self.pushButton_save_as_variation_edit.hide()
 
-        self.pushButton_save_edit = create_new_button(self.centralwidget, "Änderung speichern", self.button_save_edit_pressed)
+        self.pushButton_save_edit = create_new_button(
+            self.centralwidget, "Änderung speichern", self.button_save_edit_pressed
+        )
         self.pushButton_save_edit.setSizePolicy(SizePolicy_fixed)
         self.pushButton_save_edit.setFocusPolicy(QtCore.Qt.NoFocus)
         self.horizontalLayout_buttons.addWidget(self.pushButton_save_edit)
         self.pushButton_save_edit.hide()
 
-
-        
         self.lineEdit_titel.setFocus()
         self.tab_widget_gk.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -2071,8 +2070,7 @@ class Ui_MainWindow(object):
             self.comboBox_klassen_fb_cria.addItem("")
 
             self.comboBox_klassen_fb_cria.setItemText(
-                i,
-                _translate("MainWindow", all[1] + ". Klasse", None),
+                i, _translate("MainWindow", all[1] + ". Klasse", None),
             )
             i += 1
 
@@ -2260,7 +2258,7 @@ class Ui_MainWindow(object):
         self.pushButton_titlepage.clicked.connect(self.define_titlepage)
 
         if loaded_lama_file_path != "":
-            self.sage_load(external_file_loaded = True)
+            self.sage_load(external_file_loaded=True)
 
         ############################################################################################
         ##############################################################################################
@@ -2285,7 +2283,6 @@ class Ui_MainWindow(object):
 
         # self.cb_solution.setText(_translate("MainWindow", "Lösungen anzeigen", None))
         # self.cb_drafts.setText(_translate("MainWindow", "Entwürfe anzeigen", None))
-
 
         self.combobox_searchtype.setItemText(
             0,
@@ -2385,8 +2382,7 @@ class Ui_MainWindow(object):
             self.update_gui("widgets_search")
 
     def open_dialogwindow_erstellen(
-        self,
-        dict_titlepage,
+        self, dict_titlepage,
     ):
         self.Dialog = QtWidgets.QDialog(
             None,
@@ -2425,7 +2421,9 @@ class Ui_MainWindow(object):
                     subprocess.Popen('explorer "{}"'.format(file_path))
 
     def check_admin_entry(self):
-        if "###" in self.lineEdit_titel.text() or (self.chosen_gui == "widgets_edit" and self.developer_mode_active == True):
+        if ("###" in self.lineEdit_titel.text() and self.chosen_program == "lama") or (
+            self.chosen_gui == "widgets_edit" and self.developer_mode_active == True
+        ):
             self.cb_matura_tag.show()
         else:
             self.cb_matura_tag.hide()
@@ -2616,17 +2614,22 @@ class Ui_MainWindow(object):
 
     def check_for_update(self):
         try:
-            link = "https://github.com/chrisiweb/lama_latest_update/blob/master/README.md"
-            f= urlopen(link)
-            url_readme_version = f.read().decode('utf-8')
-            latest_version = re.search("Aktuelle Version: \[(.+)\]", url_readme_version).group(1)
+            link = (
+                "https://github.com/chrisiweb/lama_latest_update/blob/master/README.md"
+            )
+            f = urlopen(link)
+            url_readme_version = f.read().decode("utf-8")
+            latest_version = re.search(
+                "Aktuelle Version: \[(.+)\]", url_readme_version
+            ).group(1)
             print(latest_version)
             if __version__ == latest_version:
                 return
         except Exception:
-            print('Fehler beim Überprüfen der Version. Überprüfung wird übersprungen ...')
+            print(
+                "Fehler beim Überprüfen der Version. Überprüfung wird übersprungen ..."
+            )
             return
-
 
         # return
         # for i in range(5):
@@ -2653,7 +2656,7 @@ class Ui_MainWindow(object):
         # update_check.append(__version__)
 
         # if update_check[0] != update_check[1]:
-            
+
         if sys.platform.startswith("linux"):
             information_window(
                 "Es ist ein neues Update verfügbar.",
@@ -2668,11 +2671,8 @@ class Ui_MainWindow(object):
                 "Neue Version verfügbar",
             )
 
-
             if ret == True:
-                if sys.platform.startswith(
-                    "darwin"
-                ):
+                if sys.platform.startswith("darwin"):
                     opened_file = os.path.basename(sys.argv[0])
                     name, extension = os.path.splitext(opened_file)
                     # print('not yet working')
@@ -2697,13 +2697,14 @@ class Ui_MainWindow(object):
                             'Fehler:\n"{}"'.format(e),
                         )
                 else:
-                    print('not finished')
+                    print("not finished")
                     download_link = "https://github.com/mylama/lama/releases/latest/download/LaMA.exe"
-                    path_installer = os.path.join(path_home, "Downloads", "LaMA_installer.exe")
+                    path_installer = os.path.join(
+                        path_home, "Downloads", "LaMA_installer.exe"
+                    )
                     urlretrieve(download_link, path_installer)
                     os.system(path_installer)
-                    print('done')
-
+                    print("done")
 
                 return
                 opened_file = os.path.basename(sys.argv[0])
@@ -2723,9 +2724,7 @@ class Ui_MainWindow(object):
                 )
 
                 try:
-                    if sys.platform.startswith(
-                        "darwin"
-                    ):
+                    if sys.platform.startswith("darwin"):
                         if extension == ".py":
                             os.system("python3 {}".format(filename_update))
                         else:
@@ -2937,11 +2936,10 @@ class Ui_MainWindow(object):
 
         # self.delete_all_widgets(layout, 1) ### PROBLEM !!!
         for i in range(1, layout.count()):
-            try: 
+            try:
                 layout.itemAt(i).widget().hide()
             except AttributeError:
                 pass
-
 
         text_combobox = self.dict_widget_variables[
             "combobox_kapitel_creator_cria_{}".format(klasse)
@@ -3078,13 +3076,11 @@ class Ui_MainWindow(object):
             self.lineEdit_titel.setText(_translate("MainWindow", "###", None))
         else:
             self.lineEdit_titel.setText(_translate("MainWindow", "", None))
-        
-
 
         if variation == False:
             self.plainTextEdit.setPlainText(_translate("MainWindow", "", None))
-        
-        if self.chosen_gui == 'widgets_edit':
+
+        if self.chosen_gui == "widgets_edit":
             self.enable_widgets_editor(False)
             self.button_choose_file.setText("Aufgabe suchen...")
             # "Aufgabe auswählen"
@@ -3218,7 +3214,6 @@ class Ui_MainWindow(object):
             self.cb_af_ko.show()
             self.cb_af_rf.show()
             self.cb_af_ta.show()
-            
 
             # self.comboBox_at_fb.setItemText(0, _translate("MainWindow", "Aufgabenrückmeldung", None))
             # self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Allgemeine Rückmeldung", None))
@@ -3250,7 +3245,6 @@ class Ui_MainWindow(object):
         elif self.chosen_program == "cria":
             self.chosen_program = "lama"
 
-
             self.gridLayout.addWidget(self.groupBox_af, 4, 0, 1, 1)
             self.gridLayout.addWidget(self.groupBox_punkte, 0, 2, 1, 1)
             self.gridLayout.addWidget(self.groupBox_aufgabenformat, 0, 3, 1, 1)
@@ -3266,7 +3260,6 @@ class Ui_MainWindow(object):
                 ),
             )
 
- 
             self.comboBox_pruefungstyp.addItem("Quiz")
             self.cb_af_ko.hide()
             self.cb_af_rf.hide()
@@ -3292,7 +3285,7 @@ class Ui_MainWindow(object):
     def close_app(self):
         if self.list_alle_aufgaben_sage == []:
             sys.exit(0)
-        
+
         if self.no_saved_changes_sage == True:
             sys.exit(0)
         # else:
@@ -3319,7 +3312,6 @@ class Ui_MainWindow(object):
             self.actionDeveloper.setText("Entwicklermodus")
             # self.actionPush_Database.setVisible(False)
             self.menuBar.removeAction(self.menuDeveloper.menuAction())
-            
 
         elif self.developer_mode_active == True:
             self.actionDeveloper.setText("Entwicklermodus (aktiv)")
@@ -3378,7 +3370,7 @@ class Ui_MainWindow(object):
             self.lama_settings = ui.lama_settings
 
     def complete_reset(self):
-        print('complete reset!')
+        print("complete reset!")
         # rsp = question_window("Sind Sie wirklich sicher, dass Sie LaMA vollständig zurücksetzen wollen?")
         # if rsp==False:
         #     return
@@ -3389,7 +3381,7 @@ class Ui_MainWindow(object):
         # lama_folder = os.path.dirname(database)
 
         # teildokument_folder = os.path.join(lama_folder, "Teildokument")
-        
+
         # print(os.listdir(database))
         # for all in os.listdir(database):
         #     path = os.path.join(database, all)
@@ -3400,13 +3392,10 @@ class Ui_MainWindow(object):
         #         if all != "_local_database.json":
         #             os.remove(path)
 
-
-
         # for root, dirs, files in os.walk(delete_folder):
         #     print(root)
 
         # print(delete_path)
-
 
     def show_info(self):
         QtWidgets.QApplication.restoreOverrideCursor()
@@ -3432,7 +3421,9 @@ class Ui_MainWindow(object):
                             shutil.copy2(path_new_package, path_file)
                             return True
                         except PermissionError:
-                            warning_window("Das Update konnte leider nicht durchgeführt werden, da notwendige Berechtigungen fehlen. Starten Sie LaMA erneut als Administrator (Rechtsklick -> 'Als Administrator ausführen') und versuchen Sie es erneut.")
+                            warning_window(
+                                "Das Update konnte leider nicht durchgeführt werden, da notwendige Berechtigungen fehlen. Starten Sie LaMA erneut als Administrator (Rechtsklick -> 'Als Administrator ausführen') und versuchen Sie es erneut."
+                            )
                             return False
         return False
 
@@ -3442,18 +3433,18 @@ class Ui_MainWindow(object):
         if os.path.isfile(style_package_path):
             os.remove(style_package_path)
 
-
     # def reset_tabu(self):
     #     print('reset')
 
     def update_style_package(self, package_name):
         response = question_window(
-            'Sind Sie sicher, dass Sie das Paket "{}" aktualisieren möchten?'.format(package_name)
+            'Sind Sie sicher, dass Sie das Paket "{}" aktualisieren möchten?'.format(
+                package_name
+            )
         )
 
         if response == False:
             return
-
 
         # path_home = Path.home()
         path_new_package = os.path.join(
@@ -3461,15 +3452,15 @@ class Ui_MainWindow(object):
         )
         if os.path.isfile(path_new_package) == False:
             warning_window(
-                'Das Paket "{}" konnte nicht gefunden werden. Bitte versuchen Sie es später erneut.'.format(package_name)
+                'Das Paket "{}" konnte nicht gefunden werden. Bitte versuchen Sie es später erneut.'.format(
+                    package_name
+                )
             )
             return
-
 
         # paket_teildokument = os.path.join(path_programm, "Teildokument", package_name)
         # if os.path.isfile(paket_teildokument):
         #     os.remove(paket_teildokument)
-
 
         # paket_teildokument = os.path.join(
         #     path_programm, "Teildokument", package_name
@@ -3481,8 +3472,8 @@ class Ui_MainWindow(object):
             possible_locations = [os.path.join(path_home, "Library", "texmf")]
         else:
             possible_locations = [
-                os.path.join("c:\\","Program Files","MiKTeX 2.9"),
-                os.path.join("c:\\","Program Files (x86)","MiKTeX 2.9"),
+                os.path.join("c:\\", "Program Files", "MiKTeX 2.9"),
+                os.path.join("c:\\", "Program Files (x86)", "MiKTeX 2.9"),
                 os.path.join(path_home, "AppData", "Roaming", "MiKTeX"),
                 os.path.join(path_home, "AppData", "Local", "Programs", "MiKTeX"),
                 os.path.join(path_home, "AppData"),
@@ -3493,19 +3484,25 @@ class Ui_MainWindow(object):
         # update_successfull=False
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
-        update_successfull = self.copy_style_package(package_name, path_new_package, possible_locations)
+        update_successfull = self.copy_style_package(
+            package_name, path_new_package, possible_locations
+        )
 
         self.delete_style_package_in_teildokument(package_name)
 
         QtWidgets.QApplication.restoreOverrideCursor()
-        
+
         if update_successfull == False:
             critical_window(
-                'Das Update von "{}" konnte leider nicht durchgeführt werden. Aktualisieren Sie das Paket manuell oder wenden Sie sich an lama.helpme@gmail.com für Unterstützung.'.format(package_name)
+                'Das Update von "{}" konnte leider nicht durchgeführt werden. Aktualisieren Sie das Paket manuell oder wenden Sie sich an lama.helpme@gmail.com für Unterstützung.'.format(
+                    package_name
+                )
             )
             return
         if update_successfull == True:
-            information_window('Das Paket "{}" wurde erfolgreich aktualisiert.'.format(package_name))
+            information_window(
+                'Das Paket "{}" wurde erfolgreich aktualisiert.'.format(package_name)
+            )
             return
 
     def show_support(self):
@@ -3517,22 +3514,23 @@ class Ui_MainWindow(object):
         else:
             color = "rgb(47, 69, 80)"
         custom_window(
-            'Eine kleinen Spende für unsere "Kaffeekassa" wird nicht benötigt um LaMA zu finanzieren.\n\nUnser Projekt ist und bleibt kostenlos und wir versuchen es auch weiterhin stetig zu verbessern und aktualisieren. Sie dient lediglich als kleine Anerkennung unserer Arbeit.\n\nVielen Dank!', 
-            """<center><a href='{0}'style="color:{1};">Buy Me A Coffee</a><\center>""".format(link, color),
+            'Eine kleinen Spende für unsere "Kaffeekassa" wird nicht benötigt um LaMA zu finanzieren.\n\nUnser Projekt ist und bleibt kostenlos und wir versuchen es auch weiterhin stetig zu verbessern und aktualisieren. Sie dient lediglich als kleine Anerkennung unserer Arbeit.\n\nVielen Dank!',
+            """<center><a href='{0}'style="color:{1};">Buy Me A Coffee</a><\center>""".format(
+                link, color
+            ),
             # "LaMA ist gratis und soll es auch bleiben!\n",
             # "Wir freuen uns dennoch sehr über eine Unterstützung für die Weiterentwicklung von LaMA.\n\n"
-            # """ 
+            # """
             # Name: Matthias Konzett
             # IBAN: AT57 1921 0200 9941 7002
-            # BLZ: 19210 
+            # BLZ: 19210
             # """,
             titel="LaMA unterstützen",
         )
 
-
     def chosen_aufgabenformat_typ(self):
         # chosen_type = self.label_aufgabentyp.text()[-1]
-        chosen_type = self.combobox_aufgabentyp.currentIndex()+1
+        chosen_type = self.combobox_aufgabentyp.currentIndex() + 1
         if chosen_type == 1:
             # self.label_aufgabentyp.setText(
             #     _translate("MainWindow", "Aufgabentyp: Typ 1", None)
@@ -3547,7 +3545,6 @@ class Ui_MainWindow(object):
             self.groupBox_af.hide()
             self.combobox_searchtype.show()
             # self.refresh_label_update()
-
 
     def button_all_checkboxes_pressed(self, chosen_dictionary, typ, mode, klasse=None):
         if mode == "quiz":
@@ -3676,7 +3673,6 @@ class Ui_MainWindow(object):
                 titel="Warnung - Here be dragons!",
             )
 
-
     def cb_drafts_sage_enabled(self):
         if self.cb_drafts_sage.isChecked() == True:
             warning_window(
@@ -3716,12 +3712,12 @@ class Ui_MainWindow(object):
                     index = list_comboBox_gk.index("Zusatzthemen")
                 else:
                     checkbox_gk = "checkbox_creator_gk_{0}".format(short_gk)
-                    index = list_comboBox_gk.index(gk.split(" ")[0].replace("-L",""))
+                    index = list_comboBox_gk.index(gk.split(" ")[0].replace("-L", ""))
 
                 self.dict_widget_variables[checkbox_gk].setChecked(True)
                 self.tab_widget_gk_cr.setCurrentIndex(index)
 
-                if mode == 'creator':
+                if mode == "creator":
                     self.groupBox_grundkompetenzen_cr.setEnabled(False)
             elif typ == 2:
                 for i, gk in enumerate(aufgabe_total["themen"]):
@@ -3734,7 +3730,7 @@ class Ui_MainWindow(object):
                         checkbox_gk = "checkbox_creator_gk_{}".format(short_gk)
                         if i == 0:
                             index = list_comboBox_gk.index(
-                                gk.split(" ")[0].replace("-L","")
+                                gk.split(" ")[0].replace("-L", "")
                             )
 
                     self.dict_widget_variables[checkbox_gk].setChecked(True)
@@ -3748,14 +3744,14 @@ class Ui_MainWindow(object):
             if klasse != None:
                 try:
                     full_klasse = Klassen[klasse]
-                    index = self.comboBox_klassen_cr.findText(full_klasse)              
+                    index = self.comboBox_klassen_cr.findText(full_klasse)
 
                     self.comboBox_klassen_cr.setCurrentIndex(index)
                 except KeyError:
                     pass
 
         elif self.chosen_program == "cria":
-            klasse, nummer = aufgabe.split(".",1)
+            klasse, nummer = aufgabe.split(".", 1)
             index = list_klassen.index(klasse)
             self.tab_widget_cr_cria.setCurrentIndex(index)
             # print(self.dict_widget_variables)
@@ -3778,9 +3774,8 @@ class Ui_MainWindow(object):
                     klasse, kapitel, unterkapitel
                 )
                 self.dict_widget_variables[checkbox_thema].setChecked(True)
-                if mode == 'creator':
+                if mode == "creator":
                     self.groupBox_themengebiete_cria.setEnabled(False)
-
 
         self.spinBox_punkte.setValue(aufgabe_total["punkte"])
 
@@ -3790,25 +3785,25 @@ class Ui_MainWindow(object):
 
             index = self.comboBox_af.findText(full_aufgabenformat)
 
-            if mode == 'creator':
+            if mode == "creator":
                 self.comboBox_af.setEnabled(False)
 
             self.comboBox_af.setCurrentIndex(index)
         else:
             self.comboBox_af.setCurrentIndex(0)
 
-        if self.lineEdit_titel.text().startswith("###") and mode == 'creator':
+        if self.lineEdit_titel.text().startswith("###") and mode == "creator":
             self.lineEdit_titel.setText("### " + aufgabe_total["titel"])
         else:
             self.lineEdit_titel.setText(aufgabe_total["titel"])
 
-        if mode == 'editor':
-            if aufgabe_total["info"] == 'mat':
+        if mode == "editor":
+            if aufgabe_total["info"] == "mat":
                 self.cb_matura_tag.setChecked(True)
             # else:
             #     self.cb_matura_tag.setChecked(False)
             self.plainTextEdit.clear()
-            self.plainTextEdit.insertPlainText(aufgabe_total['content'])
+            self.plainTextEdit.insertPlainText(aufgabe_total["content"])
             self.lineEdit_quelle.setText(aufgabe_total["quelle"])
 
     def reset_variation(self):
@@ -3846,7 +3841,7 @@ class Ui_MainWindow(object):
 
         if response == 1:
             self.suchfenster_reset(True)
-            if mode == 'creator':
+            if mode == "creator":
                 self.chosen_variation = ui.chosen_variation
                 _file_ = self.chosen_variation
                 if self.chosen_variation != None:
@@ -3857,7 +3852,7 @@ class Ui_MainWindow(object):
                     self.suchfenster_reset(True)
                     self.reset_variation()
                     return
-            elif mode == 'editor':
+            elif mode == "editor":
                 self.chosen_file_to_edit = ui.chosen_variation
                 _file_ = self.chosen_file_to_edit
                 if self.chosen_file_to_edit != None:
@@ -3879,7 +3874,6 @@ class Ui_MainWindow(object):
         if response == 0:
             return
 
-
         self.set_infos_chosen_variation(aufgabe_total_original, mode)
 
     def btn_add_image_pressed(self):
@@ -3888,7 +3882,10 @@ class Ui_MainWindow(object):
         except AttributeError:
             self.saved_file_path = path_home
         list_filename = QtWidgets.QFileDialog.getOpenFileNames(
-            None, "Grafiken wählen", os.path.dirname(self.saved_file_path), "Grafiken (*.eps)"
+            None,
+            "Grafiken wählen",
+            os.path.dirname(self.saved_file_path),
+            "Grafiken (*.eps)",
         )
         if list_filename[0] == []:
             return
@@ -3918,8 +3915,12 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.btn_add_image)
 
     def del_picture(self, picture, question=True):
-        if question==True:
-            rsp = question_window('Sind Sie sicher, dass Sie die Grafik "{}" entfernen möchten?'.format(self.dict_picture_path[self.dict_widget_variables[picture].text()]))
+        if question == True:
+            rsp = question_window(
+                'Sind Sie sicher, dass Sie die Grafik "{}" entfernen möchten?'.format(
+                    self.dict_picture_path[self.dict_widget_variables[picture].text()]
+                )
+            )
             if rsp == False:
                 return
         del self.dict_picture_path[self.dict_widget_variables[picture].text()]
@@ -4152,7 +4153,6 @@ class Ui_MainWindow(object):
         # self.ui_save.label.setStyleSheet("padding: 10px")
         return Dialog_speichern
 
-
     def create_path_from_list(self, list_):
         path = ""
         for all in list_:
@@ -4171,7 +4171,6 @@ class Ui_MainWindow(object):
         # else:
         list_path.append("_database")
         return list_path
-
 
     def get_highest_grade_cr(self):
         klasse = 1
@@ -4197,7 +4196,7 @@ class Ui_MainWindow(object):
             all_files = table_lama.all()
 
         for all in all_files:
-            name = all["name"].replace('l.','').replace('i.','')
+            name = all["name"].replace("l.", "").replace("i.", "")
             if typ == 1:
                 num = name.split(" - ")[-1]
             elif typ == None:
@@ -4216,8 +4215,6 @@ class Ui_MainWindow(object):
 
         return max_integer
 
-
-
     def edit_image_name(self, typ_save, name):
         # if typ_save[0] == "local":
         #     local = "_L_"
@@ -4235,7 +4232,7 @@ class Ui_MainWindow(object):
 
         # if typ_save == ["admin", 1]:
         #     number = "i." + str(number)
-        if typ_save[0] == 'local':
+        if typ_save[0] == "local":
             number = "l." + str(number)
 
         if self.chosen_program == "cria":
@@ -4249,7 +4246,6 @@ class Ui_MainWindow(object):
             # if thema == None:
             thema = shorten_gk(self.list_selected_topics_creator[0]).upper()
             name = "{0}-{1}-{2}".format(thema, number, name)
-
 
         elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
             name = "{0}-{1}".format(number, name)
@@ -4307,7 +4303,7 @@ class Ui_MainWindow(object):
             list_images.append(new_image_name)
         return list_images, None
 
-    def create_file_name(self, typ, max_integer, themen_auswahl, save_typ=''):
+    def create_file_name(self, typ, max_integer, themen_auswahl, save_typ=""):
         number = max_integer + 1
         if self.chosen_variation != None:
             name = self.chosen_variation + "[{}]".format(number)
@@ -4319,9 +4315,7 @@ class Ui_MainWindow(object):
         elif typ == 2:
             name = "{0}{1}".format(save_typ, number)
 
-
         return name
-
 
     def get_themen_auswahl(self):
         themen_auswahl = []
@@ -4341,7 +4335,6 @@ class Ui_MainWindow(object):
 
         return themen_auswahl
 
-
     def define_themen_string_cria(self):
         list_ = [
             x[1] + "." + x[2] + " (" + x[0][1] + ".)"
@@ -4351,20 +4344,22 @@ class Ui_MainWindow(object):
         return string
 
     def get_all_infos_new_file(self, typ, typ_save):
-        if typ_save == 'editor':
+        if typ_save == "editor":
             name = None
         else:
-            if typ_save == 'local':
+            if typ_save == "local":
                 save_typ = "l."
             else:
                 save_typ = ""
 
-            name = self.create_file_name(typ, self.max_integer, self.themen_auswahl[0], save_typ=save_typ)
+            name = self.create_file_name(
+                typ, self.max_integer, self.themen_auswahl[0], save_typ=save_typ
+            )
             # if typ_save=='local':
             #     gk, number  = name.split(' - ')
             #     name = gk + ' - ' + 'l.' + number
         themen = self.get_themen_auswahl()
-        titel = self.lineEdit_titel.text().replace("###","").strip()
+        titel = self.lineEdit_titel.text().replace("###", "").strip()
         if typ == 2:
             af = None
         else:
@@ -4376,7 +4371,6 @@ class Ui_MainWindow(object):
         quelle = self.lineEdit_quelle.text()
         content = self.plainTextEdit.toPlainText()
         punkte = self.spinBox_punkte.value()
-
 
         if self.comboBox_pagebreak.currentIndex() == 0:
             pagebreak = False
@@ -4391,11 +4385,11 @@ class Ui_MainWindow(object):
             klasse = list(Klassen.keys())[self.comboBox_klassen_cr.currentIndex() - 1]
 
         if self.cb_matura_tag.isChecked():
-            info = 'mat'
+            info = "mat"
         else:
             info = None
 
-        if typ_save=='editor':
+        if typ_save == "editor":
             bilder = []
             for all in self.dict_picture_path.keys():
                 bilder.append(all)
@@ -4431,20 +4425,23 @@ class Ui_MainWindow(object):
             #     chosen_ddb = ["_database_addon.json"]
             # else:
             chosen_ddb = ["_database.json"]
-            action_push_database(False, chosen_ddb, message= message, worker_text="Änderung hochladen ...")
+            action_push_database(
+                False, chosen_ddb, message=message, worker_text="Änderung hochladen ..."
+            )
 
     def button_save_edit_pressed(self):
-        rsp = question_window("Sind Sie sicher, dass Sie die Änderungen speichern wollen?")
+        rsp = question_window(
+            "Sind Sie sicher, dass Sie die Änderungen speichern wollen?"
+        )
         if rsp == False:
             return
 
-        
         name = self.chosen_file_to_edit
 
         # print(name)
 
         typ = get_aufgabentyp(self.chosen_program, name)
-        
+
         (
             _,
             themen,
@@ -4459,11 +4456,9 @@ class Ui_MainWindow(object):
             bilder,
             draft,
             abstand,
-        ) = self.get_all_infos_new_file(typ, 'editor')
-
+        ) = self.get_all_infos_new_file(typ, "editor")
 
         lama_table = get_table(name, typ)
-
 
         if typ == 1:
             if themen[0] in name:
@@ -4472,20 +4467,20 @@ class Ui_MainWindow(object):
                 themen_auswahl = self.get_themen_auswahl()
                 max_integer = self.get_max_integer(lama_table, typ, themen_auswahl[0])
 
-                if 'l.' in name:
+                if "l." in name:
                     save_typ = "l."
-                elif 'i.' in name:
+                elif "i." in name:
                     save_typ = "i."
                 else:
                     save_typ = ""
 
-                new_name = self.create_file_name(typ, max_integer, themen_auswahl[0], save_typ)
+                new_name = self.create_file_name(
+                    typ, max_integer, themen_auswahl[0], save_typ
+                )
 
-       
-
-        aufgabe = name.replace(" (lokal)","")
+        aufgabe = name.replace(" (lokal)", "")
         _file_ = Query()
-        
+
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         print("Checking divergencies ...")
         rsp = check_branches()
@@ -4493,7 +4488,9 @@ class Ui_MainWindow(object):
             print("Updating database ...")
             rsp = self.worker_update_database()
             if rsp == False:
-                critical_window('Beim Synchronisieren ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass eine Internetverbindung beseteht und versuchen Sie es erneut.')
+                critical_window(
+                    "Beim Synchronisieren ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass eine Internetverbindung beseteht und versuchen Sie es erneut."
+                )
                 QtWidgets.QApplication.restoreOverrideCursor()
                 return
             lama_table.clear_cache()
@@ -4503,20 +4500,19 @@ class Ui_MainWindow(object):
         # print("file ID: {}".format(file_id))
 
         if typ == 1:
-            lama_table.update({"name" : new_name}, doc_ids=[file_id])
-        lama_table.update({"themen" :themen}, doc_ids=[file_id])
-        lama_table.update({"titel" :titel}, doc_ids=[file_id])
-        lama_table.update({"af" :af}, doc_ids=[file_id])
-        lama_table.update({"quelle" :quelle}, doc_ids=[file_id]) 
-        lama_table.update({"content" :content}, doc_ids=[file_id])
-        lama_table.update({"punkte" :punkte}, doc_ids=[file_id])
-        lama_table.update({"pagebreak" :pagebreak}, doc_ids=[file_id])
-        lama_table.update({"klasse" :klasse}, doc_ids=[file_id])
-        lama_table.update({"info" :info}, doc_ids=[file_id])
-        lama_table.update({"bilder" :bilder}, doc_ids=[file_id])
-        lama_table.update({"draft" :draft}, doc_ids=[file_id])
-        lama_table.update({"abstand" :abstand}, doc_ids=[file_id])
-
+            lama_table.update({"name": new_name}, doc_ids=[file_id])
+        lama_table.update({"themen": themen}, doc_ids=[file_id])
+        lama_table.update({"titel": titel}, doc_ids=[file_id])
+        lama_table.update({"af": af}, doc_ids=[file_id])
+        lama_table.update({"quelle": quelle}, doc_ids=[file_id])
+        lama_table.update({"content": content}, doc_ids=[file_id])
+        lama_table.update({"punkte": punkte}, doc_ids=[file_id])
+        lama_table.update({"pagebreak": pagebreak}, doc_ids=[file_id])
+        lama_table.update({"klasse": klasse}, doc_ids=[file_id])
+        lama_table.update({"info": info}, doc_ids=[file_id])
+        lama_table.update({"bilder": bilder}, doc_ids=[file_id])
+        lama_table.update({"draft": draft}, doc_ids=[file_id])
+        lama_table.update({"abstand": abstand}, doc_ids=[file_id])
 
         # lama_table.update_multiple([
         #    ({"themen" :themen}, _file_.name == aufgabe),
@@ -4551,19 +4547,23 @@ class Ui_MainWindow(object):
 
     def button_vorschau_edit_pressed(self):
         content = self.plainTextEdit.toPlainText()
-        file_path = os.path.join(
-            path_localappdata_lama, "Teildokument", "preview.tex"
-            ) 
-        rsp = create_tex(file_path, content) 
-    
+        file_path = os.path.join(path_localappdata_lama, "Teildokument", "preview.tex")
+        rsp = create_tex(file_path, content)
+
         if rsp == True:
             create_pdf("preview")
         else:
-            critical_window("Die PDF Datei konnte nicht erstellt werden", detailed_text= rsp)
+            critical_window(
+                "Die PDF Datei konnte nicht erstellt werden", detailed_text=rsp
+            )
 
     def button_delete_file_pressed(self):
         name = self.chosen_file_to_edit
-        rsp = question_window('Sind Sie sicher, dass Sie die Aufgabe "{}" endgültig und unwiderruflich löschen möchten?'.format(name))
+        rsp = question_window(
+            'Sind Sie sicher, dass Sie die Aufgabe "{}" endgültig und unwiderruflich löschen möchten?'.format(
+                name
+            )
+        )
 
         if rsp == False:
             return
@@ -4571,7 +4571,7 @@ class Ui_MainWindow(object):
         typ = get_aufgabentyp(self.chosen_program, name)
 
         aufgabe_total = get_aufgabe_total(name, typ)
-        images = aufgabe_total['bilder']
+        images = aufgabe_total["bilder"]
 
         lama_table = get_table(name, typ)
         print("Checking divergencies ...")
@@ -4580,19 +4580,21 @@ class Ui_MainWindow(object):
             print("Updating database ...")
             rsp = self.worker_update_database()
             if rsp == False:
-                critical_window('Beim Synchronisieren ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass eine Internetverbindung beseteht und versuchen Sie es erneut.')
+                critical_window(
+                    "Beim Synchronisieren ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass eine Internetverbindung beseteht und versuchen Sie es erneut."
+                )
                 QtWidgets.QApplication.restoreOverrideCursor()
                 return
-            lama_table.clear_cache()   
+            lama_table.clear_cache()
         # image_path = os.path(path_programm, '_database')
         # print(database)
 
         if "l." in name:
-            image_path= os.path.join(database, "Bilder_local")
+            image_path = os.path.join(database, "Bilder_local")
         elif "i." in name:
-            image_path= os.path.join(database, "Bilder_addon")
+            image_path = os.path.join(database, "Bilder_addon")
         else:
-            image_path=os.path.join(database, "Bilder")
+            image_path = os.path.join(database, "Bilder")
 
         for all in images:
             image = os.path.join(image_path, all)
@@ -4601,27 +4603,28 @@ class Ui_MainWindow(object):
             except FileNotFoundError:
                 print('Die Grafik "{}" konnte nicht gefunden werden.'.format(image))
 
-
         delete_file(name, typ)
-
-
 
         if "l." not in name:
             print("Uploading file ...")
             if is_empty(images):
-                self.upload_single_file_change(name, message="Gelöscht: {}".format(name))
+                self.upload_single_file_change(
+                    name, message="Gelöscht: {}".format(name)
+                )
             else:
                 self.push_full_database()
         # if "(lokal)" not in name:
         #     file_list = ["_database.json"]
         #     action_push_database(False, file_list, message= "Gelöscht: {}".format(name), worker_text="Aufgabe löschen ...")
 
-        information_window('Die Aufgabe "{}" wurde erfolgreich aus der Datenbank entfernt.'.format(name))
+        information_window(
+            'Die Aufgabe "{}" wurde erfolgreich aus der Datenbank entfernt.'.format(
+                name
+            )
+        )
 
         self.suchfenster_reset(True)
-        self.reset_edit_file()        
-
-        
+        self.reset_edit_file()
 
     def pushButton_save_as_variation_edit_pressed(self):
         Dialog = QtWidgets.QDialog(
@@ -4631,27 +4634,32 @@ class Ui_MainWindow(object):
             | QtCore.Qt.WindowCloseButtonHint,
         )
         ui = Ui_Dialog_variation()
-        ui.setupUi(Dialog, self, show_variations=False, chosen_file_to_edit=self.chosen_file_to_edit)
+        ui.setupUi(
+            Dialog,
+            self,
+            show_variations=False,
+            chosen_file_to_edit=self.chosen_file_to_edit,
+        )
         # self.Dialog.show()
         response = Dialog.exec()
 
         if response == 0:
             return
-        
+
         self.chosen_variation = ui.chosen_variation
 
         if self.chosen_variation == None:
-            self.pushButton_save_as_variation_edit.setText("Als Variation einer anderen Aufgabe speichern")
+            self.pushButton_save_as_variation_edit.setText(
+                "Als Variation einer anderen Aufgabe speichern"
+            )
             return
-        
+
         # self.pushButton_save_as_variation_edit.setText("")
 
         if "local" in self.chosen_variation:
             database = _local_database
         else:
             database = _database
-
-
 
         # if typ_save[0] == "local":
         #     database = _local_database
@@ -4664,7 +4672,7 @@ class Ui_MainWindow(object):
         else:
             typ = self.comboBox_aufgabentyp_cr.currentIndex() + 1
             typ_name = "lama_{}".format(typ)
-        
+
         table = "table_" + typ_name
         table_lama = database.table(table)
 
@@ -4674,7 +4682,9 @@ class Ui_MainWindow(object):
             print("Updating database ...")
             rsp = self.worker_update_database()
             if rsp == False:
-                critical_window('Beim Synchronisieren ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass eine Internetverbindung beseteht und versuchen Sie es erneut.')
+                critical_window(
+                    "Beim Synchronisieren ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass eine Internetverbindung beseteht und versuchen Sie es erneut."
+                )
                 QtWidgets.QApplication.restoreOverrideCursor()
                 return
             table_lama.clear_cache()
@@ -4685,15 +4695,19 @@ class Ui_MainWindow(object):
         # if self.chosen_variation != None:
         themen_auswahl = None
         # else:
-            # themen_auswahl = self.themen_auswahl[0]
+        # themen_auswahl = self.themen_auswahl[0]
 
         # typ_variation = get_aufgabentyp(self.chosen_program, self.chosen_variation)
 
         variation_total = get_aufgabe_total(self.chosen_variation, typ)
         aufgabe_total = get_aufgabe_total(self.chosen_file_to_edit, typ)
 
-        if typ == 1 and aufgabe_total['themen'] != variation_total['themen']:
-            rsp = question_window("Sind Sie sicher, dass Sie die Grundkompetenz der Aufgabe von {0} auf {1} ändern möchten?".format(aufgabe_total['themen'][0], variation_total['themen'][0]))
+        if typ == 1 and aufgabe_total["themen"] != variation_total["themen"]:
+            rsp = question_window(
+                "Sind Sie sicher, dass Sie die Grundkompetenz der Aufgabe von {0} auf {1} ändern möchten?".format(
+                    aufgabe_total["themen"][0], variation_total["themen"][0]
+                )
+            )
             if rsp == False:
                 return
 
@@ -4701,22 +4715,27 @@ class Ui_MainWindow(object):
 
         name = self.create_file_name(typ, max_integer, themen_auswahl)
 
-
         _file_ = Query()
-        if typ == 1 and aufgabe_total['themen'] != variation_total['themen']:
-            table_lama.update({'themen' : variation_total['themen']}, _file_.name == self.chosen_file_to_edit)  
-        table_lama.update({'name' : name}, _file_.name == self.chosen_file_to_edit)
- 
+        if typ == 1 and aufgabe_total["themen"] != variation_total["themen"]:
+            table_lama.update(
+                {"themen": variation_total["themen"]},
+                _file_.name == self.chosen_file_to_edit,
+            )
+        table_lama.update({"name": name}, _file_.name == self.chosen_file_to_edit)
 
         print("Uploading file ...")
-        self.upload_single_file_change(name, message="Gespeichert als Variation: {0} (ehemals: {1})".format(name, self.chosen_file_to_edit))
+        self.upload_single_file_change(
+            name,
+            message="Gespeichert als Variation: {0} (ehemals: {1})".format(
+                name, self.chosen_file_to_edit
+            ),
+        )
         # print(self.chosen_file_to_edit)
         # print(name)
         information_window("Die Änderungen wurden erfolgreich gespeichert.")
 
         self.suchfenster_reset(True)
         self.reset_edit_file()
-
 
     def worker_update_database(self):
         text = "Die Datenbank wird auf den neuesten Stand gebracht ..."
@@ -4823,10 +4842,7 @@ class Ui_MainWindow(object):
         table = "table_" + typ_name
         table_lama = database.table(table)
 
-
         self.max_integer = self.get_max_integer(table_lama, typ, self.themen_auswahl[0])
-
-
 
         ############################################################################
 
@@ -4846,7 +4862,7 @@ class Ui_MainWindow(object):
 
         list_path = self.get_parent_folder(typ_save)
 
-        if typ_save[0] == 'local':
+        if typ_save[0] == "local":
             list_path.append("Bilder_local")
         else:
             list_path.append("Bilder")
@@ -4865,27 +4881,31 @@ class Ui_MainWindow(object):
 
         ###################################################################################
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        if typ_save[0] != 'local':
+        if typ_save[0] != "local":
             internet_on = check_internet_connection()
             if internet_on == False:
-                critical_window("Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.",
+                critical_window(
+                    "Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.",
                     titel="Keine Internetverbindung",
                 )
                 QtWidgets.QApplication.restoreOverrideCursor()
                 return
-            print("Checking divergencies ...")            
+            print("Checking divergencies ...")
             rsp = check_branches()
             if rsp == False:
                 print("Updating database ...")
                 rsp = self.worker_update_database()
-                
+
                 if rsp == False:
-                    critical_window('Beim Synchronisieren ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass eine Internetverbindung beseteht und versuchen Sie es erneut.')
+                    critical_window(
+                        "Beim Synchronisieren ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass eine Internetverbindung beseteht und versuchen Sie es erneut."
+                    )
                     QtWidgets.QApplication.restoreOverrideCursor()
                     return
                 table_lama.clear_cache()
-                self.max_integer = self.get_max_integer(table_lama, typ, self.themen_auswahl[0])
-
+                self.max_integer = self.get_max_integer(
+                    table_lama, typ, self.themen_auswahl[0]
+                )
 
         (
             name,
@@ -4903,13 +4923,29 @@ class Ui_MainWindow(object):
             abstand,
         ) = self.get_all_infos_new_file(typ, typ_save[0])
 
-
         content = content_images_replaced
         bilder = list_images_new_names
-        rsp = add_file(table_lama, name, themen, titel, af, quelle, content, punkte, pagebreak, klasse, info, bilder, draft, abstand)
+        rsp = add_file(
+            table_lama,
+            name,
+            themen,
+            titel,
+            af,
+            quelle,
+            content,
+            punkte,
+            pagebreak,
+            klasse,
+            info,
+            bilder,
+            draft,
+            abstand,
+        )
         QtWidgets.QApplication.restoreOverrideCursor()
         if rsp == False:
-            critical_window('Beim Synchronisieren ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass eine Internetverbindung beseteht und versuchen Sie es erneut.')
+            critical_window(
+                "Beim Synchronisieren ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass eine Internetverbindung beseteht und versuchen Sie es erneut."
+            )
             QtWidgets.QApplication.restoreOverrideCursor()
             return
 
@@ -4940,15 +4976,13 @@ class Ui_MainWindow(object):
             list_information[6],
         )
 
-
         if typ_save[0] != "local":
             file_list = ["_database.json"]
             for image in list_images_new_names:
                 name = os.path.join("Bilder", image)
                 file_list.append(name)
             print("Uploading file ...")
-            action_push_database(False, file_list, message= "Neu: {}".format(name))
-
+            action_push_database(False, file_list, message="Neu: {}".format(name))
 
         information_window(text, "", window_title, information)
 
@@ -4967,7 +5001,7 @@ class Ui_MainWindow(object):
     #     _file_ = Query()
     #     table_1 = _database.table('table_lama_1')
     #     # print(table_1.contains(_file_.name == "AG 1.1 - 1"))
-    #     # 
+    #     #
 
     #     def your_operation():
     #         def transform(doc):
@@ -4981,21 +5015,24 @@ class Ui_MainWindow(object):
         print("Checking divergencies ...")
         rsp = check_branches()
         if rsp == False:
-            response = question_window("Es wurden Änderungen am origin/master vorgenommen. Diese Änderungen werden unwiderruflich gelöscht. Sind Sie sicher, dass Sie die vollständige Datenbank hochladen möchten?",
-            titel="Änderungen überschreiben?")
+            response = question_window(
+                "Es wurden Änderungen am origin/master vorgenommen. Diese Änderungen werden unwiderruflich gelöscht. Sind Sie sicher, dass Sie die vollständige Datenbank hochladen möchten?",
+                titel="Änderungen überschreiben?",
+            )
             if response == False:
                 return
-        action_push_database(True, ["_database.json"], "", "Änderungen werden hochgeladen ...")
-
+        action_push_database(
+            True, ["_database.json"], "", "Änderungen werden hochgeladen ..."
+        )
 
     def draft_control(self):
         dict_drafts = {}
-        for typ in ['cria', 'lama_1', 'lama_2']:
+        for typ in ["cria", "lama_1", "lama_2"]:
             table = "table_" + typ
             table_lama = _database.table(table)
 
             result = get_drafts(table_lama)
-            dict_drafts[typ]=result
+            dict_drafts[typ] = result
 
         Dialog = QtWidgets.QDialog(
             None,
@@ -5005,7 +5042,6 @@ class Ui_MainWindow(object):
         )
         ui = Ui_Dialog_draft_control()
         ui.setupUi(Dialog, dict_drafts)
-
 
         Dialog.exec_()
 
@@ -5017,13 +5053,11 @@ class Ui_MainWindow(object):
     #         )
     #         return
 
-
     #     # text = worker_text + " (1%)"
     #     # if admin == True:
     #     #     text = "Änderungen überprüfen ..."
     #     # else:
     #     #     text = "Aufgabe wird hochgeladen ... (1%)"
-
 
     #     Dialog = QtWidgets.QDialog()
     #     ui = Ui_Dialog_processing()
@@ -5046,7 +5080,6 @@ class Ui_MainWindow(object):
     #         )
     #     elif admin == True:
     #         information_window("Die Datenbank wurde erfolgreich hochgeladen.")
-        
 
     def enable_widgets_editor(self, enabled):
         self.groupBox_ausgew_gk_cr.setEnabled(enabled)
@@ -5067,14 +5100,14 @@ class Ui_MainWindow(object):
         self.groupBox_themengebiete_cria.setEnabled(enabled)
         self.groupBox_abstand.setEnabled(enabled)
         self.groupBox_pagebreak.setEnabled(enabled)
-      
+
     def action_add_file(self):
-        self.update_gui("widgets_create")   
+        self.update_gui("widgets_create")
         self.suchfenster_reset()
-        self.enable_widgets_editor(True) 
+        self.enable_widgets_editor(True)
 
     def action_edit_files(self):
-        self.update_gui('widgets_edit')
+        self.update_gui("widgets_edit")
         # try:
         #     if self.chosen_file_to_edit == None:
         #         self.enable_widgets_editor(False)
@@ -5082,9 +5115,6 @@ class Ui_MainWindow(object):
         #     self.enable_widgets_editor(False)
         self.suchfenster_reset()
         self.enable_widgets_editor(False)
-
-
-
 
     def check_if_file_exists(self, aufgabe):  # aufgabe
         typ = get_aufgabentyp(self.chosen_program, aufgabe)
@@ -5139,8 +5169,6 @@ class Ui_MainWindow(object):
             self.actionRestore_sage.setText("Backup")
             self.actionRestore_sage.setEnabled(False)
 
-
-
     def sage_load(self, external_file_loaded=False, autosave=False):
         self.update_gui("widgets_sage")
         if external_file_loaded == False and autosave == False:
@@ -5187,19 +5215,22 @@ class Ui_MainWindow(object):
 
         # self.update_gui("widgets_sage")
 
-        for aufgabe in self.dict_all_infos_for_file['list_alle_aufgaben'][:]:
+        for aufgabe in self.dict_all_infos_for_file["list_alle_aufgaben"][:]:
             typ = get_aufgabentyp(self.chosen_program, aufgabe)
-            aufgabe_total  =get_aufgabe_total(aufgabe, typ)
+            aufgabe_total = get_aufgabe_total(aufgabe, typ)
             if aufgabe_total == None:
-                warning_window("Die Aufgabe {} konnte nicht gefunden werden, da sie gelöscht oder umbenannt wurde. Sie wird daher ignoriert.".format(aufgabe))
-                self.dict_all_infos_for_file['list_alle_aufgaben'].remove(aufgabe)
+                warning_window(
+                    "Die Aufgabe {} konnte nicht gefunden werden, da sie gelöscht oder umbenannt wurde. Sie wird daher ignoriert.".format(
+                        aufgabe
+                    )
+                )
+                self.dict_all_infos_for_file["list_alle_aufgaben"].remove(aufgabe)
 
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
         self.list_alle_aufgaben_sage = self.dict_all_infos_for_file[
             "list_alle_aufgaben"
         ]
-
 
         self.spinBox_nummer.setValue(self.dict_all_infos_for_file["data_gesamt"]["#"])
         self.lineEdit_klasse.setText(
@@ -5254,7 +5285,6 @@ class Ui_MainWindow(object):
         self.list_copy_images = self.dict_all_infos_for_file["data_gesamt"][
             "copy_images"
         ]
-
 
         for aufgabe in self.list_alle_aufgaben_sage:
             self.build_aufgaben_schularbeit(aufgabe)
@@ -5318,7 +5348,7 @@ class Ui_MainWindow(object):
 
     def define_titlepage(self):
         if self.comboBox_pruefungstyp.currentText() == "Quiz":
-            print('not yet working')
+            print("not yet working")
             return
             Dialog = QtWidgets.QDialog(
                 None,
@@ -5356,8 +5386,7 @@ class Ui_MainWindow(object):
                 number_examples = len(random_list)
                 warning_window(
                     "Es sind insgesamt weniger Aufgaben enthalten ({0}), als die ausgwählte Anzahl der Aufgaben ({1}).".format(
-                        len(random_list),
-                        ui.random_quiz_response[0],
+                        len(random_list), ui.random_quiz_response[0],
                     ),
                     "Es werden alle vorhandenen Aufgaben in zufälliger Reihenfolge ausgegeben.",
                     "Anzahl der Aufgaben",
@@ -5495,13 +5524,7 @@ class Ui_MainWindow(object):
         if self.chosen_program == "cria":
             label = "Anzahl der Aufgaben: {0}".format(num_total)
 
-        self.label_gesamtbeispiele.setText(
-            _translate(
-                "MainWindow",
-                label,
-                None,
-            )
-        )
+        self.label_gesamtbeispiele.setText(_translate("MainWindow", label, None,))
 
     def adapt_label_gesamtbeispiele(self):
         list_sage_examples_typ1 = []
@@ -5602,10 +5625,10 @@ class Ui_MainWindow(object):
         self.update_punkte()
         self.button_was_deleted = True
 
-    def spinbox_pkt_changed(self): #, aufgabe, spinbox_abstand
+    def spinbox_pkt_changed(self):  # , aufgabe, spinbox_abstand
         self.update_punkte()
 
-    def spinbox_abstand_changed(self): #, aufgabe, spinbox_abstand
+    def spinbox_abstand_changed(self):  # , aufgabe, spinbox_abstand
         # self.dict_alle_aufgaben_sage[aufgabe][1] = spinbox_abstand.value()
         self.update_punkte()
 
@@ -5689,7 +5712,7 @@ class Ui_MainWindow(object):
             typ = get_aufgabentyp(self.chosen_program, aufgabe)
             if typ == 2:
                 # collect_content(self, aufgabe)
-                aufgabe_total = get_aufgabe_total(aufgabe, 'lama_2')
+                aufgabe_total = get_aufgabe_total(aufgabe, "lama_2")
                 number = self.count_ausgleichspunkte(aufgabe_total["content"])
                 number_ausgleichspkt_gesamt += number
 
@@ -5808,7 +5831,7 @@ class Ui_MainWindow(object):
         groupbox_pkt.setSizePolicy(SizePolicy_fixed)
         gridLayout_gB.addWidget(groupbox_pkt, 0, 1, 3, 1, QtCore.Qt.AlignRight)
 
-        if typ==1:
+        if typ == 1:
             punkte = self.spinBox_default_pkt.value()
         else:
             punkte = aufgabe_total["punkte"]
@@ -5902,8 +5925,7 @@ class Ui_MainWindow(object):
             spinbox_abstand.hide()
             self.count_ausgleichspunkte(aufgabe_total["content"])
             label_ausgleichspkt = create_new_label(
-                groupbox_abstand_ausgleich,
-                str(num_ap),
+                groupbox_abstand_ausgleich, str(num_ap),
             )
             label_ausgleichspkt.setStyleSheet("padding-top: 5px; padding-bottom: 5px;")
             verticalLayout_abstand.addWidget(label_ausgleichspkt)
@@ -5911,7 +5933,6 @@ class Ui_MainWindow(object):
             self.dict_variablen_label[aufgabe] = label_ausgleichspkt
         else:
             groupbox_abstand_ausgleich.setToolTip("Neue Seite: Abstand=99")
-
 
         pushbutton_ausgleich = create_new_button(
             new_groupbox,
@@ -5935,7 +5956,6 @@ class Ui_MainWindow(object):
             klasse = list_klassen[self.comboBox_klassen_fb_cria.currentIndex()]
 
         return klasse
-
 
     def delete_all_widgets(self, layout, start=0):
         for i in reversed(range(start, layout.count())):
@@ -5998,7 +6018,7 @@ class Ui_MainWindow(object):
             index_item = self.list_alle_aufgaben_sage.index(item)
             typ = get_aufgabentyp(self.chosen_program, item)
 
-            aufgabe_total = get_aufgabe_total(item.replace(' (lokal)',''), typ)
+            aufgabe_total = get_aufgabe_total(item.replace(" (lokal)", ""), typ)
             # item_infos = self.collect_all_infos_aufgabe(item)
             neue_aufgaben_box = self.create_neue_aufgaben_box(
                 index_item, item, aufgabe_total
@@ -6011,7 +6031,7 @@ class Ui_MainWindow(object):
         )
         self.gridLayout_8.addItem(self.spacerItem, index_item + 1, 0, 1, 1)
 
-        self.add_image_path_to_list(aufgabe.replace(' (lokal)',''))
+        self.add_image_path_to_list(aufgabe.replace(" (lokal)", ""))
 
         self.update_punkte()
 
@@ -6061,9 +6081,9 @@ class Ui_MainWindow(object):
             #         return
 
             if aufgabe in self.dict_sage_ausgleichspunkte_chosen.keys():
-                list_sage_ausgleichspunkte_chosen = (
-                    self.dict_sage_ausgleichspunkte_chosen[aufgabe]
-                )
+                list_sage_ausgleichspunkte_chosen = self.dict_sage_ausgleichspunkte_chosen[
+                    aufgabe
+                ]
             else:
                 list_sage_ausgleichspunkte_chosen = []
                 for index, all in enumerate(split_content):
@@ -6077,9 +6097,9 @@ class Ui_MainWindow(object):
                     #     list_sage_ausgleichspunkte_chosen.append(x)
 
             if aufgabe in self.dict_sage_hide_show_items_chosen.keys():
-                list_sage_hide_show_items_chosen = (
-                    self.dict_sage_hide_show_items_chosen[aufgabe]
-                )
+                list_sage_hide_show_items_chosen = self.dict_sage_hide_show_items_chosen[
+                    aufgabe
+                ]
             else:
                 list_sage_hide_show_items_chosen = []
 
@@ -6133,7 +6153,6 @@ class Ui_MainWindow(object):
             elif aufgabe in self.dict_sage_ausgleichspunkte_chosen:
                 del self.dict_sage_ausgleichspunkte_chosen[aufgabe]
 
-
             if not is_empty(ui.list_sage_hide_show_items_chosen):
                 self.dict_sage_hide_show_items_chosen[
                     aufgabe
@@ -6141,10 +6160,11 @@ class Ui_MainWindow(object):
             elif aufgabe in self.dict_sage_hide_show_items_chosen:
                 del self.dict_sage_hide_show_items_chosen[aufgabe]
 
-
             # print(self.dict_sage_ausgleichspunkte_chosen)
             # print(self.dict_sage_hide_show_items_chosen)
-            self.dict_variablen_label[aufgabe].setText("{}".format(len(ui.list_sage_ausgleichspunkte_chosen)))
+            self.dict_variablen_label[aufgabe].setText(
+                "{}".format(len(ui.list_sage_ausgleichspunkte_chosen))
+            )
 
         self.update_punkte()
 
@@ -6224,7 +6244,7 @@ class Ui_MainWindow(object):
             self.comboBox_gk_num.clear()
             if self.comboBox_gk.currentText() == "":
                 return
-                
+
             self.comboBox_gk_num.addItem("")
             self.lineEdit_number.clear()
             # list_klassen = ["k5", "k6", "k7", "k8"]
@@ -6286,14 +6306,14 @@ class Ui_MainWindow(object):
 
             day_time = day_time - datetime.timedelta(minutes=intervall)
             today, now_minus_intervall = day_time.strftime("%y%m%d-%H%M").split("-")
-            
+
             if date != today:
                 self.sage_save(autosave=autosave_file)
             elif now_minus_intervall >= time_tag:
                 self.sage_save(autosave=autosave_file)
         except FileNotFoundError:
             self.sage_save(autosave=autosave_file)
-        
+
         self.update_label_restore_action()
 
     def nummer_clicked(self, item):
@@ -6303,13 +6323,10 @@ class Ui_MainWindow(object):
             klasse = self.get_klasse("sage")
             aufgabe = klasse + "." + aufgabe
 
-
         if aufgabe in self.list_alle_aufgaben_sage:
             return
 
-
         self.sage_aufgabe_add(aufgabe)
-
 
         self.build_aufgaben_schularbeit(aufgabe)  # aufgabe, aufgaben_verteilung
         self.lineEdit_number.setText("")
@@ -6330,8 +6347,7 @@ class Ui_MainWindow(object):
                 _translate(
                     "MainWindow",
                     "Ausgewählte Aufgabe: {0} ({1})".format(
-                        item.text(),
-                        self.comboBox_klassen_fb_cria.currentText(),
+                        item.text(), self.comboBox_klassen_fb_cria.currentText(),
                     ),
                     None,
                 )
@@ -6362,7 +6378,6 @@ class Ui_MainWindow(object):
 
         self.adapt_choosing_list(list_mode)
 
-
     def comboBox_kapitel_changed(self, list_mode):
         klasse = self.get_klasse(list_mode)
         if list_mode == "sage":
@@ -6388,10 +6403,8 @@ class Ui_MainWindow(object):
             for all in list_unterkapitel:
                 combobox_unterkapitel.addItem(dict_unterkapitel[all] + " (" + all + ")")
 
-
     def comboBox_unterkapitel_changed(self, list_mode):
         self.adapt_choosing_list(list_mode)
-
 
     def delete_zeros_at_beginning(self, string):
         while string.startswith("0"):
@@ -6399,11 +6412,7 @@ class Ui_MainWindow(object):
         return string
 
     def add_items_to_listwidget(
-        self,
-        typ,
-        listWidget,
-        filtered_items,
-        local=False,
+        self, typ, listWidget, filtered_items, local=False,
     ):
 
         for _file_ in filtered_items:
@@ -6433,7 +6442,6 @@ class Ui_MainWindow(object):
                 continue
             else:
                 listWidget.addItem(item)
-
 
     def adapt_choosing_list(self, list_mode):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
@@ -6495,7 +6503,7 @@ class Ui_MainWindow(object):
             )
             for all in filtered_items_addon:
                 filtered_items.append(all)
-        
+
         filtered_items.sort(key=order_gesammeltedateien)
         # print(filtered_items)
 
@@ -6581,7 +6589,6 @@ class Ui_MainWindow(object):
                 )
                 return False
 
-
     def add_content_to_tex_file(
         self, aufgabe, aufgabe_total, filename_vorschau, first_typ2
     ):
@@ -6614,7 +6621,6 @@ class Ui_MainWindow(object):
         else:
             vspace = "\\vspace{{{0}cm}} \n\n".format(abstand)
 
-        
         with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
             vorschau.write(header)
             vorschau.write(begin)
@@ -6625,22 +6631,25 @@ class Ui_MainWindow(object):
             if aufgabe in self.dict_sage_individual_change:
                 vorschau.write(self.dict_sage_individual_change[aufgabe])
             elif aufgabe in self.dict_sage_ausgleichspunkte_chosen:
-                full_content = aufgabe_total['content']
+                full_content = aufgabe_total["content"]
                 # print(content)
 
                 split_content = self.split_content(aufgabe, aufgabe_total["content"])
-                content = edit_content_ausgleichspunkte(self, aufgabe, split_content, full_content)
-
+                content = edit_content_ausgleichspunkte(
+                    self, aufgabe, split_content, full_content
+                )
 
                 # print(content)
                 # return
                 # content = "\n".join(split_content)
                 vorschau.write(content)
             elif aufgabe in self.dict_sage_hide_show_items_chosen:
-                full_content = aufgabe_total['content']
+                full_content = aufgabe_total["content"]
                 split_content = self.split_content(aufgabe, aufgabe_total["content"])
                 split_content = prepare_content_for_hide_show_items(split_content)
-                content = edit_content_hide_show_items(self, aufgabe, split_content, full_content)
+                content = edit_content_hide_show_items(
+                    self, aufgabe, split_content, full_content
+                )
 
                 # print(content)
                 vorschau.write(content)
@@ -6662,8 +6671,6 @@ class Ui_MainWindow(object):
             #             'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!',
             #         )
             #         return
-
-
 
             else:
                 vorschau.write(aufgabe_total["content"])
@@ -6696,13 +6703,11 @@ class Ui_MainWindow(object):
             }
             if index == 0:
 
-                self.chosen_path_schularbeit_erstellen = (
-                    QtWidgets.QFileDialog.getSaveFileName(
-                        None,
-                        "Speicherort wählen",
-                        os.path.dirname(self.saved_file_path),
-                        "TeX Dateien (*.tex);; Alle Dateien (*.*)",
-                    )
+                self.chosen_path_schularbeit_erstellen = QtWidgets.QFileDialog.getSaveFileName(
+                    None,
+                    "Speicherort wählen",
+                    os.path.dirname(self.saved_file_path),
+                    "TeX Dateien (*.tex);; Alle Dateien (*.*)",
                 )
 
                 if self.chosen_path_schularbeit_erstellen[0] == "":
@@ -6788,11 +6793,14 @@ class Ui_MainWindow(object):
             typ = get_aufgabentyp(self.chosen_program, name)
             aufgabe_total = get_aufgabe_total(name, typ)
             if aufgabe_total == None:
-                warning_window("Die Aufgabe {} konnte nicht gefunden werden, da sie gelöscht oder umbenannt wurde. Sie wird daher beim Erstellen ignoriert.".format(name))
+                warning_window(
+                    "Die Aufgabe {} konnte nicht gefunden werden, da sie gelöscht oder umbenannt wurde. Sie wird daher beim Erstellen ignoriert.".format(
+                        name
+                    )
+                )
                 continue
             # print(aufgabe)
             # print(aufgabe_total)
-    
 
             # if self.comboBox_pruefungstyp.currentText() == "Quiz":
 
@@ -7119,7 +7127,7 @@ class Ui_MainWindow(object):
             else:
                 exec("self.%s.show()" % all)
 
-        if chosen_gui == 'widgets_search':
+        if chosen_gui == "widgets_search":
             # if self.label_aufgabentyp.text()[-1] == str(1):
             if self.combobox_aufgabentyp.currentIndex() == 0:
                 self.combobox_searchtype.hide()
@@ -7131,25 +7139,26 @@ class Ui_MainWindow(object):
         #     self.combobox_searchtype.hide()
         #     self.refresh_label_update()
         #     self.chosen_aufgabenformat_typ()
-        if chosen_gui == 'widgets_sage' or chosen_gui == 'widgets_sage_cria':
+        if chosen_gui == "widgets_sage" or chosen_gui == "widgets_sage_cria":
             MainWindow.setTabOrder(self.spinBox_nummer, self.dateEdit)
             MainWindow.setTabOrder(self.dateEdit, self.lineEdit_klasse)
             self.adapt_choosing_list("sage")
             # self.listWidget.itemClicked.connect(self.nummer_clicked)
-        if chosen_gui == 'widgets_feedback' or chosen_gui == 'widgets_feedback_cria':
+        if chosen_gui == "widgets_feedback" or chosen_gui == "widgets_feedback_cria":
             self.adapt_choosing_list("feedback")
-        
+
         if self.developer_mode_active == False:
             self.menuBar.removeAction(self.menuDeveloper.menuAction())
             # self.listWidget_fb.itemClicked.connect(self.nummer_clicked_fb)
             # self.listWidget_fb_cria.itemClicked.connect(self.nummer_clicked_fb)
- 
-        if (chosen_gui == "widgets_create" and "###" in self.lineEdit_titel.text()) or (chosen_gui == "widgets_edit"):
+
+        if (chosen_gui == "widgets_create" and "###" in self.lineEdit_titel.text()) or (
+            chosen_gui == "widgets_edit"
+        ):
             self.cb_matura_tag.show()
         else:
             self.cb_matura_tag.hide()
 
-        
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
@@ -7161,7 +7170,6 @@ if __name__ == "__main__":
             get_color(blue_7)
         )
     )
-
 
     # font = QtGui.QFont("Calibri Light", 9)
     # app.setFont(font)
@@ -7214,16 +7222,17 @@ if __name__ == "__main__":
     except FileNotFoundError:
         app.setPalette(palette)
 
-
     logo = os.path.join(
         path_programm, "_database", "_config", "icon", "LaMA_logo_full.png"
     )
     splash_pix = QtGui.QPixmap(logo)
-    
+
     splash = QtWidgets.QSplashScreen(splash_pix, QtCore.Qt.WindowStaysOnTopHint)
     # splash.setGeometry(0,0,500,210)
     splash.setFixedHeight(160)
-    splash.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint | QtCore.Qt.FramelessWindowHint)
+    splash.setWindowFlags(
+        QtCore.Qt.WindowStaysOnTopHint | QtCore.Qt.FramelessWindowHint
+    )
     splash.setEnabled(False)
     # splash.setStyleSheet("background-color:white; color: black")
     splash.setPalette(palette)
@@ -7241,55 +7250,76 @@ if __name__ == "__main__":
 
     def step_progressbar(i, text):
         progressBar.setValue(i)
-        splash.showMessage("{}.py".format(text), QtCore.Qt.AlignBottom | QtCore.Qt.AlignCenter)
+        splash.showMessage(
+            "{}.py".format(text), QtCore.Qt.AlignBottom | QtCore.Qt.AlignCenter
+        )
         time.sleep(0.03)
-        return i+1
+        return i + 1
 
-    i=0
+    i = 0
     # for i in range(1, 11):
     #     print(i)
     #     progressBar.setValue(i)
     #     t = time.time()
     #     while time.time() < t + 0.1:
     app.processEvents()
-    
-
 
     # Simulate something that takes time
     i = step_progressbar(i, "threading")
     import threading
+
     i = step_progressbar(i, "pathlib")
     from pathlib import Path
+
     i = step_progressbar(i, "datetime")
     import datetime
+
     # i = step_progressbar(i, "json")
     # import json
     i = step_progressbar(i, "subprocess")
     import subprocess
+
     i = step_progressbar(i, "shutil")
     import shutil
+
     i = step_progressbar(i, "re")
     import re
+
     i = step_progressbar(i, "random")
     import random
+
     i = step_progressbar(i, "functools")
     import functools
+
     i = step_progressbar(i, "partial")
     from functools import partial
+
     i = step_progressbar(i, "yaml")
     import yaml
+
     i = step_progressbar(i, "pillow")
     from PIL import Image  ## pillow
+
     i = step_progressbar(i, "smtplib")
     import smtplib
+
     i = step_progressbar(i, "save_titlepage")
     from save_titlepage import create_file_titlepage, check_format_titlepage_save
+
     i = step_progressbar(i, "git_sync")
-    from git_sync import git_clone_repo, git_push_to_origin, check_internet_connection, check_branches
+    from git_sync import (
+        git_clone_repo,
+        git_push_to_origin,
+        check_internet_connection,
+        check_branches,
+    )
+
     i = step_progressbar(i, "create_new_widgets")
     from upload_database import action_push_database
-    i= step_progressbar(i, "upload_database")
+
+    i = step_progressbar(i, "upload_database")
     from create_new_widgets import *
+
     i = step_progressbar(i, "list_of_widgets")
     from list_of_widgets import (
         widgets_search,
@@ -7304,49 +7334,69 @@ if __name__ == "__main__":
         widgets_feedback_cria,
         list_widgets,
     )
+
     # i = step_progressbar(i, "subwindows")
     # from subwindows import Ui_Dialog_Welcome_Window
     i = step_progressbar(i, "subwindows")
     from subwindows import Ui_Dialog_choose_type
+
     i = step_progressbar(i, "subwindows")
     from subwindows import Ui_Dialog_titlepage
+
     i = step_progressbar(i, "subwindows")
     from subwindows import Ui_Dialog_random_quiz
+
     i = step_progressbar(i, "subwindows")
     from subwindows import Ui_Dialog_ausgleichspunkte
+
     i = step_progressbar(i, "subwindows")
     from subwindows import Ui_Dialog_erstellen
+
     i = step_progressbar(i, "subwindows")
     from subwindows import Ui_Dialog_speichern
+
     i = step_progressbar(i, "subwindows")
     from subwindows import Ui_Dialog_variation
+
     i = step_progressbar(i, "subwindows")
     from subwindows import Ui_Dialog_setup
+
     i = step_progressbar(i, "subwindows")
     from subwindows import Ui_Dialog_developer
+
     i = step_progressbar(i, "subwindows")
     from subwindows import Ui_Dialog_draft_control
+
     i = step_progressbar(i, "subwindows")
     from subwindows import read_credentials
+
     # from subwindows import (
-        # Ui_Dialog_Welcome_Window,
-        # Ui_Dialog_choose_type,
-        # Ui_Dialog_titlepage,
-        # Ui_Dialog_random_quiz,
-        # Ui_Dialog_ausgleichspunkte,
-        # Ui_Dialog_erstellen,
-        # Ui_Dialog_speichern,
-        # Ui_Dialog_variation,
-        # Ui_Dialog_setup,
-        # Ui_Dialog_developer,
-        # read_credentials,
+    # Ui_Dialog_Welcome_Window,
+    # Ui_Dialog_choose_type,
+    # Ui_Dialog_titlepage,
+    # Ui_Dialog_random_quiz,
+    # Ui_Dialog_ausgleichspunkte,
+    # Ui_Dialog_erstellen,
+    # Ui_Dialog_speichern,
+    # Ui_Dialog_variation,
+    # Ui_Dialog_setup,
+    # Ui_Dialog_developer,
+    # read_credentials,
     # )
     i = step_progressbar(i, "translate")
     from translate import _fromUtf8, _translate
+
     i = step_progressbar(i, "create_pdf")
-    from create_pdf import prepare_tex_for_pdf, create_tex, create_pdf, check_if_variation
+    from create_pdf import (
+        prepare_tex_for_pdf,
+        create_tex,
+        create_pdf,
+        check_if_variation,
+    )
+
     i = step_progressbar(i, "refresh_ddb")
     from refresh_ddb import modification_date, refresh_ddb
+
     i = step_progressbar(i, "standard_dialog_windows")
     from standard_dialog_windows import (
         warning_window,
@@ -7355,8 +7405,10 @@ if __name__ == "__main__":
         information_window,
         custom_window,
     )
+
     i = step_progressbar(i, "predefined_size_policy")
     from predefined_size_policy import *
+
     i = step_progressbar(i, "work_with_content")
     from work_with_content import (
         collect_content,
@@ -7365,27 +7417,36 @@ if __name__ == "__main__":
         prepare_content_for_hide_show_items,
         edit_content_quiz,
     )
+
     i = step_progressbar(i, "build_titlepage")
     from build_titlepage import get_titlepage_vorschau
+
     i = step_progressbar(i, "prepare_content_vorschau")
     from prepare_content_vorschau import (
         copy_logo_to_target_path,
         copy_included_images,
     )
+
     i = step_progressbar(i, "convert_image_to_eps")
     from convert_image_to_eps import convert_image_to_eps
+
     i = step_progressbar(i, "lama_stylesheets")
     from lama_stylesheets import *
+
     i = step_progressbar(i, "processing_window")
     from processing_window import Ui_Dialog_processing
+
     i = step_progressbar(i, "bcrpyt")
     import bcrypt
+
     i = step_progressbar(i, "tinydb")
 
     from tinydb import Query
+
     i = step_progressbar(i, "database_commands")
 
     from sort_items import order_gesammeltedateien
+
     i = step_progressbar(i, "sort_items")
 
     from database_commands import (
@@ -7398,19 +7459,21 @@ if __name__ == "__main__":
         get_table,
         delete_file,
     )
+
     i = step_progressbar(i, "tex_minimal")
     from tex_minimal import *
+
     i = step_progressbar(i, "filter_comands")
     from filter_commands import get_filter_string, filter_items, get_drafts
+
     i = step_progressbar(i, "mainwindow")
     # form = Form()
     # form.show()
-    
+
     try:
         loaded_lama_file_path = sys.argv[1]
     except IndexError:
         loaded_lama_file_path = ""
-
 
     i = step_progressbar(i, "mainwindow")
 
@@ -7432,6 +7495,6 @@ if __name__ == "__main__":
     # i = step_progressbar(i, "MainWindow")
     # print(i)
     MainWindow.show()
-    
+
     sys.exit(app.exec_())
     # sys.exit()
