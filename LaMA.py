@@ -435,8 +435,12 @@ class Ui_MainWindow(object):
 
         # self.menuNeu.addSeparator()
 
+        if self.developer_mode_active == True:
+            label_action_edit = "Aufgabe bearbeiten"
+        else:
+            label_action_edit = "Lokal gespeicherte Aufgabe bearbeiten"
         self.actionEdit_Files = add_action(
-            MainWindow, self.menuNeu, "Aufgabe bearbeiten", self.action_edit_files
+            MainWindow, self.menuNeu, label_action_edit, self.action_edit_files
         )
         # self.actionBild_einbinden = add_action(
         #     MainWindow, self.menuBild_einbinden, "Durchsuchen...", self.btn_add_image_pressed
@@ -3308,11 +3312,13 @@ class Ui_MainWindow(object):
     def developer_mode_changed(self):
         if self.developer_mode_active == False:
             self.actionDeveloper.setText("Entwicklermodus")
+            self.actionEdit_Files.setText("Lokal gespeicherte Aufgabe bearbeiten")
             # self.actionPush_Database.setVisible(False)
             self.menuBar.removeAction(self.menuDeveloper.menuAction())
 
         elif self.developer_mode_active == True:
             self.actionDeveloper.setText("Entwicklermodus (aktiv)")
+            self.actionEdit_Files.setText("Aufgabe bearbeiten")
             # self.actionPush_Database.setVisible(True)
             self.menuBar.addAction(self.menuDeveloper.menuAction())
 
