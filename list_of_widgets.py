@@ -149,7 +149,7 @@ widgets_search_cria = [
     # "actionRefresh_Database",
     # "actionLoad",
     # "actionSave",
-    # "actionReset",
+    "actionReset",
     'actionSage',
     # "menuNeu",
     "actionNeu",
