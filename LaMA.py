@@ -1402,6 +1402,11 @@ class Ui_MainWindow(object):
         self.cb_matura_tag = create_new_checkbox(self.centralwidget, "Matura")
         self.gridLayout.addWidget(self.cb_matura_tag, 0, 7, 1, 1)
         self.cb_matura_tag.hide()
+
+        self.cb_no_grade_tag = create_new_checkbox(self.centralwidget, "klassen-\nunabhängig")
+        self.gridLayout.addWidget(self.cb_no_grade_tag, 0, 7, 1, 1)
+        self.cb_no_grade_tag.hide()
+
         self.gridLayout.setRowStretch(7, 1)
 
         self.groupBox_titel_cr = QtWidgets.QGroupBox(self.centralwidget)
@@ -2427,9 +2432,19 @@ class Ui_MainWindow(object):
             self.chosen_gui == "widgets_edit" and self.developer_mode_active == True
         ):
             self.cb_matura_tag.show()
+            self.cb_no_grade_tag.hide()
+            self.cb_no_grade_tag.setChecked(False)
+        elif ("###" in self.lineEdit_titel.text() and self.chosen_program == "cria") or (
+            self.chosen_gui == "widgets_edit_cria" and self.developer_mode_active == True
+        ):
+            self.cb_matura_tag.hide()
+            self.cb_matura_tag.setChecked(False)
+            self.cb_no_grade_tag.show()            
         else:
             self.cb_matura_tag.hide()
             self.cb_matura_tag.setChecked(False)
+            self.cb_no_grade_tag.hide()
+            self.cb_no_grade_tag.setChecked(False)
 
     def click_label_to_check(self, new_checkbox):
         if new_checkbox.isChecked() == False:
@@ -3097,6 +3112,8 @@ class Ui_MainWindow(object):
             self.lineEdit_quelle.setText(_translate("MainWindow", quelle, None))
 
         self.cb_matura_tag.setChecked(False)
+        self.cb_no_grade_tag.setChecked(False)
+
 
     def reset_sage(self, question_reset=True):
         if question_reset == True and not is_empty(self.list_alle_aufgaben_sage):
@@ -4176,6 +4193,7 @@ class Ui_MainWindow(object):
         for all in themen_auswahl:
             if int(all[1]) > klasse:
                 klasse = int(all[1])
+
         return "k{}".format(klasse)
 
     def get_max_integer(self, table_lama, typ, themen_auswahl):
@@ -4319,6 +4337,9 @@ class Ui_MainWindow(object):
         themen_auswahl = []
         if self.chosen_program == "cria":
             for all in self.list_selected_topics_creator:
+                # if self.cb_no_grade_tag.isChecked:
+                #     thema = all[1] + "." + all[2]
+                # else:
                 thema = all[0] + "." + all[1] + "." + all[2]
                 if thema not in themen_auswahl:
                     themen_auswahl.append(thema)
@@ -5070,6 +5091,7 @@ class Ui_MainWindow(object):
         self.pushButton_save_as_variation_edit.setEnabled(enabled)
         self.pushButton_delete_file.setEnabled(enabled)
         self.cb_matura_tag.setEnabled(enabled)
+        self.cb_no_grade_tag.setEnabled(enabled)
         self.groupBox_aufgabentyp.setEnabled(enabled)
         self.groupBox_themengebiete_cria.setEnabled(enabled)
         self.groupBox_abstand.setEnabled(enabled)
@@ -6424,7 +6446,7 @@ class Ui_MainWindow(object):
             typ = "lama_2"
 
         filter_string = get_filter_string(self, list_mode)
-
+        print(filter_string)
         if list_mode == "sage":
             line_entry = self.lineEdit_number.text()
         elif list_mode == "feedback":
@@ -7069,8 +7091,15 @@ class Ui_MainWindow(object):
             chosen_gui == "widgets_edit"
         ):
             self.cb_matura_tag.show()
+            self.cb_no_grade_tag.hide()
+        elif (chosen_gui == "widgets_create_cria" and "###" in self.lineEdit_titel.text()) or (
+            chosen_gui == "widgets_edit_cria"
+        ):
+            self.cb_matura_tag.hide()
+            self.cb_no_grade_tag.show()
         else:
             self.cb_matura_tag.hide()
+            self.cb_no_grade_tag.hide()
 
 
 if __name__ == "__main__":

@@ -97,8 +97,9 @@ def filter_items(self, table_lama, typ, list_mode, filter_string, line_entry, kl
         string_included_cria = lambda s: s.split(".")[-1].startswith(line_entry)
 
         def themen_included_cria(value):
+            print(filter_string[2:])
             for all in value:
-                return True if filter_string in all else False
+                return True if filter_string[2:] in all else False
 
         filtered_items = table_lama.search(
             (_file_.name.search("{}\..+".format(klasse)))

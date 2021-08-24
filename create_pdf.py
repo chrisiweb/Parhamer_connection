@@ -141,10 +141,12 @@ def collect_suchbegriffe(self):
 
 
     if self.chosen_program == "cria":
-        # print(self.dict_chosen_topics)
         for all in self.dict_chosen_topics.values():
             string  = '.'.join(all)
             suchbegriffe['themen'].append(string)
+            string_no_grade = all[1] + "." + all[2]
+            suchbegriffe['themen'].append(string_no_grade)
+            
 
 
     if chosen_aufgabenformat == "Typ1Aufgaben" or self.chosen_program == "cria":
@@ -312,7 +314,11 @@ def prepare_tex_for_pdf(self):
     list_2.sort(key=order_gesammeltedateien)
     
     gesammeltedateien = list_1 + list_2
+
+    # print(suchbegriffe)
     # print(gesammeltedateien)
+    # for all in gesammeltedateien:
+    #     print(all['themen'])
     # return
 
 
