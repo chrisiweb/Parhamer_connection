@@ -235,21 +235,33 @@ class Ui_MainWindow(object):
         except KeyError:
             self.lama_settings["start_program"] = 0
 
-        custom_window("Liebe(r) LaMA-Nutzer\xb7in\n\ndas neue LaMA 3.0 ist verfügbar!\n\n"
-        "Aufgrund einiger wesentlichen Änderungen ist dafür eine Neuinstallation von LaMA nötig.\n\n"
-        'Die neueste Version kann unter <a href="http://stackoverflow.com/">Link</a> heruntergeladen werden.'
+
+        link = "http://lama.schule/downloads"
+        color = "rgb(47, 69, 80)"
+        # custom_window(
+        #     'Eine kleinen Spende für unsere "Kaffeekassa" wird nicht benötigt um LaMA zu finanzieren.\n\nUnser Projekt ist und bleibt kostenlos und wir versuchen es auch weiterhin stetig zu verbessern und aktualisieren. Sie dient lediglich als kleine Anerkennung unserer Arbeit.\n\nVielen Dank!',
+        #     """<center><a href='{0}'style="color:{1};">Buy Me A Coffee</a><\center>""".format(
+        #         link, color
+        #     ),
+        custom_window("""
+Liebe(r) LaMA-Nutzer\xb7in,
+
+das neue LaMA 3.0 ist da!
+Aufgrund einiger wesentlichen Änderungen ist dafür eine Neuinstallation von LaMA nötig.
+
+
+Für diese veraltete Version von LaMA ({}) wird es ab sofort keine neuen Updates mehr geben. Außerdem wird die bestehende Aufgabendatenbank nicht weiter ausgebaut oder korrigiert. 
+LaMA v2.3 ist jedoch vorerst weiterhin ohne Einschränkungen verwendbar. Erst ab dem Schuljahr 2022/23 wird die alte Datenbank auf Dropbox gelöscht.
+
+
+Bei Fragen, Unterstützung bei der Installation oder ähnliches können Sich sich gerne bei uns unter lama.helpme@gmail.com melden.
+""".format(__version__),
+
+"""Die neueste Version von LaMA ist unter <a href='{0}'style="color:{1};">lama.schule/downloads</a> kostenlos verfügbar.""".format(
+                link, color
+            )            
         )
-    
-            # "LaMA - LaTeX Mathematik Assistent %s  \n\n"
-            # "Authors: Christoph Weberndorfer, Matthias Konzett\n\n"
-            # "License: GNU General Public License v3.0  \n\n" % __version__,
-            # "Credits: David Fischer\n"
-            # "Logo & Icon: Lisa Schultz\n\n"
-            # "E-Mail-Adresse: lama.helpme@gmail.com\n"
-            # "Weiter Infos: lama.schule",
-            # titel="Über LaMA - LaTeX Mathematik Assistent",
-        # )
-    
+
         if loaded_lama_file_path == "" and self.lama_settings["start_program"]==0:
             ########## Dialog: Choose program ####
 
