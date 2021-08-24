@@ -357,6 +357,11 @@ def prepare_tex_for_pdf(self):
             path_programm, "Teildokument", "Teildokument_cria.tex"
         )
 
+    if self.cb_solution.isChecked():
+        solutions = "solution_on"
+    else:
+        solutions = "solution_off"
+
     if self.cb_show_variation.isChecked():
         variation = True
     else:
@@ -367,7 +372,9 @@ def prepare_tex_for_pdf(self):
         infos = "info_on"
     else:
         infos = "info_off"
-    construct_tex_file(filename_teildokument, gesammeltedateien, variation, infos)
+
+    
+    construct_tex_file(filename_teildokument, gesammeltedateien, solutions, variation, infos)
 
 
     number_of_files = get_output_size(gesammeltedateien, variation)
@@ -433,9 +440,9 @@ def create_tex(file_path, content):
         return e
 
 
-def construct_tex_file(file_name, gesammeltedateien, variation, infos):
+def construct_tex_file(file_name, gesammeltedateien, solutions, variation, infos):
     with open(file_name, "w", encoding="utf8") as file:
-        file.write(tex_preamble(bookmark=True, info=infos))
+        file.write(tex_preamble(solution=solutions, bookmark=True, info=infos))
         for all in gesammeltedateien:
             if variation == False and check_if_variation(all['name']) == True:
                 continue
