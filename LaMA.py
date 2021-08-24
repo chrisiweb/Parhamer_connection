@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #### Version number ###
 __version__ = "v2.3.0"
-__lastupdate__ = "01/21"
+__lastupdate__ = "09/21"
 ##################
 print("Loading...")
 from PyQt5 import QtCore, QtWidgets, QtGui
@@ -234,6 +234,22 @@ class Ui_MainWindow(object):
             self.lama_settings["start_program"]
         except KeyError:
             self.lama_settings["start_program"] = 0
+
+        custom_window("Liebe(r) LaMA-Nutzer\xb7in\n\ndas neue LaMA 3.0 ist verfügbar!\n\n"
+        "Aufgrund einiger wesentlichen Änderungen ist dafür eine Neuinstallation von LaMA nötig.\n\n"
+        'Die neueste Version kann unter <a href="http://stackoverflow.com/">Link</a> heruntergeladen werden.'
+        )
+    
+            # "LaMA - LaTeX Mathematik Assistent %s  \n\n"
+            # "Authors: Christoph Weberndorfer, Matthias Konzett\n\n"
+            # "License: GNU General Public License v3.0  \n\n" % __version__,
+            # "Credits: David Fischer\n"
+            # "Logo & Icon: Lisa Schultz\n\n"
+            # "E-Mail-Adresse: lama.helpme@gmail.com\n"
+            # "Weiter Infos: lama.schule",
+            # titel="Über LaMA - LaTeX Mathematik Assistent",
+        # )
+    
         if loaded_lama_file_path == "" and self.lama_settings["start_program"]==0:
             ########## Dialog: Choose program ####
 
