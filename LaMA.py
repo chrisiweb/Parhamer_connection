@@ -1583,7 +1583,9 @@ class Ui_MainWindow(object):
         self.comboBox_klassen = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
         self.comboBox_klassen.setObjectName("comboBox_klassen")
         # self.comboBox_gk.addItem("")
-        index = 0
+
+        self.comboBox_klassen.addItem("")
+        index = 1
         for all in list_klassen:
             self.comboBox_klassen.addItem("")
 
@@ -2071,7 +2073,8 @@ class Ui_MainWindow(object):
         )
         self.comboBox_klassen_fb_cria.setObjectName("self.comboBox_klassen_fb_cria")
 
-        i = 0
+        self.comboBox_klassen_fb_cria.addItem("")
+        i = 1
         for all in list_klassen:
 
             self.comboBox_klassen_fb_cria.addItem("")
@@ -2912,7 +2915,7 @@ class Ui_MainWindow(object):
                     self.dict_widget_variables[label_button_check_all].show()
 
     def checkBox_checked_cria(self, klasse, kapitel, unterkapitel):
-        thema_checked = [klasse, kapitel, unterkapitel]
+        thema_checked = [kapitel, unterkapitel]
         thema_label = kapitel + "." + unterkapitel + " (" + klasse[1] + ".)"
 
         label_checkbox = "checkbox_unterkapitel_{0}_{1}_{2}".format(
@@ -5786,8 +5789,8 @@ class Ui_MainWindow(object):
         aufgaben_verteilung = self.get_aufgabenverteilung()
 
         if self.chosen_program == "cria":
-            klasse, aufgaben_nummer = aufgabe.split(".")
-            klasse = klasse[1]
+            klasse = aufgabe_total['klasse'][1]
+
 
             new_groupbox = create_new_groupbox(
                 self.scrollAreaWidgetContents_2, "{0}. Aufgabe".format(index + 1)
@@ -5805,7 +5808,7 @@ class Ui_MainWindow(object):
             aufgabenformat = " (" + aufgabe_total["af"].upper() + ")"
 
             label = "{0}. Klasse - {1}{2}".format(
-                klasse, aufgaben_nummer, aufgabenformat
+                klasse, aufgabe, aufgabenformat
             )
 
         elif typ == 1:
@@ -5945,9 +5948,15 @@ class Ui_MainWindow(object):
 
     def get_klasse(self, mode="sage"):
         if mode == "sage":
-            klasse = list_klassen[self.comboBox_klassen.currentIndex()]
+            if self.comboBox_klassen.currentIndex()==0:
+                klasse = None
+            else:
+                klasse = list_klassen[self.comboBox_klassen.currentIndex()-1]
         elif mode == "feedback":
-            klasse = list_klassen[self.comboBox_klassen_fb_cria.currentIndex()]
+            if self.comboBox_klassen.currentIndex()==0:
+                klasse = None
+            else:
+                klasse = list_klassen[self.comboBox_klassen_fb_cria.currentIndex()]
 
         return klasse
 
@@ -5972,13 +5981,13 @@ class Ui_MainWindow(object):
 
         return klasse, aufgabe
 
-    def build_klasse_aufgabe(self, aufgabe):
-        klasse = self.get_klasse()
-        if "_L_" in aufgabe:
-            klasse_aufgabe = klasse + aufgabe
-        else:
-            klasse_aufgabe = klasse + "_" + aufgabe
-        return klasse_aufgabe
+    # def build_klasse_aufgabe(self, aufgabe):
+    #     klasse = self.get_klasse()
+    #     if "_L_" in aufgabe:
+    #         klasse_aufgabe = klasse + aufgabe
+    #     else:
+    #         klasse_aufgabe = klasse + "_" + aufgabe
+    #     return klasse_aufgabe
 
     def add_image_path_to_list(self, aufgabe):
         typ = get_aufgabentyp(self.chosen_program, aufgabe)
@@ -6292,9 +6301,9 @@ class Ui_MainWindow(object):
     def nummer_clicked(self, item):
         aufgabe = item.text()
 
-        if self.chosen_program == "cria":
-            klasse = self.get_klasse("sage")
-            aufgabe = klasse + "." + aufgabe
+        # if self.chosen_program == "cria":
+            # klasse = self.get_klasse("sage")
+            # aufgabe = klasse + "." + aufgabe
 
         if aufgabe in self.list_alle_aufgaben_sage:
             return
@@ -6339,20 +6348,22 @@ class Ui_MainWindow(object):
             self.label_example.setText("Ausgewählte Aufgabe: -")
 
         dict_klasse_name = eval(
-            "dict_{}_name".format(list_klassen[combobox_klassen.currentIndex()])
+            "dict_{}_name".format(list_klassen[combobox_klassen.currentIndex()-1])
         )
 
         combobox_kapitel.clear()
         combobox_unterkapitel.clear()
-        combobox_kapitel.addItem("")
 
-        for all in dict_klasse_name.keys():
-            combobox_kapitel.addItem(dict_klasse_name[all] + " (" + all + ")")
+        if combobox_klassen.currentIndex() != 0:
+            combobox_kapitel.addItem("")
+
+            for all in dict_klasse_name.keys():
+                combobox_kapitel.addItem(dict_klasse_name[all] + " (" + all + ")")
 
         self.adapt_choosing_list(list_mode)
 
     def comboBox_kapitel_changed(self, list_mode):
-        klasse = self.get_klasse(list_mode)
+        # klasse = self.get_klasse(list_mode)
         if list_mode == "sage":
             combobox_klassen = self.comboBox_klassen
             chosen_kapitel = self.comboBox_kapitel.currentText()
@@ -6363,7 +6374,7 @@ class Ui_MainWindow(object):
             combobox_unterkapitel = self.comboBox_unterkapitel_fb_cria
 
         dict_klasse = eval(
-            "dict_{}".format(list_klassen[combobox_klassen.currentIndex()])
+            "dict_{}".format(list_klassen[combobox_klassen.currentIndex()-1])
         )
 
         chosen_kapitel = extract_topic_abbr(chosen_kapitel)
@@ -6446,7 +6457,7 @@ class Ui_MainWindow(object):
             typ = "lama_2"
 
         filter_string = get_filter_string(self, list_mode)
-        print(filter_string)
+
         if list_mode == "sage":
             line_entry = self.lineEdit_number.text()
         elif list_mode == "feedback":

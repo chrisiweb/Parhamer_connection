@@ -144,8 +144,9 @@ def collect_suchbegriffe(self):
         for all in self.dict_chosen_topics.values():
             string  = '.'.join(all)
             suchbegriffe['themen'].append(string)
-            string_no_grade = all[1] + "." + all[2]
-            suchbegriffe['themen'].append(string_no_grade)
+            # print(suchbegriffe['themen'])
+            # string_no_grade = all[1] + "." + all[2]
+            # suchbegriffe['themen'].append(string_no_grade)
             
 
 
