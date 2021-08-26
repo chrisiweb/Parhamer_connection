@@ -4193,9 +4193,12 @@ class Ui_MainWindow(object):
     def get_highest_grade_cr(self):
         klasse = 1
         themen_auswahl = self.get_themen_auswahl()
-        for all in themen_auswahl:
-            if int(all[1]) > klasse:
-                klasse = int(all[1])
+        for all in self.list_selected_topics_creator:
+            if int(all[0][1]) > klasse:
+                klasse = int(all[0][1])
+        # for all in themen_auswahl:
+        #     if int(all[1]) > klasse:
+        #         klasse = int(all[1])
 
         return "k{}".format(klasse)
 
@@ -4208,19 +4211,19 @@ class Ui_MainWindow(object):
             all_files = table_lama.search(_file_.name.matches(pattern))
         elif typ == 1:
             all_files = table_lama.search(_file_.name.matches(themen_auswahl))
-        elif typ == None:
-            klasse = self.get_highest_grade_cr()
-            all_files = table_lama.search(_file_.name.matches(klasse))
-        elif typ == 2:
+        elif typ == None or typ ==2:
+            # klasse = self.get_highest_grade_cr()
+        #     all_files = table_lama.search(_file_.name.matches(klasse))
+        # elif typ == 2:
             all_files = table_lama.all()
 
         for all in all_files:
             name = all["name"].replace("l.", "").replace("i.", "")
             if typ == 1:
                 num = name.split(" - ")[-1]
-            elif typ == None:
-                num = name.split(".")[-1]
-            elif typ == 2:
+            elif typ == None or typ == 2:
+            #     num = name.split(".")[-1]
+            # elif typ == 2:
                 num = name
 
             if self.chosen_variation == None:
@@ -4255,8 +4258,8 @@ class Ui_MainWindow(object):
             number = "l." + str(number)
 
         if self.chosen_program == "cria":
-            highest_grade = self.get_highest_grade_cr()
-            name = "{0}-{1}-{2}".format(highest_grade, number, name)
+            # highest_grade = self.get_highest_grade_cr()
+            name = "{0}-{1}".format(number, name)
 
         elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
             # thema, klasse = self.split_thema_klasse(
@@ -4326,12 +4329,12 @@ class Ui_MainWindow(object):
         number = max_integer + 1
         if self.chosen_variation != None:
             name = self.chosen_variation + "[{}]".format(number)
-        elif typ == None:
-            klasse = self.get_highest_grade_cr()
-            name = "{0}.{1}{2}".format(klasse, save_typ, number)
         elif typ == 1:
             name = "{0} - {1}{2}".format(themen_auswahl, save_typ, number)
-        elif typ == 2:
+        elif typ == None or typ == 2:
+        #     klasse = self.get_highest_grade_cr()
+        #     name = "{0}.{1}{2}".format(klasse, save_typ, number)
+        # elif typ == 2:
             name = "{0}{1}".format(save_typ, number)
 
         return name
@@ -4343,7 +4346,7 @@ class Ui_MainWindow(object):
                 # if self.cb_no_grade_tag.isChecked:
                 #     thema = all[1] + "." + all[2]
                 # else:
-                thema = all[0] + "." + all[1] + "." + all[2]
+                thema = all[1] + "." + all[2]
                 if thema not in themen_auswahl:
                     themen_auswahl.append(thema)
 
@@ -6401,7 +6404,7 @@ class Ui_MainWindow(object):
 
         for _file_ in filtered_items:
             if typ == "cria":
-                name = _file_["name"].split(".")[-1]
+                name = _file_["name"] #.split(".")[-1]
             else:
                 name = _file_["name"]
 
