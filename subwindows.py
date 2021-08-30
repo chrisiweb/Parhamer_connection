@@ -516,7 +516,7 @@ class Ui_Dialog_variation(object):
         #         klasse = None
         #     else:
         #         klasse = list_klassen[self.comboBox_klassen_fb_cria.currentIndex()]
-        print(klasse)
+        # print(klasse)
         return klasse
 
 

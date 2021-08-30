@@ -141,7 +141,7 @@ def collect_suchbegriffe(self):
 
 
     if self.chosen_program == "cria":
-        print(self.dict_chosen_topics)
+        # print(self.dict_chosen_topics)
         suchbegriffe['klasse'].append(None)
         for all in self.dict_chosen_topics.values():
             thema_string  = all[1] + "." + all[2]

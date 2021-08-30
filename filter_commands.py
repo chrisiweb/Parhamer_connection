@@ -99,7 +99,7 @@ def filter_items(self, table_lama, typ, list_mode, filter_string, line_entry, kl
 
         # if list_mode != "creator":
         klasse = self.get_klasse(list_mode)
-        print(klasse)
+        # print(klasse)
 
 
         string_included_cria = lambda s: s.split(".")[-1].startswith(line_entry)

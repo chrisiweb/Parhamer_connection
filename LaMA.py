@@ -3916,8 +3916,8 @@ class Ui_MainWindow(object):
 
             typ = get_aufgabentyp(self.chosen_program, _file_)
             
-            print(_file_)
-            print(typ)
+            # print(_file_)
+            # print(typ)
             aufgabe_total_original = get_aufgabe_total(_file_, typ)
 
             self.enable_widgets_editor(True)
