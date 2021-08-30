@@ -141,9 +141,14 @@ def collect_suchbegriffe(self):
 
 
     if self.chosen_program == "cria":
+        print(self.dict_chosen_topics)
+        suchbegriffe['klasse'].append(None)
         for all in self.dict_chosen_topics.values():
-            string  = '.'.join(all)
-            suchbegriffe['themen'].append(string)
+            thema_string  = all[1] + "." + all[2]
+            suchbegriffe['themen'].append(thema_string)
+            print(all)
+            if all[0] not in suchbegriffe['klasse']:
+                suchbegriffe['klasse'].append(all[0])
             # print(suchbegriffe['themen'])
             # string_no_grade = all[1] + "." + all[2]
             # suchbegriffe['themen'].append(string_no_grade)
@@ -318,8 +323,8 @@ def prepare_tex_for_pdf(self):
 
     # print(suchbegriffe)
     # print(gesammeltedateien)
-    # for all in gesammeltedateien:
-    #     print(all['themen'])
+    # # for all in gesammeltedateien:
+    # #     print(all['themen'])
     # return
 
 

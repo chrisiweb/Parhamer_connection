@@ -1180,8 +1180,12 @@ class Ui_MainWindow(object):
 
         # #################################
 
+        if self.chosen_program == 'lama':
+            titel = "Ausgewählte Grundkompetenzen"
+        else:
+            titel = "Ausgewählte Themen"
         self.groupBox_ausgew_gk_cr = create_new_groupbox(
-            self.centralwidget, "Ausgewählte Grundkompetenzen"
+            self.centralwidget, titel
         )
 
         self.groupBox_ausgew_gk_cr.setSizePolicy(SizePolicy_fixed_height)
@@ -2447,7 +2451,7 @@ class Ui_MainWindow(object):
             self.cb_matura_tag.hide()
             self.cb_matura_tag.setChecked(False)
             self.cb_no_grade_tag.hide()
-            self.cb_no_grade_tag.setChecked(False)
+            # self.cb_no_grade_tag.setChecked(False)
 
     def click_label_to_check(self, new_checkbox):
         if new_checkbox.isChecked() == False:
@@ -2915,7 +2919,7 @@ class Ui_MainWindow(object):
                     self.dict_widget_variables[label_button_check_all].show()
 
     def checkBox_checked_cria(self, klasse, kapitel, unterkapitel):
-        thema_checked = [kapitel, unterkapitel]
+        thema_checked = [klasse, kapitel, unterkapitel]
         thema_label = kapitel + "." + unterkapitel + " (" + klasse[1] + ".)"
 
         label_checkbox = "checkbox_unterkapitel_{0}_{1}_{2}".format(
@@ -2928,7 +2932,9 @@ class Ui_MainWindow(object):
             if thema_label not in self.dict_chosen_topics.keys():
                 self.dict_chosen_topics[thema_label] = thema_checked
         if checkbox.isChecked() == False:
-            del self.dict_chosen_topics[thema_label]
+            if thema_label in self.dict_chosen_topics:
+                del self.dict_chosen_topics[thema_label]
+
         x = ", ".join(self.dict_chosen_topics.keys())
 
         self.label_ausg_themen_cria.setText(_translate("MainWindow", x, None))
@@ -3260,6 +3266,9 @@ class Ui_MainWindow(object):
             self.label_gesamtbeispiele.setText(
                 _translate("MainWindow", "Anzahl der Aufgaben: 0", None)
             )
+
+
+            self.groupBox_ausgew_gk_cr.setTitle("Ausgewählte Themen")
             # self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
             #     "cria"
             # )
@@ -3295,6 +3304,8 @@ class Ui_MainWindow(object):
                     "MainWindow", "Anzahl der Aufgaben: 0 (Typ1: 0 / Typ2: 0)", None
                 )
             )
+
+            self.groupBox_ausgew_gk_cr.setTitle("Ausgewählte Grundkompetenzen")
 
         MainWindow.setWindowTitle(program_name)
         MainWindow.setWindowIcon(QtGui.QIcon(icon))
@@ -3774,14 +3785,33 @@ class Ui_MainWindow(object):
                     pass
 
         elif self.chosen_program == "cria":
-            klasse, nummer = aufgabe.split(".", 1)
-            index = list_klassen.index(klasse)
-            self.tab_widget_cr_cria.setCurrentIndex(index)
+            klasse = aufgabe_total['klasse']
+            # klasse, nummer = aufgabe.split(".", 1)
+
+            if klasse != None:
+                index = list_klassen.index(klasse)
+                self.tab_widget_cr_cria.setCurrentIndex(index)
+            else:
+                self.cb_no_grade_tag.setChecked(True)
+
             for thema in aufgabe_total["themen"]:
-                klasse_thema, kapitel, unterkapitel = thema.split(".")
-                combobox_thema = "combobox_kapitel_creator_cria_{}".format(klasse)
-                dict_klasse_name = eval("dict_{}_name".format(klasse))
-                thema_name = dict_klasse_name[kapitel]
+                kapitel, unterkapitel = thema.split(".")
+
+                if klasse == None:
+                    for all in list_klassen:
+                        
+                        dict_klasse_name = eval("dict_{}_name".format(all))
+                        if kapitel in dict_klasse_name:
+                            thema_name = dict_klasse_name[kapitel]
+                            combobox_thema = "combobox_kapitel_creator_cria_{}".format(all)
+                            temp_klasse = all
+                            break
+
+                else:
+                    temp_klasse = klasse
+                    dict_klasse_name = eval("dict_{}_name".format(klasse))
+                    thema_name = dict_klasse_name[kapitel]
+                    combobox_thema = "combobox_kapitel_creator_cria_{}".format(klasse)
 
                 index = self.dict_widget_variables[combobox_thema].findText(
                     thema_name + " (" + kapitel + ")"
@@ -3791,7 +3821,7 @@ class Ui_MainWindow(object):
                 # continue
 
                 checkbox_thema = "checkbox_unterkapitel_creator_{0}_{1}_{2}".format(
-                    klasse, kapitel, unterkapitel
+                    temp_klasse, kapitel, unterkapitel
                 )
                 self.dict_widget_variables[checkbox_thema].setChecked(True)
                 if mode == "creator":
@@ -3885,7 +3915,9 @@ class Ui_MainWindow(object):
                     return
 
             typ = get_aufgabentyp(self.chosen_program, _file_)
-
+            
+            print(_file_)
+            print(typ)
             aufgabe_total_original = get_aufgabe_total(_file_, typ)
 
             self.enable_widgets_editor(True)
@@ -4192,14 +4224,15 @@ class Ui_MainWindow(object):
 
     def get_highest_grade_cr(self):
         klasse = 1
-        themen_auswahl = self.get_themen_auswahl()
+        # themen_auswahl = self.get_themen_auswahl()
+
         for all in self.list_selected_topics_creator:
             if int(all[0][1]) > klasse:
                 klasse = int(all[0][1])
         # for all in themen_auswahl:
         #     if int(all[1]) > klasse:
         #         klasse = int(all[1])
-
+        # print(klasse)
         return "k{}".format(klasse)
 
     def get_max_integer(self, table_lama, typ, themen_auswahl):
@@ -4403,7 +4436,10 @@ class Ui_MainWindow(object):
             pagebreak = True
 
         if typ == None:
-            klasse = self.get_highest_grade_cr()
+            if self.cb_no_grade_tag.isChecked():
+                klasse = None
+            else:
+                klasse = self.get_highest_grade_cr()
         elif self.comboBox_klassen_cr.currentIndex() == 0:
             klasse = None
         else:
@@ -5792,7 +5828,10 @@ class Ui_MainWindow(object):
         aufgaben_verteilung = self.get_aufgabenverteilung()
 
         if self.chosen_program == "cria":
-            klasse = aufgabe_total['klasse'][1]
+            if aufgabe_total['klasse'] == None:
+                klasse = ""
+            else:
+                klasse = "{0}. Klasse - ".format(aufgabe_total['klasse'][1])
 
 
             new_groupbox = create_new_groupbox(
@@ -5810,7 +5849,7 @@ class Ui_MainWindow(object):
         if typ == None:
             aufgabenformat = " (" + aufgabe_total["af"].upper() + ")"
 
-            label = "{0}. Klasse - {1}{2}".format(
+            label = "{0}{1}{2}".format(
                 klasse, aufgabe, aufgabenformat
             )
 
@@ -6401,12 +6440,12 @@ class Ui_MainWindow(object):
     def add_items_to_listwidget(
         self, typ, listWidget, filtered_items, local=False,
     ):
-
         for _file_ in filtered_items:
-            if typ == "cria":
-                name = _file_["name"] #.split(".")[-1]
-            else:
-                name = _file_["name"]
+            # if typ == "cria":
+            #     name = _file_["name"] #.split(".")[-1]
+            # else:
+            name = _file_["name"]
+            # print(name)
 
             item = QtWidgets.QListWidgetItem()
 
@@ -7111,6 +7150,7 @@ class Ui_MainWindow(object):
         ):
             self.cb_matura_tag.hide()
             self.cb_no_grade_tag.show()
+
         else:
             self.cb_matura_tag.hide()
             self.cb_no_grade_tag.hide()

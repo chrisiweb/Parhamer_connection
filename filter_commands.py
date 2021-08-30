@@ -27,6 +27,7 @@ def get_filter_string(self, list_mode):
                 filter_string = (
                     filter_string + "." +extract_topic_abbr(string_2)
                 )
+
         return filter_string
 
     if self.chosen_program == "lama":
@@ -96,8 +97,9 @@ def filter_items(self, table_lama, typ, list_mode, filter_string, line_entry, kl
   
     elif typ == "cria":
 
-        if list_mode != "creator":
-            klasse = self.get_klasse(list_mode)
+        # if list_mode != "creator":
+        klasse = self.get_klasse(list_mode)
+        print(klasse)
 
 
         string_included_cria = lambda s: s.split(".")[-1].startswith(line_entry)

@@ -267,8 +267,9 @@ class Ui_Dialog_variation(object):
         if self.MainWindow.chosen_program == "cria":
             self.comboBox_klassen = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
             self.comboBox_klassen.setObjectName("comboBox_klassen")
-            # self.comboBox_gk.addItem("")
-            index = 0
+            self.comboBox_klassen.addItem("")
+            index = 1
+            
             for all in list_klassen:
                 self.comboBox_klassen.addItem("")
 
@@ -349,9 +350,10 @@ class Ui_Dialog_variation(object):
                 self.chosen_variation = None
             elif self.MainWindow.chosen_program == "cria":
                 klasse = list_klassen[self.comboBox_klassen.currentIndex()]
-                self.chosen_variation = (
-                    klasse + "." + self.listWidget.selectedItems()[0].text()
-                )
+                self.chosen_variation = self.listWidget.selectedItems()[0].text()
+                # (
+                #     klasse + "." + self.listWidget.selectedItems()[0].text()
+                # )
             else:
                 self.chosen_variation = self.listWidget.selectedItems()[0].text()
 
@@ -402,7 +404,7 @@ class Ui_Dialog_variation(object):
 
     def comboBox_klassen_changed(self):
         dict_klasse_name = eval(
-            "dict_{}_name".format(list_klassen[self.comboBox_klassen.currentIndex()])
+            "dict_{}_name".format(list_klassen[self.comboBox_klassen.currentIndex()-1])
         )
         self.comboBox_kapitel.clear()
         self.comboBox_unterkapitel.clear()
@@ -413,12 +415,12 @@ class Ui_Dialog_variation(object):
 
     def comboBox_kapitel_changed(self):
         dict_klasse = eval(
-            "dict_{}".format(list_klassen[self.comboBox_klassen.currentIndex()])
+            "dict_{}".format(list_klassen[self.comboBox_klassen.currentIndex()-1])
         )
 
-        dict_klasse = eval(
-            "dict_{}".format(list_klassen[self.comboBox_klassen.currentIndex()])
-        )
+        # dict_klasse = eval(
+        #     "dict_{}".format(list_klassen[self.comboBox_klassen.currentIndex()-1])
+        # )
         self.comboBox_unterkapitel.clear()
 
         kapitel_shortcut = list(dict_klasse.keys())[
@@ -478,11 +480,10 @@ class Ui_Dialog_variation(object):
         for _file_ in filtered_items:
             if self.mode == 'editor' and _file_['draft'] == True:
                 continue
-            if typ == "cria":
-                name = _file_["name"].split(".", 1)[-1]
-
-            else:
-                name = _file_["name"]
+            # if typ == "cria":
+            #     name = _file_["name"].split(".", 1)[-1]
+            # else:
+            name = _file_["name"]
 
             item = QtWidgets.QListWidgetItem()
 
@@ -505,13 +506,27 @@ class Ui_Dialog_variation(object):
             else:
                 self.listWidget.addItem(item)
 
+    def get_klasse(self, list_mode):
+        if self.comboBox_klassen.currentIndex()==0:
+            klasse = None
+        else:
+            klasse = list_klassen[self.comboBox_klassen.currentIndex()-1]
+        # elif mode == "feedback":
+        #     if self.comboBox_klassen.currentIndex()==0:
+        #         klasse = None
+        #     else:
+        #         klasse = list_klassen[self.comboBox_klassen_fb_cria.currentIndex()]
+        print(klasse)
+        return klasse
+
+
     def adapt_choosing_list(self):
         QtWidgets.QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
         chosen_program = self.MainWindow.chosen_program
         klasse = None
         if chosen_program == "cria":
             typ = "cria"
-            klasse = list_klassen[self.comboBox_klassen.currentIndex()]
+            klasse = list_klassen[self.comboBox_klassen.currentIndex()-1]
         elif self.comboBox_at_sage.currentIndex()==0:
             typ = "lama_1"
 
@@ -550,9 +565,10 @@ class Ui_Dialog_variation(object):
                 local = False
 
             filtered_items = filter_items(
-                self, table_lama, typ, 'creator', filter_string, line_entry,klasse
+                self, table_lama, typ, 'creator', filter_string, line_entry
             )
 
+            
             all_filtered_items = all_filtered_items + filtered_items
         
         # print(all_filtered_items)
