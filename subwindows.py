@@ -6,6 +6,8 @@ import os
 import shutil
 from json import load, dump
 import re
+import sys
+from pathlib import Path
 from string import ascii_lowercase
 from functools import partial
 from config_start import path_programm,path_localappdata_lama, lama_settings_file, lama_developer_credentials
@@ -2040,7 +2042,10 @@ class Ui_Dialog_developer(object):
         # print(password)
         if bcrypt.checkpw(password, hashed_pw):
             if self.checkbox_developer.isChecked():
-                path_lama_developer_credentials = os.path.join(os.getenv('LOCALAPPDATA'), "LaMA", "credentials")
+                if sys.platform.startswith("win"):
+                    path_lama_developer_credentials = os.path.join(os.getenv('LOCALAPPDATA'), "LaMA", "credentials")
+                elif sys.platform.startswith("darwin"):
+                    path_lama_developer_credentials = os.path.join(Path.home(), "Library", "LaMA","credentials")
                 # lama_developer_credentials = os.path.join(path_lama_developer_credentials, "developer_credentials.txt")
                 if not os.path.exists(path_lama_developer_credentials):
                     os.makedirs(path_lama_developer_credentials)
