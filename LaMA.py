@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__ = "v2.9.9"
+__version__ = "v3.0.0"
 __lastupdate__ = "09/21"
 ##################
 
 print("Loading...")
 # from urllib import request
-from dulwich.objectspec import parse_commit_range
+# from dulwich.objectspec import parse_commit_range
 from start_window import check_if_database_exists
 
 check_if_database_exists()
@@ -156,7 +156,11 @@ class Ui_MainWindow(object):
         app.aboutToQuit.connect(self.close_app)
 
     def setupUi(self, MainWindow):
+        QtWidgets.QApplication.setOverrideCursor(
+                QtGui.QCursor(QtCore.Qt.WaitCursor)
+            )
         self.check_for_update()
+        QtWidgets.QApplication.restoreOverrideCursor()
         try:
             self.lama_settings["start_program"]
         except KeyError:
@@ -2671,32 +2675,6 @@ class Ui_MainWindow(object):
             return
 
 
-        # return
-        # for i in range(5):
-        #     try:
-        #         version_path = os.path.join(
-        #             path_programm, "_database", "_config", "update"
-        #         )
-        #         version_file = os.path.join(version_path, "__version__.txt")
-        #         f = open(version_file, "r")
-        #         break
-        #     except FileNotFoundError:
-        #         input(
-        #             "Please place your config file in '{}' and hit enter. {} tries left!".format(
-        #                 version_path, 5 - i
-        #             )
-        #         )
-        #     if i == 4:
-        #         print("No version set. Skipping version check!")
-        #         return False
-
-        # update_check = []
-        # update_check.append(f.read().replace(" ", "").replace("\n", ""))
-        # f.close()
-        # update_check.append(__version__)
-
-        # if update_check[0] != update_check[1]:
-
         if sys.platform.startswith("linux"):
             information_window(
                 "Es ist ein neues Update verfügbar.",
@@ -2705,10 +2683,14 @@ class Ui_MainWindow(object):
             )
             return
         else:
+            QtWidgets.QApplication.restoreOverrideCursor()
             ret = question_window(
                 "Es ist eine neue Version von LaMA verfügbar.",
                 "Möchten Sie das neue Update jetzt installieren?",
                 "Neue Version verfügbar",
+            )
+            QtWidgets.QApplication.setOverrideCursor(
+                QtGui.QCursor(QtCore.Qt.WaitCursor)
             )
 
             if ret == True:
@@ -2741,9 +2723,7 @@ class Ui_MainWindow(object):
                     path_installer = os.path.join(
                         path_home, "Downloads", "LaMA_installer.exe"
                     )
-                    QtWidgets.QApplication.setOverrideCursor(
-                        QtGui.QCursor(QtCore.Qt.WaitCursor)
-                    )
+
                     Dialog_checkchanges = QtWidgets.QDialog()
                     ui = Ui_Dialog_processing()
                     ui.setupUi(Dialog_checkchanges, text)
@@ -2757,46 +2737,42 @@ class Ui_MainWindow(object):
                     thread.exit()
                     Dialog_checkchanges.exec()
                     
-
-
                     os.system(path_installer)
 
-                    QtWidgets.QApplication.restoreOverrideCursor()
                     sys.exit(0)
-                    # print("done")
+        QtWidgets.QApplication.restoreOverrideCursor()
+                # return
+                # opened_file = os.path.basename(sys.argv[0])
+                # name, extension = os.path.splitext(opened_file)
+                # if sys.platform.startswith("darwin"):
+                #     system_folder = "update_mac"
 
-                return
-                opened_file = os.path.basename(sys.argv[0])
-                name, extension = os.path.splitext(opened_file)
-                if sys.platform.startswith("darwin"):
-                    system_folder = "update_mac"
+                # else:
+                #     system_folder = "update_windows"
+                # filename_update = os.path.join(
+                #     path_programm,
+                #     "_database",
+                #     "_config",
+                #     "update",
+                #     system_folder,
+                #     "update%s" % extension,
+                # )
 
-                else:
-                    system_folder = "update_windows"
-                filename_update = os.path.join(
-                    path_programm,
-                    "_database",
-                    "_config",
-                    "update",
-                    system_folder,
-                    "update%s" % extension,
-                )
-
-                try:
-                    if sys.platform.startswith("darwin"):
-                        if extension == ".py":
-                            os.system("python3 {}".format(filename_update))
-                        else:
-                            os.system("chmod 777 {}".format(filename_update))
-                            os.system(filename_update)
-                    else:
-                        os.startfile(filename_update)
-                    sys.exit(0)
-                except Exception as e:
-                    warning_window(
-                        'Das neue Update von LaMA konnte leider nicht installiert werden! Bitte versuchen Sie es später erneut oder melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler".',
-                        'Fehler:\n"{}"'.format(e),
-                    )
+                # try:
+                #     if sys.platform.startswith("darwin"):
+                #         if extension == ".py":
+                #             os.system("python3 {}".format(filename_update))
+                #         else:
+                #             os.system("chmod 777 {}".format(filename_update))
+                #             os.system(filename_update)
+                #     else:
+                #         os.startfile(filename_update)
+                #     sys.exit(0)
+                # except Exception as e:
+                #     warning_window(
+                #         'Das neue Update von LaMA konnte leider nicht installiert werden! Bitte versuchen Sie es später erneut oder melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler".',
+                #         'Fehler:\n"{}"'.format(e),
+                #     )
 
     def create_Tooltip(self, chosen_dict):
         for all in chosen_dict:
