@@ -8,21 +8,26 @@ from sort_items import order_gesammeltedateien
 def get_filter_string(self, list_mode):
     if self.chosen_program == "cria":
         if list_mode == "sage":
-            string_0 = self.comboBox_klassen.currentText()
+            # string_0 = self.comboBox_klassen.currentText()
             string_1 = self.comboBox_kapitel.currentText()
             string_2 = self.comboBox_unterkapitel.currentText()
         elif list_mode == "feedback":
-            string_0 = self.comboBox_klassen_fb_cria.currentText()
+            # string_0 = self.comboBox_klassen_fb_cria.currentText()
             string_1 = self.comboBox_kapitel_fb_cria.currentText()
             string_2 = self.comboBox_unterkapitel_fb_cria.currentText()
-        filter_string = "k" + string_0[0]
+        
+        filter_string = ""
+        # if not is_empty(string_0):
+        #     filter_string = "k" + string_0[0] + "."
+        
 
         if not is_empty(string_1):
-            filter_string = filter_string + "." + extract_topic_abbr(string_1)
+            filter_string = extract_topic_abbr(string_1)
             if not is_empty(string_2):
                 filter_string = (
-                    filter_string + "." + extract_topic_abbr(string_2)
+                    filter_string + "." +extract_topic_abbr(string_2)
                 )
+
         return filter_string
 
     if self.chosen_program == "lama":
@@ -91,8 +96,11 @@ def filter_items(self, table_lama, typ, list_mode, filter_string, line_entry, kl
         filtered_items = table_lama.search(_file_.name.test(string_included_lama))
   
     elif typ == "cria":
-        if list_mode != "creator":
-            klasse = self.get_klasse(list_mode)
+
+        # if list_mode != "creator":
+        klasse = self.get_klasse(list_mode)
+        # print(klasse)
+
 
         string_included_cria = lambda s: s.split(".")[-1].startswith(line_entry)
 
@@ -100,11 +108,18 @@ def filter_items(self, table_lama, typ, list_mode, filter_string, line_entry, kl
             for all in value:
                 return True if filter_string in all else False
 
-        filtered_items = table_lama.search(
-            (_file_.name.search("{}\..+".format(klasse)))
-            & (_file_.themen.test(themen_included_cria))
-            & (_file_.name.test(string_included_cria))
-        )
+
+        if klasse == None:
+            filtered_items = table_lama.search(
+                (_file_.themen.test(themen_included_cria))
+                & (_file_.name.test(string_included_cria))
+            )
+        else:
+            filtered_items = table_lama.search(
+                (_file_.klasse == klasse)
+                & (_file_.themen.test(themen_included_cria))
+                & (_file_.name.test(string_included_cria))
+            )
 
     filtered_items.sort(key=order_gesammeltedateien)
 

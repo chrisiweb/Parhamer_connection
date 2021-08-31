@@ -142,9 +142,17 @@ def collect_suchbegriffe(self):
 
     if self.chosen_program == "cria":
         # print(self.dict_chosen_topics)
+        suchbegriffe['klasse'].append(None)
         for all in self.dict_chosen_topics.values():
-            string  = '.'.join(all)
-            suchbegriffe['themen'].append(string)
+            thema_string  = all[1] + "." + all[2]
+            suchbegriffe['themen'].append(thema_string)
+            print(all)
+            if all[0] not in suchbegriffe['klasse']:
+                suchbegriffe['klasse'].append(all[0])
+            # print(suchbegriffe['themen'])
+            # string_no_grade = all[1] + "." + all[2]
+            # suchbegriffe['themen'].append(string_no_grade)
+            
 
 
     if chosen_aufgabenformat == "Typ1Aufgaben" or self.chosen_program == "cria":
@@ -312,7 +320,11 @@ def prepare_tex_for_pdf(self):
     list_2.sort(key=order_gesammeltedateien)
     
     gesammeltedateien = list_1 + list_2
+
+    # print(suchbegriffe)
     # print(gesammeltedateien)
+    # # for all in gesammeltedateien:
+    # #     print(all['themen'])
     # return
 
 
@@ -357,6 +369,11 @@ def prepare_tex_for_pdf(self):
             path_programm, "Teildokument", "Teildokument_cria.tex"
         )
 
+    if self.cb_solution.isChecked():
+        solutions = "solution_on"
+    else:
+        solutions = "solution_off"
+
     if self.cb_show_variation.isChecked():
         variation = True
     else:
@@ -367,7 +384,9 @@ def prepare_tex_for_pdf(self):
         infos = "info_on"
     else:
         infos = "info_off"
-    construct_tex_file(filename_teildokument, gesammeltedateien, variation, infos)
+
+    
+    construct_tex_file(filename_teildokument, gesammeltedateien, solutions, variation, infos)
 
 
     number_of_files = get_output_size(gesammeltedateien, variation)
@@ -433,9 +452,9 @@ def create_tex(file_path, content):
         return e
 
 
-def construct_tex_file(file_name, gesammeltedateien, variation, infos):
+def construct_tex_file(file_name, gesammeltedateien, solutions, variation, infos):
     with open(file_name, "w", encoding="utf8") as file:
-        file.write(tex_preamble(bookmark=True, info=infos))
+        file.write(tex_preamble(solution=solutions, bookmark=True, info=infos))
         for all in gesammeltedateien:
             if variation == False and check_if_variation(all['name']) == True:
                 continue
@@ -489,7 +508,7 @@ def create_info_box(_file):
         try:
             af = dict_aufgabenformate[_file['af']]
         except KeyError:
-            print('Fehler in der Datenbank (AF = {})'.format(_file['af']))
+            print('Fehler in der Datenbank - Aufgabe {0} (AF = {1})'.format(_file['name'],_file['af']))
             af = "Fehler"
         af = "Aufgabenformat: {}\\\\".format(af)
     else:

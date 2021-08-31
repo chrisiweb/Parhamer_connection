@@ -1,0 +1,3 @@
+Update Guide LaMA
+
+1) Change __version__ in Python-File & upload on Git
