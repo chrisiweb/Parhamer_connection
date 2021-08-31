@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__ = "v3.0.0"
+__version__ = "v2.9.9"
 __lastupdate__ = "09/21"
 ##################
 
@@ -73,13 +73,12 @@ class Worker_UpdateLaMA(QtCore.QObject):
     finished = QtCore.pyqtSignal()
 
     @QtCore.pyqtSlot()
-    def task(self):
-        download_link = "https://github.com/mylama/lama/releases/latest/download/LaMA.exe"
+    def task(self, path_installer):
+        download_link = "https://github.com/mylama/lama/releases/latest/download/LaMA_setup.exe"
         path_installer = os.path.join(
             path_home, "Downloads", "LaMA_installer.exe"
         )
         urlretrieve(download_link, path_installer)
-        os.system(path_installer)
         # Ui_MainWindow.reset_successfull = git_reset_repo_to_origin()
         # print(Ui_MainWindow.reset_successfull)
 
@@ -2739,6 +2738,12 @@ class Ui_MainWindow(object):
                         )
                 else:
                     text = "Neue Version von LaMA wird heruntergeladen ..."
+                    path_installer = os.path.join(
+                        path_home, "Downloads", "LaMA_installer.exe"
+                    )
+                    QtWidgets.QApplication.setOverrideCursor(
+                        QtGui.QCursor(QtCore.Qt.WaitCursor)
+                    )
                     Dialog_checkchanges = QtWidgets.QDialog()
                     ui = Ui_Dialog_processing()
                     ui.setupUi(Dialog_checkchanges, text)
@@ -2747,12 +2752,17 @@ class Ui_MainWindow(object):
                     worker = Worker_UpdateLaMA()
                     worker.finished.connect(Dialog_checkchanges.close)
                     worker.moveToThread(thread)
-                    thread.started.connect(worker.task)
+                    thread.started.connect(partial(worker.task, path_installer))
                     thread.start()
                     thread.exit()
                     Dialog_checkchanges.exec()
                     
 
+
+                    os.system(path_installer)
+
+                    QtWidgets.QApplication.restoreOverrideCursor()
+                    sys.exit(0)
                     # print("done")
 
                 return
