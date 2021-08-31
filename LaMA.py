@@ -2666,6 +2666,7 @@ class Ui_MainWindow(object):
                 "Aktuelle Version: \[(.+)\]", url_readme_version
             ).group(1)
             print(latest_version)
+            print(__version__)
             if __version__ == latest_version:
                 return
         except Exception:
@@ -2695,6 +2696,7 @@ class Ui_MainWindow(object):
 
             if ret == True:
                 if sys.platform.startswith("darwin"):
+                    refresh_ddb(self)
                     opened_file = os.path.basename(sys.argv[0])
                     name, extension = os.path.splitext(opened_file)
                     # print('not yet working')

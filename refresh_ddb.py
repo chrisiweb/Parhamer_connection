@@ -163,9 +163,9 @@ class Worker_RefreshDDB(QtCore.QObject):
 #     # QtWidgets.QApplication.restoreOverrideCursor()
 
 
-def refresh_ddb(self, selected_program=False):
-    if selected_program == False:
-        selected_program = self.chosen_program
+def refresh_ddb(self):
+    # if selected_program == False:
+    #     selected_program = self.chosen_program
 
     QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
