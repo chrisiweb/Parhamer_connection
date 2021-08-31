@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #### Version number ###
 __version__ = "v3.0.0"
-__lastupdate__ = "07/21"
+__lastupdate__ = "09/21"
 ##################
 print("Loading...")
 # from urllib import request
@@ -68,6 +68,21 @@ class Worker_UpdateDatabase(QtCore.QObject):
         print(Ui_MainWindow.reset_successfull)
         self.finished.emit()
 
+class Worker_UpdateLaMA(QtCore.QObject):
+    finished = QtCore.pyqtSignal()
+
+    @QtCore.pyqtSlot()
+    def task(self):
+        download_link = "https://github.com/mylama/lama/releases/latest/download/LaMA.exe"
+        path_installer = os.path.join(
+            path_home, "Downloads", "LaMA_installer.exe"
+        )
+        urlretrieve(download_link, path_installer)
+        os.system(path_installer)
+        # Ui_MainWindow.reset_successfull = git_reset_repo_to_origin()
+        # print(Ui_MainWindow.reset_successfull)
+
+        self.finished.emit()
 
 # class Worker_PushDatabase(QtCore.QObject):
 #     finished = QtCore.pyqtSignal()
@@ -2699,14 +2714,22 @@ class Ui_MainWindow(object):
                             'Fehler:\n"{}"'.format(e),
                         )
                 else:
-                    print("not finished")
-                    download_link = "https://github.com/mylama/lama/releases/latest/download/LaMA.exe"
-                    path_installer = os.path.join(
-                        path_home, "Downloads", "LaMA_installer.exe"
-                    )
-                    urlretrieve(download_link, path_installer)
-                    os.system(path_installer)
-                    print("done")
+                    text = "Neue Version von LaMA wird heruntergeladen ..."
+                    Dialog_checkchanges = QtWidgets.QDialog()
+                    ui = Ui_Dialog_processing()
+                    ui.setupUi(Dialog_checkchanges, text)
+
+                    thread = QtCore.QThread(Dialog_checkchanges)
+                    worker = Worker_UpdateLaMA()
+                    worker.finished.connect(Dialog_checkchanges.close)
+                    worker.moveToThread(thread)
+                    thread.started.connect(worker.task)
+                    thread.start()
+                    thread.exit()
+                    Dialog_checkchanges.exec()
+                    
+
+                    # print("done")
 
                 return
                 opened_file = os.path.basename(sys.argv[0])
