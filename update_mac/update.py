@@ -49,7 +49,7 @@ elif sys.platform.startswith('darwin'):
 else:
     folder='update_windows'
     
-newapp_path=os.path.join(path_programm,'_database','_config','update',folder,'LaMA%s'%extension)
+newapp_path=os.path.join(path_programm,'LaMA_programdata','_database','_config','update',folder,'LaMA%s'%extension)
 mainfile_path=os.path.join(path_programm,'LaMA%s'%extension)
 # print(newapp_path)
 # print(mainfile_path)
