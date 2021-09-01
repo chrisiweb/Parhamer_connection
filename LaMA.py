@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__ = "v2.3.0"
+__version__ = "v2.3.1"
 __lastupdate__ = "09/21"
 ##################
 print("Loading...")
