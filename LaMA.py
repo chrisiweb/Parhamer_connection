@@ -254,7 +254,7 @@ Für diese veraltete Version von LaMA ({}) wird es ab sofort keine neuen Updates
 LaMA v2.3 ist jedoch vorerst weiterhin ohne Einschränkungen verwendbar. Erst ab dem Schuljahr 2022/23 wird die alte Datenbank auf Dropbox gelöscht.
 
 
-Bei Fragen, Unterstützung bei der Installation oder ähnliches können Sich sich gerne bei uns unter lama.helpme@gmail.com melden.
+Bei Fragen, Unterstützung bei der Installation oder ähnliches können Sie sich gerne bei uns unter lama.helpme@gmail.com melden.
 """.format(__version__),
 
 """Die neueste Version von LaMA ist unter <a href='{0}'style="color:{1};">lama.schule/downloads</a> kostenlos verfügbar.""".format(
