@@ -250,8 +250,8 @@ das neue LaMA 3.0 ist da!
 Aufgrund einiger wesentlichen Änderungen ist dafür eine Neuinstallation von LaMA nötig.
 
 
-Für diese veraltete Version von LaMA ({}) wird es ab sofort keine neuen Updates mehr geben. Außerdem wird die bestehende Aufgabendatenbank nicht weiter ausgebaut oder korrigiert. 
-LaMA {} ist jedoch vorerst weiterhin ohne Einschränkungen verwendbar. Erst ab dem Schuljahr 2022/23 wird die alte Datenbank auf Dropbox gelöscht.
+Für diese veraltete Version von LaMA ({0}) wird es ab sofort keine neuen Updates mehr geben. Außerdem wird die bestehende Aufgabendatenbank nicht weiter ausgebaut oder korrigiert. 
+LaMA {0} ist jedoch vorerst weiterhin ohne Einschränkungen verwendbar. Erst ab dem Schuljahr 2022/23 wird die alte Datenbank auf Dropbox gelöscht.
 
 
 Bei Fragen, Unterstützung bei der Installation oder ähnliches können Sie sich gerne bei uns unter lama.helpme@gmail.com melden.
