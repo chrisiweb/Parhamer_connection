@@ -7313,7 +7313,6 @@ if __name__ == "__main__":
 
     i = step_progressbar(i, "git_sync")
     from git_sync import (
-        git_clone_repo,
         git_push_to_origin,
         check_internet_connection,
         check_branches,

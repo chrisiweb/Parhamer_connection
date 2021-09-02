@@ -1,5 +1,5 @@
 import sys
-from os import path
+import os
 from config_start import database
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, Qt, QThread
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QLabel, QGridLayout, QDialogButtonBox, QDialog, QMessageBox
@@ -139,24 +139,31 @@ class Ui_StartWindow(object):
             thread.start()
             thread.exit()
             Dialog_download.exec()
-            if worker.download_successfull == False:
-                text = """
-    Datenbank konnte nicht heruntergeladen werden. Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.
+            # download_successfull = True
 
-    Sollte das Problem weiterhin bestehen, melden Sie sich unter lama.helpme@gmail.com
-                """
-                msg = QMessageBox()
-                msg.setWindowFlags(Qt.Dialog | Qt.CustomizeWindowHint | Qt.WindowTitleHint)
-                msg.setWindowTitle("Fehler")
-                msg.setIcon(QMessageBox.Critical)
-                # msg.setWindowIcon(QtGui.QIcon(logo_path))
-                msg.setText(text)
-                # msg.setInformativeText(informative_text)
-                # msg.setDetailedText(detailed_text)
-                msg.setStandardButtons(QMessageBox.Ok)
-                msg.exec_()
-                continue
-            elif worker.download_successfull == True:
+            if worker.download_successfull == True:
+                print(database)
+                programdata_lama_folder = os.path.dirname(database)
+                print(programdata_lama_folder)
+
+                print('start')
+                # def change_permissions_recursive(path, mode):
+                #     for root, dirs, files in os.walk(path, topdown=False):
+                #         for dir in [os.path.join(root,d) for d in dirs]:
+                #             os.chmod(dir, mode)
+                #     for file in [os.path.join(root, f) for f in files]:
+                #             os.chmod(file, mode)
+                # change_permissions_recursive(programdata_lama_folder, 0o777)
+
+                for root, dirs, files in os.walk(programdata_lama_folder):
+                    for d in dirs:
+                        print(d)
+                        os.chmod(os.path.join(root, d), 0o700)
+                    for f in files:
+                        print(f)
+                        os.chmod(os.path.join(root, f), 0o700)
+                print('end')
+                 
                 text = "Die Datenbank wurde erfolgreich heruntergeladen. LaMA kann ab sofort verwendet werden!"
                 msg = QMessageBox()
                 msg.setWindowFlags(Qt.Dialog | Qt.CustomizeWindowHint | Qt.WindowTitleHint)
@@ -169,17 +176,61 @@ class Ui_StartWindow(object):
                 msg.setStandardButtons(QMessageBox.Ok)
                 msg.exec_()
 
-            
-                # information_window(
-
-                # )
                 break
-        print("Loading...")
+            else:
+                text = """
+    Datenbank konnte nicht heruntergeladen werden. Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.
+
+    Sollte das Problem weiterhin bestehen, melden Sie sich unter lama.helpme@gmail.com
+                """
+                msg = QMessageBox()
+                msg.setWindowFlags(Qt.Dialog | Qt.CustomizeWindowHint | Qt.WindowTitleHint)
+                msg.setWindowTitle("Fehler")
+                msg.setIcon(QMessageBox.Critical)
+                # msg.setWindowIcon(QtGui.QIcon(logo_path))
+                msg.setText(text)
+                # msg.setInformativeText(informative_text)
+                msg.setDetailedText("Error: {}".format(worker.download_successfull))
+                msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+
+                buttonRepeat = msg.button(QMessageBox.Ok)
+                buttonRepeat.setText("Wiederholen")
+
+                buttonX = msg.button(QMessageBox.Cancel)
+                buttonX.setText("Abbrechen")
+                
+                rsp = msg.exec_()
+
+                if rsp == QMessageBox.Cancel:
+                    sys.exit(0)
+                else:
+                    continue
+    #         except Exception as e:
+    #             text = """
+    # Datenbank konnte nicht heruntergeladen werden. Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.
+
+    # Sollte das Problem weiterhin bestehen, melden Sie sich unter lama.helpme@gmail.com
+    #             """
+    #             msg = QMessageBox()
+    #             msg.setWindowFlags(Qt.Dialog | Qt.CustomizeWindowHint | Qt.WindowTitleHint)
+    #             msg.setWindowTitle("Fehler")
+    #             msg.setIcon(QMessageBox.Critical)
+    #             # msg.setWindowIcon(QtGui.QIcon(logo_path))
+    #             msg.setText(text)
+    #             # msg.setInformativeText(informative_text)
+    #             msg.setDetailedText("Error: {}".format(e))
+    #             msg.setStandardButtons(QMessageBox.Ok)
+    #             msg.exec_()
+    #             continue                       
+    
+        print("LaMA wird gestartet ...")
         self.StartWindow.accept()
 
 
-def check_if_database_exists():
-    if not path.isdir(database):
+def check_if_database_exists():  
+    config_file = os.path.join(database, "_config", "config.yml")
+
+    if not os.path.isfile(config_file):
         app = QApplication(sys.argv)
 
         Dialog = QDialog(

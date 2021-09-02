@@ -31,8 +31,8 @@ def git_clone_repo():
     try:
         porcelain.clone("https://github.com/chrisiweb/lama_latest_update.git", database)
         return True
-    except MaxRetryError:
-        return False
+    except Exception as e:
+        return e
 
 
 def list_all_files(store, treeid, base=None, list_of_all_files=None):
