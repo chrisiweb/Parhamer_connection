@@ -141,29 +141,7 @@ class Ui_StartWindow(object):
             Dialog_download.exec()
             # download_successfull = True
 
-            if worker.download_successfull == True:
-                print(database)
-                programdata_lama_folder = os.path.dirname(database)
-                print(programdata_lama_folder)
-
-                print('start')
-                # def change_permissions_recursive(path, mode):
-                #     for root, dirs, files in os.walk(path, topdown=False):
-                #         for dir in [os.path.join(root,d) for d in dirs]:
-                #             os.chmod(dir, mode)
-                #     for file in [os.path.join(root, f) for f in files]:
-                #             os.chmod(file, mode)
-                # change_permissions_recursive(programdata_lama_folder, 0o777)
-
-                for root, dirs, files in os.walk(programdata_lama_folder):
-                    for d in dirs:
-                        print(d)
-                        os.chmod(os.path.join(root, d), 0o700)
-                    for f in files:
-                        print(f)
-                        os.chmod(os.path.join(root, f), 0o700)
-                print('end')
-                 
+            if worker.download_successfull == True:                
                 text = "Die Datenbank wurde erfolgreich heruntergeladen. LaMA kann ab sofort verwendet werden!"
                 msg = QMessageBox()
                 msg.setWindowFlags(Qt.Dialog | Qt.CustomizeWindowHint | Qt.WindowTitleHint)
