@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__ = "v3.0.3"
+__version__ = "v2.9.9"
 __lastupdate__ = "09/21"
 ##################
 
@@ -81,6 +81,7 @@ class Worker_UpdateLaMA(QtCore.QObject):
         urlretrieve(download_link, path_installer)
         # Ui_MainWindow.reset_successfull = git_reset_repo_to_origin()
         # print(Ui_MainWindow.reset_successfull)
+        os.system(path_installer)
 
         self.finished.emit()
 
@@ -2739,7 +2740,6 @@ class Ui_MainWindow(object):
                     thread.exit()
                     Dialog_checkchanges.exec()
                     
-                    os.system(path_installer)
 
                     sys.exit(0)
         QtWidgets.QApplication.restoreOverrideCursor()
