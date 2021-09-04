@@ -1793,6 +1793,7 @@ class Ui_Dialog_setup(object):
                 'pdf_reader' : "",
                 'database' : 2,
                 'display' : 0,
+                'prozente': [91, 80, 64, 50],
                 'autosave' : 2,
                 'quelle' : '',
             }
@@ -1872,6 +1873,57 @@ class Ui_Dialog_setup(object):
         
         gridlayout_setup.addWidget(groupbox_database, row,0,1,1)
         row+=1
+
+     
+
+        groupbox_prozent = create_new_groupbox(Dialog, "Prozente Noteschlüssel")
+        gridlayout_prozente = create_new_gridlayout(groupbox_prozent)
+
+        self.label_prozente_sgu = create_new_label(groupbox_prozent, "Sehr gut:")
+        gridlayout_prozente.addWidget(self.label_prozente_sgu, 0, 0, 1, 1)
+        try:
+            sgu_value = self.lama_settings['prozente'][0]
+        except KeyError:
+            sgu_value = 91
+
+        self.spinbox_prozente_sgu = create_new_spinbox(groupbox_prozent, sgu_value)
+        gridlayout_prozente.addWidget(self.spinbox_prozente_sgu, 0, 1, 1, 1)
+
+
+        self.label_prozente_gu = create_new_label(groupbox_prozent, "Gut:")
+        gridlayout_prozente.addWidget(self.label_prozente_gu, 0, 2, 1, 1)
+        try:
+            gu_value = self.lama_settings['prozente'][1]
+        except KeyError:
+            gu_value = 80
+
+        self.spinbox_prozente_gu = create_new_spinbox(groupbox_prozent, gu_value)
+        gridlayout_prozente.addWidget(self.spinbox_prozente_gu, 0, 3, 1, 1)
+
+
+        self.label_prozente_be = create_new_label(groupbox_prozent, "Befriedigend:")
+        gridlayout_prozente.addWidget(self.label_prozente_be, 1, 0, 1, 1)
+        try:
+            be_value = self.lama_settings['prozente'][2]
+        except KeyError:
+            be_value = 64
+
+        self.spinbox_prozente_be = create_new_spinbox(groupbox_prozent, be_value)
+        gridlayout_prozente.addWidget(self.spinbox_prozente_be, 1, 1, 1, 1)
+
+        self.label_prozente_ge = create_new_label(groupbox_prozent, "Genügend:")
+        gridlayout_prozente.addWidget(self.label_prozente_ge, 1, 2, 1, 1)
+        try:
+            ge_value = self.lama_settings['prozente'][3]
+        except KeyError:
+            ge_value = 50
+
+        self.spinbox_prozente_ge = create_new_spinbox(groupbox_prozent, ge_value)
+        gridlayout_prozente.addWidget(self.spinbox_prozente_ge, 1, 3, 1, 1)
+
+
+        gridlayout_setup.addWidget(groupbox_prozent, row,0,1,1)
+        row +=1       
 
 
         groupbox_autosave = create_new_groupbox(Dialog, "Autosave Intervall")
@@ -1978,16 +2030,25 @@ class Ui_Dialog_setup(object):
         dict_['display'] = self.combobox_display.currentIndex()
         dict_['autosave'] = self.spinbox_autosave.value()
         dict_['quelle'] = self.lineedit_quelle.text()
+        dict_['prozente'] = [self.spinbox_prozente_sgu.value(), self.spinbox_prozente_gu.value(), self.spinbox_prozente_be.value(), self.spinbox_prozente_ge.value()]
 
         return dict_
 
+    def set_settings_in_sage(self):
+        self.MainWindow.lineEdit_quelle.setText(self.lineedit_quelle.text())
+        self.MainWindow.spinBox_2.setValue(self.spinbox_prozente_sgu.value())
+        self.MainWindow.spinBox_3.setValue(self.spinbox_prozente_gu.value())
+        self.MainWindow.spinBox_4.setValue(self.spinbox_prozente_be.value())
+        self.MainWindow.spinBox_5.setValue(self.spinbox_prozente_ge.value())
+        
     def save_setting(self):
         if self.MainWindow.display_mode != self.combobox_display.currentIndex():
             information_window("Die Änderung der Darstellung wird erst nach dem Neustart von LaMA übernommen.")
         self.lama_settings = self.save_settings_to_dict()
         with open(lama_settings_file, "w+", encoding="utf8") as f:
             dump(self.lama_settings, f, ensure_ascii=False)
-        self.MainWindow.lineEdit_quelle.setText(self.lineedit_quelle.text())
+        
+        self.set_settings_in_sage()
         self.Dialog.accept()
     
 

@@ -1846,10 +1846,22 @@ class Ui_MainWindow(object):
         self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_notenschl)
         self.gridLayout_6.setObjectName("gridLayout_6")
 
+        try:
+            sehr_gut = self.lama_settings["prozente"][0]
+            gut = self.lama_settings["prozente"][1]
+            befriedigend = self.lama_settings["prozente"][2]
+            genuegend = self.lama_settings["prozente"][3]
+        except KeyError:
+            sehr_gut = 91
+            gut = 80
+            befriedigend = 64
+            genuegend = 50
+
+
         self.label_sg = create_new_label(self.groupBox_notenschl, "Sehr Gut:")
         self.label_sg.setSizePolicy(SizePolicy_fixed)
         self.gridLayout_6.addWidget(self.label_sg, 0, 0, 1, 1)
-        self.spinBox_2 = create_new_spinbox(self.groupBox_notenschl, 91)
+        self.spinBox_2 = create_new_spinbox(self.groupBox_notenschl, sehr_gut)
         self.spinBox_2.setSizePolicy(SizePolicy_fixed)
         self.spinBox_2.valueChanged.connect(self.update_punkte)
         self.gridLayout_6.addWidget(self.spinBox_2, 0, 1, 1, 1)
@@ -1859,7 +1871,7 @@ class Ui_MainWindow(object):
         self.label_g = create_new_label(self.groupBox_notenschl, "Gut:")
         self.label_g.setSizePolicy(SizePolicy_fixed)
         self.gridLayout_6.addWidget(self.label_g, 0, 3, 1, 1)
-        self.spinBox_3 = create_new_spinbox(self.groupBox_notenschl, 80)
+        self.spinBox_3 = create_new_spinbox(self.groupBox_notenschl, gut)
         self.spinBox_3.setSizePolicy(SizePolicy_fixed)
         self.spinBox_3.valueChanged.connect(self.update_punkte)
         self.gridLayout_6.addWidget(self.spinBox_3, 0, 4, 1, 1)
@@ -1869,7 +1881,7 @@ class Ui_MainWindow(object):
         self.label_b = create_new_label(self.groupBox_notenschl, "Befriedigend:")
         self.label_b.setSizePolicy(SizePolicy_fixed)
         self.gridLayout_6.addWidget(self.label_b, 1, 0, 1, 1)
-        self.spinBox_4 = create_new_spinbox(self.groupBox_notenschl, 64)
+        self.spinBox_4 = create_new_spinbox(self.groupBox_notenschl, befriedigend)
         self.spinBox_4.setSizePolicy(SizePolicy_fixed)
         self.spinBox_4.valueChanged.connect(self.update_punkte)
         self.gridLayout_6.addWidget(self.spinBox_4, 1, 1, 1, 1)
@@ -1879,7 +1891,7 @@ class Ui_MainWindow(object):
         self.label_g_2 = create_new_label(self.groupBox_notenschl, "Genügend:")
         self.label_g_2.setSizePolicy(SizePolicy_fixed)
         self.gridLayout_6.addWidget(self.label_g_2, 1, 3, 1, 1)
-        self.spinBox_5 = create_new_spinbox(self.groupBox_notenschl, 50)
+        self.spinBox_5 = create_new_spinbox(self.groupBox_notenschl, genuegend)
         self.spinBox_5.setSizePolicy(SizePolicy_fixed)
         self.spinBox_5.valueChanged.connect(self.update_punkte)
         self.gridLayout_6.addWidget(self.spinBox_5, 1, 4, 1, 1)
@@ -2680,8 +2692,7 @@ class Ui_MainWindow(object):
             latest_version = re.search(
                 "Aktuelle Version: \[(.+)\]", url_readme_version
             ).group(1)
-            print(latest_version)
-            print(__version__)
+
             if __version__ == latest_version:
                 return
         except Exception:
@@ -2714,7 +2725,7 @@ class Ui_MainWindow(object):
                     refresh_ddb(self)
                     opened_file = os.path.basename(sys.argv[0])
                     name, extension = os.path.splitext(opened_file)
-                    # print('not yet working')
+                    
                     filename_update = os.path.join(
                         path_programm,
                         "_database",
@@ -3446,7 +3457,7 @@ class Ui_MainWindow(object):
 
         # teildokument_folder = os.path.join(lama_folder, "Teildokument")
 
-        # print(os.listdir(database))
+
         # for all in os.listdir(database):
         #     path = os.path.join(database, all)
         #     if os.path.isdir(path):
@@ -3457,9 +3468,7 @@ class Ui_MainWindow(object):
         #             os.remove(path)
 
         # for root, dirs, files in os.walk(delete_folder):
-        #     print(root)
 
-        # print(delete_path)
 
     def show_info(self):
         QtWidgets.QApplication.restoreOverrideCursor()
@@ -3497,8 +3506,6 @@ class Ui_MainWindow(object):
         if os.path.isfile(style_package_path):
             os.remove(style_package_path)
 
-    # def reset_tabu(self):
-    #     print('reset')
 
     def update_style_package(self, package_name):
         response = question_window(
@@ -3945,8 +3952,7 @@ class Ui_MainWindow(object):
 
             typ = get_aufgabentyp(self.chosen_program, _file_)
             
-            # print(_file_)
-            # print(typ)
+
             aufgabe_total_original = get_aufgabe_total(_file_, typ)
 
             self.enable_widgets_editor(True)
@@ -4261,7 +4267,7 @@ class Ui_MainWindow(object):
         # for all in themen_auswahl:
         #     if int(all[1]) > klasse:
         #         klasse = int(all[1])
-        # print(klasse)
+
         return "k{}".format(klasse)
 
     def get_max_integer(self, table_lama, typ, themen_auswahl):
@@ -4571,10 +4577,9 @@ class Ui_MainWindow(object):
         _file_ = Query()
 
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        print("Checking divergencies ...")
+
         rsp = check_branches()
         if rsp == False:
-            print("Updating database ...")
             rsp = self.worker_update_database()
             if rsp == False:
                 critical_window(
@@ -4618,7 +4623,6 @@ class Ui_MainWindow(object):
         # ])
         QtWidgets.QApplication.restoreOverrideCursor()
 
-        print("Uploading file ...")
         self.upload_single_file_change(name, message="Bearbeitet: {}".format(name))
 
         # if "(lokal)" not in name:
@@ -4662,10 +4666,8 @@ class Ui_MainWindow(object):
         images = aufgabe_total["bilder"]
 
         lama_table = get_table(name, typ)
-        print("Checking divergencies ...")
         rsp = check_branches()
         if rsp == False:
-            print("Updating database ...")
             rsp = self.worker_update_database()
             if rsp == False:
                 critical_window(
@@ -4675,7 +4677,6 @@ class Ui_MainWindow(object):
                 return
             lama_table.clear_cache()
         # image_path = os.path(path_programm, '_database')
-        # print(database)
 
         if "l." in name:
             image_path = os.path.join(database, "Bilder_local")
@@ -4694,7 +4695,6 @@ class Ui_MainWindow(object):
         delete_file(name, typ)
 
         if "l." not in name:
-            print("Uploading file ...")
             if is_empty(images):
                 self.upload_single_file_change(
                     name, message="Gelöscht: {}".format(name)
@@ -4764,10 +4764,8 @@ class Ui_MainWindow(object):
         table = "table_" + typ_name
         table_lama = database.table(table)
 
-        print("Checking divergencies ...")
         rsp = check_branches()
         if rsp == False:
-            print("Updating database ...")
             rsp = self.worker_update_database()
             if rsp == False:
                 critical_window(
@@ -4811,7 +4809,6 @@ class Ui_MainWindow(object):
             )
         table_lama.update({"name": name}, _file_.name == self.chosen_file_to_edit)
 
-        print("Uploading file ...")
         self.upload_single_file_change(
             name,
             message="Gespeichert als Variation: {0} (ehemals: {1})".format(
@@ -4971,10 +4968,9 @@ class Ui_MainWindow(object):
                 )
                 QtWidgets.QApplication.restoreOverrideCursor()
                 return
-            print("Checking divergencies ...")
+
             rsp = check_branches()
             if rsp == False:
-                print("Updating database ...")
                 rsp = self.worker_update_database()
 
                 if rsp == False:
@@ -5062,7 +5058,7 @@ class Ui_MainWindow(object):
             for image in list_images_new_names:
                 name = os.path.join("Bilder", image)
                 file_list.append(name)
-            print("Uploading file ...")
+
             action_push_database(False, file_list, message="Neu: {}".format(name))
 
         information_window(text, "", window_title, information)
@@ -5078,7 +5074,6 @@ class Ui_MainWindow(object):
         self.adapt_choosing_list("sage")
 
     def push_full_database(self):
-        print("Checking divergencies ...")
         rsp = check_branches()
         if rsp == False:
             response = question_window(
@@ -5545,15 +5540,6 @@ class Ui_MainWindow(object):
 
         self.update_punkte()
 
-    # def get_aufgabentyp(self, aufgabe):
-    #     # print(aufgabe)
-    #     if self.chosen_program == "cria":
-    #         typ = None
-    #     elif re.search("[A-Z]", aufgabe) == None:
-    #         typ = 2
-    #     else:
-    #         typ = 1
-    #     return typ
 
     def get_aufgabenverteilung(self):
         num_typ1 = 0
@@ -6037,11 +6023,7 @@ class Ui_MainWindow(object):
 
     def delete_widget(self, layout, index):
         try:
-            # print(layout.itemAt(index).widget())
-            # layout.itemAt(index).widget().hide()
             layout.itemAt(index).widget().setParent(None)
-            # layout.itemAt(index).widget().deleteLater()
-            # self.dict_widget_variables = {key:val for key, val in self.dict_widget_variables.items() if val != layout.itemAt(index).widget()}
         except AttributeError:
             pass
 
@@ -6470,11 +6452,8 @@ class Ui_MainWindow(object):
         self, typ, listWidget, filtered_items, local=False,
     ):
         for _file_ in filtered_items:
-            # if typ == "cria":
-            #     name = _file_["name"] #.split(".")[-1]
-            # else:
             name = _file_["name"]
-            # print(name)
+
 
             item = QtWidgets.QListWidgetItem()
 
@@ -7527,4 +7506,3 @@ if __name__ == "__main__":
     MainWindow.show()
 
     sys.exit(app.exec_())
-    # sys.exit()
