@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__ = "v2.9.9"
+__version__ = "v3.0.3"
 __lastupdate__ = "09/21"
 ##################
 
@@ -1886,6 +1886,20 @@ class Ui_MainWindow(object):
         self.label_g_2_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
         self.gridLayout_6.addWidget(self.label_g_2_pkt, 1, 5, 1, 1)
 
+        self.groupBox_notenschl_modus = create_new_groupbox(self.groupBox_notenschl, "Anzeige")
+        self.gridLayout_6.addWidget(self.groupBox_notenschl_modus, 0, 6, 2,1)
+
+        self.verticalLayout_ns_modus = create_new_verticallayout(self.groupBox_notenschl_modus)
+
+        self.cb_ns_halbe_pkt = create_new_checkbox(self.groupBox_notenschl_modus, "Halbe Punkte", True)
+        self.verticalLayout_ns_modus.addWidget(self.cb_ns_halbe_pkt)
+
+        self.cb_ns_prozent = create_new_checkbox(self.groupBox_notenschl_modus, "Prozentangabe")
+        self.verticalLayout_ns_modus.addWidget(self.cb_ns_prozent)
+
+        # self.cb_ns_NMS = create_new_checkbox(self.groupBox_notenschl_modus, "Modus: NMS")
+        # self.verticalLayout_ns_modus.addWidget(self.cb_ns_NMS)
+
         self.gridLayout_5.addWidget(self.groupBox_notenschl, 6, 0, 1, 6)
 
         ### Groupbox Beurteilungsraster #####
@@ -3158,6 +3172,8 @@ class Ui_MainWindow(object):
         self.spinBox_3.setProperty("value", 80)
         self.spinBox_4.setProperty("value", 64)
         self.spinBox_5.setProperty("value", 50)
+        self.cb_ns_halbe_pkt.setChecked(True)
+        self.cb_ns_prozent.setChecked(False)
         self.comboBox_at_sage.setCurrentIndex(0)
         self.comboBox_gk.setCurrentIndex(0)
         self.comboBox_gk_num.setCurrentIndex(0)
@@ -6848,9 +6864,19 @@ class Ui_MainWindow(object):
                     "Notenschluessel"
                 ]
 
+                zusatz = ""
+                if self.cb_ns_halbe_pkt.isChecked():
+                    zusatz = "[1/2]"
+                if self.cb_ns_prozent.isChecked():
+                    if zusatz == "":
+                        zusatz = "[]"
+                    zusatz = zusatz + "[prozent]"
+                
+
                 with open(filename_vorschau, "a", encoding="utf8") as vorschau:
                     vorschau.write(
-                        "\n\n\\null\\notenschluessel{{{0}}}{{{1}}}{{{2}}}{{{3}}}".format(
+                        "\n\n\\null\\notenschluessel{0}{{{1}}}{{{2}}}{{{3}}}{{{4}}}".format(
+                            zusatz,
                             notenschluessel[0] / 100,
                             notenschluessel[1] / 100,
                             notenschluessel[2] / 100,
