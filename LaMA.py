@@ -2722,7 +2722,7 @@ class Ui_MainWindow(object):
 
             if ret == True:
                 if sys.platform.startswith("darwin"):
-                    refresh_ddb(self)
+                    refresh_ddb(self, mac_auto_update=True)
                     opened_file = os.path.basename(sys.argv[0])
                     name, extension = os.path.splitext(opened_file)
                     

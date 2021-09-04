@@ -163,7 +163,7 @@ class Worker_RefreshDDB(QtCore.QObject):
 #     # QtWidgets.QApplication.restoreOverrideCursor()
 
 
-def refresh_ddb(self):
+def refresh_ddb(self, mac_auto_update = False):
     # if selected_program == False:
     #     selected_program = self.chosen_program
 
@@ -287,7 +287,8 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 #             information_window(text)
 
     else:
-        information_window("Die Datenbank ist jetzt auf dem neuesten Stand!")
+        if mac_auto_update == False:
+            information_window("Die Datenbank ist jetzt auf dem neuesten Stand!")
     
     # self.adapt_choosing_list("sage")
     # bring_to_front(QMainWindow())
