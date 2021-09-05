@@ -2083,7 +2083,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_fb.addWidget(self.listWidget_fb)
         self.listWidget_fb.itemClicked.connect(self.nummer_clicked_fb)
 
-        self.gridLayout.addWidget(self.groupBox_alle_aufgaben_fb, 0, 0, 7, 1)
+        self.gridLayout.addWidget(self.groupBox_alle_aufgaben_fb, 0, 0, 8, 1)
         self.groupBox_alle_aufgaben_fb.setTitle(
             _translate("MainWindow", "Aufgaben", None)
         )
@@ -2275,7 +2275,7 @@ class Ui_MainWindow(object):
         self.pushButton_send = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_send.setObjectName(_fromUtf8("pushButton_send"))
         self.gridLayout.addWidget(
-            self.pushButton_send, 6, 1, 1, 1, QtCore.Qt.AlignRight
+            self.pushButton_send, 7, 1, 1, 1, QtCore.Qt.AlignRight
         )
         self.pushButton_send.setText(_translate("MainWindow", "Senden", None))
         self.pushButton_send.clicked.connect(self.pushButton_send_pressed)
@@ -6254,23 +6254,24 @@ class Ui_MainWindow(object):
         self.label_example.setText(
             _translate("MainWindow", "Ausgewählte Aufgabe: -", None)
         )
+
         if self.comboBox_at_fb.currentText() == "Allgemeine Rückmeldung":
             self.change_status_combobox_general_feedback(False)
-        else:
-            self.change_status_combobox_general_feedback(True)
+        # else:
+        #     self.change_status_combobox_general_feedback(True)
 
-        if self.comboBox_at_fb.currentText()[-1] == "1":
-            self.comboBox_fb.clear()
-            self.lineEdit_number_fb.clear()
-            list_comboBox_gk = ["", "AG", "FA", "AN", "WS", "K5", "K6", "K7", "K8"]
-            for all in list_comboBox_gk:
-                self.comboBox_fb.addItem(all)
+        # if self.comboBox_at_fb.currentText()[-1] == "1":
+        #     self.comboBox_fb.clear()
+        #     self.lineEdit_number_fb.clear()
+        #     list_comboBox_gk = ["", "AG", "FA", "AN", "WS", "K5", "K6", "K7", "K8"]
+        #     for all in list_comboBox_gk:
+        #         self.comboBox_fb.addItem(all)
 
-            self.comboBox_fb_num.clear()
+        #     self.comboBox_fb_num.clear()
 
-        if self.comboBox_at_fb.currentText()[-1] == "2":
-            self.comboBox_fb.clear()
-            self.comboBox_fb_num.clear()
+        # if self.comboBox_at_fb.currentText()[-1] == "2":
+        #     self.comboBox_fb.clear()
+        #     self.comboBox_fb_num.clear()
         self.adapt_choosing_list("feedback")
         QtWidgets.QApplication.restoreOverrideCursor()
 
@@ -6491,6 +6492,8 @@ class Ui_MainWindow(object):
                 self.comboBox_fb.clear()
                 self.comboBox_fb_num.clear()
                 self.lineEdit_number_fb.clear()
+                listWidget.clear()
+                QtWidgets.QApplication.restoreOverrideCursor()
                 return
         listWidget.clear()
         if self.chosen_program == "cria":
