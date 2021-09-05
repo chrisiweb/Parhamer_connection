@@ -1520,6 +1520,7 @@ class Ui_MainWindow(object):
         self.pushButton_vorschau_edit = create_new_button(
             self.centralwidget, "Vorschau", self.button_vorschau_edit_pressed
         )
+        self.pushButton_vorschau_edit.setShortcut("Ctrl+Return")
         self.pushButton_vorschau_edit.setSizePolicy(SizePolicy_fixed)
         self.horizontalLayout_buttons.addWidget(self.pushButton_vorschau_edit)
         self.pushButton_vorschau_edit.hide()
