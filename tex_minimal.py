@@ -71,11 +71,11 @@ def begin_beispiel(themen = None, punkte = 0):
         string = "[{}]".format(', '.join(themen))
     else:
         string = ""
-    return "\\begin{{beispiel}}{0}{{{1}}}\n".format(string, punkte)
+    return "\\begin{{beispiel}}{0}{{{1}}}".format(string, punkte)
 
 end_beispiel = "\n\end{beispiel}"
 
 def begin_beispiel_lang(punkte = 0):
-    return "\\begin{{langesbeispiel}} \item[{0}]\n".format(punkte)
+    return "\\begin{{langesbeispiel}} \item[{0}]".format(punkte)
 
 end_beispiel_lang = "\end{langesbeispiel}"

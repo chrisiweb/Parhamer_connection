@@ -443,7 +443,7 @@ def create_tex(file_path, content):
     try:
         with open(file_path, "w", encoding="utf8") as file:
             file.write(tex_preamble())
-            file.write(begin_beispiel_lang())
+            file.write(begin_beispiel_lang() + "\n")
             file.write(content)
             file.write(end_beispiel_lang)
             file.write(tex_end)
@@ -481,11 +481,11 @@ def construct_tex_file(file_name, gesammeltedateien, solutions, variation, infos
               
             file.write('\section{{{0}{1} - {2}{3}}}\n\n'.format(draft, all['name'], all['titel'], add_on))
             if all['pagebreak']==False:
-                file.write(begin_beispiel(all['themen'], all['punkte']))
+                file.write(begin_beispiel(all['themen'], all['punkte']) + "\n") 
                 file.write(all['content'])
                 file.write(end_beispiel)
             elif all['pagebreak']==True:
-                file.write(begin_beispiel_lang(all['punkte']))
+                file.write(begin_beispiel_lang(all['punkte']) + "\n")
                 file.write(all['content'])
                 file.write(end_beispiel_lang)
             if variation == True and check_if_variation(all['name']) == True:

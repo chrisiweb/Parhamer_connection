@@ -6648,8 +6648,10 @@ class Ui_MainWindow(object):
             begin = begin_beispiel(aufgabe_total["themen"], punkte)
             end = end_beispiel
         elif aufgabe_total["pagebreak"] == True:
-            begin = begin_beispiel_lang(punkte)
+            begin = begin_beispiel_lang(punkte) 
             end = end_beispiel_lang
+
+        begin = begin + "\t% Aufgabe: {}\n".format(aufgabe_total['name'])
 
         if abstand == 99:
             vspace = "\\newpage \n\n"
@@ -6818,6 +6820,7 @@ class Ui_MainWindow(object):
         first_typ2 = False
         # aufgaben_nummer = 1
 
+        
         for aufgabe in self.list_alle_aufgaben_sage:
             name = aufgabe.replace(" (lokal)", "")
             typ = get_aufgabentyp(self.chosen_program, name)
@@ -6870,6 +6873,9 @@ class Ui_MainWindow(object):
         with open(filename_vorschau, "a", encoding="utf8") as vorschau:
             vorschau.write("\n\n")
             vorschau.write(tex_end)
+            vorschau.write("\n\n")
+            vorschau.write("Aufgabenliste: {}".format(", ".join(self.list_alle_aufgaben_sage)))
+
 
         if ausgabetyp == "schularbeit":
             if dict_titlepage["logo"] == True and dict_titlepage["hide_all"] == False:

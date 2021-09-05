@@ -2571,10 +2571,10 @@ class Ui_Dialog_edit_drafts(object):
             dict_aufgabe = self.get_dict_aufgabe(name)
             content = content + "\subsubsection{{{0}}}\n".format(name)
             if dict_aufgabe['pagebreak'] == False:
-                begin =  tex_minimal.begin_beispiel()
+                begin =  tex_minimal.begin_beispiel() + "\n"
                 end = tex_minimal.end_beispiel
             else:
-                begin = tex_minimal.begin_beispiel_lang()
+                begin = tex_minimal.begin_beispiel_lang() + "\n"
                 end = tex_minimal.end_beispiel_lang
             
             aufgabe_total = get_aufgabe_total(name, self.typ)
