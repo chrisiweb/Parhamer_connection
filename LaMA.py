@@ -6269,21 +6269,21 @@ class Ui_MainWindow(object):
 
         if self.comboBox_at_fb.currentText() == "Allgemeine Rückmeldung":
             self.change_status_combobox_general_feedback(False)
-        # else:
-        #     self.change_status_combobox_general_feedback(True)
+        else:
+            self.change_status_combobox_general_feedback(True)
 
-        # if self.comboBox_at_fb.currentText()[-1] == "1":
-        #     self.comboBox_fb.clear()
-        #     self.lineEdit_number_fb.clear()
-        #     list_comboBox_gk = ["", "AG", "FA", "AN", "WS", "K5", "K6", "K7", "K8"]
-        #     for all in list_comboBox_gk:
-        #         self.comboBox_fb.addItem(all)
+        if self.comboBox_at_fb.currentText()[-1] == "1":
+            self.comboBox_fb.clear()
+            self.lineEdit_number_fb.clear()
+            list_comboBox_gk = ["", "AG", "FA", "AN", "WS", "K5", "K6", "K7", "K8"]
+            for all in list_comboBox_gk:
+                self.comboBox_fb.addItem(all)
 
-        #     self.comboBox_fb_num.clear()
+            self.comboBox_fb_num.clear()
 
-        # if self.comboBox_at_fb.currentText()[-1] == "2":
-        #     self.comboBox_fb.clear()
-        #     self.comboBox_fb_num.clear()
+        if self.comboBox_at_fb.currentText()[-1] == "2":
+            self.comboBox_fb.clear()
+            self.comboBox_fb_num.clear()
         self.adapt_choosing_list("feedback")
         QtWidgets.QApplication.restoreOverrideCursor()
 
