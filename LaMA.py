@@ -87,7 +87,6 @@ class Worker_UpdateLaMA(QtCore.QObject):
 
         # Ui_MainWindow.reset_successfull = git_reset_repo_to_origin()
         # print(Ui_MainWindow.reset_successfull)
-        os.system(path_installer)
 
         self.finished.emit()
 
@@ -2761,7 +2760,7 @@ class Ui_MainWindow(object):
                 else:
                     text = "Neue Version von LaMA wird heruntergeladen ..."
                     path_installer = os.path.join(
-                        path_home, "Downloads", "LaMA_installer.exe"
+                        path_home, "Downloads", "LaMA_setup.exe"
                     )
 
                     Dialog_checkchanges = QtWidgets.QDialog()
@@ -2777,6 +2776,7 @@ class Ui_MainWindow(object):
                     thread.exit()
                     Dialog_checkchanges.exec()
                     
+                    os.system(path_installer)
 
                     sys.exit(0)
         QtWidgets.QApplication.restoreOverrideCursor()
