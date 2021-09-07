@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__ = "v3.1.0"
+__version__ = "v2.9.9"
 __lastupdate__ = "09/21"
 ##################
 
@@ -45,8 +45,9 @@ from tinydb import TinyDB, Query
 # import git
 # from git import Repo, remote
 
+import requests
+# from urllib.request import urlopen, urlretrieve
 
-from urllib.request import urlopen, urlretrieve
 
 # from urllib.error import URLError
 
@@ -76,9 +77,14 @@ class Worker_UpdateLaMA(QtCore.QObject):
     def task(self, path_installer):
         download_link = "https://github.com/mylama/lama/releases/latest/download/LaMA_setup.exe"
         path_installer = os.path.join(
-            path_home, "Downloads", "LaMA_installer.exe"
+            path_home, "Downloads", "LaMA_setup.exe"
         )
-        urlretrieve(download_link, path_installer)
+        # urlretrieve(download_link, path_installer)
+        r = requests.get(download_link, allow_redirects=True)
+
+        open(path_installer, 'wb').write(r.content)
+
+
         # Ui_MainWindow.reset_successfull = git_reset_repo_to_origin()
         # print(Ui_MainWindow.reset_successfull)
         os.system(path_installer)
@@ -2688,15 +2694,20 @@ class Ui_MainWindow(object):
             link = (
                 "https://github.com/chrisiweb/lama_latest_update/blob/master/README.md"
             )
-            f = urlopen(link)
-            url_readme_version = f.read().decode("utf-8")
-            latest_version = re.search(
-                "Aktuelle Version: \[(.+)\]", url_readme_version
-            ).group(1)
 
+            # r = requests.post('https://httpbin.org/post', data = {'key':'value'})
+            # print(r.text)
+            # f = urlopen(link)
+            # url_readme_version = f.read().decode("utf-8")
+            readme_content = requests.get(link)
+            latest_version = re.search(
+                "Aktuelle Version: \[(.+)\]", readme_content.text
+            ).group(1)
+            # print(latest_version)
             if __version__ == latest_version:
                 return
-        except Exception:
+        except Exception as e:
+            print(e)
             print(
                 "Fehler beim Überprüfen der Version. Überprüfung wird übersprungen ..."
             )
