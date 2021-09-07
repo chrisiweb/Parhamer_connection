@@ -28,6 +28,7 @@ jobs:
         pip install dulwich
         pip install bcrypt
         pip install tinydb
+        pip install requests
     - name: Build with pyinstaller
       if: matrix.os != 'windows-latest'
       run: |  
