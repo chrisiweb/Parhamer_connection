@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__ = "v2.9.9"
+__version__ = "v3.1.1"
 __lastupdate__ = "09/21"
 ##################
 
@@ -67,7 +67,7 @@ class Worker_UpdateDatabase(QtCore.QObject):
     @QtCore.pyqtSlot()
     def task(self):
         Ui_MainWindow.reset_successfull = git_reset_repo_to_origin()
-        print(Ui_MainWindow.reset_successfull)
+        # print(Ui_MainWindow.reset_successfull)
         self.finished.emit()
 
 class Worker_UpdateLaMA(QtCore.QObject):
