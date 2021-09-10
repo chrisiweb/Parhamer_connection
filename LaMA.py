@@ -3412,9 +3412,13 @@ class Ui_MainWindow(object):
             )
             if response == False:
                 return
-            path_lama_developer_credentials = os.path.join(
-                os.getenv("LOCALAPPDATA"), "LaMA", "credentials"
-            )
+
+            if sys.platform.startswith("win"):
+                path_lama_developer_credentials = os.path.join(os.getenv('LOCALAPPDATA'), "LaMA", "credentials")
+            elif sys.platform.startswith("darwin"):
+                path_lama_developer_credentials = os.path.join(Path.home(), "Library", "LaMA","credentials")
+
+
             lama_developer_credentials = os.path.join(
                 path_lama_developer_credentials, "developer_credentials.txt"
             )
