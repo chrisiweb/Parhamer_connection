@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__ = "v3.1.3"
+__version__ = "v3.1.2"
 __lastupdate__ = "09/21"
 ##################
 
@@ -80,15 +80,25 @@ class Worker_UpdateLaMA(QtCore.QObject):
             path_home, "Downloads", "LaMA_setup.exe"
         )
         # urlretrieve(download_link, path_installer)
-        r = requests.get(download_link, allow_redirects=True)
 
-        open(path_installer, 'wb').write(r.content)
+        
+        # timeout_start = time.time()
+        
+        try:
+            r = requests.get(download_link, allow_redirects=True, timeout=(5,10))
+            open(path_installer, 'wb').write(r.content)
+            self.response = True
+
+        except requests.exceptions.ConnectionError:
+            self.response = False            
+
+        self.finished.emit()
 
 
         # Ui_MainWindow.reset_successfull = git_reset_repo_to_origin()
         # print(Ui_MainWindow.reset_successfull)
 
-        self.finished.emit()
+        
 
 # class Worker_PushDatabase(QtCore.QObject):
 #     finished = QtCore.pyqtSignal()
@@ -2775,10 +2785,13 @@ class Ui_MainWindow(object):
                     thread.start()
                     thread.exit()
                     Dialog_checkchanges.exec()
-                    
-                    os.system(path_installer)
 
-                    sys.exit(0)
+                    if worker.response == False:
+                        critical_window("LaMA konnte nicht heruntergeladen werden. Bitte überprüfen Sie die Internetverbindung und versuchen Sie es später erneut.")
+                        return
+                    elif worker.response == True:
+                        os.system(path_installer)
+                        sys.exit(0)
         QtWidgets.QApplication.restoreOverrideCursor()
                 # return
                 # opened_file = os.path.basename(sys.argv[0])
