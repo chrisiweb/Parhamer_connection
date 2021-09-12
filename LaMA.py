@@ -1919,10 +1919,20 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_ns_modus = create_new_verticallayout(self.groupBox_notenschl_modus)
 
-        self.cb_ns_halbe_pkt = create_new_checkbox(self.groupBox_notenschl_modus, "Halbe Punkte")
+        try:
+            ns_halbe_punkte_checked = self.lama_settings['notenschluessel'][0]
+        except KeyError:
+            ns_halbe_punkte_checked = False
+        print(ns_halbe_punkte_checked)
+        self.cb_ns_halbe_pkt = create_new_checkbox(self.groupBox_notenschl_modus, "Halbe Punkte", checked=ns_halbe_punkte_checked)
         self.verticalLayout_ns_modus.addWidget(self.cb_ns_halbe_pkt)
 
-        self.cb_ns_prozent = create_new_checkbox(self.groupBox_notenschl_modus, "Prozentangabe")
+        try:
+            ns_prozente_checked = self.lama_settings['notenschluessel'][1]
+        except KeyError:
+            ns_prozente_checked = False
+
+        self.cb_ns_prozent = create_new_checkbox(self.groupBox_notenschl_modus, "Prozentangabe", checked=ns_prozente_checked)
         self.verticalLayout_ns_modus.addWidget(self.cb_ns_prozent)
 
         # self.cb_ns_NMS = create_new_checkbox(self.groupBox_notenschl_modus, "Modus: NMS")
@@ -3208,8 +3218,13 @@ class Ui_MainWindow(object):
         self.spinBox_3.setProperty("value", 80)
         self.spinBox_4.setProperty("value", 64)
         self.spinBox_5.setProperty("value", 50)
-        self.cb_ns_halbe_pkt.setChecked(True)
-        self.cb_ns_prozent.setChecked(False)
+        try:
+            self.cb_ns_halbe_pkt.setChecked(self.lama_settings['notenschluessel'][0])
+            self.cb_ns_prozent.setChecked(self.lama_settings['notenschluessel'][1])
+        except KeyError:
+            self.cb_ns_halbe_pkt.setChecked(False)
+            self.cb_ns_prozent.setChecked(False)
+
         self.comboBox_at_sage.setCurrentIndex(0)
         self.comboBox_gk.setCurrentIndex(0)
         self.comboBox_gk_num.setCurrentIndex(0)

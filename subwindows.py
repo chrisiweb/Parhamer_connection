@@ -1794,6 +1794,7 @@ class Ui_Dialog_setup(object):
                 'database' : 2,
                 'display' : 0,
                 'prozente': [91, 80, 64, 50],
+                'notenschluessel': [False, False],
                 'autosave' : 2,
                 'quelle' : '',
             }
@@ -1920,6 +1921,21 @@ class Ui_Dialog_setup(object):
 
         self.spinbox_prozente_ge = create_new_spinbox(groupbox_prozent, ge_value)
         gridlayout_prozente.addWidget(self.spinbox_prozente_ge, 1, 3, 1, 1)
+    
+
+        try:
+            ns_halbe_punkte_checked = self.lama_settings['notenschluessel'][0]
+        except KeyError:
+            ns_halbe_punkte_checked = False
+        self.cb_ns_halbe_punkte = create_new_checkbox(groupbox_prozent, "Halbe Punkte", checked= ns_halbe_punkte_checked)
+        gridlayout_prozente.addWidget(self.cb_ns_halbe_punkte, 2,0,1,2)
+
+        try:
+            ns_prozente_checked = self.lama_settings['notenschluessel'][1]
+        except KeyError:
+            ns_prozente_checked = False
+        self.cb_ns_prozente = create_new_checkbox(groupbox_prozent, "Prozentangabe", checked= ns_prozente_checked)
+        gridlayout_prozente.addWidget(self.cb_ns_prozente, 2,2,1,2)       
 
 
         gridlayout_setup.addWidget(groupbox_prozent, row,0,1,1)
@@ -2031,6 +2047,7 @@ class Ui_Dialog_setup(object):
         dict_['autosave'] = self.spinbox_autosave.value()
         dict_['quelle'] = self.lineedit_quelle.text()
         dict_['prozente'] = [self.spinbox_prozente_sgu.value(), self.spinbox_prozente_gu.value(), self.spinbox_prozente_be.value(), self.spinbox_prozente_ge.value()]
+        dict_['notenschluessel'] = [self.cb_ns_halbe_punkte.isChecked(), self.cb_ns_prozente.isChecked()]
 
         return dict_
 
@@ -2040,6 +2057,8 @@ class Ui_Dialog_setup(object):
         self.MainWindow.spinBox_3.setValue(self.spinbox_prozente_gu.value())
         self.MainWindow.spinBox_4.setValue(self.spinbox_prozente_be.value())
         self.MainWindow.spinBox_5.setValue(self.spinbox_prozente_ge.value())
+        self.MainWindow.cb_ns_halbe_pkt.setChecked(self.cb_ns_halbe_punkte.isChecked())
+        self.MainWindow.cb_ns_prozent.setChecked(self.cb_ns_prozente.isChecked())
         
     def save_setting(self):
         if self.MainWindow.display_mode != self.combobox_display.currentIndex():
