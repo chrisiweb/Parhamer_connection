@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__ = "v3.1.3"
+__version__ = "v3.1.4"
 __lastupdate__ = "09/21"
 ##################
 
@@ -1923,7 +1923,7 @@ class Ui_MainWindow(object):
             ns_halbe_punkte_checked = self.lama_settings['notenschluessel'][0]
         except KeyError:
             ns_halbe_punkte_checked = False
-        print(ns_halbe_punkte_checked)
+
         self.cb_ns_halbe_pkt = create_new_checkbox(self.groupBox_notenschl_modus, "Halbe Punkte", checked=ns_halbe_punkte_checked)
         self.verticalLayout_ns_modus.addWidget(self.cb_ns_halbe_pkt)
 
