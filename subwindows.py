@@ -2045,9 +2045,10 @@ class Ui_Dialog_setup(object):
         if self.MainWindow.display_mode != self.combobox_display.currentIndex():
             information_window("Die Änderung der Darstellung wird erst nach dem Neustart von LaMA übernommen.")
         self.lama_settings = self.save_settings_to_dict()
+
         with open(lama_settings_file, "w+", encoding="utf8") as f:
             dump(self.lama_settings, f, ensure_ascii=False)
-        
+    
         self.set_settings_in_sage()
         self.Dialog.accept()
     

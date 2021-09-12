@@ -1919,7 +1919,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_ns_modus = create_new_verticallayout(self.groupBox_notenschl_modus)
 
-        self.cb_ns_halbe_pkt = create_new_checkbox(self.groupBox_notenschl_modus, "Halbe Punkte", True)
+        self.cb_ns_halbe_pkt = create_new_checkbox(self.groupBox_notenschl_modus, "Halbe Punkte")
         self.verticalLayout_ns_modus.addWidget(self.cb_ns_halbe_pkt)
 
         self.cb_ns_prozent = create_new_checkbox(self.groupBox_notenschl_modus, "Prozentangabe")

@@ -36,7 +36,13 @@ if sys.platform.startswith("win"):
     path_localappdata_lama = path_programm
 
     path_lama_developer_credentials = os.path.join(os.getenv('LOCALAPPDATA'), "LaMA", "credentials")
+    if not os.path.isdir(path_lama_developer_credentials):
+        os.makedirs(path_lama_developer_credentials)
     lama_developer_credentials = os.path.join(path_lama_developer_credentials, "developer_credentials.txt")
+
+    lama_settings_file = os.path.join(
+                os.getenv('LOCALAPPDATA'), "LaMA", "lama_settings"
+            )
     # ## OLD VERSION!!
     # path_programm = os.path.dirname(sys.argv[0])
     # path_localappdata_lama = path_programm
@@ -61,13 +67,29 @@ elif sys.platform.startswith("darwin"):
         
     lama_developer_credentials = os.path.join(path_lama_developer_credentials, "developer_credentials.txt")
 
+    lama_settings_file = os.path.join(
+                Path.home(), "Library", "LaMA", "lama_settings"
+            )
+
+
 path_home = Path.home()
 
 lama_user_credentials = 'ghp_PwshmR'
 database = os.path.join(path_programm, "_database")
 
-lama_settings_file = os.path.join(
-            path_localappdata_lama, "Teildokument", "lama_settings"
-        )
+
+# if sys.platform.startswith("win"):
+#     path_lama_developer_credentials = os.path.join(os.getenv('LOCALAPPDATA'), "LaMA", "credentials")
+# elif sys.platform.startswith("darwin"):
+#     path_lama_developer_credentials = os.path.join(Path.home(), "Library", "LaMA","credentials")
+
+
+# lama_developer_credentials = os.path.join(
+#     path_lama_developer_credentials, "developer_credentials.txt"
+# )
+
+# lama_settings_file = os.path.join(
+#             path_localappdata_lama, "Teildokument", "lama_settings"
+#         )
 
 
