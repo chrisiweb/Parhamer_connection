@@ -40,6 +40,8 @@ import os
 
 from tinydb import TinyDB, Query
 
+
+
 # from tinydb.operations import update
 
 # import git
@@ -3445,6 +3447,8 @@ class Ui_MainWindow(object):
                 path_lama_developer_credentials = os.path.join(os.getenv('LOCALAPPDATA'), "LaMA", "credentials")
             elif sys.platform.startswith("darwin"):
                 path_lama_developer_credentials = os.path.join(Path.home(), "Library", "LaMA","credentials")
+            # elif sys.platform.startswith("linux"):
+            #     path_lama_developer_credentials = os.path.join(Path.home(), "Library", "LaMA","credentials")
 
 
             lama_developer_credentials = os.path.join(
