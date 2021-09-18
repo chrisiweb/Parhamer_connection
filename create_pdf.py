@@ -146,7 +146,7 @@ def collect_suchbegriffe(self):
         for all in self.dict_chosen_topics.values():
             thema_string  = all[1] + "." + all[2]
             suchbegriffe['themen'].append(thema_string)
-            print(all)
+            # print(all)
             if all[0] not in suchbegriffe['klasse']:
                 suchbegriffe['klasse'].append(all[0])
             # print(suchbegriffe['themen'])

@@ -2489,7 +2489,8 @@ class Ui_MainWindow(object):
         rsp = self.Dialog.exec_()
 
         if rsp == QtWidgets.QDialog.Accepted:
-            for index in range(self.ui_erstellen.spinBox_sw_gruppen.value() * 2):
+
+            for index in range(self.ui_erstellen.spinBox_sw_gruppen.value() * 2 + 1): # +1 to reset tex-file to random=0
                 self.pushButton_vorschau_pressed(
                     "schularbeit",
                     index,
@@ -2497,6 +2498,9 @@ class Ui_MainWindow(object):
                     self.ui_erstellen.pdf,
                     self.ui_erstellen.lama,
                 )
+
+
+
             if not is_empty(self.chosen_path_schularbeit_erstellen[0]):
                 if sys.platform.startswith("linux"):
                     file_path = os.path.dirname(self.saved_file_path)
@@ -6762,9 +6766,11 @@ class Ui_MainWindow(object):
     def pushButton_vorschau_pressed(
         self, ausgabetyp, index=0, maximum=0, pdf=True, lama=True
     ):
+
         self.collect_all_infos_for_creating_file()
 
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+
 
         if ausgabetyp == "vorschau":
             filename_vorschau = os.path.join(
@@ -6839,7 +6845,11 @@ class Ui_MainWindow(object):
         else:
             solution = "solution_off"
 
-        # current_index = int(index / 2)
+        if ausgabetyp == 'schularbeit' and index != self.ui_erstellen.spinBox_sw_gruppen.value() * 2:
+            gruppe = int(index / 2)
+        else:
+            gruppe = 0
+
 
         str_titlepage = get_titlepage_vorschau(
             self, dict_titlepage, ausgabetyp, maximum, index
@@ -6857,10 +6867,10 @@ class Ui_MainWindow(object):
         else:
             header = ""
 
-        vorschau = open(filename_vorschau, "w+", encoding="utf8")
+        # vorschau = open(filename_vorschau, "w+", encoding="utf8")
 
         with open(filename_vorschau, "w+", encoding="utf8") as vorschau:
-            vorschau.write(tex_preamble(solution=solution, beamer_mode=beamer_mode))
+            vorschau.write(tex_preamble(solution=solution, random = gruppe, beamer_mode=beamer_mode))
             vorschau.write(str_titlepage)
             vorschau.write(header)
 
@@ -6923,8 +6933,7 @@ class Ui_MainWindow(object):
             vorschau.write("\n\n")
             vorschau.write("Aufgabenliste: {}".format(", ".join(self.list_alle_aufgaben_sage)))
 
-
-        if ausgabetyp == "schularbeit":
+        if index == 0 and ausgabetyp == "schularbeit":
             if dict_titlepage["logo"] == True and dict_titlepage["hide_all"] == False:
                 success = copy_logo_to_target_path(self, dict_titlepage["logo_path"])
                 if success == False:
@@ -6940,6 +6949,11 @@ class Ui_MainWindow(object):
             ):
                 for image in self.dict_all_infos_for_file["data_gesamt"]["copy_images"]:
                     copy_included_images(self, image)
+
+        elif index == self.ui_erstellen.spinBox_sw_gruppen.value() * 2:
+            print('reset')
+            QtWidgets.QApplication.restoreOverrideCursor()
+            return
 
         if ausgabetyp == "vorschau":
             create_pdf("Schularbeit_Vorschau", 0, 0)
