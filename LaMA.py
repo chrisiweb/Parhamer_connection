@@ -3324,7 +3324,7 @@ class Ui_MainWindow(object):
             self.actionProgram.setText(
                 _translate("MainWindow", 'Zu "LaMA (Oberstufe)" wechseln', None)
             )
-            self.comboBox_pruefungstyp.removeItem(6)  # delete Quiz
+            # self.comboBox_pruefungstyp.removeItem(6)  # delete Quiz
             self.cb_af_ko.show()
             self.cb_af_rf.show()
             self.cb_af_ta.show()
@@ -3377,7 +3377,7 @@ class Ui_MainWindow(object):
                 ),
             )
 
-            self.comboBox_pruefungstyp.addItem("Quiz")
+            # self.comboBox_pruefungstyp.addItem("Quiz")
             self.cb_af_ko.hide()
             self.cb_af_rf.hide()
             self.cb_af_ta.hide()
@@ -3738,35 +3738,35 @@ class Ui_MainWindow(object):
         if (
             self.comboBox_pruefungstyp.currentText() == "Grundkompetenzcheck"
             or self.comboBox_pruefungstyp.currentText() == "Übungsblatt"
-            or self.comboBox_pruefungstyp.currentText() == "Quiz"
+            # or self.comboBox_pruefungstyp.currentText() == "Quiz"
         ):
             self.combobox_beurteilung.setEnabled(False)
             self.groupBox_notenschl.setEnabled(False)
             self.groupBox_beurteilungsraster.setEnabled(False)
             self.spinBox_nummer.setValue(0)
-            if self.comboBox_pruefungstyp.currentText() == "Quiz":
-                self.pushButton_titlepage.setEnabled(True)
-                self.pushButton_titlepage.setText("Zufälliges Quiz erstellen")
-                self.comboBox_at_sage.setCurrentIndex(0)
-                self.comboBox_at_sage.setEnabled(False)
-                if self.get_aufgabenverteilung()[1] != 0:
-                    response = question_window(
-                        "Das Quiz ist ausschließlich für Typ1-Aufgaben konzipiert. Sollen alle enthaltenen Typ2-Aufgaben entfernt und das Quiz erstellt werden?",
-                        titel="Typ2 Aufgaben entfernen?",
-                    )
-                    if response == False:
-                        self.comboBox_pruefungstyp.setCurrentIndex(0)
-                        return
-                    else:
-                        for aufgabe in self.list_alle_aufgaben_sage[:]:
-                            typ = get_aufgabentyp(self.chosen_program, aufgabe)
-                            if typ == 2:
-                                self.btn_delete_pressed(aufgabe)
+            # if self.comboBox_pruefungstyp.currentText() == "Quiz":
+            #     self.pushButton_titlepage.setEnabled(True)
+            #     self.pushButton_titlepage.setText("Zufälliges Quiz erstellen")
+            #     self.comboBox_at_sage.setCurrentIndex(0)
+            #     self.comboBox_at_sage.setEnabled(False)
+            #     if self.get_aufgabenverteilung()[1] != 0:
+            #         response = question_window(
+            #             "Das Quiz ist ausschließlich für Typ1-Aufgaben konzipiert. Sollen alle enthaltenen Typ2-Aufgaben entfernt und das Quiz erstellt werden?",
+            #             titel="Typ2 Aufgaben entfernen?",
+            #         )
+            #         if response == False:
+            #             self.comboBox_pruefungstyp.setCurrentIndex(0)
+            #             return
+            #         else:
+            #             for aufgabe in self.list_alle_aufgaben_sage[:]:
+            #                 typ = get_aufgabentyp(self.chosen_program, aufgabe)
+            #                 if typ == 2:
+            #                     self.btn_delete_pressed(aufgabe)
 
-            else:
-                self.pushButton_titlepage.setEnabled(False)
-                self.comboBox_at_sage.setEnabled(True)
-                self.pushButton_titlepage.setText("Titelblatt anpassen")
+            # else:
+            self.pushButton_titlepage.setEnabled(False)
+            self.comboBox_at_sage.setEnabled(True)
+            self.pushButton_titlepage.setText("Titelblatt anpassen")
         else:
             self.combobox_beurteilung.setEnabled(True)
             self.groupBox_notenschl.setEnabled(True)
@@ -6832,10 +6832,10 @@ class Ui_MainWindow(object):
         if self.chosen_program == "cria":
             dict_titlepage = self.dict_titlepage_cria
 
-        if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Quiz":
-            beamer_mode = True
-        else:
-            beamer_mode = False
+        # if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Quiz":
+        #     beamer_mode = True
+        # else:
+        #     beamer_mode = False
 
         if (ausgabetyp == "vorschau" and self.cb_solution_sage.isChecked() == True) or (
             ausgabetyp == "schularbeit" and index % 2 == 0
@@ -6900,7 +6900,7 @@ class Ui_MainWindow(object):
             != "Grundkompetenzcheck"
             and self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
             != "Übungsblatt"
-            and self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] != "Quiz"
+            # and self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] != "Quiz"
         ):
             if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "ns":
                 notenschluessel = self.dict_all_infos_for_file["data_gesamt"][
@@ -6933,27 +6933,27 @@ class Ui_MainWindow(object):
             vorschau.write("\n\n")
             vorschau.write("Aufgabenliste: {}".format(", ".join(self.list_alle_aufgaben_sage)))
 
-        if index == 0 and ausgabetyp == "schularbeit":
-            if dict_titlepage["logo"] == True and dict_titlepage["hide_all"] == False:
-                success = copy_logo_to_target_path(self, dict_titlepage["logo_path"])
-                if success == False:
-                    warning_window(
-                        "Das Logo konnte nicht gefunden werden.",
-                        "Bitte suchen Sie ein Logo unter: \n\nTitelblatt anpassen - Durchsuchen",
-                        "Kein Logo ausgewählt",
-                    )
+        if ausgabetyp == "schularbeit":
+            if index == 0:
+                if dict_titlepage["logo"] == True and dict_titlepage["hide_all"] == False:
+                    success = copy_logo_to_target_path(self, dict_titlepage["logo_path"])
+                    if success == False:
+                        warning_window(
+                            "Das Logo konnte nicht gefunden werden.",
+                            "Bitte suchen Sie ein Logo unter: \n\nTitelblatt anpassen - Durchsuchen",
+                            "Kein Logo ausgewählt",
+                        )
 
-            if (
-                is_empty(self.dict_all_infos_for_file["data_gesamt"]["copy_images"])
-                == False
-            ):
-                for image in self.dict_all_infos_for_file["data_gesamt"]["copy_images"]:
-                    copy_included_images(self, image)
+                if (
+                    is_empty(self.dict_all_infos_for_file["data_gesamt"]["copy_images"])
+                    == False
+                ):
+                    for image in self.dict_all_infos_for_file["data_gesamt"]["copy_images"]:
+                        copy_included_images(self, image)
 
-        elif index == self.ui_erstellen.spinBox_sw_gruppen.value() * 2:
-            print('reset')
-            QtWidgets.QApplication.restoreOverrideCursor()
-            return
+            elif index == self.ui_erstellen.spinBox_sw_gruppen.value() * 2:
+                QtWidgets.QApplication.restoreOverrideCursor()
+                return
 
         if ausgabetyp == "vorschau":
             create_pdf("Schularbeit_Vorschau", 0, 0)

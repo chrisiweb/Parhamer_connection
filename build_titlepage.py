@@ -3,6 +3,8 @@ import datetime
 from datetime import date
 import json
 from config_start import path_programm, path_localappdata_lama
+from config import is_empty
+from standard_dialog_windows import warning_window
 
 
 def get_datum(self):
@@ -77,10 +79,15 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, index):
         else:
             gruppe = ""
 
+        if is_empty(self.dict_all_infos_for_file["data_gesamt"]["Klasse"]):
+            klasse = ""
+        else:
+            klasse = self.dict_all_infos_for_file["data_gesamt"]["Klasse"]
+
         if self.dict_all_infos_for_file["data_gesamt"]["#"]==0:
             titlepage = (
-                "\\textsc{{Grundkompetenzcheck{0}}} \\hfill \\textsc{{Name:}} \\rule{{7.5cm}}{{0.4pt}} \\hfill {1}"
-                "\\normalsize \\\ \\vspace{{\\baselineskip}} \n\n".format(gruppe, datum_kurz)
+                "\\textsc{{Grundkompetenzcheck{0}}} \\hfill \\textsc{{Name:}} \\rule{{7.5cm}}{{0.4pt}} \\hfill {1} \\hfill {2}"
+                "\\normalsize \\\ \\vspace{{\\baselineskip}} \n\n".format(gruppe, klasse, datum_kurz)
             )
         else:
             titlepage = (
