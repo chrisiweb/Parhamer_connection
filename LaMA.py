@@ -5403,6 +5403,13 @@ class Ui_MainWindow(object):
         for aufgabe in self.list_alle_aufgaben_sage:
             self.build_aufgaben_schularbeit(aufgabe)
 
+        for aufgabe in self.list_alle_aufgaben_sage:
+            try:
+                self.dict_variablen_punkte[aufgabe].setValue(self.dict_all_infos_for_file['dict_alle_aufgaben_pkt_abstand'][aufgabe][0])
+                self.dict_variablen_abstand[aufgabe].setValue(self.dict_all_infos_for_file['dict_alle_aufgaben_pkt_abstand'][aufgabe][1])
+            except KeyError:
+                pass
+
         self.spinBox_default_pkt.setValue(
             self.dict_all_infos_for_file["data_gesamt"]["Typ1 Standard"]
         )
@@ -6129,8 +6136,8 @@ class Ui_MainWindow(object):
             aufgabe_total = get_aufgabe_total(item.replace(" (lokal)", ""), typ)
             # item_infos = self.collect_all_infos_aufgabe(item)
             neue_aufgaben_box = self.create_neue_aufgaben_box(
-                index_item, item, aufgabe_total
-            )
+                index_item, item, aufgabe_total)
+
             self.gridLayout_8.addWidget(neue_aufgaben_box, index_item, 0, 1, 1)
             index_item + 1
 
@@ -6605,6 +6612,13 @@ class Ui_MainWindow(object):
         self.dict_all_infos_for_file[
             "list_alle_aufgaben"
         ] = self.list_alle_aufgaben_sage
+
+        _dict = {}
+        for aufgabe in self.list_alle_aufgaben_sage:
+            _dict[aufgabe] = [self.get_punkte_aufgabe_sage(aufgabe), self.get_abstand_aufgabe_sage(aufgabe)]
+        
+        self.dict_all_infos_for_file['dict_alle_aufgaben_pkt_abstand'] = _dict
+
 
         # self.dict_all_infos_for_file[
         #     "dict_alle_aufgaben"
