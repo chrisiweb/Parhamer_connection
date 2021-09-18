@@ -94,26 +94,23 @@ def refresh_ddb_according_to_intervall(self, log_file):
         week_ago = today - timedelta(days=7)
         week_ago = week_ago.strftime("%y%m%d")
         date_logfile = modification_date(log_file).strftime("%y%m%d")
-        # print('week')
         if int(date_logfile)<int(week_ago):
             refresh_ddb(self)
 
     elif self.lama_settings['database'] == 2:
         month_today = date.today().strftime("%m")
         month_update_log_file = modification_date(log_file).strftime("%m")
-        # print('month')
         if month_today != month_update_log_file:
             refresh_ddb(self)  # self.label_aufgabentyp.text()[-1]
     
     elif self.lama_settings['database'] == 3:
-        # print('never')
         return
 
     self.label_update.setText(
         "Letztes Update: "
         + modification_date(log_file).strftime("%d.%m.%y - %H:%M")
     )
-    # print('refreshed')      
+    
 
 def collect_suchbegriffe(self):
     chosen_aufgabenformat = "Typ{}Aufgaben".format(self.combobox_aufgabentyp.currentIndex()+1) #self.label_aufgabentyp.text()[-1]
@@ -141,17 +138,13 @@ def collect_suchbegriffe(self):
 
 
     if self.chosen_program == "cria":
-        # print(self.dict_chosen_topics)
         suchbegriffe['klasse'].append(None)
         for all in self.dict_chosen_topics.values():
             thema_string  = all[1] + "." + all[2]
             suchbegriffe['themen'].append(thema_string)
-            # print(all)
             if all[0] not in suchbegriffe['klasse']:
                 suchbegriffe['klasse'].append(all[0])
-            # print(suchbegriffe['themen'])
-            # string_no_grade = all[1] + "." + all[2]
-            # suchbegriffe['themen'].append(string_no_grade)
+
             
 
 
@@ -315,17 +308,12 @@ def prepare_tex_for_pdf(self):
         list_3 = search_in_database(self, current_program,_database_addon ,suchbegriffe)
         for all in list_3:
             list_2.append(all)
-    # print(gesammeltedateien_addon)    
+   
 
     list_2.sort(key=order_gesammeltedateien)
     
     gesammeltedateien = list_1 + list_2
 
-    # print(suchbegriffe)
-    # print(gesammeltedateien)
-    # # for all in gesammeltedateien:
-    # #     print(all['themen'])
-    # return
 
 
     ######################################################
@@ -550,45 +538,6 @@ def extract_error_from_output(latex_output):
         )
 
         return response
-    # detailed_text = latex_output
-
-    # print(detailed_text)
-    # for all in latex_output:
-    #     if all.startswith("! LaTeX Error:"):
-    #         start = latex_output.index(all)
-    #         break
-    # if start == None:
-    #     for all in latex_output:
-    #         if all.startswith("! "):
-    #             start = latex_output.index(all)
-    #             break
-
-    # if start != None:
-    #     list_error = latex_output[start:]
-
-    #     for all in list_error:
-    #         if all == "":
-    #             end = list_error.index(all)
-    #             break
-    #     try:
-    #         error = "".join(list_error[:end])  # .replace("\n", "")
-
-    #         if path_programm in error:
-    #             error_location = None
-    #         else:
-    #             error_location = "".join(latex_output[: start + end])
-    #             index_start = error_location.rfind(path_programm)
-    #             index_end = error_location[index_start:].find(".tex") + 4
-
-    #             error_location = error_location[index_start : index_start + index_end]
-
-    #         if error_location == None:
-    #             detailed_text = error
-    #         else:
-    #             detailed_text = error + "\n\nFehlerhafte Datei:\n" + error_location
-
-    #     except UnboundLocalError:
-    #         detailed_text = "Undefined Error"
 
 
 
@@ -641,9 +590,9 @@ def build_pdf_file(folder_name, file_name, latex_output_file):
 
 def open_pdf_file(folder_name, file_name):
     drive_programm = os.path.splitdrive(path_programm)[0]
-    # print(drive_programm)
+
     drive_database = os.path.splitdrive(path_localappdata_lama)[0]
-    # print(drive_database)
+
     drive_location = os.path.splitdrive(sys.argv[0])[0]
 
     if drive_location.upper() != drive_database.upper():

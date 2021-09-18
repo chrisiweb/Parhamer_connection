@@ -6832,10 +6832,10 @@ class Ui_MainWindow(object):
         if self.chosen_program == "cria":
             dict_titlepage = self.dict_titlepage_cria
 
-        # if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Quiz":
-        #     beamer_mode = True
-        # else:
-        #     beamer_mode = False
+        if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Quiz":
+            beamer_mode = True
+        else:
+            beamer_mode = False
 
         if (ausgabetyp == "vorschau" and self.cb_solution_sage.isChecked() == True) or (
             ausgabetyp == "schularbeit" and index % 2 == 0
@@ -6852,7 +6852,7 @@ class Ui_MainWindow(object):
 
 
         str_titlepage = get_titlepage_vorschau(
-            self, dict_titlepage, ausgabetyp, maximum, index
+            self, dict_titlepage, ausgabetyp, maximum, gruppe
         )
 
         if self.chosen_program == "lama" and (

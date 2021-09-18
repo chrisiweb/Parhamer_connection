@@ -60,7 +60,7 @@ def check_if_hide_all_exists(dict_titlepage):
     return dict_titlepage
 
 
-def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, index):
+def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
     datum_kurz, datum = get_datum(self)
     dict_titlepage = check_if_hide_all_exists(dict_titlepage)
 
@@ -75,9 +75,9 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, index):
     ):
 
         if ausgabetyp == "schularbeit" and maximum > 2:
-            gruppe = " -- " + self.dict_gruppen[int(index / 2)]
+            gruppe_name = " -- " + self.dict_gruppen[gruppe]
         else:
-            gruppe = ""
+            gruppe_name = ""
 
         if is_empty(self.dict_all_infos_for_file["data_gesamt"]["Klasse"]):
             klasse = ""
@@ -86,13 +86,13 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, index):
 
         if self.dict_all_infos_for_file["data_gesamt"]["#"]==0:
             titlepage = (
-                "\\textsc{{Grundkompetenzcheck{0}}} \\hfill \\textsc{{Name:}} \\rule{{7.5cm}}{{0.4pt}} \\hfill {1} \\hfill {2}"
-                "\\normalsize \\\ \\vspace{{\\baselineskip}} \n\n".format(gruppe, klasse, datum_kurz)
+                "\\textsc{{Grundkompetenzcheck{0}}}  \\hfill {1} \\hfill \\textsc{{Name:}} \\rule{{5cm}}{{0.4pt}} \\hfill {2}"
+                "\\normalsize \\\ \\vspace{{\\baselineskip}} \n\n".format(gruppe_name, klasse, datum_kurz)
             )
         else:
             titlepage = (
-                "\\textsc{{{0}. Grundkompetenzcheck{1}}} \\hfill \\textsc{{Name:}} \\rule{{7.5cm}}{{0.4pt}} \\hfill {2}"
-                "\\normalsize \\\ \\vspace{{\\baselineskip}} \n\n".format(self.dict_all_infos_for_file["data_gesamt"]["#"], gruppe, datum_kurz)
+                "\\textsc{{{0}. Grundkompetenzcheck{1}}} \\hfill {2} \\hfill \\textsc{{Name:}} \\rule{{5cm}}{{0.4pt}} \\hfill {3}"
+                "\\normalsize \\\ \\vspace{{\\baselineskip}} \n\n".format(self.dict_all_infos_for_file["data_gesamt"]["#"], gruppe_name, klasse,datum_kurz)
             )
 
         return titlepage
@@ -235,10 +235,10 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, index):
             klasse = ""
 
         if ausgabetyp == "schularbeit" and maximum > 2:
-            gruppe = self.dict_gruppen[int(index / 2)]
-            gruppe = "\\textsc{{\\Large Gruppe {0}}} \\\ [1cm]\n\n".format(gruppe)
+            gruppe_name = self.dict_gruppen[gruppe]
+            gruppe_name = "\\textsc{{\\Large Gruppe {0}}} \\\ [1cm]\n\n".format(gruppe_name)
         else:
-            gruppe = ""
+            gruppe_name = ""
 
         if dict_titlepage["name"] == True:
             name = "\\Large Name: \\rule{8cm}{0.4pt} \\\ \n\n"
@@ -290,7 +290,7 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, index):
                 title_header,
                 datum_text,
                 klasse,
-                gruppe,
+                gruppe_name,
                 name,
                 note,
                 unterschrift,
