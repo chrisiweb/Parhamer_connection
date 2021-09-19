@@ -2478,6 +2478,7 @@ class Ui_MainWindow(object):
             | QtCore.Qt.WindowTitleHint
             | QtCore.Qt.WindowCloseButtonHint,
         )
+
         self.ui_erstellen = Ui_Dialog_erstellen()
         self.ui_erstellen.setupUi(
             self.Dialog,
@@ -2485,18 +2486,24 @@ class Ui_MainWindow(object):
             self.dict_all_infos_for_file,
             dict_titlepage,
             self.saved_file_path,
+            self.comboBox_pruefungstyp.currentText()
         )
         rsp = self.Dialog.exec_()
 
         if rsp == QtWidgets.QDialog.Accepted:
-
-            for index in range(self.ui_erstellen.spinBox_sw_gruppen.value() * 2 + 1): # +1 to reset tex-file to random=0
-                self.pushButton_vorschau_pressed(
+            single_file_index = self.ui_erstellen.single_file_index
+            if single_file_index != None:
+                range_limit = 2
+            else:
+                range_limit = self.ui_erstellen.spinBox_sw_gruppen.value() * 2    # +1 to reset tex-file to random=0  
+            for index in range(range_limit):
+                single_file_index = self.pushButton_vorschau_pressed(
                     "schularbeit",
                     index,
                     self.ui_erstellen.spinBox_sw_gruppen.value() * 2,
                     self.ui_erstellen.pdf,
                     self.ui_erstellen.lama,
+                    single_file_index,
                 )
 
 
@@ -6729,56 +6736,78 @@ class Ui_MainWindow(object):
             vorschau.write(header)
             vorschau.write(begin)
 
-            if aufgabe in self.dict_sage_individual_change:
+        if aufgabe in self.dict_sage_individual_change:
+            with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
                 vorschau.write(self.dict_sage_individual_change[aufgabe])
-            elif aufgabe in self.dict_sage_ausgleichspunkte_chosen:
-                full_content = aufgabe_total["content"]
+        elif aufgabe in self.dict_sage_ausgleichspunkte_chosen:
+            full_content = aufgabe_total["content"]
 
-                split_content = self.split_content(aufgabe, aufgabe_total["content"])
-                content = edit_content_ausgleichspunkte(
-                    self, aufgabe, split_content, full_content
-                )
+            split_content = self.split_content(aufgabe, aufgabe_total["content"])
+            content = edit_content_ausgleichspunkte(
+                self, aufgabe, split_content, full_content
+            )
 
-                # content = "\n".join(split_content)
+            # content = "\n".join(split_content)
+            with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
                 vorschau.write(content)
-            elif aufgabe in self.dict_sage_hide_show_items_chosen:
-                full_content = aufgabe_total["content"]
-                split_content = self.split_content(aufgabe, aufgabe_total["content"])
-                split_content = prepare_content_for_hide_show_items(split_content)
-                content = edit_content_hide_show_items(
-                    self, aufgabe, split_content, full_content
-                )
-
+        elif aufgabe in self.dict_sage_hide_show_items_chosen:
+            full_content = aufgabe_total["content"]
+            split_content = self.split_content(aufgabe, aufgabe_total["content"])
+            split_content = prepare_content_for_hide_show_items(split_content)
+            content = edit_content_hide_show_items(
+                self, aufgabe, split_content, full_content
+            )
+            with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
                 vorschau.write(content)
-                # for index in self.dict_sage_ausgleichspunkte_chosen[aufgabe]:
-                #     split_content[index] = split_content[index].replace("SUBitem", "")
+            # for index in self.dict_sage_ausgleichspunkte_chosen[aufgabe]:
+            #     split_content[index] = split_content[index].replace("SUBitem", "")
 
-            # try:
-            #     split_content, index_end = split_aufgaben_content(content)
-            #     split_content = split_content[:index_end]
-            # except Exception as e1:
-            #     try:
-            #         split_content = split_aufgaben_content_new_format(content)
-            #     except Exception:
-            #         # split_content = None
-            #         warning_window(
-            #             "Es ist ein Fehler bei der Anzeige der Aufgabe {} aufgetreten! (Die Aufgabe kann voraussichtlich dennoch verwendet und individuell in der TeX-Datei bearbeitet werden.)\n".format(
-            #                 aufgabe
-            #             ),
-            #             'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!',
-            #         )
-            #         return
+        # try:
+        #     split_content, index_end = split_aufgaben_content(content)
+        #     split_content = split_content[:index_end]
+        # except Exception as e1:
+        #     try:
+        #         split_content = split_aufgaben_content_new_format(content)
+        #     except Exception:
+        #         # split_content = None
+        #         warning_window(
+        #             "Es ist ein Fehler bei der Anzeige der Aufgabe {} aufgetreten! (Die Aufgabe kann voraussichtlich dennoch verwendet und individuell in der TeX-Datei bearbeitet werden.)\n".format(
+        #                 aufgabe
+        #             ),
+        #             'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!',
+        #         )
+        #         return
 
-            else:
+        else:
+            with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
                 vorschau.write(aufgabe_total["content"])
+        with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
             vorschau.write(vspace)
             vorschau.write(end)
             vorschau.write("\n\n")
 
         return first_typ2
 
+    def create_body_of_tex_file(self, filename_vorschau):
+        first_typ2 = False
+        for aufgabe in self.list_alle_aufgaben_sage:
+            name = aufgabe.replace(" (lokal)", "")
+            typ = get_aufgabentyp(self.chosen_program, name)
+            aufgabe_total = get_aufgabe_total(name, typ)
+            if aufgabe_total == None:
+                warning_window(
+                    "Die Aufgabe {} konnte nicht gefunden werden, da sie gelöscht oder umbenannt wurde. Sie wird daher beim Erstellen ignoriert.".format(
+                        name
+                    )
+                )
+                continue
+
+
+            first_typ2 = self.add_content_to_tex_file(
+                aufgabe, aufgabe_total, filename_vorschau, first_typ2
+            )
     def pushButton_vorschau_pressed(
-        self, ausgabetyp, index=0, maximum=0, pdf=True, lama=True
+        self, ausgabetyp, index=0, maximum=0, pdf=True, lama=True, single_file_index=None
     ):
 
         self.collect_all_infos_for_creating_file()
@@ -6853,13 +6882,13 @@ class Ui_MainWindow(object):
 
         if (ausgabetyp == "vorschau" and self.cb_solution_sage.isChecked() == True) or (
             ausgabetyp == "schularbeit" and index % 2 == 0
-        ):
+        ) or (ausgabetyp == "schularbeit" and pdf==False):
             solution = "solution_on"
 
         else:
             solution = "solution_off"
 
-        if ausgabetyp == 'schularbeit' and index != self.ui_erstellen.spinBox_sw_gruppen.value() * 2:
+        if ausgabetyp == 'schularbeit' and single_file_index == None: #and index != self.ui_erstellen.spinBox_sw_gruppen.value() * 2 
             gruppe = int(index / 2)
         else:
             gruppe = 0
@@ -6888,26 +6917,62 @@ class Ui_MainWindow(object):
             vorschau.write(str_titlepage)
             vorschau.write(header)
 
-        first_typ2 = False
-        # aufgaben_nummer = 1
 
-        
-        for aufgabe in self.list_alle_aufgaben_sage:
-            name = aufgabe.replace(" (lokal)", "")
-            typ = get_aufgabentyp(self.chosen_program, name)
-            aufgabe_total = get_aufgabe_total(name, typ)
-            if aufgabe_total == None:
-                warning_window(
-                    "Die Aufgabe {} konnte nicht gefunden werden, da sie gelöscht oder umbenannt wurde. Sie wird daher beim Erstellen ignoriert.".format(
-                        name
-                    )
+        if single_file_index != None:
+            for group in range(self.ui_erstellen.spinBox_sw_gruppen.value()-1):
+                self.create_body_of_tex_file(filename_vorschau)
+
+
+                str_titlepage = get_titlepage_vorschau(
+                    self, dict_titlepage, ausgabetyp, maximum, group+1
                 )
-                continue
+                with open(filename_vorschau, "a", encoding="utf8") as vorschau:
+                    vorschau.write("\n\n")
+                    vorschau.write("\\newpage\n")
+                    vorschau.write("\setcounter{{Zufall}}{{{0}}}\setcounter{{number}}{{0}}\setcounter{{page}}{{1}}\n\n".format(group+1))
+                    vorschau.write(str_titlepage)
+
+            self.create_body_of_tex_file(filename_vorschau)
+
+            with open(filename_vorschau, "a", encoding="utf8") as vorschau:
+                vorschau.write("\n\n")
+                vorschau.write(tex_end)
+
+            name, extension = os.path.splitext(filename_vorschau)
+
+            if pdf == True:
+                create_pdf(name, index, 2)
+
+                temp_filename = name + ".pdf"
+                if index % 2 == 0:
+                    new_filename = name + "_Loesung.pdf"
+
+                    shutil.move(temp_filename, new_filename)
+
+            self.reset_latex_file_to_start(filename_vorschau)
+            QtWidgets.QApplication.restoreOverrideCursor()        
+            return single_file_index+1
 
 
-            first_typ2 = self.add_content_to_tex_file(
-                aufgabe, aufgabe_total, filename_vorschau, first_typ2
-            )
+
+        else:
+            self.create_body_of_tex_file(filename_vorschau)
+        # for aufgabe in self.list_alle_aufgaben_sage:
+        #     name = aufgabe.replace(" (lokal)", "")
+        #     typ = get_aufgabentyp(self.chosen_program, name)
+        #     aufgabe_total = get_aufgabe_total(name, typ)
+        #     if aufgabe_total == None:
+        #         warning_window(
+        #             "Die Aufgabe {} konnte nicht gefunden werden, da sie gelöscht oder umbenannt wurde. Sie wird daher beim Erstellen ignoriert.".format(
+        #                 name
+        #             )
+        #         )
+        #         continue
+
+
+        #     first_typ2 = self.add_content_to_tex_file(
+        #         aufgabe, aufgabe_total, filename_vorschau, first_typ2
+        #     )
 
         if (
             self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
@@ -6945,7 +7010,7 @@ class Ui_MainWindow(object):
             vorschau.write("\n\n")
             vorschau.write(tex_end)
             vorschau.write("\n\n")
-            vorschau.write("Aufgabenliste: {}".format(", ".join(self.list_alle_aufgaben_sage)))
+            vorschau.write("% Aufgabenliste: {}".format(", ".join(self.list_alle_aufgaben_sage)))
 
         if ausgabetyp == "schularbeit":
             if index == 0:
@@ -7007,19 +7072,34 @@ class Ui_MainWindow(object):
                     shutil.move(temp_filename, new_filename)
 
                 if index == maximum - 1:
-                    with open(filename_vorschau, "r", encoding="utf8") as vorschau:
-                        text = vorschau.read()
+                    self.reset_latex_file_to_start(filename_vorschau)
+                    # with open(filename_vorschau, "r", encoding="utf8") as vorschau:
+                    #     text = vorschau.read()
 
-                    text = re.sub(
-                        r"setcounter{Zufall}{.}", "setcounter{Zufall}{0}", text
-                    )
-                    text = re.sub(r"Large Gruppe .", "Large Gruppe A", text)
+                    # text = re.sub(
+                    #     r"random=.", "random=0", text
+                    # )
+                    # text = re.sub(r"Large Gruppe .", "Large Gruppe A", text)
 
-                    with open(filename_vorschau, "w", encoding="utf8") as vorschau:
-                        vorschau.write(text)
+                    # with open(filename_vorschau, "w", encoding="utf8") as vorschau:
+                    #     vorschau.write(text)
 
         QtWidgets.QApplication.restoreOverrideCursor()
 
+
+    def reset_latex_file_to_start(self, filename_vorschau):
+        with open(filename_vorschau, "r", encoding="utf8") as vorschau:
+            text = vorschau.read()
+
+        text = re.sub(
+            r"random=.", "random=0", text
+        )
+        text = re.sub(r"Large Gruppe .", "Large Gruppe A", text)
+
+        text = re.sub(r"solution_off", "solution_on", text)
+
+        with open(filename_vorschau, "w", encoding="utf8") as vorschau:
+            vorschau.write(text)
     #######################################################################
     ########################################################################
 
@@ -7175,13 +7255,7 @@ class Ui_MainWindow(object):
             dict_titlepage = self.dict_titlepage_cria
 
         self.open_dialogwindow_erstellen(
-            # self.dict_all_infos_for_file,
-            # self.chosen_program,
-            # self.beispieldaten_dateipfad_1,
-            # self.beispieldaten_dateipfad_2,
-            # self.beispieldaten_dateipfad_cria,
             dict_titlepage,
-            # self.saved_file_path,
         )
 
     def update_gui(self, chosen_gui):

@@ -1437,6 +1437,7 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
         dict_list_input_examples,
         dict_titlepage,
         saved_file_path,
+        pruefungstyp,
     ):
 
         self.dict_list_input_examples = dict_list_input_examples
@@ -1466,11 +1467,18 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
         self.pushButton_sw_save = QtWidgets.QPushButton(Dialog)
         self.pushButton_sw_save.setObjectName("pushButton_sw_save")
         self.pushButton_sw_save.clicked.connect(self.pushButton_sw_save_pressed)
-        self.gridLayout.addWidget(self.pushButton_sw_save, 5, 3, 1, 1)
+        self.gridLayout.addWidget(self.pushButton_sw_save, 6, 3, 1, 1)
         self.pushButton_sw_back = QtWidgets.QPushButton(Dialog)
         self.pushButton_sw_back.setObjectName("pushButton_sw_back")
         self.pushButton_sw_back.clicked.connect(self.pushButton_sw_back_pressed)
-        self.gridLayout.addWidget(self.pushButton_sw_back, 4, 3, 1, 1)
+        self.gridLayout.addWidget(self.pushButton_sw_back, 5, 3, 1, 1)
+
+        
+        self.cb_single_file = create_new_checkbox(Dialog, "Gruppen in Gesamtdokument")
+        self.gridLayout.addWidget(self.cb_single_file, 4,3,1,1)
+        if pruefungstyp != "Grundkompetenzcheck":
+            self.cb_single_file.hide()
+
         self.groupBox_sw_data = QtWidgets.QGroupBox(Dialog)
         self.groupBox_sw_data.setObjectName("groupBox_sw_data")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.groupBox_sw_data)
@@ -1649,6 +1657,10 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
         else:
             self.lama = False
 
+        if self.cb_single_file.isChecked():
+            self.single_file_index = 0
+        else:
+            self.single_file_index = None
         self.Dialog.accept()
 
 
