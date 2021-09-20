@@ -6959,22 +6959,7 @@ class Ui_MainWindow(object):
 
         else:
             self.create_body_of_tex_file(filename_vorschau)
-        # for aufgabe in self.list_alle_aufgaben_sage:
-        #     name = aufgabe.replace(" (lokal)", "")
-        #     typ = get_aufgabentyp(self.chosen_program, name)
-        #     aufgabe_total = get_aufgabe_total(name, typ)
-        #     if aufgabe_total == None:
-        #         warning_window(
-        #             "Die Aufgabe {} konnte nicht gefunden werden, da sie gelöscht oder umbenannt wurde. Sie wird daher beim Erstellen ignoriert.".format(
-        #                 name
-        #             )
-        #         )
-        #         continue
 
-
-        #     first_typ2 = self.add_content_to_tex_file(
-        #         aufgabe, aufgabe_total, filename_vorschau, first_typ2
-        #     )
 
         if (
             self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
@@ -7047,14 +7032,6 @@ class Ui_MainWindow(object):
 
                 temp_filename = name + ".pdf"
 
-                # if maximum>2:
-                #     if index%2==0:
-                #         shutil.move(name+'.pdf', name+'_{}_Loesung.pdf'.format(self.dict_gruppen[int(index/2)]))
-                #     else:
-                #         shutil.move(name+'.pdf', name+'_{}.pdf'.format(self.dict_gruppen[int(index/2)]))
-                # else:
-                #     if index%2==0:
-                #         shutil.move(name+'.pdf', name+'_Loesung.pdf')
 
                 if maximum > 2:
                     if index % 2 == 0:
@@ -7076,16 +7053,7 @@ class Ui_MainWindow(object):
 
                 if index == maximum - 1:
                     self.reset_latex_file_to_start(filename_vorschau)
-                    # with open(filename_vorschau, "r", encoding="utf8") as vorschau:
-                    #     text = vorschau.read()
 
-                    # text = re.sub(
-                    #     r"random=.", "random=0", text
-                    # )
-                    # text = re.sub(r"Large Gruppe .", "Large Gruppe A", text)
-
-                    # with open(filename_vorschau, "w", encoding="utf8") as vorschau:
-                    #     vorschau.write(text)
 
         QtWidgets.QApplication.restoreOverrideCursor()
 
