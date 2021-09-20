@@ -1474,7 +1474,7 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
         self.gridLayout.addWidget(self.pushButton_sw_back, 5, 3, 1, 1)
 
         
-        self.cb_single_file = create_new_checkbox(Dialog, "Gruppen in Gesamtdokument")
+        self.cb_single_file = create_new_checkbox(Dialog, "Gesamtausgabe in einer Datei")
         self.gridLayout.addWidget(self.cb_single_file, 4,3,1,1)
         if pruefungstyp != "Grundkompetenzcheck":
             self.cb_single_file.hide()

@@ -705,11 +705,11 @@ def create_pdf(path_file, index=0, maximum=0, typ=0):
     )
 
     if path_file == "Teildokument" or path_file == "Schularbeit_Vorschau" or path_file == "preview":
-        rest = ""
+        text = "Die PDF Datei wird erstellt..."
     else:
-        rest = " ({0}|{1})".format(index + 1, maximum)
+        text = "Die PDF Dateien werden erstellt... ({0}|{1})".format(index + 1, maximum)
 
-    text = "Die PDF Datei wird erstellt..." + rest
+    # text = "Die PDF Datei wird erstellt..." + rest
     
     working_window(Worker_CreatePDF(), text, folder_name, file_name, latex_output_file)
 
