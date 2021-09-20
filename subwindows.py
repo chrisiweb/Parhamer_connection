@@ -1478,7 +1478,7 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
         self.gridLayout.addWidget(self.cb_single_file, 4,3,1,1)
         if pruefungstyp != "Grundkompetenzcheck":
             self.cb_single_file.hide()
-
+        self.cb_single_file.toggled.connect(self.cb_create_pdf_checked)
         self.groupBox_sw_data = QtWidgets.QGroupBox(Dialog)
         self.groupBox_sw_data.setObjectName("groupBox_sw_data")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.groupBox_sw_data)
@@ -1635,10 +1635,7 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
         self.radioButton_sw_br.setText(_translate("Dialog", "Beurteilungsraster"))
 
     def cb_create_pdf_checked(self):
-        if (
-            self.cb_create_pdf.isChecked() == True
-            and self.data_gesamt["Pruefungstyp"] != "Übungsblatt"
-        ):
+        if (self.cb_create_pdf.isChecked() == True or self.cb_single_file.isChecked() == True) and self.data_gesamt["Pruefungstyp"] != "Übungsblatt":
             self.groupBox_sw_gruppen.setEnabled(True)
         else:
             self.groupBox_sw_gruppen.setEnabled(False)

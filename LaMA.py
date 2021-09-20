@@ -2492,7 +2492,9 @@ class Ui_MainWindow(object):
 
         if rsp == QtWidgets.QDialog.Accepted:
             single_file_index = self.ui_erstellen.single_file_index
-            if single_file_index != None:
+            if self.ui_erstellen.pdf == False:
+                range_limit = 1
+            elif single_file_index != None:
                 range_limit = 2
             else:
                 range_limit = self.ui_erstellen.spinBox_sw_gruppen.value() * 2    # +1 to reset tex-file to random=0  
@@ -6949,7 +6951,7 @@ class Ui_MainWindow(object):
 
                     shutil.move(temp_filename, new_filename)
 
-            self.reset_latex_file_to_start(filename_vorschau)
+                self.reset_latex_file_to_start(filename_vorschau)
             QtWidgets.QApplication.restoreOverrideCursor()        
             return single_file_index+1
 
@@ -7071,6 +7073,7 @@ class Ui_MainWindow(object):
 
                     shutil.move(temp_filename, new_filename)
 
+
                 if index == maximum - 1:
                     self.reset_latex_file_to_start(filename_vorschau)
                     # with open(filename_vorschau, "r", encoding="utf8") as vorschau:
@@ -7090,7 +7093,6 @@ class Ui_MainWindow(object):
     def reset_latex_file_to_start(self, filename_vorschau):
         with open(filename_vorschau, "r", encoding="utf8") as vorschau:
             text = vorschau.read()
-
         text = re.sub(
             r"random=.", "random=0", text
         )
@@ -7100,6 +7102,7 @@ class Ui_MainWindow(object):
 
         with open(filename_vorschau, "w", encoding="utf8") as vorschau:
             vorschau.write(text)
+
     #######################################################################
     ########################################################################
 

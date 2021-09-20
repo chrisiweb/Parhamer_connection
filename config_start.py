@@ -2,10 +2,6 @@ import sys
 import os
 from pathlib import Path
 
-import win32api
-import win32security
-import ntsecuritycon as con
-
 if sys.platform.startswith("win"):
     ##### NOT IN USE ! (Working!) - Activate when installer is used!
     # path_localappdata = os.getenv('LOCALAPPDATA')
