@@ -5412,6 +5412,11 @@ class Ui_MainWindow(object):
         for aufgabe in self.list_alle_aufgaben_sage:
             self.build_aufgaben_schularbeit(aufgabe)
 
+
+        self.spinBox_default_pkt.setValue(
+            self.dict_all_infos_for_file["data_gesamt"]["Typ1 Standard"]
+        )
+
         for aufgabe in self.list_alle_aufgaben_sage:
             try:
                 self.dict_variablen_punkte[aufgabe].setValue(self.dict_all_infos_for_file['dict_alle_aufgaben_pkt_abstand'][aufgabe][0])
@@ -5419,9 +5424,7 @@ class Ui_MainWindow(object):
             except KeyError:
                 pass
 
-        self.spinBox_default_pkt.setValue(
-            self.dict_all_infos_for_file["data_gesamt"]["Typ1 Standard"]
-        )
+
         self.spinBox_2.setValue(
             self.dict_all_infos_for_file["data_gesamt"]["Notenschluessel"][0]
         )
