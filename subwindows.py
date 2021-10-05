@@ -1663,6 +1663,10 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
 
 class Ui_Dialog_speichern(QtWidgets.QDialog):
     def setupUi(self, Dialog, creator_mode, chosen_variation):
+        if chosen_variation != None and "l." in chosen_variation.split(" - ")[-1]:
+            save_mode = 'local'
+        else:
+            save_mode = 'general'  
         self.Dialog = Dialog
         self.creator_mode = creator_mode
         Dialog.setObjectName("Dialog")
@@ -1687,7 +1691,7 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
         # self.label.setWordWrap(True)
         gridlayout.addWidget(self.label, 1, 0, 1, 2)
 
-        if self.creator_mode == "user":
+        if self.creator_mode == "user" and save_mode == 'general':
             self.cb_confirm = create_new_checkbox(Dialog, "")
             self.cb_confirm.setSizePolicy(SizePolicy_fixed)
             self.cb_confirm.setStyleSheet("background-color: white; color: black;")
@@ -1743,11 +1747,15 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
                     | QtWidgets.QDialogButtonBox.No
                     | QtWidgets.QDialogButtonBox.Apply
                 )
+            elif save_mode == 'local':
+                self.buttonBox.setStandardButtons(
+                    QtWidgets.QDialogButtonBox.Apply | QtWidgets.QDialogButtonBox.No
+                )
             else:
                 self.buttonBox.setStandardButtons(
                     QtWidgets.QDialogButtonBox.Yes | QtWidgets.QDialogButtonBox.No
                 )
-        if self.creator_mode == "admin":
+        elif self.creator_mode == "admin":
             self.buttonBox.setStandardButtons(
                 QtWidgets.QDialogButtonBox.Yes | QtWidgets.QDialogButtonBox.No
             )
@@ -1756,11 +1764,12 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
         buttonN.setText("Abbrechen")
         self.buttonBox.rejected.connect(self.Dialog.reject)
 
-        buttonY = self.buttonBox.button(QtWidgets.QDialogButtonBox.Yes)
-        buttonY.setText("Speichern")
-        buttonY.clicked.connect(self.yes_pressed)
+        if save_mode == 'general':
+            buttonY = self.buttonBox.button(QtWidgets.QDialogButtonBox.Yes)
+            buttonY.setText("Speichern")
+            buttonY.clicked.connect(self.yes_pressed)
 
-        if self.creator_mode == "user" and chosen_variation == None:
+        if (self.creator_mode == "user" and chosen_variation == None) or save_mode == 'local':
             button_local = self.buttonBox.button(QtWidgets.QDialogButtonBox.Apply)
             button_local.setText("Lokal speichern")
             button_local.clicked.connect(self.local_pressed)
