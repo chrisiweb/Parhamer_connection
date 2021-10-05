@@ -545,16 +545,16 @@ def extract_error_from_output(latex_output):
 def build_pdf_file(folder_name, file_name, latex_output_file):
     if sys.platform.startswith("linux") or sys.platform.startswith("darwin"):
         if "Teildokument" in file_name:
-            terminal_command = 'cd "{0}" ; latex -interaction=nonstopmode --synctex=-1 "{1}.tex" ; dvips "{1}.dvi" ; ps2pdf -dNOSAFER "{1}.ps"'.format(
+            terminal_command = 'cd "{0}" ; latex -interaction=nonstopmode --synctex=-1 "{1}.tex" ; dvips "{1}.dvi" ; ps2pdf -dNOSAFER -dALLOWPSTRANSPARENCY "{1}.ps"'.format(
                 folder_name, file_name
             )        
         else:
-            terminal_command = 'cd "{0}" ; latex -interaction=nonstopmode --synctex=-1 "{1}.tex" ; dvips "{1}.dvi" ; ps2pdf -dNOSAFER "{1}.ps"'.format(
+            terminal_command = 'cd "{0}" ; latex -interaction=nonstopmode --synctex=-1 "{1}.tex" ; dvips "{1}.dvi" ; ps2pdf -dNOSAFER -dALLOWPSTRANSPARENCY "{1}.ps"'.format(
                 folder_name, file_name
             )
          
         process = subprocess.Popen(
-            'cd "{0}" ; latex -interaction=nonstopmode --synctex=-1 "{1}.tex" ; dvips "{1}.dvi" ; ps2pdf -dNOSAFER "{1}.ps"'.format(
+            'cd "{0}" ; latex -interaction=nonstopmode --synctex=-1 "{1}.tex" ; dvips "{1}.dvi" ; ps2pdf -dNOSAFER -dALLOWPSTRANSPARENCY "{1}.ps"'.format(
                 folder_name, file_name
             ),
             stdout=latex_output_file,
@@ -571,11 +571,11 @@ def build_pdf_file(folder_name, file_name, latex_output_file):
             drive = ""
 
         if is_empty(drive):
-            terminal_command = 'cd "{0}" & latex -interaction=nonstopmode --synctex=-1 "{1}.tex" & latex -interaction=nonstopmode --synctex=-1 "{1}.tex" & dvips "{1}.dvi" & ps2pdf -dNOSAFER "{1}.ps"'.format(
+            terminal_command = 'cd "{0}" & latex -interaction=nonstopmode --synctex=-1 "{1}.tex" & latex -interaction=nonstopmode --synctex=-1 "{1}.tex" & dvips "{1}.dvi" & ps2pdf -dNOSAFER -dALLOWPSTRANSPARENCY "{1}.ps"'.format(
                 folder_name, file_name
             )
         else:
-            terminal_command = '{0} & cd "{1}" & latex -interaction=nonstopmode --synctex=-1 "{2}.tex" & latex -interaction=nonstopmode --synctex=-1 "{2}.tex" & dvips "{2}.dvi" & ps2pdf -dNOSAFER "{2}.ps"'.format(
+            terminal_command = '{0} & cd "{1}" & latex -interaction=nonstopmode --synctex=-1 "{2}.tex" & latex -interaction=nonstopmode --synctex=-1 "{2}.tex" & dvips "{2}.dvi" & ps2pdf -dNOSAFER -dALLOWPSTRANSPARENCY "{2}.ps"'.format(
                 drive, folder_name, file_name
             )
 

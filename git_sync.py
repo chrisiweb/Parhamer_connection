@@ -190,8 +190,8 @@ def check_branches():
 
     head_id = repo[b'refs/heads/master'].id
     origin_id = repo[b'refs/remotes/origin/master'].id
-    print(head_id)
-    print(origin_id)
+    # print(head_id)
+    # print(origin_id)
     if head_id == origin_id:
         print("branches are the same")
         return True
