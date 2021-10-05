@@ -579,12 +579,27 @@ def build_pdf_file(folder_name, file_name, latex_output_file):
                 drive, folder_name, file_name
             )
 
+
         process = subprocess.Popen(
             terminal_command,
             cwd=os.path.splitdrive(path_programm)[0],
             stdout=latex_output_file,
             shell=True,
         )
+
+        # process = subprocess.Popen(
+        #     terminal_command,
+        #     cwd=os.path.splitdrive(path_programm)[0],
+        #     stdout=subprocess.PIPE, #latex_output_file
+        #     universal_newlines=True,
+        #     shell=True,
+        # )
+
+        # for line in iter(process.stdout.readline, b''):
+        #     print(line)
+        #     sys.stdout.write(line)
+
+    # print(process.stdout.readline)
     return process
 
 
