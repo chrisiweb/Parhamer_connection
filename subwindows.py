@@ -1,4 +1,3 @@
-# from Admin_LaMA_Check import Ui_MainWindow
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QIcon, QCursor, QTextCursor
 from PyQt5.QtCore import Qt, QSize, QRect, QMetaObject, QCoreApplication, QThread
