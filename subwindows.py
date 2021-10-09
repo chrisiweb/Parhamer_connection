@@ -1407,6 +1407,7 @@ class Ui_Dialog_ausgleichspunkte(object):
                 #     )
 
         elif self.combobox_edit.currentIndex() == 1:
+            print(self.hide_show_items_split_text)
             for index, linetext in enumerate(self.hide_show_items_split_text): #list(self.dict_widget_variables_hide_show_items.keys())
                 try:
                     if (

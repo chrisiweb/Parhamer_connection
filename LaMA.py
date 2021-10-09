@@ -6081,10 +6081,10 @@ class Ui_MainWindow(object):
             else:
                 klasse = list_klassen[self.comboBox_klassen.currentIndex()-1]
         elif mode == "feedback":
-            if self.comboBox_klassen.currentIndex()==0:
+            if self.comboBox_klassen_fb_cria.currentIndex()==0:
                 klasse = None
             else:
-                klasse = list_klassen[self.comboBox_klassen_fb_cria.currentIndex()]
+                klasse = list_klassen[self.comboBox_klassen_fb_cria.currentIndex()-1]
 
         return klasse
 
