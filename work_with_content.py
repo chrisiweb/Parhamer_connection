@@ -202,9 +202,9 @@ def merge_list_to_string(list_):
 
 
 def prepare_content_for_hide_show_items(content):
-    index = 0
     temp_list = []
     temp_content = []
+    # print(content)
     for item in content:
         if item.startswith("ITEM") and temp_list != []:
             combined_string = merge_list_to_string(temp_list)

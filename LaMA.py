@@ -6272,6 +6272,7 @@ class Ui_MainWindow(object):
                 "{}".format(len(ui.list_sage_ausgleichspunkte_chosen))
             )
 
+
         self.update_punkte()
 
     def comboBox_at_sage_changed(self):
@@ -6762,6 +6763,7 @@ class Ui_MainWindow(object):
             content = edit_content_hide_show_items(
                 self, aufgabe, split_content, full_content
             )
+            # print(content)
             with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
                 vorschau.write(content)
             # for index in self.dict_sage_ausgleichspunkte_chosen[aufgabe]:
@@ -6786,6 +6788,8 @@ class Ui_MainWindow(object):
         else:
             with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
                 vorschau.write(aufgabe_total["content"])
+
+
         with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
             vorschau.write(vspace)
             vorschau.write(end)

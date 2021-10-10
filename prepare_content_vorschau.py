@@ -85,10 +85,23 @@ def edit_content_ausgleichspunkte(self, aufgabe, split_content, full_content):
 
 
 def edit_content_hide_show_items(self, aufgabe, split_content, full_content):
-    # print(full_content)
     list_content = full_content.split("\\item")
+    # print(list_content)
+    # for i, all in enumerate(list_content):
+    #     if "\\end{aufgabenstellung}" in all:
+    #         # print(all)
+    #         x, y = all.split("\\end{aufgabenstellung}")
+    #         break
+    # list_content[i]=x
+    # list_content.insert(i+1,"\\end{aufgabenstellung}"+y)
+
+    # print(list_content)
+            # print(i)
+            # print(x)
+            # print(y)     
 
     for all in self.dict_sage_hide_show_items_chosen[aufgabe]:
+        # print(all)
         line = split_content[all]
         line = line.replace("ITEM", "").replace("SUBitem", "")
 
@@ -127,6 +140,7 @@ def edit_content_hide_show_items(self, aufgabe, split_content, full_content):
         del list_content[index_start:index_end+1]
 
     content = '\\item'.join(list_content)
+    print(content)
     return content                        
 
     
