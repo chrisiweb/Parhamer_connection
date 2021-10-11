@@ -7028,6 +7028,7 @@ class Ui_MainWindow(object):
                 QtWidgets.QApplication.restoreOverrideCursor()
                 return
 
+        # return ## WORKING RETURN
         if ausgabetyp == "vorschau":
             create_pdf("Schularbeit_Vorschau", 0, 0)
 

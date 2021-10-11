@@ -4,7 +4,7 @@ import shutil
 from config_start import database, path_localappdata_lama
 from config import is_empty
 from work_with_content import collect_content #, split_content_no_environment
-from standard_dialog_windows import warning_window
+from standard_dialog_windows import warning_window, critical_window
 # from work_with_content import prepare_content_for_hide_show_items
 
 
@@ -87,63 +87,99 @@ def edit_content_ausgleichspunkte(self, aufgabe, split_content, full_content):
 def edit_content_hide_show_items(self, aufgabe, split_content, full_content):
     list_content = full_content.split("\\item")
     # print(list_content)
-    # for i, all in enumerate(list_content):
-    #     if "\\end{aufgabenstellung}" in all:
-    #         # print(all)
-    #         x, y = all.split("\\end{aufgabenstellung}")
-    #         break
-    # list_content[i]=x
-    # list_content.insert(i+1,"\\end{aufgabenstellung}"+y)
+    for i, all in enumerate(list_content):
+        if "\\end{aufgabenstellung}" in all:
+            # print(all)
+            x, y = all.split("\\end{aufgabenstellung}")
+            break
+    list_content[i]=x
+    list_content.insert(i+1,"\\end{aufgabenstellung}"+y)
+ 
 
-    # print(list_content)
-            # print(i)
-            # print(x)
-            # print(y)     
+    try:   
 
-    for all in self.dict_sage_hide_show_items_chosen[aufgabe]:
-        # print(all)
-        line = split_content[all]
-        line = line.replace("ITEM", "").replace("SUBitem", "")
+        for all in self.dict_sage_hide_show_items_chosen[aufgabe]:
+            # print(all)
+            # print(split_content)
+            line = split_content[all]
+            line = line.replace("ITEM", "").replace("SUBitem", "")
 
-        _list = split("{|}", line)
-        line_start = None
-        for x in _list:
-            if x.isspace() == False:
-                line_start = x.strip()
-                break
-        
-        for x in reversed(_list):
-            if x.isspace() == False:
-                line_end = x.strip()
-                break
+            _list_to_remove = split("{|}", line)
+            # print(_list_to_remove)
 
-        # print(line_start)
-        # print(list_content)
-
-        for i, lines in enumerate(list_content):
-            if line_start in lines:
-                # print(True)
-                index_start=i
-                break
-            # else:
-            #     print(False)
-                # print(lines)
-                # print(line_start)
+            # for remove_line in _list_to_remove:
+            #     if remove_line.isspace() == False and len(remove_line)!=0:
+            #         line_start = remove_line
+            #         break
+            # # print('start:'+line_start)
+            # for i, all in enumerate(list_content):
+            #     if line_start in all:
+            #         index_start = i
+            #         break
+            
+            # for remove_line in reversed(_list_to_remove):
+            #     if remove_line.isspace() == False and len(remove_line)!=0:
+            #         line_end = remove_line
+            #         break
+            # # print('end:'+line_end)
+            # for i, all in enumerate(list_content):
+            #     # print(all)
+            #     if line_end in all:
+            #         # print('YES!!')
+            #         index_end = i
+            #         break
 
 
-        # return
-        for i, lines in enumerate(list_content[index_start:]):
-            if line_end in lines:
-                index_end=index_start+i
-                break
+                # else:
+                #     print('NO')
+                #     print(all)
+                #     print(remove_line)
+                        
 
-        del list_content[index_start:index_end+1]
+            # print(index_start)
+            # print(index_end)
 
-    content = '\\item'.join(list_content)
-    print(content)
+
+            line_start = None
+            for x in _list_to_remove:
+                if x.isspace() == False and len(x)!=0:
+                    line_start = x.split("[...] GRAFIK [...]")[0].strip()
+                    break
+            
+            for x in reversed(_list_to_remove):
+                if x.isspace() == False and len(x)!=0:
+                    line_end = x.split("[...] GRAFIK [...]")[0].strip()
+                    break
+
+            # print(line_start)
+            # print(list_content)
+
+            for i, lines in enumerate(list_content):
+                if line_start in lines:
+                    index_start=i
+                    break
+
+            for i, lines in enumerate(list_content[index_start:]):
+                if line_end in lines:
+                    index_end=index_start+i
+                    break
+
+        #     print(index_start)
+        #     print(list_content[index_start])
+        #     print(index_end)
+        #     print(list_content[index_end])
+
+            del list_content[index_start:index_end+1]
+    except UnboundLocalError:
+        critical_window("Beim automatisierten Ausblenden von einem oder mehreren Aufgabenstellungen in Aufgabe {} ist ein Fehler aufgetreten.".format(aufgabe),
+        "Die PDF Datei wird ohne Ausblenden erstellt.")
+
+    content = ''.join([("" if "\\end{aufgabenstellung}" in line else "\\item")+ line for line in list_content])
+    # print(content)
+
     return content                        
 
-    
+    ###################################################
     # new_content = []
     # for i, line in enumerate(split_content):
     #     if i not in self.dict_sage_hide_show_items_chosen[aufgabe]:
