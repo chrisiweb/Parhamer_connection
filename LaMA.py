@@ -684,9 +684,6 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addLayout(self.horizontalLayout_2, 5, 1, 1, 1)
 
-        # self.horizontalLayout = QtWidgets.QHBoxLayout()
-        # self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
-
         # self.label_update = create_new_label(self.centralwidget, "")
         # self.label_update.setMaximumHeight(18)
         # self.horizontalLayout.addWidget(self.label_update)
