@@ -94,7 +94,6 @@ def edit_content_hide_show_items(self, aufgabe, split_content, full_content):
             break
     list_content[i]=x
     list_content.insert(i+1,"\\end{aufgabenstellung}"+y)
- 
 
     try:   
 
