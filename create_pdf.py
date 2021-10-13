@@ -227,7 +227,7 @@ def search_in_database(self,current_program, database,suchbegriffe):
    
 
     gesammeltedateien = []
-    if current_program == 'lama_1' or current_program == 'cria':
+    if current_program == 'lama_1' or (current_program == 'cria' and self.combobox_searchtype.currentIndex()==0):
         if suchbegriffe['themen'] != []:
             gesammeltedateien = table_lama.search(
                 (_file_.themen.any(suchbegriffe['themen'])) &
@@ -244,7 +244,33 @@ def search_in_database(self,current_program, database,suchbegriffe):
                 (_file_.info.test(string_in_list_info)) &
                 (_file_.titel.test(lineedit_in_titel)) &
                 (_file_.draft.test(include_drafts))
-            )   
+            )
+
+    elif current_program == 'cria' and self.combobox_searchtype.currentIndex()==1:
+        def themen_included(value):
+            for all in suchbegriffe['themen']:
+                if all not in value:
+                    return False
+            return True
+        # 
+        if suchbegriffe['themen'] != []:
+            gesammeltedateien = table_lama.search(
+                (_file_.themen.test(themen_included)) &
+                (_file_.af.test(string_in_list_af)) &
+                (_file_.klasse.test(string_in_list_klasse)) &
+                (_file_.info.test(string_in_list_info)) &
+                (_file_.titel.test(lineedit_in_titel)) &
+                (_file_.draft.test(include_drafts))
+            )
+        else:
+            gesammeltedateien = table_lama.search(
+                (_file_.af.test(string_in_list_af)) &
+                (_file_.klasse.test(string_in_list_klasse)) &
+                (_file_.info.test(string_in_list_info)) &
+                (_file_.titel.test(lineedit_in_titel)) &
+                (_file_.draft.test(include_drafts))
+            )        
+  
     elif current_program == 'lama_2':
         def gk_in_list(value):
             for all in value:
@@ -268,9 +294,7 @@ def search_in_database(self,current_program, database,suchbegriffe):
                 (_file_.info.test(string_in_list_info)) &
                 (_file_.titel.test(lineedit_in_titel)) &
                 (_file_.draft.test(include_drafts))
-            )
-        
-        
+            )      
         
 
     return gesammeltedateien
@@ -314,7 +338,8 @@ def prepare_tex_for_pdf(self):
     
     gesammeltedateien = list_1 + list_2
 
-
+    # print(gesammeltedateien)
+    # return
 
     ######################################################
     ########### work around ####################
