@@ -5,11 +5,6 @@ from dulwich import porcelain
 import stat
 import posixpath
 from urllib3.exceptions import MaxRetryError, ProtocolError
-# from datetime import datetime
-# from standard_dialog_windows import information_window
-# from time import sleep
-# from urllib.request import urlopen
-# from urllib.error import URLError
 import socket
 
 
@@ -125,10 +120,7 @@ def copy_all_changed_files(staged_files):
         for all in staged_files['add']:
             filename=os.path.basename(all)
             shutil.copyfile(os.path.join(database,all.decode()), os.path.join(git_temp_add, filename.decode()))
-    # if staged_files['delete'] != []:
-    #     for all in staged_files['delete']:
-    #         filename=os.path.basename(all)
-    #         shutil.copyfile(os.path.join(path_programm,"_database" ,all.decode()), os.path.join(git_temp_delete, filename.decode()))
+
     if staged_files['modify'] != []:
         for all in staged_files['modify']:
             filename=os.path.basename(all)
@@ -190,26 +182,14 @@ def check_branches():
 
     head_id = repo[b'refs/heads/master'].id
     origin_id = repo[b'refs/remotes/origin/master'].id
-    # print(head_id)
-    # print(origin_id)
+
     if head_id == origin_id:
         print("branches are the same")
         return True
     else:
         print("branches diverge")
         return False
-    ### working but very slow
-    # try:
-    #     print('check divergence')
-    #     porcelain.check_diverged(repo, origin_id, head_id)
-    #     print('close')
-    #     repo.close()
-    #     return True
-    # except porcelain.DivergedBranches:
-    #     print('error')
-    #     repo.close()
-    #     print('close error')
-    #     return False
+
 
 def git_push_to_origin(ui, admin, file_list, message, worker_text):
         # local_appdata = os.getenv('LOCALAPPDATA')
@@ -219,11 +199,6 @@ def git_push_to_origin(ui, admin, file_list, message, worker_text):
             access_token = get_access_token('developer')
         else:
             access_token = get_access_token('user')
-
-        # path_origin = os.path.join(database, ".git", "refs","remotes","origin", "master")
-        # path_head = os.path.join(database, ".git", "refs","heads","master")
-        # ff_possible = check_branches()
-
 
         repo = porcelain.open_repo(database)
         if admin == True:
@@ -235,11 +210,6 @@ def git_push_to_origin(ui, admin, file_list, message, worker_text):
                 # information_window("Es wurden keine Änderungen gefunden.")
                 return False
         
-
-        
-        # print(ff_possible)
-        # if ff_possible == False:
-        #     return 'error'
 
         
         for file in file_list:
@@ -257,56 +227,6 @@ def git_push_to_origin(ui, admin, file_list, message, worker_text):
         ui.label.setText("{} (84%)".format(worker_text))
         porcelain.push(repo,"https://lama-user:{}@github.com/chrisiweb/lama_latest_update.git".format(access_token),"master")
         ui.label.setText("{} (100%)".format(worker_text))        
-
-        #### working all - problem diverging branches
-        # try:
-        #     if admin == True:
-        #         ui.label.setText("Datenbank hochladen ... (1%)")
-
-        #         status = porcelain.status(repo)
-        #         ui.label.setText("Datenbank hochladen ... (21%)")
-
-        #         copy_all_changed_files(status.staged)
-        #         ui.label.setText("Datenbank hochladen ... (22%)")
-
-        #         git_reset_repo_to_origin()
-        #         ui.label.setText("Datenbank hochladen ... (53%)")
-
-        #         restore_all_changes()
-        #         shutil.copyfile(path_origin, path_head)
-        #         ui.label.setText("Datenbank hochladen ... (54%)")
-
-
-        #         status = porcelain.status(repo)
-        #         ui.label.setText("Datenbank hochladen ... (79%)")
-                
-        #         repo.stage(status.unstaged + status.untracked)
-        #         ui.label.setText("Datenbank hochladen ... (84%)")
-
-
-        #         time_tag = datetime.now().strftime("%Y-%m-%d (%H:%M:%S)")
-        #         porcelain.commit(repo, message="New LaMA Upload {}".format(time_tag))
-
-        #         ui.label.setText("Datenbank hochladen ... (85%)")
-
-        #         porcelain.push(repo,"https://lama-contributor:{}@github.com/chrisiweb/lama_latest_update.git".format(access_token),"master")
-        #         ui.label.setText("Datenbank hochladen ... (100%)")
-        #     else: 
-        #         file_path = os.path.join(database, specific_file)
-        #         porcelain.add(repo, paths= file_path)
-        #         ui.label.setText("Aufgabe wird hochgeladen ... (27%)")
-        #         file_name = os.path.basename(specific_file)
-        #         porcelain.commit(repo, message="Upload {}".format(file_name))
-        #         ui.label.setText("Aufgabe wird hochgeladen ... (84%)")
-        #         porcelain.push(repo,"https://lama-user:{}@github.com/chrisiweb/lama_latest_update.git".format(access_token),"master")
-        #         ui.label.setText("Aufgabe wird hochgeladen ... (100%)")
-        #     repo.close()
-
-        #     sleep(1)
-        
-        # except Exception as e:
-        #     print(e)
-        #     return "error"
 
         return True
 

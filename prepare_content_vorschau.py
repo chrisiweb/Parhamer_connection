@@ -3,9 +3,9 @@ from re import split
 import shutil
 from config_start import database, path_localappdata_lama
 from config import is_empty
-from work_with_content import collect_content #, split_content_no_environment
-from standard_dialog_windows import warning_window, critical_window
-# from work_with_content import prepare_content_for_hide_show_items
+from work_with_content import collect_content
+from standard_dialog_windows import critical_window
+
 
 
 def edit_content_individual(self, aufgabe, content):
@@ -47,42 +47,6 @@ def edit_content_ausgleichspunkte(self, aufgabe, split_content, full_content):
     return full_content
 
 
-    # content[all] = line
-    # for i, line in enumerate(content):
-    #     ausgleichspunkte = (
-    #         ausgleichspunkte.replace("ITEM", "").replace("SUBitem", "").strip()
-    #     )
-
-    # return content
-    # for ausgleichspunkte in self.dict_all_infos_for_file["dict_ausgleichspunkte"][
-    #     aufgabe
-    # ]:
-    #     for i, line in enumerate(content):
-    #         ausgleichspunkte = (
-    #             ausgleichspunkte.replace("ITEM", "").replace("SUBitem", "").strip()
-    #         )
-    #         if ausgleichspunkte.partition("\n")[0] in line:
-    #             if "\\Subitem" in line:
-    #                 line = line.replace("\\Subitem", "\\ASubitem")
-    #             else:
-    #                 if ausgleichspunkte.startswith("{"):
-    #                     ausgleichspunkte = ausgleichspunkte[1:]
-
-    #                 line = line.replace(
-    #                     ausgleichspunkte.partition("\n")[0],
-    #                     "\\fbox{A} " + ausgleichspunkte.partition("\n")[0],
-    #                 )
-    #             content[i] = line
-    #             break
-    #         if i + 1 == len(content):
-    #             warning_window(
-    #                 "Leider ist ein Fehler beim Bearbeiten der Ausgleichspunkte augetreten",
-    #                 detailed_text="Bitte ändern Sie die Ausgleichspunkte nach dem Erstellen manuell in der LaTeX-Datei.",
-    #             )
-    #             return content
-
-    # return content
-
 
 def edit_content_hide_show_items(self, aufgabe, split_content, full_content):
     list_content = full_content.split("\\item")
@@ -104,39 +68,7 @@ def edit_content_hide_show_items(self, aufgabe, split_content, full_content):
             line = line.replace("ITEM", "").replace("SUBitem", "")
 
             _list_to_remove = split("{|}", line)
-            # print(_list_to_remove)
 
-            # for remove_line in _list_to_remove:
-            #     if remove_line.isspace() == False and len(remove_line)!=0:
-            #         line_start = remove_line
-            #         break
-            # # print('start:'+line_start)
-            # for i, all in enumerate(list_content):
-            #     if line_start in all:
-            #         index_start = i
-            #         break
-            
-            # for remove_line in reversed(_list_to_remove):
-            #     if remove_line.isspace() == False and len(remove_line)!=0:
-            #         line_end = remove_line
-            #         break
-            # # print('end:'+line_end)
-            # for i, all in enumerate(list_content):
-            #     # print(all)
-            #     if line_end in all:
-            #         # print('YES!!')
-            #         index_end = i
-            #         break
-
-
-                # else:
-                #     print('NO')
-                #     print(all)
-                #     print(remove_line)
-                        
-
-            # print(index_start)
-            # print(index_end)
 
 
             line_start = None
@@ -178,61 +110,6 @@ def edit_content_hide_show_items(self, aufgabe, split_content, full_content):
 
     return content                        
 
-    ###################################################
-    # new_content = []
-    # for i, line in enumerate(split_content):
-    #     if i not in self.dict_sage_hide_show_items_chosen[aufgabe]:
-    #         new_content.append(line)
-    
-    # for all in new_content:
-    #     new_content[all] = all.replace("ITEM", "\\item").replace("SUBitem", "\\Subitem")
-
-    # content = "".join(new_content)
-    # print(content)
-
-    # return content
-    # for all in self.dict_sage_hide_show_items_chosen[aufgabe]:
-        # line = split_content[all]
-        
-
-        # print(line)
-
-    # for item in self.dict_all_infos_for_file["dict_hide_show_items"][aufgabe]:
-    #     hide_item = item.split("\n")[0]
-    #     hide_item = hide_item.replace("ITEM", "").replace("SUBitem", "").strip()
-
-    #     start_index = -1
-    #     end_index = -1
-    #     for idx, line in enumerate(content):
-    #         if start_index == -1:
-    #             if hide_item in line:
-    #                 start_index = idx
-    #                 continue
-    #         else:
-    #             if "\\item" in line:
-    #                 end_index = idx
-    #                 break
-    #             if "\\end{aufgabenstellung}" in line:
-    #                 end_index = idx
-    #                 break
-    #             if "Lösungserwartung" in line:
-    #                 break
-    #     if start_index == -1 or end_index == -1:
-    #         warning_window(
-    #             "Das Ein- bzw. Ausblenden von Aufgabenstellungen in Aufgabe {} konnte leider nicht durchgeführt werden.\n"
-    #             "Die Aufgabe wird daher vollständig angezeigt. Bitte bearbeiten sie diese Aufgabe manuell.".format(
-    #                 aufgabe
-    #             )
-    #         )
-    #     else:
-    #         for i in reversed(range(start_index + 1)):
-    #             if "\\item" in content[i]:
-    #                 start_index = i
-    #                 break
-    #         for index, line in enumerate(content[start_index:end_index]):
-    #             content[start_index + index] = "% " + line
-
-    # return content
 
 
 def copy_logo_to_target_path(self, logo_path):
@@ -268,34 +145,6 @@ def edit_content_vorschau(self, aufgabe, ausgabetyp):
 
     content = collect_content(self, aufgabe, readlines=True)
     return content
-    # print(content)
-    # if aufgabe in self.dict_all_infos_for_file["dict_individual_change"]:
-    #     if not is_empty(self.dict_all_infos_for_file["dict_individual_change"][aufgabe]):
-    #         # print(aufgabe)
-    #         # print(self.dict_all_infos_for_file["dict_individual_change"])
-    #         content = edit_content_individual(self, aufgabe, content)
-    #         # content = self.dict_all_infos_for_file["dict_individual_change"][aufgabe] 
-    #         # print(content)
-
-    # elif self.chosen_program == "lama":
-    #     typ = self.get_aufgabentyp(aufgabe)
-
-    #     if aufgabe in self.dict_all_infos_for_file["dict_ausgleichspunkte"].keys():
-    #         content = edit_content_ausgleichspunkte(self, aufgabe, content)
-
-    #     if aufgabe in self.dict_all_infos_for_file["dict_hide_show_items"].keys():
-    #         content = edit_content_hide_show_items(self, aufgabe, content)
-
-        
-
-    # if (
-    #     ausgabetyp == "schularbeit"
-    #     and is_empty(self.dict_all_infos_for_file["data_gesamt"]["copy_images"])
-    #     == False
-    # ):
-    #     content = edit_content_image_path(content)
-
-    # return content
 
 
 def copy_included_images(self, image):
