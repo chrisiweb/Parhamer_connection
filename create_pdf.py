@@ -338,8 +338,6 @@ def prepare_tex_for_pdf(self):
     
     gesammeltedateien = list_1 + list_2
 
-    # print(gesammeltedateien)
-    # return
 
     ######################################################
     ########### work around ####################
@@ -398,7 +396,11 @@ def prepare_tex_for_pdf(self):
     else:
         infos = "info_off"
 
-    
+    print(suchbegriffe)
+    if suchbegriffe['klasse'] == []:
+        klassen_suche = False
+    else:
+        klassen_suche = True
     construct_tex_file(filename_teildokument, gesammeltedateien, solutions, variation, infos)
 
 

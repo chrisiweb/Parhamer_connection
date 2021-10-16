@@ -1,3 +1,4 @@
+import enum
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QIcon, QCursor, QTextCursor
 from PyQt5.QtCore import Qt, QSize, QRect, QMetaObject, QCoreApplication, QThread
@@ -2284,20 +2285,17 @@ class Ui_Dialog_edit_drafts(object):
         self.horizontalLayout_abstand.addWidget(self.comboBox)
 
 
-        row = 0
-        column = 0
+        self.create_all_checkboxes_drafts()
+        # row = 0
+        # column = 0
         
-        for dict_aufgabe in self.dict_drafts[typ]:
-            self.add_draft_to_list(dict_aufgabe, self.scrollAreaWidgetContents, row, column)
-            if column == 2:
-                row += 1
-                column = 0
-            else:
-                column +=1        
-
-        self.spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-
-        self.gridLayout_items.addItem(self.spacerItem, row+1, 0, 1,3)
+        # for dict_aufgabe in self.dict_drafts[typ]:
+        #     self.add_draft_to_list(dict_aufgabe, self.scrollAreaWidgetContents, row, column)
+        #     if column == 2:
+        #         row += 1
+        #         column = 0
+        #     else:
+        #         column +=1        
 
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.gridLayout.addWidget(self.scrollArea, 0, 0, 4, 4)
@@ -2365,18 +2363,25 @@ class Ui_Dialog_edit_drafts(object):
 
         self.groupBox_klasse = create_new_groupbox(self.groupBox, "Klasse")
         self.gridLayout_2.addWidget(self.groupBox_klasse, 0,3,1,1)
-        if self.typ == 'cria':
-            self.groupBox_klasse.hide()
+        # if self.typ == 'cria':
+        #     self.groupBox_klasse.hide()
         self.horizontalLayout_klasse = create_new_horizontallayout(self.groupBox_klasse)
         self.groupBox_klasse.setEnabled(False)
         
         self.comboBox_klasse = create_new_combobox(self.groupBox_klasse)
         self.horizontalLayout_klasse.addWidget(self.comboBox_klasse)
         add_new_option(self.comboBox_klasse, 0, "")
-        for i, all in enumerate(Klassen.keys()):
-            if i == 4:
-                break
-            add_new_option(self.comboBox_klasse, i+1, all)
+        if self.typ == 'cria':
+            # add_new_option(self.comboBox_klasse, 0, None)
+            i=1
+            for all in list_klassen:
+                add_new_option(self.comboBox_klasse, i, all)
+                i+=1
+        else:
+            for i, all in enumerate(Klassen.keys()):
+                if i == 4:
+                    break
+                add_new_option(self.comboBox_klasse, i+1, all)
 
 
         self.groupBox_pagebreak = create_new_groupbox(self.groupBox, "Seitenumbr.")
@@ -2459,6 +2464,22 @@ class Ui_Dialog_edit_drafts(object):
         # self.retranslateUi(Dialog)
         QMetaObject.connectSlotsByName(Dialog)
 
+    def create_all_checkboxes_drafts(self):
+        row = 0
+        column = 0
+        
+        for dict_aufgabe in self.dict_drafts[self.typ]:
+            self.add_draft_to_list(dict_aufgabe, self.scrollAreaWidgetContents, row, column)
+            if column == 2:
+                row += 1
+                column = 0
+            else:
+                column +=1
+
+        self.spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+
+        self.gridLayout_items.addItem(self.spacerItem, row+1, 0, 1,3)
+ 
 
     def checkbox_clicked(self):
         chosen_list = self.get_chosen_list()
@@ -2602,7 +2623,6 @@ class Ui_Dialog_edit_drafts(object):
         
 
     def create_content(self, chosen_list):
-        print(chosen_list)
         content = ""
         for name in chosen_list:
             dict_aufgabe = self.get_dict_aufgabe(name)
@@ -2752,12 +2772,15 @@ class Ui_Dialog_edit_drafts(object):
         else:
             new_name = name
 
-
+        if self.comboBox_klasse.currentText() == "":
+            klasse = None
+        else:
+            klasse = self.comboBox_klasse.currentText()
         dict_entries = {
             'themen':eval(self.label_themen.text()),
             'punkte':self.spinBox_pkt.value(),
             'af':self.comboBox_af.currentText(),
-            'klasse':self.comboBox_klasse.currentText(),
+            'klasse':klasse,
             'pagebreak':pagebreak,
             'abstand':self.spinBox_abstand.value(),
             'quelle':self.lineedit_quelle.text(),
@@ -2792,7 +2815,7 @@ class Ui_Dialog_edit_drafts(object):
             if all['name']==name:
                 all['themen']=eval(self.label_themen.text())
                 all['name']=new_name
-        
+
         self.comboBox.setCurrentIndex(0)
         self.dict_widget_variables[name].setText(new_name)
 
@@ -2800,11 +2823,19 @@ class Ui_Dialog_edit_drafts(object):
         del self.dict_widget_variables[name]
 
 
+        # for dict_aufgabe in self.dict_drafts[self.typ]:
+        #     self.comboBox.addItem(dict_aufgabe['name'])
+
+        ### reset checkboxes
+        for checkbox in self.dict_widget_variables.values():
+            checkbox.setParent(None)
+        self.gridLayout_items.removeItem(self.spacerItem)
+
         self.comboBox.clear()
         self.comboBox.addItem("")
 
-        for dict_aufgabe in self.dict_drafts[self.typ]:
-            self.comboBox.addItem(dict_aufgabe['name'])
+        self.create_all_checkboxes_drafts()
+
     
 
     def edit_themen(self):
