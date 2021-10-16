@@ -338,7 +338,9 @@ def prepare_tex_for_pdf(self):
     
     gesammeltedateien = list_1 + list_2
 
-
+    print(suchbegriffe)
+    # print(gesammeltedateien)
+    # return
     ######################################################
     ########### work around ####################
     #########################################
@@ -396,12 +398,12 @@ def prepare_tex_for_pdf(self):
     else:
         infos = "info_off"
 
-    print(suchbegriffe)
-    if suchbegriffe['klasse'] == []:
+    # print(suchbegriffe)
+    if suchbegriffe['klasse'] == [] and suchbegriffe['info'] == []:
         klassen_suche = False
     else:
         klassen_suche = True
-    construct_tex_file(filename_teildokument, gesammeltedateien, solutions, variation, infos)
+    construct_tex_file(filename_teildokument, gesammeltedateien, solutions, variation, infos, klassen_suche)
 
 
     number_of_files = get_output_size(gesammeltedateien, variation)
@@ -454,26 +456,38 @@ def check_if_variation(name):
     else:
         return False
 
-def create_tex(file_path, content):
+def create_tex(
+    file_path,
+    content,
+    punkte = 0,
+    pagebreak = True,
+    ):
     try:
         with open(file_path, "w", encoding="utf8") as file:
             file.write(tex_preamble())
-            file.write(begin_beispiel_lang() + "\n")
+            if pagebreak == True:
+                file.write(begin_beispiel_lang(punkte=punkte) + "\n")
+            else:
+                file.write(begin_beispiel(punkte=punkte))
             file.write(content)
-            file.write(end_beispiel_lang)
+            if pagebreak == True:
+                file.write(end_beispiel_lang)
+            else:
+                file.write(end_beispiel)
+            
             file.write(tex_end)
         return True
     except Exception as e:
         return e
 
 
-def construct_tex_file(file_name, gesammeltedateien, solutions, variation, infos):
+def construct_tex_file(file_name, gesammeltedateien, solutions, variation, infos, klassen_suche):
     with open(file_name, "w", encoding="utf8") as file:
         file.write(tex_preamble(solution=solutions, bookmark=True, info=infos))
         for all in gesammeltedateien:
-            if variation == False and check_if_variation(all['name']) == True:
+            if variation == False and check_if_variation(all['name']) == True and klassen_suche == False:
                 continue
-            if 'mat' == all['info']:
+            if all['info'] == 'mat':
                 add_on = ' ({})'.format(all['quelle'])
             else:
                 add_on = ''
@@ -487,7 +501,7 @@ def construct_tex_file(file_name, gesammeltedateien, solutions, variation, infos
             if variation == True:
                 if check_if_variation(all['name']) == True:
                     file.write("{{\color{{{0}}}".format(green))
-            else:
+            elif klassen_suche == False:
                 number_of_variations = get_number_of_variations(all['name'], gesammeltedateien)
 
                 if number_of_variations != 0:

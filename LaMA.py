@@ -645,6 +645,7 @@ class Ui_MainWindow(object):
             "Aufgaben mit dieser Kennzeichnung wurden im Rahmen einer Lehrveranstaltung auf der\nUniverstität Wien von Studierenden erstellt und von den Lehrveranstaltungsleitern evaluiert."
         )
         self.gridLayout_14.addWidget(self.cb_univie, 1, 2, 1, 1)
+        self.cb_univie.hide()
 
         self.gridLayout.addWidget(self.groupBox_klassen, 3, 1, 1, 1)
 

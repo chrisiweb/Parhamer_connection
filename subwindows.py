@@ -2447,15 +2447,20 @@ class Ui_Dialog_edit_drafts(object):
         self.gridLayout_2.addWidget(self.plainTextEdit, 2,0,1,7)
 
         self.buttonBox = QtWidgets.QDialogButtonBox(self.groupBox)
-        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Save)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Open|QtWidgets.QDialogButtonBox.Save)
         self.buttonBox.setObjectName("buttonBox")
         buttonSave = self.buttonBox.button(QtWidgets.QDialogButtonBox.Save)
         buttonSave.setText("Änderung speichern")
         buttonSave.clicked.connect(self.save_changes)
+
+        buttonPreview = self.buttonBox.button(QtWidgets.QDialogButtonBox.Open)
+        buttonPreview.setText("Vorschau")
+        buttonPreview.clicked.connect(self.open_preview)
+
         self.gridLayout_2.addWidget(self.buttonBox, 3, 6,1,1)
         self.gridLayout.addWidget(self.groupBox, 5, 0, 1, 5)
 
-
+        self.buttonBox.setEnabled(False)
 
         self.comboBox.currentIndexChanged.connect(self.comboBox_index_changed)
 
@@ -2481,6 +2486,25 @@ class Ui_Dialog_edit_drafts(object):
         self.gridLayout_items.addItem(self.spacerItem, row+1, 0, 1,3)
  
 
+    def open_preview(self):
+        content = self.plainTextEdit.toPlainText()
+
+        if self.comboBox_pagebreak.currentIndex() == 0:
+            pagebreak = False
+        else:
+            pagebreak = True
+        
+        file_path = os.path.join(path_localappdata_lama, "Teildokument", "preview.tex")
+
+        rsp = create_tex(file_path, content, punkte = self.spinBox_pkt.value(), pagebreak=pagebreak)
+
+        if rsp == True:
+            create_pdf("preview")
+        else:
+            critical_window(
+                "Die PDF Datei konnte nicht erstellt werden", detailed_text=rsp
+            )
+
     def checkbox_clicked(self):
         chosen_list = self.get_chosen_list()
 
@@ -2491,6 +2515,7 @@ class Ui_Dialog_edit_drafts(object):
         self.pushButton_open_editor.setEnabled(on_off)
         self.pushButton_add_to_database.setEnabled(on_off)
         self.pushButton_delete.setEnabled(on_off)
+
 
     def add_draft_to_list(self, dict_aufgabe, parent, row, column):
         name = dict_aufgabe['name']
@@ -2522,6 +2547,7 @@ class Ui_Dialog_edit_drafts(object):
             self.groupBox_titel.setEnabled(False)
             self.groupBox_quelle.setEnabled(False)
             self.groupBox_themen.setEnabled(False)
+            self.buttonBox.setEnabled(False)
             self.plainTextEdit.setPlainText("")
             self.plainText_backup = [0, ""]
             self.spinBox_pkt.setValue(0)
@@ -2555,6 +2581,7 @@ class Ui_Dialog_edit_drafts(object):
             self.groupBox_titel.setEnabled(True)
             self.groupBox_quelle.setEnabled(True)
             self.groupBox_themen.setEnabled(True)
+            self.buttonBox.setEnabled(True)
             try:
                 self.label_themen.setText(str(dict_aufgabe['themen']))
                 if re.search("\[.*\]", self.comboBox.currentText()) != None and self.typ == 'lama_1':
