@@ -3742,15 +3742,12 @@ class Ui_MainWindow(object):
     def comboBox_pruefungstyp_changed(self):
         self.comboBox_pruefungstyp.setEditable(False)
         self.groupBox_nummer.setEnabled(True)
-        if (
-            self.comboBox_pruefungstyp.currentText() == "Grundkompetenzcheck"
-            or self.comboBox_pruefungstyp.currentText() == "Übungsblatt"
-            # or self.comboBox_pruefungstyp.currentText() == "Quiz"
-        ):
+        if self.comboBox_pruefungstyp.currentText() == "Grundkompetenzcheck":
             self.combobox_beurteilung.setEnabled(False)
             self.groupBox_notenschl.setEnabled(False)
             self.groupBox_beurteilungsraster.setEnabled(False)
             self.spinBox_nummer.setValue(0)
+            self.groupBox_klasse.setTitle("Klasse")
             # if self.comboBox_pruefungstyp.currentText() == "Quiz":
             #     self.pushButton_titlepage.setEnabled(True)
             #     self.pushButton_titlepage.setText("Zufälliges Quiz erstellen")
@@ -3774,6 +3771,17 @@ class Ui_MainWindow(object):
             self.pushButton_titlepage.setEnabled(False)
             self.comboBox_at_sage.setEnabled(True)
             self.pushButton_titlepage.setText("Titelblatt anpassen")
+        elif self.comboBox_pruefungstyp.currentText() == "Übungsblatt":
+            self.combobox_beurteilung.setEnabled(False)
+            self.groupBox_notenschl.setEnabled(False)
+            self.groupBox_beurteilungsraster.setEnabled(False)
+            self.spinBox_nummer.setValue(0)
+            self.pushButton_titlepage.setEnabled(False)
+            self.comboBox_at_sage.setEnabled(True)
+            self.pushButton_titlepage.setText("Titelblatt anpassen")
+            self.groupBox_datum.setEnabled(False)
+            self.groupBox_nummer.setEnabled(False)
+            self.groupBox_klasse.setTitle("Überschrift")
         else:
             self.combobox_beurteilung.setEnabled(True)
             self.groupBox_notenschl.setEnabled(True)
@@ -3782,6 +3790,7 @@ class Ui_MainWindow(object):
             self.comboBox_at_sage.setEnabled(True)
             self.spinBox_nummer.setValue(1)
             self.pushButton_titlepage.setText("Titelblatt anpassen")
+            self.groupBox_klasse.setTitle("Klasse")
             if self.comboBox_pruefungstyp.currentText() == "Benutzerdefiniert":
                 self.comboBox_pruefungstyp.setEditable(True)
                 self.comboBox_pruefungstyp.lineEdit().selectAll()

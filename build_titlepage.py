@@ -98,7 +98,11 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
         return titlepage
 
     elif self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Übungsblatt":
-        titlepage = "\\subsection{Übungsblatt}"
+        titlepage = "Übungsblatt"
+        if self.lineEdit_klasse.text().strip() != "":
+            titlepage = titlepage + " -- {}".format(self.lineEdit_klasse.text())
+
+        titlepage = "\\subsection{{{0}}}".format(titlepage)
 
         return titlepage
 
