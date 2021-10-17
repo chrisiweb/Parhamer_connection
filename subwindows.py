@@ -1,4 +1,3 @@
-import enum
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QIcon, QCursor, QTextCursor
 from PyQt5.QtCore import Qt, QSize, QRect, QMetaObject, QCoreApplication, QThread
@@ -8,7 +7,6 @@ from json import load, dump
 import re
 import sys
 from pathlib import Path
-from string import ascii_lowercase
 from functools import partial
 from config_start import path_programm,path_localappdata_lama, lama_settings_file, lama_developer_credentials
 from config import (
@@ -2370,14 +2368,15 @@ class Ui_Dialog_edit_drafts(object):
         
         self.comboBox_klasse = create_new_combobox(self.groupBox_klasse)
         self.horizontalLayout_klasse.addWidget(self.comboBox_klasse)
-        add_new_option(self.comboBox_klasse, 0, "")
         if self.typ == 'cria':
-            # add_new_option(self.comboBox_klasse, 0, None)
-            i=1
+            add_new_option(self.comboBox_klasse, 0, "")
+            i=0
             for all in list_klassen:
                 add_new_option(self.comboBox_klasse, i, all)
                 i+=1
         else:
+            add_new_option(self.comboBox_klasse, 0, "")
+            i=1
             for i, all in enumerate(Klassen.keys()):
                 if i == 4:
                     break
@@ -2863,7 +2862,15 @@ class Ui_Dialog_edit_drafts(object):
 
         self.create_all_checkboxes_drafts()
 
-    
+    # def get_highest_grade_cr(self, _list):
+    #     klasse = 1
+
+    #     for all in _list:
+    #         print(all)
+    #         # if int(all[0][1]) > klasse:
+    #         #     klasse = int(all[0][1])
+
+    #     return "k{}".format(klasse)
 
     def edit_themen(self):
         Dialog = QtWidgets.QDialog(
@@ -2874,21 +2881,31 @@ class Ui_Dialog_edit_drafts(object):
         )
         ui = Ui_Dialog_edit_themen()
         list_themen = eval(self.label_themen.text())
-        ui.setupUi(Dialog, list_themen, self.typ)
-
+        klasse =  int(self.comboBox_klasse.currentText()[1])
+        ui.setupUi(Dialog, list_themen, self.typ, klasse)
 
         rsp = Dialog.exec_()
+
+        
+        # klasse = self.get_highest_grade_cr(ui.list_themen)
+        # print(klasse)
 
         if rsp == 1:
             self.label_themen.setText(str(ui.list_themen))
 
+            # klasse = "k{}".format(ui.highest_grade)
+            # print(klasse)
+            # self.comboBox_klasse.setCurrentText(klasse)
+
+
 
 
 class Ui_Dialog_edit_themen(object):
-    def setupUi(self, Dialog, list_themen, typ):
+    def setupUi(self, Dialog, list_themen, typ, klasse):
         self.Dialog = Dialog
         self.list_themen = list_themen
         self.typ = typ
+        # self.list_klassen = []
         Dialog.setObjectName("Dialog")
         Dialog.setWindowTitle("Themen bearbeiten")
         # Dialog.setFixedSize(300, 150)
@@ -3043,14 +3060,11 @@ class Ui_Dialog_edit_themen(object):
                     i+=1
 
     def change_label(self):
-        if self.typ == 'cria':
-            klasse = self.comboBox_klassen.currentText()
-  
         thema = self.comboBox_thema.currentText().split(" (")[0]
         subthema  = self.comboBox_subthema.currentText().split(" (")[0]
 
         if self.typ == 'cria':
-            self.label_themen.setText("{0}.{1}.{2}".format(klasse, thema, subthema))
+            self.label_themen.setText("{0}.{1}".format(thema, subthema))
         else:
             self.label_themen.setText("{0} {1}".format(thema, subthema))
 
@@ -3062,8 +3076,11 @@ class Ui_Dialog_edit_themen(object):
         if is_empty(existing_items):
             self.listWidget.addItem(gk)
 
-
-        
+            # if self.typ == 'cria':
+            #     # thema = "{0}.{1}".format(self.comboBox_klassen.currentText(), gk)
+            #     # if int(self.comboBox_klassen.currentText()[1]) not in self.list_klassen:
+            #     self.list_klassen.append(int(self.comboBox_klassen.currentText()[1]))
+                # print(self.list_klassen)
 
     def remove_thema(self):
         list_selected_items = self.listWidget.selectedItems()
@@ -3072,14 +3089,20 @@ class Ui_Dialog_edit_themen(object):
 
         for item in list_selected_items:
             self.listWidget.takeItem(self.listWidget.row(item))
+            # print(item.text())
+            # print(self.list_klassen)
         # self.listWidget.deleteItem(selected_item)??
-
+        # self.list_klassen.remove(int(self.comboBox_klassen.currentText()[1]))
+        # print(self.list_klassen)
 
 
     def save_changes(self):
+        # print(Ui_MainWindow().get_highest_grade_cr())
         list_themen = []
         for index in range(self.listWidget.count()):
             list_themen.append(self.listWidget.item(index).text())
+
+        # self.highest_grade = max(self.list_klassen)
 
         if len(list_themen) == 0:
             warning_window("Es muss zumindest ein Thema/eine Grudkompetenz ausgewählt werden.")

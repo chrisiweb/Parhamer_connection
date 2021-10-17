@@ -251,7 +251,7 @@ def search_in_database(self,current_program, database,suchbegriffe):
         else:
             gesammeltedateien = table_lama.search(
                 (_file_.af.test(string_in_list_af)) &
-                (_file_.klasse.test(string_in_list_klasse)) &
+                # (_file_.klasse.test(string_in_list_klasse)) &
                 (_file_.info.test(string_in_list_info)) &
                 (erweiterte_suche) &
                 (_file_.draft.test(include_drafts))
@@ -276,7 +276,7 @@ def search_in_database(self,current_program, database,suchbegriffe):
         else:
             gesammeltedateien = table_lama.search(
                 (_file_.af.test(string_in_list_af)) &
-                (_file_.klasse.test(string_in_list_klasse)) &
+                # (_file_.klasse.test(string_in_list_klasse)) &
                 (_file_.info.test(string_in_list_info)) &
                 (erweiterte_suche) &
                 (_file_.draft.test(include_drafts))
