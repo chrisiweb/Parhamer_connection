@@ -599,25 +599,33 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addWidget(self.groupBox_ausgew_gk, 3, 0, 1, 1)
 
-        self.groupBox_titelsuche = create_new_groupbox(
-            self.centralwidget, "Titelsuche:"
+        self.groupBox_advanced_search = create_new_groupbox(
+            self.centralwidget, "Erweiterte Suche:"
         )
-        self.groupBox_titelsuche.setSizePolicy(SizePolicy_fixed_height)
+        self.groupBox_advanced_search.setSizePolicy(SizePolicy_fixed_height)
 
-        # self.groupBox_titelsuche = QtWidgets.QGroupBox(self.centralwidget)
-        # self.groupBox_titelsuche.setObjectName(_fromUtf8("groupBox_titelsuche"))
 
-        # self.groupBox_titelsuche.setMaximumHeight(65)
+        self.gridLayout_10 = create_new_gridlayout(self.groupBox_advanced_search)
 
-        self.gridLayout_10 = create_new_gridlayout(self.groupBox_titelsuche)
-        # QtWidgets.QGridLayout(self.groupBox_titelsuche)
-        # self.gridLayout_10.setObjectName(_fromUtf8("gridLayout_10"))
 
-        self.entry_suchbegriffe = create_new_lineedit(self.groupBox_titelsuche)
-        self.gridLayout_10.addWidget(self.entry_suchbegriffe, 0, 0, 1, 1)
+        self.comboBox_suchbegriffe = create_new_combobox(self.groupBox_advanced_search)
+        self.gridLayout_10.addWidget(self.comboBox_suchbegriffe, 0,0,1,1)
+        add_new_option(self.comboBox_suchbegriffe, 0, "")
+        self.comboBox_suchbegriffe.currentIndexChanged.connect(self.comboBox_suchbegriffe_changed)
+
+        i=1
+        suche_auswahl = ['Titel', 'Inhalt', 'Quelle']
+        for all in suche_auswahl:
+            add_new_option(self.comboBox_suchbegriffe, i, all)
+            i+=1
+
+
+        self.entry_suchbegriffe = create_new_lineedit(self.groupBox_advanced_search)
+        self.gridLayout_10.addWidget(self.entry_suchbegriffe, 0, 1, 1, 1)
+        self.entry_suchbegriffe.setEnabled(False)
 
         self.gridLayout.addWidget(
-            self.groupBox_titelsuche, 4, 1, 1, 1, QtCore.Qt.AlignTop
+            self.groupBox_advanced_search, 4, 1, 1, 1, QtCore.Qt.AlignTop
         )
 
         self.groupBox_klassen = create_new_groupbox(
@@ -2364,7 +2372,6 @@ class Ui_MainWindow(object):
 
         self.menuHelp.setTitle(_translate("MainWindow", "?", None))
 
-        self.groupBox_titelsuche.setTitle(_translate("MainWindow", "Titelsuche:", None))
         self.groupBox_klassen.setTitle(_translate("MainWindow", "Suchfilter", None))
 
         # self.cb_solution.setText(_translate("MainWindow", "Lösungen anzeigen", None))
@@ -2857,6 +2864,13 @@ class Ui_MainWindow(object):
             name = "checkbox_creator_gk_" + all
             self.dict_widget_variables[name].setToolTip(chosen_dict[all])
 
+    def comboBox_suchbegriffe_changed(self):
+        if self.comboBox_suchbegriffe.currentIndex() == 0:
+            self.entry_suchbegriffe.setText("")
+            self.entry_suchbegriffe.setEnabled(False)
+        else:
+            self.entry_suchbegriffe.setEnabled(True)
+
     def tabWidget_klassen_cria_changed(self):
         klasse = list_klassen[self.tabWidget_klassen_cria.currentIndex()]
 
@@ -2884,6 +2898,8 @@ class Ui_MainWindow(object):
                 )
                 self.dict_widget_variables[label_button_check_all].hide()
         # self.button_check_all_unterkapitel.hide()
+
+
 
     def create_all_checkboxes_unterkapitel(self):
         for klasse in list_klassen:
@@ -3172,6 +3188,7 @@ class Ui_MainWindow(object):
         self.cb_solution.setChecked(True)
         self.spinBox_punkte.setProperty("value", 1)
         self.comboBox_aufgabentyp_cr.setCurrentIndex(0)
+        self.comboBox_suchbegriffe.setCurrentIndex(0)
         self.comboBox_af.setCurrentIndex(0)
         self.comboBox_klassen_cr.setCurrentIndex(0)
         self.label_ausgew_gk_creator.setText(_translate("MainWindow", "", None))

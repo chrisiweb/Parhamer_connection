@@ -119,7 +119,7 @@ def collect_suchbegriffe(self):
         'themen':[],
         'af' : [],
         'klasse' : [],
-        'titelsuche' : '',
+        'erweiterte_suche' : '',
         'info' : []
         }
 
@@ -166,7 +166,7 @@ def collect_suchbegriffe(self):
 
 
     if not len(self.entry_suchbegriffe.text()) == 0:
-        suchbegriffe['titelsuche'] = self.entry_suchbegriffe.text()
+        suchbegriffe['erweiterte_suche'] = self.entry_suchbegriffe.text()
 
 
 
@@ -214,7 +214,9 @@ def search_in_database(self,current_program, database,suchbegriffe):
     string_in_list_af = lambda s: True if (s in suchbegriffe['af'] or is_empty(suchbegriffe['af'])) else False
     string_in_list_klasse = lambda s: True if (s in suchbegriffe['klasse'] or is_empty(suchbegriffe['klasse'])) else False
     string_in_list_info = lambda s: True if (s in suchbegriffe['info'] or is_empty(suchbegriffe['info'])) else False
-    lineedit_in_titel = lambda s: True if (suchbegriffe['titelsuche'].lower() in s.lower() or is_empty(suchbegriffe['titelsuche'])) else False 
+    lineedit_in_erweitert = lambda s: True if (r"{}".format(suchbegriffe['erweiterte_suche'].lower()) in s.lower() or is_empty(suchbegriffe['erweiterte_suche'])) else False 
+    search_True = lambda s: True
+
 
     def include_drafts(value):
         if value == False:
@@ -225,6 +227,15 @@ def search_in_database(self,current_program, database,suchbegriffe):
             else:
                 return False
    
+    if suchbegriffe['erweiterte_suche'] == "":
+        erweiterte_suche = eval("_file_.titel.test(search_True)")
+    elif self.comboBox_suchbegriffe.currentText() == "Titel":
+        erweiterte_suche = eval("_file_.titel.test(lineedit_in_erweitert)")
+    elif self.comboBox_suchbegriffe.currentText() == "Inhalt":
+        erweiterte_suche = eval("_file_.content.test(lineedit_in_erweitert)")
+    elif self.comboBox_suchbegriffe.currentText() == "Quelle":
+        erweiterte_suche = eval("_file_.quelle.test(lineedit_in_erweitert)")
+
 
     gesammeltedateien = []
     if current_program == 'lama_1' or (current_program == 'cria' and self.combobox_searchtype.currentIndex()==0):
@@ -234,7 +245,7 @@ def search_in_database(self,current_program, database,suchbegriffe):
                 (_file_.af.test(string_in_list_af)) &
                 (_file_.klasse.test(string_in_list_klasse)) &
                 (_file_.info.test(string_in_list_info)) &
-                (_file_.titel.test(lineedit_in_titel)) &
+                (erweiterte_suche) &
                 (_file_.draft.test(include_drafts))
             )
         else:
@@ -242,7 +253,7 @@ def search_in_database(self,current_program, database,suchbegriffe):
                 (_file_.af.test(string_in_list_af)) &
                 (_file_.klasse.test(string_in_list_klasse)) &
                 (_file_.info.test(string_in_list_info)) &
-                (_file_.titel.test(lineedit_in_titel)) &
+                (erweiterte_suche) &
                 (_file_.draft.test(include_drafts))
             )
 
@@ -259,7 +270,7 @@ def search_in_database(self,current_program, database,suchbegriffe):
                 (_file_.af.test(string_in_list_af)) &
                 (_file_.klasse.test(string_in_list_klasse)) &
                 (_file_.info.test(string_in_list_info)) &
-                (_file_.titel.test(lineedit_in_titel)) &
+                (erweiterte_suche) &
                 (_file_.draft.test(include_drafts))
             )
         else:
@@ -267,7 +278,7 @@ def search_in_database(self,current_program, database,suchbegriffe):
                 (_file_.af.test(string_in_list_af)) &
                 (_file_.klasse.test(string_in_list_klasse)) &
                 (_file_.info.test(string_in_list_info)) &
-                (_file_.titel.test(lineedit_in_titel)) &
+                (erweiterte_suche) &
                 (_file_.draft.test(include_drafts))
             )        
   
@@ -283,7 +294,7 @@ def search_in_database(self,current_program, database,suchbegriffe):
                 (_file_.themen.any(suchbegriffe['themen'])) &
                 (_file_.klasse.test(string_in_list_klasse)) &
                 (_file_.info.test(string_in_list_info)) &
-                (_file_.titel.test(lineedit_in_titel)) &
+                (erweiterte_suche) &
                 (_file_.draft.test(include_drafts))
             )
 
@@ -292,7 +303,7 @@ def search_in_database(self,current_program, database,suchbegriffe):
                 (_file_.themen.test(gk_in_list)) &
                 (_file_.klasse.test(string_in_list_klasse)) &
                 (_file_.info.test(string_in_list_info)) &
-                (_file_.titel.test(lineedit_in_titel)) &
+                (erweiterte_suche) &
                 (_file_.draft.test(include_drafts))
             )      
         
@@ -300,7 +311,7 @@ def search_in_database(self,current_program, database,suchbegriffe):
     return gesammeltedateien
 
 def check_if_suchbegriffe_is_empty(suchbegriffe):
-    _list = ['themen', 'af', 'klasse', 'titelsuche' ,'info']
+    _list = ['themen', 'af', 'klasse', 'erweiterte_suche' ,'info']
     for all in _list:
         if not is_empty(suchbegriffe[all]):
             return False
@@ -338,7 +349,7 @@ def prepare_tex_for_pdf(self):
     
     gesammeltedateien = list_1 + list_2
 
-    print(suchbegriffe)
+    # print(suchbegriffe)
     # print(gesammeltedateien)
     # return
     ######################################################
@@ -399,14 +410,15 @@ def prepare_tex_for_pdf(self):
         infos = "info_off"
 
     # print(suchbegriffe)
-    if suchbegriffe['klasse'] == [] and suchbegriffe['info'] == []:
-        klassen_suche = False
+    if suchbegriffe['klasse'] == [] and suchbegriffe['info'] == [] and suchbegriffe['erweiterte_suche'] == "":
+        spezielle_suche = False
     else:
-        klassen_suche = True
-    construct_tex_file(filename_teildokument, gesammeltedateien, solutions, variation, infos, klassen_suche)
+        spezielle_suche = True
+
+    construct_tex_file(filename_teildokument, gesammeltedateien, solutions, variation, infos, spezielle_suche)
 
 
-    number_of_files = get_output_size(gesammeltedateien, variation)
+    number_of_files = get_output_size(gesammeltedateien, variation, spezielle_suche)
 
     QApplication.restoreOverrideCursor()
     if number_of_files == 0:
@@ -441,8 +453,8 @@ def prepare_tex_for_pdf(self):
 
         create_pdf("Teildokument", 0, 0, typ)
 
-def get_output_size(gesammeltedateien, variation):
-    if variation == True:
+def get_output_size(gesammeltedateien, variation, spezielle_suche):
+    if variation == True or spezielle_suche == True:
         return len(gesammeltedateien)
     number = 0
     for all in gesammeltedateien:
@@ -481,11 +493,11 @@ def create_tex(
         return e
 
 
-def construct_tex_file(file_name, gesammeltedateien, solutions, variation, infos, klassen_suche):
+def construct_tex_file(file_name, gesammeltedateien, solutions, variation, infos, spezielle_suche):
     with open(file_name, "w", encoding="utf8") as file:
         file.write(tex_preamble(solution=solutions, bookmark=True, info=infos))
         for all in gesammeltedateien:
-            if variation == False and check_if_variation(all['name']) == True and klassen_suche == False:
+            if variation == False and check_if_variation(all['name']) == True and spezielle_suche == False:
                 continue
             if all['info'] == 'mat':
                 add_on = ' ({})'.format(all['quelle'])
@@ -501,7 +513,7 @@ def construct_tex_file(file_name, gesammeltedateien, solutions, variation, infos
             if variation == True:
                 if check_if_variation(all['name']) == True:
                     file.write("{{\color{{{0}}}".format(green))
-            elif klassen_suche == False:
+            elif spezielle_suche == False:
                 number_of_variations = get_number_of_variations(all['name'], gesammeltedateien)
 
                 if number_of_variations != 0:
