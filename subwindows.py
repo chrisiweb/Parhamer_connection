@@ -2370,7 +2370,7 @@ class Ui_Dialog_edit_drafts(object):
         self.horizontalLayout_klasse.addWidget(self.comboBox_klasse)
         if self.typ == 'cria':
             add_new_option(self.comboBox_klasse, 0, "")
-            i=0
+            i=1
             for all in list_klassen:
                 add_new_option(self.comboBox_klasse, i, all)
                 i+=1
