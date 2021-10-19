@@ -2247,6 +2247,7 @@ class Ui_Dialog_edit_drafts(object):
         self.dict_drafts = dict_drafts
         # print(dict_drafts[typ])
         self.typ = typ
+        self.changed_themen = []
         self.dict_widget_variables = {}
         Dialog.setObjectName("Dialog")
         Dialog.setWindowIcon(QIcon(logo_path))
@@ -2374,6 +2375,7 @@ class Ui_Dialog_edit_drafts(object):
             for all in list_klassen:
                 add_new_option(self.comboBox_klasse, i, all)
                 i+=1
+            # self.comboBox_klasse.setEnabled(False)
         else:
             add_new_option(self.comboBox_klasse, 0, "")
             i=1
@@ -2592,7 +2594,12 @@ class Ui_Dialog_edit_drafts(object):
                 self.plainText_backup = [self.comboBox.currentIndex(), dict_aufgabe['content']]
                 self.spinBox_pkt.setValue(dict_aufgabe['punkte'])
                 self.comboBox_af.setCurrentText(dict_aufgabe['af'])
-                self.comboBox_klasse.setCurrentText(dict_aufgabe['klasse'])
+                if dict_aufgabe['klasse'] == None:
+                    self.comboBox_klasse.setCurrentIndex(0)
+                    self.saved_klasse = None
+                else:
+                    self.comboBox_klasse.setCurrentText(dict_aufgabe['klasse'])
+                    self.saved_klasse = int(dict_aufgabe['klasse'][1])
                 if dict_aufgabe['pagebreak'] == False:
                     self.comboBox_pagebreak.setCurrentIndex(0)
                 else:
@@ -2603,6 +2610,7 @@ class Ui_Dialog_edit_drafts(object):
                 self.lineedit_quelle.setText(dict_aufgabe['quelle'])
 
             except TypeError:
+                print('error')
                 pass
 
 
@@ -2881,8 +2889,11 @@ class Ui_Dialog_edit_drafts(object):
         )
         ui = Ui_Dialog_edit_themen()
         list_themen = eval(self.label_themen.text())
-        klasse =  int(self.comboBox_klasse.currentText()[1])
-        ui.setupUi(Dialog, list_themen, self.typ, klasse)
+        try: 
+            klasse =  int(self.comboBox_klasse.currentText()[1])
+        except IndexError:
+            klasse = None
+        ui.setupUi(Dialog, list_themen, self.typ, klasse, self.changed_themen)
 
         rsp = Dialog.exec_()
 
@@ -2892,19 +2903,30 @@ class Ui_Dialog_edit_drafts(object):
 
         if rsp == 1:
             self.label_themen.setText(str(ui.list_themen))
-
-            # klasse = "k{}".format(ui.highest_grade)
-            # print(klasse)
-            # self.comboBox_klasse.setCurrentText(klasse)
-
+            self.changed_themen = ui.changed_themen
+            klasse = 1
+            for all in self.changed_themen:
+                temp_klasse = int(all.split(".")[0][1])
+                if temp_klasse > klasse:
+                    klasse = temp_klasse
+         
+            if self.saved_klasse == None:
+                str_klasse = None
+            else:
+                if klasse > self.saved_klasse:
+                    str_klasse = "k{}".format(klasse)
+                else:
+                    str_klasse = "k{}".format(self.saved_klasse)
+                self.comboBox_klasse.setCurrentText(str_klasse)
 
 
 
 class Ui_Dialog_edit_themen(object):
-    def setupUi(self, Dialog, list_themen, typ, klasse):
+    def setupUi(self, Dialog, list_themen, typ, klasse, changed_themen):
         self.Dialog = Dialog
         self.list_themen = list_themen
         self.typ = typ
+        self.changed_themen = changed_themen
         # self.list_klassen = []
         Dialog.setObjectName("Dialog")
         Dialog.setWindowTitle("Themen bearbeiten")
@@ -3075,7 +3097,10 @@ class Ui_Dialog_edit_themen(object):
 
         if is_empty(existing_items):
             self.listWidget.addItem(gk)
-
+            if self.typ == 'cria':
+                klasse = self.comboBox_klassen.currentText()
+                thema = "{0}.{1}".format(klasse, gk)
+                self.changed_themen.append(thema)
             # if self.typ == 'cria':
             #     # thema = "{0}.{1}".format(self.comboBox_klassen.currentText(), gk)
             #     # if int(self.comboBox_klassen.currentText()[1]) not in self.list_klassen:
@@ -3089,6 +3114,15 @@ class Ui_Dialog_edit_themen(object):
 
         for item in list_selected_items:
             self.listWidget.takeItem(self.listWidget.row(item))
+            for all in self.changed_themen[:]:
+                if item.text() in all:
+                    self.changed_themen.remove(all)
+        
+        # print(self.changed_themen)
+            # if self.typ == 'cria':
+            #     klasse = self.comboBox_klassen.currentText()
+            #     thema = "{0}.{1}".format(klasse, gk)
+            #     self.changed_themen.append(thema)
             # print(item.text())
             # print(self.list_klassen)
         # self.listWidget.deleteItem(selected_item)??
