@@ -410,7 +410,10 @@ def prepare_tex_for_pdf(self):
         infos = "info_off"
 
     # print(suchbegriffe)
-    if suchbegriffe['klasse'] == [] and suchbegriffe['info'] == [] and suchbegriffe['erweiterte_suche'] == "":
+    # print(self.chosen_program)
+    if self.chosen_program == "lama" and (suchbegriffe['klasse'] == [] and suchbegriffe['info'] == [] and suchbegriffe['erweiterte_suche'] == ""):
+        spezielle_suche = False
+    elif self.chosen_program == "cria" and suchbegriffe['erweiterte_suche'] == "":
         spezielle_suche = False
     else:
         spezielle_suche = True
@@ -510,6 +513,7 @@ def construct_tex_file(file_name, gesammeltedateien, solutions, variation, infos
                 draft = ''
 
             green = "green!40!black!60!"
+            print(spezielle_suche)
             if variation == True:
                 if check_if_variation(all['name']) == True:
                     file.write("{{\color{{{0}}}".format(green))
