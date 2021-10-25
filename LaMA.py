@@ -613,7 +613,7 @@ class Ui_MainWindow(object):
         )
 
         i = 1
-        suche_auswahl = ["Titel", "Inhalt", "Quelle"]
+        suche_auswahl = ["Titel", "Inhalt", "Quelle", "Bilder"]
         for all in suche_auswahl:
             add_new_option(self.comboBox_suchbegriffe, i, all)
             i += 1
@@ -4680,6 +4680,11 @@ class Ui_MainWindow(object):
         if rsp == False:
             return
 
+        warning = self.check_entry_creator()
+        if warning != None:
+            warning_window(warning)
+            return
+
         name = self.chosen_file_to_edit
 
         typ = get_aufgabentyp(self.chosen_program, name)
@@ -5322,7 +5327,8 @@ class Ui_MainWindow(object):
         # except AttributeError:
         #     self.enable_widgets_editor(False)
         self.suchfenster_reset()
-        self.enable_widgets_editor(False)
+        self.reset_edit_file()
+        # self.enable_widgets_editor(False)
 
     def check_if_file_exists(self, aufgabe):  # aufgabe
         typ = get_aufgabentyp(self.chosen_program, aufgabe)

@@ -214,7 +214,8 @@ def search_in_database(self,current_program, database,suchbegriffe):
     string_in_list_af = lambda s: True if (s in suchbegriffe['af'] or is_empty(suchbegriffe['af'])) else False
     string_in_list_klasse = lambda s: True if (s in suchbegriffe['klasse'] or is_empty(suchbegriffe['klasse'])) else False
     string_in_list_info = lambda s: True if (s in suchbegriffe['info'] or is_empty(suchbegriffe['info'])) else False
-    lineedit_in_erweitert = lambda s: True if (r"{}".format(suchbegriffe['erweiterte_suche'].lower()) in s.lower() or is_empty(suchbegriffe['erweiterte_suche'])) else False 
+    lineedit_in_erweitert = lambda s: True if (r"{}".format(suchbegriffe['erweiterte_suche'].lower()) in s.lower() or is_empty(suchbegriffe['erweiterte_suche'])) else False
+ 
     search_True = lambda s: True
 
 
@@ -226,6 +227,12 @@ def search_in_database(self,current_program, database,suchbegriffe):
                 return True
             else:
                 return False
+    
+    def lineedit_in_bilder(value):
+        for bilder in value:
+            if suchbegriffe['erweiterte_suche'].lower() in bilder:
+                return True
+        return False
    
     if suchbegriffe['erweiterte_suche'] == "":
         erweiterte_suche = eval("_file_.titel.test(search_True)")
@@ -235,6 +242,8 @@ def search_in_database(self,current_program, database,suchbegriffe):
         erweiterte_suche = eval("_file_.content.test(lineedit_in_erweitert)")
     elif self.comboBox_suchbegriffe.currentText() == "Quelle":
         erweiterte_suche = eval("_file_.quelle.test(lineedit_in_erweitert)")
+    elif self.comboBox_suchbegriffe.currentText() == "Bilder":
+        erweiterte_suche = _file_.bilder.test(lineedit_in_bilder)
 
 
     gesammeltedateien = []

@@ -155,7 +155,7 @@ def copy_included_images(self, image):
 
     for folder in path_bilder:
         path_image = os.path.join(database, folder, image)
-        print(os.path.isfile(path_image))
+
         if os.path.isfile(path_image):
             saving_path = os.path.join(
                 os.path.dirname(self.chosen_path_schularbeit_erstellen[0]), image
