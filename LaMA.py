@@ -4680,10 +4680,10 @@ class Ui_MainWindow(object):
         if rsp == False:
             return
 
-        warning = self.check_entry_creator()
-        if warning != None:
-            warning_window(warning)
-            return
+        # warning = self.check_entry_creator()
+        # if warning != None:
+        #     warning_window(warning)
+        #     return
 
         name = self.chosen_file_to_edit
 
