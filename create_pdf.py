@@ -245,7 +245,6 @@ def search_in_database(self,current_program, database,suchbegriffe):
     elif self.comboBox_suchbegriffe.currentText() == "Bilder":
         erweiterte_suche = _file_.bilder.test(lineedit_in_bilder)
 
-
     gesammeltedateien = []
     if current_program == 'lama_1' or (current_program == 'cria' and self.combobox_searchtype.currentIndex()==0):
         if suchbegriffe['themen'] != []:

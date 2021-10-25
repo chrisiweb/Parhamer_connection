@@ -4754,7 +4754,13 @@ class Ui_MainWindow(object):
         lama_table.update({"pagebreak": pagebreak}, doc_ids=[file_id])
         lama_table.update({"klasse": klasse}, doc_ids=[file_id])
         lama_table.update({"info": info}, doc_ids=[file_id])
-        lama_table.update({"bilder": bilder}, doc_ids=[file_id])
+        if bilder != [] and bilder != None:
+            aufgabe_total = lama_table.get(_file_.name == aufgabe)
+            old_pictures = aufgabe_total['bilder']
+            for all in old_pictures:
+                bilder.append(all)
+            lama_table.update({"bilder": bilder}, doc_ids=[file_id])
+
         lama_table.update({"draft": draft}, doc_ids=[file_id])
         lama_table.update({"abstand": abstand}, doc_ids=[file_id])
 
