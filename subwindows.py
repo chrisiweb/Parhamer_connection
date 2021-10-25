@@ -1043,8 +1043,6 @@ class Ui_Dialog_ausgleichspunkte(object):
                 #     return rsp          
         # _list = [0,1,2]
         # _list.remove(index)
-        # print(_list)
-        # print(index)
 
     def combobox_edit_changed(self):
         index = self.check_for_change()
@@ -1106,21 +1104,11 @@ class Ui_Dialog_ausgleichspunkte(object):
 
     def button_undo_pressed(self):
         self.plainTextEdit_content.undo()
-        # print(self.plainTextEdit_content.toPlainText())
-        # print(is_empty(self.plainTextEdit_content.toPlainText()))
+
         if is_empty(self.plainTextEdit_content.toPlainText()) == True:
             self.plainTextEdit_content.redo()
     
-    # def zoom_in(self):
-    #     # value = self.spinbox_font_size.value()
-    #     self.plainTextEdit_content.zoomIn()
-        # self.plainTextEdit_content.selectAll()
-        # self.plainTextEdit_content.setFontPointSize(32)
-#         ui->textEdit->selectAll();
-# ui->textEdit->setFontPointSize(32);
-        # print(self.plainTextEdit_content.styleSheet())
-        # self.plainTextEdit_content.setStyleSheet(self.plainTextEdit_content.styleSheet().replace("12", "20"))
-        # print(self.plainTextEdit_content.styleSheet())
+
     
     def button_redo_pressed(self):
         self.plainTextEdit_content.redo()
@@ -1185,7 +1173,6 @@ class Ui_Dialog_ausgleichspunkte(object):
 
 
     def build_editable_content(self):
-        # print(self.aufgabenstellung_split_text)
         self.plainTextEdit_content.insertPlainText(self.content)
 
         # for line in conten:
@@ -1205,31 +1192,18 @@ class Ui_Dialog_ausgleichspunkte(object):
                     or is_empty(linetext.replace("ITEM", "").strip()) == True
                 ) and self.combobox_edit.currentIndex() == 0:  #
                     checkbox = None
-                    # print(str(index) + 'empty')
                 else:
                     checkbox, checkbox_label = self.create_checkbox_ausgleich(
                         linetext, row, index
                     )
-                    # print(checkbox)
-                    # if checkbox != None:
-                    #     checkbox.clicked.connect(partial(self.checkbox_changed, 0))
-                    #     # checkbox_label.clicked.connect(partial(self.checkbox_changed, 0))
-                    #     self.dict_widget_variables_ausgleichspunkte[linetext] = checkbox
 
-                        # print(index)
-                        # print(self.list_sage_ausgleichspunkte_chosen)
-                        # if index in self.list_sage_ausgleichspunkte_chosen:
-                        #     print(index)
-                        #     print(linetext)
-                    #     if index in self.list_sage_ausgleichspunkte_chosen:
-                    #         checkbox.setChecked(True) 
                 row += 1
                     
         elif self.combobox_edit.currentIndex() == 1:
             for index, linetext in enumerate(self.hide_show_items_split_text):
                 if is_empty(linetext.replace("ITEM", "").strip()) == False:
 
-            #     print(linetext)
+
                     checkbox, checkbox_label = self.create_checkbox_ausgleich(
                         linetext, row, index
                     )
@@ -1344,10 +1318,6 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.checkbox_clicked(checkbox, checkbox_label)
 
     def check_if_saved_changes_exist(self):
-        # print(self.list_sage_ausgleichspunkte_chosen)
-        # print(self.list_sage_hide_show_items_chosen)
-        # print(self.sage_individual_change)
-        # list_changes = [self.list_sage_ausgleichspunkte_chosen, self.list_sage_hide_show_items_chosen, self.sage_individual_change]
 
         if not is_empty(self.list_sage_ausgleichspunkte_chosen):
             for index in self.list_sage_ausgleichspunkte_chosen:
@@ -1373,7 +1343,6 @@ class Ui_Dialog_ausgleichspunkte(object):
         # self.combobox_edit.currentIndex())
         if self.typ == 2:
             change_detected = self.check_if_saved_changes_exist()
-            # print(change_detected)
             
             if change_detected == True:
                 response = question_window("Es wurden bereits Änderungen an der Aufgabe gespeichert.",
@@ -1385,7 +1354,6 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.list_sage_hide_show_items_chosen = []   
         # self.sage_individual_change = []
 
-        # print(self.plainTextEdit_content.toPlainText())
 
         if self.combobox_edit.currentIndex() == 2 or self.typ != 2:
             if self.content != self.plainTextEdit_content.toPlainText():
@@ -1419,11 +1387,6 @@ class Ui_Dialog_ausgleichspunkte(object):
                     #     linetext.replace("\\fbox{A}", "")
                     # )
 
-        # print(self.sage_individual_change)
-
-        # list_sage_ausgleichspunkte_chosen = self.list_sage_ausgleichspunkte_chosen
-        # list_sage_hide_show_items_chosen = self.list_sage_hide_show_items_chosen
-        # sage_individual_change = self.sage_individual_change
         self.Dialog.reject()
 
 
@@ -2046,9 +2009,7 @@ class Ui_Dialog_setup(object):
             )
         if list_filename[0] == '':
             return
-        # print(list_filename)
-        # print(os.path.isfile("-a {}".format(list_filename[0]))
-        # print(os.path.isdir("-a {}".format(list_filename[0]))
+
         self.lineedit_pdf_reader.setText(list_filename[0])
 
     def reject_dialog(self):
@@ -2134,9 +2095,9 @@ class Ui_Dialog_developer(object):
 
 
         hashed_pw = read_credentials()
-        # print(hashed_pw)
+
         password = self.lineedit_developer.text().encode('utf-8')
-        # print(password)
+
         if bcrypt.checkpw(password, hashed_pw):
             if self.checkbox_developer.isChecked():
                 if sys.platform.startswith("win"):
@@ -2245,7 +2206,6 @@ class Ui_Dialog_draft_control(object):
 class Ui_Dialog_edit_drafts(object):
     def setupUi(self, Dialog, dict_drafts, typ):
         self.dict_drafts = dict_drafts
-        # print(dict_drafts[typ])
         self.typ = typ
         self.changed_themen = []
         self.dict_widget_variables = {}
@@ -2529,10 +2489,7 @@ class Ui_Dialog_edit_drafts(object):
         self.comboBox.addItem(name)
 
         self.dict_widget_variables[name]=checkbox
-        # print(self.dict_drafts)
-        # name = dict_aufgabe['name']
-        # print(name)
-        # create_new_checkbox(parent, )
+
 
     def comboBox_index_changed(self):      
         if self.reset_combobox == True:
@@ -2870,15 +2827,6 @@ class Ui_Dialog_edit_drafts(object):
 
         self.create_all_checkboxes_drafts()
 
-    # def get_highest_grade_cr(self, _list):
-    #     klasse = 1
-
-    #     for all in _list:
-    #         print(all)
-    #         # if int(all[0][1]) > klasse:
-    #         #     klasse = int(all[0][1])
-
-    #     return "k{}".format(klasse)
 
     def edit_themen(self):
         Dialog = QtWidgets.QDialog(
@@ -2898,8 +2846,6 @@ class Ui_Dialog_edit_drafts(object):
         rsp = Dialog.exec_()
 
         
-        # klasse = self.get_highest_grade_cr(ui.list_themen)
-        # print(klasse)
 
         if rsp == 1:
             self.label_themen.setText(str(ui.list_themen))
@@ -3038,9 +2984,6 @@ class Ui_Dialog_edit_themen(object):
             klasse = self.comboBox_klassen.currentText()
             dict_themen = eval("dict_{}_name".format(klasse))
             for i, all in enumerate(dict_themen.keys()):
-            #     print(all)
-            # self.comboBox_thema.addItem("test")
-                # add_new_option(self.comboBox_thema, 0, all)
                 add_new_option(self.comboBox_thema, i, "{0} ({1})".format(all, dict_themen[all]))       
 
         self.adapt_subthemen()
@@ -3066,9 +3009,7 @@ class Ui_Dialog_edit_themen(object):
             klasse = self.comboBox_klassen.currentText()
             split = self.comboBox_thema.currentText().split(" (")
             thema = split[0]
-            # print('thema: {}'.format(split))
             dict_themen = eval("dict_{0}".format(klasse))
-            # print(dict_themen)
             list_subthemen = dict_themen[thema]
             # self.comboBox_subthema.clear()
             for i, all in enumerate(list_subthemen):
@@ -3105,7 +3046,6 @@ class Ui_Dialog_edit_themen(object):
             #     # thema = "{0}.{1}".format(self.comboBox_klassen.currentText(), gk)
             #     # if int(self.comboBox_klassen.currentText()[1]) not in self.list_klassen:
             #     self.list_klassen.append(int(self.comboBox_klassen.currentText()[1]))
-                # print(self.list_klassen)
 
     def remove_thema(self):
         list_selected_items = self.listWidget.selectedItems()
@@ -3118,20 +3058,16 @@ class Ui_Dialog_edit_themen(object):
                 if item.text() in all:
                     self.changed_themen.remove(all)
         
-        # print(self.changed_themen)
             # if self.typ == 'cria':
             #     klasse = self.comboBox_klassen.currentText()
             #     thema = "{0}.{1}".format(klasse, gk)
             #     self.changed_themen.append(thema)
-            # print(item.text())
-            # print(self.list_klassen)
         # self.listWidget.deleteItem(selected_item)??
         # self.list_klassen.remove(int(self.comboBox_klassen.currentText()[1]))
-        # print(self.list_klassen)
+
 
 
     def save_changes(self):
-        # print(Ui_MainWindow().get_highest_grade_cr())
         list_themen = []
         for index in range(self.listWidget.count()):
             list_themen.append(self.listWidget.item(index).text())

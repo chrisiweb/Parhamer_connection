@@ -1,7 +1,7 @@
 import os
 from re import split
 import shutil
-from config_start import database, path_localappdata_lama
+from config_start import database, path_localappdata_lama, path_programm
 from config import is_empty
 from work_with_content import collect_content
 from standard_dialog_windows import critical_window
@@ -148,16 +148,14 @@ def edit_content_vorschau(self, aufgabe, ausgabetyp):
 
 
 def copy_included_images(self, image):
-    draft_path = os.path.join("_database", "drafts")
     path_bilder = [
-        "_database",
-        "_database_inoffiziell",
-        draft_path,
-        "Lokaler_Ordner",
+        "Bilder",
+        "Bilder_addon",
     ]
 
     for folder in path_bilder:
-        path_image = os.path.join(database, folder, "Bilder", image)
+        path_image = os.path.join(database, folder, image)
+        print(os.path.isfile(path_image))
         if os.path.isfile(path_image):
             saving_path = os.path.join(
                 os.path.dirname(self.chosen_path_schularbeit_erstellen[0]), image

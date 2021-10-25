@@ -8,6 +8,7 @@ __lastupdate__ = "10/21"
 print("Loading...")
 # from urllib import request
 # from dulwich.objectspec import parse_commit_range
+from dulwich.ignore import IgnoreFilterManager
 from start_window import check_if_database_exists
 
 check_if_database_exists()
@@ -41,13 +42,13 @@ import os
 from tinydb import TinyDB, Query
 
 
-
 # from tinydb.operations import update
 
 # import git
 # from git import Repo, remote
 
 import requests
+
 # from urllib.request import urlopen, urlretrieve
 
 
@@ -72,35 +73,32 @@ class Worker_UpdateDatabase(QtCore.QObject):
         # print(Ui_MainWindow.reset_successfull)
         self.finished.emit()
 
+
 class Worker_UpdateLaMA(QtCore.QObject):
     finished = QtCore.pyqtSignal()
 
     @QtCore.pyqtSlot()
     def task(self, path_installer):
-        download_link = "https://github.com/mylama/lama/releases/latest/download/LaMA_setup.exe"
-        path_installer = os.path.join(
-            path_home, "Downloads", "LaMA_setup.exe"
+        download_link = (
+            "https://github.com/mylama/lama/releases/latest/download/LaMA_setup.exe"
         )
+        path_installer = os.path.join(path_home, "Downloads", "LaMA_setup.exe")
         # urlretrieve(download_link, path_installer)
 
-        
         # timeout_start = time.time()
-        
+
         try:
-            r = requests.get(download_link, allow_redirects=True, timeout=(5,10))
-            open(path_installer, 'wb').write(r.content)
+            r = requests.get(download_link, allow_redirects=True, timeout=(5, 10))
+            open(path_installer, "wb").write(r.content)
             self.response = True
 
         except requests.exceptions.ConnectionError:
-            self.response = False            
+            self.response = False
 
         self.finished.emit()
 
-
         # Ui_MainWindow.reset_successfull = git_reset_repo_to_origin()
-        # print(Ui_MainWindow.reset_successfull)
 
-        
 
 # class Worker_PushDatabase(QtCore.QObject):
 #     finished = QtCore.pyqtSignal()
@@ -174,9 +172,7 @@ class Ui_MainWindow(object):
         app.aboutToQuit.connect(self.close_app)
 
     def setupUi(self, MainWindow):
-        QtWidgets.QApplication.setOverrideCursor(
-                QtGui.QCursor(QtCore.Qt.WaitCursor)
-            )
+        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         self.check_for_update()
         QtWidgets.QApplication.restoreOverrideCursor()
         try:
@@ -342,7 +338,10 @@ class Ui_MainWindow(object):
         )
 
         self.actionPush_Database = add_action(
-            MainWindow, self.menuDeveloper, "Entwürfe prüfen", self.draft_control,
+            MainWindow,
+            self.menuDeveloper,
+            "Entwürfe prüfen",
+            self.draft_control,
         )
 
         # self.actionPush_Database = add_action(
@@ -604,21 +603,20 @@ class Ui_MainWindow(object):
         )
         self.groupBox_advanced_search.setSizePolicy(SizePolicy_fixed_height)
 
-
         self.gridLayout_10 = create_new_gridlayout(self.groupBox_advanced_search)
 
-
         self.comboBox_suchbegriffe = create_new_combobox(self.groupBox_advanced_search)
-        self.gridLayout_10.addWidget(self.comboBox_suchbegriffe, 0,0,1,1)
+        self.gridLayout_10.addWidget(self.comboBox_suchbegriffe, 0, 0, 1, 1)
         add_new_option(self.comboBox_suchbegriffe, 0, "")
-        self.comboBox_suchbegriffe.currentIndexChanged.connect(self.comboBox_suchbegriffe_changed)
+        self.comboBox_suchbegriffe.currentIndexChanged.connect(
+            self.comboBox_suchbegriffe_changed
+        )
 
-        i=1
-        suche_auswahl = ['Titel', 'Inhalt', 'Quelle']
+        i = 1
+        suche_auswahl = ["Titel", "Inhalt", "Quelle"]
         for all in suche_auswahl:
             add_new_option(self.comboBox_suchbegriffe, i, all)
-            i+=1
-
+            i += 1
 
         self.entry_suchbegriffe = create_new_lineedit(self.groupBox_advanced_search)
         self.gridLayout_10.addWidget(self.entry_suchbegriffe, 0, 1, 1, 1)
@@ -1223,13 +1221,11 @@ class Ui_MainWindow(object):
 
         # #################################
 
-        if self.chosen_program == 'lama':
+        if self.chosen_program == "lama":
             titel = "Ausgewählte Grundkompetenzen"
         else:
             titel = "Ausgewählte Themen"
-        self.groupBox_ausgew_gk_cr = create_new_groupbox(
-            self.centralwidget, titel
-        )
+        self.groupBox_ausgew_gk_cr = create_new_groupbox(self.centralwidget, titel)
 
         self.groupBox_ausgew_gk_cr.setSizePolicy(SizePolicy_fixed_height)
         self.groupBox_ausgew_gk_cr.setMaximumWidth(350)
@@ -1450,7 +1446,9 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.cb_matura_tag, 0, 7, 1, 1)
         self.cb_matura_tag.hide()
 
-        self.cb_no_grade_tag = create_new_checkbox(self.centralwidget, "klassen-\nunabhängig")
+        self.cb_no_grade_tag = create_new_checkbox(
+            self.centralwidget, "klassen-\nunabhängig"
+        )
         self.gridLayout.addWidget(self.cb_no_grade_tag, 0, 7, 1, 1)
         self.cb_no_grade_tag.hide()
 
@@ -1881,7 +1879,6 @@ class Ui_MainWindow(object):
             befriedigend = 64
             genuegend = 50
 
-
         self.label_sg = create_new_label(self.groupBox_notenschl, "Sehr Gut:")
         self.label_sg.setSizePolicy(SizePolicy_fixed)
         self.gridLayout_6.addWidget(self.label_sg, 0, 0, 1, 1)
@@ -1922,25 +1919,35 @@ class Ui_MainWindow(object):
         self.label_g_2_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
         self.gridLayout_6.addWidget(self.label_g_2_pkt, 1, 5, 1, 1)
 
-        self.groupBox_notenschl_modus = create_new_groupbox(self.groupBox_notenschl, "Anzeige")
-        self.gridLayout_6.addWidget(self.groupBox_notenschl_modus, 0, 6, 2,1)
+        self.groupBox_notenschl_modus = create_new_groupbox(
+            self.groupBox_notenschl, "Anzeige"
+        )
+        self.gridLayout_6.addWidget(self.groupBox_notenschl_modus, 0, 6, 2, 1)
 
-        self.verticalLayout_ns_modus = create_new_verticallayout(self.groupBox_notenschl_modus)
+        self.verticalLayout_ns_modus = create_new_verticallayout(
+            self.groupBox_notenschl_modus
+        )
 
         try:
-            ns_halbe_punkte_checked = self.lama_settings['notenschluessel'][0]
+            ns_halbe_punkte_checked = self.lama_settings["notenschluessel"][0]
         except KeyError:
             ns_halbe_punkte_checked = False
 
-        self.cb_ns_halbe_pkt = create_new_checkbox(self.groupBox_notenschl_modus, "Halbe Punkte", checked=ns_halbe_punkte_checked)
+        self.cb_ns_halbe_pkt = create_new_checkbox(
+            self.groupBox_notenschl_modus,
+            "Halbe Punkte",
+            checked=ns_halbe_punkte_checked,
+        )
         self.verticalLayout_ns_modus.addWidget(self.cb_ns_halbe_pkt)
 
         try:
-            ns_prozente_checked = self.lama_settings['notenschluessel'][1]
+            ns_prozente_checked = self.lama_settings["notenschluessel"][1]
         except KeyError:
             ns_prozente_checked = False
 
-        self.cb_ns_prozent = create_new_checkbox(self.groupBox_notenschl_modus, "Prozentangabe", checked=ns_prozente_checked)
+        self.cb_ns_prozent = create_new_checkbox(
+            self.groupBox_notenschl_modus, "Prozentangabe", checked=ns_prozente_checked
+        )
         self.verticalLayout_ns_modus.addWidget(self.cb_ns_prozent)
 
         # self.cb_ns_NMS = create_new_checkbox(self.groupBox_notenschl_modus, "Modus: NMS")
@@ -2164,7 +2171,8 @@ class Ui_MainWindow(object):
             self.comboBox_klassen_fb_cria.addItem("")
 
             self.comboBox_klassen_fb_cria.setItemText(
-                i, _translate("MainWindow", all[1] + ". Klasse", None),
+                i,
+                _translate("MainWindow", all[1] + ". Klasse", None),
             )
             i += 1
 
@@ -2474,8 +2482,50 @@ class Ui_MainWindow(object):
         if self.chosen_program == "cria":
             self.update_gui("widgets_search")
 
+
+    def get_saving_path(self):
+        dict_umlaute = {
+            "Ä": "AE",
+            "ä": "ae",
+            "Ö": "OE",
+            "ö": "oe",
+            "Ü": "ue",
+            "ü": "ue",
+            "ß": "ss",
+        }
+        self.chosen_path_schularbeit_erstellen = (
+            QtWidgets.QFileDialog.getSaveFileName(
+                None,
+                "Speicherort wählen",
+                os.path.dirname(self.saved_file_path),
+                "TeX Dateien (*.tex);; Alle Dateien (*.*)",
+            )
+        )
+
+        if self.chosen_path_schularbeit_erstellen[0] == "":
+            QtWidgets.QApplication.restoreOverrideCursor()
+            return
+        self.saved_file_path = self.chosen_path_schularbeit_erstellen[0]
+
+        dirname = os.path.dirname(self.chosen_path_schularbeit_erstellen[0])
+        filename = os.path.basename(self.chosen_path_schularbeit_erstellen[0])
+        if sys.platform.startswith("linux"):
+            filename = filename + ".tex"
+
+        for character in dict_umlaute.keys():
+            if character in filename:
+                filename = filename.replace(character, dict_umlaute[character])
+        filename_vorschau = os.path.join(dirname, filename)
+
+        if self.ui_erstellen.lama == True:
+            self.sage_save(self, filename_vorschau)
+        
+        return filename_vorschau
+
+
     def open_dialogwindow_erstellen(
-        self, dict_titlepage,
+        self,
+        dict_titlepage,
     ):
         self.Dialog = QtWidgets.QDialog(
             None,
@@ -2491,7 +2541,7 @@ class Ui_MainWindow(object):
             self.dict_all_infos_for_file,
             dict_titlepage,
             self.saved_file_path,
-            self.comboBox_pruefungstyp.currentText()
+            self.comboBox_pruefungstyp.currentText(),
         )
         rsp = self.Dialog.exec_()
 
@@ -2502,7 +2552,24 @@ class Ui_MainWindow(object):
             elif single_file_index != None:
                 range_limit = 2
             else:
-                range_limit = self.ui_erstellen.spinBox_sw_gruppen.value() * 2    # +1 to reset tex-file to random=0  
+                range_limit = (
+                    self.ui_erstellen.spinBox_sw_gruppen.value() * 2
+                )  # +1 to reset tex-file to random=0
+
+
+            filename_vorschau = self.get_saving_path()
+            if filename_vorschau == None:
+                return
+            self.collect_all_infos_for_creating_file()
+            # print(self.dict_all_infos_for_file)
+
+            if (
+                is_empty(self.dict_all_infos_for_file["data_gesamt"]["copy_images"])
+                == False
+            ):
+                for image in self.dict_all_infos_for_file["data_gesamt"]["copy_images"]:
+                    copy_included_images(self, image)
+
             for index in range(range_limit):
                 single_file_index = self.pushButton_vorschau_pressed(
                     "schularbeit",
@@ -2511,9 +2578,8 @@ class Ui_MainWindow(object):
                     self.ui_erstellen.pdf,
                     self.ui_erstellen.lama,
                     single_file_index,
+                    filename_vorschau = filename_vorschau,
                 )
-
-
 
             if not is_empty(self.chosen_path_schularbeit_erstellen[0]):
                 if sys.platform.startswith("linux"):
@@ -2533,12 +2599,15 @@ class Ui_MainWindow(object):
             self.cb_matura_tag.show()
             self.cb_no_grade_tag.hide()
             self.cb_no_grade_tag.setChecked(False)
-        elif ("###" in self.lineEdit_titel.text() and self.chosen_program == "cria") or (
-            self.chosen_gui == "widgets_edit_cria" and self.developer_mode_active == True
+        elif (
+            "###" in self.lineEdit_titel.text() and self.chosen_program == "cria"
+        ) or (
+            self.chosen_gui == "widgets_edit_cria"
+            and self.developer_mode_active == True
         ):
             self.cb_matura_tag.hide()
             self.cb_matura_tag.setChecked(False)
-            self.cb_no_grade_tag.show()            
+            self.cb_no_grade_tag.show()
         else:
             self.cb_matura_tag.hide()
             self.cb_matura_tag.setChecked(False)
@@ -2735,14 +2804,12 @@ class Ui_MainWindow(object):
             )
 
             # r = requests.post('https://httpbin.org/post', data = {'key':'value'})
-            # print(r.text)
             # f = urlopen(link)
             # url_readme_version = f.read().decode("utf-8")
             readme_content = requests.get(link)
             latest_version = re.search(
                 "Aktuelle Version: \[(.+)\]", readme_content.text
             ).group(1)
-            # print(latest_version)
             if __version__ == latest_version:
                 return
         except Exception as e:
@@ -2751,7 +2818,6 @@ class Ui_MainWindow(object):
                 "Fehler beim Überprüfen der Version. Überprüfung wird übersprungen ..."
             )
             return
-
 
         if sys.platform.startswith("linux"):
             information_window(
@@ -2776,7 +2842,7 @@ class Ui_MainWindow(object):
                     refresh_ddb(self, mac_auto_update=True)
                     opened_file = os.path.basename(sys.argv[0])
                     name, extension = os.path.splitext(opened_file)
-                    
+
                     filename_update = os.path.join(
                         path_programm,
                         "_database",
@@ -2817,44 +2883,46 @@ class Ui_MainWindow(object):
                     Dialog_checkchanges.exec()
 
                     if worker.response == False:
-                        critical_window("LaMA konnte nicht heruntergeladen werden. Bitte überprüfen Sie die Internetverbindung und versuchen Sie es später erneut.")
+                        critical_window(
+                            "LaMA konnte nicht heruntergeladen werden. Bitte überprüfen Sie die Internetverbindung und versuchen Sie es später erneut."
+                        )
                         return
                     elif worker.response == True:
                         os.system(path_installer)
                         sys.exit(0)
         QtWidgets.QApplication.restoreOverrideCursor()
-                # return
-                # opened_file = os.path.basename(sys.argv[0])
-                # name, extension = os.path.splitext(opened_file)
-                # if sys.platform.startswith("darwin"):
-                #     system_folder = "update_mac"
+        # return
+        # opened_file = os.path.basename(sys.argv[0])
+        # name, extension = os.path.splitext(opened_file)
+        # if sys.platform.startswith("darwin"):
+        #     system_folder = "update_mac"
 
-                # else:
-                #     system_folder = "update_windows"
-                # filename_update = os.path.join(
-                #     path_programm,
-                #     "_database",
-                #     "_config",
-                #     "update",
-                #     system_folder,
-                #     "update%s" % extension,
-                # )
+        # else:
+        #     system_folder = "update_windows"
+        # filename_update = os.path.join(
+        #     path_programm,
+        #     "_database",
+        #     "_config",
+        #     "update",
+        #     system_folder,
+        #     "update%s" % extension,
+        # )
 
-                # try:
-                #     if sys.platform.startswith("darwin"):
-                #         if extension == ".py":
-                #             os.system("python3 {}".format(filename_update))
-                #         else:
-                #             os.system("chmod 777 {}".format(filename_update))
-                #             os.system(filename_update)
-                #     else:
-                #         os.startfile(filename_update)
-                #     sys.exit(0)
-                # except Exception as e:
-                #     warning_window(
-                #         'Das neue Update von LaMA konnte leider nicht installiert werden! Bitte versuchen Sie es später erneut oder melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler".',
-                #         'Fehler:\n"{}"'.format(e),
-                #     )
+        # try:
+        #     if sys.platform.startswith("darwin"):
+        #         if extension == ".py":
+        #             os.system("python3 {}".format(filename_update))
+        #         else:
+        #             os.system("chmod 777 {}".format(filename_update))
+        #             os.system(filename_update)
+        #     else:
+        #         os.startfile(filename_update)
+        #     sys.exit(0)
+        # except Exception as e:
+        #     warning_window(
+        #         'Das neue Update von LaMA konnte leider nicht installiert werden! Bitte versuchen Sie es später erneut oder melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler".',
+        #         'Fehler:\n"{}"'.format(e),
+        #     )
 
     def create_Tooltip(self, chosen_dict):
         for all in chosen_dict:
@@ -2898,8 +2966,6 @@ class Ui_MainWindow(object):
                 )
                 self.dict_widget_variables[label_button_check_all].hide()
         # self.button_check_all_unterkapitel.hide()
-
-
 
     def create_all_checkboxes_unterkapitel(self):
         for klasse in list_klassen:
@@ -3226,7 +3292,6 @@ class Ui_MainWindow(object):
         self.cb_matura_tag.setChecked(False)
         self.cb_no_grade_tag.setChecked(False)
 
-
     def reset_sage(self, question_reset=True):
         if question_reset == True and not is_empty(self.list_alle_aufgaben_sage):
             response = question_window(
@@ -3249,8 +3314,8 @@ class Ui_MainWindow(object):
         self.spinBox_4.setProperty("value", 64)
         self.spinBox_5.setProperty("value", 50)
         try:
-            self.cb_ns_halbe_pkt.setChecked(self.lama_settings['notenschluessel'][0])
-            self.cb_ns_prozent.setChecked(self.lama_settings['notenschluessel'][1])
+            self.cb_ns_halbe_pkt.setChecked(self.lama_settings["notenschluessel"][0])
+            self.cb_ns_prozent.setChecked(self.lama_settings["notenschluessel"][1])
         except KeyError:
             self.cb_ns_halbe_pkt.setChecked(False)
             self.cb_ns_prozent.setChecked(False)
@@ -3377,7 +3442,6 @@ class Ui_MainWindow(object):
                 _translate("MainWindow", "Anzahl der Aufgaben: 0", None)
             )
 
-
             self.groupBox_ausgew_gk_cr.setTitle("Ausgewählte Themen")
             # self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
             #     "cria"
@@ -3472,12 +3536,15 @@ class Ui_MainWindow(object):
                 return
 
             if sys.platform.startswith("win"):
-                path_lama_developer_credentials = os.path.join(os.getenv('LOCALAPPDATA'), "LaMA", "credentials")
+                path_lama_developer_credentials = os.path.join(
+                    os.getenv("LOCALAPPDATA"), "LaMA", "credentials"
+                )
             elif sys.platform.startswith("darwin"):
-                path_lama_developer_credentials = os.path.join(Path.home(), "Library", "LaMA","credentials")
+                path_lama_developer_credentials = os.path.join(
+                    Path.home(), "Library", "LaMA", "credentials"
+                )
             # elif sys.platform.startswith("linux"):
             #     path_lama_developer_credentials = os.path.join(Path.home(), "Library", "LaMA","credentials")
-
 
             lama_developer_credentials = os.path.join(
                 path_lama_developer_credentials, "developer_credentials.txt"
@@ -3533,7 +3600,6 @@ class Ui_MainWindow(object):
 
         # teildokument_folder = os.path.join(lama_folder, "Teildokument")
 
-
         # for all in os.listdir(database):
         #     path = os.path.join(database, all)
         #     if os.path.isdir(path):
@@ -3544,7 +3610,6 @@ class Ui_MainWindow(object):
         #             os.remove(path)
 
         # for root, dirs, files in os.walk(delete_folder):
-
 
     def show_info(self):
         QtWidgets.QApplication.restoreOverrideCursor()
@@ -3581,7 +3646,6 @@ class Ui_MainWindow(object):
 
         if os.path.isfile(style_package_path):
             os.remove(style_package_path)
-
 
     def update_style_package(self, package_name):
         response = question_window(
@@ -3906,7 +3970,7 @@ class Ui_MainWindow(object):
                     pass
 
         elif self.chosen_program == "cria":
-            klasse = aufgabe_total['klasse']
+            klasse = aufgabe_total["klasse"]
             # klasse, nummer = aufgabe.split(".", 1)
 
             if klasse != None:
@@ -3920,11 +3984,13 @@ class Ui_MainWindow(object):
 
                 if klasse == None:
                     for all in list_klassen:
-                        
+
                         dict_klasse_name = eval("dict_{}_name".format(all))
                         if kapitel in dict_klasse_name:
                             thema_name = dict_klasse_name[kapitel]
-                            combobox_thema = "combobox_kapitel_creator_cria_{}".format(all)
+                            combobox_thema = "combobox_kapitel_creator_cria_{}".format(
+                                all
+                            )
                             temp_klasse = all
                             break
 
@@ -4036,7 +4102,6 @@ class Ui_MainWindow(object):
                     return
 
             typ = get_aufgabentyp(self.chosen_program, _file_)
-            
 
             aufgabe_total_original = get_aufgabe_total(_file_, typ)
 
@@ -4212,7 +4277,6 @@ class Ui_MainWindow(object):
         if is_empty(self.plainTextEdit.toPlainText()) == True:
             return 'Bitte geben Sie den LaTeX-Quelltext der Aufgabe im Bereich "Aufgabeneingabe" ein.'
 
-
         if is_empty(self.lineEdit_quelle.text()) == True:
             return "Bitte geben Sie die Quelle an."
 
@@ -4364,10 +4428,10 @@ class Ui_MainWindow(object):
             all_files = table_lama.search(_file_.name.matches(pattern))
         elif typ == 1:
             all_files = table_lama.search(_file_.name.matches(themen_auswahl))
-        elif typ == None or typ ==2:
+        elif typ == None or typ == 2:
             # klasse = self.get_highest_grade_cr()
-        #     all_files = table_lama.search(_file_.name.matches(klasse))
-        # elif typ == 2:
+            #     all_files = table_lama.search(_file_.name.matches(klasse))
+            # elif typ == 2:
             all_files = table_lama.all()
 
         for all in all_files:
@@ -4375,8 +4439,8 @@ class Ui_MainWindow(object):
             if typ == 1:
                 num = name.split(" - ")[-1]
             elif typ == None or typ == 2:
-            #     num = name.split(".")[-1]
-            # elif typ == 2:
+                #     num = name.split(".")[-1]
+                # elif typ == 2:
                 num = name
 
             if self.chosen_variation == None:
@@ -4403,7 +4467,6 @@ class Ui_MainWindow(object):
             variation_number = list_[-1]
             # _,variation_number = self.chosen_variation.split(" - ")
             number = "{0}[{1}]".format(variation_number, self.max_integer + 1)
-
 
         # if typ_save == ["admin", 1]:
         #     number = "i." + str(number)
@@ -4485,9 +4548,9 @@ class Ui_MainWindow(object):
         elif typ == 1:
             name = "{0} - {1}{2}".format(themen_auswahl, save_typ, number)
         elif typ == None or typ == 2:
-        #     klasse = self.get_highest_grade_cr()
-        #     name = "{0}.{1}{2}".format(klasse, save_typ, number)
-        # elif typ == 2:
+            #     klasse = self.get_highest_grade_cr()
+            #     name = "{0}.{1}{2}".format(klasse, save_typ, number)
+            # elif typ == 2:
             name = "{0}{1}".format(save_typ, number)
 
         return name
@@ -4619,7 +4682,6 @@ class Ui_MainWindow(object):
 
         name = self.chosen_file_to_edit
 
-
         typ = get_aufgabentyp(self.chosen_program, name)
 
         (
@@ -4675,7 +4737,6 @@ class Ui_MainWindow(object):
             lama_table.clear_cache()
 
         file_id = lama_table.get(_file_.name == aufgabe).doc_id
-
 
         if typ == 1:
             lama_table.update({"name": new_name}, doc_ids=[file_id])
@@ -5436,18 +5497,24 @@ class Ui_MainWindow(object):
         for aufgabe in self.list_alle_aufgaben_sage:
             self.build_aufgaben_schularbeit(aufgabe)
 
-
         self.spinBox_default_pkt.setValue(
             self.dict_all_infos_for_file["data_gesamt"]["Typ1 Standard"]
         )
 
         for aufgabe in self.list_alle_aufgaben_sage:
             try:
-                self.dict_variablen_punkte[aufgabe].setValue(self.dict_all_infos_for_file['dict_alle_aufgaben_pkt_abstand'][aufgabe][0])
-                self.dict_variablen_abstand[aufgabe].setValue(self.dict_all_infos_for_file['dict_alle_aufgaben_pkt_abstand'][aufgabe][1])
+                self.dict_variablen_punkte[aufgabe].setValue(
+                    self.dict_all_infos_for_file["dict_alle_aufgaben_pkt_abstand"][
+                        aufgabe
+                    ][0]
+                )
+                self.dict_variablen_abstand[aufgabe].setValue(
+                    self.dict_all_infos_for_file["dict_alle_aufgaben_pkt_abstand"][
+                        aufgabe
+                    ][1]
+                )
             except KeyError:
                 pass
-
 
         self.spinBox_2.setValue(
             self.dict_all_infos_for_file["data_gesamt"]["Notenschluessel"][0]
@@ -5543,7 +5610,8 @@ class Ui_MainWindow(object):
                 number_examples = len(random_list)
                 warning_window(
                     "Es sind insgesamt weniger Aufgaben enthalten ({0}), als die ausgwählte Anzahl der Aufgaben ({1}).".format(
-                        len(random_list), ui.random_quiz_response[0],
+                        len(random_list),
+                        ui.random_quiz_response[0],
                     ),
                     "Es werden alle vorhandenen Aufgaben in zufälliger Reihenfolge ausgegeben.",
                     "Anzahl der Aufgaben",
@@ -5635,7 +5703,6 @@ class Ui_MainWindow(object):
 
         self.update_punkte()
 
-
     def get_aufgabenverteilung(self):
         num_typ1 = 0
         num_typ2 = 0
@@ -5672,7 +5739,13 @@ class Ui_MainWindow(object):
         if self.chosen_program == "cria":
             label = "Anzahl der Aufgaben: {0}".format(num_total)
 
-        self.label_gesamtbeispiele.setText(_translate("MainWindow", label, None,))
+        self.label_gesamtbeispiele.setText(
+            _translate(
+                "MainWindow",
+                label,
+                None,
+            )
+        )
 
     def adapt_label_gesamtbeispiele(self):
         list_sage_examples_typ1 = []
@@ -5938,11 +6011,10 @@ class Ui_MainWindow(object):
         aufgaben_verteilung = self.get_aufgabenverteilung()
 
         if self.chosen_program == "cria":
-            if aufgabe_total['klasse'] == None:
+            if aufgabe_total["klasse"] == None:
                 klasse = ""
             else:
-                klasse = "{0}. Klasse - ".format(aufgabe_total['klasse'][1])
-
+                klasse = "{0}. Klasse - ".format(aufgabe_total["klasse"][1])
 
             new_groupbox = create_new_groupbox(
                 self.scrollAreaWidgetContents_2, "{0}. Aufgabe".format(index + 1)
@@ -5959,9 +6031,7 @@ class Ui_MainWindow(object):
         if typ == None:
             aufgabenformat = " (" + aufgabe_total["af"].upper() + ")"
 
-            label = "{0}{1}{2}".format(
-                klasse, aufgabe, aufgabenformat
-            )
+            label = "{0}{1}{2}".format(klasse, aufgabe, aufgabenformat)
 
         elif typ == 1:
             aufgabenformat = " (" + aufgabe_total["af"].upper() + ")"
@@ -6074,7 +6144,8 @@ class Ui_MainWindow(object):
             spinbox_abstand.hide()
             self.count_ausgleichspunkte(aufgabe_total["content"])
             label_ausgleichspkt = create_new_label(
-                groupbox_abstand_ausgleich, str(num_ap),
+                groupbox_abstand_ausgleich,
+                str(num_ap),
             )
             label_ausgleichspkt.setStyleSheet("padding-top: 5px; padding-bottom: 5px;")
             verticalLayout_abstand.addWidget(label_ausgleichspkt)
@@ -6100,15 +6171,15 @@ class Ui_MainWindow(object):
 
     def get_klasse(self, mode="sage"):
         if mode == "sage":
-            if self.comboBox_klassen.currentIndex()==0:
+            if self.comboBox_klassen.currentIndex() == 0:
                 klasse = None
             else:
-                klasse = list_klassen[self.comboBox_klassen.currentIndex()-1]
+                klasse = list_klassen[self.comboBox_klassen.currentIndex() - 1]
         elif mode == "feedback":
-            if self.comboBox_klassen_fb_cria.currentIndex()==0:
+            if self.comboBox_klassen_fb_cria.currentIndex() == 0:
                 klasse = None
             else:
-                klasse = list_klassen[self.comboBox_klassen_fb_cria.currentIndex()-1]
+                klasse = list_klassen[self.comboBox_klassen_fb_cria.currentIndex() - 1]
 
         return klasse
 
@@ -6140,12 +6211,18 @@ class Ui_MainWindow(object):
     def add_image_path_to_list(self, aufgabe):
         typ = get_aufgabentyp(self.chosen_program, aufgabe)
         aufgabe_total = get_aufgabe_total(aufgabe, typ)
-        content = aufgabe_total["content"]
+        # content = aufgabe_total["content"]
+        # print(content)
+        # print(aufgabe_total['bilder'])
 
-        if "\\includegraphics" in content:
-            matches = re.findall("/Bilder/(.+.eps)}", content)
-            for image in matches:
-                self.list_copy_images.append(image)
+        for image in aufgabe_total["bilder"]:
+            self.list_copy_images.append(image)
+
+        # if "\\includegraphics" in content:
+        #     matches = re.findall("/Bilder/(.+.eps)}", content)
+        #     for image in matches:
+        #         print(image)
+        #         self.list_copy_images.append(image)
 
     def build_aufgaben_schularbeit(self, aufgabe):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
@@ -6172,7 +6249,8 @@ class Ui_MainWindow(object):
             aufgabe_total = get_aufgabe_total(item.replace(" (lokal)", ""), typ)
             # item_infos = self.collect_all_infos_aufgabe(item)
             neue_aufgaben_box = self.create_neue_aufgaben_box(
-                index_item, item, aufgabe_total)
+                index_item, item, aufgabe_total
+            )
 
             self.gridLayout_8.addWidget(neue_aufgaben_box, index_item, 0, 1, 1)
             index_item + 1
@@ -6185,7 +6263,6 @@ class Ui_MainWindow(object):
         self.add_image_path_to_list(aufgabe.replace(" (lokal)", ""))
 
         self.update_punkte()
-
 
         QtWidgets.QApplication.restoreOverrideCursor()
 
@@ -6218,9 +6295,9 @@ class Ui_MainWindow(object):
             #         return
 
             if aufgabe in self.dict_sage_ausgleichspunkte_chosen.keys():
-                list_sage_ausgleichspunkte_chosen = self.dict_sage_ausgleichspunkte_chosen[
-                    aufgabe
-                ]
+                list_sage_ausgleichspunkte_chosen = (
+                    self.dict_sage_ausgleichspunkte_chosen[aufgabe]
+                )
             else:
                 list_sage_ausgleichspunkte_chosen = []
                 for index, all in enumerate(split_content):
@@ -6234,9 +6311,9 @@ class Ui_MainWindow(object):
                     #     list_sage_ausgleichspunkte_chosen.append(x)
 
             if aufgabe in self.dict_sage_hide_show_items_chosen.keys():
-                list_sage_hide_show_items_chosen = self.dict_sage_hide_show_items_chosen[
-                    aufgabe
-                ]
+                list_sage_hide_show_items_chosen = (
+                    self.dict_sage_hide_show_items_chosen[aufgabe]
+                )
             else:
                 list_sage_hide_show_items_chosen = []
 
@@ -6249,7 +6326,6 @@ class Ui_MainWindow(object):
             sage_individual_change = self.dict_sage_individual_change[aufgabe]
         else:
             sage_individual_change = None
-
 
         Dialog = QtWidgets.QDialog(
             None,
@@ -6295,7 +6371,6 @@ class Ui_MainWindow(object):
             self.dict_variablen_label[aufgabe].setText(
                 "{}".format(len(ui.list_sage_ausgleichspunkte_chosen))
             )
-
 
         self.update_punkte()
 
@@ -6452,8 +6527,8 @@ class Ui_MainWindow(object):
         aufgabe = item.text()
 
         # if self.chosen_program == "cria":
-            # klasse = self.get_klasse("sage")
-            # aufgabe = klasse + "." + aufgabe
+        # klasse = self.get_klasse("sage")
+        # aufgabe = klasse + "." + aufgabe
 
         if aufgabe in self.list_alle_aufgaben_sage:
             return
@@ -6479,7 +6554,8 @@ class Ui_MainWindow(object):
                 _translate(
                     "MainWindow",
                     "Ausgewählte Aufgabe: {0} ({1})".format(
-                        item.text(), self.comboBox_klassen_fb_cria.currentText(),
+                        item.text(),
+                        self.comboBox_klassen_fb_cria.currentText(),
                     ),
                     None,
                 )
@@ -6498,7 +6574,7 @@ class Ui_MainWindow(object):
             self.label_example.setText("Ausgewählte Aufgabe: -")
 
         dict_klasse_name = eval(
-            "dict_{}_name".format(list_klassen[combobox_klassen.currentIndex()-1])
+            "dict_{}_name".format(list_klassen[combobox_klassen.currentIndex() - 1])
         )
 
         combobox_kapitel.clear()
@@ -6524,7 +6600,7 @@ class Ui_MainWindow(object):
             combobox_unterkapitel = self.comboBox_unterkapitel_fb_cria
 
         dict_klasse = eval(
-            "dict_{}".format(list_klassen[combobox_klassen.currentIndex()-1])
+            "dict_{}".format(list_klassen[combobox_klassen.currentIndex() - 1])
         )
 
         chosen_kapitel = extract_topic_abbr(chosen_kapitel)
@@ -6546,11 +6622,14 @@ class Ui_MainWindow(object):
         return string
 
     def add_items_to_listwidget(
-        self, typ, listWidget, filtered_items, local=False,
+        self,
+        typ,
+        listWidget,
+        filtered_items,
+        local=False,
     ):
         for _file_ in filtered_items:
             name = _file_["name"]
-
 
             item = QtWidgets.QListWidgetItem()
 
@@ -6652,10 +6731,12 @@ class Ui_MainWindow(object):
 
         _dict = {}
         for aufgabe in self.list_alle_aufgaben_sage:
-            _dict[aufgabe] = [self.get_punkte_aufgabe_sage(aufgabe), self.get_abstand_aufgabe_sage(aufgabe)]
-        
-        self.dict_all_infos_for_file['dict_alle_aufgaben_pkt_abstand'] = _dict
+            _dict[aufgabe] = [
+                self.get_punkte_aufgabe_sage(aufgabe),
+                self.get_abstand_aufgabe_sage(aufgabe),
+            ]
 
+        self.dict_all_infos_for_file["dict_alle_aufgaben_pkt_abstand"] = _dict
 
         # self.dict_all_infos_for_file[
         #     "dict_alle_aufgaben"
@@ -6729,7 +6810,7 @@ class Ui_MainWindow(object):
                 return False
 
     def add_content_to_tex_file(
-        self, aufgabe, aufgabe_total, filename_vorschau, first_typ2
+        self, aufgabe, aufgabe_total, filename_vorschau, first_typ2, ausgabetyp
     ):
 
         if get_aufgabentyp(self.chosen_program, aufgabe) == 2:
@@ -6750,10 +6831,10 @@ class Ui_MainWindow(object):
             begin = begin_beispiel(aufgabe_total["themen"], punkte)
             end = end_beispiel
         elif aufgabe_total["pagebreak"] == True:
-            begin = begin_beispiel_lang(punkte) 
+            begin = begin_beispiel_lang(punkte)
             end = end_beispiel_lang
 
-        begin = begin + "\t% Aufgabe: {}\n".format(aufgabe_total['name'])
+        begin = begin + "\t% Aufgabe: {}\n".format(aufgabe_total["name"])
 
         if abstand == 99:
             vspace = "\\newpage \n\n"
@@ -6767,8 +6848,9 @@ class Ui_MainWindow(object):
             vorschau.write(begin)
 
         if aufgabe in self.dict_sage_individual_change:
-            with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
-                vorschau.write(self.dict_sage_individual_change[aufgabe])
+            content = self.dict_sage_individual_change[aufgabe]
+            # with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
+            #     vorschau.write(self.dict_sage_individual_change[aufgabe])
         elif aufgabe in self.dict_sage_ausgleichspunkte_chosen:
             full_content = aufgabe_total["content"]
 
@@ -6778,8 +6860,8 @@ class Ui_MainWindow(object):
             )
 
             # content = "\n".join(split_content)
-            with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
-                vorschau.write(content)
+            # with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
+            #     vorschau.write(content)
         elif aufgabe in self.dict_sage_hide_show_items_chosen:
             full_content = aufgabe_total["content"]
             split_content = self.split_content(aufgabe, aufgabe_total["content"])
@@ -6788,8 +6870,8 @@ class Ui_MainWindow(object):
                 self, aufgabe, split_content, full_content
             )
             # print(content)
-            with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
-                vorschau.write(content)
+            # with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
+            #     vorschau.write(content)
             # for index in self.dict_sage_ausgleichspunkte_chosen[aufgabe]:
             #     split_content[index] = split_content[index].replace("SUBitem", "")
 
@@ -6810,18 +6892,22 @@ class Ui_MainWindow(object):
         #         return
 
         else:
-            with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
-                vorschau.write(aufgabe_total["content"])
+            content = aufgabe_total["content"]
 
+        if ausgabetyp == "schularbeit" and is_empty(aufgabe_total['bilder'])  == False:
+            for image in aufgabe_total['bilder']:
+                content = re.sub(r"{{.*{0}}}".format(image),"{{{0}}}".format(image),content)
+        
 
         with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
+            vorschau.write(content)
             vorschau.write(vspace)
             vorschau.write(end)
             vorschau.write("\n\n")
 
         return first_typ2
 
-    def create_body_of_tex_file(self, filename_vorschau):
+    def create_body_of_tex_file(self, filename_vorschau, ausgabetyp):
         first_typ2 = False
         for aufgabe in self.list_alle_aufgaben_sage:
             name = aufgabe.replace(" (lokal)", "")
@@ -6835,67 +6921,80 @@ class Ui_MainWindow(object):
                 )
                 continue
 
-
             first_typ2 = self.add_content_to_tex_file(
-                aufgabe, aufgabe_total, filename_vorschau, first_typ2
+                aufgabe, aufgabe_total, filename_vorschau, first_typ2, ausgabetyp
             )
+
     def pushButton_vorschau_pressed(
-        self, ausgabetyp, index=0, maximum=0, pdf=True, lama=True, single_file_index=None
+        self,
+        ausgabetyp,
+        index=0,
+        maximum=0,
+        pdf=True,
+        lama=True,
+        single_file_index=None,
+        filename_vorschau=os.path.join(
+            path_programm, "Teildokument", "Schularbeit_Vorschau.tex"
+        ),
     ):
 
-        self.collect_all_infos_for_creating_file()
-
+        if ausgabetyp == "vorschau":
+            self.collect_all_infos_for_creating_file()
+        # print(self.dict_all_infos_for_file)
+        # return
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
+        # if ausgabetyp == "vorschau":
+        #     filename_vorschau = os.path.join(
+        #         path_programm, "Teildokument", "Schularbeit_Vorschau.tex"
+        #     )
+        # if ausgabetyp == "schularbeit":
 
-        if ausgabetyp == "vorschau":
-            filename_vorschau = os.path.join(
-                path_programm, "Teildokument", "Schularbeit_Vorschau.tex"
-            )
-        if ausgabetyp == "schularbeit":
-            dict_umlaute = {
-                "Ä": "AE",
-                "ä": "ae",
-                "Ö": "OE",
-                "ö": "oe",
-                "Ü": "ue",
-                "ü": "ue",
-                "ß": "ss",
-            }
-            if index == 0:
+        #     dict_umlaute = {
+        #         "Ä": "AE",
+        #         "ä": "ae",
+        #         "Ö": "OE",
+        #         "ö": "oe",
+        #         "Ü": "ue",
+        #         "ü": "ue",
+        #         "ß": "ss",
+        #     }
+        #     if index == 0:
 
-                self.chosen_path_schularbeit_erstellen = QtWidgets.QFileDialog.getSaveFileName(
-                    None,
-                    "Speicherort wählen",
-                    os.path.dirname(self.saved_file_path),
-                    "TeX Dateien (*.tex);; Alle Dateien (*.*)",
-                )
+        #         self.chosen_path_schularbeit_erstellen = (
+        #             QtWidgets.QFileDialog.getSaveFileName(
+        #                 None,
+        #                 "Speicherort wählen",
+        #                 os.path.dirname(self.saved_file_path),
+        #                 "TeX Dateien (*.tex);; Alle Dateien (*.*)",
+        #             )
+        #         )
 
-                if self.chosen_path_schularbeit_erstellen[0] == "":
-                    QtWidgets.QApplication.restoreOverrideCursor()
-                    return
-                self.saved_file_path = self.chosen_path_schularbeit_erstellen[0]
+        #         if self.chosen_path_schularbeit_erstellen[0] == "":
+        #             QtWidgets.QApplication.restoreOverrideCursor()
+        #             return
+        #         self.saved_file_path = self.chosen_path_schularbeit_erstellen[0]
 
-                dirname = os.path.dirname(self.chosen_path_schularbeit_erstellen[0])
-                filename = os.path.basename(self.chosen_path_schularbeit_erstellen[0])
-                if sys.platform.startswith("linux"):
-                    filename = filename + ".tex"
+        #         dirname = os.path.dirname(self.chosen_path_schularbeit_erstellen[0])
+        #         filename = os.path.basename(self.chosen_path_schularbeit_erstellen[0])
+        #         if sys.platform.startswith("linux"):
+        #             filename = filename + ".tex"
 
-                for character in dict_umlaute.keys():
-                    if character in filename:
-                        filename = filename.replace(character, dict_umlaute[character])
-                filename_vorschau = os.path.join(dirname, filename)
+        #         for character in dict_umlaute.keys():
+        #             if character in filename:
+        #                 filename = filename.replace(character, dict_umlaute[character])
+        #         filename_vorschau = os.path.join(dirname, filename)
 
-                if lama == True:
-                    Ui_MainWindow.sage_save(self, filename_vorschau)  #
+        #         if lama == True:
+        #             Ui_MainWindow.sage_save(self, filename_vorschau)  #
 
-            else:
-                dirname = os.path.dirname(self.chosen_path_schularbeit_erstellen[0])
-                filename = os.path.basename(self.chosen_path_schularbeit_erstellen[0])
-                for character in dict_umlaute.keys():
-                    if character in filename:
-                        filename = filename.replace(character, dict_umlaute[character])
-                filename_vorschau = os.path.join(dirname, filename)
+            # else:
+            #     dirname = os.path.dirname(self.chosen_path_schularbeit_erstellen[0])
+            #     filename = os.path.basename(self.chosen_path_schularbeit_erstellen[0])
+            #     for character in dict_umlaute.keys():
+            #         if character in filename:
+            #             filename = filename.replace(character, dict_umlaute[character])
+            #     filename_vorschau = os.path.join(dirname, filename)
 
         self.dict_gruppen = {0: "A", 1: "B", 2: "C", 3: "D", 4: "E", 5: "F"}
 
@@ -6913,19 +7012,22 @@ class Ui_MainWindow(object):
         else:
             beamer_mode = False
 
-        if (ausgabetyp == "vorschau" and self.cb_solution_sage.isChecked() == True) or (
-            ausgabetyp == "schularbeit" and index % 2 == 0
-        ) or (ausgabetyp == "schularbeit" and pdf==False):
+        if (
+            (ausgabetyp == "vorschau" and self.cb_solution_sage.isChecked() == True)
+            or (ausgabetyp == "schularbeit" and index % 2 == 0)
+            or (ausgabetyp == "schularbeit" and pdf == False)
+        ):
             solution = "solution_on"
 
         else:
             solution = "solution_off"
 
-        if ausgabetyp == 'schularbeit' and single_file_index == None: #and index != self.ui_erstellen.spinBox_sw_gruppen.value() * 2 
+        if (
+            ausgabetyp == "schularbeit" and single_file_index == None
+        ):  # and index != self.ui_erstellen.spinBox_sw_gruppen.value() * 2
             gruppe = int(index / 2)
         else:
             gruppe = 0
-
 
         str_titlepage = get_titlepage_vorschau(
             self, dict_titlepage, ausgabetyp, maximum, gruppe
@@ -6946,26 +7048,30 @@ class Ui_MainWindow(object):
         # vorschau = open(filename_vorschau, "w+", encoding="utf8")
 
         with open(filename_vorschau, "w+", encoding="utf8") as vorschau:
-            vorschau.write(tex_preamble(solution=solution, random = gruppe, beamer_mode=beamer_mode))
+            vorschau.write(
+                tex_preamble(solution=solution, random=gruppe, beamer_mode=beamer_mode)
+            )
             vorschau.write(str_titlepage)
             vorschau.write(header)
 
-
         if single_file_index != None:
-            for group in range(self.ui_erstellen.spinBox_sw_gruppen.value()-1):
-                self.create_body_of_tex_file(filename_vorschau)
-
+            for group in range(self.ui_erstellen.spinBox_sw_gruppen.value() - 1):
+                self.create_body_of_tex_file(filename_vorschau, ausgabetyp)
 
                 str_titlepage = get_titlepage_vorschau(
-                    self, dict_titlepage, ausgabetyp, maximum, group+1
+                    self, dict_titlepage, ausgabetyp, maximum, group + 1
                 )
                 with open(filename_vorschau, "a", encoding="utf8") as vorschau:
                     vorschau.write("\n\n")
                     vorschau.write("\\newpage\n")
-                    vorschau.write("\setcounter{{Zufall}}{{{0}}}\setcounter{{number}}{{0}}\setcounter{{page}}{{1}}\n\n".format(group+1))
+                    vorschau.write(
+                        "\setcounter{{Zufall}}{{{0}}}\setcounter{{number}}{{0}}\setcounter{{page}}{{1}}\n\n".format(
+                            group + 1
+                        )
+                    )
                     vorschau.write(str_titlepage)
 
-            self.create_body_of_tex_file(filename_vorschau)
+            self.create_body_of_tex_file(filename_vorschau, ausgabetyp)
 
             with open(filename_vorschau, "a", encoding="utf8") as vorschau:
                 vorschau.write("\n\n")
@@ -6983,14 +7089,11 @@ class Ui_MainWindow(object):
                     shutil.move(temp_filename, new_filename)
 
                 self.reset_latex_file_to_start(filename_vorschau)
-            QtWidgets.QApplication.restoreOverrideCursor()        
-            return single_file_index+1
-
-
+            QtWidgets.QApplication.restoreOverrideCursor()
+            return single_file_index + 1
 
         else:
-            self.create_body_of_tex_file(filename_vorschau)
-
+            self.create_body_of_tex_file(filename_vorschau, ausgabetyp)
 
         if (
             self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
@@ -7011,7 +7114,6 @@ class Ui_MainWindow(object):
                     if zusatz == "":
                         zusatz = "[]"
                     zusatz = zusatz + "[prozent]"
-                
 
                 with open(filename_vorschau, "a", encoding="utf8") as vorschau:
                     vorschau.write(
@@ -7028,12 +7130,19 @@ class Ui_MainWindow(object):
             vorschau.write("\n\n")
             vorschau.write(tex_end)
             vorschau.write("\n\n")
-            vorschau.write("% Aufgabenliste: {}".format(", ".join(self.list_alle_aufgaben_sage)))
+            vorschau.write(
+                "% Aufgabenliste: {}".format(", ".join(self.list_alle_aufgaben_sage))
+            )
 
         if ausgabetyp == "schularbeit":
             if index == 0:
-                if dict_titlepage["logo"] == True and dict_titlepage["hide_all"] == False:
-                    success = copy_logo_to_target_path(self, dict_titlepage["logo_path"])
+                if (
+                    dict_titlepage["logo"] == True
+                    and dict_titlepage["hide_all"] == False
+                ):
+                    success = copy_logo_to_target_path(
+                        self, dict_titlepage["logo_path"]
+                    )
                     if success == False:
                         warning_window(
                             "Das Logo konnte nicht gefunden werden.",
@@ -7041,12 +7150,12 @@ class Ui_MainWindow(object):
                             "Kein Logo ausgewählt",
                         )
 
-                if (
-                    is_empty(self.dict_all_infos_for_file["data_gesamt"]["copy_images"])
-                    == False
-                ):
-                    for image in self.dict_all_infos_for_file["data_gesamt"]["copy_images"]:
-                        copy_included_images(self, image)
+                # if (
+                #     is_empty(self.dict_all_infos_for_file["data_gesamt"]["copy_images"])
+                #     == False
+                # ):
+                #     for image in self.dict_all_infos_for_file["data_gesamt"]["copy_images"]:
+                #         copy_included_images(self, image)
 
             elif index == self.ui_erstellen.spinBox_sw_gruppen.value() * 2:
                 QtWidgets.QApplication.restoreOverrideCursor()
@@ -7063,7 +7172,6 @@ class Ui_MainWindow(object):
                 create_pdf(name, index, maximum)
 
                 temp_filename = name + ".pdf"
-
 
                 if maximum > 2:
                     if index % 2 == 0:
@@ -7082,20 +7190,15 @@ class Ui_MainWindow(object):
 
                     shutil.move(temp_filename, new_filename)
 
-
                 if index == maximum - 1:
                     self.reset_latex_file_to_start(filename_vorschau)
 
-
         QtWidgets.QApplication.restoreOverrideCursor()
-
 
     def reset_latex_file_to_start(self, filename_vorschau):
         with open(filename_vorschau, "r", encoding="utf8") as vorschau:
             text = vorschau.read()
-        text = re.sub(
-            r"random=.", "random=0", text
-        )
+        text = re.sub(r"random=.", "random=0", text)
         text = re.sub(r"Large Gruppe .", "Large Gruppe A", text)
 
         text = re.sub(r"solution_off", "solution_on", text)
@@ -7325,9 +7428,9 @@ class Ui_MainWindow(object):
         ):
             self.cb_matura_tag.show()
             self.cb_no_grade_tag.hide()
-        elif (chosen_gui == "widgets_create_cria" and "###" in self.lineEdit_titel.text()) or (
-            chosen_gui == "widgets_edit_cria"
-        ):
+        elif (
+            chosen_gui == "widgets_create_cria" and "###" in self.lineEdit_titel.text()
+        ) or (chosen_gui == "widgets_edit_cria"):
             self.cb_matura_tag.hide()
             self.cb_no_grade_tag.show()
 

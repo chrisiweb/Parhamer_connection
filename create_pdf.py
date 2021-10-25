@@ -513,7 +513,7 @@ def construct_tex_file(file_name, gesammeltedateien, solutions, variation, infos
                 draft = ''
 
             green = "green!40!black!60!"
-            print(spezielle_suche)
+
             if variation == True:
                 if check_if_variation(all['name']) == True:
                     file.write("{{\color{{{0}}}".format(green))
