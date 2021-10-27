@@ -8,7 +8,8 @@ __lastupdate__ = "10/21"
 print("Loading...")
 # from urllib import request
 # from dulwich.objectspec import parse_commit_range
-from dulwich.ignore import IgnoreFilterManager
+# from dulwich.ignore import IgnoreFilterManager
+# from processing_window import Ui_ProgressBar
 from start_window import check_if_database_exists
 
 check_if_database_exists()
@@ -73,6 +74,77 @@ class Worker_UpdateDatabase(QtCore.QObject):
         # print(Ui_MainWindow.reset_successfull)
         self.finished.emit()
 
+
+class Worker_LoadLamaFile(QtCore.QObject):
+    finished = QtCore.pyqtSignal()
+
+    @QtCore.pyqtSlot()
+    def task(self, MainWindow, ui):
+        for aufgabe in MainWindow.list_alle_aufgaben_sage:
+            MainWindow.sage_load_files(aufgabe)
+        # i=0
+        # for aufgabe in MainWindow.list_alle_aufgaben_sage:
+        #     # self.build_aufgaben_schularbeit(aufgabe)
+        #     print(aufgabe)
+        #     index_item = MainWindow.list_alle_aufgaben_sage.index(aufgabe)
+        #     typ = get_aufgabentyp(MainWindow.chosen_program, aufgabe)
+
+        #     aufgabe_total = get_aufgabe_total(aufgabe.replace(" (lokal)", ""), typ)
+        #     if aufgabe_total == None:
+        #         # warning_window(
+        #         #     "Die Aufgabe {} konnte nicht gefunden werden, da sie gelöscht oder umbenannt wurde. Sie wird daher ignoriert.".format(
+        #         #         aufgabe
+        #         #     )
+        #         # )
+        #         # MainWindow.dict_all_infos_for_file["list_alle_aufgaben"].remove(aufgabe)
+        #         continue
+        #     # item_infos = self.collect_all_infos_aufgabe(item)
+        #     neue_aufgaben_box = MainWindow.create_neue_aufgaben_box(
+        #         index_item, aufgabe, aufgabe_total
+        #     )
+        #     MainWindow.gridLayout_8.addWidget(neue_aufgaben_box, index_item, 0, 1, 1)
+        #     index_item + 1
+        #     ui.progressbar.setValue(i)
+        #     i+=1
+        ###############
+        # MainWindow.spacerItem = QtWidgets.QSpacerItem(
+        #     20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        # )
+        # MainWindow.gridLayout_8.addItem(MainWindow.spacerItem, index_item + 1, 0, 1, 1)
+
+        # MainWindow.add_image_path_to_list(aufgabe.replace(" (lokal)", ""))
+
+
+        # for i in range(10000):
+        #     print(i)
+        #     ui.progressbar.setValue(i)
+
+        
+        # self.list_remove_elements = []
+        # for aufgabe in MainWindow.list_alle_aufgaben_sage[:]:
+        #     # self.build_aufgaben_schularbeit(aufgabe)
+        #     print(aufgabe)
+        #     index_item = self.list_alle_aufgaben_sage.index(aufgabe)
+        #     typ = get_aufgabentyp(MainWindow.chosen_program, aufgabe)
+
+        #     aufgabe_total = get_aufgabe_total(aufgabe.replace(" (lokal)", ""), typ)
+        #     if aufgabe_total == None:
+        #         warning_window(
+        #             "Die Aufgabe {} konnte nicht gefunden werden, da sie gelöscht oder umbenannt wurde. Sie wird daher ignoriert.".format(
+        #                 aufgabe
+        #             )
+        #         )
+        #         MainWindow.dict_all_infos_for_file["list_alle_aufgaben"].remove(aufgabe)
+        #         # self.list_remove_elements.append(aufgabe)
+        #         continue
+        #     # item_infos = self.collect_all_infos_aufgabe(item)
+        #     neue_aufgaben_box = MainWindow.create_neue_aufgaben_box(
+        #         index_item, aufgabe, aufgabe_total
+        #     )
+        #     MainWindow.gridLayout_8.addWidget(neue_aufgaben_box, index_item, 0, 1, 1)
+        #     index_item + 1
+        # print(Ui_MainWindow.reset_successfull)
+        self.finished.emit()
 
 class Worker_UpdateLaMA(QtCore.QObject):
     finished = QtCore.pyqtSignal()
@@ -1859,6 +1931,13 @@ class Ui_MainWindow(object):
         #     )
         # )
         self.gridLayout_5.addWidget(self.scrollArea_chosen, 5, 0, 1, 6)
+
+
+        # self.sage_loading_progressbar = QtWidgets.QProgressBar(self.scrollAreaWidgetContents_2)
+        # self.sage_loading_progressbar.hide()
+        # self.gridLayout_8.addWidget(self.sage_loading_progressbar,0,0,1,1)
+
+
 
         self.groupBox_notenschl = create_new_groupbox(
             self.groupBox_sage, "Notenschlüssel"
@@ -3724,7 +3803,7 @@ class Ui_MainWindow(object):
         else:
             color = "rgb(47, 69, 80)"
         custom_window(
-            'Eine kleinen Spende für unsere "Kaffeekassa" wird nicht benötigt um LaMA zu finanzieren.\n\nUnser Projekt ist und bleibt kostenlos und wir versuchen es auch weiterhin stetig zu verbessern und aktualisieren. Sie dient lediglich als kleine Anerkennung unserer Arbeit.\n\nVielen Dank!',
+            'Eine kleinen Spende für unsere "Kaffeekassa" wird nicht benötigt, um LaMA zu finanzieren.\n\nUnser Projekt ist und bleibt kostenlos und wir versuchen es auch weiterhin stetig zu verbessern und aktualisieren. Sie dient lediglich als kleine Anerkennung unserer Arbeit.\n\nVielen Dank!',
             """<center><a href='{0}'style="color:{1};">Buy Me A Coffee</a><\center>""".format(
                 link, color
             ),
@@ -5389,14 +5468,39 @@ class Ui_MainWindow(object):
             self.actionRestore_sage.setText("Backup")
             self.actionRestore_sage.setEnabled(False)
 
+    def sage_load_files(self):
+        list_aufgaben_errors = []
+        for aufgabe in self.list_alle_aufgaben_sage:
+            index_item = self.list_alle_aufgaben_sage.index(aufgabe)
+            typ = get_aufgabentyp(self.chosen_program, aufgabe)
+
+            aufgabe_total = get_aufgabe_total(aufgabe.replace(" (lokal)", ""), typ)
+            if aufgabe_total == None:
+                list_aufgaben_errors.append(aufgabe)
+                continue
+
+            neue_aufgaben_box = self.create_neue_aufgaben_box(
+                index_item, aufgabe, aufgabe_total
+            )
+            self.gridLayout_8.addWidget(neue_aufgaben_box, index_item, 0, 1, 1)
+            index_item + 1
+
+
+        self.spacerItem = QtWidgets.QSpacerItem(
+            20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
+        self.gridLayout_8.addItem(self.spacerItem, index_item + 1, 0, 1, 1)
+
+        self.add_image_path_to_list(aufgabe.replace(" (lokal)", ""))
+        return list_aufgaben_errors
+
     def sage_load(self, external_file_loaded=False, autosave=False):
-        self.update_gui("widgets_sage")
         if external_file_loaded == False and autosave == False:
             try:
                 os.path.dirname(self.saved_file_path)
             except AttributeError:
                 self.saved_file_path = path_home
-            QtWidgets.QApplication.restoreOverrideCursor()
+            # QtWidgets.QApplication.restoreOverrideCursor()
             path_backup_file = QtWidgets.QFileDialog.getOpenFileName(
                 None,
                 "Öffnen",
@@ -5413,7 +5517,7 @@ class Ui_MainWindow(object):
             self.saved_file_path = os.path.join(
                 path_localappdata_lama, "Teildokument", "autosave.lama"
             )
-
+        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         loaded_file = self.load_file(self.saved_file_path)
 
         try:
@@ -5430,23 +5534,9 @@ class Ui_MainWindow(object):
                 "Bitte laden Sie eine aktuelle *.lama-Datei oder kontaktieren Sie lama.helpme@gmail.com, wenn Sie Hilfe benötigen.",
             )
             return
-
+        self.update_gui("widgets_sage")
         self.dict_all_infos_for_file = self.load_file(self.saved_file_path)
 
-        # self.update_gui("widgets_sage")
-
-        for aufgabe in self.dict_all_infos_for_file["list_alle_aufgaben"][:]:
-            typ = get_aufgabentyp(self.chosen_program, aufgabe)
-            aufgabe_total = get_aufgabe_total(aufgabe, typ)
-            if aufgabe_total == None:
-                warning_window(
-                    "Die Aufgabe {} konnte nicht gefunden werden, da sie gelöscht oder umbenannt wurde. Sie wird daher ignoriert.".format(
-                        aufgabe
-                    )
-                )
-                self.dict_all_infos_for_file["list_alle_aufgaben"].remove(aufgabe)
-
-        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
         self.list_alle_aufgaben_sage = self.dict_all_infos_for_file[
             "list_alle_aufgaben"
@@ -5506,8 +5596,73 @@ class Ui_MainWindow(object):
             "copy_images"
         ]
 
-        for aufgabe in self.list_alle_aufgaben_sage:
-            self.build_aufgaben_schularbeit(aufgabe)
+
+        
+        list_aufgaben_errors = self.sage_load_files()
+
+        if not is_empty(list_aufgaben_errors):
+            errors = ", ".join(list_aufgaben_errors)
+            if len(list_aufgaben_errors)==1:
+                warning_window(
+                    "Die Aufgabe {}\nkonnte nicht gefunden werden, da sie gelöscht oder umbenannt wurde.\nSie wird daher ignoriert.".format(
+                        errors
+                    )
+                )
+            else:
+                warning_window(
+                    "Die Aufgaben {}\nkonnten nicht gefunden werden, da sie gelöscht oder umbenannt wurden.\nSie werden daher ignoriert.".format(
+                        errors
+                    )
+                )             
+            for aufgabe in list_aufgaben_errors:
+                self.dict_all_infos_for_file["list_alle_aufgaben"].remove(aufgabe)
+        # self.loading_files = True
+        # while self.loading_files:
+        #     # QApplication(sys.argv).processEvents()
+        #     for aufgabe in self.list_alle_aufgaben_sage:
+        #         self.sage_load_files(aufgabe)
+
+            # print('done')
+            # self.loading_files = False
+
+                
+
+
+        # i=0
+        # for aufgabe in self.list_alle_aufgaben_sage[:]:
+        #     # self.build_aufgaben_schularbeit(aufgabe)
+        #     print(aufgabe)
+        #     index_item = self.list_alle_aufgaben_sage.index(aufgabe)
+        #     typ = get_aufgabentyp(self.chosen_program, aufgabe)
+
+        #     aufgabe_total = get_aufgabe_total(aufgabe.replace(" (lokal)", ""), typ)
+        #     if aufgabe_total == None:
+        #         # warning_window(
+        #         #     "Die Aufgabe {} konnte nicht gefunden werden, da sie gelöscht oder umbenannt wurde. Sie wird daher ignoriert.".format(
+        #         #         aufgabe
+        #         #     )
+        #         # )
+        #         self.dict_all_infos_for_file["list_alle_aufgaben"].remove(aufgabe)
+        #         continue
+        #     # item_infos = self.collect_all_infos_aufgabe(item)
+        #     neue_aufgaben_box = self.create_neue_aufgaben_box(
+        #         index_item, aufgabe, aufgabe_total
+        #     )
+        #     self.gridLayout_8.addWidget(neue_aufgaben_box, index_item, 0, 1, 1)
+        #     index_item + 1
+            # progress.setValue(i)
+            # msgBox.show()
+            # i +=1
+
+        # self.spacerItem = QtWidgets.QSpacerItem(
+        #     20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        # )
+        # self.gridLayout_8.addItem(self.spacerItem, index_item + 1, 0, 1, 1)
+
+        # self.add_image_path_to_list(aufgabe.replace(" (lokal)", ""))
+
+        self.update_punkte()
+
 
         self.spinBox_default_pkt.setValue(
             self.dict_all_infos_for_file["data_gesamt"]["Typ1 Standard"]
@@ -5542,6 +5697,7 @@ class Ui_MainWindow(object):
         )
 
         self.no_saved_changes_sage = True
+        
         QtWidgets.QApplication.restoreOverrideCursor()
 
     def sage_save(self, path_create_tex_file=False, autosave=False):  # path_file
@@ -7720,7 +7876,7 @@ if __name__ == "__main__":
     from lama_stylesheets import *
 
     i = step_progressbar(i, "processing_window")
-    from processing_window import Ui_Dialog_processing
+    from processing_window import Ui_Dialog_processing, Ui_ProgressBar
 
     i = step_progressbar(i, "bcrpyt")
     import bcrypt
