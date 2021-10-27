@@ -321,7 +321,7 @@ def search_in_database(self,current_program, database,suchbegriffe):
 def check_if_suchbegriffe_is_empty(suchbegriffe):
     _list = ['themen', 'af', 'klasse', 'erweiterte_suche' ,'info']
     for all in _list:
-        if not is_empty(suchbegriffe[all]):
+        if not is_empty(suchbegriffe[all]) and suchbegriffe[all] != [None]:
             return False
     return True
 
@@ -330,7 +330,6 @@ def prepare_tex_for_pdf(self):
     suchbegriffe = collect_suchbegriffe(self)
 
     response = check_if_suchbegriffe_is_empty(suchbegriffe)
-
     if response == True:
         QApplication.restoreOverrideCursor()
         warning_window("Bitte wählen Sie zumindest ein Suchkriterium aus.")
@@ -358,7 +357,7 @@ def prepare_tex_for_pdf(self):
     gesammeltedateien = list_1 + list_2
 
     # print(suchbegriffe)
-    # print(gesammeltedateien)
+    # # print(gesammeltedateien)
     # return
     ######################################################
     ########### work around ####################
