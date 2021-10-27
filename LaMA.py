@@ -463,7 +463,7 @@ class Ui_MainWindow(object):
             self.change_program,
         )
 
-        self.actionExit = add_action(MainWindow, self.menuDatei, "Exit", self.close_app)
+        self.actionExit = add_action(MainWindow, self.menuDatei, "Exit", self.exit_pressed)
 
         # self.actionAufgaben_Typ1 = add_action(
         #     MainWindow,
@@ -3568,6 +3568,11 @@ class Ui_MainWindow(object):
         # self.beispieldaten_dateipfad_1 = self.define_beispieldaten_dateipfad(1)
         # self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)
 
+    def exit_pressed(self):
+        rsp = question_window("Sind Sie sicher, dass Sie LaMA schließen möchten?")
+        if rsp == True:
+            self.close_app()
+
     def close_app(self):
         if self.list_alle_aufgaben_sage == []:
             sys.exit(0)
@@ -3666,8 +3671,8 @@ class Ui_MainWindow(object):
         if response == 1:
             self.lama_settings = ui.lama_settings
 
-    def complete_reset(self):
-        print("complete reset!")
+    # def complete_reset(self):
+    #     print("complete reset!")
         # rsp = question_window("Sind Sie wirklich sicher, dass Sie LaMA vollständig zurücksetzen wollen?")
         # if rsp==False:
         #     return
