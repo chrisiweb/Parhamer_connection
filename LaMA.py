@@ -1933,9 +1933,9 @@ class Ui_MainWindow(object):
         self.gridLayout_5.addWidget(self.scrollArea_chosen, 5, 0, 1, 6)
 
 
-        # self.sage_loading_progressbar = QtWidgets.QProgressBar(self.scrollAreaWidgetContents_2)
-        # self.sage_loading_progressbar.hide()
-        # self.gridLayout_8.addWidget(self.sage_loading_progressbar,0,0,1,1)
+        self.sage_loading_progressbar = QtWidgets.QProgressBar(self.scrollAreaWidgetContents_2)
+        self.sage_loading_progressbar.hide()
+        self.gridLayout_8.addWidget(self.sage_loading_progressbar,0,0,1,1)
 
 
 
@@ -5474,8 +5474,8 @@ class Ui_MainWindow(object):
 
     def sage_load_files(self):
         list_aufgaben_errors = []
+        i=0
         for aufgabe in self.list_alle_aufgaben_sage:
-            print(aufgabe)
             index_item = self.list_alle_aufgaben_sage.index(aufgabe)
             typ = get_aufgabentyp(self.chosen_program, aufgabe)
 
@@ -5491,6 +5491,8 @@ class Ui_MainWindow(object):
             index_item + 1
 
             self.add_image_path_to_list(aufgabe.replace(" (lokal)", ""))
+            self.progress.setValue(i)
+            i+=1
         self.spacerItem = QtWidgets.QSpacerItem(
             20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
         )
@@ -5498,6 +5500,29 @@ class Ui_MainWindow(object):
 
         
         return list_aufgaben_errors
+
+    # def open_progress_bar(self):
+    #     # for i in range(100):
+    #     #     # print(self.progressbar_value)
+    #     #     self.spinBox_2.setValue(i)
+    #     #     time.sleep(0.2)
+    #     # for i in range(100):
+    #     #     self.spinBox_2.setValue(i)
+    #     #     time.sleep(0.2)
+    #     msgBox = QtWidgets.QMessageBox( QtWidgets.QMessageBox.Warning, "My title", "My text.", QtWidgets.QMessageBox.NoButton )
+
+    #     # Get the layout
+    #     l = msgBox.layout()
+
+    #     # Hide the default button
+    #     l.itemAtPosition( l.rowCount() - 1, 0 ).widget().hide()
+
+    #     progress = QtWidgets.QProgressBar()
+
+    #     # Add the progress bar at the bottom (last row + 1) and first column with column span
+    #     l.addWidget(progress,l.rowCount(), 0, 1, l.columnCount(), Qt.AlignCenter )
+
+    #     msgBox.exec()        
 
     def sage_load(self, external_file_loaded=False, autosave=False):
         if external_file_loaded == False and autosave == False:
@@ -5597,75 +5622,35 @@ class Ui_MainWindow(object):
         except KeyError:
             self.dict_sage_individual_change = {}
 
-        # self.list_copy_images = self.dict_all_infos_for_file["data_gesamt"][
-        #     "copy_images"
-        # ]
 
-        # print(self.list_copy_images)
-        
+        self.progress = QtWidgets.QProgressDialog("Prüfung wird geladen ...", "",0,len(self.list_alle_aufgaben_sage)-1)
+        self.progress.setWindowTitle("Lade...")
+        self.progress.setWindowFlags(QtCore.Qt.WindowTitleHint)
+        self.progress.setWindowIcon(QtGui.QIcon(logo_path))
+        self.progress.setCancelButton(None)
+        self.progress.setWindowModality(Qt.WindowModal)
+
         list_aufgaben_errors = self.sage_load_files()
+        self.progress.cancel()
 
-        # print(self.list_copy_images)
+
+
         if not is_empty(list_aufgaben_errors):
             errors = ", ".join(list_aufgaben_errors)
             if len(list_aufgaben_errors)==1:
-                warning_window(
-                    "Die Aufgabe {}\nkonnte nicht gefunden werden, da sie gelöscht oder umbenannt wurde.\nSie wird daher ignoriert.".format(
-                        errors
-                    )
-                )
+                _list = ["Aufgabe","konnte","wurde", "wird"]
             else:
-                warning_window(
-                    "Die Aufgaben {}\nkonnten nicht gefunden werden, da sie gelöscht oder umbenannt wurden.\nSie werden daher ignoriert.".format(
-                        errors
-                    )
-                )             
+                _list = ["Aufgaben","konnten","wurden", "werden"]
+
+            warning_window(
+                "Die {0} {1} {2} nicht gefunden werden, da sie gelöscht oder umbenannt {3}.\nSie {4} daher ignoriert.".format(
+                    _list[0], errors, _list[1], _list[2], _list[3]
+                )
+            )             
             for aufgabe in list_aufgaben_errors:
                 self.dict_all_infos_for_file["list_alle_aufgaben"].remove(aufgabe)
-        # self.loading_files = True
-        # while self.loading_files:
-        #     # QApplication(sys.argv).processEvents()
-        #     for aufgabe in self.list_alle_aufgaben_sage:
-        #         self.sage_load_files(aufgabe)
 
-            # print('done')
-            # self.loading_files = False
-
-                
-
-
-        # i=0
-        # for aufgabe in self.list_alle_aufgaben_sage[:]:
-        #     # self.build_aufgaben_schularbeit(aufgabe)
-        #     print(aufgabe)
-        #     index_item = self.list_alle_aufgaben_sage.index(aufgabe)
-        #     typ = get_aufgabentyp(self.chosen_program, aufgabe)
-
-        #     aufgabe_total = get_aufgabe_total(aufgabe.replace(" (lokal)", ""), typ)
-        #     if aufgabe_total == None:
-        #         # warning_window(
-        #         #     "Die Aufgabe {} konnte nicht gefunden werden, da sie gelöscht oder umbenannt wurde. Sie wird daher ignoriert.".format(
-        #         #         aufgabe
-        #         #     )
-        #         # )
-        #         self.dict_all_infos_for_file["list_alle_aufgaben"].remove(aufgabe)
-        #         continue
-        #     # item_infos = self.collect_all_infos_aufgabe(item)
-        #     neue_aufgaben_box = self.create_neue_aufgaben_box(
-        #         index_item, aufgabe, aufgabe_total
-        #     )
-        #     self.gridLayout_8.addWidget(neue_aufgaben_box, index_item, 0, 1, 1)
-        #     index_item + 1
-            # progress.setValue(i)
-            # msgBox.show()
-            # i +=1
-
-        # self.spacerItem = QtWidgets.QSpacerItem(
-        #     20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
-        # )
-        # self.gridLayout_8.addItem(self.spacerItem, index_item + 1, 0, 1, 1)
-
-        # self.add_image_path_to_list(aufgabe.replace(" (lokal)", ""))
+     
 
         self.update_punkte()
 
