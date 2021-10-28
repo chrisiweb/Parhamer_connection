@@ -2640,7 +2640,6 @@ class Ui_MainWindow(object):
             if filename_vorschau == None:
                 return
             self.collect_all_infos_for_creating_file()
-            # print(self.dict_all_infos_for_file)
 
             if (
                 is_empty(self.dict_all_infos_for_file["data_gesamt"]["copy_images"])
@@ -5476,6 +5475,7 @@ class Ui_MainWindow(object):
     def sage_load_files(self):
         list_aufgaben_errors = []
         for aufgabe in self.list_alle_aufgaben_sage:
+            print(aufgabe)
             index_item = self.list_alle_aufgaben_sage.index(aufgabe)
             typ = get_aufgabentyp(self.chosen_program, aufgabe)
 
@@ -5490,13 +5490,13 @@ class Ui_MainWindow(object):
             self.gridLayout_8.addWidget(neue_aufgaben_box, index_item, 0, 1, 1)
             index_item + 1
 
-
+            self.add_image_path_to_list(aufgabe.replace(" (lokal)", ""))
         self.spacerItem = QtWidgets.QSpacerItem(
             20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
         )
         self.gridLayout_8.addItem(self.spacerItem, index_item + 1, 0, 1, 1)
 
-        self.add_image_path_to_list(aufgabe.replace(" (lokal)", ""))
+        
         return list_aufgaben_errors
 
     def sage_load(self, external_file_loaded=False, autosave=False):
@@ -5597,14 +5597,15 @@ class Ui_MainWindow(object):
         except KeyError:
             self.dict_sage_individual_change = {}
 
-        self.list_copy_images = self.dict_all_infos_for_file["data_gesamt"][
-            "copy_images"
-        ]
+        # self.list_copy_images = self.dict_all_infos_for_file["data_gesamt"][
+        #     "copy_images"
+        # ]
 
-
+        # print(self.list_copy_images)
         
         list_aufgaben_errors = self.sage_load_files()
 
+        # print(self.list_copy_images)
         if not is_empty(list_aufgaben_errors):
             errors = ", ".join(list_aufgaben_errors)
             if len(list_aufgaben_errors)==1:
