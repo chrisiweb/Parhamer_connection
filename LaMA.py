@@ -2642,10 +2642,10 @@ class Ui_MainWindow(object):
             self.collect_all_infos_for_creating_file()
 
             if (
-                is_empty(self.dict_all_infos_for_file["data_gesamt"]["copy_images"])
+                is_empty(self.list_copy_images) #self.dict_all_infos_for_file["data_gesamt"]["copy_images"]
                 == False
             ):
-                for image in self.dict_all_infos_for_file["data_gesamt"]["copy_images"]:
+                for image in self.list_copy_images:
                     copy_included_images(self, image)
 
             for index in range(range_limit):
@@ -3430,7 +3430,7 @@ class Ui_MainWindow(object):
                 # "num_2": 0,
                 # "punkte_2": 0,
                 # "ausgleichspunkte": 0,
-                "copy_images": [],
+                # "copy_images": [],
             },
         }
 
@@ -6944,7 +6944,7 @@ class Ui_MainWindow(object):
                 self.spinBox_5.value(),
             ],
             "Typ1 Standard": self.spinBox_default_pkt.value(),
-            "copy_images": self.list_copy_images,
+            # "copy_images": self.list_copy_images,
         }
 
         self.dict_all_infos_for_file["data_gesamt"] = dict_data_gesamt
