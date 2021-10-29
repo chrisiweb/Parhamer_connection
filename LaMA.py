@@ -6,10 +6,7 @@ __lastupdate__ = "10/21"
 ##################
 
 print("Loading...")
-# from urllib import request
-# from dulwich.objectspec import parse_commit_range
-# from dulwich.ignore import IgnoreFilterManager
-# from processing_window import Ui_ProgressBar
+
 from start_window import check_if_database_exists
 
 check_if_database_exists()
@@ -25,8 +22,6 @@ import time
 from create_new_widgets import add_action
 import json
 
-# import splash_screen
-# from splash_screen import SplashWindow
 from config_start import (
     path_programm,
     path_home,
@@ -40,29 +35,8 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 import sys
 import os
 
-from tinydb import TinyDB, Query
-
-
-# from tinydb.operations import update
-
-# import git
-# from git import Repo, remote
-
+from tinydb import Query
 import requests
-
-# from urllib.request import urlopen, urlretrieve
-
-
-# from urllib.error import URLError
-
-
-# class Worker_DownloadDatabase(QtCore.QObject):
-#     finished = QtCore.pyqtSignal()
-
-#     @QtCore.pyqtSlot()
-#     def task(self):
-#         self.download_successfull = git_clone_repo()
-#         self.finished.emit()
 
 
 class Worker_UpdateDatabase(QtCore.QObject):
@@ -82,68 +56,7 @@ class Worker_LoadLamaFile(QtCore.QObject):
     def task(self, MainWindow, ui):
         for aufgabe in MainWindow.list_alle_aufgaben_sage:
             MainWindow.sage_load_files(aufgabe)
-        # i=0
-        # for aufgabe in MainWindow.list_alle_aufgaben_sage:
-        #     # self.build_aufgaben_schularbeit(aufgabe)
-        #     print(aufgabe)
-        #     index_item = MainWindow.list_alle_aufgaben_sage.index(aufgabe)
-        #     typ = get_aufgabentyp(MainWindow.chosen_program, aufgabe)
 
-        #     aufgabe_total = get_aufgabe_total(aufgabe.replace(" (lokal)", ""), typ)
-        #     if aufgabe_total == None:
-        #         # warning_window(
-        #         #     "Die Aufgabe {} konnte nicht gefunden werden, da sie gelöscht oder umbenannt wurde. Sie wird daher ignoriert.".format(
-        #         #         aufgabe
-        #         #     )
-        #         # )
-        #         # MainWindow.dict_all_infos_for_file["list_alle_aufgaben"].remove(aufgabe)
-        #         continue
-        #     # item_infos = self.collect_all_infos_aufgabe(item)
-        #     neue_aufgaben_box = MainWindow.create_neue_aufgaben_box(
-        #         index_item, aufgabe, aufgabe_total
-        #     )
-        #     MainWindow.gridLayout_8.addWidget(neue_aufgaben_box, index_item, 0, 1, 1)
-        #     index_item + 1
-        #     ui.progressbar.setValue(i)
-        #     i+=1
-        ###############
-        # MainWindow.spacerItem = QtWidgets.QSpacerItem(
-        #     20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
-        # )
-        # MainWindow.gridLayout_8.addItem(MainWindow.spacerItem, index_item + 1, 0, 1, 1)
-
-        # MainWindow.add_image_path_to_list(aufgabe.replace(" (lokal)", ""))
-
-
-        # for i in range(10000):
-        #     print(i)
-        #     ui.progressbar.setValue(i)
-
-        
-        # self.list_remove_elements = []
-        # for aufgabe in MainWindow.list_alle_aufgaben_sage[:]:
-        #     # self.build_aufgaben_schularbeit(aufgabe)
-        #     print(aufgabe)
-        #     index_item = self.list_alle_aufgaben_sage.index(aufgabe)
-        #     typ = get_aufgabentyp(MainWindow.chosen_program, aufgabe)
-
-        #     aufgabe_total = get_aufgabe_total(aufgabe.replace(" (lokal)", ""), typ)
-        #     if aufgabe_total == None:
-        #         warning_window(
-        #             "Die Aufgabe {} konnte nicht gefunden werden, da sie gelöscht oder umbenannt wurde. Sie wird daher ignoriert.".format(
-        #                 aufgabe
-        #             )
-        #         )
-        #         MainWindow.dict_all_infos_for_file["list_alle_aufgaben"].remove(aufgabe)
-        #         # self.list_remove_elements.append(aufgabe)
-        #         continue
-        #     # item_infos = self.collect_all_infos_aufgabe(item)
-        #     neue_aufgaben_box = MainWindow.create_neue_aufgaben_box(
-        #         index_item, aufgabe, aufgabe_total
-        #     )
-        #     MainWindow.gridLayout_8.addWidget(neue_aufgaben_box, index_item, 0, 1, 1)
-        #     index_item + 1
-        # print(Ui_MainWindow.reset_successfull)
         self.finished.emit()
 
 class Worker_UpdateLaMA(QtCore.QObject):
@@ -169,21 +82,7 @@ class Worker_UpdateLaMA(QtCore.QObject):
 
         self.finished.emit()
 
-        # Ui_MainWindow.reset_successfull = git_reset_repo_to_origin()
 
-
-# class Worker_PushDatabase(QtCore.QObject):
-#     finished = QtCore.pyqtSignal()
-
-#     @QtCore.pyqtSlot()
-#     def task(self, ui, admin, file_list, message, worker_text):
-#         try:
-#             self.changes_found = git_push_to_origin(ui, admin, file_list, message, worker_text)
-#         except Exception as e:
-#             print(e)
-#             self.changes_found = 'error'
-
-#         self.finished.emit()
 
 
 class Ui_MainWindow(object):
@@ -304,26 +203,12 @@ class Ui_MainWindow(object):
         if self.chosen_program == "cria":
             self.chosen_gui = self.chosen_gui + "_cria"
 
-        # if self.chosen_program == "cria":
-        #     self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
-        #         "cria"
-        #     )
-        #     self.beispieldaten_dateipfad_1 = None
-        #     self.beispieldaten_dateipfad_2 = None
-        # else:
-        #     self.beispieldaten_dateipfad_1 = self.define_beispieldaten_dateipfad(1)
-        #     self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)
-        #     self.beispieldaten_dateipfad_cria = None
 
         ########################
         self.MainWindow = MainWindow
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        # MainWindow.resize(900, 500)
-        # MainWindow.move(30,30)
-        # MainWindow.setMaximumSize(QtCore.QSize(1078, 16777215))
         MainWindow.setLayoutDirection(QtCore.Qt.LeftToRight)
-        # MainWindow.setStyleSheet(_fromUtf8(""))
-        # MainWindow.setStyleSheet(_fromUtf8("background-color: rgb(255, 255, 255);"))
+
         if self.chosen_program == "lama":
             MainWindow.setWindowTitle(
                 _translate(
@@ -416,31 +301,6 @@ class Ui_MainWindow(object):
             self.draft_control,
         )
 
-        # self.actionPush_Database = add_action(
-        #     MainWindow,
-        #     self.menuDraftControl,
-        #     "Typ1 Aufgaben",
-        #     partial(self.draft_control, 'lama_1'),
-        # )
-
-        # self.actionPush_Database = add_action(
-        #     MainWindow,
-        #     self.menuDraftControl,
-        #     "Typ2 Aufgaben",
-        #     partial(self.draft_control, 'lama_2'),
-        # )
-
-        # self.actionRewrite = add_action(
-        #     MainWindow,
-        #     self.menuDeveloper,
-        #     "ReWrite",
-        #     self.action_rewrite
-        # )
-        # self.actionPush_Database.setEnabled(False)
-
-        # if self.developer_mode_active == False:
-        #     self.actionPush_Database.setVisible(False)
-
         self.menuDatei.addSeparator()
 
         self.actionBild_convert_image_eps = add_action(
@@ -465,21 +325,6 @@ class Ui_MainWindow(object):
 
         self.actionExit = add_action(MainWindow, self.menuDatei, "Exit", self.exit_pressed)
 
-        # self.actionAufgaben_Typ1 = add_action(
-        #     MainWindow,
-        #     self.menuDateityp,
-        #     "Typ1 Aufgaben",
-        #     self.chosen_aufgabenformat_typ,
-        # )
-        # self.actionAufgaben_Typ1.setShortcut("Ctrl+1")
-
-        # self.actionAufgaben_Typ2 = add_action(
-        #     MainWindow,
-        #     self.menuDateityp,
-        #     "Typ2 Aufgaben",
-        #     self.chosen_aufgabenformat_typ,
-        # )
-        # self.actionAufgaben_Typ2.setShortcut("Ctrl+2")
 
         self.actionSuche = add_action(
             MainWindow,
@@ -588,21 +433,7 @@ class Ui_MainWindow(object):
             MainWindow, self.menuHelp, "LaMA unterstützen", self.show_support
         )
 
-        # self.actionPUSH = add_action(
-        #     MainWindow, self.menuOptionen, 'PUSH', self.action_push_database
-        #     )
 
-        # self.actionPULL = add_action(
-        #     MainWindow, self.menuOptionen, 'PULL', self.git_pull
-        #     )
-
-        # self.actionCHECK = add_action(
-        #     MainWindow, self.menuOptionen, 'CHANGES?', self.git_check_changes
-        #     )
-
-        # self.actionPULLREQUEST = add_action(
-        #     MainWindow, self.menuOptionen, "PULLREQUEST", self.git_pull_request
-        # )
 
         if self.developer_mode_active == True:
             label = "Entwicklermodus (aktiv)"
@@ -2969,38 +2800,7 @@ class Ui_MainWindow(object):
                         os.system(path_installer)
                         sys.exit(0)
         QtWidgets.QApplication.restoreOverrideCursor()
-        # return
-        # opened_file = os.path.basename(sys.argv[0])
-        # name, extension = os.path.splitext(opened_file)
-        # if sys.platform.startswith("darwin"):
-        #     system_folder = "update_mac"
 
-        # else:
-        #     system_folder = "update_windows"
-        # filename_update = os.path.join(
-        #     path_programm,
-        #     "_database",
-        #     "_config",
-        #     "update",
-        #     system_folder,
-        #     "update%s" % extension,
-        # )
-
-        # try:
-        #     if sys.platform.startswith("darwin"):
-        #         if extension == ".py":
-        #             os.system("python3 {}".format(filename_update))
-        #         else:
-        #             os.system("chmod 777 {}".format(filename_update))
-        #             os.system(filename_update)
-        #     else:
-        #         os.startfile(filename_update)
-        #     sys.exit(0)
-        # except Exception as e:
-        #     warning_window(
-        #         'Das neue Update von LaMA konnte leider nicht installiert werden! Bitte versuchen Sie es später erneut oder melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler".',
-        #         'Fehler:\n"{}"'.format(e),
-        #     )
 
     def create_Tooltip(self, chosen_dict):
         for all in chosen_dict:
@@ -3099,10 +2899,6 @@ class Ui_MainWindow(object):
                     label_button_check_all
                 ] = button_check_all_unterkapitel
 
-        # self.button_check_all_unterkapitel = create_new_button(self.scrollAreaWidgetContents_cria, 'alle auswählen',None)
-        # self.button_check_all_unterkapitel.setStyleSheet("background-color: rgb(240, 240, 240);")
-        # self.verticalLayout_4_cria.addWidget(self.button_check_all_unterkapitel, 0, QtCore.Qt.AlignLeft)
-        # self.button_check_all_unterkapitel.hide()
 
     def btn_alle_kapitel_clicked(self, klasse):
         dict_klasse_name = eval("dict_{}_name".format(klasse))
