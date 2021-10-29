@@ -5557,6 +5557,7 @@ class Ui_MainWindow(object):
             else:
                 response = self.change_program()
                 if response == False:
+                    QtWidgets.QApplication.restoreOverrideCursor()
                     return
         except KeyError:
             warning_window(
@@ -7052,10 +7053,10 @@ class Ui_MainWindow(object):
 
         else:
             content = aufgabe_total["content"]
-
         if ausgabetyp == "schularbeit" and is_empty(aufgabe_total['bilder'])  == False:
             for image in aufgabe_total['bilder']:
-                content = re.sub(r"{{.*{0}}}".format(image),"{{{0}}}".format(image),content)
+                content = re.sub(r"{{../_database.*{0}}}".format(image),"{{{0}}}".format(image),content)
+
         
 
         with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
