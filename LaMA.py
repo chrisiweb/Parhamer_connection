@@ -7,6 +7,7 @@ __lastupdate__ = "10/21"
 
 print("Loading...")
 
+from re import A
 from start_window import check_if_database_exists
 
 check_if_database_exists()
@@ -1172,11 +1173,12 @@ class Ui_MainWindow(object):
             _translate("MainWindow", "Bilder (klicken, um Bilder zu entfernen)", None)
         )
         self.groupBox_bilder.setSizePolicy(SizePolicy_maximum_height)
-        self.label_bild_leer = QtWidgets.QLabel(self.scrollAreaWidgetContents_bilder)
-        self.label_bild_leer.setObjectName(_fromUtf8("label_bild_leer"))
-        self.verticalLayout.addWidget(self.label_bild_leer)
-        self.label_bild_leer.setText(_translate("MainWindow", "", None))
-        self.label_bild_leer.setFocusPolicy(QtCore.Qt.NoFocus)
+        # self.label_bild_leer = QtWidgets.QLabel(self.scrollAreaWidgetContents_bilder)
+        # self.label_bild_leer.setObjectName(_fromUtf8("label_bild_leer"))
+        # self.verticalLayout.addWidget(self.label_bild_leer)
+        # self.label_bild_leer.setText(_translate("MainWindow", "", None))
+        # self.label_bild_leer.setFocusPolicy(QtCore.Qt.NoFocus)
+        # self.label_bild_leer.hide()
         self.gridLayout.addWidget(self.groupBox_bilder, 7, 0, 1, 1)
 
         self.btn_add_image = create_new_button(
@@ -3132,7 +3134,7 @@ class Ui_MainWindow(object):
         self.comboBox_af.setCurrentIndex(0)
         self.comboBox_klassen_cr.setCurrentIndex(0)
         self.label_ausgew_gk_creator.setText(_translate("MainWindow", "", None))
-        self.label_bild_leer.show()
+        # self.label_bild_leer.show()
 
         self.chosen_variation = None
         self.reset_variation()
@@ -3913,6 +3915,15 @@ class Ui_MainWindow(object):
         else:
             self.lineEdit_titel.setText(aufgabe_total["titel"])
 
+        # print(aufgabe_total['bilder'])
+        # print(aufgabe_total['name'])
+
+        if not is_empty(aufgabe_total['bilder']):
+            # self.label_bild_leer.hide()
+            for all in aufgabe_total['bilder']:
+                self.add_image_label(all, None)#, clickable=False
+
+            self.verticalLayout.addWidget(self.btn_add_image)
         if mode == "editor":
             if aufgabe_total["info"] == "mat":
                 self.cb_matura_tag.setChecked(True)
@@ -3991,24 +4002,80 @@ class Ui_MainWindow(object):
 
         self.set_infos_chosen_variation(aufgabe_total_original, mode)
 
+    def add_image_label(self, image_name, image_path):
+        self.dict_picture_path[image_name] = image_path
+        label_picture = create_new_label(
+            self.scrollAreaWidgetContents_bilder, image_name, False, True
+        )
+
+        label_picture_name = "label_bild_creator_{}".format(image_name)
+        self.dict_widget_variables[label_picture_name] = label_picture
+        # if clickable == True:
+        label_picture.clicked.connect(
+            partial(self.del_picture, label_picture_name)
+        )
+        # else:
+        #     label_picture.setStyleSheet("color: gray")
+        self.verticalLayout.addWidget(label_picture)
+
+    def open_msg_box_choose_image(self):
+        msg = QtWidgets.QMessageBox()
+        # msg.setIcon(QtWidgets.QMessageBox.Question)
+        msg.setWindowIcon(QtGui.QIcon(logo_path))
+        msg.setText("Was möchten Sie tun?")
+        # msg.setInformativeText('Möchten Sie das neue Update installieren?')
+        msg.setWindowTitle("Grafik hinzufügen")
+        msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No | QtWidgets.QMessageBox.Cancel)
+        button_new = msg.button(QtWidgets.QMessageBox.Yes)
+        button_new.setText("Neue Grafik hinzufügen")
+        button_existing = msg.button(QtWidgets.QMessageBox.No)
+        button_existing.setText("Vorhande Grafik verknüpfen")
+        button_cancel = msg.button(QtWidgets.QMessageBox.Cancel)
+        button_cancel.setText("Abbrechen")
+        response = msg.exec_()
+        return response
     def btn_add_image_pressed(self):
-        try:
-            self.saved_file_path
-        except AttributeError:
-            self.saved_file_path = path_home
+        
+        response = self.open_msg_box_choose_image()
+
+        if response == QtWidgets.QMessageBox.Yes:
+            mode = 'new'
+        elif response == QtWidgets.QMessageBox.No:
+            mode = 'existing'
+        elif response == QtWidgets.QMessageBox.Cancel:
+            return
+  
+
+        if mode == 'new':
+            try:
+                self.saved_file_path
+            except AttributeError:
+                self.saved_file_path = path_home
+            open_path = os.path.dirname(self.saved_file_path)
+        elif mode == 'existing':
+            open_path = os.path.join(path_database, 'Bilder')
         list_filename = QtWidgets.QFileDialog.getOpenFileNames(
             None,
             "Grafiken wählen",
-            os.path.dirname(self.saved_file_path),
+            open_path,
             "Grafiken (*.eps)",
         )
         if list_filename[0] == []:
             return
-        self.saved_file_path = os.path.dirname(list_filename[0][0])
-
+        
+        if mode == 'new':
+            self.saved_file_path = os.path.dirname(list_filename[0][0])
+        elif mode == 'existing':
+            print(os.path.dirname(list_filename[0][0]))
+            print(os.path.join(path_database, 'Bilder'))
+            if os.path.dirname(list_filename[0][0]) == os.path.join(path_database, 'Bilder') or os.path.dirname(list_filename[0][0]) == os.path.join(path_database, 'Bilder_addon'):
+                pass
+            else:
+                critical_window('Die ausgewählte Grafik ist noch nicht in der Datenbank enthalten. Bitte wählen Sie "Neue Grafik hinzufügen", um die Grafik in der Datenbank zu speichern.')
+                return
         i = len(self.dict_picture_path)
 
-        self.label_bild_leer.hide()
+        # self.label_bild_leer.hide()
         for all in list_filename[0]:
             head, tail = os.path.split(all)
 
@@ -4016,32 +4083,33 @@ class Ui_MainWindow(object):
                 pass
             else:
                 head, tail = os.path.split(all)
-                self.dict_picture_path[tail] = all
-                label_picture = create_new_label(
-                    self.scrollAreaWidgetContents_bilder, tail, False, True
-                )
+                self.add_image_label(tail, all)
+                # self.dict_picture_path[tail] = all
+                # label_picture = create_new_label(
+                #     self.scrollAreaWidgetContents_bilder, tail, False, True
+                # )
 
-                label_picture_name = "label_bild_creator_{}".format(tail)
-                self.dict_widget_variables[label_picture_name] = label_picture
-                label_picture.clicked.connect(
-                    partial(self.del_picture, label_picture_name)
-                )
-                self.verticalLayout.addWidget(label_picture)
+                # label_picture_name = "label_bild_creator_{}".format(tail)
+                # self.dict_widget_variables[label_picture_name] = label_picture
+                # label_picture.clicked.connect(
+                #     partial(self.del_picture, label_picture_name)
+                # )
+                # self.verticalLayout.addWidget(label_picture)
         self.verticalLayout.addWidget(self.btn_add_image)
 
     def del_picture(self, picture, question=True):
         if question == True:
             rsp = question_window(
                 'Sind Sie sicher, dass Sie die Grafik "{}" entfernen möchten?'.format(
-                    self.dict_picture_path[self.dict_widget_variables[picture].text()]
+                    self.dict_widget_variables[picture].text() # self.dict_picture_path[self.dict_widget_variables[picture].text()]
                 )
             )
             if rsp == False:
                 return
         del self.dict_picture_path[self.dict_widget_variables[picture].text()]
         self.dict_widget_variables[picture].hide()
-        if len(self.dict_picture_path) == 0:
-            self.label_bild_leer.show()
+        # if len(self.dict_picture_path) == 0:
+        #     self.label_bild_leer.show()
 
         del self.dict_widget_variables[picture]
 
@@ -4372,6 +4440,8 @@ class Ui_MainWindow(object):
     def replace_image_name(self, typ_save):
         textBox_Entry = self.plainTextEdit.toPlainText()
         for old_image_name in self.dict_picture_path:
+            if self.dict_picture_path[old_image_name] == None:
+                continue
             string = "{" + old_image_name + "}"
 
             new_image_name = self.edit_image_name(typ_save, old_image_name)
@@ -4398,6 +4468,8 @@ class Ui_MainWindow(object):
     def copy_image_save(self, typ_save, parent_image_path):
         list_images = []
         for old_image_path in list(self.dict_picture_path.values()):
+            if old_image_path == None:
+                continue
             old_image_name = os.path.basename(old_image_path)
             new_image_name = self.edit_image_name(typ_save, old_image_name)
 
@@ -4559,10 +4631,10 @@ class Ui_MainWindow(object):
         if rsp == False:
             return
 
-        # warning = self.check_entry_creator()
-        # if warning != None:
-        #     warning_window(warning)
-        #     return
+        warning = self.check_entry_creator()
+        if warning != None:
+            warning_window(warning)
+            return
 
         name = self.chosen_file_to_edit
 
@@ -4621,6 +4693,8 @@ class Ui_MainWindow(object):
             lama_table.clear_cache()
 
         file_id = lama_table.get(_file_.name == aufgabe).doc_id
+        print(bilder)
+        print(self.dict_picture_path)
 
         if typ == 1:
             lama_table.update({"name": new_name}, doc_ids=[file_id])
@@ -4634,10 +4708,10 @@ class Ui_MainWindow(object):
         lama_table.update({"klasse": klasse}, doc_ids=[file_id])
         lama_table.update({"info": info}, doc_ids=[file_id])
         if bilder != [] and bilder != None:
-            aufgabe_total = lama_table.get(_file_.name == aufgabe)
-            old_pictures = aufgabe_total['bilder']
-            for all in old_pictures:
-                bilder.append(all)
+            # aufgabe_total = lama_table.get(_file_.name == aufgabe)
+            # old_pictures = aufgabe_total['bilder']
+            # for all in old_pictures:
+            #     bilder.append(all)
             lama_table.update({"bilder": bilder}, doc_ids=[file_id])
 
         lama_table.update({"draft": draft}, doc_ids=[file_id])
