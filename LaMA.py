@@ -4022,7 +4022,7 @@ class Ui_MainWindow(object):
         msg = QtWidgets.QMessageBox()
         # msg.setIcon(QtWidgets.QMessageBox.Question)
         msg.setWindowIcon(QtGui.QIcon(logo_path))
-        msg.setText("Was möchten Sie tun?")
+        msg.setText("Möchten Sie eine neue Grafik hinzufügen oder die Aufgabe mit einer bereits vorhandenen Grafik verknüpfen?")
         # msg.setInformativeText('Möchten Sie das neue Update installieren?')
         msg.setWindowTitle("Grafik hinzufügen")
         msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No | QtWidgets.QMessageBox.Cancel)
@@ -4066,24 +4066,25 @@ class Ui_MainWindow(object):
         if mode == 'new':
             self.saved_file_path = os.path.dirname(list_filename[0][0])
         elif mode == 'existing':
-            print(os.path.dirname(list_filename[0][0]))
-            print(os.path.join(path_database, 'Bilder'))
-            if os.path.dirname(list_filename[0][0]) == os.path.join(path_database, 'Bilder') or os.path.dirname(list_filename[0][0]) == os.path.join(path_database, 'Bilder_addon'):
+            if os.path.normpath(os.path.dirname(list_filename[0][0])) == os.path.normpath(os.path.join(path_database, 'Bilder')) or os.path.normpath(os.path.dirname(list_filename[0][0])) == os.path.normpath(os.path.join(path_database, 'Bilder_addon')):
                 pass
             else:
-                critical_window('Die ausgewählte Grafik ist noch nicht in der Datenbank enthalten. Bitte wählen Sie "Neue Grafik hinzufügen", um die Grafik in der Datenbank zu speichern.')
+                critical_window('Die ausgewählte Grafik(en) ist/sind noch nicht in der Datenbank enthalten. Bitte wählen Sie "Neue Grafik hinzufügen", um die Grafik einzubinden.')
                 return
         i = len(self.dict_picture_path)
 
         # self.label_bild_leer.hide()
         for all in list_filename[0]:
-            head, tail = os.path.split(all)
+            _, tail = os.path.split(all)
 
             if tail in self.dict_picture_path.keys():
                 pass
             else:
-                head, tail = os.path.split(all)
-                self.add_image_label(tail, all)
+                if mode == 'existing':
+                    self.add_image_label(tail, 'no_copy')
+                else:    
+                    # _, tail = os.path.split(all)
+                    self.add_image_label(tail, all)
                 # self.dict_picture_path[tail] = all
                 # label_picture = create_new_label(
                 #     self.scrollAreaWidgetContents_bilder, tail, False, True
@@ -4444,7 +4445,10 @@ class Ui_MainWindow(object):
                 continue
             string = "{" + old_image_name + "}"
 
-            new_image_name = self.edit_image_name(typ_save, old_image_name)
+            if self.dict_picture_path[old_image_name] == "no_copy":
+                new_image_name = old_image_name
+            else:
+                new_image_name = self.edit_image_name(typ_save, old_image_name)
             # if typ_save == ["admin", 0]:
             #     path = "../_database/Bilder/"
             # elif typ_save == ["admin", 1]:
@@ -4468,7 +4472,7 @@ class Ui_MainWindow(object):
     def copy_image_save(self, typ_save, parent_image_path):
         list_images = []
         for old_image_path in list(self.dict_picture_path.values()):
-            if old_image_path == None:
+            if old_image_path == None or old_image_path == 'no_copy':
                 continue
             old_image_name = os.path.basename(old_image_path)
             new_image_name = self.edit_image_name(typ_save, old_image_name)
