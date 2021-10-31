@@ -4053,7 +4053,14 @@ class Ui_MainWindow(object):
                 self.saved_file_path = path_home
             open_path = os.path.dirname(self.saved_file_path)
         elif mode == 'existing':
-            open_path = os.path.join(path_database, 'Bilder')
+            if self.check_for_admin_mode() == 'admin':
+                open_path = os.path.join(path_database, 'Bilder')
+            else:
+                if os.path.isdir(os.path.join(path_database, 'Bilder_local')) == False:
+                    critical_window("Es konnten keine lokal gespeicherten Grafiken gefunden werden.")
+                    return
+                else:
+                    open_path = os.path.join(path_database, 'Bilder_local')
         list_filename = QtWidgets.QFileDialog.getOpenFileNames(
             None,
             "Grafiken wählen",
@@ -4066,7 +4073,7 @@ class Ui_MainWindow(object):
         if mode == 'new':
             self.saved_file_path = os.path.dirname(list_filename[0][0])
         elif mode == 'existing':
-            if os.path.normpath(os.path.dirname(list_filename[0][0])) == os.path.normpath(os.path.join(path_database, 'Bilder')) or os.path.normpath(os.path.dirname(list_filename[0][0])) == os.path.normpath(os.path.join(path_database, 'Bilder_addon')):
+            if os.path.normpath(os.path.dirname(list_filename[0][0])) == os.path.normpath(os.path.join(path_database, 'Bilder')) or os.path.normpath(os.path.dirname(list_filename[0][0])) == os.path.normpath(os.path.join(path_database, 'Bilder_addon')) or os.path.normpath(os.path.dirname(list_filename[0][0])) == os.path.normpath(os.path.join(path_database, 'Bilder_local')):
                 pass
             else:
                 critical_window('Die ausgewählte Grafik(en) ist/sind noch nicht in der Datenbank enthalten. Bitte wählen Sie "Neue Grafik hinzufügen", um die Grafik einzubinden.')
