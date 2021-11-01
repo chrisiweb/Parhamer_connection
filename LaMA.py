@@ -3918,13 +3918,14 @@ class Ui_MainWindow(object):
         # print(aufgabe_total['bilder'])
         # print(aufgabe_total['name'])
 
-        if not is_empty(aufgabe_total['bilder']):
-            # self.label_bild_leer.hide()
-            for all in aufgabe_total['bilder']:
-                self.add_image_label(all, None)#, clickable=False
-
-            self.verticalLayout.addWidget(self.btn_add_image)
         if mode == "editor":
+            if not is_empty(aufgabe_total['bilder']):
+                # self.label_bild_leer.hide()
+                for all in aufgabe_total['bilder']:
+                    self.add_image_label(all, None)#, clickable=False
+
+                self.verticalLayout.addWidget(self.btn_add_image)
+
             if aufgabe_total["info"] == "mat":
                 self.cb_matura_tag.setChecked(True)
             # else:
@@ -4053,7 +4054,7 @@ class Ui_MainWindow(object):
                 self.saved_file_path = path_home
             open_path = os.path.dirname(self.saved_file_path)
         elif mode == 'existing':
-            if self.check_for_admin_mode() == 'admin':
+            if self.check_for_admin_mode() == 'admin' or self.developer_mode_active == True:
                 open_path = os.path.join(path_database, 'Bilder')
             else:
                 if os.path.isdir(os.path.join(path_database, 'Bilder_local')) == False:
@@ -4799,19 +4800,20 @@ class Ui_MainWindow(object):
             lama_table.clear_cache()
         # image_path = os.path(path_programm, '_database')
 
-        if "l." in name:
-            image_path = os.path.join(database, "Bilder_local")
-        elif "i." in name:
-            image_path = os.path.join(database, "Bilder_addon")
-        else:
-            image_path = os.path.join(database, "Bilder")
+        ### Bilder löschen ### disabled
+        # if "l." in name:
+        #     image_path = os.path.join(database, "Bilder_local")
+        # elif "i." in name:
+        #     image_path = os.path.join(database, "Bilder_addon")
+        # else:
+        #     image_path = os.path.join(database, "Bilder")
 
-        for all in images:
-            image = os.path.join(image_path, all)
-            try:
-                os.remove(image)
-            except FileNotFoundError:
-                print('Die Grafik "{}" konnte nicht gefunden werden.'.format(image))
+        # for all in images:
+        #     image = os.path.join(image_path, all)
+        #     try:
+        #         os.remove(image)
+        #     except FileNotFoundError:
+        #         print('Die Grafik "{}" konnte nicht gefunden werden.'.format(image))
 
         delete_file(name, typ)
 
