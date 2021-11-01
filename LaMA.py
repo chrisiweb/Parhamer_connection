@@ -5436,7 +5436,7 @@ class Ui_MainWindow(object):
 
 
     def database_clean_up(self):
-        # refresh_ddb(self, auto_update=True)
+        refresh_ddb(self, auto_update=True)
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         worker_text = "Fehlende Aufgabenummern werden gesucht ..."
         Dialog_cleanup = QtWidgets.QDialog()
