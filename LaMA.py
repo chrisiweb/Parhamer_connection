@@ -8,6 +8,9 @@ __lastupdate__ = "10/21"
 print("Loading...")
 
 from re import A
+from PIL.Image import MAX_IMAGE_PIXELS
+
+from tinydb import table
 from start_window import check_if_database_exists
 
 check_if_database_exists()
@@ -36,9 +39,24 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 import sys
 import os
 
-from tinydb import Query
+# from tinydb import Query
 import requests
 
+
+class Worker_CleanUp(QtCore.QObject):
+    finished = QtCore.pyqtSignal()
+
+    @QtCore.pyqtSlot()
+    def task(self, ui):
+        #### WORKING
+        Ui_MainWindow.dict_missing_files = Ui_MainWindow().file_clean_up(ui)
+
+        ui.label.setText("Nicht verwendete Bilder werden gesucht ...")
+        list_unused_images = Ui_MainWindow().image_clean_up(ui)
+
+        Ui_MainWindow.dict_missing_files['Nicht verwendete Bilder'] = list_unused_images
+
+        self.finished.emit()
 
 class Worker_UpdateDatabase(QtCore.QObject):
     finished = QtCore.pyqtSignal()
@@ -300,6 +318,13 @@ class Ui_MainWindow(object):
             self.menuDeveloper,
             "Entwürfe prüfen",
             self.draft_control,
+        )
+
+        self.actionPush_Database = add_action(
+            MainWindow,
+            self.menuDeveloper,
+            "Datenbank aufräumen",
+            self.database_clean_up,
         )
 
         self.menuDatei.addSeparator()
@@ -2750,7 +2775,7 @@ class Ui_MainWindow(object):
 
             if ret == True:
                 if sys.platform.startswith("darwin"):
-                    refresh_ddb(self, mac_auto_update=True)
+                    refresh_ddb(self, auto_update='mac')
                     opened_file = os.path.basename(sys.argv[0])
                     name, extension = os.path.splitext(opened_file)
 
@@ -5228,6 +5253,248 @@ class Ui_MainWindow(object):
         ui.setupUi(Dialog, dict_drafts)
 
         Dialog.exec_()
+
+    def get_missing_number(self, maximum, list_files):
+        missing_numbers = []
+        for i in range(1,maximum+1):
+            if i not in list_files:
+                # string = "{0} - {1}".format(topic, i)
+                missing_numbers.append(i)
+        return missing_numbers   
+                    
+    def check_for_missing_files(self, all_files, topic, typ, ui, index = 1):
+        maximum = 0
+        list_files = []
+        dict_files_variations = {}
+
+        if typ == "typ1":
+            progress_maximum = len(dict_gk)
+        else:
+            progress_maximum = len(all_files)
+
+        for file in all_files:
+            worker_text = "Fehlende Aufgabenummern werden gesucht ... ({0}|{1})".format(index, progress_maximum)
+            ui.label.setText(worker_text)
+
+            variation = check_if_variation(file['name'])
+            if typ == "typ1":
+                _ ,num = file['name'].split(" - ")
+            else:
+                num = file['name']
+            if variation == True:
+                x= re.split(r"\[|\]",num)
+                num = int(x[0])
+                variation_num = int(x[1])
+                if num in dict_files_variations:
+                    dict_files_variations[num].append(variation_num)
+                else:
+                    dict_files_variations[num] = [variation_num]
+            else:
+                num = int(num)
+            list_files.append(num)
+            if num > maximum:
+                maximum = num
+            if typ != 'typ1':
+                index +=1
+
+        list_missing_files = []
+        missing_numbers = self.get_missing_number(maximum, list_files)
+
+
+        for all in missing_numbers:
+            if typ == "typ1":
+                string = "{0} - {1}".format(topic, all)
+            else:
+                string = str(all)
+            list_missing_files.append(string)
+
+
+        for num in dict_files_variations:
+            maximum = max(dict_files_variations[num])
+            missing_variation_numbers = self.get_missing_number(maximum, dict_files_variations[num])
+        
+            for variation_num in missing_variation_numbers:
+                if typ == "typ1":
+                    string  = "{0} - {1}[{2}]".format(topic, num, variation_num)
+                else:
+                    string  = "{0}[{1}]".format(num, variation_num)
+                list_missing_files.append(string)
+            # print(missing_variation_numbers)
+
+
+
+
+        
+        return list_missing_files
+
+
+    def file_clean_up(self, ui):
+        dict_missing_files = {}
+        #### TYP 1 ###### FUNKTIONIERT!!!
+        table_lama = _database.table('table_lama_1')
+        _file_ = Query()
+        list_missing_file = []
+
+        i=1
+        for gk in dict_gk.values():
+            all_files = table_lama.search(_file_.themen.any([gk]))
+            
+            _list = self.check_for_missing_files(all_files, gk, "typ1", ui, index = i)
+
+            list_missing_file = list_missing_file + _list
+            i +=1
+
+        dict_missing_files["Typ1 Aufgaben"] = list_missing_file
+        # print(list_missing_file)
+        ###################################
+        #### TYP 2 ###### FUNKTIONIERT!!!
+        table_lama = _database.table('table_lama_2')
+        _file_ = Query()
+        all_files = table_lama.all()
+        list_missing_file = self.check_for_missing_files(all_files, None, "typ2", ui)
+        dict_missing_files["Typ2 Aufgaben"] = list_missing_file
+
+        ###################################
+        #### CRIA ###### FUNKTIONIERT!!!
+        table_lama = _database.table('table_cria')
+        _file_ = Query()
+        all_files = table_lama.all()
+        list_missing_file = self.check_for_missing_files(all_files, None, "cria",  ui)
+        dict_missing_files["Unterstufen Aufgaben"] = list_missing_file
+
+        QtWidgets.QApplication.restoreOverrideCursor()
+        return dict_missing_files
+
+
+        
+        # maximum = 0
+        # _list = []
+        # for file in all_files:
+        #     variation = check_if_variation(file['name'])
+        #     _,num = file['name'].split(" - ")
+        #     if variation == True:
+        #         x= re.split(r"\[|\]",num)
+        #         num = int(x[0])
+        #         variation_num = int(x[1])
+        #     else:
+        #         num = int(num)
+        #     _list.append(num)
+        #     if num > maximum:
+        #         maximum = num
+        # # print(maximum)
+
+        # for i in range(1,maximum+1):
+        #     if i not in _list:
+        #         print(i)
+        #     else:
+        #         print('existiert: {}'.format(i))    
+            
+        # print(_database_addon.all())
+        # print(database.all())
+        # print(files)
+
+    
+    def image_clean_up(self, ui):
+        image_folder = os.path.join(path_database, "Bilder")
+
+        table_lama = _database.table('table_lama_1')
+        _file_ = Query()        
+
+        def test_func(value, image):
+            if image in value:
+                return True
+            else:
+                return False
+
+        list_unused_images = []
+
+        progress_maximum = len(os.listdir(image_folder))
+        index = 1
+        for image in os.listdir(image_folder):
+            ui.label.setText("Nicht verwendete Bilder werden gesucht ... ({0}|{1})".format(index, progress_maximum))
+            table_lama = _database.table('table_lama_1')
+            _file_ = Query() 
+            _list = table_lama.search(_file_.bilder.test(test_func, image))
+
+            if is_empty(_list):
+                table_lama = _database.table('table_lama_2')
+                _file_ = Query() 
+                _list = table_lama.search(_file_.bilder.test(test_func, image))
+            
+            if is_empty(_list):
+                table_lama = _database.table('table_cria')
+                _file_ = Query() 
+                _list = table_lama.search(_file_.bilder.test(test_func, image))                
+            # print(image)
+            if is_empty(_list):
+                list_unused_images.append(image)
+            
+            index +=1
+
+        return list_unused_images
+            
+
+
+    def database_clean_up(self):
+        # refresh_ddb(self, auto_update=True)
+        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        worker_text = "Fehlende Aufgabenummern werden gesucht ..."
+        Dialog_cleanup = QtWidgets.QDialog()
+        ui = Ui_Dialog_processing()
+        ui.setupUi(Dialog_cleanup, worker_text)
+
+        thread = QtCore.QThread(Dialog_cleanup)
+        worker = Worker_CleanUp()
+        worker.finished.connect(Dialog_cleanup.close)
+        worker.moveToThread(thread)
+        thread.started.connect(partial(worker.task, ui))
+        thread.start()
+        thread.exit()
+        Dialog_cleanup.exec()
+        QtWidgets.QApplication.restoreOverrideCursor()
+        # self.file_clean_up()
+
+        try:
+            self.saved_file_path
+        except AttributeError:
+            self.saved_file_path = path_home
+
+        chosen_file  = QtWidgets.QFileDialog.getSaveFileName(
+                None,
+                "Speichern unter",
+                os.path.dirname(self.saved_file_path),
+                "Text-Dateien (*.txt)",
+            )
+        
+        if chosen_file[0]=="":
+            return
+
+        with open(chosen_file[0], "w+", encoding="utf8") as f:
+            f.write("Typ 1 Aufgaben:\n")
+            for all in self.dict_missing_files["Typ1 Aufgaben"]:
+                f.write("{}\n".format(all))
+            f.write("Typ 2 Aufgaben:\n")
+            for all in self.dict_missing_files["Typ2 Aufgaben"]:
+                f.write("{}\n".format(all))
+            f.write("Unterstufen Aufgaben:\n")
+            for all in self.dict_missing_files["Unterstufen Aufgaben"]:
+                f.write("{}\n".format(all))
+            f.write("Nicht verwendete Bilder:\n")
+            for all in self.dict_missing_files["Nicht verwendete Bilder"]:
+                f.write("{}\n".format(all))
+
+
+        if sys.platform.startswith("linux"):
+            subprocess.Popen('xdg-open "{}"'.format(chosen_file[0]), shell=True)
+        elif sys.platform.startswith("darwin"):
+            subprocess.Popen('open "{}"'.format(chosen_file[0]), shell=True)
+        else:
+            subprocess.Popen('"{}"'.format(chosen_file[0]), shell = True)
+
+
+
+
+        
 
     # def action_push_database(self, admin, file_list, message = None, worker_text = "Aufgabe wird hochgeladen ..."):
     #     QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
@@ -7758,7 +8025,7 @@ if __name__ == "__main__":
 
     i = step_progressbar(i, "tinydb")
 
-    from tinydb import Query
+    from tinydb import Query, TinyDB
 
     i = step_progressbar(i, "database_commands")
 

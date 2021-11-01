@@ -1,3 +1,4 @@
+from enum import auto
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QApplication
 import os
@@ -163,7 +164,7 @@ class Worker_RefreshDDB(QtCore.QObject):
 #     # QtWidgets.QApplication.restoreOverrideCursor()
 
 
-def refresh_ddb(self, mac_auto_update=False):
+def refresh_ddb(self, auto_update=False):
     # if selected_program == False:
     #     selected_program = self.chosen_program
 
@@ -191,7 +192,7 @@ def refresh_ddb(self, mac_auto_update=False):
     # skip_download=False
     if self.developer_mode_active == True:
         text = 'Änderungen überprüfen ...'
-    elif mac_auto_update == True:
+    elif auto_update == 'mac':
         text = "Datenbank wird vor dem Update aktualisiert ..."
     else:
         text = "Datenbank wird aktualisiert. Bitte warten ..."
@@ -275,8 +276,9 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
     QtWidgets.QApplication.restoreOverrideCursor()
 
-    if self.reset_successfull == False:
-        warning_window("Der neueste Stand der Datenbank konnte nicht heruntergeladen werden. Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.")
+    if auto_update == False:
+        if self.reset_successfull == False:
+            warning_window("Der neueste Stand der Datenbank konnte nicht heruntergeladen werden. Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.")
 #     elif self.reset_successfull == 'skip_download':
 #         if self.developer_mode_active == True:
 #             text = """
@@ -288,8 +290,8 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 # #             """
 #             information_window(text)
 
-    else:
-        information_window("Die Datenbank ist jetzt auf dem neuesten Stand!")
+        else:
+            information_window("Die Datenbank ist jetzt auf dem neuesten Stand!")
     
     # self.adapt_choosing_list("sage")
     # bring_to_front(QMainWindow())

@@ -70,6 +70,9 @@ def delete_file(aufgabe, typ):
     _file_ = Query()
     lama_table.remove(_file_.name == aufgabe)
 
+
+# def search_for_property(database, property):
+
 # def multiple_update_date(aufgabe, typ, _list):
 
 
