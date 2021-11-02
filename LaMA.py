@@ -4355,7 +4355,23 @@ class Ui_MainWindow(object):
             bilder,
         ]
 
+    def check_for_local_save_mode(self):
+        local = False
+        for all in self.dict_picture_path.values():
+            if all == "no_copy":
+                local = True
+                break
+
+        if (self.chosen_variation != None and "l." in self.chosen_variation.split(" - ")[-1]) or local == True:
+            return 'local'
+        else:
+            return 'general'   
+
     def open_dialogwindow_save(self, information):
+        
+        save_mode = self.check_for_local_save_mode()
+        
+
         Dialog_speichern = QtWidgets.QDialog(
             None,
             QtCore.Qt.WindowSystemMenuHint
@@ -4363,7 +4379,7 @@ class Ui_MainWindow(object):
             | QtCore.Qt.WindowCloseButtonHint,
         )
         self.ui_save = Ui_Dialog_speichern()
-        self.ui_save.setupUi(Dialog_speichern, self.creator_mode, self.chosen_variation)
+        self.ui_save.setupUi(Dialog_speichern, self.creator_mode, self.chosen_variation,save_mode)
         self.ui_save.label.setText(information)
         # self.ui_save.label.setStyleSheet("padding: 10px")
         return Dialog_speichern
@@ -4504,11 +4520,21 @@ class Ui_MainWindow(object):
 
     def copy_image_save(self, typ_save, parent_image_path):
         list_images = []
-        for old_image_path in list(self.dict_picture_path.values()):
-            if old_image_path == None or old_image_path == 'no_copy':
+        for old_image_name in self.dict_picture_path:
+            old_image_path = self.dict_picture_path[old_image_name]
+
+            if old_image_path == None: 
                 continue
-            old_image_name = os.path.basename(old_image_path)
+
+            if old_image_path == 'no_copy':
+                list_images.append(old_image_name)
+                continue
+
+            # old_image_name = os.path.basename(old_image_path)
             new_image_name = self.edit_image_name(typ_save, old_image_name)
+
+            list_images.append(new_image_name)
+
 
             new_image_path = os.path.join(parent_image_path, new_image_name)
 
@@ -4526,7 +4552,7 @@ class Ui_MainWindow(object):
                     #     "Bitte versichern Sie sich, dass der Dateiname korrekt geschrieben ist und Sie die richtige Grafik eingefügt haben.",
                     # )
                     return None, old_image_name
-            list_images.append(new_image_name)
+            
         return list_images, None
 
     def create_file_name(self, typ, max_integer, themen_auswahl, save_typ=""):
@@ -4673,7 +4699,7 @@ class Ui_MainWindow(object):
             warning_window(warning)
             return
 
-        name = self.chosen_file_to_edit
+        name = self.chosen_file_to_edit.replace(" (lokal)", "")
 
         typ = get_aufgabentyp(self.chosen_program, name)
 
@@ -4713,25 +4739,25 @@ class Ui_MainWindow(object):
                     typ, max_integer, themen_auswahl[0], save_typ
                 )
 
-        aufgabe = name.replace(" (lokal)", "")
         _file_ = Query()
 
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
-        rsp = check_branches()
-        if rsp == False:
-            rsp = self.worker_update_database()
+        if "l." not in name:
+            rsp = check_branches()
             if rsp == False:
-                critical_window(
-                    "Beim Synchronisieren ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass eine Internetverbindung beseteht und versuchen Sie es erneut."
-                )
-                QtWidgets.QApplication.restoreOverrideCursor()
-                return
-            lama_table.clear_cache()
+                rsp = self.worker_update_database()
+                if rsp == False:
+                    critical_window(
+                        "Beim Synchronisieren ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass eine Internetverbindung beseteht und versuchen Sie es erneut."
+                    )
+                    QtWidgets.QApplication.restoreOverrideCursor()
+                    return
+                lama_table.clear_cache()
 
-        file_id = lama_table.get(_file_.name == aufgabe).doc_id
-        print(bilder)
-        print(self.dict_picture_path)
+        file_id = lama_table.get(_file_.name == name).doc_id
+        # print(bilder)
+        # print(self.dict_picture_path)
 
         if typ == 1:
             lama_table.update({"name": new_name}, doc_ids=[file_id])
@@ -4770,7 +4796,8 @@ class Ui_MainWindow(object):
         # ])
         QtWidgets.QApplication.restoreOverrideCursor()
 
-        self.upload_single_file_change(name, message="Bearbeitet: {}".format(name))
+        if "l." not in name:
+            self.upload_single_file_change(name, message="Bearbeitet: {}".format(name))
 
         # if "(lokal)" not in name:
         #     if "i." in new_name:
@@ -4813,16 +4840,18 @@ class Ui_MainWindow(object):
         images = aufgabe_total["bilder"]
 
         lama_table = get_table(name, typ)
-        rsp = check_branches()
-        if rsp == False:
-            rsp = self.worker_update_database()
+
+        if "l." not in name:
+            rsp = check_branches()
             if rsp == False:
-                critical_window(
-                    "Beim Synchronisieren ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass eine Internetverbindung beseteht und versuchen Sie es erneut."
-                )
-                QtWidgets.QApplication.restoreOverrideCursor()
-                return
-            lama_table.clear_cache()
+                rsp = self.worker_update_database()
+                if rsp == False:
+                    critical_window(
+                        "Beim Synchronisieren ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass eine Internetverbindung beseteht und versuchen Sie es erneut."
+                    )
+                    QtWidgets.QApplication.restoreOverrideCursor()
+                    return
+                lama_table.clear_cache()
         # image_path = os.path(path_programm, '_database')
 
         ### Bilder löschen ### disabled
@@ -5096,6 +5125,8 @@ class Ui_MainWindow(object):
 
         list_images_new_names, error = self.copy_image_save(typ_save, parent_image_path)
 
+        # print(list_images_new_names)
+        # return
         if list_images_new_names == None:
             warning_window(
                 'Die Grafik mit dem Dateinamen "{}" konnte im Aufgabentext nicht gefunden werden.'.format(
@@ -5148,8 +5179,11 @@ class Ui_MainWindow(object):
             abstand,
         ) = self.get_all_infos_new_file(typ, typ_save[0])
 
+
         content = content_images_replaced
         bilder = list_images_new_names
+
+
         rsp = add_file(
             table_lama,
             name,
@@ -5354,7 +5388,6 @@ class Ui_MainWindow(object):
         ###################################
         #### TYP 2 ###### FUNKTIONIERT!!!
         table_lama = _database.table('table_lama_2')
-        # _file_ = Query()
         all_files = table_lama.all()
         list_missing_file = self.check_for_missing_files(all_files, None, "typ2")
         dict_missing_files["Typ2 Aufgaben"] = list_missing_file
@@ -5364,7 +5397,6 @@ class Ui_MainWindow(object):
         ###################################
         #### CRIA ###### FUNKTIONIERT!!!
         table_lama = _database.table('table_cria')
-        # _file_ = Query()
         all_files = table_lama.all()
         list_missing_file = self.check_for_missing_files(all_files, None, "cria")
         dict_missing_files["Unterstufen Aufgaben"] = list_missing_file
@@ -5448,17 +5480,16 @@ class Ui_MainWindow(object):
         refresh_ddb(self, auto_update=True)
 
 
-        table_lama_typ2 = _database.table('table_lama_2')
-        all_files_typ2 = table_lama_typ2.all()
+        # table_lama_typ2 = _database.table('table_lama_2')
+        # all_files_typ2 = table_lama_typ2.all()
 
 
-        table_lama_cria = _database.table('table_cria')
-        all_files_cria = table_lama_cria.all()
+        # table_lama_cria = _database.table('table_cria')
+        # all_files_cria = table_lama_cria.all()
 
         image_folder = os.path.join(path_database, "Bilder")
         progress_maximum = len(dict_gk) + len(os.listdir(image_folder)) + 2
 
-        print(progress_maximum)
         self.progress_cleanup_value = 0
         self.progress_cleanup = QtWidgets.QProgressDialog("Fehlerbericht wird erstellt ...", "",self.progress_cleanup_value,progress_maximum)
         self.progress_cleanup.setWindowTitle("Lade...")

@@ -1623,11 +1623,8 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
 
 
 class Ui_Dialog_speichern(QtWidgets.QDialog):
-    def setupUi(self, Dialog, creator_mode, chosen_variation):
-        if chosen_variation != None and "l." in chosen_variation.split(" - ")[-1]:
-            save_mode = 'local'
-        else:
-            save_mode = 'general'  
+    def setupUi(self, Dialog, creator_mode, chosen_variation, save_mode):
+ 
         self.Dialog = Dialog
         self.creator_mode = creator_mode
         Dialog.setObjectName("Dialog")
@@ -1702,15 +1699,15 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
 
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         if self.creator_mode == "user":
-            if chosen_variation == None:
+            if save_mode == 'local':
+                self.buttonBox.setStandardButtons(
+                    QtWidgets.QDialogButtonBox.Apply | QtWidgets.QDialogButtonBox.No
+                )
+            elif chosen_variation == None:
                 self.buttonBox.setStandardButtons(
                     QtWidgets.QDialogButtonBox.Yes
                     | QtWidgets.QDialogButtonBox.No
                     | QtWidgets.QDialogButtonBox.Apply
-                )
-            elif save_mode == 'local':
-                self.buttonBox.setStandardButtons(
-                    QtWidgets.QDialogButtonBox.Apply | QtWidgets.QDialogButtonBox.No
                 )
             else:
                 self.buttonBox.setStandardButtons(
