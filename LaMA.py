@@ -4228,7 +4228,7 @@ class Ui_MainWindow(object):
         attached = len(self.dict_picture_path)
         return included, attached
 
-    def check_entry_creator(self):
+    def check_entry_creator(self, mode):
         if self.chosen_program == "lama":
             if is_empty(self.list_selected_topics_creator) == True:
                 return "Es wurden keine Grundkompetenzen zugewiesen."
@@ -4258,14 +4258,6 @@ class Ui_MainWindow(object):
         if is_empty(self.plainTextEdit.toPlainText()) == True:
             return 'Bitte geben Sie den LaTeX-Quelltext der Aufgabe im Bereich "Aufgabeneingabe" ein.'
 
-        if is_empty(self.lineEdit_quelle.text()) == True:
-            return "Bitte geben Sie die Quelle an."
-
-        elif (
-            self.check_for_admin_mode() == "user"
-            and len(self.lineEdit_quelle.text()) != 6
-        ):
-            return 'Bitte geben Sie als Quelle ihren Vornamen und Nachnamen im Format "VorNac" (6 Zeichen!) ein.'
 
         included, attached = self.check_included_attached_image_ratio()
         if included != attached:
@@ -4277,6 +4269,30 @@ class Ui_MainWindow(object):
                 str_, included, attached
             )
             return warning
+
+        if mode == 'save':
+            missing_images = []
+            for image in self.dict_picture_path.keys():
+                output = re.search(r'{{"?{0}"?}}'.format(image), self.plainTextEdit.toPlainText())
+
+                if output == None:
+                    missing_images.append('"'+image+'"')
+                        
+            if not is_empty(missing_images):
+                missing_images_string = ', '.join(missing_images)
+                return 'Die Grafik(en) {} konnte(n) im Aufgabentext nicht gefunden werden.\n\nGrafiken dürfen nur in der Form "Bild.eps" in dem Quelltext (ohne Angabe eines Dateipfades) eingebunden sein und der Titel muss exakt mit den Titeln der hizugefügten Grafiken übereinstimmen.'.format(missing_images_string)
+
+
+        if is_empty(self.lineEdit_quelle.text()) == True:
+            return "Bitte geben Sie die Quelle an."
+
+        elif (
+            self.check_for_admin_mode() == "user"
+            and len(self.lineEdit_quelle.text()) != 6
+        ):
+            return 'Bitte geben Sie als Quelle ihren Vornamen und Nachnamen im Format "VorNac" (6 Zeichen!) ein.'
+
+
 
     def check_for_admin_mode(self):
         if self.lineEdit_titel.text().startswith("###"):
@@ -4456,6 +4472,8 @@ class Ui_MainWindow(object):
         #     local = "_L_"
         # else:
         #     local = ""
+        name = name.replace(" ","")
+
 
         if self.chosen_variation == None:
             number = self.max_integer + 1
@@ -4514,7 +4532,13 @@ class Ui_MainWindow(object):
             if string in self.plainTextEdit.toPlainText():
                 textBox_Entry = textBox_Entry.replace(old_image_name, new_image_name)
             else:
-                return [False, old_image_name]
+                string = '{"' + old_image_name + '"}'
+
+                if string in self.plainTextEdit.toPlainText():
+                    image_name = '"' + old_image_name + '"'
+                    textBox_Entry = textBox_Entry.replace(image_name, new_image_name)
+                else:
+                    return [False, old_image_name]
 
         return [True, textBox_Entry]
 
@@ -4694,7 +4718,7 @@ class Ui_MainWindow(object):
         if rsp == False:
             return
 
-        warning = self.check_entry_creator()
+        warning = self.check_entry_creator('edit')
         if warning != None:
             warning_window(warning)
             return
@@ -5024,7 +5048,7 @@ class Ui_MainWindow(object):
 
         ######## WARNINGS #####
 
-        warning = self.check_entry_creator()
+        warning = self.check_entry_creator('save')
         if warning != None:
             warning_window(warning)
             return
@@ -5105,15 +5129,11 @@ class Ui_MainWindow(object):
         response = self.replace_image_name(typ_save)
 
         if response[0] == False:
-            warning_window(
-                'Die Grafik mit dem Dateinamen "{}" konnte im Aufgabentext nicht gefunden werden.'.format(
-                    response[1]
-                ),
-                "Bitte versichern Sie sich, dass der Dateiname korrekt geschrieben ist und Sie die richtige Grafik eingefügt haben.",
-            )
+            critical_window("Es ist ein Fehler beim Einbinden der Bilder passiert. Bitte Überprüfen Sie ihre Eingabe.")
             return
         else:
             content_images_replaced = response[1]
+
 
         list_path = self.get_parent_folder(typ_save)
 
