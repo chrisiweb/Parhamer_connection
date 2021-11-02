@@ -5262,19 +5262,19 @@ class Ui_MainWindow(object):
                 missing_numbers.append(i)
         return missing_numbers   
                     
-    def check_for_missing_files(self, all_files, topic, typ, ui, index = 1):
+    def check_for_missing_files(self, all_files, topic, typ):
         maximum = 0
         list_files = []
         dict_files_variations = {}
 
-        if typ == "typ1":
-            progress_maximum = len(dict_gk)
-        else:
-            progress_maximum = len(all_files)
+        # if typ == "typ1":
+        #     progress_maximum = len(dict_gk)
+        # else:
+        #     progress_maximum = len(all_files)
 
         for file in all_files:
-            worker_text = "Fehlende Aufgabenummern werden gesucht ... ({0}|{1})".format(index, progress_maximum)
-            ui.label.setText(worker_text)
+            # worker_text = "Fehlende Aufgabenummern werden gesucht ... ({0}|{1})".format(index, progress_maximum)
+            # ui.label.setText(worker_text)
 
             variation = check_if_variation(file['name'])
             if typ == "typ1":
@@ -5294,8 +5294,6 @@ class Ui_MainWindow(object):
             list_files.append(num)
             if num > maximum:
                 maximum = num
-            if typ != 'typ1':
-                index +=1
 
         list_missing_files = []
         missing_numbers = self.get_missing_number(maximum, list_files)
@@ -5328,39 +5326,51 @@ class Ui_MainWindow(object):
         return list_missing_files
 
 
-    def file_clean_up(self, ui):
+    def file_clean_up(self):
         dict_missing_files = {}
+
+
         #### TYP 1 ###### FUNKTIONIERT!!!
         table_lama = _database.table('table_lama_1')
         _file_ = Query()
         list_missing_file = []
 
-        i=1
+        i=0
         for gk in dict_gk.values():
             all_files = table_lama.search(_file_.themen.any([gk]))
             
-            _list = self.check_for_missing_files(all_files, gk, "typ1", ui, index = i)
+            _list = self.check_for_missing_files(all_files, gk, "typ1")
 
             list_missing_file = list_missing_file + _list
-            i +=1
+
+
+            self.progress_cleanup_value += 1
+            self.progress_cleanup.setValue(self.progress_cleanup_value)
+
+            
 
         dict_missing_files["Typ1 Aufgaben"] = list_missing_file
         # print(list_missing_file)
         ###################################
         #### TYP 2 ###### FUNKTIONIERT!!!
         table_lama = _database.table('table_lama_2')
-        _file_ = Query()
+        # _file_ = Query()
         all_files = table_lama.all()
-        list_missing_file = self.check_for_missing_files(all_files, None, "typ2", ui)
+        list_missing_file = self.check_for_missing_files(all_files, None, "typ2")
         dict_missing_files["Typ2 Aufgaben"] = list_missing_file
 
+        self.progress_cleanup_value += 1
+        self.progress_cleanup.setValue(self.progress_cleanup_value)
         ###################################
         #### CRIA ###### FUNKTIONIERT!!!
         table_lama = _database.table('table_cria')
-        _file_ = Query()
+        # _file_ = Query()
         all_files = table_lama.all()
-        list_missing_file = self.check_for_missing_files(all_files, None, "cria",  ui)
+        list_missing_file = self.check_for_missing_files(all_files, None, "cria")
         dict_missing_files["Unterstufen Aufgaben"] = list_missing_file
+
+        self.progress_cleanup_value += 1
+        self.progress_cleanup.setValue(self.progress_cleanup_value)
 
         QtWidgets.QApplication.restoreOverrideCursor()
         return dict_missing_files
@@ -5394,7 +5404,7 @@ class Ui_MainWindow(object):
         # print(files)
 
     
-    def image_clean_up(self, ui):
+    def image_clean_up(self):
         image_folder = os.path.join(path_database, "Bilder")
 
         table_lama = _database.table('table_lama_1')
@@ -5408,10 +5418,7 @@ class Ui_MainWindow(object):
 
         list_unused_images = []
 
-        progress_maximum = len(os.listdir(image_folder))
-        index = 1
         for image in os.listdir(image_folder):
-            ui.label.setText("Nicht verwendete Bilder werden gesucht ... ({0}|{1})".format(index, progress_maximum))
             table_lama = _database.table('table_lama_1')
             _file_ = Query() 
             _list = table_lama.search(_file_.bilder.test(test_func, image))
@@ -5428,8 +5435,10 @@ class Ui_MainWindow(object):
             # print(image)
             if is_empty(_list):
                 list_unused_images.append(image)
-            
-            index +=1
+
+            self.progress_cleanup_value += 1
+            self.progress_cleanup.setValue(self.progress_cleanup_value)
+
 
         return list_unused_images
             
@@ -5437,46 +5446,46 @@ class Ui_MainWindow(object):
 
     def database_clean_up(self):
         refresh_ddb(self, auto_update=True)
+
+
+        table_lama_typ2 = _database.table('table_lama_2')
+        all_files_typ2 = table_lama_typ2.all()
+
+
+        table_lama_cria = _database.table('table_cria')
+        all_files_cria = table_lama_cria.all()
+
+        image_folder = os.path.join(path_database, "Bilder")
+        progress_maximum = len(dict_gk) + len(os.listdir(image_folder)) + 2
+
+        print(progress_maximum)
+        self.progress_cleanup_value = 0
+        self.progress_cleanup = QtWidgets.QProgressDialog("Fehlerbericht wird erstellt ...", "",self.progress_cleanup_value,progress_maximum)
+        self.progress_cleanup.setWindowTitle("Lade...")
+        self.progress_cleanup.setWindowFlags(QtCore.Qt.WindowTitleHint)
+        self.progress_cleanup.setWindowIcon(QtGui.QIcon(logo_path))
+        self.progress_cleanup.setCancelButton(None)
+        self.progress_cleanup.setWindowModality(Qt.WindowModal)
+
+        self.dict_missing_files = self.file_clean_up()
+        list_unused_images = self.image_clean_up()
+        self.dict_missing_files['Nicht verwendete Bilder'] = list_unused_images
+
+        self.progress_cleanup.cancel()
+
+
+
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        worker_text = "Fehlende Aufgabenummern werden gesucht ..."
-        Dialog_cleanup = QtWidgets.QDialog()
-        ui = Ui_Dialog_processing()
-        ui.setupUi(Dialog_cleanup, worker_text)
+        report = os.path.join(path_localappdata_lama, "Teildokument", "Fehlerbericht.txt")
 
-        thread = QtCore.QThread(Dialog_cleanup)
-        worker = Worker_CleanUp()
-        worker.finished.connect(Dialog_cleanup.close)
-        worker.moveToThread(thread)
-        thread.started.connect(partial(worker.task, ui))
-        thread.start()
-        thread.exit()
-        Dialog_cleanup.exec()
-        QtWidgets.QApplication.restoreOverrideCursor()
-        # self.file_clean_up()
-
-        try:
-            self.saved_file_path
-        except AttributeError:
-            self.saved_file_path = path_home
-
-        chosen_file  = QtWidgets.QFileDialog.getSaveFileName(
-                None,
-                "Speichern unter",
-                os.path.dirname(self.saved_file_path),
-                "Text-Dateien (*.txt)",
-            )
-        
-        if chosen_file[0]=="":
-            return
-
-        with open(chosen_file[0], "w+", encoding="utf8") as f:
-            f.write("Typ 1 Aufgaben:\n")
+        with open(report, "w+", encoding="utf8") as f:
+            f.write("Fehlende Typ 1 Aufgaben:\n")
             for all in self.dict_missing_files["Typ1 Aufgaben"]:
                 f.write("{}\n".format(all))
-            f.write("Typ 2 Aufgaben:\n")
+            f.write("Fehlende Typ 2 Aufgaben:\n")
             for all in self.dict_missing_files["Typ2 Aufgaben"]:
                 f.write("{}\n".format(all))
-            f.write("Unterstufen Aufgaben:\n")
+            f.write("Fehlende Unterstufen Aufgaben:\n")
             for all in self.dict_missing_files["Unterstufen Aufgaben"]:
                 f.write("{}\n".format(all))
             f.write("Nicht verwendete Bilder:\n")
@@ -5485,13 +5494,13 @@ class Ui_MainWindow(object):
 
 
         if sys.platform.startswith("linux"):
-            subprocess.Popen('xdg-open "{}"'.format(chosen_file[0]), shell=True)
+            subprocess.Popen('xdg-open "{}"'.format(report), shell=True)
         elif sys.platform.startswith("darwin"):
-            subprocess.Popen('open "{}"'.format(chosen_file[0]), shell=True)
+            subprocess.Popen('open "{}"'.format(report), shell=True)
         else:
-            subprocess.Popen('"{}"'.format(chosen_file[0]), shell = True)
+            subprocess.Popen('"{}"'.format(report), shell = True)
 
-
+        QtWidgets.QApplication.restoreOverrideCursor()
 
 
         
