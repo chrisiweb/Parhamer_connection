@@ -7,10 +7,6 @@ __lastupdate__ = "11/21"
 
 print("Loading...")
 
-from re import A
-from PIL.Image import MAX_IMAGE_PIXELS
-
-from tinydb import table
 from start_window import check_if_database_exists
 
 check_if_database_exists()
