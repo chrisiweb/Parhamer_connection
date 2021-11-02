@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__ = "v3.2.0"
+__version__ = "v3.1.6"
 __lastupdate__ = "11/21"
 ##################
 
