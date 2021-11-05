@@ -2745,7 +2745,7 @@ class Ui_MainWindow(object):
             if __version__ == latest_version:
                 return
         except Exception as e:
-            print(e)
+            # print(e)
             print(
                 "Fehler beim Überprüfen der Version. Überprüfung wird übersprungen ..."
             )
