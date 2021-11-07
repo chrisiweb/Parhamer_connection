@@ -8,16 +8,14 @@ def tex_preamble(
     ):
 
     if beamer_mode == False:
-        start = """
-\documentclass[a4paper,12pt]{article}
+        start = """\documentclass[a4paper,12pt]{article}
 \\usepackage{geometry}
 \geometry{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}
 """
         spacing = "\onehalfspacing %Zeilenabstand"
 
     else:
-        start = """
-\documentclass[18pt]{beamer}
+        start = """\documentclass[18pt]{beamer}
 \let\oldframe\\frame
 \\renewcommand\\frame[1][allowframebreaks, c]{\oldframe[#1]}
 \\usetheme{Boadilla}
@@ -27,7 +25,7 @@ def tex_preamble(
         spacing = ""               
 
     if bookmark == True:
-        bookmark_pkg = "\\usepackage{bookmark}"
+        bookmark_pkg = "\\usepackage{bookmark}\n\setcounter{tocdepth}{1}"
     else:
         bookmark_pkg = ""
 

@@ -297,7 +297,14 @@ def search_in_database(self,current_program, database,suchbegriffe):
                     return False
             return True
 
-        if self.combobox_searchtype.currentIndex()==0:
+        if suchbegriffe['themen'] == []:
+            gesammeltedateien = table_lama.search(
+                (_file_.klasse.test(string_in_list_klasse)) &
+                (_file_.info.test(string_in_list_info)) &
+                (erweiterte_suche) &
+                (_file_.draft.test(include_drafts))
+            )
+        elif self.combobox_searchtype.currentIndex()==0:
             gesammeltedateien = table_lama.search(
                 (_file_.themen.any(suchbegriffe['themen'])) &
                 (_file_.klasse.test(string_in_list_klasse)) &
@@ -357,7 +364,7 @@ def prepare_tex_for_pdf(self):
     gesammeltedateien = list_1 + list_2
 
     # print(suchbegriffe)
-    # # print(gesammeltedateien)
+    # print(gesammeltedateien)
     # return
     ######################################################
     ########### work around ####################
