@@ -3535,7 +3535,7 @@ class Ui_MainWindow(object):
                         path_file = os.path.join(root, file)
                         try:
                             shutil.copy2(path_new_package, path_file)
-                            return path_file
+                            return root
                         except PermissionError:
                             warning_window(
                                 "Das Update konnte leider nicht durchgeführt werden, da notwendige Berechtigungen fehlen. Starten Sie LaMA erneut als Administrator (Rechtsklick -> 'Als Administrator ausführen') und versuchen Sie es erneut."
@@ -3613,20 +3613,32 @@ class Ui_MainWindow(object):
                 )
 
                 if response == False:
+                    QtWidgets.QApplication.restoreOverrideCursor()
                     critical_window(
                         'Das Update von "srdp-mathematik.sty" konnte leider nicht durchgeführt werden. Aktualisieren Sie das Paket manuell oder wenden Sie sich an lama.helpme@gmail.com für Unterstützung.'
                         )
-                    break
+                    return
                 else:
-                    location_found = os.path.dirname(response)
+                    location_found = response
             
             else:
+                #initexmf --update-fndb
+                new_copy = False
                 try:
+                    srdptables = os.path.join(location_found, package)
+                    if sys.platform.startswith("win"):
+                        if not os.path.isfile(srdptables):
+                            new_copy = True        
                     shutil.copy2(package_list[package], location_found)
+                    if new_copy == True:
+                        os.system("initexmf --update-fndb")
                 except PermissionError:
+                    QtWidgets.QApplication.restoreOverrideCursor()
                     warning_window(
                         "Das Update konnte leider nicht durchgeführt werden, da notwendige Berechtigungen fehlen. Starten Sie LaMA erneut als Administrator (Rechtsklick -> 'Als Administrator ausführen') und versuchen Sie es erneut."
                     )
+                    
+                    return
                 
             
             
