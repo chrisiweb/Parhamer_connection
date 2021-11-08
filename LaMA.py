@@ -436,15 +436,15 @@ class Ui_MainWindow(object):
             MainWindow,
             self.menuUpdate,
             '"srdp-mathematik.sty" aktualisieren',
-            partial(self.update_style_package, "srdp-mathematik.sty"),
+            self.update_style_package,
         )
 
-        self.actionUpdate_tabu = add_action(
-            MainWindow,
-            self.menuUpdate,
-            '"tabu.sty" aktualisieren',
-            partial(self.update_style_package, "tabu.sty"),
-        )
+        # self.actionUpdate_tabu = add_action(
+        #     MainWindow,
+        #     self.menuUpdate,
+        #     '"tabu.sty" aktualisieren',
+        #     partial(self.update_style_package, "tabu.sty"),
+        # )
 
         self.menuOptionen.addAction(self.menuUpdate.menuAction())
 
@@ -3535,7 +3535,7 @@ class Ui_MainWindow(object):
                         path_file = os.path.join(root, file)
                         try:
                             shutil.copy2(path_new_package, path_file)
-                            return True
+                            return path_file
                         except PermissionError:
                             warning_window(
                                 "Das Update konnte leider nicht durchgeführt werden, da notwendige Berechtigungen fehlen. Starten Sie LaMA erneut als Administrator (Rechtsklick -> 'Als Administrator ausführen') und versuchen Sie es erneut."
@@ -3549,25 +3549,27 @@ class Ui_MainWindow(object):
         if os.path.isfile(style_package_path):
             os.remove(style_package_path)
 
-    def update_style_package(self, package_name):
+    def update_style_package(self):
         response = question_window(
             'Sind Sie sicher, dass Sie das Paket "{}" aktualisieren möchten?'.format(
-                package_name
+                "srdp-mathematik.sty"
             )
         )
 
         if response == False:
             return
 
-        # path_home = Path.home()
-        path_new_package = os.path.join(
-            path_programm, "_database", "_config", package_name
+        path_new_srdpmathematik_package = os.path.join(
+            path_programm, "_database", "_config", "srdp-mathematik.sty"
         )
-        if os.path.isfile(path_new_package) == False:
+
+        path_new_srdptables_package = os.path.join(
+            path_programm, "_database", "_config", "srdp-tables.sty"
+        )
+        
+        if os.path.isfile(path_new_srdpmathematik_package) == False or os.path.isfile(path_new_srdptables_package) == False:
             warning_window(
-                'Das Paket "{}" konnte nicht gefunden werden. Bitte versuchen Sie es später erneut.'.format(
-                    package_name
-                )
+                'Das Paket "srdp-mathematik.sty" konnte nicht gefunden werden. Bitte versuchen Sie es später erneut.'
             )
             return
 
@@ -3597,26 +3599,53 @@ class Ui_MainWindow(object):
         # update_successfull=False
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
-        update_successfull = self.copy_style_package(
-            package_name, path_new_package, possible_locations
-        )
 
-        self.delete_style_package_in_teildokument(package_name)
+        package_list = {
+            "srdp-mathematik.sty" : path_new_srdpmathematik_package, 
+            "srdp-tables.sty": path_new_srdptables_package,
+            }
 
+
+        for package in package_list:
+            if package == "srdp-mathematik.sty":
+                response = self.copy_style_package(
+                    package, package_list[package], possible_locations
+                )
+
+                if response == False:
+                    critical_window(
+                        'Das Update von "srdp-mathematik.sty" konnte leider nicht durchgeführt werden. Aktualisieren Sie das Paket manuell oder wenden Sie sich an lama.helpme@gmail.com für Unterstützung.'
+                        )
+                    break
+                else:
+                    location_found = os.path.dirname(response)
+            
+            else:
+                try:
+                    shutil.copy2(package_list[package], location_found)
+                except PermissionError:
+                    warning_window(
+                        "Das Update konnte leider nicht durchgeführt werden, da notwendige Berechtigungen fehlen. Starten Sie LaMA erneut als Administrator (Rechtsklick -> 'Als Administrator ausführen') und versuchen Sie es erneut."
+                    )
+                
+            
+            
+            self.delete_style_package_in_teildokument(package)
+
+                
+            
         QtWidgets.QApplication.restoreOverrideCursor()
 
-        if update_successfull == False:
-            critical_window(
-                'Das Update von "{}" konnte leider nicht durchgeführt werden. Aktualisieren Sie das Paket manuell oder wenden Sie sich an lama.helpme@gmail.com für Unterstützung.'.format(
-                    package_name
-                )
-            )
-            return
-        if update_successfull == True:
-            information_window(
-                'Das Paket "{}" wurde erfolgreich aktualisiert.'.format(package_name)
-            )
-            return
+        # if update_successfull == False:
+        #     critical_window(
+        #         'Das Update von "srdp-mathematik.sty" konnte leider nicht durchgeführt werden. Aktualisieren Sie das Paket manuell oder wenden Sie sich an lama.helpme@gmail.com für Unterstützung.'
+        #         )
+        #     return
+        # if update_successfull == True:
+        information_window(
+            'Das Paket "srdp-mathematik.sty" wurde erfolgreich aktualisiert.'
+        )
+            # return
 
     def show_support(self):
         QtWidgets.QApplication.restoreOverrideCursor()
