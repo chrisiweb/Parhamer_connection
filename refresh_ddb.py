@@ -276,7 +276,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
     QtWidgets.QApplication.restoreOverrideCursor()
 
-    if auto_update == False:
+    if auto_update != True:
         if self.reset_successfull == False:
             warning_window("Der neueste Stand der Datenbank konnte nicht heruntergeladen werden. Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.")
 #     elif self.reset_successfull == 'skip_download':
