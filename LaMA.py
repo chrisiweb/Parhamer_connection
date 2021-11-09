@@ -368,7 +368,7 @@ class Ui_MainWindow(object):
         self.actionSage = add_action(
             MainWindow,
             self.menuSage,
-            "Neue Prüfung erstellen...",
+            "Prüfung erstellen...",
             partial(self.update_gui, "widgets_sage"),
         )
         self.actionSage.setShortcut("F2")
