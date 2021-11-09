@@ -2450,8 +2450,7 @@ class Ui_MainWindow(object):
                 filename = filename.replace(character, dict_umlaute[character])
         filename_vorschau = os.path.join(dirname, filename)
 
-        if self.ui_erstellen.lama == True:
-            self.sage_save(self, filename_vorschau)
+
         
         return filename_vorschau
 
@@ -2493,7 +2492,13 @@ class Ui_MainWindow(object):
             filename_vorschau = self.get_saving_path()
             if filename_vorschau == None:
                 return
+
+           
             self.collect_all_infos_for_creating_file()
+
+            if self.ui_erstellen.lama == True: #????????
+                self.sage_save(path_create_tex_file=filename_vorschau)
+
 
             if (
                 is_empty(self.list_copy_images) #self.dict_all_infos_for_file["data_gesamt"]["copy_images"]
