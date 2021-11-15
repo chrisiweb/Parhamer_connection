@@ -2537,7 +2537,8 @@ class Ui_Dialog_edit_drafts(object):
             self.groupBox_quelle.setEnabled(True)
             self.groupBox_themen.setEnabled(True)
             self.buttonBox.setEnabled(True)
-            try:
+            # try:
+            if dict_aufgabe != None:
                 self.label_themen.setText(str(dict_aufgabe['themen']))
                 if re.search("\[.*\]", self.comboBox.currentText()) != None and self.typ == 'lama_1':
                     self.pushButton_themen.setEnabled(False)
@@ -2563,9 +2564,9 @@ class Ui_Dialog_edit_drafts(object):
                 self.lineedit_titel.setText(dict_aufgabe['titel'])
                 self.lineedit_quelle.setText(dict_aufgabe['quelle'])
 
-            except TypeError:
-                print('error')
-                pass
+            # except TypeError:
+            #     print('error')
+            #     pass
 
 
 
@@ -2632,6 +2633,8 @@ class Ui_Dialog_edit_drafts(object):
 
     def remove_from_list(self):
         chosen_list = self.get_chosen_list()
+        # print(self.dict_widget_variables)
+        # print(chosen_list)
         for checkbox in self.dict_widget_variables.values():
             checkbox.setParent(None)
         self.gridLayout_items.removeItem(self.spacerItem)
@@ -2738,6 +2741,7 @@ class Ui_Dialog_edit_drafts(object):
 
         internet_on = check_internet_connection()
         if internet_on == False:
+            QtWidgets.QApplication.restoreOverrideCursor()
             critical_window(
                 "Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.",
                 titel="Keine Internetverbindung",

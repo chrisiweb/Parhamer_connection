@@ -5203,11 +5203,11 @@ class Ui_MainWindow(object):
         if typ_save[0] != "local":
             internet_on = check_internet_connection()
             if internet_on == False:
+                QtWidgets.QApplication.restoreOverrideCursor()
                 critical_window(
                     "Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.",
                     titel="Keine Internetverbindung",
-                )
-                QtWidgets.QApplication.restoreOverrideCursor()
+                )  
                 return
 
             rsp = check_branches()
