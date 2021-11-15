@@ -56,7 +56,7 @@ from filter_commands import get_filter_string, filter_items
 from sort_items import order_gesammeltedateien
 from upload_database import action_push_database
 from tinydb import Query
-from git_sync import check_branches, git_reset_repo_to_origin
+from git_sync import check_branches, git_reset_repo_to_origin, check_internet_connection
 
 dict_gk = config_loader(config_file, "dict_gk")
 ag_beschreibung = config_loader(config_file, "ag_beschreibung")
@@ -2663,7 +2663,14 @@ class Ui_Dialog_edit_drafts(object):
         if rsp == False:
             return
 
-
+        internet_on = check_internet_connection()
+        if internet_on == False:
+            critical_window(
+                "Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.",
+                titel="Keine Internetverbindung",
+            )
+            return
+        
         print("Checking divergencies ...")
         rsp = check_branches()
         if rsp == False:
@@ -2694,6 +2701,15 @@ class Ui_Dialog_edit_drafts(object):
         if rsp == False:
             return
 
+        internet_on = check_internet_connection()
+        if internet_on == False:
+            critical_window(
+                "Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.",
+                titel="Keine Internetverbindung",
+            )
+            return
+
+
         print("Checking divergencies ...")
         rsp = check_branches()
         if rsp == False:
@@ -2719,6 +2735,15 @@ class Ui_Dialog_edit_drafts(object):
 
         QtWidgets.QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
         name = self.comboBox.currentText()
+
+        internet_on = check_internet_connection()
+        if internet_on == False:
+            critical_window(
+                "Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.",
+                titel="Keine Internetverbindung",
+            )
+            return
+
 
         print("Checking divergencies ...")
         rsp = check_branches()
