@@ -3771,6 +3771,7 @@ class Ui_MainWindow(object):
     def comboBox_pruefungstyp_changed(self):
         self.comboBox_pruefungstyp.setEditable(False)
         self.groupBox_nummer.setEnabled(True)
+        self.groupBox_datum.setEnabled(True)
         if self.comboBox_pruefungstyp.currentText() == "Grundkompetenzcheck":
             self.combobox_beurteilung.setEnabled(False)
             self.groupBox_notenschl.setEnabled(False)
