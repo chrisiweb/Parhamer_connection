@@ -377,12 +377,17 @@ def prepare_tex_for_pdf(self):
     # else:
     #     shutil.copy2(path_tabu_pkg, copy_path_tabu_pkg)
     ###################################################################
+
     path_srdptables_pkg = os.path.join(path_programm, "_database", "_config", "srdp-tables.sty")
     copy_path_srdptables_pkg = os.path.join(path_localappdata_lama,"Teildokument","srdp-tables.sty")
     if os.path.isfile(copy_path_srdptables_pkg):
         pass
     else:
-        shutil.copy2(path_srdptables_pkg, copy_path_srdptables_pkg)
+        try:
+            shutil.copy2(path_srdptables_pkg, copy_path_srdptables_pkg)
+        except FileNotFoundError:
+            refresh_ddb(self)
+            shutil.copy2(path_srdptables_pkg, copy_path_srdptables_pkg)
 
     ###################################################
     path_srdp_pkg = os.path.join(
