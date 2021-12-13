@@ -542,7 +542,7 @@ def construct_tex_file(file_name, gesammeltedateien, solutions, variation, infos
 
             if variation == True:
                 if check_if_variation(all['name']) == True:
-                    file.write("{{\color{{{0}}}".format(green))
+                    file.write("{{\color{{{0}}}\n".format(green))
             elif spezielle_suche == False:
                 number_of_variations = get_number_of_variations(all['name'], gesammeltedateien)
 

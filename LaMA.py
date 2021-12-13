@@ -5044,6 +5044,9 @@ class Ui_MainWindow(object):
         max_integer = self.get_max_integer(table_lama, typ, themen_auswahl)
 
         name = self.create_file_name(typ, max_integer, themen_auswahl)
+        
+        # print(max_integer)
+        # print(name)
 
         _file_ = Query()
         if typ == 1 and aufgabe_total["themen"] != variation_total["themen"]:
@@ -7314,8 +7317,8 @@ class Ui_MainWindow(object):
 
         with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
             vorschau.write(content)
-            vorschau.write(vspace)
             vorschau.write(end)
+            vorschau.write(vspace)
             vorschau.write("\n\n")
 
         return first_typ2

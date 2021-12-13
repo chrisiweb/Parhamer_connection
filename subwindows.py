@@ -336,10 +336,10 @@ class Ui_Dialog_variation(object):
             self.comboBox_at_sage.setCurrentIndex(
                 self.MainWindow.comboBox_aufgabentyp_cr.currentIndex()
             )
-        elif self.MainWindow.chosen_program == "cria":
-            self.comboBox_klassen.setCurrentIndex(
-                self.MainWindow.tab_widget_cr_cria.currentIndex()
-            )
+        # elif self.MainWindow.chosen_program == "cria":
+        #     self.comboBox_klassen.setCurrentIndex(
+        #         self.MainWindow.tab_widget_cr_cria.currentIndex()
+        #     )
 
     def cancel_pressed(self):
         self.Dialog.reject()
@@ -1565,7 +1565,7 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
         Dialog.setWindowTitle(_translate("Erstellen", "Erstellen"))
         self.radioButton_sw_ns.setText(_translate("Dialog", "Notenschlüssel"))
         self.pushButton_sw_save.setText(_translate("Dialog", "Speichern"))
-        self.pushButton_sw_back.setText(_translate("Dialog", "Zurück "))
+        self.pushButton_sw_back.setText(_translate("Dialog", "Abbrechen"))
         if self.data_gesamt["Pruefungstyp"] == "Schularbeit":
             self.groupBox_sw_data.setTitle(
                 _translate("Dialog", "%i. Schularbeit" % self.data_gesamt["#"])
