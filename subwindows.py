@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QIcon, QCursor, QTextCursor
-from PyQt5.QtCore import Qt, QSize, QRect, QMetaObject, QCoreApplication, QThread
+from PyQt5.QtCore import Qt, QSize, QRect, QMetaObject, QCoreApplication, QThread, QObject, pyqtSignal, pyqtSlot
 import os
 import shutil
 from json import load, dump
@@ -104,6 +104,35 @@ def get_color(color):
 #     get_color(blue_2), get_color(black), get_color(white), get_color(blue_7)
 # )
 
+class Worker_UpdateDatabase(QObject):
+    finished = pyqtSignal()
+
+    @pyqtSlot()
+    def task(self):
+        git_reset_repo_to_origin()
+        # print(Ui_MainWindow.reset_successfull)
+        self.finished.emit()
+
+
+def worker_update_database():
+    text = "Die Datenbank wird auf den neuesten Stand gebracht ..."
+    Dialog_checkchanges = QtWidgets.QDialog()
+    ui = Ui_Dialog_processing()
+    ui.setupUi(Dialog_checkchanges, text)
+
+    thread = QThread(Dialog_checkchanges)
+    worker = Worker_UpdateDatabase()
+    worker.finished.connect(Dialog_checkchanges.close)
+    worker.moveToThread(thread)
+    thread.started.connect(worker.task)
+    thread.start()
+    thread.exit()
+    Dialog_checkchanges.exec()
+
+    # if self.reset_successfull == False:
+    #     return False
+    # else:
+    #     return True
 
 
 class Ui_Dialog_Welcome_Window(object):
@@ -834,11 +863,14 @@ class Ui_Dialog_ausgleichspunkte(object):
         list_sage_ausgleichspunkte_chosen,
         list_sage_hide_show_items_chosen,
         sage_individual_change,
-        display_mode
+        display_mode,
+        developer_mode_active,
+        chosen_program,
     ):
-        self.content = content
+        # self.content = content
         self.sage_individual_change = sage_individual_change
         self.typ = typ
+        # self.developer_mode_active = developer_mode_active
         if typ==2:
             self.aufgabenstellung_split_text = aufgabenstellung_split_text
             self.hide_show_items_split_text = prepare_content_for_hide_show_items(
@@ -877,7 +909,7 @@ class Ui_Dialog_ausgleichspunkte(object):
             # self.combobox_edit.setStyleSheet("color: black")
 
         if typ ==2:
-            self.combobox_edit.currentIndexChanged.connect(self.combobox_edit_changed)
+            self.combobox_edit.currentIndexChanged.connect(partial(self.combobox_edit_changed, aufgabe, chosen_program))
             self.scrollArea = QtWidgets.QScrollArea(Dialog)
             self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
             self.scrollArea.setWidgetResizable(True)
@@ -922,7 +954,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         if self.sage_individual_change != None:
             self.plainTextEdit_content.insertPlainText(self.sage_individual_change)
         else:
-            self.plainTextEdit_content.insertPlainText(self.content)
+            self.plainTextEdit_content.insertPlainText(content)
         self.plainTextEdit_content.moveCursor(QTextCursor.Start)
         self.plainTextEdit_content.ensureCursorVisible()
         # self.plainTextEdit_content_changed.verticalScrollBar().setValue(0)
@@ -940,12 +972,20 @@ class Ui_Dialog_ausgleichspunkte(object):
         if typ ==2:
             self.button_preview.hide()
 
-        self.button_restore_default = create_new_button(Dialog, "Original wiederherstellen", self.button_restore_default_pressed)
+        self.button_restore_default = create_new_button(Dialog, "Original wiederherstellen", partial(self.button_restore_default_pressed,aufgabe, chosen_program))
         self.button_restore_default.setSizePolicy(SizePolicy_maximum)
         self.gridlayout_titlepage.addWidget(self.button_restore_default, 3,1,1,1)
         if typ ==2:
             self.button_restore_default.hide()
 
+
+        if developer_mode_active == True:
+            self.button_save_edit = create_new_button(Dialog, "Änderung speichern", partial(self.button_save_edit_pressed, aufgabe, chosen_program))
+            self.gridlayout_titlepage.addWidget(self.button_save_edit, 3,2,1,1)
+        if typ == 2:
+            self.button_save_edit.hide()
+
+        # ### Variationsbutton ausblenden, da derzeit nicht funktionsfähig
         self.button_save = create_new_button(Dialog, "Als Variation speichern", self.button_save_pressed)
         self.button_save.setSizePolicy(SizePolicy_maximum)
         self.gridlayout_titlepage.addWidget(self.button_save, 3, 2, 1,1)
@@ -956,7 +996,7 @@ class Ui_Dialog_ausgleichspunkte(object):
 
 
 
-        self.button_OK = create_new_button(Dialog, "OK", self.pushButton_OK_pressed)
+        self.button_OK = create_new_button(Dialog, "OK", partial(self.pushButton_OK_pressed, aufgabe, chosen_program))
         self.button_OK.setSizePolicy(SizePolicy_maximum)
         self.gridlayout_titlepage.addWidget(self.button_OK, 3,4,1,1)
 
@@ -1044,7 +1084,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         # _list = [0,1,2]
         # _list.remove(index)
 
-    def combobox_edit_changed(self):
+    def combobox_edit_changed(self, aufgabe, chosen_program):
         index = self.check_for_change()
         if index != None:
             if index != self.combobox_edit.currentIndex():
@@ -1055,7 +1095,9 @@ class Ui_Dialog_ausgleichspunkte(object):
                 else:
                     if index == 2:
                         self.plainTextEdit_content.clear()
-                        self.plainTextEdit_content.insertPlainText(self.content)  
+                        typ = get_aufgabentyp(chosen_program, aufgabe)
+                        aufgabe_total = get_aufgabe_total(aufgabe, typ)
+                        self.plainTextEdit_content.insertPlainText(aufgabe_total['content'])  
                     self.change_detected_0=False
                     self.change_detected_1=False
                     self.change_detected_2=False
@@ -1072,6 +1114,7 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.scrollArea.show()
             self.plainTextEdit_content.hide()
             self.build_checkboxes_for_content()
+            self.button_save_edit.hide()
             self.button_save.hide()
             self.button_preview.hide()
             self.button_restore_default.hide()
@@ -1088,6 +1131,7 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.plainTextEdit_content.show()
             # self.build_editable_content()
             # self.button_save.show()
+            self.button_save_edit.show()
             self.button_preview.show()
             self.button_restore_default.show()
             self.button_zoom_in.show()
@@ -1095,12 +1139,63 @@ class Ui_Dialog_ausgleichspunkte(object):
 
     def plainTextEdit_content_changed(self):
         self.change_detected_2 = True
-    def button_restore_default_pressed(self):
+    def button_restore_default_pressed(self, aufgabe, chosen_program):
         rsp = question_window("Sind Sie sicher, dass sie die originale Aufgabe wiederherstellen wollen?")
         if rsp == True:
             self.plainTextEdit_content.clear()
-            self.plainTextEdit_content.insertPlainText(self.content)
+            typ = get_aufgabentyp(chosen_program, aufgabe)
+            aufgabe_total = get_aufgabe_total(aufgabe, typ)
+            self.plainTextEdit_content.insertPlainText(aufgabe_total['content'])
             information_window("Die originale Aufgabe wurde wiederhergestellt.",titel="Original wiederhergestellt")
+
+    def button_save_edit_pressed(self, aufgabe, chosen_program):
+        rsp = question_window("Sind Sie sicher, dass Sie originale Aufgabe mit dem geänderten Inhalt überschreiben möchten?")
+        if rsp == False:
+            return
+        
+        QtWidgets.QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
+        
+        internet_on = check_internet_connection()
+        if internet_on == False:
+            QtWidgets.QApplication.restoreOverrideCursor()
+            critical_window(
+                "Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.",
+                titel="Keine Internetverbindung",
+            )  
+            return
+        
+        rsp = check_branches()
+        if rsp == False:
+            try:
+                worker_update_database()
+            except Exception:
+                critical_window(
+                    "Beim Synchronisieren ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass eine Internetverbindung beseteht und versuchen Sie es erneut."
+                )
+                QtWidgets.QApplication.restoreOverrideCursor()
+                return
+
+        typ = get_aufgabentyp(chosen_program, aufgabe)
+        new_content = self.plainTextEdit_content.toPlainText()
+
+        update_data(aufgabe, typ, 'content', new_content)
+
+        QtWidgets.QApplication.restoreOverrideCursor()
+
+        chosen_ddb = ["_database.json"]    
+        response = action_push_database(True, 
+        chosen_ddb,
+        message="Inhalt von {} geändert".format(aufgabe),
+        worker_text="Geänderter Inhalt von {} wird gespeichert".format(aufgabe)
+        )
+
+        if response == False:
+            return
+        else:
+            information_window("Die Änderung wurde erfolgreich in der Datenbank gespeichert!")
+
+        if typ == 2:
+            self.change_detected_2 = False
 
     def button_undo_pressed(self):
         self.plainTextEdit_content.undo()
@@ -1172,8 +1267,8 @@ class Ui_Dialog_ausgleichspunkte(object):
         print('save')
 
 
-    def build_editable_content(self):
-        self.plainTextEdit_content.insertPlainText(self.content)
+    # def build_editable_content(self):
+    #     self.plainTextEdit_content.insertPlainText(self.content)
 
         # for line in conten:
         #     self.plainTextEdit_content.appendPlainText(line)
@@ -1339,8 +1434,8 @@ class Ui_Dialog_ausgleichspunkte(object):
         return False      
     
 
-    def pushButton_OK_pressed(self):
-        # self.combobox_edit.currentIndex())
+    def pushButton_OK_pressed(self, aufgabe, chosen_program):
+        # self.combobox_edit.currentIndex()
         if self.typ == 2:
             change_detected = self.check_if_saved_changes_exist()
             
@@ -1355,8 +1450,12 @@ class Ui_Dialog_ausgleichspunkte(object):
         # self.sage_individual_change = []
 
 
+        typ = get_aufgabentyp(chosen_program, aufgabe)
+        aufgabe_total = get_aufgabe_total(aufgabe, typ)
+
         if self.combobox_edit.currentIndex() == 2 or self.typ != 2:
-            if self.content != self.plainTextEdit_content.toPlainText():
+
+            if aufgabe_total['content'] != self.plainTextEdit_content.toPlainText():
                 self.sage_individual_change = self.plainTextEdit_content.toPlainText()
 
         elif self.combobox_edit.currentIndex() == 0:

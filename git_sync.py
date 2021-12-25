@@ -175,19 +175,17 @@ def get_access_token(mode):
 
 
 def check_branches():
-    print('open repo')
     repo = porcelain.open_repo(database)
-    print('fetch')
     porcelain.fetch(repo)
 
     head_id = repo[b'refs/heads/master'].id
     origin_id = repo[b'refs/remotes/origin/master'].id
 
     if head_id == origin_id:
-        print("branches are the same")
+        print("Branches are the same ...")
         return True
     else:
-        print("branches diverge")
+        print("Branches diverge ...")
         return False
 
 

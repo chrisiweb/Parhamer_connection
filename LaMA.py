@@ -6762,6 +6762,8 @@ class Ui_MainWindow(object):
             list_sage_hide_show_items_chosen,
             sage_individual_change,
             self.display_mode,
+            self.developer_mode_active,
+            self.chosen_program,
         )
 
         Dialog.exec_()
