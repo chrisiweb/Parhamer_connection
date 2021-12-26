@@ -1940,9 +1940,10 @@ class Ui_Dialog_setup(object):
         
 
         add_new_option(self.combobox_database, 0, "jedes Mal beim Öffnen von LaMA")
-        add_new_option(self.combobox_database, 1, "wöchentlich")
-        add_new_option(self.combobox_database, 2, "monatlich")
-        add_new_option(self.combobox_database, 3, "niemals")
+        add_new_option(self.combobox_database, 1, "täglich")
+        add_new_option(self.combobox_database, 2, "wöchentlich")
+        add_new_option(self.combobox_database, 3, "monatlich")
+        add_new_option(self.combobox_database, 4, "niemals")
 
         try:
             self.combobox_database.setCurrentIndex(self.lama_settings['database'])

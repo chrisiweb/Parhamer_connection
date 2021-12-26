@@ -213,6 +213,24 @@ class Ui_MainWindow(object):
             )
             refresh_ddb(self)
             QtWidgets.QApplication.restoreOverrideCursor()
+        else:
+            database_file = os.path.join(database, ".git", "index")
+            refresh_date_ddb= modification_date(database_file).strftime("%Y%m%d")
+            refresh_date_ddb_month = modification_date(database_file).strftime("%m")
+            today = datetime.datetime.today().strftime("%Y%m%d")
+            today_month = datetime.datetime.today().strftime("%m")
+
+            difference = int(today) - int(refresh_date_ddb)
+            # print(difference)
+            # print(today_month)
+            # print(refresh_date_ddb_month)
+            if (self.lama_settings["database"] == 1 and difference != 0) or (self.lama_settings["database"] == 2 and difference > 6) or (self.lama_settings["database"] == 3 and refresh_date_ddb_month != today_month):
+                QtWidgets.QApplication.setOverrideCursor(
+                    QtGui.QCursor(QtCore.Qt.WaitCursor)
+                )
+                refresh_ddb(self)
+                QtWidgets.QApplication.restoreOverrideCursor()
+
 
         self.chosen_gui = "widgets_search"
         if self.chosen_program == "cria":
