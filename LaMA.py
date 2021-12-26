@@ -1802,10 +1802,15 @@ class Ui_MainWindow(object):
         self.gridLayout_6.setObjectName("gridLayout_6")
 
         try:
-            sehr_gut = self.lama_settings["prozente"][0]
-            gut = self.lama_settings["prozente"][1]
-            befriedigend = self.lama_settings["prozente"][2]
-            genuegend = self.lama_settings["prozente"][3]
+            if self.chosen_program == 'cria':
+                key = "prozente_cria"
+            else:
+                key = "prozente"
+
+            sehr_gut = self.lama_settings[key][0]
+            gut = self.lama_settings[key][1]
+            befriedigend = self.lama_settings[key][2]
+            genuegend = self.lama_settings[key][3]
         except KeyError:
             sehr_gut = 91
             gut = 80
@@ -1862,7 +1867,11 @@ class Ui_MainWindow(object):
         )
 
         try:
-            ns_halbe_punkte_checked = self.lama_settings["notenschluessel"][0]
+            if self.chosen_program == 'cria':
+                key = "notenschluessel_cria"
+            else:
+                key = "notenschluessel"
+            ns_halbe_punkte_checked = self.lama_settings[key][0]
         except KeyError:
             ns_halbe_punkte_checked = False
 
@@ -1874,7 +1883,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_ns_modus.addWidget(self.cb_ns_halbe_pkt)
 
         try:
-            ns_prozente_checked = self.lama_settings["notenschluessel"][1]
+            if self.chosen_program == 'cria':
+                key = "notenschluessel_cria"
+            else:
+                key = "notenschluessel"
+            ns_prozente_checked = self.lama_settings[key][1]
         except KeyError:
             ns_prozente_checked = False
 
@@ -3216,8 +3229,12 @@ class Ui_MainWindow(object):
         self.spinBox_4.setProperty("value", 64)
         self.spinBox_5.setProperty("value", 50)
         try:
-            self.cb_ns_halbe_pkt.setChecked(self.lama_settings["notenschluessel"][0])
-            self.cb_ns_prozent.setChecked(self.lama_settings["notenschluessel"][1])
+            if self.chosen_program == 'cria':
+                key = "notenschluessel_cria"
+            else:
+                key = "notenschluessel"
+            self.cb_ns_halbe_pkt.setChecked(self.lama_settings[key][0])
+            self.cb_ns_prozent.setChecked(self.lama_settings[key][1])
         except KeyError:
             self.cb_ns_halbe_pkt.setChecked(False)
             self.cb_ns_prozent.setChecked(False)

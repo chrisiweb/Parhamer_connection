@@ -1870,9 +1870,12 @@ class Ui_Dialog_setup(object):
                 'display' : 0,
                 'prozente': [91, 80, 64, 50],
                 'notenschluessel': [False, False],
+                'prozente_cria': [91, 80, 64, 50],
+                'notenschluessel_cria': [False, False],
                 'autosave' : 2,
                 'quelle' : '',
             }
+        print(self.lama_settings)
         # self.beispieldaten_dateipfad_cria = MainWindow.beispieldaten_dateipfad_cria
         # self.beispieldaten_dateipfad_1 = MainWindow.beispieldaten_dateipfad_1
         # self.beispieldaten_dateipfad_2 = MainWindow.beispieldaten_dateipfad_2
@@ -1950,67 +1953,107 @@ class Ui_Dialog_setup(object):
         gridlayout_setup.addWidget(groupbox_database, row,0,1,1)
         row+=1
 
-     
+        if MainWindow.chosen_program == 'cria':
+            string = 'Unterstufe'
+            try:
+                self.lama_settings['prozente_cria']
+                key_prozente = 'prozente_cria'
+                key_notenschluessel = 'notenschluessel_cria'
+            except KeyError:
+                print('no cria')
+                key_prozente = 'prozente'
+                key_notenschluessel ='notenschluessel'
+        else:
+            string = 'Oberstufe'
+            key_prozente = 'prozente'
+            key_notenschluessel = 'notenschluessel'
 
-        groupbox_prozent = create_new_groupbox(Dialog, "Prozente Noteschlüssel")
+        groupbox_prozent = create_new_groupbox(Dialog, "Prozente Notenschlüssel ({})".format(string))
         gridlayout_prozente = create_new_gridlayout(groupbox_prozent)
 
+        # self.combobox_notenschluessel_typ = create_new_combobox(Dialog)
+        # gridlayout_prozente.addWidget(self.combobox_notenschluessel_typ, 0,0,1,4)
+        # add_new_option(self.combobox_notenschluessel_typ, 0, "Unterstufe")
+        # add_new_option(self.combobox_notenschluessel_typ, 1, "Oberstufe")
+        # self.combobox_notenschluessel_typ.currentIndexChanged.connect(self.combobox_notenschluessel_changed)
+        # if MainWindow.chosen_program == 'cria':
+        #     self.combobox_notenschluessel_typ.setCurrentIndex(0)
+        #     try:
+        #         self.lama_settings['prozente_cria']
+        #         key_prozente = 'prozente_cria'
+        #         key_notenschluessel = 'notenschluessel_cria'
+        #     except KeyError:
+        #         print('no cria')
+        #         key_prozente = 'prozente'
+        #         key_notenschluessel ='notenschluessel'
+        # else:
+        #     self.combobox_notenschluessel_typ.setCurrentIndex(1)
+        #     key_prozente = 'prozente'
+        #     key_notenschluessel = 'notenschluessel'
+
+
+        #     key_prozente = 'prozente_cria'
+        #     self.combobox_notenschluessel_typ.setCurrentIndex(0)
+        # else:
+        #     key_prozente = 'prozente'
+        #     self.combobox_notenschluessel_typ.setCurrentIndex(1)
+
         self.label_prozente_sgu = create_new_label(groupbox_prozent, "Sehr gut:")
-        gridlayout_prozente.addWidget(self.label_prozente_sgu, 0, 0, 1, 1)
+        gridlayout_prozente.addWidget(self.label_prozente_sgu, 1, 0, 1, 1)
         try:
-            sgu_value = self.lama_settings['prozente'][0]
+            sgu_value = self.lama_settings[key_prozente][0]
         except KeyError:
             sgu_value = 91
 
         self.spinbox_prozente_sgu = create_new_spinbox(groupbox_prozent, sgu_value)
-        gridlayout_prozente.addWidget(self.spinbox_prozente_sgu, 0, 1, 1, 1)
+        gridlayout_prozente.addWidget(self.spinbox_prozente_sgu, 1, 1, 1, 1)
 
 
         self.label_prozente_gu = create_new_label(groupbox_prozent, "Gut:")
-        gridlayout_prozente.addWidget(self.label_prozente_gu, 0, 2, 1, 1)
+        gridlayout_prozente.addWidget(self.label_prozente_gu, 1, 2, 1, 1)
         try:
-            gu_value = self.lama_settings['prozente'][1]
+            gu_value = self.lama_settings[key_prozente][1]
         except KeyError:
             gu_value = 80
 
         self.spinbox_prozente_gu = create_new_spinbox(groupbox_prozent, gu_value)
-        gridlayout_prozente.addWidget(self.spinbox_prozente_gu, 0, 3, 1, 1)
+        gridlayout_prozente.addWidget(self.spinbox_prozente_gu, 1, 3, 1, 1)
 
 
         self.label_prozente_be = create_new_label(groupbox_prozent, "Befriedigend:")
-        gridlayout_prozente.addWidget(self.label_prozente_be, 1, 0, 1, 1)
+        gridlayout_prozente.addWidget(self.label_prozente_be, 2, 0, 1, 1)
         try:
-            be_value = self.lama_settings['prozente'][2]
+            be_value = self.lama_settings[key_prozente][2]
         except KeyError:
             be_value = 64
 
         self.spinbox_prozente_be = create_new_spinbox(groupbox_prozent, be_value)
-        gridlayout_prozente.addWidget(self.spinbox_prozente_be, 1, 1, 1, 1)
+        gridlayout_prozente.addWidget(self.spinbox_prozente_be, 2, 1, 1, 1)
 
         self.label_prozente_ge = create_new_label(groupbox_prozent, "Genügend:")
-        gridlayout_prozente.addWidget(self.label_prozente_ge, 1, 2, 1, 1)
+        gridlayout_prozente.addWidget(self.label_prozente_ge, 2, 2, 1, 1)
         try:
-            ge_value = self.lama_settings['prozente'][3]
+            ge_value = self.lama_settings[key_prozente][3]
         except KeyError:
             ge_value = 50
 
         self.spinbox_prozente_ge = create_new_spinbox(groupbox_prozent, ge_value)
-        gridlayout_prozente.addWidget(self.spinbox_prozente_ge, 1, 3, 1, 1)
+        gridlayout_prozente.addWidget(self.spinbox_prozente_ge, 2, 3, 1, 1)
     
 
         try:
-            ns_halbe_punkte_checked = self.lama_settings['notenschluessel'][0]
+            ns_halbe_punkte_checked = self.lama_settings[key_notenschluessel][0]
         except KeyError:
             ns_halbe_punkte_checked = False
         self.cb_ns_halbe_punkte = create_new_checkbox(groupbox_prozent, "Halbe Punkte", checked= ns_halbe_punkte_checked)
-        gridlayout_prozente.addWidget(self.cb_ns_halbe_punkte, 2,0,1,2)
+        gridlayout_prozente.addWidget(self.cb_ns_halbe_punkte, 3,0,1,2)
 
         try:
-            ns_prozente_checked = self.lama_settings['notenschluessel'][1]
+            ns_prozente_checked = self.lama_settings[key_notenschluessel][1]
         except KeyError:
             ns_prozente_checked = False
         self.cb_ns_prozente = create_new_checkbox(groupbox_prozent, "Prozentangabe", checked= ns_prozente_checked)
-        gridlayout_prozente.addWidget(self.cb_ns_prozente, 2,2,1,2)       
+        gridlayout_prozente.addWidget(self.cb_ns_prozente, 3,2,1,2)       
 
 
         gridlayout_setup.addWidget(groupbox_prozent, row,0,1,1)
@@ -2090,7 +2133,7 @@ class Ui_Dialog_setup(object):
         buttonX = self.buttonBox_setup.button(QtWidgets.QDialogButtonBox.Cancel)
         buttonX.setText("Abbrechen")
         self.buttonBox_setup.rejected.connect(self.reject_dialog)
-        self.buttonBox_setup.accepted.connect(self.save_setting)
+        self.buttonBox_setup.accepted.connect(partial(self.save_setting, MainWindow.chosen_program))
 
         gridlayout_setup.addWidget(self.buttonBox_setup,row,0,1,1)
 
@@ -2111,7 +2154,8 @@ class Ui_Dialog_setup(object):
     def reject_dialog(self):
         self.Dialog.reject()
 
-    def save_settings_to_dict(self):
+    def save_settings_to_dict(self, chosen_program):
+        self.lama_settings
         dict_={}
         dict_['start_program'] = self.combobox_start_program.currentIndex()
         dict_['pdf_reader'] = self.lineedit_pdf_reader.text()
@@ -2119,8 +2163,25 @@ class Ui_Dialog_setup(object):
         dict_['display'] = self.combobox_display.currentIndex()
         dict_['autosave'] = self.spinbox_autosave.value()
         dict_['quelle'] = self.lineedit_quelle.text()
-        dict_['prozente'] = [self.spinbox_prozente_sgu.value(), self.spinbox_prozente_gu.value(), self.spinbox_prozente_be.value(), self.spinbox_prozente_ge.value()]
-        dict_['notenschluessel'] = [self.cb_ns_halbe_punkte.isChecked(), self.cb_ns_prozente.isChecked()]
+        if chosen_program == 'cria':
+            key_prozente = 'prozente_cria'
+            key_notenschluessel = 'notenschluessel_cria'
+
+            dict_['prozente'] = self.lama_settings['prozente']
+            dict_['notenschluessel'] = self.lama_settings['notenschluessel']
+        else:
+            key_prozente = 'prozente'
+            key_notenschluessel = 'notenschluessel'
+
+            try: 
+                dict_['prozente_cria'] = self.lama_settings['prozente_cria']
+                dict_['notenschluessel_cria'] = self.lama_settings['notenschluessel_cria']
+            except KeyError:
+                dict_['prozente_cria'] = self.lama_settings['prozente']
+                dict_['notenschluessel_cria'] = self.lama_settings['notenschluessel']                
+
+        dict_[key_prozente] = [self.spinbox_prozente_sgu.value(), self.spinbox_prozente_gu.value(), self.spinbox_prozente_be.value(), self.spinbox_prozente_ge.value()]
+        dict_[key_notenschluessel] = [self.cb_ns_halbe_punkte.isChecked(), self.cb_ns_prozente.isChecked()]
 
         return dict_
 
@@ -2133,10 +2194,10 @@ class Ui_Dialog_setup(object):
         self.MainWindow.cb_ns_halbe_pkt.setChecked(self.cb_ns_halbe_punkte.isChecked())
         self.MainWindow.cb_ns_prozent.setChecked(self.cb_ns_prozente.isChecked())
         
-    def save_setting(self):
+    def save_setting(self, chosen_program):
         if self.MainWindow.display_mode != self.combobox_display.currentIndex():
             information_window("Die Änderung der Darstellung wird erst nach dem Neustart von LaMA übernommen.")
-        self.lama_settings = self.save_settings_to_dict()
+        self.lama_settings = self.save_settings_to_dict(chosen_program)
 
         with open(lama_settings_file, "w+", encoding="utf8") as f:
             dump(self.lama_settings, f, ensure_ascii=False)
