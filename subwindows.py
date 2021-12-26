@@ -1875,7 +1875,7 @@ class Ui_Dialog_setup(object):
                 'autosave' : 2,
                 'quelle' : '',
             }
-        print(self.lama_settings)
+        # print(self.lama_settings)
         # self.beispieldaten_dateipfad_cria = MainWindow.beispieldaten_dateipfad_cria
         # self.beispieldaten_dateipfad_1 = MainWindow.beispieldaten_dateipfad_1
         # self.beispieldaten_dateipfad_2 = MainWindow.beispieldaten_dateipfad_2
@@ -1960,7 +1960,6 @@ class Ui_Dialog_setup(object):
                 key_prozente = 'prozente_cria'
                 key_notenschluessel = 'notenschluessel_cria'
             except KeyError:
-                print('no cria')
                 key_prozente = 'prozente'
                 key_notenschluessel ='notenschluessel'
         else:
@@ -1971,32 +1970,6 @@ class Ui_Dialog_setup(object):
         groupbox_prozent = create_new_groupbox(Dialog, "Prozente Notenschlüssel ({})".format(string))
         gridlayout_prozente = create_new_gridlayout(groupbox_prozent)
 
-        # self.combobox_notenschluessel_typ = create_new_combobox(Dialog)
-        # gridlayout_prozente.addWidget(self.combobox_notenschluessel_typ, 0,0,1,4)
-        # add_new_option(self.combobox_notenschluessel_typ, 0, "Unterstufe")
-        # add_new_option(self.combobox_notenschluessel_typ, 1, "Oberstufe")
-        # self.combobox_notenschluessel_typ.currentIndexChanged.connect(self.combobox_notenschluessel_changed)
-        # if MainWindow.chosen_program == 'cria':
-        #     self.combobox_notenschluessel_typ.setCurrentIndex(0)
-        #     try:
-        #         self.lama_settings['prozente_cria']
-        #         key_prozente = 'prozente_cria'
-        #         key_notenschluessel = 'notenschluessel_cria'
-        #     except KeyError:
-        #         print('no cria')
-        #         key_prozente = 'prozente'
-        #         key_notenschluessel ='notenschluessel'
-        # else:
-        #     self.combobox_notenschluessel_typ.setCurrentIndex(1)
-        #     key_prozente = 'prozente'
-        #     key_notenschluessel = 'notenschluessel'
-
-
-        #     key_prozente = 'prozente_cria'
-        #     self.combobox_notenschluessel_typ.setCurrentIndex(0)
-        # else:
-        #     key_prozente = 'prozente'
-        #     self.combobox_notenschluessel_typ.setCurrentIndex(1)
 
         self.label_prozente_sgu = create_new_label(groupbox_prozent, "Sehr gut:")
         gridlayout_prozente.addWidget(self.label_prozente_sgu, 1, 0, 1, 1)
