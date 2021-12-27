@@ -211,7 +211,7 @@ class Ui_MainWindow(object):
             QtWidgets.QApplication.setOverrideCursor(
                 QtGui.QCursor(QtCore.Qt.WaitCursor)
             )
-            refresh_ddb(self)
+            refresh_ddb(self, True)
             QtWidgets.QApplication.restoreOverrideCursor()
         else:
             database_file = os.path.join(database, ".git", "index")
@@ -228,7 +228,7 @@ class Ui_MainWindow(object):
                 QtWidgets.QApplication.setOverrideCursor(
                     QtGui.QCursor(QtCore.Qt.WaitCursor)
                 )
-                refresh_ddb(self)
+                refresh_ddb(self, auto_update=True)
                 QtWidgets.QApplication.restoreOverrideCursor()
 
 
@@ -465,6 +465,8 @@ class Ui_MainWindow(object):
         # )
 
         self.menuOptionen.addAction(self.menuUpdate.menuAction())
+
+        self.actionGKcatalogue = add_action(MainWindow, self.menuHelp, "GK-Katalog anzeigen", self.show_gk_catalogue)
 
         self.actionInfo = add_action(
             MainWindow, self.menuHelp, "Über LaMA", self.show_info
@@ -3553,6 +3555,22 @@ class Ui_MainWindow(object):
 
         # for root, dirs, files in os.walk(delete_folder):
 
+    def show_gk_catalogue(self):
+        file_path = os.path.join(path_programm, "_database", "_config", "gkkatalog.pdf")
+
+        if os.path.isfile(file_path) == False:
+            refresh_ddb(self, True)
+            
+        if sys.platform.startswith("linux"):
+            os.system("xdg-open {0}.pdf".format(file_path))
+        elif sys.platform.startswith("darwin"):
+            subprocess.run(
+                ["open", "{0}.pdf".format(file_path)]
+            )
+
+        else:
+            subprocess.Popen(file_path, shell = True)        
+
     def show_info(self):
         QtWidgets.QApplication.restoreOverrideCursor()
 
@@ -5357,6 +5375,9 @@ class Ui_MainWindow(object):
         self.adapt_choosing_list("sage")
 
     def push_full_database(self):
+        rsp = question_window("Sind Sie sicher, dass Sie die Datenbank hochladen möchten?")
+        if rsp == False:
+            return
         rsp = check_branches()
         if rsp == False:
             response = question_window(
@@ -7006,9 +7027,8 @@ class Ui_MainWindow(object):
             self.label_example.setText(
                 _translate(
                     "MainWindow",
-                    "Ausgewählte Aufgabe: {0} ({1})".format(
-                        item.text(),
-                        self.comboBox_klassen_fb_cria.currentText(),
+                    "Ausgewählte Aufgabe: {0}".format(
+                        item.text()
                     ),
                     None,
                 )
