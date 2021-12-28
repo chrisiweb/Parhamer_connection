@@ -466,7 +466,7 @@ class Ui_MainWindow(object):
 
         self.menuOptionen.addAction(self.menuUpdate.menuAction())
 
-        self.actionGKcatalogue = add_action(MainWindow, self.menuHelp, "GK-Katalog anzeigen", self.show_gk_catalogue)
+        self.actionGKcatalogue = add_action(MainWindow, self.menuHelp, "Grundkompetenzkatalog anzeigen", self.show_gk_catalogue)
 
         self.actionInfo = add_action(
             MainWindow, self.menuHelp, "Über LaMA", self.show_info
@@ -3556,11 +3556,12 @@ class Ui_MainWindow(object):
         # for root, dirs, files in os.walk(delete_folder):
 
     def show_gk_catalogue(self):
+        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         file_path = os.path.join(path_programm, "_database", "_config", "gkkatalog.pdf")
 
         if os.path.isfile(file_path) == False:
             refresh_ddb(self, True)
-            
+
         if sys.platform.startswith("linux"):
             os.system("xdg-open {0}.pdf".format(file_path))
         elif sys.platform.startswith("darwin"):
@@ -3570,7 +3571,7 @@ class Ui_MainWindow(object):
 
         else:
             subprocess.Popen(file_path, shell = True)        
-
+        QtWidgets.QApplication.restoreOverrideCursor()
     def show_info(self):
         QtWidgets.QApplication.restoreOverrideCursor()
 
