@@ -142,7 +142,7 @@ StyleSheet_unterkapitel_cria_dark_mode = "background-color: {}".format(get_color
 
 
 StyleSheet_combobox_kapitel_dark_mode = "background-color: {0};selection-background-color: {1}; selection-color: {2}".format(
-    get_color(white), get_color(blue_7), get_color(white)
+    get_color(dark_gray), get_color(blue_7), get_color(white)
 )
 
 

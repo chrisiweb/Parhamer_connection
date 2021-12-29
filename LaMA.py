@@ -982,7 +982,7 @@ class Ui_MainWindow(object):
         self.groupBox_variation_cr = create_new_groupbox(
             self.centralwidget, "Aufgabenvariation"
         )
-        self.groupBox_variation_cr.setMaximumWidth(350)
+        self.groupBox_variation_cr.setMaximumWidth(420)
         self.verticalLayout_variation = create_new_verticallayout(
             self.groupBox_variation_cr
         )
@@ -1001,7 +1001,7 @@ class Ui_MainWindow(object):
         self.groupBox_choose_file = create_new_groupbox(
             self.centralwidget, "Aufgabe auswählen"
         )
-        self.groupBox_choose_file.setMaximumWidth(350)
+        self.groupBox_choose_file.setMaximumWidth(420)
         self.verticalLayout_choose_file = create_new_verticallayout(
             self.groupBox_choose_file
         )
@@ -1049,7 +1049,8 @@ class Ui_MainWindow(object):
         self.groupBox_themengebiete_cria.setObjectName(
             _fromUtf8("groupBox_themengebiete_cria")
         )
-        self.groupBox_themengebiete_cria.setMaximumWidth(350)
+        # self.groupBox_themengebiete_cria.setMaximumWidth(400)
+        self.groupBox_themengebiete_cria.setSizePolicy(SizePolicy_maximum_width)
         self.gridLayout_11_cr_cria = QtWidgets.QGridLayout(
             self.groupBox_themengebiete_cria
         )
@@ -1104,7 +1105,7 @@ class Ui_MainWindow(object):
             else:
                 stylesheet = StyleSheet_combobox_kapitel_dark_mode
             combobox_kapitel.setStyleSheet(stylesheet)
-            combobox_kapitel.setMinimumHeight(25)
+            # combobox_kapitel.setMinimumHeight(25)
             # combobox_kapitel.setSizePolicy(SizePolicy_fixed)
             self.dict_widget_variables[
                 "combobox_kapitel_creator_cria_{}".format(klasse)
@@ -1135,8 +1136,14 @@ class Ui_MainWindow(object):
             for unterkapitel in dict_klasse[kapitel]:
                 new_checkbox = create_new_checkbox(
                     new_scrollareacontent,
-                    dict_unterkapitel[unterkapitel] + " (" + unterkapitel + ")",
+                    dict_unterkapitel[unterkapitel] + " (" + unterkapitel + ")"
                 )
+                new_checkbox.setToolTip(dict_unterkapitel[unterkapitel])
+                if self.display_mode == 0:
+                    stylesheet = StyleSheet_new_checkbox
+                else:
+                    stylesheet = StyleSheet_new_checkbox_dark_mode
+                new_checkbox.setStyleSheet(stylesheet)
                 new_checkbox.stateChanged.connect(
                     partial(
                         self.checkbox_unterkapitel_checked_creator_cria,
@@ -1173,7 +1180,7 @@ class Ui_MainWindow(object):
         self.groupBox_ausgew_gk_cr = create_new_groupbox(self.centralwidget, titel)
 
         self.groupBox_ausgew_gk_cr.setSizePolicy(SizePolicy_fixed_height)
-        self.groupBox_ausgew_gk_cr.setMaximumWidth(350)
+        self.groupBox_ausgew_gk_cr.setMaximumWidth(420)
 
         self.verticalLayout_2 = create_new_verticallayout(self.groupBox_ausgew_gk_cr)
 
@@ -1190,7 +1197,7 @@ class Ui_MainWindow(object):
         self.groupBox_bilder = create_new_groupbox(
             self.centralwidget, "Bilder (klicken, um Bilder zu entfernen)"
         )
-        self.groupBox_bilder.setMaximumWidth(350)
+        self.groupBox_bilder.setMaximumWidth(420)
         self.groupBox_bilder.setSizePolicy(SizePolicy_maximum_height)
         self.gridLayout_13 = QtWidgets.QGridLayout(self.groupBox_bilder)
         self.gridLayout_13.setObjectName(_fromUtf8("gridLayout_13"))
@@ -1977,7 +1984,7 @@ class Ui_MainWindow(object):
         self.cb_drafts_sage = QtWidgets.QCheckBox(self.centralwidget)
         self.cb_drafts_sage.setSizePolicy(SizePolicy_fixed)
         self.cb_drafts_sage.setObjectName(_fromUtf8("cb_drafts_sage"))
-        self.gridLayout_5.addWidget(self.cb_drafts_sage, 8, 3, 1, 2)
+        self.gridLayout_5.addWidget(self.cb_drafts_sage, 8, 3, 1, 1)
         self.cb_drafts_sage.setText(_translate("MainWindow", "Entwürfe anzeigen", None))
         # self.horizontalLayout_2.addWidget(self.cb_drafts_sage)
         self.cb_drafts_sage.toggled.connect(self.cb_drafts_sage_enabled)
@@ -3095,6 +3102,12 @@ class Ui_MainWindow(object):
                 new_checkbox = create_new_checkbox(
                     parent, dict_unterkapitel[unterkapitel] + " (" + unterkapitel + ")"
                 )
+                new_checkbox.setToolTip(dict_unterkapitel[unterkapitel])
+                if self.display_mode == 0:
+                    stylesheet = StyleSheet_new_checkbox
+                else:
+                    stylesheet = StyleSheet_new_checkbox_dark_mode
+                new_checkbox.setStyleSheet(stylesheet)
                 new_checkbox.stateChanged.connect(
                     partial(
                         self.checkbox_unterkapitel_checked_creator_cria,
