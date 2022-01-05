@@ -64,8 +64,10 @@ def tex_preamble(
 
 tex_end = "\end{document}"
 
-def begin_beispiel(themen = None, punkte = 0):
-    if themen != None:
+def begin_beispiel(themen = None, punkte = 0, halbe_punkte = False):
+    if halbe_punkte == True:
+        string = "[1/2]"   
+    elif themen != None:
         string = "[{}]".format(', '.join(themen))
     else:
         string = ""

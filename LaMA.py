@@ -109,6 +109,7 @@ class Ui_MainWindow(object):
         self.dict_widget_variables = {}
         self.list_selected_topics_creator = []
         self.dict_variablen_punkte = {}
+        self.dict_variablen_punkte_halb = {}
         self.dict_variablen_abstand = {}
         self.dict_variablen_label = {}
         self.dict_sage_ausgleichspunkte_chosen = {}
@@ -2841,6 +2842,7 @@ class Ui_MainWindow(object):
                             'Fehler:\n"{}"'.format(e),
                         )
                 else:
+                    refresh_ddb(self, auto_update=True)
                     text = "Neue Version von LaMA wird heruntergeladen ..."
                     path_installer = os.path.join(
                         path_home, "Downloads", "LaMA_setup.exe"
@@ -3312,6 +3314,7 @@ class Ui_MainWindow(object):
         # self.dict_alle_aufgaben_sage = {}
         self.dict_variablen_label = {}
         self.dict_variablen_punkte = {}
+        self.dict_variablen_punkte_halb = {}
         self.dict_variablen_abstand = {}
         self.update_punkte()
         self.list_copy_images = []
@@ -5998,6 +6001,10 @@ class Ui_MainWindow(object):
                         aufgabe
                     ][1]
                 )
+
+                self.dict_variablen_punkte_halb[aufgabe] = self.dict_all_infos_for_file["dict_alle_aufgaben_pkt_abstand"][
+                        aufgabe
+                    ][2]
             except KeyError:
                 pass
 
@@ -6294,6 +6301,8 @@ class Ui_MainWindow(object):
 
     def erase_aufgabe(self, aufgabe):
         del self.dict_variablen_punkte[aufgabe]
+        if get_aufgabentyp(self.chosen_program, aufgabe) == 1:
+            del self.dict_variablen_punkte_halb[aufgabe]
         del self.dict_variablen_abstand[aufgabe]
         self.list_alle_aufgaben_sage.remove(aufgabe)
         if get_aufgabentyp(self.chosen_program, aufgabe) == 2:
@@ -6334,6 +6343,13 @@ class Ui_MainWindow(object):
 
     def spinbox_pkt_changed(self):  # , aufgabe, spinbox_abstand
         self.update_punkte()
+
+    def checkbox_pkt_changed(self, aufgabe):
+        if self.dict_variablen_punkte_halb[aufgabe] ==  False:
+            self.dict_variablen_punkte_halb[aufgabe] = True
+        else:
+            self.dict_variablen_punkte_halb[aufgabe] = False
+
 
     def spinbox_abstand_changed(self):  # , aufgabe, spinbox_abstand
         # self.dict_alle_aufgaben_sage[aufgabe][1] = spinbox_abstand.value()
@@ -6484,6 +6500,11 @@ class Ui_MainWindow(object):
     def get_abstand_aufgabe_sage(self, aufgabe):
         return self.dict_variablen_abstand[aufgabe].value()
 
+    def get_punkte_halb_aufgabe_sage(self, aufgabe):
+        return self.dict_variablen_punkte_halb[aufgabe]
+
+
+
     def count_ausgleichspunkte(self, content):
         number = content.count("\ASubitem")
         number = number + content.count("\Aitem")
@@ -6538,16 +6559,21 @@ class Ui_MainWindow(object):
         groupbox_pkt.setSizePolicy(SizePolicy_fixed)
         gridLayout_gB.addWidget(groupbox_pkt, 0, 1, 3, 1, QtCore.Qt.AlignRight)
 
-        if typ == 1:
+
+        if aufgabe in self.temp_info:
+            punkte = self.temp_info[aufgabe][0]
+        elif typ == 1:
             punkte = self.spinBox_default_pkt.value()
         else:
             punkte = aufgabe_total["punkte"]
+
 
         horizontalLayout_groupbox_pkt = QtWidgets.QHBoxLayout(groupbox_pkt)
         horizontalLayout_groupbox_pkt.setObjectName(
             _fromUtf8("horizontalLayout_groupbox_pkt")
         )
         spinbox_pkt = create_new_spinbox(groupbox_pkt)
+
         spinbox_pkt.setValue(punkte)
         spinbox_pkt.valueChanged.connect(self.spinbox_pkt_changed)
         spinbox_pkt.setToolTip("0 = Punkte ausblenden")
@@ -6555,6 +6581,20 @@ class Ui_MainWindow(object):
 
         horizontalLayout_groupbox_pkt.addWidget(spinbox_pkt)
 
+        if typ == 1:
+            checkbox_pkt = create_new_checkbox(groupbox_pkt, "1/2")
+            checkbox_pkt.setToolTip("Halbe Punkte möglich")
+            if aufgabe in self.temp_info:
+                state = self.temp_info[aufgabe][1]
+            else:
+                state= False             
+            checkbox_pkt.stateChanged.connect(partial(self.checkbox_pkt_changed, aufgabe))
+            if state == True:
+                checkbox_pkt.setChecked(True)
+            horizontalLayout_groupbox_pkt.addWidget(checkbox_pkt)
+            self.dict_variablen_punkte_halb[aufgabe] = state
+        else:
+            self.dict_variablen_punkte_halb[aufgabe] = False
         if typ == 2:
             groupbox_pkt.setToolTip(
                 "Die Punkte geben die Gesamtpunkte dieser Aufgabe an.\nEs müssen daher auch die Ausgleichspunkte berücksichtigt werden."
@@ -6616,7 +6656,10 @@ class Ui_MainWindow(object):
         verticalLayout_abstand = QtWidgets.QVBoxLayout(groupbox_abstand_ausgleich)
         verticalLayout_abstand.setObjectName("verticalLayout_abstand")
 
-        abstand = aufgabe_total["abstand"]
+        if aufgabe in self.temp_info:
+            abstand = self.temp_info[aufgabe][2]
+        else:
+            abstand = aufgabe_total["abstand"]
         spinbox_abstand = create_new_spinbox(groupbox_abstand_ausgleich)
         spinbox_abstand.setValue(abstand)
         self.dict_variablen_abstand[aufgabe] = spinbox_abstand
@@ -6725,6 +6768,12 @@ class Ui_MainWindow(object):
         else:
             start_value = index - 1
 
+
+        self.temp_info = {}
+        for all in self.dict_variablen_punkte.keys():
+            self.temp_info[all] = [self.dict_variablen_punkte[all].value(), self.dict_variablen_punkte_halb[all], self.dict_variablen_abstand[all].value()]
+
+
         for i in reversed(range(start_value, self.gridLayout_8.count() + 1)):
             self.delete_widget(self.gridLayout_8, i)
 
@@ -6733,7 +6782,6 @@ class Ui_MainWindow(object):
             typ = get_aufgabentyp(self.chosen_program, item)
 
             aufgabe_total = get_aufgabe_total(item.replace(" (lokal)", ""), typ)
-            # item_infos = self.collect_all_infos_aufgabe(item)
             neue_aufgaben_box = self.create_neue_aufgaben_box(
                 index_item, item, aufgabe_total
             )
@@ -7217,10 +7265,16 @@ class Ui_MainWindow(object):
         ] = self.list_alle_aufgaben_sage
 
         _dict = {}
+        
         for aufgabe in self.list_alle_aufgaben_sage:
+            typ = get_aufgabentyp(self.chosen_program, aufgabe)
+
+            halbe_punkte = self.get_punkte_halb_aufgabe_sage(aufgabe)
+
             _dict[aufgabe] = [
                 self.get_punkte_aufgabe_sage(aufgabe),
                 self.get_abstand_aufgabe_sage(aufgabe),
+                halbe_punkte,
             ]
 
         self.dict_all_infos_for_file["dict_alle_aufgaben_pkt_abstand"] = _dict
@@ -7310,12 +7364,15 @@ class Ui_MainWindow(object):
             header = ""
 
         punkte = self.get_punkte_aufgabe_sage(aufgabe)
+
+        halbe_punkte = self.get_punkte_halb_aufgabe_sage(aufgabe)
+
         abstand = self.get_abstand_aufgabe_sage(aufgabe)
         if punkte == 0:
             begin = "\\begin{enumerate}\item[\\stepcounter{number}\\thenumber.]"
             end = "\end{enumerate}"
         elif aufgabe_total["pagebreak"] == False:
-            begin = begin_beispiel(aufgabe_total["themen"], punkte)
+            begin = begin_beispiel(aufgabe_total["themen"], punkte, halbe_punkte)
             end = end_beispiel
         elif aufgabe_total["pagebreak"] == True:
             begin = begin_beispiel_lang(punkte)
