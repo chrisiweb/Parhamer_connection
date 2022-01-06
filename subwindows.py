@@ -37,7 +37,6 @@ from create_new_widgets import (
     add_new_option,
 )
 from standard_dialog_windows import critical_window, information_window, question_window, warning_window
-# from waitingspinnerwidget import QtWaitingSpinner
 from predefined_size_policy import SizePolicy_fixed, SizePolicy_fixed_height, SizePolicy_maximum
 from work_with_content import prepare_content_for_hide_show_items
 from lama_stylesheets import (
