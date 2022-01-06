@@ -3579,10 +3579,10 @@ class Ui_MainWindow(object):
             refresh_ddb(self, True)
 
         if sys.platform.startswith("linux"):
-            os.system("xdg-open {0}.pdf".format(file_path))
+            os.system("xdg-open {0}".format(file_path))
         elif sys.platform.startswith("darwin"):
             subprocess.run(
-                ["open", "{0}.pdf".format(file_path)]
+                ["open", "{0}".format(file_path)]
             )
 
         else:
