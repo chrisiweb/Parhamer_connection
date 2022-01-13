@@ -49,8 +49,10 @@ def edit_content_ausgleichspunkte(self, aufgabe, split_content, full_content):
 
 
 def edit_content_hide_show_items(self, aufgabe, split_content, full_content):
+    # print(full_content)
     list_content = full_content.split("\\item")
     # print(list_content)
+
     for i, all in enumerate(list_content):
         if "\\end{aufgabenstellung}" in all:
             # print(all)
@@ -105,7 +107,16 @@ def edit_content_hide_show_items(self, aufgabe, split_content, full_content):
         critical_window("Beim automatisierten Ausblenden von einem oder mehreren Aufgabenstellungen in Aufgabe {} ist ein Fehler aufgetreten.".format(aufgabe),
         "Die PDF Datei wird ohne Ausblenden erstellt.")
 
-    content = ''.join([("" if "\\end{aufgabenstellung}" in line else "\\item")+ line for line in list_content])
+    content = ""
+    for i, line in enumerate(list_content):
+        if i==0 or "\\end{aufgabenstellung}" in line:
+            content = content + line
+        else:
+            content = content + "\\item" + line
+
+            
+
+    # content = ''.join([("" if "\\end{aufgabenstellung}" in line else "\\item")+ line for line in list_content])
     # print(content)
 
     return content                        
