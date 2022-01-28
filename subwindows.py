@@ -183,7 +183,7 @@ class Ui_Dialog_choose_type(object):
         Dialog.setWindowIcon(QIcon(logo_path))
 
         # Dialog.setStyleSheet("QToolTip { color: white; background-color: rgb(47, 69, 80); border: 0px; }")
-        # Dialog.setSizePolicy(SizePolicy_fixed)
+        Dialog.setSizePolicy(SizePolicy_fixed)
         self.gridLayout = QtWidgets.QGridLayout(Dialog)
         self.gridLayout.setObjectName("gridLayout")
 
