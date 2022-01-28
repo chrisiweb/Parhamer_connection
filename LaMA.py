@@ -355,8 +355,11 @@ class Ui_MainWindow(object):
 
         if self.chosen_program == "lama":
             program = "LaMA Cria (Unterstufe)"
-        if self.chosen_program == "cria":
+        elif self.chosen_program == "cria":
             program = "LaMA (Oberstufe)"
+        elif self.chosen_program == "wizard":
+            program = "LaMA (Oberstufe)"
+
         self.actionProgram = add_action(
             MainWindow,
             self.menuDatei,
@@ -366,86 +369,86 @@ class Ui_MainWindow(object):
 
         self.actionExit = add_action(MainWindow, self.menuDatei, "Exit", self.exit_pressed)
 
+        if self.chosen_program != 'wizard':
+            self.actionSuche = add_action(
+                MainWindow,
+                self.menuSuche,
+                "Aufgaben suchen...",
+                partial(self.update_gui, "widgets_search"),
+            )
+            # self.actionSuche.setVisible(False)
+            self.actionSuche.setEnabled(False)
+            self.actionSuche.setShortcut("F1")
 
-        self.actionSuche = add_action(
-            MainWindow,
-            self.menuSuche,
-            "Aufgaben suchen...",
-            partial(self.update_gui, "widgets_search"),
-        )
-        # self.actionSuche.setVisible(False)
-        self.actionSuche.setEnabled(False)
-        self.actionSuche.setShortcut("F1")
+            self.menuSuche.addSeparator()
 
-        self.menuSuche.addSeparator()
+            self.actionReset = add_action(
+                MainWindow, self.menuSuche, "Reset", self.suchfenster_reset
+            )
+            self.actionReset.setShortcut("F4")
 
-        self.actionReset = add_action(
-            MainWindow, self.menuSuche, "Reset", self.suchfenster_reset
-        )
-        self.actionReset.setShortcut("F4")
+            self.actionSage = add_action(
+                MainWindow,
+                self.menuSage,
+                "Prüfung erstellen...",
+                partial(self.update_gui, "widgets_sage"),
+            )
+            self.actionSage.setShortcut("F2")
 
-        self.actionSage = add_action(
-            MainWindow,
-            self.menuSage,
-            "Prüfung erstellen...",
-            partial(self.update_gui, "widgets_sage"),
-        )
-        self.actionSage.setShortcut("F2")
+            self.menuSage.addSeparator()
 
-        self.menuSage.addSeparator()
+            self.actionSave = add_action(
+                MainWindow, self.menuSage, "Prüfung speichern", self.sage_save
+            )
+            self.actionSave.setEnabled(False)
+            self.actionSave.setShortcut("Ctrl+S")
 
-        self.actionSave = add_action(
-            MainWindow, self.menuSage, "Prüfung speichern", self.sage_save
-        )
-        self.actionSave.setEnabled(False)
-        self.actionSave.setShortcut("Ctrl+S")
+            self.actionLoad = add_action(
+                MainWindow, self.menuSage, "Prüfung laden", self.sage_load
+            )
+            # self.actionLoad.setEnabled(False)
+            self.actionLoad.setShortcut("Ctrl+O")
 
-        self.actionLoad = add_action(
-            MainWindow, self.menuSage, "Prüfung laden", self.sage_load
-        )
-        # self.actionLoad.setEnabled(False)
-        self.actionLoad.setShortcut("Ctrl+O")
+            self.menuSage.addSeparator()
 
-        self.menuSage.addSeparator()
+            self.actionRestore_sage = add_action(
+                MainWindow, self.menuSage, "", partial(self.sage_load, autosave=True)
+            )
+            self.update_label_restore_action()
 
-        self.actionRestore_sage = add_action(
-            MainWindow, self.menuSage, "", partial(self.sage_load, autosave=True)
-        )
-        self.update_label_restore_action()
+            self.actionReset_sage = add_action(
+                MainWindow, self.menuSage, "Reset Prüfung", partial(self.reset_sage, True)
+            )
+            self.actionReset_sage.setEnabled(False)
+            # self.actionReset_sage.setVisible(False)
 
-        self.actionReset_sage = add_action(
-            MainWindow, self.menuSage, "Reset Prüfung", partial(self.reset_sage, True)
-        )
-        self.actionReset_sage.setEnabled(False)
-        # self.actionReset_sage.setVisible(False)
+            self.actionNeu = add_action(
+                MainWindow,
+                self.menuNeu,
+                "Neue Aufgabe zur Datenbank hinzufügen...",
+                self.action_add_file,
+            )
+            self.actionNeu.setShortcut("F3")
 
-        self.actionNeu = add_action(
-            MainWindow,
-            self.menuNeu,
-            "Neue Aufgabe zur Datenbank hinzufügen...",
-            self.action_add_file,
-        )
-        self.actionNeu.setShortcut("F3")
+            # self.menuNeu.addSeparator()
 
-        # self.menuNeu.addSeparator()
+            if self.developer_mode_active == True:
+                label_action_edit = "Aufgabe bearbeiten"
+            else:
+                label_action_edit = "Lokal gespeicherte Aufgabe bearbeiten"
+            self.actionEdit_Files = add_action(
+                MainWindow, self.menuNeu, label_action_edit, self.action_edit_files
+            )
+            # self.actionBild_einbinden = add_action(
+            #     MainWindow, self.menuBild_einbinden, "Durchsuchen...", self.btn_add_image_pressed
+            # )
 
-        if self.developer_mode_active == True:
-            label_action_edit = "Aufgabe bearbeiten"
-        else:
-            label_action_edit = "Lokal gespeicherte Aufgabe bearbeiten"
-        self.actionEdit_Files = add_action(
-            MainWindow, self.menuNeu, label_action_edit, self.action_edit_files
-        )
-        # self.actionBild_einbinden = add_action(
-        #     MainWindow, self.menuBild_einbinden, "Durchsuchen...", self.btn_add_image_pressed
-        # )
-
-        self.actionFeedback = add_action(
-            MainWindow,
-            self.menuFeedback,
-            "Feedback oder Fehler senden...",
-            partial(self.update_gui, "widgets_feedback"),
-        )
+            self.actionFeedback = add_action(
+                MainWindow,
+                self.menuFeedback,
+                "Feedback oder Fehler senden...",
+                partial(self.update_gui, "widgets_feedback"),
+            )
 
         self.actionEinstellungen = add_action(
             MainWindow, self.menuOptionen, "LaMA konfigurieren ...", self.open_setup
