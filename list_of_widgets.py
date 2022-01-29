@@ -279,6 +279,28 @@ widgets_feedback_cria = [
     "pushButton_send",
 ]
 
+widgets_wizard = [
+    'comboBox_themen_wizard',
+    'groupBox_setting_wizard',
+    # "actionSave",
+    # "actionReset_sage",
+    # "actionSuche",
+    # "actionReset",
+    # 'actionSave',
+    # "actionNeu",
+    # "actionEdit_Files",
+    # "actionFeedback",
+    # "comboBox_at_sage",
+    # "groupBox_alle_themen_wizard",
+    # "splitter_wizard",
+    # "groupBox_wizard",
+    # "comboBox_at_wizard",
+    # "comboBox_gk",
+    # "comboBox_gk_num",
+    # "groupBox_default_pkt",
+    # "combobox_beurteilung",
+]
+
 list_widgets = [
     widgets_search,
     widgets_sage,
@@ -290,5 +312,6 @@ list_widgets = [
     widgets_create_cria,
     widgets_edit_cria,
     widgets_feedback_cria,
+    widgets_wizard
 ]
 

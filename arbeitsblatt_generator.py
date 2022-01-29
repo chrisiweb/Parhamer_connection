@@ -81,7 +81,7 @@ def create_worksheet_addition():
 
     examples = ""
     for _ in range(30):
-        x = get_random_number(100,700, 2)
+        x = get_random_number(-100,100, 2)
         y= get_random_number(100,700, 2)
         solution = x+y
 
@@ -105,7 +105,7 @@ def create_worksheet_addition():
 
     return content
 
-content = create_worksheet_subtraction()
+content = create_worksheet_addition()
 
 with open(path_file, "w", encoding="utf8") as file:
     file.write(tex_preamble(solution="solution_on"))
