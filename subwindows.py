@@ -231,6 +231,7 @@ class Ui_Dialog_choose_type(object):
         self.btn_worksheet.setShortcut("F2")
         self.btn_worksheet.setFixedSize(120, 120)
         self.btn_worksheet.setAutoDefault(False)
+        self.btn_worksheet.setShortcut("F3")
         self.gridLayout.addWidget(self.btn_worksheet, 0, 2, 1, 1, Qt.AlignCenter)
         self.btn_worksheet.clicked.connect(partial(self.choose_button_pressed, "wizard"))
         self.label_worksheet= QtWidgets.QLabel()

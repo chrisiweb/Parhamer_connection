@@ -282,6 +282,8 @@ widgets_feedback_cria = [
 widgets_wizard = [
     'comboBox_themen_wizard',
     'groupBox_setting_wizard',
+    'buttonBox_create_worksheet_wizard',
+    'scrollArea_chosen_wizard',
     # "actionSave",
     # "actionReset_sage",
     # "actionSuche",
