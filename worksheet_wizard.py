@@ -94,7 +94,7 @@ def create_worksheet_addition(examples, columns, minimum, maximum, commas, enume
             \end{{tabular}}\n
             """.format(str(x).replace(".",","),str(y).replace(".",","),str(solution).replace(".",","))
         elif ausrichtung == 1:
-            content += "\item ${0} + {1} = {2}$\n\n".format(str(x).replace(".",","),str(y).replace(".",","),str(solution).replace(".",","))
+            content += "\item ${0} + {1} = \\antwort{{{2}}}$\n\n".format(str(x).replace(".",","),str(y).replace(".",","),str(solution).replace(".",","))
         
     content = """
     \section{{Arbeitsblatt -- Addition}}
