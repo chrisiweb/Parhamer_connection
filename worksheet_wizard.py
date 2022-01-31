@@ -77,8 +77,8 @@ def create_worksheet_subtraction():
 
 
 
-def create_worksheet_addition(examples, columns, minimum, maximum, commas, enumerate, ausrichtung, negative_solutione, typ=0):
-
+def create_worksheet_addition(titel, examples, columns, minimum, maximum, commas, nummerierung, ausrichtung):
+    list_of_examples = []
     content = ""
     for _ in range(examples):
         x = get_random_number(minimum,maximum, commas)
@@ -94,19 +94,19 @@ def create_worksheet_addition(examples, columns, minimum, maximum, commas, enume
             \end{{tabular}}\n
             """.format(str(x).replace(".",","),str(y).replace(".",","),str(solution).replace(".",","))
         elif ausrichtung == 1:
-            content += "\item ${0} + {1} = \\antwort{{{2}}}$\n\n".format(str(x).replace(".",","),str(y).replace(".",","),str(solution).replace(".",","))
-        
+            content += "\item ${0} + {1} = \\antwort{{{2}}}$\n\\vspace{{\\leer}}\n\n".format(str(x).replace(".",","),str(y).replace(".",","),str(solution).replace(".",","))
+        list_of_examples.append("{0} + {1} = {2}".format(str(x).replace(".",","),str(y).replace(".",","),str(solution).replace(".",",")))
     content = """
-    \section{{Arbeitsblatt -- Addition}}
+    \section{{{0}}}
 
-    \\begin{{multicols}}{{{0}}}
-    \\begin{{enumerate}}[{1}]
-    {2}
+    \\begin{{multicols}}{{{1}}}
+    \\begin{{enumerate}}[{2}]
+    {3}
     \end{{enumerate}}
     \end{{multicols}}
-    """.format(columns, enumerate, content)
+    """.format(titel, columns, nummerierung, content)
 
-    return content
+    return list_of_examples, content
 
 # content = create_worksheet_addition()
 

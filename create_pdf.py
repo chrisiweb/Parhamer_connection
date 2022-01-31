@@ -788,7 +788,7 @@ def create_pdf(path_file, index=0, maximum=0, typ=0):
     else:
         head, tail = os.path.split(path_file)
         file_name = tail
-        if path_file == "Schularbeit_Vorschau" or path_file == "preview":
+        if path_file == "Schularbeit_Vorschau" or path_file == "preview" or path_file == 'worksheet':
             folder_name = "{0}/Teildokument".format(path_programm)
         else:
             folder_name = head
@@ -802,7 +802,7 @@ def create_pdf(path_file, index=0, maximum=0, typ=0):
         errors="ignore",
     )
 
-    if path_file == "Teildokument" or path_file == "Schularbeit_Vorschau" or path_file == "preview":
+    if path_file == "Teildokument" or path_file == "Schularbeit_Vorschau" or path_file == "preview" or path_file == "worksheet":
         text = "Die PDF Datei wird erstellt..."
     else:
         text = "Die PDF Dateien werden erstellt... ({0}|{1})".format(index + 1, maximum)
@@ -821,7 +821,7 @@ def create_pdf(path_file, index=0, maximum=0, typ=0):
     latex_output = latex_output_file.read() #.splitlines()
     latex_output_file.close()
 
-    if file_name == "Schularbeit_Vorschau" or file_name.startswith("Teildokument") or file_name == "preview":
+    if file_name == "Schularbeit_Vorschau" or file_name.startswith("Teildokument") or file_name == "preview" or file_name == "worksheet":
 
         response = extract_error_from_output(latex_output)
 
