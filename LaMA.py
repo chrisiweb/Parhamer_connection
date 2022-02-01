@@ -11,6 +11,7 @@ print("Loading...")
 # from operator import indexOf
 # from tokenize import group
 # from numpy import maximum, negative
+from re import M
 from start_window import check_if_database_exists
 
 check_if_database_exists()
@@ -2343,11 +2344,13 @@ class Ui_MainWindow(object):
         ######################################################
         ######################################################
 
+        
         self.comboBox_themen_wizard = create_new_combobox(self.centralwidget)
-        # self.comboBox_themen_wizard.setSizePolicy(SizePolicy_maximum)
+
         self.gridLayout.addWidget(self.comboBox_themen_wizard, 0, 0, 1, 1)
-        add_new_option(self.comboBox_themen_wizard, 0, "Addition")
-        add_new_option(self.comboBox_themen_wizard, 1, "Subtraktion")
+        for i, all in enumerate(list_of_topics_wizard):
+            add_new_option(self.comboBox_themen_wizard, i, all)
+
         self.comboBox_themen_wizard.currentIndexChanged.connect(self.themen_changed_wizard)
         self.comboBox_themen_wizard.hide()
 
@@ -2357,11 +2360,7 @@ class Ui_MainWindow(object):
         self.pushButton_create_worksheet_wizard.setShortcut("Return")
         self.gridLayout.addWidget(self.pushButton_create_worksheet_wizard, 2,0,1,1)
         self.pushButton_create_worksheet_wizard.hide()
-        # self.verticalspacer_wizard = QtWidgets.QSpacerItem(20,40,QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
-        # self.verticalspacer_wizard = QtWidgets.QSpacerItem(10, 10, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        # self.gridLayout.addItem(self.verticalspacer_wizard, 1, 0, 1, 1)
-        # # #     20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
-        # # # )
+
 
         self.checkbox_solutions_wizard = create_new_checkbox(self.centralwidget, "Lösungen anzeigen", checked=True)
         self.gridLayout.addWidget(self.checkbox_solutions_wizard, 9,7,1,1, QtCore.Qt.AlignRight)
@@ -2386,16 +2385,6 @@ class Ui_MainWindow(object):
 
         button_create.clicked.connect(self.create_vorschau_worksheet_wizard)
 
-        
-        # self.buttonBox_welcome.setObjectName("buttonBox_variation")
-        # self.buttonBox_welcome.rejected.connect(self.cancel_pressed)
-        # self.buttonBox_welcome.accepted.connect(self.start_download)
-
-        # self.pushButton_create_worksheet_wizard = create_new_button(self.centralwidget, "Arbeitsblatt erzeugen", self.create_worksheet_wizard_pressed)
-        # self.pushButton_create_worksheet_wizard.setFixedHeight(50)
-        # self.pushButton_create_worksheet_wizard.setSizePolicy(SizePolicy_maximum_width)
-        # self.gridLayout.addWidget(self.pushButton_create_worksheet_wizard, 1, 8, 1,1, QtCore.Qt.AlignBottom)
-        # self.pushButton_create_worksheet_wizard.hide()
 
         self.groupBox_setting_wizard = create_new_groupbox(self.centralwidget, "Voreinstellungen")
         self.groupBox_setting_wizard.setSizePolicy(SizePolicy_maximum_width)
@@ -2458,19 +2447,9 @@ class Ui_MainWindow(object):
         self.spinbox_zahlenbereich_minimum.setRange(-999999999,999999999)
         self.spinbox_zahlenbereich_minimum.setValue(100)
         self.spinbox_zahlenbereich_minimum.valueChanged.connect(self.minimum_changed_wizard)
-        # self.lineedit_zahlenbereich_minimum = create_new_lineedit(self.groupBox_zahlenbereich_minimum)
-        # self.lineedit_zahlenbereich_minimum.setValidator(self.onlyInt)
-        # self.lineedit_zahlenbereich_minimum.setText(str(100))
-        # self.lineedit_zahlenbereich_minimum.textChanged.connect(self.minimum_changed_wizard)
         self.horizontalLayout_zahlenbereich_minimum.addWidget(self.spinbox_zahlenbereich_minimum)
 
 
-
-        # self.spinbox_zahlenbereich_maximum.valueChanged.connect(self.minimum_changed_wizard)
-        # self.lineedit_zahlenbereich_minimum = create_new_lineedit(self.groupBox_zahlenbereich_minimum)
-        # self.lineedit_zahlenbereich_minimum.setValidator(self.onlyInt)
-        # self.lineedit_zahlenbereich_minimum.setText(str(100))
-        # self.lineedit_zahlenbereich_minimum.textChanged.connect(self.minimum_changed_wizard)
         self.horizontalLayout_zahlenbereich_minimum.addWidget(self.spinbox_zahlenbereich_minimum)
         self.groupBox_zahlenbereich_maximum = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Maximum")
         self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_zahlenbereich_maximum, 0,1,1,2)
@@ -2478,9 +2457,6 @@ class Ui_MainWindow(object):
         self.spinbox_zahlenbereich_maximum = create_new_spinbox(self.groupBox_zahlenbereich_maximum)
         self.spinbox_zahlenbereich_maximum.setMaximum(999999999)
         self.spinbox_zahlenbereich_maximum.setValue(999)
-        # self.lineedit_zahlenbereich_maximum = create_new_lineedit(self.groupBox_zahlenbereich_maximum)
-        # self.lineedit_zahlenbereich_maximum.setValidator(self.onlyInt)
-        # self.lineedit_zahlenbereich_maximum.setText(str(999))
         self.horizontalLayout_zahlenbereich_maximum.addWidget(self.spinbox_zahlenbereich_maximum)
 
 
@@ -2496,7 +2472,8 @@ class Ui_MainWindow(object):
         self.label_negative_ergebnisse_wizard = create_new_label(self.groupBox_zahlenbereich_wizard, "negative Ergebnisse erlauben", True, True)
         self.label_negative_ergebnisse_wizard.clicked.connect(partial(self.click_label_to_check, self.checkbox_negative_ergebnisse_wizard))
         self.gridLayout_zahlenbereich_wizard.addWidget(self.label_negative_ergebnisse_wizard, 1,2,1,1, QtCore.Qt.AlignLeft)
-
+        self.checkbox_negative_ergebnisse_wizard.hide()
+        self.label_negative_ergebnisse_wizard.hide()
 
         self.scrollArea_chosen_wizard = QtWidgets.QScrollArea(self.centralwidget)
         self.scrollArea_chosen_wizard.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -5768,7 +5745,16 @@ class Ui_MainWindow(object):
 
 
     def themen_changed_wizard(self):
-        self.lineEdit_titel_wizard.setText("Arbeitsblatt - {}".format(self.comboBox_themen_wizard.currentText()))
+        # index = self.comboBox_themen_wizard.currentIndex()
+        thema = self.comboBox_themen_wizard.currentText()
+        self.lineEdit_titel_wizard.setText("Arbeitsblatt - {}".format(thema))
+
+        if thema == 'Subtraktion':
+            self.checkbox_negative_ergebnisse_wizard.show()
+            self.label_negative_ergebnisse_wizard.show()
+        else:
+            self.checkbox_negative_ergebnisse_wizard.hide()
+            self.label_negative_ergebnisse_wizard.hide()
 
     def minimum_changed_wizard(self):
         min = self.spinbox_zahlenbereich_minimum.value()
@@ -5804,25 +5790,37 @@ class Ui_MainWindow(object):
         self.dict_aufgaben_wizard[index] = label
 
     def reload_example(self, index):
-        new_example = create_single_example_addition(self.spinbox_zahlenbereich_minimum.value(), self.spinbox_zahlenbereich_maximum.value(), self.spinbox_kommastellen_wizard.value())
+        thema = self.comboBox_themen_wizard.currentText()
+        minimum = self.spinbox_zahlenbereich_minimum.value()
+        maximum = self.spinbox_zahlenbereich_maximum.value()
+        commas = self.spinbox_kommastellen_wizard.value()
+
+        if thema == 'Addition':
+            new_example = create_single_example_addition(minimum, maximum, commas)
+        elif thema == 'Subtraktion':
+            new_example = create_single_example_subtraction(minimum, maximum, commas, self.checkbox_negative_ergebnisse_wizard.isChecked())
+            
         self.list_of_examples_wizard[index] = new_example
         self.dict_aufgaben_wizard[index].setText(new_example[3])
 
 
     def create_worksheet_wizard_pressed(self):
-        topic_index = self.comboBox_themen_wizard.currentIndex()
+        thema = self.comboBox_themen_wizard.currentText()
         examples = self.spinBox_number_wizard.value()
         minimum = self.spinbox_zahlenbereich_minimum.value()
         maximum = self.spinbox_zahlenbereich_maximum.value()
         commas = self.spinbox_kommastellen_wizard.value()
         columns = self.spinBox_column_wizard.value()
-        negative_solutions = self.checkbox_negative_ergebnisse_wizard.isChecked()
 
         if minimum>maximum:
             warning_window('Das Maximum muss größer als das Minimum sein.')
             return
 
-        self.list_of_examples_wizard = create_list_of_examples_addition(examples, minimum, maximum, commas)
+        if thema == 'Addition':
+            self.list_of_examples_wizard = create_list_of_examples_addition(examples, minimum, maximum, commas)
+
+        elif thema == 'Subtraktion':
+            self.list_of_examples_wizard = create_list_of_examples_subtraction(examples, minimum, maximum, commas, self.checkbox_negative_ergebnisse_wizard.isChecked())
 
         for i in reversed(range(self.gridLayout_scrollArea_wizard.count())): 
             self.gridLayout_scrollArea_wizard.itemAt(i).widget().setParent(None)
@@ -5855,8 +5853,9 @@ class Ui_MainWindow(object):
         columns = self.spinBox_column_wizard.value()
         nummerierung = self.combobox_nummerierung_wizard.currentText()
         ausrichtung = self.combobox_ausrichtung_wizard.currentIndex()
+        index = self.comboBox_themen_wizard.currentIndex()
 
-        content = create_worksheet_addition(self.list_of_examples_wizard, titel, columns, nummerierung, ausrichtung)
+        content = create_worksheet_add_subtract(self.list_of_examples_wizard, index ,titel, columns, nummerierung, ausrichtung)
 
         path_file = os.path.join(
             path_localappdata_lama, "Teildokument", "worksheet.tex"
@@ -8584,7 +8583,11 @@ if __name__ == "__main__":
     )
 
     i = step_progressbar(i, "worksheet_wizard")
-    from worksheet_wizard import create_worksheet_addition, create_list_of_examples_addition, create_single_example_addition
+    from worksheet_wizard import (
+        list_of_topics_wizard,
+        create_worksheet_add_subtract, create_list_of_examples_addition, create_single_example_addition,
+        create_list_of_examples_subtraction, create_single_example_subtraction
+    )
 
     i = step_progressbar(i, "tex_minimal")
     from tex_minimal import *
