@@ -76,14 +76,27 @@ def create_worksheet_subtraction():
     return content
 
 
+def create_single_example_addition(minimum, maximum, commas):
+    x = get_random_number(minimum,maximum, commas)
+    y= get_random_number(minimum,maximum, commas)
+    string = "{0} + {1} = {2}".format(str(x).replace(".",","),str(y).replace(".",","),str(x+y).replace(".",","))
+    return [x,y,x+y, string]
 
-def create_worksheet_addition(titel, examples, columns, minimum, maximum, commas, nummerierung, ausrichtung):
+def create_list_of_examples_addition(examples, minimum, maximum, commas):
     list_of_examples = []
-    content = ""
+
     for _ in range(examples):
-        x = get_random_number(minimum,maximum, commas)
-        y= get_random_number(minimum,maximum, commas)
-        solution = x+y
+        new_example = create_single_example_addition(minimum, maximum, commas)
+        list_of_examples.append(new_example)
+
+    return list_of_examples
+
+def create_worksheet_addition(list_of_examples, titel, columns, nummerierung, ausrichtung):
+    content = ""
+    for all in list_of_examples:
+        # x = get_random_number(minimum,maximum, commas)
+        # y= get_random_number(minimum,maximum, commas)
+        # solution = x+y
 
         if ausrichtung == 0:
             content += """
@@ -92,10 +105,9 @@ def create_worksheet_addition(titel, examples, columns, minimum, maximum, commas
             & ${1}$ \\\\ \hline
             &\\antwort{{${2}$}}
             \end{{tabular}}\n
-            """.format(str(x).replace(".",","),str(y).replace(".",","),str(solution).replace(".",","))
+            """.format(str(all[0]).replace(".",","),str(all[1]).replace(".",","),str(all[2]).replace(".",","))
         elif ausrichtung == 1:
-            content += "\item ${0} + {1} = \\antwort{{{2}}}$\n\\vspace{{\\leer}}\n\n".format(str(x).replace(".",","),str(y).replace(".",","),str(solution).replace(".",","))
-        list_of_examples.append("{0} + {1} = {2}".format(str(x).replace(".",","),str(y).replace(".",","),str(solution).replace(".",",")))
+            content += "\item ${0} + {1} = \\antwort{{{2}}}$\n\\vspace{{\\leer}}\n\n".format(str(all[0]).replace(".",","),str(all[1]).replace(".",","),str(all[2]).replace(".",","))
     content = """
     \section{{{0}}}
 
@@ -106,7 +118,7 @@ def create_worksheet_addition(titel, examples, columns, minimum, maximum, commas
     \end{{multicols}}
     """.format(titel, columns, nummerierung, content)
 
-    return list_of_examples, content
+    return content
 
 # content = create_worksheet_addition()
 

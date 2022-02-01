@@ -7,9 +7,10 @@ __lastupdate__ = "01/22"
 
 print("Loading...")
 
-from operator import indexOf
-from tokenize import group
-from numpy import maximum, negative
+# from imp import reload
+# from operator import indexOf
+# from tokenize import group
+# from numpy import maximum, negative
 from start_window import check_if_database_exists
 
 check_if_database_exists()
@@ -286,6 +287,9 @@ class Ui_MainWindow(object):
         self.menuDatei = QtWidgets.QMenu(self.menuBar)
         self.menuDatei.setObjectName(_fromUtf8("menuDatei"))
         self.menuNeu = QtWidgets.QMenu(self.menuBar)
+        self.menuChangeProgram = QtWidgets.QMenu(self.menuDatei)
+        self.menuChangeProgram.setObjectName(_fromUtf8("menuChangeProgram"))
+        self.menuChangeProgram.setTitle("Wechseln zu ...")
         self.menuNeu.setObjectName(_fromUtf8("menuNeu"))
         self.menuSage = QtWidgets.QMenu(self.menuBar)
         self.menuSage.setObjectName(_fromUtf8("menuSage"))
@@ -357,19 +361,38 @@ class Ui_MainWindow(object):
 
         self.menuDatei.addSeparator()
 
-        if self.chosen_program == "lama":
-            program = "LaMA Cria (Unterstufe)"
-        elif self.chosen_program == "cria":
-            program = "LaMA (Oberstufe)"
-        elif self.chosen_program == "wizard":
-            program = "Worksheet Wizard"
+        # list_programs = ["LaMA Cria (Unterstufe)", "LaMA (Oberstufe)", "Worksheet Wizard"]
 
-        self.actionProgram = add_action(
-            MainWindow,
-            self.menuDatei,
-            'Zu "{}" wechseln'.format(program),
-            self.change_program,
-        )
+
+        self.action_cria = add_action(
+                MainWindow,
+                self.menuChangeProgram,
+                "LaMA Cria (Unterstufe)",
+                partial(self.change_program, "cria"), #
+            )
+
+        self.action_lama = add_action(
+                MainWindow,
+                self.menuChangeProgram,
+                "LaMA (Oberstufe)",
+                partial(self.change_program, "lama"), #
+            )
+
+        self.action_wizard = add_action(
+                MainWindow,
+                self.menuChangeProgram,
+                "LaMA Worksheet Wizard",
+                partial(self.change_program, "wizard"), #
+            )
+        if self.chosen_program == "cria":
+            self.action_cria.setVisible(False)
+        elif self.chosen_program == "lama":
+            self.action_lama.setVisible(False)
+        elif self.chosen_program == "wizard":
+            self.action_wizard.setVisible(False)
+
+
+        self.menuDatei.addAction(self.menuChangeProgram.menuAction())
 
         self.actionExit = add_action(MainWindow, self.menuDatei, "Exit", self.exit_pressed)
 
@@ -2321,28 +2344,39 @@ class Ui_MainWindow(object):
         ######################################################
 
         self.comboBox_themen_wizard = create_new_combobox(self.centralwidget)
-        self.comboBox_themen_wizard.setSizePolicy(SizePolicy_maximum)
+        # self.comboBox_themen_wizard.setSizePolicy(SizePolicy_maximum)
         self.gridLayout.addWidget(self.comboBox_themen_wizard, 0, 0, 1, 1)
         add_new_option(self.comboBox_themen_wizard, 0, "Addition")
         add_new_option(self.comboBox_themen_wizard, 1, "Subtraktion")
         self.comboBox_themen_wizard.currentIndexChanged.connect(self.themen_changed_wizard)
         self.comboBox_themen_wizard.hide()
 
+
+        self.pushButton_create_worksheet_wizard = create_new_button(self.centralwidget, "Arbeitsblatt erzeugen", self.create_worksheet_wizard_pressed)
+        self.pushButton_create_worksheet_wizard.setFixedHeight(50)
+        self.pushButton_create_worksheet_wizard.setShortcut("Return")
+        self.gridLayout.addWidget(self.pushButton_create_worksheet_wizard, 2,0,1,1)
+        self.pushButton_create_worksheet_wizard.hide()
         # self.verticalspacer_wizard = QtWidgets.QSpacerItem(20,40,QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         # self.verticalspacer_wizard = QtWidgets.QSpacerItem(10, 10, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         # self.gridLayout.addItem(self.verticalspacer_wizard, 1, 0, 1, 1)
         # # #     20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
         # # # )
 
+        self.checkbox_solutions_wizard = create_new_checkbox(self.centralwidget, "Lösungen anzeigen", checked=True)
+        self.gridLayout.addWidget(self.checkbox_solutions_wizard, 9,7,1,1, QtCore.Qt.AlignRight)
+        self.checkbox_solutions_wizard.hide()
+
         self.buttonBox_create_worksheet_wizard = QtWidgets.QDialogButtonBox(self.centralwidget)
         self.buttonBox_create_worksheet_wizard.setStandardButtons(
             QtWidgets.QDialogButtonBox.Save | QtWidgets.QDialogButtonBox.Ok
         )
-        self.gridLayout.addWidget(self.buttonBox_create_worksheet_wizard, 9,7,1,1)
+        self.gridLayout.addWidget(self.buttonBox_create_worksheet_wizard, 10,7,1,1)
+        self.buttonBox_create_worksheet_wizard.hide()
         # buttonS = self.buttonBox_titlepage.button(QtWidgets.QDialogButtonBox.Save)
         # buttonS.setText('Speichern')
         button_create = self.buttonBox_create_worksheet_wizard.button(QtWidgets.QDialogButtonBox.Save)
-        button_create.setText("Arbeitsblatt erzeugen")
+        button_create.setText("Vorschau")
 
         button_save = self.buttonBox_create_worksheet_wizard.button(QtWidgets.QDialogButtonBox.Ok)
         button_save.setText("Speichern")
@@ -2350,8 +2384,7 @@ class Ui_MainWindow(object):
 
         button_save.clicked.connect(still_to_define)
 
-        button_create.clicked.connect(self.create_worksheet_wizard_pressed)
-        button_create.setShortcut("Return")
+        button_create.clicked.connect(self.create_vorschau_worksheet_wizard)
 
         
         # self.buttonBox_welcome.setObjectName("buttonBox_variation")
@@ -2366,7 +2399,7 @@ class Ui_MainWindow(object):
 
         self.groupBox_setting_wizard = create_new_groupbox(self.centralwidget, "Voreinstellungen")
         self.groupBox_setting_wizard.setSizePolicy(SizePolicy_maximum_width)
-        self.gridLayout.addWidget(self.groupBox_setting_wizard, 0,1,2,7)
+        self.gridLayout.addWidget(self.groupBox_setting_wizard, 0,1,3,7)
         self.gridLayout_setting_wizard = create_new_gridlayout(self.groupBox_setting_wizard)
         self.groupBox_setting_wizard.hide()
 
@@ -2398,10 +2431,10 @@ class Ui_MainWindow(object):
         self.gridLayout_setting_wizard.addWidget(self.groupBox_nummerierung_wizard, 2,0,1,1)
         self.horizontalLayout_nummerierung_wizard = create_new_horizontallayout(self.groupBox_nummerierung_wizard)
         self.combobox_nummerierung_wizard = create_new_combobox(self.groupBox_nummerierung_wizard)
-        add_new_option(self.combobox_nummerierung_wizard, 0, "(a)")
-        add_new_option(self.combobox_nummerierung_wizard, 1, "(i)")
+        # add_new_option(self.combobox_nummerierung_wizard, 0, "(a)")
+        add_new_option(self.combobox_nummerierung_wizard, 0, "(i)")
+        add_new_option(self.combobox_nummerierung_wizard, 1, "(I)")
         add_new_option(self.combobox_nummerierung_wizard, 2, "(1)")
-        add_new_option(self.combobox_nummerierung_wizard, 3, "(I)")
         self.horizontalLayout_nummerierung_wizard.addWidget(self.combobox_nummerierung_wizard) 
 
         self.groupBox_ausrichtung_wizard = create_new_groupbox(self.groupBox_setting_wizard, "Ausrichtung")
@@ -2421,19 +2454,34 @@ class Ui_MainWindow(object):
         self.horizontalLayout_zahlenbereich_minimum = create_new_horizontallayout(self.groupBox_zahlenbereich_minimum)
         # self.spinBox_zahlenbereich_minimum = create_new_spinbox(self.groupBox_zahlenbereich_minimum,100)
         self.onlyInt = QtGui.QIntValidator()
-        self.lineedit_zahlenbereich_minimum = create_new_lineedit(self.groupBox_zahlenbereich_minimum)
-        self.lineedit_zahlenbereich_minimum.setValidator(self.onlyInt)
-        self.lineedit_zahlenbereich_minimum.setText(str(100))
-        self.lineedit_zahlenbereich_minimum.textChanged.connect(self.minimum_changed_wizard)
-        self.horizontalLayout_zahlenbereich_minimum.addWidget(self.lineedit_zahlenbereich_minimum)
+        self.spinbox_zahlenbereich_minimum = create_new_spinbox(self.groupBox_zahlenbereich_minimum)
+        self.spinbox_zahlenbereich_minimum.setRange(-999999999,999999999)
+        self.spinbox_zahlenbereich_minimum.setValue(100)
+        self.spinbox_zahlenbereich_minimum.valueChanged.connect(self.minimum_changed_wizard)
+        # self.lineedit_zahlenbereich_minimum = create_new_lineedit(self.groupBox_zahlenbereich_minimum)
+        # self.lineedit_zahlenbereich_minimum.setValidator(self.onlyInt)
+        # self.lineedit_zahlenbereich_minimum.setText(str(100))
+        # self.lineedit_zahlenbereich_minimum.textChanged.connect(self.minimum_changed_wizard)
+        self.horizontalLayout_zahlenbereich_minimum.addWidget(self.spinbox_zahlenbereich_minimum)
 
+
+
+        # self.spinbox_zahlenbereich_maximum.valueChanged.connect(self.minimum_changed_wizard)
+        # self.lineedit_zahlenbereich_minimum = create_new_lineedit(self.groupBox_zahlenbereich_minimum)
+        # self.lineedit_zahlenbereich_minimum.setValidator(self.onlyInt)
+        # self.lineedit_zahlenbereich_minimum.setText(str(100))
+        # self.lineedit_zahlenbereich_minimum.textChanged.connect(self.minimum_changed_wizard)
+        self.horizontalLayout_zahlenbereich_minimum.addWidget(self.spinbox_zahlenbereich_minimum)
         self.groupBox_zahlenbereich_maximum = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Maximum")
         self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_zahlenbereich_maximum, 0,1,1,2)
         self.horizontalLayout_zahlenbereich_maximum = create_new_horizontallayout(self.groupBox_zahlenbereich_maximum)
-        self.lineedit_zahlenbereich_maximum = create_new_lineedit(self.groupBox_zahlenbereich_maximum)
-        self.lineedit_zahlenbereich_maximum.setValidator(self.onlyInt)
-        self.lineedit_zahlenbereich_maximum.setText(str(999))
-        self.horizontalLayout_zahlenbereich_maximum.addWidget(self.lineedit_zahlenbereich_maximum)
+        self.spinbox_zahlenbereich_maximum = create_new_spinbox(self.groupBox_zahlenbereich_maximum)
+        self.spinbox_zahlenbereich_maximum.setMaximum(999999999)
+        self.spinbox_zahlenbereich_maximum.setValue(999)
+        # self.lineedit_zahlenbereich_maximum = create_new_lineedit(self.groupBox_zahlenbereich_maximum)
+        # self.lineedit_zahlenbereich_maximum.setValidator(self.onlyInt)
+        # self.lineedit_zahlenbereich_maximum.setText(str(999))
+        self.horizontalLayout_zahlenbereich_maximum.addWidget(self.spinbox_zahlenbereich_maximum)
 
 
         self.groupBox_kommastellen_wizard = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Kommastellen")
@@ -2609,16 +2657,16 @@ class Ui_MainWindow(object):
         self.create_Tooltip(ws_beschreibung)
         #############################################
 
-        if self.chosen_program == "lama":
-            program = "LaMA Cria (Unterstufe)"
-        elif self.chosen_program == "cria":
-            program = "LaMA (Oberstufe)"
-        elif self.chosen_program == "wizard":
-            program = "LaMA (Oberstufe)"
+        # if self.chosen_program == "lama":
+        #     program = "LaMA Cria (Unterstufe)"
+        # elif self.chosen_program == "cria":
+        #     program = "LaMA (Oberstufe)"
+        # elif self.chosen_program == "wizard":
+        #     program = "LaMA (Oberstufe)"
 
-        self.actionProgram.setText(
-            _translate("MainWindow", 'Zu "{}" wechseln'.format(program), None)
-        )
+        # self.actionProgram.setText(
+        #     _translate("MainWindow", 'Zu "{}" wechseln'.format(program), None)
+        # )
         self.actionExit.setText(_translate("MainWindow", "Exit", None))
 
         print("Done")
@@ -3492,28 +3540,29 @@ class Ui_MainWindow(object):
         for i in reversed(range(self.gridLayout_8.count())):
             self.delete_widget(self.gridLayout_8, i)
 
-    def change_program(self):
-        if self.chosen_program == "lama":
-            change_to = "LaMA Cria (Unterstufe)"
+    def change_program(self, program_change_to):
+        if program_change_to == "cria":
+            name = "LaMA Cria (Unterstufe)"
             program_name = "LaMA Cria - LaTeX Mathematik Assistent (Unterstufe)"
             icon = logo_cria_path
 
-        elif self.chosen_program == "cria":
-            change_to = "LaMA (Oberstufe)"
+        elif program_change_to == "lama":
+            name = "LaMA (Oberstufe)"
             program_name = "LaMA - LaTeX Mathematik Assistent (Oberstufe)"
             icon = logo_path
 
-        elif self.chosen_program == "wizard":
-            change_to = "LaMA (Oberstufe)"
-            program_name = "LaMA - LaTeX Mathematik Assistent (Oberstufe)"
+        elif program_change_to == "wizard":
+            name = "LaMA - Worksheet Wizard"
+            program_name = "LaMA - LaTeX Mathematik Assistent (Worksheet Wizard)"
             icon = logo_path
 
-        response = question_window(
-            "Sind Sie sicher, dass sie zu {} wechseln wollen?\nDadurch werden alle bisherigen Einträge gelöscht!".format(
-                change_to
-            ),
-            titel="Programm wechseln?",
-        )
+        if self.chosen_program !='wizard':
+            response = question_window(
+                "Sind Sie sicher, dass sie zu {} wechseln wollen?\nDadurch werden alle bisherigen Einträge gelöscht!".format(
+                    name
+                ),
+                titel="Programm wechseln?",
+            )
 
         if response == False:
             return False
@@ -3522,36 +3571,23 @@ class Ui_MainWindow(object):
         self.suchfenster_reset()
         self.reset_feedback()
 
-        # self.comboBox_fehlertyp.setCurrentIndex(0)
-        # self.plainTextEdit.setPlainText("")
-
-        self.actionProgram.setText(
-            _translate("MainWindow", 'Zu "{}" wechseln'.format(change_to), None)
-        )
 
         self.comboBox_pagebreak.setCurrentIndex(0)
-        if self.chosen_program == "lama":
+        if program_change_to == "cria":
             self.chosen_program = "cria"
-
-            # if self.beispieldaten_dateipfad_cria == None:
-            #     self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
-            #         "cria"
-            #     )
 
             self.gridLayout.addWidget(self.groupBox_af, 3, 0, 1, 1)
             self.gridLayout.addWidget(self.groupBox_punkte, 0, 1, 1, 1)
             self.gridLayout.addWidget(self.groupBox_aufgabenformat, 0, 2, 1, 1)
-            self.actionProgram.setText(
-                _translate("MainWindow", 'Zu "LaMA (Oberstufe)" wechseln', None)
-            )
+
+            self.action_cria.setVisible(False)
+            self.action_lama.setVisible(True)
+            self.action_wizard.setVisible(True)
+
             # self.comboBox_pruefungstyp.removeItem(6)  # delete Quiz
             self.cb_af_ko.show()
             self.cb_af_rf.show()
             self.cb_af_ta.show()
-
-            # self.comboBox_at_fb.setItemText(0, _translate("MainWindow", "Aufgabenrückmeldung", None))
-            # self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Allgemeine Rückmeldung", None))
-            # self.comboBox_at_fb.removeItem(2)
 
             self.combobox_searchtype.setItemText(
                 1,
@@ -3574,19 +3610,19 @@ class Ui_MainWindow(object):
             )
 
             self.groupBox_ausgew_gk_cr.setTitle("Ausgewählte Themen")
-            # self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
-            #     "cria"
-            # )
+            self.update_gui("widgets_search")
 
-        elif self.chosen_program == "cria" or self.chosen_program == 'wizard':
+        elif program_change_to == "lama":
             self.chosen_program = "lama"
 
             self.gridLayout.addWidget(self.groupBox_af, 4, 0, 1, 1)
             self.gridLayout.addWidget(self.groupBox_punkte, 0, 2, 1, 1)
             self.gridLayout.addWidget(self.groupBox_aufgabenformat, 0, 3, 1, 1)
-            self.actionProgram.setText(
-                _translate("MainWindow", 'Zu "LaMA Cria (Unterstufe)" wechseln', None)
-            )
+
+            self.action_cria.setVisible(True)
+            self.action_lama.setVisible(False)
+            self.action_wizard.setVisible(True)
+
             self.combobox_searchtype.setItemText(
                 1,
                 _translate(
@@ -3611,12 +3647,20 @@ class Ui_MainWindow(object):
             )
 
             self.groupBox_ausgew_gk_cr.setTitle("Ausgewählte Grundkompetenzen")
+            self.update_gui("widgets_search")
+
+        elif program_change_to == 'wizard':
+            self.chosen_program = "wizard"
+            self.action_cria.setVisible(True)
+            self.action_lama.setVisible(True)
+            self.action_wizard.setVisible(False)
+            self.update_gui("widgets_wizard")           
 
         MainWindow.setWindowTitle(program_name)
         MainWindow.setWindowIcon(QtGui.QIcon(icon))
         if self.lama_settings["database"] == 0:
             refresh_ddb(self)
-        self.update_gui("widgets_search")
+        
         # self.beispieldaten_dateipfad_1 = self.define_beispieldaten_dateipfad(1)
         # self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)
 
@@ -5727,101 +5771,110 @@ class Ui_MainWindow(object):
         self.lineEdit_titel_wizard.setText("Arbeitsblatt - {}".format(self.comboBox_themen_wizard.currentText()))
 
     def minimum_changed_wizard(self):
-        if self.lineedit_zahlenbereich_minimum.text()=="":
-            return
-        min = int(self.lineedit_zahlenbereich_minimum.text())
-        max = int(self.lineedit_zahlenbereich_maximum.text())
+        min = self.spinbox_zahlenbereich_minimum.value()
+        max = self.spinbox_zahlenbereich_maximum.value()
 
         if min > max:
-            self.lineedit_zahlenbereich_maximum.setText(str(min+1))
+            self.spinbox_zahlenbereich_maximum.setValue(min+1)
 
 
-    def create_aufgabenbox_wizard(self, index, example, items_per_column, row, column):
+    def create_aufgabenbox_wizard(self, index, example, row, column):
         groupbox = create_new_groupbox(self.scrollAreaWidgetContents_wizard, "{}. Aufgabe".format(index+1))
         groupbox.setSizePolicy(SizePolicy_fixed)
 
         self.gridLayout_scrollArea_wizard.addWidget(groupbox ,row,column,1,1)
 
         horizontalLayout = create_new_horizontallayout(groupbox)
-        label = create_new_label(self.scrollArea_chosen_wizard, example)
+        label = create_new_label(self.scrollArea_chosen_wizard, example[3])
         horizontalLayout.addWidget(label)
         
         # horizontalLayout.addStretch()
-        button_refresh = create_new_button(groupbox, "Refresh", still_to_define)
+        # button_refresh = create_new_button(groupbox, "Refresh", still_to_define)
+        button_refresh = create_standard_button(groupbox,
+            "",
+            partial(self.reload_example, index),
+            QtWidgets.QStyle.SP_BrowserReload)
         horizontalLayout.addWidget(button_refresh)
-        button_delete = create_new_button(groupbox, "Delete", still_to_define)
-        horizontalLayout.addWidget(button_delete)
-        #self.dict_aufgaben_wizard = {} #??
+        # button_delete = create_new_button(groupbox, "Delete", still_to_define)
+        # button_delete = create_standard_button(groupbox,
+        #     "",
+        #     still_to_define,
+        #     QtWidgets.QStyle.SP_DialogCancelButton)
+        # horizontalLayout.addWidget(button_delete)
+        self.dict_aufgaben_wizard[index] = label
+
+    def reload_example(self, index):
+        new_example = create_single_example_addition(self.spinbox_zahlenbereich_minimum.value(), self.spinbox_zahlenbereich_maximum.value(), self.spinbox_kommastellen_wizard.value())
+        self.list_of_examples_wizard[index] = new_example
+        self.dict_aufgaben_wizard[index].setText(new_example[3])
+
 
     def create_worksheet_wizard_pressed(self):
         topic_index = self.comboBox_themen_wizard.currentIndex()
-        titel = self.lineEdit_titel_wizard.text()
         examples = self.spinBox_number_wizard.value()
-        columns = self.spinBox_column_wizard.value()
-        minimum = int(self.lineedit_zahlenbereich_minimum.text())
-        maximum = int(self.lineedit_zahlenbereich_maximum.text())
+        minimum = self.spinbox_zahlenbereich_minimum.value()
+        maximum = self.spinbox_zahlenbereich_maximum.value()
         commas = self.spinbox_kommastellen_wizard.value()
-        nummerierung = self.combobox_nummerierung_wizard.currentText()
-        ausrichtung = self.combobox_ausrichtung_wizard.currentIndex()
+        columns = self.spinBox_column_wizard.value()
         negative_solutions = self.checkbox_negative_ergebnisse_wizard.isChecked()
 
         if minimum>maximum:
             warning_window('Das Maximum muss größer als das Minimum sein.')
             return
 
-        list_of_examples, content = create_worksheet_addition(titel, examples, columns, minimum, maximum, commas, nummerierung, ausrichtung)
-
-        items_per_column= len(list_of_examples)/columns
-        # print(max_items_per_column)
+        self.list_of_examples_wizard = create_list_of_examples_addition(examples, minimum, maximum, commas)
 
         for i in reversed(range(self.gridLayout_scrollArea_wizard.count())): 
             self.gridLayout_scrollArea_wizard.itemAt(i).widget().setParent(None)
+
+        items_per_column= len(self.list_of_examples_wizard)/columns
         column = 0
         row = 0
-        for index, all in enumerate(list_of_examples):
-            self.create_aufgabenbox_wizard(index, all, items_per_column, row, column)
+        for index, example in enumerate(self.list_of_examples_wizard):
+            self.create_aufgabenbox_wizard(index, example, row, column)
             if row+1 < items_per_column:
                 row +=1
             else:
+                row +=1
+                self.gridLayout_scrollArea_wizard.setColumnStretch(row, 1)
+                self.gridLayout_scrollArea_wizard.setRowStretch(row, 1)
                 row = 0
                 column +=1
-        self.gridLayout_scrollArea_wizard.setColumnStretch(column, 1)
+        
+
+
+
+    def create_vorschau_worksheet_wizard(self):
+        try:
+            self.list_of_examples_wizard 
+        except AttributeError:
+            self.create_worksheet_wizard_pressed()
+
+
+        titel = self.lineEdit_titel_wizard.text()
+        columns = self.spinBox_column_wizard.value()
+        nummerierung = self.combobox_nummerierung_wizard.currentText()
+        ausrichtung = self.combobox_ausrichtung_wizard.currentIndex()
+
+        content = create_worksheet_addition(self.list_of_examples_wizard, titel, columns, nummerierung, ausrichtung)
 
         path_file = os.path.join(
             path_localappdata_lama, "Teildokument", "worksheet.tex"
             )
 
+        if self.checkbox_solutions_wizard.isChecked() == True:
+            show_solution = "solution_on"
+        else:
+            show_solution = "solution_off"
+
         with open(path_file, "w", encoding="utf8") as file:
-            file.write(tex_preamble(solution="solution_on"))
+            file.write(tex_preamble(solution=show_solution, pagestyle='empty'))
 
             file.write(content)
 
             file.write(tex_end)
 
-        #### temporary solution!!
-        # name = 'worksheet'
-        # head, tail = os.path.split(name)
-        # file_name = tail
-        # folder_name = "{0}/Teildokument".format(path_programm)
-
         create_pdf("worksheet")
-        # drive = ""
-
-        # terminal_command = 'cd "{1}" & latex -interaction=nonstopmode --synctex=-1 "{2}.tex" & latex -interaction=nonstopmode --synctex=-1 "{2}.tex" & dvips "{2}.dvi" & ps2pdf -dNOSAFER -dALLOWPSTRANSPARENCY "{2}.ps"'.format(
-        #     drive, folder_name, file_name
-        # )
-
-
-        # process = subprocess.Popen(
-        #     terminal_command,
-        #     cwd=os.path.splitdrive(path_programm)[0],
-        #     shell=True,
-        # )
-
-        # process.wait()
-
-
-        # open_pdf_file(folder_name, file_name)
 
 
     def image_clean_up(self):
@@ -8531,7 +8584,7 @@ if __name__ == "__main__":
     )
 
     i = step_progressbar(i, "worksheet_wizard")
-    from worksheet_wizard import create_worksheet_addition
+    from worksheet_wizard import create_worksheet_addition, create_list_of_examples_addition, create_single_example_addition
 
     i = step_progressbar(i, "tex_minimal")
     from tex_minimal import *
