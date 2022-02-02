@@ -2381,7 +2381,7 @@ class Ui_MainWindow(object):
         button_save.setText("Speichern")
 
 
-        button_save.clicked.connect(still_to_define)
+        button_save.clicked.connect(self.save_worksheet_wizard)
 
         button_create.clicked.connect(self.create_vorschau_worksheet_wizard)
 
@@ -5875,6 +5875,58 @@ class Ui_MainWindow(object):
 
         create_pdf("worksheet")
 
+    def save_worksheet_wizard(self):
+        try:
+            self.list_of_examples_wizard 
+        except AttributeError:
+            self.create_worksheet_wizard_pressed()
+
+
+        titel = self.lineEdit_titel_wizard.text()
+        columns = self.spinBox_column_wizard.value()
+        nummerierung = self.combobox_nummerierung_wizard.currentText()
+        ausrichtung = self.combobox_ausrichtung_wizard.currentIndex()
+        index = self.comboBox_themen_wizard.currentIndex()
+
+        content = create_worksheet_add_subtract(self.list_of_examples_wizard, index ,titel, columns, nummerierung, ausrichtung)
+
+
+        try:
+            self.saved_file_path
+        except AttributeError:
+            self.saved_file_path = path_home
+        path_file = self.get_saving_path()
+        if path_file == None:
+            return
+
+        index = 0
+        for show_solution in ["solution_on", "solution_off"]:
+            with open(path_file, "w", encoding="utf8") as file:
+                file.write(tex_preamble(solution=show_solution, pagestyle='empty'))
+
+                file.write(content)
+
+                file.write(tex_end)
+
+
+            name, extension = os.path.splitext(path_file)
+
+
+            create_pdf(name, index, 2)
+            
+            temp_filename = name + ".pdf"
+            if index == 0:
+                new_filename = name + "_Loesung.pdf"
+
+                shutil.move(temp_filename, new_filename)
+
+            elif index ==1:
+                self.reset_latex_file_to_start(path_file)
+
+            index +=1
+
+        return
+  
 
     def image_clean_up(self):
         image_folder = os.path.join(path_database, "Bilder")
@@ -7789,57 +7841,6 @@ class Ui_MainWindow(object):
         # return
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
-        # if ausgabetyp == "vorschau":
-        #     filename_vorschau = os.path.join(
-        #         path_programm, "Teildokument", "Schularbeit_Vorschau.tex"
-        #     )
-        # if ausgabetyp == "schularbeit":
-
-        #     dict_umlaute = {
-        #         "Ä": "AE",
-        #         "ä": "ae",
-        #         "Ö": "OE",
-        #         "ö": "oe",
-        #         "Ü": "ue",
-        #         "ü": "ue",
-        #         "ß": "ss",
-        #     }
-        #     if index == 0:
-
-        #         self.chosen_path_schularbeit_erstellen = (
-        #             QtWidgets.QFileDialog.getSaveFileName(
-        #                 None,
-        #                 "Speicherort wählen",
-        #                 os.path.dirname(self.saved_file_path),
-        #                 "TeX Dateien (*.tex);; Alle Dateien (*.*)",
-        #             )
-        #         )
-
-        #         if self.chosen_path_schularbeit_erstellen[0] == "":
-        #             QtWidgets.QApplication.restoreOverrideCursor()
-        #             return
-        #         self.saved_file_path = self.chosen_path_schularbeit_erstellen[0]
-
-        #         dirname = os.path.dirname(self.chosen_path_schularbeit_erstellen[0])
-        #         filename = os.path.basename(self.chosen_path_schularbeit_erstellen[0])
-        #         if sys.platform.startswith("linux"):
-        #             filename = filename + ".tex"
-
-        #         for character in dict_umlaute.keys():
-        #             if character in filename:
-        #                 filename = filename.replace(character, dict_umlaute[character])
-        #         filename_vorschau = os.path.join(dirname, filename)
-
-        #         if lama == True:
-        #             Ui_MainWindow.sage_save(self, filename_vorschau)  #
-
-            # else:
-            #     dirname = os.path.dirname(self.chosen_path_schularbeit_erstellen[0])
-            #     filename = os.path.basename(self.chosen_path_schularbeit_erstellen[0])
-            #     for character in dict_umlaute.keys():
-            #         if character in filename:
-            #             filename = filename.replace(character, dict_umlaute[character])
-            #     filename_vorschau = os.path.join(dirname, filename)
 
         self.dict_gruppen = {0: "A", 1: "B", 2: "C", 3: "D", 4: "E", 5: "F"}
 
@@ -7852,10 +7853,10 @@ class Ui_MainWindow(object):
         if self.chosen_program == "cria":
             dict_titlepage = self.dict_titlepage_cria
 
-        if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Quiz":
-            beamer_mode = True
-        else:
-            beamer_mode = False
+        # if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Quiz":
+        #     beamer_mode = True
+        # else:
+        #     beamer_mode = False
 
         if (
             (ausgabetyp == "vorschau" and self.cb_solution_sage.isChecked() == True)
