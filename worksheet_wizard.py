@@ -26,39 +26,6 @@ def get_random_number(min, max, decimal=0):
         return x
 
 
-def create_worksheet_subtraction():
-
-    examples = ""
-    for _ in range(30):
-        # x = get_random_number(100,700, 2)
-        # y = get_random_number(100,700, 2)
-    
-        # if x-y<0:
-        #     x, y = y, x
-        
-        # solution = x-y
-
-        examples += """
-        \item \\begin{{tabular}}{{rr}}
-        & {0} \\\\
-        -& {1} \\\\ \hline
-        &\\antwort{{{2}}}
-        \end{{tabular}}\n
-        """.format(str(x).replace(".",","),str(y).replace(".",","),str(solution).replace(".",","))
-        
-    content = """
-    \section{{Arbeitsblatt -- Addition}}
-
-    \\begin{{multicols}}{{3}}
-    \\begin{{enumerate}}[(1)]
-    {0}
-    \end{{enumerate}}
-    \end{{multicols}}
-    """.format(examples)
-
-    return content
-
-
 
 def create_single_example_subtraction(minimum, maximum, commas, negative_solutions_allowed):
     x = get_random_number(minimum,maximum, commas)
