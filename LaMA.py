@@ -12,6 +12,8 @@ print("Loading...")
 # from tokenize import group
 # from numpy import maximum, negative
 from re import M
+from turtle import hideturtle
+from venv import create
 from start_window import check_if_database_exists
 
 check_if_database_exists()
@@ -2348,7 +2350,7 @@ class Ui_MainWindow(object):
         self.comboBox_themen_wizard = create_new_combobox(self.centralwidget)
 
         self.gridLayout.addWidget(self.comboBox_themen_wizard, 0, 0, 1, 1)
-        for i, all in enumerate(list_of_topics_wizard):
+        for i, all in enumerate(dict_widgets_wizard.keys()):
             add_new_option(self.comboBox_themen_wizard, i, all)
 
         self.comboBox_themen_wizard.currentIndexChanged.connect(self.themen_changed_wizard)
@@ -2446,7 +2448,6 @@ class Ui_MainWindow(object):
         self.spinbox_zahlenbereich_minimum = create_new_spinbox(self.groupBox_zahlenbereich_minimum)
         self.spinbox_zahlenbereich_minimum.setRange(-999999999,999999999)
         self.spinbox_zahlenbereich_minimum.setValue(100)
-        self.spinbox_zahlenbereich_minimum.valueChanged.connect(self.minimum_changed_wizard)
         self.horizontalLayout_zahlenbereich_minimum.addWidget(self.spinbox_zahlenbereich_minimum)
 
 
@@ -2458,7 +2459,7 @@ class Ui_MainWindow(object):
         self.spinbox_zahlenbereich_maximum.setMaximum(999999999)
         self.spinbox_zahlenbereich_maximum.setValue(999)
         self.horizontalLayout_zahlenbereich_maximum.addWidget(self.spinbox_zahlenbereich_maximum)
-
+        self.spinbox_zahlenbereich_minimum.valueChanged.connect(partial(self.minimum_changed_wizard, self.spinbox_zahlenbereich_minimum, self.spinbox_zahlenbereich_maximum))
 
         self.groupBox_kommastellen_wizard = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Kommastellen")
         self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_kommastellen_wizard, 1,0,1,1)
@@ -2474,6 +2475,57 @@ class Ui_MainWindow(object):
         self.gridLayout_zahlenbereich_wizard.addWidget(self.label_negative_ergebnisse_wizard, 1,2,1,1, QtCore.Qt.AlignLeft)
         self.checkbox_negative_ergebnisse_wizard.hide()
         self.label_negative_ergebnisse_wizard.hide()
+
+
+        self.groupBox_first_number_wizard = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "1. Faktor")
+        self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_first_number_wizard, 0,0,1,1)
+        self.horizontalLayout_first_number_wizard = create_new_horizontallayout(self.groupBox_first_number_wizard)
+        self.label_first_number_min = create_new_label(self.groupBox_first_number_wizard, "Min:")
+        self.horizontalLayout_first_number_wizard.addWidget(self.label_first_number_min)
+        self.spinBox_first_number_min = create_new_spinbox(self.groupBox_first_number_wizard)
+        self.spinBox_first_number_min.setRange(-999999999,999999999)
+        self.spinBox_first_number_min.setValue(10)
+        self.horizontalLayout_first_number_wizard.addWidget(self.spinBox_first_number_min)
+
+        self.label_first_number_max = create_new_label(self.groupBox_first_number_wizard, "Max:")
+        self.horizontalLayout_first_number_wizard.addWidget(self.label_first_number_max)
+        self.spinBox_first_number_max = create_new_spinbox(self.groupBox_first_number_wizard)
+        self.spinBox_first_number_max.setRange(-999999999,999999999)
+        self.spinBox_first_number_max.setValue(99)
+        self.horizontalLayout_first_number_wizard.addWidget(self.spinBox_first_number_max)
+        self.spinBox_first_number_min.valueChanged.connect(partial(self.minimum_changed_wizard, self.spinBox_first_number_min, self.spinBox_first_number_max))        
+
+        self.label_first_number_decimal = create_new_label(self.groupBox_first_number_wizard, "Kommastellen:")
+        self.horizontalLayout_first_number_wizard.addWidget(self.label_first_number_decimal)
+        self.spinBox_first_number_decimal = create_new_spinbox(self.groupBox_first_number_wizard)
+        self.horizontalLayout_first_number_wizard.addWidget(self.spinBox_first_number_decimal)  
+        self.groupBox_first_number_wizard.hide()
+
+        self.groupBox_second_number_wizard = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "2. Faktor")
+        self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_second_number_wizard, 1,0,1,1)
+        self.horizontalLayout_second_number_wizard = create_new_horizontallayout(self.groupBox_second_number_wizard)
+        self.label_second_number_min = create_new_label(self.groupBox_second_number_wizard, "Min:")
+        self.horizontalLayout_second_number_wizard.addWidget(self.label_second_number_min)
+        self.spinBox_second_number_min = create_new_spinbox(self.groupBox_second_number_wizard)
+        self.spinBox_second_number_min.setRange(-999999999,999999999)
+        self.spinBox_second_number_min.setValue(10)
+        self.horizontalLayout_second_number_wizard.addWidget(self.spinBox_second_number_min)
+
+        self.label_second_number_max = create_new_label(self.groupBox_second_number_wizard, "Max:")
+        self.horizontalLayout_second_number_wizard.addWidget(self.label_second_number_max)
+        self.spinBox_second_number_max = create_new_spinbox(self.groupBox_second_number_wizard)
+        self.spinBox_second_number_max.setRange(-999999999,999999999)
+        self.spinBox_second_number_max.setValue(99)
+        self.horizontalLayout_second_number_wizard.addWidget(self.spinBox_second_number_max)
+        self.spinBox_second_number_min.valueChanged.connect(partial(self.minimum_changed_wizard, self.spinBox_second_number_min, self.spinBox_second_number_max))        
+
+        self.label_second_number_decimal = create_new_label(self.groupBox_second_number_wizard, "Kommastellen:")
+        self.horizontalLayout_second_number_wizard.addWidget(self.label_second_number_decimal)
+        self.spinBox_second_number_decimal = create_new_spinbox(self.groupBox_second_number_wizard)
+        self.horizontalLayout_second_number_wizard.addWidget(self.spinBox_second_number_decimal) 
+
+        self.groupBox_second_number_wizard.hide()
+
 
         self.scrollArea_chosen_wizard = QtWidgets.QScrollArea(self.centralwidget)
         self.scrollArea_chosen_wizard.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -5749,19 +5801,23 @@ class Ui_MainWindow(object):
         thema = self.comboBox_themen_wizard.currentText()
         self.lineEdit_titel_wizard.setText("Arbeitsblatt - {}".format(thema))
 
-        if thema == 'Subtraktion':
-            self.checkbox_negative_ergebnisse_wizard.show()
-            self.label_negative_ergebnisse_wizard.show()
-        else:
-            self.checkbox_negative_ergebnisse_wizard.hide()
-            self.label_negative_ergebnisse_wizard.hide()
+        hiding_list = []
+        for all in dict_widgets_wizard:
+            if all != thema:
+                for widget in dict_widgets_wizard[all]:
+                    if widget not in dict_widgets_wizard[thema] and widget not in hiding_list:
+                        hiding_list.append(widget)
+        
+        for widget in hiding_list:
+            eval(widget).hide()
 
-    def minimum_changed_wizard(self):
-        min = self.spinbox_zahlenbereich_minimum.value()
-        max = self.spinbox_zahlenbereich_maximum.value()
+        for widget in dict_widgets_wizard[thema]:
+            eval(widget).show()
 
-        if min > max:
-            self.spinbox_zahlenbereich_maximum.setValue(min+1)
+
+    def minimum_changed_wizard(self, min, max):
+        if min.value() > max.value():
+            max.setValue(min.value()+10)
 
 
     def create_aufgabenbox_wizard(self, index, example, row, column):
@@ -5799,28 +5855,46 @@ class Ui_MainWindow(object):
             new_example = create_single_example_addition(minimum, maximum, commas)
         elif thema == 'Subtraktion':
             new_example = create_single_example_subtraction(minimum, maximum, commas, self.checkbox_negative_ergebnisse_wizard.isChecked())
-            
+        elif thema == 'Multiplikation':
+            new_example = create_single_example_multiplication(minimum, maximum, commas)
+
+
         self.list_of_examples_wizard[index] = new_example
         self.dict_aufgaben_wizard[index].setText(new_example[3])
 
 
     def create_worksheet_wizard_pressed(self):
         thema = self.comboBox_themen_wizard.currentText()
-        examples = self.spinBox_number_wizard.value()
-        minimum = self.spinbox_zahlenbereich_minimum.value()
-        maximum = self.spinbox_zahlenbereich_maximum.value()
-        commas = self.spinbox_kommastellen_wizard.value()
         columns = self.spinBox_column_wizard.value()
+        examples = self.spinBox_number_wizard.value()
 
-        if minimum>maximum:
-            warning_window('Das Maximum muss größer als das Minimum sein.')
-            return
 
         if thema == 'Addition':
+            minimum = self.spinbox_zahlenbereich_minimum.value()
+            maximum = self.spinbox_zahlenbereich_maximum.value()
+            commas = self.spinbox_kommastellen_wizard.value()
+            if minimum>maximum:
+                warning_window('Das Maximum muss größer als das Minimum sein.')
+                return
             self.list_of_examples_wizard = create_list_of_examples_addition(examples, minimum, maximum, commas)
 
         elif thema == 'Subtraktion':
+            minimum = self.spinbox_zahlenbereich_minimum.value()
+            maximum = self.spinbox_zahlenbereich_maximum.value()
+            commas = self.spinbox_kommastellen_wizard.value()
+            if minimum>maximum:
+                warning_window('Das Maximum muss größer als das Minimum sein.')
+                return
             self.list_of_examples_wizard = create_list_of_examples_subtraction(examples, minimum, maximum, commas, self.checkbox_negative_ergebnisse_wizard.isChecked())
+        
+        elif thema == 'Multiplikation':
+            minimum_1 = self.spinBox_first_number_min.value()
+            maximum_1 = self.spinBox_first_number_max.value()
+            commas_1 = self.spinBox_first_number_decimal.value()
+            minimum_2 = self.spinBox_second_number_min.value()
+            maximum_2 = self.spinBox_second_number_max.value()
+            commas_2 = self.spinBox_second_number_decimal.value()
+            self.list_of_examples_wizard = create_list_of_examples_multiplication(examples, minimum_1, maximum_1, commas_1, minimum_2, maximum_2, commas_2)
 
         for i in reversed(range(self.gridLayout_scrollArea_wizard.count())): 
             self.gridLayout_scrollArea_wizard.itemAt(i).widget().setParent(None)
@@ -5828,6 +5902,7 @@ class Ui_MainWindow(object):
         items_per_column= len(self.list_of_examples_wizard)/columns
         column = 0
         row = 0
+
         for index, example in enumerate(self.list_of_examples_wizard):
             self.create_aufgabenbox_wizard(index, example, row, column)
             if row+1 < items_per_column:
@@ -5855,7 +5930,7 @@ class Ui_MainWindow(object):
         ausrichtung = self.combobox_ausrichtung_wizard.currentIndex()
         index = self.comboBox_themen_wizard.currentIndex()
 
-        content = create_worksheet_add_subtract(self.list_of_examples_wizard, index ,titel, columns, nummerierung, ausrichtung)
+        content = create_latex_worksheet(self.list_of_examples_wizard, index ,titel, columns, nummerierung, ausrichtung)
 
         path_file = os.path.join(
             path_localappdata_lama, "Teildokument", "worksheet.tex"
@@ -5888,7 +5963,7 @@ class Ui_MainWindow(object):
         ausrichtung = self.combobox_ausrichtung_wizard.currentIndex()
         index = self.comboBox_themen_wizard.currentIndex()
 
-        content = create_worksheet_add_subtract(self.list_of_examples_wizard, index ,titel, columns, nummerierung, ausrichtung)
+        content = create_latex_worksheet(self.list_of_examples_wizard, index ,titel, columns, nummerierung, ausrichtung)
 
 
         try:
@@ -8585,9 +8660,11 @@ if __name__ == "__main__":
 
     i = step_progressbar(i, "worksheet_wizard")
     from worksheet_wizard import (
-        list_of_topics_wizard,
-        create_worksheet_add_subtract, create_list_of_examples_addition, create_single_example_addition,
-        create_list_of_examples_subtraction, create_single_example_subtraction
+        dict_widgets_wizard,
+        create_latex_worksheet, 
+        create_list_of_examples_addition, create_single_example_addition,
+        create_list_of_examples_subtraction, create_single_example_subtraction,
+        create_list_of_examples_multiplication, create_single_example_multiplication,
     )
 
     i = step_progressbar(i, "tex_minimal")
