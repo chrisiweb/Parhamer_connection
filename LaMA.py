@@ -4510,18 +4510,30 @@ class Ui_MainWindow(object):
         del self.dict_widget_variables[picture]
 
     def convert_image_eps_clicked(self):
-        msg = QtWidgets.QMessageBox()
-        # msg.setIcon(QtWidgets.QMessageBox.Question)
-        msg.setWindowIcon(QtGui.QIcon(logo_path))
-        msg.setText("Wählen Sie alle Grafiken, die Sie konvertieren möchten.")
-        # msg.setInformativeText('Möchten Sie das neue Update installieren?')
-        msg.setWindowTitle("Grafik(en) konvertieren")
-        msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-        button_durchsuchen = msg.button(QtWidgets.QMessageBox.Yes)
-        button_durchsuchen.setText("Durchsuchen...")
-        buttonN = msg.button(QtWidgets.QMessageBox.No)
-        buttonN.setText("Abbrechen")
-        ret = msg.exec_()
+        Dialog = QtWidgets.QDialog(
+            None,
+            QtCore.Qt.WindowSystemMenuHint
+            | QtCore.Qt.WindowTitleHint
+            | QtCore.Qt.WindowCloseButtonHint,
+        )
+        ui = Ui_Dialog_Convert_To_Eps()
+        ui.setupUi(Dialog, self)
+
+        Dialog.exec()
+        return
+
+        # msg = QtWidgets.QMessageBox()
+        # # msg.setIcon(QtWidgets.QMessageBox.Question)
+        # msg.setWindowIcon(QtGui.QIcon(logo_path))
+        # msg.setText("Wählen Sie alle Grafiken, die Sie konvertieren möchten.")
+        # # msg.setInformativeText('Möchten Sie das neue Update installieren?')
+        # msg.setWindowTitle("Grafik(en) konvertieren")
+        # msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+        # button_durchsuchen = msg.button(QtWidgets.QMessageBox.Yes)
+        # button_durchsuchen.setText("Durchsuchen...")
+        # buttonN = msg.button(QtWidgets.QMessageBox.No)
+        # buttonN.setText("Abbrechen")
+        # ret = msg.exec_()
 
         if ret == QtWidgets.QMessageBox.Yes:
             # filename =	 filedialog.askopenfilenames(initialdir = last_path,title = "Durchsuchen...",filetypes = (('JPG-Dateien','*.jpg'),("Alle Dateien","*.*")))
@@ -7970,7 +7982,7 @@ class Ui_MainWindow(object):
 
         with open(filename_vorschau, "w+", encoding="utf8") as vorschau:
             vorschau.write(
-                tex_preamble(solution=solution, random=gruppe, beamer_mode=beamer_mode)
+                tex_preamble(solution=solution, random=gruppe)
             )
             vorschau.write(str_titlepage)
             vorschau.write(header)
@@ -8553,6 +8565,7 @@ if __name__ == "__main__":
     i = step_progressbar(i, "subwindows")
     from subwindows import Ui_Dialog_speichern
 
+
     i = step_progressbar(i, "subwindows")
     from subwindows import Ui_Dialog_variation
 
@@ -8564,6 +8577,9 @@ if __name__ == "__main__":
 
     i = step_progressbar(i, "subwindows")
     from subwindows import Ui_Dialog_draft_control
+
+    i = step_progressbar(i, "subwindows")
+    from subwindows import Ui_Dialog_Convert_To_Eps
 
     i = step_progressbar(i, "subwindows")
     from subwindows import read_credentials

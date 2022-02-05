@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets
-from PyQt5.QtGui import QIcon, QCursor, QTextCursor
+from PyQt5.QtGui import QIcon, QCursor, QTextCursor, QFont
 from PyQt5.QtCore import Qt, QSize, QRect, QMetaObject, QCoreApplication, QThread, QObject, pyqtSignal, pyqtSlot
 import os
 import shutil
@@ -8,7 +8,7 @@ import re
 import sys
 from pathlib import Path
 from functools import partial
-from config_start import path_programm,path_localappdata_lama, lama_settings_file, lama_developer_credentials
+from config_start import path_programm,path_localappdata_lama, lama_settings_file, lama_developer_credentials, path_home
 from config import (
     config_loader,
     dict_aufgabenformate,
@@ -37,7 +37,7 @@ from create_new_widgets import (
     add_new_option,
 )
 from standard_dialog_windows import critical_window, information_window, question_window, warning_window
-from predefined_size_policy import SizePolicy_fixed, SizePolicy_fixed_height, SizePolicy_maximum
+from predefined_size_policy import SizePolicy_fixed, SizePolicy_fixed_height, SizePolicy_maximum, SizePolicy_minimum
 from work_with_content import prepare_content_for_hide_show_items
 from lama_stylesheets import (
     StyleSheet_tabWidget,
@@ -134,44 +134,44 @@ def worker_update_database():
     #     return True
 
 
-class Ui_Dialog_Welcome_Window(object):
-    def setupUi(self, Dialog):
-        self.Dialog = Dialog
-        self.Dialog.setObjectName("Dialog")        
-        Dialog.setWindowTitle("Herzlich Willkommen bei LaMA")
-        self.gridLayout = create_new_gridlayout(self.Dialog)
+# class Ui_Dialog_Welcome_Window(object):
+#     def setupUi(self, Dialog):
+#         self.Dialog = Dialog
+#         self.Dialog.setObjectName("Dialog")        
+#         Dialog.setWindowTitle("Herzlich Willkommen bei LaMA")
+#         self.gridLayout = create_new_gridlayout(self.Dialog)
 
-        self.label_1 = create_new_label(Dialog, """
-Herlich Willkommen!
+#         self.label_1 = create_new_label(Dialog, """
+# Herlich Willkommen!
 
-Es freut uns sehr, dass Sie sich für das Programm LaMA interessieren!
-Um starten zu können, muss LaMA zu Beginn konfiguriert werden. Dazu muss die Aufgabendatenbank heruntergeladen werden.
+# Es freut uns sehr, dass Sie sich für das Programm LaMA interessieren!
+# Um starten zu können, muss LaMA zu Beginn konfiguriert werden. Dazu muss die Aufgabendatenbank heruntergeladen werden.
 
-Möchten Sie die Konfiguration beginnen und die Datenbank herunterladen?
-        """)
+# Möchten Sie die Konfiguration beginnen und die Datenbank herunterladen?
+#         """)
 
-        self.gridLayout.addWidget(self.label_1, 0,0,1,1)
+#         self.gridLayout.addWidget(self.label_1, 0,0,1,1)
 
-        self.buttonBox_welcome = QtWidgets.QDialogButtonBox(self.Dialog)
-        self.buttonBox_welcome.setStandardButtons(
-            QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel
-        )
+#         self.buttonBox_welcome = QtWidgets.QDialogButtonBox(self.Dialog)
+#         self.buttonBox_welcome.setStandardButtons(
+#             QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel
+#         )
 
-        # buttonS = self.buttonBox_titlepage.button(QtWidgets.QDialogButtonBox.Save)
-        # buttonS.setText('Speichern')
-        buttonX = self.buttonBox_welcome.button(QtWidgets.QDialogButtonBox.Cancel)
-        buttonX.setText("Abbrechen")
-        self.buttonBox_welcome.setObjectName("buttonBox_variation")
-        self.buttonBox_welcome.rejected.connect(self.cancel_pressed)
-        self.buttonBox_welcome.accepted.connect(self.start_download)
+#         # buttonS = self.buttonBox_titlepage.button(QtWidgets.QDialogButtonBox.Save)
+#         # buttonS.setText('Speichern')
+#         buttonX = self.buttonBox_welcome.button(QtWidgets.QDialogButtonBox.Cancel)
+#         buttonX.setText("Abbrechen")
+#         self.buttonBox_welcome.setObjectName("buttonBox_variation")
+#         self.buttonBox_welcome.rejected.connect(self.cancel_pressed)
+#         self.buttonBox_welcome.accepted.connect(self.start_download)
 
-        self.gridLayout.addWidget(self.buttonBox_welcome, 1,0,1,1)
+#         self.gridLayout.addWidget(self.buttonBox_welcome, 1,0,1,1)
 
-    def cancel_pressed(self):
-        self.Dialog.reject()
+#     def cancel_pressed(self):
+#         self.Dialog.reject()
 
-    def start_download(self):
-        self.Dialog.accept()      
+#     def start_download(self):
+#         self.Dialog.accept()      
 
 class Ui_Dialog_choose_type(object):
     def setupUi(self, Dialog):
@@ -3261,3 +3261,169 @@ class Ui_Dialog_edit_themen(object):
 
     def reject_dialog(self):
         self.Dialog.reject()
+
+class DragDropWidget(QtWidgets.QListWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setAcceptDrops(True)
+
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.accept()
+        else:
+            event.ignore()
+        
+    def dragMoveEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.setDropAction(Qt.CopyAction)
+            event.accept()
+        else:
+            event.ignore()
+
+    def dropEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.setDropAction(Qt.CopyAction)
+            event.accept()
+
+            links = []
+
+            for url in event.mimeData().urls():
+                if url.isLocalFile():
+                    links.append(str(url.toLocalFile()))
+                # else:
+                #     links.append(str(url.toString()))
+            
+            self.addItems(links)
+
+        else:
+            event.ignore()       
+
+
+class Ui_Dialog_Convert_To_Eps(object):
+    def setupUi(self, Dialog, MainWindow):
+        self.MainWindow = MainWindow
+        self.Dialog = Dialog
+        self.Dialog.setObjectName("Dialog")        
+        Dialog.setWindowTitle("Grafik(en) konvertieren")
+        self.gridLayout = create_new_gridlayout(self.Dialog)
+
+        self.label_1 = create_new_label(Dialog, "Zu konvertierende Grafik(en) auswählen oder ablegen")
+
+        self.gridLayout.addWidget(self.label_1, 0,0,1,1)
+
+        # self.scrollArea = DragDropWidget(Dialog)
+        # self.scrollArea.setWidgetResizable(True)
+        # self.scrollArea.setObjectName("scrollArea")
+        # self.scrollAreaWidgetContents = QtWidgets.QWidget(self.scrollArea)
+        # self.scrollAreaWidgetContents.setObjectName(
+        #     "scrollAreaWidgetContents"
+        # )
+
+        # self.verticalLayout_scrollArea = create_new_verticallayout(
+        #     self.scrollAreaWidgetContents
+        # )
+        # self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+        # self.gridLayout.addWidget(self.scrollArea, 1,0,1,1)
+
+        # self.label_empty = create_new_label(self.scrollAreaWidgetContents, "")
+        # self.verticalLayout_scrollArea.addWidget(self.label_empty)
+        # self.verticalLayout_scrollArea.addStretch(1)
+        # self.pushButton_search = create_new_button(self.scrollAreaWidgetContents, "Grafik(en) wählen", self.search_pressed)
+        # self.pushButton_search.setSizePolicy(SizePolicy_fixed)
+        # self.verticalLayout_scrollArea.addWidget(self.pushButton_search)
+        # self.verticalLayout_scrollArea.setAlignment(self.pushButton_search,Qt.AlignCenter)
+
+        # self.label_dragdrop = create_new_label(self.scrollAreaWidgetContents, "... oder Grafik(en) hier ablegen")
+        # self.label_dragdrop.setSizePolicy(SizePolicy_fixed)
+        # self.verticalLayout_scrollArea.addWidget(self.label_dragdrop)
+        # self.verticalLayout_scrollArea.setAlignment(self.label_dragdrop,Qt.AlignCenter)
+
+        # self.verticalLayout_scrollArea.addStretch(1)
+
+
+
+        self.listWidget = DragDropWidget(Dialog)
+        self.gridLayout.addWidget(self.listWidget, 1,0,1,1)
+        self.listWidget.itemClicked.connect(self.remove_list_item)
+
+        # self.label_dragdrop = create_new_label(Dialog, "Grafik(en) hier ablegen")
+        # self.label_dragdrop.setStyleSheet('font-size : 14pt; border-style : dashed')
+
+        # self.gridLayout.addWidget(self.label_dragdrop, 1,0,1,1, Qt.AlignCenter)
+        # self.label_dragdrop.setSizePolicy(SizePolicy_fixed)
+
+
+        self.buttonBox_convert_to_eps = QtWidgets.QDialogButtonBox(self.Dialog)
+        self.buttonBox_convert_to_eps.setStandardButtons(
+            QtWidgets.QDialogButtonBox.Open | QtWidgets.QDialogButtonBox.Apply
+        )
+
+        button_search = self.buttonBox_convert_to_eps.button(QtWidgets.QDialogButtonBox.Open)
+        button_search.setText('Durchsuchen')
+        button_convert = self.buttonBox_convert_to_eps.button(QtWidgets.QDialogButtonBox.Apply)
+        button_convert.setText('Konvertieren')
+
+        button_search.clicked.connect(self.search_pressed)
+        button_convert.clicked.connect(self.convert_pressed)
+
+
+        self.gridLayout.addWidget(self.buttonBox_convert_to_eps, 2,0,1,1)
+
+    def remove_list_item(self, item):
+        self.listWidget.takeItem(self.listWidget.row(item))
+
+    
+    def search_pressed(self):
+        try:
+            os.path.dirname(self.MainWindow.saved_file_path)
+        except AttributeError:
+            self.MainWindow.saved_file_path = path_home
+
+        filename = QtWidgets.QFileDialog.getOpenFileNames(
+            None,
+            "Select a folder:",
+            os.path.dirname(self.MainWindow.saved_file_path),
+            "Bilder (*.jpg; *.jpeg; *.png; *.jfif);; Alle Dateien (*.*)",
+        )
+
+        if filename[0] == []:
+            return
+        else:
+            self.listWidget.addItems(filename[0])
+
+
+    def convert_pressed(self):
+        item_list = []
+        for item in range(self.listWidget.count()):
+            item_list.append(self.listWidget.item(item.text()))
+
+        print(item_list)
+        # self.MainWindow.saved_file_path = item_list[0]
+        # for image in filename[0]:
+        #     response = convert_image_to_eps(image)
+        #     if response != True:
+        #         break
+        # if response == True:
+        #     if len(filename[0]) == 1:
+        #         text = "wurde {} Datei".format(len(filename[0]))
+        #     else:
+        #         text = "wurden {} Dateien".format(len(filename[0]))
+
+        #     information_window(
+        #         "Es {0} erfolgreich konvertiert.".format(text),
+        #         titel="Grafik(en) erfolgreich konvertiert",
+        #         detailed_text="Konvertierte Grafik(en):\n{}".format(
+        #             "\n".join(filename[0])
+        #         ),
+        #     )
+        # else:
+        #     critical_window(
+        #         "Beim Konvertieren der folgenden Grafik ist ein Fehler aufgetreten:\n\n{}".format(
+        #             image
+        #         ),
+        #         titel="Fehler beim Konvertieren",
+        #         detailed_text='Fehlermeldung:\n\n"{0}: {1}"'.format(
+        #             type(response).__name__, response
+        #         ),
+        #     )
+        self.Dialog.accept()  
