@@ -13,6 +13,14 @@ list_of_topics_wizard = ['Addition', 'Subtraktion']
 D = decimal.Decimal
 
 
+"""$\begin{array}{l}
+235 \cdot 123 \\ \hline
+\hspace{-0.5em} 1235 \\
+\enspace 470 \\
+705 \\ \hline
+28905\\
+\end{array}$"""
+
 def get_random_number(min, max, decimal=0):
     x = round(random.uniform(min,max),decimal)
 
@@ -26,10 +34,11 @@ def get_random_number(min, max, decimal=0):
         return x
 
 def split_into_digits(n):
+    
     return [int(d) for d in str(n)]
 
-x= get_random_number(235,235)
-y= get_random_number(123,123)
+x= get_random_number(235,235,1)
+y= get_random_number(123,123, 0)
 
 print(x)
 print(y)
