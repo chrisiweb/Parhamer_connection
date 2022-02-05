@@ -1,3 +1,4 @@
+from distutils import extension
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QIcon, QCursor, QTextCursor, QFont
 from PyQt5.QtCore import Qt, QSize, QRect, QMetaObject, QCoreApplication, QThread, QObject, pyqtSignal, pyqtSlot
@@ -56,6 +57,7 @@ from sort_items import order_gesammeltedateien
 from upload_database import action_push_database
 from tinydb import Query
 from git_sync import check_branches, git_reset_repo_to_origin, check_internet_connection
+from convert_image_to_eps import convert_image_to_eps
 
 dict_gk = config_loader(config_file, "dict_gk")
 ag_beschreibung = config_loader(config_file, "ag_beschreibung")
@@ -3286,15 +3288,18 @@ class DragDropWidget(QtWidgets.QListWidget):
             event.accept()
 
             links = []
-
             for url in event.mimeData().urls():
                 if url.isLocalFile():
-                    links.append(str(url.toLocalFile()))
-                # else:
-                #     links.append(str(url.toString()))
+                    _, extension = os.path.splitext(str(url.toLocalFile()))
+                    if extension == '.jpg' or extension == '.jpeg' or extension == '.png':
+                        links.append(str(url.toLocalFile()))
+                    else:
+                        name = os.path.basename(str(url.toLocalFile()))
+                        warning_window('Die Datei {} konnte nicht hinzugefügt werden.'.format(name),'Es können nur ".jpg"- oder ".png"-Dateien konvertiert werden.')
             
             self.addItems(links)
-
+            if len(links) != 0:
+                self.takeItem(0)
         else:
             event.ignore()       
 
@@ -3303,54 +3308,20 @@ class Ui_Dialog_Convert_To_Eps(object):
     def setupUi(self, Dialog, MainWindow):
         self.MainWindow = MainWindow
         self.Dialog = Dialog
-        self.Dialog.setObjectName("Dialog")        
+        self.Dialog.setObjectName("Dialog")
+        self.Dialog.resize(600,200)       
         Dialog.setWindowTitle("Grafik(en) konvertieren")
         self.gridLayout = create_new_gridlayout(self.Dialog)
 
-        self.label_1 = create_new_label(Dialog, "Zu konvertierende Grafik(en) auswählen oder ablegen")
+        self.label_1 = create_new_label(Dialog, "Zu konvertierende Grafik(en) auswählen oder hier ablegen:")
 
         self.gridLayout.addWidget(self.label_1, 0,0,1,1)
-
-        # self.scrollArea = DragDropWidget(Dialog)
-        # self.scrollArea.setWidgetResizable(True)
-        # self.scrollArea.setObjectName("scrollArea")
-        # self.scrollAreaWidgetContents = QtWidgets.QWidget(self.scrollArea)
-        # self.scrollAreaWidgetContents.setObjectName(
-        #     "scrollAreaWidgetContents"
-        # )
-
-        # self.verticalLayout_scrollArea = create_new_verticallayout(
-        #     self.scrollAreaWidgetContents
-        # )
-        # self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-        # self.gridLayout.addWidget(self.scrollArea, 1,0,1,1)
-
-        # self.label_empty = create_new_label(self.scrollAreaWidgetContents, "")
-        # self.verticalLayout_scrollArea.addWidget(self.label_empty)
-        # self.verticalLayout_scrollArea.addStretch(1)
-        # self.pushButton_search = create_new_button(self.scrollAreaWidgetContents, "Grafik(en) wählen", self.search_pressed)
-        # self.pushButton_search.setSizePolicy(SizePolicy_fixed)
-        # self.verticalLayout_scrollArea.addWidget(self.pushButton_search)
-        # self.verticalLayout_scrollArea.setAlignment(self.pushButton_search,Qt.AlignCenter)
-
-        # self.label_dragdrop = create_new_label(self.scrollAreaWidgetContents, "... oder Grafik(en) hier ablegen")
-        # self.label_dragdrop.setSizePolicy(SizePolicy_fixed)
-        # self.verticalLayout_scrollArea.addWidget(self.label_dragdrop)
-        # self.verticalLayout_scrollArea.setAlignment(self.label_dragdrop,Qt.AlignCenter)
-
-        # self.verticalLayout_scrollArea.addStretch(1)
-
 
 
         self.listWidget = DragDropWidget(Dialog)
         self.gridLayout.addWidget(self.listWidget, 1,0,1,1)
+        self.listWidget.addItem('hier ablegen ...')
         self.listWidget.itemClicked.connect(self.remove_list_item)
-
-        # self.label_dragdrop = create_new_label(Dialog, "Grafik(en) hier ablegen")
-        # self.label_dragdrop.setStyleSheet('font-size : 14pt; border-style : dashed')
-
-        # self.gridLayout.addWidget(self.label_dragdrop, 1,0,1,1, Qt.AlignCenter)
-        # self.label_dragdrop.setSizePolicy(SizePolicy_fixed)
 
 
         self.buttonBox_convert_to_eps = QtWidgets.QDialogButtonBox(self.Dialog)
@@ -3370,7 +3341,8 @@ class Ui_Dialog_Convert_To_Eps(object):
         self.gridLayout.addWidget(self.buttonBox_convert_to_eps, 2,0,1,1)
 
     def remove_list_item(self, item):
-        self.listWidget.takeItem(self.listWidget.row(item))
+        if item.text() != 'hier ablegen ...':
+            self.listWidget.takeItem(self.listWidget.row(item))
 
     
     def search_pressed(self):
@@ -3389,41 +3361,43 @@ class Ui_Dialog_Convert_To_Eps(object):
         if filename[0] == []:
             return
         else:
+            self.listWidget.takeItem(0)
             self.listWidget.addItems(filename[0])
 
 
     def convert_pressed(self):
         item_list = []
         for item in range(self.listWidget.count()):
-            item_list.append(self.listWidget.item(item.text()))
+            item_list.append(self.listWidget.item(item).text())
 
-        print(item_list)
-        # self.MainWindow.saved_file_path = item_list[0]
-        # for image in filename[0]:
-        #     response = convert_image_to_eps(image)
-        #     if response != True:
-        #         break
-        # if response == True:
-        #     if len(filename[0]) == 1:
-        #         text = "wurde {} Datei".format(len(filename[0]))
-        #     else:
-        #         text = "wurden {} Dateien".format(len(filename[0]))
+        self.MainWindow.saved_file_path = item_list[0]
+        QtWidgets.QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
+        for image in item_list:
+            response = convert_image_to_eps(image)
+            if response != True:
+                break
+        QtWidgets.QApplication.restoreOverrideCursor()
+        if response == True:
+            if len(item_list) == 1:
+                text = "wurde {} Datei".format(len(item_list))
+            else:
+                text = "wurden {} Dateien".format(len(item_list))
 
-        #     information_window(
-        #         "Es {0} erfolgreich konvertiert.".format(text),
-        #         titel="Grafik(en) erfolgreich konvertiert",
-        #         detailed_text="Konvertierte Grafik(en):\n{}".format(
-        #             "\n".join(filename[0])
-        #         ),
-        #     )
-        # else:
-        #     critical_window(
-        #         "Beim Konvertieren der folgenden Grafik ist ein Fehler aufgetreten:\n\n{}".format(
-        #             image
-        #         ),
-        #         titel="Fehler beim Konvertieren",
-        #         detailed_text='Fehlermeldung:\n\n"{0}: {1}"'.format(
-        #             type(response).__name__, response
-        #         ),
-        #     )
+            information_window(
+                "Es {0} erfolgreich konvertiert.".format(text),
+                titel="Grafik(en) erfolgreich konvertiert",
+                detailed_text="Konvertierte Grafik(en):\n{}".format(
+                    "\n".join(item_list)
+                ),
+            )
+        else:
+            critical_window(
+                "Beim Konvertieren der folgenden Grafik ist ein Fehler aufgetreten:\n\n{}".format(
+                    image
+                ),
+                titel="Fehler beim Konvertieren",
+                detailed_text='Fehlermeldung:\n\n"{0}: {1}"'.format(
+                    type(response).__name__, response
+                ),
+            )
         self.Dialog.accept()  
