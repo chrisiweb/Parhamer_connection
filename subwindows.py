@@ -3409,9 +3409,13 @@ class Ui_Dialog_Convert_To_Eps(object):
 
 
     def convert_pressed(self):
-        item_list = []
-        for item in range(self.listWidget.count()):
-            item_list.append(self.listWidget.item(item).text())
+        item_list = get_list_of_all_items(self.listWidget)
+
+        if item_list[0] == 'hier ablegen ...':
+            warning_window('Es wurde keine Grafik zum Konvertieren ausgewählt.')
+            return
+        # for item in range(self.listWidget.count()):
+        #     item_list.append(self.listWidget.item(item).text())
 
         self.MainWindow.saved_file_path = item_list[0]
         QtWidgets.QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
