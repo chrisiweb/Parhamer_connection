@@ -3315,13 +3315,26 @@ class Ui_Dialog_Convert_To_Eps(object):
 
         self.label_1 = create_new_label(Dialog, "Zu konvertierende Grafik(en) auswählen oder hier ablegen:")
 
-        self.gridLayout.addWidget(self.label_1, 0,0,1,1)
+        self.gridLayout.addWidget(self.label_1, 0,0,1,4)
 
 
         self.listWidget = DragDropWidget(Dialog)
-        self.gridLayout.addWidget(self.listWidget, 1,0,1,1)
+        self.gridLayout.addWidget(self.listWidget, 1,0,1,4)
         self.listWidget.addItem('hier ablegen ...')
         self.listWidget.itemClicked.connect(self.remove_list_item)
+
+
+        self.label_quality = create_new_label(Dialog, "Bildergrößen:")
+        # self.label_quality.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout.addWidget(self.label_quality, 2,0,1,1)
+        self.comboBox_quality = create_new_combobox(Dialog)
+        add_new_option(self.comboBox_quality, 0, 'klein')
+        add_new_option(self.comboBox_quality, 1, 'normal')
+        add_new_option(self.comboBox_quality, 2, 'groß')
+        self.comboBox_quality.setCurrentIndex(1)
+        self.gridLayout.addWidget(self.comboBox_quality, 2,1,1,1)
+
+        # self.gridLayout.setColumnStretch(3,1)
 
 
         self.buttonBox_convert_to_eps = QtWidgets.QDialogButtonBox(self.Dialog)
@@ -3338,7 +3351,7 @@ class Ui_Dialog_Convert_To_Eps(object):
         button_convert.clicked.connect(self.convert_pressed)
 
 
-        self.gridLayout.addWidget(self.buttonBox_convert_to_eps, 2,0,1,1)
+        self.gridLayout.addWidget(self.buttonBox_convert_to_eps, 2,3,1,1)
 
     def remove_list_item(self, item):
         if item.text() != 'hier ablegen ...':
@@ -3373,7 +3386,7 @@ class Ui_Dialog_Convert_To_Eps(object):
         self.MainWindow.saved_file_path = item_list[0]
         QtWidgets.QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
         for image in item_list:
-            response = convert_image_to_eps(image)
+            response = convert_image_to_eps(image, self.comboBox_quality.currentIndex())
             if response != True:
                 break
         QtWidgets.QApplication.restoreOverrideCursor()
@@ -3400,4 +3413,4 @@ class Ui_Dialog_Convert_To_Eps(object):
                     type(response).__name__, response
                 ),
             )
-        self.Dialog.accept()  
+        # self.Dialog.accept()  

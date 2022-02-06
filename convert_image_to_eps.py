@@ -15,7 +15,7 @@ def remove_transparency(im, bg_color=(255, 255, 255)):
     ### Taken from https://stackoverflow.com/a/35859141/7444782
 
 
-def convert_image_to_eps(image):
+def convert_image_to_eps(image, quality_index):
     name, ext = os.path.splitext(image)
 
     try:
@@ -26,7 +26,15 @@ def convert_image_to_eps(image):
             fig = fig.convert("RGB")
 
         out_fig = str(name) + ".eps"
-        fig.save(out_fig, dpi=(300, 300))
+        if quality_index == 0:
+            quality = (400,400)
+        elif quality_index == 1:
+            quality = (500,500)
+        elif quality_index == 2:
+            quality = (700,700)
+
+        fig.thumbnail(quality)
+        fig.save(out_fig)
         fig.close()
         return True
     except Exception as e:
