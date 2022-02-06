@@ -3296,12 +3296,27 @@ class DragDropWidget(QtWidgets.QListWidget):
                     else:
                         name = os.path.basename(str(url.toLocalFile()))
                         warning_window('Die Datei {} konnte nicht hinzugefügt werden.'.format(name),'Es können nur ".jpg"- oder ".png"-Dateien konvertiert werden.')
-            
-            self.addItems(links)
+
+            list_added_items = get_list_of_all_items(self)
+            for image in links:
+                if image not in list_added_items:
+                    self.addItem(image)
+
             if len(links) != 0:
-                self.takeItem(0)
+                self.setCurrentRow(0)
+                if self.currentItem().text() == 'hier ablegen ...':
+                    self.takeItem(0)       
+                self.setCurrentRow(-1)
         else:
             event.ignore()       
+
+
+def get_list_of_all_items(listWidget):
+    _list = []
+    for x in range(listWidget.count()):
+        _list.append(listWidget.item(x).text())
+    
+    return _list
 
 
 class Ui_Dialog_Convert_To_Eps(object):
@@ -3309,6 +3324,7 @@ class Ui_Dialog_Convert_To_Eps(object):
         self.MainWindow = MainWindow
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
+        self.Dialog.setWindowIcon(QIcon(logo_path))
         self.Dialog.resize(600,200)       
         Dialog.setWindowTitle("Grafik(en) konvertieren")
         self.gridLayout = create_new_gridlayout(self.Dialog)
@@ -3331,6 +3347,7 @@ class Ui_Dialog_Convert_To_Eps(object):
         add_new_option(self.comboBox_quality, 0, 'klein')
         add_new_option(self.comboBox_quality, 1, 'normal')
         add_new_option(self.comboBox_quality, 2, 'groß')
+        add_new_option(self.comboBox_quality, 3, 'sehr groß')
         self.comboBox_quality.setCurrentIndex(1)
         self.gridLayout.addWidget(self.comboBox_quality, 2,1,1,1)
 
@@ -3357,7 +3374,13 @@ class Ui_Dialog_Convert_To_Eps(object):
         if item.text() != 'hier ablegen ...':
             self.listWidget.takeItem(self.listWidget.row(item))
 
-    
+    # def get_list_of_all_items(self, listWidget):
+    #     _list = []
+    #     for x in range(self.listWidget.count()):
+    #         _list.append(self.listWidget.item(x).text())
+        
+    #     return _list
+
     def search_pressed(self):
         try:
             os.path.dirname(self.MainWindow.saved_file_path)
@@ -3374,8 +3397,15 @@ class Ui_Dialog_Convert_To_Eps(object):
         if filename[0] == []:
             return
         else:
-            self.listWidget.takeItem(0)
-            self.listWidget.addItems(filename[0])
+            self.listWidget.setCurrentRow(0)
+            if self.listWidget.currentItem().text() == 'hier ablegen ...':
+                self.listWidget.takeItem(0)
+            list_added_items = get_list_of_all_items(self.listWidget)
+            for image in filename[0]:
+                if image not in list_added_items:
+                    self.listWidget.addItem(image)
+            # self.listWidget.addItems(filename[0])
+            self.listWidget.setCurrentRow(-1)
 
 
     def convert_pressed(self):
@@ -3413,4 +3443,6 @@ class Ui_Dialog_Convert_To_Eps(object):
                     type(response).__name__, response
                 ),
             )
+        self.listWidget.clear()
+        self.listWidget.addItem('hier ablegen ...')
         # self.Dialog.accept()  

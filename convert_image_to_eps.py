@@ -33,7 +33,8 @@ def convert_image_to_eps(image, quality_index):
         elif quality_index == 2:
             quality = (700,700)
 
-        fig.thumbnail(quality)
+        if quality_index != 3:
+            fig.thumbnail(quality)
         fig.save(out_fig)
         fig.close()
         return True
