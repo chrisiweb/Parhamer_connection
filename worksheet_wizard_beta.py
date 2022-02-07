@@ -1,9 +1,8 @@
 import random
 import math
 import decimal
-from venv import create
 
-from numpy import isin
+
 import os
 from config_start import path_localappdata_lama, path_programm
 import subprocess
@@ -15,22 +14,12 @@ list_of_topics_wizard = ['Addition', 'Subtraktion']
 
 D = decimal.Decimal
 
-
-"""\item $\begin{array}{l}
-235 \cdot 123 \\ \hline
-\antwortzeile \hspace{-0.5em} 1235\\
-\antwortzeile \enspace 470\\
-\antwortzeile 705 \\ \hline
-\antwortzeile 28905 \\
-\end{array}$
-\antwort[\vspace{2cm}]{}"""
-
 def get_random_number(min, max, decimal=0):
     x = round(random.uniform(min,max),decimal)
 
     x = D('{}'.format(x))
 
-    x = D("{:.{prec}f}".format(x, prec=2))
+    x = D("{:.{prec}f}".format(x, prec=decimal))
 
     if decimal == 0:
         return int(x)
@@ -47,14 +36,14 @@ def change_to_integer(n):
     if isinstance(n, int):
         return n
     else:
-        n = normalize_decimal(n)
+        # n = normalize_decimal(n)
         n = str(n).replace('.','')
         return int(n)
 
 
 
 def get_number_of_digits(n):
-    return len(str(int(n)))
+    return len(str(int(change_to_integer(n))))
 
 def split_into_digits(n):
     # print(n)
@@ -77,17 +66,36 @@ def split_into_digits(n):
 # factor_digit_length = get_number_of_digits(x)
 
 
-def create_single_line_multiplication(digit):
-    subresult = str(int(x*digit))
+def create_single_line_multiplication(digit, i, is_integer):
+    subresult = int(change_to_integer(x)*digit)
+    print(digit)
+    print(get_number_of_digits(subresult))
+    print(factor_digit_length)
+    if get_number_of_digits(subresult) > factor_digit_length:
+        dif = get_number_of_digits(subresult)-factor_digit_length
+        if i == 0:
+            hspace = dif*'\hspace{-0.5em}'
+        elif dif > i:
+            hspace = (dif-i)*'\hspace{-0.5em}'
+        else:
+            hspace = (i-dif)*'\enspace'
+    else:
+        print('smaller')
+        print(i)
+        dif = factor_digit_length-get_number_of_digits(subresult)  
+        hspace = (i+dif)*'\enspace'
+        # hspace = i*'\enspace'
 
-    string = '\\antwortzeile {} \\\\\n'.format(subresult)
+    if is_integer==False:
+        hspace += "\,"
+    string = '\\antwortzeile {0} {1} \\\\\n'.format(hspace, str(subresult))
     return string
 
 
 content = ""
-for all in range(20):
-    x= get_random_number(10,99,0)
-    y= get_random_number(10,99, 0)
+for all in range(2):
+    x= get_random_number(10,99,2)
+    y= get_random_number(10,99,1)
 
     integer = change_to_integer(x)
 
@@ -99,15 +107,34 @@ for all in range(20):
 
     factor_digit_length = get_number_of_digits(x)
 
-    content += """\item$\\begin{{array}}{{l}}
-    {0} \cdot {1} \\\\ \hline
-    """.format(str(x).replace('.',','),str(y).replace('.',','))
-
-    for i, digit in enumerate(_list):
-        content += create_single_line_multiplication(digit)
+    content += """
+\item$\\begin{{array}}{{l}}
+{0} \cdot {1} \\\\ \hline
+""".format(str(x).replace('.',','),str(y).replace('.',','))
     
-    content += '\\antwortzeile {} \\\\\n'.format(x*y)
-    content += "\end{array}$\n\n"
+    if isinstance(x,int):
+        is_integer = True
+    else:
+        is_integer = False
+    for i, digit in enumerate(_list):
+        content += create_single_line_multiplication(digit, i, is_integer=is_integer)
+
+    result = x*y
+    if get_number_of_digits(result) > factor_digit_length:
+        dif = get_number_of_digits(result)-factor_digit_length
+        if i == 0:
+            hspace = dif*'\hspace{-0.5em}'
+        elif dif > i:
+            hspace = (dif-i)*'\hspace{-0.5em}'
+        else:
+            hspace = (i-dif)*'\enspace'
+    else:
+        dif = factor_digit_length-get_number_of_digits(result)  
+        hspace = (i+dif)*'\enspace'
+
+    # string = '\\antwortzeile {0} {1} \\\\\n'.format(hspace, result)
+    content += '\hline\n\\antwortzeile {0} {1}\\\\\n'.format(hspace, str(result).replace('.',','))
+    content += "\end{array}$\n\\antwort[\\vspace{2cm}]{}\n\n"
 
 # print(content)
 titel = "Arbeitsblatt"
@@ -124,108 +151,15 @@ content = """
 \end{{multicols}}
 """.format(titel, columns, nummerierung, content)
 
-
-print(content)
-
-# \hspace{-0.5em} 1235 \\
-# \enspace 470 \\
-# 705 \\ \hline
-# 28905\\
-# \end{array}$"""
-
-# def create_single_example_subtraction(minimum, maximum, commas, negative_solutions_allowed):
-#     x = get_random_number(minimum,maximum, commas)
-#     y= get_random_number(minimum,maximum, commas)
-#     if x-y<0 and negative_solutions_allowed== False:
-#         x, y = y, x
-
-#     string = "{0} - {1} = {2}".format(str(x).replace(".",","),str(y).replace(".",","),str(x-y).replace(".",","))   
-#     return [x,y,x-y, string]
-
-# def create_list_of_examples_subtraction(examples, minimum, maximum, commas, negative_solutions_allowed):
-#     list_of_examples = []
-
-#     for _ in range(examples):
-#         new_example = create_single_example_subtraction(minimum, maximum, commas, negative_solutions_allowed)
-#         list_of_examples.append(new_example)
-
-#     return list_of_examples
-
-# def create_single_example_addition(minimum, maximum, commas):
-#     x = get_random_number(minimum,maximum, commas)
-#     y= get_random_number(minimum,maximum, commas)
-#     string = "{0} + {1} = {2}".format(str(x).replace(".",","),str(y).replace(".",","),str(x+y).replace(".",","))
-#     return [x,y,x+y, string]
-
-# def create_list_of_examples_addition(examples, minimum, maximum, commas):
-#     list_of_examples = []
-
-#     for _ in range(examples):
-#         new_example = create_single_example_addition(minimum, maximum, commas)
-#         list_of_examples.append(new_example)
-
-#     return list_of_examples
-
-# def create_latex_string_addition(content, example, ausrichtung):
-#     if ausrichtung == 0:
-#         content += """
-#         \item \\begin{{tabular}}{{rr}}
-#         & ${0}$ \\\\
-#         & ${1}$ \\\\ \hline
-#         &\\antwort{{${2}$}}
-#         \end{{tabular}}\n
-#         """.format(str(example[0]).replace(".",","),str(example[1]).replace(".",","),str(example[2]).replace(".",","))
-#     elif ausrichtung == 1:
-#         content += "\item ${0} + {1} = \\antwort{{{2}}}$\n\\vspace{{\\leer}}\n\n".format(str(example[0]).replace(".",","),str(example[1]).replace(".",","),str(example[2]).replace(".",","))
-#     return content
-
-# def create_latex_string_subtraction(content, example, ausrichtung):
-#     if ausrichtung == 0:
-#         content += """
-#         \item \\begin{{tabular}}{{rr}}
-#         & ${0}$ \\\\
-#         & $-{1}$ \\\\ \hline
-#         &\\antwort{{${2}$}}
-#         \end{{tabular}}\n
-#         """.format(str(example[0]).replace(".",","), str(example[1]).replace(".",","),str(example[2]).replace(".",","))
-#     elif ausrichtung == 1:
-#         content += "\item ${0} - {1} = \\antwort{{{2}}}$\n\\vspace{{\\leer}}\n\n".format(str(example[0]).replace(".",","),str(example[1]).replace(".",","),str(example[2]).replace(".",","))
-#     return content
-
-
-
-# def create_latex_worksheet(list_of_examples,index, titel, columns, nummerierung, ausrichtung):
-#     content = ""
-    
-#     for example in list_of_examples:
-#         if index == 0:
-#             content = create_latex_string_addition(content, example, ausrichtung)
-#         elif index == 1:
-#             content = create_latex_string_subtraction(content, example, ausrichtung)
-
-#     content = """
-#     \section{{{0}}}
-
-#     \\begin{{multicols}}{{{1}}}
-#     \\begin{{enumerate}}[{2}]
-#     {3}
-#     \end{{enumerate}}
-#     \end{{multicols}}
-#     """.format(titel, columns, nummerierung, content)
-
-#     return content
-
-
-
+# print(x)
+# print(y)
+# print(result)
+# print(content)
 
 
 path_file = os.path.join(
     path_localappdata_lama, "Teildokument", "worksheet.tex"
     )
-
-
-
-# content = create_latex_worksheet()
 
 with open(path_file, "w", encoding="utf8") as file:
     file.write(tex_preamble(solution="solution_on"))
@@ -239,16 +173,6 @@ head, tail = os.path.split(name)
 file_name = tail
 folder_name = "{0}/Teildokument".format(path_programm)
 
-
-# latex_output_file = open(
-#     "{0}/Teildokument/temp.txt".format(path_localappdata_lama),
-#     "w",
-#     encoding="utf8",
-#     errors="ignore",
-# )
-
-# drive_programm = os.path.splitdrive(path_programm)[0]
-# drive_save = os.path.splitdrive(folder_name)[0]
 
 drive = ""
 
