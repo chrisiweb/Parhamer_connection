@@ -42,6 +42,29 @@ def get_random_number(min, max, decimal=0):
         return x
 
 
+# def normalize_decimal(d): ### cut off all zeros after deciimals
+#     normalized = d.normalize()
+#     sign, digit, exponent = normalized.as_tuple()
+#     return normalized if exponent <= 0 else normalized.quantize(1)
+
+def change_to_integer(n):
+    if isinstance(n, int):
+        return n
+    else:
+        # n = normalize_decimal(n)
+        n = str(n).replace('.','')
+        return int(n)
+
+def get_number_of_digits(n):
+    return len(str(int(change_to_integer(n))))
+
+def split_into_digits(n):
+    n = str(n).replace('.','')
+    return [int(d) for d in n]
+
+
+
+
 
 def create_single_example_addition(minimum, maximum, commas):
     x = get_random_number(minimum,maximum, commas)
@@ -121,13 +144,80 @@ def create_latex_string_subtraction(content, example, ausrichtung):
         content += "\item ${0} - {1} = \\antwort{{{2}}}$\n\\vspace{{\\leer}}\n\n".format(str(example[0]).replace(".",","),str(example[1]).replace(".",","),str(example[2]).replace(".",","))
     return content
 
+
+
+def create_single_line_multiplication(factor_1, digit, i, is_integer):
+
+    factor_digit_length = get_number_of_digits(factor_1)
+    subresult = int(change_to_integer(factor_1)*digit)
+
+    if get_number_of_digits(subresult) > factor_digit_length:
+        dif = get_number_of_digits(subresult)-factor_digit_length
+        if i == 0:
+            hspace = dif*'\hspace{-0.5em}'
+        elif dif > i:
+            hspace = (dif-i)*'\hspace{-0.5em}'
+        else:
+            hspace = (i-dif)*'\enspace'
+    else:
+        dif = factor_digit_length-get_number_of_digits(subresult)  
+        hspace = (i+dif)*'\enspace'
+
+    if is_integer==False:
+        hspace += "\,"
+    string = '\\antwortzeile {0} {1} \\\\\n'.format(hspace, str(subresult))
+    return string
+
+
+
 def create_latex_string_multiplication(content, example):
+    factor_1 = example[0]
+    factor_2 = example[1]
+
+    _list = split_into_digits(change_to_integer(factor_2))
+
+    result = []
+    for digit in _list:
+        result.append(int(factor_1*digit))
+
+    factor_digit_length = get_number_of_digits(factor_1)
+    
     content += """
-        \item \\begin{{tabular}}{{rrr}}
-        ${0}$ &$\cdot$ & ${1}$ \\\\ \hline
-        \multicolumn{{3}}{{r}}{{\\antwort{{${2}$}}}}\\\\
-        \end{{tabular}}\n
-    """.format(str(example[0]).replace(".",","),str(example[1]).replace(".",","),str(example[2]).replace(".",","))
+\item$\\begin{{array}}{{l}}
+{0} \cdot {1} \\\\ \hline
+""".format(str(factor_1).replace('.',','),str(factor_2).replace('.',','))
+
+
+    if isinstance(factor_1,int):
+        is_integer = True
+    else:
+        is_integer = False
+    for i, digit in enumerate(_list):
+        content += create_single_line_multiplication(factor_1, digit, i, is_integer=is_integer)
+
+    result = factor_1*factor_2
+    if get_number_of_digits(result) > factor_digit_length:
+        dif = get_number_of_digits(result)-factor_digit_length
+        if i == 0:
+            hspace = dif*'\hspace{-0.5em}'
+        elif dif > i:
+            hspace = (dif-i)*'\hspace{-0.5em}'
+        else:
+            hspace = (i-dif)*'\enspace'
+    else:
+        dif = factor_digit_length-get_number_of_digits(result)  
+        hspace = (i+dif)*'\enspace'
+
+    content += '\hline\n\\antwortzeile {0} {1}\\\\\n'.format(hspace, str(result).replace('.',','))
+    content += "\end{array}$\n\\antwort[\\vspace{2cm}]{}\n\n"
+
+
+    # content += """
+    #     \item \\begin{{tabular}}{{rrr}}
+    #     ${0}$ &$\cdot$ & ${1}$ \\\\ \hline
+    #     \multicolumn{{3}}{{r}}{{\\antwort{{${2}$}}}}\\\\
+    #     \end{{tabular}}\n
+    # """.format(str(example[0]).replace(".",","),str(example[1]).replace(".",","),str(example[2]).replace(".",","))
 
     return content
 

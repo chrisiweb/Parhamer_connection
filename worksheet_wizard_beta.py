@@ -97,7 +97,7 @@ for all in range(2):
     x= get_random_number(10,99,2)
     y= get_random_number(10,99,1)
 
-    integer = change_to_integer(x)
+    # integer = change_to_integer(x)
 
     _list = split_into_digits(change_to_integer(y))
 

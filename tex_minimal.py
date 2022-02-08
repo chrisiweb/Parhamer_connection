@@ -1,4 +1,6 @@
 def tex_preamble(
+    font_size="12pt",
+    documentclass = 'article',
     solution = "solution_on",
     random = 0,
     info = "info_off",
@@ -8,10 +10,10 @@ def tex_preamble(
     ):
 
     if beamer_mode == False:
-        start = """\documentclass[a4paper,12pt]{article}
-\\usepackage{geometry}
-\geometry{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}
-"""
+        start = """\documentclass[a4paper,{0}]{{{1}}}}
+\\usepackage{{geometry}}
+\geometry{{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}}
+""".format(font_size, documentclass)
         spacing = "\onehalfspacing %Zeilenabstand"
 
     else:

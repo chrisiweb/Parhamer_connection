@@ -5863,12 +5863,19 @@ class Ui_MainWindow(object):
         maximum = self.spinbox_zahlenbereich_maximum.value()
         commas = self.spinbox_kommastellen_wizard.value()
 
+
         if thema == 'Addition':
             new_example = create_single_example_addition(minimum, maximum, commas)
         elif thema == 'Subtraktion':
             new_example = create_single_example_subtraction(minimum, maximum, commas, self.checkbox_negative_ergebnisse_wizard.isChecked())
         elif thema == 'Multiplikation':
-            new_example = create_single_example_multiplication(minimum, maximum, commas)
+            minimum_1 = self.spinBox_first_number_min.value()
+            maximum_1 = self.spinBox_first_number_max.value()
+            commas_1 = self.spinBox_first_number_decimal.value()
+            minimum_2 = self.spinBox_second_number_min.value()
+            maximum_2 = self.spinBox_second_number_max.value()
+            commas_2 = self.spinBox_second_number_decimal.value()
+            new_example = create_single_example_multiplication(minimum_1, maximum_1, commas_1, minimum_2, maximum_2, commas_2)
 
 
         self.list_of_examples_wizard[index] = new_example
@@ -5954,7 +5961,7 @@ class Ui_MainWindow(object):
             show_solution = "solution_off"
 
         with open(path_file, "w", encoding="utf8") as file:
-            file.write(tex_preamble(solution=show_solution, pagestyle='empty'))
+            file.write(tex_preamble(solution=show_solution, pagestyle='empty', font_size='17pt', documentclass='extarticle'))
 
             file.write(content)
 
@@ -5989,7 +5996,7 @@ class Ui_MainWindow(object):
         index = 0
         for show_solution in ["solution_on", "solution_off"]:
             with open(path_file, "w", encoding="utf8") as file:
-                file.write(tex_preamble(solution=show_solution, pagestyle='empty'))
+                file.write(tex_preamble(solution=show_solution, pagestyle='empty', font_size='17pt', documentclass='extarticle'))
 
                 file.write(content)
 
