@@ -10,7 +10,7 @@ def tex_preamble(
     ):
 
     if beamer_mode == False:
-        start = """\documentclass[a4paper,{0}]{{{1}}}}
+        start = """\documentclass[a4paper,{0}]{{{1}}}
 \\usepackage{{geometry}}
 \geometry{{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}}
 """.format(font_size, documentclass)

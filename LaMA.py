@@ -2368,11 +2368,17 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.checkbox_solutions_wizard, 9,7,1,1, QtCore.Qt.AlignRight)
         self.checkbox_solutions_wizard.hide()
 
+        self.comboBox_solution_type_wizard = create_new_combobox(self.centralwidget)
+        add_new_option(self.comboBox_solution_type_wizard, 0, "kompakt")
+        add_new_option(self.comboBox_solution_type_wizard, 1, "schrittweise")
+        self.gridLayout.addWidget(self.comboBox_solution_type_wizard, 9, 8, 1, 1)
+
+
         self.buttonBox_create_worksheet_wizard = QtWidgets.QDialogButtonBox(self.centralwidget)
         self.buttonBox_create_worksheet_wizard.setStandardButtons(
             QtWidgets.QDialogButtonBox.Save | QtWidgets.QDialogButtonBox.Ok
         )
-        self.gridLayout.addWidget(self.buttonBox_create_worksheet_wizard, 10,7,1,1)
+        self.gridLayout.addWidget(self.buttonBox_create_worksheet_wizard, 10,7,1,2)
         self.buttonBox_create_worksheet_wizard.hide()
         # buttonS = self.buttonBox_titlepage.button(QtWidgets.QDialogButtonBox.Save)
         # buttonS.setText('Speichern')
@@ -2423,9 +2429,10 @@ class Ui_MainWindow(object):
         self.horizontalLayout_nummerierung_wizard = create_new_horizontallayout(self.groupBox_nummerierung_wizard)
         self.combobox_nummerierung_wizard = create_new_combobox(self.groupBox_nummerierung_wizard)
         # add_new_option(self.combobox_nummerierung_wizard, 0, "(a)")
-        add_new_option(self.combobox_nummerierung_wizard, 0, "(i)")
-        add_new_option(self.combobox_nummerierung_wizard, 1, "(I)")
+        add_new_option(self.combobox_nummerierung_wizard, 0, "-")
+        add_new_option(self.combobox_nummerierung_wizard, 1, "(i)")
         add_new_option(self.combobox_nummerierung_wizard, 2, "(1)")
+        add_new_option(self.combobox_nummerierung_wizard, 3, "(I)")
         self.horizontalLayout_nummerierung_wizard.addWidget(self.combobox_nummerierung_wizard) 
 
         self.groupBox_ausrichtung_wizard = create_new_groupbox(self.groupBox_setting_wizard, "Ausrichtung")
@@ -2446,7 +2453,7 @@ class Ui_MainWindow(object):
         # self.spinBox_zahlenbereich_minimum = create_new_spinbox(self.groupBox_zahlenbereich_minimum,100)
         self.onlyInt = QtGui.QIntValidator()
         self.spinbox_zahlenbereich_minimum = create_new_spinbox(self.groupBox_zahlenbereich_minimum)
-        self.spinbox_zahlenbereich_minimum.setRange(-999999999,999999999)
+        self.spinbox_zahlenbereich_minimum.setRange(0,999999999)
         self.spinbox_zahlenbereich_minimum.setValue(100)
         self.horizontalLayout_zahlenbereich_minimum.addWidget(self.spinbox_zahlenbereich_minimum)
 
@@ -2456,7 +2463,7 @@ class Ui_MainWindow(object):
         self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_zahlenbereich_maximum, 0,1,1,2)
         self.horizontalLayout_zahlenbereich_maximum = create_new_horizontallayout(self.groupBox_zahlenbereich_maximum)
         self.spinbox_zahlenbereich_maximum = create_new_spinbox(self.groupBox_zahlenbereich_maximum)
-        self.spinbox_zahlenbereich_maximum.setMaximum(999999999)
+        self.spinbox_zahlenbereich_maximum.setRange(0,999999999)
         self.spinbox_zahlenbereich_maximum.setValue(999)
         self.horizontalLayout_zahlenbereich_maximum.addWidget(self.spinbox_zahlenbereich_maximum)
         self.spinbox_zahlenbereich_minimum.valueChanged.connect(partial(self.minimum_changed_wizard, self.spinbox_zahlenbereich_minimum, self.spinbox_zahlenbereich_maximum))
@@ -2483,14 +2490,14 @@ class Ui_MainWindow(object):
         self.label_first_number_min = create_new_label(self.groupBox_first_number_wizard, "Min:")
         self.horizontalLayout_first_number_wizard.addWidget(self.label_first_number_min)
         self.spinBox_first_number_min = create_new_spinbox(self.groupBox_first_number_wizard)
-        self.spinBox_first_number_min.setRange(-999999999,999999999)
+        self.spinBox_first_number_min.setRange(0,999999999)
         self.spinBox_first_number_min.setValue(10)
         self.horizontalLayout_first_number_wizard.addWidget(self.spinBox_first_number_min)
 
         self.label_first_number_max = create_new_label(self.groupBox_first_number_wizard, "Max:")
         self.horizontalLayout_first_number_wizard.addWidget(self.label_first_number_max)
         self.spinBox_first_number_max = create_new_spinbox(self.groupBox_first_number_wizard)
-        self.spinBox_first_number_max.setRange(-999999999,999999999)
+        self.spinBox_first_number_max.setRange(0,999999999)
         self.spinBox_first_number_max.setValue(99)
         self.horizontalLayout_first_number_wizard.addWidget(self.spinBox_first_number_max)
         self.spinBox_first_number_min.valueChanged.connect(partial(self.minimum_changed_wizard, self.spinBox_first_number_min, self.spinBox_first_number_max))        
@@ -2544,7 +2551,7 @@ class Ui_MainWindow(object):
         self.scrollArea_chosen_wizard.verticalScrollBar().rangeChanged.connect(
             self.change_scrollbar_position
         )
-        self.gridLayout.addWidget(self.scrollArea_chosen_wizard, 3, 0, 6, 8)
+        self.gridLayout.addWidget(self.scrollArea_chosen_wizard, 3, 0, 6, 9)
         
         
 
@@ -5945,11 +5952,14 @@ class Ui_MainWindow(object):
 
         titel = self.lineEdit_titel_wizard.text()
         columns = self.spinBox_column_wizard.value()
-        nummerierung = self.combobox_nummerierung_wizard.currentText()
+        if self.combobox_nummerierung_wizard.currentText() == '-':
+            nummerierung = "label={}"
+        else:
+            nummerierung = self.combobox_nummerierung_wizard.currentText()
         ausrichtung = self.combobox_ausrichtung_wizard.currentIndex()
         index = self.comboBox_themen_wizard.currentIndex()
 
-        content = create_latex_worksheet(self.list_of_examples_wizard, index ,titel, columns, nummerierung, ausrichtung)
+        content = create_latex_worksheet(self.list_of_examples_wizard, index ,titel, columns, nummerierung, ausrichtung, self.comboBox_solution_type_wizard.currentIndex())
 
         path_file = os.path.join(
             path_localappdata_lama, "Teildokument", "worksheet.tex"
@@ -5978,11 +5988,14 @@ class Ui_MainWindow(object):
 
         titel = self.lineEdit_titel_wizard.text()
         columns = self.spinBox_column_wizard.value()
-        nummerierung = self.combobox_nummerierung_wizard.currentText()
+        if self.combobox_nummerierung_wizard.currentText() == '-':
+            nummerierung = "label={}"
+        else:
+            nummerierung = self.combobox_nummerierung_wizard.currentText()
         ausrichtung = self.combobox_ausrichtung_wizard.currentIndex()
         index = self.comboBox_themen_wizard.currentIndex()
 
-        content = create_latex_worksheet(self.list_of_examples_wizard, index ,titel, columns, nummerierung, ausrichtung)
+        content = create_latex_worksheet(self.list_of_examples_wizard, index ,titel, columns, nummerierung, ausrichtung, self.comboBox_solution_type_wizard.currentIndex())
 
 
         try:

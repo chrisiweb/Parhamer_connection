@@ -170,7 +170,7 @@ def create_single_line_multiplication(factor_1, digit, i, is_integer):
 
 
 
-def create_latex_string_multiplication(content, example):
+def create_latex_string_multiplication(content, example, solution_type):
     factor_1 = example[0]
     factor_2 = example[1]
 
@@ -187,28 +187,28 @@ def create_latex_string_multiplication(content, example):
 {0} \cdot {1} \\\\ \hline
 """.format(str(factor_1).replace('.',','),str(factor_2).replace('.',','))
 
-
-    if isinstance(factor_1,int):
-        is_integer = True
-    else:
-        is_integer = False
-    for i, digit in enumerate(_list):
-        content += create_single_line_multiplication(factor_1, digit, i, is_integer=is_integer)
-
     result = factor_1*factor_2
-    if get_number_of_digits(result) > factor_digit_length:
-        dif = get_number_of_digits(result)-factor_digit_length
-        if i == 0:
-            hspace = dif*'\hspace{-0.5em}'
-        elif dif > i:
-            hspace = (dif-i)*'\hspace{-0.5em}'
+    if solution_type == 1:
+        if isinstance(factor_1,int):
+            is_integer = True
         else:
-            hspace = (i-dif)*'\enspace'
-    else:
-        dif = factor_digit_length-get_number_of_digits(result)  
-        hspace = (i+dif)*'\enspace'
+            is_integer = False
+        for i, digit in enumerate(_list):
+            content += create_single_line_multiplication(factor_1, digit, i, is_integer=is_integer)
 
-    content += '\hline\n\\antwortzeile {0} {1}\\\\\n'.format(hspace, str(result).replace('.',','))
+        if get_number_of_digits(result) > factor_digit_length:
+            dif = get_number_of_digits(result)-factor_digit_length
+            if dif > i:
+                hspace = (dif-i)*'\hspace{-0.5em}'
+            else:
+                hspace = (i-dif)*'\enspace'
+        else:
+            dif = factor_digit_length-get_number_of_digits(result)  
+            hspace = (i+dif)*'\enspace'
+
+        content += '\hline\n\\antwortzeile {0} {1}\\\\\n'.format(hspace, str(result).replace('.',','))
+    else:
+        content += '\\antwortzeile {0}\\\\\n'.format(str(result).replace('.',','))
     content += "\end{array}$\n\\antwort[\\vspace{2cm}]{}\n\n"
 
 
@@ -222,7 +222,7 @@ def create_latex_string_multiplication(content, example):
     return content
 
 
-def create_latex_worksheet(list_of_examples,index, titel, columns, nummerierung, ausrichtung):
+def create_latex_worksheet(list_of_examples,index, titel, columns, nummerierung, ausrichtung, solution_type=0):
     content = ""
 
     for example in list_of_examples:
@@ -231,7 +231,7 @@ def create_latex_worksheet(list_of_examples,index, titel, columns, nummerierung,
         elif index == 1:
             content = create_latex_string_subtraction(content, example, ausrichtung)
         elif index == 2:
-            content = create_latex_string_multiplication(content, example)
+            content = create_latex_string_multiplication(content, example, solution_type)
 
     content = """
     \section{{{0}}}
