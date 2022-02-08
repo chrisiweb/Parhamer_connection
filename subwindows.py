@@ -1914,8 +1914,10 @@ class Ui_Dialog_setup(object):
 
         self.combobox_start_program = create_new_combobox(groupbox_start_program)
         add_new_option(self.combobox_start_program, 0, "beim Start fragen")
-        add_new_option(self.combobox_start_program, 1, "LaMA Cria (Unterstufe)")
+        add_new_option(self.combobox_start_program, 1, "LaMA (Unterstufe)")
         add_new_option(self.combobox_start_program, 2, "LaMA (Oberstufe)")
+        add_new_option(self.combobox_start_program, 3, "Worksheet Wizard")
+        
         try:
             self.combobox_start_program.setCurrentIndex(self.lama_settings['start_program'])
         except KeyError:

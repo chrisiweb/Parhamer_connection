@@ -23,6 +23,7 @@ dict_widgets_wizard = {
     'Multiplikation' : [
         'self.groupBox_first_number_wizard',
         'self.groupBox_second_number_wizard',
+        'self.comboBox_solution_type_wizard',
     ]
 }
 
@@ -195,16 +196,18 @@ def create_latex_string_multiplication(content, example, solution_type):
             is_integer = False
         for i, digit in enumerate(_list):
             content += create_single_line_multiplication(factor_1, digit, i, is_integer=is_integer)
-
+        print(_list)
+        print(i)
+        num = len(_list)-1
         if get_number_of_digits(result) > factor_digit_length:
             dif = get_number_of_digits(result)-factor_digit_length
-            if dif > i:
-                hspace = (dif-i)*'\hspace{-0.5em}'
+            if dif > num:
+                hspace = (dif-num)*'\hspace{-0.5em}'
             else:
-                hspace = (i-dif)*'\enspace'
+                hspace = (num-dif)*'\enspace'
         else:
             dif = factor_digit_length-get_number_of_digits(result)  
-            hspace = (i+dif)*'\enspace'
+            hspace = (num+dif)*'\enspace'
 
         content += '\hline\n\\antwortzeile {0} {1}\\\\\n'.format(hspace, str(result).replace('.',','))
     else:

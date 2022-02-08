@@ -211,7 +211,8 @@ class Ui_MainWindow(object):
             self.chosen_program = "cria"
         elif self.lama_settings["start_program"] == 2:
             self.chosen_program = "lama"
-
+        elif self.lama_settings["start_program"] == 3:
+            self.chosen_program = "wizard"
         try:
             self.lama_settings["database"]
         except KeyError:
@@ -2365,13 +2366,14 @@ class Ui_MainWindow(object):
 
 
         self.checkbox_solutions_wizard = create_new_checkbox(self.centralwidget, "Lösungen anzeigen", checked=True)
-        self.gridLayout.addWidget(self.checkbox_solutions_wizard, 9,7,1,1, QtCore.Qt.AlignRight)
+        self.gridLayout.addWidget(self.checkbox_solutions_wizard, 9,8,1,1, QtCore.Qt.AlignRight)
         self.checkbox_solutions_wizard.hide()
 
         self.comboBox_solution_type_wizard = create_new_combobox(self.centralwidget)
         add_new_option(self.comboBox_solution_type_wizard, 0, "kompakt")
         add_new_option(self.comboBox_solution_type_wizard, 1, "schrittweise")
-        self.gridLayout.addWidget(self.comboBox_solution_type_wizard, 9, 8, 1, 1)
+        self.gridLayout.addWidget(self.comboBox_solution_type_wizard, 9, 7, 1, 1)
+        self.comboBox_solution_type_wizard.hide()
 
 
         self.buttonBox_create_worksheet_wizard = QtWidgets.QDialogButtonBox(self.centralwidget)

@@ -46,10 +46,7 @@ def get_number_of_digits(n):
     return len(str(int(change_to_integer(n))))
 
 def split_into_digits(n):
-    # print(n)
     n = str(n).replace('.','')
-    # print(n)
-    # n=int(n)
     return [int(d) for d in n]
 
 # x= get_random_number(235,235,0)
@@ -157,37 +154,41 @@ content = """
 # print(content)
 
 
-path_file = os.path.join(
-    path_localappdata_lama, "Teildokument", "worksheet.tex"
-    )
+########## CREATE LATEX CODE FROM CONTENT
+# path_file = os.path.join(
+#     path_localappdata_lama, "Teildokument", "worksheet.tex"
+#     )
 
-with open(path_file, "w", encoding="utf8") as file:
-    file.write(tex_preamble(solution="solution_on"))
+# with open(path_file, "w", encoding="utf8") as file:
+#     file.write(tex_preamble(solution="solution_on"))
 
-    file.write(content)
+#     file.write(content)
 
-    file.write(tex_end)
-
-name = 'worksheet'
-head, tail = os.path.split(name)
-file_name = tail
-folder_name = "{0}/Teildokument".format(path_programm)
+#     file.write(tex_end)
 
 
-drive = ""
 
-terminal_command = 'cd "{1}" & latex -interaction=nonstopmode --synctex=-1 "{2}.tex" & latex -interaction=nonstopmode --synctex=-1 "{2}.tex" & dvips "{2}.dvi" & ps2pdf -dNOSAFER -dALLOWPSTRANSPARENCY "{2}.ps"'.format(
-    drive, folder_name, file_name
-)
-
-
-process = subprocess.Popen(
-    terminal_command,
-    cwd=os.path.splitdrive(path_programm)[0],
-    shell=True,
-)
-
-process.wait()
+################## CREATE PDF FILE
+# name = 'worksheet'
+# head, tail = os.path.split(name)
+# file_name = tail
+# folder_name = "{0}/Teildokument".format(path_programm)
 
 
-open_pdf_file(folder_name, file_name)
+# drive = ""
+
+# terminal_command = 'cd "{1}" & latex -interaction=nonstopmode --synctex=-1 "{2}.tex" & latex -interaction=nonstopmode --synctex=-1 "{2}.tex" & dvips "{2}.dvi" & ps2pdf -dNOSAFER -dALLOWPSTRANSPARENCY "{2}.ps"'.format(
+#     drive, folder_name, file_name
+# )
+
+
+# process = subprocess.Popen(
+#     terminal_command,
+#     cwd=os.path.splitdrive(path_programm)[0],
+#     shell=True,
+# )
+
+# process.wait()
+
+
+# open_pdf_file(folder_name, file_name)
