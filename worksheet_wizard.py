@@ -3,6 +3,10 @@ import random
 # import os
 # from config_start import path_localappdata_lama, path_programm
 import decimal
+import re
+
+from black import list_comments
+from create_nonograms import nonogramm_empty, all_nonogramms, list_all_pixels
 # import subprocess
 # from tex_minimal import tex_preamble, tex_end
 # from create_pdf import create_pdf, open_pdf_file, build_pdf_file
@@ -196,8 +200,6 @@ def create_latex_string_multiplication(content, example, solution_type):
             is_integer = False
         for i, digit in enumerate(_list):
             content += create_single_line_multiplication(factor_1, digit, i, is_integer=is_integer)
-        print(_list)
-        print(i)
         num = len(_list)-1
         if get_number_of_digits(result) > factor_digit_length:
             dif = get_number_of_digits(result)-factor_digit_length
@@ -246,5 +248,125 @@ def create_latex_worksheet(list_of_examples,index, titel, columns, nummerierung,
     \end{{multicols}}
     """.format(titel, columns, nummerierung, content)
 
+    return content
+
+
+def get_all_pixels(content):
+    return re.findall("[A-J][0-9]",content) 
+
+def get_all_solution_pixels(list_of_examples):
+    print(list_of_examples)
+    print(len(list_of_examples))
+    nonogram = random.choice(list(all_nonogramms.keys()))
+
+    all_pixels_solution = all_nonogramms[nonogram]
+
+    solution_pixels = {}
+
+    for example in list_of_examples:
+        pixel = random.choice(all_pixels_solution)
+        solution_pixels[pixel] = example[2] #append([pixel, example[2]])
+        all_pixels_solution.remove(pixel)
+    
+    return solution_pixels
+    # for num, pixel in enumerate(all_pixels_solution):
+    #     if num<examples:
+    #         solution_pixels.append([pixel, True])
+    #     else:
+    #         return solution_pixels  
+
+
+def replace_correct_pixels(content, coordinates_nonogramm):
+    for pixel in list_all_pixels:
+        if pixel in coordinates_nonogramm.keys():
+            if coordinates_nonogramm[pixel] != None:
+                content = content.replace(pixel, "\ifthenelse{\\theAntworten=1}{\cellcolor{black}}{}")
+            else:
+                content = content.replace(pixel, "\cellcolor{black}")
+        else:
+            content = content.replace(pixel, "")
+
+    return content            
+
+
+    # for pixel in list_all_pixels:
+    #     for coordinate in coordinates_nonogramm:
+    #         if pixel == coordinate[0]:
+    #             if coordinate[1] == True:
+    #                 content = content.replace(pixel, "\ifthenelse{\\theAntworten=1}{\cellcolor{black}}{}")
+    #                 break
+    #             else:    
+    #                 content = content.replace(pixel, "\cellcolor{black}")
+    #                 break
+    #         else:
+    #             content = content.replace(pixel, "")
+    #             break    
+    
+    # return content           
+    # for coordinate in coordinates_nonogramm:
+    #     if coordinate[1] == True:
+            
+
+
+    #     if pixel in all_nonogramms[nonogram]:
+    #         if num<examples:
+    #             content = content.replace(pixel, "\ifthenelse{\\theAntworten=1}{\cellcolor{black}}{}")
+    #             solution_pixels.append(pixel)
+    #             num+=1
+    #         else:
+    #             content = content.replace(pixel, "\cellcolor{black}")
+    #     else:
+    #         content = content.replace(pixel, "")
+
+    # return content, solution_pixels
+
+def create_coordinates(solution_pixels):
+    coordinates = solution_pixels
+    print(coordinates)
+    i=0
+    while i < 10:
+        distract_pixel = random.choice(list_all_pixels)
+        if distract_pixel not in solution_pixels.keys():
+            coordinates[distract_pixel] = None
+            i +=1
+
+
+    # random.shuffle(coordinates)
+
+    return coordinates
+
+    # while len(coordinates) < len(solution_pixels)+10:
+    #     print(len(coordinates))
+    #     distract_pixel = random.choice(list_all_pixles)
+    #     if distract_pixel not in solution_pixels:
+    #         coordinates.append(distract_pixel)
+        
+        # if len(coordinates) == len(solution_pixels)+10:
+        #     break
+
+
+def create_nonogramm(coordinates_nonogramm):
+    # nonogram = random.choice(list(all_nonogramms.keys()))
+    # print(nonogram)
+    content = """\\newpage\\fontsize{{12}}{{14}}\selectfont
+\meinlr{{{0}}}{{\scriptsize
+\\begin{{multicols}}{{3}}
+\\begin{{enumerate}}""".format(nonogramm_empty)
+
+    # list_all_pixles = get_all_pixels(content)
+    # random.shuffle(list_all_pixles)
+
+    content = replace_correct_pixels(content, coordinates_nonogramm)
+
+    list_coordinates = list(coordinates_nonogramm.keys())
+    random.shuffle(list_coordinates)
+
+    for all in list_coordinates:
+        result = coordinates_nonogramm[all]
+        content += "\item[\\fbox{{\parbox{{15pt}}{{\centering {0}}}}}] {1}\n".format(all, result)
+        
+    content += """
+    \end{enumerate}
+    \end{multicols}}"""
     return content
 

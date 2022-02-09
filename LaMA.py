@@ -15,6 +15,7 @@ from re import M
 from turtle import hideturtle
 from venv import create
 from start_window import check_if_database_exists
+from worksheet_wizard import get_all_solution_pixels
 
 check_if_database_exists()
 from prepare_content_vorschau import (
@@ -2430,7 +2431,6 @@ class Ui_MainWindow(object):
         self.gridLayout_setting_wizard.addWidget(self.groupBox_nummerierung_wizard, 2,0,1,1)
         self.horizontalLayout_nummerierung_wizard = create_new_horizontallayout(self.groupBox_nummerierung_wizard)
         self.combobox_nummerierung_wizard = create_new_combobox(self.groupBox_nummerierung_wizard)
-        # add_new_option(self.combobox_nummerierung_wizard, 0, "(a)")
         add_new_option(self.combobox_nummerierung_wizard, 0, "-")
         add_new_option(self.combobox_nummerierung_wizard, 1, "(i)")
         add_new_option(self.combobox_nummerierung_wizard, 2, "(1)")
@@ -2443,7 +2443,10 @@ class Ui_MainWindow(object):
         self.combobox_ausrichtung_wizard = create_new_combobox(self.groupBox_ausrichtung_wizard)
         add_new_option(self.combobox_ausrichtung_wizard, 0, "in der Spalte")
         add_new_option(self.combobox_ausrichtung_wizard, 1, "in der Zeile")
-        self.horizontalLayout_ausrichtung_wizard.addWidget(self.combobox_ausrichtung_wizard)  
+        self.horizontalLayout_ausrichtung_wizard.addWidget(self.combobox_ausrichtung_wizard)
+
+        self.checkBox_show_nonogramm = create_new_checkbox(self.groupBox_setting_wizard, "Lösungblatt erstellen", True)
+        self.gridLayout_setting_wizard.addWidget(self.checkBox_show_nonogramm, 3,0,1,2) 
 
         self.groupBox_zahlenbereich_wizard = create_new_groupbox(self.groupBox_setting_wizard, "Zahlenbereich")
         self.gridLayout_setting_wizard.addWidget(self.groupBox_zahlenbereich_wizard, 0,2,3,1)
@@ -5942,7 +5945,13 @@ class Ui_MainWindow(object):
                 row = 0
                 column +=1
         
+        # if self.checkbox_solutions_wizard.isChecked():
+        solution_pixel = get_all_solution_pixels(self.list_of_examples_wizard)
 
+        self.coordinates_nonogramm_wizard = create_coordinates(solution_pixel)
+
+            # print(len(coordinates))
+            # print(coordinates)
 
 
     def create_vorschau_worksheet_wizard(self):
@@ -5963,6 +5972,16 @@ class Ui_MainWindow(object):
 
         content = create_latex_worksheet(self.list_of_examples_wizard, index ,titel, columns, nummerierung, ausrichtung, self.comboBox_solution_type_wizard.currentIndex())
 
+        if self.checkBox_show_nonogramm.isChecked():
+            content += create_nonogramm(self.coordinates_nonogramm_wizard)
+
+        # print(content)
+
+        # if self.checkbox_solutions_wizard.isChecked():
+        #     content += create_nonogramm(self.coordinates_nonogramm_wizard)
+        
+        # print(content)
+        # return
         path_file = os.path.join(
             path_localappdata_lama, "Teildokument", "worksheet.tex"
             )
@@ -5973,7 +5992,7 @@ class Ui_MainWindow(object):
             show_solution = "solution_off"
 
         with open(path_file, "w", encoding="utf8") as file:
-            file.write(tex_preamble(solution=show_solution, pagestyle='empty', font_size='17pt', documentclass='extarticle'))
+            file.write(tex_preamble(solution=show_solution, pagestyle='empty', font_size='12pt', documentclass='extarticle'))
 
             file.write(content)
 
@@ -8703,6 +8722,7 @@ if __name__ == "__main__":
         create_list_of_examples_addition, create_single_example_addition,
         create_list_of_examples_subtraction, create_single_example_subtraction,
         create_list_of_examples_multiplication, create_single_example_multiplication,
+        create_nonogramm, create_coordinates, list_all_pixels
     )
 
     i = step_progressbar(i, "tex_minimal")
