@@ -234,6 +234,11 @@ class Ui_MainWindow(object):
 
 
         self.chosen_gui = "widgets_search"
+        try:
+            self.chosen_program
+        except AttributeError:
+            self.chosen_program = "lama"
+
         if self.chosen_program == "cria":
             self.chosen_gui = self.chosen_gui + "_cria"
 
@@ -7356,7 +7361,7 @@ class Ui_MainWindow(object):
 
         if get_aufgabentyp(self.chosen_program, aufgabe) == 2:
             if first_typ2 == False:
-                header = "\\newpage \n\n\subsubsection{Typ 2 Aufgaben}\n\n"
+                header = "\\newpage \n\n\\textbf{Typ 2 Aufgaben}\n\n"
                 first_typ2 = True
             else:
                 header = "\\newpage\n\n"
@@ -7584,7 +7589,7 @@ class Ui_MainWindow(object):
             or self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
             == "Nachschularbeit"
         ):
-            header = "\\subsubsection{Typ 1 Aufgaben}\n\n"
+            header = "\\textbf{Typ 1 Aufgaben}\n\n"
 
         else:
             header = ""
