@@ -5843,9 +5843,6 @@ class Ui_MainWindow(object):
 
     def spinBox_number_wizard_changed(self):
         max = 0
-        for nonogram in all_nonogramms:
-            print("{0}: {1}".format(nonogram,len(all_nonogramms[nonogram])))
-
         for nonogram in all_nonogramms.values():
             if len(nonogram)>max:
                 max = len(nonogram)
@@ -5856,8 +5853,7 @@ class Ui_MainWindow(object):
         else:
             self.checkBox_show_nonogramm.setChecked(True)
             self.checkBox_show_nonogramm.setEnabled(True)            
-        # print(max)
-        # print(self.spinBox_number_wizard.value())
+
 
 
     def minimum_changed_wizard(self, min, max):
