@@ -6906,6 +6906,7 @@ class Ui_MainWindow(object):
                 self.dict_sage_hide_show_items_chosen[
                     aufgabe
                 ] = ui.list_sage_hide_show_items_chosen
+
             elif aufgabe in self.dict_sage_hide_show_items_chosen:
                 del self.dict_sage_hide_show_items_chosen[aufgabe]
 
