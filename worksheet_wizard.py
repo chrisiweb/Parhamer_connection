@@ -420,3 +420,55 @@ def create_nonogramm(coordinates_nonogramm, MainWindow):
     \end{multicols}}"""
     return content
 
+
+def show_all_nonogramms():
+    # return
+    # nonogram = random.choice(list(all_nonogramms.keys()))
+    # print(nonogram)
+
+    content = ""
+    for nonogram in all_nonogramms:
+        all_pixels_solution = all_nonogramms[nonogram]
+
+        solution_pixels = {}
+   
+
+        for pixel in all_pixels_solution:
+            solution_pixels[pixel] = True      
+
+
+        content += """\n\\vfil\n\\fontsize{{12}}{{14}}\selectfont
+    \meinlr{{{0}}}{{\scriptsize
+    \\begin{{multicols}}{{3}}
+    \\begin{{enumerate}}""".format(nonogramm_empty)
+
+        # list_all_pixles = get_all_pixels(content)
+        # random.shuffle(list_all_pixles)
+
+        content = replace_correct_pixels(content, solution_pixels)
+
+
+
+
+    # list_coordinates = list(coordinates_nonogramm.keys())
+    # # random.shuffle(list_coordinates)
+
+    # for all in list_coordinates:
+    #     result = coordinates_nonogramm[all]
+    #     if result == True:
+    #         continue
+
+    #     if result == False:
+    #         while result == False:
+    #             distract_result = get_random_solution(MainWindow)[-2]
+    #             if distract_result not in coordinates_nonogramm:
+    #                 result = distract_result
+    #     else:
+    #         result = "\\antwort[{0}]{{{0}}}".format(result)
+
+    #     content += "\item[\\fbox{{\parbox{{15pt}}{{\centering {0}}}}}] {1}\n".format(all, result)
+        
+    # content += """
+    # \end{enumerate}
+    # \end{multicols}}"""
+    return content

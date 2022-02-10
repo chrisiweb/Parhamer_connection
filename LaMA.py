@@ -6003,6 +6003,7 @@ class Ui_MainWindow(object):
     def create_vorschau_worksheet_wizard(self):
         content = self.create_latex_file_content_wizard()
 
+        # content = show_all_nonogramms() # NOT WORKING to test all nonogramms
         # return
         path_file = os.path.join(
             path_localappdata_lama, "Teildokument", "worksheet.tex"
@@ -8749,7 +8750,7 @@ if __name__ == "__main__":
         create_list_of_examples_addition, create_single_example_addition,
         create_list_of_examples_subtraction, create_single_example_subtraction,
         create_list_of_examples_multiplication, create_single_example_multiplication,
-        create_nonogramm, create_coordinates, list_all_pixels, all_nonogramms
+        create_nonogramm, create_coordinates, list_all_pixels, all_nonogramms, show_all_nonogramms
     )
 
     i = step_progressbar(i, "tex_minimal")
