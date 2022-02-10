@@ -88,16 +88,6 @@ def edit_content_hide_show_items(self, aufgabe, split_content, full_content):
                 line_end = line_end.replace("\n","")
                 break
 
-        print(line_start)
-        print(list_content)
-        # print(line_end)
-        if line_start in list_content[2].replace("\n",""):
-            print('yes TRUE')
-        else:
-            print('NOO:')
-            print(line_start)
-            print(list_content[2].replace("\n",""))
-
         # for i, all in enumerate(list_content):
         #     if search("{}".format(line_start), list_content):
         #         print('yes search')
