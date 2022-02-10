@@ -254,20 +254,33 @@ def create_latex_worksheet(list_of_examples,index, titel, columns, nummerierung,
 def get_all_pixels(content):
     return re.findall("[A-J][0-9]",content) 
 
+
+def rechose_nonogramm(list_of_examples, nonogram):
+    while len(list_of_examples) > len(all_nonogramms[nonogram]):
+        nonogram = random.choice(list(all_nonogramms.keys()))
+
+    return nonogram
+        
 def get_all_solution_pixels(list_of_examples):
-    print(list_of_examples)
-    print(len(list_of_examples))
     nonogram = random.choice(list(all_nonogramms.keys()))
 
-    all_pixels_solution = all_nonogramms[nonogram]
+    if len(list_of_examples) > len(all_nonogramms[nonogram]):
+        nonogram = rechose_nonogramm(list_of_examples, nonogram)
 
+
+    all_pixels_solution = all_nonogramms[nonogram]
+    random.shuffle(all_pixels_solution)
     solution_pixels = {}
 
-    for example in list_of_examples:
-        pixel = random.choice(all_pixels_solution)
-        solution_pixels[pixel] = example[2] #append([pixel, example[2]])
-        all_pixels_solution.remove(pixel)
-    
+   
+
+    for i, pixel in enumerate(all_pixels_solution):
+        if i<len(list_of_examples):
+            solution_pixels[pixel] =  list_of_examples[i][-2]
+        else:
+            solution_pixels[pixel] = True
+
+
     return solution_pixels
     # for num, pixel in enumerate(all_pixels_solution):
     #     if num<examples:
@@ -279,10 +292,12 @@ def get_all_solution_pixels(list_of_examples):
 def replace_correct_pixels(content, coordinates_nonogramm):
     for pixel in list_all_pixels:
         if pixel in coordinates_nonogramm.keys():
-            if coordinates_nonogramm[pixel] != None:
-                content = content.replace(pixel, "\ifthenelse{\\theAntworten=1}{\cellcolor{black}}{}")
-            else:
+            if coordinates_nonogramm[pixel] == False:
+                content = content.replace(pixel, "")
+            elif coordinates_nonogramm[pixel] == True:
                 content = content.replace(pixel, "\cellcolor{black}")
+            else:
+                content = content.replace(pixel, "\ifthenelse{\\theAntworten=1}{\cellcolor{black}{}}{}")          
         else:
             content = content.replace(pixel, "")
 
@@ -320,35 +335,59 @@ def replace_correct_pixels(content, coordinates_nonogramm):
 
     # return content, solution_pixels
 
-def create_coordinates(solution_pixels):
+def create_coordinates(self, solution_pixels):
     coordinates = solution_pixels
-    print(coordinates)
     i=0
     while i < 10:
         distract_pixel = random.choice(list_all_pixels)
         if distract_pixel not in solution_pixels.keys():
-            coordinates[distract_pixel] = None
+            while True:
+                distract_result = get_random_solution(self)[-2]
+                if distract_result not in coordinates:
+                    break
+            coordinates[distract_pixel] = False
             i +=1
 
+    l = list(coordinates.items())
+    random.shuffle(l)
+    shuffled_coordinates = dict(l)
 
-    # random.shuffle(coordinates)
-
-    return coordinates
-
-    # while len(coordinates) < len(solution_pixels)+10:
-    #     print(len(coordinates))
-    #     distract_pixel = random.choice(list_all_pixles)
-    #     if distract_pixel not in solution_pixels:
-    #         coordinates.append(distract_pixel)
-        
-        # if len(coordinates) == len(solution_pixels)+10:
-        #     break
+    return shuffled_coordinates
 
 
-def create_nonogramm(coordinates_nonogramm):
+def get_random_solution(MainWindow):
+    thema = MainWindow.comboBox_themen_wizard.currentText()
+
+    if thema == 'Addition':
+        minimum = MainWindow.spinbox_zahlenbereich_minimum.value()
+        maximum = MainWindow.spinbox_zahlenbereich_maximum.value()
+        commas = MainWindow.spinbox_kommastellen_wizard.value()
+        distract_result = create_single_example_addition(minimum, maximum, commas)
+
+
+    elif thema == 'Subtraktion':
+        minimum = MainWindow.spinbox_zahlenbereich_minimum.value()
+        maximum = MainWindow.spinbox_zahlenbereich_maximum.value()
+        commas = MainWindow.spinbox_kommastellen_wizard.value()
+        distract_result = create_single_example_subtraction(minimum, maximum, commas, MainWindow.checkbox_negative_ergebnisse_wizard.isChecked())
+
+    
+    elif thema == 'Multiplikation':
+        minimum_1 = MainWindow.spinBox_first_number_min.value()
+        maximum_1 = MainWindow.spinBox_first_number_max.value()
+        commas_1 = MainWindow.spinBox_first_number_decimal.value()
+        minimum_2 = MainWindow.spinBox_second_number_min.value()
+        maximum_2 = MainWindow.spinBox_second_number_max.value()
+        commas_2 = MainWindow.spinBox_second_number_decimal.value()
+        distract_result = create_single_example_multiplication(minimum_1, maximum_1, commas_1, minimum_2, maximum_2, commas_2)
+        # self.list_of_examples_wizard = create_list_of_examples_multiplication(examples, minimum_1, maximum_1, commas_1, minimum_2, maximum_2, commas_2)
+    return distract_result
+
+def create_nonogramm(coordinates_nonogramm, MainWindow):
+    # return
     # nonogram = random.choice(list(all_nonogramms.keys()))
     # print(nonogram)
-    content = """\\newpage\\fontsize{{12}}{{14}}\selectfont
+    content = """\n\\vfil\n\\fontsize{{12}}{{14}}\selectfont
 \meinlr{{{0}}}{{\scriptsize
 \\begin{{multicols}}{{3}}
 \\begin{{enumerate}}""".format(nonogramm_empty)
@@ -359,10 +398,21 @@ def create_nonogramm(coordinates_nonogramm):
     content = replace_correct_pixels(content, coordinates_nonogramm)
 
     list_coordinates = list(coordinates_nonogramm.keys())
-    random.shuffle(list_coordinates)
+    # random.shuffle(list_coordinates)
 
     for all in list_coordinates:
         result = coordinates_nonogramm[all]
+        if result == True:
+            continue
+
+        if result == False:
+            while result == False:
+                distract_result = get_random_solution(MainWindow)[-2]
+                if distract_result not in coordinates_nonogramm:
+                    result = distract_result
+        else:
+            result = "\\antwort[{0}]{{{0}}}".format(result)
+
         content += "\item[\\fbox{{\parbox{{15pt}}{{\centering {0}}}}}] {1}\n".format(all, result)
         
     content += """

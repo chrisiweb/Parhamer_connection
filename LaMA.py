@@ -2417,6 +2417,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_number_wizard = create_new_horizontallayout(self.groupBox_number_wizard)
         self.spinBox_number_wizard = create_new_spinbox(self.groupBox_number_wizard, 20)
         self.spinBox_number_wizard.setMinimum(1)
+        self.spinBox_number_wizard.valueChanged.connect(self.spinBox_number_wizard_changed)
         self.horizontalLayout_number_wizard.addWidget(self.spinBox_number_wizard)
 
 
@@ -2447,6 +2448,7 @@ class Ui_MainWindow(object):
 
         self.checkBox_show_nonogramm = create_new_checkbox(self.groupBox_setting_wizard, "Lösungblatt erstellen", True)
         self.gridLayout_setting_wizard.addWidget(self.checkBox_show_nonogramm, 3,0,1,2) 
+    
 
         self.groupBox_zahlenbereich_wizard = create_new_groupbox(self.groupBox_setting_wizard, "Zahlenbereich")
         self.gridLayout_setting_wizard.addWidget(self.groupBox_zahlenbereich_wizard, 0,2,3,1)
@@ -5839,6 +5841,25 @@ class Ui_MainWindow(object):
             eval(widget).show()
 
 
+    def spinBox_number_wizard_changed(self):
+        max = 0
+        for nonogram in all_nonogramms:
+            print("{0}: {1}".format(nonogram,len(all_nonogramms[nonogram])))
+
+        for nonogram in all_nonogramms.values():
+            if len(nonogram)>max:
+                max = len(nonogram)
+        
+        if self.spinBox_number_wizard.value()>max:
+            self.checkBox_show_nonogramm.setChecked(False)
+            self.checkBox_show_nonogramm.setEnabled(False)
+        else:
+            self.checkBox_show_nonogramm.setChecked(True)
+            self.checkBox_show_nonogramm.setEnabled(True)            
+        # print(max)
+        # print(self.spinBox_number_wizard.value())
+
+
     def minimum_changed_wizard(self, min, max):
         if min.value() > max.value():
             max.setValue(min.value()+10)
@@ -5890,8 +5911,15 @@ class Ui_MainWindow(object):
             new_example = create_single_example_multiplication(minimum_1, maximum_1, commas_1, minimum_2, maximum_2, commas_2)
 
 
+        result = self.list_of_examples_wizard[index][-2]
+
+        for key, value in self.coordinates_nonogramm_wizard.items():
+            if value == result:
+                self.coordinates_nonogramm_wizard[key]=new_example[-2]
+                break
+
         self.list_of_examples_wizard[index] = new_example
-        self.dict_aufgaben_wizard[index].setText(new_example[3])
+        self.dict_aufgaben_wizard[index].setText(new_example[-1])
 
 
     def create_worksheet_wizard_pressed(self):
@@ -5948,13 +5976,10 @@ class Ui_MainWindow(object):
         # if self.checkbox_solutions_wizard.isChecked():
         solution_pixel = get_all_solution_pixels(self.list_of_examples_wizard)
 
-        self.coordinates_nonogramm_wizard = create_coordinates(solution_pixel)
-
-            # print(len(coordinates))
-            # print(coordinates)
+        self.coordinates_nonogramm_wizard = create_coordinates(self, solution_pixel)
 
 
-    def create_vorschau_worksheet_wizard(self):
+    def create_latex_file_content_wizard(self):
         try:
             self.list_of_examples_wizard 
         except AttributeError:
@@ -5973,14 +5998,15 @@ class Ui_MainWindow(object):
         content = create_latex_worksheet(self.list_of_examples_wizard, index ,titel, columns, nummerierung, ausrichtung, self.comboBox_solution_type_wizard.currentIndex())
 
         if self.checkBox_show_nonogramm.isChecked():
-            content += create_nonogramm(self.coordinates_nonogramm_wizard)
-
-        # print(content)
-
-        # if self.checkbox_solutions_wizard.isChecked():
-        #     content += create_nonogramm(self.coordinates_nonogramm_wizard)
+            content += create_nonogramm(self.coordinates_nonogramm_wizard, self)
         
-        # print(content)
+        return content
+
+
+
+    def create_vorschau_worksheet_wizard(self):
+        content = self.create_latex_file_content_wizard()
+
         # return
         path_file = os.path.join(
             path_localappdata_lama, "Teildokument", "worksheet.tex"
@@ -6000,24 +6026,29 @@ class Ui_MainWindow(object):
 
         create_pdf("worksheet")
 
+
+
     def save_worksheet_wizard(self):
-        try:
-            self.list_of_examples_wizard 
-        except AttributeError:
-            self.create_worksheet_wizard_pressed()
+        content = self.create_latex_file_content_wizard()
+        # try:
+        #     self.list_of_examples_wizard 
+        # except AttributeError:
+        #     self.create_worksheet_wizard_pressed()
 
 
-        titel = self.lineEdit_titel_wizard.text()
-        columns = self.spinBox_column_wizard.value()
-        if self.combobox_nummerierung_wizard.currentText() == '-':
-            nummerierung = "label={}"
-        else:
-            nummerierung = self.combobox_nummerierung_wizard.currentText()
-        ausrichtung = self.combobox_ausrichtung_wizard.currentIndex()
-        index = self.comboBox_themen_wizard.currentIndex()
+        # titel = self.lineEdit_titel_wizard.text()
+        # columns = self.spinBox_column_wizard.value()
+        # if self.combobox_nummerierung_wizard.currentText() == '-':
+        #     nummerierung = "label={}"
+        # else:
+        #     nummerierung = self.combobox_nummerierung_wizard.currentText()
+        # ausrichtung = self.combobox_ausrichtung_wizard.currentIndex()
+        # index = self.comboBox_themen_wizard.currentIndex()
 
-        content = create_latex_worksheet(self.list_of_examples_wizard, index ,titel, columns, nummerierung, ausrichtung, self.comboBox_solution_type_wizard.currentIndex())
+        # content = create_latex_worksheet(self.list_of_examples_wizard, index ,titel, columns, nummerierung, ausrichtung, self.comboBox_solution_type_wizard.currentIndex())
 
+        # if self.checkBox_show_nonogramm.isChecked():
+        #     content += create_nonogramm(self.coordinates_nonogramm_wizard)
 
         try:
             self.saved_file_path
@@ -8722,7 +8753,7 @@ if __name__ == "__main__":
         create_list_of_examples_addition, create_single_example_addition,
         create_list_of_examples_subtraction, create_single_example_subtraction,
         create_list_of_examples_multiplication, create_single_example_multiplication,
-        create_nonogramm, create_coordinates, list_all_pixels
+        create_nonogramm, create_coordinates, list_all_pixels, all_nonogramms
     )
 
     i = step_progressbar(i, "tex_minimal")
