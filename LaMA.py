@@ -6013,7 +6013,7 @@ class Ui_MainWindow(object):
     def create_vorschau_worksheet_wizard(self):
         content = self.create_latex_file_content_wizard()
 
-        # content = show_all_nonogramms() # for testing reasons
+        content = show_all_nonogramms() # for testing reasons
         # return
         path_file = os.path.join(
             path_localappdata_lama, "Teildokument", "worksheet.tex"
