@@ -16,6 +16,7 @@ dict_widgets_wizard = {
         'self.groupBox_zahlenbereich_minimum',
         'self.groupBox_zahlenbereich_maximum',
         'self.groupBox_kommastellen_wizard',
+        'self.groupBox_zahlenbereich_anzahl',
         ],
     'Subtraktion' : [
         'self.groupBox_zahlenbereich_minimum',
@@ -281,7 +282,7 @@ def get_all_solution_pixels(list_of_examples):
             solution_pixels[pixel] = True
 
 
-    return solution_pixels
+    return nonogram, solution_pixels
     # for num, pixel in enumerate(all_pixels_solution):
     #     if num<examples:
     #         solution_pixels.append([pixel, True])
@@ -383,14 +384,13 @@ def get_random_solution(MainWindow):
         # self.list_of_examples_wizard = create_list_of_examples_multiplication(examples, minimum_1, maximum_1, commas_1, minimum_2, maximum_2, commas_2)
     return distract_result
 
-def create_nonogramm(coordinates_nonogramm, MainWindow):
-    # return
-    # nonogram = random.choice(list(all_nonogramms.keys()))
-    # print(nonogram)
+def create_nonogramm(chosen_nonogram, coordinates_nonogramm, MainWindow):
     content = """\n\\vfil\n\\fontsize{{12}}{{14}}\selectfont
-\meinlr{{{0}}}{{\scriptsize
+\meinlr{{{0}
+
+\\antwort{{{1}}}}}{{\scriptsize
 \\begin{{multicols}}{{3}}
-\\begin{{enumerate}}""".format(nonogramm_empty)
+\\begin{{enumerate}}""".format(nonogramm_empty, chosen_nonogram.split("_")[0].capitalize())
 
     # list_all_pixles = get_all_pixels(content)
     # random.shuffle(list_all_pixles)
@@ -422,13 +422,9 @@ def create_nonogramm(coordinates_nonogramm, MainWindow):
 
 
 def show_all_nonogramms():
-    # return
-    # nonogram = random.choice(list(all_nonogramms.keys()))
-    # print(nonogram)
-
     content = ""
-    for nonogram in all_nonogramms:
-        all_pixels_solution = all_nonogramms[nonogram]
+    for nonogramm in all_nonogramms:
+        all_pixels_solution = all_nonogramms[nonogramm]
 
         solution_pixels = {}
    
@@ -438,37 +434,12 @@ def show_all_nonogramms():
 
 
         content += """\n\\vfil\n\\fontsize{{12}}{{14}}\selectfont
-    \meinlr{{{0}}}{{\scriptsize
-    \\begin{{multicols}}{{3}}
-    \\begin{{enumerate}}""".format(nonogramm_empty)
+    {0}:
+    
+    {1}""".format(nonogramm.split("_")[0].capitalize(), nonogramm_empty)
 
-        # list_all_pixles = get_all_pixels(content)
-        # random.shuffle(list_all_pixles)
 
         content = replace_correct_pixels(content, solution_pixels)
 
 
-
-
-    # list_coordinates = list(coordinates_nonogramm.keys())
-    # # random.shuffle(list_coordinates)
-
-    # for all in list_coordinates:
-    #     result = coordinates_nonogramm[all]
-    #     if result == True:
-    #         continue
-
-    #     if result == False:
-    #         while result == False:
-    #             distract_result = get_random_solution(MainWindow)[-2]
-    #             if distract_result not in coordinates_nonogramm:
-    #                 result = distract_result
-    #     else:
-    #         result = "\\antwort[{0}]{{{0}}}".format(result)
-
-    #     content += "\item[\\fbox{{\parbox{{15pt}}{{\centering {0}}}}}] {1}\n".format(all, result)
-        
-    # content += """
-    # \end{enumerate}
-    # \end{multicols}}"""
     return content

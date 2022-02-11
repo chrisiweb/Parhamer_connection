@@ -2454,6 +2454,7 @@ class Ui_MainWindow(object):
         self.gridLayout_setting_wizard.addWidget(self.groupBox_zahlenbereich_wizard, 0,2,3,1)
         self.gridLayout_zahlenbereich_wizard = create_new_gridlayout(self.groupBox_zahlenbereich_wizard)
 
+
         self.groupBox_zahlenbereich_minimum = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Minimum")
         self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_zahlenbereich_minimum, 0,0,1,1)
         self.horizontalLayout_zahlenbereich_minimum = create_new_horizontallayout(self.groupBox_zahlenbereich_minimum)
@@ -2481,9 +2482,17 @@ class Ui_MainWindow(object):
         self.spinbox_kommastellen_wizard = create_new_spinbox(self.groupBox_kommastellen_wizard)
         self.horizontalLayout_kommastellen_wizard.addWidget(self.spinbox_kommastellen_wizard)
 
+
+        self.groupBox_zahlenbereich_anzahl = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Summanden")
+        self.horizontalLayout_zahlenbereich_anzahl = create_new_horizontallayout(self.groupBox_zahlenbereich_anzahl)
+        self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_zahlenbereich_anzahl, 1,1,1,2)
+        self.spinBox_zahlenbereich_wizard = create_new_spinbox(self.groupBox_zahlenbereich_anzahl, 2)
+        self.spinBox_zahlenbereich_wizard.setRange(2,5)
+        self.horizontalLayout_zahlenbereich_anzahl.addWidget(self.spinBox_zahlenbereich_wizard)
+
         self.checkbox_negative_ergebnisse_wizard = create_new_checkbox(self.groupBox_zahlenbereich_wizard, "")
         self.checkbox_negative_ergebnisse_wizard.setSizePolicy(SizePolicy_fixed)
-        self.gridLayout_zahlenbereich_wizard.addWidget(self.checkbox_negative_ergebnisse_wizard, 1,1,1,1)
+        self.gridLayout_zahlenbereich_wizard.addWidget(self.checkbox_negative_ergebnisse_wizard, 2,1,1,1)
         self.label_negative_ergebnisse_wizard = create_new_label(self.groupBox_zahlenbereich_wizard, "negative Ergebnisse erlauben", True, True)
         self.label_negative_ergebnisse_wizard.clicked.connect(partial(self.click_label_to_check, self.checkbox_negative_ergebnisse_wizard))
         self.gridLayout_zahlenbereich_wizard.addWidget(self.label_negative_ergebnisse_wizard, 1,2,1,1, QtCore.Qt.AlignLeft)
@@ -5929,7 +5938,7 @@ class Ui_MainWindow(object):
             maximum = self.spinbox_zahlenbereich_maximum.value()
             commas = self.spinbox_kommastellen_wizard.value()
             if minimum>maximum:
-                warning_window('Das Maximum muss größer als das Minimum sein.')
+                critical_window('Das Maximum muss größer als das Minimum sein.')
                 return
             self.list_of_examples_wizard = create_list_of_examples_addition(examples, minimum, maximum, commas)
 
@@ -5970,7 +5979,7 @@ class Ui_MainWindow(object):
                 column +=1
         
         # if self.checkbox_solutions_wizard.isChecked():
-        solution_pixel = get_all_solution_pixels(self.list_of_examples_wizard)
+        self.chosen_nonogram, solution_pixel = get_all_solution_pixels(self.list_of_examples_wizard)
 
         self.coordinates_nonogramm_wizard = create_coordinates(self, solution_pixel)
 
@@ -5994,7 +6003,7 @@ class Ui_MainWindow(object):
         content = create_latex_worksheet(self.list_of_examples_wizard, index ,titel, columns, nummerierung, ausrichtung, self.comboBox_solution_type_wizard.currentIndex())
 
         if self.checkBox_show_nonogramm.isChecked():
-            content += create_nonogramm(self.coordinates_nonogramm_wizard, self)
+            content += create_nonogramm(self.chosen_nonogram , self.coordinates_nonogramm_wizard, self)
         
         return content
 
@@ -6003,7 +6012,7 @@ class Ui_MainWindow(object):
     def create_vorschau_worksheet_wizard(self):
         content = self.create_latex_file_content_wizard()
 
-        # content = show_all_nonogramms() # NOT WORKING to test all nonogramms
+        # content = show_all_nonogramms() # for testing reasons
         # return
         path_file = os.path.join(
             path_localappdata_lama, "Teildokument", "worksheet.tex"
