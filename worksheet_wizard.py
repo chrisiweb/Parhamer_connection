@@ -72,12 +72,23 @@ def split_into_digits(n):
 
 
 
-def create_single_example_addition(minimum, maximum, commas):
-    x = get_random_number(minimum,maximum, commas)
-    y= get_random_number(minimum,maximum, commas)
-    solution = x+y
-    string = "{0} + {1} = {2}".format(str(x).replace(".",","),str(y).replace(".",","),str(solution).replace(".",","))
-    return [x,y,solution, string]
+def create_single_example_addition(minimum, maximum, commas, anzahl_summanden):
+    summanden = []
+    for _ in range(anzahl_summanden):
+        x= get_random_number(minimum,maximum, commas)
+        summanden.append(x)
+
+    solution = sum(summanden)
+    # x = get_random_number(minimum,maximum, commas)
+    # y= get_random_number(minimum,maximum, commas)
+    # solution = x+y
+    string = str(summanden[0]).replace(".",",")
+    for x in summanden[1:]:
+        string += " + {}".format(str(x).replace(".",","))
+    
+    string += " = {}".format(str(solution).replace(".",","))
+
+    return [summanden,solution, string]
 
 def create_single_example_subtraction(minimum, maximum, commas, negative_solutions_allowed):
     x = get_random_number(minimum,maximum, commas)
@@ -97,11 +108,11 @@ def create_single_example_multiplication(minimum_1, maximum_1, commas_1, minimum
 
 
 
-def create_list_of_examples_addition(examples, minimum, maximum, commas):
+def create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden):
     list_of_examples = []
 
     for _ in range(examples):
-        new_example = create_single_example_addition(minimum, maximum, commas)
+        new_example = create_single_example_addition(minimum, maximum, commas, anzahl_summanden)
         list_of_examples.append(new_example)
 
     return list_of_examples
@@ -125,16 +136,25 @@ def create_list_of_examples_multiplication(examples, minimum_1, maximum_1, comma
     return list_of_examples
 
 def create_latex_string_addition(content, example, ausrichtung):
+    summanden = example[0]
+
     if ausrichtung == 0:
-        content += """
-        \item \\begin{{tabular}}{{rr}}
-        & ${0}$ \\\\
-        & ${1}$ \\\\ \hline
-        &\\antwort{{${2}$}}
-        \end{{tabular}}\n
-        """.format(str(example[0]).replace(".",","),str(example[1]).replace(".",","),str(example[2]).replace(".",","))
+        content += "\item \\begin{tabular}{rr}"
+
+        for all in summanden:
+            content += "& ${0}$ \\\\ \n".format(str(all).replace(".",","))
+
+        content += """\hline&\\antwort{{${0}$}}
+        \end{{tabular}}\n""".format(str(example[-2]).replace(".",","))
+        # .format(str(example[0]).replace(".",","),str(example[1]).replace(".",","),str(example[2]).replace(".",","))
     elif ausrichtung == 1:
-        content += "\item ${0} + {1} = \\antwort{{{2}}}$\n\\vspace{{\\leer}}\n\n".format(str(example[0]).replace(".",","),str(example[1]).replace(".",","),str(example[2]).replace(".",","))
+        content += "\item ${0}".format(str(summanden[0]).replace(".",","))
+
+        for all in summanden[1:]:
+            content += " + {}".format(str(all).replace(".",","))
+        
+
+        content += " = \\antwort{{{0}}}$\n\\leer\n\n".format(str(example[-2]).replace(".",","))
     return content
 
 def create_latex_string_subtraction(content, example, ausrichtung):
@@ -229,7 +249,11 @@ def create_latex_string_multiplication(content, example, solution_type):
 
 
 def create_latex_worksheet(list_of_examples,index, titel, columns, nummerierung, ausrichtung, solution_type=0):
-    content = ""
+    content = "\section{{{0}}}\n\n".format(titel)
+    if columns > 1:
+        content += "\\begin{{multicols}}{{{0}}}\n".format(columns)
+
+    content += "\\begin{{enumerate}}[{0}]\n".format(nummerierung)
 
     for example in list_of_examples:
         if index == 0:
@@ -239,15 +263,10 @@ def create_latex_worksheet(list_of_examples,index, titel, columns, nummerierung,
         elif index == 2:
             content = create_latex_string_multiplication(content, example, solution_type)
 
-    content = """
-    \section{{{0}}}
+    content += "\end{enumerate}"
 
-    \\begin{{multicols}}{{{1}}}
-    \\begin{{enumerate}}[{2}]
-    {3}
-    \end{{enumerate}}
-    \end{{multicols}}
-    """.format(titel, columns, nummerierung, content)
+    if columns > 1:
+        content += "\end{multicols}"
 
     return content
 
@@ -363,7 +382,8 @@ def get_random_solution(MainWindow):
         minimum = MainWindow.spinbox_zahlenbereich_minimum.value()
         maximum = MainWindow.spinbox_zahlenbereich_maximum.value()
         commas = MainWindow.spinbox_kommastellen_wizard.value()
-        distract_result = create_single_example_addition(minimum, maximum, commas)
+        anzahl_summanden = MainWindow.spinBox_zahlenbereich_anzahl_wizard.value()
+        distract_result = create_single_example_addition(minimum, maximum, commas, anzahl_summanden)
 
 
     elif thema == 'Subtraktion':

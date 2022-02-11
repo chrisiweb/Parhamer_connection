@@ -2486,9 +2486,9 @@ class Ui_MainWindow(object):
         self.groupBox_zahlenbereich_anzahl = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Summanden")
         self.horizontalLayout_zahlenbereich_anzahl = create_new_horizontallayout(self.groupBox_zahlenbereich_anzahl)
         self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_zahlenbereich_anzahl, 1,1,1,2)
-        self.spinBox_zahlenbereich_wizard = create_new_spinbox(self.groupBox_zahlenbereich_anzahl, 2)
-        self.spinBox_zahlenbereich_wizard.setRange(2,5)
-        self.horizontalLayout_zahlenbereich_anzahl.addWidget(self.spinBox_zahlenbereich_wizard)
+        self.spinBox_zahlenbereich_anzahl_wizard = create_new_spinbox(self.groupBox_zahlenbereich_anzahl, 2)
+        self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,5)
+        self.horizontalLayout_zahlenbereich_anzahl.addWidget(self.spinBox_zahlenbereich_anzahl_wizard)
 
         self.checkbox_negative_ergebnisse_wizard = create_new_checkbox(self.groupBox_zahlenbereich_wizard, "")
         self.checkbox_negative_ergebnisse_wizard.setSizePolicy(SizePolicy_fixed)
@@ -5877,7 +5877,7 @@ class Ui_MainWindow(object):
         self.gridLayout_scrollArea_wizard.addWidget(groupbox ,row,column,1,1)
 
         horizontalLayout = create_new_horizontallayout(groupbox)
-        label = create_new_label(self.scrollArea_chosen_wizard, example[3])
+        label = create_new_label(self.scrollArea_chosen_wizard, example[-1])
         horizontalLayout.addWidget(label)
         
         # horizontalLayout.addStretch()
@@ -5937,10 +5937,11 @@ class Ui_MainWindow(object):
             minimum = self.spinbox_zahlenbereich_minimum.value()
             maximum = self.spinbox_zahlenbereich_maximum.value()
             commas = self.spinbox_kommastellen_wizard.value()
+            anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
             if minimum>maximum:
                 critical_window('Das Maximum muss größer als das Minimum sein.')
                 return
-            self.list_of_examples_wizard = create_list_of_examples_addition(examples, minimum, maximum, commas)
+            self.list_of_examples_wizard = create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden)
 
         elif thema == 'Subtraktion':
             minimum = self.spinbox_zahlenbereich_minimum.value()
