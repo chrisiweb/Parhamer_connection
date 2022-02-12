@@ -1,5 +1,5 @@
 import random
-# import math
+from math import floor, ceil
 # import os
 # from config_start import path_localappdata_lama, path_programm
 import decimal
@@ -29,7 +29,12 @@ dict_widgets_wizard = {
         'self.groupBox_first_number_wizard',
         'self.groupBox_second_number_wizard',
         'self.comboBox_solution_type_wizard',
-    ]
+    ],
+    'Division' : [
+        'self.groupBox_dividend_wizard',
+        'self.groupBox_divisor_wizard',
+        'self.groupBox_ergebnis_wizard',
+    ],
 }
 
 D = decimal.Decimal
@@ -106,6 +111,32 @@ def create_single_example_multiplication(minimum_1, maximum_1, commas_1, minimum
     string = "{0} \xb7 {1} = {2}".format(str(x).replace(".",","),str(y).replace(".",","),str(solution).replace(".",","))
     return [x,y,solution, string]
 
+def get_quotient_with_rest(dividend,divisor):
+    
+    return "{}\nR {}".format(int(dividend//divisor), dividend%divisor) 
+
+def create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div, commas_result, output_type):
+    divisor = get_random_number(minimum_2, maximum_2, commas_div)
+
+    if output_type == 1:  
+        dividend = get_random_number(minimum_1, maximum_1)
+        result = str(get_quotient_with_rest(dividend, divisor))
+
+    else:
+        result_min = ceil(minimum_1/divisor)
+        result_max = floor(maximum_1/divisor)
+
+        if output_type == 0:
+            commas_result = 0
+        result = get_random_number(result_min, result_max, commas_result)
+
+        dividend = result*divisor
+
+        result = str(result)
+
+    string = "{0} : {1} = {2}".format(str(dividend).replace(".",","),str(divisor).replace(".",","),result.replace(".",","))
+
+    return [dividend,divisor,result, string]
 
 
 def create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden):
@@ -133,6 +164,16 @@ def create_list_of_examples_multiplication(examples, minimum_1, maximum_1, comma
         new_example = create_single_example_multiplication(minimum_1, maximum_1, commas_1, minimum_2, maximum_2, commas_2)
         list_of_examples.append(new_example)
 
+    return list_of_examples
+
+def create_list_of_examples_division(examples, minimum_1, maximum_1, minimum_2, maximum_2, commas_div, commas_result, output_type):
+    list_of_examples = []
+
+    for _ in range(examples):
+        new_example = create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div, commas_result, output_type)
+        list_of_examples.append(new_example)
+
+    # print(list_of_examples)
     return list_of_examples
 
 def create_latex_string_addition(content, example, ausrichtung):
@@ -248,6 +289,21 @@ def create_latex_string_multiplication(content, example, solution_type):
     return content
 
 
+def create_latex_string_division(content, example):
+    if "R " in str(example[2]):
+        solution, rest = example[2].split("R ")
+        solution = solution.replace(".",",")
+        rest = "\n\n\\antwort{{R {}}}".format(rest)    
+    else:
+        solution = str(example[2]).replace(".",",")
+        rest = ""
+
+    content += "\item ${0} : {1} = \\antwort{{{2}}}${3}\n\\vspace{{\\leer}}\n\n".format(str(example[0]).replace(".",","),str(example[1]).replace(".",","),solution, rest)
+    
+    return content
+
+
+
 def create_latex_worksheet(list_of_examples,index, titel, columns, nummerierung, ausrichtung, solution_type=0):
     content = "\section{{{0}}}\n\n".format(titel)
     if columns > 1:
@@ -262,6 +318,8 @@ def create_latex_worksheet(list_of_examples,index, titel, columns, nummerierung,
             content = create_latex_string_subtraction(content, example, ausrichtung)
         elif index == 2:
             content = create_latex_string_multiplication(content, example, solution_type)
+        elif index == 3:
+            content = create_latex_string_division(content, example)
 
     content += "\end{enumerate}"
 
@@ -402,6 +460,21 @@ def get_random_solution(MainWindow):
         commas_2 = MainWindow.spinBox_second_number_decimal.value()
         distract_result = create_single_example_multiplication(minimum_1, maximum_1, commas_1, minimum_2, maximum_2, commas_2)
         # self.list_of_examples_wizard = create_list_of_examples_multiplication(examples, minimum_1, maximum_1, commas_1, minimum_2, maximum_2, commas_2)
+
+    elif thema == 'Division':
+        minimum_1 = MainWindow.spinbox_dividend_min_wizard.value()
+        maximum_1 = MainWindow.spinbox_dividend_max_wizard.value()
+        minimum_2 = MainWindow.spinbox_divisor_min_wizard.value()
+        maximum_2 = MainWindow.spinbox_divisor_max_wizard.value()
+        commas_div = MainWindow.spinBox_divisor_kommastellen_wizard.value()
+        commas_result = MainWindow.spinbox_ergebnis_kommastellen_wizard.value()
+        if MainWindow.radioButton_division_ohne_rest.isChecked():
+            output_type = 0
+        elif MainWindow.radioButton_division_rest.isChecked():
+            output_type = 1
+        elif MainWindow.radioButton_division_decimal.isChecked():
+            output_type = 2         
+        distract_result = create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div, commas_result, output_type)
     return distract_result
 
 def create_nonogramm(chosen_nonogram, coordinates_nonogramm, MainWindow):

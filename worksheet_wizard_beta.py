@@ -3,13 +3,13 @@ import math
 import decimal
 import re
 
-import os
+# import os
 
-from numpy import empty
-from config_start import path_localappdata_lama, path_programm
-import subprocess
-from tex_minimal import tex_preamble, tex_end
-from create_pdf import  open_pdf_file
+# from numpy import empty
+# from config_start import path_localappdata_lama, path_programm
+# import subprocess
+# from tex_minimal import tex_preamble, tex_end
+# from create_pdf import  open_pdf_file
 
 
 list_of_topics_wizard = ['Addition', 'Subtraktion']
@@ -53,78 +53,53 @@ def split_into_digits(n):
 
 
 
-def get_all_pixels():
+def get_all_pixels(content):
     return re.findall("[A-J][0-9]",content)   
 
 
-all_nonogramms = {'cat': ["A3", "A6", "A7", "B1", "B2", "B3", "B4", "B6", "B9", "C0", "C1", "C2", "C4",
-"C5", "C6", "C7", "C8", "C9", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "E0", "E1", "E2", "E4",
-"E5", "E6", "E7", "E8", "E9", "F1", "F2", "F3", "F4", "F6", "F7", "F8", "F9", "G3", "G7", "G8",
-"G9", "H8", "H9", "I4", "I5", "I6", "I8", "J3", "J4", "J6", "J7", "J8"],
-}
-
-
-solution_cat = ["A3", "A6", "A7", "B1", "B2", "B3", "B4", "B6", "B9", "C0", "C1", "C2", "C4",
-"C5", "C6", "C7", "C8", "C9", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "E0", "E1", "E2", "E4",
-"E5", "E6", "E7", "E8", "E9", "F1", "F2", "F3", "F4", "F6", "F7", "F8", "F9", "G3", "G7", "G8",
-"G9", "H8", "H9", "I4", "I5", "I6", "I8", "J3", "J4", "J6", "J7", "J8"]
-
-# liste = list(all_nonogramms.keys())
-# y = random.choice(liste)
-# print(y)
-random.shuffle(solution_cat)
-print(solution_cat)
-
-content ="""\meinlr{
-\\renewcommand{\\arraystretch}{1.2}
-\\begin{tabular}{c|p{0,3cm}|p{0,3cm}|p{0,3cm}|p{0,3cm}|p{0,3cm}|p{0,3cm}|p{0,3cm}|p{0,3cm}|p{0,3cm}|p{0,3cm}|}
-\multicolumn{1}{l}{}&\multicolumn{1}{c}{A}&\multicolumn{1}{c}{B}&\multicolumn{1}{c}{C}&\multicolumn{1}{c}{D}&\multicolumn{1}{c}{E}&\multicolumn{1}{c}{F}&\multicolumn{1}{c}{G}&\multicolumn{1}{c}{H}&\multicolumn{1}{c}{I}&\multicolumn{1}{c}{J}\\\\ \cline{2-11}
-0& A0 & B0 & C0 & D0 & E0 & F0 & G0 & H0 & I0 & J0 \\\\ \cline{2-11}
-1& A1 & B1 & C1 & D1 & E1 & F1 & G1 & H1 & I1 & J1 \\\\ \cline{2-11}
-2& A2 & B2 & C2 & D2 & E2 & F2 & G2 & H2 & I2 & J2 \\\\ \cline{2-11} 
-3& A3 & B3 & C3 & D3 & E3 & F3 & G3 & H3 & I3 & J3 \\\\ \cline{2-11}
-4& A4 & B4 & C4 & D4 & E4 & F4 & G4 & H4 & I4 & J4 \\\\ \cline{2-11}
-5& A5 & B5 & C5 & D5 & E5 & F5 & G5 & H5 & I5 & J5 \\\\ \cline{2-11}
-6& A6 & B6 & C6 & D6 & E6 & F6 & G6 & H6 & I6 & J6 \\\\ \cline{2-11}
-7& A7 & B7 & C7 & D7 & E7 & F7 & G7 & H7 & I7 & J7 \\\\ \cline{2-11} 
-8& A8 & B8 & C8 & D8 & E8 & F8 & G8 & H8 & I8 & J8 \\\\ \cline{2-11} 
-9& A9 & B9 & C9 & D9 & E9 & F9 & G9 & H9 & I9 & J9 \\\\ \cline{2-11}
-\end{tabular}}{\scriptsize
-\\begin{multicols}{3}
-\\begin{enumerate}"""
-
-
-
- 
-_list = get_all_pixels()
-
-print(_list)
-
-for pixel in _list:
-    if pixel in solution_cat:
-        content = content.replace(pixel, "\ifthenelse{\\theAntworten=1}{\cellcolor{black}}{}")
-    else:
-        content = content.replace(pixel, "") 
-
-
-
-selection = random.sample(_list, 14)
-
-for pixel in selection:
-    content += "\item[\\fbox{{\parbox{{15pt}}{{\centering {}}}}}] 4716,45445\n".format(pixel)
-
-
-content += """
-\end{enumerate}
-\end{multicols}}"""
+def get_quotient_with_rest(dividend,divisor):
+    return "{} R{}".format(dividend//divisor, dividend%divisor) 
 # for coordinate in solution_cat:
 #     content = content.replace(coordinate, "\cellcolor{black}")
 
-
+comma = 1
 # print(content)
-# x= get_random_number(235,235,0)
-# y= get_random_number(123,123, 0)
+divisor = get_random_number(10,50,comma)
+min = 1000
+max = 10000
+# print(result_min)
+# print(result_max)
+result_min = math.ceil(min/divisor)
+result_max = math.floor(max/divisor)
+# print(result_min)
+# print(result_max)
 
+
+result = get_random_number(result_min,result_max, comma)
+
+
+print(divisor)
+print(result)
+
+dividend = result*divisor
+
+print("{} : {} = {}".format(dividend, divisor, result))
+
+print(8.395//0.1)
+print(83.95//1)
+
+result = get_quotient_with_rest(36,6)
+print(result)
+
+# print(max/divisor)
+# print(divisor)
+# print(result)
+# dividend = divisor*result
+
+# print(dividend)
+
+
+# print(23*22)
 # integer = change_to_integer(x)
 
 # _list = split_into_digits(change_to_integer(y))
