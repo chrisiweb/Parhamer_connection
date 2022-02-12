@@ -1731,7 +1731,7 @@ class Ui_MainWindow(object):
         self.pushButton_titlepage.setText(
             _translate("MainWindow", "Titelblatt anpassen", None)
         )
-        if self.chosen_program == "lama":
+        if self.chosen_program == "lama" or self.chosen_program == "wizard":
             self.gridLayout_5.addWidget(self.pushButton_titlepage, 2, 4, 1, 2)
         if self.chosen_program == "cria":
             self.gridLayout_5.addWidget(self.pushButton_titlepage, 2, 4, 1, 2)
@@ -5790,7 +5790,8 @@ class Ui_MainWindow(object):
     def action_refreshddb_selected(self):
         refresh_ddb(self)
 
-        self.adapt_choosing_list("sage")
+        if self.chosen_program != 'wizard':
+            self.adapt_choosing_list("sage")
 
     def push_full_database(self):
         rsp = question_window("Sind Sie sicher, dass Sie die Datenbank hochladen möchten?")
