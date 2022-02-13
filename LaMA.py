@@ -6279,7 +6279,17 @@ class Ui_MainWindow(object):
 
             index +=1
 
-        return
+
+        if sys.platform.startswith("linux"):
+            path_file = os.path.dirname(path_file)
+            subprocess.Popen('xdg-open "{}"'.format(path_file), shell=True)
+        elif sys.platform.startswith("darwin"):
+            path_file = os.path.dirname(path_file)
+            subprocess.Popen('open "{}"'.format(path_file), shell=True)
+        else:
+            path_file = os.path.dirname(path_file).replace("/", "\\")
+            subprocess.Popen('explorer "{}"'.format(path_file))
+        # return
   
 
     def image_clean_up(self):

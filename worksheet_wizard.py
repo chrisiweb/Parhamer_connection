@@ -207,7 +207,7 @@ def create_latex_string_subtraction(content, example, ausrichtung):
         \end{{tabular}}\n
         """.format(str(example[0]).replace(".",","), str(example[1]).replace(".",","),str(example[2]).replace(".",","))
     elif ausrichtung == 1:
-        content += "\item ${0} - {1} = \\antwort{{{2}}}$\n\\vspace{{\\leer}}\n\n".format(str(example[0]).replace(".",","),str(example[1]).replace(".",","),str(example[2]).replace(".",","))
+        content += "\item ${0} - {1} = \\antwort{{{2}}}$\n\\leer\n\n".format(str(example[0]).replace(".",","),str(example[1]).replace(".",","),str(example[2]).replace(".",","))
     return content
 
 
@@ -297,7 +297,7 @@ def create_latex_string_division(content, example):
         solution = str(example[2]).replace(".",",")
         rest = ""
 
-    content += "\item ${0} : {1} = \\antwort{{{2}}}${3}\n\\vspace{{\\leer}}\n\n".format(str(example[0]).replace(".",","),str(example[1]).replace(".",","),solution, rest)
+    content += "\item ${0} : {1} = \\antwort[\\vspace{{1.5cm}}]{{{2}}}${3}\n\\leer\n\n".format(str(example[0]).replace(".",","),str(example[1]).replace(".",","),solution, rest)
     
     return content
 
