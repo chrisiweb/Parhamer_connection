@@ -2490,6 +2490,10 @@ class Ui_MainWindow(object):
         self.groupBox_kommastellen_wizard = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Kommastellen")
         self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_kommastellen_wizard, 1,0,1,1)
         self.horizontalLayout_kommastellen_wizard = create_new_horizontallayout(self.groupBox_kommastellen_wizard)
+        self.combobox_kommastellen_wizard = create_new_combobox(self.groupBox_kommastellen_wizard)
+        add_new_option(self.combobox_kommastellen_wizard, 0, "=")
+        add_new_option(self.combobox_kommastellen_wizard, 1, "\u2264")
+        self.horizontalLayout_kommastellen_wizard.addWidget(self.combobox_kommastellen_wizard)
         self.spinbox_kommastellen_wizard = create_new_spinbox(self.groupBox_kommastellen_wizard)
         self.horizontalLayout_kommastellen_wizard.addWidget(self.spinbox_kommastellen_wizard)
 
@@ -2519,7 +2523,7 @@ class Ui_MainWindow(object):
         self.spinBox_first_number_min = create_new_spinbox(self.groupBox_first_number_wizard)
         self.spinBox_first_number_min.setRange(0,999999999)
         self.spinBox_first_number_min.setValue(10)
-        self.gridLayout_first_number_wizard.addWidget(self.spinBox_first_number_min, 0,1,1,1)
+        self.gridLayout_first_number_wizard.addWidget(self.spinBox_first_number_min, 0,1,1,2)
 
         self.label_first_number_max = create_new_label(self.groupBox_first_number_wizard, "Max:")
         self.gridLayout_first_number_wizard.addWidget(self.label_first_number_max, 1,0,1,1)
@@ -2527,13 +2531,17 @@ class Ui_MainWindow(object):
         self.spinBox_first_number_max.setSizePolicy(SizePolicy_fixed)
         self.spinBox_first_number_max.setRange(0,999999999)
         self.spinBox_first_number_max.setValue(99)
-        self.gridLayout_first_number_wizard.addWidget(self.spinBox_first_number_max, 1,1,1,1)
+        self.gridLayout_first_number_wizard.addWidget(self.spinBox_first_number_max, 1,1,1,2)
         self.spinBox_first_number_min.valueChanged.connect(partial(self.minimum_changed_wizard, self.spinBox_first_number_min, self.spinBox_first_number_max))        
 
-        self.label_first_number_decimal = create_new_label(self.groupBox_first_number_wizard, "Kommastellen:")
+        self.label_first_number_decimal = create_new_label(self.groupBox_first_number_wizard, "Kommastellen")
         self.gridLayout_first_number_wizard.addWidget(self.label_first_number_decimal, 2,0,1,1)
+        self.combobox_first_number_decimal = create_new_combobox(self.groupBox_first_number_wizard)
+        add_new_option(self.combobox_first_number_decimal, 0, "=")
+        add_new_option(self.combobox_first_number_decimal, 1, "\u2264")
+        self.gridLayout_first_number_wizard.addWidget(self.combobox_first_number_decimal, 2,1,1,1)
         self.spinBox_first_number_decimal = create_new_spinbox(self.groupBox_first_number_wizard)
-        self.gridLayout_first_number_wizard.addWidget(self.spinBox_first_number_decimal,2,1,1,1)  
+        self.gridLayout_first_number_wizard.addWidget(self.spinBox_first_number_decimal,2,2,1,1)  
         self.groupBox_first_number_wizard.hide()
 
         self.groupBox_second_number_wizard = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "2. Faktor")
@@ -2544,20 +2552,24 @@ class Ui_MainWindow(object):
         self.spinBox_second_number_min = create_new_spinbox(self.groupBox_second_number_wizard)
         self.spinBox_second_number_min.setRange(-999999999,999999999)
         self.spinBox_second_number_min.setValue(10)
-        self.gridLayout_second_number_wizard.addWidget(self.spinBox_second_number_min, 0,1,1,1)
+        self.gridLayout_second_number_wizard.addWidget(self.spinBox_second_number_min, 0,1,1,2)
 
         self.label_second_number_max = create_new_label(self.groupBox_second_number_wizard, "Max:")
         self.gridLayout_second_number_wizard.addWidget(self.label_second_number_max, 1,0,1,1)
         self.spinBox_second_number_max = create_new_spinbox(self.groupBox_second_number_wizard)
         self.spinBox_second_number_max.setRange(-999999999,999999999)
         self.spinBox_second_number_max.setValue(99)
-        self.gridLayout_second_number_wizard.addWidget(self.spinBox_second_number_max, 1,1,1,1)
+        self.gridLayout_second_number_wizard.addWidget(self.spinBox_second_number_max, 1,1,1,2)
         self.spinBox_second_number_min.valueChanged.connect(partial(self.minimum_changed_wizard, self.spinBox_second_number_min, self.spinBox_second_number_max))        
 
-        self.label_second_number_decimal = create_new_label(self.groupBox_second_number_wizard, "Kommastellen:")
+        self.label_second_number_decimal = create_new_label(self.groupBox_second_number_wizard, "Kommastellen")
         self.gridLayout_second_number_wizard.addWidget(self.label_second_number_decimal,2,0,1,1)
+        self.combobox_second_number_decimal = create_new_combobox(self.groupBox_second_number_wizard)
+        add_new_option(self.combobox_second_number_decimal, 0, "=")
+        add_new_option(self.combobox_second_number_decimal, 1, "\u2264")
+        self.gridLayout_second_number_wizard.addWidget(self.combobox_second_number_decimal, 2,1,1,1)
         self.spinBox_second_number_decimal = create_new_spinbox(self.groupBox_second_number_wizard)
-        self.gridLayout_second_number_wizard.addWidget(self.spinBox_second_number_decimal,2,1,1,1) 
+        self.gridLayout_second_number_wizard.addWidget(self.spinBox_second_number_decimal,2,2,1,1) 
         self.groupBox_second_number_wizard.hide()
 
 
@@ -2594,27 +2606,33 @@ class Ui_MainWindow(object):
         self.combobox_divisor_wizard = create_new_combobox(self.groupBox_divisor_wizard)
         add_new_option(self.combobox_divisor_wizard, 0, "Natürliche Zahl")
         add_new_option(self.combobox_divisor_wizard, 1, "Dezimalzahl")
-        self.gridLayout_divisor_wizard.addWidget(self.combobox_divisor_wizard, 0,0,1,2)
+        self.gridLayout_divisor_wizard.addWidget(self.combobox_divisor_wizard, 0,0,1,3)
 
         self.label_divisor_kommastelle_wizard = create_new_label(self.groupBox_divisor_wizard, "Kommastellen")
         self.gridLayout_divisor_wizard.addWidget(self.label_divisor_kommastelle_wizard, 1,0,1,1)
+
+        self.combobox_divisor_kommastelle_wizard = create_new_combobox(self.combobox_divisor_wizard)
+        add_new_option(self.combobox_divisor_kommastelle_wizard, 0, "=")
+        add_new_option(self.combobox_divisor_kommastelle_wizard, 1, "\u2264")
+        self.gridLayout_divisor_wizard.addWidget(self.combobox_divisor_kommastelle_wizard, 1,1,1,1)
         self.spinBox_divisor_kommastellen_wizard = create_new_spinbox(self.groupBox_divisor_wizard, 0)
-        self.gridLayout_divisor_wizard.addWidget(self.spinBox_divisor_kommastellen_wizard, 1,1,1,1)
+        self.gridLayout_divisor_wizard.addWidget(self.spinBox_divisor_kommastellen_wizard, 1,2,1,1)
         self.label_divisor_kommastelle_wizard.hide()
+        self.combobox_divisor_kommastelle_wizard.hide()
         self.spinBox_divisor_kommastellen_wizard.hide()
 
         self.label_divisor_min_wizard = create_new_label(self.groupBox_divisor_wizard, "Min:")
-        self.gridLayout_divisor_wizard.addWidget(self.label_divisor_min_wizard, 0,2,1,1)
+        self.gridLayout_divisor_wizard.addWidget(self.label_divisor_min_wizard, 0,3,1,1)
         self.spinbox_divisor_min_wizard = create_new_spinbox(self.groupBox_divisor_wizard, 2)
         self.spinbox_divisor_min_wizard.setMaximum(999999999)
-        self.gridLayout_divisor_wizard.addWidget(self.spinbox_divisor_min_wizard, 0,3,1,1)
+        self.gridLayout_divisor_wizard.addWidget(self.spinbox_divisor_min_wizard, 0,4,1,1)
         
 
         self.label_divisor_max_wizard = create_new_label(self.groupBox_divisor_wizard, "Max:")
-        self.gridLayout_divisor_wizard.addWidget(self.label_divisor_max_wizard, 1,2,1,1)
+        self.gridLayout_divisor_wizard.addWidget(self.label_divisor_max_wizard, 1,3,1,1)
         self.spinbox_divisor_max_wizard = create_new_spinbox(self.groupBox_divisor_wizard, 99)
         self.spinbox_divisor_max_wizard.setMaximum(999999999)
-        self.gridLayout_divisor_wizard.addWidget(self.spinbox_divisor_max_wizard, 1,3,1,1)
+        self.gridLayout_divisor_wizard.addWidget(self.spinbox_divisor_max_wizard, 1,4,1,1)
         self.groupBox_divisor_wizard.hide()
 
 
@@ -2627,12 +2645,12 @@ class Ui_MainWindow(object):
         self.gridLayout_ergebnis_wizard.addWidget(self.radioButton_division_ohne_rest, 0,0,1,1)
 
         self.radioButton_division_rest = create_new_radiobutton(self.groupBox_ergebnis_wizard, "mit Rest")
-        self.radioButton_division_rest.toggled.connect(self.radioButton_division_changed)
         self.gridLayout_ergebnis_wizard.addWidget(self.radioButton_division_rest, 0,1,1,1)
 
-        self.radioButton_division_decimal = create_new_radiobutton(self.groupBox_ergebnis_wizard, "Dezimalzahl")
-        self.radioButton_division_decimal.toggled.connect(self.radioButton_division_changed)
-        self.gridLayout_ergebnis_wizard.addWidget(self.radioButton_division_decimal, 0,2,1,1)
+        # self.radioButton_division_decimal = create_new_radiobutton(self.groupBox_ergebnis_wizard, "Dezimalzahl")
+        # self.radioButton_division_decimal.toggled.connect(self.radioButton_division_changed)
+        # self.gridLayout_ergebnis_wizard.addWidget(self.radioButton_division_decimal, 0,2,1,1)
+        # self.radioButton_division_decimal.hide()
 
         # self.label_ergebnis_anzeige_wizard = create_new_label(self.groupBox_ergebnis_wizard, "Anzeige:")
         # self.gridLayout_ergebnis_wizard.addWidget(self.label_ergebnis_anzeige_wizard, 1,0,1,1)
@@ -2646,11 +2664,16 @@ class Ui_MainWindow(object):
 
         self.label_ergebnis_kommastellen_wizard = create_new_label(self.groupBox_ergebnis_wizard, "Kommastellen:")
         self.gridLayout_ergebnis_wizard.addWidget(self.label_ergebnis_kommastellen_wizard, 1,0,1,1)
+        self.combobox_ergebnis_kommastellen_wizard = create_new_combobox(self.groupBox_ergebnis_wizard)
+        add_new_option(self.combobox_ergebnis_kommastellen_wizard, 0, "=")
+        add_new_option(self.combobox_ergebnis_kommastellen_wizard, 1, "\u2264")
+        self.gridLayout_ergebnis_wizard.addWidget(self.combobox_ergebnis_kommastellen_wizard, 1,1,1,1)
         self.spinbox_ergebnis_kommastellen_wizard = create_new_spinbox(self.groupBox_ergebnis_wizard, 1)
         self.spinbox_ergebnis_kommastellen_wizard.setMinimum(1)
-        self.gridLayout_ergebnis_wizard.addWidget(self.spinbox_ergebnis_kommastellen_wizard, 1,1,1,1)
+        self.gridLayout_ergebnis_wizard.addWidget(self.spinbox_ergebnis_kommastellen_wizard, 1,2,1,1)
 
         self.label_ergebnis_kommastellen_wizard.hide()
+        self.combobox_ergebnis_kommastellen_wizard.hide()
         self.spinbox_ergebnis_kommastellen_wizard.hide()
 
 
@@ -5805,6 +5828,7 @@ class Ui_MainWindow(object):
         action_push_database(
             True, ["_database.json"], "", "Änderungen werden hochgeladen ..."
         )
+        print('Done')
 
     def draft_control(self):
         dict_drafts = {}
@@ -5985,47 +6009,38 @@ class Ui_MainWindow(object):
             max.setValue(min.value()+10)
 
     def combobox_divisor_dividend_changed(self):
-        if self.combobox_divisor_wizard.currentIndex()==0:
+        if self.combobox_divisor_wizard.currentIndex()==1:
+            self.label_divisor_kommastelle_wizard.show()
+            self.combobox_divisor_kommastelle_wizard.show()
+            self.spinBox_divisor_kommastellen_wizard.show()
+            self.spinBox_divisor_kommastellen_wizard.setValue(1)
+            self.spinBox_divisor_kommastellen_wizard.setMinimum(1)
+            self.combobox_dividend_wizard.setCurrentIndex(1)
+            self.combobox_dividend_wizard.setEnabled(False)
+        else:
             self.label_divisor_kommastelle_wizard.hide()
+            self.combobox_divisor_kommastelle_wizard.hide()
             self.spinBox_divisor_kommastellen_wizard.hide()
             self.spinBox_divisor_kommastellen_wizard.setMinimum(0)
             self.spinBox_divisor_kommastellen_wizard.setValue(0)
-        else:
-            self.label_divisor_kommastelle_wizard.show()
-            self.spinBox_divisor_kommastellen_wizard.show()
-            self.spinBox_divisor_kommastellen_wizard.setMinimum(1)
-            self.spinBox_divisor_kommastellen_wizard.setValue(1)            
+            self.combobox_dividend_wizard.setCurrentIndex(0)
+            self.combobox_dividend_wizard.setEnabled(True)
 
-        if self.combobox_divisor_wizard.currentIndex()==1 or self.combobox_dividend_wizard.currentIndex()==1:
-            self.radioButton_division_ohne_rest.setEnabled(False)
-            self.radioButton_division_rest.setEnabled(False)
-            self.radioButton_division_decimal.setChecked(True)
-        else:
-            self.radioButton_division_ohne_rest.setEnabled(True)
-            self.radioButton_division_rest.setEnabled(True)
-            self.radioButton_division_ohne_rest.setChecked(True)                           
-        # if self.combobox_divisor_wizard.currentIndex()==0 and self.combobox_dividend_wizard.currentIndex()==0:
-        #     self.radioButton_division_ohne_rest.setEnabled(True)
-        #     self.radioButton_division_ohne_rest.setChecked(True)
-        # else:
-        #     self.radioButton_division_rest.setChecked(True)
-        #     self.radioButton_division_ohne_rest.setEnabled(False)
-
-    def radioButton_division_changed(self):
-        if self.radioButton_division_decimal.isChecked():
-            self.label_ergebnis_kommastellen_wizard.show()
-            self.spinbox_ergebnis_kommastellen_wizard.show()
-        else:
+        if self.combobox_divisor_wizard.currentIndex()==0 and self.combobox_dividend_wizard.currentIndex()==0:
             self.label_ergebnis_kommastellen_wizard.hide()
-            self.spinbox_ergebnis_kommastellen_wizard.hide()           
+            self.combobox_ergebnis_kommastellen_wizard.hide()
+            self.spinbox_ergebnis_kommastellen_wizard.hide()
+            self.radioButton_division_ohne_rest.show()
+            self.radioButton_division_ohne_rest.setChecked(True)
+            self.radioButton_division_rest.show()
+        else:
+            self.label_ergebnis_kommastellen_wizard.show()
+            self.combobox_ergebnis_kommastellen_wizard.show()
+            self.spinbox_ergebnis_kommastellen_wizard.show()
+            self.radioButton_division_ohne_rest.hide()
+            self.radioButton_division_rest.hide()
+          
 
-    # def comboBox_ergebnis_anzeige_wizard_changed(self):
-    #     if self.comboBox_ergebnis_anzeige_wizard.currentIndex()==0:
-    #         self.label_ergebnis_kommastellen_wizard.hide()
-    #         self.spinbox_ergebnis_kommastellen_wizard.hide()
-    #     else:
-    #         self.label_ergebnis_kommastellen_wizard.show()
-    #         self.spinbox_ergebnis_kommastellen_wizard.show()
 
     def create_aufgabenbox_wizard(self, index, example, row, column):
         groupbox = create_new_groupbox(self.scrollAreaWidgetContents_wizard, "{}. Aufgabe".format(index+1))
@@ -6060,7 +6075,8 @@ class Ui_MainWindow(object):
 
 
         if thema == 'Addition':
-            new_example = create_single_example_addition(minimum, maximum, commas)
+            anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
+            new_example = create_single_example_addition(minimum, maximum, commas, anzahl_summanden)
         elif thema == 'Subtraktion':
             new_example = create_single_example_subtraction(minimum, maximum, commas, self.checkbox_negative_ergebnisse_wizard.isChecked())
         elif thema == 'Multiplikation':
@@ -6078,12 +6094,14 @@ class Ui_MainWindow(object):
             maximum_2 = self.spinbox_divisor_max_wizard.value()
             commas_div = self.spinBox_divisor_kommastellen_wizard.value()
             commas_result = self.spinbox_ergebnis_kommastellen_wizard.value()
-            if self.radioButton_division_ohne_rest.isChecked():
+
+            if self.combobox_divisor_wizard.currentIndex()==1:
+                output_type = 2    
+            elif self.radioButton_division_ohne_rest.isChecked():
                 output_type = 0
             elif self.radioButton_division_rest.isChecked():
                 output_type = 1
-            elif self.radioButton_division_decimal.isChecked():
-                output_type = 2
+
             new_example = create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div, commas_result, output_type)
 
 
@@ -6139,12 +6157,12 @@ class Ui_MainWindow(object):
             maximum_2 = self.spinbox_divisor_max_wizard.value()
             commas_div = self.spinBox_divisor_kommastellen_wizard.value()
             commas_result = self.spinbox_ergebnis_kommastellen_wizard.value()
-            if self.radioButton_division_ohne_rest.isChecked():
+            if self.combobox_divisor_wizard.currentIndex()==1:
+                output_type = 2    
+            elif self.radioButton_division_ohne_rest.isChecked():
                 output_type = 0
             elif self.radioButton_division_rest.isChecked():
-                output_type = 1
-            elif self.radioButton_division_decimal.isChecked():
-                output_type = 2             
+                output_type = 1           
 
             self.list_of_examples_wizard = create_list_of_examples_division(examples, minimum_1, maximum_1, minimum_2, maximum_2, commas_div, commas_result, output_type)  
 
