@@ -11,9 +11,6 @@ print("Loading...")
 # from operator import indexOf
 # from tokenize import group
 # from numpy import maximum, negative
-from re import M
-from turtle import hideturtle
-from venv import create
 from start_window import check_if_database_exists
 from worksheet_wizard import get_all_solution_pixels
 
