@@ -5,7 +5,6 @@ from math import floor, ceil
 import decimal
 import re
 
-from black import list_comments
 from create_nonograms import nonogramm_empty, all_nonogramms, list_all_pixels
 # import subprocess
 # from tex_minimal import tex_preamble, tex_end
