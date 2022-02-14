@@ -76,9 +76,12 @@ def split_into_digits(n):
 
 
 
-def create_single_example_addition(minimum, maximum, commas, anzahl_summanden):
+def create_single_example_addition(minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
     summanden = []
+    set_commas=commas
     for _ in range(anzahl_summanden):
+        if smaller_or_equal == 1:
+            commas = random.randint(0,set_commas) 
         x= get_random_number(minimum,maximum, commas)
         summanden.append(x)
 
@@ -94,8 +97,13 @@ def create_single_example_addition(minimum, maximum, commas, anzahl_summanden):
 
     return [summanden,solution, string]
 
-def create_single_example_subtraction(minimum, maximum, commas, negative_solutions_allowed):
+def create_single_example_subtraction(minimum, maximum, commas, negative_solutions_allowed, smaller_or_equal):
+    set_commas=commas
+    if smaller_or_equal == 1:
+        commas = random.randint(0,set_commas) 
     x = get_random_number(minimum,maximum, commas)
+    if smaller_or_equal == 1:
+        commas = random.randint(0,set_commas) 
     y= get_random_number(minimum,maximum, commas)
     if x-y<0 and negative_solutions_allowed== False:
         x, y = y, x
@@ -103,7 +111,14 @@ def create_single_example_subtraction(minimum, maximum, commas, negative_solutio
     string = "{0} - {1} = {2}".format(str(x).replace(".",","),str(y).replace(".",","),str(solution).replace(".",","))   
     return [x,y,solution, string]
 
-def create_single_example_multiplication(minimum_1, maximum_1, commas_1, minimum_2, maximum_2, commas_2):
+def create_single_example_multiplication(minimum_1, maximum_1, commas_1, smaller_or_equal_1 ,minimum_2, maximum_2, commas_2, smaller_or_equal_2):
+    if smaller_or_equal_1 == 1:
+        set_commas=commas_1
+        commas_1 = random.randint(0,set_commas)
+    if smaller_or_equal_2 == 1:
+        set_commas=commas_2
+        commas_2 = random.randint(0,set_commas)
+
     x = get_random_number(minimum_1, maximum_1, commas_1)
     y= get_random_number(minimum_2, maximum_2, commas_2)
     solution = x*y
@@ -114,7 +129,11 @@ def get_quotient_with_rest(dividend,divisor):
     
     return "{}\nR {}".format(int(dividend//divisor), dividend%divisor) 
 
-def create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div, commas_result, output_type):
+def create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div, smaller_or_equal_div, commas_result, smaller_or_equal_result, output_type):
+    if smaller_or_equal_div == 1:
+        set_commas_div=commas_div
+        commas_div = random.randint(0,set_commas_div)
+    
     divisor = get_random_number(minimum_2, maximum_2, commas_div)
 
     if output_type == 1:  
@@ -127,6 +146,10 @@ def create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, c
 
         if output_type == 0:
             commas_result = 0
+        else:
+            if smaller_or_equal_result == 1:
+                set_commas_result=commas_result
+            commas_result = random.randint(0,set_commas_result)
         result = get_random_number(result_min, result_max, commas_result)
 
         dividend = result*divisor
@@ -138,38 +161,38 @@ def create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, c
     return [dividend,divisor,result, string]
 
 
-def create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden):
+def create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
     list_of_examples = []
 
     for _ in range(examples):
-        new_example = create_single_example_addition(minimum, maximum, commas, anzahl_summanden)
+        new_example = create_single_example_addition(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
         list_of_examples.append(new_example)
 
     return list_of_examples
 
-def create_list_of_examples_subtraction(examples, minimum, maximum, commas, negative_solutions_allowed):
+def create_list_of_examples_subtraction(examples, minimum, maximum, commas, negative_solutions_allowed, smaller_or_equal):
     list_of_examples = []
 
     for _ in range(examples):
-        new_example = create_single_example_subtraction(minimum, maximum, commas, negative_solutions_allowed)
+        new_example = create_single_example_subtraction(minimum, maximum, commas, negative_solutions_allowed, smaller_or_equal)
         list_of_examples.append(new_example)
 
     return list_of_examples
 
-def create_list_of_examples_multiplication(examples, minimum_1, maximum_1, commas_1, minimum_2, maximum_2, commas_2):
+def create_list_of_examples_multiplication(examples, minimum_1, maximum_1, commas_1, smaller_or_equal_1, minimum_2, maximum_2, commas_2, smaller_or_equal_2):
     list_of_examples = []
 
     for _ in range(examples):
-        new_example = create_single_example_multiplication(minimum_1, maximum_1, commas_1, minimum_2, maximum_2, commas_2)
+        new_example = create_single_example_multiplication(minimum_1, maximum_1, commas_1, smaller_or_equal_1,minimum_2, maximum_2, commas_2, smaller_or_equal_2)
         list_of_examples.append(new_example)
 
     return list_of_examples
 
-def create_list_of_examples_division(examples, minimum_1, maximum_1, minimum_2, maximum_2, commas_div, commas_result, output_type):
+def create_list_of_examples_division(examples, minimum_1, maximum_1, minimum_2, maximum_2, commas_div, smaller_or_equal_div, commas_result, smaller_or_equal_result, output_type):
     list_of_examples = []
 
     for _ in range(examples):
-        new_example = create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div, commas_result, output_type)
+        new_example = create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div, smaller_or_equal_div, commas_result,smaller_or_equal_result, output_type)
         list_of_examples.append(new_example)
 
     # print(list_of_examples)
@@ -440,24 +463,28 @@ def get_random_solution(MainWindow):
         maximum = MainWindow.spinbox_zahlenbereich_maximum.value()
         commas = MainWindow.spinbox_kommastellen_wizard.value()
         anzahl_summanden = MainWindow.spinBox_zahlenbereich_anzahl_wizard.value()
-        distract_result = create_single_example_addition(minimum, maximum, commas, anzahl_summanden)
+        smaller_or_equal = MainWindow.combobox_kommastellen_wizard.currentIndex()
+        distract_result = create_single_example_addition(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
 
 
     elif thema == 'Subtraktion':
         minimum = MainWindow.spinbox_zahlenbereich_minimum.value()
         maximum = MainWindow.spinbox_zahlenbereich_maximum.value()
         commas = MainWindow.spinbox_kommastellen_wizard.value()
-        distract_result = create_single_example_subtraction(minimum, maximum, commas, MainWindow.checkbox_negative_ergebnisse_wizard.isChecked())
+        smaller_or_equal = MainWindow.combobox_kommastellen_wizard.currentIndex()
+        distract_result = create_single_example_subtraction(minimum, maximum, commas, MainWindow.checkbox_negative_ergebnisse_wizard.isChecked(), smaller_or_equal)
 
     
     elif thema == 'Multiplikation':
         minimum_1 = MainWindow.spinBox_first_number_min.value()
         maximum_1 = MainWindow.spinBox_first_number_max.value()
         commas_1 = MainWindow.spinBox_first_number_decimal.value()
+        smaller_or_equal_1 = MainWindow.combobox_first_number_decimal.currentIndex()
         minimum_2 = MainWindow.spinBox_second_number_min.value()
         maximum_2 = MainWindow.spinBox_second_number_max.value()
         commas_2 = MainWindow.spinBox_second_number_decimal.value()
-        distract_result = create_single_example_multiplication(minimum_1, maximum_1, commas_1, minimum_2, maximum_2, commas_2)
+        smaller_or_equal_2 = MainWindow.combobox_second_number_decimal.currentIndex()
+        distract_result = create_single_example_multiplication(minimum_1, maximum_1, commas_1, smaller_or_equal_1, minimum_2, maximum_2, commas_2, smaller_or_equal_2)
         # self.list_of_examples_wizard = create_list_of_examples_multiplication(examples, minimum_1, maximum_1, commas_1, minimum_2, maximum_2, commas_2)
 
     elif thema == 'Division':
@@ -466,14 +493,16 @@ def get_random_solution(MainWindow):
         minimum_2 = MainWindow.spinbox_divisor_min_wizard.value()
         maximum_2 = MainWindow.spinbox_divisor_max_wizard.value()
         commas_div = MainWindow.spinBox_divisor_kommastellen_wizard.value()
+        smaller_or_equal_div = MainWindow.combobox_divisor_kommastelle_wizard.currentIndex()
         commas_result = MainWindow.spinbox_ergebnis_kommastellen_wizard.value()
+        smaller_or_equal_result = MainWindow.combobox_ergebnis_kommastellen_wizard.currentIndex()
         if MainWindow.radioButton_division_ohne_rest.isChecked():
             output_type = 0
         elif MainWindow.radioButton_division_rest.isChecked():
             output_type = 1
         elif MainWindow.radioButton_division_decimal.isChecked():
             output_type = 2         
-        distract_result = create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div, commas_result, output_type)
+        distract_result = create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div,smaller_or_equal_div, commas_result, smaller_or_equal_result, output_type)
     return distract_result
 
 def create_nonogramm(chosen_nonogram, coordinates_nonogramm, MainWindow):

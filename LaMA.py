@@ -5975,6 +5975,12 @@ class Ui_MainWindow(object):
         thema = self.comboBox_themen_wizard.currentText()
         self.lineEdit_titel_wizard.setText("Arbeitsblatt - {}".format(thema))
 
+        if thema == 'Addition':
+            self.groupBox_zahlenbereich_anzahl.setTitle("Summanden")
+        elif thema == 'Subtraktion':
+            self.groupBox_zahlenbereich_anzahl.setTitle("Summanden")
+
+
         hiding_list = []
         for all in dict_widgets_wizard:
             if all != thema:
@@ -6023,7 +6029,7 @@ class Ui_MainWindow(object):
             self.spinBox_divisor_kommastellen_wizard.hide()
             self.spinBox_divisor_kommastellen_wizard.setMinimum(0)
             self.spinBox_divisor_kommastellen_wizard.setValue(0)
-            self.combobox_dividend_wizard.setCurrentIndex(0)
+            # self.combobox_dividend_wizard.setCurrentIndex(0)
             self.combobox_dividend_wizard.setEnabled(True)
 
         if self.combobox_divisor_wizard.currentIndex()==0 and self.combobox_dividend_wizard.currentIndex()==0:
@@ -6072,21 +6078,26 @@ class Ui_MainWindow(object):
         minimum = self.spinbox_zahlenbereich_minimum.value()
         maximum = self.spinbox_zahlenbereich_maximum.value()
         commas = self.spinbox_kommastellen_wizard.value()
+        
 
 
         if thema == 'Addition':
             anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
-            new_example = create_single_example_addition(minimum, maximum, commas, anzahl_summanden)
+            smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
+            new_example = create_single_example_addition(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
         elif thema == 'Subtraktion':
-            new_example = create_single_example_subtraction(minimum, maximum, commas, self.checkbox_negative_ergebnisse_wizard.isChecked())
+            smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
+            new_example = create_single_example_subtraction(minimum, maximum, commas, self.checkbox_negative_ergebnisse_wizard.isChecked(), smaller_or_equal)
         elif thema == 'Multiplikation':
             minimum_1 = self.spinBox_first_number_min.value()
             maximum_1 = self.spinBox_first_number_max.value()
             commas_1 = self.spinBox_first_number_decimal.value()
+            smaller_or_equal_1 = self.combobox_first_number_decimal.currentIndex()
             minimum_2 = self.spinBox_second_number_min.value()
             maximum_2 = self.spinBox_second_number_max.value()
             commas_2 = self.spinBox_second_number_decimal.value()
-            new_example = create_single_example_multiplication(minimum_1, maximum_1, commas_1, minimum_2, maximum_2, commas_2)
+            smaller_or_equal_2 = self.combobox_second_number_decimal.currentIndex()
+            new_example = create_single_example_multiplication(minimum_1, maximum_1, commas_1, smaller_or_equal_1,minimum_2, maximum_2, commas_2, smaller_or_equal_2)
         elif thema == 'Division':
             minimum_1 = self.spinbox_dividend_min_wizard.value()
             maximum_1 = self.spinbox_dividend_max_wizard.value()
@@ -6095,7 +6106,7 @@ class Ui_MainWindow(object):
             commas_div = self.spinBox_divisor_kommastellen_wizard.value()
             commas_result = self.spinbox_ergebnis_kommastellen_wizard.value()
 
-            if self.combobox_divisor_wizard.currentIndex()==1:
+            if self.combobox_dividend_wizard.currentIndex()==1:
                 output_type = 2    
             elif self.radioButton_division_ohne_rest.isChecked():
                 output_type = 0
@@ -6126,29 +6137,33 @@ class Ui_MainWindow(object):
             minimum = self.spinbox_zahlenbereich_minimum.value()
             maximum = self.spinbox_zahlenbereich_maximum.value()
             commas = self.spinbox_kommastellen_wizard.value()
+            smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
             anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
             if minimum>maximum:
                 critical_window('Das Maximum muss größer als das Minimum sein.')
                 return
-            self.list_of_examples_wizard = create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden)
+            self.list_of_examples_wizard = create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
 
         elif thema == 'Subtraktion':
             minimum = self.spinbox_zahlenbereich_minimum.value()
             maximum = self.spinbox_zahlenbereich_maximum.value()
             commas = self.spinbox_kommastellen_wizard.value()
+            smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
             if minimum>maximum:
                 warning_window('Das Maximum muss größer als das Minimum sein.')
                 return
-            self.list_of_examples_wizard = create_list_of_examples_subtraction(examples, minimum, maximum, commas, self.checkbox_negative_ergebnisse_wizard.isChecked())
+            self.list_of_examples_wizard = create_list_of_examples_subtraction(examples, minimum, maximum, commas, self.checkbox_negative_ergebnisse_wizard.isChecked(), smaller_or_equal)
         
         elif thema == 'Multiplikation':
             minimum_1 = self.spinBox_first_number_min.value()
             maximum_1 = self.spinBox_first_number_max.value()
             commas_1 = self.spinBox_first_number_decimal.value()
+            smaller_or_equal_1 = self.combobox_first_number_decimal.currentIndex()
             minimum_2 = self.spinBox_second_number_min.value()
             maximum_2 = self.spinBox_second_number_max.value()
             commas_2 = self.spinBox_second_number_decimal.value()
-            self.list_of_examples_wizard = create_list_of_examples_multiplication(examples, minimum_1, maximum_1, commas_1, minimum_2, maximum_2, commas_2)
+            smaller_or_equal_2 = self.combobox_second_number_decimal.currentIndex()
+            self.list_of_examples_wizard = create_list_of_examples_multiplication(examples, minimum_1, maximum_1, commas_1, smaller_or_equal_1 ,minimum_2, maximum_2, commas_2, smaller_or_equal_2)
 
         elif thema == "Division":
             minimum_1 = self.spinbox_dividend_min_wizard.value()
@@ -6156,15 +6171,17 @@ class Ui_MainWindow(object):
             minimum_2 = self.spinbox_divisor_min_wizard.value()
             maximum_2 = self.spinbox_divisor_max_wizard.value()
             commas_div = self.spinBox_divisor_kommastellen_wizard.value()
+            smaller_or_equal_div = self.combobox_divisor_kommastelle_wizard.currentIndex()
             commas_result = self.spinbox_ergebnis_kommastellen_wizard.value()
-            if self.combobox_divisor_wizard.currentIndex()==1:
+            smaller_or_equal_result = self.combobox_ergebnis_kommastellen_wizard.currentIndex()
+            if self.combobox_dividend_wizard.currentIndex()==1:
                 output_type = 2    
             elif self.radioButton_division_ohne_rest.isChecked():
                 output_type = 0
             elif self.radioButton_division_rest.isChecked():
                 output_type = 1           
 
-            self.list_of_examples_wizard = create_list_of_examples_division(examples, minimum_1, maximum_1, minimum_2, maximum_2, commas_div, commas_result, output_type)  
+            self.list_of_examples_wizard = create_list_of_examples_division(examples, minimum_1, maximum_1, minimum_2, maximum_2, commas_div, smaller_or_equal_div,commas_result,smaller_or_equal_result, output_type)  
 
         for i in reversed(range(self.gridLayout_scrollArea_wizard.count())): 
             self.gridLayout_scrollArea_wizard.itemAt(i).widget().setParent(None)
