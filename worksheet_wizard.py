@@ -257,24 +257,6 @@ def create_single_example_ganze_zahlen_strich(minimum, maximum, commas, anzahl_s
 
     string = "{0} = {1}".format(string, solution)
 
-
-    # set_commas=commas
-    # for _ in range(anzahl_summanden):
-    #     if smaller_or_equal == 1:
-    #         commas = random.randint(0,set_commas) 
-    #     x= get_random_number(minimum,maximum, commas)
-    #     summanden.append(x)
-
-    # solution = sum(summanden)
-    # # x = get_random_number(minimum,maximum, commas)
-    # # y= get_random_number(minimum,maximum, commas)
-    # # solution = x+y
-    # string = str(summanden[0]).replace(".",",")
-    # for x in summanden[1:]:
-    #     string += " + {}".format(str(x).replace(".",","))
-    
-    # string += " = {}".format(str(solution).replace(".",","))
-
     return [summanden,solution, string]
 
 def create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
@@ -504,6 +486,15 @@ def create_latex_string_division(content, example):
     return content
 
 
+def create_latex_string_ganze_zahlen_strich(content, example):
+    equation = example[-1]
+    
+    x,y = equation.split(" = ")
+    
+    temp_content = "\item ${0} = \\antwort{{{1}}}$\n\\leer\n\n".format(x.replace(".",","),y.replace(".",","))
+
+    content += temp_content
+    return content
 
 def create_latex_worksheet(list_of_examples,index, titel, columns, nummerierung, ausrichtung, solution_type=0):
     content = "\section{{{0}}}\n\n".format(titel)
@@ -521,6 +512,8 @@ def create_latex_worksheet(list_of_examples,index, titel, columns, nummerierung,
             content = create_latex_string_multiplication(content, example, solution_type)
         elif index == 3:
             content = create_latex_string_division(content, example)
+        elif index == 4:
+            content = create_latex_string_ganze_zahlen_strich(content, example)
 
     content += "\end{enumerate}"
 

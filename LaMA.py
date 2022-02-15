@@ -6311,7 +6311,11 @@ class Ui_MainWindow(object):
         ausrichtung = self.combobox_ausrichtung_wizard.currentIndex()
         index = self.comboBox_themen_wizard.currentIndex()
 
-        content = create_latex_worksheet(self.list_of_examples_wizard, index ,titel, columns, nummerierung, ausrichtung, self.comboBox_solution_type_wizard.currentIndex())
+        content = create_latex_worksheet(
+            self.list_of_examples_wizard,
+            index ,titel, columns, nummerierung, ausrichtung,
+            self.comboBox_solution_type_wizard.currentIndex(),
+            )
 
         if self.checkBox_show_nonogramm.isChecked():
             content += create_nonogramm(self.chosen_nonogram , self.coordinates_nonogramm_wizard, self)
@@ -6324,7 +6328,7 @@ class Ui_MainWindow(object):
         content = self.create_latex_file_content_wizard()
 
         # content = show_all_nonogramms() # for testing reasons
-        # return
+
         path_file = os.path.join(
             path_localappdata_lama, "Teildokument", "worksheet.tex"
             )
