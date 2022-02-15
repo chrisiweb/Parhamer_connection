@@ -2521,6 +2521,11 @@ class Ui_MainWindow(object):
         self.checkbox_negative_ergebnisse_wizard.hide()
         # self.label_negative_ergebnisse_wizard.hide()
 
+        self.checkbox_allow_brackets_wizard = create_new_checkbox(self.groupBox_zahlenbereich_wizard, "Klammern erlauben")
+        self.checkbox_allow_brackets_wizard.stateChanged.connect(self.worksheet_wizard_setting_changed)
+        self.gridLayout_zahlenbereich_wizard.addWidget(self.checkbox_allow_brackets_wizard, 2,0,1,2)
+        self.checkbox_allow_brackets_wizard.hide()
+
 
         self.groupBox_first_number_wizard = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "1. Faktor")
         self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_first_number_wizard, 0,0,1,1)
@@ -2703,6 +2708,8 @@ class Ui_MainWindow(object):
         self.combobox_dividend_wizard.currentIndexChanged.connect(self.combobox_divisor_dividend_changed)
         self.combobox_divisor_wizard.currentIndexChanged.connect(self.combobox_divisor_dividend_changed)
         self.groupBox_ergebnis_wizard.hide()
+
+
 
 
 
@@ -5999,6 +6006,13 @@ class Ui_MainWindow(object):
         thema = self.comboBox_themen_wizard.currentText()
         self.lineEdit_titel_wizard.setText("Arbeitsblatt - {}".format(thema))
 
+        if thema == (themen_worksheet_wizard[0] or themen_worksheet_wizard[1]):
+            self.spinbox_zahlenbereich_minimum.setRange(0,999999999)
+            self.spinbox_zahlenbereich_minimum.setValue(100)
+            self.spinbox_zahlenbereich_maximum.setRange(0,999999999)
+            self.spinbox_zahlenbereich_maximum.setValue(999)
+            self.spinBox_zahlenbereich_anzahl_wizard.setMaximum(5)  
+
         if thema == 'Addition':
             self.groupBox_zahlenbereich_anzahl.setTitle("Summanden")
             self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,5)
@@ -6007,7 +6021,12 @@ class Ui_MainWindow(object):
             self.groupBox_zahlenbereich_anzahl.setTitle("Subtrahenden")
             self.spinBox_zahlenbereich_anzahl_wizard.setRange(1,5)
             self.spinBox_zahlenbereich_anzahl_wizard.setValue(1)
-
+        elif thema == themen_worksheet_wizard[4]:
+            self.spinbox_zahlenbereich_minimum.setRange(-999,999)
+            self.spinbox_zahlenbereich_minimum.setValue(-20)
+            self.spinbox_zahlenbereich_maximum.setRange(-999,999)
+            self.spinbox_zahlenbereich_maximum.setValue(20)
+            self.spinBox_zahlenbereich_anzahl_wizard.setMaximum(20)            
 
         hiding_list = []
         for all in dict_widgets_wizard:
@@ -6141,13 +6160,14 @@ class Ui_MainWindow(object):
             commas_2 = self.spinBox_second_number_decimal.value()
             smaller_or_equal_2 = self.combobox_second_number_decimal.currentIndex()
             new_example = create_single_example_multiplication(minimum_1, maximum_1, commas_1, smaller_or_equal_1,minimum_2, maximum_2, commas_2, smaller_or_equal_2)
-        elif thema == 'Division':
+        elif thema == themen_worksheet_wizard[3]:
             minimum_1 = self.spinbox_dividend_min_wizard.value()
             maximum_1 = self.spinbox_dividend_max_wizard.value()
             minimum_2 = self.spinbox_divisor_min_wizard.value()
             maximum_2 = self.spinbox_divisor_max_wizard.value()
             commas_div = self.spinBox_divisor_kommastellen_wizard.value()
             commas_result = self.spinbox_ergebnis_kommastellen_wizard.value()
+
 
             if self.combobox_dividend_wizard.currentIndex()==1:
                 output_type = 2    
@@ -6157,6 +6177,16 @@ class Ui_MainWindow(object):
                 output_type = 1
 
             new_example = create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div, commas_result, output_type)
+
+        elif thema == themen_worksheet_wizard[4]:
+            minimum = self.spinbox_zahlenbereich_minimum.value()
+            maximum = self.spinbox_zahlenbereich_maximum.value()
+            commas = self.spinbox_kommastellen_wizard.value()
+            smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
+            anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
+            brackets_allowed = self.checkbox_allow_brackets_wizard.isChecked()
+
+            new_example = create_single_example_ganze_zahlen_strich(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
 
 
         result = self.list_of_examples_wizard[index][-2]
@@ -6227,6 +6257,19 @@ class Ui_MainWindow(object):
                 output_type = 1           
 
             self.list_of_examples_wizard = create_list_of_examples_division(examples, minimum_1, maximum_1, minimum_2, maximum_2, commas_div, smaller_or_equal_div,commas_result,smaller_or_equal_result, output_type)  
+
+        elif thema == themen_worksheet_wizard[4]:
+            minimum = self.spinbox_zahlenbereich_minimum.value()
+            maximum = self.spinbox_zahlenbereich_maximum.value()
+            commas = self.spinbox_kommastellen_wizard.value()
+            smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
+            anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
+            brackets_allowed = self.checkbox_allow_brackets_wizard.isChecked()
+            if minimum>maximum:
+                critical_window('Das Maximum muss größer als das Minimum sein.')
+                return
+            self.list_of_examples_wizard = create_list_of_examples_ganze_zahlen_strich(examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
+
 
         for i in reversed(range(self.gridLayout_scrollArea_wizard.count())): 
             self.gridLayout_scrollArea_wizard.itemAt(i).widget().setParent(None)
@@ -9032,12 +9075,13 @@ if __name__ == "__main__":
 
     i = step_progressbar(i, "worksheet_wizard")
     from worksheet_wizard import (
-        dict_widgets_wizard,
+        dict_widgets_wizard, themen_worksheet_wizard,
         create_latex_worksheet, 
         create_list_of_examples_addition, create_single_example_addition,
         create_list_of_examples_subtraction, create_single_example_subtraction,
         create_list_of_examples_multiplication, create_single_example_multiplication,
         create_list_of_examples_division, create_single_example_division,
+        create_list_of_examples_ganze_zahlen_strich, create_single_example_ganze_zahlen_strich,
         create_nonogramm, create_coordinates, list_all_pixels, all_nonogramms, show_all_nonogramms
     )
 

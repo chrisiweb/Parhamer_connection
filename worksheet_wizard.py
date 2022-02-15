@@ -14,12 +14,14 @@ from create_nonograms import nonogramm_empty, all_nonogramms, list_all_pixels
 
 dict_widgets_wizard = {
     'Addition' : [
+        'self.groupBox_ausrichtung_wizard',
         'self.groupBox_zahlenbereich_minimum',
         'self.groupBox_zahlenbereich_maximum',
         'self.groupBox_kommastellen_wizard',
         'self.groupBox_zahlenbereich_anzahl',
         ],
     'Subtraktion' : [
+        'self.groupBox_ausrichtung_wizard',
         'self.groupBox_zahlenbereich_minimum',
         'self.groupBox_zahlenbereich_maximum',
         'self.groupBox_kommastellen_wizard',
@@ -36,7 +38,16 @@ dict_widgets_wizard = {
         'self.groupBox_divisor_wizard',
         'self.groupBox_ergebnis_wizard',
     ],
-}
+    'Ganze Zahlen - Addition & Subtraktion': [
+        'self.groupBox_zahlenbereich_minimum',
+        'self.groupBox_zahlenbereich_maximum',
+        'self.groupBox_kommastellen_wizard',
+        'self.groupBox_zahlenbereich_anzahl',
+        'self.checkbox_allow_brackets_wizard',        
+    ]
+}   
+
+themen_worksheet_wizard = list(dict_widgets_wizard.keys())
 
 D = decimal.Decimal
 
@@ -192,6 +203,79 @@ def create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, c
 
     return [dividend,divisor,result, string]
 
+def add_summand(s):
+    if s>0:
+        return "(+{})".format(s)
+    else:
+        return "({})".format(s)
+
+def random_switch(p=50):
+    return random.randrange(100) < p
+
+def create_single_example_ganze_zahlen_strich(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed):
+    summanden = []
+    set_commas=commas
+    for _ in range(anzahl_summanden):
+        if smaller_or_equal == 1:
+            commas = random.randint(0,set_commas) 
+        num = 0
+        while num == 0:
+            num = get_random_number(minimum, maximum, commas)
+        summanden.append(num)
+    
+    string  = add_summand(summanden[0])
+
+    operation = ['+', '-']
+    bracket_open = False
+    waiter = False
+
+    for all in summanden[1:]:
+        if brackets_allowed == True and random_switch(70) == True and waiter==False:
+            if bracket_open == False:
+                string +=random.choice(operation) + '['
+                bracket_open = True
+                waiter = True
+            elif bracket_open == True:
+                string +=']' + random.choice(operation) 
+                bracket_open = False
+                waiter = False  
+        else:
+            string += random.choice(operation)
+            waiter = False           
+
+        string += add_summand(all)
+
+    if bracket_open == True:
+        if waiter == True:
+            index = string.rfind('[')
+            string = string[:index] + string[index+1:]
+
+        else:
+            string +=']'
+        
+    solution = eval(string.replace('[','(').replace(']',')'))
+
+    string = "{0} = {1}".format(string, solution)
+
+
+    # set_commas=commas
+    # for _ in range(anzahl_summanden):
+    #     if smaller_or_equal == 1:
+    #         commas = random.randint(0,set_commas) 
+    #     x= get_random_number(minimum,maximum, commas)
+    #     summanden.append(x)
+
+    # solution = sum(summanden)
+    # # x = get_random_number(minimum,maximum, commas)
+    # # y= get_random_number(minimum,maximum, commas)
+    # # solution = x+y
+    # string = str(summanden[0]).replace(".",",")
+    # for x in summanden[1:]:
+    #     string += " + {}".format(str(x).replace(".",","))
+    
+    # string += " = {}".format(str(solution).replace(".",","))
+
+    return [summanden,solution, string]
 
 def create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
     list_of_examples = []
@@ -225,6 +309,17 @@ def create_list_of_examples_division(examples, minimum_1, maximum_1, minimum_2, 
 
     for _ in range(examples):
         new_example = create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div, smaller_or_equal_div, commas_result,smaller_or_equal_result, output_type)
+        list_of_examples.append(new_example)
+
+    # print(list_of_examples)
+    return list_of_examples
+
+
+def create_list_of_examples_ganze_zahlen_strich(examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed):
+    list_of_examples = []
+
+    for _ in range(examples):
+        new_example = create_single_example_ganze_zahlen_strich(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
         list_of_examples.append(new_example)
 
     # print(list_of_examples)
@@ -588,6 +683,20 @@ def get_random_solution(MainWindow):
         elif MainWindow.radioButton_division_decimal.isChecked():
             output_type = 2         
         distract_result = create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div,smaller_or_equal_div, commas_result, smaller_or_equal_result, output_type)
+
+
+    elif thema == themen_worksheet_wizard[4]:
+        minimum = MainWindow.spinbox_zahlenbereich_minimum.value()
+        maximum = MainWindow.spinbox_zahlenbereich_maximum.value()
+        commas = MainWindow.spinbox_kommastellen_wizard.value()
+        smaller_or_equal = MainWindow.combobox_kommastellen_wizard.currentIndex()
+        anzahl_summanden = MainWindow.spinBox_zahlenbereich_anzahl_wizard.value()
+        brackets_allowed = MainWindow.checkbox_allow_brackets_wizard.isChecked()
+
+        distract_result = create_single_example_ganze_zahlen_strich(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
+
+
+
     return distract_result
 
 def create_nonogramm(chosen_nonogram, coordinates_nonogramm, MainWindow):

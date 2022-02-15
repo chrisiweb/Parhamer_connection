@@ -1,3 +1,4 @@
+from pickletools import read_uint1
 import random
 from functools import reduce
 import math
@@ -64,16 +65,84 @@ def get_quotient_with_rest(dividend,divisor):
 #     content = content.replace(coordinate, "\cellcolor{black}")
 
 
-commas=2
-minimum=100
-maximum = 1000
-negative_solutions_allowed=False
-anzahl_subtrahenden=2
-smaller_or_equal=1
+commas=0
+minimum=-10
+maximum = 10
+anzahl_summanden=10
+smaller_or_equal=0
 
-subtrahenden = []
+summanden = []
 set_commas=commas
 temp_maximum = maximum
+
+def add_summand(s):
+    if s>0:
+        return "(+{})".format(s)
+    else:
+        return "({})".format(s)
+
+def random_switch(p=50):
+    return random.randrange(100) < p
+    # x = random.randint(0,1)
+    # if x== 0:
+    #     return False
+    # else:
+    #     return True
+
+
+for _ in range(anzahl_summanden):
+    num = 0
+    while num == 0:
+        num = get_random_number(minimum, maximum, commas)
+    summanden.append(num)
+
+print(summanden)
+
+content = add_summand(summanden[0])
+
+operation = ['+', '-']
+brackets = ['[',']']
+bracket_open = None
+
+# standard_calculation_add_subtract = {3 : "(a) ? [(b) ? (c)]", 4: "[(a) ? (b)] ? [(c) ? (d)]", 5: }
+waiter = False
+for all in summanden[1:]:
+    if random_switch(70) == True and waiter==False:
+        if bracket_open == None:
+            content +=random.choice(operation) + '['
+            bracket_open = True
+            waiter = True
+        elif bracket_open == True:
+            content +=']' + random.choice(operation) 
+            bracket_open = None
+            waiter = False  
+    else:
+        content += random.choice(operation)
+        waiter = False           
+
+    content += add_summand(all)
+
+if bracket_open == True:
+    if waiter == True:
+        print('replaced')
+        index = content.rfind('[')
+        content = content[:index] + content[index+1:]
+        # content = content.replace('[','')
+    else:
+        content +=']'
+print(content)
+# content = content.replace('[','(').replace(']',')')
+# print(content)
+# print(eval(content))
+
+
+solution = eval(content.replace('[','(').replace(']',')'))
+
+content = "${0} = \\antwort{{{1}}}$".format(content, solution)
+# content += "= \\antwort{{{}}}$".format(sum(summanden))
+
+
+print(content)
 
 # dif = maximum-minimum
 # step = dif/(anzahl_subtrahenden+2)
@@ -84,21 +153,21 @@ temp_maximum = maximum
 # if negative_solutions_allowed == False:
 #     temp_maximum = minimum+step
 
-if smaller_or_equal == 1:
-    commas = random.randint(0,set_commas)
+# if smaller_or_equal == 1:
+#     commas = random.randint(0,set_commas)
 
-subtrahenden_maximum = maximum/anzahl_subtrahenden
-print(subtrahenden_maximum)
-for i in range(anzahl_subtrahenden):
-    num = get_random_number(minimum, subtrahenden_maximum, commas)
-    subtrahenden.append(num)
+# subtrahenden_maximum = maximum/anzahl_subtrahenden
+# print(subtrahenden_maximum)
+# for i in range(anzahl_subtrahenden):
+#     num = get_random_number(minimum, subtrahenden_maximum, commas)
+#     subtrahenden.append(num)
 
-# print(subtrahenden)  
-print(sum(subtrahenden))  
+# # print(subtrahenden)  
+# print(sum(subtrahenden))  
 
 
-minuend = get_random_number(math.ceil(sum(subtrahenden)), maximum, commas)
-subtrahenden.insert(0, minuend)
+# minuend = get_random_number(math.ceil(sum(subtrahenden)), maximum, commas)
+# subtrahenden.insert(0, minuend)
 # for i in range(anzahl_subtrahenden):
 #     x= minuend - sum(subtrahenden)
 #     print("zwischen {} und {}".format(minimum, x))
@@ -134,19 +203,19 @@ subtrahenden.insert(0, minuend)
     
 
 
-solution = reduce(lambda x,y: x-y, subtrahenden)
+# solution = reduce(lambda x,y: x-y, subtrahenden)
 
+# # print(subtrahenden)
+# string = str(subtrahenden[0]).replace(".",",")
+# # reduced_list = subtrahenden.pop(0)
+# # print(subtrahenden)
+# # random.shuffle(reduced_list)
 # print(subtrahenden)
-string = str(subtrahenden[0]).replace(".",",")
-# reduced_list = subtrahenden.pop(0)
-# print(subtrahenden)
-# random.shuffle(reduced_list)
-print(subtrahenden)
-for x in subtrahenden[1:]:
-    string += " - {}".format(str(x).replace(".",","))
+# for x in subtrahenden[1:]:
+#     string += " - {}".format(str(x).replace(".",","))
 
-string += " = {}".format(str(solution).replace(".",","))
-print(string)
+# string += " = {}".format(str(solution).replace(".",","))
+# print(string)
 
 # comma = 1
 # # print(content)
@@ -267,24 +336,24 @@ print(string)
 #     content += "\end{array}$\n\\antwort[\\vspace{2cm}]{}\n\n"
 
 # print(content)
-# titel = "Arbeitsblatt"
-# nummerierung = "(i)"
-# columns = 2
+titel = "Arbeitsblatt"
+nummerierung = "(i)"
+columns = 2
 
-# content = """
-# \section{{{0}}}
+content = """
+\section{{{0}}}
 
-# \\begin{{multicols}}{{{1}}}
-# \\begin{{enumerate}}[{2}]
-# {3}
-# \end{{enumerate}}
-# \end{{multicols}}
-# """.format(titel, columns, nummerierung, content)
+\\begin{{multicols}}{{{1}}}
+\\begin{{enumerate}}[{2}]
+{3}
+\end{{enumerate}}
+\end{{multicols}}
+""".format(titel, columns, nummerierung, content)
 
 # print(x)
 # print(y)
 # print(result)
-# print(content)
+print(content)
 
 
 ########## CREATE LATEX CODE FROM CONTENT
