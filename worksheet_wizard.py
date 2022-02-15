@@ -1,4 +1,5 @@
 from functools import reduce
+from pickletools import decimalnl_long
 import random
 from math import floor, ceil
 # import os
@@ -23,7 +24,6 @@ dict_widgets_wizard = {
         'self.groupBox_zahlenbereich_maximum',
         'self.groupBox_kommastellen_wizard',
         'self.checkbox_negative_ergebnisse_wizard',
-        'self.groupBox_zahlenbereich_anzahl',
         # 'self.label_negative_ergebnisse_wizard', 
         ],
     'Multiplikation' : [
@@ -102,39 +102,37 @@ def create_single_example_addition(minimum, maximum, commas, anzahl_summanden, s
 def create_single_example_subtraction(minimum, maximum, commas, negative_solutions_allowed,anzahl_subtrahenden, smaller_or_equal):
     subtrahenden = []
     set_commas=commas
-    temp_maximum = maximum
-    if negative_solutions_allowed == False:
-        temp_minimum
-    for i in range(anzahl_subtrahenden+1):
-        if smaller_or_equal == 1:
-            commas = random.randint(0,set_commas) 
-        num = get_random_number(minimum,temp_maximum, commas)
-        subtrahenden.append(num)
-        if negative_solutions_allowed == False:
-            if i==0:
-                temp_maximum = num
-            else:
-                temp_maximum -= num
-            print(temp_maximum)
-            print(True)
-        #     temp_maximum = temp_maximum-num
-        # print(temp_maximum)
-        
 
+    if negative_solutions_allowed == False:
+        subtrahenden_maximum = maximum/anzahl_subtrahenden
+    else:
+        subtrahenden_maximum = maximum
+
+    for _ in range(anzahl_subtrahenden):
+        if smaller_or_equal == 1:
+            commas = random.randint(0,set_commas)
+        num = get_random_number(minimum, subtrahenden_maximum, commas)
+        subtrahenden.append(num) 
+
+    if smaller_or_equal == 1:
+        commas = random.randint(0,set_commas)
+    if negative_solutions_allowed == False:   
+        minuend = get_random_number(ceil(sum(subtrahenden)), maximum, commas)
+    else:
+        minuend = get_random_number(minimum, maximum, commas)
+
+    subtrahenden.insert(0, minuend)
     
     solution = reduce(lambda x,y: x-y, subtrahenden)
 
-    print(subtrahenden)
     string = str(subtrahenden[0]).replace(".",",")
-    # reduced_list = subtrahenden.pop(0)
-    # print(subtrahenden)
-    # random.shuffle(reduced_list)
-    # print(subtrahenden)
+
+
     for x in subtrahenden[1:]:
         string += " - {}".format(str(x).replace(".",","))
     
     string += " = {}".format(str(solution).replace(".",","))
-    print(string)
+
     return [subtrahenden,solution, string]
     # if smaller_or_equal == 1:
     #     commas = random.randint(0,set_commas) 
@@ -232,14 +230,36 @@ def create_list_of_examples_division(examples, minimum_1, maximum_1, minimum_2, 
     # print(list_of_examples)
     return list_of_examples
 
+def get_number_of_decimals(x):
+    return abs(D('{}'.format(x)).as_tuple().exponent)
+
 def create_latex_string_addition(content, example, ausrichtung):
     summanden = example[0]
+    
+    max_decimal=0
+    for all in summanden:
+        decimals = get_number_of_decimals(all)
+        if decimals > max_decimal:
+            max_decimal = decimals    
 
     if ausrichtung == 0:
         content += "\item \\begin{tabular}{rr}"
 
         for all in summanden:
-            content += "& ${0}$ \\\\ \n".format(str(all).replace(".",","))
+            decimals = get_number_of_decimals(all)
+
+            if decimals != max_decimal:
+                if decimals == 0:
+                    phantom = ","+"0"*max_decimal
+                else:
+                    phantom = "0"*(max_decimal-decimals)
+                
+                phantom = "\hphantom{{{0}}}".format(phantom)
+            else:
+                phantom = ""
+
+
+            content += "& ${0}{1}$ \\\\ \n".format(str(all).replace(".",","), phantom)
 
         content += """\hline&\\antwort{{${0}$}}
         \end{{tabular}}\n""".format(str(example[-2]).replace(".",","))
@@ -255,16 +275,46 @@ def create_latex_string_addition(content, example, ausrichtung):
     return content
 
 def create_latex_string_subtraction(content, example, ausrichtung):
+    subtrahenden = example[0]
     if ausrichtung == 0:
+        decimal_1 = get_number_of_decimals(subtrahenden[0])
+        decimal_2 = get_number_of_decimals(subtrahenden[1])
+        if decimal_1==decimal_2:
+            phantom_1 = ""
+            phantom_2 = ""
+        else:
+            if decimal_1>decimal_2:
+                diff = decimal_1-decimal_2
+                if decimal_2==0:
+                    phantom = "," + "0"*diff
+                else:
+                    phantom = "0"*diff
+                phantom_2 = "\hphantom{{{0}}}".format(phantom)
+                phantom_1 = ""
+            elif decimal_2>decimal_1:
+                diff = decimal_2-decimal_1
+                if decimal_1 ==0:
+                    phantom = "," + "0"*diff
+                else:
+                    phantom = "0"*diff
+                phantom_1 = "\hphantom{{{0}}}".format(phantom)
+                phantom_2 = ""
+            
+
         content += """
         \item \\begin{{tabular}}{{rr}}
-        & ${0}$ \\\\
-        & $-{1}$ \\\\ \hline
+        & ${0}{3}$ \\\\
+        & $-{1}{4}$ \\\\ \hline
         &\\antwort{{${2}$}}
         \end{{tabular}}\n
-        """.format(str(example[0]).replace(".",","), str(example[1]).replace(".",","),str(example[2]).replace(".",","))
+        """.format(str(subtrahenden[0]).replace(".",","), str(subtrahenden[1]).replace(".",","),str(example[-2]).replace(".",","), phantom_1, phantom_2)
     elif ausrichtung == 1:
-        content += "\item ${0} - {1} = \\antwort{{{2}}}$\n\\leer\n\n".format(str(example[0]).replace(".",","),str(example[1]).replace(".",","),str(example[2]).replace(".",","))
+        content += "\item ${0}".format(str(subtrahenden[0]).replace(".",","))
+
+        for all in subtrahenden[1:]:
+            content += " - {}".format(str(all).replace(".",","))
+
+        content += " = \\antwort{{{0}}}$\n\\leer\n\n".format(str(example[-2]).replace(".",","))
     return content
 
 

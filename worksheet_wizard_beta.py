@@ -75,8 +75,8 @@ subtrahenden = []
 set_commas=commas
 temp_maximum = maximum
 
-dif = maximum-minimum
-step = dif/(anzahl_subtrahenden+2)
+# dif = maximum-minimum
+# step = dif/(anzahl_subtrahenden+2)
 # print(dif)
 # print(step)
 # if negative_solutions_allowed == False:

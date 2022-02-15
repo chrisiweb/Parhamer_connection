@@ -129,6 +129,7 @@ class Ui_MainWindow(object):
         hashed_pw = read_credentials()
         self.developer_mode_active = False
         self.no_saved_changes_sage = True
+        self.worksheet_wizard_changed = True
 
         # if sys.platform.startswith("win"):
         # path_lama_developer_credentials = os.path.join(os.getenv('LOCALAPPDATA'), "LaMA", "credentials")
@@ -2454,6 +2455,7 @@ class Ui_MainWindow(object):
         self.gridLayout_setting_wizard.addWidget(self.groupBox_ausrichtung_wizard, 2,1,1,1)
         self.horizontalLayout_ausrichtung_wizard = create_new_horizontallayout(self.groupBox_ausrichtung_wizard)
         self.combobox_ausrichtung_wizard = create_new_combobox(self.groupBox_ausrichtung_wizard)
+        self.combobox_ausrichtung_wizard.currentIndexChanged.connect(self.combobox_ausrichtung_wizard_changed)
         add_new_option(self.combobox_ausrichtung_wizard, 0, "in der Spalte")
         add_new_option(self.combobox_ausrichtung_wizard, 1, "in der Zeile")
         self.horizontalLayout_ausrichtung_wizard.addWidget(self.combobox_ausrichtung_wizard)
@@ -2485,6 +2487,7 @@ class Ui_MainWindow(object):
         self.spinbox_zahlenbereich_maximum.setRange(0,999999999)
         self.spinbox_zahlenbereich_maximum.setValue(999)
         self.horizontalLayout_zahlenbereich_maximum.addWidget(self.spinbox_zahlenbereich_maximum)
+        self.spinbox_zahlenbereich_maximum.valueChanged.connect(self.worksheet_wizard_setting_changed)
         self.spinbox_zahlenbereich_minimum.valueChanged.connect(partial(self.minimum_changed_wizard, self.spinbox_zahlenbereich_minimum, self.spinbox_zahlenbereich_maximum))
 
         self.groupBox_kommastellen_wizard = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Kommastellen")
@@ -2493,8 +2496,10 @@ class Ui_MainWindow(object):
         self.combobox_kommastellen_wizard = create_new_combobox(self.groupBox_kommastellen_wizard)
         add_new_option(self.combobox_kommastellen_wizard, 0, "=")
         add_new_option(self.combobox_kommastellen_wizard, 1, "\u2264")
+        self.combobox_kommastellen_wizard.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
         self.horizontalLayout_kommastellen_wizard.addWidget(self.combobox_kommastellen_wizard)
         self.spinbox_kommastellen_wizard = create_new_spinbox(self.groupBox_kommastellen_wizard)
+        self.spinbox_kommastellen_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
         self.horizontalLayout_kommastellen_wizard.addWidget(self.spinbox_kommastellen_wizard)
 
 
@@ -2503,9 +2508,11 @@ class Ui_MainWindow(object):
         self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_zahlenbereich_anzahl, 1,1,1,2)
         self.spinBox_zahlenbereich_anzahl_wizard = create_new_spinbox(self.groupBox_zahlenbereich_anzahl, 2)
         self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,5)
+        self.spinBox_zahlenbereich_anzahl_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
         self.horizontalLayout_zahlenbereich_anzahl.addWidget(self.spinBox_zahlenbereich_anzahl_wizard)
 
         self.checkbox_negative_ergebnisse_wizard = create_new_checkbox(self.groupBox_zahlenbereich_wizard, "negative Ergebnisse erlauben")
+        self.checkbox_negative_ergebnisse_wizard.stateChanged.connect(self.worksheet_wizard_setting_changed)
         # self.checkbox_negative_ergebnisse_wizard.setSizePolicy(SizePolicy_fixed)
         self.gridLayout_zahlenbereich_wizard.addWidget(self.checkbox_negative_ergebnisse_wizard, 2,0,1,2)
         # self.label_negative_ergebnisse_wizard = create_new_label(self.groupBox_zahlenbereich_wizard, "negative Ergebnisse erlauben", True, True)
@@ -2532,6 +2539,7 @@ class Ui_MainWindow(object):
         self.spinBox_first_number_max.setRange(0,999999999)
         self.spinBox_first_number_max.setValue(99)
         self.gridLayout_first_number_wizard.addWidget(self.spinBox_first_number_max, 1,1,1,2)
+        self.spinBox_first_number_max.valueChanged.connect(self.worksheet_wizard_setting_changed)
         self.spinBox_first_number_min.valueChanged.connect(partial(self.minimum_changed_wizard, self.spinBox_first_number_min, self.spinBox_first_number_max))        
 
         self.label_first_number_decimal = create_new_label(self.groupBox_first_number_wizard, "Kommastellen")
@@ -2539,8 +2547,10 @@ class Ui_MainWindow(object):
         self.combobox_first_number_decimal = create_new_combobox(self.groupBox_first_number_wizard)
         add_new_option(self.combobox_first_number_decimal, 0, "=")
         add_new_option(self.combobox_first_number_decimal, 1, "\u2264")
+        self.combobox_first_number_decimal.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
         self.gridLayout_first_number_wizard.addWidget(self.combobox_first_number_decimal, 2,1,1,1)
         self.spinBox_first_number_decimal = create_new_spinbox(self.groupBox_first_number_wizard)
+        self.spinBox_first_number_decimal.valueChanged.connect(self.worksheet_wizard_setting_changed)
         self.gridLayout_first_number_wizard.addWidget(self.spinBox_first_number_decimal,2,2,1,1)  
         self.groupBox_first_number_wizard.hide()
 
@@ -2560,6 +2570,7 @@ class Ui_MainWindow(object):
         self.spinBox_second_number_max.setRange(-999999999,999999999)
         self.spinBox_second_number_max.setValue(99)
         self.gridLayout_second_number_wizard.addWidget(self.spinBox_second_number_max, 1,1,1,2)
+        self.spinBox_second_number_max.valueChanged.connect(self.worksheet_wizard_setting_changed)
         self.spinBox_second_number_min.valueChanged.connect(partial(self.minimum_changed_wizard, self.spinBox_second_number_min, self.spinBox_second_number_max))        
 
         self.label_second_number_decimal = create_new_label(self.groupBox_second_number_wizard, "Kommastellen")
@@ -2567,8 +2578,10 @@ class Ui_MainWindow(object):
         self.combobox_second_number_decimal = create_new_combobox(self.groupBox_second_number_wizard)
         add_new_option(self.combobox_second_number_decimal, 0, "=")
         add_new_option(self.combobox_second_number_decimal, 1, "\u2264")
+        self.combobox_second_number_decimal.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
         self.gridLayout_second_number_wizard.addWidget(self.combobox_second_number_decimal, 2,1,1,1)
         self.spinBox_second_number_decimal = create_new_spinbox(self.groupBox_second_number_wizard)
+        self.spinBox_second_number_decimal.valueChanged.connect(self.worksheet_wizard_setting_changed)
         self.gridLayout_second_number_wizard.addWidget(self.spinBox_second_number_decimal,2,2,1,1) 
         self.groupBox_second_number_wizard.hide()
 
@@ -2587,6 +2600,7 @@ class Ui_MainWindow(object):
         self.spinbox_dividend_min_wizard = create_new_spinbox(self.groupBox_dividend_wizard)
         self.spinbox_dividend_min_wizard.setMaximum(999999999)
         self.spinbox_dividend_min_wizard.setValue(100)
+        self.spinbox_dividend_min_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
         self.gridLayout_dividend_wizard.addWidget(self.spinbox_dividend_min_wizard, 0,2,1,1)
         
 
@@ -2595,6 +2609,7 @@ class Ui_MainWindow(object):
         self.spinbox_dividend_max_wizard = create_new_spinbox(self.groupBox_dividend_wizard)
         self.spinbox_dividend_max_wizard.setMaximum(999999999)
         self.spinbox_dividend_max_wizard.setValue(1000)
+        self.spinbox_dividend_max_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
         self.gridLayout_dividend_wizard.addWidget(self.spinbox_dividend_max_wizard, 1,2,1,1)
         self.groupBox_dividend_wizard.hide()
 
@@ -2614,8 +2629,10 @@ class Ui_MainWindow(object):
         self.combobox_divisor_kommastelle_wizard = create_new_combobox(self.combobox_divisor_wizard)
         add_new_option(self.combobox_divisor_kommastelle_wizard, 0, "=")
         add_new_option(self.combobox_divisor_kommastelle_wizard, 1, "\u2264")
+        self.combobox_divisor_kommastelle_wizard.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
         self.gridLayout_divisor_wizard.addWidget(self.combobox_divisor_kommastelle_wizard, 1,1,1,1)
         self.spinBox_divisor_kommastellen_wizard = create_new_spinbox(self.groupBox_divisor_wizard, 0)
+        self.spinBox_divisor_kommastellen_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
         self.gridLayout_divisor_wizard.addWidget(self.spinBox_divisor_kommastellen_wizard, 1,2,1,1)
         self.label_divisor_kommastelle_wizard.hide()
         self.combobox_divisor_kommastelle_wizard.hide()
@@ -2625,6 +2642,7 @@ class Ui_MainWindow(object):
         self.gridLayout_divisor_wizard.addWidget(self.label_divisor_min_wizard, 0,3,1,1)
         self.spinbox_divisor_min_wizard = create_new_spinbox(self.groupBox_divisor_wizard, 2)
         self.spinbox_divisor_min_wizard.setMaximum(999999999)
+        self.spinbox_divisor_min_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
         self.gridLayout_divisor_wizard.addWidget(self.spinbox_divisor_min_wizard, 0,4,1,1)
         
 
@@ -2632,6 +2650,7 @@ class Ui_MainWindow(object):
         self.gridLayout_divisor_wizard.addWidget(self.label_divisor_max_wizard, 1,3,1,1)
         self.spinbox_divisor_max_wizard = create_new_spinbox(self.groupBox_divisor_wizard, 99)
         self.spinbox_divisor_max_wizard.setMaximum(999999999)
+        self.spinbox_divisor_max_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
         self.gridLayout_divisor_wizard.addWidget(self.spinbox_divisor_max_wizard, 1,4,1,1)
         self.groupBox_divisor_wizard.hide()
 
@@ -2642,9 +2661,11 @@ class Ui_MainWindow(object):
 
         self.radioButton_division_ohne_rest = create_new_radiobutton(self.groupBox_ergebnis_wizard, "ohne Rest")
         self.radioButton_division_ohne_rest.setChecked(True)
+        self.radioButton_division_ohne_rest.toggled.connect(self.worksheet_wizard_setting_changed)
         self.gridLayout_ergebnis_wizard.addWidget(self.radioButton_division_ohne_rest, 0,0,1,1)
 
         self.radioButton_division_rest = create_new_radiobutton(self.groupBox_ergebnis_wizard, "mit Rest")
+        self.radioButton_division_rest.toggled.connect(self.worksheet_wizard_setting_changed)
         self.gridLayout_ergebnis_wizard.addWidget(self.radioButton_division_rest, 0,1,1,1)
 
         # self.radioButton_division_decimal = create_new_radiobutton(self.groupBox_ergebnis_wizard, "Dezimalzahl")
@@ -2667,9 +2688,11 @@ class Ui_MainWindow(object):
         self.combobox_ergebnis_kommastellen_wizard = create_new_combobox(self.groupBox_ergebnis_wizard)
         add_new_option(self.combobox_ergebnis_kommastellen_wizard, 0, "=")
         add_new_option(self.combobox_ergebnis_kommastellen_wizard, 1, "\u2264")
+        self.combobox_ergebnis_kommastellen_wizard.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
         self.gridLayout_ergebnis_wizard.addWidget(self.combobox_ergebnis_kommastellen_wizard, 1,1,1,1)
         self.spinbox_ergebnis_kommastellen_wizard = create_new_spinbox(self.groupBox_ergebnis_wizard, 1)
         self.spinbox_ergebnis_kommastellen_wizard.setMinimum(1)
+        self.spinbox_ergebnis_kommastellen_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
         self.gridLayout_ergebnis_wizard.addWidget(self.spinbox_ergebnis_kommastellen_wizard, 1,2,1,1)
 
         self.label_ergebnis_kommastellen_wizard.hide()
@@ -5971,6 +5994,7 @@ class Ui_MainWindow(object):
 
 
     def themen_changed_wizard(self):
+        self.worksheet_wizard_changed = True
         # index = self.comboBox_themen_wizard.currentIndex()
         thema = self.comboBox_themen_wizard.currentText()
         self.lineEdit_titel_wizard.setText("Arbeitsblatt - {}".format(thema))
@@ -5999,7 +6023,11 @@ class Ui_MainWindow(object):
             eval(widget).show()
 
 
+    def worksheet_wizard_setting_changed(self):
+        self.worksheet_wizard_changed=True
+
     def spinBox_number_wizard_changed(self):
+        self.worksheet_wizard_changed=True
         max = 0
         for nonogram in all_nonogramms.values():
             if len(nonogram)>max:
@@ -6015,10 +6043,20 @@ class Ui_MainWindow(object):
 
 
     def minimum_changed_wizard(self, min, max):
+        self.worksheet_wizard_changed=True
         if min.value() > max.value():
             max.setValue(min.value()+10)
 
+    def combobox_ausrichtung_wizard_changed(self):
+        if self.comboBox_themen_wizard.currentText()=='Subtraktion':
+            if self.combobox_ausrichtung_wizard.currentIndex()==0:
+                self.groupBox_zahlenbereich_anzahl.hide()
+                self.spinBox_zahlenbereich_anzahl_wizard.setValue(1)
+            else:
+                self.groupBox_zahlenbereich_anzahl.show()
+
     def combobox_divisor_dividend_changed(self):
+        self.worksheet_wizard_changed=True
         if self.combobox_divisor_wizard.currentIndex()==1:
             self.label_divisor_kommastelle_wizard.show()
             self.combobox_divisor_kommastelle_wizard.show()
@@ -6133,6 +6171,7 @@ class Ui_MainWindow(object):
 
 
     def create_worksheet_wizard_pressed(self):
+        self.worksheet_wizard_changed = False
         thema = self.comboBox_themen_wizard.currentText()
         columns = self.spinBox_column_wizard.value()
         examples = self.spinBox_number_wizard.value()
@@ -6215,10 +6254,9 @@ class Ui_MainWindow(object):
         # print(self.list_of_examples_wizard)
 
     def create_latex_file_content_wizard(self):
-        try:
-            self.list_of_examples_wizard 
-        except AttributeError:
-            self.create_worksheet_wizard_pressed()
+        if self.worksheet_wizard_changed == True:
+            self.create_worksheet_wizard_pressed()    
+
 
 
         titel = self.lineEdit_titel_wizard.text()
