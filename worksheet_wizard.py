@@ -254,8 +254,9 @@ def create_single_example_ganze_zahlen_strich(minimum, maximum, commas, anzahl_s
             string +=']'
         
     solution = eval(string.replace('[','(').replace(']',')'))
+    solution = D("{:.{prec}f}".format(solution, prec=set_commas))
 
-    string = "{0} = {1}".format(string, solution)
+    string = "{0} = {1}".format(str(string).replace(".",","), str(solution).replace(".",","))
 
     return [summanden,solution, string]
 
