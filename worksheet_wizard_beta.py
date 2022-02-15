@@ -1,4 +1,5 @@
 import random
+from functools import reduce
 import math
 import decimal
 import re
@@ -62,34 +63,119 @@ def get_quotient_with_rest(dividend,divisor):
 # for coordinate in solution_cat:
 #     content = content.replace(coordinate, "\cellcolor{black}")
 
-comma = 1
-# print(content)
-divisor = get_random_number(10,50,comma)
-min = 1000
-max = 10000
-# print(result_min)
-# print(result_max)
-result_min = math.ceil(min/divisor)
-result_max = math.floor(max/divisor)
-# print(result_min)
-# print(result_max)
+
+commas=2
+minimum=100
+maximum = 1000
+negative_solutions_allowed=False
+anzahl_subtrahenden=2
+smaller_or_equal=1
+
+subtrahenden = []
+set_commas=commas
+temp_maximum = maximum
+
+dif = maximum-minimum
+step = dif/(anzahl_subtrahenden+2)
+# print(dif)
+# print(step)
+# if negative_solutions_allowed == False:
+#     temp_minimum
+# if negative_solutions_allowed == False:
+#     temp_maximum = minimum+step
+
+if smaller_or_equal == 1:
+    commas = random.randint(0,set_commas)
+
+subtrahenden_maximum = maximum/anzahl_subtrahenden
+print(subtrahenden_maximum)
+for i in range(anzahl_subtrahenden):
+    num = get_random_number(minimum, subtrahenden_maximum, commas)
+    subtrahenden.append(num)
+
+# print(subtrahenden)  
+print(sum(subtrahenden))  
 
 
-result = get_random_number(result_min,result_max, comma)
+minuend = get_random_number(math.ceil(sum(subtrahenden)), maximum, commas)
+subtrahenden.insert(0, minuend)
+# for i in range(anzahl_subtrahenden):
+#     x= minuend - sum(subtrahenden)
+#     print("zwischen {} und {}".format(minimum, x))
+#     num = get_random_number(minimum,x, commas)
+#     subtrahenden.append(num)
+#     print(num)
 
 
-print(divisor)
-print(result)
+# subtrahenden.insert(0, minuend)
+    # temp_min = maximum-step*(i+1)
+    # if negative_solutions_allowed == False:
+    #     if i!=0:
+    #         temp_maximum = minimum+(num-minimum)/anzahl_subtrahenden
+    #         print(temp_maximum)
+    # print("zwischen {} und {}".format(minimum, temp_maximum))
+    # # print(temp_maximum)
+    # if smaller_or_equal == 1:
+    #     commas = random.randint(0,set_commas)
+    # if i == 0:
+    #     num = get_random_number(minimum,maximum, commas)
+    # else:
+    #     num = get_random_number(minimum,temp_maximum, commas)
+    # subtrahenden.append(num)
+    # print(num)
+    #     if i==0:
+    #         temp_maximum = num
+    #     else:
+    #         temp_maximum -= num
+        # print(temp_maximum)
+        # print(True)
+    #     temp_maximum = temp_maximum-num
+    # print(temp_maximum)
+    
 
-dividend = result*divisor
 
-print("{} : {} = {}".format(dividend, divisor, result))
+solution = reduce(lambda x,y: x-y, subtrahenden)
 
-print(8.395//0.1)
-print(83.95//1)
+# print(subtrahenden)
+string = str(subtrahenden[0]).replace(".",",")
+# reduced_list = subtrahenden.pop(0)
+# print(subtrahenden)
+# random.shuffle(reduced_list)
+print(subtrahenden)
+for x in subtrahenden[1:]:
+    string += " - {}".format(str(x).replace(".",","))
 
-result = get_quotient_with_rest(36,6)
-print(result)
+string += " = {}".format(str(solution).replace(".",","))
+print(string)
+
+# comma = 1
+# # print(content)
+# divisor = get_random_number(10,50,comma)
+# min = 1000
+# max = 10000
+# # print(result_min)
+# # print(result_max)
+# result_min = math.ceil(min/divisor)
+# result_max = math.floor(max/divisor)
+# # print(result_min)
+# # print(result_max)
+
+
+# result = get_random_number(result_min,result_max, comma)
+
+
+# print(divisor)
+# print(result)
+
+# dividend = result*divisor
+
+# print("{} : {} = {}".format(dividend, divisor, result))
+
+# print(8.395//0.1)
+# print(83.95//1)
+
+# result = get_quotient_with_rest(36,6)
+# print(result)
 
 # print(max/divisor)
 # print(divisor)

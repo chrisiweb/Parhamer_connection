@@ -2505,14 +2505,14 @@ class Ui_MainWindow(object):
         self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,5)
         self.horizontalLayout_zahlenbereich_anzahl.addWidget(self.spinBox_zahlenbereich_anzahl_wizard)
 
-        self.checkbox_negative_ergebnisse_wizard = create_new_checkbox(self.groupBox_zahlenbereich_wizard, "")
-        self.checkbox_negative_ergebnisse_wizard.setSizePolicy(SizePolicy_fixed)
-        self.gridLayout_zahlenbereich_wizard.addWidget(self.checkbox_negative_ergebnisse_wizard, 1,1,1,1)
-        self.label_negative_ergebnisse_wizard = create_new_label(self.groupBox_zahlenbereich_wizard, "negative Ergebnisse erlauben", True, True)
-        self.label_negative_ergebnisse_wizard.clicked.connect(partial(self.click_label_to_check, self.checkbox_negative_ergebnisse_wizard))
-        self.gridLayout_zahlenbereich_wizard.addWidget(self.label_negative_ergebnisse_wizard, 1,2,1,1, QtCore.Qt.AlignLeft)
+        self.checkbox_negative_ergebnisse_wizard = create_new_checkbox(self.groupBox_zahlenbereich_wizard, "negative Ergebnisse erlauben")
+        # self.checkbox_negative_ergebnisse_wizard.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout_zahlenbereich_wizard.addWidget(self.checkbox_negative_ergebnisse_wizard, 2,0,1,2)
+        # self.label_negative_ergebnisse_wizard = create_new_label(self.groupBox_zahlenbereich_wizard, "negative Ergebnisse erlauben", True, True)
+        # self.label_negative_ergebnisse_wizard.clicked.connect(partial(self.click_label_to_check, self.checkbox_negative_ergebnisse_wizard))
+        # self.gridLayout_zahlenbereich_wizard.addWidget(self.label_negative_ergebnisse_wizard, 2,0,1,1, QtCore.Qt.AlignRight)
         self.checkbox_negative_ergebnisse_wizard.hide()
-        self.label_negative_ergebnisse_wizard.hide()
+        # self.label_negative_ergebnisse_wizard.hide()
 
 
         self.groupBox_first_number_wizard = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "1. Faktor")
@@ -5977,8 +5977,12 @@ class Ui_MainWindow(object):
 
         if thema == 'Addition':
             self.groupBox_zahlenbereich_anzahl.setTitle("Summanden")
+            self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,5)
+            self.spinBox_zahlenbereich_anzahl_wizard.setValue(2)
         elif thema == 'Subtraktion':
-            self.groupBox_zahlenbereich_anzahl.setTitle("Summanden")
+            self.groupBox_zahlenbereich_anzahl.setTitle("Subtrahenden")
+            self.spinBox_zahlenbereich_anzahl_wizard.setRange(1,5)
+            self.spinBox_zahlenbereich_anzahl_wizard.setValue(1)
 
 
         hiding_list = []
@@ -6086,8 +6090,9 @@ class Ui_MainWindow(object):
             smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
             new_example = create_single_example_addition(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
         elif thema == 'Subtraktion':
+            anzahl_subtrahenden = self.spinBox_zahlenbereich_anzahl_wizard.value()
             smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
-            new_example = create_single_example_subtraction(minimum, maximum, commas, self.checkbox_negative_ergebnisse_wizard.isChecked(), smaller_or_equal)
+            new_example = create_single_example_subtraction(minimum, maximum, commas, self.checkbox_negative_ergebnisse_wizard.isChecked(),anzahl_subtrahenden ,smaller_or_equal)
         elif thema == 'Multiplikation':
             minimum_1 = self.spinBox_first_number_min.value()
             maximum_1 = self.spinBox_first_number_max.value()
@@ -6148,11 +6153,12 @@ class Ui_MainWindow(object):
             minimum = self.spinbox_zahlenbereich_minimum.value()
             maximum = self.spinbox_zahlenbereich_maximum.value()
             commas = self.spinbox_kommastellen_wizard.value()
+            anzahl_subtrahenden = self.spinBox_zahlenbereich_anzahl_wizard.value()
             smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
             if minimum>maximum:
                 warning_window('Das Maximum muss größer als das Minimum sein.')
                 return
-            self.list_of_examples_wizard = create_list_of_examples_subtraction(examples, minimum, maximum, commas, self.checkbox_negative_ergebnisse_wizard.isChecked(), smaller_or_equal)
+            self.list_of_examples_wizard = create_list_of_examples_subtraction(examples, minimum, maximum, commas, self.checkbox_negative_ergebnisse_wizard.isChecked(), anzahl_subtrahenden,smaller_or_equal)
         
         elif thema == 'Multiplikation':
             minimum_1 = self.spinBox_first_number_min.value()

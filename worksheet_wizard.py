@@ -1,3 +1,4 @@
+from functools import reduce
 import random
 from math import floor, ceil
 # import os
@@ -22,7 +23,8 @@ dict_widgets_wizard = {
         'self.groupBox_zahlenbereich_maximum',
         'self.groupBox_kommastellen_wizard',
         'self.checkbox_negative_ergebnisse_wizard',
-        'self.label_negative_ergebnisse_wizard', 
+        'self.groupBox_zahlenbereich_anzahl',
+        # 'self.label_negative_ergebnisse_wizard', 
         ],
     'Multiplikation' : [
         'self.groupBox_first_number_wizard',
@@ -97,19 +99,51 @@ def create_single_example_addition(minimum, maximum, commas, anzahl_summanden, s
 
     return [summanden,solution, string]
 
-def create_single_example_subtraction(minimum, maximum, commas, negative_solutions_allowed, smaller_or_equal):
+def create_single_example_subtraction(minimum, maximum, commas, negative_solutions_allowed,anzahl_subtrahenden, smaller_or_equal):
+    subtrahenden = []
     set_commas=commas
-    if smaller_or_equal == 1:
-        commas = random.randint(0,set_commas) 
-    x = get_random_number(minimum,maximum, commas)
-    if smaller_or_equal == 1:
-        commas = random.randint(0,set_commas) 
-    y= get_random_number(minimum,maximum, commas)
-    if x-y<0 and negative_solutions_allowed== False:
-        x, y = y, x
-    solution = x-y
-    string = "{0} - {1} = {2}".format(str(x).replace(".",","),str(y).replace(".",","),str(solution).replace(".",","))   
-    return [x,y,solution, string]
+    temp_maximum = maximum
+    if negative_solutions_allowed == False:
+        temp_minimum
+    for i in range(anzahl_subtrahenden+1):
+        if smaller_or_equal == 1:
+            commas = random.randint(0,set_commas) 
+        num = get_random_number(minimum,temp_maximum, commas)
+        subtrahenden.append(num)
+        if negative_solutions_allowed == False:
+            if i==0:
+                temp_maximum = num
+            else:
+                temp_maximum -= num
+            print(temp_maximum)
+            print(True)
+        #     temp_maximum = temp_maximum-num
+        # print(temp_maximum)
+        
+
+    
+    solution = reduce(lambda x,y: x-y, subtrahenden)
+
+    print(subtrahenden)
+    string = str(subtrahenden[0]).replace(".",",")
+    # reduced_list = subtrahenden.pop(0)
+    # print(subtrahenden)
+    # random.shuffle(reduced_list)
+    # print(subtrahenden)
+    for x in subtrahenden[1:]:
+        string += " - {}".format(str(x).replace(".",","))
+    
+    string += " = {}".format(str(solution).replace(".",","))
+    print(string)
+    return [subtrahenden,solution, string]
+    # if smaller_or_equal == 1:
+    #     commas = random.randint(0,set_commas) 
+    # y= get_random_number(minimum,maximum, commas)
+    # if x-y<0 and negative_solutions_allowed== False:
+    #     x, y = y, x
+    # solution = x-y
+    # string = "{0} - {1} = {2}".format(str(x).replace(".",","),str(y).replace(".",","),str(solution).replace(".",","))   
+    # return [x,y,solution, string]
 
 def create_single_example_multiplication(minimum_1, maximum_1, commas_1, smaller_or_equal_1 ,minimum_2, maximum_2, commas_2, smaller_or_equal_2):
     if smaller_or_equal_1 == 1:
@@ -170,11 +204,11 @@ def create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_
 
     return list_of_examples
 
-def create_list_of_examples_subtraction(examples, minimum, maximum, commas, negative_solutions_allowed, smaller_or_equal):
+def create_list_of_examples_subtraction(examples, minimum, maximum, commas, negative_solutions_allowed, anzahl_subtrahenden,smaller_or_equal):
     list_of_examples = []
 
     for _ in range(examples):
-        new_example = create_single_example_subtraction(minimum, maximum, commas, negative_solutions_allowed, smaller_or_equal)
+        new_example = create_single_example_subtraction(minimum, maximum, commas, negative_solutions_allowed,anzahl_subtrahenden, smaller_or_equal)
         list_of_examples.append(new_example)
 
     return list_of_examples
@@ -472,7 +506,8 @@ def get_random_solution(MainWindow):
         maximum = MainWindow.spinbox_zahlenbereich_maximum.value()
         commas = MainWindow.spinbox_kommastellen_wizard.value()
         smaller_or_equal = MainWindow.combobox_kommastellen_wizard.currentIndex()
-        distract_result = create_single_example_subtraction(minimum, maximum, commas, MainWindow.checkbox_negative_ergebnisse_wizard.isChecked(), smaller_or_equal)
+        anzahl_subtrahenden = MainWindow.spinBox_zahlenbereich_anzahl_wizard.value()
+        distract_result = create_single_example_subtraction(minimum, maximum, commas, MainWindow.checkbox_negative_ergebnisse_wizard.isChecked(),anzahl_subtrahenden, smaller_or_equal)
 
     
     elif thema == 'Multiplikation':
