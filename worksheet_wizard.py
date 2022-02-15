@@ -38,7 +38,7 @@ dict_widgets_wizard = {
         'self.groupBox_divisor_wizard',
         'self.groupBox_ergebnis_wizard',
     ],
-    'Ganze Zahlen - Addition & Subtraktion': [
+    'Ganze Zahlen (Addition & Subtraktion)': [
         'self.groupBox_zahlenbereich_minimum',
         'self.groupBox_zahlenbereich_maximum',
         'self.groupBox_kommastellen_wizard',
@@ -497,7 +497,7 @@ def create_latex_string_ganze_zahlen_strich(content, example):
     return content
 
 def create_latex_worksheet(list_of_examples,index, titel, columns, nummerierung, ausrichtung, solution_type=0):
-    content = "\section{{{0}}}\n\n".format(titel)
+    content = "\section{{{0}}}\n\n".format(titel.replace('&', '\&'))
     if columns > 1:
         content += "\\begin{{multicols}}{{{0}}}\n".format(columns)
 
