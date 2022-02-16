@@ -192,7 +192,7 @@ def create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, c
         else:
             if smaller_or_equal_result == 1:
                 set_commas_result=commas_result
-            commas_result = random.randint(0,set_commas_result)
+                commas_result = random.randint(0,set_commas_result)
         result = get_random_number(result_min, result_max, commas_result)
 
         dividend = result*divisor
