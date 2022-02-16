@@ -156,6 +156,7 @@ def collect_suchbegriffe(self):
             or self.cb_af_rf.isChecked()
             or self.cb_af_ta.isChecked()
             or self.cb_af_oa.isChecked()
+            or self.cb_af_ko.isChecked()
         ):
             for all_formats in list(dict_aufgabenformate.keys()):
                 x = eval("self.cb_af_" + all_formats)
