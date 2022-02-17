@@ -2499,6 +2499,7 @@ class Ui_MainWindow(object):
         self.combobox_kommastellen_wizard.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
         self.horizontalLayout_kommastellen_wizard.addWidget(self.combobox_kommastellen_wizard)
         self.spinbox_kommastellen_wizard = create_new_spinbox(self.groupBox_kommastellen_wizard)
+        self.spinbox_kommastellen_wizard.setMaximum(14)
         self.spinbox_kommastellen_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
         self.horizontalLayout_kommastellen_wizard.addWidget(self.spinbox_kommastellen_wizard)
 
@@ -2555,6 +2556,7 @@ class Ui_MainWindow(object):
         self.combobox_first_number_decimal.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
         self.gridLayout_first_number_wizard.addWidget(self.combobox_first_number_decimal, 2,1,1,1)
         self.spinBox_first_number_decimal = create_new_spinbox(self.groupBox_first_number_wizard)
+        self.spinBox_first_number_decimal.setMaximum(14)
         self.spinBox_first_number_decimal.valueChanged.connect(self.worksheet_wizard_setting_changed)
         self.gridLayout_first_number_wizard.addWidget(self.spinBox_first_number_decimal,2,2,1,1)  
         self.groupBox_first_number_wizard.hide()
@@ -2586,6 +2588,7 @@ class Ui_MainWindow(object):
         self.combobox_second_number_decimal.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
         self.gridLayout_second_number_wizard.addWidget(self.combobox_second_number_decimal, 2,1,1,1)
         self.spinBox_second_number_decimal = create_new_spinbox(self.groupBox_second_number_wizard)
+        self.spinBox_second_number_decimal.setMaximum(14)
         self.spinBox_second_number_decimal.valueChanged.connect(self.worksheet_wizard_setting_changed)
         self.gridLayout_second_number_wizard.addWidget(self.spinBox_second_number_decimal,2,2,1,1) 
         self.groupBox_second_number_wizard.hide()
@@ -2637,6 +2640,7 @@ class Ui_MainWindow(object):
         self.combobox_divisor_kommastelle_wizard.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
         self.gridLayout_divisor_wizard.addWidget(self.combobox_divisor_kommastelle_wizard, 1,1,1,1)
         self.spinBox_divisor_kommastellen_wizard = create_new_spinbox(self.groupBox_divisor_wizard, 0)
+        self.spinBox_divisor_kommastellen_wizard.setMaximum(14)
         self.spinBox_divisor_kommastellen_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
         self.gridLayout_divisor_wizard.addWidget(self.spinBox_divisor_kommastellen_wizard, 1,2,1,1)
         self.label_divisor_kommastelle_wizard.hide()
@@ -2696,7 +2700,7 @@ class Ui_MainWindow(object):
         self.combobox_ergebnis_kommastellen_wizard.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
         self.gridLayout_ergebnis_wizard.addWidget(self.combobox_ergebnis_kommastellen_wizard, 1,1,1,1)
         self.spinbox_ergebnis_kommastellen_wizard = create_new_spinbox(self.groupBox_ergebnis_wizard, 1)
-        self.spinbox_ergebnis_kommastellen_wizard.setMinimum(1)
+        self.spinbox_ergebnis_kommastellen_wizard.setRange(1,14)
         self.spinbox_ergebnis_kommastellen_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
         self.gridLayout_ergebnis_wizard.addWidget(self.spinbox_ergebnis_kommastellen_wizard, 1,2,1,1)
 
@@ -6006,27 +6010,37 @@ class Ui_MainWindow(object):
         thema = self.comboBox_themen_wizard.currentText()
         self.lineEdit_titel_wizard.setText("Arbeitsblatt - {}".format(thema))
 
-        if thema == (themen_worksheet_wizard[0] or themen_worksheet_wizard[1]):
+        if thema == themen_worksheet_wizard[0] or thema == themen_worksheet_wizard[1]:
             self.spinbox_zahlenbereich_minimum.setRange(0,999999999)
             self.spinbox_zahlenbereich_minimum.setValue(100)
             self.spinbox_zahlenbereich_maximum.setRange(0,999999999)
             self.spinbox_zahlenbereich_maximum.setValue(999)
             self.spinBox_zahlenbereich_anzahl_wizard.setMaximum(5)  
 
-        if thema == 'Addition':
+        if thema == themen_worksheet_wizard[0]:
             self.groupBox_zahlenbereich_anzahl.setTitle("Summanden")
             self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,5)
             self.spinBox_zahlenbereich_anzahl_wizard.setValue(2)
-        elif thema == 'Subtraktion':
+        elif thema == themen_worksheet_wizard[1]:
             self.groupBox_zahlenbereich_anzahl.setTitle("Subtrahenden")
             self.spinBox_zahlenbereich_anzahl_wizard.setRange(1,5)
             self.spinBox_zahlenbereich_anzahl_wizard.setValue(1)
-        elif thema == themen_worksheet_wizard[4]:
+        elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[5]:
             self.spinbox_zahlenbereich_minimum.setRange(-999,999)
-            self.spinbox_zahlenbereich_minimum.setValue(-20)
             self.spinbox_zahlenbereich_maximum.setRange(-999,999)
-            self.spinbox_zahlenbereich_maximum.setValue(20)
-            self.spinBox_zahlenbereich_anzahl_wizard.setMaximum(20)            
+            self.spinBox_zahlenbereich_anzahl_wizard.setMaximum(20)
+            self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,10) 
+            if thema == themen_worksheet_wizard[4]:
+                self.groupBox_zahlenbereich_anzahl.setTitle("Summanden")
+                self.spinBox_zahlenbereich_anzahl_wizard.setValue(2)
+                self.spinbox_zahlenbereich_minimum.setValue(-20)
+                self.spinbox_zahlenbereich_maximum.setValue(20)
+            elif thema == themen_worksheet_wizard[5]:
+                self.groupBox_zahlenbereich_anzahl.setTitle("Faktoren") 
+                self.spinBox_zahlenbereich_anzahl_wizard.setValue(3)
+                self.spinbox_zahlenbereich_minimum.setValue(-10)
+                self.spinbox_zahlenbereich_maximum.setValue(10)
+           
 
         hiding_list = []
         for all in dict_widgets_wizard:
@@ -6178,7 +6192,7 @@ class Ui_MainWindow(object):
 
             new_example = create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div, commas_result, output_type)
 
-        elif thema == themen_worksheet_wizard[4]:
+        elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[5]:
             minimum = self.spinbox_zahlenbereich_minimum.value()
             maximum = self.spinbox_zahlenbereich_maximum.value()
             commas = self.spinbox_kommastellen_wizard.value()
@@ -6186,7 +6200,10 @@ class Ui_MainWindow(object):
             anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
             brackets_allowed = self.checkbox_allow_brackets_wizard.isChecked()
 
-            new_example = create_single_example_ganze_zahlen_strich(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
+            if thema == themen_worksheet_wizard[4]:
+                new_example = create_single_example_ganze_zahlen_strich(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
+            elif thema == themen_worksheet_wizard[5]:
+                new_example = create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
 
 
         result = self.list_of_examples_wizard[index][-2]
@@ -6258,7 +6275,11 @@ class Ui_MainWindow(object):
 
             self.list_of_examples_wizard = create_list_of_examples_division(examples, minimum_1, maximum_1, minimum_2, maximum_2, commas_div, smaller_or_equal_div,commas_result,smaller_or_equal_result, output_type)  
 
-        elif thema == themen_worksheet_wizard[4]:
+        elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[5]:
+            if thema == themen_worksheet_wizard[4]:
+                typ = 'strich'
+            elif thema == themen_worksheet_wizard[5]:
+                typ = 'punkt'
             minimum = self.spinbox_zahlenbereich_minimum.value()
             maximum = self.spinbox_zahlenbereich_maximum.value()
             commas = self.spinbox_kommastellen_wizard.value()
@@ -6268,7 +6289,7 @@ class Ui_MainWindow(object):
             if minimum>maximum:
                 critical_window('Das Maximum muss größer als das Minimum sein.')
                 return
-            self.list_of_examples_wizard = create_list_of_examples_ganze_zahlen_strich(examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
+            self.list_of_examples_wizard = create_list_of_examples_ganze_zahlen(typ, examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
 
 
         for i in reversed(range(self.gridLayout_scrollArea_wizard.count())): 
@@ -9085,7 +9106,7 @@ if __name__ == "__main__":
         create_list_of_examples_subtraction, create_single_example_subtraction,
         create_list_of_examples_multiplication, create_single_example_multiplication,
         create_list_of_examples_division, create_single_example_division,
-        create_list_of_examples_ganze_zahlen_strich, create_single_example_ganze_zahlen_strich,
+        create_list_of_examples_ganze_zahlen, create_single_example_ganze_zahlen_strich, create_single_example_ganze_zahlen_punkt,
         create_nonogramm, create_coordinates, list_all_pixels, all_nonogramms, show_all_nonogramms
     )
 

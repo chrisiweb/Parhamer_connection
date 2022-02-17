@@ -44,6 +44,13 @@ dict_widgets_wizard = {
         'self.groupBox_kommastellen_wizard',
         'self.groupBox_zahlenbereich_anzahl',
         'self.checkbox_allow_brackets_wizard',        
+    ],
+    'Ganze Zahlen (Multiplikation & Division)': [
+        'self.groupBox_zahlenbereich_minimum',
+        'self.groupBox_zahlenbereich_maximum',
+        'self.groupBox_kommastellen_wizard',
+        'self.groupBox_zahlenbereich_anzahl',
+        # 'self.checkbox_allow_brackets_wizard',        
     ]
 }   
 
@@ -52,9 +59,13 @@ themen_worksheet_wizard = list(dict_widgets_wizard.keys())
 D = decimal.Decimal
 
 
-def get_random_number(min, max, decimal=0):
-    x = round(random.uniform(min,max),decimal)
-
+def get_random_number(min, max, decimal=0, zero_allowed=False):
+    if zero_allowed == False:
+        x = 0
+        while x == 0:
+            x = round(random.uniform(min,max),decimal)
+    else:
+        x = round(random.uniform(min,max),decimal)
     x = D('{}'.format(x))
 
     x = D("{:.{prec}f}".format(x, prec=decimal))
@@ -260,6 +271,53 @@ def create_single_example_ganze_zahlen_strich(minimum, maximum, commas, anzahl_s
 
     return [summanden,solution, string]
 
+
+def create_division_pair(factor_1, factor_2):
+    dividend = factor_1*factor_2
+    return "{}:{}".format(add_summand(dividend), add_summand(factor_1))
+
+def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
+    factors = []
+    set_commas=commas
+    for _ in range(anzahl_summanden):
+        if smaller_or_equal == 1:
+            commas = random.randint(0,set_commas) 
+
+        num = get_random_number(minimum, maximum, commas)
+        factors.append(num)
+
+
+    string  = add_summand(factors[0])
+
+    operators = ['\xb7', ':']
+    division_pair = None
+
+    for i, all in enumerate(factors[1:]):
+        if division_pair != None:
+            string += "[" + create_division_pair(division_pair, all) + "]"
+            division_pair = None
+            continue
+        operation = random.choice(operators)
+        if operation == ':':
+            if i < len(factors[1:])-1:
+                string += '\xb7'
+                division_pair = all
+            elif len(factors)==2:
+                string = create_division_pair(factors[0], all) 
+            else:
+                string += '\xb7' + add_summand(all)            
+        else:
+            string += operation
+
+            string += add_summand(all)
+
+
+    solution = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
+    solution = D("{:.{prec}f}".format(solution, prec=set_commas))
+    string = "{0} = {1}".format(string.replace(".",","), str(solution).replace(".",","))
+
+    return [factors, solution, string]     
+
 def create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
     list_of_examples = []
 
@@ -298,11 +356,15 @@ def create_list_of_examples_division(examples, minimum_1, maximum_1, minimum_2, 
     return list_of_examples
 
 
-def create_list_of_examples_ganze_zahlen_strich(examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed):
+def create_list_of_examples_ganze_zahlen(typ, examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed):
     list_of_examples = []
 
     for _ in range(examples):
-        new_example = create_single_example_ganze_zahlen_strich(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
+        if typ == 'strich':
+            new_example = create_single_example_ganze_zahlen_strich(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
+        elif typ == 'punkt':
+            new_example = create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_summanden, smaller_or_equal) 
+
         list_of_examples.append(new_example)
 
     # print(list_of_examples)
@@ -487,13 +549,13 @@ def create_latex_string_division(content, example):
     return content
 
 
-def create_latex_string_ganze_zahlen_strich(content, example):
+def create_latex_string_ganze_zahlen(content, example):
     equation = example[-1]
     
     x,y = equation.split(" = ")
     
     temp_content = "\item ${0} = \\antwort{{{1}}}$\n\\leer\n\n".format(x.replace(".",","),y.replace(".",","))
-
+    temp_content = temp_content.replace('\xb7', '\cdot')
     content += temp_content
     return content
 
@@ -513,8 +575,9 @@ def create_latex_worksheet(list_of_examples,index, titel, columns, nummerierung,
             content = create_latex_string_multiplication(content, example, solution_type)
         elif index == 3:
             content = create_latex_string_division(content, example)
-        elif index == 4:
-            content = create_latex_string_ganze_zahlen_strich(content, example)
+        elif index == 4 or index == 5:
+            content = create_latex_string_ganze_zahlen(content, example)
+
 
     content += "\end{enumerate}"
 
@@ -616,10 +679,13 @@ def create_coordinates(self, solution_pixels):
         if distract_pixel not in solution_pixels.keys():
             while True:
                 distract_result = get_random_solution(self)[-2]
-                if distract_result not in coordinates:
+                   
+                if distract_result not in coordinates.values():
                     break
+
             coordinates[distract_pixel] = False
             i +=1
+        possible_option = False
 
     l = list(coordinates.items())
     random.shuffle(l)
@@ -679,7 +745,7 @@ def get_random_solution(MainWindow):
         distract_result = create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div,smaller_or_equal_div, commas_result, smaller_or_equal_result, output_type)
 
 
-    elif thema == themen_worksheet_wizard[4]:
+    elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[5]:
         minimum = MainWindow.spinbox_zahlenbereich_minimum.value()
         maximum = MainWindow.spinbox_zahlenbereich_maximum.value()
         commas = MainWindow.spinbox_kommastellen_wizard.value()
@@ -687,7 +753,10 @@ def get_random_solution(MainWindow):
         anzahl_summanden = MainWindow.spinBox_zahlenbereich_anzahl_wizard.value()
         brackets_allowed = MainWindow.checkbox_allow_brackets_wizard.isChecked()
 
-        distract_result = create_single_example_ganze_zahlen_strich(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
+        if thema == themen_worksheet_wizard[4]:
+            distract_result = create_single_example_ganze_zahlen_strich(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
+        elif thema == themen_worksheet_wizard[5]:
+            distract_result = create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
 
 
 
