@@ -74,7 +74,7 @@ def get_quotient_with_rest(dividend,divisor):
 commas=0
 minimum=-10
 maximum = 10
-anzahl_summanden=4
+anzahl_summanden=10
 smaller_or_equal=0
 brackets_allowed = False
 
@@ -86,6 +86,8 @@ temp_maximum = maximum
 def add_summand(s):
     if s>0:
         return "(+{})".format(s)
+    elif s==0:
+        return "{}".format(s)
     else:
         return "({})".format(s)
 
@@ -93,56 +95,140 @@ def random_switch(p=50):
     return random.randrange(100) < p
 
 def create_division_pair(factor_1, factor_2):
-
     dividend = factor_1*factor_2
+    return "{}:{}".format(add_summand(dividend), add_summand(factor_1))
 
-    return "[{}:{}]".format(add_summand(dividend), add_summand(factor_1))
+def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
+    factors = []
+    set_commas=commas
+    for _ in range(anzahl_summanden):
+        if smaller_or_equal == 1:
+            commas = random.randint(0,set_commas) 
 
-
-
-# create_division_pair(minimum, maximum, commas)
-
-factors = []
-set_commas=commas
-for _ in range(anzahl_summanden):
-    if smaller_or_equal == 1:
-        commas = random.randint(0,set_commas) 
-
-    num = get_random_number(minimum, maximum, commas)
-    factors.append(num)
+        num = get_random_number(minimum, maximum, commas, 25)
+        factors.append(num)
 
 
-string  = add_summand(factors[0])
+    string  = add_summand(factors[0])
 
-operators = ['\xb7', ':']
-division_pair = None
+    operators = ['+', '-', '\xb7', ':']
+    division_pair = None
+    bracket_open = False
+    waiter = False
 
-for i, all in enumerate(factors[1:]):
-    if division_pair != None:
-        string += create_division_pair(division_pair, all)
-        division_pair = None
-        continue
-    operation = random.choice(operators)
-    if operation == ':':
-        if i < len(factors[1:])-1:
-            string += '\xb7'
-            division_pair = all
+    for i, all in enumerate(factors[1:]):
+        if division_pair != None:
+            if division_pair == 0:
+                division_pair = get_random_number(minimum, maximum, commas)    
+            string += "[" + create_division_pair(division_pair, all) + "]"
+            division_pair = None
+            continue
+        operation = random.choice(operators)
+        if operation == ':':
+            rsp = random_switch()
+            if i==0 and rsp == True:
+                division_pair = factors[0]
+                if division_pair == 0:
+                    division_pair = get_random_number(minimum, maximum, commas)
+                string = "[" + create_division_pair(division_pair, all) + "]"
+                division_pair = None
+                continue
+            else:
+                if i < len(factors[1:])-1:
+                    string += '\xb7'
+                    division_pair = all
+                elif len(factors)==2:
+                    string = create_division_pair(factors[0], all) 
+                else:
+                    string += '\xb7' + add_summand(all)            
         else:
-            string += '\xb7' + add_summand(all)            
-    else:
-        string += operation
+            if brackets_allowed == True and random_switch(70) == True and waiter==False:
+                if bracket_open == False:
+                    string +=random.choice(operation) + '['
+                    bracket_open = True
+                    waiter = True
+                elif bracket_open == True:
+                    string +=']' + random.choice(operation) 
+                    bracket_open = False
+                    waiter = False  
+            else:
+                string += random.choice(operation)
+                waiter = False           
 
-        string += add_summand(all)
+            string += add_summand(all)
+
+            # string += operation
+
+            # string += add_summand(all)
+
+    if bracket_open == True:
+        if waiter == True:
+            index = string.rfind('[')
+            string = string[:index] + string[index+1:]
+
+        else:
+            string +=']'
+
+
+    solution = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
+    solution = D("{:.{prec}f}".format(solution, prec=set_commas))
+
+    if solution == 0:
+        solution = 0
+    string = "{0} = {1}".format(string.replace(".",","), str(solution).replace(".",","))
+
+    return [factors, solution, string] 
+
+
+factors, solution, string = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
 
 print(string)
+#### Addition & Subtraktion ###
 
-solution = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
-solution = D("{:.{prec}f}".format(solution, prec=set_commas))
+# summanden = []
+# set_commas=commas
+# for _ in range(anzahl_summanden):
+#     if smaller_or_equal == 1:
+#         commas = random.randint(0,set_commas) 
+#     num = 0
+#     while num == 0:
+#         num = get_random_number(minimum, maximum, commas)
+#     summanden.append(num)
 
-print(string)
-string = "{0} = {1}".format(string.replace(".",","), str(solution).replace(".",","))
+# string  = add_summand(summanden[0])
 
-print(string)
+# operation = ['+', '-']
+# bracket_open = False
+# waiter = False
+
+# for all in summanden[1:]:
+#     if brackets_allowed == True and random_switch(70) == True and waiter==False:
+#         if bracket_open == False:
+#             string +=random.choice(operation) + '['
+#             bracket_open = True
+#             waiter = True
+#         elif bracket_open == True:
+#             string +=']' + random.choice(operation) 
+#             bracket_open = False
+#             waiter = False  
+#     else:
+#         string += random.choice(operation)
+#         waiter = False           
+
+#     string += add_summand(all)
+
+# if bracket_open == True:
+#     if waiter == True:
+#         index = string.rfind('[')
+#         string = string[:index] + string[index+1:]
+
+#     else:
+#         string +=']'
+    
+# solution = eval(string.replace('[','(').replace(']',')'))
+# solution = D("{:.{prec}f}".format(solution, prec=set_commas))
+
+# string = "{0} = {1}".format(str(string).replace(".",","), str(solution).replace(".",","))
 
 #######################################################
 # titel = "Arbeitsblatt"

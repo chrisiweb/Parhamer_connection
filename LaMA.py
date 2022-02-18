@@ -6025,7 +6025,7 @@ class Ui_MainWindow(object):
             self.groupBox_zahlenbereich_anzahl.setTitle("Subtrahenden")
             self.spinBox_zahlenbereich_anzahl_wizard.setRange(1,5)
             self.spinBox_zahlenbereich_anzahl_wizard.setValue(1)
-        elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[5]:
+        elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[5] or thema == themen_worksheet_wizard[6]:
             self.spinbox_zahlenbereich_minimum.setRange(-999,999)
             self.spinbox_zahlenbereich_maximum.setRange(-999,999)
             self.spinBox_zahlenbereich_anzahl_wizard.setMaximum(20)
@@ -6040,6 +6040,11 @@ class Ui_MainWindow(object):
                 self.spinBox_zahlenbereich_anzahl_wizard.setValue(3)
                 self.spinbox_zahlenbereich_minimum.setValue(-10)
                 self.spinbox_zahlenbereich_maximum.setValue(10)
+            elif thema == themen_worksheet_wizard[6]:
+                self.groupBox_zahlenbereich_anzahl.setTitle("Zahlen") 
+                self.spinBox_zahlenbereich_anzahl_wizard.setValue(4)
+                self.spinbox_zahlenbereich_minimum.setValue(-10)
+                self.spinbox_zahlenbereich_maximum.setValue(10)                
            
 
         hiding_list = []
@@ -6192,7 +6197,7 @@ class Ui_MainWindow(object):
 
             new_example = create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div, commas_result, output_type)
 
-        elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[5]:
+        elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[5] or thema == themen_worksheet_wizard[6]:
             minimum = self.spinbox_zahlenbereich_minimum.value()
             maximum = self.spinbox_zahlenbereich_maximum.value()
             commas = self.spinbox_kommastellen_wizard.value()
@@ -6204,6 +6209,8 @@ class Ui_MainWindow(object):
                 new_example = create_single_example_ganze_zahlen_strich(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
             elif thema == themen_worksheet_wizard[5]:
                 new_example = create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
+            elif thema == themen_worksheet_wizard[6]:
+                new_example = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
 
 
         result = self.list_of_examples_wizard[index][-2]
@@ -6275,11 +6282,13 @@ class Ui_MainWindow(object):
 
             self.list_of_examples_wizard = create_list_of_examples_division(examples, minimum_1, maximum_1, minimum_2, maximum_2, commas_div, smaller_or_equal_div,commas_result,smaller_or_equal_result, output_type)  
 
-        elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[5]:
+        elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[5] or thema == themen_worksheet_wizard[6]:
             if thema == themen_worksheet_wizard[4]:
                 typ = 'strich'
             elif thema == themen_worksheet_wizard[5]:
                 typ = 'punkt'
+            elif thema == themen_worksheet_wizard[6]:
+                typ = 'grundrechnungsarten'
             minimum = self.spinbox_zahlenbereich_minimum.value()
             maximum = self.spinbox_zahlenbereich_maximum.value()
             commas = self.spinbox_kommastellen_wizard.value()
@@ -9106,7 +9115,7 @@ if __name__ == "__main__":
         create_list_of_examples_subtraction, create_single_example_subtraction,
         create_list_of_examples_multiplication, create_single_example_multiplication,
         create_list_of_examples_division, create_single_example_division,
-        create_list_of_examples_ganze_zahlen, create_single_example_ganze_zahlen_strich, create_single_example_ganze_zahlen_punkt,
+        create_list_of_examples_ganze_zahlen, create_single_example_ganze_zahlen_strich, create_single_example_ganze_zahlen_punkt, create_single_example_ganze_zahlen_grundrechnungsarten,
         create_nonogramm, create_coordinates, list_all_pixels, all_nonogramms, show_all_nonogramms
     )
 
