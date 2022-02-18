@@ -1,4 +1,5 @@
 from functools import reduce
+from operator import is_
 from pickletools import decimalnl_long
 import random
 from math import floor, ceil
@@ -60,12 +61,16 @@ D = decimal.Decimal
 
 
 def get_random_number(min, max, decimal=0, zero_allowed=False):
+    if not isinstance(zero_allowed, bool):
+        zero_allowed = random_switch(zero_allowed)
+
     if zero_allowed == False:
         x = 0
         while x == 0:
             x = round(random.uniform(min,max),decimal)
     else:
         x = round(random.uniform(min,max),decimal)
+
     x = D('{}'.format(x))
 
     x = D("{:.{prec}f}".format(x, prec=decimal))
@@ -217,6 +222,8 @@ def create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, c
 def add_summand(s):
     if s>0:
         return "(+{})".format(s)
+    elif s==0:
+        return "{}".format(s)
     else:
         return "({})".format(s)
 
@@ -283,7 +290,7 @@ def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_su
         if smaller_or_equal == 1:
             commas = random.randint(0,set_commas) 
 
-        num = get_random_number(minimum, maximum, commas)
+        num = get_random_number(minimum, maximum, commas, 25)
         factors.append(num)
 
 
@@ -294,26 +301,39 @@ def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_su
 
     for i, all in enumerate(factors[1:]):
         if division_pair != None:
+            if division_pair == 0:
+                division_pair = get_random_number(minimum, maximum, commas)    
             string += "[" + create_division_pair(division_pair, all) + "]"
             division_pair = None
             continue
         operation = random.choice(operators)
         if operation == ':':
-            if i < len(factors[1:])-1:
-                string += '\xb7'
-                division_pair = all
-            elif len(factors)==2:
-                string = create_division_pair(factors[0], all) 
+            rsp = random_switch()
+            if i==0 and rsp == True:
+                division_pair = factors[0]
+                if division_pair == 0:
+                    division_pair = get_random_number(minimum, maximum, commas)
+                string = "[" + create_division_pair(division_pair, all) + "]"
+                division_pair = None
+                continue
             else:
-                string += '\xb7' + add_summand(all)            
+                if i < len(factors[1:])-1:
+                    string += '\xb7'
+                    division_pair = all
+                elif len(factors)==2:
+                    string = create_division_pair(factors[0], all) 
+                else:
+                    string += '\xb7' + add_summand(all)            
         else:
             string += operation
 
             string += add_summand(all)
 
-
     solution = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
     solution = D("{:.{prec}f}".format(solution, prec=set_commas))
+
+    if solution == 0:
+        solution = 0
     string = "{0} = {1}".format(string.replace(".",","), str(solution).replace(".",","))
 
     return [factors, solution, string]     
