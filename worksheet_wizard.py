@@ -39,6 +39,13 @@ dict_widgets_wizard = {
         'self.groupBox_divisor_wizard',
         'self.groupBox_ergebnis_wizard',
     ],
+    'Verbindung der Grundrechnungsarten': [
+        'self.groupBox_zahlenbereich_minimum',
+        'self.groupBox_zahlenbereich_maximum',
+        # 'self.groupBox_kommastellen_wizard',
+        'self.groupBox_zahlenbereich_anzahl',
+        'self.checkbox_allow_brackets_wizard',        
+    ],
     'Ganze Zahlen (Addition & Subtraktion)': [
         'self.groupBox_zahlenbereich_minimum',
         'self.groupBox_zahlenbereich_maximum',
@@ -363,7 +370,7 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
     division_pair = None
     bracket_open = False
     waiter = False
-
+    
     for i, all in enumerate(numbers[1:]):
         if division_pair != None:
             if division_pair == 0:
@@ -373,6 +380,7 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
             continue
         operation = random.choice(operators)
         if operation == ':':
+            waiter = False
             rsp = random_switch()
             if i==0 and rsp == True:
                 division_pair = numbers[0]
@@ -405,12 +413,10 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
 
             string += add_summand(all)
 
-
     if bracket_open == True:
         if waiter == True:
             index = string.rfind('[')
             string = string[:index] + string[index+1:]
-
         else:
             string +=']'
 
@@ -421,7 +427,6 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
     if solution == 0:
         solution = 0
     string = "{0} = {1}".format(string.replace(".",","), str(solution).replace(".",","))
-
     return [numbers, solution, string] 
 
 
@@ -684,7 +689,7 @@ def create_latex_worksheet(list_of_examples,index, titel, columns, nummerierung,
             content = create_latex_string_multiplication(content, example, solution_type)
         elif index == 3:
             content = create_latex_string_division(content, example)
-        elif index == 4 or index == 5 or index ==6:
+        elif index == 5 or index == 6 or index ==7:
             content = create_latex_string_ganze_zahlen(content, example)
 
 
@@ -854,7 +859,7 @@ def get_random_solution(MainWindow):
         distract_result = create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div,smaller_or_equal_div, commas_result, smaller_or_equal_result, output_type)
 
 
-    elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[5] or thema == themen_worksheet_wizard[6]:
+    elif thema == themen_worksheet_wizard[5] or thema == themen_worksheet_wizard[6] or thema == themen_worksheet_wizard[7]:
         minimum = MainWindow.spinbox_zahlenbereich_minimum.value()
         maximum = MainWindow.spinbox_zahlenbereich_maximum.value()
         commas = MainWindow.spinbox_kommastellen_wizard.value()
@@ -862,11 +867,11 @@ def get_random_solution(MainWindow):
         anzahl_summanden = MainWindow.spinBox_zahlenbereich_anzahl_wizard.value()
         brackets_allowed = MainWindow.checkbox_allow_brackets_wizard.isChecked()
 
-        if thema == themen_worksheet_wizard[4]:
+        if thema == themen_worksheet_wizard[5]:
             distract_result = create_single_example_ganze_zahlen_strich(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
-        elif thema == themen_worksheet_wizard[5]:
-            distract_result = create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
         elif thema == themen_worksheet_wizard[6]:
+            distract_result = create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
+        elif thema == themen_worksheet_wizard[7]:
             distract_result = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
 
 

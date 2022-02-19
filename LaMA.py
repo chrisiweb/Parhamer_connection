@@ -6025,23 +6025,23 @@ class Ui_MainWindow(object):
             self.groupBox_zahlenbereich_anzahl.setTitle("Subtrahenden")
             self.spinBox_zahlenbereich_anzahl_wizard.setRange(1,5)
             self.spinBox_zahlenbereich_anzahl_wizard.setValue(1)
-        elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[5] or thema == themen_worksheet_wizard[6]:
+        elif thema == themen_worksheet_wizard[5] or thema == themen_worksheet_wizard[6] or thema == themen_worksheet_wizard[7]:
             self.spinbox_zahlenbereich_minimum.setRange(-999,999)
             self.spinbox_zahlenbereich_maximum.setRange(-999,999)
             self.spinBox_zahlenbereich_anzahl_wizard.setMaximum(20)
-            self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,10) 
-            if thema == themen_worksheet_wizard[4]:
-                self.groupBox_zahlenbereich_anzahl.setTitle("Summanden")
+            self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,10)
+            self.groupBox_zahlenbereich_anzahl.setTitle("Zahlen")  
+            if thema == themen_worksheet_wizard[5]:
+                # self.groupBox_zahlenbereich_anzahl.setTitle("Summanden")
                 self.spinBox_zahlenbereich_anzahl_wizard.setValue(2)
                 self.spinbox_zahlenbereich_minimum.setValue(-20)
                 self.spinbox_zahlenbereich_maximum.setValue(20)
-            elif thema == themen_worksheet_wizard[5]:
-                self.groupBox_zahlenbereich_anzahl.setTitle("Faktoren") 
+            elif thema == themen_worksheet_wizard[6]:
+                # self.groupBox_zahlenbereich_anzahl.setTitle("Faktoren") 
                 self.spinBox_zahlenbereich_anzahl_wizard.setValue(3)
                 self.spinbox_zahlenbereich_minimum.setValue(-10)
                 self.spinbox_zahlenbereich_maximum.setValue(10)
-            elif thema == themen_worksheet_wizard[6]:
-                self.groupBox_zahlenbereich_anzahl.setTitle("Zahlen") 
+            elif thema == themen_worksheet_wizard[7]:
                 self.spinBox_zahlenbereich_anzahl_wizard.setValue(4)
                 self.spinbox_zahlenbereich_minimum.setValue(-10)
                 self.spinbox_zahlenbereich_maximum.setValue(10)                
@@ -6197,7 +6197,7 @@ class Ui_MainWindow(object):
 
             new_example = create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div, commas_result, output_type)
 
-        elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[5] or thema == themen_worksheet_wizard[6]:
+        elif thema == themen_worksheet_wizard[5] or thema == themen_worksheet_wizard[6] or thema == themen_worksheet_wizard[7]:
             minimum = self.spinbox_zahlenbereich_minimum.value()
             maximum = self.spinbox_zahlenbereich_maximum.value()
             commas = self.spinbox_kommastellen_wizard.value()
@@ -6205,11 +6205,11 @@ class Ui_MainWindow(object):
             anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
             brackets_allowed = self.checkbox_allow_brackets_wizard.isChecked()
 
-            if thema == themen_worksheet_wizard[4]:
+            if thema == themen_worksheet_wizard[5]:
                 new_example = create_single_example_ganze_zahlen_strich(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
-            elif thema == themen_worksheet_wizard[5]:
-                new_example = create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
             elif thema == themen_worksheet_wizard[6]:
+                new_example = create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
+            elif thema == themen_worksheet_wizard[7]:
                 new_example = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
 
 
@@ -6282,12 +6282,12 @@ class Ui_MainWindow(object):
 
             self.list_of_examples_wizard = create_list_of_examples_division(examples, minimum_1, maximum_1, minimum_2, maximum_2, commas_div, smaller_or_equal_div,commas_result,smaller_or_equal_result, output_type)  
 
-        elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[5] or thema == themen_worksheet_wizard[6]:
-            if thema == themen_worksheet_wizard[4]:
+        elif thema == themen_worksheet_wizard[5] or thema == themen_worksheet_wizard[6] or thema == themen_worksheet_wizard[7]:
+            if thema == themen_worksheet_wizard[5]:
                 typ = 'strich'
-            elif thema == themen_worksheet_wizard[5]:
-                typ = 'punkt'
             elif thema == themen_worksheet_wizard[6]:
+                typ = 'punkt'
+            elif thema == themen_worksheet_wizard[7]:
                 typ = 'grundrechnungsarten'
             minimum = self.spinbox_zahlenbereich_minimum.value()
             maximum = self.spinbox_zahlenbereich_maximum.value()
