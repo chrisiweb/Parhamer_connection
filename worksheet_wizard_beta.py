@@ -119,7 +119,9 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
     for i, all in enumerate(factors[1:]):
         if division_pair != None:
             if division_pair == 0:
-                division_pair = get_random_number(minimum, maximum, commas)    
+                division_pair = get_random_number(minimum, maximum, commas)
+            print(string)
+            print(string[-1])
             string += "[" + create_division_pair(division_pair, all) + "]"
             division_pair = None
             continue
@@ -135,7 +137,9 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
                 continue
             else:
                 if i < len(factors[1:])-1:
-                    string += '\xb7'
+                    while operation == ':':
+                        operation = random.choice(operators)
+                    string += operation
                     division_pair = all
                 elif len(factors)==2:
                     string = create_division_pair(factors[0], all) 

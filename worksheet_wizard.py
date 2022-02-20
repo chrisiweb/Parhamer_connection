@@ -1,6 +1,5 @@
 from functools import reduce
-from operator import is_
-from pickletools import decimalnl_long
+
 import random
 from math import floor, ceil
 # import os
@@ -233,11 +232,11 @@ def create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, c
 
     return [dividend,divisor,result, string]
 
-def add_summand(s):
-    if s>0:
-        return "(+{})".format(s)
-    elif s==0:
+def add_summand(s, show_brackets=True):
+    if s==0 or show_brackets == False:
         return "{}".format(s)
+    elif s>0:
+        return "(+{})".format(s)
     else:
         return "({})".format(s)
 
@@ -293,9 +292,9 @@ def create_single_example_ganze_zahlen_strich(minimum, maximum, commas, anzahl_s
     return [summanden,solution, string]
 
 
-def create_division_pair(factor_1, factor_2):
+def create_division_pair(factor_1, factor_2, show_brackets = True):
     dividend = factor_1*factor_2
-    return "{}:{}".format(add_summand(dividend), add_summand(factor_1))
+    return "{}:{}".format(add_summand(dividend, show_brackets), add_summand(factor_1, show_brackets))
 
 def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
     factors = []
@@ -353,7 +352,7 @@ def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_su
     return [factors, solution, string]     
 
 
-def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed):
+def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets):
     numbers = []
     set_commas=commas
     for _ in range(anzahl_summanden):
@@ -363,40 +362,62 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
         num = get_random_number(minimum, maximum, commas, 25)
         numbers.append(num)
 
-
-    string  = add_summand(numbers[0])
+    string  = add_summand(numbers[0], show_brackets)
 
     operators = ['+', '-', '\xb7', ':']
     division_pair = None
     bracket_open = False
     waiter = False
-    
+
     for i, all in enumerate(numbers[1:]):
-        if division_pair != None:
-            if division_pair == 0:
-                division_pair = get_random_number(minimum, maximum, commas)    
-            string += "[" + create_division_pair(division_pair, all) + "]"
+        if division_pair == 'done':
             division_pair = None
+        elif division_pair != None:
+            if division_pair[0] == 0:
+                division_pair[0] = get_random_number(minimum, maximum, commas)
+
+            operation = random.choice(operators) # operation after the division
+
+            if division_pair[1] != '\xb7' and operation != '\xb7':
+                string += create_division_pair(division_pair[0], all, show_brackets)
+            elif show_brackets == False:
+                string += "(" + create_division_pair(division_pair[0], all, show_brackets) + ")"
+            else:
+                string += "[" + create_division_pair(division_pair[0], all, show_brackets) + "]"
+
+                
+            division_pair = 'done'
             continue
-        operation = random.choice(operators)
+        else:
+            operation = random.choice(operators)
+
         if operation == ':':
             waiter = False
             rsp = random_switch()
             if i==0 and rsp == True:
-                division_pair = numbers[0]
-                if division_pair == 0:
-                    division_pair = get_random_number(minimum, maximum, commas)
-                string = "[" + create_division_pair(division_pair, all) + "]"
-                division_pair = None
+                division_pair = [numbers[0], None]
+                if division_pair[0] == 0:
+                    division_pair[0] = get_random_number(minimum, maximum, commas)
+                operation = random.choice(operators)
+                if operation != '\xb7' or len(numbers)==2:
+                    string = create_division_pair(division_pair[0], all, show_brackets)
+                elif show_brackets == False:
+                    string = "(" + create_division_pair(division_pair[0], all, show_brackets) + ")"
+                else: 
+                    string = "[" + create_division_pair(division_pair[0], all, show_brackets) + "]"
+                
+                division_pair = 'done'
                 continue
             else:
                 if i < len(numbers[1:])-1:
-                    string += '\xb7'
-                    division_pair = all
+                    operation = random.choice([x for x in operators if x!=':'])
+                    string += operation
+                    division_pair = [all, operation]
                 elif len(numbers)==2:
-                    string = create_division_pair(numbers[0], all) 
+                    string = create_division_pair(numbers[0], all, show_brackets) 
                 else:
-                    string += '\xb7' + add_summand(all)            
+                    operation = random.choice([x for x in operators if x!=':'])
+                    string += operation + add_summand(all, show_brackets)            
         else:
             if brackets_allowed == True and random_switch(70) == True and waiter==False:
                 if bracket_open == False:
@@ -411,7 +432,7 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
                 string += random.choice(operation)
                 waiter = False           
 
-            string += add_summand(all)
+            string += add_summand(all, show_brackets)
 
     if bracket_open == True:
         if waiter == True:
@@ -422,11 +443,22 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
 
 
     solution = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
+
+    if show_brackets== False: ## check if result ist negative, when natural numbers are chosen          
+        while solution < 0:
+            string = string.replace("-", "+", 1)
+            solution = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
+            
+
+
     solution = D("{:.{prec}f}".format(solution, prec=set_commas))
+
+  
 
     if solution == 0:
         solution = 0
     string = "{0} = {1}".format(string.replace(".",","), str(solution).replace(".",","))
+
     return [numbers, solution, string] 
 
 
@@ -469,7 +501,7 @@ def create_list_of_examples_division(examples, minimum_1, maximum_1, minimum_2, 
     return list_of_examples
 
 
-def create_list_of_examples_ganze_zahlen(typ, examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed):
+def create_list_of_examples_ganze_zahlen(typ, examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets):
     list_of_examples = []
 
     for _ in range(examples):
@@ -478,7 +510,7 @@ def create_list_of_examples_ganze_zahlen(typ, examples, minimum, maximum, commas
         elif typ == 'punkt':
             new_example = create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
         elif typ == 'grundrechnungsarten': 
-            new_example = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
+            new_example = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)
         list_of_examples.append(new_example)
 
     # print(list_of_examples)
@@ -859,7 +891,7 @@ def get_random_solution(MainWindow):
         distract_result = create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div,smaller_or_equal_div, commas_result, smaller_or_equal_result, output_type)
 
 
-    elif thema == themen_worksheet_wizard[5] or thema == themen_worksheet_wizard[6] or thema == themen_worksheet_wizard[7]:
+    elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[5] or thema == themen_worksheet_wizard[6] or thema == themen_worksheet_wizard[7]:
         minimum = MainWindow.spinbox_zahlenbereich_minimum.value()
         maximum = MainWindow.spinbox_zahlenbereich_maximum.value()
         commas = MainWindow.spinbox_kommastellen_wizard.value()
@@ -871,8 +903,12 @@ def get_random_solution(MainWindow):
             distract_result = create_single_example_ganze_zahlen_strich(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
         elif thema == themen_worksheet_wizard[6]:
             distract_result = create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
-        elif thema == themen_worksheet_wizard[7]:
-            distract_result = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
+        elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[7]:
+            if thema == themen_worksheet_wizard[4]:
+                show_brackets = False
+            else:
+                show_brackets = True
+            distract_result = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)
 
 
     return distract_result
