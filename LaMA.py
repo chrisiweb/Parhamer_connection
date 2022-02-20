@@ -8822,6 +8822,33 @@ class Ui_MainWindow(object):
         else:
             self.cb_matura_tag.hide()
             self.cb_no_grade_tag.hide()
+        
+        list_all_menubar = [self.menuSuche, self.menuSage, self.menuNeu, self.menuFeedback, self.menuOptionen ,self.menuDeveloper, self.menuHelp]
+        list_menubar_wizard = [self.menuOptionen ,self.menuHelp]
+
+        # if self.developer_mode_active == True:
+
+        if chosen_gui == 'widgets_wizard':
+            for all in list_all_menubar:
+                if all == self.menuDeveloper and self.developer_mode_active == False:
+                    continue
+                else:
+                    self.menuBar.removeAction(all.menuAction())
+            for all in list_menubar_wizard:
+                self.menuBar.addAction(all.menuAction())
+
+            self.actionRefresh_Database.setVisible(False)
+
+        else:
+            for all in list_menubar_wizard:
+                self.menuBar.removeAction(all.menuAction())
+
+            for all in list_all_menubar:
+                if all == self.menuDeveloper and self.developer_mode_active == False:
+                    continue
+                else:
+                    self.menuBar.addAction(all.menuAction())
+            self.actionRefresh_Database.setVisible(True)
 
 
 if __name__ == "__main__":
