@@ -6,7 +6,8 @@ from functools import reduce
 import math
 import decimal
 import re
-
+from sympy import symbols, init_printing, expand
+# import numpy
 # import os
 
 # from numpy import empty
@@ -98,141 +99,17 @@ def create_division_pair(factor_1, factor_2):
     dividend = factor_1*factor_2
     return "{}:{}".format(add_summand(dividend), add_summand(factor_1))
 
-def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
-    factors = []
-    set_commas=commas
-    for _ in range(anzahl_summanden):
-        if smaller_or_equal == 1:
-            commas = random.randint(0,set_commas) 
 
-        num = get_random_number(minimum, maximum, commas, 25)
-        factors.append(num)
+# init_printing()
+a, b = symbols("a b")
 
+e = (3*a+1/2*b)**2
 
-    string  = add_summand(factors[0])
+print(e)
 
-    operators = ['+', '-', '\xb7', ':']
-    division_pair = None
-    bracket_open = False
-    waiter = False
+print(e.expand())
+# sympy.Eq((x^2+x-5, 15))
 
-    for i, all in enumerate(factors[1:]):
-        if division_pair != None:
-            if division_pair == 0:
-                division_pair = get_random_number(minimum, maximum, commas)
-            print(string)
-            print(string[-1])
-            string += "[" + create_division_pair(division_pair, all) + "]"
-            division_pair = None
-            continue
-        operation = random.choice(operators)
-        if operation == ':':
-            rsp = random_switch()
-            if i==0 and rsp == True:
-                division_pair = factors[0]
-                if division_pair == 0:
-                    division_pair = get_random_number(minimum, maximum, commas)
-                string = "[" + create_division_pair(division_pair, all) + "]"
-                division_pair = None
-                continue
-            else:
-                if i < len(factors[1:])-1:
-                    while operation == ':':
-                        operation = random.choice(operators)
-                    string += operation
-                    division_pair = all
-                elif len(factors)==2:
-                    string = create_division_pair(factors[0], all) 
-                else:
-                    string += '\xb7' + add_summand(all)            
-        else:
-            if brackets_allowed == True and random_switch(70) == True and waiter==False:
-                if bracket_open == False:
-                    string +=random.choice(operation) + '['
-                    bracket_open = True
-                    waiter = True
-                elif bracket_open == True:
-                    string +=']' + random.choice(operation) 
-                    bracket_open = False
-                    waiter = False  
-            else:
-                string += random.choice(operation)
-                waiter = False           
-
-            string += add_summand(all)
-
-            # string += operation
-
-            # string += add_summand(all)
-
-    if bracket_open == True:
-        if waiter == True:
-            index = string.rfind('[')
-            string = string[:index] + string[index+1:]
-
-        else:
-            string +=']'
-
-
-    solution = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
-    solution = D("{:.{prec}f}".format(solution, prec=set_commas))
-
-    if solution == 0:
-        solution = 0
-    string = "{0} = {1}".format(string.replace(".",","), str(solution).replace(".",","))
-
-    return [factors, solution, string] 
-
-
-factors, solution, string = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
-
-print(string)
-#### Addition & Subtraktion ###
-
-# summanden = []
-# set_commas=commas
-# for _ in range(anzahl_summanden):
-#     if smaller_or_equal == 1:
-#         commas = random.randint(0,set_commas) 
-#     num = 0
-#     while num == 0:
-#         num = get_random_number(minimum, maximum, commas)
-#     summanden.append(num)
-
-# string  = add_summand(summanden[0])
-
-# operation = ['+', '-']
-# bracket_open = False
-# waiter = False
-
-# for all in summanden[1:]:
-#     if brackets_allowed == True and random_switch(70) == True and waiter==False:
-#         if bracket_open == False:
-#             string +=random.choice(operation) + '['
-#             bracket_open = True
-#             waiter = True
-#         elif bracket_open == True:
-#             string +=']' + random.choice(operation) 
-#             bracket_open = False
-#             waiter = False  
-#     else:
-#         string += random.choice(operation)
-#         waiter = False           
-
-#     string += add_summand(all)
-
-# if bracket_open == True:
-#     if waiter == True:
-#         index = string.rfind('[')
-#         string = string[:index] + string[index+1:]
-
-#     else:
-#         string +=']'
-    
-# solution = eval(string.replace('[','(').replace(']',')'))
-# solution = D("{:.{prec}f}".format(solution, prec=set_commas))
-
-# string = "{0} = {1}".format(str(string).replace(".",","), str(solution).replace(".",","))
 
 #######################################################
 # titel = "Arbeitsblatt"

@@ -2438,6 +2438,7 @@ class Ui_MainWindow(object):
         self.gridLayout_setting_wizard.addWidget(self.groupBox_column_wizard, 1, 1,1,1)
         self.horizontalLayout_column_wizard = create_new_horizontallayout(self.groupBox_column_wizard)
         self.spinBox_column_wizard = create_new_spinbox(self.groupBox_column_wizard, 2)
+        self.spinBox_column_wizard.valueChanged.connect(self.spinBox_column_wizard_changed)
         self.spinBox_column_wizard.setRange(1, 10)
         self.horizontalLayout_column_wizard.addWidget(self.spinBox_column_wizard)        
 
@@ -6031,14 +6032,14 @@ class Ui_MainWindow(object):
             self.spinbox_zahlenbereich_minimum.setValue(0)
             self.spinbox_zahlenbereich_maximum.setValue(20)
             self.spinBox_zahlenbereich_anzahl_wizard.setMaximum(20)
-            self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,10)
+            self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,20)
             self.groupBox_zahlenbereich_anzahl.setTitle("Zahlen") 
 
         elif thema == themen_worksheet_wizard[5] or thema == themen_worksheet_wizard[6] or thema == themen_worksheet_wizard[7]:
             self.spinbox_zahlenbereich_minimum.setRange(-999,999)
             self.spinbox_zahlenbereich_maximum.setRange(-999,999)
             self.spinBox_zahlenbereich_anzahl_wizard.setMaximum(20)
-            self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,10)
+            self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,20)
             self.groupBox_zahlenbereich_anzahl.setTitle("Zahlen")  
             if thema == themen_worksheet_wizard[5]:
                 # self.groupBox_zahlenbereich_anzahl.setTitle("Summanden")
@@ -6087,6 +6088,8 @@ class Ui_MainWindow(object):
             self.checkBox_show_nonogramm.setChecked(True)
             self.checkBox_show_nonogramm.setEnabled(True)            
 
+    def spinBox_column_wizard_changed(self):
+        self.reset_aufgabenboxes_wizard()
 
 
     def minimum_changed_wizard(self, min, max):
@@ -6237,10 +6240,29 @@ class Ui_MainWindow(object):
         self.dict_aufgaben_wizard[index].setText(new_example[-1])
 
 
+    def reset_aufgabenboxes_wizard(self):
+        columns = self.spinBox_column_wizard.value()
+        for i in reversed(range(self.gridLayout_scrollArea_wizard.count())): 
+            self.gridLayout_scrollArea_wizard.itemAt(i).widget().setParent(None)
+
+        items_per_column= len(self.list_of_examples_wizard)/columns
+        column = 0
+        row = 0
+
+        for index, example in enumerate(self.list_of_examples_wizard):
+            self.create_aufgabenbox_wizard(index, example, row, column)
+            if row+1 < items_per_column:
+                row +=1
+            else:
+                row +=1
+                self.gridLayout_scrollArea_wizard.setColumnStretch(row, 1)
+                self.gridLayout_scrollArea_wizard.setRowStretch(row, 1)
+                row = 0
+                column +=1
+
     def create_worksheet_wizard_pressed(self):
         self.worksheet_wizard_changed = False
         thema = self.comboBox_themen_wizard.currentText()
-        columns = self.spinBox_column_wizard.value()
         examples = self.spinBox_number_wizard.value()
 
 
@@ -6318,23 +6340,7 @@ class Ui_MainWindow(object):
             self.list_of_examples_wizard = create_list_of_examples_ganze_zahlen(typ, examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)
 
 
-        for i in reversed(range(self.gridLayout_scrollArea_wizard.count())): 
-            self.gridLayout_scrollArea_wizard.itemAt(i).widget().setParent(None)
-
-        items_per_column= len(self.list_of_examples_wizard)/columns
-        column = 0
-        row = 0
-
-        for index, example in enumerate(self.list_of_examples_wizard):
-            self.create_aufgabenbox_wizard(index, example, row, column)
-            if row+1 < items_per_column:
-                row +=1
-            else:
-                row +=1
-                self.gridLayout_scrollArea_wizard.setColumnStretch(row, 1)
-                self.gridLayout_scrollArea_wizard.setRowStretch(row, 1)
-                row = 0
-                column +=1
+        self.reset_aufgabenboxes_wizard()
         
         # if self.checkbox_solutions_wizard.isChecked():
         self.chosen_nonogram, solution_pixel = get_all_solution_pixels(self.list_of_examples_wizard)

@@ -421,11 +421,19 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
         else:
             if brackets_allowed == True and random_switch(70) == True and waiter==False:
                 if bracket_open == False:
-                    string +=random.choice(operation) + '['
+                    string +=random.choice(operation)
+                    if show_brackets == False:
+                        string += '('
+                    else:
+                        string += '['
                     bracket_open = True
                     waiter = True
                 elif bracket_open == True:
-                    string +=']' + random.choice(operation) 
+                    if show_brackets == False:
+                        string += ')'
+                    else:
+                        string += ']'
+                    string += random.choice(operation) 
                     bracket_open = False
                     waiter = False  
             else:
@@ -436,10 +444,15 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
 
     if bracket_open == True:
         if waiter == True:
-            index = string.rfind('[')
+            if show_brackets == True:
+                index = string.rfind('[')
+            elif show_brackets == False:
+                index = string.rfind('(')
             string = string[:index] + string[index+1:]
-        else:
+        elif show_brackets == True:
             string +=']'
+        elif show_brackets == False:
+            string +=')'
 
 
     solution = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
@@ -721,7 +734,7 @@ def create_latex_worksheet(list_of_examples,index, titel, columns, nummerierung,
             content = create_latex_string_multiplication(content, example, solution_type)
         elif index == 3:
             content = create_latex_string_division(content, example)
-        elif index == 5 or index == 6 or index ==7:
+        elif index == 4 or index == 5 or index == 6 or index ==7:
             content = create_latex_string_ganze_zahlen(content, example)
 
 
