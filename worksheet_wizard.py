@@ -243,6 +243,9 @@ def add_summand(s, show_brackets=True):
 def random_switch(p=50):
     return random.randrange(100) < p
 
+def random_choice_except(_list, exception):
+    return random.choice([x for x in _list if x != exception])
+
 def create_single_example_ganze_zahlen_strich(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed):
     summanden = []
     set_commas=commas
@@ -256,22 +259,22 @@ def create_single_example_ganze_zahlen_strich(minimum, maximum, commas, anzahl_s
     
     string  = add_summand(summanden[0])
 
-    operation = ['+', '-']
+    operators = ['+', '-']
     bracket_open = False
     waiter = False
 
     for all in summanden[1:]:
         if brackets_allowed == True and random_switch(70) == True and waiter==False:
             if bracket_open == False:
-                string +=random.choice(operation) + '['
+                string +=random.choice(operators) + '['
                 bracket_open = True
                 waiter = True
             elif bracket_open == True:
-                string +=']' + random.choice(operation) 
+                string +=']' + random.choice(operators) 
                 bracket_open = False
                 waiter = False  
         else:
-            string += random.choice(operation)
+            string += random.choice(operators)
             waiter = False           
 
         string += add_summand(all)
@@ -352,6 +355,119 @@ def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_su
     return [factors, solution, string]     
 
 
+def get_solution(string):
+    return eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
+
+
+
+def replace_negative_solutions(string):
+    split_string = string.split('-')
+
+    temp_split_string = ['-'+s for s in split_string[1:]]
+
+    split_string = [split_string[0]] + temp_split_string
+    
+    str = '+'.join(split_string)
+    split_string = str.split('+')
+
+    temp_split_string = ['+'+s if s[0]!='-' else s for s in split_string[1:]]
+    split_string = [split_string[0]] + temp_split_string  
+
+    bracket_open = False
+    new_split_string = []
+    for i, all in enumerate(split_string[:]):
+        if all.count('(')>all.count(')'):
+            stack = [all]
+            bracket_open = True
+        elif all.count('(')<all.count(')'):
+            stack.append(all)
+            new_split_string.append(''.join(stack))
+            bracket_open = False
+        elif bracket_open == True:
+            stack.append(all)
+        else:
+            new_split_string.append(all)
+
+
+    split_string = new_split_string
+
+    total_string = ''
+    for part in split_string:
+        temp_string = total_string + part
+        temp_solution = get_solution(temp_string)
+
+        while temp_solution<0:
+            temp_string = temp_string.replace("-", "+", 1)
+            temp_solution = get_solution(temp_string)
+        
+        total_string = temp_string
+
+
+    return total_string
+
+
+
+def check_for_negative_solutions(string):
+    inner_string_brackets = re.findall(r"\(([0-9+-:\xb7]+)\)", string)
+    # print(inner_string_brackets)
+
+    new_inner_string_brackets = [replace_negative_solutions(x) for x in inner_string_brackets]
+    for i, item in enumerate(inner_string_brackets):
+        if item in string:
+            string = string.replace(item, new_inner_string_brackets[i])
+    inner_string_brackets = new_inner_string_brackets
+    # replace_negative_solutions(inner_string_brackets[0])
+
+
+    inner_brackets_replacement = {}
+    replaced_string = string
+    for i, all in enumerate(inner_string_brackets):
+        x = '('+all+')'
+        inner_brackets_replacement['R{}'.format(i)] = x
+        replaced_string = replaced_string.replace(x,'R{}'.format(i))
+
+    outer_string_brackets = re.findall(r"\(([R0-9+-:\xb7]+)\)", replaced_string)
+
+    for i, all in enumerate(outer_string_brackets[:]):
+        temp_string = all
+        for r in inner_brackets_replacement:
+            if r in temp_string:
+                temp_string = temp_string.replace(r, inner_brackets_replacement[r])
+
+        outer_string_brackets[i] = temp_string
+    
+
+    new_outer_string_brackets = [replace_negative_solutions(x) for x in outer_string_brackets]
+    for i, item in enumerate(outer_string_brackets):
+        if item in string:
+            string = string.replace(item, new_outer_string_brackets[i])
+    outer_string_brackets = new_outer_string_brackets
+
+    string = replace_negative_solutions(string)
+
+    solution = get_solution(string)
+
+    return string, solution
+
+
+def prevent_double_multiplication(string):
+    operations = ['+','-','\xb7',':']
+    multiplication = False
+
+    print(string)
+
+    for i, all in enumerate(string[:]):
+        if all in operations:
+            if multiplication == True and all == '\xb7':
+                string = string[0:i] + '+' + string[i+1:]
+                multiplication = False    
+            elif all == '\xb7':
+                multiplication =True
+            else:
+                multiplication = False
+
+    return string
+
 def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets):
     numbers = []
     set_commas=commas
@@ -367,7 +483,8 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
     operators = ['+', '-', '\xb7', ':']
     division_pair = None
     bracket_open = False
-    waiter = False
+    waiter_brackets = False
+
 
     for i, all in enumerate(numbers[1:]):
         if division_pair == 'done':
@@ -392,14 +509,14 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
             operation = random.choice(operators)
 
         if operation == ':':
-            waiter = False
+            waiter_brackets = False
             rsp = random_switch()
             if i==0 and rsp == True:
                 division_pair = [numbers[0], None]
                 if division_pair[0] == 0:
                     division_pair[0] = get_random_number(minimum, maximum, commas)
                 operation = random.choice(operators)
-                if operation != '\xb7' or len(numbers)==2:
+                if len(numbers)==2: #operation != '\xb7' or 
                     string = create_division_pair(division_pair[0], all, show_brackets)
                 elif show_brackets == False:
                     string = "(" + create_division_pair(division_pair[0], all, show_brackets) + ")"
@@ -419,31 +536,31 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
                     operation = random.choice([x for x in operators if x!=':'])
                     string += operation + add_summand(all, show_brackets)            
         else:
-            if brackets_allowed == True and random_switch(70) == True and waiter==False:
+            if brackets_allowed == True and random_switch(70) == True and waiter_brackets==False:
                 if bracket_open == False:
-                    string +=random.choice(operation)
+                    string +=operation
                     if show_brackets == False:
                         string += '('
                     else:
                         string += '['
                     bracket_open = True
-                    waiter = True
+                    waiter_brackets = True
                 elif bracket_open == True:
                     if show_brackets == False:
                         string += ')'
                     else:
                         string += ']'
-                    string += random.choice(operation) 
+                    string += operation
                     bracket_open = False
-                    waiter = False  
+                    waiter_brackets = False  
             else:
-                string += random.choice(operation)
-                waiter = False           
+                string += operation
+                waiter_brackets = False           
 
             string += add_summand(all, show_brackets)
 
     if bracket_open == True:
-        if waiter == True:
+        if waiter_brackets == True:
             if show_brackets == True:
                 index = string.rfind('[')
             elif show_brackets == False:
@@ -455,13 +572,12 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
             string +=')'
 
 
+    string = prevent_double_multiplication(string)
+    print(string)
     solution = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
 
     if show_brackets== False: ## check if result ist negative, when natural numbers are chosen          
-        while solution < 0:
-            string = string.replace("-", "+", 1)
-            solution = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
-            
+        string, solution = check_for_negative_solutions(string)
 
 
     solution = D("{:.{prec}f}".format(solution, prec=set_commas))
