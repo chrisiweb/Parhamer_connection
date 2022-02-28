@@ -409,7 +409,6 @@ def replace_negative_solutions(string):
 
 def check_for_negative_solutions(string):
     inner_string_brackets = re.findall(r"\(([0-9+-:\xb7]+)\)", string)
-    # print(inner_string_brackets)
 
     new_inner_string_brackets = [replace_negative_solutions(x) for x in inner_string_brackets]
     for i, item in enumerate(inner_string_brackets):
@@ -453,16 +452,27 @@ def check_for_negative_solutions(string):
 def prevent_double_multiplication(string):
     operations = ['+','-','\xb7',':']
     multiplication = False
-
-    print(string)
-
+    multiplication_brackets = False
+    inside_brackets = False
     for i, all in enumerate(string[:]):
+        if all == '(':
+            inside_brackets = True
+        elif all == ')':
+            inside_brackets = False
+
         if all in operations:
-            if multiplication == True and all == '\xb7':
-                string = string[0:i] + '+' + string[i+1:]
-                multiplication = False    
+            if multiplication_brackets==True and all == '\xb7':
+               string = string[0:i] + '-' + string[i+1:]
+               multiplication_brackets=False
+            elif multiplication == True and all == '\xb7':
+                string = string[0:i] + '-' + string[i+1:]
+                multiplication = False
+                if inside_brackets == False:
+                    multiplication_brackets=False 
             elif all == '\xb7':
                 multiplication =True
+                if inside_brackets == False:
+                    multiplication_brackets=True   
             else:
                 multiplication = False
 
@@ -571,7 +581,7 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
         elif show_brackets == False:
             string +=')'
 
-
+    print(string)
     string = prevent_double_multiplication(string)
     print(string)
     solution = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))

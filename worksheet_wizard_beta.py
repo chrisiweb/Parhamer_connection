@@ -241,18 +241,37 @@ def check_for_negative_solutions(string):
 def prevent_double_multiplication(string):
     operations = ['+','-','\xb7',':']
     multiplication = False
-    print('string')
-    print(string)
+    multiplication_brackets = False
+    inside_brackets = False
     for i, all in enumerate(string[:]):
+        # print(all)
+        if all == '(':
+            inside_brackets = True
+        elif all == ')':
+            inside_brackets = False
+
         if all in operations:
-            if multiplication == True and all == '\xb7':
-                string = string[0:i] + '+' + string[i+1:]
-                multiplication = False    
+            if multiplication_brackets==True and all == '\xb7':
+               string = string[0:i] + '-' + string[i+1:]
+               multiplication_brackets=False
+            elif multiplication == True and all == '\xb7':
+                string = string[0:i] + '-' + string[i+1:]
+                multiplication = False
+                if inside_brackets == False:
+                    multiplication_brackets=False 
             elif all == '\xb7':
                 multiplication =True
+                if inside_brackets == False:
+                    multiplication_brackets=True   
             else:
                 multiplication = False
+            # elif inside_brackets==0:
+            #     multiplication = False
 
+    
+    # split_string = [char for char in string] 
+    # # temp_string = re.sub("\([0-9+-:]+\)", "B", string)
+    # print(split_string)
     return string
 
 
@@ -384,11 +403,13 @@ rsp = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, c
 print(rsp)
 
 
-# s = '(80:20)-(15-7)+15+66:6+(10+(60:20))'
+s = '(80:20)\xb7(15-7)\xb715\xb766:6\xb7(10\xb7(60\xb720)\xb73)'
 # # # print(s)
 
 # result, solution = check_for_negative_solutions(s)
-# print(result)
+
+result = prevent_double_multiplication(s)
+print(result)
 
 
 ## binomische Formel
