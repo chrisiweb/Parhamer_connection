@@ -581,9 +581,9 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
         elif show_brackets == False:
             string +=')'
 
-    print(string)
+
     string = prevent_double_multiplication(string)
-    print(string)
+
     solution = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
 
     if show_brackets== False: ## check if result ist negative, when natural numbers are chosen          

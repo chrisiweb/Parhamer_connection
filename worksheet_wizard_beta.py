@@ -403,13 +403,13 @@ rsp = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, c
 print(rsp)
 
 
-s = '(80:20)\xb7(15-7)\xb715\xb766:6\xb7(10\xb7(60\xb720)\xb73)'
-# # # print(s)
+# s = '8+9-(16+6)+13-(1-(18:2))·11-12'
+# # # # print(s)
 
 # result, solution = check_for_negative_solutions(s)
 
-result = prevent_double_multiplication(s)
-print(result)
+# result = prevent_double_multiplication(s)
+# print(result)
 
 
 ## binomische Formel
