@@ -2464,6 +2464,17 @@ class Ui_MainWindow(object):
         self.checkBox_show_nonogramm = create_new_checkbox(self.groupBox_setting_wizard, "Selbstkontrolle erstellen", True)
         self.gridLayout_setting_wizard.addWidget(self.checkBox_show_nonogramm, 4,0,1,2) 
     
+        self.combobox_nonogramm_wizard = create_new_combobox(self.groupBox_setting_wizard)
+        self.gridLayout_setting_wizard.addWidget(self.combobox_nonogramm_wizard, 4,2,1,1)
+        add_new_option(self.combobox_nonogramm_wizard, 0, 'Zufällig')
+        i=1
+        for all in all_nonogramms:
+            add_new_option(self.combobox_nonogramm_wizard, i, all.capitalize())
+            i+=1
+
+        # setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
+        # self.combobox_nonogramm_wizard.setMaxVisibleItems(8)
+
 
         self.groupBox_zahlenbereich_wizard = create_new_groupbox(self.groupBox_setting_wizard, "Zahlenbereich")
         self.gridLayout_setting_wizard.addWidget(self.groupBox_zahlenbereich_wizard, 0,3,5,1)
