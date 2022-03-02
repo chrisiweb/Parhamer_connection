@@ -1965,7 +1965,7 @@ class Ui_MainWindow(object):
             label = "Anzahl der Aufgaben: 0"
 
         self.label_gesamtbeispiele = create_new_label(self.groupBox_sage, label, True)
-        self.gridLayout_5.addWidget(self.label_gesamtbeispiele, 7, 0, 1, 2)
+        self.gridLayout_5.addWidget(self.label_gesamtbeispiele, 7, 0, 1, 3)
 
         self.label_gesamtpunkte = QtWidgets.QLabel(self.groupBox_sage)
         self.gridLayout_5.addWidget(self.label_gesamtpunkte, 8, 0, 1, 2)
@@ -1982,8 +1982,16 @@ class Ui_MainWindow(object):
         self.cb_solution_sage.setChecked(True)
         self.cb_solution_sage.setSizePolicy(SizePolicy_fixed)
         self.cb_solution_sage.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.gridLayout_5.addWidget(self.cb_solution_sage, 7, 3, 1, 2)
+        self.gridLayout_5.addWidget(self.cb_solution_sage, 7, 3, 1, 1)
 
+        self.label_gruppe_AB  = create_new_label(self.centralwidget, "Gruppe:")
+        self.label_gruppe_AB.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout_5.addWidget(self.label_gruppe_AB, 7,4,1,1, QtCore.Qt.AlignRight)
+        self.comboBox_gruppe_AB = create_new_combobox(self.centralwidget)
+        self.comboBox_gruppe_AB.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout_5.addWidget(self.comboBox_gruppe_AB, 7,5,1,1)
+        add_new_option(self.comboBox_gruppe_AB, 0, "A")
+        add_new_option(self.comboBox_gruppe_AB, 1, "B")
         # self.cb_show_variaton_sage = create_new_checkbox(self.centralwidget, "Aufgabenvariationen anzeigen")
         # self.gridLayout_5.addWidget(self.cb_show_variaton_sage, 8, 4, 1, 1)
 
@@ -2002,7 +2010,7 @@ class Ui_MainWindow(object):
         self.pushButton_vorschau.setText(_translate("MainWindow", "Vorschau", None))
         self.pushButton_vorschau.setShortcut(_translate("MainWindow", "Return", None))
         self.gridLayout_5.addWidget(
-            self.pushButton_vorschau, 8, 5, 1, 1, QtCore.Qt.AlignRight
+            self.pushButton_vorschau, 8, 4, 1, 2, QtCore.Qt.AlignRight
         )
         self.pushButton_vorschau.clicked.connect(
             partial(self.pushButton_vorschau_pressed, "vorschau")
@@ -2017,7 +2025,7 @@ class Ui_MainWindow(object):
         self.pushButton_erstellen.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.pushButton_erstellen.clicked.connect(self.pushButton_erstellen_pressed)
         self.gridLayout_5.addWidget(
-            self.pushButton_erstellen, 9, 5, 1, 1, QtCore.Qt.AlignRight
+            self.pushButton_erstellen, 9, 4, 1, 2, QtCore.Qt.AlignRight
         )
         self.groupBox_sage.hide()
         self.splitter_sage.hide()
@@ -3851,7 +3859,6 @@ class Ui_MainWindow(object):
             self.combobox_beurteilung.setEnabled(False)
             self.groupBox_notenschl.setEnabled(False)
             self.groupBox_beurteilungsraster.setEnabled(False)
-            self.spinBox_nummer.setValue(0)
             self.groupBox_klasse.setTitle("Klasse")
             # if self.comboBox_pruefungstyp.currentText() == "Quiz":
             #     self.pushButton_titlepage.setEnabled(True)
@@ -3880,7 +3887,6 @@ class Ui_MainWindow(object):
             self.combobox_beurteilung.setEnabled(False)
             self.groupBox_notenschl.setEnabled(False)
             self.groupBox_beurteilungsraster.setEnabled(False)
-            self.spinBox_nummer.setValue(0)
             self.pushButton_titlepage.setEnabled(False)
             self.comboBox_at_sage.setEnabled(True)
             self.pushButton_titlepage.setText("Titelblatt anpassen")
@@ -3893,7 +3899,6 @@ class Ui_MainWindow(object):
             self.groupBox_beurteilungsraster.setEnabled(True)
             self.pushButton_titlepage.setEnabled(True)
             self.comboBox_at_sage.setEnabled(True)
-            self.spinBox_nummer.setValue(1)
             self.pushButton_titlepage.setText("Titelblatt anpassen")
             self.groupBox_klasse.setTitle("Klasse")
             if self.comboBox_pruefungstyp.currentText() == "Benutzerdefiniert":
@@ -6518,6 +6523,10 @@ class Ui_MainWindow(object):
         return number
 
     def create_neue_aufgaben_box(self, index, aufgabe, aufgabe_total):
+        # try: 
+        #     print(aufgabe_total['gruppe'])
+        # except KeyError:
+        #     print(False)
         typ = get_aufgabentyp(self.chosen_program, aufgabe)
 
         aufgaben_verteilung = self.get_aufgabenverteilung()
@@ -6560,9 +6569,31 @@ class Ui_MainWindow(object):
         )
         gridLayout_gB.addWidget(label_titel, 2, 0, 1, 1)
 
+        gridLayout_gB.setColumnStretch(1, 2)
+
+        af = aufgabe_total["af"]
+        if  af == 'oa' or af == 'ta' or af == 'ko':
+            groupbox_AB = create_new_groupbox(new_groupbox, "Gruppe")
+            groupbox_AB.setSizePolicy(SizePolicy_fixed)
+            gridLayout_gB.addWidget(groupbox_AB, 0,2,3,1,QtCore.Qt.AlignRight)
+            horizontalLayout_groupbox_AB = create_new_horizontallayout(groupbox_AB)
+
+            checkbox_AB = create_new_checkbox(groupbox_AB, "A/B", True)
+            self.dict_widget_variables['checkbox_AB_{}'.format(aufgabe)] = checkbox_AB
+
+            if aufgabe_total['gruppe'] == False:
+                checkbox_AB.setChecked(False)
+                checkbox_AB.setEnabled(False)
+                checkbox_AB.setToolTip("Derzeit ist für diese Aufgabe keine Gruppen-Variation verfügbar.")
+            else:
+                checkbox_AB.setToolTip("Diese Aufgabe wird bei unterschiedlichen Gruppen\ngeringfügig (z.B. durch veränderte Zahlen) variiert.")
+            
+            horizontalLayout_groupbox_AB.addWidget(checkbox_AB)
+
+
         groupbox_pkt = create_new_groupbox(new_groupbox, "Punkte")
         groupbox_pkt.setSizePolicy(SizePolicy_fixed)
-        gridLayout_gB.addWidget(groupbox_pkt, 0, 1, 3, 1, QtCore.Qt.AlignRight)
+        gridLayout_gB.addWidget(groupbox_pkt, 0, 3, 3, 1, QtCore.Qt.AlignRight)
 
 
         if aufgabe in self.temp_info:
@@ -6625,7 +6656,7 @@ class Ui_MainWindow(object):
             QtWidgets.QStyle.SP_ArrowUp,
         )
 
-        gridLayout_gB.addWidget(button_up, 0, 3, 2, 1)
+        gridLayout_gB.addWidget(button_up, 0, 5, 2, 1)
         number = index + 1
         if (typ == 1 or typ == None) and number == 1:
             button_up.setEnabled(False)
@@ -6638,7 +6669,7 @@ class Ui_MainWindow(object):
             partial(self.btn_down_pressed, aufgabe),
             QtWidgets.QStyle.SP_ArrowDown,
         )
-        gridLayout_gB.addWidget(button_down, 0, 4, 2, 1)
+        gridLayout_gB.addWidget(button_down, 0, 6, 2, 1)
 
         if typ == 1 and number == aufgaben_verteilung[0]:
             button_down.setEnabled(False)
@@ -6651,12 +6682,12 @@ class Ui_MainWindow(object):
             partial(self.btn_delete_pressed, aufgabe),
             QtWidgets.QStyle.SP_DialogCancelButton,
         )
-        gridLayout_gB.addWidget(button_delete, 0, 5, 2, 1)
+        gridLayout_gB.addWidget(button_delete, 0, 7, 2, 1)
 
         groupbox_abstand_ausgleich = create_new_groupbox(new_groupbox, "Abstand (cm)  ")
         groupbox_abstand_ausgleich.setSizePolicy(SizePolicy_fixed)
         # groupbox_abstand.setMaximumSize(QtCore.QSize(100, 16777215))
-        gridLayout_gB.addWidget(groupbox_abstand_ausgleich, 0, 2, 3, 1)
+        gridLayout_gB.addWidget(groupbox_abstand_ausgleich, 0,4, 3, 1)
 
         verticalLayout_abstand = QtWidgets.QVBoxLayout(groupbox_abstand_ausgleich)
         verticalLayout_abstand.setObjectName("verticalLayout_abstand")
@@ -6696,7 +6727,7 @@ class Ui_MainWindow(object):
         pushbutton_ausgleich.setStyleSheet("padding: 6px")
         pushbutton_ausgleich.setSizePolicy(SizePolicy_fixed)
         # pushbutton_ausgleich.setMaximumSize(QtCore.QSize(220, 30))
-        gridLayout_gB.addWidget(pushbutton_ausgleich, 2, 3, 1, 3)
+        gridLayout_gB.addWidget(pushbutton_ausgleich, 2, 5, 1, 3)
 
         # pushbutton_aufgabe_bearbeiten = create_new_button(groupbox_pkt, 'Aufgabe bearbeiten', still_to_define)
         # gridLayout_gB.addWidget(pushbutton_aufgabe_bearbeiten, 0,1,1,1)
@@ -7356,9 +7387,20 @@ class Ui_MainWindow(object):
                 )
                 return False
 
+    def replace_group_variation_aufgabe(self, aufgabe_total):
+        content = aufgabe_total['content']
+        # content = re.sub("\\variation{.?}{(.?)}", r"\1", content)
+        print(content)
+
     def add_content_to_tex_file(
         self, aufgabe, aufgabe_total, filename_vorschau, first_typ2, ausgabetyp
     ):
+
+        if 'checkbox_AB_{}'.format(aufgabe) in self.dict_widget_variables:
+            checkbox = self.dict_widget_variables['checkbox_AB_{}'.format(aufgabe)]
+            if checkbox.isChecked() and self.comboBox_gruppe_AB.currentIndex()==1:
+                self.replace_group_variation_aufgabe(aufgabe_total)
+
 
         if get_aufgabentyp(self.chosen_program, aufgabe) == 2:
             if first_typ2 == False:
@@ -7675,7 +7717,7 @@ class Ui_MainWindow(object):
                             notenschluessel[3] / 100,
                         )
                     )
-
+        return ### EMERCENCY BREAK
         with open(filename_vorschau, "a", encoding="utf8") as vorschau:
             vorschau.write("\n\n")
             vorschau.write(tex_end)
