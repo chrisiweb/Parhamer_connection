@@ -7,7 +7,6 @@ __lastupdate__ = "01/22"
 
 print("Loading...")
 
-from black import replace_child
 from start_window import check_if_database_exists
 
 check_if_database_exists()
