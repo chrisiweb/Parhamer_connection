@@ -4748,6 +4748,13 @@ class Ui_MainWindow(object):
         string = ", ".join(list_)
         return string
 
+    def exisiting_variations_AB(self, content):
+        rsp = re.search("\\\\variation\{.*\}\{.*\}", content)
+        if rsp == None:
+            return False
+        else:
+            return True
+        
     def get_all_infos_new_file(self, typ, typ_save):
         if typ_save == "editor":
             name = None
@@ -4775,6 +4782,10 @@ class Ui_MainWindow(object):
             ]
         quelle = self.lineEdit_quelle.text()
         content = self.plainTextEdit.toPlainText()
+
+        group_variation = self.exisiting_variations_AB(content)
+
+
         punkte = self.spinBox_punkte.value()
 
         if self.comboBox_pagebreak.currentIndex() == 0:
@@ -4818,6 +4829,7 @@ class Ui_MainWindow(object):
             af,
             quelle,
             content,
+            group_variation,
             punkte,
             pagebreak,
             klasse,
@@ -4860,6 +4872,7 @@ class Ui_MainWindow(object):
             af,
             quelle,
             content,
+            group_variation,
             punkte,
             pagebreak,
             klasse,
@@ -4916,6 +4929,7 @@ class Ui_MainWindow(object):
         lama_table.update({"af": af}, doc_ids=[file_id])
         lama_table.update({"quelle": quelle}, doc_ids=[file_id])
         lama_table.update({"content": content}, doc_ids=[file_id])
+        lama_table.update({"gruppe": group_variation}, doc_ids=[file_id])
         lama_table.update({"punkte": punkte}, doc_ids=[file_id])
         lama_table.update({"pagebreak": pagebreak}, doc_ids=[file_id])
         lama_table.update({"klasse": klasse}, doc_ids=[file_id])
@@ -5319,6 +5333,7 @@ class Ui_MainWindow(object):
             af,
             quelle,
             content,
+            group_variation,
             punkte,
             pagebreak,
             klasse,
@@ -5341,6 +5356,7 @@ class Ui_MainWindow(object):
             af,
             quelle,
             content,
+            group_variation,
             punkte,
             pagebreak,
             klasse,
