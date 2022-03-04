@@ -11,6 +11,7 @@ print("Loading...")
 # from operator import indexOf
 # from tokenize import group
 # from numpy import maximum, negative
+from numpy import False_
 from start_window import check_if_database_exists
 from worksheet_wizard import get_all_solution_pixels
 
@@ -2462,14 +2463,16 @@ class Ui_MainWindow(object):
         self.horizontalLayout_ausrichtung_wizard.addWidget(self.combobox_ausrichtung_wizard)
 
         self.checkBox_show_nonogramm = create_new_checkbox(self.groupBox_setting_wizard, "Selbstkontrolle erstellen", True)
-        self.gridLayout_setting_wizard.addWidget(self.checkBox_show_nonogramm, 4,0,1,2) 
+        self.gridLayout_setting_wizard.addWidget(self.checkBox_show_nonogramm, 4,0,1,2)
+        self.checkBox_show_nonogramm.stateChanged.connect(self.checkBox_show_nonogramm_changed) 
     
         self.combobox_nonogramm_wizard = create_new_combobox(self.groupBox_setting_wizard)
         self.gridLayout_setting_wizard.addWidget(self.combobox_nonogramm_wizard, 4,2,1,1)
+        self.combobox_nonogramm_wizard.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
         add_new_option(self.combobox_nonogramm_wizard, 0, 'Zufällig')
         i=1
         for all in all_nonogramms:
-            add_new_option(self.combobox_nonogramm_wizard, i, all.capitalize())
+            add_new_option(self.combobox_nonogramm_wizard, i, "{0} ({1})".format(all.capitalize(), len(all_nonogramms[all])))
             i+=1
 
         # setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
@@ -6085,6 +6088,12 @@ class Ui_MainWindow(object):
     def worksheet_wizard_setting_changed(self):
         self.worksheet_wizard_changed=True
 
+    def checkBox_show_nonogramm_changed(self):
+        if self.checkBox_show_nonogramm.isChecked():
+            self.combobox_nonogramm_wizard.setEnabled(True)
+        else:
+            self.combobox_nonogramm_wizard.setEnabled(False)
+
     def spinBox_number_wizard_changed(self):
         self.worksheet_wizard_changed=True
         max = 0
@@ -6095,9 +6104,19 @@ class Ui_MainWindow(object):
         if self.spinBox_number_wizard.value()>max:
             self.checkBox_show_nonogramm.setChecked(False)
             self.checkBox_show_nonogramm.setEnabled(False)
+            self.combobox_nonogramm_wizard.setEnabled(False)
         else:
-            self.checkBox_show_nonogramm.setChecked(True)
-            self.checkBox_show_nonogramm.setEnabled(True)            
+            # self.checkBox_show_nonogramm.setChecked(True)
+            self.checkBox_show_nonogramm.setEnabled(True)
+            self.combobox_nonogramm_wizard.setEnabled(True)
+
+        self.combobox_nonogramm_wizard.clear()
+        add_new_option(self.combobox_nonogramm_wizard, 0, 'Zufällig')
+        i=1
+        for all in all_nonogramms:
+            if len(all_nonogramms[all])>= self.spinBox_number_wizard.value():
+                add_new_option(self.combobox_nonogramm_wizard, i, "{0} ({1})".format(all.capitalize(), len(all_nonogramms[all])))
+                i+=1                    
 
     def spinBox_column_wizard_changed(self):
         self.reset_aufgabenboxes_wizard()
@@ -6242,10 +6261,11 @@ class Ui_MainWindow(object):
 
         result = self.list_of_examples_wizard[index][-2]
 
-        for key, value in self.coordinates_nonogramm_wizard.items():
-            if value == result:
-                self.coordinates_nonogramm_wizard[key]=new_example[-2]
-                break
+        if self.checkBox_show_nonogramm.isChecked():
+            for key, value in self.coordinates_nonogramm_wizard.items():
+                if value == result:
+                    self.coordinates_nonogramm_wizard[key]=new_example[-2]
+                    break
 
         self.list_of_examples_wizard[index] = new_example
         self.dict_aufgaben_wizard[index].setText(new_example[-1])
@@ -6353,10 +6373,10 @@ class Ui_MainWindow(object):
 
         self.reset_aufgabenboxes_wizard()
         
-        # if self.checkbox_solutions_wizard.isChecked():
-        self.chosen_nonogram, solution_pixel = get_all_solution_pixels(self.list_of_examples_wizard)
+        if self.checkBox_show_nonogramm.isChecked():
+            self.chosen_nonogram, solution_pixel = get_all_solution_pixels(self.list_of_examples_wizard, self.combobox_nonogramm_wizard.currentText())
 
-        self.coordinates_nonogramm_wizard = create_coordinates(self, solution_pixel)
+            self.coordinates_nonogramm_wizard = create_coordinates(self, solution_pixel)
 
         # print(self.list_of_examples_wizard)
 

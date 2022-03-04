@@ -877,13 +877,17 @@ def get_all_pixels(content):
 
 
 def rechose_nonogramm(list_of_examples, nonogram):
+    
     while len(list_of_examples) > len(all_nonogramms[nonogram]):
         nonogram = random.choice(list(all_nonogramms.keys()))
 
     return nonogram
         
-def get_all_solution_pixels(list_of_examples):
-    nonogram = random.choice(list(all_nonogramms.keys()))
+def get_all_solution_pixels(list_of_examples, chosen_nonogramm):
+    if chosen_nonogramm == "Zufällig":
+        nonogram = random.choice(list(all_nonogramms.keys()))
+    else:
+        nonogram = chosen_nonogramm.lower()
 
     if len(list_of_examples) > len(all_nonogramms[nonogram]):
         nonogram = rechose_nonogramm(list_of_examples, nonogram)
