@@ -7,6 +7,7 @@ __lastupdate__ = "01/22"
 
 print("Loading...")
 
+from black import replace_child
 from start_window import check_if_database_exists
 
 check_if_database_exists()
@@ -1986,12 +1987,15 @@ class Ui_MainWindow(object):
 
         self.label_gruppe_AB  = create_new_label(self.centralwidget, "Gruppe:")
         self.label_gruppe_AB.setSizePolicy(SizePolicy_fixed)
+        tooltip_text_gruppe_AB = "Auswahl welche Gruppenvariation bei der Ausgabe\nder Vorschau angezeigt wird (falls eine vorhanden ist)."
+        self.label_gruppe_AB.setToolTip(tooltip_text_gruppe_AB)
         self.gridLayout_5.addWidget(self.label_gruppe_AB, 7,4,1,1, QtCore.Qt.AlignRight)
         self.comboBox_gruppe_AB = create_new_combobox(self.centralwidget)
         self.comboBox_gruppe_AB.setSizePolicy(SizePolicy_fixed)
         self.gridLayout_5.addWidget(self.comboBox_gruppe_AB, 7,5,1,1)
         add_new_option(self.comboBox_gruppe_AB, 0, "A")
         add_new_option(self.comboBox_gruppe_AB, 1, "B")
+        self.comboBox_gruppe_AB.setToolTip(tooltip_text_gruppe_AB)
         # self.cb_show_variaton_sage = create_new_checkbox(self.centralwidget, "Aufgabenvariationen anzeigen")
         # self.gridLayout_5.addWidget(self.cb_show_variaton_sage, 8, 4, 1, 1)
 
@@ -7387,19 +7391,32 @@ class Ui_MainWindow(object):
                 )
                 return False
 
-    def replace_group_variation_aufgabe(self, aufgabe_total):
-        content = aufgabe_total['content']
-        # content = re.sub("\\variation{.?}{(.?)}", r"\1", content)
-        print(content)
+    def replace_group_variation_aufgabe(self, content):
+        _list = re.findall("\\\\variation\{.*\}\{.*\}", content)
+
+        for all in _list:
+            open_count=0
+            close_count=0
+            for i, char in enumerate(all):
+                if char != "{" and char != "}":
+                    continue
+                elif char == "{":
+                    open_count +=1
+                elif char == "}":
+                    close_count +=1
+                if open_count==close_count:
+                    start_index = i
+                    break
+        
+            replacement_string = all[start_index+2:-1].replace("\\", "\\\\")
+            content = re.sub("\\\\variation\{.*\}\{.*\}", replacement_string, content)
+     
+
+        return content
 
     def add_content_to_tex_file(
         self, aufgabe, aufgabe_total, filename_vorschau, first_typ2, ausgabetyp
     ):
-
-        if 'checkbox_AB_{}'.format(aufgabe) in self.dict_widget_variables:
-            checkbox = self.dict_widget_variables['checkbox_AB_{}'.format(aufgabe)]
-            if checkbox.isChecked() and self.comboBox_gruppe_AB.currentIndex()==1:
-                self.replace_group_variation_aufgabe(aufgabe_total)
 
 
         if get_aufgabentyp(self.chosen_program, aufgabe) == 2:
@@ -7485,6 +7502,13 @@ class Ui_MainWindow(object):
 
         else:
             content = aufgabe_total["content"]
+
+        if 'checkbox_AB_{}'.format(aufgabe) in self.dict_widget_variables:
+            checkbox = self.dict_widget_variables['checkbox_AB_{}'.format(aufgabe)]
+            if checkbox.isChecked() and self.comboBox_gruppe_AB.currentIndex()==1:
+                content = self.replace_group_variation_aufgabe(content)
+
+
         if ausgabetyp == "schularbeit" and is_empty(aufgabe_total['bilder'])  == False:
             for image in aufgabe_total['bilder']:
                 content = re.sub(r"{{../_database.*{0}}}".format(image),"{{{0}}}".format(image),content)
@@ -7717,7 +7741,7 @@ class Ui_MainWindow(object):
                             notenschluessel[3] / 100,
                         )
                     )
-        return ### EMERCENCY BREAK
+
         with open(filename_vorschau, "a", encoding="utf8") as vorschau:
             vorschau.write("\n\n")
             vorschau.write(tex_end)
