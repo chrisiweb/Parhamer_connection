@@ -2462,12 +2462,18 @@ class Ui_MainWindow(object):
         add_new_option(self.combobox_ausrichtung_wizard, 1, "in der Zeile")
         self.horizontalLayout_ausrichtung_wizard.addWidget(self.combobox_ausrichtung_wizard)
 
-        self.checkBox_show_nonogramm = create_new_checkbox(self.groupBox_setting_wizard, "Selbstkontrolle erstellen", True)
-        self.gridLayout_setting_wizard.addWidget(self.checkBox_show_nonogramm, 4,0,1,2)
+
+        self.groupBox_show_nonogramm = create_new_groupbox(self.groupBox_setting_wizard, "Selbstkontrolle")
+        self.gridLayout_setting_wizard.addWidget(self.groupBox_show_nonogramm, 4,0,1,3)
+        self.horizontalLayout_show_nongramm = create_new_horizontallayout(self.groupBox_show_nonogramm)
+        self.checkBox_show_nonogramm = create_new_checkbox(self.groupBox_setting_wizard, "Selbstkontrolle anzeigen", True)
+        self.horizontalLayout_show_nongramm.addWidget(self.checkBox_show_nonogramm)
+        # self.gridLayout_setting_wizard.addWidget(self.checkBox_show_nonogramm, 4,0,1,2)
         self.checkBox_show_nonogramm.stateChanged.connect(self.checkBox_show_nonogramm_changed) 
     
         self.combobox_nonogramm_wizard = create_new_combobox(self.groupBox_setting_wizard)
-        self.gridLayout_setting_wizard.addWidget(self.combobox_nonogramm_wizard, 4,2,1,1)
+        # self.gridLayout_setting_wizard.addWidget(self.combobox_nonogramm_wizard, 4,2,1,1)
+        self.horizontalLayout_show_nongramm.addWidget(self.combobox_nonogramm_wizard)
         self.combobox_nonogramm_wizard.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
         add_new_option(self.combobox_nonogramm_wizard, 0, 'Zufällig')
         i=1

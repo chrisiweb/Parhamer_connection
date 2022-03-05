@@ -887,7 +887,7 @@ def get_all_solution_pixels(list_of_examples, chosen_nonogramm):
     if chosen_nonogramm == "Zufällig":
         nonogram = random.choice(list(all_nonogramms.keys()))
     else:
-        nonogram = chosen_nonogramm.lower()
+        nonogram = re.split(" \([0-9]+\)", chosen_nonogramm)[0].lower()
 
     if len(list_of_examples) > len(all_nonogramms[nonogram]):
         nonogram = rechose_nonogramm(list_of_examples, nonogram)
