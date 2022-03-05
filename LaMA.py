@@ -6600,12 +6600,18 @@ class Ui_MainWindow(object):
             checkbox_AB = create_new_checkbox(groupbox_AB, "A/B", True)
             self.dict_widget_variables['checkbox_AB_{}'.format(aufgabe)] = checkbox_AB
 
-            if aufgabe_total['gruppe'] == False:
+            try:
+                gruppe = aufgabe_total['gruppe']
+            except KeyError:
+                gruppe = False
+
+            if gruppe == False:
                 checkbox_AB.setChecked(False)
                 checkbox_AB.setEnabled(False)
                 checkbox_AB.setToolTip("Derzeit ist für diese Aufgabe keine Gruppen-Variation verfügbar.")
             else:
                 checkbox_AB.setToolTip("Diese Aufgabe wird bei unterschiedlichen Gruppen\ngeringfügig (z.B. durch veränderte Zahlen) variiert.")
+
             
             horizontalLayout_groupbox_AB.addWidget(checkbox_AB)
 
@@ -7408,7 +7414,7 @@ class Ui_MainWindow(object):
 
     def replace_group_variation_aufgabe(self, content):
         _list = re.findall("\\\\variation\{.*\}\{.*\}", content)
-
+        print(_list)
         for all in _list:
             open_count=0
             close_count=0
@@ -7422,10 +7428,12 @@ class Ui_MainWindow(object):
                 if open_count==close_count:
                     start_index = i
                     break
-        
+            print(start_index)
             replacement_string = all[start_index+2:-1].replace("\\", "\\\\")
+            print(replacement_string)
             content = re.sub("\\\\variation\{.*\}\{.*\}", replacement_string, content)
-     
+
+
 
         return content
 
