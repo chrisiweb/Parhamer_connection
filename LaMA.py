@@ -299,6 +299,8 @@ class Ui_MainWindow(object):
         self.menuSage.setObjectName(_fromUtf8("menuSage"))
         self.menuSuche = QtWidgets.QMenu(self.menuBar)
         self.menuSuche.setObjectName(_fromUtf8("menuSuche"))
+        self.menuWizard = QtWidgets.QMenu(self.menuBar)
+        self.menuWizard.setObjectName(_fromUtf8("menuWizard"))
         self.menuFeedback = QtWidgets.QMenu(self.menuBar)
         self.menuFeedback.setObjectName(_fromUtf8("menuFeedback"))
         self.menuOptionen = QtWidgets.QMenu(self.menuBar)
@@ -411,6 +413,10 @@ class Ui_MainWindow(object):
         self.actionSuche.setShortcut("F1")
 
         self.menuSuche.addSeparator()
+
+        self.actionReset_wizard = add_action(
+            MainWindow, self.menuWizard, "Reset", self.worksheet_wizard_reset
+        )
 
         self.actionReset = add_action(
             MainWindow, self.menuSuche, "Reset", self.suchfenster_reset
@@ -2803,6 +2809,7 @@ class Ui_MainWindow(object):
         self.menuNeu.setTitle(_translate("MainWindow", "Aufgabe", None))
         self.menuSage.setTitle(_translate("MainWindow", "Prüfung", None))
         self.menuSuche.setTitle(_translate("MainWindow", "Suche", None))
+        self.menuWizard.setTitle(_translate("MainWindow", "Wizard", None))
         self.menuDeveloper.setTitle(_translate("MainWindow", "Entwicklermodus", None))
 
         # self.menuBild_einbinden.setTitle(
@@ -6024,6 +6031,19 @@ class Ui_MainWindow(object):
         QtWidgets.QApplication.restoreOverrideCursor()
         return dict_missing_files
 
+    def worksheet_wizard_reset(self):
+        self.comboBox_themen_wizard.setCurrentIndex(0)
+        self.spinBox_number_wizard.setValue(20)
+        self.spinBox_column_wizard.setValue(2)
+        self.combobox_fontsize_wizard.setCurrentIndex(4)
+        self.combobox_nummerierung_wizard.setCurrentIndex(0)
+        self.combobox_ausrichtung_wizard.setCurrentIndex(0)
+        self.checkBox_show_nonogramm.setChecked(True)
+        self.combobox_nonogramm_wizard.setCurrentIndex(0)
+        
+        for i in reversed(range(self.gridLayout_scrollArea_wizard.count())): 
+            self.gridLayout_scrollArea_wizard.itemAt(i).widget().setParent(None)
+
 
     def themen_changed_wizard(self):
         self.worksheet_wizard_changed = True
@@ -8867,7 +8887,7 @@ class Ui_MainWindow(object):
             self.cb_no_grade_tag.hide()
         
         list_all_menubar = [self.menuSuche, self.menuSage, self.menuNeu, self.menuFeedback, self.menuOptionen ,self.menuDeveloper, self.menuHelp]
-        list_menubar_wizard = [self.menuOptionen ,self.menuHelp]
+        list_menubar_wizard = [self.menuWizard, self.menuOptionen ,self.menuHelp]
 
         # if self.developer_mode_active == True:
 
