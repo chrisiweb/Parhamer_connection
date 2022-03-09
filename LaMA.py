@@ -1080,7 +1080,7 @@ class Ui_MainWindow(object):
         self.groupBox_themengebiete_cria.hide()
 
         for klasse in list_klassen:
-            name = "tab_{0}".format(klasse)
+            # name = "tab_{0}".format(klasse)
             new_tab = add_new_tab(
                 self.tab_widget_cr_cria, "{}. Klasse".format(klasse[1])
             )
@@ -1589,14 +1589,10 @@ class Ui_MainWindow(object):
         self.comboBox_klassen.setObjectName("comboBox_klassen")
         # self.comboBox_gk.addItem("")
 
-        self.comboBox_klassen.addItem("")
+        self.comboBox_klassen.addItem("Alle Klassen")
         index = 1
         for all in list_klassen:
-            self.comboBox_klassen.addItem("")
-
-            self.comboBox_klassen.setItemText(
-                index, _translate("MainWindow", all[1] + ". Klasse", None)
-            )
+            add_new_option(self.comboBox_klassen, index, all[1] + ". Klasse")
             index += 1
 
         self.comboBox_klassen.currentIndexChanged.connect(
@@ -2553,7 +2549,7 @@ class Ui_MainWindow(object):
            
             self.collect_all_infos_for_creating_file()
 
-            if self.ui_erstellen.lama == True: #????????
+            if self.ui_erstellen.lama == True:
                 self.sage_save(path_create_tex_file=filename_vorschau)
 
 
@@ -6032,9 +6028,9 @@ class Ui_MainWindow(object):
                     ][1]
                 )
 
-                self.dict_variablen_punkte_halb[aufgabe] = self.dict_all_infos_for_file["dict_alle_aufgaben_pkt_abstand"][
+                self.dict_variablen_punkte_halb[aufgabe].setChecked(self.dict_all_infos_for_file["dict_alle_aufgaben_pkt_abstand"][
                         aufgabe
-                    ][2]
+                    ][2])
             except KeyError:
                 pass
 
@@ -6094,124 +6090,40 @@ class Ui_MainWindow(object):
             self.update_label_restore_action()
 
     def define_titlepage(self):
-        if self.comboBox_pruefungstyp.currentText() == "Quiz":
-            print("not yet working")
-            return
-            Dialog = QtWidgets.QDialog(
-                None,
-                QtCore.Qt.WindowSystemMenuHint
-                | QtCore.Qt.WindowTitleHint
-                | QtCore.Qt.WindowCloseButtonHint,
+        if self.chosen_program == "lama":
+            dict_titlepage = self.dict_titlepage
+        elif self.chosen_program == "cria":
+            dict_titlepage = self.dict_titlepage_cria
+
+        self.Dialog = QtWidgets.QDialog(
+            None,
+            QtCore.Qt.WindowSystemMenuHint
+            | QtCore.Qt.WindowTitleHint
+            | QtCore.Qt.WindowCloseButtonHint,
+        )
+        self.ui = Ui_Dialog_titlepage()
+        self.ui.setupUi(self.Dialog, dict_titlepage)
+        # self.Dialog.show()
+        self.Dialog.exec()
+
+        if self.chosen_program == "lama":
+            self.dict_titlepage = dict_titlepage
+            titlepage_save = os.path.join(
+                path_localappdata_lama, "Teildokument", "titlepage_save"
             )
-            ui = Ui_Dialog_random_quiz()
-            ui.setupUi(Dialog, self)
-            # self.Dialog.show()
-            response = Dialog.exec()
-            if response == 0:
-                return
-
-            chosen_gks = ui.random_quiz_response[1]
-
-            random_list = []
-            for all in self.beispieldaten_dateipfad_1:
-                for gks in chosen_gks:
-                    if gks in all:
-                        _file = os.path.basename(self.beispieldaten_dateipfad_1[all])
-                        filename, extension = os.path.splitext(_file)
-                        random_list.append(filename)
-
-            if random_list == []:
-                for all in self.beispieldaten_dateipfad_1:
-                    _file = os.path.basename(self.beispieldaten_dateipfad_1[all])
-                    filename, extension = os.path.splitext(_file)
-                    if (
-                        filename.split(" - ")[0] in dict_gk.values()
-                    ):  # ignore all not examples not in gks
-                        random_list.append(filename)
-
-            if len(random_list) < ui.random_quiz_response[0]:
-                number_examples = len(random_list)
-                warning_window(
-                    "Es sind insgesamt weniger Aufgaben enthalten ({0}), als die ausgwählte Anzahl der Aufgaben ({1}).".format(
-                        len(random_list),
-                        ui.random_quiz_response[0],
-                    ),
-                    "Es werden alle vorhandenen Aufgaben in zufälliger Reihenfolge ausgegeben.",
-                    "Anzahl der Aufgaben",
-                )
-            else:
-                number_examples = ui.random_quiz_response[0]
-
-            sampling = random.sample(random_list, number_examples)
-
-            if not is_empty(self.list_alle_aufgaben_sage):
-                response = question_window(
-                    "Sind Sie sicher, dass Sie das Fenster zurücksetzen wollen und die erstellte Datei löschen möchten?",
-                    titel="Datei löschen?",
-                )
-
-                if response == False:
-                    return
-
-                for aufgabe in self.list_alle_aufgaben_sage[:]:
-                    self.btn_delete_pressed(aufgabe)
-            # self.list_alle_aufgaben_sage = []
-
-            QtWidgets.QApplication.setOverrideCursor(
-                QtGui.QCursor(QtCore.Qt.WaitCursor)
+        if self.chosen_program == "cria":
+            self.dict_titlepage_cria = dict_titlepage
+            titlepage_save = os.path.join(
+                path_localappdata_lama, "Teildokument", "titlepage_save_cria"
             )
 
-            for aufgabe in sampling:
-                self.sage_aufgabe_add(aufgabe)
-                infos = self.collect_all_infos_aufgabe(aufgabe)
-                self.dict_alle_aufgaben_sage[aufgabe] = infos
-
-                self.build_aufgaben_schularbeit(aufgabe)  # aufgabe, aufgaben_verteilung
-
-            QtWidgets.QApplication.restoreOverrideCursor()
-
-            # self.list_alle_aufgaben_sage = []
-            # for all in sampling:
-            #     self.list_alle_aufgaben_sage.append(all)
-
-            # for all in self.list_alle_aufgaben_sage:
-            #     self.build_aufgaben_schularbeit(all)
-
-        else:
-            if self.chosen_program == "lama":
-                dict_titlepage = self.dict_titlepage
-            if self.chosen_program == "cria":
-                dict_titlepage = self.dict_titlepage_cria
-
-            self.Dialog = QtWidgets.QDialog(
-                None,
-                QtCore.Qt.WindowSystemMenuHint
-                | QtCore.Qt.WindowTitleHint
-                | QtCore.Qt.WindowCloseButtonHint,
-            )
-            self.ui = Ui_Dialog_titlepage()
-            self.ui.setupUi(self.Dialog, dict_titlepage)
-            # self.Dialog.show()
-            self.Dialog.exec()
-
-            if self.chosen_program == "lama":
-                self.dict_titlepage = dict_titlepage
-                titlepage_save = os.path.join(
-                    path_localappdata_lama, "Teildokument", "titlepage_save"
-                )
-            if self.chosen_program == "cria":
-                self.dict_titlepage_cria = dict_titlepage
-                titlepage_save = os.path.join(
-                    path_localappdata_lama, "Teildokument", "titlepage_save_cria"
-                )
-
-            try:
-                with open(titlepage_save, "w+", encoding="utf8") as f:
-                    json.dump(dict_titlepage, f, ensure_ascii=False)
-            except FileNotFoundError:
-                os.makedirs(os.path.join(path_localappdata_lama, "Teildokument"))
-                with open(titlepage_save, "w+", encoding="utf8") as f:
-                    json.dump(dict_titlepage, f, ensure_ascii=False)
+        try:
+            with open(titlepage_save, "w+", encoding="utf8") as f:
+                json.dump(dict_titlepage, f, ensure_ascii=False)
+        except FileNotFoundError:
+            os.makedirs(os.path.join(path_localappdata_lama, "Teildokument"))
+            with open(titlepage_save, "w+", encoding="utf8") as f:
+                json.dump(dict_titlepage, f, ensure_ascii=False)
 
     def notenanzeige_changed(self):
         if self.combobox_beurteilung.currentIndex() == 0:
@@ -6374,11 +6286,11 @@ class Ui_MainWindow(object):
     def spinbox_pkt_changed(self):  # , aufgabe, spinbox_abstand
         self.update_punkte()
 
-    def checkbox_pkt_changed(self, aufgabe):
-        if self.dict_variablen_punkte_halb[aufgabe] ==  False:
-            self.dict_variablen_punkte_halb[aufgabe] = True
-        else:
-            self.dict_variablen_punkte_halb[aufgabe] = False
+    # def checkbox_pkt_changed(self, aufgabe):
+    #     if self.dict_variablen_punkte_halb[aufgabe] ==  False:
+    #         self.dict_variablen_punkte_halb[aufgabe] = True
+    #     else:
+    #         self.dict_variablen_punkte_halb[aufgabe] = False
 
 
     def spinbox_abstand_changed(self):  # , aufgabe, spinbox_abstand
@@ -6531,7 +6443,7 @@ class Ui_MainWindow(object):
         return self.dict_variablen_abstand[aufgabe].value()
 
     def get_punkte_halb_aufgabe_sage(self, aufgabe):
-        return self.dict_variablen_punkte_halb[aufgabe]
+        return self.dict_variablen_punkte_halb[aufgabe].isChecked()
 
 
 
@@ -6652,13 +6564,13 @@ class Ui_MainWindow(object):
                 state = self.temp_info[aufgabe][1]
             else:
                 state= False             
-            checkbox_pkt.stateChanged.connect(partial(self.checkbox_pkt_changed, aufgabe))
+            # checkbox_pkt.stateChanged.connect(partial(self.checkbox_pkt_changed, aufgabe))
             if state == True:
                 checkbox_pkt.setChecked(True)
             horizontalLayout_groupbox_pkt.addWidget(checkbox_pkt)
-            self.dict_variablen_punkte_halb[aufgabe] = state
-        else:
-            self.dict_variablen_punkte_halb[aufgabe] = False
+            self.dict_variablen_punkte_halb[aufgabe] = checkbox_pkt
+        # else:
+        #     self.dict_variablen_punkte_halb[aufgabe] = False
         if typ == 2:
             groupbox_pkt.setToolTip(
                 "Die Punkte geben die Gesamtpunkte dieser Aufgabe an.\nEs müssen daher auch die Ausgleichspunkte berücksichtigt werden."
@@ -6835,7 +6747,7 @@ class Ui_MainWindow(object):
 
         self.temp_info = {}
         for all in self.dict_variablen_punkte.keys():
-            self.temp_info[all] = [self.dict_variablen_punkte[all].value(), self.dict_variablen_punkte_halb[all], self.dict_variablen_abstand[all].value()]
+            self.temp_info[all] = [self.dict_variablen_punkte[all].value(), self.dict_variablen_punkte_halb[all].isChecked(), self.dict_variablen_abstand[all].value()]
 
 
         for i in reversed(range(start_value, self.gridLayout_8.count() + 1)):
@@ -7332,8 +7244,6 @@ class Ui_MainWindow(object):
         _dict = {}
         
         for aufgabe in self.list_alle_aufgaben_sage:
-            typ = get_aufgabentyp(self.chosen_program, aufgabe)
-
             halbe_punkte = self.get_punkte_halb_aufgabe_sage(aufgabe)
 
             _dict[aufgabe] = [
