@@ -1,11 +1,19 @@
 import re
-string = "Das ist ein Test.\n\nGegeben ist der Bruch \\variation{$\\frac{3}{4}$}{$\\frac{5}{7}$}. Gib an, ob der Bruch ein echter oder unechter Bruch ist."
+string = "Löse die folgende lineare Gleichung:\n\n$4x-2=\\variation{14}{22}$\n\n\\antwort{$x=\\variation{4}{6}$}"
 
-def replace_group_variation_aufgabe(string):
-    # content = aufgabe_total['content']
-    _list = re.findall("\\\\variation\{.*\}\{.*\}", string)
+def replace_group_variation_aufgabe(content):
+    _list = re.findall("\\\\variation\{.*\}\{.*\}", content)
+
+    # for i, all in enumerate(_list):
+    #     open_count = all.count("{")
+    #     close_count = all.count("}")
+    #     print(open_count)
+    #     print(close_count)
+    #     if open_count < close_count:
+    #       string = all.rsplit("}", 2)
+    #       _list[i] = string[0] + "}"  
+
     print(_list)
-
     for all in _list:
         open_count=0
         close_count=0
@@ -19,15 +27,16 @@ def replace_group_variation_aufgabe(string):
             if open_count==close_count:
                 start_index = i
                 break
-    
-        replacement_string = all[start_index+2:-1]
+        print(start_index)
+        replacement_string = all[start_index+2:-1].replace("\\", "\\\\")
+        print(replacement_string)
+        content = re.sub("\\\\variation\{.*\}\{.*\}", replacement_string, content)
 
-        string = re.sub("\\\\variation\{.*\}\{.*\}", replacement_string, string)
-    
-    # return string
-    # content = re.sub("\\variation{.?}{(.?)}", r"\1", content)
+
+
+    return content
 
 
 
 string = replace_group_variation_aufgabe(string)
-# print(string)
+print(string)

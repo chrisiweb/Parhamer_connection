@@ -4748,6 +4748,13 @@ class Ui_MainWindow(object):
         string = ", ".join(list_)
         return string
 
+    def exisiting_variations_AB(self, content):
+        rsp = re.search("\\\\variation\{.*\}\{.*\}", content)
+        if rsp == None:
+            return False
+        else:
+            return True
+        
     def get_all_infos_new_file(self, typ, typ_save):
         if typ_save == "editor":
             name = None
@@ -4775,6 +4782,10 @@ class Ui_MainWindow(object):
             ]
         quelle = self.lineEdit_quelle.text()
         content = self.plainTextEdit.toPlainText()
+
+        group_variation = self.exisiting_variations_AB(content)
+
+
         punkte = self.spinBox_punkte.value()
 
         if self.comboBox_pagebreak.currentIndex() == 0:
@@ -4818,6 +4829,7 @@ class Ui_MainWindow(object):
             af,
             quelle,
             content,
+            group_variation,
             punkte,
             pagebreak,
             klasse,
@@ -4860,6 +4872,7 @@ class Ui_MainWindow(object):
             af,
             quelle,
             content,
+            group_variation,
             punkte,
             pagebreak,
             klasse,
@@ -4916,6 +4929,7 @@ class Ui_MainWindow(object):
         lama_table.update({"af": af}, doc_ids=[file_id])
         lama_table.update({"quelle": quelle}, doc_ids=[file_id])
         lama_table.update({"content": content}, doc_ids=[file_id])
+        lama_table.update({"gruppe": group_variation}, doc_ids=[file_id])
         lama_table.update({"punkte": punkte}, doc_ids=[file_id])
         lama_table.update({"pagebreak": pagebreak}, doc_ids=[file_id])
         lama_table.update({"klasse": klasse}, doc_ids=[file_id])
@@ -5319,6 +5333,7 @@ class Ui_MainWindow(object):
             af,
             quelle,
             content,
+            group_variation,
             punkte,
             pagebreak,
             klasse,
@@ -5341,6 +5356,7 @@ class Ui_MainWindow(object):
             af,
             quelle,
             content,
+            group_variation,
             punkte,
             pagebreak,
             klasse,
@@ -6527,10 +6543,6 @@ class Ui_MainWindow(object):
         return number
 
     def create_neue_aufgaben_box(self, index, aufgabe, aufgabe_total):
-        # try: 
-        #     print(aufgabe_total['gruppe'])
-        # except KeyError:
-        #     print(False)
         typ = get_aufgabentyp(self.chosen_program, aufgabe)
 
         aufgaben_verteilung = self.get_aufgabenverteilung()
@@ -6576,7 +6588,7 @@ class Ui_MainWindow(object):
         gridLayout_gB.setColumnStretch(1, 2)
 
         af = aufgabe_total["af"]
-        if  af == 'oa' or af == 'ta' or af == 'ko':
+        if  af == 'oa' or af == 'ta' or af == 'ko' or typ==2:
             groupbox_AB = create_new_groupbox(new_groupbox, "Gruppe")
             groupbox_AB.setSizePolicy(SizePolicy_fixed)
             gridLayout_gB.addWidget(groupbox_AB, 0,2,3,1,QtCore.Qt.AlignRight)
@@ -6585,12 +6597,18 @@ class Ui_MainWindow(object):
             checkbox_AB = create_new_checkbox(groupbox_AB, "A/B", True)
             self.dict_widget_variables['checkbox_AB_{}'.format(aufgabe)] = checkbox_AB
 
-            if aufgabe_total['gruppe'] == False:
+            try:
+                gruppe = aufgabe_total['gruppe']
+            except KeyError:
+                gruppe = False
+
+            if gruppe == False:
                 checkbox_AB.setChecked(False)
                 checkbox_AB.setEnabled(False)
                 checkbox_AB.setToolTip("Derzeit ist für diese Aufgabe keine Gruppen-Variation verfügbar.")
             else:
                 checkbox_AB.setToolTip("Diese Aufgabe wird bei unterschiedlichen Gruppen\ngeringfügig (z.B. durch veränderte Zahlen) variiert.")
+
             
             horizontalLayout_groupbox_AB.addWidget(checkbox_AB)
 
@@ -7399,7 +7417,7 @@ class Ui_MainWindow(object):
 
     def replace_group_variation_aufgabe(self, content):
         _list = re.findall("\\\\variation\{.*\}\{.*\}", content)
-
+        print(_list)
         for all in _list:
             open_count=0
             close_count=0
@@ -7413,10 +7431,12 @@ class Ui_MainWindow(object):
                 if open_count==close_count:
                     start_index = i
                     break
-        
+            print(start_index)
             replacement_string = all[start_index+2:-1].replace("\\", "\\\\")
+            print(replacement_string)
             content = re.sub("\\\\variation\{.*\}\{.*\}", replacement_string, content)
-     
+
+
 
         return content
 
@@ -7458,14 +7478,11 @@ class Ui_MainWindow(object):
         else:
             vspace = "\\vspace{{{0}cm}} \n\n".format(abstand)
 
-        with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
-            vorschau.write(header)
-            vorschau.write(begin)
+
 
         if aufgabe in self.dict_sage_individual_change:
             content = self.dict_sage_individual_change[aufgabe]
-            # with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
-            #     vorschau.write(self.dict_sage_individual_change[aufgabe])
+
         elif aufgabe in self.dict_sage_ausgleichspunkte_chosen:
             full_content = aufgabe_total["content"]
 
@@ -7474,9 +7491,7 @@ class Ui_MainWindow(object):
                 self, aufgabe, split_content, full_content
             )
 
-            # content = "\n".join(split_content)
-            # with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
-            #     vorschau.write(content)
+
         elif aufgabe in self.dict_sage_hide_show_items_chosen:
             full_content = aufgabe_total["content"]
             split_content = self.split_content(aufgabe, aufgabe_total["content"])
@@ -7484,46 +7499,34 @@ class Ui_MainWindow(object):
             content = edit_content_hide_show_items(
                 self, aufgabe, split_content, full_content
             )
-            # print(content)
-            # with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
-            #     vorschau.write(content)
-            # for index in self.dict_sage_ausgleichspunkte_chosen[aufgabe]:
-            #     split_content[index] = split_content[index].replace("SUBitem", "")
 
-        # try:
-        #     split_content, index_end = split_aufgaben_content(content)
-        #     split_content = split_content[:index_end]
-        # except Exception as e1:
-        #     try:
-        #         split_content = split_aufgaben_content_new_format(content)
-        #     except Exception:
-        #         # split_content = None
-        #         warning_window(
-        #             "Es ist ein Fehler bei der Anzeige der Aufgabe {} aufgetreten! (Die Aufgabe kann voraussichtlich dennoch verwendet und individuell in der TeX-Datei bearbeitet werden.)\n".format(
-        #                 aufgabe
-        #             ),
-        #             'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!',
-        #         )
-        #         return
 
         else:
             content = aufgabe_total["content"]
 
-        if 'checkbox_AB_{}'.format(aufgabe) in self.dict_widget_variables:
-            checkbox = self.dict_widget_variables['checkbox_AB_{}'.format(aufgabe)]
-            if checkbox.isChecked() and self.comboBox_gruppe_AB.currentIndex()==1:
-                content = self.replace_group_variation_aufgabe(content)
 
 
         if ausgabetyp == "schularbeit" and is_empty(aufgabe_total['bilder'])  == False:
             for image in aufgabe_total['bilder']:
                 content = re.sub(r"{{../_database.*{0}}}".format(image),"{{{0}}}".format(image),content)
 
-        
+
+        show_group_B = False
+        if 'checkbox_AB_{}'.format(aufgabe) in self.dict_widget_variables:
+            checkbox = self.dict_widget_variables['checkbox_AB_{}'.format(aufgabe)]
+            if checkbox.isChecked() and self.comboBox_gruppe_AB.currentIndex()==1:
+                show_group_B = True
+
 
         with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
+            vorschau.write(header)
+            if show_group_B == True:
+                vorschau.write("\setcounter{Zufall}{1}")    
+            vorschau.write(begin)
             vorschau.write(content)
             vorschau.write(end)
+            if show_group_B == True:
+                vorschau.write("\setcounter{Zufall}{0}")
             vorschau.write(vspace)
             vorschau.write("\n\n")
 
@@ -7531,6 +7534,7 @@ class Ui_MainWindow(object):
 
     def create_body_of_tex_file(self, filename_vorschau, ausgabetyp):
         first_typ2 = False
+
         for aufgabe in self.list_alle_aufgaben_sage:
             name = aufgabe.replace(" (lokal)", "")
             typ = get_aufgabentyp(self.chosen_program, name)
