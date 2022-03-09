@@ -3330,7 +3330,7 @@ class Ui_MainWindow(object):
         self.dict_variablen_abstand = {}
         self.update_punkte()
         self.list_copy_images = []
-        for i in reversed(range(self.gridLayout_8.count())):
+        for i in reversed(range(self.gridLayout_8.count()+1)):
             self.delete_widget(self.gridLayout_8, i)
 
     def change_program(self):
@@ -5903,7 +5903,7 @@ class Ui_MainWindow(object):
             )
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         loaded_file = self.load_file(self.saved_file_path)
-
+        QtWidgets.QApplication.restoreOverrideCursor()
         try:
             if self.chosen_program == loaded_file["data_gesamt"]["program"]:
                 if self.list_alle_aufgaben_sage != []:
@@ -5919,6 +5919,7 @@ class Ui_MainWindow(object):
                 "Bitte laden Sie eine aktuelle *.lama-Datei oder kontaktieren Sie lama.helpme@gmail.com, wenn Sie Hilfe benötigen.",
             )
             return
+        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         self.update_gui("widgets_sage")
         self.dict_all_infos_for_file = self.load_file(self.saved_file_path)
 
@@ -6325,17 +6326,19 @@ class Ui_MainWindow(object):
         pkt_typ2 = 0
         gesamtpunkte = 0
         # print(self.dict_variablen_punkte)
-
-        for all in self.dict_variablen_punkte:
-            typ = get_aufgabentyp(self.chosen_program, all)
-            if typ == None:
-                gesamtpunkte += self.get_punkte_aufgabe_sage(all)
-            elif typ == 1:
-                pkt_typ1 += self.dict_variablen_punkte[all].value()
-                gesamtpunkte += self.dict_variablen_punkte[all].value()
-            elif typ == 2:
-                pkt_typ2 += self.dict_variablen_punkte[all].value()
-                gesamtpunkte += self.dict_variablen_punkte[all].value()
+        # print(len(self.dict_variablen_punkte))
+        # for all in self.dict_variablen_punkte:
+            # print(all)
+            # print(self.dict_variablen_punkte[all].value())
+        #     typ = get_aufgabentyp(self.chosen_program, all)
+        #     if typ == None:
+        #         gesamtpunkte += self.dict_variablen_punkte[all].value()
+        #     elif typ == 1:
+        #         pkt_typ1 += self.dict_variablen_punkte[all].value()
+        #         gesamtpunkte += self.dict_variablen_punkte[all].value()
+        #     elif typ == 2:
+        #         pkt_typ2 += self.dict_variablen_punkte[all].value()
+        #         gesamtpunkte += self.dict_variablen_punkte[all].value()
 
         return [gesamtpunkte, pkt_typ1, pkt_typ2]
 
@@ -6773,10 +6776,11 @@ class Ui_MainWindow(object):
             self.gridLayout_8.addWidget(neue_aufgaben_box, index_item, 0, 1, 1)
             index_item + 1
 
-        self.spacerItem = QtWidgets.QSpacerItem(
-            20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
-        )
-        self.gridLayout_8.addItem(self.spacerItem, index_item + 1, 0, 1, 1)
+        self.gridLayout_8.setRowStretch(index_item+2,1)
+        # self.spacerItem = QtWidgets.QSpacerItem(
+        #     20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        # )
+        # self.gridLayout_8.addItem(self.spacerItem, index_item + 1, 0, 1, 1)
 
         self.add_image_path_to_list(aufgabe.replace(" (lokal)", ""))
 
