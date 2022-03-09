@@ -6324,10 +6324,12 @@ class Ui_MainWindow(object):
         pkt_typ1 = 0
         pkt_typ2 = 0
         gesamtpunkte = 0
+        # print(self.dict_variablen_punkte)
+
         for all in self.dict_variablen_punkte:
             typ = get_aufgabentyp(self.chosen_program, all)
             if typ == None:
-                gesamtpunkte += self.dict_variablen_punkte[all].value()
+                gesamtpunkte += self.get_punkte_aufgabe_sage(all)
             elif typ == 1:
                 pkt_typ1 += self.dict_variablen_punkte[all].value()
                 gesamtpunkte += self.dict_variablen_punkte[all].value()
@@ -6443,7 +6445,12 @@ class Ui_MainWindow(object):
         return self.dict_variablen_abstand[aufgabe].value()
 
     def get_punkte_halb_aufgabe_sage(self, aufgabe):
-        return self.dict_variablen_punkte_halb[aufgabe].isChecked()
+        typ = get_aufgabentyp(self.chosen_program, aufgabe)
+        if typ == 1:
+            return self.dict_variablen_punkte_halb[aufgabe].isChecked()
+        else:
+            return False
+
 
 
 
@@ -6747,7 +6754,8 @@ class Ui_MainWindow(object):
 
         self.temp_info = {}
         for all in self.dict_variablen_punkte.keys():
-            self.temp_info[all] = [self.dict_variablen_punkte[all].value(), self.dict_variablen_punkte_halb[all].isChecked(), self.dict_variablen_abstand[all].value()]
+            halbe_punkte = self.get_punkte_halb_aufgabe_sage(all)
+            self.temp_info[all] = [self.dict_variablen_punkte[all].value(), halbe_punkte, self.dict_variablen_abstand[all].value()]
 
 
         for i in reversed(range(start_value, self.gridLayout_8.count() + 1)):
