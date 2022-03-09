@@ -6254,6 +6254,8 @@ class Ui_MainWindow(object):
             maximum_2 = self.spinbox_divisor_max_wizard.value()
             commas_div = self.spinBox_divisor_kommastellen_wizard.value()
             commas_result = self.spinbox_ergebnis_kommastellen_wizard.value()
+            smaller_or_equal_div = self.combobox_divisor_kommastelle_wizard.currentIndex()
+            smaller_or_equal_result = self.combobox_ergebnis_kommastellen_wizard.currentIndex()
 
 
             if self.combobox_dividend_wizard.currentIndex()==1:
@@ -6263,7 +6265,7 @@ class Ui_MainWindow(object):
             elif self.radioButton_division_rest.isChecked():
                 output_type = 1
 
-            new_example = create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div, commas_result, output_type)
+            new_example = create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div, smaller_or_equal_div, commas_result, smaller_or_equal_result, output_type)
 
         elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[5] or thema == themen_worksheet_wizard[6] or thema == themen_worksheet_wizard[7]:
             minimum = self.spinbox_zahlenbereich_minimum.value()
