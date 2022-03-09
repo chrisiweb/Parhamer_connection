@@ -5973,6 +5973,7 @@ class Ui_MainWindow(object):
         self.progress.setCancelButton(None)
         self.progress.setWindowModality(Qt.WindowModal)
 
+
         list_aufgaben_errors = self.sage_load_files()
         self.progress.cancel()
 
@@ -6599,12 +6600,18 @@ class Ui_MainWindow(object):
         gridLayout_gB.addWidget(groupbox_pkt, 0, 3, 3, 1, QtCore.Qt.AlignRight)
 
 
+        try:
+            self.temp_info
+        except AttributeError:
+            self.temp_info={}
+
         if aufgabe in self.temp_info:
             punkte = self.temp_info[aufgabe][0]
         elif typ == 1:
             punkte = self.spinBox_default_pkt.value()
         else:
             punkte = aufgabe_total["punkte"]
+
 
 
         horizontalLayout_groupbox_pkt = QtWidgets.QHBoxLayout(groupbox_pkt)
