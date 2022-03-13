@@ -1705,7 +1705,7 @@ class Ui_MainWindow(object):
 
         self.groupBox_default_pkt = QtWidgets.QGroupBox(self.groupBox_sage)
         self.groupBox_default_pkt.setObjectName("groupBox_default_pkt")
-        # self.groupBox_default_pkt.setSizePolicy(SizePolicy_fixed_height)
+        self.groupBox_default_pkt.setSizePolicy(SizePolicy_fixed_height)
         # self.groupBox_default_pkt.setMaximumSize(QtCore.QSize(120, 16777215))
         self.verticalLayout_default_pkt = QtWidgets.QVBoxLayout(
             self.groupBox_default_pkt
@@ -1767,8 +1767,10 @@ class Ui_MainWindow(object):
         self.verticalLayout_6.setObjectName("verticalLayout_6")
         self.spinBox_nummer = QtWidgets.QSpinBox(self.groupBox_nummer)
         self.spinBox_nummer.setValue(1)
+        self.spinBox_nummer_setvalue = 1
         self.spinBox_nummer.setObjectName("spinBox_nummer")
         self.spinBox_nummer.setToolTip("0 = keine Nummerierung")
+        self.spinBox_nummer.valueChanged.connect(self.spinBox_nummer_changed)
         # self.groupBox_nummer.setMaximumSize(QtCore.QSize(90, 16777215))
         # self.radioButton_notenschl.setText(
         #     _translate("MainWindow", "Notenschlüssel", None)
@@ -3850,35 +3852,24 @@ class Ui_MainWindow(object):
                 _translate("MainWindow", str(gesamt), None)
             )
 
+    def spinBox_nummer_changed(self):
+        if self.comboBox_pruefungstyp.currentText() != "Übungsblatt" and self.comboBox_pruefungstyp.currentText() != "Benutzerdefiniert":
+            self.spinBox_nummer_setvalue = self.spinBox_nummer.value()
+
     def comboBox_pruefungstyp_changed(self):
         self.comboBox_pruefungstyp.setEditable(False)
         self.groupBox_nummer.setEnabled(True)
         self.groupBox_datum.setEnabled(True)
+
+
+        self.spinBox_nummer.setValue(self.spinBox_nummer_setvalue)
+
+
         if self.comboBox_pruefungstyp.currentText() == "Grundkompetenzcheck":
             self.combobox_beurteilung.setEnabled(False)
             self.groupBox_notenschl.setEnabled(False)
             self.groupBox_beurteilungsraster.setEnabled(False)
             self.groupBox_klasse.setTitle("Klasse")
-            # if self.comboBox_pruefungstyp.currentText() == "Quiz":
-            #     self.pushButton_titlepage.setEnabled(True)
-            #     self.pushButton_titlepage.setText("Zufälliges Quiz erstellen")
-            #     self.comboBox_at_sage.setCurrentIndex(0)
-            #     self.comboBox_at_sage.setEnabled(False)
-            #     if self.get_aufgabenverteilung()[1] != 0:
-            #         response = question_window(
-            #             "Das Quiz ist ausschließlich für Typ1-Aufgaben konzipiert. Sollen alle enthaltenen Typ2-Aufgaben entfernt und das Quiz erstellt werden?",
-            #             titel="Typ2 Aufgaben entfernen?",
-            #         )
-            #         if response == False:
-            #             self.comboBox_pruefungstyp.setCurrentIndex(0)
-            #             return
-            #         else:
-            #             for aufgabe in self.list_alle_aufgaben_sage[:]:
-            #                 typ = get_aufgabentyp(self.chosen_program, aufgabe)
-            #                 if typ == 2:
-            #                     self.btn_delete_pressed(aufgabe)
-
-            # else:
             self.pushButton_titlepage.setEnabled(False)
             self.comboBox_at_sage.setEnabled(True)
             self.pushButton_titlepage.setText("Titelblatt anpassen")
@@ -3890,7 +3881,10 @@ class Ui_MainWindow(object):
             self.comboBox_at_sage.setEnabled(True)
             self.pushButton_titlepage.setText("Titelblatt anpassen")
             self.groupBox_datum.setEnabled(False)
+            # self.groupBox_nummer.hide()
             self.groupBox_nummer.setEnabled(False)
+            self.spinBox_nummer_setvalue = self.spinBox_nummer.value()
+            self.spinBox_nummer.setValue(0)
             self.groupBox_klasse.setTitle("Überschrift")
         else:
             self.combobox_beurteilung.setEnabled(True)
@@ -3903,7 +3897,8 @@ class Ui_MainWindow(object):
             if self.comboBox_pruefungstyp.currentText() == "Benutzerdefiniert":
                 self.comboBox_pruefungstyp.setEditable(True)
                 self.comboBox_pruefungstyp.lineEdit().selectAll()
-                # setCursorPosition(0)
+                self.spinBox_nummer_setvalue = self.spinBox_nummer.value()
+                self.spinBox_nummer.setValue(0)
                 self.groupBox_nummer.setEnabled(False)
                 # self.spinBox_nummer.setEnabled(False)
 
