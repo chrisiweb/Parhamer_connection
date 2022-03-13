@@ -3491,7 +3491,9 @@ class Ui_MainWindow(object):
             self.actionDeveloper.setText("Entwicklermodus (aktiv)")
             self.actionEdit_Files.setText("Aufgabe bearbeiten")
             # self.actionPush_Database.setVisible(True)
+            self.menuBar.removeAction(self.menuHelp.menuAction())
             self.menuBar.addAction(self.menuDeveloper.menuAction())
+            self.menuBar.addAction(self.menuHelp.menuAction())
 
     def activate_developermode(self):
         if self.developer_mode_active == True:
