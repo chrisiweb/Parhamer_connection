@@ -1421,7 +1421,7 @@ class Ui_MainWindow(object):
         self.gridLayout_14.setObjectName(_fromUtf8("gridLayout_14"))
         self.lineEdit_titel = QtWidgets.QLineEdit(self.groupBox_titel_cr)
         self.lineEdit_titel.setObjectName(_fromUtf8("lineEdit_titel"))
-        self.lineEdit_titel.textChanged.connect(self.check_admin_entry)
+        # self.lineEdit_titel.textChanged.connect(self.check_admin_entry)
         self.gridLayout_14.addWidget(self.lineEdit_titel, 0, 0, 1, 1)
         self.gridLayout.addWidget(self.groupBox_titel_cr, 1, 1, 1, 7)
         self.groupBox_titel_cr.setTitle(_translate("MainWindow", "Titel", None))
@@ -2534,6 +2534,7 @@ class Ui_MainWindow(object):
 
         if rsp == QtWidgets.QDialog.Accepted:
             single_file_index = self.ui_erstellen.single_file_index
+
             if self.ui_erstellen.pdf == False:
                 range_limit = 1
             elif single_file_index != None:
@@ -2568,7 +2569,7 @@ class Ui_MainWindow(object):
                     index,
                     self.ui_erstellen.spinBox_sw_gruppen.value() * 2,
                     self.ui_erstellen.pdf,
-                    self.ui_erstellen.lama,
+                    self.ui_erstellen.show_pagenumber,
                     single_file_index,
                     filename_vorschau = filename_vorschau,
                 )
@@ -2585,18 +2586,11 @@ class Ui_MainWindow(object):
                     subprocess.Popen('explorer "{}"'.format(file_path))
 
     def check_admin_entry(self):
-        if ("###" in self.lineEdit_titel.text() and self.chosen_program == "lama") or (
-            self.chosen_gui == "widgets_edit" and self.developer_mode_active == True
-        ):
+        if (self.chosen_gui == "widgets_edit" or self.chosen_gui == "widgets_create") and self.developer_mode_active == True:
             self.cb_matura_tag.show()
             self.cb_no_grade_tag.hide()
             self.cb_no_grade_tag.setChecked(False)
-        elif (
-            "###" in self.lineEdit_titel.text() and self.chosen_program == "cria"
-        ) or (
-            self.chosen_gui == "widgets_edit_cria"
-            and self.developer_mode_active == True
-        ):
+        elif (self.chosen_gui == "widgets_edit_cria" or self.chosen_gui == "widgets_create_cria") and self.developer_mode_active == True:
             self.cb_matura_tag.hide()
             self.cb_matura_tag.setChecked(False)
             self.cb_no_grade_tag.show()
@@ -3231,10 +3225,8 @@ class Ui_MainWindow(object):
             if picture.startswith("label_bild_creator_"):
                 self.del_picture(picture, question=False)
 
-        if self.lineEdit_titel.text().startswith("###"):
-            self.lineEdit_titel.setText(_translate("MainWindow", "###", None))
-        else:
-            self.lineEdit_titel.setText(_translate("MainWindow", "", None))
+
+        self.lineEdit_titel.setText(_translate("MainWindow", "", None))
 
         if variation == False:
             self.plainTextEdit.setPlainText(_translate("MainWindow", "", None))
@@ -4052,10 +4044,8 @@ class Ui_MainWindow(object):
         else:
             self.comboBox_af.setCurrentIndex(0)
 
-        if self.lineEdit_titel.text().startswith("###") and mode == "creator":
-            self.lineEdit_titel.setText("### " + aufgabe_total["titel"])
-        else:
-            self.lineEdit_titel.setText(aufgabe_total["titel"])
+
+        self.lineEdit_titel.setText(aufgabe_total["titel"])
 
         # print(aufgabe_total['bilder'])
         # print(aufgabe_total['name'])
@@ -4367,8 +4357,8 @@ class Ui_MainWindow(object):
             return "Es wurde kein Aufgabenformat ausgewählt."
 
         if (
-            is_empty(self.lineEdit_titel.text().replace("###", "")) == True
-            or self.lineEdit_titel.text().replace("###", "").isspace()
+            is_empty(self.lineEdit_titel.text()) == True
+            or self.lineEdit_titel.text().isspace()
         ):
             return "Bitte geben Sie einen Titel ein."
 
@@ -4404,19 +4394,12 @@ class Ui_MainWindow(object):
             return "Bitte geben Sie die Quelle an."
 
         elif (
-            self.check_for_admin_mode() == "user"
+            self.developer_mode_active == False
             and len(self.lineEdit_quelle.text()) != 6
         ):
             return 'Bitte geben Sie als Quelle ihren Vornamen und Nachnamen im Format "VorNac" (6 Zeichen!) ein.'
 
 
-
-    def check_for_admin_mode(self):
-        if self.lineEdit_titel.text().startswith("###"):
-            mode = "admin"
-        else:
-            mode = "user"
-        return mode
 
     def create_information_aufgabentyp(self):
         if self.chosen_program == "lama":
@@ -4429,11 +4412,7 @@ class Ui_MainWindow(object):
         return aufgabentyp
 
     def create_information_titel(self):
-        if self.lineEdit_titel.text().startswith("###"):
-            _, titel = self.lineEdit_titel.text().split("###")
-            titel = titel.strip()
-        else:
-            titel = self.lineEdit_titel.text().strip()
+        titel = self.lineEdit_titel.text().strip()
         return titel
 
     def create_information_themen(self):
@@ -4512,7 +4491,7 @@ class Ui_MainWindow(object):
             | QtCore.Qt.WindowCloseButtonHint,
         )
         self.ui_save = Ui_Dialog_speichern()
-        self.ui_save.setupUi(Dialog_speichern, self.creator_mode, self.chosen_variation,save_mode)
+        self.ui_save.setupUi(Dialog_speichern, self.developer_mode_active, self.chosen_variation,save_mode)
         self.ui_save.label.setText(information)
         # self.ui_save.label.setStyleSheet("padding: 10px")
         return Dialog_speichern
@@ -4762,7 +4741,7 @@ class Ui_MainWindow(object):
             #     gk, number  = name.split(' - ')
             #     name = gk + ' - ' + 'l.' + number
         themen = self.get_themen_auswahl()
-        titel = self.lineEdit_titel.text().replace("###", "").strip()
+        titel = self.lineEdit_titel.text().strip()
         if typ == 2:
             af = None
         else:
@@ -5177,7 +5156,6 @@ class Ui_MainWindow(object):
             return True
 
     def button_speichern_pressed(self):
-        # self.creator_mode = "user"
         self.local_save = False
 
         ######## WARNINGS #####
@@ -5187,9 +5165,6 @@ class Ui_MainWindow(object):
             warning_window(warning)
             return
 
-        ###### Check if Admin Mode is activated ####
-
-        self.creator_mode = self.check_for_admin_mode()
 
         ####### Collect information of file ################
 
@@ -5219,7 +5194,7 @@ class Ui_MainWindow(object):
 
         typ_save = self.ui_save.get_output()
 
-        if self.creator_mode == "user":
+        if self.developer_mode_active == True:
 
             while typ_save == ["user", False] or typ_save == ["local", None]:
                 if typ_save == ["user", False]:
@@ -5376,9 +5351,9 @@ class Ui_MainWindow(object):
                 titel
             )
 
-        if self.creator_mode == "admin":
+        if self.developer_mode_active == True:
             window_title = "Admin Modus - Aufgabe erfolgreich gespeichert"
-        if self.creator_mode == "user":
+        if self.developer_mode_active == False:
             window_title = "Aufgabe erfolgreich gespeichert"
 
         information = '{0}Titel: "{1}"\n\n{2}: {3}\n\n{4}Quelle: {5}{6}\n\n'.format(
@@ -7474,7 +7449,7 @@ class Ui_MainWindow(object):
         index=0,
         maximum=0,
         pdf=True,
-        lama=True,
+        show_pagenumber='plain',
         single_file_index=None,
         filename_vorschau=os.path.join(
             path_programm, "Teildokument", "Schularbeit_Vorschau.tex"
@@ -7592,7 +7567,7 @@ class Ui_MainWindow(object):
 
         with open(filename_vorschau, "w+", encoding="utf8") as vorschau:
             vorschau.write(
-                tex_preamble(solution=solution, random=gruppe, beamer_mode=beamer_mode)
+                tex_preamble(solution=solution, random=gruppe, beamer_mode=beamer_mode, pagestyle=show_pagenumber)
             )
             vorschau.write(str_titlepage)
             vorschau.write(header)
@@ -7966,20 +7941,7 @@ class Ui_MainWindow(object):
             # self.listWidget_fb.itemClicked.connect(self.nummer_clicked_fb)
             # self.listWidget_fb_cria.itemClicked.connect(self.nummer_clicked_fb)
 
-        if (chosen_gui == "widgets_create" and "###" in self.lineEdit_titel.text()) or (
-            chosen_gui == "widgets_edit"
-        ):
-            self.cb_matura_tag.show()
-            self.cb_no_grade_tag.hide()
-        elif (
-            chosen_gui == "widgets_create_cria" and "###" in self.lineEdit_titel.text()
-        ) or (chosen_gui == "widgets_edit_cria"):
-            self.cb_matura_tag.hide()
-            self.cb_no_grade_tag.show()
-
-        else:
-            self.cb_matura_tag.hide()
-            self.cb_no_grade_tag.hide()
+        self.check_admin_entry()
 
 
 if __name__ == "__main__":

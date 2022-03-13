@@ -1543,15 +1543,18 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
         self.pushButton_sw_save = QtWidgets.QPushButton(Dialog)
         self.pushButton_sw_save.setObjectName("pushButton_sw_save")
         self.pushButton_sw_save.clicked.connect(self.pushButton_sw_save_pressed)
-        self.gridLayout.addWidget(self.pushButton_sw_save, 6, 3, 1, 1)
+        self.gridLayout.addWidget(self.pushButton_sw_save, 7, 3, 1, 1)
         self.pushButton_sw_back = QtWidgets.QPushButton(Dialog)
         self.pushButton_sw_back.setObjectName("pushButton_sw_back")
         self.pushButton_sw_back.clicked.connect(self.pushButton_sw_back_pressed)
-        self.gridLayout.addWidget(self.pushButton_sw_back, 5, 3, 1, 1)
+        self.gridLayout.addWidget(self.pushButton_sw_back, 6, 3, 1, 1)
 
-        
+
+        self.cb_show_pagenumber = create_new_checkbox(Dialog, "Seitennummerierung anzeigen", True)
+        self.gridLayout.addWidget(self.cb_show_pagenumber, 4,3,1,1)
+
         self.cb_single_file = create_new_checkbox(Dialog, "Gesamtausgabe in einer Datei")
-        self.gridLayout.addWidget(self.cb_single_file, 4,3,1,1)
+        self.gridLayout.addWidget(self.cb_single_file, 5,3,1,1)
         if pruefungstyp != "Grundkompetenzcheck":
             self.cb_single_file.hide()
         self.cb_single_file.toggled.connect(self.cb_create_pdf_checked)
@@ -1611,7 +1614,7 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
         self.label_sw_klasse = QtWidgets.QLabel(self.groupBox_sw_data)
         self.label_sw_klasse.setObjectName("label_sw_klasse")
         self.gridLayout_2.addWidget(self.label_sw_klasse, 1, 3, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_sw_data, 1, 0, 5, 3)
+        self.gridLayout.addWidget(self.groupBox_sw_data, 1, 0, 6, 3)
         self.groupBox_sw_gruppen = QtWidgets.QGroupBox(Dialog)
         self.groupBox_sw_gruppen.setObjectName("groupBox_sw_gruppen")
         self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBox_sw_gruppen)
@@ -1641,18 +1644,18 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
         self.cb_create_tex.setText(".tex")
         self.cb_create_tex.setChecked(True)
         self.cb_create_tex.setEnabled(False)
-        self.gridLayout.addWidget(self.cb_create_tex, 6, 0, 1, 1)
+        self.gridLayout.addWidget(self.cb_create_tex, 7, 0, 1, 1)
         self.cb_create_pdf = QtWidgets.QCheckBox(Dialog)
         self.cb_create_pdf.setObjectName(_fromUtf8("cb_create_pdf"))
         self.cb_create_pdf.setText(".pdf")
         self.cb_create_pdf.setChecked(True)
         self.cb_create_pdf.toggled.connect(self.cb_create_pdf_checked)
-        self.gridLayout.addWidget(self.cb_create_pdf, 6, 1, 1, 1)
+        self.gridLayout.addWidget(self.cb_create_pdf, 7, 1, 1, 1)
         self.cb_create_lama = QtWidgets.QCheckBox(Dialog)
         self.cb_create_lama.setObjectName(_fromUtf8("cb_create_lama"))
         self.cb_create_lama.setText("Autosave (.lama)")
         self.cb_create_lama.setChecked(True)
-        self.gridLayout.addWidget(self.cb_create_lama, 6, 2, 1, 1)
+        self.gridLayout.addWidget(self.cb_create_lama, 7, 2, 1, 1)
 
         self.retranslateUi(Dialog)
 
@@ -1734,18 +1737,23 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
             self.single_file_index = 0
         else:
             self.single_file_index = None
+        
+        if self.cb_show_pagenumber.isChecked():
+            self.show_pagenumber = 'plain'
+        else:
+            self.show_pagenumber = 'empty'
         self.Dialog.accept()
 
 
 class Ui_Dialog_speichern(QtWidgets.QDialog):
-    def setupUi(self, Dialog, creator_mode, chosen_variation, save_mode):
+    def setupUi(self, Dialog, developer_mode_active, chosen_variation, save_mode):
  
         self.Dialog = Dialog
-        self.creator_mode = creator_mode
+        self.developer_mode_active = developer_mode_active
         Dialog.setObjectName("Dialog")
-        if self.creator_mode == "user":
+        if self.developer_mode_active == False:
             titel = "Aufgabe speichern"
-        if self.creator_mode == "admin":
+        if self.developer_mode_active == True:
             titel = "Administrator Modus - Aufgabe speichern"
         Dialog.setWindowTitle(titel)
 
@@ -1764,7 +1772,7 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
         # self.label.setWordWrap(True)
         gridlayout.addWidget(self.label, 1, 0, 1, 2)
 
-        if self.creator_mode == "user" and save_mode == 'general':
+        if self.developer_mode_active==False and save_mode == 'general':
             self.cb_confirm = create_new_checkbox(Dialog, "")
             self.cb_confirm.setSizePolicy(SizePolicy_fixed)
             self.cb_confirm.setStyleSheet("background-color: white; color: black;")
@@ -1781,39 +1789,9 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
             gridlayout.addWidget(self.label_checkbox, 2, 1, 1, 1, Qt.AlignTop)
             self.label_checkbox.clicked.connect(self.label_checkbox_clicked)
 
-        # if self.creator_mode == "admin":
-            # self.combobox_in_official = create_new_combobox(Dialog)
-            # self.combobox_in_official.setStyleSheet(
-            #     """
-            # QWidget {{
-            #     background-color: white;
-            #     color: black;
-            #     selection-background-color: {0};
-            #     selection-color: white;
-            # }}
-
-            # QComboBox::disabled {{
-            #    background-color: gray; color: white; 
-            # }}
-            # """.format(
-            #         get_color(blue_7)
-            #     )
-            # )
-            # self.combobox_in_official.addItem("offizielle Aufgabe")
-            # self.combobox_in_official.setEnabled(False)
-            # self.combobox_in_official.addItem("inoffizelle Aufgabe")
-            # if chosen_variation != None:
-            #     number = chosen_variation.split(" - ")
-            #     number = number[-1].split("_")[-1]
-                # if "i" in number:
-                #     self.combobox_in_official.setCurrentIndex(1)
-                # else:
-                # self.combobox_in_official.setCurrentIndex(0)
-                # self.combobox_in_official.setEnabled(False)
-            # gridlayout.addWidget(self.combobox_in_official, 2, 0, 1, 1)
 
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
-        if self.creator_mode == "user":
+        if self.developer_mode_active == False:
             if save_mode == 'local':
                 self.buttonBox.setStandardButtons(
                     QtWidgets.QDialogButtonBox.Apply | QtWidgets.QDialogButtonBox.No
@@ -1828,7 +1806,7 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
                 self.buttonBox.setStandardButtons(
                     QtWidgets.QDialogButtonBox.Yes | QtWidgets.QDialogButtonBox.No
                 )
-        elif self.creator_mode == "admin":
+        elif self.developer_mode_active == True:
             self.buttonBox.setStandardButtons(
                 QtWidgets.QDialogButtonBox.Yes | QtWidgets.QDialogButtonBox.No
             )
@@ -1842,7 +1820,7 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
             buttonY.setText("Speichern")
             buttonY.clicked.connect(self.yes_pressed)
 
-        if (self.creator_mode == "user" and chosen_variation == None) or save_mode == 'local':
+        if (self.developer_mode_active==False and chosen_variation == None) or save_mode == 'local':
             button_local = self.buttonBox.button(QtWidgets.QDialogButtonBox.Apply)
             button_local.setText("Lokal speichern")
             button_local.clicked.connect(self.local_pressed)
@@ -1854,7 +1832,7 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
         self.Dialog.accept()
 
     def yes_pressed(self):
-        if self.creator_mode == "admin":
+        if self.developer_mode_active == True:
             self.confirmed = ["admin", 0]
         else:
             self.confirmed = ["user", self.cb_confirm.isChecked()]
