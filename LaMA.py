@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__ = "v3.3.0"
-__lastupdate__ = "01/22"
+__version__ = "v3.4.0"
+__lastupdate__ = "03/22"
 ##################
 
 print("Loading...")
@@ -11,7 +11,6 @@ print("Loading...")
 # from operator import indexOf
 # from tokenize import group
 # from numpy import maximum, negative
-from numpy import False_
 from start_window import check_if_database_exists
 from worksheet_wizard import get_all_solution_pixels
 
