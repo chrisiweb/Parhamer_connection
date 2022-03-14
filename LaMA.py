@@ -5,7 +5,7 @@ __version__ = "v3.4.0"
 __lastupdate__ = "03/22"
 
 ##################
-show_popup = True
+show_popup = False
 print("Loading...")
 
 from start_window import check_if_database_exists
