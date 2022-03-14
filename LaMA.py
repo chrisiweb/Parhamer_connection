@@ -3,8 +3,9 @@
 #### Version number ###
 __version__ = "v3.4.0"
 __lastupdate__ = "03/22"
-##################
 
+##################
+show_popup = True
 print("Loading...")
 
 from start_window import check_if_database_exists
@@ -222,15 +223,28 @@ class Ui_MainWindow(object):
             today_month = datetime.datetime.today().strftime("%m")
 
             difference = int(today) - int(refresh_date_ddb)
-            # print(difference)
-            # print(today_month)
-            # print(refresh_date_ddb_month)
+
             if (self.lama_settings["database"] == 1 and difference != 0) or (self.lama_settings["database"] == 2 and difference > 6) or (self.lama_settings["database"] == 3 and refresh_date_ddb_month != today_month):
                 QtWidgets.QApplication.setOverrideCursor(
                     QtGui.QCursor(QtCore.Qt.WaitCursor)
                 )
                 refresh_ddb(self, auto_update=True)
                 QtWidgets.QApplication.restoreOverrideCursor()
+
+        try:
+            self.lama_settings["popup_off"]
+        except KeyError:
+            self.lama_settings["popup_off"] = False
+
+
+        if self.lama_settings["popup_off"] == False and show_popup==True:
+            rsp = self.show_popup_window()
+            if rsp == True:
+                self.lama_settings["popup_off"] = True
+
+                with open(lama_settings_file, "w+", encoding="utf8") as f:
+                    json.dump(self.lama_settings, f, ensure_ascii=False)
+
 
 
         self.chosen_gui = "widgets_search"
@@ -2470,6 +2484,23 @@ class Ui_MainWindow(object):
         if self.chosen_program == "cria":
             self.update_gui("widgets_search")
 
+    def show_popup_window(self):
+        msg = QtWidgets.QMessageBox()
+        msg.setWindowTitle("Update")
+        pixmap = QtGui.QPixmap(logo_path)
+        msg.setIconPixmap(pixmap)
+        msg.setWindowIcon(QtGui.QIcon(logo_path))
+        msg.setText('Die neue Version LaMA {} verwendet Befehle des aktuellsten "srdp-mathematik"-Pakets. Um die volle Funktionsfähigkeit von LaMA zu gewährleisten, sollte das LaTeX-Paket auf Ihrem Gerät manuell aktualisiert werden.'.format(__version__))
+        msg.setInformativeText('Eine direkte Aktualisierung des "srdp-mathematik"-Pakets über LaMA kann via\n"Optionen -> Update ... -> srdp-mathematik.sty aktualisieren"\nerreicht werden.\n(Sollte dies nicht möglich sein, melden Sie sich bitte unter lama.helpme@gmail.com.)')
+        
+
+        cb = QtWidgets.QCheckBox()
+        msg.setCheckBox(cb)
+        cb.setText("Diese Meldung nicht mehr anzeigen")
+        msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+
+        msg.exec_()
+        return cb.isChecked()
 
     def get_saving_path(self):
         dict_umlaute = {
@@ -2824,6 +2855,10 @@ class Ui_MainWindow(object):
             )
 
             if ret == True:
+                self.lama_settings["popup_off"] = False
+                with open(lama_settings_file, "w+", encoding="utf8") as f:
+                    json.dump(self.lama_settings, f, ensure_ascii=False)
+
                 if sys.platform.startswith("darwin"):
                     refresh_ddb(self, auto_update='mac')
                     opened_file = os.path.basename(sys.argv[0])

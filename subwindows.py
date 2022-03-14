@@ -1868,6 +1868,7 @@ class Ui_Dialog_setup(object):
                 'notenschluessel_cria': [False, False],
                 'autosave' : 2,
                 'quelle' : '',
+                'popup_off': False,
             }
         # print(self.lama_settings)
         # self.beispieldaten_dateipfad_cria = MainWindow.beispieldaten_dateipfad_cria
@@ -2123,7 +2124,7 @@ class Ui_Dialog_setup(object):
         self.Dialog.reject()
 
     def save_settings_to_dict(self, chosen_program):
-        self.lama_settings
+        # self.lama_settings
         dict_={}
         dict_['start_program'] = self.combobox_start_program.currentIndex()
         dict_['pdf_reader'] = self.lineedit_pdf_reader.text()
@@ -2151,6 +2152,10 @@ class Ui_Dialog_setup(object):
         dict_[key_prozente] = [self.spinbox_prozente_sgu.value(), self.spinbox_prozente_gu.value(), self.spinbox_prozente_be.value(), self.spinbox_prozente_ge.value()]
         dict_[key_notenschluessel] = [self.cb_ns_halbe_punkte.isChecked(), self.cb_ns_prozente.isChecked()]
 
+        try:
+            dict_['popup_off'] = self.lama_settings['popup_off']
+        except KeyError:
+            dict_['popup_off'] = False
         return dict_
 
     def set_settings_in_sage(self):
