@@ -1853,23 +1853,32 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
 class Ui_Dialog_setup(object):
     def setupUi(self, Dialog, MainWindow):
         self.MainWindow = MainWindow
+        standard_settings = {
+            'start_program' : 0,
+            'pdf_reader' : "",
+            'database' : 2,
+            'display' : 0,
+            'prozente': [91, 80, 64, 50],
+            'notenschluessel': [False, False],
+            'prozente_cria': [91, 80, 64, 50],
+            'notenschluessel_cria': [False, False],
+            'autosave' : 2,
+            'quelle' : '',
+            'popup_off': False,
+        }
         try: 
             with open(lama_settings_file, "r", encoding="utf8") as f:
                 self.lama_settings = load(f)
+
+            for all in standard_settings:
+                try:
+                    self.lama_settings[all]
+                except KeyError:
+                    self.lama_settings[all] = standard_settings[all] 
         except FileNotFoundError:
-            self.lama_settings = {
-                'start_program' : 0,
-                'pdf_reader' : "",
-                'database' : 2,
-                'display' : 0,
-                'prozente': [91, 80, 64, 50],
-                'notenschluessel': [False, False],
-                'prozente_cria': [91, 80, 64, 50],
-                'notenschluessel_cria': [False, False],
-                'autosave' : 2,
-                'quelle' : '',
-                'popup_off': False,
-            }
+            self.lama_settings = standard_settings
+
+ 
         # print(self.lama_settings)
         # self.beispieldaten_dateipfad_cria = MainWindow.beispieldaten_dateipfad_cria
         # self.beispieldaten_dateipfad_1 = MainWindow.beispieldaten_dateipfad_1
