@@ -210,11 +210,8 @@ class Ui_MainWindow(object):
             self.lama_settings["database"] = 2
 
         if self.lama_settings["database"] == 0:
-            QtWidgets.QApplication.setOverrideCursor(
-                QtGui.QCursor(QtCore.Qt.WaitCursor)
-            )
             refresh_ddb(self, True)
-            QtWidgets.QApplication.restoreOverrideCursor()
+
         else:
             database_file = os.path.join(database, ".git", "index")
             refresh_date_ddb= modification_date(database_file).strftime("%Y%m%d")
@@ -225,11 +222,7 @@ class Ui_MainWindow(object):
             difference = int(today) - int(refresh_date_ddb)
 
             if (self.lama_settings["database"] == 1 and difference != 0) or (self.lama_settings["database"] == 2 and difference > 6) or (self.lama_settings["database"] == 3 and refresh_date_ddb_month != today_month):
-                QtWidgets.QApplication.setOverrideCursor(
-                    QtGui.QCursor(QtCore.Qt.WaitCursor)
-                )
                 refresh_ddb(self, auto_update=True)
-                QtWidgets.QApplication.restoreOverrideCursor()
 
         try:
             self.lama_settings["popup_off"]
@@ -2830,7 +2823,6 @@ class Ui_MainWindow(object):
             if __version__ == latest_version:
                 return
         except Exception as e:
-            # print(e)
             print(
                 "Fehler beim Überprüfen der Version. Überprüfung wird übersprungen ..."
             )

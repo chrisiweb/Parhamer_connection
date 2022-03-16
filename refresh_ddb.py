@@ -58,9 +58,10 @@ def refresh_ddb(self, auto_update=False):
 
     if check_internet_connection()==False:
         QtWidgets.QApplication.restoreOverrideCursor()
-        critical_window("""
-Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.
-        """, titel="Keine Internetverbindung")
+        critical_window("Die Aktualisierung der Datenbank konnte nicht durchgeführt werden, da die Verbindung zum Internet fehlgeschlagen ist.",
+        "Bitte stellen Sie sicher, dass eine Verbindung besteht und versuchen Sie es erneut.",
+        titel="Keine Internetverbindung"
+        )
         return
 
     if self.developer_mode_active == True:        
