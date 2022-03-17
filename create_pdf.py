@@ -694,6 +694,10 @@ def open_pdf_file(folder_name, file_name):
 
     drive_location = os.path.splitdrive(sys.argv[0])[0]
 
+    print(drive_programm)
+    print(drive_database)
+    print(drive_location)
+
     if drive_location.upper() != drive_database.upper():
         drive = drive_database.upper()
     else:
@@ -743,6 +747,10 @@ def open_pdf_file(folder_name, file_name):
         else:
             path_pdf_reader = '"{}"'.format(path_pdf_reader) 
 
+        print(drive)
+        print(folder_name)
+        print(path_pdf_reader)
+        print(file_name)
         if is_empty(drive):
             subprocess.Popen(
                 'cd "{0}" & {1} {2}.pdf'.format(folder_name,path_pdf_reader, file_name),
