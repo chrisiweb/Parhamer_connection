@@ -692,7 +692,7 @@ def open_pdf_file(folder_name, file_name):
 
     drive_database = os.path.splitdrive(path_localappdata_lama)[0]
 
-    drive_location = os.path.splitdrive(sys.argv[0])[0]
+    drive_location = os.path.splitdrive(sys.argv[-1])[0]
 
     print(drive_programm)
     print(drive_database)
