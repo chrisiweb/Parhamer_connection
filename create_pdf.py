@@ -688,8 +688,6 @@ def build_pdf_file(folder_name, file_name, latex_output_file):
 
 
 def open_pdf_file(folder_name, file_name):
-    drive_programm = os.path.splitdrive(path_programm)[0]
-
     drive_database = os.path.splitdrive(path_localappdata_lama)[0]
 
     drive_location = os.path.splitdrive(sys.argv[-1])[0]
