@@ -697,6 +697,8 @@ def open_pdf_file(folder_name, file_name):
     print(drive_programm)
     print(drive_database)
     print(drive_location)
+    print(sys.argv[0])
+    print(sys.argv)
 
     if drive_location.upper() != drive_database.upper():
         drive = drive_database.upper()
