@@ -667,10 +667,12 @@ def build_pdf_file(folder_name, file_name, latex_output_file):
         process = subprocess.Popen(
             terminal_command,
             cwd=os.path.splitdrive(path_programm)[0],
-            stdout=latex_output_file,
+            stdout=subprocess.PIPE,
             shell=True,
         )
 
+        for line in iter(process.stdout.readline, ''):
+            print(line)
         # process = subprocess.Popen(
         #     terminal_command,
         #     cwd=os.path.splitdrive(path_programm)[0],

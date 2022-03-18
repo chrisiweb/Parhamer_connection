@@ -1,3 +1,4 @@
+from pydoc import plain
 from PyQt5 import QtCore, QtWidgets, QtGui
 # from PyQt5.QtWidgets import QMainWindow, QApplication
 from config import (
@@ -8,7 +9,7 @@ from config import (
 )
 from waitingspinnerwidget import QtWaitingSpinner
 from functools import partial
-from create_new_widgets import create_new_verticallayout, create_new_label
+from create_new_widgets import create_new_verticallayout, create_new_gridlayout, create_new_label
 
 blue_7 = colors_ui["blue_7"]
 
@@ -33,9 +34,8 @@ class Ui_Dialog_processing(object):
         else:
             Dialog.setWindowFlags(QtCore.Qt.Dialog | QtCore.Qt.CustomizeWindowHint | QtCore.Qt.WindowTitleHint)
         # Dialog.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed))
-        horizontalLayout = QtWidgets.QHBoxLayout(Dialog)
-        horizontalLayout.setObjectName("horizontal")
-        horizontalLayout.setSizeConstraint(QtWidgets.QHBoxLayout.SetFixedSize)
+        gridLayout = create_new_gridlayout(Dialog)
+        gridLayout.setSizeConstraint(QtWidgets.QHBoxLayout.SetFixedSize)
 
         if icon == True:
             pixmap = QtGui.QPixmap(logo_cria_button_path)
@@ -64,9 +64,14 @@ class Ui_Dialog_processing(object):
         spinner.start()  # starts spinning
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         if icon == True:
-            horizontalLayout.addWidget(image)
-        horizontalLayout.addWidget(self.label)
-        horizontalLayout.addWidget(label_spinner)
+            gridLayout.addWidget(image, 0,0,1,1)
+        gridLayout.addWidget(self.label, 0,1,1,1)
+        gridLayout.addWidget(label_spinner, 0,2,1,1)
+        plainTextEdit = QtWidgets.QPlainTextEdit(Dialog)
+        plainTextEdit.setReadOnly(True)
+        plainTextEdit.setPlainText("Das ist ein Test")
+        gridLayout.addWidget(plainTextEdit, 1,0,1,3)
+
 
 
 class Ui_ProgressBar(object):
