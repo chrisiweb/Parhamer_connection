@@ -161,7 +161,7 @@ def working_window(worker, text, show_terminal_output, *args):
     worker.finished.connect(Dialog.close)
     worker.moveToThread(thread)
 
-    thread.started.connect(partial(worker.task,ui,*args)) 
+    thread.started.connect(partial(worker.task,*args)) 
     thread.start()
     thread.exit()
     Dialog.exec()
