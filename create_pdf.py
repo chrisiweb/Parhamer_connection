@@ -6,6 +6,8 @@ import os
 import re
 import json
 import subprocess
+
+from numpy import sign
 from config_start import path_programm, path_localappdata_lama, lama_settings_file
 from config import (
     config_file,
@@ -20,7 +22,7 @@ from time import sleep
 from refresh_ddb import refresh_ddb, modification_date
 from sort_items import order_gesammeltedateien
 from standard_dialog_windows import question_window, warning_window
-from processing_window import working_window
+from processing_window import signalUpdateOutput, working_window, Ui_Dialog_processing
 import webbrowser
 from tinydb import Query
 from database_commands import _database, _database_addon, _local_database
@@ -47,18 +49,28 @@ dict_aufgabenformate = config_loader(config_file, "dict_aufgabenformate")
 
 class Worker_CreatePDF(QObject):
     finished = pyqtSignal()
-
+    signalUpdateOutput = pyqtSignal(object, str)
     @pyqtSlot()
-    def task(self, folder_name, file_name, latex_output_file):
-        process = build_pdf_file(folder_name, file_name, latex_output_file)
-        process.poll()
-        latex_output_file.close()
+    def task(self, ui, folder_name, file_name, latex_output_file):
+        process = build_pdf_file(ui, folder_name, file_name, latex_output_file)
 
-        loading_animation(process)
+        ui.latex_error_occured = False
+        logfile = ""
+        while process.poll() is None:
+            output = process.stdout.readline().strip()
+            if output:
+                msg = output.decode("utf-8", 'ignore')
+                logfile += msg 
+                if "! Emergency stop." in msg or "! LaTeX Error:" in msg or "Unrecoverable error" in msg:
+                    ui.latex_error_occured = logfile
 
+                self.signalUpdateOutput.emit(ui, msg)
+
+        
         process.wait()
 
         self.finished.emit()
+
 
 
 def get_number_of_variations(file_name, gesammeltedateien):
@@ -626,7 +638,7 @@ def extract_error_from_output(latex_output):
 
 
 
-def build_pdf_file(folder_name, file_name, latex_output_file):
+def build_pdf_file(ui, folder_name, file_name, latex_output_file):
     if sys.platform.startswith("linux") or sys.platform.startswith("darwin"):
         if "Teildokument" in file_name:
             terminal_command = 'cd "{0}" ; latex -interaction=nonstopmode --synctex=-1 "{1}.tex" ; dvips "{1}.dvi" ; ps2pdf -dNOSAFER -dALLOWPSTRANSPARENCY "{1}.ps"'.format(
@@ -668,24 +680,10 @@ def build_pdf_file(folder_name, file_name, latex_output_file):
             terminal_command,
             cwd=os.path.splitdrive(path_programm)[0],
             stdout=subprocess.PIPE,
-            shell=True,
+            shell=True
         )
 
-        for line in iter(process.stdout.readline, ''):
-            print(line)
-        # process = subprocess.Popen(
-        #     terminal_command,
-        #     cwd=os.path.splitdrive(path_programm)[0],
-        #     stdout=subprocess.PIPE, #latex_output_file
-        #     universal_newlines=True,
-        #     shell=True,
-        # )
 
-        # for line in iter(process.stdout.readline, b''):
-        #     print(line)
-        #     sys.stdout.write(line)
-
-    # print(process.stdout.readline)
     return process
 
 
@@ -810,9 +808,8 @@ def create_pdf(path_file, index=0, maximum=0, typ=0):
 
     # text = "Die PDF Datei wird erstellt..." + rest
     
-    working_window(Worker_CreatePDF(), text, folder_name, file_name, latex_output_file)
-
-
+    errors_latex_output = working_window(Worker_CreatePDF(), text, True ,folder_name, file_name, latex_output_file)
+    
     latex_output_file = open(
         "{0}/Teildokument/temp.txt".format(path_localappdata_lama),
         "r",
@@ -822,12 +819,27 @@ def create_pdf(path_file, index=0, maximum=0, typ=0):
     latex_output = latex_output_file.read() #.splitlines()
     latex_output_file.close()
 
-    if file_name == "Schularbeit_Vorschau" or file_name.startswith("Teildokument") or file_name == "preview":
-
-        response = extract_error_from_output(latex_output)
-
+    if errors_latex_output != False:
+        QApplication.restoreOverrideCursor()
+        response = question_window(
+            "Es ist ein Fehler beim Erstellen der PDF-Datei aufgetreten. Dadurch konnte die PDF-Datei nicht vollständig erzeugt werden.\n\n"
+            + "Dies kann viele unterschiedliche Ursachen haben (siehe Details).\n"
+            + "Durch das Aktualisieren der Datenbank (F5) können jedoch die meisten dieser Fehler behoben werden.\n"
+            + "Sollte der Fehler weiterhin bestehen, bitte kontaktieren Sie uns unter lama.helpme@gmail.com",
+            "Wollen Sie die fehlerhafte PDF-Datei dennoch anzeigen?",
+            "Fehler beim Erstellen der PDF-Datei",
+            "Log-Datei:\n" + errors_latex_output,
+        )
         if response == False:
             return
+
+
+    if file_name == "Schularbeit_Vorschau" or file_name.startswith("Teildokument") or file_name == "preview":
+
+        # response = extract_error_from_output(latex_output)
+
+        # if response == False:
+        #     return
 
         open_pdf_file(folder_name, file_name)
 
@@ -836,5 +848,6 @@ def create_pdf(path_file, index=0, maximum=0, typ=0):
     except Exception as e:
         print("Error: " + str(e))
         return
+        
     QApplication.restoreOverrideCursor()
 

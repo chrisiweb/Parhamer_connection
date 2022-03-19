@@ -14,7 +14,7 @@ from create_new_widgets import create_new_verticallayout, create_new_gridlayout,
 blue_7 = colors_ui["blue_7"]
 
 class Ui_Dialog_processing(object):
-    def setupUi(self, Dialog, worker_text, icon=True):
+    def setupUi(self, Dialog, worker_text, show_output = False, icon=True):
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
 
@@ -67,10 +67,10 @@ class Ui_Dialog_processing(object):
             gridLayout.addWidget(image, 0,0,1,1)
         gridLayout.addWidget(self.label, 0,1,1,1)
         gridLayout.addWidget(label_spinner, 0,2,1,1)
-        plainTextEdit = QtWidgets.QPlainTextEdit(Dialog)
-        plainTextEdit.setReadOnly(True)
-        plainTextEdit.setPlainText("Das ist ein Test")
-        gridLayout.addWidget(plainTextEdit, 1,0,1,3)
+        if show_output == True:
+            self.plainTextEdit = QtWidgets.QPlainTextEdit(Dialog)
+            self.plainTextEdit.setReadOnly(True)
+            gridLayout.addWidget(self.plainTextEdit, 1,0,1,3)
 
 
 
@@ -142,18 +142,39 @@ class Ui_ProgressBar(object):
         # horizontalLayout.addWidget(label_spinner)
 
 
-def working_window(worker, text, *args):
+def working_window(worker, text, show_terminal_output, *args):
     Dialog = QtWidgets.QDialog()
     ui = Ui_Dialog_processing()
-    ui.setupUi(Dialog, text)
 
+    ui.setupUi(Dialog, text, show_output=show_terminal_output)
+
+    # def worker_finished(latex_error_occured):
+    #     latex_error_occured
+    #     Dialog.close()
+
+
+    ui.latex_error_occured = False
     thread = QtCore.QThread(Dialog)
     # worker = Worker_RefreshDDB()
+    if show_terminal_output == True:
+        worker.signalUpdateOutput.connect(signalUpdateOutput)
     worker.finished.connect(Dialog.close)
     worker.moveToThread(thread)
-    thread.started.connect(partial(worker.task, *args))
+
+    thread.started.connect(partial(worker.task,ui,*args)) 
     thread.start()
     thread.exit()
     Dialog.exec()
+    
+    return ui.latex_error_occured
+
+
+
+
+
+def signalUpdateOutput(ui, msg):
+    ui.plainTextEdit.appendPlainText(msg)
+    
+
 
     

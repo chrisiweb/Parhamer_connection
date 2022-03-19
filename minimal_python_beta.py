@@ -1,42 +1,57 @@
-import re
-string = "Löse die folgende lineare Gleichung:\n\n$4x-2=\\variation{14}{22}$\n\n\\antwort{$x=\\variation{4}{6}$}"
-
-def replace_group_variation_aufgabe(content):
-    _list = re.findall("\\\\variation\{.*\}\{.*\}", content)
-
-    # for i, all in enumerate(_list):
-    #     open_count = all.count("{")
-    #     close_count = all.count("}")
-    #     print(open_count)
-    #     print(close_count)
-    #     if open_count < close_count:
-    #       string = all.rsplit("}", 2)
-    #       _list[i] = string[0] + "}"  
-
-    print(_list)
-    for all in _list:
-        open_count=0
-        close_count=0
-        for i, char in enumerate(all):
-            if char != "{" and char != "}":
-                continue
-            elif char == "{":
-                open_count +=1
-            elif char == "}":
-                close_count +=1
-            if open_count==close_count:
-                start_index = i
-                break
-        print(start_index)
-        replacement_string = all[start_index+2:-1].replace("\\", "\\\\")
-        print(replacement_string)
-        content = re.sub("\\\\variation\{.*\}\{.*\}", replacement_string, content)
+import tkinter as tk
+import subprocess
+import threading
+import sys
+from functools import partial
 
 
+# ### classes ####
 
-    return content
+class Redirect:
+    
+    def __init__(self, widget, autoscroll=True):
+        self.widget = widget
+        self.autoscroll = autoscroll
+
+    def write(self, textbox):
+        self.widget.insert('end', textbox)
+        if self.autoscroll:
+            self.widget.see('end') # autoscroll
+
+    def flush(self):
+        pass
 
 
+def run(textbox=None):
+    threading.Thread(target=test, args=[textbox]).start()
 
-string = replace_group_variation_aufgabe(string)
-print(string)
+
+def test(textbox=None):
+
+    p = subprocess.Popen("python myprogram.py".split(), stdout=subprocess.PIPE, bufsize=1, text=True)
+    while p.poll() is None:
+        msg = p.stdout.readline().strip()  # read a line from the process output
+        if msg:
+            textbox.insert(tk.END, msg + "\n")
+
+
+if __name__ == "__main__":
+    fenster = tk.Tk()
+    fenster.title("My Program")
+    textbox = tk.Text(fenster)
+    textbox.grid()
+    scrollbar = tk.Scrollbar(fenster, orient=tk.VERTICAL)
+    scrollbar.grid()
+
+    textbox.config(yscrollcommand=scrollbar.set)
+    scrollbar.config(command=textbox.yview)
+
+    start_button = tk.Button(fenster, text="Start", command=partial(run, textbox))
+    start_button.grid()
+
+    old_stdout = sys.stdout
+    sys.stdout = Redirect(textbox)
+
+    fenster.mainloop()
+    sys.stdout = old_stdout
+    

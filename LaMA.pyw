@@ -69,7 +69,7 @@ class Worker_LoadLamaFile(QtCore.QObject):
     finished = QtCore.pyqtSignal()
 
     @QtCore.pyqtSlot()
-    def task(self, MainWindow, ui):
+    def task(self, MainWindow):
         for aufgabe in MainWindow.list_alle_aufgaben_sage:
             MainWindow.sage_load_files(aufgabe)
 
