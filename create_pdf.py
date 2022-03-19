@@ -22,7 +22,7 @@ from time import sleep
 from refresh_ddb import refresh_ddb, modification_date
 from sort_items import order_gesammeltedateien
 from standard_dialog_windows import question_window, warning_window
-from processing_window import signalUpdateOutput, working_window, Ui_Dialog_processing
+from processing_window import working_window_latex_output
 import webbrowser
 from tinydb import Query
 from database_commands import _database, _database_addon, _local_database
@@ -808,7 +808,7 @@ def create_pdf(path_file, index=0, maximum=0, typ=0):
 
     # text = "Die PDF Datei wird erstellt..." + rest
     
-    errors_latex_output = working_window(Worker_CreatePDF(), text, True ,folder_name, file_name, latex_output_file)
+    errors_latex_output = working_window_latex_output(Worker_CreatePDF(), text, folder_name, file_name, latex_output_file)
     
     latex_output_file = open(
         "{0}/Teildokument/temp.txt".format(path_localappdata_lama),

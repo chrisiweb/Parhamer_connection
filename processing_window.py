@@ -7,6 +7,7 @@ from config import (
     logo_path,
     logo_cria_button_path,
 )
+from predefined_size_policy import SizePolicy_maximum_height
 from waitingspinnerwidget import QtWaitingSpinner
 from functools import partial
 from create_new_widgets import create_new_verticallayout, create_new_gridlayout, create_new_label
@@ -70,6 +71,8 @@ class Ui_Dialog_processing(object):
         if show_output == True:
             self.plainTextEdit = QtWidgets.QPlainTextEdit(Dialog)
             self.plainTextEdit.setReadOnly(True)
+            self.plainTextEdit.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+            self.plainTextEdit.setFixedHeight(70)
             gridLayout.addWidget(self.plainTextEdit, 1,0,1,3)
 
 
@@ -142,26 +145,37 @@ class Ui_ProgressBar(object):
         # horizontalLayout.addWidget(label_spinner)
 
 
-def working_window(worker, text, show_terminal_output, *args):
+def working_window(worker, text, *args):
+    Dialog = QtWidgets.QDialog()
+    ui = Ui_Dialog_processing()
+    ui.setupUi(Dialog, text)
+
+    thread = QtCore.QThread(Dialog)
+    # worker = Worker_RefreshDDB()
+    worker.finished.connect(Dialog.close)
+    worker.moveToThread(thread)
+    thread.started.connect(partial(worker.task, *args))
+    thread.start()
+    thread.exit()
+    Dialog.exec()
+
+
+
+
+def working_window_latex_output(worker, text, *args):
     Dialog = QtWidgets.QDialog()
     ui = Ui_Dialog_processing()
 
-    ui.setupUi(Dialog, text, show_output=show_terminal_output)
-
-    # def worker_finished(latex_error_occured):
-    #     latex_error_occured
-    #     Dialog.close()
-
+    ui.setupUi(Dialog, text, show_output=True)
 
     ui.latex_error_occured = False
     thread = QtCore.QThread(Dialog)
     # worker = Worker_RefreshDDB()
-    if show_terminal_output == True:
-        worker.signalUpdateOutput.connect(signalUpdateOutput)
+    worker.signalUpdateOutput.connect(signalUpdateOutput)
     worker.finished.connect(Dialog.close)
     worker.moveToThread(thread)
 
-    thread.started.connect(partial(worker.task,*args)) 
+    thread.started.connect(partial(worker.task,ui, *args)) 
     thread.start()
     thread.exit()
     Dialog.exec()
@@ -174,7 +188,3 @@ def working_window(worker, text, show_terminal_output, *args):
 
 def signalUpdateOutput(ui, msg):
     ui.plainTextEdit.appendPlainText(msg)
-    
-
-
-    
