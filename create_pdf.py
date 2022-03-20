@@ -801,7 +801,7 @@ def create_pdf(path_file, index=0, maximum=0, typ=0):
         errors="ignore",
     )
 
-    if path_file == "Teildokument" or path_file == "Schularbeit_Vorschau" or path_file == "preview":
+    if path_file == "Teildokument" or path_file == "Schularbeit_Vorschau" or path_file == "preview" or file_name == "worksheet":
         text = "Die PDF Datei wird erstellt..."
     else:
         text = "Die PDF Dateien werden erstellt... ({0}|{1})".format(index + 1, maximum)
