@@ -9,18 +9,18 @@ show_popup = True
 print("Loading...")
 
 from start_window import check_if_database_exists
-from worksheet_wizard import get_all_solution_pixels
+# from worksheet_wizard import get_all_solution_pixels
 check_if_database_exists()
-from prepare_content_vorschau import (
-    edit_content_ausgleichspunkte,
-    edit_content_hide_show_items,
-)
+# from prepare_content_vorschau import (
+#     edit_content_ausgleichspunkte,
+#     edit_content_hide_show_items,
+# )
 from git_sync import git_reset_repo_to_origin
-from standard_dialog_windows import question_window
+# from standard_dialog_windows import question_window
 from config import *
 from lama_colors import *
 import time
-from create_new_widgets import add_action
+# from create_new_widgets import add_action
 import json
 
 from config_start import (
@@ -40,20 +40,20 @@ import os
 import requests
 
 
-class Worker_CleanUp(QtCore.QObject):
-    finished = QtCore.pyqtSignal()
+# class Worker_CleanUp(QtCore.QObject):
+#     finished = QtCore.pyqtSignal()
 
-    @QtCore.pyqtSlot()
-    def task(self, ui):
-        #### WORKING
-        Ui_MainWindow.dict_missing_files = Ui_MainWindow().file_clean_up(ui)
+#     @QtCore.pyqtSlot()
+#     def task(self, ui):
+#         #### WORKING
+#         Ui_MainWindow.dict_missing_files = Ui_MainWindow().file_clean_up(ui)
 
-        ui.label.setText("Nicht verwendete Bilder werden gesucht ...")
-        list_unused_images = Ui_MainWindow().image_clean_up(ui)
+#         ui.label.setText("Nicht verwendete Bilder werden gesucht ...")
+#         list_unused_images = Ui_MainWindow().image_clean_up(ui)
 
-        Ui_MainWindow.dict_missing_files['Nicht verwendete Bilder'] = list_unused_images
+#         Ui_MainWindow.dict_missing_files['Nicht verwendete Bilder'] = list_unused_images
 
-        self.finished.emit()
+#         self.finished.emit()
 
 class Worker_UpdateDatabase(QtCore.QObject):
     finished = QtCore.pyqtSignal()
@@ -9194,6 +9194,8 @@ if __name__ == "__main__":
 
     i = step_progressbar(i, "prepare_content_vorschau")
     from prepare_content_vorschau import (
+        edit_content_ausgleichspunkte,
+        edit_content_hide_show_items,
         copy_logo_to_target_path,
         copy_included_images,
     )
@@ -9234,6 +9236,7 @@ if __name__ == "__main__":
     i = step_progressbar(i, "worksheet_wizard")
     from worksheet_wizard import (
         dict_widgets_wizard, themen_worksheet_wizard,
+        get_all_solution_pixels,
         create_latex_worksheet, 
         create_list_of_examples_addition, create_single_example_addition,
         create_list_of_examples_subtraction, create_single_example_subtraction,
