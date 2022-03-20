@@ -1509,6 +1509,7 @@ class Ui_MainWindow(object):
             self.centralwidget, "Vorschau", self.button_vorschau_edit_pressed
         )
         self.pushButton_vorschau_edit.setShortcut("Ctrl+Return")
+        self.pushButton_vorschau_edit.setToolTip("Strg+Enter")
         self.pushButton_vorschau_edit.setSizePolicy(SizePolicy_fixed)
         self.horizontalLayout_buttons.addWidget(self.pushButton_vorschau_edit)
         self.pushButton_vorschau_edit.hide()
@@ -3590,29 +3591,6 @@ lama.helpme@gmail.com""")
         if response == 1:
             self.lama_settings = ui.lama_settings
 
-    # def complete_reset(self):
-    #     print("complete reset!")
-        # rsp = question_window("Sind Sie wirklich sicher, dass Sie LaMA vollständig zurücksetzen wollen?")
-        # if rsp==False:
-        #     return
-
-        # if os.path.isfile(os.path.join(database, "_local_database.json")):
-        #     delete_local_db = question_window("Möchten Sie auch alle lokal gespeicherten Aufgaben unwiderruflich löschen?")
-
-        # lama_folder = os.path.dirname(database)
-
-        # teildokument_folder = os.path.join(lama_folder, "Teildokument")
-
-        # for all in os.listdir(database):
-        #     path = os.path.join(database, all)
-        #     if os.path.isdir(path):
-        #         if all != "Bilder_local":
-        #             shutil.rmtree(path, ignore_errors=True)
-        #     elif os.path.isfile(path):
-        #         if all != "_local_database.json":
-        #             os.remove(path)
-
-        # for root, dirs, files in os.walk(delete_folder):
 
     def show_gk_catalogue(self):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
@@ -4262,17 +4240,7 @@ lama.helpme@gmail.com""")
                 else:    
                     # _, tail = os.path.split(all)
                     self.add_image_label(tail, all)
-                # self.dict_picture_path[tail] = all
-                # label_picture = create_new_label(
-                #     self.scrollAreaWidgetContents_bilder, tail, False, True
-                # )
 
-                # label_picture_name = "label_bild_creator_{}".format(tail)
-                # self.dict_widget_variables[label_picture_name] = label_picture
-                # label_picture.clicked.connect(
-                #     partial(self.del_picture, label_picture_name)
-                # )
-                # self.verticalLayout.addWidget(label_picture)
         self.verticalLayout.addWidget(self.btn_add_image)
 
     def del_picture(self, picture, question=True):
@@ -4951,20 +4919,7 @@ lama.helpme@gmail.com""")
         lama_table.update({"draft": draft}, doc_ids=[file_id])
         lama_table.update({"abstand": abstand}, doc_ids=[file_id])
 
-        # lama_table.update_multiple([
-        #    ({"themen" :themen}, _file_.name == aufgabe),
-        #    ({"titel" :titel}, _file_.name == aufgabe),
-        #    ({"af" :af}, _file_.name == aufgabe),
-        #    ({"quelle" :quelle}, _file_.name == aufgabe),
-        #    ({"content" :content}, _file_.name == aufgabe),
-        #    ({"punkte" :punkte}, _file_.name == aufgabe),
-        #    ({"pagebreak" :pagebreak}, _file_.name == aufgabe),
-        #    ({"klasse" :klasse}, _file_.name == aufgabe),
-        #    ({"info" :info}, _file_.name == aufgabe),
-        #    ({"bilder" :bilder}, _file_.name == aufgabe),
-        #    ({"draft" :draft}, _file_.name == aufgabe),
-        #    ({"abstand" :abstand}, _file_.name == aufgabe),
-        # ])
+
         QtWidgets.QApplication.restoreOverrideCursor()
 
         if "l." not in name:
@@ -4985,7 +4940,11 @@ lama.helpme@gmail.com""")
     def button_vorschau_edit_pressed(self):
         content = self.plainTextEdit.toPlainText()
         file_path = os.path.join(path_localappdata_lama, "Teildokument", "preview.tex")
-        rsp = create_tex(file_path, content)
+        if self.comboBox_pagebreak.currentIndex()==0:
+            pagebreak = False
+        else:
+            pagebreak = True
+        rsp = create_tex(file_path, content, punkte = self.spinBox_punkte.value(), pagebreak=pagebreak)
 
         if rsp == True:
             create_pdf("preview")
@@ -5023,22 +4982,7 @@ lama.helpme@gmail.com""")
                     QtWidgets.QApplication.restoreOverrideCursor()
                     return
                 lama_table.clear_cache()
-        # image_path = os.path(path_programm, '_database')
 
-        ### Bilder löschen ### disabled
-        # if "l." in name:
-        #     image_path = os.path.join(database, "Bilder_local")
-        # elif "i." in name:
-        #     image_path = os.path.join(database, "Bilder_addon")
-        # else:
-        #     image_path = os.path.join(database, "Bilder")
-
-        # for all in images:
-        #     image = os.path.join(image_path, all)
-        #     try:
-        #         os.remove(image)
-        #     except FileNotFoundError:
-        #         print('Die Grafik "{}" konnte nicht gefunden werden.'.format(image))
 
         delete_file(name, typ)
 
@@ -5049,9 +4993,7 @@ lama.helpme@gmail.com""")
                 )
             else:
                 self.push_full_database()
-        # if "(lokal)" not in name:
-        #     file_list = ["_database.json"]
-        #     action_push_database(False, file_list, message= "Gelöscht: {}".format(name), worker_text="Aufgabe löschen ...")
+
 
         information_window(
             'Die Aufgabe "{}" wurde erfolgreich aus der Datenbank entfernt.'.format(
@@ -5578,34 +5520,6 @@ lama.helpme@gmail.com""")
         QtWidgets.QApplication.restoreOverrideCursor()
         return dict_missing_files
 
-
-        
-        # maximum = 0
-        # _list = []
-        # for file in all_files:
-        #     variation = check_if_variation(file['name'])
-        #     _,num = file['name'].split(" - ")
-        #     if variation == True:
-        #         x= re.split(r"\[|\]",num)
-        #         num = int(x[0])
-        #         variation_num = int(x[1])
-        #     else:
-        #         num = int(num)
-        #     _list.append(num)
-        #     if num > maximum:
-        #         maximum = num
-        # # print(maximum)
-
-        # for i in range(1,maximum+1):
-        #     if i not in _list:
-        #         print(i)
-        #     else:
-        #         print('existiert: {}'.format(i))    
-            
-        # print(_database_addon.all())
-        # print(database.all())
-        # print(files)
-
     
     def image_clean_up(self):
         image_folder = os.path.join(path_database, "Bilder")
@@ -5651,19 +5565,12 @@ lama.helpme@gmail.com""")
         refresh_ddb(self, auto_update=True)
 
 
-        # table_lama_typ2 = _database.table('table_lama_2')
-        # all_files_typ2 = table_lama_typ2.all()
-
-
-        # table_lama_cria = _database.table('table_cria')
-        # all_files_cria = table_lama_cria.all()
-
         image_folder = os.path.join(path_database, "Bilder")
         progress_maximum = len(dict_gk) + len(os.listdir(image_folder)) + 2
 
         self.progress_cleanup_value = 0
         self.progress_cleanup = QtWidgets.QProgressDialog("Fehlerbericht wird erstellt ...", "",self.progress_cleanup_value,progress_maximum)
-        self.progress_cleanup.setSizePolicy(SizePolicy_fixed)
+        self.progress_cleanup.setFixedSize(self.progress_cleanup.sizeHint())
         self.progress_cleanup.setWindowTitle("Lade...")
         self.progress_cleanup.setWindowFlags(QtCore.Qt.WindowTitleHint)
         self.progress_cleanup.setWindowIcon(QtGui.QIcon(logo_path))
@@ -5705,44 +5612,6 @@ lama.helpme@gmail.com""")
 
         QtWidgets.QApplication.restoreOverrideCursor()
 
-
-        
-
-    # def action_push_database(self, admin, file_list, message = None, worker_text = "Aufgabe wird hochgeladen ..."):
-    #     QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-    #     if check_internet_connection() == False:
-    #         critical_window("Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.",
-    #             titel="Keine Internetverbindung",
-    #         )
-    #         return
-
-    #     # text = worker_text + " (1%)"
-    #     # if admin == True:
-    #     #     text = "Änderungen überprüfen ..."
-    #     # else:
-    #     #     text = "Aufgabe wird hochgeladen ... (1%)"
-
-    #     Dialog = QtWidgets.QDialog()
-    #     ui = Ui_Dialog_processing()
-    #     ui.setupUi(Dialog, worker_text)
-
-    #     thread = QtCore.QThread(Dialog)
-    #     worker = Worker_PushDatabase()
-    #     worker.finished.connect(Dialog.close)
-    #     worker.moveToThread(thread)
-    #     thread.started.connect(partial(worker.task, ui, admin, file_list, message, worker_text))
-    #     thread.start()
-    #     thread.exit()
-    #     Dialog.exec()
-    #     QtWidgets.QApplication.restoreOverrideCursor()
-    #     if worker.changes_found == False:
-    #         information_window("Es wurden keine Änderungen gefunden.")
-    #     elif worker.changes_found == "error":
-    #         critical_window(
-    #             "Es ist ein Fehler aufgetreten. Die Datenbank konnte nicht hochgeladen werden. Bitte versuchen Sie es später erneut."
-    #         )
-    #     elif admin == True:
-    #         information_window("Die Datenbank wurde erfolgreich hochgeladen.")
 
     def enable_widgets_editor(self, enabled):
         self.groupBox_ausgew_gk_cr.setEnabled(enabled)

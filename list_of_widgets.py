@@ -56,6 +56,7 @@ widgets_create = [
     "groupBox_abstand",
     "groupBox_beispieleingabe",
     "groupBox_quelle",
+    "pushButton_vorschau_edit",
     "pushButton_save",
 ]  #'actionRefresh_Database'
 
@@ -239,6 +240,7 @@ widgets_create_cria = [
     "groupBox_abstand",
     "groupBox_beispieleingabe",
     "groupBox_quelle",
+    "pushButton_vorschau_edit",
     "pushButton_save",
 ]
 
