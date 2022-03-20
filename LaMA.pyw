@@ -5663,6 +5663,7 @@ lama.helpme@gmail.com""")
 
         self.progress_cleanup_value = 0
         self.progress_cleanup = QtWidgets.QProgressDialog("Fehlerbericht wird erstellt ...", "",self.progress_cleanup_value,progress_maximum)
+        self.progress_cleanup.setSizePolicy(SizePolicy_fixed)
         self.progress_cleanup.setWindowTitle("Lade...")
         self.progress_cleanup.setWindowFlags(QtCore.Qt.WindowTitleHint)
         self.progress_cleanup.setWindowIcon(QtGui.QIcon(logo_path))
@@ -8084,8 +8085,8 @@ if __name__ == "__main__":
     import time
     i = step_progressbar(i, "time")
     # Simulate something that takes time
-    i = step_progressbar(i, "threading")
-    import threading
+    # i = step_progressbar(i, "threading")
+    # import threading
 
     i = step_progressbar(i, "PyQt5")
     from PyQt5 import QtCore, QtWidgets, QtGui
@@ -8137,11 +8138,10 @@ if __name__ == "__main__":
     import smtplib
 
     i = step_progressbar(i, "save_titlepage")
-    from save_titlepage import create_file_titlepage, check_format_titlepage_save
+    from save_titlepage import check_format_titlepage_save
 
     i = step_progressbar(i, "git_sync")
     from git_sync import (
-        git_push_to_origin,
         check_internet_connection,
         check_branches,
     )
@@ -8202,20 +8202,6 @@ if __name__ == "__main__":
     i = step_progressbar(i, "subwindows")
     from subwindows import read_credentials
 
-    
-    # from subwindows import (
-    # Ui_Dialog_Welcome_Window,
-    # Ui_Dialog_choose_type,
-    # Ui_Dialog_titlepage,
-    # Ui_Dialog_random_quiz,
-    # Ui_Dialog_ausgleichspunkte,
-    # Ui_Dialog_erstellen,
-    # Ui_Dialog_speichern,
-    # Ui_Dialog_variation,
-    # Ui_Dialog_setup,
-    # Ui_Dialog_developer,
-    # read_credentials,
-    # )
     i = step_progressbar(i, "translate")
     from translate import _fromUtf8, _translate
 
@@ -8275,7 +8261,7 @@ if __name__ == "__main__":
 
     i = step_progressbar(i, "tinydb")
 
-    from tinydb import Query, TinyDB
+    from tinydb import Query
 
     i = step_progressbar(i, "database_commands")
 
@@ -8301,8 +8287,6 @@ if __name__ == "__main__":
     from filter_commands import get_filter_string, filter_items, get_drafts
 
     i = step_progressbar(i, "mainwindow")
-    # form = Form()
-    # form.show()
 
     try:
         loaded_lama_file_path = sys.argv[1]
@@ -8326,8 +8310,7 @@ if __name__ == "__main__":
 
     splash.finish(MainWindow)
     ui.setupUi(MainWindow)
-    # i = step_progressbar(i, "MainWindow")
-    # print(i)
+
     MainWindow.show()
 
     sys.exit(app.exec_())

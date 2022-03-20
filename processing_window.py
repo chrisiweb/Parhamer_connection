@@ -72,6 +72,7 @@ class Ui_Dialog_processing(object):
             self.plainTextEdit = QtWidgets.QPlainTextEdit(Dialog)
             self.plainTextEdit.setReadOnly(True)
             self.plainTextEdit.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+            self.plainTextEdit.setPlainText("Creating pdf-file ...")
             self.plainTextEdit.setFixedHeight(70)
             gridLayout.addWidget(self.plainTextEdit, 1,0,1,3)
 

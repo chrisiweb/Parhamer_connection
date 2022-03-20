@@ -7,7 +7,6 @@ import re
 import json
 import subprocess
 
-from numpy import sign
 from config_start import path_programm, path_localappdata_lama, lama_settings_file
 from config import (
     config_file,
