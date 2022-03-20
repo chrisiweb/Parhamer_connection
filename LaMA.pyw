@@ -9,7 +9,7 @@ show_popup = True
 print("Loading...")
 
 from start_window import check_if_database_exists
-
+from worksheet_wizard import get_all_solution_pixels
 check_if_database_exists()
 from prepare_content_vorschau import (
     edit_content_ausgleichspunkte,
@@ -119,10 +119,12 @@ class Ui_MainWindow(object):
         self.dict_chosen_topics = {}
         self.list_copy_images = []
         self.dict_picture_path = {}
+        self.dict_aufgaben_wizard = {}
 
         hashed_pw = read_credentials()
         self.developer_mode_active = False
         self.no_saved_changes_sage = True
+        self.worksheet_wizard_changed = True
 
         # if sys.platform.startswith("win"):
         # path_lama_developer_credentials = os.path.join(os.getenv('LOCALAPPDATA'), "LaMA", "credentials")
@@ -203,6 +205,8 @@ class Ui_MainWindow(object):
             self.chosen_program = "cria"
         elif self.lama_settings["start_program"] == 2:
             self.chosen_program = "lama"
+        elif self.lama_settings["start_program"] == 3:
+            self.chosen_program = "wizard"
 
         try:
             self.lama_settings["database"]
@@ -239,8 +243,10 @@ class Ui_MainWindow(object):
                     json.dump(self.lama_settings, f, ensure_ascii=False)
 
 
-
-        self.chosen_gui = "widgets_search"
+        if self.chosen_program == 'wizard':
+           self.chosen_gui = "widgets_wizard" 
+        else:
+            self.chosen_gui = "widgets_search"
         try:
             self.chosen_program
         except AttributeError:
@@ -256,23 +262,16 @@ class Ui_MainWindow(object):
         MainWindow.setLayoutDirection(QtCore.Qt.LeftToRight)
 
         if self.chosen_program == "lama":
-            MainWindow.setWindowTitle(
-                _translate(
-                    "LaMA - LaTeX Mathematik Assistent (Oberstufe)",
-                    "LaMA - LaTeX Mathematik Assistent (Oberstufe)",
-                    None,
-                )
-            )
+            MainWindow.setWindowTitle("LaMA - LaTeX Mathematik Assistent (Oberstufe)")
             MainWindow.setWindowIcon(QtGui.QIcon(logo_path))
-        if self.chosen_program == "cria":
-            MainWindow.setWindowTitle(
-                _translate(
-                    "LaMA Cria - LaTeX Mathematik Assistent (Unterstufe)",
-                    "LaMA Cria - LaTeX Mathematik Assistent (Unterstufe)",
-                    None,
-                )
-            )
+
+        elif self.chosen_program == "cria":
+            MainWindow.setWindowTitle("LaMA Cria - LaTeX Mathematik Assistent (Unterstufe)")
             MainWindow.setWindowIcon(QtGui.QIcon(logo_cria_path))
+
+        elif self.chosen_program == "wizard":
+            MainWindow.setWindowTitle("LaMA Worksheet Wizard")
+            MainWindow.setWindowIcon(QtGui.QIcon(logo_path))
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
 
@@ -294,11 +293,16 @@ class Ui_MainWindow(object):
         self.menuDatei = QtWidgets.QMenu(self.menuBar)
         self.menuDatei.setObjectName(_fromUtf8("menuDatei"))
         self.menuNeu = QtWidgets.QMenu(self.menuBar)
+        self.menuChangeProgram = QtWidgets.QMenu(self.menuDatei)
+        self.menuChangeProgram.setObjectName(_fromUtf8("menuChangeProgram"))
+        self.menuChangeProgram.setTitle("Wechseln zu ...")
         self.menuNeu.setObjectName(_fromUtf8("menuNeu"))
         self.menuSage = QtWidgets.QMenu(self.menuBar)
         self.menuSage.setObjectName(_fromUtf8("menuSage"))
         self.menuSuche = QtWidgets.QMenu(self.menuBar)
         self.menuSuche.setObjectName(_fromUtf8("menuSuche"))
+        self.menuWizard = QtWidgets.QMenu(self.menuBar)
+        self.menuWizard.setObjectName(_fromUtf8("menuWizard"))
         self.menuFeedback = QtWidgets.QMenu(self.menuBar)
         self.menuFeedback.setObjectName(_fromUtf8("menuFeedback"))
         self.menuOptionen = QtWidgets.QMenu(self.menuBar)
@@ -365,17 +369,35 @@ class Ui_MainWindow(object):
 
         self.menuDatei.addSeparator()
 
-        if self.chosen_program == "lama":
-            program = "LaMA Cria (Unterstufe)"
-        if self.chosen_program == "cria":
-            program = "LaMA (Oberstufe)"
-        self.actionProgram = add_action(
-            MainWindow,
-            self.menuDatei,
-            'Zu "{}" wechseln'.format(program),
-            self.change_program,
-        )
+        self.action_cria = add_action(
+                MainWindow,
+                self.menuChangeProgram,
+                "LaMA Cria (Unterstufe)",
+                partial(self.change_program, "cria"), #
+            )
 
+        self.action_lama = add_action(
+                MainWindow,
+                self.menuChangeProgram,
+                "LaMA (Oberstufe)",
+                partial(self.change_program, "lama"), #
+            )
+
+        self.action_wizard = add_action(
+                MainWindow,
+                self.menuChangeProgram,
+                "LaMA Worksheet Wizard",
+                partial(self.change_program, "wizard"), #
+            )
+        if self.chosen_program == "cria":
+            self.action_cria.setVisible(False)
+        elif self.chosen_program == "lama":
+            self.action_lama.setVisible(False)
+        elif self.chosen_program == "wizard":
+            self.action_wizard.setVisible(False)
+
+
+        self.menuDatei.addAction(self.menuChangeProgram.menuAction())
         self.actionExit = add_action(MainWindow, self.menuDatei, "Exit", self.exit_pressed)
 
 
@@ -390,6 +412,10 @@ class Ui_MainWindow(object):
         self.actionSuche.setShortcut("F1")
 
         self.menuSuche.addSeparator()
+
+        self.actionReset_wizard = add_action(
+            MainWindow, self.menuWizard, "Reset", self.worksheet_wizard_reset
+        )
 
         self.actionReset = add_action(
             MainWindow, self.menuSuche, "Reset", self.suchfenster_reset
@@ -1711,7 +1737,7 @@ class Ui_MainWindow(object):
         self.pushButton_titlepage.setText(
             _translate("MainWindow", "Titelblatt anpassen", None)
         )
-        if self.chosen_program == "lama":
+        if self.chosen_program == "lama" or self.chosen_program == "wizard":
             self.gridLayout_5.addWidget(self.pushButton_titlepage, 2, 4, 1, 2)
         if self.chosen_program == "cria":
             self.gridLayout_5.addWidget(self.pushButton_titlepage, 2, 4, 1, 2)
@@ -2043,7 +2069,8 @@ class Ui_MainWindow(object):
         )
         self.groupBox_sage.hide()
         self.splitter_sage.hide()
-        self.comboBox_klassen_changed("sage")
+        if self.chosen_program != 'wizard':
+            self.comboBox_klassen_changed("sage")
 
         self.comboBox_kapitel.currentIndexChanged.connect(
             partial(self.comboBox_kapitel_changed, "sage")
@@ -2332,6 +2359,428 @@ class Ui_MainWindow(object):
             partial(self.comboBox_unterkapitel_changed, "feedback")
         )
 
+        ####################################################
+        ######################################################
+        ################## WORKSHEET WIZARD ####################
+        ######################################################
+        ######################################################
+
+        
+        self.comboBox_themen_wizard = create_new_combobox(self.centralwidget)
+        self.comboBox_themen_wizard.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout.addWidget(self.comboBox_themen_wizard, 0, 0, 1, 1)
+        for i, all in enumerate(dict_widgets_wizard.keys()):
+            add_new_option(self.comboBox_themen_wizard, i, all)
+
+        self.comboBox_themen_wizard.currentIndexChanged.connect(self.themen_changed_wizard)
+        self.comboBox_themen_wizard.hide()
+
+
+        self.pushButton_create_worksheet_wizard = create_new_button(self.centralwidget, "Arbeitsblatt erzeugen", self.create_worksheet_wizard_pressed)
+        # self.pushButton_create_worksheet_wizard.setFixedHeight(50)
+        self.pushButton_create_worksheet_wizard.setShortcut("Return")
+        self.gridLayout.addWidget(self.pushButton_create_worksheet_wizard, 2,0,1,1, QtCore.Qt.AlignLeft)
+        self.pushButton_create_worksheet_wizard.hide()
+
+
+        self.checkbox_solutions_wizard = create_new_checkbox(self.centralwidget, "Lösungen anzeigen", checked=True)
+        self.gridLayout.addWidget(self.checkbox_solutions_wizard, 9,8,1,1, QtCore.Qt.AlignRight)
+        self.checkbox_solutions_wizard.hide()
+
+        self.comboBox_solution_type_wizard = create_new_combobox(self.centralwidget)
+        add_new_option(self.comboBox_solution_type_wizard, 0, "kompakt")
+        add_new_option(self.comboBox_solution_type_wizard, 1, "schrittweise")
+        self.gridLayout.addWidget(self.comboBox_solution_type_wizard, 9, 7, 1, 1)
+        self.comboBox_solution_type_wizard.hide()
+
+
+        self.buttonBox_create_worksheet_wizard = QtWidgets.QDialogButtonBox(self.centralwidget)
+        self.buttonBox_create_worksheet_wizard.setStandardButtons(
+            QtWidgets.QDialogButtonBox.Save | QtWidgets.QDialogButtonBox.Ok
+        )
+        self.gridLayout.addWidget(self.buttonBox_create_worksheet_wizard, 10,7,1,2)
+        self.buttonBox_create_worksheet_wizard.hide()
+        # buttonS = self.buttonBox_titlepage.button(QtWidgets.QDialogButtonBox.Save)
+        # buttonS.setText('Speichern')
+        button_create = self.buttonBox_create_worksheet_wizard.button(QtWidgets.QDialogButtonBox.Save)
+        button_create.setText("Vorschau")
+
+        button_save = self.buttonBox_create_worksheet_wizard.button(QtWidgets.QDialogButtonBox.Ok)
+        button_save.setText("Speichern")
+
+
+        button_save.clicked.connect(self.save_worksheet_wizard)
+
+        button_create.clicked.connect(self.create_vorschau_worksheet_wizard)
+
+
+        self.groupBox_setting_wizard = create_new_groupbox(self.centralwidget, "Voreinstellungen")
+        self.groupBox_setting_wizard.setSizePolicy(SizePolicy_maximum_width)
+        self.gridLayout.addWidget(self.groupBox_setting_wizard, 1,0,1,9)
+        self.gridLayout_setting_wizard = create_new_gridlayout(self.groupBox_setting_wizard)
+        self.groupBox_setting_wizard.hide()
+
+        
+        self.groupBox_titel_wizard = create_new_groupbox(self.groupBox_setting_wizard, "Titel")
+        self.gridLayout_setting_wizard.addWidget(self.groupBox_titel_wizard, 0,0,1,3)
+        self.horizontalLayout_titel_wizard = create_new_horizontallayout(self.groupBox_titel_wizard)
+        self.lineEdit_titel_wizard = create_new_lineedit(self.groupBox_titel_wizard)
+        self.horizontalLayout_titel_wizard.addWidget(self.lineEdit_titel_wizard)
+        self.lineEdit_titel_wizard.setText("Arbeitsblatt - {}".format(self.comboBox_themen_wizard.currentText()))
+
+        self.groupBox_fontsize_wizard = create_new_groupbox(self.groupBox_titel_wizard, "Schrift")
+        self.gridLayout_setting_wizard.addWidget(self.groupBox_fontsize_wizard, 1,2,1,1)
+        self.horizontalLayout_fontsize_wizard = create_new_horizontallayout(self.groupBox_fontsize_wizard)
+        self.combobox_fontsize_wizard = create_new_combobox(self.groupBox_setting_wizard)
+        add_new_option(self.combobox_fontsize_wizard, 0, "8pt")
+        add_new_option(self.combobox_fontsize_wizard, 1, "9pt")
+        add_new_option(self.combobox_fontsize_wizard, 2, "10pt")
+        add_new_option(self.combobox_fontsize_wizard, 3, "11pt")
+        add_new_option(self.combobox_fontsize_wizard, 4, "12pt")
+        add_new_option(self.combobox_fontsize_wizard, 5, "14pt")
+        add_new_option(self.combobox_fontsize_wizard, 6, "17pt")
+        add_new_option(self.combobox_fontsize_wizard, 7, "20pt")
+        self.combobox_fontsize_wizard.setCurrentIndex(4)
+        self.horizontalLayout_fontsize_wizard.addWidget(self.combobox_fontsize_wizard)
+
+
+        self.groupBox_number_wizard = create_new_groupbox(self.groupBox_setting_wizard, "Aufgaben")
+        self.gridLayout_setting_wizard.addWidget(self.groupBox_number_wizard, 1, 0,1,1)
+        self.horizontalLayout_number_wizard = create_new_horizontallayout(self.groupBox_number_wizard)
+        self.spinBox_number_wizard = create_new_spinbox(self.groupBox_number_wizard, 20)
+        self.spinBox_number_wizard.setMinimum(1)
+        self.spinBox_number_wizard.valueChanged.connect(self.spinBox_number_wizard_changed)
+        self.horizontalLayout_number_wizard.addWidget(self.spinBox_number_wizard)
+
+
+        self.groupBox_column_wizard = create_new_groupbox(self.groupBox_setting_wizard, "Spalten")
+        self.gridLayout_setting_wizard.addWidget(self.groupBox_column_wizard, 1, 1,1,1)
+        self.horizontalLayout_column_wizard = create_new_horizontallayout(self.groupBox_column_wizard)
+        self.spinBox_column_wizard = create_new_spinbox(self.groupBox_column_wizard, 2)
+        self.spinBox_column_wizard.valueChanged.connect(self.spinBox_column_wizard_changed)
+        self.spinBox_column_wizard.setRange(1, 10)
+        self.horizontalLayout_column_wizard.addWidget(self.spinBox_column_wizard)        
+
+        self.groupBox_nummerierung_wizard = create_new_groupbox(self.groupBox_setting_wizard, "Nummerierung")
+        self.gridLayout_setting_wizard.addWidget(self.groupBox_nummerierung_wizard, 2,0,1,1)
+        self.horizontalLayout_nummerierung_wizard = create_new_horizontallayout(self.groupBox_nummerierung_wizard)
+        self.combobox_nummerierung_wizard = create_new_combobox(self.groupBox_nummerierung_wizard)
+        add_new_option(self.combobox_nummerierung_wizard, 0, "-")
+        add_new_option(self.combobox_nummerierung_wizard, 1, "(i)")
+        add_new_option(self.combobox_nummerierung_wizard, 2, "(1)")
+        add_new_option(self.combobox_nummerierung_wizard, 3, "(I)")
+        self.horizontalLayout_nummerierung_wizard.addWidget(self.combobox_nummerierung_wizard) 
+
+        self.groupBox_ausrichtung_wizard = create_new_groupbox(self.groupBox_setting_wizard, "Ausrichtung")
+        self.gridLayout_setting_wizard.addWidget(self.groupBox_ausrichtung_wizard, 2,1,1,1)
+        self.horizontalLayout_ausrichtung_wizard = create_new_horizontallayout(self.groupBox_ausrichtung_wizard)
+        self.combobox_ausrichtung_wizard = create_new_combobox(self.groupBox_ausrichtung_wizard)
+        self.combobox_ausrichtung_wizard.currentIndexChanged.connect(self.combobox_ausrichtung_wizard_changed)
+        add_new_option(self.combobox_ausrichtung_wizard, 0, "in der Spalte")
+        add_new_option(self.combobox_ausrichtung_wizard, 1, "in der Zeile")
+        self.horizontalLayout_ausrichtung_wizard.addWidget(self.combobox_ausrichtung_wizard)
+
+
+        self.groupBox_show_nonogramm = create_new_groupbox(self.groupBox_setting_wizard, "Selbstkontrolle")
+        self.gridLayout_setting_wizard.addWidget(self.groupBox_show_nonogramm, 4,0,1,3)
+        self.horizontalLayout_show_nongramm = create_new_horizontallayout(self.groupBox_show_nonogramm)
+        self.checkBox_show_nonogramm = create_new_checkbox(self.groupBox_setting_wizard, "Selbstkontrolle anzeigen", True)
+        self.horizontalLayout_show_nongramm.addWidget(self.checkBox_show_nonogramm)
+        # self.gridLayout_setting_wizard.addWidget(self.checkBox_show_nonogramm, 4,0,1,2)
+        self.checkBox_show_nonogramm.stateChanged.connect(self.checkBox_show_nonogramm_changed) 
+    
+        self.combobox_nonogramm_wizard = create_new_combobox(self.groupBox_setting_wizard)
+        # self.gridLayout_setting_wizard.addWidget(self.combobox_nonogramm_wizard, 4,2,1,1)
+        self.horizontalLayout_show_nongramm.addWidget(self.combobox_nonogramm_wizard)
+        self.combobox_nonogramm_wizard.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
+        add_new_option(self.combobox_nonogramm_wizard, 0, 'Zufällig')
+        i=1
+        for all in all_nonogramms:
+            add_new_option(self.combobox_nonogramm_wizard, i, "{0} ({1})".format(all.capitalize(), len(all_nonogramms[all])))
+            i+=1
+
+        # setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
+        # self.combobox_nonogramm_wizard.setMaxVisibleItems(8)
+
+
+        self.groupBox_zahlenbereich_wizard = create_new_groupbox(self.groupBox_setting_wizard, "Zahlenbereich")
+        self.gridLayout_setting_wizard.addWidget(self.groupBox_zahlenbereich_wizard, 0,3,5,1)
+        self.gridLayout_zahlenbereich_wizard = create_new_gridlayout(self.groupBox_zahlenbereich_wizard)
+
+
+        self.groupBox_zahlenbereich_minimum = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Minimum")
+        self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_zahlenbereich_minimum, 0,0,1,1)
+        self.horizontalLayout_zahlenbereich_minimum = create_new_horizontallayout(self.groupBox_zahlenbereich_minimum)
+        self.onlyInt = QtGui.QIntValidator()
+        self.spinbox_zahlenbereich_minimum = create_new_spinbox(self.groupBox_zahlenbereich_minimum)
+        self.spinbox_zahlenbereich_minimum.setRange(0,999999999)
+        self.spinbox_zahlenbereich_minimum.setValue(100)
+        self.horizontalLayout_zahlenbereich_minimum.addWidget(self.spinbox_zahlenbereich_minimum)
+
+
+        self.horizontalLayout_zahlenbereich_minimum.addWidget(self.spinbox_zahlenbereich_minimum)
+        self.groupBox_zahlenbereich_maximum = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Maximum")
+        self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_zahlenbereich_maximum, 0,1,1,2)
+        self.horizontalLayout_zahlenbereich_maximum = create_new_horizontallayout(self.groupBox_zahlenbereich_maximum)
+        self.spinbox_zahlenbereich_maximum = create_new_spinbox(self.groupBox_zahlenbereich_maximum)
+        self.spinbox_zahlenbereich_maximum.setRange(0,999999999)
+        self.spinbox_zahlenbereich_maximum.setValue(999)
+        self.horizontalLayout_zahlenbereich_maximum.addWidget(self.spinbox_zahlenbereich_maximum)
+        self.spinbox_zahlenbereich_maximum.valueChanged.connect(self.worksheet_wizard_setting_changed)
+        self.spinbox_zahlenbereich_minimum.valueChanged.connect(partial(self.minimum_changed_wizard, self.spinbox_zahlenbereich_minimum, self.spinbox_zahlenbereich_maximum))
+
+        self.groupBox_kommastellen_wizard = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Kommastellen")
+        self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_kommastellen_wizard, 1,0,1,1)
+        self.horizontalLayout_kommastellen_wizard = create_new_horizontallayout(self.groupBox_kommastellen_wizard)
+        self.combobox_kommastellen_wizard = create_new_combobox(self.groupBox_kommastellen_wizard)
+        add_new_option(self.combobox_kommastellen_wizard, 0, "=")
+        add_new_option(self.combobox_kommastellen_wizard, 1, "\u2264")
+        self.combobox_kommastellen_wizard.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
+        self.horizontalLayout_kommastellen_wizard.addWidget(self.combobox_kommastellen_wizard)
+        self.spinbox_kommastellen_wizard = create_new_spinbox(self.groupBox_kommastellen_wizard)
+        self.spinbox_kommastellen_wizard.setMaximum(14)
+        self.spinbox_kommastellen_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
+        self.horizontalLayout_kommastellen_wizard.addWidget(self.spinbox_kommastellen_wizard)
+
+
+        self.groupBox_zahlenbereich_anzahl = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Summanden")
+        self.horizontalLayout_zahlenbereich_anzahl = create_new_horizontallayout(self.groupBox_zahlenbereich_anzahl)
+        self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_zahlenbereich_anzahl, 1,1,1,2)
+        self.spinBox_zahlenbereich_anzahl_wizard = create_new_spinbox(self.groupBox_zahlenbereich_anzahl, 2)
+        self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,5)
+        self.spinBox_zahlenbereich_anzahl_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
+        self.horizontalLayout_zahlenbereich_anzahl.addWidget(self.spinBox_zahlenbereich_anzahl_wizard)
+
+        self.checkbox_negative_ergebnisse_wizard = create_new_checkbox(self.groupBox_zahlenbereich_wizard, "negative Ergebnisse erlauben")
+        self.checkbox_negative_ergebnisse_wizard.stateChanged.connect(self.worksheet_wizard_setting_changed)
+        # self.checkbox_negative_ergebnisse_wizard.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout_zahlenbereich_wizard.addWidget(self.checkbox_negative_ergebnisse_wizard, 2,0,1,2)
+        # self.label_negative_ergebnisse_wizard = create_new_label(self.groupBox_zahlenbereich_wizard, "negative Ergebnisse erlauben", True, True)
+        # self.label_negative_ergebnisse_wizard.clicked.connect(partial(self.click_label_to_check, self.checkbox_negative_ergebnisse_wizard))
+        # self.gridLayout_zahlenbereich_wizard.addWidget(self.label_negative_ergebnisse_wizard, 2,0,1,1, QtCore.Qt.AlignRight)
+        self.checkbox_negative_ergebnisse_wizard.hide()
+        # self.label_negative_ergebnisse_wizard.hide()
+
+        self.checkbox_allow_brackets_wizard = create_new_checkbox(self.groupBox_zahlenbereich_wizard, "Klammern erlauben")
+        self.checkbox_allow_brackets_wizard.stateChanged.connect(self.worksheet_wizard_setting_changed)
+        self.gridLayout_zahlenbereich_wizard.addWidget(self.checkbox_allow_brackets_wizard, 2,0,1,2)
+        self.checkbox_allow_brackets_wizard.hide()
+
+
+        self.groupBox_first_number_wizard = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "1. Faktor")
+        self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_first_number_wizard, 0,0,1,1)
+        self.gridLayout_first_number_wizard = create_new_gridlayout(self.groupBox_first_number_wizard)
+        self.label_first_number_min = create_new_label(self.groupBox_first_number_wizard, "Min:")
+        self.gridLayout_first_number_wizard.addWidget(self.label_first_number_min, 0,0,1,1)
+        self.spinBox_first_number_min = create_new_spinbox(self.groupBox_first_number_wizard)
+        self.spinBox_first_number_min.setRange(0,999999999)
+        self.spinBox_first_number_min.setValue(10)
+        self.gridLayout_first_number_wizard.addWidget(self.spinBox_first_number_min, 0,1,1,2)
+
+        self.label_first_number_max = create_new_label(self.groupBox_first_number_wizard, "Max:")
+        self.gridLayout_first_number_wizard.addWidget(self.label_first_number_max, 1,0,1,1)
+        self.spinBox_first_number_max = create_new_spinbox(self.groupBox_first_number_wizard)
+        self.spinBox_first_number_max.setSizePolicy(SizePolicy_fixed)
+        self.spinBox_first_number_max.setRange(0,999999999)
+        self.spinBox_first_number_max.setValue(99)
+        self.gridLayout_first_number_wizard.addWidget(self.spinBox_first_number_max, 1,1,1,2)
+        self.spinBox_first_number_max.valueChanged.connect(self.worksheet_wizard_setting_changed)
+        self.spinBox_first_number_min.valueChanged.connect(partial(self.minimum_changed_wizard, self.spinBox_first_number_min, self.spinBox_first_number_max))        
+
+        self.label_first_number_decimal = create_new_label(self.groupBox_first_number_wizard, "Kommastellen")
+        self.gridLayout_first_number_wizard.addWidget(self.label_first_number_decimal, 2,0,1,1)
+        self.combobox_first_number_decimal = create_new_combobox(self.groupBox_first_number_wizard)
+        add_new_option(self.combobox_first_number_decimal, 0, "=")
+        add_new_option(self.combobox_first_number_decimal, 1, "\u2264")
+        self.combobox_first_number_decimal.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
+        self.gridLayout_first_number_wizard.addWidget(self.combobox_first_number_decimal, 2,1,1,1)
+        self.spinBox_first_number_decimal = create_new_spinbox(self.groupBox_first_number_wizard)
+        self.spinBox_first_number_decimal.setMaximum(14)
+        self.spinBox_first_number_decimal.valueChanged.connect(self.worksheet_wizard_setting_changed)
+        self.gridLayout_first_number_wizard.addWidget(self.spinBox_first_number_decimal,2,2,1,1)  
+        self.groupBox_first_number_wizard.hide()
+
+        self.groupBox_second_number_wizard = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "2. Faktor")
+        self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_second_number_wizard, 0,1,1,1)
+        self.gridLayout_second_number_wizard = create_new_gridlayout(self.groupBox_second_number_wizard)
+        self.label_second_number_min = create_new_label(self.groupBox_second_number_wizard, "Min:")
+        self.gridLayout_second_number_wizard.addWidget(self.label_second_number_min, 0,0,1,1)
+        self.spinBox_second_number_min = create_new_spinbox(self.groupBox_second_number_wizard)
+        self.spinBox_second_number_min.setRange(-999999999,999999999)
+        self.spinBox_second_number_min.setValue(10)
+        self.gridLayout_second_number_wizard.addWidget(self.spinBox_second_number_min, 0,1,1,2)
+
+        self.label_second_number_max = create_new_label(self.groupBox_second_number_wizard, "Max:")
+        self.gridLayout_second_number_wizard.addWidget(self.label_second_number_max, 1,0,1,1)
+        self.spinBox_second_number_max = create_new_spinbox(self.groupBox_second_number_wizard)
+        self.spinBox_second_number_max.setRange(-999999999,999999999)
+        self.spinBox_second_number_max.setValue(99)
+        self.gridLayout_second_number_wizard.addWidget(self.spinBox_second_number_max, 1,1,1,2)
+        self.spinBox_second_number_max.valueChanged.connect(self.worksheet_wizard_setting_changed)
+        self.spinBox_second_number_min.valueChanged.connect(partial(self.minimum_changed_wizard, self.spinBox_second_number_min, self.spinBox_second_number_max))        
+
+        self.label_second_number_decimal = create_new_label(self.groupBox_second_number_wizard, "Kommastellen")
+        self.gridLayout_second_number_wizard.addWidget(self.label_second_number_decimal,2,0,1,1)
+        self.combobox_second_number_decimal = create_new_combobox(self.groupBox_second_number_wizard)
+        add_new_option(self.combobox_second_number_decimal, 0, "=")
+        add_new_option(self.combobox_second_number_decimal, 1, "\u2264")
+        self.combobox_second_number_decimal.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
+        self.gridLayout_second_number_wizard.addWidget(self.combobox_second_number_decimal, 2,1,1,1)
+        self.spinBox_second_number_decimal = create_new_spinbox(self.groupBox_second_number_wizard)
+        self.spinBox_second_number_decimal.setMaximum(14)
+        self.spinBox_second_number_decimal.valueChanged.connect(self.worksheet_wizard_setting_changed)
+        self.gridLayout_second_number_wizard.addWidget(self.spinBox_second_number_decimal,2,2,1,1) 
+        self.groupBox_second_number_wizard.hide()
+
+
+        self.groupBox_dividend_wizard = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Dividend")
+        self.gridLayout_dividend_wizard = create_new_gridlayout(self.groupBox_dividend_wizard)
+        self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_dividend_wizard, 0,0, 1,1)
+
+        self.combobox_dividend_wizard = create_new_combobox(self.groupBox_dividend_wizard)
+        add_new_option(self.combobox_dividend_wizard, 0, "Natürliche Zahl")
+        add_new_option(self.combobox_dividend_wizard, 1, "Dezimalzahl")
+        self.gridLayout_dividend_wizard.addWidget(self.combobox_dividend_wizard, 0,0,1,1)
+
+        self.label_dividend_min_wizard = create_new_label(self.groupBox_dividend_wizard, "Min:")
+        self.gridLayout_dividend_wizard.addWidget(self.label_dividend_min_wizard, 0,1,1,1)
+        self.spinbox_dividend_min_wizard = create_new_spinbox(self.groupBox_dividend_wizard)
+        self.spinbox_dividend_min_wizard.setMaximum(999999999)
+        self.spinbox_dividend_min_wizard.setValue(100)
+        self.spinbox_dividend_min_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
+        self.gridLayout_dividend_wizard.addWidget(self.spinbox_dividend_min_wizard, 0,2,1,1)
+        
+
+        self.label_dividend_max_wizard = create_new_label(self.groupBox_dividend_wizard, "Max:")
+        self.gridLayout_dividend_wizard.addWidget(self.label_dividend_max_wizard, 1,1,1,1)
+        self.spinbox_dividend_max_wizard = create_new_spinbox(self.groupBox_dividend_wizard)
+        self.spinbox_dividend_max_wizard.setMaximum(999999999)
+        self.spinbox_dividend_max_wizard.setValue(1000)
+        self.spinbox_dividend_max_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
+        self.gridLayout_dividend_wizard.addWidget(self.spinbox_dividend_max_wizard, 1,2,1,1)
+        self.groupBox_dividend_wizard.hide()
+
+
+        self.groupBox_divisor_wizard = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Divisor")
+        self.gridLayout_divisor_wizard = create_new_gridlayout(self.groupBox_divisor_wizard)
+        self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_divisor_wizard, 1,0, 1,1)
+
+        self.combobox_divisor_wizard = create_new_combobox(self.groupBox_divisor_wizard)
+        add_new_option(self.combobox_divisor_wizard, 0, "Natürliche Zahl")
+        add_new_option(self.combobox_divisor_wizard, 1, "Dezimalzahl")
+        self.gridLayout_divisor_wizard.addWidget(self.combobox_divisor_wizard, 0,0,1,3)
+
+        self.label_divisor_kommastelle_wizard = create_new_label(self.groupBox_divisor_wizard, "Kommastellen")
+        self.gridLayout_divisor_wizard.addWidget(self.label_divisor_kommastelle_wizard, 1,0,1,1)
+
+        self.combobox_divisor_kommastelle_wizard = create_new_combobox(self.combobox_divisor_wizard)
+        add_new_option(self.combobox_divisor_kommastelle_wizard, 0, "=")
+        add_new_option(self.combobox_divisor_kommastelle_wizard, 1, "\u2264")
+        self.combobox_divisor_kommastelle_wizard.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
+        self.gridLayout_divisor_wizard.addWidget(self.combobox_divisor_kommastelle_wizard, 1,1,1,1)
+        self.spinBox_divisor_kommastellen_wizard = create_new_spinbox(self.groupBox_divisor_wizard, 0)
+        self.spinBox_divisor_kommastellen_wizard.setMaximum(14)
+        self.spinBox_divisor_kommastellen_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
+        self.gridLayout_divisor_wizard.addWidget(self.spinBox_divisor_kommastellen_wizard, 1,2,1,1)
+        self.label_divisor_kommastelle_wizard.hide()
+        self.combobox_divisor_kommastelle_wizard.hide()
+        self.spinBox_divisor_kommastellen_wizard.hide()
+
+        self.label_divisor_min_wizard = create_new_label(self.groupBox_divisor_wizard, "Min:")
+        self.gridLayout_divisor_wizard.addWidget(self.label_divisor_min_wizard, 0,3,1,1)
+        self.spinbox_divisor_min_wizard = create_new_spinbox(self.groupBox_divisor_wizard, 2)
+        self.spinbox_divisor_min_wizard.setMaximum(999999999)
+        self.spinbox_divisor_min_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
+        self.gridLayout_divisor_wizard.addWidget(self.spinbox_divisor_min_wizard, 0,4,1,1)
+        
+
+        self.label_divisor_max_wizard = create_new_label(self.groupBox_divisor_wizard, "Max:")
+        self.gridLayout_divisor_wizard.addWidget(self.label_divisor_max_wizard, 1,3,1,1)
+        self.spinbox_divisor_max_wizard = create_new_spinbox(self.groupBox_divisor_wizard, 99)
+        self.spinbox_divisor_max_wizard.setMaximum(999999999)
+        self.spinbox_divisor_max_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
+        self.gridLayout_divisor_wizard.addWidget(self.spinbox_divisor_max_wizard, 1,4,1,1)
+        self.groupBox_divisor_wizard.hide()
+
+
+        self.groupBox_ergebnis_wizard = create_new_groupbox(self.groupBox_zahlenbereich_anzahl, "Ergebnis")
+        self.gridLayout_ergebnis_wizard = create_new_gridlayout(self.groupBox_ergebnis_wizard)
+        self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_ergebnis_wizard, 2,0,1,1)
+
+        self.radioButton_division_ohne_rest = create_new_radiobutton(self.groupBox_ergebnis_wizard, "ohne Rest")
+        self.radioButton_division_ohne_rest.setChecked(True)
+        self.radioButton_division_ohne_rest.toggled.connect(self.worksheet_wizard_setting_changed)
+        self.gridLayout_ergebnis_wizard.addWidget(self.radioButton_division_ohne_rest, 0,0,1,1)
+
+        self.radioButton_division_rest = create_new_radiobutton(self.groupBox_ergebnis_wizard, "mit Rest")
+        self.radioButton_division_rest.toggled.connect(self.worksheet_wizard_setting_changed)
+        self.gridLayout_ergebnis_wizard.addWidget(self.radioButton_division_rest, 0,1,1,1)
+
+        # self.radioButton_division_decimal = create_new_radiobutton(self.groupBox_ergebnis_wizard, "Dezimalzahl")
+        # self.radioButton_division_decimal.toggled.connect(self.radioButton_division_changed)
+        # self.gridLayout_ergebnis_wizard.addWidget(self.radioButton_division_decimal, 0,2,1,1)
+        # self.radioButton_division_decimal.hide()
+
+        # self.label_ergebnis_anzeige_wizard = create_new_label(self.groupBox_ergebnis_wizard, "Anzeige:")
+        # self.gridLayout_ergebnis_wizard.addWidget(self.label_ergebnis_anzeige_wizard, 1,0,1,1)
+        # self.comboBox_ergebnis_anzeige_wizard = create_new_combobox(self.groupBox_ergebnis_wizard)
+        # add_new_option(self.comboBox_ergebnis_anzeige_wizard, 0, "Rest")
+        # add_new_option(self.comboBox_ergebnis_anzeige_wizard, 1, "Dezimalzahl")
+        # self.comboBox_ergebnis_anzeige_wizard.currentIndexChanged.connect(self.comboBox_ergebnis_anzeige_wizard_changed)
+        # self.gridLayout_ergebnis_wizard.addWidget(self.comboBox_ergebnis_anzeige_wizard, 1,1,1,1)
+        # self.label_ergebnis_anzeige_wizard.hide()
+        # self.comboBox_ergebnis_anzeige_wizard.hide()
+
+        self.label_ergebnis_kommastellen_wizard = create_new_label(self.groupBox_ergebnis_wizard, "Kommastellen:")
+        self.gridLayout_ergebnis_wizard.addWidget(self.label_ergebnis_kommastellen_wizard, 1,0,1,1)
+        self.combobox_ergebnis_kommastellen_wizard = create_new_combobox(self.groupBox_ergebnis_wizard)
+        add_new_option(self.combobox_ergebnis_kommastellen_wizard, 0, "=")
+        add_new_option(self.combobox_ergebnis_kommastellen_wizard, 1, "\u2264")
+        self.combobox_ergebnis_kommastellen_wizard.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
+        self.gridLayout_ergebnis_wizard.addWidget(self.combobox_ergebnis_kommastellen_wizard, 1,1,1,1)
+        self.spinbox_ergebnis_kommastellen_wizard = create_new_spinbox(self.groupBox_ergebnis_wizard, 1)
+        self.spinbox_ergebnis_kommastellen_wizard.setRange(1,14)
+        self.spinbox_ergebnis_kommastellen_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
+        self.gridLayout_ergebnis_wizard.addWidget(self.spinbox_ergebnis_kommastellen_wizard, 1,2,1,1)
+
+        self.label_ergebnis_kommastellen_wizard.hide()
+        self.combobox_ergebnis_kommastellen_wizard.hide()
+        self.spinbox_ergebnis_kommastellen_wizard.hide()
+
+
+        self.combobox_dividend_wizard.currentIndexChanged.connect(self.combobox_divisor_dividend_changed)
+        self.combobox_divisor_wizard.currentIndexChanged.connect(self.combobox_divisor_dividend_changed)
+        self.groupBox_ergebnis_wizard.hide()
+
+
+
+
+
+        self.gridLayout_zahlenbereich_wizard.setRowStretch(4,1)
+        self.gridLayout_setting_wizard.setRowStretch(3, 2)
+
+        self.scrollArea_chosen_wizard = QtWidgets.QScrollArea(self.centralwidget)
+        self.scrollArea_chosen_wizard.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.scrollArea_chosen_wizard.setWidgetResizable(True)
+        self.scrollArea_chosen_wizard.setObjectName("scrollArea_chosen_wizard")
+        self.scrollArea_chosen_wizard.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.scrollArea_chosen_wizard.setSizePolicy(SizePolicy_minimum)
+        self.scrollArea_chosen_wizard.hide()
+        self.scrollAreaWidgetContents_wizard = QtWidgets.QWidget()
+        # self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 389, 323))
+        self.scrollAreaWidgetContents_wizard.setObjectName("scrollAreaWidgetContents_wizard")
+        self.scrollAreaWidgetContents_wizard.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.gridLayout_scrollArea_wizard = QtWidgets.QGridLayout(self.scrollAreaWidgetContents_wizard)
+        self.gridLayout_scrollArea_wizard.setObjectName("gridLayout_scrollArea_wizard")
+        self.scrollArea_chosen_wizard.setWidget(self.scrollAreaWidgetContents_wizard)
+        self.scrollArea_chosen_wizard.verticalScrollBar().rangeChanged.connect(
+            self.change_scrollbar_position
+        )
+        self.gridLayout.addWidget(self.scrollArea_chosen_wizard, 3, 0, 6, 9)
+
+
+
+
         #         ####################################################################
         #         #####################################################################
         #         ######################################################################
@@ -2372,6 +2821,7 @@ class Ui_MainWindow(object):
         self.menuNeu.setTitle(_translate("MainWindow", "Aufgabe", None))
         self.menuSage.setTitle(_translate("MainWindow", "Prüfung", None))
         self.menuSuche.setTitle(_translate("MainWindow", "Suche", None))
+        self.menuWizard.setTitle(_translate("MainWindow", "Wizard", None))
         self.menuDeveloper.setTitle(_translate("MainWindow", "Entwicklermodus", None))
 
         # self.menuBild_einbinden.setTitle(
@@ -2469,19 +2919,21 @@ class Ui_MainWindow(object):
         self.create_Tooltip(ws_beschreibung)
         #############################################
 
-        if self.chosen_program == "lama":
-            program = "LaMA Cria (Unterstufe)"
-        if self.chosen_program == "cria":
-            program = "LaMA (Oberstufe)"
-        self.actionProgram.setText(
-            _translate("MainWindow", 'Zu "{}" wechseln'.format(program), None)
-        )
+        # if self.chosen_program == "lama":
+        #     program = "LaMA Cria (Unterstufe)"
+        # if self.chosen_program == "cria":
+        #     program = "LaMA (Oberstufe)"
+        # self.actionProgram.setText(
+        #     _translate("MainWindow", 'Zu "{}" wechseln'.format(program), None)
+        # )
         self.actionExit.setText(_translate("MainWindow", "Exit", None))
 
         print("Done")
 
         if self.chosen_program == "cria":
             self.update_gui("widgets_search")
+        elif self.chosen_program == 'wizard':
+            self.update_gui("widgets_wizard")
 
     def show_popup_window(self, show_checkbox = True):
         msg = QtWidgets.QMessageBox()
@@ -3367,40 +3819,41 @@ lama.helpme@gmail.com""")
         for i in reversed(range(self.gridLayout_8.count()+1)):
             self.delete_widget(self.gridLayout_8, i)
 
-    def change_program(self):
-        if self.chosen_program == "lama":
-            change_to = "LaMA Cria (Unterstufe)"
+    def change_program(self, program_change_to):
+        if program_change_to == "cria":
+            name = "LaMA Cria (Unterstufe)"
             program_name = "LaMA Cria - LaTeX Mathematik Assistent (Unterstufe)"
             icon = logo_cria_path
 
-        elif self.chosen_program == "cria":
-            change_to = "LaMA (Oberstufe)"
+        elif program_change_to == "lama":
+            name = "LaMA (Oberstufe)"
             program_name = "LaMA - LaTeX Mathematik Assistent (Oberstufe)"
             icon = logo_path
 
-        response = question_window(
-            "Sind Sie sicher, dass sie zu {} wechseln wollen?\nDadurch werden alle bisherigen Einträge gelöscht!".format(
-                change_to
-            ),
-            titel="Programm wechseln?",
-        )
+        elif program_change_to == "wizard":
+            name = "LaMA - Worksheet Wizard"
+            program_name = "LaMA - LaTeX Mathematik Assistent (Worksheet Wizard)"
+            icon = logo_path
 
-        if response == False:
-            return False
+        if self.chosen_program !='wizard':
+            response = question_window(
+                "Sind Sie sicher, dass sie zu {} wechseln wollen?\nDadurch werden alle bisherigen Einträge gelöscht!".format(
+                    name
+                ),
+                titel="Programm wechseln?",
+            )
+
+            if response == False:
+                return False
 
         self.reset_sage(False)
         self.suchfenster_reset()
         self.reset_feedback()
 
-        # self.comboBox_fehlertyp.setCurrentIndex(0)
-        # self.plainTextEdit.setPlainText("")
 
-        self.actionProgram.setText(
-            _translate("MainWindow", 'Zu "{}" wechseln'.format(change_to), None)
-        )
 
         self.comboBox_pagebreak.setCurrentIndex(0)
-        if self.chosen_program == "lama":
+        if program_change_to == "cria":
             self.chosen_program = "cria"
 
             # if self.beispieldaten_dateipfad_cria == None:
@@ -3411,9 +3864,10 @@ lama.helpme@gmail.com""")
             self.gridLayout.addWidget(self.groupBox_af, 3, 0, 1, 1)
             self.gridLayout.addWidget(self.groupBox_punkte, 0, 1, 1, 1)
             self.gridLayout.addWidget(self.groupBox_aufgabenformat, 0, 2, 1, 1)
-            self.actionProgram.setText(
-                _translate("MainWindow", 'Zu "LaMA (Oberstufe)" wechseln', None)
-            )
+
+            self.action_cria.setVisible(False)
+            self.action_lama.setVisible(True)
+            self.action_wizard.setVisible(True)
             # self.comboBox_pruefungstyp.removeItem(6)  # delete Quiz
             self.cb_af_ko.show()
             self.cb_af_rf.show()
@@ -3444,19 +3898,22 @@ lama.helpme@gmail.com""")
             )
 
             self.groupBox_ausgew_gk_cr.setTitle("Ausgewählte Themen")
+            self.update_gui("widgets_search")
             # self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
             #     "cria"
             # )
 
-        elif self.chosen_program == "cria":
+        elif program_change_to == "lama":
             self.chosen_program = "lama"
 
             self.gridLayout.addWidget(self.groupBox_af, 4, 0, 1, 1)
             self.gridLayout.addWidget(self.groupBox_punkte, 0, 2, 1, 1)
             self.gridLayout.addWidget(self.groupBox_aufgabenformat, 0, 3, 1, 1)
-            self.actionProgram.setText(
-                _translate("MainWindow", 'Zu "LaMA Cria (Unterstufe)" wechseln', None)
-            )
+
+            self.action_cria.setVisible(True)
+            self.action_lama.setVisible(False)
+            self.action_wizard.setVisible(True)
+
             self.combobox_searchtype.setItemText(
                 1,
                 _translate(
@@ -3481,12 +3938,20 @@ lama.helpme@gmail.com""")
             )
 
             self.groupBox_ausgew_gk_cr.setTitle("Ausgewählte Grundkompetenzen")
+            self.update_gui("widgets_search")
+
+        elif program_change_to == 'wizard':
+            self.chosen_program = "wizard"
+            self.action_cria.setVisible(True)
+            self.action_lama.setVisible(True)
+            self.action_wizard.setVisible(False)
+            self.update_gui("widgets_wizard") 
 
         MainWindow.setWindowTitle(program_name)
         MainWindow.setWindowIcon(QtGui.QIcon(icon))
         if self.lama_settings["database"] == 0:
             refresh_ddb(self)
-        self.update_gui("widgets_search")
+
         # self.beispieldaten_dateipfad_1 = self.define_beispieldaten_dateipfad(1)
         # self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)
 
@@ -4297,61 +4762,18 @@ lama.helpme@gmail.com""")
         del self.dict_widget_variables[picture]
 
     def convert_image_eps_clicked(self):
-        msg = QtWidgets.QMessageBox()
-        # msg.setIcon(QtWidgets.QMessageBox.Question)
-        msg.setWindowIcon(QtGui.QIcon(logo_path))
-        msg.setText("Wählen Sie alle Grafiken, die Sie konvertieren möchten.")
-        # msg.setInformativeText('Möchten Sie das neue Update installieren?')
-        msg.setWindowTitle("Grafik(en) konvertieren")
-        msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-        button_durchsuchen = msg.button(QtWidgets.QMessageBox.Yes)
-        button_durchsuchen.setText("Durchsuchen...")
-        buttonN = msg.button(QtWidgets.QMessageBox.No)
-        buttonN.setText("Abbrechen")
-        ret = msg.exec_()
+        Dialog = QtWidgets.QDialog(
+            None,
+            QtCore.Qt.WindowSystemMenuHint
+            | QtCore.Qt.WindowTitleHint
+            | QtCore.Qt.WindowCloseButtonHint,
+        )
+        ui = Ui_Dialog_Convert_To_Eps()
+        ui.setupUi(Dialog, self)
 
-        if ret == QtWidgets.QMessageBox.Yes:
-            # filename =	 filedialog.askopenfilenames(initialdir = last_path,title = "Durchsuchen...",filetypes = (('JPG-Dateien','*.jpg'),("Alle Dateien","*.*")))
-            try:
-                os.path.dirname(self.saved_file_path)
-            except AttributeError:
-                self.saved_file_path = path_home
+        Dialog.exec()
 
-            filename = QtWidgets.QFileDialog.getOpenFileNames(
-                None,
-                "Select a folder:",
-                os.path.dirname(self.saved_file_path),
-                "Bilder (*.jpg; *.jpeg; *.png; *.jfif);; Alle Dateien (*.*)",
-            )
-            if filename[0] != []:
-                self.saved_file_path = filename[0][0]
-                for image in filename[0]:
-                    response = convert_image_to_eps(image)
-                    if response != True:
-                        break
-                if response == True:
-                    if len(filename[0]) == 1:
-                        text = "wurde {} Datei".format(len(filename[0]))
-                    else:
-                        text = "wurden {} Dateien".format(len(filename[0]))
 
-                    information_window(
-                        "Es {0} erfolgreich konvertiert.".format(text),
-                        titel="Grafik(en) erfolgreich konvertiert",
-                        detailed_text="Konvertierte Grafik(en):\n{}".format(
-                            "\n".join(filename[0])
-                        ),
-                    )
-                else:
-                    critical_window(
-                        "Beim Konvertieren der folgenden Grafik ist ein Fehler aufgetreten:\n\n{}".format(
-                            image
-                        ),
-                        titel="Fehler beim Konvertieren",
-                        detailed_text='Fehlermeldung:\n\n"{0}: {1}"'.format(
-                            type(response).__name__, response
-                        ),
-                    )
 
     def chosen_aufgabenformat_cr(self):
         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
@@ -5426,7 +5848,8 @@ lama.helpme@gmail.com""")
     def action_refreshddb_selected(self):
         refresh_ddb(self)
 
-        self.adapt_choosing_list("sage")
+        if self.chosen_program != 'wizard':
+            self.adapt_choosing_list("sage")
 
     def push_full_database(self):
         rsp = question_window("Sind Sie sicher, dass Sie die Datenbank hochladen möchten?")
@@ -5610,8 +6033,505 @@ lama.helpme@gmail.com""")
         # print(_database_addon.all())
         # print(database.all())
         # print(files)
+    def worksheet_wizard_reset(self):
+        self.comboBox_themen_wizard.setCurrentIndex(0)
+        self.spinBox_number_wizard.setValue(20)
+        self.spinBox_column_wizard.setValue(2)
+        self.combobox_fontsize_wizard.setCurrentIndex(4)
+        self.combobox_nummerierung_wizard.setCurrentIndex(0)
+        self.combobox_ausrichtung_wizard.setCurrentIndex(0)
+        self.checkBox_show_nonogramm.setChecked(True)
+        self.combobox_nonogramm_wizard.setCurrentIndex(0)
+        
+        for i in reversed(range(self.gridLayout_scrollArea_wizard.count())): 
+            self.gridLayout_scrollArea_wizard.itemAt(i).widget().setParent(None)
 
+
+    def themen_changed_wizard(self):
+        self.worksheet_wizard_changed = True
+        # index = self.comboBox_themen_wizard.currentIndex()
+        thema = self.comboBox_themen_wizard.currentText()
+        self.lineEdit_titel_wizard.setText("Arbeitsblatt - {}".format(thema))
+
+        if thema == themen_worksheet_wizard[0] or thema == themen_worksheet_wizard[1]:
+            self.spinbox_zahlenbereich_minimum.setRange(0,999999999)
+            self.spinbox_zahlenbereich_minimum.setValue(100)
+            self.spinbox_zahlenbereich_maximum.setRange(0,999999999)
+            self.spinbox_zahlenbereich_maximum.setValue(999)
+            self.spinBox_zahlenbereich_anzahl_wizard.setMaximum(5)  
+
+        if thema == themen_worksheet_wizard[0]:
+            self.groupBox_zahlenbereich_anzahl.setTitle("Summanden")
+            self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,5)
+            self.spinBox_zahlenbereich_anzahl_wizard.setValue(2)
+        elif thema == themen_worksheet_wizard[1]:
+            self.groupBox_zahlenbereich_anzahl.setTitle("Subtrahenden")
+            self.spinBox_zahlenbereich_anzahl_wizard.setRange(1,5)
+            self.spinBox_zahlenbereich_anzahl_wizard.setValue(1)
+        elif thema == themen_worksheet_wizard[4]:
+            self.spinbox_zahlenbereich_minimum.setRange(0,999)
+            self.spinbox_zahlenbereich_maximum.setRange(0,999)
+            self.spinbox_zahlenbereich_minimum.setValue(0)
+            self.spinbox_zahlenbereich_maximum.setValue(20)
+            self.spinBox_zahlenbereich_anzahl_wizard.setMaximum(20)
+            self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,20)
+            self.groupBox_zahlenbereich_anzahl.setTitle("Zahlen") 
+
+        elif thema == themen_worksheet_wizard[5] or thema == themen_worksheet_wizard[6] or thema == themen_worksheet_wizard[7]:
+            self.spinbox_zahlenbereich_minimum.setRange(-999,999)
+            self.spinbox_zahlenbereich_maximum.setRange(-999,999)
+            self.spinBox_zahlenbereich_anzahl_wizard.setMaximum(20)
+            self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,20)
+            self.groupBox_zahlenbereich_anzahl.setTitle("Zahlen")  
+            if thema == themen_worksheet_wizard[5]:
+                # self.groupBox_zahlenbereich_anzahl.setTitle("Summanden")
+                self.spinBox_zahlenbereich_anzahl_wizard.setValue(2)
+                self.spinbox_zahlenbereich_minimum.setValue(-20)
+                self.spinbox_zahlenbereich_maximum.setValue(20)
+            elif thema == themen_worksheet_wizard[6]:
+                # self.groupBox_zahlenbereich_anzahl.setTitle("Faktoren") 
+                self.spinBox_zahlenbereich_anzahl_wizard.setValue(3)
+                self.spinbox_zahlenbereich_minimum.setValue(-10)
+                self.spinbox_zahlenbereich_maximum.setValue(10)
+            elif thema == themen_worksheet_wizard[7]:
+                self.spinBox_zahlenbereich_anzahl_wizard.setValue(4)
+                self.spinbox_zahlenbereich_minimum.setValue(-10)
+                self.spinbox_zahlenbereich_maximum.setValue(10)                
+           
+
+        hiding_list = []
+        for all in dict_widgets_wizard:
+            if all != thema:
+                for widget in dict_widgets_wizard[all]:
+                    if widget not in dict_widgets_wizard[thema] and widget not in hiding_list:
+                        hiding_list.append(widget)
+        
+        for widget in hiding_list:
+            eval(widget).hide()
+
+        for widget in dict_widgets_wizard[thema]:
+            eval(widget).show()
+
+
+    def worksheet_wizard_setting_changed(self):
+        self.worksheet_wizard_changed=True
+
+    def checkBox_show_nonogramm_changed(self):
+        if self.checkBox_show_nonogramm.isChecked():
+            self.combobox_nonogramm_wizard.setEnabled(True)
+        else:
+            self.combobox_nonogramm_wizard.setEnabled(False)
+
+    def spinBox_number_wizard_changed(self):
+        self.worksheet_wizard_changed=True
+        max = 0
+        for nonogram in all_nonogramms.values():
+            if len(nonogram)>max:
+                max = len(nonogram)
+        
+        if self.spinBox_number_wizard.value()>max:
+            self.checkBox_show_nonogramm.setChecked(False)
+            self.checkBox_show_nonogramm.setEnabled(False)
+            self.combobox_nonogramm_wizard.setEnabled(False)
+        else:
+            # self.checkBox_show_nonogramm.setChecked(True)
+            self.checkBox_show_nonogramm.setEnabled(True)
+            self.combobox_nonogramm_wizard.setEnabled(True)
+
+        self.combobox_nonogramm_wizard.clear()
+        add_new_option(self.combobox_nonogramm_wizard, 0, 'Zufällig')
+        i=1
+        for all in all_nonogramms:
+            if len(all_nonogramms[all])>= self.spinBox_number_wizard.value():
+                add_new_option(self.combobox_nonogramm_wizard, i, "{0} ({1})".format(all.capitalize(), len(all_nonogramms[all])))
+                i+=1                    
+
+    def spinBox_column_wizard_changed(self):
+        self.reset_aufgabenboxes_wizard()
+
+
+    def minimum_changed_wizard(self, min, max):
+        self.worksheet_wizard_changed=True
+        if min.value() > max.value():
+            max.setValue(min.value()+10)
+
+    def combobox_ausrichtung_wizard_changed(self):
+        if self.comboBox_themen_wizard.currentText()=='Subtraktion':
+            if self.combobox_ausrichtung_wizard.currentIndex()==0:
+                self.groupBox_zahlenbereich_anzahl.hide()
+                self.spinBox_zahlenbereich_anzahl_wizard.setValue(1)
+            else:
+                self.groupBox_zahlenbereich_anzahl.show()
+
+    def combobox_divisor_dividend_changed(self):
+        self.worksheet_wizard_changed=True
+        if self.combobox_divisor_wizard.currentIndex()==1:
+            self.label_divisor_kommastelle_wizard.show()
+            self.combobox_divisor_kommastelle_wizard.show()
+            self.spinBox_divisor_kommastellen_wizard.show()
+            self.spinBox_divisor_kommastellen_wizard.setValue(1)
+            self.spinBox_divisor_kommastellen_wizard.setMinimum(1)
+            self.combobox_dividend_wizard.setCurrentIndex(1)
+            self.combobox_dividend_wizard.setEnabled(False)
+        else:
+            self.label_divisor_kommastelle_wizard.hide()
+            self.combobox_divisor_kommastelle_wizard.hide()
+            self.spinBox_divisor_kommastellen_wizard.hide()
+            self.spinBox_divisor_kommastellen_wizard.setMinimum(0)
+            self.spinBox_divisor_kommastellen_wizard.setValue(0)
+            # self.combobox_dividend_wizard.setCurrentIndex(0)
+            self.combobox_dividend_wizard.setEnabled(True)
+
+        if self.combobox_divisor_wizard.currentIndex()==0 and self.combobox_dividend_wizard.currentIndex()==0:
+            self.label_ergebnis_kommastellen_wizard.hide()
+            self.combobox_ergebnis_kommastellen_wizard.hide()
+            self.spinbox_ergebnis_kommastellen_wizard.hide()
+            self.radioButton_division_ohne_rest.show()
+            self.radioButton_division_ohne_rest.setChecked(True)
+            self.radioButton_division_rest.show()
+        else:
+            self.label_ergebnis_kommastellen_wizard.show()
+            self.combobox_ergebnis_kommastellen_wizard.show()
+            self.spinbox_ergebnis_kommastellen_wizard.show()
+            self.radioButton_division_ohne_rest.hide()
+            self.radioButton_division_rest.hide()
+          
+
+
+    def create_aufgabenbox_wizard(self, index, example, row, column):
+        groupbox = create_new_groupbox(self.scrollAreaWidgetContents_wizard, "{}. Aufgabe".format(index+1))
+        groupbox.setSizePolicy(SizePolicy_maximum_width)
+
+        self.gridLayout_scrollArea_wizard.addWidget(groupbox ,row,column,1,1)
+
+        horizontalLayout = create_new_horizontallayout(groupbox)
+        label = create_new_label(self.scrollArea_chosen_wizard, example[-1])
+        horizontalLayout.addWidget(label)
+        
+        # horizontalLayout.addStretch()
+        # button_refresh = create_new_button(groupbox, "Refresh", still_to_define)
+        button_refresh = create_standard_button(groupbox,
+            "",
+            partial(self.reload_example, index),
+            QtWidgets.QStyle.SP_BrowserReload)
+        horizontalLayout.addWidget(button_refresh)
+        # button_delete = create_new_button(groupbox, "Delete", still_to_define)
+        # button_delete = create_standard_button(groupbox,
+        #     "",
+        #     still_to_define,
+        #     QtWidgets.QStyle.SP_DialogCancelButton)
+        # horizontalLayout.addWidget(button_delete)
+        self.dict_aufgaben_wizard[index] = label
+
+    def reload_example(self, index):
+        thema = self.comboBox_themen_wizard.currentText()
+        minimum = self.spinbox_zahlenbereich_minimum.value()
+        maximum = self.spinbox_zahlenbereich_maximum.value()
+        commas = self.spinbox_kommastellen_wizard.value()
+        
+
+
+        if thema == 'Addition':
+            anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
+            smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
+            new_example = create_single_example_addition(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
+        elif thema == 'Subtraktion':
+            anzahl_subtrahenden = self.spinBox_zahlenbereich_anzahl_wizard.value()
+            smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
+            new_example = create_single_example_subtraction(minimum, maximum, commas, self.checkbox_negative_ergebnisse_wizard.isChecked(),anzahl_subtrahenden ,smaller_or_equal)
+        elif thema == 'Multiplikation':
+            minimum_1 = self.spinBox_first_number_min.value()
+            maximum_1 = self.spinBox_first_number_max.value()
+            commas_1 = self.spinBox_first_number_decimal.value()
+            smaller_or_equal_1 = self.combobox_first_number_decimal.currentIndex()
+            minimum_2 = self.spinBox_second_number_min.value()
+            maximum_2 = self.spinBox_second_number_max.value()
+            commas_2 = self.spinBox_second_number_decimal.value()
+            smaller_or_equal_2 = self.combobox_second_number_decimal.currentIndex()
+            new_example = create_single_example_multiplication(minimum_1, maximum_1, commas_1, smaller_or_equal_1,minimum_2, maximum_2, commas_2, smaller_or_equal_2)
+        elif thema == themen_worksheet_wizard[3]:
+            minimum_1 = self.spinbox_dividend_min_wizard.value()
+            maximum_1 = self.spinbox_dividend_max_wizard.value()
+            minimum_2 = self.spinbox_divisor_min_wizard.value()
+            maximum_2 = self.spinbox_divisor_max_wizard.value()
+            commas_div = self.spinBox_divisor_kommastellen_wizard.value()
+            commas_result = self.spinbox_ergebnis_kommastellen_wizard.value()
+            smaller_or_equal_div = self.combobox_divisor_kommastelle_wizard.currentIndex()
+            smaller_or_equal_result = self.combobox_ergebnis_kommastellen_wizard.currentIndex()
+
+
+            if self.combobox_dividend_wizard.currentIndex()==1:
+                output_type = 2    
+            elif self.radioButton_division_ohne_rest.isChecked():
+                output_type = 0
+            elif self.radioButton_division_rest.isChecked():
+                output_type = 1
+
+            new_example = create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div, smaller_or_equal_div, commas_result, smaller_or_equal_result, output_type)
+
+        elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[5] or thema == themen_worksheet_wizard[6] or thema == themen_worksheet_wizard[7]:
+            minimum = self.spinbox_zahlenbereich_minimum.value()
+            maximum = self.spinbox_zahlenbereich_maximum.value()
+            commas = self.spinbox_kommastellen_wizard.value()
+            smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
+            anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
+            brackets_allowed = self.checkbox_allow_brackets_wizard.isChecked()
+
+            if thema == themen_worksheet_wizard[5]:
+                new_example = create_single_example_ganze_zahlen_strich(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
+            elif thema == themen_worksheet_wizard[6]:
+                new_example = create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
+            elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[7]:
+                if thema == themen_worksheet_wizard[4]:
+                    show_brackets = False
+                else:
+                    show_brackets = True
+                new_example = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)
+
+
+        result = self.list_of_examples_wizard[index][-2]
+
+        if self.checkBox_show_nonogramm.isChecked():
+            for key, value in self.coordinates_nonogramm_wizard.items():
+                if value == result:
+                    self.coordinates_nonogramm_wizard[key]=new_example[-2]
+                    break
+
+        self.list_of_examples_wizard[index] = new_example
+        self.dict_aufgaben_wizard[index].setText(new_example[-1])
+
+
+    def reset_aufgabenboxes_wizard(self):
+        columns = self.spinBox_column_wizard.value()
+        for i in reversed(range(self.gridLayout_scrollArea_wizard.count())): 
+            self.gridLayout_scrollArea_wizard.itemAt(i).widget().setParent(None)
+
+        items_per_column= len(self.list_of_examples_wizard)/columns
+        column = 0
+        row = 0
+
+        for index, example in enumerate(self.list_of_examples_wizard):
+            self.create_aufgabenbox_wizard(index, example, row, column)
+            if row+1 < items_per_column:
+                row +=1
+            else:
+                row +=1
+                self.gridLayout_scrollArea_wizard.setColumnStretch(row, 1)
+                self.gridLayout_scrollArea_wizard.setRowStretch(row, 1)
+                row = 0
+                column +=1
+
+    def create_worksheet_wizard_pressed(self):
+        self.worksheet_wizard_changed = False
+        thema = self.comboBox_themen_wizard.currentText()
+        examples = self.spinBox_number_wizard.value()
+
+
+        if thema == 'Addition':
+            minimum = self.spinbox_zahlenbereich_minimum.value()
+            maximum = self.spinbox_zahlenbereich_maximum.value()
+            commas = self.spinbox_kommastellen_wizard.value()
+            smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
+            anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
+            if minimum>maximum:
+                critical_window('Das Maximum muss größer als das Minimum sein.')
+                return
+            self.list_of_examples_wizard = create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
+
+        elif thema == 'Subtraktion':
+            minimum = self.spinbox_zahlenbereich_minimum.value()
+            maximum = self.spinbox_zahlenbereich_maximum.value()
+            commas = self.spinbox_kommastellen_wizard.value()
+            anzahl_subtrahenden = self.spinBox_zahlenbereich_anzahl_wizard.value()
+            smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
+            if minimum>maximum:
+                warning_window('Das Maximum muss größer als das Minimum sein.')
+                return
+            self.list_of_examples_wizard = create_list_of_examples_subtraction(examples, minimum, maximum, commas, self.checkbox_negative_ergebnisse_wizard.isChecked(), anzahl_subtrahenden,smaller_or_equal)
+        
+        elif thema == 'Multiplikation':
+            minimum_1 = self.spinBox_first_number_min.value()
+            maximum_1 = self.spinBox_first_number_max.value()
+            commas_1 = self.spinBox_first_number_decimal.value()
+            smaller_or_equal_1 = self.combobox_first_number_decimal.currentIndex()
+            minimum_2 = self.spinBox_second_number_min.value()
+            maximum_2 = self.spinBox_second_number_max.value()
+            commas_2 = self.spinBox_second_number_decimal.value()
+            smaller_or_equal_2 = self.combobox_second_number_decimal.currentIndex()
+            self.list_of_examples_wizard = create_list_of_examples_multiplication(examples, minimum_1, maximum_1, commas_1, smaller_or_equal_1 ,minimum_2, maximum_2, commas_2, smaller_or_equal_2)
+
+        elif thema == "Division":
+            minimum_1 = self.spinbox_dividend_min_wizard.value()
+            maximum_1 = self.spinbox_dividend_max_wizard.value()
+            minimum_2 = self.spinbox_divisor_min_wizard.value()
+            maximum_2 = self.spinbox_divisor_max_wizard.value()
+            commas_div = self.spinBox_divisor_kommastellen_wizard.value()
+            smaller_or_equal_div = self.combobox_divisor_kommastelle_wizard.currentIndex()
+            commas_result = self.spinbox_ergebnis_kommastellen_wizard.value()
+            smaller_or_equal_result = self.combobox_ergebnis_kommastellen_wizard.currentIndex()
+            if self.combobox_dividend_wizard.currentIndex()==1:
+                output_type = 2    
+            elif self.radioButton_division_ohne_rest.isChecked():
+                output_type = 0
+            elif self.radioButton_division_rest.isChecked():
+                output_type = 1           
+
+            self.list_of_examples_wizard = create_list_of_examples_division(examples, minimum_1, maximum_1, minimum_2, maximum_2, commas_div, smaller_or_equal_div,commas_result,smaller_or_equal_result, output_type)  
+
+        elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[5] or thema == themen_worksheet_wizard[6] or thema == themen_worksheet_wizard[7]:
+            minimum = self.spinbox_zahlenbereich_minimum.value()
+            maximum = self.spinbox_zahlenbereich_maximum.value()
+            commas = self.spinbox_kommastellen_wizard.value()
+            smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
+            anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
+            brackets_allowed = self.checkbox_allow_brackets_wizard.isChecked()
+            show_brackets = True
+            if thema == themen_worksheet_wizard[5]:
+                typ = 'strich'
+            elif thema == themen_worksheet_wizard[6]:
+                typ = 'punkt'
+            elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[7]:
+                if thema == themen_worksheet_wizard[4]:
+                    show_brackets = False
+                typ = 'grundrechnungsarten'
+
+            if minimum>maximum:
+                critical_window('Das Maximum muss größer als das Minimum sein.')
+                return
+            self.list_of_examples_wizard = create_list_of_examples_ganze_zahlen(typ, examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)
+
+
+        self.reset_aufgabenboxes_wizard()
+        
+        if self.checkBox_show_nonogramm.isChecked():
+            self.chosen_nonogram, solution_pixel = get_all_solution_pixels(self.list_of_examples_wizard, self.combobox_nonogramm_wizard.currentText())
+
+            self.coordinates_nonogramm_wizard = create_coordinates(self, solution_pixel)
+
+        # print(self.list_of_examples_wizard)
+
+    def create_latex_file_content_wizard(self):
+        if self.worksheet_wizard_changed == True:
+            self.create_worksheet_wizard_pressed()    
+
+
+
+        titel = self.lineEdit_titel_wizard.text()
+        columns = self.spinBox_column_wizard.value()
+        if self.combobox_nummerierung_wizard.currentText() == '-':
+            nummerierung = "label={}"
+        else:
+            nummerierung = self.combobox_nummerierung_wizard.currentText()
+        ausrichtung = self.combobox_ausrichtung_wizard.currentIndex()
+        index = self.comboBox_themen_wizard.currentIndex()
+
+        content = create_latex_worksheet(
+            self.list_of_examples_wizard,
+            index ,titel, columns, nummerierung, ausrichtung,
+            self.comboBox_solution_type_wizard.currentIndex(),
+            )
+
+        if self.checkBox_show_nonogramm.isChecked():
+            content += create_nonogramm(self.chosen_nonogram , self.coordinates_nonogramm_wizard, self)
+        
+        return content
+
+
+
+    def create_vorschau_worksheet_wizard(self):
+        content = self.create_latex_file_content_wizard()
+
+        # content = show_all_nonogramms() # for testing reasons
+
+        path_file = os.path.join(
+            path_localappdata_lama, "Teildokument", "worksheet.tex"
+            )
+
+        if self.checkbox_solutions_wizard.isChecked() == True:
+            show_solution = "solution_on"
+        else:
+            show_solution = "solution_off"
+
+        with open(path_file, "w", encoding="utf8") as file:
+            file.write(tex_preamble(solution=show_solution, pagestyle='empty', font_size=self.combobox_fontsize_wizard.currentText(), documentclass='extarticle'))
+
+            file.write(content)
+
+            file.write(tex_end)
+
+        create_pdf("worksheet")
+
+
+
+    def save_worksheet_wizard(self):
+        content = self.create_latex_file_content_wizard()
+        # try:
+        #     self.list_of_examples_wizard 
+        # except AttributeError:
+        #     self.create_worksheet_wizard_pressed()
+
+
+        # titel = self.lineEdit_titel_wizard.text()
+        # columns = self.spinBox_column_wizard.value()
+        # if self.combobox_nummerierung_wizard.currentText() == '-':
+        #     nummerierung = "label={}"
+        # else:
+        #     nummerierung = self.combobox_nummerierung_wizard.currentText()
+        # ausrichtung = self.combobox_ausrichtung_wizard.currentIndex()
+        # index = self.comboBox_themen_wizard.currentIndex()
+
+        # content = create_latex_worksheet(self.list_of_examples_wizard, index ,titel, columns, nummerierung, ausrichtung, self.comboBox_solution_type_wizard.currentIndex())
+
+        # if self.checkBox_show_nonogramm.isChecked():
+        #     content += create_nonogramm(self.coordinates_nonogramm_wizard)
+
+        try:
+            self.saved_file_path
+        except AttributeError:
+            self.saved_file_path = path_home
+        path_file = self.get_saving_path()
+        if path_file == None:
+            return
+
+        index = 0
+        for show_solution in ["solution_on", "solution_off"]:
+            with open(path_file, "w", encoding="utf8") as file:
+                file.write(tex_preamble(solution=show_solution, pagestyle='empty', font_size=self.combobox_fontsize_wizard.currentText(), documentclass='extarticle'))
+
+                file.write(content)
+
+                file.write(tex_end)
+
+
+            name, extension = os.path.splitext(path_file)
+
+
+            create_pdf(name, index, 2)
+            
+            temp_filename = name + ".pdf"
+            if index == 0:
+                new_filename = name + "_Loesung.pdf"
+
+                shutil.move(temp_filename, new_filename)
+
+            elif index ==1:
+                self.reset_latex_file_to_start(path_file)
+
+            index +=1
+
+
+        if sys.platform.startswith("linux"):
+            path_file = os.path.dirname(path_file)
+            subprocess.Popen('xdg-open "{}"'.format(path_file), shell=True)
+        elif sys.platform.startswith("darwin"):
+            path_file = os.path.dirname(path_file)
+            subprocess.Popen('open "{}"'.format(path_file), shell=True)
+        else:
+            path_file = os.path.dirname(path_file).replace("/", "\\")
+            subprocess.Popen('explorer "{}"'.format(path_file))
+        # return
     
+
     def image_clean_up(self):
         image_folder = os.path.join(path_database, "Bilder")
 
@@ -7351,7 +8271,7 @@ lama.helpme@gmail.com""")
 
     def replace_group_variation_aufgabe(self, content):
         _list = re.findall("\\\\variation\{.*\}\{.*\}", content)
-        print(_list)
+        # print(_list)
         for all in _list:
             open_count=0
             close_count=0
@@ -7365,9 +8285,9 @@ lama.helpme@gmail.com""")
                 if open_count==close_count:
                     start_index = i
                     break
-            print(start_index)
+            # print(start_index)
             replacement_string = all[start_index+2:-1].replace("\\", "\\\\")
-            print(replacement_string)
+            # print(replacement_string)
             content = re.sub("\\\\variation\{.*\}\{.*\}", replacement_string, content)
 
 
@@ -7567,10 +8487,10 @@ lama.helpme@gmail.com""")
         if self.chosen_program == "cria":
             dict_titlepage = self.dict_titlepage_cria
 
-        if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Quiz":
-            beamer_mode = True
-        else:
-            beamer_mode = False
+        # if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Quiz":
+        #     beamer_mode = True
+        # else:
+        #     beamer_mode = False
 
         if (
             (ausgabetyp == "vorschau" and self.cb_solution_sage.isChecked() == True)
@@ -7609,7 +8529,7 @@ lama.helpme@gmail.com""")
 
         with open(filename_vorschau, "w+", encoding="utf8") as vorschau:
             vorschau.write(
-                tex_preamble(solution=solution, random=gruppe, beamer_mode=beamer_mode, pagestyle=show_pagenumber)
+                tex_preamble(solution=solution, random=gruppe, pagestyle=show_pagenumber)
             )
             vorschau.write(str_titlepage)
             vorschau.write(header)
@@ -7984,6 +8904,32 @@ lama.helpme@gmail.com""")
             # self.listWidget_fb_cria.itemClicked.connect(self.nummer_clicked_fb)
 
         self.check_admin_entry()
+        list_all_menubar = [self.menuSuche, self.menuSage, self.menuNeu, self.menuFeedback, self.menuOptionen ,self.menuDeveloper, self.menuHelp]
+        list_menubar_wizard = [self.menuWizard, self.menuOptionen ,self.menuHelp]
+
+        # if self.developer_mode_active == True:
+
+        if chosen_gui == 'widgets_wizard':
+            for all in list_all_menubar:
+                if all == self.menuDeveloper and self.developer_mode_active == False:
+                    continue
+                else:
+                    self.menuBar.removeAction(all.menuAction())
+            for all in list_menubar_wizard:
+                self.menuBar.addAction(all.menuAction())
+
+            self.actionRefresh_Database.setVisible(False)
+
+        else:
+            for all in list_menubar_wizard:
+                self.menuBar.removeAction(all.menuAction())
+
+            for all in list_all_menubar:
+                if all == self.menuDeveloper and self.developer_mode_active == False:
+                    continue
+                else:
+                    self.menuBar.addAction(all.menuAction())
+            self.actionRefresh_Database.setVisible(True)
 
 
 if __name__ == "__main__":
@@ -8153,6 +9099,7 @@ if __name__ == "__main__":
         widgets_create_cria,
         widgets_edit_cria,
         widgets_feedback_cria,
+        widgets_wizard,
         list_widgets,
     )
 
@@ -8187,6 +9134,9 @@ if __name__ == "__main__":
 
     i = step_progressbar(i, "subwindows")
     from subwindows import Ui_Dialog_draft_control
+
+    i = step_progressbar(i, "subwindows")
+    from subwindows import Ui_Dialog_Convert_To_Eps
 
     i = step_progressbar(i, "subwindows")
     from subwindows import read_credentials
@@ -8248,8 +9198,8 @@ if __name__ == "__main__":
         copy_included_images,
     )
 
-    i = step_progressbar(i, "convert_image_to_eps")
-    from convert_image_to_eps import convert_image_to_eps
+    # i = step_progressbar(i, "convert_image_to_eps")
+    # from convert_image_to_eps import convert_image_to_eps
 
     i = step_progressbar(i, "lama_stylesheets")
     from lama_stylesheets import *
@@ -8279,6 +9229,18 @@ if __name__ == "__main__":
         add_file,
         get_table,
         delete_file,
+    )
+
+    i = step_progressbar(i, "worksheet_wizard")
+    from worksheet_wizard import (
+        dict_widgets_wizard, themen_worksheet_wizard,
+        create_latex_worksheet, 
+        create_list_of_examples_addition, create_single_example_addition,
+        create_list_of_examples_subtraction, create_single_example_subtraction,
+        create_list_of_examples_multiplication, create_single_example_multiplication,
+        create_list_of_examples_division, create_single_example_division,
+        create_list_of_examples_ganze_zahlen, create_single_example_ganze_zahlen_strich, create_single_example_ganze_zahlen_punkt, create_single_example_ganze_zahlen_grundrechnungsarten,
+        create_nonogramm, create_coordinates, list_all_pixels, all_nonogramms, show_all_nonogramms
     )
 
     i = step_progressbar(i, "tex_minimal")
