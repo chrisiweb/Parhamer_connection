@@ -142,7 +142,7 @@ def create_list_from_section(section):
 	return list_collected_data
 
 
-def add_file(database, name, themen, titel, af, quelle, content, punkte, pagebreak, klasse, info = None, bilder=[], draft = False, abstand = 0):
+def add_file(database, name, themen, titel, af, quelle, content, group_variation, punkte, pagebreak, klasse, info = None, bilder=[], draft = False, abstand = 0):
     i=0
     while i<5:
         try:
@@ -160,6 +160,7 @@ def add_file(database, name, themen, titel, af, quelle, content, punkte, pagebre
                 'bilder' : bilder,
                 'draft' : draft,
                 'abstand' : abstand,
+                'gruppe' : group_variation,
             })
             return True
         except AssertionError:
@@ -198,74 +199,74 @@ def search_for_images(content):
     #     print(content)
 
 
-def write_to_database(folder_path, typ,klasse=None):
-    try:
-        for all in os.listdir(folder_path):
-            print(all)
-            if os.path.splitext(all)[1] != '.tex':
-                continue 
+# def write_to_database(folder_path, typ,klasse=None):
+#     try:
+#         for all in os.listdir(folder_path):
+#             print(all)
+#             if os.path.splitext(all)[1] != '.tex':
+#                 continue 
 
-            file_path = os.path.join(folder_path, all)
-            content = collect_content(file_path)
+#             file_path = os.path.join(folder_path, all)
+#             content = collect_content(file_path)
 
-            pagebreak, punkte = get_default_info(content)
-            rest_content = get_rest_from_content(content)
+#             pagebreak, punkte = get_default_info(content)
+#             rest_content = get_rest_from_content(content)
 
-            section = get_section_from_content(content)
+#             section = get_section_from_content(content)
             
-            _list = create_list_from_section(section)
+#             _list = create_list_from_section(section)
                               
-            info = None
-            if typ == 1:
-                name = os.path.splitext(all)[0]
-                themen = [_list[0]]
-                titel = _list[-3]
-                af = _list[-2].lower()
-                quelle = _list[-1]
-                klasse = None
-                if len(_list) != 5:
-                    x= re.search('K.',_list[2])
-                    if x != None:
-                        klasse = x.group().lower()
+#             info = None
+#             if typ == 1:
+#                 name = os.path.splitext(all)[0]
+#                 themen = [_list[0]]
+#                 titel = _list[-3]
+#                 af = _list[-2].lower()
+#                 quelle = _list[-1]
+#                 klasse = None
+#                 if len(_list) != 5:
+#                     x= re.search('K.',_list[2])
+#                     if x != None:
+#                         klasse = x.group().lower()
                     
-                    for string in ['MAT', 'UNIVIE']:
-                        if len(_list)==6 and string in _list[2]:
-                            info = string.lower()
-                        elif len(_list)==7 and string in _list[3]:
-                            info = string.lower()
-            elif typ == 2:
-                name = os.path.splitext(all)[0]
-                themen = create_gk_list(_list[-3])
-                titel = _list[-2]
-                quelle = _list[-1]
-                af = None
-                klasse = None
+#                     for string in ['MAT', 'UNIVIE']:
+#                         if len(_list)==6 and string in _list[2]:
+#                             info = string.lower()
+#                         elif len(_list)==7 and string in _list[3]:
+#                             info = string.lower()
+#             elif typ == 2:
+#                 name = os.path.splitext(all)[0]
+#                 themen = create_gk_list(_list[-3])
+#                 titel = _list[-2]
+#                 quelle = _list[-1]
+#                 af = None
+#                 klasse = None
 
-                if 'MAT' in _list[1]:
-                    info = 'mat'
-                x= re.search('K.',_list[1])
-                if x != None:
-                    klasse = x.group().lower()
-            elif typ == 0:
-                name = klasse + '.' + os.path.splitext(all)[0]
-                print(_list)
-                themen = create_gk_list(_list[1])
-                print(themen)
-                themen = [klasse + '.' + x for x in themen]
-                print(themen)
-                titel = _list[-3]
-                af = _list[-2].lower()
-                quelle = _list[-1]
+#                 if 'MAT' in _list[1]:
+#                     info = 'mat'
+#                 x= re.search('K.',_list[1])
+#                 if x != None:
+#                     klasse = x.group().lower()
+#             elif typ == 0:
+#                 name = klasse + '.' + os.path.splitext(all)[0]
+#                 print(_list)
+#                 themen = create_gk_list(_list[1])
+#                 print(themen)
+#                 themen = [klasse + '.' + x for x in themen]
+#                 print(themen)
+#                 titel = _list[-3]
+#                 af = _list[-2].lower()
+#                 quelle = _list[-1]
  
-            image_list = search_for_images(rest_content)
-            if image_list != []:
-                bilder = image_list
-            else:
-                bilder = []
-            # break
-            add_file(table_lama, name, themen, titel, af, quelle, rest_content, punkte, pagebreak, klasse, info, bilder)
-    except FileNotFoundError:
-        print('not found' + folder_path)
+#             image_list = search_for_images(rest_content)
+#             if image_list != []:
+#                 bilder = image_list
+#             else:
+#                 bilder = []
+#             # break
+#             add_file(table_lama, name, themen, titel, af, quelle, rest_content, punkte, pagebreak, klasse, info, bilder)
+#     except FileNotFoundError:
+#         print('not found' + folder_path)
 
 
 # path_database = os.path.join(path_programm, "_database", "database_lama_1.json")

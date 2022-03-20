@@ -1,18 +1,14 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #### Version number ###
-__version__ = "v3.4.0"
+__version__ = "v3.4.1"
 __lastupdate__ = "03/22"
-##################
 
+##################
+show_popup = True
 print("Loading...")
 
-# from imp import reload
-# from operator import indexOf
-# from tokenize import group
-# from numpy import maximum, negative
 from start_window import check_if_database_exists
-from worksheet_wizard import get_all_solution_pixels
 
 check_if_database_exists()
 from prepare_content_vorschau import (
@@ -26,7 +22,6 @@ from lama_colors import *
 import time
 from create_new_widgets import add_action
 import json
-from create_pdf import open_pdf_file
 
 from config_start import (
     path_programm,
@@ -74,7 +69,7 @@ class Worker_LoadLamaFile(QtCore.QObject):
     finished = QtCore.pyqtSignal()
 
     @QtCore.pyqtSlot()
-    def task(self, MainWindow, ui):
+    def task(self, MainWindow):
         for aufgabe in MainWindow.list_alle_aufgaben_sage:
             MainWindow.sage_load_files(aufgabe)
 
@@ -124,12 +119,10 @@ class Ui_MainWindow(object):
         self.dict_chosen_topics = {}
         self.list_copy_images = []
         self.dict_picture_path = {}
-        self.dict_aufgaben_wizard = {}
 
         hashed_pw = read_credentials()
         self.developer_mode_active = False
         self.no_saved_changes_sage = True
-        self.worksheet_wizard_changed = True
 
         # if sys.platform.startswith("win"):
         # path_lama_developer_credentials = os.path.join(os.getenv('LOCALAPPDATA'), "LaMA", "credentials")
@@ -210,19 +203,15 @@ class Ui_MainWindow(object):
             self.chosen_program = "cria"
         elif self.lama_settings["start_program"] == 2:
             self.chosen_program = "lama"
-        elif self.lama_settings["start_program"] == 3:
-            self.chosen_program = "wizard"
+
         try:
             self.lama_settings["database"]
         except KeyError:
             self.lama_settings["database"] = 2
 
         if self.lama_settings["database"] == 0:
-            QtWidgets.QApplication.setOverrideCursor(
-                QtGui.QCursor(QtCore.Qt.WaitCursor)
-            )
             refresh_ddb(self, True)
-            QtWidgets.QApplication.restoreOverrideCursor()
+
         else:
             database_file = os.path.join(database, ".git", "index")
             refresh_date_ddb= modification_date(database_file).strftime("%Y%m%d")
@@ -231,23 +220,34 @@ class Ui_MainWindow(object):
             today_month = datetime.datetime.today().strftime("%m")
 
             difference = int(today) - int(refresh_date_ddb)
-            # print(difference)
-            # print(today_month)
-            # print(refresh_date_ddb_month)
+
             if (self.lama_settings["database"] == 1 and difference != 0) or (self.lama_settings["database"] == 2 and difference > 6) or (self.lama_settings["database"] == 3 and refresh_date_ddb_month != today_month):
-                QtWidgets.QApplication.setOverrideCursor(
-                    QtGui.QCursor(QtCore.Qt.WaitCursor)
-                )
                 refresh_ddb(self, auto_update=True)
-                QtWidgets.QApplication.restoreOverrideCursor()
+
+        try:
+            self.lama_settings["popup_off"]
+        except KeyError:
+            self.lama_settings["popup_off"] = False
 
 
-        if self.chosen_program == 'wizard':
-           self.chosen_gui = "widgets_wizard" 
-        else:
-            self.chosen_gui = "widgets_search"
-            if self.chosen_program == "cria":
-                self.chosen_gui = self.chosen_gui + "_cria"
+        if self.lama_settings["popup_off"] == False and show_popup==True:
+            rsp = self.show_popup_window()
+            if rsp == True:
+                self.lama_settings["popup_off"] = True
+
+                with open(lama_settings_file, "w+", encoding="utf8") as f:
+                    json.dump(self.lama_settings, f, ensure_ascii=False)
+
+
+
+        self.chosen_gui = "widgets_search"
+        try:
+            self.chosen_program
+        except AttributeError:
+            self.chosen_program = "lama"
+
+        if self.chosen_program == "cria":
+            self.chosen_gui = self.chosen_gui + "_cria"
 
 
         ########################
@@ -256,23 +256,27 @@ class Ui_MainWindow(object):
         MainWindow.setLayoutDirection(QtCore.Qt.LeftToRight)
 
         if self.chosen_program == "lama":
-            MainWindow.setWindowTitle("LaMA - LaTeX Mathematik Assistent (Oberstufe)")
+            MainWindow.setWindowTitle(
+                _translate(
+                    "LaMA - LaTeX Mathematik Assistent (Oberstufe)",
+                    "LaMA - LaTeX Mathematik Assistent (Oberstufe)",
+                    None,
+                )
+            )
             MainWindow.setWindowIcon(QtGui.QIcon(logo_path))
-
-        elif self.chosen_program == "cria":
-            MainWindow.setWindowTitle("LaMA Cria - LaTeX Mathematik Assistent (Unterstufe)")
+        if self.chosen_program == "cria":
+            MainWindow.setWindowTitle(
+                _translate(
+                    "LaMA Cria - LaTeX Mathematik Assistent (Unterstufe)",
+                    "LaMA Cria - LaTeX Mathematik Assistent (Unterstufe)",
+                    None,
+                )
+            )
             MainWindow.setWindowIcon(QtGui.QIcon(logo_cria_path))
-
-        elif self.chosen_program == "wizard":
-            MainWindow.setWindowTitle("LaMA Worksheet Wizard")
-            MainWindow.setWindowIcon(QtGui.QIcon(logo_path))
-            
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
 
         self.gridLayout = create_new_gridlayout(self.centralwidget)
-
-
         # self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
         # self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         #######################################################
@@ -290,16 +294,11 @@ class Ui_MainWindow(object):
         self.menuDatei = QtWidgets.QMenu(self.menuBar)
         self.menuDatei.setObjectName(_fromUtf8("menuDatei"))
         self.menuNeu = QtWidgets.QMenu(self.menuBar)
-        self.menuChangeProgram = QtWidgets.QMenu(self.menuDatei)
-        self.menuChangeProgram.setObjectName(_fromUtf8("menuChangeProgram"))
-        self.menuChangeProgram.setTitle("Wechseln zu ...")
         self.menuNeu.setObjectName(_fromUtf8("menuNeu"))
         self.menuSage = QtWidgets.QMenu(self.menuBar)
         self.menuSage.setObjectName(_fromUtf8("menuSage"))
         self.menuSuche = QtWidgets.QMenu(self.menuBar)
         self.menuSuche.setObjectName(_fromUtf8("menuSuche"))
-        self.menuWizard = QtWidgets.QMenu(self.menuBar)
-        self.menuWizard.setObjectName(_fromUtf8("menuWizard"))
         self.menuFeedback = QtWidgets.QMenu(self.menuBar)
         self.menuFeedback.setObjectName(_fromUtf8("menuFeedback"))
         self.menuOptionen = QtWidgets.QMenu(self.menuBar)
@@ -366,40 +365,19 @@ class Ui_MainWindow(object):
 
         self.menuDatei.addSeparator()
 
-        # list_programs = ["LaMA Cria (Unterstufe)", "LaMA (Oberstufe)", "Worksheet Wizard"]
-
-
-        self.action_cria = add_action(
-                MainWindow,
-                self.menuChangeProgram,
-                "LaMA Cria (Unterstufe)",
-                partial(self.change_program, "cria"), #
-            )
-
-        self.action_lama = add_action(
-                MainWindow,
-                self.menuChangeProgram,
-                "LaMA (Oberstufe)",
-                partial(self.change_program, "lama"), #
-            )
-
-        self.action_wizard = add_action(
-                MainWindow,
-                self.menuChangeProgram,
-                "LaMA Worksheet Wizard",
-                partial(self.change_program, "wizard"), #
-            )
+        if self.chosen_program == "lama":
+            program = "LaMA Cria (Unterstufe)"
         if self.chosen_program == "cria":
-            self.action_cria.setVisible(False)
-        elif self.chosen_program == "lama":
-            self.action_lama.setVisible(False)
-        elif self.chosen_program == "wizard":
-            self.action_wizard.setVisible(False)
-
-
-        self.menuDatei.addAction(self.menuChangeProgram.menuAction())
+            program = "LaMA (Oberstufe)"
+        self.actionProgram = add_action(
+            MainWindow,
+            self.menuDatei,
+            'Zu "{}" wechseln'.format(program),
+            self.change_program,
+        )
 
         self.actionExit = add_action(MainWindow, self.menuDatei, "Exit", self.exit_pressed)
+
 
         self.actionSuche = add_action(
             MainWindow,
@@ -412,10 +390,6 @@ class Ui_MainWindow(object):
         self.actionSuche.setShortcut("F1")
 
         self.menuSuche.addSeparator()
-
-        self.actionReset_wizard = add_action(
-            MainWindow, self.menuWizard, "Reset", self.worksheet_wizard_reset
-        )
 
         self.actionReset = add_action(
             MainWindow, self.menuSuche, "Reset", self.suchfenster_reset
@@ -506,6 +480,12 @@ class Ui_MainWindow(object):
         self.menuOptionen.addAction(self.menuUpdate.menuAction())
 
         self.actionGKcatalogue = add_action(MainWindow, self.menuHelp, "Grundkompetenzkatalog anzeigen", self.show_gk_catalogue)
+
+        self.actionShowPopupWindow = add_action(
+            MainWindow, self.menuHelp, "Letzes Infofenster anzeigen", partial(self.show_popup_window, False)
+        )
+        if show_popup == False:
+            self.actionShowPopupWindow.setEnabled(False)
 
         self.actionInfo = add_action(
             MainWindow, self.menuHelp, "Über LaMA", self.show_info
@@ -1113,7 +1093,7 @@ class Ui_MainWindow(object):
         self.groupBox_themengebiete_cria.hide()
 
         for klasse in list_klassen:
-            name = "tab_{0}".format(klasse)
+            # name = "tab_{0}".format(klasse)
             new_tab = add_new_tab(
                 self.tab_widget_cr_cria, "{}. Klasse".format(klasse[1])
             )
@@ -1454,7 +1434,7 @@ class Ui_MainWindow(object):
         self.gridLayout_14.setObjectName(_fromUtf8("gridLayout_14"))
         self.lineEdit_titel = QtWidgets.QLineEdit(self.groupBox_titel_cr)
         self.lineEdit_titel.setObjectName(_fromUtf8("lineEdit_titel"))
-        self.lineEdit_titel.textChanged.connect(self.check_admin_entry)
+        # self.lineEdit_titel.textChanged.connect(self.check_admin_entry)
         self.gridLayout_14.addWidget(self.lineEdit_titel, 0, 0, 1, 1)
         self.gridLayout.addWidget(self.groupBox_titel_cr, 1, 1, 1, 7)
         self.groupBox_titel_cr.setTitle(_translate("MainWindow", "Titel", None))
@@ -1622,14 +1602,10 @@ class Ui_MainWindow(object):
         self.comboBox_klassen.setObjectName("comboBox_klassen")
         # self.comboBox_gk.addItem("")
 
-        self.comboBox_klassen.addItem("")
+        self.comboBox_klassen.addItem("Alle Klassen")
         index = 1
         for all in list_klassen:
-            self.comboBox_klassen.addItem("")
-
-            self.comboBox_klassen.setItemText(
-                index, _translate("MainWindow", all[1] + ". Klasse", None)
-            )
+            add_new_option(self.comboBox_klassen, index, all[1] + ". Klasse")
             index += 1
 
         self.comboBox_klassen.currentIndexChanged.connect(
@@ -1735,14 +1711,14 @@ class Ui_MainWindow(object):
         self.pushButton_titlepage.setText(
             _translate("MainWindow", "Titelblatt anpassen", None)
         )
-        if self.chosen_program == "lama" or self.chosen_program == "wizard":
+        if self.chosen_program == "lama":
             self.gridLayout_5.addWidget(self.pushButton_titlepage, 2, 4, 1, 2)
         if self.chosen_program == "cria":
             self.gridLayout_5.addWidget(self.pushButton_titlepage, 2, 4, 1, 2)
 
         self.groupBox_default_pkt = QtWidgets.QGroupBox(self.groupBox_sage)
         self.groupBox_default_pkt.setObjectName("groupBox_default_pkt")
-        # self.groupBox_default_pkt.setSizePolicy(SizePolicy_fixed_height)
+        self.groupBox_default_pkt.setSizePolicy(SizePolicy_fixed_height)
         # self.groupBox_default_pkt.setMaximumSize(QtCore.QSize(120, 16777215))
         self.verticalLayout_default_pkt = QtWidgets.QVBoxLayout(
             self.groupBox_default_pkt
@@ -1804,8 +1780,10 @@ class Ui_MainWindow(object):
         self.verticalLayout_6.setObjectName("verticalLayout_6")
         self.spinBox_nummer = QtWidgets.QSpinBox(self.groupBox_nummer)
         self.spinBox_nummer.setValue(1)
+        self.spinBox_nummer_setvalue = 1
         self.spinBox_nummer.setObjectName("spinBox_nummer")
         self.spinBox_nummer.setToolTip("0 = keine Nummerierung")
+        self.spinBox_nummer.valueChanged.connect(self.spinBox_nummer_changed)
         # self.groupBox_nummer.setMaximumSize(QtCore.QSize(90, 16777215))
         # self.radioButton_notenschl.setText(
         #     _translate("MainWindow", "Notenschlüssel", None)
@@ -1998,7 +1976,7 @@ class Ui_MainWindow(object):
             label = "Anzahl der Aufgaben: 0"
 
         self.label_gesamtbeispiele = create_new_label(self.groupBox_sage, label, True)
-        self.gridLayout_5.addWidget(self.label_gesamtbeispiele, 7, 0, 1, 2)
+        self.gridLayout_5.addWidget(self.label_gesamtbeispiele, 7, 0, 1, 3)
 
         self.label_gesamtpunkte = QtWidgets.QLabel(self.groupBox_sage)
         self.gridLayout_5.addWidget(self.label_gesamtpunkte, 8, 0, 1, 2)
@@ -2015,8 +1993,19 @@ class Ui_MainWindow(object):
         self.cb_solution_sage.setChecked(True)
         self.cb_solution_sage.setSizePolicy(SizePolicy_fixed)
         self.cb_solution_sage.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.gridLayout_5.addWidget(self.cb_solution_sage, 7, 3, 1, 2)
+        self.gridLayout_5.addWidget(self.cb_solution_sage, 7, 3, 1, 1)
 
+        self.label_gruppe_AB  = create_new_label(self.centralwidget, "Gruppe:")
+        self.label_gruppe_AB.setSizePolicy(SizePolicy_fixed)
+        tooltip_text_gruppe_AB = "Auswahl welche Gruppenvariation bei der Ausgabe\nder Vorschau angezeigt wird (falls eine vorhanden ist)."
+        self.label_gruppe_AB.setToolTip(tooltip_text_gruppe_AB)
+        self.gridLayout_5.addWidget(self.label_gruppe_AB, 7,4,1,1, QtCore.Qt.AlignRight)
+        self.comboBox_gruppe_AB = create_new_combobox(self.centralwidget)
+        self.comboBox_gruppe_AB.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout_5.addWidget(self.comboBox_gruppe_AB, 7,5,1,1)
+        add_new_option(self.comboBox_gruppe_AB, 0, "A")
+        add_new_option(self.comboBox_gruppe_AB, 1, "B")
+        self.comboBox_gruppe_AB.setToolTip(tooltip_text_gruppe_AB)
         # self.cb_show_variaton_sage = create_new_checkbox(self.centralwidget, "Aufgabenvariationen anzeigen")
         # self.gridLayout_5.addWidget(self.cb_show_variaton_sage, 8, 4, 1, 1)
 
@@ -2035,7 +2024,7 @@ class Ui_MainWindow(object):
         self.pushButton_vorschau.setText(_translate("MainWindow", "Vorschau", None))
         self.pushButton_vorschau.setShortcut(_translate("MainWindow", "Return", None))
         self.gridLayout_5.addWidget(
-            self.pushButton_vorschau, 8, 5, 1, 1, QtCore.Qt.AlignRight
+            self.pushButton_vorschau, 8, 4, 1, 2, QtCore.Qt.AlignRight
         )
         self.pushButton_vorschau.clicked.connect(
             partial(self.pushButton_vorschau_pressed, "vorschau")
@@ -2050,13 +2039,11 @@ class Ui_MainWindow(object):
         self.pushButton_erstellen.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.pushButton_erstellen.clicked.connect(self.pushButton_erstellen_pressed)
         self.gridLayout_5.addWidget(
-            self.pushButton_erstellen, 9, 5, 1, 1, QtCore.Qt.AlignRight
+            self.pushButton_erstellen, 9, 4, 1, 2, QtCore.Qt.AlignRight
         )
         self.groupBox_sage.hide()
         self.splitter_sage.hide()
-
-        if self.chosen_program != 'wizard':
-            self.comboBox_klassen_changed("sage")
+        self.comboBox_klassen_changed("sage")
 
         self.comboBox_kapitel.currentIndexChanged.connect(
             partial(self.comboBox_kapitel_changed, "sage")
@@ -2345,429 +2332,6 @@ class Ui_MainWindow(object):
             partial(self.comboBox_unterkapitel_changed, "feedback")
         )
 
-
-        ####################################################
-        ######################################################
-        ################## WORKSHEET WIZARD ####################
-        ######################################################
-        ######################################################
-
-        
-        self.comboBox_themen_wizard = create_new_combobox(self.centralwidget)
-        self.comboBox_themen_wizard.setSizePolicy(SizePolicy_fixed)
-        self.gridLayout.addWidget(self.comboBox_themen_wizard, 0, 0, 1, 1)
-        for i, all in enumerate(dict_widgets_wizard.keys()):
-            add_new_option(self.comboBox_themen_wizard, i, all)
-
-        self.comboBox_themen_wizard.currentIndexChanged.connect(self.themen_changed_wizard)
-        self.comboBox_themen_wizard.hide()
-
-
-        self.pushButton_create_worksheet_wizard = create_new_button(self.centralwidget, "Arbeitsblatt erzeugen", self.create_worksheet_wizard_pressed)
-        # self.pushButton_create_worksheet_wizard.setFixedHeight(50)
-        self.pushButton_create_worksheet_wizard.setShortcut("Return")
-        self.gridLayout.addWidget(self.pushButton_create_worksheet_wizard, 2,0,1,1, QtCore.Qt.AlignLeft)
-        self.pushButton_create_worksheet_wizard.hide()
-
-
-        self.checkbox_solutions_wizard = create_new_checkbox(self.centralwidget, "Lösungen anzeigen", checked=True)
-        self.gridLayout.addWidget(self.checkbox_solutions_wizard, 9,8,1,1, QtCore.Qt.AlignRight)
-        self.checkbox_solutions_wizard.hide()
-
-        self.comboBox_solution_type_wizard = create_new_combobox(self.centralwidget)
-        add_new_option(self.comboBox_solution_type_wizard, 0, "kompakt")
-        add_new_option(self.comboBox_solution_type_wizard, 1, "schrittweise")
-        self.gridLayout.addWidget(self.comboBox_solution_type_wizard, 9, 7, 1, 1)
-        self.comboBox_solution_type_wizard.hide()
-
-
-        self.buttonBox_create_worksheet_wizard = QtWidgets.QDialogButtonBox(self.centralwidget)
-        self.buttonBox_create_worksheet_wizard.setStandardButtons(
-            QtWidgets.QDialogButtonBox.Save | QtWidgets.QDialogButtonBox.Ok
-        )
-        self.gridLayout.addWidget(self.buttonBox_create_worksheet_wizard, 10,7,1,2)
-        self.buttonBox_create_worksheet_wizard.hide()
-        # buttonS = self.buttonBox_titlepage.button(QtWidgets.QDialogButtonBox.Save)
-        # buttonS.setText('Speichern')
-        button_create = self.buttonBox_create_worksheet_wizard.button(QtWidgets.QDialogButtonBox.Save)
-        button_create.setText("Vorschau")
-
-        button_save = self.buttonBox_create_worksheet_wizard.button(QtWidgets.QDialogButtonBox.Ok)
-        button_save.setText("Speichern")
-
-
-        button_save.clicked.connect(self.save_worksheet_wizard)
-
-        button_create.clicked.connect(self.create_vorschau_worksheet_wizard)
-
-
-        self.groupBox_setting_wizard = create_new_groupbox(self.centralwidget, "Voreinstellungen")
-        self.groupBox_setting_wizard.setSizePolicy(SizePolicy_maximum_width)
-        self.gridLayout.addWidget(self.groupBox_setting_wizard, 1,0,1,9)
-        self.gridLayout_setting_wizard = create_new_gridlayout(self.groupBox_setting_wizard)
-        self.groupBox_setting_wizard.hide()
-
-        
-        self.groupBox_titel_wizard = create_new_groupbox(self.groupBox_setting_wizard, "Titel")
-        self.gridLayout_setting_wizard.addWidget(self.groupBox_titel_wizard, 0,0,1,3)
-        self.horizontalLayout_titel_wizard = create_new_horizontallayout(self.groupBox_titel_wizard)
-        self.lineEdit_titel_wizard = create_new_lineedit(self.groupBox_titel_wizard)
-        self.horizontalLayout_titel_wizard.addWidget(self.lineEdit_titel_wizard)
-        self.lineEdit_titel_wizard.setText("Arbeitsblatt - {}".format(self.comboBox_themen_wizard.currentText()))
-
-        self.groupBox_fontsize_wizard = create_new_groupbox(self.groupBox_titel_wizard, "Schrift")
-        self.gridLayout_setting_wizard.addWidget(self.groupBox_fontsize_wizard, 1,2,1,1)
-        self.horizontalLayout_fontsize_wizard = create_new_horizontallayout(self.groupBox_fontsize_wizard)
-        self.combobox_fontsize_wizard = create_new_combobox(self.groupBox_setting_wizard)
-        add_new_option(self.combobox_fontsize_wizard, 0, "8pt")
-        add_new_option(self.combobox_fontsize_wizard, 1, "9pt")
-        add_new_option(self.combobox_fontsize_wizard, 2, "10pt")
-        add_new_option(self.combobox_fontsize_wizard, 3, "11pt")
-        add_new_option(self.combobox_fontsize_wizard, 4, "12pt")
-        add_new_option(self.combobox_fontsize_wizard, 5, "14pt")
-        add_new_option(self.combobox_fontsize_wizard, 6, "17pt")
-        add_new_option(self.combobox_fontsize_wizard, 7, "20pt")
-        self.combobox_fontsize_wizard.setCurrentIndex(4)
-        self.horizontalLayout_fontsize_wizard.addWidget(self.combobox_fontsize_wizard)
-
-
-        self.groupBox_number_wizard = create_new_groupbox(self.groupBox_setting_wizard, "Aufgaben")
-        self.gridLayout_setting_wizard.addWidget(self.groupBox_number_wizard, 1, 0,1,1)
-        self.horizontalLayout_number_wizard = create_new_horizontallayout(self.groupBox_number_wizard)
-        self.spinBox_number_wizard = create_new_spinbox(self.groupBox_number_wizard, 20)
-        self.spinBox_number_wizard.setMinimum(1)
-        self.spinBox_number_wizard.valueChanged.connect(self.spinBox_number_wizard_changed)
-        self.horizontalLayout_number_wizard.addWidget(self.spinBox_number_wizard)
-
-
-        self.groupBox_column_wizard = create_new_groupbox(self.groupBox_setting_wizard, "Spalten")
-        self.gridLayout_setting_wizard.addWidget(self.groupBox_column_wizard, 1, 1,1,1)
-        self.horizontalLayout_column_wizard = create_new_horizontallayout(self.groupBox_column_wizard)
-        self.spinBox_column_wizard = create_new_spinbox(self.groupBox_column_wizard, 2)
-        self.spinBox_column_wizard.valueChanged.connect(self.spinBox_column_wizard_changed)
-        self.spinBox_column_wizard.setRange(1, 10)
-        self.horizontalLayout_column_wizard.addWidget(self.spinBox_column_wizard)        
-
-        self.groupBox_nummerierung_wizard = create_new_groupbox(self.groupBox_setting_wizard, "Nummerierung")
-        self.gridLayout_setting_wizard.addWidget(self.groupBox_nummerierung_wizard, 2,0,1,1)
-        self.horizontalLayout_nummerierung_wizard = create_new_horizontallayout(self.groupBox_nummerierung_wizard)
-        self.combobox_nummerierung_wizard = create_new_combobox(self.groupBox_nummerierung_wizard)
-        add_new_option(self.combobox_nummerierung_wizard, 0, "-")
-        add_new_option(self.combobox_nummerierung_wizard, 1, "(i)")
-        add_new_option(self.combobox_nummerierung_wizard, 2, "(1)")
-        add_new_option(self.combobox_nummerierung_wizard, 3, "(I)")
-        self.horizontalLayout_nummerierung_wizard.addWidget(self.combobox_nummerierung_wizard) 
-
-        self.groupBox_ausrichtung_wizard = create_new_groupbox(self.groupBox_setting_wizard, "Ausrichtung")
-        self.gridLayout_setting_wizard.addWidget(self.groupBox_ausrichtung_wizard, 2,1,1,1)
-        self.horizontalLayout_ausrichtung_wizard = create_new_horizontallayout(self.groupBox_ausrichtung_wizard)
-        self.combobox_ausrichtung_wizard = create_new_combobox(self.groupBox_ausrichtung_wizard)
-        self.combobox_ausrichtung_wizard.currentIndexChanged.connect(self.combobox_ausrichtung_wizard_changed)
-        add_new_option(self.combobox_ausrichtung_wizard, 0, "in der Spalte")
-        add_new_option(self.combobox_ausrichtung_wizard, 1, "in der Zeile")
-        self.horizontalLayout_ausrichtung_wizard.addWidget(self.combobox_ausrichtung_wizard)
-
-
-        self.groupBox_show_nonogramm = create_new_groupbox(self.groupBox_setting_wizard, "Selbstkontrolle")
-        self.gridLayout_setting_wizard.addWidget(self.groupBox_show_nonogramm, 4,0,1,3)
-        self.horizontalLayout_show_nongramm = create_new_horizontallayout(self.groupBox_show_nonogramm)
-        self.checkBox_show_nonogramm = create_new_checkbox(self.groupBox_setting_wizard, "Selbstkontrolle anzeigen", True)
-        self.horizontalLayout_show_nongramm.addWidget(self.checkBox_show_nonogramm)
-        # self.gridLayout_setting_wizard.addWidget(self.checkBox_show_nonogramm, 4,0,1,2)
-        self.checkBox_show_nonogramm.stateChanged.connect(self.checkBox_show_nonogramm_changed) 
-    
-        self.combobox_nonogramm_wizard = create_new_combobox(self.groupBox_setting_wizard)
-        # self.gridLayout_setting_wizard.addWidget(self.combobox_nonogramm_wizard, 4,2,1,1)
-        self.horizontalLayout_show_nongramm.addWidget(self.combobox_nonogramm_wizard)
-        self.combobox_nonogramm_wizard.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
-        add_new_option(self.combobox_nonogramm_wizard, 0, 'Zufällig')
-        i=1
-        for all in all_nonogramms:
-            add_new_option(self.combobox_nonogramm_wizard, i, "{0} ({1})".format(all.capitalize(), len(all_nonogramms[all])))
-            i+=1
-
-        # setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
-        # self.combobox_nonogramm_wizard.setMaxVisibleItems(8)
-
-
-        self.groupBox_zahlenbereich_wizard = create_new_groupbox(self.groupBox_setting_wizard, "Zahlenbereich")
-        self.gridLayout_setting_wizard.addWidget(self.groupBox_zahlenbereich_wizard, 0,3,5,1)
-        self.gridLayout_zahlenbereich_wizard = create_new_gridlayout(self.groupBox_zahlenbereich_wizard)
-
-
-        self.groupBox_zahlenbereich_minimum = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Minimum")
-        self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_zahlenbereich_minimum, 0,0,1,1)
-        self.horizontalLayout_zahlenbereich_minimum = create_new_horizontallayout(self.groupBox_zahlenbereich_minimum)
-        self.onlyInt = QtGui.QIntValidator()
-        self.spinbox_zahlenbereich_minimum = create_new_spinbox(self.groupBox_zahlenbereich_minimum)
-        self.spinbox_zahlenbereich_minimum.setRange(0,999999999)
-        self.spinbox_zahlenbereich_minimum.setValue(100)
-        self.horizontalLayout_zahlenbereich_minimum.addWidget(self.spinbox_zahlenbereich_minimum)
-
-
-        self.horizontalLayout_zahlenbereich_minimum.addWidget(self.spinbox_zahlenbereich_minimum)
-        self.groupBox_zahlenbereich_maximum = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Maximum")
-        self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_zahlenbereich_maximum, 0,1,1,2)
-        self.horizontalLayout_zahlenbereich_maximum = create_new_horizontallayout(self.groupBox_zahlenbereich_maximum)
-        self.spinbox_zahlenbereich_maximum = create_new_spinbox(self.groupBox_zahlenbereich_maximum)
-        self.spinbox_zahlenbereich_maximum.setRange(0,999999999)
-        self.spinbox_zahlenbereich_maximum.setValue(999)
-        self.horizontalLayout_zahlenbereich_maximum.addWidget(self.spinbox_zahlenbereich_maximum)
-        self.spinbox_zahlenbereich_maximum.valueChanged.connect(self.worksheet_wizard_setting_changed)
-        self.spinbox_zahlenbereich_minimum.valueChanged.connect(partial(self.minimum_changed_wizard, self.spinbox_zahlenbereich_minimum, self.spinbox_zahlenbereich_maximum))
-
-        self.groupBox_kommastellen_wizard = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Kommastellen")
-        self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_kommastellen_wizard, 1,0,1,1)
-        self.horizontalLayout_kommastellen_wizard = create_new_horizontallayout(self.groupBox_kommastellen_wizard)
-        self.combobox_kommastellen_wizard = create_new_combobox(self.groupBox_kommastellen_wizard)
-        add_new_option(self.combobox_kommastellen_wizard, 0, "=")
-        add_new_option(self.combobox_kommastellen_wizard, 1, "\u2264")
-        self.combobox_kommastellen_wizard.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
-        self.horizontalLayout_kommastellen_wizard.addWidget(self.combobox_kommastellen_wizard)
-        self.spinbox_kommastellen_wizard = create_new_spinbox(self.groupBox_kommastellen_wizard)
-        self.spinbox_kommastellen_wizard.setMaximum(14)
-        self.spinbox_kommastellen_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
-        self.horizontalLayout_kommastellen_wizard.addWidget(self.spinbox_kommastellen_wizard)
-
-
-        self.groupBox_zahlenbereich_anzahl = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Summanden")
-        self.horizontalLayout_zahlenbereich_anzahl = create_new_horizontallayout(self.groupBox_zahlenbereich_anzahl)
-        self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_zahlenbereich_anzahl, 1,1,1,2)
-        self.spinBox_zahlenbereich_anzahl_wizard = create_new_spinbox(self.groupBox_zahlenbereich_anzahl, 2)
-        self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,5)
-        self.spinBox_zahlenbereich_anzahl_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
-        self.horizontalLayout_zahlenbereich_anzahl.addWidget(self.spinBox_zahlenbereich_anzahl_wizard)
-
-        self.checkbox_negative_ergebnisse_wizard = create_new_checkbox(self.groupBox_zahlenbereich_wizard, "negative Ergebnisse erlauben")
-        self.checkbox_negative_ergebnisse_wizard.stateChanged.connect(self.worksheet_wizard_setting_changed)
-        # self.checkbox_negative_ergebnisse_wizard.setSizePolicy(SizePolicy_fixed)
-        self.gridLayout_zahlenbereich_wizard.addWidget(self.checkbox_negative_ergebnisse_wizard, 2,0,1,2)
-        # self.label_negative_ergebnisse_wizard = create_new_label(self.groupBox_zahlenbereich_wizard, "negative Ergebnisse erlauben", True, True)
-        # self.label_negative_ergebnisse_wizard.clicked.connect(partial(self.click_label_to_check, self.checkbox_negative_ergebnisse_wizard))
-        # self.gridLayout_zahlenbereich_wizard.addWidget(self.label_negative_ergebnisse_wizard, 2,0,1,1, QtCore.Qt.AlignRight)
-        self.checkbox_negative_ergebnisse_wizard.hide()
-        # self.label_negative_ergebnisse_wizard.hide()
-
-        self.checkbox_allow_brackets_wizard = create_new_checkbox(self.groupBox_zahlenbereich_wizard, "Klammern erlauben")
-        self.checkbox_allow_brackets_wizard.stateChanged.connect(self.worksheet_wizard_setting_changed)
-        self.gridLayout_zahlenbereich_wizard.addWidget(self.checkbox_allow_brackets_wizard, 2,0,1,2)
-        self.checkbox_allow_brackets_wizard.hide()
-
-
-        self.groupBox_first_number_wizard = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "1. Faktor")
-        self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_first_number_wizard, 0,0,1,1)
-        self.gridLayout_first_number_wizard = create_new_gridlayout(self.groupBox_first_number_wizard)
-        self.label_first_number_min = create_new_label(self.groupBox_first_number_wizard, "Min:")
-        self.gridLayout_first_number_wizard.addWidget(self.label_first_number_min, 0,0,1,1)
-        self.spinBox_first_number_min = create_new_spinbox(self.groupBox_first_number_wizard)
-        self.spinBox_first_number_min.setRange(0,999999999)
-        self.spinBox_first_number_min.setValue(10)
-        self.gridLayout_first_number_wizard.addWidget(self.spinBox_first_number_min, 0,1,1,2)
-
-        self.label_first_number_max = create_new_label(self.groupBox_first_number_wizard, "Max:")
-        self.gridLayout_first_number_wizard.addWidget(self.label_first_number_max, 1,0,1,1)
-        self.spinBox_first_number_max = create_new_spinbox(self.groupBox_first_number_wizard)
-        self.spinBox_first_number_max.setSizePolicy(SizePolicy_fixed)
-        self.spinBox_first_number_max.setRange(0,999999999)
-        self.spinBox_first_number_max.setValue(99)
-        self.gridLayout_first_number_wizard.addWidget(self.spinBox_first_number_max, 1,1,1,2)
-        self.spinBox_first_number_max.valueChanged.connect(self.worksheet_wizard_setting_changed)
-        self.spinBox_first_number_min.valueChanged.connect(partial(self.minimum_changed_wizard, self.spinBox_first_number_min, self.spinBox_first_number_max))        
-
-        self.label_first_number_decimal = create_new_label(self.groupBox_first_number_wizard, "Kommastellen")
-        self.gridLayout_first_number_wizard.addWidget(self.label_first_number_decimal, 2,0,1,1)
-        self.combobox_first_number_decimal = create_new_combobox(self.groupBox_first_number_wizard)
-        add_new_option(self.combobox_first_number_decimal, 0, "=")
-        add_new_option(self.combobox_first_number_decimal, 1, "\u2264")
-        self.combobox_first_number_decimal.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
-        self.gridLayout_first_number_wizard.addWidget(self.combobox_first_number_decimal, 2,1,1,1)
-        self.spinBox_first_number_decimal = create_new_spinbox(self.groupBox_first_number_wizard)
-        self.spinBox_first_number_decimal.setMaximum(14)
-        self.spinBox_first_number_decimal.valueChanged.connect(self.worksheet_wizard_setting_changed)
-        self.gridLayout_first_number_wizard.addWidget(self.spinBox_first_number_decimal,2,2,1,1)  
-        self.groupBox_first_number_wizard.hide()
-
-        self.groupBox_second_number_wizard = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "2. Faktor")
-        self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_second_number_wizard, 0,1,1,1)
-        self.gridLayout_second_number_wizard = create_new_gridlayout(self.groupBox_second_number_wizard)
-        self.label_second_number_min = create_new_label(self.groupBox_second_number_wizard, "Min:")
-        self.gridLayout_second_number_wizard.addWidget(self.label_second_number_min, 0,0,1,1)
-        self.spinBox_second_number_min = create_new_spinbox(self.groupBox_second_number_wizard)
-        self.spinBox_second_number_min.setRange(-999999999,999999999)
-        self.spinBox_second_number_min.setValue(10)
-        self.gridLayout_second_number_wizard.addWidget(self.spinBox_second_number_min, 0,1,1,2)
-
-        self.label_second_number_max = create_new_label(self.groupBox_second_number_wizard, "Max:")
-        self.gridLayout_second_number_wizard.addWidget(self.label_second_number_max, 1,0,1,1)
-        self.spinBox_second_number_max = create_new_spinbox(self.groupBox_second_number_wizard)
-        self.spinBox_second_number_max.setRange(-999999999,999999999)
-        self.spinBox_second_number_max.setValue(99)
-        self.gridLayout_second_number_wizard.addWidget(self.spinBox_second_number_max, 1,1,1,2)
-        self.spinBox_second_number_max.valueChanged.connect(self.worksheet_wizard_setting_changed)
-        self.spinBox_second_number_min.valueChanged.connect(partial(self.minimum_changed_wizard, self.spinBox_second_number_min, self.spinBox_second_number_max))        
-
-        self.label_second_number_decimal = create_new_label(self.groupBox_second_number_wizard, "Kommastellen")
-        self.gridLayout_second_number_wizard.addWidget(self.label_second_number_decimal,2,0,1,1)
-        self.combobox_second_number_decimal = create_new_combobox(self.groupBox_second_number_wizard)
-        add_new_option(self.combobox_second_number_decimal, 0, "=")
-        add_new_option(self.combobox_second_number_decimal, 1, "\u2264")
-        self.combobox_second_number_decimal.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
-        self.gridLayout_second_number_wizard.addWidget(self.combobox_second_number_decimal, 2,1,1,1)
-        self.spinBox_second_number_decimal = create_new_spinbox(self.groupBox_second_number_wizard)
-        self.spinBox_second_number_decimal.setMaximum(14)
-        self.spinBox_second_number_decimal.valueChanged.connect(self.worksheet_wizard_setting_changed)
-        self.gridLayout_second_number_wizard.addWidget(self.spinBox_second_number_decimal,2,2,1,1) 
-        self.groupBox_second_number_wizard.hide()
-
-
-        self.groupBox_dividend_wizard = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Dividend")
-        self.gridLayout_dividend_wizard = create_new_gridlayout(self.groupBox_dividend_wizard)
-        self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_dividend_wizard, 0,0, 1,1)
-
-        self.combobox_dividend_wizard = create_new_combobox(self.groupBox_dividend_wizard)
-        add_new_option(self.combobox_dividend_wizard, 0, "Natürliche Zahl")
-        add_new_option(self.combobox_dividend_wizard, 1, "Dezimalzahl")
-        self.gridLayout_dividend_wizard.addWidget(self.combobox_dividend_wizard, 0,0,1,1)
-
-        self.label_dividend_min_wizard = create_new_label(self.groupBox_dividend_wizard, "Min:")
-        self.gridLayout_dividend_wizard.addWidget(self.label_dividend_min_wizard, 0,1,1,1)
-        self.spinbox_dividend_min_wizard = create_new_spinbox(self.groupBox_dividend_wizard)
-        self.spinbox_dividend_min_wizard.setMaximum(999999999)
-        self.spinbox_dividend_min_wizard.setValue(100)
-        self.spinbox_dividend_min_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
-        self.gridLayout_dividend_wizard.addWidget(self.spinbox_dividend_min_wizard, 0,2,1,1)
-        
-
-        self.label_dividend_max_wizard = create_new_label(self.groupBox_dividend_wizard, "Max:")
-        self.gridLayout_dividend_wizard.addWidget(self.label_dividend_max_wizard, 1,1,1,1)
-        self.spinbox_dividend_max_wizard = create_new_spinbox(self.groupBox_dividend_wizard)
-        self.spinbox_dividend_max_wizard.setMaximum(999999999)
-        self.spinbox_dividend_max_wizard.setValue(1000)
-        self.spinbox_dividend_max_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
-        self.gridLayout_dividend_wizard.addWidget(self.spinbox_dividend_max_wizard, 1,2,1,1)
-        self.groupBox_dividend_wizard.hide()
-
-
-        self.groupBox_divisor_wizard = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Divisor")
-        self.gridLayout_divisor_wizard = create_new_gridlayout(self.groupBox_divisor_wizard)
-        self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_divisor_wizard, 1,0, 1,1)
-
-        self.combobox_divisor_wizard = create_new_combobox(self.groupBox_divisor_wizard)
-        add_new_option(self.combobox_divisor_wizard, 0, "Natürliche Zahl")
-        add_new_option(self.combobox_divisor_wizard, 1, "Dezimalzahl")
-        self.gridLayout_divisor_wizard.addWidget(self.combobox_divisor_wizard, 0,0,1,3)
-
-        self.label_divisor_kommastelle_wizard = create_new_label(self.groupBox_divisor_wizard, "Kommastellen")
-        self.gridLayout_divisor_wizard.addWidget(self.label_divisor_kommastelle_wizard, 1,0,1,1)
-
-        self.combobox_divisor_kommastelle_wizard = create_new_combobox(self.combobox_divisor_wizard)
-        add_new_option(self.combobox_divisor_kommastelle_wizard, 0, "=")
-        add_new_option(self.combobox_divisor_kommastelle_wizard, 1, "\u2264")
-        self.combobox_divisor_kommastelle_wizard.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
-        self.gridLayout_divisor_wizard.addWidget(self.combobox_divisor_kommastelle_wizard, 1,1,1,1)
-        self.spinBox_divisor_kommastellen_wizard = create_new_spinbox(self.groupBox_divisor_wizard, 0)
-        self.spinBox_divisor_kommastellen_wizard.setMaximum(14)
-        self.spinBox_divisor_kommastellen_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
-        self.gridLayout_divisor_wizard.addWidget(self.spinBox_divisor_kommastellen_wizard, 1,2,1,1)
-        self.label_divisor_kommastelle_wizard.hide()
-        self.combobox_divisor_kommastelle_wizard.hide()
-        self.spinBox_divisor_kommastellen_wizard.hide()
-
-        self.label_divisor_min_wizard = create_new_label(self.groupBox_divisor_wizard, "Min:")
-        self.gridLayout_divisor_wizard.addWidget(self.label_divisor_min_wizard, 0,3,1,1)
-        self.spinbox_divisor_min_wizard = create_new_spinbox(self.groupBox_divisor_wizard, 2)
-        self.spinbox_divisor_min_wizard.setMaximum(999999999)
-        self.spinbox_divisor_min_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
-        self.gridLayout_divisor_wizard.addWidget(self.spinbox_divisor_min_wizard, 0,4,1,1)
-        
-
-        self.label_divisor_max_wizard = create_new_label(self.groupBox_divisor_wizard, "Max:")
-        self.gridLayout_divisor_wizard.addWidget(self.label_divisor_max_wizard, 1,3,1,1)
-        self.spinbox_divisor_max_wizard = create_new_spinbox(self.groupBox_divisor_wizard, 99)
-        self.spinbox_divisor_max_wizard.setMaximum(999999999)
-        self.spinbox_divisor_max_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
-        self.gridLayout_divisor_wizard.addWidget(self.spinbox_divisor_max_wizard, 1,4,1,1)
-        self.groupBox_divisor_wizard.hide()
-
-
-        self.groupBox_ergebnis_wizard = create_new_groupbox(self.groupBox_zahlenbereich_anzahl, "Ergebnis")
-        self.gridLayout_ergebnis_wizard = create_new_gridlayout(self.groupBox_ergebnis_wizard)
-        self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_ergebnis_wizard, 2,0,1,1)
-
-        self.radioButton_division_ohne_rest = create_new_radiobutton(self.groupBox_ergebnis_wizard, "ohne Rest")
-        self.radioButton_division_ohne_rest.setChecked(True)
-        self.radioButton_division_ohne_rest.toggled.connect(self.worksheet_wizard_setting_changed)
-        self.gridLayout_ergebnis_wizard.addWidget(self.radioButton_division_ohne_rest, 0,0,1,1)
-
-        self.radioButton_division_rest = create_new_radiobutton(self.groupBox_ergebnis_wizard, "mit Rest")
-        self.radioButton_division_rest.toggled.connect(self.worksheet_wizard_setting_changed)
-        self.gridLayout_ergebnis_wizard.addWidget(self.radioButton_division_rest, 0,1,1,1)
-
-        # self.radioButton_division_decimal = create_new_radiobutton(self.groupBox_ergebnis_wizard, "Dezimalzahl")
-        # self.radioButton_division_decimal.toggled.connect(self.radioButton_division_changed)
-        # self.gridLayout_ergebnis_wizard.addWidget(self.radioButton_division_decimal, 0,2,1,1)
-        # self.radioButton_division_decimal.hide()
-
-        # self.label_ergebnis_anzeige_wizard = create_new_label(self.groupBox_ergebnis_wizard, "Anzeige:")
-        # self.gridLayout_ergebnis_wizard.addWidget(self.label_ergebnis_anzeige_wizard, 1,0,1,1)
-        # self.comboBox_ergebnis_anzeige_wizard = create_new_combobox(self.groupBox_ergebnis_wizard)
-        # add_new_option(self.comboBox_ergebnis_anzeige_wizard, 0, "Rest")
-        # add_new_option(self.comboBox_ergebnis_anzeige_wizard, 1, "Dezimalzahl")
-        # self.comboBox_ergebnis_anzeige_wizard.currentIndexChanged.connect(self.comboBox_ergebnis_anzeige_wizard_changed)
-        # self.gridLayout_ergebnis_wizard.addWidget(self.comboBox_ergebnis_anzeige_wizard, 1,1,1,1)
-        # self.label_ergebnis_anzeige_wizard.hide()
-        # self.comboBox_ergebnis_anzeige_wizard.hide()
-
-        self.label_ergebnis_kommastellen_wizard = create_new_label(self.groupBox_ergebnis_wizard, "Kommastellen:")
-        self.gridLayout_ergebnis_wizard.addWidget(self.label_ergebnis_kommastellen_wizard, 1,0,1,1)
-        self.combobox_ergebnis_kommastellen_wizard = create_new_combobox(self.groupBox_ergebnis_wizard)
-        add_new_option(self.combobox_ergebnis_kommastellen_wizard, 0, "=")
-        add_new_option(self.combobox_ergebnis_kommastellen_wizard, 1, "\u2264")
-        self.combobox_ergebnis_kommastellen_wizard.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
-        self.gridLayout_ergebnis_wizard.addWidget(self.combobox_ergebnis_kommastellen_wizard, 1,1,1,1)
-        self.spinbox_ergebnis_kommastellen_wizard = create_new_spinbox(self.groupBox_ergebnis_wizard, 1)
-        self.spinbox_ergebnis_kommastellen_wizard.setRange(1,14)
-        self.spinbox_ergebnis_kommastellen_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
-        self.gridLayout_ergebnis_wizard.addWidget(self.spinbox_ergebnis_kommastellen_wizard, 1,2,1,1)
-
-        self.label_ergebnis_kommastellen_wizard.hide()
-        self.combobox_ergebnis_kommastellen_wizard.hide()
-        self.spinbox_ergebnis_kommastellen_wizard.hide()
-
-
-        self.combobox_dividend_wizard.currentIndexChanged.connect(self.combobox_divisor_dividend_changed)
-        self.combobox_divisor_wizard.currentIndexChanged.connect(self.combobox_divisor_dividend_changed)
-        self.groupBox_ergebnis_wizard.hide()
-
-
-
-
-
-        self.gridLayout_zahlenbereich_wizard.setRowStretch(4,1)
-        self.gridLayout_setting_wizard.setRowStretch(3, 2)
-
-        self.scrollArea_chosen_wizard = QtWidgets.QScrollArea(self.centralwidget)
-        self.scrollArea_chosen_wizard.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.scrollArea_chosen_wizard.setWidgetResizable(True)
-        self.scrollArea_chosen_wizard.setObjectName("scrollArea_chosen_wizard")
-        self.scrollArea_chosen_wizard.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.scrollArea_chosen_wizard.setSizePolicy(SizePolicy_minimum)
-        self.scrollArea_chosen_wizard.hide()
-        self.scrollAreaWidgetContents_wizard = QtWidgets.QWidget()
-        # self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 389, 323))
-        self.scrollAreaWidgetContents_wizard.setObjectName("scrollAreaWidgetContents_wizard")
-        self.scrollAreaWidgetContents_wizard.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.gridLayout_scrollArea_wizard = QtWidgets.QGridLayout(self.scrollAreaWidgetContents_wizard)
-        self.gridLayout_scrollArea_wizard.setObjectName("gridLayout_scrollArea_wizard")
-        self.scrollArea_chosen_wizard.setWidget(self.scrollAreaWidgetContents_wizard)
-        self.scrollArea_chosen_wizard.verticalScrollBar().rangeChanged.connect(
-            self.change_scrollbar_position
-        )
-        self.gridLayout.addWidget(self.scrollArea_chosen_wizard, 3, 0, 6, 9)
-        
-        
-
-
         #         ####################################################################
         #         #####################################################################
         #         ######################################################################
@@ -2808,7 +2372,6 @@ class Ui_MainWindow(object):
         self.menuNeu.setTitle(_translate("MainWindow", "Aufgabe", None))
         self.menuSage.setTitle(_translate("MainWindow", "Prüfung", None))
         self.menuSuche.setTitle(_translate("MainWindow", "Suche", None))
-        self.menuWizard.setTitle(_translate("MainWindow", "Wizard", None))
         self.menuDeveloper.setTitle(_translate("MainWindow", "Entwicklermodus", None))
 
         # self.menuBild_einbinden.setTitle(
@@ -2906,24 +2469,44 @@ class Ui_MainWindow(object):
         self.create_Tooltip(ws_beschreibung)
         #############################################
 
-        # if self.chosen_program == "lama":
-        #     program = "LaMA Cria (Unterstufe)"
-        # elif self.chosen_program == "cria":
-        #     program = "LaMA (Oberstufe)"
-        # elif self.chosen_program == "wizard":
-        #     program = "LaMA (Oberstufe)"
-
-        # self.actionProgram.setText(
-        #     _translate("MainWindow", 'Zu "{}" wechseln'.format(program), None)
-        # )
+        if self.chosen_program == "lama":
+            program = "LaMA Cria (Unterstufe)"
+        if self.chosen_program == "cria":
+            program = "LaMA (Oberstufe)"
+        self.actionProgram.setText(
+            _translate("MainWindow", 'Zu "{}" wechseln'.format(program), None)
+        )
         self.actionExit.setText(_translate("MainWindow", "Exit", None))
 
         print("Done")
 
         if self.chosen_program == "cria":
             self.update_gui("widgets_search")
-        elif self.chosen_program == 'wizard':
-            self.update_gui("widgets_wizard")
+
+    def show_popup_window(self, show_checkbox = True):
+        msg = QtWidgets.QMessageBox()
+        msg.setWindowTitle("Update")
+        pixmap = QtGui.QPixmap(logo_path)
+        msg.setIconPixmap(pixmap)
+        msg.setWindowIcon(QtGui.QIcon(logo_path))
+        msg.setText("""Die neue Version von LaMA ({}) verwendet Befehle des aktuellsten "srdp-mathematik"-Pakets. Um die volle Funktionsfähigkeit von LaMA zu gewährleisten, sollte das LaTeX-Paket auf Ihrem Gerät manuell aktualisiert werden.""".format(__version__))
+        msg.setInformativeText("""Eine direkte Aktualisierung des "srdp-mathematik"-Pakets über LaMA kann via
+
+"Optionen -> Update ... -> srdp-mathematik.sty aktualisieren"
+
+durchgeführt werden. 
+
+Sollte dies nicht möglich sein, melden Sie sich bitte unter:
+lama.helpme@gmail.com""")
+        
+        cb = QtWidgets.QCheckBox()
+        if show_checkbox==True:
+            msg.setCheckBox(cb)
+            cb.setText("Diese Meldung nicht mehr anzeigen")
+        msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+
+        msg.exec_()
+        return cb.isChecked()
 
     def get_saving_path(self):
         dict_umlaute = {
@@ -2988,6 +2571,7 @@ class Ui_MainWindow(object):
 
         if rsp == QtWidgets.QDialog.Accepted:
             single_file_index = self.ui_erstellen.single_file_index
+
             if self.ui_erstellen.pdf == False:
                 range_limit = 1
             elif single_file_index != None:
@@ -3005,7 +2589,7 @@ class Ui_MainWindow(object):
            
             self.collect_all_infos_for_creating_file()
 
-            if self.ui_erstellen.lama == True: #????????
+            if self.ui_erstellen.lama == True:
                 self.sage_save(path_create_tex_file=filename_vorschau)
 
 
@@ -3022,7 +2606,7 @@ class Ui_MainWindow(object):
                     index,
                     self.ui_erstellen.spinBox_sw_gruppen.value() * 2,
                     self.ui_erstellen.pdf,
-                    self.ui_erstellen.lama,
+                    self.ui_erstellen.show_pagenumber,
                     single_file_index,
                     filename_vorschau = filename_vorschau,
                 )
@@ -3039,18 +2623,11 @@ class Ui_MainWindow(object):
                     subprocess.Popen('explorer "{}"'.format(file_path))
 
     def check_admin_entry(self):
-        if ("###" in self.lineEdit_titel.text() and self.chosen_program == "lama") or (
-            self.chosen_gui == "widgets_edit" and self.developer_mode_active == True
-        ):
+        if (self.chosen_gui == "widgets_edit" or self.chosen_gui == "widgets_create") and self.developer_mode_active == True:
             self.cb_matura_tag.show()
             self.cb_no_grade_tag.hide()
             self.cb_no_grade_tag.setChecked(False)
-        elif (
-            "###" in self.lineEdit_titel.text() and self.chosen_program == "cria"
-        ) or (
-            self.chosen_gui == "widgets_edit_cria"
-            and self.developer_mode_active == True
-        ):
+        elif (self.chosen_gui == "widgets_edit_cria" or self.chosen_gui == "widgets_create_cria") and self.developer_mode_active == True:
             self.cb_matura_tag.hide()
             self.cb_matura_tag.setChecked(False)
             self.cb_no_grade_tag.show()
@@ -3259,7 +2836,6 @@ class Ui_MainWindow(object):
             if __version__ == latest_version:
                 return
         except Exception as e:
-            # print(e)
             print(
                 "Fehler beim Überprüfen der Version. Überprüfung wird übersprungen ..."
             )
@@ -3284,6 +2860,10 @@ class Ui_MainWindow(object):
             )
 
             if ret == True:
+                self.lama_settings["popup_off"] = False
+                with open(lama_settings_file, "w+", encoding="utf8") as f:
+                    json.dump(self.lama_settings, f, ensure_ascii=False)
+
                 if sys.platform.startswith("darwin"):
                     refresh_ddb(self, auto_update='mac')
                     opened_file = os.path.basename(sys.argv[0])
@@ -3685,10 +3265,8 @@ class Ui_MainWindow(object):
             if picture.startswith("label_bild_creator_"):
                 self.del_picture(picture, question=False)
 
-        if self.lineEdit_titel.text().startswith("###"):
-            self.lineEdit_titel.setText(_translate("MainWindow", "###", None))
-        else:
-            self.lineEdit_titel.setText(_translate("MainWindow", "", None))
+
+        self.lineEdit_titel.setText(_translate("MainWindow", "", None))
 
         if variation == False:
             self.plainTextEdit.setPlainText(_translate("MainWindow", "", None))
@@ -3786,58 +3364,64 @@ class Ui_MainWindow(object):
         self.dict_variablen_abstand = {}
         self.update_punkte()
         self.list_copy_images = []
-        for i in reversed(range(self.gridLayout_8.count())):
+        for i in reversed(range(self.gridLayout_8.count()+1)):
             self.delete_widget(self.gridLayout_8, i)
 
-    def change_program(self, program_change_to):
-        if program_change_to == "cria":
-            name = "LaMA Cria (Unterstufe)"
+    def change_program(self):
+        if self.chosen_program == "lama":
+            change_to = "LaMA Cria (Unterstufe)"
             program_name = "LaMA Cria - LaTeX Mathematik Assistent (Unterstufe)"
             icon = logo_cria_path
 
-        elif program_change_to == "lama":
-            name = "LaMA (Oberstufe)"
+        elif self.chosen_program == "cria":
+            change_to = "LaMA (Oberstufe)"
             program_name = "LaMA - LaTeX Mathematik Assistent (Oberstufe)"
             icon = logo_path
 
-        elif program_change_to == "wizard":
-            name = "LaMA - Worksheet Wizard"
-            program_name = "LaMA - LaTeX Mathematik Assistent (Worksheet Wizard)"
-            icon = logo_path
+        response = question_window(
+            "Sind Sie sicher, dass sie zu {} wechseln wollen?\nDadurch werden alle bisherigen Einträge gelöscht!".format(
+                change_to
+            ),
+            titel="Programm wechseln?",
+        )
 
-        if self.chosen_program !='wizard':
-            response = question_window(
-                "Sind Sie sicher, dass sie zu {} wechseln wollen?\nDadurch werden alle bisherigen Einträge gelöscht!".format(
-                    name
-                ),
-                titel="Programm wechseln?",
-            )
-        
-
-            if response == False:
-                return False
+        if response == False:
+            return False
 
         self.reset_sage(False)
         self.suchfenster_reset()
         self.reset_feedback()
 
+        # self.comboBox_fehlertyp.setCurrentIndex(0)
+        # self.plainTextEdit.setPlainText("")
+
+        self.actionProgram.setText(
+            _translate("MainWindow", 'Zu "{}" wechseln'.format(change_to), None)
+        )
 
         self.comboBox_pagebreak.setCurrentIndex(0)
-        if program_change_to == "cria":
+        if self.chosen_program == "lama":
             self.chosen_program = "cria"
+
+            # if self.beispieldaten_dateipfad_cria == None:
+            #     self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
+            #         "cria"
+            #     )
 
             self.gridLayout.addWidget(self.groupBox_af, 3, 0, 1, 1)
             self.gridLayout.addWidget(self.groupBox_punkte, 0, 1, 1, 1)
             self.gridLayout.addWidget(self.groupBox_aufgabenformat, 0, 2, 1, 1)
-
-            self.action_cria.setVisible(False)
-            self.action_lama.setVisible(True)
-            self.action_wizard.setVisible(True)
-
+            self.actionProgram.setText(
+                _translate("MainWindow", 'Zu "LaMA (Oberstufe)" wechseln', None)
+            )
             # self.comboBox_pruefungstyp.removeItem(6)  # delete Quiz
             self.cb_af_ko.show()
             self.cb_af_rf.show()
             self.cb_af_ta.show()
+
+            # self.comboBox_at_fb.setItemText(0, _translate("MainWindow", "Aufgabenrückmeldung", None))
+            # self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Allgemeine Rückmeldung", None))
+            # self.comboBox_at_fb.removeItem(2)
 
             self.combobox_searchtype.setItemText(
                 1,
@@ -3860,19 +3444,19 @@ class Ui_MainWindow(object):
             )
 
             self.groupBox_ausgew_gk_cr.setTitle("Ausgewählte Themen")
-            self.update_gui("widgets_search")
+            # self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
+            #     "cria"
+            # )
 
-        elif program_change_to == "lama":
+        elif self.chosen_program == "cria":
             self.chosen_program = "lama"
 
             self.gridLayout.addWidget(self.groupBox_af, 4, 0, 1, 1)
             self.gridLayout.addWidget(self.groupBox_punkte, 0, 2, 1, 1)
             self.gridLayout.addWidget(self.groupBox_aufgabenformat, 0, 3, 1, 1)
-
-            self.action_cria.setVisible(True)
-            self.action_lama.setVisible(False)
-            self.action_wizard.setVisible(True)
-
+            self.actionProgram.setText(
+                _translate("MainWindow", 'Zu "LaMA Cria (Unterstufe)" wechseln', None)
+            )
             self.combobox_searchtype.setItemText(
                 1,
                 _translate(
@@ -3897,20 +3481,12 @@ class Ui_MainWindow(object):
             )
 
             self.groupBox_ausgew_gk_cr.setTitle("Ausgewählte Grundkompetenzen")
-            self.update_gui("widgets_search")
-
-        elif program_change_to == 'wizard':
-            self.chosen_program = "wizard"
-            self.action_cria.setVisible(True)
-            self.action_lama.setVisible(True)
-            self.action_wizard.setVisible(False)
-            self.update_gui("widgets_wizard")           
 
         MainWindow.setWindowTitle(program_name)
         MainWindow.setWindowIcon(QtGui.QIcon(icon))
         if self.lama_settings["database"] == 0:
             refresh_ddb(self)
-        
+        self.update_gui("widgets_search")
         # self.beispieldaten_dateipfad_1 = self.define_beispieldaten_dateipfad(1)
         # self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)
 
@@ -3955,7 +3531,9 @@ class Ui_MainWindow(object):
             self.actionDeveloper.setText("Entwicklermodus (aktiv)")
             self.actionEdit_Files.setText("Aufgabe bearbeiten")
             # self.actionPush_Database.setVisible(True)
+            self.menuBar.removeAction(self.menuHelp.menuAction())
             self.menuBar.addAction(self.menuDeveloper.menuAction())
+            self.menuBar.addAction(self.menuHelp.menuAction())
 
     def activate_developermode(self):
         if self.developer_mode_active == True:
@@ -4308,36 +3886,24 @@ class Ui_MainWindow(object):
                 _translate("MainWindow", str(gesamt), None)
             )
 
+    def spinBox_nummer_changed(self):
+        if self.comboBox_pruefungstyp.currentText() != "Übungsblatt" and self.comboBox_pruefungstyp.currentText() != "Benutzerdefiniert":
+            self.spinBox_nummer_setvalue = self.spinBox_nummer.value()
+
     def comboBox_pruefungstyp_changed(self):
         self.comboBox_pruefungstyp.setEditable(False)
         self.groupBox_nummer.setEnabled(True)
         self.groupBox_datum.setEnabled(True)
+
+
+        self.spinBox_nummer.setValue(self.spinBox_nummer_setvalue)
+
+
         if self.comboBox_pruefungstyp.currentText() == "Grundkompetenzcheck":
             self.combobox_beurteilung.setEnabled(False)
             self.groupBox_notenschl.setEnabled(False)
             self.groupBox_beurteilungsraster.setEnabled(False)
-            self.spinBox_nummer.setValue(0)
             self.groupBox_klasse.setTitle("Klasse")
-            # if self.comboBox_pruefungstyp.currentText() == "Quiz":
-            #     self.pushButton_titlepage.setEnabled(True)
-            #     self.pushButton_titlepage.setText("Zufälliges Quiz erstellen")
-            #     self.comboBox_at_sage.setCurrentIndex(0)
-            #     self.comboBox_at_sage.setEnabled(False)
-            #     if self.get_aufgabenverteilung()[1] != 0:
-            #         response = question_window(
-            #             "Das Quiz ist ausschließlich für Typ1-Aufgaben konzipiert. Sollen alle enthaltenen Typ2-Aufgaben entfernt und das Quiz erstellt werden?",
-            #             titel="Typ2 Aufgaben entfernen?",
-            #         )
-            #         if response == False:
-            #             self.comboBox_pruefungstyp.setCurrentIndex(0)
-            #             return
-            #         else:
-            #             for aufgabe in self.list_alle_aufgaben_sage[:]:
-            #                 typ = get_aufgabentyp(self.chosen_program, aufgabe)
-            #                 if typ == 2:
-            #                     self.btn_delete_pressed(aufgabe)
-
-            # else:
             self.pushButton_titlepage.setEnabled(False)
             self.comboBox_at_sage.setEnabled(True)
             self.pushButton_titlepage.setText("Titelblatt anpassen")
@@ -4345,12 +3911,14 @@ class Ui_MainWindow(object):
             self.combobox_beurteilung.setEnabled(False)
             self.groupBox_notenschl.setEnabled(False)
             self.groupBox_beurteilungsraster.setEnabled(False)
-            self.spinBox_nummer.setValue(0)
             self.pushButton_titlepage.setEnabled(False)
             self.comboBox_at_sage.setEnabled(True)
             self.pushButton_titlepage.setText("Titelblatt anpassen")
             self.groupBox_datum.setEnabled(False)
+            # self.groupBox_nummer.hide()
             self.groupBox_nummer.setEnabled(False)
+            self.spinBox_nummer_setvalue = self.spinBox_nummer.value()
+            self.spinBox_nummer.setValue(0)
             self.groupBox_klasse.setTitle("Überschrift")
         else:
             self.combobox_beurteilung.setEnabled(True)
@@ -4358,13 +3926,13 @@ class Ui_MainWindow(object):
             self.groupBox_beurteilungsraster.setEnabled(True)
             self.pushButton_titlepage.setEnabled(True)
             self.comboBox_at_sage.setEnabled(True)
-            self.spinBox_nummer.setValue(1)
             self.pushButton_titlepage.setText("Titelblatt anpassen")
             self.groupBox_klasse.setTitle("Klasse")
             if self.comboBox_pruefungstyp.currentText() == "Benutzerdefiniert":
                 self.comboBox_pruefungstyp.setEditable(True)
                 self.comboBox_pruefungstyp.lineEdit().selectAll()
-                # setCursorPosition(0)
+                self.spinBox_nummer_setvalue = self.spinBox_nummer.value()
+                self.spinBox_nummer.setValue(0)
                 self.groupBox_nummer.setEnabled(False)
                 # self.spinBox_nummer.setEnabled(False)
 
@@ -4518,10 +4086,8 @@ class Ui_MainWindow(object):
         else:
             self.comboBox_af.setCurrentIndex(0)
 
-        if self.lineEdit_titel.text().startswith("###") and mode == "creator":
-            self.lineEdit_titel.setText("### " + aufgabe_total["titel"])
-        else:
-            self.lineEdit_titel.setText(aufgabe_total["titel"])
+
+        self.lineEdit_titel.setText(aufgabe_total["titel"])
 
         # print(aufgabe_total['bilder'])
         # print(aufgabe_total['name'])
@@ -4731,73 +4297,61 @@ class Ui_MainWindow(object):
         del self.dict_widget_variables[picture]
 
     def convert_image_eps_clicked(self):
-        Dialog = QtWidgets.QDialog(
-            None,
-            QtCore.Qt.WindowSystemMenuHint
-            | QtCore.Qt.WindowTitleHint
-            | QtCore.Qt.WindowCloseButtonHint,
-        )
-        ui = Ui_Dialog_Convert_To_Eps()
-        ui.setupUi(Dialog, self)
+        msg = QtWidgets.QMessageBox()
+        # msg.setIcon(QtWidgets.QMessageBox.Question)
+        msg.setWindowIcon(QtGui.QIcon(logo_path))
+        msg.setText("Wählen Sie alle Grafiken, die Sie konvertieren möchten.")
+        # msg.setInformativeText('Möchten Sie das neue Update installieren?')
+        msg.setWindowTitle("Grafik(en) konvertieren")
+        msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+        button_durchsuchen = msg.button(QtWidgets.QMessageBox.Yes)
+        button_durchsuchen.setText("Durchsuchen...")
+        buttonN = msg.button(QtWidgets.QMessageBox.No)
+        buttonN.setText("Abbrechen")
+        ret = msg.exec_()
 
-        Dialog.exec()
+        if ret == QtWidgets.QMessageBox.Yes:
+            # filename =	 filedialog.askopenfilenames(initialdir = last_path,title = "Durchsuchen...",filetypes = (('JPG-Dateien','*.jpg'),("Alle Dateien","*.*")))
+            try:
+                os.path.dirname(self.saved_file_path)
+            except AttributeError:
+                self.saved_file_path = path_home
 
+            filename = QtWidgets.QFileDialog.getOpenFileNames(
+                None,
+                "Select a folder:",
+                os.path.dirname(self.saved_file_path),
+                "Bilder (*.jpg; *.jpeg; *.png; *.jfif);; Alle Dateien (*.*)",
+            )
+            if filename[0] != []:
+                self.saved_file_path = filename[0][0]
+                for image in filename[0]:
+                    response = convert_image_to_eps(image)
+                    if response != True:
+                        break
+                if response == True:
+                    if len(filename[0]) == 1:
+                        text = "wurde {} Datei".format(len(filename[0]))
+                    else:
+                        text = "wurden {} Dateien".format(len(filename[0]))
 
-        # msg = QtWidgets.QMessageBox()
-        # # msg.setIcon(QtWidgets.QMessageBox.Question)
-        # msg.setWindowIcon(QtGui.QIcon(logo_path))
-        # msg.setText("Wählen Sie alle Grafiken, die Sie konvertieren möchten.")
-        # # msg.setInformativeText('Möchten Sie das neue Update installieren?')
-        # msg.setWindowTitle("Grafik(en) konvertieren")
-        # msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-        # button_durchsuchen = msg.button(QtWidgets.QMessageBox.Yes)
-        # button_durchsuchen.setText("Durchsuchen...")
-        # buttonN = msg.button(QtWidgets.QMessageBox.No)
-        # buttonN.setText("Abbrechen")
-        # ret = msg.exec_()
-
-        # if ret == QtWidgets.QMessageBox.Yes:
-        #     # filename =	 filedialog.askopenfilenames(initialdir = last_path,title = "Durchsuchen...",filetypes = (('JPG-Dateien','*.jpg'),("Alle Dateien","*.*")))
-        #     try:
-        #         os.path.dirname(self.saved_file_path)
-        #     except AttributeError:
-        #         self.saved_file_path = path_home
-
-        #     filename = QtWidgets.QFileDialog.getOpenFileNames(
-        #         None,
-        #         "Select a folder:",
-        #         os.path.dirname(self.saved_file_path),
-        #         "Bilder (*.jpg; *.jpeg; *.png; *.jfif);; Alle Dateien (*.*)",
-        #     )
-        #     if filename[0] != []:
-        #         self.saved_file_path = filename[0][0]
-        #         for image in filename[0]:
-        #             response = convert_image_to_eps(image)
-        #             if response != True:
-        #                 break
-        #         if response == True:
-        #             if len(filename[0]) == 1:
-        #                 text = "wurde {} Datei".format(len(filename[0]))
-        #             else:
-        #                 text = "wurden {} Dateien".format(len(filename[0]))
-
-        #             information_window(
-        #                 "Es {0} erfolgreich konvertiert.".format(text),
-        #                 titel="Grafik(en) erfolgreich konvertiert",
-        #                 detailed_text="Konvertierte Grafik(en):\n{}".format(
-        #                     "\n".join(filename[0])
-        #                 ),
-        #             )
-        #         else:
-        #             critical_window(
-        #                 "Beim Konvertieren der folgenden Grafik ist ein Fehler aufgetreten:\n\n{}".format(
-        #                     image
-        #                 ),
-        #                 titel="Fehler beim Konvertieren",
-        #                 detailed_text='Fehlermeldung:\n\n"{0}: {1}"'.format(
-        #                     type(response).__name__, response
-        #                 ),
-        #             )
+                    information_window(
+                        "Es {0} erfolgreich konvertiert.".format(text),
+                        titel="Grafik(en) erfolgreich konvertiert",
+                        detailed_text="Konvertierte Grafik(en):\n{}".format(
+                            "\n".join(filename[0])
+                        ),
+                    )
+                else:
+                    critical_window(
+                        "Beim Konvertieren der folgenden Grafik ist ein Fehler aufgetreten:\n\n{}".format(
+                            image
+                        ),
+                        titel="Fehler beim Konvertieren",
+                        detailed_text='Fehlermeldung:\n\n"{0}: {1}"'.format(
+                            type(response).__name__, response
+                        ),
+                    )
 
     def chosen_aufgabenformat_cr(self):
         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
@@ -4845,8 +4399,8 @@ class Ui_MainWindow(object):
             return "Es wurde kein Aufgabenformat ausgewählt."
 
         if (
-            is_empty(self.lineEdit_titel.text().replace("###", "")) == True
-            or self.lineEdit_titel.text().replace("###", "").isspace()
+            is_empty(self.lineEdit_titel.text()) == True
+            or self.lineEdit_titel.text().isspace()
         ):
             return "Bitte geben Sie einen Titel ein."
 
@@ -4882,19 +4436,12 @@ class Ui_MainWindow(object):
             return "Bitte geben Sie die Quelle an."
 
         elif (
-            self.check_for_admin_mode() == "user"
+            self.developer_mode_active == False
             and len(self.lineEdit_quelle.text()) != 6
         ):
             return 'Bitte geben Sie als Quelle ihren Vornamen und Nachnamen im Format "VorNac" (6 Zeichen!) ein.'
 
 
-
-    def check_for_admin_mode(self):
-        if self.lineEdit_titel.text().startswith("###"):
-            mode = "admin"
-        else:
-            mode = "user"
-        return mode
 
     def create_information_aufgabentyp(self):
         if self.chosen_program == "lama":
@@ -4907,11 +4454,7 @@ class Ui_MainWindow(object):
         return aufgabentyp
 
     def create_information_titel(self):
-        if self.lineEdit_titel.text().startswith("###"):
-            _, titel = self.lineEdit_titel.text().split("###")
-            titel = titel.strip()
-        else:
-            titel = self.lineEdit_titel.text().strip()
+        titel = self.lineEdit_titel.text().strip()
         return titel
 
     def create_information_themen(self):
@@ -4990,7 +4533,7 @@ class Ui_MainWindow(object):
             | QtCore.Qt.WindowCloseButtonHint,
         )
         self.ui_save = Ui_Dialog_speichern()
-        self.ui_save.setupUi(Dialog_speichern, self.creator_mode, self.chosen_variation,save_mode)
+        self.ui_save.setupUi(Dialog_speichern, self.developer_mode_active, self.chosen_variation,save_mode)
         self.ui_save.label.setText(information)
         # self.ui_save.label.setStyleSheet("padding: 10px")
         return Dialog_speichern
@@ -5217,6 +4760,13 @@ class Ui_MainWindow(object):
         string = ", ".join(list_)
         return string
 
+    def exisiting_variations_AB(self, content):
+        rsp = re.search("\\\\variation\{.*\}\{.*\}", content)
+        if rsp == None:
+            return False
+        else:
+            return True
+        
     def get_all_infos_new_file(self, typ, typ_save):
         if typ_save == "editor":
             name = None
@@ -5233,7 +4783,7 @@ class Ui_MainWindow(object):
             #     gk, number  = name.split(' - ')
             #     name = gk + ' - ' + 'l.' + number
         themen = self.get_themen_auswahl()
-        titel = self.lineEdit_titel.text().replace("###", "").strip()
+        titel = self.lineEdit_titel.text().strip()
         if typ == 2:
             af = None
         else:
@@ -5244,6 +4794,10 @@ class Ui_MainWindow(object):
             ]
         quelle = self.lineEdit_quelle.text()
         content = self.plainTextEdit.toPlainText()
+
+        group_variation = self.exisiting_variations_AB(content)
+
+
         punkte = self.spinBox_punkte.value()
 
         if self.comboBox_pagebreak.currentIndex() == 0:
@@ -5287,6 +4841,7 @@ class Ui_MainWindow(object):
             af,
             quelle,
             content,
+            group_variation,
             punkte,
             pagebreak,
             klasse,
@@ -5329,6 +4884,7 @@ class Ui_MainWindow(object):
             af,
             quelle,
             content,
+            group_variation,
             punkte,
             pagebreak,
             klasse,
@@ -5385,6 +4941,7 @@ class Ui_MainWindow(object):
         lama_table.update({"af": af}, doc_ids=[file_id])
         lama_table.update({"quelle": quelle}, doc_ids=[file_id])
         lama_table.update({"content": content}, doc_ids=[file_id])
+        lama_table.update({"gruppe": group_variation}, doc_ids=[file_id])
         lama_table.update({"punkte": punkte}, doc_ids=[file_id])
         lama_table.update({"pagebreak": pagebreak}, doc_ids=[file_id])
         lama_table.update({"klasse": klasse}, doc_ids=[file_id])
@@ -5641,7 +5198,6 @@ class Ui_MainWindow(object):
             return True
 
     def button_speichern_pressed(self):
-        # self.creator_mode = "user"
         self.local_save = False
 
         ######## WARNINGS #####
@@ -5651,9 +5207,6 @@ class Ui_MainWindow(object):
             warning_window(warning)
             return
 
-        ###### Check if Admin Mode is activated ####
-
-        self.creator_mode = self.check_for_admin_mode()
 
         ####### Collect information of file ################
 
@@ -5683,7 +5236,7 @@ class Ui_MainWindow(object):
 
         typ_save = self.ui_save.get_output()
 
-        if self.creator_mode == "user":
+        if self.developer_mode_active == True:
 
             while typ_save == ["user", False] or typ_save == ["local", None]:
                 if typ_save == ["user", False]:
@@ -5788,6 +5341,7 @@ class Ui_MainWindow(object):
             af,
             quelle,
             content,
+            group_variation,
             punkte,
             pagebreak,
             klasse,
@@ -5810,6 +5364,7 @@ class Ui_MainWindow(object):
             af,
             quelle,
             content,
+            group_variation,
             punkte,
             pagebreak,
             klasse,
@@ -5838,9 +5393,9 @@ class Ui_MainWindow(object):
                 titel
             )
 
-        if self.creator_mode == "admin":
+        if self.developer_mode_active == True:
             window_title = "Admin Modus - Aufgabe erfolgreich gespeichert"
-        if self.creator_mode == "user":
+        if self.developer_mode_active == False:
             window_title = "Aufgabe erfolgreich gespeichert"
 
         information = '{0}Titel: "{1}"\n\n{2}: {3}\n\n{4}Quelle: {5}{6}\n\n'.format(
@@ -5871,8 +5426,7 @@ class Ui_MainWindow(object):
     def action_refreshddb_selected(self):
         refresh_ddb(self)
 
-        if self.chosen_program != 'wizard':
-            self.adapt_choosing_list("sage")
+        self.adapt_choosing_list("sage")
 
     def push_full_database(self):
         rsp = question_window("Sind Sie sicher, dass Sie die Datenbank hochladen möchten?")
@@ -5889,7 +5443,6 @@ class Ui_MainWindow(object):
         action_push_database(
             True, ["_database.json"], "", "Änderungen werden hochgeladen ..."
         )
-        print('Done')
 
     def draft_control(self):
         dict_drafts = {}
@@ -6030,505 +5583,35 @@ class Ui_MainWindow(object):
         QtWidgets.QApplication.restoreOverrideCursor()
         return dict_missing_files
 
-    def worksheet_wizard_reset(self):
-        self.comboBox_themen_wizard.setCurrentIndex(0)
-        self.spinBox_number_wizard.setValue(20)
-        self.spinBox_column_wizard.setValue(2)
-        self.combobox_fontsize_wizard.setCurrentIndex(4)
-        self.combobox_nummerierung_wizard.setCurrentIndex(0)
-        self.combobox_ausrichtung_wizard.setCurrentIndex(0)
-        self.checkBox_show_nonogramm.setChecked(True)
-        self.combobox_nonogramm_wizard.setCurrentIndex(0)
+
         
-        for i in reversed(range(self.gridLayout_scrollArea_wizard.count())): 
-            self.gridLayout_scrollArea_wizard.itemAt(i).widget().setParent(None)
-
-
-    def themen_changed_wizard(self):
-        self.worksheet_wizard_changed = True
-        # index = self.comboBox_themen_wizard.currentIndex()
-        thema = self.comboBox_themen_wizard.currentText()
-        self.lineEdit_titel_wizard.setText("Arbeitsblatt - {}".format(thema))
-
-        if thema == themen_worksheet_wizard[0] or thema == themen_worksheet_wizard[1]:
-            self.spinbox_zahlenbereich_minimum.setRange(0,999999999)
-            self.spinbox_zahlenbereich_minimum.setValue(100)
-            self.spinbox_zahlenbereich_maximum.setRange(0,999999999)
-            self.spinbox_zahlenbereich_maximum.setValue(999)
-            self.spinBox_zahlenbereich_anzahl_wizard.setMaximum(5)  
-
-        if thema == themen_worksheet_wizard[0]:
-            self.groupBox_zahlenbereich_anzahl.setTitle("Summanden")
-            self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,5)
-            self.spinBox_zahlenbereich_anzahl_wizard.setValue(2)
-        elif thema == themen_worksheet_wizard[1]:
-            self.groupBox_zahlenbereich_anzahl.setTitle("Subtrahenden")
-            self.spinBox_zahlenbereich_anzahl_wizard.setRange(1,5)
-            self.spinBox_zahlenbereich_anzahl_wizard.setValue(1)
-        elif thema == themen_worksheet_wizard[4]:
-            self.spinbox_zahlenbereich_minimum.setRange(0,999)
-            self.spinbox_zahlenbereich_maximum.setRange(0,999)
-            self.spinbox_zahlenbereich_minimum.setValue(0)
-            self.spinbox_zahlenbereich_maximum.setValue(20)
-            self.spinBox_zahlenbereich_anzahl_wizard.setMaximum(20)
-            self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,20)
-            self.groupBox_zahlenbereich_anzahl.setTitle("Zahlen") 
-
-        elif thema == themen_worksheet_wizard[5] or thema == themen_worksheet_wizard[6] or thema == themen_worksheet_wizard[7]:
-            self.spinbox_zahlenbereich_minimum.setRange(-999,999)
-            self.spinbox_zahlenbereich_maximum.setRange(-999,999)
-            self.spinBox_zahlenbereich_anzahl_wizard.setMaximum(20)
-            self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,20)
-            self.groupBox_zahlenbereich_anzahl.setTitle("Zahlen")  
-            if thema == themen_worksheet_wizard[5]:
-                # self.groupBox_zahlenbereich_anzahl.setTitle("Summanden")
-                self.spinBox_zahlenbereich_anzahl_wizard.setValue(2)
-                self.spinbox_zahlenbereich_minimum.setValue(-20)
-                self.spinbox_zahlenbereich_maximum.setValue(20)
-            elif thema == themen_worksheet_wizard[6]:
-                # self.groupBox_zahlenbereich_anzahl.setTitle("Faktoren") 
-                self.spinBox_zahlenbereich_anzahl_wizard.setValue(3)
-                self.spinbox_zahlenbereich_minimum.setValue(-10)
-                self.spinbox_zahlenbereich_maximum.setValue(10)
-            elif thema == themen_worksheet_wizard[7]:
-                self.spinBox_zahlenbereich_anzahl_wizard.setValue(4)
-                self.spinbox_zahlenbereich_minimum.setValue(-10)
-                self.spinbox_zahlenbereich_maximum.setValue(10)                
-           
-
-        hiding_list = []
-        for all in dict_widgets_wizard:
-            if all != thema:
-                for widget in dict_widgets_wizard[all]:
-                    if widget not in dict_widgets_wizard[thema] and widget not in hiding_list:
-                        hiding_list.append(widget)
-        
-        for widget in hiding_list:
-            eval(widget).hide()
-
-        for widget in dict_widgets_wizard[thema]:
-            eval(widget).show()
-
-
-    def worksheet_wizard_setting_changed(self):
-        self.worksheet_wizard_changed=True
-
-    def checkBox_show_nonogramm_changed(self):
-        if self.checkBox_show_nonogramm.isChecked():
-            self.combobox_nonogramm_wizard.setEnabled(True)
-        else:
-            self.combobox_nonogramm_wizard.setEnabled(False)
-
-    def spinBox_number_wizard_changed(self):
-        self.worksheet_wizard_changed=True
-        max = 0
-        for nonogram in all_nonogramms.values():
-            if len(nonogram)>max:
-                max = len(nonogram)
-        
-        if self.spinBox_number_wizard.value()>max:
-            self.checkBox_show_nonogramm.setChecked(False)
-            self.checkBox_show_nonogramm.setEnabled(False)
-            self.combobox_nonogramm_wizard.setEnabled(False)
-        else:
-            # self.checkBox_show_nonogramm.setChecked(True)
-            self.checkBox_show_nonogramm.setEnabled(True)
-            self.combobox_nonogramm_wizard.setEnabled(True)
-
-        self.combobox_nonogramm_wizard.clear()
-        add_new_option(self.combobox_nonogramm_wizard, 0, 'Zufällig')
-        i=1
-        for all in all_nonogramms:
-            if len(all_nonogramms[all])>= self.spinBox_number_wizard.value():
-                add_new_option(self.combobox_nonogramm_wizard, i, "{0} ({1})".format(all.capitalize(), len(all_nonogramms[all])))
-                i+=1                    
-
-    def spinBox_column_wizard_changed(self):
-        self.reset_aufgabenboxes_wizard()
-
-
-    def minimum_changed_wizard(self, min, max):
-        self.worksheet_wizard_changed=True
-        if min.value() > max.value():
-            max.setValue(min.value()+10)
-
-    def combobox_ausrichtung_wizard_changed(self):
-        if self.comboBox_themen_wizard.currentText()=='Subtraktion':
-            if self.combobox_ausrichtung_wizard.currentIndex()==0:
-                self.groupBox_zahlenbereich_anzahl.hide()
-                self.spinBox_zahlenbereich_anzahl_wizard.setValue(1)
-            else:
-                self.groupBox_zahlenbereich_anzahl.show()
-
-    def combobox_divisor_dividend_changed(self):
-        self.worksheet_wizard_changed=True
-        if self.combobox_divisor_wizard.currentIndex()==1:
-            self.label_divisor_kommastelle_wizard.show()
-            self.combobox_divisor_kommastelle_wizard.show()
-            self.spinBox_divisor_kommastellen_wizard.show()
-            self.spinBox_divisor_kommastellen_wizard.setValue(1)
-            self.spinBox_divisor_kommastellen_wizard.setMinimum(1)
-            self.combobox_dividend_wizard.setCurrentIndex(1)
-            self.combobox_dividend_wizard.setEnabled(False)
-        else:
-            self.label_divisor_kommastelle_wizard.hide()
-            self.combobox_divisor_kommastelle_wizard.hide()
-            self.spinBox_divisor_kommastellen_wizard.hide()
-            self.spinBox_divisor_kommastellen_wizard.setMinimum(0)
-            self.spinBox_divisor_kommastellen_wizard.setValue(0)
-            # self.combobox_dividend_wizard.setCurrentIndex(0)
-            self.combobox_dividend_wizard.setEnabled(True)
-
-        if self.combobox_divisor_wizard.currentIndex()==0 and self.combobox_dividend_wizard.currentIndex()==0:
-            self.label_ergebnis_kommastellen_wizard.hide()
-            self.combobox_ergebnis_kommastellen_wizard.hide()
-            self.spinbox_ergebnis_kommastellen_wizard.hide()
-            self.radioButton_division_ohne_rest.show()
-            self.radioButton_division_ohne_rest.setChecked(True)
-            self.radioButton_division_rest.show()
-        else:
-            self.label_ergebnis_kommastellen_wizard.show()
-            self.combobox_ergebnis_kommastellen_wizard.show()
-            self.spinbox_ergebnis_kommastellen_wizard.show()
-            self.radioButton_division_ohne_rest.hide()
-            self.radioButton_division_rest.hide()
-          
-
-
-    def create_aufgabenbox_wizard(self, index, example, row, column):
-        groupbox = create_new_groupbox(self.scrollAreaWidgetContents_wizard, "{}. Aufgabe".format(index+1))
-        groupbox.setSizePolicy(SizePolicy_maximum_width)
-
-        self.gridLayout_scrollArea_wizard.addWidget(groupbox ,row,column,1,1)
-
-        horizontalLayout = create_new_horizontallayout(groupbox)
-        label = create_new_label(self.scrollArea_chosen_wizard, example[-1])
-        horizontalLayout.addWidget(label)
-        
-        # horizontalLayout.addStretch()
-        # button_refresh = create_new_button(groupbox, "Refresh", still_to_define)
-        button_refresh = create_standard_button(groupbox,
-            "",
-            partial(self.reload_example, index),
-            QtWidgets.QStyle.SP_BrowserReload)
-        horizontalLayout.addWidget(button_refresh)
-        # button_delete = create_new_button(groupbox, "Delete", still_to_define)
-        # button_delete = create_standard_button(groupbox,
-        #     "",
-        #     still_to_define,
-        #     QtWidgets.QStyle.SP_DialogCancelButton)
-        # horizontalLayout.addWidget(button_delete)
-        self.dict_aufgaben_wizard[index] = label
-
-    def reload_example(self, index):
-        thema = self.comboBox_themen_wizard.currentText()
-        minimum = self.spinbox_zahlenbereich_minimum.value()
-        maximum = self.spinbox_zahlenbereich_maximum.value()
-        commas = self.spinbox_kommastellen_wizard.value()
-        
-
-
-        if thema == 'Addition':
-            anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
-            smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
-            new_example = create_single_example_addition(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
-        elif thema == 'Subtraktion':
-            anzahl_subtrahenden = self.spinBox_zahlenbereich_anzahl_wizard.value()
-            smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
-            new_example = create_single_example_subtraction(minimum, maximum, commas, self.checkbox_negative_ergebnisse_wizard.isChecked(),anzahl_subtrahenden ,smaller_or_equal)
-        elif thema == 'Multiplikation':
-            minimum_1 = self.spinBox_first_number_min.value()
-            maximum_1 = self.spinBox_first_number_max.value()
-            commas_1 = self.spinBox_first_number_decimal.value()
-            smaller_or_equal_1 = self.combobox_first_number_decimal.currentIndex()
-            minimum_2 = self.spinBox_second_number_min.value()
-            maximum_2 = self.spinBox_second_number_max.value()
-            commas_2 = self.spinBox_second_number_decimal.value()
-            smaller_or_equal_2 = self.combobox_second_number_decimal.currentIndex()
-            new_example = create_single_example_multiplication(minimum_1, maximum_1, commas_1, smaller_or_equal_1,minimum_2, maximum_2, commas_2, smaller_or_equal_2)
-        elif thema == themen_worksheet_wizard[3]:
-            minimum_1 = self.spinbox_dividend_min_wizard.value()
-            maximum_1 = self.spinbox_dividend_max_wizard.value()
-            minimum_2 = self.spinbox_divisor_min_wizard.value()
-            maximum_2 = self.spinbox_divisor_max_wizard.value()
-            commas_div = self.spinBox_divisor_kommastellen_wizard.value()
-            commas_result = self.spinbox_ergebnis_kommastellen_wizard.value()
-            smaller_or_equal_div = self.combobox_divisor_kommastelle_wizard.currentIndex()
-            smaller_or_equal_result = self.combobox_ergebnis_kommastellen_wizard.currentIndex()
-
-
-            if self.combobox_dividend_wizard.currentIndex()==1:
-                output_type = 2    
-            elif self.radioButton_division_ohne_rest.isChecked():
-                output_type = 0
-            elif self.radioButton_division_rest.isChecked():
-                output_type = 1
-
-            new_example = create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div, smaller_or_equal_div, commas_result, smaller_or_equal_result, output_type)
-
-        elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[5] or thema == themen_worksheet_wizard[6] or thema == themen_worksheet_wizard[7]:
-            minimum = self.spinbox_zahlenbereich_minimum.value()
-            maximum = self.spinbox_zahlenbereich_maximum.value()
-            commas = self.spinbox_kommastellen_wizard.value()
-            smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
-            anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
-            brackets_allowed = self.checkbox_allow_brackets_wizard.isChecked()
-
-            if thema == themen_worksheet_wizard[5]:
-                new_example = create_single_example_ganze_zahlen_strich(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
-            elif thema == themen_worksheet_wizard[6]:
-                new_example = create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
-            elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[7]:
-                if thema == themen_worksheet_wizard[4]:
-                    show_brackets = False
-                else:
-                    show_brackets = True
-                new_example = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)
-
-
-        result = self.list_of_examples_wizard[index][-2]
-
-        if self.checkBox_show_nonogramm.isChecked():
-            for key, value in self.coordinates_nonogramm_wizard.items():
-                if value == result:
-                    self.coordinates_nonogramm_wizard[key]=new_example[-2]
-                    break
-
-        self.list_of_examples_wizard[index] = new_example
-        self.dict_aufgaben_wizard[index].setText(new_example[-1])
-
-
-    def reset_aufgabenboxes_wizard(self):
-        columns = self.spinBox_column_wizard.value()
-        for i in reversed(range(self.gridLayout_scrollArea_wizard.count())): 
-            self.gridLayout_scrollArea_wizard.itemAt(i).widget().setParent(None)
-
-        items_per_column= len(self.list_of_examples_wizard)/columns
-        column = 0
-        row = 0
-
-        for index, example in enumerate(self.list_of_examples_wizard):
-            self.create_aufgabenbox_wizard(index, example, row, column)
-            if row+1 < items_per_column:
-                row +=1
-            else:
-                row +=1
-                self.gridLayout_scrollArea_wizard.setColumnStretch(row, 1)
-                self.gridLayout_scrollArea_wizard.setRowStretch(row, 1)
-                row = 0
-                column +=1
-
-    def create_worksheet_wizard_pressed(self):
-        self.worksheet_wizard_changed = False
-        thema = self.comboBox_themen_wizard.currentText()
-        examples = self.spinBox_number_wizard.value()
-
-
-        if thema == 'Addition':
-            minimum = self.spinbox_zahlenbereich_minimum.value()
-            maximum = self.spinbox_zahlenbereich_maximum.value()
-            commas = self.spinbox_kommastellen_wizard.value()
-            smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
-            anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
-            if minimum>maximum:
-                critical_window('Das Maximum muss größer als das Minimum sein.')
-                return
-            self.list_of_examples_wizard = create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
-
-        elif thema == 'Subtraktion':
-            minimum = self.spinbox_zahlenbereich_minimum.value()
-            maximum = self.spinbox_zahlenbereich_maximum.value()
-            commas = self.spinbox_kommastellen_wizard.value()
-            anzahl_subtrahenden = self.spinBox_zahlenbereich_anzahl_wizard.value()
-            smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
-            if minimum>maximum:
-                warning_window('Das Maximum muss größer als das Minimum sein.')
-                return
-            self.list_of_examples_wizard = create_list_of_examples_subtraction(examples, minimum, maximum, commas, self.checkbox_negative_ergebnisse_wizard.isChecked(), anzahl_subtrahenden,smaller_or_equal)
-        
-        elif thema == 'Multiplikation':
-            minimum_1 = self.spinBox_first_number_min.value()
-            maximum_1 = self.spinBox_first_number_max.value()
-            commas_1 = self.spinBox_first_number_decimal.value()
-            smaller_or_equal_1 = self.combobox_first_number_decimal.currentIndex()
-            minimum_2 = self.spinBox_second_number_min.value()
-            maximum_2 = self.spinBox_second_number_max.value()
-            commas_2 = self.spinBox_second_number_decimal.value()
-            smaller_or_equal_2 = self.combobox_second_number_decimal.currentIndex()
-            self.list_of_examples_wizard = create_list_of_examples_multiplication(examples, minimum_1, maximum_1, commas_1, smaller_or_equal_1 ,minimum_2, maximum_2, commas_2, smaller_or_equal_2)
-
-        elif thema == "Division":
-            minimum_1 = self.spinbox_dividend_min_wizard.value()
-            maximum_1 = self.spinbox_dividend_max_wizard.value()
-            minimum_2 = self.spinbox_divisor_min_wizard.value()
-            maximum_2 = self.spinbox_divisor_max_wizard.value()
-            commas_div = self.spinBox_divisor_kommastellen_wizard.value()
-            smaller_or_equal_div = self.combobox_divisor_kommastelle_wizard.currentIndex()
-            commas_result = self.spinbox_ergebnis_kommastellen_wizard.value()
-            smaller_or_equal_result = self.combobox_ergebnis_kommastellen_wizard.currentIndex()
-            if self.combobox_dividend_wizard.currentIndex()==1:
-                output_type = 2    
-            elif self.radioButton_division_ohne_rest.isChecked():
-                output_type = 0
-            elif self.radioButton_division_rest.isChecked():
-                output_type = 1           
-
-            self.list_of_examples_wizard = create_list_of_examples_division(examples, minimum_1, maximum_1, minimum_2, maximum_2, commas_div, smaller_or_equal_div,commas_result,smaller_or_equal_result, output_type)  
-
-        elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[5] or thema == themen_worksheet_wizard[6] or thema == themen_worksheet_wizard[7]:
-            minimum = self.spinbox_zahlenbereich_minimum.value()
-            maximum = self.spinbox_zahlenbereich_maximum.value()
-            commas = self.spinbox_kommastellen_wizard.value()
-            smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
-            anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
-            brackets_allowed = self.checkbox_allow_brackets_wizard.isChecked()
-            show_brackets = True
-            if thema == themen_worksheet_wizard[5]:
-                typ = 'strich'
-            elif thema == themen_worksheet_wizard[6]:
-                typ = 'punkt'
-            elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[7]:
-                if thema == themen_worksheet_wizard[4]:
-                    show_brackets = False
-                typ = 'grundrechnungsarten'
-
-            if minimum>maximum:
-                critical_window('Das Maximum muss größer als das Minimum sein.')
-                return
-            self.list_of_examples_wizard = create_list_of_examples_ganze_zahlen(typ, examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)
-
-
-        self.reset_aufgabenboxes_wizard()
-        
-        if self.checkBox_show_nonogramm.isChecked():
-            self.chosen_nonogram, solution_pixel = get_all_solution_pixels(self.list_of_examples_wizard, self.combobox_nonogramm_wizard.currentText())
-
-            self.coordinates_nonogramm_wizard = create_coordinates(self, solution_pixel)
-
-        # print(self.list_of_examples_wizard)
-
-    def create_latex_file_content_wizard(self):
-        if self.worksheet_wizard_changed == True:
-            self.create_worksheet_wizard_pressed()    
-
-
-
-        titel = self.lineEdit_titel_wizard.text()
-        columns = self.spinBox_column_wizard.value()
-        if self.combobox_nummerierung_wizard.currentText() == '-':
-            nummerierung = "label={}"
-        else:
-            nummerierung = self.combobox_nummerierung_wizard.currentText()
-        ausrichtung = self.combobox_ausrichtung_wizard.currentIndex()
-        index = self.comboBox_themen_wizard.currentIndex()
-
-        content = create_latex_worksheet(
-            self.list_of_examples_wizard,
-            index ,titel, columns, nummerierung, ausrichtung,
-            self.comboBox_solution_type_wizard.currentIndex(),
-            )
-
-        if self.checkBox_show_nonogramm.isChecked():
-            content += create_nonogramm(self.chosen_nonogram , self.coordinates_nonogramm_wizard, self)
-        
-        return content
-
-
-
-    def create_vorschau_worksheet_wizard(self):
-        content = self.create_latex_file_content_wizard()
-
-        # content = show_all_nonogramms() # for testing reasons
-
-        path_file = os.path.join(
-            path_localappdata_lama, "Teildokument", "worksheet.tex"
-            )
-
-        if self.checkbox_solutions_wizard.isChecked() == True:
-            show_solution = "solution_on"
-        else:
-            show_solution = "solution_off"
-
-        with open(path_file, "w", encoding="utf8") as file:
-            file.write(tex_preamble(solution=show_solution, pagestyle='empty', font_size=self.combobox_fontsize_wizard.currentText(), documentclass='extarticle'))
-
-            file.write(content)
-
-            file.write(tex_end)
-
-        create_pdf("worksheet")
-
-
-
-    def save_worksheet_wizard(self):
-        content = self.create_latex_file_content_wizard()
-        # try:
-        #     self.list_of_examples_wizard 
-        # except AttributeError:
-        #     self.create_worksheet_wizard_pressed()
-
-
-        # titel = self.lineEdit_titel_wizard.text()
-        # columns = self.spinBox_column_wizard.value()
-        # if self.combobox_nummerierung_wizard.currentText() == '-':
-        #     nummerierung = "label={}"
-        # else:
-        #     nummerierung = self.combobox_nummerierung_wizard.currentText()
-        # ausrichtung = self.combobox_ausrichtung_wizard.currentIndex()
-        # index = self.comboBox_themen_wizard.currentIndex()
-
-        # content = create_latex_worksheet(self.list_of_examples_wizard, index ,titel, columns, nummerierung, ausrichtung, self.comboBox_solution_type_wizard.currentIndex())
-
-        # if self.checkBox_show_nonogramm.isChecked():
-        #     content += create_nonogramm(self.coordinates_nonogramm_wizard)
-
-        try:
-            self.saved_file_path
-        except AttributeError:
-            self.saved_file_path = path_home
-        path_file = self.get_saving_path()
-        if path_file == None:
-            return
-
-        index = 0
-        for show_solution in ["solution_on", "solution_off"]:
-            with open(path_file, "w", encoding="utf8") as file:
-                file.write(tex_preamble(solution=show_solution, pagestyle='empty', font_size=self.combobox_fontsize_wizard.currentText(), documentclass='extarticle'))
-
-                file.write(content)
-
-                file.write(tex_end)
-
-
-            name, extension = os.path.splitext(path_file)
-
-
-            create_pdf(name, index, 2)
+        # maximum = 0
+        # _list = []
+        # for file in all_files:
+        #     variation = check_if_variation(file['name'])
+        #     _,num = file['name'].split(" - ")
+        #     if variation == True:
+        #         x= re.split(r"\[|\]",num)
+        #         num = int(x[0])
+        #         variation_num = int(x[1])
+        #     else:
+        #         num = int(num)
+        #     _list.append(num)
+        #     if num > maximum:
+        #         maximum = num
+        # # print(maximum)
+
+        # for i in range(1,maximum+1):
+        #     if i not in _list:
+        #         print(i)
+        #     else:
+        #         print('existiert: {}'.format(i))    
             
-            temp_filename = name + ".pdf"
-            if index == 0:
-                new_filename = name + "_Loesung.pdf"
+        # print(_database_addon.all())
+        # print(database.all())
+        # print(files)
 
-                shutil.move(temp_filename, new_filename)
-
-            elif index ==1:
-                self.reset_latex_file_to_start(path_file)
-
-            index +=1
-
-
-        if sys.platform.startswith("linux"):
-            path_file = os.path.dirname(path_file)
-            subprocess.Popen('xdg-open "{}"'.format(path_file), shell=True)
-        elif sys.platform.startswith("darwin"):
-            path_file = os.path.dirname(path_file)
-            subprocess.Popen('open "{}"'.format(path_file), shell=True)
-        else:
-            path_file = os.path.dirname(path_file).replace("/", "\\")
-            subprocess.Popen('explorer "{}"'.format(path_file))
-        # return
-  
-
+    
     def image_clean_up(self):
         image_folder = os.path.join(path_database, "Bilder")
 
@@ -6832,7 +5915,7 @@ class Ui_MainWindow(object):
             )
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         loaded_file = self.load_file(self.saved_file_path)
-
+        QtWidgets.QApplication.restoreOverrideCursor()
         try:
             if self.chosen_program == loaded_file["data_gesamt"]["program"]:
                 if self.list_alle_aufgaben_sage != []:
@@ -6848,6 +5931,7 @@ class Ui_MainWindow(object):
                 "Bitte laden Sie eine aktuelle *.lama-Datei oder kontaktieren Sie lama.helpme@gmail.com, wenn Sie Hilfe benötigen.",
             )
             return
+        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         self.update_gui("widgets_sage")
         self.dict_all_infos_for_file = self.load_file(self.saved_file_path)
 
@@ -6914,6 +5998,7 @@ class Ui_MainWindow(object):
         self.progress.setCancelButton(None)
         self.progress.setWindowModality(Qt.WindowModal)
 
+
         list_aufgaben_errors = self.sage_load_files()
         self.progress.cancel()
 
@@ -6956,9 +6041,9 @@ class Ui_MainWindow(object):
                     ][1]
                 )
 
-                self.dict_variablen_punkte_halb[aufgabe] = self.dict_all_infos_for_file["dict_alle_aufgaben_pkt_abstand"][
+                self.dict_variablen_punkte_halb[aufgabe].setChecked(self.dict_all_infos_for_file["dict_alle_aufgaben_pkt_abstand"][
                         aufgabe
-                    ][2]
+                    ][2])
             except KeyError:
                 pass
 
@@ -7018,124 +6103,40 @@ class Ui_MainWindow(object):
             self.update_label_restore_action()
 
     def define_titlepage(self):
-        if self.comboBox_pruefungstyp.currentText() == "Quiz":
-            print("not yet working")
-            return
-            Dialog = QtWidgets.QDialog(
-                None,
-                QtCore.Qt.WindowSystemMenuHint
-                | QtCore.Qt.WindowTitleHint
-                | QtCore.Qt.WindowCloseButtonHint,
+        if self.chosen_program == "lama":
+            dict_titlepage = self.dict_titlepage
+        elif self.chosen_program == "cria":
+            dict_titlepage = self.dict_titlepage_cria
+
+        self.Dialog = QtWidgets.QDialog(
+            None,
+            QtCore.Qt.WindowSystemMenuHint
+            | QtCore.Qt.WindowTitleHint
+            | QtCore.Qt.WindowCloseButtonHint,
+        )
+        self.ui = Ui_Dialog_titlepage()
+        self.ui.setupUi(self.Dialog, dict_titlepage)
+        # self.Dialog.show()
+        self.Dialog.exec()
+
+        if self.chosen_program == "lama":
+            self.dict_titlepage = dict_titlepage
+            titlepage_save = os.path.join(
+                path_localappdata_lama, "Teildokument", "titlepage_save"
             )
-            ui = Ui_Dialog_random_quiz()
-            ui.setupUi(Dialog, self)
-            # self.Dialog.show()
-            response = Dialog.exec()
-            if response == 0:
-                return
-
-            chosen_gks = ui.random_quiz_response[1]
-
-            random_list = []
-            for all in self.beispieldaten_dateipfad_1:
-                for gks in chosen_gks:
-                    if gks in all:
-                        _file = os.path.basename(self.beispieldaten_dateipfad_1[all])
-                        filename, extension = os.path.splitext(_file)
-                        random_list.append(filename)
-
-            if random_list == []:
-                for all in self.beispieldaten_dateipfad_1:
-                    _file = os.path.basename(self.beispieldaten_dateipfad_1[all])
-                    filename, extension = os.path.splitext(_file)
-                    if (
-                        filename.split(" - ")[0] in dict_gk.values()
-                    ):  # ignore all not examples not in gks
-                        random_list.append(filename)
-
-            if len(random_list) < ui.random_quiz_response[0]:
-                number_examples = len(random_list)
-                warning_window(
-                    "Es sind insgesamt weniger Aufgaben enthalten ({0}), als die ausgwählte Anzahl der Aufgaben ({1}).".format(
-                        len(random_list),
-                        ui.random_quiz_response[0],
-                    ),
-                    "Es werden alle vorhandenen Aufgaben in zufälliger Reihenfolge ausgegeben.",
-                    "Anzahl der Aufgaben",
-                )
-            else:
-                number_examples = ui.random_quiz_response[0]
-
-            sampling = random.sample(random_list, number_examples)
-
-            if not is_empty(self.list_alle_aufgaben_sage):
-                response = question_window(
-                    "Sind Sie sicher, dass Sie das Fenster zurücksetzen wollen und die erstellte Datei löschen möchten?",
-                    titel="Datei löschen?",
-                )
-
-                if response == False:
-                    return
-
-                for aufgabe in self.list_alle_aufgaben_sage[:]:
-                    self.btn_delete_pressed(aufgabe)
-            # self.list_alle_aufgaben_sage = []
-
-            QtWidgets.QApplication.setOverrideCursor(
-                QtGui.QCursor(QtCore.Qt.WaitCursor)
+        if self.chosen_program == "cria":
+            self.dict_titlepage_cria = dict_titlepage
+            titlepage_save = os.path.join(
+                path_localappdata_lama, "Teildokument", "titlepage_save_cria"
             )
 
-            for aufgabe in sampling:
-                self.sage_aufgabe_add(aufgabe)
-                infos = self.collect_all_infos_aufgabe(aufgabe)
-                self.dict_alle_aufgaben_sage[aufgabe] = infos
-
-                self.build_aufgaben_schularbeit(aufgabe)  # aufgabe, aufgaben_verteilung
-
-            QtWidgets.QApplication.restoreOverrideCursor()
-
-            # self.list_alle_aufgaben_sage = []
-            # for all in sampling:
-            #     self.list_alle_aufgaben_sage.append(all)
-
-            # for all in self.list_alle_aufgaben_sage:
-            #     self.build_aufgaben_schularbeit(all)
-
-        else:
-            if self.chosen_program == "lama":
-                dict_titlepage = self.dict_titlepage
-            if self.chosen_program == "cria":
-                dict_titlepage = self.dict_titlepage_cria
-
-            self.Dialog = QtWidgets.QDialog(
-                None,
-                QtCore.Qt.WindowSystemMenuHint
-                | QtCore.Qt.WindowTitleHint
-                | QtCore.Qt.WindowCloseButtonHint,
-            )
-            self.ui = Ui_Dialog_titlepage()
-            self.ui.setupUi(self.Dialog, dict_titlepage)
-            # self.Dialog.show()
-            self.Dialog.exec()
-
-            if self.chosen_program == "lama":
-                self.dict_titlepage = dict_titlepage
-                titlepage_save = os.path.join(
-                    path_localappdata_lama, "Teildokument", "titlepage_save"
-                )
-            if self.chosen_program == "cria":
-                self.dict_titlepage_cria = dict_titlepage
-                titlepage_save = os.path.join(
-                    path_localappdata_lama, "Teildokument", "titlepage_save_cria"
-                )
-
-            try:
-                with open(titlepage_save, "w+", encoding="utf8") as f:
-                    json.dump(dict_titlepage, f, ensure_ascii=False)
-            except FileNotFoundError:
-                os.makedirs(os.path.join(path_localappdata_lama, "Teildokument"))
-                with open(titlepage_save, "w+", encoding="utf8") as f:
-                    json.dump(dict_titlepage, f, ensure_ascii=False)
+        try:
+            with open(titlepage_save, "w+", encoding="utf8") as f:
+                json.dump(dict_titlepage, f, ensure_ascii=False)
+        except FileNotFoundError:
+            os.makedirs(os.path.join(path_localappdata_lama, "Teildokument"))
+            with open(titlepage_save, "w+", encoding="utf8") as f:
+                json.dump(dict_titlepage, f, ensure_ascii=False)
 
     def notenanzeige_changed(self):
         if self.combobox_beurteilung.currentIndex() == 0:
@@ -7298,11 +6299,11 @@ class Ui_MainWindow(object):
     def spinbox_pkt_changed(self):  # , aufgabe, spinbox_abstand
         self.update_punkte()
 
-    def checkbox_pkt_changed(self, aufgabe):
-        if self.dict_variablen_punkte_halb[aufgabe] ==  False:
-            self.dict_variablen_punkte_halb[aufgabe] = True
-        else:
-            self.dict_variablen_punkte_halb[aufgabe] = False
+    # def checkbox_pkt_changed(self, aufgabe):
+    #     if self.dict_variablen_punkte_halb[aufgabe] ==  False:
+    #         self.dict_variablen_punkte_halb[aufgabe] = True
+    #     else:
+    #         self.dict_variablen_punkte_halb[aufgabe] = False
 
 
     def spinbox_abstand_changed(self):  # , aufgabe, spinbox_abstand
@@ -7336,16 +6337,20 @@ class Ui_MainWindow(object):
         pkt_typ1 = 0
         pkt_typ2 = 0
         gesamtpunkte = 0
-        for all in self.dict_variablen_punkte:
-            typ = get_aufgabentyp(self.chosen_program, all)
-            if typ == None:
-                gesamtpunkte += self.dict_variablen_punkte[all].value()
-            elif typ == 1:
-                pkt_typ1 += self.dict_variablen_punkte[all].value()
-                gesamtpunkte += self.dict_variablen_punkte[all].value()
-            elif typ == 2:
-                pkt_typ2 += self.dict_variablen_punkte[all].value()
-                gesamtpunkte += self.dict_variablen_punkte[all].value()
+        # print(self.dict_variablen_punkte)
+        # print(len(self.dict_variablen_punkte))
+        # for all in self.dict_variablen_punkte:
+            # print(all)
+            # print(self.dict_variablen_punkte[all].value())
+        #     typ = get_aufgabentyp(self.chosen_program, all)
+        #     if typ == None:
+        #         gesamtpunkte += self.dict_variablen_punkte[all].value()
+        #     elif typ == 1:
+        #         pkt_typ1 += self.dict_variablen_punkte[all].value()
+        #         gesamtpunkte += self.dict_variablen_punkte[all].value()
+        #     elif typ == 2:
+        #         pkt_typ2 += self.dict_variablen_punkte[all].value()
+        #         gesamtpunkte += self.dict_variablen_punkte[all].value()
 
         return [gesamtpunkte, pkt_typ1, pkt_typ2]
 
@@ -7455,7 +6460,12 @@ class Ui_MainWindow(object):
         return self.dict_variablen_abstand[aufgabe].value()
 
     def get_punkte_halb_aufgabe_sage(self, aufgabe):
-        return self.dict_variablen_punkte_halb[aufgabe]
+        typ = get_aufgabentyp(self.chosen_program, aufgabe)
+        if typ == 1:
+            return self.dict_variablen_punkte_halb[aufgabe].isChecked()
+        else:
+            return False
+
 
 
 
@@ -7509,10 +6519,43 @@ class Ui_MainWindow(object):
         )
         gridLayout_gB.addWidget(label_titel, 2, 0, 1, 1)
 
+        gridLayout_gB.setColumnStretch(1, 2)
+
+        af = aufgabe_total["af"]
+        if  af == 'oa' or af == 'ta' or af == 'ko' or typ==2:
+            groupbox_AB = create_new_groupbox(new_groupbox, "Gruppe")
+            groupbox_AB.setSizePolicy(SizePolicy_fixed)
+            gridLayout_gB.addWidget(groupbox_AB, 0,2,3,1,QtCore.Qt.AlignRight)
+            horizontalLayout_groupbox_AB = create_new_horizontallayout(groupbox_AB)
+
+            checkbox_AB = create_new_checkbox(groupbox_AB, "A/B", True)
+            self.dict_widget_variables['checkbox_AB_{}'.format(aufgabe)] = checkbox_AB
+
+            try:
+                gruppe = aufgabe_total['gruppe']
+            except KeyError:
+                gruppe = False
+
+            if gruppe == False:
+                checkbox_AB.setChecked(False)
+                checkbox_AB.setEnabled(False)
+                checkbox_AB.setToolTip("Derzeit ist für diese Aufgabe keine Gruppen-Variation verfügbar.")
+            else:
+                checkbox_AB.setToolTip("Diese Aufgabe wird bei unterschiedlichen Gruppen\ngeringfügig (z.B. durch veränderte Zahlen) variiert.")
+
+            
+            horizontalLayout_groupbox_AB.addWidget(checkbox_AB)
+
+
         groupbox_pkt = create_new_groupbox(new_groupbox, "Punkte")
         groupbox_pkt.setSizePolicy(SizePolicy_fixed)
-        gridLayout_gB.addWidget(groupbox_pkt, 0, 1, 3, 1, QtCore.Qt.AlignRight)
+        gridLayout_gB.addWidget(groupbox_pkt, 0, 3, 3, 1, QtCore.Qt.AlignRight)
 
+
+        try:
+            self.temp_info
+        except AttributeError:
+            self.temp_info={}
 
         if aufgabe in self.temp_info:
             punkte = self.temp_info[aufgabe][0]
@@ -7520,6 +6563,7 @@ class Ui_MainWindow(object):
             punkte = self.spinBox_default_pkt.value()
         else:
             punkte = aufgabe_total["punkte"]
+
 
 
         horizontalLayout_groupbox_pkt = QtWidgets.QHBoxLayout(groupbox_pkt)
@@ -7542,13 +6586,13 @@ class Ui_MainWindow(object):
                 state = self.temp_info[aufgabe][1]
             else:
                 state= False             
-            checkbox_pkt.stateChanged.connect(partial(self.checkbox_pkt_changed, aufgabe))
+            # checkbox_pkt.stateChanged.connect(partial(self.checkbox_pkt_changed, aufgabe))
             if state == True:
                 checkbox_pkt.setChecked(True)
             horizontalLayout_groupbox_pkt.addWidget(checkbox_pkt)
-            self.dict_variablen_punkte_halb[aufgabe] = state
-        else:
-            self.dict_variablen_punkte_halb[aufgabe] = False
+            self.dict_variablen_punkte_halb[aufgabe] = checkbox_pkt
+        # else:
+        #     self.dict_variablen_punkte_halb[aufgabe] = False
         if typ == 2:
             groupbox_pkt.setToolTip(
                 "Die Punkte geben die Gesamtpunkte dieser Aufgabe an.\nEs müssen daher auch die Ausgleichspunkte berücksichtigt werden."
@@ -7574,7 +6618,7 @@ class Ui_MainWindow(object):
             QtWidgets.QStyle.SP_ArrowUp,
         )
 
-        gridLayout_gB.addWidget(button_up, 0, 3, 2, 1)
+        gridLayout_gB.addWidget(button_up, 0, 5, 2, 1)
         number = index + 1
         if (typ == 1 or typ == None) and number == 1:
             button_up.setEnabled(False)
@@ -7587,7 +6631,7 @@ class Ui_MainWindow(object):
             partial(self.btn_down_pressed, aufgabe),
             QtWidgets.QStyle.SP_ArrowDown,
         )
-        gridLayout_gB.addWidget(button_down, 0, 4, 2, 1)
+        gridLayout_gB.addWidget(button_down, 0, 6, 2, 1)
 
         if typ == 1 and number == aufgaben_verteilung[0]:
             button_down.setEnabled(False)
@@ -7600,12 +6644,12 @@ class Ui_MainWindow(object):
             partial(self.btn_delete_pressed, aufgabe),
             QtWidgets.QStyle.SP_DialogCancelButton,
         )
-        gridLayout_gB.addWidget(button_delete, 0, 5, 2, 1)
+        gridLayout_gB.addWidget(button_delete, 0, 7, 2, 1)
 
         groupbox_abstand_ausgleich = create_new_groupbox(new_groupbox, "Abstand (cm)  ")
         groupbox_abstand_ausgleich.setSizePolicy(SizePolicy_fixed)
         # groupbox_abstand.setMaximumSize(QtCore.QSize(100, 16777215))
-        gridLayout_gB.addWidget(groupbox_abstand_ausgleich, 0, 2, 3, 1)
+        gridLayout_gB.addWidget(groupbox_abstand_ausgleich, 0,4, 3, 1)
 
         verticalLayout_abstand = QtWidgets.QVBoxLayout(groupbox_abstand_ausgleich)
         verticalLayout_abstand.setObjectName("verticalLayout_abstand")
@@ -7645,7 +6689,7 @@ class Ui_MainWindow(object):
         pushbutton_ausgleich.setStyleSheet("padding: 6px")
         pushbutton_ausgleich.setSizePolicy(SizePolicy_fixed)
         # pushbutton_ausgleich.setMaximumSize(QtCore.QSize(220, 30))
-        gridLayout_gB.addWidget(pushbutton_ausgleich, 2, 3, 1, 3)
+        gridLayout_gB.addWidget(pushbutton_ausgleich, 2, 5, 1, 3)
 
         # pushbutton_aufgabe_bearbeiten = create_new_button(groupbox_pkt, 'Aufgabe bearbeiten', still_to_define)
         # gridLayout_gB.addWidget(pushbutton_aufgabe_bearbeiten, 0,1,1,1)
@@ -7725,7 +6769,8 @@ class Ui_MainWindow(object):
 
         self.temp_info = {}
         for all in self.dict_variablen_punkte.keys():
-            self.temp_info[all] = [self.dict_variablen_punkte[all].value(), self.dict_variablen_punkte_halb[all], self.dict_variablen_abstand[all].value()]
+            halbe_punkte = self.get_punkte_halb_aufgabe_sage(all)
+            self.temp_info[all] = [self.dict_variablen_punkte[all].value(), halbe_punkte, self.dict_variablen_abstand[all].value()]
 
 
         for i in reversed(range(start_value, self.gridLayout_8.count() + 1)):
@@ -7743,10 +6788,11 @@ class Ui_MainWindow(object):
             self.gridLayout_8.addWidget(neue_aufgaben_box, index_item, 0, 1, 1)
             index_item + 1
 
-        self.spacerItem = QtWidgets.QSpacerItem(
-            20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
-        )
-        self.gridLayout_8.addItem(self.spacerItem, index_item + 1, 0, 1, 1)
+        self.gridLayout_8.setRowStretch(index_item+2,1)
+        # self.spacerItem = QtWidgets.QSpacerItem(
+        #     20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        # )
+        # self.gridLayout_8.addItem(self.spacerItem, index_item + 1, 0, 1, 1)
 
         self.add_image_path_to_list(aufgabe.replace(" (lokal)", ""))
 
@@ -7855,6 +6901,7 @@ class Ui_MainWindow(object):
                 self.dict_sage_hide_show_items_chosen[
                     aufgabe
                 ] = ui.list_sage_hide_show_items_chosen
+
             elif aufgabe in self.dict_sage_hide_show_items_chosen:
                 del self.dict_sage_hide_show_items_chosen[aufgabe]
 
@@ -8221,8 +7268,6 @@ class Ui_MainWindow(object):
         _dict = {}
         
         for aufgabe in self.list_alle_aufgaben_sage:
-            typ = get_aufgabentyp(self.chosen_program, aufgabe)
-
             halbe_punkte = self.get_punkte_halb_aufgabe_sage(aufgabe)
 
             _dict[aufgabe] = [
@@ -8304,13 +7349,39 @@ class Ui_MainWindow(object):
                 )
                 return False
 
+    def replace_group_variation_aufgabe(self, content):
+        _list = re.findall("\\\\variation\{.*\}\{.*\}", content)
+        print(_list)
+        for all in _list:
+            open_count=0
+            close_count=0
+            for i, char in enumerate(all):
+                if char != "{" and char != "}":
+                    continue
+                elif char == "{":
+                    open_count +=1
+                elif char == "}":
+                    close_count +=1
+                if open_count==close_count:
+                    start_index = i
+                    break
+            print(start_index)
+            replacement_string = all[start_index+2:-1].replace("\\", "\\\\")
+            print(replacement_string)
+            content = re.sub("\\\\variation\{.*\}\{.*\}", replacement_string, content)
+
+
+
+        return content
+
     def add_content_to_tex_file(
         self, aufgabe, aufgabe_total, filename_vorschau, first_typ2, ausgabetyp
     ):
 
+
         if get_aufgabentyp(self.chosen_program, aufgabe) == 2:
             if first_typ2 == False:
-                header = "\\newpage \n\n\subsubsection{Typ 2 Aufgaben}\n\n"
+                header = "\\newpage \n\n\\textbf{Typ 2 Aufgaben}\n\n"
                 first_typ2 = True
             else:
                 header = "\\newpage\n\n"
@@ -8341,14 +7412,11 @@ class Ui_MainWindow(object):
         else:
             vspace = "\\vspace{{{0}cm}} \n\n".format(abstand)
 
-        with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
-            vorschau.write(header)
-            vorschau.write(begin)
+
 
         if aufgabe in self.dict_sage_individual_change:
             content = self.dict_sage_individual_change[aufgabe]
-            # with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
-            #     vorschau.write(self.dict_sage_individual_change[aufgabe])
+
         elif aufgabe in self.dict_sage_ausgleichspunkte_chosen:
             full_content = aufgabe_total["content"]
 
@@ -8357,9 +7425,7 @@ class Ui_MainWindow(object):
                 self, aufgabe, split_content, full_content
             )
 
-            # content = "\n".join(split_content)
-            # with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
-            #     vorschau.write(content)
+
         elif aufgabe in self.dict_sage_hide_show_items_chosen:
             full_content = aufgabe_total["content"]
             split_content = self.split_content(aufgabe, aufgabe_total["content"])
@@ -8367,39 +7433,34 @@ class Ui_MainWindow(object):
             content = edit_content_hide_show_items(
                 self, aufgabe, split_content, full_content
             )
-            # print(content)
-            # with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
-            #     vorschau.write(content)
-            # for index in self.dict_sage_ausgleichspunkte_chosen[aufgabe]:
-            #     split_content[index] = split_content[index].replace("SUBitem", "")
 
-        # try:
-        #     split_content, index_end = split_aufgaben_content(content)
-        #     split_content = split_content[:index_end]
-        # except Exception as e1:
-        #     try:
-        #         split_content = split_aufgaben_content_new_format(content)
-        #     except Exception:
-        #         # split_content = None
-        #         warning_window(
-        #             "Es ist ein Fehler bei der Anzeige der Aufgabe {} aufgetreten! (Die Aufgabe kann voraussichtlich dennoch verwendet und individuell in der TeX-Datei bearbeitet werden.)\n".format(
-        #                 aufgabe
-        #             ),
-        #             'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!',
-        #         )
-        #         return
 
         else:
             content = aufgabe_total["content"]
+
+
+
         if ausgabetyp == "schularbeit" and is_empty(aufgabe_total['bilder'])  == False:
             for image in aufgabe_total['bilder']:
                 content = re.sub(r"{{../_database.*{0}}}".format(image),"{{{0}}}".format(image),content)
 
-        
+
+        show_group_B = False
+        if 'checkbox_AB_{}'.format(aufgabe) in self.dict_widget_variables:
+            checkbox = self.dict_widget_variables['checkbox_AB_{}'.format(aufgabe)]
+            if checkbox.isChecked() and self.comboBox_gruppe_AB.currentIndex()==1:
+                show_group_B = True
+
 
         with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
+            vorschau.write(header)
+            if show_group_B == True:
+                vorschau.write("\setcounter{Zufall}{1}")    
+            vorschau.write(begin)
             vorschau.write(content)
             vorschau.write(end)
+            if show_group_B == True:
+                vorschau.write("\setcounter{Zufall}{0}")
             vorschau.write(vspace)
             vorschau.write("\n\n")
 
@@ -8407,6 +7468,7 @@ class Ui_MainWindow(object):
 
     def create_body_of_tex_file(self, filename_vorschau, ausgabetyp):
         first_typ2 = False
+
         for aufgabe in self.list_alle_aufgaben_sage:
             name = aufgabe.replace(" (lokal)", "")
             typ = get_aufgabentyp(self.chosen_program, name)
@@ -8429,7 +7491,7 @@ class Ui_MainWindow(object):
         index=0,
         maximum=0,
         pdf=True,
-        lama=True,
+        show_pagenumber='plain',
         single_file_index=None,
         filename_vorschau=os.path.join(
             path_programm, "Teildokument", "Schularbeit_Vorschau.tex"
@@ -8442,6 +7504,57 @@ class Ui_MainWindow(object):
         # return
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
+        # if ausgabetyp == "vorschau":
+        #     filename_vorschau = os.path.join(
+        #         path_programm, "Teildokument", "Schularbeit_Vorschau.tex"
+        #     )
+        # if ausgabetyp == "schularbeit":
+
+        #     dict_umlaute = {
+        #         "Ä": "AE",
+        #         "ä": "ae",
+        #         "Ö": "OE",
+        #         "ö": "oe",
+        #         "Ü": "ue",
+        #         "ü": "ue",
+        #         "ß": "ss",
+        #     }
+        #     if index == 0:
+
+        #         self.chosen_path_schularbeit_erstellen = (
+        #             QtWidgets.QFileDialog.getSaveFileName(
+        #                 None,
+        #                 "Speicherort wählen",
+        #                 os.path.dirname(self.saved_file_path),
+        #                 "TeX Dateien (*.tex);; Alle Dateien (*.*)",
+        #             )
+        #         )
+
+        #         if self.chosen_path_schularbeit_erstellen[0] == "":
+        #             QtWidgets.QApplication.restoreOverrideCursor()
+        #             return
+        #         self.saved_file_path = self.chosen_path_schularbeit_erstellen[0]
+
+        #         dirname = os.path.dirname(self.chosen_path_schularbeit_erstellen[0])
+        #         filename = os.path.basename(self.chosen_path_schularbeit_erstellen[0])
+        #         if sys.platform.startswith("linux"):
+        #             filename = filename + ".tex"
+
+        #         for character in dict_umlaute.keys():
+        #             if character in filename:
+        #                 filename = filename.replace(character, dict_umlaute[character])
+        #         filename_vorschau = os.path.join(dirname, filename)
+
+        #         if lama == True:
+        #             Ui_MainWindow.sage_save(self, filename_vorschau)  #
+
+            # else:
+            #     dirname = os.path.dirname(self.chosen_path_schularbeit_erstellen[0])
+            #     filename = os.path.basename(self.chosen_path_schularbeit_erstellen[0])
+            #     for character in dict_umlaute.keys():
+            #         if character in filename:
+            #             filename = filename.replace(character, dict_umlaute[character])
+            #     filename_vorschau = os.path.join(dirname, filename)
 
         self.dict_gruppen = {0: "A", 1: "B", 2: "C", 3: "D", 4: "E", 5: "F"}
 
@@ -8454,10 +7567,10 @@ class Ui_MainWindow(object):
         if self.chosen_program == "cria":
             dict_titlepage = self.dict_titlepage_cria
 
-        # if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Quiz":
-        #     beamer_mode = True
-        # else:
-        #     beamer_mode = False
+        if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Quiz":
+            beamer_mode = True
+        else:
+            beamer_mode = False
 
         if (
             (ausgabetyp == "vorschau" and self.cb_solution_sage.isChecked() == True)
@@ -8487,7 +7600,7 @@ class Ui_MainWindow(object):
             or self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
             == "Nachschularbeit"
         ):
-            header = "\\subsubsection{Typ 1 Aufgaben}\n\n"
+            header = "\\textbf{Typ 1 Aufgaben}\n\n"
 
         else:
             header = ""
@@ -8496,7 +7609,7 @@ class Ui_MainWindow(object):
 
         with open(filename_vorschau, "w+", encoding="utf8") as vorschau:
             vorschau.write(
-                tex_preamble(solution=solution, random=gruppe)
+                tex_preamble(solution=solution, random=gruppe, beamer_mode=beamer_mode, pagestyle=show_pagenumber)
             )
             vorschau.write(str_titlepage)
             vorschau.write(header)
@@ -8814,8 +7927,6 @@ class Ui_MainWindow(object):
     def update_gui(self, chosen_gui):
         if self.chosen_program == "cria":
             chosen_gui = chosen_gui + "_cria"
-        # elif self.chosen_program == 'wizard':
-        #     chosen_gui == 'widgets_wizard'
         #     chosen_gui_list = eval(chosen_gui)
         # else:
         chosen_gui_list = eval(chosen_gui)
@@ -8872,47 +7983,7 @@ class Ui_MainWindow(object):
             # self.listWidget_fb.itemClicked.connect(self.nummer_clicked_fb)
             # self.listWidget_fb_cria.itemClicked.connect(self.nummer_clicked_fb)
 
-        if (chosen_gui == "widgets_create" and "###" in self.lineEdit_titel.text()) or (
-            chosen_gui == "widgets_edit"
-        ):
-            self.cb_matura_tag.show()
-            self.cb_no_grade_tag.hide()
-        elif (
-            chosen_gui == "widgets_create_cria" and "###" in self.lineEdit_titel.text()
-        ) or (chosen_gui == "widgets_edit_cria"):
-            self.cb_matura_tag.hide()
-            self.cb_no_grade_tag.show()
-
-        else:
-            self.cb_matura_tag.hide()
-            self.cb_no_grade_tag.hide()
-        
-        list_all_menubar = [self.menuSuche, self.menuSage, self.menuNeu, self.menuFeedback, self.menuOptionen ,self.menuDeveloper, self.menuHelp]
-        list_menubar_wizard = [self.menuWizard, self.menuOptionen ,self.menuHelp]
-
-        # if self.developer_mode_active == True:
-
-        if chosen_gui == 'widgets_wizard':
-            for all in list_all_menubar:
-                if all == self.menuDeveloper and self.developer_mode_active == False:
-                    continue
-                else:
-                    self.menuBar.removeAction(all.menuAction())
-            for all in list_menubar_wizard:
-                self.menuBar.addAction(all.menuAction())
-
-            self.actionRefresh_Database.setVisible(False)
-
-        else:
-            for all in list_menubar_wizard:
-                self.menuBar.removeAction(all.menuAction())
-
-            for all in list_all_menubar:
-                if all == self.menuDeveloper and self.developer_mode_active == False:
-                    continue
-                else:
-                    self.menuBar.addAction(all.menuAction())
-            self.actionRefresh_Database.setVisible(True)
+        self.check_admin_entry()
 
 
 if __name__ == "__main__":
@@ -9082,7 +8153,6 @@ if __name__ == "__main__":
         widgets_create_cria,
         widgets_edit_cria,
         widgets_feedback_cria,
-        widgets_wizard,
         list_widgets,
     )
 
@@ -9106,7 +8176,6 @@ if __name__ == "__main__":
     i = step_progressbar(i, "subwindows")
     from subwindows import Ui_Dialog_speichern
 
-
     i = step_progressbar(i, "subwindows")
     from subwindows import Ui_Dialog_variation
 
@@ -9118,9 +8187,6 @@ if __name__ == "__main__":
 
     i = step_progressbar(i, "subwindows")
     from subwindows import Ui_Dialog_draft_control
-
-    i = step_progressbar(i, "subwindows")
-    from subwindows import Ui_Dialog_Convert_To_Eps
 
     i = step_progressbar(i, "subwindows")
     from subwindows import read_credentials
@@ -9182,8 +8248,8 @@ if __name__ == "__main__":
         copy_included_images,
     )
 
-    # i = step_progressbar(i, "convert_image_to_eps")
-    # from convert_image_to_eps import convert_image_to_eps
+    i = step_progressbar(i, "convert_image_to_eps")
+    from convert_image_to_eps import convert_image_to_eps
 
     i = step_progressbar(i, "lama_stylesheets")
     from lama_stylesheets import *
@@ -9213,18 +8279,6 @@ if __name__ == "__main__":
         add_file,
         get_table,
         delete_file,
-    )
-
-    i = step_progressbar(i, "worksheet_wizard")
-    from worksheet_wizard import (
-        dict_widgets_wizard, themen_worksheet_wizard,
-        create_latex_worksheet, 
-        create_list_of_examples_addition, create_single_example_addition,
-        create_list_of_examples_subtraction, create_single_example_subtraction,
-        create_list_of_examples_multiplication, create_single_example_multiplication,
-        create_list_of_examples_division, create_single_example_division,
-        create_list_of_examples_ganze_zahlen, create_single_example_ganze_zahlen_strich, create_single_example_ganze_zahlen_punkt, create_single_example_ganze_zahlen_grundrechnungsarten,
-        create_nonogramm, create_coordinates, list_all_pixels, all_nonogramms, show_all_nonogramms
     )
 
     i = step_progressbar(i, "tex_minimal")

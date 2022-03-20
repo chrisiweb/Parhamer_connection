@@ -84,6 +84,14 @@ widgets_sage = [
     "comboBox_gk_num",
     "groupBox_default_pkt",
     "combobox_beurteilung",
+    # "label_gesamtpunkte",
+    # "label_gesamtbeispiele",
+    # "cb_drafts_sage",
+    # "cb_solution_sage",
+    # "label_gruppe_AB",
+    # "comboBox_gruppe_AB",
+    # "pushButton_vorschau",
+    # "pushButton_erstellen",
     # "radioButton_notenschl",
     # "radioButton_beurteilungsraster",
 ]  # ,'comboBox_at_sage','groupBox_sage','groupBox_notenschl','actionRefresh_Database'
@@ -194,6 +202,14 @@ widgets_sage_cria = [
     "comboBox_klassen",
     "comboBox_kapitel",
     "comboBox_unterkapitel",
+    # "label_gesamtpunkte",
+    # "label_gesamtbeispiele",
+    # "cb_drafts_sage",
+    # "cb_solution_sage",
+    # "label_gruppe_AB",
+    # "comboBox_gruppe_AB",
+    # "pushButton_vorschau",
+    # "pushButton_erstellen",
 ]  # ,'comboBox_at_sage','groupBox_sage','groupBox_notenschl','actionRefresh_Database'
 
 widgets_create_cria = [

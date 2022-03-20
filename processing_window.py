@@ -1,3 +1,4 @@
+from pydoc import plain
 from PyQt5 import QtCore, QtWidgets, QtGui
 # from PyQt5.QtWidgets import QMainWindow, QApplication
 from config import (
@@ -6,14 +7,15 @@ from config import (
     logo_path,
     logo_cria_button_path,
 )
+from predefined_size_policy import SizePolicy_maximum_height
 from waitingspinnerwidget import QtWaitingSpinner
 from functools import partial
-from create_new_widgets import create_new_verticallayout, create_new_label
+from create_new_widgets import create_new_verticallayout, create_new_gridlayout, create_new_label
 
 blue_7 = colors_ui["blue_7"]
 
 class Ui_Dialog_processing(object):
-    def setupUi(self, Dialog, worker_text, icon=True):
+    def setupUi(self, Dialog, worker_text, show_output = False, icon=True):
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
 
@@ -33,9 +35,8 @@ class Ui_Dialog_processing(object):
         else:
             Dialog.setWindowFlags(QtCore.Qt.Dialog | QtCore.Qt.CustomizeWindowHint | QtCore.Qt.WindowTitleHint)
         # Dialog.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed))
-        horizontalLayout = QtWidgets.QHBoxLayout(Dialog)
-        horizontalLayout.setObjectName("horizontal")
-        horizontalLayout.setSizeConstraint(QtWidgets.QHBoxLayout.SetFixedSize)
+        gridLayout = create_new_gridlayout(Dialog)
+        gridLayout.setSizeConstraint(QtWidgets.QHBoxLayout.SetFixedSize)
 
         if icon == True:
             pixmap = QtGui.QPixmap(logo_cria_button_path)
@@ -64,9 +65,16 @@ class Ui_Dialog_processing(object):
         spinner.start()  # starts spinning
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         if icon == True:
-            horizontalLayout.addWidget(image)
-        horizontalLayout.addWidget(self.label)
-        horizontalLayout.addWidget(label_spinner)
+            gridLayout.addWidget(image, 0,0,1,1)
+        gridLayout.addWidget(self.label, 0,1,1,1)
+        gridLayout.addWidget(label_spinner, 0,2,1,1)
+        if show_output == True:
+            self.plainTextEdit = QtWidgets.QPlainTextEdit(Dialog)
+            self.plainTextEdit.setReadOnly(True)
+            self.plainTextEdit.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+            self.plainTextEdit.setFixedHeight(70)
+            gridLayout.addWidget(self.plainTextEdit, 1,0,1,3)
+
 
 
 class Ui_ProgressBar(object):
@@ -151,4 +159,32 @@ def working_window(worker, text, *args):
     thread.exit()
     Dialog.exec()
 
+
+
+
+def working_window_latex_output(worker, text, *args):
+    Dialog = QtWidgets.QDialog()
+    ui = Ui_Dialog_processing()
+
+    ui.setupUi(Dialog, text, show_output=True)
+
+    ui.latex_error_occured = False
+    thread = QtCore.QThread(Dialog)
+    # worker = Worker_RefreshDDB()
+    worker.signalUpdateOutput.connect(signalUpdateOutput)
+    worker.finished.connect(Dialog.close)
+    worker.moveToThread(thread)
+
+    thread.started.connect(partial(worker.task,ui, *args)) 
+    thread.start()
+    thread.exit()
+    Dialog.exec()
     
+    return ui.latex_error_occured
+
+
+
+
+
+def signalUpdateOutput(ui, msg):
+    ui.plainTextEdit.appendPlainText(msg)
