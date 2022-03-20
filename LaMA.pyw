@@ -11,16 +11,10 @@ print("Loading...")
 from start_window import check_if_database_exists
 
 check_if_database_exists()
-from prepare_content_vorschau import (
-    edit_content_ausgleichspunkte,
-    edit_content_hide_show_items,
-)
+
 from git_sync import git_reset_repo_to_origin
-from standard_dialog_windows import question_window
 from config import *
 from lama_colors import *
-import time
-from create_new_widgets import add_action
 import json
 
 from config_start import (
@@ -31,29 +25,30 @@ from config_start import (
     database,
     lama_developer_credentials,
 )
-from PyQt5 import QtCore, QtWidgets, QtGui
-from PyQt5.QtWidgets import QMainWindow, QApplication
+# from PyQt5 import QtCore, QtWidgets, QtGui
+from PyQt5.QtWidgets import QApplication
+
 import sys
-import os
+# import os
 
 # from tinydb import Query
-import requests
 
 
-class Worker_CleanUp(QtCore.QObject):
-    finished = QtCore.pyqtSignal()
 
-    @QtCore.pyqtSlot()
-    def task(self, ui):
-        #### WORKING
-        Ui_MainWindow.dict_missing_files = Ui_MainWindow().file_clean_up(ui)
+# class Worker_CleanUp(QtCore.QObject):
+#     finished = QtCore.pyqtSignal()
 
-        ui.label.setText("Nicht verwendete Bilder werden gesucht ...")
-        list_unused_images = Ui_MainWindow().image_clean_up(ui)
+#     @QtCore.pyqtSlot()
+#     def task(self, ui):
+#         #### WORKING
+#         Ui_MainWindow.dict_missing_files = Ui_MainWindow().file_clean_up(ui)
 
-        Ui_MainWindow.dict_missing_files['Nicht verwendete Bilder'] = list_unused_images
+#         ui.label.setText("Nicht verwendete Bilder werden gesucht ...")
+#         list_unused_images = Ui_MainWindow().image_clean_up(ui)
 
-        self.finished.emit()
+#         Ui_MainWindow.dict_missing_files['Nicht verwendete Bilder'] = list_unused_images
+
+#         self.finished.emit()
 
 class Worker_UpdateDatabase(QtCore.QObject):
     finished = QtCore.pyqtSignal()
@@ -8086,9 +8081,17 @@ if __name__ == "__main__":
 
     app.processEvents()
 
+    import time
+    i = step_progressbar(i, "time")
     # Simulate something that takes time
     i = step_progressbar(i, "threading")
     import threading
+
+    i = step_progressbar(i, "PyQt5")
+    from PyQt5 import QtCore, QtWidgets, QtGui
+
+    i = step_progressbar(i, "PyQt5.QtWidgets")
+    from PyQt5.QtWidgets import QMainWindow
 
     i = step_progressbar(i, "pathlib")
     from pathlib import Path
@@ -8107,20 +8110,28 @@ if __name__ == "__main__":
     i = step_progressbar(i, "re")
     import re
 
+
+
+    i = step_progressbar(i, "sys")
+    import os
+
+    i= step_progressbar(i, "requestes")
+    import requests
+
     i = step_progressbar(i, "random")
     import random
 
-    i = step_progressbar(i, "functools")
-    import functools
+    # i = step_progressbar(i, "functools")
+    # import functools
 
     i = step_progressbar(i, "partial")
     from functools import partial
 
-    i = step_progressbar(i, "yaml")
-    import yaml
+    # i = step_progressbar(i, "yaml")
+    # import yaml
 
-    i = step_progressbar(i, "pillow")
-    from PIL import Image  ## pillow
+    # i = step_progressbar(i, "pillow")
+    # from PIL import Image  ## pillow
 
     i = step_progressbar(i, "smtplib")
     import smtplib
@@ -8191,6 +8202,7 @@ if __name__ == "__main__":
     i = step_progressbar(i, "subwindows")
     from subwindows import read_credentials
 
+    
     # from subwindows import (
     # Ui_Dialog_Welcome_Window,
     # Ui_Dialog_choose_type,
@@ -8236,7 +8248,6 @@ if __name__ == "__main__":
         split_aufgaben_content_new_format,
         split_aufgaben_content,
         prepare_content_for_hide_show_items,
-        edit_content_quiz,
     )
 
     i = step_progressbar(i, "build_titlepage")
@@ -8244,6 +8255,8 @@ if __name__ == "__main__":
 
     i = step_progressbar(i, "prepare_content_vorschau")
     from prepare_content_vorschau import (
+        edit_content_ausgleichspunkte,
+        edit_content_hide_show_items,
         copy_logo_to_target_path,
         copy_included_images,
     )
