@@ -6633,7 +6633,9 @@ lama.helpme@gmail.com""")
 
 
         self.temp_info = {}
+        print(self.dict_variablen_punkte)
         for all in self.dict_variablen_punkte.keys():
+            print(all)
             halbe_punkte = self.get_punkte_halb_aufgabe_sage(all)
             self.temp_info[all] = [self.dict_variablen_punkte[all].value(), halbe_punkte, self.dict_variablen_abstand[all].value()]
 
@@ -7133,13 +7135,22 @@ lama.helpme@gmail.com""")
         _dict = {}
         
         for aufgabe in self.list_alle_aufgaben_sage:
-            halbe_punkte = self.get_punkte_halb_aufgabe_sage(aufgabe)
+            print(self.dict_variablen_punkte_halb)
 
-            _dict[aufgabe] = [
-                self.get_punkte_aufgabe_sage(aufgabe),
-                self.get_abstand_aufgabe_sage(aufgabe),
-                halbe_punkte,
-            ]
+            try:
+                halbe_punkte = self.get_punkte_halb_aufgabe_sage(aufgabe)
+                _dict[aufgabe] = [
+                    self.get_punkte_aufgabe_sage(aufgabe),
+                    self.get_abstand_aufgabe_sage(aufgabe),
+                    halbe_punkte,
+                ]
+            except RuntimeError:
+                typ = get_aufgabentyp(self.chosen_program, aufgabe)
+                aufgabe_total = get_aufgabe_total(aufgabe, typ)
+                print(aufgabe_total)
+                _dict[aufgabe] = [0,1,False]
+                # if typ==1:
+                #     punkte = self.spinBox_default_pkt.value()
 
         self.dict_all_infos_for_file["dict_alle_aufgaben_pkt_abstand"] = _dict
 
