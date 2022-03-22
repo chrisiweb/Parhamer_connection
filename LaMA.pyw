@@ -5705,58 +5705,32 @@ lama.helpme@gmail.com""")
 
     def sage_load_files(self):
         list_aufgaben_errors = []
-        i=0
-        for aufgabe in self.list_alle_aufgaben_sage:
+
+        for i in reversed(range(0, self.gridLayout_8.count())):
+            self.delete_widget(self.gridLayout_8, i)
+
+        for index, aufgabe in enumerate(self.list_alle_aufgaben_sage):
             typ = get_aufgabentyp(self.chosen_program, aufgabe)
+
             aufgabe_total = get_aufgabe_total(aufgabe.replace(" (lokal)", ""), typ)
+            neue_aufgaben_box = self.create_neue_aufgaben_box(
+                index, aufgabe, aufgabe_total
+            )
 
-            if aufgabe_total == None:
-                list_aufgaben_errors.append(aufgabe)
-                continue
-            
-            self.build_aufgaben_schularbeit(aufgabe)
-            # neue_aufgaben_box = self.create_neue_aufgaben_box(
-            #     index_item, aufgabe, aufgabe_total
-            # )
-            # self.gridLayout_8.addWidget(neue_aufgaben_box, index_item, 0, 1, 1)
-            # index_item + 1
+            self.gridLayout_8.addWidget(neue_aufgaben_box, index, 0, 1, 1)
 
-            # self.add_image_path_to_list(aufgabe.replace(" (lokal)", ""))
-            self.progress.setValue(i)
-            i+=1
+            self.add_image_path_to_list(aufgabe.replace(" (lokal)", ""))
+            self.progress.setValue(index)
 
 
-        # self.gridLayout_8.setRowStretch(i+2,1)
-        # self.spacerItem = QtWidgets.QSpacerItem(
-        #     20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
-        # )
-        # self.gridLayout_8.addItem(self.spacerItem, index_item + 1, 0, 1, 1)
+        self.gridLayout_8.setRowStretch(index+2,1)
+
+        self.update_punkte()
 
         
         return list_aufgaben_errors
 
-    # def open_progress_bar(self):
-    #     # for i in range(100):
-    #     #     # print(self.progressbar_value)
-    #     #     self.spinBox_2.setValue(i)
-    #     #     time.sleep(0.2)
-    #     # for i in range(100):
-    #     #     self.spinBox_2.setValue(i)
-    #     #     time.sleep(0.2)
-    #     msgBox = QtWidgets.QMessageBox( QtWidgets.QMessageBox.Warning, "My title", "My text.", QtWidgets.QMessageBox.NoButton )
-
-    #     # Get the layout
-    #     l = msgBox.layout()
-
-    #     # Hide the default button
-    #     l.itemAtPosition( l.rowCount() - 1, 0 ).widget().hide()
-
-    #     progress = QtWidgets.QProgressBar()
-
-    #     # Add the progress bar at the bottom (last row + 1) and first column with column span
-    #     l.addWidget(progress,l.rowCount(), 0, 1, l.columnCount(), Qt.AlignCenter )
-
-    #     msgBox.exec()        
+     
 
     def sage_load(self, external_file_loaded=False, autosave=False):
         if external_file_loaded == False and autosave == False:
