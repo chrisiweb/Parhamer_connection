@@ -4,9 +4,9 @@ Create App for Mac
 2) get py file working
 3) goto Path in terminal an enter: 
 
-	pyinstaller -F LaMA.py
+	pyinstaller -F -w -i icon_lama.icns LaMA.pyw
 (probably error, because of tkinter, which is not used), then:
 	
-	pyinstaller -F LaMA.py --exclude-module tkinter
+	pyinstaller -F -w -i icon_lama.icns LaMA.pyw --exclude-module tkinter
 
 	
