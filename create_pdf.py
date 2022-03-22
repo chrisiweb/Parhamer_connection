@@ -652,7 +652,7 @@ def build_pdf_file(ui, folder_name, file_name, latex_output_file):
             'cd "{0}" ; latex -interaction=nonstopmode --synctex=-1 "{1}.tex" ; dvips "{1}.dvi" ; ps2pdf -dNOSAFER -dALLOWPSTRANSPARENCY "{1}.ps"'.format(
                 folder_name, file_name
             ),
-            stdout=latex_output_file,
+            stdout=subprocess.PIPE,
             shell=True,
         )
 
