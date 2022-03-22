@@ -7368,11 +7368,12 @@ lama.helpme@gmail.com""")
         ),
     ):
 
+        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         if ausgabetyp == "vorschau":
             self.collect_all_infos_for_creating_file()
         # print(self.dict_all_infos_for_file)
         # return
-        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        
 
         # if ausgabetyp == "vorschau":
         #     filename_vorschau = os.path.join(
