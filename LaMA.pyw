@@ -3633,10 +3633,11 @@ lama.helpme@gmail.com""")
                             shutil.copy2(path_new_package, path_file)
                             return root
                         except PermissionError:
+                            QtWidgets.QApplication.restoreOverrideCursor()
                             warning_window(
                                 "Das Update konnte leider nicht durchgeführt werden, da notwendige Berechtigungen fehlen. Starten Sie LaMA erneut als Administrator (Rechtsklick -> 'Als Administrator ausführen') und versuchen Sie es erneut."
                             )
-                            return False
+                            return
         return False
 
     def delete_style_package_in_teildokument(self, package_name):
@@ -3683,11 +3684,13 @@ lama.helpme@gmail.com""")
             possible_locations = [os.path.join(path_home, "Library", "texmf")]
         else:
             possible_locations = [
-                os.path.join("c:\\", "Program Files", "MiKTeX 2.9"),
-                os.path.join("c:\\", "Program Files (x86)", "MiKTeX 2.9"),
                 os.path.join(path_home, "AppData", "Roaming", "MiKTeX"),
                 os.path.join(path_home, "AppData", "Local", "Programs", "MiKTeX"),
                 os.path.join(path_home, "AppData"),
+                os.path.join(os.environ["ProgramFiles"], "MiKTeX 2.9"),
+                os.path.join(os.environ["ProgramFiles(x86)"], "MiKTeX 2.9"),
+                os.path.join(os.environ["ProgramFiles"]),
+                os.path.join(os.environ["ProgramFiles(x86)"]),
                 # os.path.join(
                 # "C:\Users\Christoph\AppData\Roaming\MiKTeX\2.9\tex\latex\srdp-mathematik\srdp-mathematik.sty
             ]
@@ -3714,6 +3717,8 @@ lama.helpme@gmail.com""")
                         'Das Update von "srdp-mathematik.sty" konnte leider nicht durchgeführt werden. Aktualisieren Sie das Paket manuell oder wenden Sie sich an lama.helpme@gmail.com für Unterstützung.'
                         )
                     return
+                elif response == None:
+                    return
                 else:
                     location_found = response
             
@@ -3721,13 +3726,20 @@ lama.helpme@gmail.com""")
                 #initexmf --update-fndb
                 new_copy = False
                 try:
+                    for all in possible_locations:
+                        if all in location_found:
+                            index = possible_locations.index(all)
+
                     srdptables = os.path.join(location_found, package)
                     if sys.platform.startswith("win"):
                         if not os.path.isfile(srdptables):
                             new_copy = True        
                     shutil.copy2(package_list[package], location_found)
                     if new_copy == True:
-                        os.system("initexmf --update-fndb")
+                        if index == 3 or index == 4 or index == 5 or index == 6:
+                            os.system("initexmf --admin --update-fndb")
+                        else:
+                            os.system("initexmf --update-fndb")
                 except PermissionError:
                     QtWidgets.QApplication.restoreOverrideCursor()
                     warning_window(
