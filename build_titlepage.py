@@ -64,10 +64,9 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
     datum_kurz, datum = get_datum(self)
     dict_titlepage = check_if_hide_all_exists(dict_titlepage)
 
-    pkt_gesamt = self.get_punkteverteilung()[0]
     pkt_typ1 = self.get_punkteverteilung()[1]
     pkt_typ2 = self.get_punkteverteilung()[2]
-    pkt_ausgleich = self.get_number_ausgleichspunkte_gesamt()
+
 
     if (
         self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
@@ -106,15 +105,15 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
 
         return titlepage
 
-    elif self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Quiz":
-        titlepage = (
-            "\\title{{Typ1 - Quiz}} \n"
-            "\subtitle{{Anzahl der Aufgaben: {0}}} \n"
-            "\maketitle \n"
-            "\subtitle{{}} \n"
-        ).format(len(self.list_alle_aufgaben_sage))
+    # elif self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Quiz":
+    #     titlepage = (
+    #         "\\title{{Typ1 - Quiz}} \n"
+    #         "\subtitle{{Anzahl der Aufgaben: {0}}} \n"
+    #         "\maketitle \n"
+    #         "\subtitle{{}} \n"
+    #     ).format(len(self.list_alle_aufgaben_sage))
 
-        return titlepage
+    #     return titlepage
 
     elif dict_titlepage["hide_all"] == True:
 
@@ -138,21 +137,16 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
 
         titlepage = "\\subsection{{{0} \\hfill {1}}}".format(subsection, datum_kurz)
 
-        if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "br":
-            teil2_pkt_ohne_ap = pkt_typ2 - pkt_ausgleich
+        # if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "br":
 
-            beurteilungsraster = (
-                "\\flushleft \\normalsize\n"
-                "\\thispagestyle{{empty}}\n"
-                "\\beurteilungsraster{{0.85}}{{0.68}}{{0.5}}{{1/3}}{{ % Prozentschluessel\n"
-                "T1={{{0}}}, % Punkte im Teil 1\n"
-                "AP={{{1}}}, % Ausgleichspunkte aus Teil 2\n"
-                "T2={{{2}}}, % Punkte im Teil 2\n"
-                "}} \n\n"
-                "\\newpage\n\n".format(pkt_typ2, pkt_ausgleich, teil2_pkt_ohne_ap,)
-            )
+        #     beurteilungsraster = (
+        #         "\\beurteilung{{0.875}}{{0.75}}{{0.625}}{{1/2}}{{ % Prozentschluessel\n"
+        #         "T1={{{0}}}, % Punkte im Teil 1\n"
+        #         "T2={{{1}}}, % Punkte im Teil 2\n"
+        #         "}}\n\n".format(pkt_typ1, pkt_typ2)
+        #     )
 
-            titlepage = titlepage + beurteilungsraster
+        #     titlepage = titlepage + beurteilungsraster
         return titlepage
 
     else:
@@ -164,7 +158,7 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
                 logo_input = (
                     "\\begin{{minipage}}[t]{{0.4\\textwidth}} \\vspace{{0pt}}\n"
                     "\\includegraphics[width=1\\textwidth]{{{0}}}\n"
-                    "\\end{{minipage}} \\\ \\vfil \n".format(logo_name)
+                    "\\end{{minipage}} \\\ [1cm] \n".format(logo_name)
                 )
             else:
                 warning_window(
@@ -172,9 +166,9 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
                     "Bitte suchen Sie ein Logo unter: \n\nTitelblatt anpassen - Durchsuchen",
                     "Kein Logo gefunden",
                 )
-                logo_input = "~\\vfil \n"
+                logo_input = "~\\vspace[1cm] \n"
         else:
-            logo_input = "~\\vfil \n"
+            logo_input = "~\\vspace[1cm] \n"
             # logo_input = "~\\vfil \n"
 
         if dict_titlepage["titel"] == True:
@@ -182,7 +176,7 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
                 self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
                 == "Wiederholungsprüfung"
             ):
-                title_header = "\\textsc{{\\Huge Wiederholungsprüfung}} \\\ [2cm]"
+                title_header = "\\textsc{{\\Huge Wiederholungsprüfung}} \\\ [0.5cm]"
             elif (
                 self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
                 == "Schularbeit"
@@ -217,7 +211,7 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
                         + "\\\ [0.5cm] \\textsc{{\Large {0}}}".format(add_on)
                     )
 
-                title_header = title_header + "\\\ [2cm] \n\n"
+                title_header = title_header + "\\\ [0.5cm] \n\n"
 
             else:
                 title_header = "\\textsc{{\\Huge {0}}} \\\ [2cm]".format(
@@ -245,7 +239,7 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
             gruppe_name = ""
 
         if dict_titlepage["name"] == True:
-            name = "\\Large Name: \\rule{8cm}{0.4pt} \\\ \n\n"
+            name = "\\Large Name: \\rule{8cm}{0.4pt} \\\ [1cm]\n\n"
         else:
             name = ""
 
@@ -255,24 +249,18 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
             note = ""
 
         if dict_titlepage["unterschrift"] == True:
-            unterschrift = "\\Large Unterschrift: \\rule{8cm}{0.4pt} \\\ \n\n"
+            unterschrift = "\\Large Unterschrift: \\rule{8cm}{0.4pt} \\\ [1cm]\n\n"
         else:
             unterschrift = ""
 
         if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "br":
-            teil2_pkt_ohne_ap = pkt_typ2 - pkt_ausgleich
-
             beurteilungsraster = (
-                "\\newpage \n\n"
-                "\\flushleft \\normalsize\n"
-                "\\thispagestyle{{empty}}\n"
-                "\\beurteilungsraster{{0.85}}{{0.68}}{{0.5}}{{1/3}}{{ % Prozentschluessel\n"
+                "\large\\beurteilung{{0.875}}{{0.75}}{{0.625}}{{1/2}}{{ % Prozentschluessel\n"
                 "T1={{{0}}}, % Punkte im Teil 1\n"
-                "AP={{{1}}}, % Ausgleichspunkte aus Teil 2\n"
-                "T2={{{2}}}, % Punkte im Teil 2\n"
-                "}} \n\n"
-                "\\newpage\n\n".format(pkt_typ2, pkt_ausgleich, teil2_pkt_ohne_ap,)
+                "T2={{{1}}}, % Punkte im Teil 2\n"
+                "}}\n\n".format(pkt_typ1, pkt_typ2)
             )
+
         else:
             beurteilungsraster = ""
 
@@ -285,10 +273,9 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
             "{3}"
             "{4}"
             "{5}"
-            "\\vfil\\vfil\\vfil \n"
             "{6}"
             "{7}"
-            "{8}"
+            "\\vspace{{1cm}}\n\n{8}"
             "\\end{{titlepage}}\n\n".format(
                 logo_input,
                 title_header,

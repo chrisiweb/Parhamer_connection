@@ -1697,8 +1697,17 @@ class Ui_MainWindow(object):
 
         self.combobox_beurteilung = create_new_combobox(self.groupBox_sage)
         add_new_option(self.combobox_beurteilung, 0, "Notenschlüssel")
+
         add_new_option(self.combobox_beurteilung, 1, "Beurteilungsraster")
+
         add_new_option(self.combobox_beurteilung, 2, "keine Auswahl")
+
+        try:
+            if self.dict_titlepage['hide_all'] == True:
+                self.combobox_beurteilung.removeItem(1)
+        except KeyError:
+            pass
+
         self.combobox_beurteilung.currentIndexChanged.connect(self.notenanzeige_changed)
         # self.combobox_beurteilung.setMinimumContentsLength(1)
         self.gridLayout_5.addWidget(self.combobox_beurteilung, 1, 4, 1, 2)
@@ -5981,6 +5990,11 @@ lama.helpme@gmail.com""")
             titlepage_save = os.path.join(
                 path_localappdata_lama, "Teildokument", "titlepage_save"
             )
+
+            if dict_titlepage['hide_all']==True:
+                self.combobox_beurteilung.removeItem(1)
+            elif self.combobox_beurteilung.findText("Beurteilungsraster") == -1:
+                self.combobox_beurteilung.insertItem(1,"Beurteilungsraster")
         if self.chosen_program == "cria":
             self.dict_titlepage_cria = dict_titlepage
             titlepage_save = os.path.join(
@@ -5996,13 +6010,13 @@ lama.helpme@gmail.com""")
                 json.dump(dict_titlepage, f, ensure_ascii=False)
 
     def notenanzeige_changed(self):
-        if self.combobox_beurteilung.currentIndex() == 0:
+        if self.combobox_beurteilung.currentText() == "Notenschlüssel":
             self.groupBox_beurteilungsraster.hide()
             self.groupBox_notenschl.show()
-        if self.combobox_beurteilung.currentIndex() == 1:
+        if self.combobox_beurteilung.currentText() == "Beurteilungsraster":
             self.groupBox_notenschl.hide()
             self.groupBox_beurteilungsraster.show()
-        if self.combobox_beurteilung.currentIndex() == 2:
+        if self.combobox_beurteilung.currentText() == "keine Auswahl":
             self.groupBox_notenschl.hide()
             self.groupBox_beurteilungsraster.hide()
 
@@ -6194,20 +6208,17 @@ lama.helpme@gmail.com""")
         pkt_typ1 = 0
         pkt_typ2 = 0
         gesamtpunkte = 0
-        # print(self.dict_variablen_punkte)
-        # print(len(self.dict_variablen_punkte))
-        # for all in self.dict_variablen_punkte:
-            # print(all)
-            # print(self.dict_variablen_punkte[all].value())
-        #     typ = get_aufgabentyp(self.chosen_program, all)
-        #     if typ == None:
-        #         gesamtpunkte += self.dict_variablen_punkte[all].value()
-        #     elif typ == 1:
-        #         pkt_typ1 += self.dict_variablen_punkte[all].value()
-        #         gesamtpunkte += self.dict_variablen_punkte[all].value()
-        #     elif typ == 2:
-        #         pkt_typ2 += self.dict_variablen_punkte[all].value()
-        #         gesamtpunkte += self.dict_variablen_punkte[all].value()
+
+        for all in self.dict_variablen_punkte:
+            typ = get_aufgabentyp(self.chosen_program, all)
+            if typ == None:
+                gesamtpunkte += self.dict_variablen_punkte[all].value()
+            elif typ == 1:
+                pkt_typ1 += self.dict_variablen_punkte[all].value()
+                gesamtpunkte += self.dict_variablen_punkte[all].value()
+            elif typ == 2:
+                pkt_typ2 += self.dict_variablen_punkte[all].value()
+                gesamtpunkte += self.dict_variablen_punkte[all].value()
 
         return [gesamtpunkte, pkt_typ1, pkt_typ2]
 
@@ -6245,46 +6256,34 @@ lama.helpme@gmail.com""")
             )
         )
 
-    def get_number_ausgleichspunkte_gesamt(self):
-        number_ausgleichspkt_gesamt = 0
-        for aufgabe in self.list_alle_aufgaben_sage:
-            typ = get_aufgabentyp(self.chosen_program, aufgabe)
-            if typ == 2:
-                # collect_content(self, aufgabe)
-                aufgabe_total = get_aufgabe_total(aufgabe, "lama_2")
-                number = self.count_ausgleichspunkte(aufgabe_total["content"])
-                number_ausgleichspkt_gesamt += number
+    # def get_number_ausgleichspunkte_gesamt(self):
+    #     number_ausgleichspkt_gesamt = 0
+    #     for aufgabe in self.list_alle_aufgaben_sage:
+    #         typ = get_aufgabentyp(self.chosen_program, aufgabe)
+    #         if typ == 2:
+    #             # collect_content(self, aufgabe)
+    #             aufgabe_total = get_aufgabe_total(aufgabe, "lama_2")
+    #             number = self.count_ausgleichspunkte(aufgabe_total["content"])
+    #             number_ausgleichspkt_gesamt += number
 
-        return number_ausgleichspkt_gesamt
+    #     return number_ausgleichspkt_gesamt
 
     def update_beurteilungsraster(self):
 
         punkteverteilung = self.get_punkteverteilung()
-        number_ausgleichspunkte_gesamt = self.get_number_ausgleichspunkte_gesamt()
-        self.label_typ1_pkt.setText(
-            _translate(
-                "MainWindow", "Punkte Typ 1: {}".format(punkteverteilung[1]), None
-            )
-        )
-        self.label_typ2_pkt.setText(
-            _translate(
-                "MainWindow",
-                "Punkte Typ 2: {0} (davon Ausgleichspunkte: {1})".format(
-                    punkteverteilung[2], number_ausgleichspunkte_gesamt
-                ),
-                None,
-            )
-        )
+        # number_ausgleichspunkte_gesamt = self.get_number_ausgleichspunkte_gesamt()
+        self.label_typ1_pkt.setText("Punkte Typ 1: {}".format(punkteverteilung[1]))
+        self.label_typ2_pkt.setText("Punkte Typ 2: {0}".format(punkteverteilung[2]))
 
     def update_punkte(self):
         gesamtpunkte = self.get_punkteverteilung()[0]
         num_typ1, num_typ2 = self.get_aufgabenverteilung()
         num_total = len(self.list_alle_aufgaben_sage)
 
-        if self.combobox_beurteilung.currentIndex() == 0:
+        if self.combobox_beurteilung.currentText() == "Notenschlüssel":
             self.update_notenschluessel()
 
-        if self.combobox_beurteilung.currentIndex() == 1:
+        if self.combobox_beurteilung.currentText() == "Beurteilungsraster":
             self.update_beurteilungsraster()
 
         if self.chosen_program == "cria":
@@ -7158,11 +7157,11 @@ lama.helpme@gmail.com""")
         ] = self.dict_sage_individual_change
 
         ### include basic data of test ###
-        if self.combobox_beurteilung.currentIndex() == 0:
+        if self.combobox_beurteilung.currentText() == "Notenschlüssel":
             beurteilung = "ns"
-        elif self.combobox_beurteilung.currentIndex() == 1:
+        elif self.combobox_beurteilung.currentText() == "Beurteilungsraster":
             beurteilung = "br"
-        elif self.combobox_beurteilung.currentIndex() == 2:
+        elif self.combobox_beurteilung.currentText() == "keine Auswahl":
             beurteilung = "none"
 
         dict_data_gesamt = {
@@ -7359,61 +7358,7 @@ lama.helpme@gmail.com""")
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         if ausgabetyp == "vorschau":
             self.collect_all_infos_for_creating_file()
-        # print(self.dict_all_infos_for_file)
-        # return
-        
 
-        # if ausgabetyp == "vorschau":
-        #     filename_vorschau = os.path.join(
-        #         path_programm, "Teildokument", "Schularbeit_Vorschau.tex"
-        #     )
-        # if ausgabetyp == "schularbeit":
-
-        #     dict_umlaute = {
-        #         "Ä": "AE",
-        #         "ä": "ae",
-        #         "Ö": "OE",
-        #         "ö": "oe",
-        #         "Ü": "ue",
-        #         "ü": "ue",
-        #         "ß": "ss",
-        #     }
-        #     if index == 0:
-
-        #         self.chosen_path_schularbeit_erstellen = (
-        #             QtWidgets.QFileDialog.getSaveFileName(
-        #                 None,
-        #                 "Speicherort wählen",
-        #                 os.path.dirname(self.saved_file_path),
-        #                 "TeX Dateien (*.tex);; Alle Dateien (*.*)",
-        #             )
-        #         )
-
-        #         if self.chosen_path_schularbeit_erstellen[0] == "":
-        #             QtWidgets.QApplication.restoreOverrideCursor()
-        #             return
-        #         self.saved_file_path = self.chosen_path_schularbeit_erstellen[0]
-
-        #         dirname = os.path.dirname(self.chosen_path_schularbeit_erstellen[0])
-        #         filename = os.path.basename(self.chosen_path_schularbeit_erstellen[0])
-        #         if sys.platform.startswith("linux"):
-        #             filename = filename + ".tex"
-
-        #         for character in dict_umlaute.keys():
-        #             if character in filename:
-        #                 filename = filename.replace(character, dict_umlaute[character])
-        #         filename_vorschau = os.path.join(dirname, filename)
-
-        #         if lama == True:
-        #             Ui_MainWindow.sage_save(self, filename_vorschau)  #
-
-            # else:
-            #     dirname = os.path.dirname(self.chosen_path_schularbeit_erstellen[0])
-            #     filename = os.path.basename(self.chosen_path_schularbeit_erstellen[0])
-            #     for character in dict_umlaute.keys():
-            #         if character in filename:
-            #             filename = filename.replace(character, dict_umlaute[character])
-            #     filename_vorschau = os.path.join(dirname, filename)
 
         self.dict_gruppen = {0: "A", 1: "B", 2: "C", 3: "D", 4: "E", 5: "F"}
 
@@ -7521,7 +7466,8 @@ lama.helpme@gmail.com""")
             != "Übungsblatt"
             # and self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] != "Quiz"
         ):
-            if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "ns":
+            # dict_titlepage = check_if_hide_all_exists(dict_titlepage)
+            if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "ns": #or dict_titlepage["hide_all"] == True:
                 notenschluessel = self.dict_all_infos_for_file["data_gesamt"][
                     "Notenschluessel"
                 ]
@@ -7534,14 +7480,25 @@ lama.helpme@gmail.com""")
                         zusatz = "[]"
                     zusatz = zusatz + "[prozent]"
 
+                # if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "br":
+                #     gut = 0.875
+                #     befriedigend = 0.75
+                #     genuegend = 0.625
+                #     nichtgenuegend = 0.5
+                #     zusatz = "[1/2]"
+                # else: 
+                gut = notenschluessel[0] / 100
+                befriedigend = notenschluessel[1] / 100
+                genuegend = notenschluessel[2] / 100
+                nichtgenuegend = notenschluessel[3] / 100
                 with open(filename_vorschau, "a", encoding="utf8") as vorschau:
                     vorschau.write(
                         "\n\n\\null\\notenschluessel{0}{{{1}}}{{{2}}}{{{3}}}{{{4}}}".format(
                             zusatz,
-                            notenschluessel[0] / 100,
-                            notenschluessel[1] / 100,
-                            notenschluessel[2] / 100,
-                            notenschluessel[3] / 100,
+                            gut,
+                            befriedigend,
+                            genuegend,
+                            nichtgenuegend,
                         )
                     )
 
@@ -8100,7 +8057,7 @@ if __name__ == "__main__":
     )
 
     i = step_progressbar(i, "build_titlepage")
-    from build_titlepage import get_titlepage_vorschau
+    from build_titlepage import get_titlepage_vorschau, check_if_hide_all_exists
 
     i = step_progressbar(i, "prepare_content_vorschau")
     from prepare_content_vorschau import (
