@@ -6,6 +6,7 @@ __lastupdate__ = "03/22"
 
 ##################
 show_popup = True
+reset_popup = False
 print("Loading...")
 
 from start_window import check_if_database_exists
@@ -2856,7 +2857,8 @@ lama.helpme@gmail.com""")
             )
 
             if ret == True:
-                self.lama_settings["popup_off"] = False
+                if reset_popup == True:
+                    self.lama_settings["popup_off"] = False
                 with open(lama_settings_file, "w+", encoding="utf8") as f:
                     json.dump(self.lama_settings, f, ensure_ascii=False)
 
