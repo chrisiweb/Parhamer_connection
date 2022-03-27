@@ -166,9 +166,9 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
                     "Bitte suchen Sie ein Logo unter: \n\nTitelblatt anpassen - Durchsuchen",
                     "Kein Logo gefunden",
                 )
-                logo_input = "~\\vspace[1cm] \n"
+                logo_input = "\\null\\vspace{3cm}\n\n"
         else:
-            logo_input = "~\\vspace[1cm] \n"
+            logo_input = "\\null\\vspace{3cm}\n\n"
             # logo_input = "~\\vfil \n"
 
         if dict_titlepage["titel"] == True:
@@ -246,12 +246,12 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
         if dict_titlepage["note"] == True:
             note = "\\Large Note: \\rule{8cm}{0.4pt} \\\ [1cm]\n\n"
         else:
-            note = ""
+            note = "\\vspace{1cm}\n\n"
 
         if dict_titlepage["unterschrift"] == True:
             unterschrift = "\\Large Unterschrift: \\rule{8cm}{0.4pt} \\\ [1cm]\n\n"
         else:
-            unterschrift = ""
+            unterschrift = "\\vspace{1cm}\n\n"
 
         if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "br":
             beurteilungsraster = (
