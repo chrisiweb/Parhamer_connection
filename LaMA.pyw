@@ -5736,6 +5736,10 @@ lama.helpme@gmail.com""")
             typ = get_aufgabentyp(self.chosen_program, aufgabe)
 
             aufgabe_total = get_aufgabe_total(aufgabe.replace(" (lokal)", ""), typ)
+            if aufgabe_total == None:
+                list_aufgaben_errors.append(aufgabe)
+                continue
+
             neue_aufgaben_box = self.create_neue_aufgaben_box(
                 index, aufgabe, aufgabe_total
             )
@@ -5876,12 +5880,13 @@ lama.helpme@gmail.com""")
                 _list = ["Aufgabe","konnte","wurde", "wird"]
             else:
                 _list = ["Aufgaben","konnten","wurden", "werden"]
-
+            QtWidgets.QApplication.restoreOverrideCursor()
             warning_window(
                 "Die {0} {1} {2} nicht gefunden werden, da sie gelöscht oder umbenannt {3}.\nSie {4} daher ignoriert.".format(
                     _list[0], errors, _list[1], _list[2], _list[3]
                 )
-            )             
+            )
+            QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))            
             for aufgabe in list_aufgaben_errors:
                 self.dict_all_infos_for_file["list_alle_aufgaben"].remove(aufgabe)
 
@@ -6362,6 +6367,7 @@ lama.helpme@gmail.com""")
 
         elif typ == 1:
             aufgabenformat = " (" + aufgabe_total["af"].upper() + ")"
+
 
             label = "{0}{1}".format(aufgabe, aufgabenformat)
         elif typ == 2:
