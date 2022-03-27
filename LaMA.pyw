@@ -5,7 +5,8 @@ __version__ = "v3.4.2"
 __lastupdate__ = "03/22"
 
 ##################
-show_popup = True
+
+show_popup = False
 
 print("Loading...")
 
