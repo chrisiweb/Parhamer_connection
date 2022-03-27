@@ -4283,7 +4283,16 @@ lama.helpme@gmail.com""")
         del self.dict_widget_variables[picture]
 
     def convert_image_eps_clicked(self):
+        Dialog = QtWidgets.QDialog(
+            None,
+            QtCore.Qt.WindowSystemMenuHint
+            | QtCore.Qt.WindowTitleHint
+            | QtCore.Qt.WindowCloseButtonHint,
+        )
+        ui = Ui_Dialog_Convert_To_Eps()
+        ui.setupUi(Dialog, self)
 
+        Dialog.exec()
         # old version:
         # msg = QtWidgets.QMessageBox()
         # # msg.setIcon(QtWidgets.QMessageBox.Question)
@@ -8026,6 +8035,9 @@ if __name__ == "__main__":
 
     i = step_progressbar(i, "subwindows")
     from subwindows import Ui_Dialog_draft_control
+
+    i = step_progressbar(i, "subwindows")
+    from subwindows import Ui_Dialog_Convert_To_Eps
 
     i = step_progressbar(i, "subwindows")
     from subwindows import read_credentials
