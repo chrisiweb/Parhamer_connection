@@ -3,7 +3,7 @@
 block_cipher = None
 
 
-a = Analysis(['LaMA.py'],
+a = Analysis(['LaMA.pyw'],
              pathex=['/Users/wolfganghintringer/Desktop/Parhamer_connection'],
              binaries=[],
              datas=[],
