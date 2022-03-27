@@ -1529,7 +1529,7 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
         self.num_typ1 = Ui_MainWindow.get_aufgabenverteilung()[0]
         self.num_typ2 = Ui_MainWindow.get_aufgabenverteilung()[1]
 
-        self.pkt_ausgleich = Ui_MainWindow.get_number_ausgleichspunkte_gesamt()
+        # self.pkt_ausgleich = Ui_MainWindow.get_number_ausgleichspunkte_gesamt()
 
         # self.dict_list_input_examples["data_gesamt"]
 
@@ -1703,9 +1703,7 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
         self.label_sw_num_2_int.setText(str(self.num_typ2))
         self.label_sw_num_1_int.setText(str(self.num_typ1))
         self.label_sw_pkt_1_int.setText(str(self.pkt_typ1))
-        self.label_sw_pkt_2_int.setText(
-            "{0} (davon {1} AP)".format(self.pkt_typ2, self.pkt_ausgleich)
-        )
+        self.label_sw_pkt_2_int.setText(str(self.pkt_typ2))
         self.label_sw_pkt_ges_int.setText(str(self.pkt_gesamt))
         self.label_sw_klasse.setText(
             _translate("Dialog", "Klasse: %s" % self.data_gesamt["Klasse"])
