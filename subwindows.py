@@ -56,6 +56,7 @@ from sort_items import order_gesammeltedateien
 from upload_database import action_push_database
 from tinydb import Query
 from git_sync import check_branches, git_reset_repo_to_origin, check_internet_connection
+from convert_image_to_eps import convert_image_to_eps
 
 dict_gk = config_loader(config_file, "dict_gk")
 ag_beschreibung = config_loader(config_file, "ag_beschreibung")
