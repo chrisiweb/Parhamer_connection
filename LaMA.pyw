@@ -8,6 +8,7 @@ __lastupdate__ = "03/22"
 
 show_popup = False
 
+
 print("Loading...")
 
 from start_window import check_if_database_exists
@@ -31,7 +32,6 @@ from config_start import (
 from PyQt5.QtWidgets import QApplication
 
 import sys
-# import os
 
 # from tinydb import Query
 
@@ -2922,7 +2922,7 @@ lama.helpme@gmail.com""")
                         )
                         return
                     elif worker.response == True:
-                        os.system(path_installer)
+                        os.startfile(path_installer)
                         sys.exit(0)
         QtWidgets.QApplication.restoreOverrideCursor()
 
