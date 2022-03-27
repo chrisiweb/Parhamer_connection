@@ -3252,3 +3252,136 @@ class Ui_Dialog_edit_themen(object):
 
     def reject_dialog(self):
         self.Dialog.reject()
+
+
+class Ui_Dialog_Convert_To_Eps(object):
+    def setupUi(self, Dialog, MainWindow):
+        self.MainWindow = MainWindow
+        self.Dialog = Dialog
+        self.Dialog.setObjectName("Dialog")
+        self.Dialog.setWindowIcon(QIcon(logo_path))
+        self.Dialog.resize(600,200)       
+        Dialog.setWindowTitle("Grafik(en) konvertieren")
+        self.gridLayout = create_new_gridlayout(self.Dialog)
+
+        self.label_1 = create_new_label(Dialog, "Zu konvertierende Grafik(en) auswählen oder hier ablegen:")
+
+        self.gridLayout.addWidget(self.label_1, 0,0,1,4)
+
+
+        self.listWidget = DragDropWidget(Dialog)
+        self.gridLayout.addWidget(self.listWidget, 1,0,1,4)
+        self.listWidget.addItem('hier ablegen ...')
+        self.listWidget.itemClicked.connect(self.remove_list_item)
+
+
+        self.label_quality = create_new_label(Dialog, "Bildergrößen:")
+        # self.label_quality.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout.addWidget(self.label_quality, 2,0,1,1)
+        self.comboBox_quality = create_new_combobox(Dialog)
+        add_new_option(self.comboBox_quality, 0, 'klein')
+        add_new_option(self.comboBox_quality, 1, 'normal')
+        add_new_option(self.comboBox_quality, 2, 'groß')
+        add_new_option(self.comboBox_quality, 3, 'sehr groß')
+        self.comboBox_quality.setCurrentIndex(1)
+        self.gridLayout.addWidget(self.comboBox_quality, 2,1,1,1)
+
+        # self.gridLayout.setColumnStretch(3,1)
+
+
+        self.buttonBox_convert_to_eps = QtWidgets.QDialogButtonBox(self.Dialog)
+        self.buttonBox_convert_to_eps.setStandardButtons(
+            QtWidgets.QDialogButtonBox.Open | QtWidgets.QDialogButtonBox.Apply
+        )
+
+        button_search = self.buttonBox_convert_to_eps.button(QtWidgets.QDialogButtonBox.Open)
+        button_search.setText('Durchsuchen')
+        button_convert = self.buttonBox_convert_to_eps.button(QtWidgets.QDialogButtonBox.Apply)
+        button_convert.setText('Konvertieren')
+
+        button_search.clicked.connect(self.search_pressed)
+        button_convert.clicked.connect(self.convert_pressed)
+
+
+        self.gridLayout.addWidget(self.buttonBox_convert_to_eps, 2,3,1,1)
+
+    def remove_list_item(self, item):
+        if item.text() != 'hier ablegen ...':
+            self.listWidget.takeItem(self.listWidget.row(item))
+
+    # def get_list_of_all_items(self, listWidget):
+    #     _list = []
+    #     for x in range(self.listWidget.count()):
+    #         _list.append(self.listWidget.item(x).text())
+        
+    #     return _list
+
+    def search_pressed(self):
+        try:
+            os.path.dirname(self.MainWindow.saved_file_path)
+        except AttributeError:
+            self.MainWindow.saved_file_path = path_home
+
+        filename = QtWidgets.QFileDialog.getOpenFileNames(
+            None,
+            "Select a folder:",
+            os.path.dirname(self.MainWindow.saved_file_path),
+            "Bilder (*.jpg; *.jpeg; *.png; *.jfif);; Alle Dateien (*.*)",
+        )
+
+        if filename[0] == []:
+            return
+        else:
+            self.listWidget.setCurrentRow(0)
+            if self.listWidget.currentItem().text() == 'hier ablegen ...':
+                self.listWidget.takeItem(0)
+            list_added_items = get_list_of_all_items(self.listWidget)
+            for image in filename[0]:
+                if image not in list_added_items:
+                    self.listWidget.addItem(image)
+            # self.listWidget.addItems(filename[0])
+            self.listWidget.setCurrentRow(-1)
+
+
+    def convert_pressed(self):
+        item_list = get_list_of_all_items(self.listWidget)
+
+        if item_list[0] == 'hier ablegen ...':
+            warning_window('Es wurde keine Grafik zum Konvertieren ausgewählt.')
+            return
+        # for item in range(self.listWidget.count()):
+        #     item_list.append(self.listWidget.item(item).text())
+
+        self.MainWindow.saved_file_path = item_list[0]
+        QtWidgets.QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
+        for image in item_list:
+            response = convert_image_to_eps(image, self.comboBox_quality.currentIndex())
+            if response != True:
+                break
+        QtWidgets.QApplication.restoreOverrideCursor()
+        if response == True:
+            if len(item_list) == 1:
+                text = "wurde {} Datei".format(len(item_list))
+            else:
+                text = "wurden {} Dateien".format(len(item_list))
+
+            information_window(
+                "Es {0} erfolgreich konvertiert.".format(text),
+                titel="Grafik(en) erfolgreich konvertiert",
+                detailed_text="Konvertierte Grafik(en):\n{}".format(
+                    "\n".join(item_list)
+                ),
+            )
+        else:
+            critical_window(
+                "Beim Konvertieren der folgenden Grafik ist ein Fehler aufgetreten:\n\n{}".format(
+                    image
+                ),
+                titel="Fehler beim Konvertieren",
+                detailed_text='Fehlermeldung:\n\n"{0}: {1}"'.format(
+                    type(response).__name__, response
+                ),
+            )
+        self.listWidget.clear()
+        self.listWidget.addItem('hier ablegen ...')
+        # self.Dialog.accept()  

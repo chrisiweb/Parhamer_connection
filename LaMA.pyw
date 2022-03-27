@@ -4283,61 +4283,63 @@ lama.helpme@gmail.com""")
         del self.dict_widget_variables[picture]
 
     def convert_image_eps_clicked(self):
-        msg = QtWidgets.QMessageBox()
-        # msg.setIcon(QtWidgets.QMessageBox.Question)
-        msg.setWindowIcon(QtGui.QIcon(logo_path))
-        msg.setText("Wählen Sie alle Grafiken, die Sie konvertieren möchten.")
-        # msg.setInformativeText('Möchten Sie das neue Update installieren?')
-        msg.setWindowTitle("Grafik(en) konvertieren")
-        msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-        button_durchsuchen = msg.button(QtWidgets.QMessageBox.Yes)
-        button_durchsuchen.setText("Durchsuchen...")
-        buttonN = msg.button(QtWidgets.QMessageBox.No)
-        buttonN.setText("Abbrechen")
-        ret = msg.exec_()
 
-        if ret == QtWidgets.QMessageBox.Yes:
-            # filename =	 filedialog.askopenfilenames(initialdir = last_path,title = "Durchsuchen...",filetypes = (('JPG-Dateien','*.jpg'),("Alle Dateien","*.*")))
-            try:
-                os.path.dirname(self.saved_file_path)
-            except AttributeError:
-                self.saved_file_path = path_home
+        # old version:
+        # msg = QtWidgets.QMessageBox()
+        # # msg.setIcon(QtWidgets.QMessageBox.Question)
+        # msg.setWindowIcon(QtGui.QIcon(logo_path))
+        # msg.setText("Wählen Sie alle Grafiken, die Sie konvertieren möchten.")
+        # # msg.setInformativeText('Möchten Sie das neue Update installieren?')
+        # msg.setWindowTitle("Grafik(en) konvertieren")
+        # msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+        # button_durchsuchen = msg.button(QtWidgets.QMessageBox.Yes)
+        # button_durchsuchen.setText("Durchsuchen...")
+        # buttonN = msg.button(QtWidgets.QMessageBox.No)
+        # buttonN.setText("Abbrechen")
+        # ret = msg.exec_()
 
-            filename = QtWidgets.QFileDialog.getOpenFileNames(
-                None,
-                "Select a folder:",
-                os.path.dirname(self.saved_file_path),
-                "Bilder (*.jpg; *.jpeg; *.png; *.jfif);; Alle Dateien (*.*)",
-            )
-            if filename[0] != []:
-                self.saved_file_path = filename[0][0]
-                for image in filename[0]:
-                    response = convert_image_to_eps(image)
-                    if response != True:
-                        break
-                if response == True:
-                    if len(filename[0]) == 1:
-                        text = "wurde {} Datei".format(len(filename[0]))
-                    else:
-                        text = "wurden {} Dateien".format(len(filename[0]))
+        # if ret == QtWidgets.QMessageBox.Yes:
+        #     # filename =	 filedialog.askopenfilenames(initialdir = last_path,title = "Durchsuchen...",filetypes = (('JPG-Dateien','*.jpg'),("Alle Dateien","*.*")))
+        #     try:
+        #         os.path.dirname(self.saved_file_path)
+        #     except AttributeError:
+        #         self.saved_file_path = path_home
 
-                    information_window(
-                        "Es {0} erfolgreich konvertiert.".format(text),
-                        titel="Grafik(en) erfolgreich konvertiert",
-                        detailed_text="Konvertierte Grafik(en):\n{}".format(
-                            "\n".join(filename[0])
-                        ),
-                    )
-                else:
-                    critical_window(
-                        "Beim Konvertieren der folgenden Grafik ist ein Fehler aufgetreten:\n\n{}".format(
-                            image
-                        ),
-                        titel="Fehler beim Konvertieren",
-                        detailed_text='Fehlermeldung:\n\n"{0}: {1}"'.format(
-                            type(response).__name__, response
-                        ),
-                    )
+        #     filename = QtWidgets.QFileDialog.getOpenFileNames(
+        #         None,
+        #         "Select a folder:",
+        #         os.path.dirname(self.saved_file_path),
+        #         "Bilder (*.jpg; *.jpeg; *.png; *.jfif);; Alle Dateien (*.*)",
+        #     )
+        #     if filename[0] != []:
+        #         self.saved_file_path = filename[0][0]
+        #         for image in filename[0]:
+        #             response = convert_image_to_eps(image)
+        #             if response != True:
+        #                 break
+        #         if response == True:
+        #             if len(filename[0]) == 1:
+        #                 text = "wurde {} Datei".format(len(filename[0]))
+        #             else:
+        #                 text = "wurden {} Dateien".format(len(filename[0]))
+
+        #             information_window(
+        #                 "Es {0} erfolgreich konvertiert.".format(text),
+        #                 titel="Grafik(en) erfolgreich konvertiert",
+        #                 detailed_text="Konvertierte Grafik(en):\n{}".format(
+        #                     "\n".join(filename[0])
+        #                 ),
+        #             )
+        #         else:
+        #             critical_window(
+        #                 "Beim Konvertieren der folgenden Grafik ist ein Fehler aufgetreten:\n\n{}".format(
+        #                     image
+        #                 ),
+        #                 titel="Fehler beim Konvertieren",
+        #                 detailed_text='Fehlermeldung:\n\n"{0}: {1}"'.format(
+        #                     type(response).__name__, response
+        #                 ),
+        #             )
 
     def chosen_aufgabenformat_cr(self):
         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
