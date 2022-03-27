@@ -8,7 +8,7 @@ import re
 import sys
 from pathlib import Path
 from functools import partial
-from config_start import path_programm,path_localappdata_lama, lama_settings_file, lama_developer_credentials
+from config_start import path_programm,path_localappdata_lama, lama_settings_file, lama_developer_credentials, path_home
 from config import (
     config_loader,
     dict_aufgabenformate,
@@ -3252,6 +3252,61 @@ class Ui_Dialog_edit_themen(object):
 
     def reject_dialog(self):
         self.Dialog.reject()
+
+
+class DragDropWidget(QtWidgets.QListWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setAcceptDrops(True)
+
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.accept()
+        else:
+            event.ignore()
+        
+    def dragMoveEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.setDropAction(Qt.CopyAction)
+            event.accept()
+        else:
+            event.ignore()
+
+    def dropEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.setDropAction(Qt.CopyAction)
+            event.accept()
+
+            links = []
+            for url in event.mimeData().urls():
+                if url.isLocalFile():
+                    _, extension = os.path.splitext(str(url.toLocalFile()))
+                    if extension == '.jpg' or extension == '.jpeg' or extension == '.png':
+                        links.append(str(url.toLocalFile()))
+                    else:
+                        name = os.path.basename(str(url.toLocalFile()))
+                        warning_window('Die Datei {} konnte nicht hinzugefügt werden.'.format(name),'Es können nur ".jpg"- oder ".png"-Dateien konvertiert werden.')
+
+            list_added_items = get_list_of_all_items(self)
+            for image in links:
+                if image not in list_added_items:
+                    self.addItem(image)
+
+            if len(links) != 0:
+                self.setCurrentRow(0)
+                if self.currentItem().text() == 'hier ablegen ...':
+                    self.takeItem(0)       
+                self.setCurrentRow(-1)
+        else:
+            event.ignore()       
+
+
+def get_list_of_all_items(listWidget):
+    _list = []
+    for x in range(listWidget.count()):
+        _list.append(listWidget.item(x).text())
+    
+    return _list
 
 
 class Ui_Dialog_Convert_To_Eps(object):
