@@ -6,7 +6,7 @@ __lastupdate__ = "03/22"
 
 ##################
 
-show_popup = False
+show_popup = True
 
 
 print("Loading...")
@@ -2491,29 +2491,45 @@ class Ui_MainWindow(object):
             self.update_gui("widgets_search")
 
     def show_popup_window(self, show_checkbox = True):
-        msg = QtWidgets.QMessageBox()
-        msg.setWindowTitle("Update")
-        pixmap = QtGui.QPixmap(logo_path)
-        msg.setIconPixmap(pixmap)
-        msg.setWindowIcon(QtGui.QIcon(logo_path))
-        msg.setText("""Die neue Version von LaMA ({}) verwendet Befehle des aktuellsten "srdp-mathematik"-Pakets. Um die volle Funktionsfähigkeit von LaMA zu gewährleisten, sollte das LaTeX-Paket auf Ihrem Gerät manuell aktualisiert werden.""".format(__version__))
-        msg.setInformativeText("""Eine direkte Aktualisierung des "srdp-mathematik"-Pakets über LaMA kann via
+        rsp = custom_window("""
+<b>Die neue Version von LaMA ({}) verwendet Befehle des aktuellsten "srdp-mathematik"-Pakets. Um die volle Funktionsfähigkeit von LaMA zu gewährleisten, sollte das LaTeX-Paket auf Ihrem Gerät manuell aktualisiert werden.</b><br><br><br>
 
-"Optionen -> Update ... -> srdp-mathematik.sty aktualisieren"
+Eine direkte Aktualisierung des "srdp-mathematik"-Pakets über LaMA kann via<br>
 
-durchgeführt werden. 
+<i>"Optionen -> Update ... -> srdp-mathematik.sty aktualisieren"</i><br>
 
-Sollte dies nicht möglich sein, melden Sie sich bitte unter:
-lama.helpme@gmail.com""")
+durchgeführt werden.<br><br>
+
+Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.com<br>
+""".format(__version__),
+        titel="Update Information",
+        show_checkbox=show_checkbox,
+        set_width=800,
+        )
+        return rsp
+#         msg = QtWidgets.QMessageBox()
+#         msg.setWindowTitle("Update")
+#         pixmap = QtGui.QPixmap(logo_path)
+#         msg.setIconPixmap(pixmap)
+#         msg.setWindowIcon(QtGui.QIcon(logo_path))
+#         msg.setText("""Die neue Version von LaMA ({}) verwendet Befehle des aktuellsten "srdp-mathematik"-Pakets. Um die volle Funktionsfähigkeit von LaMA zu gewährleisten, sollte das LaTeX-Paket auf Ihrem Gerät manuell aktualisiert werden.""".format(__version__))
+#         msg.setInformativeText("""Eine direkte Aktualisierung des "srdp-mathematik"-Pakets über LaMA kann via
+
+# "Optionen -> Update ... -> srdp-mathematik.sty aktualisieren"
+
+# durchgeführt werden. 
+
+# Sollte dies nicht möglich sein, melden Sie sich bitte unter:
+# lama.helpme@gmail.com""")
         
-        cb = QtWidgets.QCheckBox()
-        if show_checkbox==True:
-            msg.setCheckBox(cb)
-            cb.setText("Diese Meldung nicht mehr anzeigen")
-        msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+#         cb = QtWidgets.QCheckBox()
+#         if show_checkbox==True:
+#             msg.setCheckBox(cb)
+#             cb.setText("Diese Meldung nicht mehr anzeigen")
+#         msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
 
-        msg.exec_()
-        return cb.isChecked()
+#         msg.exec_()
+#         return cb.isChecked()
 
     def get_saving_path(self):
         dict_umlaute = {
@@ -2922,7 +2938,7 @@ lama.helpme@gmail.com""")
                         )
                         return
                     elif worker.response == True:
-                        os.startfile(path_installer)
+                        os.startfile('"' + path_installer + '"')
                         sys.exit(0)
         QtWidgets.QApplication.restoreOverrideCursor()
 
@@ -3622,17 +3638,26 @@ lama.helpme@gmail.com""")
         QtWidgets.QApplication.restoreOverrideCursor()
     def show_info(self):
         QtWidgets.QApplication.restoreOverrideCursor()
+        if self.display_mode == 1:
+            color = "rgb(88, 111, 124)"
+        else:
+            color = "rgb(47, 69, 80)"
+        link = "https://mylama.github.io/lama/"
+        custom_window("""
+<h3>LaMA - LaTeX Mathematik Assistent {0}</h3><br>
 
-        custom_window(
-            "LaMA - LaTeX Mathematik Assistent %s  \n\n"
-            "Authors: Christoph Weberndorfer, Matthias Konzett\n\n"
-            "License: GNU General Public License v3.0  \n" % __version__,
-            "Logo & Icon: Lisa Schultz\n"
-            "Credits: David Fischer\n\n"
-            "E-Mail-Adresse: lama.helpme@gmail.com\n"
-            "Weiter Infos: lama.schule",
-            titel="Über LaMA - LaTeX Mathematik Assistent",
+<b>Authors:</b> Christoph Weberndorfer, Matthias Konzett<br><br>
+
+<b>License:</b> GNU General Public License v3.0<br>
+<b>Logo & Icon:</b> Lisa Schultz<br>
+<b>Credits:</b> David Fischer<br>
+<b>E-Mail-Adresse:</b> lama.helpme@gmail.com<br>
+<b>Weiter Infos:</b> <a href='{1}'style="color:{2};">lama.schule</a>
+""".format(__version__, link, color),
+        titel="Über LaMA - LaTeX Mathematik Assistent",
+        set_width=500,
         )
+
 
     def copy_style_package(self, package_name, path_new_package, possible_locations):
         for path in possible_locations:
@@ -3785,9 +3810,14 @@ lama.helpme@gmail.com""")
             color = "rgb(88, 111, 124)"
         else:
             color = "rgb(47, 69, 80)"
-        custom_window(
-            'Eine kleinen Spende für unsere "Kaffeekassa" wird nicht benötigt, um LaMA zu finanzieren.\n\nUnser Projekt ist und bleibt kostenlos und wir versuchen es auch weiterhin stetig zu verbessern und aktualisieren. Sie dient lediglich als kleine Anerkennung unserer Arbeit.\n\nVielen Dank!',
-            """<center><a href='{0}'style="color:{1};">Buy Me A Coffee</a><\center>""".format(
+        custom_window("""
+Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu finanzieren.<br><br>
+
+<b>Unser Projekt ist und bleibt kostenlos und wir versuchen es auch weiterhin stetig zu verbessern und aktualisieren. Sie dient lediglich als kleine Anerkennung unserer Arbeit.</b><br>
+
+<center><a href='{0}'style="color:{1};">Buy Me A Coffee</a><\center>
+
+<h2> Vielen Dank!</h2>""".format(
                 link, color
             ),
             # "LaMA ist gratis und soll es auch bleiben!\n",
@@ -3798,6 +3828,7 @@ lama.helpme@gmail.com""")
             # BLZ: 19210
             # """,
             titel="LaMA unterstützen",
+            set_width=600
         )
 
     def chosen_aufgabenformat_typ(self):
