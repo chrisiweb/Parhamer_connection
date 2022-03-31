@@ -170,6 +170,7 @@ def working_window_latex_output(worker, text, *args):
     ui.setupUi(Dialog, text, show_output=True)
 
     ui.latex_error_occured = False
+    ui.terminal_error_occured = False
     thread = QtCore.QThread(Dialog)
     # worker = Worker_RefreshDDB()
     worker.signalUpdateOutput.connect(signalUpdateOutput)
@@ -181,7 +182,7 @@ def working_window_latex_output(worker, text, *args):
     thread.exit()
     Dialog.exec()
     
-    return ui.latex_error_occured
+    return ui.latex_error_occured, ui.terminal_error_occured
 
 
 
