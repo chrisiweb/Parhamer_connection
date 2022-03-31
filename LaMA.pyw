@@ -4094,7 +4094,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 checkbox_thema = "checkbox_unterkapitel_creator_{0}_{1}_{2}".format(
                     temp_klasse, kapitel, unterkapitel
                 )
-                self.dict_widget_variables[checkbox_thema].setChecked(True)
+                try:
+                    self.dict_widget_variables[checkbox_thema].setChecked(True)
+                except KeyError:
+                    critical_window('Es ist ein Fehler beim Aufrufen der zugeordneten Themen aufgetreten.',
+                    'Das Thema {0}.{1} ist in der {2}. Klasse nicht vorhanden.'.format(kapitel, unterkapitel, temp_klasse[1]))
+
                 if mode == "creator":
                     self.groupBox_themengebiete_cria.setEnabled(False)
 
@@ -7738,7 +7743,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             msg.setText(
                 "Das Feedback bzw. die Fehlermeldung wurde erfolgreich gesendet!\n"
             )
-            msg.setInformativeText("Vielen Dank für die Mithilfe LaMA zu verbessern.")
+            msg.setInformativeText("Vielen Dank für die Mithilfe, LaMA zu verbessern.")
             msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
             msg.exec_()
 
@@ -8166,22 +8171,108 @@ if __name__ == "__main__":
 
     i = step_progressbar(i, "mainwindow")
 
-    MainWindow = QMainWindow()
-    # MainWindow.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-    screen_resolution = app.desktop().screenGeometry()
-    screen_width, screen_height = screen_resolution.width(), screen_resolution.height()
+    try:
+        MainWindow = QMainWindow()
+        # MainWindow.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        screen_resolution = app.desktop().screenGeometry()
+        screen_width, screen_height = screen_resolution.width(), screen_resolution.height()
 
-    MainWindow.setGeometry(
-        30, 30, round(screen_width * 0.5), round(screen_height * 0.8)
-    )
-    MainWindow.move(30, 30)
-    i = step_progressbar(i, "mainwindow")
+        MainWindow.setGeometry(
+            30, 30, round(screen_width * 0.5), round(screen_height * 0.8)
+        )
+        MainWindow.move(30, 30)
+        i = step_progressbar(i, "mainwindow")
 
-    ui = Ui_MainWindow()
+        ui = Ui_MainWindow()
 
-    splash.finish(MainWindow)
-    ui.setupUi(MainWindow)
+        splash.finish(MainWindow)
+        ui.setupUi(MainWindow)
 
-    MainWindow.show()
+        MainWindow.show()
 
-    sys.exit(app.exec_())
+        sys.exit(app.exec_())
+    except Exception as e:
+        import traceback
+        rsp = critical_window("LaMA wurde unerwartet beendet.",
+        "Beim Ausführen des Programms ist ein Fehler aufgetreten und es musste daher geschlossen werden.\n\nDurch das Senden des Fehlerberichts, wird der Fehler an das LaMA-Team weitergeleitet. Programmfehler können dadurch schneller behoben werden.",
+        detailed_text=traceback.format_exc(),
+        titel="Programmfehler",
+        sendbutton=True,
+        OKButton_text="LaMA beenden",
+        set_width=350)
+        QtWidgets.QApplication.setOverrideCursor(
+            QtGui.QCursor(QtCore.Qt.WaitCursor)
+        )
+        if rsp == True:
+            gmail_user = "lamabugfix@gmail.com"
+            try:
+                fbpassword_path = os.path.join(path_programm, "_database", "_config")
+                fbpassword_file = os.path.join(fbpassword_path, "c2skuwwtgh.txt")
+                f = open(fbpassword_file, "r")
+                fbpassword_check = []
+                fbpassword_check.append(f.read().replace(" ", "").replace("\n", ""))
+                gmail_password = fbpassword_check[0]
+
+            except FileNotFoundError:
+                QtWidgets.QApplication.restoreOverrideCursor()
+                pw_msg = QtWidgets.QInputDialog(
+                    None,
+                    QtCore.Qt.WindowSystemMenuHint
+                    | QtCore.Qt.WindowTitleHint
+                    | QtCore.Qt.WindowCloseButtonHint,
+                )
+                pw_msg.setInputMode(QtWidgets.QInputDialog.TextInput)
+                pw_msg.setWindowTitle("Passworteingabe nötig")
+                pw_msg.setLabelText("Passwort:")
+                pw_msg.setCancelButtonText("Abbrechen")
+                pw_msg.setWindowIcon(QtGui.QIcon(logo_path))
+                if pw_msg.exec_() == QtWidgets.QDialog.Accepted:
+                    gmail_password = pw_msg.textValue()
+                    QtWidgets.QApplication.setOverrideCursor(
+                        QtGui.QCursor(QtCore.Qt.WaitCursor)
+                    )
+                else:
+                    critical_window("Der Fehlerbericht konnte leider nicht gesendet werden.",
+                    titel="Fehler beim Senden")
+                
+
+            try:
+                content = "Subject: LaMA Absturzbericht\n\nProblembeschreibung:\n\n{0}\n\nLaMA Version: {1}\nBetriebssystem: {2}".format(
+                    traceback.format_exc(), __version__, sys.platform, 
+                )
+                server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
+                server.ehlo()
+                server.login(gmail_user, gmail_password)
+                server.sendmail(
+                    "lamabugfix@gmail.com", "lama.helpme@gmail.com", content.encode("utf8")
+                )
+                server.close()
+
+                QtWidgets.QApplication.restoreOverrideCursor()
+
+                custom_window(
+                    "Der Fehlerbericht wurde erfolgreich gesendet!",
+                "Vielen Dank für die Mithilfe, LaMA zu verbessern.",
+                titel = "Fehlerbericht gesendet",
+                set_width=300)
+
+
+            except:
+                QtWidgets.QApplication.restoreOverrideCursor()
+
+                if "smtplib.SMTPAuthenticationError" in str(sys.exc_info()[0]):
+                    text = (
+                        "Bitte kontaktieren Sie den Support unter:\nlama.helpme@gmail.com"
+                    )
+
+                else:
+                    text = "Überprüfen Sie Ihre Internetverbindung oder kontaktieren Sie den Support für nähere Informationen unter:\nlama.helpme@gmail.com"
+
+                critical_window(
+                    "Der Fehlerbericht konnte leider nicht gesendet werden.",
+                    titel="Fehler beim Senden",
+                    detailed_text="Fehlermeldung:\n" + str(sys.exc_info()),
+                )
+        sys.exit()
+
+    
