@@ -20,13 +20,12 @@ from datetime import date, timedelta
 from time import sleep
 from refresh_ddb import refresh_ddb, modification_date
 from sort_items import order_gesammeltedateien
-from standard_dialog_windows import critical_window,question_window, warning_window
+from standard_dialog_windows import critical_window, question_window, warning_window
 from processing_window import working_window_latex_output
 import webbrowser
 from tinydb import Query
 from database_commands import _database, _database_addon, _local_database
 from tex_minimal import tex_preamble, tex_end, begin_beispiel, end_beispiel, begin_beispiel_lang, end_beispiel_lang
-from distutils.spawn import find_executable
 
 
 
@@ -53,37 +52,31 @@ class Worker_CreatePDF(QObject):
     @pyqtSlot()
     def task(self, ui, folder_name, file_name, latex_output_file):
         process = build_pdf_file(ui, folder_name, file_name, latex_output_file)
-
         ui.latex_error_occured = False
         logfile = ""
-        # error_msg = "" NOT WORKING (when latex not installed)
+        error_msg = ""
         while process.poll() is None:
             output = process.stdout.readline().strip()
-            # error_output = process.stderr.readline().strip()
+            error_output = process.stderr.readline().strip()
             if output:
                 msg = output.decode("utf-8", 'ignore')
-                logfile += msg
-
-                if ("! Emergency stop." in msg or 
-                "! LaTeX Error:" in msg or 
-                "Unrecoverable error" in msg or
-                "! Missing $ inserted" in msg or
-                "! Missing } inserted" in msg
-                ):
+                # print("ERROR: {}".format(msg))
+                logfile += msg 
+                print(msg)
+                if "! Emergency stop." in msg or "! LaTeX Error:" in msg or "Unrecoverable error" in msg:
                     ui.latex_error_occured = logfile
 
                 self.signalUpdateOutput.emit(ui, msg)
+            
+            if error_output: 
+                error = error_output.decode("utf-8", 'ignore')
+                error_msg += error
+                # if "latex" in error or "dvips" in error or "ps2pdf" in error:
+                #     ui.terminal_error_occured = 
 
-        # NOT WORKING
-        #     if error_output: 
-        #         error = error_output.decode("utf-8", 'ignore')
-        #         error_msg += error
-        #         # if "latex" in error or "dvips" in error or "ps2pdf" in error:
-        #         #     ui.terminal_error_occured = 
-
-        # if error_msg != "":
-        #     ui.terminal_error_occured = error_msg
-
+        if error_msg != "":
+            ui.terminal_error_occured = error_msg
+        
         process.wait()
 
         self.finished.emit()
@@ -697,6 +690,7 @@ def build_pdf_file(ui, folder_name, file_name, latex_output_file):
             terminal_command,
             cwd=os.path.splitdrive(path_programm)[0],
             stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
             shell=True
         )
 
@@ -824,9 +818,19 @@ def create_pdf(path_file, index=0, maximum=0, typ=0):
         text = "Die PDF Dateien werden erstellt... ({0}|{1})".format(index + 1, maximum)
 
     # text = "Die PDF Datei wird erstellt..." + rest
+    
+    errors_latex_output, terminal_error_occured = working_window_latex_output(Worker_CreatePDF(), text, folder_name, file_name, latex_output_file)
+    
+    # latex_output_file = open(
+    #     "{0}/Teildokument/temp.txt".format(path_localappdata_lama),
+    #     "r",
+    #     encoding="utf8",
+    #     errors="ignore",
+    # )
+    # latex_output = latex_output_file.read() #.splitlines()
+    # latex_output_file.close()
 
-
-    if not find_executable('latex'):
+    if terminal_error_occured != False:
         QApplication.restoreOverrideCursor()
 
         link = "https://mylama.github.io/lama/downloads.html"
@@ -834,15 +838,9 @@ def create_pdf(path_file, index=0, maximum=0, typ=0):
 
 Bitte öffnen Sie <a href='{0}'>lama.schule/downloads</a> und folgen Sie allen Schritten des Installationsguides.<br><br>
 
-Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@gmail.com""".format(link),
+Sollte das Problem weiterhin bestehen, bitte melden Sie sich unter lama.helpme@gmail.com""".format(link),
         titel="Keine LaTeX-Distribution gefunden")
-        return
-
-
-    
-    errors_latex_output = working_window_latex_output(Worker_CreatePDF(), text, folder_name, file_name, latex_output_file)
-    
-
+        return 
 
 
     if errors_latex_output != False:
@@ -854,7 +852,7 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
             + "Sollte der Fehler weiterhin bestehen, bitte kontaktieren Sie uns unter lama.helpme@gmail.com",
             "Wollen Sie die fehlerhafte PDF-Datei dennoch anzeigen?",
             "Fehler beim Erstellen der PDF-Datei",
-            "Log-Datei:\n" + "".join(errors_latex_output),
+            "Log-Datei:\n" + errors_latex_output,
         )
         if response == False:
             return

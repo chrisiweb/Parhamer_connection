@@ -10,7 +10,7 @@ def add_action(parent, menu, text, command):
     new_action.setObjectName(_fromUtf8("{}".format(new_action)))
     menu.addAction(new_action)
     new_action.setText(_translate("MainWindow", text, None))
-    new_action.triggered.connect(command)
+    new_action.triggered.connect(lambda: command())
 
     return new_action
 
@@ -83,7 +83,7 @@ def create_new_button(parent, text, command):
     new_button.setObjectName("{}".format(new_button))
     new_button.setText(_translate("MainWindow", text, None))
     if command != None:
-        new_button.clicked.connect(command)
+        new_button.clicked.connect(lambda: command())
 
     return new_button
 

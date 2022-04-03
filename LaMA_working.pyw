@@ -6,8 +6,7 @@ __lastupdate__ = "03/22"
 
 ##################
 
-show_popup = True
-
+show_popup = False
 
 print("Loading...")
 
@@ -32,100 +31,11 @@ from config_start import (
 from PyQt5.QtWidgets import QApplication
 
 import sys
+# import os
 
 # from tinydb import Query
 
-def report_exceptions(f):
-    def wrapped_f(*args, **kwargs):
-        try:
-            f(*args, **kwargs)
-        except Exception as e:
-            print(f"caught: {e}")
 
-            import traceback
-            rsp = critical_window("LaMA wurde unerwartet beendet.",
-            "Beim Ausführen des Programms ist ein Fehler aufgetreten und es musste daher geschlossen werden.\n\nDurch das Senden des Fehlerberichts, wird der Fehler an das LaMA-Team weitergeleitet. Programmfehler können dadurch schneller behoben werden.",
-            detailed_text=traceback.format_exc(),
-            titel="Programmfehler",
-            sendbutton=True,
-            OKButton_text="LaMA beenden",
-            set_width=350)
-            QtWidgets.QApplication.setOverrideCursor(
-                QtGui.QCursor(QtCore.Qt.WaitCursor)
-            )
-            if rsp == True:
-                gmail_user = "lamabugfix@gmail.com"
-                try:
-                    fbpassword_path = os.path.join(path_programm, "_database", "_config")
-                    fbpassword_file = os.path.join(fbpassword_path, "c2skuwwtgh.txt")
-                    file = open(fbpassword_file, "r")
-                    fbpassword_check = []
-                    fbpassword_check.append(file.read().replace(" ", "").replace("\n", ""))
-                    gmail_password = fbpassword_check[0]
-
-                except FileNotFoundError:
-                    pass
-                    QtWidgets.QApplication.restoreOverrideCursor()
-                    pw_msg = QtWidgets.QInputDialog(
-                        None,
-                        QtCore.Qt.WindowSystemMenuHint
-                        | QtCore.Qt.WindowTitleHint
-                        | QtCore.Qt.WindowCloseButtonHint,
-                    )
-                    pw_msg.setInputMode(QtWidgets.QInputDialog.TextInput)
-                    pw_msg.setWindowTitle("Passworteingabe nötig")
-                    pw_msg.setLabelText("Passwort:")
-                    pw_msg.setCancelButtonText("Abbrechen")
-                    pw_msg.setWindowIcon(QtGui.QIcon(logo_path))
-                    if pw_msg.exec_() == QtWidgets.QDialog.Accepted:
-                        gmail_password = pw_msg.textValue()
-                        QtWidgets.QApplication.setOverrideCursor(
-                            QtGui.QCursor(QtCore.Qt.WaitCursor)
-                        )
-                    else:
-                        critical_window("Der Fehlerbericht konnte leider nicht gesendet werden.",
-                        titel="Fehler beim Senden")
-                    
-
-                try:
-                    content = "Subject: LaMA Absturzbericht\n\nProblembeschreibung:\n\n{0}\n\nLaMA Version: {1}\nBetriebssystem: {2}".format(
-                        traceback.format_exc(), __version__, sys.platform, 
-                    )
-                    server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
-                    server.ehlo()
-                    server.login(gmail_user, gmail_password)
-                    server.sendmail(
-                        "lamabugfix@gmail.com", "lama.helpme@gmail.com", content.encode("utf8")
-                    )
-                    server.close()
-
-                    QtWidgets.QApplication.restoreOverrideCursor()
-
-                    custom_window(
-                        "Der Fehlerbericht wurde erfolgreich gesendet!",
-                    "Vielen Dank für die Mithilfe, LaMA zu verbessern.",
-                    titel = "Fehlerbericht gesendet",
-                    set_width=300)
-
-
-                except:
-                    QtWidgets.QApplication.restoreOverrideCursor()
-
-                    if "smtplib.SMTPAuthenticationError" in str(sys.exc_info()[0]):
-                        text = (
-                            "Bitte kontaktieren Sie den Support unter:\nlama.helpme@gmail.com"
-                        )
-
-                    else:
-                        text = "Überprüfen Sie Ihre Internetverbindung oder kontaktieren Sie den Support für nähere Informationen unter:\nlama.helpme@gmail.com"
-
-                    critical_window(
-                        "Der Fehlerbericht konnte leider nicht gesendet werden.",
-                        titel="Fehler beim Senden",
-                        detailed_text="Fehlermeldung:\n" + str(sys.exc_info()),
-                    )
-            sys.exit()
-    return wrapped_f
 
 # class Worker_CleanUp(QtCore.QObject):
 #     finished = QtCore.pyqtSignal()
@@ -190,7 +100,7 @@ class Worker_UpdateLaMA(QtCore.QObject):
 
 class Ui_MainWindow(object):
     # global dict_picture_path  # , set_chosen_gk #, list_sage_examples#, dict_alle_aufgaben_sage
-    
+
     def __init__(self):
         # self.dict_alle_aufgaben_sage = {}
         self.list_alle_aufgaben_sage = []
@@ -2134,7 +2044,7 @@ class Ui_MainWindow(object):
         self.pushButton_erstellen.setObjectName("pushButton_erstellen")
         self.pushButton_erstellen.setText(_translate("MainWindow", "Erstellen", None))
         self.pushButton_erstellen.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.pushButton_erstellen.clicked.connect(lambda: self.pushButton_erstellen_pressed())
+        self.pushButton_erstellen.clicked.connect(self.pushButton_erstellen_pressed)
         self.gridLayout_5.addWidget(
             self.pushButton_erstellen, 9, 4, 1, 2, QtCore.Qt.AlignRight
         )
@@ -2418,7 +2328,7 @@ class Ui_MainWindow(object):
             self.pushButton_send, 7, 1, 1, 1, QtCore.Qt.AlignRight
         )
         self.pushButton_send.setText(_translate("MainWindow", "Senden", None))
-        self.pushButton_send.clicked.connect(lambda: self.pushButton_send_pressed())
+        self.pushButton_send.clicked.connect(self.pushButton_send_pressed)
         self.pushButton_send.hide()
 
         self.comboBox_kapitel_fb_cria.currentIndexChanged.connect(
@@ -2462,7 +2372,7 @@ class Ui_MainWindow(object):
 
         ############################################################################################
         ##############################################################################################
-    @report_exceptions
+
     def retranslateUi(self, MainWindow):
         # self.menuDateityp.setTitle(_translate("MainWindow", "Aufgabentyp", None))
         self.menuDatei.setTitle(_translate("MainWindow", "Datei", None))
@@ -2581,45 +2491,29 @@ class Ui_MainWindow(object):
             self.update_gui("widgets_search")
 
     def show_popup_window(self, show_checkbox = True):
-        rsp = custom_window("""
-<b>Die neue Version von LaMA ({}) verwendet Befehle des aktuellsten "srdp-mathematik"-Pakets. Um die volle Funktionsfähigkeit von LaMA zu gewährleisten, sollte das LaTeX-Paket auf Ihrem Gerät manuell aktualisiert werden.</b><br><br><br>
+        msg = QtWidgets.QMessageBox()
+        msg.setWindowTitle("Update")
+        pixmap = QtGui.QPixmap(logo_path)
+        msg.setIconPixmap(pixmap)
+        msg.setWindowIcon(QtGui.QIcon(logo_path))
+        msg.setText("""Die neue Version von LaMA ({}) verwendet Befehle des aktuellsten "srdp-mathematik"-Pakets. Um die volle Funktionsfähigkeit von LaMA zu gewährleisten, sollte das LaTeX-Paket auf Ihrem Gerät manuell aktualisiert werden.""".format(__version__))
+        msg.setInformativeText("""Eine direkte Aktualisierung des "srdp-mathematik"-Pakets über LaMA kann via
 
-Eine direkte Aktualisierung des "srdp-mathematik"-Pakets über LaMA kann via<br>
+"Optionen -> Update ... -> srdp-mathematik.sty aktualisieren"
 
-<i>"Optionen -> Update ... -> srdp-mathematik.sty aktualisieren"</i><br>
+durchgeführt werden. 
 
-durchgeführt werden.<br><br>
-
-Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.com<br>
-""".format(__version__),
-        titel="Update Information",
-        show_checkbox=show_checkbox,
-        set_width=800,
-        )
-        return rsp
-#         msg = QtWidgets.QMessageBox()
-#         msg.setWindowTitle("Update")
-#         pixmap = QtGui.QPixmap(logo_path)
-#         msg.setIconPixmap(pixmap)
-#         msg.setWindowIcon(QtGui.QIcon(logo_path))
-#         msg.setText("""Die neue Version von LaMA ({}) verwendet Befehle des aktuellsten "srdp-mathematik"-Pakets. Um die volle Funktionsfähigkeit von LaMA zu gewährleisten, sollte das LaTeX-Paket auf Ihrem Gerät manuell aktualisiert werden.""".format(__version__))
-#         msg.setInformativeText("""Eine direkte Aktualisierung des "srdp-mathematik"-Pakets über LaMA kann via
-
-# "Optionen -> Update ... -> srdp-mathematik.sty aktualisieren"
-
-# durchgeführt werden. 
-
-# Sollte dies nicht möglich sein, melden Sie sich bitte unter:
-# lama.helpme@gmail.com""")
+Sollte dies nicht möglich sein, melden Sie sich bitte unter:
+lama.helpme@gmail.com""")
         
-#         cb = QtWidgets.QCheckBox()
-#         if show_checkbox==True:
-#             msg.setCheckBox(cb)
-#             cb.setText("Diese Meldung nicht mehr anzeigen")
-#         msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+        cb = QtWidgets.QCheckBox()
+        if show_checkbox==True:
+            msg.setCheckBox(cb)
+            cb.setText("Diese Meldung nicht mehr anzeigen")
+        msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
 
-#         msg.exec_()
-#         return cb.isChecked()
+        msg.exec_()
+        return cb.isChecked()
 
     def get_saving_path(self):
         dict_umlaute = {
@@ -2659,7 +2553,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         
         return filename_vorschau
 
-    @report_exceptions
+
     def open_dialogwindow_erstellen(
         self,
         dict_titlepage,
@@ -2735,7 +2629,6 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
                     file_path = os.path.dirname(self.saved_file_path).replace("/", "\\")
                     subprocess.Popen('explorer "{}"'.format(file_path))
 
-    @report_exceptions
     def check_admin_entry(self):
         if (self.chosen_gui == "widgets_edit" or self.chosen_gui == "widgets_create") and self.developer_mode_active == True:
             self.cb_matura_tag.show()
@@ -2787,7 +2680,6 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
 
         return row
 
-    @report_exceptions
     def create_tab_checkboxes_themen(self, tab_widget, mode):
         # new_tab = add_new_tab(
         #     tab_widget, "{}. Klasse".format(klasse[1])
@@ -2934,7 +2826,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
     #######################
     #### Check for Updates
     ##########################
-    @report_exceptions
+
     def check_for_update(self):
         try:
             link = (
@@ -3030,7 +2922,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
                         )
                         return
                     elif worker.response == True:
-                        os.startfile('"' + path_installer + '"')
+                        os.system(path_installer)
                         sys.exit(0)
         QtWidgets.QApplication.restoreOverrideCursor()
 
@@ -3077,7 +2969,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
                 )
                 self.dict_widget_variables[label_button_check_all].hide()
         # self.button_check_all_unterkapitel.hide()
-    @report_exceptions
+
     def create_all_checkboxes_unterkapitel(self):
         for klasse in list_klassen:
             dict_klasse = eval("dict_{}".format(klasse))
@@ -3230,7 +3122,6 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             if all.startswith("checkbox_unterkapitel_{0}_{1}_".format(klasse, kapitel)):
                 self.dict_widget_variables[all].setChecked(check_checkboxes)
 
-    @report_exceptions
     def comboBox_kapitel_changed_cr(
         self, parent, layout, klasse
     ):  # , verticalLayout_cr_cria, combobox_kapitel, klasse, spacerItem_unterkapitel_cria
@@ -3337,7 +3228,6 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         self.cb_mat.setChecked(False)
         self.cb_univie.setChecked(False)
 
-    @report_exceptions
     def suchfenster_reset(self, variation=False):
         self.uncheck_all_checkboxes("gk")
 
@@ -3405,7 +3295,6 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         self.cb_matura_tag.setChecked(False)
         self.cb_no_grade_tag.setChecked(False)
 
-    @report_exceptions
     def reset_sage(self, question_reset=True):
         if question_reset == True and not is_empty(self.list_alle_aufgaben_sage):
             response = question_window(
@@ -3485,7 +3374,6 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         for i in reversed(range(self.gridLayout_8.count()+1)):
             self.delete_widget(self.gridLayout_8, i)
 
-    @report_exceptions
     def change_program(self):
         if self.chosen_program == "lama":
             change_to = "LaMA Cria (Unterstufe)"
@@ -3654,7 +3542,6 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             self.menuBar.addAction(self.menuDeveloper.menuAction())
             self.menuBar.addAction(self.menuHelp.menuAction())
 
-    @report_exceptions
     def activate_developermode(self):
         if self.developer_mode_active == True:
             response = question_window(
@@ -3733,30 +3620,19 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         else:
             subprocess.Popen(file_path, shell = True)        
         QtWidgets.QApplication.restoreOverrideCursor()
-
-    
     def show_info(self):
         QtWidgets.QApplication.restoreOverrideCursor()
-        if self.display_mode == 1:
-            color = "rgb(88, 111, 124)"
-        else:
-            color = "rgb(47, 69, 80)"
-        link = "https://mylama.github.io/lama/"
-        custom_window("""
-<h3>LaMA - LaTeX Mathematik Assistent {0}</h3><br>
 
-<b>Authors:</b> Christoph Weberndorfer, Matthias Konzett<br><br>
-
-<b>License:</b> GNU General Public License v3.0<br>
-<b>Logo & Icon:</b> Lisa Schultz<br>
-<b>Credits:</b> David Fischer<br>
-<b>E-Mail-Adresse:</b> lama.helpme@gmail.com<br>
-<b>Weiter Infos:</b> <a href='{1}'style="color:{2};">lama.schule</a>
-""".format(__version__, link, color),
-        titel="Über LaMA - LaTeX Mathematik Assistent",
-        set_width=500,
+        custom_window(
+            "LaMA - LaTeX Mathematik Assistent %s  \n\n"
+            "Authors: Christoph Weberndorfer, Matthias Konzett\n\n"
+            "License: GNU General Public License v3.0  \n" % __version__,
+            "Logo & Icon: Lisa Schultz\n"
+            "Credits: David Fischer\n\n"
+            "E-Mail-Adresse: lama.helpme@gmail.com\n"
+            "Weiter Infos: lama.schule",
+            titel="Über LaMA - LaTeX Mathematik Assistent",
         )
-
 
     def copy_style_package(self, package_name, path_new_package, possible_locations):
         for path in possible_locations:
@@ -3781,7 +3657,6 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         if os.path.isfile(style_package_path):
             os.remove(style_package_path)
 
-    @report_exceptions
     def update_style_package(self):
         response = question_window(
             'Sind Sie sicher, dass Sie das Paket "{}" aktualisieren möchten?'.format(
@@ -3910,14 +3785,9 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             color = "rgb(88, 111, 124)"
         else:
             color = "rgb(47, 69, 80)"
-        custom_window("""
-Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu finanzieren.<br><br>
-
-<b>Unser Projekt ist und bleibt kostenlos und wir versuchen es auch weiterhin stetig zu verbessern und aktualisieren. Sie dient lediglich als kleine Anerkennung unserer Arbeit.</b><br>
-
-<center><a href='{0}'style="color:{1};">Buy Me A Coffee</a><\center>
-
-<h2> Vielen Dank!</h2>""".format(
+        custom_window(
+            'Eine kleinen Spende für unsere "Kaffeekassa" wird nicht benötigt, um LaMA zu finanzieren.\n\nUnser Projekt ist und bleibt kostenlos und wir versuchen es auch weiterhin stetig zu verbessern und aktualisieren. Sie dient lediglich als kleine Anerkennung unserer Arbeit.\n\nVielen Dank!',
+            """<center><a href='{0}'style="color:{1};">Buy Me A Coffee</a><\center>""".format(
                 link, color
             ),
             # "LaMA ist gratis und soll es auch bleiben!\n",
@@ -3928,7 +3798,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # BLZ: 19210
             # """,
             titel="LaMA unterstützen",
-            set_width=600
         )
 
     def chosen_aufgabenformat_typ(self):
@@ -3949,7 +3818,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.combobox_searchtype.show()
             # self.refresh_label_update()
 
-    @report_exceptions
     def button_all_checkboxes_pressed(self, chosen_dictionary, typ, mode, klasse=None):
         if mode == "quiz":
             name_start = "checkbox_quiz_{}_".format(typ)
@@ -4017,7 +3885,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def spinBox_nummer_changed(self):
         if self.comboBox_pruefungstyp.currentText() != "Übungsblatt" and self.comboBox_pruefungstyp.currentText() != "Benutzerdefiniert":
             self.spinBox_nummer_setvalue = self.spinBox_nummer.value()
-
 
     def comboBox_pruefungstyp_changed(self):
         self.comboBox_pruefungstyp.setEditable(False)
@@ -4100,7 +3967,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     ################### Befehle Creator ###########################
     #############################################################
 
-    @report_exceptions
     def set_infos_chosen_variation(self, aufgabe_total, mode):
         aufgabe = aufgabe_total["name"]
 
@@ -4197,12 +4063,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 checkbox_thema = "checkbox_unterkapitel_creator_{0}_{1}_{2}".format(
                     temp_klasse, kapitel, unterkapitel
                 )
-                try:
-                    self.dict_widget_variables[checkbox_thema].setChecked(True)
-                except KeyError:
-                    critical_window('Es ist ein Fehler beim Aufrufen der zugeordneten Themen aufgetreten.',
-                    'Das Thema {0}.{1} ist in der {2}. Klasse nicht vorhanden.'.format(kapitel, unterkapitel, temp_klasse[1]))
-
+                self.dict_widget_variables[checkbox_thema].setChecked(True)
                 if mode == "creator":
                     self.groupBox_themengebiete_cria.setEnabled(False)
 
@@ -4259,7 +4120,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # self.comboBox_af.setEnabled(True)
         # self.groupBox_themengebiete_cria.setEnabled(True)
 
-    @report_exceptions
     def button_variation_cr_pressed(self, mode):
         Dialog = QtWidgets.QDialog(
             None,
@@ -4345,8 +4205,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         button_cancel.setText("Abbrechen")
         response = msg.exec_()
         return response
-
-    @report_exceptions
     def btn_add_image_pressed(self):
         
         response = self.open_msg_box_choose_image()
@@ -4408,7 +4266,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         self.verticalLayout.addWidget(self.btn_add_image)
 
-    @report_exceptions
     def del_picture(self, picture, question=True):
         if question == True:
             rsp = question_window(
@@ -4425,74 +4282,62 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         del self.dict_widget_variables[picture]
 
-    @report_exceptions
     def convert_image_eps_clicked(self):
-        Dialog = QtWidgets.QDialog(
-            None,
-            QtCore.Qt.WindowSystemMenuHint
-            | QtCore.Qt.WindowTitleHint
-            | QtCore.Qt.WindowCloseButtonHint,
-        )
-        ui = Ui_Dialog_Convert_To_Eps()
-        ui.setupUi(Dialog, self)
+        msg = QtWidgets.QMessageBox()
+        # msg.setIcon(QtWidgets.QMessageBox.Question)
+        msg.setWindowIcon(QtGui.QIcon(logo_path))
+        msg.setText("Wählen Sie alle Grafiken, die Sie konvertieren möchten.")
+        # msg.setInformativeText('Möchten Sie das neue Update installieren?')
+        msg.setWindowTitle("Grafik(en) konvertieren")
+        msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+        button_durchsuchen = msg.button(QtWidgets.QMessageBox.Yes)
+        button_durchsuchen.setText("Durchsuchen...")
+        buttonN = msg.button(QtWidgets.QMessageBox.No)
+        buttonN.setText("Abbrechen")
+        ret = msg.exec_()
 
-        Dialog.exec()
-        # old version:
-        # msg = QtWidgets.QMessageBox()
-        # # msg.setIcon(QtWidgets.QMessageBox.Question)
-        # msg.setWindowIcon(QtGui.QIcon(logo_path))
-        # msg.setText("Wählen Sie alle Grafiken, die Sie konvertieren möchten.")
-        # # msg.setInformativeText('Möchten Sie das neue Update installieren?')
-        # msg.setWindowTitle("Grafik(en) konvertieren")
-        # msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-        # button_durchsuchen = msg.button(QtWidgets.QMessageBox.Yes)
-        # button_durchsuchen.setText("Durchsuchen...")
-        # buttonN = msg.button(QtWidgets.QMessageBox.No)
-        # buttonN.setText("Abbrechen")
-        # ret = msg.exec_()
+        if ret == QtWidgets.QMessageBox.Yes:
+            # filename =	 filedialog.askopenfilenames(initialdir = last_path,title = "Durchsuchen...",filetypes = (('JPG-Dateien','*.jpg'),("Alle Dateien","*.*")))
+            try:
+                os.path.dirname(self.saved_file_path)
+            except AttributeError:
+                self.saved_file_path = path_home
 
-        # if ret == QtWidgets.QMessageBox.Yes:
-        #     # filename =	 filedialog.askopenfilenames(initialdir = last_path,title = "Durchsuchen...",filetypes = (('JPG-Dateien','*.jpg'),("Alle Dateien","*.*")))
-        #     try:
-        #         os.path.dirname(self.saved_file_path)
-        #     except AttributeError:
-        #         self.saved_file_path = path_home
+            filename = QtWidgets.QFileDialog.getOpenFileNames(
+                None,
+                "Select a folder:",
+                os.path.dirname(self.saved_file_path),
+                "Bilder (*.jpg; *.jpeg; *.png; *.jfif);; Alle Dateien (*.*)",
+            )
+            if filename[0] != []:
+                self.saved_file_path = filename[0][0]
+                for image in filename[0]:
+                    response = convert_image_to_eps(image)
+                    if response != True:
+                        break
+                if response == True:
+                    if len(filename[0]) == 1:
+                        text = "wurde {} Datei".format(len(filename[0]))
+                    else:
+                        text = "wurden {} Dateien".format(len(filename[0]))
 
-        #     filename = QtWidgets.QFileDialog.getOpenFileNames(
-        #         None,
-        #         "Select a folder:",
-        #         os.path.dirname(self.saved_file_path),
-        #         "Bilder (*.jpg; *.jpeg; *.png; *.jfif);; Alle Dateien (*.*)",
-        #     )
-        #     if filename[0] != []:
-        #         self.saved_file_path = filename[0][0]
-        #         for image in filename[0]:
-        #             response = convert_image_to_eps(image)
-        #             if response != True:
-        #                 break
-        #         if response == True:
-        #             if len(filename[0]) == 1:
-        #                 text = "wurde {} Datei".format(len(filename[0]))
-        #             else:
-        #                 text = "wurden {} Dateien".format(len(filename[0]))
-
-        #             information_window(
-        #                 "Es {0} erfolgreich konvertiert.".format(text),
-        #                 titel="Grafik(en) erfolgreich konvertiert",
-        #                 detailed_text="Konvertierte Grafik(en):\n{}".format(
-        #                     "\n".join(filename[0])
-        #                 ),
-        #             )
-        #         else:
-        #             critical_window(
-        #                 "Beim Konvertieren der folgenden Grafik ist ein Fehler aufgetreten:\n\n{}".format(
-        #                     image
-        #                 ),
-        #                 titel="Fehler beim Konvertieren",
-        #                 detailed_text='Fehlermeldung:\n\n"{0}: {1}"'.format(
-        #                     type(response).__name__, response
-        #                 ),
-        #             )
+                    information_window(
+                        "Es {0} erfolgreich konvertiert.".format(text),
+                        titel="Grafik(en) erfolgreich konvertiert",
+                        detailed_text="Konvertierte Grafik(en):\n{}".format(
+                            "\n".join(filename[0])
+                        ),
+                    )
+                else:
+                    critical_window(
+                        "Beim Konvertieren der folgenden Grafik ist ein Fehler aufgetreten:\n\n{}".format(
+                            image
+                        ),
+                        titel="Fehler beim Konvertieren",
+                        detailed_text='Fehlermeldung:\n\n"{0}: {1}"'.format(
+                            type(response).__name__, response
+                        ),
+                    )
 
     def chosen_aufgabenformat_cr(self):
         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
@@ -5114,7 +4959,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         self.suchfenster_reset(True)
         self.reset_edit_file()
-
 
     def button_vorschau_edit_pressed(self):
         content = self.plainTextEdit.toPlainText()
@@ -5882,7 +5726,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.actionRestore_sage.setText("Backup")
             self.actionRestore_sage.setEnabled(False)
 
-    
     def sage_load_files(self):
         list_aufgaben_errors = []
 
@@ -5915,7 +5758,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         return list_aufgaben_errors
 
      
-    @report_exceptions
+
     def sage_load(self, external_file_loaded=False, autosave=False):
         if external_file_loaded == False and autosave == False:
             try:
@@ -6092,7 +5935,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         
         QtWidgets.QApplication.restoreOverrideCursor()
 
-    @report_exceptions
     def sage_save(self, path_create_tex_file=False, autosave=False):  # path_file
         if autosave == False:
             self.update_gui("widgets_sage")
@@ -6770,7 +6612,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         #         print(image)
         #         self.list_copy_images.append(image)
 
-    @report_exceptions
     def build_aufgaben_schularbeit(self, aufgabe):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
@@ -7082,7 +6923,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         self.update_label_restore_action()
 
-    @report_exceptions
     def nummer_clicked(self, item):
         aufgabe = item.text()
 
@@ -7147,7 +6987,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         self.adapt_choosing_list(list_mode)
 
-    @report_exceptions
     def comboBox_kapitel_changed(self, list_mode):
         # klasse = self.get_klasse(list_mode)
         if list_mode == "sage":
@@ -7213,7 +7052,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             else:
                 listWidget.addItem(item)
 
-    @report_exceptions
     def adapt_choosing_list(self, list_mode):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         if list_mode == "sage":
@@ -7283,7 +7121,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         QtWidgets.QApplication.restoreOverrideCursor()
 
-    @report_exceptions
     def collect_all_infos_for_creating_file(self):
         self.dict_all_infos_for_file = {}
 
@@ -7492,7 +7329,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         return first_typ2
 
-    @report_exceptions
     def create_body_of_tex_file(self, filename_vorschau, ausgabetyp):
         first_typ2 = False
 
@@ -7512,7 +7348,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 aufgabe, aufgabe_total, filename_vorschau, first_typ2, ausgabetyp
             )
 
-    @report_exceptions
     def pushButton_vorschau_pressed(
         self,
         ausgabetyp,
@@ -7525,6 +7360,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             path_programm, "Teildokument", "Schularbeit_Vorschau.tex"
         ),
     ):
+
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         if ausgabetyp == "vorschau":
             self.collect_all_infos_for_creating_file()
@@ -7768,7 +7604,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.lineEdit_number_fb.setText(_translate("MainWindow", "", None))
         self.lineEdit_email.setText(_translate("MainWindow", "", None))
 
-    @report_exceptions
     def pushButton_send_pressed(self):
         if (
             self.comboBox_at_fb.currentText() == "Allgemeine Rückmeldung"
@@ -7861,7 +7696,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             msg.setText(
                 "Das Feedback bzw. die Fehlermeldung wurde erfolgreich gesendet!\n"
             )
-            msg.setInformativeText("Vielen Dank für die Mithilfe, LaMA zu verbessern.")
+            msg.setInformativeText("Vielen Dank für die Mithilfe LaMA zu verbessern.")
             msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
             msg.exec_()
 
@@ -7895,7 +7730,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     ##########################################################################
     ############################################################################
 
-    @report_exceptions
     def pushButton_erstellen_pressed(self):
         self.collect_all_infos_for_creating_file()
         try:
@@ -8192,9 +8026,6 @@ if __name__ == "__main__":
     from subwindows import Ui_Dialog_draft_control
 
     i = step_progressbar(i, "subwindows")
-    from subwindows import Ui_Dialog_Convert_To_Eps
-
-    i = step_progressbar(i, "subwindows")
     from subwindows import read_credentials
 
     i = step_progressbar(i, "translate")
@@ -8290,7 +8121,6 @@ if __name__ == "__main__":
 
     i = step_progressbar(i, "mainwindow")
 
-    # try:
     MainWindow = QMainWindow()
     # MainWindow.setWindowFlags(QtCore.Qt.FramelessWindowHint)
     screen_resolution = app.desktop().screenGeometry()
@@ -8302,7 +8132,6 @@ if __name__ == "__main__":
     MainWindow.move(30, 30)
     i = step_progressbar(i, "mainwindow")
 
-    
     ui = Ui_MainWindow()
 
     splash.finish(MainWindow)
@@ -8311,7 +8140,3 @@ if __name__ == "__main__":
     MainWindow.show()
 
     sys.exit(app.exec_())
-    # except Exception as e:
-
-
-    
