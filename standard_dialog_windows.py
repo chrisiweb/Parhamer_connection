@@ -2,7 +2,7 @@ from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QMessageBox, QWidget, QCheckBox
 from config import logo_path
-from create_new_widgets import create_new_gridlayout
+# from create_new_widgets import create_new_gridlayout
 
 
 def warning_window(text, detailed_text="", titel="Warnung", informative_text=""):
@@ -116,7 +116,7 @@ def custom_window(
         layout = msg.layout()
         widget = QWidget()
         widget.setFixedWidth(set_width)
-        layout.addWidget(widget, 4,1,1,2)
+        layout.addWidget(widget, 4,0,1,3)
 
 
     # horizontalspacer = QSpacerItem(

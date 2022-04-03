@@ -695,7 +695,7 @@ class Ui_Dialog_random_quiz(object):
 
 class Ui_Dialog_titlepage(object):
     def setupUi(self, Dialog, dict_titlepage):
-
+        
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
         Dialog.setWindowTitle(

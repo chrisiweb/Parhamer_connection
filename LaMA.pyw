@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-#### Version number ###
-__version__ = "v3.4.3"
+
 __lastupdate__ = "03/22"
 
 ##################
@@ -21,6 +20,7 @@ from lama_colors import *
 import json
 
 from config_start import (
+    __version__,
     path_programm,
     path_home,
     path_localappdata_lama,
@@ -35,112 +35,8 @@ import sys
 
 # from tinydb import Query
 
-def report_exceptions(f):
-    def wrapped_f(*args, **kwargs):
-        try:
-            f(*args, **kwargs)
-        except Exception as e:
-            print(f"caught: {e}")
+from handle_exceptions import report_exceptions
 
-            import traceback
-            rsp = critical_window("LaMA wurde unerwartet beendet.",
-            "Beim Ausführen des Programms ist ein Fehler aufgetreten und es musste daher geschlossen werden.\n\nDurch das Senden des Fehlerberichts, wird der Fehler an das LaMA-Team weitergeleitet. Programmfehler können dadurch schneller behoben werden.",
-            detailed_text=traceback.format_exc(),
-            titel="Programmfehler",
-            sendbutton=True,
-            OKButton_text="LaMA beenden",
-            set_width=350)
-            QtWidgets.QApplication.setOverrideCursor(
-                QtGui.QCursor(QtCore.Qt.WaitCursor)
-            )
-            if rsp == True:
-                gmail_user = "lamabugfix@gmail.com"
-                try:
-                    fbpassword_path = os.path.join(path_programm, "_database", "_config")
-                    fbpassword_file = os.path.join(fbpassword_path, "c2skuwwtgh.txt")
-                    file = open(fbpassword_file, "r")
-                    fbpassword_check = []
-                    fbpassword_check.append(file.read().replace(" ", "").replace("\n", ""))
-                    gmail_password = fbpassword_check[0]
-
-                except FileNotFoundError:
-                    pass
-                    QtWidgets.QApplication.restoreOverrideCursor()
-                    pw_msg = QtWidgets.QInputDialog(
-                        None,
-                        QtCore.Qt.WindowSystemMenuHint
-                        | QtCore.Qt.WindowTitleHint
-                        | QtCore.Qt.WindowCloseButtonHint,
-                    )
-                    pw_msg.setInputMode(QtWidgets.QInputDialog.TextInput)
-                    pw_msg.setWindowTitle("Passworteingabe nötig")
-                    pw_msg.setLabelText("Passwort:")
-                    pw_msg.setCancelButtonText("Abbrechen")
-                    pw_msg.setWindowIcon(QtGui.QIcon(logo_path))
-                    if pw_msg.exec_() == QtWidgets.QDialog.Accepted:
-                        gmail_password = pw_msg.textValue()
-                        QtWidgets.QApplication.setOverrideCursor(
-                            QtGui.QCursor(QtCore.Qt.WaitCursor)
-                        )
-                    else:
-                        critical_window("Der Fehlerbericht konnte leider nicht gesendet werden.",
-                        titel="Fehler beim Senden")
-                    
-
-                try:
-                    content = "Subject: LaMA Absturzbericht\n\nProblembeschreibung:\n\n{0}\n\nLaMA Version: {1}\nBetriebssystem: {2}".format(
-                        traceback.format_exc(), __version__, sys.platform, 
-                    )
-                    server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
-                    server.ehlo()
-                    server.login(gmail_user, gmail_password)
-                    server.sendmail(
-                        "lamabugfix@gmail.com", "lama.helpme@gmail.com", content.encode("utf8")
-                    )
-                    server.close()
-
-                    QtWidgets.QApplication.restoreOverrideCursor()
-
-                    custom_window(
-                        "Der Fehlerbericht wurde erfolgreich gesendet!",
-                    "Vielen Dank für die Mithilfe, LaMA zu verbessern.",
-                    titel = "Fehlerbericht gesendet",
-                    set_width=300)
-
-
-                except:
-                    QtWidgets.QApplication.restoreOverrideCursor()
-
-                    if "smtplib.SMTPAuthenticationError" in str(sys.exc_info()[0]):
-                        text = (
-                            "Bitte kontaktieren Sie den Support unter:\nlama.helpme@gmail.com"
-                        )
-
-                    else:
-                        text = "Überprüfen Sie Ihre Internetverbindung oder kontaktieren Sie den Support für nähere Informationen unter:\nlama.helpme@gmail.com"
-
-                    critical_window(
-                        "Der Fehlerbericht konnte leider nicht gesendet werden.",
-                        titel="Fehler beim Senden",
-                        detailed_text="Fehlermeldung:\n" + str(sys.exc_info()),
-                    )
-            sys.exit()
-    return wrapped_f
-
-# class Worker_CleanUp(QtCore.QObject):
-#     finished = QtCore.pyqtSignal()
-
-#     @QtCore.pyqtSlot()
-#     def task(self, ui):
-#         #### WORKING
-#         Ui_MainWindow.dict_missing_files = Ui_MainWindow().file_clean_up(ui)
-
-#         ui.label.setText("Nicht verwendete Bilder werden gesucht ...")
-#         list_unused_images = Ui_MainWindow().image_clean_up(ui)
-
-#         Ui_MainWindow.dict_missing_files['Nicht verwendete Bilder'] = list_unused_images
-
-#         self.finished.emit()
 
 class Worker_UpdateDatabase(QtCore.QObject):
     finished = QtCore.pyqtSignal()
@@ -246,6 +142,7 @@ class Ui_MainWindow(object):
             os.mkdir(path_teildokument)
         app.aboutToQuit.connect(self.close_app)
 
+    @report_exceptions
     def setupUi(self, MainWindow):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         self.check_for_update()
@@ -2454,8 +2351,8 @@ class Ui_MainWindow(object):
         self.comboBox_aufgabentyp_cr.currentIndexChanged.connect(
             self.chosen_aufgabenformat_cr
         )
-        self.pushButton_save.clicked.connect(self.button_speichern_pressed)
-        self.pushButton_titlepage.clicked.connect(self.define_titlepage)
+        self.pushButton_save.clicked.connect(lambda: self.button_speichern_pressed())
+        self.pushButton_titlepage.clicked.connect(lambda: self.define_titlepage())
 
         if loaded_lama_file_path != "":
             self.sage_load(external_file_loaded=True)
@@ -2594,7 +2491,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
 """.format(__version__),
         titel="Update Information",
         show_checkbox=show_checkbox,
-        set_width=800,
+        set_width=600,
         )
         return rsp
 #         msg = QtWidgets.QMessageBox()
@@ -3754,7 +3651,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
 <b>Weiter Infos:</b> <a href='{1}'style="color:{2};">lama.schule</a>
 """.format(__version__, link, color),
         titel="Über LaMA - LaTeX Mathematik Assistent",
-        set_width=500,
+        set_width=450,
         )
 
 
@@ -3928,7 +3825,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # BLZ: 19210
             # """,
             titel="LaMA unterstützen",
-            set_width=600
+            set_width=500
         )
 
     def chosen_aufgabenformat_typ(self):
@@ -6131,6 +6028,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         if autosave == True:
             self.update_label_restore_action()
 
+    @report_exceptions
     def define_titlepage(self):
         if self.chosen_program == "lama":
             dict_titlepage = self.dict_titlepage
@@ -6197,6 +6095,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         return [num_typ1, num_typ2]
 
+    @report_exceptions
     def sage_aufgabe_add(self, aufgabe):
         if self.chosen_program == "lama":
 
@@ -6263,6 +6162,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 )
             )
 
+    @report_exceptions
     def btn_up_pressed(self, aufgabe):
         a, b = (
             self.list_alle_aufgaben_sage.index(aufgabe),
@@ -6275,6 +6175,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         self.build_aufgaben_schularbeit(aufgabe)
 
+    @report_exceptions
     def btn_down_pressed(self, aufgabe):
 
         a, b = (
@@ -6303,6 +6204,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         if aufgabe in self.dict_sage_individual_change:
             del self.dict_sage_individual_change[aufgabe]
 
+    @report_exceptions
     def btn_delete_pressed(self, aufgabe):
         try:
             self.dict_sage_individual_change[aufgabe]

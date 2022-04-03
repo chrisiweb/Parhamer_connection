@@ -3,6 +3,7 @@ from PyQt5.QtCore import Qt
 from config import SpinBox_noWheel, ClickLabel
 from translate import _fromUtf8, _translate
 from predefined_size_policy import SizePolicy_fixed
+from handle_exceptions import report_exceptions
 
 
 def add_action(parent, menu, text, command):

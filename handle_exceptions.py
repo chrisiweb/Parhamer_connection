@@ -1,14 +1,16 @@
 from standard_dialog_windows import critical_window, custom_window
 from PyQt5 import QtWidgets, QtCore, QtGui
-from config_start import path_programm
+from config_start import path_programm, __version__
 from config import logo_path
+from smtplib import SMTP_SSL
 import os
+import sys
 
 def report_exceptions(f):
     def wrapped_f(*args, **kwargs):
         try:
             f(*args, **kwargs)
-        except Exception:
+        except Exception as e:
             import traceback
             rsp = critical_window("LaMA wurde unerwartet beendet.",
             "Beim Ausführen des Programms ist ein Fehler aufgetreten und es musste daher geschlossen werden.\n\nDurch das Senden des Fehlerberichts, wird der Fehler an das LaMA-Team weitergeleitet. Programmfehler können dadurch schneller behoben werden.",
@@ -25,12 +27,13 @@ def report_exceptions(f):
                 try:
                     fbpassword_path = os.path.join(path_programm, "_database", "_config")
                     fbpassword_file = os.path.join(fbpassword_path, "c2skuwwtgh.txt")
-                    f = open(fbpassword_file, "r")
+                    file = open(fbpassword_file, "r")
                     fbpassword_check = []
-                    fbpassword_check.append(f.read().replace(" ", "").replace("\n", ""))
+                    fbpassword_check.append(file.read().replace(" ", "").replace("\n", ""))
                     gmail_password = fbpassword_check[0]
 
                 except FileNotFoundError:
+                    pass
                     QtWidgets.QApplication.restoreOverrideCursor()
                     pw_msg = QtWidgets.QInputDialog(
                         None,
@@ -57,7 +60,7 @@ def report_exceptions(f):
                     content = "Subject: LaMA Absturzbericht\n\nProblembeschreibung:\n\n{0}\n\nLaMA Version: {1}\nBetriebssystem: {2}".format(
                         traceback.format_exc(), __version__, sys.platform, 
                     )
-                    server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
+                    server = SMTP_SSL("smtp.gmail.com", 465)
                     server.ehlo()
                     server.login(gmail_user, gmail_password)
                     server.sendmail(
