@@ -3373,6 +3373,7 @@ class Ui_Dialog_Convert_To_Eps(object):
     #     return _list
 
     def search_pressed(self):
+        raise Exception("ERROR")
         try:
             os.path.dirname(self.MainWindow.saved_file_path)
         except AttributeError:
