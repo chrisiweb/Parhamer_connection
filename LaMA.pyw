@@ -3128,7 +3128,6 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             if all.startswith("checkbox_unterkapitel_{0}_{1}_".format(klasse, kapitel)):
                 self.dict_widget_variables[all].setChecked(check_checkboxes)
 
-    @report_exceptions
     def comboBox_kapitel_changed_cr(
         self, parent, layout, klasse
     ):  # , verticalLayout_cr_cria, combobox_kapitel, klasse, spacerItem_unterkapitel_cria
