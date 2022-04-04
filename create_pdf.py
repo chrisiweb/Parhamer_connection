@@ -13,6 +13,7 @@ from config import (
     config_loader,
     logo_path,
     is_empty,
+    shorten_gk,
 )
 import json
 import shutil
@@ -24,7 +25,7 @@ from standard_dialog_windows import critical_window,question_window, warning_win
 from processing_window import working_window_latex_output
 import webbrowser
 from tinydb import Query
-from database_commands import _database, _database_addon, _local_database
+from database_commands import _database, _database_addon, _local_database, get_aufgabentyp
 from tex_minimal import tex_preamble, tex_end, begin_beispiel, end_beispiel, begin_beispiel_lang, end_beispiel_lang
 from distutils.spawn import find_executable
 
@@ -263,6 +264,38 @@ def search_in_database(self,current_program, database,suchbegriffe):
             if suchbegriffe['erweiterte_suche'].lower() in bilder:
                 return True
         return False
+
+    def lineedit_in_name(value):
+        simplified_search = shorten_gk(suchbegriffe['erweiterte_suche'].lower())
+        simplified_value = shorten_gk(value)
+        # print(short_gk)#
+
+        _list= simplified_search.split("-")
+        gk_search = _list[0]
+        num_search = _list[-1]
+
+        _list= simplified_value.split("-")
+        gk_value = _list[0]
+        num_value = _list[-1]
+
+
+        if "*" in gk_search:
+            gk_search = gk_search.replace("*", ".*")
+            x= re.fullmatch("{}".format(gk_search), gk_value)
+            if x == None:
+                return False
+        elif gk_search != gk_value:
+            return False
+
+        if "*" in num_search:
+            num_search = num_search.replace("*", ".*")
+            x= re.fullmatch("{}".format(num_search), num_value)
+            if x == None:
+                return False
+        elif num_search != num_value:
+            return False     
+
+        return True
    
     if suchbegriffe['erweiterte_suche'] == "":
         erweiterte_suche = eval("_file_.titel.test(search_True)")
@@ -274,6 +307,8 @@ def search_in_database(self,current_program, database,suchbegriffe):
         erweiterte_suche = eval("_file_.quelle.test(lineedit_in_erweitert)")
     elif self.comboBox_suchbegriffe.currentText() == "Bilder":
         erweiterte_suche = _file_.bilder.test(lineedit_in_bilder)
+    elif self.comboBox_suchbegriffe.currentText() == "Aufgaben-ID":
+        erweiterte_suche = _file_.name.test(lineedit_in_name)
 
     gesammeltedateien = []
     if current_program == 'lama_1' or (current_program == 'cria' and self.combobox_searchtype.currentIndex()==0):

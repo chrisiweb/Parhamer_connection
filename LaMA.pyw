@@ -5,11 +5,12 @@ __lastupdate__ = "03/22"
 
 ##################
 
-show_popup = True
+show_popup = False
 
 
 print("Loading...")
 
+from multiprocessing.sharedctypes import Value
 from start_window import check_if_database_exists
 
 check_if_database_exists()
@@ -555,20 +556,20 @@ class Ui_MainWindow(object):
 
         self.comboBox_suchbegriffe = create_new_combobox(self.groupBox_advanced_search)
         self.gridLayout_10.addWidget(self.comboBox_suchbegriffe, 0, 0, 1, 1)
-        add_new_option(self.comboBox_suchbegriffe, 0, "")
-        self.comboBox_suchbegriffe.currentIndexChanged.connect(
-            self.comboBox_suchbegriffe_changed
-        )
+        # add_new_option(self.comboBox_suchbegriffe, 0, "")
+        # self.comboBox_suchbegriffe.currentIndexChanged.connect(
+        #     self.comboBox_suchbegriffe_changed
+        # )
 
-        i = 1
-        suche_auswahl = ["Titel", "Inhalt", "Quelle", "Bilder"]
+        i = 0
+        suche_auswahl = ["Titel", "Inhalt", "Quelle", "Bilder", "Aufgaben-ID"]
         for all in suche_auswahl:
             add_new_option(self.comboBox_suchbegriffe, i, all)
             i += 1
 
         self.entry_suchbegriffe = create_new_lineedit(self.groupBox_advanced_search)
         self.gridLayout_10.addWidget(self.entry_suchbegriffe, 0, 1, 1, 1)
-        self.entry_suchbegriffe.setEnabled(False)
+        # self.entry_suchbegriffe.setEnabled(False)
 
         self.gridLayout.addWidget(
             self.groupBox_advanced_search, 4, 1, 1, 1, QtCore.Qt.AlignTop
@@ -2940,12 +2941,12 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             name = "checkbox_creator_gk_" + all
             self.dict_widget_variables[name].setToolTip(chosen_dict[all])
 
-    def comboBox_suchbegriffe_changed(self):
-        if self.comboBox_suchbegriffe.currentIndex() == 0:
-            self.entry_suchbegriffe.setText("")
-            self.entry_suchbegriffe.setEnabled(False)
-        else:
-            self.entry_suchbegriffe.setEnabled(True)
+    # def comboBox_suchbegriffe_changed(self):
+    #     if self.comboBox_suchbegriffe.currentIndex() == 0:
+    #         self.entry_suchbegriffe.setText("")
+    #         self.entry_suchbegriffe.setEnabled(False)
+    #     else:
+    #         self.entry_suchbegriffe.setEnabled(True)
 
     def tabWidget_klassen_cria_changed(self):
         klasse = list_klassen[self.tabWidget_klassen_cria.currentIndex()]
@@ -4025,6 +4026,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             elif typ == 2:
                 for i, gk in enumerate(aufgabe_total["themen"]):
                     short_gk = shorten_gk(gk)
+
                     if short_gk in zusatzthemen_beschreibung:
                         checkbox_gk = "checkbox_creator_themen_{}".format(short_gk)
                         if i == 0:

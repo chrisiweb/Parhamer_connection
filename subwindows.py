@@ -2276,7 +2276,8 @@ class Ui_Dialog_draft_control(object):
         self.dict_drafts = dict_drafts
         Dialog.setObjectName("Dialog")
         Dialog.setWindowTitle("Entwürfe prüfen")
-        Dialog.setFixedSize(300, 150)
+        Dialog.setSizePolicy(SizePolicy_fixed)
+        # Dialog.setFixedSize(300, 150)
         Dialog.setWindowIcon(QIcon(logo_path))
 
 
