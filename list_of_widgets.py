@@ -203,6 +203,7 @@ widgets_sage_cria = [
     "comboBox_klassen",
     "comboBox_kapitel",
     "comboBox_unterkapitel",
+    "combobox_beurteilung",
     # "label_gesamtpunkte",
     # "label_gesamtbeispiele",
     # "cb_drafts_sage",

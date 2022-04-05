@@ -1691,15 +1691,23 @@ class Ui_MainWindow(object):
 
         add_new_option(self.combobox_beurteilung, 2, "keine Auswahl")
 
+        if self.chosen_program == "cria":
+            self.combobox_beurteilung.removeItem(self.combobox_beurteilung.findText("Beurteilungsraster"))
+
         try:
             if self.dict_titlepage['hide_all'] == True:
-                self.combobox_beurteilung.removeItem(1)
+                self.combobox_beurteilung.removeItem(self.combobox_beurteilung.findText("Beurteilungsraster"))
         except KeyError:
             pass
 
         self.combobox_beurteilung.currentIndexChanged.connect(self.notenanzeige_changed)
         # self.combobox_beurteilung.setMinimumContentsLength(1)
         self.gridLayout_5.addWidget(self.combobox_beurteilung, 1, 4, 1, 2)
+
+        # self.checkbox_beurteilung = create_new_checkbox(self.groupBox_sage, "Notenschlüssel anzeigen", True)
+        # self.gridLayout_5.addWidget(self.checkbox_beurteilung, 1,4,1,2)
+        # self.checkbox_beurteilung.hide()        
+
 
         self.pushButton_titlepage = QtWidgets.QPushButton(self.groupBox_sage)
         self.pushButton_titlepage.setObjectName(_fromUtf8("pushButton_titlepage"))
@@ -3461,6 +3469,8 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             )
 
             self.groupBox_ausgew_gk_cr.setTitle("Ausgewählte Themen")
+
+            self.combobox_beurteilung.removeItem(self.combobox_beurteilung.findText("Beurteilungsraster"))
             # self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
             #     "cria"
             # )
@@ -3498,6 +3508,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             )
 
             self.groupBox_ausgew_gk_cr.setTitle("Ausgewählte Grundkompetenzen")
+            self.combobox_beurteilung.insertItem(1,"Beurteilungsraster")
 
         MainWindow.setWindowTitle(program_name)
         MainWindow.setWindowIcon(QtGui.QIcon(icon))
@@ -6055,7 +6066,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             )
 
             if dict_titlepage['hide_all']==True:
-                self.combobox_beurteilung.removeItem(1)
+                self.combobox_beurteilung.removeItem(self.combobox_beurteilung.findText("Beurteilungsraster"))
             elif self.combobox_beurteilung.findText("Beurteilungsraster") == -1:
                 self.combobox_beurteilung.insertItem(1,"Beurteilungsraster")
         if self.chosen_program == "cria":
