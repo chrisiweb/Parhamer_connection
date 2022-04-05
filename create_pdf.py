@@ -57,33 +57,36 @@ class Worker_CreatePDF(QObject):
 
         ui.latex_error_occured = False
         logfile = ""
-        # error_msg = "" NOT WORKING (when latex not installed)
+
         while process.poll() is None:
             output = process.stdout.readline().strip()
-            # error_output = process.stderr.readline().strip()
             if output:
                 msg = output.decode("utf-8", 'ignore')
                 logfile += msg
+                if ui.latex_error_occured != False:
+                    ui.latex_error_occured += msg    
+                possible_errors = [
+                    "! Emergency stop.",
+                    "! LaTeX Error:",
+                    "Unrecoverable error",
+                    "! Undefined control sequence",
+                    "! Missing $ inserted",
+                    "! Missing } inserted",
+                ]
 
-                if ("! Emergency stop." in msg or 
-                "! LaTeX Error:" in msg or 
-                "Unrecoverable error" in msg or
-                "! Missing $ inserted" in msg or
-                "! Missing } inserted" in msg
-                ):
-                    ui.latex_error_occured = logfile
+                for all in possible_errors:
+                    if all in msg: 
+                        ui.latex_error_occured = logfile
+                        break
+                # if ("! Emergency stop." in msg or 
+                # "! LaTeX Error:" in msg or 
+                # "Unrecoverable error" in msg or
+                # "! Missing $ inserted" in msg or
+                # "! Missing } inserted" in msg
+                # ):
+                #     ui.latex_error_occured = logfile
 
                 self.signalUpdateOutput.emit(ui, msg)
-
-        # NOT WORKING
-        #     if error_output: 
-        #         error = error_output.decode("utf-8", 'ignore')
-        #         error_msg += error
-        #         # if "latex" in error or "dvips" in error or "ps2pdf" in error:
-        #         #     ui.terminal_error_occured = 
-
-        # if error_msg != "":
-        #     ui.terminal_error_occured = error_msg
 
         process.wait()
 
