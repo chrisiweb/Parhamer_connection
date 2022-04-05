@@ -572,7 +572,7 @@ class Ui_MainWindow(object):
         # self.entry_suchbegriffe.setEnabled(False)
 
         self.gridLayout.addWidget(
-            self.groupBox_advanced_search, 4, 1, 1, 1, QtCore.Qt.AlignTop
+            self.groupBox_advanced_search, 4, 1, 1, 7, QtCore.Qt.AlignTop
         )
 
         self.groupBox_klassen = create_new_groupbox(
@@ -602,7 +602,7 @@ class Ui_MainWindow(object):
         self.gridLayout_14.addWidget(self.cb_univie, 1, 2, 1, 1)
         self.cb_univie.hide()
 
-        self.gridLayout.addWidget(self.groupBox_klassen, 3, 1, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_klassen, 3, 1, 1, 7)
 
         self.horizontalLayout_2 = create_new_horizontallayout()
 
@@ -635,7 +635,7 @@ class Ui_MainWindow(object):
             self.centralwidget, "Suche starten", partial(prepare_tex_for_pdf, self)
         )
         self.btn_suche.setShortcut(_translate("MainWindow", "Return", None))
-        self.gridLayout.addWidget(self.btn_suche, 6, 1, 1, 1, QtCore.Qt.AlignRight)
+        self.gridLayout.addWidget(self.btn_suche, 6, 7, 1, 1, QtCore.Qt.AlignRight)
         # self.horizontalLayout_2.addWidget(self.btn_suche)
 
         self.gridLayout.addLayout(self.horizontalLayout_2, 5, 1, 1, 1)
@@ -688,7 +688,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_combobox.addWidget(self.combobox_searchtype)
 
-        self.gridLayout.addLayout(self.horizontalLayout_combobox, 0, 1, 1, 1)
+        self.gridLayout.addLayout(self.horizontalLayout_combobox, 0, 1, 1, 7)
 
         self.combobox_searchtype.hide()
 
@@ -711,7 +711,7 @@ class Ui_MainWindow(object):
         self.tab_widget_themen.setObjectName(_fromUtf8("tab_widget_themen"))
         self.verticalLayout.addWidget(self.tab_widget_themen)
 
-        self.gridLayout.addWidget(self.groupBox_themen_klasse, 1, 1, 2, 1)
+        self.gridLayout.addWidget(self.groupBox_themen_klasse, 1, 1, 2, 7)
 
         self.groupBox_gk = create_new_groupbox(self.centralwidget, "Grundkompetenzen")
 
@@ -791,9 +791,9 @@ class Ui_MainWindow(object):
         self.label_warnung.hide()
         #########################
 
-        ##################################################################
-        ################ LAMA CRIA SEARCH #################################
-        ###################################################################
+        # ##################################################################
+        # ################ LAMA CRIA SEARCH #################################
+        # ###################################################################
 
         self.groupBox_schulstufe_cria = create_new_groupbox(
             self.centralwidget, "Themen Schulstufe"
@@ -886,7 +886,7 @@ class Ui_MainWindow(object):
         )
         self.gridLayout_11_cria = QtWidgets.QGridLayout(self.groupBox_unterkapitel_cria)
         self.gridLayout_11_cria.setObjectName("gridLayout_11_cria")
-        self.gridLayout.addWidget(self.groupBox_unterkapitel_cria, 1, 1, 2, 1)
+        self.gridLayout.addWidget(self.groupBox_unterkapitel_cria, 1, 1, 2, 7)
 
         self.tabWidget_klassen_cria.currentChanged.connect(
             self.tabWidget_klassen_cria_changed
@@ -965,7 +965,7 @@ class Ui_MainWindow(object):
         # self.groupBox_ausgew_themen_cria.setMaximumHeight(200)
         self.groupBox_ausgew_themen_cria.hide()
         self.verticalLayout_2_cria.addWidget(self.label_ausg_themen_cria)
-        self.gridLayout.addWidget(self.groupBox_ausgew_themen_cria, 3, 1, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_ausgew_themen_cria, 3, 1, 1, 7)
         self.groupBox_schulstufe_cria.hide()
         self.groupBox_unterkapitel_cria.hide()
 
@@ -975,13 +975,8 @@ class Ui_MainWindow(object):
             "radiobutton_kapitel_{0}_{1}".format(list_klassen[0], erstes_kapitel)
         ].setChecked(True)
 
-        ##############################################################
-        ##################### CREATOR #########################################
-        self.groupBox_aufgabentyp = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBox_aufgabentyp.setObjectName(_fromUtf8("groupBox_aufgabentyp"))
-        self.groupBox_aufgabentyp.setSizePolicy(SizePolicy_fixed)
-        self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBox_aufgabentyp)
-        self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
+        # ##############################################################
+        # ##################### CREATOR #########################################
 
         self.groupBox_variation_cr = create_new_groupbox(
             self.centralwidget, "Aufgabenvariation"
@@ -1175,7 +1170,7 @@ class Ui_MainWindow(object):
 
         # self.comboBox_kapitel_changed_cr(new_scrollareacontent,new_verticallayout, )
 
-        # #################################
+
 
         if self.chosen_program == "lama":
             titel = "Ausgewählte Grundkompetenzen"
@@ -1279,24 +1274,38 @@ class Ui_MainWindow(object):
         # self.create_tab_checkboxes_themen(self.tab_widget_gk_cr, "k8", "creator")
 
         # self.groupBox_aufgabentyp.setMaximumSize(100, 60)
-        self.comboBox_aufgabentyp_cr = QtWidgets.QComboBox(self.groupBox_aufgabentyp)
-        self.comboBox_aufgabentyp_cr.setObjectName(_fromUtf8("comboBox_aufgabentyp_cr"))
-        # self.comboBox_aufgabentyp_cr.setSizePolicy(SizePolicy_fixed)
-        self.comboBox_aufgabentyp_cr.addItem(_fromUtf8(""))
-        self.comboBox_aufgabentyp_cr.addItem(_fromUtf8(""))
+
+        self.groupBox_basic_settings_creator = create_new_groupbox(self.centralwidget, "")
+        self.horizontalLayout_basic_settings_creator = create_new_horizontallayout(self.groupBox_basic_settings_creator)
+        self.gridLayout.addWidget(self.groupBox_basic_settings_creator, 0,1,1,7) 
+        self.groupBox_basic_settings_creator.hide()
+
+
+        self.groupBox_aufgabentyp = create_new_groupbox(self.groupBox_basic_settings_creator, "Aufgabentyp")
+        self.groupBox_aufgabentyp.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout_3 = create_new_horizontallayout(self.groupBox_aufgabentyp)
+
+        self.comboBox_aufgabentyp_cr = create_new_combobox(self.groupBox_aufgabentyp)
+        add_new_option(self.comboBox_aufgabentyp_cr, 0, "Typ 1")
+        add_new_option(self.comboBox_aufgabentyp_cr, 1, "Typ 2")
+
+        self.gridLayout_3.addWidget(self.comboBox_aufgabentyp_cr)
+        self.horizontalLayout_basic_settings_creator.addWidget(self.groupBox_aufgabentyp)   
+        # self.comboBox_aufgabentyp_cr = QtWidgets.QComboBox(self.groupBox_aufgabentyp)
+        # self.comboBox_aufgabentyp_cr.setObjectName(_fromUtf8("comboBox_aufgabentyp_cr"))
+        # # self.comboBox_aufgabentyp_cr.setSizePolicy(SizePolicy_fixed)
+        # self.comboBox_aufgabentyp_cr.addItem(_fromUtf8(""))
+        # self.comboBox_aufgabentyp_cr.addItem(_fromUtf8(""))
         # self.comboBox_aufgabentyp_cr.currentIndexChanged.connect(self.comboBox_aufgabentyp_cr_changed)
-        self.gridLayout_3.addWidget(self.comboBox_aufgabentyp_cr, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_aufgabentyp, 0, 1, 1, 1)
-        self.groupBox_aufgabentyp.setTitle(
-            _translate("MainWindow", "Aufgabentyp", None)
-        )
-        self.comboBox_aufgabentyp_cr.setItemText(
-            0, _translate("MainWindow", "Typ 1", None)
-        )
-        self.comboBox_aufgabentyp_cr.setItemText(
-            1, _translate("MainWindow", "Typ 2", None)
-        )
-        self.groupBox_aufgabentyp.hide()
+
+
+        # self.comboBox_aufgabentyp_cr.setItemText(
+        #     0, _translate("MainWindow", "Typ 1", None)
+        # )
+        # self.comboBox_aufgabentyp_cr.setItemText(
+        #     1, _translate("MainWindow", "Typ 2", None)
+        # )
+        # self.groupBox_aufgabentyp.hide()
 
         self.groupBox_punkte = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_punkte.setObjectName(_fromUtf8("groupBox_punkte"))
@@ -1409,6 +1418,7 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.cb_no_grade_tag, 0, 7, 1, 1)
         self.cb_no_grade_tag.hide()
 
+
         self.gridLayout.setRowStretch(7, 1)
 
         self.groupBox_titel_cr = QtWidgets.QGroupBox(self.centralwidget)
@@ -1420,6 +1430,7 @@ class Ui_MainWindow(object):
         self.lineEdit_titel = QtWidgets.QLineEdit(self.groupBox_titel_cr)
         self.lineEdit_titel.setObjectName(_fromUtf8("lineEdit_titel"))
         # self.lineEdit_titel.textChanged.connect(self.check_admin_entry)
+
         self.gridLayout_14.addWidget(self.lineEdit_titel, 0, 0, 1, 1)
         self.gridLayout.addWidget(self.groupBox_titel_cr, 1, 1, 1, 7)
         self.groupBox_titel_cr.setTitle(_translate("MainWindow", "Titel", None))
@@ -1471,6 +1482,7 @@ class Ui_MainWindow(object):
 
         self.lineEdit_quelle.setText(quelle)
         self.gridLayout_18.addWidget(self.lineEdit_quelle, 0, 0, 1, 1)
+        # self.gridLayout.addWidget(self.groupBox_quelle, 7, 1, 1, 7, QtCore.Qt.AlignTop)
         self.gridLayout.addWidget(self.groupBox_quelle, 7, 1, 1, 7, QtCore.Qt.AlignTop)
         self.groupBox_quelle.setTitle(
             _translate(
@@ -1533,10 +1545,10 @@ class Ui_MainWindow(object):
         self.tab_widget_gk.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-        #         ####################################################
-        #         #####################################################
-        #         ################# LaMA SAGE ####################
-        #         #####################################################
+        # #         ####################################################
+        # #         #####################################################
+        # #         ################# LaMA SAGE ####################
+        # #         #####################################################
 
         self.splitter_sage = QtWidgets.QSplitter(self.centralwidget)
         self.splitter_sage.setOrientation(QtCore.Qt.Horizontal)
@@ -2034,7 +2046,7 @@ class Ui_MainWindow(object):
         )
         self.pushButton_vorschau.setFocusPolicy(QtCore.Qt.ClickFocus)
         # self.gridLayout.addWidget(self.groupBox_sage, 1, 2, 8, 3)
-        self.gridLayout.addWidget(self.splitter_sage, 0, 0, 8, 1)
+        self.gridLayout.addWidget(self.splitter_sage, 0, 0, 8, 8)
         self.pushButton_erstellen = QtWidgets.QPushButton(self.groupBox_sage)
         self.pushButton_erstellen.setSizePolicy(SizePolicy_fixed)
         self.pushButton_erstellen.setObjectName("pushButton_erstellen")
@@ -2056,10 +2068,10 @@ class Ui_MainWindow(object):
             partial(self.comboBox_unterkapitel_changed, "sage")
         )
 
-        ################################################################
-        ################################################################
-        ########### FEEDBACK #############################################
-        #######################################################################
+        # ################################################################
+        # ################################################################
+        # ########### FEEDBACK #############################################
+        # #######################################################################
 
         self.label_example = QtWidgets.QLabel(self.centralwidget)
         self.label_example.setObjectName(_fromUtf8("label_example"))
@@ -2335,10 +2347,10 @@ class Ui_MainWindow(object):
             partial(self.comboBox_unterkapitel_changed, "feedback")
         )
 
-        #         ####################################################################
-        #         #####################################################################
-        #         ######################################################################
-        #         #####################################################################
+        # #         ####################################################################
+        # #         #####################################################################
+        # #         ######################################################################
+        # #         #####################################################################
 
         # self.gridLayout_11.addWidget(self.tab_widget_gk, 0, 0, 1, 1)
         # self.gridLayout.addWidget(self.groupBox_gk, 1, 1, 2, 1)
@@ -2353,18 +2365,18 @@ class Ui_MainWindow(object):
         self.tab_widget_gk_cr.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-        #         ############################################################################
-        #         ############## Commands ####################################################
-        #         ############################################################################
+        # #         ############################################################################
+        # #         ############## Commands ####################################################
+        # #         ############################################################################
 
-        self.comboBox_aufgabentyp_cr.currentIndexChanged.connect(
-            self.chosen_aufgabenformat_cr
-        )
-        self.pushButton_save.clicked.connect(lambda: self.button_speichern_pressed())
-        self.pushButton_titlepage.clicked.connect(lambda: self.define_titlepage())
+        # self.comboBox_aufgabentyp_cr.currentIndexChanged.connect(
+        #     self.chosen_aufgabenformat_cr
+        # )
+        # self.pushButton_save.clicked.connect(lambda: self.button_speichern_pressed())
+        # self.pushButton_titlepage.clicked.connect(lambda: self.define_titlepage())
 
-        if loaded_lama_file_path != "":
-            self.sage_load(external_file_loaded=True)
+        # if loaded_lama_file_path != "":
+        #     self.sage_load(external_file_loaded=True)
 
         ############################################################################################
         ##############################################################################################
