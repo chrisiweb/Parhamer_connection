@@ -22,6 +22,7 @@ from config import (
     still_to_define,
 )
 from subprocess import Popen
+from handle_exceptions import report_exceptions
 from translate import _fromUtf8, _translate
 from create_new_widgets import (
     create_new_verticallayout,
@@ -37,7 +38,7 @@ from create_new_widgets import (
     add_new_option,
 )
 from standard_dialog_windows import critical_window, information_window, question_window, warning_window
-from predefined_size_policy import SizePolicy_fixed, SizePolicy_fixed_height, SizePolicy_maximum
+from predefined_size_policy import SizePolicy_fixed, SizePolicy_fixed_height, SizePolicy_maximum, SizePolicy_maximum_width
 from work_with_content import prepare_content_for_hide_show_items
 from lama_stylesheets import (
     StyleSheet_tabWidget,
@@ -3317,7 +3318,8 @@ class Ui_Dialog_Convert_To_Eps(object):
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
         self.Dialog.setWindowIcon(QIcon(logo_path))
-        self.Dialog.resize(600,200)       
+        # self.Dialog.resize(600,200)
+        self.Dialog.setSizePolicy(SizePolicy_maximum_width)       
         Dialog.setWindowTitle("Grafik(en) konvertieren")
         self.gridLayout = create_new_gridlayout(self.Dialog)
 
@@ -3348,16 +3350,19 @@ class Ui_Dialog_Convert_To_Eps(object):
 
         self.buttonBox_convert_to_eps = QtWidgets.QDialogButtonBox(self.Dialog)
         self.buttonBox_convert_to_eps.setStandardButtons(
-            QtWidgets.QDialogButtonBox.Open | QtWidgets.QDialogButtonBox.Apply
+            QtWidgets.QDialogButtonBox.Open | QtWidgets.QDialogButtonBox.Save | QtWidgets.QDialogButtonBox.Cancel
         )
 
-        button_search = self.buttonBox_convert_to_eps.button(QtWidgets.QDialogButtonBox.Open)
-        button_search.setText('Durchsuchen')
-        button_convert = self.buttonBox_convert_to_eps.button(QtWidgets.QDialogButtonBox.Apply)
+        button_convert = self.buttonBox_convert_to_eps.button(QtWidgets.QDialogButtonBox.Open)
         button_convert.setText('Konvertieren')
+        button_search = self.buttonBox_convert_to_eps.button(QtWidgets.QDialogButtonBox.Save)
+        button_search.setText('Durchsuchen')
+        button_cancel = self.buttonBox_convert_to_eps.button(QtWidgets.QDialogButtonBox.Cancel)
+        button_cancel.setText('Abbrechen')        
 
-        button_search.clicked.connect(self.search_pressed)
-        button_convert.clicked.connect(self.convert_pressed)
+        button_search.clicked.connect(lambda: self.search_pressed())
+        button_convert.clicked.connect(lambda: self.convert_pressed())
+        button_cancel.clicked.connect(self.Dialog.reject)
 
 
         self.gridLayout.addWidget(self.buttonBox_convert_to_eps, 2,3,1,1)
@@ -3372,9 +3377,8 @@ class Ui_Dialog_Convert_To_Eps(object):
     #         _list.append(self.listWidget.item(x).text())
         
     #     return _list
-
+    @report_exceptions
     def search_pressed(self):
-        raise Exception("ERROR")
         try:
             os.path.dirname(self.MainWindow.saved_file_path)
         except AttributeError:
@@ -3400,7 +3404,7 @@ class Ui_Dialog_Convert_To_Eps(object):
             # self.listWidget.addItems(filename[0])
             self.listWidget.setCurrentRow(-1)
 
-
+    @report_exceptions
     def convert_pressed(self):
         item_list = get_list_of_all_items(self.listWidget)
 
