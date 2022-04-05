@@ -1049,8 +1049,8 @@ class Ui_MainWindow(object):
         self.groupBox_themengebiete_cria.setObjectName(
             _fromUtf8("groupBox_themengebiete_cria")
         )
-        # self.groupBox_themengebiete_cria.setMaximumWidth(400)
-        self.groupBox_themengebiete_cria.setSizePolicy(SizePolicy_maximum_width)
+        self.groupBox_themengebiete_cria.setMaximumWidth(420)
+        # self.groupBox_themengebiete_cria.setSizePolicy(SizePolicy_minimum_width)
         self.gridLayout_11_cr_cria = QtWidgets.QGridLayout(
             self.groupBox_themengebiete_cria
         )
