@@ -882,7 +882,16 @@ def rechose_nonogramm(list_of_examples, nonogram):
         nonogram = random.choice(list(all_nonogramms.keys()))
 
     return nonogram
-        
+
+def get_max_pixels_nonogram():
+    max = 0
+    for all in all_nonogramms.values():
+        if len(all)>max:
+            max = len(all)
+    
+    return max
+
+
 def get_all_solution_pixels(list_of_examples, chosen_nonogramm):
     if chosen_nonogramm == "Zufällig":
         nonogram = random.choice(list(all_nonogramms.keys()))
@@ -974,7 +983,7 @@ def create_coordinates(self, solution_pixels):
 
             coordinates[distract_pixel] = False
             i +=1
-        possible_option = False
+        # possible_option = False
 
     l = list(coordinates.items())
     random.shuffle(l)
@@ -984,7 +993,8 @@ def create_coordinates(self, solution_pixels):
 
 
 def get_random_solution(MainWindow):
-    thema = MainWindow.comboBox_themen_wizard.currentText()
+    thema = random.choice(list(MainWindow.dict_all_examples_wizard.keys()))
+    # thema = MainWindow.comboBox_themen_wizard.currentText()
 
     if thema == 'Addition':
         minimum = MainWindow.spinbox_zahlenbereich_minimum.value()
