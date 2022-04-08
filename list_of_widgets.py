@@ -302,6 +302,7 @@ widgets_wizard = [
     'buttonBox_create_worksheet_wizard',
     'scrollArea_chosen_wizard',
     'checkbox_solutions_wizard',
+    'lineEdit_titel_wizard',
     # "actionSave",
     # "actionReset_sage",
     # "actionSuche",
