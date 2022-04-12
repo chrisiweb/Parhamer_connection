@@ -7,3 +7,5 @@ Create Professional GUI:
 
 View Python Code in QTDesigner not showing:
 https://www.youtube.com/watch?v=aWeWsaXLf2w&ab_channel=SpinnTV
+(1) Open "C:\Users\Chris\AppData\Roaming\Python\Python39\site-packages\qt5_applications\Qt\bin\designer.exe"
+(2) Change language back to englisch: go to: "C:\Users\Chris\AppData\Roaming\Python\Python39\site-packages\qt5_applications\Qt\translations" and zip all files
