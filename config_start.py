@@ -2,6 +2,9 @@ import sys
 import os
 from pathlib import Path
 
+#### Version number ###
+__version__ = "v3.4.3"
+
 if sys.platform.startswith("win"):
     ##### NOT IN USE ! (Working!) - Activate when installer is used!
     # path_localappdata = os.getenv('LOCALAPPDATA')

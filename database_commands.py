@@ -27,16 +27,21 @@ def get_table(aufgabe, typ):
         typ = 'lama_2'
     table = "table_" + typ
 
-    if "l." in aufgabe:
-        # aufgabe = aufgabe.replace(" (lokal)","")
-        return _local_database.table(table)
-    elif "i." in aufgabe:
-        return _database_addon.table(table)
-    else:
-        return _database.table(table)
+    try:
+        if "l." in aufgabe:
+            # aufgabe = aufgabe.replace(" (lokal)","")
+            return _local_database.table(table)
+        elif "i." in aufgabe:
+            return _database_addon.table(table)
+        else:
+            return _database.table(table)
+    except AttributeError:
+        return None
 
 def get_aufgabe_total(aufgabe, typ):
     table_lama = get_table(aufgabe, typ)
+    if table_lama == None:
+        return
     aufgabe = aufgabe.replace(" (lokal)","")
     # if typ==None:
     #     typ = 'cria'

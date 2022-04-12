@@ -72,6 +72,7 @@ class Ui_Dialog_processing(object):
             self.plainTextEdit = QtWidgets.QPlainTextEdit(Dialog)
             self.plainTextEdit.setReadOnly(True)
             self.plainTextEdit.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+            self.plainTextEdit.setPlainText("Creating PDF file ...")
             self.plainTextEdit.setFixedHeight(70)
             gridLayout.addWidget(self.plainTextEdit, 1,0,1,3)
 
@@ -169,6 +170,7 @@ def working_window_latex_output(worker, text, *args):
     ui.setupUi(Dialog, text, show_output=True)
 
     ui.latex_error_occured = False
+    # ui.terminal_error_occured = False
     thread = QtCore.QThread(Dialog)
     # worker = Worker_RefreshDDB()
     worker.signalUpdateOutput.connect(signalUpdateOutput)
@@ -180,7 +182,7 @@ def working_window_latex_output(worker, text, *args):
     thread.exit()
     Dialog.exec()
     
-    return ui.latex_error_occured
+    return ui.latex_error_occured #, ui.terminal_error_occured
 
 
 

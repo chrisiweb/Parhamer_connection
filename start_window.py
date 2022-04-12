@@ -3,7 +3,6 @@ import os
 from config_start import database
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, Qt, QThread
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QLabel, QGridLayout, QDialogButtonBox, QDialog, QMessageBox
-from PyQt5.QtGui import QIcon
 from waitingspinnerwidget import QtWaitingSpinner
 from git_sync import git_clone_repo
 # from standard_dialog_windows import information_window, critical_window

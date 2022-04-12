@@ -13,6 +13,7 @@ from config import (
     config_loader,
     logo_path,
     is_empty,
+    shorten_gk,
 )
 import json
 import shutil
@@ -20,12 +21,13 @@ from datetime import date, timedelta
 from time import sleep
 from refresh_ddb import refresh_ddb, modification_date
 from sort_items import order_gesammeltedateien
-from standard_dialog_windows import question_window, warning_window
+from standard_dialog_windows import critical_window,question_window, warning_window
 from processing_window import working_window_latex_output
 import webbrowser
 from tinydb import Query
-from database_commands import _database, _database_addon, _local_database
+from database_commands import _database, _database_addon, _local_database, get_aufgabentyp
 from tex_minimal import tex_preamble, tex_end, begin_beispiel, end_beispiel, begin_beispiel_lang, end_beispiel_lang
+from distutils.spawn import find_executable
 
 
 
@@ -55,17 +57,37 @@ class Worker_CreatePDF(QObject):
 
         ui.latex_error_occured = False
         logfile = ""
+
         while process.poll() is None:
             output = process.stdout.readline().strip()
             if output:
                 msg = output.decode("utf-8", 'ignore')
-                logfile += msg 
-                if "! Emergency stop." in msg or "! LaTeX Error:" in msg or "Unrecoverable error" in msg:
-                    ui.latex_error_occured = logfile
+                logfile += msg
+                if ui.latex_error_occured != False:
+                    ui.latex_error_occured += msg    
+                possible_errors = [
+                    "! Emergency stop.",
+                    "! LaTeX Error:",
+                    "Unrecoverable error",
+                    "! Undefined control sequence",
+                    "! Missing $ inserted",
+                    "! Missing } inserted",
+                ]
+
+                for all in possible_errors:
+                    if all in msg: 
+                        ui.latex_error_occured = logfile
+                        break
+                # if ("! Emergency stop." in msg or 
+                # "! LaTeX Error:" in msg or 
+                # "Unrecoverable error" in msg or
+                # "! Missing $ inserted" in msg or
+                # "! Missing } inserted" in msg
+                # ):
+                #     ui.latex_error_occured = logfile
 
                 self.signalUpdateOutput.emit(ui, msg)
 
-        
         process.wait()
 
         self.finished.emit()
@@ -245,6 +267,38 @@ def search_in_database(self,current_program, database,suchbegriffe):
             if suchbegriffe['erweiterte_suche'].lower() in bilder:
                 return True
         return False
+
+    def lineedit_in_name(value):
+        simplified_search = shorten_gk(suchbegriffe['erweiterte_suche'].lower())
+        simplified_value = shorten_gk(value)
+        # print(short_gk)#
+
+        _list= simplified_search.split("-")
+        gk_search = _list[0]
+        num_search = _list[-1]
+
+        _list= simplified_value.split("-")
+        gk_value = _list[0]
+        num_value = _list[-1]
+
+
+        if "*" in gk_search:
+            gk_search = gk_search.replace("*", ".*")
+            x= re.fullmatch("{}".format(gk_search), gk_value)
+            if x == None:
+                return False
+        elif gk_search != gk_value:
+            return False
+
+        if "*" in num_search:
+            num_search = num_search.replace("*", ".*")
+            x= re.fullmatch("{}".format(num_search), num_value)
+            if x == None:
+                return False
+        elif num_search != num_value:
+            return False     
+
+        return True
    
     if suchbegriffe['erweiterte_suche'] == "":
         erweiterte_suche = eval("_file_.titel.test(search_True)")
@@ -256,6 +310,8 @@ def search_in_database(self,current_program, database,suchbegriffe):
         erweiterte_suche = eval("_file_.quelle.test(lineedit_in_erweitert)")
     elif self.comboBox_suchbegriffe.currentText() == "Bilder":
         erweiterte_suche = _file_.bilder.test(lineedit_in_bilder)
+    elif self.comboBox_suchbegriffe.currentText() == "Aufgaben-ID":
+        erweiterte_suche = _file_.name.test(lineedit_in_name)
 
     gesammeltedateien = []
     if current_program == 'lama_1' or (current_program == 'cria' and self.combobox_searchtype.currentIndex()==0):
@@ -652,7 +708,7 @@ def build_pdf_file(ui, folder_name, file_name, latex_output_file):
             'cd "{0}" ; latex -interaction=nonstopmode --synctex=-1 "{1}.tex" ; dvips "{1}.dvi" ; ps2pdf -dNOSAFER -dALLOWPSTRANSPARENCY "{1}.ps"'.format(
                 folder_name, file_name
             ),
-            stdout=latex_output_file,
+            stdout=subprocess.PIPE,
             shell=True,
         )
 
@@ -701,7 +757,7 @@ def open_pdf_file(folder_name, file_name):
         with open(lama_settings_file, "r", encoding="utf8") as f:
             lama_settings = json.load(f)
         path_pdf_reader = '{}'.format(lama_settings['pdf_reader'])
-    except FileNotFoundError:
+    except (FileNotFoundError, KeyError):
         path_pdf_reader = ""
 
     file_path = os.path.join(folder_name, file_name)
@@ -779,7 +835,7 @@ def delete_unneeded_files(folder_name, file_name):
 
 
 def create_pdf(path_file, index=0, maximum=0, typ=0):
-    QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
+    # QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
     if path_file == "Teildokument":
         folder_name = "{0}/Teildokument".format(path_programm)
         file_name = path_file + "_" + typ
@@ -791,7 +847,7 @@ def create_pdf(path_file, index=0, maximum=0, typ=0):
         else:
             folder_name = head
 
-    print("Pdf-Datei wird erstellt. Bitte warten...")
+    # print("Pdf-Datei wird erstellt. Bitte warten...")
 
     latex_output_file = open(
         "{0}/Teildokument/temp.txt".format(path_localappdata_lama),
@@ -806,17 +862,26 @@ def create_pdf(path_file, index=0, maximum=0, typ=0):
         text = "Die PDF Dateien werden erstellt... ({0}|{1})".format(index + 1, maximum)
 
     # text = "Die PDF Datei wird erstellt..." + rest
+
+
+    if not find_executable('latex'):
+        QApplication.restoreOverrideCursor()
+
+        link = "https://mylama.github.io/lama/downloads.html"
+        critical_window("""<h4>Die PDF-Datei konnte nicht erstellt werden, da keine LaTeX-Distribution auf dem Computer gefunden wurde.</h4>
+
+Bitte öffnen Sie <a href='{0}'>lama.schule/downloads</a> und folgen Sie allen Schritten des Installationsguides.<br><br>
+
+Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@gmail.com""".format(link),
+        titel="Keine LaTeX-Distribution gefunden")
+        return
+
+
     
     errors_latex_output = working_window_latex_output(Worker_CreatePDF(), text, folder_name, file_name, latex_output_file)
     
-    latex_output_file = open(
-        "{0}/Teildokument/temp.txt".format(path_localappdata_lama),
-        "r",
-        encoding="utf8",
-        errors="ignore",
-    )
-    latex_output = latex_output_file.read() #.splitlines()
-    latex_output_file.close()
+
+
 
     if errors_latex_output != False:
         QApplication.restoreOverrideCursor()
@@ -827,7 +892,7 @@ def create_pdf(path_file, index=0, maximum=0, typ=0):
             + "Sollte der Fehler weiterhin bestehen, bitte kontaktieren Sie uns unter lama.helpme@gmail.com",
             "Wollen Sie die fehlerhafte PDF-Datei dennoch anzeigen?",
             "Fehler beim Erstellen der PDF-Datei",
-            "Log-Datei:\n" + errors_latex_output,
+            "Log-Datei:\n" + "".join(errors_latex_output),
         )
         if response == False:
             return
