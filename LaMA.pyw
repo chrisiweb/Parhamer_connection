@@ -2394,13 +2394,13 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.pushButton_add_to_worksheet_wizard, 2,1,1,1, QtCore.Qt.AlignLeft)
 
         self.checkbox_solutions_wizard = create_new_checkbox(self.centralwidget, "Lösungen anzeigen", checked=True)
-        self.gridLayout.addWidget(self.checkbox_solutions_wizard, 9,8,1,1, QtCore.Qt.AlignRight)
+        self.gridLayout.addWidget(self.checkbox_solutions_wizard, 9,1,1,1, QtCore.Qt.AlignRight)
         self.checkbox_solutions_wizard.hide()
 
         self.comboBox_solution_type_wizard = create_new_combobox(self.centralwidget)
         add_new_option(self.comboBox_solution_type_wizard, 0, "kompakt")
         add_new_option(self.comboBox_solution_type_wizard, 1, "schrittweise")
-        self.gridLayout.addWidget(self.comboBox_solution_type_wizard, 9, 7, 1, 1)
+        self.gridLayout.addWidget(self.comboBox_solution_type_wizard, 9, 0, 1, 1)
         self.comboBox_solution_type_wizard.hide()
 
 
@@ -2408,7 +2408,7 @@ class Ui_MainWindow(object):
         self.buttonBox_create_worksheet_wizard.setStandardButtons(
             QtWidgets.QDialogButtonBox.Save | QtWidgets.QDialogButtonBox.Ok
         )
-        self.gridLayout.addWidget(self.buttonBox_create_worksheet_wizard, 10,7,1,2)
+        self.gridLayout.addWidget(self.buttonBox_create_worksheet_wizard, 10,1,1,2)
         self.buttonBox_create_worksheet_wizard.hide()
         # buttonS = self.buttonBox_titlepage.button(QtWidgets.QDialogButtonBox.Save)
         # buttonS.setText('Speichern')
@@ -2426,7 +2426,7 @@ class Ui_MainWindow(object):
 
         self.groupBox_setting_wizard = create_new_groupbox(self.centralwidget, "Voreinstellungen")
         self.groupBox_setting_wizard.setSizePolicy(QSizePolicy(QSizePolicy.Minimum,QSizePolicy.Maximum))
-        self.gridLayout.addWidget(self.groupBox_setting_wizard, 1,0,1,9)
+        self.gridLayout.addWidget(self.groupBox_setting_wizard, 1,0,1,2)
         self.gridLayout_setting_wizard = create_new_gridlayout(self.groupBox_setting_wizard)
         self.groupBox_setting_wizard.hide()
 
@@ -2794,7 +2794,7 @@ class Ui_MainWindow(object):
         self.scrollArea_chosen_wizard.verticalScrollBar().rangeChanged.connect(
             self.change_scrollbar_position
         )
-        self.gridLayout.addWidget(self.scrollArea_chosen_wizard, 3, 0, 6, 9)
+        self.gridLayout.addWidget(self.scrollArea_chosen_wizard, 3, 0, 6, 2)
 
 
 
