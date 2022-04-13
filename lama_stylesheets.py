@@ -1,5 +1,119 @@
-from config import get_color
+from config import get_color, get_icon_path
 from lama_colors import *
+
+
+
+StyleSheet_application = """
+    QMenuBar::item:selected{{
+        background-color: #2F4550;
+        color: #F4F4F9; 
+    }}
+
+   
+    QMenu::item:selected{{
+        background-color: #2F4550;
+        color: #F4F4F9;  
+    }}
+
+    QMenu::item:disabled{{
+        color: gray
+    }}
+    QTabBar::tab:selected {{
+        background-color: #2F4550;
+        color: #F4F4F9;
+    }}
+
+    QTabBar::tab::disabled {{
+        background-color: gray;
+        color: #F4F4F9;
+    }}
+
+    QTabBar::scroller{{
+        background-color: #2F4550;
+        color: #2F4550;
+    }}
+
+    QToolButton {{
+        background-color: #F4F4F9;
+    }}
+
+    QToolTip {{
+        color: #F4F4F9; 
+        background-color: #2F4550; 
+        border: 0px;
+        }}
+
+    QCheckBox {{
+        spacing: 0px;
+        padding-top: 2px;
+    }}
+
+    QCheckBox::indicator:unchecked {{ 
+        image: url({0});
+        width: 35px;
+    }}
+
+
+    QCheckBox::indicator:checked {{ 
+        image: url({1});
+        width: 35px;
+    }}
+
+    #frame_tab_widget_gk {{
+        border-color: #6E8784;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 4px;
+        margin-top: 0.5em;
+    }}
+
+    #entry_suchbegriffe{{
+        border-color: #6E8784;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 4px;
+        padding: 3px 3px;        
+    }}
+
+    QLineEdit{{
+        background-color: #F4F4F9; 
+    }}
+
+    QGroupBox {{
+        border-color: #6E8784;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 4px;
+        margin-top: 0.5em;
+    }}
+
+    QGroupBox::title{{
+        top: -5px;
+        left: 5px;
+        padding-left: 3px;
+        padding-right: 2px;    
+    }}
+
+    #widget_headMenu {{
+        background-color: #D3E0DF;
+        border-width: 1px;
+        border-radius: 4px; 
+    }}
+
+    #combobox_searchtype {{
+        padding-left: 5px;
+        padding-right: 20px;
+    }}        
+
+""".format(
+    get_icon_path("square.svg"),
+    get_icon_path("check-square.svg"),
+    )
+
+
+
+
+
 
 StyleSheet_tabWidget = """
 QTabBar::tab:selected {{
@@ -125,6 +239,9 @@ border-right: 2px solid {3};
 }}
 
 QWidget {{color: {2};background-color: {3}}}
+
+
+
 
 """.format(
     get_color(blue_7), get_color(white), get_color(white), get_color(dark_gray)

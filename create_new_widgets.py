@@ -72,9 +72,12 @@ def create_new_label(parent, text, wordwrap=False, clickable=False):
     return new_label
 
 
-def create_new_lineedit(parent):
+def create_new_lineedit(parent, ObjectName=None):
     new_lineedit = QtWidgets.QLineEdit(parent)
-    new_lineedit.setObjectName(_fromUtf8("{}".format(new_lineedit)))
+    if ObjectName == None:
+        new_lineedit.setObjectName(_fromUtf8("{}".format(new_lineedit)))
+    else:
+        new_lineedit.setObjectName(ObjectName)
 
     return new_lineedit
 
@@ -111,9 +114,12 @@ def create_new_spinbox(parent, value=0):
     return new_spinbox
 
 
-def create_new_combobox(parent):
+def create_new_combobox(parent, ObjectName=None):
     new_combobox = QtWidgets.QComboBox(parent)
-    new_combobox.setObjectName(_fromUtf8("{}".format(new_combobox)))
+    if ObjectName == None:
+        new_combobox.setObjectName(_fromUtf8("{}".format(new_combobox)))
+    else:
+        new_combobox.setObjectName(ObjectName)
 
     return new_combobox
 

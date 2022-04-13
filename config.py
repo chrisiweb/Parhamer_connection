@@ -53,6 +53,20 @@ logo_cria_button_path = os.path.join(
 )
 
 
+
+path_assets_charcoal = os.path.join(path_programm, "_database", "_config", "assets", "icons_charcoal").replace('\\', "/")
+
+path_assets_ghostwhite = os.path.join(path_programm, "_database", "_config", "assets", "icons_ghostwhite").replace('\\', "/")
+
+def get_icon_path(icon, color='charcoal'):
+    if color == 'charcoal':
+        icon_path = path_assets_charcoal
+    else:
+        icon_path = path_assets_ghostwhite    
+
+    return os.path.join(icon_path, icon).replace('\\', "/")
+
+
 class SpinBox_noWheel(QtWidgets.QSpinBox):
     def wheelEvent(self, event):
         event.ignore()
