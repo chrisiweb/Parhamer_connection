@@ -33,6 +33,18 @@ StyleSheet_application = """
         color: #2F4550;
     }}
 
+    QTabBar QToolButton::left-arrow {{
+        background-color: #F4F4F9;
+        image: url({0});        
+    }}
+
+    QTabBar QToolButton::right-arrow {{
+        background-color: #F4F4F9;
+        image: url({1});        
+    }}
+
+
+
     QToolButton {{
         background-color: #F4F4F9;
     }}
@@ -49,13 +61,13 @@ StyleSheet_application = """
     }}
 
     QCheckBox::indicator:unchecked {{ 
-        image: url({0});
+        image: url({2});
         width: 35px;
     }}
 
 
     QCheckBox::indicator:checked {{ 
-        image: url({1});
+        image: url({3});
         width: 35px;
     }}
 
@@ -94,18 +106,16 @@ StyleSheet_application = """
         padding-right: 2px;    
     }}
 
-    #widget_headMenu {{
-        background-color: #D3E0DF;
-        border-width: 1px;
-        border-radius: 4px; 
-    }}
-
     #combobox_searchtype {{
         padding-left: 5px;
         padding-right: 20px;
+        padding-top: 2px;
+        padding-bottom: 2px
     }}        
 
 """.format(
+    get_icon_path("chevron-left.svg"),
+    get_icon_path("chevron-right.svg"),
     get_icon_path("square.svg"),
     get_icon_path("check-square.svg"),
     )

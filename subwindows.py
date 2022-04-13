@@ -20,6 +20,7 @@ from config import (
     logo_path,
     logo_cria_button_path,
     is_empty,
+    get_icon_path,
     still_to_define,
 )
 from subprocess import Popen
@@ -2110,6 +2111,7 @@ class Ui_Dialog_setup(object):
 
         buttonS = self.buttonBox_setup.button(QtWidgets.QDialogButtonBox.Save)
         buttonS.setText('Speichern')
+        buttonS.setIcon(QIcon(get_icon_path('save.svg')))
         buttonX = self.buttonBox_setup.button(QtWidgets.QDialogButtonBox.Cancel)
         buttonX.setText("Abbrechen")
         self.buttonBox_setup.rejected.connect(self.reject_dialog)
@@ -2197,7 +2199,6 @@ class Ui_Dialog_developer(object):
         self.developer_mode_active = False
         Dialog.setWindowTitle("Entwicklermodus aktivieren")
         row=0
-        # self.Dialog.setMinimumWidth(400)
         Dialog.setWindowIcon(QIcon(logo_path))
         gridlayout_developer = create_new_gridlayout(Dialog)
 
@@ -2219,7 +2220,8 @@ class Ui_Dialog_developer(object):
 
 
         buttonS = self.buttonBox_developer.button(QtWidgets.QDialogButtonBox.Save)
-        buttonS.setText('Speichern')
+        buttonS.setText('Aktivieren')
+        buttonS.setIcon(QIcon(get_icon_path('unlock.svg')))
         buttonX = self.buttonBox_developer.button(QtWidgets.QDialogButtonBox.Cancel)
         buttonX.setText("Abbrechen")
         self.buttonBox_developer.rejected.connect(self.reject_dialog)
