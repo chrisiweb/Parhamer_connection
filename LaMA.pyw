@@ -570,11 +570,16 @@ class Ui_MainWindow(object):
 
         # self.horizontalLayout_aufgabentyp = create_new_horizontallayout()
 
-        # self.label_aufgabentyp = create_new_label(self.centralwidget, "Aufgabentyp:")
         self.widget_headMenu = QtWidgets.QWidget(self.centralwidget)
         self.widget_headMenu.setObjectName("widget_headMenu")
         self.horizontalLayout_headMenu = create_new_horizontallayout(self.widget_headMenu)
         self.horizontalLayout_headMenu.setContentsMargins(0,0,0,0)
+
+        self.label_aufgabentyp = create_new_label(self.widget_headMenu, "")
+        self.label_aufgabentyp.setPixmap(QtGui.QPixmap(get_icon_path("database.svg")))
+        # self.label_lamaLogo.setFixedHeight(30)
+        self.label_aufgabentyp.setFixedSize(QtCore.QSize(30,30))
+        self.label_aufgabentyp.setScaledContents(True)
         # self.gridLayout.addLayout(self.horizontalLayout_headMenu, 0, 0, 1, 2)
         self.combobox_aufgabentyp = create_new_combobox(self.widget_headMenu)
         # self.combobox_aufgabentyp.setSizePolicy(SizePolicy_fixed)
@@ -583,7 +588,7 @@ class Ui_MainWindow(object):
         self.combobox_aufgabentyp.currentIndexChanged.connect(
             self.chosen_aufgabenformat_typ
         )
-        # self.horizontalLayout_aufgabentyp.addWidget(self.label_aufgabentyp)
+        self.horizontalLayout_headMenu.addWidget(self.label_aufgabentyp)
         # self.horizontalLayout_aufgabentyp.addWidget(
         #     self.combobox_aufgabentyp, QtCore.Qt.AlignLeft
         # )
@@ -622,15 +627,15 @@ class Ui_MainWindow(object):
         self.combobox_searchtype.hide()
         self.horizontalLayout_headMenu.addStretch()
 
-        self.label_lamaLogo = create_new_label(self.widget_headMenu, "")
-        lama_logo = os.path.join(
-            path_programm, "_database", "_config", "icon", "LaMA_logo_full_transparent.png"
-        )
-        self.label_lamaLogo.setPixmap(QtGui.QPixmap(lama_logo))
-        # self.label_lamaLogo.setFixedHeight(30)
-        self.label_lamaLogo.setFixedSize(QtCore.QSize(100,40))
-        self.label_lamaLogo.setScaledContents(True)
-        self.horizontalLayout_headMenu.addWidget(self.label_lamaLogo)
+        # self.label_lamaLogo = create_new_label(self.widget_headMenu, "")
+        # lama_logo = os.path.join(
+        #     path_programm, "_database", "_config", "icon", "LaMA_logo_full_transparent.png"
+        # )
+        # self.label_lamaLogo.setPixmap(QtGui.QPixmap(lama_logo))
+        # # self.label_lamaLogo.setFixedHeight(30)
+        # self.label_lamaLogo.setFixedSize(QtCore.QSize(100,40))
+        # self.label_lamaLogo.setScaledContents(True)
+        # self.horizontalLayout_headMenu.addWidget(self.label_lamaLogo)
 
 
 

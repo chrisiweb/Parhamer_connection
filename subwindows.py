@@ -910,13 +910,20 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.gridlayout_titlepage = create_new_gridlayout(Dialog)
         # self.gridLayout_2 = QtWidgets.QGridLayout(Dialog)
         # self.gridLayout_2.setObjectName("gridLayout_2")
-        self.combobox_edit = create_new_combobox(Dialog)
-        self.combobox_edit.setSizePolicy(SizePolicy_fixed)
-        if typ == 2:
-            self.gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,5)
-        else:
-            self.gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,4)
 
+        self.widgetHeader = QtWidgets.QWidget(Dialog)
+        self.widgetHeader.setObjectName(_fromUtf8("widgetHeader"))
+        self.horizontalLayoutHeader = create_new_horizontallayout(self.widgetHeader)
+        self.horizontalLayoutHeader.setContentsMargins(0,0,0,0)
+        self.gridlayout_titlepage.addWidget(self.widgetHeader, 0,0,1,6)
+
+        self.combobox_edit = create_new_combobox(self.widgetHeader)
+        self.combobox_edit.setSizePolicy(SizePolicy_fixed)
+        # if typ == 2:
+        #     self.gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,5)
+        # else:
+        #     self.gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,4)
+        self.horizontalLayoutHeader.addWidget(self.combobox_edit)
         # self.gridlayout_titlepage.setColumnStretch(1,0)
         # self.gridlayout_titlepage.addItem(QtWidgets.QSpacerItem(10, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum),0,3,1,1)
         if typ == 2:
@@ -984,6 +991,7 @@ class Ui_Dialog_ausgleichspunkte(object):
 
 
         self.button_preview = create_new_button(Dialog, "Vorschau", self.button_preview_pressed)
+        self.button_preview.setIcon(QIcon(get_icon_path('eye.svg')))
         self.button_preview.setSizePolicy(SizePolicy_maximum)
         self.button_preview.setShortcut("Ctrl+Return")
         self.button_preview.setToolTip("Strg+Enter")
@@ -992,6 +1000,7 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.button_preview.hide()
 
         self.button_restore_default = create_new_button(Dialog, "Original wiederherstellen", partial(self.button_restore_default_pressed,aufgabe, chosen_program))
+        self.button_restore_default.setIcon(QIcon(get_icon_path('archive.svg')))
         self.button_restore_default.setSizePolicy(SizePolicy_maximum)
         self.gridlayout_titlepage.addWidget(self.button_restore_default, 3,1,1,1)
         if typ ==2:
@@ -1000,6 +1009,8 @@ class Ui_Dialog_ausgleichspunkte(object):
 
         if developer_mode_active == True:
             self.button_save_edit = create_new_button(Dialog, "Änderung speichern", partial(self.button_save_edit_pressed, aufgabe, chosen_program))
+            self.button_save_edit.setIcon(QIcon(get_icon_path('save.svg')))
+            self.button_save_edit.setSizePolicy(SizePolicy_fixed)
             self.gridlayout_titlepage.addWidget(self.button_save_edit, 3,2,1,1)
         if typ == 2:
             self.button_save_edit.hide()
@@ -1025,45 +1036,49 @@ class Ui_Dialog_ausgleichspunkte(object):
 
 
 
-        path_undo = os.path.join(path_programm, "_database", "_config", "icon", "undo-arrow.png")
+
+        self.horizontalLayoutHeader.addStretch()
+        # path_undo = os.path.join(path_programm, "_database", "_config", "icon", "undo-arrow.png")
         # self.button_undo = create_standard_button(Dialog, "", still_to_define,QIcon(path_undo))
         self.button_undo = create_new_button(Dialog, "", self.button_undo_pressed)
-        self.button_undo.setIcon(QIcon(path_undo))
+        self.button_undo.setIcon(QIcon(get_icon_path('rotate-ccw.svg')))
         self.button_undo.setSizePolicy(SizePolicy_maximum)
         self.button_undo.setToolTip("Rückgängig (Strg+Z)")
         self.button_undo.setShortcut("Ctrl+Z")
-        self.gridlayout_titlepage.addWidget(self.button_undo, 0,4,1,1, Qt.AlignLeft)
+        self.horizontalLayoutHeader.addWidget(self.button_undo)
+        # self.gridlayout_titlepage.addWidget(self.button_undo, 0,4,1,1, Qt.AlignLeft)
 
 
 
-        path_redo = os.path.join(path_programm, "_database", "_config", "icon", "redo-arrow.png")
+        # path_redo = os.path.join(path_programm, "_database", "_config", "icon", "redo-arrow.png")
         # self.button_undo = create_standard_button(Dialog, "", still_to_define,QIcon(path_undo))
         self.button_redo = create_new_button(Dialog, "", self.button_redo_pressed)
-        self.button_redo.setIcon(QIcon(path_redo))
+        self.button_redo.setIcon(QIcon(get_icon_path('rotate-cw.svg')))
         self.button_redo.setSizePolicy(SizePolicy_maximum)
         self.button_redo.setToolTip("Wiederherstellen (Strg+Y)")
         self.button_redo.setShortcut("Ctrl+Y")
+        self.horizontalLayoutHeader.addWidget(self.button_redo)
         # self.button_redo = create_standard_button(Dialog, "", still_to_define,QtWidgets.QStyle.SP_ArrowForward)
-        self.gridlayout_titlepage.addWidget(self.button_redo, 0,4,1,1, Qt.AlignRight)
+        # self.gridlayout_titlepage.addWidget(self.button_redo, 0,4,1,1, Qt.AlignRight)
 
        
 
         
-        path_zoom_in = os.path.join(path_programm, "_database", "_config", "icon", "zoom-in.png")
+        # path_zoom_in = os.path.join(path_programm, "_database", "_config", "icon", "zoom-in.png")
         self.button_zoom_in = create_new_button(Dialog, "", self.plainTextEdit_content.zoomIn)
-        self.button_zoom_in.setIcon(QIcon(path_zoom_in))
+        self.button_zoom_in.setIcon(QIcon(get_icon_path('zoom-in.svg')))
         self.button_zoom_in.setSizePolicy(SizePolicy_maximum)
-        self.gridlayout_titlepage.addWidget(self.button_zoom_in,0,5,1,1, Qt.AlignLeft)
+        # self.gridlayout_titlepage.addWidget(self.button_zoom_in,0,5,1,1, Qt.AlignLeft)
         self.button_zoom_in.setShortcut("Ctrl++")
-        
+        self.horizontalLayoutHeader.addWidget(self.button_zoom_in)
 
-        path_zoom_out = os.path.join(path_programm, "_database", "_config", "icon", "zoom-out.png")
+        # path_zoom_out = os.path.join(path_programm, "_database", "_config", "icon", "zoom-out.png")
         self.button_zoom_out = create_new_button(Dialog, "", self.plainTextEdit_content.zoomOut)
-        self.button_zoom_out.setIcon(QIcon(path_zoom_out))
+        self.button_zoom_out.setIcon(QIcon(get_icon_path('zoom-out.svg')))
         self.button_zoom_out.setSizePolicy(SizePolicy_maximum)
-        self.gridlayout_titlepage.addWidget(self.button_zoom_out,0,5,1,1, Qt.AlignRight)
+        # self.gridlayout_titlepage.addWidget(self.button_zoom_out,0,5,1,1, Qt.AlignRight)
         self.button_zoom_out.setShortcut("Ctrl+-")
-        
+        self.horizontalLayoutHeader.addWidget(self.button_zoom_out)
 
         if typ==2:        
             self.button_undo.hide()
@@ -1228,7 +1243,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.plainTextEdit_content.redo()
 
 
-    def button_preview_pressed(self, typ):
+    def button_preview_pressed(self):
         file_path = os.path.join(
             path_localappdata_lama, "Teildokument", "preview.tex"
             )
@@ -1332,39 +1347,45 @@ class Ui_Dialog_ausgleichspunkte(object):
         row += 1
         self.gridLayout.setRowStretch(row, 1)
 
-    def checkbox_changed(self, index):
-        if index==0:
+    def checkbox_changed(self):
+        if self.combobox_edit.currentIndex()==0:
             self.change_detected_0 = True
-        elif index == 1:
+        elif self.combobox_edit.currentIndex() == 1:
             self.change_detected_1 = True
+            # self.checkbox_clicked(checkbox, checkbox_label)
+
 
     def checkbox_clicked(self, checkbox, checkbox_label):
-        self.checkbox_changed(1)
+        self.checkbox_changed()
         try: 
             with open(lama_settings_file, "r", encoding="utf8") as f:
                 self.lama_settings = load(f)
         except FileNotFoundError:
             self.lama_settings = {}
         
-        try:
-            display_settings = self.lama_settings["display"]
-            if  display_settings == 1:
-                stylesheet = StyleSheet_ausgleichspunkte_dark_mode
-            else:
-                stylesheet = StyleSheet_ausgleichspunkte
-        except KeyError:
-            stylesheet = StyleSheet_ausgleichspunkte
+        # try:
+        #     display_settings = self.lama_settings["display"]
+        #     if  display_settings == 1:
+        #         stylesheet = StyleSheet_ausgleichspunkte_dark_mode
+        #     else:
+        #         stylesheet = StyleSheet_ausgleichspunkte
+        # except KeyError:
+        #     stylesheet = StyleSheet_ausgleichspunkte
 
-        if checkbox.isChecked() == True:
-            checkbox_label.setStyleSheet(stylesheet)
-        else:
-            checkbox_label.setStyleSheet("color: gray")
+        # if checkbox.isChecked() == True:
+        #     checkbox_label.setStyleSheet(stylesheet)
+        if self.combobox_edit.currentIndex() == 1:
+            if checkbox.isChecked() == False:
+                checkbox_label.setStyleSheet("color: gray")
+            else:
+                checkbox_label.setStyleSheet("color: black")
 
     def create_checkbox_ausgleich(self, linetext, row, index):
-        checkbox_label = create_new_label(self.scrollAreaWidgetContents, "", True, True)
+        checkbox_label = create_new_label(self.scrollAreaWidgetContents, "",wordwrap=True, clickable=True)
 
         checkbox = create_new_checkbox(self.scrollAreaWidgetContents, "")
-        checkbox.setSizePolicy(SizePolicy_fixed)
+        checkbox.setStyleSheet("QCheckBox::indicator { width: 20px; height: 20px;}")
+        # checkbox.setSizePolicy(SizePolicy_fixed)
 
 
 
@@ -1378,8 +1399,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         #     else:
         #         checkbox.setChecked(True)
 
-
-        checkbox.clicked.connect(partial(self.checkbox_changed, 0))
+        checkbox.stateChanged.connect(partial(self.checkbox_clicked, checkbox, checkbox_label))
 
 
         if self.combobox_edit.currentIndex() == 0:
