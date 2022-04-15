@@ -175,6 +175,7 @@ widgets_search_cria = [
     # "menuHelp",
     # "menuDeveloper",
     # "label_update",
+    "widget_searchMenu",
     "frame_tab_widget_gk",
     "tab_widget_search_cria",
     # "groupBox_themengebiete_cria",

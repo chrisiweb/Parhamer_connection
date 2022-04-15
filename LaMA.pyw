@@ -779,27 +779,27 @@ class Ui_MainWindow(object):
         self.cb_af_zo = QtWidgets.QCheckBox(self.groupBox_af)        
         self.cb_af_zo.setObjectName(_fromUtf8("cb_af_zo"))
         self.gridLayout_af.addWidget(self.cb_af_zo, 1, 0, 1, 1)
-        
+
+        self.cb_af_lt = QtWidgets.QCheckBox(self.groupBox_af)
+        self.cb_af_lt.setObjectName(_fromUtf8("cb_af_lt"))
+        self.gridLayout_af.addWidget(self.cb_af_lt, 2, 0, 1, 1)        
         
         self.cb_af_oa = QtWidgets.QCheckBox(self.groupBox_af)
         self.cb_af_oa.setObjectName(_fromUtf8("cb_af_oa"))
         self.gridLayout_af.addWidget(self.cb_af_oa, 3, 0, 1, 1)
 
-        self.cb_af_lt = QtWidgets.QCheckBox(self.groupBox_af)
-        self.cb_af_lt.setObjectName(_fromUtf8("cb_af_lt"))
-        self.gridLayout_af.addWidget(self.cb_af_lt, 2, 0, 1, 1)
 
         self.cb_af_ta = QtWidgets.QCheckBox(self.groupBox_af)
         self.cb_af_ta.setObjectName("cb_af_ta")
-        self.gridLayout_af.addWidget(self.cb_af_ta, 2, 0, 1, 1)
+        self.gridLayout_af.addWidget(self.cb_af_ta, 0, 1, 1, 1)
 
         self.cb_af_rf = QtWidgets.QCheckBox(self.groupBox_af)
         self.cb_af_rf.setObjectName("cb_af_rf")
-        self.gridLayout_af.addWidget(self.cb_af_rf, 2, 2, 1, 1)
+        self.gridLayout_af.addWidget(self.cb_af_rf, 1, 1, 1, 1)
 
         self.cb_af_ko = QtWidgets.QCheckBox(self.groupBox_af)
         self.cb_af_ko.setObjectName("cb_af_ko")
-        self.gridLayout_af.addWidget(self.cb_af_ko, 3, 0, 1, 1)
+        self.gridLayout_af.addWidget(self.cb_af_ko, 2, 1, 1, 1)
 
         self.gridLayout_af.setRowStretch(4,1)
 
@@ -1066,9 +1066,13 @@ class Ui_MainWindow(object):
                     new_scrollareacontent,
                     new_verticallayout,
                     klasse,
+                    'search',
                 )
             )
-
+                    # self.comboBox_kapitel_changed_cr,
+                    # new_scrollareacontent,
+                    # new_verticallayout,
+                    # klasse,
             new_verticallayout.addWidget(combobox_kapitel)
 
             dict_klasse = eval("dict_{}".format(klasse))
@@ -1085,20 +1089,28 @@ class Ui_MainWindow(object):
                 # else:
                 #     stylesheet = StyleSheet_new_checkbox_dark_mode
                 # new_checkbox.setStyleSheet(stylesheet)
-                new_checkbox.stateChanged.connect(
-                    partial(
-                        self.checkbox_unterkapitel_checked_cria,
-                        new_checkbox,
-                        klasse,
-                        kapitel,
-                        unterkapitel,
-                    )
-                )
+
                 self.dict_widget_variables[
-                    "checkbox_unterkapitel_search_{0}_{1}_{2}".format(
+                    "checkbox_unterkapitel_{0}_{1}_{2}".format(
                         klasse, kapitel, unterkapitel
                     )
                 ] = new_checkbox
+                new_checkbox.stateChanged.connect(
+                    partial(
+                        self.checkBox_checked_cria,
+                        klasse,
+                        kapitel,
+                        unterkapitel))
+                # new_checkbox.stateChanged.connect(
+                #     partial(
+                #         self.checkbox_unterkapitel_checked_cria,
+                #         new_checkbox,
+                #         klasse,
+                #         kapitel,
+                #         unterkapitel,
+                #     )
+                # )
+
                 new_verticallayout.addWidget(new_checkbox)
                 new_checkbox.setFocusPolicy(QtCore.Qt.NoFocus)
 
@@ -1444,6 +1456,7 @@ class Ui_MainWindow(object):
                     new_scrollareacontent,
                     new_verticallayout,
                     klasse,
+                    'creator',
                 )
             )
 
@@ -3843,7 +3856,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
 
         x = ", ".join(self.dict_chosen_topics.keys())
 
-        self.label_ausg_themen_cria.setText(_translate("MainWindow", x, None))
+        self.label_ausgew_gk.setText(_translate("MainWindow", x, None))
 
     def btn_alle_unterkapitel_clicked_cria(self, klasse, kapitel):
         dict_klasse = eval("dict_{}".format(klasse))
@@ -3866,10 +3879,11 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         self, parent, layout, klasse,typ ,checked=False # prevent error decorator
     ):  # , verticalLayout_cr_cria, combobox_kapitel, klasse, spacerItem_unterkapitel_cria
         # layout.removeItem(self.spacerItem_unterkapitel_creator_cria)
-        if typ == 'search:':
+
+        if typ == 'search':
             widget_string_kapitel = 'combobox_kapitel_search_cria'
-            widget_string_unterkapitel = 'checkbox_unterkapitel_search'
-        else:
+            widget_string_unterkapitel = 'checkbox_unterkapitel'
+        elif typ == 'creator':
             widget_string_kapitel = 'combobox_kapitel_creator_cria'
             widget_string_unterkapitel = 'checkbox_unterkapitel_creator'
         # self.delete_all_widgets(layout, 1) ### PROBLEM !!!
@@ -3879,9 +3893,11 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             except AttributeError:
                 pass
 
+            
         text_combobox = self.dict_widget_variables[
             "{0}_{1}".format(widget_string_kapitel, klasse)
         ].currentText()
+
         kapitel = text_combobox[text_combobox.find("(") + 1 : text_combobox.find(")")]
 
         dict_klasse = eval("dict_{}".format(klasse))
@@ -3910,15 +3926,23 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
                 # else:
                 #     stylesheet = StyleSheet_new_checkbox_dark_mode
                 # new_checkbox.setStyleSheet(stylesheet)
-                new_checkbox.stateChanged.connect(
-                    partial(
-                        self.checkbox_unterkapitel_checked_cria,
-                        new_checkbox,
-                        klasse,
-                        kapitel,
-                        unterkapitel,
+                if typ== 'search':
+                    new_checkbox.stateChanged.connect(
+                        partial(
+                            self.checkBox_checked_cria,
+                            klasse,
+                            kapitel,
+                            unterkapitel))
+                elif typ == "creator":
+                    new_checkbox.stateChanged.connect(
+                        partial(
+                            self.checkbox_unterkapitel_checked_cria,
+                            new_checkbox,
+                            klasse,
+                            kapitel,
+                            unterkapitel,
+                        )
                     )
-                )
                 self.dict_widget_variables[
                     "{0}_{1}_{2}_{3}".format(
                         widget_string_unterkapitel,klasse, kapitel, unterkapitel
@@ -3931,7 +3955,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         # layout.addItem(self.spacerItem_unterkapitel_creator_cria)
 
     def checkbox_unterkapitel_checked_cria(
-        self, checkbox, klasse, kapitel, unterkapitel
+        self, checkbox, klasse, kapitel, unterkapitel,
     ):
         thema_checked = [klasse, kapitel, unterkapitel]
 
@@ -9288,7 +9312,7 @@ if __name__ == "__main__":
     # dir_ = QtCore.QDir("assets/fonts/IBM_Plex_Sans")
     _id = QtGui.QFontDatabase.addApplicationFont("assets/fonts/IBM_Plex_Sans/IBMPlexSans-Regular.ttf")
     QtGui.QFontDatabase.applicationFontFamilies(_id)
-    font = QtGui.QFont("IBM Plex Sans", 10)
+    font = QtGui.QFont("IBM Plex Sans", 8)
     # QtGui.QFontDatabase.addApplicationFont("newfont.otf")   
     # font = QtGui.QFont("Disco Society - Personal Use", 10)
     app.setFont(font)
@@ -9349,7 +9373,7 @@ if __name__ == "__main__":
 
 
     logo = os.path.join(
-        path_programm, "_database", "_config", "icon", "LaMA_logo_full.png"
+        path_programm, "_database", "_config", "icon", "LaMA_logo_full_transparent.png"
     )
     splash_pix = QtGui.QPixmap(logo)
 

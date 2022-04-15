@@ -18,6 +18,7 @@ StyleSheet_application = """
     QMenu::item:disabled{{
         color: gray
     }}
+    
     QTabBar::tab:selected {{
         background-color: #2F4550;
         color: #F4F4F9;
