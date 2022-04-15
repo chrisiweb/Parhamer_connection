@@ -580,6 +580,7 @@ class Ui_MainWindow(object):
         # self.label_lamaLogo.setFixedHeight(30)
         self.label_aufgabentyp.setFixedSize(QtCore.QSize(30,30))
         self.label_aufgabentyp.setScaledContents(True)
+        
         # self.gridLayout.addLayout(self.horizontalLayout_headMenu, 0, 0, 1, 2)
         self.combobox_aufgabentyp = create_new_combobox(self.widget_headMenu)
         # self.combobox_aufgabentyp.setSizePolicy(SizePolicy_fixed)
@@ -588,11 +589,16 @@ class Ui_MainWindow(object):
         self.combobox_aufgabentyp.currentIndexChanged.connect(
             self.chosen_aufgabenformat_typ
         )
+        
         self.horizontalLayout_headMenu.addWidget(self.label_aufgabentyp)
         # self.horizontalLayout_aufgabentyp.addWidget(
         #     self.combobox_aufgabentyp, QtCore.Qt.AlignLeft
         # )
         self.horizontalLayout_headMenu.addWidget(self.combobox_aufgabentyp)
+
+        if self.chosen_program == 'cria':
+            self.combobox_aufgabentyp.hide()
+            self.label_aufgabentyp.hide()
         # self.horizontalspacer_at = QtWidgets.QSpacerItem(
         #     40, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
         # )
@@ -606,7 +612,7 @@ class Ui_MainWindow(object):
 
         self.combobox_searchtype = create_new_combobox(self.widget_headMenu, "combobox_searchtype")
         self.combobox_searchtype.setMinimumContentsLength(1)
-
+    
         # self.horizontalLayout_combobox = create_new_horizontallayout()
         add_new_option(
             self.combobox_searchtype,
@@ -766,7 +772,7 @@ class Ui_MainWindow(object):
         # self.groupBox_af.setMaximumHeight(80)
         self.gridLayout_af = QtWidgets.QGridLayout(self.groupBox_af)
         self.gridLayout_af.setObjectName(_fromUtf8("gridLayout_af"))
-        self.gridLayout_af.setContentsMargins(0,10,0,10)
+        self.gridLayout_af.setContentsMargins(0,15,5,10)
 
         self.cb_af_mc = QtWidgets.QCheckBox(self.groupBox_af)
         self.cb_af_mc.setObjectName(_fromUtf8("cb_af_mc"))
@@ -1019,6 +1025,7 @@ class Ui_MainWindow(object):
             new_tab = add_new_tab(
                 self.tab_widget_search_cria, "{}. Klasse".format(klasse[1])
             )
+            new_tab.setStyleSheet("background-color: #F0F0F0; selection-background-color: #2F4550; selection-color: #F4F4F9")
             # if self.display_mode == 0:
             #     stylesheet = StyleSheet_new_tab
             # else:
@@ -1034,6 +1041,7 @@ class Ui_MainWindow(object):
             new_scrollarea.setWidgetResizable(True)
             # new_scrollarea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
             new_scrollareacontent = QtWidgets.QWidget()
+
             # new_scrollareacontent.setGeometry(QtCore.QRect(0, 0, 264, 235))
             new_scrollareacontent.setObjectName("{}".format(new_scrollareacontent))
 
@@ -1409,6 +1417,7 @@ class Ui_MainWindow(object):
             new_tab = add_new_tab(
                 self.tab_widget_cr_cria, "{}. Klasse".format(klasse[1])
             )
+            new_tab.setStyleSheet("background-color: #F0F0F0; selection-background-color: #2F4550; selection-color: #F4F4F9")
             # if self.display_mode == 0:
             #     stylesheet = StyleSheet_new_tab
             # else:
@@ -9373,7 +9382,7 @@ if __name__ == "__main__":
 
 
     logo = os.path.join(
-        path_programm, "_database", "_config", "icon", "LaMA_logo_full_transparent.png"
+        path_programm, "_database", "_config", "icon", "LaMA_logo_full.png"
     )
     splash_pix = QtGui.QPixmap(logo)
 
