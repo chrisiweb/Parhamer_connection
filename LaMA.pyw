@@ -4903,7 +4903,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                         self.groupBox_themengebiete_cria.setEnabled(False)
                 except KeyError:
                     critical_window('Es ist ein Fehler beim Aufrufen der zugeordneten Themen aufgetreten.',
-                    'Das Thema {0} ist in der Klasse {1} nicht vorhanden.'.format(thema, klasse))
+                    'Das Thema {0} ist in der {1}. Klasse nicht vorhanden.'.format(thema, klasse[1]))
 
         self.spinBox_punkte.setValue(aufgabe_total["punkte"])
 
