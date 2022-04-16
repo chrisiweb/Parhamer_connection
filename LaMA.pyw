@@ -1009,7 +1009,7 @@ class Ui_MainWindow(object):
         # self.tab_widget_cr_cria.setStyleSheet(stylesheet)
 
         # self.tab_widget_cr_cria.setStyleSheet("background-color: rgb(229, 246, 255);")
-        self.tab_widget_search_cria.setObjectName(_fromUtf8("tab_widget_cr_cria"))
+        self.tab_widget_search_cria.setObjectName(_fromUtf8("tab_widget_search_cria"))
         self.tab_widget_search_cria.setFocusPolicy(QtCore.Qt.NoFocus)
         self.verticalLayout_frame_gk.addWidget(self.tab_widget_search_cria)
         self.tab_widget_search_cria.hide()
@@ -1025,7 +1025,7 @@ class Ui_MainWindow(object):
             new_tab = add_new_tab(
                 self.tab_widget_search_cria, "{}. Klasse".format(klasse[1])
             )
-            new_tab.setStyleSheet("background-color: #F0F0F0; selection-background-color: #2F4550; selection-color: #F4F4F9")
+            new_tab.setStyleSheet(StyleSheet_new_tab)
             # if self.display_mode == 0:
             #     stylesheet = StyleSheet_new_tab
             # else:
@@ -1417,7 +1417,7 @@ class Ui_MainWindow(object):
             new_tab = add_new_tab(
                 self.tab_widget_cr_cria, "{}. Klasse".format(klasse[1])
             )
-            new_tab.setStyleSheet("background-color: #F0F0F0; selection-background-color: #2F4550; selection-color: #F4F4F9")
+            new_tab.setStyleSheet(StyleSheet_new_tab)
             # if self.display_mode == 0:
             #     stylesheet = StyleSheet_new_tab
             # else:
@@ -3442,6 +3442,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         #     tab_widget, "{}. Klasse".format(klasse[1])
         # )  # self.tab_widget_gk self.tab_widget_gk_cr
         new_tab = add_new_tab(tab_widget, "Zusatzthemen")
+        new_tab.setStyleSheet(StyleSheet_new_tab)
         # if self.display_mode == 0:
         #     stylesheet = StyleSheet_new_tab
         # else:
@@ -3500,7 +3501,10 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
     def create_tab_checkboxes_gk(self, tab_widget, titel, chosen_dictionary, mode):
         new_tab = add_new_tab(
             tab_widget, titel
-        )  # self.tab_widget_gk self.tab_widget_gk_cr
+        ) 
+        
+        new_tab.setStyleSheet(StyleSheet_new_tab)
+        # self.tab_widget_gk self.tab_widget_gk_cr
         # if self.display_mode == 0:
         #     stylesheet = StyleSheet_new_tab
         # else:
@@ -4858,44 +4862,48 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 self.cb_no_grade_tag.setChecked(True)
 
             for thema in aufgabe_total["themen"]:
-                kapitel, unterkapitel = thema.split(".")
 
-                if klasse == None:
-                    for all in list_klassen:
-
-                        dict_klasse_name = eval("dict_{}_name".format(all))
-                        if kapitel in dict_klasse_name:
-                            thema_name = dict_klasse_name[kapitel]
-                            combobox_thema = "combobox_kapitel_creator_cria_{}".format(
-                                all
-                            )
-                            temp_klasse = all
-                            break
-
-                else:
-                    temp_klasse = klasse
-                    dict_klasse_name = eval("dict_{}_name".format(klasse))
-                    thema_name = dict_klasse_name[kapitel]
-                    combobox_thema = "combobox_kapitel_creator_cria_{}".format(klasse)
-
-                index = self.dict_widget_variables[combobox_thema].findText(
-                    thema_name + " (" + kapitel + ")"
-                )
-
-                self.dict_widget_variables[combobox_thema].setCurrentIndex(index)
-                # continue
-
-                checkbox_thema = "checkbox_unterkapitel_creator_{0}_{1}_{2}".format(
-                    temp_klasse, kapitel, unterkapitel
-                )
                 try:
+                    kapitel, unterkapitel = thema.split(".")
+
+                    if klasse == None:
+                        for all in list_klassen:
+
+                            dict_klasse_name = eval("dict_{}_name".format(all))
+                            if kapitel in dict_klasse_name:
+                                thema_name = dict_klasse_name[kapitel]
+                                combobox_thema = "combobox_kapitel_creator_cria_{}".format(
+                                    all
+                                )
+                                temp_klasse = all
+                                break
+
+                    else:
+                        temp_klasse = klasse
+                        dict_klasse_name = eval("dict_{}_name".format(klasse))
+                        thema_name = dict_klasse_name[kapitel]
+                        combobox_thema = "combobox_kapitel_creator_cria_{}".format(klasse)
+
+                    index = self.dict_widget_variables[combobox_thema].findText(
+                        thema_name + " (" + kapitel + ")"
+                    )
+
+                    self.dict_widget_variables[combobox_thema].setCurrentIndex(index)
+                    # continue
+
+                    checkbox_thema = "checkbox_unterkapitel_creator_{0}_{1}_{2}".format(
+                        temp_klasse, kapitel, unterkapitel
+                    )
+
                     self.dict_widget_variables[checkbox_thema].setChecked(True)
+
+
+
+                    if mode == "creator":
+                        self.groupBox_themengebiete_cria.setEnabled(False)
                 except KeyError:
                     critical_window('Es ist ein Fehler beim Aufrufen der zugeordneten Themen aufgetreten.',
-                    'Das Thema {0}.{1} ist in der {2}. Klasse nicht vorhanden.'.format(kapitel, unterkapitel, temp_klasse[1]))
-
-                if mode == "creator":
-                    self.groupBox_themengebiete_cria.setEnabled(False)
+                    'Das Thema {0} ist in der Klasse {1} nicht vorhanden.'.format(thema, klasse))
 
         self.spinBox_punkte.setValue(aufgabe_total["punkte"])
 
@@ -9328,7 +9336,7 @@ if __name__ == "__main__":
 
 
     palette = QtGui.QPalette()
-    # palette.setColor(QtGui.QPalette.Window, white)  # Window background
+    palette.setColor(QtGui.QPalette.Window, white)  # Window background
     # palette.setColor(QtGui.QPalette.WindowText, QtCore.Qt.black)
     # palette.setColor(QtGui.QPalette.Base, white)
     # palette.setColor(QtGui.QPalette.AlternateBase, blue_2)

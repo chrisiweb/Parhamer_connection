@@ -122,7 +122,7 @@ StyleSheet_application = """
     )
 
 
-
+StyleSheet_new_tab = "background-color: #F4F4F9; selection-background-color: #2F4550; selection-color: #F4F4F9"
 
 
 
@@ -146,13 +146,6 @@ QWidget {{color: {2};background-color: {3}}}
     get_color(blue_2), get_color(black), get_color(white), get_color(blue_7)
 )
 
-StyleSheet_new_tab = """
-QWidget {{color: {0}; background-color:{1}}}
-
-QWidget::disabled {{background-color: lightGray}}
-""".format(
-    get_color(black), get_color(blue_2)
-)
 
 
 StyleSheet_tab_widget_themen = """
