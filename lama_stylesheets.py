@@ -72,6 +72,22 @@ StyleSheet_application = """
         width: 35px;
     }}
 
+    #frameNummer {{
+        border-color: #6E8784;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 4px;
+        margin-top: 0.5em;       
+    }}
+
+    #frame_datum {{
+        border-color: #6E8784;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 4px;
+        margin-top: 0.5em;       
+    }}
+
     #frame_tab_widget_gk {{
         border-color: #6E8784;
         border-width: 1px;
