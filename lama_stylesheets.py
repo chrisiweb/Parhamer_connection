@@ -114,13 +114,15 @@ StyleSheet_application = """
         border-style: solid;
         border-radius: 4px;
         margin-top: 0.5em;
+        padding-right: 5px;
+        padding-left: 5px;
     }}
+
 
     QGroupBox::title{{
         top: -5px;
-        left: 5px;
-        padding-left: 3px;
-        padding-right: 2px;    
+        left: 1px;
+        padding-left: 3px;   
     }}
 
     #combobox_searchtype {{
@@ -128,13 +130,41 @@ StyleSheet_application = """
         padding-right: 20px;
         padding-top: 2px;
         padding-bottom: 2px
-    }}        
+    }}
+
+    QCalendarWidget QWidget
+    {{
+        background-color: #F4F4F9;
+        color: #2F4550;
+    }} 
+    
+    QCalendarWidget QTableView 
+    {{
+        background-color: #F4F4F9;
+        color: #2F4550;
+        alternate-background-color: #D3E0DF;
+    }}
+
+    QCalendarWidget QMenu {{
+        background-color: #F4F4F9;
+        color: #2F4550;        
+    }}
+
+    QCalendarWidget QWidget#qt_calendar_prevmonth{{
+        qproperty-icon:url({4});
+    }}
+
+    QCalendarWidget QWidget#qt_calendar_nextmonth{{
+        qproperty-icon:url({5});
+    }}
 
 """.format(
     get_icon_path("chevron-left.svg"),
     get_icon_path("chevron-right.svg"),
     get_icon_path("square.svg"),
     get_icon_path("check-square.svg"),
+    get_icon_path("arrow-left-circle.svg"),
+    get_icon_path("arrow-right-circle.svg"),
     )
 
 

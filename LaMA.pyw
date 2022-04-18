@@ -147,12 +147,12 @@ class Ui_MainWindow(object):
 
         
 
-    def resizeEvent(self, event: QtGui.QResizeEvent):
-        self.resized.emit()
-        print('test')
-        return self.resizeEvent(event)
-        # self.resized.emit()
-        # return 
+    # def resizeEvent(self, event: QtGui.QResizeEvent):
+    #     self.resized.emit()
+    #     print('test')
+    #     return self.resizeEvent(event)
+    #     # self.resized.emit()
+    #     # return 
 
     @report_exceptions
     def setupUi(self, MainWindow):
@@ -266,123 +266,34 @@ class Ui_MainWindow(object):
         elif self.chosen_program == "wizard":
             MainWindow.setWindowTitle("LaMA Worksheet Wizard")
             MainWindow.setWindowIcon(QtGui.QIcon(logo_path))
+
+
+
+        self.stackMainWindow =  QtWidgets.QStackedWidget(MainWindow)
+
+        self.stackSearch = QtWidgets.QWidget(MainWindow)
+        self.stackSage = QtWidgets.QWidget(MainWindow)
+        
+        self.stackMainWindow.addWidget(self.stackSearch)
+        self.stackMainWindow.addWidget(self.stackSage)
+
+
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
-
+        self.centralwidget.hide()
         self.gridLayout = create_new_gridlayout(self.centralwidget)
-        # self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
-        # self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
+
+
+
+
+        self.stackMainWindow.setCurrentIndex(1)
         #######################################################
         ############ Menu Bar ###################
+        #######################################################
 
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
-        self.statusbar.setObjectName(_fromUtf8("statusbar"))
-        MainWindow.setStatusBar(self.statusbar)
-        self.menuBar = QtWidgets.QMenuBar(MainWindow)
-        self.menuBar.setGeometry(QtCore.QRect(0, 0, 950, 21))
-        self.menuBar.setObjectName(_fromUtf8("menuBar"))
-        # self.menuBar.setStyleSheet("QMenu::item:disabled{color: gray}")
-        # self.menuDateityp = QtWidgets.QMenu(self.menuBar)
-        # self.menuDateityp.setObjectName(_fromUtf8("menuDateityp"))
-        self.menuDatei = QtWidgets.QMenu(self.menuBar)
-        self.menuDatei.setObjectName(_fromUtf8("menuDatei"))
-        self.menuNeu = QtWidgets.QMenu(self.menuBar)
-        self.menuChangeProgram = QtWidgets.QMenu(self.menuDatei)
-        self.menuChangeProgram.setObjectName(_fromUtf8("menuChangeProgram"))
-        self.menuChangeProgram.setTitle("Wechseln zu ...")
-        self.menuNeu.setObjectName(_fromUtf8("menuNeu"))
-        self.menuSage = QtWidgets.QMenu(self.menuBar)
-        self.menuSage.setObjectName(_fromUtf8("menuSage"))
-        self.menuSuche = QtWidgets.QMenu(self.menuBar)
-        self.menuSuche.setObjectName(_fromUtf8("menuSuche"))
-        self.menuWizard = QtWidgets.QMenu(self.menuBar)
-        self.menuWizard.setObjectName(_fromUtf8("menuWizard"))
-        self.menuFeedback = QtWidgets.QMenu(self.menuBar)
-        self.menuFeedback.setObjectName(_fromUtf8("menuFeedback"))
-        self.menuOptionen = QtWidgets.QMenu(self.menuBar)
-        self.menuOptionen.setObjectName(_fromUtf8("menuOptionen"))
-        self.menuOptionen.setTitle("Optionen")
-        self.menuHelp = QtWidgets.QMenu(self.menuBar)
-        self.menuHelp.setObjectName(_fromUtf8("menuHelp"))
-        self.menuUpdate = QtWidgets.QMenu(self.menuHelp)
-        self.menuUpdate.setObjectName(_fromUtf8("menuUpdate"))
-        self.menuUpdate.setTitle("Update...")
-        self.menuDeveloper = QtWidgets.QMenu(self.menuBar)
-        self.menuDeveloper.setObjectName(_fromUtf8("menuDeveloper"))
+        setup_MenuBar(self)
 
-        # self.menuDraftControl = QtWidgets.QMenu(self.menuDeveloper)
-        # self.menuDraftControl.setObjectName(_fromUtf8("menuDraftControl"))
-        # self.menuDeveloper.setStyleSheet("background-color: {};".format(get_color(blue_4)))
 
-        # self.menuBild_einbinden = QtWidgets.QMenu(self.menuBar)
-        # self.menuBild_einbinden.setObjectName(_fromUtf8("menuBild_einbinden"))
-        MainWindow.setMenuBar(self.menuBar)
-
-        # self.actionReset_creator = add_action(self.menuDatei, "Reset", self.suchfenster_reset)
-        # self.actionReset.setShortcut("F4")
-
-        self.actionRefresh_Database = add_action(
-            MainWindow,
-            self.menuDatei,
-            "Datenbank aktualisieren",
-            self.action_refreshddb_selected,
-        )
-        self.actionRefresh_Database.setShortcut("F5")
-
-        # self.menuDatei.addSeparator()
-
-        self.actionPush_Database = add_action(
-            MainWindow,
-            self.menuDeveloper,
-            "Datenbank hochladen",
-            self.push_full_database,
-        )
-
-        self.actionPush_Database = add_action(
-            MainWindow,
-            self.menuDeveloper,
-            "Entwürfe prüfen",
-            self.draft_control,
-        )
-
-        self.actionPush_Database = add_action(
-            MainWindow,
-            self.menuDeveloper,
-            "Datenbank aufräumen",
-            self.database_clean_up,
-        )
-
-        self.menuDatei.addSeparator()
-
-        self.actionBild_convert_image_eps = add_action(
-            MainWindow,
-            self.menuDatei,
-            "Grafik zu eps-Datei konvertieren",
-            self.convert_image_eps_clicked,
-        )
-
-        self.menuDatei.addSeparator()
-
-        self.action_cria = add_action(
-                MainWindow,
-                self.menuChangeProgram,
-                "LaMA Cria (Unterstufe)",
-                partial(self.change_program, "cria"), #
-            )
-
-        self.action_lama = add_action(
-                MainWindow,
-                self.menuChangeProgram,
-                "LaMA (Oberstufe)",
-                partial(self.change_program, "lama"), #
-            )
-
-        self.action_wizard = add_action(
-                MainWindow,
-                self.menuChangeProgram,
-                "LaMA Worksheet Wizard",
-                partial(self.change_program, "wizard"), #
-            )
         if self.chosen_program == "cria":
             self.action_cria.setVisible(False)
         elif self.chosen_program == "lama":
@@ -390,601 +301,629 @@ class Ui_MainWindow(object):
         elif self.chosen_program == "wizard":
             self.action_wizard.setVisible(False)
 
-
-        self.menuDatei.addAction(self.menuChangeProgram.menuAction())
-        self.actionExit = add_action(MainWindow, self.menuDatei, "Exit", self.exit_pressed)
-
-
-        self.actionSuche = add_action(
-            MainWindow,
-            self.menuSuche,
-            "Aufgaben suchen...",
-            partial(self.update_gui, "widgets_search"),
-        )
-        # self.actionSuche.setVisible(False)
-        self.actionSuche.setEnabled(False)
-        self.actionSuche.setShortcut("F1")
-
-        self.menuSuche.addSeparator()
-
-        self.actionReset_wizard = add_action(
-            MainWindow, self.menuWizard, "Reset", self.worksheet_wizard_reset
-        )
-
-        self.actionReset = add_action(
-            MainWindow, self.menuSuche, "Reset", self.suchfenster_reset
-        )
-        self.actionReset.setShortcut("F4")
-
-        self.actionSage = add_action(
-            MainWindow,
-            self.menuSage,
-            "Prüfung erstellen...",
-            partial(self.update_gui, "widgets_sage"),
-        )
-        self.actionSage.setShortcut("F2")
-
-        self.menuSage.addSeparator()
-
-        self.actionSave = add_action(
-            MainWindow, self.menuSage, "Prüfung speichern", self.sage_save
-        )
-        self.actionSave.setEnabled(False)
-        self.actionSave.setShortcut("Ctrl+S")
-
-        self.actionLoad = add_action(
-            MainWindow, self.menuSage, "Prüfung laden", self.sage_load
-        )
-        # self.actionLoad.setEnabled(False)
-        self.actionLoad.setShortcut("Ctrl+O")
-
-        self.menuSage.addSeparator()
-
-        self.actionRestore_sage = add_action(
-            MainWindow, self.menuSage, "", partial(self.sage_load, autosave=True)
-        )
         self.update_label_restore_action()
 
-        self.actionReset_sage = add_action(
-            MainWindow, self.menuSage, "Reset Prüfung", partial(self.reset_sage, True)
-        )
-        self.actionReset_sage.setEnabled(False)
-        # self.actionReset_sage.setVisible(False)
-
-        self.actionNeu = add_action(
-            MainWindow,
-            self.menuNeu,
-            "Neue Aufgabe zur Datenbank hinzufügen...",
-            self.action_add_file,
-        )
-        self.actionNeu.setShortcut("F3")
-
-        # self.menuNeu.addSeparator()
-
-        if self.developer_mode_active == True:
-            label_action_edit = "Aufgabe bearbeiten"
-        else:
-            label_action_edit = "Lokal gespeicherte Aufgabe bearbeiten"
-        self.actionEdit_Files = add_action(
-            MainWindow, self.menuNeu, label_action_edit, self.action_edit_files
-        )
-        # self.actionBild_einbinden = add_action(
-        #     MainWindow, self.menuBild_einbinden, "Durchsuchen...", self.btn_add_image_pressed
-        # )
-
-        self.actionFeedback = add_action(
-            MainWindow,
-            self.menuFeedback,
-            "Feedback oder Fehler senden...",
-            partial(self.update_gui, "widgets_feedback"),
-        )
-
-        self.actionEinstellungen = add_action(
-            MainWindow, self.menuOptionen, "LaMA konfigurieren ...", self.open_setup
-        )
-
-        self.actionUpdate_srdpmathematik = add_action(
-            MainWindow,
-            self.menuUpdate,
-            '"srdp-mathematik.sty" aktualisieren',
-            self.update_style_package,
-        )
-
-        # self.actionUpdate_tabu = add_action(
-        #     MainWindow,
-        #     self.menuUpdate,
-        #     '"tabu.sty" aktualisieren',
-        #     partial(self.update_style_package, "tabu.sty"),
-        # )
-
-        self.menuOptionen.addAction(self.menuUpdate.menuAction())
-
-        self.actionGKcatalogue = add_action(MainWindow, self.menuHelp, "Grundkompetenzkatalog anzeigen", self.show_gk_catalogue)
-
-        self.actionShowPopupWindow = add_action(
-            MainWindow, self.menuHelp, "Letzes Infofenster anzeigen", partial(self.show_popup_window, False)
-        )
         if show_popup == False:
             self.actionShowPopupWindow.setEnabled(False)
 
-        self.actionInfo = add_action(
-            MainWindow, self.menuHelp, "Über LaMA", self.show_info
-        )
-        self.actionSupport = add_action(
-            MainWindow, self.menuHelp, "LaMA unterstützen", self.show_support
-        )
 
+        ###########################################################################
+        ##########################################################################
 
+        #######################################################
+        ############ Stack Search ###################
+        #######################################################
 
-        if self.developer_mode_active == True:
-            label = "Entwicklermodus (aktiv)"
-        else:
-            label = "Entwicklermodus"
-
-        self.actionDeveloper = add_action(
-            MainWindow, self.menuOptionen, label, self.activate_developermode
-        )
-
-        # self.menuOptionen.addSeparator()
-
-        # self.actionComplete_reset = add_action(MainWindow, self.menuOptionen, "LaMA vollständig zurücksetzen", self.complete_reset)
-
-        self.menuBar.addAction(self.menuDatei.menuAction())
-        self.menuBar.addAction(self.menuSuche.menuAction())
-        # self.menuBar.addAction(self.menuDateityp.menuAction())
-        self.menuBar.addAction(self.menuSage.menuAction())
-        self.menuBar.addAction(self.menuNeu.menuAction())
-        self.menuBar.addAction(self.menuFeedback.menuAction())
-        self.menuBar.addAction(self.menuOptionen.menuAction())
-
-        if self.developer_mode_active == True:
-            self.menuBar.addAction(self.menuDeveloper.menuAction())
-
-        self.menuBar.addAction(self.menuHelp.menuAction())
-
-
-        # QtWidgets.QVBoxLayout(
-        #     self.scrollAreaWidgetContents_ausgew_gk
-        # )
-        # self.verticalLayout_scrollA_ausgew_gk.setObjectName(
-        #     "verticalLayout_scrollA_ausgew_gk"
-        # )
-
-
-
-
-
-        # self.horizontalLayout_2 = create_new_horizontallayout()
-
-
-
-        # self.horizontalLayout_2.addWidget(self.btn_suche)
-
-        # self.gridLayout.addLayout(self.horizontalLayout_2, 5, 1, 1, 1)
-
-        # self.label_update = create_new_label(self.centralwidget, "")
-        # self.label_update.setMaximumHeight(18)
-        # self.horizontalLayout.addWidget(self.label_update)
-
-        # self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
-
-        # self.horizontalLayout_aufgabentyp = create_new_horizontallayout()
-
-        self.widget_headMenu = QtWidgets.QWidget(self.centralwidget)
-        self.widget_headMenu.setObjectName("widget_headMenu")
-        self.horizontalLayout_headMenu = create_new_horizontallayout(self.widget_headMenu)
-        self.horizontalLayout_headMenu.setContentsMargins(0,0,0,0)
-
-        self.label_aufgabentyp = create_new_label(self.widget_headMenu, "")
-        self.label_aufgabentyp.setPixmap(QtGui.QPixmap(get_icon_path("database.svg")))
-        # self.label_lamaLogo.setFixedHeight(30)
-        self.label_aufgabentyp.setFixedSize(QtCore.QSize(30,30))
-        self.label_aufgabentyp.setScaledContents(True)
-        
-        # self.gridLayout.addLayout(self.horizontalLayout_headMenu, 0, 0, 1, 2)
-        self.combobox_aufgabentyp = create_new_combobox(self.widget_headMenu)
-        # self.combobox_aufgabentyp.setSizePolicy(SizePolicy_fixed)
-        add_new_option(self.combobox_aufgabentyp, 0, "Typ1")
-        add_new_option(self.combobox_aufgabentyp, 1, "Typ2")
-        self.combobox_aufgabentyp.currentIndexChanged.connect(
-            self.chosen_aufgabenformat_typ
-        )
-        
-        self.horizontalLayout_headMenu.addWidget(self.label_aufgabentyp)
-        self.horizontalLayout_headMenu.addWidget(self.combobox_aufgabentyp)
-
-
-        if self.chosen_program == 'cria':
-            self.combobox_aufgabentyp.hide()
-            self.label_aufgabentyp.hide()
-        # self.horizontalspacer_at = QtWidgets.QSpacerItem(
-        #     40, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        # )
-        # self.horizontalLayout_aufgabentyp.addSpacerItem(self.horizontalspacer_at)
-        # self.horizontalLayout_aufgabentyp.addStretch()  ## problem with creator gui
-        # self.label_aufgabentyp.setMaximumHeight(18)
-
-        
-        # self.gridLayout.addWidget(self.combobox_aufgabentyp, 0,0,1,1)
-
-
-        self.combobox_searchtype = create_new_combobox(self.widget_headMenu, "combobox_searchtype")
-        self.combobox_searchtype.setMinimumContentsLength(1)
-    
-        # self.horizontalLayout_combobox = create_new_horizontallayout()
-        add_new_option(
-            self.combobox_searchtype,
-            0,
-            "Alle Dateien ausgeben, die zumindest ein Themengebiet enthalten",
-        )
-        if self.chosen_program == "lama":
-            label = "Alle Dateien ausgeben, die ausschließlich diese Themengebiete enthalten"
-        if self.chosen_program == "cria":
-            label = "Alle Dateien ausgeben, die alle Themengebiete enthalten"
-
-        add_new_option(self.combobox_searchtype, 1, label)
-        # self.combobox_searchtype.setSizePolicy(SizePolicy_minimum_width)
-        self.horizontalLayout_headMenu.addWidget(self.combobox_searchtype)
-
-        # self.gridLayout.addLayout(self.horizontalLayout_combobox, 0, 1, 1, 1)
-
-        self.combobox_searchtype.hide()
-        self.horizontalLayout_headMenu.addStretch()
-
-        # self.label_lamaLogo = create_new_label(self.widget_headMenu, "")
-        # lama_logo = os.path.join(
-        #     path_programm, "_database", "_config", "icon", "LaMA_logo_full_transparent.png"
-        # )
-        # self.label_lamaLogo.setPixmap(QtGui.QPixmap(lama_logo))
-        # # self.label_lamaLogo.setFixedHeight(30)
-        # self.label_lamaLogo.setFixedSize(QtCore.QSize(100,40))
-        # self.label_lamaLogo.setScaledContents(True)
-        # self.horizontalLayout_headMenu.addWidget(self.label_lamaLogo)
-
-
-
-        self.gridLayout.addWidget(self.widget_headMenu, 0,0,1,2)
-        # self.groupBox_themen_klasse = create_new_groupbox(
-        #     self.centralwidget, "Themen Schulstufen"
-        # )
-
-        # self.verticalLayout = create_new_verticallayout(self.groupBox_themen_klasse)
-        # QtWidgets.QVBoxLayout(self.groupBox_themen_klasse)
-        # self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        # self.tab_widget_themen = QtWidgets.QTabWidget(self.groupBox_themen_klasse)
-        # if self.display_mode == 0:
-        #     stylesheet = StyleSheet_tab_widget_themen
-        # else:
-        #     stylesheet = StyleSheet_tab_widget_themen_dark_mode
-        # self.tab_widget_themen.setStyleSheet(stylesheet)
-
-        # self.tabWidget.setStyleSheet(set_color_text(white))
-
-        # self.tab_widget_themen.setObjectName(_fromUtf8("tab_widget_themen"))
-        # self.verticalLayout.addWidget(self.tab_widget_themen)
-
-        # self.gridLayout.addWidget(self.groupBox_themen_klasse, 1, 1, 2, 1)
-
-        # self.groupBox_gk = create_new_groupbox(self.centralwidget, "Grundkompetenzen")
-
-        # self.gridLayout_11 = create_new_gridlayout(self.groupBox_gk)
-
-        # QtWidgets.QGridLayout(self.groupBox_gk)
-        # self.gridLayout_11.setObjectName(_fromUtf8("gridLayout_11"))
-        self.frame_tab_widget_gk = QtWidgets.QFrame(self.centralwidget)
-        self.frame_tab_widget_gk.setObjectName("frame_tab_widget_gk")
-        self.verticalLayout_frame_gk = create_new_verticallayout(self.frame_tab_widget_gk)
-        # self.verticalLayout_frame_gk.setContentsMargins(1,1,1,1)
-
-        self.tab_widget_gk = QtWidgets.QTabWidget(self.frame_tab_widget_gk)
-
-        # if self.display_mode == 0:
-        #     stylesheet = StyleSheet_tabWidget
-        # else:
-        #     stylesheet = StyleSheet_tabWidget_dark_mode
-        # self.tab_widget_gk.setStyleSheet(stylesheet)
-        # self.tab_widget_gk.setStyleSheet(_fromUtf8("color: {0}".format(white)))
-        # self.tab_widget_gk.setStyleSheet("QToolTip { color: white; background-color: rgb(47, 69, 80); border: 0px; }")
-        # ))
-
-        #
-        self.tab_widget_gk.setObjectName(_fromUtf8("tab_widget_gk"))
-        self.verticalLayout_frame_gk.addWidget(self.tab_widget_gk)
-        self.gridLayout.addWidget(self.frame_tab_widget_gk, 1, 0, 1, 1)
-
-        # #### AG #####
-        self.create_tab_checkboxes_gk(
-            self.tab_widget_gk, "Algebra und Geometrie", ag_beschreibung, "search"
-        )
-
-        ### FA ###
-        self.create_tab_checkboxes_gk(
-            self.tab_widget_gk, "Funktionale Abhängigkeiten", fa_beschreibung, "search"
-        )
-
-        ### AN ###
-        self.create_tab_checkboxes_gk(
-            self.tab_widget_gk, "Analysis", an_beschreibung, "search"
-        )
-
-        ### WS ###
-        self.create_tab_checkboxes_gk(
-            self.tab_widget_gk,
-            "Wahrscheinlichkeit und Statistik",
-            ws_beschreibung,
-            "search",
-        )
-
-        ######### Klassenthemen
-        self.create_tab_checkboxes_themen(self.tab_widget_gk, "search")
-        ###############################
-
-        # self.frame_ausgew_gk = QtWidgets.QFrame(self.centralwidget)
-        # self.frame_ausgew_gk.setObjectName("frame_ausgew_gk")
-        # self.horizontalLayout_ausgew_gk = create_new_horizontallayout(self.frame_ausgew_gk)
-        # self.horizontalLayout_ausgew_gk.setContentsMargins(0,0,0,10)
-
-
-        self.groupBox_ausgew_gk = create_new_groupbox(
-            self.centralwidget, "Auswahl"
-        )
-        # self.groupBox_ausgew_gk.setMaximumHeight(110)
-
-        self.verticalLayout_2 = create_new_verticallayout(self.groupBox_ausgew_gk)
-
-        # QtWidgets.QVBoxLayout(self.groupBox_ausgew_gk)
-        # self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
-
-        self.scrollArea_ausgew_gk = QtWidgets.QScrollArea(self.groupBox_ausgew_gk)
-        self.scrollArea_ausgew_gk.setWidgetResizable(True)
-        self.scrollArea_ausgew_gk.setObjectName("scrollArea_ausgew_gk")
-        self.scrollAreaWidgetContents_ausgew_gk = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_ausgew_gk.setObjectName(
-            "scrollAreaWidgetContents_ausgew_gk"
-        )
-
-        self.verticalLayout_scrollA_ausgew_gk = create_new_verticallayout(
-            self.scrollAreaWidgetContents_ausgew_gk
-        )
-        self.verticalLayout_scrollA_ausgew_gk.setContentsMargins(0,0,0,0)
-
-
-        # self.horizontalLayout_ausgew_gk.addWidget(self.groupBox_ausgew_gk)
-        self.gridLayout.addWidget(self.groupBox_ausgew_gk, 2, 0, 1, 1)
-        # self.gridLayout.addWidget(self.frame_ausgew_gk, 2 , 0,1,1)
-
-
-
-        self.widget_searchMenu = QtWidgets.QWidget(self.centralwidget)
-        self.widget_searchMenu.setObjectName("widget_searchMenu")
-        # self.widget_searchMenu.setContentsMargins(0,0,0,0)
-        self.gridLayout.addWidget(self.widget_searchMenu, 1 , 1,2,1)
-
-        self.verticalLayout_searchMenu = create_new_verticallayout(self.widget_searchMenu)
-        self.verticalLayout_searchMenu.setContentsMargins(0,0,0,0)
-
-        self.groupBox_af = QtWidgets.QGroupBox(self.widget_searchMenu)
-        self.groupBox_af.setSizePolicy(SizePolicy_fixed_height)
-        # self.groupBox_af.setMaximumSize(QtCore.QSize(375, 16777215))
-        self.groupBox_af.setObjectName(_fromUtf8("groupBox_af"))
-        # self.groupBox_af.setMaximumHeight(80)
-        self.gridLayout_af = QtWidgets.QGridLayout(self.groupBox_af)
-        self.gridLayout_af.setObjectName(_fromUtf8("gridLayout_af"))
-        self.gridLayout_af.setContentsMargins(0,15,5,10)
-
-        self.cb_af_mc = QtWidgets.QCheckBox(self.groupBox_af)
-        self.cb_af_mc.setObjectName(_fromUtf8("cb_af_mc"))
-        self.gridLayout_af.addWidget(self.cb_af_mc, 0, 0, 1, 1)
-        # self.cb_af_mc.setStyleSheet("""
-        #     QCheckBox::indicator:unchecked{
-        #     image: url("C:/ProgramData/LaMA/_database/_config/assets/icons_charcoal/square.svg");
-        #     width: 25px;
-        #     }""")
-        self.cb_af_zo = QtWidgets.QCheckBox(self.groupBox_af)        
-        self.cb_af_zo.setObjectName(_fromUtf8("cb_af_zo"))
-        self.gridLayout_af.addWidget(self.cb_af_zo, 1, 0, 1, 1)
-
-        self.cb_af_lt = QtWidgets.QCheckBox(self.groupBox_af)
-        self.cb_af_lt.setObjectName(_fromUtf8("cb_af_lt"))
-        self.gridLayout_af.addWidget(self.cb_af_lt, 2, 0, 1, 1)        
-        
-        self.cb_af_oa = QtWidgets.QCheckBox(self.groupBox_af)
-        self.cb_af_oa.setObjectName(_fromUtf8("cb_af_oa"))
-        self.gridLayout_af.addWidget(self.cb_af_oa, 3, 0, 1, 1)
-
-
-        self.cb_af_ta = QtWidgets.QCheckBox(self.groupBox_af)
-        self.cb_af_ta.setObjectName("cb_af_ta")
-        self.gridLayout_af.addWidget(self.cb_af_ta, 0, 1, 1, 1)
-
-        self.cb_af_rf = QtWidgets.QCheckBox(self.groupBox_af)
-        self.cb_af_rf.setObjectName("cb_af_rf")
-        self.gridLayout_af.addWidget(self.cb_af_rf, 1, 1, 1, 1)
-
-        self.cb_af_ko = QtWidgets.QCheckBox(self.groupBox_af)
-        self.cb_af_ko.setObjectName("cb_af_ko")
-        self.gridLayout_af.addWidget(self.cb_af_ko, 2, 1, 1, 1)
-
-        self.gridLayout_af.setRowStretch(4,1)
-
-        if self.chosen_program != "cria":
-            self.cb_af_ko.hide()
-            self.cb_af_rf.hide()
-            self.cb_af_ta.hide()
-
-        # self.gridLayout.addWidget(self.groupBox_af, 3, 0, 1, 1)
-        # if self.chosen_program == "lama":
-        #     self.gridLayout.addWidget(self.groupBox_af, 1, 1, 1, 1)
-        self.verticalLayout_searchMenu.addWidget(self.groupBox_af)
-        # if self.chosen_program == "cria":
-        #     self.gridLayout.addWidget(self.groupBox_af, 3, 0, 1, 1)
-
-
-
-
-        self.groupBox_klassen = create_new_groupbox(
-            self.widget_searchMenu, "Suchfilter"
-        )
-        self.groupBox_klassen.setSizePolicy(SizePolicy_fixed_height)
-        self.gridLayout_14 = create_new_gridlayout(self.groupBox_klassen)
-
-        self.cb_k5 = create_new_checkbox(self.groupBox_klassen, "5. Klasse")
-        self.gridLayout_14.addWidget(self.cb_k5, 0, 0, 1, 1)
-
-        self.cb_k6 = create_new_checkbox(self.groupBox_klassen, "6. Klasse")
-        self.gridLayout_14.addWidget(self.cb_k6, 1, 0, 1, 1)
-
-        self.cb_k7 = create_new_checkbox(self.groupBox_klassen, "7. Klasse")
-        self.gridLayout_14.addWidget(self.cb_k7, 2, 0, 1, 1)
-
-        self.cb_k8 = create_new_checkbox(self.groupBox_klassen, "8. Klasse")
-        self.gridLayout_14.addWidget(self.cb_k8, 3, 0, 1, 1)
-
-        self.cb_mat = create_new_checkbox(self.groupBox_klassen, "Matura")
-        self.gridLayout_14.addWidget(self.cb_mat, 4, 0, 1, 1)
-
-        self.cb_univie = create_new_checkbox(self.groupBox_klassen, "Uni Wien")
-        self.cb_univie.setToolTip(
-            "Aufgaben mit dieser Kennzeichnung wurden im Rahmen einer Lehrveranstaltung auf der\nUniverstität Wien von Studierenden erstellt und von den Lehrveranstaltungsleitern evaluiert."
-        )
-        self.gridLayout_14.addWidget(self.cb_univie, 1, 2, 1, 1)
-        self.gridLayout_14.setContentsMargins(0,10,0,10)
-        self.cb_univie.hide()
-
-        self.verticalLayout_searchMenu.addWidget(self.groupBox_klassen)
-        # self.gridLayout.addWidget(self.groupBox_klassen, 2, 1, 1, 1)
-
-
-        self.label_ausgew_gk = create_new_label(self.scrollArea_ausgew_gk, "", True)
-        self.verticalLayout_scrollA_ausgew_gk.addWidget(self.label_ausgew_gk)
-
-        self.label_ausgew_gk_rest = create_new_label(self.scrollArea_ausgew_gk, "")
-
-        self.verticalLayout_scrollA_ausgew_gk.addWidget(self.label_ausgew_gk_rest)
-        self.label_ausgew_gk_rest.hide()
-        self.scrollArea_ausgew_gk.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.scrollArea_ausgew_gk.setWidget(self.scrollAreaWidgetContents_ausgew_gk)
-        self.verticalLayout_2.addWidget(self.scrollArea_ausgew_gk)
-
+        setup_stackSearch(self)
         
 
-        
 
-        self.frame_advanced_search = QtWidgets.QFrame(self.centralwidget)
-        self.frame_advanced_search.setObjectName("frame_advanced_search")
-        # self.groupBox_advanced_search = create_new_groupbox(
-        #     self.centralwidget, "Erweiterte Suche:"
-        # )
-        self.frame_advanced_search.setSizePolicy(SizePolicy_fixed_height)
-
-        self.horizontalLayout_advanced_search = create_new_horizontallayout(self.frame_advanced_search)
-        # self.gridLayout_10 = create_new_gridlayout(self.groupBox_advanced_search)
-
-        # self.comboBox_suchbegriffe = create_new_combobox(self.frame_advanced_search)
-        # self.gridLayout_10.addWidget(self.comboBox_suchbegriffe, 0, 0, 1, 1)
-        self.iconlabel_search = create_new_label(self.frame_advanced_search, "")
-        self.iconlabel_search.setPixmap(QtGui.QPixmap(get_icon_path("search.svg")))
-        self.iconlabel_search.setFixedSize(QtCore.QSize(22,22))
-        self.iconlabel_search.setScaledContents(True)
-        self.horizontalLayout_advanced_search.addWidget(self.iconlabel_search)
-        self.horizontalLayout_advanced_search.setContentsMargins(0,0,0,0)
-        # self.horizontalLayout_advanced_search.addWidget(self.comboBox_suchbegriffe)
-
-        # add_new_option(self.comboBox_suchbegriffe, 0, "")
-        # self.comboBox_suchbegriffe.currentIndexChanged.connect(
-        #     self.comboBox_suchbegriffe_changed
-        # )
-
-        # i = 0
-        # suche_auswahl = ["Titel", "Inhalt", "Quelle", "Bilder", "Aufgaben-ID"]
-        # for all in suche_auswahl:
-        #     add_new_option(self.comboBox_suchbegriffe, i, all)
-        #     i += 1
-
-        self.entry_suchbegriffe = create_new_lineedit(self.frame_advanced_search, "entry_suchbegriffe")
-        self.horizontalLayout_advanced_search.addWidget(self.entry_suchbegriffe)
-
-        self.filter_search = create_new_button(self.frame_advanced_search, "", still_to_define)
-        self.filter_search.setIcon(QtGui.QIcon(get_icon_path('filter.svg')))
-        self.horizontalLayout_advanced_search.addWidget(self.filter_search)
-        # self.entry_suchbegriffe.setEnabled(False)
-
-        self.verticalLayout_searchMenu.addWidget(self.frame_advanced_search)
-
-        self.verticalLayout_searchMenu.addStretch()
-
-        self.groupBox_pdf_output = create_new_groupbox(self.centralwidget, "PDF Anzeige")
-        self.groupBox_pdf_output.setSizePolicy(SizePolicy_fixed_height)
-        # self.gridLayout.addWidget(self.groupBox_pdf_output, 4,1,2,1, QtCore.Qt.AlignTop)
-
-        self.verticalLayout_pdf_output = create_new_verticallayout(self.groupBox_pdf_output)
-        self.verticalLayout_pdf_output.setContentsMargins(0,10,2,10)
-
-
-        self.cb_solution = create_new_checkbox(self.groupBox_pdf_output, "Lösungen", True)
-        self.verticalLayout_pdf_output.addWidget(self.cb_solution)
-        # self.horizontalLayout_2.addWidget(self.cb_solution)
-        self.cb_solution.setToolTip(
-            "Die gesuchten Aufgaben werden inklusive der Lösungen angezeigt."
-        )
-
-        self.cb_infos = create_new_checkbox(self.groupBox_pdf_output, "Aufgabeninfos")
-        self.verticalLayout_pdf_output.addWidget(self.cb_infos)
-
-
-        self.cb_show_variation = create_new_checkbox(
-            self.groupBox_pdf_output, "Aufgabenvariationen"
-        )
-        self.verticalLayout_pdf_output.addWidget(self.cb_show_variation)
-        self.cb_show_variation.setToolTip(
-            "Es werden alle Aufgabenvariationen angezeigt."
-        )
-
-        self.cb_drafts = create_new_checkbox(self.groupBox_pdf_output, "Entwürfe")
-        self.verticalLayout_pdf_output.addWidget(self.cb_drafts)
-        self.cb_drafts.setToolTip(
-            "Es werden auch eingereichte Aufgaben durchsucht, die bisher noch nicht auf Fehler überprüft\nund in die Datenbank aufgenommen wurden."
-        )
-        self.cb_drafts.toggled.connect(self.cb_drafts_enabled)
-
-
-
-        self.verticalLayout_searchMenu.addWidget(self.groupBox_pdf_output)
-
-        # self.verticalLayout_searchMenu.addStretch()
-        # self.gridLayout.addWidget(self.cb_show_variaton,5, 1,1,1)
-
-        self.btn_suche = create_new_button(
-            self.centralwidget, "Suche starten", partial(prepare_tex_for_pdf, self)
-        )
-        self.btn_suche.setIcon(QtGui.QIcon(get_icon_path('search.svg')))
-        self.btn_suche.setShortcut(_translate("MainWindow", "Return", None))
-
-        
-        self.gridLayout.addWidget(self.btn_suche, 3, 1, 1, 1, QtCore.Qt.AlignRight)
-
-
+        # if self.chosen_program == 'cria':
+        #     self.combobox_aufgabentyp.hide()
+        #     self.label_aufgabentyp.hide()
+ 
 
 
         #### Warnung ### Hinweis ####
-        self.label_warnung = QtWidgets.QLabel(self.centralwidget)
-        self.label_warnung.setWordWrap(True)
-        self.label_warnung.setObjectName(_fromUtf8("label_warnung"))
-        color = get_color(red)
-        self.label_warnung.setStyleSheet(
-            _fromUtf8("border: 2px solid {};".format(color))
-        )  # background-color: rgb(195, 58, 63)
-        # self.label_warnung.setMaximumSize(QtCore.QSize(375, 16777215))
-        self.label_warnung.setText(
-            _translate(
-                "MainWindow",
-                "Achtung: Aufgrund neuer hilfreicher Befehle ist es notwendig, ein Update des srdp-mathematik-Pakets so bald wie möglich durchzuführen! Nähere Infos unter: lama.schule/update",
-                None,
-            )
-        )
-        self.gridLayout.addWidget(self.label_warnung, 6, 0, 1, 1)
-        self.label_warnung.hide()
+        # self.label_warnung = QtWidgets.QLabel(self.centralwidget)
+        # self.label_warnung.setWordWrap(True)
+        # self.label_warnung.setObjectName(_fromUtf8("label_warnung"))
+        # color = get_color(red)
+        # self.label_warnung.setStyleSheet(
+        #     _fromUtf8("border: 2px solid {};".format(color))
+        # )  # background-color: rgb(195, 58, 63)
+        # # self.label_warnung.setMaximumSize(QtCore.QSize(375, 16777215))
+        # self.label_warnung.setText(
+        #     _translate(
+        #         "MainWindow",
+        #         "Achtung: Aufgrund neuer hilfreicher Befehle ist es notwendig, ein Update des srdp-mathematik-Pakets so bald wie möglich durchzuführen! Nähere Infos unter: lama.schule/update",
+        #         None,
+        #     )
+        # )
+        # self.gridLayout.addWidget(self.label_warnung, 6, 0, 1, 1)
+        # self.label_warnung.hide()
         #########################
+
+        ###########################################################################
+        ##########################################################################
+
+
+        #######################################################
+        ############ Stack Sage ###################
+        #######################################################
+
+        setup_stackSage(self)
+
+
+        ##### ComboBox LaMA ####
+        
+
+        ##################
+        ##### ComboBox LaMA Cria ####
+        ##################################
+        self.comboBox_klassen = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
+        self.comboBox_klassen.setObjectName("comboBox_klassen")
+
+        self.comboBox_klassen.addItem("Alle Klassen")
+        index = 1
+        for all in list_klassen:
+            add_new_option(self.comboBox_klassen, index, all[1] + ". Klasse")
+            index += 1
+
+        self.comboBox_klassen.currentIndexChanged.connect(
+            partial(self.comboBox_klassen_changed, "sage")
+        )
+
+        self.comboBox_klassen.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.verticalLayout_sage.addWidget(self.comboBox_klassen)
+
+        self.comboBox_kapitel = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
+        self.comboBox_kapitel.setObjectName("comboBox_kapitel")
+
+        self.comboBox_kapitel.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.verticalLayout_sage.addWidget(self.comboBox_kapitel)
+
+        self.comboBox_unterkapitel = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
+        self.comboBox_unterkapitel.setObjectName("comboBox_unterkapitel")
+
+        self.comboBox_unterkapitel.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.verticalLayout_sage.addWidget(self.comboBox_unterkapitel)
+
+        self.lineEdit_number = QtWidgets.QLineEdit(self.groupBox_alle_aufgaben)
+        self.lineEdit_number.setObjectName("lineEdit_number")
+        self.lineEdit_number.textChanged.connect(
+            partial(self.lineEdit_number_changed, "sage")
+        )
+        self.verticalLayout_sage.addWidget(self.lineEdit_number)
+        self.listWidget = QtWidgets.QListWidget(self.groupBox_alle_aufgaben)
+        self.listWidget.setObjectName("listWidget")
+        self.verticalLayout_sage.addWidget(self.listWidget)
+        self.listWidget.itemClicked.connect(self.nummer_clicked)
+        ##############################
+        #############################
+
+        # self.groupBox_alle_aufgaben.hide()
+
+        self.groupBox_sage = QtWidgets.QGroupBox(self.splitter_sage)
+        # self.groupBox_sage.setMinimumWidth(1)
+        self.groupBox_sage.setObjectName("groupBox_sage")
+        self.gridLayout_5 = QtWidgets.QGridLayout(self.groupBox_sage)
+        self.gridLayout_5.setObjectName("gridLayout_5")
+        # self.groupBox_sage.setTitle(
+        #     _translate("MainWindow", "Erstellen", None)
+        # )
+
+        # self.checkBox_wiederholung = QtWidgets.QCheckBox(self.groupBox_sage)
+        # self.checkBox_wiederholung.setObjectName("checkBox_wiederholung")
+        # self.checkBox_wiederholung.setFocusPolicy(QtCore.Qt.ClickFocus)
+        # self.gridLayout_5.addWidget(self.checkBox_wiederholung, 2, 4, 1, 2)
+        # self.checkBox_wiederholung.setText(_translate("MainWindow", "Wiederholung", None))
+
+        self.widget_SageMenu2 = QtWidgets.QWidget(self.groupBox_sage)
+        self.widget_SageMenu2.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout_5.addWidget(self.widget_SageMenu2, 0,1,1,1)
+        self.verticalLayout_SageMenu2 = create_new_verticallayout(self.widget_SageMenu2)
+        self.verticalLayout_SageMenu2.setContentsMargins(0,0,0,0)
+        self.comboBox_pruefungstyp = QtWidgets.QComboBox(self.groupBox_sage)
+        # self.comboBox_pruefungstyp.setMinimumContentsLength(1)
+        self.comboBox_pruefungstyp.setObjectName("comboBox_pruefungstyp")
+        list_comboBox_pruefungstyp = [
+            "Schularbeit",
+            "Nachschularbeit",
+            "Wiederholungsschularbeit",
+            "Wiederholungsprüfung",
+            "Grundkompetenzcheck",
+            "Übungsblatt",
+        ]
+        # self.comboBox_pruefungstyp.setEditable(True)
+
+        # if self.chosen_program == "lama":
+        #     list_comboBox_pruefungstyp.append("Quiz")
+
+        list_comboBox_pruefungstyp.append("Benutzerdefiniert")
+
+        index = 0
+        for all in list_comboBox_pruefungstyp:
+            self.comboBox_pruefungstyp.addItem("")
+            self.comboBox_pruefungstyp.setItemText(
+                index, _translate("MainWindow", all, None)
+            )
+            index += 1
+        self.comboBox_pruefungstyp.setFocusPolicy(QtCore.Qt.ClickFocus)
+        # self.comboBox_pruefungstyp.setMinimumContentsLength()
+        self.verticalLayout_SageMenu2.addWidget(self.comboBox_pruefungstyp)
+        # self.gridLayout_5.addWidget(self.comboBox_pruefungstyp, 0, 1, 1, 1)
+        self.comboBox_pruefungstyp.currentIndexChanged.connect(
+            self.comboBox_pruefungstyp_changed
+        )
+        # self.verticalLayout_sage.addWidget(self.comboBox_pruefungstyp)
+
+        self.combobox_beurteilung = create_new_combobox(self.groupBox_sage)
+        add_new_option(self.combobox_beurteilung, 0, "Notenschlüssel")
+
+        add_new_option(self.combobox_beurteilung, 1, "Beurteilungsraster")
+
+        add_new_option(self.combobox_beurteilung, 2, "keine Auswahl")
+
+        if self.chosen_program == "cria":
+            self.combobox_beurteilung.removeItem(self.combobox_beurteilung.findText("Beurteilungsraster"))
+
+        try:
+            if self.dict_titlepage['hide_all'] == True:
+                self.combobox_beurteilung.removeItem(self.combobox_beurteilung.findText("Beurteilungsraster"))
+        except KeyError:
+            pass
+
+        self.combobox_beurteilung.currentIndexChanged.connect(self.notenanzeige_changed)
+        # self.combobox_beurteilung.setMinimumContentsLength(1)
+        self.verticalLayout_SageMenu2.addWidget(self.combobox_beurteilung)
+        # self.gridLayout_5.addWidget(self.combobox_beurteilung, 1, 1, 1, 1)
+
+        # self.checkbox_beurteilung = create_new_checkbox(self.groupBox_sage, "Notenschlüssel anzeigen", True)
+        # self.gridLayout_5.addWidget(self.checkbox_beurteilung, 1,4,1,2)
+        # self.checkbox_beurteilung.hide()        
+
+
+        self.pushButton_titlepage = QtWidgets.QPushButton(self.groupBox_sage)
+        self.pushButton_titlepage.setObjectName(_fromUtf8("pushButton_titlepage"))
+        self.pushButton_titlepage.setText("Titelblatt")
+        self.pushButton_titlepage.setIcon(QtGui.QIcon(get_icon_path('edit.svg')))
+        self.verticalLayout_SageMenu2.addWidget(self.pushButton_titlepage)
+        # self.gridLayout_5.addWidget(self.pushButton_titlepage, 2, 1, 1, 1) 
+        # if self.chosen_program == "lama" or self.chosen_program == "wizard":
+        #     self.gridLayout_5.addWidget(self.pushButton_titlepage, 2, 4, 1, 2)
+        # if self.chosen_program == "cria":
+        #     self.gridLayout_5.addWidget(self.pushButton_titlepage, 2, 4, 1, 2)
+
+
+        self.widget_SageMenu = QtWidgets.QWidget(self.groupBox_sage)
+        self.gridLayout_5.addWidget(self.widget_SageMenu, 0,0,1,1)
+        self.widget_SageMenu.setContentsMargins(0,0,0,0)
+        self.horizontalLayout_SageMenu = create_new_horizontallayout(self.widget_SageMenu)
+
+
+        self.frameNummer = QtWidgets.QFrame(self.widget_SageMenu)
+        self.frameNummer.setObjectName("frameNummer")
+        # self.groupBox_nummer.setTitle(_translate("MainWindow", "Nummer", None))
+        # self.groupBox_nummer.setSizePolicy(SizePolicy_minimum_fixed)
+        # self.groupBox_nummer.setSizePolicy(
+        #     QtWidgets.QSizePolicy(
+        #         QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed
+        #     )
+        # )
+        # self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.groupBox_nummer)
+        # self.verticalLayout_6.setObjectName("verticalLayout_6")
+        self.horizontalLayout_frameNummer = create_new_horizontallayout(self.frameNummer)
+
+
+        self.labelNummer = create_new_label(self.frameNummer,"")
+        self.labelNummer.setPixmap(QtGui.QPixmap(get_icon_path("hash.svg")))
+        # self.label_lamaLogo.setFixedHeight(30)
+        self.labelNummer.setFixedSize(QtCore.QSize(15,15))
+        self.labelNummer.setScaledContents(True)
+        self.horizontalLayout_frameNummer.addWidget(self.labelNummer)
+
+        self.spinBox_nummer = QtWidgets.QSpinBox(self.frameNummer)
+        self.spinBox_nummer.setValue(1)
+        self.spinBox_nummer_setvalue = 1
+        self.spinBox_nummer.setObjectName("spinBox_nummer")
+        self.spinBox_nummer.setToolTip("0 = keine Nummerierung")
+        self.spinBox_nummer.valueChanged.connect(self.spinBox_nummer_changed)
+
+        self.horizontalLayout_frameNummer.addWidget(self.spinBox_nummer)
+        self.horizontalLayout_SageMenu.addWidget(self.frameNummer)
+
+
+        self.frame_datum = QtWidgets.QFrame(self.widget_SageMenu)
+        self.frame_datum.setObjectName("frame_datum")
+        self.horizontalLayout_frameDatum = create_new_horizontallayout(self.frame_datum)
+        
+        self.labelDate = create_new_label(self.frameNummer,"")
+        self.labelDate.setPixmap(QtGui.QPixmap(get_icon_path("calendar.svg")))
+        # self.label_lamaLogo.setFixedHeight(30)
+        self.labelDate.setFixedSize(QtCore.QSize(15,15))
+        self.labelDate.setScaledContents(True)
+        self.horizontalLayout_frameDatum.addWidget(self.labelDate)
+
+        self.dateEdit = QtWidgets.QDateEdit(self.frame_datum)
+        self.dateEdit.setCalendarPopup(True)
+        self.dateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
+        self.dateEdit.setObjectName("dateEdit")
+        self.horizontalLayout_frameDatum.addWidget(self.dateEdit)
+
+        self.horizontalLayout_SageMenu.addWidget(self.frame_datum)
+
+
+
+
+        self.groupBox_klasse_sage = QtWidgets.QGroupBox(self.widget_SageMenu)
+        self.groupBox_klasse_sage.setObjectName("groupBox_klasse_sage")
+        self.groupBox_klasse_sage.setTitle(_translate("MainWindow", "Klasse", None))
+        self.verticalLayout_4 = create_new_verticallayout(self.groupBox_klasse_sage)
+        self.lineEdit_klasse_sage = QtWidgets.QLineEdit(self.groupBox_klasse_sage)
+        self.lineEdit_klasse_sage.setObjectName("lineEdit_klasse_sage")
+        self.verticalLayout_4.addWidget(self.lineEdit_klasse_sage)
+        self.horizontalLayout_SageMenu.addWidget(self.groupBox_klasse_sage)
+
+
+
+        self.groupBox_default_pkt = QtWidgets.QGroupBox(self.widget_SageMenu)
+        self.groupBox_default_pkt.setObjectName("groupBox_default_pkt")
+        self.groupBox_default_pkt.setTitle("Typ1 Standard")
+        # self.groupBox_default_pkt.setSizePolicy(SizePolicy_fixed_height)
+        # self.groupBox_default_pkt.setMaximumSize(QtCore.QSize(120, 16777215))
+        self.verticalLayout_default_pkt = QtWidgets.QVBoxLayout(
+            self.groupBox_default_pkt
+        )
+        self.verticalLayout_default_pkt.setObjectName("verticalLayout_default_pkt")
+        self.spinBox_default_pkt = SpinBox_noWheel(self.groupBox_default_pkt)
+        self.spinBox_default_pkt.setSizePolicy(SizePolicy_minimum_fixed)
+        self.spinBox_default_pkt.setValue(1)
+        self.spinBox_default_pkt.setToolTip("0 = Punkte ausblenden")
+        self.spinBox_default_pkt.setObjectName("spinBox_default_pkt")
+        self.verticalLayout_default_pkt.addWidget(self.spinBox_default_pkt)
+        self.spinBox_default_pkt.valueChanged.connect(self.update_default_pkt)
+        self.horizontalLayout_SageMenu.addWidget(self.groupBox_default_pkt)
+        # self.gridLayout_5.addWidget(self.groupBox_default_pkt, 0, 3, 3, 1)
+
+        # self.horizontalLayout_SageMenu.addStretch()
+    
+        # self.groupBox_datum = QtWidgets.QGroupBox(self.groupBox_sage)
+        # self.groupBox_datum.setObjectName("groupBox_datum")
+        # self.groupBox_datum.setTitle(_translate("MainWindow", "Datum", None))
+        # self.groupBox_datum.setMinimumWidth(20)
+        # self.groupBox_datum.setStyleSheet("padding-left: 10px")
+        # self.groupBox_datum.setSizePolicy(SizePolicy_fixed)
+        # self.groupBox_datum.setSizePolicy(SizePolicy_fixed_height)
+        # self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.groupBox_datum)
+        # self.verticalLayout_5.setObjectName("verticalLayout_5")
+
+
+        # self.verticalLayout_5.addWidget(self.dateEdit)
+        # self.gridLayout_5.addWidget(self.groupBox_datum, 0, 1, 3, 1)
+        # self.groupBox_datum.setMaximumSize(QtCore.QSize(140, 16777215))
+
+        # self.groupBox_nummer.setMaximumSize(QtCore.QSize(90, 16777215))
+        # self.radioButton_notenschl.setText(
+        #     _translate("MainWindow", "Notenschlüssel", None)
+        # )
+        # self.radioButton_beurteilungsraster.setText(
+        #     _translate("MainWindow", "Beurteilungsraster", None)
+        # )
+        
+        
+    
+
+        # self.horizontalspacer = QtWidgets.QSpacerItem(
+        #     20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        # )
+        # self.gridLayout_5.addItem(self.horizontalspacer, 2, 4, 3, 1)
+        # self.pushButton_vorschau = QtWidgets.QPushButton(self.groupBox_sage)
+        # self.pushButton_vorschau.setMaximumSize(QtCore.QSize(77, 16777215))
+        # self.pushButton_vorschau.setObjectName("pushButton_vorschau")
+        # self.gridLayout_5.addWidget(self.pushButton_vorschau, 7, 3, 1, 1, QtCore.Qt.AlignRight)
+
+        self.scrollArea_chosen = QtWidgets.QScrollArea(self.groupBox_sage)
+        self.scrollArea_chosen.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.scrollArea_chosen.setWidgetResizable(True)
+        self.scrollArea_chosen.setObjectName("scrollArea_chosen")
+        self.scrollArea_chosen.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
+        # self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 389, 323))
+        self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
+        self.scrollAreaWidgetContents_2.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.gridLayout_8 = QtWidgets.QGridLayout(self.scrollAreaWidgetContents_2)
+        self.gridLayout_8.setObjectName("gridLayout_8")
+        self.scrollArea_chosen.setWidget(self.scrollAreaWidgetContents_2)
+        self.scrollArea_chosen.verticalScrollBar().rangeChanged.connect(
+            self.change_scrollbar_position
+        )
+        # self.scrollArea_chosen.verticalScrollBar().rangeChanged.connect(
+        #     lambda: self.scrollArea_chosen.verticalScrollBar().setValue(
+        #         self.scrollArea_chosen.verticalScrollBar().maximum()
+        #     )
+        # )
+        self.gridLayout_5.addWidget(self.scrollArea_chosen, 1, 0, 1, 2)
+
+
+        # self.sage_loading_progressbar = QtWidgets.QProgressBar(self.scrollAreaWidgetContents_2)
+        # self.sage_loading_progressbar.hide()
+        # self.gridLayout_8.addWidget(self.sage_loading_progressbar,0,0,1,1)
+
+
+
+        self.groupBox_notenschl = create_new_groupbox(
+            self.groupBox_sage, "Notenschlüssel"
+        )
+        # QtWidgets.QGroupBox(self.groupBox_sage)
+        # self.groupBox_notenschl.setObjectName("groupBox_notenschl")
+        self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_notenschl)
+        self.gridLayout_6.setObjectName("gridLayout_6")
+
+        try:
+            if self.chosen_program == 'cria':
+                key = "prozente_cria"
+            else:
+                key = "prozente"
+
+            sehr_gut = self.lama_settings[key][0]
+            gut = self.lama_settings[key][1]
+            befriedigend = self.lama_settings[key][2]
+            genuegend = self.lama_settings[key][3]
+        except KeyError:
+            sehr_gut = 91
+            gut = 80
+            befriedigend = 64
+            genuegend = 50
+
+        self.label_sg = create_new_label(self.groupBox_notenschl, "Sehr Gut:")
+        self.label_sg.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout_6.addWidget(self.label_sg, 0, 0, 1, 1)
+        self.spinBox_2 = create_new_spinbox(self.groupBox_notenschl, sehr_gut)
+        self.spinBox_2.setSizePolicy(SizePolicy_fixed)
+        self.spinBox_2.valueChanged.connect(self.update_punkte)
+        self.gridLayout_6.addWidget(self.spinBox_2, 0, 1, 1, 1)
+        self.label_sg_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
+        self.gridLayout_6.addWidget(self.label_sg_pkt, 0, 2, 1, 1)
+
+        self.label_g = create_new_label(self.groupBox_notenschl, "Gut:")
+        self.label_g.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout_6.addWidget(self.label_g, 0, 3, 1, 1)
+        self.spinBox_3 = create_new_spinbox(self.groupBox_notenschl, gut)
+        self.spinBox_3.setSizePolicy(SizePolicy_fixed)
+        self.spinBox_3.valueChanged.connect(self.update_punkte)
+        self.gridLayout_6.addWidget(self.spinBox_3, 0, 4, 1, 1)
+        self.label_g_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
+        self.gridLayout_6.addWidget(self.label_g_pkt, 0, 5, 1, 1)
+
+        self.label_b = create_new_label(self.groupBox_notenschl, "Befriedigend:")
+        self.label_b.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout_6.addWidget(self.label_b, 1, 0, 1, 1)
+        self.spinBox_4 = create_new_spinbox(self.groupBox_notenschl, befriedigend)
+        self.spinBox_4.setSizePolicy(SizePolicy_fixed)
+        self.spinBox_4.valueChanged.connect(self.update_punkte)
+        self.gridLayout_6.addWidget(self.spinBox_4, 1, 1, 1, 1)
+        self.label_b_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
+        self.gridLayout_6.addWidget(self.label_b_pkt, 1, 2, 1, 1)
+
+        self.label_g_2 = create_new_label(self.groupBox_notenschl, "Genügend:")
+        self.label_g_2.setSizePolicy(SizePolicy_fixed)
+        self.gridLayout_6.addWidget(self.label_g_2, 1, 3, 1, 1)
+        self.spinBox_5 = create_new_spinbox(self.groupBox_notenschl, genuegend)
+        self.spinBox_5.setSizePolicy(SizePolicy_fixed)
+        self.spinBox_5.valueChanged.connect(self.update_punkte)
+        self.gridLayout_6.addWidget(self.spinBox_5, 1, 4, 1, 1)
+        self.label_g_2_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
+        self.gridLayout_6.addWidget(self.label_g_2_pkt, 1, 5, 1, 1)
+
+        self.groupBox_notenschl_modus = create_new_groupbox(
+            self.groupBox_notenschl, "Anzeige"
+        )
+        self.gridLayout_6.addWidget(self.groupBox_notenschl_modus, 0, 6, 2, 1)
+
+        self.verticalLayout_ns_modus = create_new_verticallayout(
+            self.groupBox_notenschl_modus
+        )
+
+        try:
+            if self.chosen_program == 'cria':
+                key = "notenschluessel_cria"
+            else:
+                key = "notenschluessel"
+            ns_halbe_punkte_checked = self.lama_settings[key][0]
+        except KeyError:
+            ns_halbe_punkte_checked = False
+
+        self.cb_ns_halbe_pkt = create_new_checkbox(
+            self.groupBox_notenschl_modus,
+            "Halbe Punkte",
+            checked=ns_halbe_punkte_checked,
+        )
+        self.verticalLayout_ns_modus.addWidget(self.cb_ns_halbe_pkt)
+
+        try:
+            if self.chosen_program == 'cria':
+                key = "notenschluessel_cria"
+            else:
+                key = "notenschluessel"
+            ns_prozente_checked = self.lama_settings[key][1]
+        except KeyError:
+            ns_prozente_checked = False
+
+        self.cb_ns_prozent = create_new_checkbox(
+            self.groupBox_notenschl_modus, "Prozentangabe", checked=ns_prozente_checked
+        )
+        self.verticalLayout_ns_modus.addWidget(self.cb_ns_prozent)
+
+        # self.cb_ns_NMS = create_new_checkbox(self.groupBox_notenschl_modus, "Modus: NMS")
+        # self.verticalLayout_ns_modus.addWidget(self.cb_ns_NMS)
+
+        self.gridLayout_5.addWidget(self.groupBox_notenschl, 2, 0, 1, 2)
+
+        ### Groupbox Beurteilungsraster #####
+
+        self.groupBox_beurteilungsraster = QtWidgets.QGroupBox(self.groupBox_sage)
+        self.groupBox_beurteilungsraster.setObjectName("groupBox_beurteilungsraster")
+        # self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_beurteilungsraster)
+        # self.gridLayout_6.setObjectName("gridLayout_6")
+        self.verticalLayout_beurteilungsraster = create_new_verticallayout(self.groupBox_beurteilungsraster)
+
+        self.label_typ1_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsraster)
+        self.label_typ1_pkt.setObjectName("label_typ1_pkt")
+        self.verticalLayout_beurteilungsraster.addWidget(self.label_typ1_pkt)
+        # self.gridLayout_6.addWidget(self.label_typ1_pkt, 0, 0, 1, 2)
+        # self.label_typ1_pkt.setText(_translate("MainWindow", "Punkte Typ 1: 0",None))
+
+        self.label_typ2_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsraster)
+        self.label_typ2_pkt.setObjectName("label_typ2_pkt")
+        self.verticalLayout_beurteilungsraster.addWidget(self.label_typ2_pkt)
+        # self.gridLayout_6.addWidget(self.label_typ2_pkt, 1, 0, 1, 2)
+
+        self.groupBox_beurteilungsraster.setTitle(
+            _translate("MainWindow", "Beurteilungsraster", None)
+        )
+
+        self.gridLayout_5.addWidget(self.groupBox_beurteilungsraster, 2, 0, 1, 2)
+        self.groupBox_beurteilungsraster.hide()
+
+        ### Zusammenfassung d. SA ###
+        self.widgetSummarySage = QtWidgets.QWidget(self.groupBox_sage)
+        self.widgetSummarySage.setObjectName("widgetSummarySage")
+        self.gridLayout_5.addWidget(self.widgetSummarySage,3, 0, 1, 1)
+        self.verticalLayoutSummarySage = create_new_verticallayout(self.widgetSummarySage)
+
+
+
+        if self.chosen_program == "lama":
+            label = "Anzahl der Aufgaben: 0\n(Typ1: 0 / Typ2: 0)"
+
+        if self.chosen_program == "cria":
+            label = "Anzahl der Aufgaben: 0"
+
+        self.label_gesamtbeispiele = create_new_label(self.widgetSummarySage, label, True)
+        self.verticalLayoutSummarySage.addWidget(self.label_gesamtbeispiele)
+        # self.gridLayout_5.addWidget(self.label_gesamtbeispiele, 5, 0, 1, 2)
+
+        self.label_gesamtpunkte = QtWidgets.QLabel(self.widgetSummarySage)
+        # self.gridLayout_5.addWidget(self.label_gesamtpunkte, 6, 0, 1, 2)
+        self.label_gesamtpunkte.setObjectName("label_gesamtpunkte")
+        self.label_gesamtpunkte.setText(
+            _translate("MainWindow", "Gesamtpunkte: 0", None)
+        )
+        self.verticalLayoutSummarySage.addWidget(self.label_gesamtpunkte)
+
+        self.widgetSetupSage = QtWidgets.QWidget(self.groupBox_sage)
+        self.widgetSetupSage.setObjectName("widgetSetupSage")
+        self.gridLayout_5.addWidget(self.widgetSetupSage,3, 1, 1, 1)
+        self.gridLayoutSetupSage = create_new_gridlayout(self.widgetSetupSage)
+
+
+        self.cb_solution_sage = QtWidgets.QCheckBox(self.centralwidget)
+        self.cb_solution_sage.setObjectName(_fromUtf8("cb_solution"))
+        self.cb_solution_sage.setText(
+            _translate("MainWindow", "Lösungen anzeigen", None)
+        )
+        self.cb_solution_sage.setChecked(True)
+        self.cb_solution_sage.setSizePolicy(SizePolicy_fixed)
+        self.cb_solution_sage.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.gridLayoutSetupSage.addWidget(self.cb_solution_sage, 0,0,1,2, QtCore.Qt.AlignRight)
+        # self.gridLayout_5.addWidget(self.cb_solution_sage, 7, 3, 1, 1)
+
+
+        # self.cb_show_variaton_sage = create_new_checkbox(self.centralwidget, "Aufgabenvariationen anzeigen")
+        # self.gridLayout_5.addWidget(self.cb_show_variaton_sage, 8, 4, 1, 1)
+
+        self.cb_drafts_sage = QtWidgets.QCheckBox(self.centralwidget)
+        self.cb_drafts_sage.setSizePolicy(SizePolicy_fixed)
+        self.cb_drafts_sage.setObjectName(_fromUtf8("cb_drafts_sage"))
+        # self.gridLayout_5.addWidget(self.cb_drafts_sage, 8, 3, 1, 1)
+        self.cb_drafts_sage.setText(_translate("MainWindow", "Entwürfe anzeigen", None))
+        # self.horizontalLayout_2.addWidget(self.cb_drafts_sage)
+        self.cb_drafts_sage.toggled.connect(self.cb_drafts_sage_enabled)
+        self.gridLayoutSetupSage.addWidget(self.cb_drafts_sage,1,0,1,2, QtCore.Qt.AlignRight)
+
+        self.label_gruppe_AB  = create_new_label(self.centralwidget, "Gruppe:")
+        self.label_gruppe_AB.setSizePolicy(SizePolicy_fixed)
+        tooltip_text_gruppe_AB = "Auswahl welche Gruppenvariation bei der Ausgabe\nder Vorschau angezeigt wird (falls eine vorhanden ist)."
+        self.label_gruppe_AB.setToolTip(tooltip_text_gruppe_AB)
+        # self.gridLayout_5.addWidget(self.label_gruppe_AB, 7,4,1,1, QtCore.Qt.AlignRight)
+        self.comboBox_gruppe_AB = create_new_combobox(self.centralwidget)
+        self.comboBox_gruppe_AB.setSizePolicy(SizePolicy_fixed)
+        # self.gridLayout_5.addWidget(self.comboBox_gruppe_AB, 7,5,1,1)
+        add_new_option(self.comboBox_gruppe_AB, 0, "A")
+        add_new_option(self.comboBox_gruppe_AB, 1, "B")
+        self.comboBox_gruppe_AB.setToolTip(tooltip_text_gruppe_AB)
+
+        self.gridLayoutSetupSage.addWidget(self.label_gruppe_AB,2,0,1,1, QtCore.Qt.AlignRight)
+        self.gridLayoutSetupSage.addWidget(self.comboBox_gruppe_AB, 2,1,1,1)
+
+        self.buttonBox_sage = QtWidgets.QDialogButtonBox(self.groupBox_sage)
+        self.buttonBox_sage.setStandardButtons(
+            QtWidgets.QDialogButtonBox.Save | QtWidgets.QDialogButtonBox.Ok
+        )
+
+        # self.gridLayout.addWidget(self.buttonBox_create_worksheet_wizard, 10,1,1,2)
+        # self.buttonBox_create_worksheet_wizard.hide()
+        # buttonS = self.buttonBox_titlepage.button(QtWidgets.QDialogButtonBox.Save)
+        # buttonS.setText('Speichern')
+        self.pushButton_vorschau = self.buttonBox_sage.button(QtWidgets.QDialogButtonBox.Save)
+        self.pushButton_vorschau.setText("Vorschau")
+        self.pushButton_vorschau.setIcon(QtGui.QIcon(get_icon_path('eye.svg')))
+        self.pushButton_vorschau.setShortcut("Return")
+        self.pushButton_vorschau.setFocusPolicy(QtCore.Qt.ClickFocus)
+
+        self.pushButton_erstellen = self.buttonBox_sage.button(QtWidgets.QDialogButtonBox.Ok)
+        self.pushButton_erstellen.setText("Speichern")
+        self.pushButton_erstellen.setIcon(QtGui.QIcon(get_icon_path('save.svg'))) 
+        self.pushButton_erstellen.setFocusPolicy(QtCore.Qt.ClickFocus)
+
+        self.pushButton_vorschau.clicked.connect(partial(self.pushButton_vorschau_pressed, "vorschau"))
+
+        self.pushButton_erstellen.clicked.connect(lambda: self.pushButton_erstellen_pressed())
+
+        self.gridLayout_5.addWidget(self.buttonBox_sage,4, 1, 1, 1)
+
+        # self.pushButton_vorschau = QtWidgets.QPushButton(self.groupBox_sage)
+        # self.pushButton_vorschau.setSizePolicy(SizePolicy_fixed)
+        # self.pushButton_vorschau.setIcon(QtGui.QIcon(get_icon_path('eye.svg'))) 
+        # self.pushButton_vorschau.setMaximumSize(QtCore.QSize(90, 16777215))
+        # self.pushButton_vorschau.setObjectName("pushButton_vorschau")
+        # self.pushButton_vorschau.setText(_translate("MainWindow", "Vorschau", None))
+
+        # self.gridLayout_5.addWidget(
+        #     self.pushButton_vorschau, 8, 4, 1, 2, QtCore.Qt.AlignRight
+        # )
+        # self.pushButton_vorschau.clicked.connect(
+        #     partial(self.pushButton_vorschau_pressed, "vorschau")
+        # )
+        # self.pushButton_vorschau.setFocusPolicy(QtCore.Qt.ClickFocus)
+        # self.gridLayout.addWidget(self.groupBox_sage, 1, 2, 8, 3)
+        self.gridLayout_stackSage.addWidget(self.splitter_sage, 0, 0, 4, 2)
+        # self.pushButton_erstellen = QtWidgets.QPushButton(self.groupBox_sage)
+        # self.pushButton_erstellen.setSizePolicy(SizePolicy_fixed)
+        # self.pushButton_erstellen.setObjectName("pushButton_erstellen")
+        # self.pushButton_erstellen.setText(_translate("MainWindow", "Erstellen", None))
+        # self.pushButton_erstellen.setIcon(QtGui.QIcon(get_icon_path('save.svg'))) 
+        # self.pushButton_erstellen.setFocusPolicy(QtCore.Qt.ClickFocus)
+        # self.pushButton_erstellen.clicked.connect()
+        # self.gridLayout_5.addWidget(
+        #     self.pushButton_erstellen, 9, 4, 1, 2, QtCore.Qt.AlignRight
+        # )
+        # self.groupBox_sage.hide()
+        # self.splitter_sage.hide()
+        if self.chosen_program != 'wizard':
+            self.comboBox_klassen_changed("sage")
+
+        self.comboBox_kapitel.currentIndexChanged.connect(
+            partial(self.comboBox_kapitel_changed, "sage")
+        )
+
+        self.comboBox_unterkapitel.currentIndexChanged.connect(
+            partial(self.comboBox_unterkapitel_changed, "sage")
+        )
+
+
+
 
         # ##################################################################
         # ################ LAMA CRIA SEARCH #################################
@@ -1380,7 +1319,7 @@ class Ui_MainWindow(object):
         self.tab_widget_gk_cr.setFocusPolicy(QtCore.Qt.NoFocus)
         self.tab_widget_gk_cr.setObjectName(_fromUtf8("tab_widget_gk_cr"))
         self.gridLayout_11_cr.addWidget(self.tab_widget_gk_cr, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_grundkompetenzen_cr, 1, 0, 5, 1)
+        self.gridLayout.addWidget(self.groupBox_grundkompetenzen_cr, 1, 0, 2, 1)
         self.groupBox_grundkompetenzen_cr.setTitle(
             _translate("MainWindow", "Grundkompetenzen", None)
         )
@@ -1410,7 +1349,7 @@ class Ui_MainWindow(object):
         self.tab_widget_cr_cria.setObjectName(_fromUtf8("tab_widget_cr_cria"))
         self.tab_widget_cr_cria.setFocusPolicy(QtCore.Qt.NoFocus)
         self.gridLayout_11_cr_cria.addWidget(self.tab_widget_cr_cria, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_themengebiete_cria, 1, 0, 5, 1)
+        self.gridLayout.addWidget(self.groupBox_themengebiete_cria, 1, 0, 2, 1)
         self.groupBox_themengebiete_cria.setTitle(
             _translate("MainWindow", "Themengebiete", None)
         )
@@ -1512,7 +1451,7 @@ class Ui_MainWindow(object):
 
             new_scrollarea.setWidget(new_scrollareacontent)
 
-            new_gridlayout.addWidget(new_scrollarea, 5, 0, 1, 1)
+            new_gridlayout.addWidget(new_scrollarea, 2, 0, 1, 1)
 
         # self.comboBox_kapitel_changed_cr(new_scrollareacontent,new_verticallayout, )
 
@@ -1534,7 +1473,7 @@ class Ui_MainWindow(object):
         )
 
         self.verticalLayout_2.addWidget(self.label_ausgew_gk_creator)
-        self.gridLayout.addWidget(self.groupBox_ausgew_gk_cr, 6, 0, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_ausgew_gk_cr, 3, 0, 1, 1)
 
         # self.label_ausgew_gk.setText(_translate("MainWindow", "", None))
         self.groupBox_ausgew_gk_cr.hide()
@@ -1572,7 +1511,7 @@ class Ui_MainWindow(object):
         # self.label_bild_leer.setText(_translate("MainWindow", "", None))
         # self.label_bild_leer.setFocusPolicy(QtCore.Qt.NoFocus)
         # self.label_bild_leer.hide()
-        self.gridLayout.addWidget(self.groupBox_bilder, 7, 0, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_bilder, 4, 0, 1, 1)
 
         self.btn_add_image = create_new_button(
             self.groupBox_bilder, "Hinzufügen", self.btn_add_image_pressed
@@ -1621,16 +1560,18 @@ class Ui_MainWindow(object):
 
         # self.groupBox_aufgabentyp.setMaximumSize(100, 60)
 
-        self.groupBox_basic_settings_creator = create_new_groupbox(self.centralwidget, "")
-        self.groupBox_basic_settings_creator.setObjectName("groupBox_basic_settings_creator")
-        self.groupBox_basic_settings_creator.setSizePolicy(QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Maximum))
-        self.groupBox_basic_settings_creator.setStyleSheet("QGroupBox#groupBox_basic_settings_creator {border:0;}")
-        self.horizontalLayout_basic_settings_creator = create_new_horizontallayout(self.groupBox_basic_settings_creator)
-        self.gridLayout.addWidget(self.groupBox_basic_settings_creator, 0,1,1,1) 
-        self.groupBox_basic_settings_creator.hide()
+        self.widget_basic_settings_creator = QtWidgets.QWidget(self.centralwidget)
+        self.gridLayout.addWidget(self.widget_basic_settings_creator, 0,1,1,1)
+
+        # self.groupBox_basic_settings_creator.setSizePolicy(QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Maximum))
+        # self.groupBox_basic_settings_creator.setStyleSheet("QGroupBox#groupBox_basic_settings_creator {border:0;}")
+        self.horizontalLayout_basic_settings_creator = create_new_horizontallayout(self.widget_basic_settings_creator)
+        self.horizontalLayout_basic_settings_creator.setContentsMargins(0,0,0,0)
+        # self.gridLayout.addWidget(self.groupBox_basic_settings_creator, 0,1,1,1) 
+        self.widget_basic_settings_creator.hide()
 
 
-        self.groupBox_aufgabentyp = create_new_groupbox(self.groupBox_basic_settings_creator, "Aufgabentyp")
+        self.groupBox_aufgabentyp = create_new_groupbox(self.widget_basic_settings_creator, "Aufgabentyp")
         self.groupBox_aufgabentyp.setSizePolicy(SizePolicy_fixed)
         self.gridLayout_3 = create_new_horizontallayout(self.groupBox_aufgabentyp)
 
@@ -1643,20 +1584,20 @@ class Ui_MainWindow(object):
         self.horizontalLayout_basic_settings_creator.addWidget(self.groupBox_aufgabentyp)   
 
 
-        self.groupBox_punkte = create_new_groupbox(self.groupBox_basic_settings_creator, "Punkte")
-        self.groupBox_punkte.setSizePolicy(SizePolicy_fixed)
+        self.groupBox_punkte = create_new_groupbox(self.widget_basic_settings_creator, "Punkte")
+        # self.groupBox_punkte.setSizePolicy(SizePolicy_fixed)
 
         self.horizontalLayout_punkte_creator = create_new_horizontallayout(self.groupBox_punkte)
 
-        self.spinBox_punkte = create_new_spinbox(self.groupBox_basic_settings_creator, 1)
-        self.spinBox_punkte.setSizePolicy(SizePolicy_fixed)
+        self.spinBox_punkte = create_new_spinbox(self.groupBox_punkte, 1)
+        # self.spinBox_punkte.setSizePolicy(SizePolicy_fixed)
        
         self.horizontalLayout_punkte_creator.addWidget(self.spinBox_punkte)
         self.horizontalLayout_basic_settings_creator.addWidget(self.groupBox_punkte)
 
 
-        self.groupBox_aufgabenformat = create_new_groupbox(self.groupBox_basic_settings_creator, "Aufgabenformat")
-        self.groupBox_aufgabenformat.setSizePolicy(SizePolicy_fixed)
+        self.groupBox_aufgabenformat = create_new_groupbox(self.widget_basic_settings_creator, "Aufgabenformat")
+        # self.groupBox_aufgabenformat.setSizePolicy(SizePolicy_fixed)
 
         self.horizontalLayout_aufgabenformat_creator = create_new_horizontallayout(self.groupBox_aufgabenformat)
 
@@ -1684,8 +1625,8 @@ class Ui_MainWindow(object):
             i += 1
         self.horizontalLayout_basic_settings_creator.addWidget(self.groupBox_aufgabenformat)
 
-        self.groupBox_klassen_cr = create_new_groupbox(self.groupBox_basic_settings_creator, "Klasse")
-        self.groupBox_klassen_cr.setSizePolicy(SizePolicy_fixed)
+        self.groupBox_klassen_cr = create_new_groupbox(self.widget_basic_settings_creator, "Klasse")
+        # self.groupBox_klassen_cr.setSizePolicy(SizePolicy_fixed)
 
         
         self.horizontalLayout_klassen_cr = create_new_horizontallayout(self.groupBox_klassen_cr)
@@ -1703,8 +1644,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_klassen_cr.addWidget(self.comboBox_klassen_cr)
         self.horizontalLayout_basic_settings_creator.addWidget(self.groupBox_klassen_cr)
 
-        self.groupBox_abstand = create_new_groupbox(self.groupBox_basic_settings_creator, "Abstand")
-        self.groupBox_abstand.setSizePolicy(SizePolicy_fixed)
+        self.groupBox_abstand = create_new_groupbox(self.widget_basic_settings_creator, "Abstand")
+        # self.groupBox_abstand.setSizePolicy(SizePolicy_fixed)
         self.groupBox_abstand.setToolTip("Abstand unter der Aufgabe (in cm)")
         self.horizontalLayout_abstand = create_new_horizontallayout(
             self.groupBox_abstand
@@ -1719,9 +1660,9 @@ class Ui_MainWindow(object):
 
 
         self.groupBox_pagebreak = create_new_groupbox(
-            self.groupBox_basic_settings_creator, "Seitenumbruch"
+            self.widget_basic_settings_creator, "Seitenumbruch"
         )
-        self.groupBox_pagebreak.setSizePolicy(SizePolicy_fixed)
+        # self.groupBox_pagebreak.setSizePolicy(SizePolicy_fixed)
         self.horizontalLayout_pagebreak = create_new_horizontallayout(
             self.groupBox_pagebreak
         )
@@ -1734,13 +1675,13 @@ class Ui_MainWindow(object):
         # self.gridLayout.addWidget(self.groupBox_pagebreak, 0, 6, 1, 1)
         # self.groupBox_pagebreak.hide()
 
-        self.cb_matura_tag = create_new_checkbox(self.groupBox_basic_settings_creator, "Matura")
+        self.cb_matura_tag = create_new_checkbox(self.widget_basic_settings_creator, "Matura")
         self.horizontalLayout_basic_settings_creator.addWidget(self.cb_matura_tag)
         # self.gridLayout.addWidget(self.cb_matura_tag, 0, 7, 1, 1)
         self.cb_matura_tag.hide()
 
         self.cb_no_grade_tag = create_new_checkbox(
-            self.groupBox_basic_settings_creator, "klassen-\nunabhängig"
+            self.widget_basic_settings_creator, "klassen-\nunabhängig"
         )
         self.horizontalLayout_basic_settings_creator.addWidget(self.cb_no_grade_tag)
         self.cb_no_grade_tag.hide()
@@ -1780,7 +1721,7 @@ class Ui_MainWindow(object):
         self.plainTextEdit.setObjectName(_fromUtf8("plainTextEdit"))
         self.plainTextEdit.setTabChangesFocus(True)
         self.gridLayout_10.addWidget(self.plainTextEdit, 1, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_beispieleingabe, 2, 1, 5, 1)
+        self.gridLayout.addWidget(self.groupBox_beispieleingabe, 2, 1, 1, 1)
         self.groupBox_beispieleingabe.setTitle(
             _translate("MainWindow", "Aufgabeneingabe", None)
         )
@@ -1810,7 +1751,7 @@ class Ui_MainWindow(object):
         self.lineEdit_quelle.setText(quelle)
         self.gridLayout_18.addWidget(self.lineEdit_quelle, 0, 0, 1, 1)
         # self.gridLayout.addWidget(self.groupBox_quelle, 7, 1, 1, 7, QtCore.Qt.AlignTop)
-        self.gridLayout.addWidget(self.groupBox_quelle, 7, 1, 1, 1, QtCore.Qt.AlignTop)
+        self.gridLayout.addWidget(self.groupBox_quelle, 3, 1, 1, 1, QtCore.Qt.AlignTop)
         self.groupBox_quelle.setTitle(
             _translate(
                 "MainWindow",
@@ -1820,15 +1761,17 @@ class Ui_MainWindow(object):
         )
         self.groupBox_quelle.hide()
 
-        self.horizontalLayout_buttons = create_new_horizontallayout()
-        self.gridLayout.addLayout(self.horizontalLayout_buttons, 8, 1, 1, 1)
+        self.widgetcreatorButton = QtWidgets.QWidget(self.centralwidget)
+        self.gridLayout.addWidget(self.widgetcreatorButton, 5,0,1,2)
+        self.horizontalLayout_creatorButtons = create_new_horizontallayout(self.widgetcreatorButton)
+        # self.gridLayout.addLayout(self.horizontalLayout_buttons, 4, 1, 1, 1)
 
-        self.horizontalLayout_buttons.addStretch()
+        self.horizontalLayout_creatorButtons.addStretch()
         self.pushButton_save = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_save.setObjectName(_fromUtf8("pushButton_save"))
         self.pushButton_save.setFocusPolicy(QtCore.Qt.NoFocus)
         self.pushButton_save.setSizePolicy(SizePolicy_fixed)
-        self.horizontalLayout_buttons.addWidget(self.pushButton_save)
+        self.horizontalLayout_creatorButtons.addWidget(self.pushButton_save)
         self.pushButton_save.setText(_translate("MainWindow", "Speichern", None))
         self.pushButton_save.setIcon(QtGui.QIcon(get_icon_path('save.svg')))
         # # self.pushButton_save.setShortcut(_translate("MainWindow", "Return", None))
@@ -1841,7 +1784,7 @@ class Ui_MainWindow(object):
         self.pushButton_vorschau_edit.setShortcut("Ctrl+Return")
         self.pushButton_vorschau_edit.setToolTip("Strg+Enter")
         self.pushButton_vorschau_edit.setSizePolicy(SizePolicy_fixed)
-        self.horizontalLayout_buttons.addWidget(self.pushButton_vorschau_edit)
+        self.horizontalLayout_creatorButtons.addWidget(self.pushButton_vorschau_edit)
         self.pushButton_vorschau_edit.hide()
 
         self.pushButton_delete_file = create_new_button(
@@ -1850,7 +1793,7 @@ class Ui_MainWindow(object):
         self.pushButton_delete_file.setIcon(QtGui.QIcon(get_icon_path('trash-2.svg')))
         # self.pushButton_delete_file.setStyleSheet("color: red")
         self.pushButton_delete_file.setSizePolicy(SizePolicy_fixed)
-        self.horizontalLayout_buttons.addWidget(self.pushButton_delete_file)
+        self.horizontalLayout_creatorButtons.addWidget(self.pushButton_delete_file)
         self.pushButton_delete_file.hide()
 
         self.pushButton_save_as_variation_edit = create_new_button(
@@ -1860,7 +1803,7 @@ class Ui_MainWindow(object):
         )
         self.pushButton_save_as_variation_edit.setIcon(QtGui.QIcon(get_icon_path('git-branch.svg')))
         self.pushButton_save_as_variation_edit.setSizePolicy(SizePolicy_fixed)
-        self.horizontalLayout_buttons.addWidget(self.pushButton_save_as_variation_edit)
+        self.horizontalLayout_creatorButtons.addWidget(self.pushButton_save_as_variation_edit)
         self.pushButton_save_as_variation_edit.hide()
 
         self.pushButton_save_edit = create_new_button(
@@ -1869,624 +1812,14 @@ class Ui_MainWindow(object):
         self.pushButton_save_edit.setIcon(QtGui.QIcon(get_icon_path('save.svg')))
         self.pushButton_save_edit.setSizePolicy(SizePolicy_fixed)
         self.pushButton_save_edit.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.horizontalLayout_buttons.addWidget(self.pushButton_save_edit)
+        self.horizontalLayout_creatorButtons.addWidget(self.pushButton_save_edit)
         self.pushButton_save_edit.hide()
 
         self.lineEdit_titel.setFocus()
         self.tab_widget_gk.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-        # #         ####################################################
-        # #         #####################################################
-        # #         ################# LaMA SAGE ####################
-        # #         #####################################################
 
-        self.splitter_sage = QtWidgets.QSplitter(self.centralwidget)
-        self.splitter_sage.setOrientation(QtCore.Qt.Horizontal)
-        self.splitter_sage.setObjectName("splitter_sage")
-
-        self.groupBox_alle_aufgaben = QtWidgets.QGroupBox(self.splitter_sage)
-        self.groupBox_alle_aufgaben.setMinimumWidth(1)
-        self.groupBox_alle_aufgaben.setObjectName("groupBox_alle_aufgaben")
-
-        self.verticalLayout_sage = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben)
-        self.verticalLayout_sage.setObjectName("verticalLayout_sage")
-
-        ##### ComboBox LaMA ####
-        self.comboBox_at_sage = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
-        self.comboBox_at_sage.setObjectName("comboBox_at_sage")
-        self.comboBox_at_sage.addItem("")
-        self.comboBox_at_sage.addItem("")
-        self.verticalLayout_sage.addWidget(self.comboBox_at_sage)
-        self.comboBox_at_sage.setItemText(0, _translate("MainWindow", "Typ 1", None))
-        self.comboBox_at_sage.setItemText(1, _translate("MainWindow", "Typ 2", None))
-        self.comboBox_at_sage.currentIndexChanged.connect(self.comboBox_at_sage_changed)
-        self.comboBox_at_sage.setFocusPolicy(QtCore.Qt.ClickFocus)
-        # self.comboBox_at_sage.hide()
-
-        self.comboBox_gk = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
-        self.comboBox_gk.setObjectName("comboBox_gk")
-        list_comboBox_gk = ["", "AG", "FA", "AN", "WS", "Zusatzthemen"]
-        index = 0
-        for all in list_comboBox_gk:
-            self.comboBox_gk.addItem("")
-            self.comboBox_gk.setItemText(index, _translate("MainWindow", all, None))
-            index += 1
-        self.comboBox_gk.currentIndexChanged.connect(
-            partial(self.comboBox_gk_changed, "sage")
-        )
-        self.comboBox_gk.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.verticalLayout_sage.addWidget(self.comboBox_gk)
-        self.comboBox_gk_num = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
-        self.comboBox_gk_num.setObjectName("comboBox_gk_num")
-        self.comboBox_gk_num.currentIndexChanged.connect(
-            partial(self.comboBox_gk_num_changed, "sage")
-        )
-        self.comboBox_gk_num.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.verticalLayout_sage.addWidget(self.comboBox_gk_num)
-
-        ##### ComboBox LaMA Cria ####
-
-        self.comboBox_klassen = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
-        self.comboBox_klassen.setObjectName("comboBox_klassen")
-        # self.comboBox_gk.addItem("")
-
-        self.comboBox_klassen.addItem("Alle Klassen")
-        index = 1
-        for all in list_klassen:
-            add_new_option(self.comboBox_klassen, index, all[1] + ". Klasse")
-            index += 1
-
-        self.comboBox_klassen.currentIndexChanged.connect(
-            partial(self.comboBox_klassen_changed, "sage")
-        )
-
-        self.comboBox_klassen.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.verticalLayout_sage.addWidget(self.comboBox_klassen)
-
-        self.comboBox_kapitel = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
-        self.comboBox_kapitel.setObjectName("comboBox_kapitel")
-        # self.comboBox_kapitel.currentIndexChanged.connect(
-        #     partial(self.comboBox_kapitel_changed, "sage")
-        # )
-        self.comboBox_kapitel.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.verticalLayout_sage.addWidget(self.comboBox_kapitel)
-
-        self.comboBox_unterkapitel = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
-        self.comboBox_unterkapitel.setObjectName("comboBox_unterkapitel")
-        # self.comboBox_unterkapitel.currentIndexChanged.connect(
-        #     partial(self.comboBox_unterkapitel_changed, "sage")
-        # )
-        self.comboBox_unterkapitel.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.verticalLayout_sage.addWidget(self.comboBox_unterkapitel)
-
-        self.lineEdit_number = QtWidgets.QLineEdit(self.groupBox_alle_aufgaben)
-        self.lineEdit_number.setObjectName("lineEdit_number")
-        # self.lineEdit_number.setValidator(QtGui.QIntValidator())
-        self.lineEdit_number.textChanged.connect(
-            partial(self.lineEdit_number_changed, "sage")
-        )
-        self.verticalLayout_sage.addWidget(self.lineEdit_number)
-        self.listWidget = QtWidgets.QListWidget(self.groupBox_alle_aufgaben)
-        self.listWidget.setObjectName("listWidget")
-        self.verticalLayout_sage.addWidget(self.listWidget)
-        self.listWidget.itemClicked.connect(self.nummer_clicked)
-        # self.gridLayout.addWidget(self.groupBox_alle_aufgaben, 2, 0, 7, 1)
-
-        # self.groupBox_alle_aufgaben.setTitle(_translate("MainWindow", "Aufgaben", None))
-        # self.groupBox_alle_aufgaben.setMinimumWidth(280)
-        # self.groupBox_alle_aufgaben.resize(self.groupBox_alle_aufgaben.sizeHint())
-
-        self.groupBox_alle_aufgaben.hide()
-
-        self.groupBox_sage = QtWidgets.QGroupBox(self.splitter_sage)
-        self.groupBox_sage.setMinimumWidth(1)
-        self.groupBox_sage.setObjectName("groupBox_sage")
-        self.gridLayout_5 = QtWidgets.QGridLayout(self.groupBox_sage)
-        self.gridLayout_5.setObjectName("gridLayout_5")
-        # self.groupBox_sage.setTitle(
-        #     _translate("MainWindow", "Erstellen", None)
-        # )
-
-        # self.checkBox_wiederholung = QtWidgets.QCheckBox(self.groupBox_sage)
-        # self.checkBox_wiederholung.setObjectName("checkBox_wiederholung")
-        # self.checkBox_wiederholung.setFocusPolicy(QtCore.Qt.ClickFocus)
-        # self.gridLayout_5.addWidget(self.checkBox_wiederholung, 2, 4, 1, 2)
-        # self.checkBox_wiederholung.setText(_translate("MainWindow", "Wiederholung", None))
-
-        self.comboBox_pruefungstyp = QtWidgets.QComboBox(self.groupBox_sage)
-        self.comboBox_pruefungstyp.setMinimumContentsLength(1)
-        self.comboBox_pruefungstyp.setObjectName("comboBox_pruefungstyp")
-        list_comboBox_pruefungstyp = [
-            "Schularbeit",
-            "Nachschularbeit",
-            "Wiederholungsschularbeit",
-            "Wiederholungsprüfung",
-            "Grundkompetenzcheck",
-            "Übungsblatt",
-        ]
-        # self.comboBox_pruefungstyp.setEditable(True)
-
-        # if self.chosen_program == "lama":
-        #     list_comboBox_pruefungstyp.append("Quiz")
-
-        list_comboBox_pruefungstyp.append("Benutzerdefiniert")
-
-        index = 0
-        for all in list_comboBox_pruefungstyp:
-            self.comboBox_pruefungstyp.addItem("")
-            self.comboBox_pruefungstyp.setItemText(
-                index, _translate("MainWindow", all, None)
-            )
-            index += 1
-        self.comboBox_pruefungstyp.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.comboBox_pruefungstyp.setMinimumContentsLength(5)
-        self.gridLayout_5.addWidget(self.comboBox_pruefungstyp, 0, 1, 1, 1)
-        self.comboBox_pruefungstyp.currentIndexChanged.connect(
-            self.comboBox_pruefungstyp_changed
-        )
-        # self.verticalLayout_sage.addWidget(self.comboBox_pruefungstyp)
-
-        self.combobox_beurteilung = create_new_combobox(self.groupBox_sage)
-        add_new_option(self.combobox_beurteilung, 0, "Notenschlüssel")
-
-        add_new_option(self.combobox_beurteilung, 1, "Beurteilungsraster")
-
-        add_new_option(self.combobox_beurteilung, 2, "keine Auswahl")
-
-        if self.chosen_program == "cria":
-            self.combobox_beurteilung.removeItem(self.combobox_beurteilung.findText("Beurteilungsraster"))
-
-        try:
-            if self.dict_titlepage['hide_all'] == True:
-                self.combobox_beurteilung.removeItem(self.combobox_beurteilung.findText("Beurteilungsraster"))
-        except KeyError:
-            pass
-
-        self.combobox_beurteilung.currentIndexChanged.connect(self.notenanzeige_changed)
-        # self.combobox_beurteilung.setMinimumContentsLength(1)
-        self.gridLayout_5.addWidget(self.combobox_beurteilung, 1, 1, 1, 1)
-
-        # self.checkbox_beurteilung = create_new_checkbox(self.groupBox_sage, "Notenschlüssel anzeigen", True)
-        # self.gridLayout_5.addWidget(self.checkbox_beurteilung, 1,4,1,2)
-        # self.checkbox_beurteilung.hide()        
-
-
-        self.pushButton_titlepage = QtWidgets.QPushButton(self.groupBox_sage)
-        self.pushButton_titlepage.setObjectName(_fromUtf8("pushButton_titlepage"))
-        self.pushButton_titlepage.setText("Titelblatt")
-        self.pushButton_titlepage.setIcon(QtGui.QIcon(get_icon_path('edit.svg')))
-        self.gridLayout_5.addWidget(self.pushButton_titlepage, 2, 1, 1, 1) 
-        # if self.chosen_program == "lama" or self.chosen_program == "wizard":
-        #     self.gridLayout_5.addWidget(self.pushButton_titlepage, 2, 4, 1, 2)
-        # if self.chosen_program == "cria":
-        #     self.gridLayout_5.addWidget(self.pushButton_titlepage, 2, 4, 1, 2)
-
-
-
-        self.widget_SageMenu = QtWidgets.QWidget(self.groupBox_sage)
-        self.gridLayout_5.addWidget(self.widget_SageMenu, 0,0,3,1)
-        self.horizontalLayout_SageMenu = create_new_horizontallayout(self.widget_SageMenu)
-
-
-        self.frameNummer = QtWidgets.QFrame(self.widget_SageMenu)
-        self.frameNummer.setObjectName("frameNummer")
-        # self.groupBox_nummer.setTitle(_translate("MainWindow", "Nummer", None))
-        # self.groupBox_nummer.setSizePolicy(SizePolicy_minimum_fixed)
-        # self.groupBox_nummer.setSizePolicy(
-        #     QtWidgets.QSizePolicy(
-        #         QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed
-        #     )
-        # )
-        # self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.groupBox_nummer)
-        # self.verticalLayout_6.setObjectName("verticalLayout_6")
-        self.horizontalLayout_frameNummer = create_new_horizontallayout(self.frameNummer)
-
-
-        self.labelNummer = create_new_label(self.frameNummer,"")
-        self.labelNummer.setPixmap(QtGui.QPixmap(get_icon_path("hash.svg")))
-        # self.label_lamaLogo.setFixedHeight(30)
-        self.labelNummer.setFixedSize(QtCore.QSize(15,15))
-        self.labelNummer.setScaledContents(True)
-        self.horizontalLayout_frameNummer.addWidget(self.labelNummer)
-
-        self.spinBox_nummer = QtWidgets.QSpinBox(self.frameNummer)
-        self.spinBox_nummer.setValue(1)
-        self.spinBox_nummer_setvalue = 1
-        self.spinBox_nummer.setObjectName("spinBox_nummer")
-        self.spinBox_nummer.setToolTip("0 = keine Nummerierung")
-        self.spinBox_nummer.valueChanged.connect(self.spinBox_nummer_changed)
-
-        self.horizontalLayout_frameNummer.addWidget(self.spinBox_nummer)
-        self.horizontalLayout_SageMenu.addWidget(self.frameNummer)
-
-
-        self.frame_datum = QtWidgets.QFrame(self.widget_SageMenu)
-        self.frame_datum.setObjectName("frame_datum")
-        self.horizontalLayout_frameDatum = create_new_horizontallayout(self.frame_datum)
-        
-        self.labelDate = create_new_label(self.frameNummer,"")
-        self.labelDate.setPixmap(QtGui.QPixmap(get_icon_path("calendar.svg")))
-        # self.label_lamaLogo.setFixedHeight(30)
-        self.labelDate.setFixedSize(QtCore.QSize(15,15))
-        self.labelDate.setScaledContents(True)
-        self.horizontalLayout_frameDatum.addWidget(self.labelDate)
-
-        self.dateEdit = QtWidgets.QDateEdit(self.frame_datum)
-        self.dateEdit.setCalendarPopup(True)
-        self.dateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
-        self.dateEdit.setObjectName("dateEdit")
-        self.horizontalLayout_frameDatum.addWidget(self.dateEdit)
-
-        self.horizontalLayout_SageMenu.addWidget(self.frame_datum)
-
-
-
-
-        self.groupBox_klasse = QtWidgets.QGroupBox(self.widget_SageMenu)
-        self.groupBox_klasse.setObjectName("groupBox_klasse")
-        self.groupBox_klasse.setTitle(_translate("MainWindow", "Klasse", None))
-        self.verticalLayout_4 = create_new_verticallayout(self.groupBox_klasse)
-        self.lineEdit_klasse = QtWidgets.QLineEdit(self.groupBox_klasse)
-        self.lineEdit_klasse.setObjectName("lineEdit_klasse")
-        self.verticalLayout_4.addWidget(self.lineEdit_klasse)
-        self.horizontalLayout_SageMenu.addWidget(self.groupBox_klasse)
-
-
-
-        self.groupBox_default_pkt = QtWidgets.QGroupBox(self.widget_SageMenu)
-        self.groupBox_default_pkt.setObjectName("groupBox_default_pkt")
-        self.groupBox_default_pkt.setTitle("Typ1 Standard")
-        # self.groupBox_default_pkt.setSizePolicy(SizePolicy_fixed_height)
-        # self.groupBox_default_pkt.setMaximumSize(QtCore.QSize(120, 16777215))
-        self.verticalLayout_default_pkt = QtWidgets.QVBoxLayout(
-            self.groupBox_default_pkt
-        )
-        self.verticalLayout_default_pkt.setObjectName("verticalLayout_default_pkt")
-        self.spinBox_default_pkt = SpinBox_noWheel(self.groupBox_default_pkt)
-        self.spinBox_default_pkt.setSizePolicy(SizePolicy_minimum_fixed)
-        self.spinBox_default_pkt.setValue(1)
-        self.spinBox_default_pkt.setToolTip("0 = Punkte ausblenden")
-        self.spinBox_default_pkt.setObjectName("spinBox_default_pkt")
-        self.verticalLayout_default_pkt.addWidget(self.spinBox_default_pkt)
-        self.spinBox_default_pkt.valueChanged.connect(self.update_default_pkt)
-        self.horizontalLayout_SageMenu.addWidget(self.groupBox_default_pkt)
-        # self.gridLayout_5.addWidget(self.groupBox_default_pkt, 0, 3, 3, 1)
-
-    
-        # self.groupBox_datum = QtWidgets.QGroupBox(self.groupBox_sage)
-        # self.groupBox_datum.setObjectName("groupBox_datum")
-        # self.groupBox_datum.setTitle(_translate("MainWindow", "Datum", None))
-        # self.groupBox_datum.setMinimumWidth(20)
-        # self.groupBox_datum.setStyleSheet("padding-left: 10px")
-        # self.groupBox_datum.setSizePolicy(SizePolicy_fixed)
-        # self.groupBox_datum.setSizePolicy(SizePolicy_fixed_height)
-        # self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.groupBox_datum)
-        # self.verticalLayout_5.setObjectName("verticalLayout_5")
-
-
-        # self.verticalLayout_5.addWidget(self.dateEdit)
-        # self.gridLayout_5.addWidget(self.groupBox_datum, 0, 1, 3, 1)
-        # self.groupBox_datum.setMaximumSize(QtCore.QSize(140, 16777215))
-
-        # self.groupBox_nummer.setMaximumSize(QtCore.QSize(90, 16777215))
-        # self.radioButton_notenschl.setText(
-        #     _translate("MainWindow", "Notenschlüssel", None)
-        # )
-        # self.radioButton_beurteilungsraster.setText(
-        #     _translate("MainWindow", "Beurteilungsraster", None)
-        # )
-        
-        
-    
-
-        # self.horizontalspacer = QtWidgets.QSpacerItem(
-        #     20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
-        # )
-        # self.gridLayout_5.addItem(self.horizontalspacer, 2, 4, 3, 1)
-        # self.pushButton_vorschau = QtWidgets.QPushButton(self.groupBox_sage)
-        # self.pushButton_vorschau.setMaximumSize(QtCore.QSize(77, 16777215))
-        # self.pushButton_vorschau.setObjectName("pushButton_vorschau")
-        # self.gridLayout_5.addWidget(self.pushButton_vorschau, 7, 3, 1, 1, QtCore.Qt.AlignRight)
-
-        self.scrollArea_chosen = QtWidgets.QScrollArea(self.groupBox_sage)
-        self.scrollArea_chosen.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.scrollArea_chosen.setWidgetResizable(True)
-        self.scrollArea_chosen.setObjectName("scrollArea_chosen")
-        self.scrollArea_chosen.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
-        # self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 389, 323))
-        self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.gridLayout_8 = QtWidgets.QGridLayout(self.scrollAreaWidgetContents_2)
-        self.gridLayout_8.setObjectName("gridLayout_8")
-        self.scrollArea_chosen.setWidget(self.scrollAreaWidgetContents_2)
-        self.scrollArea_chosen.verticalScrollBar().rangeChanged.connect(
-            self.change_scrollbar_position
-        )
-        # self.scrollArea_chosen.verticalScrollBar().rangeChanged.connect(
-        #     lambda: self.scrollArea_chosen.verticalScrollBar().setValue(
-        #         self.scrollArea_chosen.verticalScrollBar().maximum()
-        #     )
-        # )
-        self.gridLayout_5.addWidget(self.scrollArea_chosen, 3, 0, 1, 2)
-
-
-        self.sage_loading_progressbar = QtWidgets.QProgressBar(self.scrollAreaWidgetContents_2)
-        self.sage_loading_progressbar.hide()
-        self.gridLayout_8.addWidget(self.sage_loading_progressbar,0,0,1,1)
-
-
-
-        self.groupBox_notenschl = create_new_groupbox(
-            self.groupBox_sage, "Notenschlüssel"
-        )
-        # QtWidgets.QGroupBox(self.groupBox_sage)
-        # self.groupBox_notenschl.setObjectName("groupBox_notenschl")
-        self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_notenschl)
-        self.gridLayout_6.setObjectName("gridLayout_6")
-
-        try:
-            if self.chosen_program == 'cria':
-                key = "prozente_cria"
-            else:
-                key = "prozente"
-
-            sehr_gut = self.lama_settings[key][0]
-            gut = self.lama_settings[key][1]
-            befriedigend = self.lama_settings[key][2]
-            genuegend = self.lama_settings[key][3]
-        except KeyError:
-            sehr_gut = 91
-            gut = 80
-            befriedigend = 64
-            genuegend = 50
-
-        self.label_sg = create_new_label(self.groupBox_notenschl, "Sehr Gut:")
-        self.label_sg.setSizePolicy(SizePolicy_fixed)
-        self.gridLayout_6.addWidget(self.label_sg, 0, 0, 1, 1)
-        self.spinBox_2 = create_new_spinbox(self.groupBox_notenschl, sehr_gut)
-        self.spinBox_2.setSizePolicy(SizePolicy_fixed)
-        self.spinBox_2.valueChanged.connect(self.update_punkte)
-        self.gridLayout_6.addWidget(self.spinBox_2, 0, 1, 1, 1)
-        self.label_sg_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
-        self.gridLayout_6.addWidget(self.label_sg_pkt, 0, 2, 1, 1)
-
-        self.label_g = create_new_label(self.groupBox_notenschl, "Gut:")
-        self.label_g.setSizePolicy(SizePolicy_fixed)
-        self.gridLayout_6.addWidget(self.label_g, 0, 3, 1, 1)
-        self.spinBox_3 = create_new_spinbox(self.groupBox_notenschl, gut)
-        self.spinBox_3.setSizePolicy(SizePolicy_fixed)
-        self.spinBox_3.valueChanged.connect(self.update_punkte)
-        self.gridLayout_6.addWidget(self.spinBox_3, 0, 4, 1, 1)
-        self.label_g_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
-        self.gridLayout_6.addWidget(self.label_g_pkt, 0, 5, 1, 1)
-
-        self.label_b = create_new_label(self.groupBox_notenschl, "Befriedigend:")
-        self.label_b.setSizePolicy(SizePolicy_fixed)
-        self.gridLayout_6.addWidget(self.label_b, 1, 0, 1, 1)
-        self.spinBox_4 = create_new_spinbox(self.groupBox_notenschl, befriedigend)
-        self.spinBox_4.setSizePolicy(SizePolicy_fixed)
-        self.spinBox_4.valueChanged.connect(self.update_punkte)
-        self.gridLayout_6.addWidget(self.spinBox_4, 1, 1, 1, 1)
-        self.label_b_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
-        self.gridLayout_6.addWidget(self.label_b_pkt, 1, 2, 1, 1)
-
-        self.label_g_2 = create_new_label(self.groupBox_notenschl, "Genügend:")
-        self.label_g_2.setSizePolicy(SizePolicy_fixed)
-        self.gridLayout_6.addWidget(self.label_g_2, 1, 3, 1, 1)
-        self.spinBox_5 = create_new_spinbox(self.groupBox_notenschl, genuegend)
-        self.spinBox_5.setSizePolicy(SizePolicy_fixed)
-        self.spinBox_5.valueChanged.connect(self.update_punkte)
-        self.gridLayout_6.addWidget(self.spinBox_5, 1, 4, 1, 1)
-        self.label_g_2_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
-        self.gridLayout_6.addWidget(self.label_g_2_pkt, 1, 5, 1, 1)
-
-        self.groupBox_notenschl_modus = create_new_groupbox(
-            self.groupBox_notenschl, "Anzeige"
-        )
-        self.gridLayout_6.addWidget(self.groupBox_notenschl_modus, 0, 6, 2, 1)
-
-        self.verticalLayout_ns_modus = create_new_verticallayout(
-            self.groupBox_notenschl_modus
-        )
-
-        try:
-            if self.chosen_program == 'cria':
-                key = "notenschluessel_cria"
-            else:
-                key = "notenschluessel"
-            ns_halbe_punkte_checked = self.lama_settings[key][0]
-        except KeyError:
-            ns_halbe_punkte_checked = False
-
-        self.cb_ns_halbe_pkt = create_new_checkbox(
-            self.groupBox_notenschl_modus,
-            "Halbe Punkte",
-            checked=ns_halbe_punkte_checked,
-        )
-        self.verticalLayout_ns_modus.addWidget(self.cb_ns_halbe_pkt)
-
-        try:
-            if self.chosen_program == 'cria':
-                key = "notenschluessel_cria"
-            else:
-                key = "notenschluessel"
-            ns_prozente_checked = self.lama_settings[key][1]
-        except KeyError:
-            ns_prozente_checked = False
-
-        self.cb_ns_prozent = create_new_checkbox(
-            self.groupBox_notenschl_modus, "Prozentangabe", checked=ns_prozente_checked
-        )
-        self.verticalLayout_ns_modus.addWidget(self.cb_ns_prozent)
-
-        # self.cb_ns_NMS = create_new_checkbox(self.groupBox_notenschl_modus, "Modus: NMS")
-        # self.verticalLayout_ns_modus.addWidget(self.cb_ns_NMS)
-
-        self.gridLayout_5.addWidget(self.groupBox_notenschl, 4, 0, 1, 2)
-
-        ### Groupbox Beurteilungsraster #####
-
-        self.groupBox_beurteilungsraster = QtWidgets.QGroupBox(self.groupBox_sage)
-        self.groupBox_beurteilungsraster.setObjectName("groupBox_beurteilungsraster")
-        # self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_beurteilungsraster)
-        # self.gridLayout_6.setObjectName("gridLayout_6")
-        self.verticalLayout_beurteilungsraster = create_new_verticallayout(self.groupBox_beurteilungsraster)
-
-        self.label_typ1_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsraster)
-        self.label_typ1_pkt.setObjectName("label_typ1_pkt")
-        self.verticalLayout_beurteilungsraster.addWidget(self.label_typ1_pkt)
-        # self.gridLayout_6.addWidget(self.label_typ1_pkt, 0, 0, 1, 2)
-        # self.label_typ1_pkt.setText(_translate("MainWindow", "Punkte Typ 1: 0",None))
-
-        self.label_typ2_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsraster)
-        self.label_typ2_pkt.setObjectName("label_typ2_pkt")
-        self.verticalLayout_beurteilungsraster.addWidget(self.label_typ2_pkt)
-        # self.gridLayout_6.addWidget(self.label_typ2_pkt, 1, 0, 1, 2)
-
-        self.groupBox_beurteilungsraster.setTitle(
-            _translate("MainWindow", "Beurteilungsraster", None)
-        )
-
-        self.gridLayout_5.addWidget(self.groupBox_beurteilungsraster, 4, 0, 1, 2)
-        self.groupBox_beurteilungsraster.hide()
-
-        ### Zusammenfassung d. SA ###
-        self.widgetSummarySage = QtWidgets.QWidget(self.groupBox_sage)
-        self.widgetSummarySage.setObjectName("widgetSummarySage")
-        self.gridLayout_5.addWidget(self.widgetSummarySage,5, 0, 1, 1)
-        self.verticalLayoutSummarySage = create_new_verticallayout(self.widgetSummarySage)
-
-
-
-        if self.chosen_program == "lama":
-            label = "Anzahl der Aufgaben: 0\n(Typ1: 0 / Typ2: 0)"
-
-        if self.chosen_program == "cria":
-            label = "Anzahl der Aufgaben: 0"
-
-        self.label_gesamtbeispiele = create_new_label(self.groupBox_sage, label, True)
-        self.verticalLayoutSummarySage.addWidget(self.label_gesamtbeispiele)
-        # self.gridLayout_5.addWidget(self.label_gesamtbeispiele, 5, 0, 1, 2)
-
-        self.label_gesamtpunkte = QtWidgets.QLabel(self.groupBox_sage)
-        # self.gridLayout_5.addWidget(self.label_gesamtpunkte, 6, 0, 1, 2)
-        self.label_gesamtpunkte.setObjectName("label_gesamtpunkte")
-        self.label_gesamtpunkte.setText(
-            _translate("MainWindow", "Gesamtpunkte: 0", None)
-        )
-        self.verticalLayoutSummarySage.addWidget(self.label_gesamtpunkte)
-
-        self.widgetSetupSage = QtWidgets.QWidget(self.groupBox_sage)
-        self.widgetSetupSage.setObjectName("widgetSetupSage")
-        self.gridLayout_5.addWidget(self.widgetSetupSage,5, 1, 1, 1)
-        self.gridLayoutSetupSage = create_new_gridlayout(self.widgetSetupSage)
-
-
-        self.cb_solution_sage = QtWidgets.QCheckBox(self.centralwidget)
-        self.cb_solution_sage.setObjectName(_fromUtf8("cb_solution"))
-        self.cb_solution_sage.setText(
-            _translate("MainWindow", "Lösungen anzeigen", None)
-        )
-        self.cb_solution_sage.setChecked(True)
-        self.cb_solution_sage.setSizePolicy(SizePolicy_fixed)
-        self.cb_solution_sage.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.gridLayoutSetupSage.addWidget(self.cb_solution_sage, 0,0,1,2, QtCore.Qt.AlignRight)
-        # self.gridLayout_5.addWidget(self.cb_solution_sage, 7, 3, 1, 1)
-
-
-        # self.cb_show_variaton_sage = create_new_checkbox(self.centralwidget, "Aufgabenvariationen anzeigen")
-        # self.gridLayout_5.addWidget(self.cb_show_variaton_sage, 8, 4, 1, 1)
-
-        self.cb_drafts_sage = QtWidgets.QCheckBox(self.centralwidget)
-        self.cb_drafts_sage.setSizePolicy(SizePolicy_fixed)
-        self.cb_drafts_sage.setObjectName(_fromUtf8("cb_drafts_sage"))
-        # self.gridLayout_5.addWidget(self.cb_drafts_sage, 8, 3, 1, 1)
-        self.cb_drafts_sage.setText(_translate("MainWindow", "Entwürfe anzeigen", None))
-        # self.horizontalLayout_2.addWidget(self.cb_drafts_sage)
-        self.cb_drafts_sage.toggled.connect(self.cb_drafts_sage_enabled)
-        self.gridLayoutSetupSage.addWidget(self.cb_drafts_sage,1,0,1,2, QtCore.Qt.AlignRight)
-
-        self.label_gruppe_AB  = create_new_label(self.centralwidget, "Gruppe:")
-        self.label_gruppe_AB.setSizePolicy(SizePolicy_fixed)
-        tooltip_text_gruppe_AB = "Auswahl welche Gruppenvariation bei der Ausgabe\nder Vorschau angezeigt wird (falls eine vorhanden ist)."
-        self.label_gruppe_AB.setToolTip(tooltip_text_gruppe_AB)
-        # self.gridLayout_5.addWidget(self.label_gruppe_AB, 7,4,1,1, QtCore.Qt.AlignRight)
-        self.comboBox_gruppe_AB = create_new_combobox(self.centralwidget)
-        self.comboBox_gruppe_AB.setSizePolicy(SizePolicy_fixed)
-        # self.gridLayout_5.addWidget(self.comboBox_gruppe_AB, 7,5,1,1)
-        add_new_option(self.comboBox_gruppe_AB, 0, "A")
-        add_new_option(self.comboBox_gruppe_AB, 1, "B")
-        self.comboBox_gruppe_AB.setToolTip(tooltip_text_gruppe_AB)
-
-        self.gridLayoutSetupSage.addWidget(self.label_gruppe_AB,2,0,1,1, QtCore.Qt.AlignRight)
-        self.gridLayoutSetupSage.addWidget(self.comboBox_gruppe_AB, 2,1,1,1)
-
-        self.buttonBox_sage = QtWidgets.QDialogButtonBox(self.groupBox_sage)
-        self.buttonBox_sage.setStandardButtons(
-            QtWidgets.QDialogButtonBox.Save | QtWidgets.QDialogButtonBox.Ok
-        )
-
-        # self.gridLayout.addWidget(self.buttonBox_create_worksheet_wizard, 10,1,1,2)
-        # self.buttonBox_create_worksheet_wizard.hide()
-        # buttonS = self.buttonBox_titlepage.button(QtWidgets.QDialogButtonBox.Save)
-        # buttonS.setText('Speichern')
-        self.pushButton_vorschau = self.buttonBox_sage.button(QtWidgets.QDialogButtonBox.Save)
-        self.pushButton_vorschau.setText("Vorschau")
-        self.pushButton_vorschau.setIcon(QtGui.QIcon(get_icon_path('eye.svg')))
-        self.pushButton_vorschau.setShortcut("Return")
-        self.pushButton_vorschau.setFocusPolicy(QtCore.Qt.ClickFocus)
-
-        self.pushButton_erstellen = self.buttonBox_sage.button(QtWidgets.QDialogButtonBox.Ok)
-        self.pushButton_erstellen.setText("Speichern")
-        self.pushButton_erstellen.setIcon(QtGui.QIcon(get_icon_path('save.svg'))) 
-        self.pushButton_erstellen.setFocusPolicy(QtCore.Qt.ClickFocus)
-
-        self.pushButton_vorschau.clicked.connect(partial(self.pushButton_vorschau_pressed, "vorschau"))
-
-        self.pushButton_erstellen.clicked.connect(lambda: self.pushButton_erstellen_pressed())
-
-        self.gridLayout_5.addWidget(self.buttonBox_sage,6, 1, 1, 1)
-
-        # self.pushButton_vorschau = QtWidgets.QPushButton(self.groupBox_sage)
-        # self.pushButton_vorschau.setSizePolicy(SizePolicy_fixed)
-        # self.pushButton_vorschau.setIcon(QtGui.QIcon(get_icon_path('eye.svg'))) 
-        # self.pushButton_vorschau.setMaximumSize(QtCore.QSize(90, 16777215))
-        # self.pushButton_vorschau.setObjectName("pushButton_vorschau")
-        # self.pushButton_vorschau.setText(_translate("MainWindow", "Vorschau", None))
-
-        # self.gridLayout_5.addWidget(
-        #     self.pushButton_vorschau, 8, 4, 1, 2, QtCore.Qt.AlignRight
-        # )
-        # self.pushButton_vorschau.clicked.connect(
-        #     partial(self.pushButton_vorschau_pressed, "vorschau")
-        # )
-        # self.pushButton_vorschau.setFocusPolicy(QtCore.Qt.ClickFocus)
-        # self.gridLayout.addWidget(self.groupBox_sage, 1, 2, 8, 3)
-        self.gridLayout.addWidget(self.splitter_sage, 0, 0, 4, 2)
-        # self.pushButton_erstellen = QtWidgets.QPushButton(self.groupBox_sage)
-        # self.pushButton_erstellen.setSizePolicy(SizePolicy_fixed)
-        # self.pushButton_erstellen.setObjectName("pushButton_erstellen")
-        # self.pushButton_erstellen.setText(_translate("MainWindow", "Erstellen", None))
-        # self.pushButton_erstellen.setIcon(QtGui.QIcon(get_icon_path('save.svg'))) 
-        # self.pushButton_erstellen.setFocusPolicy(QtCore.Qt.ClickFocus)
-        # self.pushButton_erstellen.clicked.connect()
-        # self.gridLayout_5.addWidget(
-        #     self.pushButton_erstellen, 9, 4, 1, 2, QtCore.Qt.AlignRight
-        # )
-        self.groupBox_sage.hide()
-        self.splitter_sage.hide()
-        if self.chosen_program != 'wizard':
-            self.comboBox_klassen_changed("sage")
-
-        self.comboBox_kapitel.currentIndexChanged.connect(
-            partial(self.comboBox_kapitel_changed, "sage")
-        )
-
-        self.comboBox_unterkapitel.currentIndexChanged.connect(
-            partial(self.comboBox_unterkapitel_changed, "sage")
-        )
 
         # ################################################################
         # ################################################################
@@ -2560,7 +1893,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_fb.addWidget(self.listWidget_fb)
         self.listWidget_fb.itemClicked.connect(self.nummer_clicked_fb)
 
-        self.gridLayout.addWidget(self.groupBox_alle_aufgaben_fb, 0, 0, 8, 1)
+        self.gridLayout.addWidget(self.groupBox_alle_aufgaben_fb, 0, 0, 5, 1)
         self.groupBox_alle_aufgaben_fb.setTitle(
             _translate("MainWindow", "Aufgaben", None)
         )
@@ -2657,7 +1990,7 @@ class Ui_MainWindow(object):
         self.listWidget_fb_cria.setObjectName("listWidget_fb_cria")
         self.verticalLayout_fb_cria.addWidget(self.listWidget_fb_cria)
         self.listWidget_fb_cria.itemClicked.connect(self.nummer_clicked_fb)
-        self.gridLayout.addWidget(self.groupBox_alle_aufgaben_fb_cria, 1, 0, 6, 1)
+        self.gridLayout.addWidget(self.groupBox_alle_aufgaben_fb_cria, 1, 0, 4, 1)
         self.groupBox_alle_aufgaben_fb_cria.setTitle(
             _translate("MainWindow", "Aufgaben", None)
         )
@@ -2747,13 +2080,13 @@ class Ui_MainWindow(object):
             _translate("MainWindow", "E-Mail Adresse für Nachfragen (optional)", None)
         )
         self.verticalLayout_email.addWidget(self.lineEdit_email)
-        self.gridLayout.addWidget(self.groupBox_email, 5, 1, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_email, 3, 1, 1, 1)
         self.groupBox_email.hide()
 
         self.pushButton_send = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_send.setObjectName(_fromUtf8("pushButton_send"))
         self.gridLayout.addWidget(
-            self.pushButton_send, 7, 1, 1, 1, QtCore.Qt.AlignRight
+            self.pushButton_send, 4, 1, 1, 1, QtCore.Qt.AlignRight
         )
         self.pushButton_send.setText(_translate("MainWindow", "Senden", None))
         self.pushButton_send.setIcon(QtGui.QIcon(get_icon_path('send.svg'))) 
@@ -3218,10 +2551,11 @@ class Ui_MainWindow(object):
 
         # self.gridLayout_11.addWidget(self.tab_widget_gk, 0, 0, 1, 1)
         # self.gridLayout.addWidget(self.groupBox_gk, 1, 1, 2, 1)
-        MainWindow.setCentralWidget(self.centralwidget)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
-        self.statusbar.setObjectName(_fromUtf8("statusbar"))
-        MainWindow.setStatusBar(self.statusbar)
+        # MainWindow.setCentralWidget(self.centralwidget)
+        MainWindow.setCentralWidget(self.stackMainWindow)
+        # self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        # self.statusbar.setObjectName(_fromUtf8("statusbar"))
+        # MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
         # self.tab_widget_themen.setCurrentIndex(0)
@@ -4183,7 +3517,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         self.spinBox_nummer.setValue(1)
         self.dateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
         self.comboBox_pruefungstyp.setCurrentIndex(0)
-        self.lineEdit_klasse.setText("")
+        self.lineEdit_klasse_sage.setText("")
         self.spinBox_default_pkt.setValue(1)
         self.combobox_beurteilung.setCurrentIndex(0)
         # self.radioButton_notenschl.setChecked(True)
@@ -4817,7 +4151,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.combobox_beurteilung.setEnabled(False)
             self.groupBox_notenschl.setEnabled(False)
             self.groupBox_beurteilungsraster.setEnabled(False)
-            self.groupBox_klasse.setTitle("Klasse")
+            self.groupBox_klasse_sage.setTitle("Klasse")
             self.pushButton_titlepage.setEnabled(False)
             self.comboBox_at_sage.setEnabled(True)
             self.pushButton_titlepage.setText("Titelblatt anpassen")
@@ -4833,7 +4167,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.groupBox_nummer.setEnabled(False)
             self.spinBox_nummer_setvalue = self.spinBox_nummer.value()
             self.spinBox_nummer.setValue(0)
-            self.groupBox_klasse.setTitle("Überschrift")
+            self.groupBox_klasse_sage.setTitle("Überschrift")
         else:
             self.combobox_beurteilung.setEnabled(True)
             self.groupBox_notenschl.setEnabled(True)
@@ -4841,7 +4175,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.pushButton_titlepage.setEnabled(True)
             self.comboBox_at_sage.setEnabled(True)
             self.pushButton_titlepage.setText("Titelblatt anpassen")
-            self.groupBox_klasse.setTitle("Klasse")
+            self.groupBox_klasse_sage.setTitle("Klasse")
             if self.comboBox_pruefungstyp.currentText() == "Benutzerdefiniert":
                 self.comboBox_pruefungstyp.setEditable(True)
                 self.comboBox_pruefungstyp.lineEdit().selectAll()
@@ -7317,7 +6651,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         ]
 
         self.spinBox_nummer.setValue(self.dict_all_infos_for_file["data_gesamt"]["#"])
-        self.lineEdit_klasse.setText(
+        self.lineEdit_klasse_sage.setText(
             self.dict_all_infos_for_file["data_gesamt"]["Klasse"]
         )
 
@@ -8308,6 +7642,18 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         self.update_punkte()
 
+    def splitter_sage_moved(self):
+        self.width_groupBox_sage = self.groupBox_sage.geometry().width()
+        self.min_width_groupBox_sage = self.groupBox_sage.minimumSizeHint().width()
+        print(self.groupBox_sage.sizeHint())
+
+        # if self.width_groupBox_sage <= self.min_width_groupBox_sage:
+        #     self.groupBox_klasse_sage.hide()
+        # else:
+        #     self.groupBox_klasse_sage.show()
+            
+
+
     def comboBox_at_sage_changed(self):
         if self.comboBox_at_sage.currentText()[-1] == "1":
             self.comboBox_gk.clear()
@@ -8717,7 +8063,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 self.dateEdit.date().month(),
                 self.dateEdit.date().day(),
             ],  # .toPyDate()
-            "Klasse": self.lineEdit_klasse.text(),
+            "Klasse": self.lineEdit_klasse_sage.text(),
             "Beurteilung": beurteilung,
             "Notenschluessel": [
                 self.spinBox_2.value(),
@@ -9336,7 +8682,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         #     self.chosen_aufgabenformat_typ()
         if chosen_gui == "widgets_sage" or chosen_gui == "widgets_sage_cria":
             self.MainWindow.setTabOrder(self.spinBox_nummer, self.dateEdit)
-            self.MainWindow.setTabOrder(self.dateEdit, self.lineEdit_klasse)
+            self.MainWindow.setTabOrder(self.dateEdit, self.lineEdit_klasse_sage)
             self.adapt_choosing_list("sage")
             # self.listWidget.itemClicked.connect(self.nummer_clicked)
         if chosen_gui == "widgets_feedback" or chosen_gui == "widgets_feedback_cria":
@@ -9647,7 +8993,6 @@ if __name__ == "__main__":
 
     i = step_progressbar(i, "create_pdf")
     from create_pdf import (
-        prepare_tex_for_pdf,
         create_tex,
         create_pdf,
         check_if_variation,
@@ -9687,6 +9032,12 @@ if __name__ == "__main__":
         copy_included_images,
     )
 
+    i = step_progressbar(i, "setup_gui")
+    from lama_gui import (
+        setup_MenuBar,
+        setup_stackSearch,
+        setup_stackSage,
+    )
     # i = step_progressbar(i, "convert_image_to_eps")
     # from convert_image_to_eps import convert_image_to_eps
 
