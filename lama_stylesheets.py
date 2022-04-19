@@ -19,10 +19,12 @@ StyleSheet_application = """
         color: gray
     }}
     
+
     QTabBar::tab:selected {{
         background-color: #2F4550;
         color: #F4F4F9;
     }}
+
 
     QTabBar::tab::disabled {{
         background-color: gray;
@@ -45,6 +47,14 @@ StyleSheet_application = """
     }}
 
 
+    #frame_tab_widget_gk {{
+        border-color: #6E8784;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 4px;
+        margin-top: 0.5em;
+    }}
+
 
     QToolButton {{
         background-color: #F4F4F9;
@@ -55,6 +65,9 @@ StyleSheet_application = """
         background-color: #2F4550; 
         border: 0px;
         }}
+
+
+
 
     QCheckBox {{
         spacing: 0px;
@@ -88,13 +101,6 @@ StyleSheet_application = """
         margin-top: 0.5em;       
     }}
 
-    #frame_tab_widget_gk {{
-        border-color: #6E8784;
-        border-width: 1px;
-        border-style: solid;
-        border-radius: 4px;
-        margin-top: 0.5em;
-    }}
 
     #entry_suchbegriffe{{
         border-color: #6E8784;
@@ -158,6 +164,15 @@ StyleSheet_application = """
         qproperty-icon:url({5});
     }}
 
+    QSplitter::handle {{
+        image: url({6});
+    }}   
+
+    QSplitter::handle:vertical {{
+        height: 20px;
+        width: 50px;
+    }}
+
 """.format(
     get_icon_path("chevron-left.svg"),
     get_icon_path("chevron-right.svg"),
@@ -165,6 +180,7 @@ StyleSheet_application = """
     get_icon_path("check-square.svg"),
     get_icon_path("arrow-left-circle.svg"),
     get_icon_path("arrow-right-circle.svg"),
+    get_icon_path("more-vertical.svg")
     )
 
 
