@@ -1452,6 +1452,392 @@ def setup_stackCreator(self):
     self.pushButton_save.clicked.connect(lambda: self.button_speichern_pressed())
 
 
+def setup_stackEditor(self):
+    self.gridLayout_stackEditor = create_new_gridlayout(self.stackEditor)
+
+    # self.splitter_editor = QtWidgets.QSplitter(self.stackEditor)
+    # self.splitter_editor.setOrientation(QtCore.Qt.Horizontal)
+    # self.splitter_editor.setObjectName("splitter_editor")
+    # self.gridLayout_stackEditor.addWidget(self.splitter_editor, 0, 0, 1, 1)
+
+    # self.splitter_editor_left_widget = QtWidgets.QWidget(self.splitter_editor)
+    # self.splitter_editor_left_widget.setMinimumSize(1,1)
+    # self.splitter_editor_left_widget.resize(450,0)
+    # self.verticalLayout_splitter_editor_left_widget = create_new_verticallayout(self.splitter_editor_left_widget)
+    # self.verticalLayout_splitter_editor_left_widget.setContentsMargins(0,0,0,0)
+
+
+    # self.splitter_editor_right_widget = QtWidgets.QWidget(self.splitter_editor)
+    # self.splitter_editor_right_widget.setMinimumSize(1,1)  
+    # self.verticalLayout_splitter_editor_right_widget = create_new_verticallayout(self.splitter_editor_right_widget)
+    # self.verticalLayout_splitter_editor_right_widget.setContentsMargins(0,0,0,0)
+
+
+
+    # # self.groupBox_variation_editor = create_new_groupbox(
+    # #     self.splitter_editor, "Aufgabenvariation"
+    # # )
+    # # # self.groupBox_variation_cr.setMaximumWidth(420)
+    # # self.verticalLayout_variation = create_new_verticallayout(
+    # #     self.groupBox_variation_editor
+    # # )  
+
+    # # self.button_variation_cr = create_new_button(
+    # #     self.groupBox_variation_cr,
+    # #     "Variation vorhandender Aufgabe...",
+    # #     partial(self.button_variation_cr_pressed, "creator"),
+    # # )
+    # # self.button_variation_cr.setMinimumWidth(0)
+    # # self.verticalLayout_variation.addWidget(self.button_variation_cr)
+
+    # # self.verticalLayout_splitter_creator_left_widget.addWidget(self.groupBox_variation_cr)
+
+
+
+    # self.groupBox_choose_file_editor = create_new_groupbox(
+    #     self.splitter_editor, "Aufgabe auswählen"
+    # )
+    # self.groupBox_choose_file_editor.setMaximumWidth(420)
+    # self.verticalLayout_choose_file_editor = create_new_verticallayout(
+    #     self.groupBox_choose_file_editor
+    # )
+
+    # self.button_choose_file_editor = create_new_button(
+    #     self.groupBox_choose_file_editor,
+    #     "Aufgabe suchen...",
+    #     partial(self.button_variation_cr_pressed, "editor"),
+    # )
+    # self.button_choose_file_editor.setMinimumWidth(0)
+    # self.verticalLayout_choose_file.addWidget(self.button_choose_file_editor)
+
+    # self.gridLayout_stackEditor.addWidget(self.groupBox_choose_file_editor, 0, 0, 1, 1)
+
+
+    # self.groupBox_grundkompetenzen_editor = QtWidgets.QGroupBox(self.splitter_editor)
+    # self.groupBox_grundkompetenzen_editor.setFocusPolicy(QtCore.Qt.NoFocus)
+    # self.groupBox_grundkompetenzen_editor.setObjectName("groupBox_grundkompetenzen_editor")
+    # self.groupBox_grundkompetenzen_editor.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum))
+    # self.gridLayout_11_editor = QtWidgets.QGridLayout(self.groupBox_grundkompetenzen_editor)
+    # self.gridLayout_11_editor.setObjectName("gridLayout_11_editor")
+    # self.tab_widget_gk_editor = QtWidgets.QTabWidget(self.groupBox_grundkompetenzen_editor)
+
+
+    # self.tab_widget_gk_editor.setFocusPolicy(QtCore.Qt.NoFocus)
+    # self.tab_widget_gk_editor.setObjectName("tab_widget_gk_editor")
+    # self.gridLayout_11_editor.addWidget(self.tab_widget_gk_editor, 0, 0, 1, 1)
+    # self.verticalLayout_splitter_editor_left_widget.addWidget(self.groupBox_grundkompetenzen_editor)
+
+    # self.groupBox_grundkompetenzen_editor.setTitle("Grundkompetenzen")
+
+
+    # self.groupBox_ausgew_gk_editor = create_new_groupbox(self.splitter_editor, "Auswahl")
+
+    # self.verticalLayout_2_editor = create_new_verticallayout(self.groupBox_ausgew_gk_editor)
+
+    # self.label_ausgew_gk_editor = create_new_label(
+    #     self.groupBox_ausgew_gk_editor, "", True
+    # )
+
+    # self.verticalLayout_2_editor.addWidget(self.label_ausgew_gk_editor)
+    # self.verticalLayout_splitter_editor_left_widget.addWidget(self.groupBox_ausgew_gk_editor)
+
+    # self.groupBox_bilder_editor = create_new_groupbox(
+    #     self.splitter_editor, "Bilder (klicken, um Bilder zu entfernen)"
+    # )
+
+    # self.gridLayout_13_editor = QtWidgets.QGridLayout(self.groupBox_bilder)
+    # self.gridLayout_13_editor.setObjectName("gridLayout_13_editor")
+    # self.scrollArea_editor = QtWidgets.QScrollArea(self.groupBox_bilder_editor)
+    # self.scrollArea_editor.setWidgetResizable(True)
+    # self.scrollArea_editor.setObjectName("scrollArea_editor")
+    # self.scrollArea_editor.setFrameShape(QtWidgets.QFrame.NoFrame)
+    # self.scrollArea_editor.setFocusPolicy(QtCore.Qt.NoFocus)
+    # self.scrollAreaWidgetContents_bilder_editor = QtWidgets.QWidget()
+
+    # self.scrollAreaWidgetContents_bilder_editor.setObjectName("scrollAreaWidgetContents_bilder")
+    # self.verticalLayout_editor = QtWidgets.QVBoxLayout(
+    #     self.scrollAreaWidgetContents_bilder_editor
+    # )
+    # self.verticalLayout_editor.setObjectName("verticalLayout_editor")
+    # self.scrollArea_editor.setWidget(self.scrollAreaWidgetContents_bilder_editor)
+    # self.gridLayout_13_editor.addWidget(self.scrollArea_editor, 1, 0, 1, 1)
+    # self.groupBox_bilder_editor.setTitle("Bilder (klicken, um Bilder zu entfernen)")
+    # self.groupBox_bilder_editor.setSizePolicy(SizePolicy_maximum_height)
+
+
+    # self.verticalLayout_splitter_editor_left_widget.addWidget(self.groupBox_bilder_editor)
+
+    # self.btn_add_image_editor = create_new_button(
+    #     self.groupBox_bilder_editor, "Hinzufügen", self.btn_add_image_pressed
+    # )
+    # self.verticalLayout.addWidget(self.btn_add_image_editor)
+
+    # #### CREATE CHECKBOXES ####
+    # ##### AG #####
+    # self.create_tab_checkboxes_gk(
+    #     self.tab_widget_gk_editor, "Algebra und Geometrie", ag_beschreibung, "editor"
+    # )
+
+    # # # #### FA ####
+    # self.create_tab_checkboxes_gk(
+    #     self.tab_widget_gk_editor,
+    #     "Funktionale Abhängigkeiten",
+    #     fa_beschreibung,
+    #     "editor",
+    # )
+
+    # # ##### AN ####
+    # self.create_tab_checkboxes_gk(
+    #     self.tab_widget_gk_editor, "Analysis", an_beschreibung, "editor"
+    # )
+
+    # # ### WS ####
+    # self.create_tab_checkboxes_gk(
+    #     self.tab_widget_gk_editor,
+    #     "Wahrscheinlichkeit und Statistik",
+    #     ws_beschreibung,
+    #     "editor",
+    # )
+
+    # # ### Zusatzthemen ###
+    # self.create_tab_checkboxes_themen(self.tab_widget_gk_editor, "editor")
+
+    # ############################
+
+    # self.widget_basic_settings_editor = QtWidgets.QWidget(self.splitter_editor_right_widget)
+    # self.verticalLayout_splitter_editor_right_widget.addWidget(self.widget_basic_settings_editor)
+
+    # self.horizontalLayout_basic_settings_editor = create_new_horizontallayout(self.widget_basic_settings_editor)
+    # self.horizontalLayout_basic_settings_editor.setContentsMargins(0,0,0,0)
+
+
+    # self.groupBox_aufgabentyp_editor = create_new_groupbox(self.widget_basic_settings_editor, "Aufgabentyp")
+    # self.groupBox_aufgabentyp_editor.setSizePolicy(SizePolicy_fixed)
+    # self.gridLayout_3_editor = create_new_horizontallayout(self.groupBox_aufgabentyp_editor)
+
+    # add_new_option(self.comboBox_aufgabentyp_editor, 0, "Typ 1")
+    # add_new_option(self.comboBox_aufgabentyp_editor, 1, "Typ 2")
+
+    # self.comboBox_aufgabentyp_editor.currentIndexChanged.connect(self.chosen_aufgabenformat_editor)
+    # self.gridLayout_3_editor.addWidget(self.comboBox_aufgabentyp_editor)
+    # self.horizontalLayout_basic_settings_editor.addWidget(self.groupBox_aufgabentyp_editor)   
+
+
+    # self.groupBox_punkte_editor = create_new_groupbox(self.widget_basic_settings_editor, "Punkte")
+
+    # self.horizontalLayout_punkte_editor = create_new_horizontallayout(self.groupBox_punkte_editor)
+
+    # self.spinBox_punkte_editor = create_new_spinbox(self.groupBox_punkte_editor, 1)
+
+    
+    # self.horizontalLayout_punkte_editor.addWidget(self.spinBox_punkte_editor)
+    # self.horizontalLayout_basic_settings_editor.addWidget(self.groupBox_punkte_editor)
+
+
+    # self.groupBox_aufgabenformat_editor = create_new_groupbox(self.widget_basic_settings_editor, "Aufgabenformat")
+
+
+    # self.horizontalLayout_aufgabenformat_editor = create_new_horizontallayout(self.groupBox_aufgabenformat_editor)
+
+
+    # self.comboBox_af_editor = create_new_combobox(self.groupBox_aufgabenformat_editor)
+    # add_new_option(self.comboBox_af_editor, 0, "bitte auswählen")
+
+    # self.horizontalLayout_aufgabenformat_editor.addWidget(self.comboBox_af_editor)
+
+
+    # i = 1
+    # for all in dict_aufgabenformate:
+    #     add_new_option(self.comboBox_af_editor, i, dict_aufgabenformate[all])
+    #     if self.chosen_program == "lama" and i == 4:
+    #         break
+    #     i += 1
+    # self.horizontalLayout_basic_settings_editor.addWidget(self.groupBox_aufgabenformat_editor)
+
+    # self.groupBox_klassen_editor = create_new_groupbox(self.widget_basic_settings_editor, "Klasse")
+
+
+    # self.horizontalLayout_klassen_editor = create_new_horizontallayout(self.groupBox_klassen_editor)
+    # self.comboBox_klassen_editor = create_new_combobox(self.groupBox_klassen_editor)
+
+    # add_new_option(self.comboBox_klassen_editor, 0, "-")
+
+    # i=1
+    # for all in Klassen:
+    #     if all != "univie" and all != "mat":
+    #         add_new_option(self.comboBox_klassen_editor, i, Klassen[all])
+    #         i+=1
+
+
+    # self.horizontalLayout_klassen_editor.addWidget(self.comboBox_klassen_editor)
+    # self.horizontalLayout_basic_settings_editor.addWidget(self.groupBox_klassen_editor)
+
+    # self.groupBox_abstand_editor = create_new_groupbox(self.widget_basic_settings_editor, "Abstand")
+
+    # self.groupBox_abstand_editor.setToolTip("Abstand unter der Aufgabe (in cm)")
+    # self.horizontalLayout_abstand_editor = create_new_horizontallayout(
+    #     self.groupBox_abstand_editor
+    # )
+    # self.spinBox_abstand_editor = create_new_spinbox(self.groupBox_abstand_editor)
+    # self.horizontalLayout_abstand_editor.addWidget(self.spinBox_abstand_editor)
+
+    # self.horizontalLayout_basic_settings_editor.addWidget(self.groupBox_abstand_editor)
+
+
+
+    # self.groupBox_pagebreak_editor = create_new_groupbox(
+    #     self.widget_basic_settings_editor, "Seitenumbruch"
+    # )
+
+    # self.horizontalLayout_pagebreak_editor = create_new_horizontallayout(
+    #     self.groupBox_pagebreak_editor
+    # )
+    # self.comboBox_pagebreak_editor = create_new_combobox(self.groupBox_pagebreak_editor)
+    # add_new_option(self.comboBox_pagebreak_editor, 0, "nicht möglich")
+    # add_new_option(self.comboBox_pagebreak_editor, 1, "möglich")
+    # self.horizontalLayout_pagebreak_editor.addWidget(self.comboBox_pagebreak_editor)
+
+    # self.horizontalLayout_basic_settings_editor.addWidget(self.groupBox_pagebreak_editor)
+
+    # self.cb_matura_tag_editor = create_new_checkbox(self.widget_basic_settings_editor, "Matura")
+    # self.horizontalLayout_basic_settings_editor.addWidget(self.cb_matura_tag_editor)
+    # self.cb_matura_tag_editor.hide()
+
+    # self.cb_no_grade_tag_editor = create_new_checkbox(
+    #     self.widget_basic_settings_editor, "klassen-\nunabhängig"
+    # )
+    # self.horizontalLayout_basic_settings_editor.addWidget(self.cb_no_grade_tag_editor)
+    # self.cb_no_grade_tag_editor.hide()
+
+
+    # self.groupBox_titel_editor = QtWidgets.QGroupBox(self.splitter_editor_right_widget)
+    # self.groupBox_titel_editor.setObjectName("groupBox_titel_editor")
+    # self.groupBox_titel_editor.setSizePolicy(SizePolicy_fixed_height)
+
+    # self.gridLayout_14_editor = QtWidgets.QGridLayout(self.groupBox_titel_editor)
+    # self.gridLayout_14_editor.setObjectName("gridLayout_14_editor")
+    # self.lineEdit_titel_editor = QtWidgets.QLineEdit(self.groupBox_titel_editor)
+    # self.lineEdit_titel_editor.setObjectName("lineEdit_titel_editor")
+
+
+    # self.gridLayout_14_editor.addWidget(self.lineEdit_titel_editor, 0, 0, 1, 1)
+    # self.verticalLayout_splitter_editor_right_widget.addWidget(self.groupBox_titel_editor)
+
+    # self.groupBox_titel_editor.setTitle("Titel")
+
+
+    # self.groupBox_beispieleingabe_editor = QtWidgets.QGroupBox(self.splitter_editor)
+    # self.groupBox_beispieleingabe_editor.setObjectName("groupBox_beispieleingabe_editor")
+
+    # self.gridLayout_10_editor = QtWidgets.QGridLayout(self.groupBox_beispieleingabe_editor)
+    # self.gridLayout_10_editor.setObjectName("gridLayout_10_editor")
+    # self.label_editor = QtWidgets.QLabel(self.groupBox_beispieleingabe_editor)
+
+    # self.label_editor.setStyleSheet("border: 2px solid #C33A3F;")
+    # self.label_editor.setWordWrap(True)
+    # self.label_editor.setObjectName("label")
+    # self.gridLayout_10_editor.addWidget(self.label_editor, 0, 0, 1, 1)
+    # self.plainTextEdit_editor = QtWidgets.QPlainTextEdit(self.groupBox_beispieleingabe_editor)
+    # self.plainTextEdit_editor.setObjectName("plainTextEdit")
+    # self.plainTextEdit_editor.setTabChangesFocus(True)
+    # self.gridLayout_10_editor.addWidget(self.plainTextEdit_editor, 1, 0, 1, 1)
+    # self.verticalLayout_splitter_editor_right_widget.addWidget(self.groupBox_beispieleingabe_editor)
+
+    # self.groupBox_beispieleingabe_editor.setTitle("Aufgabeneingabe")
+    # self.label_editor.setText("Info: Eingabe des Aufgabentextes zwischen \\begin{beispiel}...\\end{beispiel}")
+
+
+    # self.groupBox_quelle_editor = QtWidgets.QGroupBox(self.splitter_editor_right_widget)
+    # self.groupBox_quelle_editor.setObjectName("groupBox_quelle_editor")
+
+    # self.gridLayout_18_editor = QtWidgets.QGridLayout(self.groupBox_quelle_editor)
+    # self.gridLayout_18_editor.setObjectName("gridLayout_18_editor")
+    # self.lineEdit_quelle_editor = QtWidgets.QLineEdit(self.groupBox_quelle_editor)
+    # self.lineEdit_quelle_editor.setObjectName("lineEdit_quelle_editor")
+    # try:
+    #     quelle = self.lama_settings["quelle"]
+    # except KeyError:
+    #     quelle = ""
+
+    # self.lineEdit_quelle_editor.setText(quelle)
+    # self.gridLayout_18_editor.addWidget(self.lineEdit_quelle_editor, 0, 0, 1, 1)
+
+    # self.verticalLayout_splitter_editor_right_widget.addWidget(self.groupBox_quelle_editor)
+
+    # self.groupBox_quelle_editor.setTitle("Quelle oder Autor (Vorname Nachname) - Eingabe: VorNac")
+
+
+    # self.widgeteditorButtons_editor = QtWidgets.QWidget(self.stackEditor)
+    # self.gridLayout_stackEditor.addWidget(self.widgeteditorButtons_editor, 1,0,1,1)
+    # self.widgeteditorButtons_editor.setSizePolicy(SizePolicy_fixed_height)
+    # self.horizontalLayout_editorButtons_editor = create_new_horizontallayout(self.widgeteditorButtons_editor)
+    # self.horizontalLayout_editorButtons_editor.setContentsMargins(0,0,0,0)
+
+
+    # self.horizontalLayout_editorButtons.addStretch()
+    # self.pushButton_save_editor = QtWidgets.QPushButton(self.widgeteditorButtons)
+    # self.pushButton_save_editor.setObjectName("pushButton_save_editor")
+    # self.pushButton_save_editor.setFocusPolicy(QtCore.Qt.NoFocus)
+    # self.pushButton_save_editor.setSizePolicy(SizePolicy_fixed)
+    # self.horizontalLayout_editorButtons.addWidget(self.pushButton_save_editor)
+    # self.pushButton_save_editor.setText("Speichern")
+    # self.pushButton_save_editor.setIcon(QtGui.QIcon(get_icon_path('save.svg')))
+
+
+    # self.pushButton_vorschau_edit_editor = create_new_button(
+    #     self.widgeteditorButtons, "Vorschau", self.button_vorschau_edit_pressed
+    # )
+    # self.pushButton_vorschau_edit_editor.setIcon(QtGui.QIcon(get_icon_path('eye.svg')))
+    # self.pushButton_vorschau_edit_editor.setShortcut("Ctrl+Return")
+    # self.pushButton_vorschau_edit_editor.setToolTip("Strg+Enter")
+    # self.pushButton_vorschau_edit_editor.setSizePolicy(SizePolicy_fixed)
+    # self.horizontalLayout_editorButtons.addWidget(self.pushButton_vorschau_edit_editor)
+    # # self.pushButton_vorschau_edit.hide()
+
+    # self.pushButton_delete_file_editor = create_new_button(
+    #     self.widgeteditorButtons, "Aufgabe löschen", self.button_delete_file_pressed
+    # )
+    # self.pushButton_delete_file_editor.setIcon(QtGui.QIcon(get_icon_path('trash-2.svg')))
+    # # self.pushButton_delete_file.setStyleSheet("color: red")
+    # self.pushButton_delete_file_editor.setSizePolicy(SizePolicy_fixed)
+    # self.horizontalLayout_editorButtons.addWidget(self.pushButton_delete_file_editor)
+    # # self.pushButton_delete_file_editor.hide()
+
+    # self.pushButton_save_as_variation_edit_editor = create_new_button(
+    #     self.widgeteditorButtons,
+    #     "Als Variation einer anderen Aufgabe speichern",
+    #     self.pushButton_save_as_variation_edit_pressed,
+    # )
+    # self.pushButton_save_as_variation_edit_editor.setIcon(QtGui.QIcon(get_icon_path('git-branch.svg')))
+    # self.pushButton_save_as_variation_edit_editor.setSizePolicy(SizePolicy_fixed)
+    # self.horizontalLayout_editorButtons.addWidget(self.pushButton_save_as_variation_edit_editor)
+    # # self.pushButton_save_as_variation_edit.hide()
+
+    # self.pushButton_save_edit_editor = create_new_button(
+    #     self.stackEditor, "Änderung speichern", self.button_save_edit_pressed
+    # )
+    # self.pushButton_save_edit_editor.setIcon(QtGui.QIcon(get_icon_path('save.svg')))
+    # self.pushButton_save_edit_editor.setSizePolicy(SizePolicy_fixed)
+    # self.pushButton_save_edit_editor.setFocusPolicy(QtCore.Qt.NoFocus)
+    # self.horizontalLayout_editorButtons.addWidget(self.pushButton_save_edit_editor)
+    # # self.pushButton_save_edit.hide()
+
+    # self.lineEdit_titel_editor.setFocus()
+    # self.tab_widget_gk_editor.setCurrentIndex(0)
+    # QtCore.QMetaObject.connectSlotsByName(self.MainWindow)
+
+    # ############ Infos for GKs
+    # self.create_Tooltip(ag_beschreibung)
+    # self.create_Tooltip(fa_beschreibung)
+    # self.create_Tooltip(an_beschreibung)
+    # self.create_Tooltip(ws_beschreibung)
+    # ############################################
+
+    # self.comboBox_aufgabentyp_editor.currentIndexChanged.connect(self.chosen_aufgabenformat_cr)
+    # self.pushButton_save.clicked.connect(lambda: self.button_speichern_pressed())
+
+
+
 def setup_stackFeedback(self):
     self.gridLayout_stackFeedback = create_new_gridlayout(self.stackFeedback)
 

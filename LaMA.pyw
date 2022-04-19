@@ -274,12 +274,14 @@ class Ui_MainWindow(object):
         self.stackSearch = QtWidgets.QWidget(MainWindow)
         self.stackSage = QtWidgets.QWidget(MainWindow)
         self.stackCreator = QtWidgets.QWidget(MainWindow)
+        self.stackEditor = QtWidgets.QWidget(MainWindow)
         self.stackFeedback  = QtWidgets.QWidget(MainWindow)
 
 
         self.stackMainWindow.addWidget(self.stackSearch)
         self.stackMainWindow.addWidget(self.stackSage)
         self.stackMainWindow.addWidget(self.stackCreator)
+        self.stackMainWindow.addWidget(self.stackEditor)
         self.stackMainWindow.addWidget(self.stackFeedback)
 
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -694,6 +696,12 @@ class Ui_MainWindow(object):
 
         ##########################
         ###########################
+
+        #######################################################
+        ############ Stack Editor ###################
+        #######################################################
+
+        setup_stackEditor(self)
 
         #######################################################
         ############ Stack Feedback ###################
@@ -3275,7 +3283,21 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         Dialog.exec()
 
-            
+
+    def chosen_aufgabenformat_editor(self):
+        if self.comboBox_aufgabentyp_editor.currentText() == "Typ 1":
+            self.groupBox_aufgabenformat_editor.setEnabled(True)
+            self.comboBox_pagebreak_editor.setCurrentIndex(0)
+            # self.label_keine_auswahl.hide()
+            # self.comboBox_af.show()
+            self.comboBox_af_editor.removeItem(0)
+        if self.comboBox_aufgabentyp_editor.currentText() == "Typ 2":
+            self.comboBox_af_editor.insertItem(0, "keine Auswahl nötig")
+            self.comboBox_pagebreak_editor.setCurrentIndex(1)
+            self.comboBox_af_editor.setCurrentIndex(0)
+            self.groupBox_aufgabenformat_editor.setEnabled(False)
+            # self.label_keine_auswahl.show()
+            # self.comboBox_af.hide()         
     
     def chosen_aufgabenformat_cr(self):
         if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
@@ -7355,8 +7377,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.stackMainWindow.setCurrentIndex(1)
         elif chosen_gui == "widgets_create":
             self.stackMainWindow.setCurrentIndex(2)
-        elif chosen_gui == "widgets_feedback":
+        elif chosen_gui == "widgets_edit":
             self.stackMainWindow.setCurrentIndex(3)
+        elif chosen_gui == "widgets_feedback":
+            self.stackMainWindow.setCurrentIndex(4)
 
         return
         if self.chosen_program == "cria":
@@ -7762,6 +7786,7 @@ if __name__ == "__main__":
         setup_stackSearch,
         setup_stackSage,
         setup_stackCreator,
+        setup_stackEditor,
         setup_stackFeedback,
     )
     # i = step_progressbar(i, "convert_image_to_eps")
