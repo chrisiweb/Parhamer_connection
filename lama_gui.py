@@ -12,22 +12,10 @@ from create_new_widgets import (
     create_new_lineedit,
     create_new_spinbox,
     add_new_option,
+    add_new_tab,
     )
 from predefined_size_policy import SizePolicy_fixed_height, SizePolicy_fixed, SizePolicy_minimum_fixed, SizePolicy_maximum_height
-from config import (
-    get_icon_path,
-    ag_beschreibung,
-    fa_beschreibung,
-    an_beschreibung,
-    ws_beschreibung,
-    zusatzthemen_beschreibung,
-    dict_aufgabenformate,
-    Klassen,
-    get_color,
-    list_klassen,
-    SpinBox_noWheel,
-    still_to_define,
-    )
+from config import *
 from functools import partial
 from create_pdf import prepare_tex_for_pdf
 
@@ -321,7 +309,7 @@ def setup_stackSearch(self):
     self.frame_tab_widget_gk = QtWidgets.QFrame(self.stackSearch)
     self.frame_tab_widget_gk.setObjectName("frame_tab_widget_gk")
     self.verticalLayout_frame_gk = create_new_verticallayout(self.frame_tab_widget_gk)
-    # self.verticalLayout_frame_gk.setContentsMargins(1,1,1,1)
+    # # self.verticalLayout_frame_gk.setContentsMargins(1,1,1,1)
 
     self.tab_widget_gk = QtWidgets.QTabWidget(self.frame_tab_widget_gk)
 
@@ -356,45 +344,145 @@ def setup_stackSearch(self):
     ######### Klassenthemen
     self.create_tab_checkboxes_themen(self.tab_widget_gk, "search")
 
-    self.gridLayout_stackSearch.addWidget(self.widget_headMenu, 0,0,1,2)
+    # self.gridLayout_stackSearch.addWidget(self.widget_headMenu, 0,0,1,2)
 
 
-    self.frame_tab_widget_gk = QtWidgets.QFrame(self.stackSearch)
-    self.frame_tab_widget_gk.setObjectName("frame_tab_widget_gk")
-    self.verticalLayout_frame_gk = create_new_verticallayout(self.frame_tab_widget_gk)
-    # self.verticalLayout_frame_gk.setContentsMargins(1,1,1,1)
 
-    self.tab_widget_gk = QtWidgets.QTabWidget(self.frame_tab_widget_gk)
+    # self.frame_tab_widget_gk = QtWidgets.QFrame(self.stackSearch)
+    # self.frame_tab_widget_gk.setObjectName("frame_tab_widget_gk")
+    # self.verticalLayout_frame_gk = create_new_verticallayout(self.frame_tab_widget_gk)
+    # # self.verticalLayout_frame_gk.setContentsMargins(1,1,1,1)
 
-    self.tab_widget_gk.setObjectName("tab_widget_gk")
-    self.verticalLayout_frame_gk.addWidget(self.tab_widget_gk)
-    self.gridLayout_stackSearch.addWidget(self.frame_tab_widget_gk, 1, 0, 1, 1)
+    # self.tab_widget_gk = QtWidgets.QTabWidget(self.frame_tab_widget_gk)
 
-    # #### AG #####
-    self.create_tab_checkboxes_gk(
-        self.tab_widget_gk, "Algebra und Geometrie", ag_beschreibung, "search"
-    )
+    # self.tab_widget_gk.setObjectName("tab_widget_gk")
+    # self.verticalLayout_frame_gk.addWidget(self.tab_widget_gk)
+    # self.gridLayout_stackSearch.addWidget(self.frame_tab_widget_gk, 1, 0, 1, 1)
 
-    ### FA ###
-    self.create_tab_checkboxes_gk(
-        self.tab_widget_gk, "Funktionale Abhängigkeiten", fa_beschreibung, "search"
-    )
+    # # #### AG #####
+    # self.create_tab_checkboxes_gk(
+    #     self.tab_widget_gk, "Algebra und Geometrie", ag_beschreibung, "search"
+    # )
 
-    ### AN ###
-    self.create_tab_checkboxes_gk(
-        self.tab_widget_gk, "Analysis", an_beschreibung, "search"
-    )
+    # ### FA ###
+    # self.create_tab_checkboxes_gk(
+    #     self.tab_widget_gk, "Funktionale Abhängigkeiten", fa_beschreibung, "search"
+    # )
 
-    ### WS ###
-    self.create_tab_checkboxes_gk(
-        self.tab_widget_gk,
-        "Wahrscheinlichkeit und Statistik",
-        ws_beschreibung,
-        "search",
-    )
+    # ### AN ###
+    # self.create_tab_checkboxes_gk(
+    #     self.tab_widget_gk, "Analysis", an_beschreibung, "search"
+    # )
 
-    ######### Klassenthemen
-    self.create_tab_checkboxes_themen(self.tab_widget_gk, "search")
+    # ### WS ###
+    # self.create_tab_checkboxes_gk(
+    #     self.tab_widget_gk,
+    #     "Wahrscheinlichkeit und Statistik",
+    #     ws_beschreibung,
+    #     "search",
+    # )
+
+    # ######### Klassenthemen
+    # self.create_tab_checkboxes_themen(self.tab_widget_gk, "search")
+
+
+
+
+
+    # ##################################################################
+    # ################ LAMA CRIA SEARCH #################################
+    # ###################################################################
+
+
+    self.tab_widget_search_cria = QtWidgets.QTabWidget(self.frame_tab_widget_gk)
+
+    self.tab_widget_search_cria.setObjectName("tab_widget_search_cria")
+    self.tab_widget_search_cria.setFocusPolicy(QtCore.Qt.NoFocus)
+    self.verticalLayout_frame_gk.addWidget(self.tab_widget_search_cria)
+    self.tab_widget_search_cria.hide()
+
+
+    for klasse in list_klassen:
+        new_tab = add_new_tab(
+            self.tab_widget_search_cria, "{}. Klasse".format(klasse[1])
+        )
+
+        new_gridlayout = QtWidgets.QGridLayout(new_tab)
+        new_gridlayout.setObjectName("{}".format(new_gridlayout))
+
+        new_scrollarea = QtWidgets.QScrollArea(new_tab)
+        new_scrollarea.setObjectName("{}".format(new_scrollarea))
+        new_scrollarea.setFrameShape(QtWidgets.QFrame.NoFrame)
+        new_scrollarea.setFocusPolicy(QtCore.Qt.NoFocus)
+        new_scrollarea.setWidgetResizable(True)
+
+        new_scrollareacontent = QtWidgets.QWidget()
+
+        new_scrollareacontent.setObjectName("{}".format(new_scrollareacontent))
+
+        new_verticallayout = QtWidgets.QVBoxLayout(new_scrollareacontent)
+        new_verticallayout.setObjectName("{}".format(new_verticallayout))
+
+        combobox_kapitel = create_new_combobox(new_scrollareacontent)
+
+        self.dict_widget_variables[
+            "combobox_kapitel_search_cria_{}".format(klasse)
+        ] = combobox_kapitel
+        dict_klasse_name = eval("dict_{}_name".format(klasse))
+        index = 0
+        for kapitel in dict_klasse_name:
+            add_new_option(
+                combobox_kapitel,
+                index,
+                dict_klasse_name[kapitel] + " (" + kapitel + ")",
+            )
+            index += 1
+        combobox_kapitel.currentIndexChanged.connect(
+            partial(
+                self.comboBox_kapitel_changed_cr,
+                new_scrollareacontent,
+                new_verticallayout,
+                klasse,
+                'search',
+            )
+        )
+
+        new_verticallayout.addWidget(combobox_kapitel)
+
+        dict_klasse = eval("dict_{}".format(klasse))
+        kapitel = list(dict_klasse.keys())[0]
+
+        for unterkapitel in dict_klasse[kapitel]:
+            new_checkbox = create_new_checkbox(
+                new_scrollareacontent,
+                dict_unterkapitel[unterkapitel] + " (" + unterkapitel + ")"
+            )
+            new_checkbox.setToolTip(dict_unterkapitel[unterkapitel])
+
+            self.dict_widget_variables[
+                "checkbox_unterkapitel_{0}_{1}_{2}".format(
+                    klasse, kapitel, unterkapitel
+                )
+            ] = new_checkbox
+            new_checkbox.stateChanged.connect(
+                partial(
+                    self.checkBox_checked_cria,
+                    klasse,
+                    kapitel,
+                    unterkapitel))
+
+
+            new_verticallayout.addWidget(new_checkbox)
+            new_checkbox.setFocusPolicy(QtCore.Qt.NoFocus)
+
+        new_verticallayout.addStretch()
+
+        new_scrollarea.setWidget(new_scrollareacontent)
+
+        new_gridlayout.addWidget(new_scrollarea, 5, 0, 1, 1)
+
+
+
 
     self.groupBox_ausgew_gk = create_new_groupbox(
         self.stackSearch, "Auswahl"
@@ -426,6 +514,7 @@ def setup_stackSearch(self):
 
     self.widget_searchMenu = QtWidgets.QWidget(self.stackSearch)
     self.widget_searchMenu.setObjectName("widget_searchMenu")
+    self.widget_searchMenu.setMinimumWidth(1)
     # self.widget_searchMenu.setContentsMargins(0,0,0,0)
     self.gridLayout_stackSearch.addWidget(self.widget_searchMenu, 1 , 1,2,1)
 
@@ -615,7 +704,7 @@ def setup_stackSage(self):
     # self.splitter_sage.splitterMoved.connect(self.splitter_sage_moved)
 
     self.groupBox_alle_aufgaben = QtWidgets.QGroupBox(self.splitter_sage)
-    self.groupBox_alle_aufgaben.setMinimumWidth(10)
+    self.groupBox_alle_aufgaben.setMinimumWidth(1)
     self.groupBox_alle_aufgaben.setObjectName("groupBox_alle_aufgaben")
 
     self.verticalLayout_sage = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben)
@@ -741,8 +830,8 @@ def setup_stackSage(self):
 
     self.widget_SageMenu = QtWidgets.QWidget(self.groupBox_sage)
     self.gridLayout_5.addWidget(self.widget_SageMenu, 0,0,1,1)
-    self.widget_SageMenu.setContentsMargins(0,0,0,0)
     self.horizontalLayout_SageMenu = create_new_horizontallayout(self.widget_SageMenu)
+    self.horizontalLayout_SageMenu.setContentsMargins(0,0,0,0)
 
 
     self.frameNummer = QtWidgets.QFrame(self.widget_SageMenu)
@@ -1037,6 +1126,10 @@ def setup_stackSage(self):
     self.gridLayoutSetupSage.addWidget(self.label_gruppe_AB,2,0,1,1, QtCore.Qt.AlignRight)
     self.gridLayoutSetupSage.addWidget(self.comboBox_gruppe_AB, 2,1,1,1)
 
+
+    self.gridLayout_stackSage.addWidget(self.splitter_sage, 0, 0, 1, 1)
+
+
     self.buttonBox_sage = QtWidgets.QDialogButtonBox(self.stackSage)
     self.buttonBox_sage.setStandardButtons(
         QtWidgets.QDialogButtonBox.Save | QtWidgets.QDialogButtonBox.Ok
@@ -1064,7 +1157,7 @@ def setup_stackSage(self):
     self.gridLayout_stackSage.addWidget(self.buttonBox_sage,1, 0, 1, 1)
     # self.gridLayout_5.addWidget(self.buttonBox_sage,0, 1, 1, 1)
 
-    self.gridLayout_stackSage.addWidget(self.splitter_sage, 0, 0, 1, 1)
+    
 
 def setup_stackCreator(self):
     self.gridLayout_stackCreator = create_new_gridlayout(self.stackCreator)
@@ -1088,6 +1181,8 @@ def setup_stackCreator(self):
 
 
 
+    ############# CREATOR ###############
+
     self.groupBox_variation_cr = create_new_groupbox(
         self.splitter_creator, "Aufgabenvariation"
     )
@@ -1095,7 +1190,6 @@ def setup_stackCreator(self):
     self.verticalLayout_variation = create_new_verticallayout(
         self.groupBox_variation_cr
     )  
-
     self.button_variation_cr = create_new_button(
         self.groupBox_variation_cr,
         "Variation vorhandender Aufgabe...",
@@ -1106,7 +1200,9 @@ def setup_stackCreator(self):
 
     self.verticalLayout_splitter_creator_left_widget.addWidget(self.groupBox_variation_cr)
 
+    ######################################
 
+    ################ EDITOR #####################
 
     self.groupBox_choose_file = create_new_groupbox(
         self.splitter_creator, "Aufgabe auswählen"
@@ -1124,8 +1220,9 @@ def setup_stackCreator(self):
     self.button_choose_file.setMinimumWidth(0)
     self.verticalLayout_choose_file.addWidget(self.button_choose_file)
 
-    self.gridLayout_stackCreator.addWidget(self.groupBox_choose_file, 0, 0, 1, 1)
-    self.groupBox_choose_file.hide()
+    self.verticalLayout_splitter_creator_left_widget.addWidget(self.groupBox_choose_file)
+
+    ########################################
 
     self.groupBox_grundkompetenzen_cr = QtWidgets.QGroupBox(self.splitter_creator)
     self.groupBox_grundkompetenzen_cr.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -1452,8 +1549,8 @@ def setup_stackCreator(self):
     self.pushButton_save.clicked.connect(lambda: self.button_speichern_pressed())
 
 
-def setup_stackEditor(self):
-    self.gridLayout_stackEditor = create_new_gridlayout(self.stackEditor)
+# def setup_stackEditor(self):
+#     self.gridLayout_stackEditor = create_new_gridlayout(self.stackEditor)
 
     # self.splitter_editor = QtWidgets.QSplitter(self.stackEditor)
     # self.splitter_editor.setOrientation(QtCore.Qt.Horizontal)

@@ -9,8 +9,6 @@ __lastupdate__ = "04/22"
 show_popup = False
 
 
-print("Loading...")
-
 from start_window import check_if_database_exists
 # from worksheet_wizard import get_all_solution_pixels
 check_if_database_exists()
@@ -274,14 +272,14 @@ class Ui_MainWindow(object):
         self.stackSearch = QtWidgets.QWidget(MainWindow)
         self.stackSage = QtWidgets.QWidget(MainWindow)
         self.stackCreator = QtWidgets.QWidget(MainWindow)
-        self.stackEditor = QtWidgets.QWidget(MainWindow)
+        # self.stackEditor = QtWidgets.QWidget(MainWindow)
         self.stackFeedback  = QtWidgets.QWidget(MainWindow)
 
 
         self.stackMainWindow.addWidget(self.stackSearch)
         self.stackMainWindow.addWidget(self.stackSage)
         self.stackMainWindow.addWidget(self.stackCreator)
-        self.stackMainWindow.addWidget(self.stackEditor)
+        # self.stackMainWindow.addWidget(self.stackEditor)
         self.stackMainWindow.addWidget(self.stackFeedback)
 
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -292,7 +290,8 @@ class Ui_MainWindow(object):
 
 
 
-        self.stackMainWindow.setCurrentIndex(3)
+        self.stackMainWindow.setCurrentIndex(0)
+        self.MainWindow.resize(800,400)
         #######################################################
         ############ Menu Bar ###################
         #######################################################
@@ -395,7 +394,7 @@ class Ui_MainWindow(object):
         
         self.comboBox_klassen.hide()
         self.comboBox_kapitel.hide()
-        self.comboBox_kapitel.hide()
+        self.comboBox_unterkapitel.hide()
         ###################################
         ####################################
 
@@ -413,159 +412,13 @@ class Ui_MainWindow(object):
 
 
 
-        # ##################################################################
-        # ################ LAMA CRIA SEARCH #################################
-        # ###################################################################
 
-        # self.groupBox_themengebiete_cria = QtWidgets.QGroupBox(self.centralwidget)
-
-        # self.groupBox_themengebiete_cria.setObjectName(
-        #     _fromUtf8("groupBox_themengebiete_cria")
-        # )
-        # self.groupBox_themengebiete_cria.setMaximumWidth(420)
-        # # self.groupBox_themengebiete_cria.setSizePolicy(SizePolicy_minimum_width)
-        # self.gridLayout_11_cr_cria = QtWidgets.QGridLayout(
-        #     self.groupBox_themengebiete_cria
-        # )
-        # self.gridLayout_11_cr_cria.setObjectName(_fromUtf8("gridLayout_11_cr_cria"))
-
-
-        self.tab_widget_search_cria = QtWidgets.QTabWidget(self.frame_tab_widget_gk)
-        # self.tab_widget_gk_cr.setStyleSheet(_fromUtf8("background-color: rgb(217, 255, 215);")
-
-        # if self.display_mode == 0:
-        #     stylesheet = StyleSheet_tabWidget
-        # else:
-        #     stylesheet = StyleSheet_tabWidget_dark_mode
-        # self.tab_widget_cr_cria.setStyleSheet(stylesheet)
-
-        # self.tab_widget_cr_cria.setStyleSheet("background-color: rgb(229, 246, 255);")
-        self.tab_widget_search_cria.setObjectName(_fromUtf8("tab_widget_search_cria"))
-        self.tab_widget_search_cria.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.verticalLayout_frame_gk.addWidget(self.tab_widget_search_cria)
-        self.tab_widget_search_cria.hide()
-        # self.gridLayout_search_cria.addWidget(self.tab_widget_cr_cria, 0, 0, 1, 1)
-        # self.gridLayout.addWidget(self.groupBox_themengebiete_cria, 1, 0, 5, 1)
-        # self.groupBox_themengebiete_cria.setTitle(
-        #     _translate("MainWindow", "Themengebiete", None)
-        # )
-        # self.groupBox_themengebiete_cria.hide()
-
-        for klasse in list_klassen:
-            # name = "tab_{0}".format(klasse)
-            new_tab = add_new_tab(
-                self.tab_widget_search_cria, "{}. Klasse".format(klasse[1])
-            )
-            # new_tab.setStyleSheet(StyleSheet_new_tab)
-            # if self.display_mode == 0:
-            #     stylesheet = StyleSheet_new_tab
-            # else:
-            #     stylesheet = StyleSheet_new_tab_dark_mode
-            # new_tab.setStyleSheet(stylesheet)
-            new_gridlayout = QtWidgets.QGridLayout(new_tab)
-            new_gridlayout.setObjectName("{}".format(new_gridlayout))
-
-            new_scrollarea = QtWidgets.QScrollArea(new_tab)
-            new_scrollarea.setObjectName("{}".format(new_scrollarea))
-            new_scrollarea.setFrameShape(QtWidgets.QFrame.NoFrame)
-            new_scrollarea.setFocusPolicy(QtCore.Qt.NoFocus)
-            new_scrollarea.setWidgetResizable(True)
-            # new_scrollarea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-            new_scrollareacontent = QtWidgets.QWidget()
-
-            # new_scrollareacontent.setGeometry(QtCore.QRect(0, 0, 264, 235))
-            new_scrollareacontent.setObjectName("{}".format(new_scrollareacontent))
-
-            new_verticallayout = QtWidgets.QVBoxLayout(new_scrollareacontent)
-            new_verticallayout.setObjectName("{}".format(new_verticallayout))
-
-            combobox_kapitel = create_new_combobox(new_scrollareacontent)
-            # if self.display_mode == 0:
-            #     stylesheet = StyleSheet_combobox_kapitel
-            # else:
-            #     stylesheet = StyleSheet_combobox_kapitel_dark_mode
-            # combobox_kapitel.setStyleSheet(stylesheet)
-            # combobox_kapitel.setMinimumHeight(25)
-            # combobox_kapitel.setSizePolicy(SizePolicy_fixed)
-            self.dict_widget_variables[
-                "combobox_kapitel_search_cria_{}".format(klasse)
-            ] = combobox_kapitel
-            dict_klasse_name = eval("dict_{}_name".format(klasse))
-            index = 0
-            for kapitel in dict_klasse_name:
-                add_new_option(
-                    combobox_kapitel,
-                    index,
-                    dict_klasse_name[kapitel] + " (" + kapitel + ")",
-                )
-                index += 1
-            combobox_kapitel.currentIndexChanged.connect(
-                partial(
-                    self.comboBox_kapitel_changed_cr,
-                    new_scrollareacontent,
-                    new_verticallayout,
-                    klasse,
-                    'search',
-                )
-            )
-                    # self.comboBox_kapitel_changed_cr,
-                    # new_scrollareacontent,
-                    # new_verticallayout,
-                    # klasse,
-            new_verticallayout.addWidget(combobox_kapitel)
-
-            dict_klasse = eval("dict_{}".format(klasse))
-            kapitel = list(dict_klasse.keys())[0]
-
-            for unterkapitel in dict_klasse[kapitel]:
-                new_checkbox = create_new_checkbox(
-                    new_scrollareacontent,
-                    dict_unterkapitel[unterkapitel] + " (" + unterkapitel + ")"
-                )
-                new_checkbox.setToolTip(dict_unterkapitel[unterkapitel])
-                # if self.display_mode == 0:
-                #     stylesheet = StyleSheet_new_checkbox
-                # else:
-                #     stylesheet = StyleSheet_new_checkbox_dark_mode
-                # new_checkbox.setStyleSheet(stylesheet)
-
-                self.dict_widget_variables[
-                    "checkbox_unterkapitel_{0}_{1}_{2}".format(
-                        klasse, kapitel, unterkapitel
-                    )
-                ] = new_checkbox
-                new_checkbox.stateChanged.connect(
-                    partial(
-                        self.checkBox_checked_cria,
-                        klasse,
-                        kapitel,
-                        unterkapitel))
-                # new_checkbox.stateChanged.connect(
-                #     partial(
-                #         self.checkbox_unterkapitel_checked_cria,
-                #         new_checkbox,
-                #         klasse,
-                #         kapitel,
-                #         unterkapitel,
-                #     )
-                # )
-
-                new_verticallayout.addWidget(new_checkbox)
-                new_checkbox.setFocusPolicy(QtCore.Qt.NoFocus)
-
-            # new_verticallayout.addStretch()
-            # new_verticallayout.addItem(self.spacerItem_unterkapitel_creator_cria)
-            new_verticallayout.addStretch()
-
-            new_scrollarea.setWidget(new_scrollareacontent)
-
-            new_gridlayout.addWidget(new_scrollarea, 5, 0, 1, 1)
 
 
 
 
         #######################################################
-        ############ Stack Creator ###################
+        ############ Stack Creator & Stack Editor ###################
         #######################################################
 
         setup_stackCreator(self)
@@ -698,10 +551,10 @@ class Ui_MainWindow(object):
         ###########################
 
         #######################################################
-        ############ Stack Editor ###################
+        ############ ###################
         #######################################################
 
-        setup_stackEditor(self)
+        # setup_stackEditor(self)
 
         #######################################################
         ############ Stack Feedback ###################
@@ -3211,7 +3064,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 self.saved_file_path = path_home
             open_path = os.path.dirname(self.saved_file_path)
         elif mode == 'existing':
-            if self.check_for_admin_mode() == 'admin' or self.developer_mode_active == True:
+            if self.developer_mode_active == True:
                 open_path = os.path.join(path_database, 'Bilder')
             else:
                 if os.path.isdir(os.path.join(path_database, 'Bilder_local')) == False:
@@ -7371,20 +7224,46 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     @report_exceptions
     def update_gui(self, chosen_gui):
         print(chosen_gui)
+        if self.chosen_program == "cria":
+            chosen_gui = chosen_gui + "_cria"
+        print(chosen_gui)
         if chosen_gui == "widgets_search":
             self.stackMainWindow.setCurrentIndex(0)
         elif chosen_gui == "widgets_sage":
             self.stackMainWindow.setCurrentIndex(1)
-        elif chosen_gui == "widgets_create":
+        elif chosen_gui == "widgets_create" or chosen_gui == "widgets_edit":
             self.stackMainWindow.setCurrentIndex(2)
-        elif chosen_gui == "widgets_edit":
-            self.stackMainWindow.setCurrentIndex(3)
         elif chosen_gui == "widgets_feedback":
-            self.stackMainWindow.setCurrentIndex(4)
+            self.stackMainWindow.setCurrentIndex(3)
+
+        self.stackMainWindow.minimumSizeHint()
+
+        chosen_gui_list = eval(chosen_gui)
+
+        self.chosen_gui = chosen_gui
+        self.MainWindow.setMenuBar(self.menuBar)
+        list_delete = []
+        for item in list_widgets:
+            if item != chosen_gui_list:
+                list_delete += item
+
+        for all in list_delete:
+            if "action" in all:
+                exec("%s.setEnabled(False)" % all)
+            elif "layout" in all.lower():
+                exec("%s.setParent(None)" % all)
+            else:
+                exec("%s.hide()" % all)
+        for all in chosen_gui_list:
+            if "action" in all:
+                exec("%s.setEnabled(True)" % all)
+            # elif "layout" in all.lower():
+            #     exec("self.gridLayout.addLayout({}, 0, 0, 1, 1)".format(all))
+            else:
+                exec("%s.show()" % all)
 
         return
-        if self.chosen_program == "cria":
-            chosen_gui = chosen_gui + "_cria"
+
         #     chosen_gui_list = eval(chosen_gui)
         # else:
         chosen_gui_list = eval(chosen_gui)
@@ -7397,24 +7276,24 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 list_delete += item
         for all in list_delete:
             if "action" in all:
-                exec("self.%s.setEnabled(False)" % all)
+                exec("%s.setEnabled(False)" % all)
                 # exec("self.%s.setVisible(False)" % all)
             # elif "menu" in all:
             #     exec("self.menuBar.removeAction(self.%s.menuAction())" % all)
             elif "layout" in all.lower():
-                exec("self.%s.setParent(None)" % all)
+                exec("%s.setParent(None)" % all)
             else:
-                exec("self.%s.hide()" % all)
+                exec("%s.hide()" % all)
         for all in chosen_gui_list:
             if "action" in all:
-                exec("self.%s.setEnabled(True)" % all)
+                exec("%s.setEnabled(True)" % all)
                 # exec("self.%s.setVisible(True)" % all)
             # elif "menu" in all:
             #     exec("self.menuBar.addAction(self.%s.menuAction())" % all)
             elif "layout" in all.lower():
-                exec("self.gridLayout.addLayout(self.{}, 0, 0, 1, 1)".format(all))
+                exec("self.gridLayout.addLayout({}, 0, 0, 1, 1)".format(all))
             else:
-                exec("self.%s.show()" % all)
+                exec("%s.show()" % all)
 
         if chosen_gui == "widgets_search":
             # if self.label_aufgabentyp.text()[-1] == str(1):
@@ -7471,25 +7350,25 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
 
-class WrappedWindow(QtWidgets.QMainWindow):
-    resized = QtCore.pyqtSignal()
-    def  __init__(self, parent=None):
-        super(WrappedWindow, self).__init__(parent=parent)
-        ui = Ui_MainWindow()
-        ui.setupUi(self)
-        self.resized.connect(partial(self.adaptGUItosize, ui))
+# class WrappedWindow(QtWidgets.QMainWindow):
+#     resized = QtCore.pyqtSignal()
+#     def  __init__(self, parent=None):
+#         super(WrappedWindow, self).__init__(parent=parent)
+#         ui = Ui_MainWindow()
+#         ui.setupUi(self)
+#         self.resized.connect(partial(self.adaptGUItosize, ui))
 
-    def resizeEvent(self, event):
-        self.resized.emit()
-        return super(WrappedWindow, self).resizeEvent(event)
+#     def resizeEvent(self, event):
+#         self.resized.emit()
+#         return super(WrappedWindow, self).resizeEvent(event)
 
-    def adaptGUItosize(self, MainWindow):
-        size = QtCore.QSize(self.geometry().width(), self.geometry().height())
-        # print(size)
-        # MainWindow.label_lamaLogo.setText("TEEEST")
-        # return size
-        width = self.geometry().width()
-        height = self.geometry().height()
+#     def adaptGUItosize(self, MainWindow):
+#         size = QtCore.QSize(self.geometry().width(), self.geometry().height())
+#         # print(size)
+#         # MainWindow.label_lamaLogo.setText("TEEEST")
+#         # return size
+#         width = self.geometry().width()
+#         height = self.geometry().height()
 
         # if width<=350:
         #     MainWindow.widget_searchMenu.hide()
@@ -7786,7 +7665,6 @@ if __name__ == "__main__":
         setup_stackSearch,
         setup_stackSage,
         setup_stackCreator,
-        setup_stackEditor,
         setup_stackFeedback,
     )
     # i = step_progressbar(i, "convert_image_to_eps")
@@ -7854,30 +7732,30 @@ if __name__ == "__main__":
 
 
     # try:
-    # MainWindow = QMainWindow()
-    # # MainWindow.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+    MainWindow = QMainWindow()
+    # MainWindow.setWindowFlags(QtCore.Qt.FramelessWindowHint)
 
-    # i = step_progressbar(i, "mainwindow")
+    i = step_progressbar(i, "mainwindow")
 
     
-    # ui = Ui_MainWindow()
-    w = WrappedWindow()
-
+    MainWindow = QMainWindow()
+    # MainWindow.setWindowFlags(QtCore.Qt.FramelessWindowHint)
     screen_resolution = app.desktop().screenGeometry()
     screen_width, screen_height = screen_resolution.width(), screen_resolution.height()
 
-    w.setGeometry(
-        30, 30, round(screen_width * 0.4), round(screen_height * 0.6)
+    MainWindow.setGeometry(
+        30, 30, round(screen_width * 0.5), round(screen_height * 0.8)
     )
-    w.move(30, 30)
+    MainWindow.move(30, 30)
+    i = step_progressbar(i, "mainwindow")
 
-
-    splash.finish(w)
-    w.show()
     
-    # ui.setupUi(MainWindow)
+    ui = Ui_MainWindow()
 
-    # MainWindow.show()
+    splash.finish(MainWindow)
+    ui.setupUi(MainWindow)
+
+    MainWindow.show()
 
     sys.exit(app.exec_())
     # except Exception as e:
