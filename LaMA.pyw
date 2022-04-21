@@ -152,7 +152,7 @@ class Ui_MainWindow(object):
     #     # self.resized.emit()
     #     # return 
 
-    @report_exceptions
+    # @report_exceptions
     def setupUi(self, MainWindow):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         self.check_for_update()
@@ -288,9 +288,6 @@ class Ui_MainWindow(object):
         self.gridLayout = create_new_gridlayout(self.centralwidget)
 
 
-
-
-        self.stackMainWindow.setCurrentIndex(0)
         self.MainWindow.resize(800,400)
         #######################################################
         ############ Menu Bar ###################
@@ -360,63 +357,6 @@ class Ui_MainWindow(object):
         setup_stackSage(self)
 
        
-
-        ##################
-        ##### ComboBox LaMA Cria ####
-        ##################################
-        self.comboBox_klassen = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
-        self.comboBox_klassen.setObjectName("comboBox_klassen")
-
-        self.comboBox_klassen.addItem("Alle Klassen")
-        index = 1
-        for all in list_klassen:
-            add_new_option(self.comboBox_klassen, index, all[1] + ". Klasse")
-            index += 1
-
-        self.comboBox_klassen.currentIndexChanged.connect(
-            partial(self.comboBox_klassen_changed, "sage")
-        )
-
-        self.comboBox_klassen.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.verticalLayout_sage.addWidget(self.comboBox_klassen)
-
-        self.comboBox_kapitel = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
-        self.comboBox_kapitel.setObjectName("comboBox_kapitel")
-
-        self.comboBox_kapitel.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.verticalLayout_sage.addWidget(self.comboBox_kapitel)
-
-        self.comboBox_unterkapitel = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
-        self.comboBox_unterkapitel.setObjectName("comboBox_unterkapitel")
-
-        self.comboBox_unterkapitel.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.verticalLayout_sage.addWidget(self.comboBox_unterkapitel)
-        
-        self.comboBox_klassen.hide()
-        self.comboBox_kapitel.hide()
-        self.comboBox_unterkapitel.hide()
-        ###################################
-        ####################################
-
-        if self.chosen_program != 'wizard':
-            self.comboBox_klassen_changed("sage")
-
-        self.comboBox_kapitel.currentIndexChanged.connect(
-            partial(self.comboBox_kapitel_changed, "sage")
-        )
-
-        self.comboBox_unterkapitel.currentIndexChanged.connect(
-            partial(self.comboBox_unterkapitel_changed, "sage")
-        )
-
-
-
-
-
-
-
-
-
         #######################################################
         ############ Stack Creator & Stack Editor ###################
         #######################################################
@@ -450,16 +390,9 @@ class Ui_MainWindow(object):
 
 
         for klasse in list_klassen:
-            # name = "tab_{0}".format(klasse)
             new_tab = add_new_tab(
                 self.tab_widget_cr_cria, "{}. Klasse".format(klasse[1])
             )
-            # new_tab.setStyleSheet(StyleSheet_new_tab)
-            # if self.display_mode == 0:
-            #     stylesheet = StyleSheet_new_tab
-            # else:
-            #     stylesheet = StyleSheet_new_tab_dark_mode
-            # new_tab.setStyleSheet(stylesheet)
             new_gridlayout = QtWidgets.QGridLayout(new_tab)
             new_gridlayout.setObjectName("{}".format(new_gridlayout))
 
@@ -468,7 +401,6 @@ class Ui_MainWindow(object):
             new_scrollarea.setFrameShape(QtWidgets.QFrame.NoFrame)
             new_scrollarea.setFocusPolicy(QtCore.Qt.NoFocus)
             new_scrollarea.setWidgetResizable(True)
-            # new_scrollarea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
             new_scrollareacontent = QtWidgets.QWidget()
             # new_scrollareacontent.setGeometry(QtCore.QRect(0, 0, 264, 235))
             new_scrollareacontent.setObjectName("{}".format(new_scrollareacontent))
@@ -550,11 +482,6 @@ class Ui_MainWindow(object):
         ##########################
         ###########################
 
-        #######################################################
-        ############ ###################
-        #######################################################
-
-        # setup_stackEditor(self)
 
         #######################################################
         ############ Stack Feedback ###################
@@ -562,9 +489,6 @@ class Ui_MainWindow(object):
 
         setup_stackFeedback(self)
 
-
-
-        # self.groupBox_alle_aufgaben_fb.hide()
 
         ######################################
         #### Feedback Cria ##########################
@@ -1095,8 +1019,6 @@ class Ui_MainWindow(object):
 
 
 
-
-
         self.gridLayout_zahlenbereich_wizard.setRowStretch(4,1)
         self.gridLayout_setting_wizard.setRowStretch(3, 2)
 
@@ -1128,102 +1050,17 @@ class Ui_MainWindow(object):
         #         #####################################################################
 
 
-        # self.gridLayout_11.addWidget(self.tab_widget_gk, 0, 0, 1, 1)
-        # self.gridLayout.addWidget(self.groupBox_gk, 1, 1, 2, 1)
-        # MainWindow.setCentralWidget(self.centralwidget)
+
         MainWindow.setCentralWidget(self.stackMainWindow)
-        # self.statusbar = QtWidgets.QStatusBar(MainWindow)
-        # self.statusbar.setObjectName(_fromUtf8("statusbar"))
-        # MainWindow.setStatusBar(self.statusbar)
 
-        self.retranslateUi(MainWindow)
-        # self.tab_widget_themen.setCurrentIndex(0)
-
-        # self.tab_widget_gk_cr.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-        # #         ############################################################################
-        # #         ############## Commands ####################################################
-        # #         ############################################################################
-
-
-        self.pushButton_titlepage.clicked.connect(lambda: self.define_titlepage())
+        self.update_gui("widgets_search")
+        
 
         if loaded_lama_file_path != "":
             self.sage_load(external_file_loaded=True)
 
-        ############################################################################################
-        ##############################################################################################
-    @report_exceptions
-    def retranslateUi(self, MainWindow):
-        # self.menuDateityp.setTitle(_translate("MainWindow", "Aufgabentyp", None))
-        self.menuDatei.setTitle(_translate("MainWindow", "Datei", None))
-        self.menuNeu.setTitle(_translate("MainWindow", "Aufgabe", None))
-        self.menuSage.setTitle(_translate("MainWindow", "Prüfung", None))
-        self.menuSuche.setTitle(_translate("MainWindow", "Suche", None))
-        self.menuWizard.setTitle(_translate("MainWindow", "Wizard", None))
-        self.menuDeveloper.setTitle(_translate("MainWindow", "Entwicklermodus", None))
-
-        # self.menuBild_einbinden.setTitle(
-        #     _translate("MainWindow", "Bild einfügen", None)
-        # )
-        self.menuFeedback.setTitle(_translate("MainWindow", "Feedback && Fehler", None))
-
-        self.menuHelp.setTitle(_translate("MainWindow", "?", None))
-
-        # self.cb_solution.setText(_translate("MainWindow", "Lösungen anzeigen", None))
-        # self.cb_drafts.setText(_translate("MainWindow", "Entwürfe anzeigen", None))
-
-        self.combobox_searchtype.setItemText(
-            0,
-            _translate(
-                "MainWindow",
-                "Alle Dateien ausgeben, die zumindest ein Themengebiet enthalten",
-                None,
-            ),
-        )
-
-        # #################
-
-        # ##### ONLY NEEDED for Typ1 #####
-
-        self.groupBox_af.setTitle(
-            _translate("MainWindow", "Aufgabenformate", None)
-        )
-        self.cb_af_zo.setText(_translate("MainWindow", "Zuordnungsformat", None))
-        self.cb_af_mc.setText(_translate("MainWindow", "Multiplechoice", None))
-        self.cb_af_oa.setText(
-            _translate("MainWindow", "Offenes Format", None)
-        )
-        self.cb_af_lt.setText(_translate("MainWindow", "Lückentext", None))
-        self.cb_af_rf.setText(
-            _translate("MainWindow", "Richtig/Falsch-Format", None)
-        )
-        self.cb_af_ko.setText(_translate("MainWindow", "Konstruktion", None))
-        self.cb_af_ta.setText(_translate("MainWindow", "Textaufgaben", None))
-        #########################
-
-        # self.groupBox_themen_klasse.setTitle(
-        #     _translate("MainWindow", "Erweiterungsstoff", None)
-        # )
-
-
-
-        # if self.chosen_program == "lama":
-        #     program = "LaMA Cria (Unterstufe)"
-        # if self.chosen_program == "cria":
-        #     program = "LaMA (Oberstufe)"
-        # self.actionProgram.setText(
-        #     _translate("MainWindow", 'Zu "{}" wechseln'.format(program), None)
-        # )
-        self.actionExit.setText(_translate("MainWindow", "Exit", None))
-
-        print("Done")
-
-        if self.chosen_program == "cria":
-            self.update_gui("widgets_search")
-        elif self.chosen_program == 'wizard':
-            self.update_gui("widgets_wizard")
 
     def show_popup_window(self, show_checkbox = True):
         rsp = custom_window("""
@@ -7224,9 +7061,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     @report_exceptions
     def update_gui(self, chosen_gui):
         print(chosen_gui)
-        if self.chosen_program == "cria":
-            chosen_gui = chosen_gui + "_cria"
-        print(chosen_gui)
+
         if chosen_gui == "widgets_search":
             self.stackMainWindow.setCurrentIndex(0)
         elif chosen_gui == "widgets_sage":
@@ -7237,6 +7072,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.stackMainWindow.setCurrentIndex(3)
 
         self.stackMainWindow.minimumSizeHint()
+        if self.chosen_program == "cria":
+            chosen_gui = chosen_gui + "_cria"
+        print(chosen_gui)
+
 
         chosen_gui_list = eval(chosen_gui)
 

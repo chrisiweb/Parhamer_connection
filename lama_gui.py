@@ -26,19 +26,37 @@ def setup_MenuBar(self):
     self.menuBar.setObjectName("menuBar")
 
     self.menuDatei = QtWidgets.QMenu(self.menuBar)
+    self.menuDatei.setTitle("Datei")
     self.menuNeu = QtWidgets.QMenu(self.menuBar)
+    self.menuNeu.setTitle("Aufgabe")
     self.menuChangeProgram = QtWidgets.QMenu(self.menuDatei)
     self.menuChangeProgram.setTitle("Wechseln zu ...")
     self.menuSage = QtWidgets.QMenu(self.menuBar)
+    self.menuSage.setTitle("Prüfung")
     self.menuSuche = QtWidgets.QMenu(self.menuBar)
+    self.menuSuche.setTitle("Suche")
     self.menuWizard = QtWidgets.QMenu(self.menuBar)
+    self.menuWizard.setTitle("Wizard")
     self.menuFeedback = QtWidgets.QMenu(self.menuBar)
+    self.menuFeedback.setTitle("Feedback && Fehler")
     self.menuOptionen = QtWidgets.QMenu(self.menuBar)
     self.menuOptionen.setTitle("Optionen")
     self.menuHelp = QtWidgets.QMenu(self.menuBar)
+    self.menuHelp.setTitle("?")
     self.menuUpdate = QtWidgets.QMenu(self.menuHelp)
     self.menuUpdate.setTitle("Update...")
     self.menuDeveloper = QtWidgets.QMenu(self.menuBar)
+    self.menuDeveloper.setTitle("Entwicklermodus")
+
+    
+    
+    
+    
+    
+    
+    
+    
+
 
     self.MainWindow.setMenuBar(self.menuBar)
 
@@ -523,7 +541,7 @@ def setup_stackSearch(self):
 
     self.groupBox_af = QtWidgets.QGroupBox(self.widget_searchMenu)
     self.groupBox_af.setSizePolicy(SizePolicy_fixed_height)
-    # self.groupBox_af.setMaximumSize(QtCore.QSize(375, 16777215))
+    self.groupBox_af.setTitle("Aufgabenformate")
     self.groupBox_af.setObjectName("groupBox_af")
     # self.groupBox_af.setMaximumHeight(80)
     self.gridLayout_af = QtWidgets.QGridLayout(self.groupBox_af)
@@ -532,32 +550,38 @@ def setup_stackSearch(self):
 
     self.cb_af_mc = QtWidgets.QCheckBox(self.groupBox_af)
     self.cb_af_mc.setObjectName("cb_af_mc")
+    self.cb_af_mc.setText("Multiplechoice")
     self.gridLayout_af.addWidget(self.cb_af_mc, 0, 0, 1, 1)
-
-
+        
     self.cb_af_zo = QtWidgets.QCheckBox(self.groupBox_af)        
     self.cb_af_zo.setObjectName("cb_af_zo")
+    self.cb_af_zo.setText("Zuordnungsformat")
     self.gridLayout_af.addWidget(self.cb_af_zo, 1, 0, 1, 1)
 
     self.cb_af_lt = QtWidgets.QCheckBox(self.groupBox_af)
     self.cb_af_lt.setObjectName("cb_af_lt")
+    self.cb_af_lt.setText("Lückentext")
     self.gridLayout_af.addWidget(self.cb_af_lt, 2, 0, 1, 1)        
     
     self.cb_af_oa = QtWidgets.QCheckBox(self.groupBox_af)
     self.cb_af_oa.setObjectName("cb_af_oa")
+    self.cb_af_oa.setText("Offenes Format")
     self.gridLayout_af.addWidget(self.cb_af_oa, 3, 0, 1, 1)
 
 
     self.cb_af_ta = QtWidgets.QCheckBox(self.groupBox_af)
     self.cb_af_ta.setObjectName("cb_af_ta")
+    self.cb_af_ta.setText("Textaufgaben")
     self.gridLayout_af.addWidget(self.cb_af_ta, 0, 1, 1, 1)
 
     self.cb_af_rf = QtWidgets.QCheckBox(self.groupBox_af)
     self.cb_af_rf.setObjectName("cb_af_rf")
+    self.cb_af_rf.setText("Richtig/Falsch-Format")
     self.gridLayout_af.addWidget(self.cb_af_rf, 1, 1, 1, 1)
 
     self.cb_af_ko = QtWidgets.QCheckBox(self.groupBox_af)
     self.cb_af_ko.setObjectName("cb_af_ko")
+    self.cb_af_ko.setText("Konstruktion")
     self.gridLayout_af.addWidget(self.cb_af_ko, 2, 1, 1, 1)
 
     self.gridLayout_af.setRowStretch(4,1)
@@ -747,11 +771,56 @@ def setup_stackSage(self):
     self.lineEdit_number.textChanged.connect(
         partial(self.lineEdit_number_changed, "sage")
     )
-    self.verticalLayout_sage.addWidget(self.lineEdit_number)
+    
     self.listWidget = QtWidgets.QListWidget(self.groupBox_alle_aufgaben)
     self.listWidget.setObjectName("listWidget")
-    self.verticalLayout_sage.addWidget(self.listWidget)
     self.listWidget.itemClicked.connect(self.nummer_clicked)
+  
+
+    ##### Sage ComboBoxes LaMA Cria ####
+    self.comboBox_klassen = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
+    self.comboBox_klassen.setObjectName("comboBox_klassen")
+
+    self.comboBox_klassen.addItem("Alle Klassen")
+    index = 1
+    for all in list_klassen:
+        add_new_option(self.comboBox_klassen, index, all[1] + ". Klasse")
+        index += 1
+
+    self.comboBox_klassen.currentIndexChanged.connect(
+        partial(self.comboBox_klassen_changed, "sage")
+    )
+
+    self.comboBox_klassen.setFocusPolicy(QtCore.Qt.ClickFocus)
+    self.verticalLayout_sage.addWidget(self.comboBox_klassen)
+
+    self.comboBox_kapitel = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
+    self.comboBox_kapitel.setObjectName("comboBox_kapitel")
+
+    self.comboBox_kapitel.setFocusPolicy(QtCore.Qt.ClickFocus)
+    self.verticalLayout_sage.addWidget(self.comboBox_kapitel)
+
+    self.comboBox_unterkapitel = QtWidgets.QComboBox(self.groupBox_alle_aufgaben)
+    self.comboBox_unterkapitel.setObjectName("comboBox_unterkapitel")
+
+    self.comboBox_unterkapitel.setFocusPolicy(QtCore.Qt.ClickFocus)
+    self.verticalLayout_sage.addWidget(self.comboBox_unterkapitel)
+    
+
+    if self.chosen_program != 'wizard':
+        self.comboBox_klassen_changed("sage")
+
+    self.comboBox_kapitel.currentIndexChanged.connect(
+        partial(self.comboBox_kapitel_changed, "sage")
+    )
+
+    self.comboBox_unterkapitel.currentIndexChanged.connect(
+        partial(self.comboBox_unterkapitel_changed, "sage")
+    )
+
+    ####################
+    self.verticalLayout_sage.addWidget(self.lineEdit_number)
+    self.verticalLayout_sage.addWidget(self.listWidget)
 
 
     self.groupBox_sage = QtWidgets.QGroupBox(self.splitter_sage)
@@ -825,6 +894,7 @@ def setup_stackSage(self):
     self.pushButton_titlepage.setObjectName("pushButton_titlepage")
     self.pushButton_titlepage.setText("Titelblatt")
     self.pushButton_titlepage.setIcon(QtGui.QIcon(get_icon_path('edit.svg')))
+    self.pushButton_titlepage.clicked.connect(lambda: self.define_titlepage())
     self.verticalLayout_SageMenu2.addWidget(self.pushButton_titlepage)
 
 
@@ -2088,7 +2158,7 @@ def setup_stackFeedback(self):
     button_send.setIcon(QtGui.QIcon(get_icon_path('send.svg')))
     button_send.clicked.connect(lambda: self.pushButton_send_pressed()) 
 
-    self.adapt_choosing_list('feedback')
+    # self.adapt_choosing_list('feedback')
 
 
     # self.pushButton_send = QtWidgets.QPushButton(self.splitter_feedback_right_widget)

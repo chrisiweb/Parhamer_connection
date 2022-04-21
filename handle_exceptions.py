@@ -12,6 +12,7 @@ def report_exceptions(f):
             f(*args, **kwargs)
         except Exception as e:
             import traceback
+            QtWidgets.QApplication.restoreOverrideCursor()
             rsp = critical_window("LaMA wurde unerwartet beendet.",
             "Beim Ausführen des Programms ist ein Fehler aufgetreten und es musste daher geschlossen werden.\n\nDurch das Senden des Fehlerberichts, wird der Fehler an das LaMA-Team weitergeleitet. Programmfehler können dadurch schneller behoben werden.",
             detailed_text=traceback.format_exc(),
@@ -19,9 +20,9 @@ def report_exceptions(f):
             sendbutton=True,
             OKButton_text="LaMA beenden",
             set_width=350)
-            QtWidgets.QApplication.setOverrideCursor(
-                QtGui.QCursor(QtCore.Qt.WaitCursor)
-            )
+            # QtWidgets.QApplication.setOverrideCursor(
+            #     QtGui.QCursor(QtCore.Qt.WaitCursor)
+            # )
             if rsp == True:
                 gmail_user = "lamabugfix@gmail.com"
                 try:
