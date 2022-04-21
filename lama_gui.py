@@ -661,8 +661,21 @@ def setup_stackSearch(self):
     self.entry_suchbegriffe = create_new_lineedit(self.frame_advanced_search, "entry_suchbegriffe")
     self.horizontalLayout_advanced_search.addWidget(self.entry_suchbegriffe)
 
-    self.filter_search = create_new_button(self.frame_advanced_search, "", still_to_define)
+    self.filter_search = QtWidgets.QPushButton(self.frame_advanced_search)
     self.filter_search.setIcon(QtGui.QIcon(get_icon_path('filter.svg')))
+    filterMenu = QtWidgets.QMenu(self.frame_advanced_search)
+    # ag = QtGui.QActionGroup(self.filter_search, exclusive=False)
+    filterMenu.addAction(QtWidgets.QAction("Titel", filterMenu, checkable=True))
+    filterMenu.addAction(QtWidgets.QAction("Inhalt", filterMenu, checkable=True))
+    filterMenu.addAction(QtWidgets.QAction("Quelle", filterMenu, checkable=True))
+    filterMenu.addAction(QtWidgets.QAction("Bilder", filterMenu, checkable=True))
+
+    def filterMenu_opened():
+        
+        filterMenu.show()
+
+    filterMenu.triggered.connect(filterMenu_opened)
+    self.filter_search.setMenu(filterMenu)
     self.horizontalLayout_advanced_search.addWidget(self.filter_search)
     # self.entry_suchbegriffe.setEnabled(False)
 

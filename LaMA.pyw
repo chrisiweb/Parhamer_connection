@@ -989,6 +989,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             self.cb_no_grade_tag.hide()
             # self.cb_no_grade_tag.setChecked(False)
 
+
     def click_label_to_check(self, new_checkbox):
         if new_checkbox.isChecked() == False:
             new_checkbox.setChecked(True)
