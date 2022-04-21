@@ -971,7 +971,7 @@ def setup_stackSage(self):
     )
     self.verticalLayout_default_pkt.setObjectName("verticalLayout_default_pkt")
     self.spinBox_default_pkt = SpinBox_noWheel(self.groupBox_default_pkt)
-    self.spinBox_default_pkt.setSizePolicy(SizePolicy_minimum_fixed)
+    # self.spinBox_default_pkt.setSizePolicy(SizePolicy_minimum_fixed)
     self.spinBox_default_pkt.setValue(1)
     self.spinBox_default_pkt.setToolTip("0 = Punkte ausblenden")
     self.spinBox_default_pkt.setObjectName("spinBox_default_pkt")
@@ -1265,7 +1265,7 @@ def setup_stackCreator(self):
         "Variation vorhandender Aufgabe...",
         partial(self.button_variation_cr_pressed, "creator"),
     )
-    self.button_variation_cr.setMinimumWidth(0)
+    # self.button_variation_cr.setMinimumWidth(0)
     self.verticalLayout_variation.addWidget(self.button_variation_cr)
 
     self.verticalLayout_splitter_creator_left_widget.addWidget(self.groupBox_variation_cr)
@@ -1287,7 +1287,7 @@ def setup_stackCreator(self):
         "Aufgabe suchen...",
         partial(self.button_variation_cr_pressed, "editor"),
     )
-    self.button_choose_file.setMinimumWidth(0)
+    # self.button_choose_file.setMinimumWidth(0)
     self.verticalLayout_choose_file.addWidget(self.button_choose_file)
 
     self.verticalLayout_splitter_creator_left_widget.addWidget(self.groupBox_choose_file)
@@ -1297,7 +1297,7 @@ def setup_stackCreator(self):
     self.groupBox_grundkompetenzen_cr = QtWidgets.QGroupBox(self.splitter_creator)
     self.groupBox_grundkompetenzen_cr.setFocusPolicy(QtCore.Qt.NoFocus)
     self.groupBox_grundkompetenzen_cr.setObjectName("groupBox_grundkompetenzen_cr")
-    self.groupBox_grundkompetenzen_cr.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum))
+    # self.groupBox_grundkompetenzen_cr.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum))
     self.gridLayout_11_cr = QtWidgets.QGridLayout(self.groupBox_grundkompetenzen_cr)
     self.gridLayout_11_cr.setObjectName("gridLayout_11_cr")
     self.tab_widget_gk_cr = QtWidgets.QTabWidget(self.groupBox_grundkompetenzen_cr)
@@ -1309,6 +1309,105 @@ def setup_stackCreator(self):
     self.verticalLayout_splitter_creator_left_widget.addWidget(self.groupBox_grundkompetenzen_cr)
 
     self.groupBox_grundkompetenzen_cr.setTitle("Grundkompetenzen")
+
+
+    ### CRIA SAGE ###
+    self.groupBox_themengebiete_cria = QtWidgets.QGroupBox(self.splitter_creator)
+
+    self.groupBox_themengebiete_cria.setObjectName("groupBox_themengebiete_cria")
+    # self.groupBox_themengebiete_cria.setMaximumWidth(420)
+    self.gridLayout_11_cr_cria = QtWidgets.QGridLayout(
+        self.groupBox_themengebiete_cria
+    )
+    self.gridLayout_11_cr_cria.setObjectName("gridLayout_11_cr_cria")
+    self.tab_widget_cr_cria = QtWidgets.QTabWidget(self.groupBox_themengebiete_cria)
+
+    self.tab_widget_cr_cria.setObjectName("tab_widget_cr_cria")
+    self.tab_widget_cr_cria.setFocusPolicy(QtCore.Qt.NoFocus)
+    self.gridLayout_11_cr_cria.addWidget(self.tab_widget_cr_cria, 0, 0, 1, 1)
+    self.verticalLayout_splitter_creator_left_widget.addWidget(self.groupBox_themengebiete_cria)
+    self.groupBox_themengebiete_cria.setTitle("Themengebiete")
+    # self.groupBox_themengebiete_cria.hide()
+
+
+    for klasse in list_klassen:
+        new_tab = add_new_tab(
+            self.tab_widget_cr_cria, "{}. Klasse".format(klasse[1])
+        )
+        new_gridlayout = QtWidgets.QGridLayout(new_tab)
+        new_gridlayout.setObjectName("{}".format(new_gridlayout))
+
+        new_scrollarea = QtWidgets.QScrollArea(new_tab)
+        new_scrollarea.setObjectName("{}".format(new_scrollarea))
+        new_scrollarea.setFrameShape(QtWidgets.QFrame.NoFrame)
+        new_scrollarea.setFocusPolicy(QtCore.Qt.NoFocus)
+        new_scrollarea.setWidgetResizable(True)
+        new_scrollareacontent = QtWidgets.QWidget()
+        new_scrollareacontent.setObjectName("{}".format(new_scrollareacontent))
+
+        new_verticallayout = QtWidgets.QVBoxLayout(new_scrollareacontent)
+        new_verticallayout.setObjectName("{}".format(new_verticallayout))
+
+        combobox_kapitel = create_new_combobox(new_scrollareacontent)
+        self.dict_widget_variables[
+            "combobox_kapitel_creator_cria_{}".format(klasse)
+        ] = combobox_kapitel
+        dict_klasse_name = eval("dict_{}_name".format(klasse))
+        index = 0
+        for kapitel in dict_klasse_name:
+            add_new_option(
+                combobox_kapitel,
+                index,
+                dict_klasse_name[kapitel] + " (" + kapitel + ")",
+            )
+            index += 1
+        combobox_kapitel.currentIndexChanged.connect(
+            partial(
+                self.comboBox_kapitel_changed_cr,
+                new_scrollareacontent,
+                new_verticallayout,
+                klasse,
+                'creator',
+            )
+        )
+
+        new_verticallayout.addWidget(combobox_kapitel)
+
+        dict_klasse = eval("dict_{}".format(klasse))
+        kapitel = list(dict_klasse.keys())[0]
+
+        for unterkapitel in dict_klasse[kapitel]:
+            new_checkbox = create_new_checkbox(
+                new_scrollareacontent,
+                dict_unterkapitel[unterkapitel] + " (" + unterkapitel + ")"
+            )
+            new_checkbox.setToolTip(dict_unterkapitel[unterkapitel])
+
+            new_checkbox.stateChanged.connect(
+                partial(
+                    self.checkbox_unterkapitel_checked_cria,
+                    new_checkbox,
+                    klasse,
+                    kapitel,
+                    unterkapitel,
+                )
+            )
+            self.dict_widget_variables[
+                "checkbox_unterkapitel_creator_{0}_{1}_{2}".format(
+                    klasse, kapitel, unterkapitel
+                )
+            ] = new_checkbox
+            new_verticallayout.addWidget(new_checkbox)
+            new_checkbox.setFocusPolicy(QtCore.Qt.NoFocus)
+
+        new_verticallayout.addStretch()
+
+        new_scrollarea.setWidget(new_scrollareacontent)
+
+        new_gridlayout.addWidget(new_scrollarea, 2, 0, 1, 1)
+
+    ##########################
+
 
 
     self.groupBox_ausgew_gk_cr = create_new_groupbox(self.splitter_creator, "Auswahl")
@@ -1384,6 +1483,8 @@ def setup_stackCreator(self):
     self.create_tab_checkboxes_themen(self.tab_widget_gk_cr, "creator")
 
     ############################
+
+
 
     self.widget_basic_settings_creator = QtWidgets.QWidget(self.splitter_creator_right_widget)
     self.verticalLayout_splitter_creator_right_widget.addWidget(self.widget_basic_settings_creator)
@@ -2071,6 +2172,124 @@ def setup_stackFeedback(self):
     self.listWidget_fb.setObjectName("listWidget_fb")
     self.verticalLayout_fb.addWidget(self.listWidget_fb)
     self.listWidget_fb.itemClicked.connect(self.nummer_clicked_fb)
+
+
+    #### Feedback Cria ##########################
+    
+    self.splitter_feedback_cria_left = QtWidgets.QWidget(self.splitter_creator)
+    self.verticallayout_splitter_feedback_cria_left = create_new_verticallayout(self.splitter_feedback_cria_left)
+
+    self.comboBox_at_fb_cria = QtWidgets.QComboBox(self.splitter_feedback_cria_left)
+    self.comboBox_at_fb_cria.setObjectName("comboBox_at_fb_cria")
+    self.comboBox_at_fb_cria.addItem("Aufgabenrückmeldung")
+    self.comboBox_at_fb_cria.addItem("Allgemeine Rückmeldung")
+    self.comboBox_at_fb_cria.currentIndexChanged.connect(
+        self.comboBox_at_fb_cria_changed
+    )
+
+    self.verticallayout_splitter_feedback_cria_left.addWidget(self.comboBox_at_fb_cria)
+    # if self.chosen_program == 'cria':
+    #     self.comboBox_at_fb.setItemText(0, _translate("MainWindow", "Aufgabenrückmeldung", None))
+    #     self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Allgemeine Rückmeldung", None))
+    # self.comboBox_at_fb.currentIndexChanged.connect(self.comboBox_at_fb_changed)
+    # self.comboBox_at_fb.setFocusPolicy(QtCore.Qt.ClickFocus)
+
+    # self.gridLayout_stackFeedback.addWidget(self.comboBox_at_fb_cria, 0, 0, 1, 1)
+    # self.comboBox_at_fb_cria.hide()
+
+    self.groupBox_alle_aufgaben_fb_cria = QtWidgets.QGroupBox(self.splitter_feedback_cria_left)
+    # self.groupBox_alle_aufgaben_fb_cria.setMinimumWidth(100)
+    # self.groupBox_alle_aufgaben_fb_cria.setMaximumWidth(250)
+    # self.groupBox_alle_aufgaben_fb_cria.setMinimumSize(QtCore.QSize(140, 16777215))
+    # self.groupBox_alle_aufgaben_fb_cria.setMaximumSize(QtCore.QSize(200, 16777215))
+    self.groupBox_alle_aufgaben_fb_cria.setObjectName(
+        "groupBox_alle_aufgaben_fb_cria"
+    )
+    self.verticalLayout_fb_cria = QtWidgets.QVBoxLayout(
+        self.groupBox_alle_aufgaben_fb_cria
+    )
+    self.verticalLayout_fb_cria.setObjectName("verticalLayout_fb_cria")
+    self.comboBox_klassen_fb_cria = QtWidgets.QComboBox(
+        self.groupBox_alle_aufgaben_fb_cria
+    )
+    self.comboBox_klassen_fb_cria.setObjectName("self.comboBox_klassen_fb_cria")
+
+    self.comboBox_klassen_fb_cria.addItem("")
+    i = 1
+    for all in list_klassen:
+
+        self.comboBox_klassen_fb_cria.addItem("")
+
+        self.comboBox_klassen_fb_cria.setItemText(i, f"{all[1]}. Klasse")
+        i += 1
+
+    self.comboBox_klassen_fb_cria.currentIndexChanged.connect(
+        partial(self.comboBox_klassen_changed, "feedback")
+    )
+
+    self.comboBox_klassen_fb_cria.setFocusPolicy(QtCore.Qt.ClickFocus)
+    self.verticalLayout_fb_cria.addWidget(self.comboBox_klassen_fb_cria)
+    self.comboBox_kapitel_fb_cria = QtWidgets.QComboBox(
+        self.groupBox_alle_aufgaben_fb_cria
+    )
+    self.comboBox_kapitel_fb_cria.setObjectName("self.comboBox_kapitel_fb_cria")
+
+    # self.comboBox_kapitel_fb_cria.currentIndexChanged.connect(
+    #     partial(self.comboBox_kapitel_changed, "feedback")
+    # )
+    self.comboBox_kapitel_fb_cria.setFocusPolicy(QtCore.Qt.ClickFocus)
+    self.verticalLayout_fb_cria.addWidget(self.comboBox_kapitel_fb_cria)
+
+    self.comboBox_unterkapitel_fb_cria = QtWidgets.QComboBox(
+        self.groupBox_alle_aufgaben_fb_cria
+    )
+    self.comboBox_unterkapitel_fb_cria.setObjectName(
+        "self.comboBox_unterkapitel_fb_cria"
+    )
+
+    # self.comboBox_unterkapitel_fb_cria.currentIndexChanged.connect(
+    #     partial(self.comboBox_unterkapitel_changed, "feedback")
+    # )
+    self.comboBox_unterkapitel_fb_cria.setFocusPolicy(QtCore.Qt.ClickFocus)
+    self.verticalLayout_fb_cria.addWidget(self.comboBox_unterkapitel_fb_cria)
+
+    self.lineEdit_number_fb_cria = QtWidgets.QLineEdit(
+        self.groupBox_alle_aufgaben_fb_cria
+    )
+    self.lineEdit_number_fb_cria.setObjectName("lineEdit_number_fb_cria")
+
+    self.lineEdit_number_fb_cria.textChanged.connect(
+        partial(self.adapt_choosing_list, "feedback")
+    )
+    self.verticalLayout_fb_cria.addWidget(self.lineEdit_number_fb_cria)
+    self.listWidget_fb_cria = QtWidgets.QListWidget(
+        self.groupBox_alle_aufgaben_fb_cria
+    )
+    self.listWidget_fb_cria.setObjectName("listWidget_fb_cria")
+    self.verticalLayout_fb_cria.addWidget(self.listWidget_fb_cria)
+    self.listWidget_fb_cria.itemClicked.connect(self.nummer_clicked_fb)
+    # self.gridLayout_stackFeedback.addWidget(self.groupBox_alle_aufgaben_fb_cria, 1, 0, 1, 1)
+    self.groupBox_alle_aufgaben_fb_cria.setTitle("Aufgaben")
+    self.verticallayout_splitter_feedback_cria_left.addWidget(self.groupBox_alle_aufgaben_fb_cria)
+    # self.groupBox_alle_aufgaben_fb_cria.hide()
+
+    self.comboBox_kapitel_fb_cria.addItem("")
+    for all in dict_k1_name:
+        self.comboBox_kapitel_fb_cria.addItem(dict_k1_name[all] + " (" + all + ")")
+    ###############################################
+
+
+    self.comboBox_kapitel_fb_cria.currentIndexChanged.connect(
+        partial(self.comboBox_kapitel_changed, "feedback")
+    )
+
+    self.comboBox_unterkapitel_fb_cria.currentIndexChanged.connect(
+        partial(self.comboBox_unterkapitel_changed, "feedback")
+    )
+
+
+
+
 
     # self.gridLayout_stackFeedback.addWidget(self.groupBox_alle_aufgaben_fb, 0, 0, 5, 1)
     self.groupBox_alle_aufgaben_fb.setTitle("Aufgaben")
