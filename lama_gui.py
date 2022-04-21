@@ -2115,14 +2115,21 @@ def setup_stackFeedback(self):
     self.splitter_feedback.setObjectName("splitter_feedback")
     self.gridLayout_stackFeedback.addWidget(self.splitter_feedback, 0, 0, 1, 1)
 
-    self.groupBox_alle_aufgaben_fb = QtWidgets.QGroupBox(self.splitter_feedback)
+
+    self.splitter_feedback_left_widget = QtWidgets.QWidget(self.splitter_feedback)
+    self.splitter_feedback_left_widget.setMinimumSize(1,1)  
+    self.verticalLayout_splitter_feedback_left_widget = create_new_verticallayout(self.splitter_feedback_left_widget)
+    self.verticalLayout_splitter_feedback_left_widget.setContentsMargins(0,0,0,0)
+
+
+    self.groupBox_alle_aufgaben_fb = QtWidgets.QGroupBox(self.splitter_feedback_left_widget)
     self.groupBox_alle_aufgaben_fb.setMinimumSize(1,1)
-    # self.groupBox_alle_aufgaben_fb.resize(50,100) 
-
-
     self.groupBox_alle_aufgaben_fb.setObjectName("groupBox_alle_aufgaben_fb")
+    self.verticalLayout_splitter_feedback_left_widget.addWidget(self.groupBox_alle_aufgaben_fb)
+
     self.verticalLayout_fb = QtWidgets.QVBoxLayout(self.groupBox_alle_aufgaben_fb)
     self.verticalLayout_fb.setObjectName("verticalLayout_fb")
+
 
     self.comboBox_at_fb = QtWidgets.QComboBox(self.groupBox_alle_aufgaben_fb)
     # self.comboBox_at_fb.setSizePolicy(SizePolicy_fixed)
@@ -2174,12 +2181,10 @@ def setup_stackFeedback(self):
     self.listWidget_fb.itemClicked.connect(self.nummer_clicked_fb)
 
 
+
     #### Feedback Cria ##########################
     
-    self.splitter_feedback_cria_left = QtWidgets.QWidget(self.splitter_creator)
-    self.verticallayout_splitter_feedback_cria_left = create_new_verticallayout(self.splitter_feedback_cria_left)
-
-    self.comboBox_at_fb_cria = QtWidgets.QComboBox(self.splitter_feedback_cria_left)
+    self.comboBox_at_fb_cria = QtWidgets.QComboBox(self.splitter_feedback_left_widget)
     self.comboBox_at_fb_cria.setObjectName("comboBox_at_fb_cria")
     self.comboBox_at_fb_cria.addItem("Aufgabenrückmeldung")
     self.comboBox_at_fb_cria.addItem("Allgemeine Rückmeldung")
@@ -2187,7 +2192,7 @@ def setup_stackFeedback(self):
         self.comboBox_at_fb_cria_changed
     )
 
-    self.verticallayout_splitter_feedback_cria_left.addWidget(self.comboBox_at_fb_cria)
+    self.verticalLayout_splitter_feedback_left_widget.addWidget(self.comboBox_at_fb_cria)
     # if self.chosen_program == 'cria':
     #     self.comboBox_at_fb.setItemText(0, _translate("MainWindow", "Aufgabenrückmeldung", None))
     #     self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Allgemeine Rückmeldung", None))
@@ -2197,14 +2202,10 @@ def setup_stackFeedback(self):
     # self.gridLayout_stackFeedback.addWidget(self.comboBox_at_fb_cria, 0, 0, 1, 1)
     # self.comboBox_at_fb_cria.hide()
 
-    self.groupBox_alle_aufgaben_fb_cria = QtWidgets.QGroupBox(self.splitter_feedback_cria_left)
-    # self.groupBox_alle_aufgaben_fb_cria.setMinimumWidth(100)
-    # self.groupBox_alle_aufgaben_fb_cria.setMaximumWidth(250)
-    # self.groupBox_alle_aufgaben_fb_cria.setMinimumSize(QtCore.QSize(140, 16777215))
-    # self.groupBox_alle_aufgaben_fb_cria.setMaximumSize(QtCore.QSize(200, 16777215))
-    self.groupBox_alle_aufgaben_fb_cria.setObjectName(
-        "groupBox_alle_aufgaben_fb_cria"
-    )
+    self.groupBox_alle_aufgaben_fb_cria = QtWidgets.QGroupBox(self.splitter_feedback_left_widget)
+    self.groupBox_alle_aufgaben_fb_cria.setObjectName("groupBox_alle_aufgaben_fb_cria")
+    self.verticalLayout_splitter_feedback_left_widget.addWidget(self.groupBox_alle_aufgaben_fb_cria)
+
     self.verticalLayout_fb_cria = QtWidgets.QVBoxLayout(
         self.groupBox_alle_aufgaben_fb_cria
     )
@@ -2270,7 +2271,7 @@ def setup_stackFeedback(self):
     self.listWidget_fb_cria.itemClicked.connect(self.nummer_clicked_fb)
     # self.gridLayout_stackFeedback.addWidget(self.groupBox_alle_aufgaben_fb_cria, 1, 0, 1, 1)
     self.groupBox_alle_aufgaben_fb_cria.setTitle("Aufgaben")
-    self.verticallayout_splitter_feedback_cria_left.addWidget(self.groupBox_alle_aufgaben_fb_cria)
+    
     # self.groupBox_alle_aufgaben_fb_cria.hide()
 
     self.comboBox_kapitel_fb_cria.addItem("")

@@ -320,12 +320,6 @@ class Ui_MainWindow(object):
         
 
 
-        # if self.chosen_program == 'cria':
-        #     self.combobox_aufgabentyp.hide()
-        #     self.label_aufgabentyp.hide()
- 
-
-
         #### Warnung ### Hinweis ####
         # self.label_warnung = QtWidgets.QLabel(self.centralwidget)
         # self.label_warnung.setWordWrap(True)
@@ -346,10 +340,6 @@ class Ui_MainWindow(object):
         # self.label_warnung.hide()
         #########################
 
-        ###########################################################################
-        ##########################################################################
-
-
         #######################################################
         ############ Stack Sage ###################
         #######################################################
@@ -363,21 +353,12 @@ class Ui_MainWindow(object):
 
         setup_stackCreator(self)
 
-        
-
-
-        ###########################
-
 
         #######################################################
         ############ Stack Feedback ###################
         #######################################################
 
         setup_stackFeedback(self)
-
-
-
-
 
 
         ####################################################
@@ -6069,7 +6050,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.adapt_choosing_list(list_mode)
 
     @report_exceptions
-    def comboBox_kapitel_changed(self, list_mode):
+    def comboBox_kapitel_changed(self, list_mode, checked=False): # prevent error decorator
         # klasse = self.get_klasse(list_mode)
         if list_mode == "sage":
             combobox_klassen = self.comboBox_klassen
@@ -6835,7 +6816,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     @report_exceptions
     def update_gui(self, chosen_gui):
-        print(chosen_gui)
+        # print(chosen_gui)
 
         if chosen_gui == "widgets_search":
             self.stackMainWindow.setCurrentIndex(0)
@@ -6849,7 +6830,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.stackMainWindow.minimumSizeHint()
         if self.chosen_program == "cria":
             chosen_gui = chosen_gui + "_cria"
-        print(chosen_gui)
+        # print(chosen_gui)
 
 
         chosen_gui_list = eval(chosen_gui)
@@ -6876,6 +6857,21 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             else:
                 exec("%s.show()" % all)
 
+        if chosen_gui == "widgets_search":
+            if self.combobox_aufgabentyp.currentIndex() == 0:
+                self.combobox_searchtype.hide()
+        if chosen_gui == "widgets_sage" or chosen_gui == "widgets_sage_cria":
+            self.MainWindow.setTabOrder(self.spinBox_nummer, self.dateEdit)
+            self.MainWindow.setTabOrder(self.dateEdit, self.lineEdit_klasse_sage)
+            self.adapt_choosing_list("sage")
+        if chosen_gui == "widgets_feedback" or chosen_gui == "widgets_feedback_cria":
+            self.adapt_choosing_list("feedback")
+
+
+        if self.developer_mode_active == False:
+            self.menuBar.removeAction(self.menuDeveloper.menuAction())
+
+        self.check_admin_entry()
         return
 
         #     chosen_gui_list = eval(chosen_gui)
