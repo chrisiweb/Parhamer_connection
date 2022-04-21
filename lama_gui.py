@@ -18,6 +18,7 @@ from predefined_size_policy import SizePolicy_fixed_height, SizePolicy_fixed, Si
 from config import *
 from functools import partial
 from create_pdf import prepare_tex_for_pdf
+from standard_dialog_windows import warning_window
 
 def setup_MenuBar(self):
     MainWindow = self.MainWindow
@@ -665,14 +666,49 @@ def setup_stackSearch(self):
     self.filter_search.setIcon(QtGui.QIcon(get_icon_path('filter.svg')))
     filterMenu = QtWidgets.QMenu(self.frame_advanced_search)
     # ag = QtGui.QActionGroup(self.filter_search, exclusive=False)
-    filterMenu.addAction(QtWidgets.QAction("Titel", filterMenu, checkable=True))
-    filterMenu.addAction(QtWidgets.QAction("Inhalt", filterMenu, checkable=True))
-    filterMenu.addAction(QtWidgets.QAction("Quelle", filterMenu, checkable=True))
-    filterMenu.addAction(QtWidgets.QAction("Bilder", filterMenu, checkable=True))
 
-    def filterMenu_opened():
-        
+    action_titel = QtWidgets.QAction("Titel", filterMenu)
+    filterMenu.addAction(action_titel)
+    action_titel.setCheckable(True)
+    action_titel.setChecked(True)
+
+    action_inhalt = QtWidgets.QAction("Inhalt", filterMenu)
+    filterMenu.addAction(action_inhalt)
+    action_inhalt.setCheckable(True)
+    action_inhalt.setChecked(True)
+
+    action_quelle = QtWidgets.QAction("Quelle", filterMenu)
+    filterMenu.addAction(action_quelle)
+    action_quelle.setCheckable(True)
+    action_quelle.setChecked(True)
+
+    action_bilder = QtWidgets.QAction("Bilder", filterMenu)
+    filterMenu.addAction(action_bilder)
+    action_bilder.setCheckable(True)
+    action_bilder.setChecked(True)
+
+    action_id = QtWidgets.QAction("Aufgaben-ID", filterMenu)
+    filterMenu.addAction(action_id)
+    action_id.setCheckable(True)
+    action_id.setChecked(True)
+    # action_inhalt = filterMenu.addAction(QtWidgets.QAction("Inhalt", filterMenu, checkable=True))
+    # action_titel.setChecked(True)
+    # action_inhalt.setChecked(True)
+    # filterMenu.addAction(QtWidgets.QAction("Quelle", filterMenu, checkable=True))
+    # filterMenu.addAction(QtWidgets.QAction("Bilder", filterMenu, checkable=True))
+    # filterMenu.addAction(QtWidgets.QAction("Aufgaben-ID", filterMenu, checkable=True))
+    self.set_filters = {"Titel", "Inhalt", "Quelle", "Bilder", "Aufgaben-ID"}
+    def filterMenu_opened(action):
+        if action.isChecked():
+            self.set_filters.add(action.text())
+        else:
+            self.set_filters.remove(action.text())
+            if len(self.set_filters)==0:
+                warning_window("Es muss mindestens ein Suchkriterium ausgewählt werden.")
+                self.set_filters.add(action.text())
+                action.setChecked(True)
         filterMenu.show()
+
 
     filterMenu.triggered.connect(filterMenu_opened)
     self.filter_search.setMenu(filterMenu)

@@ -7,6 +7,8 @@ import re
 import json
 import subprocess
 
+from numpy import string_
+
 from config_start import path_programm, path_localappdata_lama, lama_settings_file
 from config import (
     config_file,
@@ -299,19 +301,31 @@ def search_in_database(self,current_program, database,suchbegriffe):
             return False     
 
         return True
-   
+
+
     if suchbegriffe['erweiterte_suche'] == "":
-        erweiterte_suche = eval("_file_.titel.test(search_True)")
-    elif self.comboBox_suchbegriffe.currentText() == "Titel":
-        erweiterte_suche = eval("_file_.titel.test(lineedit_in_erweitert)")
-    elif self.comboBox_suchbegriffe.currentText() == "Inhalt":
-        erweiterte_suche = eval("_file_.content.test(lineedit_in_erweitert)")
-    elif self.comboBox_suchbegriffe.currentText() == "Quelle":
-        erweiterte_suche = eval("_file_.quelle.test(lineedit_in_erweitert)")
-    elif self.comboBox_suchbegriffe.currentText() == "Bilder":
-        erweiterte_suche = _file_.bilder.test(lineedit_in_bilder)
-    elif self.comboBox_suchbegriffe.currentText() == "Aufgaben-ID":
-        erweiterte_suche = _file_.name.test(lineedit_in_name)
+        suche_complete = eval("_file_.titel.test(search_True)")
+    else:
+        string_suche = ""
+        for filter in self.set_filters:
+            if filter == "Titel":
+                erweiterte_suche = "_file_.titel.test(lineedit_in_erweitert)"
+            elif filter == "Inhalt":
+                erweiterte_suche = "_file_.content.test(lineedit_in_erweitert)"
+            elif filter == "Quelle":
+                erweiterte_suche = "_file_.quelle.test(lineedit_in_erweitert)"
+            elif filter == "Bilder":
+                erweiterte_suche = "_file_.bilder.test(lineedit_in_bilder)"
+            elif filter == "Aufgaben-ID":
+                erweiterte_suche = "_file_.name.test(lineedit_in_name)"
+            
+            if string_suche == "":
+                string_suche = erweiterte_suche
+            else:
+                string_suche = f"{string_suche} | {erweiterte_suche}"
+        
+        suche_complete = eval(string_suche)
+
 
     gesammeltedateien = []
     if current_program == 'lama_1' or (current_program == 'cria' and self.combobox_searchtype.currentIndex()==0):
@@ -321,7 +335,7 @@ def search_in_database(self,current_program, database,suchbegriffe):
                 (_file_.af.test(string_in_list_af)) &
                 (_file_.klasse.test(string_in_list_klasse)) &
                 (_file_.info.test(string_in_list_info)) &
-                (erweiterte_suche) &
+                (suche_complete) &
                 (_file_.draft.test(include_drafts))
             )
         else:
