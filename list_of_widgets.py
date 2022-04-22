@@ -22,6 +22,8 @@ widgets_create = [
     "self.actionFeedback",
     "self.groupBox_variation_cr",
     "self.groupBox_grundkompetenzen_cr",
+    "self.pushButton_vorschau_edit",
+    "self.pushButton_save",
 ]
 
 widgets_edit = [
@@ -33,6 +35,10 @@ widgets_edit = [
     "self.actionFeedback",
     "self.groupBox_choose_file",
     "self.groupBox_grundkompetenzen_cr",
+    "self.pushButton_vorschau_edit",
+    "self.pushButton_delete_file",
+    "self.pushButton_save_as_variation_edit",
+    "self.pushButton_save_edit",
 ]
 
 widgets_sage = [
@@ -95,6 +101,8 @@ widgets_create_cria = [
     "self.actionEdit_Files",
     "self.actionFeedback",
     "self.groupBox_themengebiete_cria",
+    "self.pushButton_vorschau_edit",
+    "self.pushButton_save",
 
 ]
 
@@ -105,7 +113,12 @@ widgets_edit_cria = [
     'self.actionSage',
     "self.actionNeu",
     "self.actionFeedback",
+    "self.groupBox_choose_file",
     "self.groupBox_themengebiete_cria",
+    "self.pushButton_vorschau_edit",
+    "self.pushButton_delete_file",
+    "self.pushButton_save_as_variation_edit",
+    "self.pushButton_save_edit",
 ]
 
 widgets_feedback_cria = [

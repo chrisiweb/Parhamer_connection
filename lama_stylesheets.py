@@ -173,6 +173,13 @@ StyleSheet_application = """
         width: 50px;
     }}
 
+    #filter_search {{
+        padding-left: -2px;
+        padding-right: 5px;
+        padding-top: 3px;
+        padding-bottom: 3px;  
+    }}
+
 """.format(
     get_icon_path("chevron-left.svg"),
     get_icon_path("chevron-right.svg"),

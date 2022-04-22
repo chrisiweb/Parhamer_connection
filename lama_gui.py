@@ -663,6 +663,7 @@ def setup_stackSearch(self):
     self.horizontalLayout_advanced_search.addWidget(self.entry_suchbegriffe)
 
     self.filter_search = QtWidgets.QPushButton(self.frame_advanced_search)
+    self.filter_search.setObjectName("filter_search")
     self.filter_search.setIcon(QtGui.QIcon(get_icon_path('filter.svg')))
     filterMenu = QtWidgets.QMenu(self.frame_advanced_search)
     # ag = QtGui.QActionGroup(self.filter_search, exclusive=False)
@@ -1474,8 +1475,9 @@ def setup_stackCreator(self):
         self.splitter_creator, "Bilder (klicken, um Bilder zu entfernen)"
     )
 
-    self.gridLayout_13 = QtWidgets.QGridLayout(self.groupBox_bilder)
-    self.gridLayout_13.setObjectName("gridLayout_13")
+    self.verticalLayout_bilder = create_new_verticallayout(self.groupBox_bilder)
+    # self.gridLayout_13 = QtWidgets.QGridLayout(self.groupBox_bilder)
+    # self.gridLayout_13.setObjectName("gridLayout_13")
     self.scrollArea = QtWidgets.QScrollArea(self.groupBox_bilder)
     self.scrollArea.setWidgetResizable(True)
     self.scrollArea.setObjectName("scrollArea")
@@ -1484,23 +1486,25 @@ def setup_stackCreator(self):
     self.scrollAreaWidgetContents_bilder = QtWidgets.QWidget()
 
     self.scrollAreaWidgetContents_bilder.setObjectName("scrollAreaWidgetContents_bilder")
-    self.verticalLayout = QtWidgets.QVBoxLayout(
+    self.verticalLayout_bilder2 = QtWidgets.QVBoxLayout(
         self.scrollAreaWidgetContents_bilder
     )
-    self.verticalLayout.setObjectName("verticalLayout")
+    self.verticalLayout_bilder2.setObjectName("verticalLayout")
     self.scrollArea.setWidget(self.scrollAreaWidgetContents_bilder)
-    self.gridLayout_13.addWidget(self.scrollArea, 1, 0, 1, 1)
-    self.groupBox_bilder.setTitle("Bilder (klicken, um Bilder zu entfernen)")
-    self.groupBox_bilder.setSizePolicy(SizePolicy_maximum_height)
+    self.verticalLayout_bilder.addWidget(self.scrollArea)
+    self.groupBox_bilder.setTitle("Bilder")
+    # self.groupBox_bilder.setSizePolicy(SizePolicy_maximum_height)
 
+   
+    self.verticalLayout_bilder2.addStretch()
+    self.btn_add_image = create_new_button(
+        self.groupBox_bilder, "", self.btn_add_image_pressed
+    )
+    self.btn_add_image.setIcon(QtGui.QIcon(get_icon_path('image.svg')))
+    self.verticalLayout_bilder2.addWidget(self.btn_add_image)
+    
 
     self.verticalLayout_splitter_creator_left_widget.addWidget(self.groupBox_bilder)
-
-    self.btn_add_image = create_new_button(
-        self.groupBox_bilder, "Hinzufügen", self.btn_add_image_pressed
-    )
-    self.verticalLayout.addWidget(self.btn_add_image)
-
     #### CREATE CHECKBOXES ####
     ##### AG #####
     self.create_tab_checkboxes_gk(
@@ -1733,7 +1737,7 @@ def setup_stackCreator(self):
     # self.pushButton_delete_file.setStyleSheet("color: red")
     self.pushButton_delete_file.setSizePolicy(SizePolicy_fixed)
     self.horizontalLayout_creatorButtons.addWidget(self.pushButton_delete_file)
-    self.pushButton_delete_file.hide()
+    # self.pushButton_delete_file.hide()
 
     self.pushButton_save_as_variation_edit = create_new_button(
         self.widgetcreatorButtons,
@@ -1743,7 +1747,7 @@ def setup_stackCreator(self):
     self.pushButton_save_as_variation_edit.setIcon(QtGui.QIcon(get_icon_path('git-branch.svg')))
     self.pushButton_save_as_variation_edit.setSizePolicy(SizePolicy_fixed)
     self.horizontalLayout_creatorButtons.addWidget(self.pushButton_save_as_variation_edit)
-    self.pushButton_save_as_variation_edit.hide()
+    # self.pushButton_save_as_variation_edit.hide()
 
     self.pushButton_save_edit = create_new_button(
         self.stackCreator, "Änderung speichern", self.button_save_edit_pressed
@@ -1752,7 +1756,7 @@ def setup_stackCreator(self):
     self.pushButton_save_edit.setSizePolicy(SizePolicy_fixed)
     self.pushButton_save_edit.setFocusPolicy(QtCore.Qt.NoFocus)
     self.horizontalLayout_creatorButtons.addWidget(self.pushButton_save_edit)
-    self.pushButton_save_edit.hide()
+    # self.pushButton_save_edit.hide()
 
     self.lineEdit_titel.setFocus()
     self.tab_widget_gk_cr.setCurrentIndex(0)

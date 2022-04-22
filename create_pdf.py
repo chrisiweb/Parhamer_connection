@@ -343,7 +343,7 @@ def search_in_database(self,current_program, database,suchbegriffe):
                 (_file_.af.test(string_in_list_af)) &
                 # (_file_.klasse.test(string_in_list_klasse)) &
                 (_file_.info.test(string_in_list_info)) &
-                (erweiterte_suche) &
+                (suche_complete) &
                 (_file_.draft.test(include_drafts))
             )
 
@@ -360,7 +360,7 @@ def search_in_database(self,current_program, database,suchbegriffe):
                 (_file_.af.test(string_in_list_af)) &
                 (_file_.klasse.test(string_in_list_klasse)) &
                 (_file_.info.test(string_in_list_info)) &
-                (erweiterte_suche) &
+                (suche_complete) &
                 (_file_.draft.test(include_drafts))
             )
         else:
@@ -368,7 +368,7 @@ def search_in_database(self,current_program, database,suchbegriffe):
                 (_file_.af.test(string_in_list_af)) &
                 # (_file_.klasse.test(string_in_list_klasse)) &
                 (_file_.info.test(string_in_list_info)) &
-                (erweiterte_suche) &
+                (suche_complete) &
                 (_file_.draft.test(include_drafts))
             )        
   
@@ -383,7 +383,7 @@ def search_in_database(self,current_program, database,suchbegriffe):
             gesammeltedateien = table_lama.search(
                 (_file_.klasse.test(string_in_list_klasse)) &
                 (_file_.info.test(string_in_list_info)) &
-                (erweiterte_suche) &
+                (suche_complete) &
                 (_file_.draft.test(include_drafts))
             )
         elif self.combobox_searchtype.currentIndex()==0:
@@ -391,7 +391,7 @@ def search_in_database(self,current_program, database,suchbegriffe):
                 (_file_.themen.any(suchbegriffe['themen'])) &
                 (_file_.klasse.test(string_in_list_klasse)) &
                 (_file_.info.test(string_in_list_info)) &
-                (erweiterte_suche) &
+                (suche_complete) &
                 (_file_.draft.test(include_drafts))
             )
 
@@ -400,7 +400,7 @@ def search_in_database(self,current_program, database,suchbegriffe):
                 (_file_.themen.test(gk_in_list)) &
                 (_file_.klasse.test(string_in_list_klasse)) &
                 (_file_.info.test(string_in_list_info)) &
-                (erweiterte_suche) &
+                (suche_complete) &
                 (_file_.draft.test(include_drafts))
             )      
         
