@@ -14,7 +14,7 @@ from create_new_widgets import (
     add_new_option,
     add_new_tab,
     )
-from predefined_size_policy import SizePolicy_fixed_height, SizePolicy_fixed, SizePolicy_minimum_fixed, SizePolicy_maximum_height
+from predefined_size_policy import SizePolicy_fixed_height, SizePolicy_fixed, SizePolicy_minimum_fixed, SizePolicy_maximum_height, SizePolicy_maximum_width
 from config import *
 from functools import partial
 from create_pdf import prepare_tex_for_pdf
@@ -1474,8 +1474,10 @@ def setup_stackCreator(self):
     self.groupBox_bilder = create_new_groupbox(
         self.splitter_creator, "Bilder (klicken, um Bilder zu entfernen)"
     )
+    self.groupBox_bilder.setSizePolicy(SizePolicy_maximum_height)
 
     self.verticalLayout_bilder = create_new_verticallayout(self.groupBox_bilder)
+    self.verticalLayout_bilder.setContentsMargins(0,5,0,0)
     # self.gridLayout_13 = QtWidgets.QGridLayout(self.groupBox_bilder)
     # self.gridLayout_13.setObjectName("gridLayout_13")
     self.scrollArea = QtWidgets.QScrollArea(self.groupBox_bilder)
@@ -1489,6 +1491,7 @@ def setup_stackCreator(self):
     self.verticalLayout_bilder2 = QtWidgets.QVBoxLayout(
         self.scrollAreaWidgetContents_bilder
     )
+    self.verticalLayout_bilder2.setContentsMargins(0,2,0,5)
     self.verticalLayout_bilder2.setObjectName("verticalLayout")
     self.scrollArea.setWidget(self.scrollAreaWidgetContents_bilder)
     self.verticalLayout_bilder.addWidget(self.scrollArea)
@@ -1500,7 +1503,8 @@ def setup_stackCreator(self):
     self.btn_add_image = create_new_button(
         self.groupBox_bilder, "", self.btn_add_image_pressed
     )
-    self.btn_add_image.setIcon(QtGui.QIcon(get_icon_path('image.svg')))
+    self.btn_add_image.setIcon(QtGui.QIcon(get_icon_path('plus-square.svg')))
+    # self.btn_add_image.setSizePolicy(SizePolicy_fixed)
     self.verticalLayout_bilder2.addWidget(self.btn_add_image)
     
 

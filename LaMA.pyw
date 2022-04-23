@@ -1644,9 +1644,12 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         self.chosen_variation = None
         self.reset_variation()
 
-        for picture in list(self.dict_widget_variables.keys())[:]:
-            if picture.startswith("label_bild_creator_"):
-                self.del_picture(picture, question=False)
+        # print("reset images missing!")
+        for image in list(self.dict_picture_path.keys())[:]:
+            self.del_picture(image, question=False)    
+        # for picture in list(self.dict_widget_variables.keys())[:]:
+        #     if picture.startswith("label_bild_creator_"):
+        #         self.del_picture(picture, question=False)
 
 
         self.lineEdit_titel.setText(_translate("MainWindow", "", None))
@@ -2607,19 +2610,34 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     def add_image_label(self, image_name, image_path):
         self.dict_picture_path[image_name] = image_path
-        label_picture = create_new_label(
-            self.scrollAreaWidgetContents_bilder, image_name, False, True
-        )
 
-        label_picture_name = "label_bild_creator_{}".format(image_name)
-        self.dict_widget_variables[label_picture_name] = label_picture
+        widget_picture = QtWidgets.QWidget(self.groupBox_bilder)
+        self.verticalLayout_bilder2.insertWidget(len(self.verticalLayout_bilder2) - 2, widget_picture)
+        # self.verticalLayout_bilder.addWidget(widget_picture)
+
+        horizontalLayoutWidget_picture = create_new_horizontallayout(widget_picture)
+        horizontalLayoutWidget_picture.setContentsMargins(0,0,0,0)
+        label_picture = create_new_label(widget_picture, image_name)       
+        horizontalLayoutWidget_picture.addWidget(label_picture)
+
+        # widget_picture_name = "widget_bild_creator_{}".format(image_name)
+        self.dict_widget_variables[image_name] = widget_picture
+
+        horizontalLayoutWidget_picture.addStretch()
+
+        pushButton_deletePicture = create_new_button(widget_picture, "", partial(self.del_picture, image_name))
+        pushButton_deletePicture.setIcon(QtGui.QIcon(get_icon_path('trash-2.svg')))
+        pushButton_deletePicture.setSizePolicy(SizePolicy_fixed)
+        horizontalLayoutWidget_picture.addWidget(pushButton_deletePicture)
+
+
         # if clickable == True:
-        label_picture.clicked.connect(
-            partial(self.del_picture, label_picture_name)
-        )
+        # label_picture.clicked.connect(
+            
+        # )
         # else:
         #     label_picture.setStyleSheet("color: gray")
-        self.verticalLayout.addWidget(label_picture)
+        # self.verticalLayout.addWidget(label_picture)
 
     def open_msg_box_choose_image(self):
         msg = QtWidgets.QMessageBox()
@@ -2631,8 +2649,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No | QtWidgets.QMessageBox.Cancel)
         button_new = msg.button(QtWidgets.QMessageBox.Yes)
         button_new.setText("Neue Grafik hinzufügen")
+        button_new.setIcon(QtGui.QIcon(get_icon_path('image.svg')))
         button_existing = msg.button(QtWidgets.QMessageBox.No)
         button_existing.setText("Vorhande Grafik verknüpfen")
+        button_existing.setIcon(QtGui.QIcon(get_icon_path('link.svg')))
         button_cancel = msg.button(QtWidgets.QMessageBox.Cancel)
         button_cancel.setText("Abbrechen")
         response = msg.exec_()
@@ -2683,14 +2703,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             else:
                 critical_window('Die ausgewählte Grafik(en) ist/sind noch nicht in der Datenbank enthalten. Bitte wählen Sie "Neue Grafik hinzufügen", um die Grafik einzubinden.')
                 return
-        i = len(self.dict_picture_path)
+        # i = len(self.dict_picture_path)
 
         # self.label_bild_leer.hide()
         for all in list_filename[0]:
             _, tail = os.path.split(all)
 
             if tail in self.dict_picture_path.keys():
-                pass
+                information_window("Eine Grafik mit dem Namen {} wurde bereits hinzugefügt.".format(tail))
             else:
                 if mode == 'existing':
                     self.add_image_label(tail, 'no_copy')
@@ -2698,24 +2718,26 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     # _, tail = os.path.split(all)
                     self.add_image_label(tail, all)
 
-        self.verticalLayout.addWidget(self.btn_add_image)
+        # self.verticalLayout_bilder.addWidget(self.btn_add_image)
 
     @report_exceptions
-    def del_picture(self, picture, question=True):
+    def del_picture(self, image_name, question=True):
         if question == True:
             rsp = question_window(
                 'Sind Sie sicher, dass Sie die Grafik "{}" entfernen möchten?'.format(
-                    self.dict_widget_variables[picture].text() # self.dict_picture_path[self.dict_widget_variables[picture].text()]
+                    image_name # self.dict_picture_path[self.dict_widget_variables[picture].text()]
                 )
             )
             if rsp == False:
                 return
-        del self.dict_picture_path[self.dict_widget_variables[picture].text()]
-        self.dict_widget_variables[picture].hide()
+        del self.dict_picture_path[image_name]
+
+        self.dict_widget_variables[image_name].setParent(None)
+        # self.dict_widget_variables[image_name].hide()
         # if len(self.dict_picture_path) == 0:
         #     self.label_bild_leer.show()
 
-        del self.dict_widget_variables[picture]
+        del self.dict_widget_variables[image_name]
 
     @report_exceptions
     def convert_image_eps_clicked(self):
