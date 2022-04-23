@@ -6,7 +6,7 @@ from PyQt5.QtGui import QDrag, QPixmap
 from create_new_widgets import create_new_label, create_new_verticallayout
 
 
-class DragItem(QGroupBox):
+class DragDropGroupBox(QGroupBox):
 
     # def __init__(self, *args, **kwargs):
     #     super().__init__(*args, **kwargs)
@@ -33,7 +33,7 @@ class DragItem(QGroupBox):
             drag.exec_(Qt.MoveAction)
 
 
-class DragWidget(QWidget):
+class DragDropWidget(QWidget):
     """
     Generic list sorting handler.
     """
@@ -91,10 +91,10 @@ class MainWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.drag = DragWidget()
+        self.drag = DragDropWidget()
         
         for i in range(4):
-            item = DragItem()
+            item = DragDropGroupBox()
             item.setTitle("NEU")
             verticallayout = create_new_verticallayout(item)
             label = create_new_label(item, f"Das ist ein Test {i}")
