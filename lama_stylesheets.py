@@ -93,14 +93,20 @@ StyleSheet_application = """
         margin-top: 0.5em;       
     }}
 
-    #frame_datum {{
+    /*#widget_datum {{
         border-color: #6E8784;
         border-width: 1px;
         border-style: solid;
         border-radius: 4px;
         margin-top: 0.5em;       
     }}
-
+    #widgetNummer {{
+        border-color: #6E8784;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 4px;
+        margin-top: 0.5em;       
+    }}*/
 
     #entry_suchbegriffe{{
         border-color: #6E8784;

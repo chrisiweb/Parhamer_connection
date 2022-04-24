@@ -14,7 +14,7 @@ from create_new_widgets import (
     add_new_option,
     add_new_tab,
     )
-from predefined_size_policy import SizePolicy_fixed_height, SizePolicy_fixed, SizePolicy_minimum_fixed, SizePolicy_maximum_height, SizePolicy_maximum_width
+from predefined_size_policy import SizePolicy_fixed_height, SizePolicy_fixed, SizePolicy_fixed_width, SizePolicy_minimum_fixed, SizePolicy_maximum_height, SizePolicy_maximum_width
 from config import *
 from functools import partial
 from create_pdf import prepare_tex_for_pdf
@@ -950,75 +950,79 @@ def setup_stackSage(self):
 
     self.widget_SageMenu = QtWidgets.QWidget(self.groupBox_sage)
     self.gridLayout_5.addWidget(self.widget_SageMenu, 0,0,1,1)
-    self.horizontalLayout_SageMenu = create_new_horizontallayout(self.widget_SageMenu)
-    self.horizontalLayout_SageMenu.setContentsMargins(0,0,0,0)
+    self.gridLayout_SageMenu = create_new_gridlayout(self.widget_SageMenu)
+    self.gridLayout_SageMenu.setContentsMargins(0,0,0,0)
 
 
-    self.frameNummer = QtWidgets.QFrame(self.widget_SageMenu)
-    self.frameNummer.setObjectName("frameNummer")
+    self.widgetNummer = QtWidgets.QWidget(self.widget_SageMenu)
+    self.widgetNummer.setObjectName("widgetNummer")
+    
 
 
+    self.horizontalLayout_widgetNummer = create_new_horizontallayout(self.widgetNummer)
+    self.horizontalLayout_widgetNummer.setContentsMargins(0,0,0,0)
 
-    self.horizontalLayout_frameNummer = create_new_horizontallayout(self.frameNummer)
-
-
-    self.labelNummer = create_new_label(self.frameNummer,"")
+    self.labelNummer = create_new_label(self.widgetNummer,"")
     self.labelNummer.setPixmap(QtGui.QPixmap(get_icon_path("hash.svg")))
     # self.label_lamaLogo.setFixedHeight(30)
     self.labelNummer.setFixedSize(QtCore.QSize(15,15))
     self.labelNummer.setScaledContents(True)
-    self.horizontalLayout_frameNummer.addWidget(self.labelNummer)
+    self.horizontalLayout_widgetNummer.addWidget(self.labelNummer)
 
-    self.spinBox_nummer = QtWidgets.QSpinBox(self.frameNummer)
+    self.spinBox_nummer = QtWidgets.QSpinBox(self.widgetNummer)
     self.spinBox_nummer.setValue(1)
     self.spinBox_nummer_setvalue = 1
     self.spinBox_nummer.setObjectName("spinBox_nummer")
     self.spinBox_nummer.setToolTip("0 = keine Nummerierung")
     self.spinBox_nummer.valueChanged.connect(self.spinBox_nummer_changed)
 
-    self.horizontalLayout_frameNummer.addWidget(self.spinBox_nummer)
-    self.horizontalLayout_SageMenu.addWidget(self.frameNummer)
+    self.horizontalLayout_widgetNummer.addWidget(self.spinBox_nummer)
+    self.gridLayout_SageMenu.addWidget(self.widgetNummer, 0,0,1,1, QtCore.Qt.AlignLeft)
 
 
-    self.frame_datum = QtWidgets.QFrame(self.widget_SageMenu)
-    self.frame_datum.setObjectName("frame_datum")
-    self.horizontalLayout_frameDatum = create_new_horizontallayout(self.frame_datum)
+    self.widget_datum = QtWidgets.QWidget(self.widget_SageMenu)
+    self.widget_datum.setObjectName("widget_datum")
+    self.horizontalLayout_frameDatum = create_new_horizontallayout(self.widget_datum)
+    self.horizontalLayout_frameDatum.setContentsMargins(0,0,0,0)
     
-    self.labelDate = create_new_label(self.frameNummer,"")
+    self.labelDate = create_new_label(self.widget_datum,"")
     self.labelDate.setPixmap(QtGui.QPixmap(get_icon_path("calendar.svg")))
     # self.label_lamaLogo.setFixedHeight(30)
     self.labelDate.setFixedSize(QtCore.QSize(15,15))
     self.labelDate.setScaledContents(True)
     self.horizontalLayout_frameDatum.addWidget(self.labelDate)
 
-    self.dateEdit = QtWidgets.QDateEdit(self.frame_datum)
+    self.dateEdit = QtWidgets.QDateEdit(self.widget_datum)
     self.dateEdit.setCalendarPopup(True)
     self.dateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
     self.dateEdit.setObjectName("dateEdit")
     self.horizontalLayout_frameDatum.addWidget(self.dateEdit)
 
-    self.horizontalLayout_SageMenu.addWidget(self.frame_datum)
+    self.gridLayout_SageMenu.addWidget(self.widget_datum, 1,0,1,1, QtCore.Qt.AlignLeft)
 
 
     self.groupBox_klasse_sage = QtWidgets.QGroupBox(self.widget_SageMenu)
     self.groupBox_klasse_sage.setObjectName("groupBox_klasse_sage")
     self.groupBox_klasse_sage.setTitle("Klasse")
+    self.groupBox_klasse_sage.setMaximumWidth(80)
     self.verticalLayout_4 = create_new_verticallayout(self.groupBox_klasse_sage)
+    self.verticalLayout_4.setContentsMargins(0,5,0,0)
     self.lineEdit_klasse_sage = QtWidgets.QLineEdit(self.groupBox_klasse_sage)
     self.lineEdit_klasse_sage.setObjectName("lineEdit_klasse_sage")
     self.verticalLayout_4.addWidget(self.lineEdit_klasse_sage)
-    self.horizontalLayout_SageMenu.addWidget(self.groupBox_klasse_sage)
+    self.gridLayout_SageMenu.addWidget(self.groupBox_klasse_sage,0,1,2,1)
 
 
 
     self.groupBox_default_pkt = QtWidgets.QGroupBox(self.widget_SageMenu)
     self.groupBox_default_pkt.setObjectName("groupBox_default_pkt")
     self.groupBox_default_pkt.setTitle("Typ1 Standard")
-    # self.groupBox_default_pkt.setSizePolicy(SizePolicy_fixed_height)
+    self.groupBox_default_pkt.setMaximumWidth(80)
     # self.groupBox_default_pkt.setMaximumSize(QtCore.QSize(120, 16777215))
     self.verticalLayout_default_pkt = QtWidgets.QVBoxLayout(
         self.groupBox_default_pkt
     )
+    self.verticalLayout_default_pkt.setContentsMargins(0,5,0,0)
     self.verticalLayout_default_pkt.setObjectName("verticalLayout_default_pkt")
     self.spinBox_default_pkt = SpinBox_noWheel(self.groupBox_default_pkt)
     # self.spinBox_default_pkt.setSizePolicy(SizePolicy_minimum_fixed)
@@ -1027,8 +1031,9 @@ def setup_stackSage(self):
     self.spinBox_default_pkt.setObjectName("spinBox_default_pkt")
     self.verticalLayout_default_pkt.addWidget(self.spinBox_default_pkt)
     self.spinBox_default_pkt.valueChanged.connect(self.update_default_pkt)
-    self.horizontalLayout_SageMenu.addWidget(self.groupBox_default_pkt)
+    self.gridLayout_SageMenu.addWidget(self.groupBox_default_pkt,0,2,2,1)
 
+    self.gridLayout_SageMenu.setColumnStretch(3,1)
 
     self.scrollArea_chosen = QtWidgets.QScrollArea(self.groupBox_sage)
     self.scrollArea_chosen.setFrameShape(QtWidgets.QFrame.StyledPanel)
