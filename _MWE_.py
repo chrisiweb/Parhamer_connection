@@ -59,27 +59,27 @@ class DragDropWidget(QWidget):
         
         for n in range(self.blayout.count()):
             # Get the widget at each index in turn.
-            print(n)
+            # print(n)
             w = self.blayout.itemAt(n).widget()
 
             drop_here = pos.y() < w.y() +  w.size().height() // 2
-            print(f"drop: {pos.y()}")
-            print(f"widget: {w.y()}")
-            print(f"max  {w.y() + w.size().height() // 2}")
+            # print(f"drop: {pos.y()}")
+            # print(f"widget: {w.y()}")
+            # print(f"max  {w.y() + w.size().height() // 2}")
             if pos.y() < w.y() and n == 0:
-                print("A")
+                # print("FIRST Position")
                 self.blayout.insertWidget(0, widget)
                 break
             elif drop_here:
-                print("B")
+                # print("B")
                 # We didn't drag past this widget.
                 # insert to the left of it.
-                self.blayout.insertWidget(n, widget)
-                print(f"index: {n}")
+                self.blayout.insertWidget(n-1, widget)
+                # print(f"index: {n}")
                 # self.orderChanged.emit()
                 break
         if drop_here == False:
-            print("C")
+            # print("Last Item")
             self.blayout.insertWidget(n, widget)
         e.accept()
 
