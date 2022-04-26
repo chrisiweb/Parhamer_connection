@@ -5,7 +5,6 @@ from PyQt5.QtCore import Qt, QMimeData, pyqtSignal
 from PyQt5.QtGui import QDrag, QPixmap
 from create_new_widgets import create_new_label, create_new_verticallayout
 
-
 class DragDropGroupBox(QGroupBox):
 
     # def __init__(self, *args, **kwargs):
@@ -38,7 +37,7 @@ class DragDropWidget(QWidget):
     Generic list sorting handler.
     """
 
-    orderChanged = pyqtSignal()
+    groupBox_clicked = pyqtSignal(int)
 
     def __init__(self):
         super().__init__()
@@ -50,12 +49,14 @@ class DragDropWidget(QWidget):
         self.setLayout(self.blayout)
 
     def dragEnterEvent(self, e):
+        self.starting_cursor_height = e.pos().y()
+        # self.groupBox_clicked.emit(e.pos().y())
         e.accept()
 
     def dropEvent(self, e):
         pos = e.pos()
         widget = e.source()
-        print(pos)
+        # print(pos)
         
         for n in range(self.blayout.count()):
             # Get the widget at each index in turn.
@@ -63,7 +64,7 @@ class DragDropWidget(QWidget):
             w = self.blayout.itemAt(n).widget()
 
             drop_here = pos.y() < w.y() +  w.size().height() // 2
-            # print(f"drop: {pos.y()}")
+            print(f"drop: {pos.y()}")
             # print(f"widget: {w.y()}")
             # print(f"max  {w.y() + w.size().height() // 2}")
             if pos.y() < w.y() and n == 0:
@@ -74,7 +75,11 @@ class DragDropWidget(QWidget):
                 # print("B")
                 # We didn't drag past this widget.
                 # insert to the left of it.
-                self.blayout.insertWidget(n-1, widget)
+                print(self.starting_cursor_height)
+                if self.starting_cursor_height <= pos.y():
+                    self.blayout.insertWidget(n-1, widget)
+                else:
+                    self.blayout.insertWidget(n, widget)
                 # print(f"index: {n}")
                 # self.orderChanged.emit()
                 break
@@ -95,6 +100,8 @@ class MainWindow(QMainWindow):
         
         for i in range(4):
             item = DragDropGroupBox()
+
+            # item.clicked.connect(self.groupbox_clicked)
             item.setTitle("NEU")
             verticallayout = create_new_verticallayout(item)
             label = create_new_label(item, f"Das ist ein Test {i}")
@@ -102,6 +109,7 @@ class MainWindow(QMainWindow):
             # item.set_data(n)  # Store the data.
             self.drag.add_item(item)
 
+        self.drag.groupBox_clicked.connect(print)
         # Print out the changed order.
         # self.drag.orderChanged.connect(lambda: print('test'))
 
@@ -114,6 +122,10 @@ class MainWindow(QMainWindow):
 
         self.setCentralWidget(container)
 
+    # def groupbox_clicked(self):
+    #     print(self.drag.starting_cursor_position)
+        # mouse = Controller()
+        # print(mouse.position)
 
 app = QApplication([])
 w = MainWindow()
