@@ -1,9 +1,60 @@
-from PyQt5 import QtWidgets
-from PyQt5.QtCore import Qt
+from PyQt5 import QtWidgets, QtGui
+from PyQt5.QtCore import Qt, QMimeData
 from config import SpinBox_noWheel, ClickLabel
 from translate import _fromUtf8, _translate
 from predefined_size_policy import SizePolicy_fixed
 from handle_exceptions import report_exceptions
+
+
+
+class DragDropGroupBox(QtWidgets.QGroupBox):
+    def mouseMoveEvent(self, e):
+
+        if e.buttons() == Qt.LeftButton:
+            drag = QtGui.QDrag(self)
+            mime = QMimeData()
+            drag.setMimeData(mime)
+
+            pixmap = QtGui.QPixmap(self.size())
+            self.render(pixmap)
+            drag.setPixmap(pixmap)
+
+            drag.exec_(Qt.MoveAction)
+
+
+class DragDropWidget(QtWidgets.QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setAcceptDrops(True)
+
+
+    def dragEnterEvent(self, e):
+        e.accept()
+
+    def dropEvent(self, e):
+        pos = e.pos()
+        widget = e.source()
+        
+        for n in range(self.blayout.count()):
+            w = self.blayout.itemAt(n).widget()
+
+            drop_here = pos.y() < w.y() +  w.size().height() // 2
+            if pos.y() < w.y() and n == 0:
+                self.blayout.insertWidget(0, widget)
+                break
+            elif drop_here:
+                if self.starting_cursor_height <= pos.y():
+                    self.blayout.insertWidget(n-1, widget)
+                else:
+                    self.blayout.insertWidget(n, widget)
+                break
+        if drop_here == False:
+            self.blayout.insertWidget(n, widget)
+        e.accept()
+
+    def add_item(self, item):
+        self.blayout.addWidget(item)
+
 
 
 def add_action(parent, menu, text, command):

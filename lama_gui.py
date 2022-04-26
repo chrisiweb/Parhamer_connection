@@ -13,12 +13,17 @@ from create_new_widgets import (
     create_new_spinbox,
     add_new_option,
     add_new_tab,
+    DragDropWidget,
     )
 from predefined_size_policy import SizePolicy_fixed_height, SizePolicy_fixed, SizePolicy_fixed_width, SizePolicy_minimum_fixed, SizePolicy_maximum_height, SizePolicy_maximum_width
 from config import *
 from functools import partial
 from create_pdf import prepare_tex_for_pdf
 from standard_dialog_windows import warning_window
+
+
+
+
 
 def setup_MenuBar(self):
     MainWindow = self.MainWindow
@@ -48,16 +53,6 @@ def setup_MenuBar(self):
     self.menuUpdate.setTitle("Update...")
     self.menuDeveloper = QtWidgets.QMenu(self.menuBar)
     self.menuDeveloper.setTitle("Entwicklermodus")
-
-    
-    
-    
-    
-    
-    
-    
-    
-
 
     self.MainWindow.setMenuBar(self.menuBar)
 

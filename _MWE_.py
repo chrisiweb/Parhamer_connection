@@ -1,23 +1,11 @@
 
 ## WORKING DRAG & DROP!!!
-from PyQt5.QtWidgets import QApplication, QHBoxLayout, QWidget, QLabel, QMainWindow, QVBoxLayout, QGroupBox
+from PyQt5.QtWidgets import QApplication, QHBoxLayout, QWidget, QLabel, QMainWindow, QVBoxLayout, QGroupBox, QScrollArea
 from PyQt5.QtCore import Qt, QMimeData, pyqtSignal
 from PyQt5.QtGui import QDrag, QPixmap
 from create_new_widgets import create_new_label, create_new_verticallayout
 
 class DragDropGroupBox(QGroupBox):
-
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-        # self.setContentsMargins(25, 5, 25, 5)
-        # self.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        # self.setStyleSheet("border: 1px solid black;")
-        # Store data separately from display label, but use label for default.
-        # self.data = self.text()
-
-    # def set_data(self, data):
-    #     self.data = data
-
     def mouseMoveEvent(self, e):
 
         if e.buttons() == Qt.LeftButton:
@@ -33,24 +21,20 @@ class DragDropGroupBox(QGroupBox):
 
 
 class DragDropWidget(QWidget):
-    """
-    Generic list sorting handler.
-    """
-
-    groupBox_clicked = pyqtSignal(int)
-
     def __init__(self):
         super().__init__()
         self.setAcceptDrops(True)
 
         self.blayout = QVBoxLayout()
-
-
         self.setLayout(self.blayout)
 
     def dragEnterEvent(self, e):
         self.starting_cursor_height = e.pos().y()
-        # self.groupBox_clicked.emit(e.pos().y())
+        print(self.starting_cursor_height)
+        # print(self.pos().y())
+        print(self.size())
+        # print(MainWindow.scrollArea_chosen.size())
+        # print(self.size())
         e.accept()
 
     def dropEvent(self, e):
@@ -64,7 +48,7 @@ class DragDropWidget(QWidget):
             w = self.blayout.itemAt(n).widget()
 
             drop_here = pos.y() < w.y() +  w.size().height() // 2
-            print(f"drop: {pos.y()}")
+            # print(f"drop: {pos.y()}")
             # print(f"widget: {w.y()}")
             # print(f"max  {w.y() + w.size().height() // 2}")
             if pos.y() < w.y() and n == 0:
@@ -75,7 +59,7 @@ class DragDropWidget(QWidget):
                 # print("B")
                 # We didn't drag past this widget.
                 # insert to the left of it.
-                print(self.starting_cursor_height)
+                # print(self.starting_cursor_height)
                 if self.starting_cursor_height <= pos.y():
                     self.blayout.insertWidget(n-1, widget)
                 else:
@@ -96,9 +80,14 @@ class MainWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
+        self.scrollArea_chosen = QScrollArea()
+        # self.scrollArea_chosen.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.scrollArea_chosen.setWidgetResizable(True)
         self.drag = DragDropWidget()
+        self.scrollArea_chosen.setWidget(self.drag)
+        # self.drag.setParent(self.scrollArea_chosen)
         
-        for i in range(4):
+        for i in range(20):
             item = DragDropGroupBox()
 
             # item.clicked.connect(self.groupbox_clicked)
@@ -109,15 +98,16 @@ class MainWindow(QMainWindow):
             # item.set_data(n)  # Store the data.
             self.drag.add_item(item)
 
-        self.drag.groupBox_clicked.connect(print)
+        # self.drag.groupBox_clicked.connect(print)
         # Print out the changed order.
         # self.drag.orderChanged.connect(lambda: print('test'))
 
         container = QWidget()
         layout = QVBoxLayout()
-        layout.addStretch(1)
-        layout.addWidget(self.drag)
-        layout.addStretch(1)
+        # layout.addStretch(1)
+        layout.addWidget(self.scrollArea_chosen)
+        # layout.addWidget(self.drag)
+        # layout.addStretch(1)
         container.setLayout(layout)
 
         self.setCentralWidget(container)
