@@ -1035,15 +1035,32 @@ def setup_stackSage(self):
     self.scrollArea_chosen.setWidgetResizable(True)
     self.scrollArea_chosen.setObjectName("scrollArea_chosen")
     self.scrollArea_chosen.setFocusPolicy(QtCore.Qt.ClickFocus)
-    self.scrollAreaWidgetContents_2 = DragDropWidget(self)
-    # self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 389, 323))
-    self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
-    self.scrollAreaWidgetContents_2.setFocusPolicy(QtCore.Qt.ClickFocus)
-    self.verticalLayout_scrollArea_sage = create_new_verticallayout(self.scrollAreaWidgetContents_2)
-    self.verticalLayout_scrollArea_sage.addStretch()
+    self.widgetscrollArea_sage = QtWidgets.QWidget(self.groupBox_sage)
+    self.scrollArea_chosen.setWidget(self.widgetscrollArea_sage)
+    self.verticalLayout_widgetscrollArea_sage = create_new_verticallayout(self.widgetscrollArea_sage)
+
+    self.scrollAreaWidgetContents_typ1 = DragDropWidget(self)
+    self.scrollAreaWidgetContents_typ1.setObjectName("scrollAreaWidgetContents_typ1")
+    self.scrollAreaWidgetContents_typ1.setFocusPolicy(QtCore.Qt.ClickFocus)
+    self.verticalLayout_scrollArea_sage_typ1 = create_new_verticallayout(self.scrollAreaWidgetContents_typ1)
+    self.verticalLayout_scrollArea_sage_typ1.addStretch()
     # self.gridLayout_8 = QtWidgets.QGridLayout(self.scrollAreaWidgetContents_2)
     # self.gridLayout_8.setObjectName("gridLayout_8")
-    self.scrollArea_chosen.setWidget(self.scrollAreaWidgetContents_2)
+    self.verticalLayout_widgetscrollArea_sage.addWidget(self.scrollAreaWidgetContents_typ1)
+    # self.scrollArea_chosen.setWidget(self.scrollAreaWidgetContents_2)
+#
+
+    self.scrollAreaWidgetContents_typ2 = DragDropWidget(self)
+    self.scrollAreaWidgetContents_typ2.setObjectName("scrollAreaWidgetContents_3")
+    self.scrollAreaWidgetContents_typ2.setFocusPolicy(QtCore.Qt.ClickFocus)
+    self.verticalLayout_scrollArea_sage_typ2 = create_new_verticallayout(self.scrollAreaWidgetContents_typ2)
+    self.verticalLayout_scrollArea_sage_typ2.addStretch()
+    # self.gridLayout_8 = QtWidgets.QGridLayout(self.scrollAreaWidgetContents_2)
+    # self.gridLayout_8.setObjectName("gridLayout_8")
+    self.verticalLayout_widgetscrollArea_sage.addWidget(self.scrollAreaWidgetContents_typ2)
+    # self.scrollArea_chosen.setWidget(self.scrollAreaWidgetContents_2)
+
+
     self.scrollArea_chosen.verticalScrollBar().rangeChanged.connect(
         self.change_scrollbar_position
     )

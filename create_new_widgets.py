@@ -4,6 +4,7 @@ from config import SpinBox_noWheel, ClickLabel
 from translate import _fromUtf8, _translate
 from predefined_size_policy import SizePolicy_fixed
 from handle_exceptions import report_exceptions
+from database_commands import get_aufgabentyp
 
 
 
@@ -59,13 +60,17 @@ class DragDropWidget(QtWidgets.QWidget):
 
         # print(index)
         self.MainWindow.verticalLayout_scrollArea_sage.insertWidget(index, widget)
-
+        
         print(self.MainWindow.list_alle_aufgaben_sage)
         print(self.MainWindow.moving_aufgabe)
+      
+
         old_index = self.MainWindow.list_alle_aufgaben_sage.index(self.MainWindow.moving_aufgabe)
         self.MainWindow.list_alle_aufgaben_sage.pop(old_index)
-        print(self.MainWindow.list_alle_aufgaben_sage)
+ 
+        self.MainWindow.list_alle_aufgaben_sage.insert(index, self.MainWindow.moving_aufgabe)
 
+        print(self.MainWindow.list_alle_aufgaben_sage)
         self.MainWindow.build_aufgaben_schularbeit(self.MainWindow.list_alle_aufgaben_sage[index])
         e.accept()
 
