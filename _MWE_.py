@@ -6,8 +6,12 @@ from PyQt5.QtGui import QDrag, QPixmap
 from create_new_widgets import create_new_label, create_new_verticallayout
 
 class DragDropGroupBox(QGroupBox):
-    def mouseMoveEvent(self, e):
+    def __init__(self, aufgabe):
+        super().__init__()
+        self.aufgabe = aufgabe
 
+    def mouseMoveEvent(self, e):
+        print(self.aufgabe)
         if e.buttons() == Qt.LeftButton:
             drag = QDrag(self)
             mime = QMimeData()
@@ -88,7 +92,7 @@ class MainWindow(QMainWindow):
         # self.drag.setParent(self.scrollArea_chosen)
         
         for i in range(20):
-            item = DragDropGroupBox()
+            item = DragDropGroupBox(f"Aufgabe {i}")
 
             # item.clicked.connect(self.groupbox_clicked)
             item.setTitle("NEU")

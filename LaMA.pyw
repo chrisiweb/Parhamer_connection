@@ -5397,7 +5397,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         aufgaben_verteilung = self.get_aufgabenverteilung()
 
-        new_groupbox = DragDropGroupBox()
+        new_groupbox = DragDropGroupBox(self, aufgabe)
         new_groupbox.setParent(self.scrollAreaWidgetContents_2)
 
         if self.chosen_program == "cria":

@@ -8,10 +8,13 @@ from handle_exceptions import report_exceptions
 
 
 class DragDropGroupBox(QtWidgets.QGroupBox):
-    def __init__(self):
-        print(self)
+    def __init__(self, MainWindow, aufgabe):
+        super().__init__()
+        self.MainWindow = MainWindow
+        self.aufgabe = aufgabe
         
     def mouseMoveEvent(self, e):
+        self.MainWindow.moving_aufgabe = self.aufgabe
         if e.buttons() == Qt.LeftButton:
             drag = QtGui.QDrag(self)
             mime = QMimeData()
@@ -38,7 +41,6 @@ class DragDropWidget(QtWidgets.QWidget):
     def dropEvent(self, e):
         pos = e.pos()
         widget = e.source()
-        print(self.MainWindow.list_alle_aufgaben_sage)
         for n in range(self.MainWindow.verticalLayout_scrollArea_sage.count()):
             w = self.MainWindow.verticalLayout_scrollArea_sage.itemAt(n).widget()
 
@@ -55,8 +57,14 @@ class DragDropWidget(QtWidgets.QWidget):
         if drop_here == False:
             index = n
 
-        print(index)
+        # print(index)
         self.MainWindow.verticalLayout_scrollArea_sage.insertWidget(index, widget)
+
+        print(self.MainWindow.list_alle_aufgaben_sage)
+        print(self.MainWindow.moving_aufgabe)
+        old_index = self.MainWindow.list_alle_aufgaben_sage.index(self.MainWindow.moving_aufgabe)
+        self.MainWindow.list_alle_aufgaben_sage.pop(old_index)
+        print(self.MainWindow.list_alle_aufgaben_sage)
 
         self.MainWindow.build_aufgaben_schularbeit(self.MainWindow.list_alle_aufgaben_sage[index])
         e.accept()
