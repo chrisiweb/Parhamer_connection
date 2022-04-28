@@ -1755,8 +1755,8 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         self.dict_variablen_abstand = {}
         self.update_punkte()
         self.list_copy_images = []
-        for i in reversed(range(self.gridLayout_8.count()+1)):
-            self.delete_widget(self.gridLayout_8, i)
+        for i in reversed(range(self.verticalLayout_scrollArea_sage.count()+1)):
+            self.delete_widget(self.verticalLayout_scrollArea_sage, i)
 
 
     @report_exceptions
@@ -4778,8 +4778,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def sage_load_files(self):
         list_aufgaben_errors = []
 
-        for i in reversed(range(0, self.gridLayout_8.count())):
-            self.delete_widget(self.gridLayout_8, i)
+        for i in reversed(range(0, self.verticalLayout_scrollArea_sage.count())):
+            self.delete_widget(self.verticalLayout_scrollArea_sage, i)
 
         for index, aufgabe in enumerate(self.list_alle_aufgaben_sage):
             typ = get_aufgabentyp(self.chosen_program, aufgabe)
@@ -4793,13 +4793,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 index, aufgabe, aufgabe_total
             )
 
-            self.gridLayout_8.addWidget(neue_aufgaben_box, index, 0, 1, 1)
+            self.verticalLayout_scrollArea_sage.addWidget(neue_aufgaben_box)
 
             self.add_image_path_to_list(aufgabe.replace(" (lokal)", ""))
             self.progress.setValue(index)
 
 
-        self.gridLayout_8.setRowStretch(index+2,1)
+        # self.verticalLayout_scrollArea_sage.addStretch()
 
         self.update_punkte()
 
@@ -5217,7 +5217,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         index = self.list_alle_aufgaben_sage.index(aufgabe)
 
         if index + 1 == len(self.list_alle_aufgaben_sage):
-            self.delete_widget(self.gridLayout_8, index)
+            self.delete_widget(self.verticalLayout_scrollArea_sage, index)
             self.erase_aufgabe(aufgabe)
 
         else:
@@ -5712,8 +5712,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.temp_info[all] = [self.dict_variablen_punkte[all].value(), halbe_punkte, self.dict_variablen_abstand[all].value()]
 
 
-        for i in reversed(range(start_value, self.gridLayout_8.count())):
-            self.delete_widget(self.gridLayout_8, i)
+        for i in reversed(range(start_value, self.verticalLayout_scrollArea_sage.count()+1)):
+            self.delete_widget(self.verticalLayout_scrollArea_sage, i)
 
         for item in self.list_alle_aufgaben_sage[start_value:]:
             index_item = self.list_alle_aufgaben_sage.index(item)
@@ -5724,10 +5724,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 index_item, item, aufgabe_total
             )
 
-            self.gridLayout_8.addWidget(neue_aufgaben_box, index_item, 0, 1, 1)
+            self.verticalLayout_scrollArea_sage.insertWidget(self.verticalLayout_scrollArea_sage.count() - 1, neue_aufgaben_box)
             index_item + 1
 
-        self.gridLayout_8.setRowStretch(index_item+2,1)
+        
         # self.spacerItem = QtWidgets.QSpacerItem(
         #     20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
         # )

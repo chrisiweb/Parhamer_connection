@@ -1039,8 +1039,10 @@ def setup_stackSage(self):
     # self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 389, 323))
     self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
     self.scrollAreaWidgetContents_2.setFocusPolicy(QtCore.Qt.ClickFocus)
-    self.gridLayout_8 = QtWidgets.QGridLayout(self.scrollAreaWidgetContents_2)
-    self.gridLayout_8.setObjectName("gridLayout_8")
+    self.verticalLayout_scrollArea_sage = create_new_verticallayout(self.scrollAreaWidgetContents_2)
+    self.verticalLayout_scrollArea_sage.addStretch()
+    # self.gridLayout_8 = QtWidgets.QGridLayout(self.scrollAreaWidgetContents_2)
+    # self.gridLayout_8.setObjectName("gridLayout_8")
     self.scrollArea_chosen.setWidget(self.scrollAreaWidgetContents_2)
     self.scrollArea_chosen.verticalScrollBar().rangeChanged.connect(
         self.change_scrollbar_position
