@@ -8,8 +8,10 @@ from handle_exceptions import report_exceptions
 
 
 class DragDropGroupBox(QtWidgets.QGroupBox):
+    def __init__(self):
+        print(self)
+        
     def mouseMoveEvent(self, e):
-
         if e.buttons() == Qt.LeftButton:
             drag = QtGui.QDrag(self)
             mime = QMimeData()
@@ -23,38 +25,44 @@ class DragDropGroupBox(QtWidgets.QGroupBox):
 
 
 class DragDropWidget(QtWidgets.QWidget):
-    def __init__(self):
+    def __init__(self, MainWindow):
         super().__init__()
+        self.MainWindow = MainWindow
         self.setAcceptDrops(True)
 
 
     def dragEnterEvent(self, e):
+        self.starting_cursor_height = e.pos().y()
         e.accept()
 
     def dropEvent(self, e):
         pos = e.pos()
         widget = e.source()
-        
-        for n in range(self.blayout.count()):
-            w = self.blayout.itemAt(n).widget()
+        print(self.MainWindow.list_alle_aufgaben_sage)
+        for n in range(self.MainWindow.verticalLayout_scrollArea_sage.count()):
+            w = self.MainWindow.verticalLayout_scrollArea_sage.itemAt(n).widget()
 
             drop_here = pos.y() < w.y() +  w.size().height() // 2
             if pos.y() < w.y() and n == 0:
-                self.blayout.insertWidget(0, widget)
+                index=0
                 break
             elif drop_here:
                 if self.starting_cursor_height <= pos.y():
-                    self.blayout.insertWidget(n-1, widget)
+                    index = n-1
                 else:
-                    self.blayout.insertWidget(n, widget)
+                    index = n
                 break
         if drop_here == False:
-            self.blayout.insertWidget(n, widget)
+            index = n
+
+        print(index)
+        self.MainWindow.verticalLayout_scrollArea_sage.insertWidget(index, widget)
+
+        self.MainWindow.build_aufgaben_schularbeit(self.MainWindow.list_alle_aufgaben_sage[index])
         e.accept()
 
     def add_item(self, item):
-        self.blayout.addWidget(item)
-
+        self.MainWindow.verticalLayout_scrollArea_sage.insertWidget(self.MainWindow.verticalLayout_scrollArea_sage.count() - 1, item)
 
 
 def add_action(parent, menu, text, command):

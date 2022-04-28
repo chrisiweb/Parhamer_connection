@@ -5397,20 +5397,27 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         aufgaben_verteilung = self.get_aufgabenverteilung()
 
+        new_groupbox = DragDropGroupBox()
+        new_groupbox.setParent(self.scrollAreaWidgetContents_2)
+
         if self.chosen_program == "cria":
             if aufgabe_total["klasse"] == None:
                 klasse = ""
             else:
                 klasse = "{0}. Klasse - ".format(aufgabe_total["klasse"][1])
 
-            new_groupbox = create_new_groupbox(
-                self.scrollAreaWidgetContents_2, "{0}. Aufgabe".format(index + 1)
-            )
+            # new_groupbox = DragDropGroupBox()
+            # new_groupbox.setParent(self.scrollAreaWidgetContents_2)
+            new_groupbox.setTitle("{0}. Aufgabe".format(index + 1))
+            # new_groupbox = create_new_groupbox(
+            #     self.scrollAreaWidgetContents_2, 
+            # )
         else:
-            new_groupbox = create_new_groupbox(
-                self.scrollAreaWidgetContents_2,
-                "{0}. Aufgabe (Typ{1})".format(index + 1, typ),
-            )
+            new_groupbox.setTitle("{0}. Aufgabe (Typ{1})".format(index + 1, typ))
+            # new_groupbox = create_new_groupbox(
+            #     self.scrollAreaWidgetContents_2,
+            #     "{0}. Aufgabe (Typ{1})".format(index + 1, typ),
+            # )
 
         gridLayout_gB = QtWidgets.QGridLayout(new_groupbox)
         gridLayout_gB.setObjectName("gridLayout_gB")

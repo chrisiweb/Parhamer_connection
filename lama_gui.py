@@ -1035,7 +1035,7 @@ def setup_stackSage(self):
     self.scrollArea_chosen.setWidgetResizable(True)
     self.scrollArea_chosen.setObjectName("scrollArea_chosen")
     self.scrollArea_chosen.setFocusPolicy(QtCore.Qt.ClickFocus)
-    self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
+    self.scrollAreaWidgetContents_2 = DragDropWidget(self)
     # self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 389, 323))
     self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
     self.scrollAreaWidgetContents_2.setFocusPolicy(QtCore.Qt.ClickFocus)
