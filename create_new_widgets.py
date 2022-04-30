@@ -42,8 +42,8 @@ class DragDropWidget(QtWidgets.QWidget):
     def dropEvent(self, e):
         pos = e.pos()
         widget = e.source()
-        for n in range(self.MainWindow.verticalLayout_scrollArea_sage.count()):
-            w = self.MainWindow.verticalLayout_scrollArea_sage.itemAt(n).widget()
+        for n in range(self.MainWindow.verticalLayout_scrollArea_sage_typ1.count()):
+            w = self.MainWindow.verticalLayout_scrollArea_sage_typ1.itemAt(n).widget()
 
             drop_here = pos.y() < w.y() +  w.size().height() // 2
             if pos.y() < w.y() and n == 0:
@@ -59,23 +59,28 @@ class DragDropWidget(QtWidgets.QWidget):
             index = n
 
         # print(index)
-        self.MainWindow.verticalLayout_scrollArea_sage.insertWidget(index, widget)
+        self.MainWindow.verticalLayout_scrollArea_sage_typ1.insertWidget(index, widget)
         
         print(self.MainWindow.list_alle_aufgaben_sage)
         print(self.MainWindow.moving_aufgabe)
-      
+        typ = get_aufgabentyp(self.MainWindow.chosen_program, self.MainWindow.moving_aufgabe)
 
-        old_index = self.MainWindow.list_alle_aufgaben_sage.index(self.MainWindow.moving_aufgabe)
-        self.MainWindow.list_alle_aufgaben_sage.pop(old_index)
+        if typ == 2:
+            list_index = 1         
+        else:
+            list_index = 0       
+
+        old_index = self.MainWindow.list_alle_aufgaben_sage[list_index].index(self.MainWindow.moving_aufgabe)
+        self.MainWindow.list_alle_aufgaben_sage[list_index].pop(old_index)
  
-        self.MainWindow.list_alle_aufgaben_sage.insert(index, self.MainWindow.moving_aufgabe)
+        self.MainWindow.list_alle_aufgaben_sage[list_index].insert(index, self.MainWindow.moving_aufgabe)
 
-        print(self.MainWindow.list_alle_aufgaben_sage)
-        self.MainWindow.build_aufgaben_schularbeit(self.MainWindow.list_alle_aufgaben_sage[index])
+        print(self.MainWindow.list_alle_aufgaben_sage[list_index])
+        self.MainWindow.build_aufgaben_schularbeit(self.MainWindow.list_alle_aufgaben_sage[list_index][index])
         e.accept()
 
-    def add_item(self, item):
-        self.MainWindow.verticalLayout_scrollArea_sage.insertWidget(self.MainWindow.verticalLayout_scrollArea_sage.count() - 1, item)
+    # def add_item(self, item):
+    #     self.MainWindow.verticalLayout_scrollArea_sage_typ1.insertWidget(self.MainWindow.verticalLayout_scrollArea_sage_typ1.count() - 1, item)
 
 
 def add_action(parent, menu, text, command):

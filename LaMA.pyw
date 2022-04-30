@@ -9,6 +9,7 @@ __lastupdate__ = "04/22"
 show_popup = False
 
 
+from sympy import li
 from start_window import check_if_database_exists
 # from worksheet_wizard import get_all_solution_pixels
 check_if_database_exists()
@@ -53,8 +54,9 @@ class Worker_LoadLamaFile(QtCore.QObject):
 
     @QtCore.pyqtSlot()
     def task(self, MainWindow):
-        for aufgabe in MainWindow.list_alle_aufgaben_sage:
-            MainWindow.sage_load_files(aufgabe)
+        for index in [0,1]:
+            for aufgabe in MainWindow.list_alle_aufgaben_sage[index]:
+                MainWindow.sage_load_files(aufgabe)
 
         self.finished.emit()
 
@@ -89,7 +91,7 @@ class Ui_MainWindow(object):
     def __init__(self):
         super().__init__()
         # self.dict_alle_aufgaben_sage = {}
-        self.list_alle_aufgaben_sage = []
+        self.list_alle_aufgaben_sage = [[],[]]
         self.dict_widget_variables = {}
         self.list_selected_topics_creator = []
         self.dict_variablen_punkte = {}
@@ -1680,7 +1682,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
 
     @report_exceptions
     def reset_sage(self, question_reset=True):
-        if question_reset == True and not is_empty(self.list_alle_aufgaben_sage):
+        if question_reset == True and (not is_empty(self.list_alle_aufgaben_sage[0]) or not is_empty(self.list_alle_aufgaben_sage[1])):
             response = question_window(
                 "Sind Sie sicher, dass Sie das Fenster zurücksetzen wollen und die erstellte Prüfung löschen möchten?",
                 titel="Datei löschen?",
@@ -1747,7 +1749,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             },
         }
 
-        self.list_alle_aufgaben_sage = []
+        self.list_alle_aufgaben_sage = [[],[]]
         # self.dict_alle_aufgaben_sage = {}
         self.dict_variablen_label = {}
         self.dict_variablen_punkte = {}
@@ -1907,7 +1909,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             self.close_app()
 
     def close_app(self):
-        if self.list_alle_aufgaben_sage == []:
+        if self.list_alle_aufgaben_sage ==  [[],[]]:
             sys.exit(0)
 
         if self.no_saved_changes_sage == True:
@@ -4793,7 +4795,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 index, aufgabe, aufgabe_total
             )
 
-            self.verticalLayout_scrollArea_sage.addWidget(neue_aufgaben_box)
+            self.scrollAreaWidgetContents_typ1.addWidget(neue_aufgaben_box)
 
             self.add_image_path_to_list(aufgabe.replace(" (lokal)", ""))
             self.progress.setValue(index)
@@ -4836,7 +4838,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         QtWidgets.QApplication.restoreOverrideCursor()
         try:
             if self.chosen_program == loaded_file["data_gesamt"]["program"]:
-                if self.list_alle_aufgaben_sage != []:
+                if self.list_alle_aufgaben_sage !=  [[],[]]:
                     self.reset_sage()
             else:
                 response = self.change_program()
@@ -4907,6 +4909,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             ]
         except KeyError:
             self.dict_sage_individual_change = {}
+
 
 
         self.progress = QtWidgets.QProgressDialog("Prüfung wird geladen ...", "",0,len(self.list_alle_aufgaben_sage)-1)
@@ -5078,35 +5081,43 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         self.update_punkte()
 
-    def get_aufgabenverteilung(self):
-        num_typ1 = 0
-        num_typ2 = 0
-        for all in self.list_alle_aufgaben_sage:
-            typ = get_aufgabentyp(self.chosen_program, all)
-            if typ == 1:
-                num_typ1 += 1
-            if typ == 2:
-                num_typ2 += 1
+    def get_aufgabenverteilung(self):      
+        num_typ1 = len(self.list_alle_aufgaben_sage[0])
+        num_typ2 = len(self.list_alle_aufgaben_sage[1])
+        # for all in self.list_alle_aufgaben_sage:
+        #     typ = get_aufgabentyp(self.chosen_program, all)
+        #     if typ == 1:
+        #         num_typ1 += 1
+        #     if typ == 2:
+        #         num_typ2 += 1
 
-        return [num_typ1, num_typ2]
+        return num_typ1, num_typ2
 
     @report_exceptions
     def sage_aufgabe_add(self, aufgabe):
-        if self.chosen_program == "lama":
+        # if self.chosen_program == "lama":
 
-            old_num_typ1, old_num_typ2 = self.get_aufgabenverteilung()
+        #     old_num_typ1, old_num_typ2 = self.get_aufgabenverteilung()
 
-            typ = get_aufgabentyp(self.chosen_program, aufgabe)
-            if typ == 1:
-                self.list_alle_aufgaben_sage.insert(old_num_typ1, aufgabe)
-            if typ == 2:
-                self.list_alle_aufgaben_sage.append(aufgabe)
+        #     typ = get_aufgabentyp(self.chosen_program, aufgabe)
+        #     if typ == 1:
+        #         self.list_alle_aufgaben_sage.insert(old_num_typ1, aufgabe)
+        #     if typ == 2:
+        #         self.list_alle_aufgaben_sage.append(aufgabe)
 
-        if self.chosen_program == "cria":
-            self.list_alle_aufgaben_sage.append(aufgabe)
+        # if self.chosen_program == "cria":
+        #     self.list_alle_aufgaben_sage.append(aufgabe)
+
+        typ = get_aufgabentyp(self.chosen_program, aufgabe)
+
+        if typ == 2:
+            self.list_alle_aufgaben_sage[1].append(aufgabe)
+        else:
+            self.list_alle_aufgaben_sage[0].append(aufgabe)
+
 
         num_typ1, num_typ2 = self.get_aufgabenverteilung()
-        num_total = len(self.list_alle_aufgaben_sage)
+        num_total = num_typ1+num_typ2
 
         if self.chosen_program == "lama":
             label = "Anzahl der Aufgaben: {0}\n(Typ1: {1} / Typ2: {2})".format(
@@ -5124,21 +5135,29 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         )
 
     def adapt_label_gesamtbeispiele(self):
-        list_sage_examples_typ1 = []
-        list_sage_examples_typ2 = []
+        # list_sage_examples_typ1 = []
+        # list_sage_examples_typ2 = []
 
-        for all in self.list_alle_aufgaben_sage:
-            if re.search("[A-Z]", all) == None:
-                list_sage_examples_typ2.append(all)
-            else:
-                list_sage_examples_typ1.append(all)
+        # for all in self.list_alle_aufgaben_sage[0]:
+        #     list_sage_examples_typ1.append(all)
+        
+        # for all in self.list_alle_aufgaben_sage[1]:
+        #     list_sage_examples_typ2.append(all)
 
-        self.list_alle_aufgaben_sage.clear()
-        self.list_alle_aufgaben_sage.extend(list_sage_examples_typ1)
-        self.list_alle_aufgaben_sage.extend(list_sage_examples_typ2)
-        num_typ1 = len(list_sage_examples_typ1)
-        num_typ2 = len(list_sage_examples_typ2)
-        num_total = len(self.list_alle_aufgaben_sage)
+        #     # if re.search("[A-Z]", all) == None:
+        #     #     list_sage_examples_typ2.append(all)
+        #     # else:
+        #     #     list_sage_examples_typ1.append(all)
+
+        # self.list_alle_aufgaben_sage.clear()
+        # self.list_alle_aufgaben_sage.extend(list_sage_examples_typ1)
+        # self.list_alle_aufgaben_sage.extend(list_sage_examples_typ2)
+        # num_typ1 = len(list_sage_examples_typ1)
+        # num_typ2 = len(list_sage_examples_typ2)
+        # num_total = len(self.list_alle_aufgaben_sage)
+        num_typ1, num_typ2 = self.get_aufgabenverteilung()
+        num_total = num_typ1+num_typ2
+
 
         if self.chosen_program == "lama":
             self.label_gesamtbeispiele.setText(
@@ -5159,39 +5178,55 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     @report_exceptions
     def btn_up_pressed(self, aufgabe):
+        typ = get_aufgabentyp(self.chosen_program, aufgabe)
+
+        if typ == 2:
+            list_index = 1         
+        else:
+            list_index = 0
         a, b = (
-            self.list_alle_aufgaben_sage.index(aufgabe),
-            self.list_alle_aufgaben_sage.index(aufgabe) - 1,
+            self.list_alle_aufgaben_sage[list_index].index(aufgabe),
+            self.list_alle_aufgaben_sage[list_index].index(aufgabe) - 1,
         )
-        self.list_alle_aufgaben_sage[a], self.list_alle_aufgaben_sage[b] = (
-            self.list_alle_aufgaben_sage[b],
-            self.list_alle_aufgaben_sage[a],
+        self.list_alle_aufgaben_sage[list_index][a], self.list_alle_aufgaben_sage[list_index][b] = (
+            self.list_alle_aufgaben_sage[list_index][b],
+            self.list_alle_aufgaben_sage[list_index][a],
         )
 
         self.build_aufgaben_schularbeit(aufgabe)
 
     @report_exceptions
     def btn_down_pressed(self, aufgabe):
+        typ = get_aufgabentyp(self.chosen_program, aufgabe)
+        if typ == 2:
+            list_index = 1         
+        else:
+            list_index = 0
 
         a, b = (
-            self.list_alle_aufgaben_sage.index(aufgabe),
-            self.list_alle_aufgaben_sage.index(aufgabe) + 1,
+            self.list_alle_aufgaben_sage[list_index].index(aufgabe),
+            self.list_alle_aufgaben_sage[list_index].index(aufgabe) + 1,
         )
-        self.list_alle_aufgaben_sage[a], self.list_alle_aufgaben_sage[b] = (
-            self.list_alle_aufgaben_sage[b],
-            self.list_alle_aufgaben_sage[a],
+        self.list_alle_aufgaben_sage[list_index][a], self.list_alle_aufgaben_sage[list_index][b] = (
+            self.list_alle_aufgaben_sage[list_index][b],
+            self.list_alle_aufgaben_sage[list_index][a],
         )
 
         self.build_aufgaben_schularbeit(aufgabe)
 
     def erase_aufgabe(self, aufgabe):
+        typ = get_aufgabentyp(self.chosen_program, aufgabe)
         del self.dict_variablen_punkte[aufgabe]
-        if get_aufgabentyp(self.chosen_program, aufgabe) == 1:
+        if typ == 1:
             del self.dict_variablen_punkte_halb[aufgabe]
         del self.dict_variablen_abstand[aufgabe]
-        self.list_alle_aufgaben_sage.remove(aufgabe)
-        if get_aufgabentyp(self.chosen_program, aufgabe) == 2:
+        
+        if typ == 2:
             del self.dict_variablen_label[aufgabe]
+            self.list_alle_aufgaben_sage[1].remove(aufgabe)
+        else:
+            self.list_alle_aufgaben_sage[0].remove(aufgabe)
+
         if aufgabe in self.dict_sage_ausgleichspunkte_chosen:
             del self.dict_sage_ausgleichspunkte_chosen[aufgabe]
         if aufgabe in self.dict_sage_hide_show_items_chosen:
@@ -5214,15 +5249,23 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     return
         except KeyError:
             pass
-        index = self.list_alle_aufgaben_sage.index(aufgabe)
+        
+        typ = get_aufgabentyp(self.chosen_program, aufgabe)
+        if typ == 2:
+           list_index = 1
+           layout = self.verticalLayout_scrollArea_sage_typ2
+        else:
+            list_index = 0 
+            layout = self.verticalLayout_scrollArea_sage_typ1
+        index = self.list_alle_aufgaben_sage[list_index].index(aufgabe)
 
-        if index + 1 == len(self.list_alle_aufgaben_sage):
-            self.delete_widget(self.verticalLayout_scrollArea_sage, index)
+        if index + 1 == len(self.list_alle_aufgaben_sage[list_index]):
+            self.delete_widget(layout, index)
             self.erase_aufgabe(aufgabe)
 
         else:
             self.erase_aufgabe(aufgabe)
-            self.build_aufgaben_schularbeit(self.list_alle_aufgaben_sage[index])
+            self.build_aufgaben_schularbeit(self.list_alle_aufgaben_sage[list_index][index])
 
         self.update_punkte()
         self.button_was_deleted = True
@@ -5251,7 +5294,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         pos_maximum = self.scrollArea_chosen.verticalScrollBar().maximum()
         height_aufgabe = 110
-        num_typ2 = self.get_aufgabenverteilung()[1]
+        _, num_typ2 = self.get_aufgabenverteilung()
         pos_end_typ1 = pos_maximum - height_aufgabe * num_typ2
 
         if self.listWidget.currentItem() != None:
@@ -5268,7 +5311,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         pkt_typ1 = 0
         pkt_typ2 = 0
         gesamtpunkte = 0
-
+        print(self.dict_variablen_punkte)
         for all in self.dict_variablen_punkte:
             typ = get_aufgabentyp(self.chosen_program, all)
             if typ == None:
@@ -5338,7 +5381,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def update_punkte(self):
         gesamtpunkte = self.get_punkteverteilung()[0]
         num_typ1, num_typ2 = self.get_aufgabenverteilung()
-        num_total = len(self.list_alle_aufgaben_sage)
+        num_total = num_typ1+num_typ2
 
         if self.combobox_beurteilung.currentText() == "Notenschlüssel":
             self.update_notenschluessel()
@@ -5395,7 +5438,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def create_neue_aufgaben_box(self, index, aufgabe, aufgabe_total):
         typ = get_aufgabentyp(self.chosen_program, aufgabe)
 
-        aufgaben_verteilung = self.get_aufgabenverteilung()
+        num_typ1, _ = self.get_aufgabenverteilung()
 
         new_groupbox = DragDropGroupBox(self, aufgabe)
         new_groupbox.setParent(self.scrollAreaWidgetContents_typ1)
@@ -5412,8 +5455,15 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # new_groupbox = create_new_groupbox(
             #     self.scrollAreaWidgetContents_2, 
             # )
+        elif typ == 2:
+            print(num_typ1)
+            print(index)
+            num = num_typ1+index+1
+            print(num)
+            new_groupbox.setTitle(f"{num}. Aufgabe (Typ2)")
+            self.dict_widget_variables[f'groupbox_sage_{aufgabe}'] = new_groupbox
         else:
-            new_groupbox.setTitle("{0}. Aufgabe (Typ{1})".format(index + 1, typ))
+            new_groupbox.setTitle(f"{index+1}. Aufgabe (Typ1)")
             # new_groupbox = create_new_groupbox(
             #     self.scrollAreaWidgetContents_2,
             #     "{0}. Aufgabe (Typ{1})".format(index + 1, typ),
@@ -5545,11 +5595,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # )
 
         gridLayout_gB.addWidget(button_up, 0, 5, 1, 1)
-        number = index + 1
-        if (typ == 1 or typ == None) and number == 1:
+        # number = index + 1
+        if index == 0:
             button_up.setEnabled(False)
-        if typ == 2 and number == aufgaben_verteilung[0] + 1:
-            button_up.setEnabled(False)
+        # if typ == 2 and number == aufgaben_verteilung[0] + 1:
+        #     button_up.setEnabled(False)
 
         button_down = create_new_button(new_groupbox, "", partial(self.btn_down_pressed, aufgabe))
         button_down.setIcon(QtGui.QIcon(get_icon_path('arrow-down-circle.svg'))) 
@@ -5563,9 +5613,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # )
         gridLayout_gB.addWidget(button_down, 0, 6, 1, 1)
 
-        if typ == 1 and number == aufgaben_verteilung[0]:
-            button_down.setEnabled(False)
-        if (typ == 2 or typ == None) and number == len(self.list_alle_aufgaben_sage):
+        # if typ == 1 and number == aufgaben_verteilung[0]:
+        #     button_down.setEnabled(False)
+        # if (typ == 2 or typ == None) and number == len(self.list_alle_aufgaben_sage):
+        num_total = len(self.list_alle_aufgaben_sage[0])+len(self.list_alle_aufgaben_sage[1])
+
+        if index == num_total-1:
             button_down.setEnabled(False)
 
 
@@ -5702,8 +5755,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         #     self.gridLayout_8.removeItem(self.spacerItem)
         # except AttributeError:
         #     pass
-
-        index = self.list_alle_aufgaben_sage.index(aufgabe)
+        typ = get_aufgabentyp(self.chosen_program, aufgabe)        
+        if typ == 2:
+            list_index = 1
+            layout = self.verticalLayout_scrollArea_sage_typ2
+        else:
+            list_index = 0
+            layout = self.verticalLayout_scrollArea_sage_typ1
+        index = self.list_alle_aufgaben_sage[list_index].index(aufgabe)
 
         if index == 0:
             start_value = index
@@ -5719,22 +5778,31 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.temp_info[all] = [self.dict_variablen_punkte[all].value(), halbe_punkte, self.dict_variablen_abstand[all].value()]
 
 
-        for i in reversed(range(start_value, self.verticalLayout_scrollArea_sage.count()+1)):
-            self.delete_widget(self.verticalLayout_scrollArea_sage, i)
+        for i in reversed(range(start_value, layout.count()+1)):
+            self.delete_widget(layout, i)
 
-        for item in self.list_alle_aufgaben_sage[start_value:]:
-            index_item = self.list_alle_aufgaben_sage.index(item)
-            typ = get_aufgabentyp(self.chosen_program, item)
+        for item in self.list_alle_aufgaben_sage[list_index][start_value:]:
+            temp_typ = get_aufgabentyp(self.chosen_program, item)
+            index_item = self.list_alle_aufgaben_sage[list_index].index(item)
+            
 
-            aufgabe_total = get_aufgabe_total(item.replace(" (lokal)", ""), typ)
+            aufgabe_total = get_aufgabe_total(item.replace(" (lokal)", ""), temp_typ)
             neue_aufgaben_box = self.create_neue_aufgaben_box(
                 index_item, item, aufgabe_total
             )
 
-            self.verticalLayout_scrollArea_sage.insertWidget(self.verticalLayout_scrollArea_sage.count() - 1, neue_aufgaben_box)
+
+            layout.insertWidget(layout.count() - 1, neue_aufgaben_box)
             index_item + 1
 
-        
+
+        if typ == 1 and not is_empty(self.list_alle_aufgaben_sage[1]):
+            num_typ1, _=self.get_aufgabenverteilung()
+            for i, item in enumerate(self.list_alle_aufgaben_sage[1]):
+                num = num_typ1+i+1
+                self.dict_widget_variables[f'groupbox_sage_{item}'].setTitle(f"{num}. Aufgabe (Typ2)")
+
+                
         # self.spacerItem = QtWidgets.QSpacerItem(
         #     20, 60, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
         # )
@@ -6025,13 +6093,19 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # if self.chosen_program == "cria":
         # klasse = self.get_klasse("sage")
         # aufgabe = klasse + "." + aufgabe
+        typ = get_aufgabentyp(self.chosen_program, aufgabe)
+        if typ == 2:
+            list_index = 1
+        else:
+            list_index = 0
 
-        if aufgabe in self.list_alle_aufgaben_sage:
+        if aufgabe in self.list_alle_aufgaben_sage[list_index]:
             return
 
         self.sage_aufgabe_add(aufgabe)
 
         self.build_aufgaben_schularbeit(aufgabe)  # aufgabe, aufgaben_verteilung
+        print(self.list_alle_aufgaben_sage)
         self.lineEdit_number.setText("")
         self.lineEdit_number.setFocus()
         self.check_for_autosave()
@@ -6229,13 +6303,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         _dict = {}
         
-        for aufgabe in self.list_alle_aufgaben_sage:
-            halbe_punkte = self.get_punkte_halb_aufgabe_sage(aufgabe)
-            _dict[aufgabe] = [
-                self.get_punkte_aufgabe_sage(aufgabe),
-                self.get_abstand_aufgabe_sage(aufgabe),
-                halbe_punkte,
-            ]
+        for list_index in [0,1]:
+            for aufgabe in self.list_alle_aufgaben_sage[list_index]:
+                halbe_punkte = self.get_punkte_halb_aufgabe_sage(aufgabe)
+                _dict[aufgabe] = [
+                    self.get_punkte_aufgabe_sage(aufgabe),
+                    self.get_abstand_aufgabe_sage(aufgabe),
+                    halbe_punkte,
+                ]
 
 
         self.dict_all_infos_for_file["dict_alle_aufgaben_pkt_abstand"] = _dict
@@ -6432,7 +6507,23 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def create_body_of_tex_file(self, filename_vorschau, ausgabetyp):
         first_typ2 = False
 
-        for aufgabe in self.list_alle_aufgaben_sage:
+        for aufgabe in self.list_alle_aufgaben_sage[0]:
+            name = aufgabe.replace(" (lokal)", "")
+            typ = get_aufgabentyp(self.chosen_program, name)
+            aufgabe_total = get_aufgabe_total(name, typ)
+            if aufgabe_total == None:
+                warning_window(
+                    "Die Aufgabe {} konnte nicht gefunden werden, da sie gelöscht oder umbenannt wurde. Sie wird daher beim Erstellen ignoriert.".format(
+                        name
+                    )
+                )
+                continue
+
+            self.add_content_to_tex_file(
+                aufgabe, aufgabe_total, filename_vorschau, first_typ2, ausgabetyp
+            )
+        
+        for aufgabe in self.list_alle_aufgaben_sage[1]:
             name = aufgabe.replace(" (lokal)", "")
             typ = get_aufgabentyp(self.chosen_program, name)
             aufgabe_total = get_aufgabe_total(name, typ)
@@ -6446,7 +6537,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             first_typ2 = self.add_content_to_tex_file(
                 aufgabe, aufgabe_total, filename_vorschau, first_typ2, ausgabetyp
-            )
+            ) 
 
     @report_exceptions
     def pushButton_vorschau_pressed(
@@ -6613,7 +6704,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             vorschau.write(tex_end)
             vorschau.write("\n\n")
             vorschau.write(
-                "% Aufgabenliste: {}".format(", ".join(self.list_alle_aufgaben_sage))
+                "% Aufgabenliste: {}".format(", ".join(self.list_alle_aufgaben_sage[0]+self.list_alle_aufgaben_sage[1]))
             )
 
         if ausgabetyp == "schularbeit":
