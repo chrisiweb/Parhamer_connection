@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets, QtGui
-from PyQt5.QtCore import Qt, QMimeData
+from PyQt5.QtCore import Qt, QMimeData, QPoint
 from config import SpinBox_noWheel, ClickLabel
 from translate import _fromUtf8, _translate
 from predefined_size_policy import SizePolicy_fixed
@@ -36,14 +36,35 @@ class DragDropWidget(QtWidgets.QWidget):
         self.setAcceptDrops(True)
 
 
+    # def mouseMoveEvent(self, e):
+    #     print(f"widget size: {self.size()}")
+    #     print(f"widget position: {self.pos()}")
+    #     print(f"mouse position: {e.pos()}")
+
+    # def dragLeaveEvent(self, event):
+    #     # self.MainWindow.groupBox_sage.setCursor(Qt.ForbiddenCursor)
+    #     # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(Qt.ForbiddenCursor))
+    #     print('ERROR')
+
+    # # def cursorInWidget(self):
+    # #     cursorPos = QtGui.QCursor.pos()
+    # #     widgetWidth = self.geometry().width()
+    # #     widgetHeight = self.geometry().height()        
+    # #     widgetPos = self.mapToGlobal(QPoint(0,0))
+    # #     if cursorPos.x() <= widgetPos.x() or cursorPos.y() <= widgetPos.y() or cursorPos.x() >= (widgetPos.x() + widgetWidth) or cursorPos.y() >= (widgetPos.y() + widgetHeight):
+    # #         return False
+    # #     else:
+    # #         return True
+
     def dragEnterEvent(self, e):
-        self.starting_cursor_height = e.pos().y()
-        print(self.size())
-        print(self.pos())
-        e.accept()
+        typ = get_aufgabentyp(self.MainWindow.chosen_program, self.MainWindow.moving_aufgabe)
+        if self.dragdropWidget_typ == typ:
+            self.starting_cursor_height = e.pos().y()
+            e.accept()
+
+
 
     def dropEvent(self, e):
-
         pos = e.pos()
         widget = e.source()
         typ = get_aufgabentyp(self.MainWindow.chosen_program, self.MainWindow.moving_aufgabe)
@@ -83,9 +104,7 @@ class DragDropWidget(QtWidgets.QWidget):
 
         # print(index)
         # self.MainWindow.verticalLayout_scrollArea_sage_typ1.insertWidget(index, widget)
-        
-        print(self.MainWindow.list_alle_aufgaben_sage)
-        print(self.MainWindow.moving_aufgabe)
+
       
 
         old_index = self.MainWindow.list_alle_aufgaben_sage[list_index].index(self.MainWindow.moving_aufgabe)
@@ -93,9 +112,7 @@ class DragDropWidget(QtWidgets.QWidget):
  
         self.MainWindow.list_alle_aufgaben_sage[list_index].insert(index, self.MainWindow.moving_aufgabe)
 
-        print(self.MainWindow.list_alle_aufgaben_sage[list_index])
-        print(f"alt: {old_index}")
-        print(f"neu: {index}")
+
         if old_index<index:
             idx = old_index
         else:
