@@ -29,23 +29,46 @@ class DragDropGroupBox(QtWidgets.QGroupBox):
 
 
 class DragDropWidget(QtWidgets.QWidget):
-    def __init__(self, MainWindow):
+    def __init__(self, MainWindow, dragdropWidget_typ):
         super().__init__()
         self.MainWindow = MainWindow
+        self.dragdropWidget_typ = dragdropWidget_typ
         self.setAcceptDrops(True)
 
 
     def dragEnterEvent(self, e):
         self.starting_cursor_height = e.pos().y()
+        print(self.size())
+        print(self.pos())
         e.accept()
 
     def dropEvent(self, e):
+
         pos = e.pos()
         widget = e.source()
-        for n in range(self.MainWindow.verticalLayout_scrollArea_sage_typ1.count()):
-            w = self.MainWindow.verticalLayout_scrollArea_sage_typ1.itemAt(n).widget()
+        typ = get_aufgabentyp(self.MainWindow.chosen_program, self.MainWindow.moving_aufgabe)
 
-            drop_here = pos.y() < w.y() +  w.size().height() // 2
+        if self.dragdropWidget_typ != typ:
+            print('not allowed')
+            return
+
+        if typ == 2:
+            list_index = 1
+            layout =  self.MainWindow.verticalLayout_scrollArea_sage_typ2        
+        else:
+            list_index = 0 
+            layout = self.MainWindow.verticalLayout_scrollArea_sage_typ1
+
+
+        for n in range(layout.count()-1):
+            w = layout.itemAt(n).widget()
+
+            try:
+                drop_here = pos.y() < w.y() +  w.size().height() // 2
+            except AttributeError:
+                print('to the end')
+                index=layout.count()-2
+                break
             if pos.y() < w.y() and n == 0:
                 index=0
                 break
@@ -59,16 +82,11 @@ class DragDropWidget(QtWidgets.QWidget):
             index = n
 
         # print(index)
-        self.MainWindow.verticalLayout_scrollArea_sage_typ1.insertWidget(index, widget)
+        # self.MainWindow.verticalLayout_scrollArea_sage_typ1.insertWidget(index, widget)
         
         print(self.MainWindow.list_alle_aufgaben_sage)
         print(self.MainWindow.moving_aufgabe)
-        typ = get_aufgabentyp(self.MainWindow.chosen_program, self.MainWindow.moving_aufgabe)
-
-        if typ == 2:
-            list_index = 1         
-        else:
-            list_index = 0       
+      
 
         old_index = self.MainWindow.list_alle_aufgaben_sage[list_index].index(self.MainWindow.moving_aufgabe)
         self.MainWindow.list_alle_aufgaben_sage[list_index].pop(old_index)
@@ -76,7 +94,13 @@ class DragDropWidget(QtWidgets.QWidget):
         self.MainWindow.list_alle_aufgaben_sage[list_index].insert(index, self.MainWindow.moving_aufgabe)
 
         print(self.MainWindow.list_alle_aufgaben_sage[list_index])
-        self.MainWindow.build_aufgaben_schularbeit(self.MainWindow.list_alle_aufgaben_sage[list_index][index])
+        print(f"alt: {old_index}")
+        print(f"neu: {index}")
+        if old_index<index:
+            idx = old_index
+        else:
+            idx = index
+        self.MainWindow.build_aufgaben_schularbeit(self.MainWindow.list_alle_aufgaben_sage[list_index][idx])
         e.accept()
 
     # def add_item(self, item):

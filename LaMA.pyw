@@ -1757,9 +1757,13 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         self.dict_variablen_abstand = {}
         self.update_punkte()
         self.list_copy_images = []
-        for i in reversed(range(self.verticalLayout_scrollArea_sage.count()+1)):
-            self.delete_widget(self.verticalLayout_scrollArea_sage, i)
 
+
+        for i in reversed(range(self.verticalLayout_scrollArea_sage_typ1.count()+1)):
+            self.delete_widget(self.verticalLayout_scrollArea_sage_typ1, i)
+        for i in reversed(range(self.verticalLayout_scrollArea_sage_typ2.count()+1)):
+            self.delete_widget(self.verticalLayout_scrollArea_sage_typ2, i)
+        self.scrollAreaWidgetContents_typ2.hide()    
 
     @report_exceptions
     def change_program(self, program_change_to):
@@ -4780,8 +4784,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def sage_load_files(self):
         list_aufgaben_errors = []
 
-        for i in reversed(range(0, self.verticalLayout_scrollArea_sage.count())):
-            self.delete_widget(self.verticalLayout_scrollArea_sage, i)
+        for i in reversed(range(0, self.verticalLayout_scrollArea_sage_typ1.count())):
+            self.delete_widget(self.verticalLayout_scrollArea_sage_typ1, i)
+
+        for i in reversed(range(0, self.verticalLayout_scrollArea_sage_typ2.count())):
+            self.delete_widget(self.verticalLayout_scrollArea_sage_typ2, i)
+        self.scrollAreaWidgetContents_typ2.hide()
 
         for index, aufgabe in enumerate(self.list_alle_aufgaben_sage):
             typ = get_aufgabentyp(self.chosen_program, aufgabe)
@@ -5267,6 +5275,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.erase_aufgabe(aufgabe)
             self.build_aufgaben_schularbeit(self.list_alle_aufgaben_sage[list_index][index])
 
+        if is_empty(self.list_alle_aufgaben_sage[1]):
+            print('hide')
+            self.scrollAreaWidgetContents_typ2.hide() 
+
         self.update_punkte()
         self.button_was_deleted = True
 
@@ -5313,6 +5325,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         gesamtpunkte = 0
         print(self.dict_variablen_punkte)
         for all in self.dict_variablen_punkte:
+            print(all)
             typ = get_aufgabentyp(self.chosen_program, all)
             if typ == None:
                 gesamtpunkte += self.dict_variablen_punkte[all].value()
@@ -5456,10 +5469,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             #     self.scrollAreaWidgetContents_2, 
             # )
         elif typ == 2:
-            print(num_typ1)
-            print(index)
             num = num_typ1+index+1
-            print(num)
             new_groupbox.setTitle(f"{num}. Aufgabe (Typ2)")
             self.dict_widget_variables[f'groupbox_sage_{aufgabe}'] = new_groupbox
         else:
@@ -5616,7 +5626,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # if typ == 1 and number == aufgaben_verteilung[0]:
         #     button_down.setEnabled(False)
         # if (typ == 2 or typ == None) and number == len(self.list_alle_aufgaben_sage):
-        num_total = len(self.list_alle_aufgaben_sage[0])+len(self.list_alle_aufgaben_sage[1])
+        if typ == 2:
+            num_total = len(self.list_alle_aufgaben_sage[1])
+        else:
+            num_total = len(self.list_alle_aufgaben_sage[0])
 
         if index == num_total-1:
             button_down.setEnabled(False)
@@ -5793,6 +5806,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
             layout.insertWidget(layout.count() - 1, neue_aufgaben_box)
+            # if typ== 2:
+            #     layout.insertWidget(layout.count() - 1, neue_aufgaben_box)
+            # else:
+            #     layout.insertWidget(layout.count(), neue_aufgaben_box)
             index_item + 1
 
 
@@ -6103,6 +6120,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             return
 
         self.sage_aufgabe_add(aufgabe)
+
+        if not is_empty(self.list_alle_aufgaben_sage[1]):
+            print('show')
+            self.scrollAreaWidgetContents_typ2.show()
 
         self.build_aufgaben_schularbeit(aufgabe)  # aufgabe, aufgaben_verteilung
         print(self.list_alle_aufgaben_sage)
