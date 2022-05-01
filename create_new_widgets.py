@@ -58,7 +58,7 @@ class DragDropWidget(QtWidgets.QWidget):
 
     def dragEnterEvent(self, e):
         typ = get_aufgabentyp(self.MainWindow.chosen_program, self.MainWindow.moving_aufgabe)
-        if self.dragdropWidget_typ == typ:
+        if self.dragdropWidget_typ == typ or typ==None:
             self.starting_cursor_height = e.pos().y()
             e.accept()
 
@@ -69,7 +69,7 @@ class DragDropWidget(QtWidgets.QWidget):
         widget = e.source()
         typ = get_aufgabentyp(self.MainWindow.chosen_program, self.MainWindow.moving_aufgabe)
 
-        if self.dragdropWidget_typ != typ:
+        if self.dragdropWidget_typ != typ and typ != None:
             # print('not allowed')
             return
 
