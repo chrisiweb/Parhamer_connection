@@ -45,7 +45,6 @@ class Worker_UpdateDatabase(QtCore.QObject):
     @QtCore.pyqtSlot()
     def task(self):
         Ui_MainWindow.reset_successfull = git_reset_repo_to_origin()
-        # print(Ui_MainWindow.reset_successfull)
         self.finished.emit()
 
 
@@ -149,7 +148,6 @@ class Ui_MainWindow(object):
 
     # def resizeEvent(self, event: QtGui.QResizeEvent):
     #     self.resized.emit()
-    #     print('test')
     #     return self.resizeEvent(event)
     #     # self.resized.emit()
     #     # return 
@@ -1650,7 +1648,6 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         self.chosen_variation = None
         self.reset_variation()
 
-        # print("reset images missing!")
         for image in list(self.dict_picture_path.keys())[:]:
             self.del_picture(image, question=False)    
         # for picture in list(self.dict_widget_variables.keys())[:]:
@@ -2529,8 +2526,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         self.lineEdit_titel.setText(aufgabe_total["titel"])
 
-        # print(aufgabe_total['bilder'])
-        # print(aufgabe_total['name'])
 
         if mode == "editor":
             if not is_empty(aufgabe_total['bilder']):
@@ -3356,8 +3351,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 lama_table.clear_cache()
 
         file_id = lama_table.get(_file_.name == name).doc_id
-        # print(bilder)
-        # print(self.dict_picture_path)
 
         if typ == 1:
             lama_table.update({"name": new_name}, doc_ids=[file_id])
@@ -3554,9 +3547,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         name = self.create_file_name(typ, max_integer, themen_auswahl)
         
-        # print(max_integer)
-        # print(name)
-
         _file_ = Query()
         if typ == 1 and aufgabe_total["themen"] != variation_total["themen"]:
             table_lama.update(
@@ -3696,8 +3686,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         list_images_new_names, error = self.copy_image_save(typ_save, parent_image_path)
 
-        # print(list_images_new_names)
-        # return
+
         if list_images_new_names == None:
             warning_window(
                 'Die Grafik mit dem Dateinamen "{}" konnte im Aufgabentext nicht gefunden werden.'.format(
@@ -3928,10 +3917,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 else:
                     string  = "{0}[{1}]".format(num, variation_num)
                 list_missing_files.append(string)
-            # print(missing_variation_numbers)
-
-
-
 
         
         return list_missing_files
@@ -3961,7 +3946,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             
 
         dict_missing_files["Typ1 Aufgaben"] = list_missing_file
-        # print(list_missing_file)
+
         ###################################
         #### TYP 2 ###### FUNKTIONIERT!!!
         table_lama = _database.table('table_lama_2')
@@ -4000,17 +3985,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         #     _list.append(num)
         #     if num > maximum:
         #         maximum = num
-        # # print(maximum)
 
-        # for i in range(1,maximum+1):
-        #     if i not in _list:
-        #         print(i)
-        #     else:
-        #         print('existiert: {}'.format(i))    
-            
-        # print(_database_addon.all())
-        # print(database.all())
-        # print(files)
+
+
     def worksheet_wizard_reset(self):
         self.comboBox_themen_wizard.setCurrentIndex(0)
         self.spinBox_number_wizard.setValue(20)
@@ -4430,9 +4407,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         #     self.coordinates_nonogramm_wizard = create_coordinates(self, solution_pixel)
 
-        # print(self.chosen_nonogram)
-        # print(solution_pixel)
-        # print(self.coordinates_nonogramm_wizard)
 
     def add_to_worksheet_wizard_pressed(self):
         self.worksheet_edited = True
@@ -4457,9 +4431,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.create_nonogramm_wizard()
         #     self.coordinates_nonogramm_wizard = create_coordinates(self, solution_pixel)
 
-        # print(self.chosen_nonogram)
-        # print(solution_pixel)
-        # print(self.coordinates_nonogramm_wizard)        
 
     def create_latex_file_content_wizard(self):
         # if self.worksheet_wizard_changed == True:
@@ -4467,10 +4438,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         if self.worksheet_edited == True:
             self.coordinates_nonogramm_wizard = create_coordinates(self, self.solution_pixel)
             self.worksheet_edited = False
-        else:
-            print('passed') 
+
         len(self.coordinates_nonogramm_wizard)
-        print(self.coordinates_nonogramm_wizard)
+        # print(self.coordinates_nonogramm_wizard)
         list_empty = 0
         list_solutions = 0
         for all in self.coordinates_nonogramm_wizard:
@@ -4479,8 +4449,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             else:
                 list_solutions +=1
         
-        print(list_empty)
-        print(list_solutions)
+        # print(list_empty)
+        # print(list_solutions)
         return ""
         titel = self.lineEdit_titel_wizard.text()
         columns = self.spinBox_column_wizard.value()
@@ -4626,7 +4596,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 table_lama = _database.table('table_cria')
                 _file_ = Query() 
                 _list = table_lama.search(_file_.bilder.test(test_func, image))                
-            # print(image)
+
             if is_empty(_list):
                 list_unused_images.append(image)
 
@@ -5276,7 +5246,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.build_aufgaben_schularbeit(self.list_alle_aufgaben_sage[list_index][index])
 
         if is_empty(self.list_alle_aufgaben_sage[1]):
-            print('hide')
             self.scrollAreaWidgetContents_typ2.hide() 
 
         self.update_punkte()
@@ -5323,9 +5292,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         pkt_typ1 = 0
         pkt_typ2 = 0
         gesamtpunkte = 0
-        print(self.dict_variablen_punkte)
+        # print(self.dict_variablen_punkte)
         for all in self.dict_variablen_punkte:
-            print(all)
             typ = get_aufgabentyp(self.chosen_program, all)
             if typ == None:
                 gesamtpunkte += self.dict_variablen_punkte[all].value()
@@ -5748,8 +5716,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         typ = get_aufgabentyp(self.chosen_program, aufgabe)
         aufgabe_total = get_aufgabe_total(aufgabe, typ)
         # content = aufgabe_total["content"]
-        # print(content)
-        # print(aufgabe_total['bilder'])
+
 
         for image in aufgabe_total["bilder"]:
             self.list_copy_images.append(image)
@@ -5757,7 +5724,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # if "\\includegraphics" in content:
         #     matches = re.findall("/Bilder/(.+.eps)}", content)
         #     for image in matches:
-        #         print(image)
         #         self.list_copy_images.append(image)
 
     @report_exceptions
@@ -5784,9 +5750,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
         self.temp_info = {}
-        # print(self.dict_variablen_punkte)
         for all in self.dict_variablen_punkte.keys():
-            # print(all)
             halbe_punkte = self.get_punkte_halb_aufgabe_sage(all)
             self.temp_info[all] = [self.dict_variablen_punkte[all].value(), halbe_punkte, self.dict_variablen_abstand[all].value()]
 
@@ -5945,7 +5909,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     # def splitter_sage_moved(self):
     #     self.width_groupBox_sage = self.groupBox_sage.geometry().width()
     #     self.min_width_groupBox_sage = self.groupBox_sage.minimumSizeHint().width()
-    #     print(self.groupBox_sage.sizeHint())
+
 
         # if self.width_groupBox_sage <= self.min_width_groupBox_sage:
         #     self.groupBox_klasse_sage.hide()
@@ -6122,11 +6086,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.sage_aufgabe_add(aufgabe)
 
         if not is_empty(self.list_alle_aufgaben_sage[1]):
-            print('show')
             self.scrollAreaWidgetContents_typ2.show()
 
         self.build_aufgaben_schularbeit(aufgabe)  # aufgabe, aufgaben_verteilung
-        print(self.list_alle_aufgaben_sage)
+        # print(self.list_alle_aufgaben_sage)
         self.lineEdit_number.setText("")
         self.lineEdit_number.setFocus()
         self.check_for_autosave()
@@ -6409,7 +6372,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     def replace_group_variation_aufgabe(self, content):
         _list = re.findall("\\\\variation\{.*\}\{.*\}", content)
-        # print(_list)
+
         for all in _list:
             open_count=0
             close_count=0
@@ -6423,9 +6386,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 if open_count==close_count:
                     start_index = i
                     break
-            # print(start_index)
+
             replacement_string = all[start_index+2:-1].replace("\\", "\\\\")
-            # print(replacement_string)
+
             content = re.sub("\\\\variation\{.*\}\{.*\}", replacement_string, content)
 
 
@@ -6962,7 +6925,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     @report_exceptions
     def update_gui(self, chosen_gui):
-        # print(chosen_gui)
 
         if chosen_gui == "widgets_search":
             self.stackMainWindow.setCurrentIndex(0)
@@ -6976,8 +6938,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.stackMainWindow.minimumSizeHint()
         if self.chosen_program == "cria":
             chosen_gui = chosen_gui + "_cria"
-        # print(chosen_gui)
-
 
         chosen_gui_list = eval(chosen_gui)
 
@@ -7120,7 +7080,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 #     def adaptGUItosize(self, MainWindow):
 #         size = QtCore.QSize(self.geometry().width(), self.geometry().height())
-#         # print(size)
 #         # MainWindow.label_lamaLogo.setText("TEEEST")
 #         # return size
 #         width = self.geometry().width()
@@ -7139,7 +7098,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             #     MainWindow.groupBox_ausgew_gk.show()
             #     MainWindow.groupBox_pdf_output.show()
         # MainWindow.label_warnung.setText(str(size))
-        # print("someFunction")
+
 
 
 if __name__ == "__main__":

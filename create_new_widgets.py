@@ -70,7 +70,7 @@ class DragDropWidget(QtWidgets.QWidget):
         typ = get_aufgabentyp(self.MainWindow.chosen_program, self.MainWindow.moving_aufgabe)
 
         if self.dragdropWidget_typ != typ:
-            print('not allowed')
+            # print('not allowed')
             return
 
         if typ == 2:
@@ -91,32 +91,41 @@ class DragDropWidget(QtWidgets.QWidget):
                 index=layout.count()-2
                 break
             if pos.y() < w.y() and n == 0:
+                print("A")
                 index=0
                 break
             elif drop_here:
                 if self.starting_cursor_height <= pos.y():
+                    print("B")
                     index = n-1
                 else:
+                    print("C")
                     index = n
                 break
         if drop_here == False:
+            print("C")
             index = n
 
         # print(index)
         # self.MainWindow.verticalLayout_scrollArea_sage_typ1.insertWidget(index, widget)
 
-      
+        if index < 0:
+            index=0   
 
         old_index = self.MainWindow.list_alle_aufgaben_sage[list_index].index(self.MainWindow.moving_aufgabe)
         self.MainWindow.list_alle_aufgaben_sage[list_index].pop(old_index)
  
         self.MainWindow.list_alle_aufgaben_sage[list_index].insert(index, self.MainWindow.moving_aufgabe)
 
+        print(index)
+        print(old_index)
 
         if old_index<index:
             idx = old_index
         else:
             idx = index
+        
+
         self.MainWindow.build_aufgaben_schularbeit(self.MainWindow.list_alle_aufgaben_sage[list_index][idx])
         e.accept()
 
