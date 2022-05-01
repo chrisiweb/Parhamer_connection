@@ -87,23 +87,18 @@ class DragDropWidget(QtWidgets.QWidget):
             try:
                 drop_here = pos.y() < w.y() +  w.size().height() // 2
             except AttributeError:
-                print('to the end')
                 index=layout.count()-2
                 break
             if pos.y() < w.y() and n == 0:
-                print("A")
                 index=0
                 break
             elif drop_here:
                 if self.starting_cursor_height <= pos.y():
-                    print("B")
                     index = n-1
                 else:
-                    print("C")
                     index = n
                 break
         if drop_here == False:
-            print("C")
             index = n
 
         # print(index)
@@ -116,9 +111,6 @@ class DragDropWidget(QtWidgets.QWidget):
         self.MainWindow.list_alle_aufgaben_sage[list_index].pop(old_index)
  
         self.MainWindow.list_alle_aufgaben_sage[list_index].insert(index, self.MainWindow.moving_aufgabe)
-
-        print(index)
-        print(old_index)
 
         if old_index<index:
             idx = old_index
