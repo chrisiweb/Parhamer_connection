@@ -268,7 +268,7 @@ class Ui_MainWindow(object):
 
 
         self.stackMainWindow =  QtWidgets.QStackedWidget(MainWindow)
-
+        self.stackMainWindow.setMinimumSize(1,1)
         self.stackSearch = QtWidgets.QWidget(MainWindow)
         self.stackSearch.setMinimumSize(1,1)
         self.stackSage = QtWidgets.QWidget(MainWindow)

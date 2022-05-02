@@ -501,7 +501,8 @@ def setup_stackSearch(self):
     self.groupBox_ausgew_gk = create_new_groupbox(
         self.stackSearch, "Auswahl"
     )
-    # self.groupBox_ausgew_gk.setMaximumHeight(110)
+  
+    self.groupBox_ausgew_gk.setMaximumHeight(115)
 
     self.verticalLayout_2 = create_new_verticallayout(self.groupBox_ausgew_gk)
 
@@ -753,6 +754,7 @@ def setup_stackSearch(self):
 
     self.verticalLayout_searchMenu.addWidget(self.groupBox_pdf_output)
 
+
     # self.verticalLayout_searchMenu.addStretch()
     # self.gridLayout.addWidget(self.cb_show_variaton,5, 1,1,1)
 
@@ -851,9 +853,6 @@ def setup_stackSage(self):
     self.comboBox_unterkapitel.setFocusPolicy(QtCore.Qt.ClickFocus)
     self.verticalLayout_sage.addWidget(self.comboBox_unterkapitel)
     
-
-    if self.chosen_program != 'wizard':
-        self.comboBox_klassen_changed("sage")
 
     self.comboBox_kapitel.currentIndexChanged.connect(
         partial(self.comboBox_kapitel_changed, "sage")
@@ -1253,6 +1252,10 @@ def setup_stackSage(self):
     self.cb_drafts_sage.toggled.connect(self.cb_drafts_sage_enabled)
     self.gridLayoutSetupSage.addWidget(self.cb_drafts_sage,1,0,1,2, QtCore.Qt.AlignRight)
 
+
+    if self.chosen_program != 'wizard':
+        self.comboBox_klassen_changed("sage")
+
     self.label_gruppe_AB  = create_new_label(self.widgetSetupSage, "Gruppe:")
     self.label_gruppe_AB.setSizePolicy(SizePolicy_fixed)
     tooltip_text_gruppe_AB = "Auswahl welche Gruppenvariation bei der Ausgabe\nder Vorschau angezeigt wird (falls eine vorhanden ist)."
@@ -1310,14 +1313,14 @@ def setup_stackCreator(self):
     self.gridLayout_stackCreator.addWidget(self.splitter_creator, 0, 0, 1, 1)
 
     self.splitter_creator_left_widget = QtWidgets.QWidget(self.splitter_creator)
-    self.splitter_creator_left_widget.setMinimumSize(1,1)
-    self.splitter_creator_left_widget.resize(450,0)
+    # self.splitter_creator_left_widget.setMinimumSize(1,1)
+    # self.splitter_creator_left_widget.resize(450,0)
     self.verticalLayout_splitter_creator_left_widget = create_new_verticallayout(self.splitter_creator_left_widget)
     self.verticalLayout_splitter_creator_left_widget.setContentsMargins(0,0,0,0)
 
 
     self.splitter_creator_right_widget = QtWidgets.QWidget(self.splitter_creator)
-    self.splitter_creator_right_widget.setMinimumSize(1,1)  
+    # self.splitter_creator_right_widget.setMinimumSize(1,1)  
     self.verticalLayout_splitter_creator_right_widget = create_new_verticallayout(self.splitter_creator_right_widget)
     self.verticalLayout_splitter_creator_right_widget.setContentsMargins(0,0,0,0)
 
@@ -1349,7 +1352,8 @@ def setup_stackCreator(self):
     self.groupBox_choose_file = create_new_groupbox(
         self.splitter_creator, "Aufgabe auswählen"
     )
-    self.groupBox_choose_file.setMaximumWidth(420)
+    self.groupBox_choose_file.setMinimumSize(1,1)
+    # self.groupBox_choose_file.setMaximumWidth(420)
     self.verticalLayout_choose_file = create_new_verticallayout(
         self.groupBox_choose_file
     )
@@ -1382,7 +1386,6 @@ def setup_stackCreator(self):
 
     self.groupBox_grundkompetenzen_cr.setTitle("Grundkompetenzen")
 
-
     ### CRIA SAGE ###
     self.groupBox_themengebiete_cria = QtWidgets.QGroupBox(self.splitter_creator)
 
@@ -1399,6 +1402,7 @@ def setup_stackCreator(self):
     self.gridLayout_11_cr_cria.addWidget(self.tab_widget_cr_cria, 0, 0, 1, 1)
     self.verticalLayout_splitter_creator_left_widget.addWidget(self.groupBox_themengebiete_cria)
     self.groupBox_themengebiete_cria.setTitle("Themengebiete")
+    self.groupBox_themengebiete_cria.setMinimumSize(1,1)
     # self.groupBox_themengebiete_cria.hide()
 
 
@@ -1483,7 +1487,7 @@ def setup_stackCreator(self):
 
 
     self.groupBox_ausgew_gk_cr = create_new_groupbox(self.splitter_creator, "Auswahl")
-
+    self.groupBox_ausgew_gk_cr.setMinimumSize(1,1)
     self.verticalLayout_2 = create_new_verticallayout(self.groupBox_ausgew_gk_cr)
 
     self.label_ausgew_gk_creator = create_new_label(
@@ -1496,7 +1500,7 @@ def setup_stackCreator(self):
     self.groupBox_bilder = create_new_groupbox(
         self.splitter_creator, "Bilder (klicken, um Bilder zu entfernen)"
     )
-    self.groupBox_bilder.setSizePolicy(SizePolicy_maximum_height)
+    # self.groupBox_bilder.setSizePolicy(SizePolicy_maximum_height)
 
     self.verticalLayout_bilder = create_new_verticallayout(self.groupBox_bilder)
     self.verticalLayout_bilder.setContentsMargins(0,5,0,0)
@@ -1518,6 +1522,7 @@ def setup_stackCreator(self):
     self.scrollArea.setWidget(self.scrollAreaWidgetContents_bilder)
     self.verticalLayout_bilder.addWidget(self.scrollArea)
     self.groupBox_bilder.setTitle("Bilder")
+    self.groupBox_bilder.setMinimumSize(1,1)
     # self.groupBox_bilder.setSizePolicy(SizePolicy_maximum_height)
 
    
@@ -1566,6 +1571,7 @@ def setup_stackCreator(self):
 
 
     self.widget_basic_settings_creator = QtWidgets.QWidget(self.splitter_creator_right_widget)
+    self.widget_basic_settings_creator.setMinimumSize(1,1)
     self.verticalLayout_splitter_creator_right_widget.addWidget(self.widget_basic_settings_creator)
 
     self.horizontalLayout_basic_settings_creator = create_new_horizontallayout(self.widget_basic_settings_creator)
@@ -1573,7 +1579,7 @@ def setup_stackCreator(self):
 
 
     self.groupBox_aufgabentyp = create_new_groupbox(self.widget_basic_settings_creator, "Aufgabentyp")
-    self.groupBox_aufgabentyp.setSizePolicy(SizePolicy_fixed)
+    # self.groupBox_aufgabentyp.setSizePolicy(SizePolicy_fixed)
     self.gridLayout_3 = create_new_horizontallayout(self.groupBox_aufgabentyp)
 
     self.comboBox_aufgabentyp_cr = create_new_combobox(self.groupBox_aufgabentyp)
@@ -1674,7 +1680,7 @@ def setup_stackCreator(self):
 
     self.groupBox_titel_cr = QtWidgets.QGroupBox(self.splitter_creator_right_widget)
     self.groupBox_titel_cr.setObjectName("groupBox_titel_cr")
-    self.groupBox_titel_cr.setSizePolicy(SizePolicy_fixed_height)
+    # self.groupBox_titel_cr.setSizePolicy(SizePolicy_fixed_height)
 
     self.gridLayout_14 = QtWidgets.QGridLayout(self.groupBox_titel_cr)
     self.gridLayout_14.setObjectName("gridLayout_14")
@@ -1686,6 +1692,7 @@ def setup_stackCreator(self):
     self.verticalLayout_splitter_creator_right_widget.addWidget(self.groupBox_titel_cr)
 
     self.groupBox_titel_cr.setTitle("Titel")
+    self.groupBox_titel_cr.setMinimumSize(1,1)
 
 
     self.groupBox_beispieleingabe = QtWidgets.QGroupBox(self.splitter_creator)
@@ -1706,6 +1713,7 @@ def setup_stackCreator(self):
     self.verticalLayout_splitter_creator_right_widget.addWidget(self.groupBox_beispieleingabe)
 
     self.groupBox_beispieleingabe.setTitle("Aufgabeneingabe")
+    self.groupBox_beispieleingabe.setMinimumSize(1,1)
     self.label.setText("Info: Eingabe des Aufgabentextes zwischen \\begin{beispiel}...\\end{beispiel}")
 
 
@@ -1727,7 +1735,7 @@ def setup_stackCreator(self):
     self.verticalLayout_splitter_creator_right_widget.addWidget(self.groupBox_quelle)
 
     self.groupBox_quelle.setTitle("Quelle oder Autor (Vorname Nachname) - Eingabe: VorNac")
-
+    self.groupBox_quelle.setMinimumSize(1,1)
 
     self.widgetcreatorButtons = QtWidgets.QWidget(self.stackCreator)
     self.gridLayout_stackCreator.addWidget(self.widgetcreatorButtons, 1,0,1,1)
@@ -2196,13 +2204,13 @@ def setup_stackFeedback(self):
 
 
     self.splitter_feedback_left_widget = QtWidgets.QWidget(self.splitter_feedback)
-    self.splitter_feedback_left_widget.setMinimumSize(1,1)  
+    # self.splitter_feedback_left_widget.setMinimumSize(1,1)  
     self.verticalLayout_splitter_feedback_left_widget = create_new_verticallayout(self.splitter_feedback_left_widget)
     self.verticalLayout_splitter_feedback_left_widget.setContentsMargins(0,0,0,0)
 
 
     self.groupBox_alle_aufgaben_fb = QtWidgets.QGroupBox(self.splitter_feedback_left_widget)
-    self.groupBox_alle_aufgaben_fb.setMinimumSize(1,1)
+    # self.groupBox_alle_aufgaben_fb.setMinimumSize(1,1)
     self.groupBox_alle_aufgaben_fb.setObjectName("groupBox_alle_aufgaben_fb")
     self.verticalLayout_splitter_feedback_left_widget.addWidget(self.groupBox_alle_aufgaben_fb)
 
@@ -2375,7 +2383,7 @@ def setup_stackFeedback(self):
     self.groupBox_alle_aufgaben_fb.setTitle("Aufgaben")
 
     self.splitter_feedback_right_widget = QtWidgets.QWidget(self.splitter_feedback)
-    self.splitter_feedback_right_widget.setMinimumSize(1,1)  
+    # self.splitter_feedback_right_widget.setMinimumSize(1,1)  
     self.verticalLayout_splitter_feedback_right_widget = create_new_verticallayout(self.splitter_feedback_right_widget)
     self.verticalLayout_splitter_feedback_right_widget.setContentsMargins(0,0,0,0)
 
