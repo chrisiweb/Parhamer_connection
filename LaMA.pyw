@@ -270,14 +270,14 @@ class Ui_MainWindow(object):
         self.stackMainWindow =  QtWidgets.QStackedWidget(MainWindow)
         self.stackMainWindow.setMinimumSize(1,1)
         self.stackSearch = QtWidgets.QWidget(MainWindow)
-        self.stackSearch.setMinimumSize(1,1)
+        # self.stackSearch.setMinimumSize(1,1)
         self.stackSage = QtWidgets.QWidget(MainWindow)
-        self.stackSage.setMinimumSize(1,1)
+        # self.stackSage.setMinimumSize(1,1)
         self.stackCreator = QtWidgets.QWidget(MainWindow)
-        self.stackCreator.setMinimumSize(1,1)
+        # self.stackCreator.setMinimumSize(1,1)
         # self.stackEditor = QtWidgets.QWidget(MainWindow)
         self.stackFeedback  = QtWidgets.QWidget(MainWindow)
-        self.stackFeedback.setMinimumSize(1,1)
+        # self.stackFeedback.setMinimumSize(1,1)
 
 
         self.stackMainWindow.addWidget(self.stackSearch)
@@ -1297,155 +1297,71 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             name = "checkbox_creator_gk_" + all
             self.dict_widget_variables[name].setToolTip(chosen_dict[all])
 
-    # def comboBox_suchbegriffe_changed(self):
-    #     if self.comboBox_suchbegriffe.currentIndex() == 0:
-    #         self.entry_suchbegriffe.setText("")
-    #         self.entry_suchbegriffe.setEnabled(False)
-    #     else:
-    #         self.entry_suchbegriffe.setEnabled(True)
 
-    def tabWidget_klassen_cria_changed(self):
-        klasse = list_klassen[self.tabWidget_klassen_cria.currentIndex()]
 
-        for all in self.dict_widget_variables:
-            if all.startswith("radiobutton_kapitel_{}".format(klasse)):
-                if self.dict_widget_variables[all].isChecked():
-                    split_ending = all.rpartition("_")
-                    kapitel = split_ending[-1]
-                    self.chosen_radiobutton(klasse, kapitel)
-                    return
 
-        self.label_unterkapitel_cria.setText("")
-
-        for alle_klassen in list_klassen:
-            dict_klasse = eval("dict_{}".format(alle_klassen))
-            for alle_kapitel in dict_klasse:
-
-                for unterkapitel in dict_klasse[alle_kapitel]:
-                    label = "checkbox_unterkapitel_{0}_{1}_{2}".format(
-                        alle_klassen, alle_kapitel, unterkapitel
-                    )
-                    self.dict_widget_variables[label].hide()
-                label_button_check_all = "button_check_all_unterkapitel_{0}_{1}".format(
-                    alle_klassen, alle_kapitel
-                )
-                self.dict_widget_variables[label_button_check_all].hide()
-        # self.button_check_all_unterkapitel.hide()
     @report_exceptions
-    def create_all_checkboxes_unterkapitel(self):
-        for klasse in list_klassen:
-            dict_klasse = eval("dict_{}".format(klasse))
-            for kapitel in dict_klasse:
-                for unterkapitel in dict_klasse[kapitel]:
-                    checkbox = create_new_checkbox(
-                        self.scrollAreaWidgetContents_cria,
-                        dict_unterkapitel[unterkapitel] + " (" + unterkapitel + ")",
-                    )
-                    checkbox.stateChanged.connect(
-                        partial(
-                            self.checkBox_checked_cria, klasse, kapitel, unterkapitel
-                        )
-                    )
-                    self.verticalLayout_4_cria.addWidget(checkbox)
-                    checkbox.hide()
-                    label = "checkbox_unterkapitel_{0}_{1}_{2}".format(
-                        klasse, kapitel, unterkapitel
-                    )
-                    self.dict_widget_variables[
-                        label
-                    ] = checkbox  #### creates widgets ???
-
-        self.spacerItem_unterkapitel_cria = QtWidgets.QSpacerItem(
-            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
-        )
-
-        self.verticalLayout_4_cria.addItem(self.spacerItem_unterkapitel_cria)
-
-        for klasse in list_klassen:
-            dict_klasse = eval("dict_{}".format(klasse))
-            for kapitel in dict_klasse:
-                button_check_all_unterkapitel = create_new_button(
-                    self.scrollAreaWidgetContents_cria, "alle auswählen", None
-                )
-                # if self.display_mode == 0:
-                #     stylesheet = StyleSheet_button_check_all
-                # else:
-                #     stylesheet = StyleSheet_button_check_all_dark_mode
-                # button_check_all_unterkapitel.setStyleSheet(stylesheet)
-                button_check_all_unterkapitel.clicked.connect(
-                    partial(self.btn_alle_unterkapitel_clicked_cria, klasse, kapitel)
-                )
-                self.verticalLayout_4_cria.addWidget(
-                    button_check_all_unterkapitel, 0, QtCore.Qt.AlignLeft
-                )
-                button_check_all_unterkapitel.hide()
-                label_button_check_all = "button_check_all_unterkapitel_{0}_{1}".format(
-                    klasse, kapitel
-                )
-                self.dict_widget_variables[
-                    label_button_check_all
-                ] = button_check_all_unterkapitel
-
-
-    def btn_alle_kapitel_clicked(self, klasse):
-        dict_klasse_name = eval("dict_{}_name".format(klasse))
+    def btn_alle_kapitel_clicked_cria(self, klasse):
         dict_klasse = eval("dict_{}".format(klasse))
-        first_chapter = list(dict_klasse_name.keys())[0]
-        first_radiobutton = "radiobutton_kapitel_{0}_{1}".format(klasse, first_chapter)
-        first_checkbox = "checkbox_unterkapitel_{0}_{1}_{2}".format(
-            klasse, first_chapter, dict_klasse[first_chapter][0]
-        )
-        self.dict_widget_variables[first_radiobutton].setChecked(True)
+        comboBox = self.dict_widget_variables[f"combobox_kapitel_search_cria_{klasse}"]
+        text_combobox = comboBox.currentText()
+        # kapitel = text_combobox[text_combobox.find("(") + 1 : text_combobox.find(")")]
+        first_kapitel = text_combobox[text_combobox.find("(") + 1 : text_combobox.find(")")]
+        first_unterkapitel = dict_klasse[first_kapitel][0]
+        first_checkbox = self.dict_widget_variables[f"checkbox_unterkapitel_{klasse}_{first_kapitel}_{first_unterkapitel}"]
 
-        if self.dict_widget_variables[first_checkbox].isChecked() == True:
-            all_checked = True
+        if first_checkbox.isChecked():
+            setchecked = False
         else:
-            all_checked = False
+            setchecked = True
 
-        for kapitel in dict_klasse_name:
-            first_checkbox = "checkbox_unterkapitel_{0}_{1}_{2}".format(
-                klasse, kapitel, dict_klasse[kapitel][0]
-            )
-            if all_checked == True:
-                self.dict_widget_variables[first_checkbox].setChecked(True)
-            else:
-                self.dict_widget_variables[first_checkbox].setChecked(False)
+        for i in range(0,self.dict_widget_variables[f"combobox_kapitel_search_cria_{klasse}"].count()):
+            comboBox.setCurrentIndex(i)
+            text_combobox = comboBox.currentText()
+            kapitel = text_combobox[text_combobox.find("(") + 1 : text_combobox.find(")")]
+            for unterkapitel in dict_klasse[kapitel]:
+                # print(unterkapitel)
+                checkbox = self.dict_widget_variables[f"checkbox_unterkapitel_{klasse}_{kapitel}_{unterkapitel}"]
+                checkbox.setChecked(setchecked)
 
-            self.btn_alle_unterkapitel_clicked_cria(klasse, kapitel)
-
-    def chosen_radiobutton(self, klasse, kapitel):
+        comboBox.setCurrentIndex(0)
+ 
+    @report_exceptions
+    def btn_alle_unterkapitel_clicked_cria(self, klasse):
         dict_klasse = eval("dict_{}".format(klasse))
-        dict_klasse_name = eval("dict_{}_name".format(klasse))
+        comboBox = self.dict_widget_variables[f"combobox_kapitel_search_cria_{klasse}"]
+        text_combobox = comboBox.currentText()
+        # kapitel = text_combobox[text_combobox.find("(") + 1 : text_combobox.find(")")]
+        kapitel = text_combobox[text_combobox.find("(") + 1 : text_combobox.find(")")]
+        first_unterkapitel = dict_klasse[kapitel][0]
+        first_checkbox = self.dict_widget_variables[f"checkbox_unterkapitel_{klasse}_{kapitel}_{first_unterkapitel}"]
 
-        self.label_unterkapitel_cria.setText(
-            _translate(
-                "MainWindow",
-                klasse[1] + ". Klasse  - " + dict_klasse_name[kapitel],
-                None,
-            )
-        )
+        if first_checkbox.isChecked():
+            setchecked = False
+        else:
+            setchecked = True
 
-        for alle_klassen in list_klassen:
-            dict_klasse = eval("dict_{}".format(alle_klassen))
-            for alle_kapitel in dict_klasse:
-                for unterkapitel in dict_klasse[alle_kapitel]:
-                    label = "checkbox_unterkapitel_{0}_{1}_{2}".format(
-                        alle_klassen, alle_kapitel, unterkapitel
-                    )
-                    if alle_klassen == klasse and alle_kapitel == kapitel:
-                        self.dict_widget_variables[label].show()
-                    else:
-                        self.dict_widget_variables[label].hide()
+        for unterkapitel in dict_klasse[kapitel]:
+            checkbox = self.dict_widget_variables[f"checkbox_unterkapitel_{klasse}_{kapitel}_{unterkapitel}"]
+            checkbox.setChecked(setchecked)
 
-        label_button_check_all = "button_check_all_unterkapitel_{0}_{1}".format(
-            klasse, kapitel
-        )
-        for button in self.dict_widget_variables:
-            if button.startswith("button_check_all_unterkapitel_"):
-                if button != label_button_check_all:
-                    self.dict_widget_variables[button].hide()
-                else:
-                    self.dict_widget_variables[label_button_check_all].show()
+        
+
+        # dict_klasse = eval("dict_{}".format(klasse))
+
+        # first_checkbox = "checkbox_unterkapitel_{0}_{1}_{2}".format(
+        #     klasse, kapitel, dict_klasse[kapitel][0]
+        # )
+
+        # if self.dict_widget_variables[first_checkbox].isChecked() == False:
+        #     check_checkboxes = True
+        # else:
+        #     check_checkboxes = False
+
+        # for all in self.dict_widget_variables:
+        #     if all.startswith("checkbox_unterkapitel_{0}_{1}_".format(klasse, kapitel)):
+        #         self.dict_widget_variables[all].setChecked(check_checkboxes)
+
 
     def checkBox_checked_cria(self, klasse, kapitel, unterkapitel):
         thema_checked = [klasse, kapitel, unterkapitel]
@@ -1468,21 +1384,6 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
 
         self.label_ausgew_gk.setText(_translate("MainWindow", x, None))
 
-    def btn_alle_unterkapitel_clicked_cria(self, klasse, kapitel):
-        dict_klasse = eval("dict_{}".format(klasse))
-
-        first_checkbox = "checkbox_unterkapitel_{0}_{1}_{2}".format(
-            klasse, kapitel, dict_klasse[kapitel][0]
-        )
-
-        if self.dict_widget_variables[first_checkbox].isChecked() == False:
-            check_checkboxes = True
-        else:
-            check_checkboxes = False
-
-        for all in self.dict_widget_variables:
-            if all.startswith("checkbox_unterkapitel_{0}_{1}_".format(klasse, kapitel)):
-                self.dict_widget_variables[all].setChecked(check_checkboxes)
 
     @report_exceptions
     def comboBox_kapitel_changed_cr(
@@ -1500,6 +1401,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         for i in range(1, layout.count()):
             try:
                 layout.itemAt(i).widget().hide()
+                # layout.itemAt(i).widget().setParent(None)
             except AttributeError:
                 pass
 
@@ -1558,9 +1460,19 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
                         widget_string_unterkapitel,klasse, kapitel, unterkapitel
                     )
                 ] = new_checkbox
-                new_checkbox.setFocusPolicy(QtCore.Qt.NoFocus)
-                layout.insertWidget(layout.count() - 1, new_checkbox)
 
+                new_checkbox.setFocusPolicy(QtCore.Qt.NoFocus)
+                if typ == "search":
+                    layout.insertWidget(layout.count() - 3, new_checkbox)
+                else:
+                    layout.insertWidget(layout.count() - 1, new_checkbox)
+
+
+
+        if typ == "search":
+            self.dict_widget_variables[f"btn_alle_unterkapitel_{klasse}"].show()
+            self.dict_widget_variables[f"btn_alle_kapitel_{klasse}"].show()
+        # layout.insertWidget(layout.count() - 1, self.dict_widget_variables[f"btn_alle_kapitel_{klasse}"])
         # layout.addStretch()
         # layout.addItem(self.spacerItem_unterkapitel_creator_cria)
 
@@ -4761,22 +4673,38 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.delete_widget(self.verticalLayout_scrollArea_sage_typ2, i)
         self.scrollAreaWidgetContents_typ2.hide()
 
-        for index, aufgabe in enumerate(self.list_alle_aufgaben_sage):
-            typ = get_aufgabentyp(self.chosen_program, aufgabe)
+        # typ = get_aufgabentyp(self.chosen_program, aufgabe)        
+        # if typ == 2:
+        #     list_index = 1
+        #     layout = self.verticalLayout_scrollArea_sage_typ2
+        # else:
+        #     list_index = 0
+        #     layout = self.verticalLayout_scrollArea_sage_typ1
 
-            aufgabe_total = get_aufgabe_total(aufgabe.replace(" (lokal)", ""), typ)
-            if aufgabe_total == None:
-                list_aufgaben_errors.append(aufgabe)
-                continue
+        for list_index in [0,1]:
+            if list_index == 0:
+                layout = self.verticalLayout_scrollArea_sage_typ1
+            elif list_index == 1:
+                if not is_empty(self.list_alle_aufgaben_sage[1]):
+                    self.scrollAreaWidgetContents_typ2.show()
+                layout = self.verticalLayout_scrollArea_sage_typ2    
+            for index, aufgabe in enumerate(self.list_alle_aufgaben_sage[list_index]):
+                typ = get_aufgabentyp(self.chosen_program, aufgabe)
 
-            neue_aufgaben_box = self.create_neue_aufgaben_box(
-                index, aufgabe, aufgabe_total
-            )
+                aufgabe_total = get_aufgabe_total(aufgabe.replace(" (lokal)", ""), typ)
+                if aufgabe_total == None:
+                    list_aufgaben_errors.append(aufgabe)
+                    continue
 
-            self.scrollAreaWidgetContents_typ1.addWidget(neue_aufgaben_box)
+                neue_aufgaben_box = self.create_neue_aufgaben_box(
+                    index, aufgabe, aufgabe_total
+                )
 
-            self.add_image_path_to_list(aufgabe.replace(" (lokal)", ""))
-            self.progress.setValue(index)
+                layout.insertWidget(layout.count() - 1, neue_aufgaben_box)
+                # layout.addWidget(neue_aufgaben_box)
+
+                self.add_image_path_to_list(aufgabe.replace(" (lokal)", ""))
+                self.progress.setValue(index)
 
 
         # self.verticalLayout_scrollArea_sage.addStretch()
@@ -4819,7 +4747,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 if self.list_alle_aufgaben_sage !=  [[],[]]:
                     self.reset_sage()
             else:
-                response = self.change_program()
+                response = self.change_program(loaded_file["data_gesamt"]["program"])
                 if response == False:
                     QtWidgets.QApplication.restoreOverrideCursor()
                     return
@@ -4929,24 +4857,25 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.dict_all_infos_for_file["data_gesamt"]["Typ1 Standard"]
         )
 
-        for aufgabe in self.list_alle_aufgaben_sage:
-            try:
-                self.dict_variablen_punkte[aufgabe].setValue(
-                    self.dict_all_infos_for_file["dict_alle_aufgaben_pkt_abstand"][
-                        aufgabe
-                    ][0]
-                )
-                self.dict_variablen_abstand[aufgabe].setValue(
-                    self.dict_all_infos_for_file["dict_alle_aufgaben_pkt_abstand"][
-                        aufgabe
-                    ][1]
-                )
+        for list_index in [0,1]:
+            for aufgabe in self.list_alle_aufgaben_sage[list_index]:
+                try:
+                    self.dict_variablen_punkte[aufgabe].setValue(
+                        self.dict_all_infos_for_file["dict_alle_aufgaben_pkt_abstand"][
+                            aufgabe
+                        ][0]
+                    )
+                    self.dict_variablen_abstand[aufgabe].setValue(
+                        self.dict_all_infos_for_file["dict_alle_aufgaben_pkt_abstand"][
+                            aufgabe
+                        ][1]
+                    )
 
-                self.dict_variablen_punkte_halb[aufgabe].setChecked(self.dict_all_infos_for_file["dict_alle_aufgaben_pkt_abstand"][
-                        aufgabe
-                    ][2])
-            except KeyError:
-                pass
+                    self.dict_variablen_punkte_halb[aufgabe].setChecked(self.dict_all_infos_for_file["dict_alle_aufgaben_pkt_abstand"][
+                            aufgabe
+                        ][2])
+                except KeyError:
+                    pass
 
         self.spinBox_2.setValue(
             self.dict_all_infos_for_file["data_gesamt"]["Notenschluessel"][0]

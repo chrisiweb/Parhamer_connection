@@ -2115,8 +2115,8 @@ class Ui_Dialog_setup(object):
         except KeyError:
             self.lama_settings['display'] = 0
         
-        gridlayout_setup.addWidget(groupbox_display, row, 0,1,1)
-        row +=1
+        # gridlayout_setup.addWidget(groupbox_display, row, 0,1,1)
+        # row +=1
 
 
         gridlayout_setup.setRowStretch(row, 1)
