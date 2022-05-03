@@ -2100,7 +2100,7 @@ class Ui_Dialog_setup(object):
 
         groupbox_display = create_new_groupbox(Dialog, "Anzeigemodus")
         horizontallayout_display = create_new_horizontallayout(groupbox_display)
-
+    
         # label_display = create_new_label(Dialog, "Darstellung:")
         # horizontallayout_display.addWidget(label_display)
         self.combobox_display = create_new_combobox(Dialog)
@@ -2115,8 +2115,9 @@ class Ui_Dialog_setup(object):
         except KeyError:
             self.lama_settings['display'] = 0
         
-        # gridlayout_setup.addWidget(groupbox_display, row, 0,1,1)
-        # row +=1
+        gridlayout_setup.addWidget(groupbox_display, row, 0,1,1)
+        groupbox_display.hide()
+        row +=1
 
 
         gridlayout_setup.setRowStretch(row, 1)

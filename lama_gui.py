@@ -304,10 +304,13 @@ def setup_stackSearch(self):
         0,
         "Alle Dateien ausgeben, die zumindest ein Themengebiet enthalten",
     )
+
+    label = None
     if self.chosen_program == "lama":
         label = "Alle Dateien ausgeben, die ausschließlich diese Themengebiete enthalten"
-    if self.chosen_program == "cria":
+    elif self.chosen_program == "cria":
         label = "Alle Dateien ausgeben, die alle Themengebiete enthalten"
+        
 
     add_new_option(self.combobox_searchtype, 1, label)
     # self.combobox_searchtype.setSizePolicy(SizePolicy_minimum_width)
@@ -1231,11 +1234,11 @@ def setup_stackSage(self):
     self.verticalLayoutSummarySage = create_new_verticallayout(self.widgetSummarySage)
 
 
-
+    label = None
     if self.chosen_program == "lama":
         label = "Anzahl der Aufgaben: 0\n(Typ1: 0 / Typ2: 0)"
 
-    if self.chosen_program == "cria":
+    elif self.chosen_program == "cria":
         label = "Anzahl der Aufgaben: 0"
 
     self.label_gesamtbeispiele = create_new_label(self.widgetSummarySage, label, True)

@@ -270,29 +270,26 @@ class Ui_MainWindow(object):
         self.stackMainWindow =  QtWidgets.QStackedWidget(MainWindow)
         self.stackMainWindow.setMinimumSize(1,1)
         self.stackSearch = QtWidgets.QWidget(MainWindow)
-        # self.stackSearch.setMinimumSize(1,1)
         self.stackSage = QtWidgets.QWidget(MainWindow)
-        # self.stackSage.setMinimumSize(1,1)
         self.stackCreator = QtWidgets.QWidget(MainWindow)
-        # self.stackCreator.setMinimumSize(1,1)
-        # self.stackEditor = QtWidgets.QWidget(MainWindow)
         self.stackFeedback  = QtWidgets.QWidget(MainWindow)
-        # self.stackFeedback.setMinimumSize(1,1)
+        self.stackWizard = QtWidgets.QWidget(MainWindow)
+
 
 
         self.stackMainWindow.addWidget(self.stackSearch)
         self.stackMainWindow.addWidget(self.stackSage)
         self.stackMainWindow.addWidget(self.stackCreator)
-        # self.stackMainWindow.addWidget(self.stackEditor)
         self.stackMainWindow.addWidget(self.stackFeedback)
+        self.stackMainWindow.addWidget(self.stackWizard)
 
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
-        self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
-        self.centralwidget.hide()
-        self.gridLayout = create_new_gridlayout(self.centralwidget)
+        # self.centralwidget = QtWidgets.QWidget(MainWindow)
+        # self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
+        # self.centralwidget.hide()
+        # self.gridLayout = create_new_gridlayout(self.centralwidget)
 
 
-        self.MainWindow.resize(900,500)
+        self.MainWindow.resize(900,600)
         #######################################################
         ############ Menu Bar ###################
         #######################################################
@@ -372,17 +369,18 @@ class Ui_MainWindow(object):
         ######################################################
 
         
-        self.comboBox_themen_wizard = create_new_combobox(self.centralwidget)
+        self.comboBox_themen_wizard = create_new_combobox(self.stackWizard)
         self.comboBox_themen_wizard.setSizePolicy(SizePolicy_fixed)
-        self.gridLayout.addWidget(self.comboBox_themen_wizard, 0, 0, 1, 1)
+        self.gridLayout_wizard = create_new_gridlayout(self.stackWizard)
+        self.gridLayout_wizard.addWidget(self.comboBox_themen_wizard, 0, 0, 1, 1)
         for i, all in enumerate(dict_widgets_wizard.keys()):
             add_new_option(self.comboBox_themen_wizard, i, all)
 
         self.comboBox_themen_wizard.currentIndexChanged.connect(self.themen_changed_wizard)
         self.comboBox_themen_wizard.hide()
 
-        self.groupBox_titel_wizard = create_new_groupbox(self.centralwidget, "Titel")
-        self.gridLayout.addWidget(self.groupBox_titel_wizard, 0,1,1,1)
+        self.groupBox_titel_wizard = create_new_groupbox(self.stackWizard, "Titel")
+        self.gridLayout_wizard.addWidget(self.groupBox_titel_wizard, 0,1,1,1)
         self.horizontalLayout_titel_wizard = create_new_horizontallayout(self.groupBox_titel_wizard)
         self.lineEdit_titel_wizard = create_new_lineedit(self.groupBox_titel_wizard)
         self.horizontalLayout_titel_wizard.addWidget(self.lineEdit_titel_wizard)
@@ -390,32 +388,32 @@ class Ui_MainWindow(object):
         self.groupBox_titel_wizard.hide()
 
 
-        self.pushButton_create_worksheet_wizard = create_new_button(self.centralwidget, "Neues Arbeitsblatt erzeugen", self.create_new_worksheet_wizard_pressed)
+        self.pushButton_create_worksheet_wizard = create_new_button(self.stackWizard, "Neues Arbeitsblatt erzeugen", self.create_new_worksheet_wizard_pressed)
         # self.pushButton_create_worksheet_wizard.setFixedHeight(50)
         # self.pushButton_create_worksheet_wizard.setShortcut("Return")
-        self.gridLayout.addWidget(self.pushButton_create_worksheet_wizard, 2,0,1,1, QtCore.Qt.AlignLeft)
+        self.gridLayout_wizard.addWidget(self.pushButton_create_worksheet_wizard, 2,0,1,1, QtCore.Qt.AlignLeft)
         self.pushButton_create_worksheet_wizard.hide()
 
-        self.pushButton_add_to_worksheet_wizard = create_new_button(self.centralwidget, "Zum bestehenden Arbeitsblatt hinzufügen", self.add_to_worksheet_wizard_pressed)
-        self.gridLayout.addWidget(self.pushButton_add_to_worksheet_wizard, 2,1,1,1, QtCore.Qt.AlignLeft)
+        self.pushButton_add_to_worksheet_wizard = create_new_button(self.stackWizard, "Zum bestehenden Arbeitsblatt hinzufügen", self.add_to_worksheet_wizard_pressed)
+        self.gridLayout_wizard.addWidget(self.pushButton_add_to_worksheet_wizard, 2,1,1,1, QtCore.Qt.AlignLeft)
         self.pushButton_add_to_worksheet_wizard.hide()
 
-        self.checkbox_solutions_wizard = create_new_checkbox(self.centralwidget, "Lösungen anzeigen", checked=True)
-        self.gridLayout.addWidget(self.checkbox_solutions_wizard, 9,1,1,1, QtCore.Qt.AlignRight)
+        self.checkbox_solutions_wizard = create_new_checkbox(self.stackWizard, "Lösungen anzeigen", checked=True)
+        self.gridLayout_wizard.addWidget(self.checkbox_solutions_wizard, 9,1,1,1, QtCore.Qt.AlignRight)
         self.checkbox_solutions_wizard.hide()
 
-        self.comboBox_solution_type_wizard = create_new_combobox(self.centralwidget)
+        self.comboBox_solution_type_wizard = create_new_combobox(self.stackWizard)
         add_new_option(self.comboBox_solution_type_wizard, 0, "kompakt")
         add_new_option(self.comboBox_solution_type_wizard, 1, "schrittweise")
-        self.gridLayout.addWidget(self.comboBox_solution_type_wizard, 9, 0, 1, 1)
+        self.gridLayout_wizard.addWidget(self.comboBox_solution_type_wizard, 9, 0, 1, 1)
         self.comboBox_solution_type_wizard.hide()
 
 
-        self.buttonBox_create_worksheet_wizard = QtWidgets.QDialogButtonBox(self.centralwidget)
+        self.buttonBox_create_worksheet_wizard = QtWidgets.QDialogButtonBox(self.stackWizard)
         self.buttonBox_create_worksheet_wizard.setStandardButtons(
             QtWidgets.QDialogButtonBox.Save | QtWidgets.QDialogButtonBox.Ok
         )
-        self.gridLayout.addWidget(self.buttonBox_create_worksheet_wizard, 10,1,1,2)
+        self.gridLayout_wizard.addWidget(self.buttonBox_create_worksheet_wizard, 10,1,1,2)
         self.buttonBox_create_worksheet_wizard.hide()
         # buttonS = self.buttonBox_titlepage.button(QtWidgets.QDialogButtonBox.Save)
         # buttonS.setText('Speichern')
@@ -431,9 +429,9 @@ class Ui_MainWindow(object):
         button_create.clicked.connect(self.create_vorschau_worksheet_wizard)
 
 
-        self.groupBox_setting_wizard = create_new_groupbox(self.centralwidget, "Voreinstellungen")
+        self.groupBox_setting_wizard = create_new_groupbox(self.stackWizard, "Voreinstellungen")
         self.groupBox_setting_wizard.setSizePolicy(QSizePolicy(QSizePolicy.Minimum,QSizePolicy.Maximum))
-        self.gridLayout.addWidget(self.groupBox_setting_wizard, 1,0,1,2)
+        self.gridLayout_wizard.addWidget(self.groupBox_setting_wizard, 1,0,1,2)
         self.gridLayout_setting_wizard = create_new_gridlayout(self.groupBox_setting_wizard)
         self.groupBox_setting_wizard.hide()
 
@@ -782,7 +780,7 @@ class Ui_MainWindow(object):
         self.gridLayout_zahlenbereich_wizard.setRowStretch(4,1)
         self.gridLayout_setting_wizard.setRowStretch(3, 2)
 
-        self.scrollArea_chosen_wizard = QtWidgets.QScrollArea(self.centralwidget)
+        self.scrollArea_chosen_wizard = QtWidgets.QScrollArea(self.stackWizard)
         self.scrollArea_chosen_wizard.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.scrollArea_chosen_wizard.setWidgetResizable(True)
         self.scrollArea_chosen_wizard.setObjectName("scrollArea_chosen_wizard")
@@ -799,7 +797,7 @@ class Ui_MainWindow(object):
         self.scrollArea_chosen_wizard.verticalScrollBar().rangeChanged.connect(
             self.change_scrollbar_position
         )
-        self.gridLayout.addWidget(self.scrollArea_chosen_wizard, 3, 0, 6, 2)
+        self.gridLayout_wizard.addWidget(self.scrollArea_chosen_wizard, 3, 0, 6, 2)
 
 
 
@@ -815,7 +813,10 @@ class Ui_MainWindow(object):
 
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-        self.update_gui("widgets_search")
+        if self.chosen_program == "wizard":
+            self.update_gui("widgets_wizard")
+        else:
+            self.update_gui("widgets_search")
         
 
         if loaded_lama_file_path != "":
@@ -1692,16 +1693,16 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             program_name = "LaMA - LaTeX Mathematik Assistent (Worksheet Wizard)"
             icon = logo_path
 
-        if self.chosen_program !='wizard':
-            response = question_window(
-                "Sind Sie sicher, dass sie zu {} wechseln wollen?\nDadurch werden alle bisherigen Einträge gelöscht!".format(
-                    name
-                ),
-                titel="Programm wechseln?",
-            )
+        # if self.chosen_program !='wizard':
+        response = question_window(
+            "Sind Sie sicher, dass sie zu {} wechseln wollen?\nDadurch werden alle bisherigen Einträge gelöscht!".format(
+                name
+            ),
+            titel="Programm wechseln?",
+        )
 
-            if response == False:
-                return False
+        if response == False:
+            return False
 
         self.reset_sage(False)
         self.suchfenster_reset()
@@ -1719,7 +1720,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             #     )
 
             # self.gridLayout.addWidget(self.groupBox_af, 3, 0, 1, 1)
-            self.gridLayout.addWidget(self.groupBox_punkte, 0, 1, 1, 1)
+            # self.gridLayout.addWidget(self.groupBox_punkte, 0, 1, 1, 1)
             # self.gridLayout.addWidget(self.groupBox_aufgabenformat, 0, 2, 1, 1)
 
             self.action_cria.setVisible(False)
@@ -1768,7 +1769,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             self.chosen_program = "lama"
 
             # self.gridLayout.addWidget(self.groupBox_af, 1, 1, 1, 1)
-            self.gridLayout.addWidget(self.groupBox_punkte, 0, 2, 1, 1)
+            # self.gridLayout.addWidget(self.groupBox_punkte, 0, 2, 1, 1)
             # self.gridLayout.addWidget(self.groupBox_aufgabenformat, 0, 3, 1, 1)
 
             self.action_cria.setVisible(True)
@@ -6863,6 +6864,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.stackMainWindow.setCurrentIndex(2)
         elif chosen_gui == "widgets_feedback":
             self.stackMainWindow.setCurrentIndex(3)
+        elif chosen_gui == "widgets_wizard":
+            self.stackMainWindow.setCurrentIndex(4)
 
         self.stackMainWindow.minimumSizeHint()
         if self.chosen_program == "cria":
@@ -6907,6 +6910,33 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.menuBar.removeAction(self.menuDeveloper.menuAction())
 
         self.check_admin_entry()
+
+        list_all_menubar = [self.menuSuche, self.menuSage, self.menuNeu, self.menuFeedback, self.menuOptionen ,self.menuDeveloper, self.menuHelp]
+        list_menubar_wizard = [self.menuWizard, self.menuOptionen ,self.menuHelp]
+
+        if chosen_gui == 'widgets_wizard':
+            for all in list_all_menubar:
+                if all == self.menuDeveloper and self.developer_mode_active == False:
+                    continue
+                else:
+                    self.menuBar.removeAction(all.menuAction())
+            for all in list_menubar_wizard:
+                self.menuBar.addAction(all.menuAction())
+
+            self.actionRefresh_Database.setVisible(False)
+
+        else:
+            for all in list_menubar_wizard:
+                self.menuBar.removeAction(all.menuAction())
+
+            for all in list_all_menubar:
+                if all == self.menuDeveloper and self.developer_mode_active == False:
+                    continue
+                else:
+                    self.menuBar.addAction(all.menuAction())
+            self.actionRefresh_Database.setVisible(True)
+
+
         return
 
         #     chosen_gui_list = eval(chosen_gui)
