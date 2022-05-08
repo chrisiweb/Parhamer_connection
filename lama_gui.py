@@ -2419,7 +2419,12 @@ def setup_stackWizard(self):
 
 
 
-    self.pushButton_calculate_new_examples = create_new_button(self.groupBox_setting_wizard, "Neue Aufgaben berechnen", still_to_define, icon="activity.svg")
+    self.pushButton_calculate_new_examples = create_new_button(
+        self.groupBox_setting_wizard,
+        "Neue Aufgaben berechnen",
+        self.create_new_worksheet_wizard_pressed, 
+        icon="activity.svg"
+    )
     self.pushButton_calculate_new_examples.setSizePolicy(SizePolicy_fixed)
     self.gridLayout_setting_wizard.addWidget(self.pushButton_calculate_new_examples, 2,1,1,1, QtCore.Qt.AlignRight)
 
@@ -2472,8 +2477,8 @@ def setup_stackWizard(self):
     self.scrollAreaWidgetContents_wizard = QtWidgets.QWidget()
     self.scrollAreaWidgetContents_wizard.setObjectName("scrollAreaWidgetContents_wizard")
     self.scrollAreaWidgetContents_wizard.setFocusPolicy(QtCore.Qt.ClickFocus)
-    # self.gridLayout_scrollArea_wizard = QtWidgets.QGridLayout(self.scrollAreaWidgetContents_wizard)
-    # self.gridLayout_scrollArea_wizard.setObjectName("gridLayout_scrollArea_wizard")
+    self.gridLayout_scrollArea_wizard = QtWidgets.QGridLayout(self.scrollAreaWidgetContents_wizard)
+    self.gridLayout_scrollArea_wizard.setObjectName("gridLayout_scrollArea_wizard")
     self.scrollArea_chosen_wizard.setWidget(self.scrollAreaWidgetContents_wizard)
     self.scrollArea_chosen_wizard.verticalScrollBar().rangeChanged.connect(
         self.change_scrollbar_position
