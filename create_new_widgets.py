@@ -1,10 +1,12 @@
-from PyQt5 import QtWidgets, QtGui
-from PyQt5.QtCore import Qt, QMimeData, QPoint
+from PyQt5 import QtWidgets
+from PyQt5.QtGui import QDrag, QPixmap, QIcon
+from PyQt5.QtCore import Qt, QMimeData, QSize
 from config import SpinBox_noWheel, ClickLabel
 from translate import _fromUtf8, _translate
 from predefined_size_policy import SizePolicy_fixed
 from handle_exceptions import report_exceptions
 from database_commands import get_aufgabentyp
+from config import get_icon_path
 
 
 
@@ -17,11 +19,11 @@ class DragDropGroupBox(QtWidgets.QGroupBox):
     def mouseMoveEvent(self, e):
         self.MainWindow.moving_aufgabe = self.aufgabe
         if e.buttons() == Qt.LeftButton:
-            drag = QtGui.QDrag(self)
+            drag = QDrag(self)
             mime = QMimeData()
             drag.setMimeData(mime)
 
-            pixmap = QtGui.QPixmap(self.size())
+            pixmap = QPixmap(self.size())
             self.render(pixmap)
             drag.setPixmap(pixmap)
 
@@ -177,7 +179,7 @@ def create_new_groupbox(parent, name):
     return new_groupbox
 
 
-def create_new_label(parent, text, wordwrap=False, clickable=False):
+def create_new_label(parent, text, wordwrap=False, clickable=False, icon = None):
     new_label = ClickLabel()
     if clickable == False:
         new_label = QtWidgets.QLabel(parent)
@@ -187,6 +189,12 @@ def create_new_label(parent, text, wordwrap=False, clickable=False):
     new_label.setObjectName("{}".format(new_label))
     new_label.setText(_translate("MainWindow", text, None))
     new_label.setWordWrap(wordwrap)
+
+    if icon != None:
+        new_label.setPixmap(QPixmap(get_icon_path("database.svg")))
+        # self.label_lamaLogo.setFixedHeight(30)
+        new_label.setFixedSize(QSize(30,30))
+        new_label.setScaledContents(True) 
 
     return new_label
 
@@ -201,12 +209,15 @@ def create_new_lineedit(parent, ObjectName=None):
     return new_lineedit
 
 
-def create_new_button(parent, text, command):
+def create_new_button(parent, text, command, icon = None):
     new_button = QtWidgets.QPushButton(parent)
     new_button.setObjectName("{}".format(new_button))
     new_button.setText(_translate("MainWindow", text, None))
     if command != None:
         new_button.clicked.connect(lambda: command())
+
+    if icon != None:
+        new_button.setIcon(QIcon(get_icon_path(icon)))
 
     return new_button
 

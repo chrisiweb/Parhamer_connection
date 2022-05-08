@@ -17,7 +17,7 @@ from create_new_widgets import (
     add_new_tab,
     DragDropWidget,
     )
-from predefined_size_policy import SizePolicy_fixed_height, SizePolicy_fixed, SizePolicy_minimum, SizePolicy_minimum_fixed, SizePolicy_maximum_height, SizePolicy_maximum_width
+from predefined_size_policy import SizePolicy_fixed_height, SizePolicy_fixed, SizePolicy_minimum, SizePolicy_minimum_fixed, SizePolicy_maximum_height, SizePolicy_maximum_width, SizePolicy_minimum_height
 from config import *
 from functools import partial
 from create_pdf import prepare_tex_for_pdf
@@ -279,11 +279,11 @@ def setup_stackSearch(self):
     self.horizontalLayout_headMenu = create_new_horizontallayout(self.widget_headMenu)
     self.horizontalLayout_headMenu.setContentsMargins(0,0,0,0)
 
-    self.label_aufgabentyp = create_new_label(self.widget_headMenu, "")
-    self.label_aufgabentyp.setPixmap(QtGui.QPixmap(get_icon_path("database.svg")))
-    # self.label_lamaLogo.setFixedHeight(30)
-    self.label_aufgabentyp.setFixedSize(QtCore.QSize(30,30))
-    self.label_aufgabentyp.setScaledContents(True)
+    self.label_aufgabentyp = create_new_label(self.widget_headMenu, "", icon="database.svg")
+    # self.label_aufgabentyp.setPixmap(QtGui.QPixmap(get_icon_path("database.svg")))
+    # # self.label_lamaLogo.setFixedHeight(30)
+    # self.label_aufgabentyp.setFixedSize(QtCore.QSize(30,30))
+    # self.label_aufgabentyp.setScaledContents(True)
     
     # self.gridLayout.addLayout(self.horizontalLayout_headMenu, 0, 0, 1, 2)
     self.combobox_aufgabentyp = create_new_combobox(self.widget_headMenu)
@@ -2110,6 +2110,7 @@ def setup_stackWizard(self):
     self.verticalLayout_stackWidget = create_new_verticallayout(self.stackWizard)
 
     self.widgetTopics = QtWidgets.QWidget(self.stackWizard)
+    self.widgetTopics.setSizePolicy(SizePolicy_fixed_height)
     self.verticalLayout_stackWidget.addWidget(self.widgetTopics)
 
     self.horizontalLayout_widgetTopics = create_new_horizontallayout(self.widgetTopics)
@@ -2135,6 +2136,539 @@ def setup_stackWizard(self):
 
 
 
+    self.groupBox_setting_wizard = create_new_groupbox(self.stackWizard, "Voreinstellungen")
+    self.groupBox_setting_wizard.setSizePolicy(SizePolicy_maximum_height)
+    self.verticalLayout_stackWidget.addWidget(self.groupBox_setting_wizard)
+    self.gridLayout_setting_wizard = create_new_gridlayout(self.groupBox_setting_wizard)
+    # self.groupBox_setting_wizard.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum,QtWidgets.QSizePolicy.Maximum))
+    # self.gridLayout_wizard.addWidget(self.groupBox_setting_wizard, 1,0,1,2)
+    # self.gridLayout_setting_wizard = create_new_gridlayout(self.groupBox_setting_wizard)
+    # self.groupBox_setting_wizard.hide()
+
+    self.widget_setting_wizard1 = QtWidgets.QWidget(self.groupBox_setting_wizard)
+    self.gridLayout_setting_wizard.addWidget(self.widget_setting_wizard1, 0,0,1,1)
+    self.horizontalLayout_setting_wizard1 = create_new_horizontallayout(self.widget_setting_wizard1)
+
+    self.groupBox_number_wizard = create_new_groupbox(self.widget_setting_wizard1, "Aufgaben")
+    # self.groupBox_number_wizard.setSizePolicy(SizePolicy_fixed)
+    self.horizontalLayout_setting_wizard1.addWidget(self.groupBox_number_wizard)
+    self.horizontalLayout_setting_wizard1.setContentsMargins(1,1,1,1)
+    self.horizontalLayout_number_wizard = create_new_horizontallayout(self.groupBox_number_wizard)
+    self.spinBox_number_wizard = create_new_spinbox(self.groupBox_number_wizard, 20)
+    # self.spinBox_number_wizard.setMinimum(1)
+    self.spinBox_number_wizard.valueChanged.connect(self.spinBox_number_wizard_changed)
+    self.horizontalLayout_number_wizard.addWidget(self.spinBox_number_wizard)
+
+
+    self.groupBox_ausrichtung_wizard = create_new_groupbox(self.widget_setting_wizard1, "Ausrichtung")
+    # self.groupBox_ausrichtung_wizard.setSizePolicy(SizePolicy_fixed)
+    self.horizontalLayout_setting_wizard1.addWidget(self.groupBox_ausrichtung_wizard)
+    self.horizontalLayout_ausrichtung_wizard = create_new_horizontallayout(self.groupBox_ausrichtung_wizard)
+    self.combobox_ausrichtung_wizard = create_new_combobox(self.groupBox_ausrichtung_wizard)
+    self.combobox_ausrichtung_wizard.currentIndexChanged.connect(self.combobox_ausrichtung_wizard_changed)
+    add_new_option(self.combobox_ausrichtung_wizard, 0, "in der Spalte")
+    add_new_option(self.combobox_ausrichtung_wizard, 1, "in der Zeile")
+    self.horizontalLayout_ausrichtung_wizard.addWidget(self.combobox_ausrichtung_wizard)
+
+
+    self.groupbox_instruction_wizard = create_new_groupbox(self.groupBox_setting_wizard, "Arbeitsanweisung")
+    self.gridLayout_setting_wizard.addWidget(self.groupbox_instruction_wizard, 1,0,1,1)
+    # self.groupbox_instruction_wizard.setSizePolicy(SizePolicy_maximum_height)
+
+    self.horizontalLayout_instruction_wizard = create_new_horizontallayout(self.groupbox_instruction_wizard)
+    self.plainTextEdit_instruction_wizard = QtWidgets.QPlainTextEdit(self.groupbox_instruction_wizard)
+    # self.plainTextEdit_instruction_wizard.setMaximumHeight(100)
+    self.horizontalLayout_instruction_wizard.addWidget(self.plainTextEdit_instruction_wizard)
+
+
+    self.groupBox_zahlenbereich_wizard = create_new_groupbox(self.groupBox_setting_wizard, "Zahlenbereich")
+    self.gridLayout_setting_wizard.addWidget(self.groupBox_zahlenbereich_wizard, 0,1,2,1)
+    self.gridLayout_zahlenbereich_wizard = create_new_gridlayout(self.groupBox_zahlenbereich_wizard)
+
+
+
+    self.groupBox_zahlenbereich_anzahl = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Summanden")
+
+    self.horizontalLayout_zahlenbereich_anzahl = create_new_horizontallayout(self.groupBox_zahlenbereich_anzahl)
+    self.horizontalLayout_zahlenbereich_anzahl.setContentsMargins(2,9,2,2)
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_zahlenbereich_anzahl, 0,0,1,2)
+    self.spinBox_zahlenbereich_anzahl_wizard = create_new_spinbox(self.groupBox_zahlenbereich_anzahl, 2)
+    self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,5)
+    self.spinBox_zahlenbereich_anzahl_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
+    self.horizontalLayout_zahlenbereich_anzahl.addWidget(self.spinBox_zahlenbereich_anzahl_wizard)
+
+
+    self.groupBox_zahlenbereich_minimum = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Minimum")
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_zahlenbereich_minimum, 1,0,1,1)
+    self.horizontalLayout_zahlenbereich_minimum = create_new_horizontallayout(self.groupBox_zahlenbereich_minimum)
+    self.onlyInt = QtGui.QIntValidator()
+    self.spinbox_zahlenbereich_minimum = create_new_spinbox(self.groupBox_zahlenbereich_minimum)
+    self.spinbox_zahlenbereich_minimum.setRange(0,999999999)
+    self.spinbox_zahlenbereich_minimum.setValue(100)
+    self.horizontalLayout_zahlenbereich_minimum.addWidget(self.spinbox_zahlenbereich_minimum)
+
+
+    self.horizontalLayout_zahlenbereich_minimum.addWidget(self.spinbox_zahlenbereich_minimum)
+    self.groupBox_zahlenbereich_maximum = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Maximum")
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_zahlenbereich_maximum, 1,1,1,1)
+    self.horizontalLayout_zahlenbereich_maximum = create_new_horizontallayout(self.groupBox_zahlenbereich_maximum)
+    self.spinbox_zahlenbereich_maximum = create_new_spinbox(self.groupBox_zahlenbereich_maximum)
+    self.spinbox_zahlenbereich_maximum.setRange(0,999999999)
+    self.spinbox_zahlenbereich_maximum.setValue(999)
+    self.horizontalLayout_zahlenbereich_maximum.addWidget(self.spinbox_zahlenbereich_maximum)
+    self.spinbox_zahlenbereich_maximum.valueChanged.connect(self.worksheet_wizard_setting_changed)
+    self.spinbox_zahlenbereich_minimum.valueChanged.connect(partial(self.minimum_changed_wizard, self.spinbox_zahlenbereich_minimum, self.spinbox_zahlenbereich_maximum))
+
+    self.groupBox_kommastellen_wizard = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Kommastellen")
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_kommastellen_wizard, 2,0,1,2)
+    self.horizontalLayout_kommastellen_wizard = create_new_horizontallayout(self.groupBox_kommastellen_wizard)
+    self.combobox_kommastellen_wizard = create_new_combobox(self.groupBox_kommastellen_wizard)
+    add_new_option(self.combobox_kommastellen_wizard, 0, "=")
+    add_new_option(self.combobox_kommastellen_wizard, 1, "\u2264")
+    self.combobox_kommastellen_wizard.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
+    self.horizontalLayout_kommastellen_wizard.addWidget(self.combobox_kommastellen_wizard)
+    self.spinbox_kommastellen_wizard = create_new_spinbox(self.groupBox_kommastellen_wizard)
+    self.spinbox_kommastellen_wizard.setMaximum(14)
+    self.spinbox_kommastellen_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
+    self.horizontalLayout_kommastellen_wizard.addWidget(self.spinbox_kommastellen_wizard)
+
+
+
+    self.checkbox_negative_ergebnisse_wizard = create_new_checkbox(self.groupBox_zahlenbereich_wizard, "negative Ergebnisse erlauben")
+    self.checkbox_negative_ergebnisse_wizard.stateChanged.connect(self.worksheet_wizard_setting_changed)
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.checkbox_negative_ergebnisse_wizard, 3,0,1,2)
+    self.checkbox_negative_ergebnisse_wizard.hide()
+
+    self.checkbox_allow_brackets_wizard = create_new_checkbox(self.groupBox_zahlenbereich_wizard, "Klammern erlauben")
+    self.checkbox_allow_brackets_wizard.stateChanged.connect(self.worksheet_wizard_setting_changed)
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.checkbox_allow_brackets_wizard, 3,0,1,2)
+    self.checkbox_allow_brackets_wizard.hide()
+
+
+    self.groupBox_first_number_wizard = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "1. Faktor")
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_first_number_wizard, 0,0,1,1)
+    self.gridLayout_first_number_wizard = create_new_gridlayout(self.groupBox_first_number_wizard)
+    self.label_first_number_min = create_new_label(self.groupBox_first_number_wizard, "Min:")
+    self.gridLayout_first_number_wizard.addWidget(self.label_first_number_min, 0,0,1,1)
+    self.spinBox_first_number_min = create_new_spinbox(self.groupBox_first_number_wizard)
+    self.spinBox_first_number_min.setRange(0,999999999)
+    self.spinBox_first_number_min.setValue(10)
+    self.gridLayout_first_number_wizard.addWidget(self.spinBox_first_number_min, 0,1,1,2)
+
+    self.label_first_number_max = create_new_label(self.groupBox_first_number_wizard, "Max:")
+    self.gridLayout_first_number_wizard.addWidget(self.label_first_number_max, 1,0,1,1)
+    self.spinBox_first_number_max = create_new_spinbox(self.groupBox_first_number_wizard)
+    self.spinBox_first_number_max.setSizePolicy(SizePolicy_fixed)
+    self.spinBox_first_number_max.setRange(0,999999999)
+    self.spinBox_first_number_max.setValue(99)
+    self.gridLayout_first_number_wizard.addWidget(self.spinBox_first_number_max, 1,1,1,2)
+    self.spinBox_first_number_max.valueChanged.connect(self.worksheet_wizard_setting_changed)
+    self.spinBox_first_number_min.valueChanged.connect(partial(self.minimum_changed_wizard, self.spinBox_first_number_min, self.spinBox_first_number_max))        
+
+    self.label_first_number_decimal = create_new_label(self.groupBox_first_number_wizard, "Kommastellen")
+    self.gridLayout_first_number_wizard.addWidget(self.label_first_number_decimal, 2,0,1,1)
+    self.combobox_first_number_decimal = create_new_combobox(self.groupBox_first_number_wizard)
+    add_new_option(self.combobox_first_number_decimal, 0, "=")
+    add_new_option(self.combobox_first_number_decimal, 1, "\u2264")
+    self.combobox_first_number_decimal.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
+    self.gridLayout_first_number_wizard.addWidget(self.combobox_first_number_decimal, 2,1,1,1)
+    self.spinBox_first_number_decimal = create_new_spinbox(self.groupBox_first_number_wizard)
+    self.spinBox_first_number_decimal.setMaximum(14)
+    self.spinBox_first_number_decimal.valueChanged.connect(self.worksheet_wizard_setting_changed)
+    self.gridLayout_first_number_wizard.addWidget(self.spinBox_first_number_decimal,2,2,1,1)  
+    self.groupBox_first_number_wizard.hide()
+
+    self.groupBox_second_number_wizard = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "2. Faktor")
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_second_number_wizard, 0,1,1,1)
+    self.gridLayout_second_number_wizard = create_new_gridlayout(self.groupBox_second_number_wizard)
+    self.label_second_number_min = create_new_label(self.groupBox_second_number_wizard, "Min:")
+    self.gridLayout_second_number_wizard.addWidget(self.label_second_number_min, 0,0,1,1)
+    self.spinBox_second_number_min = create_new_spinbox(self.groupBox_second_number_wizard)
+    self.spinBox_second_number_min.setRange(-999999999,999999999)
+    self.spinBox_second_number_min.setValue(10)
+    self.gridLayout_second_number_wizard.addWidget(self.spinBox_second_number_min, 0,1,1,2)
+
+    self.label_second_number_max = create_new_label(self.groupBox_second_number_wizard, "Max:")
+    self.gridLayout_second_number_wizard.addWidget(self.label_second_number_max, 1,0,1,1)
+    self.spinBox_second_number_max = create_new_spinbox(self.groupBox_second_number_wizard)
+    self.spinBox_second_number_max.setRange(-999999999,999999999)
+    self.spinBox_second_number_max.setValue(99)
+    self.gridLayout_second_number_wizard.addWidget(self.spinBox_second_number_max, 1,1,1,2)
+    self.spinBox_second_number_max.valueChanged.connect(self.worksheet_wizard_setting_changed)
+    self.spinBox_second_number_min.valueChanged.connect(partial(self.minimum_changed_wizard, self.spinBox_second_number_min, self.spinBox_second_number_max))        
+
+    self.label_second_number_decimal = create_new_label(self.groupBox_second_number_wizard, "Kommastellen")
+    self.gridLayout_second_number_wizard.addWidget(self.label_second_number_decimal,2,0,1,1)
+    self.combobox_second_number_decimal = create_new_combobox(self.groupBox_second_number_wizard)
+    add_new_option(self.combobox_second_number_decimal, 0, "=")
+    add_new_option(self.combobox_second_number_decimal, 1, "\u2264")
+    self.combobox_second_number_decimal.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
+    self.gridLayout_second_number_wizard.addWidget(self.combobox_second_number_decimal, 2,1,1,1)
+    self.spinBox_second_number_decimal = create_new_spinbox(self.groupBox_second_number_wizard)
+    self.spinBox_second_number_decimal.setMaximum(14)
+    self.spinBox_second_number_decimal.valueChanged.connect(self.worksheet_wizard_setting_changed)
+    self.gridLayout_second_number_wizard.addWidget(self.spinBox_second_number_decimal,2,2,1,1) 
+    self.groupBox_second_number_wizard.hide()
+
+
+    self.groupBox_dividend_wizard = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Dividend")
+    self.gridLayout_dividend_wizard = create_new_gridlayout(self.groupBox_dividend_wizard)
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_dividend_wizard, 0,0, 1,1)
+
+    self.combobox_dividend_wizard = create_new_combobox(self.groupBox_dividend_wizard)
+    add_new_option(self.combobox_dividend_wizard, 0, "Natürliche Zahl")
+    add_new_option(self.combobox_dividend_wizard, 1, "Dezimalzahl")
+    self.gridLayout_dividend_wizard.addWidget(self.combobox_dividend_wizard, 0,0,1,1)
+
+    self.label_dividend_min_wizard = create_new_label(self.groupBox_dividend_wizard, "Min:")
+    self.gridLayout_dividend_wizard.addWidget(self.label_dividend_min_wizard, 0,1,1,1)
+    self.spinbox_dividend_min_wizard = create_new_spinbox(self.groupBox_dividend_wizard)
+    self.spinbox_dividend_min_wizard.setMaximum(999999999)
+    self.spinbox_dividend_min_wizard.setValue(100)
+    self.spinbox_dividend_min_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
+    self.gridLayout_dividend_wizard.addWidget(self.spinbox_dividend_min_wizard, 0,2,1,1)
+    
+
+    self.label_dividend_max_wizard = create_new_label(self.groupBox_dividend_wizard, "Max:")
+    self.gridLayout_dividend_wizard.addWidget(self.label_dividend_max_wizard, 1,1,1,1)
+    self.spinbox_dividend_max_wizard = create_new_spinbox(self.groupBox_dividend_wizard)
+    self.spinbox_dividend_max_wizard.setMaximum(999999999)
+    self.spinbox_dividend_max_wizard.setValue(1000)
+    self.spinbox_dividend_max_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
+    self.gridLayout_dividend_wizard.addWidget(self.spinbox_dividend_max_wizard, 1,2,1,1)
+    self.groupBox_dividend_wizard.hide()
+
+
+    self.groupBox_divisor_wizard = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Divisor")
+    self.gridLayout_divisor_wizard = create_new_gridlayout(self.groupBox_divisor_wizard)
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_divisor_wizard, 1,0, 1,1)
+
+    self.combobox_divisor_wizard = create_new_combobox(self.groupBox_divisor_wizard)
+    add_new_option(self.combobox_divisor_wizard, 0, "Natürliche Zahl")
+    add_new_option(self.combobox_divisor_wizard, 1, "Dezimalzahl")
+    self.gridLayout_divisor_wizard.addWidget(self.combobox_divisor_wizard, 0,0,1,3)
+
+    self.label_divisor_kommastelle_wizard = create_new_label(self.groupBox_divisor_wizard, "Kommastellen")
+    self.gridLayout_divisor_wizard.addWidget(self.label_divisor_kommastelle_wizard, 1,0,1,1)
+
+    self.combobox_divisor_kommastelle_wizard = create_new_combobox(self.combobox_divisor_wizard)
+    add_new_option(self.combobox_divisor_kommastelle_wizard, 0, "=")
+    add_new_option(self.combobox_divisor_kommastelle_wizard, 1, "\u2264")
+    self.combobox_divisor_kommastelle_wizard.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
+    self.gridLayout_divisor_wizard.addWidget(self.combobox_divisor_kommastelle_wizard, 1,1,1,1)
+    self.spinBox_divisor_kommastellen_wizard = create_new_spinbox(self.groupBox_divisor_wizard, 0)
+    self.spinBox_divisor_kommastellen_wizard.setMaximum(14)
+    self.spinBox_divisor_kommastellen_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
+    self.gridLayout_divisor_wizard.addWidget(self.spinBox_divisor_kommastellen_wizard, 1,2,1,1)
+    self.label_divisor_kommastelle_wizard.hide()
+    self.combobox_divisor_kommastelle_wizard.hide()
+    self.spinBox_divisor_kommastellen_wizard.hide()
+
+    self.label_divisor_min_wizard = create_new_label(self.groupBox_divisor_wizard, "Min:")
+    self.gridLayout_divisor_wizard.addWidget(self.label_divisor_min_wizard, 0,3,1,1)
+    self.spinbox_divisor_min_wizard = create_new_spinbox(self.groupBox_divisor_wizard, 2)
+    self.spinbox_divisor_min_wizard.setMaximum(999999999)
+    self.spinbox_divisor_min_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
+    self.gridLayout_divisor_wizard.addWidget(self.spinbox_divisor_min_wizard, 0,4,1,1)
+    
+
+    self.label_divisor_max_wizard = create_new_label(self.groupBox_divisor_wizard, "Max:")
+    self.gridLayout_divisor_wizard.addWidget(self.label_divisor_max_wizard, 1,3,1,1)
+    self.spinbox_divisor_max_wizard = create_new_spinbox(self.groupBox_divisor_wizard, 99)
+    self.spinbox_divisor_max_wizard.setMaximum(999999999)
+    self.spinbox_divisor_max_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
+    self.gridLayout_divisor_wizard.addWidget(self.spinbox_divisor_max_wizard, 1,4,1,1)
+    self.groupBox_divisor_wizard.hide()
+
+
+    self.groupBox_ergebnis_wizard = create_new_groupbox(self.groupBox_zahlenbereich_anzahl, "Ergebnis")
+    self.gridLayout_ergebnis_wizard = create_new_gridlayout(self.groupBox_ergebnis_wizard)
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_ergebnis_wizard, 2,0,1,1)
+
+    self.radioButton_division_ohne_rest = create_new_radiobutton(self.groupBox_ergebnis_wizard, "ohne Rest")
+    self.radioButton_division_ohne_rest.setChecked(True)
+    self.radioButton_division_ohne_rest.toggled.connect(self.worksheet_wizard_setting_changed)
+    self.gridLayout_ergebnis_wizard.addWidget(self.radioButton_division_ohne_rest, 0,0,1,1)
+
+    self.radioButton_division_rest = create_new_radiobutton(self.groupBox_ergebnis_wizard, "mit Rest")
+    self.radioButton_division_rest.toggled.connect(self.worksheet_wizard_setting_changed)
+    self.gridLayout_ergebnis_wizard.addWidget(self.radioButton_division_rest, 0,1,1,1)
+
+
+
+    self.label_ergebnis_kommastellen_wizard = create_new_label(self.groupBox_ergebnis_wizard, "Kommastellen:")
+    self.gridLayout_ergebnis_wizard.addWidget(self.label_ergebnis_kommastellen_wizard, 1,0,1,1)
+    self.combobox_ergebnis_kommastellen_wizard = create_new_combobox(self.groupBox_ergebnis_wizard)
+    add_new_option(self.combobox_ergebnis_kommastellen_wizard, 0, "=")
+    add_new_option(self.combobox_ergebnis_kommastellen_wizard, 1, "\u2264")
+    self.combobox_ergebnis_kommastellen_wizard.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
+    self.gridLayout_ergebnis_wizard.addWidget(self.combobox_ergebnis_kommastellen_wizard, 1,1,1,1)
+    self.spinbox_ergebnis_kommastellen_wizard = create_new_spinbox(self.groupBox_ergebnis_wizard, 1)
+    self.spinbox_ergebnis_kommastellen_wizard.setRange(1,14)
+    self.spinbox_ergebnis_kommastellen_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
+    self.gridLayout_ergebnis_wizard.addWidget(self.spinbox_ergebnis_kommastellen_wizard, 1,2,1,1)
+
+    self.label_ergebnis_kommastellen_wizard.hide()
+    self.combobox_ergebnis_kommastellen_wizard.hide()
+    self.spinbox_ergebnis_kommastellen_wizard.hide()
+
+
+    self.combobox_dividend_wizard.currentIndexChanged.connect(self.combobox_divisor_dividend_changed)
+    self.combobox_divisor_wizard.currentIndexChanged.connect(self.combobox_divisor_dividend_changed)
+    self.groupBox_ergebnis_wizard.hide()
+
+
+
+    self.pushButton_calculate_new_examples = create_new_button(self.groupBox_setting_wizard, "Neue Aufgaben berechnen", still_to_define, icon="activity.svg")
+    self.pushButton_calculate_new_examples.setSizePolicy(SizePolicy_fixed)
+    self.gridLayout_setting_wizard.addWidget(self.pushButton_calculate_new_examples, 2,1,1,1, QtCore.Qt.AlignRight)
+
+    # self.buttonBox_addto_worksheet_wizard = QtWidgets.QDialogButtonBox(self.widgetNewExamples_wizard)
+    # self.buttonBox_addto_worksheet_wizard.setStandardButtons(
+    #     QtWidgets.QDialogButtonBox.Ok
+    # )
+    # self.verticalLayout_newexamples_wizard.addWidget(self.buttonBox_addto_worksheet_wizard)
+
+
+    # button_addto = self.buttonBox_addto_worksheet_wizard.button(QtWidgets.QDialogButtonBox.Ok)
+    # button_addto.setText("Aufgaben zum Arbeitsblatt hinzufügen")
+    # button_addto.setIcon(QtGui.QIcon(get_icon_path('plus-square.svg')))
+
+    # button_addto.clicked.connect(still_to_define)
+    # self.gridLayout_zahlenbereich_wizard.setRowStretch(4,1)
+    # self.gridLayout_setting_wizard.setRowStretch(3, 2)
+
+
+
+
+
+    self.widgetNewWorksheet_wizard = QtWidgets.QWidget(self.stackWizard)
+#     self.widgetNewWorksheet_wizard.setSizePolicy(QtWidgets.QSizePolicy(
+#     QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding
+# ))
+    self.verticalLayout_stackWidget.addWidget(self.widgetNewWorksheet_wizard)
+
+    self.horizontalLayout_newexamples = create_new_horizontallayout(self.widgetNewWorksheet_wizard)    
+
+
+
+    self.splitter_newWorksheet = QtWidgets.QSplitter(self.widgetNewWorksheet_wizard)
+    self.splitter_newWorksheet.setOrientation(QtCore.Qt.Horizontal)
+    self.splitter_newWorksheet.setObjectName("splitter_newWorksheet")
+    self.horizontalLayout_newexamples.addWidget(self.splitter_newWorksheet)
+
+
+    self.widgetNewExamples_wizard = QtWidgets.QWidget(self.splitter_newWorksheet)
+    # self.horizontalLayout_newexamples.addWidget(self.widgetNewExamples_wizard)
+    self.verticalLayout_newexamples_wizard = create_new_verticallayout(self.widgetNewExamples_wizard)
+
+
+    self.scrollArea_chosen_wizard = QtWidgets.QScrollArea(self.widgetNewExamples_wizard)
+    # self.scrollArea_chosen_wizard.setFrameShape(QtWidgets.QFrame.StyledPanel)
+    self.scrollArea_chosen_wizard.setWidgetResizable(True)
+    self.scrollArea_chosen_wizard.setObjectName("scrollArea_chosen_wizard")
+    self.scrollArea_chosen_wizard.setFocusPolicy(QtCore.Qt.ClickFocus)
+    # self.scrollArea_chosen_wizard.setSizePolicy(SizePolicy_minimum)
+    self.scrollAreaWidgetContents_wizard = QtWidgets.QWidget()
+    self.scrollAreaWidgetContents_wizard.setObjectName("scrollAreaWidgetContents_wizard")
+    self.scrollAreaWidgetContents_wizard.setFocusPolicy(QtCore.Qt.ClickFocus)
+    # self.gridLayout_scrollArea_wizard = QtWidgets.QGridLayout(self.scrollAreaWidgetContents_wizard)
+    # self.gridLayout_scrollArea_wizard.setObjectName("gridLayout_scrollArea_wizard")
+    self.scrollArea_chosen_wizard.setWidget(self.scrollAreaWidgetContents_wizard)
+    self.scrollArea_chosen_wizard.verticalScrollBar().rangeChanged.connect(
+        self.change_scrollbar_position
+    )
+    self.verticalLayout_newexamples_wizard.addWidget(self.scrollArea_chosen_wizard)
+
+    self.buttonBox_addto_worksheet_wizard = QtWidgets.QDialogButtonBox(self.widgetNewExamples_wizard)
+    self.buttonBox_addto_worksheet_wizard.setStandardButtons(
+        QtWidgets.QDialogButtonBox.Ok
+    )
+    self.verticalLayout_newexamples_wizard.addWidget(self.buttonBox_addto_worksheet_wizard)
+
+
+    button_addto = self.buttonBox_addto_worksheet_wizard.button(QtWidgets.QDialogButtonBox.Ok)
+    button_addto.setText("Aufgaben zum Arbeitsblatt hinzufügen")
+    button_addto.setIcon(QtGui.QIcon(get_icon_path('plus-square.svg')))
+
+    button_addto.clicked.connect(still_to_define)
+
+
+    self.groupBox_complete_worksheet_wizard = create_new_groupbox(self.splitter_newWorksheet, "Arbeitsblatt")
+    # self.horizontalLayout_newexamples.addWidget(self.groupBox_complete_worksheet_wizard)
+
+    self.horizontalLayout_worksheet_wizard = create_new_horizontallayout(self.groupBox_complete_worksheet_wizard)
+
+    self.scrollArea_complete_worksheet_wizard = QtWidgets.QScrollArea(self.groupBox_complete_worksheet_wizard)
+    # self.scrollArea_chosen_wizard.setFrameShape(QtWidgets.QFrame.StyledPanel)
+    self.scrollArea_complete_worksheet_wizard.setWidgetResizable(True)
+    self.scrollArea_complete_worksheet_wizard.setObjectName("scrollArea_complete_worksheet_wizard")
+    self.scrollArea_complete_worksheet_wizard.setFocusPolicy(QtCore.Qt.ClickFocus)
+    # self.scrollArea_complete_worksheet_wizard.setSizePolicy(SizePolicy_minimum)
+    self.scrollAreaWidgetContents_complete_worksheet_wizard = QtWidgets.QWidget()
+    self.scrollAreaWidgetContents_complete_worksheet_wizard.setObjectName("scrollAreaWidgetContents_complete_worksheet_wizard")
+    self.scrollAreaWidgetContents_complete_worksheet_wizard.setFocusPolicy(QtCore.Qt.ClickFocus)
+
+    self.verticalLayout_complete_worksheet_wizard = create_new_verticallayout(self.scrollAreaWidgetContents_complete_worksheet_wizard)
+    self.verticalLayout_complete_worksheet_wizard.addStretch()
+    # self.gridLayout_scrollArea_wizard = QtWidgets.QGridLayout(self.scrollAreaWidgetContents_wizard)
+    # self.gridLayout_scrollArea_wizard.setObjectName("gridLayout_scrollArea_wizard")
+    self.scrollArea_complete_worksheet_wizard.setWidget(self.scrollAreaWidgetContents_complete_worksheet_wizard)
+    self.scrollArea_complete_worksheet_wizard.verticalScrollBar().rangeChanged.connect(
+        self.change_scrollbar_position
+    )
+    self.horizontalLayout_worksheet_wizard.addWidget(self.scrollArea_complete_worksheet_wizard)
+
+
+
+
+    self.widgetWorksheetView = QtWidgets.QWidget(self.stackWizard)
+    self.widgetWorksheetView.setSizePolicy(SizePolicy_fixed_height)
+    self.verticalLayout_stackWidget.addWidget(self.widgetWorksheetView)
+
+    self.horizontalLayout_worksheetview = create_new_horizontallayout(self.widgetWorksheetView)
+    self.horizontalLayout_worksheetview.setContentsMargins(0,0,0,0)
+    self.horizontalLayout_worksheetview.addStretch()
+
+
+
+    self.groupBox_nummerierung_wizard = create_new_groupbox(self.groupBox_setting_wizard, "Nummerierung")
+    self.groupBox_nummerierung_wizard.setSizePolicy(SizePolicy_fixed)
+    self.horizontalLayout_worksheetview.addWidget(self.groupBox_nummerierung_wizard)
+    # self.gridLayout_setting_wizard.addWidget(self.groupBox_nummerierung_wizard, 2,0,1,1)
+    self.horizontalLayout_nummerierung_wizard = create_new_horizontallayout(self.groupBox_nummerierung_wizard)
+    self.combobox_nummerierung_wizard = create_new_combobox(self.groupBox_nummerierung_wizard)
+    add_new_option(self.combobox_nummerierung_wizard, 0, "-")
+    add_new_option(self.combobox_nummerierung_wizard, 1, "(i)")
+    add_new_option(self.combobox_nummerierung_wizard, 2, "(1)")
+    add_new_option(self.combobox_nummerierung_wizard, 3, "(I)")
+    self.horizontalLayout_nummerierung_wizard.addWidget(self.combobox_nummerierung_wizard) 
+
+
+    self.groupBox_fontsize_wizard = create_new_groupbox(self.groupBox_titel_wizard, "Schrift")
+    self.groupBox_fontsize_wizard.setSizePolicy(SizePolicy_fixed)
+    self.horizontalLayout_worksheetview.addWidget(self.groupBox_fontsize_wizard)
+    # self.gridLayout_setting_wizard.addWidget(self.groupBox_fontsize_wizard, 1,2,1,1)
+    self.horizontalLayout_fontsize_wizard = create_new_horizontallayout(self.groupBox_fontsize_wizard)
+    self.combobox_fontsize_wizard = create_new_combobox(self.groupBox_setting_wizard)
+    add_new_option(self.combobox_fontsize_wizard, 0, "8pt")
+    add_new_option(self.combobox_fontsize_wizard, 1, "9pt")
+    add_new_option(self.combobox_fontsize_wizard, 2, "10pt")
+    add_new_option(self.combobox_fontsize_wizard, 3, "11pt")
+    add_new_option(self.combobox_fontsize_wizard, 4, "12pt")
+    add_new_option(self.combobox_fontsize_wizard, 5, "14pt")
+    add_new_option(self.combobox_fontsize_wizard, 6, "17pt")
+    add_new_option(self.combobox_fontsize_wizard, 7, "20pt")
+    self.combobox_fontsize_wizard.setCurrentIndex(4)
+    self.horizontalLayout_fontsize_wizard.addWidget(self.combobox_fontsize_wizard)
+
+
+
+    self.groupBox_column_wizard = create_new_groupbox(self.groupBox_setting_wizard, "Spalten")
+    self.groupBox_column_wizard.setSizePolicy(SizePolicy_fixed)
+    self.horizontalLayout_worksheetview.addWidget(self.groupBox_column_wizard)
+    # self.gridLayout_setting_wizard.addWidget(self.groupBox_column_wizard, 1, 1,1,1)
+    self.horizontalLayout_column_wizard = create_new_horizontallayout(self.groupBox_column_wizard)
+    self.spinBox_column_wizard = create_new_spinbox(self.groupBox_column_wizard, 2)
+    self.spinBox_column_wizard.valueChanged.connect(self.spinBox_column_wizard_changed)
+    self.spinBox_column_wizard.setRange(1, 10)
+    self.horizontalLayout_column_wizard.addWidget(self.spinBox_column_wizard)   
+
+
+    self.groupBox_show_nonogramm = create_new_groupbox(self.groupBox_setting_wizard, "Selbstkontrolle")
+    self.groupBox_show_nonogramm.setSizePolicy(SizePolicy_fixed)
+    self.horizontalLayout_worksheetview.addWidget(self.groupBox_show_nonogramm)
+    # self.gridLayout_setting_wizard.addWidget(self.groupBox_show_nonogramm, 4,0,1,3)
+    self.horizontalLayout_show_nongramm = create_new_horizontallayout(self.groupBox_show_nonogramm)
+    self.checkBox_show_nonogramm = create_new_checkbox(self.groupBox_setting_wizard, "Selbstkontrolle anzeigen", True)
+    self.horizontalLayout_show_nongramm.addWidget(self.checkBox_show_nonogramm)
+    self.checkBox_show_nonogramm.stateChanged.connect(self.checkBox_show_nonogramm_changed) 
+
+    self.combobox_nonogramm_wizard = create_new_combobox(self.groupBox_setting_wizard)
+    self.horizontalLayout_show_nongramm.addWidget(self.combobox_nonogramm_wizard)
+    self.combobox_nonogramm_wizard.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
+    add_new_option(self.combobox_nonogramm_wizard, 0, 'Zufällig')
+    i=1
+    for all in all_nonogramms:
+        add_new_option(self.combobox_nonogramm_wizard, i, "{0} ({1})".format(all.capitalize(), len(all_nonogramms[all])))
+        i+=1
+
+
+    self.checkbox_solutions_wizard = create_new_checkbox(self.stackWizard, "Lösungen anzeigen", checked=True)
+    self.horizontalLayout_worksheetview.addWidget(self.checkbox_solutions_wizard)
+    # self.gridLayout_wizard.addWidget(self.checkbox_solutions_wizard, 9,1,1,1, QtCore.Qt.AlignRight)
+    # # self.checkbox_solutions_wizard.hide()
+
+
+    self.comboBox_solution_type_wizard = create_new_combobox(self.stackWizard)
+    add_new_option(self.comboBox_solution_type_wizard, 0, "kompakt")
+    add_new_option(self.comboBox_solution_type_wizard, 1, "schrittweise")
+    self.horizontalLayout_worksheetview.addWidget(self.comboBox_solution_type_wizard)
+
+    # self.gridLayout_wizard.addWidget(self.comboBox_solution_type_wizard, 9, 0, 1, 1)
+    self.comboBox_solution_type_wizard.hide()
+
+
+
+
+    self.buttonBox_create_worksheet_wizard = QtWidgets.QDialogButtonBox(self.stackWizard)
+    self.buttonBox_create_worksheet_wizard.setStandardButtons(
+        QtWidgets.QDialogButtonBox.Save | QtWidgets.QDialogButtonBox.Ok
+    )
+    self.verticalLayout_stackWidget.addWidget(self.buttonBox_create_worksheet_wizard)
+    # self.gridLayout_wizard.addWidget(self.buttonBox_create_worksheet_wizard, 10,1,1,2)
+    # self.buttonBox_create_worksheet_wizard.hide()
+
+    button_create = self.buttonBox_create_worksheet_wizard.button(QtWidgets.QDialogButtonBox.Save)
+    button_create.setIcon(QtGui.QIcon(get_icon_path('eye.svg')))
+    button_create.setText("Vorschau")
+
+    button_save = self.buttonBox_create_worksheet_wizard.button(QtWidgets.QDialogButtonBox.Ok)
+    button_save.setIcon(QtGui.QIcon(get_icon_path('save.svg')))
+    button_save.setText("Speichern")
+
+
+    button_save.clicked.connect(self.save_worksheet_wizard)
+
+    button_create.clicked.connect(self.create_vorschau_worksheet_wizard)
+
+
+
+
+
+
+
+
+
+
+     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     # self.pushButton_create_worksheet_wizard = create_new_button(self.stackWizard, "Neues Arbeitsblatt erzeugen", self.create_new_worksheet_wizard_pressed)
     # self.gridLayout_wizard.addWidget(self.pushButton_create_worksheet_wizard, 2,0,1,1, QtCore.Qt.AlignLeft)
     # self.pushButton_create_worksheet_wizard.hide()
@@ -2143,377 +2677,6 @@ def setup_stackWizard(self):
     # self.gridLayout_wizard.addWidget(self.pushButton_add_to_worksheet_wizard, 2,1,1,1, QtCore.Qt.AlignLeft)
     # self.pushButton_add_to_worksheet_wizard.hide()
 
-    # self.checkbox_solutions_wizard = create_new_checkbox(self.stackWizard, "Lösungen anzeigen", checked=True)
-    # self.gridLayout_wizard.addWidget(self.checkbox_solutions_wizard, 9,1,1,1, QtCore.Qt.AlignRight)
-    # self.checkbox_solutions_wizard.hide()
 
-    # self.comboBox_solution_type_wizard = create_new_combobox(self.stackWizard)
-    # add_new_option(self.comboBox_solution_type_wizard, 0, "kompakt")
-    # add_new_option(self.comboBox_solution_type_wizard, 1, "schrittweise")
-    # self.gridLayout_wizard.addWidget(self.comboBox_solution_type_wizard, 9, 0, 1, 1)
-    # self.comboBox_solution_type_wizard.hide()
 
 
-    # self.buttonBox_create_worksheet_wizard = QtWidgets.QDialogButtonBox(self.stackWizard)
-    # self.buttonBox_create_worksheet_wizard.setStandardButtons(
-    #     QtWidgets.QDialogButtonBox.Save | QtWidgets.QDialogButtonBox.Ok
-    # )
-    # self.gridLayout_wizard.addWidget(self.buttonBox_create_worksheet_wizard, 10,1,1,2)
-    # self.buttonBox_create_worksheet_wizard.hide()
-
-    # button_create = self.buttonBox_create_worksheet_wizard.button(QtWidgets.QDialogButtonBox.Save)
-    # button_create.setText("Vorschau")
-
-    # button_save = self.buttonBox_create_worksheet_wizard.button(QtWidgets.QDialogButtonBox.Ok)
-    # button_save.setText("Speichern")
-
-
-    # button_save.clicked.connect(self.save_worksheet_wizard)
-
-    # button_create.clicked.connect(self.create_vorschau_worksheet_wizard)
-
-
-    # self.groupBox_setting_wizard = create_new_groupbox(self.stackWizard, "Voreinstellungen")
-    # self.groupBox_setting_wizard.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum,QtWidgets.QSizePolicy.Maximum))
-    # self.gridLayout_wizard.addWidget(self.groupBox_setting_wizard, 1,0,1,2)
-    # self.gridLayout_setting_wizard = create_new_gridlayout(self.groupBox_setting_wizard)
-    # self.groupBox_setting_wizard.hide()
-
-    
-    # self.groupbox_instruction_wizard = create_new_groupbox(self.groupBox_setting_wizard, "Arbeitsanweisung")
-    # self.gridLayout_setting_wizard.addWidget(self.groupbox_instruction_wizard, 0,0,1,4)
-    # self.horizontalLayout_instruction_wizard = create_new_horizontallayout(self.groupbox_instruction_wizard)
-    # self.plainTextEdit_instruction_wizard = QtWidgets.QPlainTextEdit(self.groupbox_instruction_wizard)
-    # self.plainTextEdit_instruction_wizard.setMaximumHeight(100)
-    # self.horizontalLayout_instruction_wizard.addWidget(self.plainTextEdit_instruction_wizard)
-
-
-    # self.groupBox_fontsize_wizard = create_new_groupbox(self.groupBox_titel_wizard, "Schrift")
-    # self.groupBox_fontsize_wizard.setSizePolicy(SizePolicy_fixed)
-    # self.gridLayout_setting_wizard.addWidget(self.groupBox_fontsize_wizard, 1,2,1,1)
-    # self.horizontalLayout_fontsize_wizard = create_new_horizontallayout(self.groupBox_fontsize_wizard)
-    # self.combobox_fontsize_wizard = create_new_combobox(self.groupBox_setting_wizard)
-    # add_new_option(self.combobox_fontsize_wizard, 0, "8pt")
-    # add_new_option(self.combobox_fontsize_wizard, 1, "9pt")
-    # add_new_option(self.combobox_fontsize_wizard, 2, "10pt")
-    # add_new_option(self.combobox_fontsize_wizard, 3, "11pt")
-    # add_new_option(self.combobox_fontsize_wizard, 4, "12pt")
-    # add_new_option(self.combobox_fontsize_wizard, 5, "14pt")
-    # add_new_option(self.combobox_fontsize_wizard, 6, "17pt")
-    # add_new_option(self.combobox_fontsize_wizard, 7, "20pt")
-    # self.combobox_fontsize_wizard.setCurrentIndex(4)
-    # self.horizontalLayout_fontsize_wizard.addWidget(self.combobox_fontsize_wizard)
-
-
-    # self.groupBox_number_wizard = create_new_groupbox(self.groupBox_setting_wizard, "Aufgaben")
-    # self.groupBox_number_wizard.setSizePolicy(SizePolicy_fixed)
-    # self.gridLayout_setting_wizard.addWidget(self.groupBox_number_wizard, 1, 0,1,1)
-    # self.horizontalLayout_number_wizard = create_new_horizontallayout(self.groupBox_number_wizard)
-    # self.spinBox_number_wizard = create_new_spinbox(self.groupBox_number_wizard, 20)
-    # self.spinBox_number_wizard.setMinimum(1)
-    # self.spinBox_number_wizard.valueChanged.connect(self.spinBox_number_wizard_changed)
-    # self.horizontalLayout_number_wizard.addWidget(self.spinBox_number_wizard)
-
-
-    # self.groupBox_column_wizard = create_new_groupbox(self.groupBox_setting_wizard, "Spalten")
-    # self.groupBox_column_wizard.setSizePolicy(SizePolicy_fixed)
-    # self.gridLayout_setting_wizard.addWidget(self.groupBox_column_wizard, 1, 1,1,1)
-    # self.horizontalLayout_column_wizard = create_new_horizontallayout(self.groupBox_column_wizard)
-    # self.spinBox_column_wizard = create_new_spinbox(self.groupBox_column_wizard, 2)
-    # self.spinBox_column_wizard.valueChanged.connect(self.spinBox_column_wizard_changed)
-    # self.spinBox_column_wizard.setRange(1, 10)
-    # self.horizontalLayout_column_wizard.addWidget(self.spinBox_column_wizard)        
-
-    # self.groupBox_nummerierung_wizard = create_new_groupbox(self.groupBox_setting_wizard, "Nummerierung")
-    # self.groupBox_nummerierung_wizard.setSizePolicy(SizePolicy_fixed)
-    # self.gridLayout_setting_wizard.addWidget(self.groupBox_nummerierung_wizard, 2,0,1,1)
-    # self.horizontalLayout_nummerierung_wizard = create_new_horizontallayout(self.groupBox_nummerierung_wizard)
-    # self.combobox_nummerierung_wizard = create_new_combobox(self.groupBox_nummerierung_wizard)
-    # add_new_option(self.combobox_nummerierung_wizard, 0, "-")
-    # add_new_option(self.combobox_nummerierung_wizard, 1, "(i)")
-    # add_new_option(self.combobox_nummerierung_wizard, 2, "(1)")
-    # add_new_option(self.combobox_nummerierung_wizard, 3, "(I)")
-    # self.horizontalLayout_nummerierung_wizard.addWidget(self.combobox_nummerierung_wizard) 
-
-    # self.groupBox_ausrichtung_wizard = create_new_groupbox(self.groupBox_setting_wizard, "Ausrichtung")
-    # self.groupBox_ausrichtung_wizard.setSizePolicy(SizePolicy_fixed)
-    # self.gridLayout_setting_wizard.addWidget(self.groupBox_ausrichtung_wizard, 2,1,1,1)
-    # self.horizontalLayout_ausrichtung_wizard = create_new_horizontallayout(self.groupBox_ausrichtung_wizard)
-    # self.combobox_ausrichtung_wizard = create_new_combobox(self.groupBox_ausrichtung_wizard)
-    # self.combobox_ausrichtung_wizard.currentIndexChanged.connect(self.combobox_ausrichtung_wizard_changed)
-    # add_new_option(self.combobox_ausrichtung_wizard, 0, "in der Spalte")
-    # add_new_option(self.combobox_ausrichtung_wizard, 1, "in der Zeile")
-    # self.horizontalLayout_ausrichtung_wizard.addWidget(self.combobox_ausrichtung_wizard)
-
-
-    # self.groupBox_show_nonogramm = create_new_groupbox(self.groupBox_setting_wizard, "Selbstkontrolle")
-    # self.groupBox_show_nonogramm.setSizePolicy(SizePolicy_fixed)
-    # self.gridLayout_setting_wizard.addWidget(self.groupBox_show_nonogramm, 4,0,1,3)
-    # self.horizontalLayout_show_nongramm = create_new_horizontallayout(self.groupBox_show_nonogramm)
-    # self.checkBox_show_nonogramm = create_new_checkbox(self.groupBox_setting_wizard, "Selbstkontrolle anzeigen", True)
-    # self.horizontalLayout_show_nongramm.addWidget(self.checkBox_show_nonogramm)
-    # self.checkBox_show_nonogramm.stateChanged.connect(self.checkBox_show_nonogramm_changed) 
-
-    # self.combobox_nonogramm_wizard = create_new_combobox(self.groupBox_setting_wizard)
-    # self.horizontalLayout_show_nongramm.addWidget(self.combobox_nonogramm_wizard)
-    # self.combobox_nonogramm_wizard.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
-    # add_new_option(self.combobox_nonogramm_wizard, 0, 'Zufällig')
-    # i=1
-    # for all in all_nonogramms:
-    #     add_new_option(self.combobox_nonogramm_wizard, i, "{0} ({1})".format(all.capitalize(), len(all_nonogramms[all])))
-    #     i+=1
-
-    # self.groupBox_zahlenbereich_wizard = create_new_groupbox(self.groupBox_setting_wizard, "Zahlenbereich")
-    # self.gridLayout_setting_wizard.addWidget(self.groupBox_zahlenbereich_wizard, 0,4,5,1)
-    # self.gridLayout_zahlenbereich_wizard = create_new_gridlayout(self.groupBox_zahlenbereich_wizard)
-
-
-    # self.groupBox_zahlenbereich_minimum = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Minimum")
-    # self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_zahlenbereich_minimum, 0,0,1,1)
-    # self.horizontalLayout_zahlenbereich_minimum = create_new_horizontallayout(self.groupBox_zahlenbereich_minimum)
-    # self.onlyInt = QtGui.QIntValidator()
-    # self.spinbox_zahlenbereich_minimum = create_new_spinbox(self.groupBox_zahlenbereich_minimum)
-    # self.spinbox_zahlenbereich_minimum.setRange(0,999999999)
-    # self.spinbox_zahlenbereich_minimum.setValue(100)
-    # self.horizontalLayout_zahlenbereich_minimum.addWidget(self.spinbox_zahlenbereich_minimum)
-
-
-    # self.horizontalLayout_zahlenbereich_minimum.addWidget(self.spinbox_zahlenbereich_minimum)
-    # self.groupBox_zahlenbereich_maximum = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Maximum")
-    # self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_zahlenbereich_maximum, 0,1,1,2)
-    # self.horizontalLayout_zahlenbereich_maximum = create_new_horizontallayout(self.groupBox_zahlenbereich_maximum)
-    # self.spinbox_zahlenbereich_maximum = create_new_spinbox(self.groupBox_zahlenbereich_maximum)
-    # self.spinbox_zahlenbereich_maximum.setRange(0,999999999)
-    # self.spinbox_zahlenbereich_maximum.setValue(999)
-    # self.horizontalLayout_zahlenbereich_maximum.addWidget(self.spinbox_zahlenbereich_maximum)
-    # self.spinbox_zahlenbereich_maximum.valueChanged.connect(self.worksheet_wizard_setting_changed)
-    # self.spinbox_zahlenbereich_minimum.valueChanged.connect(partial(self.minimum_changed_wizard, self.spinbox_zahlenbereich_minimum, self.spinbox_zahlenbereich_maximum))
-
-    # self.groupBox_kommastellen_wizard = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Kommastellen")
-    # self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_kommastellen_wizard, 1,0,1,1)
-    # self.horizontalLayout_kommastellen_wizard = create_new_horizontallayout(self.groupBox_kommastellen_wizard)
-    # self.combobox_kommastellen_wizard = create_new_combobox(self.groupBox_kommastellen_wizard)
-    # add_new_option(self.combobox_kommastellen_wizard, 0, "=")
-    # add_new_option(self.combobox_kommastellen_wizard, 1, "\u2264")
-    # self.combobox_kommastellen_wizard.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
-    # self.horizontalLayout_kommastellen_wizard.addWidget(self.combobox_kommastellen_wizard)
-    # self.spinbox_kommastellen_wizard = create_new_spinbox(self.groupBox_kommastellen_wizard)
-    # self.spinbox_kommastellen_wizard.setMaximum(14)
-    # self.spinbox_kommastellen_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
-    # self.horizontalLayout_kommastellen_wizard.addWidget(self.spinbox_kommastellen_wizard)
-
-
-
-    # self.groupBox_zahlenbereich_anzahl = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Summanden")
-    # self.horizontalLayout_zahlenbereich_anzahl = create_new_horizontallayout(self.groupBox_zahlenbereich_anzahl)
-    # self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_zahlenbereich_anzahl, 1,1,1,2)
-    # self.spinBox_zahlenbereich_anzahl_wizard = create_new_spinbox(self.groupBox_zahlenbereich_anzahl, 2)
-    # self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,5)
-    # self.spinBox_zahlenbereich_anzahl_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
-    # self.horizontalLayout_zahlenbereich_anzahl.addWidget(self.spinBox_zahlenbereich_anzahl_wizard)
-
-    # self.checkbox_negative_ergebnisse_wizard = create_new_checkbox(self.groupBox_zahlenbereich_wizard, "negative Ergebnisse erlauben")
-    # self.checkbox_negative_ergebnisse_wizard.stateChanged.connect(self.worksheet_wizard_setting_changed)
-    # self.gridLayout_zahlenbereich_wizard.addWidget(self.checkbox_negative_ergebnisse_wizard, 2,0,1,2)
-    # self.checkbox_negative_ergebnisse_wizard.hide()
-
-    # self.checkbox_allow_brackets_wizard = create_new_checkbox(self.groupBox_zahlenbereich_wizard, "Klammern erlauben")
-    # self.checkbox_allow_brackets_wizard.stateChanged.connect(self.worksheet_wizard_setting_changed)
-    # self.gridLayout_zahlenbereich_wizard.addWidget(self.checkbox_allow_brackets_wizard, 2,0,1,2)
-    # self.checkbox_allow_brackets_wizard.hide()
-
-
-    # self.groupBox_first_number_wizard = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "1. Faktor")
-    # self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_first_number_wizard, 0,0,1,1)
-    # self.gridLayout_first_number_wizard = create_new_gridlayout(self.groupBox_first_number_wizard)
-    # self.label_first_number_min = create_new_label(self.groupBox_first_number_wizard, "Min:")
-    # self.gridLayout_first_number_wizard.addWidget(self.label_first_number_min, 0,0,1,1)
-    # self.spinBox_first_number_min = create_new_spinbox(self.groupBox_first_number_wizard)
-    # self.spinBox_first_number_min.setRange(0,999999999)
-    # self.spinBox_first_number_min.setValue(10)
-    # self.gridLayout_first_number_wizard.addWidget(self.spinBox_first_number_min, 0,1,1,2)
-
-    # self.label_first_number_max = create_new_label(self.groupBox_first_number_wizard, "Max:")
-    # self.gridLayout_first_number_wizard.addWidget(self.label_first_number_max, 1,0,1,1)
-    # self.spinBox_first_number_max = create_new_spinbox(self.groupBox_first_number_wizard)
-    # self.spinBox_first_number_max.setSizePolicy(SizePolicy_fixed)
-    # self.spinBox_first_number_max.setRange(0,999999999)
-    # self.spinBox_first_number_max.setValue(99)
-    # self.gridLayout_first_number_wizard.addWidget(self.spinBox_first_number_max, 1,1,1,2)
-    # self.spinBox_first_number_max.valueChanged.connect(self.worksheet_wizard_setting_changed)
-    # self.spinBox_first_number_min.valueChanged.connect(partial(self.minimum_changed_wizard, self.spinBox_first_number_min, self.spinBox_first_number_max))        
-
-    # self.label_first_number_decimal = create_new_label(self.groupBox_first_number_wizard, "Kommastellen")
-    # self.gridLayout_first_number_wizard.addWidget(self.label_first_number_decimal, 2,0,1,1)
-    # self.combobox_first_number_decimal = create_new_combobox(self.groupBox_first_number_wizard)
-    # add_new_option(self.combobox_first_number_decimal, 0, "=")
-    # add_new_option(self.combobox_first_number_decimal, 1, "\u2264")
-    # self.combobox_first_number_decimal.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
-    # self.gridLayout_first_number_wizard.addWidget(self.combobox_first_number_decimal, 2,1,1,1)
-    # self.spinBox_first_number_decimal = create_new_spinbox(self.groupBox_first_number_wizard)
-    # self.spinBox_first_number_decimal.setMaximum(14)
-    # self.spinBox_first_number_decimal.valueChanged.connect(self.worksheet_wizard_setting_changed)
-    # self.gridLayout_first_number_wizard.addWidget(self.spinBox_first_number_decimal,2,2,1,1)  
-    # self.groupBox_first_number_wizard.hide()
-
-    # self.groupBox_second_number_wizard = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "2. Faktor")
-    # self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_second_number_wizard, 0,1,1,1)
-    # self.gridLayout_second_number_wizard = create_new_gridlayout(self.groupBox_second_number_wizard)
-    # self.label_second_number_min = create_new_label(self.groupBox_second_number_wizard, "Min:")
-    # self.gridLayout_second_number_wizard.addWidget(self.label_second_number_min, 0,0,1,1)
-    # self.spinBox_second_number_min = create_new_spinbox(self.groupBox_second_number_wizard)
-    # self.spinBox_second_number_min.setRange(-999999999,999999999)
-    # self.spinBox_second_number_min.setValue(10)
-    # self.gridLayout_second_number_wizard.addWidget(self.spinBox_second_number_min, 0,1,1,2)
-
-    # self.label_second_number_max = create_new_label(self.groupBox_second_number_wizard, "Max:")
-    # self.gridLayout_second_number_wizard.addWidget(self.label_second_number_max, 1,0,1,1)
-    # self.spinBox_second_number_max = create_new_spinbox(self.groupBox_second_number_wizard)
-    # self.spinBox_second_number_max.setRange(-999999999,999999999)
-    # self.spinBox_second_number_max.setValue(99)
-    # self.gridLayout_second_number_wizard.addWidget(self.spinBox_second_number_max, 1,1,1,2)
-    # self.spinBox_second_number_max.valueChanged.connect(self.worksheet_wizard_setting_changed)
-    # self.spinBox_second_number_min.valueChanged.connect(partial(self.minimum_changed_wizard, self.spinBox_second_number_min, self.spinBox_second_number_max))        
-
-    # self.label_second_number_decimal = create_new_label(self.groupBox_second_number_wizard, "Kommastellen")
-    # self.gridLayout_second_number_wizard.addWidget(self.label_second_number_decimal,2,0,1,1)
-    # self.combobox_second_number_decimal = create_new_combobox(self.groupBox_second_number_wizard)
-    # add_new_option(self.combobox_second_number_decimal, 0, "=")
-    # add_new_option(self.combobox_second_number_decimal, 1, "\u2264")
-    # self.combobox_second_number_decimal.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
-    # self.gridLayout_second_number_wizard.addWidget(self.combobox_second_number_decimal, 2,1,1,1)
-    # self.spinBox_second_number_decimal = create_new_spinbox(self.groupBox_second_number_wizard)
-    # self.spinBox_second_number_decimal.setMaximum(14)
-    # self.spinBox_second_number_decimal.valueChanged.connect(self.worksheet_wizard_setting_changed)
-    # self.gridLayout_second_number_wizard.addWidget(self.spinBox_second_number_decimal,2,2,1,1) 
-    # self.groupBox_second_number_wizard.hide()
-
-
-    # self.groupBox_dividend_wizard = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Dividend")
-    # self.gridLayout_dividend_wizard = create_new_gridlayout(self.groupBox_dividend_wizard)
-    # self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_dividend_wizard, 0,0, 1,1)
-
-    # self.combobox_dividend_wizard = create_new_combobox(self.groupBox_dividend_wizard)
-    # add_new_option(self.combobox_dividend_wizard, 0, "Natürliche Zahl")
-    # add_new_option(self.combobox_dividend_wizard, 1, "Dezimalzahl")
-    # self.gridLayout_dividend_wizard.addWidget(self.combobox_dividend_wizard, 0,0,1,1)
-
-    # self.label_dividend_min_wizard = create_new_label(self.groupBox_dividend_wizard, "Min:")
-    # self.gridLayout_dividend_wizard.addWidget(self.label_dividend_min_wizard, 0,1,1,1)
-    # self.spinbox_dividend_min_wizard = create_new_spinbox(self.groupBox_dividend_wizard)
-    # self.spinbox_dividend_min_wizard.setMaximum(999999999)
-    # self.spinbox_dividend_min_wizard.setValue(100)
-    # self.spinbox_dividend_min_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
-    # self.gridLayout_dividend_wizard.addWidget(self.spinbox_dividend_min_wizard, 0,2,1,1)
-    
-
-    # self.label_dividend_max_wizard = create_new_label(self.groupBox_dividend_wizard, "Max:")
-    # self.gridLayout_dividend_wizard.addWidget(self.label_dividend_max_wizard, 1,1,1,1)
-    # self.spinbox_dividend_max_wizard = create_new_spinbox(self.groupBox_dividend_wizard)
-    # self.spinbox_dividend_max_wizard.setMaximum(999999999)
-    # self.spinbox_dividend_max_wizard.setValue(1000)
-    # self.spinbox_dividend_max_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
-    # self.gridLayout_dividend_wizard.addWidget(self.spinbox_dividend_max_wizard, 1,2,1,1)
-    # self.groupBox_dividend_wizard.hide()
-
-
-    # self.groupBox_divisor_wizard = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Divisor")
-    # self.gridLayout_divisor_wizard = create_new_gridlayout(self.groupBox_divisor_wizard)
-    # self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_divisor_wizard, 1,0, 1,1)
-
-    # self.combobox_divisor_wizard = create_new_combobox(self.groupBox_divisor_wizard)
-    # add_new_option(self.combobox_divisor_wizard, 0, "Natürliche Zahl")
-    # add_new_option(self.combobox_divisor_wizard, 1, "Dezimalzahl")
-    # self.gridLayout_divisor_wizard.addWidget(self.combobox_divisor_wizard, 0,0,1,3)
-
-    # self.label_divisor_kommastelle_wizard = create_new_label(self.groupBox_divisor_wizard, "Kommastellen")
-    # self.gridLayout_divisor_wizard.addWidget(self.label_divisor_kommastelle_wizard, 1,0,1,1)
-
-    # self.combobox_divisor_kommastelle_wizard = create_new_combobox(self.combobox_divisor_wizard)
-    # add_new_option(self.combobox_divisor_kommastelle_wizard, 0, "=")
-    # add_new_option(self.combobox_divisor_kommastelle_wizard, 1, "\u2264")
-    # self.combobox_divisor_kommastelle_wizard.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
-    # self.gridLayout_divisor_wizard.addWidget(self.combobox_divisor_kommastelle_wizard, 1,1,1,1)
-    # self.spinBox_divisor_kommastellen_wizard = create_new_spinbox(self.groupBox_divisor_wizard, 0)
-    # self.spinBox_divisor_kommastellen_wizard.setMaximum(14)
-    # self.spinBox_divisor_kommastellen_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
-    # self.gridLayout_divisor_wizard.addWidget(self.spinBox_divisor_kommastellen_wizard, 1,2,1,1)
-    # self.label_divisor_kommastelle_wizard.hide()
-    # self.combobox_divisor_kommastelle_wizard.hide()
-    # self.spinBox_divisor_kommastellen_wizard.hide()
-
-    # self.label_divisor_min_wizard = create_new_label(self.groupBox_divisor_wizard, "Min:")
-    # self.gridLayout_divisor_wizard.addWidget(self.label_divisor_min_wizard, 0,3,1,1)
-    # self.spinbox_divisor_min_wizard = create_new_spinbox(self.groupBox_divisor_wizard, 2)
-    # self.spinbox_divisor_min_wizard.setMaximum(999999999)
-    # self.spinbox_divisor_min_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
-    # self.gridLayout_divisor_wizard.addWidget(self.spinbox_divisor_min_wizard, 0,4,1,1)
-    
-
-    # self.label_divisor_max_wizard = create_new_label(self.groupBox_divisor_wizard, "Max:")
-    # self.gridLayout_divisor_wizard.addWidget(self.label_divisor_max_wizard, 1,3,1,1)
-    # self.spinbox_divisor_max_wizard = create_new_spinbox(self.groupBox_divisor_wizard, 99)
-    # self.spinbox_divisor_max_wizard.setMaximum(999999999)
-    # self.spinbox_divisor_max_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
-    # self.gridLayout_divisor_wizard.addWidget(self.spinbox_divisor_max_wizard, 1,4,1,1)
-    # self.groupBox_divisor_wizard.hide()
-
-
-    # self.groupBox_ergebnis_wizard = create_new_groupbox(self.groupBox_zahlenbereich_anzahl, "Ergebnis")
-    # self.gridLayout_ergebnis_wizard = create_new_gridlayout(self.groupBox_ergebnis_wizard)
-    # self.gridLayout_zahlenbereich_wizard.addWidget(self.groupBox_ergebnis_wizard, 2,0,1,1)
-
-    # self.radioButton_division_ohne_rest = create_new_radiobutton(self.groupBox_ergebnis_wizard, "ohne Rest")
-    # self.radioButton_division_ohne_rest.setChecked(True)
-    # self.radioButton_division_ohne_rest.toggled.connect(self.worksheet_wizard_setting_changed)
-    # self.gridLayout_ergebnis_wizard.addWidget(self.radioButton_division_ohne_rest, 0,0,1,1)
-
-    # self.radioButton_division_rest = create_new_radiobutton(self.groupBox_ergebnis_wizard, "mit Rest")
-    # self.radioButton_division_rest.toggled.connect(self.worksheet_wizard_setting_changed)
-    # self.gridLayout_ergebnis_wizard.addWidget(self.radioButton_division_rest, 0,1,1,1)
-
-
-
-    # self.label_ergebnis_kommastellen_wizard = create_new_label(self.groupBox_ergebnis_wizard, "Kommastellen:")
-    # self.gridLayout_ergebnis_wizard.addWidget(self.label_ergebnis_kommastellen_wizard, 1,0,1,1)
-    # self.combobox_ergebnis_kommastellen_wizard = create_new_combobox(self.groupBox_ergebnis_wizard)
-    # add_new_option(self.combobox_ergebnis_kommastellen_wizard, 0, "=")
-    # add_new_option(self.combobox_ergebnis_kommastellen_wizard, 1, "\u2264")
-    # self.combobox_ergebnis_kommastellen_wizard.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
-    # self.gridLayout_ergebnis_wizard.addWidget(self.combobox_ergebnis_kommastellen_wizard, 1,1,1,1)
-    # self.spinbox_ergebnis_kommastellen_wizard = create_new_spinbox(self.groupBox_ergebnis_wizard, 1)
-    # self.spinbox_ergebnis_kommastellen_wizard.setRange(1,14)
-    # self.spinbox_ergebnis_kommastellen_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
-    # self.gridLayout_ergebnis_wizard.addWidget(self.spinbox_ergebnis_kommastellen_wizard, 1,2,1,1)
-
-    # self.label_ergebnis_kommastellen_wizard.hide()
-    # self.combobox_ergebnis_kommastellen_wizard.hide()
-    # self.spinbox_ergebnis_kommastellen_wizard.hide()
-
-
-    # self.combobox_dividend_wizard.currentIndexChanged.connect(self.combobox_divisor_dividend_changed)
-    # self.combobox_divisor_wizard.currentIndexChanged.connect(self.combobox_divisor_dividend_changed)
-    # self.groupBox_ergebnis_wizard.hide()
-
-
-
-    # self.gridLayout_zahlenbereich_wizard.setRowStretch(4,1)
-    # self.gridLayout_setting_wizard.setRowStretch(3, 2)
-
-    # self.scrollArea_chosen_wizard = QtWidgets.QScrollArea(self.stackWizard)
-    # self.scrollArea_chosen_wizard.setFrameShape(QtWidgets.QFrame.StyledPanel)
-    # self.scrollArea_chosen_wizard.setWidgetResizable(True)
-    # self.scrollArea_chosen_wizard.setObjectName("scrollArea_chosen_wizard")
-    # self.scrollArea_chosen_wizard.setFocusPolicy(QtCore.Qt.ClickFocus)
-    # self.scrollArea_chosen_wizard.setSizePolicy(SizePolicy_minimum)
-    # self.scrollArea_chosen_wizard.hide()
-    # self.scrollAreaWidgetContents_wizard = QtWidgets.QWidget()
-    # self.scrollAreaWidgetContents_wizard.setObjectName("scrollAreaWidgetContents_wizard")
-    # self.scrollAreaWidgetContents_wizard.setFocusPolicy(QtCore.Qt.ClickFocus)
-    # self.gridLayout_scrollArea_wizard = QtWidgets.QGridLayout(self.scrollAreaWidgetContents_wizard)
-    # self.gridLayout_scrollArea_wizard.setObjectName("gridLayout_scrollArea_wizard")
-    # self.scrollArea_chosen_wizard.setWidget(self.scrollAreaWidgetContents_wizard)
-    # self.scrollArea_chosen_wizard.verticalScrollBar().rangeChanged.connect(
-    #     self.change_scrollbar_position
-    # )
-    # self.gridLayout_wizard.addWidget(self.scrollArea_chosen_wizard, 3, 0, 6, 2)
