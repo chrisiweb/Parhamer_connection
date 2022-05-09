@@ -70,7 +70,7 @@ StyleSheet_application = """
 
 
     QCheckBox {{
-        spacing: 0px;
+        spacing: -5px;
         padding-top: 2px;
     }}
 

@@ -179,8 +179,8 @@ def create_new_groupbox(parent, name):
     return new_groupbox
 
 
-def create_new_label(parent, text, wordwrap=False, clickable=False, icon = None):
-    new_label = ClickLabel()
+def create_new_label(parent, text, wordwrap=False, clickable=False):
+    # new_label = ClickLabel()
     if clickable == False:
         new_label = QtWidgets.QLabel(parent)
     elif clickable == True:
@@ -190,13 +190,17 @@ def create_new_label(parent, text, wordwrap=False, clickable=False, icon = None)
     new_label.setText(_translate("MainWindow", text, None))
     new_label.setWordWrap(wordwrap)
 
-    if icon != None:
-        new_label.setPixmap(QPixmap(get_icon_path("database.svg")))
-        # self.label_lamaLogo.setFixedHeight(30)
-        new_label.setFixedSize(QSize(30,30))
-        new_label.setScaledContents(True) 
+    return new_label
+
+def create_new_label_icon(parent, icon, icon_size=(30,30)):
+    new_label = QtWidgets.QLabel(parent)
+    new_label.setPixmap(QPixmap(get_icon_path(icon)))
+    w, h = icon_size
+    new_label.setFixedSize(QSize(w,h))
+    new_label.setScaledContents(True)
 
     return new_label
+
 
 
 def create_new_lineedit(parent, ObjectName=None):

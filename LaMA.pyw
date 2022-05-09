@@ -3653,11 +3653,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         
         # horizontalLayout.addStretch()
         # button_refresh = create_new_button(groupbox, "Refresh", still_to_define)
-        button_refresh = create_standard_button(groupbox,
-            "",
-            partial(self.reload_example, index),
-            QtWidgets.QStyle.SP_BrowserReload)
+        button_refresh = create_new_button(groupbox, "", partial(self.reload_example, index), icon="refresh-cw.svg")
+        button_refresh.setSizePolicy(SizePolicy_fixed)
         horizontalLayout.addWidget(button_refresh)
+
+        button_delete = create_new_button(groupbox, "", still_to_define, icon="trash-2.svg")
+        button_delete.setSizePolicy(SizePolicy_fixed)
+        horizontalLayout.addWidget(button_delete)
         # button_delete = create_new_button(groupbox, "Delete", still_to_define)
         # button_delete = create_standard_button(groupbox,
         #     "",
@@ -3872,6 +3874,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     def create_new_worksheet_wizard_pressed(self):
         self.worksheet_edited = True
+
         # self.worksheet_wizard_changed = False
 
         self.dict_all_examples_wizard = {}
@@ -3879,7 +3882,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         self.dict_all_examples_wizard[thema] = list_of_examples_wizard
 
+        print(self.dict_all_examples_wizard)
+
         self.reset_aufgabenboxes_wizard()
+
 
         if self.checkBox_show_nonogramm.isChecked():
             self.create_nonogramm_wizard()        
