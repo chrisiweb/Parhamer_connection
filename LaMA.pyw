@@ -3497,28 +3497,32 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.spinBox_zahlenbereich_anzahl_wizard.setMaximum(5)  
 
         if thema == themen_worksheet_wizard[0]:
-            self.groupBox_zahlenbereich_anzahl.setTitle("Summanden")
+            self.label_zahlenbereich_anzahl_wizard.setText("Summanden:")
+            # self.groupBox_zahlenbereich_anzahl.setTitle("Summanden")
             self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,5)
             self.spinBox_zahlenbereich_anzahl_wizard.setValue(2)
         elif thema == themen_worksheet_wizard[1]:
-            self.groupBox_zahlenbereich_anzahl.setTitle("Subtrahenden")
+            self.label_zahlenbereich_anzahl_wizard.setText("Subtrahenden:")
+            # self.groupBox_zahlenbereich_anzahl.setTitle("Subtrahenden")
             self.spinBox_zahlenbereich_anzahl_wizard.setRange(1,5)
             self.spinBox_zahlenbereich_anzahl_wizard.setValue(1)
         elif thema == themen_worksheet_wizard[4]:
+            self.label_zahlenbereich_anzahl_wizard.setText("Zahlen:")
             self.spinbox_zahlenbereich_minimum.setRange(0,999)
             self.spinbox_zahlenbereich_maximum.setRange(0,999)
             self.spinbox_zahlenbereich_minimum.setValue(0)
             self.spinbox_zahlenbereich_maximum.setValue(20)
             self.spinBox_zahlenbereich_anzahl_wizard.setMaximum(20)
             self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,20)
-            self.groupBox_zahlenbereich_anzahl.setTitle("Zahlen") 
+            # self.groupBox_zahlenbereich_anzahl.setTitle("Zahlen") 
 
         elif thema == themen_worksheet_wizard[5] or thema == themen_worksheet_wizard[6] or thema == themen_worksheet_wizard[7]:
+            self.label_zahlenbereich_anzahl_wizard.setText("Zahlen:")
             self.spinbox_zahlenbereich_minimum.setRange(-999,999)
             self.spinbox_zahlenbereich_maximum.setRange(-999,999)
             self.spinBox_zahlenbereich_anzahl_wizard.setMaximum(20)
             self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,20)
-            self.groupBox_zahlenbereich_anzahl.setTitle("Zahlen")  
+            # self.groupBox_zahlenbereich_anzahl.setTitle("Zahlen")  
             if thema == themen_worksheet_wizard[5]:
                 # self.groupBox_zahlenbereich_anzahl.setTitle("Summanden")
                 self.spinBox_zahlenbereich_anzahl_wizard.setValue(2)
@@ -3572,11 +3576,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         num_of_examples += self.spinBox_number_wizard.value()
         if num_of_examples >maximum:
             self.checkBox_show_nonogramm.setChecked(False)
-            self.groupBox_show_nonogramm.setEnabled(False)
+            self.widget_show_nonogramm.setEnabled(False)
             # self.checkBox_show_nonogramm.setEnabled(False)
             # self.combobox_nonogramm_wizard.setEnabled(False)
         else:
-            self.groupBox_show_nonogramm.setEnabled(True)
+            self.widget_show_nonogramm.setEnabled(True)
             # self.checkBox_show_nonogramm.setChecked(True)
             # self.checkBox_show_nonogramm.setEnabled(True)
             # self.combobox_nonogramm_wizard.setEnabled(True)
@@ -3601,10 +3605,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def combobox_ausrichtung_wizard_changed(self):
         if self.comboBox_themen_wizard.currentText()=='Subtraktion':
             if self.combobox_ausrichtung_wizard.currentIndex()==0:
-                self.groupBox_zahlenbereich_anzahl.hide()
+                self.widgetZahlenbereich_anzahl.hide()
                 self.spinBox_zahlenbereich_anzahl_wizard.setValue(1)
             else:
-                self.groupBox_zahlenbereich_anzahl.show()
+                self.widgetZahlenbereich_anzahl.show()
 
     def combobox_divisor_dividend_changed(self):
         # self.worksheet_wizard_changed=True
@@ -3984,6 +3988,25 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         create_pdf("worksheet")
 
+
+    def edit_worksheet_instructions(self):
+        Dialog = QtWidgets.QDialog(
+            None,
+            QtCore.Qt.WindowSystemMenuHint
+            | QtCore.Qt.WindowTitleHint
+            | QtCore.Qt.WindowCloseButtonHint,
+        )
+        ui = Ui_Dialog_edit_worksheet_instructions()
+        ui.setupUi(Dialog)
+
+        rsp = Dialog.exec()
+        if rsp == QtWidgets.QDialog.Accepted:
+            self.show_instructions_wizard = ui.checkBox_hide_instructions.isChecked()
+            self.instructions_wizard = ui.plainTextEdit_instructions.toPlainText()
+            print(self.show_instructions_wizard)
+            print(self.instructions_wizard)
+        else:
+            print('no')
 
 
     def save_worksheet_wizard(self):
@@ -6860,6 +6883,8 @@ if __name__ == "__main__":
     i = step_progressbar(i, "subwindows")
     from subwindows import Ui_Dialog_Convert_To_Eps
 
+    i = step_progressbar(i, "subwindows")
+    from subwindows import Ui_Dialog_edit_worksheet_instructions
     i = step_progressbar(i, "subwindows")
     from subwindows import read_credentials
 

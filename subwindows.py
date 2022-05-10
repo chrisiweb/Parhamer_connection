@@ -3471,3 +3471,46 @@ class Ui_Dialog_Convert_To_Eps(object):
         self.listWidget.clear()
         self.listWidget.addItem('hier ablegen ...')
         # self.Dialog.accept()  
+
+
+class Ui_Dialog_edit_worksheet_instructions(object):
+    def setupUi(self, Dialog):
+        # self.MainWindow = MainWindow
+        # self.Dialog = Dialog
+        # self.Dialog.setObjectName("Dialog")
+        Dialog.setWindowTitle("Arbeitsanweisung")
+        Dialog.setWindowIcon(QIcon(logo_path)) 
+        Dialog.resize(200, 200)
+
+        verticalLayout = create_new_verticallayout(Dialog)
+
+        self.plainTextEdit_instructions = QtWidgets.QPlainTextEdit()
+        verticalLayout.addWidget(self.plainTextEdit_instructions)
+
+        self.checkBox_hide_instructions = create_new_checkbox(Dialog, "Arbeitsanweisung anzeigen", True)
+        verticalLayout.addWidget(self.checkBox_hide_instructions)
+
+
+        buttonBox = QtWidgets.QDialogButtonBox(Dialog)
+        buttonBox.setStandardButtons(
+            QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel
+        )
+        verticalLayout.addWidget(buttonBox)
+    # self.gridLayout_wizard.addWidget(self.buttonBox_create_worksheet_wizard, 10,1,1,2)
+    # self.buttonBox_create_worksheet_wizard.hide()
+        # buttonOk.setIcon(QtGui.QIcon(get_icon_path('eye.svg')))
+        # button.setText("Vorschau")
+
+        buttonCancel = buttonBox.button(QtWidgets.QDialogButtonBox.Cancel)
+        buttonCancel.setText("Abbrechen")
+        
+        
+        buttonBox.rejected.connect(Dialog.reject)
+        buttonBox.accepted.connect(Dialog.accept)
+    
+        # self.buttonBox_setup.accepted.connect(partial(self.save_setting, MainWindow.chosen_program))
+        # button_save.setIcon(QtGui.QIcon(get_icon_path('save.svg')))
+        # button_save.setText("Speichern")
+
+        
+
