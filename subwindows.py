@@ -3474,20 +3474,21 @@ class Ui_Dialog_Convert_To_Eps(object):
 
 
 class Ui_Dialog_edit_worksheet_instructions(object):
-    def setupUi(self, Dialog):
+    def setupUi(self, Dialog, text, show_instructions):
         # self.MainWindow = MainWindow
         # self.Dialog = Dialog
         # self.Dialog.setObjectName("Dialog")
         Dialog.setWindowTitle("Arbeitsanweisung")
         Dialog.setWindowIcon(QIcon(logo_path)) 
-        Dialog.resize(200, 200)
+        Dialog.resize(300,50)
 
         verticalLayout = create_new_verticallayout(Dialog)
 
         self.plainTextEdit_instructions = QtWidgets.QPlainTextEdit()
+        self.plainTextEdit_instructions.setPlainText(text)
         verticalLayout.addWidget(self.plainTextEdit_instructions)
 
-        self.checkBox_hide_instructions = create_new_checkbox(Dialog, "Arbeitsanweisung anzeigen", True)
+        self.checkBox_hide_instructions = create_new_checkbox(Dialog, "Arbeitsanweisung anzeigen", show_instructions)
         verticalLayout.addWidget(self.checkBox_hide_instructions)
 
 

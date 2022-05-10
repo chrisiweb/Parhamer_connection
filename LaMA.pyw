@@ -8,6 +8,7 @@ __lastupdate__ = "04/22"
 
 show_popup = False
 
+from xml.dom.minidom import Attr
 from lama_gui import setup_stackWizard
 from start_window import check_if_database_exists
 # from worksheet_wizard import get_all_solution_pixels
@@ -3570,7 +3571,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         #     if len(nonogram)>max:
         #         max = len(nonogram)
         try:
-            num_of_examples = len(self.get_all_examples_wizard()) 
+            num_of_examples = len(self.list_of_examples_wizard) 
         except AttributeError:
             num_of_examples = 0
         num_of_examples += self.spinBox_number_wizard.value()
@@ -3661,7 +3662,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         button_refresh.setSizePolicy(SizePolicy_fixed)
         horizontalLayout.addWidget(button_refresh)
 
-        button_delete = create_new_button(groupbox, "", still_to_define, icon="trash-2.svg")
+        button_delete = create_new_button(groupbox, "", partial(self.delete_example, index, groupbox), icon="trash-2.svg")
         button_delete.setSizePolicy(SizePolicy_fixed)
         horizontalLayout.addWidget(button_delete)
         # button_delete = create_new_button(groupbox, "Delete", still_to_define)
@@ -3672,13 +3673,40 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # horizontalLayout.addWidget(button_delete)
         self.dict_aufgaben_wizard[index] = label
 
+    def delete_example(self, index, groupbox):
+
+        columns = self.spinBox_column_wizard.value()
+        for i in range(self.gridLayout_scrollArea_wizard.count()-2): 
+            self.gridLayout_scrollArea_wizard.itemAt(i).widget().setTitle("TEST")
+
+        # # num_of_examples = 0
+        # # for all in self.dict_all_examples_wizard:
+        # num_of_examples = len(self.list_of_examples_wizard)
+
+        # items_per_column= num_of_examples/columns
+        # column = 0
+        # row = 0
+        # index = 0
+        # # for thema in self.dict_all_examples_wizard:
+        # for example in self.list_of_examples_wizard:
+        #     self.create_aufgabenbox_wizard(index, example, row, column)
+        #     if row+1 < items_per_column:
+        #         row +=1
+        #     else:
+        #         row +=1
+        #         self.gridLayout_scrollArea_wizard.setColumnStretch(row, 1)
+        #         self.gridLayout_scrollArea_wizard.setRowStretch(row, 1)
+        #         row = 0
+        #         column +=1
+        #     index +=1
+        print(self.list_of_examples_wizard[index])
+
     def reload_example(self, index):
         thema = self.comboBox_themen_wizard.currentText()
         minimum = self.spinbox_zahlenbereich_minimum.value()
         maximum = self.spinbox_zahlenbereich_maximum.value()
         commas = self.spinbox_kommastellen_wizard.value()
         
-
 
         if thema == 'Addition':
             anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
@@ -3737,14 +3765,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     show_brackets = True
                 new_example = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)
 
+        
+        # result = self.list_of_examples_wizard[index][-2]
 
-        result = self.list_of_examples_wizard[index][-2]
-
-        if self.checkBox_show_nonogramm.isChecked():
-            for key, value in self.coordinates_nonogramm_wizard.items():
-                if value == result:
-                    self.coordinates_nonogramm_wizard[key]=new_example[-2]
-                    break
+        # if self.checkBox_show_nonogramm.isChecked():
+        #     for key, value in self.coordinates_nonogramm_wizard.items():
+        #         if value == result:
+        #             self.coordinates_nonogramm_wizard[key]=new_example[-2]
+        #             break
 
         self.list_of_examples_wizard[index] = new_example
         self.dict_aufgaben_wizard[index].setText(new_example[-1])
@@ -3755,26 +3783,26 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         for i in reversed(range(self.gridLayout_scrollArea_wizard.count())): 
             self.gridLayout_scrollArea_wizard.itemAt(i).widget().setParent(None)
 
-        num_of_examples = 0
-        for all in self.dict_all_examples_wizard:
-            num_of_examples += len(self.dict_all_examples_wizard[all])
+        # num_of_examples = 0
+        # for all in self.dict_all_examples_wizard:
+        num_of_examples = len(self.list_of_examples_wizard)
 
         items_per_column= num_of_examples/columns
         column = 0
         row = 0
         index = 0
-        for thema in self.dict_all_examples_wizard:
-            for example in self.dict_all_examples_wizard[thema]:
-                self.create_aufgabenbox_wizard(index, example, row, column)
-                if row+1 < items_per_column:
-                    row +=1
-                else:
-                    row +=1
-                    self.gridLayout_scrollArea_wizard.setColumnStretch(row, 1)
-                    self.gridLayout_scrollArea_wizard.setRowStretch(row, 1)
-                    row = 0
-                    column +=1
-                index +=1
+        # for thema in self.dict_all_examples_wizard:
+        for example in self.list_of_examples_wizard:
+            self.create_aufgabenbox_wizard(index, example, row, column)
+            if row+1 < items_per_column:
+                row +=1
+            else:
+                row +=1
+                self.gridLayout_scrollArea_wizard.setColumnStretch(row, 1)
+                self.gridLayout_scrollArea_wizard.setRowStretch(row, 1)
+                row = 0
+                column +=1
+            index +=1
 
     def create_list_of_examples_wizard(self):
         thema = self.comboBox_themen_wizard.currentText()
@@ -3853,7 +3881,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 return
             list_of_examples_wizard = create_list_of_examples_ganze_zahlen(typ, examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)        
 
-        return thema, list_of_examples_wizard
+        return list_of_examples_wizard
 
     def get_all_examples_wizard(self):
         list_of_examples = []
@@ -3881,18 +3909,20 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         # self.worksheet_wizard_changed = False
 
-        self.dict_all_examples_wizard = {}
-        thema, list_of_examples_wizard = self.create_list_of_examples_wizard()
+        # self.dict_all_examples_wizard = {}
+        self.list_of_examples_wizard = self.create_list_of_examples_wizard()
 
-        self.dict_all_examples_wizard[thema] = list_of_examples_wizard
-
-        print(self.dict_all_examples_wizard)
+        # self.dict_all_examples_wizard[thema] = list_of_examples_wizard
+        print(self.list_of_examples_wizard)
+        # print(self.dict_all_examples_wizard)
 
         self.reset_aufgabenboxes_wizard()
 
 
-        if self.checkBox_show_nonogramm.isChecked():
-            self.create_nonogramm_wizard()        
+        # if self.checkBox_show_nonogramm.isChecked():
+        #     self.create_nonogramm_wizard()  
+
+
         # if self.checkBox_show_nonogramm.isChecked():
         #     self.chosen_nonogram, solution_pixel = get_all_solution_pixels(self.list_of_examples_wizard, self.combobox_nonogramm_wizard.currentText())
 
@@ -3997,16 +4027,23 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             | QtCore.Qt.WindowCloseButtonHint,
         )
         ui = Ui_Dialog_edit_worksheet_instructions()
-        ui.setupUi(Dialog)
+
+        try:
+            text = self.instructions_wizard
+        except AttributeError:
+            text = ""
+
+        try:
+            show_instructions = self.show_instructions_wizard
+        except AttributeError:
+            show_instructions = True
+
+        ui.setupUi(Dialog, text, show_instructions)
 
         rsp = Dialog.exec()
         if rsp == QtWidgets.QDialog.Accepted:
             self.show_instructions_wizard = ui.checkBox_hide_instructions.isChecked()
             self.instructions_wizard = ui.plainTextEdit_instructions.toPlainText()
-            print(self.show_instructions_wizard)
-            print(self.instructions_wizard)
-        else:
-            print('no')
 
 
     def save_worksheet_wizard(self):
