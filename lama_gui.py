@@ -2633,7 +2633,7 @@ def setup_stackWizard(self):
     button_addto.setText("Alle Aufgaben zum Arbeitsblatt hinzufügen")
     button_addto.setIcon(QtGui.QIcon(get_icon_path('plus-square.svg')))
 
-    button_addto.clicked.connect(still_to_define)
+    button_addto.clicked.connect(self.add_to_worksheet_wizard)
 
 
     self.groupBox_complete_worksheet_wizard = create_new_groupbox(self.splitter_newWorksheet, "Arbeitsblatt")

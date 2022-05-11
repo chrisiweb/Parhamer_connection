@@ -8,6 +8,7 @@ __lastupdate__ = "04/22"
 
 show_popup = False
 
+from cProfile import label
 from xml.dom.minidom import Attr
 from lama_gui import setup_stackWizard
 from start_window import check_if_database_exists
@@ -3662,7 +3663,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         button_refresh.setSizePolicy(SizePolicy_fixed)
         horizontalLayout.addWidget(button_refresh)
 
-        button_delete = create_new_button(groupbox, "", partial(self.delete_example, index, groupbox), icon="trash-2.svg")
+        button_delete = create_new_button(groupbox, "", partial(self.delete_example, index), icon="trash-2.svg")
         button_delete.setSizePolicy(SizePolicy_fixed)
         horizontalLayout.addWidget(button_delete)
         # button_delete = create_new_button(groupbox, "Delete", still_to_define)
@@ -3673,11 +3674,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # horizontalLayout.addWidget(button_delete)
         self.dict_aufgaben_wizard[index] = label
 
-    def delete_example(self, index, groupbox):
+    def delete_example(self, index):
+        self.list_of_examples_wizard.pop(index)
+        self.reset_aufgabenboxes_wizard()
 
-        columns = self.spinBox_column_wizard.value()
-        for i in range(self.gridLayout_scrollArea_wizard.count()-2): 
-            self.gridLayout_scrollArea_wizard.itemAt(i).widget().setTitle("TEST")
+
+        # columns = self.spinBox_column_wizard.value()
+        # for i in range(self.gridLayout_scrollArea_wizard.count()-2): 
+        #     self.gridLayout_scrollArea_wizard.itemAt(i).widget().setTitle("TEST")
 
         # # num_of_examples = 0
         # # for all in self.dict_all_examples_wizard:
@@ -3699,7 +3703,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         #         row = 0
         #         column +=1
         #     index +=1
-        print(self.list_of_examples_wizard[index])
+        # print(self.list_of_examples_wizard[index])
 
     def reload_example(self, index):
         thema = self.comboBox_themen_wizard.currentText()
@@ -3778,6 +3782,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.dict_aufgaben_wizard[index].setText(new_example[-1])
 
 
+
+
+
     def reset_aufgabenboxes_wizard(self):
         columns = self.spinBox_column_wizard.value()
         for i in reversed(range(self.gridLayout_scrollArea_wizard.count())): 
@@ -3803,6 +3810,15 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 row = 0
                 column +=1
             index +=1
+
+
+        # pushButton_create_new_example = create_new_button(
+        #     self.scrollAreaWidgetContents_wizard,
+        #     "Neue Aufgabe hinzufügen",
+        #     self.add_new_example,
+        #     icon = "plus-square.svg"
+        #     )
+        # self.gridLayout_scrollArea_wizard.addWidget(pushButton_create_new_example ,row,column,1,1)
 
     def create_list_of_examples_wizard(self):
         thema = self.comboBox_themen_wizard.currentText()
@@ -3929,27 +3945,49 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         #     self.coordinates_nonogramm_wizard = create_coordinates(self, solution_pixel)
 
 
-    def add_to_worksheet_wizard_pressed(self):
-        self.worksheet_edited = True
-        # self.worksheet_wizard_changed = False
+    def add_to_worksheet_wizard(self):
+        print(self.list_of_examples_wizard)  
 
-        thema, list_of_examples_wizard = self.create_list_of_examples_wizard()
-        try:
-            if thema in self.dict_all_examples_wizard:
-                list_of_items = self.get_all_examples_wizard()
-                for item in list_of_items:
-                    self.dict_all_examples_wizard[thema].append(item)        
-            else:
-                self.dict_all_examples_wizard[thema] = list_of_examples_wizard
-        except AttributeError:
-            self.dict_all_examples_wizard = {}
-            self.dict_all_examples_wizard[thema] = list_of_examples_wizard
+        widget_worksheet = QtWidgets.QWidget(self.scrollAreaWidgetContents_complete_worksheet_wizard)
+        self.verticalLayout_complete_worksheet_wizard.insertWidget(self.verticalLayout_complete_worksheet_wizard.count() - 1, widget_worksheet)
 
-        self.reset_aufgabenboxes_wizard()
+        horizontalLayout_worksheet = create_new_horizontallayout(widget_worksheet)
+        horizontalLayout_worksheet.setContentsMargins(0,0,0,0)
+
+        thema = self.comboBox_themen_wizard.currentText()
+        anzahl = len(self.list_of_examples_wizard)
+
+        label_worksheet = create_new_label(self.scrollAreaWidgetContents_complete_worksheet_wizard, f"{thema} ({anzahl})", True)
+        horizontalLayout_worksheet.addWidget(label_worksheet)
+
+        horizontalLayout_worksheet.addStretch()
+        pushButton_edit = create_new_button(self.scrollAreaWidgetContents_complete_worksheet_wizard, "", still_to_define, icon="edit.svg")
+        horizontalLayout_worksheet.addWidget(pushButton_edit)
+
+        pushButton_delete = create_new_button(self.scrollAreaWidgetContents_complete_worksheet_wizard, "", still_to_define, icon="trash-2.svg")
+        horizontalLayout_worksheet.addWidget(pushButton_delete)        
+        # 
+        #       
+        # self.worksheet_edited = True
+        # # self.worksheet_wizard_changed = False
+
+        # thema, list_of_examples_wizard = self.create_list_of_examples_wizard()
+        # try:
+        #     if thema in self.dict_all_examples_wizard:
+        #         list_of_items = self.get_all_examples_wizard()
+        #         for item in list_of_items:
+        #             self.dict_all_examples_wizard[thema].append(item)        
+        #     else:
+        #         self.dict_all_examples_wizard[thema] = list_of_examples_wizard
+        # except AttributeError:
+        #     self.dict_all_examples_wizard = {}
+        #     self.dict_all_examples_wizard[thema] = list_of_examples_wizard
+
+        # self.reset_aufgabenboxes_wizard()
         
 
-        if self.checkBox_show_nonogramm.isChecked():
-            self.create_nonogramm_wizard()
+        # if self.checkBox_show_nonogramm.isChecked():
+        #     self.create_nonogramm_wizard()
         #     self.coordinates_nonogramm_wizard = create_coordinates(self, solution_pixel)
 
 
