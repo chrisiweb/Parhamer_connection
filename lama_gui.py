@@ -2158,6 +2158,8 @@ def setup_stackWizard(self):
     self.horizontalLayout_setting_wizard1.addWidget(self.widget_number_wizard)
     self.horizontalLayout_setting_wizard1.setContentsMargins(0,0,0,0)
     self.horizontalLayout_number_wizard = create_new_horizontallayout(self.widget_number_wizard)
+    self.horizontalLayout_number_wizard.setContentsMargins(0,9,0,0)
+
 
     self.label_number_wizard = create_new_label(self.widget_number_wizard, "Aufgaben:")
     self.horizontalLayout_number_wizard.addWidget(self.label_number_wizard)
@@ -2174,6 +2176,8 @@ def setup_stackWizard(self):
     self.widget_ausrichtung_wizard.setSizePolicy(SizePolicy_fixed)
     self.horizontalLayout_setting_wizard1.addWidget(self.widget_ausrichtung_wizard)
     self.horizontalLayout_ausrichtung_wizard = create_new_horizontallayout(self.widget_ausrichtung_wizard)
+    self.horizontalLayout_ausrichtung_wizard.setContentsMargins(0,9,0,0)
+
 
     self.label_ausrichtung_wizard = create_new_label(self.widget_ausrichtung_wizard, "Ausrichtung:")
     self.horizontalLayout_ausrichtung_wizard.addWidget(self.label_ausrichtung_wizard)
@@ -2195,6 +2199,7 @@ def setup_stackWizard(self):
     self.horizontalLayout_ausrichtung_wizard.addWidget(self.widget_column_wizard)
 
     self.horizontalLayout_column_wizard = create_new_horizontallayout(self.widget_column_wizard)
+    self.horizontalLayout_column_wizard.setContentsMargins(0,9,0,0)
     self.icon_column_wizard = create_new_label_icon(self.widget_column_wizard, "columns.svg", icon_size=(15,15))
     self.horizontalLayout_column_wizard.addWidget(self.icon_column_wizard)
 
@@ -2555,15 +2560,29 @@ def setup_stackWizard(self):
 
 
 
+    self.widget_buttons_create_new_examples = QtWidgets.QWidget(self.groupBox_setting_wizard)
+    self.verticalLayout_setting_wizard.addWidget(self.widget_buttons_create_new_examples)
+    
+    self.horizontalLayout_buttons_create_new_examples = create_new_horizontallayout(self.widget_buttons_create_new_examples)
+    self.horizontalLayout_buttons_create_new_examples.setContentsMargins(0,0,0,0)
+    self.horizontalLayout_buttons_create_new_examples.addStretch()
+    self.pushButton_add_single_example = create_new_button(
+        self.widget_buttons_create_new_examples,
+        "Einzelaufgabe hinzufügen",
+        still_to_define,
+        icon="plus-square.svg",
+    )
+    self.horizontalLayout_buttons_create_new_examples.addWidget(self.pushButton_add_single_example)
     self.pushButton_calculate_new_examples = create_new_button(
-        self.groupBox_setting_wizard,
+        self.widget_buttons_create_new_examples,
         "Neue Aufgaben berechnen",
         self.create_new_worksheet_wizard_pressed, 
         icon="activity.svg"
     )
-    self.pushButton_calculate_new_examples.setSizePolicy(SizePolicy_fixed)
+    self.horizontalLayout_buttons_create_new_examples.addWidget(self.pushButton_calculate_new_examples)
+    # self.pushButton_calculate_new_examples.setSizePolicy(SizePolicy_fixed)
     
-    self.verticalLayout_setting_wizard.addWidget(self.pushButton_calculate_new_examples, alignment=QtCore.Qt.AlignRight)
+    # self.verticalLayout_setting_wizard.addWidget(self.pushButton_calculate_new_examples, alignment=QtCore.Qt.AlignRight)
 
     # self.buttonBox_addto_worksheet_wizard = QtWidgets.QDialogButtonBox(self.widgetNewExamples_wizard)
     # self.buttonBox_addto_worksheet_wizard.setStandardButtons(

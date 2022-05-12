@@ -290,7 +290,7 @@ class Ui_MainWindow(object):
         # self.gridLayout = create_new_gridlayout(self.centralwidget)
 
 
-        self.MainWindow.resize(900,600)
+        self.MainWindow.resize(900,700)
         #######################################################
         ############ Menu Bar ###################
         #######################################################
