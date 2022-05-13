@@ -3593,7 +3593,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         for all in all_nonogramms:
             if len(all_nonogramms[all])>= num_of_examples:
                 add_new_option(self.combobox_nonogramm_wizard, i, "{0} ({1})".format(all.capitalize(), len(all_nonogramms[all])))
-                i+=1                    
+                i+=1 
+        self.pushButton_calculate_new_examples.setText(f"{self.spinBox_number_wizard.value()} neue Aufgaben berechnen")                  
 
     def spinBox_column_wizard_changed(self):
         self.reset_aufgabenboxes_wizard()
@@ -3705,7 +3706,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         #     index +=1
         # print(self.list_of_examples_wizard[index])
 
-    def reload_example(self, index):
+    def create_single_example_wizard(self):
         thema = self.comboBox_themen_wizard.currentText()
         minimum = self.spinbox_zahlenbereich_minimum.value()
         maximum = self.spinbox_zahlenbereich_maximum.value()
@@ -3769,7 +3770,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     show_brackets = True
                 new_example = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)
 
-        
+        return new_example
+
+    def reload_example(self, index):  
+        new_example = self.create_single_example_wizard()
         # result = self.list_of_examples_wizard[index][-2]
 
         # if self.checkBox_show_nonogramm.isChecked():
@@ -3944,6 +3948,16 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         #     self.coordinates_nonogramm_wizard = create_coordinates(self, solution_pixel)
 
+
+    def add_single_example_wizard(self):
+        print(self.list_of_examples_wizard)
+        new_example = self.create_single_example_wizard()
+
+        self.list_of_examples_wizard.append(new_example)
+        print(self.dict_aufgaben_wizard)
+
+        self.reset_aufgabenboxes_wizard()
+        # self.dict_aufgaben_wizard[index].setText(new_example[-1])
 
     def add_to_worksheet_wizard(self):
         print(self.list_of_examples_wizard)  

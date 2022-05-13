@@ -2569,13 +2569,14 @@ def setup_stackWizard(self):
     self.pushButton_add_single_example = create_new_button(
         self.widget_buttons_create_new_examples,
         "Einzelaufgabe hinzufügen",
-        still_to_define,
+        self.add_single_example_wizard,
         icon="plus-square.svg",
     )
     self.horizontalLayout_buttons_create_new_examples.addWidget(self.pushButton_add_single_example)
+
     self.pushButton_calculate_new_examples = create_new_button(
         self.widget_buttons_create_new_examples,
-        "Neue Aufgaben berechnen",
+        f"{self.spinBox_number_wizard.value()} neue Aufgaben berechnen",
         self.create_new_worksheet_wizard_pressed, 
         icon="activity.svg"
     )
