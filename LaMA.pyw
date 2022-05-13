@@ -3959,14 +3959,34 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.reset_aufgabenboxes_wizard()
         # self.dict_aufgaben_wizard[index].setText(new_example[-1])
 
+    def edit_set_of_examples_wizard(self, widget, thema):
+        if not is_empty(self.list_of_examples_wizard):
+            rsp = question_window("?")
+            if rsp == False:
+                return
+        
+        self.list_of_examples_wizard = self.dict_all_examples_worksheet_wizard[widget]
+
+        self.reset_aufgabenboxes_wizard()
+        self.comboBox_themen_wizard.setCurrentText(thema)
+        widget.setParent(None)
+
+    def delete_set_of_examples_wizard(self, widget):
+        rsp = question_window("Sind Sie sicher, dass Sie die Aufgaben vom Arbeitsblatt entfernen wollen?")
+        
+        if rsp == True:
+            widget.setParent(None)
+
     def add_to_worksheet_wizard(self):
         print(self.list_of_examples_wizard)  
 
-        widget_worksheet = QtWidgets.QWidget(self.scrollAreaWidgetContents_complete_worksheet_wizard)
+        # widget_worksheet = QtWidgets.QWidget(self.scrollAreaWidgetContents_complete_worksheet_wizard)
+        widget_worksheet = DragDropGroupBox(self, None)
+        widget_worksheet.setParent(self.scrollAreaWidgetContents_complete_worksheet_wizard)
         self.verticalLayout_complete_worksheet_wizard.insertWidget(self.verticalLayout_complete_worksheet_wizard.count() - 1, widget_worksheet)
 
         horizontalLayout_worksheet = create_new_horizontallayout(widget_worksheet)
-        horizontalLayout_worksheet.setContentsMargins(0,0,0,0)
+        horizontalLayout_worksheet.setContentsMargins(0,5,0,5)
 
         thema = self.comboBox_themen_wizard.currentText()
         anzahl = len(self.list_of_examples_wizard)
@@ -3975,12 +3995,21 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         horizontalLayout_worksheet.addWidget(label_worksheet)
 
         horizontalLayout_worksheet.addStretch()
-        pushButton_edit = create_new_button(self.scrollAreaWidgetContents_complete_worksheet_wizard, "", still_to_define, icon="edit.svg")
+        pushButton_edit = create_new_button(self.scrollAreaWidgetContents_complete_worksheet_wizard, "", partial(self.edit_set_of_examples_wizard, widget_worksheet, thema), icon="edit.svg")
         horizontalLayout_worksheet.addWidget(pushButton_edit)
 
-        pushButton_delete = create_new_button(self.scrollAreaWidgetContents_complete_worksheet_wizard, "", still_to_define, icon="trash-2.svg")
+        pushButton_delete = create_new_button(self.scrollAreaWidgetContents_complete_worksheet_wizard, "", partial(self.delete_set_of_examples_wizard,widget_worksheet), icon="trash-2.svg")
         horizontalLayout_worksheet.addWidget(pushButton_delete)        
-        # 
+
+        try:
+            self.dict_all_examples_worksheet_wizard[widget_worksheet] = self.list_of_examples_wizard
+        except AttributeError:
+            self.dict_all_examples_worksheet_wizard = {}
+            self.dict_all_examples_worksheet_wizard[widget_worksheet] = self.list_of_examples_wizard
+        self.list_of_examples_wizard = []
+
+        self.reset_aufgabenboxes_wizard()
+
         #       
         # self.worksheet_edited = True
         # # self.worksheet_wizard_changed = False

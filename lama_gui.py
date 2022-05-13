@@ -2667,7 +2667,7 @@ def setup_stackWizard(self):
     self.scrollArea_complete_worksheet_wizard.setObjectName("scrollArea_complete_worksheet_wizard")
     self.scrollArea_complete_worksheet_wizard.setFocusPolicy(QtCore.Qt.ClickFocus)
     # self.scrollArea_complete_worksheet_wizard.setSizePolicy(SizePolicy_minimum)
-    self.scrollAreaWidgetContents_complete_worksheet_wizard = QtWidgets.QWidget()
+    self.scrollAreaWidgetContents_complete_worksheet_wizard = DragDropWidget(self,None)
     self.scrollAreaWidgetContents_complete_worksheet_wizard.setObjectName("scrollAreaWidgetContents_complete_worksheet_wizard")
     self.scrollAreaWidgetContents_complete_worksheet_wizard.setFocusPolicy(QtCore.Qt.ClickFocus)
 

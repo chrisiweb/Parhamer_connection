@@ -59,28 +59,37 @@ class DragDropWidget(QtWidgets.QWidget):
     # #         return True
 
     def dragEnterEvent(self, e):
-        typ = get_aufgabentyp(self.MainWindow.chosen_program, self.MainWindow.moving_aufgabe)
-        if self.dragdropWidget_typ == typ or typ==None:
+        print(self.MainWindow.chosen_program)
+        if self.MainWindow.chosen_program == "wizard":
             self.starting_cursor_height = e.pos().y()
             e.accept()
+        else:
+            typ = get_aufgabentyp(self.MainWindow.chosen_program, self.MainWindow.moving_aufgabe)
+            if self.dragdropWidget_typ == typ or typ==None:
+                self.starting_cursor_height = e.pos().y()
+                e.accept()
 
 
 
     def dropEvent(self, e):
         pos = e.pos()
         widget = e.source()
-        typ = get_aufgabentyp(self.MainWindow.chosen_program, self.MainWindow.moving_aufgabe)
-
-        if self.dragdropWidget_typ != typ and typ != None:
-            # print('not allowed')
-            return
-
-        if typ == 2:
-            list_index = 1
-            layout =  self.MainWindow.verticalLayout_scrollArea_sage_typ2        
+        if self.MainWindow.chosen_program == "wizard":
+            layout = self.MainWindow.verticalLayout_complete_worksheet_wizard
+        
         else:
-            list_index = 0 
-            layout = self.MainWindow.verticalLayout_scrollArea_sage_typ1
+            typ = get_aufgabentyp(self.MainWindow.chosen_program, self.MainWindow.moving_aufgabe)
+
+            if self.dragdropWidget_typ != typ and typ != None:
+                return
+
+
+            elif typ == 2:
+                list_index = 1
+                layout =  self.MainWindow.verticalLayout_scrollArea_sage_typ2        
+            else:
+                list_index = 0 
+                layout = self.MainWindow.verticalLayout_scrollArea_sage_typ1
 
 
         for n in range(layout.count()-1):
@@ -109,18 +118,23 @@ class DragDropWidget(QtWidgets.QWidget):
         if index < 0:
             index=0   
 
-        old_index = self.MainWindow.list_alle_aufgaben_sage[list_index].index(self.MainWindow.moving_aufgabe)
-        self.MainWindow.list_alle_aufgaben_sage[list_index].pop(old_index)
- 
-        self.MainWindow.list_alle_aufgaben_sage[list_index].insert(index, self.MainWindow.moving_aufgabe)
 
-        if old_index<index:
-            idx = old_index
+        if self.MainWindow.chosen_program == "wizard":
+            layout.insertWidget(index, widget)
+            e.accept()
         else:
-            idx = index
-        
+            old_index = self.MainWindow.list_alle_aufgaben_sage[list_index].index(self.MainWindow.moving_aufgabe)
+            self.MainWindow.list_alle_aufgaben_sage[list_index].pop(old_index)
+    
+            self.MainWindow.list_alle_aufgaben_sage[list_index].insert(index, self.MainWindow.moving_aufgabe)
 
-        self.MainWindow.build_aufgaben_schularbeit(self.MainWindow.list_alle_aufgaben_sage[list_index][idx])
+            if old_index<index:
+                idx = old_index
+            else:
+                idx = index
+            
+
+            self.MainWindow.build_aufgaben_schularbeit(self.MainWindow.list_alle_aufgaben_sage[list_index][idx])
         e.accept()
 
     # def add_item(self, item):
