@@ -3566,34 +3566,34 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     def spinBox_number_wizard_changed(self):
         # self.worksheet_wizard_changed=True
-        maximum = get_max_pixels_nonogram()
-        # max = 0
-        # for nonogram in all_nonogramms.values():
-        #     if len(nonogram)>max:
-        #         max = len(nonogram)
-        try:
-            num_of_examples = len(self.list_of_examples_wizard) 
-        except AttributeError:
-            num_of_examples = 0
-        num_of_examples += self.spinBox_number_wizard.value()
-        if num_of_examples >maximum:
-            self.checkBox_show_nonogramm.setChecked(False)
-            self.widget_show_nonogramm.setEnabled(False)
-            # self.checkBox_show_nonogramm.setEnabled(False)
-            # self.combobox_nonogramm_wizard.setEnabled(False)
-        else:
-            self.widget_show_nonogramm.setEnabled(True)
-            # self.checkBox_show_nonogramm.setChecked(True)
-            # self.checkBox_show_nonogramm.setEnabled(True)
-            # self.combobox_nonogramm_wizard.setEnabled(True)
+        # maximum = get_max_pixels_nonogram()
+        # # max = 0
+        # # for nonogram in all_nonogramms.values():
+        # #     if len(nonogram)>max:
+        # #         max = len(nonogram)
+        # try:
+        #     num_of_examples = len(self.list_of_examples_wizard) 
+        # except AttributeError:
+        #     num_of_examples = 0
+        # num_of_examples += self.spinBox_number_wizard.value()
+        # if num_of_examples >maximum:
+        #     self.checkBox_show_nonogramm.setChecked(False)
+        #     self.widget_show_nonogramm.setEnabled(False)
+        #     # self.checkBox_show_nonogramm.setEnabled(False)
+        #     # self.combobox_nonogramm_wizard.setEnabled(False)
+        # else:
+        #     self.widget_show_nonogramm.setEnabled(True)
+        #     # self.checkBox_show_nonogramm.setChecked(True)
+        #     # self.checkBox_show_nonogramm.setEnabled(True)
+        #     # self.combobox_nonogramm_wizard.setEnabled(True)
 
-        self.combobox_nonogramm_wizard.clear()
-        add_new_option(self.combobox_nonogramm_wizard, 0, 'Zufällig')
-        i=1
-        for all in all_nonogramms:
-            if len(all_nonogramms[all])>= num_of_examples:
-                add_new_option(self.combobox_nonogramm_wizard, i, "{0} ({1})".format(all.capitalize(), len(all_nonogramms[all])))
-                i+=1 
+        # self.combobox_nonogramm_wizard.clear()
+        # add_new_option(self.combobox_nonogramm_wizard, 0, 'Zufällig')
+        # i=1
+        # for all in all_nonogramms:
+        #     if len(all_nonogramms[all])>= num_of_examples:
+        #         add_new_option(self.combobox_nonogramm_wizard, i, "{0} ({1})".format(all.capitalize(), len(all_nonogramms[all])))
+        #         i+=1 
         self.pushButton_calculate_new_examples.setText(f"{self.spinBox_number_wizard.value()} neue Aufgaben berechnen")                  
 
     def spinBox_column_wizard_changed(self):
@@ -3969,7 +3969,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             if rsp == False:
                 return
         
-        self.list_of_examples_wizard = self.dict_all_examples_worksheet_wizard[widget]
+        self.list_of_examples_wizard = self.dict_all_examples_worksheet_wizard[widget][0]
 
         self.reset_aufgabenboxes_wizard()
         self.comboBox_themen_wizard.setCurrentText(thema)
@@ -3986,8 +3986,18 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         del self.dict_all_examples_worksheet_wizard[widget]
 
 
+    def get_total_number_of_examples_wizard(self):
+        total = 0
+        for all in self.dict_all_examples_worksheet_wizard.values():
+            total += len(all[0])
+
+        return total
+
 
     def add_to_worksheet_wizard(self):
+        
+
+
         self.pushButton_addto_worksheet_wizard.setEnabled(False)
 
         # widget_worksheet = QtWidgets.QWidget(self.scrollAreaWidgetContents_complete_worksheet_wizard)
@@ -4020,17 +4030,49 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         widget_worksheet.setToolTip(tooltip_str)
 
 
+        list_dummy_solutions = []
+        for _ in range(10):
+            dummy_solution = get_random_solution(self, thema)
+            list_dummy_solutions.append(dummy_solution)
+
 
         try:
-            self.dict_all_examples_worksheet_wizard[widget_worksheet] = self.list_of_examples_wizard
+            self.dict_all_examples_worksheet_wizard[widget_worksheet] = [self.list_of_examples_wizard, list_dummy_solutions]
         except AttributeError:
             self.dict_all_examples_worksheet_wizard = {}
-            self.dict_all_examples_worksheet_wizard[widget_worksheet] = self.list_of_examples_wizard
+            self.dict_all_examples_worksheet_wizard[widget_worksheet] = [self.list_of_examples_wizard, list_dummy_solutions]
         self.list_of_examples_wizard = []
 
         self.reset_aufgabenboxes_wizard()
 
-        #       
+        
+
+
+
+        maximum = get_max_pixels_nonogram()
+        num_of_examples = self.get_total_number_of_examples_wizard()
+
+        
+        if num_of_examples >maximum:
+            self.checkBox_show_nonogramm.setChecked(False)
+            self.widget_show_nonogramm.setEnabled(False)
+            # self.checkBox_show_nonogramm.setEnabled(False)
+            # self.combobox_nonogramm_wizard.setEnabled(False)
+        else:
+            self.widget_show_nonogramm.setEnabled(True)
+            # self.checkBox_show_nonogramm.setChecked(True)
+            # self.checkBox_show_nonogramm.setEnabled(True)
+            # self.combobox_nonogramm_wizard.setEnabled(True)
+
+        self.combobox_nonogramm_wizard.clear()
+        add_new_option(self.combobox_nonogramm_wizard, 0, 'Zufällig')
+        i=1
+        for all in all_nonogramms:
+            if len(all_nonogramms[all])>= num_of_examples:
+                add_new_option(self.combobox_nonogramm_wizard, i, "{0} ({1})".format(all.capitalize(), len(all_nonogramms[all])))
+                i+=1 
+
+
         # self.worksheet_edited = True
         # # self.worksheet_wizard_changed = False
 
@@ -4055,6 +4097,22 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
     def create_latex_file_content_wizard(self):
+        print(self.dict_all_examples_worksheet_wizard)
+        total_list_of_examples = []
+        for all in self.dict_all_examples_worksheet_wizard.values():
+            for item in all[0]:
+                total_list_of_examples.append(item)
+
+
+
+        print(total_list_of_examples)
+
+        nonogram, solution_pixels = get_all_solution_pixels(total_list_of_examples, self.combobox_nonogramm_wizard.currentText())
+
+        print(nonogram)
+        print(solution_pixels)
+
+        return ""
         # if self.worksheet_wizard_changed == True:
         #     self.create_new_worksheet_wizard_pressed()
         if self.worksheet_edited == True:
@@ -4100,8 +4158,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         print(self.dict_all_examples_worksheet_wizard)
 
 
+        # for item in self.dict_all_examples_worksheet_wizard
 
-        # content = self.create_latex_file_content_wizard()
+        content = self.create_latex_file_content_wizard()
         return
         # content = show_all_nonogramms() # for testing reasons
 
@@ -7127,7 +7186,7 @@ if __name__ == "__main__":
         create_list_of_examples_multiplication, create_single_example_multiplication,
         create_list_of_examples_division, create_single_example_division,
         create_list_of_examples_ganze_zahlen, create_single_example_ganze_zahlen_strich, create_single_example_ganze_zahlen_punkt, create_single_example_ganze_zahlen_grundrechnungsarten,
-        create_nonogramm, create_coordinates, list_all_pixels, all_nonogramms, show_all_nonogramms
+        create_nonogramm, create_coordinates, get_random_solution,list_all_pixels, all_nonogramms, show_all_nonogramms
     )
 
     i = step_progressbar(i, "tex_minimal")
