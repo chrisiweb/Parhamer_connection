@@ -59,7 +59,6 @@ class DragDropWidget(QtWidgets.QWidget):
     # #         return True
 
     def dragEnterEvent(self, e):
-        print(self.MainWindow.chosen_program)
         if self.MainWindow.chosen_program == "wizard":
             self.starting_cursor_height = e.pos().y()
             e.accept()

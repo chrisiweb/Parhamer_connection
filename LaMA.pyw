@@ -3677,6 +3677,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     def delete_example(self, index):
         self.list_of_examples_wizard.pop(index)
+
+        if is_empty(self.list_of_examples_wizard):
+            self.pushButton_addto_worksheet_wizard.setEnabled(False)
         self.reset_aufgabenboxes_wizard()
 
 
@@ -3925,6 +3928,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
     def create_new_worksheet_wizard_pressed(self):
+        self.pushButton_addto_worksheet_wizard.setEnabled(True)
         self.worksheet_edited = True
 
         # self.worksheet_wizard_changed = False
@@ -3950,18 +3954,18 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
     def add_single_example_wizard(self):
-        print(self.list_of_examples_wizard)
+        self.pushButton_addto_worksheet_wizard.setEnabled(True)
         new_example = self.create_single_example_wizard()
 
         self.list_of_examples_wizard.append(new_example)
-        print(self.dict_aufgaben_wizard)
 
         self.reset_aufgabenboxes_wizard()
         # self.dict_aufgaben_wizard[index].setText(new_example[-1])
 
     def edit_set_of_examples_wizard(self, widget, thema):
+        self.pushButton_addto_worksheet_wizard.setEnabled(True)
         if not is_empty(self.list_of_examples_wizard):
-            rsp = question_window("?")
+            rsp = question_window("Es befinden sich nicht gespeicherte Aufgaben im Bearbeitungsbereich. Sind Sie sicher, dass Sie diese unwiderruflich läschen möchten?")
             if rsp == False:
                 return
         
@@ -3969,16 +3973,22 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         self.reset_aufgabenboxes_wizard()
         self.comboBox_themen_wizard.setCurrentText(thema)
+        del self.dict_all_examples_worksheet_wizard[widget]
         widget.setParent(None)
 
     def delete_set_of_examples_wizard(self, widget):
         rsp = question_window("Sind Sie sicher, dass Sie die Aufgaben vom Arbeitsblatt entfernen wollen?")
         
-        if rsp == True:
-            widget.setParent(None)
+        if rsp == False:
+            return
+
+        widget.setParent(None)
+        del self.dict_all_examples_worksheet_wizard[widget]
+
+
 
     def add_to_worksheet_wizard(self):
-        print(self.list_of_examples_wizard)  
+        self.pushButton_addto_worksheet_wizard.setEnabled(False)
 
         # widget_worksheet = QtWidgets.QWidget(self.scrollAreaWidgetContents_complete_worksheet_wizard)
         widget_worksheet = DragDropGroupBox(self, None)
@@ -4000,6 +4010,16 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         pushButton_delete = create_new_button(self.scrollAreaWidgetContents_complete_worksheet_wizard, "", partial(self.delete_set_of_examples_wizard,widget_worksheet), icon="trash-2.svg")
         horizontalLayout_worksheet.addWidget(pushButton_delete)        
+
+        for all in self.list_of_examples_wizard:
+            try:
+                tooltip_str += f"\n{all[-1]}"
+            except UnboundLocalError:
+                tooltip_str = all[-1]
+
+        widget_worksheet.setToolTip(tooltip_str)
+
+
 
         try:
             self.dict_all_examples_worksheet_wizard[widget_worksheet] = self.list_of_examples_wizard
@@ -4077,7 +4097,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
     def create_vorschau_worksheet_wizard(self):
-        content = self.create_latex_file_content_wizard()
+        print(self.dict_all_examples_worksheet_wizard)
+
+
+
+        # content = self.create_latex_file_content_wizard()
         return
         # content = show_all_nonogramms() # for testing reasons
 

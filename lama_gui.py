@@ -2166,9 +2166,26 @@ def setup_stackWizard(self):
 
     self.spinBox_number_wizard = create_new_spinbox(self.widget_number_wizard, 20)
 
-    # self.spinBox_number_wizard.setMinimum(1)
+    self.spinBox_number_wizard.setMinimum(1)
     self.spinBox_number_wizard.valueChanged.connect(self.spinBox_number_wizard_changed)
     self.horizontalLayout_number_wizard.addWidget(self.spinBox_number_wizard)
+
+
+    self.widget_column_wizard = QtWidgets.QWidget(self.widget_setting_wizard1)
+    # create_new_groupbox(self.widgetWorksheetView, "Spalten")
+    # self.widget_column_wizard.setSizePolicy(SizePolicy_fixed)
+    self.horizontalLayout_setting_wizard1.addWidget(self.widget_column_wizard)
+
+    self.horizontalLayout_column_wizard = create_new_horizontallayout(self.widget_column_wizard)
+    self.horizontalLayout_column_wizard.setContentsMargins(0,9,0,0)
+    self.icon_column_wizard = create_new_label_icon(self.widget_column_wizard, "columns.svg", icon_size=(15,15))
+    self.horizontalLayout_column_wizard.addWidget(self.icon_column_wizard)
+
+    self.spinBox_column_wizard = create_new_spinbox(self.widget_column_wizard, 2)
+    self.spinBox_column_wizard.valueChanged.connect(self.spinBox_column_wizard_changed)
+    self.spinBox_column_wizard.setRange(1, 10)
+    self.horizontalLayout_column_wizard.addWidget(self.spinBox_column_wizard)   
+
 
 
     self.widget_ausrichtung_wizard = QtWidgets.QWidget(self.widget_setting_wizard1)
@@ -2193,20 +2210,7 @@ def setup_stackWizard(self):
 
 
 
-    self.widget_column_wizard = QtWidgets.QWidget(self.widget_setting_wizard1)
-    # create_new_groupbox(self.widgetWorksheetView, "Spalten")
-    # self.widget_column_wizard.setSizePolicy(SizePolicy_fixed)
-    self.horizontalLayout_ausrichtung_wizard.addWidget(self.widget_column_wizard)
 
-    self.horizontalLayout_column_wizard = create_new_horizontallayout(self.widget_column_wizard)
-    self.horizontalLayout_column_wizard.setContentsMargins(0,9,0,0)
-    self.icon_column_wizard = create_new_label_icon(self.widget_column_wizard, "columns.svg", icon_size=(15,15))
-    self.horizontalLayout_column_wizard.addWidget(self.icon_column_wizard)
-
-    self.spinBox_column_wizard = create_new_spinbox(self.widget_column_wizard, 2)
-    self.spinBox_column_wizard.valueChanged.connect(self.spinBox_column_wizard_changed)
-    self.spinBox_column_wizard.setRange(1, 10)
-    self.horizontalLayout_column_wizard.addWidget(self.spinBox_column_wizard)   
 
 
 
@@ -2649,11 +2653,12 @@ def setup_stackWizard(self):
     self.verticalLayout_newexamples_wizard.addWidget(self.buttonBox_addto_worksheet_wizard)
 
 
-    button_addto = self.buttonBox_addto_worksheet_wizard.button(QtWidgets.QDialogButtonBox.Ok)
-    button_addto.setText("Alle Aufgaben zum Arbeitsblatt hinzufügen")
-    button_addto.setIcon(QtGui.QIcon(get_icon_path('plus-square.svg')))
+    self.pushButton_addto_worksheet_wizard = self.buttonBox_addto_worksheet_wizard.button(QtWidgets.QDialogButtonBox.Ok)
+    self.pushButton_addto_worksheet_wizard.setText("Alle Aufgaben zum Arbeitsblatt hinzufügen")
+    self.pushButton_addto_worksheet_wizard.setIcon(QtGui.QIcon(get_icon_path('plus-square.svg')))
+    self.pushButton_addto_worksheet_wizard.setEnabled(False)
 
-    button_addto.clicked.connect(self.add_to_worksheet_wizard)
+    self.pushButton_addto_worksheet_wizard.clicked.connect(self.add_to_worksheet_wizard)
 
 
     self.groupBox_complete_worksheet_wizard = create_new_groupbox(self.splitter_newWorksheet, "Arbeitsblatt")
