@@ -3993,7 +3993,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def get_total_number_of_examples_wizard(self):
         total = 0
         for all in self.dict_all_examples_worksheet_wizard.values():
-            total += len(all[0])
+            total += len(all['list_of_examples'])
 
         return total
 
@@ -4068,11 +4068,26 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 list_dummy_solutions.append(dummy_solution)
                 i+=1
 
+        info = {
+
+            }
+
         try:
-            self.dict_all_examples_worksheet_wizard[widget_worksheet] = [self.list_of_examples_wizard, list_dummy_solutions]
+            self.dict_all_examples_worksheet_wizard[widget_worksheet] = {
+                'index_thema' : self.comboBox_themen_wizard.currentIndex(),
+                'spalten' : self.spinBox_column_wizard.value(),
+                'list_of_examples' : self.list_of_examples_wizard,
+                'dummy_examples' : list_dummy_solutions,
+            }
+
         except AttributeError:
             self.dict_all_examples_worksheet_wizard = {}
-            self.dict_all_examples_worksheet_wizard[widget_worksheet] = [self.list_of_examples_wizard, list_dummy_solutions]
+            self.dict_all_examples_worksheet_wizard[widget_worksheet] = {
+                'index_thema' : self.comboBox_themen_wizard.currentIndex(),
+                'spalten' : self.spinBox_column_wizard.value(),
+                'list_of_examples' : self.list_of_examples_wizard,
+                'dummy_examples' : list_dummy_solutions,
+            }
         self.list_of_examples_wizard = []
 
         self.reset_aufgabenboxes_wizard()
@@ -4115,7 +4130,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # print(self.dict_all_examples_worksheet_wizard)
         total_list_of_examples = []
         for all in self.dict_all_examples_worksheet_wizard.values():
-            for item in all[0]:
+            for item in all['list_of_examples']:
                 total_list_of_examples.append(item)
 
 
@@ -4128,8 +4143,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             all_shuffeled_coordinates = create_coordinates(solution_pixels, self.dict_all_examples_worksheet_wizard)
 
-            print(all_shuffeled_coordinates)
-            print(len(all_shuffeled_coordinates))
+            # print(all_shuffeled_coordinates)
+            # print(len(all_shuffeled_coordinates))
 
 
 
@@ -4144,14 +4159,15 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         index = self.comboBox_themen_wizard.currentIndex()
 
         content = create_latex_worksheet(
-            self.list_of_examples_wizard,
+            self.dict_all_examples_worksheet_wizard,
             index ,titel, columns, nummerierung, ausrichtung,
             self.comboBox_solution_type_wizard.currentIndex(),
             )
 
         if self.checkBox_show_nonogramm.isChecked():
-            content += create_nonogramm(self.chosen_nonogram , self.coordinates_nonogramm_wizard, self)
+            content += create_nonogramm(nonogram, all_shuffeled_coordinates)
         
+        # print(content)
         return content
         
             # print(nonogram)
@@ -4211,20 +4227,21 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             )
 
         if self.checkBox_show_nonogramm.isChecked():
-            content += create_nonogramm(self.chosen_nonogram , self.coordinates_nonogramm_wizard, self)
+            content += create_nonogramm(self.chosen_nonogram , self.coordinates_nonogramm_wizard)
         
         return content
 
 
 
     def create_vorschau_worksheet_wizard(self):
-        print(self.dict_all_examples_worksheet_wizard)
-
+        # print(self.dict_all_examples_worksheet_wizard)
+        # return
 
         # for item in self.dict_all_examples_worksheet_wizard
 
         content = self.create_latex_file_content_wizard()
-        return
+        
+        # return
         # content = show_all_nonogramms() # for testing reasons
 
         path_file = os.path.join(

@@ -844,12 +844,39 @@ def create_latex_string_ganze_zahlen(content, example):
     content += temp_content
     return content
 
-def create_latex_worksheet(list_of_examples,index, titel, columns, nummerierung, ausrichtung, solution_type=0):
+def create_latex_worksheet(dict_of_examples,index, titel, columns, nummerierung, ausrichtung, solution_type=0):
     content = "\section{{{0}}}\n\n".format(titel.replace('&', '\&'))
-    if columns > 1:
-        content += "\\begin{{multicols}}{{{0}}}\n".format(columns)
 
-    content += "\\begin{{enumerate}}[{0}]\n".format(nummerierung)
+
+    for all in dict_of_examples.values():
+        index = all['index_thema']
+        if columns > 1:
+            content += "\\begin{{multicols}}{{{0}}}\n".format(columns)
+
+        content += "\\begin{{enumerate}}[{0}]\n".format(nummerierung)
+
+        list_of_examples = all['list_of_examples']
+        for example in list_of_examples:
+            if index == 0:
+                content = create_latex_string_addition(content, example, ausrichtung)
+            elif index == 1:
+                content = create_latex_string_subtraction(content, example, ausrichtung)
+            elif index == 2:
+                content = create_latex_string_multiplication(content, example, solution_type)
+            elif index == 3:
+                content = create_latex_string_division(content, example)
+            elif index == 4 or index == 5 or index == 6 or index ==7:
+                content = create_latex_string_ganze_zahlen(content, example)
+
+        content += "\end{enumerate}"
+
+        if columns > 1:
+            content += "\end{multicols}"
+
+     
+    return content
+
+
 
     for example in list_of_examples:
         if index == 0:
@@ -926,9 +953,9 @@ def get_all_solution_pixels(list_of_examples, chosen_nonogramm):
 def replace_correct_pixels(content, coordinates_nonogramm):
     for pixel in list_all_pixels:
         if pixel in coordinates_nonogramm.keys():
-            if coordinates_nonogramm[pixel] == False:
+            if coordinates_nonogramm[pixel][0] == False:
                 content = content.replace(pixel, "")
-            elif coordinates_nonogramm[pixel] == True:
+            elif coordinates_nonogramm[pixel][0] == True and coordinates_nonogramm[pixel][1] == None:
                 content = content.replace(pixel, "\cellcolor{black}")
             else:
                 content = content.replace(pixel, "\ifthenelse{\\theAntworten=1}{\cellcolor{black}{}}{}")          
@@ -973,7 +1000,7 @@ def replace_correct_pixels(content, coordinates_nonogramm):
 def collect_dummy_solutions(dict_all_examples):
     all_dummy_solutions = []
     for all in dict_all_examples.values():
-        all_dummy_solutions.extend(all[1])
+        all_dummy_solutions.extend(all['dummy_examples'])
 
     _list = random.choices(all_dummy_solutions, k=10)
 
@@ -1092,36 +1119,51 @@ def get_random_solution(self, thema):
 
     return distract_result
 
-def create_nonogramm(chosen_nonogram, coordinates_nonogramm, MainWindow):
+def create_nonogramm(nonogram, coordinates_nonogramm):
     content = """\n\\vfil\n\\fontsize{{12}}{{14}}\selectfont
-\meinlr{{{0}
+    \meinlr{{{0}
 
-\\antwort{{{1}}}}}{{\scriptsize
-\\begin{{multicols}}{{3}}
-\\begin{{enumerate}}""".format(nonogramm_empty, chosen_nonogram.split("_")[0].capitalize())
+    \\antwort{{{1}}}}}{{\scriptsize
+    \\begin{{multicols}}{{3}}
+    \\begin{{enumerate}}""".format(nonogramm_empty, nonogram.split("_")[0].capitalize())
 
-    # list_all_pixles = get_all_pixels(content)
-    # random.shuffle(list_all_pixles)
+#     # list_all_pixles = get_all_pixels(content)
+#     # random.shuffle(list_all_pixles)
 
     content = replace_correct_pixels(content, coordinates_nonogramm)
+    
 
-    list_coordinates = list(coordinates_nonogramm.keys())
-    # random.shuffle(list_coordinates)
+#     list_coordinates = list(coordinates_nonogramm.keys())
+#     # random.shuffle(list_coordinates)
+    print(coordinates_nonogramm)
 
-    for all in list_coordinates:
-        result = coordinates_nonogramm[all]
-        if result == True:
+    for all in coordinates_nonogramm:
+        print(all)
+        print(coordinates_nonogramm[all])
+        if coordinates_nonogramm[all][1] == None:
             continue
-
-        if result == False:
-            while result == False:
-                distract_result = get_random_solution(MainWindow)[-2]
-                if distract_result not in coordinates_nonogramm:
-                    result = distract_result
-        else:
-            result = "\\antwort[{0}]{{{0}}}".format(result)
-
+        
+        elif coordinates_nonogramm[all][0] == True:
+            result = "\\antwort[{0}]{{{0}}}".format(coordinates_nonogramm[all][1])
+        
+        elif coordinates_nonogramm[all][0] == False:
+            result = coordinates_nonogramm[all][1]
+        
         content += "\item[\\fbox{{\parbox{{15pt}}{{\centering {0}}}}}] {1}\n".format(all, result)
+    # for all in list_coordinates:
+#         result = coordinates_nonogramm[all]
+#         if result == True:
+#             continue
+
+#         if result == False:
+#             while result == False:
+#                 distract_result = get_random_solution(MainWindow)[-2]
+#                 if distract_result not in coordinates_nonogramm:
+#                     result = distract_result
+#         else:
+#             result = "\\antwort[{0}]{{{0}}}".format(result)
+
+#         content += "\item[\\fbox{{\parbox{{15pt}}{{\centering {0}}}}}] {1}\n".format(all, result)
         
     content += """
     \end{enumerate}
