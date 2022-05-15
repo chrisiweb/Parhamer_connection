@@ -910,9 +910,9 @@ def get_all_solution_pixels(list_of_examples, chosen_nonogramm):
 
     for i, pixel in enumerate(all_pixels_solution):
         if i<len(list_of_examples):
-            solution_pixels[pixel] =  list_of_examples[i][-2]
+            solution_pixels[pixel] =  [True, list_of_examples[i][-2]]
         else:
-            solution_pixels[pixel] = True
+            solution_pixels[pixel] = [True, None]
 
 
     return nonogram, solution_pixels
@@ -969,9 +969,32 @@ def replace_correct_pixels(content, coordinates_nonogramm):
 
     # return content, solution_pixels
 
-def create_coordinates(self, solution_pixels):
-    
-    return
+
+def collect_dummy_solutions(dict_all_examples):
+    all_dummy_solutions = []
+    for all in dict_all_examples.values():
+        all_dummy_solutions.extend(all[1])
+
+    _list = random.choices(all_dummy_solutions, k=10)
+
+    return _list
+
+def create_coordinates(solution_pixels, dict_all_examples):
+    list_dummy_solutions = collect_dummy_solutions(dict_all_examples)
+    for all in list_dummy_solutions:
+        while True:
+            distract_pixel = random.choice(list_all_pixels)
+            if distract_pixel not in solution_pixels.keys():
+                solution_pixels[distract_pixel] = [False, all[-2]]
+                break
+
+    l = list(solution_pixels.items())
+    random.shuffle(l)
+    shuffled_coordinates = dict(l)   
+
+    return shuffled_coordinates
+
+
     coordinates = solution_pixels
     i=0
     while i < 10:

@@ -3976,6 +3976,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         del self.dict_all_examples_worksheet_wizard[widget]
         widget.setParent(None)
 
+        self.adapt_nonogramm_selection()
+
     def delete_set_of_examples_wizard(self, widget):
         rsp = question_window("Sind Sie sicher, dass Sie die Aufgaben vom Arbeitsblatt entfernen wollen?")
         
@@ -3985,6 +3987,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         widget.setParent(None)
         del self.dict_all_examples_worksheet_wizard[widget]
 
+        self.adapt_nonogramm_selection()
+
 
     def get_total_number_of_examples_wizard(self):
         total = 0
@@ -3993,6 +3997,30 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         return total
 
+
+    def adapt_nonogramm_selection(self):
+        maximum = get_max_pixels_nonogram()
+        num_of_examples = self.get_total_number_of_examples_wizard()
+
+        
+        if num_of_examples >maximum:
+            self.checkBox_show_nonogramm.setChecked(False)
+            self.widget_show_nonogramm.setEnabled(False)
+            # self.checkBox_show_nonogramm.setEnabled(False)
+            # self.combobox_nonogramm_wizard.setEnabled(False)
+        else:
+            self.widget_show_nonogramm.setEnabled(True)
+            # self.checkBox_show_nonogramm.setChecked(True)
+            # self.checkBox_show_nonogramm.setEnabled(True)
+            # self.combobox_nonogramm_wizard.setEnabled(True)
+
+        self.combobox_nonogramm_wizard.clear()
+        add_new_option(self.combobox_nonogramm_wizard, 0, 'Zufällig')
+        i=1
+        for all in all_nonogramms:
+            if len(all_nonogramms[all])>= num_of_examples:
+                add_new_option(self.combobox_nonogramm_wizard, i, "{0} ({1})".format(all.capitalize(), len(all_nonogramms[all])))
+                i+=1 
 
     def add_to_worksheet_wizard(self):
         
@@ -4031,7 +4059,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
         list_dummy_solutions = []
-        for _ in range(10):
+        for _ in range(10): ### NOT WORKING - SOLUTIONS CAN BE MULTIPLE
             dummy_solution = get_random_solution(self, thema)
             list_dummy_solutions.append(dummy_solution)
 
@@ -4046,31 +4074,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.reset_aufgabenboxes_wizard()
 
         
+        self.adapt_nonogramm_selection()
 
 
 
-        maximum = get_max_pixels_nonogram()
-        num_of_examples = self.get_total_number_of_examples_wizard()
-
-        
-        if num_of_examples >maximum:
-            self.checkBox_show_nonogramm.setChecked(False)
-            self.widget_show_nonogramm.setEnabled(False)
-            # self.checkBox_show_nonogramm.setEnabled(False)
-            # self.combobox_nonogramm_wizard.setEnabled(False)
-        else:
-            self.widget_show_nonogramm.setEnabled(True)
-            # self.checkBox_show_nonogramm.setChecked(True)
-            # self.checkBox_show_nonogramm.setEnabled(True)
-            # self.combobox_nonogramm_wizard.setEnabled(True)
-
-        self.combobox_nonogramm_wizard.clear()
-        add_new_option(self.combobox_nonogramm_wizard, 0, 'Zufällig')
-        i=1
-        for all in all_nonogramms:
-            if len(all_nonogramms[all])>= num_of_examples:
-                add_new_option(self.combobox_nonogramm_wizard, i, "{0} ({1})".format(all.capitalize(), len(all_nonogramms[all])))
-                i+=1 
 
 
         # self.worksheet_edited = True
@@ -4096,8 +4103,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         #     self.coordinates_nonogramm_wizard = create_coordinates(self, solution_pixel)
 
 
+
+        # print(all_dummy_solutions)
+        # print(len(all_dummy_solutions))
+
     def create_latex_file_content_wizard(self):
-        print(self.dict_all_examples_worksheet_wizard)
+        # print(self.dict_all_examples_worksheet_wizard)
         total_list_of_examples = []
         for all in self.dict_all_examples_worksheet_wizard.values():
             for item in all[0]:
@@ -4105,13 +4116,37 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
 
-        print(total_list_of_examples)
+        # print(total_list_of_examples)
 
-        nonogram, solution_pixels = get_all_solution_pixels(total_list_of_examples, self.combobox_nonogramm_wizard.currentText())
+        if self.checkBox_show_nonogramm.isChecked():
+            nonogram, solution_pixels = get_all_solution_pixels(total_list_of_examples, self.combobox_nonogramm_wizard.currentText())
 
-        print(nonogram)
-        print(solution_pixels)
 
+            all_shuffeled_coordinates = create_coordinates(solution_pixels, self.dict_all_examples_worksheet_wizard)
+
+            print(all_shuffeled_coordinates)
+            print(len(all_shuffeled_coordinates))
+            # print(nonogram)
+            # print(solution_pixels)
+            # print(len(solution_pixels))
+        
+            # list_dummy_solutions = self.collect_dummy_solutions()
+            # for all in list_dummy_solutions:
+            #     while True:
+            #         distract_pixel = random.choice(list_all_pixels)
+            #         if distract_pixel not in solution_pixels.keys():
+            #             solution_pixels[distract_pixel] = False
+            #             break
+
+            # print(solution_pixels)
+            # print(len(solution_pixels))
+
+            # l = list(solution_pixels.items())
+            # random.shuffle(l)
+            # shuffled_coordinates = dict(l)
+
+        print('done')
+        # create_coordinates(self, self.solution_pixel)
         return ""
         # if self.worksheet_wizard_changed == True:
         #     self.create_new_worksheet_wizard_pressed()
