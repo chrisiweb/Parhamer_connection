@@ -4023,9 +4023,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 i+=1 
 
     def add_to_worksheet_wizard(self):
-        
-
-
         self.pushButton_addto_worksheet_wizard.setEnabled(False)
 
         # widget_worksheet = QtWidgets.QWidget(self.scrollAreaWidgetContents_complete_worksheet_wizard)
@@ -4058,11 +4055,18 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         widget_worksheet.setToolTip(tooltip_str)
 
 
-        list_dummy_solutions = []
-        for _ in range(10): ### NOT WORKING - SOLUTIONS CAN BE MULTIPLE
-            dummy_solution = get_random_solution(self, thema)
-            list_dummy_solutions.append(dummy_solution)
+        list_solutions =  []
+        for all in self.list_of_examples_wizard:
+            list_solutions.append(all[-2])
 
+        # print(list_solutions)
+        list_dummy_solutions = []
+        i=0
+        while i<10:
+            dummy_solution = get_random_solution(self, thema)
+            if dummy_solution[-2] not in list_solutions:
+                list_dummy_solutions.append(dummy_solution)
+                i+=1
 
         try:
             self.dict_all_examples_worksheet_wizard[widget_worksheet] = [self.list_of_examples_wizard, list_dummy_solutions]
@@ -4126,6 +4130,30 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             print(all_shuffeled_coordinates)
             print(len(all_shuffeled_coordinates))
+
+
+
+
+        titel = self.lineEdit_titel_wizard.text()
+        columns = self.spinBox_column_wizard.value()
+        if self.combobox_nummerierung_wizard.currentText() == '-':
+            nummerierung = "label={}"
+        else:
+            nummerierung = self.combobox_nummerierung_wizard.currentText()
+        ausrichtung = self.combobox_ausrichtung_wizard.currentIndex()
+        index = self.comboBox_themen_wizard.currentIndex()
+
+        content = create_latex_worksheet(
+            self.list_of_examples_wizard,
+            index ,titel, columns, nummerierung, ausrichtung,
+            self.comboBox_solution_type_wizard.currentIndex(),
+            )
+
+        if self.checkBox_show_nonogramm.isChecked():
+            content += create_nonogramm(self.chosen_nonogram , self.coordinates_nonogramm_wizard, self)
+        
+        return content
+        
             # print(nonogram)
             # print(solution_pixels)
             # print(len(solution_pixels))
