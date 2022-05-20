@@ -3489,7 +3489,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # self.worksheet_wizard_changed = True
         # index = self.comboBox_themen_wizard.currentIndex()
         thema = self.comboBox_themen_wizard.currentText()
-        self.lineEdit_titel_wizard.setText("Arbeitsblatt - {}".format(thema))
+        # self.lineEdit_titel_wizard.setText("Arbeitsblatt - {}".format(thema))
 
         if thema == themen_worksheet_wizard[0] or thema == themen_worksheet_wizard[1]:
             self.spinbox_zahlenbereich_minimum.setRange(0,999999999)
@@ -3969,9 +3969,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             if rsp == False:
                 return
         
-        self.list_of_examples_wizard = self.dict_all_examples_worksheet_wizard[widget][0]
+        print(self.dict_all_examples_worksheet_wizard[widget])
+        self.list_of_examples_wizard = self.dict_all_examples_worksheet_wizard[widget]['list_of_examples']
 
         self.reset_aufgabenboxes_wizard()
+        self.spinBox_column_wizard.setValue(self.dict_all_examples_worksheet_wizard[widget]['spalten'])
         self.comboBox_themen_wizard.setCurrentText(thema)
         del self.dict_all_examples_worksheet_wizard[widget]
         widget.setParent(None)
@@ -4068,14 +4070,19 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 list_dummy_solutions.append(dummy_solution)
                 i+=1
 
-        info = {
+        # info = {
 
-            }
-
+        #     }
+        if self.comboBox_themen_wizard.currentIndex() == 0 or self.comboBox_themen_wizard.currentIndex() == 1:
+            ausrichtung = self.combobox_ausrichtung_wizard.currentIndex()
+        
+        else:
+            ausrichtung = None
         try:
             self.dict_all_examples_worksheet_wizard[widget_worksheet] = {
                 'index_thema' : self.comboBox_themen_wizard.currentIndex(),
                 'spalten' : self.spinBox_column_wizard.value(),
+                'ausrichtung': ausrichtung,
                 'list_of_examples' : self.list_of_examples_wizard,
                 'dummy_examples' : list_dummy_solutions,
             }
@@ -4085,6 +4092,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.dict_all_examples_worksheet_wizard[widget_worksheet] = {
                 'index_thema' : self.comboBox_themen_wizard.currentIndex(),
                 'spalten' : self.spinBox_column_wizard.value(),
+                'ausrichtung': ausrichtung,
                 'list_of_examples' : self.list_of_examples_wizard,
                 'dummy_examples' : list_dummy_solutions,
             }
@@ -4150,17 +4158,22 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
         titel = self.lineEdit_titel_wizard.text()
+        try:
+            arbeitsanweisung = self.instructions_wizard
+        except AttributeError:
+            arbeitsanweisung = "Berechne die folgenden Aufgaben"
+
         columns = self.spinBox_column_wizard.value()
         if self.combobox_nummerierung_wizard.currentText() == '-':
             nummerierung = "label={}"
         else:
             nummerierung = self.combobox_nummerierung_wizard.currentText()
-        ausrichtung = self.combobox_ausrichtung_wizard.currentIndex()
+
         index = self.comboBox_themen_wizard.currentIndex()
 
         content = create_latex_worksheet(
             self.dict_all_examples_worksheet_wizard,
-            index ,titel, columns, nummerierung, ausrichtung,
+            index ,titel, arbeitsanweisung, columns, nummerierung,
             self.comboBox_solution_type_wizard.currentIndex(),
             )
 
@@ -4222,7 +4235,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         content = create_latex_worksheet(
             self.list_of_examples_wizard,
-            index ,titel, columns, nummerierung, ausrichtung,
+            index ,titel, columns, nummerierung, 
             self.comboBox_solution_type_wizard.currentIndex(),
             )
 
@@ -4238,6 +4251,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # return
 
         # for item in self.dict_all_examples_worksheet_wizard
+
+        try:
+            if is_empty(self.dict_all_examples_worksheet_wizard):
+                warning_window("Es wurden keine Aufgaben zum Arbeitsblatt hinzugefügt.")
+                return
+        except AttributeError:
+            warning_window("Es wurden keine Aufgaben zum Arbeitsblatt hinzugefügt.")
+            return
 
         content = self.create_latex_file_content_wizard()
         
@@ -4275,7 +4296,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         try:
             text = self.instructions_wizard
         except AttributeError:
-            text = ""
+            text = "Berechne die folgenden Aufgaben"
 
         try:
             show_instructions = self.show_instructions_wizard

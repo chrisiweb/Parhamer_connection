@@ -2133,7 +2133,7 @@ def setup_stackWizard(self):
     self.horizontalLayout_titel_wizard = create_new_horizontallayout(self.groupBox_titel_wizard)
     self.lineEdit_titel_wizard = create_new_lineedit(self.groupBox_titel_wizard)
     self.horizontalLayout_titel_wizard.addWidget(self.lineEdit_titel_wizard)
-    self.lineEdit_titel_wizard.setText("Arbeitsblatt - {}".format(self.comboBox_themen_wizard.currentText()))
+    self.lineEdit_titel_wizard.setText("Arbeitsblatt") #.format(self.comboBox_themen_wizard.currentText())
 
 
 
@@ -2178,7 +2178,7 @@ def setup_stackWizard(self):
 
     self.horizontalLayout_column_wizard = create_new_horizontallayout(self.widget_column_wizard)
     self.horizontalLayout_column_wizard.setContentsMargins(0,9,0,0)
-    self.icon_column_wizard = create_new_label_icon(self.widget_column_wizard, "columns.svg", icon_size=(15,15))
+    self.icon_column_wizard = create_new_label_icon(self.widget_column_wizard, "columns.svg", icon_size=(20,20))
     self.horizontalLayout_column_wizard.addWidget(self.icon_column_wizard)
 
     self.spinBox_column_wizard = create_new_spinbox(self.widget_column_wizard, 2)
@@ -2569,14 +2569,6 @@ def setup_stackWizard(self):
     
     self.horizontalLayout_buttons_create_new_examples = create_new_horizontallayout(self.widget_buttons_create_new_examples)
     self.horizontalLayout_buttons_create_new_examples.setContentsMargins(0,0,0,0)
-    self.horizontalLayout_buttons_create_new_examples.addStretch()
-    self.pushButton_add_single_example = create_new_button(
-        self.widget_buttons_create_new_examples,
-        "Einzelaufgabe hinzufügen",
-        self.add_single_example_wizard,
-        icon="plus-square.svg",
-    )
-    self.horizontalLayout_buttons_create_new_examples.addWidget(self.pushButton_add_single_example)
 
     self.pushButton_calculate_new_examples = create_new_button(
         self.widget_buttons_create_new_examples,
@@ -2585,6 +2577,16 @@ def setup_stackWizard(self):
         icon="activity.svg"
     )
     self.horizontalLayout_buttons_create_new_examples.addWidget(self.pushButton_calculate_new_examples)
+
+    self.pushButton_add_single_example = create_new_button(
+        self.widget_buttons_create_new_examples,
+        "Einzelaufgabe",
+        self.add_single_example_wizard,
+        icon="plus-square.svg",
+    )
+    self.horizontalLayout_buttons_create_new_examples.addWidget(self.pushButton_add_single_example)
+
+    self.horizontalLayout_buttons_create_new_examples.addStretch() 
     # self.pushButton_calculate_new_examples.setSizePolicy(SizePolicy_fixed)
     
     # self.verticalLayout_setting_wizard.addWidget(self.pushButton_calculate_new_examples, alignment=QtCore.Qt.AlignRight)
@@ -2655,7 +2657,7 @@ def setup_stackWizard(self):
 
     self.pushButton_addto_worksheet_wizard = self.buttonBox_addto_worksheet_wizard.button(QtWidgets.QDialogButtonBox.Ok)
     self.pushButton_addto_worksheet_wizard.setText("Alle Aufgaben zum Arbeitsblatt hinzufügen")
-    self.pushButton_addto_worksheet_wizard.setIcon(QtGui.QIcon(get_icon_path('plus-square.svg')))
+    self.pushButton_addto_worksheet_wizard.setIcon(QtGui.QIcon(get_icon_path('chevrons-right.svg')))
     self.pushButton_addto_worksheet_wizard.setEnabled(False)
 
     self.pushButton_addto_worksheet_wizard.clicked.connect(self.add_to_worksheet_wizard)
