@@ -3485,6 +3485,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.gridLayout_scrollArea_wizard.itemAt(i).widget().setParent(None)
 
 
+        self.dict_all_examples_worksheet_wizard = {}
+        self.list_of_examples_wizard = []
+
+
     def themen_changed_wizard(self):
         # self.worksheet_wizard_changed = True
         # index = self.comboBox_themen_wizard.currentIndex()
@@ -3937,7 +3941,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.list_of_examples_wizard = self.create_list_of_examples_wizard()
 
         # self.dict_all_examples_wizard[thema] = list_of_examples_wizard
-        print(self.list_of_examples_wizard)
+        # print(self.list_of_examples_wizard)
         # print(self.dict_all_examples_wizard)
 
         self.reset_aufgabenboxes_wizard()
@@ -3969,7 +3973,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             if rsp == False:
                 return
         
-        print(self.dict_all_examples_worksheet_wizard[widget])
+        # print(self.dict_all_examples_worksheet_wizard[widget])
         self.list_of_examples_wizard = self.dict_all_examples_worksheet_wizard[widget]['list_of_examples']
 
         self.reset_aufgabenboxes_wizard()
@@ -4016,7 +4020,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # self.checkBox_show_nonogramm.setEnabled(True)
             # self.combobox_nonogramm_wizard.setEnabled(True)
 
+        
+        auswahl = self.combobox_nonogramm_wizard.currentText()
         self.combobox_nonogramm_wizard.clear()
+
+        
         add_new_option(self.combobox_nonogramm_wizard, 0, 'Zufällig')
         i=1
         for all in all_nonogramms:
@@ -4024,10 +4032,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 add_new_option(self.combobox_nonogramm_wizard, i, "{0} ({1})".format(all.capitalize(), len(all_nonogramms[all])))
                 i+=1 
 
+        self.combobox_nonogramm_wizard.setCurrentText(auswahl)
+
+
     def add_to_worksheet_wizard(self):
         self.pushButton_addto_worksheet_wizard.setEnabled(False)
 
-        # widget_worksheet = QtWidgets.QWidget(self.scrollAreaWidgetContents_complete_worksheet_wizard)
+
         widget_worksheet = DragDropGroupBox(self, None)
         widget_worksheet.setParent(self.scrollAreaWidgetContents_complete_worksheet_wizard)
         self.verticalLayout_complete_worksheet_wizard.insertWidget(self.verticalLayout_complete_worksheet_wizard.count() - 1, widget_worksheet)
@@ -4061,7 +4072,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         for all in self.list_of_examples_wizard:
             list_solutions.append(all[-2])
 
-        # print(list_solutions)
         list_dummy_solutions = []
         i=0
         while i<10:
@@ -4070,9 +4080,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 list_dummy_solutions.append(dummy_solution)
                 i+=1
 
-        # info = {
 
-        #     }
         if self.comboBox_themen_wizard.currentIndex() == 0 or self.comboBox_themen_wizard.currentIndex() == 1:
             ausrichtung = self.combobox_ausrichtung_wizard.currentIndex()
         
@@ -4105,37 +4113,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
 
-
-
-        # self.worksheet_edited = True
-        # # self.worksheet_wizard_changed = False
-
-        # thema, list_of_examples_wizard = self.create_list_of_examples_wizard()
-        # try:
-        #     if thema in self.dict_all_examples_wizard:
-        #         list_of_items = self.get_all_examples_wizard()
-        #         for item in list_of_items:
-        #             self.dict_all_examples_wizard[thema].append(item)        
-        #     else:
-        #         self.dict_all_examples_wizard[thema] = list_of_examples_wizard
-        # except AttributeError:
-        #     self.dict_all_examples_wizard = {}
-        #     self.dict_all_examples_wizard[thema] = list_of_examples_wizard
-
-        # self.reset_aufgabenboxes_wizard()
-        
-
-        # if self.checkBox_show_nonogramm.isChecked():
-        #     self.create_nonogramm_wizard()
-        #     self.coordinates_nonogramm_wizard = create_coordinates(self, solution_pixel)
-
-
-
-        # print(all_dummy_solutions)
-        # print(len(all_dummy_solutions))
-
     def create_latex_file_content_wizard(self):
-        # print(self.dict_all_examples_worksheet_wizard)
         total_list_of_examples = []
         for all in self.dict_all_examples_worksheet_wizard.values():
             for item in all['list_of_examples']:
@@ -4143,18 +4121,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
 
-        # print(total_list_of_examples)
-
         if self.checkBox_show_nonogramm.isChecked():
             nonogram, solution_pixels = get_all_solution_pixels(total_list_of_examples, self.combobox_nonogramm_wizard.currentText())
 
 
             all_shuffeled_coordinates = create_coordinates(solution_pixels, self.dict_all_examples_worksheet_wizard)
-
-            # print(all_shuffeled_coordinates)
-            # print(len(all_shuffeled_coordinates))
-
-
 
 
         titel = self.lineEdit_titel_wizard.text()
@@ -4179,79 +4150,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         if self.checkBox_show_nonogramm.isChecked():
             content += create_nonogramm(nonogram, all_shuffeled_coordinates)
-        
-        # print(content)
+
         return content
-        
-            # print(nonogram)
-            # print(solution_pixels)
-            # print(len(solution_pixels))
-        
-            # list_dummy_solutions = self.collect_dummy_solutions()
-            # for all in list_dummy_solutions:
-            #     while True:
-            #         distract_pixel = random.choice(list_all_pixels)
-            #         if distract_pixel not in solution_pixels.keys():
-            #             solution_pixels[distract_pixel] = False
-            #             break
 
-            # print(solution_pixels)
-            # print(len(solution_pixels))
-
-            # l = list(solution_pixels.items())
-            # random.shuffle(l)
-            # shuffled_coordinates = dict(l)
-
-        print('done')
-        # create_coordinates(self, self.solution_pixel)
-        return ""
-        # if self.worksheet_wizard_changed == True:
-        #     self.create_new_worksheet_wizard_pressed()
-        if self.worksheet_edited == True:
-            self.coordinates_nonogramm_wizard = create_coordinates(self, self.solution_pixel)
-            self.worksheet_edited = False
-
-        len(self.coordinates_nonogramm_wizard)
-        # print(self.coordinates_nonogramm_wizard)
-        list_empty = 0
-        list_solutions = 0
-        for all in self.coordinates_nonogramm_wizard:
-            if self.coordinates_nonogramm_wizard[all] == True:
-                list_empty +=1
-            else:
-                list_solutions +=1
-        
-        # print(list_empty)
-        # print(list_solutions)
-        return ""
-        titel = self.lineEdit_titel_wizard.text()
-        columns = self.spinBox_column_wizard.value()
-        if self.combobox_nummerierung_wizard.currentText() == '-':
-            nummerierung = "label={}"
-        else:
-            nummerierung = self.combobox_nummerierung_wizard.currentText()
-        ausrichtung = self.combobox_ausrichtung_wizard.currentIndex()
-        index = self.comboBox_themen_wizard.currentIndex()
-
-        content = create_latex_worksheet(
-            self.list_of_examples_wizard,
-            index ,titel, columns, nummerierung, 
-            self.comboBox_solution_type_wizard.currentIndex(),
-            )
-
-        if self.checkBox_show_nonogramm.isChecked():
-            content += create_nonogramm(self.chosen_nonogram , self.coordinates_nonogramm_wizard)
-        
-        return content
 
 
 
     def create_vorschau_worksheet_wizard(self):
-        # print(self.dict_all_examples_worksheet_wizard)
-        # return
-
-        # for item in self.dict_all_examples_worksheet_wizard
-
         try:
             if is_empty(self.dict_all_examples_worksheet_wizard):
                 warning_window("Es wurden keine Aufgaben zum Arbeitsblatt hinzugefügt.")
@@ -4262,8 +4167,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         content = self.create_latex_file_content_wizard()
         
-        # return
-        # content = show_all_nonogramms() # for testing reasons
+
 
         path_file = os.path.join(
             path_localappdata_lama, "Teildokument", "worksheet.tex"

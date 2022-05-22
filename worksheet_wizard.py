@@ -636,7 +636,6 @@ def create_list_of_examples_division(examples, minimum_1, maximum_1, minimum_2, 
         new_example = create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div, smaller_or_equal_div, commas_result,smaller_or_equal_result, output_type)
         list_of_examples.append(new_example)
 
-    # print(list_of_examples)
     return list_of_examples
 
 
@@ -652,7 +651,6 @@ def create_list_of_examples_ganze_zahlen(typ, examples, minimum, maximum, commas
             new_example = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)
         list_of_examples.append(new_example)
 
-    # print(list_of_examples)
     return list_of_examples
 
 def get_number_of_decimals(x):
@@ -1134,15 +1132,10 @@ def create_nonogramm(nonogram, coordinates_nonogramm):
 #     # random.shuffle(list_all_pixles)
 
     content = replace_correct_pixels(content, coordinates_nonogramm)
-    
 
-#     list_coordinates = list(coordinates_nonogramm.keys())
-#     # random.shuffle(list_coordinates)
-    print(coordinates_nonogramm)
+
 
     for all in coordinates_nonogramm:
-        print(all)
-        print(coordinates_nonogramm[all])
         if coordinates_nonogramm[all][1] == None:
             continue
         

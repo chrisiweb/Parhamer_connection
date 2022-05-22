@@ -2705,6 +2705,7 @@ def setup_stackWizard(self):
     #create_new_groupbox(self.widgetWorksheetView, "Nummerierung")
     # self.widget_nummerierung_wizard.setSizePolicy(SizePolicy_fixed)
     self.horizontalLayout_worksheetview.addWidget(self.widget_nummerierung_wizard)
+    self.horizontalLayout_worksheetview.setContentsMargins(0,0,0,0)
     # self.gridLayout_setting_wizard.addWidget(self.widget_nummerierung_wizard, 2,0,1,1)
 
     self.horizontalLayout_nummerierung_wizard = create_new_horizontallayout(self.widget_nummerierung_wizard)
@@ -2724,8 +2725,10 @@ def setup_stackWizard(self):
     # create_new_groupbox(self.widgetWorksheetView, "Schrift")
     # self.widget_fontsize_wizard.setSizePolicy(SizePolicy_fixed)
     self.horizontalLayout_worksheetview.addWidget(self.widget_fontsize_wizard)
+    
     # self.gridLayout_setting_wizard.addWidget(self.groupBox_fontsize_wizard, 1,2,1,1)
     self.horizontalLayout_fontsize_wizard = create_new_horizontallayout(self.widget_fontsize_wizard)
+    self.horizontalLayout_fontsize_wizard.setContentsMargins(0,0,0,0)
 
     self.icon_fontsize_wizard = create_new_label_icon(self.widget_fontsize_wizard, icon= "type.svg", icon_size=(15,15))
     self.horizontalLayout_fontsize_wizard.addWidget(self.icon_fontsize_wizard)  
@@ -2749,9 +2752,11 @@ def setup_stackWizard(self):
     # create_new_groupbox(self.groupBox_setting_wizard, "Selbstkontrolle")
     # self.groupBox_show_nonogramm.setSizePolicy(SizePolicy_fixed)
     self.horizontalLayout_worksheetview.addWidget(self.widget_show_nonogramm)
+    
     # self.horizontalLayout_worksheetview.setContentsMargins(0,9,0,5)
     # self.gridLayout_setting_wizard.addWidget(self.groupBox_show_nonogramm, 4,0,1,3)
     self.horizontalLayout_show_nongramm = create_new_horizontallayout(self.widget_show_nonogramm)
+    self.horizontalLayout_show_nongramm.setContentsMargins(0,0,9,0)
     self.checkBox_show_nonogramm = create_new_checkbox(self.widget_show_nonogramm, "Selbstkontrolle", True)
     self.horizontalLayout_show_nongramm.addWidget(self.checkBox_show_nonogramm)
     self.checkBox_show_nonogramm.stateChanged.connect(self.checkBox_show_nonogramm_changed) 
