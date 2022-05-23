@@ -4130,12 +4130,15 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         titel = self.lineEdit_titel_wizard.text()
 
-        if self.show_instructions_wizard == True:
-            try:
-                arbeitsanweisung = self.instructions_wizard
-            except AttributeError:
-                arbeitsanweisung = "Berechne die folgenden Aufgaben"
-        else:
+        try: 
+            if self.show_instructions_wizard == True:
+                try:
+                    arbeitsanweisung = self.instructions_wizard
+                except AttributeError:
+                    arbeitsanweisung = "Berechne die folgenden Aufgaben"
+            else:
+                arbeitsanweisung = False
+        except AttributeError:
             arbeitsanweisung = False
 
 
