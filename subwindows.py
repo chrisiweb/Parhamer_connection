@@ -3474,7 +3474,7 @@ class Ui_Dialog_Convert_To_Eps(object):
 
 
 class Ui_Dialog_edit_worksheet_instructions(object):
-    def setupUi(self, Dialog, text, show_instructions):
+    def setupUi(self, Dialog, text, show_instructions, show_pagenumbers):
         # self.MainWindow = MainWindow
         # self.Dialog = Dialog
         # self.Dialog.setObjectName("Dialog")
@@ -3484,12 +3484,22 @@ class Ui_Dialog_edit_worksheet_instructions(object):
 
         verticalLayout = create_new_verticallayout(Dialog)
 
+        self.checkBox_hide_instructions = create_new_checkbox(Dialog, "Arbeitsanweisung anzeigen", show_instructions)
+        
+        verticalLayout.addWidget(self.checkBox_hide_instructions)
+
         self.plainTextEdit_instructions = QtWidgets.QPlainTextEdit()
         self.plainTextEdit_instructions.setPlainText(text)
+        if show_instructions==False: 
+            self.plainTextEdit_instructions.setEnabled(False)
         verticalLayout.addWidget(self.plainTextEdit_instructions)
 
-        self.checkBox_hide_instructions = create_new_checkbox(Dialog, "Arbeitsanweisung anzeigen", show_instructions)
-        verticalLayout.addWidget(self.checkBox_hide_instructions)
+        self.checkBox_hide_instructions.stateChanged.connect(self.enable_isntructions)
+
+
+
+        self.checkBox_show_pagenumbers = create_new_checkbox(Dialog, "Seitennummerierung anzeigen", show_pagenumbers)
+        verticalLayout.addWidget(self.checkBox_show_pagenumbers)
 
 
         buttonBox = QtWidgets.QDialogButtonBox(Dialog)
@@ -3513,5 +3523,9 @@ class Ui_Dialog_edit_worksheet_instructions(object):
         # button_save.setIcon(QtGui.QIcon(get_icon_path('save.svg')))
         # button_save.setText("Speichern")
 
-        
+    def enable_isntructions(self):
+        if self.checkBox_hide_instructions.isChecked():
+            self.plainTextEdit_instructions.setEnabled(True)
+        else:
+            self.plainTextEdit_instructions.setEnabled(False)      
 

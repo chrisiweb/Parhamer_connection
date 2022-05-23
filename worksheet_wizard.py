@@ -846,7 +846,8 @@ def create_latex_worksheet(dict_of_examples,index, titel, arbeitsanweisung, colu
     content = "\section{{{0}}}\n\n".format(titel.replace('&', '\&'))
 
 
-    content += arbeitsanweisung
+    if arbeitsanweisung != False:
+        content += arbeitsanweisung
 
     for all in dict_of_examples.values():
         index = all['index_thema']

@@ -2773,7 +2773,7 @@ def setup_stackWizard(self):
         i+=1
 
 
-    self.pushButton_worksheet_instructions_wizard = create_new_button(self.widgetWorksheetView, "Arbeitsanweisung", self.edit_worksheet_instructions, icon = "edit.svg")
+    self.pushButton_worksheet_instructions_wizard = create_new_button(self.widgetWorksheetView, "Layout", self.edit_worksheet_instructions, icon = "edit.svg")
     self.horizontalLayout_worksheetview.addWidget(self.pushButton_worksheet_instructions_wizard)
 
 
@@ -2806,6 +2806,8 @@ def setup_stackWizard(self):
     button_create.setIcon(QtGui.QIcon(get_icon_path('eye.svg')))
     button_create.setText("Vorschau")
 
+    button_create.clicked.connect(self.create_vorschau_worksheet_wizard)
+
     button_save = self.buttonBox_create_worksheet_wizard.button(QtWidgets.QDialogButtonBox.Ok)
     button_save.setIcon(QtGui.QIcon(get_icon_path('save.svg')))
     button_save.setText("Speichern")
@@ -2813,7 +2815,7 @@ def setup_stackWizard(self):
 
     button_save.clicked.connect(self.save_worksheet_wizard)
 
-    button_create.clicked.connect(self.create_vorschau_worksheet_wizard)
+    
 
 
 

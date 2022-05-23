@@ -4129,10 +4129,16 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
         titel = self.lineEdit_titel_wizard.text()
-        try:
-            arbeitsanweisung = self.instructions_wizard
-        except AttributeError:
-            arbeitsanweisung = "Berechne die folgenden Aufgaben"
+
+        if self.show_instructions_wizard == True:
+            try:
+                arbeitsanweisung = self.instructions_wizard
+            except AttributeError:
+                arbeitsanweisung = "Berechne die folgenden Aufgaben"
+        else:
+            arbeitsanweisung = False
+
+
 
         columns = self.spinBox_column_wizard.value()
         if self.combobox_nummerierung_wizard.currentText() == '-':
@@ -4154,9 +4160,16 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         return content
 
 
+    def get_content_worksheet_wizard(self):
+        if is_empty(self.list_of_examples_wizard)==False:
+            rsp = question_window("Es existieren temporäre Aufgaben, die nicht zum Arbeitsblatt hinzugefügt wurden.", 
+            "Möchten Sie diese Aufgaben zum Arbeitsblatt hizufügen?",
+            titel= "Temporäre Aufgaben zum Arbeitsblatt hinzufügen?")
+
+            if rsp == True:
+                self.add_to_worksheet_wizard()
 
 
-    def create_vorschau_worksheet_wizard(self):
         try:
             if is_empty(self.dict_all_examples_worksheet_wizard):
                 warning_window("Es wurden keine Aufgaben zum Arbeitsblatt hinzugefügt.")
@@ -4166,8 +4179,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             return
 
         content = self.create_latex_file_content_wizard()
-        
 
+        return content
+
+
+    def create_vorschau_worksheet_wizard(self):
+        
+        content = self.get_content_worksheet_wizard()
 
         path_file = os.path.join(
             path_localappdata_lama, "Teildokument", "worksheet.tex"
@@ -4178,14 +4196,24 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         else:
             show_solution = "solution_off"
 
+        try:
+            if self.checkBox_show_pagenumbers_wizard == True:
+                pagestyle = 'plain'
+            else:
+                pagestyle = 'empty'
+        except AttributeError:
+            pagestyle = 'empty'
+
         with open(path_file, "w", encoding="utf8") as file:
-            file.write(tex_preamble(solution=show_solution, pagestyle='empty', font_size=self.combobox_fontsize_wizard.currentText(), documentclass='extarticle'))
+            file.write(tex_preamble(solution=show_solution, pagestyle=pagestyle, font_size=self.combobox_fontsize_wizard.currentText(), documentclass='extarticle'))
 
             file.write(content)
 
             file.write(tex_end)
 
+
         create_pdf("worksheet")
+
 
 
     def edit_worksheet_instructions(self):
@@ -4207,16 +4235,23 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         except AttributeError:
             show_instructions = True
 
-        ui.setupUi(Dialog, text, show_instructions)
+
+        try:
+            show_pagenumbers = self.checkBox_show_pagenumbers_wizard
+        except AttributeError:
+            show_pagenumbers = False
+        ui.setupUi(Dialog, text, show_instructions, show_pagenumbers)
 
         rsp = Dialog.exec()
         if rsp == QtWidgets.QDialog.Accepted:
             self.show_instructions_wizard = ui.checkBox_hide_instructions.isChecked()
             self.instructions_wizard = ui.plainTextEdit_instructions.toPlainText()
+            self.checkBox_show_pagenumbers_wizard = ui.checkBox_show_pagenumbers.isChecked()
 
 
     def save_worksheet_wizard(self):
-        content = self.create_latex_file_content_wizard()
+        content = self.get_content_worksheet_wizard()
+        # content = self.create_latex_file_content_wizard()
         # try:
         #     self.list_of_examples_wizard 
         # except AttributeError:

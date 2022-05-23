@@ -179,6 +179,10 @@ StyleSheet_application = """
         width: 50px;
     }}
 
+    QPlainTextEdit:disabled {{
+        color: gray;
+    }}
+
     #filter_search {{
         padding-left: -2px;
         padding-right: 5px;
