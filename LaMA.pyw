@@ -4115,8 +4115,20 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     def create_latex_file_content_wizard(self):
         total_list_of_examples = []
-        for all in self.dict_all_examples_worksheet_wizard.values():
-            for item in all['list_of_examples']:
+        # print(self.dict_all_examples_worksheet_wizard)
+        order_of_examples = []
+        for i in range(self.verticalLayout_complete_worksheet_wizard.count()):
+            print(self.verticalLayout_complete_worksheet_wizard.itemAt(i).widget())
+            if self.verticalLayout_complete_worksheet_wizard.itemAt(i).widget() != None:
+                order_of_examples.append(self.verticalLayout_complete_worksheet_wizard.itemAt(i).widget())
+
+
+        print(order_of_examples)
+        for widget in order_of_examples:
+            set_of_examples = self.dict_all_examples_worksheet_wizard[widget]    
+            # print(set_of_examples)
+        # for all in self.dict_all_examples_worksheet_wizard.values():
+            for item in set_of_examples['list_of_examples']:
                 total_list_of_examples.append(item)
 
 
@@ -4143,7 +4155,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
 
-        columns = self.spinBox_column_wizard.value()
+        # columns = self.spinBox_column_wizard.value()
         if self.combobox_nummerierung_wizard.currentText() == '-':
             nummerierung = "label={}"
         else:
@@ -4151,9 +4163,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         index = self.comboBox_themen_wizard.currentIndex()
 
+
         content = create_latex_worksheet(
             self.dict_all_examples_worksheet_wizard,
-            index ,titel, arbeitsanweisung, columns, nummerierung,
+            index ,titel, arbeitsanweisung, nummerierung,
             self.comboBox_solution_type_wizard.currentIndex(),
             )
 
@@ -4164,13 +4177,18 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
     def get_content_worksheet_wizard(self):
-        if is_empty(self.list_of_examples_wizard)==False:
-            rsp = question_window("Es existieren temporäre Aufgaben, die nicht zum Arbeitsblatt hinzugefügt wurden.", 
-            "Möchten Sie diese Aufgaben zum Arbeitsblatt hizufügen?",
-            titel= "Temporäre Aufgaben zum Arbeitsblatt hinzufügen?")
+        try:
+            if is_empty(self.list_of_examples_wizard)==False:
+                rsp = question_window("Es existieren temporäre Aufgaben, die nicht zum Arbeitsblatt hinzugefügt wurden.", 
+                "Möchten Sie diese Aufgaben zum Arbeitsblatt hizufügen?",
+                titel= "Temporäre Aufgaben zum Arbeitsblatt hinzufügen?")
 
-            if rsp == True:
-                self.add_to_worksheet_wizard()
+                if rsp == True:
+                    self.add_to_worksheet_wizard()
+
+        except AttributeError:
+            warning_window("Es wurden keine Aufgaben zum Arbeitsblatt hinzugefügt.")
+            return
 
 
         try:
@@ -4190,6 +4208,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         
         content = self.get_content_worksheet_wizard()
 
+        if content == None:
+            return
+
+
         path_file = os.path.join(
             path_localappdata_lama, "Teildokument", "worksheet.tex"
             )
@@ -4206,7 +4228,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 pagestyle = 'empty'
         except AttributeError:
             pagestyle = 'empty'
-
+        return
         with open(path_file, "w", encoding="utf8") as file:
             file.write(tex_preamble(solution=show_solution, pagestyle=pagestyle, font_size=self.combobox_fontsize_wizard.currentText(), documentclass='extarticle'))
 
@@ -4254,6 +4276,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     def save_worksheet_wizard(self):
         content = self.get_content_worksheet_wizard()
+    
+
+        if content == None:
+            return
         # content = self.create_latex_file_content_wizard()
         # try:
         #     self.list_of_examples_wizard 

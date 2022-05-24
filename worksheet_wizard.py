@@ -842,7 +842,7 @@ def create_latex_string_ganze_zahlen(content, example):
     content += temp_content
     return content
 
-def create_latex_worksheet(dict_of_examples,index, titel, arbeitsanweisung, columns, nummerierung, solution_type=0):
+def create_latex_worksheet(dict_of_examples,index, titel, arbeitsanweisung, nummerierung, solution_type=0):
     content = "\section{{{0}}}\n\n".format(titel.replace('&', '\&'))
 
 
@@ -852,6 +852,8 @@ def create_latex_worksheet(dict_of_examples,index, titel, arbeitsanweisung, colu
     for all in dict_of_examples.values():
         index = all['index_thema']
         ausrichtung = all['ausrichtung']
+        columns = all['spalten']
+        
         if columns > 1:
             content += "\\begin{{multicols}}{{{0}}}\n".format(columns)
 
