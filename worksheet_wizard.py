@@ -842,24 +842,27 @@ def create_latex_string_ganze_zahlen(content, example):
     content += temp_content
     return content
 
-def create_latex_worksheet(dict_of_examples,index, titel, arbeitsanweisung, nummerierung, solution_type=0):
+def create_latex_worksheet(order_of_examples, dict_of_examples,index, titel, arbeitsanweisung, nummerierung, solution_type=0):
     content = "\section{{{0}}}\n\n".format(titel.replace('&', '\&'))
 
 
     if arbeitsanweisung != False:
         content += arbeitsanweisung
 
-    for all in dict_of_examples.values():
-        index = all['index_thema']
-        ausrichtung = all['ausrichtung']
-        columns = all['spalten']
+
+    for widget in order_of_examples:
+        set_of_examples = dict_of_examples[widget] 
+    # for all in dict_of_examples.values():
+        index = set_of_examples['index_thema']
+        ausrichtung = set_of_examples['ausrichtung']
+        columns = set_of_examples['spalten']
         
         if columns > 1:
             content += "\\begin{{multicols}}{{{0}}}\n".format(columns)
 
         content += "\\begin{{enumerate}}[{0}]\n".format(nummerierung)
 
-        list_of_examples = all['list_of_examples']
+        list_of_examples = set_of_examples['list_of_examples']
         for example in list_of_examples:
             if index == 0:
                 content = create_latex_string_addition(content, example, ausrichtung)
@@ -872,7 +875,7 @@ def create_latex_worksheet(dict_of_examples,index, titel, arbeitsanweisung, numm
             elif index == 4 or index == 5 or index == 6 or index ==7:
                 content = create_latex_string_ganze_zahlen(content, example)
 
-        content += "\end{enumerate}"
+        content += "\end{enumerate}\leer\n\n"
 
         if columns > 1:
             content += "\end{multicols}"

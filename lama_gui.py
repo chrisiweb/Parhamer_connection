@@ -2164,7 +2164,7 @@ def setup_stackWizard(self):
     self.label_number_wizard = create_new_label(self.widget_number_wizard, "Aufgaben:")
     self.horizontalLayout_number_wizard.addWidget(self.label_number_wizard)
 
-    self.spinBox_number_wizard = create_new_spinbox(self.widget_number_wizard, 20)
+    self.spinBox_number_wizard = create_new_spinbox(self.widget_number_wizard, 10)
 
     self.spinBox_number_wizard.setMinimum(1)
     self.spinBox_number_wizard.valueChanged.connect(self.spinBox_number_wizard_changed)

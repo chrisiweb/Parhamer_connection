@@ -3972,12 +3972,18 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             rsp = question_window("Es befinden sich nicht gespeicherte Aufgaben im Bearbeitungsbereich. Sind Sie sicher, dass Sie diese unwiderruflich läschen möchten?")
             if rsp == False:
                 return
-        
-        # print(self.dict_all_examples_worksheet_wizard[widget])
+
         self.list_of_examples_wizard = self.dict_all_examples_worksheet_wizard[widget]['list_of_examples']
 
         self.reset_aufgabenboxes_wizard()
+
+        self.spinBox_number_wizard.setValue(len(self.list_of_examples_wizard))
+
         self.spinBox_column_wizard.setValue(self.dict_all_examples_worksheet_wizard[widget]['spalten'])
+
+        if self.dict_all_examples_worksheet_wizard[widget]['ausrichtung'] != None:
+            self.combobox_ausrichtung_wizard.setCurrentIndex(self.dict_all_examples_worksheet_wizard[widget]['ausrichtung'])
+        
         self.comboBox_themen_wizard.setCurrentText(thema)
         del self.dict_all_examples_worksheet_wizard[widget]
         widget.setParent(None)
@@ -4116,19 +4122,15 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def create_latex_file_content_wizard(self):
         total_list_of_examples = []
         # print(self.dict_all_examples_worksheet_wizard)
-        order_of_examples = []
-        for i in range(self.verticalLayout_complete_worksheet_wizard.count()):
-            print(self.verticalLayout_complete_worksheet_wizard.itemAt(i).widget())
-            if self.verticalLayout_complete_worksheet_wizard.itemAt(i).widget() != None:
-                order_of_examples.append(self.verticalLayout_complete_worksheet_wizard.itemAt(i).widget())
 
 
-        print(order_of_examples)
-        for widget in order_of_examples:
-            set_of_examples = self.dict_all_examples_worksheet_wizard[widget]    
+
+        # print(order_of_examples)
+        # for widget in order_of_examples:
+        #     set_of_examples = self.dict_all_examples_worksheet_wizard[widget]    
             # print(set_of_examples)
-        # for all in self.dict_all_examples_worksheet_wizard.values():
-            for item in set_of_examples['list_of_examples']:
+        for all in self.dict_all_examples_worksheet_wizard.values():
+            for item in all['list_of_examples']:
                 total_list_of_examples.append(item)
 
 
@@ -4163,8 +4165,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         index = self.comboBox_themen_wizard.currentIndex()
 
+        order_of_examples = []
+        for i in range(self.verticalLayout_complete_worksheet_wizard.count()):
+            if self.verticalLayout_complete_worksheet_wizard.itemAt(i).widget() != None:
+                order_of_examples.append(self.verticalLayout_complete_worksheet_wizard.itemAt(i).widget())
+
 
         content = create_latex_worksheet(
+            order_of_examples,
             self.dict_all_examples_worksheet_wizard,
             index ,titel, arbeitsanweisung, nummerierung,
             self.comboBox_solution_type_wizard.currentIndex(),
@@ -4228,7 +4236,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 pagestyle = 'empty'
         except AttributeError:
             pagestyle = 'empty'
-        return
+        # return
         with open(path_file, "w", encoding="utf8") as file:
             file.write(tex_preamble(solution=show_solution, pagestyle=pagestyle, font_size=self.combobox_fontsize_wizard.currentText(), documentclass='extarticle'))
 
