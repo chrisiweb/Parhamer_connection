@@ -102,6 +102,7 @@ widgets_create_cria = [
     'self.actionSage',
     "self.actionEdit_Files",
     "self.actionFeedback",
+    "self.groupBox_variation_cr",
     "self.groupBox_themengebiete_cria",
     "self.pushButton_vorschau_edit",
     "self.pushButton_save",
