@@ -1342,7 +1342,7 @@ def setup_stackCreator(self):
 
     self.splitter_creator_left_widget = QtWidgets.QWidget(self.splitter_creator)
     # self.splitter_creator_left_widget.setMinimumSize(1,1)
-    # self.splitter_creator_left_widget.resize(450,0)
+    self.splitter_creator_left_widget.resize(450,0)
     self.verticalLayout_splitter_creator_left_widget = create_new_verticallayout(self.splitter_creator_left_widget)
     self.verticalLayout_splitter_creator_left_widget.setContentsMargins(0,0,0,0)
 
@@ -1611,8 +1611,8 @@ def setup_stackCreator(self):
     self.gridLayout_3 = create_new_horizontallayout(self.groupBox_aufgabentyp)
 
     self.comboBox_aufgabentyp_cr = create_new_combobox(self.groupBox_aufgabentyp)
-    add_new_option(self.comboBox_aufgabentyp_cr, 0, "Typ 1")
-    add_new_option(self.comboBox_aufgabentyp_cr, 1, "Typ 2")
+    add_new_option(self.comboBox_aufgabentyp_cr, 0, "1")
+    add_new_option(self.comboBox_aufgabentyp_cr, 1, "2")
 
     self.comboBox_aufgabentyp_cr.currentIndexChanged.connect(self.chosen_aufgabenformat_cr)
     self.gridLayout_3.addWidget(self.comboBox_aufgabentyp_cr)

@@ -19,6 +19,32 @@ StyleSheet_application = """
         color: gray
     }}
 
+    QScrollBar {{
+        border: none;    
+    }}
+
+    QScrollBar::handle::vertical {{
+       background-color: #2F4550;
+       border-radius: 7px;
+       min-height: 30px;
+    }}
+
+    QScrollBar::handle::horizontal {{
+       background-color: #2F4550;
+       border-radius: 7px;
+       min-width: 30px;
+    }}
+
+    QScrollBar::add-line{{
+        border: none;
+        background: none;
+    }}
+
+    QScrollBar::sub-line{{
+        border: none;
+        background: none;
+    }}
+
 
     QTabBar::tab:selected {{
         background-color: #2F4550;
@@ -173,6 +199,7 @@ StyleSheet_application = """
     QSplitter::handle {{
         image: url({6});
     }}   
+
 
     QSplitter::handle:vertical {{
         height: 20px;

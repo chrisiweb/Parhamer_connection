@@ -20,6 +20,8 @@ widgets_create = [
     'self.actionSage',
     "self.actionEdit_Files",
     "self.actionFeedback",
+    "self.groupBox_aufgabentyp",
+    "self.groupBox_klassen_cr",
     "self.groupBox_variation_cr",
     "self.groupBox_grundkompetenzen_cr",
     "self.pushButton_vorschau_edit",
