@@ -1298,6 +1298,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             self.action_wizard.setVisible(True)
 
             # self.comboBox_pruefungstyp.removeItem(6)  # delete Quiz
+            self.groupBox_af.show()
             self.cb_af_ko.show()
             self.cb_af_rf.show()
             self.cb_af_ta.show()
@@ -1356,6 +1357,8 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             )
 
             # self.comboBox_pruefungstyp.addItem("Quiz")
+            self.chosen_aufgabenformat_typ() # show AF when typ 1
+
             self.cb_af_ko.hide()
             self.cb_af_rf.hide()
             self.cb_af_ta.hide()
@@ -1712,6 +1715,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def chosen_aufgabenformat_typ(self):
         # chosen_type = self.label_aufgabentyp.text()[-1]
         chosen_type = self.combobox_aufgabentyp.currentIndex() + 1
+
         if chosen_type == 1:
             # self.label_aufgabentyp.setText(
             #     _translate("MainWindow", "Aufgabentyp: Typ 1", None)
@@ -1801,8 +1805,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     def comboBox_pruefungstyp_changed(self):
         self.comboBox_pruefungstyp.setEditable(False)
-        self.groupBox_nummer.setEnabled(True)
-        self.groupBox_datum.setEnabled(True)
+        self.widgetNummer.setEnabled(True)
+        self.widget_datum.setEnabled(True)
 
 
         self.spinBox_nummer.setValue(self.spinBox_nummer_setvalue)

@@ -743,6 +743,7 @@ class Ui_Dialog_titlepage(object):
         self.btn_titlepage_logo_path.setObjectName(_fromUtf8("btn_titlepage_logo_path"))
         self.verticalLayout_gBtitlepage.addWidget(self.btn_titlepage_logo_path)
         self.btn_titlepage_logo_path.setText("Durchsuchen")
+        self.btn_titlepage_logo_path.setIcon(QIcon(get_icon_path('folder.svg')))
         self.btn_titlepage_logo_path.setMaximumWidth(130)
         self.btn_titlepage_logo_path.clicked.connect(
             partial(self.btn_titlepage_logo_path_pressed, dict_titlepage)
@@ -1951,6 +1952,7 @@ class Ui_Dialog_setup(object):
 
 
         self.button_search_pdf_reader = create_new_button(groupbox_path_pdf, "Durchsuchen", self.search_pdf_reader)
+        self.button_search_pdf_reader.setIcon(QIcon(get_icon_path('folder.svg')))
         horizontallayout_path_pdf.addWidget(self.button_search_pdf_reader)
 
         gridlayout_setup.addWidget(groupbox_path_pdf,row,0,1,1)
@@ -3381,6 +3383,7 @@ class Ui_Dialog_Convert_To_Eps(object):
         button_convert.setText('Konvertieren')
         button_search = self.buttonBox_convert_to_eps.button(QtWidgets.QDialogButtonBox.Save)
         button_search.setText('Durchsuchen')
+        button_search.setIcon(QIcon(get_icon_path('folder.svg')))
         button_cancel = self.buttonBox_convert_to_eps.button(QtWidgets.QDialogButtonBox.Cancel)
         button_cancel.setText('Abbrechen')        
 
