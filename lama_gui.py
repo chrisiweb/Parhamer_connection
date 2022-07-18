@@ -1341,14 +1341,14 @@ def setup_stackCreator(self):
     self.gridLayout_stackCreator.addWidget(self.splitter_creator, 0, 0, 1, 1)
 
     self.splitter_creator_left_widget = QtWidgets.QWidget(self.splitter_creator)
-    # self.splitter_creator_left_widget.setMinimumSize(1,1)
+    self.splitter_creator_left_widget.setMinimumWidth(1)
     self.splitter_creator_left_widget.resize(450,0)
     self.verticalLayout_splitter_creator_left_widget = create_new_verticallayout(self.splitter_creator_left_widget)
     self.verticalLayout_splitter_creator_left_widget.setContentsMargins(0,0,0,0)
 
 
     self.splitter_creator_right_widget = QtWidgets.QWidget(self.splitter_creator)
-    # self.splitter_creator_right_widget.setMinimumSize(1,1)  
+    self.splitter_creator_right_widget.setMinimumWidth(1) 
     self.verticalLayout_splitter_creator_right_widget = create_new_verticallayout(self.splitter_creator_right_widget)
     self.verticalLayout_splitter_creator_right_widget.setContentsMargins(0,0,0,0)
 
@@ -1357,19 +1357,30 @@ def setup_stackCreator(self):
     ############# CREATOR ###############
 
     self.groupBox_variation_cr = create_new_groupbox(
-        self.splitter_creator, "Aufgabenvariation"
+        self.splitter_creator, "Variation vorhandener Aufgabe"
     )
     # self.groupBox_variation_cr.setMaximumWidth(420)
-    self.verticalLayout_variation = create_new_verticallayout(
+    self.horizontalLayout_variation = create_new_horizontallayout(
         self.groupBox_variation_cr
     )  
     self.button_variation_cr = create_new_button(
         self.groupBox_variation_cr,
-        "Variation vorhandender Aufgabe...",
+        "Aufgabenvariation",
         partial(self.button_variation_cr_pressed, "creator"),
     )
-    # self.button_variation_cr.setMinimumWidth(0)
-    self.verticalLayout_variation.addWidget(self.button_variation_cr)
+    self.button_variation_cr.setIcon(QtGui.QIcon(get_icon_path('git-branch.svg')))
+    self.horizontalLayout_variation.addWidget(self.button_variation_cr)
+
+
+    self.button_translation_cr = create_new_button(
+        self.groupBox_variation_cr,
+        "Übersetzung",
+        partial(self.button_variation_cr_pressed, "translation"),
+    )
+    self.button_translation_cr.setIcon(QtGui.QIcon(get_icon_path('globe.svg')))
+    self.horizontalLayout_variation.addWidget(self.button_translation_cr)
+
+
 
     self.verticalLayout_splitter_creator_left_widget.addWidget(self.groupBox_variation_cr)
 
@@ -1846,13 +1857,14 @@ def setup_stackFeedback(self):
 
 
     self.splitter_feedback_left_widget = QtWidgets.QWidget(self.splitter_feedback)
-    # self.splitter_feedback_left_widget.setMinimumSize(1,1)  
+    self.splitter_feedback_left_widget.setMinimumWidth(1)
+    self.splitter_feedback_left_widget.resize(150,0)
     self.verticalLayout_splitter_feedback_left_widget = create_new_verticallayout(self.splitter_feedback_left_widget)
     self.verticalLayout_splitter_feedback_left_widget.setContentsMargins(0,0,0,0)
 
 
     self.groupBox_alle_aufgaben_fb = QtWidgets.QGroupBox(self.splitter_feedback_left_widget)
-    # self.groupBox_alle_aufgaben_fb.setMinimumSize(1,1)
+    self.groupBox_alle_aufgaben_fb.setMinimumWidth(1)
     self.groupBox_alle_aufgaben_fb.setObjectName("groupBox_alle_aufgaben_fb")
     self.verticalLayout_splitter_feedback_left_widget.addWidget(self.groupBox_alle_aufgaben_fb)
 
@@ -1932,6 +1944,7 @@ def setup_stackFeedback(self):
     # self.comboBox_at_fb_cria.hide()
 
     self.groupBox_alle_aufgaben_fb_cria = QtWidgets.QGroupBox(self.splitter_feedback_left_widget)
+    self.groupBox_alle_aufgaben_fb_cria.setMinimumWidth(1)
     self.groupBox_alle_aufgaben_fb_cria.setObjectName("groupBox_alle_aufgaben_fb_cria")
     self.verticalLayout_splitter_feedback_left_widget.addWidget(self.groupBox_alle_aufgaben_fb_cria)
 
@@ -2025,13 +2038,14 @@ def setup_stackFeedback(self):
     self.groupBox_alle_aufgaben_fb.setTitle("Aufgaben")
 
     self.splitter_feedback_right_widget = QtWidgets.QWidget(self.splitter_feedback)
-    # self.splitter_feedback_right_widget.setMinimumSize(1,1)  
+    self.splitter_feedback_right_widget.setMinimumWidth(1)  
     self.verticalLayout_splitter_feedback_right_widget = create_new_verticallayout(self.splitter_feedback_right_widget)
     self.verticalLayout_splitter_feedback_right_widget.setContentsMargins(0,0,0,0)
 
 
 
     self.label_example = QtWidgets.QLabel(self.splitter_feedback_right_widget)
+    self.label_example.setMinimumWidth(1)
     self.label_example.setObjectName("label_example")
     # self.label_update.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
     self.label_example.setText("Ausgewählte Aufgabe: -")
@@ -2039,6 +2053,7 @@ def setup_stackFeedback(self):
     # self.gridLayout_stackFeedback.addWidget(self.label_example, 0, 1, 1, 1)
 
     self.groupBox_fehlertyp = QtWidgets.QGroupBox(self.splitter_feedback_right_widget)
+    self.groupBox_fehlertyp.setMinimumWidth(1)
     # self.groupBox_fehlertyp.setSizePolicy(SizePolicy_fixed)
     self.groupBox_fehlertyp.setObjectName("groupBox_fehlertyp")
     self.gridLayout_fehlertyp = QtWidgets.QGridLayout(self.groupBox_fehlertyp)
@@ -2071,6 +2086,7 @@ def setup_stackFeedback(self):
 
     self.groupBox_feedback = QtWidgets.QGroupBox(self.splitter_feedback_right_widget)
     self.groupBox_feedback.setObjectName("groupBox_feedback")
+    self.groupBox_feedback.setMinimumWidth(1)
     # self.groupBox_feedback.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding))
     self.gridLayout_fb = QtWidgets.QGridLayout(self.groupBox_feedback)
     self.gridLayout_fb.setObjectName("gridLayout_fb")
@@ -2086,6 +2102,7 @@ def setup_stackFeedback(self):
 
     self.groupBox_email = QtWidgets.QGroupBox(self.splitter_feedback_right_widget)
     self.groupBox_email.setObjectName("groupBox_email")
+    self.groupBox_email.setMinimumWidth(1)
     # self.groupBox_klasse.setMaximumSize(QtCore.QSize(200, 16777215))
     self.verticalLayout_email = QtWidgets.QVBoxLayout(self.groupBox_email)
     self.verticalLayout_email.setObjectName("verticalLayout_email")

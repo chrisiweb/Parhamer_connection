@@ -11,7 +11,8 @@ _database = TinyDB(path_database)
 # table_lama = _database.table('table_cria')
 tables = ['table_lama_1', 'table_lama_2', 'table_cria']
 
-for table_lama in tables:
-    _database.table(table_lama).update({'gruppe': False})
+### CHANGE DATABASE #####
+# for table_lama in tables:
+#     _database.table(table_lama).update({'gruppe': False})
 
 print('done')

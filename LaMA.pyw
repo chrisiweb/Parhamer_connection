@@ -2010,6 +2010,18 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         else:
             self.comboBox_af.setCurrentIndex(0)
 
+        if mode == "translation":
+            self.widget_basic_settings_creator.setEnabled(False)
+            self.groupBox_titel_cr.setEnabled(False)
+            self.groupBox_quelle.setEnabled(False)
+            self.groupBox_bilder.setEnabled(False)
+
+            if self.chosen_program == "cria":
+                self.groupBox_themengebiete_cria.setEnabled(False)
+            elif self.chosen_program == "lama":
+                self.groupBox_grundkompetenzen_cr.setEnabled(False)
+
+
 
         self.lineEdit_titel.setText(aufgabe_total["titel"])
 
@@ -2031,7 +2043,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.lineEdit_quelle.setText(aufgabe_total["quelle"])
 
     def reset_variation(self):
-        self.button_variation_cr.setText("Variation vorhandender Aufgabe...")
+        self.button_variation_cr.setText("Aufgabenvariation")
         self.groupBox_grundkompetenzen_cr.setEnabled(True)
         self.groupBox_aufgabentyp.setEnabled(True)
         self.comboBox_af.setEnabled(True)
@@ -2056,17 +2068,17 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         )
         ui = Ui_Dialog_variation()
 
-        if mode == "creator":
-            show_variations = False
-        elif mode == "editor":
+        if mode == "editor":
             show_variations = True
+        else:
+            show_variations = False
         ui.setupUi(Dialog, self, show_variations, mode)
 
         response = Dialog.exec()
 
         if response == 1:
             self.suchfenster_reset(True)
-            if mode == "creator":
+            if mode == "creator" or mode == "translation":
                 self.chosen_variation = ui.chosen_variation
                 _file_ = self.chosen_variation
                 if self.chosen_variation != None:
