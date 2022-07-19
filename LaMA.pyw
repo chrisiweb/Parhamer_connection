@@ -2041,6 +2041,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.plainTextEdit.clear()
             self.plainTextEdit.insertPlainText(aufgabe_total["content"])
             self.lineEdit_quelle.setText(aufgabe_total["quelle"])
+        elif mode == "translation":
+            self.lineEdit_quelle.setText(aufgabe_total["quelle"])
 
     def reset_variation(self):
         self.button_variation_cr.setText("Aufgabenvariation")
