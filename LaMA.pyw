@@ -1925,7 +1925,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                             )
 
                     self.dict_widget_variables[checkbox_gk].setChecked(True)
-                self.tab_widget_gk_cr.setCurrentIndex(index)
+                # self.tab_widget_gk_cr.setCurrentIndex(index)
 
             self.comboBox_aufgabentyp_cr.setCurrentIndex(typ - 1)
             self.groupBox_aufgabentyp.setEnabled(False)
@@ -2086,18 +2086,20 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.suchfenster_reset(True)
             self.reset_variation()
             if mode == "creator" or mode == "translation":
-                self.chosen_variation = ui.chosen_variation
-                _file_ = self.chosen_variation
-                if self.chosen_variation != None:
+                _file_ = ui.chosen_variation
+
+                if _file_ != None:
                     if mode == "creator":
+                        self.chosen_variation = ui.chosen_variation
                         self.button_variation_cr.setText(
                             "Variation von: {}".format(self.chosen_variation.upper())
                         )
                     elif mode == "translation":
+                        self.chosen_file_to_edit = ui.chosen_variation
                         self.pushButton_save_translation.show()
                         self.pushButton_save.hide()
                         self.button_translation_cr.setText(
-                            "Übersetzung von: {}".format(self.chosen_variation.upper())
+                            "Übersetzung von: {}".format(self.chosen_file_to_edit.upper())
                         )
                 else:
                     self.suchfenster_reset(True)
@@ -2287,13 +2289,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # self.comboBox_af.hide()         
     
     def chosen_aufgabenformat_cr(self):
-        if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+        if self.comboBox_aufgabentyp_cr.currentText() == "1":
             self.groupBox_aufgabenformat.setEnabled(True)
             self.comboBox_pagebreak.setCurrentIndex(0)
             # self.label_keine_auswahl.hide()
             # self.comboBox_af.show()
             self.comboBox_af.removeItem(0)
-        if self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
+        if self.comboBox_aufgabentyp_cr.currentText() == "2":
             self.comboBox_af.insertItem(0, "keine Auswahl nötig")
             self.comboBox_pagebreak.setCurrentIndex(1)
             self.comboBox_af.setCurrentIndex(0)
@@ -2310,12 +2312,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         attached = len(self.dict_picture_path)
         return included, attached
 
-    def check_entry_creator(self, mode):
+    def check_entry_creator(self, mode, typ):
         if self.chosen_program == "lama":
             if is_empty(self.list_selected_topics_creator) == True:
                 return "Es wurden keine Grundkompetenzen zugewiesen."
 
-            if self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+            if typ == 1:
                 if len(self.list_selected_topics_creator) > 1:
                     return "Es wurden zu viele Grundkompetenzen zugewiesen."
 
@@ -2326,7 +2328,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             return "Es wurden keine Themengebiete zugewiesen."
 
         if (
-            self.comboBox_aufgabentyp_cr.currentText() != "Typ 2"
+            typ != 2
             and self.comboBox_af.currentText() == "bitte auswählen"
         ):
             return "Es wurde kein Aufgabenformat ausgewählt."
@@ -2675,10 +2677,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 if thema not in themen_auswahl:
                     themen_auswahl.append(thema)
 
-        elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+        elif self.comboBox_aufgabentyp_cr.currentText() == "1":
             themen_auswahl.append(self.list_selected_topics_creator[0])
 
-        elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
+        elif self.comboBox_aufgabentyp_cr.currentText() == "2":
 
             for all in self.list_selected_topics_creator:
                 themen_auswahl.append(all)
@@ -2796,22 +2798,23 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     @report_exceptions
     def button_save_edit_pressed(self, mode):
-        # print('saved!')
-        # return
+
         rsp = question_window(
             "Sind Sie sicher, dass Sie die Änderungen speichern wollen?"
         )
         if rsp == False:
             return
 
-        warning = self.check_entry_creator('edit')
+
+        name = self.chosen_file_to_edit.replace(" (lokal)", "")
+        typ = get_aufgabentyp(self.chosen_program, name)
+
+        warning = self.check_entry_creator('edit', typ)
         if warning != None:
             warning_window(warning)
             return
 
-        name = self.chosen_file_to_edit.replace(" (lokal)", "")
-
-        typ = get_aufgabentyp(self.chosen_program, name)
+       
 
         (
             _,
@@ -2868,27 +2871,30 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         file_id = lama_table.get(_file_.name == name).doc_id
 
-        if typ == 1:
-            lama_table.update({"name": new_name}, doc_ids=[file_id])
-        lama_table.update({"themen": themen}, doc_ids=[file_id])
-        lama_table.update({"titel": titel}, doc_ids=[file_id])
-        lama_table.update({"af": af}, doc_ids=[file_id])
-        lama_table.update({"quelle": quelle}, doc_ids=[file_id])
-        lama_table.update({"content": content}, doc_ids=[file_id])
-        lama_table.update({"gruppe": group_variation}, doc_ids=[file_id])
-        lama_table.update({"punkte": punkte}, doc_ids=[file_id])
-        lama_table.update({"pagebreak": pagebreak}, doc_ids=[file_id])
-        lama_table.update({"klasse": klasse}, doc_ids=[file_id])
-        lama_table.update({"info": info}, doc_ids=[file_id])
-        if bilder != [] and bilder != None:
-            # aufgabe_total = lama_table.get(_file_.name == aufgabe)
-            # old_pictures = aufgabe_total['bilder']
-            # for all in old_pictures:
-            #     bilder.append(all)
-            lama_table.update({"bilder": bilder}, doc_ids=[file_id])
+        if mode == "translation":
+           lama_table.update({"content_translation": content}, doc_ids=[file_id]) 
+        else:
+            if typ == 1:
+                lama_table.update({"name": new_name}, doc_ids=[file_id])
+            lama_table.update({"themen": themen}, doc_ids=[file_id])
+            lama_table.update({"titel": titel}, doc_ids=[file_id])
+            lama_table.update({"af": af}, doc_ids=[file_id])
+            lama_table.update({"quelle": quelle}, doc_ids=[file_id])
+            lama_table.update({"content": content}, doc_ids=[file_id])
+            lama_table.update({"gruppe": group_variation}, doc_ids=[file_id])
+            lama_table.update({"punkte": punkte}, doc_ids=[file_id])
+            lama_table.update({"pagebreak": pagebreak}, doc_ids=[file_id])
+            lama_table.update({"klasse": klasse}, doc_ids=[file_id])
+            lama_table.update({"info": info}, doc_ids=[file_id])
+            if bilder != [] and bilder != None:
+                # aufgabe_total = lama_table.get(_file_.name == aufgabe)
+                # old_pictures = aufgabe_total['bilder']
+                # for all in old_pictures:
+                #     bilder.append(all)
+                lama_table.update({"bilder": bilder}, doc_ids=[file_id])
 
-        lama_table.update({"draft": draft}, doc_ids=[file_id])
-        lama_table.update({"abstand": abstand}, doc_ids=[file_id])
+            lama_table.update({"draft": draft}, doc_ids=[file_id])
+            lama_table.update({"abstand": abstand}, doc_ids=[file_id])
 
 
         QtWidgets.QApplication.restoreOverrideCursor()
@@ -3107,8 +3113,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.local_save = False
 
         ######## WARNINGS #####
+        if self.chosen_program == "cria":
+            typ = None
+        elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+            typ = 1
+        elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
+            typ = 2
 
-        warning = self.check_entry_creator('save')
+        warning = self.check_entry_creator('save', typ)
         if warning != None:
             warning_window(warning)
             return
@@ -5309,36 +5321,50 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         )
         gridLayout_gB.addWidget(label_titel, 1, 0, 1, 1)
 
-        gridLayout_gB.setColumnStretch(1, 1)
+        gridLayout_gB.setColumnStretch(2, 1)
 
-        af = aufgabe_total["af"]
-        if  af == 'oa' or af == 'ta' or af == 'ko' or typ==2:
-            groupbox_AB = create_new_groupbox(new_groupbox, "Gruppe")
-            groupbox_AB.setSizePolicy(SizePolicy_fixed)
-            gridLayout_gB.addWidget(groupbox_AB, 0,1,2,1,QtCore.Qt.AlignRight)
-            horizontalLayout_groupbox_AB = create_new_horizontallayout(groupbox_AB)
+        # af = aufgabe_total["af"]
+        # if  af == 'oa' or af == 'ta' or af == 'ko' or typ==2:
+        #     # widget_AB = create_new_groupbox(new_groupbox, "Gruppe")
+        #     widget_AB = QtWidgets.QWidget(new_groupbox)
+        #     # widget_AB.setSizePolicy(SizePolicy_fixed)
+        #     gridLayout_gB.addWidget(widget_AB, 0,1,2,1,QtCore.Qt.AlignRight)
+        #     horizontalLayout_widget_AB = create_new_horizontallayout(widget_AB)
+        #     horizontalLayout_widget_AB.setSpacing(0)
+            
+        #     button_AB = create_new_button(widget_AB, "", still_to_define, "users.svg")
+        #     button_AB.setCheckable(True)
+        #     button_AB.toggle()
+        #     horizontalLayout_widget_AB.addWidget(button_AB)
 
-            checkbox_AB = create_new_checkbox(groupbox_AB, "A/B", True)
-            self.dict_widget_variables['checkbox_AB_{}'.format(aufgabe)] = checkbox_AB
+        #     label_AB = create_new_label(widget_AB, "")
+        #     label_AB.setPixmap(QtGui.QPixmap(get_icon_path("users.svg")))
+        #     label_AB.setFixedSize(QtCore.QSize(20,20))
+        #     label_AB.setScaledContents(True)
+        #     horizontalLayout_widget_AB.addWidget(label_AB)
 
-            try:
-                gruppe = aufgabe_total['gruppe']
-            except KeyError:
-                gruppe = False
+        #     checkbox_AB = create_new_checkbox(widget_AB, " ", True)
+        #     checkbox_AB.setSizePolicy(SizePolicy_fixed)
+        #     self.dict_widget_variables['checkbox_AB_{}'.format(aufgabe)] = checkbox_AB
 
-            if gruppe == False:
-                checkbox_AB.setChecked(False)
-                checkbox_AB.setEnabled(False)
-                checkbox_AB.setToolTip("Derzeit ist für diese Aufgabe keine Gruppen-Variation verfügbar.")
-            else:
-                checkbox_AB.setToolTip("Diese Aufgabe wird bei unterschiedlichen Gruppen\ngeringfügig (z.B. durch veränderte Zahlen) variiert.")
+        #     try:
+        #         gruppe = aufgabe_total['gruppe']
+        #     except KeyError:
+        #         gruppe = False
 
-            horizontalLayout_groupbox_AB.addWidget(checkbox_AB)
+        #     if gruppe == False:
+        #         checkbox_AB.setChecked(False)
+        #         checkbox_AB.setEnabled(False)
+        #         checkbox_AB.setToolTip("Derzeit ist für diese Aufgabe keine Gruppen-Variation verfügbar.")
+        #     else:
+        #         checkbox_AB.setToolTip("Diese Aufgabe wird bei unterschiedlichen Gruppen\ngeringfügig (z.B. durch veränderte Zahlen) variiert.")
+
+        #     horizontalLayout_widget_AB.addWidget(checkbox_AB)
 
 
         groupbox_pkt = create_new_groupbox(new_groupbox, "Punkte")
         groupbox_pkt.setSizePolicy(SizePolicy_fixed)
-        gridLayout_gB.addWidget(groupbox_pkt, 0, 3, 2, 1, QtCore.Qt.AlignRight)
+        gridLayout_gB.addWidget(groupbox_pkt, 0, 2, 2, 1, QtCore.Qt.AlignRight)
 
 
         try:
@@ -5398,6 +5424,33 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             else:
                 stylesheet = StyleSheet_typ2_dark_mode
             new_groupbox.setStyleSheet(stylesheet)
+
+
+        # button_translation = create_new_button(new_groupbox, "DE", still_to_define, "globe.svg")
+        # gridLayout_gB.addWidget(button_AB, 1, 4, 1, 1)
+
+        af = aufgabe_total["af"]
+        if  af == 'oa' or af == 'ta' or af == 'ko' or typ==2:
+
+            button_AB = create_new_button(new_groupbox, "", still_to_define, "users.svg")
+            button_AB.setCheckable(True)
+            gridLayout_gB.addWidget(button_AB, 1, 4, 1, 1)
+
+            self.dict_widget_variables['button_AB_{}'.format(aufgabe)] = button_AB
+
+            try:
+                gruppe = aufgabe_total['gruppe']
+            except KeyError:
+                gruppe = False
+
+            if gruppe == False:
+                # button_AB.setChecked(False)
+                button_AB.setEnabled(False)
+                button_AB.setToolTip("Derzeit ist für diese Aufgabe keine Gruppen-Variation verfügbar.")
+            else:
+                button_AB.toggle()
+                button_AB.setToolTip("Diese Aufgabe wird bei unterschiedlichen Gruppen\ngeringfügig (z.B. durch veränderte Zahlen) variiert.")
+
 
 
         button_up = create_new_button(new_groupbox, "", partial(self.btn_up_pressed, aufgabe))
@@ -5467,7 +5520,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         groupbox_abstand_ausgleich = create_new_groupbox(new_groupbox, "Abstand (cm)  ")
         groupbox_abstand_ausgleich.setSizePolicy(SizePolicy_fixed)
         # groupbox_abstand.setMaximumSize(QtCore.QSize(100, 16777215))
-        gridLayout_gB.addWidget(groupbox_abstand_ausgleich, 0,4, 2, 1)
+        gridLayout_gB.addWidget(groupbox_abstand_ausgleich, 0,3, 2, 1)
 
         verticalLayout_abstand = QtWidgets.QVBoxLayout(groupbox_abstand_ausgleich)
         verticalLayout_abstand.setObjectName("verticalLayout_abstand")

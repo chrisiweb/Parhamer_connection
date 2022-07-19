@@ -229,7 +229,7 @@ def create_new_lineedit(parent, ObjectName=None):
 def create_new_button(parent, text, command, icon = None):
     new_button = QtWidgets.QPushButton(parent)
     new_button.setObjectName("{}".format(new_button))
-    new_button.setText(_translate("MainWindow", text, None))
+    new_button.setText(_translate("MainWindow", f" {text}", None))
     if command != None:
         new_button.clicked.connect(lambda: command())
 

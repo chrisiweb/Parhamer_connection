@@ -29,6 +29,9 @@ colors_ui = {
 }
     # "blue_6": QtGui.QColor(68, 92, 136),
 
+def test_coloring(widget, color="blue"):
+    widget.setStyleSheet(f"background-color: {color}")
+
 def get_color(color):
     color = "rgb({0}, {1}, {2})".format(color.red(), color.green(), color.blue())
     return color

@@ -13,6 +13,6 @@ tables = ['table_lama_1', 'table_lama_2', 'table_cria']
 
 ### CHANGE DATABASE #####
 # for table_lama in tables:
-#     _database.table(table_lama).update({'gruppe': False})
+#     _database.table(table_lama).update({'content_translation': None})
 
 print('done')

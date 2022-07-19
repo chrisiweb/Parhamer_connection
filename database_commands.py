@@ -166,6 +166,7 @@ def add_file(database, name, themen, titel, af, quelle, content, group_variation
                 'draft' : draft,
                 'abstand' : abstand,
                 'gruppe' : group_variation,
+                'content_translation': None,
             })
             return True
         except AssertionError:
