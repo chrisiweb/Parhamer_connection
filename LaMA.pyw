@@ -2044,6 +2044,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     def reset_variation(self):
         self.button_variation_cr.setText("Aufgabenvariation")
+        self.button_translation_cr.setText("Übersetzung")
+        self.pushButton_save_translation.hide()
+        self.pushButton_save.show()
         self.groupBox_grundkompetenzen_cr.setEnabled(True)
         self.groupBox_aufgabentyp.setEnabled(True)
         self.comboBox_af.setEnabled(True)
@@ -2068,23 +2071,32 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         )
         ui = Ui_Dialog_variation()
 
-        if mode == "editor":
-            show_variations = True
-        else:
+        if mode == "creator":
             show_variations = False
+        else:
+            show_variations = True
+
         ui.setupUi(Dialog, self, show_variations, mode)
 
         response = Dialog.exec()
 
         if response == 1:
             self.suchfenster_reset(True)
+            self.reset_variation()
             if mode == "creator" or mode == "translation":
                 self.chosen_variation = ui.chosen_variation
                 _file_ = self.chosen_variation
                 if self.chosen_variation != None:
-                    self.button_variation_cr.setText(
-                        "Variation von: {}".format(self.chosen_variation.upper())
-                    )
+                    if mode == "creator":
+                        self.button_variation_cr.setText(
+                            "Variation von: {}".format(self.chosen_variation.upper())
+                        )
+                    elif mode == "translation":
+                        self.pushButton_save_translation.show()
+                        self.pushButton_save.hide()
+                        self.button_translation_cr.setText(
+                            "Übersetzung von: {}".format(self.chosen_variation.upper())
+                        )
                 else:
                     self.suchfenster_reset(True)
                     self.reset_variation()
@@ -2780,7 +2792,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 False, chosen_ddb, message=message, worker_text="Änderung hochladen ..."
             )
 
-    def button_save_edit_pressed(self):
+    @report_exceptions
+    def button_save_edit_pressed(self, mode):
+        print('saved!')
+        return
         rsp = question_window(
             "Sind Sie sicher, dass Sie die Änderungen speichern wollen?"
         )

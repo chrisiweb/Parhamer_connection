@@ -1792,6 +1792,15 @@ def setup_stackCreator(self):
     self.pushButton_save.setText("Speichern")
     self.pushButton_save.setIcon(QtGui.QIcon(get_icon_path('save.svg')))
 
+    self.pushButton_save_translation = QtWidgets.QPushButton(self.widgetcreatorButtons)
+    self.pushButton_save_translation.setObjectName("pushButton_save")
+    self.pushButton_save_translation.setFocusPolicy(QtCore.Qt.NoFocus)
+    self.pushButton_save_translation.setSizePolicy(SizePolicy_fixed)
+    self.horizontalLayout_creatorButtons.addWidget(self.pushButton_save_translation)
+    self.pushButton_save_translation.setText("Speichern")
+    self.pushButton_save_translation.setIcon(QtGui.QIcon(get_icon_path('save.svg')))
+    self.pushButton_save_translation.hide()
+
 
     self.pushButton_vorschau_edit = create_new_button(
         self.widgetcreatorButtons, "Vorschau", self.button_vorschau_edit_pressed
@@ -1823,7 +1832,7 @@ def setup_stackCreator(self):
     # self.pushButton_save_as_variation_edit.hide()
 
     self.pushButton_save_edit = create_new_button(
-        self.stackCreator, "Änderung speichern", self.button_save_edit_pressed
+        self.stackCreator, "Änderung speichern", lambda: self.button_save_edit_pressed("editor")
     )
     self.pushButton_save_edit.setIcon(QtGui.QIcon(get_icon_path('save.svg')))
     self.pushButton_save_edit.setSizePolicy(SizePolicy_fixed)
@@ -1844,6 +1853,7 @@ def setup_stackCreator(self):
 
     self.comboBox_aufgabentyp_cr.currentIndexChanged.connect(self.chosen_aufgabenformat_cr)
     self.pushButton_save.clicked.connect(lambda: self.button_speichern_pressed())
+    self.pushButton_save_translation.clicked.connect(lambda: self.button_save_edit_pressed("translation"))
 
 
 def setup_stackFeedback(self):
