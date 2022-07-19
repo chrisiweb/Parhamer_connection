@@ -2032,7 +2032,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 for all in aufgabe_total['bilder']:
                     self.add_image_label(all, None)#, clickable=False
 
-                self.verticalLayout.addWidget(self.btn_add_image)
+                self.verticalLayout_bilder2.addWidget(self.btn_add_image)
 
             if aufgabe_total["info"] == "mat":
                 self.cb_matura_tag.setChecked(True)
