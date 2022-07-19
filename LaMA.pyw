@@ -2796,8 +2796,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     @report_exceptions
     def button_save_edit_pressed(self, mode):
-        print('saved!')
-        return
+        # print('saved!')
+        # return
         rsp = question_window(
             "Sind Sie sicher, dass Sie die Änderungen speichern wollen?"
         )
