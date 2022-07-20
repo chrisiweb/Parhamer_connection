@@ -1706,6 +1706,15 @@ def setup_stackCreator(self):
 
     self.horizontalLayout_basic_settings_creator.addWidget(self.groupBox_pagebreak)
 
+    self.button_language = QtWidgets.QPushButton(self.widget_basic_settings_creator)
+    self.button_language.setIcon(QtGui.QIcon(get_icon_path("globe.svg")))
+    self.button_language.setSizePolicy(SizePolicy_fixed)
+    self.button_language.clicked.connect(lambda: self.button_language_pressed(self.button_language))
+    self.button_language.setToolTip("Deutsch")
+    self.horizontalLayout_basic_settings_creator.addWidget(self.button_language)
+    
+
+
     self.cb_matura_tag = create_new_checkbox(self.widget_basic_settings_creator, "Matura")
     self.horizontalLayout_basic_settings_creator.addWidget(self.cb_matura_tag)
     self.cb_matura_tag.hide()

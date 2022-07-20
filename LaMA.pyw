@@ -9,7 +9,10 @@ __lastupdate__ = "04/22"
 show_popup = False
 
 from cProfile import label
+from importlib.util import module_for_loader
 from xml.dom.minidom import Attr
+
+from sympy import true
 from lama_gui import setup_stackWizard
 from start_window import check_if_database_exists
 # from worksheet_wizard import get_all_solution_pixels
@@ -96,6 +99,8 @@ class Ui_MainWindow(object):
         self.list_selected_topics_creator = []
         self.dict_variablen_punkte = {}
         self.dict_variablen_punkte_halb = {}
+        self.dict_variablen_translation = {}
+        self.dict_variablen_AB = {}
         self.dict_variablen_abstand = {}
         self.dict_variablen_label = {}
         self.dict_sage_ausgleichspunkte_chosen = {}
@@ -1117,7 +1122,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         # dict_klasse = eval("dict_{}_name".format(klasse))
         # kapitel = list(dict_klasse.keys())[0]
         # self.chosen_radiobutton(klasse, kapitel)
-
+        
         self.entry_suchbegriffe.setText("")
         self.cb_solution.setChecked(True)
         self.spinBox_punkte.setProperty("value", 1)
@@ -1234,6 +1239,8 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         self.dict_variablen_label = {}
         self.dict_variablen_punkte = {}
         self.dict_variablen_punkte_halb = {}
+        self.dict_variablen_translation = {}
+        self.dict_variablen_AB = {}
         self.dict_variablen_abstand = {}
         self.update_punkte()
         self.list_copy_images = []
@@ -1827,9 +1834,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.pushButton_titlepage.setEnabled(False)
             self.comboBox_at_sage.setEnabled(True)
             self.pushButton_titlepage.setText("Titelblatt anpassen")
-            self.groupBox_datum.setEnabled(False)
+            self.widget_datum.setEnabled(False)
             # self.groupBox_nummer.hide()
-            self.groupBox_nummer.setEnabled(False)
+            self.widgetNummer.setEnabled(False)
             self.spinBox_nummer_setvalue = self.spinBox_nummer.value()
             self.spinBox_nummer.setValue(0)
             self.groupBox_klasse_sage.setTitle("Überschrift")
@@ -1846,7 +1853,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 self.comboBox_pruefungstyp.lineEdit().selectAll()
                 self.spinBox_nummer_setvalue = self.spinBox_nummer.value()
                 self.spinBox_nummer.setValue(0)
-                self.groupBox_nummer.setEnabled(False)
+                self.widgetNummer.setEnabled(False)
                 # self.spinBox_nummer.setEnabled(False)
 
     ############################################################################
@@ -2053,6 +2060,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.groupBox_aufgabentyp.setEnabled(True)
         self.comboBox_af.setEnabled(True)
         self.groupBox_themengebiete_cria.setEnabled(True)
+        self.widget_basic_settings_creator.setEnabled(True)
 
     def reset_edit_file(self):
         self.button_choose_file.setText("Aufgabe suchen...")
@@ -2096,6 +2104,21 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                         )
                     elif mode == "translation":
                         self.chosen_file_to_edit = ui.chosen_variation
+                        typ = get_aufgabentyp(self.chosen_program, self.chosen_file_to_edit)
+                        aufgabe_total = get_aufgabe_total(self.chosen_file_to_edit, typ)
+
+                        try:
+                            if aufgabe_total['content_translation'] != None:
+                                rsp = question_window("Für diese Aufgabe ist bereits eine englische Übersetzung vorhanden. Möchten Sie diese bearbeiten?")
+                                if rsp == False:
+                                    self.suchfenster_reset(True)
+                                    self.reset_variation()
+                                    return
+                                else:
+                                    self.plainTextEdit.setPlainText(aufgabe_total['content_translation'])
+                        except KeyError:
+                            pass
+
                         self.pushButton_save_translation.show()
                         self.pushButton_save.hide()
                         self.button_translation_cr.setText(
@@ -2303,6 +2326,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # self.label_keine_auswahl.show()
             # self.comboBox_af.hide()
 
+    def button_language_pressed(self, button):
+        print(button.toolTip())
+
     def get_number_of_included_images(self):
         num = self.plainTextEdit.toPlainText().count("\includegraphics")
         return num
@@ -2339,7 +2365,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         ):
             return "Bitte geben Sie einen Titel ein."
 
-        if is_empty(self.plainTextEdit.toPlainText()) == True:
+        if is_empty(self.plainTextEdit.toPlainText()) == True and mode != "translation":
             return 'Bitte geben Sie den LaTeX-Quelltext der Aufgabe im Bereich "Aufgabeneingabe" ein.'
 
 
@@ -2793,15 +2819,17 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # else:
             chosen_ddb = ["_database.json"]
             action_push_database(
-                False, chosen_ddb, message=message, worker_text="Änderung hochladen ..."
+                False, chosen_ddb, message=message, worker_text="wird hochgeladen ..."
             )
 
     @report_exceptions
     def button_save_edit_pressed(self, mode):
+        if mode == "translation":
+            text = "Übersetzung"
+        else:
+            text = "Änderung"
 
-        rsp = question_window(
-            "Sind Sie sicher, dass Sie die Änderungen speichern wollen?"
-        )
+        rsp = question_window(f"Sind Sie sicher, dass Sie die {text} speichern wollen?")
         if rsp == False:
             return
 
@@ -2809,7 +2837,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         name = self.chosen_file_to_edit.replace(" (lokal)", "")
         typ = get_aufgabentyp(self.chosen_program, name)
 
-        warning = self.check_entry_creator('edit', typ)
+        warning = self.check_entry_creator(mode, typ)
         if warning != None:
             warning_window(warning)
             return
@@ -2872,7 +2900,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         file_id = lama_table.get(_file_.name == name).doc_id
 
         if mode == "translation":
-           lama_table.update({"content_translation": content}, doc_ids=[file_id]) 
+            if is_empty(content):
+                content = None
+            lama_table.update({"content_translation": content}, doc_ids=[file_id]) 
         else:
             if typ == 1:
                 lama_table.update({"name": new_name}, doc_ids=[file_id])
@@ -2909,7 +2939,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         #         chosen_ddb = ["_database.json"]
         #     action_push_database(False, chosen_ddb, message= "Bearbeitet: {}".format(name), worker_text="Änderung hochladen ...")
 
-        information_window("Die Änderungen wurden erfolgreich gespeichert.")
+        information_window(f"Die {text} wurde erfolgreich gespeichert.")
 
         self.suchfenster_reset(True)
         self.reset_edit_file()
@@ -4513,10 +4543,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.groupBox_themengebiete_cria.setEnabled(enabled)
         self.groupBox_abstand.setEnabled(enabled)
         self.groupBox_pagebreak.setEnabled(enabled)
+        self.button_language.setEnabled(enabled)
 
     def action_add_file(self):
         self.update_gui("widgets_create")
         self.suchfenster_reset()
+        self.reset_variation()
         self.enable_widgets_editor(True)
 
     def action_edit_files(self):
@@ -5005,6 +5037,21 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             )
 
     @report_exceptions
+    def btn_translation_pressed(self, button, aufgabe):
+        print('translation')
+        if button.text() == "DE":
+            button.setText("EN")
+        else:
+            button.setText("DE")
+        self.dict_variablen_translation[aufgabe] = button.text()
+
+
+
+    def btn_AB_pressed(self, button, aufgabe):
+        self.dict_variablen_AB[aufgabe] = button.isChecked()
+
+
+    @report_exceptions
     def btn_up_pressed(self, aufgabe):
         typ = get_aufgabentyp(self.chosen_program, aufgabe)
 
@@ -5048,7 +5095,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         if typ == 1:
             del self.dict_variablen_punkte_halb[aufgabe]
         del self.dict_variablen_abstand[aufgabe]
-        
+
+        del self.dict_variablen_translation[aufgabe]
+        del self.dict_variablen_AB[aufgabe]
+
         if typ == 2:
             del self.dict_variablen_label[aufgabe]
             self.list_alle_aufgaben_sage[1].remove(aufgabe)
@@ -5426,17 +5476,39 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             new_groupbox.setStyleSheet(stylesheet)
 
 
-        # button_translation = create_new_button(new_groupbox, "DE", still_to_define, "globe.svg")
-        # gridLayout_gB.addWidget(button_AB, 1, 4, 1, 1)
+        button_translation = QtWidgets.QPushButton(new_groupbox)
+
+        
+        if aufgabe in self.temp_info:
+            language = self.temp_info[aufgabe][3]
+        else:
+            language = "DE" 
+        
+        button_translation.setText(language)
+        button_translation.setIcon(QtGui.QIcon(get_icon_path("globe.svg")))
+        button_translation.clicked.connect(lambda: self.btn_translation_pressed(button_translation, aufgabe))
+
+        self.dict_variablen_translation[aufgabe] = button_translation.text()
+        # create_new_button(new_groupbox, "DE", partial(self.btn_translation_pressed, button_translation), "globe.svg")
+
+        try:
+            if aufgabe_total['content_translation'] == None:
+                button_translation.setEnabled(False)
+                button_translation.setToolTip("Derzeit ist diese Aufgabe nur in Deutsch verfügbar.")
+            else:
+                button_translation.setToolTip("Diese Aufgabe kann in Deutsch oder Englisch angezeigt werden.")
+        except KeyError:
+            button_translation.setEnabled(False)
+            button_translation.setToolTip("Derzeit ist diese Aufgabe nur in Deutsch verfügbar.")
+
+        gridLayout_gB.addWidget(button_translation, 0, 4, 1, 1)
 
         af = aufgabe_total["af"]
         if  af == 'oa' or af == 'ta' or af == 'ko' or typ==2:
 
-            button_AB = create_new_button(new_groupbox, "", still_to_define, "users.svg")
+            button_AB = QtWidgets.QPushButton(new_groupbox)
             button_AB.setCheckable(True)
             gridLayout_gB.addWidget(button_AB, 1, 4, 1, 1)
-
-            self.dict_widget_variables['button_AB_{}'.format(aufgabe)] = button_AB
 
             try:
                 gruppe = aufgabe_total['gruppe']
@@ -5444,13 +5516,26 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 gruppe = False
 
             if gruppe == False:
-                # button_AB.setChecked(False)
+                button_AB.setChecked(False)
                 button_AB.setEnabled(False)
                 button_AB.setToolTip("Derzeit ist für diese Aufgabe keine Gruppen-Variation verfügbar.")
             else:
-                button_AB.toggle()
-                button_AB.setToolTip("Diese Aufgabe wird bei unterschiedlichen Gruppen\ngeringfügig (z.B. durch veränderte Zahlen) variiert.")
+                button_AB.setToolTip("Diese Aufgabe kann bei unterschiedlichen Gruppen\ngeringfügig (z.B. durch veränderte Zahlen) variiert werden.")
 
+
+            if aufgabe in self.temp_info:
+                gruppe_AB = self.temp_info[aufgabe][4]
+            else:
+                gruppe_AB = True
+
+            button_AB.setChecked(gruppe_AB)  
+
+            self.dict_variablen_AB[aufgabe] = button_AB.isChecked()
+            button_AB.setIcon(QtGui.QIcon(get_icon_path("users.svg")))
+            button_AB.clicked.connect(lambda: self.btn_AB_pressed(button_AB, aufgabe))
+
+        else:
+            self.dict_variablen_AB[aufgabe] = None
 
 
         button_up = create_new_button(new_groupbox, "", partial(self.btn_up_pressed, aufgabe))
@@ -5501,7 +5586,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         )
         pushbutton_edit.setIcon(QtGui.QIcon(get_icon_path('edit.svg'))) 
         # pushbutton_ausgleich.setStyleSheet("padding: 6px")
-        pushbutton_edit.setSizePolicy(SizePolicy_fixed)
+        pushbutton_edit.setSizePolicy(SizePolicy_maximum)
 
         gridLayout_gB.addWidget(pushbutton_edit, 1, 5, 1, 1)
 
@@ -5552,13 +5637,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         else:
             groupbox_abstand_ausgleich.setToolTip("Neue Seite: Abstand=99")
 
-
-
-        
-
         # pushbutton_ausgleich.setMaximumSize(QtCore.QSize(220, 30))
         
-
+        # print(self.temp_info)
         # pushbutton_aufgabe_bearbeiten = create_new_button(groupbox_pkt, 'Aufgabe bearbeiten', still_to_define)
         # gridLayout_gB.addWidget(pushbutton_aufgabe_bearbeiten, 0,1,1,1)
 
@@ -5643,7 +5724,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.temp_info = {}
         for all in self.dict_variablen_punkte.keys():
             halbe_punkte = self.get_punkte_halb_aufgabe_sage(all)
-            self.temp_info[all] = [self.dict_variablen_punkte[all].value(), halbe_punkte, self.dict_variablen_abstand[all].value()]
+            self.temp_info[all] = [self.dict_variablen_punkte[all].value(), halbe_punkte, self.dict_variablen_abstand[all].value(), self.dict_variablen_translation[all], self.dict_variablen_AB[all]]
 
 
         for i in reversed(range(start_value, layout.count()+1)):
