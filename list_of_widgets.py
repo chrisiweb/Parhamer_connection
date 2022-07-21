@@ -41,6 +41,7 @@ widgets_edit = [
     "self.pushButton_delete_file",
     "self.pushButton_save_as_variation_edit",
     "self.pushButton_save_edit",
+    "self.button_language",
 ]
 
 widgets_sage = [
@@ -122,6 +123,7 @@ widgets_edit_cria = [
     "self.pushButton_delete_file",
     "self.pushButton_save_as_variation_edit",
     "self.pushButton_save_edit",
+    "self.button_language",
 ]
 
 widgets_feedback_cria = [

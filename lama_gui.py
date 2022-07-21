@@ -1396,12 +1396,14 @@ def setup_stackCreator(self):
     self.verticalLayout_choose_file = create_new_verticallayout(
         self.groupBox_choose_file
     )
+    self.verticalLayout_choose_file.setContentsMargins(5,10,5,5)
 
     self.button_choose_file = create_new_button(
         self.groupBox_choose_file,
         "Aufgabe suchen...",
         partial(self.button_variation_cr_pressed, "editor"),
     )
+    self.button_choose_file.setMinimumHeight(15)
     # self.button_choose_file.setMinimumWidth(0)
     self.verticalLayout_choose_file.addWidget(self.button_choose_file)
 
@@ -1542,7 +1544,7 @@ def setup_stackCreator(self):
     # self.groupBox_bilder.setSizePolicy(SizePolicy_maximum_height)
 
     self.verticalLayout_bilder = create_new_verticallayout(self.groupBox_bilder)
-    self.verticalLayout_bilder.setContentsMargins(0,5,0,0)
+    self.verticalLayout_bilder.setContentsMargins(0,8,0,0)
     # self.gridLayout_13 = QtWidgets.QGridLayout(self.groupBox_bilder)
     # self.gridLayout_13.setObjectName("gridLayout_13")
     self.scrollArea = QtWidgets.QScrollArea(self.groupBox_bilder)
@@ -1708,9 +1710,11 @@ def setup_stackCreator(self):
 
     self.button_language = QtWidgets.QPushButton(self.widget_basic_settings_creator)
     self.button_language.setIcon(QtGui.QIcon(get_icon_path("globe.svg")))
+    self.button_language.setText("DE")
     self.button_language.setSizePolicy(SizePolicy_fixed)
-    self.button_language.clicked.connect(lambda: self.button_language_pressed(self.button_language))
+    self.button_language.clicked.connect(lambda: self.button_language_pressed())
     self.button_language.setToolTip("Deutsch")
+    self.button_language.sizeHint()
     self.horizontalLayout_basic_settings_creator.addWidget(self.button_language)
     
 

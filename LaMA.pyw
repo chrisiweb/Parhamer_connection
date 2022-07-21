@@ -2045,6 +2045,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 self.cb_matura_tag.setChecked(True)
             # else:
             #     self.cb_matura_tag.setChecked(False)
+
+
             self.plainTextEdit.clear()
             self.plainTextEdit.insertPlainText(aufgabe_total["content"])
             self.lineEdit_quelle.setText(aufgabe_total["quelle"])
@@ -2065,6 +2067,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def reset_edit_file(self):
         self.button_choose_file.setText("Aufgabe suchen...")
         self.enable_widgets_editor(False)
+        self.button_language.setToolTip("")
+        self.button_language.setText("DE")
         self.plainTextEdit.clear()
         # self.groupBox_grundkompetenzen_cr.setEnabled(True)
         # self.groupBox_aufgabentyp.setEnabled(True)
@@ -2326,9 +2330,27 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # self.label_keine_auswahl.show()
             # self.comboBox_af.hide()
 
-    def button_language_pressed(self, button):
-        print(button.toolTip())
+    def button_language_pressed(self):
+        typ = get_aufgabentyp(self.chosen_program, self.chosen_file_to_edit)
+        aufgabe_total = get_aufgabe_total(self.chosen_file_to_edit, typ)
 
+        self.plainTextEdit.clear()
+        if self.button_language.text() == "DE":
+            self.button_language.setToolTip("Englisch")
+            self.button_language.setText("EN")
+            try:
+                content = aufgabe_total["content_translation"]
+                if content != None: 
+                    self.plainTextEdit.insertPlainText(content)
+            except KeyError:
+                pass
+            
+        else:
+            self.button_language.setToolTip("Deutsch")
+            self.button_language.setText("DE")
+            self.plainTextEdit.insertPlainText(aufgabe_total["content"])
+
+            # 
     def get_number_of_included_images(self):
         num = self.plainTextEdit.toPlainText().count("\includegraphics")
         return num
@@ -2910,7 +2932,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             lama_table.update({"titel": titel}, doc_ids=[file_id])
             lama_table.update({"af": af}, doc_ids=[file_id])
             lama_table.update({"quelle": quelle}, doc_ids=[file_id])
-            lama_table.update({"content": content}, doc_ids=[file_id])
+            if self.button_language.text()=="DE":
+                lama_table.update({"content": content}, doc_ids=[file_id])
+            elif self.button_language.text()=="EN":
+                if is_empty(content):
+                    content = None
+                lama_table.update({"content_translation": content}, doc_ids=[file_id]) 
             lama_table.update({"gruppe": group_variation}, doc_ids=[file_id])
             lama_table.update({"punkte": punkte}, doc_ids=[file_id])
             lama_table.update({"pagebreak": pagebreak}, doc_ids=[file_id])
@@ -7463,7 +7490,7 @@ if __name__ == "__main__":
     screen_width, screen_height = screen_resolution.width(), screen_resolution.height()
 
     MainWindow.setGeometry(
-        30, 30, round(screen_width * 0.5), round(screen_height * 0.8)
+        30, 30, round(screen_width * 0.5), round(screen_height * 0.9)
     )
     MainWindow.move(30, 30)
     i = step_progressbar(i, "mainwindow")
