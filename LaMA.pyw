@@ -12,7 +12,6 @@ from cProfile import label
 from importlib.util import module_for_loader
 from xml.dom.minidom import Attr
 
-from sympy import true
 from lama_gui import setup_stackWizard
 from start_window import check_if_database_exists
 # from worksheet_wizard import get_all_solution_pixels
