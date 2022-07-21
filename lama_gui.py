@@ -1392,6 +1392,7 @@ def setup_stackCreator(self):
         self.splitter_creator, "Aufgabe auswählen"
     )
     self.groupBox_choose_file.setMinimumSize(1,1)
+    self.groupBox_choose_file.setSizePolicy(SizePolicy_fixed_height)
     # self.groupBox_choose_file.setMaximumWidth(420)
     self.verticalLayout_choose_file = create_new_verticallayout(
         self.groupBox_choose_file
@@ -1403,7 +1404,7 @@ def setup_stackCreator(self):
         "Aufgabe suchen...",
         partial(self.button_variation_cr_pressed, "editor"),
     )
-    self.button_choose_file.setMinimumHeight(15)
+    self.button_choose_file.setMinimumHeight(20)
     # self.button_choose_file.setMinimumWidth(0)
     self.verticalLayout_choose_file.addWidget(self.button_choose_file)
 

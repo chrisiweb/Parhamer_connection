@@ -7490,7 +7490,7 @@ if __name__ == "__main__":
     screen_width, screen_height = screen_resolution.width(), screen_resolution.height()
 
     MainWindow.setGeometry(
-        30, 30, round(screen_width * 0.5), round(screen_height * 0.9)
+        30, 30, round(screen_width * 0.5), round(screen_height * 0.85)
     )
     MainWindow.move(30, 30)
     i = step_progressbar(i, "mainwindow")
