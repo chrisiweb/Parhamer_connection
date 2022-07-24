@@ -1,4 +1,3 @@
-from operator import is_
 from PyQt5.QtGui import QCursor, QIcon
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, Qt
 from PyQt5.QtWidgets import QApplication, QMessageBox
@@ -8,7 +7,6 @@ import re
 import json
 import subprocess
 
-from sympy import content
 
 from config_start import path_programm, path_localappdata_lama, lama_settings_file
 from config import (
