@@ -2084,6 +2084,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.button_language.setToolTip("")
         self.button_language.setText("DE")
         self.plainTextEdit.clear()
+        try:
+            del self.temporary_save_edit_plainText_deutsch
+        except AttributeError:
+            pass
+        try:
+            del self.temporary_save_edit_plainText_englisch
+        except AttributeError:
+            pass
         # self.groupBox_grundkompetenzen_cr.setEnabled(True)
         # self.groupBox_aufgabentyp.setEnabled(True)
         # self.comboBox_af.setEnabled(True)
@@ -2347,22 +2355,32 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def button_language_pressed(self):
         typ = get_aufgabentyp(self.chosen_program, self.chosen_file_to_edit)
         aufgabe_total = get_aufgabe_total(self.chosen_file_to_edit, typ)
-
-        self.plainTextEdit.clear()
+        
         if self.button_language.text() == "DE":
+            self.temporary_save_edit_plainText_deutsch = self.plainTextEdit.toPlainText()
+            self.plainTextEdit.clear()
             self.button_language.setToolTip("Englisch")
             self.button_language.setText("EN")
-            try:
-                content = aufgabe_total["content_translation"]
-                if content != None: 
-                    self.plainTextEdit.insertPlainText(content)
-            except KeyError:
-                pass
+
+            try: 
+                self.plainTextEdit.insertPlainText(self.temporary_save_edit_plainText_englisch)
+            except AttributeError:
+                try:
+                    content = aufgabe_total["content_translation"]
+                    if content != None: 
+                        self.plainTextEdit.insertPlainText(content)
+                except KeyError:
+                    pass
             
         else:
+            self.temporary_save_edit_plainText_englisch = self.plainTextEdit.toPlainText()
+            self.plainTextEdit.clear()
             self.button_language.setToolTip("Deutsch")
             self.button_language.setText("DE")
-            self.plainTextEdit.insertPlainText(aufgabe_total["content"])
+            try: 
+                self.plainTextEdit.insertPlainText(self.temporary_save_edit_plainText_deutsch)
+            except AttributeError:
+                self.plainTextEdit.insertPlainText(aufgabe_total["content"])
 
             # 
     def get_number_of_included_images(self):
@@ -2948,10 +2966,20 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             lama_table.update({"quelle": quelle}, doc_ids=[file_id])
             if self.button_language.text()=="DE":
                 lama_table.update({"content": content}, doc_ids=[file_id])
+                try: 
+                    content_englisch = self.temporary_save_edit_plainText_englisch
+                    lama_table.update({"content_translation": content_englisch}, doc_ids=[file_id])
+                except AttributeError:
+                    pass
             elif self.button_language.text()=="EN":
                 if is_empty(content):
                     content = None
-                lama_table.update({"content_translation": content}, doc_ids=[file_id]) 
+                lama_table.update({"content_translation": content}, doc_ids=[file_id])
+                try: 
+                    content_deutsch = self.temporary_save_edit_plainText_deutsch
+                    lama_table.update({"content": content_deutsch}, doc_ids=[file_id])
+                except AttributeError:
+                    pass               
             lama_table.update({"gruppe": group_variation}, doc_ids=[file_id])
             lama_table.update({"punkte": punkte}, doc_ids=[file_id])
             lama_table.update({"pagebreak": pagebreak}, doc_ids=[file_id])
