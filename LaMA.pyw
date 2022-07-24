@@ -1935,8 +1935,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                             index = list_comboBox_gk.index("Zusatzthemen")
                     else:
                         checkbox_gk = "checkbox_creator_gk_{}".format(short_gk)
-                        print(list_comboBox_gk)
-                        print(gk)
+
                         try:
                             if i == 0:
                                 index = list_comboBox_gk.index(
