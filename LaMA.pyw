@@ -8,10 +8,9 @@ __lastupdate__ = "04/22"
 
 show_popup = False
 
-from cProfile import label
-from importlib.util import module_for_loader
-from xml.dom.minidom import Attr
 
+
+from distutils.log import warn
 from lama_gui import setup_stackWizard
 from start_window import check_if_database_exists
 # from worksheet_wizard import get_all_solution_pixels
@@ -1738,6 +1737,16 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # self.refresh_label_update()
 
     @report_exceptions
+    def combobox_translation_changed(self):
+        index = self.combobox_translation.currentIndex()
+        if index == 0:
+            self.widget_translation.setToolTip("Alle Aufgaben in Deutsch anzeigen")
+        elif index == 1:
+            self.widget_translation.setToolTip("Aufgaben in Englisch anzeigen, falls vorhanden")
+        elif index == 2:
+            self.widget_translation.setToolTip("Nur englische Aufgaben anzeigen")
+
+    @report_exceptions
     def button_all_checkboxes_pressed(self, chosen_dictionary, typ, mode, klasse=None):
         if mode == "quiz":
             name_start = "checkbox_quiz_{}_".format(typ)
@@ -1780,6 +1789,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                         chosen_themen.append(thema.upper())
 
         x = ", ".join(chosen_gk)
+
         if len(chosen_themen) > 6:
             y = ", ".join(sorted(chosen_themen)[:6])
             y = y + ", ..."
@@ -1790,8 +1800,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             if len(chosen_themen) > 0:
                 self.label_ausgew_gk_rest.show()
                 y = "Weitere: " + y
-                self.label_ausgew_gk_rest.setText(_translate("MainWindow", str(y), None))
-            self.label_ausgew_gk.setText(_translate("MainWindow", str(x), None))
+                self.label_ausgew_gk_rest.setText(str(y))
+            else:
+                self.label_ausgew_gk_rest.hide()
+            self.label_ausgew_gk.setText(str(x))
             
         if mode == "creator":
             if x == "":
@@ -1800,9 +1812,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 gesamt = x
             else:
                 gesamt = x + ", " + y
-            self.label_ausgew_gk_creator.setText(
-                _translate("MainWindow", str(gesamt), None)
-            )
+            self.label_ausgew_gk_creator.setText(str(gesamt))
 
     def spinBox_nummer_changed(self):
         if self.comboBox_pruefungstyp.currentText() != "Übungsblatt" and self.comboBox_pruefungstyp.currentText() != "Benutzerdefiniert":
@@ -1925,12 +1935,18 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                             index = list_comboBox_gk.index("Zusatzthemen")
                     else:
                         checkbox_gk = "checkbox_creator_gk_{}".format(short_gk)
-                        if i == 0:
-                            index = list_comboBox_gk.index(
-                                gk.split(" ")[0].replace("-L", "")
-                            )
+                        print(list_comboBox_gk)
+                        print(gk)
+                        try:
+                            if i == 0:
+                                index = list_comboBox_gk.index(
+                                    gk.split(" ")[0].replace("-L", "")
+                                )
+                            self.dict_widget_variables[checkbox_gk].setChecked(True)
+                        except ValueError:
+                            warning_window(f"Die geöffnete Aufgabe {aufgabe} ist fehlerhaft!", "Bitte melden Sie dies unter lama.helpme@gmail.com, damit der Fehler behoebn werden kann. Vielen Dank!")
 
-                    self.dict_widget_variables[checkbox_gk].setChecked(True)
+                    
                 # self.tab_widget_gk_cr.setCurrentIndex(index)
 
             self.comboBox_aufgabentyp_cr.setCurrentIndex(typ - 1)
@@ -2386,7 +2402,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         ):
             return "Bitte geben Sie einen Titel ein."
 
-        if is_empty(self.plainTextEdit.toPlainText()) == True and mode != "translation":
+        if is_empty(self.plainTextEdit.toPlainText()) == True and mode != "translation" and self.button_language.text()=="DE":
             return 'Bitte geben Sie den LaTeX-Quelltext der Aufgabe im Bereich "Aufgabeneingabe" ein.'
 
 
@@ -3171,9 +3187,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         ######## WARNINGS #####
         if self.chosen_program == "cria":
             typ = None
-        elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 1":
+        elif self.comboBox_aufgabentyp_cr.currentText() == "1":
             typ = 1
-        elif self.comboBox_aufgabentyp_cr.currentText() == "Typ 2":
+        elif self.comboBox_aufgabentyp_cr.currentText() == "2":
             typ = 2
 
         warning = self.check_entry_creator('save', typ)

@@ -1,3 +1,4 @@
+from operator import is_
 from PyQt5.QtGui import QCursor, QIcon
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, Qt
 from PyQt5.QtWidgets import QApplication, QMessageBox
@@ -6,6 +7,8 @@ import os
 import re
 import json
 import subprocess
+
+from sympy import content
 
 from config_start import path_programm, path_localappdata_lama, lama_settings_file
 from config import (
@@ -405,18 +408,20 @@ def search_in_database(self,current_program, database,suchbegriffe):
 
     return gesammeltedateien
 
-def check_if_suchbegriffe_is_empty(suchbegriffe):
+def check_if_suchbegriffe_is_empty(suchbegriffe, language_index):
     _list = ['themen', 'af', 'klasse', 'erweiterte_suche' ,'info']
     for all in _list:
         if not is_empty(suchbegriffe[all]) and suchbegriffe[all] != [None]:
             return False
+    if language_index ==2:
+        return False
     return True
 
 def prepare_tex_for_pdf(self):
     QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
     suchbegriffe = collect_suchbegriffe(self)
 
-    response = check_if_suchbegriffe_is_empty(suchbegriffe)
+    response = check_if_suchbegriffe_is_empty(suchbegriffe, self.combobox_translation.currentIndex())
     if response == True:
         QApplication.restoreOverrideCursor()
         warning_window("Bitte wählen Sie zumindest ein Suchkriterium aus.")
@@ -524,10 +529,12 @@ def prepare_tex_for_pdf(self):
     else:
         spezielle_suche = True
 
-    construct_tex_file(filename_teildokument, gesammeltedateien, solutions, variation, infos, spezielle_suche)
+    language_index = self.combobox_translation.currentIndex()
+
+    construct_tex_file(filename_teildokument, gesammeltedateien, solutions, variation, infos, spezielle_suche, language_index)
 
 
-    number_of_files = get_output_size(gesammeltedateien, variation, spezielle_suche)
+    number_of_files = get_output_size(gesammeltedateien, variation, spezielle_suche, language_index)
 
     QApplication.restoreOverrideCursor()
     if number_of_files == 0:
@@ -562,7 +569,17 @@ def prepare_tex_for_pdf(self):
 
         create_pdf("Teildokument", 0, 0, typ)
 
-def get_output_size(gesammeltedateien, variation, spezielle_suche):
+def get_output_size(gesammeltedateien, variation, spezielle_suche, language_index):
+    if language_index == 2:
+        number = 0
+        for all in gesammeltedateien:
+            try:
+                if all['content_translation'] != None:
+                    number +=1
+            except KeyError:
+                pass
+        return number
+
     if variation == True or spezielle_suche == True:
         return len(gesammeltedateien)
     number = 0
@@ -602,12 +619,21 @@ def create_tex(
         return e
 
 
-def construct_tex_file(file_name, gesammeltedateien, solutions, variation, infos, spezielle_suche):
+def construct_tex_file(file_name, gesammeltedateien, solutions, variation, infos, spezielle_suche, language_index):
     with open(file_name, "w", encoding="utf8") as file:
-        file.write(tex_preamble(solution=solutions, bookmark=True, info=infos))
+        file.write(tex_preamble(solution=solutions, bookmark=True, info=infos, worldflags=True))
+
         for all in gesammeltedateien:
             if variation == False and check_if_variation(all['name']) == True and spezielle_suche == False:
                 continue
+            
+            if language_index == 2:
+                try:
+                    if all['content_translation'] == None:
+                        continue
+                except KeyError:
+                    continue
+
             if all['info'] == 'mat':
                 add_on = ' ({})'.format(all['quelle'])
             else:
@@ -618,26 +644,53 @@ def construct_tex_file(file_name, gesammeltedateien, solutions, variation, infos
             else:
                 draft = ''
 
+
+            try: 
+                if all['content_translation'] != None and language_index==0:
+                    language = " \worldflag[width=3.8mm,length=0pt,stretch=1]{GB}"
+                else:
+                    language = ""
+            except KeyError:
+                    language = ""
+
+            # print(f"{all['name']} : {language}")
             green = "green!40!black!60!"
 
             if variation == True:
                 if check_if_variation(all['name']) == True:
-                    file.write("{{\color{{{0}}}\n".format(green))
+                    file.write("{0}{{\color{{{1}}}\n".format(language, green))
+                elif not is_empty(language):
+                    file.write(f"{language}\\vspace{{-0.5cm}}\n\n")
             elif spezielle_suche == False:
                 number_of_variations = get_number_of_variations(all['name'], gesammeltedateien)
 
                 if number_of_variations != 0:
-                    file.write("{{\color{{{0}}}{{\\fbox{{Anzahl weiterer Variationen dieser Aufgabe: {1}}}}}}}\\vspace{{-0.5cm}}\n\n".format(green, number_of_variations))
+                    file.write("{2}{{\color{{{0}}}{{\\fbox{{Anzahl weiterer Variationen dieser Aufgabe: {1}}}}}}}\\vspace{{-0.5cm}}\n\n".format(green, number_of_variations, language))
+                elif not is_empty(language):
+                    file.write(f"{language}\\vspace{{-0.5cm}}\n\n")
+            elif not is_empty(language):
+                file.write(f"{language}\\vspace{{-0.5cm}}\n\n")
 
-              
             file.write('\section{{{0}{1} - {2}{3}}}\n\n'.format(draft, all['name'], all['titel'], add_on))
+
+            if language_index == 0:
+                content = all['content']
+            else:
+                try:
+                    if all['content_translation']!= None:
+                        content = all['content_translation']
+                    else:
+                        content = all['content']
+                except KeyError:
+                    content = all['content']
+
             if all['pagebreak']==False:
                 file.write(begin_beispiel(all['themen'], all['punkte']) + "\n") 
-                file.write(all['content'])
+                file.write(content)
                 file.write(end_beispiel)
             elif all['pagebreak']==True:
                 file.write(begin_beispiel_lang(all['punkte']) + "\n")
-                file.write(all['content'])
+                file.write(content)
                 file.write(end_beispiel_lang)
             if variation == True and check_if_variation(all['name']) == True:
                 file.write("}")               

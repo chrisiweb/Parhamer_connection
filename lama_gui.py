@@ -1,4 +1,3 @@
-from ctypes import create_unicode_buffer
 from PyQt5 import QtCore, QtWidgets, QtGui
 
 from create_new_widgets import (
@@ -779,6 +778,32 @@ def setup_stackSearch(self):
     self.cb_drafts.toggled.connect(self.cb_drafts_enabled)
 
 
+    self.widget_translation = QtWidgets.QWidget(self.groupBox_pdf_output)
+    
+
+    self.horizontalLayout_translation = create_new_horizontallayout(self.widget_translation)
+    self.horizontalLayout_translation.setContentsMargins(10,0,0,0)
+
+    self.label_translation = create_new_label(self.widget_translation, "")
+    self.label_translation.setPixmap(QtGui.QPixmap(get_icon_path("globe.svg")))
+    self.label_translation.setFixedSize(QtCore.QSize(20,20))
+    self.label_translation.setScaledContents(True)
+    self.horizontalLayout_translation.addWidget(self.label_translation)
+
+
+    self.combobox_translation = create_new_combobox(self.widget_translation)
+    add_new_option(self.combobox_translation, 0, "Deutsch")
+    add_new_option(self.combobox_translation, 1, "Deutsch & Englisch")
+    add_new_option(self.combobox_translation, 2, "Englisch")
+
+    self.combobox_translation.currentIndexChanged.connect(lambda: self.combobox_translation_changed())
+
+    self.horizontalLayout_translation.addWidget(self.combobox_translation)
+    self.widget_translation.setToolTip("Alle Aufgaben in Deutsch anzeigen")
+
+    self.horizontalLayout_translation.addStretch()
+
+    self.verticalLayout_pdf_output.addWidget(self.widget_translation)
 
     self.verticalLayout_searchMenu.addWidget(self.groupBox_pdf_output)
 
@@ -1391,8 +1416,8 @@ def setup_stackCreator(self):
     self.groupBox_choose_file = create_new_groupbox(
         self.splitter_creator, "Aufgabe auswählen"
     )
-    self.groupBox_choose_file.setMinimumSize(1,1)
-    self.groupBox_choose_file.setSizePolicy(SizePolicy_fixed_height)
+    # self.groupBox_choose_file.setMinimumSize(1,1)
+    # self.groupBox_choose_file.setSizePolicy(SizePolicy_fixed_height)
     # self.groupBox_choose_file.setMaximumWidth(420)
     self.verticalLayout_choose_file = create_new_verticallayout(
         self.groupBox_choose_file
@@ -1404,7 +1429,8 @@ def setup_stackCreator(self):
         "Aufgabe suchen...",
         partial(self.button_variation_cr_pressed, "editor"),
     )
-    self.button_choose_file.setMinimumHeight(20)
+    # self.button_choose_file.setMinimumHeight(20)
+    # self.button_choose_file.sizeHint()
     # self.button_choose_file.setMinimumWidth(0)
     self.verticalLayout_choose_file.addWidget(self.button_choose_file)
 
@@ -1444,7 +1470,7 @@ def setup_stackCreator(self):
     self.gridLayout_11_cr_cria.addWidget(self.tab_widget_cr_cria, 0, 0, 1, 1)
     self.verticalLayout_splitter_creator_left_widget.addWidget(self.groupBox_themengebiete_cria)
     self.groupBox_themengebiete_cria.setTitle("Themengebiete")
-    self.groupBox_themengebiete_cria.setMinimumSize(1,1)
+    # self.groupBox_themengebiete_cria.setMinimumSize(1,1)
     # self.groupBox_themengebiete_cria.hide()
 
 
