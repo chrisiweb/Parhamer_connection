@@ -4088,6 +4088,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         # self.dict_all_examples_wizard[thema] = list_of_examples_wizard
         # print(self.list_of_examples_wizard)
+        
+        # return
         # print(self.dict_all_examples_wizard)
 
         self.reset_aufgabenboxes_wizard()
@@ -4206,9 +4208,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         horizontalLayout_worksheet.addStretch()
         pushButton_edit = create_new_button(self.scrollAreaWidgetContents_complete_worksheet_wizard, "", partial(self.edit_set_of_examples_wizard, widget_worksheet, thema), icon="edit.svg")
+        pushButton_edit.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         horizontalLayout_worksheet.addWidget(pushButton_edit)
 
         pushButton_delete = create_new_button(self.scrollAreaWidgetContents_complete_worksheet_wizard, "", partial(self.delete_set_of_examples_wizard,widget_worksheet), icon="trash-2.svg")
+        pushButton_delete.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         horizontalLayout_worksheet.addWidget(pushButton_delete)        
 
         for all in self.list_of_examples_wizard:

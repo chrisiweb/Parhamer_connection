@@ -18,6 +18,7 @@ class DragDropGroupBox(QtWidgets.QGroupBox):
         
     def mouseMoveEvent(self, e):
         self.MainWindow.moving_aufgabe = self.aufgabe
+        self.setCursor(QCursor(Qt.OpenHandCursor))
         if e.buttons() == Qt.LeftButton:
             drag = QDrag(self)
             mime = QMimeData()

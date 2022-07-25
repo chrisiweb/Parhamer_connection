@@ -7,6 +7,8 @@ from math import floor, ceil
 import decimal
 import re
 
+from numpy import integer
+
 from create_nonograms import nonogramm_empty, all_nonogramms, list_all_pixels
 # import subprocess
 # from tex_minimal import tex_preamble, tex_end
@@ -491,12 +493,22 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
     string  = add_summand(numbers[0], show_brackets)
 
     operators = ['+', '-', '\xb7', ':']
+    reduced_operators = ['+', '-']
     division_pair = None
     bracket_open = False
     waiter_brackets = False
+    # multiplication_pair = False
+    prevent_division = False
 
 
     for i, all in enumerate(numbers[1:]):
+        print(string)
+        # if multiplication_pair == True:
+        #     multiplication_pair = False
+        #     prevent_division = True
+        #     continue
+
+
         if division_pair == 'done':
             division_pair = None
         elif division_pair != None:
@@ -515,8 +527,14 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
                 
             division_pair = 'done'
             continue
+        
+        elif prevent_division == True:
+            operation = random.choice(reduced_operators)
+            prevent_division = False
         else:
             operation = random.choice(operators)
+
+        print(operation)
 
         if operation == ':':
             waiter_brackets = False
@@ -537,16 +555,27 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
                 continue
             else:
                 if i < len(numbers[1:])-1:
-                    operation = random.choice([x for x in operators if x!=':'])
+                    print('A')
+                    if commas !=0:
+                        operation = random.choice([x for x in reduced_operators])
+                    else:
+                        operation = random.choice([x for x in operators if x!=':'])
                     string += operation
                     division_pair = [all, operation]
                 elif len(numbers)==2:
                     string = create_division_pair(numbers[0], all, show_brackets) 
                 else:
-                    operation = random.choice([x for x in operators if x!=':'])
+                    print('B')
+                    if commas !=0:
+                        operation = random.choice([x for x in reduced_operators])
+                    else:
+                        operation = random.choice([x for x in operators if x!=':'])
                     string += operation + add_summand(all, show_brackets)            
+        
         else:
-            if brackets_allowed == True and random_switch(70) == True and waiter_brackets==False:
+            if operation == '\xb7' and commas != 0:
+                string +=operation
+            elif brackets_allowed == True and random_switch(70) == True and waiter_brackets==False:
                 if bracket_open == False:
                     string +=operation
                     if show_brackets == False:
@@ -565,9 +594,15 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
                     waiter_brackets = False  
             else:
                 string += operation
-                waiter_brackets = False           
+                waiter_brackets = False
 
-            string += add_summand(all, show_brackets)
+            if operation == '\xb7' and commas != 0:
+                integer = get_random_number(minimum, maximum, 0, 25)
+                string += add_summand(integer, show_brackets)
+                prevent_division = True
+            else:
+                string += add_summand(all, show_brackets)
+            
 
     if bracket_open == True:
         if waiter_brackets == True:
@@ -590,14 +625,15 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
         string, solution = check_for_negative_solutions(string)
 
 
-    solution = D("{:.{prec}f}".format(solution, prec=set_commas))
+    solution = D("{:.{prec}f}".format(solution, prec=set_commas)) #
 
   
 
     if solution == 0:
         solution = 0
     string = "{0} = {1}".format(string.replace(".",","), str(solution).replace(".",","))
-
+    
+    # print([numbers, solution, string])
     return [numbers, solution, string] 
 
 

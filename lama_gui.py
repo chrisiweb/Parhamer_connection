@@ -2737,6 +2737,7 @@ def setup_stackWizard(self):
     self.horizontalLayout_worksheet_wizard = create_new_horizontallayout(self.groupBox_complete_worksheet_wizard)
 
     self.scrollArea_complete_worksheet_wizard = QtWidgets.QScrollArea(self.groupBox_complete_worksheet_wizard)
+    self.scrollArea_complete_worksheet_wizard.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
     # self.scrollArea_chosen_wizard.setFrameShape(QtWidgets.QFrame.StyledPanel)
     self.scrollArea_complete_worksheet_wizard.setWidgetResizable(True)
     self.scrollArea_complete_worksheet_wizard.setObjectName("scrollArea_complete_worksheet_wizard")
