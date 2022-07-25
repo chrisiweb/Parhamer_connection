@@ -3949,7 +3949,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         # num_of_examples = 0
         # for all in self.dict_all_examples_wizard:
-        num_of_examples = len(self.list_of_examples_wizard)
+        try:
+            num_of_examples = len(self.list_of_examples_wizard)
+        except AttributeError:
+            self.list_of_examples_wizard = []
+            num_of_examples = len(self.list_of_examples_wizard)
+
+
 
         items_per_column= num_of_examples/columns
         column = 0

@@ -502,13 +502,6 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
 
 
     for i, all in enumerate(numbers[1:]):
-        print(string)
-        # if multiplication_pair == True:
-        #     multiplication_pair = False
-        #     prevent_division = True
-        #     continue
-
-
         if division_pair == 'done':
             division_pair = None
         elif division_pair != None:
@@ -534,8 +527,6 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
         else:
             operation = random.choice(operators)
 
-        print(operation)
-
         if operation == ':':
             waiter_brackets = False
             rsp = random_switch()
@@ -555,7 +546,6 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
                 continue
             else:
                 if i < len(numbers[1:])-1:
-                    print('A')
                     if commas !=0:
                         operation = random.choice([x for x in reduced_operators])
                     else:
@@ -565,7 +555,6 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
                 elif len(numbers)==2:
                     string = create_division_pair(numbers[0], all, show_brackets) 
                 else:
-                    print('B')
                     if commas !=0:
                         operation = random.choice([x for x in reduced_operators])
                     else:
