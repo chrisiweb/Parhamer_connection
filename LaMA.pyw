@@ -1132,7 +1132,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         # self.label_bild_leer.show()
 
         self.chosen_variation = None
-        self.reset_variation()
+        # self.reset_variation()
 
         for image in list(self.dict_picture_path.keys())[:]:
             self.del_picture(image, question=False)    
@@ -2128,6 +2128,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                         self.button_variation_cr.setText(
                             "Variation von: {}".format(self.chosen_variation.upper())
                         )
+                        self.pushButton_save_translation.hide()
+                        self.pushButton_save.show()
                     elif mode == "translation":
                         self.chosen_file_to_edit = ui.chosen_variation
                         typ = get_aufgabentyp(self.chosen_program, self.chosen_file_to_edit)
@@ -5482,6 +5484,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
         groupbox_pkt = create_new_groupbox(new_groupbox, "Punkte")
+        groupbox_pkt.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         groupbox_pkt.setSizePolicy(SizePolicy_fixed)
         gridLayout_gB.addWidget(groupbox_pkt, 0, 2, 2, 1, QtCore.Qt.AlignRight)
 
@@ -5555,6 +5558,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         
         button_translation.setText(language)
         button_translation.setIcon(QtGui.QIcon(get_icon_path("globe.svg")))
+        button_translation.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         button_translation.clicked.connect(lambda: self.btn_translation_pressed(button_translation, aufgabe))
 
         self.dict_variablen_translation[aufgabe] = button_translation.text()
@@ -5608,6 +5612,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
         button_up = create_new_button(new_groupbox, "", partial(self.btn_up_pressed, aufgabe))
+        button_up.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         button_up.setIcon(QtGui.QIcon(get_icon_path('arrow-up-circle.svg'))) 
         button_up.setSizePolicy(SizePolicy_fixed)
         # button_up = create_standard_button(
@@ -5625,6 +5630,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         #     button_up.setEnabled(False)
 
         button_down = create_new_button(new_groupbox, "", partial(self.btn_down_pressed, aufgabe))
+        button_down.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         button_down.setIcon(QtGui.QIcon(get_icon_path('arrow-down-circle.svg'))) 
         button_down.setSizePolicy(SizePolicy_fixed)
 
@@ -5653,14 +5659,16 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             "",
             partial(self.pushButton_edit_pressed, aufgabe),
         )
-        pushbutton_edit.setIcon(QtGui.QIcon(get_icon_path('edit.svg'))) 
+        pushbutton_edit.setIcon(QtGui.QIcon(get_icon_path('edit.svg')))
+        pushbutton_edit.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor)) 
         # pushbutton_ausgleich.setStyleSheet("padding: 6px")
         pushbutton_edit.setSizePolicy(SizePolicy_maximum)
 
         gridLayout_gB.addWidget(pushbutton_edit, 1, 5, 1, 1)
 
         button_delete = create_new_button(new_groupbox, "", partial(self.btn_delete_pressed, aufgabe))
-        button_delete.setIcon(QtGui.QIcon(get_icon_path('trash-2.svg'))) 
+        button_delete.setIcon(QtGui.QIcon(get_icon_path('trash-2.svg')))
+        button_delete.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor)) 
         button_delete.setSizePolicy(SizePolicy_fixed)
 
         # button_delete = create_standard_button(
@@ -5672,6 +5680,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         gridLayout_gB.addWidget(button_delete, 1, 6, 1, 1)
 
         groupbox_abstand_ausgleich = create_new_groupbox(new_groupbox, "Abstand (cm)  ")
+        groupbox_abstand_ausgleich.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         groupbox_abstand_ausgleich.setSizePolicy(SizePolicy_fixed)
         # groupbox_abstand.setMaximumSize(QtCore.QSize(100, 16777215))
         gridLayout_gB.addWidget(groupbox_abstand_ausgleich, 0,3, 2, 1)
@@ -5712,6 +5721,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # pushbutton_aufgabe_bearbeiten = create_new_button(groupbox_pkt, 'Aufgabe bearbeiten', still_to_define)
         # gridLayout_gB.addWidget(pushbutton_aufgabe_bearbeiten, 0,1,1,1)
 
+        new_groupbox.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
         return new_groupbox
 
     def get_klasse(self, mode="sage"):

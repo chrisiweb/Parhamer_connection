@@ -573,7 +573,8 @@ def get_output_size(gesammeltedateien, variation, spezielle_suche, language_inde
         for all in gesammeltedateien:
             try:
                 if all['content_translation'] != None:
-                    number +=1
+                    if variation == True or check_if_variation(all['name']) == False:
+                        number +=1
             except KeyError:
                 pass
         return number

@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets
-from PyQt5.QtGui import QDrag, QPixmap, QIcon
+from PyQt5.QtGui import QDrag, QPixmap, QIcon, QCursor
 from PyQt5.QtCore import Qt, QMimeData, QSize
 from config import SpinBox_noWheel, ClickLabel
 from translate import _fromUtf8, _translate
@@ -22,12 +22,16 @@ class DragDropGroupBox(QtWidgets.QGroupBox):
             drag = QDrag(self)
             mime = QMimeData()
             drag.setMimeData(mime)
-
             pixmap = QPixmap(self.size())
             self.render(pixmap)
             drag.setPixmap(pixmap)
 
             drag.exec_(Qt.MoveAction)
+    def mousePressEvent(self, e):
+        self.setCursor(QCursor(Qt.ClosedHandCursor))
+    
+    def mouseReleaseEvent(self, e):
+        self.setCursor(QCursor(Qt.OpenHandCursor))
 
 
 class DragDropWidget(QtWidgets.QWidget):

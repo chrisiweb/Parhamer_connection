@@ -1831,6 +1831,7 @@ def setup_stackCreator(self):
     self.horizontalLayout_creatorButtons.addWidget(self.pushButton_save)
     self.pushButton_save.setText("Speichern")
     self.pushButton_save.setIcon(QtGui.QIcon(get_icon_path('save.svg')))
+    # self.pushButton_save.hide()
 
     self.pushButton_save_translation = QtWidgets.QPushButton(self.widgetcreatorButtons)
     self.pushButton_save_translation.setObjectName("pushButton_save")
