@@ -883,12 +883,14 @@ class Ui_Dialog_ausgleichspunkte(object):
         list_sage_ausgleichspunkte_chosen,
         list_sage_hide_show_items_chosen,
         sage_individual_change,
+        language,
         display_mode,
         developer_mode_active,
         chosen_program,
     ):
         # self.content = content
         self.sage_individual_change = sage_individual_change
+        self.language = language
         self.typ = typ
         # self.developer_mode_active = developer_mode_active
         if typ==2:
@@ -978,8 +980,14 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.plainTextEdit_content.setObjectName(_fromUtf8("plainTextEdit_content"))
         self.plainTextEdit_content.textChanged.connect(self.plainTextEdit_content_changed)
         self.plainTextEdit_content.setUndoRedoEnabled(False)
-        if self.sage_individual_change != None:
-            self.plainTextEdit_content.insertPlainText(self.sage_individual_change)
+        if language == "DE":
+            key = 0
+        elif language == "EN":
+            key = 1
+
+        if self.sage_individual_change[key] != None:
+            # print(self.sage_individual_change)
+            self.plainTextEdit_content.insertPlainText(self.sage_individual_change[key])
         else:
             self.plainTextEdit_content.insertPlainText(content)
         self.plainTextEdit_content.moveCursor(QTextCursor.Start)
@@ -1009,7 +1017,7 @@ class Ui_Dialog_ausgleichspunkte(object):
 
 
         if developer_mode_active == True:
-            self.button_save_edit = create_new_button(Dialog, "Änderung speichern", partial(self.button_save_edit_pressed, aufgabe, chosen_program))
+            self.button_save_edit = create_new_button(Dialog, "Änderung speichern", partial(self.button_save_edit_pressed_individual_changes, aufgabe, chosen_program, language))
             self.button_save_edit.setIcon(QIcon(get_icon_path('save.svg')))
             self.button_save_edit.setSizePolicy(SizePolicy_fixed)
             self.gridlayout_titlepage.addWidget(self.button_save_edit, 3,2,1,1)
@@ -1180,10 +1188,15 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.plainTextEdit_content.clear()
             typ = get_aufgabentyp(chosen_program, aufgabe)
             aufgabe_total = get_aufgabe_total(aufgabe, typ)
-            self.plainTextEdit_content.insertPlainText(aufgabe_total['content'])
+            if self.language == "DE":
+                key = 'content'
+            elif self.language == "EN":
+                key = 'content_translation'
+            
+            self.plainTextEdit_content.insertPlainText(aufgabe_total[key])
             information_window("Die originale Aufgabe wurde wiederhergestellt.",titel="Original wiederhergestellt")
 
-    def button_save_edit_pressed(self, aufgabe, chosen_program):
+    def button_save_edit_pressed_individual_changes(self, aufgabe, chosen_program, language):
         rsp = question_window("Sind Sie sicher, dass Sie originale Aufgabe mit dem geänderten Inhalt überschreiben möchten?")
         if rsp == False:
             return
@@ -1213,7 +1226,12 @@ class Ui_Dialog_ausgleichspunkte(object):
         typ = get_aufgabentyp(chosen_program, aufgabe)
         new_content = self.plainTextEdit_content.toPlainText()
 
-        update_data(aufgabe, typ, 'content', new_content)
+        if language == 'DE':
+            entry_key = 'content'
+        elif language == 'EN':
+            entry_key = 'content_translation'
+
+        update_data(aufgabe, typ, entry_key, new_content)
 
         QtWidgets.QApplication.restoreOverrideCursor()
 
@@ -1468,7 +1486,12 @@ class Ui_Dialog_ausgleichspunkte(object):
         
         if not is_empty(self.list_sage_hide_show_items_chosen):
             return True
-        if self.sage_individual_change != None:
+        
+        if self.language == "DE":
+            index =0
+        elif self.language == "EN":
+            index = 1
+        if self.sage_individual_change[index] != None:
             return True
 
         return False      
@@ -1494,9 +1517,17 @@ class Ui_Dialog_ausgleichspunkte(object):
         aufgabe_total = get_aufgabe_total(aufgabe, typ)
 
         if self.combobox_edit.currentIndex() == 2 or self.typ != 2:
+            if self.language == "DE":
+                key = 'content'
+                index = 0
+            elif self.language == "EN":
+                key = 'content_translation'
+                index = 1
 
-            if aufgabe_total['content'] != self.plainTextEdit_content.toPlainText():
-                self.sage_individual_change = self.plainTextEdit_content.toPlainText()
+            if aufgabe_total[key] != self.plainTextEdit_content.toPlainText():
+                self.sage_individual_change[index] = self.plainTextEdit_content.toPlainText()
+            else:
+                self.sage_individual_change[index] = None
 
         elif self.combobox_edit.currentIndex() == 0:
             for index, linetext in enumerate(self.aufgabenstellung_split_text):  #list(self.dict_widget_variables_ausgleichspunkte.keys())

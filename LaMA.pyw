@@ -5119,7 +5119,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     @report_exceptions
     def btn_translation_pressed(self, button, aufgabe):
-        print('translation')
         if button.text() == "DE":
             button.setText("EN")
         else:
@@ -5197,7 +5196,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def btn_delete_pressed(self, aufgabe):
         try:
             self.dict_sage_individual_change[aufgabe]
-            if not is_empty(self.dict_sage_individual_change[aufgabe]):
+            if self.dict_sage_individual_change[aufgabe][0] != None or self.dict_sage_individual_change[aufgabe][1] != None:
                 response = question_window(
                     "Diese Aufgabe wurde abgeändert!\n\nWenn Sie diese Aufgabe löschen, werden auch alle Änderungen, die an dieser Aufgabe vorgenommen wurden, gelöscht.",
                     "Sind Sie sicher, dass Sie diese Aufgaben entfernen möchten?",
@@ -5915,7 +5914,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         if aufgabe in self.dict_sage_individual_change.keys():
             sage_individual_change = self.dict_sage_individual_change[aufgabe]
         else:
-            sage_individual_change = None
+            sage_individual_change = [None, None]
 
         Dialog = QtWidgets.QDialog(
             None,
@@ -5935,6 +5934,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             list_sage_ausgleichspunkte_chosen,
             list_sage_hide_show_items_chosen,
             sage_individual_change,
+            self.dict_variablen_translation[aufgabe],
             self.display_mode,
             self.developer_mode_active,
             self.chosen_program,
@@ -5942,8 +5942,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         Dialog.exec_()
 
-        if ui.sage_individual_change != None:
+        if ui.sage_individual_change == [None, None] and aufgabe in self.dict_sage_individual_change:
+            self.dict_sage_individual_change.pop(aufgabe)
+        else:
             self.dict_sage_individual_change[aufgabe] = ui.sage_individual_change
+
+        # print(self.dict_sage_individual_change)
+
+            
 
         if typ == 2:
             if not is_empty(ui.list_sage_ausgleichspunkte_chosen):
@@ -6494,11 +6500,26 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         else:
             vspace = "\\vspace{{{0}cm}} \n\n".format(abstand)
 
-
+        
+            # print(f"{aufgabe}: {self.dict_variablen_translation[aufgabe]}")
 
         if aufgabe in self.dict_sage_individual_change:
-            content = self.dict_sage_individual_change[aufgabe]
+            if self.dict_variablen_translation[aufgabe] == "DE":
+                index = 0
+                entry_key = "content"
+            elif self.dict_variablen_translation[aufgabe] == "EN":
+                index = 1
+                entry_key = "content_translation"
 
+
+            if self.dict_sage_individual_change[aufgabe][index] != None:
+                content = self.dict_sage_individual_change[aufgabe][index]
+            else:
+                content = aufgabe_total[entry_key]
+
+        elif self.dict_variablen_translation[aufgabe] == "EN":
+            content = aufgabe_total["content_translation"]
+            
         elif aufgabe in self.dict_sage_ausgleichspunkte_chosen:
             full_content = aufgabe_total["content"]
 
