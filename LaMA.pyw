@@ -2905,9 +2905,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 warning_window(warning)
                 return
 
-        print('no warning')
-        return
-
         (
             _,
             themen,
