@@ -2083,6 +2083,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.enable_widgets_editor(False)
         self.button_language.setToolTip("")
         self.button_language.setText("DE")
+        self.button_translation_cr.setText("Übersetzung")
         self.plainTextEdit.clear()
         try:
             del self.temporary_save_edit_plainText_deutsch

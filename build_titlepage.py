@@ -123,7 +123,7 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
         ):
             subsection = self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
         else:
-            if self.groupBox_nummer.isEnabled() == False:
+            if self.widgetNummer.isEnabled() == False:
                 subsection = self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
             else:
                 if self.dict_all_infos_for_file["data_gesamt"]["#"]==0:
