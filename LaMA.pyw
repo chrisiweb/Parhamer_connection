@@ -11,6 +11,7 @@ show_popup = False
 
 
 from distutils.log import warn
+from urllib import response
 from lama_gui import setup_stackWizard
 from start_window import check_if_database_exists
 # from worksheet_wizard import get_all_solution_pixels
@@ -2035,7 +2036,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.widget_basic_settings_creator.setEnabled(False)
             self.groupBox_titel_cr.setEnabled(False)
             self.groupBox_quelle.setEnabled(False)
-            self.groupBox_bilder.setEnabled(False)
+            # self.groupBox_bilder.setEnabled(False)
 
             if self.chosen_program == "cria":
                 self.groupBox_themengebiete_cria.setEnabled(False)
@@ -2896,10 +2897,16 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         warning = self.check_entry_creator(mode, typ)
         if warning != None:
-            warning_window(warning)
-            return
+            if self.developer_mode_active == True:
+                rsp = question_window(f"WARNUNG: {warning}", "Möchten Sie die Aufgabe dennoch speichern?", default='no')
+                if rsp == False:
+                    return
+            else:
+                warning_window(warning)
+                return
 
-       
+        print('no warning')
+        return
 
         (
             _,
