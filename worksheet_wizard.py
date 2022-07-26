@@ -7,7 +7,6 @@ from math import floor, ceil
 import decimal
 import re
 
-from numpy import integer
 
 from create_nonograms import nonogramm_empty, all_nonogramms, list_all_pixels
 # import subprocess

@@ -8,10 +8,6 @@ __lastupdate__ = "04/22"
 
 show_popup = False
 
-
-
-from distutils.log import warn
-from urllib import response
 from lama_gui import setup_stackWizard
 from start_window import check_if_database_exists
 # from worksheet_wizard import get_all_solution_pixels

@@ -42,6 +42,7 @@ widgets_edit = [
     "self.pushButton_save_as_variation_edit",
     "self.pushButton_save_edit",
     "self.button_language",
+    "self.pushButton_save",
 ]
 
 widgets_sage = [
