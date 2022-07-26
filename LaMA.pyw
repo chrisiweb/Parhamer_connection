@@ -2161,6 +2161,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     self.button_choose_file.setText(
                         "Gewählte Aufgabe: {}".format(self.chosen_file_to_edit.upper())
                     )
+                    self.pushButton_save.hide()
                 else:
                     self.suchfenster_reset(True)
                     self.reset_edit_file()
