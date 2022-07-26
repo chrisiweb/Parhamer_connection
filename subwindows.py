@@ -40,7 +40,7 @@ from create_new_widgets import (
     add_new_option,
 )
 from standard_dialog_windows import critical_window, information_window, question_window, warning_window
-from predefined_size_policy import SizePolicy_fixed, SizePolicy_fixed_height, SizePolicy_maximum, SizePolicy_maximum_width
+from predefined_size_policy import SizePolicy_fixed, SizePolicy_fixed_height, SizePolicy_fixed_width, SizePolicy_maximum, SizePolicy_maximum_width
 from work_with_content import prepare_content_for_hide_show_items
 from lama_stylesheets import (
     StyleSheet_tabWidget,
@@ -880,7 +880,6 @@ class Ui_Dialog_ausgleichspunkte(object):
         typ,
         content,
         aufgabenstellung_split_text,
-        list_sage_ausgleichspunkte_chosen,
         list_sage_hide_show_items_chosen,
         sage_individual_change,
         language,
@@ -898,10 +897,10 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.hide_show_items_split_text = prepare_content_for_hide_show_items(
                 aufgabenstellung_split_text
             )
-            self.list_sage_ausgleichspunkte_chosen = list_sage_ausgleichspunkte_chosen
+            # self.list_sage_ausgleichspunkte_chosen = list_sage_ausgleichspunkte_chosen
             self.list_sage_hide_show_items_chosen = list_sage_hide_show_items_chosen
             # print(sage_individual_change)
-            self.dict_widget_variables_ausgleichspunkte = {}
+            # self.dict_widget_variables_ausgleichspunkte = {}
             self.dict_widget_variables_hide_show_items = {}
 
         self.Dialog = Dialog
@@ -922,15 +921,12 @@ class Ui_Dialog_ausgleichspunkte(object):
 
         self.combobox_edit = create_new_combobox(self.widgetHeader)
         self.combobox_edit.setSizePolicy(SizePolicy_fixed)
-        # if typ == 2:
-        #     self.gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,5)
-        # else:
-        #     self.gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,4)
+
         self.horizontalLayoutHeader.addWidget(self.combobox_edit)
         # self.gridlayout_titlepage.setColumnStretch(1,0)
         # self.gridlayout_titlepage.addItem(QtWidgets.QSpacerItem(10, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum),0,3,1,1)
         if typ == 2:
-            self.combobox_edit.addItem("Ausgleichspunkte anpassen")
+            # self.combobox_edit.addItem("Ausgleichspunkte anpassen")
             self.combobox_edit.addItem("Aufgabenstellungen ein-/ausblenden")
         self.combobox_edit.addItem("Individuell bearbeiten")
         if typ !=2:
@@ -938,6 +934,7 @@ class Ui_Dialog_ausgleichspunkte(object):
             # self.combobox_edit.setStyleSheet("color: black")
 
         if typ ==2:
+            self.combobox_edit.setCurrentIndex(0)
             self.combobox_edit.currentIndexChanged.connect(partial(self.combobox_edit_changed, aufgabe, chosen_program))
             self.scrollArea = QtWidgets.QScrollArea(Dialog)
             self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
@@ -1102,9 +1099,9 @@ class Ui_Dialog_ausgleichspunkte(object):
 
         if typ == 2:
             if not is_empty(list_sage_hide_show_items_chosen):
-                self.combobox_edit.setCurrentIndex(1)
+                self.combobox_edit.setCurrentIndex(0)
             elif sage_individual_change != None:
-                self.combobox_edit.setCurrentIndex(2)
+                self.combobox_edit.setCurrentIndex(1)
 
     def change_detected_warning(self):
         response = question_window("Es wurden bereits nicht gespeicherte Änderungen an der Aufgabe vorgenommen.",
@@ -1112,7 +1109,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         return response
 
     def check_for_change(self):
-        for index in [0,1,2]:
+        for index in [0,1]:
             change_detected = eval("self.change_detected_{}".format(index))
             if change_detected == True:  
                 return index
@@ -1149,7 +1146,7 @@ class Ui_Dialog_ausgleichspunkte(object):
 
         for i in reversed(range(1, self.gridLayout.count())):
             self.gridLayout.itemAt(i).widget().setParent(None)
-        if self.combobox_edit.currentIndex() == 0 or self.combobox_edit.currentIndex() == 1:
+        if self.combobox_edit.currentIndex() == 0:
 
             self.gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,5)
             self.button_undo.hide()
@@ -1164,7 +1161,7 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.button_zoom_in.hide()
             self.button_zoom_out.hide()
 
-        elif self.combobox_edit.currentIndex() == 2:
+        elif self.combobox_edit.currentIndex() == 1:
             self.gridlayout_titlepage.addWidget(self.combobox_edit, 0,0,1,4)
             # self.gridlayout_titlepage.update()
             self.button_undo.show()
@@ -1333,21 +1330,21 @@ class Ui_Dialog_ausgleichspunkte(object):
 
     def build_checkboxes_for_content(self):
         row = 1
-        if self.combobox_edit.currentIndex() == 0:
-            for index, linetext in enumerate(self.aufgabenstellung_split_text):
-                if (
-                    "GRAFIK" in linetext
-                    or is_empty(linetext.replace("ITEM", "").strip()) == True
-                ) and self.combobox_edit.currentIndex() == 0:  #
-                    checkbox = None
-                else:
-                    checkbox, checkbox_label = self.create_checkbox_ausgleich(
-                        linetext, row, index
-                    )
+        # if self.combobox_edit.currentIndex() == 0:
+        #     for index, linetext in enumerate(self.aufgabenstellung_split_text):
+        #         if (
+        #             "GRAFIK" in linetext
+        #             or is_empty(linetext.replace("ITEM", "").strip()) == True
+        #         ) and self.combobox_edit.currentIndex() == 0:  #
+        #             checkbox = None
+        #         else:
+        #             checkbox, checkbox_label = self.create_checkbox_ausgleich(
+        #                 linetext, row, index
+        #             )
 
-                row += 1
+        #         row += 1
                     
-        elif self.combobox_edit.currentIndex() == 1:
+        if self.combobox_edit.currentIndex() == 0:
             for index, linetext in enumerate(self.hide_show_items_split_text):
                 if is_empty(linetext.replace("ITEM", "").strip()) == False:
 
@@ -1369,8 +1366,8 @@ class Ui_Dialog_ausgleichspunkte(object):
     def checkbox_changed(self):
         if self.combobox_edit.currentIndex()==0:
             self.change_detected_0 = True
-        elif self.combobox_edit.currentIndex() == 1:
-            self.change_detected_1 = True
+        # elif self.combobox_edit.currentIndex() == 1:
+        #     self.change_detected_1 = True
             # self.checkbox_clicked(checkbox, checkbox_label)
 
 
@@ -1393,7 +1390,7 @@ class Ui_Dialog_ausgleichspunkte(object):
 
         # if checkbox.isChecked() == True:
         #     checkbox_label.setStyleSheet(stylesheet)
-        if self.combobox_edit.currentIndex() == 1:
+        if self.combobox_edit.currentIndex() == 0:
             if checkbox.isChecked() == False:
                 checkbox_label.setStyleSheet("color: gray")
             else:
@@ -1403,8 +1400,8 @@ class Ui_Dialog_ausgleichspunkte(object):
         checkbox_label = create_new_label(self.scrollAreaWidgetContents, "",wordwrap=True, clickable=True)
 
         checkbox = create_new_checkbox(self.scrollAreaWidgetContents, "")
-        checkbox.setStyleSheet("QCheckBox::indicator { width: 20px; height: 20px;}")
-        # checkbox.setSizePolicy(SizePolicy_fixed)
+        checkbox.setStyleSheet("QCheckBox::indicator { width: 20px; height: 20px; padding-right: 10px}")
+        checkbox.setSizePolicy(SizePolicy_fixed_width)
 
 
 
@@ -1421,12 +1418,12 @@ class Ui_Dialog_ausgleichspunkte(object):
         checkbox.stateChanged.connect(partial(self.checkbox_clicked, checkbox, checkbox_label))
 
 
-        if self.combobox_edit.currentIndex() == 0:
-            self.dict_widget_variables_ausgleichspunkte[linetext] = checkbox
-            if index in self.list_sage_ausgleichspunkte_chosen:
-                checkbox.setChecked(True)
+        # if self.combobox_edit.currentIndex() == 0:
+        #     self.dict_widget_variables_ausgleichspunkte[linetext] = checkbox
+        #     if index in self.list_sage_ausgleichspunkte_chosen:
+        #         checkbox.setChecked(True)
 
-        if self.combobox_edit.currentIndex() == 1:
+        if self.combobox_edit.currentIndex() == 0:
             self.dict_widget_variables_hide_show_items[linetext] = checkbox
             if index in self.list_sage_hide_show_items_chosen:
                 checkbox.setChecked(False)
@@ -1467,22 +1464,22 @@ class Ui_Dialog_ausgleichspunkte(object):
             checkbox.setChecked(False)
         else:
             checkbox.setChecked(True)
-        if self.combobox_edit.currentIndex() == 1:
+        if self.combobox_edit.currentIndex() == 0:
             self.checkbox_clicked(checkbox, checkbox_label)
 
     def check_if_saved_changes_exist(self):
 
-        if not is_empty(self.list_sage_ausgleichspunkte_chosen):
-            for index in self.list_sage_ausgleichspunkte_chosen:
-                if "\\fbox{A}" in self.aufgabenstellung_split_text[index] or "\\ASubitem" in self.aufgabenstellung_split_text[index]:
-                    continue
-                else:
-                    return True
-            # return False
-        elif is_empty(self.list_sage_ausgleichspunkte_chosen):
-            for all in self.aufgabenstellung_split_text:
-                if "\\fbox{A}" in all or "\\ASubitem" in all:
-                    return True
+        # if not is_empty(self.list_sage_ausgleichspunkte_chosen):
+        #     for index in self.list_sage_ausgleichspunkte_chosen:
+        #         if "\\fbox{A}" in self.aufgabenstellung_split_text[index] or "\\ASubitem" in self.aufgabenstellung_split_text[index]:
+        #             continue
+        #         else:
+        #             return True
+        #     # return False
+        # if is_empty(self.list_sage_ausgleichspunkte_chosen):
+        #     for all in self.aufgabenstellung_split_text:
+        #         if "\\fbox{A}" in all or "\\ASubitem" in all:
+        #             return True
         
         if not is_empty(self.list_sage_hide_show_items_chosen):
             return True
@@ -1508,7 +1505,7 @@ class Ui_Dialog_ausgleichspunkte(object):
                 if response == False:
                     return
 
-        self.list_sage_ausgleichspunkte_chosen = []
+        # self.list_sage_ausgleichspunkte_chosen = []
         self.list_sage_hide_show_items_chosen = []   
         # self.sage_individual_change = []
 
@@ -1516,7 +1513,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         typ = get_aufgabentyp(chosen_program, aufgabe)
         aufgabe_total = get_aufgabe_total(aufgabe, typ)
 
-        if self.combobox_edit.currentIndex() == 2 or self.typ != 2:
+        if self.combobox_edit.currentIndex() == 1 or self.typ != 2:
             if self.language == "DE":
                 key = 'content'
                 index = 0
@@ -1529,21 +1526,21 @@ class Ui_Dialog_ausgleichspunkte(object):
             else:
                 self.sage_individual_change[index] = None
 
-        elif self.combobox_edit.currentIndex() == 0:
-            for index, linetext in enumerate(self.aufgabenstellung_split_text):  #list(self.dict_widget_variables_ausgleichspunkte.keys())
-                try:
-                    if (
-                        self.dict_widget_variables_ausgleichspunkte[linetext].isChecked()
-                        == True
-                    ):
-                        self.list_sage_ausgleichspunkte_chosen.append(index)
-                except KeyError:
-                    pass
+        # elif self.combobox_edit.currentIndex() == 0:
+        #     for index, linetext in enumerate(self.aufgabenstellung_split_text):  #list(self.dict_widget_variables_ausgleichspunkte.keys())
+        #         try:
+        #             if (
+        #                 self.dict_widget_variables_ausgleichspunkte[linetext].isChecked()
+        #                 == True
+        #             ):
+        #                 self.list_sage_ausgleichspunkte_chosen.append(index)
+        #         except KeyError:
+        #             pass
                 #     self.list_sage_ausgleichspunkte_chosen.append(
                 #         linetext.replace("\\fbox{A}", "").replace("\\ASubitem", "")
                 #     )
 
-        elif self.combobox_edit.currentIndex() == 1:
+        elif self.combobox_edit.currentIndex() == 0:
             for index, linetext in enumerate(self.hide_show_items_split_text): #list(self.dict_widget_variables_hide_show_items.keys())
                 try:
                     if (

@@ -100,8 +100,8 @@ class Ui_MainWindow(object):
         self.dict_variablen_translation = {}
         self.dict_variablen_AB = {}
         self.dict_variablen_abstand = {}
-        self.dict_variablen_label = {}
-        self.dict_sage_ausgleichspunkte_chosen = {}
+        # self.dict_variablen_label = {}
+        # self.dict_sage_ausgleichspunkte_chosen = {}
         self.dict_sage_hide_show_items_chosen = {}
         self.dict_sage_individual_change = {}
         self.dict_chosen_topics = {}
@@ -1205,7 +1205,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         self.lineEdit_number.setText("")
         self.dict_all_infos_for_file = {
             "list_alle_aufgaben": [],
-            "dict_ausgleichspunkte": {},
+            # "dict_ausgleichspunkte": {},
             "data_gesamt": {
                 "#": self.spinBox_nummer.value(),
                 "Pruefungstyp": self.comboBox_pruefungstyp.currentText(),
@@ -1234,7 +1234,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
 
         self.list_alle_aufgaben_sage = [[],[]]
         # self.dict_alle_aufgaben_sage = {}
-        self.dict_variablen_label = {}
+        # self.dict_variablen_label = {}
         self.dict_variablen_punkte = {}
         self.dict_variablen_punkte_halb = {}
         self.dict_variablen_translation = {}
@@ -4830,12 +4830,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         day = self.dict_all_infos_for_file["data_gesamt"]["Datum"][2]
         self.dateEdit.setDate(QtCore.QDate(year, month, day))
 
-        try:
-            self.dict_sage_ausgleichspunkte_chosen = self.dict_all_infos_for_file[
-                "dict_ausgleichspunkte"
-            ]
-        except KeyError:
-            self.dict_sage_ausgleichspunkte_chosen = {}
+        # try:
+        #     self.dict_sage_ausgleichspunkte_chosen = self.dict_all_infos_for_file[
+        #         "dict_ausgleichspunkte"
+        #     ]
+        # except KeyError:
+        #     self.dict_sage_ausgleichspunkte_chosen = {}
 
         try:
             self.dict_sage_hide_show_items_chosen = self.dict_all_infos_for_file[
@@ -5181,13 +5181,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         del self.dict_variablen_AB[aufgabe]
 
         if typ == 2:
-            del self.dict_variablen_label[aufgabe]
+            # del self.dict_variablen_label[aufgabe]
             self.list_alle_aufgaben_sage[1].remove(aufgabe)
         else:
             self.list_alle_aufgaben_sage[0].remove(aufgabe)
 
-        if aufgabe in self.dict_sage_ausgleichspunkte_chosen:
-            del self.dict_sage_ausgleichspunkte_chosen[aufgabe]
+        # if aufgabe in self.dict_sage_ausgleichspunkte_chosen:
+        #     del self.dict_sage_ausgleichspunkte_chosen[aufgabe]
         if aufgabe in self.dict_sage_hide_show_items_chosen:
             del self.dict_sage_hide_show_items_chosen[aufgabe]
         if aufgabe in self.dict_sage_individual_change:
@@ -5378,7 +5378,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         return self.dict_variablen_punkte[aufgabe].value()
 
     def get_abstand_aufgabe_sage(self, aufgabe):
-        return self.dict_variablen_abstand[aufgabe].value()
+        try:
+            return self.dict_variablen_abstand[aufgabe].value()
+        except KeyError:
+            return 0
 
     def get_punkte_halb_aufgabe_sage(self, aufgabe):
         typ = get_aufgabentyp(self.chosen_program, aufgabe)
@@ -5390,12 +5393,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
 
-    def count_ausgleichspunkte(self, content):
-        number = content.count("\ASubitem")
-        number = number + content.count("\Aitem")
-        number = number + content.count("fbox{A}")
+    # def count_ausgleichspunkte(self, content):
+    #     number = content.count("\ASubitem")
+    #     number = number + content.count("\Aitem")
+    #     number = number + content.count("fbox{A}")
 
-        return number
+    #     return number
 
     def create_neue_aufgaben_box(self, index, aufgabe, aufgabe_total):
         typ = get_aufgabentyp(self.chosen_program, aufgabe)
@@ -5539,10 +5542,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             horizontalLayout_groupbox_pkt.addWidget(checkbox_pkt)
             self.dict_variablen_punkte_halb[aufgabe] = checkbox_pkt
 
-        if typ == 2:
-            groupbox_pkt.setToolTip(
-                "Die Punkte geben die Gesamtpunkte dieser Aufgabe an.\nEs müssen daher auch die Ausgleichspunkte berücksichtigt werden."
-            )
+        # if typ == 2:
+        #     groupbox_pkt.setToolTip(
+        #         "Die Punkte geben die Gesamtpunkte dieser Aufgabe an.\nEs müssen daher auch die Ausgleichspunkte berücksichtigt werden."
+        #     )
 
         if (index % 2) == 1 and (typ == 1 or typ == None):
             if self.display_mode == 0:
@@ -5689,6 +5692,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         gridLayout_gB.addWidget(button_delete, 1, 6, 1, 1)
 
+        # if typ == 2:
+        #     self.dict_variablen_abstand[aufgabe] = 0
+        # else:
         groupbox_abstand_ausgleich = create_new_groupbox(new_groupbox, "Abstand (cm)  ")
         groupbox_abstand_ausgleich.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         groupbox_abstand_ausgleich.setSizePolicy(SizePolicy_fixed)
@@ -5709,19 +5715,22 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         spinbox_abstand.valueChanged.connect(self.spinbox_abstand_changed)
         verticalLayout_abstand.addWidget(spinbox_abstand)
 
-        num_ap = self.count_ausgleichspunkte(aufgabe_total["content"])
-        if typ == 2:
-            groupbox_abstand_ausgleich.setTitle("Ausgleichspkte")
-            spinbox_abstand.hide()
-            self.count_ausgleichspunkte(aufgabe_total["content"])
-            label_ausgleichspkt = create_new_label(
-                groupbox_abstand_ausgleich,
-                str(num_ap),
-            )
-            label_ausgleichspkt.setStyleSheet("padding-top: 5px; padding-bottom: 5px;")
-            verticalLayout_abstand.addWidget(label_ausgleichspkt)
+        # num_ap = self.count_ausgleichspunkte(aufgabe_total["content"])
+        # if typ == 2:
+        #     spinbox_abstand.hide()
+        #     groupbox_abstand_ausgleich.setTitle("Ausgleichspkte")
+            
+        #     self.count_ausgleichspunkte(aufgabe_total["content"])
+        #     label_ausgleichspkt = create_new_label(
+        #         groupbox_abstand_ausgleich,
+        #         str(num_ap),
+        #     )
+        #     label_ausgleichspkt.setStyleSheet("padding-top: 5px; padding-bottom: 5px;")
+        #     verticalLayout_abstand.addWidget(label_ausgleichspkt)
 
-            self.dict_variablen_label[aufgabe] = label_ausgleichspkt
+        #     self.dict_variablen_label[aufgabe] = label_ausgleichspkt
+        if typ == 2:
+            groupbox_abstand_ausgleich.hide()
         else:
             groupbox_abstand_ausgleich.setToolTip("Neue Seite: Abstand=99")
 
@@ -5884,15 +5893,15 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             #         )
             #         return
 
-            if aufgabe in self.dict_sage_ausgleichspunkte_chosen.keys():
-                list_sage_ausgleichspunkte_chosen = (
-                    self.dict_sage_ausgleichspunkte_chosen[aufgabe]
-                )
-            else:
-                list_sage_ausgleichspunkte_chosen = []
-                for index, all in enumerate(split_content):
-                    if "\\fbox{A}" in all or "\\ASubitem" in all:
-                        list_sage_ausgleichspunkte_chosen.append(index)
+            # if aufgabe in self.dict_sage_ausgleichspunkte_chosen.keys():
+            #     list_sage_ausgleichspunkte_chosen = (
+            #         self.dict_sage_ausgleichspunkte_chosen[aufgabe]
+            #     )
+            # else:
+            #     list_sage_ausgleichspunkte_chosen = []
+            #     for index, all in enumerate(split_content):
+            #         if "\\fbox{A}" in all or "\\ASubitem" in all:
+            #             list_sage_ausgleichspunkte_chosen.append(index)
                     # if "\\fbox{A}" in all:
                     #     x = all.replace("\\fbox{A}", "")
                     #     list_sage_ausgleichspunkte_chosen.append(x)
@@ -5909,7 +5918,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         else:
             list_sage_hide_show_items_chosen = []
-            list_sage_ausgleichspunkte_chosen = []
+            # list_sage_ausgleichspunkte_chosen = []
             split_content = None
 
         if aufgabe in self.dict_sage_individual_change.keys():
@@ -5932,7 +5941,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             typ,
             content,
             split_content,
-            list_sage_ausgleichspunkte_chosen,
             list_sage_hide_show_items_chosen,
             sage_individual_change,
             self.dict_variablen_translation[aufgabe],
@@ -5953,12 +5961,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             
 
         if typ == 2:
-            if not is_empty(ui.list_sage_ausgleichspunkte_chosen):
-                self.dict_sage_ausgleichspunkte_chosen[
-                    aufgabe
-                ] = ui.list_sage_ausgleichspunkte_chosen
-            elif aufgabe in self.dict_sage_ausgleichspunkte_chosen:
-                del self.dict_sage_ausgleichspunkte_chosen[aufgabe]
+            # if not is_empty(ui.list_sage_ausgleichspunkte_chosen):
+            #     self.dict_sage_ausgleichspunkte_chosen[
+            #         aufgabe
+            #     ] = ui.list_sage_ausgleichspunkte_chosen
+            # elif aufgabe in self.dict_sage_ausgleichspunkte_chosen:
+            #     del self.dict_sage_ausgleichspunkte_chosen[aufgabe]
 
             if not is_empty(ui.list_sage_hide_show_items_chosen):
                 self.dict_sage_hide_show_items_chosen[
@@ -5968,9 +5976,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             elif aufgabe in self.dict_sage_hide_show_items_chosen:
                 del self.dict_sage_hide_show_items_chosen[aufgabe]
 
-            self.dict_variablen_label[aufgabe].setText(
-                "{}".format(len(ui.list_sage_ausgleichspunkte_chosen))
-            )
+            # self.dict_variablen_label[aufgabe].setText(
+            #     "{}".format(len(ui.list_sage_ausgleichspunkte_chosen))
+            # )
 
         self.update_punkte()
 
@@ -6372,9 +6380,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # ] = self.dict_alle_aufgaben_sage
 
         ### include dictionary of changed 'ausgleichspunkte' ###
-        self.dict_all_infos_for_file[
-            "dict_ausgleichspunkte"
-        ] = self.dict_sage_ausgleichspunkte_chosen
+        # self.dict_all_infos_for_file[
+        #     "dict_ausgleichspunkte"
+        # ] = {}
 
         ### end ###
         ### include dictionary hide/show items ###
@@ -6521,13 +6529,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         elif self.dict_variablen_translation[aufgabe] == "EN":
             content = aufgabe_total["content_translation"]
             
-        elif aufgabe in self.dict_sage_ausgleichspunkte_chosen:
-            full_content = aufgabe_total["content"]
+        # elif aufgabe in self.dict_sage_ausgleichspunkte_chosen:
+        #     full_content = aufgabe_total["content"]
 
-            split_content = self.split_content(aufgabe, aufgabe_total["content"])
-            content = edit_content_ausgleichspunkte(
-                self, aufgabe, split_content, full_content
-            )
+        #     split_content = self.split_content(aufgabe, aufgabe_total["content"])
+        #     content = edit_content_ausgleichspunkte(
+        #         self, aufgabe, split_content, full_content
+        #     )
 
 
         elif aufgabe in self.dict_sage_hide_show_items_chosen:
