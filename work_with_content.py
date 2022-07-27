@@ -8,10 +8,7 @@ def collect_content(self, aufgabe, readlines=False):
     typ = get_aufgabentyp(self.chosen_program, aufgabe)
     aufgabe_total = get_aufgabe_total(aufgabe, typ)
 
-    if self.dict_variablen_translation[aufgabe] == "EN":
-        content  = aufgabe_total['content_translation']
-    else:    
-        content  = aufgabe_total['content']
+    content  = aufgabe_total['content']
 
     if readlines == True:
         content = content.split("\n")

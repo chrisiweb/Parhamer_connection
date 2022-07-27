@@ -887,7 +887,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         developer_mode_active,
         chosen_program,
     ):
-        # self.content = content
+
         self.sage_individual_change = sage_individual_change
         self.language = language
         self.typ = typ
@@ -934,8 +934,7 @@ class Ui_Dialog_ausgleichspunkte(object):
             # self.combobox_edit.setStyleSheet("color: black")
 
         if typ ==2:
-            self.combobox_edit.setCurrentIndex(0)
-            self.combobox_edit.currentIndexChanged.connect(partial(self.combobox_edit_changed, aufgabe, chosen_program))
+            # self.combobox_edit.setCurrentIndex(0)
             self.scrollArea = QtWidgets.QScrollArea(Dialog)
             self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
             self.scrollArea.setWidgetResizable(True)
@@ -975,7 +974,7 @@ class Ui_Dialog_ausgleichspunkte(object):
             background_color = StyleSheet_subwindow_ausgleichspunkte_dark_mode
         self.plainTextEdit_content.setStyleSheet(background_color)
         self.plainTextEdit_content.setObjectName(_fromUtf8("plainTextEdit_content"))
-        self.plainTextEdit_content.textChanged.connect(self.plainTextEdit_content_changed)
+        # self.plainTextEdit_content.textChanged.connect(self.plainTextEdit_content_changed)
         self.plainTextEdit_content.setUndoRedoEnabled(False)
         if language == "DE":
             key = 0
@@ -985,8 +984,10 @@ class Ui_Dialog_ausgleichspunkte(object):
         if self.sage_individual_change[key] != None:
             # print(self.sage_individual_change)
             self.plainTextEdit_content.insertPlainText(self.sage_individual_change[key])
+            self.inital_content = self.sage_individual_change[key]
         else:
             self.plainTextEdit_content.insertPlainText(content)
+            self.inital_content = content
         self.plainTextEdit_content.moveCursor(QTextCursor.Start)
         self.plainTextEdit_content.ensureCursorVisible()
         # self.plainTextEdit_content_changed.verticalScrollBar().setValue(0)
@@ -994,6 +995,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.plainTextEdit_content.setUndoRedoEnabled(True)
         if typ == 2:
             self.plainTextEdit_content.hide()
+            self.combobox_edit.currentIndexChanged.connect(self.combobox_edit_changed)
 
 
         self.button_preview = create_new_button(Dialog, "Vorschau", self.button_preview_pressed)
@@ -1093,26 +1095,40 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.button_zoom_out.hide()
 
         self.change_detected_0 = False
-        self.change_detected_1 = False
-        self.change_detected_2 = False
+
         QMetaObject.connectSlotsByName(self.Dialog)
 
-        if typ == 2:
-            if not is_empty(list_sage_hide_show_items_chosen):
-                self.combobox_edit.setCurrentIndex(0)
-            elif sage_individual_change != None:
-                self.combobox_edit.setCurrentIndex(1)
+        if self.sage_individual_change[key] != None:
+            self.combobox_edit.setCurrentIndex(1)
+        # if typ == 2:
+        #     if not is_empty(list_sage_hide_show_items_chosen):
+        #         self.combobox_edit.setCurrentIndex(0)
+        #     elif sage_individual_change != None:
+        #         self.combobox_edit.setCurrentIndex(1)
 
-    def change_detected_warning(self):
-        response = question_window("Es wurden bereits nicht gespeicherte Änderungen an der Aufgabe vorgenommen.",
-        "Sind Sie sicher, dass Sie diese Änderungen verwerfen wollen?","Änderung der Aufgabe")
-        return response
+    # def change_detected_warning(self):
+    #     response = question_window("Es wurden bereits nicht gespeicherte Änderungen an der Aufgabe vorgenommen.",
+    #     "Sind Sie sicher, dass Sie diese Änderungen verwerfen wollen?","Änderung der Aufgabe")
+    #     return response
 
     def check_for_change(self):
-        for index in [0,1]:
-            change_detected = eval("self.change_detected_{}".format(index))
-            if change_detected == True:  
-                return index
+        change_to_index = self.combobox_edit.currentIndex()
+
+        if change_to_index == 1: #change to 1 -> control index 0 
+            return self.change_detected_0, 0
+        
+        elif change_to_index == 0:
+            if self.inital_content != self.plainTextEdit_content.toPlainText():
+                return True, 1
+            else:
+                return False, 1
+
+        #####
+            
+        # for index in [0,1]:
+        #     change_detected = eval("self.change_detected_{}".format(index))
+        #     if change_detected == True:  
+        #         return index
 
                 # rsp = self.change_detected_warning()
                 # if rsp == False:
@@ -1124,25 +1140,22 @@ class Ui_Dialog_ausgleichspunkte(object):
         # _list = [0,1,2]
         # _list.remove(index)
 
-    def combobox_edit_changed(self, aufgabe, chosen_program):
-        index = self.check_for_change()
-        if index != None:
-            if index != self.combobox_edit.currentIndex():
-                response = self.change_detected_warning()
-                if response == False:
-                    self.combobox_edit.setCurrentIndex(index)
-                    return
-                else:
-                    if index == 2:
-                        self.plainTextEdit_content.clear()
-                        typ = get_aufgabentyp(chosen_program, aufgabe)
-                        aufgabe_total = get_aufgabe_total(aufgabe, typ)
-                        self.plainTextEdit_content.insertPlainText(aufgabe_total['content'])  
-                    self.change_detected_0=False
-                    self.change_detected_1=False
-                    self.change_detected_2=False
-            else:
+    def combobox_edit_changed(self):
+        changes_detected, index = self.check_for_change()
+
+        if changes_detected == True:
+            rsp = question_window("Es wurden bereits nicht gespeicherte Änderungen an der Aufgabe vorgenommen.",
+                    "Sind Sie sicher, dass Sie diese Änderungen verwerfen wollen?","Änderung der Aufgabe")
+            if rsp == False:
+                self.combobox_edit.setCurrentIndex(index)
                 return
+            else:
+                self.change_detected_0=False
+                if index == 1:
+                    self.plainTextEdit_content.clear()
+                    self.plainTextEdit_content.insertPlainText(self.inital_content)
+                self.inital_content = self.plainTextEdit_content.toPlainText()  
+                
 
         for i in reversed(range(1, self.gridLayout.count())):
             self.gridLayout.itemAt(i).widget().setParent(None)
@@ -1177,8 +1190,9 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.button_zoom_in.show()
             self.button_zoom_out.show()
 
-    def plainTextEdit_content_changed(self):
-        self.change_detected_2 = True
+    # def plainTextEdit_content_changed(self):
+    #     self.change_detected_2 = True
+
     def button_restore_default_pressed(self, aufgabe, chosen_program):
         rsp = question_window("Sind Sie sicher, dass sie die originale Aufgabe wiederherstellen wollen?")
         if rsp == True:
@@ -1191,6 +1205,7 @@ class Ui_Dialog_ausgleichspunkte(object):
                 key = 'content_translation'
             
             self.plainTextEdit_content.insertPlainText(aufgabe_total[key])
+            self.inital_content = aufgabe_total[key]
             information_window("Die originale Aufgabe wurde wiederhergestellt.",titel="Original wiederhergestellt")
 
     def button_save_edit_pressed_individual_changes(self, aufgabe, chosen_program, language):
@@ -1349,7 +1364,7 @@ class Ui_Dialog_ausgleichspunkte(object):
                 if is_empty(linetext.replace("ITEM", "").strip()) == False:
 
 
-                    checkbox, checkbox_label = self.create_checkbox_ausgleich(
+                    self.create_checkbox_ausgleich(
                         linetext, row, index
                     )
                 # if checkbox != None:
@@ -1363,21 +1378,26 @@ class Ui_Dialog_ausgleichspunkte(object):
         row += 1
         self.gridLayout.setRowStretch(row, 1)
 
-    def checkbox_changed(self):
-        if self.combobox_edit.currentIndex()==0:
-            self.change_detected_0 = True
+    # def checkbox_changed(self):
+    #     if self.combobox_edit.currentIndex()==0:
+    #         self.change_detected_0 = True
         # elif self.combobox_edit.currentIndex() == 1:
         #     self.change_detected_1 = True
             # self.checkbox_clicked(checkbox, checkbox_label)
 
 
     def checkbox_clicked(self, checkbox, checkbox_label):
-        self.checkbox_changed()
-        try: 
-            with open(lama_settings_file, "r", encoding="utf8") as f:
-                self.lama_settings = load(f)
-        except FileNotFoundError:
-            self.lama_settings = {}
+        self.change_detected_0 = True
+        if checkbox.isChecked() == False:
+            checkbox_label.setStyleSheet("color: gray")
+        else:
+            checkbox_label.setStyleSheet("color: black")
+        # self.checkbox_changed()
+        # try: 
+        #     with open(lama_settings_file, "r", encoding="utf8") as f:
+        #         self.lama_settings = load(f)
+        # except FileNotFoundError:
+        #     self.lama_settings = {}
         
         # try:
         #     display_settings = self.lama_settings["display"]
@@ -1390,11 +1410,8 @@ class Ui_Dialog_ausgleichspunkte(object):
 
         # if checkbox.isChecked() == True:
         #     checkbox_label.setStyleSheet(stylesheet)
-        if self.combobox_edit.currentIndex() == 0:
-            if checkbox.isChecked() == False:
-                checkbox_label.setStyleSheet("color: gray")
-            else:
-                checkbox_label.setStyleSheet("color: black")
+        # if self.combobox_edit.currentIndex() == 0:
+
 
     def create_checkbox_ausgleich(self, linetext, row, index):
         checkbox_label = create_new_label(self.scrollAreaWidgetContents, "",wordwrap=True, clickable=True)
@@ -1415,9 +1432,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         #     else:
         #         checkbox.setChecked(True)
 
-        checkbox.stateChanged.connect(partial(self.checkbox_clicked, checkbox, checkbox_label))
-
-
+        
         # if self.combobox_edit.currentIndex() == 0:
         #     self.dict_widget_variables_ausgleichspunkte[linetext] = checkbox
         #     if index in self.list_sage_ausgleichspunkte_chosen:
@@ -1431,10 +1446,6 @@ class Ui_Dialog_ausgleichspunkte(object):
             else:
                 checkbox.setChecked(True)
 
-
-        checkbox_label.clicked.connect(
-            partial(self.checkbox_label_clicked, checkbox, checkbox_label)
-        )
 
         # if "\\fbox{A}" in linetext:
         #     linetext = linetext.replace("\\fbox{A}", "")
@@ -1457,6 +1468,12 @@ class Ui_Dialog_ausgleichspunkte(object):
 
         self.gridLayout.addWidget(checkbox, row, 0, 1, 1, Qt.AlignTop)
         self.gridLayout.addWidget(checkbox_label, row, 1, 1, 2, Qt.AlignTop)
+
+        checkbox.stateChanged.connect(partial(self.checkbox_clicked, checkbox, checkbox_label))
+        checkbox_label.clicked.connect(
+            partial(self.checkbox_label_clicked, checkbox, checkbox_label)
+        )
+        
         return checkbox, checkbox_label
 
     def checkbox_label_clicked(self, checkbox, checkbox_label):
@@ -1481,7 +1498,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         #         if "\\fbox{A}" in all or "\\ASubitem" in all:
         #             return True
         
-        if not is_empty(self.list_sage_hide_show_items_chosen):
+        if not is_empty(self.list_sage_hide_show_items_chosen) and self.combobox_edit.currentIndex()==1:
             return True
         
         if self.language == "DE":
@@ -1501,7 +1518,7 @@ class Ui_Dialog_ausgleichspunkte(object):
             
             if change_detected == True:
                 response = question_window("Es wurden bereits Änderungen an der Aufgabe gespeichert.",
-                "Sind Sie sicher, dass Sie diese Änderungen verwerfen wollen?","Änderung der Aufgabe")
+                "Sind Sie sicher, dass Sie diese Änderungen überschreiben möchten?","Änderung der Aufgabe")
                 if response == False:
                     return
 
@@ -1550,6 +1567,15 @@ class Ui_Dialog_ausgleichspunkte(object):
                         self.list_sage_hide_show_items_chosen.append(index)
                 except KeyError:
                     pass
+
+
+            if self.language == "DE":
+                index = 0
+            elif self.language == "EN":
+                index = 1
+            
+            self.sage_individual_change[index] = None
+            
                     # self.list_sage_hide_show_items_chosen.append(
                     #     linetext.replace("\\fbox{A}", "")
                     # )

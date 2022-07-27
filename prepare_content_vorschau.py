@@ -79,14 +79,18 @@ def edit_content_hide_show_items(self, aufgabe, split_content, full_content):
         for x in _list_to_remove:
             if x.isspace() == False and len(x)!=0:
                 line_start = x.split("[...] GRAFIK [...]")[0].strip()
-                line_start = line_start.replace("\n","")
+                line_start = line_start.replace("\n","").replace("\t","")
                 break
         
         for x in reversed(_list_to_remove):
             if x.isspace() == False and len(x)!=0:
                 line_end = x.split("[...] GRAFIK [...]")[0].strip()
-                line_end = line_end.replace("\n","")
+                line_end = line_end.replace("\n","").replace("\t","")
                 break
+
+
+        # print(list_content)
+        # print(f"line_start: {line_start}")
 
         # for i, all in enumerate(list_content):
         #     if search("{}".format(line_start), list_content):
@@ -97,12 +101,12 @@ def edit_content_hide_show_items(self, aufgabe, split_content, full_content):
 
 
         for i, lines in enumerate(list_content):
-            if line_start in lines.replace("\n",""):
+            if line_start in lines.replace("\n","").replace("\t",""):
                 index_start=i
                 break
 
         for i, lines in enumerate(list_content[index_start:]):
-            if line_end in lines.replace("\n",""):
+            if line_end in lines.replace("\n","").replace("\t",""):
                 index_end=index_start+i
                 break
 

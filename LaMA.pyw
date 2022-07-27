@@ -5977,6 +5977,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             elif aufgabe in self.dict_sage_hide_show_items_chosen:
                 del self.dict_sage_hide_show_items_chosen[aufgabe]
 
+            # print(self.dict_sage_hide_show_items_chosen)
             # self.dict_variablen_label[aufgabe].setText(
             #     "{}".format(len(ui.list_sage_ausgleichspunkte_chosen))
             # )
@@ -6513,7 +6514,17 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         
             # print(f"{aufgabe}: {self.dict_variablen_translation[aufgabe]}")
 
-        if aufgabe in self.dict_sage_individual_change:
+        
+        try:
+            if self.dict_sage_individual_change[aufgabe] != [None, None]:
+                individual_changes = True
+            else:
+                individual_changes = False
+        except KeyError:
+            individual_changes = False
+
+
+        if individual_changes == True:
             if self.dict_variablen_translation[aufgabe] == "DE":
                 index = 0
                 entry_key = "content"
