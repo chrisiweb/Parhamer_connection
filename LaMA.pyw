@@ -2032,7 +2032,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.widget_basic_settings_creator.setEnabled(False)
             self.groupBox_titel_cr.setEnabled(False)
             self.groupBox_quelle.setEnabled(False)
-            # self.groupBox_bilder.setEnabled(False)
+            self.groupBox_bilder.setEnabled(False)
 
             if self.chosen_program == "cria":
                 self.groupBox_themengebiete_cria.setEnabled(False)
