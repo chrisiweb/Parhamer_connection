@@ -1159,6 +1159,8 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
 
         self.cb_matura_tag.setChecked(False)
         self.cb_no_grade_tag.setChecked(False)
+        self.button_language.setToolTip("Deutsch")
+        self.button_language.setText("DE")
 
     @report_exceptions
     def reset_sage(self, question_reset=True):
@@ -2354,8 +2356,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # self.comboBox_af.hide()
 
     def button_language_pressed(self):
-        typ = get_aufgabentyp(self.chosen_program, self.chosen_file_to_edit)
-        aufgabe_total = get_aufgabe_total(self.chosen_file_to_edit, typ)
+        if self.chosen_gui == "widgets_create" or self.chosen_gui == "widgets_create_cria":
+            new_example = True
+        else:
+            new_example = False
+            typ = get_aufgabentyp(self.chosen_program, self.chosen_file_to_edit)
+            aufgabe_total = get_aufgabe_total(self.chosen_file_to_edit, typ)
         
         if self.button_language.text() == "DE":
             self.temporary_save_edit_plainText_deutsch = self.plainTextEdit.toPlainText()
@@ -2366,12 +2372,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             try: 
                 self.plainTextEdit.insertPlainText(self.temporary_save_edit_plainText_englisch)
             except AttributeError:
-                try:
-                    content = aufgabe_total["content_translation"]
-                    if content != None: 
-                        self.plainTextEdit.insertPlainText(content)
-                except KeyError:
-                    pass
+                if new_example == False:
+                    try:
+                        content = aufgabe_total["content_translation"]
+                        if content != None: 
+                            self.plainTextEdit.insertPlainText(content)
+                    except KeyError:
+                        pass
             
         else:
             self.temporary_save_edit_plainText_englisch = self.plainTextEdit.toPlainText()
@@ -2381,7 +2388,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             try: 
                 self.plainTextEdit.insertPlainText(self.temporary_save_edit_plainText_deutsch)
             except AttributeError:
-                self.plainTextEdit.insertPlainText(aufgabe_total["content"])
+                if new_example == False:
+                    self.plainTextEdit.insertPlainText(aufgabe_total["content"])
 
             # 
     def get_number_of_included_images(self):
@@ -2420,8 +2428,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         ):
             return "Bitte geben Sie einen Titel ein."
 
-        if is_empty(self.plainTextEdit.toPlainText()) == True and mode != "translation" and self.button_language.text()=="DE":
-            return 'Bitte geben Sie den LaTeX-Quelltext der Aufgabe im Bereich "Aufgabeneingabe" ein.'
+        if mode == 'save' and self.button_language.text()=="EN":
+            if is_empty(self.temporary_save_edit_plainText_deutsch):
+                return 'Bitte geben Sie einen deutschen LaTeX-Quelltext der Aufgabe im Bereich "Aufgabeneingabe" ein.'
+
+
+        if mode != "translation":
+            if is_empty(self.plainTextEdit.toPlainText()) == True and self.button_language.text()=="DE":
+                return 'Bitte geben Sie den LaTeX-Quelltext der Aufgabe im Bereich "Aufgabeneingabe" ein.'
 
 
         included, attached = self.check_included_attached_image_ratio()
@@ -2659,8 +2673,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         return name
 
-    def replace_image_name(self, typ_save):
-        textBox_Entry = self.plainTextEdit.toPlainText()
+    def replace_image_name(self, typ_save, content):
+        textBox_Entry = content
         for old_image_name in self.dict_picture_path:
             if self.dict_picture_path[old_image_name] == None:
                 continue
@@ -2683,12 +2697,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             new_image_name = path + new_image_name
 
-            if string in self.plainTextEdit.toPlainText():
+            if string in content:
                 textBox_Entry = textBox_Entry.replace(old_image_name, new_image_name)
             else:
                 string = '{"' + old_image_name + '"}'
 
-                if string in self.plainTextEdit.toPlainText():
+                if string in content:
                     image_name = '"' + old_image_name + '"'
                     textBox_Entry = textBox_Entry.replace(image_name, new_image_name)
                 else:
@@ -3215,6 +3229,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def button_speichern_pressed(self):
         self.local_save = False
 
+     
         ######## WARNINGS #####
         if self.chosen_program == "cria":
             typ = None
@@ -3298,13 +3313,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         ############################################################################
 
-        response = self.replace_image_name(typ_save)
-
-        if response[0] == False:
-            critical_window("Es ist ein Fehler beim Einbinden der Bilder passiert. Bitte Überprüfen Sie ihre Eingabe.")
-            return
-        else:
-            content_images_replaced = response[1]
 
 
         list_path = self.get_parent_folder(typ_save)
@@ -3360,7 +3368,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             titel,
             af,
             quelle,
-            content,
+            temp_content,
             group_variation,
             punkte,
             pagebreak,
@@ -3372,7 +3380,42 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         ) = self.get_all_infos_new_file(typ, typ_save[0])
 
 
-        content = content_images_replaced
+        if self.button_language.text() == "DE":
+            content = self.plainTextEdit.toPlainText()
+            try: 
+                content_translation = self.temporary_save_edit_plainText_englisch
+                if is_empty(content_translation):
+                    content_translation = None
+            except AttributeError:
+                content_translation = None
+        elif self.button_language.text() == "EN":
+            content_translation = self.plainTextEdit.toPlainText()
+            if is_empty(content_translation):
+                content_translation = None
+            content = self.temporary_save_edit_plainText_deutsch
+
+
+        response = self.replace_image_name(typ_save, content) #, latex_code
+
+        if response[0] == False:
+            critical_window("Es ist ein Fehler beim Einbinden der Bilder passiert. Bitte Überprüfen Sie ihre Eingabe.")
+            return
+        else:
+            content = response[1]
+
+
+
+        if content_translation != None:
+            response = self.replace_image_name(typ_save, content_translation) #, latex_code
+
+            if response[0] == False:
+                critical_window("Es ist ein Fehler beim Einbinden der Bilder passiert. Bitte Überprüfen Sie die englische Eingabe.")
+                return
+            else:
+                content_translation = response[1]
+
+
+
         bilder = list_images_new_names
 
 
@@ -3384,6 +3427,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             af,
             quelle,
             content,
+            content_translation,
             group_variation,
             punkte,
             pagebreak,
@@ -4632,6 +4676,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.update_gui("widgets_create")
         self.suchfenster_reset()
         self.reset_variation()
+        self.reset_edit_file()
         self.enable_widgets_editor(True)
 
     def action_edit_files(self):

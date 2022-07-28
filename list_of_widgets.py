@@ -26,6 +26,7 @@ widgets_create = [
     "self.groupBox_grundkompetenzen_cr",
     "self.pushButton_vorschau_edit",
     "self.pushButton_save",
+    "self.button_language",
 ]
 
 widgets_edit = [
@@ -108,6 +109,7 @@ widgets_create_cria = [
     "self.groupBox_themengebiete_cria",
     "self.pushButton_vorschau_edit",
     "self.pushButton_save",
+    "self.button_language",
 
 ]
 

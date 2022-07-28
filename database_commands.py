@@ -147,7 +147,7 @@ def create_list_from_section(section):
 	return list_collected_data
 
 
-def add_file(database, name, themen, titel, af, quelle, content, group_variation, punkte, pagebreak, klasse, info = None, bilder=[], draft = False, abstand = 0):
+def add_file(database, name, themen, titel, af, quelle, content, content_translation, group_variation, punkte, pagebreak, klasse, info = None, bilder=[], draft = False, abstand = 0):
     i=0
     while i<5:
         try:
@@ -166,7 +166,7 @@ def add_file(database, name, themen, titel, af, quelle, content, group_variation
                 'draft' : draft,
                 'abstand' : abstand,
                 'gruppe' : group_variation,
-                'content_translation': None,
+                'content_translation': content_translation,
             })
             return True
         except AssertionError:

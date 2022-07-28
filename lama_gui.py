@@ -1750,11 +1750,13 @@ def setup_stackCreator(self):
     self.horizontalLayout_basic_settings_creator.addWidget(self.cb_matura_tag)
     self.cb_matura_tag.hide()
 
+
     self.cb_no_grade_tag = create_new_checkbox(
         self.widget_basic_settings_creator, "klassen-\nunabhängig"
     )
     self.horizontalLayout_basic_settings_creator.addWidget(self.cb_no_grade_tag)
     self.cb_no_grade_tag.hide()
+
 
 
     self.groupBox_titel_cr = QtWidgets.QGroupBox(self.splitter_creator_right_widget)
