@@ -538,9 +538,8 @@ def prepare_tex_for_pdf(self):
     if number_of_files == 0:
         warning_window("Es konnten keine Aufgaben mit angegebenen Suchkriterien gefunden werden!")
         return
-        
 
-    
+
     msg = QMessageBox()
     msg.setIcon(QMessageBox.Question)
     msg.setWindowIcon(QIcon(logo_path))
@@ -560,6 +559,24 @@ def prepare_tex_for_pdf(self):
     ret = msg.exec_()
 
     if ret == QMessageBox.Yes:
+        if current_program == 'cria':
+            try:
+                self.last_search_history_cria
+            except AttributeError:
+                self.comboBox_klassen.addItem("")
+                self.comboBox_klassen.setItemText(5, "Letzte Suche")
+
+            self.last_search_history_cria = {'typ': current_program, 'files': gesammeltedateien}    
+        else:
+            try:
+                self.last_search_history
+            except AttributeError:
+                self.comboBox_at_sage.addItem("")
+                self.comboBox_at_sage.setItemText(2, "Letzte Suche")
+
+            self.last_search_history = {'typ': current_program, 'files': gesammeltedateien}
+
+
         if self.chosen_program == "lama":
             typ = str(self.combobox_aufgabentyp.currentIndex()+1)#self.label_aufgabentyp.text()[-1]
         elif self.chosen_program == "cria":

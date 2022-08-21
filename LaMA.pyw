@@ -5794,7 +5794,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             if self.comboBox_klassen.currentIndex() == 0:
                 klasse = None
             else:
-                klasse = list_klassen[self.comboBox_klassen.currentIndex() - 1]
+                try:
+                    klasse = list_klassen[self.comboBox_klassen.currentIndex() - 1]
+                except IndexError:
+                    klasse = None
+                    print('ERROR2')
         elif mode == "feedback":
             if self.comboBox_klassen_fb_cria.currentIndex() == 0:
                 klasse = None
@@ -6042,7 +6046,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
     def comboBox_at_sage_changed(self):
-        if self.comboBox_at_sage.currentText()[-1] == "1":
+        if self.comboBox_at_sage.currentIndex() == 0:
             self.comboBox_gk.clear()
             self.lineEdit_number.clear()
             self.comboBox_gk.setEnabled(True)
@@ -6055,7 +6059,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 index += 1
             self.comboBox_gk_num.clear()
 
-        if self.comboBox_at_sage.currentText()[-1] == "2":
+        if self.comboBox_at_sage.currentIndex() == 1 or self.comboBox_at_sage.currentIndex() == 2:
             self.comboBox_gk.setCurrentIndex(0)
             self.comboBox_gk_num.setCurrentIndex(0)
             self.comboBox_gk.setEnabled(False)
@@ -6238,6 +6242,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             )
 
     def comboBox_klassen_changed(self, list_mode):
+        if self.comboBox_klassen.currentIndex()==5:
+            self.adapt_choosing_list(list_mode)
+            return
+
         if list_mode == "sage":
             combobox_klassen = self.comboBox_klassen
             combobox_kapitel = self.comboBox_kapitel
@@ -6248,6 +6256,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             combobox_unterkapitel = self.comboBox_unterkapitel_fb_cria
 
             self.label_example.setText("Ausgewählte Aufgabe: -")
+
 
         dict_klasse_name = eval(
             "dict_{}_name".format(list_klassen[combobox_klassen.currentIndex() - 1])
@@ -6300,11 +6309,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     def add_items_to_listwidget(
         self,
-        typ,
         listWidget,
         filtered_items,
         local=False,
     ):
+
         for _file_ in filtered_items:
             name = _file_["name"]
 
@@ -6361,6 +6370,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.comboBox_at_sage.currentText() == "Typ 2" and list_mode == "sage"
         ) or (self.comboBox_at_fb.currentText() == "Typ 2" and list_mode == "feedback"):
             typ = "lama_2"
+        
+        else:
+            typ = "lama_1"
 
         filter_string = get_filter_string(self, list_mode)
 
@@ -6372,31 +6384,53 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             elif self.chosen_program == "cria":
                 line_entry = self.lineEdit_number_fb_cria.text()
 
-        table = "table_" + typ
-        if list_mode == "sage":
-            table_lama = _local_database.table(table)
+
+        if list_mode == "sage" and (self.comboBox_at_sage.currentIndex()==2 or self.comboBox_klassen.currentIndex()==5):
+            filtered_items = []
+            if typ == 'cria':
+                last_search_history = self.last_search_history_cria
+            else:
+                last_search_history = self.last_search_history
+
+            for all in last_search_history['files']:
+                if line_entry.startswith('l'):
+                    number = all['name'].split(" - ")[-1].replace("i.","")
+                elif line_entry.startswith('i'):
+                    number = all['name'].split(" - ")[-1].replace("l.","")
+                else:
+                    number = all['name'].split(" - ")[-1].replace("l.","").replace("i.","")
+        
+                if number.startswith(line_entry):
+                    filtered_items.append(all)
+            
+
+            self.add_items_to_listwidget(listWidget, filtered_items)
+        else:
+            table = "table_" + typ
+            if list_mode == "sage":
+                table_lama = _local_database.table(table)
+                filtered_items = filter_items(
+                    self, table_lama, typ, list_mode, filter_string, line_entry
+                )
+
+                self.add_items_to_listwidget(listWidget, filtered_items, local=True)
+
+            table_lama = _database.table(table)
             filtered_items = filter_items(
                 self, table_lama, typ, list_mode, filter_string, line_entry
             )
 
-            self.add_items_to_listwidget(typ, listWidget, filtered_items, local=True)
+            if _database_addon != None:
+                table_lama = _database_addon.table(table)
+                filtered_items_addon = filter_items(
+                    self, table_lama, typ, list_mode, filter_string, line_entry
+                )
+                for all in filtered_items_addon:
+                    filtered_items.append(all)
 
-        table_lama = _database.table(table)
-        filtered_items = filter_items(
-            self, table_lama, typ, list_mode, filter_string, line_entry
-        )
+            filtered_items.sort(key=order_gesammeltedateien)
 
-        if _database_addon != None:
-            table_lama = _database_addon.table(table)
-            filtered_items_addon = filter_items(
-                self, table_lama, typ, list_mode, filter_string, line_entry
-            )
-            for all in filtered_items_addon:
-                filtered_items.append(all)
-
-        filtered_items.sort(key=order_gesammeltedateien)
-
-        self.add_items_to_listwidget(typ, listWidget, filtered_items)
+            self.add_items_to_listwidget(listWidget, filtered_items)
 
         QtWidgets.QApplication.restoreOverrideCursor()
 
@@ -7576,7 +7610,7 @@ if __name__ == "__main__":
 
     i = step_progressbar(i, "tinydb")
 
-    from tinydb import Query
+    from tinydb import Query, TinyDB
 
     i = step_progressbar(i, "database_commands")
 
