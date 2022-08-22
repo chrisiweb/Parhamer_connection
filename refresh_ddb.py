@@ -4,9 +4,14 @@ import datetime
 from config_start import database
 from config import config_file, config_loader, is_empty
 from processing_window import working_window
+from database_commands import _database_addon
 from standard_dialog_windows import question_window
 from git_sync import git_reset_repo_to_origin, check_for_changes, check_internet_connection
 from standard_dialog_windows import warning_window, information_window, question_window, critical_window
+import urllib.request
+import requests
+import json
+import pathlib
 
 
 list_klassen = config_loader(config_file, "list_klassen")
@@ -83,6 +88,31 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         text = "Datenbank wird aktualisiert. Bitte warten ..."
 
     working_window(Worker_RefreshDDB(), text, self)
+
+    # if _database_addon != None:
+    #     print('yes')
+        
+    #     # database_addon_downloadfile = urllib.URLopener()
+    #     download_link = "https://github.com/chrisiweb/lama_private/blob/125aed4d48e24024a7894383d92e97efa914183e/_database_addon.json"
+        
+    #     # "https://github.com/chrisiweb/lama_private/blob/125aed4d48e24024a7894383d92e97efa914183e/_database_addon.json"
+    #     # 'https://raw.githubusercontent.com/chrisiweb/lama_private/main/_database_addon.json?token=GHSAT0AAAAAABX3CCZTFC6LEML2IJ6SBHP2YYDLM2Q'
+        
+    #     # r = requests.get(download_link)
+    #     # file_database_addon = r.json()
+    #     saving_path = os.path.join(database, "_database_addon.json")
+
+
+    #     # with open(saving_path, "w") as f:
+    #     #     json.dump(file_database_addon, f)
+            
+    #     urllib.request.urlretrieve(download_link, saving_path)
+
+        # print(database)
+        # saving_path = os.path.join(database, "_database_addon.json")
+
+        # with open(saving_path, "wb") as f:
+        #     f.write(url.content)
 
     QtWidgets.QApplication.restoreOverrideCursor()
 
