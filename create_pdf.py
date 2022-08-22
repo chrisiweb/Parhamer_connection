@@ -529,7 +529,7 @@ def prepare_tex_for_pdf(self):
 
     language_index = self.combobox_translation.currentIndex()
 
-    construct_tex_file(filename_teildokument, gesammeltedateien, solutions, variation, infos, spezielle_suche, language_index)
+    construct_tex_file(filename_teildokument, gesammeltedateien, current_program, solutions, variation, infos, spezielle_suche, language_index)
 
 
     number_of_files = get_output_size(gesammeltedateien, variation, spezielle_suche, language_index)
@@ -635,9 +635,14 @@ def create_tex(
         return e
 
 
-def construct_tex_file(file_name, gesammeltedateien, solutions, variation, infos, spezielle_suche, language_index):
+def construct_tex_file(file_name, gesammeltedateien, current_program, solutions, variation, infos, spezielle_suche, language_index):
     with open(file_name, "w", encoding="utf8") as file:
-        file.write(tex_preamble(solution=solutions, bookmark=True, info=infos, worldflags=True))
+        if current_program == "lama_2":
+            bookmark_value = 1
+        else:
+            bookmark_value = 2
+
+        file.write(tex_preamble(solution=solutions, bookmark=bookmark_value, info=infos, worldflags=True))
 
         for all in gesammeltedateien:
             if variation == False and check_if_variation(all['name']) == True and spezielle_suche == False:
@@ -670,11 +675,15 @@ def construct_tex_file(file_name, gesammeltedateien, solutions, variation, infos
                     language = ""
 
             # print(f"{all['name']} : {language}")
+
+            file.write("\smallskip\\begin{minipage}{1\\textwidth}\n")
             green = "green!40!black!60!"
 
             if variation == True:
-                if check_if_variation(all['name']) == True:
-                    file.write("{0}{{\color{{{1}}}\n".format(language, green))
+                if check_if_variation(all['name']) == True and not is_empty(language):
+                    file.write("{0}\color{{{1}}}\\vspace{{-0.5cm}}\n\n".format(language, green))
+                elif check_if_variation(all['name']) == True:
+                    file.write("{0}\color{{{1}}}\n".format(language, green))
                 elif not is_empty(language):
                     file.write(f"{language}\\vspace{{-0.5cm}}\n\n")
             elif spezielle_suche == False:
@@ -687,7 +696,13 @@ def construct_tex_file(file_name, gesammeltedateien, solutions, variation, infos
             elif not is_empty(language):
                 file.write(f"{language}\\vspace{{-0.5cm}}\n\n")
 
-            file.write('\section{{{0}{1} - {2}{3}}}\n\n'.format(draft, all['name'], all['titel'], add_on))
+            if current_program == 'lama_2':
+                section = "section"
+            else:
+                section = "subsection"
+
+            file.write('\{0}{{{1}{2} - {3}{4}}}\smallskip\n\n'.format(section, draft, all['name'], all['titel'], add_on))
+            file.write('\end{minipage}\n\n')
 
             if language_index == 0:
                 content = all['content']
@@ -708,8 +723,8 @@ def construct_tex_file(file_name, gesammeltedateien, solutions, variation, infos
                 file.write(begin_beispiel_lang(all['punkte']) + "\n")
                 file.write(content)
                 file.write(end_beispiel_lang)
-            if variation == True and check_if_variation(all['name']) == True:
-                file.write("}")               
+            # if variation == True and check_if_variation(all['name']) == True:
+            #     file.write("}")               
                
                             
             file.write("\n")

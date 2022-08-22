@@ -27,10 +27,12 @@ def tex_preamble(
 """
         spacing = ""               
 
-    if bookmark == True:
-        bookmark_pkg = "\\usepackage{bookmark}\n\setcounter{tocdepth}{1}"
-    else:
+    if bookmark == False:
         bookmark_pkg = ""
+    else:    
+        bookmark_pkg = f"\\usepackage{{bookmark}}\n\setcounter{{tocdepth}}{{{bookmark}}}"
+
+        
 
 
     if worldflags == True:
