@@ -9,6 +9,7 @@ from standard_dialog_windows import question_window
 from git_sync import git_reset_repo_to_origin, check_for_changes, check_internet_connection
 from standard_dialog_windows import warning_window, information_window, question_window, critical_window
 import urllib.request
+import urllib.error
 import requests
 import json
 import pathlib
@@ -89,24 +90,26 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
     working_window(Worker_RefreshDDB(), text, self)
 
-    # if _database_addon != None:
-    #     print('yes')
+    if _database_addon != None:
+        print('yes')
         
-    #     # database_addon_downloadfile = urllib.URLopener()
-    #     download_link = "https://github.com/chrisiweb/lama_private/blob/125aed4d48e24024a7894383d92e97efa914183e/_database_addon.json"
-        
-    #     # "https://github.com/chrisiweb/lama_private/blob/125aed4d48e24024a7894383d92e97efa914183e/_database_addon.json"
-    #     # 'https://raw.githubusercontent.com/chrisiweb/lama_private/main/_database_addon.json?token=GHSAT0AAAAAABX3CCZTFC6LEML2IJ6SBHP2YYDLM2Q'
-        
-    #     # r = requests.get(download_link)
-    #     # file_database_addon = r.json()
-    #     saving_path = os.path.join(database, "_database_addon.json")
+        # database_addon_downloadfile = urllib.URLopener()
+        try:
+            download_link = 'https://www.dropbox.com/s/nezphxdbqip46cu/_database_addon.json?dl=1'
+            # 'https://www.dropbox.com/s/o3qb04nnjwgp2jl/_database_addon.json?dl=0'
+            #"https://github.com/chrisiweb/lama_private/blob/125aed4d48e24024a7894383d92e97efa914183e/_database_addon.json"
 
-
-    #     # with open(saving_path, "w") as f:
-    #     #     json.dump(file_database_addon, f)
+            # "https://github.com/chrisiweb/lama_private/blob/125aed4d48e24024a7894383d92e97efa914183e/_database_addon.json"
+            # 'https://raw.githubusercontent.com/chrisiweb/lama_private/main/_database_addon.json?token=GHSAT0AAAAAABX3CCZTFC6LEML2IJ6SBHP2YYDLM2Q'
             
-    #     urllib.request.urlretrieve(download_link, saving_path)
+            # r = requests.get(download_link)
+            # file_database_addon = r.json()
+            saving_path = os.path.join(database, "_database_addon.json")
+                
+            urllib.request.urlretrieve(download_link, saving_path)
+        except urllib.error.HTTPError:
+            print('Die erweiterte Datenbank konnte nicht aktualisiert werden, da der Downloadlink nicht mehr verfügbar ist.')
+
 
         # print(database)
         # saving_path = os.path.join(database, "_database_addon.json")
