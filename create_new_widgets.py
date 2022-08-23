@@ -68,10 +68,13 @@ class DragDropWidget(QtWidgets.QWidget):
             self.starting_cursor_height = e.pos().y()
             e.accept()
         else:
-            typ = get_aufgabentyp(self.MainWindow.chosen_program, self.MainWindow.moving_aufgabe)
-            if self.dragdropWidget_typ == typ or typ==None:
-                self.starting_cursor_height = e.pos().y()
-                e.accept()
+            try:
+                typ = get_aufgabentyp(self.MainWindow.chosen_program, self.MainWindow.moving_aufgabe)
+                if self.dragdropWidget_typ == typ or typ==None:
+                    self.starting_cursor_height = e.pos().y()
+                    e.accept()
+            except AttributeError:
+                print('Item not dragable')
 
 
 
