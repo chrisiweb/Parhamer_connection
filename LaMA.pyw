@@ -6303,20 +6303,24 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.adapt_choosing_list(list_mode)
 
     def standardize_aufgabe(self, aufgabe):
-        x = shorten_gk(aufgabe)
-        
         try:
-            gk, num = x.split('-')
+            gk, num = aufgabe.split('-')
         except ValueError:
-            return x
-        
-        gk = dict_gk[gk]
+            return aufgabe
 
-        x = f"{gk} - {num}"
+        gk = shorten_gk(gk)
+        
+       
+        try:
+            gk = dict_gk[gk]
+        except KeyError:
+            gk = gk.upper()
+
+        x = f"{gk.strip()} - {num.strip().lower()}"
 
         return x
 
-
+    @report_exceptions
     def buttonImport_sage_clicked(self):
         Dialog = QtWidgets.QDialog(
             None,
@@ -6333,13 +6337,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.import_list_sage = ui.list_of_tasks      
         except AttributeError:
             return
-            
+
         list_aufgaben_errors=[]
 
 
         for index, aufgabe in enumerate(self.import_list_sage):
             aufgabe = aufgabe.upper()
-            typ = get_aufgabentyp(self.chosen_program, aufgabe)
+
+            typ = get_aufgabentyp(self.chosen_program, aufgabe.replace('I.',''))
 
             if typ == 1:
                 layout = self.verticalLayout_scrollArea_sage_typ1
@@ -6349,13 +6354,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             elif typ == 2:
                 self.scrollAreaWidgetContents_typ2.show()
                 layout = self.verticalLayout_scrollArea_sage_typ2
-                aufgabe = aufgabe.replace(" ","")
+                aufgabe = aufgabe.replace(" ","").lower()
                            
             elif typ == None:
                 layout = self.verticalLayout_scrollArea_sage_typ1
-                aufgabe = aufgabe.replace(" ","")
+                aufgabe = aufgabe.replace(" ","").lower()
                 
-            
+
             aufgabe_total = get_aufgabe_total(aufgabe.replace(" (lokal)", ""), typ)
             if aufgabe_total == None:
                 list_aufgaben_errors.append(aufgabe)
