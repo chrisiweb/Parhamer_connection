@@ -161,8 +161,6 @@ def working_window(worker, text, *args):
     Dialog.exec()
 
 
-
-
 def working_window_latex_output(worker, text, *args):
     Dialog = QtWidgets.QDialog()
     ui = Ui_Dialog_processing()

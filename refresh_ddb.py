@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtWidgets, QtGui
 import os
 import datetime
-from config_start import database
+from config_start import database, path_programm
 from config import config_file, config_loader, is_empty
 from processing_window import working_window
 from database_commands import _database_addon
@@ -48,6 +48,45 @@ class Worker_RefreshDDB(QtCore.QObject):
     def task(self, Ui_MainWindow):              
         Ui_MainWindow.reset_successfull = git_reset_repo_to_origin()
 
+        Ui_MainWindow.missing_images_addon = []
+        if _database_addon != None:
+            try:
+                download_link = 'https://www.dropbox.com/s/nezphxdbqip46cu/_database_addon.json?dl=1'
+
+                saving_path = os.path.join(database, "_database_addon.json")
+                    
+                urllib.request.urlretrieve(download_link, saving_path)
+
+            except urllib.error.HTTPError:
+                print('Die erweiterte Datenbank konnte nicht aktualisiert werden, da der Downloadlink nicht mehr verfügbar ist.')
+
+            try:
+                download_link_images = 'https://www.dropbox.com/s/1hfh5u47lba4xvd/list_of_images.json?dl=1'
+
+                saving_path_images = os.path.join(path_programm, "Teildokument", "list_of_images_addon.txt")
+
+                
+                urllib.request.urlretrieve(download_link_images, saving_path_images)
+
+
+                with open(saving_path_images, "r") as f:
+                    new_list_images = json.load(f)
+
+                folder_images_addon = os.path.join(database, "Bilder_addon")
+
+                old_list_images = os.listdir(folder_images_addon)
+
+                Ui_MainWindow.missing_images_addon = []
+                for image in new_list_images:
+                    if image not in old_list_images:
+                        Ui_MainWindow.missing_images_addon.append(image)
+
+
+
+            except urllib.error.HTTPError:
+                print('BILDER: Die erweiterte Datenbank konnte nicht aktualisiert werden, da der Downloadlink nicht mehr verfügbar ist.')
+
+
         self.finished.emit()
 
 
@@ -90,36 +129,26 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
     working_window(Worker_RefreshDDB(), text, self)
 
-    if _database_addon != None:
-        print('yes')
+    QtWidgets.QApplication.restoreOverrideCursor()
+
+    if not is_empty(self.missing_images_addon):
+        string_missing_images = "\n".join(self.missing_images_addon)
+        folder_images_addon = os.path.join(database, "Bilder_addon")
+        link = "https://www.dropbox.com/sh/8aaybb7aflx5whj/AAB1ylEA69UbAHjHM1ztwRCga?dl=0"
+        color = "rgb(47, 69, 80)"
+        warning_window(f'Folgende(s) Bild(er) ist/sind derzeit nicht in der Datenbank vorhanden:\n\n{string_missing_images}',
+        f"""Bitte laden Sie das/die fehlende(n) Bild(er) <a href='{link}'style='color:{color};'>manuell herunter</a> und kopieren Sie diese(s) in folgenden Ordner:<br><br>
         
-        # database_addon_downloadfile = urllib.URLopener()
-        try:
-            download_link = 'https://www.dropbox.com/s/nezphxdbqip46cu/_database_addon.json?dl=1'
-            # 'https://www.dropbox.com/s/o3qb04nnjwgp2jl/_database_addon.json?dl=0'
-            #"https://github.com/chrisiweb/lama_private/blob/125aed4d48e24024a7894383d92e97efa914183e/_database_addon.json"
-
-            # "https://github.com/chrisiweb/lama_private/blob/125aed4d48e24024a7894383d92e97efa914183e/_database_addon.json"
-            # 'https://raw.githubusercontent.com/chrisiweb/lama_private/main/_database_addon.json?token=GHSAT0AAAAAABX3CCZTFC6LEML2IJ6SBHP2YYDLM2Q'
-            
-            # r = requests.get(download_link)
-            # file_database_addon = r.json()
-            saving_path = os.path.join(database, "_database_addon.json")
-                
-            urllib.request.urlretrieve(download_link, saving_path)
-        except urllib.error.HTTPError:
-            print('Die erweiterte Datenbank konnte nicht aktualisiert werden, da der Downloadlink nicht mehr verfügbar ist.')
-
-
+        {folder_images_addon}""")
         # print(database)
         # saving_path = os.path.join(database, "_database_addon.json")
 
         # with open(saving_path, "wb") as f:
         #     f.write(url.content)
 
-    QtWidgets.QApplication.restoreOverrideCursor()
+    
 
-    if auto_update != True:
+    elif auto_update != True:
         if self.reset_successfull == False:
             warning_window("Der neueste Stand der Datenbank konnte nicht heruntergeladen werden. Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.")
         else:
