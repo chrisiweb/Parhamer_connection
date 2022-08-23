@@ -61,7 +61,7 @@ class Worker_RefreshDDB(QtCore.QObject):
                 print('Die erweiterte Datenbank konnte nicht aktualisiert werden, da der Downloadlink nicht mehr verfügbar ist.')
 
             try:
-                download_link_images = 'https://www.dropbox.com/s/1hfh5u47lba4xvd/list_of_images.json?dl=1'
+                download_link_images = 'https://www.dropbox.com/s/8xgh6p8zgl7xd96/list_of_images.json?dl=1'
 
                 saving_path_images = os.path.join(path_programm, "Teildokument", "list_of_images_addon.txt")
 
