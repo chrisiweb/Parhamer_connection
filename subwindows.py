@@ -3586,3 +3586,31 @@ class Ui_Dialog_edit_worksheet_instructions(object):
         else:
             self.plainTextEdit_instructions.setEnabled(False)      
 
+class Ui_Dialog_import_sage(object):
+    def setupUi(self, Dialog):
+        Dialog.setWindowTitle("Aufgabenliste importieren")
+        Dialog.setWindowIcon(QIcon(logo_path)) 
+        Dialog.resize(80,300)
+        self.Dialog = Dialog
+        verticalLayout = create_new_verticallayout(Dialog)
+
+        # self.tableWidget = QtWidgets.QTableWidget(Dialog)
+        # self.tableWidget.setRowCount(4)
+        # self.tableWidget.setColumnCount(1)
+        # verticalLayout.addWidget(self.tableWidget)
+        label = create_new_label(Dialog, "Import der Aufgabenummern")
+        verticalLayout.addWidget(label)
+
+        self.plainTextEdit = QtWidgets.QPlainTextEdit(Dialog)
+        self.plainTextEdit.setToolTip("Jede Aufgabenummer muss in eine neue Zeile eingefügt werden")
+        verticalLayout.addWidget(self.plainTextEdit)
+
+        btn_import = create_new_button(Dialog, "Importieren", self.btn_import_clicked)
+        verticalLayout.addWidget(btn_import)
+
+    def btn_import_clicked(self):
+       
+        self.list_of_tasks = self.plainTextEdit.toPlainText().split('\n')
+        self.list_of_tasks = [x for x in self.list_of_tasks if x]
+        self.Dialog.accept()
+        

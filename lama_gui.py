@@ -915,10 +915,13 @@ def setup_stackSage(self):
         partial(self.comboBox_unterkapitel_changed, "sage")
     )
 
+
+    self.buttonImport_sage = create_new_button(self.stackSage, "Aufgabenliste hinzufügen",self.buttonImport_sage_clicked, icon= "upload.svg")
+    
     ####################
     self.verticalLayout_sage.addWidget(self.lineEdit_number)
     self.verticalLayout_sage.addWidget(self.listWidget)
-
+    self.verticalLayout_sage.addWidget(self.buttonImport_sage)
 
     self.groupBox_sage = QtWidgets.QGroupBox(self.splitter_sage)
     self.groupBox_sage.setMinimumWidth(1)
@@ -1326,6 +1329,7 @@ def setup_stackSage(self):
 
 
     self.gridLayout_stackSage.addWidget(self.splitter_sage, 0, 0, 1, 1)
+
 
 
     self.buttonBox_sage = QtWidgets.QDialogButtonBox(self.stackSage)

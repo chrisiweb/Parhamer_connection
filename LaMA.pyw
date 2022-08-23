@@ -6302,6 +6302,89 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def comboBox_unterkapitel_changed(self, list_mode):
         self.adapt_choosing_list(list_mode)
 
+    def standardize_aufgabe(self, aufgabe):
+        x = shorten_gk(aufgabe)
+        
+        try:
+            gk, num = x.split('-')
+        except ValueError:
+            return x
+        
+        gk = dict_gk[gk]
+
+        x = f"{gk} - {num}"
+
+        return x
+
+
+    def buttonImport_sage_clicked(self):
+        Dialog = QtWidgets.QDialog(
+            None,
+            Qt.WindowSystemMenuHint
+            | Qt.WindowTitleHint
+            | Qt.WindowCloseButtonHint,
+        )
+        ui = Ui_Dialog_import_sage()
+
+        ui.setupUi(Dialog)
+        Dialog.exec()
+
+        try:
+            self.import_list_sage = ui.list_of_tasks      
+        except AttributeError:
+            return
+            
+        list_aufgaben_errors=[]
+
+
+        for index, aufgabe in enumerate(self.import_list_sage):
+            aufgabe = aufgabe.upper()
+            typ = get_aufgabentyp(self.chosen_program, aufgabe)
+
+            if typ == 1:
+                layout = self.verticalLayout_scrollArea_sage_typ1
+                aufgabe = self.standardize_aufgabe(aufgabe)
+                
+
+            elif typ == 2:
+                self.scrollAreaWidgetContents_typ2.show()
+                layout = self.verticalLayout_scrollArea_sage_typ2
+                aufgabe = aufgabe.replace(" ","")
+                           
+            elif typ == None:
+                layout = self.verticalLayout_scrollArea_sage_typ1
+                aufgabe = aufgabe.replace(" ","")
+                
+            
+            aufgabe_total = get_aufgabe_total(aufgabe.replace(" (lokal)", ""), typ)
+            if aufgabe_total == None:
+                list_aufgaben_errors.append(aufgabe)
+                continue
+
+            if typ == 2:
+                if aufgabe not in self.list_alle_aufgaben_sage[1]:
+                    self.list_alle_aufgaben_sage[1].append(aufgabe)
+                else:
+                    continue
+            else:
+                if aufgabe not in self.list_alle_aufgaben_sage[0]:
+                    self.list_alle_aufgaben_sage[0].append(aufgabe)
+                else:
+                    continue
+
+            neue_aufgaben_box = self.create_neue_aufgaben_box(
+                index, aufgabe, aufgabe_total
+            )
+
+            layout.insertWidget(layout.count() - 1, neue_aufgaben_box)
+
+        if not is_empty(list_aufgaben_errors):
+            str_error = ', '.join(list_aufgaben_errors)
+            warning_window(f"Für folgende Eingaben konnte keine passende Aufgabenummer in der Datenbank gefunden werden:\n\n{str_error}")
+        
+        num_imported_files = len(self.import_list_sage)-len(list_aufgaben_errors)
+        information_window(f"Insgesamt wurde {num_imported_files} Aufgaben erfolgreich importiert.")
+
     def delete_zeros_at_beginning(self, string):
         while string.startswith("0"):
             string = string[1:]
@@ -7512,7 +7595,7 @@ if __name__ == "__main__":
     from subwindows import Ui_Dialog_titlepage
 
     i = step_progressbar(i, "subwindows")
-    from subwindows import Ui_Dialog_random_quiz
+    from subwindows import Ui_Dialog_import_sage
 
     i = step_progressbar(i, "subwindows")
     from subwindows import Ui_Dialog_ausgleichspunkte
