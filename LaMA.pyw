@@ -6302,6 +6302,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def comboBox_unterkapitel_changed(self, list_mode):
         self.adapt_choosing_list(list_mode)
 
+    @report_exceptions
     def standardize_aufgabe(self, aufgabe):
         try:
             gk, num = aufgabe.split('-')
