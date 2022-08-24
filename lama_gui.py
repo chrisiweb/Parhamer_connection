@@ -87,7 +87,7 @@ def setup_MenuBar(self):
     self.actionPush_Database = add_action(
         MainWindow,
         self.menuDeveloper,
-        "Datenbank aufräumen",
+        "Datenbank-Fehlerbericht erstellen",
         self.database_clean_up,
     )
 
