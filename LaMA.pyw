@@ -4754,13 +4754,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.delete_widget(self.verticalLayout_scrollArea_sage_typ2, i)
         self.scrollAreaWidgetContents_typ2.hide()
 
-        # typ = get_aufgabentyp(self.chosen_program, aufgabe)        
-        # if typ == 2:
-        #     list_index = 1
-        #     layout = self.verticalLayout_scrollArea_sage_typ2
-        # else:
-        #     list_index = 0
-        #     layout = self.verticalLayout_scrollArea_sage_typ1
+        if type(self.list_alle_aufgaben_sage[0]) != list:
+            warning_window(
+                "Die geöffnete *.lama-Datei ist veraltet. Es ist daher möglich, dass diese Datei nicht oder nur teilweise geladen werden kann.",
+                "Für nähere Infos kontaktieren Sie uns bitte unter lama.helpme@gmail.com",
+            )
+            list_all_files = self.list_alle_aufgaben_sage
+            self.list_alle_aufgaben_sage = [list_all_files,[]]
+
 
         for list_index in [0,1]:
             if list_index == 0:
@@ -4906,6 +4907,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.progress.setCancelButton(None)
         self.progress.setWindowModality(Qt.WindowModal)
 
+        print(self.list_alle_aufgaben_sage)
         # for aufgabe in self.list_alle_aufgaben_sage:
         list_aufgaben_errors = self.sage_load_files()
 
