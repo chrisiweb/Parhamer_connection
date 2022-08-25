@@ -3599,14 +3599,15 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     def file_clean_up(self):
         dict_missing_files = {}
-
+        dict_of_duplicates = {}
 
         #### TYP 1 ###### FUNKTIONIERT!!!
         table_lama = _database.table('table_lama_1')
         _file_ = Query()
         list_missing_file = []
+        
 
-        i=0
+
         for gk in dict_gk.values():
             all_files = table_lama.search(_file_.themen.any([gk]))
             
@@ -3618,8 +3619,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.progress_cleanup_value += 1
             self.progress_cleanup.setValue(self.progress_cleanup_value)
 
-            
 
+            list_of_duplicates = self.check_for_duplicates(all_files)
+
+            self.progress_cleanup_value += 1
+            self.progress_cleanup.setValue(self.progress_cleanup_value)
+
+        dict_of_duplicates['Typ1 Aufgaben'] = list_of_duplicates
         dict_missing_files["Typ1 Aufgaben"] = list_missing_file
 
         ###################################
@@ -3631,6 +3637,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         self.progress_cleanup_value += 1
         self.progress_cleanup.setValue(self.progress_cleanup_value)
+
+        list_of_duplicates = self.check_for_duplicates(all_files)
+        self.progress_cleanup_value += 1
+        self.progress_cleanup.setValue(self.progress_cleanup_value)
+        dict_of_duplicates['Typ2 Aufgaben'] = list_of_duplicates  
+
         ###################################
         #### CRIA ###### FUNKTIONIERT!!!
         table_lama = _database.table('table_cria')
@@ -3641,8 +3653,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.progress_cleanup_value += 1
         self.progress_cleanup.setValue(self.progress_cleanup_value)
 
+        list_of_duplicates = self.check_for_duplicates(all_files)
+        self.progress_cleanup_value += 1
+        self.progress_cleanup.setValue(self.progress_cleanup_value)
+        dict_of_duplicates['Unterstufen Aufgaben'] = list_of_duplicates
+
+
         QtWidgets.QApplication.restoreOverrideCursor()
-        return dict_missing_files
+        return dict_missing_files, dict_of_duplicates
 
 
         
@@ -4596,14 +4614,23 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         return list_unused_images
             
+    def check_for_duplicates(self, list_all_files):
+        list_of_duplicates = []
+        list_of_files = []
+        for file in list_all_files:
+            if file['name'] in list_of_files:
+                list_of_duplicates.append(file['name'])
+            else:
+                list_of_files.append(file['name']) 
 
+        return list_of_duplicates       
 
     def database_clean_up(self):
         refresh_ddb(self, auto_update=True)
 
 
         image_folder = os.path.join(path_database, "Bilder")
-        progress_maximum = len(dict_gk) + len(os.listdir(image_folder)) + 2
+        progress_maximum = len(dict_gk)*2 + len(os.listdir(image_folder)) + 4
 
         self.progress_cleanup_value = 0
         self.progress_cleanup = QtWidgets.QProgressDialog("Fehlerbericht wird erstellt ...", "",self.progress_cleanup_value,progress_maximum)
@@ -4614,9 +4641,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.progress_cleanup.setCancelButton(None)
         self.progress_cleanup.setWindowModality(Qt.WindowModal)
 
-        self.dict_missing_files = self.file_clean_up()
+        dict_missing_files, dict_of_duplicates = self.file_clean_up()
         list_unused_images = self.image_clean_up()
-        self.dict_missing_files['Nicht verwendete Bilder'] = list_unused_images
+      
+        dict_missing_files['Nicht verwendete Bilder'] = list_unused_images
+
 
         self.progress_cleanup.cancel()
 
@@ -4627,17 +4656,33 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         with open(report, "w+", encoding="utf8") as f:
             f.write("Fehlende Typ 1 Aufgaben:\n")
-            for all in self.dict_missing_files["Typ1 Aufgaben"]:
+            for all in dict_missing_files["Typ1 Aufgaben"]:
                 f.write("{}\n".format(all))
+            f.write("\n\n")
+            f.write("Doppelte Typ 1 Aufgaben:\n")
+            for all in dict_of_duplicates["Typ1 Aufgaben"]:
+                f.write("{}\n".format(all))
+            f.write("\n\n")
             f.write("Fehlende Typ 2 Aufgaben:\n")
-            for all in self.dict_missing_files["Typ2 Aufgaben"]:
+            for all in dict_missing_files["Typ2 Aufgaben"]:
                 f.write("{}\n".format(all))
+            f.write("\n\n")
+            f.write("Doppelte Typ 2 Aufgaben:\n")
+            for all in dict_of_duplicates["Typ2 Aufgaben"]:
+                f.write("{}\n".format(all))
+            f.write("\n\n")
             f.write("Fehlende Unterstufen Aufgaben:\n")
-            for all in self.dict_missing_files["Unterstufen Aufgaben"]:
+            for all in dict_missing_files["Unterstufen Aufgaben"]:
                 f.write("{}\n".format(all))
+            f.write("\n\n")
+            f.write("Doppelte Unterstufen Aufgaben:\n")
+            for all in dict_of_duplicates["Unterstufen Aufgaben"]:
+                f.write("{}\n".format(all))
+            f.write("\n\n")
             f.write("Nicht verwendete Bilder:\n")
-            for all in self.dict_missing_files["Nicht verwendete Bilder"]:
+            for all in dict_missing_files["Nicht verwendete Bilder"]:
                 f.write("{}\n".format(all))
+            
 
 
         if sys.platform.startswith("linux"):
