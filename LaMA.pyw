@@ -2149,6 +2149,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
                         self.pushButton_save_translation.show()
                         self.pushButton_save.hide()
+                        self.button_language.setText("EN")
                         self.button_translation_cr.setText(
                             "Übersetzung von: {}".format(self.chosen_file_to_edit.upper())
                         )
@@ -3483,6 +3484,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         information_window(text, "", window_title, information)
 
         self.suchfenster_reset()
+        self.reset_variation()
 
     ##################################################################
     ################## Befehle LAMA SAGE################################
