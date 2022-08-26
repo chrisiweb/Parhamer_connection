@@ -105,21 +105,21 @@ def setup_MenuBar(self):
     self.action_cria = add_action(
             MainWindow,
             self.menuChangeProgram,
-            "LaMA Cria (Unterstufe)",
+            "Unterstufe",
             partial(self.change_program, "cria"), #
         )
 
     self.action_lama = add_action(
             MainWindow,
             self.menuChangeProgram,
-            "LaMA (Oberstufe)",
+            "Oberstufe",
             partial(self.change_program, "lama"), #
         )
 
     self.action_wizard = add_action(
             MainWindow,
             self.menuChangeProgram,
-            "LaMA Worksheet Wizard",
+            "Worksheet Wizard",
             partial(self.change_program, "wizard"), #
         )
 

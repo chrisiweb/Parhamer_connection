@@ -255,15 +255,15 @@ class Ui_MainWindow(object):
         MainWindow.setLayoutDirection(QtCore.Qt.LeftToRight)
 
         if self.chosen_program == "lama":
-            MainWindow.setWindowTitle("LaMA - LaTeX Mathematik Assistent (Oberstufe)")
+            MainWindow.setWindowTitle("LaMA - LaTeX Mathematik Assistent - Oberstufe")
             MainWindow.setWindowIcon(QtGui.QIcon(logo_path))
 
         elif self.chosen_program == "cria":
-            MainWindow.setWindowTitle("LaMA Cria - LaTeX Mathematik Assistent (Unterstufe)")
-            MainWindow.setWindowIcon(QtGui.QIcon(logo_cria_path))
+            MainWindow.setWindowTitle("LaMA - LaTeX Mathematik Assistent - Unterstufe")
+            MainWindow.setWindowIcon(QtGui.QIcon(logo_path))
 
         elif self.chosen_program == "wizard":
-            MainWindow.setWindowTitle("LaMA Worksheet Wizard")
+            MainWindow.setWindowTitle("LaMA - LaTeX Mathematik Assistent - Worksheet Wizard")
             MainWindow.setWindowIcon(QtGui.QIcon(logo_path))
 
 
@@ -1252,19 +1252,19 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
     @report_exceptions
     def change_program(self, program_change_to):
         if program_change_to == "cria":
-            name = "LaMA Cria (Unterstufe)"
+            name = "LaMA - Unterstufe"
 
-            program_name = "LaMA Cria - LaTeX Mathematik Assistent (Unterstufe)"
+            program_name = "LaMA - LaTeX Mathematik Assistent - Unterstufe"
             icon = logo_cria_path
 
         elif program_change_to == "lama":
-            name = "LaMA (Oberstufe)"
-            program_name = "LaMA - LaTeX Mathematik Assistent (Oberstufe)"
+            name = "LaMA - Oberstufe"
+            program_name = "LaMA - LaTeX Mathematik Assistent - Oberstufe"
             icon = logo_path
 
         elif program_change_to == "wizard":
             name = "LaMA - Worksheet Wizard"
-            program_name = "LaMA - LaTeX Mathematik Assistent (Worksheet Wizard)"
+            program_name = "LaMA - LaTeX Mathematik Assistent - Worksheet Wizard"
             icon = logo_path
 
         # if self.chosen_program !='wizard':

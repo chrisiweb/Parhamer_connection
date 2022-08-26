@@ -38,3 +38,6 @@ SizePolicy_minimum_fixed =QSizePolicy(
     QSizePolicy.Minimum, QSizePolicy.Fixed
 )
 
+SizePolicy_expanding = QSizePolicy(
+    QSizePolicy.Expanding, QSizePolicy.Expanding
+)
