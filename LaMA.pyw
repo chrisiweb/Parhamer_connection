@@ -1253,19 +1253,18 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
     def change_program(self, program_change_to):
         if program_change_to == "cria":
             name = "LaMA - Unterstufe"
-
             program_name = "LaMA - LaTeX Mathematik Assistent - Unterstufe"
-            icon = logo_cria_path
+
 
         elif program_change_to == "lama":
             name = "LaMA - Oberstufe"
             program_name = "LaMA - LaTeX Mathematik Assistent - Oberstufe"
-            icon = logo_path
+            
 
         elif program_change_to == "wizard":
             name = "LaMA - Worksheet Wizard"
             program_name = "LaMA - LaTeX Mathematik Assistent - Worksheet Wizard"
-            icon = logo_path
+            
 
         # if self.chosen_program !='wizard':
         response = question_window(
@@ -1386,8 +1385,16 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             self.action_wizard.setVisible(False)
             self.update_gui("widgets_wizard") 
 
+            self.cb_af_ko.hide()
+            self.cb_af_rf.hide()
+            self.cb_af_ta.hide()
+            self.comboBox_af.removeItem(7)
+            self.comboBox_af.removeItem(6)
+            self.comboBox_af.removeItem(5)
+
+
         self.MainWindow.setWindowTitle(program_name)
-        self.MainWindow.setWindowIcon(QtGui.QIcon(icon))
+        # self.MainWindow.setWindowIcon(QtGui.QIcon(icon))
         if self.lama_settings["database"] == 0:
             refresh_ddb(self)
 
