@@ -1707,10 +1707,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 <b>Unser Projekt ist und bleibt kostenlos und wir versuchen es auch weiterhin stetig zu verbessern und aktualisieren. Sie dient lediglich als kleine Anerkennung unserer Arbeit.</b><br>
 
-<center><a href='{0}'style="color:{1};">Buy Me A Coffee</a><\center>
+<center><a href='{0}'style="color:{1};">Buy Me A Coffee </a> <\center>
 
-<h2> Vielen Dank!</h2>""".format(
-                link, color
+<h2> Vielen Dank!</h2>""".format( #<img src={2} height="30" width="30">
+                link, color, #get_icon_path('coffee.svg')
             ),
             # "LaMA ist gratis und soll es auch bleiben!\n",
             # "Wir freuen uns dennoch sehr über eine Unterstützung für die Weiterentwicklung von LaMA.\n\n"
