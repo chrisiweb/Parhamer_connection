@@ -1,5 +1,4 @@
 from PyQt5 import QtCore, QtWidgets, QtGui
-
 from create_new_widgets import (
     add_action,
     create_new_label,
@@ -18,7 +17,7 @@ from create_new_widgets import (
     add_new_tab,
     DragDropWidget,
     )
-from predefined_size_policy import SizePolicy_fixed_height, SizePolicy_fixed, SizePolicy_minimum, SizePolicy_minimum_fixed, SizePolicy_maximum_height, SizePolicy_maximum_width, SizePolicy_minimum_height
+from predefined_size_policy import SizePolicy_fixed_height, SizePolicy_fixed, SizePolicy_minimum, SizePolicy_minimum_fixed, SizePolicy_maximum_height, SizePolicy_maximum_width, SizePolicy_minimum_height, SizePolicy_expanding
 from config import *
 from functools import partial
 from create_pdf import prepare_tex_for_pdf
@@ -2260,6 +2259,20 @@ def setup_stackWizard(self):
     self.spinBox_column_wizard.setRange(1, 10)
     self.horizontalLayout_column_wizard.addWidget(self.spinBox_column_wizard)   
 
+
+    self.widget_settings_addon_wizard = QtWidgets.QWidget(self.widget_setting_wizard1)
+    self.horizontalLayout_setting_wizard1.addWidget(self.widget_settings_addon_wizard)
+
+    self.horizontalLayout_settings_addon_wizard = create_new_horizontallayout(self.widget_settings_addon_wizard)
+    self.horizontalLayout_settings_addon_wizard.setContentsMargins(0,9,0,0)
+
+    self.checkbox_enable_addition = create_new_checkbox(self.widget_settings_addon_wizard, "Addition", checked=True)
+    self.horizontalLayout_settings_addon_wizard.addWidget(self.checkbox_enable_addition)
+    self.checkbox_enable_addition.hide()
+
+    self.checkbox_enable_subtraktion = create_new_checkbox(self.widget_settings_addon_wizard, "Subtraktion", checked=True)
+    self.horizontalLayout_settings_addon_wizard.addWidget(self.checkbox_enable_subtraktion)  
+    self.checkbox_enable_subtraktion.hide()
 
 
     self.widget_ausrichtung_wizard = QtWidgets.QWidget(self.widget_setting_wizard1)

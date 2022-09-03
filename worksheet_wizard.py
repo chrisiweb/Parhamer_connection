@@ -247,7 +247,7 @@ def random_switch(p=50):
 def random_choice_except(_list, exception):
     return random.choice([x for x in _list if x != exception])
 
-def create_single_example_ganze_zahlen_strich(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed):
+def create_single_example_ganze_zahlen_strich(typ, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed):
     summanden = []
     set_commas=commas
     for _ in range(anzahl_summanden):
@@ -260,7 +260,13 @@ def create_single_example_ganze_zahlen_strich(minimum, maximum, commas, anzahl_s
     
     string  = add_summand(summanden[0])
 
-    operators = ['+', '-']
+    if typ == "+":
+        operators =  ['+']
+    elif typ == "-":
+        operators =  ['-']
+    elif typ == "+-":
+        operators = ['+', '-']
+        
     bracket_open = False
     waiter = False
 
@@ -667,11 +673,11 @@ def create_list_of_examples_ganze_zahlen(typ, examples, minimum, maximum, commas
     list_of_examples = []
 
     for _ in range(examples):
-        if typ == 'strich':
-            new_example = create_single_example_ganze_zahlen_strich(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
-        elif typ == 'punkt':
+        if typ == '+' or typ == '-' or typ == '+-':
+            new_example = create_single_example_ganze_zahlen_strich(typ, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
+        elif typ == '*:':
             new_example = create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
-        elif typ == 'grundrechnungsarten': 
+        elif typ == '+-*:': 
             new_example = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)
         list_of_examples.append(new_example)
 

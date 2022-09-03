@@ -3713,7 +3713,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # index = self.comboBox_themen_wizard.currentIndex()
         thema = self.comboBox_themen_wizard.currentText()
         # self.lineEdit_titel_wizard.setText("Arbeitsblatt - {}".format(thema))
-
+        self.checkbox_enable_addition.hide()
+        self.checkbox_enable_subtraktion.hide()
         if thema == themen_worksheet_wizard[0] or thema == themen_worksheet_wizard[1]:
             self.spinbox_zahlenbereich_minimum.setRange(0,999999999)
             self.spinbox_zahlenbereich_minimum.setValue(100)
@@ -3753,6 +3754,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 self.spinBox_zahlenbereich_anzahl_wizard.setValue(2)
                 self.spinbox_zahlenbereich_minimum.setValue(-20)
                 self.spinbox_zahlenbereich_maximum.setValue(20)
+                self.checkbox_enable_addition.show()
+                self.checkbox_enable_subtraktion.show()
             elif thema == themen_worksheet_wizard[6]:
                 # self.groupBox_zahlenbereich_anzahl.setTitle("Faktoren") 
                 self.spinBox_zahlenbereich_anzahl_wizard.setValue(3)
@@ -4119,14 +4122,23 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
             brackets_allowed = self.checkbox_allow_brackets_wizard.isChecked()
             show_brackets = True
+
             if thema == themen_worksheet_wizard[5]:
-                typ = 'strich'
+                if self.checkbox_enable_addition.isChecked():
+                    typ = "+"
+                else:
+                    typ = ""
+                
+                if self.checkbox_enable_subtraktion.isChecked():
+                    typ += "-"
+                
+
             elif thema == themen_worksheet_wizard[6]:
-                typ = 'punkt'
+                typ = '*:'
             elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[7]:
                 if thema == themen_worksheet_wizard[4]:
                     show_brackets = False
-                typ = 'grundrechnungsarten'
+                typ = '+-*:'
 
             if minimum>maximum:
                 critical_window('Das Maximum muss größer als das Minimum sein.')
