@@ -309,6 +309,7 @@ def create_division_pair(factor_1, factor_2, show_brackets = True):
 def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
     factors = []
     set_commas=commas
+
     for _ in range(anzahl_summanden):
         if smaller_or_equal == 1:
             commas = random.randint(0,set_commas) 
@@ -336,7 +337,12 @@ def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_su
                 division_pair = factors[0]
                 if division_pair == 0:
                     division_pair = get_random_number(minimum, maximum, commas)
-                string = "[" + create_division_pair(division_pair, all) + "]"
+                
+                string = create_division_pair(division_pair, all)
+                if anzahl_summanden > 2:
+                    string = "[" + string + "]"
+
+                
                 division_pair = None
                 continue
             else:
