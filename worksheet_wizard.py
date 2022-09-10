@@ -491,6 +491,40 @@ def prevent_double_multiplication(string):
 
     return string
 
+
+def avoid_futile_brackets(string):
+    character_list = [x for x in string]
+
+    operations_strich = ["+", "-"]
+    bracket_open = False
+    index_list_to_pop = []
+
+    for i, all in enumerate(character_list):
+        if bracket_open == False:
+            if all == "[" and character_list[i-1] in operations_strich:
+                bracket_open = True
+                starting_index = i
+        elif bracket_open == True:
+            try:
+                following_operation = character_list[i+1]
+            except IndexError:
+                following_operation = "+"
+            if all == "]" and following_operation in operations_strich:
+                index_list_to_pop.append(starting_index)
+                index_list_to_pop.append(i)
+                bracket_open = False
+    
+
+    for index in reversed(index_list_to_pop):
+        character_list.pop(index)
+
+    
+    string = "".join(character_list)
+
+
+
+    return string
+
 def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets):
     numbers = []
     set_commas=commas
@@ -516,17 +550,21 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
         if division_pair == 'done':
             division_pair = None
         elif division_pair != None:
+
             if division_pair[0] == 0:
                 division_pair[0] = get_random_number(minimum, maximum, commas)
 
             operation = random.choice(operators) # operation after the division
 
+            # print(division_pair[1])
+            # print(operation)
+            # print(i)
             if division_pair[1] != '\xb7' and operation != '\xb7':
                 string += create_division_pair(division_pair[0], all, show_brackets)
             elif show_brackets == False:
                 string += "(" + create_division_pair(division_pair[0], all, show_brackets) + ")"
             else:
-                string += "[" + create_division_pair(division_pair[0], all, show_brackets) + "]"
+                string +=  "[" + create_division_pair(division_pair[0], all, show_brackets) + "]" #create_division_pair(division_pair[0], all, show_brackets)
 
                 
             division_pair = 'done'
@@ -551,7 +589,7 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
                 elif show_brackets == False:
                     string = "(" + create_division_pair(division_pair[0], all, show_brackets) + ")"
                 else: 
-                    string = "[" + create_division_pair(division_pair[0], all, show_brackets) + "]"
+                    string = create_division_pair(division_pair[0], all, show_brackets)#"[" + create_division_pair(division_pair[0], all, show_brackets) + "]"
                 
                 division_pair = 'done'
                 continue
@@ -602,6 +640,7 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
                 prevent_division = True
             else:
                 string += add_summand(all, show_brackets)
+
             
 
     if bracket_open == True:
@@ -616,9 +655,9 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
         elif show_brackets == False:
             string +=')'
 
-
     string = prevent_double_multiplication(string)
 
+    string = avoid_futile_brackets(string)
     solution = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
 
     if show_brackets== False: ## check if result ist negative, when natural numbers are chosen          
@@ -634,6 +673,7 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
     string = "{0} = {1}".format(string.replace(".",","), str(solution).replace(".",","))
     
     # print([numbers, solution, string])
+    
     return [numbers, solution, string] 
 
 
