@@ -61,7 +61,7 @@ dict_widgets_wizard = {
         # 'self.checkbox_allow_brackets_wizard',        
     ],
     'Ganze Zahlen (Grundrechnungsarten)': [
-        'self.widget_zahlenbereich_maximum',
+        'self.widget_zahlenbereich_minimum',
         'self.widget_zahlenbereich_maximum',
         'self.widget_kommastellen_wizard',
         'self.widgetZahlenbereich_anzahl',
@@ -501,7 +501,10 @@ def avoid_futile_brackets(string):
 
     for i, all in enumerate(character_list):
         if bracket_open == False:
-            if all == "[" and character_list[i-1] in operations_strich:
+            if all == "[" and i==0:
+                bracket_open = True
+                starting_index = i            
+            elif all == "[" and character_list[i-1] in operations_strich:
                 bracket_open = True
                 starting_index = i
         elif bracket_open == True:
@@ -513,6 +516,8 @@ def avoid_futile_brackets(string):
                 index_list_to_pop.append(starting_index)
                 index_list_to_pop.append(i)
                 bracket_open = False
+            elif all == "]":
+                bracket_open = False  
     
 
     for index in reversed(index_list_to_pop):
@@ -589,7 +594,7 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
                 elif show_brackets == False:
                     string = "(" + create_division_pair(division_pair[0], all, show_brackets) + ")"
                 else: 
-                    string = create_division_pair(division_pair[0], all, show_brackets)#"[" + create_division_pair(division_pair[0], all, show_brackets) + "]"
+                    string = "[" + create_division_pair(division_pair[0], all, show_brackets) + "]"
                 
                 division_pair = 'done'
                 continue
@@ -655,9 +660,13 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
         elif show_brackets == False:
             string +=')'
 
+    # print(f"create: {string}")
     string = prevent_double_multiplication(string)
 
+    # print(f"after prevent double multiplpication: {string}")
     string = avoid_futile_brackets(string)
+
+    # print(f"after avoid futile brackets: {string}")
     solution = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
 
     if show_brackets== False: ## check if result ist negative, when natural numbers are chosen          
