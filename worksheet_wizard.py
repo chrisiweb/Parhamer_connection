@@ -1197,15 +1197,26 @@ def get_random_solution(self, thema):
         anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
         brackets_allowed = self.checkbox_allow_brackets_wizard.isChecked()
 
+
         if thema == themen_worksheet_wizard[5]:
-            distract_result = create_single_example_ganze_zahlen_strich(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
+            if self.checkbox_enable_addition.isChecked():
+                typ = "+"
+            else:
+                typ = ""
+            
+            if self.checkbox_enable_subtraktion.isChecked():
+                typ += "-"
+
+            distract_result = create_single_example_ganze_zahlen_strich(typ, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
         elif thema == themen_worksheet_wizard[6]:
+            typ = '*:'
             distract_result = create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
         elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[7]:
             if thema == themen_worksheet_wizard[4]:
                 show_brackets = False
             else:
                 show_brackets = True
+            typ = '+-*:'
             distract_result = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)
 
 

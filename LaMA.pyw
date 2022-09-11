@@ -4319,6 +4319,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         for all in self.list_of_examples_wizard:
             list_solutions.append(all[-2])
 
+
+
         list_dummy_solutions = []
         i=0
         while i<10:
