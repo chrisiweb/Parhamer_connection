@@ -642,7 +642,7 @@ def construct_tex_file(file_name, gesammeltedateien, current_program, solutions,
         else:
             bookmark_value = 2
 
-        file.write(tex_preamble(solution=solutions, bookmark=bookmark_value, info=infos, worldflags=True))
+        file.write(tex_preamble(solution=solutions, bookmark=bookmark_value, info=infos))
 
         for all in gesammeltedateien:
             if variation == False and check_if_variation(all['name']) == True and spezielle_suche == False:
@@ -668,7 +668,7 @@ def construct_tex_file(file_name, gesammeltedateien, current_program, solutions,
 
             try: 
                 if all['content_translation'] != None and language_index==0:
-                    language = " \worldflag[width=3.8mm,length=0pt,stretch=1]{GB}"
+                    language = " \\flagUK\ "
                 else:
                     language = ""
             except KeyError:

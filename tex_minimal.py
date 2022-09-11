@@ -7,7 +7,6 @@ def tex_preamble(
     bookmark = False,
     beamer_mode = False,
     pagestyle = "plain",
-    worldflags = False,
     ):
 
     if beamer_mode == False:
@@ -33,13 +32,6 @@ def tex_preamble(
         bookmark_pkg = f"\\usepackage{{bookmark}}\n\setcounter{{tocdepth}}{{{bookmark}}}"
 
         
-
-
-    if worldflags == True:
-        worldflags = "\\usepackage{worldflags}"
-    else:
-        worldflags = ""
-
     preamble = """
 {0} 
 
@@ -49,10 +41,9 @@ def tex_preamble(
 \\usepackage[ngerman]{{babel}}
 \\usepackage[{1}, random={2}, {3}]{{srdp-mathematik}} % solution_on/off, random, info_on/off
 {4}
-{5}
 
-\pagestyle{{{6}}} %PAGESTYLE: empty, plain
-{7}
+\pagestyle{{{5}}} %PAGESTYLE: empty, plain
+{6}
 \setcounter{{secnumdepth}}{{-1}} % keine Nummerierung der Überschriften
 %
 %
@@ -69,7 +60,6 @@ def tex_preamble(
     random,
     info,
     bookmark_pkg,
-    worldflags,
     pagestyle,
     spacing
 )
