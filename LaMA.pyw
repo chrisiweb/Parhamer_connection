@@ -7476,7 +7476,12 @@ if __name__ == "__main__":
     # dir_ = QtCore.QDir("assets/fonts/IBM_Plex_Sans")
     _id = QtGui.QFontDatabase.addApplicationFont("assets/fonts/IBM_Plex_Sans/IBMPlexSans-Regular.ttf")
     QtGui.QFontDatabase.applicationFontFamilies(_id)
-    font = QtGui.QFont("IBM Plex Sans", 8)
+    if sys.platform.startswith("darwin"):
+        font_size = 10
+    else:
+        font_size = 8
+
+    font = QtGui.QFont("IBM Plex Sans", font_size)
     # QtGui.QFontDatabase.addApplicationFont("newfont.otf")   
     # font = QtGui.QFont("Disco Society - Personal Use", 10)
     app.setFont(font)
