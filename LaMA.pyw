@@ -6054,6 +6054,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             | QtCore.Qt.WindowMaximizeButtonHint
             | QtCore.Qt.WindowMinimizeButtonHint,
         )
+
         ui = Ui_Dialog_ausgleichspunkte()
         ui.setupUi(
             Dialog,

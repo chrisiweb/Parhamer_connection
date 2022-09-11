@@ -922,6 +922,7 @@ class Ui_Dialog_ausgleichspunkte(object):
 
         self.sage_individual_change = sage_individual_change
         self.language = language
+        
         self.typ = typ
         # self.developer_mode_active = developer_mode_active
         if typ==2:
@@ -1008,6 +1009,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.plainTextEdit_content.setObjectName(_fromUtf8("plainTextEdit_content"))
         # self.plainTextEdit_content.textChanged.connect(self.plainTextEdit_content_changed)
         self.plainTextEdit_content.setUndoRedoEnabled(False)
+
         if language == "DE":
             key = 0
         elif language == "EN":

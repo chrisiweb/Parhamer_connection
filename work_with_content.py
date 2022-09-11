@@ -4,11 +4,14 @@ from database_commands import get_aufgabe_total, get_aufgabentyp
 
 def collect_content(self, aufgabe, readlines=False):
     aufgabe = aufgabe.replace(" (lokal)","")
-
+    language = self.dict_variablen_translation[aufgabe]
     typ = get_aufgabentyp(self.chosen_program, aufgabe)
     aufgabe_total = get_aufgabe_total(aufgabe, typ)
 
-    content  = aufgabe_total['content']
+    if language == "DE":
+        content  = aufgabe_total['content']
+    elif language == "EN":
+        content = aufgabe_total['content_translation']
 
     if readlines == True:
         content = content.split("\n")
