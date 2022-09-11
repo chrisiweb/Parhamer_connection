@@ -4822,7 +4822,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         if type(self.list_alle_aufgaben_sage[0]) != list:
             warning_window(
-                "Die geöffnete *.lama-Datei ist veraltet. Es ist daher möglich, dass diese Datei nicht oder nur teilweise geladen werden kann.",
+                "Die geöffnete *.lama-Datei ist veraltet. Die Datei kann daher möglicherweise nicht oder nur teilweise geladen werden.",
                 "Für nähere Infos kontaktieren Sie uns bitte unter lama.helpme@gmail.com",
             )
             list_all_files = self.list_alle_aufgaben_sage
@@ -4973,7 +4973,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.progress.setCancelButton(None)
         self.progress.setWindowModality(Qt.WindowModal)
 
-        print(self.list_alle_aufgaben_sage)
+        # print(self.list_alle_aufgaben_sage)
         # for aufgabe in self.list_alle_aufgaben_sage:
         list_aufgaben_errors = self.sage_load_files()
 
