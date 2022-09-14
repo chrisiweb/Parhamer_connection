@@ -102,7 +102,6 @@ imports:
  &#8226;   <a href="#config">config</a>
  &#8226;   <a href="#config_start">config_start</a>
  &#8226;   <a href="#contextlib">contextlib</a>
- &#8226;   <a href="#convert_image_to_eps">convert_image_to_eps</a>
  &#8226;   <a href="#copy">copy</a>
  &#8226;   <a href="#copyreg">copyreg</a>
  &#8226;   <a href="#create_new_widgets">create_new_widgets</a>
@@ -270,6 +269,7 @@ imports:
  &#8226;   <a href="#glob">glob</a>
  &#8226;   <a href="#grp">grp</a>
  &#8226;   <a href="#gzip">gzip</a>
+ &#8226;   <a href="#handle_exceptions">handle_exceptions</a>
  &#8226;   <a href="#hashlib">hashlib</a>
  &#8226;   <a href="#heapq">heapq</a>
  &#8226;   <a href="#html">html</a>
@@ -290,6 +290,7 @@ imports:
  &#8226;   <a href="#json">json</a>
  &#8226;   <a href="#keyword">keyword</a>
  &#8226;   <a href="#lama_colors">lama_colors</a>
+ &#8226;   <a href="#lama_gui">lama_gui</a>
  &#8226;   <a href="#lama_stylesheets">lama_stylesheets</a>
  &#8226;   <a href="#linecache">linecache</a>
  &#8226;   <a href="#list_of_widgets">list_of_widgets</a>
@@ -398,6 +399,7 @@ imports:
  &#8226;   <a href="#webbrowser">webbrowser</a>
  &#8226;   <a href="#winreg">winreg</a>
  &#8226;   <a href="#work_with_content">work_with_content</a>
+ &#8226;   <a href="#worksheet_wizard">worksheet_wizard</a>
  &#8226;   <a href="#xml">xml</a>
  &#8226;   <a href="#xml.parsers">xml.parsers</a>
  &#8226;   <a href="#xml.parsers.expat">xml.parsers.expat</a>
@@ -671,7 +673,7 @@ imported by:
 <span class="moduletype">MissingModule</span>  <div class="import">
 imported by:
     <a href="#LaMA.pyw">LaMA.pyw</a>
- &#8226;   <a href="#pickle">pickle</a>
+ &#8226;   <a href="#copy">copy</a>
  &#8226;   <a href="#setuptools.sandbox">setuptools.sandbox</a>
  &#8226;   <a href="#xml.sax">xml.sax</a>
 
@@ -868,6 +870,7 @@ imports:
  &#8226;   <a href="#PIL.ImageSequence">PIL.ImageSequence</a>
  &#8226;   <a href="#PIL.ImageShow">PIL.ImageShow</a>
  &#8226;   <a href="#PIL.ImageTk">PIL.ImageTk</a>
+ &#8226;   <a href="#PIL.Jpeg2KImagePlugin">PIL.Jpeg2KImagePlugin</a>
  &#8226;   <a href="#PIL.JpegImagePlugin">PIL.JpegImagePlugin</a>
  &#8226;   <a href="#PIL.PaletteFile">PIL.PaletteFile</a>
  &#8226;   <a href="#PIL.PdfParser">PIL.PdfParser</a>
@@ -1857,7 +1860,8 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#PIL.IcnsImagePlugin">PIL.IcnsImagePlugin</a>
+    <a href="#PIL">PIL</a>
+ &#8226;   <a href="#PIL.IcnsImagePlugin">PIL.IcnsImagePlugin</a>
  &#8226;   <a href="#PIL.Image">PIL.Image</a>
 
   </div>
@@ -2643,7 +2647,9 @@ imported by:
   <a target="code" href="/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/PyQt5/__init__.py" type="text/plain"><tt>PyQt5</tt></a>
 <span class="moduletype">Package</span>  <div class="import">
 imports:
-    <a href="#PyQt5.QtGui">PyQt5.QtGui</a>
+    <a href="#PyQt5.QtCore">PyQt5.QtCore</a>
+ &#8226;   <a href="#PyQt5.QtGui">PyQt5.QtGui</a>
+ &#8226;   <a href="#PyQt5.QtWidgets">PyQt5.QtWidgets</a>
  &#8226;   <a href="#PyQt5.sip">PyQt5.sip</a>
  &#8226;   <a href="#sip">sip</a>
 
@@ -2657,6 +2663,8 @@ imported by:
  &#8226;   <a href="#PyQt5.sip">PyQt5.sip</a>
  &#8226;   <a href="#config">config</a>
  &#8226;   <a href="#create_new_widgets">create_new_widgets</a>
+ &#8226;   <a href="#handle_exceptions">handle_exceptions</a>
+ &#8226;   <a href="#lama_gui">lama_gui</a>
  &#8226;   <a href="#processing_window">processing_window</a>
  &#8226;   <a href="#refresh_ddb">refresh_ddb</a>
  &#8226;   <a href="#subwindows">subwindows</a>
@@ -2679,12 +2687,15 @@ imports:
   <div class="import">
 imported by:
     <a href="#LaMA.pyw">LaMA.pyw</a>
+ &#8226;   <a href="#PyQt5">PyQt5</a>
  &#8226;   <a href="#PyQt5.QtCore">PyQt5.QtCore</a>
  &#8226;   <a href="#PyQt5.QtGui">PyQt5.QtGui</a>
  &#8226;   <a href="#PyQt5.QtWidgets">PyQt5.QtWidgets</a>
  &#8226;   <a href="#config">config</a>
  &#8226;   <a href="#create_new_widgets">create_new_widgets</a>
  &#8226;   <a href="#create_pdf">create_pdf</a>
+ &#8226;   <a href="#handle_exceptions">handle_exceptions</a>
+ &#8226;   <a href="#lama_gui">lama_gui</a>
  &#8226;   <a href="#processing_window">processing_window</a>
  &#8226;   <a href="#refresh_ddb">refresh_ddb</a>
  &#8226;   <a href="#standard_dialog_windows">standard_dialog_windows</a>
@@ -2714,7 +2725,10 @@ imported by:
  &#8226;   <a href="#PyQt5.QtGui">PyQt5.QtGui</a>
  &#8226;   <a href="#PyQt5.QtWidgets">PyQt5.QtWidgets</a>
  &#8226;   <a href="#config">config</a>
+ &#8226;   <a href="#create_new_widgets">create_new_widgets</a>
  &#8226;   <a href="#create_pdf">create_pdf</a>
+ &#8226;   <a href="#handle_exceptions">handle_exceptions</a>
+ &#8226;   <a href="#lama_gui">lama_gui</a>
  &#8226;   <a href="#processing_window">processing_window</a>
  &#8226;   <a href="#refresh_ddb">refresh_ddb</a>
  &#8226;   <a href="#standard_dialog_windows">standard_dialog_windows</a>
@@ -2739,10 +2753,13 @@ imports:
   <div class="import">
 imported by:
     <a href="#LaMA.pyw">LaMA.pyw</a>
+ &#8226;   <a href="#PyQt5">PyQt5</a>
  &#8226;   <a href="#PyQt5.QtWidgets">PyQt5.QtWidgets</a>
  &#8226;   <a href="#config">config</a>
  &#8226;   <a href="#create_new_widgets">create_new_widgets</a>
  &#8226;   <a href="#create_pdf">create_pdf</a>
+ &#8226;   <a href="#handle_exceptions">handle_exceptions</a>
+ &#8226;   <a href="#lama_gui">lama_gui</a>
  &#8226;   <a href="#predefined_size_policy">predefined_size_policy</a>
  &#8226;   <a href="#processing_window">processing_window</a>
  &#8226;   <a href="#refresh_ddb">refresh_ddb</a>
@@ -5700,7 +5717,9 @@ imported by:
  &#8226;   <a href="#create_pdf">create_pdf</a>
  &#8226;   <a href="#database_commands">database_commands</a>
  &#8226;   <a href="#filter_commands">filter_commands</a>
+ &#8226;   <a href="#handle_exceptions">handle_exceptions</a>
  &#8226;   <a href="#lama_colors">lama_colors</a>
+ &#8226;   <a href="#lama_gui">lama_gui</a>
  &#8226;   <a href="#lama_stylesheets">lama_stylesheets</a>
  &#8226;   <a href="#prepare_content_vorschau">prepare_content_vorschau</a>
  &#8226;   <a href="#processing_window">processing_window</a>
@@ -5731,6 +5750,7 @@ imported by:
  &#8226;   <a href="#create_pdf">create_pdf</a>
  &#8226;   <a href="#database_commands">database_commands</a>
  &#8226;   <a href="#git_sync">git_sync</a>
+ &#8226;   <a href="#handle_exceptions">handle_exceptions</a>
  &#8226;   <a href="#prepare_content_vorschau">prepare_content_vorschau</a>
  &#8226;   <a href="#refresh_ddb">refresh_ddb</a>
  &#8226;   <a href="#save_titlepage">save_titlepage</a>
@@ -5864,7 +5884,7 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#LaMA.pyw">LaMA.pyw</a>
+    <a href="#subwindows">subwindows</a>
 
   </div>
 
@@ -5886,8 +5906,8 @@ imported by:
   <a target="code" href="/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/copy.py" type="text/plain"><tt>copy</tt></a>
 <span class="moduletype">SourceModule</span>  <div class="import">
 imports:
-    <a href="#copyreg">copyreg</a>
- &#8226;   <a href="#org">org</a>
+    <a href="#'org.python'">'org.python'</a>
+ &#8226;   <a href="#copyreg">copyreg</a>
  &#8226;   <a href="#types">types</a>
  &#8226;   <a href="#weakref">weakref</a>
 
@@ -5964,8 +5984,11 @@ imported by:
 imports:
     <a href="#PyQt5">PyQt5</a>
  &#8226;   <a href="#PyQt5.QtCore">PyQt5.QtCore</a>
+ &#8226;   <a href="#PyQt5.QtGui">PyQt5.QtGui</a>
  &#8226;   <a href="#PyQt5.QtWidgets">PyQt5.QtWidgets</a>
  &#8226;   <a href="#config">config</a>
+ &#8226;   <a href="#database_commands">database_commands</a>
+ &#8226;   <a href="#handle_exceptions">handle_exceptions</a>
  &#8226;   <a href="#predefined_size_policy">predefined_size_policy</a>
  &#8226;   <a href="#translate">translate</a>
 
@@ -5973,8 +5996,21 @@ imports:
   <div class="import">
 imported by:
     <a href="#LaMA.pyw">LaMA.pyw</a>
+ &#8226;   <a href="#lama_gui">lama_gui</a>
  &#8226;   <a href="#processing_window">processing_window</a>
  &#8226;   <a href="#subwindows">subwindows</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="create_nonograms"></a>
+  <a target="code" href="/Users/wolfganghintringer/Desktop/Parhamer_connection/create_nonograms.py" type="text/plain"><tt>create_nonograms</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imported by:
+    <a href="#lama_gui">lama_gui</a>
+ &#8226;   <a href="#worksheet_wizard">worksheet_wizard</a>
 
   </div>
 
@@ -5992,6 +6028,7 @@ imports:
  &#8226;   <a href="#config_start">config_start</a>
  &#8226;   <a href="#database_commands">database_commands</a>
  &#8226;   <a href="#datetime">datetime</a>
+ &#8226;   <a href="#distutils.spawn">distutils.spawn</a>
  &#8226;   <a href="#json">json</a>
  &#8226;   <a href="#os">os</a>
  &#8226;   <a href="#processing_window">processing_window</a>
@@ -6011,6 +6048,7 @@ imports:
   <div class="import">
 imported by:
     <a href="#LaMA.pyw">LaMA.pyw</a>
+ &#8226;   <a href="#lama_gui">lama_gui</a>
  &#8226;   <a href="#subwindows">subwindows</a>
 
   </div>
@@ -6059,6 +6097,7 @@ imported by:
  &#8226;   <a href="#pkg_resources._vendor.appdirs">pkg_resources._vendor.appdirs</a>
  &#8226;   <a href="#setuptools.glibc">setuptools.glibc</a>
  &#8226;   <a href="#setuptools.windows_support">setuptools.windows_support</a>
+ &#8226;   <a href="#subwindows">subwindows</a>
  &#8226;   <a href="#uuid">uuid</a>
 
   </div>
@@ -6275,7 +6314,9 @@ imports:
   <div class="import">
 imported by:
     <a href="#LaMA.pyw">LaMA.pyw</a>
+ &#8226;   <a href="#create_new_widgets">create_new_widgets</a>
  &#8226;   <a href="#create_pdf">create_pdf</a>
+ &#8226;   <a href="#refresh_ddb">refresh_ddb</a>
  &#8226;   <a href="#subwindows">subwindows</a>
  &#8226;   <a href="#work_with_content">work_with_content</a>
 
@@ -6334,6 +6375,7 @@ imports:
   <div class="import">
 imported by:
     <a href="#fractions">fractions</a>
+ &#8226;   <a href="#worksheet_wizard">worksheet_wizard</a>
  &#8226;   <a href="#xmlrpc.client">xmlrpc.client</a>
 
   </div>
@@ -7474,6 +7516,7 @@ imports:
   <div class="import">
 imported by:
     <a href="#PIL.EpsImagePlugin">PIL.EpsImagePlugin</a>
+ &#8226;   <a href="#create_pdf">create_pdf</a>
  &#8226;   <a href="#distutils.archive_util">distutils.archive_util</a>
  &#8226;   <a href="#distutils.ccompiler">distutils.ccompiler</a>
  &#8226;   <a href="#distutils.cmd">distutils.cmd</a>
@@ -11895,6 +11938,7 @@ imported by:
  &#8226;   <a href="#importlib.util">importlib.util</a>
  &#8226;   <a href="#inspect">inspect</a>
  &#8226;   <a href="#ipaddress">ipaddress</a>
+ &#8226;   <a href="#lama_gui">lama_gui</a>
  &#8226;   <a href="#linecache">linecache</a>
  &#8226;   <a href="#locale">locale</a>
  &#8226;   <a href="#multiprocessing.reduction">multiprocessing.reduction</a>
@@ -11959,6 +12003,7 @@ imported by:
  &#8226;   <a href="#urllib3.packages.six">urllib3.packages.six</a>
  &#8226;   <a href="#urllib3.poolmanager">urllib3.poolmanager</a>
  &#8226;   <a href="#urllib3.util.wait">urllib3.util.wait</a>
+ &#8226;   <a href="#worksheet_wizard">worksheet_wizard</a>
 
   </div>
 
@@ -12189,6 +12234,34 @@ imported by:
  &#8226;   <a href="#numpy.lib._datasource">numpy.lib._datasource</a>
  &#8226;   <a href="#tarfile">tarfile</a>
  &#8226;   <a href="#xmlrpc.client">xmlrpc.client</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="handle_exceptions"></a>
+  <a target="code" href="/Users/wolfganghintringer/Desktop/Parhamer_connection/handle_exceptions.py" type="text/plain"><tt>handle_exceptions</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#PyQt5">PyQt5</a>
+ &#8226;   <a href="#PyQt5.QtCore">PyQt5.QtCore</a>
+ &#8226;   <a href="#PyQt5.QtGui">PyQt5.QtGui</a>
+ &#8226;   <a href="#PyQt5.QtWidgets">PyQt5.QtWidgets</a>
+ &#8226;   <a href="#config">config</a>
+ &#8226;   <a href="#config_start">config_start</a>
+ &#8226;   <a href="#os">os</a>
+ &#8226;   <a href="#smtplib">smtplib</a>
+ &#8226;   <a href="#standard_dialog_windows">standard_dialog_windows</a>
+ &#8226;   <a href="#sys">sys</a>
+ &#8226;   <a href="#traceback">traceback</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#LaMA.pyw">LaMA.pyw</a>
+ &#8226;   <a href="#create_new_widgets">create_new_widgets</a>
+ &#8226;   <a href="#subwindows">subwindows</a>
 
   </div>
 
@@ -13140,6 +13213,7 @@ imported by:
  &#8226;   <a href="#json.encoder">json.encoder</a>
  &#8226;   <a href="#json.scanner">json.scanner</a>
  &#8226;   <a href="#numpy._version">numpy._version</a>
+ &#8226;   <a href="#refresh_ddb">refresh_ddb</a>
  &#8226;   <a href="#requests.compat">requests.compat</a>
  &#8226;   <a href="#save_titlepage">save_titlepage</a>
  &#8226;   <a href="#subwindows">subwindows</a>
@@ -13236,6 +13310,33 @@ imports:
 imported by:
     <a href="#LaMA.pyw">LaMA.pyw</a>
  &#8226;   <a href="#lama_stylesheets">lama_stylesheets</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="lama_gui"></a>
+  <a target="code" href="/Users/wolfganghintringer/Desktop/Parhamer_connection/lama_gui.py" type="text/plain"><tt>lama_gui</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#PyQt5">PyQt5</a>
+ &#8226;   <a href="#PyQt5.QtCore">PyQt5.QtCore</a>
+ &#8226;   <a href="#PyQt5.QtGui">PyQt5.QtGui</a>
+ &#8226;   <a href="#PyQt5.QtWidgets">PyQt5.QtWidgets</a>
+ &#8226;   <a href="#config">config</a>
+ &#8226;   <a href="#create_new_widgets">create_new_widgets</a>
+ &#8226;   <a href="#create_nonograms">create_nonograms</a>
+ &#8226;   <a href="#create_pdf">create_pdf</a>
+ &#8226;   <a href="#functools">functools</a>
+ &#8226;   <a href="#predefined_size_policy">predefined_size_policy</a>
+ &#8226;   <a href="#standard_dialog_windows">standard_dialog_windows</a>
+ &#8226;   <a href="#worksheet_wizard">worksheet_wizard</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#LaMA.pyw">LaMA.pyw</a>
 
   </div>
 
@@ -13835,6 +13936,7 @@ imported by:
  &#8226;   <a href="#random">random</a>
  &#8226;   <a href="#selectors">selectors</a>
  &#8226;   <a href="#waitingspinnerwidget">waitingspinnerwidget</a>
+ &#8226;   <a href="#worksheet_wizard">worksheet_wizard</a>
 
   </div>
 
@@ -20198,7 +20300,7 @@ imported by:
 <span class="moduletype">MissingModule</span>  <div class="import">
 imported by:
     <a href="#LaMA.pyw">LaMA.pyw</a>
- &#8226;   <a href="#copy">copy</a>
+ &#8226;   <a href="#pickle">pickle</a>
 
   </div>
 
@@ -20327,6 +20429,7 @@ imported by:
  &#8226;   <a href="#git_sync">git_sync</a>
  &#8226;   <a href="#glob">glob</a>
  &#8226;   <a href="#gzip">gzip</a>
+ &#8226;   <a href="#handle_exceptions">handle_exceptions</a>
  &#8226;   <a href="#http.server">http.server</a>
  &#8226;   <a href="#imp">imp</a>
  &#8226;   <a href="#inspect">inspect</a>
@@ -20521,6 +20624,7 @@ imported by:
  &#8226;   <a href="#config_start">config_start</a>
  &#8226;   <a href="#dulwich.porcelain">dulwich.porcelain</a>
  &#8226;   <a href="#numpy.compat.py3k">numpy.compat.py3k</a>
+ &#8226;   <a href="#refresh_ddb">refresh_ddb</a>
  &#8226;   <a href="#subwindows">subwindows</a>
 
   </div>
@@ -20581,8 +20685,7 @@ imported by:
   <a target="code" href="/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/pickle.py" type="text/plain"><tt>pickle</tt></a>
 <span class="moduletype">SourceModule</span>  <div class="import">
 imports:
-    <a href="#'org.python'">'org.python'</a>
- &#8226;   <a href="#_compat_pickle">_compat_pickle</a>
+    <a href="#_compat_pickle">_compat_pickle</a>
  &#8226;   <a href="#_pickle">_pickle</a>
  &#8226;   <a href="#argparse">argparse</a>
  &#8226;   <a href="#codecs">codecs</a>
@@ -20591,6 +20694,7 @@ imports:
  &#8226;   <a href="#functools">functools</a>
  &#8226;   <a href="#io">io</a>
  &#8226;   <a href="#itertools">itertools</a>
+ &#8226;   <a href="#org">org</a>
  &#8226;   <a href="#pprint">pprint</a>
  &#8226;   <a href="#re">re</a>
  &#8226;   <a href="#struct">struct</a>
@@ -21360,6 +21464,7 @@ imports:
 imported by:
     <a href="#LaMA.pyw">LaMA.pyw</a>
  &#8226;   <a href="#create_new_widgets">create_new_widgets</a>
+ &#8226;   <a href="#lama_gui">lama_gui</a>
  &#8226;   <a href="#processing_window">processing_window</a>
  &#8226;   <a href="#subwindows">subwindows</a>
 
@@ -21926,6 +22031,7 @@ imported by:
  &#8226;   <a href="#setuptools.command.easy_install">setuptools.command.easy_install</a>
  &#8226;   <a href="#tempfile">tempfile</a>
  &#8226;   <a href="#uuid">uuid</a>
+ &#8226;   <a href="#worksheet_wizard">worksheet_wizard</a>
 
   </div>
 
@@ -22120,6 +22226,7 @@ imported by:
  &#8226;   <a href="#uuid">uuid</a>
  &#8226;   <a href="#warnings">warnings</a>
  &#8226;   <a href="#work_with_content">work_with_content</a>
+ &#8226;   <a href="#worksheet_wizard">worksheet_wizard</a>
  &#8226;   <a href="#wsgiref.headers">wsgiref.headers</a>
  &#8226;   <a href="#yaml.constructor">yaml.constructor</a>
  &#8226;   <a href="#yaml.reader">yaml.reader</a>
@@ -22153,11 +22260,17 @@ imports:
  &#8226;   <a href="#PyQt5.QtWidgets">PyQt5.QtWidgets</a>
  &#8226;   <a href="#config">config</a>
  &#8226;   <a href="#config_start">config_start</a>
+ &#8226;   <a href="#database_commands">database_commands</a>
  &#8226;   <a href="#datetime">datetime</a>
  &#8226;   <a href="#git_sync">git_sync</a>
+ &#8226;   <a href="#json">json</a>
  &#8226;   <a href="#os">os</a>
+ &#8226;   <a href="#pathlib">pathlib</a>
  &#8226;   <a href="#processing_window">processing_window</a>
+ &#8226;   <a href="#requests">requests</a>
  &#8226;   <a href="#standard_dialog_windows">standard_dialog_windows</a>
+ &#8226;   <a href="#urllib.error">urllib.error</a>
+ &#8226;   <a href="#urllib.request">urllib.request</a>
 
   </div>
   <div class="import">
@@ -22221,6 +22334,7 @@ imports:
   <div class="import">
 imported by:
     <a href="#LaMA.pyw">LaMA.pyw</a>
+ &#8226;   <a href="#refresh_ddb">refresh_ddb</a>
  &#8226;   <a href="#requests">requests</a>
  &#8226;   <a href="#requests.__version__">requests.__version__</a>
  &#8226;   <a href="#requests._internal_utils">requests._internal_utils</a>
@@ -24415,6 +24529,7 @@ imports:
   <div class="import">
 imported by:
     <a href="#LaMA.pyw">LaMA.pyw</a>
+ &#8226;   <a href="#handle_exceptions">handle_exceptions</a>
 
   </div>
 
@@ -24649,6 +24764,8 @@ imported by:
     <a href="#LaMA.pyw">LaMA.pyw</a>
  &#8226;   <a href="#build_titlepage">build_titlepage</a>
  &#8226;   <a href="#create_pdf">create_pdf</a>
+ &#8226;   <a href="#handle_exceptions">handle_exceptions</a>
+ &#8226;   <a href="#lama_gui">lama_gui</a>
  &#8226;   <a href="#prepare_content_vorschau">prepare_content_vorschau</a>
  &#8226;   <a href="#refresh_ddb">refresh_ddb</a>
  &#8226;   <a href="#subwindows">subwindows</a>
@@ -24909,12 +25026,15 @@ imports:
  &#8226;   <a href="#bcrypt">bcrypt</a>
  &#8226;   <a href="#config">config</a>
  &#8226;   <a href="#config_start">config_start</a>
+ &#8226;   <a href="#convert_image_to_eps">convert_image_to_eps</a>
  &#8226;   <a href="#create_new_widgets">create_new_widgets</a>
  &#8226;   <a href="#create_pdf">create_pdf</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
  &#8226;   <a href="#database_commands">database_commands</a>
  &#8226;   <a href="#filter_commands">filter_commands</a>
  &#8226;   <a href="#functools">functools</a>
  &#8226;   <a href="#git_sync">git_sync</a>
+ &#8226;   <a href="#handle_exceptions">handle_exceptions</a>
  &#8226;   <a href="#json">json</a>
  &#8226;   <a href="#lama_stylesheets">lama_stylesheets</a>
  &#8226;   <a href="#os">os</a>
@@ -25041,6 +25161,7 @@ imported by:
  &#8226;   <a href="#getpass">getpass</a>
  &#8226;   <a href="#gettext">gettext</a>
  &#8226;   <a href="#gzip">gzip</a>
+ &#8226;   <a href="#handle_exceptions">handle_exceptions</a>
  &#8226;   <a href="#http.server">http.server</a>
  &#8226;   <a href="#imp">imp</a>
  &#8226;   <a href="#importlib">importlib</a>
@@ -25817,6 +25938,7 @@ imported by:
  &#8226;   <a href="#code">code</a>
  &#8226;   <a href="#concurrent.futures.process">concurrent.futures.process</a>
  &#8226;   <a href="#doctest">doctest</a>
+ &#8226;   <a href="#handle_exceptions">handle_exceptions</a>
  &#8226;   <a href="#http.cookiejar">http.cookiejar</a>
  &#8226;   <a href="#logging">logging</a>
  &#8226;   <a href="#multiprocessing.managers">multiprocessing.managers</a>
@@ -26364,6 +26486,7 @@ imports:
   <div class="import">
 imported by:
     <a href="#numpy.lib._datasource">numpy.lib._datasource</a>
+ &#8226;   <a href="#refresh_ddb">refresh_ddb</a>
  &#8226;   <a href="#urllib.request">urllib.request</a>
 
   </div>
@@ -26521,6 +26644,7 @@ imports:
 imported by:
     <a href="#http.cookiejar">http.cookiejar</a>
  &#8226;   <a href="#numpy.lib._datasource">numpy.lib._datasource</a>
+ &#8226;   <a href="#refresh_ddb">refresh_ddb</a>
  &#8226;   <a href="#requests.compat">requests.compat</a>
  &#8226;   <a href="#xml.sax.saxutils">xml.sax.saxutils</a>
 
@@ -27941,6 +28065,28 @@ imported by:
     <a href="#LaMA.pyw">LaMA.pyw</a>
  &#8226;   <a href="#prepare_content_vorschau">prepare_content_vorschau</a>
  &#8226;   <a href="#subwindows">subwindows</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="worksheet_wizard"></a>
+  <a target="code" href="/Users/wolfganghintringer/Desktop/Parhamer_connection/worksheet_wizard.py" type="text/plain"><tt>worksheet_wizard</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#create_nonograms">create_nonograms</a>
+ &#8226;   <a href="#decimal">decimal</a>
+ &#8226;   <a href="#functools">functools</a>
+ &#8226;   <a href="#math">math</a>
+ &#8226;   <a href="#random">random</a>
+ &#8226;   <a href="#re">re</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#LaMA.pyw">LaMA.pyw</a>
+ &#8226;   <a href="#lama_gui">lama_gui</a>
 
   </div>
 
