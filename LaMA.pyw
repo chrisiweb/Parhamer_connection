@@ -6373,24 +6373,24 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def comboBox_unterkapitel_changed(self, list_mode):
         self.adapt_choosing_list(list_mode)
 
-    @report_exceptions
-    def standardize_aufgabe(self, aufgabe):
-        try:
-            gk, num = aufgabe.split('-')
-        except ValueError:
-            return aufgabe
+    # @report_exceptions  NOT WORKING (not sure why) always returns NONE
+    # def standardize_aufgabe(self, aufgabe):
+    #     try:
+    #         gk, num = aufgabe.split('-')
+    #     except ValueError:
+    #         return aufgabe
 
-        gk = shorten_gk(gk)
+    #     gk = shorten_gk(gk)
         
        
-        try:
-            gk = dict_gk[gk]
-        except KeyError:
-            gk = gk.upper()
+    #     try:
+    #         gk = dict_gk[gk]
+    #     except KeyError:
+    #         gk = gk.upper()
 
-        x = f"{gk.strip()} - {num.strip().lower()}"
+    #     x = f"{gk.strip()} - {num.strip().lower()}"
 
-        return x
+    #     return x
 
     @report_exceptions
     def buttonImport_sage_clicked(self):
@@ -6412,7 +6412,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         list_aufgaben_errors=[]
 
-
+        
         for index, aufgabe in enumerate(self.import_list_sage):
             aufgabe = aufgabe.upper()
 
@@ -6420,7 +6420,20 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             if typ == 1:
                 layout = self.verticalLayout_scrollArea_sage_typ1
-                aufgabe = self.standardize_aufgabe(aufgabe)
+                try:
+                    gk, num = aufgabe.split('-')
+                except ValueError:
+                    return aufgabe
+
+                gk = shorten_gk(gk)
+                
+            
+                try:
+                    gk = dict_gk[gk]
+                except KeyError:
+                    gk = gk.upper()
+
+                aufgabe = f"{gk.strip()} - {num.strip().lower()}"
                 
 
             elif typ == 2:
@@ -6449,12 +6462,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 else:
                     continue
 
+            aufgaben_nummer = len(self.list_alle_aufgaben_sage)+index
             neue_aufgaben_box = self.create_neue_aufgaben_box(
-                index, aufgabe, aufgabe_total
+                aufgaben_nummer, aufgabe, aufgabe_total
             )
 
             layout.insertWidget(layout.count() - 1, neue_aufgaben_box)
 
+        print(self.list_alle_aufgaben_sage)
         if not is_empty(list_aufgaben_errors):
             str_error = ', '.join(list_aufgaben_errors)
             warning_window(f"Für folgende Eingaben konnte keine passende Aufgabenummer in der Datenbank gefunden werden:\n\n{str_error}")

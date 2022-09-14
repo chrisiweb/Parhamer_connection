@@ -3639,7 +3639,7 @@ class Ui_Dialog_import_sage(object):
         self.plainTextEdit.setToolTip("Jede Aufgabenummer muss in eine neue Zeile eingefügt werden")
         verticalLayout.addWidget(self.plainTextEdit)
 
-        btn_import = create_new_button(Dialog, "Importieren", self.btn_import_clicked)
+        btn_import = create_new_button(Dialog, "Importieren", self.btn_import_clicked, icon="plus-square.svg")
         verticalLayout.addWidget(btn_import)
 
     def btn_import_clicked(self):
