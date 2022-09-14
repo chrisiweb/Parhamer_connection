@@ -1065,7 +1065,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.button_save.hide()
         if typ ==2:
             self.button_save.hide()
-
+        ########################################################################
 
 
         self.button_OK = create_new_button(Dialog, "OK", partial(self.pushButton_OK_pressed, aufgabe, chosen_program))
@@ -1602,7 +1602,7 @@ class Ui_Dialog_ausgleichspunkte(object):
                 except KeyError:
                     pass
 
-
+            # print(self.list_sage_hide_show_items_chosen)               
             if self.language == "DE":
                 index = 0
             elif self.language == "EN":

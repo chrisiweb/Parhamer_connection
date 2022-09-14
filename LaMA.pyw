@@ -5994,7 +5994,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         if typ == 2:
             split_content = self.split_content(aufgabe, content)
-
+            # print(split_content)
             if split_content == False:
                 return
             # try:
@@ -6076,7 +6076,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.dict_sage_individual_change.pop(aufgabe)
         else:
             self.dict_sage_individual_change[aufgabe] = ui.sage_individual_change
-
+        
+        
+        # print(self.list_sage_hide_show_items_chosen)
         # print(self.dict_sage_individual_change)
 
             
@@ -6804,6 +6806,20 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             else:
                 content = aufgabe_total[entry_key]
 
+
+        elif aufgabe in self.dict_sage_hide_show_items_chosen:
+            if self.dict_variablen_translation[aufgabe] == "DE":
+                aufgabentext = "content"
+            elif self.dict_variablen_translation[aufgabe] == "EN":
+                aufgabentext = "content_translation"
+            full_content = aufgabe_total[aufgabentext]
+            split_content = self.split_content(aufgabe, aufgabe_total[aufgabentext])
+            split_content = prepare_content_for_hide_show_items(split_content)
+
+            content = edit_content_hide_show_items(
+                self, aufgabe, split_content, full_content
+            )
+
         elif self.dict_variablen_translation[aufgabe] == "EN":
             content = aufgabe_total["content_translation"]
             
@@ -6814,16 +6830,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         #     content = edit_content_ausgleichspunkte(
         #         self, aufgabe, split_content, full_content
         #     )
-
-
-        elif aufgabe in self.dict_sage_hide_show_items_chosen:
-            full_content = aufgabe_total["content"]
-            split_content = self.split_content(aufgabe, aufgabe_total["content"])
-            split_content = prepare_content_for_hide_show_items(split_content)
-            content = edit_content_hide_show_items(
-                self, aufgabe, split_content, full_content
-            )
-
 
         else:
             content = aufgabe_total["content"]
