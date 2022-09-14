@@ -6411,7 +6411,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             return
 
         list_aufgaben_errors=[]
-
+        list_duplicates = []
 
         for index, aufgabe in enumerate(self.import_list_sage):
             aufgabe = aufgabe.upper()
@@ -6453,16 +6453,22 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             if typ == 2:
                 if aufgabe not in self.list_alle_aufgaben_sage[1]:
+                    aufgaben_nummer = len(self.list_alle_aufgaben_sage[1])
                     self.list_alle_aufgaben_sage[1].append(aufgabe)
+     
                 else:
+                    list_duplicates.append(aufgabe)
                     continue
             else:
                 if aufgabe not in self.list_alle_aufgaben_sage[0]:
-                    self.list_alle_aufgaben_sage[0].append(aufgabe)
+                    aufgaben_nummer = len(self.list_alle_aufgaben_sage[0])
+                    self.list_alle_aufgaben_sage[0].append(aufgabe) 
+                    
                 else:
+                    list_duplicates.append(aufgabe)
                     continue
-
-            aufgaben_nummer = len(self.list_alle_aufgaben_sage)+index
+            
+            
             neue_aufgaben_box = self.create_neue_aufgaben_box(
                 aufgaben_nummer, aufgabe, aufgabe_total
             )
@@ -6473,8 +6479,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         if not is_empty(list_aufgaben_errors):
             str_error = ', '.join(list_aufgaben_errors)
             warning_window(f"Für folgende Eingaben konnte keine passende Aufgabenummer in der Datenbank gefunden werden:\n\n{str_error}")
-        
-        num_imported_files = len(self.import_list_sage)-len(list_aufgaben_errors)
+
+        # print(self.import_list_sage)
+        # print(self.list_alle_aufgaben_sage)
+        if not is_empty(list_duplicates):
+            str_duplicates = ', '.join(list_duplicates)
+            information_window(f"Folgende Aufgaben wurden bereits hinzugefügt und werden daher übersprungen:\n\n{str_duplicates}")
+
+        num_imported_files = len(self.import_list_sage)-len(list_aufgaben_errors)-len(list_duplicates)
         information_window(f"Insgesamt wurde {num_imported_files} Aufgaben erfolgreich importiert.")
 
     def delete_zeros_at_beginning(self, string):
