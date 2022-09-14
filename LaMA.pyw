@@ -6412,7 +6412,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         list_aufgaben_errors=[]
 
-        
+
         for index, aufgabe in enumerate(self.import_list_sage):
             aufgabe = aufgabe.upper()
 
@@ -6469,7 +6469,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             layout.insertWidget(layout.count() - 1, neue_aufgaben_box)
 
-        print(self.list_alle_aufgaben_sage)
+        # print(self.list_alle_aufgaben_sage)
         if not is_empty(list_aufgaben_errors):
             str_error = ', '.join(list_aufgaben_errors)
             warning_window(f"Für folgende Eingaben konnte keine passende Aufgabenummer in der Datenbank gefunden werden:\n\n{str_error}")
