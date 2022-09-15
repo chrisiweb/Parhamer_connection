@@ -5134,14 +5134,47 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         if self.combobox_beurteilung.currentText() == "Notenschlüssel":
             self.groupBox_beurteilungsraster.hide()
             self.groupBox_notenschl.show()
-        if self.combobox_beurteilung.currentText() == "Beurteilungsraster":
+        elif self.combobox_beurteilung.currentText() == "Beurteilungsraster":
             self.groupBox_notenschl.hide()
             self.groupBox_beurteilungsraster.show()
-        if self.combobox_beurteilung.currentText() == "keine Auswahl":
+        elif self.combobox_beurteilung.currentText() == "keine Auswahl":
             self.groupBox_notenschl.hide()
             self.groupBox_beurteilungsraster.hide()
 
         self.update_punkte()
+
+    def notenschluessel_changed(self):
+        list_label_widgets = [self.label_sg_pkt, self.label_g_pkt, self.label_b_pkt, self.label_g_2_pkt]
+        list_notenschluessel_standard = [self.spinBox_2, self.spinBox_3, self.spinBox_4, self.spinBox_5]
+        list_notenschluessel_individual = [
+            self.lineedit_sg_upper_limit,
+            self.lineedit_sg_lower_limit,
+            self.lineedit_g_upper_limit,
+            self.lineedit_g_lower_limit,
+            self.lineedit_b_upper_limit,
+            self.lineedit_b_lower_limit, 
+            self.lineedit_g2_upper_limit,
+            self.lineedit_g2_lower_limit,
+            ]
+        # print(self.get_punkteverteilung())
+        if self.combobox_notenschluessel_typ.currentIndex()==0:
+            for widget in list_label_widgets:
+                widget.setText("% (ab 0)")
+            for widget in list_notenschluessel_standard:
+                widget.show()
+            for widget in list_notenschluessel_individual:
+                widget.hide()
+
+        elif self.combobox_notenschluessel_typ.currentIndex()==1:
+            for widget in list_label_widgets:
+                widget.setText(" - ")
+            for widget in list_notenschluessel_standard:
+                widget.hide()
+            for widget in list_notenschluessel_individual:
+                widget.show()
+            
+        
+        self.update_notenschluessel()
 
     def get_aufgabenverteilung(self):      
         num_typ1 = len(self.list_alle_aufgaben_sage[0])
@@ -5420,26 +5453,29 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 verteilung_notenschluessel.append(int(gesamtpunkte * (x / 100)) + 1)
             r += 1
 
-        self.label_sg_pkt.setText(
-            _translate(
-                "MainWindow", "% (ab {})".format(verteilung_notenschluessel[0]), None
+        if self.combobox_notenschluessel_typ.currentIndex()== 0:
+            self.label_sg_pkt.setText(
+                _translate(
+                    "MainWindow", "% (ab {})".format(verteilung_notenschluessel[0]), None
+                )
             )
-        )
-        self.label_g_pkt.setText(
-            _translate(
-                "MainWindow", "% (ab {})".format(verteilung_notenschluessel[1]), None
+            self.label_g_pkt.setText(
+                _translate(
+                    "MainWindow", "% (ab {})".format(verteilung_notenschluessel[1]), None
+                )
             )
-        )
-        self.label_b_pkt.setText(
-            _translate(
-                "MainWindow", "% (ab {})".format(verteilung_notenschluessel[2]), None
+            self.label_b_pkt.setText(
+                _translate(
+                    "MainWindow", "% (ab {})".format(verteilung_notenschluessel[2]), None
+                )
             )
-        )
-        self.label_g_2_pkt.setText(
-            _translate(
-                "MainWindow", "% (ab {})".format(verteilung_notenschluessel[3]), None
+            self.label_g_2_pkt.setText(
+                _translate(
+                    "MainWindow", "% (ab {})".format(verteilung_notenschluessel[3]), None
+                )
             )
-        )
+        else:
+            self.lineedit_sg_upper_limit.setText(str(gesamtpunkte))
 
     # def get_number_ausgleichspunkte_gesamt(self):
     #     number_ausgleichspkt_gesamt = 0
