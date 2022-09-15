@@ -530,7 +530,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
                     copy_included_images(self, image)
 
             for index in range(range_limit):
-                single_file_index = self.pushButton_vorschau_pressed(
+                self.pushButton_vorschau_pressed(
                     "schularbeit",
                     index,
                     self.ui_erstellen.spinBox_sw_gruppen.value() * 2,
@@ -539,6 +539,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
                     single_file_index,
                     filename_vorschau = filename_vorschau,
                 )
+                single_file_index += 1
 
             if not is_empty(self.chosen_path_schularbeit_erstellen[0]):
                 if sys.platform.startswith("linux"):
@@ -7013,7 +7014,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
                 self.reset_latex_file_to_start(filename_vorschau)
             QtWidgets.QApplication.restoreOverrideCursor()
-            return single_file_index + 1
+            return
 
         else:
             self.create_body_of_tex_file(filename_vorschau, ausgabetyp)
