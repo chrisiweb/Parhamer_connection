@@ -178,7 +178,7 @@ def worker_update_database():
 #         self.Dialog.accept()      
 
 class Ui_Dialog_choose_type(object):
-    def setupUi(self, Dialog):
+    def setupUi(self, Dialog, screen_width, screen_height):
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
         Dialog.setWindowTitle(
@@ -202,7 +202,8 @@ class Ui_Dialog_choose_type(object):
         label_logo.setPixmap(QPixmap(logo))
         # label_logo.setFixedHeight(100)
         # label_logo.setFixedWidth(100)
-        label_logo.setFixedSize(QSize(190,70))
+
+        label_logo.setFixedSize(QSize(screen_width*0.1,screen_height*0.07))
         label_logo.setScaledContents(True)
 
         verticalLayout.addWidget(label_logo, alignment=Qt.AlignCenter)
@@ -274,11 +275,12 @@ class Ui_Dialog_choose_type(object):
         # self.btn_worksheet.setShortcut("F3")
         verticalLayout.addWidget(self.btn_worksheet, alignment=Qt.AlignCenter)
 
+
         self.btn_worksheet.setFixedWidth(label_logo.width())
         self.btn_lama.setFixedWidth(label_logo.width())
         self.btn_lama_cria.setFixedWidth(label_logo.width())
-        Dialog.setFixedWidth(label_logo.width()+80)
-        Dialog.setFixedHeight(250)
+        Dialog.setFixedWidth(label_logo.width()+50)
+        Dialog.setFixedHeight(260)
         # Dialog.setFixedHeight(Dialog.height())
         # print(maximum_width)
         # self.btn_worksheet.clicked.connect(partial(self.choose_button_pressed, "wizard"))

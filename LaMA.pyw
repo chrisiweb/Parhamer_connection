@@ -170,8 +170,12 @@ class Ui_MainWindow(object):
                 | QtCore.Qt.WindowTitleHint
                 | QtCore.Qt.WindowCloseButtonHint,
             )
+
+            # screen_resolution = app.desktop().screenGeometry()
+            # screen_width = screen_resolution.width()
+
             self.ui = Ui_Dialog_choose_type()
-            self.ui.setupUi(self.Dialog)
+            self.ui.setupUi(self.Dialog, screen_width, screen_height)
 
             bring_to_front(self.Dialog)
 
