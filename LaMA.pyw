@@ -8,7 +8,6 @@ __lastupdate__ = "09/22"
 
 show_popup = False
 
-from lama_gui import setup_stackWizard
 from start_window import check_if_database_exists
 # from worksheet_wizard import get_all_solution_pixels
 check_if_database_exists()

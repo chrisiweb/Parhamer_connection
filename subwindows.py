@@ -40,7 +40,7 @@ from create_new_widgets import (
     add_new_option,
 )
 from standard_dialog_windows import critical_window, information_window, question_window, warning_window
-from predefined_size_policy import SizePolicy_fixed, SizePolicy_fixed_height, SizePolicy_fixed_width, SizePolicy_maximum, SizePolicy_maximum_width, SizePolicy_expanding
+from predefined_size_policy import SizePolicy_fixed, SizePolicy_fixed_height, SizePolicy_fixed_width, SizePolicy_maximum, SizePolicy_maximum_width, SizePolicy_expanding, SizePolicy_minimum_width
 from work_with_content import prepare_content_for_hide_show_items
 from lama_stylesheets import (
     StyleSheet_tabWidget,
@@ -185,12 +185,13 @@ class Ui_Dialog_choose_type(object):
             _translate("Titelplatt anpassen", "Programm auswählen", None)
         )
         Dialog.setWindowIcon(QIcon(logo_path))
-        Dialog.setFixedSize(250,240)
+        # Dialog.setFixedSize(250,240)
+        Dialog.setSizePolicy(SizePolicy_fixed)
         # Dialog.setStyleSheet("QToolTip { color: white; background-color: rgb(47, 69, 80); border: 0px; }")
         # Dialog.setSizePolicy(SizePolicy_fixed)
         verticalLayout = create_new_verticallayout(Dialog)
-        verticalLayout.setContentsMargins(8, 0, 8, 35)
-        button_width  = 152
+        verticalLayout.setContentsMargins(8, 0, 8, 30)
+
         button_height = 32
         # self.gridLayout.setObjectName("gridLayout")
         
@@ -201,9 +202,8 @@ class Ui_Dialog_choose_type(object):
         label_logo.setPixmap(QPixmap(logo))
         # label_logo.setFixedHeight(100)
         # label_logo.setFixedWidth(100)
-        label_logo.setFixedSize(QSize(180,70))
+        label_logo.setFixedSize(QSize(190,70))
         label_logo.setScaledContents(True)
-        # label_logo.setStyleSheet("border: 1px solid black;")
 
         verticalLayout.addWidget(label_logo, alignment=Qt.AlignCenter)
         # label_logo.setSizePolicy(SizePolicy_expanding)
@@ -222,7 +222,8 @@ class Ui_Dialog_choose_type(object):
         self.btn_lama_cria.setStyleSheet("QPushButton { text-align: left; padding-left: 8px}")
         self.btn_lama_cria.setAutoDefault(False)
         self.btn_lama_cria.setShortcut("F1")
-        self.btn_lama_cria.setFixedSize(button_width,button_height)
+        self.btn_lama_cria.setFixedHeight(button_height)
+        # self.btn_lama_cria.setFixedSize(button_width,button_height)
         # self.btn_lama_cria.setSizePolicy(SizePolicy_maximum_width)
         verticalLayout.addWidget(self.btn_lama_cria, alignment=Qt.AlignCenter)
         # self.label_lama_cria = QtWidgets.QLabel()
@@ -235,7 +236,9 @@ class Ui_Dialog_choose_type(object):
         # self.btn_lama_cria.clicked.connect(partial(self.choose_button_pressed, "cria"))
 
         self.btn_lama = create_new_button(Dialog, "Oberstufe", partial(self.choose_button_pressed, "lama"), "database.svg")
-        self.btn_lama.setFixedSize(button_width,button_height)
+        # self.btn_lama.setFixedSize(button_width,button_height)
+        # self.btn_lama.setSizePolicy(SizePolicy_minimum_width)
+        self.btn_lama.setFixedHeight(button_height)
         self.btn_lama.setStyleSheet("QPushButton { text-align: left; padding-left: 8px}")
         # self.btn_lama.setObjectName(_fromUtf8("btn_lama"))
         # # self.btn_lama.setText("LaMA (Oberstufe)")
@@ -256,17 +259,28 @@ class Ui_Dialog_choose_type(object):
 
 
         self.btn_worksheet = create_new_button(Dialog, "Worksheet Wizard", partial(self.choose_button_pressed, "wizard"), "file-text.svg")
-        self.btn_worksheet.setStyleSheet("QPushButton { text-align: left; padding-left: 8px}")
+        self.btn_worksheet.setStyleSheet("QPushButton { text-align: left; padding-left: 8px; padding-right:8px}")
         # self.btn_worksheet.setObjectName(_fromUtf8("btn_worksheet"))
         # self.btn_lama.setText("LaMA (Oberstufe)")
         # self.btn_worksheet.setIcon(QIcon(logo_path))
         # self.btn_worksheet.setIconSize(QSize(120, 120))
         self.btn_worksheet.setShortcut("F3")
-        self.btn_worksheet.setFixedSize(button_width,button_height)
+        self.btn_worksheet.setSizePolicy(SizePolicy_maximum_width)
+        self.btn_worksheet.setFixedHeight(button_height)
+        # print(self.btn_worksheet.size())
+        # self.btn_worksheet.setFixedSize(button_width,button_height)
         # self.btn_worksheet.setFixedSize(120, 120)
         self.btn_worksheet.setAutoDefault(False)
         # self.btn_worksheet.setShortcut("F3")
         verticalLayout.addWidget(self.btn_worksheet, alignment=Qt.AlignCenter)
+
+        self.btn_worksheet.setFixedWidth(label_logo.width())
+        self.btn_lama.setFixedWidth(label_logo.width())
+        self.btn_lama_cria.setFixedWidth(label_logo.width())
+        Dialog.setFixedWidth(label_logo.width()+80)
+        Dialog.setFixedHeight(250)
+        # Dialog.setFixedHeight(Dialog.height())
+        # print(maximum_width)
         # self.btn_worksheet.clicked.connect(partial(self.choose_button_pressed, "wizard"))
         # self.label_worksheet= QtWidgets.QLabel()
         # self.label_worksheet.setObjectName(_fromUtf8("label_worksheet"))
