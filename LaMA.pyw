@@ -1188,6 +1188,15 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         self.spinBox_3.setProperty("value", 80)
         self.spinBox_4.setProperty("value", 64)
         self.spinBox_5.setProperty("value", 50)
+
+        self.lineedit_sg_lower_limit.clear()
+        self.lineedit_g_upper_limit.clear()
+        self.lineedit_g_lower_limit.clear()
+        self.lineedit_b_upper_limit.clear()
+        self.lineedit_b_lower_limit.clear()
+        self.lineedit_g2_upper_limit.clear()
+        self.lineedit_g2_lower_limit.clear()
+
         try:
             if self.chosen_program == 'cria':
                 key = "notenschluessel_cria"
@@ -5003,7 +5012,17 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             for aufgabe in list_aufgaben_errors:
                 self.dict_all_infos_for_file["list_alle_aufgaben"].remove(aufgabe)
 
-     
+
+        try:
+            self.lineedit_sg_lower_limit.setText(self.dict_all_infos_for_file["data_gesamt"]["Notenschluessel_individual"][0])
+            self.lineedit_g_upper_limit.setText(self.dict_all_infos_for_file["data_gesamt"]["Notenschluessel_individual"][1])
+            self.lineedit_g_lower_limit.setText(self.dict_all_infos_for_file["data_gesamt"]["Notenschluessel_individual"][2])
+            self.lineedit_b_upper_limit.setText(self.dict_all_infos_for_file["data_gesamt"]["Notenschluessel_individual"][3])
+            self.lineedit_b_lower_limit.setText(self.dict_all_infos_for_file["data_gesamt"]["Notenschluessel_individual"][4])
+            self.lineedit_g2_upper_limit.setText(self.dict_all_infos_for_file["data_gesamt"]["Notenschluessel_individual"][5])
+            self.lineedit_g2_lower_limit.setText(self.dict_all_infos_for_file["data_gesamt"]["Notenschluessel_individual"][6])
+        except KeyError:
+            pass
 
         self.update_punkte()
 
@@ -5158,6 +5177,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             ]
         # print(self.get_punkteverteilung())
         if self.combobox_notenschluessel_typ.currentIndex()==0:
+            self.cb_ns_halbe_pkt.setEnabled(True)
+            self.cb_ns_halbe_pkt.setChecked(True)
             for widget in list_label_widgets:
                 widget.setText("% (ab 0)")
             for widget in list_notenschluessel_standard:
@@ -5166,6 +5187,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 widget.hide()
 
         elif self.combobox_notenschluessel_typ.currentIndex()==1:
+            self.cb_ns_halbe_pkt.setEnabled(False)
+            self.cb_ns_halbe_pkt.setChecked(False)
             for widget in list_label_widgets:
                 widget.setText(" - ")
             for widget in list_notenschluessel_standard:
@@ -6731,6 +6754,15 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 self.spinBox_4.value(),
                 self.spinBox_5.value(),
             ],
+            "Notenschluessel_individual": [
+                self.lineedit_sg_lower_limit.text(),
+                self.lineedit_g_upper_limit.text(),
+                self.lineedit_g_lower_limit.text(),
+                self.lineedit_b_upper_limit.text(),
+                self.lineedit_b_lower_limit.text(),
+                self.lineedit_g2_upper_limit.text(),
+                self.lineedit_g2_lower_limit.text(),
+            ],
             "Typ1 Standard": self.spinBox_default_pkt.value(),
             # "copy_images": self.list_copy_images,
         }
@@ -7064,39 +7096,54 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         ):
             # dict_titlepage = check_if_hide_all_exists(dict_titlepage)
             if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "ns": #or dict_titlepage["hide_all"] == True:
-                notenschluessel = self.dict_all_infos_for_file["data_gesamt"][
-                    "Notenschluessel"
-                ]
+                if self.combobox_notenschluessel_typ.currentIndex() == 0:
+                    notenschluessel = self.dict_all_infos_for_file["data_gesamt"][
+                        "Notenschluessel"
+                    ]
 
-                zusatz = ""
-                if self.cb_ns_halbe_pkt.isChecked():
-                    zusatz = "[1/2]"
-                if self.cb_ns_prozent.isChecked():
-                    if zusatz == "":
-                        zusatz = "[]"
-                    zusatz = zusatz + "[prozent]"
+                    zusatz = ""
+                    if self.cb_ns_halbe_pkt.isChecked():
+                        zusatz = "[1/2]"
+                    if self.cb_ns_prozent.isChecked():
+                        if zusatz == "":
+                            zusatz = "[]"
+                        zusatz = zusatz + "[prozent]"
 
-                # if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "br":
-                #     gut = 0.875
-                #     befriedigend = 0.75
-                #     genuegend = 0.625
-                #     nichtgenuegend = 0.5
-                #     zusatz = "[1/2]"
-                # else: 
-                gut = notenschluessel[0] / 100
-                befriedigend = notenschluessel[1] / 100
-                genuegend = notenschluessel[2] / 100
-                nichtgenuegend = notenschluessel[3] / 100
-                with open(filename_vorschau, "a", encoding="utf8") as vorschau:
-                    vorschau.write(
-                        "\n\n\\null\\notenschluessel{0}{{{1}}}{{{2}}}{{{3}}}{{{4}}}".format(
-                            zusatz,
-                            gut,
-                            befriedigend,
-                            genuegend,
-                            nichtgenuegend,
+
+                    gut = notenschluessel[0] / 100
+                    befriedigend = notenschluessel[1] / 100
+                    genuegend = notenschluessel[2] / 100
+                    nichtgenuegend = notenschluessel[3] / 100
+                    with open(filename_vorschau, "a", encoding="utf8") as vorschau:
+                        vorschau.write(
+                            "\n\n\\null\\notenschluessel{0}{{{1}}}{{{2}}}{{{3}}}{{{4}}}".format(
+                                zusatz,
+                                gut,
+                                befriedigend,
+                                genuegend,
+                                nichtgenuegend,
+                            )
                         )
-                    )
+                elif self.combobox_notenschluessel_typ.currentIndex() == 1:
+                    notenschluessel = self.dict_all_infos_for_file["data_gesamt"][
+                        "Notenschluessel_individual"
+                    ]
+                    sg_lower = notenschluessel[0]
+                    gu_upper = notenschluessel[1]
+                    gu_lower = notenschluessel[2]
+                    b_upper = notenschluessel[3]
+                    b_lower = notenschluessel[4]
+                    ge_upper = notenschluessel[5]
+                    ge_lower = notenschluessel[6]
+                    if self.cb_ns_prozent.isChecked():
+                        zusatz = "[][prozent]"
+                    else:
+                        zusatz = ""
+
+                    with open(filename_vorschau, "a", encoding="utf8") as vorschau:
+                        vorschau.write(
+                            f"\n\n\\null\individualnotenschluessel{zusatz}{{{sg_lower}}}{{{gu_upper}}}{{{gu_lower}}}{{{b_upper}}}{{{b_lower}}}{{{ge_upper}}}{{{ge_lower}}}"
+                        )
 
         with open(filename_vorschau, "a", encoding="utf8") as vorschau:
             vorschau.write("\n\n")

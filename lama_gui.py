@@ -1165,6 +1165,8 @@ def setup_stackSage(self):
     self.label_sg_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
     self.gridLayout_6.addWidget(self.label_sg_pkt, 1, 2, 1, 1)
 
+    regexp = QtCore.QRegExp("[0-9,;/\.]*")
+    validator = QtGui.QRegExpValidator(regexp)
 
     # QRegExp, QRegExpValidator, .setValidator, 
     # https://social.msdn.microsoft.com/forums/en-US/a1e87254-b6c2-491c-b18b-e092611b5f9d/regular-expression-for-comma-separated-numbers?forum=aspgettingstarted
@@ -1172,9 +1174,11 @@ def setup_stackSage(self):
     self.lineedit_sg_upper_limit = create_new_lineedit(self.groupBox_notenschl)
     self.gridLayout_6.addWidget(self.lineedit_sg_upper_limit, 1, 1, 1, 1)
     self.lineedit_sg_upper_limit.setEnabled(False)
+    self.lineedit_sg_upper_limit.setStyleSheet("background-color: lightGray")
     self.lineedit_sg_upper_limit.hide()
     self.lineedit_sg_lower_limit = create_new_lineedit(self.groupBox_notenschl)
     self.gridLayout_6.addWidget(self.lineedit_sg_lower_limit, 1, 3, 1, 1)
+    self.lineedit_sg_lower_limit.setValidator(validator)
     self.lineedit_sg_lower_limit.hide()
 
     self.label_g = create_new_label(self.groupBox_notenschl, "Gut:")
@@ -1189,9 +1193,11 @@ def setup_stackSage(self):
 
     self.lineedit_g_upper_limit = create_new_lineedit(self.groupBox_notenschl)
     self.gridLayout_6.addWidget(self.lineedit_g_upper_limit, 1, 5, 1, 1)
+    self.lineedit_g_upper_limit.setValidator(validator)
     self.lineedit_g_upper_limit.hide()
     self.lineedit_g_lower_limit = create_new_lineedit(self.groupBox_notenschl)
     self.gridLayout_6.addWidget(self.lineedit_g_lower_limit, 1, 7, 1, 1)
+    self.lineedit_g_lower_limit.setValidator(validator)
     self.lineedit_g_lower_limit.hide()
 
 
@@ -1207,9 +1213,11 @@ def setup_stackSage(self):
 
     self.lineedit_b_upper_limit = create_new_lineedit(self.groupBox_notenschl)
     self.gridLayout_6.addWidget(self.lineedit_b_upper_limit, 2, 1, 1, 1)
+    self.lineedit_b_upper_limit.setValidator(validator)
     self.lineedit_b_upper_limit.hide()
     self.lineedit_b_lower_limit = create_new_lineedit(self.groupBox_notenschl)
     self.gridLayout_6.addWidget(self.lineedit_b_lower_limit, 2, 3, 1, 1)
+    self.lineedit_b_lower_limit.setValidator(validator)
     self.lineedit_b_lower_limit.hide()
 
 
@@ -1226,9 +1234,11 @@ def setup_stackSage(self):
 
     self.lineedit_g2_upper_limit = create_new_lineedit(self.groupBox_notenschl)
     self.gridLayout_6.addWidget(self.lineedit_g2_upper_limit, 2, 5, 1, 1)
+    self.lineedit_g2_upper_limit.setValidator(validator)
     self.lineedit_g2_upper_limit.hide()
     self.lineedit_g2_lower_limit = create_new_lineedit(self.groupBox_notenschl)
     self.gridLayout_6.addWidget(self.lineedit_g2_lower_limit, 2, 7, 1, 1)
+    self.lineedit_g2_lower_limit.setValidator(validator)
     self.lineedit_g2_lower_limit.hide()
 
 
