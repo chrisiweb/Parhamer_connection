@@ -224,13 +224,16 @@ def create_new_label_icon(parent, icon, icon_size=(30,30)):
 
 
 
-def create_new_lineedit(parent, ObjectName=None):
+def create_new_lineedit(parent, text="", ObjectName=None):
     new_lineedit = QtWidgets.QLineEdit(parent)
     if ObjectName == None:
         new_lineedit.setObjectName(_fromUtf8("{}".format(new_lineedit)))
     else:
         new_lineedit.setObjectName(ObjectName)
 
+    if text != "":
+        new_lineedit.setText(text)
+        
     return new_lineedit
 
 

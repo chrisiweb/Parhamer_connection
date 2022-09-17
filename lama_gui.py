@@ -681,7 +681,7 @@ def setup_stackSearch(self):
     self.horizontalLayout_advanced_search.setContentsMargins(0,0,0,0)
 
 
-    self.entry_suchbegriffe = create_new_lineedit(self.frame_advanced_search, "entry_suchbegriffe")
+    self.entry_suchbegriffe = create_new_lineedit(self.frame_advanced_search, ObjectName="entry_suchbegriffe")
     self.horizontalLayout_advanced_search.addWidget(self.entry_suchbegriffe)
 
     self.filter_search = QtWidgets.QPushButton(self.frame_advanced_search)
@@ -1240,6 +1240,24 @@ def setup_stackSage(self):
     self.gridLayout_6.addWidget(self.lineedit_g2_lower_limit, 2, 7, 1, 1)
     self.lineedit_g2_lower_limit.setValidator(validator)
     self.lineedit_g2_lower_limit.hide()
+
+    try:
+        if self.chosen_program == 'cria':
+            key_notenschluessel_individual = 'notenschluessel_cria_individual'
+        else:
+            key_notenschluessel_individual = 'notenschluessel_individual'
+
+        list_ = self.lama_settings[key_notenschluessel_individual]
+
+        self.lineedit_sg_lower_limit.setText(list_[0])
+        self.lineedit_g_upper_limit.setText(list_[1])
+        self.lineedit_g_lower_limit.setText(list_[2])
+        self.lineedit_b_upper_limit.setText(list_[3])
+        self.lineedit_b_lower_limit.setText(list_[4])
+        self.lineedit_g2_upper_limit.setText(list_[5])
+        self.lineedit_g2_lower_limit.setText(list_[6])
+    except KeyError:
+        pass
 
 
 

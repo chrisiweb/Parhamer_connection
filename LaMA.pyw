@@ -5178,7 +5178,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # print(self.get_punkteverteilung())
         if self.combobox_notenschluessel_typ.currentIndex()==0:
             self.cb_ns_halbe_pkt.setEnabled(True)
-            self.cb_ns_halbe_pkt.setChecked(True)
+            # self.cb_ns_halbe_pkt.setChecked(True)
             for widget in list_label_widgets:
                 widget.setText("% (ab 0)")
             for widget in list_notenschluessel_standard:
@@ -5188,7 +5188,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         elif self.combobox_notenschluessel_typ.currentIndex()==1:
             self.cb_ns_halbe_pkt.setEnabled(False)
-            self.cb_ns_halbe_pkt.setChecked(False)
+            # self.cb_ns_halbe_pkt.setChecked(False)
             for widget in list_label_widgets:
                 widget.setText(" - ")
             for widget in list_notenschluessel_standard:
@@ -5463,9 +5463,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         return [gesamtpunkte, pkt_typ1, pkt_typ2]
 
-    def update_notenschluessel(self):
+    def get_punkteverteilung_notenschluessel(self):
+        # percetnt_sg = self.spinBox_2.value()
+        # percent_gu = self.spinBox_3.value()
+        # percent_b = self.spinBox_4.value()
+        # percent_ge = self.spinBox_5.value()
         gesamtpunkte = self.get_punkteverteilung()[0]
-
         verteilung_notenschluessel = []
         for g in range(2, 6):
             r = 0
@@ -5475,30 +5478,47 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             else:
                 verteilung_notenschluessel.append(int(gesamtpunkte * (x / 100)) + 1)
             r += 1
+        
+        return verteilung_notenschluessel
+
+
+    def update_notenschluessel(self):
+        gesamtpunkte = self.get_punkteverteilung()[0]
+
+        punkteverteilung_notenschluessel = self.get_punkteverteilung_notenschluessel()
 
         if self.combobox_notenschluessel_typ.currentIndex()== 0:
             self.label_sg_pkt.setText(
                 _translate(
-                    "MainWindow", "% (ab {})".format(verteilung_notenschluessel[0]), None
+                    "MainWindow", "% (ab {})".format(punkteverteilung_notenschluessel[0]), None
                 )
             )
             self.label_g_pkt.setText(
                 _translate(
-                    "MainWindow", "% (ab {})".format(verteilung_notenschluessel[1]), None
+                    "MainWindow", "% (ab {})".format(punkteverteilung_notenschluessel[1]), None
                 )
             )
             self.label_b_pkt.setText(
                 _translate(
-                    "MainWindow", "% (ab {})".format(verteilung_notenschluessel[2]), None
+                    "MainWindow", "% (ab {})".format(punkteverteilung_notenschluessel[2]), None
                 )
             )
             self.label_g_2_pkt.setText(
                 _translate(
-                    "MainWindow", "% (ab {})".format(verteilung_notenschluessel[3]), None
+                    "MainWindow", "% (ab {})".format(punkteverteilung_notenschluessel[3]), None
                 )
             )
         else:
             self.lineedit_sg_upper_limit.setText(str(gesamtpunkte))
+            # self.lineedit_sg_lower_limit.setText(str(punkteverteilung_notenschluessel[0]))
+            # self.lineedit_g_upper_limit.setText(str(punkteverteilung_notenschluessel[0]-1))
+            # self.lineedit_g_lower_limit.setText(str(punkteverteilung_notenschluessel[1]))
+            # self.lineedit_b_upper_limit.setText(str(punkteverteilung_notenschluessel[1]-1))
+            # self.lineedit_b_lower_limit.setText(str(punkteverteilung_notenschluessel[2])) 
+            # self.lineedit_g2_upper_limit.setText(str(punkteverteilung_notenschluessel[2]-1))
+            # self.lineedit_g2_lower_limit.setText(str(punkteverteilung_notenschluessel[3]))
+
+
 
     # def get_number_ausgleichspunkte_gesamt(self):
     #     number_ausgleichspkt_gesamt = 0
