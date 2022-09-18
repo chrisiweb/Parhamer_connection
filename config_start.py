@@ -45,6 +45,11 @@ if sys.platform.startswith("win"):
     lama_settings_file = os.path.join(
                 os.getenv('LOCALAPPDATA'), "LaMA", "lama_settings"
             )
+
+
+    lama_notenschluessel_file = os.path.join(
+                os.getenv('LOCALAPPDATA'), "LaMA", "lama_notenschluessel.json"
+            )
     # ## OLD VERSION!!
     # path_programm = os.path.dirname(sys.argv[0])
     # path_localappdata_lama = path_programm
@@ -94,6 +99,10 @@ elif sys.platform.startswith("darwin"):
                 Path.home(), "Library", "LaMA", "lama_settings"
             )
 
+    lama_notenschluessel_file = os.path.join(
+                Path.home(), "Library", "LaMA", "lama_notenschluessel.json"
+            )
+
 
 elif sys.platform.startswith("linux"):
     path_programm = os.path.join("var","lib","LaMA")
@@ -108,6 +117,10 @@ elif sys.platform.startswith("linux"):
 
     lama_settings_file = os.path.join(
                 "~",".LaMA", "lama_settings"
+            )
+
+    lama_notenschluessel_file = os.path.join(
+                "~",".LaMA", "lama_notenschluessel.json"
             )
 
 path_home = Path.home()
