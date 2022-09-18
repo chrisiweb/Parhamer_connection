@@ -1899,9 +1899,24 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
         gridlayout.addWidget(self.label, 1, 0, 1, 2)
 
         if self.developer_mode_active==False and save_mode == 'general':
-            self.cb_confirm = create_new_checkbox(Dialog, "")
-            self.cb_confirm.setSizePolicy(SizePolicy_fixed)
-            self.cb_confirm.setStyleSheet("background-color: white; color: black;")
+            self.cb_confirm = create_new_checkbox(Dialog, " ")
+            # self.cb_confirm.setSizePolicy(SizePolicy_fixed)
+            self.cb_confirm.setStyleSheet(f"""
+            QCheckBox {{
+                spacing: -5px;
+                padding-top: 2px;
+            }}
+
+            QCheckBox::indicator:unchecked {{ 
+                image: url({get_icon_path("square.svg", color="ghostwhite")});
+                width: 35px;
+            }}
+
+            QCheckBox::indicator:checked {{ 
+                image: url({get_icon_path("check-square.svg", color="ghostwhite")});
+                width: 35px;
+            }}""")
+
             gridlayout.addWidget(self.cb_confirm, 2, 0, 1, 1, Qt.AlignTop)
             self.label_checkbox = create_new_label(
                 Dialog,
@@ -1911,7 +1926,7 @@ class Ui_Dialog_speichern(QtWidgets.QDialog):
                 False,
                 True,
             )
-            self.label_checkbox.setStyleSheet("padding-bottom: 20px;")
+            # self.label_checkbox.setStyleSheet("padding-bottom: 20px;")
             gridlayout.addWidget(self.label_checkbox, 2, 1, 1, 1, Qt.AlignTop)
             self.label_checkbox.clicked.connect(self.label_checkbox_clicked)
 
@@ -1986,10 +2001,8 @@ class Ui_Dialog_setup(object):
             'display' : 0,
             'prozente': [91, 80, 64, 50],
             'notenschluessel': [False, False],
-            'notenschluessel_individual': ["","","","","","",""],
             'prozente_cria': [91, 80, 64, 50],
             'notenschluessel_cria': [False, False],
-            'notenschluessel_cria_individual': ["","","","","","",""],
             'autosave' : 2,
             'quelle' : '',
             'popup_off': False,
@@ -2006,7 +2019,7 @@ class Ui_Dialog_setup(object):
         except FileNotFoundError:
             self.lama_settings = standard_settings
 
- 
+        # Dialog.resize(500, 200)
         # print(self.lama_settings)
         # self.beispieldaten_dateipfad_cria = MainWindow.beispieldaten_dateipfad_cria
         # self.beispieldaten_dateipfad_1 = MainWindow.beispieldaten_dateipfad_1
@@ -2107,162 +2120,82 @@ class Ui_Dialog_setup(object):
         gridlayout_prozente = create_new_gridlayout(groupbox_prozent)
 
 
-        self.combobox_notenschluessel_typ = create_new_combobox(groupbox_prozent)
-        gridlayout_prozente.addWidget(self.combobox_notenschluessel_typ, 0, 0, 1, 4)
-        add_new_option(self.combobox_notenschluessel_typ, 0, "Standard")
-        add_new_option(self.combobox_notenschluessel_typ, 1, "Individuell")
-        self.combobox_notenschluessel_typ.currentIndexChanged.connect(self.combobox_notenschluessel_typ_changed)
+        # self.combobox_notenschluessel_typ = create_new_combobox(groupbox_prozent)
+        # gridlayout_prozente.addWidget(self.combobox_notenschluessel_typ, 0, 0, 1, 4)
+        # add_new_option(self.combobox_notenschluessel_typ, 0, "Standard")
+        # add_new_option(self.combobox_notenschluessel_typ, 1, "Individuell")
+        # self.combobox_notenschluessel_typ.currentIndexChanged.connect(self.combobox_notenschluessel_typ_changed)
 
         self.label_prozente_sgu = create_new_label(groupbox_prozent, "Sehr gut:")
-        gridlayout_prozente.addWidget(self.label_prozente_sgu, 1, 0, 1, 1)
+        gridlayout_prozente.addWidget(self.label_prozente_sgu, 0, 0, 1, 1)
         try:
             sgu_value = self.lama_settings[key_prozente][0]
         except KeyError:
             sgu_value = 91
 
         self.spinbox_prozente_sgu = create_new_spinbox(groupbox_prozent, sgu_value)
-        gridlayout_prozente.addWidget(self.spinbox_prozente_sgu, 1, 1, 1, 1)
+        gridlayout_prozente.addWidget(self.spinbox_prozente_sgu, 0, 1, 1, 1)
 
-        regexp = QRegExp("[0-9,;/\.]*")
-        validator = QRegExpValidator(regexp)
-
-        self.widget_sg = QtWidgets.QWidget(groupbox_prozent)
-        gridlayout_prozente.addWidget(self.widget_sg, 1,1,1,1)
-
-        self.horizontallayout_sg = create_new_horizontallayout(self.widget_sg)
-
-
-        self.label_sg = create_new_label(self.widget_sg,"Gesamt - ")
-        self.horizontallayout_sg.addWidget(self.label_sg)
-        self.horizontallayout_sg.setContentsMargins(0,0,0,0)
-
-        
-        self.lineedit_sg_lower = create_new_lineedit(self.widget_sg)
-        self.lineedit_sg_lower.setValidator(validator)
-        self.horizontallayout_sg.addWidget(self.lineedit_sg_lower)
-        self.widget_sg.hide()
 
         self.label_prozente_gu = create_new_label(groupbox_prozent, "Gut:")
-        gridlayout_prozente.addWidget(self.label_prozente_gu, 1, 2, 1, 1)
+        gridlayout_prozente.addWidget(self.label_prozente_gu, 0, 2, 1, 1)
         try:
             gu_value = self.lama_settings[key_prozente][1]
         except KeyError:
             gu_value = 80
 
         self.spinbox_prozente_gu = create_new_spinbox(groupbox_prozent, gu_value)
-        gridlayout_prozente.addWidget(self.spinbox_prozente_gu, 1, 3, 1, 1)
+        gridlayout_prozente.addWidget(self.spinbox_prozente_gu, 0, 3, 1, 1)
 
-        self.widget_gu = QtWidgets.QWidget(groupbox_prozent)
-        gridlayout_prozente.addWidget(self.widget_gu, 1,3,1,1)
-
-        self.horizontallayout_gu = create_new_horizontallayout(self.widget_gu)
-        self.horizontallayout_gu.setContentsMargins(0,0,0,0)
-
-        self.lineedit_gu_upper = create_new_lineedit(self.widget_gu)
-        self.horizontallayout_gu.addWidget(self.lineedit_gu_upper)
-        self.lineedit_gu_upper.setValidator(validator)
-
-        self.label_gu = create_new_label(self.widget_gu, " - ")
-        self.horizontallayout_gu.addWidget(self.label_gu)
-
-        self.lineedit_gu_lower = create_new_lineedit(self.widget_gu)
-        self.horizontallayout_gu.addWidget(self.lineedit_gu_lower)
-        self.lineedit_gu_lower.setValidator(validator)
-        
-        self.widget_gu.hide()
 
         self.label_prozente_be = create_new_label(groupbox_prozent, "Befriedigend:")
-        gridlayout_prozente.addWidget(self.label_prozente_be, 2, 0, 1, 1)
+        gridlayout_prozente.addWidget(self.label_prozente_be, 1, 0, 1, 1)
         try:
             be_value = self.lama_settings[key_prozente][2]
         except KeyError:
             be_value = 64
 
         self.spinbox_prozente_be = create_new_spinbox(groupbox_prozent, be_value)
-        gridlayout_prozente.addWidget(self.spinbox_prozente_be, 2, 1, 1, 1)
+        gridlayout_prozente.addWidget(self.spinbox_prozente_be, 1, 1, 1, 1)
 
-        self.widget_be = QtWidgets.QWidget(groupbox_prozent)
-        gridlayout_prozente.addWidget(self.widget_be, 2,1,1,1)
-
-        self.horizontallayout_be = create_new_horizontallayout(self.widget_be)
-        self.horizontallayout_be.setContentsMargins(0,0,0,0)
-
-        self.lineedit_be_upper = create_new_lineedit(self.widget_be)
-        self.horizontallayout_be.addWidget(self.lineedit_be_upper)
-        self.lineedit_be_upper.setValidator(validator)
-
-        self.label_be = create_new_label(self.widget_be, " - ")
-        self.horizontallayout_be.addWidget(self.label_be)
-
-        self.lineedit_be_lower = create_new_lineedit(self.widget_be)
-        self.horizontallayout_be.addWidget(self.lineedit_be_lower)
-        self.lineedit_be_lower.setValidator(validator)
-
-        self.widget_be.hide()
 
         self.label_prozente_ge = create_new_label(groupbox_prozent, "Genügend:")
-        gridlayout_prozente.addWidget(self.label_prozente_ge, 2, 2, 1, 1)
+        gridlayout_prozente.addWidget(self.label_prozente_ge, 1, 2, 1, 1)
         try:
             ge_value = self.lama_settings[key_prozente][3]
         except KeyError:
             ge_value = 50
 
         self.spinbox_prozente_ge = create_new_spinbox(groupbox_prozent, ge_value)
-        gridlayout_prozente.addWidget(self.spinbox_prozente_ge, 2, 3, 1, 1)
+        gridlayout_prozente.addWidget(self.spinbox_prozente_ge, 1, 3, 1, 1)
     
 
-        self.widget_ge = QtWidgets.QWidget(groupbox_prozent)
-        gridlayout_prozente.addWidget(self.widget_ge, 2,3,1,1)
+        
+        widget_notenschluessel_edit = QtWidgets.QWidget(groupbox_prozent)
+        gridlayout_prozente.addWidget(widget_notenschluessel_edit, 2,0,1,4)
 
-        self.horizontallayout_ge = create_new_horizontallayout(self.widget_ge)
-        self.horizontallayout_ge.setContentsMargins(0,0,0,0)
-
-        self.lineedit_ge_upper = create_new_lineedit(self.widget_ge)
-        self.horizontallayout_ge.addWidget(self.lineedit_ge_upper)
-        self.lineedit_ge_upper.setValidator(validator)
-
-        self.label_ge = create_new_label(self.widget_ge, " - ")
-        self.horizontallayout_ge.addWidget(self.label_ge)
-
-        self.lineedit_ge_lower = create_new_lineedit(self.widget_ge)
-        self.horizontallayout_ge.addWidget(self.lineedit_ge_lower)
-        self.lineedit_ge_lower.setValidator(validator)
-
-        self.widget_ge.hide()
-
-        try:
-            if MainWindow.chosen_program == 'cria':
-                key_notenschluessel_individual = 'notenschluessel_cria_individual'
-            else:
-                key_notenschluessel_individual = 'notenschluessel_individual'
-            
-            list_ = self.lama_settings[key_notenschluessel_individual]
-
-            self.lineedit_sg_lower.setText(list_[0])
-            self.lineedit_gu_upper.setText(list_[1])
-            self.lineedit_gu_lower.setText(list_[2])
-            self.lineedit_be_upper.setText(list_[3])
-            self.lineedit_be_lower.setText(list_[4])
-            self.lineedit_ge_upper.setText(list_[5])
-            self.lineedit_ge_lower.setText(list_[6])
-
-        except KeyError:
-            pass
+        horizontallayout_notenschluessel_edit = create_new_horizontallayout(widget_notenschluessel_edit)
+        horizontallayout_notenschluessel_edit.setContentsMargins(0, 0, 0, 0)
 
         try:
             ns_halbe_punkte_checked = self.lama_settings[key_notenschluessel][0]
         except KeyError:
             ns_halbe_punkte_checked = False
         self.cb_ns_halbe_punkte = create_new_checkbox(groupbox_prozent, "Halbe Punkte", checked= ns_halbe_punkte_checked)
-        gridlayout_prozente.addWidget(self.cb_ns_halbe_punkte, 3,0,1,2)
+        horizontallayout_notenschluessel_edit.addWidget(self.cb_ns_halbe_punkte)
+        # gridlayout_prozente.addWidget(self.cb_ns_halbe_punkte, 3,0,1,2)
 
         try:
             ns_prozente_checked = self.lama_settings[key_notenschluessel][1]
         except KeyError:
             ns_prozente_checked = False
         self.cb_ns_prozente = create_new_checkbox(groupbox_prozent, "Prozentangabe", checked= ns_prozente_checked)
-        gridlayout_prozente.addWidget(self.cb_ns_prozente, 3,2,1,2)       
+        # gridlayout_prozente.addWidget(self.cb_ns_prozente, 3,2,1,2)       
+        horizontallayout_notenschluessel_edit.addWidget(self.cb_ns_prozente)
 
+
+        btn_edit_notenschluessel_individual = create_new_button(groupbox_prozent, "Individuelle Notenschlüssel", self.btn_individual_notenschluessel_clicked, icon="edit-2.svg")
+        horizontallayout_notenschluessel_edit.addWidget(btn_edit_notenschluessel_individual)
 
         gridlayout_setup.addWidget(groupbox_prozent, row,0,1,1)
         row +=1       
@@ -2342,29 +2275,78 @@ class Ui_Dialog_setup(object):
         buttonS.setIcon(QIcon(get_icon_path('save.svg')))
         buttonX = self.buttonBox_setup.button(QtWidgets.QDialogButtonBox.Cancel)
         buttonX.setText("Abbrechen")
+        buttonX.setIcon(QIcon(get_icon_path('x.svg')))
         self.buttonBox_setup.rejected.connect(self.reject_dialog)
         self.buttonBox_setup.accepted.connect(partial(self.save_setting, MainWindow.chosen_program))
 
         gridlayout_setup.addWidget(self.buttonBox_setup,row,0,1,1)
 
+
+
+
+    def btn_individual_notenschluessel_clicked(self):
+        Dialog = QtWidgets.QDialog(
+            None,
+            Qt.WindowSystemMenuHint
+            | Qt.WindowTitleHint
+            | Qt.WindowCloseButtonHint,
+        )
+        ui = Ui_Dialog_set_individual_ns()
+        ui.setupUi(Dialog)
+        # self.Dialog.show()
+        response = Dialog.exec()
+        # screen_resolution = app.desktop().screenGeometry()
+        # screen_width = screen_resolution.width()
+
+        # ui = Ui_Dialog_set_individual_ns()
+        # ui.setupUi(Dialog)
+
+        # bring_to_front(self.Dialog)
+
+        # self.Dialog.setFixedSize(self.Dialog.size())
+        # rsp = Dialog.exec_()
+        # list_widgets_notenschluessel = [self.spinbox_prozente_sgu, self.spinbox_prozente_gu, self.spinbox_prozente_be, self.spinbox_prozente_ge]
+        # list_widgets_notenschluessel_individual = [self.widget_sg, self.widget_gu, self.widget_be, self.widget_ge]
+        # if self.combobox_notenschluessel_typ.currentIndex()==0:
+        #     for widget in list_widgets_notenschluessel:
+        #         widget.show()
+        #     for widget in list_widgets_notenschluessel_individual:
+        #         widget.hide()
+
+        # elif self.combobox_notenschluessel_typ.currentIndex()==1:
+        #     for widget in list_widgets_notenschluessel:
+        #         widget.hide()
+        #     for widget in list_widgets_notenschluessel_individual:
+        #         widget.show()
+
+
+    ########################################################################
+    ########################################################################
+
+
+
+
+
+    ############################################################################
+    ###########################################################################
         
     # def combobox_display_changed(self):
     #     information_window("Die Darstellung wird erst nach dem Neustart von LaMA übernommen.")
         
-    def combobox_notenschluessel_typ_changed(self):
-        list_widgets_notenschluessel = [self.spinbox_prozente_sgu, self.spinbox_prozente_gu, self.spinbox_prozente_be, self.spinbox_prozente_ge]
-        list_widgets_notenschluessel_individual = [self.widget_sg, self.widget_gu, self.widget_be, self.widget_ge]
-        if self.combobox_notenschluessel_typ.currentIndex()==0:
-            for widget in list_widgets_notenschluessel:
-                widget.show()
-            for widget in list_widgets_notenschluessel_individual:
-                widget.hide()
+    # def combobox_notenschluessel_typ_changed(self):
+    #     list_widgets_notenschluessel = [self.spinbox_prozente_sgu, self.spinbox_prozente_gu, self.spinbox_prozente_be, self.spinbox_prozente_ge]
+    #     list_widgets_notenschluessel_individual = [self.widget_sg, self.widget_gu, self.widget_be, self.widget_ge]
+    #     if self.combobox_notenschluessel_typ.currentIndex()==0:
+    #         for widget in list_widgets_notenschluessel:
+    #             widget.show()
+    #         for widget in list_widgets_notenschluessel_individual:
+    #             widget.hide()
 
-        elif self.combobox_notenschluessel_typ.currentIndex()==1:
-            for widget in list_widgets_notenschluessel:
-                widget.hide()
-            for widget in list_widgets_notenschluessel_individual:
-                widget.show()
+    #     elif self.combobox_notenschluessel_typ.currentIndex()==1:
+    #         for widget in list_widgets_notenschluessel:
+    #             widget.hide()
+    #         for widget in list_widgets_notenschluessel_individual:
+    #             widget.show()
 
     def search_pdf_reader(self):
         list_filename = QtWidgets.QFileDialog.getOpenFileName(
@@ -2408,20 +2390,20 @@ class Ui_Dialog_setup(object):
         dict_[key_prozente] = [self.spinbox_prozente_sgu.value(), self.spinbox_prozente_gu.value(), self.spinbox_prozente_be.value(), self.spinbox_prozente_ge.value()]
         dict_[key_notenschluessel] = [self.cb_ns_halbe_punkte.isChecked(), self.cb_ns_prozente.isChecked()]
 
-        if chosen_program == 'cria':
-            key_notenschluessel_individual = 'notenschluessel_cria_individual'
-        else:
-            key_notenschluessel_individual = 'notenschluessel_individual'
+        # if chosen_program == 'cria':
+        #     key_notenschluessel_individual = 'notenschluessel_cria_individual'
+        # else:
+        #     key_notenschluessel_individual = 'notenschluessel_individual'
 
-        dict_[key_notenschluessel_individual] = [
-            self.lineedit_sg_lower.text(),
-            self.lineedit_gu_upper.text(),
-            self.lineedit_gu_lower.text(),
-            self.lineedit_be_upper.text(),
-            self.lineedit_be_lower.text(),
-            self.lineedit_ge_upper.text(),
-            self.lineedit_ge_lower.text(),
-            ]
+        # dict_[key_notenschluessel_individual] = [
+        #     self.lineedit_sg_lower.text(),
+        #     self.lineedit_gu_upper.text(),
+        #     self.lineedit_gu_lower.text(),
+        #     self.lineedit_be_upper.text(),
+        #     self.lineedit_be_lower.text(),
+        #     self.lineedit_ge_upper.text(),
+        #     self.lineedit_ge_lower.text(),
+        #     ]
 
 
         try:
@@ -2459,6 +2441,139 @@ class Ui_Dialog_setup(object):
         self.set_settings_in_sage()
         self.Dialog.accept()
     
+
+class Ui_Dialog_set_individual_ns(QtWidgets.QDialog):
+    def setupUi(self, Dialog):
+        Dialog.setWindowTitle("Individuelle Notenschlüssel")
+        Dialog.setWindowIcon(QIcon(logo_path))
+
+        verticallayout = create_new_verticallayout(Dialog)
+
+
+        widget_ns = QtWidgets.QWidget(Dialog)
+        verticallayout.addWidget(widget_ns)
+
+        horizontallayout_widget_ns = create_new_horizontallayout(widget_ns)
+        horizontallayout_widget_ns.setContentsMargins(0,0,0,0)
+
+        label_ns = create_new_label(widget_ns, "Notenschlüssel:")
+        horizontallayout_widget_ns.addWidget(label_ns)
+
+        combobox_ns = create_new_combobox(Dialog)
+        horizontallayout_widget_ns.addWidget(combobox_ns)
+
+        horizontallayout_widget_ns.addStretch()
+
+        add_new_option(combobox_ns, 0, "Neu")
+
+        regexp = QRegExp("[0-9,;/\.]*")
+        validator = QRegExpValidator(regexp)
+
+        widget_ns_entry = QtWidgets.QWidget(Dialog)
+        verticallayout.addWidget(widget_ns_entry)
+
+        gridlayout_ns_entry = create_new_gridlayout(widget_ns_entry)
+        gridlayout_ns_entry.setContentsMargins(0,0,0,0)
+
+        widget_sg = QtWidgets.QWidget(widget_ns_entry)
+        gridlayout_ns_entry.addWidget(widget_sg, 0,0,0,0)
+
+        horizontallayout_sg = create_new_horizontallayout(widget_sg)
+
+
+        label_sg = create_new_label(widget_sg,"Sehr Gut:  Gesamt - ")
+        horizontallayout_sg.addWidget(label_sg)
+        horizontallayout_sg.setContentsMargins(0,0,0,0)
+
+        
+        lineedit_sg_lower = create_new_lineedit(widget_sg)
+        lineedit_sg_lower.setValidator(validator)
+        horizontallayout_sg.addWidget(lineedit_sg_lower)
+        # self.widget_sg.hide()
+
+
+
+        # self.widget_gu = QtWidgets.QWidget(groupbox_prozent)
+        # gridlayout_ns_entry.addWidget(self.widget_gu, 1,3,1,1)
+
+        # self.horizontallayout_gu = create_new_horizontallayout(self.widget_gu)
+        # self.horizontallayout_gu.setContentsMargins(0,0,0,0)
+
+        # self.lineedit_gu_upper = create_new_lineedit(self.widget_gu)
+        # self.horizontallayout_gu.addWidget(self.lineedit_gu_upper)
+        # self.lineedit_gu_upper.setValidator(validator)
+
+        # self.label_gu = create_new_label(self.widget_gu, " - ")
+        # self.horizontallayout_gu.addWidget(self.label_gu)
+
+        # self.lineedit_gu_lower = create_new_lineedit(self.widget_gu)
+        # self.horizontallayout_gu.addWidget(self.lineedit_gu_lower)
+        # self.lineedit_gu_lower.setValidator(validator)
+        
+        # self.widget_gu.hide()
+
+
+        # self.widget_be = QtWidgets.QWidget(groupbox_prozent)
+        # gridlayout_ns_entry.addWidget(self.widget_be, 2,1,1,1)
+
+        # self.horizontallayout_be = create_new_horizontallayout(self.widget_be)
+        # self.horizontallayout_be.setContentsMargins(0,0,0,0)
+
+        # self.lineedit_be_upper = create_new_lineedit(self.widget_be)
+        # self.horizontallayout_be.addWidget(self.lineedit_be_upper)
+        # self.lineedit_be_upper.setValidator(validator)
+
+        # self.label_be = create_new_label(self.widget_be, " - ")
+        # self.horizontallayout_be.addWidget(self.label_be)
+
+        # self.lineedit_be_lower = create_new_lineedit(self.widget_be)
+        # self.horizontallayout_be.addWidget(self.lineedit_be_lower)
+        # self.lineedit_be_lower.setValidator(validator)
+
+        # self.widget_be.hide()
+
+
+
+        # self.widget_ge = QtWidgets.QWidget(groupbox_prozent)
+        # gridlayout_ns_entry.addWidget(self.widget_ge, 2,3,1,1)
+
+        # self.horizontallayout_ge = create_new_horizontallayout(self.widget_ge)
+        # self.horizontallayout_ge.setContentsMargins(0,0,0,0)
+
+        # self.lineedit_ge_upper = create_new_lineedit(self.widget_ge)
+        # self.horizontallayout_ge.addWidget(self.lineedit_ge_upper)
+        # self.lineedit_ge_upper.setValidator(validator)
+
+        # self.label_ge = create_new_label(self.widget_ge, " - ")
+        # self.horizontallayout_ge.addWidget(self.label_ge)
+
+        # self.lineedit_ge_lower = create_new_lineedit(self.widget_ge)
+        # self.horizontallayout_ge.addWidget(self.lineedit_ge_lower)
+        # self.lineedit_ge_lower.setValidator(validator)
+
+        # self.widget_ge.hide()
+
+        # try:
+        #     if MainWindow.chosen_program == 'cria':
+        #         key_notenschluessel_individual = 'notenschluessel_cria_individual'
+        #     else:
+        #         key_notenschluessel_individual = 'notenschluessel_individual'
+            
+        #     list_ = self.lama_settings[key_notenschluessel_individual]
+
+        #     self.lineedit_sg_lower.setText(list_[0])
+        #     self.lineedit_gu_upper.setText(list_[1])
+        #     self.lineedit_gu_lower.setText(list_[2])
+        #     self.lineedit_be_upper.setText(list_[3])
+        #     self.lineedit_be_lower.setText(list_[4])
+        #     self.lineedit_ge_upper.setText(list_[5])
+        #     self.lineedit_ge_lower.setText(list_[6])
+
+        # except KeyError:
+        #     pass
+
+
+
 
 class Ui_Dialog_developer(object):
     def setupUi(self, Dialog):

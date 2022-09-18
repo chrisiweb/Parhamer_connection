@@ -983,8 +983,8 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
         QApplication.restoreOverrideCursor()
         response = question_window(
             "Es ist ein Fehler beim Erstellen der PDF-Datei aufgetreten. Dadurch konnte die PDF-Datei nicht vollständig erzeugt werden.\n\n"
-            + "Dies kann viele unterschiedliche Ursachen haben (siehe Details).\n"
-            + "Durch das Aktualisieren der Datenbank (F5) können jedoch die meisten dieser Fehler behoben werden.\n"
+            + "Dies kann viele unterschiedliche Ursachen haben (siehe Details).\n\n"
+            + 'Durch das Aktualisieren der Datenbank (F5) oder des srdp-mathematik-Pakets\n(-> Optionen -> Update... -> "srdp-mathematik.sty" aktualisieren)\nkönnen jedoch die meisten dieser Fehler behoben werden.\n\n'
             + "Sollte der Fehler weiterhin bestehen, bitte kontaktieren Sie uns unter lama.helpme@gmail.com",
             "Wollen Sie die fehlerhafte PDF-Datei dennoch anzeigen?",
             "Fehler beim Erstellen der PDF-Datei",
