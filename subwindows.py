@@ -2476,6 +2476,12 @@ class Ui_Dialog_set_individual_ns(QtWidgets.QDialog):
         horizontallayout_widget_ns.addStretch()
 
         add_new_option(self.combobox_ns, 0, "Neuer Notenschlüssel")
+
+        index = 1
+        for all in self.dict_notenschluessel.keys():
+            add_new_option(self.combobox_ns, index, all)
+            index +=1            
+
         self.combobox_ns.setEditable(True)
         self.combobox_ns.currentIndexChanged.connect(self.combobox_ns_index_changed)
 
@@ -2604,9 +2610,11 @@ class Ui_Dialog_set_individual_ns(QtWidgets.QDialog):
         self.button_delete.setText('Löschen')
         self.button_delete.setIcon(QIcon(get_icon_path('trash-2.svg')))
 
-        buttonS.clicked.connect(self.save_clicked)
-        buttonX.clicked.connect(self.cancel_clicked)
-        self.button_delete.clicked.connect(self.delete_clicked)
+        buttonS.clicked.connect(lambda: self.save_clicked())
+        buttonX.clicked.connect(lambda: self.cancel_clicked())
+        self.button_delete.clicked.connect(lambda: self.delete_clicked()) #self.delete_clicked
+
+
         # self.buttonBox_setup.rejected.connect(self.reject_dialog)
         # self.buttonBox_setup.accepted.connect(partial(self.save_setting, MainWindow.chosen_program))
 
@@ -2615,14 +2623,18 @@ class Ui_Dialog_set_individual_ns(QtWidgets.QDialog):
     def combobox_ns_index_changed(self):
         if self.combobox_ns.currentIndex()==0:
             self.combobox_ns.setEditable(True)
+            self.button_delete.hide()
         else:
             self.combobox_ns.setEditable(False)
+            
+            self.combobox_ns.currentText()
+            self.button_delete.show()
 
 
 
     def add_to_dictionary(self):
         
-        _list = [
+        _list_entry = [
             self.lineedit_sg_lower.text(),
             self.lineedit_gu_upper.text(),
             self.lineedit_gu_lower.text(),
@@ -2632,10 +2644,19 @@ class Ui_Dialog_set_individual_ns(QtWidgets.QDialog):
             self.lineedit_ge_lower.text(),
         ]
 
-        print(self.combobox_ns.currentText())
+        if self.combobox_ns.currentText() in self.dict_notenschluessel:
+            rsp = information_window("Der Name des Notenschlüssels exisitiert bereits. Wollen sie diesen überschreiben?")
+            if rsp == False:
+                return rsp
+
+        self.dict_notenschluessel[self.combobox_ns.currentText()] = _list_entry
+
 
     def save_clicked(self):
-        self.add_to_dictionary()
+        rsp = self.add_to_dictionary()
+        if rsp == False:
+            return
+
 
         with open(lama_notenschluessel_file, "w", encoding="utf8") as f:
             dump(self.dict_notenschluessel, f, ensure_ascii=False)
@@ -2647,7 +2668,14 @@ class Ui_Dialog_set_individual_ns(QtWidgets.QDialog):
         self.Dialog.reject()
 
     def delete_clicked(self):
-        print('delete')
+        rsp = information_window(f'Sind Sie sicher, dass die Notenschlüssel "{self.combobox_ns.currentText()}" löschen möchten?')
+
+        if rsp == True:
+            self.dict_notenschluessel.pop(self.combobox_ns.currentText())
+
+        with open(lama_notenschluessel_file, "w", encoding="utf8") as f:
+            dump(self.dict_notenschluessel, f, ensure_ascii=False)
+
 
 class Ui_Dialog_developer(object):
     def setupUi(self, Dialog):
