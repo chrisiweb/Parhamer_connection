@@ -26,6 +26,7 @@ from config_start import (
     lama_settings_file,
     database,
     lama_developer_credentials,
+    lama_notenschluessel_file
 )
 # from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QApplication
@@ -5178,6 +5179,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # print(self.get_punkteverteilung())
         if self.combobox_notenschluessel_typ.currentIndex()==0:
             self.cb_ns_halbe_pkt.setEnabled(True)
+            self.combobox_notenschluessel_saved.hide()
             # self.cb_ns_halbe_pkt.setChecked(True)
             for widget in list_label_widgets:
                 widget.setText("% (ab 0)")
@@ -5188,6 +5190,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         elif self.combobox_notenschluessel_typ.currentIndex()==1:
             self.cb_ns_halbe_pkt.setEnabled(False)
+            self.combobox_notenschluessel_saved.show()
             # self.cb_ns_halbe_pkt.setChecked(False)
             for widget in list_label_widgets:
                 widget.setText(" - ")
@@ -5198,6 +5201,31 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             
         
         self.update_notenschluessel()
+
+    def combobox_notenschluessel_saved_changed(self):
+        list_widgets_notenschluessel_individual = [
+            self.lineedit_sg_lower_limit,
+            self.lineedit_g_upper_limit,
+            self.lineedit_g_lower_limit,
+            self.lineedit_b_upper_limit,
+            self.lineedit_b_lower_limit, 
+            self.lineedit_g2_upper_limit,
+            self.lineedit_g2_lower_limit,
+            ]
+        try:
+            with open(lama_notenschluessel_file, "r", encoding="utf8") as f:
+                dict_notenschluessel = json.load(f)
+        except FileNotFoundError:
+            dict_notenschluessel = {}
+        if self.combobox_notenschluessel_saved.currentIndex()==0:
+            for all in list_widgets_notenschluessel_individual:
+                all.clear()
+        elif self.combobox_notenschluessel_saved.currentText() in dict_notenschluessel:
+            list_grade_limits = dict_notenschluessel[self.combobox_notenschluessel_saved.currentText()]
+
+            for i, all in enumerate(list_widgets_notenschluessel_individual):
+                all.setText(list_grade_limits[i])
+
 
     def get_aufgabenverteilung(self):      
         num_typ1 = len(self.list_alle_aufgaben_sage[0])

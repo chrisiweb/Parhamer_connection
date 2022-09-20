@@ -19,6 +19,8 @@ from create_new_widgets import (
     )
 from predefined_size_policy import SizePolicy_fixed_height, SizePolicy_fixed, SizePolicy_minimum, SizePolicy_minimum_fixed, SizePolicy_maximum_height, SizePolicy_maximum_width, SizePolicy_minimum_height, SizePolicy_expanding
 from config import *
+from config_start import lama_notenschluessel_file
+from json import load
 from functools import partial
 from create_pdf import prepare_tex_for_pdf
 from standard_dialog_windows import warning_window
@@ -1155,6 +1157,24 @@ def setup_stackSage(self):
     self.gridLayout_6.addWidget(self.combobox_notenschluessel_typ, 0,0,1,1)
     self.combobox_notenschluessel_typ.currentIndexChanged.connect(self.notenschluessel_changed)
 
+    self.combobox_notenschluessel_saved = create_new_combobox(self.groupBox_notenschl)
+    self.gridLayout_6.addWidget(self.combobox_notenschluessel_saved, 0,1,1,4)
+    
+    try:
+        with open(lama_notenschluessel_file, "r", encoding="utf8") as f:
+            dict_notenschluessel = load(f)
+    except FileNotFoundError:
+        dict_notenschluessel = {}
+
+    add_new_option(self.combobox_notenschluessel_saved, 0, "")
+
+    index = 1
+    for all in dict_notenschluessel.keys():
+        add_new_option(self.combobox_notenschluessel_saved, index, all)
+        index +=1 
+    
+    self.combobox_notenschluessel_saved.hide()
+
     self.label_sg = create_new_label(self.groupBox_notenschl, "Sehr Gut:")
     self.label_sg.setSizePolicy(SizePolicy_fixed)
     self.gridLayout_6.addWidget(self.label_sg, 1, 0, 1, 1)
@@ -1259,7 +1279,7 @@ def setup_stackSage(self):
     except KeyError:
         pass
 
-
+    self.combobox_notenschluessel_saved.currentIndexChanged.connect(self.combobox_notenschluessel_saved_changed)
 
     self.groupBox_notenschl_modus = create_new_groupbox(
         self.groupBox_notenschl, "Anzeige"

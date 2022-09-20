@@ -2293,9 +2293,9 @@ class Ui_Dialog_setup(object):
             | Qt.WindowCloseButtonHint,
         )
         ui = Ui_Dialog_set_individual_ns()
-        ui.setupUi(Dialog)
+        ui.setupUi(Dialog, self.MainWindow)
         # self.Dialog.show()
-        response = Dialog.exec()
+        Dialog.exec()
         # screen_resolution = app.desktop().screenGeometry()
         # screen_width = screen_resolution.width()
 
@@ -2422,13 +2422,14 @@ class Ui_Dialog_setup(object):
         self.MainWindow.cb_ns_halbe_pkt.setChecked(self.cb_ns_halbe_punkte.isChecked())
         self.MainWindow.cb_ns_prozent.setChecked(self.cb_ns_prozente.isChecked())
 
-        self.MainWindow.lineedit_sg_lower_limit.setText(self.lineedit_sg_lower.text())
-        self.MainWindow.lineedit_g_upper_limit.setText(self.lineedit_gu_upper.text())
-        self.MainWindow.lineedit_g_lower_limit.setText(self.lineedit_gu_lower.text())
-        self.MainWindow.lineedit_b_upper_limit.setText(self.lineedit_be_upper.text())
-        self.MainWindow.lineedit_b_lower_limit.setText(self.lineedit_be_lower.text())
-        self.MainWindow.lineedit_g2_upper_limit.setText(self.lineedit_ge_upper.text())
-        self.MainWindow.lineedit_g2_lower_limit.setText(self.lineedit_ge_lower.text())
+
+        # self.MainWindow.lineedit_sg_lower_limit.setText(self.lineedit_sg_lower.text())
+        # self.MainWindow.lineedit_g_upper_limit.setText(self.lineedit_gu_upper.text())
+        # self.MainWindow.lineedit_g_lower_limit.setText(self.lineedit_gu_lower.text())
+        # self.MainWindow.lineedit_b_upper_limit.setText(self.lineedit_be_upper.text())
+        # self.MainWindow.lineedit_b_lower_limit.setText(self.lineedit_be_lower.text())
+        # self.MainWindow.lineedit_g2_upper_limit.setText(self.lineedit_ge_upper.text())
+        # self.MainWindow.lineedit_g2_lower_limit.setText(self.lineedit_ge_lower.text())
 
         
     def save_setting(self, chosen_program):
@@ -2451,8 +2452,9 @@ class Ui_Dialog_set_individual_ns(QtWidgets.QDialog):
         except FileNotFoundError:
             self.dict_notenschluessel = {}
 
-    def setupUi(self, Dialog):
+    def setupUi(self, Dialog, MainWindow):
         self.Dialog = Dialog
+        self.MainWindow = MainWindow
         Dialog.setWindowTitle("Individuelle Notenschlüssel")
         Dialog.setWindowIcon(QIcon(logo_path))
         Dialog.setSizePolicy(SizePolicy_fixed)
@@ -2483,7 +2485,7 @@ class Ui_Dialog_set_individual_ns(QtWidgets.QDialog):
             index +=1            
 
         self.combobox_ns.setEditable(True)
-        self.combobox_ns.currentIndexChanged.connect(self.combobox_ns_index_changed)
+        self.combobox_ns.currentIndexChanged.connect(lambda: self.combobox_ns_index_changed())
 
         regexp = QRegExp("[0-9,;/\.]*")
         validator = QRegExpValidator(regexp)
@@ -2608,6 +2610,7 @@ class Ui_Dialog_set_individual_ns(QtWidgets.QDialog):
 
         self.button_delete = buttonbox.button(QtWidgets.QDialogButtonBox.Discard)
         self.button_delete.setText('Löschen')
+        self.button_delete.setEnabled(False)
         self.button_delete.setIcon(QIcon(get_icon_path('trash-2.svg')))
 
         buttonS.clicked.connect(lambda: self.save_clicked())
@@ -2619,16 +2622,31 @@ class Ui_Dialog_set_individual_ns(QtWidgets.QDialog):
         # self.buttonBox_setup.accepted.connect(partial(self.save_setting, MainWindow.chosen_program))
 
 
-
+    @report_exceptions
     def combobox_ns_index_changed(self):
         if self.combobox_ns.currentIndex()==0:
             self.combobox_ns.setEditable(True)
-            self.button_delete.hide()
-        else:
+            self.button_delete.setEnabled(False)
+            self.lineedit_sg_lower.clear()
+            self.lineedit_gu_upper.clear()
+            self.lineedit_gu_lower.clear()
+            self.lineedit_be_upper.clear()
+            self.lineedit_be_lower.clear()
+            self.lineedit_ge_upper.clear()
+            self.lineedit_ge_lower.clear()
+        elif self.combobox_ns.currentText() in self.dict_notenschluessel:
+            grade_limits = self.dict_notenschluessel[self.combobox_ns.currentText()]
             self.combobox_ns.setEditable(False)
-            
-            self.combobox_ns.currentText()
-            self.button_delete.show()
+            self.lineedit_sg_lower.setText(grade_limits[0])
+            self.lineedit_gu_upper.setText(grade_limits[1])
+            self.lineedit_gu_lower.setText(grade_limits[2])
+            self.lineedit_be_upper.setText(grade_limits[3])
+            self.lineedit_be_lower.setText(grade_limits[4])
+            self.lineedit_ge_upper.setText(grade_limits[5])
+            self.lineedit_ge_lower.setText(grade_limits[6])
+
+            self.button_delete.setEnabled(True)
+
 
 
 
@@ -2644,10 +2662,10 @@ class Ui_Dialog_set_individual_ns(QtWidgets.QDialog):
             self.lineedit_ge_lower.text(),
         ]
 
-        if self.combobox_ns.currentText() in self.dict_notenschluessel:
-            rsp = information_window("Der Name des Notenschlüssels exisitiert bereits. Wollen sie diesen überschreiben?")
-            if rsp == False:
-                return rsp
+        # if self.combobox_ns.currentText() in self.dict_notenschluessel:
+        #     rsp = information_window("Der Name des Notenschlüssels exisitiert bereits. Wollen sie diesen überschreiben?")
+        #     if rsp == False:
+        #         return rsp
 
         self.dict_notenschluessel[self.combobox_ns.currentText()] = _list_entry
 
@@ -2661,20 +2679,50 @@ class Ui_Dialog_set_individual_ns(QtWidgets.QDialog):
         with open(lama_notenschluessel_file, "w", encoding="utf8") as f:
             dump(self.dict_notenschluessel, f, ensure_ascii=False)
 
-
+        self.MainWindow.combobox_notenschluessel_saved.addItem(self.combobox_ns.currentText())
         self.Dialog.accept()
 
     def cancel_clicked(self):
         self.Dialog.reject()
 
+    def reset_combobox(self):
+        self.combobox_ns.clear()
+
+        add_new_option(self.combobox_ns, 0, "Neuer Notenschlüssel")
+
+        index = 1
+        for all in self.dict_notenschluessel.keys():
+            add_new_option(self.combobox_ns, index, all)
+            index +=1   
+
+
+        self.MainWindow.combobox_notenschluessel_saved.clear()
+
+        add_new_option(self.MainWindow.combobox_notenschluessel_saved, 0, "")
+
+        index = 1
+        for all in self.dict_notenschluessel.keys():
+            add_new_option(self.MainWindow.combobox_notenschluessel_saved, index, all)
+            index +=1 
+
+
+
     def delete_clicked(self):
         rsp = information_window(f'Sind Sie sicher, dass die Notenschlüssel "{self.combobox_ns.currentText()}" löschen möchten?')
 
-        if rsp == True:
-            self.dict_notenschluessel.pop(self.combobox_ns.currentText())
+        if rsp == False:
+            return
+
+          
+
+        self.dict_notenschluessel.pop(self.combobox_ns.currentText())
 
         with open(lama_notenschluessel_file, "w", encoding="utf8") as f:
             dump(self.dict_notenschluessel, f, ensure_ascii=False)
+
+        
+
+        self.reset_combobox()
 
 
 class Ui_Dialog_developer(object):
