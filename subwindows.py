@@ -2031,7 +2031,30 @@ class Ui_Dialog_setup(object):
         row=0
         # self.Dialog.setMinimumWidth(400)
         Dialog.setWindowIcon(QIcon(logo_path))
-        gridlayout_setup = create_new_gridlayout(Dialog)
+
+        verticallayout = create_new_verticallayout(Dialog)
+
+        self.tabWidget = QtWidgets.QTabWidget(Dialog)
+        verticallayout.addWidget(self.tabWidget)
+
+        self.tab_general = QtWidgets.QWidget(self.tabWidget)
+        self.tabWidget.addTab(self.tab_general, "Allgemein")
+
+        self.tab_sage = QtWidgets.QWidget(self.tabWidget)
+        self.tabWidget.addTab(self.tab_sage, "Prüfungsgenerator")
+
+        self.tab_creator = QtWidgets.QWidget(self.tabWidget)
+        self.tabWidget.addTab(self.tab_creator, "Aufgabeneingabe")
+
+        verticallayout_tab_general = create_new_verticallayout(self.tab_general)
+        verticallayout_tab_sage = create_new_verticallayout(self.tab_sage)
+        verticallayout_tab_creator = create_new_verticallayout(self.tab_creator)
+
+        # gridlayout_setup = create_new_gridlayout(Dialog)
+
+        ################################
+        ################### TAB GENERAL
+        ################################
 
         groupbox_start_program = create_new_groupbox(Dialog, "Auswahl beim Programmstart")
         groupbox_start_program.setSizePolicy(SizePolicy_fixed_height)
@@ -2052,8 +2075,8 @@ class Ui_Dialog_setup(object):
             self.lama_settings['start_program'] = 0
         horizontalLayout_start_program.addWidget(self.combobox_start_program)
 
-        gridlayout_setup.addWidget(groupbox_start_program, row,0,1,1)
-        row +=1
+        verticallayout_tab_general.addWidget(groupbox_start_program)
+        # row +=1
 
         groupbox_path_pdf = create_new_groupbox(Dialog, "Dateipfad PDF Reader")
         groupbox_path_pdf.setSizePolicy(SizePolicy_fixed_height)
@@ -2074,8 +2097,8 @@ class Ui_Dialog_setup(object):
         self.button_search_pdf_reader.setIcon(QIcon(get_icon_path('folder.svg')))
         horizontallayout_path_pdf.addWidget(self.button_search_pdf_reader)
 
-        gridlayout_setup.addWidget(groupbox_path_pdf,row,0,1,1)
-        row +=1
+        verticallayout_tab_general.addWidget(groupbox_path_pdf)
+        # row +=1
 
         groupbox_database = create_new_groupbox(Dialog, "Automatische Aktualisierung der Datenbank")
         groupbox_database.setSizePolicy(SizePolicy_fixed_height)
@@ -2099,8 +2122,55 @@ class Ui_Dialog_setup(object):
             self.lama_settings['database'] = 2
             self.combobox_database.setCurrentIndex(2)
         
-        gridlayout_setup.addWidget(groupbox_database, row,0,1,1)
-        row+=1
+        verticallayout_tab_general.addWidget(groupbox_database)
+        # row+=1
+
+        groupbox_display = create_new_groupbox(Dialog, "Anzeigemodus")
+        horizontallayout_display = create_new_horizontallayout(groupbox_display)
+    
+        # label_display = create_new_label(Dialog, "Darstellung:")
+        # horizontallayout_display.addWidget(label_display)
+        self.combobox_display = create_new_combobox(Dialog)
+        # self.combobox_display.currentIndexChanged.connect(self.combobox_display_changed)
+        horizontallayout_display.addWidget(self.combobox_display)
+
+        add_new_option(self.combobox_display, 0, "Standard")
+        add_new_option(self.combobox_display, 1, "Dark Mode")
+
+        try:
+            self.combobox_display.setCurrentIndex(self.lama_settings['display'])
+        except KeyError:
+            self.lama_settings['display'] = 0
+        
+        verticallayout_tab_general.addWidget(groupbox_display)
+        groupbox_display.hide()
+
+        ################################
+        ################### TAB SAGE
+        ################################
+        
+        groupbox_autosave = create_new_groupbox(Dialog, "Autosave Intervall")
+        groupbox_autosave.setToolTip("0 = Autosave deaktivieren")
+        horizontallayout_autosave = create_new_horizontallayout(groupbox_autosave)
+
+        # label_autosave = create_new_label(Dialog, "Intervall:")
+        # horizontallayout_autosave.addWidget(label_autosave)
+
+        self.spinbox_autosave = create_new_spinbox(Dialog, value=2)
+        try:
+            self.spinbox_autosave.setValue(self.lama_settings['autosave'])
+        except KeyError:
+            self.lama_settings['autosave'] = 2
+        self.spinbox_autosave.setSizePolicy(SizePolicy_fixed)
+        horizontallayout_autosave.addWidget(self.spinbox_autosave)
+
+        label_autosave_2 = create_new_label(Dialog, "Minuten")
+        horizontallayout_autosave.addWidget(label_autosave_2)
+
+        verticallayout_tab_sage.addWidget(groupbox_autosave)
+
+
+
 
         if MainWindow.chosen_program == 'cria':
             string = 'Unterstufe'
@@ -2198,31 +2268,15 @@ class Ui_Dialog_setup(object):
         # horizontallayout_notenschluessel_edit.addWidget(btn_edit_notenschluessel_individual)
         gridlayout_prozente.addWidget(btn_edit_notenschluessel_individual, 3,0,1,4)
 
-        gridlayout_setup.addWidget(groupbox_prozent, row,0,1,1)
-        row +=1       
+        verticallayout_tab_sage.addWidget(groupbox_prozent)
+        # row +=1       
 
 
-        groupbox_autosave = create_new_groupbox(Dialog, "Autosave Intervall")
-        groupbox_autosave.setToolTip("0 = Autosave deaktivieren")
-        horizontallayout_autosave = create_new_horizontallayout(groupbox_autosave)
 
-        # label_autosave = create_new_label(Dialog, "Intervall:")
-        # horizontallayout_autosave.addWidget(label_autosave)
-
-        self.spinbox_autosave = create_new_spinbox(Dialog, value=2)
-        try:
-            self.spinbox_autosave.setValue(self.lama_settings['autosave'])
-        except KeyError:
-            self.lama_settings['autosave'] = 2
-        self.spinbox_autosave.setSizePolicy(SizePolicy_fixed)
-        horizontallayout_autosave.addWidget(self.spinbox_autosave)
-
-        label_autosave_2 = create_new_label(Dialog, "Minuten")
-        horizontallayout_autosave.addWidget(label_autosave_2)
-
-        gridlayout_setup.addWidget(groupbox_autosave, row,0,1,1)
-        row+=1
-
+        # row+=1
+        ################################
+        ################### TAB CREATOR
+        ################################
 
         groupbox_quelle = create_new_groupbox(Dialog, "Quelle Standardeingabe")
         horizontallayout_quelle = create_new_horizontallayout(groupbox_quelle)
@@ -2235,34 +2289,20 @@ class Ui_Dialog_setup(object):
 
         horizontallayout_quelle.addWidget(self.lineedit_quelle)
 
-        gridlayout_setup.addWidget(groupbox_quelle, row,0,1,1)
-        row +=1
+        verticallayout_tab_creator.addWidget(groupbox_quelle)
+        # row +=1
 
 
-        groupbox_display = create_new_groupbox(Dialog, "Anzeigemodus")
-        horizontallayout_display = create_new_horizontallayout(groupbox_display)
-    
-        # label_display = create_new_label(Dialog, "Darstellung:")
-        # horizontallayout_display.addWidget(label_display)
-        self.combobox_display = create_new_combobox(Dialog)
-        # self.combobox_display.currentIndexChanged.connect(self.combobox_display_changed)
-        horizontallayout_display.addWidget(self.combobox_display)
 
-        add_new_option(self.combobox_display, 0, "Standard")
-        add_new_option(self.combobox_display, 1, "Dark Mode")
-
-        try:
-            self.combobox_display.setCurrentIndex(self.lama_settings['display'])
-        except KeyError:
-            self.lama_settings['display'] = 0
-        
-        gridlayout_setup.addWidget(groupbox_display, row, 0,1,1)
-        groupbox_display.hide()
-        row +=1
+        # row +=1
 
 
-        gridlayout_setup.setRowStretch(row, 1)
-        row +=1
+        # gridlayout_setup.setRowStretch(row, 1)
+        # row +=1
+
+        verticallayout_tab_general.addStretch()
+        verticallayout_tab_sage.addStretch()
+        verticallayout_tab_creator.addStretch()
 
 
         self.buttonBox_setup = QtWidgets.QDialogButtonBox(self.Dialog)
@@ -2280,7 +2320,7 @@ class Ui_Dialog_setup(object):
         self.buttonBox_setup.rejected.connect(self.reject_dialog)
         self.buttonBox_setup.accepted.connect(partial(self.save_setting, MainWindow.chosen_program))
 
-        gridlayout_setup.addWidget(self.buttonBox_setup,row,0,1,1)
+        verticallayout.addWidget(self.buttonBox_setup)
 
 
 
