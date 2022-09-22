@@ -2029,6 +2029,7 @@ class Ui_Dialog_setup(object):
         self.Dialog.setObjectName("Dialog")
         Dialog.setWindowTitle("Einstellungen")
         row=0
+
         # self.Dialog.setMinimumWidth(400)
         Dialog.setWindowIcon(QIcon(logo_path))
 
@@ -2321,7 +2322,6 @@ class Ui_Dialog_setup(object):
         self.buttonBox_setup.accepted.connect(partial(self.save_setting, MainWindow.chosen_program))
 
         verticallayout.addWidget(self.buttonBox_setup)
-
 
 
 
