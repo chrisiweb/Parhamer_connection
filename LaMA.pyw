@@ -540,7 +540,8 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
                     single_file_index,
                     filename_vorschau = filename_vorschau,
                 )
-                single_file_index += 1
+                if single_file_index != None:
+                    single_file_index += 1
 
             if not is_empty(self.chosen_path_schularbeit_erstellen[0]):
                 if sys.platform.startswith("linux"):
