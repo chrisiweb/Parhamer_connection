@@ -2150,9 +2150,8 @@ def setup_stackFeedback(self):
     )
     self.lineEdit_number_fb_cria.setObjectName("lineEdit_number_fb_cria")
 
-    self.lineEdit_number_fb_cria.textChanged.connect(
-        partial(self.adapt_choosing_list, "feedback")
-    )
+    self.lineEdit_number_fb_cria.textChanged.connect(lambda: self.adapt_choosing_list("feedback"))
+    
     self.verticalLayout_fb_cria.addWidget(self.lineEdit_number_fb_cria)
     self.listWidget_fb_cria = QtWidgets.QListWidget(
         self.groupBox_alle_aufgaben_fb_cria
