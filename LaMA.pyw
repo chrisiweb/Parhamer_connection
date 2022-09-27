@@ -2537,7 +2537,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def create_information_aufgabenformat(self):
         if (
             self.chosen_program == "cria"
-            or self.comboBox_aufgabentyp_cr.currentText() == "Typ 1"
+            or self.comboBox_aufgabentyp_cr.currentText() == "1"
         ):
             aufgabenformat = "Aufgabenformat: %s\n\n" % self.comboBox_af.currentText()
         else:
