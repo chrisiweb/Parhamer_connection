@@ -6963,11 +6963,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
         show_group_B = False
-        if 'checkbox_AB_{}'.format(aufgabe) in self.dict_widget_variables:
-            checkbox = self.dict_widget_variables['checkbox_AB_{}'.format(aufgabe)]
-            if checkbox.isChecked() and self.comboBox_gruppe_AB.currentIndex()==1:
+        if aufgabe in self.dict_variablen_AB:
+            if self.dict_variablen_AB[aufgabe] == True and self.comboBox_gruppe_AB.currentIndex()==1:
                 show_group_B = True
-
 
         with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
             vorschau.write(header)
