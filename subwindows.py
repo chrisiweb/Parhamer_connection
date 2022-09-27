@@ -1999,6 +1999,7 @@ class Ui_Dialog_setup(object):
             'pdf_reader' : "",
             'database' : 2,
             'display' : 0,
+            'search_output': 0,
             'prozente': [91, 80, 64, 50],
             'notenschluessel': [False, False],
             'prozente_cria': [91, 80, 64, 50],
@@ -2041,6 +2042,9 @@ class Ui_Dialog_setup(object):
         self.tab_general = QtWidgets.QWidget(self.tabWidget)
         self.tabWidget.addTab(self.tab_general, "Allgemein")
 
+        self.tab_search = QtWidgets.QWidget(self.tabWidget)
+        self.tabWidget.addTab(self.tab_search, "Aufgabensuche")
+
         self.tab_sage = QtWidgets.QWidget(self.tabWidget)
         self.tabWidget.addTab(self.tab_sage, "Prüfungsgenerator")
 
@@ -2048,6 +2052,7 @@ class Ui_Dialog_setup(object):
         self.tabWidget.addTab(self.tab_creator, "Aufgabeneingabe")
 
         verticallayout_tab_general = create_new_verticallayout(self.tab_general)
+        verticallayout_tab_search = create_new_verticallayout(self.tab_search)
         verticallayout_tab_sage = create_new_verticallayout(self.tab_sage)
         verticallayout_tab_creator = create_new_verticallayout(self.tab_creator)
 
@@ -2057,7 +2062,7 @@ class Ui_Dialog_setup(object):
         ################### TAB GENERAL
         ################################
 
-        groupbox_start_program = create_new_groupbox(Dialog, "Auswahl beim Programmstart")
+        groupbox_start_program = create_new_groupbox(self.tab_general, "Auswahl beim Programmstart")
         groupbox_start_program.setSizePolicy(SizePolicy_fixed_height)
         horizontalLayout_start_program = create_new_horizontallayout(groupbox_start_program)
 
@@ -2079,7 +2084,7 @@ class Ui_Dialog_setup(object):
         verticallayout_tab_general.addWidget(groupbox_start_program)
         # row +=1
 
-        groupbox_path_pdf = create_new_groupbox(Dialog, "Dateipfad PDF Reader")
+        groupbox_path_pdf = create_new_groupbox(self.tab_general, "Dateipfad PDF Reader")
         groupbox_path_pdf.setSizePolicy(SizePolicy_fixed_height)
         horizontallayout_path_pdf = create_new_horizontallayout(groupbox_path_pdf)
 
@@ -2101,7 +2106,7 @@ class Ui_Dialog_setup(object):
         verticallayout_tab_general.addWidget(groupbox_path_pdf)
         # row +=1
 
-        groupbox_database = create_new_groupbox(Dialog, "Automatische Aktualisierung der Datenbank")
+        groupbox_database = create_new_groupbox(self.tab_general, "Automatische Aktualisierung der Datenbank")
         groupbox_database.setSizePolicy(SizePolicy_fixed_height)
         horizontallayout_database = create_new_horizontallayout(groupbox_database)
 
@@ -2126,7 +2131,7 @@ class Ui_Dialog_setup(object):
         verticallayout_tab_general.addWidget(groupbox_database)
         # row+=1
 
-        groupbox_display = create_new_groupbox(Dialog, "Anzeigemodus")
+        groupbox_display = create_new_groupbox(self.tab_general, "Anzeigemodus")
         horizontallayout_display = create_new_horizontallayout(groupbox_display)
     
         # label_display = create_new_label(Dialog, "Darstellung:")
@@ -2146,18 +2151,40 @@ class Ui_Dialog_setup(object):
         verticallayout_tab_general.addWidget(groupbox_display)
         groupbox_display.hide()
 
+
+        ################################
+        ################### TAB SEARCH
+        ################################
+
+        groupbox_search_output = create_new_groupbox(self.tab_search, "PDF Ausgabe")
+        groupbox_search_output.setSizePolicy(SizePolicy_fixed_height)
+        verticallayout_tab_search.addWidget(groupbox_search_output)
+        horizontalLayout_search_output = create_new_horizontallayout(groupbox_search_output)
+
+        self.combobox_search_output = create_new_combobox(groupbox_search_output)
+        horizontalLayout_search_output.addWidget(self.combobox_search_output)
+
+        add_new_option(self.combobox_search_output, 0,"kompakt")
+        add_new_option(self.combobox_search_output, 1,"Seitenumbruch nach jeder Aufgabe")
+
+        try:
+            self.combobox_search_output.setCurrentIndex(self.lama_settings['search_output'])
+        except KeyError:
+            self.lama_settings['search_output'] == 0
+        
+
         ################################
         ################### TAB SAGE
         ################################
         
-        groupbox_autosave = create_new_groupbox(Dialog, "Autosave Intervall")
+        groupbox_autosave = create_new_groupbox(self.tab_sage, "Autosave Intervall")
         groupbox_autosave.setToolTip("0 = Autosave deaktivieren")
         horizontallayout_autosave = create_new_horizontallayout(groupbox_autosave)
 
         # label_autosave = create_new_label(Dialog, "Intervall:")
         # horizontallayout_autosave.addWidget(label_autosave)
 
-        self.spinbox_autosave = create_new_spinbox(Dialog, value=2)
+        self.spinbox_autosave = create_new_spinbox(groupbox_autosave, value=2)
         try:
             self.spinbox_autosave.setValue(self.lama_settings['autosave'])
         except KeyError:
@@ -2165,7 +2192,7 @@ class Ui_Dialog_setup(object):
         self.spinbox_autosave.setSizePolicy(SizePolicy_fixed)
         horizontallayout_autosave.addWidget(self.spinbox_autosave)
 
-        label_autosave_2 = create_new_label(Dialog, "Minuten")
+        label_autosave_2 = create_new_label(groupbox_autosave, "Minuten")
         horizontallayout_autosave.addWidget(label_autosave_2)
 
         verticallayout_tab_sage.addWidget(groupbox_autosave)
@@ -2187,7 +2214,7 @@ class Ui_Dialog_setup(object):
             key_prozente = 'prozente'
             key_notenschluessel = 'notenschluessel'
 
-        groupbox_prozent = create_new_groupbox(Dialog, "Prozente Notenschlüssel ({})".format(string))
+        groupbox_prozent = create_new_groupbox(self.tab_sage, "Prozente Notenschlüssel ({})".format(string))
         gridlayout_prozente = create_new_gridlayout(groupbox_prozent)
 
 
@@ -2302,6 +2329,7 @@ class Ui_Dialog_setup(object):
         # row +=1
 
         verticallayout_tab_general.addStretch()
+        verticallayout_tab_search.addStretch()
         verticallayout_tab_sage.addStretch()
         verticallayout_tab_creator.addStretch()
 
@@ -2408,6 +2436,7 @@ class Ui_Dialog_setup(object):
         dict_['pdf_reader'] = self.lineedit_pdf_reader.text()
         dict_['database'] = self.combobox_database.currentIndex()
         dict_['display'] = self.combobox_display.currentIndex()
+        dict_['search_output'] = self.combobox_search_output.currentIndex()
         dict_['autosave'] = self.spinbox_autosave.value()
         dict_['quelle'] = self.lineedit_quelle.text()
         if chosen_program == 'cria':

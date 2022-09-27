@@ -529,7 +529,12 @@ def prepare_tex_for_pdf(self):
 
     language_index = self.combobox_translation.currentIndex()
 
-    construct_tex_file(filename_teildokument, gesammeltedateien, current_program, solutions, variation, infos, spezielle_suche, language_index)
+    try:
+        search_output_index  = self.lama_settings['search_output']
+    except KeyError:
+        search_output_index = 0
+
+    construct_tex_file(filename_teildokument, gesammeltedateien, current_program, solutions, variation, infos, spezielle_suche, language_index, search_output_index)
 
 
     number_of_files = get_output_size(gesammeltedateien, variation, spezielle_suche, language_index)
@@ -635,7 +640,7 @@ def create_tex(
         return e
 
 
-def construct_tex_file(file_name, gesammeltedateien, current_program, solutions, variation, infos, spezielle_suche, language_index):
+def construct_tex_file(file_name, gesammeltedateien, current_program, solutions, variation, infos, spezielle_suche, language_index, search_output_index):
     with open(file_name, "w", encoding="utf8") as file:
         if current_program == "lama_2":
             bookmark_value = 1
@@ -731,7 +736,10 @@ def construct_tex_file(file_name, gesammeltedateien, current_program, solutions,
             info_box = create_info_box(all)
             file.write(info_box)
             file.write("\n")
-            file.write("\hrulefill")
+            if search_output_index == 0:
+                file.write("\hrulefill")
+            elif search_output_index == 1:
+                file.write("\\newpage")
             file.write("\n\n")
         file.write(tex_end)
 
