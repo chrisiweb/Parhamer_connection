@@ -5898,7 +5898,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         pushbutton_edit = create_new_button(
             new_groupbox,
             "",
-            partial(self.pushButton_edit_pressed, aufgabe),
+            lambda: self.pushButton_edit_pressed(aufgabe),
         )
         pushbutton_edit.setIcon(QtGui.QIcon(get_icon_path('edit.svg')))
         pushbutton_edit.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor)) 
@@ -6097,6 +6097,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         QtWidgets.QApplication.restoreOverrideCursor()
 
+    @report_exceptions
     def pushButton_edit_pressed(self, aufgabe):
         content = collect_content(self, aufgabe)
 

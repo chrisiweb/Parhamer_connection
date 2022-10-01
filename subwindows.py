@@ -921,6 +921,7 @@ class Ui_Dialog_titlepage(object):
 
 
 class Ui_Dialog_ausgleichspunkte(object):
+    @report_exceptions
     def setupUi(
         self,
         Dialog,
@@ -1070,8 +1071,8 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.button_save_edit.setIcon(QIcon(get_icon_path('save.svg')))
             self.button_save_edit.setSizePolicy(SizePolicy_fixed)
             self.gridlayout_titlepage.addWidget(self.button_save_edit, 3,2,1,1)
-        if typ == 2:
-            self.button_save_edit.hide()
+            if typ == 2:
+                self.button_save_edit.hide()
 
         # ### Variationsbutton ausblenden, da derzeit nicht funktionsfähig
         self.button_save = create_new_button(Dialog, "Als Variation speichern", self.button_save_pressed)
