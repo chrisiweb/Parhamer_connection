@@ -254,21 +254,56 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
             unterschrift = "\\vspace{1cm}\n\n"
 
         if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "br":
-            notenschluessel = self.dict_all_infos_for_file["data_gesamt"][
-                "Notenschluessel"
-            ]
+            if self.combobox_notenschluessel_typ.currentIndex() == 0:
+                notenschluessel = self.dict_all_infos_for_file["data_gesamt"][
+                    "Notenschluessel"
+                ]
+
+                if self.cb_ns_halbe_pkt.isChecked():
+                    zusatz = "[1/2]"
+                else:
+                    zusatz = ""
 
 
-            gut = notenschluessel[0] / 100
-            befriedigend = notenschluessel[1] / 100
-            genuegend = notenschluessel[2] / 100
-            nichtgenuegend = notenschluessel[3] / 100
-            
-            beurteilungsraster = (
-                f"\large\\beurteilung{{{gut}}}{{{befriedigend}}}{{{genuegend}}}{{{nichtgenuegend}}}{{ % Prozentschluessel\n"
-                f"T1={{{pkt_typ1}}}, % Punkte im Teil 1\n"
-                f"T2={{{pkt_typ2}}}, % Punkte im Teil 2\n}}\n\n"
-            )
+                gut = notenschluessel[0] / 100
+                befriedigend = notenschluessel[1] / 100
+                genuegend = notenschluessel[2] / 100
+                nichtgenuegend = notenschluessel[3] / 100
+                
+                beurteilungsraster = (
+                    f"\large\\beurteilung{zusatz}{{{gut}}}{{{befriedigend}}}{{{genuegend}}}{{{nichtgenuegend}}}{{ % Prozentschluessel\n"
+                    f"T1={{{pkt_typ1}}}, % Punkte im Teil 1\n"
+                    f"T2={{{pkt_typ2}}}, % Punkte im Teil 2\n}}\n\n"
+                )
+
+
+            elif self.combobox_notenschluessel_typ.currentIndex() == 1:
+                notenschluessel = self.dict_all_infos_for_file["data_gesamt"][
+                    "Notenschluessel_individual"
+                ]
+                sg_lower = notenschluessel[0]
+                gu_upper = notenschluessel[1]
+                gu_lower = notenschluessel[2]
+                b_upper = notenschluessel[3]
+                b_lower = notenschluessel[4]
+                ge_upper = notenschluessel[5]
+                ge_lower = notenschluessel[6]
+
+                beurteilungsraster = (
+                    f"\large\individualbeurteilung{{{sg_lower}}}{{{gu_upper}}}{{{gu_lower}}}{{{b_upper}}}{{{b_lower}}}{{{ge_upper}}}{{{ge_lower}}}{{ % Prozentschluessel\n"
+                    f"T1={{{pkt_typ1}}}, % Punkte im Teil 1\n"
+                    f"T2={{{pkt_typ2}}}, % Punkte im Teil 2\n}}\n\n"
+                )              
+
+                # with open(filename_vorschau, "a", encoding="utf8") as vorschau:
+                #     vorschau.write(
+                #         f"\n\n\\null\individualnotenschluessel{zusatz}{{{sg_lower}}}{{{gu_upper}}}{{{gu_lower}}}{{{b_upper}}}{{{b_lower}}}{{{ge_upper}}}{{{ge_lower}}}"
+                #     )
+
+
+
+
+
 
         else:
             beurteilungsraster = ""

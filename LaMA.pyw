@@ -5178,13 +5178,15 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def notenanzeige_changed(self):
         if self.combobox_beurteilung.currentText() == "Notenschlüssel":
             self.groupBox_notenschl.show()
-            self.groupBox_notenschl_modus.show()
-            self.combobox_notenschluessel_typ.show()
+            self.cb_ns_prozent.show()
+            # self.groupBox_notenschl_modus.show()
+            # self.combobox_notenschluessel_typ.show()
             self.groupBox_notenschl.setTitle("Notenschlüssel")
         elif self.combobox_beurteilung.currentText() == "Beurteilungsraster":
             self.groupBox_notenschl.show()
-            self.combobox_notenschluessel_typ.hide()
-            self.groupBox_notenschl_modus.hide()
+            self.cb_ns_prozent.hide()
+            # self.combobox_notenschluessel_typ.hide()
+            # self.groupBox_notenschl_modus.hide()
             self.groupBox_notenschl.setTitle("Beurteilungsraster")
         elif self.combobox_beurteilung.currentText() == "keine Auswahl":
             self.groupBox_notenschl.hide()
