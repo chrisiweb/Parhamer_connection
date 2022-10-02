@@ -2001,7 +2001,7 @@ class Ui_Dialog_setup(object):
             'database' : 2,
             'display' : 0,
             'search_output': 0,
-            'prozente': [91, 80, 64, 50],
+            'prozente': [87, 75, 61, 50],
             'notenschluessel': [False, False],
             'prozente_cria': [91, 80, 64, 50],
             'notenschluessel_cria': [False, False],
@@ -2215,7 +2215,7 @@ class Ui_Dialog_setup(object):
             key_prozente = 'prozente'
             key_notenschluessel = 'notenschluessel'
 
-        groupbox_prozent = create_new_groupbox(self.tab_sage, "Prozente Notenschlüssel ({})".format(string))
+        groupbox_prozent = create_new_groupbox(self.tab_sage, "Prozente Beurteilung ({})".format(string))
         gridlayout_prozente = create_new_gridlayout(groupbox_prozent)
 
 

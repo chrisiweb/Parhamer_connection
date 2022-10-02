@@ -1186,10 +1186,26 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         self.spinBox_default_pkt.setValue(1)
         self.combobox_beurteilung.setCurrentIndex(0)
         # self.radioButton_notenschl.setChecked(True)
-        self.spinBox_2.setProperty("value", 91)
-        self.spinBox_3.setProperty("value", 80)
-        self.spinBox_4.setProperty("value", 64)
-        self.spinBox_5.setProperty("value", 50)
+
+        if self.chosen_program == 'cria':
+            key_prozente = 'prozente_cria'
+        else:
+            key_prozente = 'prozente'
+        
+        try: 
+            list_prozente = self.lama_settings[key_prozente]
+        except KeyError:
+            if self.chosen_program == 'cria':
+                list_prozente = [91, 80, 64, 50]
+            else:
+                list_prozente = [87, 75, 61, 50]
+
+
+
+        self.spinBox_2.setValue(list_prozente[0])
+        self.spinBox_3.setValue(list_prozente[1])
+        self.spinBox_4.setValue(list_prozente[2])
+        self.spinBox_5.setValue(list_prozente[3])
 
         self.lineedit_sg_lower_limit.clear()
         self.lineedit_g_upper_limit.clear()
@@ -1852,7 +1868,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         if self.comboBox_pruefungstyp.currentText() == "Grundkompetenzcheck":
             self.combobox_beurteilung.setEnabled(False)
             self.groupBox_notenschl.setEnabled(False)
-            self.groupBox_beurteilungsraster.setEnabled(False)
+            # self.groupBox_beurteilungsraster.setEnabled(False)
             self.groupBox_klasse_sage.setTitle("Klasse")
             self.pushButton_titlepage.setEnabled(False)
             self.comboBox_at_sage.setEnabled(True)
@@ -1860,7 +1876,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         elif self.comboBox_pruefungstyp.currentText() == "Übungsblatt":
             self.combobox_beurteilung.setEnabled(False)
             self.groupBox_notenschl.setEnabled(False)
-            self.groupBox_beurteilungsraster.setEnabled(False)
+            # self.groupBox_beurteilungsraster.setEnabled(False)
             self.pushButton_titlepage.setEnabled(False)
             self.comboBox_at_sage.setEnabled(True)
             self.pushButton_titlepage.setText("Titelblatt anpassen")
@@ -1873,7 +1889,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         else:
             self.combobox_beurteilung.setEnabled(True)
             self.groupBox_notenschl.setEnabled(True)
-            self.groupBox_beurteilungsraster.setEnabled(True)
+            # self.groupBox_beurteilungsraster.setEnabled(True)
             self.pushButton_titlepage.setEnabled(True)
             self.comboBox_at_sage.setEnabled(True)
             self.pushButton_titlepage.setText("Titelblatt anpassen")
@@ -5134,9 +5150,17 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             )
 
             if dict_titlepage['hide_all']==True:
-                self.combobox_beurteilung.removeItem(self.combobox_beurteilung.findText("Beurteilungsraster"))
-            elif self.combobox_beurteilung.findText("Beurteilungsraster") == -1:
-                self.combobox_beurteilung.insertItem(1,"Beurteilungsraster")
+                self.combobox_beurteilung.model().item(1).setEnabled(False)
+                self.combobox_beurteilung.model().item(1).setForeground(QtGui.QColor('gray'))
+                self.combobox_beurteilung.setItemText(1, "Beurteilungsraster (Titelblatt deaktiviert)")
+                if self.combobox_beurteilung.currentIndex()==1:
+                    self.combobox_beurteilung.setCurrentIndex(0)
+                # self.combobox_beurteilung.removeItem(self.combobox_beurteilung.findText("Beurteilungsraster"))
+            else:
+                self.combobox_beurteilung.model().item(1).setEnabled(True)
+                self.combobox_beurteilung.setItemText(1, "Beurteilungsraster")
+                self.combobox_beurteilung.model().item(1).setForeground(QtGui.QColor('black'))
+                # self.combobox_beurteilung.insertItem(1,"Beurteilungsraster")
         if self.chosen_program == "cria":
             self.dict_titlepage_cria = dict_titlepage
             titlepage_save = os.path.join(
@@ -5153,14 +5177,18 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     def notenanzeige_changed(self):
         if self.combobox_beurteilung.currentText() == "Notenschlüssel":
-            self.groupBox_beurteilungsraster.hide()
             self.groupBox_notenschl.show()
+            self.groupBox_notenschl_modus.show()
+            self.combobox_notenschluessel_typ.show()
+            self.groupBox_notenschl.setTitle("Notenschlüssel")
         elif self.combobox_beurteilung.currentText() == "Beurteilungsraster":
-            self.groupBox_notenschl.hide()
-            self.groupBox_beurteilungsraster.show()
+            self.groupBox_notenschl.show()
+            self.combobox_notenschluessel_typ.hide()
+            self.groupBox_notenschl_modus.hide()
+            self.groupBox_notenschl.setTitle("Beurteilungsraster")
         elif self.combobox_beurteilung.currentText() == "keine Auswahl":
             self.groupBox_notenschl.hide()
-            self.groupBox_beurteilungsraster.hide()
+
 
         self.update_punkte()
 
@@ -5561,23 +5589,23 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     #     return number_ausgleichspkt_gesamt
 
-    def update_beurteilungsraster(self):
+    # def update_beurteilungsraster(self):
 
-        punkteverteilung = self.get_punkteverteilung()
-        # number_ausgleichspunkte_gesamt = self.get_number_ausgleichspunkte_gesamt()
-        self.label_typ1_pkt.setText("Punkte Typ 1: {}".format(punkteverteilung[1]))
-        self.label_typ2_pkt.setText("Punkte Typ 2: {0}".format(punkteverteilung[2]))
+    #     punkteverteilung = self.get_punkteverteilung()
+    #     # number_ausgleichspunkte_gesamt = self.get_number_ausgleichspunkte_gesamt()
+    #     self.label_typ1_pkt.setText("Punkte Typ 1: {}".format(punkteverteilung[1]))
+    #     self.label_typ2_pkt.setText("Punkte Typ 2: {0}".format(punkteverteilung[2]))
 
     def update_punkte(self):
         gesamtpunkte = self.get_punkteverteilung()[0]
         num_typ1, num_typ2 = self.get_aufgabenverteilung()
         num_total = num_typ1+num_typ2
 
-        if self.combobox_beurteilung.currentText() == "Notenschlüssel":
-            self.update_notenschluessel()
+        # if self.combobox_beurteilung.currentText() == "Notenschlüssel":
+        self.update_notenschluessel()
 
-        if self.combobox_beurteilung.currentText() == "Beurteilungsraster":
-            self.update_beurteilungsraster()
+        # if self.combobox_beurteilung.currentText() == "Beurteilungsraster":
+        #     self.update_beurteilungsraster()
 
         if self.chosen_program == "cria":
             self.label_gesamtbeispiele.setText(
@@ -7035,6 +7063,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         if ausgabetyp == "vorschau":
             self.collect_all_infos_for_creating_file()
 
+        
 
         self.dict_gruppen = {0: "A", 1: "B", 2: "C", 3: "D", 4: "E", 5: "F"}
 
@@ -7047,6 +7076,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         if self.chosen_program == "cria":
             dict_titlepage = self.dict_titlepage_cria
 
+
+
+        # if self.dict_all_infos_for_file["data_gesamt"]['Beurteilung'] == 'br' and dict_titlepage['hide_all'] == True:
+        #     rsp = question_window("Es wurde der Beurteilungsraster ausgewählt, obwohl kein Titelblatt angezeigt wird. Dadurch ist der Beurteilungsraster nicht mehr sichtbar.",
+        #     "Möchten Sie dennoch fortfahren?")
+        #     if rsp == False:
+        #         return
         # if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Quiz":
         #     beamer_mode = True
         # else:

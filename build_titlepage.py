@@ -254,11 +254,20 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
             unterschrift = "\\vspace{1cm}\n\n"
 
         if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "br":
+            notenschluessel = self.dict_all_infos_for_file["data_gesamt"][
+                "Notenschluessel"
+            ]
+
+
+            gut = notenschluessel[0] / 100
+            befriedigend = notenschluessel[1] / 100
+            genuegend = notenschluessel[2] / 100
+            nichtgenuegend = notenschluessel[3] / 100
+            
             beurteilungsraster = (
-                "\large\\beurteilung{{0.875}}{{0.75}}{{0.625}}{{1/2}}{{ % Prozentschluessel\n"
-                "T1={{{0}}}, % Punkte im Teil 1\n"
-                "T2={{{1}}}, % Punkte im Teil 2\n"
-                "}}\n\n".format(pkt_typ1, pkt_typ2)
+                f"\large\\beurteilung{{{gut}}}{{{befriedigend}}}{{{genuegend}}}{{{nichtgenuegend}}}{{ % Prozentschluessel\n"
+                f"T1={{{pkt_typ1}}}, % Punkte im Teil 1\n"
+                f"T2={{{pkt_typ2}}}, % Punkte im Teil 2\n}}\n\n"
             )
 
         else:

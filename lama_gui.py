@@ -983,7 +983,10 @@ def setup_stackSage(self):
 
     try:
         if self.dict_titlepage['hide_all'] == True:
-            self.combobox_beurteilung.removeItem(self.combobox_beurteilung.findText("Beurteilungsraster"))
+            self.combobox_beurteilung.model().item(1).setEnabled(False)
+            self.combobox_beurteilung.model().item(1).setForeground(QtGui.QColor('gray'))
+            self.combobox_beurteilung.setItemText(1, "Beurteilungsraster (Titelblatt deaktiviert)")
+            # self.combobox_beurteilung.removeItem(self.combobox_beurteilung.findText("Beurteilungsraster"))
     except KeyError:
         pass
 
@@ -1330,27 +1333,27 @@ def setup_stackSage(self):
 
     ### Groupbox Beurteilungsraster #####
 
-    self.groupBox_beurteilungsraster = QtWidgets.QGroupBox(self.groupBox_sage)
-    self.groupBox_beurteilungsraster.setObjectName("groupBox_beurteilungsraster")
-    # self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_beurteilungsraster)
-    # self.gridLayout_6.setObjectName("gridLayout_6")
-    self.verticalLayout_beurteilungsraster = create_new_verticallayout(self.groupBox_beurteilungsraster)
+    # self.groupBox_beurteilungsraster = QtWidgets.QGroupBox(self.groupBox_sage)
+    # self.groupBox_beurteilungsraster.setObjectName("groupBox_beurteilungsraster")
+    # # self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_beurteilungsraster)
+    # # self.gridLayout_6.setObjectName("gridLayout_6")
+    # self.verticalLayout_beurteilungsraster = create_new_verticallayout(self.groupBox_beurteilungsraster)
 
-    self.label_typ1_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsraster)
-    self.label_typ1_pkt.setObjectName("label_typ1_pkt")
-    self.verticalLayout_beurteilungsraster.addWidget(self.label_typ1_pkt)
-    # self.gridLayout_6.addWidget(self.label_typ1_pkt, 0, 0, 1, 2)
-    # self.label_typ1_pkt.setText(_translate("MainWindow", "Punkte Typ 1: 0",None))
+    # self.label_typ1_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsraster)
+    # self.label_typ1_pkt.setObjectName("label_typ1_pkt")
+    # self.verticalLayout_beurteilungsraster.addWidget(self.label_typ1_pkt)
+    # # self.gridLayout_6.addWidget(self.label_typ1_pkt, 0, 0, 1, 2)
+    # # self.label_typ1_pkt.setText(_translate("MainWindow", "Punkte Typ 1: 0",None))
 
-    self.label_typ2_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsraster)
-    self.label_typ2_pkt.setObjectName("label_typ2_pkt")
-    self.verticalLayout_beurteilungsraster.addWidget(self.label_typ2_pkt)
-    # self.gridLayout_6.addWidget(self.label_typ2_pkt, 1, 0, 1, 2)
+    # self.label_typ2_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsraster)
+    # self.label_typ2_pkt.setObjectName("label_typ2_pkt")
+    # self.verticalLayout_beurteilungsraster.addWidget(self.label_typ2_pkt)
+    # # self.gridLayout_6.addWidget(self.label_typ2_pkt, 1, 0, 1, 2)
 
-    self.groupBox_beurteilungsraster.setTitle("Beurteilungsraster")
+    # self.groupBox_beurteilungsraster.setTitle("Beurteilungsraster")
 
-    self.gridLayout_5.addWidget(self.groupBox_beurteilungsraster, 2, 0, 1, 2)
-    self.groupBox_beurteilungsraster.hide()
+    # self.gridLayout_5.addWidget(self.groupBox_beurteilungsraster, 2, 0, 1, 2)
+    # self.groupBox_beurteilungsraster.hide()
 
     ### Zusammenfassung d. SA ###
     self.widgetSummarySage = QtWidgets.QWidget(self.groupBox_sage)
