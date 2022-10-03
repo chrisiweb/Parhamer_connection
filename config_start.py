@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 
 #### Version number ###
-__version__ = "v4.1.2"
+__version__ = "v4.1.3"
 
 if sys.platform.startswith("win"):
     ##### NOT IN USE ! (Working!) - Activate when installer is used!
