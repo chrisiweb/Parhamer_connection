@@ -6140,37 +6140,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # print(split_content)
             if split_content == False:
                 return
-            # try:
-            #     split_content, index_end = split_aufgaben_content(content)
-            #     split_content = split_content[:index_end]
-            # except Exception as e1:
-            #     try:
-            #         split_content = split_aufgaben_content_new_format(content)
-            #     except Exception:
-            #         # split_content = None
-            #         warning_window(
-            #             "Es ist ein Fehler bei der Anzeige der Aufgabe {} aufgetreten! (Die Aufgabe kann voraussichtlich dennoch verwendet und individuell in der TeX-Datei bearbeitet werden.)\n".format(
-            #                 aufgabe
-            #             ),
-            #             'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!',
-            #         )
-            #         return
-
-            # if aufgabe in self.dict_sage_ausgleichspunkte_chosen.keys():
-            #     list_sage_ausgleichspunkte_chosen = (
-            #         self.dict_sage_ausgleichspunkte_chosen[aufgabe]
-            #     )
-            # else:
-            #     list_sage_ausgleichspunkte_chosen = []
-            #     for index, all in enumerate(split_content):
-            #         if "\\fbox{A}" in all or "\\ASubitem" in all:
-            #             list_sage_ausgleichspunkte_chosen.append(index)
-                    # if "\\fbox{A}" in all:
-                    #     x = all.replace("\\fbox{A}", "")
-                    #     list_sage_ausgleichspunkte_chosen.append(x)
-                    # if "\\ASubitem" in all:
-                    #     x = all.replace("\\ASubitem", "")
-                    #     list_sage_ausgleichspunkte_chosen.append(x)
 
             if aufgabe in self.dict_sage_hide_show_items_chosen.keys():
                 list_sage_hide_show_items_chosen = (
@@ -6227,12 +6196,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             
 
         if typ == 2:
-            # if not is_empty(ui.list_sage_ausgleichspunkte_chosen):
-            #     self.dict_sage_ausgleichspunkte_chosen[
-            #         aufgabe
-            #     ] = ui.list_sage_ausgleichspunkte_chosen
-            # elif aufgabe in self.dict_sage_ausgleichspunkte_chosen:
-            #     del self.dict_sage_ausgleichspunkte_chosen[aufgabe]
 
             if not is_empty(ui.list_sage_hide_show_items_chosen):
                 self.dict_sage_hide_show_items_chosen[
@@ -6242,22 +6205,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             elif aufgabe in self.dict_sage_hide_show_items_chosen:
                 del self.dict_sage_hide_show_items_chosen[aufgabe]
 
-            # print(self.dict_sage_hide_show_items_chosen)
-            # self.dict_variablen_label[aufgabe].setText(
-            #     "{}".format(len(ui.list_sage_ausgleichspunkte_chosen))
-            # )
 
         self.update_punkte()
 
-    # def splitter_sage_moved(self):
-    #     self.width_groupBox_sage = self.groupBox_sage.geometry().width()
-    #     self.min_width_groupBox_sage = self.groupBox_sage.minimumSizeHint().width()
-
-
-        # if self.width_groupBox_sage <= self.min_width_groupBox_sage:
-        #     self.groupBox_klasse_sage.hide()
-        # else:
-        #     self.groupBox_klasse_sage.show()
             
 
 

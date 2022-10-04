@@ -941,7 +941,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.language = language
         
         self.typ = typ
-        # self.developer_mode_active = developer_mode_active
+        self.developer_mode_active = developer_mode_active
         if typ==2:
             self.aufgabenstellung_split_text = aufgabenstellung_split_text
             self.hide_show_items_split_text = prepare_content_for_hide_show_items(
@@ -1046,7 +1046,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.plainTextEdit_content.setUndoRedoEnabled(True)
         if typ == 2:
             self.plainTextEdit_content.hide()
-            self.combobox_edit.currentIndexChanged.connect(self.combobox_edit_changed)
+            self.combobox_edit.currentIndexChanged.connect(lambda: self.combobox_edit_changed())
 
 
         self.button_preview = create_new_button(Dialog, "Vorschau", self.button_preview_pressed)
@@ -1065,14 +1065,14 @@ class Ui_Dialog_ausgleichspunkte(object):
         if typ ==2:
             self.button_restore_default.hide()
 
+        self.button_save_edit = create_new_button(Dialog, "Änderung speichern", partial(self.button_save_edit_pressed_individual_changes, aufgabe, chosen_program, language))
+        self.button_save_edit.setIcon(QIcon(get_icon_path('save.svg')))
+        self.button_save_edit.setSizePolicy(SizePolicy_fixed)
+        self.gridlayout_titlepage.addWidget(self.button_save_edit, 3,2,1,1)
 
-        if developer_mode_active == True:
-            self.button_save_edit = create_new_button(Dialog, "Änderung speichern", partial(self.button_save_edit_pressed_individual_changes, aufgabe, chosen_program, language))
-            self.button_save_edit.setIcon(QIcon(get_icon_path('save.svg')))
-            self.button_save_edit.setSizePolicy(SizePolicy_fixed)
-            self.gridlayout_titlepage.addWidget(self.button_save_edit, 3,2,1,1)
-            if typ == 2:
-                self.button_save_edit.hide()
+        if developer_mode_active == False or typ == 2:
+            self.button_save_edit.hide()
+
 
         # ### Variationsbutton ausblenden, da derzeit nicht funktionsfähig
         self.button_save = create_new_button(Dialog, "Als Variation speichern", self.button_save_pressed)
@@ -1191,6 +1191,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         # _list = [0,1,2]
         # _list.remove(index)
 
+    @report_exceptions
     def combobox_edit_changed(self):
         changes_detected, index = self.check_for_change()
 
@@ -1235,11 +1236,12 @@ class Ui_Dialog_ausgleichspunkte(object):
             self.plainTextEdit_content.show()
             # self.build_editable_content()
             # self.button_save.show()
-            self.button_save_edit.show()
             self.button_preview.show()
             self.button_restore_default.show()
             self.button_zoom_in.show()
             self.button_zoom_out.show()
+            if self.developer_mode_active == True:
+                self.button_save_edit.show()    
 
     # def plainTextEdit_content_changed(self):
     #     self.change_detected_2 = True
