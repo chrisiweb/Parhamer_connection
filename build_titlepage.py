@@ -61,12 +61,22 @@ def check_if_hide_all_exists(dict_titlepage):
 
 
 def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
-    datum_kurz, datum = get_datum(self)
+    if self.checkBox_date.isChecked():
+        datum_kurz, datum = get_datum(self)
+    else:
+        datum_kurz = ""
+        datum = ""
+
     dict_titlepage = check_if_hide_all_exists(dict_titlepage)
 
     pkt_typ1 = self.get_punkteverteilung()[1]
     pkt_typ2 = self.get_punkteverteilung()[2]
 
+
+    if is_empty(self.dict_all_infos_for_file["data_gesamt"]["Klasse"]):
+        klasse = ""
+    else:
+        klasse = self.dict_all_infos_for_file["data_gesamt"]["Klasse"]
 
     if (
         self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
@@ -78,10 +88,7 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
         else:
             gruppe_name = ""
 
-        if is_empty(self.dict_all_infos_for_file["data_gesamt"]["Klasse"]):
-            klasse = ""
-        else:
-            klasse = self.dict_all_infos_for_file["data_gesamt"]["Klasse"]
+
 
         if self.dict_all_infos_for_file["data_gesamt"]["#"]==0:
             titlepage = (
@@ -135,7 +142,7 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
                         + self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
                     )
 
-        titlepage = "\\subsection{{{0} \\hfill {1}}}".format(subsection, datum_kurz)
+        titlepage = f"\\subsection{{{subsection} \\hfill {klasse} \\hfill {datum_kurz}}}"
 
         # if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "br":
 

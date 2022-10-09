@@ -1863,7 +1863,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
         self.spinBox_nummer.setValue(self.spinBox_nummer_setvalue)
-
+        self.checkBox_date.hide()
+        self.checkBox_date.setChecked(True)
 
         if self.comboBox_pruefungstyp.currentText() == "Grundkompetenzcheck":
             self.combobox_beurteilung.setEnabled(False)
@@ -1900,6 +1901,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 self.spinBox_nummer_setvalue = self.spinBox_nummer.value()
                 self.spinBox_nummer.setValue(0)
                 self.widgetNummer.setEnabled(False)
+                self.checkBox_date.show()
                 # self.spinBox_nummer.setEnabled(False)
 
     ############################################################################
@@ -6238,6 +6240,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.comboBox_fb_num.setEnabled(status)
         self.lineEdit_number_fb.setEnabled(status)
         self.listWidget_fb.setEnabled(status)
+
+    @report_exceptions
+    def checkBox_date_changed(self):
+        if self.checkBox_date.isChecked():
+            self.dateEdit.setEnabled(True)
+        else:
+            self.dateEdit.setEnabled(False)
 
     def comboBox_at_fb_cria_changed(self):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))

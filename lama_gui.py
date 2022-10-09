@@ -1046,6 +1046,27 @@ def setup_stackSage(self):
     self.labelDate.setScaledContents(True)
     self.horizontalLayout_frameDatum.addWidget(self.labelDate)
 
+    self.checkBox_date = create_new_checkbox(self.widget_datum, " ", checked = True)
+    self.checkBox_date.setStyleSheet(f"""
+            QCheckBox {{
+                spacing: -5px;
+                padding-top: 2px;
+            }}
+
+            QCheckBox::indicator:unchecked {{ 
+                image: url({get_icon_path("square.svg")});
+                width: 35px;
+            }}
+
+            QCheckBox::indicator:checked {{ 
+                image: url({get_icon_path("check-square.svg")});
+                width: 35px;
+            }}""")
+    self.horizontalLayout_frameDatum.addWidget(self.checkBox_date)
+    self.checkBox_date.stateChanged.connect(lambda: self.checkBox_date_changed())
+    self.checkBox_date.hide()
+
+
     self.dateEdit = QtWidgets.QDateEdit(self.widget_datum)
     self.dateEdit.setCalendarPopup(True)
     self.dateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
