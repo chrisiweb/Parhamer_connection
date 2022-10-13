@@ -107,12 +107,12 @@ elif sys.platform.startswith("darwin"):
 elif sys.platform.startswith("linux"):
     path_programm = os.path.join("~",".LaMA")
     if not os.path.isdir(path_programm):
-        os.mkdir(path_programm)
+        os.makedirs(path_programm)
     path_localappdata_lama = path_programm
 
     path_lama_developer_credentials = os.path.join("~",".LaMA", "credentials")
     if not os.path.isdir(path_lama_developer_credentials):
-        os.makedirs(path_lama_developer_credentials)
+        os.mkdir(path_lama_developer_credentials)
     lama_developer_credentials = os.path.join(path_lama_developer_credentials, "developer_credentials.txt")
 
     lama_settings_file = os.path.join(
