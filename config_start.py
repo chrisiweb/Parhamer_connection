@@ -105,7 +105,7 @@ elif sys.platform.startswith("darwin"):
 
 
 elif sys.platform.startswith("linux"):
-    path_programm = os.path.join("var","lib","LaMA")
+    path_programm = os.path.join("~",".LaMA")
     if not os.path.isdir(path_programm):
         os.mkdir(path_programm)
     path_localappdata_lama = path_programm
