@@ -874,14 +874,13 @@ def open_pdf_file(folder_name, file_name):
 
         # webbrowser.open(file_path, new=2, autoraise=True)
 
-        os.system("xdg-open {0}".format(file_path))
-        # subprocess.run(
-        #     [
-        #         # "sudo",
-        #         "xdg-open",
-        #         file_path,
-        #     ]
-        # )
+        # os.system("xdg-open {0}".format(file_path))
+        subprocess.run(
+            [
+                "xdg-open",
+                file_path,
+            ]
+        )
     elif sys.platform.startswith("darwin"):
         if os.path.exists(path_pdf_reader) == False:
             if is_empty(path_pdf_reader)== False:
