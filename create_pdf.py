@@ -869,14 +869,17 @@ def open_pdf_file(folder_name, file_name):
     
 
     if sys.platform.startswith("linux"):
+
         file_path = file_path + ".pdf"
-        webbrowser.open(file_path, new=2, autoraise=True)
-        # os.system("xdg-open {0}.pdf".format(file_path))
+
+        # webbrowser.open(file_path, new=2, autoraise=True)
+
+        os.system("xdg-open {0}".format(file_path))
         # subprocess.run(
         #     [
         #         # "sudo",
         #         "xdg-open",
-        #         "{0}.pdf".format(file_path),
+        #         file_path,
         #     ]
         # )
     elif sys.platform.startswith("darwin"):
