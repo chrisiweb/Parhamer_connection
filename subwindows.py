@@ -3963,11 +3963,13 @@ class Ui_Dialog_Convert_To_Eps(object):
 
         button_convert = self.buttonBox_convert_to_eps.button(QtWidgets.QDialogButtonBox.Open)
         button_convert.setText('Konvertieren')
+        button_convert.setIcon(QIcon(get_icon_path('repeat.svg')))
         button_search = self.buttonBox_convert_to_eps.button(QtWidgets.QDialogButtonBox.Save)
         button_search.setText('Durchsuchen')
         button_search.setIcon(QIcon(get_icon_path('folder.svg')))
         button_cancel = self.buttonBox_convert_to_eps.button(QtWidgets.QDialogButtonBox.Cancel)
-        button_cancel.setText('Abbrechen')        
+        button_cancel.setText('Abbrechen')
+        button_cancel.setIcon(QIcon(get_icon_path('x.svg')))        
 
         button_search.clicked.connect(lambda: self.search_pressed())
         button_convert.clicked.connect(lambda: self.convert_pressed())
