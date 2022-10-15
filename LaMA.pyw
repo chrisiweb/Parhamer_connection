@@ -1639,8 +1639,10 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         # if os.path.isfile(paket_teildokument):
         #     os.remove(paket_teildokument)
 
-        if sys.platform.startswith("darwin") or sys.platform.startswith("linux"):
+        if sys.platform.startswith("darwin"):
             possible_locations = [os.path.join(path_home, "Library", "texmf")]
+        elif sys.platform.startswith("linux"):
+            possible_locations = [os.path.join(path_home, "texmf")]
         else:
             possible_locations = [
                 os.path.join(path_home, "AppData", "Roaming", "MiKTeX"),
