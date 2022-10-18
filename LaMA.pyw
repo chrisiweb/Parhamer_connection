@@ -967,7 +967,6 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         self, parent, layout, klasse,typ ,checked=False # prevent error decorator
     ):  # , verticalLayout_cr_cria, combobox_kapitel, klasse, spacerItem_unterkapitel_cria
         # layout.removeItem(self.spacerItem_unterkapitel_creator_cria)
-
         if typ == 'search':
             widget_string_kapitel = 'combobox_kapitel_search_cria'
             widget_string_unterkapitel = 'checkbox_unterkapitel'

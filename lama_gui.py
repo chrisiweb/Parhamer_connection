@@ -1636,9 +1636,10 @@ def setup_stackCreator(self):
         )
 
         new_verticallayout.addWidget(combobox_kapitel)
-
+        
         dict_klasse = eval("dict_{}".format(klasse))
-        kapitel = list(dict_klasse.keys())[0]
+        kapitel = list(dict_klasse_name.keys())[0]
+        print(kapitel)
 
         for unterkapitel in dict_klasse[kapitel]:
             new_checkbox = create_new_checkbox(
@@ -2017,6 +2018,7 @@ def setup_stackCreator(self):
     self.comboBox_aufgabentyp_cr.currentIndexChanged.connect(self.chosen_aufgabenformat_cr)
     self.pushButton_save.clicked.connect(lambda: self.button_speichern_pressed())
     self.pushButton_save_translation.clicked.connect(lambda: self.button_save_edit_pressed("translation"))
+
 
 
 def setup_stackFeedback(self):
