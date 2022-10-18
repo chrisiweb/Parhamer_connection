@@ -32,6 +32,7 @@ from config_start import (
 from PyQt5.QtWidgets import QApplication
 
 import sys
+from distutils.spawn import find_executable
 
 # from tinydb import Query
 
@@ -488,6 +489,17 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             | QtCore.Qt.WindowCloseButtonHint,
         )
 
+        if not find_executable('latex'):
+            link = "https://mylama.github.io/lama/downloads.html"
+            critical_window("""<h4>Die PDF-Datei konnte nicht erstellt werden, da keine LaTeX-Distribution auf dem Computer gefunden wurde.</h4>
+
+Bitte öffnen Sie <a href='{0}'>lama.schule/downloads</a> und folgen Sie allen Schritten des Installationsguides.<br><br>
+
+Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@gmail.com""".format(link),
+            titel="Keine LaTeX-Distribution gefunden")
+            return
+
+
         self.ui_erstellen = Ui_Dialog_erstellen()
         self.ui_erstellen.setupUi(
             self.Dialog,
@@ -529,6 +541,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             ):
                 for image in self.list_copy_images:
                     copy_included_images(self, image)
+
 
             for index in range(range_limit):
                 self.pushButton_vorschau_pressed(
@@ -7234,7 +7247,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             name, extension = os.path.splitext(filename_vorschau)
 
             if pdf == True:
-                create_pdf(name, index, maximum)
+                pdf_created = create_pdf(name, index, maximum)
 
                 temp_filename = name + ".pdf"
 
@@ -7248,7 +7261,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                             self.dict_gruppen[int(index / 2)]
                         )
 
+
                     shutil.move(temp_filename, new_filename)
+
 
                 elif index % 2 == 0:
                     new_filename = name + "_Loesung.pdf"

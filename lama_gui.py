@@ -1639,7 +1639,6 @@ def setup_stackCreator(self):
         
         dict_klasse = eval("dict_{}".format(klasse))
         kapitel = list(dict_klasse_name.keys())[0]
-        print(kapitel)
 
         for unterkapitel in dict_klasse[kapitel]:
             new_checkbox = create_new_checkbox(
