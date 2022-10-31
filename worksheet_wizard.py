@@ -85,9 +85,11 @@ def get_random_number(min, max, decimal=0, zero_allowed=False):
     else:
         x = round(random.uniform(min,max),decimal)
 
-    x = D('{}'.format(x))
+    x = D(f'{x}')
 
     x = D("{:.{prec}f}".format(x, prec=decimal))
+
+    x = x.normalize()
 
     if decimal == 0:
         return int(x)
@@ -317,6 +319,11 @@ def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_su
         num = get_random_number(minimum, maximum, commas, 25)
         factors.append(num)
 
+    print(factors)
+    # for i, number in enumerate(factors):
+    #     x = get_number_of_decimals(number)
+    #     print(x)
+
 
     string  = add_summand(factors[0])
 
@@ -354,9 +361,27 @@ def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_su
                 else:
                     string += '\xb7' + add_summand(all)            
         else:
+            print(string)
+            temp_solution = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
+            temp_solution = temp_solution = D("{:.{prec}f}".format(temp_solution, prec=set_commas))
+
+            print(f"setcommas: {set_commas}")
+            print(temp_solution)
+            print(f"decimal solution: {get_number_of_decimals(temp_solution)}")
+            print(f"new decimal: {get_number_of_decimals(all)}")
+            
+            if set_commas >= get_number_of_decimals(temp_solution):
+                new_number = round(all, set_commas-get_number_of_decimals(temp_solution))
+                index = factors.index(all)
+                factors[index] = new_number
+            else:
+                new_number=all
+
             string += operation
 
-            string += add_summand(all)
+            string += add_summand(new_number)
+
+    print(factors)
 
     solution = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
     solution = D("{:.{prec}f}".format(solution, prec=set_commas))
@@ -364,6 +389,8 @@ def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_su
     if solution == 0:
         solution = 0
     string = "{0} = {1}".format(string.replace(".",","), str(solution).replace(".",","))
+
+    # print([factors, solution, string])
 
     return [factors, solution, string]     
 
