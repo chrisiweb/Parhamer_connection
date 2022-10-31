@@ -308,6 +308,32 @@ def create_division_pair(factor_1, factor_2, show_brackets = True):
     dividend = factor_1*factor_2
     return "{}:{}".format(add_summand(dividend, show_brackets), add_summand(factor_1, show_brackets))
 
+def check_decimals(string, number, set_commas, factors):
+        temp_solution = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
+        temp_solution = D("{:.{prec}f}".format(temp_solution, prec=set_commas))
+
+        # print(f"setcommas: {set_commas}")
+        print(temp_solution)
+
+        print(f"decimal solution: {get_number_of_decimals(temp_solution)}")
+        print(f"new decimal: {get_number_of_decimals(number)}")
+        
+        if set_commas >= get_number_of_decimals(temp_solution):
+            print('adapt Decimal')
+            # y= get_number_of_decimals(str(temp_solution))
+            # print(set_commas)
+            # print(int(abs(temp_solution.as_tuple().exponent)))
+            difference = int(set_commas) - int(get_number_of_decimals(temp_solution))
+            print(f"difference: {difference}")
+            new_number = round(number, difference)
+            index = factors.index(number)
+            factors[index] = new_number
+        else:
+            print('leave Decimal')
+            new_number=number
+        
+        return new_number, factors
+
 def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
     factors = []
     set_commas=commas
@@ -317,7 +343,8 @@ def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_su
 
         if smaller_or_equal == 1 or i+1 != anzahl_summanden:
             print(f"TRUE {i}")
-            commas = random.randint(0,set_commas) 
+            commas = random.randint(0,set_commas)
+            print(f"commas: {commas}") 
         else:
             print(f"FALSE {i}")
         num = get_random_number(minimum, maximum, commas, 25)
@@ -336,6 +363,7 @@ def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_su
 
     for i, all in enumerate(factors[1:]):
         if division_pair != None:
+            print('TYP A')
             if division_pair == 0:
                 division_pair = get_random_number(minimum, maximum, commas)    
             string += "[" + create_division_pair(division_pair, all) + "]"
@@ -343,6 +371,7 @@ def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_su
             continue
         operation = random.choice(operators)
         if operation == ':':
+            print('TYP B')
             rsp = random_switch()
             if i==0 and rsp == True:
                 division_pair = factors[0]
@@ -357,34 +386,45 @@ def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_su
                 division_pair = None
                 continue
             else:
+                print('TYP C')
                 if i < len(factors[1:])-1:
+                    print('TYP C1')
                     string += '\xb7'
                     division_pair = all
                 elif len(factors)==2:
+                    print('TYP C2')
                     string = create_division_pair(factors[0], all) 
                 else:
-                    string += '\xb7' + add_summand(all)            
+                    print('TYP C3')
+                    new_number, factors = check_decimals(string, all, set_commas, factors)
+                    string += '\xb7' + add_summand(new_number)            
         else:
             # print(string)
-            temp_solution = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
-            temp_solution = D("{:.{prec}f}".format(temp_solution, prec=set_commas))
+            print('TYP D')
 
-            # print(f"setcommas: {set_commas}")
+            new_number, factors = check_decimals(string, all, set_commas, factors)
+            # temp_solution = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
+            # temp_solution = D("{:.{prec}f}".format(temp_solution, prec=set_commas))
+
+            # # print(f"setcommas: {set_commas}")
             # print(temp_solution)
+
             # print(f"decimal solution: {get_number_of_decimals(temp_solution)}")
             # print(f"new decimal: {get_number_of_decimals(all)}")
             
-            if set_commas >= abs(temp_solution.as_tuple().exponent):
-                # y= get_number_of_decimals(str(temp_solution))
-                print(set_commas)
-
-                difference = int(set_commas) - int(abs(temp_solution.as_tuple().exponent))
-                print(difference)
-                new_number = round(all, difference)
-                index = factors.index(all)
-                factors[index] = new_number
-            else:
-                new_number=all
+            # if set_commas >= get_number_of_decimals(temp_solution):
+            #     print('adapt Decimal')
+            #     # y= get_number_of_decimals(str(temp_solution))
+            #     # print(set_commas)
+            #     # print(int(abs(temp_solution.as_tuple().exponent)))
+            #     difference = int(set_commas) - int(get_number_of_decimals(temp_solution))
+            #     print(f"difference: {difference}")
+            #     new_number = round(all, difference)
+            #     index = factors.index(all)
+            #     factors[index] = new_number
+            # else:
+            #     print('leave Decimal')
+            #     new_number=all
 
             string += operation
 
@@ -775,7 +815,9 @@ def create_list_of_examples_ganze_zahlen(typ, examples, minimum, maximum, commas
     return list_of_examples
 
 def get_number_of_decimals(x):
-    return abs(D('{}'.format(x)).as_tuple().exponent)
+    num = D('{}'.format(x)).normalize()
+    num = abs(num.as_tuple().exponent)
+    return num
 
 def create_latex_string_addition(content, example, ausrichtung):
     summanden = example[0]
