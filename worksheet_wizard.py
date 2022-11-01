@@ -2,6 +2,7 @@ from functools import reduce
 
 import random
 from math import floor, ceil
+from config import is_empty
 # import os
 # from config_start import path_localappdata_lama, path_programm
 import decimal
@@ -90,7 +91,10 @@ def get_random_number(min, max, decimal=0, zero_allowed=False):
     x = D("{:.{prec}f}".format(x, prec=decimal))
 
     x = x.normalize()
+ 
+    x = remove_exponent(x)
 
+    
     if decimal == 0:
         return int(x)
     else:
@@ -308,49 +312,62 @@ def create_division_pair(factor_1, factor_2, show_brackets = True):
     dividend = factor_1*factor_2
     return "{}:{}".format(add_summand(dividend, show_brackets), add_summand(factor_1, show_brackets))
 
+def calculate_solution(string, set_commas):
+    solution = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
+    solution = D("{:.{prec}f}".format(solution, prec=set_commas)).normalize()
+
+    solution = remove_exponent(solution)
+
+    return solution
+
 def check_decimals(string, number, set_commas, factors):
-        temp_solution = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
-        temp_solution = D("{:.{prec}f}".format(temp_solution, prec=set_commas))
+        # print(string)
+        temp_solution = calculate_solution(string, set_commas)
+
+        # print(f"temp solution {temp_solution}")
+        # temp_solution = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
+        # temp_solution = D("{:.{prec}f}".format(temp_solution, prec=set_commas))
 
         # print(f"setcommas: {set_commas}")
-        print(temp_solution)
+        # print(temp_solution)
 
-        print(f"decimal solution: {get_number_of_decimals(temp_solution)}")
-        print(f"new decimal: {get_number_of_decimals(number)}")
-        
+        # print(f"decimal solution: {get_number_of_decimals(temp_solution)}")
+        # print(f"new decimal: {get_number_of_decimals(number)}")
+        # print(factors)
+        # print(number)
         if set_commas >= get_number_of_decimals(temp_solution):
-            print('adapt Decimal')
-            # y= get_number_of_decimals(str(temp_solution))
-            # print(set_commas)
-            # print(int(abs(temp_solution.as_tuple().exponent)))
             difference = int(set_commas) - int(get_number_of_decimals(temp_solution))
-            print(f"difference: {difference}")
             new_number = round(number, difference)
             index = factors.index(number)
             factors[index] = new_number
         else:
-            print('leave Decimal')
-            new_number=number
+            # print('leave Decimal')
+            new_number= number
         
+
+        # print(new_number)
+        new_number = D('{}'.format(new_number)).normalize()
+        new_number = remove_exponent(new_number)
         return new_number, factors
+
+def remove_exponent(d):
+    return d.quantize(D(1)) if d == d.to_integral() else d.normalize()
 
 def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
     factors = []
     set_commas=commas
 
-    print(anzahl_summanden)
+    # print(anzahl_summanden)
     for i in range(anzahl_summanden):
 
         if smaller_or_equal == 1 or i+1 != anzahl_summanden:
-            print(f"TRUE {i}")
             commas = random.randint(0,set_commas)
-            print(f"commas: {commas}") 
-        else:
-            print(f"FALSE {i}")
+
         num = get_random_number(minimum, maximum, commas, 25)
         factors.append(num)
 
-    print(factors)
+    # print(f"factors: {factors}")
+    # return [[],0,""] 
     # for i, number in enumerate(factors):
     #     x = get_number_of_decimals(number)
     #     print(x)
@@ -363,7 +380,7 @@ def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_su
 
     for i, all in enumerate(factors[1:]):
         if division_pair != None:
-            print('TYP A')
+            # print('TYP A')
             if division_pair == 0:
                 division_pair = get_random_number(minimum, maximum, commas)    
             string += "[" + create_division_pair(division_pair, all) + "]"
@@ -371,7 +388,7 @@ def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_su
             continue
         operation = random.choice(operators)
         if operation == ':':
-            print('TYP B')
+            # print('TYP B')
             rsp = random_switch()
             if i==0 and rsp == True:
                 division_pair = factors[0]
@@ -386,21 +403,56 @@ def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_su
                 division_pair = None
                 continue
             else:
-                print('TYP C')
+                # print('TYP C')
                 if i < len(factors[1:])-1:
-                    print('TYP C1')
+                    # print('TYP C1')
                     string += '\xb7'
                     division_pair = all
                 elif len(factors)==2:
-                    print('TYP C2')
+                    # print('TYP C2')
                     string = create_division_pair(factors[0], all) 
                 else:
-                    print('TYP C3')
+                    # print('TYP C3')
                     new_number, factors = check_decimals(string, all, set_commas, factors)
-                    string += '\xb7' + add_summand(new_number)            
+
+                    # if smaller_or_equal == 0:
+                    #     temp_string = string + '\xb7' + add_summand(new_number)
+                    #     temp_solution = calculate_solution(temp_string, set_commas)
+                    #     print(f"temp_solution: {temp_solution}")
+                    #     print(f"kommas: {get_number_of_decimals(temp_solution)}")
+
+                    #     # print(factors)
+                    #     # while True:
+                    #     #     new_number, factors = check_decimals(string, all, set_commas, factors)
+                            
+                    #     #     print(new_number)                        
+                    #     # new_number = all
+
+                    #     # while True:
+                    #     #     print('while loop')
+                    #     #     print(get_number_of_decimals(temp_solution))
+                    #     #     print(set_commas)
+                    #     #     if get_number_of_decimals(temp_solution) == set_commas:
+                    #     #         break
+                    #     #     new_number, factors = check_decimals(string, new_number, set_commas, factors)
+                    #     #     print(new_number)
+                    #     #     temp_string = string + '\xb7' + add_summand(new_number)
+                    #     #     temp_solution = calculate_solution(temp_string, set_commas)
+                    #     #     if get_number_of_decimals(temp_solution) == set_commas:
+                    #     #         break
+                            
+                    #     #     index = factors.index(new_number)
+                    #     #     new_number = get_random_number(minimum, maximum, get_number_of_decimals(new_number)) 
+                            
+                    #     #     factors[index] = new_number                            
+                            
+                    #     string = temp_string
+
+                    # else: 
+                    string += '\xb7' + add_summand(new_number)
         else:
             # print(string)
-            print('TYP D')
+            # print('TYP D')
 
             new_number, factors = check_decimals(string, all, set_commas, factors)
             # temp_solution = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
@@ -432,16 +484,64 @@ def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_su
 
     # print(factors)
 
-    solution = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
-    solution = D("{:.{prec}f}".format(solution, prec=set_commas))
+    solution = calculate_solution(string, set_commas)
 
+    if smaller_or_equal == 0 and get_number_of_decimals(solution) < set_commas:
+        if solution != 0:
+            factors, solution, string = repair_decimals(factors, solution, string, set_commas, minimum, maximum)
+
+    # solution = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
+    # solution = D("{:.{prec}f}".format(solution, prec=set_commas)).normalize()
+
+    # solution = remove_exponent(solution)
+    # print(solution)
+    # solution = D("{:f}%".format(solution.normalize()))
+    # print(solution)
+    
     if solution == 0:
         solution = 0
     string = "{0} = {1}".format(string.replace(".",","), str(solution).replace(".",","))
 
-    # print([factors, solution, string])
 
     return [factors, solution, string]     
+
+def repair_decimals(factors, solution, string, set_commas, minimum, maximum):
+    split_string = string.split("\xb7")
+
+    for all in reversed(split_string):
+        if ":" not in all:
+            number = D("{}".format(all.replace("(","").replace(")","").replace("+",""))).normalize()
+            number = remove_exponent(number)
+
+
+            i=0
+            temp_solution = solution
+            index = factors.index(number)
+            split_string_index = split_string.index(all)
+            while i<3:
+                temp_split_string = split_string
+                comma_difference = set_commas - get_number_of_decimals(temp_solution)
+                if comma_difference < 0:
+                    break
+
+                new_number = get_random_number(minimum, maximum, comma_difference)
+
+                
+
+                temp_split_string[split_string_index] = add_summand(new_number)
+                new_string = "\xb7".join(temp_split_string)
+
+
+
+                temp_solution = get_solution(new_string)
+                if get_number_of_decimals(temp_solution) == set_commas:
+                    factors[index] = new_number
+                    solution = temp_solution
+                    string = new_string
+                    return factors, solution, string
+                i +=1
+    print('ERROR')
+    return factors, solution, string   
 
 
 def get_solution(string):
