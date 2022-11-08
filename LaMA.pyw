@@ -6723,9 +6723,15 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 self.add_items_to_listwidget(listWidget, filtered_items, local=True)
 
             table_lama = _database.table(table)
-            filtered_items = filter_items(
-                self, table_lama, typ, list_mode, filter_string, line_entry
-            )
+            try:
+                filtered_items = filter_items(
+                    self, table_lama, typ, list_mode, filter_string, line_entry
+                )
+            except json.JSONDecodeError:
+                refresh_ddb(self, auto_update=True)
+                filtered_items = filter_items(
+                    self, table_lama, typ, list_mode, filter_string, line_entry
+                )                
 
             if _database_addon != None:
                 table_lama = _database_addon.table(table)
