@@ -97,7 +97,9 @@ def get_random_number(min, max, decimal=0, zero_allowed=False, force_decimals=Fa
     x = D("{:.{prec}f}".format(x, prec=decimal))
 
     if force_decimals==True:
-        test_value = round(x-int(x),decimal)
+        rand_int = random.randint(0,2)
+        new_decimal = decimal - rand_int
+        test_value = round(x-int(x),new_decimal)
         print(f"test value: {test_value}")
         last_integer = str(test_value)[-1]
         print(f"last integer: {str(test_value)[-1]}")
@@ -341,10 +343,13 @@ def calculate_solution(string, set_commas):
     exact_solution = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
     rounded_solution = round(exact_solution, 2)
 
+    
     test_value = rounded_solution - exact_solution
     test_value = round(test_value, 10)
 
-    if test_value !=0 :
+    print(f"exact solution: {exact_solution}")
+    print(f"rounded solution: {rounded_solution}")
+    if test_value != 0 :
         return False
 
     solution = D("{:.{prec}f}".format(exact_solution, prec=set_commas)).normalize()
@@ -357,16 +362,17 @@ def calculate_solution(string, set_commas):
 
 def check_decimals(string, number, set_commas, factors):
         # print(string)
-        temp_solution = calculate_solution(string, set_commas)
-        if temp_solution == False:
-            print('EEEEEERRRRRROOOORRR')
+        # temp_solution = calculate_solution(string, set_commas)
+        temp_solution = get_solution(string)
+        # if temp_solution == False:
+        #     print('EEEEEERRRRRROOOORRR')
 
         # print(f"temp solution {temp_solution}")
         # temp_solution = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
         # temp_solution = D("{:.{prec}f}".format(temp_solution, prec=set_commas))
 
         # print(f"setcommas: {set_commas}")
-        # print(temp_solution)
+        print(temp_solution)
 
         # print(f"decimal solution: {get_number_of_decimals(temp_solution)}")
         # print(f"new decimal: {get_number_of_decimals(number)}")
@@ -402,6 +408,12 @@ def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_su
 
         if i == 0:
             force_decimals = True
+        # elif i == 1:
+        #     previous_num = num
+        #     if get_number_of_decimals(previous_num) == set_commas:
+        #         force_decimals = False
+        #     else:
+        #         force_decimals = set_commas-get_number_of_decimals(previous_num)
         else:
             force_decimals = False
             
@@ -494,7 +506,7 @@ def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_su
                     # else: 
                     string += '\xb7' + add_summand(new_number)
         else:
-            # print(string)
+            print(string)
             # print('TYP D')
 
             new_number, factors = check_decimals(string, all, set_commas, factors)

@@ -6735,9 +6735,15 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             if _database_addon != None:
                 table_lama = _database_addon.table(table)
-                filtered_items_addon = filter_items(
-                    self, table_lama, typ, list_mode, filter_string, line_entry
-                )
+                try:
+                    filtered_items_addon = filter_items(
+                        self, table_lama, typ, list_mode, filter_string, line_entry
+                    )
+                except json.JSONDecodeError:
+                    refresh_ddb(self, auto_update=True)
+                    filtered_items_addon = filter_items(
+                        self, table_lama, typ, list_mode, filter_string, line_entry
+                    )  
                 for all in filtered_items_addon:
                     filtered_items.append(all)
 
