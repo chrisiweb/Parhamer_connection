@@ -81,7 +81,7 @@ D = decimal.Decimal
 #     print(_str)
 #     return  
 
-def get_random_number(min, max, decimal=0, zero_allowed=False, force_decimals=False):
+def get_random_number(min, max, decimal=0, zero_allowed=False, force_decimals=False): #
     if not isinstance(zero_allowed, bool):
         zero_allowed = random_switch(zero_allowed)
 
@@ -100,19 +100,17 @@ def get_random_number(min, max, decimal=0, zero_allowed=False, force_decimals=Fa
         rand_int = random.randint(0,2)
         new_decimal = decimal - rand_int
         test_value = round(x-int(x),new_decimal)
-        print(f"test value: {test_value}")
+        # print(f"test value: {test_value}")
         last_integer = str(test_value)[-1]
-        print(f"last integer: {str(test_value)[-1]}")
+        # print(f"last integer: {str(test_value)[-1]}")
 
         if last_integer == "0":
             integer = random.randint(1,9)
             _str = str(test_value)
             _str = _str[:-1] + str(integer)
-            print(_str)
+            # print(_str)
             x = _str
-            # x = 0
-            # while x == 0:
-            #     x = round(random.uniform(min,max),decimal)            
+        
 
     x = D(f'{x}')
 
@@ -347,8 +345,8 @@ def calculate_solution(string, set_commas):
     test_value = rounded_solution - exact_solution
     test_value = round(test_value, 10)
 
-    print(f"exact solution: {exact_solution}")
-    print(f"rounded solution: {rounded_solution}")
+    # print(f"exact solution: {exact_solution}")
+    # print(f"rounded solution: {rounded_solution}")
     if test_value != 0 :
         return False
 
@@ -372,7 +370,7 @@ def check_decimals(string, number, set_commas, factors):
         # temp_solution = D("{:.{prec}f}".format(temp_solution, prec=set_commas))
 
         # print(f"setcommas: {set_commas}")
-        print(temp_solution)
+        # print(temp_solution)
 
         # print(f"decimal solution: {get_number_of_decimals(temp_solution)}")
         # print(f"new decimal: {get_number_of_decimals(number)}")
@@ -401,26 +399,46 @@ def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_su
     set_commas=commas
 
     # print(anzahl_summanden)
+    test_commas = commas
     for i in range(anzahl_summanden):
-
-        if smaller_or_equal == 1: # or i+1 != anzahl_summanden
-            commas = random.randint(0,set_commas)
-
-        if i == 0:
+        # print(f"index: {i} vs {anzahl_summanden}")
+        # if smaller_or_equal == 1 or i+1 != anzahl_summanden:
+        if smaller_or_equal == 1 and i+1 == anzahl_summanden:
+            commas = test_commas
             force_decimals = True
-        # elif i == 1:
-        #     previous_num = num
-        #     if get_number_of_decimals(previous_num) == set_commas:
-        #         force_decimals = False
-        #     else:
-        #         force_decimals = set_commas-get_number_of_decimals(previous_num)
         else:
+            commas = random.randint(0,test_commas)
             force_decimals = False
             
+
+        # force_decimals = False
+        # print(f"test_commas: {test_commas}")
+        # print(commas)
+        # if i == 0:
+        #     force_decimals = True
+        # # elif i == 1:
+        # #     previous_num = num
+        # #     if get_number_of_decimals(previous_num) == set_commas:
+        # #         force_decimals = False
+        # #     else:
+        # #         force_decimals = set_commas-get_number_of_decimals(previous_num)
+        # else:
+        #     force_decimals = False
+        #######
+        #     
         num = get_random_number(minimum, maximum, commas, zero_allowed=25, force_decimals=force_decimals)
         factors.append(num)
+        
+        if test_commas !=0:
+            test_commas = test_commas - commas
+        
+        if test_commas <0:
+            test_commas = 0
+        
+    #     print(f"test_commas: {test_commas}")
 
-    print(f"factors: {factors}")
+
+    # print(f"factors: {factors}")
 
     # return [[],0,""] 
     # for i, number in enumerate(factors):
@@ -506,7 +524,7 @@ def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_su
                     # else: 
                     string += '\xb7' + add_summand(new_number)
         else:
-            print(string)
+            # print(string)
             # print('TYP D')
 
             new_number, factors = check_decimals(string, all, set_commas, factors)
@@ -537,12 +555,13 @@ def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_su
 
             string += add_summand(new_number)
 
-    print(f"factors 2: {factors}")
+    # print(f"factors 2: {factors}")
 
     solution = calculate_solution(string, set_commas)
+    # print(f"solution {solution}")
     if solution == False:
-        print(string)
-        print(factors)
+        # print(string)
+        # print(factors)
         factors, solution, string = repair_decimals(factors, solution, string, set_commas, minimum, maximum)
         # return [[], 0, ""] 
         # raise Exception('Wrong solution - rounding mistake')
@@ -609,13 +628,11 @@ def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_su
 
 def repair_decimals(factors, solution, string, set_commas, minimum, maximum):
     split_string = string.split("\xb7")
-    # print(factors)
-    print('REPAIR')
+
     for all in reversed(split_string):
         if ":" not in all:
             number = D("{}".format(all.replace("(","").replace(")","").replace("+",""))).normalize()
             number = remove_exponent(number)
-
 
             i=0
             temp_solution = solution
@@ -627,8 +644,6 @@ def repair_decimals(factors, solution, string, set_commas, minimum, maximum):
 
                 # new_number = get_random_number(minimum, maximum, set_commas)
             if solution == False:
-                print('NOO')
-
                 new_number = get_random_number(minimum, maximum,0)
                 split_string[split_string_index] = add_summand(new_number)
                 string = "\xb7".join(split_string)
@@ -641,11 +656,13 @@ def repair_decimals(factors, solution, string, set_commas, minimum, maximum):
 
                 return factors, solution, string
 
-            while i<3:
+            while i<5:
                 temp_split_string = split_string
                 comma_difference = set_commas - get_number_of_decimals(temp_solution)
 
+                # print(f"set commas: {set_commas}, temp_solution: {temp_solution}, comma_difference: {comma_difference}")
                 if comma_difference < 0:
+                    # print('comma difference < 0')
                     break
 
                 new_number = get_random_number(minimum, maximum, comma_difference)
@@ -664,12 +681,14 @@ def repair_decimals(factors, solution, string, set_commas, minimum, maximum):
                     string = new_string
                     return factors, solution, string
                 i +=1
-    print('ERROR')
+    # print('ERROR')
     return factors, solution, string   
 
 
 def get_solution(string):
-    return eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
+    value = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
+    value = round(value, 10)
+    return value
 
 
 
