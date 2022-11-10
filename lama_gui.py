@@ -1080,6 +1080,11 @@ def setup_stackSage(self):
 
 
     self.widgetName = QtWidgets.QWidget(self.widget_SageMenu)
+    if self.chosen_program == 'lama' and self.dict_titlepage['hide_all'] == False:
+        self.widgetName.hide()
+    elif self.chosen_program == 'cria' and self.dict_titlepage_cria['hide_all'] == False:
+        self.widgetName.hide()
+        
     self.horizontalLayout_widgetName = create_new_horizontallayout(self.widgetName)
     self.horizontalLayout_widgetName.setContentsMargins(0,0,0,0)
 
@@ -1113,6 +1118,7 @@ def setup_stackSage(self):
     self.pushButtonName = create_new_button(self.widgetName, "", self.pushButtonName_clicked, icon="align-left.svg")
     self.pushButtonName_current_index = 0
     self.horizontalLayout_widgetName.addWidget(self.pushButtonName)
+    
 
     self.checkBoxName.stateChanged.connect(lambda: self.checkbox_enable_disable_widget(self.checkBoxName, self.labelName))
     self.checkBoxName.stateChanged.connect(lambda: self.checkbox_enable_disable_widget(self.checkBoxName, self.pushButtonName))

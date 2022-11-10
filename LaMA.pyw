@@ -1349,6 +1349,10 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
             self.cb_af_rf.show()
             self.cb_af_ta.show()
 
+            if self.dict_titlepage_cria['hide_all']==False:
+                self.widgetName.hide()
+            else:
+                self.widgetName.show()
             # self.comboBox_at_fb.setItemText(0, _translate("MainWindow", "Aufgabenrückmeldung", None))
             # self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Allgemeine Rückmeldung", None))
             # self.comboBox_at_fb.removeItem(2)
@@ -1417,7 +1421,10 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
                     "MainWindow", "Anzahl der Aufgaben: 0 (Typ1: 0 / Typ2: 0)", None
                 )
             )
-
+            if self.dict_titlepage['hide_all']==False:
+                self.widgetName.hide()
+            else:
+                self.widgetName.show()
             # self.groupBox_ausgew_gk_cr.setTitle("Ausgewählte Grundkompetenzen")
             self.update_gui("widgets_search")
             self.combobox_beurteilung.insertItem(1,"Beurteilungsraster")
@@ -5160,6 +5167,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.ui.setupUi(self.Dialog, dict_titlepage)
         # self.Dialog.show()
         self.Dialog.exec()
+
+
+        if dict_titlepage['hide_all'] == True:
+            self.widgetName.show()
+        else:
+            self.widgetName.hide()
 
         if self.chosen_program == "lama":
             self.dict_titlepage = dict_titlepage

@@ -142,8 +142,19 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
                         + self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
                     )
 
-        titlepage = f"\\subsection{{{subsection} \\hfill {klasse} \\hfill {datum_kurz}}}"
+        if self.checkBoxName.isChecked():
+            name = "\\footnotesize Name: \\rule{8cm}{0.3pt}"
+            if self.pushButtonName_current_index == 1:
+                name = f"\\begin{{center}}{name}\end{{center}}"
+            elif self.pushButtonName_current_index == 2:
+                name = f"\\begin{{flushright}}{name}\end{{flushright}}"
+            name = name + "\n\n"
+        else:
+            name = ""
 
+        titlepage = f"{name}\\subsection{{{subsection} \\hfill {klasse} \\hfill {datum_kurz}}}"
+
+        print(titlepage)
         # if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "br":
 
         #     beurteilungsraster = (
