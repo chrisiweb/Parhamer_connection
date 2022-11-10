@@ -6258,11 +6258,23 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.listWidget_fb.setEnabled(status)
 
     @report_exceptions
-    def checkBox_date_changed(self):
-        if self.checkBox_date.isChecked():
-            self.dateEdit.setEnabled(True)
+    def checkbox_enable_disable_widget(self, checkbox, widget):
+        if checkbox.isChecked():
+            widget.setEnabled(True)
         else:
-            self.dateEdit.setEnabled(False)
+            widget.setEnabled(False)
+
+    def pushButtonName_clicked(self):
+        if self.pushButtonName_current_index==2:
+            index = 0
+        else:
+            index = self.pushButtonName_current_index+1
+        icon_list = ["align-left.svg", "align-center.svg", "align-right.svg"]
+        self.pushButtonName.setIcon(QIcon(get_icon_path(icon_list[index])))
+
+
+        self.pushButtonName_current_index = index
+
 
     def comboBox_at_fb_cria_changed(self):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))

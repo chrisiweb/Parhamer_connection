@@ -1038,13 +1038,6 @@ def setup_stackSage(self):
     self.widget_datum.setObjectName("widget_datum")
     self.horizontalLayout_frameDatum = create_new_horizontallayout(self.widget_datum)
     self.horizontalLayout_frameDatum.setContentsMargins(0,0,0,0)
-    
-    self.labelDate = create_new_label(self.widget_datum,"")
-    self.labelDate.setPixmap(QtGui.QPixmap(get_icon_path("calendar.svg")))
-    # self.label_lamaLogo.setFixedHeight(30)
-    self.labelDate.setFixedSize(QtCore.QSize(15,15))
-    self.labelDate.setScaledContents(True)
-    self.horizontalLayout_frameDatum.addWidget(self.labelDate)
 
     self.checkBox_date = create_new_checkbox(self.widget_datum, " ", checked = True)
     self.checkBox_date.setStyleSheet(f"""
@@ -1063,18 +1056,68 @@ def setup_stackSage(self):
                 width: 35px;
             }}""")
     self.horizontalLayout_frameDatum.addWidget(self.checkBox_date)
-    self.checkBox_date.stateChanged.connect(lambda: self.checkBox_date_changed())
     self.checkBox_date.hide()
 
 
+    self.labelDate = create_new_label(self.widget_datum,"")
+    self.labelDate.setPixmap(QtGui.QPixmap(get_icon_path("calendar.svg")))
+    # self.label_lamaLogo.setFixedHeight(30)
+    self.labelDate.setFixedSize(QtCore.QSize(15,15))
+    self.labelDate.setScaledContents(True)
+    self.horizontalLayout_frameDatum.addWidget(self.labelDate)
+
+    
     self.dateEdit = QtWidgets.QDateEdit(self.widget_datum)
     self.dateEdit.setCalendarPopup(True)
     self.dateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
     self.dateEdit.setObjectName("dateEdit")
     self.horizontalLayout_frameDatum.addWidget(self.dateEdit)
 
+    self.checkBox_date.stateChanged.connect(lambda: self.checkbox_enable_disable_widget(self.checkBox_date, self.dateEdit))
+
+
     self.gridLayout_SageMenu.addWidget(self.widget_datum, 1,0,1,1, QtCore.Qt.AlignLeft)
 
+
+    self.widgetName = QtWidgets.QWidget(self.widget_SageMenu)
+    self.horizontalLayout_widgetName = create_new_horizontallayout(self.widgetName)
+    self.horizontalLayout_widgetName.setContentsMargins(0,0,0,0)
+
+    self.checkBoxName = create_new_checkbox(self.widgetName, " ", checked = True)
+    self.checkBoxName.setStyleSheet(f"""
+            QCheckBox {{
+                spacing: -5px;
+                padding-top: 2px;
+            }}
+
+            QCheckBox::indicator:unchecked {{ 
+                image: url({get_icon_path("square.svg")});
+                width: 35px;
+            }}
+
+            QCheckBox::indicator:checked {{ 
+                image: url({get_icon_path("check-square.svg")});
+                width: 35px;
+            }}""")
+    self.horizontalLayout_widgetName.addWidget(self.checkBoxName)
+
+
+    self.labelName = create_new_label(self.widgetName,"")
+    self.labelName.setToolTip("Namensfeld anzeigen")
+    self.labelName.setPixmap(QtGui.QPixmap(get_icon_path("pen-tool.svg")))
+    self.labelName.setFixedSize(QtCore.QSize(15,15))
+    self.labelName.setScaledContents(True)
+    self.horizontalLayout_widgetName.addWidget(self.labelName)    
+
+
+    self.pushButtonName = create_new_button(self.widgetName, "", self.pushButtonName_clicked, icon="align-left.svg")
+    self.pushButtonName_current_index = 0
+    self.horizontalLayout_widgetName.addWidget(self.pushButtonName)
+
+    self.checkBoxName.stateChanged.connect(lambda: self.checkbox_enable_disable_widget(self.checkBoxName, self.labelName))
+    self.checkBoxName.stateChanged.connect(lambda: self.checkbox_enable_disable_widget(self.checkBoxName, self.pushButtonName))
+
+    self.gridLayout_SageMenu.addWidget(self.widgetName, 2,0,1,1, QtCore.Qt.AlignLeft)
 
     self.groupBox_klasse_sage = QtWidgets.QGroupBox(self.widget_SageMenu)
     self.groupBox_klasse_sage.setObjectName("groupBox_klasse_sage")
