@@ -2816,6 +2816,31 @@ def setup_stackWizard(self):
     self.groupBox_ergebnis_wizard.hide()
 
 
+    #### Binomische Formeln ###
+
+    # self.groupbox_binoms_combobox_mode = create_new_combobox(self.groupBox_zahlenbereich_wizard)
+    # self.gridLayout_zahlenbereich_wizard.addWidget(self.groupbox_binoms_types, 0,3, 1,1)
+
+    # add_new_option(self.groupbox_binoms_combobox_mode, 0, "Zahl +")
+
+
+    self.groupbox_binoms_types = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Typen")
+    self.vertical_binoms_types = create_new_verticallayout(self.groupbox_binoms_types)
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.groupbox_binoms_types, 0,1, 1,1)
+
+    self.cb_binoms_1 = create_new_checkbox(self.groupbox_binoms_types, "(a+b)²", checked=True)
+    self.vertical_binoms_types.addWidget(self.cb_binoms_1)
+
+    self.cb_binoms_2 = create_new_checkbox(self.groupbox_binoms_types, "(a-b)²", checked=True)
+    self.vertical_binoms_types.addWidget(self.cb_binoms_2)
+
+    self.cb_binoms_3 = create_new_checkbox(self.groupbox_binoms_types, "(a+b)(a-b)", checked=True)
+    self.vertical_binoms_types.addWidget(self.cb_binoms_3)
+    self.groupbox_binoms_types.hide()
+
+    ####################################################
+    ######################################################
+    #######################################################
 
     self.widget_buttons_create_new_examples = QtWidgets.QWidget(self.groupBox_setting_wizard)
     self.verticalLayout_setting_wizard.addWidget(self.widget_buttons_create_new_examples)

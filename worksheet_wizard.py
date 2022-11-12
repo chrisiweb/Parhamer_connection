@@ -68,6 +68,12 @@ dict_widgets_wizard = {
         'self.widgetZahlenbereich_anzahl',
         'self.checkbox_allow_brackets_wizard',        
     ],
+    'Binomische Formeln': [
+        'self.widget_zahlenbereich_minimum',
+        'self.widget_zahlenbereich_maximum',
+        'self.groupbox_binomische_formeln_types',
+
+    ],
 }   
 
 themen_worksheet_wizard = list(dict_widgets_wizard.keys())
