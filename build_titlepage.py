@@ -61,12 +61,22 @@ def check_if_hide_all_exists(dict_titlepage):
 
 
 def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
-    datum_kurz, datum = get_datum(self)
+    if self.checkBox_date.isChecked():
+        datum_kurz, datum = get_datum(self)
+    else:
+        datum_kurz = ""
+        datum = ""
+
     dict_titlepage = check_if_hide_all_exists(dict_titlepage)
 
     pkt_typ1 = self.get_punkteverteilung()[1]
     pkt_typ2 = self.get_punkteverteilung()[2]
 
+
+    if is_empty(self.dict_all_infos_for_file["data_gesamt"]["Klasse"]):
+        klasse = ""
+    else:
+        klasse = self.dict_all_infos_for_file["data_gesamt"]["Klasse"]
 
     if (
         self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
@@ -78,10 +88,7 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
         else:
             gruppe_name = ""
 
-        if is_empty(self.dict_all_infos_for_file["data_gesamt"]["Klasse"]):
-            klasse = ""
-        else:
-            klasse = self.dict_all_infos_for_file["data_gesamt"]["Klasse"]
+
 
         if self.dict_all_infos_for_file["data_gesamt"]["#"]==0:
             titlepage = (
@@ -98,8 +105,8 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
 
     elif self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Übungsblatt":
         titlepage = "Übungsblatt"
-        if self.lineEdit_klasse.text().strip() != "":
-            titlepage = titlepage + " -- {}".format(self.lineEdit_klasse.text())
+        if self.lineEdit_klasse_sage.text().strip() != "":
+            titlepage = titlepage + " -- {}".format(self.lineEdit_klasse_sage.text())
 
         titlepage = "\\subsection{{{0}}}".format(titlepage)
 
@@ -135,8 +142,19 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
                         + self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
                     )
 
-        titlepage = "\\subsection{{{0} \\hfill {1}}}".format(subsection, datum_kurz)
+        if self.checkBoxName.isChecked():
+            name = "\\footnotesize Name: \\rule{8cm}{0.3pt}"
+            if self.pushButtonName_current_index == 1:
+                name = f"\\begin{{center}}{name}\end{{center}}"
+            elif self.pushButtonName_current_index == 2:
+                name = f"\\begin{{flushright}}{name}\end{{flushright}}"
+            name = name + "\n\n"
+        else:
+            name = ""
 
+        titlepage = f"{name}\\subsection{{{subsection} \\hfill {klasse} \\hfill {datum_kurz}}}"
+
+        print(titlepage)
         # if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "br":
 
         #     beurteilungsraster = (
@@ -254,12 +272,56 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
             unterschrift = "\\vspace{1cm}\n\n"
 
         if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "br":
-            beurteilungsraster = (
-                "\large\\beurteilung{{0.875}}{{0.75}}{{0.625}}{{1/2}}{{ % Prozentschluessel\n"
-                "T1={{{0}}}, % Punkte im Teil 1\n"
-                "T2={{{1}}}, % Punkte im Teil 2\n"
-                "}}\n\n".format(pkt_typ1, pkt_typ2)
-            )
+            if self.combobox_notenschluessel_typ.currentIndex() == 0:
+                notenschluessel = self.dict_all_infos_for_file["data_gesamt"][
+                    "Notenschluessel"
+                ]
+
+                if self.cb_ns_halbe_pkt.isChecked():
+                    zusatz = "[1/2]"
+                else:
+                    zusatz = ""
+
+
+                gut = notenschluessel[0] / 100
+                befriedigend = notenschluessel[1] / 100
+                genuegend = notenschluessel[2] / 100
+                nichtgenuegend = notenschluessel[3] / 100
+                
+                beurteilungsraster = (
+                    f"\large\\beurteilung{zusatz}{{{gut}}}{{{befriedigend}}}{{{genuegend}}}{{{nichtgenuegend}}}{{ % Prozentschluessel\n"
+                    f"T1={{{pkt_typ1}}}, % Punkte im Teil 1\n"
+                    f"T2={{{pkt_typ2}}}, % Punkte im Teil 2\n}}\n\n"
+                )
+
+
+            elif self.combobox_notenschluessel_typ.currentIndex() == 1:
+                notenschluessel = self.dict_all_infos_for_file["data_gesamt"][
+                    "Notenschluessel_individual"
+                ]
+                sg_lower = notenschluessel[0]
+                gu_upper = notenschluessel[1]
+                gu_lower = notenschluessel[2]
+                b_upper = notenschluessel[3]
+                b_lower = notenschluessel[4]
+                ge_upper = notenschluessel[5]
+                ge_lower = notenschluessel[6]
+
+                beurteilungsraster = (
+                    f"\large\individualbeurteilung{{{sg_lower}}}{{{gu_upper}}}{{{gu_lower}}}{{{b_upper}}}{{{b_lower}}}{{{ge_upper}}}{{{ge_lower}}}{{ % Prozentschluessel\n"
+                    f"T1={{{pkt_typ1}}}, % Punkte im Teil 1\n"
+                    f"T2={{{pkt_typ2}}}, % Punkte im Teil 2\n}}\n\n"
+                )              
+
+                # with open(filename_vorschau, "a", encoding="utf8") as vorschau:
+                #     vorschau.write(
+                #         f"\n\n\\null\individualnotenschluessel{zusatz}{{{sg_lower}}}{{{gu_upper}}}{{{gu_lower}}}{{{b_upper}}}{{{b_lower}}}{{{ge_upper}}}{{{ge_lower}}}"
+                #     )
+
+
+
+
+
 
         else:
             beurteilungsraster = ""

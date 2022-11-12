@@ -116,26 +116,36 @@ def get_solution(string):
 def get_random_fraction(min, max):
     nominator = get_random_number(min, max-1)
     denominator = get_random_number(nominator+1, max)
+    print(f"nominator {nominator}")
+    print(f"denominator: {denominator}")
 
     return Fraction("{0}/{1}".format(nominator, denominator))
 
 
 ## binomische Formel
-init_printing()
+# init_printing()
 variable_1 = "a"
 variable_2 = "b"
 a, b = symbols("{} {}".format(variable_1, variable_2))
 
 e = (3*a-1/2*b)**2
 
-coef_1 = get_random_number(1,10)
-coef_2 = get_random_number(1,10)
+# coef_1 = get_random_number(1,10)
+# coef_2 = get_random_number(1,10)
+coef_1 = get_random_fraction(1,10)
+coef_2 = get_random_fraction(1,10)
+print(coef_1)
+print(coef_2)
+
 exponent = 2
 binome = ['({0}*a+{1}*b)**{2}'.format(coef_1,coef_2,exponent), '({0}*a-{1}*b)**{2}'.format(coef_1,coef_2,exponent), '({0}*a+{1}*b)*({0}*a-{1}*b)'.format(coef_1,coef_2)]
 
-binom = eval(random.choice(binome))
 
-# print(binom)
+random_choice = random.choice(binome)
+print(f"choice: {random_choice}")
+binom = eval(random_choice)
+
+print(f"binom: {binom}")
 fraction = get_random_fraction(1,10)
 
 # print(e)

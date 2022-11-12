@@ -19,6 +19,8 @@ from create_new_widgets import (
     )
 from predefined_size_policy import SizePolicy_fixed_height, SizePolicy_fixed, SizePolicy_minimum, SizePolicy_minimum_fixed, SizePolicy_maximum_height, SizePolicy_maximum_width, SizePolicy_minimum_height, SizePolicy_expanding
 from config import *
+from config_start import lama_notenschluessel_file
+from json import load
 from functools import partial
 from create_pdf import prepare_tex_for_pdf
 from standard_dialog_windows import warning_window
@@ -681,7 +683,7 @@ def setup_stackSearch(self):
     self.horizontalLayout_advanced_search.setContentsMargins(0,0,0,0)
 
 
-    self.entry_suchbegriffe = create_new_lineedit(self.frame_advanced_search, "entry_suchbegriffe")
+    self.entry_suchbegriffe = create_new_lineedit(self.frame_advanced_search, ObjectName="entry_suchbegriffe")
     self.horizontalLayout_advanced_search.addWidget(self.entry_suchbegriffe)
 
     self.filter_search = QtWidgets.QPushButton(self.frame_advanced_search)
@@ -981,7 +983,10 @@ def setup_stackSage(self):
 
     try:
         if self.dict_titlepage['hide_all'] == True:
-            self.combobox_beurteilung.removeItem(self.combobox_beurteilung.findText("Beurteilungsraster"))
+            self.combobox_beurteilung.model().item(1).setEnabled(False)
+            self.combobox_beurteilung.model().item(1).setForeground(QtGui.QColor('gray'))
+            self.combobox_beurteilung.setItemText(1, "Beurteilungsraster (Titelblatt deaktiviert)")
+            # self.combobox_beurteilung.removeItem(self.combobox_beurteilung.findText("Beurteilungsraster"))
     except KeyError:
         pass
 
@@ -1033,7 +1038,27 @@ def setup_stackSage(self):
     self.widget_datum.setObjectName("widget_datum")
     self.horizontalLayout_frameDatum = create_new_horizontallayout(self.widget_datum)
     self.horizontalLayout_frameDatum.setContentsMargins(0,0,0,0)
-    
+
+    self.checkBox_date = create_new_checkbox(self.widget_datum, " ", checked = True)
+    self.checkBox_date.setStyleSheet(f"""
+            QCheckBox {{
+                spacing: -5px;
+                padding-top: 2px;
+            }}
+
+            QCheckBox::indicator:unchecked {{ 
+                image: url({get_icon_path("square.svg")});
+                width: 35px;
+            }}
+
+            QCheckBox::indicator:checked {{ 
+                image: url({get_icon_path("check-square.svg")});
+                width: 35px;
+            }}""")
+    self.horizontalLayout_frameDatum.addWidget(self.checkBox_date)
+    self.checkBox_date.hide()
+
+
     self.labelDate = create_new_label(self.widget_datum,"")
     self.labelDate.setPixmap(QtGui.QPixmap(get_icon_path("calendar.svg")))
     # self.label_lamaLogo.setFixedHeight(30)
@@ -1041,14 +1066,64 @@ def setup_stackSage(self):
     self.labelDate.setScaledContents(True)
     self.horizontalLayout_frameDatum.addWidget(self.labelDate)
 
+    
     self.dateEdit = QtWidgets.QDateEdit(self.widget_datum)
     self.dateEdit.setCalendarPopup(True)
     self.dateEdit.setDateTime(QtCore.QDateTime.currentDateTime())
     self.dateEdit.setObjectName("dateEdit")
     self.horizontalLayout_frameDatum.addWidget(self.dateEdit)
 
+    self.checkBox_date.stateChanged.connect(lambda: self.checkbox_enable_disable_widget(self.checkBox_date, self.dateEdit))
+
+
     self.gridLayout_SageMenu.addWidget(self.widget_datum, 1,0,1,1, QtCore.Qt.AlignLeft)
 
+
+    self.widgetName = QtWidgets.QWidget(self.widget_SageMenu)
+    if self.chosen_program == 'lama' and self.dict_titlepage['hide_all'] == False:
+        self.widgetName.hide()
+    elif self.chosen_program == 'cria' and self.dict_titlepage_cria['hide_all'] == False:
+        self.widgetName.hide()
+        
+    self.horizontalLayout_widgetName = create_new_horizontallayout(self.widgetName)
+    self.horizontalLayout_widgetName.setContentsMargins(0,0,0,0)
+
+    self.checkBoxName = create_new_checkbox(self.widgetName, " ", checked = True)
+    self.checkBoxName.setStyleSheet(f"""
+            QCheckBox {{
+                spacing: -5px;
+                padding-top: 2px;
+            }}
+
+            QCheckBox::indicator:unchecked {{ 
+                image: url({get_icon_path("square.svg")});
+                width: 35px;
+            }}
+
+            QCheckBox::indicator:checked {{ 
+                image: url({get_icon_path("check-square.svg")});
+                width: 35px;
+            }}""")
+    self.horizontalLayout_widgetName.addWidget(self.checkBoxName)
+
+
+    self.labelName = create_new_label(self.widgetName,"")
+    self.labelName.setToolTip("Namensfeld anzeigen")
+    self.labelName.setPixmap(QtGui.QPixmap(get_icon_path("pen-tool.svg")))
+    self.labelName.setFixedSize(QtCore.QSize(15,15))
+    self.labelName.setScaledContents(True)
+    self.horizontalLayout_widgetName.addWidget(self.labelName)    
+
+
+    self.pushButtonName = create_new_button(self.widgetName, "", self.pushButtonName_clicked, icon="align-left.svg")
+    self.pushButtonName_current_index = 0
+    self.horizontalLayout_widgetName.addWidget(self.pushButtonName)
+    
+
+    self.checkBoxName.stateChanged.connect(lambda: self.checkbox_enable_disable_widget(self.checkBoxName, self.labelName))
+    self.checkBoxName.stateChanged.connect(lambda: self.checkbox_enable_disable_widget(self.checkBoxName, self.pushButtonName))
+
+    self.gridLayout_SageMenu.addWidget(self.widgetName, 2,0,1,1, QtCore.Qt.AlignLeft)
 
     self.groupBox_klasse_sage = QtWidgets.QGroupBox(self.widget_SageMenu)
     self.groupBox_klasse_sage.setObjectName("groupBox_klasse_sage")
@@ -1149,50 +1224,141 @@ def setup_stackSage(self):
         befriedigend = 64
         genuegend = 50
 
+    self.combobox_notenschluessel_typ = create_new_combobox(self.groupBox_notenschl)
+    add_new_option(self.combobox_notenschluessel_typ, 0, "Standard")
+    add_new_option(self.combobox_notenschluessel_typ, 1, "Individuell")
+    self.gridLayout_6.addWidget(self.combobox_notenschluessel_typ, 0,0,1,1)
+    self.combobox_notenschluessel_typ.currentIndexChanged.connect(self.notenschluessel_changed)
+
+    self.combobox_notenschluessel_saved = create_new_combobox(self.groupBox_notenschl)
+    self.gridLayout_6.addWidget(self.combobox_notenschluessel_saved, 0,1,1,4)
+    
+    try:
+        with open(lama_notenschluessel_file, "r", encoding="utf8") as f:
+            dict_notenschluessel = load(f)
+    except FileNotFoundError:
+        dict_notenschluessel = {}
+
+    add_new_option(self.combobox_notenschluessel_saved, 0, "")
+
+    index = 1
+    for all in dict_notenschluessel.keys():
+        add_new_option(self.combobox_notenschluessel_saved, index, all)
+        index +=1 
+    
+    self.combobox_notenschluessel_saved.hide()
+
     self.label_sg = create_new_label(self.groupBox_notenschl, "Sehr Gut:")
     self.label_sg.setSizePolicy(SizePolicy_fixed)
-    self.gridLayout_6.addWidget(self.label_sg, 0, 0, 1, 1)
+    self.gridLayout_6.addWidget(self.label_sg, 1, 0, 1, 1)
     self.spinBox_2 = create_new_spinbox(self.groupBox_notenschl, sehr_gut)
     self.spinBox_2.setSizePolicy(SizePolicy_fixed)
     self.spinBox_2.valueChanged.connect(self.update_punkte)
-    self.gridLayout_6.addWidget(self.spinBox_2, 0, 1, 1, 1)
+    self.gridLayout_6.addWidget(self.spinBox_2, 1, 1, 1, 1)
     self.label_sg_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
-    self.gridLayout_6.addWidget(self.label_sg_pkt, 0, 2, 1, 1)
+    self.gridLayout_6.addWidget(self.label_sg_pkt, 1, 2, 1, 1)
+
+    regexp = QtCore.QRegExp("[0-9,;/\.]*")
+    validator = QtGui.QRegExpValidator(regexp)
+
+    # QRegExp, QRegExpValidator, .setValidator, 
+    # https://social.msdn.microsoft.com/forums/en-US/a1e87254-b6c2-491c-b18b-e092611b5f9d/regular-expression-for-comma-separated-numbers?forum=aspgettingstarted
+
+    self.lineedit_sg_upper_limit = create_new_lineedit(self.groupBox_notenschl)
+    self.gridLayout_6.addWidget(self.lineedit_sg_upper_limit, 1, 1, 1, 1)
+    self.lineedit_sg_upper_limit.setEnabled(False)
+    self.lineedit_sg_upper_limit.setStyleSheet("background-color: lightGray")
+    self.lineedit_sg_upper_limit.hide()
+    self.lineedit_sg_lower_limit = create_new_lineedit(self.groupBox_notenschl)
+    self.gridLayout_6.addWidget(self.lineedit_sg_lower_limit, 1, 3, 1, 1)
+    self.lineedit_sg_lower_limit.setValidator(validator)
+    self.lineedit_sg_lower_limit.hide()
 
     self.label_g = create_new_label(self.groupBox_notenschl, "Gut:")
     self.label_g.setSizePolicy(SizePolicy_fixed)
-    self.gridLayout_6.addWidget(self.label_g, 0, 3, 1, 1)
+    self.gridLayout_6.addWidget(self.label_g, 1, 4, 1, 1)
     self.spinBox_3 = create_new_spinbox(self.groupBox_notenschl, gut)
     self.spinBox_3.setSizePolicy(SizePolicy_fixed)
     self.spinBox_3.valueChanged.connect(self.update_punkte)
-    self.gridLayout_6.addWidget(self.spinBox_3, 0, 4, 1, 1)
+    self.gridLayout_6.addWidget(self.spinBox_3, 1, 5, 1, 1)
     self.label_g_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
-    self.gridLayout_6.addWidget(self.label_g_pkt, 0, 5, 1, 1)
+    self.gridLayout_6.addWidget(self.label_g_pkt, 1, 6, 1, 1)
+
+    self.lineedit_g_upper_limit = create_new_lineedit(self.groupBox_notenschl)
+    self.gridLayout_6.addWidget(self.lineedit_g_upper_limit, 1, 5, 1, 1)
+    self.lineedit_g_upper_limit.setValidator(validator)
+    self.lineedit_g_upper_limit.hide()
+    self.lineedit_g_lower_limit = create_new_lineedit(self.groupBox_notenschl)
+    self.gridLayout_6.addWidget(self.lineedit_g_lower_limit, 1, 7, 1, 1)
+    self.lineedit_g_lower_limit.setValidator(validator)
+    self.lineedit_g_lower_limit.hide()
+
 
     self.label_b = create_new_label(self.groupBox_notenschl, "Befriedigend:")
     self.label_b.setSizePolicy(SizePolicy_fixed)
-    self.gridLayout_6.addWidget(self.label_b, 1, 0, 1, 1)
+    self.gridLayout_6.addWidget(self.label_b, 2, 0, 1, 1)
     self.spinBox_4 = create_new_spinbox(self.groupBox_notenschl, befriedigend)
     self.spinBox_4.setSizePolicy(SizePolicy_fixed)
     self.spinBox_4.valueChanged.connect(self.update_punkte)
-    self.gridLayout_6.addWidget(self.spinBox_4, 1, 1, 1, 1)
+    self.gridLayout_6.addWidget(self.spinBox_4, 2, 1, 1, 1)
     self.label_b_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
-    self.gridLayout_6.addWidget(self.label_b_pkt, 1, 2, 1, 1)
+    self.gridLayout_6.addWidget(self.label_b_pkt, 2, 2, 1, 1)
+
+    self.lineedit_b_upper_limit = create_new_lineedit(self.groupBox_notenschl)
+    self.gridLayout_6.addWidget(self.lineedit_b_upper_limit, 2, 1, 1, 1)
+    self.lineedit_b_upper_limit.setValidator(validator)
+    self.lineedit_b_upper_limit.hide()
+    self.lineedit_b_lower_limit = create_new_lineedit(self.groupBox_notenschl)
+    self.gridLayout_6.addWidget(self.lineedit_b_lower_limit, 2, 3, 1, 1)
+    self.lineedit_b_lower_limit.setValidator(validator)
+    self.lineedit_b_lower_limit.hide()
+
 
     self.label_g_2 = create_new_label(self.groupBox_notenschl, "Genügend:")
     self.label_g_2.setSizePolicy(SizePolicy_fixed)
-    self.gridLayout_6.addWidget(self.label_g_2, 1, 3, 1, 1)
+    self.gridLayout_6.addWidget(self.label_g_2, 2, 4, 1, 1)
     self.spinBox_5 = create_new_spinbox(self.groupBox_notenschl, genuegend)
     self.spinBox_5.setSizePolicy(SizePolicy_fixed)
     self.spinBox_5.valueChanged.connect(self.update_punkte)
-    self.gridLayout_6.addWidget(self.spinBox_5, 1, 4, 1, 1)
+    self.gridLayout_6.addWidget(self.spinBox_5, 2, 5, 1, 1)
     self.label_g_2_pkt = create_new_label(self.groupBox_notenschl, "% (ab 0)")
-    self.gridLayout_6.addWidget(self.label_g_2_pkt, 1, 5, 1, 1)
+    self.gridLayout_6.addWidget(self.label_g_2_pkt, 2, 6, 1, 1)
+
+
+    self.lineedit_g2_upper_limit = create_new_lineedit(self.groupBox_notenschl)
+    self.gridLayout_6.addWidget(self.lineedit_g2_upper_limit, 2, 5, 1, 1)
+    self.lineedit_g2_upper_limit.setValidator(validator)
+    self.lineedit_g2_upper_limit.hide()
+    self.lineedit_g2_lower_limit = create_new_lineedit(self.groupBox_notenschl)
+    self.gridLayout_6.addWidget(self.lineedit_g2_lower_limit, 2, 7, 1, 1)
+    self.lineedit_g2_lower_limit.setValidator(validator)
+    self.lineedit_g2_lower_limit.hide()
+
+    try:
+        if self.chosen_program == 'cria':
+            key_notenschluessel_individual = 'notenschluessel_cria_individual'
+        else:
+            key_notenschluessel_individual = 'notenschluessel_individual'
+
+        list_ = self.lama_settings[key_notenschluessel_individual]
+
+        self.lineedit_sg_lower_limit.setText(list_[0])
+        self.lineedit_g_upper_limit.setText(list_[1])
+        self.lineedit_g_lower_limit.setText(list_[2])
+        self.lineedit_b_upper_limit.setText(list_[3])
+        self.lineedit_b_lower_limit.setText(list_[4])
+        self.lineedit_g2_upper_limit.setText(list_[5])
+        self.lineedit_g2_lower_limit.setText(list_[6])
+    except KeyError:
+        pass
+
+    self.combobox_notenschluessel_saved.currentIndexChanged.connect(self.combobox_notenschluessel_saved_changed)
 
     self.groupBox_notenschl_modus = create_new_groupbox(
         self.groupBox_notenschl, "Anzeige"
     )
-    self.gridLayout_6.addWidget(self.groupBox_notenschl_modus, 0, 6, 2, 1)
+    self.groupBox_notenschl_modus.setSizePolicy(SizePolicy_fixed)
+    self.gridLayout_6.addWidget(self.groupBox_notenschl_modus, 0, 8, 3, 1, QtCore.Qt.AlignRight)
 
     self.verticalLayout_ns_modus = create_new_verticallayout(
         self.groupBox_notenschl_modus
@@ -1237,27 +1403,27 @@ def setup_stackSage(self):
 
     ### Groupbox Beurteilungsraster #####
 
-    self.groupBox_beurteilungsraster = QtWidgets.QGroupBox(self.groupBox_sage)
-    self.groupBox_beurteilungsraster.setObjectName("groupBox_beurteilungsraster")
-    # self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_beurteilungsraster)
-    # self.gridLayout_6.setObjectName("gridLayout_6")
-    self.verticalLayout_beurteilungsraster = create_new_verticallayout(self.groupBox_beurteilungsraster)
+    # self.groupBox_beurteilungsraster = QtWidgets.QGroupBox(self.groupBox_sage)
+    # self.groupBox_beurteilungsraster.setObjectName("groupBox_beurteilungsraster")
+    # # self.gridLayout_6 = QtWidgets.QGridLayout(self.groupBox_beurteilungsraster)
+    # # self.gridLayout_6.setObjectName("gridLayout_6")
+    # self.verticalLayout_beurteilungsraster = create_new_verticallayout(self.groupBox_beurteilungsraster)
 
-    self.label_typ1_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsraster)
-    self.label_typ1_pkt.setObjectName("label_typ1_pkt")
-    self.verticalLayout_beurteilungsraster.addWidget(self.label_typ1_pkt)
-    # self.gridLayout_6.addWidget(self.label_typ1_pkt, 0, 0, 1, 2)
-    # self.label_typ1_pkt.setText(_translate("MainWindow", "Punkte Typ 1: 0",None))
+    # self.label_typ1_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsraster)
+    # self.label_typ1_pkt.setObjectName("label_typ1_pkt")
+    # self.verticalLayout_beurteilungsraster.addWidget(self.label_typ1_pkt)
+    # # self.gridLayout_6.addWidget(self.label_typ1_pkt, 0, 0, 1, 2)
+    # # self.label_typ1_pkt.setText(_translate("MainWindow", "Punkte Typ 1: 0",None))
 
-    self.label_typ2_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsraster)
-    self.label_typ2_pkt.setObjectName("label_typ2_pkt")
-    self.verticalLayout_beurteilungsraster.addWidget(self.label_typ2_pkt)
-    # self.gridLayout_6.addWidget(self.label_typ2_pkt, 1, 0, 1, 2)
+    # self.label_typ2_pkt = QtWidgets.QLabel(self.groupBox_beurteilungsraster)
+    # self.label_typ2_pkt.setObjectName("label_typ2_pkt")
+    # self.verticalLayout_beurteilungsraster.addWidget(self.label_typ2_pkt)
+    # # self.gridLayout_6.addWidget(self.label_typ2_pkt, 1, 0, 1, 2)
 
-    self.groupBox_beurteilungsraster.setTitle("Beurteilungsraster")
+    # self.groupBox_beurteilungsraster.setTitle("Beurteilungsraster")
 
-    self.gridLayout_5.addWidget(self.groupBox_beurteilungsraster, 2, 0, 1, 2)
-    self.groupBox_beurteilungsraster.hide()
+    # self.gridLayout_5.addWidget(self.groupBox_beurteilungsraster, 2, 0, 1, 2)
+    # self.groupBox_beurteilungsraster.hide()
 
     ### Zusammenfassung d. SA ###
     self.widgetSummarySage = QtWidgets.QWidget(self.groupBox_sage)
@@ -1519,9 +1685,9 @@ def setup_stackCreator(self):
         )
 
         new_verticallayout.addWidget(combobox_kapitel)
-
+        
         dict_klasse = eval("dict_{}".format(klasse))
-        kapitel = list(dict_klasse.keys())[0]
+        kapitel = list(dict_klasse_name.keys())[0]
 
         for unterkapitel in dict_klasse[kapitel]:
             new_checkbox = create_new_checkbox(
@@ -1902,6 +2068,7 @@ def setup_stackCreator(self):
     self.pushButton_save_translation.clicked.connect(lambda: self.button_save_edit_pressed("translation"))
 
 
+
 def setup_stackFeedback(self):
     self.gridLayout_stackFeedback = create_new_gridlayout(self.stackFeedback)
 
@@ -2057,9 +2224,8 @@ def setup_stackFeedback(self):
     )
     self.lineEdit_number_fb_cria.setObjectName("lineEdit_number_fb_cria")
 
-    self.lineEdit_number_fb_cria.textChanged.connect(
-        partial(self.adapt_choosing_list, "feedback")
-    )
+    self.lineEdit_number_fb_cria.textChanged.connect(lambda: self.adapt_choosing_list("feedback"))
+    
     self.verticalLayout_fb_cria.addWidget(self.lineEdit_number_fb_cria)
     self.listWidget_fb_cria = QtWidgets.QListWidget(
         self.groupBox_alle_aufgaben_fb_cria

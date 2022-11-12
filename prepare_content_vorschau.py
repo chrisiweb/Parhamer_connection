@@ -49,13 +49,11 @@ def edit_content_ausgleichspunkte(self, aufgabe, split_content, full_content):
 
 
 def edit_content_hide_show_items(self, aufgabe, split_content, full_content):
-    # print(full_content)
+
     list_content = full_content.split("\\item")
-    # print(list_content)
 
     for i, all in enumerate(list_content):
         if "\\end{aufgabenstellung}" in all:
-            # print(all)
             x, y = all.split("\\end{aufgabenstellung}")
             break
     list_content[i]=x
@@ -64,44 +62,31 @@ def edit_content_hide_show_items(self, aufgabe, split_content, full_content):
     # try:   
 
     for all in self.dict_sage_hide_show_items_chosen[aufgabe]:
-        # print(all)
-        # print(split_content)
         line = split_content[all]
         line = line.replace("ITEM", "").replace("SUBitem", "")
 
-        # print(line)
 
         _list_to_remove = split("{|}", line)
 
-        # print(_list_to_remove)
 
         line_start = None
         for x in _list_to_remove:
             if x.isspace() == False and len(x)!=0:
-                line_start = x.split("[...] GRAFIK [...]")[0].strip()
+                line_start = x.split("\\")[0].strip() #[...] GRAFIK [...]
                 line_start = line_start.replace("\n","").replace("\t","")
                 break
         
         for x in reversed(_list_to_remove):
             if x.isspace() == False and len(x)!=0:
-                line_end = x.split("[...] GRAFIK [...]")[0].strip()
+                line_end = x.split("\\")[0].strip()
                 line_end = line_end.replace("\n","").replace("\t","")
                 break
 
 
-        # print(list_content)
-        # print(f"line_start: {line_start}")
 
-        # for i, all in enumerate(list_content):
-        #     if search("{}".format(line_start), list_content):
-        #         print('yes search')
-        #         print(i)
-        #     else:
-        #         print("NO: {}".format(i))
-
-
+        # index_start=0
         for i, lines in enumerate(list_content):
-            if line_start in lines.replace("\n","").replace("\t",""):
+            if line_start in lines.replace("\n","").replace("\t","").strip():
                 index_start=i
                 break
 
@@ -110,10 +95,6 @@ def edit_content_hide_show_items(self, aufgabe, split_content, full_content):
                 index_end=index_start+i
                 break
 
-        # print(index_start)
-        # print(list_content[index_start])
-        # print(index_end)
-        # print(list_content[index_end])
 
         del list_content[index_start:index_end+1]
     # except UnboundLocalError:
@@ -130,7 +111,6 @@ def edit_content_hide_show_items(self, aufgabe, split_content, full_content):
             
 
     # content = ''.join([("" if "\\end{aufgabenstellung}" in line else "\\item")+ line for line in list_content])
-    # print(content)
 
     return content                        
 

@@ -529,7 +529,12 @@ def prepare_tex_for_pdf(self):
 
     language_index = self.combobox_translation.currentIndex()
 
-    construct_tex_file(filename_teildokument, gesammeltedateien, current_program, solutions, variation, infos, spezielle_suche, language_index)
+    try:
+        search_output_index  = self.lama_settings['search_output']
+    except KeyError:
+        search_output_index = 0
+
+    construct_tex_file(filename_teildokument, gesammeltedateien, current_program, solutions, variation, infos, spezielle_suche, language_index, search_output_index)
 
 
     number_of_files = get_output_size(gesammeltedateien, variation, spezielle_suche, language_index)
@@ -635,7 +640,7 @@ def create_tex(
         return e
 
 
-def construct_tex_file(file_name, gesammeltedateien, current_program, solutions, variation, infos, spezielle_suche, language_index):
+def construct_tex_file(file_name, gesammeltedateien, current_program, solutions, variation, infos, spezielle_suche, language_index, search_output_index):
     with open(file_name, "w", encoding="utf8") as file:
         if current_program == "lama_2":
             bookmark_value = 1
@@ -731,7 +736,10 @@ def construct_tex_file(file_name, gesammeltedateien, current_program, solutions,
             info_box = create_info_box(all)
             file.write(info_box)
             file.write("\n")
-            file.write("\hrulefill")
+            if search_output_index == 0:
+                file.write("\hrulefill")
+            elif search_output_index == 1:
+                file.write("\\newpage")
             file.write("\n\n")
         file.write(tex_end)
 
@@ -859,18 +867,20 @@ def open_pdf_file(folder_name, file_name):
     file_path = os.path.join(folder_name, file_name)
 
     
-
+    print(file_path)
     if sys.platform.startswith("linux"):
+
         file_path = file_path + ".pdf"
-        webbrowser.open(file_path, new=2, autoraise=True)
-        # os.system("xdg-open {0}.pdf".format(file_path))
-        # subprocess.run(
-        #     [
-        #         # "sudo",
-        #         "xdg-open",
-        #         "{0}.pdf".format(file_path),
-        #     ]
-        # )
+
+        # webbrowser.open(file_path, new=2, autoraise=True)
+
+        # os.system("xdg-open {0}".format(file_path))
+        subprocess.run(
+            [
+                "xdg-open",
+                file_path,
+            ]
+        )
     elif sys.platform.startswith("darwin"):
         if os.path.exists(path_pdf_reader) == False:
             if is_empty(path_pdf_reader)== False:
@@ -983,8 +993,8 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
         QApplication.restoreOverrideCursor()
         response = question_window(
             "Es ist ein Fehler beim Erstellen der PDF-Datei aufgetreten. Dadurch konnte die PDF-Datei nicht vollständig erzeugt werden.\n\n"
-            + "Dies kann viele unterschiedliche Ursachen haben (siehe Details).\n"
-            + "Durch das Aktualisieren der Datenbank (F5) können jedoch die meisten dieser Fehler behoben werden.\n"
+            + "Dies kann viele unterschiedliche Ursachen haben (siehe Details).\n\n"
+            + 'Durch das Aktualisieren der Datenbank (F5) oder des srdp-mathematik-Pakets\n(-> Optionen -> Update... -> "srdp-mathematik.sty" aktualisieren)\nkönnen jedoch die meisten dieser Fehler behoben werden.\n\n'
             + "Sollte der Fehler weiterhin bestehen, bitte kontaktieren Sie uns unter lama.helpme@gmail.com",
             "Wollen Sie die fehlerhafte PDF-Datei dennoch anzeigen?",
             "Fehler beim Erstellen der PDF-Datei",

@@ -1,14 +1,13 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-__lastupdate__ = "04/22"
+__lastupdate__ = "11/22"
 
 
 ##################
 
 show_popup = False
 
-from lama_gui import setup_stackWizard
 from start_window import check_if_database_exists
 # from worksheet_wizard import get_all_solution_pixels
 check_if_database_exists()
@@ -27,11 +26,13 @@ from config_start import (
     lama_settings_file,
     database,
     lama_developer_credentials,
+    lama_notenschluessel_file
 )
 # from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QApplication
 
 import sys
+from distutils.spawn import find_executable
 
 # from tinydb import Query
 
@@ -171,8 +172,12 @@ class Ui_MainWindow(object):
                 | QtCore.Qt.WindowTitleHint
                 | QtCore.Qt.WindowCloseButtonHint,
             )
+
+            # screen_resolution = app.desktop().screenGeometry()
+            # screen_width = screen_resolution.width()
+
             self.ui = Ui_Dialog_choose_type()
-            self.ui.setupUi(self.Dialog)
+            self.ui.setupUi(self.Dialog, screen_width, screen_height)
 
             bring_to_front(self.Dialog)
 
@@ -484,6 +489,17 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             | QtCore.Qt.WindowCloseButtonHint,
         )
 
+        if not find_executable('latex'):
+            link = "https://mylama.github.io/lama/downloads.html"
+            critical_window("""<h4>Die PDF-Datei konnte nicht erstellt werden, da keine LaTeX-Distribution auf dem Computer gefunden wurde.</h4>
+
+Bitte öffnen Sie <a href='{0}'>lama.schule/downloads</a> und folgen Sie allen Schritten des Installationsguides.<br><br>
+
+Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@gmail.com""".format(link),
+            titel="Keine LaTeX-Distribution gefunden")
+            return
+
+
         self.ui_erstellen = Ui_Dialog_erstellen()
         self.ui_erstellen.setupUi(
             self.Dialog,
@@ -526,8 +542,9 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
                 for image in self.list_copy_images:
                     copy_included_images(self, image)
 
+
             for index in range(range_limit):
-                single_file_index = self.pushButton_vorschau_pressed(
+                self.pushButton_vorschau_pressed(
                     "schularbeit",
                     index,
                     self.ui_erstellen.spinBox_sw_gruppen.value() * 2,
@@ -536,6 +553,8 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
                     single_file_index,
                     filename_vorschau = filename_vorschau,
                 )
+                if single_file_index != None:
+                    single_file_index += 1
 
             if not is_empty(self.chosen_path_schularbeit_erstellen[0]):
                 if sys.platform.startswith("linux"):
@@ -781,82 +800,82 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             )
             return
 
-        if sys.platform.startswith("linux"):
-            information_window(
-                "Es ist ein neues Update verfügbar.",
-                "Es wird empfohlen die neueste Version von LaMA unter lama.schule/downloads herunterzuladen und damit die alte Version zu ersetzen.",
-                titel="Neue Version verfügbar",
-            )
-            return
-        else:
-            QtWidgets.QApplication.restoreOverrideCursor()
-            ret = question_window(
-                "Es ist eine neue Version von LaMA verfügbar.",
-                "Möchten Sie das neue Update jetzt installieren?",
-                "Neue Version verfügbar",
-            )
-            QtWidgets.QApplication.setOverrideCursor(
-                QtGui.QCursor(QtCore.Qt.WaitCursor)
-            )
+        # if sys.platform.startswith("linux"):
+        #     information_window(
+        #         "Es ist ein neues Update verfügbar.",
+        #         "Es wird empfohlen die neueste Version von LaMA unter lama.schule/downloads herunterzuladen und damit die alte Version zu ersetzen.",
+        #         titel="Neue Version verfügbar",
+        #     )
+        #     return
+        # else:
+        QtWidgets.QApplication.restoreOverrideCursor()
+        ret = question_window(
+            "Es ist eine neue Version von LaMA verfügbar.",
+            "Möchten Sie das neue Update jetzt installieren?",
+            "Neue Version verfügbar",
+        )
+        QtWidgets.QApplication.setOverrideCursor(
+            QtGui.QCursor(QtCore.Qt.WaitCursor)
+        )
 
-            if ret == True:
-                self.lama_settings["popup_off"] = False
-                with open(lama_settings_file, "w+", encoding="utf8") as f:
-                    json.dump(self.lama_settings, f, ensure_ascii=False)
+        if ret == True:
+            self.lama_settings["popup_off"] = False
+            with open(lama_settings_file, "w+", encoding="utf8") as f:
+                json.dump(self.lama_settings, f, ensure_ascii=False)
 
-                if sys.platform.startswith("darwin"):
-                    refresh_ddb(self, auto_update='mac')
-                    opened_file = os.path.basename(sys.argv[0])
-                    name, extension = os.path.splitext(opened_file)
+            if sys.platform.startswith("darwin") or sys.platform.startswith("linux"):
+                refresh_ddb(self, auto_update='mac')
+                opened_file = os.path.basename(sys.argv[0])
+                name, extension = os.path.splitext(opened_file)
 
-                    filename_update = os.path.join(
-                        path_programm,
-                        "_database",
-                        "_config",
-                        "update",
-                        "update_mac",
-                        "update%s" % extension,
+                filename_update = os.path.join(
+                    path_programm,
+                    "_database",
+                    "_config",
+                    "update",
+                    "update_mac",
+                    "update%s" % extension,
+                )
+                try:
+                    if extension == ".py":
+                        os.system("python3 {}".format(filename_update))
+                    else:
+                        os.system("chmod 777 {}".format(filename_update))
+                        os.system(filename_update)
+                    sys.exit(0)
+                except Exception as e:
+                    warning_window(
+                        'Das neue Update von LaMA konnte leider nicht installiert werden! Bitte versuchen Sie es später erneut oder melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler".',
+                        'Fehler:\n"{}"'.format(e),
                     )
-                    try:
-                        if extension == ".py":
-                            os.system("python3 {}".format(filename_update))
-                        else:
-                            os.system("chmod 777 {}".format(filename_update))
-                            os.system(filename_update)
-                        sys.exit(0)
-                    except Exception as e:
-                        warning_window(
-                            'Das neue Update von LaMA konnte leider nicht installiert werden! Bitte versuchen Sie es später erneut oder melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler".',
-                            'Fehler:\n"{}"'.format(e),
-                        )
-                else:
-                    refresh_ddb(self, auto_update=True)
-                    text = "Neue Version von LaMA wird heruntergeladen ..."
-                    path_installer = os.path.join(
-                        path_home, "Downloads", "LaMA_setup.exe"
+            else:
+                refresh_ddb(self, auto_update=True)
+                text = "Neue Version von LaMA wird heruntergeladen ..."
+                path_installer = os.path.join(
+                    path_home, "Downloads", "LaMA_setup.exe"
+                )
+
+                Dialog_checkchanges = QtWidgets.QDialog()
+                ui = Ui_Dialog_processing()
+                ui.setupUi(Dialog_checkchanges, text)
+
+                thread = QtCore.QThread(Dialog_checkchanges)
+                worker = Worker_UpdateLaMA()
+                worker.finished.connect(Dialog_checkchanges.close)
+                worker.moveToThread(thread)
+                thread.started.connect(partial(worker.task, path_installer))
+                thread.start()
+                thread.exit()
+                Dialog_checkchanges.exec()
+
+                if worker.response == False:
+                    critical_window(
+                        "LaMA konnte nicht heruntergeladen werden. Bitte überprüfen Sie die Internetverbindung und versuchen Sie es später erneut."
                     )
-
-                    Dialog_checkchanges = QtWidgets.QDialog()
-                    ui = Ui_Dialog_processing()
-                    ui.setupUi(Dialog_checkchanges, text)
-
-                    thread = QtCore.QThread(Dialog_checkchanges)
-                    worker = Worker_UpdateLaMA()
-                    worker.finished.connect(Dialog_checkchanges.close)
-                    worker.moveToThread(thread)
-                    thread.started.connect(partial(worker.task, path_installer))
-                    thread.start()
-                    thread.exit()
-                    Dialog_checkchanges.exec()
-
-                    if worker.response == False:
-                        critical_window(
-                            "LaMA konnte nicht heruntergeladen werden. Bitte überprüfen Sie die Internetverbindung und versuchen Sie es später erneut."
-                        )
-                        return
-                    elif worker.response == True:
-                        os.startfile('"' + path_installer + '"')
-                        sys.exit(0)
+                    return
+                elif worker.response == True:
+                    os.startfile('"' + path_installer + '"')
+                    sys.exit(0)
         QtWidgets.QApplication.restoreOverrideCursor()
 
 
@@ -961,7 +980,6 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         self, parent, layout, klasse,typ ,checked=False # prevent error decorator
     ):  # , verticalLayout_cr_cria, combobox_kapitel, klasse, spacerItem_unterkapitel_cria
         # layout.removeItem(self.spacerItem_unterkapitel_creator_cria)
-
         if typ == 'search':
             widget_string_kapitel = 'combobox_kapitel_search_cria'
             widget_string_unterkapitel = 'checkbox_unterkapitel'
@@ -1180,10 +1198,35 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         self.spinBox_default_pkt.setValue(1)
         self.combobox_beurteilung.setCurrentIndex(0)
         # self.radioButton_notenschl.setChecked(True)
-        self.spinBox_2.setProperty("value", 91)
-        self.spinBox_3.setProperty("value", 80)
-        self.spinBox_4.setProperty("value", 64)
-        self.spinBox_5.setProperty("value", 50)
+
+        if self.chosen_program == 'cria':
+            key_prozente = 'prozente_cria'
+        else:
+            key_prozente = 'prozente'
+        
+        try: 
+            list_prozente = self.lama_settings[key_prozente]
+        except KeyError:
+            if self.chosen_program == 'cria':
+                list_prozente = [91, 80, 64, 50]
+            else:
+                list_prozente = [87, 75, 61, 50]
+
+
+
+        self.spinBox_2.setValue(list_prozente[0])
+        self.spinBox_3.setValue(list_prozente[1])
+        self.spinBox_4.setValue(list_prozente[2])
+        self.spinBox_5.setValue(list_prozente[3])
+
+        self.lineedit_sg_lower_limit.clear()
+        self.lineedit_g_upper_limit.clear()
+        self.lineedit_g_lower_limit.clear()
+        self.lineedit_b_upper_limit.clear()
+        self.lineedit_b_lower_limit.clear()
+        self.lineedit_g2_upper_limit.clear()
+        self.lineedit_g2_lower_limit.clear()
+
         try:
             if self.chosen_program == 'cria':
                 key = "notenschluessel_cria"
@@ -1306,6 +1349,10 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             self.cb_af_rf.show()
             self.cb_af_ta.show()
 
+            if self.dict_titlepage_cria['hide_all']==False:
+                self.widgetName.hide()
+            else:
+                self.widgetName.show()
             # self.comboBox_at_fb.setItemText(0, _translate("MainWindow", "Aufgabenrückmeldung", None))
             # self.comboBox_at_fb.setItemText(1, _translate("MainWindow", "Allgemeine Rückmeldung", None))
             # self.comboBox_at_fb.removeItem(2)
@@ -1374,7 +1421,10 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
                     "MainWindow", "Anzahl der Aufgaben: 0 (Typ1: 0 / Typ2: 0)", None
                 )
             )
-
+            if self.dict_titlepage['hide_all']==False:
+                self.widgetName.hide()
+            else:
+                self.widgetName.show()
             # self.groupBox_ausgew_gk_cr.setTitle("Ausgewählte Grundkompetenzen")
             self.update_gui("widgets_search")
             self.combobox_beurteilung.insertItem(1,"Beurteilungsraster")
@@ -1584,6 +1634,8 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         if response == False:
             return
 
+        refresh_ddb(self)
+
         path_new_srdpmathematik_package = os.path.join(
             path_programm, "_database", "_config", "srdp-mathematik.sty"
         )
@@ -1608,8 +1660,10 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         # if os.path.isfile(paket_teildokument):
         #     os.remove(paket_teildokument)
 
-        if sys.platform.startswith("darwin") or sys.platform.startswith("linux"):
+        if sys.platform.startswith("darwin"):
             possible_locations = [os.path.join(path_home, "Library", "texmf")]
+        elif sys.platform.startswith("linux"):
+            possible_locations = [os.path.join(path_home, "texmf")]
         else:
             possible_locations = [
                 os.path.join(path_home, "AppData", "Roaming", "MiKTeX"),
@@ -1832,12 +1886,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
         self.spinBox_nummer.setValue(self.spinBox_nummer_setvalue)
-
+        self.checkBox_date.hide()
+        self.checkBox_date.setChecked(True)
 
         if self.comboBox_pruefungstyp.currentText() == "Grundkompetenzcheck":
             self.combobox_beurteilung.setEnabled(False)
             self.groupBox_notenschl.setEnabled(False)
-            self.groupBox_beurteilungsraster.setEnabled(False)
+            # self.groupBox_beurteilungsraster.setEnabled(False)
             self.groupBox_klasse_sage.setTitle("Klasse")
             self.pushButton_titlepage.setEnabled(False)
             self.comboBox_at_sage.setEnabled(True)
@@ -1845,7 +1900,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         elif self.comboBox_pruefungstyp.currentText() == "Übungsblatt":
             self.combobox_beurteilung.setEnabled(False)
             self.groupBox_notenschl.setEnabled(False)
-            self.groupBox_beurteilungsraster.setEnabled(False)
+            # self.groupBox_beurteilungsraster.setEnabled(False)
             self.pushButton_titlepage.setEnabled(False)
             self.comboBox_at_sage.setEnabled(True)
             self.pushButton_titlepage.setText("Titelblatt anpassen")
@@ -1858,7 +1913,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         else:
             self.combobox_beurteilung.setEnabled(True)
             self.groupBox_notenschl.setEnabled(True)
-            self.groupBox_beurteilungsraster.setEnabled(True)
+            # self.groupBox_beurteilungsraster.setEnabled(True)
             self.pushButton_titlepage.setEnabled(True)
             self.comboBox_at_sage.setEnabled(True)
             self.pushButton_titlepage.setText("Titelblatt anpassen")
@@ -1869,6 +1924,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 self.spinBox_nummer_setvalue = self.spinBox_nummer.value()
                 self.spinBox_nummer.setValue(0)
                 self.widgetNummer.setEnabled(False)
+                self.checkBox_date.show()
                 # self.spinBox_nummer.setEnabled(False)
 
     ############################################################################
@@ -2522,7 +2578,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def create_information_aufgabenformat(self):
         if (
             self.chosen_program == "cria"
-            or self.comboBox_aufgabentyp_cr.currentText() == "Typ 1"
+            or self.comboBox_aufgabentyp_cr.currentText() == "1"
         ):
             aufgabenformat = "Aufgabenformat: %s\n\n" % self.comboBox_af.currentText()
         else:
@@ -4999,7 +5055,17 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             for aufgabe in list_aufgaben_errors:
                 self.dict_all_infos_for_file["list_alle_aufgaben"].remove(aufgabe)
 
-     
+
+        try:
+            self.lineedit_sg_lower_limit.setText(self.dict_all_infos_for_file["data_gesamt"]["Notenschluessel_individual"][0])
+            self.lineedit_g_upper_limit.setText(self.dict_all_infos_for_file["data_gesamt"]["Notenschluessel_individual"][1])
+            self.lineedit_g_lower_limit.setText(self.dict_all_infos_for_file["data_gesamt"]["Notenschluessel_individual"][2])
+            self.lineedit_b_upper_limit.setText(self.dict_all_infos_for_file["data_gesamt"]["Notenschluessel_individual"][3])
+            self.lineedit_b_lower_limit.setText(self.dict_all_infos_for_file["data_gesamt"]["Notenschluessel_individual"][4])
+            self.lineedit_g2_upper_limit.setText(self.dict_all_infos_for_file["data_gesamt"]["Notenschluessel_individual"][5])
+            self.lineedit_g2_lower_limit.setText(self.dict_all_infos_for_file["data_gesamt"]["Notenschluessel_individual"][6])
+        except KeyError:
+            pass
 
         self.update_punkte()
 
@@ -5102,6 +5168,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # self.Dialog.show()
         self.Dialog.exec()
 
+
+        if dict_titlepage['hide_all'] == True:
+            self.widgetName.show()
+        else:
+            self.widgetName.hide()
+
         if self.chosen_program == "lama":
             self.dict_titlepage = dict_titlepage
             titlepage_save = os.path.join(
@@ -5109,9 +5181,17 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             )
 
             if dict_titlepage['hide_all']==True:
-                self.combobox_beurteilung.removeItem(self.combobox_beurteilung.findText("Beurteilungsraster"))
-            elif self.combobox_beurteilung.findText("Beurteilungsraster") == -1:
-                self.combobox_beurteilung.insertItem(1,"Beurteilungsraster")
+                self.combobox_beurteilung.model().item(1).setEnabled(False)
+                self.combobox_beurteilung.model().item(1).setForeground(QtGui.QColor('gray'))
+                self.combobox_beurteilung.setItemText(1, "Beurteilungsraster (Titelblatt deaktiviert)")
+                if self.combobox_beurteilung.currentIndex()==1:
+                    self.combobox_beurteilung.setCurrentIndex(0)
+                # self.combobox_beurteilung.removeItem(self.combobox_beurteilung.findText("Beurteilungsraster"))
+            else:
+                self.combobox_beurteilung.model().item(1).setEnabled(True)
+                self.combobox_beurteilung.setItemText(1, "Beurteilungsraster")
+                self.combobox_beurteilung.model().item(1).setForeground(QtGui.QColor('black'))
+                # self.combobox_beurteilung.insertItem(1,"Beurteilungsraster")
         if self.chosen_program == "cria":
             self.dict_titlepage_cria = dict_titlepage
             titlepage_save = os.path.join(
@@ -5128,16 +5208,86 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     def notenanzeige_changed(self):
         if self.combobox_beurteilung.currentText() == "Notenschlüssel":
-            self.groupBox_beurteilungsraster.hide()
             self.groupBox_notenschl.show()
-        if self.combobox_beurteilung.currentText() == "Beurteilungsraster":
+            self.cb_ns_prozent.show()
+            # self.groupBox_notenschl_modus.show()
+            # self.combobox_notenschluessel_typ.show()
+            self.groupBox_notenschl.setTitle("Notenschlüssel")
+        elif self.combobox_beurteilung.currentText() == "Beurteilungsraster":
+            self.groupBox_notenschl.show()
+            self.cb_ns_prozent.hide()
+            # self.combobox_notenschluessel_typ.hide()
+            # self.groupBox_notenschl_modus.hide()
+            self.groupBox_notenschl.setTitle("Beurteilungsraster")
+        elif self.combobox_beurteilung.currentText() == "keine Auswahl":
             self.groupBox_notenschl.hide()
-            self.groupBox_beurteilungsraster.show()
-        if self.combobox_beurteilung.currentText() == "keine Auswahl":
-            self.groupBox_notenschl.hide()
-            self.groupBox_beurteilungsraster.hide()
+
 
         self.update_punkte()
+
+    def notenschluessel_changed(self):
+        list_label_widgets = [self.label_sg_pkt, self.label_g_pkt, self.label_b_pkt, self.label_g_2_pkt]
+        list_notenschluessel_standard = [self.spinBox_2, self.spinBox_3, self.spinBox_4, self.spinBox_5]
+        list_notenschluessel_individual = [
+            self.lineedit_sg_upper_limit,
+            self.lineedit_sg_lower_limit,
+            self.lineedit_g_upper_limit,
+            self.lineedit_g_lower_limit,
+            self.lineedit_b_upper_limit,
+            self.lineedit_b_lower_limit, 
+            self.lineedit_g2_upper_limit,
+            self.lineedit_g2_lower_limit,
+            ]
+        # print(self.get_punkteverteilung())
+        if self.combobox_notenschluessel_typ.currentIndex()==0:
+            self.cb_ns_halbe_pkt.setEnabled(True)
+            self.combobox_notenschluessel_saved.hide()
+            # self.cb_ns_halbe_pkt.setChecked(True)
+            for widget in list_label_widgets:
+                widget.setText("% (ab 0)")
+            for widget in list_notenschluessel_standard:
+                widget.show()
+            for widget in list_notenschluessel_individual:
+                widget.hide()
+
+        elif self.combobox_notenschluessel_typ.currentIndex()==1:
+            self.cb_ns_halbe_pkt.setEnabled(False)
+            self.combobox_notenschluessel_saved.show()
+            # self.cb_ns_halbe_pkt.setChecked(False)
+            for widget in list_label_widgets:
+                widget.setText(" - ")
+            for widget in list_notenschluessel_standard:
+                widget.hide()
+            for widget in list_notenschluessel_individual:
+                widget.show()
+            
+        
+        self.update_notenschluessel()
+
+    def combobox_notenschluessel_saved_changed(self):
+        list_widgets_notenschluessel_individual = [
+            self.lineedit_sg_lower_limit,
+            self.lineedit_g_upper_limit,
+            self.lineedit_g_lower_limit,
+            self.lineedit_b_upper_limit,
+            self.lineedit_b_lower_limit, 
+            self.lineedit_g2_upper_limit,
+            self.lineedit_g2_lower_limit,
+            ]
+        try:
+            with open(lama_notenschluessel_file, "r", encoding="utf8") as f:
+                dict_notenschluessel = json.load(f)
+        except FileNotFoundError:
+            dict_notenschluessel = {}
+        if self.combobox_notenschluessel_saved.currentIndex()==0:
+            for all in list_widgets_notenschluessel_individual:
+                all.clear()
+        elif self.combobox_notenschluessel_saved.currentText() in dict_notenschluessel:
+            list_grade_limits = dict_notenschluessel[self.combobox_notenschluessel_saved.currentText()]
+
+            for i, all in enumerate(list_widgets_notenschluessel_individual):
+                all.setText(list_grade_limits[i])
+
 
     def get_aufgabenverteilung(self):      
         num_typ1 = len(self.list_alle_aufgaben_sage[0])
@@ -5403,9 +5553,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         return [gesamtpunkte, pkt_typ1, pkt_typ2]
 
-    def update_notenschluessel(self):
+    def get_punkteverteilung_notenschluessel(self):
+        # percetnt_sg = self.spinBox_2.value()
+        # percent_gu = self.spinBox_3.value()
+        # percent_b = self.spinBox_4.value()
+        # percent_ge = self.spinBox_5.value()
         gesamtpunkte = self.get_punkteverteilung()[0]
-
         verteilung_notenschluessel = []
         for g in range(2, 6):
             r = 0
@@ -5415,27 +5568,47 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             else:
                 verteilung_notenschluessel.append(int(gesamtpunkte * (x / 100)) + 1)
             r += 1
+        
+        return verteilung_notenschluessel
 
-        self.label_sg_pkt.setText(
-            _translate(
-                "MainWindow", "% (ab {})".format(verteilung_notenschluessel[0]), None
+
+    def update_notenschluessel(self):
+        gesamtpunkte = self.get_punkteverteilung()[0]
+
+        punkteverteilung_notenschluessel = self.get_punkteverteilung_notenschluessel()
+
+        if self.combobox_notenschluessel_typ.currentIndex()== 0:
+            self.label_sg_pkt.setText(
+                _translate(
+                    "MainWindow", "% (ab {})".format(punkteverteilung_notenschluessel[0]), None
+                )
             )
-        )
-        self.label_g_pkt.setText(
-            _translate(
-                "MainWindow", "% (ab {})".format(verteilung_notenschluessel[1]), None
+            self.label_g_pkt.setText(
+                _translate(
+                    "MainWindow", "% (ab {})".format(punkteverteilung_notenschluessel[1]), None
+                )
             )
-        )
-        self.label_b_pkt.setText(
-            _translate(
-                "MainWindow", "% (ab {})".format(verteilung_notenschluessel[2]), None
+            self.label_b_pkt.setText(
+                _translate(
+                    "MainWindow", "% (ab {})".format(punkteverteilung_notenschluessel[2]), None
+                )
             )
-        )
-        self.label_g_2_pkt.setText(
-            _translate(
-                "MainWindow", "% (ab {})".format(verteilung_notenschluessel[3]), None
+            self.label_g_2_pkt.setText(
+                _translate(
+                    "MainWindow", "% (ab {})".format(punkteverteilung_notenschluessel[3]), None
+                )
             )
-        )
+        else:
+            self.lineedit_sg_upper_limit.setText(str(gesamtpunkte))
+            # self.lineedit_sg_lower_limit.setText(str(punkteverteilung_notenschluessel[0]))
+            # self.lineedit_g_upper_limit.setText(str(punkteverteilung_notenschluessel[0]-1))
+            # self.lineedit_g_lower_limit.setText(str(punkteverteilung_notenschluessel[1]))
+            # self.lineedit_b_upper_limit.setText(str(punkteverteilung_notenschluessel[1]-1))
+            # self.lineedit_b_lower_limit.setText(str(punkteverteilung_notenschluessel[2])) 
+            # self.lineedit_g2_upper_limit.setText(str(punkteverteilung_notenschluessel[2]-1))
+            # self.lineedit_g2_lower_limit.setText(str(punkteverteilung_notenschluessel[3]))
+
+
 
     # def get_number_ausgleichspunkte_gesamt(self):
     #     number_ausgleichspkt_gesamt = 0
@@ -5449,23 +5622,23 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     #     return number_ausgleichspkt_gesamt
 
-    def update_beurteilungsraster(self):
+    # def update_beurteilungsraster(self):
 
-        punkteverteilung = self.get_punkteverteilung()
-        # number_ausgleichspunkte_gesamt = self.get_number_ausgleichspunkte_gesamt()
-        self.label_typ1_pkt.setText("Punkte Typ 1: {}".format(punkteverteilung[1]))
-        self.label_typ2_pkt.setText("Punkte Typ 2: {0}".format(punkteverteilung[2]))
+    #     punkteverteilung = self.get_punkteverteilung()
+    #     # number_ausgleichspunkte_gesamt = self.get_number_ausgleichspunkte_gesamt()
+    #     self.label_typ1_pkt.setText("Punkte Typ 1: {}".format(punkteverteilung[1]))
+    #     self.label_typ2_pkt.setText("Punkte Typ 2: {0}".format(punkteverteilung[2]))
 
     def update_punkte(self):
         gesamtpunkte = self.get_punkteverteilung()[0]
         num_typ1, num_typ2 = self.get_aufgabenverteilung()
         num_total = num_typ1+num_typ2
 
-        if self.combobox_beurteilung.currentText() == "Notenschlüssel":
-            self.update_notenschluessel()
+        # if self.combobox_beurteilung.currentText() == "Notenschlüssel":
+        self.update_notenschluessel()
 
-        if self.combobox_beurteilung.currentText() == "Beurteilungsraster":
-            self.update_beurteilungsraster()
+        # if self.combobox_beurteilung.currentText() == "Beurteilungsraster":
+        #     self.update_beurteilungsraster()
 
         if self.chosen_program == "cria":
             self.label_gesamtbeispiele.setText(
@@ -5786,7 +5959,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         pushbutton_edit = create_new_button(
             new_groupbox,
             "",
-            partial(self.pushButton_edit_pressed, aufgabe),
+            lambda: self.pushButton_edit_pressed(aufgabe),
         )
         pushbutton_edit.setIcon(QtGui.QIcon(get_icon_path('edit.svg')))
         pushbutton_edit.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor)) 
@@ -5985,6 +6158,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         QtWidgets.QApplication.restoreOverrideCursor()
 
+    @report_exceptions
     def pushButton_edit_pressed(self, aufgabe):
         content = collect_content(self, aufgabe)
 
@@ -5994,40 +6168,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         if typ == 2:
             split_content = self.split_content(aufgabe, content)
-
+            # print(split_content)
             if split_content == False:
                 return
-            # try:
-            #     split_content, index_end = split_aufgaben_content(content)
-            #     split_content = split_content[:index_end]
-            # except Exception as e1:
-            #     try:
-            #         split_content = split_aufgaben_content_new_format(content)
-            #     except Exception:
-            #         # split_content = None
-            #         warning_window(
-            #             "Es ist ein Fehler bei der Anzeige der Aufgabe {} aufgetreten! (Die Aufgabe kann voraussichtlich dennoch verwendet und individuell in der TeX-Datei bearbeitet werden.)\n".format(
-            #                 aufgabe
-            #             ),
-            #             'Bitte melden Sie den Fehler unter dem Abschnitt "Feedback & Fehler" an das LaMA-Team. Vielen Dank!',
-            #         )
-            #         return
-
-            # if aufgabe in self.dict_sage_ausgleichspunkte_chosen.keys():
-            #     list_sage_ausgleichspunkte_chosen = (
-            #         self.dict_sage_ausgleichspunkte_chosen[aufgabe]
-            #     )
-            # else:
-            #     list_sage_ausgleichspunkte_chosen = []
-            #     for index, all in enumerate(split_content):
-            #         if "\\fbox{A}" in all or "\\ASubitem" in all:
-            #             list_sage_ausgleichspunkte_chosen.append(index)
-                    # if "\\fbox{A}" in all:
-                    #     x = all.replace("\\fbox{A}", "")
-                    #     list_sage_ausgleichspunkte_chosen.append(x)
-                    # if "\\ASubitem" in all:
-                    #     x = all.replace("\\ASubitem", "")
-                    #     list_sage_ausgleichspunkte_chosen.append(x)
 
             if aufgabe in self.dict_sage_hide_show_items_chosen.keys():
                 list_sage_hide_show_items_chosen = (
@@ -6076,18 +6219,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.dict_sage_individual_change.pop(aufgabe)
         else:
             self.dict_sage_individual_change[aufgabe] = ui.sage_individual_change
-
+        
+        
+        # print(self.list_sage_hide_show_items_chosen)
         # print(self.dict_sage_individual_change)
 
             
 
         if typ == 2:
-            # if not is_empty(ui.list_sage_ausgleichspunkte_chosen):
-            #     self.dict_sage_ausgleichspunkte_chosen[
-            #         aufgabe
-            #     ] = ui.list_sage_ausgleichspunkte_chosen
-            # elif aufgabe in self.dict_sage_ausgleichspunkte_chosen:
-            #     del self.dict_sage_ausgleichspunkte_chosen[aufgabe]
 
             if not is_empty(ui.list_sage_hide_show_items_chosen):
                 self.dict_sage_hide_show_items_chosen[
@@ -6097,22 +6236,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             elif aufgabe in self.dict_sage_hide_show_items_chosen:
                 del self.dict_sage_hide_show_items_chosen[aufgabe]
 
-            # print(self.dict_sage_hide_show_items_chosen)
-            # self.dict_variablen_label[aufgabe].setText(
-            #     "{}".format(len(ui.list_sage_ausgleichspunkte_chosen))
-            # )
 
         self.update_punkte()
 
-    # def splitter_sage_moved(self):
-    #     self.width_groupBox_sage = self.groupBox_sage.geometry().width()
-    #     self.min_width_groupBox_sage = self.groupBox_sage.minimumSizeHint().width()
-
-
-        # if self.width_groupBox_sage <= self.min_width_groupBox_sage:
-        #     self.groupBox_klasse_sage.hide()
-        # else:
-        #     self.groupBox_klasse_sage.show()
             
 
 
@@ -6143,6 +6269,25 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.comboBox_fb_num.setEnabled(status)
         self.lineEdit_number_fb.setEnabled(status)
         self.listWidget_fb.setEnabled(status)
+
+    @report_exceptions
+    def checkbox_enable_disable_widget(self, checkbox, widget):
+        if checkbox.isChecked():
+            widget.setEnabled(True)
+        else:
+            widget.setEnabled(False)
+
+    def pushButtonName_clicked(self):
+        if self.pushButtonName_current_index==2:
+            index = 0
+        else:
+            index = self.pushButtonName_current_index+1
+        icon_list = ["align-left.svg", "align-center.svg", "align-right.svg"]
+        self.pushButtonName.setIcon(QIcon(get_icon_path(icon_list[index])))
+
+
+        self.pushButtonName_current_index = index
+
 
     def comboBox_at_fb_cria_changed(self):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
@@ -6373,24 +6518,24 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def comboBox_unterkapitel_changed(self, list_mode):
         self.adapt_choosing_list(list_mode)
 
-    @report_exceptions
-    def standardize_aufgabe(self, aufgabe):
-        try:
-            gk, num = aufgabe.split('-')
-        except ValueError:
-            return aufgabe
+    # @report_exceptions  NOT WORKING (not sure why) always returns NONE
+    # def standardize_aufgabe(self, aufgabe):
+    #     try:
+    #         gk, num = aufgabe.split('-')
+    #     except ValueError:
+    #         return aufgabe
 
-        gk = shorten_gk(gk)
+    #     gk = shorten_gk(gk)
         
        
-        try:
-            gk = dict_gk[gk]
-        except KeyError:
-            gk = gk.upper()
+    #     try:
+    #         gk = dict_gk[gk]
+    #     except KeyError:
+    #         gk = gk.upper()
 
-        x = f"{gk.strip()} - {num.strip().lower()}"
+    #     x = f"{gk.strip()} - {num.strip().lower()}"
 
-        return x
+    #     return x
 
     @report_exceptions
     def buttonImport_sage_clicked(self):
@@ -6411,7 +6556,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             return
 
         list_aufgaben_errors=[]
-
+        list_duplicates = []
 
         for index, aufgabe in enumerate(self.import_list_sage):
             aufgabe = aufgabe.upper()
@@ -6420,7 +6565,20 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             if typ == 1:
                 layout = self.verticalLayout_scrollArea_sage_typ1
-                aufgabe = self.standardize_aufgabe(aufgabe)
+                try:
+                    gk, num = aufgabe.split('-')
+                except ValueError:
+                    return aufgabe
+
+                gk = shorten_gk(gk)
+                
+            
+                try:
+                    gk = dict_gk[gk]
+                except KeyError:
+                    gk = gk.upper()
+
+                aufgabe = f"{gk.strip()} - {num.strip().lower()}"
                 
 
             elif typ == 2:
@@ -6440,26 +6598,40 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             if typ == 2:
                 if aufgabe not in self.list_alle_aufgaben_sage[1]:
+                    aufgaben_nummer = len(self.list_alle_aufgaben_sage[1])
                     self.list_alle_aufgaben_sage[1].append(aufgabe)
+     
                 else:
+                    list_duplicates.append(aufgabe)
                     continue
             else:
                 if aufgabe not in self.list_alle_aufgaben_sage[0]:
-                    self.list_alle_aufgaben_sage[0].append(aufgabe)
+                    aufgaben_nummer = len(self.list_alle_aufgaben_sage[0])
+                    self.list_alle_aufgaben_sage[0].append(aufgabe) 
+                    
                 else:
+                    list_duplicates.append(aufgabe)
                     continue
-
+            
+            
             neue_aufgaben_box = self.create_neue_aufgaben_box(
-                index, aufgabe, aufgabe_total
+                aufgaben_nummer, aufgabe, aufgabe_total
             )
 
             layout.insertWidget(layout.count() - 1, neue_aufgaben_box)
 
+        # print(self.list_alle_aufgaben_sage)
         if not is_empty(list_aufgaben_errors):
             str_error = ', '.join(list_aufgaben_errors)
             warning_window(f"Für folgende Eingaben konnte keine passende Aufgabenummer in der Datenbank gefunden werden:\n\n{str_error}")
-        
-        num_imported_files = len(self.import_list_sage)-len(list_aufgaben_errors)
+
+        # print(self.import_list_sage)
+        # print(self.list_alle_aufgaben_sage)
+        if not is_empty(list_duplicates):
+            str_duplicates = ', '.join(list_duplicates)
+            information_window(f"Folgende Aufgaben wurden bereits hinzugefügt und werden daher übersprungen:\n\n{str_duplicates}")
+
+        num_imported_files = len(self.import_list_sage)-len(list_aufgaben_errors)-len(list_duplicates)
         information_window(f"Insgesamt wurde {num_imported_files} Aufgaben erfolgreich importiert.")
 
     def delete_zeros_at_beginning(self, string):
@@ -6576,15 +6748,27 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 self.add_items_to_listwidget(listWidget, filtered_items, local=True)
 
             table_lama = _database.table(table)
-            filtered_items = filter_items(
-                self, table_lama, typ, list_mode, filter_string, line_entry
-            )
+            try:
+                filtered_items = filter_items(
+                    self, table_lama, typ, list_mode, filter_string, line_entry
+                )
+            except json.JSONDecodeError:
+                refresh_ddb(self, auto_update=True)
+                filtered_items = filter_items(
+                    self, table_lama, typ, list_mode, filter_string, line_entry
+                )                
 
             if _database_addon != None:
                 table_lama = _database_addon.table(table)
-                filtered_items_addon = filter_items(
-                    self, table_lama, typ, list_mode, filter_string, line_entry
-                )
+                try:
+                    filtered_items_addon = filter_items(
+                        self, table_lama, typ, list_mode, filter_string, line_entry
+                    )
+                except json.JSONDecodeError:
+                    refresh_ddb(self, auto_update=True)
+                    filtered_items_addon = filter_items(
+                        self, table_lama, typ, list_mode, filter_string, line_entry
+                    )  
                 for all in filtered_items_addon:
                     filtered_items.append(all)
 
@@ -6661,6 +6845,15 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 self.spinBox_3.value(),
                 self.spinBox_4.value(),
                 self.spinBox_5.value(),
+            ],
+            "Notenschluessel_individual": [
+                self.lineedit_sg_lower_limit.text(),
+                self.lineedit_g_upper_limit.text(),
+                self.lineedit_g_lower_limit.text(),
+                self.lineedit_b_upper_limit.text(),
+                self.lineedit_b_lower_limit.text(),
+                self.lineedit_g2_upper_limit.text(),
+                self.lineedit_g2_lower_limit.text(),
             ],
             "Typ1 Standard": self.spinBox_default_pkt.value(),
             # "copy_images": self.list_copy_images,
@@ -6777,6 +6970,20 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             else:
                 content = aufgabe_total[entry_key]
 
+
+        elif aufgabe in self.dict_sage_hide_show_items_chosen:
+            if self.dict_variablen_translation[aufgabe] == "DE":
+                aufgabentext = "content"
+            elif self.dict_variablen_translation[aufgabe] == "EN":
+                aufgabentext = "content_translation"
+            full_content = aufgabe_total[aufgabentext]
+            split_content = self.split_content(aufgabe, aufgabe_total[aufgabentext])
+            split_content = prepare_content_for_hide_show_items(split_content)
+
+            content = edit_content_hide_show_items(
+                self, aufgabe, split_content, full_content
+            )
+
         elif self.dict_variablen_translation[aufgabe] == "EN":
             content = aufgabe_total["content_translation"]
             
@@ -6787,16 +6994,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         #     content = edit_content_ausgleichspunkte(
         #         self, aufgabe, split_content, full_content
         #     )
-
-
-        elif aufgabe in self.dict_sage_hide_show_items_chosen:
-            full_content = aufgabe_total["content"]
-            split_content = self.split_content(aufgabe, aufgabe_total["content"])
-            split_content = prepare_content_for_hide_show_items(split_content)
-            content = edit_content_hide_show_items(
-                self, aufgabe, split_content, full_content
-            )
-
 
         else:
             content = aufgabe_total["content"]
@@ -6809,11 +7006,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
         show_group_B = False
-        if 'checkbox_AB_{}'.format(aufgabe) in self.dict_widget_variables:
-            checkbox = self.dict_widget_variables['checkbox_AB_{}'.format(aufgabe)]
-            if checkbox.isChecked() and self.comboBox_gruppe_AB.currentIndex()==1:
+        if aufgabe in self.dict_variablen_AB:
+            if self.dict_variablen_AB[aufgabe] == True and self.comboBox_gruppe_AB.currentIndex()==1:
                 show_group_B = True
-
 
         with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
             vorschau.write(header)
@@ -6882,6 +7077,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         if ausgabetyp == "vorschau":
             self.collect_all_infos_for_creating_file()
 
+        
 
         self.dict_gruppen = {0: "A", 1: "B", 2: "C", 3: "D", 4: "E", 5: "F"}
 
@@ -6894,6 +7090,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         if self.chosen_program == "cria":
             dict_titlepage = self.dict_titlepage_cria
 
+
+
+        # if self.dict_all_infos_for_file["data_gesamt"]['Beurteilung'] == 'br' and dict_titlepage['hide_all'] == True:
+        #     rsp = question_window("Es wurde der Beurteilungsraster ausgewählt, obwohl kein Titelblatt angezeigt wird. Dadurch ist der Beurteilungsraster nicht mehr sichtbar.",
+        #     "Möchten Sie dennoch fortfahren?")
+        #     if rsp == False:
+        #         return
         # if self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Quiz":
         #     beamer_mode = True
         # else:
@@ -6977,7 +7180,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
                 self.reset_latex_file_to_start(filename_vorschau)
             QtWidgets.QApplication.restoreOverrideCursor()
-            return single_file_index + 1
+            return
 
         else:
             self.create_body_of_tex_file(filename_vorschau, ausgabetyp)
@@ -6991,39 +7194,54 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         ):
             # dict_titlepage = check_if_hide_all_exists(dict_titlepage)
             if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "ns": #or dict_titlepage["hide_all"] == True:
-                notenschluessel = self.dict_all_infos_for_file["data_gesamt"][
-                    "Notenschluessel"
-                ]
+                if self.combobox_notenschluessel_typ.currentIndex() == 0:
+                    notenschluessel = self.dict_all_infos_for_file["data_gesamt"][
+                        "Notenschluessel"
+                    ]
 
-                zusatz = ""
-                if self.cb_ns_halbe_pkt.isChecked():
-                    zusatz = "[1/2]"
-                if self.cb_ns_prozent.isChecked():
-                    if zusatz == "":
-                        zusatz = "[]"
-                    zusatz = zusatz + "[prozent]"
+                    zusatz = ""
+                    if self.cb_ns_halbe_pkt.isChecked():
+                        zusatz = "[1/2]"
+                    if self.cb_ns_prozent.isChecked():
+                        if zusatz == "":
+                            zusatz = "[]"
+                        zusatz = zusatz + "[prozent]"
 
-                # if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "br":
-                #     gut = 0.875
-                #     befriedigend = 0.75
-                #     genuegend = 0.625
-                #     nichtgenuegend = 0.5
-                #     zusatz = "[1/2]"
-                # else: 
-                gut = notenschluessel[0] / 100
-                befriedigend = notenschluessel[1] / 100
-                genuegend = notenschluessel[2] / 100
-                nichtgenuegend = notenschluessel[3] / 100
-                with open(filename_vorschau, "a", encoding="utf8") as vorschau:
-                    vorschau.write(
-                        "\n\n\\null\\notenschluessel{0}{{{1}}}{{{2}}}{{{3}}}{{{4}}}".format(
-                            zusatz,
-                            gut,
-                            befriedigend,
-                            genuegend,
-                            nichtgenuegend,
+
+                    gut = notenschluessel[0] / 100
+                    befriedigend = notenschluessel[1] / 100
+                    genuegend = notenschluessel[2] / 100
+                    nichtgenuegend = notenschluessel[3] / 100
+                    with open(filename_vorschau, "a", encoding="utf8") as vorschau:
+                        vorschau.write(
+                            "\n\n\\null\\notenschluessel{0}{{{1}}}{{{2}}}{{{3}}}{{{4}}}".format(
+                                zusatz,
+                                gut,
+                                befriedigend,
+                                genuegend,
+                                nichtgenuegend,
+                            )
                         )
-                    )
+                elif self.combobox_notenschluessel_typ.currentIndex() == 1:
+                    notenschluessel = self.dict_all_infos_for_file["data_gesamt"][
+                        "Notenschluessel_individual"
+                    ]
+                    sg_lower = notenschluessel[0]
+                    gu_upper = notenschluessel[1]
+                    gu_lower = notenschluessel[2]
+                    b_upper = notenschluessel[3]
+                    b_lower = notenschluessel[4]
+                    ge_upper = notenschluessel[5]
+                    ge_lower = notenschluessel[6]
+                    if self.cb_ns_prozent.isChecked():
+                        zusatz = "[][prozent]"
+                    else:
+                        zusatz = ""
+
+                    with open(filename_vorschau, "a", encoding="utf8") as vorschau:
+                        vorschau.write(
+                            f"\n\n\\null\individualnotenschluessel{zusatz}{{{sg_lower}}}{{{gu_upper}}}{{{gu_lower}}}{{{b_upper}}}{{{b_lower}}}{{{ge_upper}}}{{{ge_lower}}}"
+                        )
 
         with open(filename_vorschau, "a", encoding="utf8") as vorschau:
             vorschau.write("\n\n")
@@ -7068,7 +7286,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             name, extension = os.path.splitext(filename_vorschau)
 
             if pdf == True:
-                create_pdf(name, index, maximum)
+                pdf_created = create_pdf(name, index, maximum)
 
                 temp_filename = name + ".pdf"
 
@@ -7082,7 +7300,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                             self.dict_gruppen[int(index / 2)]
                         )
 
+
                     shutil.move(temp_filename, new_filename)
+
 
                 elif index % 2 == 0:
                     new_filename = name + "_Loesung.pdf"

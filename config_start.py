@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 
 #### Version number ###
-__version__ = "v3.4.3"
+__version__ = "v4.1.5"
 
 if sys.platform.startswith("win"):
     ##### NOT IN USE ! (Working!) - Activate when installer is used!
@@ -44,6 +44,11 @@ if sys.platform.startswith("win"):
 
     lama_settings_file = os.path.join(
                 os.getenv('LOCALAPPDATA'), "LaMA", "lama_settings"
+            )
+
+
+    lama_notenschluessel_file = os.path.join(
+                os.getenv('LOCALAPPDATA'), "LaMA", "lama_notenschluessel.json"
             )
     # ## OLD VERSION!!
     # path_programm = os.path.dirname(sys.argv[0])
@@ -94,20 +99,28 @@ elif sys.platform.startswith("darwin"):
                 Path.home(), "Library", "LaMA", "lama_settings"
             )
 
+    lama_notenschluessel_file = os.path.join(
+                Path.home(), "Library", "LaMA", "lama_notenschluessel.json"
+            )
+
 
 elif sys.platform.startswith("linux"):
-    path_programm = os.path.join("var","lib","LaMA")
+    path_programm = os.path.join(os.path.expanduser('~'), ".LaMA")
+
     if not os.path.isdir(path_programm):
         os.mkdir(path_programm)
     path_localappdata_lama = path_programm
 
-    path_lama_developer_credentials = os.path.join("~",".LaMA", "credentials")
+    path_lama_developer_credentials = os.path.join(path_programm,"credentials")
     if not os.path.isdir(path_lama_developer_credentials):
-        os.makedirs(path_lama_developer_credentials)
+        os.mkdir(path_lama_developer_credentials)
     lama_developer_credentials = os.path.join(path_lama_developer_credentials, "developer_credentials.txt")
 
-    lama_settings_file = os.path.join(
-                "~",".LaMA", "lama_settings"
+    lama_settings_file = os.path.join(path_programm, "lama_settings"
+            )
+
+    lama_notenschluessel_file = os.path.join(
+                path_programm, "lama_notenschluessel.json"
             )
 
 path_home = Path.home()
