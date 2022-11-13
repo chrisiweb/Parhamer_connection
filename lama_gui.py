@@ -2826,17 +2826,143 @@ def setup_stackWizard(self):
 
     self.groupbox_binoms_types = create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Typen")
     self.vertical_binoms_types = create_new_verticallayout(self.groupbox_binoms_types)
-    self.gridLayout_zahlenbereich_wizard.addWidget(self.groupbox_binoms_types, 0,1, 1,1)
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.groupbox_binoms_types, 0,0, 2,1)
 
-    self.cb_binoms_1 = create_new_checkbox(self.groupbox_binoms_types, "(a+b)²", checked=True)
+    self.cb_binoms_1 = create_new_checkbox(self.groupbox_binoms_types, "(a + b)²", checked=True)
     self.vertical_binoms_types.addWidget(self.cb_binoms_1)
 
-    self.cb_binoms_2 = create_new_checkbox(self.groupbox_binoms_types, "(a-b)²", checked=True)
+    self.cb_binoms_2 = create_new_checkbox(self.groupbox_binoms_types, "(a - b)²", checked=True)
     self.vertical_binoms_types.addWidget(self.cb_binoms_2)
 
-    self.cb_binoms_3 = create_new_checkbox(self.groupbox_binoms_types, "(a+b)(a-b)", checked=True)
+    self.cb_binoms_3 = create_new_checkbox(self.groupbox_binoms_types, "(a + b)(a - b)", checked=True)
     self.vertical_binoms_types.addWidget(self.cb_binoms_3)
     self.groupbox_binoms_types.hide()
+
+
+    self.widget_binoms_set_variables_factors = QtWidgets.QWidget(self.groupBox_zahlenbereich_wizard)
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.widget_binoms_set_variables_factors, 1,1, 1,1)
+    
+    self.gridlayout_binoms_set_variables = create_new_gridlayout(self.widget_binoms_set_variables_factors)
+    self.gridlayout_binoms_set_variables.setContentsMargins(9,0,9,9)
+    self.label_binoms_von = create_new_label(self.widget_binoms_set_variables_factors, "von")
+    self.gridlayout_binoms_set_variables.addWidget(self.label_binoms_von, 1,2,1,1, QtCore.Qt.AlignCenter)
+
+    self.label_binoms_bis = create_new_label(self.widget_binoms_set_variables_factors, "bis")
+    self.gridlayout_binoms_set_variables.addWidget(self.label_binoms_bis, 1,4,1,1, QtCore.Qt.AlignCenter)
+
+
+    self.checkbox_binoms_a = create_new_checkbox(self.widget_binoms_set_variables_factors, " ", checked=True)
+    self.gridlayout_binoms_set_variables.addWidget(self.checkbox_binoms_a, 2,0,1,1)
+
+    self.label_binoms_a = create_new_label(self.widget_binoms_set_variables_factors, "a =")
+    self.gridlayout_binoms_set_variables.addWidget(self.label_binoms_a, 2,1,1,1)
+
+    self.spinbox_binoms_a_min = create_new_spinbox(self.widget_binoms_set_variables_factors, value=1)
+    self.spinbox_binoms_a_min.setRange(-99,99)
+    self.gridlayout_binoms_set_variables.addWidget(self.spinbox_binoms_a_min, 2,2,1,1)
+
+    self.label_binoms_a_to = create_new_label(self.widget_binoms_set_variables_factors, " - ")
+    self.gridlayout_binoms_set_variables.addWidget(self.label_binoms_a_to, 2,3,1,1)
+
+    self.spinbox_binoms_a_max = create_new_spinbox(self.widget_binoms_set_variables_factors, value=10)
+    self.spinbox_binoms_a_max.setRange(-99,99)
+    self.gridlayout_binoms_set_variables.addWidget(self.spinbox_binoms_a_max, 2,4,1,1)
+
+    self.checkbox_binoms_a.stateChanged.connect(self.checkbox_binoms_a_state_changed)
+
+    self.checkbox_binoms_b = create_new_checkbox(self.widget_binoms_set_variables_factors, " ", checked=True)
+    self.gridlayout_binoms_set_variables.addWidget(self.checkbox_binoms_b, 3,0,1,1)
+
+    self.label_binoms_b = create_new_label(self.widget_binoms_set_variables_factors, "b =")
+    self.gridlayout_binoms_set_variables.addWidget(self.label_binoms_b, 3,1,1,1)
+
+    self.spinbox_binoms_b_min = create_new_spinbox(self.widget_binoms_set_variables_factors, value=1)
+    self.spinbox_binoms_b_min.setRange(-99,99)
+    self.gridlayout_binoms_set_variables.addWidget(self.spinbox_binoms_b_min, 3,2,1,1)
+
+    self.label_binoms_b_to = create_new_label(self.widget_binoms_set_variables_factors, " - ")
+    self.gridlayout_binoms_set_variables.addWidget(self.label_binoms_b_to, 3,3,1,1)
+
+    self.spinbox_binoms_b_max = create_new_spinbox(self.widget_binoms_set_variables_factors, value=10)
+    self.spinbox_binoms_b_max.setRange(-99,99)
+    self.gridlayout_binoms_set_variables.addWidget(self.spinbox_binoms_b_max, 3,4,1,1)
+
+    self.checkbox_binoms_b.stateChanged.connect(self.checkbox_binoms_b_state_changed)
+
+    self.widget_binoms_set_variables_factors.hide()
+
+    self.widget_binoms_set_variables_exponents = QtWidgets.QWidget(self.groupBox_zahlenbereich_wizard)
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.widget_binoms_set_variables_exponents, 1,2, 1,1)
+    
+    self.gridlayout_binoms_set_exponents= create_new_gridlayout(self.widget_binoms_set_variables_exponents)
+    self.gridlayout_binoms_set_exponents.setContentsMargins(9,0,9,9)
+    self.label_binoms_von = create_new_label(self.widget_binoms_set_variables_exponents, "von")
+    self.gridlayout_binoms_set_exponents.addWidget(self.label_binoms_von, 1,2,1,1, QtCore.Qt.AlignCenter)
+
+    self.label_binoms_bis = create_new_label(self.widget_binoms_set_variables_exponents, "bis")
+    self.gridlayout_binoms_set_exponents.addWidget(self.label_binoms_bis, 1,4,1,1, QtCore.Qt.AlignCenter)
+
+
+    self.checkbox_binoms_x = create_new_checkbox(self.widget_binoms_set_variables_factors, "x: ", checked=True)
+
+    self.gridlayout_binoms_set_exponents.addWidget(self.checkbox_binoms_x, 2,0,1,1)
+
+    self.label_binoms_m = create_new_label(self.widget_binoms_set_variables_exponents, "m =")
+    self.gridlayout_binoms_set_exponents.addWidget(self.label_binoms_m, 2,1,1,1)
+
+    self.spinbox_binoms_m_min = create_new_spinbox(self.widget_binoms_set_variables_exponents, value=1)
+    self.spinbox_binoms_m_min.setRange(0,9)
+    self.gridlayout_binoms_set_exponents.addWidget(self.spinbox_binoms_m_min, 2,2,1,1)
+
+    self.label_binoms_m_to = create_new_label(self.widget_binoms_set_variables_exponents, " - ")
+    self.gridlayout_binoms_set_exponents.addWidget(self.label_binoms_m_to, 2,3,1,1)
+
+    self.spinbox_binoms_m_max = create_new_spinbox(self.widget_binoms_set_variables_exponents, value=1)
+    self.spinbox_binoms_m_max.setRange(0,9)
+    self.gridlayout_binoms_set_exponents.addWidget(self.spinbox_binoms_m_max, 2,4,1,1)
+
+
+    self.checkbox_binoms_x.stateChanged.connect(self.checkbox_binoms_x_state_changed)
+
+    self.checkbox_binoms_y = create_new_checkbox(self.widget_binoms_set_variables_factors, "y: ", checked=True)
+    self.gridlayout_binoms_set_exponents.addWidget(self.checkbox_binoms_y, 3,0,1,1)
+
+    self.label_binoms_n = create_new_label(self.widget_binoms_set_variables_exponents, "n =")
+    self.gridlayout_binoms_set_exponents.addWidget(self.label_binoms_n, 3,1,1,1)
+
+    self.spinbox_binoms_n_min = create_new_spinbox(self.widget_binoms_set_variables_exponents, value=1)
+    self.spinbox_binoms_n_min.setRange(0,9)
+    self.gridlayout_binoms_set_exponents.addWidget(self.spinbox_binoms_n_min, 3,2,1,1)
+
+    self.label_binoms_n_to = create_new_label(self.widget_binoms_set_variables_exponents, " - ")
+    self.gridlayout_binoms_set_exponents.addWidget(self.label_binoms_n_to, 3,3,1,1)
+
+    self.spinbox_binoms_n_max = create_new_spinbox(self.widget_binoms_set_variables_exponents, value=1)
+    self.spinbox_binoms_n_max.setRange(0,9)
+    self.gridlayout_binoms_set_exponents.addWidget(self.spinbox_binoms_n_max, 3,4,1,1)
+
+    self.checkbox_binoms_y.stateChanged.connect(self.checkbox_binoms_y_state_changed)
+    # self.checkbox_binoms_y.stateChanged.connect(lambda: self.checkbox_enable_disable_widget(self.checkbox_binoms_y, self.spinbox_binoms_n_min))
+    # self.checkbox_binoms_y.stateChanged.connect(lambda: self.checkbox_enable_disable_widget(self.checkbox_binoms_y, self.spinbox_binoms_n_max))
+
+    self.widget_binoms_set_variables_exponents.hide()
+
+
+    self.label_binom_example = create_new_label(self.groupBox_zahlenbereich_wizard, "")
+    self.binom_update_label()
+    self.label_binom_example.setFont(QtGui.QFont("IBM Plex Sans", 12))
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.label_binom_example, 0,1, 1,2, QtCore.Qt.AlignCenter)
+
+    self.label_binom_example.hide()
+
+    self.widget_binom_further_settings = QtWidgets.QWidget(self.groupBox_zahlenbereich_wizard)
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.widget_binom_further_settings, 0,3, 1,1)
+    self.verticallayout_binom_further_settings = create_new_verticallayout(self.widget_binom_further_settings)
+
+    self.checkbox_binoms_enable_fraction = create_new_checkbox(self.widget_binoms_set_variables_factors, "Brüche erlauben")
+    self.verticallayout_binom_further_settings.addWidget(self.checkbox_binoms_enable_fraction)
+
+    self.widget_binom_further_settings.hide()
 
     ####################################################
     ######################################################

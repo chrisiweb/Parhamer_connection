@@ -3840,6 +3840,52 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def worksheet_wizard_setting_changed(self):
         self.worksheet_wizard_changed=True
 
+    def binom_update_label(self):
+        label = "("
+                 
+        if self.checkbox_binoms_a.isChecked():
+            label += "a"
+        if self.checkbox_binoms_a.isChecked() and self.checkbox_binoms_x.isChecked():
+            label += " \xb7 "
+        if self.checkbox_binoms_x.isChecked():
+            label += "x<sup>n</sup>"
+
+        label += " + "
+
+        if self.checkbox_binoms_b.isChecked():
+            label += "b"
+        if self.checkbox_binoms_b.isChecked() and self.checkbox_binoms_y.isChecked():
+            label += " \xb7 "
+        if self.checkbox_binoms_y.isChecked():
+            label += "y<sup>m</sup>"
+
+        label += ")<sup>2</sup>"
+
+        self.label_binom_example.setText(label)
+        #"(a \xb7 x<sup>n</sup> + b \xb7 y<sup>m</sup>)<sup>2</sup>"
+
+    def checkbox_binoms_a_state_changed(self):
+        self.checkbox_enable_disable_widget(self.checkbox_binoms_a, self.spinbox_binoms_a_min)
+        self.checkbox_enable_disable_widget(self.checkbox_binoms_a, self.spinbox_binoms_a_max)
+        self.binom_update_label()
+
+    def checkbox_binoms_b_state_changed(self):
+        self.checkbox_enable_disable_widget(self.checkbox_binoms_b, self.spinbox_binoms_b_min)
+        self.checkbox_enable_disable_widget(self.checkbox_binoms_b, self.spinbox_binoms_b_max)
+        self.binom_update_label()
+
+    def checkbox_binoms_x_state_changed(self):
+        self.checkbox_enable_disable_widget(self.checkbox_binoms_x, self.spinbox_binoms_m_min)
+        self.checkbox_enable_disable_widget(self.checkbox_binoms_x, self.spinbox_binoms_m_max)
+        self.binom_update_label()
+
+    def checkbox_binoms_y_state_changed(self):
+        self.checkbox_enable_disable_widget(self.checkbox_binoms_y, self.spinbox_binoms_n_min)
+        self.checkbox_enable_disable_widget(self.checkbox_binoms_y, self.spinbox_binoms_n_max)
+        self.binom_update_label()
+
+
+
     def checkBox_show_nonogramm_changed(self):
         if self.checkBox_show_nonogramm.isChecked():
             self.combobox_nonogramm_wizard.setEnabled(True)

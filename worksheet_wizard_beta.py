@@ -130,10 +130,10 @@ a, b = symbols("{} {}".format(variable_1, variable_2))
 
 e = (3*a-1/2*b)**2
 
-# coef_1 = get_random_number(1,10)
-# coef_2 = get_random_number(1,10)
-coef_1 = get_random_fraction(1,10)
-coef_2 = get_random_fraction(1,10)
+coef_1 = get_random_number(1,10)
+coef_2 = get_random_number(1,10)
+# coef_1 = get_random_fraction(1,10)
+# coef_2 = get_random_fraction(1,10)
 print(coef_1)
 print(coef_2)
 
@@ -168,67 +168,6 @@ for i, all in enumerate(x):
 calculated = calculated.replace("**", "^")
 calculated = calculated.replace("*", "")
 print(calculated)
-# split_calculated = re.split("\+|-|\*|:|(|)", str(calculated))
 
 
 
-# Eq((x^2+x-5, 15))
-
-
-#######################################################
-# titel = "Arbeitsblatt"
-# nummerierung = "(i)"
-# columns = 2
-
-# content = """
-# \section{{{0}}}
-
-# \\begin{{multicols}}{{{1}}}
-# \\begin{{enumerate}}[{2}]
-# {3}
-# \end{{enumerate}}
-# \end{{multicols}}
-# """.format(titel, columns, nummerierung, content)
-
-
-# print(content)
-
-
-########## CREATE LATEX CODE FROM CONTENT
-# path_file = os.path.join(
-#     path_localappdata_lama, "Teildokument", "worksheet.tex"
-#     )
-
-# with open(path_file, "w", encoding="utf8") as file:
-#     file.write(tex_preamble(solution="solution_on"))
-
-#     file.write(content)
-
-#     file.write(tex_end)
-
-
-
-# ################# CREATE PDF FILE
-# name = 'worksheet'
-# head, tail = os.path.split(name)
-# file_name = tail
-# folder_name = "{0}/Teildokument".format(path_programm)
-
-
-# drive = ""
-
-# terminal_command = 'cd "{1}" & latex -interaction=nonstopmode --synctex=-1 "{2}.tex" & latex -interaction=nonstopmode --synctex=-1 "{2}.tex" & dvips "{2}.dvi" & ps2pdf -dNOSAFER -dALLOWPSTRANSPARENCY "{2}.ps"'.format(
-#     drive, folder_name, file_name
-# )
-
-
-# process = subprocess.Popen(
-#     terminal_command,
-#     cwd=os.path.splitdrive(path_programm)[0],
-#     shell=True,
-# )
-
-# process.wait()
-
-
-# open_pdf_file(folder_name, file_name)

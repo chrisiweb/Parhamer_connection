@@ -69,10 +69,11 @@ dict_widgets_wizard = {
         'self.checkbox_allow_brackets_wizard',        
     ],
     'Binomische Formeln': [
-        'self.widget_zahlenbereich_minimum',
-        'self.widget_zahlenbereich_maximum',
-        'self.groupbox_binomische_formeln_types',
-
+        'self.groupbox_binoms_types',
+        'self.widget_binoms_set_variables_factors',
+        'self.widget_binoms_set_variables_exponents',
+        'self.label_binom_example',
+        'self.widget_binom_further_settings',
     ],
 }   
 
