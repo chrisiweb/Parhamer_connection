@@ -3848,18 +3848,18 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         if self.checkbox_binoms_a.isChecked() and self.checkbox_binoms_x.isChecked():
             label += " \xb7 "
         if self.checkbox_binoms_x.isChecked():
-            label += "x<sup>n</sup>"
+            label += "x<sup>m</sup>"
 
-        label += " + "
+        label += " \u00B1 "
 
         if self.checkbox_binoms_b.isChecked():
             label += "b"
         if self.checkbox_binoms_b.isChecked() and self.checkbox_binoms_y.isChecked():
             label += " \xb7 "
         if self.checkbox_binoms_y.isChecked():
-            label += "y<sup>m</sup>"
+            label += "y<sup>n</sup>"
 
-        label += ")<sup>2</sup>"
+        label += " )<sup>2</sup>"
 
         self.label_binom_example.setText(label)
         #"(a \xb7 x<sup>n</sup> + b \xb7 y<sup>m</sup>)<sup>2</sup>"
