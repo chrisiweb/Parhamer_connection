@@ -130,14 +130,14 @@ a, b = symbols("{} {}".format(variable_1, variable_2))
 
 e = (3*a-1/2*b)**2
 
-coef_1 = get_random_number(1,10)
-coef_2 = get_random_number(1,10)
+coef_1 = get_random_number(1,1)
+coef_2 = get_random_number(1,1)
 # coef_1 = get_random_fraction(1,10)
 # coef_2 = get_random_fraction(1,10)
 print(coef_1)
 print(coef_2)
 
-exponent = 2
+exponent = 5
 binome = ['({0}*a+{1}*b)**{2}'.format(coef_1,coef_2,exponent), '({0}*a-{1}*b)**{2}'.format(coef_1,coef_2,exponent), '({0}*a+{1}*b)*({0}*a-{1}*b)'.format(coef_1,coef_2)]
 
 

@@ -17,7 +17,7 @@ from create_new_widgets import (
     add_new_tab,
     DragDropWidget,
     )
-from predefined_size_policy import SizePolicy_fixed_height, SizePolicy_fixed, SizePolicy_minimum, SizePolicy_minimum_fixed, SizePolicy_maximum_height, SizePolicy_maximum_width, SizePolicy_minimum_height, SizePolicy_expanding
+from predefined_size_policy import SizePolicy_fixed_height, SizePolicy_fixed, SizePolicy_minimum, SizePolicy_minimum_fixed, SizePolicy_maximum_height, SizePolicy_maximum_width, SizePolicy_minimum_height, SizePolicy_expanding, SizePolicy_maximum
 from config import *
 from config_start import lama_notenschluessel_file
 from json import load
@@ -2931,14 +2931,14 @@ def setup_stackWizard(self):
     self.gridlayout_binoms_set_exponents.addWidget(self.label_binoms_n, 3,1,1,1)
 
     self.spinbox_binoms_n_min = create_new_spinbox(self.widget_binoms_set_variables_exponents, value=1)
-    self.spinbox_binoms_n_min.setRange(0,9)
+    self.spinbox_binoms_n_min.setRange(1,9)
     self.gridlayout_binoms_set_exponents.addWidget(self.spinbox_binoms_n_min, 3,2,1,1)
 
     self.label_binoms_n_to = create_new_label(self.widget_binoms_set_variables_exponents, " - ")
     self.gridlayout_binoms_set_exponents.addWidget(self.label_binoms_n_to, 3,3,1,1)
 
     self.spinbox_binoms_n_max = create_new_spinbox(self.widget_binoms_set_variables_exponents, value=1)
-    self.spinbox_binoms_n_max.setRange(0,9)
+    self.spinbox_binoms_n_max.setRange(1,9)
     self.gridlayout_binoms_set_exponents.addWidget(self.spinbox_binoms_n_max, 3,4,1,1)
 
     self.checkbox_binoms_y.stateChanged.connect(self.checkbox_binoms_y_state_changed)
@@ -2949,21 +2949,55 @@ def setup_stackWizard(self):
 
 
     self.label_binom_example = create_new_label(self.groupBox_zahlenbereich_wizard, "")
-    self.binom_update_label()
     self.label_binom_example.setFont(QtGui.QFont("IBM Plex Sans", 12))
     self.gridLayout_zahlenbereich_wizard.addWidget(self.label_binom_example, 0,1, 1,2, QtCore.Qt.AlignCenter)
 
     self.label_binom_example.hide()
 
     self.widget_binom_further_settings = QtWidgets.QWidget(self.groupBox_zahlenbereich_wizard)
-    self.gridLayout_zahlenbereich_wizard.addWidget(self.widget_binom_further_settings, 0,3, 1,1)
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.widget_binom_further_settings, 0,3, 2,1)
     self.verticallayout_binom_further_settings = create_new_verticallayout(self.widget_binom_further_settings)
+
+    self.widget_binoms_exponent = QtWidgets.QWidget(self.widget_binom_further_settings)
+    self.verticallayout_binom_further_settings.addWidget(self.widget_binoms_exponent)
+
+    self.horizontallayout_binoms_exponent = create_new_horizontallayout(self.widget_binoms_exponent)
+    self.horizontallayout_binoms_exponent.setContentsMargins(12,0,0,0)    
+
+    self.label_binoms_exponent = create_new_label(self.widget_binoms_exponent, "Exponent:")
+    self.horizontallayout_binoms_exponent.addWidget(self.label_binoms_exponent)
+
+    self.spinbox_binoms_exponent = create_new_spinbox(self.widget_binoms_exponent, value = 2)
+    self.spinbox_binoms_exponent.valueChanged.connect(self.binom_update_label)
+    self.spinbox_binoms_exponent.setRange(2,9)
+    # self.spinbox_binoms_exponent.setSizePolicy(SizePolicy_maximum)
+    self.horizontallayout_binoms_exponent.addWidget(self.spinbox_binoms_exponent)
+    self.horizontallayout_binoms_exponent.addStretch()
+
+    self.widget_binoms_direction = QtWidgets.QWidget(self.widget_binom_further_settings)
+    self.verticallayout_binom_further_settings.addWidget(self.widget_binoms_direction)
+
+    self.horizontallayout_binoms_direction = create_new_horizontallayout(self.widget_binoms_direction)
+    self.horizontallayout_binoms_direction.setContentsMargins(12,0,0,0)
+
+    self.label_binoms_direction_1 = create_new_label(self.widget_binoms_direction, "(a \u00B1 b)<sup>2</sup>")
+    self.horizontallayout_binoms_direction.addWidget(self.label_binoms_direction_1)
+
+
+    self.binoms_direction_index = 0
+    self.pushbutton_binoms_direction = create_new_button(self.widget_binoms_direction, "", self.binoms_direction_changed, "chevron-right.svg")
+    self.horizontallayout_binoms_direction.addWidget(self.pushbutton_binoms_direction)
+    
+
+    self.label_binoms_direction_2 = create_new_label(self.widget_binoms_direction, "a<sup>2</sup> \u00B1 2ab + b<sup>2</sup>")
+    self.horizontallayout_binoms_direction.addWidget(self.label_binoms_direction_2)  
 
     self.checkbox_binoms_enable_fraction = create_new_checkbox(self.widget_binoms_set_variables_factors, "Brüche erlauben")
     self.verticallayout_binom_further_settings.addWidget(self.checkbox_binoms_enable_fraction)
 
     self.widget_binom_further_settings.hide()
 
+    self.binom_update_label()
     ####################################################
     ######################################################
     #######################################################

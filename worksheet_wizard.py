@@ -1013,6 +1013,71 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
 
 
 
+def create_single_example_binomische_formeln(binomials_types, a,b,x,y, exponent, binoms_direction_index, fractions_allowed):
+    if a!=False:
+        num = get_random_number(a[0],a[1])
+        if num == 1:
+            first_string = ""
+        else:
+            first_string = f"{num}"
+    else: 
+        first_string = ""
+
+    if x!= False:
+        exponent_x = get_random_number(x[0],x[1])
+        if exponent_x !=1:
+            x = f"x^^{exponent_x}"
+        else:
+            x = "x"
+    else: 
+        exponent_x = ""
+
+    if first_string == "":
+        first_string = x
+    elif exponent_x != "":
+        first_string += f"*{x}"
+     
+
+    if b!=False:
+        num = get_random_number(b[0],b[1])
+        if num == 1:
+            second_string = ""
+        else:
+            second_string = f"{num}"
+    else: 
+        second_string = ""
+
+    if y!= False:
+        exponent_y = get_random_number(y[0],y[1])
+        if exponent_y !=1:
+            y = f"y^^{exponent_y}"
+        else:
+            y = "y"
+    else: 
+        exponent_y = ""   
+
+    if second_string == "":
+        second_string = y
+    elif exponent_y != "":
+        second_string += f"*{y}"
+    
+    print(first_string)
+    print(second_string)
+
+    binome = [f'({first_string}+{second_string})**{exponent}', f'({first_string}-{second_string})**{exponent}', f'({first_string}+{second_string})*({first_string}-{second_string})']
+
+    random_choice = str(random.choice(binome))
+    print(f"choice: {random_choice}")
+    binom = eval(random_choice)
+        
+    calculated = str(binom.expand())
+
+    calculated = calculated.replace("**", "^")
+    calculated = calculated.replace("*", "")
+    print(calculated)
+
+    return [[],0, ""]
+
 def create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
     list_of_examples = []
 
@@ -1063,6 +1128,17 @@ def create_list_of_examples_ganze_zahlen(typ, examples, minimum, maximum, commas
         list_of_examples.append(new_example)
 
     return list_of_examples
+
+def create_list_of_examples_binomische_formeln(examples, binomials_types, a,b,x,y, exponent, binoms_direction_index, fractions_allowed):
+    list_of_examples = []
+
+    for _ in range(examples):
+        new_example = create_single_example_binomische_formeln(binomials_types, a,b,x,y, exponent, binoms_direction_index, fractions_allowed)
+
+        list_of_examples.append(new_example)
+
+    return list_of_examples
+
 
 def get_number_of_decimals(x):
     num = D('{}'.format(x)).normalize()
