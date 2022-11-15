@@ -7,7 +7,7 @@ from config import is_empty
 # from config_start import path_localappdata_lama, path_programm
 import decimal
 import re
-
+from sympy import symbols, Symbol
 
 from create_nonograms import nonogramm_empty, all_nonogramms, list_all_pixels
 # import subprocess
@@ -1013,7 +1013,76 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
 
 
 
-def create_single_example_binomische_formeln(binomials_types, a,b,x,y, exponent, binoms_direction_index, fractions_allowed):
+def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_x,exp_y, exponent, binoms_direction_index, fractions_allowed):
+    alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+
+    choices = random.choices(alphabet, k=2)
+    v_1 = choices[0]
+    v_2 = choices[1]
+    v_1, v_2 = symbols("{} {}".format(v_1, v_2))
+
+    # e = (3*a-1/2*b)**2
+
+    coef_1 = get_random_number(1,10)
+    coef_2 = get_random_number(1,10)
+    # coef_1 = get_random_fraction(1,10)
+    # coef_2 = get_random_fraction(1,10)
+    print(coef_1)
+    print(coef_2)
+    # coef_1 = get_random_fraction(1,10)
+    # coef_2 = get_random_fraction(1,10)
+
+
+    if coef_a!=False:
+        num = get_random_number(coef_a[0],coef_a[1])
+        if num == 1:
+            first_string = ""
+        else:
+            first_string = f"{num}"
+    else: 
+        first_string = ""
+
+    if exp_x!= False and first_string != "":
+        first_string += f"*{Symbol('A')}"
+    # if exp_x!= False:
+    #     exponent_x = get_random_number(exp_x[0],exp_x[1])
+    #     if exponent_x !=1:
+    #         x = f"{v_1}^^{exponent_x}"
+    #     else:
+    #         x = f"{v_1}"
+    # else: 
+    #     exponent_x = ""
+
+    # if first_string == "":
+    #     first_string = x
+    # elif exponent_x != "":
+    #     first_string += f"*{x}"
+
+
+
+
+    exponent = 2
+    # binome = [f'({first_string}*v_1+{coef_2}*v_2)**{exponent}', '({0}*v_1-{1}*v_2)**{2}'.format(coef_1,coef_2,exponent), '({0}*v_1+{1}*v_2)*({0}*v_1-{1}*v_2)'.format(coef_1,coef_2)]
+
+    index = random.choice(range(3))
+    print(index)
+    # random_choice = random.choice(binome)
+    random_choice = f'({first_string}+{coef_2}*v_2)**{exponent}'
+    print(f"choice: {random_choice}")
+    binom = eval(random_choice)
+
+    print(f"binom: {binom}")
+    # fraction = get_random_fraction(1,10)
+
+    # print(e)
+
+    calculated = str(binom.expand())
+    print(binom.expand())
+    x = re.findall('[0-9.]+', calculated)
+    print(x)
+
+    return [[],0, ""]
+
     if a!=False:
         num = get_random_number(a[0],a[1])
         if num == 1:
@@ -1064,17 +1133,38 @@ def create_single_example_binomische_formeln(binomials_types, a,b,x,y, exponent,
     print(first_string)
     print(second_string)
 
-    binome = [f'({first_string}+{second_string})**{exponent}', f'({first_string}-{second_string})**{exponent}', f'({first_string}+{second_string})*({first_string}-{second_string})']
+    # binome = [f'({first_string}+{second_string})**{exponent}', f'({first_string}-{second_string})**{exponent}', f'({first_string}+{second_string})*({first_string}-{second_string})']
 
-    random_choice = str(random.choice(binome))
+    # random_choice = str(random.choice(binome))
+    # print(f"choice: {random_choice}")
+
+    # string = '({0}+{1})**{2}'.format(first_string,second_string,2)
+    coef_1 = get_random_number(1,1)
+    coef_2 = get_random_number(1,1)
+    # coef_1 = get_random_fraction(1,10)
+    # coef_2 = get_random_fraction(1,10)
+    print(coef_1)
+    print(coef_2)
+
+    exponent = 2
+    binome = ['({0}*a+{1}*b)**{2}'.format(coef_1,coef_2,exponent), '({0}*a-{1}*b)**{2}'.format(coef_1,coef_2,exponent), '({0}*a+{1}*b)*({0}*a-{1}*b)'.format(coef_1,coef_2)]
+
+
+    random_choice = random.choice(binome)
     print(f"choice: {random_choice}")
     binom = eval(random_choice)
-        
-    calculated = str(binom.expand())
 
-    calculated = calculated.replace("**", "^")
-    calculated = calculated.replace("*", "")
-    print(calculated)
+    print(f"binom: {binom}")
+
+    # test= eval(string)
+    # print(test) 
+    # binom = eval(random_choice)
+        
+    # calculated = str(binom.expand())
+
+    # calculated = calculated.replace("**", "^")
+    # calculated = calculated.replace("*", "")
+    # print(calculated)
 
     return [[],0, ""]
 

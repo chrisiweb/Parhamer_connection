@@ -130,8 +130,8 @@ a, b = symbols("{} {}".format(variable_1, variable_2))
 
 e = (3*a-1/2*b)**2
 
-coef_1 = get_random_number(1,1)
-coef_2 = get_random_number(1,1)
+coef_1 = get_random_number(1,10)
+coef_2 = get_random_number(1,10)
 # coef_1 = get_random_fraction(1,10)
 # coef_2 = get_random_fraction(1,10)
 print(coef_1)
