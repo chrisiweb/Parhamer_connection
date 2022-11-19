@@ -10,6 +10,7 @@ import re
 from sympy import symbols, Symbol
 
 from create_nonograms import nonogramm_empty, all_nonogramms, list_all_pixels
+from fractions import Fraction
 # import subprocess
 # from tex_minimal import tex_preamble, tex_end
 # from create_pdf import create_pdf, open_pdf_file, build_pdf_file
@@ -1006,25 +1007,27 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
     if solution == 0:
         solution = 0
     string = "{0} = {1}".format(string.replace(".",","), str(solution).replace(".",","))
-    
-    # print([numbers, solution, string])
-    
+       
     return [numbers, solution, string] 
 
 
 
 def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_x,exp_y, exponent, binoms_direction_index, fractions_allowed):
-    alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-
-    choices = random.choices(alphabet, k=2)
-    v_1 = choices[0]
-    v_2 = choices[1]
-    v_1, v_2 = symbols("{} {}".format(v_1, v_2))
+    v_1 = "a"
+    v_2 = "b"
+    a, b = symbols("{} {}".format(v_1, v_2))
 
     # e = (3*a-1/2*b)**2
+    print(coef_a)
 
-    coef_1 = get_random_number(1,10)
-    coef_2 = get_random_number(1,10)
+    if fractions_allowed == True:
+        coef_1 = get_random_fraction(coef_a[0],coef_a[1])
+        coef_2 = get_random_fraction(coef_b[0],coef_b[1])
+    else:
+        coef_1 = get_random_number(coef_a[0],coef_a[1])
+        coef_2 = get_random_number(coef_b[0],coef_b[1])
+
+    
     # coef_1 = get_random_fraction(1,10)
     # coef_2 = get_random_fraction(1,10)
     print(coef_1)
@@ -1033,17 +1036,17 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
     # coef_2 = get_random_fraction(1,10)
 
 
-    if coef_a!=False:
-        num = get_random_number(coef_a[0],coef_a[1])
-        if num == 1:
-            first_string = ""
-        else:
-            first_string = f"{num}"
-    else: 
-        first_string = ""
+    # if coef_a!=False:
+    #     num = get_random_number(coef_a[0],coef_a[1])
+    #     if num == 1:
+    #         first_string = ""
+    #     else:
+    #         first_string = f"{num}"
+    # else: 
+    #     first_string = ""
 
-    if exp_x!= False and first_string != "":
-        first_string += f"*{Symbol('A')}"
+    # if exp_x!= False and first_string != "":
+    #     first_string += f"*{Symbol('A')}"
     # if exp_x!= False:
     #     exponent_x = get_random_number(exp_x[0],exp_x[1])
     #     if exponent_x !=1:
@@ -1059,29 +1062,53 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
     #     first_string += f"*{x}"
 
 
-
-
-    exponent = 2
+    binome = ['({0}*a+{1}*b)**{2}'.format(coef_1,coef_2,exponent), '({0}*a-{1}*b)**{2}'.format(coef_1,coef_2,exponent), '({0}*a+{1}*b)*({0}*a-{1}*b)'.format(coef_1,coef_2)]
     # binome = [f'({first_string}*v_1+{coef_2}*v_2)**{exponent}', '({0}*v_1-{1}*v_2)**{2}'.format(coef_1,coef_2,exponent), '({0}*v_1+{1}*v_2)*({0}*v_1-{1}*v_2)'.format(coef_1,coef_2)]
 
-    index = random.choice(range(3))
-    print(index)
-    # random_choice = random.choice(binome)
-    random_choice = f'({first_string}+{coef_2}*v_2)**{exponent}'
+
+
+
+    random_choice = random.choice(binome)
     print(f"choice: {random_choice}")
     binom = eval(random_choice)
 
     print(f"binom: {binom}")
-    # fraction = get_random_fraction(1,10)
+    
 
     # print(e)
 
-    calculated = str(binom.expand())
+    solution = str(binom.expand())
     print(binom.expand())
-    x = re.findall('[0-9.]+', calculated)
-    print(x)
+    # if fractions_allowed == True:
+    #     _temp = re.findall('[0-9.]+', solution)
+    #     # # print(x)
 
-    return [[],0, ""]
+
+    #     for all in enumerate(_temp):
+    #         frac= Fraction(all)
+
+    #         if frac.denominator != 1:
+    #             solution = solution.replace(all, "\\frac{{{0}}}{{{1}}}".format(frac.numerator, frac.denominator))
+    #         else:
+    #             solution = solution.replace(all, str(frac))
+
+
+    alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+
+    choices = random.choices(alphabet, k=2)
+
+    solution_string = solution.replace("**", "^")
+    solution_string = solution_string.replace("*", "")
+    solution_string = solution_string.replace("a", choices[0])
+    solution_string = solution_string.replace("b", choices[1])
+
+    binom_string = random_choice.replace("**", "^")
+    binom_string = binom_string.replace("*", "")
+    binom_string = binom_string.replace("a", choices[0])
+    binom_string = binom_string.replace("b", choices[1])
+    print(solution)
+
+    return [binom,solution, f"{binom_string} = {solution_string}"]
 
     if a!=False:
         num = get_random_number(a[0],a[1])
@@ -1167,6 +1194,13 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
     # print(calculated)
 
     return [[],0, ""]
+
+def get_random_fraction(min, max):
+    nominator = get_random_number(min, max-1)
+    denominator = get_random_number(nominator+1, max)
+
+    return Fraction("{0}/{1}".format(nominator, denominator))
+
 
 def create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
     list_of_examples = []
