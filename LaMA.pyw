@@ -4947,7 +4947,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             )
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         loaded_file = self.load_file(self.saved_file_path)
+
         QtWidgets.QApplication.restoreOverrideCursor()
+        if loaded_file == None:
+            critical_window("Die geöffnete *.lama-Datei ist fehlerhaft und kann nicht geladen werden.",
+            "Für weitere Unterstützung kontaktieren Sie uns unter lama.helpme@gmail.com.")
+            return
+        
         try:
             if self.chosen_program == loaded_file["data_gesamt"]["program"]:
                 if self.list_alle_aufgaben_sage !=  [[],[]]:
