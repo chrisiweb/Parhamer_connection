@@ -4278,6 +4278,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         elif thema == "Binomische Formeln":
             binomials_types = [self.cb_binoms_1.isChecked(), self.cb_binoms_2.isChecked(), self.cb_binoms_3.isChecked()]
+            if binomials_types == [False, False, False]:
+                warning_window("Es muss mindestens eine der Typen der binomischen Formeln ausgewählt werden.")
+                return []
+
             if self.checkbox_binoms_a.isChecked():
                 a = [self.spinbox_binoms_a_min.value(), self.spinbox_binoms_a_max.value()]
             else:
