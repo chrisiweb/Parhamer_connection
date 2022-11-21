@@ -3844,11 +3844,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         label = "("
                  
         if self.checkbox_binoms_a.isChecked():
-            label += "a"
-        if self.checkbox_binoms_a.isChecked() and self.checkbox_binoms_x.isChecked():
-            label += " \xb7 "
-        if self.checkbox_binoms_x.isChecked():
-            label += "x<sup>m</sup>"
+            label += "a \xb7 "
+
+        label += "x<sup>m</sup>"
 
         label += " \u00B1 "
 
@@ -3865,10 +3863,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         #"(a \xb7 x<sup>n</sup> + b \xb7 y<sup>m</sup>)<sup>2</sup>"
 
     def checkbox_binoms_a_state_changed(self):
-        if self.checkbox_binoms_x.isChecked()==False and self.checkbox_binoms_a.isChecked()==False:
-            warning_window('Es muss entweder "a" oder "x" ausgewählt sein.')
-            self.checkbox_binoms_x.setChecked(True)
-            return
         self.checkbox_enable_disable_widget(self.checkbox_binoms_a, self.spinbox_binoms_a_min)
         self.checkbox_enable_disable_widget(self.checkbox_binoms_a, self.spinbox_binoms_a_max)
         self.binom_update_label()
@@ -3882,14 +3876,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.checkbox_enable_disable_widget(self.checkbox_binoms_b, self.spinbox_binoms_b_max)
         self.binom_update_label()
 
-    def checkbox_binoms_x_state_changed(self):
-        if self.checkbox_binoms_x.isChecked()==False and self.checkbox_binoms_a.isChecked()==False:
-            warning_window('Es muss entweder "a" oder "x" ausgewählt sein.')
-            self.checkbox_binoms_a.setChecked(True)
-            return
-        self.checkbox_enable_disable_widget(self.checkbox_binoms_x, self.spinbox_binoms_m_min)
-        self.checkbox_enable_disable_widget(self.checkbox_binoms_x, self.spinbox_binoms_m_max)
-        self.binom_update_label()
 
     def checkbox_binoms_y_state_changed(self):
         if self.checkbox_binoms_y.isChecked()==False and self.checkbox_binoms_b.isChecked()==False:
@@ -4130,6 +4116,39 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     show_brackets = True
                 new_example = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)
 
+        elif thema == themen_worksheet_wizard[8]:
+            binomials_types = [self.cb_binoms_1.isChecked(), self.cb_binoms_2.isChecked(), self.cb_binoms_3.isChecked()]
+            if binomials_types == [False, False, False]:
+                warning_window("Es muss mindestens eine der Typen der binomischen Formeln ausgewählt werden.")
+                return
+
+            if self.checkbox_binoms_a.isChecked():
+                a = [self.spinbox_binoms_a_min.value(), self.spinbox_binoms_a_max.value()]
+                if a == [0,0]:
+                    warning_window('Der Koeffizient "a" darf nicht gleich 0 sein.')
+                    return
+            else:
+                a = [1,1]
+            
+            if self.checkbox_binoms_b.isChecked(): 
+                b = [self.spinbox_binoms_b_min.value(), self.spinbox_binoms_b_max.value()]
+                if b == [0,0]:
+                    warning_window('Der Koeffizient "b" darf nicht gleich 0 sein.')
+                    return
+            else:
+                b = [1,1] 
+
+            x = [self.spinbox_binoms_m_min.value(), self.spinbox_binoms_m_max.value()]
+
+            if self.checkbox_binoms_y.isChecked():
+                y = [self.spinbox_binoms_n_min.value(), self.spinbox_binoms_n_max.value()]
+            else:
+                y = [0,0]
+
+            fractions_allowed = self.checkbox_binoms_enable_fraction.isChecked()
+            exponent = self.spinbox_binoms_exponent.value()   
+            new_example = create_single_example_binomische_formeln(binomials_types, a,b,x,y,exponent, self.binoms_direction_index, fractions_allowed)         
+
         return new_example
 
     def reload_example(self, index):  
@@ -4158,7 +4177,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # for all in self.dict_all_examples_wizard:
         try:
             num_of_examples = len(self.list_of_examples_wizard)
-        except AttributeError:
+        except (AttributeError, TypeError):
             self.list_of_examples_wizard = []
             num_of_examples = len(self.list_of_examples_wizard)
 
@@ -4273,7 +4292,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             if minimum>maximum:
                 critical_window('Das Maximum muss größer als das Minimum sein.')
-                return
+                return []
             list_of_examples_wizard = create_list_of_examples_ganze_zahlen(typ, examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)        
 
         elif thema == "Binomische Formeln":
@@ -4284,23 +4303,27 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             if self.checkbox_binoms_a.isChecked():
                 a = [self.spinbox_binoms_a_min.value(), self.spinbox_binoms_a_max.value()]
+                if a == [0,0]:
+                    warning_window('Der Koeffizient "a" darf nicht gleich 0 sein.')
+                    return
             else:
-                a = False
+                a = [1,1]
             
             if self.checkbox_binoms_b.isChecked(): 
                 b = [self.spinbox_binoms_b_min.value(), self.spinbox_binoms_b_max.value()]
+                if b == [0,0]:
+                    warning_window('Der Koeffizient "b" darf nicht gleich 0 sein.')
+                    return
             else:
-                b = False  
+                b = [1,1] 
 
-            if self.checkbox_binoms_x.isChecked():
-                x = [self.spinbox_binoms_m_min.value(), self.spinbox_binoms_m_max.value()]
-            else:
-                x = False
+            x = [self.spinbox_binoms_m_min.value(), self.spinbox_binoms_m_max.value()]
+
 
             if self.checkbox_binoms_y.isChecked():
                 y = [self.spinbox_binoms_n_min.value(), self.spinbox_binoms_n_max.value()]
             else:
-                y = False
+                y = [0,0]
 
             fractions_allowed = self.checkbox_binoms_enable_fraction.isChecked()
             exponent = self.spinbox_binoms_exponent.value()
@@ -8136,7 +8159,11 @@ if __name__ == "__main__":
         create_list_of_examples_subtraction, create_single_example_subtraction,
         create_list_of_examples_multiplication, create_single_example_multiplication,
         create_list_of_examples_division, create_single_example_division,
-        create_list_of_examples_ganze_zahlen, create_single_example_ganze_zahlen_strich, create_single_example_ganze_zahlen_punkt, create_single_example_ganze_zahlen_grundrechnungsarten,
+        create_list_of_examples_ganze_zahlen,
+        create_single_example_ganze_zahlen_strich,
+        create_single_example_ganze_zahlen_punkt,
+        create_single_example_ganze_zahlen_grundrechnungsarten,
+        create_single_example_binomische_formeln,
         create_list_of_examples_binomische_formeln,
         create_nonogramm, create_coordinates, get_random_solution,list_all_pixels, all_nonogramms, show_all_nonogramms
     )

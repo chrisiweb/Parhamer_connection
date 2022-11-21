@@ -7,7 +7,7 @@ from config import is_empty
 # from config_start import path_localappdata_lama, path_programm
 import decimal
 import re
-from sympy import symbols, Symbol
+from sympy import symbols, Symbol, simplify, latex
 
 from create_nonograms import nonogramm_empty, all_nonogramms, list_all_pixels
 from fractions import Fraction
@@ -1035,12 +1035,20 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
         coef_1 = get_random_number(coef_a[0],coef_a[1])
         coef_2 = get_random_number(coef_b[0],coef_b[1])
 
-    exponent_x = get_random_number(exp_x[0],exp_x[1])
+
+    if exp_x == [0,0]:
+        exponent_x = 0
+    else:    
+        exponent_x = get_random_number(exp_x[0],exp_x[1])
     if exponent_x ==1:
         exponent_x = ""
     else:
         exponent_x = f"**{exponent_x}"
-    exponent_y = get_random_number(exp_y[0],exp_y[1])
+
+    if exp_y == [0,0]:
+        exponent_y = 0
+    else:
+        exponent_y = get_random_number(exp_y[0],exp_y[1])
     if exponent_y ==1:
         exponent_y = ""
     else:
@@ -1049,8 +1057,7 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
     # print(exp_x)
     # print(exp_y)
     print(binoms_direction_index)
-    exp_x=1
-    exp_y=1
+
     binome = []
 
     for i, all in enumerate(binomials_types):
@@ -1069,11 +1076,20 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
 
 
     random_choice = random.choice(binome)
+
+   
     print(f"choice: {random_choice}")
+
+    random_choice = re.sub("\*[AB]\*\*0", "", random_choice)
+    
+    print(f"repaired choice: {random_choice}")
+
+
     binom = eval(random_choice)
+    binom_2 = latex(binom)
 
     print(f"binom: {binom}")
-
+    print(f"binom_2: {binom_2}")
 
     # print(e)
 
@@ -1110,101 +1126,37 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
     binom_string = binom_string.replace("*", replacement)
     binom_string = binom_string.replace("A", variable_choices[0])
     binom_string = binom_string.replace("B", variable_choices[1])
-    binom_string = re.sub('([^0-9])1([^0-9])', r"\1\2",binom_string)
-
-    print([binom,solution, f"{binom_string} = {solution_string}"])
-    return [binom,solution, f"{binom_string} = {solution_string}"]
-
-    if a!=False:
-        num = get_random_number(a[0],a[1])
-        if num == 1:
-            first_string = ""
-        else:
-            first_string = f"{num}"
-    else: 
-        first_string = ""
-
-    if x!= False:
-        exponent_x = get_random_number(x[0],x[1])
-        if exponent_x !=1:
-            x = f"x^^{exponent_x}"
-        else:
-            x = "x"
-    else: 
-        exponent_x = ""
-
-    if first_string == "":
-        first_string = x
-    elif exponent_x != "":
-        first_string += f"*{x}"
-     
-
-    if b!=False:
-        num = get_random_number(b[0],b[1])
-        if num == 1:
-            second_string = ""
-        else:
-            second_string = f"{num}"
-    else: 
-        second_string = ""
-
-    if y!= False:
-        exponent_y = get_random_number(y[0],y[1])
-        if exponent_y !=1:
-            y = f"y^^{exponent_y}"
-        else:
-            y = "y"
-    else: 
-        exponent_y = ""   
-
-    if second_string == "":
-        second_string = y
-    elif exponent_y != "":
-        second_string += f"*{y}"
-    
-    print(first_string)
-    print(second_string)
-
-    # binome = [f'({first_string}+{second_string})**{exponent}', f'({first_string}-{second_string})**{exponent}', f'({first_string}+{second_string})*({first_string}-{second_string})']
-
-    # random_choice = str(random.choice(binome))
-    # print(f"choice: {random_choice}")
-
-    # string = '({0}+{1})**{2}'.format(first_string,second_string,2)
-    coef_1 = get_random_number(1,1)
-    coef_2 = get_random_number(1,1)
-    # coef_1 = get_random_fraction(1,10)
-    # coef_2 = get_random_fraction(1,10)
-    print(coef_1)
-    print(coef_2)
-
-    exponent = 2
-    binome = ['({0}*a+{1}*b)**{2}'.format(coef_1,coef_2,exponent), '({0}*a-{1}*b)**{2}'.format(coef_1,coef_2,exponent), '({0}*a+{1}*b)*({0}*a-{1}*b)'.format(coef_1,coef_2)]
+    binom_string = re.sub('([^0-9])1([^0-9/])', r"\1\2",binom_string)
+    binom_string = binom_string.replace("+-", "-")
+    binom_string = binom_string.replace("--", "+")
 
 
-    random_choice = random.choice(binome)
-    print(f"choice: {random_choice}")
-    binom = eval(random_choice)
+    print(binoms_direction_index)
 
-    print(f"binom: {binom}")
+    if binoms_direction_index == 1:
+        index = random.choice([0,2])
+    else:
+        index = binoms_direction_index
 
-    # test= eval(string)
-    # print(test) 
-    # binom = eval(random_choice)
-        
-    # calculated = str(binom.expand())
+    if index == 0:
+        string = f"{binom_string} = {solution_string}"
+    elif index == 2:
+        string = f"{solution_string} = {binom_string}"
+    	        
 
-    # calculated = calculated.replace("**", "^")
-    # calculated = calculated.replace("*", "")
-    # print(calculated)
+    print([binom,solution, string])
+    return [binom,solution, string]
 
-    return [[],0, ""]
 
 def get_random_fraction(min, max):
-    nominator = get_random_number(min, max-1)
-    denominator = get_random_number(nominator+1, max)
+    if min == 0 and max == 1:
+        numerator = 1
+        denominator = 2
+    else:
+        numerator = get_random_number(min, max-1)
+        denominator = get_random_number(numerator+1, max)
 
-    return Fraction("{0}/{1}".format(nominator, denominator))
+    return Fraction("{0}/{1}".format(numerator, denominator))
 
 
 def create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
@@ -1460,6 +1412,15 @@ def create_latex_string_ganze_zahlen(content, example):
     content += temp_content
     return content
 
+
+def create_latex_string_binomische_formeln(content, example):
+    print(content)
+
+    print(example)
+
+    return content
+
+
 def create_latex_worksheet(order_of_examples, dict_of_examples,index, titel, arbeitsanweisung, nummerierung, solution_type=0):
     content = "\section{{{0}}}\n\n".format(titel.replace('&', '\&'))
 
@@ -1492,6 +1453,8 @@ def create_latex_worksheet(order_of_examples, dict_of_examples,index, titel, arb
                 content = create_latex_string_division(content, example)
             elif index == 4 or index == 5 or index == 6 or index ==7:
                 content = create_latex_string_ganze_zahlen(content, example)
+            elif index == 8:
+                content = create_latex_string_binomische_formeln(content, example)
 
         content += "\end{enumerate}\leer\n\n"
 
@@ -1755,25 +1718,24 @@ def get_random_solution(self, thema):
 
     elif thema == themen_worksheet_wizard[8]:
         binomials_types = [self.cb_binoms_1.isChecked(), self.cb_binoms_2.isChecked(), self.cb_binoms_3.isChecked()]
+        
         if self.checkbox_binoms_a.isChecked():
             a = [self.spinbox_binoms_a_min.value(), self.spinbox_binoms_a_max.value()]
         else:
-            a = False
+            a = [1,1]
         
         if self.checkbox_binoms_b.isChecked(): 
             b = [self.spinbox_binoms_b_min.value(), self.spinbox_binoms_b_max.value()]
         else:
-            b = False  
+            b = [1,1] 
 
-        if self.checkbox_binoms_x.isChecked():
-            x = [self.spinbox_binoms_m_min.value(), self.spinbox_binoms_m_max.value()]
-        else:
-            x = False
+        x = [self.spinbox_binoms_m_min.value(), self.spinbox_binoms_m_max.value()]
+
 
         if self.checkbox_binoms_y.isChecked():
             y = [self.spinbox_binoms_n_min.value(), self.spinbox_binoms_n_max.value()]
         else:
-            y = False
+            y = [0,0]
 
         fractions_allowed = self.checkbox_binoms_enable_fraction.isChecked()
         exponent = self.spinbox_binoms_exponent.value()

@@ -2858,7 +2858,7 @@ def setup_stackWizard(self):
     self.gridlayout_binoms_set_variables.addWidget(self.label_binoms_a, 2,1,1,1)
 
     self.spinbox_binoms_a_min = create_new_spinbox(self.widget_binoms_set_variables_factors, value=1)
-    self.spinbox_binoms_a_min.setRange(-99,99)
+    self.spinbox_binoms_a_min.setRange(-99,10)
     self.gridlayout_binoms_set_variables.addWidget(self.spinbox_binoms_a_min, 2,2,1,1)
 
     self.label_binoms_a_to = create_new_label(self.widget_binoms_set_variables_factors, " - ")
@@ -2866,6 +2866,7 @@ def setup_stackWizard(self):
 
     self.spinbox_binoms_a_max = create_new_spinbox(self.widget_binoms_set_variables_factors, value=10)
     self.spinbox_binoms_a_max.setRange(-99,99)
+    self.spinbox_binoms_a_max.valueChanged.connect(lambda: self.spinbox_binoms_a_min.setMaximum(self.spinbox_binoms_a_max.value()))
     self.gridlayout_binoms_set_variables.addWidget(self.spinbox_binoms_a_max, 2,4,1,1)
 
     self.checkbox_binoms_a.stateChanged.connect(self.checkbox_binoms_a_state_changed)
@@ -2877,7 +2878,7 @@ def setup_stackWizard(self):
     self.gridlayout_binoms_set_variables.addWidget(self.label_binoms_b, 3,1,1,1)
 
     self.spinbox_binoms_b_min = create_new_spinbox(self.widget_binoms_set_variables_factors, value=1)
-    self.spinbox_binoms_b_min.setRange(-99,99)
+    self.spinbox_binoms_b_min.setRange(-99,10)
     self.gridlayout_binoms_set_variables.addWidget(self.spinbox_binoms_b_min, 3,2,1,1)
 
     self.label_binoms_b_to = create_new_label(self.widget_binoms_set_variables_factors, " - ")
@@ -2885,6 +2886,7 @@ def setup_stackWizard(self):
 
     self.spinbox_binoms_b_max = create_new_spinbox(self.widget_binoms_set_variables_factors, value=10)
     self.spinbox_binoms_b_max.setRange(-99,99)
+    self.spinbox_binoms_b_max.valueChanged.connect(lambda: self.spinbox_binoms_b_min.setMaximum(self.spinbox_binoms_b_max.value()))
     self.gridlayout_binoms_set_variables.addWidget(self.spinbox_binoms_b_max, 3,4,1,1)
 
     self.checkbox_binoms_b.stateChanged.connect(self.checkbox_binoms_b_state_changed)
@@ -2903,26 +2905,23 @@ def setup_stackWizard(self):
     self.gridlayout_binoms_set_exponents.addWidget(self.label_binoms_bis, 1,4,1,1, QtCore.Qt.AlignCenter)
 
 
-    self.checkbox_binoms_x = create_new_checkbox(self.widget_binoms_set_variables_factors, "x: ", checked=True)
-
-    self.gridlayout_binoms_set_exponents.addWidget(self.checkbox_binoms_x, 2,0,1,1)
 
     self.label_binoms_m = create_new_label(self.widget_binoms_set_variables_exponents, "m =")
     self.gridlayout_binoms_set_exponents.addWidget(self.label_binoms_m, 2,1,1,1)
 
     self.spinbox_binoms_m_min = create_new_spinbox(self.widget_binoms_set_variables_exponents, value=1)
-    self.spinbox_binoms_m_min.setRange(0,9)
+    self.spinbox_binoms_m_min.setRange(1,1)
+
     self.gridlayout_binoms_set_exponents.addWidget(self.spinbox_binoms_m_min, 2,2,1,1)
 
     self.label_binoms_m_to = create_new_label(self.widget_binoms_set_variables_exponents, " - ")
     self.gridlayout_binoms_set_exponents.addWidget(self.label_binoms_m_to, 2,3,1,1)
 
     self.spinbox_binoms_m_max = create_new_spinbox(self.widget_binoms_set_variables_exponents, value=1)
-    self.spinbox_binoms_m_max.setRange(0,9)
+    self.spinbox_binoms_m_max.setRange(1,9)
+    self.spinbox_binoms_m_max.valueChanged.connect(lambda: self.spinbox_binoms_m_min.setMaximum(self.spinbox_binoms_m_max.value()))
     self.gridlayout_binoms_set_exponents.addWidget(self.spinbox_binoms_m_max, 2,4,1,1)
 
-
-    self.checkbox_binoms_x.stateChanged.connect(self.checkbox_binoms_x_state_changed)
 
     self.checkbox_binoms_y = create_new_checkbox(self.widget_binoms_set_variables_factors, "y: ", checked=True)
     self.gridlayout_binoms_set_exponents.addWidget(self.checkbox_binoms_y, 3,0,1,1)
@@ -2931,7 +2930,7 @@ def setup_stackWizard(self):
     self.gridlayout_binoms_set_exponents.addWidget(self.label_binoms_n, 3,1,1,1)
 
     self.spinbox_binoms_n_min = create_new_spinbox(self.widget_binoms_set_variables_exponents, value=1)
-    self.spinbox_binoms_n_min.setRange(1,9)
+    self.spinbox_binoms_n_min.setRange(1,1)
     self.gridlayout_binoms_set_exponents.addWidget(self.spinbox_binoms_n_min, 3,2,1,1)
 
     self.label_binoms_n_to = create_new_label(self.widget_binoms_set_variables_exponents, " - ")
@@ -2939,6 +2938,7 @@ def setup_stackWizard(self):
 
     self.spinbox_binoms_n_max = create_new_spinbox(self.widget_binoms_set_variables_exponents, value=1)
     self.spinbox_binoms_n_max.setRange(1,9)
+    self.spinbox_binoms_n_max.valueChanged.connect(lambda: self.spinbox_binoms_n_min.setMaximum(self.spinbox_binoms_n_max.value()))
     self.gridlayout_binoms_set_exponents.addWidget(self.spinbox_binoms_n_max, 3,4,1,1)
 
     self.checkbox_binoms_y.stateChanged.connect(self.checkbox_binoms_y_state_changed)
