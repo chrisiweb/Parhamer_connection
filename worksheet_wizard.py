@@ -1054,9 +1054,6 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
     else:
         exponent_y = f"**{exponent_y}"
 
-    # print(exp_x)
-    # print(exp_y)
-    print(binoms_direction_index)
 
     binome = []
 
@@ -1070,28 +1067,15 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
         if all == True:
             binome.append(possible_binoms[i])
 
-    # binome = ['({0}*A+{1}*B)**{2}'.format(coef_1,coef_2,exponent), '({0}*A-{1}*B)**{2}'.format(coef_1,coef_2,exponent), '({0}*A+{1}*B)*({0}*A-{1}*B)'.format(coef_1,coef_2)]
-
-
-
-
+   
     random_choice = random.choice(binome)
 
-   
-    print(f"choice: {random_choice}")
 
     random_choice = re.sub("\*[AB]\*\*0", "", random_choice)
-    
-    print(f"repaired choice: {random_choice}")
 
 
     binom = eval(random_choice)
-    binom_2 = latex(binom)
 
-    print(f"binom: {binom}")
-    print(f"binom_2: {binom_2}")
-
-    # print(e)
 
     solution = str(binom.expand())
     binom = str(binom)
@@ -1100,8 +1084,7 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
         solution = convert_to_fractions(solution)
         # binom = convert_to_fractions(binom)
 
-    print(f'solution: {solution}')
-    print(f"binom: {binom}")
+
 
     alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
@@ -1114,24 +1097,28 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
 
 
     solution_string = solution.replace("**", "^")
+
     if fractions_allowed==True:
-        replacement = "\xb7"
+        solution_string = re.sub('([AB])\*([AB])', r"\1\2", solution_string)
+        solution_string = solution_string.replace("*", "\xb7")
     else:
-        replacement = ""
-    solution_string = solution_string.replace("*", replacement)
+        solution_string = solution_string.replace("*", "")
     solution_string = solution_string.replace("A", variable_choices[0])
     solution_string = solution_string.replace("B", variable_choices[1])
+    
 
     binom_string = random_choice.replace("**", "^")
-    binom_string = binom_string.replace("*", replacement)
+    if fractions_allowed==True:
+        binom_string = re.sub('([AB])\*([AB])', r"\1\2", binom_string)
+        binom_string = binom_string.replace("*", "\xb7")
+    else:
+        binom_string = binom_string.replace("*", "")
     binom_string = binom_string.replace("A", variable_choices[0])
     binom_string = binom_string.replace("B", variable_choices[1])
     binom_string = re.sub('([^0-9])1([^0-9/])', r"\1\2",binom_string)
     binom_string = binom_string.replace("+-", "-")
     binom_string = binom_string.replace("--", "+")
-
-
-    print(binoms_direction_index)
+    
 
     if binoms_direction_index == 1:
         index = random.choice([0,2])
@@ -1142,10 +1129,17 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
         string = f"{binom_string} = {solution_string}"
     elif index == 2:
         string = f"{solution_string} = {binom_string}"
-    	        
 
-    print([binom,solution, string])
-    return [binom,solution, string]
+    solution_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", solution_string)
+    solution_string = solution_string.replace('\xb7', '\cdot ')
+    binom_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", binom_string)
+    binom_string = binom_string.replace('\xb7', '\cdot ')
+
+    print(binom_string)
+
+    print(solution_string)
+
+    return [f"${binom_string}$",f"${solution_string}$", string]
 
 
 def get_random_fraction(min, max):
@@ -1414,9 +1408,16 @@ def create_latex_string_ganze_zahlen(content, example):
 
 
 def create_latex_string_binomische_formeln(content, example):
-    print(content)
 
-    print(example)
+    example_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", example[2])
+
+    aufgabe, loesung = example_string.split(" = ")
+    
+    temp_content = f"\item ${aufgabe} = \\antwort{{{loesung}}}$\n\\leer\n\n"
+
+    temp_content = temp_content.replace('\xb7', '\cdot ')
+
+    content += temp_content
 
     return content
 
@@ -1745,13 +1746,13 @@ def get_random_solution(self, thema):
         distract_result = create_single_example_binomische_formeln(binomials_types, a,b,x,y, exponent, self.binoms_direction_index, fractions_allowed)
     return distract_result
 
-def create_nonogramm(nonogram, coordinates_nonogramm):
-    content = """\n\\vfil\n\\fontsize{{12}}{{14}}\selectfont
-    \meinlr{{{0}
+def create_nonogramm(nonogram, coordinates_nonogramm, spalten=3):
+    content = f"""\n\\vfil\n\\fontsize{{12}}{{14}}\selectfont
+    \meinlr{{{nonogramm_empty}
 
-    \\antwort{{{1}}}}}{{\scriptsize
-    \\begin{{multicols}}{{3}}
-    \\begin{{enumerate}}""".format(nonogramm_empty, nonogram.split("_")[0].capitalize())
+    \\antwort{{{nonogram.split("_")[0].capitalize()}}}}}{{\scriptsize
+    \\begin{{multicols}}{{{spalten}}}
+    \\begin{{enumerate}}"""
 
 #     # list_all_pixles = get_all_pixels(content)
 #     # random.shuffle(list_all_pixles)

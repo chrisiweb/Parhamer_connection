@@ -4339,18 +4339,18 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 list_of_examples.append(item)
         return list_of_examples 
 
-    def create_nonogramm_wizard(self):
-        list_of_examples = self.get_all_examples_wizard()
+    # def create_nonogramm_wizard(self):
+    #     list_of_examples = self.get_all_examples_wizard()
 
-        max_pixels = get_max_pixels_nonogram()
-        if len(list_of_examples) > max_pixels:
-            warning_window("Die maximale Anzahl der Aufgaben zur Verwendung der Selbstkontrolle wurde überschritten ({0}|{1}).".format(len(list_of_examples), max_pixels),
-            "Reduzieren Sie die Anzahl der Aufgaben, um die Selbstkontrolle verwenden zu können.")
-            self.checkBox_show_nonogramm.setChecked(False)
-            self.groupBox_show_nonogramm.setEnabled(False)
+    #     max_pixels = get_max_pixels_nonogram()
+    #     if len(list_of_examples) > max_pixels:
+    #         warning_window("Die maximale Anzahl der Aufgaben zur Verwendung der Selbstkontrolle wurde überschritten ({0}|{1}).".format(len(list_of_examples), max_pixels),
+    #         "Reduzieren Sie die Anzahl der Aufgaben, um die Selbstkontrolle verwenden zu können.")
+    #         self.checkBox_show_nonogramm.setChecked(False)
+    #         self.groupBox_show_nonogramm.setEnabled(False)
 
-        else: 
-            self.chosen_nonogram, self.solution_pixel = get_all_solution_pixels(list_of_examples, self.combobox_nonogramm_wizard.currentText())
+    #     else: 
+    #         self.chosen_nonogram, self.solution_pixel = get_all_solution_pixels(list_of_examples, self.combobox_nonogramm_wizard.currentText())
 
 
     def create_new_worksheet_wizard_pressed(self):
@@ -4564,11 +4564,15 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
         if self.checkBox_show_nonogramm.isChecked():
-            nonogram, solution_pixels = get_all_solution_pixels(total_list_of_examples, self.combobox_nonogramm_wizard.currentText())
+            try:
+                self.nonogram_wizard
+            except AttributeError:
+                self.nonogram_wizard = self.combobox_nonogramm_wizard.currentText()
+
+            self.nonogram_wizard, solution_pixels = get_all_solution_pixels(total_list_of_examples, self.nonogram_wizard)
 
 
             all_shuffeled_coordinates = create_coordinates(solution_pixels, self.dict_all_examples_worksheet_wizard)
-
 
         titel = self.lineEdit_titel_wizard.text()
 
@@ -4607,7 +4611,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             )
 
         if self.checkBox_show_nonogramm.isChecked():
-            content += create_nonogramm(nonogram, all_shuffeled_coordinates)
+            content += create_nonogramm(self.nonogram_wizard, all_shuffeled_coordinates, spalten=2)
 
         return content
 
