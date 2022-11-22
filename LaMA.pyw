@@ -4146,8 +4146,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 y = [0,0]
 
             fractions_allowed = self.checkbox_binoms_enable_fraction.isChecked()
-            exponent = self.spinbox_binoms_exponent.value()   
-            new_example = create_single_example_binomische_formeln(binomials_types, a,b,x,y,exponent, self.binoms_direction_index, fractions_allowed)         
+            exponent = self.spinbox_binoms_exponent.value()
+            variable_1 = self.combobox_choose_variables_1.currentText()
+            variable_2 = self.combobox_choose_variables_2.currentText()
+            new_example = create_single_example_binomische_formeln(binomials_types, a,b,x,y,exponent, self.binoms_direction_index, fractions_allowed, variable_1, variable_2)         
 
         return new_example
 
@@ -4320,6 +4322,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             x = [self.spinbox_binoms_m_min.value(), self.spinbox_binoms_m_max.value()]
 
 
+
             if self.checkbox_binoms_y.isChecked():
                 y = [self.spinbox_binoms_n_min.value(), self.spinbox_binoms_n_max.value()]
             else:
@@ -4327,8 +4330,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             fractions_allowed = self.checkbox_binoms_enable_fraction.isChecked()
             exponent = self.spinbox_binoms_exponent.value()
+            variable_1 = self.combobox_choose_variables_1.currentText()
+            variable_2 = self.combobox_choose_variables_2.currentText()
 
-            list_of_examples_wizard = create_list_of_examples_binomische_formeln(examples, binomials_types, a,b,x,y, exponent, self.binoms_direction_index, fractions_allowed)
+            list_of_examples_wizard = create_list_of_examples_binomische_formeln(examples, binomials_types, a,b,x,y, exponent, self.binoms_direction_index, fractions_allowed, variable_1, variable_2)
 
         return list_of_examples_wizard
 
@@ -4574,7 +4579,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             all_shuffeled_coordinates = create_coordinates(solution_pixels, self.dict_all_examples_worksheet_wizard)
 
-        titel = self.lineEdit_titel_wizard.text()
+        try:
+            titel = self.titel_worksheet_wizard
+        except AttributeError:
+            titel = "Arbeitsblatt"
 
         try: 
             if self.show_instructions_wizard == True:
@@ -4602,16 +4610,29 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             if self.verticalLayout_complete_worksheet_wizard.itemAt(i).widget() != None:
                 order_of_examples.append(self.verticalLayout_complete_worksheet_wizard.itemAt(i).widget())
 
+        try:
+            item_spacing = self.item_spacing_wizard
+        except AttributeError:
+            item_spacing = 2.00
 
         content = create_latex_worksheet(
             order_of_examples,
             self.dict_all_examples_worksheet_wizard,
-            index ,titel, arbeitsanweisung, nummerierung,
+            index ,titel, arbeitsanweisung, nummerierung, item_spacing,
             self.comboBox_solution_type_wizard.currentIndex(),
             )
 
         if self.checkBox_show_nonogramm.isChecked():
-            content += create_nonogramm(self.nonogram_wizard, all_shuffeled_coordinates, spalten=2)
+            try:
+                columns = self.number_columns_solution_wizard
+            except AttributeError:
+                thema = self.comboBox_themen_wizard.currentText()
+                if thema =="Binomische Formeln":
+                    columns = 2
+                else:
+                    columns = 3
+                    
+            content += create_nonogramm(self.nonogram_wizard, all_shuffeled_coordinates, spalten=columns)
 
         return content
 
@@ -4696,24 +4717,45 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             text = "Berechne die folgenden Aufgaben"
 
         try:
+            show_titel = self.titel_worksheet_wizard
+        except:
+            show_titel = True
+
+        try:
             show_instructions = self.show_instructions_wizard
         except AttributeError:
             show_instructions = True
-
 
         try:
             show_pagenumbers = self.checkBox_show_pagenumbers_wizard
         except AttributeError:
             show_pagenumbers = False
-        ui.setupUi(Dialog, text, show_instructions, show_pagenumbers)
+
+        try:
+            columns = self.number_columns_solution_wizard
+        except AttributeError:
+            columns = 3
+
+
+        try:
+            item_spacing = self.item_spacing_wizard
+        except AttributeError:
+            item_spacing = 2.00
+
+        ui.setupUi(Dialog, text, show_titel ,show_instructions, show_pagenumbers, columns, item_spacing)
 
         rsp = Dialog.exec()
         if rsp == QtWidgets.QDialog.Accepted:
             self.show_instructions_wizard = ui.checkBox_hide_instructions.isChecked()
             self.instructions_wizard = ui.plainTextEdit_instructions.toPlainText()
             self.checkBox_show_pagenumbers_wizard = ui.checkBox_show_pagenumbers.isChecked()
-
-
+            if ui.checkbox_titel.isChecked():
+                self.titel_worksheet_wizard = ui.lineedit_titel.text()
+            else:
+                self.titel_worksheet_wizard = False
+            self.number_columns_solution_wizard = ui.spinbox_number_columns.value()
+            self.item_spacing_wizard = ui.spinbox_item_spacing.value()
+            print(ui.spinbox_item_spacing.value())
     def save_worksheet_wizard(self):
         content = self.get_content_worksheet_wizard()
     

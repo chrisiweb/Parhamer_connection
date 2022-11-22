@@ -2367,12 +2367,14 @@ def setup_stackWizard(self):
         add_new_option(self.comboBox_themen_wizard, i, all)
     self.comboBox_themen_wizard.currentIndexChanged.connect(self.themen_changed_wizard)
 
-    self.groupBox_titel_wizard = create_new_groupbox(self.widgetTopics, "Titel")
-    self.horizontalLayout_widgetTopics.addWidget(self.groupBox_titel_wizard)
-    self.horizontalLayout_titel_wizard = create_new_horizontallayout(self.groupBox_titel_wizard)
-    self.lineEdit_titel_wizard = create_new_lineedit(self.groupBox_titel_wizard)
-    self.horizontalLayout_titel_wizard.addWidget(self.lineEdit_titel_wizard)
-    self.lineEdit_titel_wizard.setText("Arbeitsblatt") #.format(self.comboBox_themen_wizard.currentText())
+
+    self.horizontalLayout_widgetTopics.addStretch()
+    # self.groupBox_titel_wizard = create_new_groupbox(self.widgetTopics, "Titel")
+    # self.horizontalLayout_widgetTopics.addWidget(self.groupBox_titel_wizard)
+    # self.horizontalLayout_titel_wizard = create_new_horizontallayout(self.groupBox_titel_wizard)
+    # self.lineEdit_titel_wizard = create_new_lineedit(self.groupBox_titel_wizard)
+    # self.horizontalLayout_titel_wizard.addWidget(self.lineEdit_titel_wizard)
+    # self.lineEdit_titel_wizard.setText("Arbeitsblatt") #.format(self.comboBox_themen_wizard.currentText())
 
 
 
@@ -2955,7 +2957,7 @@ def setup_stackWizard(self):
     self.label_binom_example.hide()
 
     self.widget_binom_further_settings = QtWidgets.QWidget(self.groupBox_zahlenbereich_wizard)
-    self.gridLayout_zahlenbereich_wizard.addWidget(self.widget_binom_further_settings, 0,3, 2,1)
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.widget_binom_further_settings, 0,3, 3,1)
     self.verticallayout_binom_further_settings = create_new_verticallayout(self.widget_binom_further_settings)
 
     self.widget_binoms_exponent = QtWidgets.QWidget(self.widget_binom_further_settings)
@@ -2992,8 +2994,32 @@ def setup_stackWizard(self):
     self.label_binoms_direction_2 = create_new_label(self.widget_binoms_direction, "a<sup>2</sup> \u00B1 2ab + b<sup>2</sup>")
     self.horizontallayout_binoms_direction.addWidget(self.label_binoms_direction_2)  
 
-    self.checkbox_binoms_enable_fraction = create_new_checkbox(self.widget_binoms_set_variables_factors, "Brüche erlauben")
+    self.checkbox_binoms_enable_fraction = create_new_checkbox(self.widget_binom_further_settings, "Brüche erlauben")
     self.verticallayout_binom_further_settings.addWidget(self.checkbox_binoms_enable_fraction)
+
+    self.widget_choose_variables = QtWidgets.QWidget(self.widget_binom_further_settings)
+    self.verticallayout_binom_further_settings.addWidget(self.widget_choose_variables)
+    self.horizontallayout_choose_variables = create_new_horizontallayout(self.widget_choose_variables)
+
+    self.label_choose_variables = create_new_label(self.widget_choose_variables, "Variablen:")
+    self.horizontallayout_choose_variables.addWidget(self.label_choose_variables)
+
+    alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+
+    self.combobox_choose_variables_1 = create_new_combobox(self.widget_choose_variables)
+    self.horizontallayout_choose_variables.addWidget(self.combobox_choose_variables_1)
+    add_new_option(self.combobox_choose_variables_1, 0, "")
+
+    self.combobox_choose_variables_2 = create_new_combobox(self.widget_choose_variables)
+    self.horizontallayout_choose_variables.addWidget(self.combobox_choose_variables_2)
+    add_new_option(self.combobox_choose_variables_2, 0, "")
+    
+    i=1
+    for all in alphabet:
+        add_new_option(self.combobox_choose_variables_1, i, all)
+        add_new_option(self.combobox_choose_variables_2, i, all)
+        i +=1
+
 
     self.widget_binom_further_settings.hide()
 

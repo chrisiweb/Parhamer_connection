@@ -850,7 +850,7 @@ def convert_to_fractions(string):
     
     return string
 
-def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_x,exp_y, exponent, binoms_direction_index, fractions_allowed):
+def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_x,exp_y, exponent, binoms_direction_index, fractions_allowed, variable_1, variable_2):
     A, B = symbols("{} {}".format("A", "B"))
 
     if fractions_allowed == True:
@@ -913,11 +913,19 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
 
     alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
-    choice = random.choice(alphabet)
+    if variable_1 == "":
+        choice = random.choice(alphabet)
+    else:
+        choice = variable_1
     variable_choices = [choice]
     
     alphabet.remove(choice)
-    choice = random.choice(alphabet)
+
+    if variable_2 == "":
+        choice = random.choice(alphabet)
+    else:
+        choice = variable_2
+    
     variable_choices.append(choice) 
 
 
@@ -954,6 +962,7 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
         string = f"{binom_string} = {solution_string}"
     elif index == 2:
         string = f"{solution_string} = {binom_string}"
+        binom_string, solution_string = solution_string, binom_string
 
     solution_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", solution_string)
     solution_string = solution_string.replace('\xb7', '\cdot ')
@@ -1025,11 +1034,11 @@ def create_list_of_examples_ganze_zahlen(typ, examples, minimum, maximum, commas
 
     return list_of_examples
 
-def create_list_of_examples_binomische_formeln(examples, binomials_types, a,b,x,y, exponent, binoms_direction_index, fractions_allowed):
+def create_list_of_examples_binomische_formeln(examples, binomials_types, a,b,x,y, exponent, binoms_direction_index, fractions_allowed, variable_1, variable_2):
     list_of_examples = []
 
     for _ in range(examples):
-        new_example = create_single_example_binomische_formeln(binomials_types, a,b,x,y, exponent, binoms_direction_index, fractions_allowed)
+        new_example = create_single_example_binomische_formeln(binomials_types, a,b,x,y, exponent, binoms_direction_index, fractions_allowed, variable_1, variable_2)
 
         list_of_examples.append(new_example)
 
@@ -1038,6 +1047,9 @@ def create_list_of_examples_binomische_formeln(examples, binomials_types, a,b,x,
 
 def get_number_of_decimals(x):
     num = D('{}'.format(x)).normalize()
+    print(num)
+    num = remove_exponent(num)
+    print(num)
     num = abs(num.as_tuple().exponent)
     return num
 
@@ -1051,11 +1063,13 @@ def create_latex_string_addition(content, example, ausrichtung):
             max_decimal = decimals    
 
     if ausrichtung == 0:
-        content += "\item \\begin{tabular}{rr}"
+        content += "\item \\begin{tabular}{rr}\n"
 
         for all in summanden:
+            print(all)
             decimals = get_number_of_decimals(all)
-
+            print(f"maxdecimals {max_decimal}")
+            print(f"decimals {decimals}")
             if decimals != max_decimal:
                 if decimals == 0:
                     phantom = ","+"0"*max_decimal
@@ -1079,7 +1093,7 @@ def create_latex_string_addition(content, example, ausrichtung):
             content += " + {}".format(str(all).replace(".",","))
         
 
-        content += " = \\antwort{{{0}}}$\n\\leer\n\n".format(str(example[-2]).replace(".",","))
+        content += " = \\antwort{{{0}}}$\n\n".format(str(example[-2]).replace(".",","))
     return content
 
 def create_latex_string_subtraction(content, example, ausrichtung):
@@ -1122,7 +1136,7 @@ def create_latex_string_subtraction(content, example, ausrichtung):
         for all in subtrahenden[1:]:
             content += " - {}".format(str(all).replace(".",","))
 
-        content += " = \\antwort{{{0}}}$\n\\leer\n\n".format(str(example[-2]).replace(".",","))
+        content += " = \\antwort{{{0}}}$\n\n".format(str(example[-2]).replace(".",","))
     return content
 
 
@@ -1212,7 +1226,7 @@ def create_latex_string_division(content, example):
         solution = str(example[2]).replace(".",",")
         rest = ""
 
-    content += "\item ${0} : {1} = \\antwort[\\vspace{{1.5cm}}]{{{2}}}${3}\n\\leer\n\n".format(str(example[0]).replace(".",","),str(example[1]).replace(".",","),solution, rest)
+    content += "\item ${0} : {1} = \\antwort[\\vspace{{1.5cm}}]{{{2}}}${3}\n\n".format(str(example[0]).replace(".",","),str(example[1]).replace(".",","),solution, rest)
     
     return content
 
@@ -1222,7 +1236,7 @@ def create_latex_string_ganze_zahlen(content, example):
     
     x,y = equation.split(" = ")
     
-    temp_content = "\item ${0} = \\antwort{{{1}}}$\n\\leer\n\n".format(x.replace(".",","),y.replace(".",","))
+    temp_content = "\item ${0} = \\antwort{{{1}}}$\n\n".format(x.replace(".",","),y.replace(".",","))
     temp_content = temp_content.replace('\xb7', '\cdot')
     content += temp_content
     return content
@@ -1234,7 +1248,7 @@ def create_latex_string_binomische_formeln(content, example):
 
     aufgabe, loesung = example_string.split(" = ")
     
-    temp_content = f"\item ${aufgabe} = \\antwort{{{loesung}}}$\n\\leer\n\n"
+    temp_content = f"\item ${aufgabe} = \\antwort{{{loesung}}}$\n\n"
 
     temp_content = temp_content.replace('\xb7', '\cdot ')
 
@@ -1243,8 +1257,12 @@ def create_latex_string_binomische_formeln(content, example):
     return content
 
 
-def create_latex_worksheet(order_of_examples, dict_of_examples,index, titel, arbeitsanweisung, nummerierung, solution_type=0):
-    content = "\section{{{0}}}\n\n".format(titel.replace('&', '\&'))
+def create_latex_worksheet(order_of_examples, dict_of_examples,index, titel, arbeitsanweisung, nummerierung, item_spacing, solution_type=0):
+    print(f"item spacing {item_spacing}")
+    if titel != False:
+        content = "\section{{{0}}}\n\n".format(titel.replace('&', '\&'))
+    else:
+        content = ""
 
 
     if arbeitsanweisung != False:
@@ -1261,7 +1279,7 @@ def create_latex_worksheet(order_of_examples, dict_of_examples,index, titel, arb
         if columns > 1:
             content += "\\begin{{multicols}}{{{0}}}\n".format(columns)
 
-        content += "\\begin{{enumerate}}[{0}]\n".format(nummerierung)
+        content += f"\\begin{{enumerate}}[{nummerierung}]\setlength\itemsep{{{item_spacing}cm}}\n"
 
         list_of_examples = set_of_examples['list_of_examples']
         for example in list_of_examples:
@@ -1278,11 +1296,12 @@ def create_latex_worksheet(order_of_examples, dict_of_examples,index, titel, arb
             elif index == 8:
                 content = create_latex_string_binomische_formeln(content, example)
 
-        content += "\end{enumerate}\leer\n\n"
+        content += "\end{enumerate}\n"
 
         if columns > 1:
-            content += "\end{multicols}"
-
+            content += "\end{multicols}\n"
+        
+        content += "\leer\n\n"
      
     return content
 
@@ -1562,17 +1581,27 @@ def get_random_solution(self, thema):
         fractions_allowed = self.checkbox_binoms_enable_fraction.isChecked()
         exponent = self.spinbox_binoms_exponent.value()
 
+        variable_1 = self.combobox_choose_variables_1.currentText()
+        variable_2 = self.combobox_choose_variables_2.currentText()
 
 
-        distract_result = create_single_example_binomische_formeln(binomials_types, a,b,x,y, exponent, self.binoms_direction_index, fractions_allowed)
+        distract_result = create_single_example_binomische_formeln(binomials_types, a,b,x,y, exponent, self.binoms_direction_index, fractions_allowed, variable_1, variable_2)
     return distract_result
 
 def create_nonogramm(nonogram, coordinates_nonogramm, spalten=3):
+
+    if spalten > 1:
+        begin_multicols = f"\\begin{{multicols}}{{{spalten}}}"
+        end_multicols = "\end{multicols}"
+    else:
+        begin_multicols = ""
+        end_multicols = ""
+
     content = f"""\n\\vfil\n\\fontsize{{12}}{{14}}\selectfont
     \meinlr{{{nonogramm_empty}
 
     \\antwort{{{nonogram.split("_")[0].capitalize()}}}}}{{\scriptsize
-    \\begin{{multicols}}{{{spalten}}}
+    {begin_multicols}
     \\begin{{enumerate}}"""
 
 #     # list_all_pixles = get_all_pixels(content)
@@ -1608,9 +1637,9 @@ def create_nonogramm(nonogram, coordinates_nonogramm, spalten=3):
 
 #         content += "\item[\\fbox{{\parbox{{15pt}}{{\centering {0}}}}}] {1}\n".format(all, result)
         
-    content += """
-    \end{enumerate}
-    \end{multicols}}"""
+    content += f"""
+    \end{{enumerate}}
+    {end_multicols}}}"""
     return content
 
 

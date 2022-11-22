@@ -4061,15 +4061,32 @@ class Ui_Dialog_Convert_To_Eps(object):
 
 
 class Ui_Dialog_edit_worksheet_instructions(object):
-    def setupUi(self, Dialog, text, show_instructions, show_pagenumbers):
+    def setupUi(self, Dialog, text, show_titel, show_instructions, show_pagenumbers, columns, item_spacing):
         # self.MainWindow = MainWindow
         # self.Dialog = Dialog
         # self.Dialog.setObjectName("Dialog")
-        Dialog.setWindowTitle("Arbeitsanweisung")
+        Dialog.setWindowTitle("Layout des Arbeitsblatts")
         Dialog.setWindowIcon(QIcon(logo_path)) 
         Dialog.resize(300,50)
 
         verticalLayout = create_new_verticallayout(Dialog)
+
+        widget_titel = QtWidgets.QWidget(Dialog)
+        verticalLayout.addWidget(widget_titel)
+        self.horizontallayout_titel = create_new_horizontallayout(widget_titel)
+        self.horizontallayout_titel.setContentsMargins(0,0,0,0)
+
+        if show_titel == False:
+            check_title = False
+        else:
+            check_title = True
+        self.checkbox_titel = create_new_checkbox(widget_titel, "Titel:", checked=check_title)
+        self.horizontallayout_titel.addWidget(self.checkbox_titel)
+        self.checkbox_titel.stateChanged.connect(self.enable_title)
+
+        self.lineedit_titel = create_new_lineedit(widget_titel, "Arbeitsblatt")
+        self.horizontallayout_titel.addWidget(self.lineedit_titel)
+
 
         self.checkBox_hide_instructions = create_new_checkbox(Dialog, "Arbeitsanweisung anzeigen", show_instructions)
         
@@ -4081,13 +4098,47 @@ class Ui_Dialog_edit_worksheet_instructions(object):
             self.plainTextEdit_instructions.setEnabled(False)
         verticalLayout.addWidget(self.plainTextEdit_instructions)
 
-        self.checkBox_hide_instructions.stateChanged.connect(self.enable_isntructions)
+        self.checkBox_hide_instructions.stateChanged.connect(self.enable_instructions)
 
 
 
         self.checkBox_show_pagenumbers = create_new_checkbox(Dialog, "Seitennummerierung anzeigen", show_pagenumbers)
         verticalLayout.addWidget(self.checkBox_show_pagenumbers)
 
+        self.widget_number_columns_solution = QtWidgets.QWidget(Dialog)
+        verticalLayout.addWidget(self.widget_number_columns_solution)
+        horizontallayout_number_columns = create_new_horizontallayout(self.widget_number_columns_solution)
+        horizontallayout_number_columns.setContentsMargins(0,0,0,0)
+
+        label_number_columns = create_new_label(self.widget_number_columns_solution, "Lösungen: Spaltenanzahl")
+        horizontallayout_number_columns.addWidget(label_number_columns)
+
+        # label_number_columns_icon = create_new_label(self.widget_number_columns_solution, " ")
+        # label_number_columns_icon.setPixmap(QPixmap(get_icon_path("columns.svg")))
+        # label_number_columns_icon.setFixedSize(QSize(20,20))
+        # label_number_columns_icon.setScaledContents(True)
+        # horizontallayout_number_columns.addWidget(label_number_columns_icon)
+
+        self.spinbox_number_columns = create_new_spinbox(self.widget_number_columns_solution, columns)
+        self.spinbox_number_columns.setRange(1,5)
+        horizontallayout_number_columns.addWidget(self.spinbox_number_columns)
+
+        horizontallayout_number_columns.addStretch()
+
+        widget_item_spacing = QtWidgets.QWidget(Dialog)
+        verticalLayout.addWidget(widget_item_spacing)
+        horizontallayout_item_spacing = create_new_horizontallayout(widget_item_spacing)
+        horizontallayout_item_spacing.setContentsMargins(0,0,0,0)
+
+        label_item_spacing = create_new_label(widget_item_spacing, "Abstand zwischen den Aufgaben:")
+        horizontallayout_item_spacing.addWidget(label_item_spacing)
+
+        self.spinbox_item_spacing = QtWidgets.QDoubleSpinBox(widget_item_spacing)
+        self.spinbox_item_spacing.setValue(item_spacing)
+        self.spinbox_item_spacing.setSuffix(" cm")
+        horizontallayout_item_spacing.addWidget(self.spinbox_item_spacing)
+
+        horizontallayout_item_spacing.addStretch()
 
         buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         buttonBox.setStandardButtons(
@@ -4110,7 +4161,13 @@ class Ui_Dialog_edit_worksheet_instructions(object):
         # button_save.setIcon(QtGui.QIcon(get_icon_path('save.svg')))
         # button_save.setText("Speichern")
 
-    def enable_isntructions(self):
+    def enable_title(self):
+        if self.checkbox_titel.isChecked():
+            self.lineedit_titel.setEnabled(True)
+        else:
+            self.lineedit_titel.setEnabled(False)
+
+    def enable_instructions(self):
         if self.checkBox_hide_instructions.isChecked():
             self.plainTextEdit_instructions.setEnabled(True)
         else:
