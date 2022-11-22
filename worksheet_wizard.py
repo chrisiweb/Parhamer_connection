@@ -1047,9 +1047,7 @@ def create_list_of_examples_binomische_formeln(examples, binomials_types, a,b,x,
 
 def get_number_of_decimals(x):
     num = D('{}'.format(x)).normalize()
-    print(num)
     num = remove_exponent(num)
-    print(num)
     num = abs(num.as_tuple().exponent)
     return num
 
@@ -1066,10 +1064,7 @@ def create_latex_string_addition(content, example, ausrichtung):
         content += "\item \\begin{tabular}{rr}\n"
 
         for all in summanden:
-            print(all)
             decimals = get_number_of_decimals(all)
-            print(f"maxdecimals {max_decimal}")
-            print(f"decimals {decimals}")
             if decimals != max_decimal:
                 if decimals == 0:
                     phantom = ","+"0"*max_decimal
