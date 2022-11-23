@@ -1253,7 +1253,6 @@ def create_latex_string_binomische_formeln(content, example):
 
 
 def create_latex_worksheet(order_of_examples, dict_of_examples,index, titel, arbeitsanweisung, nummerierung, item_spacing, solution_type=0):
-    print(f"item spacing {item_spacing}")
     if titel != False:
         content = "\section{{{0}}}\n\n".format(titel.replace('&', '\&'))
     else:

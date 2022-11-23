@@ -4569,12 +4569,16 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
         if self.checkBox_show_nonogramm.isChecked():
-            try:
-                self.nonogram_wizard
-            except AttributeError:
-                self.nonogram_wizard = self.combobox_nonogramm_wizard.currentText()
+            if self.combobox_nonogramm_wizard.currentIndex()==0:
+                try:
+                    nonogram = self.nonogram_wizard
+                except AttributeError:
+                    nonogram = self.combobox_nonogramm_wizard.currentText()
+            else:
+                nonogram = self.combobox_nonogramm_wizard.currentText()
 
-            self.nonogram_wizard, solution_pixels = get_all_solution_pixels(total_list_of_examples, self.nonogram_wizard)
+
+            self.nonogram_wizard, solution_pixels = get_all_solution_pixels(total_list_of_examples, nonogram)
 
 
             all_shuffeled_coordinates = create_coordinates(solution_pixels, self.dict_all_examples_worksheet_wizard)
@@ -4755,7 +4759,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 self.titel_worksheet_wizard = False
             self.number_columns_solution_wizard = ui.spinbox_number_columns.value()
             self.item_spacing_wizard = ui.spinbox_item_spacing.value()
-            print(ui.spinbox_item_spacing.value())
+
     def save_worksheet_wizard(self):
         content = self.get_content_worksheet_wizard()
     
@@ -6222,7 +6226,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     klasse = list_klassen[self.comboBox_klassen.currentIndex() - 1]
                 except IndexError:
                     klasse = None
-                    print('ERROR2')
         elif mode == "feedback":
             if self.comboBox_klassen_fb_cria.currentIndex() == 0:
                 klasse = None
