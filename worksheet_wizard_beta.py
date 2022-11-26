@@ -115,12 +115,14 @@ def get_solution(string):
 
 
 def get_random_fraction(min, max):
-    nominator = get_random_number(min, max-1)
-    denominator = get_random_number(nominator+1, max)
-    print(f"nominator {nominator}")
-    print(f"denominator: {denominator}")
+    if min == 0 and max == 1:
+        numerator = 1
+        denominator = 2
+    else:
+        numerator = get_random_number(min, max-1)
+        denominator = get_random_number(numerator+1, max)
 
-    return Fraction("{0}/{1}".format(nominator, denominator))
+    return Fraction("{0}/{1}".format(numerator, denominator))
 
 
 ## binomische Formel
@@ -258,106 +260,15 @@ def convert_to_fractions(string):
 
 
 
-A, B = symbols("{} {}".format("A", "B"))
-
-# e = (3*a-1/2*b)**2
-coef_a = [0,1]
-coef_b = [11,11]
-exp
-fractions_allowed = False
-exponent = 2
-binomials_types = [True, True, True]
-
-A, B = symbols("{} {}".format("A", "B"))
-
-if fractions_allowed == True:
-    coef_1 = get_random_fraction(coef_a[0],coef_a[1])
-    coef_2 = get_random_fraction(coef_b[0],coef_b[1])
-else:
-    coef_1 = get_random_number(coef_a[0],coef_a[1])
-    coef_2 = get_random_number(coef_b[0],coef_b[1])
-
-
-binome = []
-
-for i, all in enumerate(binomials_types):
-    possible_binoms = [f'({coef_1}*A**{exp_x}+{coef_2}*B**{exp_y})**{exponent}', f'({coef_1}*A**{exp_x}-{coef_2}*B**{exp_y})**{exponent}', f'({coef_1}*A**{exp_x}+{coef_2}*B**{exp_y})*({coef_1}*A**{exp_x}-{coef_2}*B**{exp_y})']
-    if all == True:
-        binome.append(possible_binoms[i])
-
-# binome = ['({0}*A+{1}*B)**{2}'.format(coef_1,coef_2,exponent), '({0}*A-{1}*B)**{2}'.format(coef_1,coef_2,exponent), '({0}*A+{1}*B)*({0}*A-{1}*B)'.format(coef_1,coef_2)]
+w = get_random_fraction(2,10)
+x = get_random_fraction(2,10)
+y= get_random_fraction(2,10)
+z= get_random_fraction(2,10)
 
 
 
-
-random_choice = random.choice(binome)
-print(f"choice: {random_choice}")
-binom = eval(random_choice)
-
-print(f"binom: {binom}")
-
-
-# print(e)
-
-solution = str(binom.expand())
-binom = str(binom)
-
-if fractions_allowed == True:
-    solution = convert_to_fractions(solution)
-    # binom = convert_to_fractions(binom)
-
-print(f'solution: {solution}')
-print(f"binom: {binom}")
-
-alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-
-choice = random.choice(alphabet)
-variable_choices = [choice]
-
-alphabet.remove(choice)
-choice = random.choice(alphabet)
-variable_choices.append(choice) 
-
-
-solution_string = solution.replace("**", "^")
-if fractions_allowed==True:
-    replacement = "\xb7"
-else:
-    replacement = ""
-solution_string = solution_string.replace("*", replacement)
-solution_string = solution_string.replace("A", variable_choices[0])
-solution_string = solution_string.replace("B", variable_choices[1])
-
-binom_string = random_choice.replace("**", "^")
-binom_string = binom_string.replace("*", replacement)
-binom_string = binom_string.replace("A", variable_choices[0])
-binom_string = binom_string.replace("B", variable_choices[1])
-
-
-print(binom_string)
-
-binom_string = re.sub('([^0-9])1([^0-9])', r"\1\2",binom_string)
-
-print(binom_string)
-
-    # for all in _temp:
-    #     frac= Fraction(all).limit_denominator()
-
-    #     if frac.denominator != 1:
-    #         solution = solution.replace(all, "\\frac{{{0}}}{{{1}}}".format(frac.numerator, frac.denominator))
-    #     else:
-    #         solution = solution.replace(all, str(frac))
-
-#####
-
-# if fractions_allowed == True:
-#     _temp = re.findall('[0-9.]+', solution)
-
-
-#     for all in _temp:
-#         frac= Fraction(all).limit_denominator()
-
-#         if frac.denominator != 1:
-#             solution = solution.replace(all, "\\frac{{{0}}}{{{1}}}".format(frac.numerator, frac.denominator))
-#         else:
-#             solution = solution.replace(all, str(frac))
+print(x)
+print(y)
+print(z)
+print(x-y)
+print((x-y)*z)
