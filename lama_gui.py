@@ -3233,8 +3233,14 @@ def setup_stackWizard(self):
     self.combobox_nonogramm_wizard.currentIndexChanged.connect(self.worksheet_wizard_setting_changed)
     add_new_option(self.combobox_nonogramm_wizard, 0, 'Zufällig')
     i=1
-    for all in all_nonogramms:
-        add_new_option(self.combobox_nonogramm_wizard, i, "{0} ({1})".format(all.capitalize(), len(all_nonogramms[all])))
+
+    # def sort_nonogram(item):
+    #     print(item[1])
+    #     return 
+
+    sorted_nonogramms = sorted(all_nonogramms.items(), key= lambda item: len(item[1]))
+    for all in sorted_nonogramms:
+        add_new_option(self.combobox_nonogramm_wizard, i, "{0} ({1})".format(all[0].title(), len(all[1])))
         i+=1
 
 

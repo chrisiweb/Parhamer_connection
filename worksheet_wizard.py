@@ -7,7 +7,7 @@ from config import is_empty
 # from config_start import path_localappdata_lama, path_programm
 import decimal
 import re
-from sympy import symbols, Symbol, simplify, latex
+from sympy import symbols
 
 from create_nonograms import nonogramm_empty, all_nonogramms, list_all_pixels
 from fractions import Fraction
@@ -1578,10 +1578,11 @@ def create_nonogramm(nonogram, coordinates_nonogramm, spalten=3):
         begin_multicols = ""
         end_multicols = ""
 
+    nonogram_name = nonogram.split("_")[0].replace("&","\&").title()
     content = f"""\n\\vfil\n\\fontsize{{12}}{{14}}\selectfont
     \meinlr{{{nonogramm_empty}
 
-    \\antwort{{{nonogram.split("_")[0].capitalize()}}}}}{{\scriptsize
+    \\antwort{{{nonogram_name}}}}}{{\scriptsize
     {begin_multicols}
     \\begin{{enumerate}}"""
 

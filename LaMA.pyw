@@ -4462,9 +4462,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         
         add_new_option(self.combobox_nonogramm_wizard, 0, 'Zufällig')
         i=1
-        for all in all_nonogramms:
-            if len(all_nonogramms[all])>= num_of_examples:
-                add_new_option(self.combobox_nonogramm_wizard, i, "{0} ({1})".format(all.capitalize(), len(all_nonogramms[all])))
+        sorted_nonogramms = sorted(all_nonogramms.items(), key= lambda item: len(item[1]))
+        for all in sorted_nonogramms:
+            if len(all[1])>= num_of_examples:
+                add_new_option(self.combobox_nonogramm_wizard, i, "{0} ({1})".format(all[0].title(), len(all[1])))
                 i+=1 
 
         self.combobox_nonogramm_wizard.setCurrentText(auswahl)
@@ -4575,8 +4576,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         if self.checkBox_show_nonogramm.isChecked():
             if self.combobox_nonogramm_wizard.currentIndex()==0:
-
-                
                 try:
                     nonogram = self.nonogram_wizard
                 except AttributeError:
@@ -4589,7 +4588,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             else:
                 nonogram = self.combobox_nonogramm_wizard.currentText()
                 nonogram = re.split(" \([0-9]+\)", nonogram)[0].lower()
-                del self.nonogram_wizard
+                try:
+                    del self.nonogram_wizard
+                except AttributeError:
+                    pass
 
             nonogram, solution_pixels = get_all_solution_pixels(total_list_of_examples, nonogram)
 
