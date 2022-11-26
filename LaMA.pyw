@@ -4550,7 +4550,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         
         self.adapt_nonogramm_selection()
 
+    def rechose_nonogramm(self, list_of_examples, nonogram):
+        
+        while len(list_of_examples) > len(all_nonogramms[nonogram]):
+            nonogram = random.choice(list(all_nonogramms.keys()))
 
+        return nonogram
 
     def create_latex_file_content_wizard(self):
         total_list_of_examples = []
@@ -4570,15 +4575,23 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         if self.checkBox_show_nonogramm.isChecked():
             if self.combobox_nonogramm_wizard.currentIndex()==0:
+
+                
                 try:
                     nonogram = self.nonogram_wizard
                 except AttributeError:
-                    nonogram = self.combobox_nonogramm_wizard.currentText()
+                    nonogram = random.choice(list(all_nonogramms.keys()))
+
+                    if len(total_list_of_examples) > len(all_nonogramms[nonogram]):
+                        nonogram = self.rechose_nonogramm(total_list_of_examples, nonogram)
+
+                    self.nonogram_wizard = nonogram
             else:
                 nonogram = self.combobox_nonogramm_wizard.currentText()
+                nonogram = re.split(" \([0-9]+\)", nonogram)[0].lower()
+                del self.nonogram_wizard
 
-
-            self.nonogram_wizard, solution_pixels = get_all_solution_pixels(total_list_of_examples, nonogram)
+            nonogram, solution_pixels = get_all_solution_pixels(total_list_of_examples, nonogram)
 
 
             all_shuffeled_coordinates = create_coordinates(solution_pixels, self.dict_all_examples_worksheet_wizard)
@@ -4636,7 +4649,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 else:
                     columns = 3
                     
-            content += create_nonogramm(self.nonogram_wizard, all_shuffeled_coordinates, spalten=columns)
+            content += create_nonogramm(nonogram, all_shuffeled_coordinates, spalten=columns)
 
         return content
 
@@ -4738,7 +4751,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         try:
             columns = self.number_columns_solution_wizard
         except AttributeError:
-            columns = 3
+            thema = self.comboBox_themen_wizard.currentText()
+            if thema =="Binomische Formeln":
+                columns = 2
+            else:
+                columns = 3
 
 
         try:

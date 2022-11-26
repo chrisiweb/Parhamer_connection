@@ -3892,7 +3892,7 @@ class DragDropWidget(QtWidgets.QListWidget):
             for url in event.mimeData().urls():
                 if url.isLocalFile():
                     _, extension = os.path.splitext(str(url.toLocalFile()))
-                    if extension == '.jpg' or extension == '.jpeg' or extension == '.png':
+                    if extension.lower() == '.jpg' or extension.lower() == '.jpeg' or extension.lower() == '.png':
                         links.append(str(url.toLocalFile()))
                     else:
                         name = os.path.basename(str(url.toLocalFile()))

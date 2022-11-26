@@ -1326,12 +1326,6 @@ def get_all_pixels(content):
     return re.findall("[A-J][0-9]",content) 
 
 
-def rechose_nonogramm(list_of_examples, nonogram):
-    
-    while len(list_of_examples) > len(all_nonogramms[nonogram]):
-        nonogram = random.choice(list(all_nonogramms.keys()))
-
-    return nonogram
 
 def get_max_pixels_nonogram():
     max = 0
@@ -1342,15 +1336,8 @@ def get_max_pixels_nonogram():
     return max
 
 
-def get_all_solution_pixels(list_of_examples, chosen_nonogramm):
-    if chosen_nonogramm == "Zufällig":
-        nonogram = random.choice(list(all_nonogramms.keys()))
-    else:
-        nonogram = re.split(" \([0-9]+\)", chosen_nonogramm)[0].lower()
-
-    if len(list_of_examples) > len(all_nonogramms[nonogram]):
-        nonogram = rechose_nonogramm(list_of_examples, nonogram)
-
+def get_all_solution_pixels(list_of_examples, nonogram):
+   
 
     all_pixels_solution = all_nonogramms[nonogram]
     random.shuffle(all_pixels_solution)
