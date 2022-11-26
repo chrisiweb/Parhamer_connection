@@ -4994,9 +4994,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     def action_add_file(self):
         self.update_gui("widgets_create")
-        self.suchfenster_reset()
-        self.reset_variation()
-        self.reset_edit_file()
+        # self.suchfenster_reset()
+        # self.reset_variation()
+        # self.reset_edit_file()
         self.enable_widgets_editor(True)
 
     def action_edit_files(self):
@@ -7756,7 +7756,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             for all in list_menubar_wizard:
                 self.menuBar.addAction(all.menuAction())
 
-            self.actionRefresh_Database.setVisible(False)
 
         else:
             for all in list_menubar_wizard:
@@ -7767,8 +7766,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     continue
                 else:
                     self.menuBar.addAction(all.menuAction())
-            self.actionRefresh_Database.setVisible(True)
-
 
         return
 
