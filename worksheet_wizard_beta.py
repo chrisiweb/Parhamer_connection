@@ -111,7 +111,9 @@ def create_division_pair(factor_1, factor_2, show_brackets = True):
 
 
 def get_solution(string):
-    return eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
+    value = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
+    value = round(value, 10)
+    return value
 
 
 def get_random_fraction(min, max):
@@ -258,17 +260,107 @@ def convert_to_fractions(string):
     return string
 
 
+def get_first_temp_division(dividend, temp_solution):
+    end_index =1
+    part_divide = str(dividend)[0:end_index]
+    print(f"{temp_solution} vs. {eval(part_divide)}")
+    while True:
+        if temp_solution <= eval(part_divide):
+            return part_divide, end_index-1
+        
+        end_index +=1
+        part_divide = str(dividend)[0:end_index]
+
+def get_temp_solution_division(dividend, divisor, solution):
+    str_solution = [x for x in solution if x!="."]
+    # str_divisor = [x for x in str(divisor) if x!="."]
+    list_temp_solutions = []
+    # start_index =0
+
+    for i, all in enumerate(str_solution):
+        temp_solution = eval(f"{all}*{divisor}")
+
+        if i == 0:
+            first_part_divide, end_index = get_first_temp_division(dividend, temp_solution)
+            part_divide = first_part_divide
+        differenz = eval(part_divide)-temp_solution
+        end_index +=1
+        try:
+            next_digit = str(dividend)[end_index]            
+        except IndexError:
+            next_digit = ""
 
 
-w = get_random_fraction(2,10)
-x = get_random_fraction(2,10)
-y= get_random_fraction(2,10)
-z= get_random_fraction(2,10)
+        part_divide = f"{differenz}{next_digit}"
+
+        list_temp_solutions.append([f"{differenz}",next_digit])
+
+    return first_part_divide, list_temp_solutions
+example = [504,42]
+# solution = str(get_solution(f"{example[0]} : {example[1]}"))
+solution = "12"
+print(example)
 
 
 
-print(x)
-print(y)
-print(z)
-print(x-y)
-print((x-y)*z)
+first_part_divide, list_temp_solutions = get_temp_solution_division(dividend=example[0], divisor=example[1], solution=solution)
+
+
+print(first_part_divide)
+print(list_temp_solutions)    
+content = f"""
+$\\begin{{array}}{{l}}
+{str(example[0]).replace(".",",")} : {str(example[1]).replace(".",",")} = \\antwort[\\vspace{{1.5cm}}]{{{solution}}} \\\\
+"""
+
+previous_num_of_digits  = get_number_of_digits(first_part_divide)
+# multiplier = 0
+rest = ""
+for i, all in enumerate(list_temp_solutions):
+    num_of_digits = get_number_of_digits(int(all[0]))
+    print(f"pervious_number : {previous_num_of_digits}")
+    print(f"num_of_digits: {num_of_digits}")
+    print(f"i: {i}")
+
+    if i == 0:
+        multiplier = previous_num_of_digits - num_of_digits
+    # elif i == len(list_temp_solutions)-1:
+    #     diff = previous_num_of_digits - num_of_digits
+    #     multiplier += diff
+    #     rest = "R"        
+    else:
+        multiplier += 1
+        diff = previous_num_of_digits - num_of_digits
+        multiplier += diff
+
+    if i == len(list_temp_solutions)-1:
+        rest = "R"
+                
+    hspace = multiplier*'\enspace'
+    content += f"\\antwortzeile {hspace} {all[0]}{all[1]}{rest} \\\\ \n"
+    previous_num_of_digits = num_of_digits 
+    # print(content)
+    print(f"multiplier: {multiplier}")
+content += "\end{array}$\n\n"
+
+print(content)
+
+# print(f'end: {temp_solution} vs. {eval(part_divide)}')
+#     i=0
+#     while temp_solution>eval(part_divide):
+
+
+##### FRACTION
+# w = get_random_fraction(2,10)
+# x = get_random_fraction(2,10)
+# y= get_random_fraction(2,10)
+# z= get_random_fraction(2,10)
+
+
+
+# print(x)
+# print(y)
+# print(z)
+# print(x-y)
+
+# print(f"({x}-{y})*({z}+{w}) = {(x-y)*(z+w)}")

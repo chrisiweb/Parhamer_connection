@@ -867,7 +867,7 @@ def open_pdf_file(folder_name, file_name):
     file_path = os.path.join(folder_name, file_name)
 
     
-    print(file_path)
+    # print(file_path)
     if sys.platform.startswith("linux"):
 
         file_path = file_path + ".pdf"
