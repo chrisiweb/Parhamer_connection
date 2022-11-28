@@ -40,6 +40,7 @@ dict_widgets_wizard = {
         'self.groupBox_dividend_wizard',
         'self.groupBox_divisor_wizard',
         'self.groupBox_ergebnis_wizard',
+        'self.comboBox_solution_type_wizard',
     ],
     'Verbindung der Grundrechnungsarten': [
         'self.widget_zahlenbereich_minimum',
@@ -259,14 +260,16 @@ def create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, c
             if smaller_or_equal_result == 1:
                 set_commas_result=commas_result
                 commas_result = random.randint(0,set_commas_result)
-        result = get_random_number(result_min, result_max, commas_result)
+        result = get_random_number(result_min, result_max, commas_result, force_decimals=True)
 
         dividend = result*divisor
-
+        dividend = D(f'{dividend}').normalize()
+        dividend = remove_exponent(dividend)
+        
         result = str(result)
 
     string = "{0} : {1} = {2}".format(str(dividend).replace(".",","),str(divisor).replace(".",","),result.replace(".",","))
-
+    # print([dividend,divisor,result, string])
     return [dividend,divisor,result, string]
 
 def add_summand(s, show_brackets=True):
@@ -894,13 +897,13 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
 
    
     random_choice = random.choice(binome)
-
+    print(random_choice)
 
     random_choice = re.sub("\*[AB]\*\*0", "", random_choice)
 
 
     binom = eval(random_choice)
-
+    print(binom)
 
     solution = str(binom.expand())
     binom = str(binom)
@@ -948,7 +951,10 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
         binom_string = binom_string.replace("*", "")
     binom_string = binom_string.replace("A", variable_choices[0])
     binom_string = binom_string.replace("B", variable_choices[1])
-    binom_string = re.sub('([^0-9])1([^0-9/])', r"\1\2",binom_string)
+
+    if exp_y != [0,0]:
+        binom_string = re.sub('([^0-9])1([^0-9/])', r"\1\2",binom_string)
+
     binom_string = binom_string.replace("+-", "-")
     binom_string = binom_string.replace("--", "+")
     
@@ -1223,7 +1229,7 @@ def get_first_temp_division(dividend, temp_solution):
         part_divide = str(dividend)[0:end_index]
 
 def get_temp_solution_division(dividend, divisor, solution):
-    str_solution = [x for x in solution if x!=","]
+    str_solution = [x for x in solution if x.isnumeric()]
 
     list_temp_solutions = []
 
@@ -1233,7 +1239,12 @@ def get_temp_solution_division(dividend, divisor, solution):
         if i == 0:
             first_part_divide, end_index = get_first_temp_division(dividend, temp_solution)
             part_divide = first_part_divide
-        differenz = eval(part_divide.lstrip('0'))-temp_solution
+
+        if isinstance(part_divide, str):
+            part_divide = part_divide.lstrip('0')
+
+        differenz = eval(part_divide)-temp_solution
+        differenz = round(differenz, 10)
         end_index +=1
         try:
             if str(dividend)[end_index].isnumeric():
@@ -1255,8 +1266,8 @@ def get_temp_solution_division(dividend, divisor, solution):
     return first_part_divide, list_temp_solutions
 
 
-def create_latex_string_division(content, example):
-    print(example)
+def create_latex_string_division(content, example, solution_type):
+
     if "R " in str(example[2]):
         solution, rest = example[2].split("R ")
         solution = solution.replace(".",",")
@@ -1265,27 +1276,38 @@ def create_latex_string_division(content, example):
         solution = str(example[2]).replace(".",",")
         rest = ""
 
-
-    first_part_divide, list_temp_solutions = get_temp_solution_division(dividend=example[0], divisor=example[1], solution=solution)
-
-
-    # print(first_part_divide)
-    # print(list_temp_solutions)    
     content += f"""
     \item $\\begin{{array}}{{l}}
     {str(example[0]).replace(".",",")} : {str(example[1]).replace(".",",")} = \\antwort[\\vspace{{1.5cm}}]{{{solution}}} \\\\
     """
+
+    num_decimal_divisor = get_number_of_decimals(example[1])
+
+    if num_decimal_divisor != 0:
+        example[0] = example[0]*10**(num_decimal_divisor)
+        example[0] = example[0].normalize()
+        example[0] = remove_exponent(example[0])
+        example[1] = int(example[1]*10**(num_decimal_divisor))
+
+
+    first_part_divide, list_temp_solutions = get_temp_solution_division(dividend=example[0], divisor=example[1], solution=solution)
+
+
+    if num_decimal_divisor != 0:
+        content += f"""\\antwortzeile {str(example[0]).replace(".",",")} : {str(example[1]).replace(".",",")} \\\\ """ 
+
+
 
     previous_num_of_digits  = get_number_of_digits(first_part_divide)
     # multiplier = 0
     rest = ""
     komma = False
     for i, all in enumerate(list_temp_solutions):
-        print(all)
+        # print(all)
         num_of_digits = get_number_of_digits(int(all[0]))
-        print(f"pervious_number : {previous_num_of_digits}")
-        print(f"num_of_digits: {num_of_digits}")
-        print(f"i: {i}")
+        # print(f"pervious_number : {previous_num_of_digits}")
+        # print(f"num_of_digits: {num_of_digits}")
+        # print(f"i: {i}")
 
         if i == 0:
             multiplier = previous_num_of_digits - num_of_digits
@@ -1311,7 +1333,7 @@ def create_latex_string_division(content, example):
         content += f"\\antwortzeile {hspace} {all[0]}{all[1]}{rest} \\\\ \n"
         previous_num_of_digits = num_of_digits 
         # print(content)
-        print(f"multiplier: {multiplier}")
+        # print(f"multiplier: {multiplier}")
     content += "\end{array}$\n\n"
 
 
@@ -1382,7 +1404,7 @@ def create_latex_worksheet(order_of_examples, dict_of_examples,index, titel, arb
             elif index == 2:
                 content = create_latex_string_multiplication(content, example, solution_type)
             elif index == 3:
-                content = create_latex_string_division(content, example)
+                content = create_latex_string_division(content, example, solution_type)
             elif index == 4 or index == 5 or index == 6 or index ==7:
                 content = create_latex_string_ganze_zahlen(content, example)
             elif index == 8:

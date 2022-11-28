@@ -10,7 +10,7 @@ jobs:
       max-parallel: 4
       matrix:
         python-version: [3.9]
-        os: [windows-latest, ubuntu-latest] #ubuntu-latest, windows-latest, macOS-latest
+        os: [windows-latest] #ubuntu-latest, windows-latest, macOS-latest
 
     steps:
     - uses: actions/checkout@v1

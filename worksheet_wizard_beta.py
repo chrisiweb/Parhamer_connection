@@ -58,7 +58,14 @@ def change_to_integer(n):
         n = str(n).replace('.','')
         return int(n)
 
+def remove_exponent(d):
+    return d.quantize(D(1)) if d == d.to_integral() else d.normalize()
 
+def get_number_of_decimals(x):
+    num = D('{}'.format(x)).normalize()
+    num = remove_exponent(num)
+    num = abs(num.as_tuple().exponent)
+    return num
 
 def get_number_of_digits(n):
     return len(str(int(change_to_integer(n))))
@@ -283,6 +290,7 @@ def get_temp_solution_division(dividend, divisor, solution):
             part_divide = first_part_divide
 
         differenz = eval(part_divide.lstrip('0'))-temp_solution
+        differenz = round(differenz, 10)
         end_index +=1
         try:
             if str(dividend)[end_index].isnumeric():
@@ -307,20 +315,32 @@ example = [315.9236,29.72]
 solution = "10.63"
 print(example)
 
+content = f"""
+$\\begin{{array}}{{l}}
+{str(example[0]).replace(".",",")} : {str(example[1]).replace(".",",")} = \\antwort[\\vspace{{1.5cm}}]{{{solution.replace(".",",")}}} \\\\
+"""
 
+
+num_decimal_divisor = get_number_of_decimals(29.72)
+
+if num_decimal_divisor != 0:
+    example[0] = example[0]*10**(num_decimal_divisor)
+    example[1] = int(example[1]*10**(num_decimal_divisor))
+
+print(example)
 
 first_part_divide, list_temp_solutions = get_temp_solution_division(dividend=example[0], divisor=example[1], solution=solution)
 
 
 print(first_part_divide)
 print(list_temp_solutions)    
-content = f"""
-$\\begin{{array}}{{l}}
-{str(example[0]).replace(".",",")} : {str(example[1]).replace(".",",")} = \\antwort[\\vspace{{1.5cm}}]{{{solution.replace(".",",")}}} \\\\
-"""
+
 
 previous_num_of_digits  = get_number_of_digits(first_part_divide)
 # multiplier = 0
+
+if num_decimal_divisor != 0:
+    content += f"""\\antwortzeile {str(example[0]).replace(".",",")} : {str(example[1]).replace(".",",")} \\\\ """   
 rest = ""
 komma = False
 for i, all in enumerate(list_temp_solutions):
