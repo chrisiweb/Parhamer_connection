@@ -1215,7 +1215,6 @@ def create_latex_string_multiplication(content, example, solution_type):
 def get_first_temp_division(dividend, temp_solution):
     end_index =1
     part_divide = str(dividend)[0:end_index]
-    # print(f"{temp_solution} vs. {eval(part_divide)}")
     while True:
         if temp_solution <= eval(part_divide):
             return part_divide, end_index-1
@@ -1224,28 +1223,34 @@ def get_first_temp_division(dividend, temp_solution):
         part_divide = str(dividend)[0:end_index]
 
 def get_temp_solution_division(dividend, divisor, solution):
-    str_solution = [x for x in solution if (x!="." and x!="\n")]
-    # str_divisor = [x for x in str(divisor) if x!="."]
+    str_solution = [x for x in solution if x!=","]
+
     list_temp_solutions = []
-    # start_index =0
-    print(str_solution)
+
     for i, all in enumerate(str_solution):
         temp_solution = eval(f"{all}*{divisor}")
 
         if i == 0:
             first_part_divide, end_index = get_first_temp_division(dividend, temp_solution)
             part_divide = first_part_divide
-        differenz = eval(part_divide)-temp_solution
+        differenz = eval(part_divide.lstrip('0'))-temp_solution
         end_index +=1
         try:
-            next_digit = str(dividend)[end_index]            
+            if str(dividend)[end_index].isnumeric():
+                next_digit = str(dividend)[end_index]
+                next_digit_string = next_digit
+            else:
+                end_index +=1
+                next_digit = str(dividend)[end_index]
+                next_digit_string = f"\;{next_digit}"       
         except IndexError:
             next_digit = ""
+            next_digit_string = next_digit
 
 
         part_divide = f"{differenz}{next_digit}"
 
-        list_temp_solutions.append([f"{differenz}",next_digit])
+        list_temp_solutions.append([f"{differenz}",next_digit_string])
 
     return first_part_divide, list_temp_solutions
 
@@ -1274,7 +1279,9 @@ def create_latex_string_division(content, example):
     previous_num_of_digits  = get_number_of_digits(first_part_divide)
     # multiplier = 0
     rest = ""
+    komma = False
     for i, all in enumerate(list_temp_solutions):
+        print(all)
         num_of_digits = get_number_of_digits(int(all[0]))
         print(f"pervious_number : {previous_num_of_digits}")
         print(f"num_of_digits: {num_of_digits}")
@@ -1295,6 +1302,12 @@ def create_latex_string_division(content, example):
             rest = "R"
                     
         hspace = multiplier*'\enspace'
+        if komma == True:
+            hspace += "\\;"
+        if "\\;" in all[1]:
+            komma = True
+
+
         content += f"\\antwortzeile {hspace} {all[0]}{all[1]}{rest} \\\\ \n"
         previous_num_of_digits = num_of_digits 
         # print(content)
