@@ -857,8 +857,15 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
     A, B = symbols("{} {}".format("A", "B"))
 
     if fractions_allowed == True:
-        coef_1 = get_random_fraction(coef_a[0],coef_a[1])
-        coef_2 = get_random_fraction(coef_b[0],coef_b[1])
+        if coef_a == False:
+            coef_1 = 1
+        else:
+            coef_1 = get_random_fraction(coef_a[0],coef_a[1])
+        
+        if coef_b == False:
+            coef_2 = 1
+        else:
+            coef_2 = get_random_fraction(coef_b[0],coef_b[1])
     else:
         coef_1 = get_random_number(coef_a[0],coef_a[1])
         coef_2 = get_random_number(coef_b[0],coef_b[1])
@@ -873,7 +880,7 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
     else:
         exponent_x = f"**{exponent_x}"
 
-    if exp_y == [0,0]:
+    if exp_y == False:
         exponent_y = 0
     else:
         exponent_y = get_random_number(exp_y[0],exp_y[1])
@@ -897,13 +904,11 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
 
    
     random_choice = random.choice(binome)
-    print(random_choice)
 
     random_choice = re.sub("\*[AB]\*\*0", "", random_choice)
 
 
     binom = eval(random_choice)
-    print(binom)
 
     solution = str(binom.expand())
     binom = str(binom)
@@ -944,6 +949,7 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
     
 
     binom_string = random_choice.replace("**", "^")
+    print(binom_string)
     if fractions_allowed==True:
         binom_string = re.sub('([AB])\*([AB])', r"\1\2", binom_string)
         binom_string = binom_string.replace("*", "\xb7")
@@ -952,12 +958,17 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
     binom_string = binom_string.replace("A", variable_choices[0])
     binom_string = binom_string.replace("B", variable_choices[1])
 
-    if exp_y != [0,0]:
-        binom_string = re.sub('([^0-9])1([^0-9/])', r"\1\2",binom_string)
-
+    print(binom_string)
+    # if exp_y != [0,0]:
+    #     binom_string = re.sub('([^0-9])1([^0-9/])', r"\1\2",binom_string)
+    # else:
+    binom_string = re.sub('([^0-9])1\xb7([^0-9\)/])', r"\1\2",binom_string)
+    print(binom_string)
+    binom_string = re.sub('([^0-9])\xb7([^0-9])', r"\1\2",binom_string)
     binom_string = binom_string.replace("+-", "-")
     binom_string = binom_string.replace("--", "+")
     
+    print(binom_string)
 
     if binoms_direction_index == 1:
         index = random.choice([0,2])
@@ -975,16 +986,17 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
     binom_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", binom_string)
     binom_string = binom_string.replace('\xb7', '\cdot ')
 
+    print(binom_string)
     return [f"${binom_string}$",f"${solution_string}$", string]
 
 
 def get_random_fraction(min, max):
-    if min == 0 and max == 1:
-        numerator = 1
-        denominator = 2
-    else:
-        numerator = get_random_number(min, max-1)
-        denominator = get_random_number(numerator+1, max)
+    # if min == 0 and max == 1:
+    #     numerator = 1
+    #     denominator = 2
+    # else:
+    numerator = get_random_number(min, max-1)
+    denominator = get_random_number(numerator+1, max)
 
     return Fraction("{0}/{1}".format(numerator, denominator))
 
@@ -1664,12 +1676,12 @@ def get_random_solution(self, thema):
         if self.checkbox_binoms_a.isChecked():
             a = [self.spinbox_binoms_a_min.value(), self.spinbox_binoms_a_max.value()]
         else:
-            a = [1,1]
+            a = False
         
         if self.checkbox_binoms_b.isChecked(): 
             b = [self.spinbox_binoms_b_min.value(), self.spinbox_binoms_b_max.value()]
         else:
-            b = [1,1] 
+            b = False 
 
         x = [self.spinbox_binoms_m_min.value(), self.spinbox_binoms_m_max.value()]
 
@@ -1677,7 +1689,7 @@ def get_random_solution(self, thema):
         if self.checkbox_binoms_y.isChecked():
             y = [self.spinbox_binoms_n_min.value(), self.spinbox_binoms_n_max.value()]
         else:
-            y = [0,0]
+            y = False
 
         fractions_allowed = self.checkbox_binoms_enable_fraction.isChecked()
         exponent = self.spinbox_binoms_exponent.value()

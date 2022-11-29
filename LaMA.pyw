@@ -4128,7 +4128,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     warning_window('Der Koeffizient "a" darf nicht gleich 0 sein.')
                     return
             else:
-                a = [1,1]
+                a = False
             
             if self.checkbox_binoms_b.isChecked(): 
                 b = [self.spinbox_binoms_b_min.value(), self.spinbox_binoms_b_max.value()]
@@ -4136,14 +4136,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     warning_window('Der Koeffizient "b" darf nicht gleich 0 sein.')
                     return
             else:
-                b = [1,1] 
+                b = False 
 
             x = [self.spinbox_binoms_m_min.value(), self.spinbox_binoms_m_max.value()]
 
             if self.checkbox_binoms_y.isChecked():
                 y = [self.spinbox_binoms_n_min.value(), self.spinbox_binoms_n_max.value()]
             else:
-                y = [0,0]
+                y = False
 
             fractions_allowed = self.checkbox_binoms_enable_fraction.isChecked()
             exponent = self.spinbox_binoms_exponent.value()
@@ -4309,7 +4309,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     warning_window('Der Koeffizient "a" darf nicht gleich 0 sein.')
                     return
             else:
-                a = [1,1]
+                a = False
             
             if self.checkbox_binoms_b.isChecked(): 
                 b = [self.spinbox_binoms_b_min.value(), self.spinbox_binoms_b_max.value()]
@@ -4317,7 +4317,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     warning_window('Der Koeffizient "b" darf nicht gleich 0 sein.')
                     return
             else:
-                b = [1,1] 
+                b = False
 
             x = [self.spinbox_binoms_m_min.value(), self.spinbox_binoms_m_max.value()]
 
@@ -4326,7 +4326,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             if self.checkbox_binoms_y.isChecked():
                 y = [self.spinbox_binoms_n_min.value(), self.spinbox_binoms_n_max.value()]
             else:
-                y = [0,0]
+                y = False
 
             fractions_allowed = self.checkbox_binoms_enable_fraction.isChecked()
             exponent = self.spinbox_binoms_exponent.value()
