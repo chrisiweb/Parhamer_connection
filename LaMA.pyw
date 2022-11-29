@@ -8,6 +8,7 @@ __lastupdate__ = "11/22"
 
 show_popup = False
 
+from xml.dom.minidom import Attr
 from start_window import check_if_database_exists
 # from worksheet_wizard import get_all_solution_pixels
 check_if_database_exists()
@@ -3759,6 +3760,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         for i in reversed(range(self.gridLayout_scrollArea_wizard.count())): 
             self.gridLayout_scrollArea_wizard.itemAt(i).widget().setParent(None)
 
+        for i in reversed(range(self.verticalLayout_complete_worksheet_wizard.count())):
+            try: 
+                self.verticalLayout_complete_worksheet_wizard.itemAt(i).widget().setParent(None)
+            except AttributeError:
+                pass
+        
 
         self.dict_all_examples_worksheet_wizard = {}
         self.list_of_examples_wizard = []
@@ -4560,15 +4567,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     def create_latex_file_content_wizard(self):
         total_list_of_examples = []
-        # print(self.dict_all_examples_worksheet_wizard)
 
-
-
-        # print(order_of_examples)
-        # for widget in order_of_examples:
-        #     set_of_examples = self.dict_all_examples_worksheet_wizard[widget]    
-            # print(set_of_examples)
         for all in self.dict_all_examples_worksheet_wizard.values():
+            if self.combobox_nummerierung_wizard.currentText() == "(a)" and len(all['list_of_examples'])>26:
+                warning_window("Bei der Nummerierung (a) können maximal 26 Aufgaben pro Aufgabenpaket verwendet werden.")
+                return
             for item in all['list_of_examples']:
                 total_list_of_examples.append(item)
 

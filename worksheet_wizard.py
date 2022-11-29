@@ -958,17 +958,12 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
     binom_string = binom_string.replace("A", variable_choices[0])
     binom_string = binom_string.replace("B", variable_choices[1])
 
-    print(binom_string)
-    # if exp_y != [0,0]:
-    #     binom_string = re.sub('([^0-9])1([^0-9/])', r"\1\2",binom_string)
-    # else:
+
     binom_string = re.sub('([^0-9])1\xb7([^0-9\)/])', r"\1\2",binom_string)
-    print(binom_string)
     binom_string = re.sub('([^0-9])\xb7([^0-9])', r"\1\2",binom_string)
     binom_string = binom_string.replace("+-", "-")
     binom_string = binom_string.replace("--", "+")
-    
-    print(binom_string)
+
 
     if binoms_direction_index == 1:
         index = random.choice([0,2])
@@ -986,7 +981,7 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
     binom_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", binom_string)
     binom_string = binom_string.replace('\xb7', '\cdot ')
 
-    print(binom_string)
+    # print(binom_string)
     return [f"${binom_string}$",f"${solution_string}$", string]
 
 
@@ -1315,11 +1310,7 @@ def create_latex_string_division(content, example, solution_type):
     rest = ""
     komma = False
     for i, all in enumerate(list_temp_solutions):
-        # print(all)
         num_of_digits = get_number_of_digits(int(all[0]))
-        # print(f"pervious_number : {previous_num_of_digits}")
-        # print(f"num_of_digits: {num_of_digits}")
-        # print(f"i: {i}")
 
         if i == 0:
             multiplier = previous_num_of_digits - num_of_digits

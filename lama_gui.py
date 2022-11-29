@@ -3180,9 +3180,12 @@ def setup_stackWizard(self):
     
     self.combobox_nummerierung_wizard = create_new_combobox(self.widget_nummerierung_wizard)
     add_new_option(self.combobox_nummerierung_wizard, 0, "-")
-    add_new_option(self.combobox_nummerierung_wizard, 1, "(i)")
-    add_new_option(self.combobox_nummerierung_wizard, 2, "(1)")
+    add_new_option(self.combobox_nummerierung_wizard, 1, "(a)")
+    add_new_option(self.combobox_nummerierung_wizard, 2, "(i)")
     add_new_option(self.combobox_nummerierung_wizard, 3, "(I)")
+    add_new_option(self.combobox_nummerierung_wizard, 4, "(1)")
+    
+    
     self.horizontalLayout_nummerierung_wizard.addWidget(self.combobox_nummerierung_wizard) 
 
 
