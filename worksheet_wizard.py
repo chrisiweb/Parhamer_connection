@@ -11,6 +11,7 @@ from sympy import symbols
 
 from create_nonograms import nonogramm_empty, all_nonogramms, list_all_pixels
 from fractions import Fraction
+from handle_exceptions import report_exceptions
 # import subprocess
 # from tex_minimal import tex_preamble, tex_end
 # from create_pdf import create_pdf, open_pdf_file, build_pdf_file
@@ -867,8 +868,15 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
         else:
             coef_2 = get_random_fraction(coef_b[0],coef_b[1])
     else:
-        coef_1 = get_random_number(coef_a[0],coef_a[1])
-        coef_2 = get_random_number(coef_b[0],coef_b[1])
+        if coef_a == False:
+            coef_1 = 1
+        else:
+            coef_1 = get_random_number(coef_a[0],coef_a[1])
+        
+        if coef_b == False:
+            coef_2 = 1
+        else:
+            coef_2 = get_random_number(coef_b[0],coef_b[1])
 
 
     if exp_x == [0,0]:
@@ -891,12 +899,13 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
 
 
     binome = []
-
+    operation = [['+','-'],['-','+']]
+    chosen_operation = random.choice(operation)
     for i, all in enumerate(binomials_types):
         possible_binoms = [
             f'({coef_1}*A{exponent_x}+{coef_2}*B{exponent_y})**{exponent}',
             f'({coef_1}*A{exponent_x}-{coef_2}*B{exponent_y})**{exponent}',
-            f'({coef_1}*A{exponent_x}+{coef_2}*B{exponent_y})*({coef_1}*A{exponent_x}-{coef_2}*B{exponent_y})'
+            f'({coef_1}*A{exponent_x}{chosen_operation[0]}{coef_2}*B{exponent_y})*({coef_1}*A{exponent_x}{chosen_operation[1]}{coef_2}*B{exponent_y})'
             ]
 
         if all == True:
@@ -949,7 +958,7 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
     
 
     binom_string = random_choice.replace("**", "^")
-    print(binom_string)
+    # print(binom_string)
     if fractions_allowed==True:
         binom_string = re.sub('([AB])\*([AB])', r"\1\2", binom_string)
         binom_string = binom_string.replace("*", "\xb7")
@@ -960,6 +969,7 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
 
 
     binom_string = re.sub('([^0-9])1\xb7([^0-9\)/])', r"\1\2",binom_string)
+    binom_string = re.sub('([^0-9])1([^0-9\)/])', r"\1\2",binom_string)
     binom_string = re.sub('([^0-9])\xb7([^0-9])', r"\1\2",binom_string)
     binom_string = binom_string.replace("+-", "-")
     binom_string = binom_string.replace("--", "+")
@@ -988,10 +998,13 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
 def get_random_fraction(min, max):
     # if min == 0 and max == 1:
     #     numerator = 1
-    #     denominator = 2
+    #     denominator = get_random_number(1, 9)
     # else:
-    numerator = get_random_number(min, max-1)
-    denominator = get_random_number(numerator+1, max)
+    # numerator = get_random_number(min, max-1)
+    # denominator = get_random_number(numerator+1, max)
+    numerator = get_random_number(min, max)
+    denominator = get_random_number(min, max) 
+    # denominator = get_random_number(numerator, max)
 
     return Fraction("{0}/{1}".format(numerator, denominator))
 
@@ -1047,12 +1060,12 @@ def create_list_of_examples_ganze_zahlen(typ, examples, minimum, maximum, commas
 
     return list_of_examples
 
+
 def create_list_of_examples_binomische_formeln(examples, binomials_types, a,b,x,y, exponent, binoms_direction_index, fractions_allowed, variable_1, variable_2):
     list_of_examples = []
 
     for _ in range(examples):
         new_example = create_single_example_binomische_formeln(binomials_types, a,b,x,y, exponent, binoms_direction_index, fractions_allowed, variable_1, variable_2)
-
         list_of_examples.append(new_example)
 
     return list_of_examples

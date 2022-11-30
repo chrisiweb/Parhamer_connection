@@ -3237,9 +3237,7 @@ def setup_stackWizard(self):
     add_new_option(self.combobox_nonogramm_wizard, 0, 'Zufällig')
     i=1
 
-    # def sort_nonogram(item):
-    #     print(item[1])
-    #     return 
+
 
     sorted_nonogramms = sorted(all_nonogramms.items(), key= lambda item: len(item[1]))
     for all in sorted_nonogramms:

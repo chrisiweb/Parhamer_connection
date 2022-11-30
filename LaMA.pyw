@@ -4059,6 +4059,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         #     index +=1
         # print(self.list_of_examples_wizard[index])
 
+    @report_exceptions
     def create_single_example_wizard(self):
         thema = self.comboBox_themen_wizard.currentText()
         minimum = self.spinbox_zahlenbereich_minimum.value()
@@ -4176,7 +4177,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
 
-
+    @report_exceptions
     def reset_aufgabenboxes_wizard(self):
         columns = self.spinBox_column_wizard.value()
         for i in reversed(range(self.gridLayout_scrollArea_wizard.count())): 
@@ -4197,6 +4198,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         row = 0
         index = 0
         # for thema in self.dict_all_examples_wizard:
+        # print(self.list_of_examples_wizard)
         for example in self.list_of_examples_wizard:
             self.create_aufgabenbox_wizard(index, example, row, column)
             if row+1 < items_per_column:
@@ -4364,7 +4366,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     #     else: 
     #         self.chosen_nonogram, self.solution_pixel = get_all_solution_pixels(list_of_examples, self.combobox_nonogramm_wizard.currentText())
 
-
+    @report_exceptions
     def create_new_worksheet_wizard_pressed(self):
         self.pushButton_addto_worksheet_wizard.setEnabled(True)
         self.worksheet_edited = True
