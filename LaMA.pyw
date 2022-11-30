@@ -3876,7 +3876,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     def checkbox_binoms_b_state_changed(self):
         if self.checkbox_binoms_y.isChecked()==False and self.checkbox_binoms_b.isChecked()==False:
-            warning_window('Es muss entweder "a" oder "x" ausgewählt sein.')
+            warning_window('Es muss entweder "b" oder "y" ausgewählt sein.')
             self.checkbox_binoms_y.setChecked(True)
             return
         self.checkbox_enable_disable_widget(self.checkbox_binoms_b, self.spinbox_binoms_b_min)
@@ -3886,7 +3886,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     def checkbox_binoms_y_state_changed(self):
         if self.checkbox_binoms_y.isChecked()==False and self.checkbox_binoms_b.isChecked()==False:
-            warning_window('Es muss entweder "a" oder "x" ausgewählt sein.')
+            warning_window('Es muss entweder "b" oder "y" ausgewählt sein.')
             self.checkbox_binoms_b.setChecked(True)
             return
         self.checkbox_enable_disable_widget(self.checkbox_binoms_y, self.spinbox_binoms_n_min)
