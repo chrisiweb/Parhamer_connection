@@ -4084,7 +4084,11 @@ class Ui_Dialog_edit_worksheet_instructions(object):
         self.horizontallayout_titel.addWidget(self.checkbox_titel)
         self.checkbox_titel.stateChanged.connect(self.enable_title)
 
-        self.lineedit_titel = create_new_lineedit(widget_titel, "Arbeitsblatt")
+        
+        self.lineedit_titel = create_new_lineedit(widget_titel, "")
+        if show_titel != False:
+            self.lineedit_titel.setText(show_titel)
+            
         self.horizontallayout_titel.addWidget(self.lineedit_titel)
 
 

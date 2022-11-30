@@ -4025,6 +4025,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # horizontalLayout.addWidget(button_delete)
         self.dict_aufgaben_wizard[index] = label
 
+    @report_exceptions
     def delete_example(self, index):
         self.list_of_examples_wizard.pop(index)
 
@@ -4059,7 +4060,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         #     index +=1
         # print(self.list_of_examples_wizard[index])
 
-    @report_exceptions
+    
     def create_single_example_wizard(self):
         thema = self.comboBox_themen_wizard.currentText()
         minimum = self.spinbox_zahlenbereich_minimum.value()
@@ -4161,6 +4162,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         return new_example
 
+    @report_exceptions
     def reload_example(self, index):  
         new_example = self.create_single_example_wizard()
         # result = self.list_of_examples_wizard[index][-2]
@@ -4394,7 +4396,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         #     self.coordinates_nonogramm_wizard = create_coordinates(self, solution_pixel)
 
-
+    @report_exceptions
     def add_single_example_wizard(self):
         self.pushButton_addto_worksheet_wizard.setEnabled(True)
         new_example = self.create_single_example_wizard()
@@ -4742,8 +4744,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         try:
             show_titel = self.titel_worksheet_wizard
-        except:
-            show_titel = True
+        except AttributeError:
+            show_titel = "Arbeitsblatt"
+
 
         try:
             show_instructions = self.show_instructions_wizard
