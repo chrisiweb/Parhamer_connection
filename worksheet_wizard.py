@@ -1376,7 +1376,8 @@ def create_latex_string_ganze_zahlen(content, example):
 def create_latex_string_binomische_formeln(content, example):
 
     example_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", example[2])
-
+    example_string = re.sub("\^([0-9][0-9]+)",r"^{\1}", example[2])
+    print(example_string)
     aufgabe, loesung = example_string.split(" = ")
     
     temp_content = f"\item ${aufgabe} = \\antwort{{{loesung}}}$\n\n"
