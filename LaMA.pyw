@@ -4621,7 +4621,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         except AttributeError:
             arbeitsanweisung = False
 
-
+        # try:
+        #     fortlaufende_nummerierung = self.fortlaufende_nummerierung
+        # except AttributeError:
+        #     fortlaufende_nummerierung = True
 
         # columns = self.spinBox_column_wizard.value()
         if self.combobox_nummerierung_wizard.currentText() == '-':
@@ -4641,10 +4644,17 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         except AttributeError:
             item_spacing = 2.00
 
+
+
+        total_number_of_examples = self.get_total_number_of_examples_wizard()
+
         content = create_latex_worksheet(
             order_of_examples,
             self.dict_all_examples_worksheet_wizard,
-            index ,titel, arbeitsanweisung, nummerierung, item_spacing,
+            total_number_of_examples,
+            index ,titel, arbeitsanweisung,
+            # fortlaufende_nummerierung, 
+            nummerierung, item_spacing,
             self.comboBox_solution_type_wizard.currentIndex(),
             )
 
@@ -4753,6 +4763,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         except AttributeError:
             show_instructions = True
 
+
+        # try:
+        #     fortlaufende_nummerierung = self.fortlaufende_nummerierung
+        # except AttributeError:
+        #     fortlaufende_nummerierung = True
+
         try:
             show_pagenumbers = self.checkBox_show_pagenumbers_wizard
         except AttributeError:
@@ -4784,6 +4800,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 self.titel_worksheet_wizard = ui.lineedit_titel.text()
             else:
                 self.titel_worksheet_wizard = False
+            # self.fortlaufende_nummerierung = ui.checkbox_fortlaufende_nummerierung.isChecked()
             self.number_columns_solution_wizard = ui.spinbox_number_columns.value()
             self.item_spacing_wizard = ui.spinbox_item_spacing.value()
 

@@ -1006,7 +1006,7 @@ def get_random_fraction(min, max):
     denominator = get_random_number(min, max) 
     # denominator = get_random_number(numerator, max)
 
-    return Fraction("{0}/{1}".format(numerator, denominator))
+    return Fraction("{0}/{1}".format(numerator, abs(denominator)))
 
 
 def create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
@@ -1388,7 +1388,7 @@ def create_latex_string_binomische_formeln(content, example):
     return content
 
 
-def create_latex_worksheet(order_of_examples, dict_of_examples,index, titel, arbeitsanweisung, nummerierung, item_spacing, solution_type=0):
+def create_latex_worksheet(order_of_examples, dict_of_examples,total_number_of_examples, index, titel, arbeitsanweisung,nummerierung, item_spacing, solution_type=0):
     if titel != False:
         content = "\section{{{0}}}\n\n".format(titel.replace('&', '\&'))
     else:
@@ -1398,7 +1398,7 @@ def create_latex_worksheet(order_of_examples, dict_of_examples,index, titel, arb
     if arbeitsanweisung != False:
         content += arbeitsanweisung
 
-
+    enumi_counter = 0
     for widget in order_of_examples:
         set_of_examples = dict_of_examples[widget] 
     # for all in dict_of_examples.values():
@@ -1410,6 +1410,10 @@ def create_latex_worksheet(order_of_examples, dict_of_examples,index, titel, arb
             content += "\\begin{{multicols}}{{{0}}}\n".format(columns)
 
         content += f"\\begin{{enumerate}}[{nummerierung}]\setlength\itemsep{{{item_spacing}cm}}\n"
+
+        # if fortlaufende_nummerierung == True:
+        #     content += f"\setcounter{{enumi}}{{{enumi_counter}}}"
+        #     enumi_counter +=1
 
         list_of_examples = set_of_examples['list_of_examples']
         for example in list_of_examples:
@@ -1431,7 +1435,7 @@ def create_latex_worksheet(order_of_examples, dict_of_examples,index, titel, arb
         if columns > 1:
             content += "\end{multicols}\n"
         
-        content += "\leer\n\n"
+        content += f"\\vspace{{{item_spacing}cm}}\n\n"
      
     return content
 

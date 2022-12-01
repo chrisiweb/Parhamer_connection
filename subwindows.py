@@ -4061,7 +4061,7 @@ class Ui_Dialog_Convert_To_Eps(object):
 
 
 class Ui_Dialog_edit_worksheet_instructions(object):
-    def setupUi(self, Dialog, text, show_titel, show_instructions, show_pagenumbers, columns, item_spacing):
+    def setupUi(self, Dialog, text, show_titel, show_instructions, fortlaufende_nummerierung ,show_pagenumbers, columns, item_spacing):
         # self.MainWindow = MainWindow
         # self.Dialog = Dialog
         # self.Dialog.setObjectName("Dialog")
@@ -4104,7 +4104,8 @@ class Ui_Dialog_edit_worksheet_instructions(object):
 
         self.checkBox_hide_instructions.stateChanged.connect(self.enable_instructions)
 
-
+        # self.checkbox_fortlaufende_nummerierung = create_new_checkbox(Dialog, "Aufgaben fortlaufend nummerieren", checked=fortlaufende_nummerierung)
+        # verticalLayout.addWidget(self.checkbox_fortlaufende_nummerierung)
 
         self.checkBox_show_pagenumbers = create_new_checkbox(Dialog, "Seitennummerierung anzeigen", show_pagenumbers)
         verticalLayout.addWidget(self.checkBox_show_pagenumbers)
