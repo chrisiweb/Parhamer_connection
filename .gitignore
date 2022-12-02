@@ -8,4 +8,5 @@
 *.synctex
 __pycache__/
 Teildokument/
+miktex-portable/
 
