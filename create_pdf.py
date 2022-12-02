@@ -825,7 +825,7 @@ def build_pdf_file(ui, folder_name, file_name, latex_output_file):
         else:
             drive = ""
 
-        print(sys.argv[0])
+        warning_window(f"NEU {sys.argv[0]}")
         if is_empty(drive):
             terminal_command = 'cd "{0}" & latex -interaction=nonstopmode --synctex=-1 "{1}.tex" & latex -interaction=nonstopmode --synctex=-1 "{1}.tex" & dvips "{1}.dvi" & ps2pdf -dNOSAFER -dALLOWPSTRANSPARENCY "{1}.ps"'.format(
                 folder_name, file_name
