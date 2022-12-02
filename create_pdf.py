@@ -828,21 +828,23 @@ def build_pdf_file(ui, folder_name, file_name, latex_output_file):
         print(sys.argv[0])
         print(os.path.abspath("."))
         print(os.path.dirname(sys.argv[0]))
-        
-        if is_empty(drive):
-            terminal_command = 'cd "{0}" & latex -interaction=nonstopmode --synctex=-1 "{1}.tex" & latex -interaction=nonstopmode --synctex=-1 "{1}.tex" & dvips "{1}.dvi" & ps2pdf -dNOSAFER -dALLOWPSTRANSPARENCY "{1}.ps"'.format(
-                folder_name, file_name
-            )
-        else:
-            terminal_command = '{0} & cd "{1}" & latex -interaction=nonstopmode --synctex=-1 "{2}.tex" & latex -interaction=nonstopmode --synctex=-1 "{2}.tex" & dvips "{2}.dvi" & ps2pdf -dNOSAFER -dALLOWPSTRANSPARENCY "{2}.ps"'.format(
-                drive, folder_name, file_name
-            )
 
+        folder_name =os.path.abspath(".")
+
+        compile = os.path.join(folder_name, "miktex-portable", "texmfs", "install", "miktex", "bin", "x64")
+        compile_latex = os.path.join(compile, "latex.exe")
+
+        print(os.path.exists(compile_latex))
+
+        if is_empty(drive):
+            terminal_command = f'cd "{folder_name}" & {compile_latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & {compile_latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & dvips "{file_name}.dvi" & ps2pdf -dNOSAFER -dALLOWPSTRANSPARENCY "{file_name}.ps"'
+        else:
+            terminal_command = f'{drive} & cd "{folder_name}" & {compile_latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & {compile_latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & dvips "{file_name}.dvi" & ps2pdf -dNOSAFER -dALLOWPSTRANSPARENCY "{file_name}.ps"'
 
         process = subprocess.Popen(
             terminal_command,
-            cwd=os.path.splitdrive(path_programm)[0],
-            stdout=subprocess.PIPE,
+            # cwd=os.path.splitdrive(path_programm)[0],
+            # stdout=subprocess.PIPE,
             shell=True
         )
 
