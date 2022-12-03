@@ -829,7 +829,12 @@ def build_pdf_file(ui, folder_name, file_name, latex_output_file):
         print(sys.argv[0])
         print(folder_name_miktex)
         print(compile_miktex_folder)
-
+        warning_window(f"""
+sys.argv : {sys.argv};
+sys.argv[0]: {sys.argv[0]};
+folder_name_miktex: {folder_name_miktex};
+compile_miktex_folder: {compile_miktex_folder};
+        """)
 
 
         if is_empty(drive):
