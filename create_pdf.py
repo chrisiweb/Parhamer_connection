@@ -829,12 +829,14 @@ def build_pdf_file(ui, folder_name, file_name, latex_output_file):
         print(sys.argv[0])
         print(folder_name_miktex)
         print(compile_miktex_folder)
-        warning_window(f"""
-sys.argv : {sys.argv};
-sys.argv[0]: {sys.argv[0]};
-folder_name_miktex: {folder_name_miktex};
-compile_miktex_folder: {compile_miktex_folder};
-        """)
+        folder_name_miktex =os.path.abspath(".")
+        compile_miktex_folder = os.path.join(folder_name_miktex, "miktex-portable", "texmfs", "install", "miktex", "bin", "x64")
+#         warning_window(f"""
+# sys.argv : {sys.argv};
+# sys.argv[0]: {sys.argv[0]};
+# folder_name_miktex: {folder_name_miktex};
+# compile_miktex_folder: {compile_miktex_folder};
+#         """)
 
 
         if is_empty(drive):
@@ -976,6 +978,16 @@ def create_pdf(path_file, index=0, maximum=0, typ=0):
 
     # text = "Die PDF Datei wird erstellt..." + rest
 
+    folder_name_miktex =os.path.abspath(".")
+    compile_miktex_folder = os.path.join(folder_name_miktex, "miktex-portable", "texmfs", "install", "miktex", "bin", "x64")
+    warning_window(f"""
+sys.argv : {sys.argv};
+sys.argv[0]: {sys.argv[0]};
+folder_name_miktex: {folder_name_miktex};
+compile_miktex_folder: {compile_miktex_folder};
+    """)
+
+
 
     if not find_executable('latex'):
         QApplication.restoreOverrideCursor()
@@ -988,6 +1000,8 @@ Bitte öffnen Sie <a href='{0}'>lama.schule/downloads</a> und folgen Sie allen S
 Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@gmail.com""".format(link),
         titel="Keine LaTeX-Distribution gefunden")
         return
+
+
 
 
     
