@@ -840,9 +840,9 @@ def build_pdf_file(ui, folder_name, file_name, latex_output_file):
 
 
         if is_empty(drive):
-            terminal_command = f'cd "{folder_name}" & {compile_latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & {compile_latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & {compile_dvips} "{file_name}.dvi" & {compile_ps2pdf} -dNOSAFER -dALLOWPSTRANSPARENCY "{file_name}.ps"'
+            terminal_command = f'cd "{folder_name}" & "{compile_latex}" -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & "{compile_latex}" -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & "{compile_dvips}" "{file_name}.dvi" & "{compile_ps2pdf}" -dNOSAFER -dALLOWPSTRANSPARENCY "{file_name}.ps"'
         else:
-            terminal_command = f'{drive} & cd "{folder_name}" & {compile_latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & {compile_latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & {compile_dvips} "{file_name}.dvi" & {compile_ps2pdf} -dNOSAFER -dALLOWPSTRANSPARENCY "{file_name}.ps"'
+            terminal_command = f'{drive} & cd "{folder_name}" & "{compile_latex}" -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & "{compile_latex}" -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & "{compile_dvips}" "{file_name}.dvi" & "{compile_ps2pdf}" -dNOSAFER -dALLOWPSTRANSPARENCY "{file_name}.ps"'
 
         process = subprocess.Popen(
             terminal_command,
