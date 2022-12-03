@@ -825,6 +825,12 @@ def build_pdf_file(ui, folder_name, file_name, latex_output_file):
         else:
             drive = ""
 
+        print(sys.argv)
+        print(sys.argv[0])
+        print(folder_name_miktex)
+        print(compile_miktex_folder)
+
+
 
         if is_empty(drive):
             terminal_command = f'cd "{folder_name}" & {compile_latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & {compile_latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & {compile_dvips} "{file_name}.dvi" & {compile_ps2pdf} -dNOSAFER -dALLOWPSTRANSPARENCY "{file_name}.ps"'
