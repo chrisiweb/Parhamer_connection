@@ -107,16 +107,22 @@ def get_random_number(min, max, decimal=0, zero_allowed=False, force_decimals=Fa
     x = D("{:.{prec}f}".format(x, prec=decimal))
 
     if force_decimals==True:
-        rand_int = random.randint(0,2)
-        new_decimal = decimal - rand_int
-        test_value = round(x-int(x),new_decimal)
-        last_integer = str(test_value)[-1]
-
-        if last_integer == "0":
+        normalized_result = x.normalize()
+        if get_number_of_decimals(normalized_result) != decimal:
             integer = random.randint(1,9)
-            _str = str(test_value)
-            _str = _str[:-1] + str(integer)
-            x = _str
+            x = str(x)[:-1] + str(integer)
+        
+        ## not sure  
+        # rand_int = random.randint(0,2)
+        # new_decimal = decimal - rand_int
+        # test_value = round(x-int(x),new_decimal)
+        # last_integer = str(test_value)[-1]
+
+        # if last_integer == "0":
+        #     integer = random.randint(1,9)
+        #     _str = str(test_value)
+        #     _str = _str[:-1] + str(integer)
+        #     x = _str
         
 
     x = D(f'{x}')
@@ -261,8 +267,8 @@ def create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, c
             if smaller_or_equal_result == 1:
                 set_commas_result=commas_result
                 commas_result = random.randint(0,set_commas_result)
-        result = get_random_number(result_min, result_max, commas_result, force_decimals=True)
-
+        result = get_random_number(result_min, result_max, decimal= commas_result,force_decimals=True)
+        print(result)
         dividend = result*divisor
         dividend = D(f'{dividend}').normalize()
         dividend = remove_exponent(dividend)
@@ -1087,7 +1093,7 @@ def create_latex_string_addition(content, example, ausrichtung):
             max_decimal = decimals    
 
     if ausrichtung == 0:
-        content += "\item \\begin{tabular}{rr}\n"
+        content += "\\task \\begin{tabular}[t]{rr}\n"
 
         for all in summanden:
             decimals = get_number_of_decimals(all)
@@ -1108,7 +1114,7 @@ def create_latex_string_addition(content, example, ausrichtung):
         \end{{tabular}}\n""".format(str(example[-2]).replace(".",","))
         # .format(str(example[0]).replace(".",","),str(example[1]).replace(".",","),str(example[2]).replace(".",","))
     elif ausrichtung == 1:
-        content += "\item ${0}".format(str(summanden[0]).replace(".",","))
+        content += "\\task ${0}".format(str(summanden[0]).replace(".",","))
 
         for all in summanden[1:]:
             content += " + {}".format(str(all).replace(".",","))
@@ -1145,14 +1151,14 @@ def create_latex_string_subtraction(content, example, ausrichtung):
             
 
         content += """
-        \item \\begin{{tabular}}{{rr}}
+        \\task \\begin{{tabular}}[t]{{rr}}
         & ${0}{3}$ \\\\
         & $-{1}{4}$ \\\\ \hline
         &\\antwort{{${2}$}}
         \end{{tabular}}\n
         """.format(str(subtrahenden[0]).replace(".",","), str(subtrahenden[1]).replace(".",","),str(example[-2]).replace(".",","), phantom_1, phantom_2)
     elif ausrichtung == 1:
-        content += "\item ${0}".format(str(subtrahenden[0]).replace(".",","))
+        content += "\\task ${0}".format(str(subtrahenden[0]).replace(".",","))
 
         for all in subtrahenden[1:]:
             content += " - {}".format(str(all).replace(".",","))
@@ -1199,7 +1205,7 @@ def create_latex_string_multiplication(content, example, solution_type):
     factor_digit_length = get_number_of_digits(factor_1)
     
     content += """
-\item$\\begin{{array}}{{l}}
+\\task $\\begin{{array}}[t]{{l}}
 {0} \cdot {1} \\\\ \hline
 """.format(str(factor_1).replace('.',','),str(factor_2).replace('.',','))
 
@@ -1249,39 +1255,64 @@ def get_first_temp_division(dividend, temp_solution):
         part_divide = str(dividend)[0:end_index]
 
 def get_temp_solution_division(dividend, divisor, solution):
+
     str_solution = [x for x in solution if x.isnumeric()]
 
     list_temp_solutions = []
 
+    # print(f"{dividend} : {divisor} = {solution}")
+    # print(str_solution)
     for i, all in enumerate(str_solution):
+        # print(all)
         temp_solution = eval(f"{all}*{divisor}")
 
         if i == 0:
             first_part_divide, end_index = get_first_temp_division(dividend, temp_solution)
             part_divide = first_part_divide
 
+        # print(f"before strip: {part_divide}")
         if isinstance(part_divide, str):
             part_divide = part_divide.lstrip('0')
 
+        if part_divide == "":
+            part_divide = "0"
+
+        # print(f"after strip: {part_divide}")
+        # print(temp_solution)
+        # if part_divide == "":
+        #     part_divide = 0
+
         differenz = eval(part_divide)-temp_solution
         differenz = round(differenz, 10)
+        # print(f"index: {i}; end_index: {end_index}")
+        # print(f"len: {len(str_solution)}")
         end_index +=1
-        try:
-            if str(dividend)[end_index].isnumeric():
-                next_digit = str(dividend)[end_index]
-                next_digit_string = next_digit
-            else:
-                end_index +=1
-                next_digit = str(dividend)[end_index]
-                next_digit_string = f"\;{next_digit}"       
-        except IndexError:
+
+        if i == len(str_solution)-1:
+            # print('A')
             next_digit = ""
             next_digit_string = next_digit
+        else:            
+            try:
+                if str(dividend)[end_index].isnumeric():
+                    # print('B')
+                    next_digit = str(dividend)[end_index]
+                    next_digit_string = next_digit
+                else:
+                    # print('C')
+                    end_index +=1
+                    next_digit = str(dividend)[end_index]
+                    next_digit_string = f"\;{next_digit}"       
+            except IndexError:
+                # print('D')
+                next_digit = "0"
+                next_digit_string = next_digit
 
 
         part_divide = f"{differenz}{next_digit}"
 
         list_temp_solutions.append([f"{differenz}",next_digit_string])
+        # print(list_temp_solutions)
 
     return first_part_divide, list_temp_solutions
 
@@ -1296,67 +1327,66 @@ def create_latex_string_division(content, example, solution_type):
         solution = str(example[2]).replace(".",",")
         rest = ""
 
-    content += f"""
-    \item $\\begin{{array}}{{l}}
-    {str(example[0]).replace(".",",")} : {str(example[1]).replace(".",",")} = \\antwort[\\vspace{{1.5cm}}]{{{solution}}} \\\\
-    """
+    if solution_type == 1:
+        content += f"""
+        \\task $\\begin{{array}}[t]{{l}}
+        {str(example[0]).replace(".",",")} : {str(example[1]).replace(".",",")} = \\antwort[\\vspace{{1.5cm}}]{{{solution}}} \\\\
+        """
 
-    num_decimal_divisor = get_number_of_decimals(example[1])
+        num_decimal_divisor = get_number_of_decimals(example[1])
 
-    if num_decimal_divisor != 0:
-        example[0] = example[0]*10**(num_decimal_divisor)
-        example[0] = example[0].normalize()
-        example[0] = remove_exponent(example[0])
-        example[1] = int(example[1]*10**(num_decimal_divisor))
+        if num_decimal_divisor != 0:
+            example[0] = example[0]*10**(num_decimal_divisor)
+            example[0] = example[0].normalize()
+            example[0] = remove_exponent(example[0])
+            example[1] = int(example[1]*10**(num_decimal_divisor))
 
-
-    first_part_divide, list_temp_solutions = get_temp_solution_division(dividend=example[0], divisor=example[1], solution=solution)
-
-
-    if num_decimal_divisor != 0:
-        content += f"""\\antwortzeile {str(example[0]).replace(".",",")} : {str(example[1]).replace(".",",")} \\\\ """ 
+        # print(example)
+        first_part_divide, list_temp_solutions = get_temp_solution_division(dividend=example[0], divisor=example[1], solution=solution)
 
 
-
-    previous_num_of_digits  = get_number_of_digits(first_part_divide)
-    # multiplier = 0
-    rest = ""
-    komma = False
-    for i, all in enumerate(list_temp_solutions):
-        num_of_digits = get_number_of_digits(int(all[0]))
-
-        if i == 0:
-            multiplier = previous_num_of_digits - num_of_digits
-        # elif i == len(list_temp_solutions)-1:
-        #     diff = previous_num_of_digits - num_of_digits
-        #     multiplier += diff
-        #     rest = "R"        
-        else:
-            multiplier += 1
-            diff = previous_num_of_digits - num_of_digits
-            multiplier += diff
-
-        if i == len(list_temp_solutions)-1:
-            rest = "R"
-                    
-        hspace = multiplier*'\enspace'
-        if komma == True:
-            hspace += "\\;"
-        if "\\;" in all[1]:
-            komma = True
-
-
-        content += f"\\antwortzeile {hspace} {all[0]}{all[1]}{rest} \\\\ \n"
-        previous_num_of_digits = num_of_digits 
-        # print(content)
-        # print(f"multiplier: {multiplier}")
-    content += "\end{array}$\n\n"
+        if num_decimal_divisor != 0:
+            content += f"""\\antwortzeile {str(example[0]).replace(".",",")} : {str(example[1]).replace(".",",")} \\\\ """ 
 
 
 
+        previous_num_of_digits  = get_number_of_digits(first_part_divide)
+        # multiplier = 0
+        rest = ""
+        komma = False
+        for i, all in enumerate(list_temp_solutions):
+            num_of_digits = get_number_of_digits(int(all[0]))
+
+            if i == 0:
+                multiplier = previous_num_of_digits - num_of_digits
+            # elif i == len(list_temp_solutions)-1:
+            #     diff = previous_num_of_digits - num_of_digits
+            #     multiplier += diff
+            #     rest = "R"        
+            else:
+                multiplier += 1
+                diff = previous_num_of_digits - num_of_digits
+                multiplier += diff
+
+            if i == len(list_temp_solutions)-1:
+                rest = "R"
+                        
+            hspace = multiplier*'\enspace'
+            if komma == True:
+                hspace += "\\;"
+            if "\\;" in all[1]:
+                komma = True
 
 
-    # content += "\item ${0} : {1} = \\antwort[\\vspace{{1.5cm}}]{{{2}}}${3}\n\n".format(str(example[0]).replace(".",","),str(example[1]).replace(".",","),solution, rest)
+            content += f"\\antwortzeile {hspace} {all[0]}{all[1]}{rest} \\\\ \n"
+            previous_num_of_digits = num_of_digits 
+            # print(content)
+            # print(f"multiplier: {multiplier}")
+        content += "\end{array}$\n\n"
+
+
+    else:
+        content += "\\task ${0} : {1} = \\antwort[\\vspace{{1.5cm}}]{{{2}}}${3}\n\n".format(str(example[0]).replace(".",","),str(example[1]).replace(".",","),solution, rest)
 
 
     return content
@@ -1367,7 +1397,7 @@ def create_latex_string_ganze_zahlen(content, example):
     
     x,y = equation.split(" = ")
     
-    temp_content = "\item ${0} = \\antwort{{{1}}}$\n\n".format(x.replace(".",","),y.replace(".",","))
+    temp_content = "\\task ${0} = \\antwort{{{1}}}$\n\n".format(x.replace(".",","),y.replace(".",","))
     temp_content = temp_content.replace('\xb7', '\cdot')
     content += temp_content
     return content
@@ -1380,7 +1410,7 @@ def create_latex_string_binomische_formeln(content, example):
 
     aufgabe, loesung = example_string.split(" = ")
     
-    temp_content = f"\item ${aufgabe} = \\antwort{{{loesung}}}$\n\n"
+    temp_content = f"\\task ${aufgabe} = \\antwort{{{loesung}}}$\n\n"
 
     temp_content = temp_content.replace('\xb7', '\cdot ')
 
@@ -1389,7 +1419,7 @@ def create_latex_string_binomische_formeln(content, example):
     return content
 
 
-def create_latex_worksheet(order_of_examples, dict_of_examples,total_number_of_examples, index, titel, arbeitsanweisung,nummerierung, item_spacing, solution_type=0):
+def create_latex_worksheet(order_of_examples, dict_of_examples,total_number_of_examples, index, titel, arbeitsanweisung,fortlaufende_nummerierung ,nummerierung,solution_type=0):
     if titel != False:
         content = "\section{{{0}}}\n\n".format(titel.replace('&', '\&'))
     else:
@@ -1399,7 +1429,6 @@ def create_latex_worksheet(order_of_examples, dict_of_examples,total_number_of_e
     if arbeitsanweisung != False:
         content += arbeitsanweisung
 
-    enumi_counter = 0
     for widget in order_of_examples:
         set_of_examples = dict_of_examples[widget] 
     # for all in dict_of_examples.values():
@@ -1407,11 +1436,11 @@ def create_latex_worksheet(order_of_examples, dict_of_examples,total_number_of_e
         ausrichtung = set_of_examples['ausrichtung']
         columns = set_of_examples['spalten']
         
-        if columns > 1:
-            content += "\\begin{{multicols}}{{{0}}}\n".format(columns)
-
-        content += f"\\begin{{enumerate}}[{nummerierung}]\setlength\itemsep{{{item_spacing}cm}}\n"
-
+        # if columns > 1:
+        #     content += "\\begin{{multicols}}{{{0}}}\n".format(columns)
+        # print(nummerierung)
+        # content += f"\\begin{{enumerate}}[{nummerierung}]\setlength\itemsep{{{item_spacing}cm}}\n"
+        content += f"\\begin{{tasks}}[label={nummerierung},resume={fortlaufende_nummerierung}]({columns})"
         # if fortlaufende_nummerierung == True:
         #     content += f"\setcounter{{enumi}}{{{enumi_counter}}}"
         #     enumi_counter +=1
@@ -1431,12 +1460,12 @@ def create_latex_worksheet(order_of_examples, dict_of_examples,total_number_of_e
             elif index == 8:
                 content = create_latex_string_binomische_formeln(content, example)
 
-        content += "\end{enumerate}\n"
+        content += "\end{tasks}\n"
 
-        if columns > 1:
-            content += "\end{multicols}\n"
+        # if columns > 1:
+        #     content += "\end{multicols}\n"
         
-        content += f"\\vspace{{{item_spacing}cm}}\n\n"
+        # content += f"\\vspace{{{item_spacing}cm}}\n\n"
      
     return content
 
@@ -1639,12 +1668,12 @@ def get_random_solution(self, thema):
         smaller_or_equal_div = self.combobox_divisor_kommastelle_wizard.currentIndex()
         commas_result = self.spinbox_ergebnis_kommastellen_wizard.value()
         smaller_or_equal_result = self.combobox_ergebnis_kommastellen_wizard.currentIndex()
-        if self.radioButton_division_ohne_rest.isChecked():
+        if self.combobox_dividend_wizard.currentIndex()==1:
+            output_type = 2    
+        elif self.radioButton_division_ohne_rest.isChecked():
             output_type = 0
         elif self.radioButton_division_rest.isChecked():
-            output_type = 1
-        elif self.radioButton_division_decimal.isChecked():
-            output_type = 2         
+            output_type = 1       
         distract_result = create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div,smaller_or_equal_div, commas_result, smaller_or_equal_result, output_type)
 
 

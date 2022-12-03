@@ -7,13 +7,14 @@ def tex_preamble(
     bookmark = False,
     beamer_mode = False,
     pagestyle = "plain",
+    tasks = False,
     ):
 
     if beamer_mode == False:
-        start = """\documentclass[a4paper,{0}]{{{1}}}
+        start = f"""\documentclass[a4paper,{font_size}]{{{documentclass}}}
 \\usepackage{{geometry}}
 \geometry{{a4paper,left=18mm,right=18mm, top=2cm, bottom=2cm}}
-""".format(font_size, documentclass)
+"""
         spacing = "\onehalfspacing %Zeilenabstand"
 
     else:
@@ -31,19 +32,31 @@ def tex_preamble(
     else:    
         bookmark_pkg = f"\\usepackage{{bookmark}}\n\setcounter{{tocdepth}}{{{bookmark}}}"
 
+    if tasks != False:
+        tasks_package =f"""
+\\usepackage{{tasks}}
+\settasks{{
+label-width=4ex,
+after-skip = {tasks} , % undo paragraph skip
+after-item-skip = {tasks} % undo paragraph skip
+}}
+"""
+    else:
+        tasks_package = ""
         
-    preamble = """
-{0} 
+    preamble = f"""
+{start} 
 
 \\usepackage{{lmodern}}
 \\usepackage[T1]{{fontenc}}
 \\usepackage[utf8]{{inputenc}}
 \\usepackage[ngerman]{{babel}}
-\\usepackage[{1}, random={2}, {3}]{{srdp-mathematik}} % solution_on/off, random, info_on/off
-{4}
+\\usepackage[{solution}, random={random}, {info}]{{srdp-mathematik}} % solution_on/off, random, info_on/off
+{bookmark_pkg}
+{tasks_package}
 
-\pagestyle{{{5}}} %PAGESTYLE: empty, plain
-{6}
+\pagestyle{{{pagestyle}}} %PAGESTYLE: empty, plain
+{spacing}
 \setcounter{{secnumdepth}}{{-1}} % keine Nummerierung der Überschriften
 %
 %
@@ -54,15 +67,7 @@ def tex_preamble(
 %
 
 \\begin{{document}}
-""".format(
-    start,
-    solution,
-    random,
-    info,
-    bookmark_pkg,
-    pagestyle,
-    spacing
-)
+"""
     return preamble
 
 tex_end = "\end{document}"
@@ -74,11 +79,11 @@ def begin_beispiel(themen = None, punkte = 0, halbe_punkte = False):
         string = "[{}]".format(', '.join(themen))
     else:
         string = ""
-    return "\\begin{{beispiel}}{0}{{{1}}}".format(string, punkte)
+    return f"\\begin{{beispiel}}{string}{{{punkte}}}"
 
 end_beispiel = "\n\end{beispiel}"
 
 def begin_beispiel_lang(punkte = 0):
-    return "\\begin{{langesbeispiel}} \item[{0}]".format(punkte)
+    return f"\\begin{{langesbeispiel}} \item[{punkte}]"
 
 end_beispiel_lang = "\end{langesbeispiel}"

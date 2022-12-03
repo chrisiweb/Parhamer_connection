@@ -4401,8 +4401,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.pushButton_addto_worksheet_wizard.setEnabled(True)
         new_example = self.create_single_example_wizard()
 
-        self.list_of_examples_wizard.append(new_example)
-
+        try:
+            self.list_of_examples_wizard.append(new_example)
+        except AttributeError:
+            self.list_of_examples_wizard = [new_example]
+            
         self.reset_aufgabenboxes_wizard()
         # self.dict_aufgaben_wizard[index].setText(new_example[-1])
 
@@ -4572,9 +4575,15 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def create_latex_file_content_wizard(self):
         total_list_of_examples = []
 
+        try:
+            fortlaufende_nummerierung = self.fortlaufende_nummerierung
+        except AttributeError:
+            fortlaufende_nummerierung = True
+
         for all in self.dict_all_examples_worksheet_wizard.values():
             if self.combobox_nummerierung_wizard.currentText() == "(a)" and len(all['list_of_examples'])>26:
-                warning_window("Bei der Nummerierung (a) können maximal 26 Aufgaben pro Aufgabenpaket verwendet werden.")
+                warning_window("Bei der Nummerierung (a) und (A) können maximal 26 Aufgaben pro Aufgabenpaket verwendet werden.",
+                "Bitte ändern Sie die Beschriftung.")
                 return
             for item in all['list_of_examples']:
                 total_list_of_examples.append(item)
@@ -4621,16 +4630,24 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         except AttributeError:
             arbeitsanweisung = False
 
-        # try:
-        #     fortlaufende_nummerierung = self.fortlaufende_nummerierung
-        # except AttributeError:
-        #     fortlaufende_nummerierung = True
+        try:
+            fortlaufende_nummerierung = str(self.fortlaufende_nummerierung).lower()
+        except AttributeError:
+            fortlaufende_nummerierung = 'true'
 
         # columns = self.spinBox_column_wizard.value()
         if self.combobox_nummerierung_wizard.currentText() == '-':
-            nummerierung = "label={}"
-        else:
-            nummerierung = self.combobox_nummerierung_wizard.currentText()
+            nummerierung = "{}"
+        elif self.combobox_nummerierung_wizard.currentText() == '(a)':
+            nummerierung = "(\\alph*)"
+        elif self.combobox_nummerierung_wizard.currentText() == '(A)':
+            nummerierung = "(\\Alph*)"
+        elif self.combobox_nummerierung_wizard.currentText() == '(i)':
+            nummerierung = "(\\roman*)"
+        elif self.combobox_nummerierung_wizard.currentText() == '(I)':
+            nummerierung = "(\\Roman*)"
+        elif self.combobox_nummerierung_wizard.currentText() == '(1)':
+            nummerierung = "(\\arabic*)"
 
         index = self.comboBox_themen_wizard.currentIndex()
 
@@ -4639,10 +4656,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             if self.verticalLayout_complete_worksheet_wizard.itemAt(i).widget() != None:
                 order_of_examples.append(self.verticalLayout_complete_worksheet_wizard.itemAt(i).widget())
 
-        try:
-            item_spacing = self.item_spacing_wizard
-        except AttributeError:
-            item_spacing = 2.00
+        # try:
+        #     item_spacing = self.item_spacing_wizard
+        # except AttributeError:
+        #     item_spacing = 2.00
 
 
 
@@ -4653,8 +4670,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.dict_all_examples_worksheet_wizard,
             total_number_of_examples,
             index ,titel, arbeitsanweisung,
-            # fortlaufende_nummerierung, 
-            nummerierung, item_spacing,
+            fortlaufende_nummerierung, 
+            nummerierung,
             self.comboBox_solution_type_wizard.currentIndex(),
             )
 
@@ -4696,13 +4713,29 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             warning_window("Es wurden keine Aufgaben zum Arbeitsblatt hinzugefügt.")
             return
 
+        # print(self.get_total_number_of_examples_wizard())
+        try:
+            fortlaufende_nummerierung = self.fortlaufende_nummerierung
+        except AttributeError:
+            fortlaufende_nummerierung = True
+
+        if (self.combobox_nummerierung_wizard.currentText() == "(a)" or self.combobox_nummerierung_wizard.currentText() == "(A)") and fortlaufende_nummerierung == True:
+            if self.get_total_number_of_examples_wizard()>26:
+                warning_window(
+                    "Bei der Nummerierung (a) und (A) können insgesamt maximal 26 Aufgaben verwendet werden.",
+                    "Bitte ändern Sie die Beschriftung oder deaktivieren Sie die fortlaufende Nummerierung."
+                )
+                return   
+
+
+
         content = self.create_latex_file_content_wizard()
 
         return content
 
 
     def create_vorschau_worksheet_wizard(self):
-        
+  
         content = self.get_content_worksheet_wizard()
 
         if content == None:
@@ -4725,9 +4758,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 pagestyle = 'empty'
         except AttributeError:
             pagestyle = 'empty'
-        # return
+
+        try:
+            item_spacing = f"{self.item_spacing_wizard}cm"
+        except AttributeError:
+            item_spacing = "2.00cm"
+
         with open(path_file, "w", encoding="utf8") as file:
-            file.write(tex_preamble(solution=show_solution, pagestyle=pagestyle, font_size=self.combobox_fontsize_wizard.currentText(), documentclass='extarticle'))
+            file.write(tex_preamble(solution=show_solution, pagestyle=pagestyle, font_size=self.combobox_fontsize_wizard.currentText(), documentclass='extarticle', tasks = item_spacing))
 
             file.write(content)
 
@@ -4764,10 +4802,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             show_instructions = True
 
 
-        # try:
-        #     fortlaufende_nummerierung = self.fortlaufende_nummerierung
-        # except AttributeError:
-        #     fortlaufende_nummerierung = True
+        try:
+            fortlaufende_nummerierung = self.fortlaufende_nummerierung
+        except AttributeError:
+            fortlaufende_nummerierung = True
 
         try:
             show_pagenumbers = self.checkBox_show_pagenumbers_wizard
@@ -4789,7 +4827,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         except AttributeError:
             item_spacing = 2.00
 
-        ui.setupUi(Dialog, text, show_titel ,show_instructions, show_pagenumbers, columns, item_spacing)
+        ui.setupUi(Dialog, text, show_titel ,show_instructions,fortlaufende_nummerierung ,show_pagenumbers, columns, item_spacing)
 
         rsp = Dialog.exec()
         if rsp == QtWidgets.QDialog.Accepted:
@@ -4800,7 +4838,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 self.titel_worksheet_wizard = ui.lineedit_titel.text()
             else:
                 self.titel_worksheet_wizard = False
-            # self.fortlaufende_nummerierung = ui.checkbox_fortlaufende_nummerierung.isChecked()
+            self.fortlaufende_nummerierung = ui.checkbox_fortlaufende_nummerierung.isChecked()
             self.number_columns_solution_wizard = ui.spinbox_number_columns.value()
             self.item_spacing_wizard = ui.spinbox_item_spacing.value()
 
@@ -4839,10 +4877,16 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         if path_file == None:
             return
 
+        try:
+            item_spacing = f"{self.item_spacing_wizard}cm"
+        except AttributeError:
+            item_spacing = "2.00cm"
+
+
         index = 0
         for show_solution in ["solution_on", "solution_off"]:
             with open(path_file, "w", encoding="utf8") as file:
-                file.write(tex_preamble(solution=show_solution, pagestyle='empty', font_size=self.combobox_fontsize_wizard.currentText(), documentclass='extarticle'))
+                file.write(tex_preamble(solution=show_solution, pagestyle='empty', font_size=self.combobox_fontsize_wizard.currentText(), documentclass='extarticle', tasks = item_spacing))
 
                 file.write(content)
 
