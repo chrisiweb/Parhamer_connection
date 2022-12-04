@@ -997,7 +997,7 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
     binom_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", binom_string)
     binom_string = binom_string.replace('\xb7', '\cdot ')
 
-    # print(binom_string)
+    print([f"${binom_string}$",f"${solution_string}$", string])
     return [f"${binom_string}$",f"${solution_string}$", string]
 
 
