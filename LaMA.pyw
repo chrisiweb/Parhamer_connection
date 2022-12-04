@@ -1200,11 +1200,13 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
         self.combobox_beurteilung.setCurrentIndex(0)
         # self.radioButton_notenschl.setChecked(True)
 
+
         if self.chosen_program == 'cria':
             key_prozente = 'prozente_cria'
         else:
             key_prozente = 'prozente'
-        
+
+ 
         try: 
             list_prozente = self.lama_settings[key_prozente]
         except KeyError:
@@ -1212,7 +1214,6 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
                 list_prozente = [91, 80, 64, 50]
             else:
                 list_prozente = [87, 75, 61, 50]
-
 
 
         self.spinBox_2.setValue(list_prozente[0])
@@ -1321,6 +1322,10 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
         if response == False:
             return False
 
+
+        self.chosen_program = program_change_to
+
+
         self.reset_sage(False)
         self.suchfenster_reset()
         self.reset_feedback()
@@ -1329,7 +1334,7 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
 
         self.comboBox_pagebreak.setCurrentIndex(0)
         if program_change_to == "cria":
-            self.chosen_program = "cria"
+            # self.chosen_program = "cria"
 
             # if self.beispieldaten_dateipfad_cria == None:
             #     self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
@@ -1388,7 +1393,7 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
             # )
 
         elif program_change_to == "lama":
-            self.chosen_program = "lama"
+            # self.chosen_program = "lama"
 
             # self.gridLayout.addWidget(self.groupBox_af, 1, 1, 1, 1)
             # self.gridLayout.addWidget(self.groupBox_punkte, 0, 2, 1, 1)
@@ -1430,7 +1435,7 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
             self.update_gui("widgets_search")
             self.combobox_beurteilung.insertItem(1,"Beurteilungsraster")
         elif program_change_to == 'wizard':
-            self.chosen_program = "wizard"
+            # self.chosen_program = "wizard"
             self.action_cria.setVisible(True)
             self.action_lama.setVisible(True)
             self.action_wizard.setVisible(False)
