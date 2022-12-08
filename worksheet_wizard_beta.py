@@ -164,37 +164,35 @@ def choose_random_blanks(_list):
 a = '(6f+9u)^2 = 36f^2 + 108fu + 81u^2'
 b = '(7y+7e)(7y-7e) = 49y^2 - 49e^2'
 
-# split_a = a.split("=")
-# split_b = b.split("=")
-# x= re.split('\(|\)|\+|-|=', a)
-# print(x)
 
-# for all in x[:]:
-#     if re.fullmatch(' *\^[0-9] *', all) != None:
-#         x.remove(all)
-#     elif is_empty(all):
-#         x.remove(all)
+binom_parts = re.search("\((.+)[\+-](.+)\)", a)
+print(binom_parts.group(1))
+print(binom_parts.group(2))
 
-# x = [item.strip() for item in x]
+binom_parts = re.search("\((.+)[\+-](.+)\)", b)
+print(binom_parts.group(0))
+print(binom_parts.group(1))
+print(binom_parts.group(2))
 
 
-split_list = extract_parts_of_binom(a)
-print(split_list)
-chosen_blanks = choose_random_blanks(split_list)
-print(chosen_blanks)
 
-for i, all in enumerate(chosen_blanks):
-    for index in all:
-        print(split_list[i][index])
-        a = a.replace(split_list[i][index], "\\rule{1cm}{0.3pt}")
+# split_list = extract_parts_of_binom(a)
+# print(split_list)
+# chosen_blanks = choose_random_blanks(split_list)
+# print(chosen_blanks)
 
-print(a)
+# for i, all in enumerate(chosen_blanks):
+#     for index in all:
+#         print(split_list[i][index])
+#         a = a.replace(split_list[i][index], "\\rule{1cm}{0.3pt}")
 
-split_list = extract_parts_of_binom(b)
-print(split_list)
-chosen_blanks = choose_random_blanks(split_list)
+# print(a)
 
-print(chosen_blanks)
+# split_list = extract_parts_of_binom(b)
+# print(split_list)
+# chosen_blanks = choose_random_blanks(split_list)
+
+# print(chosen_blanks)
 
 
 
