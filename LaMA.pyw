@@ -545,7 +545,7 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
 
 
             for index in range(range_limit):
-                self.pushButton_vorschau_pressed(
+                rsp = self.pushButton_vorschau_pressed(
                     "schularbeit",
                     index,
                     self.ui_erstellen.spinBox_sw_gruppen.value() * 2,
@@ -554,6 +554,10 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
                     single_file_index,
                     filename_vorschau = filename_vorschau,
                 )
+
+                if rsp == False:
+                    return
+
                 if single_file_index != None:
                     single_file_index += 1
 
@@ -4907,7 +4911,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             if index == 0:
                 new_filename = name + "_Loesung.pdf"
 
-                shutil.move(temp_filename, new_filename)
+                try:
+                    shutil.move(temp_filename, new_filename)
+                except PermissionError:
+                    critical_window(f'Die Datei "{os.path.basename(new_filename)}" konnte nicht gespeichert werden, da diese Datei bereits exisitiert und geöffnet ist.',
+                    "Bitte schließen sie die pdf-Datei oder speichern sie die Datei unter einem anderen Namen.",
+                    "Zugriff verweigert")
+                    return False
 
             elif index ==1:
                 self.reset_latex_file_to_start(path_file)
@@ -5619,6 +5629,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 None,
             )
         )
+
 
     def adapt_label_gesamtbeispiele(self):
         # list_sage_examples_typ1 = []
@@ -6391,8 +6402,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         self.temp_info = {}
         for all in self.dict_variablen_punkte.keys():
-            halbe_punkte = self.get_punkte_halb_aufgabe_sage(all)
-            self.temp_info[all] = [self.dict_variablen_punkte[all].value(), halbe_punkte, self.dict_variablen_abstand[all].value(), self.dict_variablen_translation[all], self.dict_variablen_AB[all]]
+            item = all.replace(" (lokal)", "")
+            halbe_punkte = self.get_punkte_halb_aufgabe_sage(item)
+            self.temp_info[item] = [self.dict_variablen_punkte[item].value(), halbe_punkte, self.dict_variablen_abstand[item].value(), self.dict_variablen_translation[item], self.dict_variablen_AB[item]]
 
 
         for i in reversed(range(start_value, layout.count()+1)):
@@ -6704,16 +6716,20 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             return
 
         self.sage_aufgabe_add(aufgabe)
-
+        print(self.dict_variablen_translation)
         if not is_empty(self.list_alle_aufgaben_sage[1]):
             self.scrollAreaWidgetContents_typ2.show()
 
         self.build_aufgaben_schularbeit(aufgabe)  # aufgabe, aufgaben_verteilung
+        print(self.dict_variablen_translation)
         # print(self.list_alle_aufgaben_sage)
         self.lineEdit_number.setText("")
         self.lineEdit_number.setFocus()
         self.check_for_autosave()
+        print(self.dict_variablen_translation)
         self.no_saved_changes_sage = False
+        print(self.dict_variablen_translation)
+        
 
     def nummer_clicked_fb(self, item):
         if self.chosen_program == "lama":
@@ -7337,7 +7353,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 aufgabe, aufgabe_total, filename_vorschau, first_typ2, ausgabetyp
             ) 
 
-    @report_exceptions
+    # @report_exceptions
     def pushButton_vorschau_pressed(
         self,
         ausgabetyp,
@@ -7453,7 +7469,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 if index % 2 == 0:
                     new_filename = name + "_Loesung.pdf"
 
-                    shutil.move(temp_filename, new_filename)
+                    try:
+                        shutil.move(temp_filename, new_filename)
+                    except PermissionError:
+                        critical_window(f'Die Datei "{os.path.basename(new_filename)}" konnte nicht gespeichert werden, da diese Datei bereits exisitiert und geöffnet ist.',
+                        "Bitte schließen sie die pdf-Datei oder speichern sie die Datei unter einem anderen Namen.",
+                        "Zugriff verweigert")
+                        QtWidgets.QApplication.restoreOverrideCursor()
+                        return False
 
                 self.reset_latex_file_to_start(filename_vorschau)
             QtWidgets.QApplication.restoreOverrideCursor()
@@ -7577,14 +7600,27 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                             self.dict_gruppen[int(index / 2)]
                         )
 
-
-                    shutil.move(temp_filename, new_filename)
+                    try:
+                        shutil.move(temp_filename, new_filename)
+                    except PermissionError:
+                        critical_window(f'Die Datei "{os.path.basename(new_filename)}" konnte nicht gespeichert werden, da diese Datei bereits exisitiert und geöffnet ist.',
+                        "Bitte schließen sie die pdf-Datei oder speichern sie die Datei unter einem anderen Namen.",
+                        "Zugriff verweigert")
+                        QtWidgets.QApplication.restoreOverrideCursor()
+                        return False
 
 
                 elif index % 2 == 0:
                     new_filename = name + "_Loesung.pdf"
 
-                    shutil.move(temp_filename, new_filename)
+                    try:
+                        shutil.move(temp_filename, new_filename)
+                    except PermissionError:
+                        critical_window(f'Die Datei "{os.path.basename(new_filename)}" konnte nicht gespeichert werden, da diese Datei bereits exisitiert und geöffnet ist.',
+                        "Bitte schließen sie die pdf-Datei oder speichern sie die Datei unter einem anderen Namen.",
+                        "Zugriff verweigert")
+                        QtWidgets.QApplication.restoreOverrideCursor()
+                        return False
 
                 if index == maximum - 1:
                     self.reset_latex_file_to_start(filename_vorschau)
