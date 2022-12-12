@@ -780,6 +780,7 @@ class Ui_Dialog_titlepage(object):
             dict_titlepage["hide_all"] = False
 
         self.cb_titlepage_logo = QtWidgets.QCheckBox("Logo")
+
         if dict_titlepage["logo_path"] != False:
             logo_name = os.path.basename(dict_titlepage["logo_path"])
             self.cb_titlepage_logo.setText("Logo ({})".format(logo_name))

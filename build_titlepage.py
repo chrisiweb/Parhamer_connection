@@ -154,7 +154,7 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
 
         titlepage = f"{name}\\subsection{{{subsection} \\hfill {klasse} \\hfill {datum_kurz}}}"
 
-        print(titlepage)
+        # print(titlepage)
         # if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "br":
 
         #     beurteilungsraster = (
@@ -169,22 +169,27 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
 
     else:
         if dict_titlepage["logo"] == True:
-            logo_name = os.path.basename(dict_titlepage["logo_path"])
-            logo_titlepage_path = os.path.join(path_localappdata_lama, "Teildokument", logo_name)
+            try:
+                logo_name = os.path.basename(dict_titlepage["logo_path"])
 
-            if os.path.isfile(logo_titlepage_path):
-                logo_input = (
-                    "\\begin{{minipage}}[t]{{0.4\\textwidth}} \\vspace{{0pt}}\n"
-                    "\\includegraphics[width=1\\textwidth]{{{0}}}\n"
-                    "\\end{{minipage}} \\\ [1cm] \n".format(logo_name)
-                )
-            else:
-                warning_window(
-                    "Das Logo konnte nicht gefunden werden.",
-                    "Bitte suchen Sie ein Logo unter: \n\nTitelblatt anpassen - Durchsuchen",
-                    "Kein Logo gefunden",
-                )
+                logo_titlepage_path = os.path.join(path_localappdata_lama, "Teildokument", logo_name)
+
+                if os.path.isfile(logo_titlepage_path):
+                    logo_input = (
+                        "\\begin{{minipage}}[t]{{0.4\\textwidth}} \\vspace{{0pt}}\n"
+                        "\\includegraphics[width=1\\textwidth]{{{0}}}\n"
+                        "\\end{{minipage}} \\\ [1cm] \n".format(logo_name)
+                    )
+                else:
+                    warning_window(
+                        "Das Logo konnte nicht gefunden werden.",
+                        "Bitte suchen Sie ein Logo unter: \n\nTitelblatt anpassen - Durchsuchen",
+                        "Kein Logo gefunden",
+                    )
+                    logo_input = "\\null\\vspace{3cm}\n\n"
+            except TypeError:
                 logo_input = "\\null\\vspace{3cm}\n\n"
+
         else:
             logo_input = "\\null\\vspace{3cm}\n\n"
             # logo_input = "~\\vfil \n"

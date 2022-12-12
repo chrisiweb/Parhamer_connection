@@ -6402,9 +6402,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         self.temp_info = {}
         for all in self.dict_variablen_punkte.keys():
-            item = all.replace(" (lokal)", "")
-            halbe_punkte = self.get_punkte_halb_aufgabe_sage(item)
-            self.temp_info[item] = [self.dict_variablen_punkte[item].value(), halbe_punkte, self.dict_variablen_abstand[item].value(), self.dict_variablen_translation[item], self.dict_variablen_AB[item]]
+            halbe_punkte = self.get_punkte_halb_aufgabe_sage(all)
+            self.temp_info[all] = [self.dict_variablen_punkte[all].value(), halbe_punkte, self.dict_variablen_abstand[all].value(), self.dict_variablen_translation[all], self.dict_variablen_AB[all]]
 
 
         for i in reversed(range(start_value, layout.count()+1)):
@@ -6701,7 +6700,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     @report_exceptions
     def nummer_clicked(self, item):
-        aufgabe = item.text()
+        aufgabe = item.text().replace(" (lokal)", "")
 
         # if self.chosen_program == "cria":
         # klasse = self.get_klasse("sage")
@@ -6716,19 +6715,16 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             return
 
         self.sage_aufgabe_add(aufgabe)
-        print(self.dict_variablen_translation)
+
         if not is_empty(self.list_alle_aufgaben_sage[1]):
             self.scrollAreaWidgetContents_typ2.show()
 
         self.build_aufgaben_schularbeit(aufgabe)  # aufgabe, aufgaben_verteilung
-        print(self.dict_variablen_translation)
         # print(self.list_alle_aufgaben_sage)
         self.lineEdit_number.setText("")
         self.lineEdit_number.setFocus()
         self.check_for_autosave()
-        print(self.dict_variablen_translation)
         self.no_saved_changes_sage = False
-        print(self.dict_variablen_translation)
         
 
     def nummer_clicked_fb(self, item):
@@ -7472,10 +7468,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     try:
                         shutil.move(temp_filename, new_filename)
                     except PermissionError:
+                        QtWidgets.QApplication.restoreOverrideCursor()
                         critical_window(f'Die Datei "{os.path.basename(new_filename)}" konnte nicht gespeichert werden, da diese Datei bereits exisitiert und geöffnet ist.',
                         "Bitte schließen sie die pdf-Datei oder speichern sie die Datei unter einem anderen Namen.",
                         "Zugriff verweigert")
-                        QtWidgets.QApplication.restoreOverrideCursor()
                         return False
 
                 self.reset_latex_file_to_start(filename_vorschau)
