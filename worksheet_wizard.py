@@ -84,13 +84,6 @@ themen_worksheet_wizard = list(dict_widgets_wizard.keys())
 
 D = decimal.Decimal
 
-# def add_random_decimal(value):
-#     integer = random.randint(1,9)
-#     _str = str(value)
-#     _str = _str[:-1] + str(integer)
-#     print(_str)
-#     return  
-
 def get_random_number(min, max, decimal=0, zero_allowed=False, force_decimals=False): #
     if not isinstance(zero_allowed, bool):
         zero_allowed = random_switch(zero_allowed)
@@ -268,7 +261,6 @@ def create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, c
                 set_commas_result=commas_result
                 commas_result = random.randint(0,set_commas_result)
         result = get_random_number(result_min, result_max, decimal= commas_result,force_decimals=True)
-        print(result)
         dividend = result*divisor
         dividend = D(f'{dividend}').normalize()
         dividend = remove_exponent(dividend)
@@ -997,7 +989,6 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
     binom_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", binom_string)
     binom_string = binom_string.replace('\xb7', '\cdot ')
 
-    print([f"${binom_string}$",f"${solution_string}$", string])
     return [f"${binom_string}$",f"${solution_string}$", string]
 
 
@@ -1260,10 +1251,7 @@ def get_temp_solution_division(dividend, divisor, solution):
 
     list_temp_solutions = []
 
-    # print(f"{dividend} : {divisor} = {solution}")
-    # print(str_solution)
     for i, all in enumerate(str_solution):
-        # print(all)
         temp_solution = eval(f"{all}*{divisor}")
 
         if i == 0:
@@ -1277,15 +1265,9 @@ def get_temp_solution_division(dividend, divisor, solution):
         if part_divide == "":
             part_divide = "0"
 
-        # print(f"after strip: {part_divide}")
-        # print(temp_solution)
-        # if part_divide == "":
-        #     part_divide = 0
 
         differenz = eval(part_divide)-temp_solution
         differenz = round(differenz, 10)
-        # print(f"index: {i}; end_index: {end_index}")
-        # print(f"len: {len(str_solution)}")
         end_index +=1
 
         if i == len(str_solution)-1:
