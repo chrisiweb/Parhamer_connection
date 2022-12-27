@@ -24,7 +24,7 @@ from json import load
 from functools import partial
 from create_pdf import prepare_tex_for_pdf
 from standard_dialog_windows import warning_window
-from worksheet_wizard import dict_widgets_wizard
+from worksheet_wizard import dict_widgets_wizard, dict_themen_wizard
 from create_nonograms import all_nonogramms
 
 
@@ -2367,6 +2367,77 @@ def setup_stackWizard(self):
         add_new_option(self.comboBox_themen_wizard, i, all)
     self.comboBox_themen_wizard.currentIndexChanged.connect(self.themen_changed_wizard)
 
+
+    self.pushbutton_themen_wizard = QtWidgets.QPushButton(self.groupBox_topics)
+    # print(list(dict_themen_wizard.values())[0][0])
+    # self.pushbutton_themen_wizard.setText(dict_themen_wizard[list(dict_themen_wizard.values())[0][0]])
+    self.pushbutton_themen_wizard.setText("Positive (Dezimal-)Zahlen: Addition")
+    self.horizontalLayout_groupBox_topics.addWidget(self.pushbutton_themen_wizard)
+
+    self.menu_themen_wizard = QtWidgets.QMenu(self.groupBox_topics)
+    # ag = QtGui.QActionGroup(self.filter_search, exclusive=False)
+    print(dict_themen_wizard)
+
+    for topics, subtopics in dict_themen_wizard.items():
+        print(topics)
+        print(subtopics)
+        submenu = self.menu_themen_wizard.addMenu(str(topics))
+        for subtopic in subtopics:
+            subsubmenu = submenu.addMenu(str(subtopic))
+            subsubtopics = subtopics[subtopic]
+            for subsubtopic in subsubtopics:
+                print(subsubtopic)
+                subsubmenu.addAction(subsubtopic)
+
+            # subsubmenu = submenu.addMenu(str(subtopic))
+            # subsubtopics = subtopic
+            # for subsubtopic in subsubtopics:
+            #     subsubmenu.addAction(str(subsubtopic))
+
+
+        # sub_menu = self.menu_themen_wizard.addMenu(key)
+        # for v in value:
+        #     action = sub_menu.addAction((str(v)))
+
+    def topic_chosen(action):
+        print(action.text())
+    # #     if action.isChecked():
+    # #         self.set_filters.add(action.text())
+    # #     else:
+    # #         self.set_filters.remove(action.text())
+    # #         if len(self.set_filters)==0:
+    # #             warning_window("Es muss mindestens ein Suchkriterium ausgewählt werden.")
+    # #             self.set_filters.add(action.text())
+    # #             action.setChecked(True)
+    #     menu.show()
+
+
+    self.menu_themen_wizard.triggered.connect(topic_chosen)
+    self.pushbutton_themen_wizard.setMenu(self.menu_themen_wizard)
+
+    # print(dict_themen_wizard)
+
+    # def callback_factory(k, v):
+    #     return lambda: self.toolbutton_themen_wizard.setText('{0}_{1}'.format(k, v))
+
+    # self.toolbutton_themen_wizard = QtWidgets.QToolButton(self.groupBox_topics)
+
+    # self.menu_themen_wizard = QtWidgets.QMenu(self.groupBox_topics)
+    # for key, value in dict_themen_wizard.items():
+    #     print(key)
+    #     print(value)
+    #     sub_menu = self.menu_themen_wizard.addMenu(key)
+    #     for v in value:
+    #         action = sub_menu.addAction((str(v)))
+
+
+    # for i, all in enumerate(dict_widgets_wizard.keys()):
+        
+        # add_new_option(self.comboBox_themen_wizard, i, all)    
+
+    # self.toolbutton_themen_wizard.setMenu(self.menu_themen_wizard)
+
+    # self.horizontalLayout_groupBox_topics.addWidget(self.toolbutton_themen_wizard)
 
     self.horizontalLayout_widgetTopics.addStretch()
     # self.groupBox_titel_wizard = create_new_groupbox(self.widgetTopics, "Titel")

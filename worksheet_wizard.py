@@ -16,6 +16,12 @@ from handle_exceptions import report_exceptions
 # from tex_minimal import tex_preamble, tex_end
 # from create_pdf import create_pdf, open_pdf_file, build_pdf_file
 
+dict_themen_wizard = {
+    "Arithmetik": {
+        "Positive (Dezimal-)Zahlen": ["Addition", "Subtraktion", "Mulitplikation", "Divisionen"]
+        },
+}
+
 dict_widgets_wizard = {
     'Addition' : [
         'self.widget_ausrichtung_wizard',
