@@ -18,8 +18,22 @@ from handle_exceptions import report_exceptions
 
 dict_themen_wizard = {
     "Arithmetik": {
-        "Positive (Dezimal-)Zahlen": ["Addition", "Subtraktion", "Mulitplikation", "Divisionen"]
+        "Positive (Dezimal-)Zahlen": [
+            "Addition",
+            "Subtraktion",
+            "Mulitplikation",
+            "Divisionen",
+            "Verbindung der Grundrechnungsarten",
+            ],
+        "Negative && Positive (Dezimal-)Zahlen": [
+            "Addition && Subtraktion",
+            "Multiplikation && Division",
+            "Verbindung der Grundrechnungsarten",
+        ],
         },
+    "Terme": [
+        "Binomische Formeln"
+    ],
 }
 
 dict_widgets_wizard = {

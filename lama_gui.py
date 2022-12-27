@@ -2366,87 +2366,52 @@ def setup_stackWizard(self):
     for i, all in enumerate(dict_widgets_wizard.keys()):
         add_new_option(self.comboBox_themen_wizard, i, all)
     self.comboBox_themen_wizard.currentIndexChanged.connect(self.themen_changed_wizard)
-
+    self.comboBox_themen_wizard.hide()
 
     self.pushbutton_themen_wizard = QtWidgets.QPushButton(self.groupBox_topics)
     # print(list(dict_themen_wizard.values())[0][0])
     # self.pushbutton_themen_wizard.setText(dict_themen_wizard[list(dict_themen_wizard.values())[0][0]])
-    self.pushbutton_themen_wizard.setText("Positive (Dezimal-)Zahlen: Addition")
+    self.pushbutton_themen_wizard.setText("Arithmetik \u2b9e Positive (Dezimal-)Zahlen \u2b9e Addition")
+    self.chosen_topics_wizard = ["Arithmetik", "Positive (Dezimal-)Zahlen", "Addition"]
     self.horizontalLayout_groupBox_topics.addWidget(self.pushbutton_themen_wizard)
 
     self.menu_themen_wizard = QtWidgets.QMenu(self.groupBox_topics)
     # ag = QtGui.QActionGroup(self.filter_search, exclusive=False)
-    print(dict_themen_wizard)
+
+    def topic_chosen(list_topics):
+        _string = list_topics[0]
+        for all in list_topics[1:]:
+            _string += f" \u2b9e {all}" 
+        return lambda: self.pushbutton_themen_wizard.setText(_string)
+    
+    def change_list_topic():
+        button_text = self.pushbutton_themen_wizard.text()
+        x = button_text.split(" \u2b9e ")
+        self.chosen_topic_wizard = x
+
 
     for topics, subtopics in dict_themen_wizard.items():
-        print(topics)
-        print(subtopics)
         submenu = self.menu_themen_wizard.addMenu(str(topics))
+
         for subtopic in subtopics:
-            subsubmenu = submenu.addMenu(str(subtopic))
-            subsubtopics = subtopics[subtopic]
-            for subsubtopic in subsubtopics:
-                print(subsubtopic)
-                subsubmenu.addAction(subsubtopic)
-
-            # subsubmenu = submenu.addMenu(str(subtopic))
-            # subsubtopics = subtopic
-            # for subsubtopic in subsubtopics:
-            #     subsubmenu.addAction(str(subsubtopic))
-
-
-        # sub_menu = self.menu_themen_wizard.addMenu(key)
-        # for v in value:
-        #     action = sub_menu.addAction((str(v)))
-
-    def topic_chosen(action):
-        print(action.text())
-    # #     if action.isChecked():
-    # #         self.set_filters.add(action.text())
-    # #     else:
-    # #         self.set_filters.remove(action.text())
-    # #         if len(self.set_filters)==0:
-    # #             warning_window("Es muss mindestens ein Suchkriterium ausgewählt werden.")
-    # #             self.set_filters.add(action.text())
-    # #             action.setChecked(True)
-    #     menu.show()
+            if type(subtopics)==dict:
+                subsubmenu = submenu.addMenu(str(subtopic))
+                subsubtopics = subtopics[subtopic]
+                for subsubtopic in subsubtopics:
+                    action = subsubmenu.addAction(subsubtopic)
+                    list_topics = [topics, subtopic, subsubtopic]
+                    action.triggered.connect(topic_chosen(list_topics))
+            elif type(subtopics)==list:
+                action = submenu.addAction(subtopic)
+                list_topics = [topics, subtopic]
+                action.triggered.connect(topic_chosen(list_topics))               
 
 
-    self.menu_themen_wizard.triggered.connect(topic_chosen)
+    self.menu_themen_wizard.triggered.connect(change_list_topic)
     self.pushbutton_themen_wizard.setMenu(self.menu_themen_wizard)
 
-    # print(dict_themen_wizard)
-
-    # def callback_factory(k, v):
-    #     return lambda: self.toolbutton_themen_wizard.setText('{0}_{1}'.format(k, v))
-
-    # self.toolbutton_themen_wizard = QtWidgets.QToolButton(self.groupBox_topics)
-
-    # self.menu_themen_wizard = QtWidgets.QMenu(self.groupBox_topics)
-    # for key, value in dict_themen_wizard.items():
-    #     print(key)
-    #     print(value)
-    #     sub_menu = self.menu_themen_wizard.addMenu(key)
-    #     for v in value:
-    #         action = sub_menu.addAction((str(v)))
-
-
-    # for i, all in enumerate(dict_widgets_wizard.keys()):
-        
-        # add_new_option(self.comboBox_themen_wizard, i, all)    
-
-    # self.toolbutton_themen_wizard.setMenu(self.menu_themen_wizard)
-
-    # self.horizontalLayout_groupBox_topics.addWidget(self.toolbutton_themen_wizard)
 
     self.horizontalLayout_widgetTopics.addStretch()
-    # self.groupBox_titel_wizard = create_new_groupbox(self.widgetTopics, "Titel")
-    # self.horizontalLayout_widgetTopics.addWidget(self.groupBox_titel_wizard)
-    # self.horizontalLayout_titel_wizard = create_new_horizontallayout(self.groupBox_titel_wizard)
-    # self.lineEdit_titel_wizard = create_new_lineedit(self.groupBox_titel_wizard)
-    # self.horizontalLayout_titel_wizard.addWidget(self.lineEdit_titel_wizard)
-    # self.lineEdit_titel_wizard.setText("Arbeitsblatt") #.format(self.comboBox_themen_wizard.currentText())
-
 
 
 
