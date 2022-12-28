@@ -18,89 +18,139 @@ from handle_exceptions import report_exceptions
 
 dict_themen_wizard = {
     "Arithmetik": {
-        "Positive (Dezimal-)Zahlen": [
-            "Addition",
-            "Subtraktion",
-            "Mulitplikation",
-            "Divisionen",
-            "Verbindung der Grundrechnungsarten",
+        "Positive (Dezimal-)Zahlen": {
+            "Addition": [
+                'self.widget_ausrichtung_wizard',
+                'self.widget_zahlenbereich_minimum',
+                'self.widget_zahlenbereich_maximum',
+                'self.widget_kommastellen_wizard',
+                'self.widgetZahlenbereich_anzahl',                
             ],
-        "Negative && Positive (Dezimal-)Zahlen": [
-            "Addition && Subtraktion",
-            "Multiplikation && Division",
-            "Verbindung der Grundrechnungsarten",
-        ],
+            "Subtraktion": [
+                'self.widget_ausrichtung_wizard',
+                'self.widget_zahlenbereich_minimum',
+                'self.widget_zahlenbereich_maximum',
+                'self.widget_kommastellen_wizard',
+                'self.checkbox_negative_ergebnisse_wizard',
+            ],
+            "Multiplikation": [
+                'self.groupBox_first_number_wizard',
+                'self.groupBox_second_number_wizard',
+                'self.comboBox_solution_type_wizard',
+            ],
+            "Division": [
+                'self.groupBox_dividend_wizard',
+                'self.groupBox_divisor_wizard',
+                'self.groupBox_ergebnis_wizard',
+                'self.comboBox_solution_type_wizard',
+            ],
+            "Verbindung der Grundrechnungsarten": [
+                'self.widget_zahlenbereich_minimum',
+                'self.widget_zahlenbereich_maximum',
+                'self.widget_kommastellen_wizard',
+                'self.widgetZahlenbereich_anzahl',
+                'self.checkbox_allow_brackets_wizard',                  
+            ],
         },
-    "Terme": [
-        "Binomische Formeln"
-    ],
-}
-
-dict_widgets_wizard = {
-    'Addition' : [
-        'self.widget_ausrichtung_wizard',
-        'self.widget_zahlenbereich_minimum',
-        'self.widget_zahlenbereich_maximum',
-        'self.widget_kommastellen_wizard',
-        'self.widgetZahlenbereich_anzahl',
-        ],
-    'Subtraktion' : [
-        'self.widget_ausrichtung_wizard',
-        'self.widget_zahlenbereich_minimum',
-        'self.widget_zahlenbereich_maximum',
-        'self.widget_kommastellen_wizard',
-        'self.checkbox_negative_ergebnisse_wizard',
-        # 'self.label_negative_ergebnisse_wizard', 
-        ],
-    'Multiplikation' : [
-        'self.groupBox_first_number_wizard',
-        'self.groupBox_second_number_wizard',
-        'self.comboBox_solution_type_wizard',
-    ],
-    'Division' : [
-        'self.groupBox_dividend_wizard',
-        'self.groupBox_divisor_wizard',
-        'self.groupBox_ergebnis_wizard',
-        'self.comboBox_solution_type_wizard',
-    ],
-    'Verbindung der Grundrechnungsarten': [
-        'self.widget_zahlenbereich_minimum',
-        'self.widget_zahlenbereich_maximum',
-        'self.widget_kommastellen_wizard',
-        'self.widgetZahlenbereich_anzahl',
-        'self.checkbox_allow_brackets_wizard',        
-    ],
-    'Ganze Zahlen (Addition & Subtraktion)': [
-        'self.widget_zahlenbereich_minimum',
-        'self.widget_zahlenbereich_maximum',
-        'self.widget_kommastellen_wizard',
-        'self.widgetZahlenbereich_anzahl',
-        'self.checkbox_allow_brackets_wizard',        
-    ],
-    'Ganze Zahlen (Multiplikation & Division)': [
-        'self.widget_zahlenbereich_minimum',
-        'self.widget_zahlenbereich_maximum',
-        'self.widget_kommastellen_wizard',
-        'self.widgetZahlenbereich_anzahl',
-        # 'self.checkbox_allow_brackets_wizard',        
-    ],
-    'Ganze Zahlen (Grundrechnungsarten)': [
-        'self.widget_zahlenbereich_minimum',
-        'self.widget_zahlenbereich_maximum',
-        'self.widget_kommastellen_wizard',
-        'self.widgetZahlenbereich_anzahl',
-        'self.checkbox_allow_brackets_wizard',        
-    ],
-    'Binomische Formeln': [
+        "Negative && Positive (Dezimal-)Zahlen": {
+            "Addition && Subtraktion" : [
+                'self.widget_zahlenbereich_minimum',
+                'self.widget_zahlenbereich_maximum',
+                'self.widget_kommastellen_wizard',
+                'self.widgetZahlenbereich_anzahl',
+                'self.checkbox_allow_brackets_wizard',                  
+            ],
+            "Multiplikation && Division" : [
+                'self.widget_zahlenbereich_minimum',
+                'self.widget_zahlenbereich_maximum',
+                'self.widget_kommastellen_wizard',
+                'self.widgetZahlenbereich_anzahl',                
+            ],
+            "Verbindung der Grundrechnungsarten" : [
+                'self.widget_zahlenbereich_minimum',
+                'self.widget_zahlenbereich_maximum',
+                'self.widget_kommastellen_wizard',
+                'self.widgetZahlenbereich_anzahl',
+                'self.checkbox_allow_brackets_wizard', 
+            ],
+        },
+        },
+    "Terme": {
+        "Binomische Formeln": [
         'self.groupbox_binoms_types',
         'self.widget_binoms_set_variables_factors',
         'self.widget_binoms_set_variables_exponents',
         'self.label_binom_example',
         'self.widget_binom_further_settings',
-    ],
-}   
+        ]
+    },
+}
 
-themen_worksheet_wizard = list(dict_widgets_wizard.keys())
+# dict_widgets_wizard = {
+#     'Arithmetik_Positive (Dezimal-)Zahlen_Addition' : [
+#         'self.widget_ausrichtung_wizard',
+#         'self.widget_zahlenbereich_minimum',
+#         'self.widget_zahlenbereich_maximum',
+#         'self.widget_kommastellen_wizard',
+#         'self.widgetZahlenbereich_anzahl',
+#         ],
+#     'Arithmetik_Positive (Dezimal-)Zahlen_Subtraktion' : [
+#         'self.widget_ausrichtung_wizard',
+#         'self.widget_zahlenbereich_minimum',
+#         'self.widget_zahlenbereich_maximum',
+#         'self.widget_kommastellen_wizard',
+#         'self.checkbox_negative_ergebnisse_wizard',
+#         # 'self.label_negative_ergebnisse_wizard', 
+#         ],
+#     'Arithmetik_Positive (Dezimal-)Zahlen_Multiplikation' : [
+#         'self.groupBox_first_number_wizard',
+#         'self.groupBox_second_number_wizard',
+#         'self.comboBox_solution_type_wizard',
+#     ],
+#     'Arithmetik_Positive (Dezimal-)Zahlen_Division' : [
+#         'self.groupBox_dividend_wizard',
+#         'self.groupBox_divisor_wizard',
+#         'self.groupBox_ergebnis_wizard',
+#         'self.comboBox_solution_type_wizard',
+#     ],
+#     'Arithmetik_Positive (Dezimal-)Zahlen_Verbindung der Grundrechnungsarten': [
+#         'self.widget_zahlenbereich_minimum',
+#         'self.widget_zahlenbereich_maximum',
+#         'self.widget_kommastellen_wizard',
+#         'self.widgetZahlenbereich_anzahl',
+#         'self.checkbox_allow_brackets_wizard',        
+#     ],
+#     'Arithmetik_Negative && Positive (Dezimal-)Zahlen_Addition && Subtraktion': [
+#         'self.widget_zahlenbereich_minimum',
+#         'self.widget_zahlenbereich_maximum',
+#         'self.widget_kommastellen_wizard',
+#         'self.widgetZahlenbereich_anzahl',
+#         'self.checkbox_allow_brackets_wizard',        
+#     ],
+#     'Arithmetik_Negative && Positive (Dezimal-)Zahlen_Multiplikation && Division': [
+#         'self.widget_zahlenbereich_minimum',
+#         'self.widget_zahlenbereich_maximum',
+#         'self.widget_kommastellen_wizard',
+#         'self.widgetZahlenbereich_anzahl',
+#         # 'self.checkbox_allow_brackets_wizard',        
+#     ],
+#     'Arithmetik_Negative && Positive (Dezimal-)Zahlen_Verbindung der Grundrechnungsarten': [
+#         'self.widget_zahlenbereich_minimum',
+#         'self.widget_zahlenbereich_maximum',
+#         'self.widget_kommastellen_wizard',
+#         'self.widgetZahlenbereich_anzahl',
+#         'self.checkbox_allow_brackets_wizard',        
+#     ],
+#     'Terme_Binomische Formeln': [
+#         'self.groupbox_binoms_types',
+#         'self.widget_binoms_set_variables_factors',
+#         'self.widget_binoms_set_variables_exponents',
+#         'self.label_binom_example',
+#         'self.widget_binom_further_settings',
+#     ],
+# }   
+
+# themen_worksheet_wizard = list(dict_widgets_wizard.keys())
 
 D = decimal.Decimal
 

@@ -3778,32 +3778,52 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.dict_all_examples_worksheet_wizard = {}
         self.list_of_examples_wizard = []
 
+    def get_current_topic_wizard(self):
+        button_text = self.pushbutton_themen_wizard.text()
+        thema = button_text.split(" \u2b9e ")
+        # thema = button_text.replace(" \u2b9e ","_")
+        return thema
+
+    def get_list_of_widgets_wizard(self, thema):
+        x = dict_themen_wizard
+        for all in thema:
+            x = x[all]
+        return x   
+
+
 
     def themen_changed_wizard(self):
+
+        thema = self.get_current_topic_wizard()
+        print(thema)
+
+
+        # self.chosen_topic_wizard = "_".join(x)
+        # print(self.chosen_topic_wizard)
         # self.worksheet_wizard_changed = True
         # index = self.comboBox_themen_wizard.currentIndex()
-        thema = self.comboBox_themen_wizard.currentText()
+        # thema = self.comboBox_themen_wizard.currentText()
         # self.lineEdit_titel_wizard.setText("Arbeitsblatt - {}".format(thema))
         self.checkbox_enable_addition.hide()
         self.checkbox_enable_subtraktion.hide()
-        if thema == themen_worksheet_wizard[0] or thema == themen_worksheet_wizard[1]:
+        if thema == ['Arithmetik', 'Positive (Dezimal-)Zahlen', 'Addition'] or thema == ['Arithmetik', 'Positive (Dezimal-)Zahlen', 'Subtraktion']:
             self.spinbox_zahlenbereich_minimum.setRange(0,999999999)
             self.spinbox_zahlenbereich_minimum.setValue(100)
             self.spinbox_zahlenbereich_maximum.setRange(0,999999999)
             self.spinbox_zahlenbereich_maximum.setValue(999)
             self.spinBox_zahlenbereich_anzahl_wizard.setMaximum(5)  
 
-        if thema == themen_worksheet_wizard[0]:
+        if thema == ['Arithmetik', 'Positive (Dezimal-)Zahlen', 'Addition']:
             self.label_zahlenbereich_anzahl_wizard.setText("Summanden:")
             # self.groupBox_zahlenbereich_anzahl.setTitle("Summanden")
             self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,5)
             self.spinBox_zahlenbereich_anzahl_wizard.setValue(2)
-        elif thema == themen_worksheet_wizard[1]:
+        elif thema == ['Arithmetik', 'Positive (Dezimal-)Zahlen', 'Subtraktion']:
             self.label_zahlenbereich_anzahl_wizard.setText("Subtrahenden:")
             # self.groupBox_zahlenbereich_anzahl.setTitle("Subtrahenden")
             self.spinBox_zahlenbereich_anzahl_wizard.setRange(1,5)
             self.spinBox_zahlenbereich_anzahl_wizard.setValue(1)
-        elif thema == themen_worksheet_wizard[4]:
+        elif thema == ['Arithmetik', 'Positive (Dezimal-)Zahlen', 'Verbindung der Grundrechnungsarten']:
             self.label_zahlenbereich_anzahl_wizard.setText("Zahlen:")
             self.spinbox_zahlenbereich_minimum.setRange(0,999)
             self.spinbox_zahlenbereich_maximum.setRange(0,999)
@@ -3813,42 +3833,52 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,20)
             # self.groupBox_zahlenbereich_anzahl.setTitle("Zahlen") 
 
-        elif thema == themen_worksheet_wizard[5] or thema == themen_worksheet_wizard[6] or thema == themen_worksheet_wizard[7]:
+        elif (
+            thema == ['Arithmetik', 'Negative && Positive (Dezimal-)Zahlen', 'Addition && Subtraktion'] or 
+            thema == ['Arithmetik', 'Negative && Positive (Dezimal-)Zahlen', 'Multiplikation && Division'] or 
+            thema == ['Arithmetik', 'Negative && Positive (Dezimal-)Zahlen', 'Verbindung der Grundrechnungsarten']
+            ):
             self.label_zahlenbereich_anzahl_wizard.setText("Zahlen:")
             self.spinbox_zahlenbereich_minimum.setRange(-999,999)
             self.spinbox_zahlenbereich_maximum.setRange(-999,999)
             self.spinBox_zahlenbereich_anzahl_wizard.setMaximum(20)
             self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,20)
             # self.groupBox_zahlenbereich_anzahl.setTitle("Zahlen")  
-            if thema == themen_worksheet_wizard[5]:
+            if thema == ['Arithmetik', 'Negative && Positive (Dezimal-)Zahlen', 'Addition && Subtraktion']:
                 # self.groupBox_zahlenbereich_anzahl.setTitle("Summanden")
                 self.spinBox_zahlenbereich_anzahl_wizard.setValue(2)
                 self.spinbox_zahlenbereich_minimum.setValue(-20)
                 self.spinbox_zahlenbereich_maximum.setValue(20)
                 self.checkbox_enable_addition.show()
                 self.checkbox_enable_subtraktion.show()
-            elif thema == themen_worksheet_wizard[6]:
+            elif thema == ['Arithmetik', 'Negative && Positive (Dezimal-)Zahlen', 'Multiplikation && Division']:
                 # self.groupBox_zahlenbereich_anzahl.setTitle("Faktoren") 
                 self.spinBox_zahlenbereich_anzahl_wizard.setValue(3)
                 self.spinbox_zahlenbereich_minimum.setValue(-10)
                 self.spinbox_zahlenbereich_maximum.setValue(10)
-            elif thema == themen_worksheet_wizard[7]:
+            elif thema == ['Arithmetik', 'Negative && Positive (Dezimal-)Zahlen', 'Verbindung der Grundrechnungsarten']:
                 self.spinBox_zahlenbereich_anzahl_wizard.setValue(4)
                 self.spinbox_zahlenbereich_minimum.setValue(-10)
                 self.spinbox_zahlenbereich_maximum.setValue(10)                
-           
+
+
+        list_of_widgets = self.get_list_of_widgets_wizard(thema)
+        print(list_of_widgets)
 
         hiding_list = []
-        for all in dict_widgets_wizard:
-            if all != thema:
-                for widget in dict_widgets_wizard[all]:
-                    if widget not in dict_widgets_wizard[thema] and widget not in hiding_list:
-                        hiding_list.append(widget)
-        
+        # for all in dict_widgets_wizard:
+        #     if all != thema:
+        for widget in list_of_widgets:
+            if widget not in list_of_widgets and widget not in hiding_list:
+                hiding_list.append(widget)
+
+
+
+
         for widget in hiding_list:
             eval(widget).hide()
 
-        for widget in dict_widgets_wizard[thema]:
+        for widget in list_of_widgets:
             eval(widget).show()
 
 
@@ -8321,7 +8351,8 @@ if __name__ == "__main__":
 
     i = step_progressbar(i, "worksheet_wizard")
     from worksheet_wizard import (
-        dict_widgets_wizard, themen_worksheet_wizard,
+        # dict_widgets_wizard, themen_worksheet_wizard,
+        dict_themen_wizard,
         get_all_solution_pixels,
         get_max_pixels_nonogram,
         create_latex_worksheet, 

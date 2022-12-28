@@ -24,7 +24,7 @@ from json import load
 from functools import partial
 from create_pdf import prepare_tex_for_pdf
 from standard_dialog_windows import warning_window
-from worksheet_wizard import dict_widgets_wizard, dict_themen_wizard
+from worksheet_wizard import dict_themen_wizard
 from create_nonograms import all_nonogramms
 
 
@@ -2362,10 +2362,10 @@ def setup_stackWizard(self):
     self.horizontalLayout_groupBox_topics = create_new_horizontallayout(self.groupBox_topics)
 
     self.comboBox_themen_wizard = create_new_combobox(self.groupBox_topics)
-    self.horizontalLayout_groupBox_topics.addWidget(self.comboBox_themen_wizard)
-    for i, all in enumerate(dict_widgets_wizard.keys()):
-        add_new_option(self.comboBox_themen_wizard, i, all)
-    self.comboBox_themen_wizard.currentIndexChanged.connect(self.themen_changed_wizard)
+    # self.horizontalLayout_groupBox_topics.addWidget(self.comboBox_themen_wizard)
+    # for i, all in enumerate(dict_widgets_wizard.keys()):
+    #     add_new_option(self.comboBox_themen_wizard, i, all)
+    # self.comboBox_themen_wizard.currentIndexChanged.connect(self.themen_changed_wizard)
     self.comboBox_themen_wizard.hide()
 
     self.pushbutton_themen_wizard = QtWidgets.QPushButton(self.groupBox_topics)
@@ -2384,30 +2384,51 @@ def setup_stackWizard(self):
             _string += f" \u2b9e {all}" 
         return lambda: self.pushbutton_themen_wizard.setText(_string)
     
-    def change_list_topic():
-        button_text = self.pushbutton_themen_wizard.text()
-        x = button_text.split(" \u2b9e ")
-        self.chosen_topic_wizard = x
+    # def change_list_topic():
+    #     button_text = self.pushbutton_themen_wizard.text()
+    #     x = button_text.split(" \u2b9e ")
+    #     self.chosen_topic_wizard = x
+    #     print(self.chosen_topic_wizard)
 
 
-    for topics, subtopics in dict_themen_wizard.items():
-        submenu = self.menu_themen_wizard.addMenu(str(topics))
+    for level_0_keys, level_0_values in dict_themen_wizard.items():
+        print(level_0_keys)
+        print(level_0_values)
+        submenu = self.menu_themen_wizard.addMenu(str(level_0_keys))
 
-        for subtopic in subtopics:
-            if type(subtopics)==dict:
-                subsubmenu = submenu.addMenu(str(subtopic))
-                subsubtopics = subtopics[subtopic]
-                for subsubtopic in subsubtopics:
-                    action = subsubmenu.addAction(subsubtopic)
-                    list_topics = [topics, subtopic, subsubtopic]
-                    action.triggered.connect(topic_chosen(list_topics))
-            elif type(subtopics)==list:
-                action = submenu.addAction(subtopic)
-                list_topics = [topics, subtopic]
-                action.triggered.connect(topic_chosen(list_topics))               
+        for level_1_keys, level_1_values in level_0_values.items():
+            print(level_1_keys)
+            print(level_1_values)
+            if type(level_1_values)==list:
+                action = submenu.addAction(level_1_keys)
+                list_topics = [level_0_keys, level_1_keys]
+                action.triggered.connect(topic_chosen(list_topics))
+            else:
+                subsubmenu = submenu.addMenu(level_1_keys)
+
+                for level_2_keys, level_2_values in level_1_values.items():
+                    if type(level_2_values)==list: 
+                        action = subsubmenu.addAction(level_2_keys)
+                        list_topics = [level_0_keys, level_1_keys, level_2_keys]
+                        action.triggered.connect(topic_chosen(list_topics))                                      
+            # print(level_1_values)
+        # for subtopic in subtopics:
+        #     print(subtopic)
+        #     subsubtopics = subtopics[subtopic]
+            # if type(subsubtopics)==dict:
+            #     subsubmenu = submenu.addMenu(str(subtopic))
+                
+            #     for subsubtopic in subsubtopics:
+            #         action = subsubmenu.addAction(subsubtopic)
+            #         list_topics = [topics, subtopic, subsubtopic]
+            #         action.triggered.connect(topic_chosen(list_topics))
+            # elif type(subsubtopics)==list:
+            #     action = submenu.addAction(subtopic)
+            #     list_topics = [topics, subtopic]
+            #     action.triggered.connect(topic_chosen(list_topics))               
 
 
-    self.menu_themen_wizard.triggered.connect(change_list_topic)
+    self.menu_themen_wizard.triggered.connect(self.themen_changed_wizard)
     self.pushbutton_themen_wizard.setMenu(self.menu_themen_wizard)
 
 
