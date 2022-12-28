@@ -3795,8 +3795,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def themen_changed_wizard(self):
 
         thema = self.get_current_topic_wizard()
-        print(thema)
-
+        # print(thema)
+        # print(self.total_list_of_topics_wizard)
+        thema_index = self.total_list_of_topics_wizard.index(thema)
 
         # self.chosen_topic_wizard = "_".join(x)
         # print(self.chosen_topic_wizard)
@@ -3806,24 +3807,24 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # self.lineEdit_titel_wizard.setText("Arbeitsblatt - {}".format(thema))
         self.checkbox_enable_addition.hide()
         self.checkbox_enable_subtraktion.hide()
-        if thema == ['Arithmetik', 'Positive (Dezimal-)Zahlen', 'Addition'] or thema == ['Arithmetik', 'Positive (Dezimal-)Zahlen', 'Subtraktion']:
+        if thema_index == 0 or thema_index == 1:
             self.spinbox_zahlenbereich_minimum.setRange(0,999999999)
             self.spinbox_zahlenbereich_minimum.setValue(100)
             self.spinbox_zahlenbereich_maximum.setRange(0,999999999)
             self.spinbox_zahlenbereich_maximum.setValue(999)
             self.spinBox_zahlenbereich_anzahl_wizard.setMaximum(5)  
 
-        if thema == ['Arithmetik', 'Positive (Dezimal-)Zahlen', 'Addition']:
+        if thema_index == 0:
             self.label_zahlenbereich_anzahl_wizard.setText("Summanden:")
             # self.groupBox_zahlenbereich_anzahl.setTitle("Summanden")
             self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,5)
             self.spinBox_zahlenbereich_anzahl_wizard.setValue(2)
-        elif thema == ['Arithmetik', 'Positive (Dezimal-)Zahlen', 'Subtraktion']:
+        elif thema_index == 1:
             self.label_zahlenbereich_anzahl_wizard.setText("Subtrahenden:")
             # self.groupBox_zahlenbereich_anzahl.setTitle("Subtrahenden")
             self.spinBox_zahlenbereich_anzahl_wizard.setRange(1,5)
             self.spinBox_zahlenbereich_anzahl_wizard.setValue(1)
-        elif thema == ['Arithmetik', 'Positive (Dezimal-)Zahlen', 'Verbindung der Grundrechnungsarten']:
+        elif thema_index == 4:
             self.label_zahlenbereich_anzahl_wizard.setText("Zahlen:")
             self.spinbox_zahlenbereich_minimum.setRange(0,999)
             self.spinbox_zahlenbereich_maximum.setRange(0,999)
@@ -3834,9 +3835,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # self.groupBox_zahlenbereich_anzahl.setTitle("Zahlen") 
 
         elif (
-            thema == ['Arithmetik', 'Negative && Positive (Dezimal-)Zahlen', 'Addition && Subtraktion'] or 
-            thema == ['Arithmetik', 'Negative && Positive (Dezimal-)Zahlen', 'Multiplikation && Division'] or 
-            thema == ['Arithmetik', 'Negative && Positive (Dezimal-)Zahlen', 'Verbindung der Grundrechnungsarten']
+            thema_index == 5 or 
+            thema_index == 6 or 
+            thema_index == 7
             ):
             self.label_zahlenbereich_anzahl_wizard.setText("Zahlen:")
             self.spinbox_zahlenbereich_minimum.setRange(-999,999)
@@ -3844,34 +3845,30 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.spinBox_zahlenbereich_anzahl_wizard.setMaximum(20)
             self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,20)
             # self.groupBox_zahlenbereich_anzahl.setTitle("Zahlen")  
-            if thema == ['Arithmetik', 'Negative && Positive (Dezimal-)Zahlen', 'Addition && Subtraktion']:
+            if thema_index == 5:
                 # self.groupBox_zahlenbereich_anzahl.setTitle("Summanden")
                 self.spinBox_zahlenbereich_anzahl_wizard.setValue(2)
                 self.spinbox_zahlenbereich_minimum.setValue(-20)
                 self.spinbox_zahlenbereich_maximum.setValue(20)
                 self.checkbox_enable_addition.show()
                 self.checkbox_enable_subtraktion.show()
-            elif thema == ['Arithmetik', 'Negative && Positive (Dezimal-)Zahlen', 'Multiplikation && Division']:
+            elif thema_index == 6:
                 # self.groupBox_zahlenbereich_anzahl.setTitle("Faktoren") 
                 self.spinBox_zahlenbereich_anzahl_wizard.setValue(3)
                 self.spinbox_zahlenbereich_minimum.setValue(-10)
                 self.spinbox_zahlenbereich_maximum.setValue(10)
-            elif thema == ['Arithmetik', 'Negative && Positive (Dezimal-)Zahlen', 'Verbindung der Grundrechnungsarten']:
+            elif thema_index == 7:
                 self.spinBox_zahlenbereich_anzahl_wizard.setValue(4)
                 self.spinbox_zahlenbereich_minimum.setValue(-10)
                 self.spinbox_zahlenbereich_maximum.setValue(10)                
 
 
         list_of_widgets = self.get_list_of_widgets_wizard(thema)
-        print(list_of_widgets)
 
         hiding_list = []
-        # for all in dict_widgets_wizard:
-        #     if all != thema:
-        for widget in list_of_widgets:
+        for widget in self.total_list_of_widgets_wizard:
             if widget not in list_of_widgets and widget not in hiding_list:
                 hiding_list.append(widget)
-
 
 
 
@@ -4261,10 +4258,15 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # self.gridLayout_scrollArea_wizard.addWidget(pushButton_create_new_example ,row,column,1,1)
 
     def create_list_of_examples_wizard(self):
-        thema = self.comboBox_themen_wizard.currentText()
+        thema = self.get_current_topic_wizard()
+        thema_index = self.total_list_of_topics_wizard.index(thema)
+
+        print(thema)
+        print(self.total_list_of_topics_wizard)
+        print(thema_index)
         examples = self.spinBox_number_wizard.value()
 
-        if thema == 'Addition':
+        if thema_index==0:
             minimum = self.spinbox_zahlenbereich_minimum.value()
             maximum = self.spinbox_zahlenbereich_maximum.value()
             commas = self.spinbox_kommastellen_wizard.value()
@@ -4275,7 +4277,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 return
             list_of_examples_wizard = create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
 
-        elif thema == 'Subtraktion':
+        elif thema_index==1:
             minimum = self.spinbox_zahlenbereich_minimum.value()
             maximum = self.spinbox_zahlenbereich_maximum.value()
             commas = self.spinbox_kommastellen_wizard.value()
@@ -4286,7 +4288,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 return
             list_of_examples_wizard = create_list_of_examples_subtraction(examples, minimum, maximum, commas, self.checkbox_negative_ergebnisse_wizard.isChecked(), anzahl_subtrahenden,smaller_or_equal)
         
-        elif thema == 'Multiplikation':
+        elif thema_index==2:
             minimum_1 = self.spinBox_first_number_min.value()
             maximum_1 = self.spinBox_first_number_max.value()
             commas_1 = self.spinBox_first_number_decimal.value()
@@ -4297,7 +4299,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             smaller_or_equal_2 = self.combobox_second_number_decimal.currentIndex()
             list_of_examples_wizard = create_list_of_examples_multiplication(examples, minimum_1, maximum_1, commas_1, smaller_or_equal_1 ,minimum_2, maximum_2, commas_2, smaller_or_equal_2)
 
-        elif thema == "Division":
+        elif thema_index==3:
             minimum_1 = self.spinbox_dividend_min_wizard.value()
             maximum_1 = self.spinbox_dividend_max_wizard.value()
             minimum_2 = self.spinbox_divisor_min_wizard.value()
@@ -4315,7 +4317,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             list_of_examples_wizard = create_list_of_examples_division(examples, minimum_1, maximum_1, minimum_2, maximum_2, commas_div, smaller_or_equal_div,commas_result,smaller_or_equal_result, output_type)  
 
-        elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[5] or thema == themen_worksheet_wizard[6] or thema == themen_worksheet_wizard[7]:
+        elif (
+            thema_index==4 or 
+            thema_index==5 or 
+            thema_index==6 or 
+            thema_index==7
+            ):
             minimum = self.spinbox_zahlenbereich_minimum.value()
             maximum = self.spinbox_zahlenbereich_maximum.value()
             commas = self.spinbox_kommastellen_wizard.value()
@@ -4324,7 +4331,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             brackets_allowed = self.checkbox_allow_brackets_wizard.isChecked()
             show_brackets = True
 
-            if thema == themen_worksheet_wizard[5]:
+            if thema_index==5:
                 if self.checkbox_enable_addition.isChecked():
                     typ = "+"
                 else:
@@ -4334,10 +4341,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     typ += "-"
                 
 
-            elif thema == themen_worksheet_wizard[6]:
+            elif thema_index==6:
                 typ = '*:'
-            elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[7]:
-                if thema == themen_worksheet_wizard[4]:
+            elif (
+                thema_index==4 or
+                thema_index==7
+                ):
+                if thema_index==4:
                     show_brackets = False
                 typ = '+-*:'
 
@@ -4346,7 +4356,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 return []
             list_of_examples_wizard = create_list_of_examples_ganze_zahlen(typ, examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)        
 
-        elif thema == "Binomische Formeln":
+        elif thema_index==8:
             binomials_types = [self.cb_binoms_1.isChecked(), self.cb_binoms_2.isChecked(), self.cb_binoms_3.isChecked()]
             if binomials_types == [False, False, False]:
                 warning_window("Es muss mindestens eine der Typen der binomischen Formeln ausgewählt werden.")
@@ -4464,8 +4474,16 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         if self.dict_all_examples_worksheet_wizard[widget]['ausrichtung'] != None:
             self.combobox_ausrichtung_wizard.setCurrentIndex(self.dict_all_examples_worksheet_wizard[widget]['ausrichtung'])
+
+        _string = thema[0]
+        for all in thema[1:]:
+            _string += f" \u2b9e {all}" 
         
-        self.comboBox_themen_wizard.setCurrentText(thema)
+        self.pushbutton_themen_wizard.setText(_string)
+        self.themen_changed_wizard()
+        # thema = self.get_current_topic_wizard()
+        # self.comboBox_themen_wizard.setCurrentText(thema)
+
         del self.dict_all_examples_worksheet_wizard[widget]
         widget.setParent(None)
 
@@ -4534,10 +4552,16 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         horizontalLayout_worksheet = create_new_horizontallayout(widget_worksheet)
         horizontalLayout_worksheet.setContentsMargins(0,5,0,5)
 
-        thema = self.comboBox_themen_wizard.currentText()
+        thema = self.get_current_topic_wizard()
+        thema_index = self.total_list_of_topics_wizard.index(thema)
+
+        print(thema)
+        print(self.total_list_of_topics_wizard)
+        print(thema_index)
+        # thema = self.comboBox_themen_wizard.currentText()
         anzahl = len(self.list_of_examples_wizard)
 
-        label_worksheet = create_new_label(self.scrollAreaWidgetContents_complete_worksheet_wizard, f"{thema} ({anzahl})", True)
+        label_worksheet = create_new_label(self.scrollAreaWidgetContents_complete_worksheet_wizard, f"{thema[-1]} ({anzahl})", True)
         horizontalLayout_worksheet.addWidget(label_worksheet)
 
         horizontalLayout_worksheet.addStretch()
@@ -4567,13 +4591,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         list_dummy_solutions = []
         i=0
         while i<10:
-            dummy_solution = get_random_solution(self, thema)
+            dummy_solution = get_random_solution(self)
             if dummy_solution[-2] not in list_solutions:
                 list_dummy_solutions.append(dummy_solution)
                 i+=1
 
 
-        if self.comboBox_themen_wizard.currentIndex() == 0 or self.comboBox_themen_wizard.currentIndex() == 1:
+        if thema_index==0 or thema_index==1:
             ausrichtung = self.combobox_ausrichtung_wizard.currentIndex()
         
         else:

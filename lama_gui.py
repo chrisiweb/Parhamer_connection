@@ -2390,19 +2390,20 @@ def setup_stackWizard(self):
     #     self.chosen_topic_wizard = x
     #     print(self.chosen_topic_wizard)
 
-
+    self.total_list_of_widgets_wizard = []
+    self.total_list_of_topics_wizard = []
     for level_0_keys, level_0_values in dict_themen_wizard.items():
-        print(level_0_keys)
-        print(level_0_values)
         submenu = self.menu_themen_wizard.addMenu(str(level_0_keys))
 
         for level_1_keys, level_1_values in level_0_values.items():
-            print(level_1_keys)
-            print(level_1_values)
             if type(level_1_values)==list:
                 action = submenu.addAction(level_1_keys)
                 list_topics = [level_0_keys, level_1_keys]
+                self.total_list_of_topics_wizard.append(list_topics)
                 action.triggered.connect(topic_chosen(list_topics))
+                for all in level_1_values:
+                    if all not in self.total_list_of_widgets_wizard:
+                        self.total_list_of_widgets_wizard.append(all)
             else:
                 subsubmenu = submenu.addMenu(level_1_keys)
 
@@ -2410,7 +2411,11 @@ def setup_stackWizard(self):
                     if type(level_2_values)==list: 
                         action = subsubmenu.addAction(level_2_keys)
                         list_topics = [level_0_keys, level_1_keys, level_2_keys]
-                        action.triggered.connect(topic_chosen(list_topics))                                      
+                        self.total_list_of_topics_wizard.append(list_topics)
+                        action.triggered.connect(topic_chosen(list_topics))
+                        for all in level_2_values:
+                            if all not in self.total_list_of_widgets_wizard:
+                                self.total_list_of_widgets_wizard.append(all)                                      
             # print(level_1_values)
         # for subtopic in subtopics:
         #     print(subtopic)

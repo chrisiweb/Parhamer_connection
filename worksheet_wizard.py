@@ -1676,12 +1676,18 @@ def create_coordinates(solution_pixels, dict_all_examples):
     return shuffled_coordinates
 
 
-def get_random_solution(self, thema):
+def get_random_solution(self):
+    thema = self.get_current_topic_wizard()
+    thema_index = self.total_list_of_topics_wizard.index(thema)
+
+    print(thema)
+    print(self.total_list_of_topics_wizard)
+    print(thema_index)
     # if thema =
     # thema = random.choice(list(self.dict_all_examples_wizard.keys()))
     # thema = self.comboBox_themen_wizard.currentText()
 
-    if thema == 'Addition':
+    if thema_index == 0:
         minimum = self.spinbox_zahlenbereich_minimum.value()
         maximum = self.spinbox_zahlenbereich_maximum.value()
         commas = self.spinbox_kommastellen_wizard.value()
@@ -1690,7 +1696,7 @@ def get_random_solution(self, thema):
         distract_result = create_single_example_addition(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
 
 
-    elif thema == 'Subtraktion':
+    elif thema_index==1:
         minimum = self.spinbox_zahlenbereich_minimum.value()
         maximum = self.spinbox_zahlenbereich_maximum.value()
         commas = self.spinbox_kommastellen_wizard.value()
@@ -1699,7 +1705,7 @@ def get_random_solution(self, thema):
         distract_result = create_single_example_subtraction(minimum, maximum, commas, self.checkbox_negative_ergebnisse_wizard.isChecked(),anzahl_subtrahenden, smaller_or_equal)
 
     
-    elif thema == 'Multiplikation':
+    elif thema_index==2:
         minimum_1 = self.spinBox_first_number_min.value()
         maximum_1 = self.spinBox_first_number_max.value()
         commas_1 = self.spinBox_first_number_decimal.value()
@@ -1711,7 +1717,7 @@ def get_random_solution(self, thema):
         distract_result = create_single_example_multiplication(minimum_1, maximum_1, commas_1, smaller_or_equal_1, minimum_2, maximum_2, commas_2, smaller_or_equal_2)
         # self.list_of_examples_wizard = create_list_of_examples_multiplication(examples, minimum_1, maximum_1, commas_1, minimum_2, maximum_2, commas_2)
 
-    elif thema == 'Division':
+    elif thema_index==3:
         minimum_1 = self.spinbox_dividend_min_wizard.value()
         maximum_1 = self.spinbox_dividend_max_wizard.value()
         minimum_2 = self.spinbox_divisor_min_wizard.value()
@@ -1729,7 +1735,7 @@ def get_random_solution(self, thema):
         distract_result = create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div,smaller_or_equal_div, commas_result, smaller_or_equal_result, output_type)
 
 
-    elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[5] or thema == themen_worksheet_wizard[6] or thema == themen_worksheet_wizard[7]:
+    elif thema_index==4 or thema_index==5 or thema_index==6 or thema_index==7:
         minimum = self.spinbox_zahlenbereich_minimum.value()
         maximum = self.spinbox_zahlenbereich_maximum.value()
         commas = self.spinbox_kommastellen_wizard.value()
@@ -1738,7 +1744,7 @@ def get_random_solution(self, thema):
         brackets_allowed = self.checkbox_allow_brackets_wizard.isChecked()
 
 
-        if thema == themen_worksheet_wizard[5]:
+        if thema_index==5:
             if self.checkbox_enable_addition.isChecked():
                 typ = "+"
             else:
@@ -1748,11 +1754,11 @@ def get_random_solution(self, thema):
                 typ += "-"
 
             distract_result = create_single_example_ganze_zahlen_strich(typ, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
-        elif thema == themen_worksheet_wizard[6]:
+        elif thema_index==6:
             typ = '*:'
             distract_result = create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
-        elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[7]:
-            if thema == themen_worksheet_wizard[4]:
+        elif thema_index==4 or thema_index==7:
+            if thema_index==4:
                 show_brackets = False
             else:
                 show_brackets = True
@@ -1760,7 +1766,7 @@ def get_random_solution(self, thema):
             distract_result = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)
 
 
-    elif thema == themen_worksheet_wizard[8]:
+    elif thema_index==8:
         binomials_types = [self.cb_binoms_1.isChecked(), self.cb_binoms_2.isChecked(), self.cb_binoms_3.isChecked()]
         
         if self.checkbox_binoms_a.isChecked():
