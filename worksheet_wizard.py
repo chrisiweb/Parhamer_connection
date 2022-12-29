@@ -1477,14 +1477,16 @@ def create_latex_worksheet(order_of_examples, dict_of_examples,total_number_of_e
     else:
         content = ""
 
-
+    print(arbeitsanweisung)
     if arbeitsanweisung != False:
+        if arbeitsanweisung == True:
+            arbeitsanweisung="Berechne die folgenden Aufgaben"
         content += arbeitsanweisung
 
     for widget in order_of_examples:
         set_of_examples = dict_of_examples[widget] 
     # for all in dict_of_examples.values():
-        index = set_of_examples['index_thema']
+        index = set_of_examples['thema_index']
         ausrichtung = set_of_examples['ausrichtung']
         columns = set_of_examples['spalten']
         
@@ -1680,9 +1682,9 @@ def get_random_solution(self):
     thema = self.get_current_topic_wizard()
     thema_index = self.total_list_of_topics_wizard.index(thema)
 
-    print(thema)
-    print(self.total_list_of_topics_wizard)
-    print(thema_index)
+    # print(thema)
+    # print(self.total_list_of_topics_wizard)
+    # print(thema_index)
     # if thema =
     # thema = random.choice(list(self.dict_all_examples_wizard.keys()))
     # thema = self.comboBox_themen_wizard.currentText()
