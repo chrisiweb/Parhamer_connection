@@ -1053,6 +1053,16 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
     elif index == 2:
         string = f"{solution_string} = {binom_string}"
         binom_string, solution_string = solution_string, binom_string
+    elif index == 3:
+        string = f"{binom_string} = {solution_string}"
+        split_string = split_binomial_expression(string)
+        random_blanks = choose_random_blanks(split_string)
+
+        print(string)
+        print(split_string)
+        print(random_blanks)
+
+
 
     solution_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", solution_string)
     solution_string = solution_string.replace('\xb7', '\cdot ')
@@ -1061,6 +1071,25 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
 
     return [f"${binom_string}$",f"${solution_string}$", string]
 
+def split_binomial_expression(expression):
+    pattern = r'([0-9/a-z]+\^\d+|\d*(?:/\d)*[a-z]+|\d+(?:/\d)*[a-z]*)'
+    return re.findall(pattern, expression)
+
+def choose_random_blanks(_list):
+    if len(_list)==5:
+        possible_blanks = [
+            [0,3,4],
+            [0,2,4],
+            [1,2,3],
+            [1,2,4],
+        ]
+    elif len(_list)==6:
+        possible_blanks = [
+            [0,2,5],
+            [1,3,4],
+        ]      
+
+    return random.choice(possible_blanks)
 
 def get_random_fraction(min, max):
     # if min == 0 and max == 1:
@@ -1456,9 +1485,9 @@ def create_latex_string_ganze_zahlen(content, example):
 
 
 def create_latex_string_binomische_formeln(content, example):
-
+    print(example)
     example_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", example[2])
-    example_string = re.sub("\^([0-9][0-9]+)",r"^{\1}", example[2])
+    example_string = re.sub("\^([0-9][0-9]+)",r"^{\1}", example_string)
 
     aufgabe, loesung = example_string.split(" = ")
     
@@ -1477,7 +1506,6 @@ def create_latex_worksheet(order_of_examples, dict_of_examples,total_number_of_e
     else:
         content = ""
 
-    print(arbeitsanweisung)
     if arbeitsanweisung != False:
         if arbeitsanweisung == True:
             arbeitsanweisung="Berechne die folgenden Aufgaben"
@@ -1809,7 +1837,7 @@ def create_nonogramm(nonogram, coordinates_nonogramm, spalten=3):
         end_multicols = ""
 
     nonogram_name = nonogram.split("_")[0].replace("&","\&").title()
-    content = f"""\n\\vfil\n\\fontsize{{12}}{{14}}\selectfont
+    content = f"""\n\\vfill\n\\fontsize{{12}}{{14}}\selectfont
     \meinlr{{{nonogramm_empty}
 
     \\antwort{{{nonogram_name}}}}}{{\scriptsize

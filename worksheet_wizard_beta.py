@@ -1,12 +1,4 @@
-# from __future__ import division
-# from distutils.log import fatal
-# from pickletools import read_uint1
-from functools import partial
-from operator import imod
-from posixpath import split
 import random
-# from functools import reduce
-# import math
 import decimal
 import re
 from config import is_empty
@@ -15,14 +7,6 @@ from config import is_empty
 from sympy import symbols, init_printing, expand, simplify, apart, Rational
 # from sympy import *
 from fractions import Fraction
-# import numpy
-# import os
-
-# from numpy import empty
-# from config_start import path_localappdata_lama, path_programm
-# import subprocess
-# from tex_minimal import tex_preamble, tex_end
-# from create_pdf import  open_pdf_file
 
 
 list_of_topics_wizard = ['Addition', 'Subtraktion']
@@ -152,28 +136,47 @@ def extract_parts_of_binom(string):
     return split_list   
 
 def choose_random_blanks(_list):
-    possible_blanks = {1: [[[0],[1,2]], [[0],[0,2]],[[1],[0,1]],[[1],[0,2]]], 2: [[[0,2],[1]], [[1,3],[0]]]}
+    # possible_blanks = {
+    #     1: [[[0],[1,2]], [[0],[0,2]],[[1],[0,1]],[[1],[0,2]]],
+    #     2: [[[0,2],[1]], [[1,3],[0]]]}
+    if len(_list)==5:
+        possible_blanks = [
+            [0,3,4],
+            [0,2,4],
+            [1,2,3],
+            [1,2,4],
+        ]
+    elif len(_list)==6:
+        possible_blanks = [
+            [0,2,5],
+            [1,3,4],
+        ]      
 
-    if len(_list[0])==2:
-        typ_index = 1
-    elif len(_list[0])==4:
-        typ_index = 2
+    return random.choice(possible_blanks)
 
-    return random.choice(possible_blanks[typ_index])
+a = '(7m-5a)^2 = 49m^2 - 70ma + 25a^2'
+b ='(1/3+1/2h)^2 = 1/9 - 1/3th + 1/4h^2'
+c = '(m-8q)^2 = m^2 - 16mq + 64q^2'
+d = '(4+7e)(4-7e) = 16 - 49e^2'
 
-a = '(6f+9u)^2 = 36f^2 + 108fu + 81u^2'
-b = '(7y+7e)(7y-7e) = 49y^2 - 49e^2'
+# Der Ausdruck, der unterteilt werden soll
+expression = "(2a+5b)^2 = 4a^2 + 20ab + 25b^2"
 
+# Ein regulärer Ausdruck, der auf die Summanden des Ausdrucks abgestimmt ist
+pattern = r'([0-9/a-z]+\^\d+|\d*(?:/\d)*[a-z]+|\d+(?:/\d)*[a-z]*)'
+# Verwende den regulären Ausdruck, um die Summanden des Ausdrucks zu finden
+a_split = re.findall(pattern, a)
+b_split = re.findall(pattern, b)
+c_split = re.findall(pattern, c)
+d_split = re.findall(pattern, d)
+print(a_split)
+print(b_split)
+print(c_split)
+print(d_split)
 
-binom_parts = re.search("\((.+)[\+-](.+)\)", a)
-print(binom_parts.group(1))
-print(binom_parts.group(2))
+# blanks =choose_random_blanks(a_split)
 
-binom_parts = re.search("\((.+)[\+-](.+)\)", b)
-print(binom_parts.group(0))
-print(binom_parts.group(1))
-print(binom_parts.group(2))
-
+# print(blanks)
 
 
 # split_list = extract_parts_of_binom(a)

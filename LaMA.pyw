@@ -914,7 +914,6 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
             text_combobox = comboBox.currentText()
             kapitel = text_combobox[text_combobox.find("(") + 1 : text_combobox.find(")")]
             for unterkapitel in dict_klasse[kapitel]:
-                # print(unterkapitel)
                 checkbox = self.dict_widget_variables[f"checkbox_unterkapitel_{klasse}_{kapitel}_{unterkapitel}"]
                 checkbox.setChecked(setchecked)
 
@@ -3756,6 +3755,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
     def worksheet_wizard_reset(self):
+        rsp= question_window("Sind Sie sicher, dass Sie den Worksheet Wizard vollständig zurücksetzen und alle erstellen Aufgaben löschen möchten?")
+        if rsp == False:
+            return
+
         self.comboBox_themen_wizard.setCurrentIndex(0)
         self.spinBox_number_wizard.setValue(20)
         self.spinBox_column_wizard.setValue(2)
@@ -3793,18 +3796,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
     def themen_changed_wizard(self):
-
         thema = self.get_current_topic_wizard()
-        # print(thema)
-        # print(self.total_list_of_topics_wizard)
         thema_index = self.total_list_of_topics_wizard.index(thema)
 
-        # self.chosen_topic_wizard = "_".join(x)
-        # print(self.chosen_topic_wizard)
-        # self.worksheet_wizard_changed = True
-        # index = self.comboBox_themen_wizard.currentIndex()
-        # thema = self.comboBox_themen_wizard.currentText()
-        # self.lineEdit_titel_wizard.setText("Arbeitsblatt - {}".format(thema))
+
         self.checkbox_enable_addition.hide()
         self.checkbox_enable_subtraktion.hide()
         if thema_index == 0 or thema_index == 1:
@@ -3931,14 +3926,18 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
     def binoms_direction_changed(self):
-        icons = ["chevron-right.svg","code.svg", "chevron-left.svg"]
-        if self.binoms_direction_index==2:
+        icons = ["chevron-right.svg","code.svg", "chevron-left.svg", "edit-3.svg"]
+        if self.binoms_direction_index==3:
             index = 0
         else:
             index = self.binoms_direction_index+1
 
         
         self.pushbutton_binoms_direction.setIcon(QIcon(get_icon_path(icons[index])))
+        if index == 3:
+            self.pushbutton_binoms_direction.setToolTip("Lücken ergänzen")
+        else:
+            self.pushbutton_binoms_direction.setToolTip("")
 
         self.binoms_direction_index = index
 
@@ -4093,7 +4092,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         #         row = 0
         #         column +=1
         #     index +=1
-        # print(self.list_of_examples_wizard[index])
 
     
     def create_single_example_wizard(self):
@@ -4237,8 +4235,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         column = 0
         row = 0
         index = 0
-        # for thema in self.dict_all_examples_wizard:
-        # print(self.list_of_examples_wizard)
+
         for example in self.list_of_examples_wizard:
             self.create_aufgabenbox_wizard(index, example, row, column)
             if row+1 < items_per_column:
@@ -4264,9 +4261,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         thema = self.get_current_topic_wizard()
         thema_index = self.total_list_of_topics_wizard.index(thema)
 
-        print(thema)
-        print(self.total_list_of_topics_wizard)
-        print(thema_index)
         examples = self.spinBox_number_wizard.value()
 
         if thema_index==0:
@@ -4429,12 +4423,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # self.dict_all_examples_wizard = {}
         self.list_of_examples_wizard = self.create_list_of_examples_wizard()
 
-        # self.dict_all_examples_wizard[thema] = list_of_examples_wizard
-        # print(self.list_of_examples_wizard)
-        
-        # return
-        # print(self.dict_all_examples_wizard)
-
         self.reset_aufgabenboxes_wizard()
 
 
@@ -4558,9 +4546,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         thema = self.get_current_topic_wizard()
         thema_index = self.total_list_of_topics_wizard.index(thema)
 
-        print(thema)
-        print(self.total_list_of_topics_wizard)
-        print(thema_index)
         # thema = self.comboBox_themen_wizard.currentText()
         anzahl = len(self.list_of_examples_wizard)
 
@@ -4784,7 +4769,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             warning_window("Es wurden keine Aufgaben zum Arbeitsblatt hinzugefügt.")
             return
 
-        # print(self.get_total_number_of_examples_wizard())
         try:
             fortlaufende_nummerierung = self.fortlaufende_nummerierung
         except AttributeError:
@@ -5383,8 +5367,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.progress.setCancelButton(None)
         self.progress.setWindowModality(Qt.WindowModal)
 
-        # print(self.list_alle_aufgaben_sage)
-        # for aufgabe in self.list_alle_aufgaben_sage:
+
         list_aufgaben_errors = self.sage_load_files()
 
         self.progress.cancel()
@@ -5590,7 +5573,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.lineedit_g2_upper_limit,
             self.lineedit_g2_lower_limit,
             ]
-        # print(self.get_punkteverteilung())
+
         if self.combobox_notenschluessel_typ.currentIndex()==0:
             self.cb_ns_halbe_pkt.setEnabled(True)
             self.combobox_notenschluessel_saved.hide()
@@ -5892,7 +5875,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         pkt_typ1 = 0
         pkt_typ2 = 0
         gesamtpunkte = 0
-        # print(self.dict_variablen_punkte)
+
         for all in self.dict_variablen_punkte:
             typ = get_aufgabentyp(self.chosen_program, all)
             if typ == None:
@@ -6377,8 +6360,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             groupbox_abstand_ausgleich.setToolTip("Neue Seite: Abstand=99")
 
         # pushbutton_ausgleich.setMaximumSize(QtCore.QSize(220, 30))
-        
-        # print(self.temp_info)
+
         # pushbutton_aufgabe_bearbeiten = create_new_button(groupbox_pkt, 'Aufgabe bearbeiten', still_to_define)
         # gridLayout_gB.addWidget(pushbutton_aufgabe_bearbeiten, 0,1,1,1)
 
@@ -6520,7 +6502,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         if typ == 2:
             split_content = self.split_content(aufgabe, content)
-            # print(split_content)
+
             if split_content == False:
                 return
 
@@ -6571,12 +6553,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.dict_sage_individual_change.pop(aufgabe)
         else:
             self.dict_sage_individual_change[aufgabe] = ui.sage_individual_change
-        
-        
-        # print(self.list_sage_hide_show_items_chosen)
-        # print(self.dict_sage_individual_change)
-
-            
+                   
 
         if typ == 2:
 
@@ -6784,7 +6761,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.scrollAreaWidgetContents_typ2.show()
 
         self.build_aufgaben_schularbeit(aufgabe)  # aufgabe, aufgaben_verteilung
-        # print(self.list_alle_aufgaben_sage)
+
         self.lineEdit_number.setText("")
         self.lineEdit_number.setFocus()
         self.check_for_autosave()
@@ -6973,13 +6950,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             layout.insertWidget(layout.count() - 1, neue_aufgaben_box)
 
-        # print(self.list_alle_aufgaben_sage)
+
         if not is_empty(list_aufgaben_errors):
             str_error = ', '.join(list_aufgaben_errors)
             warning_window(f"Für folgende Eingaben konnte keine passende Aufgabenummer in der Datenbank gefunden werden:\n\n{str_error}")
 
-        # print(self.import_list_sage)
-        # print(self.list_alle_aufgaben_sage)
+
         if not is_empty(list_duplicates):
             str_duplicates = ', '.join(list_duplicates)
             information_window(f"Folgende Aufgaben wurden bereits hinzugefügt und werden daher übersprungen:\n\n{str_duplicates}")
@@ -7296,8 +7272,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         else:
             vspace = "\\vspace{{{0}cm}} \n\n".format(abstand)
 
-        
-            # print(f"{aufgabe}: {self.dict_variablen_translation[aufgabe]}")
 
         
         try:
