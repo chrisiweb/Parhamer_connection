@@ -449,18 +449,31 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             "ü": "ue",
             "ß": "ss",
         }
-        self.chosen_path_schularbeit_erstellen = (
-            QtWidgets.QFileDialog.getSaveFileName(
-                None,
-                "Speicherort wählen",
-                os.path.dirname(self.saved_file_path),
-                "TeX Dateien (*.tex);; Alle Dateien (*.*)",
+        
+        while True:
+            self.chosen_path_schularbeit_erstellen = (
+                QtWidgets.QFileDialog.getSaveFileName(
+                    None,
+                    "Speicherort wählen",
+                    os.path.dirname(self.saved_file_path),
+                    "TeX Dateien (*.tex);; Alle Dateien (*.*)",
+                )
             )
-        )
+
+            if re.search("[_&]", os.path.basename(self.chosen_path_schularbeit_erstellen[0]))!=None:
+                self.saved_file_path = os.path.join(self.chosen_path_schularbeit_erstellen[0],self.chosen_path_schularbeit_erstellen[1])
+                warning_window("Der Dateinamen ist ungültig!",
+                    "Folgende Sonderzeichen sind nicht erlaubt: _&")
+            else:
+                break
+
 
         if self.chosen_path_schularbeit_erstellen[0] == "":
             QtWidgets.QApplication.restoreOverrideCursor()
             return
+        
+
+        
         self.saved_file_path = self.chosen_path_schularbeit_erstellen[0]
 
         dirname = os.path.dirname(self.chosen_path_schularbeit_erstellen[0])
@@ -4662,7 +4675,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     del self.nonogram_wizard
                 except AttributeError:
                     pass
-
+            
             nonogram, solution_pixels = get_all_solution_pixels(total_list_of_examples, nonogram)
 
 
@@ -4727,6 +4740,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             fortlaufende_nummerierung, 
             nummerierung,
             self.comboBox_solution_type_wizard.currentIndex(),
+            self.binoms_direction_index,
             )
 
         if self.checkBox_show_nonogramm.isChecked():
@@ -5464,8 +5478,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             )
             if path_backup_file[0] == "":
                 return
+
             self.collect_all_infos_for_creating_file()
             save_file = path_backup_file[0]
+            return
 
         elif autosave != False:
             save_file = autosave

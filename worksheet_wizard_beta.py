@@ -155,24 +155,87 @@ def choose_random_blanks(_list):
     return random.choice(possible_blanks)
 
 a = '(7m-5a)^2 = 49m^2 - 70ma + 25a^2'
-b ='(1/3+1/2h)^2 = 1/9 - 1/3th + 1/4h^2'
+a_reversed = '49m^2 - 70ma + 25a^2 = (7m-5a)^2'
+b ='(1/3t+1/2h)^2 = 1/9t^2 - 1/3th + 1/4h^2'
 c = '(m-8q)^2 = m^2 - 16mq + 64q^2'
-d = '(4+7e)(4-7e) = 16 - 49e^2'
+d = '(7y+7e)(7y-7e) = 49y^2 - 49e^2'
 
 # Der Ausdruck, der unterteilt werden soll
 expression = "(2a+5b)^2 = 4a^2 + 20ab + 25b^2"
 
 # Ein regulärer Ausdruck, der auf die Summanden des Ausdrucks abgestimmt ist
-pattern = r'([0-9/a-z]+\^\d+|\d*(?:/\d)*[a-z]+|\d+(?:/\d)*[a-z]*)'
+# pattern = r'([0-9/a-z]+\^\d+|\d*(?:/\d)*[a-z]+|^\^\d+(?:/\d)*[a-z]*)'
 # Verwende den regulären Ausdruck, um die Summanden des Ausdrucks zu finden
-a_split = re.findall(pattern, a)
-b_split = re.findall(pattern, b)
-c_split = re.findall(pattern, c)
-d_split = re.findall(pattern, d)
-print(a_split)
-print(b_split)
-print(c_split)
-print(d_split)
+
+def split_binomial_expression(expression):
+    pattern = r'([0-9/a-z]+\^\d+|\d*(?:/\d)*[a-z]+|^\^\d+(?:/\d)*[a-z]*)'
+    return re.findall(pattern, expression)
+
+def choose_random_blanks(_list):
+    if len(_list)==5:
+        possible_blanks = [
+            [0,3,4],
+            [0,2,4],
+            [1,2,3],
+            [1,2,4],
+        ]
+    elif len(_list)==6:
+        possible_blanks = [
+            [0,2,5],
+            [1,3,4],
+        ]      
+
+    return random.choice(possible_blanks)
+
+
+split_string = split_binomial_expression(a)
+random_blanks = choose_random_blanks(split_string)
+
+# print(a)
+# print(split_string)
+# print(random_blanks)
+
+# choice = 0 
+# if choice == 1:
+#     random_blanks.reverse()
+#     # split_string.reverse()
+#     print(random_blanks)
+#     # print(split_string)
+
+string = a
+for i in random_blanks:
+    string = string.replace(split_string[i], "_", 1)
+
+# print(string)
+
+split_string = string.split(" = ")
+
+reversed_string = f"{split_string[1]} = {split_string[0]}"
+
+# print(reversed_string)
+
+
+set_solution = ['6f', '36f^2', '81j^2']
+string = "$(\\rule{1cm}{0.3pt}+9j)^2 = \\rule{1cm}{0.3pt} + 108fj + \\rule{1cm}{0.3pt}$"
+
+print(string)
+
+for i, solution in enumerate(set_solution):
+    print(string)
+    string = string.replace('\\rule{1cm}{0.3pt}', f'\\antwort[RULE]{{{solution}}}', 1)
+
+print(string)
+
+string = string.replace("RULE", "\\rule{1cm}{0.3pt}")
+
+print(string)
+# string = a_reversed
+# for i in random_blanks:
+#     print(i)
+#     print(split_string[i])
+#     string = string.replace(split_string[i], "_", 1)
+
+# print(string)
 
 # blanks =choose_random_blanks(a_split)
 

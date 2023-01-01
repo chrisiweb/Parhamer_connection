@@ -1053,26 +1053,58 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
     elif index == 2:
         string = f"{solution_string} = {binom_string}"
         binom_string, solution_string = solution_string, binom_string
-    elif index == 3:
+
+    if index == 3:
+        choice = random.choice([0,1]) #edit to 0,1
+
         string = f"{binom_string} = {solution_string}"
+
+        # if choice == 1:
+        #     solution_string = f"{solution_string} = {binom_string}"
+        # else:
+        #     solution_string = string
+
         split_string = split_binomial_expression(string)
         random_blanks = choose_random_blanks(split_string)
 
-        print(string)
-        print(split_string)
-        print(random_blanks)
+        solution_string = []
+        for i in random_blanks:
+            string = string.replace(split_string[i], "_", 1)
+            solution_string.append(split_string[i])
+
+        
+        if choice == 0:
+            binom_string = string
+
+
+        elif choice == 1:
+            split_string = string.split(" = ")
+
+            string = f"{split_string[1]} = {split_string[0]}"
+            binom_string = string
+
+        binom_string = binom_string.replace("_","\\rule{1cm}{0.3pt}")
+            # string = reversed_string_blanks
+            # binom_string = reversed_string_blanks           
+
+            # random_blanks.reverse()
+            # # split_string.reverse()
+            # print(random_blanks)
+            # # print(split_string)
+    else:
+        solution_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", solution_string)
+        solution_string = solution_string.replace('\xb7', '\cdot ')
+        solution_string  = f"${solution_string}$"
 
 
 
-    solution_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", solution_string)
-    solution_string = solution_string.replace('\xb7', '\cdot ')
     binom_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", binom_string)
     binom_string = binom_string.replace('\xb7', '\cdot ')
 
-    return [f"${binom_string}$",f"${solution_string}$", string]
+    return [f"${binom_string}$",solution_string, string]
 
 def split_binomial_expression(expression):
-    pattern = r'([0-9/a-z]+\^\d+|\d*(?:/\d)*[a-z]+|\d+(?:/\d)*[a-z]*)'
+    pattern = r'([0-9/a-z]+\^\d+|\d*(?:/\d)*[a-z]+|^\^\d+(?:/\d)*[a-z]*)'
     return re.findall(pattern, expression)
 
 def choose_random_blanks(_list):
@@ -1092,12 +1124,6 @@ def choose_random_blanks(_list):
     return random.choice(possible_blanks)
 
 def get_random_fraction(min, max):
-    # if min == 0 and max == 1:
-    #     numerator = 1
-    #     denominator = get_random_number(1, 9)
-    # else:
-    # numerator = get_random_number(min, max-1)
-    # denominator = get_random_number(numerator+1, max)
     numerator = get_random_number(min, max)
     denominator = get_random_number(min, max) 
     # denominator = get_random_number(numerator, max)
@@ -1484,14 +1510,28 @@ def create_latex_string_ganze_zahlen(content, example):
     return content
 
 
-def create_latex_string_binomische_formeln(content, example):
+def create_latex_string_binomische_formeln(content, example, binoms_direction_index):
     print(example)
-    example_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", example[2])
-    example_string = re.sub("\^([0-9][0-9]+)",r"^{\1}", example_string)
+    if binoms_direction_index==3:
+        print(example[0])
+        aufgabe = example[0]
 
-    aufgabe, loesung = example_string.split(" = ")
-    
-    temp_content = f"\\task ${aufgabe} = \\antwort{{{loesung}}}$\n\n"
+        for _, solution in enumerate(example[1]):
+            aufgabe = aufgabe.replace('\\rule{1cm}{0.3pt}', f'\\antwort[RULE]{{{solution}}}', 1)
+
+        aufgabe = aufgabe.replace("RULE", "\\rule{1cm}{0.3pt}")
+        # for loesung in example[1]:
+        #     aufgabe = aufgabe.replace("\\rule{1cm}{0.3pt}", f"\\antwort[\\rule{{1cm}}{{0.3pt}}]{{{loesung}}}",1)
+        temp_content = f"\\task {aufgabe}\n\n"
+        print(aufgabe)
+
+    else:
+        example_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", example[2])
+        example_string = re.sub("\^([0-9][0-9]+)",r"^{\1}", example_string)
+
+        aufgabe, loesung = example_string.split(" = ")
+
+        temp_content = f"\\task ${aufgabe} = \\antwort{{{loesung}}}$\n\n"
 
     temp_content = temp_content.replace('\xb7', '\cdot ')
 
@@ -1500,7 +1540,18 @@ def create_latex_string_binomische_formeln(content, example):
     return content
 
 
-def create_latex_worksheet(order_of_examples, dict_of_examples,total_number_of_examples, index, titel, arbeitsanweisung,fortlaufende_nummerierung ,nummerierung,solution_type=0):
+def create_latex_worksheet(
+    order_of_examples,
+    dict_of_examples,
+    total_number_of_examples,
+    index,
+    titel,
+    arbeitsanweisung,
+    fortlaufende_nummerierung,
+    nummerierung,
+    solution_type=0,
+    binoms_direction_index=0
+    ):
     if titel != False:
         content = "\section{{{0}}}\n\n".format(titel.replace('&', '\&'))
     else:
@@ -1522,7 +1573,7 @@ def create_latex_worksheet(order_of_examples, dict_of_examples,total_number_of_e
         #     content += "\\begin{{multicols}}{{{0}}}\n".format(columns)
         # print(nummerierung)
         # content += f"\\begin{{enumerate}}[{nummerierung}]\setlength\itemsep{{{item_spacing}cm}}\n"
-        content += f"\\begin{{tasks}}[label={nummerierung},resume={fortlaufende_nummerierung}]({columns})"
+        content += f"\\begin{{tasks}}[label={nummerierung},resume={fortlaufende_nummerierung}]({columns})\n\n"
         # if fortlaufende_nummerierung == True:
         #     content += f"\setcounter{{enumi}}{{{enumi_counter}}}"
         #     enumi_counter +=1
@@ -1540,7 +1591,7 @@ def create_latex_worksheet(order_of_examples, dict_of_examples,total_number_of_e
             elif index == 4 or index == 5 or index == 6 or index ==7:
                 content = create_latex_string_ganze_zahlen(content, example)
             elif index == 8:
-                content = create_latex_string_binomische_formeln(content, example)
+                content = create_latex_string_binomische_formeln(content, example, binoms_direction_index)
 
         content += "\end{tasks}\n"
 
@@ -1589,7 +1640,6 @@ def get_max_pixels_nonogram():
 
 
 def get_all_solution_pixels(list_of_examples, nonogram):
-   
 
     all_pixels_solution = all_nonogramms[nonogram]
     random.shuffle(all_pixels_solution)
@@ -1854,12 +1904,17 @@ def create_nonogramm(nonogram, coordinates_nonogramm, spalten=3):
     for all in coordinates_nonogramm:
         if coordinates_nonogramm[all][1] == None:
             continue
-        
-        elif coordinates_nonogramm[all][0] == True:
-            result = "\\antwort[{0}]{{{0}}}".format(coordinates_nonogramm[all][1])
-        
-        elif coordinates_nonogramm[all][0] == False:
+        elif type(coordinates_nonogramm[all][1])==list:
+            result = ", ".join(coordinates_nonogramm[all][1])
+            result = f"${result}$"
+        else:
             result = coordinates_nonogramm[all][1]
+        
+        if coordinates_nonogramm[all][0] == True:
+            result = "\\antwort[{0}]{{{0}}}".format(result)
+        
+        # elif coordinates_nonogramm[all][0] == False:
+        #     result = result
         
         content += "\item[\\fbox{{\parbox{{15pt}}{{\centering {0}}}}}] {1}\n".format(all, result)
     # for all in list_coordinates:
