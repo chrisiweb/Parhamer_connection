@@ -3796,7 +3796,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     def get_current_topic_wizard(self):
         button_text = self.pushbutton_themen_wizard.text()
-        thema = button_text.split(" \u27a4 ")
+        thema = button_text.split(" > ")
         # thema = button_text.replace(" \u2b9e ","_")
         return thema
 
@@ -4481,7 +4481,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         _string = thema[0]
         for all in thema[1:]:
-            _string += f" \u27a4 {all}" 
+            _string += f" > {all}" 
         
         self.pushbutton_themen_wizard.setText(_string)
         self.themen_changed_wizard()
@@ -8057,6 +8057,7 @@ if __name__ == "__main__":
 
     app.setStyle("Fusion")
     # dir_ = QtCore.QDir("assets/fonts/IBM_Plex_Sans")
+
     _id = QtGui.QFontDatabase.addApplicationFont("assets/fonts/IBM_Plex_Sans/IBMPlexSans-Regular.ttf")
     QtGui.QFontDatabase.applicationFontFamilies(_id)
     if sys.platform.startswith("darwin"):
@@ -8072,13 +8073,13 @@ if __name__ == "__main__":
 
     palette = QtGui.QPalette()
     palette.setColor(QtGui.QPalette.Window, white)  # Window background
-    palette.setColor(QtGui.QPalette.WindowText, QtCore.Qt.black)
+    palette.setColor(QtGui.QPalette.WindowText, black)
     palette.setColor(QtGui.QPalette.Base, white)
     palette.setColor(QtGui.QPalette.Button, white)
     
     # palette.setColor(QtGui.QPalette.AlternateBase, blue_2)
     palette.setColor(QtGui.QPalette.ToolTipBase, blue_7)
-    palette.setColor(QtGui.QPalette.ToolTipText, QtCore.Qt.white)
+    palette.setColor(QtGui.QPalette.ToolTipText, white)
     palette.setColor(QtGui.QPalette.Text, black)
     # palette.setColor(QtGui.QPalette.Button, blue_3)  # blue_4
 

@@ -2371,7 +2371,7 @@ def setup_stackWizard(self):
     self.pushbutton_themen_wizard = QtWidgets.QPushButton(self.groupBox_topics)
     # print(list(dict_themen_wizard.values())[0][0])
     # self.pushbutton_themen_wizard.setText(dict_themen_wizard[list(dict_themen_wizard.values())[0][0]])
-    self.pushbutton_themen_wizard.setText("Arithmetik \u27a4 Positive (Dezimal-)Zahlen \u27a4 Addition")
+    self.pushbutton_themen_wizard.setText("Arithmetik > Positive (Dezimal-)Zahlen > Addition")
     self.chosen_topics_wizard = ["Arithmetik", "Positive (Dezimal-)Zahlen", "Addition"]
     self.horizontalLayout_groupBox_topics.addWidget(self.pushbutton_themen_wizard)
 
@@ -2381,7 +2381,7 @@ def setup_stackWizard(self):
     def topic_chosen(list_topics):
         _string = list_topics[0]
         for all in list_topics[1:]:
-            _string += f" \u27a4 {all}" 
+            _string += f" > {all}" 
         return lambda: self.pushbutton_themen_wizard.setText(_string)
     
     # def change_list_topic():
