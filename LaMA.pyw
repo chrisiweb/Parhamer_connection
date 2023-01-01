@@ -3796,7 +3796,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     def get_current_topic_wizard(self):
         button_text = self.pushbutton_themen_wizard.text()
-        thema = button_text.split(" \u2b9e ")
+        thema = button_text.split(" \u27a4 ")
         # thema = button_text.replace(" \u2b9e ","_")
         return thema
 
@@ -4481,7 +4481,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         _string = thema[0]
         for all in thema[1:]:
-            _string += f" \u2b9e {all}" 
+            _string += f" \u27a4 {all}" 
         
         self.pushbutton_themen_wizard.setText(_string)
         self.themen_changed_wizard()
@@ -8072,8 +8072,10 @@ if __name__ == "__main__":
 
     palette = QtGui.QPalette()
     palette.setColor(QtGui.QPalette.Window, white)  # Window background
-    # palette.setColor(QtGui.QPalette.WindowText, QtCore.Qt.black)
-    # palette.setColor(QtGui.QPalette.Base, white)
+    palette.setColor(QtGui.QPalette.WindowText, QtCore.Qt.black)
+    palette.setColor(QtGui.QPalette.Base, white)
+    palette.setColor(QtGui.QPalette.Button, white)
+    
     # palette.setColor(QtGui.QPalette.AlternateBase, blue_2)
     palette.setColor(QtGui.QPalette.ToolTipBase, blue_7)
     palette.setColor(QtGui.QPalette.ToolTipText, QtCore.Qt.white)
