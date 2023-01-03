@@ -33,7 +33,7 @@ jobs:
     - name: Build with pyinstaller
       if: matrix.os != 'windows-latest'
       run: |  
-        pyinstaller -F -w LaMA.pyw        
+        pyinstaller -F LaMA.pyw --exclude-module tkinter      
     - name: Build with pyinstaller Windows
       if: matrix.os == 'windows-latest'
       run: |  
@@ -42,14 +42,14 @@ jobs:
       if: matrix.os != 'windows-latest'
       run: |
         mkdir artifacts
-        mv dist/* artifacts
+        mv dist/*.app artifacts
     - name: Cleanup artifacts Windows
       if: matrix.os == 'windows-latest'
       run: |
         mkdir artifacts
         mv dist/*.exe artifacts
     - name: Upload artifacts
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v3
       with:
         name: lama_${{matrix.os}}
         path: artifacts
