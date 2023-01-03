@@ -1,12 +1,16 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-__lastupdate__ = "11/22"
+__lastupdate__ = "12/22"
 
 
 ##################
+import sys
 
-show_popup = False
+if sys.platform.startswith("darwin"):
+    show_popup = True
+else:
+    show_popup = False
 
 from start_window import check_if_database_exists
 # from worksheet_wizard import get_all_solution_pixels
@@ -31,7 +35,6 @@ from config_start import (
 # from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QApplication
 
-import sys
 from distutils.spawn import find_executable
 
 # from tinydb import Query
@@ -400,44 +403,30 @@ class Ui_MainWindow(object):
 
     def show_popup_window(self, show_checkbox = True):
         rsp = custom_window("""
-<b>Die neue Version von LaMA ({}) verwendet Befehle des aktuellsten "srdp-mathematik"-Pakets. Um die volle Funktionsfähigkeit von LaMA zu gewährleisten, sollte das LaTeX-Paket auf Ihrem Gerät manuell aktualisiert werden.</b><br><br><br>
+<b>Augrund einer Änderung der Datenbank, muss diese neu heruntergeladen werden.</b><br><br><br>
 
-Eine direkte Aktualisierung des "srdp-mathematik"-Pakets über LaMA kann via<br>
-
-<i>"Optionen -> Update ... -> srdp-mathematik.sty aktualisieren"</i><br>
-
-durchgeführt werden.<br><br>
-
-Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.com<br>
+Sollten dabei Problem auftreten, melden Sie sich bitte unter: lama.helpme@gmail.com<br>
 """.format(__version__),
         titel="Update Information",
         show_checkbox=show_checkbox,
         set_width=600,
         )
         return rsp
-#         msg = QtWidgets.QMessageBox()
-#         msg.setWindowTitle("Update")
-#         pixmap = QtGui.QPixmap(logo_path)
-#         msg.setIconPixmap(pixmap)
-#         msg.setWindowIcon(QtGui.QIcon(logo_path))
-#         msg.setText("""Die neue Version von LaMA ({}) verwendet Befehle des aktuellsten "srdp-mathematik"-Pakets. Um die volle Funktionsfähigkeit von LaMA zu gewährleisten, sollte das LaTeX-Paket auf Ihrem Gerät manuell aktualisiert werden.""".format(__version__))
-#         msg.setInformativeText("""Eine direkte Aktualisierung des "srdp-mathematik"-Pakets über LaMA kann via
 
-# "Optionen -> Update ... -> srdp-mathematik.sty aktualisieren"
 
-# durchgeführt werden. 
+    ##### PREVIOUS MESSAGES
+# <b>Die neue Version von LaMA ({}) verwendet Befehle des aktuellsten "srdp-mathematik"-Pakets. Um die volle Funktionsfähigkeit von LaMA zu gewährleisten, sollte das LaTeX-Paket auf Ihrem Gerät manuell aktualisiert werden.</b><br><br><br>
 
-# Sollte dies nicht möglich sein, melden Sie sich bitte unter:
-# lama.helpme@gmail.com""")
-        
-#         cb = QtWidgets.QCheckBox()
-#         if show_checkbox==True:
-#             msg.setCheckBox(cb)
-#             cb.setText("Diese Meldung nicht mehr anzeigen")
-#         msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+# Eine direkte Aktualisierung des "srdp-mathematik"-Pakets über LaMA kann via<br>
 
-#         msg.exec_()
-#         return cb.isChecked()
+# <i>"Optionen -> Update ... -> srdp-mathematik.sty aktualisieren"</i><br>
+
+# durchgeführt werden.<br><br>
+
+# Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.com<br>
+
+
+
 
     def get_saving_path(self):
         dict_umlaute = {
@@ -449,18 +438,31 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             "ü": "ue",
             "ß": "ss",
         }
-        self.chosen_path_schularbeit_erstellen = (
-            QtWidgets.QFileDialog.getSaveFileName(
-                None,
-                "Speicherort wählen",
-                os.path.dirname(self.saved_file_path),
-                "TeX Dateien (*.tex);; Alle Dateien (*.*)",
+        
+        while True:
+            self.chosen_path_schularbeit_erstellen = (
+                QtWidgets.QFileDialog.getSaveFileName(
+                    None,
+                    "Speicherort wählen",
+                    os.path.dirname(self.saved_file_path),
+                    "TeX Dateien (*.tex);; Alle Dateien (*.*)",
+                )
             )
-        )
+
+            if re.search("[_&]", os.path.basename(self.chosen_path_schularbeit_erstellen[0]))!=None:
+                self.saved_file_path = os.path.join(self.chosen_path_schularbeit_erstellen[0],self.chosen_path_schularbeit_erstellen[1])
+                warning_window("Der Dateinamen ist ungültig!",
+                    "Folgende Sonderzeichen sind nicht erlaubt: _&")
+            else:
+                break
+
 
         if self.chosen_path_schularbeit_erstellen[0] == "":
             QtWidgets.QApplication.restoreOverrideCursor()
             return
+        
+
+        
         self.saved_file_path = self.chosen_path_schularbeit_erstellen[0]
 
         dirname = os.path.dirname(self.chosen_path_schularbeit_erstellen[0])
@@ -544,7 +546,7 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
 
 
             for index in range(range_limit):
-                self.pushButton_vorschau_pressed(
+                rsp = self.pushButton_vorschau_pressed(
                     "schularbeit",
                     index,
                     self.ui_erstellen.spinBox_sw_gruppen.value() * 2,
@@ -553,6 +555,10 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
                     single_file_index,
                     filename_vorschau = filename_vorschau,
                 )
+
+                if rsp == False:
+                    return
+
                 if single_file_index != None:
                     single_file_index += 1
 
@@ -910,7 +916,6 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
             text_combobox = comboBox.currentText()
             kapitel = text_combobox[text_combobox.find("(") + 1 : text_combobox.find(")")]
             for unterkapitel in dict_klasse[kapitel]:
-                # print(unterkapitel)
                 checkbox = self.dict_widget_variables[f"checkbox_unterkapitel_{klasse}_{kapitel}_{unterkapitel}"]
                 checkbox.setChecked(setchecked)
 
@@ -1199,11 +1204,13 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
         self.combobox_beurteilung.setCurrentIndex(0)
         # self.radioButton_notenschl.setChecked(True)
 
+
         if self.chosen_program == 'cria':
             key_prozente = 'prozente_cria'
         else:
             key_prozente = 'prozente'
-        
+
+ 
         try: 
             list_prozente = self.lama_settings[key_prozente]
         except KeyError:
@@ -1211,7 +1218,6 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
                 list_prozente = [91, 80, 64, 50]
             else:
                 list_prozente = [87, 75, 61, 50]
-
 
 
         self.spinBox_2.setValue(list_prozente[0])
@@ -1320,6 +1326,10 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
         if response == False:
             return False
 
+
+        self.chosen_program = program_change_to
+
+
         self.reset_sage(False)
         self.suchfenster_reset()
         self.reset_feedback()
@@ -1328,7 +1338,7 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
 
         self.comboBox_pagebreak.setCurrentIndex(0)
         if program_change_to == "cria":
-            self.chosen_program = "cria"
+            # self.chosen_program = "cria"
 
             # if self.beispieldaten_dateipfad_cria == None:
             #     self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
@@ -1387,7 +1397,7 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
             # )
 
         elif program_change_to == "lama":
-            self.chosen_program = "lama"
+            # self.chosen_program = "lama"
 
             # self.gridLayout.addWidget(self.groupBox_af, 1, 1, 1, 1)
             # self.gridLayout.addWidget(self.groupBox_punkte, 0, 2, 1, 1)
@@ -1429,7 +1439,7 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
             self.update_gui("widgets_search")
             self.combobox_beurteilung.insertItem(1,"Beurteilungsraster")
         elif program_change_to == 'wizard':
-            self.chosen_program = "wizard"
+            # self.chosen_program = "wizard"
             self.action_cria.setVisible(True)
             self.action_lama.setVisible(True)
             self.action_wizard.setVisible(False)
@@ -3747,6 +3757,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
     def worksheet_wizard_reset(self):
+        rsp= question_window("Sind Sie sicher, dass Sie den Worksheet Wizard vollständig zurücksetzen und alle erstellen Aufgaben löschen möchten?")
+        if rsp == False:
+            return
+
         self.comboBox_themen_wizard.setCurrentIndex(0)
         self.spinBox_number_wizard.setValue(20)
         self.spinBox_column_wizard.setValue(2)
@@ -3769,32 +3783,45 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.dict_all_examples_worksheet_wizard = {}
         self.list_of_examples_wizard = []
 
+    def get_current_topic_wizard(self):
+        button_text = self.pushbutton_themen_wizard.text()
+        thema = button_text.split(" > ")
+        # thema = button_text.replace(" \u2b9e ","_")
+        return thema
+
+    def get_list_of_widgets_wizard(self, thema):
+        x = dict_themen_wizard
+        for all in thema:
+            x = x[all]
+        return x   
+
+
 
     def themen_changed_wizard(self):
-        # self.worksheet_wizard_changed = True
-        # index = self.comboBox_themen_wizard.currentIndex()
-        thema = self.comboBox_themen_wizard.currentText()
-        # self.lineEdit_titel_wizard.setText("Arbeitsblatt - {}".format(thema))
+        thema = self.get_current_topic_wizard()
+        thema_index = self.total_list_of_topics_wizard.index(thema)
+
+
         self.checkbox_enable_addition.hide()
         self.checkbox_enable_subtraktion.hide()
-        if thema == themen_worksheet_wizard[0] or thema == themen_worksheet_wizard[1]:
+        if thema_index == 0 or thema_index == 1:
             self.spinbox_zahlenbereich_minimum.setRange(0,999999999)
             self.spinbox_zahlenbereich_minimum.setValue(100)
             self.spinbox_zahlenbereich_maximum.setRange(0,999999999)
             self.spinbox_zahlenbereich_maximum.setValue(999)
             self.spinBox_zahlenbereich_anzahl_wizard.setMaximum(5)  
 
-        if thema == themen_worksheet_wizard[0]:
+        if thema_index == 0:
             self.label_zahlenbereich_anzahl_wizard.setText("Summanden:")
             # self.groupBox_zahlenbereich_anzahl.setTitle("Summanden")
             self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,5)
             self.spinBox_zahlenbereich_anzahl_wizard.setValue(2)
-        elif thema == themen_worksheet_wizard[1]:
+        elif thema_index == 1:
             self.label_zahlenbereich_anzahl_wizard.setText("Subtrahenden:")
             # self.groupBox_zahlenbereich_anzahl.setTitle("Subtrahenden")
             self.spinBox_zahlenbereich_anzahl_wizard.setRange(1,5)
             self.spinBox_zahlenbereich_anzahl_wizard.setValue(1)
-        elif thema == themen_worksheet_wizard[4]:
+        elif thema_index == 4:
             self.label_zahlenbereich_anzahl_wizard.setText("Zahlen:")
             self.spinbox_zahlenbereich_minimum.setRange(0,999)
             self.spinbox_zahlenbereich_maximum.setRange(0,999)
@@ -3804,42 +3831,48 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,20)
             # self.groupBox_zahlenbereich_anzahl.setTitle("Zahlen") 
 
-        elif thema == themen_worksheet_wizard[5] or thema == themen_worksheet_wizard[6] or thema == themen_worksheet_wizard[7]:
+        elif (
+            thema_index == 5 or 
+            thema_index == 6 or 
+            thema_index == 7
+            ):
             self.label_zahlenbereich_anzahl_wizard.setText("Zahlen:")
             self.spinbox_zahlenbereich_minimum.setRange(-999,999)
             self.spinbox_zahlenbereich_maximum.setRange(-999,999)
             self.spinBox_zahlenbereich_anzahl_wizard.setMaximum(20)
             self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,20)
             # self.groupBox_zahlenbereich_anzahl.setTitle("Zahlen")  
-            if thema == themen_worksheet_wizard[5]:
+            if thema_index == 5:
                 # self.groupBox_zahlenbereich_anzahl.setTitle("Summanden")
                 self.spinBox_zahlenbereich_anzahl_wizard.setValue(2)
                 self.spinbox_zahlenbereich_minimum.setValue(-20)
                 self.spinbox_zahlenbereich_maximum.setValue(20)
                 self.checkbox_enable_addition.show()
                 self.checkbox_enable_subtraktion.show()
-            elif thema == themen_worksheet_wizard[6]:
+            elif thema_index == 6:
                 # self.groupBox_zahlenbereich_anzahl.setTitle("Faktoren") 
                 self.spinBox_zahlenbereich_anzahl_wizard.setValue(3)
                 self.spinbox_zahlenbereich_minimum.setValue(-10)
                 self.spinbox_zahlenbereich_maximum.setValue(10)
-            elif thema == themen_worksheet_wizard[7]:
+            elif thema_index == 7:
                 self.spinBox_zahlenbereich_anzahl_wizard.setValue(4)
                 self.spinbox_zahlenbereich_minimum.setValue(-10)
                 self.spinbox_zahlenbereich_maximum.setValue(10)                
-           
+
+
+        list_of_widgets = self.get_list_of_widgets_wizard(thema)
 
         hiding_list = []
-        for all in dict_widgets_wizard:
-            if all != thema:
-                for widget in dict_widgets_wizard[all]:
-                    if widget not in dict_widgets_wizard[thema] and widget not in hiding_list:
-                        hiding_list.append(widget)
-        
+        for widget in self.total_list_of_widgets_wizard:
+            if widget not in list_of_widgets and widget not in hiding_list:
+                hiding_list.append(widget)
+
+
+
         for widget in hiding_list:
             eval(widget).hide()
 
-        for widget in dict_widgets_wizard[thema]:
+        for widget in list_of_widgets:
             eval(widget).show()
 
 
@@ -3895,14 +3928,18 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
     def binoms_direction_changed(self):
-        icons = ["chevron-right.svg","code.svg", "chevron-left.svg"]
-        if self.binoms_direction_index==2:
+        icons = ["chevron-right.svg","code.svg", "chevron-left.svg", "edit-3.svg"]
+        if self.binoms_direction_index==3:
             index = 0
         else:
             index = self.binoms_direction_index+1
 
         
         self.pushbutton_binoms_direction.setIcon(QIcon(get_icon_path(icons[index])))
+        if index == 3:
+            self.pushbutton_binoms_direction.setToolTip("Lücken ergänzen")
+        else:
+            self.pushbutton_binoms_direction.setToolTip("")
 
         self.binoms_direction_index = index
 
@@ -4057,25 +4094,27 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         #         row = 0
         #         column +=1
         #     index +=1
-        # print(self.list_of_examples_wizard[index])
 
     
     def create_single_example_wizard(self):
-        thema = self.comboBox_themen_wizard.currentText()
+        # thema = self.comboBox_themen_wizard.currentText()
+        thema = self.get_current_topic_wizard()
+        thema_index = self.total_list_of_topics_wizard.index(thema)
+
         minimum = self.spinbox_zahlenbereich_minimum.value()
         maximum = self.spinbox_zahlenbereich_maximum.value()
         commas = self.spinbox_kommastellen_wizard.value()
         
 
-        if thema == 'Addition':
+        if thema_index == 0:
             anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
             smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
             new_example = create_single_example_addition(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
-        elif thema == 'Subtraktion':
+        elif thema_index == 1:
             anzahl_subtrahenden = self.spinBox_zahlenbereich_anzahl_wizard.value()
             smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
             new_example = create_single_example_subtraction(minimum, maximum, commas, self.checkbox_negative_ergebnisse_wizard.isChecked(),anzahl_subtrahenden ,smaller_or_equal)
-        elif thema == 'Multiplikation':
+        elif thema_index == 2:
             minimum_1 = self.spinBox_first_number_min.value()
             maximum_1 = self.spinBox_first_number_max.value()
             commas_1 = self.spinBox_first_number_decimal.value()
@@ -4085,7 +4124,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             commas_2 = self.spinBox_second_number_decimal.value()
             smaller_or_equal_2 = self.combobox_second_number_decimal.currentIndex()
             new_example = create_single_example_multiplication(minimum_1, maximum_1, commas_1, smaller_or_equal_1,minimum_2, maximum_2, commas_2, smaller_or_equal_2)
-        elif thema == themen_worksheet_wizard[3]:
+        elif thema_index == 3:
             minimum_1 = self.spinbox_dividend_min_wizard.value()
             maximum_1 = self.spinbox_dividend_max_wizard.value()
             minimum_2 = self.spinbox_divisor_min_wizard.value()
@@ -4105,7 +4144,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             new_example = create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div, smaller_or_equal_div, commas_result, smaller_or_equal_result, output_type)
 
-        elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[5] or thema == themen_worksheet_wizard[6] or thema == themen_worksheet_wizard[7]:
+        elif thema_index == 4 or thema_index == 5 or thema_index == 6 or thema_index == 7:
             minimum = self.spinbox_zahlenbereich_minimum.value()
             maximum = self.spinbox_zahlenbereich_maximum.value()
             commas = self.spinbox_kommastellen_wizard.value()
@@ -4113,18 +4152,18 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
             brackets_allowed = self.checkbox_allow_brackets_wizard.isChecked()
 
-            if thema == themen_worksheet_wizard[5]:
+            if thema_index == 5:
                 new_example = create_single_example_ganze_zahlen_strich(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
-            elif thema == themen_worksheet_wizard[6]:
+            elif thema_index == 6:
                 new_example = create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
-            elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[7]:
-                if thema == themen_worksheet_wizard[4]:
+            elif thema_index == 4 or thema_index == 7:
+                if thema_index == 4:
                     show_brackets = False
                 else:
                     show_brackets = True
                 new_example = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)
 
-        elif thema == themen_worksheet_wizard[8]:
+        elif thema_index == 8:
             binomials_types = [self.cb_binoms_1.isChecked(), self.cb_binoms_2.isChecked(), self.cb_binoms_3.isChecked()]
             if binomials_types == [False, False, False]:
                 warning_window("Es muss mindestens eine der Typen der binomischen Formeln ausgewählt werden.")
@@ -4198,8 +4237,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         column = 0
         row = 0
         index = 0
-        # for thema in self.dict_all_examples_wizard:
-        # print(self.list_of_examples_wizard)
+
         for example in self.list_of_examples_wizard:
             self.create_aufgabenbox_wizard(index, example, row, column)
             if row+1 < items_per_column:
@@ -4222,10 +4260,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # self.gridLayout_scrollArea_wizard.addWidget(pushButton_create_new_example ,row,column,1,1)
 
     def create_list_of_examples_wizard(self):
-        thema = self.comboBox_themen_wizard.currentText()
+        thema = self.get_current_topic_wizard()
+        thema_index = self.total_list_of_topics_wizard.index(thema)
+
         examples = self.spinBox_number_wizard.value()
 
-        if thema == 'Addition':
+        if thema_index==0:
             minimum = self.spinbox_zahlenbereich_minimum.value()
             maximum = self.spinbox_zahlenbereich_maximum.value()
             commas = self.spinbox_kommastellen_wizard.value()
@@ -4236,7 +4276,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 return
             list_of_examples_wizard = create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
 
-        elif thema == 'Subtraktion':
+        elif thema_index==1:
             minimum = self.spinbox_zahlenbereich_minimum.value()
             maximum = self.spinbox_zahlenbereich_maximum.value()
             commas = self.spinbox_kommastellen_wizard.value()
@@ -4247,7 +4287,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 return
             list_of_examples_wizard = create_list_of_examples_subtraction(examples, minimum, maximum, commas, self.checkbox_negative_ergebnisse_wizard.isChecked(), anzahl_subtrahenden,smaller_or_equal)
         
-        elif thema == 'Multiplikation':
+        elif thema_index==2:
             minimum_1 = self.spinBox_first_number_min.value()
             maximum_1 = self.spinBox_first_number_max.value()
             commas_1 = self.spinBox_first_number_decimal.value()
@@ -4258,7 +4298,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             smaller_or_equal_2 = self.combobox_second_number_decimal.currentIndex()
             list_of_examples_wizard = create_list_of_examples_multiplication(examples, minimum_1, maximum_1, commas_1, smaller_or_equal_1 ,minimum_2, maximum_2, commas_2, smaller_or_equal_2)
 
-        elif thema == "Division":
+        elif thema_index==3:
             minimum_1 = self.spinbox_dividend_min_wizard.value()
             maximum_1 = self.spinbox_dividend_max_wizard.value()
             minimum_2 = self.spinbox_divisor_min_wizard.value()
@@ -4276,7 +4316,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             list_of_examples_wizard = create_list_of_examples_division(examples, minimum_1, maximum_1, minimum_2, maximum_2, commas_div, smaller_or_equal_div,commas_result,smaller_or_equal_result, output_type)  
 
-        elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[5] or thema == themen_worksheet_wizard[6] or thema == themen_worksheet_wizard[7]:
+        elif (
+            thema_index==4 or 
+            thema_index==5 or 
+            thema_index==6 or 
+            thema_index==7
+            ):
             minimum = self.spinbox_zahlenbereich_minimum.value()
             maximum = self.spinbox_zahlenbereich_maximum.value()
             commas = self.spinbox_kommastellen_wizard.value()
@@ -4285,7 +4330,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             brackets_allowed = self.checkbox_allow_brackets_wizard.isChecked()
             show_brackets = True
 
-            if thema == themen_worksheet_wizard[5]:
+            if thema_index==5:
                 if self.checkbox_enable_addition.isChecked():
                     typ = "+"
                 else:
@@ -4295,10 +4340,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     typ += "-"
                 
 
-            elif thema == themen_worksheet_wizard[6]:
+            elif thema_index==6:
                 typ = '*:'
-            elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[7]:
-                if thema == themen_worksheet_wizard[4]:
+            elif (
+                thema_index==4 or
+                thema_index==7
+                ):
+                if thema_index==4:
                     show_brackets = False
                 typ = '+-*:'
 
@@ -4307,7 +4355,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 return []
             list_of_examples_wizard = create_list_of_examples_ganze_zahlen(typ, examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)        
 
-        elif thema == "Binomische Formeln":
+        elif thema_index==8:
             binomials_types = [self.cb_binoms_1.isChecked(), self.cb_binoms_2.isChecked(), self.cb_binoms_3.isChecked()]
             if binomials_types == [False, False, False]:
                 warning_window("Es muss mindestens eine der Typen der binomischen Formeln ausgewählt werden.")
@@ -4377,12 +4425,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # self.dict_all_examples_wizard = {}
         self.list_of_examples_wizard = self.create_list_of_examples_wizard()
 
-        # self.dict_all_examples_wizard[thema] = list_of_examples_wizard
-        # print(self.list_of_examples_wizard)
-        
-        # return
-        # print(self.dict_all_examples_wizard)
-
         self.reset_aufgabenboxes_wizard()
 
 
@@ -4400,8 +4442,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.pushButton_addto_worksheet_wizard.setEnabled(True)
         new_example = self.create_single_example_wizard()
 
-        self.list_of_examples_wizard.append(new_example)
-
+        try:
+            self.list_of_examples_wizard.append(new_example)
+        except AttributeError:
+            self.list_of_examples_wizard = [new_example]
+            
         self.reset_aufgabenboxes_wizard()
         # self.dict_aufgaben_wizard[index].setText(new_example[-1])
 
@@ -4422,8 +4467,16 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         if self.dict_all_examples_worksheet_wizard[widget]['ausrichtung'] != None:
             self.combobox_ausrichtung_wizard.setCurrentIndex(self.dict_all_examples_worksheet_wizard[widget]['ausrichtung'])
+
+        _string = thema[0]
+        for all in thema[1:]:
+            _string += f" > {all}" 
         
-        self.comboBox_themen_wizard.setCurrentText(thema)
+        self.pushbutton_themen_wizard.setText(_string)
+        self.themen_changed_wizard()
+        # thema = self.get_current_topic_wizard()
+        # self.comboBox_themen_wizard.setCurrentText(thema)
+
         del self.dict_all_examples_worksheet_wizard[widget]
         widget.setParent(None)
 
@@ -4492,10 +4545,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         horizontalLayout_worksheet = create_new_horizontallayout(widget_worksheet)
         horizontalLayout_worksheet.setContentsMargins(0,5,0,5)
 
-        thema = self.comboBox_themen_wizard.currentText()
+        thema = self.get_current_topic_wizard()
+        thema_index = self.total_list_of_topics_wizard.index(thema)
+
+        # thema = self.comboBox_themen_wizard.currentText()
         anzahl = len(self.list_of_examples_wizard)
 
-        label_worksheet = create_new_label(self.scrollAreaWidgetContents_complete_worksheet_wizard, f"{thema} ({anzahl})", True)
+        label_worksheet = create_new_label(self.scrollAreaWidgetContents_complete_worksheet_wizard, f"{thema[-1]} ({anzahl})", True)
         horizontalLayout_worksheet.addWidget(label_worksheet)
 
         horizontalLayout_worksheet.addStretch()
@@ -4525,20 +4581,24 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         list_dummy_solutions = []
         i=0
         while i<10:
-            dummy_solution = get_random_solution(self, thema)
+            dummy_solution = get_random_solution(self)
             if dummy_solution[-2] not in list_solutions:
                 list_dummy_solutions.append(dummy_solution)
                 i+=1
 
 
-        if self.comboBox_themen_wizard.currentIndex() == 0 or self.comboBox_themen_wizard.currentIndex() == 1:
+        if thema_index==0 or thema_index==1:
             ausrichtung = self.combobox_ausrichtung_wizard.currentIndex()
-        
+
         else:
             ausrichtung = None
+
+        thema = self.get_current_topic_wizard()
+        thema_index = self.total_list_of_topics_wizard.index(thema)
+
         try:
             self.dict_all_examples_worksheet_wizard[widget_worksheet] = {
-                'index_thema' : self.comboBox_themen_wizard.currentIndex(),
+                'thema_index' : thema_index,
                 'spalten' : self.spinBox_column_wizard.value(),
                 'ausrichtung': ausrichtung,
                 'list_of_examples' : self.list_of_examples_wizard,
@@ -4548,7 +4608,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         except AttributeError:
             self.dict_all_examples_worksheet_wizard = {}
             self.dict_all_examples_worksheet_wizard[widget_worksheet] = {
-                'index_thema' : self.comboBox_themen_wizard.currentIndex(),
+                'thema_index' : thema_index,
                 'spalten' : self.spinBox_column_wizard.value(),
                 'ausrichtung': ausrichtung,
                 'list_of_examples' : self.list_of_examples_wizard,
@@ -4571,9 +4631,15 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def create_latex_file_content_wizard(self):
         total_list_of_examples = []
 
+        try:
+            fortlaufende_nummerierung = self.fortlaufende_nummerierung
+        except AttributeError:
+            fortlaufende_nummerierung = True
+
         for all in self.dict_all_examples_worksheet_wizard.values():
             if self.combobox_nummerierung_wizard.currentText() == "(a)" and len(all['list_of_examples'])>26:
-                warning_window("Bei der Nummerierung (a) können maximal 26 Aufgaben pro Aufgabenpaket verwendet werden.")
+                warning_window("Bei der Nummerierung (a) und (A) können maximal 26 Aufgaben pro Aufgabenpaket verwendet werden.",
+                "Bitte ändern Sie die Beschriftung.")
                 return
             for item in all['list_of_examples']:
                 total_list_of_examples.append(item)
@@ -4598,7 +4664,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     del self.nonogram_wizard
                 except AttributeError:
                     pass
-
+            
             nonogram, solution_pixels = get_all_solution_pixels(total_list_of_examples, nonogram)
 
 
@@ -4614,22 +4680,30 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 try:
                     arbeitsanweisung = self.instructions_wizard
                 except AttributeError:
-                    arbeitsanweisung = "Berechne die folgenden Aufgaben"
+                    arbeitsanweisung = True
             else:
                 arbeitsanweisung = False
         except AttributeError:
-            arbeitsanweisung = False
+            arbeitsanweisung = True
 
-        # try:
-        #     fortlaufende_nummerierung = self.fortlaufende_nummerierung
-        # except AttributeError:
-        #     fortlaufende_nummerierung = True
+        try:
+            fortlaufende_nummerierung = str(self.fortlaufende_nummerierung).lower()
+        except AttributeError:
+            fortlaufende_nummerierung = 'true'
 
         # columns = self.spinBox_column_wizard.value()
         if self.combobox_nummerierung_wizard.currentText() == '-':
-            nummerierung = "label={}"
-        else:
-            nummerierung = self.combobox_nummerierung_wizard.currentText()
+            nummerierung = "{}"
+        elif self.combobox_nummerierung_wizard.currentText() == '(a)':
+            nummerierung = "(\\alph*)"
+        elif self.combobox_nummerierung_wizard.currentText() == '(A)':
+            nummerierung = "(\\Alph*)"
+        elif self.combobox_nummerierung_wizard.currentText() == '(i)':
+            nummerierung = "(\\roman*)"
+        elif self.combobox_nummerierung_wizard.currentText() == '(I)':
+            nummerierung = "(\\Roman*)"
+        elif self.combobox_nummerierung_wizard.currentText() == '(1)':
+            nummerierung = "(\\arabic*)"
 
         index = self.comboBox_themen_wizard.currentIndex()
 
@@ -4638,10 +4712,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             if self.verticalLayout_complete_worksheet_wizard.itemAt(i).widget() != None:
                 order_of_examples.append(self.verticalLayout_complete_worksheet_wizard.itemAt(i).widget())
 
-        try:
-            item_spacing = self.item_spacing_wizard
-        except AttributeError:
-            item_spacing = 2.00
+        # try:
+        #     item_spacing = self.item_spacing_wizard
+        # except AttributeError:
+        #     item_spacing = 2.00
 
 
 
@@ -4652,17 +4726,20 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.dict_all_examples_worksheet_wizard,
             total_number_of_examples,
             index ,titel, arbeitsanweisung,
-            # fortlaufende_nummerierung, 
-            nummerierung, item_spacing,
+            fortlaufende_nummerierung, 
+            nummerierung,
             self.comboBox_solution_type_wizard.currentIndex(),
+            self.binoms_direction_index,
             )
 
         if self.checkBox_show_nonogramm.isChecked():
             try:
                 columns = self.number_columns_solution_wizard
             except AttributeError:
-                thema = self.comboBox_themen_wizard.currentText()
-                if thema =="Binomische Formeln":
+                thema = self.get_current_topic_wizard()
+                thema_index = self.total_list_of_topics_wizard.index(thema)
+
+                if thema_index == 8:
                     columns = 2
                 else:
                     columns = 3
@@ -4695,13 +4772,28 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             warning_window("Es wurden keine Aufgaben zum Arbeitsblatt hinzugefügt.")
             return
 
+        try:
+            fortlaufende_nummerierung = self.fortlaufende_nummerierung
+        except AttributeError:
+            fortlaufende_nummerierung = True
+
+        if (self.combobox_nummerierung_wizard.currentText() == "(a)" or self.combobox_nummerierung_wizard.currentText() == "(A)") and fortlaufende_nummerierung == True:
+            if self.get_total_number_of_examples_wizard()>26:
+                warning_window(
+                    "Bei der Nummerierung (a) und (A) können insgesamt maximal 26 Aufgaben verwendet werden.",
+                    "Bitte ändern Sie die Beschriftung oder deaktivieren Sie die fortlaufende Nummerierung."
+                )
+                return   
+
+
+
         content = self.create_latex_file_content_wizard()
 
         return content
 
 
     def create_vorschau_worksheet_wizard(self):
-        
+  
         content = self.get_content_worksheet_wizard()
 
         if content == None:
@@ -4724,9 +4816,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 pagestyle = 'empty'
         except AttributeError:
             pagestyle = 'empty'
-        # return
+
+        try:
+            item_spacing = f"{self.item_spacing_wizard}cm"
+        except AttributeError:
+            item_spacing = "2.00cm"
+
         with open(path_file, "w", encoding="utf8") as file:
-            file.write(tex_preamble(solution=show_solution, pagestyle=pagestyle, font_size=self.combobox_fontsize_wizard.currentText(), documentclass='extarticle'))
+            file.write(tex_preamble(solution=show_solution, pagestyle=pagestyle, font_size=self.combobox_fontsize_wizard.currentText(), documentclass='extarticle', tasks = item_spacing))
 
             file.write(content)
 
@@ -4763,10 +4860,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             show_instructions = True
 
 
-        # try:
-        #     fortlaufende_nummerierung = self.fortlaufende_nummerierung
-        # except AttributeError:
-        #     fortlaufende_nummerierung = True
+        try:
+            fortlaufende_nummerierung = self.fortlaufende_nummerierung
+        except AttributeError:
+            fortlaufende_nummerierung = True
 
         try:
             show_pagenumbers = self.checkBox_show_pagenumbers_wizard
@@ -4776,8 +4873,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         try:
             columns = self.number_columns_solution_wizard
         except AttributeError:
-            thema = self.comboBox_themen_wizard.currentText()
-            if thema =="Binomische Formeln":
+            thema = self.get_current_topic_wizard()
+            thema_index = self.total_list_of_topics_wizard.index(thema)
+
+            if thema_index == 8:
                 columns = 2
             else:
                 columns = 3
@@ -4788,7 +4887,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         except AttributeError:
             item_spacing = 2.00
 
-        ui.setupUi(Dialog, text, show_titel ,show_instructions, show_pagenumbers, columns, item_spacing)
+        ui.setupUi(Dialog, text, show_titel ,show_instructions,fortlaufende_nummerierung ,show_pagenumbers, columns, item_spacing)
 
         rsp = Dialog.exec()
         if rsp == QtWidgets.QDialog.Accepted:
@@ -4799,7 +4898,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 self.titel_worksheet_wizard = ui.lineedit_titel.text()
             else:
                 self.titel_worksheet_wizard = False
-            # self.fortlaufende_nummerierung = ui.checkbox_fortlaufende_nummerierung.isChecked()
+            self.fortlaufende_nummerierung = ui.checkbox_fortlaufende_nummerierung.isChecked()
             self.number_columns_solution_wizard = ui.spinbox_number_columns.value()
             self.item_spacing_wizard = ui.spinbox_item_spacing.value()
 
@@ -4838,10 +4937,16 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         if path_file == None:
             return
 
+        try:
+            item_spacing = f"{self.item_spacing_wizard}cm"
+        except AttributeError:
+            item_spacing = "2.00cm"
+
+
         index = 0
         for show_solution in ["solution_on", "solution_off"]:
             with open(path_file, "w", encoding="utf8") as file:
-                file.write(tex_preamble(solution=show_solution, pagestyle='empty', font_size=self.combobox_fontsize_wizard.currentText(), documentclass='extarticle'))
+                file.write(tex_preamble(solution=show_solution, pagestyle='empty', font_size=self.combobox_fontsize_wizard.currentText(), documentclass='extarticle', tasks = item_spacing))
 
                 file.write(content)
 
@@ -4857,7 +4962,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             if index == 0:
                 new_filename = name + "_Loesung.pdf"
 
-                shutil.move(temp_filename, new_filename)
+                try:
+                    shutil.move(temp_filename, new_filename)
+                except PermissionError:
+                    critical_window(f'Die Datei "{os.path.basename(new_filename)}" konnte nicht gespeichert werden, da diese Datei bereits exisitiert und geöffnet ist.',
+                    "Bitte schließen sie die pdf-Datei oder speichern sie die Datei unter einem anderen Namen.",
+                    "Zugriff verweigert")
+                    return False
 
             elif index ==1:
                 self.reset_latex_file_to_start(path_file)
@@ -5259,8 +5370,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.progress.setCancelButton(None)
         self.progress.setWindowModality(Qt.WindowModal)
 
-        # print(self.list_alle_aufgaben_sage)
-        # for aufgabe in self.list_alle_aufgaben_sage:
+
         list_aufgaben_errors = self.sage_load_files()
 
         self.progress.cancel()
@@ -5357,8 +5467,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             )
             if path_backup_file[0] == "":
                 return
+
             self.collect_all_infos_for_creating_file()
             save_file = path_backup_file[0]
+            return
 
         elif autosave != False:
             save_file = autosave
@@ -5466,7 +5578,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.lineedit_g2_upper_limit,
             self.lineedit_g2_lower_limit,
             ]
-        # print(self.get_punkteverteilung())
+
         if self.combobox_notenschluessel_typ.currentIndex()==0:
             self.cb_ns_halbe_pkt.setEnabled(True)
             self.combobox_notenschluessel_saved.hide()
@@ -5569,6 +5681,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 None,
             )
         )
+
 
     def adapt_label_gesamtbeispiele(self):
         # list_sage_examples_typ1 = []
@@ -5767,7 +5880,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         pkt_typ1 = 0
         pkt_typ2 = 0
         gesamtpunkte = 0
-        # print(self.dict_variablen_punkte)
+
         for all in self.dict_variablen_punkte:
             typ = get_aufgabentyp(self.chosen_program, all)
             if typ == None:
@@ -6252,8 +6365,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             groupbox_abstand_ausgleich.setToolTip("Neue Seite: Abstand=99")
 
         # pushbutton_ausgleich.setMaximumSize(QtCore.QSize(220, 30))
-        
-        # print(self.temp_info)
+
         # pushbutton_aufgabe_bearbeiten = create_new_button(groupbox_pkt, 'Aufgabe bearbeiten', still_to_define)
         # gridLayout_gB.addWidget(pushbutton_aufgabe_bearbeiten, 0,1,1,1)
 
@@ -6395,7 +6507,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         if typ == 2:
             split_content = self.split_content(aufgabe, content)
-            # print(split_content)
+
             if split_content == False:
                 return
 
@@ -6446,12 +6558,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.dict_sage_individual_change.pop(aufgabe)
         else:
             self.dict_sage_individual_change[aufgabe] = ui.sage_individual_change
-        
-        
-        # print(self.list_sage_hide_show_items_chosen)
-        # print(self.dict_sage_individual_change)
-
-            
+                   
 
         if typ == 2:
 
@@ -6639,7 +6746,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     @report_exceptions
     def nummer_clicked(self, item):
-        aufgabe = item.text()
+        aufgabe = item.text().replace(" (lokal)", "")
 
         # if self.chosen_program == "cria":
         # klasse = self.get_klasse("sage")
@@ -6659,11 +6766,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.scrollAreaWidgetContents_typ2.show()
 
         self.build_aufgaben_schularbeit(aufgabe)  # aufgabe, aufgaben_verteilung
-        # print(self.list_alle_aufgaben_sage)
+
         self.lineEdit_number.setText("")
         self.lineEdit_number.setFocus()
         self.check_for_autosave()
         self.no_saved_changes_sage = False
+        
 
     def nummer_clicked_fb(self, item):
         if self.chosen_program == "lama":
@@ -6847,13 +6955,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             layout.insertWidget(layout.count() - 1, neue_aufgaben_box)
 
-        # print(self.list_alle_aufgaben_sage)
+
         if not is_empty(list_aufgaben_errors):
             str_error = ', '.join(list_aufgaben_errors)
             warning_window(f"Für folgende Eingaben konnte keine passende Aufgabenummer in der Datenbank gefunden werden:\n\n{str_error}")
 
-        # print(self.import_list_sage)
-        # print(self.list_alle_aufgaben_sage)
+
         if not is_empty(list_duplicates):
             str_duplicates = ', '.join(list_duplicates)
             information_window(f"Folgende Aufgaben wurden bereits hinzugefügt und werden daher übersprungen:\n\n{str_duplicates}")
@@ -7170,8 +7277,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         else:
             vspace = "\\vspace{{{0}cm}} \n\n".format(abstand)
 
-        
-            # print(f"{aufgabe}: {self.dict_variablen_translation[aufgabe]}")
 
         
         try:
@@ -7287,7 +7392,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 aufgabe, aufgabe_total, filename_vorschau, first_typ2, ausgabetyp
             ) 
 
-    @report_exceptions
+    # @report_exceptions
     def pushButton_vorschau_pressed(
         self,
         ausgabetyp,
@@ -7403,7 +7508,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 if index % 2 == 0:
                     new_filename = name + "_Loesung.pdf"
 
-                    shutil.move(temp_filename, new_filename)
+                    try:
+                        shutil.move(temp_filename, new_filename)
+                    except PermissionError:
+                        QtWidgets.QApplication.restoreOverrideCursor()
+                        critical_window(f'Die Datei "{os.path.basename(new_filename)}" konnte nicht gespeichert werden, da diese Datei bereits exisitiert und geöffnet ist.',
+                        "Bitte schließen sie die pdf-Datei oder speichern sie die Datei unter einem anderen Namen.",
+                        "Zugriff verweigert")
+                        return False
 
                 self.reset_latex_file_to_start(filename_vorschau)
             QtWidgets.QApplication.restoreOverrideCursor()
@@ -7527,14 +7639,27 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                             self.dict_gruppen[int(index / 2)]
                         )
 
-
-                    shutil.move(temp_filename, new_filename)
+                    try:
+                        shutil.move(temp_filename, new_filename)
+                    except PermissionError:
+                        critical_window(f'Die Datei "{os.path.basename(new_filename)}" konnte nicht gespeichert werden, da diese Datei bereits exisitiert und geöffnet ist.',
+                        "Bitte schließen sie die pdf-Datei oder speichern sie die Datei unter einem anderen Namen.",
+                        "Zugriff verweigert")
+                        QtWidgets.QApplication.restoreOverrideCursor()
+                        return False
 
 
                 elif index % 2 == 0:
                     new_filename = name + "_Loesung.pdf"
 
-                    shutil.move(temp_filename, new_filename)
+                    try:
+                        shutil.move(temp_filename, new_filename)
+                    except PermissionError:
+                        critical_window(f'Die Datei "{os.path.basename(new_filename)}" konnte nicht gespeichert werden, da diese Datei bereits exisitiert und geöffnet ist.',
+                        "Bitte schließen sie die pdf-Datei oder speichern sie die Datei unter einem anderen Namen.",
+                        "Zugriff verweigert")
+                        QtWidgets.QApplication.restoreOverrideCursor()
+                        return False
 
                 if index == maximum - 1:
                     self.reset_latex_file_to_start(filename_vorschau)
@@ -7921,6 +8046,7 @@ if __name__ == "__main__":
 
     app.setStyle("Fusion")
     # dir_ = QtCore.QDir("assets/fonts/IBM_Plex_Sans")
+
     _id = QtGui.QFontDatabase.addApplicationFont("assets/fonts/IBM_Plex_Sans/IBMPlexSans-Regular.ttf")
     QtGui.QFontDatabase.applicationFontFamilies(_id)
     if sys.platform.startswith("darwin"):
@@ -7936,11 +8062,13 @@ if __name__ == "__main__":
 
     palette = QtGui.QPalette()
     palette.setColor(QtGui.QPalette.Window, white)  # Window background
-    # palette.setColor(QtGui.QPalette.WindowText, QtCore.Qt.black)
-    # palette.setColor(QtGui.QPalette.Base, white)
+    palette.setColor(QtGui.QPalette.WindowText, black)
+    palette.setColor(QtGui.QPalette.Base, white)
+    palette.setColor(QtGui.QPalette.Button, white)
+    
     # palette.setColor(QtGui.QPalette.AlternateBase, blue_2)
     palette.setColor(QtGui.QPalette.ToolTipBase, blue_7)
-    palette.setColor(QtGui.QPalette.ToolTipText, QtCore.Qt.white)
+    palette.setColor(QtGui.QPalette.ToolTipText, white)
     palette.setColor(QtGui.QPalette.Text, black)
     # palette.setColor(QtGui.QPalette.Button, blue_3)  # blue_4
 
@@ -8240,7 +8368,8 @@ if __name__ == "__main__":
 
     i = step_progressbar(i, "worksheet_wizard")
     from worksheet_wizard import (
-        dict_widgets_wizard, themen_worksheet_wizard,
+        # dict_widgets_wizard, themen_worksheet_wizard,
+        dict_themen_wizard,
         get_all_solution_pixels,
         get_max_pixels_nonogram,
         create_latex_worksheet, 

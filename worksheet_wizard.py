@@ -16,80 +16,143 @@ from handle_exceptions import report_exceptions
 # from tex_minimal import tex_preamble, tex_end
 # from create_pdf import create_pdf, open_pdf_file, build_pdf_file
 
-dict_widgets_wizard = {
-    'Addition' : [
-        'self.widget_ausrichtung_wizard',
-        'self.widget_zahlenbereich_minimum',
-        'self.widget_zahlenbereich_maximum',
-        'self.widget_kommastellen_wizard',
-        'self.widgetZahlenbereich_anzahl',
-        ],
-    'Subtraktion' : [
-        'self.widget_ausrichtung_wizard',
-        'self.widget_zahlenbereich_minimum',
-        'self.widget_zahlenbereich_maximum',
-        'self.widget_kommastellen_wizard',
-        'self.checkbox_negative_ergebnisse_wizard',
-        # 'self.label_negative_ergebnisse_wizard', 
-        ],
-    'Multiplikation' : [
-        'self.groupBox_first_number_wizard',
-        'self.groupBox_second_number_wizard',
-        'self.comboBox_solution_type_wizard',
-    ],
-    'Division' : [
-        'self.groupBox_dividend_wizard',
-        'self.groupBox_divisor_wizard',
-        'self.groupBox_ergebnis_wizard',
-        'self.comboBox_solution_type_wizard',
-    ],
-    'Verbindung der Grundrechnungsarten': [
-        'self.widget_zahlenbereich_minimum',
-        'self.widget_zahlenbereich_maximum',
-        'self.widget_kommastellen_wizard',
-        'self.widgetZahlenbereich_anzahl',
-        'self.checkbox_allow_brackets_wizard',        
-    ],
-    'Ganze Zahlen (Addition & Subtraktion)': [
-        'self.widget_zahlenbereich_minimum',
-        'self.widget_zahlenbereich_maximum',
-        'self.widget_kommastellen_wizard',
-        'self.widgetZahlenbereich_anzahl',
-        'self.checkbox_allow_brackets_wizard',        
-    ],
-    'Ganze Zahlen (Multiplikation & Division)': [
-        'self.widget_zahlenbereich_minimum',
-        'self.widget_zahlenbereich_maximum',
-        'self.widget_kommastellen_wizard',
-        'self.widgetZahlenbereich_anzahl',
-        # 'self.checkbox_allow_brackets_wizard',        
-    ],
-    'Ganze Zahlen (Grundrechnungsarten)': [
-        'self.widget_zahlenbereich_minimum',
-        'self.widget_zahlenbereich_maximum',
-        'self.widget_kommastellen_wizard',
-        'self.widgetZahlenbereich_anzahl',
-        'self.checkbox_allow_brackets_wizard',        
-    ],
-    'Binomische Formeln': [
+dict_themen_wizard = {
+    "Arithmetik": {
+        "Positive (Dezimal-)Zahlen": {
+            "Addition": [
+                'self.widget_ausrichtung_wizard',
+                'self.widget_zahlenbereich_minimum',
+                'self.widget_zahlenbereich_maximum',
+                'self.widget_kommastellen_wizard',
+                'self.widgetZahlenbereich_anzahl',                
+            ],
+            "Subtraktion": [
+                'self.widget_ausrichtung_wizard',
+                'self.widget_zahlenbereich_minimum',
+                'self.widget_zahlenbereich_maximum',
+                'self.widget_kommastellen_wizard',
+                'self.checkbox_negative_ergebnisse_wizard',
+            ],
+            "Multiplikation": [
+                'self.groupBox_first_number_wizard',
+                'self.groupBox_second_number_wizard',
+                'self.comboBox_solution_type_wizard',
+            ],
+            "Division": [
+                'self.groupBox_dividend_wizard',
+                'self.groupBox_divisor_wizard',
+                'self.groupBox_ergebnis_wizard',
+                'self.comboBox_solution_type_wizard',
+            ],
+            "Verbindung der Grundrechnungsarten": [
+                'self.widget_zahlenbereich_minimum',
+                'self.widget_zahlenbereich_maximum',
+                'self.widget_kommastellen_wizard',
+                'self.widgetZahlenbereich_anzahl',
+                'self.checkbox_allow_brackets_wizard',                  
+            ],
+        },
+        "Negative && Positive (Dezimal-)Zahlen": {
+            "Addition && Subtraktion" : [
+                'self.widget_zahlenbereich_minimum',
+                'self.widget_zahlenbereich_maximum',
+                'self.widget_kommastellen_wizard',
+                'self.widgetZahlenbereich_anzahl',
+                'self.checkbox_allow_brackets_wizard',                  
+            ],
+            "Multiplikation && Division" : [
+                'self.widget_zahlenbereich_minimum',
+                'self.widget_zahlenbereich_maximum',
+                'self.widget_kommastellen_wizard',
+                'self.widgetZahlenbereich_anzahl',                
+            ],
+            "Verbindung der Grundrechnungsarten" : [
+                'self.widget_zahlenbereich_minimum',
+                'self.widget_zahlenbereich_maximum',
+                'self.widget_kommastellen_wizard',
+                'self.widgetZahlenbereich_anzahl',
+                'self.checkbox_allow_brackets_wizard', 
+            ],
+        },
+        },
+    "Terme": {
+        "Binomische Formeln": [
         'self.groupbox_binoms_types',
         'self.widget_binoms_set_variables_factors',
         'self.widget_binoms_set_variables_exponents',
         'self.label_binom_example',
         'self.widget_binom_further_settings',
-    ],
-}   
+        ]
+    },
+}
 
-themen_worksheet_wizard = list(dict_widgets_wizard.keys())
+# dict_widgets_wizard = {
+#     'Arithmetik_Positive (Dezimal-)Zahlen_Addition' : [
+#         'self.widget_ausrichtung_wizard',
+#         'self.widget_zahlenbereich_minimum',
+#         'self.widget_zahlenbereich_maximum',
+#         'self.widget_kommastellen_wizard',
+#         'self.widgetZahlenbereich_anzahl',
+#         ],
+#     'Arithmetik_Positive (Dezimal-)Zahlen_Subtraktion' : [
+#         'self.widget_ausrichtung_wizard',
+#         'self.widget_zahlenbereich_minimum',
+#         'self.widget_zahlenbereich_maximum',
+#         'self.widget_kommastellen_wizard',
+#         'self.checkbox_negative_ergebnisse_wizard',
+#         # 'self.label_negative_ergebnisse_wizard', 
+#         ],
+#     'Arithmetik_Positive (Dezimal-)Zahlen_Multiplikation' : [
+#         'self.groupBox_first_number_wizard',
+#         'self.groupBox_second_number_wizard',
+#         'self.comboBox_solution_type_wizard',
+#     ],
+#     'Arithmetik_Positive (Dezimal-)Zahlen_Division' : [
+#         'self.groupBox_dividend_wizard',
+#         'self.groupBox_divisor_wizard',
+#         'self.groupBox_ergebnis_wizard',
+#         'self.comboBox_solution_type_wizard',
+#     ],
+#     'Arithmetik_Positive (Dezimal-)Zahlen_Verbindung der Grundrechnungsarten': [
+#         'self.widget_zahlenbereich_minimum',
+#         'self.widget_zahlenbereich_maximum',
+#         'self.widget_kommastellen_wizard',
+#         'self.widgetZahlenbereich_anzahl',
+#         'self.checkbox_allow_brackets_wizard',        
+#     ],
+#     'Arithmetik_Negative && Positive (Dezimal-)Zahlen_Addition && Subtraktion': [
+#         'self.widget_zahlenbereich_minimum',
+#         'self.widget_zahlenbereich_maximum',
+#         'self.widget_kommastellen_wizard',
+#         'self.widgetZahlenbereich_anzahl',
+#         'self.checkbox_allow_brackets_wizard',        
+#     ],
+#     'Arithmetik_Negative && Positive (Dezimal-)Zahlen_Multiplikation && Division': [
+#         'self.widget_zahlenbereich_minimum',
+#         'self.widget_zahlenbereich_maximum',
+#         'self.widget_kommastellen_wizard',
+#         'self.widgetZahlenbereich_anzahl',
+#         # 'self.checkbox_allow_brackets_wizard',        
+#     ],
+#     'Arithmetik_Negative && Positive (Dezimal-)Zahlen_Verbindung der Grundrechnungsarten': [
+#         'self.widget_zahlenbereich_minimum',
+#         'self.widget_zahlenbereich_maximum',
+#         'self.widget_kommastellen_wizard',
+#         'self.widgetZahlenbereich_anzahl',
+#         'self.checkbox_allow_brackets_wizard',        
+#     ],
+#     'Terme_Binomische Formeln': [
+#         'self.groupbox_binoms_types',
+#         'self.widget_binoms_set_variables_factors',
+#         'self.widget_binoms_set_variables_exponents',
+#         'self.label_binom_example',
+#         'self.widget_binom_further_settings',
+#     ],
+# }   
+
+# themen_worksheet_wizard = list(dict_widgets_wizard.keys())
 
 D = decimal.Decimal
-
-# def add_random_decimal(value):
-#     integer = random.randint(1,9)
-#     _str = str(value)
-#     _str = _str[:-1] + str(integer)
-#     print(_str)
-#     return  
 
 def get_random_number(min, max, decimal=0, zero_allowed=False, force_decimals=False): #
     if not isinstance(zero_allowed, bool):
@@ -107,16 +170,22 @@ def get_random_number(min, max, decimal=0, zero_allowed=False, force_decimals=Fa
     x = D("{:.{prec}f}".format(x, prec=decimal))
 
     if force_decimals==True:
-        rand_int = random.randint(0,2)
-        new_decimal = decimal - rand_int
-        test_value = round(x-int(x),new_decimal)
-        last_integer = str(test_value)[-1]
-
-        if last_integer == "0":
+        normalized_result = x.normalize()
+        if get_number_of_decimals(normalized_result) != decimal:
             integer = random.randint(1,9)
-            _str = str(test_value)
-            _str = _str[:-1] + str(integer)
-            x = _str
+            x = str(x)[:-1] + str(integer)
+        
+        ## not sure  
+        # rand_int = random.randint(0,2)
+        # new_decimal = decimal - rand_int
+        # test_value = round(x-int(x),new_decimal)
+        # last_integer = str(test_value)[-1]
+
+        # if last_integer == "0":
+        #     integer = random.randint(1,9)
+        #     _str = str(test_value)
+        #     _str = _str[:-1] + str(integer)
+        #     x = _str
         
 
     x = D(f'{x}')
@@ -261,8 +330,7 @@ def create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, c
             if smaller_or_equal_result == 1:
                 set_commas_result=commas_result
                 commas_result = random.randint(0,set_commas_result)
-        result = get_random_number(result_min, result_max, commas_result, force_decimals=True)
-
+        result = get_random_number(result_min, result_max, decimal= commas_result,force_decimals=True)
         dividend = result*divisor
         dividend = D(f'{dividend}').normalize()
         dividend = remove_exponent(dividend)
@@ -986,22 +1054,76 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
         string = f"{solution_string} = {binom_string}"
         binom_string, solution_string = solution_string, binom_string
 
-    solution_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", solution_string)
-    solution_string = solution_string.replace('\xb7', '\cdot ')
+    if index == 3:
+        choice = random.choice([0,1]) #edit to 0,1
+
+        string = f"{binom_string} = {solution_string}"
+
+        # if choice == 1:
+        #     solution_string = f"{solution_string} = {binom_string}"
+        # else:
+        #     solution_string = string
+
+        split_string = split_binomial_expression(string)
+        random_blanks = choose_random_blanks(split_string)
+
+        solution_string = []
+        for i in random_blanks:
+            string = string.replace(split_string[i], "_", 1)
+            solution_string.append(split_string[i])
+
+        
+        if choice == 0:
+            binom_string = string
+
+
+        elif choice == 1:
+            split_string = string.split(" = ")
+
+            string = f"{split_string[1]} = {split_string[0]}"
+            binom_string = string
+
+        binom_string = binom_string.replace("_","\\rule{1cm}{0.3pt}")
+            # string = reversed_string_blanks
+            # binom_string = reversed_string_blanks           
+
+            # random_blanks.reverse()
+            # # split_string.reverse()
+            # print(random_blanks)
+            # # print(split_string)
+    else:
+        solution_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", solution_string)
+        solution_string = solution_string.replace('\xb7', '\cdot ')
+        solution_string  = f"${solution_string}$"
+
+
+
     binom_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", binom_string)
     binom_string = binom_string.replace('\xb7', '\cdot ')
 
-    # print(binom_string)
-    return [f"${binom_string}$",f"${solution_string}$", string]
+    return [f"${binom_string}$",solution_string, string]
 
+def split_binomial_expression(expression):
+    pattern = r'([0-9/a-z]+\^\d+|\d*(?:/\d)*[a-z]+|^\^\d+(?:/\d)*[a-z]*)'
+    return re.findall(pattern, expression)
+
+def choose_random_blanks(_list):
+    if len(_list)==5:
+        possible_blanks = [
+            [0,3,4],
+            [0,2,4],
+            [1,2,3],
+            [1,2,4],
+        ]
+    elif len(_list)==6:
+        possible_blanks = [
+            [0,2,5],
+            [1,3,4],
+        ]      
+
+    return random.choice(possible_blanks)
 
 def get_random_fraction(min, max):
-    # if min == 0 and max == 1:
-    #     numerator = 1
-    #     denominator = get_random_number(1, 9)
-    # else:
-    # numerator = get_random_number(min, max-1)
-    # denominator = get_random_number(numerator+1, max)
     numerator = get_random_number(min, max)
     denominator = get_random_number(min, max) 
     # denominator = get_random_number(numerator, max)
@@ -1087,7 +1209,7 @@ def create_latex_string_addition(content, example, ausrichtung):
             max_decimal = decimals    
 
     if ausrichtung == 0:
-        content += "\item \\begin{tabular}{rr}\n"
+        content += "\\task \\begin{tabular}[t]{rr}\n"
 
         for all in summanden:
             decimals = get_number_of_decimals(all)
@@ -1108,7 +1230,7 @@ def create_latex_string_addition(content, example, ausrichtung):
         \end{{tabular}}\n""".format(str(example[-2]).replace(".",","))
         # .format(str(example[0]).replace(".",","),str(example[1]).replace(".",","),str(example[2]).replace(".",","))
     elif ausrichtung == 1:
-        content += "\item ${0}".format(str(summanden[0]).replace(".",","))
+        content += "\\task ${0}".format(str(summanden[0]).replace(".",","))
 
         for all in summanden[1:]:
             content += " + {}".format(str(all).replace(".",","))
@@ -1145,14 +1267,14 @@ def create_latex_string_subtraction(content, example, ausrichtung):
             
 
         content += """
-        \item \\begin{{tabular}}{{rr}}
+        \\task \\begin{{tabular}}[t]{{rr}}
         & ${0}{3}$ \\\\
         & $-{1}{4}$ \\\\ \hline
         &\\antwort{{${2}$}}
         \end{{tabular}}\n
         """.format(str(subtrahenden[0]).replace(".",","), str(subtrahenden[1]).replace(".",","),str(example[-2]).replace(".",","), phantom_1, phantom_2)
     elif ausrichtung == 1:
-        content += "\item ${0}".format(str(subtrahenden[0]).replace(".",","))
+        content += "\\task ${0}".format(str(subtrahenden[0]).replace(".",","))
 
         for all in subtrahenden[1:]:
             content += " - {}".format(str(all).replace(".",","))
@@ -1199,7 +1321,7 @@ def create_latex_string_multiplication(content, example, solution_type):
     factor_digit_length = get_number_of_digits(factor_1)
     
     content += """
-\item$\\begin{{array}}{{l}}
+\\task $\\begin{{array}}[t]{{l}}
 {0} \cdot {1} \\\\ \hline
 """.format(str(factor_1).replace('.',','),str(factor_2).replace('.',','))
 
@@ -1249,6 +1371,7 @@ def get_first_temp_division(dividend, temp_solution):
         part_divide = str(dividend)[0:end_index]
 
 def get_temp_solution_division(dividend, divisor, solution):
+
     str_solution = [x for x in solution if x.isnumeric()]
 
     list_temp_solutions = []
@@ -1260,28 +1383,43 @@ def get_temp_solution_division(dividend, divisor, solution):
             first_part_divide, end_index = get_first_temp_division(dividend, temp_solution)
             part_divide = first_part_divide
 
+        # print(f"before strip: {part_divide}")
         if isinstance(part_divide, str):
             part_divide = part_divide.lstrip('0')
+
+        if part_divide == "":
+            part_divide = "0"
+
 
         differenz = eval(part_divide)-temp_solution
         differenz = round(differenz, 10)
         end_index +=1
-        try:
-            if str(dividend)[end_index].isnumeric():
-                next_digit = str(dividend)[end_index]
-                next_digit_string = next_digit
-            else:
-                end_index +=1
-                next_digit = str(dividend)[end_index]
-                next_digit_string = f"\;{next_digit}"       
-        except IndexError:
+
+        if i == len(str_solution)-1:
+            # print('A')
             next_digit = ""
             next_digit_string = next_digit
+        else:            
+            try:
+                if str(dividend)[end_index].isnumeric():
+                    # print('B')
+                    next_digit = str(dividend)[end_index]
+                    next_digit_string = next_digit
+                else:
+                    # print('C')
+                    end_index +=1
+                    next_digit = str(dividend)[end_index]
+                    next_digit_string = f"\;{next_digit}"       
+            except IndexError:
+                # print('D')
+                next_digit = "0"
+                next_digit_string = next_digit
 
 
         part_divide = f"{differenz}{next_digit}"
 
         list_temp_solutions.append([f"{differenz}",next_digit_string])
+        # print(list_temp_solutions)
 
     return first_part_divide, list_temp_solutions
 
@@ -1296,67 +1434,66 @@ def create_latex_string_division(content, example, solution_type):
         solution = str(example[2]).replace(".",",")
         rest = ""
 
-    content += f"""
-    \item $\\begin{{array}}{{l}}
-    {str(example[0]).replace(".",",")} : {str(example[1]).replace(".",",")} = \\antwort[\\vspace{{1.5cm}}]{{{solution}}} \\\\
-    """
+    if solution_type == 1:
+        content += f"""
+        \\task $\\begin{{array}}[t]{{l}}
+        {str(example[0]).replace(".",",")} : {str(example[1]).replace(".",",")} = \\antwort[\\vspace{{1.5cm}}]{{{solution}}} \\\\
+        """
 
-    num_decimal_divisor = get_number_of_decimals(example[1])
+        num_decimal_divisor = get_number_of_decimals(example[1])
 
-    if num_decimal_divisor != 0:
-        example[0] = example[0]*10**(num_decimal_divisor)
-        example[0] = example[0].normalize()
-        example[0] = remove_exponent(example[0])
-        example[1] = int(example[1]*10**(num_decimal_divisor))
+        if num_decimal_divisor != 0:
+            example[0] = example[0]*10**(num_decimal_divisor)
+            example[0] = example[0].normalize()
+            example[0] = remove_exponent(example[0])
+            example[1] = int(example[1]*10**(num_decimal_divisor))
 
-
-    first_part_divide, list_temp_solutions = get_temp_solution_division(dividend=example[0], divisor=example[1], solution=solution)
-
-
-    if num_decimal_divisor != 0:
-        content += f"""\\antwortzeile {str(example[0]).replace(".",",")} : {str(example[1]).replace(".",",")} \\\\ """ 
+        # print(example)
+        first_part_divide, list_temp_solutions = get_temp_solution_division(dividend=example[0], divisor=example[1], solution=solution)
 
 
-
-    previous_num_of_digits  = get_number_of_digits(first_part_divide)
-    # multiplier = 0
-    rest = ""
-    komma = False
-    for i, all in enumerate(list_temp_solutions):
-        num_of_digits = get_number_of_digits(int(all[0]))
-
-        if i == 0:
-            multiplier = previous_num_of_digits - num_of_digits
-        # elif i == len(list_temp_solutions)-1:
-        #     diff = previous_num_of_digits - num_of_digits
-        #     multiplier += diff
-        #     rest = "R"        
-        else:
-            multiplier += 1
-            diff = previous_num_of_digits - num_of_digits
-            multiplier += diff
-
-        if i == len(list_temp_solutions)-1:
-            rest = "R"
-                    
-        hspace = multiplier*'\enspace'
-        if komma == True:
-            hspace += "\\;"
-        if "\\;" in all[1]:
-            komma = True
-
-
-        content += f"\\antwortzeile {hspace} {all[0]}{all[1]}{rest} \\\\ \n"
-        previous_num_of_digits = num_of_digits 
-        # print(content)
-        # print(f"multiplier: {multiplier}")
-    content += "\end{array}$\n\n"
+        if num_decimal_divisor != 0:
+            content += f"""\\antwortzeile {str(example[0]).replace(".",",")} : {str(example[1]).replace(".",",")} \\\\ """ 
 
 
 
+        previous_num_of_digits  = get_number_of_digits(first_part_divide)
+        # multiplier = 0
+        rest = ""
+        komma = False
+        for i, all in enumerate(list_temp_solutions):
+            num_of_digits = get_number_of_digits(int(all[0]))
+
+            if i == 0:
+                multiplier = previous_num_of_digits - num_of_digits
+            # elif i == len(list_temp_solutions)-1:
+            #     diff = previous_num_of_digits - num_of_digits
+            #     multiplier += diff
+            #     rest = "R"        
+            else:
+                multiplier += 1
+                diff = previous_num_of_digits - num_of_digits
+                multiplier += diff
+
+            if i == len(list_temp_solutions)-1:
+                rest = "R"
+                        
+            hspace = multiplier*'\enspace'
+            if komma == True:
+                hspace += "\\;"
+            if "\\;" in all[1]:
+                komma = True
 
 
-    # content += "\item ${0} : {1} = \\antwort[\\vspace{{1.5cm}}]{{{2}}}${3}\n\n".format(str(example[0]).replace(".",","),str(example[1]).replace(".",","),solution, rest)
+            content += f"\\antwortzeile {hspace} {all[0]}{all[1]}{rest} \\\\ \n"
+            previous_num_of_digits = num_of_digits 
+            # print(content)
+            # print(f"multiplier: {multiplier}")
+        content += "\end{array}$\n\n"
+
+
+    else:
+        content += "\\task ${0} : {1} = \\antwort[\\vspace{{1.5cm}}]{{{2}}}${3}\n\n".format(str(example[0]).replace(".",","),str(example[1]).replace(".",","),solution, rest)
 
 
     return content
@@ -1367,20 +1504,34 @@ def create_latex_string_ganze_zahlen(content, example):
     
     x,y = equation.split(" = ")
     
-    temp_content = "\item ${0} = \\antwort{{{1}}}$\n\n".format(x.replace(".",","),y.replace(".",","))
+    temp_content = "\\task ${0} = \\antwort{{{1}}}$\n\n".format(x.replace(".",","),y.replace(".",","))
     temp_content = temp_content.replace('\xb7', '\cdot')
     content += temp_content
     return content
 
 
-def create_latex_string_binomische_formeln(content, example):
+def create_latex_string_binomische_formeln(content, example, binoms_direction_index):
+    print(example)
+    if binoms_direction_index==3:
+        print(example[0])
+        aufgabe = example[0]
 
-    example_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", example[2])
-    example_string = re.sub("\^([0-9][0-9]+)",r"^{\1}", example[2])
+        for _, solution in enumerate(example[1]):
+            aufgabe = aufgabe.replace('\\rule{1cm}{0.3pt}', f'\\antwort[RULE]{{{solution}}}', 1)
 
-    aufgabe, loesung = example_string.split(" = ")
-    
-    temp_content = f"\item ${aufgabe} = \\antwort{{{loesung}}}$\n\n"
+        aufgabe = aufgabe.replace("RULE", "\\rule{1cm}{0.3pt}")
+        # for loesung in example[1]:
+        #     aufgabe = aufgabe.replace("\\rule{1cm}{0.3pt}", f"\\antwort[\\rule{{1cm}}{{0.3pt}}]{{{loesung}}}",1)
+        temp_content = f"\\task {aufgabe}\n\n"
+        print(aufgabe)
+
+    else:
+        example_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", example[2])
+        example_string = re.sub("\^([0-9][0-9]+)",r"^{\1}", example_string)
+
+        aufgabe, loesung = example_string.split(" = ")
+
+        temp_content = f"\\task ${aufgabe} = \\antwort{{{loesung}}}$\n\n"
 
     temp_content = temp_content.replace('\xb7', '\cdot ')
 
@@ -1389,29 +1540,40 @@ def create_latex_string_binomische_formeln(content, example):
     return content
 
 
-def create_latex_worksheet(order_of_examples, dict_of_examples,total_number_of_examples, index, titel, arbeitsanweisung,nummerierung, item_spacing, solution_type=0):
+def create_latex_worksheet(
+    order_of_examples,
+    dict_of_examples,
+    total_number_of_examples,
+    index,
+    titel,
+    arbeitsanweisung,
+    fortlaufende_nummerierung,
+    nummerierung,
+    solution_type=0,
+    binoms_direction_index=0
+    ):
     if titel != False:
         content = "\section{{{0}}}\n\n".format(titel.replace('&', '\&'))
     else:
         content = ""
 
-
     if arbeitsanweisung != False:
+        if arbeitsanweisung == True:
+            arbeitsanweisung="Berechne die folgenden Aufgaben"
         content += arbeitsanweisung
 
-    enumi_counter = 0
     for widget in order_of_examples:
         set_of_examples = dict_of_examples[widget] 
     # for all in dict_of_examples.values():
-        index = set_of_examples['index_thema']
+        index = set_of_examples['thema_index']
         ausrichtung = set_of_examples['ausrichtung']
         columns = set_of_examples['spalten']
         
-        if columns > 1:
-            content += "\\begin{{multicols}}{{{0}}}\n".format(columns)
-
-        content += f"\\begin{{enumerate}}[{nummerierung}]\setlength\itemsep{{{item_spacing}cm}}\n"
-
+        # if columns > 1:
+        #     content += "\\begin{{multicols}}{{{0}}}\n".format(columns)
+        # print(nummerierung)
+        # content += f"\\begin{{enumerate}}[{nummerierung}]\setlength\itemsep{{{item_spacing}cm}}\n"
+        content += f"\\begin{{tasks}}[label={nummerierung},resume={fortlaufende_nummerierung}]({columns})\n\n"
         # if fortlaufende_nummerierung == True:
         #     content += f"\setcounter{{enumi}}{{{enumi_counter}}}"
         #     enumi_counter +=1
@@ -1429,14 +1591,14 @@ def create_latex_worksheet(order_of_examples, dict_of_examples,total_number_of_e
             elif index == 4 or index == 5 or index == 6 or index ==7:
                 content = create_latex_string_ganze_zahlen(content, example)
             elif index == 8:
-                content = create_latex_string_binomische_formeln(content, example)
+                content = create_latex_string_binomische_formeln(content, example, binoms_direction_index)
 
-        content += "\end{enumerate}\n"
+        content += "\end{tasks}\n"
 
-        if columns > 1:
-            content += "\end{multicols}\n"
+        # if columns > 1:
+        #     content += "\end{multicols}\n"
         
-        content += f"\\vspace{{{item_spacing}cm}}\n\n"
+        # content += f"\\vspace{{{item_spacing}cm}}\n\n"
      
     return content
 
@@ -1478,7 +1640,6 @@ def get_max_pixels_nonogram():
 
 
 def get_all_solution_pixels(list_of_examples, nonogram):
-   
 
     all_pixels_solution = all_nonogramms[nonogram]
     random.shuffle(all_pixels_solution)
@@ -1595,12 +1756,18 @@ def create_coordinates(solution_pixels, dict_all_examples):
     return shuffled_coordinates
 
 
-def get_random_solution(self, thema):
+def get_random_solution(self):
+    thema = self.get_current_topic_wizard()
+    thema_index = self.total_list_of_topics_wizard.index(thema)
+
+    # print(thema)
+    # print(self.total_list_of_topics_wizard)
+    # print(thema_index)
     # if thema =
     # thema = random.choice(list(self.dict_all_examples_wizard.keys()))
     # thema = self.comboBox_themen_wizard.currentText()
 
-    if thema == 'Addition':
+    if thema_index == 0:
         minimum = self.spinbox_zahlenbereich_minimum.value()
         maximum = self.spinbox_zahlenbereich_maximum.value()
         commas = self.spinbox_kommastellen_wizard.value()
@@ -1609,7 +1776,7 @@ def get_random_solution(self, thema):
         distract_result = create_single_example_addition(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
 
 
-    elif thema == 'Subtraktion':
+    elif thema_index==1:
         minimum = self.spinbox_zahlenbereich_minimum.value()
         maximum = self.spinbox_zahlenbereich_maximum.value()
         commas = self.spinbox_kommastellen_wizard.value()
@@ -1618,7 +1785,7 @@ def get_random_solution(self, thema):
         distract_result = create_single_example_subtraction(minimum, maximum, commas, self.checkbox_negative_ergebnisse_wizard.isChecked(),anzahl_subtrahenden, smaller_or_equal)
 
     
-    elif thema == 'Multiplikation':
+    elif thema_index==2:
         minimum_1 = self.spinBox_first_number_min.value()
         maximum_1 = self.spinBox_first_number_max.value()
         commas_1 = self.spinBox_first_number_decimal.value()
@@ -1630,7 +1797,7 @@ def get_random_solution(self, thema):
         distract_result = create_single_example_multiplication(minimum_1, maximum_1, commas_1, smaller_or_equal_1, minimum_2, maximum_2, commas_2, smaller_or_equal_2)
         # self.list_of_examples_wizard = create_list_of_examples_multiplication(examples, minimum_1, maximum_1, commas_1, minimum_2, maximum_2, commas_2)
 
-    elif thema == 'Division':
+    elif thema_index==3:
         minimum_1 = self.spinbox_dividend_min_wizard.value()
         maximum_1 = self.spinbox_dividend_max_wizard.value()
         minimum_2 = self.spinbox_divisor_min_wizard.value()
@@ -1639,16 +1806,16 @@ def get_random_solution(self, thema):
         smaller_or_equal_div = self.combobox_divisor_kommastelle_wizard.currentIndex()
         commas_result = self.spinbox_ergebnis_kommastellen_wizard.value()
         smaller_or_equal_result = self.combobox_ergebnis_kommastellen_wizard.currentIndex()
-        if self.radioButton_division_ohne_rest.isChecked():
+        if self.combobox_dividend_wizard.currentIndex()==1:
+            output_type = 2    
+        elif self.radioButton_division_ohne_rest.isChecked():
             output_type = 0
         elif self.radioButton_division_rest.isChecked():
-            output_type = 1
-        elif self.radioButton_division_decimal.isChecked():
-            output_type = 2         
+            output_type = 1       
         distract_result = create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div,smaller_or_equal_div, commas_result, smaller_or_equal_result, output_type)
 
 
-    elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[5] or thema == themen_worksheet_wizard[6] or thema == themen_worksheet_wizard[7]:
+    elif thema_index==4 or thema_index==5 or thema_index==6 or thema_index==7:
         minimum = self.spinbox_zahlenbereich_minimum.value()
         maximum = self.spinbox_zahlenbereich_maximum.value()
         commas = self.spinbox_kommastellen_wizard.value()
@@ -1657,7 +1824,7 @@ def get_random_solution(self, thema):
         brackets_allowed = self.checkbox_allow_brackets_wizard.isChecked()
 
 
-        if thema == themen_worksheet_wizard[5]:
+        if thema_index==5:
             if self.checkbox_enable_addition.isChecked():
                 typ = "+"
             else:
@@ -1667,11 +1834,11 @@ def get_random_solution(self, thema):
                 typ += "-"
 
             distract_result = create_single_example_ganze_zahlen_strich(typ, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
-        elif thema == themen_worksheet_wizard[6]:
+        elif thema_index==6:
             typ = '*:'
             distract_result = create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
-        elif thema == themen_worksheet_wizard[4] or thema == themen_worksheet_wizard[7]:
-            if thema == themen_worksheet_wizard[4]:
+        elif thema_index==4 or thema_index==7:
+            if thema_index==4:
                 show_brackets = False
             else:
                 show_brackets = True
@@ -1679,7 +1846,7 @@ def get_random_solution(self, thema):
             distract_result = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)
 
 
-    elif thema == themen_worksheet_wizard[8]:
+    elif thema_index==8:
         binomials_types = [self.cb_binoms_1.isChecked(), self.cb_binoms_2.isChecked(), self.cb_binoms_3.isChecked()]
         
         if self.checkbox_binoms_a.isChecked():
@@ -1720,7 +1887,7 @@ def create_nonogramm(nonogram, coordinates_nonogramm, spalten=3):
         end_multicols = ""
 
     nonogram_name = nonogram.split("_")[0].replace("&","\&").title()
-    content = f"""\n\\vfil\n\\fontsize{{12}}{{14}}\selectfont
+    content = f"""\n\\vfill\n\\fontsize{{12}}{{14}}\selectfont
     \meinlr{{{nonogramm_empty}
 
     \\antwort{{{nonogram_name}}}}}{{\scriptsize
@@ -1737,12 +1904,17 @@ def create_nonogramm(nonogram, coordinates_nonogramm, spalten=3):
     for all in coordinates_nonogramm:
         if coordinates_nonogramm[all][1] == None:
             continue
-        
-        elif coordinates_nonogramm[all][0] == True:
-            result = "\\antwort[{0}]{{{0}}}".format(coordinates_nonogramm[all][1])
-        
-        elif coordinates_nonogramm[all][0] == False:
+        elif type(coordinates_nonogramm[all][1])==list:
+            result = ", ".join(coordinates_nonogramm[all][1])
+            result = f"${result}$"
+        else:
             result = coordinates_nonogramm[all][1]
+        
+        if coordinates_nonogramm[all][0] == True:
+            result = "\\antwort[{0}]{{{0}}}".format(result)
+        
+        # elif coordinates_nonogramm[all][0] == False:
+        #     result = result
         
         content += "\item[\\fbox{{\parbox{{15pt}}{{\centering {0}}}}}] {1}\n".format(all, result)
     # for all in list_coordinates:

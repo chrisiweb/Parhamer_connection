@@ -5,6 +5,7 @@
 - PyYaml
 - Pillow
 - bcrypt
+- sympy
 - LaTeX
 - LaTeX-package: srdp-mathematik <https://ctan.org/pkg/srdp-mathematik>
 

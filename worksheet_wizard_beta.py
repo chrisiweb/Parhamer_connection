@@ -1,29 +1,12 @@
-# from __future__ import division
-# from distutils.log import fatal
-# from pickletools import read_uint1
-from functools import partial
-from operator import imod
-from posixpath import split
 import random
-# from functools import reduce
-# import math
 import decimal
 import re
+from config import is_empty
 
 
 from sympy import symbols, init_printing, expand, simplify, apart, Rational
 # from sympy import *
 from fractions import Fraction
-
-
-# import numpy
-# import os
-
-# from numpy import empty
-# from config_start import path_localappdata_lama, path_programm
-# import subprocess
-# from tex_minimal import tex_preamble, tex_end
-# from create_pdf import  open_pdf_file
 
 
 list_of_topics_wizard = ['Addition', 'Subtraktion']
@@ -136,254 +119,161 @@ def get_random_fraction(min, max):
     return Fraction("{0}/{1}".format(numerator, denominator))
 
 
-## binomische Formel
-# v_1 = "a"
-# v_2 = "b"
-# a, b = symbols("{} {}".format(v_1, v_2))
-# C, D = symbols("{} {}".format("C","D"))
-# # e = (3*a-1/2*b)**2
-# coef_a = [0,3]
-# coef_b = [0,3]
-# fractions_allowed = True
-# exponent = 3
-
-# # if fractions_allowed == True:
-# #     coef_1 = get_random_fraction(coef_a[0],coef_a[1])
-# #     coef_2 = get_random_fraction(coef_b[0],coef_b[1])
-# # else:
-# #     coef_1 = get_random_number(coef_a[0],coef_a[1])
-# #     coef_2 = get_random_number(coef_b[0],coef_b[1])
-
-
-# coef_1 = Rational(1,4)
-# coef_2 = Rational(1,3)
-# print(coef_1)
-# print(coef_2)
-# # coef_1 = get_random_fraction(1,10)
-# # coef_2 = get_random_fraction(1,10)
-
-# print(f'square {coef_1**2}')
-# print(f'square {coef_2**2}')
-# # if coef_a!=False:
-# #     num = get_random_number(coef_a[0],coef_a[1])
-# #     if num == 1:
-# #         first_string = ""
-# #     else:
-# #         first_string = f"{num}"
-# # else: 
-# #     first_string = ""
-
-# # if exp_x!= False and first_string != "":
-# #     first_string += f"*{Symbol('A')}"
-# # if exp_x!= False:
-# #     exponent_x = get_random_number(exp_x[0],exp_x[1])
-# #     if exponent_x !=1:
-# #         x = f"{v_1}^^{exponent_x}"
-# #     else:
-# #         x = f"{v_1}"
-# # else: 
-# #     exponent_x = ""
-
-# # if first_string == "":
-# #     first_string = x
-# # elif exponent_x != "":
-# #     first_string += f"*{x}"
-
-
-# binome = ['(C*a+D*b)**{0}'.format(exponent), '(C*a-D*b)**{0}'.format(exponent), '(C*a+D*b)*(C*a-D*b)']
-# # binome = [f'({first_string}*v_1+{coef_2}*v_2)**{exponent}', '({0}*v_1-{1}*v_2)**{2}'.format(coef_1,coef_2,exponent), '({0}*v_1+{1}*v_2)*({0}*v_1-{1}*v_2)'.format(coef_1,coef_2)]
-
-
-
-
-# random_choice = random.choice(binome)
-# print(f"choice: {random_choice}")
-# binom = eval(random_choice)
-
-# print(f"binom: {binom}")
-
-
-# # print(e)
-
-# solution = str(binom.expand())
-
-# print(solution)
-
-# for i in range(2,exponent+1):
-
-#     solution = solution.replace(f"C**{i}",f"{coef_1**i}")
-#     solution = solution.replace(f"D**{i}",f"{coef_2**i}")
- 
-# solution = solution.replace("C",str(coef_1))
-# solution = solution.replace("D",str(coef_2))
-
-
-# print(solution)
-
-
-
-# if fractions_allowed == True:
-#     _temp = re.findall('[0-9.]+', solution)
-#     print(_temp)
-
-
-#     for all in _temp:
-#         frac= Fraction(all)
-
-#         if frac.denominator != 1:
-#             solution = solution.replace(all, "\\frac{{{0}}}{{{1}}}".format(frac.numerator, frac.denominator))
-#         else:
-#             solution = solution.replace(all, str(frac))
-
-
-# print(solution)
-# #####
-# # alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-
-# # choices = random.choices(alphabet, k=2)
-
-# # solution_string = solution.replace("**", "^")
-# # solution_string = solution_string.replace("*", "")
-# # solution_string = solution_string.replace("a", choices[0])
-# # solution_string = solution_string.replace("b", choices[1])
-
-# # binom_string = random_choice.replace("**", "^")
-# # binom_string = binom_string.replace("*", "")
-# # binom_string = binom_string.replace("a", choices[0])
-# # binom_string = binom_string.replace("b", choices[1])
-
-# ##### working 
-
-def convert_to_fractions(string):
-    _temp = re.findall('[0-9.]+', string)
-
-
-    for all in _temp:
-        frac= Fraction(all).limit_denominator()
-
-        if frac.denominator != 1:
-            string = string.replace(all, f"{frac.numerator}/{frac.denominator}")
-        else:
-            string = string.replace(all, str(frac))
-    
-    return string
-
-
-def get_first_temp_division(dividend, temp_solution):
-    end_index =1
-    part_divide = str(dividend)[0:end_index]
-    while True:
-        if temp_solution <= eval(part_divide):
-            return part_divide, end_index-1
+def extract_parts_of_binom(string):
+    _list = string.split("=")
+    split_list = []
+    for string in _list:
+        x= re.split('\(|\)|\+|-|=', string)
+        x = [item.strip() for item in x]
         
-        end_index +=1
-        part_divide = str(dividend)[0:end_index]
+        for all in x[:]:
+            if re.fullmatch(' *\^[0-9] *', all) != None:
+                x.remove(all)
+            elif is_empty(all):
+                x.remove(all) 
+        
+        split_list.append(x)
+    return split_list   
 
-def get_temp_solution_division(dividend, divisor, solution):
-    str_solution = [x for x in solution if x!="."]
+def choose_random_blanks(_list):
+    # possible_blanks = {
+    #     1: [[[0],[1,2]], [[0],[0,2]],[[1],[0,1]],[[1],[0,2]]],
+    #     2: [[[0,2],[1]], [[1,3],[0]]]}
+    if len(_list)==5:
+        possible_blanks = [
+            [0,3,4],
+            [0,2,4],
+            [1,2,3],
+            [1,2,4],
+        ]
+    elif len(_list)==6:
+        possible_blanks = [
+            [0,2,5],
+            [1,3,4],
+        ]      
 
-    list_temp_solutions = []
-
-    for i, all in enumerate(str_solution):
-        temp_solution = eval(f"{all}*{divisor}")
-
-        if i == 0:
-            first_part_divide, end_index = get_first_temp_division(dividend, temp_solution)
-            part_divide = first_part_divide
-
-        differenz = eval(part_divide.lstrip('0'))-temp_solution
-        differenz = round(differenz, 10)
-        end_index +=1
-        try:
-            if str(dividend)[end_index].isnumeric():
-                next_digit = str(dividend)[end_index]
-                next_digit_string = next_digit
-            else:
-                end_index +=1
-                next_digit = str(dividend)[end_index]
-                next_digit_string = f"\;{next_digit}"       
-        except IndexError:
-            next_digit = ""
-            next_digit_string = next_digit
+    return random.choice(possible_blanks)
 
 
-        part_divide = f"{differenz}{next_digit}"
+def split_binomial_expression(expression):
+    pattern = r'([0-9/a-z]+\^\d+|\d*(?:/\d)*[a-z]+|^\^\d+(?:/\d)*[a-z]*)'
+    return re.findall(pattern, expression)
 
-        list_temp_solutions.append([f"{differenz}",next_digit_string])
+def choose_random_blanks(_list):
+    if len(_list)==5:
+        possible_blanks = [
+            [0,3,4],
+            [0,2,4],
+            [1,2,3],
+            [1,2,4],
+        ]
+    elif len(_list)==6:
+        possible_blanks = [
+            [0,2,5],
+            [1,3,4],
+        ]      
 
-    return first_part_divide, list_temp_solutions
-example = [315.9236,29.72]
-# solution = str(get_solution(f"{example[0]} : {example[1]}"))
-solution = "10.63"
-print(example)
+    return random.choice(possible_blanks)
 
-content = f"""
-$\\begin{{array}}{{l}}
-{str(example[0]).replace(".",",")} : {str(example[1]).replace(".",",")} = \\antwort[\\vspace{{1.5cm}}]{{{solution.replace(".",",")}}} \\\\
-"""
+a = '(7m-5a)^2 = 49m^2 - 70ma + 25a^2'
+a_reversed = '49m^2 - 70ma + 25a^2 = (7m-5a)^2'
+b ='(1/3t+1/2h)^2 = 1/9t^2 - 1/3th + 1/4h^2'
+c = '(m-8q)^2 = m^2 - 16mq + 64q^2'
+d = '(7y+7e)(7y-7e) = 49y^2 - 49e^2'
 
+# Der Ausdruck, der unterteilt werden soll
+expression = "(2a+5b)^2 = 4a^2 + 20ab + 25b^2"
 
-num_decimal_divisor = get_number_of_decimals(29.72)
-
-if num_decimal_divisor != 0:
-    example[0] = example[0]*10**(num_decimal_divisor)
-    example[1] = int(example[1]*10**(num_decimal_divisor))
-
-print(example)
-
-first_part_divide, list_temp_solutions = get_temp_solution_division(dividend=example[0], divisor=example[1], solution=solution)
-
-
-print(first_part_divide)
-print(list_temp_solutions)    
-
-
-previous_num_of_digits  = get_number_of_digits(first_part_divide)
-# multiplier = 0
-
-if num_decimal_divisor != 0:
-    content += f"""\\antwortzeile {str(example[0]).replace(".",",")} : {str(example[1]).replace(".",",")} \\\\ """   
-rest = ""
-komma = False
-for i, all in enumerate(list_temp_solutions):
-    print(all)
-    num_of_digits = get_number_of_digits(int(all[0]))
-    print(f"pervious_number : {previous_num_of_digits}")
-    print(f"num_of_digits: {num_of_digits}")
-    print(f"i: {i}")
-
-    if i == 0:
-        multiplier = previous_num_of_digits - num_of_digits
-    # elif i == len(list_temp_solutions)-1:
-    #     diff = previous_num_of_digits - num_of_digits
-    #     multiplier += diff
-    #     rest = "R"        
-    else:
-        multiplier += 1
-        diff = previous_num_of_digits - num_of_digits
-        multiplier += diff
-
-    if i == len(list_temp_solutions)-1:
-        rest = "R"
-                
-    hspace = multiplier*'\enspace'
-    if komma == True:
-        hspace += "\\;"
-    if "\\;" in all[1]:
-        komma = True
+# Ein regulärer Ausdruck, der auf die Summanden des Ausdrucks abgestimmt ist
+# pattern = r'([0-9/a-z]+\^\d+|\d*(?:/\d)*[a-z]+|^\^\d+(?:/\d)*[a-z]*)'
+# Verwende den regulären Ausdruck, um die Summanden des Ausdrucks zu finden
 
 
-    content += f"\\antwortzeile {hspace} {all[0]}{all[1]}{rest} \\\\ \n"
-    previous_num_of_digits = num_of_digits 
-    # print(content)
-    print(f"multiplier: {multiplier}")
-content += "\end{array}$\n\n"
+split_string = split_binomial_expression(a)
+random_blanks = choose_random_blanks(split_string)
 
-print(content)
+# print(a)
+# print(split_string)
+# print(random_blanks)
 
-# print(f'end: {temp_solution} vs. {eval(part_divide)}')
-#     i=0
-#     while temp_solution>eval(part_divide):
+# choice = 0 
+# if choice == 1:
+#     random_blanks.reverse()
+#     # split_string.reverse()
+#     print(random_blanks)
+#     # print(split_string)
+
+coef_a = get_random_number(1,10)
+coef_b = get_random_number(1,10)
+
+A, B = symbols("{} {}".format("A", "B"))
+
+term = "(3*A + 3*B) * (2*B-3*A)"
+
+
+print(eval(term).expand())
+# string = a_reversed
+# for i in random_blanks:
+#     print(i)
+#     print(split_string[i])
+#     string = string.replace(split_string[i], "_", 1)
+
+# print(string)
+
+# blanks =choose_random_blanks(a_split)
+
+# print(blanks)
+
+
+# split_list = extract_parts_of_binom(a)
+# print(split_list)
+# chosen_blanks = choose_random_blanks(split_list)
+# print(chosen_blanks)
+
+# for i, all in enumerate(chosen_blanks):
+#     for index in all:
+#         print(split_list[i][index])
+#         a = a.replace(split_list[i][index], "\\rule{1cm}{0.3pt}")
+
+# print(a)
+
+# split_list = extract_parts_of_binom(b)
+# print(split_list)
+# chosen_blanks = choose_random_blanks(split_list)
+
+# print(chosen_blanks)
+
+
+
+
+# extracted_string = extract_parts_of_binom(a)
+
+# print(extracted_string)
+# print(extract_parts_of_binom(b))
+
+# for all in x:
+#     print(all)
+#     print(re.fullmatch(' *\^[0-9] *', all))
+
+# y= re.split('\(|\)|\+|-|=', b)
+# print(y)
+
+
+#####
+# alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+
+# choices = random.choices(alphabet, k=2)
+
+# solution_string = solution.replace("**", "^")
+# solution_string = solution_string.replace("*", "")
+# solution_string = solution_string.replace("a", choices[0])
+# solution_string = solution_string.replace("b", choices[1])
+
+# binom_string = random_choice.replace("**", "^")
+# binom_string = binom_string.replace("*", "")
+# binom_string = binom_string.replace("a", choices[0])
+# binom_string = binom_string.replace("b", choices[1])
+
 
 
 ##### FRACTION

@@ -6,31 +6,6 @@ from pathlib import Path
 __version__ = "v4.1.5"
 
 if sys.platform.startswith("win"):
-    ##### NOT IN USE ! (Working!) - Activate when installer is used!
-    # path_localappdata = os.getenv('LOCALAPPDATA')
-    # path_localappdata_lama = os.path.join(path_localappdata, "LaMA")
-    # file_path_database = os.path.join(path_localappdata_lama ,"file_path_database.txt")
-    # try:
-    #     with open(file_path_database, "r") as file:
-    #         path = file.read()
-    # except FileNotFoundError:
-    #     path = os.path.dirname(file_path_database)
-    #     if os.path.isdir(path) == False:    
-    #         os.mkdir(path)
-
-    #     app = QtWidgets.QApplication(sys.argv)
-    #     define_database = QtWidgets.QWidget()
-    #     ui = Ui_define_database()
-    #     ui.setupUi(define_database)
-    #     define_database.show()
-    #     app.exec_()
-
-    #     with open(file_path_database, "r") as file:
-    #         path = file.read()
-
-
-
-    #####
     programdata = os.getenv('PROGRAMDATA')
     path_programm = os.path.join(programdata, "LaMA")
     if not os.path.isdir(path_programm):
@@ -77,21 +52,21 @@ if sys.platform.startswith("win"):
 
 elif sys.platform.startswith("darwin"):
 # else:
-    path_programm=os.path.dirname(sys.argv[0])
-    if path_programm == "":
-        path_programm = "."
+    # path_programm=os.path.dirname(sys.argv[0])
+    # if path_programm == "":
+    #     path_programm = "."
     
-    path_programm = os.path.join(path_programm, "LaMA_programdata")
+    # path_programm = os.path.join(path_programm, "LaMA_programdata")
+    path_programm = os.path.join(Path.home(), "Library", "LaMA","LaMA_programdata")
     if not os.path.isdir(path_programm):
-        os.mkdir(path_programm)
-    
+        os.makedirs(path_programm)
+
     path_localappdata_lama = path_programm
 
-    # path_home=Path.home()
 
     path_lama_developer_credentials = os.path.join(Path.home(), "Library", "LaMA","credentials")
     if not os.path.isdir(path_lama_developer_credentials):
-        os.makedirs(path_lama_developer_credentials)
+        os.mkdir(path_lama_developer_credentials)
         
     lama_developer_credentials = os.path.join(path_lama_developer_credentials, "developer_credentials.txt")
 

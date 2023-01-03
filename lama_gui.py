@@ -24,7 +24,7 @@ from json import load
 from functools import partial
 from create_pdf import prepare_tex_for_pdf
 from standard_dialog_windows import warning_window
-from worksheet_wizard import dict_widgets_wizard
+from worksheet_wizard import dict_themen_wizard
 from create_nonograms import all_nonogramms
 
 
@@ -2362,20 +2362,82 @@ def setup_stackWizard(self):
     self.horizontalLayout_groupBox_topics = create_new_horizontallayout(self.groupBox_topics)
 
     self.comboBox_themen_wizard = create_new_combobox(self.groupBox_topics)
-    self.horizontalLayout_groupBox_topics.addWidget(self.comboBox_themen_wizard)
-    for i, all in enumerate(dict_widgets_wizard.keys()):
-        add_new_option(self.comboBox_themen_wizard, i, all)
-    self.comboBox_themen_wizard.currentIndexChanged.connect(self.themen_changed_wizard)
+    # self.horizontalLayout_groupBox_topics.addWidget(self.comboBox_themen_wizard)
+    # for i, all in enumerate(dict_widgets_wizard.keys()):
+    #     add_new_option(self.comboBox_themen_wizard, i, all)
+    # self.comboBox_themen_wizard.currentIndexChanged.connect(self.themen_changed_wizard)
+    self.comboBox_themen_wizard.hide()
+
+    self.pushbutton_themen_wizard = QtWidgets.QPushButton(self.groupBox_topics)
+    # print(list(dict_themen_wizard.values())[0][0])
+    # self.pushbutton_themen_wizard.setText(dict_themen_wizard[list(dict_themen_wizard.values())[0][0]])
+    self.pushbutton_themen_wizard.setText("Arithmetik > Positive (Dezimal-)Zahlen > Addition")
+    self.chosen_topics_wizard = ["Arithmetik", "Positive (Dezimal-)Zahlen", "Addition"]
+    self.horizontalLayout_groupBox_topics.addWidget(self.pushbutton_themen_wizard)
+
+    self.menu_themen_wizard = QtWidgets.QMenu(self.groupBox_topics)
+    # ag = QtGui.QActionGroup(self.filter_search, exclusive=False)
+
+    def topic_chosen(list_topics):
+        _string = list_topics[0]
+        for all in list_topics[1:]:
+            _string += f" > {all}" 
+        return lambda: self.pushbutton_themen_wizard.setText(_string)
+    
+    # def change_list_topic():
+    #     button_text = self.pushbutton_themen_wizard.text()
+    #     x = button_text.split(" \u2b9e ")
+    #     self.chosen_topic_wizard = x
+    #     print(self.chosen_topic_wizard)
+
+    self.total_list_of_widgets_wizard = []
+    self.total_list_of_topics_wizard = []
+    for level_0_keys, level_0_values in dict_themen_wizard.items():
+        submenu = self.menu_themen_wizard.addMenu(str(level_0_keys))
+
+        for level_1_keys, level_1_values in level_0_values.items():
+            if type(level_1_values)==list:
+                action = submenu.addAction(level_1_keys)
+                list_topics = [level_0_keys, level_1_keys]
+                self.total_list_of_topics_wizard.append(list_topics)
+                action.triggered.connect(topic_chosen(list_topics))
+                for all in level_1_values:
+                    if all not in self.total_list_of_widgets_wizard:
+                        self.total_list_of_widgets_wizard.append(all)
+            else:
+                subsubmenu = submenu.addMenu(level_1_keys)
+
+                for level_2_keys, level_2_values in level_1_values.items():
+                    if type(level_2_values)==list: 
+                        action = subsubmenu.addAction(level_2_keys)
+                        list_topics = [level_0_keys, level_1_keys, level_2_keys]
+                        self.total_list_of_topics_wizard.append(list_topics)
+                        action.triggered.connect(topic_chosen(list_topics))
+                        for all in level_2_values:
+                            if all not in self.total_list_of_widgets_wizard:
+                                self.total_list_of_widgets_wizard.append(all)                                      
+            # print(level_1_values)
+        # for subtopic in subtopics:
+        #     print(subtopic)
+        #     subsubtopics = subtopics[subtopic]
+            # if type(subsubtopics)==dict:
+            #     subsubmenu = submenu.addMenu(str(subtopic))
+                
+            #     for subsubtopic in subsubtopics:
+            #         action = subsubmenu.addAction(subsubtopic)
+            #         list_topics = [topics, subtopic, subsubtopic]
+            #         action.triggered.connect(topic_chosen(list_topics))
+            # elif type(subsubtopics)==list:
+            #     action = submenu.addAction(subtopic)
+            #     list_topics = [topics, subtopic]
+            #     action.triggered.connect(topic_chosen(list_topics))               
+
+
+    self.menu_themen_wizard.triggered.connect(self.themen_changed_wizard)
+    self.pushbutton_themen_wizard.setMenu(self.menu_themen_wizard)
 
 
     self.horizontalLayout_widgetTopics.addStretch()
-    # self.groupBox_titel_wizard = create_new_groupbox(self.widgetTopics, "Titel")
-    # self.horizontalLayout_widgetTopics.addWidget(self.groupBox_titel_wizard)
-    # self.horizontalLayout_titel_wizard = create_new_horizontallayout(self.groupBox_titel_wizard)
-    # self.lineEdit_titel_wizard = create_new_lineedit(self.groupBox_titel_wizard)
-    # self.horizontalLayout_titel_wizard.addWidget(self.lineEdit_titel_wizard)
-    # self.lineEdit_titel_wizard.setText("Arbeitsblatt") #.format(self.comboBox_themen_wizard.currentText())
-
 
 
 
@@ -2924,6 +2986,8 @@ def setup_stackWizard(self):
     self.spinbox_binoms_m_max.valueChanged.connect(lambda: self.spinbox_binoms_m_min.setMaximum(self.spinbox_binoms_m_max.value()))
     self.gridlayout_binoms_set_exponents.addWidget(self.spinbox_binoms_m_max, 2,4,1,1)
 
+    self.label_binoms_x = create_new_label(self.widget_binoms_set_variables_factors, "x: ")
+    self.gridlayout_binoms_set_exponents.addWidget(self.label_binoms_x, 2,0,1,1, QtCore.Qt.AlignRight)
 
     self.checkbox_binoms_y = create_new_checkbox(self.widget_binoms_set_variables_factors, "y: ", checked=True)
     self.gridlayout_binoms_set_exponents.addWidget(self.checkbox_binoms_y, 3,0,1,1)
@@ -3181,9 +3245,10 @@ def setup_stackWizard(self):
     self.combobox_nummerierung_wizard = create_new_combobox(self.widget_nummerierung_wizard)
     add_new_option(self.combobox_nummerierung_wizard, 0, "-")
     add_new_option(self.combobox_nummerierung_wizard, 1, "(a)")
-    add_new_option(self.combobox_nummerierung_wizard, 2, "(i)")
-    add_new_option(self.combobox_nummerierung_wizard, 3, "(I)")
-    add_new_option(self.combobox_nummerierung_wizard, 4, "(1)")
+    add_new_option(self.combobox_nummerierung_wizard, 2, "(A)")
+    add_new_option(self.combobox_nummerierung_wizard, 3, "(i)")
+    add_new_option(self.combobox_nummerierung_wizard, 4, "(I)")
+    add_new_option(self.combobox_nummerierung_wizard, 5, "(1)")
     
     
     self.horizontalLayout_nummerierung_wizard.addWidget(self.combobox_nummerierung_wizard) 
