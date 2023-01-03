@@ -2986,6 +2986,8 @@ def setup_stackWizard(self):
     self.spinbox_binoms_m_max.valueChanged.connect(lambda: self.spinbox_binoms_m_min.setMaximum(self.spinbox_binoms_m_max.value()))
     self.gridlayout_binoms_set_exponents.addWidget(self.spinbox_binoms_m_max, 2,4,1,1)
 
+    self.label_binoms_x = create_new_label(self.widget_binoms_set_variables_factors, "x: ")
+    self.gridlayout_binoms_set_exponents.addWidget(self.label_binoms_x, 2,0,1,1, QtCore.Qt.AlignRight)
 
     self.checkbox_binoms_y = create_new_checkbox(self.widget_binoms_set_variables_factors, "y: ", checked=True)
     self.gridlayout_binoms_set_exponents.addWidget(self.checkbox_binoms_y, 3,0,1,1)

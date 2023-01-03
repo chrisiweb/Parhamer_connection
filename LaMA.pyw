@@ -5,8 +5,12 @@ __lastupdate__ = "12/22"
 
 
 ##################
+import sys
 
-show_popup = False
+if sys.platform.startswith("darwin"):
+    show_popup = True
+else:
+    show_popup = False
 
 from start_window import check_if_database_exists
 # from worksheet_wizard import get_all_solution_pixels
@@ -31,7 +35,6 @@ from config_start import (
 # from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QApplication
 
-import sys
 from distutils.spawn import find_executable
 
 # from tinydb import Query
@@ -400,44 +403,30 @@ class Ui_MainWindow(object):
 
     def show_popup_window(self, show_checkbox = True):
         rsp = custom_window("""
-<b>Die neue Version von LaMA ({}) verwendet Befehle des aktuellsten "srdp-mathematik"-Pakets. Um die volle Funktionsfähigkeit von LaMA zu gewährleisten, sollte das LaTeX-Paket auf Ihrem Gerät manuell aktualisiert werden.</b><br><br><br>
+<b>Augrund einer Änderung der Datenbank, muss diese neu heruntergeladen werden.</b><br><br><br>
 
-Eine direkte Aktualisierung des "srdp-mathematik"-Pakets über LaMA kann via<br>
-
-<i>"Optionen -> Update ... -> srdp-mathematik.sty aktualisieren"</i><br>
-
-durchgeführt werden.<br><br>
-
-Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.com<br>
+Sollten dabei Problem auftreten, melden Sie sich bitte unter: lama.helpme@gmail.com<br>
 """.format(__version__),
         titel="Update Information",
         show_checkbox=show_checkbox,
         set_width=600,
         )
         return rsp
-#         msg = QtWidgets.QMessageBox()
-#         msg.setWindowTitle("Update")
-#         pixmap = QtGui.QPixmap(logo_path)
-#         msg.setIconPixmap(pixmap)
-#         msg.setWindowIcon(QtGui.QIcon(logo_path))
-#         msg.setText("""Die neue Version von LaMA ({}) verwendet Befehle des aktuellsten "srdp-mathematik"-Pakets. Um die volle Funktionsfähigkeit von LaMA zu gewährleisten, sollte das LaTeX-Paket auf Ihrem Gerät manuell aktualisiert werden.""".format(__version__))
-#         msg.setInformativeText("""Eine direkte Aktualisierung des "srdp-mathematik"-Pakets über LaMA kann via
 
-# "Optionen -> Update ... -> srdp-mathematik.sty aktualisieren"
 
-# durchgeführt werden. 
+    ##### PREVIOUS MESSAGES
+# <b>Die neue Version von LaMA ({}) verwendet Befehle des aktuellsten "srdp-mathematik"-Pakets. Um die volle Funktionsfähigkeit von LaMA zu gewährleisten, sollte das LaTeX-Paket auf Ihrem Gerät manuell aktualisiert werden.</b><br><br><br>
 
-# Sollte dies nicht möglich sein, melden Sie sich bitte unter:
-# lama.helpme@gmail.com""")
-        
-#         cb = QtWidgets.QCheckBox()
-#         if show_checkbox==True:
-#             msg.setCheckBox(cb)
-#             cb.setText("Diese Meldung nicht mehr anzeigen")
-#         msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+# Eine direkte Aktualisierung des "srdp-mathematik"-Pakets über LaMA kann via<br>
 
-#         msg.exec_()
-#         return cb.isChecked()
+# <i>"Optionen -> Update ... -> srdp-mathematik.sty aktualisieren"</i><br>
+
+# durchgeführt werden.<br><br>
+
+# Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.com<br>
+
+
+
 
     def get_saving_path(self):
         dict_umlaute = {

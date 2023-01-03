@@ -61,7 +61,6 @@ elif sys.platform.startswith("darwin"):
     if not os.path.isdir(path_programm):
         os.makedirs(path_programm)
 
-    print(path_programm)
     path_localappdata_lama = path_programm
 
 
