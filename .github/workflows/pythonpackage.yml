@@ -7,9 +7,9 @@ jobs:
 
     runs-on: ${{ matrix.os }}
     strategy:
-      max-parallel: 4
+      max-parallel: 2
       matrix:
-        python-version: [3.7]
+        python-version: [3.9]
         os: [windows-latest, macos-latest] #ubuntu-latest, windows-latest, macOS-latest
 
     steps:
@@ -33,7 +33,7 @@ jobs:
     - name: Build with pyinstaller
       if: matrix.os != 'windows-latest'
       run: |  
-        pyinstaller -F -w -i icon_lama.icns LaMA.pyw        
+        pyinstaller -w -i icon_lama.icns LaMA.pyw        
     - name: Build with pyinstaller Windows
       if: matrix.os == 'windows-latest'
       run: |  
