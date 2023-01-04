@@ -33,7 +33,7 @@ jobs:
     - name: Build with pyinstaller
       if: matrix.os != 'windows-latest'
       run: |  
-        pyinstaller -F -i icon_lama.icns LaMA.pyw --exclude-module tkinter      
+        pyinstaller -F -i icon_lama.icns LaMA.pyw --exclude-module tkinter --osx-bundle-identifier 'YOUR_IDENTIFIER'      
     - name: Build with pyinstaller Windows
       if: matrix.os == 'windows-latest'
       run: |  
