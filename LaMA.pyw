@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-__lastupdate__ = "12/22"
+__lastupdate__ = "01/23"
 
 
 ##################
@@ -11,6 +11,7 @@ if sys.platform.startswith("darwin"):
     show_popup = True
 else:
     show_popup = False
+
 
 from start_window import check_if_database_exists
 # from worksheet_wizard import get_all_solution_pixels

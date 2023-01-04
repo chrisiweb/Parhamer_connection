@@ -1511,9 +1511,9 @@ def create_latex_string_ganze_zahlen(content, example):
 
 
 def create_latex_string_binomische_formeln(content, example, binoms_direction_index):
-    print(example)
+    # print(example)
     if binoms_direction_index==3:
-        print(example[0])
+        # print(example[0])
         aufgabe = example[0]
 
         for _, solution in enumerate(example[1]):
@@ -1523,7 +1523,7 @@ def create_latex_string_binomische_formeln(content, example, binoms_direction_in
         # for loesung in example[1]:
         #     aufgabe = aufgabe.replace("\\rule{1cm}{0.3pt}", f"\\antwort[\\rule{{1cm}}{{0.3pt}}]{{{loesung}}}",1)
         temp_content = f"\\task {aufgabe}\n\n"
-        print(aufgabe)
+        # print(aufgabe)
 
     else:
         example_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", example[2])
