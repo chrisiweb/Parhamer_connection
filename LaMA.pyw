@@ -847,9 +847,9 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
                 )
                 try:
                     if extension == ".py":
-                        os.system("python3 {}".format(filename_update))
+                        os.system('python3 "{}"'.format(filename_update))
                     else:
-                        os.system("chmod 777 {}".format(filename_update))
+                        os.system('chmod 777 "{}"'.format(filename_update))
                         os.system(filename_update)
                     sys.exit(0)
                 except Exception as e:
