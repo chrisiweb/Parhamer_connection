@@ -7,10 +7,11 @@ __lastupdate__ = "01/23"
 ##################
 import sys
 
-if sys.platform.startswith("darwin"):
-    reload_ddb = True
-else:
-    reload_ddb = False
+# if sys.platform.startswith("darwin"):
+#     reload_ddb = True
+# else:
+#     reload_ddb = False
+reload_ddb = False
 
 show_popup = False
 

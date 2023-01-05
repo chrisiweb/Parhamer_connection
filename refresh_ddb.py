@@ -93,7 +93,7 @@ class Worker_RefreshDDB(QtCore.QObject):
 
 def refresh_ddb(self, auto_update=False):
     QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-
+    print(auto_update)
     if self.developer_mode_active == True:
         text = 'Änderungen überprüfen ...'
     elif auto_update == 'mac':
@@ -148,7 +148,7 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
 
     
 
-    elif auto_update != True:
+    elif auto_update == False:
         if self.reset_successfull == False:
             warning_window("Der neueste Stand der Datenbank konnte nicht heruntergeladen werden. Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.")
         else:
