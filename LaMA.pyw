@@ -8,7 +8,7 @@ __lastupdate__ = "01/23"
 import sys
 
 if sys.platform.startswith("darwin"):
-    relaod_ddb = True
+    reload_ddb = True
 else:
     reload_ddb = False
 

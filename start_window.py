@@ -72,7 +72,6 @@ class Ui_StartWindow(object):
     def setupUi(self, StartWindow, reload_dbb):
         self.StartWindow = StartWindow
         StartWindow.setObjectName("StartWindow")
-        StartWindow.setWindowTitle("Herzlich Willkommen bei LaMA!")
         gridlayout = QGridLayout()
 
         gridlayout.setObjectName("gridlayout")
@@ -80,21 +79,13 @@ class Ui_StartWindow(object):
 #         gridLayout = create_new_gridlayout(self.StartWindow)
         label_1 = QLabel(self.StartWindow)
         label_1.setObjectName("label_1")
-
         if reload_dbb == True:
+            StartWindow.setWindowTitle("Datenbank erneuern")
             text = """<b>Augrund einer Änderung der Datenbank muss diese neu heruntergeladen werden.</b><br><br><br>
 
             Sollten dabei Problem auftreten, melden Sie sich bitte unter: lama.helpme@gmail.com<br>"""
-
-            msg = QMessageBox()
-            msg.setWindowTitle("Datenbank erneuern")
-            msg.setIcon(QMessageBox.Information)
-            msg.setText(text)
-            msg.setStandardButtons(QMessageBox.Ok)
-            msg.accepted.connect(self.start_download)
-            msg.exec_()
-               
         else:
+            StartWindow.setWindowTitle("Herzlich Willkommen bei LaMA!")
             text = """
 
                 **    **
@@ -113,26 +104,32 @@ class Ui_StartWindow(object):
                     ****                          ****                         Möchten Sie die Konfiguration beginnen und die Datenbank herunterladen?
 
                 """
-                
-            label_1.setText(text)
-            gridlayout.addWidget(label_1, 0,0,1,1)
-            StartWindow.setLayout(gridlayout)
+            
+        label_1.setText(text)
+        gridlayout.addWidget(label_1, 0,0,1,1)
+        StartWindow.setLayout(gridlayout)
 
 
-            self.buttonBox_welcome = QDialogButtonBox(self.StartWindow)
+        self.buttonBox_welcome = QDialogButtonBox(self.StartWindow)
+        if reload_dbb == True:
+           self.buttonBox_welcome.setStandardButtons(
+                QDialogButtonBox.Ok
+            )        
+        else:
             self.buttonBox_welcome.setStandardButtons(
                 QDialogButtonBox.Ok | QDialogButtonBox.Cancel
             )
-
-            # buttonS = self.buttonBox_titlepage.button(QDialogButtonBox.Save)
-            # buttonS.setText('Speichern')
             buttonX = self.buttonBox_welcome.button(QDialogButtonBox.Cancel)
             buttonX.setText("Abbrechen")
-            self.buttonBox_welcome.setObjectName("buttonBox_variation")
             self.buttonBox_welcome.rejected.connect(self.cancel_pressed)
-            self.buttonBox_welcome.accepted.connect(self.start_download)
 
-            gridlayout.addWidget(self.buttonBox_welcome, 1,0,1,1)
+        # buttonS = self.buttonBox_titlepage.button(QDialogButtonBox.Save)
+        # buttonS.setText('Speichern')
+
+        self.buttonBox_welcome.setObjectName("buttonBox_variation")
+        self.buttonBox_welcome.accepted.connect(self.start_download)
+
+        gridlayout.addWidget(self.buttonBox_welcome, 1,0,1,1)
 
     def cancel_pressed(self):
         sys.exit()
@@ -155,7 +152,7 @@ class Ui_StartWindow(object):
             # download_successfull = True
 
             if worker.download_successfull == True:                
-                text = "Die Datenbank wurde erfolgreich heruntergeladen. LaMA kann ab sofort verwendet werden!"
+                text = "Die Datenbank wurde erfolgreich heruntergeladen.\n\nLaMA kann ab sofort verwendet werden!"
                 msg = QMessageBox()
                 msg.setWindowFlags(Qt.Dialog | Qt.CustomizeWindowHint | Qt.WindowTitleHint)
                 msg.setWindowTitle("Datenbank heruntergeladen")
@@ -215,6 +212,7 @@ class Ui_StartWindow(object):
     #             continue                       
     
         print("LaMA wird gestartet ...")
+
         self.StartWindow.accept()
 
 
