@@ -69,7 +69,7 @@ class Ui_StartWindow(object):
     # def __init__(self):
     #     if os.path.isdir(database):
 
-    def setupUi(self, StartWindow):
+    def setupUi(self, StartWindow, reload_dbb):
         self.StartWindow = StartWindow
         StartWindow.setObjectName("StartWindow")
         StartWindow.setWindowTitle("Herzlich Willkommen bei LaMA!")
@@ -81,44 +81,58 @@ class Ui_StartWindow(object):
         label_1 = QLabel(self.StartWindow)
         label_1.setObjectName("label_1")
 
-        text = """
+        if reload_dbb == True:
+            text = """<b>Augrund einer Änderung der Datenbank muss diese neu heruntergeladen werden.</b><br><br><br>
 
-            **    **
-            **    **                                                          Herzlich Willkommen! Es freut uns sehr, dass Sie sich für das Programm LaMA interessieren!
-    **********                                                                             
-    **********
-    **********                                                                                                                             
-                ****                                                          LaMA ist eine Open-Source Aufgaben-Datenbank, die Mathematiklehrer\xb7innen bei der    
-                ****                            ***                       
-                ****                            ***                        Erstellung von Schularbeiten, Grundkompetenzchecks, Übungsblättern usw. unterstützen soll.
-                *********************                    
-                *********************                                                          
-                *********************                        
-                ****                          ****                         Um starten zu können, muss LaMA zu Beginn konfiguriert werden. Dazu muss die Aufgabendatenbank heruntergeladen werden.
-                ****                          ****                           
-                ****                          ****                         Möchten Sie die Konfiguration beginnen und die Datenbank herunterladen?
+            Sollten dabei Problem auftreten, melden Sie sich bitte unter: lama.helpme@gmail.com<br>"""
 
-            """
+            msg = QMessageBox()
+            msg.setWindowTitle("Datenbank erneuern")
+            msg.setIcon(QMessageBox.Information)
+            msg.setText(text)
+            msg.setStandardButtons(QMessageBox.Ok)
+            msg.accepted.connect(self.start_download)
+            msg.exec_()
+               
+        else:
+            text = """
+
+                **    **
+                **    **                                                          Herzlich Willkommen! Es freut uns sehr, dass Sie sich für das Programm LaMA interessieren!
+        **********                                                                             
+        **********
+        **********                                                                                                                             
+                    ****                                                          LaMA ist eine Open-Source Aufgaben-Datenbank, die Mathematiklehrer\xb7innen bei der    
+                    ****                            ***                       
+                    ****                            ***                        Erstellung von Schularbeiten, Grundkompetenzchecks, Übungsblättern usw. unterstützen soll.
+                    *********************                    
+                    *********************                                                          
+                    *********************                        
+                    ****                          ****                         Um starten zu können, muss LaMA zu Beginn konfiguriert werden. Dazu muss die Aufgabendatenbank heruntergeladen werden.
+                    ****                          ****                           
+                    ****                          ****                         Möchten Sie die Konfiguration beginnen und die Datenbank herunterladen?
+
+                """
                 
-        label_1.setText(text)
-        gridlayout.addWidget(label_1, 0,0,1,1)
-        StartWindow.setLayout(gridlayout)
+            label_1.setText(text)
+            gridlayout.addWidget(label_1, 0,0,1,1)
+            StartWindow.setLayout(gridlayout)
 
 
-        self.buttonBox_welcome = QDialogButtonBox(self.StartWindow)
-        self.buttonBox_welcome.setStandardButtons(
-            QDialogButtonBox.Ok | QDialogButtonBox.Cancel
-        )
+            self.buttonBox_welcome = QDialogButtonBox(self.StartWindow)
+            self.buttonBox_welcome.setStandardButtons(
+                QDialogButtonBox.Ok | QDialogButtonBox.Cancel
+            )
 
-        # buttonS = self.buttonBox_titlepage.button(QDialogButtonBox.Save)
-        # buttonS.setText('Speichern')
-        buttonX = self.buttonBox_welcome.button(QDialogButtonBox.Cancel)
-        buttonX.setText("Abbrechen")
-        self.buttonBox_welcome.setObjectName("buttonBox_variation")
-        self.buttonBox_welcome.rejected.connect(self.cancel_pressed)
-        self.buttonBox_welcome.accepted.connect(self.start_download)
+            # buttonS = self.buttonBox_titlepage.button(QDialogButtonBox.Save)
+            # buttonS.setText('Speichern')
+            buttonX = self.buttonBox_welcome.button(QDialogButtonBox.Cancel)
+            buttonX.setText("Abbrechen")
+            self.buttonBox_welcome.setObjectName("buttonBox_variation")
+            self.buttonBox_welcome.rejected.connect(self.cancel_pressed)
+            self.buttonBox_welcome.accepted.connect(self.start_download)
 
-        gridlayout.addWidget(self.buttonBox_welcome, 1,0,1,1)
+            gridlayout.addWidget(self.buttonBox_welcome, 1,0,1,1)
 
     def cancel_pressed(self):
         sys.exit()
@@ -204,7 +218,7 @@ class Ui_StartWindow(object):
         self.StartWindow.accept()
 
 
-def check_if_database_exists():  
+def check_if_database_exists(reload_ddb = False):  
     config_file = os.path.join(database, "_config", "config.yml")
 
     if not os.path.isfile(config_file):
@@ -218,7 +232,7 @@ def check_if_database_exists():
         )
         Dialog.setWindowFlags(Qt.Dialog | Qt.CustomizeWindowHint | Qt.WindowTitleHint)
         ui = Ui_StartWindow()
-        ui.setupUi(Dialog)
+        ui.setupUi(Dialog, reload_ddb)
         Dialog.show()
 
         app.exec()

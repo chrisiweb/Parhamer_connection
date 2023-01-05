@@ -8,14 +8,16 @@ __lastupdate__ = "01/23"
 import sys
 
 if sys.platform.startswith("darwin"):
-    show_popup = True
+    relaod_ddb = True
 else:
-    show_popup = False
+    reload_ddb = False
+
+show_popup = False
 
 
 from start_window import check_if_database_exists
 # from worksheet_wizard import get_all_solution_pixels
-check_if_database_exists()
+check_if_database_exists(reload_ddb)
 
 
 from git_sync import git_reset_repo_to_origin
