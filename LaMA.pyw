@@ -453,10 +453,10 @@ Sollten dabei Problem auftreten, melden Sie sich bitte unter: lama.helpme@gmail.
                 )
             )
 
-            if re.search("[_&]", os.path.basename(self.chosen_path_schularbeit_erstellen[0]))!=None:
+            if re.search("[&]", os.path.basename(self.chosen_path_schularbeit_erstellen[0]))!=None:
                 self.saved_file_path = os.path.join(self.chosen_path_schularbeit_erstellen[0],self.chosen_path_schularbeit_erstellen[1])
                 warning_window("Der Dateinamen ist ungültig!",
-                    "Folgende Sonderzeichen sind nicht erlaubt: _&")
+                    "Folgende Sonderzeichen sind nicht erlaubt: &")
             else:
                 break
 
