@@ -252,9 +252,7 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
             datum_text = ""
 
         if dict_titlepage["klasse"] == True:
-            klasse = "\\textsc{{\Large Klasse {0}}} \\\ [1cm] \n\n".format(
-                self.dict_all_infos_for_file["data_gesamt"]["Klasse"]
-            )
+            klasse = f"\\textsc{{\Large Klasse {klasse}}} \\\ [1cm] \n\n"
         else:
             klasse = ""
 
