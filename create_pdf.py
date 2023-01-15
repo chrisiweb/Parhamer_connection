@@ -9,19 +9,21 @@ import subprocess
 
 
 from config_start import path_programm, path_localappdata_lama, lama_settings_file
-from config import (
-    config_file,
-    config_loader,
-    logo_path,
-    is_empty,
-    shorten_gk,
-)
+from config import *
+# (
+#     config_file,
+#     config_loader,
+#     logo_path,
+#     is_empty,
+#     shorten_gk,
+
+# )
 import json
 import shutil
 from datetime import date, timedelta 
 from time import sleep
 from refresh_ddb import refresh_ddb, modification_date
-from sort_items import order_gesammeltedateien
+from sort_items import order_gesammeltedateien, sortTopics
 from standard_dialog_windows import critical_window,question_window, warning_window
 from processing_window import working_window_latex_output
 import webbrowser
@@ -172,6 +174,22 @@ def collect_suchbegriffe(self):
 
 
     if self.chosen_program == "cria":
+        # def sortTopics(item):
+        #     # print(item)
+        #     for index_1, klasse in enumerate(list_klassen):
+        #         # print(f"INDEX 1: {index_1}")
+        #         dict_klasse = eval("dict_{}".format(klasse))
+        #         for index_2, topic in enumerate(dict_klasse):
+        #             # print(index_2)
+        #             # print(dict_klasse[topic])
+
+        #             for index_3, subtopic in enumerate(dict_klasse[topic]):
+        #                 if item == f"{topic}.{subtopic}":
+        #                     # print('TRUE')
+        #                     return [index_1, index_2, index_3]
+          
+            
+
         suchbegriffe['klasse'].append(None)
         for all in self.dict_chosen_topics.values():
             thema_string  = all[1] + "." + all[2]
@@ -179,6 +197,8 @@ def collect_suchbegriffe(self):
             if all[0] not in suchbegriffe['klasse']:
                 suchbegriffe['klasse'].append(all[0])
 
+        # print(suchbegriffe['themen'])
+        suchbegriffe['themen'].sort(key=sortTopics)
             
 
 
@@ -418,7 +438,7 @@ def check_if_suchbegriffe_is_empty(suchbegriffe, language_index):
 def prepare_tex_for_pdf(self):
     QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
     suchbegriffe = collect_suchbegriffe(self)
-
+    # print(suchbegriffe)
     response = check_if_suchbegriffe_is_empty(suchbegriffe, self.combobox_translation.currentIndex())
     if response == True:
         QApplication.restoreOverrideCursor()
@@ -436,19 +456,45 @@ def prepare_tex_for_pdf(self):
     # for all in _list:
     #     gesammeltedateien.append(all)
 
+
+
     if _database_addon != None:
         list_3 = search_in_database(self, current_program,_database_addon ,suchbegriffe)
         for all in list_3:
             list_2.append(all)
    
+    # for all in list_2:
+    #     print(f"{all['name']}: {all['themen']}")
+
+
+
+    # print(list_2)
 
     list_2.sort(key=order_gesammeltedateien)
-    
-    gesammeltedateien = list_1 + list_2
 
+        #     # print(item)
+        #     for index_1, klasse in enumerate(list_klassen):
+        #         # print(f"INDEX 1: {index_1}")
+        #         dict_klasse = eval("dict_{}".format(klasse))
+        #         for index_2, topic in enumerate(dict_klasse):
+        #             # print(index_2)
+        #             # print(dict_klasse[topic])
+
+        #             for index_3, subtopic in enumerate(dict_klasse[topic]):
+        #                 if item == f"{topic}.{subtopic}":
+        #                     # print('TRUE')
+        #                     return [index_1, index_2, index_3]
+
+
+        # print(f"{all['name']}: {all['themen']}")
+    # for all in list_2:
+    #     print(f"{all['name']}: {all['themen']}")
+
+    gesammeltedateien = list_1 + list_2
+    
     # print(suchbegriffe)
     # print(gesammeltedateien)
-    # return
+    return
     ######################################################
     ########### work around ####################
     #########################################

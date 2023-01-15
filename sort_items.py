@@ -1,7 +1,7 @@
 import enum
 import re
 import os
-from config import dict_gk, zusatzthemen_beschreibung
+from config import *
 
 
 def atoi(text):
@@ -44,7 +44,19 @@ def order_gesammeltedateien(text):
 
 
     elif typ == 'cria':
-        num = name.split('.')[-1]
+        thema = text['themen'][-1]
+        print(thema)
+        temp_list = []
+        for klasse in list_klassen:
+            dict_klasse = eval("dict_{}".format(klasse))
+            for topic in dict_klasse:
+                for subtopic in dict_klasse[topic]:
+                    temp_list.append(f"{topic}.{subtopic}")
+
+        print(temp_list)
+        index = temp_list.index(thema)
+        num = name
+        
         
     elif typ == 'lama_2':
         num = name
@@ -65,7 +77,7 @@ def order_gesammeltedateien(text):
         _list.append(int(split_number[1]))
     else:
         _list.append(int(num))
-
+    # print(_list)
     return _list
 
 
@@ -115,6 +127,22 @@ def lama_order(text):
         return 4
     else:
         return 5
+
+
+def sortTopics(item):
+    # print(item)
+    for index_1, klasse in enumerate(list_klassen):
+        # print(f"INDEX 1: {index_1}")
+        dict_klasse = eval("dict_{}".format(klasse))
+        for index_2, topic in enumerate(dict_klasse):
+            # print(index_2)
+            # print(dict_klasse[topic])
+
+            for index_3, subtopic in enumerate(dict_klasse[topic]):
+                if item == f"{topic}.{subtopic}":
+                    # print('TRUE')
+                    return [index_1, index_2, index_3]
+
 
 def typ2_order(text):
     number = re.split("section{| - ", text)[1]
