@@ -450,7 +450,7 @@ def prepare_tex_for_pdf(self):
 
 
     list_1 = search_in_database(self, current_program,_local_database ,suchbegriffe)
-    list_1.sort(key=order_gesammeltedateien)
+    list_1.sort(key=lambda text: order_gesammeltedateien(text, current_program))
     
     list_2 = search_in_database(self, current_program,_database ,suchbegriffe)
     # for all in _list:
@@ -470,8 +470,8 @@ def prepare_tex_for_pdf(self):
 
     # print(list_2)
 
-    list_2.sort(key=order_gesammeltedateien)
-
+    list_2.sort(key= lambda text: order_gesammeltedateien(text, current_program))
+    # print(list_2)
         #     # print(item)
         #     for index_1, klasse in enumerate(list_klassen):
         #         # print(f"INDEX 1: {index_1}")

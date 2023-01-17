@@ -21,8 +21,10 @@ def get_typ(string):
         return 'lama_2'
     
 
-def order_gesammeltedateien(text):
-    typ = get_typ(text['name'])
+def order_gesammeltedateien(text, typ):
+    
+    # typ = get_typ(text['name'])
+    # print(current_program) #lama_1, lama_2, cria
     name = text['name'].replace('i.','').replace('l.','')
     # print(text)
     # get_typ(text['name'])
@@ -53,7 +55,7 @@ def order_gesammeltedateien(text):
                 for subtopic in dict_klasse[topic]:
                     temp_list.append(f"{topic}.{subtopic}")
 
-        print(temp_list)
+        # print(temp_list)
         index = temp_list.index(thema)
         num = name
         

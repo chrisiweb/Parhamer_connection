@@ -347,7 +347,7 @@ def prepare_tex_for_pdf(self):
 
 
     list_1 = search_in_database(self, current_program,_local_database ,suchbegriffe)
-    list_1.sort(key=order_gesammeltedateien)
+    list_1.sort(key=lambda text: order_gesammeltedateien(text, current_program))
     
     list_2 = search_in_database(self, current_program,_database ,suchbegriffe)
     # for all in _list:
@@ -359,7 +359,7 @@ def prepare_tex_for_pdf(self):
             list_2.append(all)
    
 
-    list_2.sort(key=order_gesammeltedateien)
+    list_2.sort(key=lambda text: order_gesammeltedateien(text, current_program))
     
     gesammeltedateien = list_1 + list_2
 
