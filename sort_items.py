@@ -21,6 +21,16 @@ def get_typ(string):
         return 'lama_2'
     
 
+def sort_variation(num, _list):
+    if re.match("[0-9]+\[.+\]", num):
+        split_number = re.split("\[|\]", num)
+        _list.append(int(split_number[0]))
+        _list.append(int(split_number[1]))
+    else:
+        _list.append(int(num))
+    
+    return _list
+
 def order_gesammeltedateien(text, typ):
     
     # typ = get_typ(text['name'])
@@ -47,7 +57,7 @@ def order_gesammeltedateien(text, typ):
 
     elif typ == 'cria':
         thema = text['themen'][-1]
-        print(thema)
+        # print(thema)
         temp_list = []
         for klasse in list_klassen:
             dict_klasse = eval("dict_{}".format(klasse))
@@ -56,8 +66,14 @@ def order_gesammeltedateien(text, typ):
                     temp_list.append(f"{topic}.{subtopic}")
 
         # print(temp_list)
-        index = temp_list.index(thema)
-        num = name
+        try:
+            num = temp_list.index(thema)
+        except ValueError:
+            num = 0
+
+        _list = sort_variation(num, _list)
+        print(_list)
+        # num = name
         
         
     elif typ == 'lama_2':
@@ -73,12 +89,7 @@ def order_gesammeltedateien(text, typ):
         _list.append(1)
         # name = text['name']
 
-    if re.match("[0-9]+\[.+\]", num):
-        split_number = re.split("\[|\]", num)
-        _list.append(int(split_number[0]))
-        _list.append(int(split_number[1]))
-    else:
-        _list.append(int(num))
+    _list = sort_variation(num, _list)
     # print(_list)
     return _list
 
