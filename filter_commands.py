@@ -129,8 +129,8 @@ def filter_items(self, table_lama, typ, list_mode, filter_string, line_entry, kl
                 & (_file_.name.test(string_included_cria))
             )
 
-    filtered_items.sort(key=lambda text: order_gesammeltedateien(text, typ))
-
+    filtered_items.sort(key=lambda text: order_gesammeltedateien(text, typ, cria_plain_number_order=True))
+    print(filter_items)
     return filtered_items
 
 def get_drafts(table_lama):

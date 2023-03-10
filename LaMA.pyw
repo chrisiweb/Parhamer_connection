@@ -7110,7 +7110,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 for all in filtered_items_addon:
                     filtered_items.append(all)
 
-            filtered_items.sort(key=lambda text: order_gesammeltedateien(text, typ))
+            filtered_items.sort(key=lambda text: order_gesammeltedateien(text, typ, cria_plain_number_order=True))
 
             self.add_items_to_listwidget(listWidget, filtered_items)
 
