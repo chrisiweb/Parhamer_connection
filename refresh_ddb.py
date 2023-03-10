@@ -93,7 +93,7 @@ class Worker_RefreshDDB(QtCore.QObject):
 
 def refresh_ddb(self, auto_update=False):
     QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-    print(auto_update)
+    # print(auto_update)
     if self.developer_mode_active == True:
         text = 'Änderungen überprüfen ...'
     elif auto_update == 'mac':
