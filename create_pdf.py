@@ -494,7 +494,7 @@ def prepare_tex_for_pdf(self):
     
     # print(suchbegriffe)
     # print(gesammeltedateien)
-    return
+    # return
     ######################################################
     ########### work around ####################
     #########################################

@@ -62,20 +62,21 @@ def order_gesammeltedateien(text, typ, cria_plain_number_order=False):
         else:
             num = name  
             thema = text['themen'][-1]
-            # print(thema)
             temp_list = []
             for klasse in list_klassen:
+                dict_klasse_name = eval("dict_{}_name".format(klasse))
                 dict_klasse = eval("dict_{}".format(klasse))
-                for topic in dict_klasse:
+                for topic in dict_klasse_name:
                     for subtopic in dict_klasse[topic]:
                         temp_list.append(f"{topic}.{subtopic}")
 
-            print(temp_list)
+            # print(temp_list)
             try:
-                num = temp_list.index(thema)
+                thema_index = temp_list.index(thema)
             except ValueError:
-                num = 0
-            print(num)
+                thema_index = 0
+            # print(num)
+            
         # # print(_list)
         # _list = sort_variation(num, _list)
         # print(_list)
@@ -93,10 +94,13 @@ def order_gesammeltedateien(text, typ, cria_plain_number_order=False):
         _list.append(2)
     else:
         _list.append(1)
-        # name = text['name']
 
-    _list = sort_variation(num, _list)
+    if typ == 'cria' and cria_plain_number_order == False:
+        _list.append(thema_index)
+
     # print(_list)
+    _list = sort_variation(num, _list)
+    print(_list)
     return _list
 
 
