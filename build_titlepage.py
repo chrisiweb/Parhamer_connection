@@ -79,7 +79,7 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
         klasse = self.dict_all_infos_for_file["data_gesamt"]["Klasse"]
     
     klasse = klasse.replace("_","\_")
-    print(klasse)
+    #print(klasse)
 
     if (
         self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]

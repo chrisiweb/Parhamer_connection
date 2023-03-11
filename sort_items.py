@@ -100,7 +100,7 @@ def order_gesammeltedateien(text, typ, cria_plain_number_order=False):
 
     # print(_list)
     _list = sort_variation(num, _list)
-    print(_list)
+    #print(_list)
     return _list
 
 
