@@ -9,7 +9,12 @@ Create App for Mac
 	
 	pyinstaller -F LaMA.pyw --exclude-module tkinter
 
-	
+	python3 -m PyInstaller -F LaMA.pyw
+
 
 Maybe working someday:
 pyinstaller -F -w -i icon_lama.icns LaMA.pyw --exclude-module tkinter
+
+If module not found:
+
+Enter in terminal: pip3.11 install pyqt5 v
