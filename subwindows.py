@@ -945,14 +945,20 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.developer_mode_active = developer_mode_active
         if typ==2:
             self.aufgabenstellung_split_text = aufgabenstellung_split_text
-            self.hide_show_items_split_text = prepare_content_for_hide_show_items(
-                aufgabenstellung_split_text
-            )
+            try:
+                self.hide_show_items_split_text = prepare_content_for_hide_show_items(
+                    aufgabenstellung_split_text
+                )
+            except TypeError:
+                information_window("Aufgrund einer fehlerhaften Formatierung, kann diese Typ2-Aufgabe nur indivduell bearbeitet werden.")
+                self.hide_show_items_split_text = None
             # self.list_sage_ausgleichspunkte_chosen = list_sage_ausgleichspunkte_chosen
             self.list_sage_hide_show_items_chosen = list_sage_hide_show_items_chosen
             # print(sage_individual_change)
             # self.dict_widget_variables_ausgleichspunkte = {}
             self.dict_widget_variables_hide_show_items = {}
+        else: 
+            self.hide_show_items_split_text = None
 
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
@@ -976,15 +982,15 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.horizontalLayoutHeader.addWidget(self.combobox_edit)
         # self.gridlayout_titlepage.setColumnStretch(1,0)
         # self.gridlayout_titlepage.addItem(QtWidgets.QSpacerItem(10, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum),0,3,1,1)
-        if typ == 2:
+        if typ == 2 and self.hide_show_items_split_text != None:
             # self.combobox_edit.addItem("Ausgleichspunkte anpassen")
             self.combobox_edit.addItem("Aufgabenstellungen ein-/ausblenden")
         self.combobox_edit.addItem("Individuell bearbeiten")
-        if typ !=2:
+        if typ !=2 or self.hide_show_items_split_text == None:
             self.combobox_edit.setEnabled(False)
             # self.combobox_edit.setStyleSheet("color: black")
 
-        if typ ==2:
+        if typ ==2 and self.hide_show_items_split_text != None:
             # self.combobox_edit.setCurrentIndex(0)
             self.scrollArea = QtWidgets.QScrollArea(Dialog)
             self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
@@ -1045,9 +1051,9 @@ class Ui_Dialog_ausgleichspunkte(object):
         # self.plainTextEdit_content_changed.verticalScrollBar().setValue(0)
         self.gridlayout_titlepage.addWidget(self.plainTextEdit_content, 1,0,1,6)
         self.plainTextEdit_content.setUndoRedoEnabled(True)
-        if typ == 2:
-            self.plainTextEdit_content.hide()
-            self.combobox_edit.currentIndexChanged.connect(lambda: self.combobox_edit_changed())
+        # if typ == 2:
+        #     self.plainTextEdit_content.hide()
+        #     self.combobox_edit.currentIndexChanged.connect(lambda: self.combobox_edit_changed())
 
 
         self.button_preview = create_new_button(Dialog, "Vorschau", self.button_preview_pressed)
@@ -1056,22 +1062,22 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.button_preview.setShortcut("Ctrl+Return")
         self.button_preview.setToolTip("Strg+Enter")
         self.gridlayout_titlepage.addWidget(self.button_preview, 3, 0, 1,1)
-        if typ ==2:
-            self.button_preview.hide()
+        # if typ ==2:
+        #     self.button_preview.hide()
 
         self.button_restore_default = create_new_button(Dialog, "Original wiederherstellen", partial(self.button_restore_default_pressed,aufgabe, chosen_program))
         self.button_restore_default.setIcon(QIcon(get_icon_path('archive.svg')))
         self.button_restore_default.setSizePolicy(SizePolicy_maximum)
         self.gridlayout_titlepage.addWidget(self.button_restore_default, 3,1,1,1)
-        if typ ==2:
-            self.button_restore_default.hide()
+        # if typ ==2:
+        #     self.button_restore_default.hide()
 
         self.button_save_edit = create_new_button(Dialog, "Änderung speichern", partial(self.button_save_edit_pressed_individual_changes, aufgabe, chosen_program, language))
         self.button_save_edit.setIcon(QIcon(get_icon_path('save.svg')))
         self.button_save_edit.setSizePolicy(SizePolicy_fixed)
         self.gridlayout_titlepage.addWidget(self.button_save_edit, 3,2,1,1)
 
-        if developer_mode_active == False or typ == 2:
+        if developer_mode_active == False or (typ ==2 and self.hide_show_items_split_text != None):
             self.button_save_edit.hide()
 
 
@@ -1081,7 +1087,11 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.gridlayout_titlepage.addWidget(self.button_save, 3, 2, 1,1)
         ### Variationsbutton ausblenden, da derzeit nicht funktionsfähig
         self.button_save.hide()
-        if typ ==2:
+        if typ ==2 and self.hide_show_items_split_text != None:
+            self.plainTextEdit_content.hide()
+            self.combobox_edit.currentIndexChanged.connect(lambda: self.combobox_edit_changed())
+            self.button_preview.hide()
+            self.button_restore_default.hide()
             self.button_save.hide()
         ########################################################################
 
@@ -1140,7 +1150,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         self.button_zoom_out.setShortcut("Ctrl+-")
         self.horizontalLayoutHeader.addWidget(self.button_zoom_out)
 
-        if typ==2:        
+        if typ==2 and self.hide_show_items_split_text != None:        
             self.button_undo.hide()
             self.button_redo.hide()
             self.button_zoom_in.hide()
@@ -1150,8 +1160,8 @@ class Ui_Dialog_ausgleichspunkte(object):
 
         QMetaObject.connectSlotsByName(self.Dialog)
 
-        if self.sage_individual_change[key] != None:
-            self.combobox_edit.setCurrentIndex(1)
+        # if self.sage_individual_change[key] != None:
+        #     self.combobox_edit.setCurrentIndex(1)
         # if typ == 2:
         #     if not is_empty(list_sage_hide_show_items_chosen):
         #         self.combobox_edit.setCurrentIndex(0)
@@ -1584,7 +1594,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         typ = get_aufgabentyp(chosen_program, aufgabe)
         aufgabe_total = get_aufgabe_total(aufgabe, typ)
 
-        if self.combobox_edit.currentIndex() == 1 or self.typ != 2:
+        if self.combobox_edit.currentIndex() == 1 or self.hide_show_items_split_text==None:
             if self.language == "DE":
                 key = 'content'
                 index = 0
