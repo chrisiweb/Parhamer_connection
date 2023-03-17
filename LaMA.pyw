@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-__lastupdate__ = "01/23"
+__lastupdate__ = "03/23"
 
 
 ##################
@@ -1909,7 +1909,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.combobox_beurteilung.setEnabled(False)
             self.groupBox_notenschl.setEnabled(False)
             # self.groupBox_beurteilungsraster.setEnabled(False)
-            self.groupBox_klasse_sage.setTitle("Klasse")
+            # self.groupBox_klasse_sage.setTitle("Klasse")
+            self.labelKlasse_sage.setPixmap(QPixmap(get_icon_path("users.svg")))
+            self.widgetklasse_sage.setToolTip("Klasse")
             self.pushButton_titlepage.setEnabled(False)
             self.comboBox_at_sage.setEnabled(True)
             self.pushButton_titlepage.setText("Titelblatt anpassen")
@@ -1925,7 +1927,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.widgetNummer.setEnabled(False)
             self.spinBox_nummer_setvalue = self.spinBox_nummer.value()
             self.spinBox_nummer.setValue(0)
-            self.groupBox_klasse_sage.setTitle("Überschrift")
+            self.labelKlasse_sage.setPixmap(QPixmap(get_icon_path("edit-3.svg")))
+            self.widgetklasse_sage.setToolTip("Überschrift")
+            # self.groupBox_klasse_sage.setTitle("Überschrift")
         else:
             self.combobox_beurteilung.setEnabled(True)
             self.groupBox_notenschl.setEnabled(True)
@@ -1933,7 +1937,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.pushButton_titlepage.setEnabled(True)
             self.comboBox_at_sage.setEnabled(True)
             self.pushButton_titlepage.setText("Titelblatt anpassen")
-            self.groupBox_klasse_sage.setTitle("Klasse")
+            self.labelKlasse_sage.setPixmap(QPixmap(get_icon_path("users.svg")))
+            self.widgetklasse_sage.setToolTip("Klasse")
+            # self.groupBox_klasse_sage.setTitle("Klasse")
             if self.comboBox_pruefungstyp.currentText() == "Benutzerdefiniert":
                 self.comboBox_pruefungstyp.setEditable(True)
                 self.comboBox_pruefungstyp.lineEdit().selectAll()
@@ -2238,11 +2244,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             elif mode == "editor":
                 self.chosen_file_to_edit = ui.chosen_variation
                 _file_ = self.chosen_file_to_edit
+                self.pushButton_save.hide()
                 if self.chosen_file_to_edit != None:
                     self.button_choose_file.setText(
                         "Gewählte Aufgabe: {}".format(self.chosen_file_to_edit.upper())
                     )
-                    self.pushButton_save.hide()
                 else:
                     self.suchfenster_reset(True)
                     self.reset_edit_file()
@@ -5136,6 +5142,16 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     def action_add_file(self):
         self.update_gui("widgets_create")
+        try:
+            if self.creator_file_mode == 'edit':
+                self.suchfenster_reset()
+                # self.reset_variation()
+        except AttributeError:
+            pass
+        
+        self.creator_file_mode = 'new'
+        self.enable_widgets_editor(True)
+
         # try:
         #     print(self.chosen_variation)
         # except AttributeError:
@@ -5144,10 +5160,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # self.suchfenster_reset()
         # self.reset_variation()
         # self.reset_edit_file()
-        self.enable_widgets_editor(True)
+        
 
     def action_edit_files(self):
         self.update_gui("widgets_edit")
+
+       
+        self.creator_file_mode = 'edit'
         # try:
         #     if self.chosen_file_to_edit == None:
         #         self.enable_widgets_editor(False)

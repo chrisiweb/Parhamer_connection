@@ -1125,16 +1125,29 @@ def setup_stackSage(self):
 
     self.gridLayout_SageMenu.addWidget(self.widgetName, 2,0,1,1, QtCore.Qt.AlignLeft)
 
-    self.groupBox_klasse_sage = QtWidgets.QGroupBox(self.widget_SageMenu)
-    self.groupBox_klasse_sage.setObjectName("groupBox_klasse_sage")
-    self.groupBox_klasse_sage.setTitle("Klasse")
-    self.groupBox_klasse_sage.setMaximumWidth(80)
-    self.verticalLayout_4 = create_new_verticallayout(self.groupBox_klasse_sage)
-    self.verticalLayout_4.setContentsMargins(0,5,0,0)
-    self.lineEdit_klasse_sage = QtWidgets.QLineEdit(self.groupBox_klasse_sage)
-    self.lineEdit_klasse_sage.setObjectName("lineEdit_klasse_sage")
-    self.verticalLayout_4.addWidget(self.lineEdit_klasse_sage)
-    self.gridLayout_SageMenu.addWidget(self.groupBox_klasse_sage,0,1,2,1)
+
+    self.widgetklasse_sage = QtWidgets.QWidget(self.widget_SageMenu)
+    self.widgetklasse_sage.setToolTip("Klasse")
+    self.horizontalLayout_widgetklasse_sage = create_new_horizontallayout(self.widgetklasse_sage)
+    self.horizontalLayout_widgetklasse_sage.setContentsMargins(0,0,0,0)
+
+    self.labelKlasse_sage = create_new_label_icon(self.widgetklasse_sage, "users.svg", icon_size=(15,15))
+    self.horizontalLayout_widgetklasse_sage.addWidget(self.labelKlasse_sage)
+
+    self.lineEdit_klasse_sage = create_new_lineedit(self.widgetklasse_sage, "")
+    self.horizontalLayout_widgetklasse_sage.addWidget(self.lineEdit_klasse_sage)
+
+    self.gridLayout_SageMenu.addWidget(self.widgetklasse_sage, 0,1,1,1, QtCore.Qt.AlignLeft)
+    # self.groupBox_klasse_sage = QtWidgets.QGroupBox(self.widget_SageMenu)
+    # self.groupBox_klasse_sage.setObjectName("groupBox_klasse_sage")
+    # self.groupBox_klasse_sage.setTitle("Klasse")
+    # self.groupBox_klasse_sage.setMaximumWidth(80)
+    # self.verticalLayout_4 = create_new_verticallayout(self.groupBox_klasse_sage)
+    # self.verticalLayout_4.setContentsMargins(0,5,0,0)
+    # self.lineEdit_klasse_sage = QtWidgets.QLineEdit(self.groupBox_klasse_sage)
+    # self.lineEdit_klasse_sage.setObjectName("lineEdit_klasse_sage")
+    # self.verticalLayout_4.addWidget(self.lineEdit_klasse_sage)
+    # self.gridLayout_SageMenu.addWidget(self.groupBox_klasse_sage,0,1,2,1)
 
 
 

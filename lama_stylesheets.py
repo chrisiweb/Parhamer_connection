@@ -146,6 +146,10 @@ StyleSheet_application = """
         background-color: #F4F4F9; 
     }}
 
+    QLineEdit::disabled{{
+        background-color: #EBEBEB; 
+    }}
+
     QGroupBox {{
         border-color: #6E8784;
         border-width: 1px;
@@ -170,12 +174,18 @@ StyleSheet_application = """
         padding-bottom: 2px
     }}
 
+    QDateEdit::disabled {{
+        background-color: #EBEBEB;
+        color: #EBEBEB;          
+    }}
+    
     QCalendarWidget QWidget
     {{
         background-color: #F4F4F9;
         color: #2F4550;
     }} 
-    
+
+
     QCalendarWidget QTableView 
     {{
         background-color: #F4F4F9;
@@ -206,8 +216,13 @@ StyleSheet_application = """
         width: 50px;
     }}
 
+    
+    QSpinBox::disabled {{
+        background-color: #EBEBEB;
+        color: #EBEBEB
+    }}
     QPlainTextEdit:disabled {{
-        color: gray;
+        background-color: #EBEBEB;
     }}
 
     #filter_search {{
