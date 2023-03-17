@@ -668,7 +668,7 @@ class Ui_Dialog_variation(object):
             all_filtered_items = all_filtered_items + filtered_items
         
         # print(all_filtered_items)
-        all_filtered_items.sort(key=lambda text: order_gesammeltedateien(text, typ))
+        all_filtered_items.sort(key=lambda text: order_gesammeltedateien(text, typ, cria_plain_number_order=True))
 
         self.add_items_to_listwidget_creator(typ, all_filtered_items, local)
         QtWidgets.QApplication.restoreOverrideCursor()

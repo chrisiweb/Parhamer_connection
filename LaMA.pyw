@@ -1188,6 +1188,8 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
         self.cb_no_grade_tag.setChecked(False)
         self.button_language.setToolTip("Deutsch")
         self.button_language.setText("DE")
+        self.temporary_save_edit_plainText_deutsch = ""
+        self.temporary_save_edit_plainText_englisch = ""
 
     @report_exceptions
     def reset_sage(self, question_reset=True):
@@ -2198,7 +2200,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.reset_variation()
             if mode == "creator" or mode == "translation":
                 _file_ = ui.chosen_variation
-
                 if _file_ != None:
                     if mode == "creator":
                         self.chosen_variation = ui.chosen_variation
@@ -5135,6 +5136,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     def action_add_file(self):
         self.update_gui("widgets_create")
+        # try:
+        #     print(self.chosen_variation)
+        # except AttributeError:
+        #     print('pass')
+        #     pass
         # self.suchfenster_reset()
         # self.reset_variation()
         # self.reset_edit_file()
