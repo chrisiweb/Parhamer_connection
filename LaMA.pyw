@@ -5766,6 +5766,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     def btn_AB_pressed(self, button, aufgabe):
         self.dict_variablen_AB[aufgabe] = button.isChecked()
+        if button.isChecked()==True:
+            button.setIcon(QtGui.QIcon(get_icon_path("users.svg",color='ghostwhite')))
+        else:
+            button.setIcon(QtGui.QIcon(get_icon_path("users.svg")))
 
 
     @report_exceptions
@@ -6276,7 +6280,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             button_AB.setChecked(gruppe_AB)  
 
             self.dict_variablen_AB[aufgabe] = button_AB.isChecked()
-            button_AB.setIcon(QtGui.QIcon(get_icon_path("users.svg")))
+            if button_AB.isChecked()==True:
+                button_AB.setIcon(QtGui.QIcon(get_icon_path("users.svg",color='ghostwhite')))
+            else:
+                button_AB.setIcon(QtGui.QIcon(get_icon_path("users.svg")))
+            # button_AB.setIcon(QtGui.QIcon(get_icon_path("users.svg")))
             button_AB.clicked.connect(lambda: self.btn_AB_pressed(button_AB, aufgabe))
 
         else:

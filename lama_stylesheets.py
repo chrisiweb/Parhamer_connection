@@ -86,6 +86,14 @@ StyleSheet_application = """
         background-color: #F4F4F9;
     }}
 
+
+    QPushButton::checked {{
+        background-color: #2F4550;
+        color: #F4F4F9
+    }}
+    QPushButton::checked::disabled {{
+        background-color: #D6D6D6;
+    }}        
     QToolTip {{
         color: #F4F4F9; 
         background-color: #2F4550; 
