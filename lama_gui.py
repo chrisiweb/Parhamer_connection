@@ -1151,24 +1151,37 @@ def setup_stackSage(self):
 
 
 
-    self.groupBox_default_pkt = QtWidgets.QGroupBox(self.widget_SageMenu)
-    self.groupBox_default_pkt.setObjectName("groupBox_default_pkt")
-    self.groupBox_default_pkt.setTitle("Typ1 Standard")
-    self.groupBox_default_pkt.setMaximumWidth(80)
-    # self.groupBox_default_pkt.setMaximumSize(QtCore.QSize(120, 16777215))
-    self.verticalLayout_default_pkt = QtWidgets.QVBoxLayout(
-        self.groupBox_default_pkt
-    )
-    self.verticalLayout_default_pkt.setContentsMargins(0,5,0,0)
-    self.verticalLayout_default_pkt.setObjectName("verticalLayout_default_pkt")
-    self.spinBox_default_pkt = SpinBox_noWheel(self.groupBox_default_pkt)
+    self.widgetDefault_pkt = QtWidgets.QWidget(self.widget_SageMenu)
+    self.widgetDefault_pkt.setToolTip("Typ1 Standard")
+    self.horizontalLayout_default_pkt = create_new_horizontallayout(self.widgetDefault_pkt)
+    self.horizontalLayout_default_pkt.setContentsMargins(0,0,0,0)
+
+    # self.label_default_pkt_icon = create_new_label_icon(self.widgetDefault_pkt, "sliders.svg", icon_size=(15,15))
+    # self.horizontalLayout_default_pkt.addWidget(self.label_default_pkt_icon) 
+
+    self.label_default_pkt = create_new_label(self.widgetDefault_pkt, "Typ1 Standard:") 
+    self.horizontalLayout_default_pkt.addWidget(self.label_default_pkt)
+
+
+    # self.groupBox_default_pkt = QtWidgets.QGroupBox(self.widget_SageMenu)
+    # self.groupBox_default_pkt.setObjectName("groupBox_default_pkt")
+    # self.groupBox_default_pkt.setTitle("Typ1 Standard")
+    # self.groupBox_default_pkt.setMaximumWidth(80)
+    # # self.groupBox_default_pkt.setMaximumSize(QtCore.QSize(120, 16777215))
+    # self.verticalLayout_default_pkt = QtWidgets.QVBoxLayout(
+    #     self.groupBox_default_pkt
+    # )
+    # self.verticalLayout_default_pkt.setContentsMargins(0,0,0,0)
+    # self.verticalLayout_default_pkt.setObjectName("verticalLayout_default_pkt")
+    self.spinBox_default_pkt = SpinBox_noWheel(self.widgetDefault_pkt)
     # self.spinBox_default_pkt.setSizePolicy(SizePolicy_minimum_fixed)
     self.spinBox_default_pkt.setValue(1)
     self.spinBox_default_pkt.setToolTip("0 = Punkte ausblenden")
     self.spinBox_default_pkt.setObjectName("spinBox_default_pkt")
-    self.verticalLayout_default_pkt.addWidget(self.spinBox_default_pkt)
+    self.horizontalLayout_default_pkt.addWidget(self.spinBox_default_pkt)
+    # self.verticalLayout_default_pkt.addWidget(self.spinBox_default_pkt)
     self.spinBox_default_pkt.valueChanged.connect(self.update_default_pkt)
-    self.gridLayout_SageMenu.addWidget(self.groupBox_default_pkt,0,2,2,1)
+    self.gridLayout_SageMenu.addWidget(self.widgetDefault_pkt,1,1,1,1)
 
     self.gridLayout_SageMenu.setColumnStretch(3,1)
 

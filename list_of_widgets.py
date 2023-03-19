@@ -58,7 +58,7 @@ widgets_sage = [
     "self.comboBox_at_sage",
     "self.comboBox_gk",
     "self.comboBox_gk_num",
-    "self.groupBox_default_pkt",
+    # "self.groupBox_default_pkt",
 ]
 
 
