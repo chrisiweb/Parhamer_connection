@@ -1,59 +1,34 @@
-# -*- coding: utf-8 -*-
+from PyQt5.QtCore import QUrl
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
+from PyQt5.QtWebEngineWidgets import QWebEngineView
+from config import path_programm
+import os
+# from PyQt5.QtWebKitWidgets import QWebView
+import sys
 
-# Form implementation generated from reading ui file 'pyqt5_minimal.ui'
-#
-# Created by: PyQt5 UI code generator 5.12.1
-#
-# WARNING! All changes made in this file will be lost!
+class PDFViewer(QMainWindow):
+    def __init__(self):
+        super().__init__()
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-# from create_new_widgets import create_new_gridlayout, create_new_label
+        # Set the title and geometry of the main window
+        self.setWindowTitle("PDF Viewer")
+        self.setGeometry(100, 100, 800, 600)
 
+        # Create a QWebView widget to display the PDF file
+        self.web_view = QWebEngineView(self)
+        self.web_view.setGeometry(0, 0, 800, 600)
+        self.setCentralWidget(self.web_view)
 
-class Ui_WelcomeWindow(object):
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(273, 131)
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
-        self.centralwidget.setObjectName("centralwidget")
-        self.gridlayout = QtWidgets.QGridLayout(self.centralwidget)
-        self.gridlayout.setObjectName("gridlayout")
+    def open_pdf(self, file_path):
+        # Load the PDF file into the QWebView widget
+        self.web_view.load(QUrl.fromLocalFile(file_path))
 
-        self.label_1 = QtWidgets.QLabel(self.centralwidget)
-        self.label_1.setObjectName("label_1")
-        self.label_1.setText("""
-        Herzlich Willkommen!
-
-        
-        """)
-        # self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        # self.pushButton.setObjectName("pushButton")
-        # self.verticalLayout.addWidget(self.pushButton)
-        # self.gridlayout = create_new_gridlayout(self.centralwidget)
-
-        self.gridlayout.addWidget(self.label_1, 0,0,1,1)
-        # self.label_1  =create_new_label(self.centralwidget, "Test")
-
-        # self.gridlayout.addWidget(0,0,1,1)
-        MainWindow.setCentralWidget(self.centralwidget)
-        # self.statusbar = QtWidgets.QStatusBar(MainWindow)
-        # self.statusbar.setObjectName("statusbar")
-        # MainWindow.setStatusBar(self.statusbar)
-
-        # self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
-
-    # def retranslateUi(self, MainWindow):
-    #     _translate = QtCore.QCoreApplication.translate
-    #     MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-    #     self.pushButton.setText(_translate("MainWindow", "PushButton"))
-
-
-# if __name__ == "__main__":
-#     import sys
-#     app = QtWidgets.QApplication(sys.argv)
-#     MainWindow = QtWidgets.QMainWindow()
-#     ui = Ui_WelcomeWindow()
-#     ui.setupUi(MainWindow)
-#     MainWindow.show()
-#     sys.exit(app.exec_())
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    viewer = PDFViewer()
+    viewer.show()
+    path_teildokument = os.path.join(path_programm, "Teildokument","Teildokument_1.pdf")
+    # print(path_programm)
+    viewer.open_pdf(path_teildokument)
+    sys.exit(app.exec_())
