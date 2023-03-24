@@ -152,5 +152,12 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
         if self.reset_successfull == False:
             warning_window("Der neueste Stand der Datenbank konnte nicht heruntergeladen werden. Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.")
         else:
-            information_window("Die Datenbank ist jetzt auf dem neuesten Stand!")
+            link = "https://www.buymeacoffee.com/lama.schule"
+            # if self.display_mode == 1:
+            #     color = "rgb(88, 111, 124)"
+            # else:
+            color = "rgb(47, 69, 80)"
+
+            
+            information_window("Die Datenbank ist jetzt auf dem neuesten Stand!", f"<center><font size='-1'><br>Du bist zufrieden mit LaMA?<br>Wir freuen uns über jede kleine Spende:<br><a href='{link}'style='color:{color}';>Buy Me A Coffee </a><\center></font>")
 
