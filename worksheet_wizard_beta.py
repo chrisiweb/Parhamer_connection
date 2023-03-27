@@ -175,118 +175,89 @@ def choose_random_blanks(_list):
 
     return random.choice(possible_blanks)
 
-a = '(7m-5a)^2 = 49m^2 - 70ma + 25a^2'
-a_reversed = '49m^2 - 70ma + 25a^2 = (7m-5a)^2'
-b ='(1/3t+1/2h)^2 = 1/9t^2 - 1/3th + 1/4h^2'
-c = '(m-8q)^2 = m^2 - 16mq + 64q^2'
-d = '(7y+7e)(7y-7e) = 49y^2 - 49e^2'
 
-# Der Ausdruck, der unterteilt werden soll
-expression = "(2a+5b)^2 = 4a^2 + 20ab + 25b^2"
+list_stellenwerte = ['ht', 'zt','t','h','z','E', 'Z', 'H', 'T', 'ZT', 'HT', 'M', 'ZM', 'HM', 'Mrd', 'ZMrd', 'HMrd', 'B', 'ZB', 'HB']
+index_E = 5
+x= get_random_number(10,1000000,4)
 
-# Ein regulärer Ausdruck, der auf die Summanden des Ausdrucks abgestimmt ist
-# pattern = r'([0-9/a-z]+\^\d+|\d*(?:/\d)*[a-z]+|^\^\d+(?:/\d)*[a-z]*)'
-# Verwende den regulären Ausdruck, um die Summanden des Ausdrucks zu finden
+print(x)
 
+list_digits = []
+list_decimals = []
+decimals=False
+for all in str(x):
+    if all == ".":
+        decimals = True
+    elif decimals == False:
+        list_digits.append(all)
+    elif decimals == True:
+        list_decimals.append(all)
 
-split_string = split_binomial_expression(a)
-random_blanks = choose_random_blanks(split_string)
+# print(list_digits)
+# print(list_decimals)
 
-# print(a)
-# print(split_string)
-# print(random_blanks)
+complete_string = ""
+for i, all in enumerate(reversed(list_digits)):
+    if int(all) != 0:
+        complete_string = f"{all}{list_stellenwerte[index_E+i]}  {complete_string}"
 
-# choice = 0 
-# if choice == 1:
-#     random_blanks.reverse()
-#     # split_string.reverse()
-#     print(random_blanks)
-#     # print(split_string)
+complete_string = complete_string.strip()
 
-coef_a = get_random_number(1,10)
-coef_b = get_random_number(1,10)
+if list_decimals != []:
+    for i, all in enumerate(list_decimals):
+        # print(i)
+        # print(all)
+        if int(all) != 0:
+            complete_string += f"  {all}{list_stellenwerte[index_E-(i+1)]}"    
 
-A, B = symbols("{} {}".format("A", "B"))
-
-term = "(3*A + 3*B) * (2*B-3*A)"
-
-
-print(eval(term).expand())
-# string = a_reversed
-# for i in random_blanks:
-#     print(i)
-#     print(split_string[i])
-#     string = string.replace(split_string[i], "_", 1)
-
-# print(string)
-
-# blanks =choose_random_blanks(a_split)
-
-# print(blanks)
-
-
-# split_list = extract_parts_of_binom(a)
-# print(split_list)
-# chosen_blanks = choose_random_blanks(split_list)
-# print(chosen_blanks)
-
-# for i, all in enumerate(chosen_blanks):
-#     for index in all:
-#         print(split_list[i][index])
-#         a = a.replace(split_list[i][index], "\\rule{1cm}{0.3pt}")
-
-# print(a)
-
-# split_list = extract_parts_of_binom(b)
-# print(split_list)
-# chosen_blanks = choose_random_blanks(split_list)
-
-# print(chosen_blanks)
+print(complete_string)
+# list_of_digits = [int(i) for i in str(x)]
+# print(list_of_digits)
 
 
 
 
-# extracted_string = extract_parts_of_binom(a)
+### ROMAN NUMBERS WORKING!!!
+def int_to_roman(input):
+    """ Convert an integer to a Roman numeral. """
 
-# print(extracted_string)
-# print(extract_parts_of_binom(b))
+    if not isinstance(input, type(1)):
+        raise TypeError#, "expected integer, got %s" % type(input)
+    if not 0 < input < 4000:
+        raise ValueError #, "Argument must be between 1 and 3999"
+    ints = (1000, 900,  500, 400, 100,  90, 50,  40, 10,  9,   5,  4,   1)
+    nums = ('M',  'CM', 'D', 'CD','C', 'XC','L','XL','X','IX','V','IV','I')
+    result = []
+    for i in range(len(ints)):
+        count = int(input / ints[i])
+        result.append(nums[i] * count)
+        input -= ints[i] * count
+    return ''.join(result)
 
-# for all in x:
-#     print(all)
-#     print(re.fullmatch(' *\^[0-9] *', all))
+def roman_to_int(input):
+    """ Convert a Roman numeral to an integer. """
 
-# y= re.split('\(|\)|\+|-|=', b)
-# print(y)
+    if not isinstance(input, type("")):
+        raise TypeError#, "expected string, got %s" % type(input)
+    input = input.upper(  )
+    nums = {'M':1000, 'D':500, 'C':100, 'L':50, 'X':10, 'V':5, 'I':1}
+    sum = 0
+    for i in range(len(input)):
+        try:
+            value = nums[input[i]]
+            # If the next place holds a larger number, this value is negative
+            if i+1 < len(input) and nums[input[i+1]] > value:
+                sum -= value
+            else: sum += value
+        except KeyError:
+            raise ValueError#, 'input is not a valid Roman numeral: %s' % input
+    # easiest test for validity...
+    if int_to_roman(sum) == input:
+        return sum
+    else:
+        raise ValueError#, 'input is not a valid Roman numeral: %s' % input
+    
 
+# print(f'2029 = {int_to_roman(2029)}')
 
-#####
-# alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-
-# choices = random.choices(alphabet, k=2)
-
-# solution_string = solution.replace("**", "^")
-# solution_string = solution_string.replace("*", "")
-# solution_string = solution_string.replace("a", choices[0])
-# solution_string = solution_string.replace("b", choices[1])
-
-# binom_string = random_choice.replace("**", "^")
-# binom_string = binom_string.replace("*", "")
-# binom_string = binom_string.replace("a", choices[0])
-# binom_string = binom_string.replace("b", choices[1])
-
-
-
-##### FRACTION
-# w = get_random_fraction(2,10)
-# x = get_random_fraction(2,10)
-# y= get_random_fraction(2,10)
-# z= get_random_fraction(2,10)
-
-
-
-# print(x)
-# print(y)
-# print(z)
-# print(x-y)
-
-# print(f"({x}-{y})*({z}+{w}) = {(x-y)*(z+w)}")
+# print(f"XLII = {roman_to_int('XLII')}")
