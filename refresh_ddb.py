@@ -159,5 +159,5 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
             color = "rgb(47, 69, 80)"
 
             
-            information_window("Die Datenbank ist jetzt auf dem neuesten Stand!", f"<center><font size='-1'><br>Du bist zufrieden mit LaMA?<br>Wir freuen uns über jede kleine Spende:<br><a href='{link}'style='color:{color}';>Buy Me A Coffee </a><\center></font>")
+            information_window("Die Datenbank ist jetzt auf dem neuesten Stand!", f"<center><font size='-2'><br>Du bist zufrieden mit LaMA?<br>Wir freuen uns über jede kleine Spende:<br><a href='{link}'style='color:{color}';>Buy Me A Coffee </a><\center></font>")
 

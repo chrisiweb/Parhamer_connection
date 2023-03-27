@@ -219,7 +219,7 @@ class Ui_MainWindow(object):
             self.lama_settings["database"] = 2
 
         if self.lama_settings["database"] == 0:
-            refresh_ddb(self, True)
+            refresh_ddb(self) # auto_update = True
 
         else:
             database_file = os.path.join(database, ".git", "index")
@@ -231,7 +231,7 @@ class Ui_MainWindow(object):
             difference = int(today) - int(refresh_date_ddb)
 
             if (self.lama_settings["database"] == 1 and difference != 0) or (self.lama_settings["database"] == 2 and difference > 6) or (self.lama_settings["database"] == 3 and refresh_date_ddb_month != today_month):
-                refresh_ddb(self, auto_update=True)
+                refresh_ddb(self) ## auto_update = True
 
         try:
             self.lama_settings["popup_off"]
@@ -2065,13 +2065,15 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                         for all in list_klassen:
 
                             dict_klasse_name = eval("dict_{}_name".format(all))
+                            dict_klasse = eval(("dict_{}".format(all)))
                             if kapitel in dict_klasse_name:
-                                thema_name = dict_klasse_name[kapitel]
-                                combobox_thema = "combobox_kapitel_creator_cria_{}".format(
-                                    all
-                                )
-                                temp_klasse = all
-                                break
+                                if unterkapitel in dict_klasse[kapitel]:
+                                    thema_name = dict_klasse_name[kapitel]
+                                    combobox_thema = "combobox_kapitel_creator_cria_{}".format(
+                                        all
+                                    )
+                                    temp_klasse = all
+                                    break
 
                     else:
                         temp_klasse = klasse
@@ -2090,6 +2092,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                         temp_klasse, kapitel, unterkapitel
                     )
 
+                    
                     self.dict_widget_variables[checkbox_thema].setChecked(True)
 
 
