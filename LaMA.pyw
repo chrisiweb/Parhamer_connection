@@ -3809,16 +3809,18 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             x = x[all]
         return x   
 
+    def shorten_topic(self, thema):
+        shorten_topic = [x[:3] for x in thema]
+        shorten_topic = "_".join(shorten_topic).lower()
 
+        return shorten_topic
 
     def themen_changed_wizard(self):
         thema = self.get_current_topic_wizard()
-        thema_index = self.total_list_of_topics_wizard.index(thema)
-        # print(self.total_list_of_topics_wizard)
-        print(thema)
-        shorten_topic = [x[:3] for x in thema]
-        shorten_topic = "_".join(shorten_topic).lower()
-        print(shorten_topic)
+        # thema_index = self.total_list_of_topics_wizard.index(thema)
+
+        shorten_topic = self.shorten_topic(thema)
+        # print(shorten_topic)
 
         self.checkbox_enable_addition.hide()
         self.checkbox_enable_subtraktion.hide()
@@ -3850,9 +3852,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # self.groupBox_zahlenbereich_anzahl.setTitle("Zahlen") 
 
         elif (
-            thema_index == 5 or 
-            thema_index == 6 or 
-            thema_index == 7
+            shorten_topic=='ari_neg_add' or 
+            shorten_topic=='ari_neg_mul' or
+            shorten_topic=='ari_neg_ver'
             ):
             self.label_zahlenbereich_anzahl_wizard.setText("Zahlen:")
             self.spinbox_zahlenbereich_minimum.setRange(-999,999)
@@ -3860,19 +3862,19 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.spinBox_zahlenbereich_anzahl_wizard.setMaximum(20)
             self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,20)
             # self.groupBox_zahlenbereich_anzahl.setTitle("Zahlen")  
-            if thema_index == 5:
+            if shorten_topic=='ari_neg_add':
                 # self.groupBox_zahlenbereich_anzahl.setTitle("Summanden")
                 self.spinBox_zahlenbereich_anzahl_wizard.setValue(2)
                 self.spinbox_zahlenbereich_minimum.setValue(-20)
                 self.spinbox_zahlenbereich_maximum.setValue(20)
                 self.checkbox_enable_addition.show()
                 self.checkbox_enable_subtraktion.show()
-            elif thema_index == 6:
+            elif shorten_topic=='ari_neg_mul':
                 # self.groupBox_zahlenbereich_anzahl.setTitle("Faktoren") 
                 self.spinBox_zahlenbereich_anzahl_wizard.setValue(3)
                 self.spinbox_zahlenbereich_minimum.setValue(-10)
                 self.spinbox_zahlenbereich_maximum.setValue(10)
-            elif thema_index == 7:
+            elif shorten_topic=='ari_neg_ver':
                 self.spinBox_zahlenbereich_anzahl_wizard.setValue(4)
                 self.spinbox_zahlenbereich_minimum.setValue(-10)
                 self.spinbox_zahlenbereich_maximum.setValue(10)                
@@ -4117,22 +4119,24 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def create_single_example_wizard(self):
         # thema = self.comboBox_themen_wizard.currentText()
         thema = self.get_current_topic_wizard()
-        thema_index = self.total_list_of_topics_wizard.index(thema)
+        # thema_index = self.total_list_of_topics_wizard.index(thema)
+
+        shorten_topic = self.shorten_topic(thema)
 
         minimum = self.spinbox_zahlenbereich_minimum.value()
         maximum = self.spinbox_zahlenbereich_maximum.value()
         commas = self.spinbox_kommastellen_wizard.value()
         
 
-        if thema_index == 0:
+        if shorten_topic=='ari_pos_add':
             anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
             smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
             new_example = create_single_example_addition(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
-        elif thema_index == 1:
+        elif shorten_topic=='ari_pos_sub':
             anzahl_subtrahenden = self.spinBox_zahlenbereich_anzahl_wizard.value()
             smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
             new_example = create_single_example_subtraction(minimum, maximum, commas, self.checkbox_negative_ergebnisse_wizard.isChecked(),anzahl_subtrahenden ,smaller_or_equal)
-        elif thema_index == 2:
+        elif shorten_topic=='ari_pos_mul':
             minimum_1 = self.spinBox_first_number_min.value()
             maximum_1 = self.spinBox_first_number_max.value()
             commas_1 = self.spinBox_first_number_decimal.value()
@@ -4142,7 +4146,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             commas_2 = self.spinBox_second_number_decimal.value()
             smaller_or_equal_2 = self.combobox_second_number_decimal.currentIndex()
             new_example = create_single_example_multiplication(minimum_1, maximum_1, commas_1, smaller_or_equal_1,minimum_2, maximum_2, commas_2, smaller_or_equal_2)
-        elif thema_index == 3:
+        elif shorten_topic=='ari_pos_div':
             minimum_1 = self.spinbox_dividend_min_wizard.value()
             maximum_1 = self.spinbox_dividend_max_wizard.value()
             minimum_2 = self.spinbox_divisor_min_wizard.value()
@@ -4162,7 +4166,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             new_example = create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div, smaller_or_equal_div, commas_result, smaller_or_equal_result, output_type)
 
-        elif thema_index == 4 or thema_index == 5 or thema_index == 6 or thema_index == 7:
+        elif (shorten_topic=='ari_pos_ver' or 
+              shorten_topic=='ari_neg_add' or 
+              shorten_topic=='ari_neg_mul' or 
+              shorten_topic=='ari_neg_ver'
+              ):
             minimum = self.spinbox_zahlenbereich_minimum.value()
             maximum = self.spinbox_zahlenbereich_maximum.value()
             commas = self.spinbox_kommastellen_wizard.value()
@@ -4170,18 +4178,18 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
             brackets_allowed = self.checkbox_allow_brackets_wizard.isChecked()
 
-            if thema_index == 5:
+            if shorten_topic=='ari_neg_add':
                 new_example = create_single_example_ganze_zahlen_strich(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
-            elif thema_index == 6:
+            elif shorten_topic=='ari_neg_mul':
                 new_example = create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
-            elif thema_index == 4 or thema_index == 7:
-                if thema_index == 4:
+            elif shorten_topic=='ari_pos_ver' or shorten_topic=='ari_neg_ver':
+                if shorten_topic=='ari_pos_ver':
                     show_brackets = False
                 else:
                     show_brackets = True
                 new_example = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)
 
-        elif thema_index == 8:
+        elif shorten_topic=='ter_bin':
             binomials_types = [self.cb_binoms_1.isChecked(), self.cb_binoms_2.isChecked(), self.cb_binoms_3.isChecked()]
             if binomials_types == [False, False, False]:
                 warning_window("Es muss mindestens eine der Typen der binomischen Formeln ausgewählt werden.")
@@ -4279,11 +4287,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     def create_list_of_examples_wizard(self):
         thema = self.get_current_topic_wizard()
-        thema_index = self.total_list_of_topics_wizard.index(thema)
-        print(self.total_list_of_topics_wizard)
+        # thema_index = self.total_list_of_topics_wizard.index(thema)
+
+        shorten_topic = self.shorten_topic(thema)
         examples = self.spinBox_number_wizard.value()
 
-        if thema_index==0:
+        if shorten_topic=='ari_pos_add':
             minimum = self.spinbox_zahlenbereich_minimum.value()
             maximum = self.spinbox_zahlenbereich_maximum.value()
             commas = self.spinbox_kommastellen_wizard.value()
@@ -4294,7 +4303,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 return
             list_of_examples_wizard = create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
 
-        elif thema_index==1:
+        elif shorten_topic=='ari_pos_sub':
             minimum = self.spinbox_zahlenbereich_minimum.value()
             maximum = self.spinbox_zahlenbereich_maximum.value()
             commas = self.spinbox_kommastellen_wizard.value()
@@ -4305,7 +4314,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 return
             list_of_examples_wizard = create_list_of_examples_subtraction(examples, minimum, maximum, commas, self.checkbox_negative_ergebnisse_wizard.isChecked(), anzahl_subtrahenden,smaller_or_equal)
         
-        elif thema_index==2:
+        elif shorten_topic=='ari_pos_mul':
             minimum_1 = self.spinBox_first_number_min.value()
             maximum_1 = self.spinBox_first_number_max.value()
             commas_1 = self.spinBox_first_number_decimal.value()
@@ -4316,7 +4325,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             smaller_or_equal_2 = self.combobox_second_number_decimal.currentIndex()
             list_of_examples_wizard = create_list_of_examples_multiplication(examples, minimum_1, maximum_1, commas_1, smaller_or_equal_1 ,minimum_2, maximum_2, commas_2, smaller_or_equal_2)
 
-        elif thema_index==3:
+        elif shorten_topic=='ari_pos_div':
             minimum_1 = self.spinbox_dividend_min_wizard.value()
             maximum_1 = self.spinbox_dividend_max_wizard.value()
             minimum_2 = self.spinbox_divisor_min_wizard.value()
@@ -4335,10 +4344,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             list_of_examples_wizard = create_list_of_examples_division(examples, minimum_1, maximum_1, minimum_2, maximum_2, commas_div, smaller_or_equal_div,commas_result,smaller_or_equal_result, output_type)  
 
         elif (
-            thema_index==4 or 
-            thema_index==5 or 
-            thema_index==6 or 
-            thema_index==7
+            shorten_topic=='ari_pos_ver' or 
+            shorten_topic=='ari_neg_add' or 
+            shorten_topic=='ari_neg_mul' or 
+            shorten_topic=='ari_neg_ver'
             ):
             minimum = self.spinbox_zahlenbereich_minimum.value()
             maximum = self.spinbox_zahlenbereich_maximum.value()
@@ -4348,7 +4357,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             brackets_allowed = self.checkbox_allow_brackets_wizard.isChecked()
             show_brackets = True
 
-            if thema_index==5:
+            if shorten_topic=='ari_neg_add':
                 if self.checkbox_enable_addition.isChecked():
                     typ = "+"
                 else:
@@ -4358,13 +4367,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     typ += "-"
                 
 
-            elif thema_index==6:
+            elif shorten_topic=='ari_neg_mul':
                 typ = '*:'
             elif (
-                thema_index==4 or
-                thema_index==7
+                shorten_topic=='ari_pos_ver' or
+                shorten_topic=='ari_neg_ver'
                 ):
-                if thema_index==4:
+                if shorten_topic=='ari_pos_ver':
                     show_brackets = False
                 typ = '+-*:'
 
@@ -4373,7 +4382,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 return []
             list_of_examples_wizard = create_list_of_examples_ganze_zahlen(typ, examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)        
 
-        elif thema_index==8:
+        elif shorten_topic=='ter_bin':
             binomials_types = [self.cb_binoms_1.isChecked(), self.cb_binoms_2.isChecked(), self.cb_binoms_3.isChecked()]
             if binomials_types == [False, False, False]:
                 warning_window("Es muss mindestens eine der Typen der binomischen Formeln ausgewählt werden.")
@@ -4564,8 +4573,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         horizontalLayout_worksheet.setContentsMargins(0,5,0,5)
 
         thema = self.get_current_topic_wizard()
-        thema_index = self.total_list_of_topics_wizard.index(thema)
-
+        # thema_index = self.total_list_of_topics_wizard.index(thema)
+        shorten_topic = self.shorten_topic(thema)
         # thema = self.comboBox_themen_wizard.currentText()
         anzahl = len(self.list_of_examples_wizard)
 
@@ -4605,18 +4614,18 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 i+=1
 
 
-        if thema_index==0 or thema_index==1:
+        if shorten_topic=='ari_pos_add' or shorten_topic=='ari_pos_sub':
             ausrichtung = self.combobox_ausrichtung_wizard.currentIndex()
 
         else:
             ausrichtung = None
 
         thema = self.get_current_topic_wizard()
-        thema_index = self.total_list_of_topics_wizard.index(thema)
-
+        # thema_index = self.total_list_of_topics_wizard.index(thema)
+        shorten_topic = self.shorten_topic(thema)
         try:
             self.dict_all_examples_worksheet_wizard[widget_worksheet] = {
-                'thema_index' : thema_index,
+                'shorten_topic' : shorten_topic,
                 'spalten' : self.spinBox_column_wizard.value(),
                 'ausrichtung': ausrichtung,
                 'list_of_examples' : self.list_of_examples_wizard,
@@ -4626,7 +4635,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         except AttributeError:
             self.dict_all_examples_worksheet_wizard = {}
             self.dict_all_examples_worksheet_wizard[widget_worksheet] = {
-                'thema_index' : thema_index,
+                'shorten_topic' : shorten_topic,
                 'spalten' : self.spinBox_column_wizard.value(),
                 'ausrichtung': ausrichtung,
                 'list_of_examples' : self.list_of_examples_wizard,
@@ -4755,9 +4764,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 columns = self.number_columns_solution_wizard
             except AttributeError:
                 thema = self.get_current_topic_wizard()
-                thema_index = self.total_list_of_topics_wizard.index(thema)
+                # thema_index = self.total_list_of_topics_wizard.index(thema)
+                shorten_topic = self.shorten_topic(thema)
 
-                if thema_index == 8:
+                if shorten_topic=='ter_bin':
                     columns = 2
                 else:
                     columns = 3
@@ -4892,9 +4902,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             columns = self.number_columns_solution_wizard
         except AttributeError:
             thema = self.get_current_topic_wizard()
-            thema_index = self.total_list_of_topics_wizard.index(thema)
+            # thema_index = self.total_list_of_topics_wizard.index(thema)
+            shorten_topic = self.shorten_topic(thema)
 
-            if thema_index == 8:
+            if shorten_topic=='ter_bin':
                 columns = 2
             else:
                 columns = 3

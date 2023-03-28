@@ -1601,7 +1601,8 @@ def create_latex_worksheet(
     for widget in order_of_examples:
         set_of_examples = dict_of_examples[widget] 
     # for all in dict_of_examples.values():
-        index = set_of_examples['thema_index']
+        # index = set_of_examples['thema_index']
+        shorten_topic = set_of_examples['shorten_topic']
         ausrichtung = set_of_examples['ausrichtung']
         columns = set_of_examples['spalten']
         
@@ -1616,17 +1617,21 @@ def create_latex_worksheet(
 
         list_of_examples = set_of_examples['list_of_examples']
         for example in list_of_examples:
-            if index == 0:
+            if shorten_topic == 'ari_pos_add':
                 content = create_latex_string_addition(content, example, ausrichtung)
-            elif index == 1:
+            elif shorten_topic == 'ari_pos_sub':
                 content = create_latex_string_subtraction(content, example, ausrichtung)
-            elif index == 2:
+            elif shorten_topic == 'ari_pos_mul':
                 content = create_latex_string_multiplication(content, example, solution_type)
-            elif index == 3:
+            elif shorten_topic == 'ari_pos_div':
                 content = create_latex_string_division(content, example, solution_type)
-            elif index == 4 or index == 5 or index == 6 or index ==7:
+            elif (
+                shorten_topic == 'ari_pos_div' or 
+                shorten_topic == 'ari_neg_add' or 
+                shorten_topic == 'ari_neg_mul' or 
+                shorten_topic == 'ari_neg_ver'):
                 content = create_latex_string_ganze_zahlen(content, example)
-            elif index == 8:
+            elif shorten_topic == 'ter_bin':
                 content = create_latex_string_binomische_formeln(content, example, binoms_direction_index)
 
         content += "\end{tasks}\n"
@@ -1794,8 +1799,8 @@ def create_coordinates(solution_pixels, dict_all_examples):
 
 def get_random_solution(self):
     thema = self.get_current_topic_wizard()
-    thema_index = self.total_list_of_topics_wizard.index(thema)
-
+    # thema_index = self.total_list_of_topics_wizard.index(thema)
+    shorten_topic = self.shorten_topic(thema)
     # print(thema)
     # print(self.total_list_of_topics_wizard)
     # print(thema_index)
@@ -1803,7 +1808,7 @@ def get_random_solution(self):
     # thema = random.choice(list(self.dict_all_examples_wizard.keys()))
     # thema = self.comboBox_themen_wizard.currentText()
 
-    if thema_index == 0:
+    if shorten_topic == 'ari_pos_add':
         minimum = self.spinbox_zahlenbereich_minimum.value()
         maximum = self.spinbox_zahlenbereich_maximum.value()
         commas = self.spinbox_kommastellen_wizard.value()
@@ -1812,7 +1817,7 @@ def get_random_solution(self):
         distract_result = create_single_example_addition(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
 
 
-    elif thema_index==1:
+    elif shorten_topic == 'ari_pos_sub':
         minimum = self.spinbox_zahlenbereich_minimum.value()
         maximum = self.spinbox_zahlenbereich_maximum.value()
         commas = self.spinbox_kommastellen_wizard.value()
@@ -1821,7 +1826,7 @@ def get_random_solution(self):
         distract_result = create_single_example_subtraction(minimum, maximum, commas, self.checkbox_negative_ergebnisse_wizard.isChecked(),anzahl_subtrahenden, smaller_or_equal)
 
     
-    elif thema_index==2:
+    elif shorten_topic == 'ari_pos_mul':
         minimum_1 = self.spinBox_first_number_min.value()
         maximum_1 = self.spinBox_first_number_max.value()
         commas_1 = self.spinBox_first_number_decimal.value()
@@ -1833,7 +1838,7 @@ def get_random_solution(self):
         distract_result = create_single_example_multiplication(minimum_1, maximum_1, commas_1, smaller_or_equal_1, minimum_2, maximum_2, commas_2, smaller_or_equal_2)
         # self.list_of_examples_wizard = create_list_of_examples_multiplication(examples, minimum_1, maximum_1, commas_1, minimum_2, maximum_2, commas_2)
 
-    elif thema_index==3:
+    elif shorten_topic == 'ari_pos_div':
         minimum_1 = self.spinbox_dividend_min_wizard.value()
         maximum_1 = self.spinbox_dividend_max_wizard.value()
         minimum_2 = self.spinbox_divisor_min_wizard.value()
@@ -1851,7 +1856,12 @@ def get_random_solution(self):
         distract_result = create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div,smaller_or_equal_div, commas_result, smaller_or_equal_result, output_type)
 
 
-    elif thema_index==4 or thema_index==5 or thema_index==6 or thema_index==7:
+    elif (
+        shorten_topic == 'ari_pos_ver' or 
+        shorten_topic == 'ari_neg_add' or 
+        shorten_topic == 'ari_neg_mul' or 
+        shorten_topic == 'ari_neg_ver'
+        ):
         minimum = self.spinbox_zahlenbereich_minimum.value()
         maximum = self.spinbox_zahlenbereich_maximum.value()
         commas = self.spinbox_kommastellen_wizard.value()
@@ -1860,7 +1870,7 @@ def get_random_solution(self):
         brackets_allowed = self.checkbox_allow_brackets_wizard.isChecked()
 
 
-        if thema_index==5:
+        if shorten_topic == 'ari_neg_add':
             if self.checkbox_enable_addition.isChecked():
                 typ = "+"
             else:
@@ -1870,11 +1880,11 @@ def get_random_solution(self):
                 typ += "-"
 
             distract_result = create_single_example_ganze_zahlen_strich(typ, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
-        elif thema_index==6:
+        elif shorten_topic == 'ari_neg_mul':
             typ = '*:'
             distract_result = create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
-        elif thema_index==4 or thema_index==7:
-            if thema_index==4:
+        elif shorten_topic == 'ari_pos_ver' or 'ari_neg_ver':
+            if shorten_topic == 'ari_pos_ver':
                 show_brackets = False
             else:
                 show_brackets = True
@@ -1882,7 +1892,7 @@ def get_random_solution(self):
             distract_result = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)
 
 
-    elif thema_index==8:
+    elif shorten_topic == 'ter_bin':
         binomials_types = [self.cb_binoms_1.isChecked(), self.cb_binoms_2.isChecked(), self.cb_binoms_3.isChecked()]
         
         if self.checkbox_binoms_a.isChecked():
