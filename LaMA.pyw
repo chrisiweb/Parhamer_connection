@@ -4276,7 +4276,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def create_list_of_examples_wizard(self):
         thema = self.get_current_topic_wizard()
         thema_index = self.total_list_of_topics_wizard.index(thema)
-
+        print(self.total_list_of_topics_wizard)
         examples = self.spinBox_number_wizard.value()
 
         if thema_index==0:

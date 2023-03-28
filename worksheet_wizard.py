@@ -19,6 +19,11 @@ from handle_exceptions import report_exceptions
 dict_themen_wizard = {
     "Arithmetik": {
         "Positive (Dezimal-)Zahlen": {
+            "Stellenwert" : [
+                'self.widget_zahlenbereich_minimum',
+                'self.widget_zahlenbereich_maximum',
+                'self.widget_kommastellen_wizard',                
+            ],
             "Addition": [
                 'self.widget_ausrichtung_wizard',
                 'self.widget_zahlenbereich_minimum',
@@ -1198,6 +1203,37 @@ def get_number_of_decimals(x):
     num = remove_exponent(num)
     num = abs(num.as_tuple().exponent)
     return num
+
+
+list_stellenwerte = ['ht', 'zt','t','h','z','E', 'Z', 'H', 'T', 'ZT', 'HT', 'M', 'ZM', 'HM', 'Mrd', 'ZMrd', 'HMrd', 'B', 'ZB', 'HB']
+index_E = 5
+def number_to_placevalue(number):
+    list_digits = []
+    list_decimals = []
+    decimals=False
+    for all in str(number):
+        if all == ".":
+            decimals = True
+        elif decimals == False:
+            list_digits.append(all)
+        elif decimals == True:
+            list_decimals.append(all)
+
+    complete_string_list=[]
+    for i, all in enumerate(reversed(list_digits)):
+        if int(all) != 0:
+            string = f"{all}{list_stellenwerte[index_E+i]}"
+            complete_string_list.insert(0, string)
+
+
+    if list_decimals != []:
+        for i, all in enumerate(list_decimals):
+            if int(all) != 0:
+                string = f"{all}{list_stellenwerte[index_E-(i+1)]}"
+                complete_string_list.append(string)
+    
+    return complete_string_list
+
 
 def create_latex_string_addition(content, example, ausrichtung):
     summanden = example[0]

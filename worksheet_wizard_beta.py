@@ -176,41 +176,49 @@ def choose_random_blanks(_list):
     return random.choice(possible_blanks)
 
 
+def number_to_placevalue(number):
+    list_digits = []
+    list_decimals = []
+    decimals=False
+    for all in str(number):
+        if all == ".":
+            decimals = True
+        elif decimals == False:
+            list_digits.append(all)
+        elif decimals == True:
+            list_decimals.append(all)
+
+    complete_string_list=[]
+    for i, all in enumerate(reversed(list_digits)):
+        if int(all) != 0:
+            string = f"{all}{list_stellenwerte[index_E+i]}"
+            complete_string_list.insert(0, string)
+
+
+    if list_decimals != []:
+        for i, all in enumerate(list_decimals):
+            if int(all) != 0:
+                string = f"{all}{list_stellenwerte[index_E-(i+1)]}"
+                complete_string_list.append(string)
+    
+    return complete_string_list
+
+
 list_stellenwerte = ['ht', 'zt','t','h','z','E', 'Z', 'H', 'T', 'ZT', 'HT', 'M', 'ZM', 'HM', 'Mrd', 'ZMrd', 'HMrd', 'B', 'ZB', 'HB']
 index_E = 5
-x= get_random_number(10,1000000,4)
+
+
+x= get_random_number(10,1000000,3)
 
 print(x)
 
-list_digits = []
-list_decimals = []
-decimals=False
-for all in str(x):
-    if all == ".":
-        decimals = True
-    elif decimals == False:
-        list_digits.append(all)
-    elif decimals == True:
-        list_decimals.append(all)
+_list = number_to_placevalue(x)
 
-# print(list_digits)
-# print(list_decimals)
+print(_list)
 
-complete_string = ""
-for i, all in enumerate(reversed(list_digits)):
-    if int(all) != 0:
-        complete_string = f"{all}{list_stellenwerte[index_E+i]}  {complete_string}"
+# print(complete_string_list)
 
-complete_string = complete_string.strip()
-
-if list_decimals != []:
-    for i, all in enumerate(list_decimals):
-        # print(i)
-        # print(all)
-        if int(all) != 0:
-            complete_string += f"  {all}{list_stellenwerte[index_E-(i+1)]}"    
-
-print(complete_string)
+# print("  ".join(complete_string_list))
 # list_of_digits = [int(i) for i in str(x)]
 # print(list_of_digits)
 
