@@ -24,7 +24,7 @@ from json import load
 from functools import partial
 from create_pdf import prepare_tex_for_pdf
 from standard_dialog_windows import warning_window
-from worksheet_wizard import dict_themen_wizard
+from worksheet_wizard import dict_themen_wizard, list_stellenwerte, index_E
 from create_nonograms import all_nonogramms
 
 
@@ -2621,6 +2621,9 @@ def setup_stackWizard(self):
     self.horizontalLayout_zahlenbereich_minimum.addWidget(self.spinbox_zahlenbereich_minimum)
 
 
+
+
+
     self.widget_zahlenbereich_maximum = QtWidgets.QWidget(self.groupBox_zahlenbereich_wizard)
     self.widget_zahlenbereich_maximum.setSizePolicy(SizePolicy_fixed)
     # create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Maximum")
@@ -2636,6 +2639,47 @@ def setup_stackWizard(self):
     self.horizontalLayout_zahlenbereich_maximum.addWidget(self.spinbox_zahlenbereich_maximum)
     self.spinbox_zahlenbereich_maximum.valueChanged.connect(self.worksheet_wizard_setting_changed)
     self.spinbox_zahlenbereich_minimum.valueChanged.connect(partial(self.minimum_changed_wizard, self.spinbox_zahlenbereich_minimum, self.spinbox_zahlenbereich_maximum))
+    self.widget_zahlenbereich_minimum.hide()
+    self.widget_zahlenbereich_maximum.hide()
+
+
+    self.widget_zahlenbereich_1_combobox = QtWidgets.QWidget(self.groupBox_zahlenbereich_wizard)
+    # create_new_groupbox(self.groupBox_zahlenbereich_wizard, "1")
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.widget_zahlenbereich_1_combobox, 0,1,1,1)
+    self.widget_zahlenbereich_1_combobox.setSizePolicy(SizePolicy_fixed)
+
+    self.horizontalLayout_zahlenbereich_1_combobox = create_new_horizontallayout(self.widget_zahlenbereich_1_combobox)
+    # self.onlyInt = QtGui.QIntValidator()
+
+    self.label_zahlenbereich_1_combobox = create_new_label(self.widget_zahlenbereich_1_combobox, "Größter Stellenwert:")
+    self.horizontalLayout_zahlenbereich_1_combobox.addWidget(self.label_zahlenbereich_1_combobox)
+    
+    self.combobox_zahlenbereich_1 = create_new_combobox(self.widget_zahlenbereich_1_combobox)
+    self.horizontalLayout_zahlenbereich_1_combobox.addWidget(self.combobox_zahlenbereich_1)
+
+    for i, all in enumerate(list_stellenwerte[index_E+1:]):
+        add_new_option(self.combobox_zahlenbereich_1, i, all)
+
+    self.combobox_zahlenbereich_1.setCurrentIndex(5)
+
+    self.widget_zahlenbereich_2_combobox = QtWidgets.QWidget(self.groupBox_zahlenbereich_wizard)
+    self.widget_zahlenbereich_2_combobox.setSizePolicy(SizePolicy_fixed)
+    # create_new_groupbox(self.groupBox_zahlenbereich_wizard, "2")
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.widget_zahlenbereich_2_combobox, 0,2,1,1)
+    self.horizontalLayout_zahlenbereich_2_combobox = create_new_horizontallayout(self.widget_zahlenbereich_2_combobox)
+
+    self.label_zahlenbereich_2_combobox = create_new_label(self.widget_zahlenbereich_2_combobox, "Kleinster Stellenwert:")
+    self.horizontalLayout_zahlenbereich_2_combobox.addWidget(self.label_zahlenbereich_2_combobox)
+
+    self.combobox_zahlenbereich_2 = create_new_combobox(self.widget_zahlenbereich_2_combobox)
+    self.horizontalLayout_zahlenbereich_2_combobox.addWidget(self.combobox_zahlenbereich_2)
+
+
+    for i, all in enumerate(reversed(list_stellenwerte[:index_E+1])):
+        add_new_option(self.combobox_zahlenbereich_2, i, all)
+
+    self.combobox_zahlenbereich_2.currentIndexChanged.connect(lambda: print(self.combobox_zahlenbereich_2.currentIndex()))
+    self.combobox_zahlenbereich_1.currentIndexChanged.connect(lambda: print(self.combobox_zahlenbereich_1.currentIndex()))
 
     self.widget_kommastellen_wizard = QtWidgets.QWidget(self.groupBox_zahlenbereich_wizard)
     self.widget_kommastellen_wizard.setSizePolicy(SizePolicy_fixed)

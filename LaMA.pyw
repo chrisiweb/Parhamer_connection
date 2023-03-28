@@ -4144,7 +4144,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         
         if shorten_topic == 'ari_pos_ste':
             smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
-            new_example = create_single_example_stellenwert(minimum, maximum, commas, smaller_or_equal, self.general_direction_index)
+            new_example = create_single_example_stellenwert(minimum, maximum, self.general_direction_index)
         elif shorten_topic=='ari_pos_add':
             anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
             smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
@@ -4310,11 +4310,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         examples = self.spinBox_number_wizard.value()
 
         if shorten_topic == 'ari_pos_ste':
-            minimum = self.spinbox_zahlenbereich_minimum.value()
-            maximum = self.spinbox_zahlenbereich_maximum.value()
+            minimum = self.combobox_zahlenbereich_2.currentIndex()
+            maximum = self.combobox_zahlenbereich_1.currentIndex()
+
             commas = self.spinbox_kommastellen_wizard.value()
             smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
-            list_of_examples_wizard = create_list_of_examples_stellenwert(examples, minimum, maximum, commas, smaller_or_equal, self.general_direction_index)                        
+            list_of_examples_wizard = create_list_of_examples_stellenwert(examples, minimum, maximum, self.general_direction_index)                        
         elif shorten_topic =='ari_pos_add':
             minimum = self.spinbox_zahlenbereich_minimum.value()
             maximum = self.spinbox_zahlenbereich_maximum.value()

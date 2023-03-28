@@ -20,9 +20,8 @@ dict_themen_wizard = {
     "Arithmetik": {
         "Positive (Dezimal-)Zahlen": {
             "Stellenwerte" : [
-                'self.widget_zahlenbereich_minimum',
-                'self.widget_zahlenbereich_maximum',
-                'self.widget_kommastellen_wizard',
+                'self.widget_zahlenbereich_1_combobox',
+                'self.widget_zahlenbereich_2_combobox',
                 'self.widget_general_direction',               
             ],
             "Addition": [
@@ -228,13 +227,29 @@ def split_into_digits(n):
     n = str(n).replace('.','')
     return [int(d) for d in n]
 
+def insert_dots(number):
+    number = str(number)
+    result = ""
+    for i in range(len(number)):
+        if (len(number) - i) % 3 == 0 and i != 0:
+            result += "*"
+        result += number[i]
+    return result
 
+def create_single_example_stellenwert(minimum, maximum, general_direction_index):
+    # set_commas=commas
+    # if smaller_or_equal == 1:
+    #     commas = random.randint(0,set_commas) 
 
-def create_single_example_stellenwert(minimum, maximum, commas, smaller_or_equal, general_direction_index):
-    set_commas=commas
-    if smaller_or_equal == 1:
-        commas = random.randint(0,set_commas) 
-    number = get_random_number(minimum,maximum, commas)
+    maximum = maximum+2
+
+    maximum_num = int('9'*maximum)
+    minimum_num = int('1'+'0'*(maximum-1))
+
+    print(maximum_num)
+    print(minimum_num)
+    print(minimum)
+    number = get_random_number(minimum_num,maximum_num, minimum)
 
     _list_stellenwert = number_to_placevalue(number)
 
@@ -244,11 +259,17 @@ def create_single_example_stellenwert(minimum, maximum, commas, smaller_or_equal
     else:
         index = general_direction_index
 
+    # x = '*'.join(reversed(str(number))[i:i+3] for i in range(0, len(str(number)), 3))
+    # print(x)
+    number = insert_dots(number)
+
     if index == 0:
         _string = f"{number} = {string_stellenwert}".replace(".",",")
+        _string = _string.replace("*",'.')
         return [number, string_stellenwert, _string]
     elif index == 2:
         _string = f"{string_stellenwert} = {number}".replace(".",",")
+        _string = _string.replace("*",'.')
         return [string_stellenwert,number, _string]
 
 def create_single_example_addition(minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
@@ -1156,11 +1177,11 @@ def get_random_fraction(min, max):
     return Fraction("{0}/{1}".format(numerator, abs(denominator)))
 
 
-def create_list_of_examples_stellenwert(examples, minimum, maximum, commas, smaller_or_equal, general_direction_index):
+def create_list_of_examples_stellenwert(examples, minimum, maximum, general_direction_index):
     list_of_examples = []
 
     for _ in range(examples):
-        new_example = create_single_example_stellenwert(minimum, maximum, commas, smaller_or_equal, general_direction_index)
+        new_example = create_single_example_stellenwert(minimum, maximum, general_direction_index)
         list_of_examples.append(new_example)
 
     return list_of_examples     
@@ -1851,7 +1872,7 @@ def get_random_solution(self):
         maximum = self.spinbox_zahlenbereich_maximum.value()
         commas = self.spinbox_kommastellen_wizard.value()
         smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
-        distract_result = create_single_example_stellenwert(minimum, maximum, commas, smaller_or_equal, self.general_direction_index)
+        distract_result = create_single_example_stellenwert(minimum, maximum, self.general_direction_index)
     elif shorten_topic == 'ari_pos_add':
         minimum = self.spinbox_zahlenbereich_minimum.value()
         maximum = self.spinbox_zahlenbereich_maximum.value()
