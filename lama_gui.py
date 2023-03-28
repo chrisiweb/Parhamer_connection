@@ -2548,7 +2548,7 @@ def setup_stackWizard(self):
     add_new_option(self.combobox_ausrichtung_wizard, 1, "in der Zeile")
     self.horizontalLayout_ausrichtung_wizard.addWidget(self.combobox_ausrichtung_wizard)
 
-
+    self.widget_ausrichtung_wizard.hide()
 
 
 
@@ -2602,6 +2602,7 @@ def setup_stackWizard(self):
     self.spinBox_zahlenbereich_anzahl_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
     self.horizontalLayout_zahlenbereich_anzahl.addWidget(self.spinBox_zahlenbereich_anzahl_wizard)
 
+    self.widgetZahlenbereich_anzahl.hide()
 
     self.widget_zahlenbereich_minimum = QtWidgets.QWidget(self.groupBox_zahlenbereich_wizard)
     # create_new_groupbox(self.groupBox_zahlenbereich_wizard, "Minimum")
@@ -2616,7 +2617,7 @@ def setup_stackWizard(self):
 
     self.spinbox_zahlenbereich_minimum = create_new_spinbox(self.widget_zahlenbereich_minimum)
     self.spinbox_zahlenbereich_minimum.setRange(0,999999999)
-    self.spinbox_zahlenbereich_minimum.setValue(100)
+    self.spinbox_zahlenbereich_minimum.setValue(1000)
     self.horizontalLayout_zahlenbereich_minimum.addWidget(self.spinbox_zahlenbereich_minimum)
 
 
@@ -2631,7 +2632,7 @@ def setup_stackWizard(self):
 
     self.spinbox_zahlenbereich_maximum = create_new_spinbox(self.widget_zahlenbereich_maximum)
     self.spinbox_zahlenbereich_maximum.setRange(0,999999999)
-    self.spinbox_zahlenbereich_maximum.setValue(999)
+    self.spinbox_zahlenbereich_maximum.setValue(99999)
     self.horizontalLayout_zahlenbereich_maximum.addWidget(self.spinbox_zahlenbereich_maximum)
     self.spinbox_zahlenbereich_maximum.valueChanged.connect(self.worksheet_wizard_setting_changed)
     self.spinbox_zahlenbereich_minimum.valueChanged.connect(partial(self.minimum_changed_wizard, self.spinbox_zahlenbereich_minimum, self.spinbox_zahlenbereich_maximum))

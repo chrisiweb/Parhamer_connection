@@ -3824,7 +3824,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         self.checkbox_enable_addition.hide()
         self.checkbox_enable_subtraktion.hide()
-        if shorten_topic=='ari_pos_add' or shorten_topic=='ari_pos_sub':
+
+        if shorten_topic == 'ari_pos_ste':
+            self.spinbox_zahlenbereich_minimum.setRange(0,999999999)
+            self.spinbox_zahlenbereich_minimum.setValue(1000)
+            self.spinbox_zahlenbereich_maximum.setRange(0,999999999)
+            self.spinbox_zahlenbereich_maximum.setValue(99999)
+        elif shorten_topic=='ari_pos_add' or shorten_topic=='ari_pos_sub':
             self.spinbox_zahlenbereich_minimum.setRange(0,999999999)
             self.spinbox_zahlenbereich_minimum.setValue(100)
             self.spinbox_zahlenbereich_maximum.setRange(0,999999999)
@@ -4292,7 +4298,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         shorten_topic = self.shorten_topic(thema)
         examples = self.spinBox_number_wizard.value()
 
-        if shorten_topic=='ari_pos_add':
+        if shorten_topic == 'ari_pos_ste':
+            minimum = self.spinbox_zahlenbereich_minimum.value()
+            maximum = self.spinbox_zahlenbereich_maximum.value()
+            commas = self.spinbox_kommastellen_wizard.value()
+            smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
+            list_of_examples_wizard = create_list_of_examples_stellenwert(examples, minimum, maximum, commas)                        
+        elif shorten_topic =='ari_pos_add':
             minimum = self.spinbox_zahlenbereich_minimum.value()
             maximum = self.spinbox_zahlenbereich_maximum.value()
             commas = self.spinbox_kommastellen_wizard.value()
