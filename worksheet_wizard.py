@@ -22,7 +22,8 @@ dict_themen_wizard = {
             "Stellenwerte" : [
                 'self.widget_zahlenbereich_minimum',
                 'self.widget_zahlenbereich_maximum',
-                'self.widget_kommastellen_wizard',                
+                'self.widget_kommastellen_wizard',
+                'self.widget_general_direction',               
             ],
             "Addition": [
                 'self.widget_ausrichtung_wizard',
@@ -229,7 +230,26 @@ def split_into_digits(n):
 
 
 
+def create_single_example_stellenwert(minimum, maximum, commas, smaller_or_equal, general_direction_index):
+    set_commas=commas
+    if smaller_or_equal == 1:
+        commas = random.randint(0,set_commas) 
+    number = get_random_number(minimum,maximum, commas)
 
+    _list_stellenwert = number_to_placevalue(number)
+
+    string_stellenwert = "  ".join(_list_stellenwert)
+    if general_direction_index == 1:
+        index = random.choice([0,2])
+    else:
+        index = general_direction_index
+
+    if index == 0:
+        _string = f"{number} = {string_stellenwert}".replace(".",",")
+        return [number, string_stellenwert, _string]
+    elif index == 2:
+        _string = f"{string_stellenwert} = {number}".replace(".",",")
+        return [string_stellenwert,number, _string]
 
 def create_single_example_addition(minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
     summanden = []
@@ -1136,6 +1156,15 @@ def get_random_fraction(min, max):
     return Fraction("{0}/{1}".format(numerator, abs(denominator)))
 
 
+def create_list_of_examples_stellenwert(examples, minimum, maximum, commas, smaller_or_equal, general_direction_index):
+    list_of_examples = []
+
+    for _ in range(examples):
+        new_example = create_single_example_stellenwert(minimum, maximum, commas, smaller_or_equal, general_direction_index)
+        list_of_examples.append(new_example)
+
+    return list_of_examples     
+
 def create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
     list_of_examples = []
 
@@ -1234,7 +1263,14 @@ def number_to_placevalue(number):
     
     return complete_string_list
 
+def create_latex_string_stellenwert(content, example):
+    _string = example[-1]
 
+    _string = _string.split(" = ")
+    print(_string)
+    content += f"\\task {_string[0]} = \\antwort{{{_string[1]}}}"
+
+    return content
 def create_latex_string_addition(content, example, ausrichtung):
     summanden = example[0]
     
@@ -1617,7 +1653,9 @@ def create_latex_worksheet(
 
         list_of_examples = set_of_examples['list_of_examples']
         for example in list_of_examples:
-            if shorten_topic == 'ari_pos_add':
+            if shorten_topic == 'ari_pos_ste':
+                content = create_latex_string_stellenwert(content, example)
+            elif shorten_topic == 'ari_pos_add':
                 content = create_latex_string_addition(content, example, ausrichtung)
             elif shorten_topic == 'ari_pos_sub':
                 content = create_latex_string_subtraction(content, example, ausrichtung)
@@ -1808,7 +1846,13 @@ def get_random_solution(self):
     # thema = random.choice(list(self.dict_all_examples_wizard.keys()))
     # thema = self.comboBox_themen_wizard.currentText()
 
-    if shorten_topic == 'ari_pos_add':
+    if shorten_topic == 'ari_pos_ste':
+        minimum = self.spinbox_zahlenbereich_minimum.value()
+        maximum = self.spinbox_zahlenbereich_maximum.value()
+        commas = self.spinbox_kommastellen_wizard.value()
+        smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
+        distract_result = create_single_example_stellenwert(minimum, maximum, commas, smaller_or_equal, self.general_direction_index)
+    elif shorten_topic == 'ari_pos_add':
         minimum = self.spinbox_zahlenbereich_minimum.value()
         maximum = self.spinbox_zahlenbereich_maximum.value()
         commas = self.spinbox_kommastellen_wizard.value()

@@ -2656,7 +2656,26 @@ def setup_stackWizard(self):
     self.spinbox_kommastellen_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
     self.horizontalLayout_kommastellen_wizard.addWidget(self.spinbox_kommastellen_wizard)
 
-    self.gridLayout_zahlenbereich_wizard.setColumnStretch(4, 1)
+    self.widget_general_direction = QtWidgets.QWidget(self.groupBox_zahlenbereich_wizard)
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.widget_general_direction, 0,4,1,1)
+    # self.verticallayout_binom_further_settings.addWidget(self.widget_binoms_direction)
+
+    self.horizontallayout_general_direction = create_new_horizontallayout(self.widget_general_direction)
+    # self.horizontallayout_general_direction.setContentsMargins(12,0,0,0)
+
+    self.label_general_direction_1 = create_new_label(self.widget_general_direction, "123")
+    self.horizontallayout_general_direction.addWidget(self.label_general_direction_1)
+
+
+    self.general_direction_index = 0
+    self.pushbutton_general_direction = create_new_button(self.widget_general_direction, "", self.general_direction_changed, "chevron-right.svg")
+    self.horizontallayout_general_direction.addWidget(self.pushbutton_general_direction)
+    
+
+    self.label_general_direction_2 = create_new_label(self.widget_general_direction, "1H 2Z 3E")
+    self.horizontallayout_general_direction.addWidget(self.label_general_direction_2)  
+
+    self.gridLayout_zahlenbereich_wizard.setColumnStretch(5, 1)
 
     self.checkbox_negative_ergebnisse_wizard = create_new_checkbox(self.groupBox_zahlenbereich_wizard, "negative Ergebnisse erlauben")
     self.checkbox_negative_ergebnisse_wizard.stateChanged.connect(self.worksheet_wizard_setting_changed)

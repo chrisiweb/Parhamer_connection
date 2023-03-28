@@ -3951,7 +3951,16 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.checkbox_enable_disable_widget(self.checkbox_binoms_y, self.spinbox_binoms_n_max)
         self.binom_update_label()
 
+    def general_direction_changed(self):
+        icons = ["chevron-right.svg","code.svg", "chevron-left.svg"]
+        if self.general_direction_index==2:
+            index = 0
+        else:
+            index = self.general_direction_index+1
 
+        self.pushbutton_general_direction.setIcon(QIcon(get_icon_path(icons[index])))
+
+        self.general_direction_index = index
 
     def binoms_direction_changed(self):
         icons = ["chevron-right.svg","code.svg", "chevron-left.svg", "edit-3.svg"]
@@ -4133,8 +4142,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         maximum = self.spinbox_zahlenbereich_maximum.value()
         commas = self.spinbox_kommastellen_wizard.value()
         
-
-        if shorten_topic=='ari_pos_add':
+        if shorten_topic == 'ari_pos_ste':
+            smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
+            new_example = create_single_example_stellenwert(minimum, maximum, commas, smaller_or_equal, self.general_direction_index)
+        elif shorten_topic=='ari_pos_add':
             anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
             smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
             new_example = create_single_example_addition(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
@@ -4303,7 +4314,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             maximum = self.spinbox_zahlenbereich_maximum.value()
             commas = self.spinbox_kommastellen_wizard.value()
             smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
-            list_of_examples_wizard = create_list_of_examples_stellenwert(examples, minimum, maximum, commas)                        
+            list_of_examples_wizard = create_list_of_examples_stellenwert(examples, minimum, maximum, commas, smaller_or_equal, self.general_direction_index)                        
         elif shorten_topic =='ari_pos_add':
             minimum = self.spinbox_zahlenbereich_minimum.value()
             maximum = self.spinbox_zahlenbereich_maximum.value()
@@ -4313,7 +4324,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             if minimum>maximum:
                 critical_window('Das Maximum muss größer als das Minimum sein.')
                 return
-            list_of_examples_wizard = create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
+            list_of_examples_wizard = create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, self.general_direction_index)
 
         elif shorten_topic=='ari_pos_sub':
             minimum = self.spinbox_zahlenbereich_minimum.value()
@@ -8439,7 +8450,8 @@ if __name__ == "__main__":
         dict_themen_wizard,
         get_all_solution_pixels,
         get_max_pixels_nonogram,
-        create_latex_worksheet, 
+        create_latex_worksheet,
+        create_list_of_examples_stellenwert, create_single_example_stellenwert, 
         create_list_of_examples_addition, create_single_example_addition,
         create_list_of_examples_subtraction, create_single_example_subtraction,
         create_list_of_examples_multiplication, create_single_example_multiplication,

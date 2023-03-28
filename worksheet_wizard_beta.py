@@ -208,7 +208,7 @@ list_stellenwerte = ['ht', 'zt','t','h','z','E', 'Z', 'H', 'T', 'ZT', 'HT', 'M',
 index_E = 5
 
 
-x= get_random_number(10,1000000,3)
+x= get_random_number(100,999)
 
 print(x)
 
@@ -218,7 +218,7 @@ print(_list)
 
 # print(complete_string_list)
 
-# print("  ".join(complete_string_list))
+print("  ".join(_list))
 # list_of_digits = [int(i) for i in str(x)]
 # print(list_of_digits)
 
