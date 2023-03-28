@@ -3814,28 +3814,32 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def themen_changed_wizard(self):
         thema = self.get_current_topic_wizard()
         thema_index = self.total_list_of_topics_wizard.index(thema)
-
+        # print(self.total_list_of_topics_wizard)
+        print(thema)
+        shorten_topic = [x[:3] for x in thema]
+        shorten_topic = "_".join(shorten_topic).lower()
+        print(shorten_topic)
 
         self.checkbox_enable_addition.hide()
         self.checkbox_enable_subtraktion.hide()
-        if thema_index == 0 or thema_index == 1:
+        if shorten_topic=='ari_pos_add' or shorten_topic=='ari_pos_sub':
             self.spinbox_zahlenbereich_minimum.setRange(0,999999999)
             self.spinbox_zahlenbereich_minimum.setValue(100)
             self.spinbox_zahlenbereich_maximum.setRange(0,999999999)
             self.spinbox_zahlenbereich_maximum.setValue(999)
             self.spinBox_zahlenbereich_anzahl_wizard.setMaximum(5)  
 
-        if thema_index == 0:
+        if shorten_topic=='ari_pos_add':
             self.label_zahlenbereich_anzahl_wizard.setText("Summanden:")
             # self.groupBox_zahlenbereich_anzahl.setTitle("Summanden")
             self.spinBox_zahlenbereich_anzahl_wizard.setRange(2,5)
             self.spinBox_zahlenbereich_anzahl_wizard.setValue(2)
-        elif thema_index == 1:
+        elif shorten_topic=='ari_pos_sub':
             self.label_zahlenbereich_anzahl_wizard.setText("Subtrahenden:")
             # self.groupBox_zahlenbereich_anzahl.setTitle("Subtrahenden")
             self.spinBox_zahlenbereich_anzahl_wizard.setRange(1,5)
             self.spinBox_zahlenbereich_anzahl_wizard.setValue(1)
-        elif thema_index == 4:
+        elif shorten_topic=='ari_pos_ver':
             self.label_zahlenbereich_anzahl_wizard.setText("Zahlen:")
             self.spinbox_zahlenbereich_minimum.setRange(0,999)
             self.spinbox_zahlenbereich_maximum.setRange(0,999)

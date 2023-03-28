@@ -19,7 +19,7 @@ from handle_exceptions import report_exceptions
 dict_themen_wizard = {
     "Arithmetik": {
         "Positive (Dezimal-)Zahlen": {
-            "Stellenwert" : [
+            "Stellenwerte" : [
                 'self.widget_zahlenbereich_minimum',
                 'self.widget_zahlenbereich_maximum',
                 'self.widget_kommastellen_wizard',                
