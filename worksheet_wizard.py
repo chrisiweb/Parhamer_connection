@@ -228,13 +228,53 @@ def split_into_digits(n):
     return [int(d) for d in n]
 
 def insert_dots(number):
+    print('test')
     number = str(number)
+    print(number)
+    number.split(",")
+    print(number)
     result = ""
     for i in range(len(number)):
         if (len(number) - i) % 3 == 0 and i != 0:
             result += "*"
         result += number[i]
     return result
+
+
+def simplify_numbers(number, num_stellenwerte):
+    str_num = [*str(number)]
+    number_of_zeros = str_num.count("0")
+    erwartungswert = 4.5-number_of_zeros #4.5-1 if first number must exist
+
+
+    if erwartungswert<0:
+        return number
+    
+    probability = erwartungswert/num_stellenwerte
+    # print(num_stellenwerte)
+    # print(f"prb: {probability}")
+    # if probability>1:
+    #     probability=1
+    str_new_number = []
+    for i, all in enumerate(str_num):
+        # print(random_switch(probability))
+        if all != '0' and i!=0 and all!='.':
+            if random_switch(probability*100)==False:
+                str_new_number.append('0')
+            else:
+                str_new_number.append(all)
+        else:
+            str_new_number.append(all)
+
+    # print(str_new_number)
+    if "." in str_new_number:
+        number = float("".join(str_new_number))
+    else:
+        number = int("".join(str_new_number))
+    return number
+
+
+
 
 def create_single_example_stellenwert(minimum, maximum, general_direction_index):
     # set_commas=commas
@@ -246,10 +286,12 @@ def create_single_example_stellenwert(minimum, maximum, general_direction_index)
     maximum_num = int('9'*maximum)
     minimum_num = int('1'+'0'*(maximum-1))
 
-    print(maximum_num)
-    print(minimum_num)
-    print(minimum)
+    # print(maximum_num)
+    # print(minimum_num)
+    # print(minimum)
     number = get_random_number(minimum_num,maximum_num, minimum)
+
+    number = simplify_numbers(number, maximum+minimum)
 
     _list_stellenwert = number_to_placevalue(number)
 
@@ -1868,11 +1910,13 @@ def get_random_solution(self):
     # thema = self.comboBox_themen_wizard.currentText()
 
     if shorten_topic == 'ari_pos_ste':
-        minimum = self.spinbox_zahlenbereich_minimum.value()
-        maximum = self.spinbox_zahlenbereich_maximum.value()
-        commas = self.spinbox_kommastellen_wizard.value()
-        smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
-        distract_result = create_single_example_stellenwert(minimum, maximum, self.general_direction_index)
+        minimum = self.combobox_zahlenbereich_2.currentIndex()
+        maximum = self.combobox_zahlenbereich_1.currentIndex()
+
+        # commas = self.spinbox_kommastellen_wizard.value()
+        # smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
+        distract_result = create_single_example_stellenwert(minimum, maximum, self.general_direction_index) #
+
     elif shorten_topic == 'ari_pos_add':
         minimum = self.spinbox_zahlenbereich_minimum.value()
         maximum = self.spinbox_zahlenbereich_maximum.value()

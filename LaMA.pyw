@@ -4143,7 +4143,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         commas = self.spinbox_kommastellen_wizard.value()
         
         if shorten_topic == 'ari_pos_ste':
-            smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
+            minimum = self.combobox_zahlenbereich_2.currentIndex()
+            maximum = self.combobox_zahlenbereich_1.currentIndex()
+            # smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
             new_example = create_single_example_stellenwert(minimum, maximum, self.general_direction_index)
         elif shorten_topic=='ari_pos_add':
             anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()

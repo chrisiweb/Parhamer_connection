@@ -216,7 +216,7 @@ def insert_dots(number):
 def simplify_numbers(number, num_stellenwerte):
     str_num = [*str(number)]
     number_of_zeros = str_num.count("0")
-    erwartungswert = 3.5-number_of_zeros #4.5-1 if first number must exist
+    erwartungswert = 4.5-number_of_zeros #4.5-1 if first number must exist
 
 
     if erwartungswert<0:
@@ -227,7 +227,7 @@ def simplify_numbers(number, num_stellenwerte):
 
     str_new_number = []
     for i, all in enumerate(str_num):
-        print(random_switch(probability))
+        # print(random_switch(probability))
         if all != '0' and i!=0:
             if random_switch(probability*100)==False:
                 str_new_number.append('0')
@@ -237,7 +237,10 @@ def simplify_numbers(number, num_stellenwerte):
             str_new_number.append(all)
 
     print(str_new_number)
-    number = int("".join(str_new_number))
+    if "." in str_new_number:
+        number = float("".join(str_new_number))
+    else:
+        number = int("".join(str_new_number))
     return number
 
 list_stellenwerte = ['ht', 'zt','t','h','z','E', 'Z', 'H', 'T', 'ZT', 'HT', 'M', 'ZM', 'HM', 'Mrd', 'ZMrd', 'HMrd', 'B', 'ZB', 'HB']
@@ -259,7 +262,7 @@ index_E = 5
 # print(list_of_digits)
 
 maximum = 8
-minimum = 0
+minimum = 2
 maximum = maximum+2
 
 maximum_num = int('9'*maximum)
@@ -271,7 +274,7 @@ minimum_num = int('1'+'0'*(maximum-1))
 number = get_random_number(minimum_num,maximum_num, minimum)
 
 print(number)
-number = simplify_numbers(number, maximum-minimum)
+number = simplify_numbers(number, maximum+minimum)
 print(number)
 
 _list_stellenwert = number_to_placevalue(number)
@@ -295,7 +298,7 @@ elif index == 2:
     _string = f"{string_stellenwert} = {number}".replace(".",",")
     _string = _string.replace("*",'.')
 
-# print(_string)
+print(_string)
 
 
 ### ROMAN NUMBERS WORKING!!!
