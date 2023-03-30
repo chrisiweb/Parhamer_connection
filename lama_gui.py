@@ -2654,6 +2654,11 @@ def setup_stackWizard(self):
     self.label_zahlenbereich_1_combobox = create_new_label(self.widget_zahlenbereich_1_combobox, "Größter Stellenwert:")
     self.horizontalLayout_zahlenbereich_1_combobox.addWidget(self.label_zahlenbereich_1_combobox)
     
+    self.combobox_zahlenbereich_1_leq = create_new_combobox(self.widget_zahlenbereich_1_combobox)
+    add_new_option(self.combobox_zahlenbereich_1_leq, 0, "=")
+    add_new_option(self.combobox_zahlenbereich_1_leq, 1, "\u2264")
+    self.horizontalLayout_zahlenbereich_1_combobox.addWidget(self.combobox_zahlenbereich_1_leq) 
+
     self.combobox_zahlenbereich_1 = create_new_combobox(self.widget_zahlenbereich_1_combobox)
     self.horizontalLayout_zahlenbereich_1_combobox.addWidget(self.combobox_zahlenbereich_1)
 
@@ -2670,6 +2675,11 @@ def setup_stackWizard(self):
 
     self.label_zahlenbereich_2_combobox = create_new_label(self.widget_zahlenbereich_2_combobox, "Kleinster Stellenwert:")
     self.horizontalLayout_zahlenbereich_2_combobox.addWidget(self.label_zahlenbereich_2_combobox)
+
+    self.combobox_zahlenbereich_2_leq = create_new_combobox(self.widget_zahlenbereich_2_combobox)
+    add_new_option(self.combobox_zahlenbereich_2_leq, 0, "=")
+    add_new_option(self.combobox_zahlenbereich_2_leq, 1, "\u2264")
+    self.horizontalLayout_zahlenbereich_2_combobox.addWidget(self.combobox_zahlenbereich_2_leq) 
 
     self.combobox_zahlenbereich_2 = create_new_combobox(self.widget_zahlenbereich_2_combobox)
     self.horizontalLayout_zahlenbereich_2_combobox.addWidget(self.combobox_zahlenbereich_2)
@@ -2699,6 +2709,8 @@ def setup_stackWizard(self):
     self.spinbox_kommastellen_wizard.setMaximum(14)
     self.spinbox_kommastellen_wizard.valueChanged.connect(self.worksheet_wizard_setting_changed)
     self.horizontalLayout_kommastellen_wizard.addWidget(self.spinbox_kommastellen_wizard)
+
+    self.widget_kommastellen_wizard.hide()
 
     self.widget_general_direction = QtWidgets.QWidget(self.groupBox_zahlenbereich_wizard)
     self.gridLayout_zahlenbereich_wizard.addWidget(self.widget_general_direction, 0,4,1,1)

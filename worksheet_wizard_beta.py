@@ -206,11 +206,16 @@ def number_to_placevalue(number):
 
 def insert_dots(number):
     number = str(number)
+    number = number.split(".")
+    print(number)
     result = ""
-    for i in range(len(number)):
-        if (len(number) - i) % 3 == 0 and i != 0:
+    for i in range(len(number[0])):
+        if (len(number[0]) - i) % 3 == 0 and i != 0:
             result += "*"
-        result += number[i]
+        result += number[0][i]
+    print(f"length: {len(number)}")
+    if len(number)>1:
+        result = f"{result}.{number[1]}"
     return result
 
 def simplify_numbers(number, num_stellenwerte):
@@ -223,12 +228,14 @@ def simplify_numbers(number, num_stellenwerte):
         return number
     
     probability = erwartungswert/num_stellenwerte
-    print(probability)
-
+    # print(num_stellenwerte)
+    # print(f"prb: {probability}")
+    # if probability>1:
+    #     probability=1
     str_new_number = []
     for i, all in enumerate(str_num):
         # print(random_switch(probability))
-        if all != '0' and i!=0:
+        if all != '0' and i!=0 and all!='.' and i!=len(str_num)-1:
             if random_switch(probability*100)==False:
                 str_new_number.append('0')
             else:
@@ -236,12 +243,13 @@ def simplify_numbers(number, num_stellenwerte):
         else:
             str_new_number.append(all)
 
-    print(str_new_number)
+    # print(str_new_number)
     if "." in str_new_number:
         number = float("".join(str_new_number))
     else:
         number = int("".join(str_new_number))
     return number
+
 
 list_stellenwerte = ['ht', 'zt','t','h','z','E', 'Z', 'H', 'T', 'ZT', 'HT', 'M', 'ZM', 'HM', 'Mrd', 'ZMrd', 'HMrd', 'B', 'ZB', 'HB']
 index_E = 5
@@ -273,9 +281,7 @@ minimum_num = int('1'+'0'*(maximum-1))
 # print(minimum)
 number = get_random_number(minimum_num,maximum_num, minimum)
 
-print(number)
 number = simplify_numbers(number, maximum+minimum)
-print(number)
 
 _list_stellenwert = number_to_placevalue(number)
 
@@ -283,12 +289,14 @@ string_stellenwert = "  ".join(_list_stellenwert)
 
 index = 0
 
-print(string_stellenwert)
+# print(string_stellenwert)
 
 
 # x = '*'.join(reversed(str(number))[i:i+3] for i in range(0, len(str(number)), 3))
 # print(x)
+print(number)
 number = insert_dots(number)
+print(number)
 
 if index == 0:
     _string = f"{number} = {string_stellenwert}".replace(".",",")

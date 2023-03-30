@@ -4144,9 +4144,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         
         if shorten_topic == 'ari_pos_ste':
             minimum = self.combobox_zahlenbereich_2.currentIndex()
+            minimum_index = self.combobox_zahlenbereich_2_leq.currentIndex()
             maximum = self.combobox_zahlenbereich_1.currentIndex()
+            maximum_index = self.combobox_zahlenbereich_1_leq.currentIndex()
             # smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
-            new_example = create_single_example_stellenwert(minimum, maximum, self.general_direction_index)
+            new_example = create_single_example_stellenwert(minimum, minimum_index, maximum, maximum_index, self.general_direction_index)
         elif shorten_topic=='ari_pos_add':
             anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
             smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
@@ -4313,11 +4315,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         if shorten_topic == 'ari_pos_ste':
             minimum = self.combobox_zahlenbereich_2.currentIndex()
+            minimum_index = self.combobox_zahlenbereich_2_leq.currentIndex()
             maximum = self.combobox_zahlenbereich_1.currentIndex()
+            maximum_index = self.combobox_zahlenbereich_1_leq.currentIndex()
 
-            commas = self.spinbox_kommastellen_wizard.value()
-            smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
-            list_of_examples_wizard = create_list_of_examples_stellenwert(examples, minimum, maximum, self.general_direction_index)                        
+            list_of_examples_wizard = create_list_of_examples_stellenwert(examples, minimum, minimum_index, maximum, maximum_index, self.general_direction_index)                        
         elif shorten_topic =='ari_pos_add':
             minimum = self.spinbox_zahlenbereich_minimum.value()
             maximum = self.spinbox_zahlenbereich_maximum.value()

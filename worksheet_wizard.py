@@ -228,37 +228,48 @@ def split_into_digits(n):
     return [int(d) for d in n]
 
 def insert_dots(number):
-    print('test')
     number = str(number)
-    print(number)
-    number.split(",")
-    print(number)
+    number = number.split(".")
     result = ""
-    for i in range(len(number)):
-        if (len(number) - i) % 3 == 0 and i != 0:
+    for i in range(len(number[0])):
+        if (len(number[0]) - i) % 3 == 0 and i != 0:
             result += "*"
-        result += number[i]
+        result += number[0][i]
+    if len(number)>1:
+        result = f"{result}.{number[1]}"
     return result
 
 
-def simplify_numbers(number, num_stellenwerte):
+def simplify_numbers(number, num_stellenwerte, minimum_index, maximum_index):
     str_num = [*str(number)]
     number_of_zeros = str_num.count("0")
-    erwartungswert = 4.5-number_of_zeros #4.5-1 if first number must exist
+    erwartungswert = 4-number_of_zeros #4.5-1 if first number must exist
 
 
     if erwartungswert<0:
         return number
     
     probability = erwartungswert/num_stellenwerte
-    # print(num_stellenwerte)
-    # print(f"prb: {probability}")
-    # if probability>1:
-    #     probability=1
+
     str_new_number = []
     for i, all in enumerate(str_num):
         # print(random_switch(probability))
-        if all != '0' and i!=0 and all!='.':
+        # print('count')
+        # print(str_new_number.count('0'))
+        # print(len(str_num))
+        if str_new_number.count('0')+3>=len(str_num):
+            str_new_number.append(str(get_random_number(1,9)))
+        elif maximum_index==0 and i==0:
+            if all == '0':
+                str_new_number.append(str(get_random_number(1,9)))
+            else:
+                str_new_number.append(all)
+        elif minimum_index==0 and i==len(str_num)-1:
+            if all == '0':
+                str_new_number.append(str(get_random_number(1,9)))
+            else:
+                str_new_number.append(all)
+        elif all != '0' and all!='.':
             if random_switch(probability*100)==False:
                 str_new_number.append('0')
             else:
@@ -276,7 +287,7 @@ def simplify_numbers(number, num_stellenwerte):
 
 
 
-def create_single_example_stellenwert(minimum, maximum, general_direction_index):
+def create_single_example_stellenwert(minimum, minimum_index, maximum, maximum_index, general_direction_index):
     # set_commas=commas
     # if smaller_or_equal == 1:
     #     commas = random.randint(0,set_commas) 
@@ -289,13 +300,14 @@ def create_single_example_stellenwert(minimum, maximum, general_direction_index)
     # print(maximum_num)
     # print(minimum_num)
     # print(minimum)
+
     number = get_random_number(minimum_num,maximum_num, minimum)
-
-    number = simplify_numbers(number, maximum+minimum)
-
+    # print(number)
+    number = simplify_numbers(number, maximum+minimum, minimum_index, maximum_index)
+    # print(number)
     _list_stellenwert = number_to_placevalue(number)
 
-    string_stellenwert = "  ".join(_list_stellenwert)
+    string_stellenwert = " ".join(_list_stellenwert)
     if general_direction_index == 1:
         index = random.choice([0,2])
     else:
@@ -303,8 +315,9 @@ def create_single_example_stellenwert(minimum, maximum, general_direction_index)
 
     # x = '*'.join(reversed(str(number))[i:i+3] for i in range(0, len(str(number)), 3))
     # print(x)
+    # print(number)
     number = insert_dots(number)
-
+    # print(number)
     if index == 0:
         _string = f"{number} = {string_stellenwert}".replace(".",",")
         _string = _string.replace("*",'.')
@@ -1219,11 +1232,11 @@ def get_random_fraction(min, max):
     return Fraction("{0}/{1}".format(numerator, abs(denominator)))
 
 
-def create_list_of_examples_stellenwert(examples, minimum, maximum, general_direction_index):
+def create_list_of_examples_stellenwert(examples, minimum, minimum_index, maximum, maximum_index, general_direction_index):
     list_of_examples = []
 
     for _ in range(examples):
-        new_example = create_single_example_stellenwert(minimum, maximum, general_direction_index)
+        new_example = create_single_example_stellenwert(minimum, minimum_index, maximum, maximum_index, general_direction_index)
         list_of_examples.append(new_example)
 
     return list_of_examples     
@@ -1911,11 +1924,13 @@ def get_random_solution(self):
 
     if shorten_topic == 'ari_pos_ste':
         minimum = self.combobox_zahlenbereich_2.currentIndex()
+        minimum_index = self.combobox_zahlenbereich_2_leq.currentIndex()
         maximum = self.combobox_zahlenbereich_1.currentIndex()
+        maximum_index = self.combobox_zahlenbereich_1_leq.currentIndex()
 
         # commas = self.spinbox_kommastellen_wizard.value()
         # smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
-        distract_result = create_single_example_stellenwert(minimum, maximum, self.general_direction_index) #
+        distract_result = create_single_example_stellenwert(minimum, minimum_index, maximum, maximum_index, self.general_direction_index) #
 
     elif shorten_topic == 'ari_pos_add':
         minimum = self.spinbox_zahlenbereich_minimum.value()
