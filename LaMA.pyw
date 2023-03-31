@@ -4633,12 +4633,15 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
 
+        full_list_dummy_solutions = []
         list_dummy_solutions = []
         i=0
         while i<10:
             dummy_solution = get_random_solution(self)
-            if dummy_solution[-2] not in list_solutions:
-                list_dummy_solutions.append(dummy_solution)
+   
+            if dummy_solution[-2] not in list_solutions and dummy_solution[-2] not in list_dummy_solutions:
+                full_list_dummy_solutions.append(dummy_solution)
+                list_dummy_solutions.append(dummy_solution[-2])
                 i+=1
 
 
@@ -4657,7 +4660,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 'spalten' : self.spinBox_column_wizard.value(),
                 'ausrichtung': ausrichtung,
                 'list_of_examples' : self.list_of_examples_wizard,
-                'dummy_examples' : list_dummy_solutions,
+                'dummy_examples' : full_list_dummy_solutions,
             }
 
         except AttributeError:
@@ -4667,7 +4670,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 'spalten' : self.spinBox_column_wizard.value(),
                 'ausrichtung': ausrichtung,
                 'list_of_examples' : self.list_of_examples_wizard,
-                'dummy_examples' : list_dummy_solutions,
+                'dummy_examples' : full_list_dummy_solutions,
             }
         self.list_of_examples_wizard = []
 
@@ -4795,7 +4798,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 # thema_index = self.total_list_of_topics_wizard.index(thema)
                 shorten_topic = self.shorten_topic(thema)
 
-                if shorten_topic=='ter_bin':
+                if shorten_topic=='ter_bin'or shorten_topic=='ari_pos_ste':
                     columns = 2
                 else:
                     columns = 3

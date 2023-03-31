@@ -308,6 +308,7 @@ def create_single_example_stellenwert(minimum, minimum_index, maximum, maximum_i
     _list_stellenwert = number_to_placevalue(number)
 
     string_stellenwert = " ".join(_list_stellenwert)
+
     if general_direction_index == 1:
         index = random.choice([0,2])
     else:
@@ -316,15 +317,18 @@ def create_single_example_stellenwert(minimum, minimum_index, maximum, maximum_i
     # x = '*'.join(reversed(str(number))[i:i+3] for i in range(0, len(str(number)), 3))
     # print(x)
     # print(number)
+
     number = insert_dots(number)
     # print(number)
     if index == 0:
         _string = f"{number} = {string_stellenwert}".replace(".",",")
         _string = _string.replace("*",'.')
+        number = number.replace("*",'.')
         return [number, string_stellenwert, _string]
     elif index == 2:
         _string = f"{string_stellenwert} = {number}".replace(".",",")
         _string = _string.replace("*",'.')
+        number = number.replace("*",'.')
         return [string_stellenwert,number, _string]
 
 def create_single_example_addition(minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
@@ -1343,8 +1347,11 @@ def create_latex_string_stellenwert(content, example):
     _string = example[-1]
 
     _string = _string.split(" = ")
-    print(_string)
-    content += f"\\task {_string[0]} = \\antwort{{{_string[1]}}}"
+    # _string = _string.replace(".","\,")
+    # print(_string)
+    string_0 = _string[0].replace(".","\,")
+    string_1 = _string[1].replace(".","\,")
+    content += f"\\task {string_0} = \\antwort{{{string_1}}}"
 
     return content
 def create_latex_string_addition(content, example, ausrichtung):
@@ -1869,8 +1876,8 @@ def collect_dummy_solutions(dict_all_examples):
     for all in dict_all_examples.values():
         all_dummy_solutions.extend(all['dummy_examples'])
 
-    _list = random.choices(all_dummy_solutions, k=10)
 
+    _list = random.sample(all_dummy_solutions, k=10) #choices
     return _list
 
 def create_coordinates(solution_pixels, dict_all_examples):
