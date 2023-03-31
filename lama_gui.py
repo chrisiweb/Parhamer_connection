@@ -3280,12 +3280,16 @@ def setup_stackWizard(self):
 
     self.buttonBox_addto_worksheet_wizard = QtWidgets.QDialogButtonBox(self.widgetNewExamples_wizard)
     self.buttonBox_addto_worksheet_wizard.setStandardButtons(
-        QtWidgets.QDialogButtonBox.Ok
+        QtWidgets.QDialogButtonBox.Save | QtWidgets.QDialogButtonBox.Ok 
     )
     self.verticalLayout_newexamples_wizard.addWidget(self.buttonBox_addto_worksheet_wizard)
 
+    self.pushButton_single_task = self.buttonBox_addto_worksheet_wizard.button(QtWidgets.QDialogButtonBox.Ok)
+    self.pushButton_single_task.setText("Arbeitsanweisung für diese Aufgaben hinzufügen")
+    self.pushButton_single_task.setIcon(QtGui.QIcon(get_icon_path('plus-square.svg')))
+    self.pushButton_single_task.setEnabled(False)    
 
-    self.pushButton_addto_worksheet_wizard = self.buttonBox_addto_worksheet_wizard.button(QtWidgets.QDialogButtonBox.Ok)
+    self.pushButton_addto_worksheet_wizard = self.buttonBox_addto_worksheet_wizard.button(QtWidgets.QDialogButtonBox.Save)
     self.pushButton_addto_worksheet_wizard.setText("Alle Aufgaben zum Arbeitsblatt hinzufügen")
     self.pushButton_addto_worksheet_wizard.setIcon(QtGui.QIcon(get_icon_path('chevrons-right.svg')))
     self.pushButton_addto_worksheet_wizard.setEnabled(False)

@@ -1714,7 +1714,7 @@ def create_latex_worksheet(
 
     if arbeitsanweisung != False:
         if arbeitsanweisung == True:
-            arbeitsanweisung="Berechne die folgenden Aufgaben"
+            arbeitsanweisung="Berechne die folgenden Aufgaben."
         content += arbeitsanweisung
 
     for widget in order_of_examples:

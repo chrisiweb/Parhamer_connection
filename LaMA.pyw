@@ -4905,7 +4905,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         try:
             text = self.instructions_wizard
         except AttributeError:
-            text = "Berechne die folgenden Aufgaben"
+            text = "Berechne die folgenden Aufgaben."
 
         try:
             show_titel = self.titel_worksheet_wizard
