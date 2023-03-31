@@ -1725,6 +1725,9 @@ def create_latex_worksheet(
         ausrichtung = set_of_examples['ausrichtung']
         columns = set_of_examples['spalten']
         
+        if set_of_examples['instruction'] != None:
+            content += f"\n\n{set_of_examples['instruction']}\n\n"
+
         # if columns > 1:
         #     content += "\\begin{{multicols}}{{{0}}}\n".format(columns)
         # print(nummerierung)

@@ -2531,6 +2531,15 @@ def setup_stackWizard(self):
     self.checkbox_enable_subtraktion.hide()
 
 
+    self.widget_single_instructions = QtWidgets.QWidget(self.widget_setting_wizard1)
+    self.horizontalLayout_single_instructions = create_new_horizontallayout(self.widget_single_instructions)
+    self.horizontalLayout_single_instructions.setContentsMargins(0,9,0,0)
+    self.pushButton_single_instructions = create_new_button(self.widget_single_instructions, "Arbeitsanweisung hinzufügen", self.edit_single_instructions, icon="edit.svg")
+    self.horizontalLayout_single_instructions.addWidget(self.pushButton_single_instructions)
+    self.horizontalLayout_setting_wizard1.addWidget(self.widget_single_instructions)
+
+
+
     self.widget_ausrichtung_wizard = QtWidgets.QWidget(self.widget_setting_wizard1)
     # create_new_groupbox(self.widget_setting_wizard1, "Ausrichtung")
     self.widget_ausrichtung_wizard.setSizePolicy(SizePolicy_fixed)
@@ -2548,17 +2557,11 @@ def setup_stackWizard(self):
     add_new_option(self.combobox_ausrichtung_wizard, 1, "in der Zeile")
     self.horizontalLayout_ausrichtung_wizard.addWidget(self.combobox_ausrichtung_wizard)
 
+
+
+
+
     self.widget_ausrichtung_wizard.hide()
-
-
-
-
-
-
-
-
-
-
 
     self.horizontalLayout_setting_wizard1.addStretch()
     # self.groupbox_instruction_wizard = create_new_groupbox(self.groupBox_setting_wizard, "Arbeitsanweisung")

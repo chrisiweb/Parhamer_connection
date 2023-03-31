@@ -4026,6 +4026,34 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         if min.value() > max.value():
             max.setValue(min.value()+10)
 
+    def edit_single_instructions(self):
+        # print('yes')
+        Dialog = QtWidgets.QDialog(
+            None,
+            QtCore.Qt.WindowSystemMenuHint
+            | QtCore.Qt.WindowTitleHint
+            | QtCore.Qt.WindowCloseButtonHint,
+        )
+        ui = Ui_Dialog_edit_single_instructions()
+
+        try:
+            if self.current_single_instruction_wizard == None:
+                text = ""
+            else:
+                text = self.current_single_instruction_wizard
+        except AttributeError:
+            text = ""
+        ui.setupUi(Dialog, text)
+
+        rsp = Dialog.exec()
+
+        if rsp == QtWidgets.QDialog.Accepted:
+            self.current_single_instruction_wizard = ui.plainTextEdit_instructions.toPlainText()
+            if is_empty(self.current_single_instruction_wizard):
+                self.pushButton_single_instructions.setText("Arbeitsanweisung hinzufügen")
+            else:    
+                self.pushButton_single_instructions.setText("Arbeitsanweisung ändern")
+
     def combobox_ausrichtung_wizard_changed(self):
         if self.comboBox_themen_wizard.currentText()=='Subtraktion':
             if self.combobox_ausrichtung_wizard.currentIndex()==0:
@@ -4523,6 +4551,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         if self.dict_all_examples_worksheet_wizard[widget]['ausrichtung'] != None:
             self.combobox_ausrichtung_wizard.setCurrentIndex(self.dict_all_examples_worksheet_wizard[widget]['ausrichtung'])
 
+        if self.dict_all_examples_worksheet_wizard[widget]['instruction'] != None:
+            self.current_single_instruction_wizard = self.dict_all_examples_worksheet_wizard[widget]['instruction']
+            self.pushButton_single_instructions.setText("Arbeitsanweisung ändern")
+        else:
+            self.pushButton_single_instructions.setText("Arbeitsanweisung hinzufügen")
+
         _string = thema[0]
         for all in thema[1:]:
             _string += f" > {all}" 
@@ -4652,11 +4686,19 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             ausrichtung = None
 
         thema = self.get_current_topic_wizard()
+        try:
+            instruction = self.current_single_instruction_wizard
+        except AttributeError:
+            if is_empty(self.current_single_instruction_wizard):
+                instruction = None
+            else:
+                instruction = self.current_single_instruction_wizard
         # thema_index = self.total_list_of_topics_wizard.index(thema)
         shorten_topic = self.shorten_topic(thema)
         try:
             self.dict_all_examples_worksheet_wizard[widget_worksheet] = {
                 'shorten_topic' : shorten_topic,
+                'instruction' : instruction,
                 'spalten' : self.spinBox_column_wizard.value(),
                 'ausrichtung': ausrichtung,
                 'list_of_examples' : self.list_of_examples_wizard,
@@ -4667,12 +4709,15 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.dict_all_examples_worksheet_wizard = {}
             self.dict_all_examples_worksheet_wizard[widget_worksheet] = {
                 'shorten_topic' : shorten_topic,
+                'instruction' : instruction,
                 'spalten' : self.spinBox_column_wizard.value(),
                 'ausrichtung': ausrichtung,
                 'list_of_examples' : self.list_of_examples_wizard,
                 'dummy_examples' : full_list_dummy_solutions,
             }
         self.list_of_examples_wizard = []
+        self.current_single_instruction_wizard = None
+        self.pushButton_single_instructions.setText("Arbeitsanweisung hinzufügen")
 
         self.reset_aufgabenboxes_wizard()
 
@@ -8362,7 +8407,7 @@ if __name__ == "__main__":
     from subwindows import Ui_Dialog_Convert_To_Eps
 
     i = step_progressbar(i, "subwindows")
-    from subwindows import Ui_Dialog_edit_worksheet_instructions
+    from subwindows import Ui_Dialog_edit_worksheet_instructions, Ui_Dialog_edit_single_instructions
     i = step_progressbar(i, "subwindows")
     from subwindows import read_credentials
 
