@@ -1314,7 +1314,7 @@ def get_number_of_decimals(x):
     return num
 
 
-list_stellenwerte = ['ht', 'zt','t','h','z','E', 'Z', 'H', 'T', 'ZT', 'HT', 'M', 'ZM', 'HM', 'Mrd', 'ZMrd', 'HMrd', 'B', 'ZB', 'HB']
+list_stellenwerte = ['ht', 'zt','t','h','z','E', 'Z', 'H', 'T', 'ZT', 'HT', 'M', 'ZM', 'HM', 'Md', 'ZMd', 'HMd', 'B', 'ZB', 'HB']
 index_E = 5
 def number_to_placevalue(number):
     list_digits = []
