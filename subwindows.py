@@ -4206,7 +4206,7 @@ class Ui_Dialog_edit_worksheet_instructions(object):
         self.horizontallayout_titel.addWidget(self.lineedit_titel)
 
 
-        self.checkBox_hide_instructions = create_new_checkbox(Dialog, "Arbeitsanweisung anzeigen", show_instructions)
+        self.checkBox_hide_instructions = create_new_checkbox(Dialog, "Arbeitsanweisung am Beginn anzeigen", show_instructions)
         
         verticalLayout.addWidget(self.checkBox_hide_instructions)
 

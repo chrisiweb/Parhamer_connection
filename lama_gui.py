@@ -3293,7 +3293,7 @@ def setup_stackWizard(self):
     self.pushButton_addto_worksheet_wizard.setIcon(QtGui.QIcon(get_icon_path('chevrons-right.svg')))
     self.pushButton_addto_worksheet_wizard.setEnabled(False)
 
-    self.pushButton_addto_worksheet_wizard.clicked.connect(self.add_to_worksheet_wizard)
+    self.pushButton_addto_worksheet_wizard.clicked.connect(lambda: self.add_to_worksheet_wizard())
 
 
     self.groupBox_complete_worksheet_wizard = create_new_groupbox(self.splitter_newWorksheet, "Arbeitsblatt")

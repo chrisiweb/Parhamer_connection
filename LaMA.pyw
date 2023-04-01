@@ -4622,7 +4622,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         self.combobox_nonogramm_wizard.setCurrentText(auswahl)
 
-
+    @report_exceptions
     def add_to_worksheet_wizard(self):
         self.pushButton_addto_worksheet_wizard.setEnabled(False)
 
@@ -4687,12 +4687,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         thema = self.get_current_topic_wizard()
         try:
-            instruction = self.current_single_instruction_wizard
-        except AttributeError:
             if is_empty(self.current_single_instruction_wizard):
                 instruction = None
             else:
                 instruction = self.current_single_instruction_wizard
+        except AttributeError:
+                instruction = None
         # thema_index = self.total_list_of_topics_wizard.index(thema)
         shorten_topic = self.shorten_topic(thema)
         try:
@@ -4950,7 +4950,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         try:
             text = self.instructions_wizard
         except AttributeError:
-            text = "Berechne die folgenden Aufgaben."
+            text = ""
 
         try:
             show_titel = self.titel_worksheet_wizard
