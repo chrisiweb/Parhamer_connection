@@ -219,7 +219,7 @@ class Ui_MainWindow(object):
             self.lama_settings["database"] = 2
 
         if self.lama_settings["database"] == 0:
-            refresh_ddb(self) # auto_update = True
+            refresh_ddb(self, auto_update = True) # auto_update = True
 
         else:
             database_file = os.path.join(database, ".git", "index")
@@ -231,7 +231,7 @@ class Ui_MainWindow(object):
             difference = int(today) - int(refresh_date_ddb)
 
             if (self.lama_settings["database"] == 1 and difference != 0) or (self.lama_settings["database"] == 2 and difference > 6) or (self.lama_settings["database"] == 3 and refresh_date_ddb_month != today_month):
-                refresh_ddb(self) ## auto_update = True
+                refresh_ddb(self, auto_update = True) ## auto_update = True
 
         try:
             self.lama_settings["popup_off"]
@@ -1461,8 +1461,8 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
 
         self.MainWindow.setWindowTitle(program_name)
         # self.MainWindow.setWindowIcon(QtGui.QIcon(icon))
-        if self.lama_settings["database"] == 0:
-            refresh_ddb(self)
+        # if self.lama_settings["database"] == 0:
+        #     refresh_ddb(self)
 
         # self.beispieldaten_dateipfad_1 = self.define_beispieldaten_dateipfad(1)
         # self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)

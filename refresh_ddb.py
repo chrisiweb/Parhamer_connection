@@ -92,20 +92,25 @@ class Worker_RefreshDDB(QtCore.QObject):
 
 
 def refresh_ddb(self, auto_update=False):
-    QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+    # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
     # print(auto_update)
     if self.developer_mode_active == True:
         text = 'Änderungen überprüfen ...'
     elif auto_update == 'mac':
         text = "Datenbank wird vor dem Update aktualisiert ..."
     else:
+        link = "https://www.buymeacoffee.com/lama.schule"
+        # if self.display_mode == 1:
+        #     color = "rgb(88, 111, 124)"
+        # else:
+        color = "rgb(47, 69, 80)"
         text = "Datenbank wird aktualisiert. Bitte warten ..."
 
     if check_internet_connection()==False:
-        QtWidgets.QApplication.restoreOverrideCursor()
-        critical_window("""
-Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.
-        """, titel="Keine Internetverbindung")
+        # QtWidgets.QApplication.restoreOverrideCursor()
+        critical_window(
+            "Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.",
+            titel="Keine Internetverbindung")
         return
 
     if self.developer_mode_active == True:        
@@ -124,12 +129,17 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
                     """.format(self.worker_response[0], self.worker_response[1]), buttontext_yes="Lokale Änderungen löschen", buttontext_no="Abbrechen", default="no")    
             if response == False:
                 return
-            QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+            # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        link = "https://mylama.github.io/lama/"
+        # if self.display_mode == 1:
+        #     color = "rgb(88, 111, 124)"
+        # else:
+        color = "rgb(211, 224, 223)"
         text = "Datenbank wird aktualisiert. Bitte warten ..."
 
-    working_window(Worker_RefreshDDB(), text, self)
+    working_window(Worker_RefreshDDB(), text, self,show_donation_notice=True)
 
-    QtWidgets.QApplication.restoreOverrideCursor()
+    # QtWidgets.QApplication.restoreOverrideCursor()
 
     if not is_empty(self.missing_images_addon):
         string_missing_images = "\n".join(self.missing_images_addon)
@@ -151,13 +161,6 @@ Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie 
     elif auto_update == False:
         if self.reset_successfull == False:
             warning_window("Der neueste Stand der Datenbank konnte nicht heruntergeladen werden. Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.")
-        else:
-            link = "https://www.buymeacoffee.com/lama.schule"
-            # if self.display_mode == 1:
-            #     color = "rgb(88, 111, 124)"
-            # else:
-            color = "rgb(47, 69, 80)"
-
-            
-            information_window("Die Datenbank ist jetzt auf dem neuesten Stand!", f"<center><font size='-2'><br>Du bist zufrieden mit LaMA?<br>Wir freuen uns über jede kleine Spende:<br><a href='{link}'style='color:{color}';>Buy Me A Coffee </a><\center></font>")
+        else:           
+            information_window("Die Datenbank ist jetzt auf dem neuesten Stand!")
 

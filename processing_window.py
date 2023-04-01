@@ -10,12 +10,13 @@ from config import (
 from predefined_size_policy import SizePolicy_maximum_height
 from waitingspinnerwidget import QtWaitingSpinner
 from functools import partial
-from create_new_widgets import create_new_verticallayout, create_new_gridlayout, create_new_label
+import webbrowser
+from create_new_widgets import create_new_verticallayout, create_new_gridlayout, create_new_label, create_new_button
 
 blue_7 = colors_ui["blue_7"]
 
 class Ui_Dialog_processing(object):
-    def setupUi(self, Dialog, worker_text, show_output = False, icon=True):
+    def setupUi(self, Dialog, worker_text, show_output = False, icon=True, show_donation_notice=False):
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
 
@@ -47,8 +48,19 @@ class Ui_Dialog_processing(object):
 
         self.label = QtWidgets.QLabel(Dialog)
         self.label.setObjectName("label")
-        self.label.setText(worker_text)
-        self.label.setStyleSheet("padding: 20px")
+
+        if show_donation_notice==True:
+            worker_text += "<font size='-1'><br><br><br>Du bist zufrieden mit LaMA? Wir freuen uns über jede kleine Spende</font>"
+            self.label.setText(worker_text)
+            self.label.setStyleSheet("padding: 20px 20px 0px 20px")
+            url_clickable = create_new_label(Dialog, "Buy me a coffee",clickable=True)
+            url_clickable.setStyleSheet("color: #D3E0DF; text-decoration: underline;")
+            url_clickable.clicked.connect(lambda: webbrowser.open("https://www.buymeacoffee.com/lama.schule", new=0, autoraise=True))
+            gridLayout.addWidget(url_clickable, 1,1,1,1, QtCore.Qt.AlignCenter)
+        else:
+            self.label.setText(worker_text)
+            self.label.setStyleSheet("padding: 20px")
+
         label_spinner = QtWidgets.QLabel(Dialog)
         self.label.setObjectName("label_spinner")
         label_spinner.setFixedSize(30, 30)
@@ -146,10 +158,11 @@ class Ui_ProgressBar(object):
         # horizontalLayout.addWidget(label_spinner)
 
 
-def working_window(worker, text, *args):
+def working_window(worker, text, *args, show_donation_notice=False):
+
     Dialog = QtWidgets.QDialog()
     ui = Ui_Dialog_processing()
-    ui.setupUi(Dialog, text)
+    ui.setupUi(Dialog, text, show_donation_notice=show_donation_notice)
 
     thread = QtCore.QThread(Dialog)
     # worker = Worker_RefreshDDB()
