@@ -395,10 +395,11 @@ def create_single_example_roman_numerals(roman_max, maximum_index, general_direc
 
     if index == 0:
         _string = f"{number} = {roman_number}"
+        return [number, roman_number, _string]
     elif index == 2:
         _string = f"{roman_number} = {number}"
+        return [roman_number, number, _string]
 
-    return [number, roman_number, _string]
 
 def create_single_example_addition(minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
     summanden = []
@@ -1435,13 +1436,23 @@ def create_latex_string_stellenwert(content, example):
     return content
 
 def create_latex_string_roman_numerals(content, example):
-    print(example)
     _string = example[-1]
-    print(_string)
     _string = _string.split(" = ")
-    print(_string)
     content += f"\\task {_string[0]} = \\antwort{{{_string[1]}}}"
 
+#     content += f"""
+# \\task 
+
+# \psset{{xunit=1cm,yunit=1cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1pt,arrowsize=3pt 2,arrowinset=0.25}}
+# \\begin{{pspicture*}}(-0.6,-0.6)(5.4,5.4)
+# \multips(0,0)(0,1){{7}}{{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{{c-c}}(0,0)(6.17,0)}}
+# \multips(0,0)(1,0){{7}}{{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{{c-c}}(0,0)(0,5.58)}}
+# \psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=1,Dy=1,ticksize=-2pt 0,subticks=0]{{->}}(0,0)(0,0)(5.4,5.4)[x,140] [y,-40]
+# \\begin{{scriptsize}}
+# \psdots[dotstyle=*](2,3)
+# \\rput[bl](2.07,3.2){{$A$}}
+# \end{{scriptsize}}
+# \end{{pspicture*}}""" 
     return content
 
 def create_latex_string_addition(content, example, ausrichtung):
