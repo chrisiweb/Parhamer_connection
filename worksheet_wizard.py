@@ -252,6 +252,7 @@ def simplify_numbers(number, num_stellenwerte, minimum_index, maximum_index):
     probability = erwartungswert/num_stellenwerte
 
     str_new_number = []
+    print(str_num)
     for i, all in enumerate(str_num):
         # print(random_switch(probability))
         # print('count')
@@ -265,10 +266,13 @@ def simplify_numbers(number, num_stellenwerte, minimum_index, maximum_index):
             else:
                 str_new_number.append(all)
         elif minimum_index==0 and i==len(str_num)-1:
+            print('yes')
+            print(all)
             if all == '0':
                 str_new_number.append(str(get_random_number(1,9)))
             else:
                 str_new_number.append(all)
+            print(str_new_number)
         elif all != '0' and all!='.':
             if random_switch(probability*100)==False:
                 str_new_number.append('0')
@@ -301,7 +305,7 @@ def create_single_example_stellenwert(minimum, minimum_index, maximum, maximum_i
     # print(minimum_num)
     # print(minimum)
 
-    number = get_random_number(minimum_num,maximum_num, minimum)
+    number = get_random_number(minimum_num,maximum_num, minimum, force_decimals=True)
     # print(number)
     number = simplify_numbers(number, maximum+minimum, minimum_index, maximum_index)
     # print(number)

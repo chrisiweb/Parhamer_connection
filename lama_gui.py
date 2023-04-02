@@ -2681,7 +2681,7 @@ def setup_stackWizard(self):
 
     self.combobox_zahlenbereich_2_leq = create_new_combobox(self.widget_zahlenbereich_2_combobox)
     add_new_option(self.combobox_zahlenbereich_2_leq, 0, "=")
-    add_new_option(self.combobox_zahlenbereich_2_leq, 1, "\u2264")
+    add_new_option(self.combobox_zahlenbereich_2_leq, 1, "\u2265")
     self.horizontalLayout_zahlenbereich_2_combobox.addWidget(self.combobox_zahlenbereich_2_leq) 
 
     self.combobox_zahlenbereich_2 = create_new_combobox(self.widget_zahlenbereich_2_combobox)
@@ -2691,8 +2691,8 @@ def setup_stackWizard(self):
     for i, all in enumerate(reversed(list_stellenwerte[:index_E+1])):
         add_new_option(self.combobox_zahlenbereich_2, i, all)
 
-    self.combobox_zahlenbereich_2.currentIndexChanged.connect(lambda: print(self.combobox_zahlenbereich_2.currentIndex()))
-    self.combobox_zahlenbereich_1.currentIndexChanged.connect(lambda: print(self.combobox_zahlenbereich_1.currentIndex()))
+    # self.combobox_zahlenbereich_2.currentIndexChanged.connect(lambda: print(self.combobox_zahlenbereich_2.currentIndex()))
+    # self.combobox_zahlenbereich_1.currentIndexChanged.connect(lambda: print(self.combobox_zahlenbereich_1.currentIndex()))
 
     self.widget_kommastellen_wizard = QtWidgets.QWidget(self.groupBox_zahlenbereich_wizard)
     self.widget_kommastellen_wizard.setSizePolicy(SizePolicy_fixed)
