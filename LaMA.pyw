@@ -3775,7 +3775,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         if rsp == False:
             return
 
-        self.comboBox_themen_wizard.setCurrentIndex(0)
+        # self.comboBox_themen_wizard.setCurrentIndex(0)
         self.spinBox_number_wizard.setValue(20)
         self.spinBox_column_wizard.setValue(2)
         self.combobox_fontsize_wizard.setCurrentIndex(4)
@@ -3820,16 +3820,45 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # thema_index = self.total_list_of_topics_wizard.index(thema)
 
         shorten_topic = self.shorten_topic(thema)
-        # print(shorten_topic)
+        print(shorten_topic)
 
         self.checkbox_enable_addition.hide()
         self.checkbox_enable_subtraktion.hide()
 
         if shorten_topic == 'ari_pos_ste':
-            self.spinbox_zahlenbereich_minimum.setRange(0,999999999)
-            self.spinbox_zahlenbereich_minimum.setValue(1000)
-            self.spinbox_zahlenbereich_maximum.setRange(0,999999999)
-            self.spinbox_zahlenbereich_maximum.setValue(99999)
+            self.label_zahlenbereich_1_combobox.setText("Größter Stellenwert:")
+            self.combobox_zahlenbereich_1.clear()
+            for i, all in enumerate(list_stellenwerte[index_E+1:]):
+                add_new_option(self.combobox_zahlenbereich_1, i, all)
+
+            self.combobox_zahlenbereich_1.setCurrentIndex(5)
+
+            self.label_zahlenbereich_1_combobox.setText("Kleinster Stellenwert:")
+            self.combobox_zahlenbereich_2.clear()
+            for i, all in enumerate(reversed(list_stellenwerte[:index_E+1])):
+                add_new_option(self.combobox_zahlenbereich_2, i, all)
+
+            self.label_general_direction_1.setText("123")
+            self.label_general_direction_2.setText("1H 2Z 3E")
+            # self.spinbox_zahlenbereich_minimum.setRange(0,999999999)
+            # self.spinbox_zahlenbereich_minimum.setValue(1000)
+            # self.spinbox_zahlenbereich_maximum.setRange(0,999999999)
+            # self.spinbox_zahlenbereich_maximum.setValue(99999)
+        elif shorten_topic == "ari_pos_röm":
+            self.label_zahlenbereich_1_combobox.setText("Größtes römisches Zeichen:")
+            self.combobox_zahlenbereich_1.clear()
+
+            i=0
+            for all in list(dict_of_roman_max.keys()):
+                if all != "I" and all !="V":
+                    add_new_option(self.combobox_zahlenbereich_1, i, all)
+                    i+=1
+
+            self.combobox_zahlenbereich_1.setCurrentIndex(2)
+
+            self.label_general_direction_1.setText("Zahl")
+            self.label_general_direction_2.setText("Römische Zahl")           
+
         elif shorten_topic=='ari_pos_add' or shorten_topic=='ari_pos_sub':
             self.spinbox_zahlenbereich_minimum.setRange(0,999999999)
             self.spinbox_zahlenbereich_minimum.setValue(100)
@@ -4054,13 +4083,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             else:    
                 self.pushButton_single_instructions.setText("Arbeitsanweisung ändern")
 
-    def combobox_ausrichtung_wizard_changed(self):
-        if self.comboBox_themen_wizard.currentText()=='Subtraktion':
-            if self.combobox_ausrichtung_wizard.currentIndex()==0:
-                self.widgetZahlenbereich_anzahl.hide()
-                self.spinBox_zahlenbereich_anzahl_wizard.setValue(1)
-            else:
-                self.widgetZahlenbereich_anzahl.show()
+    # def combobox_ausrichtung_wizard_changed(self):
+    #     if self.comboBox_themen_wizard.currentText()=='Subtraktion':
+    #         if self.combobox_ausrichtung_wizard.currentIndex()==0:
+    #             self.widgetZahlenbereich_anzahl.hide()
+    #             self.spinBox_zahlenbereich_anzahl_wizard.setValue(1)
+    #         else:
+    #             self.widgetZahlenbereich_anzahl.show()
 
     def combobox_divisor_dividend_changed(self):
         # self.worksheet_wizard_changed=True
@@ -4177,6 +4206,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             maximum_index = self.combobox_zahlenbereich_1_leq.currentIndex()
             # smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
             new_example = create_single_example_stellenwert(minimum, minimum_index, maximum, maximum_index, self.general_direction_index)
+        elif shorten_topic=='ari_pos_röm':
+            roman_max = self.combobox_zahlenbereich_1.currentText()
+            maximum_index = self.combobox_zahlenbereich_1_leq.currentIndex()
+            new_example = create_single_example_roman_numerals(roman_max, maximum_index, self.general_direction_index)
         elif shorten_topic=='ari_pos_add':
             anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
             smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
@@ -4348,6 +4381,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             maximum_index = self.combobox_zahlenbereich_1_leq.currentIndex()
 
             list_of_examples_wizard = create_list_of_examples_stellenwert(examples, minimum, minimum_index, maximum, maximum_index, self.general_direction_index)                        
+        
+        elif shorten_topic == 'ari_pos_röm':
+            roman_max = self.combobox_zahlenbereich_1.currentText()
+            maximum_index = self.combobox_zahlenbereich_1_leq.currentIndex()
+            list_of_examples_wizard = create_list_of_examples_roman_numerals(examples, roman_max, maximum_index, self.general_direction_index)
         elif shorten_topic =='ari_pos_add':
             minimum = self.spinbox_zahlenbereich_minimum.value()
             maximum = self.spinbox_zahlenbereich_maximum.value()
@@ -4808,7 +4846,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         elif self.combobox_nummerierung_wizard.currentText() == '(1)':
             nummerierung = "(\\arabic*)"
 
-        index = self.comboBox_themen_wizard.currentIndex()
+        # index = self.comboBox_themen_wizard.currentIndex()
 
         order_of_examples = []
         for i in range(self.verticalLayout_complete_worksheet_wizard.count()):
@@ -4822,13 +4860,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
 
-        total_number_of_examples = self.get_total_number_of_examples_wizard()
+        # total_number_of_examples = self.get_total_number_of_examples_wizard()
 
         content = create_latex_worksheet(
             order_of_examples,
             self.dict_all_examples_worksheet_wizard,
-            total_number_of_examples,
-            index ,titel, arbeitsanweisung,
+            titel, arbeitsanweisung,
             fortlaufende_nummerierung, 
             nummerierung,
             self.comboBox_solution_type_wizard.currentIndex(),
@@ -8504,7 +8541,8 @@ if __name__ == "__main__":
         get_all_solution_pixels,
         get_max_pixels_nonogram,
         create_latex_worksheet,
-        create_list_of_examples_stellenwert, create_single_example_stellenwert, 
+        create_list_of_examples_stellenwert, create_single_example_stellenwert, list_stellenwerte, index_E,
+        create_list_of_examples_roman_numerals, create_single_example_roman_numerals, dict_of_roman_max,
         create_list_of_examples_addition, create_single_example_addition,
         create_list_of_examples_subtraction, create_single_example_subtraction,
         create_list_of_examples_multiplication, create_single_example_multiplication,

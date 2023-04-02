@@ -251,62 +251,9 @@ def simplify_numbers(number, num_stellenwerte):
     return number
 
 
-list_stellenwerte = ['ht', 'zt','t','h','z','E', 'Z', 'H', 'T', 'ZT', 'HT', 'M', 'ZM', 'HM', 'Mrd', 'ZMrd', 'HMrd', 'B', 'ZB', 'HB']
+list_stellenwerte = ['ht', 'zt','t','h','z','E', 'Z', 'H', 'T', 'ZT', 'HT', 'M', 'ZM', 'HM', 'Md', 'ZMd', 'HMd', 'B', 'ZB', 'HB']
 index_E = 5
 
-
-# x= get_random_number(100,999)
-
-# print(x)
-
-# _list = number_to_placevalue(x)
-
-# print(_list)
-
-# # print(complete_string_list)
-
-# print("  ".join(_list))
-# list_of_digits = [int(i) for i in str(x)]
-# print(list_of_digits)
-
-maximum = 8
-minimum = 2
-maximum = maximum+2
-
-maximum_num = int('9'*maximum)
-minimum_num = int('1'+'0'*(maximum-1))
-
-# print(maximum_num)
-# print(minimum_num)
-# print(minimum)
-number = get_random_number(minimum_num,maximum_num, minimum)
-
-number = simplify_numbers(number, maximum+minimum)
-
-_list_stellenwert = number_to_placevalue(number)
-
-string_stellenwert = "  ".join(_list_stellenwert)
-
-index = 0
-
-# print(string_stellenwert)
-
-
-# x = '*'.join(reversed(str(number))[i:i+3] for i in range(0, len(str(number)), 3))
-# print(x)
-print(number)
-number = insert_dots(number)
-print(number)
-
-if index == 0:
-    _string = f"{number} = {string_stellenwert}".replace(".",",")
-    _string = _string.replace("*",'.')
-    # return [number, string_stellenwert, _string]
-elif index == 2:
-    _string = f"{string_stellenwert} = {number}".replace(".",",")
-    _string = _string.replace("*",'.')
-
-print(_string)
 
 
 ### ROMAN NUMBERS WORKING!!!
@@ -349,7 +296,19 @@ def roman_to_int(input):
     else:
         raise ValueError#, 'input is not a valid Roman numeral: %s' % input
     
+dict_of_max = {'I':3, 'V': 8, 'X':39, 'L':89, 'C':399, 'D':899, 'M':3999}
 
-# print(f'2029 = {int_to_roman(2029)}')
+for i in range(10):
+    roman_max='L'
+    exact = True
+    if exact == False:
+        number = get_random_number(10, dict_of_max[roman_max])
+    else:
+        chosen_index = list(dict_of_max.keys()).index(roman_max)
+        roman_min = list(dict_of_max.keys())[chosen_index-1]
+        number = get_random_number(dict_of_max[roman_min]+1, dict_of_max[roman_max])
+        
+    print(f'{number} = {int_to_roman(number)}')
+
 
 # print(f"XLII = {roman_to_int('XLII')}")

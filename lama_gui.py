@@ -2552,7 +2552,7 @@ def setup_stackWizard(self):
     self.horizontalLayout_ausrichtung_wizard.addWidget(self.label_ausrichtung_wizard)
 
     self.combobox_ausrichtung_wizard = create_new_combobox(self.widget_ausrichtung_wizard)
-    self.combobox_ausrichtung_wizard.currentIndexChanged.connect(self.combobox_ausrichtung_wizard_changed)
+    # self.combobox_ausrichtung_wizard.currentIndexChanged.connect(self.combobox_ausrichtung_wizard_changed)
     add_new_option(self.combobox_ausrichtung_wizard, 0, "in der Spalte")
     add_new_option(self.combobox_ausrichtung_wizard, 1, "in der Zeile")
     self.horizontalLayout_ausrichtung_wizard.addWidget(self.combobox_ausrichtung_wizard)
