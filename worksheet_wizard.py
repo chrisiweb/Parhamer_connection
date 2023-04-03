@@ -215,7 +215,7 @@ def get_random_number(min, max, decimal=0, zero_allowed=False, force_decimals=Fa
         if half_allowed == True:
             switch = random_switch()
             if switch == True:
-                num = D(f"{str(x)}.5")
+                num = float(f"{str(x)}.5")
                 return num
             else:
                 return int(x)   
@@ -1100,8 +1100,8 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
 def index_to_letter(index):
     return chr(ord('a') + index)
 
-def create_single_example_coordinate_system(half_allowed, zero_allowed):
-    if zero_allowed == True:
+def create_single_example_coordinate_system(half_allowed, negative_allowed):
+    if negative_allowed == True:
         minimum = -5
     else:
         minimum = 0
@@ -1109,9 +1109,9 @@ def create_single_example_coordinate_system(half_allowed, zero_allowed):
     dict_of_points = {}
 
     i=0
-    while i < 6:
-        x = get_random_number(minimum, 5, half_allowed=half_allowed)
-        y = get_random_number(minimum, 5, half_allowed=half_allowed)
+    while i < 5:
+        x = get_random_number(minimum, 5, zero_allowed=True,half_allowed=half_allowed)
+        y = get_random_number(minimum, 5, zero_allowed=True,half_allowed=half_allowed)
         if (x,y) not in list(dict_of_points.values()):
             dict_of_points[index_to_letter(i).upper()]=(x,y)
             i+=1
@@ -1418,11 +1418,11 @@ def create_list_of_examples_ganze_zahlen(typ, examples, minimum, maximum, commas
 
     return list_of_examples
 
-def create_list_of_examples_coordinate_system(examples, half_allowed, zero_allowed):
+def create_list_of_examples_coordinate_system(examples, half_allowed, negative_allowed):
     list_of_examples = []
 
     for _ in range(examples):
-        new_example = create_single_example_coordinate_system(half_allowed, zero_allowed)
+        new_example = create_single_example_coordinate_system(half_allowed, negative_allowed)
         list_of_examples.append(new_example)
 
     return list_of_examples
@@ -1490,19 +1490,6 @@ def create_latex_string_roman_numerals(content, example):
     _string = _string.split(" = ")
     content += f"\\task {_string[0]} = \\antwort{{{_string[1]}}}"
 
-#     content += f"""
-# \\task 
-
-# \psset{{xunit=1cm,yunit=1cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1pt,arrowsize=3pt 2,arrowinset=0.25}}
-# \\begin{{pspicture*}}(-0.6,-0.6)(5.4,5.4)
-# \multips(0,0)(0,1){{7}}{{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{{c-c}}(0,0)(6.17,0)}}
-# \multips(0,0)(1,0){{7}}{{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{{c-c}}(0,0)(0,5.58)}}
-# \psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=1,Dy=1,ticksize=-2pt 0,subticks=0]{{->}}(0,0)(0,0)(5.4,5.4)[x,140] [y,-40]
-# \\begin{{scriptsize}}
-# \psdots[dotstyle=*](2,3)
-# \\rput[bl](2.07,3.2){{$A$}}
-# \end{{scriptsize}}
-# \end{{pspicture*}}""" 
     return content
 
 def create_latex_string_addition(content, example, ausrichtung):
@@ -1815,9 +1802,52 @@ def create_latex_string_ganze_zahlen(content, example):
     content += temp_content
     return content
 
-def create_latex_string_coordinate_system(content, example, dot_style_index):
-    print('test')
+def create_pstricks_code_dots(example, dot_style_index):
+    print(example)
+    if dot_style_index==0:
+        dot_style = "*"
+    elif dot_style_index==1:
+        dot_style = "x"
 
+    dict_dots = example[0]
+    _string = ""
+    for all in dict_dots:
+        _string += f"\psdots[dotstyle={dot_style}]({dict_dots[all][0]},{dict_dots[all][1]})\n\\rput[bl]({dict_dots[all][0]+0.1},{dict_dots[all][1]+0.2}){{${all}$}}\n"        
+
+    return _string
+
+def minimal_coordinate_system(half_allowed, negative_allowed, pstricks_code_dots):
+    if negative_allowed == True:
+        xyunit = "0.75"
+        pspicture_min = "-5.7"
+        mulitps_1 = "-5"
+        mulitps_num = "11"
+        mulitps_2 = "-5.4"
+    else:
+        xyunit = "0.8"
+        pspicture_min = "-0.7"
+        mulitps_1 = "0"
+        mulitps_num = "7"
+        mulitps_2 = "0"
+
+    pstricks_code = f"""
+\psset{{xunit={xyunit}cm,yunit={xyunit}cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1pt,arrowsize=3pt 2,arrowinset=0.25}}
+\\begin{{pspicture*}}({pspicture_min},{pspicture_min})(5.5,5.5)
+\multips(0,{mulitps_1})(0,1){{{mulitps_num}}}{{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{{c-c}}({mulitps_2},0)(5.4,0)}}
+\multips({mulitps_1},0)(1,0){{{mulitps_num}}}{{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{{c-c}}(0,{mulitps_2})(0,5.4)}}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=1,Dy=1,ticksize=-2pt 0,subticks=0]{{->}}(0,0)({mulitps_2},{mulitps_2})(5.5,5.5)[$x$,140] [$y$,-40]
+\\begin{{scriptsize}}
+{pstricks_code_dots}
+\end{{scriptsize}}
+\end{{pspicture*}}
+    """
+    return pstricks_code
+
+def create_latex_string_coordinate_system(content, example, half_allowed, negative_allowed,dot_style_index):
+    pstricks_code_dots = create_pstricks_code_dots(example, dot_style_index)
+    pstricks_code = minimal_coordinate_system(half_allowed, negative_allowed, pstricks_code_dots)
+    content += f"""\\task \n{pstricks_code}"""
+    return content
 
 def create_latex_string_binomische_formeln(content, example, binoms_direction_index):
     # print(example)
@@ -1858,6 +1888,8 @@ def create_latex_worksheet(
     nummerierung,
     solution_type,
     binoms_direction_index,
+    half_allowed,
+    negative_allowed,
     dot_style_index,
     ):
     if titel != False:
@@ -1911,7 +1943,7 @@ def create_latex_worksheet(
                 shorten_topic == 'ari_neg_ver'):
                 content = create_latex_string_ganze_zahlen(content, example)
             elif shorten_topic == 'gru_koo':
-                content = create_latex_string_coordinate_system(content, example, dot_style_index)
+                content = create_latex_string_coordinate_system(content, example, half_allowed, negative_allowed,dot_style_index)
             elif shorten_topic == 'ter_bin':
                 content = create_latex_string_binomische_formeln(content, example, binoms_direction_index)
 
@@ -2189,8 +2221,8 @@ def get_random_solution(self):
 
     elif shorten_topic == 'gru_koo':
         half_allowed = self.checkbox_coordinatesystem_zwischenwerte.isChecked()
-        zero_allowed = self.checkbox_coordinatesystem_negative_numbers.isChecked()
-        create_single_example_coordinate_system(half_allowed, zero_allowed)
+        negative_allowed = self.checkbox_coordinatesystem_negative_numbers.isChecked()
+        distract_result = create_single_example_coordinate_system(half_allowed, negative_allowed)
 
     elif shorten_topic == 'ter_bin':
         binomials_types = [self.cb_binoms_1.isChecked(), self.cb_binoms_2.isChecked(), self.cb_binoms_3.isChecked()]

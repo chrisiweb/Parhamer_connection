@@ -3825,6 +3825,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.checkbox_enable_addition.hide()
         self.checkbox_enable_subtraktion.hide()
 
+        if shorten_topic == 'gru_koo':
+            self.checkBox_show_nonogramm.setChecked(False)
+            self.checkBox_show_nonogramm.setEnabled(False)
+            self.widget_column_wizard.setEnabled(False)
+        else:
+            self.checkBox_show_nonogramm.setEnabled(True)
+            self.widget_column_wizard.setEnabled(True)
         if shorten_topic == 'ari_pos_ste':
             self.label_zahlenbereich_1_combobox.setText("Größter Stellenwert:")
             self.combobox_zahlenbereich_1.clear()
@@ -4273,8 +4280,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         elif shorten_topic == 'gru_koo':
             half_allowed = self.checkbox_coordinatesystem_zwischenwerte.isChecked()
-            zero_allowed = self.checkbox_coordinatesystem_negative_numbers.isChecked()
-            new_example = create_single_example_coordinate_system(half_allowed, zero_allowed)
+            negative_allowed = self.checkbox_coordinatesystem_negative_numbers.isChecked()
+            new_example = create_single_example_coordinate_system(half_allowed, negative_allowed)
 
         elif shorten_topic=='ter_bin':
             binomials_types = [self.cb_binoms_1.isChecked(), self.cb_binoms_2.isChecked(), self.cb_binoms_3.isChecked()]
@@ -4483,8 +4490,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         elif shorten_topic == 'gru_koo':
             half_allowed = self.checkbox_coordinatesystem_zwischenwerte.isChecked()
-            zero_allowed = self.checkbox_coordinatesystem_negative_numbers.isChecked()
-            list_of_examples_wizard = create_list_of_examples_coordinate_system(examples, half_allowed, zero_allowed)
+            negative_allowed = self.checkbox_coordinatesystem_negative_numbers.isChecked()
+            list_of_examples_wizard = create_list_of_examples_coordinate_system(examples, half_allowed, negative_allowed)
 
         elif shorten_topic=='ter_bin':
             binomials_types = [self.cb_binoms_1.isChecked(), self.cb_binoms_2.isChecked(), self.cb_binoms_3.isChecked()]
@@ -4714,17 +4721,18 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             list_solutions.append(all[-2])
 
 
-
         full_list_dummy_solutions = []
         list_dummy_solutions = []
-        i=0
-        while i<10:
-            dummy_solution = get_random_solution(self)
-   
-            if dummy_solution[-2] not in list_solutions and dummy_solution[-2] not in list_dummy_solutions:
-                full_list_dummy_solutions.append(dummy_solution)
-                list_dummy_solutions.append(dummy_solution[-2])
-                i+=1
+        if shorten_topic != 'gru_koo':
+            i=0
+            while i<10:
+                dummy_solution = get_random_solution(self)
+    
+                if dummy_solution[-2] not in list_solutions and dummy_solution[-2] not in list_dummy_solutions:
+                    full_list_dummy_solutions.append(dummy_solution)
+                    list_dummy_solutions.append(dummy_solution[-2])
+                    i+=1
+
 
 
         if shorten_topic=='ari_pos_add' or shorten_topic=='ari_pos_sub':
@@ -4743,11 +4751,20 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 instruction = None
         # thema_index = self.total_list_of_topics_wizard.index(thema)
         shorten_topic = self.shorten_topic(thema)
+
+        if shorten_topic == 'gru_koo':
+            if self.checkbox_coordinatesystem_negative_numbers.isChecked()==True:
+                columns = 2
+            else:
+                columns = 3
+        else:
+            columns = self.spinBox_column_wizard.value()
+
         try:
             self.dict_all_examples_worksheet_wizard[widget_worksheet] = {
                 'shorten_topic' : shorten_topic,
                 'instruction' : instruction,
-                'spalten' : self.spinBox_column_wizard.value(),
+                'spalten' : columns,
                 'ausrichtung': ausrichtung,
                 'list_of_examples' : self.list_of_examples_wizard,
                 'dummy_examples' : full_list_dummy_solutions,
@@ -4758,7 +4775,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.dict_all_examples_worksheet_wizard[widget_worksheet] = {
                 'shorten_topic' : shorten_topic,
                 'instruction' : instruction,
-                'spalten' : self.spinBox_column_wizard.value(),
+                'spalten' : columns,
                 'ausrichtung': ausrichtung,
                 'list_of_examples' : self.list_of_examples_wizard,
                 'dummy_examples' : full_list_dummy_solutions,
@@ -4881,6 +4898,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             nummerierung,
             self.comboBox_solution_type_wizard.currentIndex(),
             self.binoms_direction_index,
+            self.checkbox_coordinatesystem_zwischenwerte.isChecked(),
+            self.checkbox_coordinatesystem_negative_numbers.isChecked(),
             self.combobox_points.currentIndex(),
             )
 

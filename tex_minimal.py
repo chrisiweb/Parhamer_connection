@@ -87,3 +87,6 @@ def begin_beispiel_lang(punkte = 0):
     return f"\\begin{{langesbeispiel}} \item[{punkte}]"
 
 end_beispiel_lang = "\end{langesbeispiel}"
+
+
+
