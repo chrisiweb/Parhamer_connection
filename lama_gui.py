@@ -3190,6 +3190,37 @@ def setup_stackWizard(self):
     self.widget_binom_further_settings.hide()
 
     self.binom_update_label()
+
+
+    self.widget_coordinatesystem_setting = QtWidgets.QWidget(self.groupBox_zahlenbereich_wizard)
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.widget_coordinatesystem_setting, 0,0, 1,1)
+
+    self.horizontallayout_coordinatesystem_setting = create_new_horizontallayout(self.widget_coordinatesystem_setting)
+    # self.horizontallayout_coordinatesystem_setting.setContentsMargins(0,0,0,0)
+
+    self.checkbox_coordinatesystem_zwischenwerte = create_new_checkbox(self.widget_coordinatesystem_setting, "Zwischenwerte erlauben")
+    self.horizontallayout_coordinatesystem_setting.addWidget(self.checkbox_coordinatesystem_zwischenwerte)
+
+    self.checkbox_coordinatesystem_negative_numbers = create_new_checkbox(self.widget_coordinatesystem_setting, "Negative Zahlen erlauben")
+    self.horizontallayout_coordinatesystem_setting.addWidget(self.checkbox_coordinatesystem_negative_numbers)
+
+    self.widget_coordinatesystem_points = QtWidgets.QWidget(self.widget_coordinatesystem_setting)
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.widget_coordinatesystem_points, 1,0, 1,1)
+    self.horizontallayout_coordinatesystem_setting.addStretch()
+    self.widget_coordinatesystem_setting.hide()
+
+    self.horizontallayout_coordinatesystem_points = create_new_horizontallayout(self.widget_coordinatesystem_points)
+    # self.horizontallayout_coordinatesystem_points.setContentsMargins(0,0,0,0)
+
+    self.label_points = create_new_label(self.widget_coordinatesystem_points, "Punktdarstellung")
+    self.horizontallayout_coordinatesystem_points.addWidget(self.label_points)
+    self.combobox_points = create_new_combobox(self.widget_coordinatesystem_points)
+    add_new_option(self.combobox_points,0,"\u2b24")
+    add_new_option(self.combobox_points,1,"\u2a09")
+    self.horizontallayout_coordinatesystem_points.addWidget(self.combobox_points)
+    self.horizontallayout_coordinatesystem_points.addStretch()
+    self.widget_coordinatesystem_points.hide()
+
     ####################################################
     ######################################################
     #######################################################

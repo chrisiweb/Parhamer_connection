@@ -13,19 +13,58 @@ list_of_topics_wizard = ['Addition', 'Subtraktion']
 
 D = decimal.Decimal
 
-def get_random_number(min, max, decimal=0, zero_allowed=False):
+def get_random_number(min, max, decimal=0, zero_allowed=False, force_decimals=False, half_allowed = False): #
+    if not isinstance(zero_allowed, bool):
+        zero_allowed = random_switch(zero_allowed)
+
     if zero_allowed == False:
         x = 0
         while x == 0:
             x = round(random.uniform(min,max),decimal)
     else:
         x = round(random.uniform(min,max),decimal)
-    x = D('{}'.format(x))
+
+    x = D(f'{x}')
 
     x = D("{:.{prec}f}".format(x, prec=decimal))
 
+    if force_decimals==True:
+        normalized_result = x.normalize()
+        if get_number_of_decimals(normalized_result) != decimal:
+            integer = random.randint(1,9)
+            x = str(x)[:-1] + str(integer)
+        
+        ## not sure  
+        # rand_int = random.randint(0,2)
+        # new_decimal = decimal - rand_int
+        # test_value = round(x-int(x),new_decimal)
+        # last_integer = str(test_value)[-1]
+
+        # if last_integer == "0":
+        #     integer = random.randint(1,9)
+        #     _str = str(test_value)
+        #     _str = _str[:-1] + str(integer)
+        #     x = _str
+        
+
+    x = D(f'{x}')
+
+    x = D("{:.{prec}f}".format(x, prec=decimal))
+
+    x = x.normalize()
+ 
+    x = remove_exponent(x)
+
     if decimal == 0:
-        return int(x)
+        if half_allowed == True:
+            switch = random_switch()
+            if switch == True:
+                num = D(f"{str(x)}.5")
+                return num
+            else:
+                return int(x)   
+        else:
+            return int(x)
     else:
         return x
 
@@ -250,106 +289,26 @@ def simplify_numbers(number, num_stellenwerte):
         number = int("".join(str_new_number))
     return number
 
-
-list_stellenwerte = ['ht', 'zt','t','h','z','E', 'Z', 'H', 'T', 'ZT', 'HT', 'M', 'ZM', 'HM', 'Mrd', 'ZMrd', 'HMrd', 'B', 'ZB', 'HB']
-index_E = 5
-
-
-# x= get_random_number(100,999)
-
-# print(x)
-
-# _list = number_to_placevalue(x)
-
-# print(_list)
-
-# # print(complete_string_list)
-
-# print("  ".join(_list))
-# list_of_digits = [int(i) for i in str(x)]
-# print(list_of_digits)
-
-maximum = 8
-minimum = 2
-maximum = maximum+2
-
-maximum_num = int('9'*maximum)
-minimum_num = int('1'+'0'*(maximum-1))
-
-# print(maximum_num)
-# print(minimum_num)
-# print(minimum)
-number = get_random_number(minimum_num,maximum_num, minimum)
-
-number = simplify_numbers(number, maximum+minimum)
-
-_list_stellenwert = number_to_placevalue(number)
-
-string_stellenwert = "  ".join(_list_stellenwert)
-
-index = 0
-
-# print(string_stellenwert)
+def index_to_letter(index):
+    return chr(ord('a') + index)
 
 
-# x = '*'.join(reversed(str(number))[i:i+3] for i in range(0, len(str(number)), 3))
-# print(x)
-print(number)
-number = insert_dots(number)
-print(number)
+dict_of_points = {}
+for i in range(5):
+    x = get_random_number(minimum, 5, half_allowed=True)
+    y = get_random_number(minimum, 5, half_allowed=True)
+    dict_of_points[index_to_letter(i).upper()]=[x,y]
 
-if index == 0:
-    _string = f"{number} = {string_stellenwert}".replace(".",",")
-    _string = _string.replace("*",'.')
-    # return [number, string_stellenwert, _string]
-elif index == 2:
-    _string = f"{string_stellenwert} = {number}".replace(".",",")
-    _string = _string.replace("*",'.')
+print(dict_of_points)
+
+_list =list(dict_of_points.values())
+
+print(_list)
+
+_string = ""
+for all in dict_of_points:
+    if _string != "":
+        _string += ", "
+    _string += f"{all} = ({dict_of_points[all][0]}|{dict_of_points[all][1]})"
 
 print(_string)
-
-
-### ROMAN NUMBERS WORKING!!!
-def int_to_roman(input):
-    """ Convert an integer to a Roman numeral. """
-
-    if not isinstance(input, type(1)):
-        raise TypeError#, "expected integer, got %s" % type(input)
-    if not 0 < input < 4000:
-        raise ValueError #, "Argument must be between 1 and 3999"
-    ints = (1000, 900,  500, 400, 100,  90, 50,  40, 10,  9,   5,  4,   1)
-    nums = ('M',  'CM', 'D', 'CD','C', 'XC','L','XL','X','IX','V','IV','I')
-    result = []
-    for i in range(len(ints)):
-        count = int(input / ints[i])
-        result.append(nums[i] * count)
-        input -= ints[i] * count
-    return ''.join(result)
-
-def roman_to_int(input):
-    """ Convert a Roman numeral to an integer. """
-
-    if not isinstance(input, type("")):
-        raise TypeError#, "expected string, got %s" % type(input)
-    input = input.upper(  )
-    nums = {'M':1000, 'D':500, 'C':100, 'L':50, 'X':10, 'V':5, 'I':1}
-    sum = 0
-    for i in range(len(input)):
-        try:
-            value = nums[input[i]]
-            # If the next place holds a larger number, this value is negative
-            if i+1 < len(input) and nums[input[i+1]] > value:
-                sum -= value
-            else: sum += value
-        except KeyError:
-            raise ValueError#, 'input is not a valid Roman numeral: %s' % input
-    # easiest test for validity...
-    if int_to_roman(sum) == input:
-        return sum
-    else:
-        raise ValueError#, 'input is not a valid Roman numeral: %s' % input
-    
-
-# print(f'2029 = {int_to_roman(2029)}')
-
-# print(f"XLII = {roman_to_int('XLII')}")

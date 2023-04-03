@@ -4210,6 +4210,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     show_brackets = True
                 new_example = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)
 
+        elif shorten_topic == 'gru_koo':
+            half_allowed = self.checkbox_coordinatesystem_zwischenwerte.isChecked()
+            zero_allowed = self.checkbox_coordinatesystem_negative_numbers.isChecked()
+            new_example = create_single_example_coordinate_system(half_allowed, zero_allowed)
+
         elif shorten_topic=='ter_bin':
             binomials_types = [self.cb_binoms_1.isChecked(), self.cb_binoms_2.isChecked(), self.cb_binoms_3.isChecked()]
             if binomials_types == [False, False, False]:
@@ -4409,6 +4414,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 critical_window('Das Maximum muss größer als das Minimum sein.')
                 return []
             list_of_examples_wizard = create_list_of_examples_ganze_zahlen(typ, examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)        
+
+        elif shorten_topic == 'gru_koo':
+            half_allowed = self.checkbox_coordinatesystem_zwischenwerte.isChecked()
+            zero_allowed = self.checkbox_coordinatesystem_negative_numbers.isChecked()
+            list_of_examples_wizard = create_list_of_examples_coordinate_system(examples, half_allowed, zero_allowed)
 
         elif shorten_topic=='ter_bin':
             binomials_types = [self.cb_binoms_1.isChecked(), self.cb_binoms_2.isChecked(), self.cb_binoms_3.isChecked()]
@@ -4782,12 +4792,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         content = create_latex_worksheet(
             order_of_examples,
             self.dict_all_examples_worksheet_wizard,
-            total_number_of_examples,
-            index ,titel, arbeitsanweisung,
+            index,
+            titel,
+            arbeitsanweisung,
             fortlaufende_nummerierung, 
             nummerierung,
             self.comboBox_solution_type_wizard.currentIndex(),
             self.binoms_direction_index,
+            self.combobox_points.currentIndex(),
             )
 
         if self.checkBox_show_nonogramm.isChecked():
@@ -8468,6 +8480,7 @@ if __name__ == "__main__":
         create_single_example_ganze_zahlen_strich,
         create_single_example_ganze_zahlen_punkt,
         create_single_example_ganze_zahlen_grundrechnungsarten,
+        create_list_of_examples_coordinate_system, create_single_example_coordinate_system,
         create_single_example_binomische_formeln,
         create_list_of_examples_binomische_formeln,
         create_nonogramm, create_coordinates, get_random_solution,list_all_pixels, all_nonogramms, show_all_nonogramms

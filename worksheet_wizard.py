@@ -80,6 +80,12 @@ dict_themen_wizard = {
             ],
         },
         },
+    "Grundlagen der Geometrie": {
+        "Koordinatensystem" : [
+            'self.widget_coordinatesystem_setting',
+            'self.widget_coordinatesystem_points',
+        ]
+    },
     "Terme": {
         "Binomische Formeln": [
         'self.groupbox_binoms_types',
@@ -159,7 +165,7 @@ dict_themen_wizard = {
 
 D = decimal.Decimal
 
-def get_random_number(min, max, decimal=0, zero_allowed=False, force_decimals=False): #
+def get_random_number(min, max, decimal=0, zero_allowed=False, force_decimals=False, half_allowed = False): #
     if not isinstance(zero_allowed, bool):
         zero_allowed = random_switch(zero_allowed)
 
@@ -202,7 +208,15 @@ def get_random_number(min, max, decimal=0, zero_allowed=False, force_decimals=Fa
     x = remove_exponent(x)
 
     if decimal == 0:
-        return int(x)
+        if half_allowed == True:
+            switch = random_switch()
+            if switch == True:
+                num = D(f"{str(x)}.5")
+                return num
+            else:
+                return int(x)   
+        else:
+            return int(x)
     else:
         return x
 
@@ -1013,6 +1027,34 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
     # print([numbers, solution, string])
     return [numbers, solution, string] 
 
+def index_to_letter(index):
+    return chr(ord('a') + index)
+
+def create_single_example_coordinate_system(half_allowed, zero_allowed):
+    if zero_allowed == True:
+        minimum = -5
+    else:
+        minimum = 0
+    
+    dict_of_points = {}
+
+    i=0
+    while i < 6:
+        x = get_random_number(minimum, 5, half_allowed=half_allowed)
+        y = get_random_number(minimum, 5, half_allowed=half_allowed)
+        if (x,y) not in list(dict_of_points.values()):
+            dict_of_points[index_to_letter(i).upper()]=(x,y)
+            i+=1
+
+    _string = ""
+    for all in dict_of_points:
+        if _string != "":
+            _string += ", "
+        _string += f"{all} = ({dict_of_points[all][0]}|{dict_of_points[all][1]})"
+
+
+    return [dict_of_points,0,_string] 
+
 def convert_to_fractions(string):
     _temp = re.findall('[0-9.]+', string)
 
@@ -1296,6 +1338,14 @@ def create_list_of_examples_ganze_zahlen(typ, examples, minimum, maximum, commas
 
     return list_of_examples
 
+def create_list_of_examples_coordinate_system(examples, half_allowed, zero_allowed):
+    list_of_examples = []
+
+    for _ in range(examples):
+        new_example = create_single_example_coordinate_system(half_allowed, zero_allowed)
+        list_of_examples.append(new_example)
+
+    return list_of_examples
 
 def create_list_of_examples_binomische_formeln(examples, binomials_types, a,b,x,y, exponent, binoms_direction_index, fractions_allowed, variable_1, variable_2):
     list_of_examples = []
@@ -1664,6 +1714,9 @@ def create_latex_string_ganze_zahlen(content, example):
     content += temp_content
     return content
 
+def create_latex_string_coordinate_system(content, example, dot_style_index):
+    print('test')
+
 
 def create_latex_string_binomische_formeln(content, example, binoms_direction_index):
     # print(example)
@@ -1698,14 +1751,14 @@ def create_latex_string_binomische_formeln(content, example, binoms_direction_in
 def create_latex_worksheet(
     order_of_examples,
     dict_of_examples,
-    total_number_of_examples,
     index,
     titel,
     arbeitsanweisung,
     fortlaufende_nummerierung,
     nummerierung,
-    solution_type=0,
-    binoms_direction_index=0
+    solution_type,
+    binoms_direction_index,
+    dot_style_index,
     ):
     if titel != False:
         content = "\section{{{0}}}\n\n".format(titel.replace('&', '\&'))
@@ -1752,6 +1805,8 @@ def create_latex_worksheet(
                 shorten_topic == 'ari_neg_mul' or 
                 shorten_topic == 'ari_neg_ver'):
                 content = create_latex_string_ganze_zahlen(content, example)
+            elif shorten_topic == 'gru_koo':
+                content = create_latex_string_coordinate_system(content, example, dot_style_index)
             elif shorten_topic == 'ter_bin':
                 content = create_latex_string_binomische_formeln(content, example, binoms_direction_index)
 
@@ -2022,6 +2077,10 @@ def get_random_solution(self):
             typ = '+-*:'
             distract_result = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)
 
+    elif shorten_topic == 'gru_koo':
+        half_allowed = self.checkbox_coordinatesystem_zwischenwerte.isChecked()
+        zero_allowed = self.checkbox_coordinatesystem_negative_numbers.isChecked()
+        create_single_example_coordinate_system(half_allowed, zero_allowed)
 
     elif shorten_topic == 'ter_bin':
         binomials_types = [self.cb_binoms_1.isChecked(), self.cb_binoms_2.isChecked(), self.cb_binoms_3.isChecked()]
