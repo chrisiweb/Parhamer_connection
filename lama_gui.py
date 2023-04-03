@@ -2531,6 +2531,15 @@ def setup_stackWizard(self):
     self.checkbox_enable_subtraktion.hide()
 
 
+    self.widget_single_instructions = QtWidgets.QWidget(self.widget_setting_wizard1)
+    self.horizontalLayout_single_instructions = create_new_horizontallayout(self.widget_single_instructions)
+    self.horizontalLayout_single_instructions.setContentsMargins(0,9,0,0)
+    self.pushButton_single_instructions = create_new_button(self.widget_single_instructions, "Arbeitsanweisung hinzufügen", self.edit_single_instructions, icon="edit.svg")
+    self.horizontalLayout_single_instructions.addWidget(self.pushButton_single_instructions)
+    self.horizontalLayout_setting_wizard1.addWidget(self.widget_single_instructions)
+
+
+
     self.widget_ausrichtung_wizard = QtWidgets.QWidget(self.widget_setting_wizard1)
     # create_new_groupbox(self.widget_setting_wizard1, "Ausrichtung")
     self.widget_ausrichtung_wizard.setSizePolicy(SizePolicy_fixed)
@@ -2543,22 +2552,16 @@ def setup_stackWizard(self):
     self.horizontalLayout_ausrichtung_wizard.addWidget(self.label_ausrichtung_wizard)
 
     self.combobox_ausrichtung_wizard = create_new_combobox(self.widget_ausrichtung_wizard)
-    self.combobox_ausrichtung_wizard.currentIndexChanged.connect(self.combobox_ausrichtung_wizard_changed)
+    # self.combobox_ausrichtung_wizard.currentIndexChanged.connect(self.combobox_ausrichtung_wizard_changed)
     add_new_option(self.combobox_ausrichtung_wizard, 0, "in der Spalte")
     add_new_option(self.combobox_ausrichtung_wizard, 1, "in der Zeile")
     self.horizontalLayout_ausrichtung_wizard.addWidget(self.combobox_ausrichtung_wizard)
 
+
+
+
+
     self.widget_ausrichtung_wizard.hide()
-
-
-
-
-
-
-
-
-
-
 
     self.horizontalLayout_setting_wizard1.addStretch()
     # self.groupbox_instruction_wizard = create_new_groupbox(self.groupBox_setting_wizard, "Arbeitsanweisung")
@@ -2678,7 +2681,7 @@ def setup_stackWizard(self):
 
     self.combobox_zahlenbereich_2_leq = create_new_combobox(self.widget_zahlenbereich_2_combobox)
     add_new_option(self.combobox_zahlenbereich_2_leq, 0, "=")
-    add_new_option(self.combobox_zahlenbereich_2_leq, 1, "\u2264")
+    add_new_option(self.combobox_zahlenbereich_2_leq, 1, "\u2265")
     self.horizontalLayout_zahlenbereich_2_combobox.addWidget(self.combobox_zahlenbereich_2_leq) 
 
     self.combobox_zahlenbereich_2 = create_new_combobox(self.widget_zahlenbereich_2_combobox)
@@ -2688,8 +2691,8 @@ def setup_stackWizard(self):
     for i, all in enumerate(reversed(list_stellenwerte[:index_E+1])):
         add_new_option(self.combobox_zahlenbereich_2, i, all)
 
-    self.combobox_zahlenbereich_2.currentIndexChanged.connect(lambda: print(self.combobox_zahlenbereich_2.currentIndex()))
-    self.combobox_zahlenbereich_1.currentIndexChanged.connect(lambda: print(self.combobox_zahlenbereich_1.currentIndex()))
+    # self.combobox_zahlenbereich_2.currentIndexChanged.connect(lambda: print(self.combobox_zahlenbereich_2.currentIndex()))
+    # self.combobox_zahlenbereich_1.currentIndexChanged.connect(lambda: print(self.combobox_zahlenbereich_1.currentIndex()))
 
     self.widget_kommastellen_wizard = QtWidgets.QWidget(self.groupBox_zahlenbereich_wizard)
     self.widget_kommastellen_wizard.setSizePolicy(SizePolicy_fixed)
@@ -3321,7 +3324,7 @@ def setup_stackWizard(self):
     self.pushButton_addto_worksheet_wizard.setIcon(QtGui.QIcon(get_icon_path('chevrons-right.svg')))
     self.pushButton_addto_worksheet_wizard.setEnabled(False)
 
-    self.pushButton_addto_worksheet_wizard.clicked.connect(self.add_to_worksheet_wizard)
+    self.pushButton_addto_worksheet_wizard.clicked.connect(lambda: self.add_to_worksheet_wizard())
 
 
     self.groupBox_complete_worksheet_wizard = create_new_groupbox(self.splitter_newWorksheet, "Arbeitsblatt")

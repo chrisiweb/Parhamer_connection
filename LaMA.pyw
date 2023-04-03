@@ -219,7 +219,7 @@ class Ui_MainWindow(object):
             self.lama_settings["database"] = 2
 
         if self.lama_settings["database"] == 0:
-            refresh_ddb(self) # auto_update = True
+            refresh_ddb(self, auto_update = True) # auto_update = True
 
         else:
             database_file = os.path.join(database, ".git", "index")
@@ -231,7 +231,7 @@ class Ui_MainWindow(object):
             difference = int(today) - int(refresh_date_ddb)
 
             if (self.lama_settings["database"] == 1 and difference != 0) or (self.lama_settings["database"] == 2 and difference > 6) or (self.lama_settings["database"] == 3 and refresh_date_ddb_month != today_month):
-                refresh_ddb(self) ## auto_update = True
+                refresh_ddb(self, auto_update = True) ## auto_update = True
 
         try:
             self.lama_settings["popup_off"]
@@ -1461,8 +1461,8 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
 
         self.MainWindow.setWindowTitle(program_name)
         # self.MainWindow.setWindowIcon(QtGui.QIcon(icon))
-        if self.lama_settings["database"] == 0:
-            refresh_ddb(self)
+        # if self.lama_settings["database"] == 0:
+        #     refresh_ddb(self)
 
         # self.beispieldaten_dateipfad_1 = self.define_beispieldaten_dateipfad(1)
         # self.beispieldaten_dateipfad_2 = self.define_beispieldaten_dateipfad(2)
@@ -3775,7 +3775,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         if rsp == False:
             return
 
-        self.comboBox_themen_wizard.setCurrentIndex(0)
+        # self.comboBox_themen_wizard.setCurrentIndex(0)
         self.spinBox_number_wizard.setValue(20)
         self.spinBox_column_wizard.setValue(2)
         self.combobox_fontsize_wizard.setCurrentIndex(4)
@@ -3820,16 +3820,45 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # thema_index = self.total_list_of_topics_wizard.index(thema)
 
         shorten_topic = self.shorten_topic(thema)
-        # print(shorten_topic)
+        print(shorten_topic)
 
         self.checkbox_enable_addition.hide()
         self.checkbox_enable_subtraktion.hide()
 
         if shorten_topic == 'ari_pos_ste':
-            self.spinbox_zahlenbereich_minimum.setRange(0,999999999)
-            self.spinbox_zahlenbereich_minimum.setValue(1000)
-            self.spinbox_zahlenbereich_maximum.setRange(0,999999999)
-            self.spinbox_zahlenbereich_maximum.setValue(99999)
+            self.label_zahlenbereich_1_combobox.setText("Größter Stellenwert:")
+            self.combobox_zahlenbereich_1.clear()
+            for i, all in enumerate(list_stellenwerte[index_E+1:]):
+                add_new_option(self.combobox_zahlenbereich_1, i, all)
+
+            self.combobox_zahlenbereich_1.setCurrentIndex(5)
+
+            self.label_zahlenbereich_1_combobox.setText("Kleinster Stellenwert:")
+            self.combobox_zahlenbereich_2.clear()
+            for i, all in enumerate(reversed(list_stellenwerte[:index_E+1])):
+                add_new_option(self.combobox_zahlenbereich_2, i, all)
+
+            self.label_general_direction_1.setText("123")
+            self.label_general_direction_2.setText("1H 2Z 3E")
+            # self.spinbox_zahlenbereich_minimum.setRange(0,999999999)
+            # self.spinbox_zahlenbereich_minimum.setValue(1000)
+            # self.spinbox_zahlenbereich_maximum.setRange(0,999999999)
+            # self.spinbox_zahlenbereich_maximum.setValue(99999)
+        elif shorten_topic == "ari_pos_röm":
+            self.label_zahlenbereich_1_combobox.setText("Größtes römisches Zeichen:")
+            self.combobox_zahlenbereich_1.clear()
+
+            i=0
+            for all in list(dict_of_roman_max.keys()):
+                if all != "I" and all !="V":
+                    add_new_option(self.combobox_zahlenbereich_1, i, all)
+                    i+=1
+
+            self.combobox_zahlenbereich_1.setCurrentIndex(2)
+
+            self.label_general_direction_1.setText("Zahl")
+            self.label_general_direction_2.setText("Römische Zahl")           
+
         elif shorten_topic=='ari_pos_add' or shorten_topic=='ari_pos_sub':
             self.spinbox_zahlenbereich_minimum.setRange(0,999999999)
             self.spinbox_zahlenbereich_minimum.setValue(100)
@@ -4026,13 +4055,41 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         if min.value() > max.value():
             max.setValue(min.value()+10)
 
-    def combobox_ausrichtung_wizard_changed(self):
-        if self.comboBox_themen_wizard.currentText()=='Subtraktion':
-            if self.combobox_ausrichtung_wizard.currentIndex()==0:
-                self.widgetZahlenbereich_anzahl.hide()
-                self.spinBox_zahlenbereich_anzahl_wizard.setValue(1)
+    def edit_single_instructions(self):
+        # print('yes')
+        Dialog = QtWidgets.QDialog(
+            None,
+            QtCore.Qt.WindowSystemMenuHint
+            | QtCore.Qt.WindowTitleHint
+            | QtCore.Qt.WindowCloseButtonHint,
+        )
+        ui = Ui_Dialog_edit_single_instructions()
+
+        try:
+            if self.current_single_instruction_wizard == None:
+                text = ""
             else:
-                self.widgetZahlenbereich_anzahl.show()
+                text = self.current_single_instruction_wizard
+        except AttributeError:
+            text = ""
+        ui.setupUi(Dialog, text)
+
+        rsp = Dialog.exec()
+
+        if rsp == QtWidgets.QDialog.Accepted:
+            self.current_single_instruction_wizard = ui.plainTextEdit_instructions.toPlainText()
+            if is_empty(self.current_single_instruction_wizard):
+                self.pushButton_single_instructions.setText("Arbeitsanweisung hinzufügen")
+            else:    
+                self.pushButton_single_instructions.setText("Arbeitsanweisung ändern")
+
+    # def combobox_ausrichtung_wizard_changed(self):
+    #     if self.comboBox_themen_wizard.currentText()=='Subtraktion':
+    #         if self.combobox_ausrichtung_wizard.currentIndex()==0:
+    #             self.widgetZahlenbereich_anzahl.hide()
+    #             self.spinBox_zahlenbereich_anzahl_wizard.setValue(1)
+    #         else:
+    #             self.widgetZahlenbereich_anzahl.show()
 
     def combobox_divisor_dividend_changed(self):
         # self.worksheet_wizard_changed=True
@@ -4149,6 +4206,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             maximum_index = self.combobox_zahlenbereich_1_leq.currentIndex()
             # smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
             new_example = create_single_example_stellenwert(minimum, minimum_index, maximum, maximum_index, self.general_direction_index)
+        elif shorten_topic=='ari_pos_röm':
+            roman_max = self.combobox_zahlenbereich_1.currentText()
+            maximum_index = self.combobox_zahlenbereich_1_leq.currentIndex()
+            new_example = create_single_example_roman_numerals(roman_max, maximum_index, self.general_direction_index)
         elif shorten_topic=='ari_pos_add':
             anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
             smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
@@ -4325,6 +4386,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             maximum_index = self.combobox_zahlenbereich_1_leq.currentIndex()
 
             list_of_examples_wizard = create_list_of_examples_stellenwert(examples, minimum, minimum_index, maximum, maximum_index, self.general_direction_index)                        
+        
+        elif shorten_topic == 'ari_pos_röm':
+            roman_max = self.combobox_zahlenbereich_1.currentText()
+            maximum_index = self.combobox_zahlenbereich_1_leq.currentIndex()
+            list_of_examples_wizard = create_list_of_examples_roman_numerals(examples, roman_max, maximum_index, self.general_direction_index)
         elif shorten_topic =='ari_pos_add':
             minimum = self.spinbox_zahlenbereich_minimum.value()
             maximum = self.spinbox_zahlenbereich_maximum.value()
@@ -4533,6 +4599,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         if self.dict_all_examples_worksheet_wizard[widget]['ausrichtung'] != None:
             self.combobox_ausrichtung_wizard.setCurrentIndex(self.dict_all_examples_worksheet_wizard[widget]['ausrichtung'])
 
+        if self.dict_all_examples_worksheet_wizard[widget]['instruction'] != None:
+            self.current_single_instruction_wizard = self.dict_all_examples_worksheet_wizard[widget]['instruction']
+            self.pushButton_single_instructions.setText("Arbeitsanweisung ändern")
+        else:
+            self.pushButton_single_instructions.setText("Arbeitsanweisung hinzufügen")
+
         _string = thema[0]
         for all in thema[1:]:
             _string += f" > {all}" 
@@ -4598,7 +4670,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         self.combobox_nonogramm_wizard.setCurrentText(auswahl)
 
-
+    @report_exceptions
     def add_to_worksheet_wizard(self):
         self.pushButton_addto_worksheet_wizard.setEnabled(False)
 
@@ -4662,11 +4734,19 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             ausrichtung = None
 
         thema = self.get_current_topic_wizard()
+        try:
+            if is_empty(self.current_single_instruction_wizard):
+                instruction = None
+            else:
+                instruction = self.current_single_instruction_wizard
+        except AttributeError:
+                instruction = None
         # thema_index = self.total_list_of_topics_wizard.index(thema)
         shorten_topic = self.shorten_topic(thema)
         try:
             self.dict_all_examples_worksheet_wizard[widget_worksheet] = {
                 'shorten_topic' : shorten_topic,
+                'instruction' : instruction,
                 'spalten' : self.spinBox_column_wizard.value(),
                 'ausrichtung': ausrichtung,
                 'list_of_examples' : self.list_of_examples_wizard,
@@ -4677,12 +4757,15 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.dict_all_examples_worksheet_wizard = {}
             self.dict_all_examples_worksheet_wizard[widget_worksheet] = {
                 'shorten_topic' : shorten_topic,
+                'instruction' : instruction,
                 'spalten' : self.spinBox_column_wizard.value(),
                 'ausrichtung': ausrichtung,
                 'list_of_examples' : self.list_of_examples_wizard,
                 'dummy_examples' : full_list_dummy_solutions,
             }
         self.list_of_examples_wizard = []
+        self.current_single_instruction_wizard = None
+        self.pushButton_single_instructions.setText("Arbeitsanweisung hinzufügen")
 
         self.reset_aufgabenboxes_wizard()
 
@@ -4773,7 +4856,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         elif self.combobox_nummerierung_wizard.currentText() == '(1)':
             nummerierung = "(\\arabic*)"
 
-        index = self.comboBox_themen_wizard.currentIndex()
+        # index = self.comboBox_themen_wizard.currentIndex()
 
         order_of_examples = []
         for i in range(self.verticalLayout_complete_worksheet_wizard.count()):
@@ -4787,12 +4870,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
 
-        total_number_of_examples = self.get_total_number_of_examples_wizard()
+        # total_number_of_examples = self.get_total_number_of_examples_wizard()
 
         content = create_latex_worksheet(
             order_of_examples,
             self.dict_all_examples_worksheet_wizard,
-            index,
             titel,
             arbeitsanweisung,
             fortlaufende_nummerierung, 
@@ -4917,7 +4999,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         try:
             text = self.instructions_wizard
         except AttributeError:
-            text = "Berechne die folgenden Aufgaben."
+            text = ""
 
         try:
             show_titel = self.titel_worksheet_wizard
@@ -8374,7 +8456,7 @@ if __name__ == "__main__":
     from subwindows import Ui_Dialog_Convert_To_Eps
 
     i = step_progressbar(i, "subwindows")
-    from subwindows import Ui_Dialog_edit_worksheet_instructions
+    from subwindows import Ui_Dialog_edit_worksheet_instructions, Ui_Dialog_edit_single_instructions
     i = step_progressbar(i, "subwindows")
     from subwindows import read_credentials
 
@@ -8471,7 +8553,8 @@ if __name__ == "__main__":
         get_all_solution_pixels,
         get_max_pixels_nonogram,
         create_latex_worksheet,
-        create_list_of_examples_stellenwert, create_single_example_stellenwert, 
+        create_list_of_examples_stellenwert, create_single_example_stellenwert, list_stellenwerte, index_E,
+        create_list_of_examples_roman_numerals, create_single_example_roman_numerals, dict_of_roman_max,
         create_list_of_examples_addition, create_single_example_addition,
         create_list_of_examples_subtraction, create_single_example_subtraction,
         create_list_of_examples_multiplication, create_single_example_multiplication,

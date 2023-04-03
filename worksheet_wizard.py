@@ -24,6 +24,10 @@ dict_themen_wizard = {
                 'self.widget_zahlenbereich_2_combobox',
                 'self.widget_general_direction',               
             ],
+            "Römische Zahlen" : [
+              'self.widget_zahlenbereich_1_combobox',
+              'self.widget_general_direction',  
+            ],
             "Addition": [
                 'self.widget_ausrichtung_wizard',
                 'self.widget_zahlenbereich_minimum',
@@ -299,6 +303,47 @@ def simplify_numbers(number, num_stellenwerte, minimum_index, maximum_index):
     return number
 
 
+def int_to_roman(input):
+    """ Convert an integer to a Roman numeral. """
+
+    if not isinstance(input, type(1)):
+        raise TypeError#, "expected integer, got %s" % type(input)
+    if not 0 < input < 4000:
+        raise ValueError #, "Argument must be between 1 and 3999"
+    ints = (1000, 900,  500, 400, 100,  90, 50,  40, 10,  9,   5,  4,   1)
+    nums = ('M',  'CM', 'D', 'CD','C', 'XC','L','XL','X','IX','V','IV','I')
+    result = []
+    for i in range(len(ints)):
+        count = int(input / ints[i])
+        result.append(nums[i] * count)
+        input -= ints[i] * count
+    return ''.join(result)
+
+def roman_to_int(input):
+    """ Convert a Roman numeral to an integer. """
+
+    if not isinstance(input, type("")):
+        raise TypeError#, "expected string, got %s" % type(input)
+    input = input.upper(  )
+    nums = {'M':1000, 'D':500, 'C':100, 'L':50, 'X':10, 'V':5, 'I':1}
+    sum = 0
+    for i in range(len(input)):
+        try:
+            value = nums[input[i]]
+            # If the next place holds a larger number, this value is negative
+            if i+1 < len(input) and nums[input[i+1]] > value:
+                sum -= value
+            else: sum += value
+        except KeyError:
+            raise ValueError#, 'input is not a valid Roman numeral: %s' % input
+    # easiest test for validity...
+    if int_to_roman(sum) == input:
+        return sum
+    else:
+        raise ValueError#, 'input is not a valid Roman numeral: %s' % input
+
+dict_of_roman_max = {'I':3, 'V': 8, 'X':39, 'L':89, 'C':399, 'D':899, 'M':3999}
+
 
 
 def create_single_example_stellenwert(minimum, minimum_index, maximum, maximum_index, general_direction_index):
@@ -315,7 +360,7 @@ def create_single_example_stellenwert(minimum, minimum_index, maximum, maximum_i
     # print(minimum_num)
     # print(minimum)
 
-    number = get_random_number(minimum_num,maximum_num, minimum)
+    number = get_random_number(minimum_num,maximum_num, minimum, force_decimals=True)
     # print(number)
     number = simplify_numbers(number, maximum+minimum, minimum_index, maximum_index)
     # print(number)
@@ -344,6 +389,31 @@ def create_single_example_stellenwert(minimum, minimum_index, maximum, maximum_i
         _string = _string.replace("*",'.')
         number = number.replace("*",'.')
         return [string_stellenwert,number, _string]
+    
+
+
+def create_single_example_roman_numerals(roman_max, maximum_index, general_direction_index):
+    if maximum_index == 1:
+        number = get_random_number(10, dict_of_roman_max[roman_max])
+    else:
+        chosen_index = list(dict_of_roman_max.keys()).index(roman_max)
+        roman_min = list(dict_of_roman_max.keys())[chosen_index-1]
+        number = get_random_number(dict_of_roman_max[roman_min]+1, dict_of_roman_max[roman_max])
+    
+    roman_number = int_to_roman(number)
+
+    if general_direction_index == 1:
+        index = random.choice([0,2])
+    else:
+        index = general_direction_index
+
+    if index == 0:
+        _string = f"{number} = {roman_number}"
+        return [number, roman_number, _string]
+    elif index == 2:
+        _string = f"{roman_number} = {number}"
+        return [roman_number, number, _string]
+
 
 def create_single_example_addition(minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
     summanden = []
@@ -1287,6 +1357,16 @@ def create_list_of_examples_stellenwert(examples, minimum, minimum_index, maximu
 
     return list_of_examples     
 
+
+def create_list_of_examples_roman_numerals(examples, roman_max, maximum_index, general_direction_index):
+    list_of_examples = []
+
+    for _ in range(examples):
+        new_example = create_single_example_roman_numerals(roman_max, maximum_index, general_direction_index)
+        list_of_examples.append(new_example)
+
+    return list_of_examples
+
 def create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
     list_of_examples = []
 
@@ -1404,6 +1484,27 @@ def create_latex_string_stellenwert(content, example):
     content += f"\\task {string_0} = \\antwort{{{string_1}}}"
 
     return content
+
+def create_latex_string_roman_numerals(content, example):
+    _string = example[-1]
+    _string = _string.split(" = ")
+    content += f"\\task {_string[0]} = \\antwort{{{_string[1]}}}"
+
+#     content += f"""
+# \\task 
+
+# \psset{{xunit=1cm,yunit=1cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1pt,arrowsize=3pt 2,arrowinset=0.25}}
+# \\begin{{pspicture*}}(-0.6,-0.6)(5.4,5.4)
+# \multips(0,0)(0,1){{7}}{{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{{c-c}}(0,0)(6.17,0)}}
+# \multips(0,0)(1,0){{7}}{{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{{c-c}}(0,0)(0,5.58)}}
+# \psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=1,Dy=1,ticksize=-2pt 0,subticks=0]{{->}}(0,0)(0,0)(5.4,5.4)[x,140] [y,-40]
+# \\begin{{scriptsize}}
+# \psdots[dotstyle=*](2,3)
+# \\rput[bl](2.07,3.2){{$A$}}
+# \end{{scriptsize}}
+# \end{{pspicture*}}""" 
+    return content
+
 def create_latex_string_addition(content, example, ausrichtung):
     summanden = example[0]
     
@@ -1751,7 +1852,6 @@ def create_latex_string_binomische_formeln(content, example, binoms_direction_in
 def create_latex_worksheet(
     order_of_examples,
     dict_of_examples,
-    index,
     titel,
     arbeitsanweisung,
     fortlaufende_nummerierung,
@@ -1767,7 +1867,7 @@ def create_latex_worksheet(
 
     if arbeitsanweisung != False:
         if arbeitsanweisung == True:
-            arbeitsanweisung="Berechne die folgenden Aufgaben."
+            arbeitsanweisung=""
         content += arbeitsanweisung
 
     for widget in order_of_examples:
@@ -1778,6 +1878,9 @@ def create_latex_worksheet(
         ausrichtung = set_of_examples['ausrichtung']
         columns = set_of_examples['spalten']
         
+        if set_of_examples['instruction'] != None:
+            content += f"\n\n{set_of_examples['instruction']}\n\n"
+
         # if columns > 1:
         #     content += "\\begin{{multicols}}{{{0}}}\n".format(columns)
         # print(nummerierung)
@@ -1791,6 +1894,8 @@ def create_latex_worksheet(
         for example in list_of_examples:
             if shorten_topic == 'ari_pos_ste':
                 content = create_latex_string_stellenwert(content, example)
+            elif shorten_topic == 'ari_pos_röm':
+                content = create_latex_string_roman_numerals(content, example)
             elif shorten_topic == 'ari_pos_add':
                 content = create_latex_string_addition(content, example, ausrichtung)
             elif shorten_topic == 'ari_pos_sub':
@@ -1994,6 +2099,11 @@ def get_random_solution(self):
         # smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
         distract_result = create_single_example_stellenwert(minimum, minimum_index, maximum, maximum_index, self.general_direction_index) #
 
+    elif shorten_topic == 'ari_pos_röm':
+        roman_max = self.combobox_zahlenbereich_1.currentText()          
+        maximum_index = self.combobox_zahlenbereich_1_leq.currentIndex()
+
+        distract_result = create_single_example_roman_numerals(roman_max, maximum_index, self.general_direction_index)
     elif shorten_topic == 'ari_pos_add':
         minimum = self.spinbox_zahlenbereich_minimum.value()
         maximum = self.spinbox_zahlenbereich_maximum.value()
