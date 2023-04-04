@@ -4893,7 +4893,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # try:
         #     item_spacing = self.item_spacing_wizard
         # except AttributeError:
-        #     item_spacing = 2.00
+        #     item_spacing = 0.50
 
         
 
@@ -4999,7 +4999,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         try:
             item_spacing = f"{self.item_spacing_wizard}cm"
         except AttributeError:
-            item_spacing = "2.00cm"
+            item_spacing = "0.50cm"
 
         with open(path_file, "w", encoding="utf8") as file:
             file.write(tex_preamble(solution=show_solution, pagestyle=pagestyle, font_size=self.combobox_fontsize_wizard.currentText(), documentclass='extarticle', tasks = item_spacing))
@@ -5065,7 +5065,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         try:
             item_spacing = self.item_spacing_wizard
         except AttributeError:
-            item_spacing = 2.00
+            item_spacing = 0.5
 
         ui.setupUi(Dialog, text, show_titel ,show_instructions,fortlaufende_nummerierung ,show_pagenumbers, columns, item_spacing)
 
@@ -5120,7 +5120,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         try:
             item_spacing = f"{self.item_spacing_wizard}cm"
         except AttributeError:
-            item_spacing = "2.00cm"
+            item_spacing = "0.50cm"
 
 
         index = 0
