@@ -4761,25 +4761,35 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             columns = self.spinBox_column_wizard.value()
 
         try:
-            self.dict_all_examples_worksheet_wizard[widget_worksheet] = {
-                'shorten_topic' : shorten_topic,
-                'instruction' : instruction,
-                'spalten' : columns,
-                'ausrichtung': ausrichtung,
-                'list_of_examples' : self.list_of_examples_wizard,
-                'dummy_examples' : full_list_dummy_solutions,
-            }
-
+            self.dict_all_examples_worksheet_wizard
         except AttributeError:
             self.dict_all_examples_worksheet_wizard = {}
-            self.dict_all_examples_worksheet_wizard[widget_worksheet] = {
-                'shorten_topic' : shorten_topic,
-                'instruction' : instruction,
-                'spalten' : columns,
-                'ausrichtung': ausrichtung,
-                'list_of_examples' : self.list_of_examples_wizard,
-                'dummy_examples' : full_list_dummy_solutions,
-            }
+
+        try:
+            coordinate_system_zwischenwerte = self.checkbox_coordinatesystem_zwischenwerte.isChecked()
+            coordinate_system_negative = self.checkbox_coordinatesystem_negative_numbers.isChecked()
+            coordinate_system_dotstyle_index = self.combobox_points.currentIndex()
+        except AttributeError:
+            coordinate_system_zwischenwerte = False
+            coordinate_system_negative = False
+            coordinate_system_dotstyle_index = 0
+            # self.dict_all_examples_worksheet_wizard[widget_worksheet] = {
+            #     'shorten_topic' : shorten_topic,
+            #     'instruction' : instruction,
+            #     'spalten' : columns,
+            #     'ausrichtung': ausrichtung,
+            #     'list_of_examples' : self.list_of_examples_wizard,
+            #     'dummy_examples' : full_list_dummy_solutions,
+            # }
+        self.dict_all_examples_worksheet_wizard[widget_worksheet] = {
+            'shorten_topic' : shorten_topic,
+            'instruction' : instruction,
+            'spalten' : columns,
+            'ausrichtung': ausrichtung,
+            'list_of_examples' : self.list_of_examples_wizard,
+            'dummy_examples' : full_list_dummy_solutions,
+            'coordinate_system' : [coordinate_system_zwischenwerte, coordinate_system_negative, coordinate_system_dotstyle_index],
+        }
         self.list_of_examples_wizard = []
         self.current_single_instruction_wizard = None
         self.pushButton_single_instructions.setText("Arbeitsanweisung hinzufügen")
@@ -4885,7 +4895,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # except AttributeError:
         #     item_spacing = 2.00
 
-
+        
 
         # total_number_of_examples = self.get_total_number_of_examples_wizard()
 
@@ -4898,9 +4908,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             nummerierung,
             self.comboBox_solution_type_wizard.currentIndex(),
             self.binoms_direction_index,
-            self.checkbox_coordinatesystem_zwischenwerte.isChecked(),
-            self.checkbox_coordinatesystem_negative_numbers.isChecked(),
-            self.combobox_points.currentIndex(),
             )
 
         if self.checkBox_show_nonogramm.isChecked():

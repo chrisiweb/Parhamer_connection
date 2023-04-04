@@ -214,7 +214,7 @@ def get_random_number(min, max, decimal=0, zero_allowed=False, force_decimals=Fa
     if decimal == 0:
         if half_allowed == True:
             switch = random_switch()
-            if switch == True:
+            if switch == True and x!=max and (min>0 or x!=min):
                 num = float(f"{str(x)}.5")
                 return num
             else:
@@ -1109,9 +1109,14 @@ def create_single_example_coordinate_system(half_allowed, negative_allowed):
     dict_of_points = {}
 
     i=0
-    while i < 5:
+    while i < 6:
         x = get_random_number(minimum, 5, zero_allowed=True,half_allowed=half_allowed)
-        y = get_random_number(minimum, 5, zero_allowed=True,half_allowed=half_allowed)
+        if x == 0: 
+            y = get_random_number(minimum, 4, zero_allowed=True,half_allowed=half_allowed)
+        elif x==5:
+            y = get_random_number(minimum, 5, zero_allowed=False,half_allowed=half_allowed)
+        else:
+            y = get_random_number(minimum, 5, zero_allowed=True,half_allowed=half_allowed)
         if (x,y) not in list(dict_of_points.values()):
             dict_of_points[index_to_letter(i).upper()]=(x,y)
             i+=1
@@ -1812,30 +1817,48 @@ def create_pstricks_code_dots(example, dot_style_index):
     dict_dots = example[0]
     _string = ""
     for all in dict_dots:
-        _string += f"\psdots[dotstyle={dot_style}]({dict_dots[all][0]},{dict_dots[all][1]})\n\\rput[bl]({dict_dots[all][0]+0.1},{dict_dots[all][1]+0.2}){{${all}$}}\n"        
+        _string += f"\psdots[dotstyle={dot_style}]({dict_dots[all][0]},{dict_dots[all][1]})\n\\rput[bl]({dict_dots[all][0]+0.1},{dict_dots[all][1]+0.1}){{${all}$}}\n"        
 
     return _string
 
 def minimal_coordinate_system(half_allowed, negative_allowed, pstricks_code_dots):
+    if half_allowed == True:
+        multips_spacing = "0.5"
+    else:
+        multips_spacing = "1"
+
     if negative_allowed == True:
         xyunit = "0.75"
         pspicture_min = "-5.7"
-        mulitps_1 = "-5"
-        mulitps_num = "11"
         mulitps_2 = "-5.4"
+        mulitps_1 = "-5"
+        showorigin = "false"
+        if half_allowed == True:
+            mulitps_num = "21"
+        else:
+            mulitps_num = "11"
+
+        
     else:
         xyunit = "0.8"
         pspicture_min = "-0.7"
-        mulitps_1 = "0"
-        mulitps_num = "7"
         mulitps_2 = "0"
+        mulitps_1 = "0"
+        showorigin= "true"
+        if half_allowed == True:
+            mulitps_num = "11"
+        else:
+            mulitps_num = "7"
+        
+
+
 
     pstricks_code = f"""
 \psset{{xunit={xyunit}cm,yunit={xyunit}cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1pt,arrowsize=3pt 2,arrowinset=0.25}}
 \\begin{{pspicture*}}({pspicture_min},{pspicture_min})(5.5,5.5)
-\multips(0,{mulitps_1})(0,1){{{mulitps_num}}}{{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{{c-c}}({mulitps_2},0)(5.4,0)}}
-\multips({mulitps_1},0)(1,0){{{mulitps_num}}}{{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=lightgray]{{c-c}}(0,{mulitps_2})(0,5.4)}}
-\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=1,Dy=1,ticksize=-2pt 0,subticks=0]{{->}}(0,0)({mulitps_2},{mulitps_2})(5.5,5.5)[$x$,140] [$y$,-40]
+\multips(0,{mulitps_1})(0,{multips_spacing}){{{mulitps_num}}}{{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=darkgray]{{c-c}}({mulitps_2},0)(5.4,0)}}
+\multips({mulitps_1},0)({multips_spacing},0){{{mulitps_num}}}{{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=darkgray]{{c-c}}(0,{mulitps_2})(0,5.4)}}
+\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=1,Dy=1,ticksize=-2pt 0,subticks=0, showorigin={showorigin}]{{->}}(0,0)({mulitps_2},{mulitps_2})(5.5,5.5)[$x$,140] [$y$,-40]
 \\begin{{scriptsize}}
 {pstricks_code_dots}
 \end{{scriptsize}}
@@ -1843,10 +1866,46 @@ def minimal_coordinate_system(half_allowed, negative_allowed, pstricks_code_dots
     """
     return pstricks_code
 
+def create_latex_coordinates(example):
+    dict_dots = example[0]
+
+    i = 0
+    temp_string = ""
+    for all in dict_dots:
+        coordinates = dict_dots[all]
+        if i==0:
+            temp_string += f"${all} = ({str(coordinates[0]).replace('.',',')}\mid {str(coordinates[1]).replace('.',',')})$ &"
+            i +=1
+        elif i==1:
+            temp_string += f"${all} = ({str(coordinates[0]).replace('.',',')}\mid {str(coordinates[1]).replace('.',',')})$ \\\\"
+            i=0
+
+    return temp_string
+
 def create_latex_string_coordinate_system(content, example, half_allowed, negative_allowed,dot_style_index):
     pstricks_code_dots = create_pstricks_code_dots(example, dot_style_index)
     pstricks_code = minimal_coordinate_system(half_allowed, negative_allowed, pstricks_code_dots)
-    content += f"""\\task \n{pstricks_code}"""
+    latex_coordinates = create_latex_coordinates(example)
+
+    content += f"""\\task \n{pstricks_code}\n
+    \\begin{{center}}
+    \\begin{{tabular}}{{cc}}
+    {latex_coordinates}
+    \end{{tabular}}
+    \end{{center}}  
+    """
+
+    # \\begin{{multicols}}{2}
+    # \\begin{{enumerate}}[$A$]
+    # \item $= (3, 2)$
+    # \item $= (3, 2)$
+    # \item $= (3, 2)$
+    # \item $= (3, 2)$
+    # \item $= (3, 2)$
+    # \item $= (3, 2)$
+    # \end{{enumerate}}
+    # \end{{multicols}}
+
     return content
 
 def create_latex_string_binomische_formeln(content, example, binoms_direction_index):
@@ -1888,9 +1947,6 @@ def create_latex_worksheet(
     nummerierung,
     solution_type,
     binoms_direction_index,
-    half_allowed,
-    negative_allowed,
-    dot_style_index,
     ):
     if titel != False:
         content = "\section{{{0}}}\n\n".format(titel.replace('&', '\&'))
@@ -1913,6 +1969,10 @@ def create_latex_worksheet(
         if set_of_examples['instruction'] != None:
             content += f"\n\n{set_of_examples['instruction']}\n\n"
 
+
+        half_allowed = set_of_examples['coordinate_system'][0]
+        negative_allowed = set_of_examples['coordinate_system'][1]
+        dot_style_index = set_of_examples['coordinate_system'][2]
         # if columns > 1:
         #     content += "\\begin{{multicols}}{{{0}}}\n".format(columns)
         # print(nummerierung)
@@ -2069,7 +2129,10 @@ def collect_dummy_solutions(dict_all_examples):
         all_dummy_solutions.extend(all['dummy_examples'])
 
 
-    _list = random.sample(all_dummy_solutions, k=10) #choices
+    try:
+        _list = random.sample(all_dummy_solutions, k=10) #choices
+    except ValueError:
+        _list = []
     return _list
 
 def create_coordinates(solution_pixels, dict_all_examples):
