@@ -3820,7 +3820,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # thema_index = self.total_list_of_topics_wizard.index(thema)
 
         shorten_topic = self.shorten_topic(thema)
-        print(shorten_topic)
+        # print(shorten_topic)
 
         self.checkbox_enable_addition.hide()
         self.checkbox_enable_subtraktion.hide()

@@ -272,10 +272,6 @@ def simplify_numbers(number, num_stellenwerte, minimum_index, maximum_index):
 
     str_new_number = []
     for i, all in enumerate(str_num):
-        # print(random_switch(probability))
-        # print('count')
-        # print(str_new_number.count('0'))
-        # print(len(str_num))
         if str_new_number.count('0')+3>=len(str_num):
             str_new_number.append(str(get_random_number(1,9)))
         elif maximum_index==0 and i==0:
@@ -296,7 +292,6 @@ def simplify_numbers(number, num_stellenwerte, minimum_index, maximum_index):
         else:
             str_new_number.append(all)
 
-    # print(str_new_number)
     if "." in str_new_number:
         number = float("".join(str_new_number))
     else:
@@ -357,14 +352,9 @@ def create_single_example_stellenwert(minimum, minimum_index, maximum, maximum_i
     maximum_num = int('9'*maximum)
     minimum_num = int('1'+'0'*(maximum-1))
 
-    # print(maximum_num)
-    # print(minimum_num)
-    # print(minimum)
 
     number = get_random_number(minimum_num,maximum_num, minimum, force_decimals=True)
-    # print(number)
     number = simplify_numbers(number, maximum+minimum, minimum_index, maximum_index)
-    # print(number)
     _list_stellenwert = number_to_placevalue(number)
 
     string_stellenwert = " ".join(_list_stellenwert)
@@ -374,12 +364,8 @@ def create_single_example_stellenwert(minimum, minimum_index, maximum, maximum_i
     else:
         index = general_direction_index
 
-    # x = '*'.join(reversed(str(number))[i:i+3] for i in range(0, len(str(number)), 3))
-    # print(x)
-    # print(number)
 
     number = insert_dots(number)
-    # print(number)
     if index == 0:
         _string = f"{number} = {string_stellenwert}".replace(".",",")
         _string = _string.replace("*",'.')
@@ -528,7 +514,7 @@ def create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, c
         result = str(result)
 
     string = "{0} : {1} = {2}".format(str(dividend).replace(".",","),str(divisor).replace(".",","),result.replace(".",","))
-    # print([dividend,divisor,result, string])
+
     return [dividend,divisor,result, string]
 
 def add_summand(s, show_brackets=True):
@@ -1095,7 +1081,6 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
         solution = 0
     string = "{0} = {1}".format(string.replace(".",","), str(solution).replace(".",","))
 
-    # print([numbers, solution, string])
     return [numbers, solution, string] 
 
 def index_to_letter(index):
@@ -1249,7 +1234,7 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
     
 
     binom_string = random_choice.replace("**", "^")
-    # print(binom_string)
+
     if fractions_allowed==True:
         binom_string = re.sub('([AB])\*([AB])', r"\1\2", binom_string)
         binom_string = binom_string.replace("*", "\xb7")
@@ -1307,13 +1292,7 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
             binom_string = string
 
         binom_string = binom_string.replace("_","\\rule{1cm}{0.3pt}")
-            # string = reversed_string_blanks
-            # binom_string = reversed_string_blanks           
 
-            # random_blanks.reverse()
-            # # split_string.reverse()
-            # print(random_blanks)
-            # # print(split_string)
     else:
         solution_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", solution_string)
         solution_string = solution_string.replace('\xb7', '\cdot ')
@@ -1483,8 +1462,7 @@ def create_latex_string_stellenwert(content, example):
     _string = example[-1]
 
     _string = _string.split(" = ")
-    # _string = _string.replace(".","\,")
-    # print(_string)
+
     string_0 = _string[0].replace(".","\,")
     string_1 = _string[1].replace(".","\,")
     content += f"\\task {string_0} = \\antwort{{{string_1}}}"
@@ -1682,7 +1660,6 @@ def get_temp_solution_division(dividend, divisor, solution):
             first_part_divide, end_index = get_first_temp_division(dividend, temp_solution)
             part_divide = first_part_divide
 
-        # print(f"before strip: {part_divide}")
         if isinstance(part_divide, str):
             part_divide = part_divide.lstrip('0')
 
@@ -1695,22 +1672,18 @@ def get_temp_solution_division(dividend, divisor, solution):
         end_index +=1
 
         if i == len(str_solution)-1:
-            # print('A')
             next_digit = ""
             next_digit_string = next_digit
         else:            
             try:
                 if str(dividend)[end_index].isnumeric():
-                    # print('B')
                     next_digit = str(dividend)[end_index]
                     next_digit_string = next_digit
                 else:
-                    # print('C')
                     end_index +=1
                     next_digit = str(dividend)[end_index]
                     next_digit_string = f"\;{next_digit}"       
             except IndexError:
-                # print('D')
                 next_digit = "0"
                 next_digit_string = next_digit
 
@@ -1718,7 +1691,6 @@ def get_temp_solution_division(dividend, divisor, solution):
         part_divide = f"{differenz}{next_digit}"
 
         list_temp_solutions.append([f"{differenz}",next_digit_string])
-        # print(list_temp_solutions)
 
     return first_part_divide, list_temp_solutions
 
@@ -1747,7 +1719,6 @@ def create_latex_string_division(content, example, solution_type):
             example[0] = remove_exponent(example[0])
             example[1] = int(example[1]*10**(num_decimal_divisor))
 
-        # print(example)
         first_part_divide, list_temp_solutions = get_temp_solution_division(dividend=example[0], divisor=example[1], solution=solution)
 
 
@@ -1786,8 +1757,7 @@ def create_latex_string_division(content, example, solution_type):
 
             content += f"\\antwortzeile {hspace} {all[0]}{all[1]}{rest} \\\\ \n"
             previous_num_of_digits = num_of_digits 
-            # print(content)
-            # print(f"multiplier: {multiplier}")
+
         content += "\end{array}$\n\n"
 
 
@@ -1809,7 +1779,6 @@ def create_latex_string_ganze_zahlen(content, example):
     return content
 
 def create_pstricks_code_dots(example, dot_style_index, coordinates_direction_index):
-    print(example)
     if dot_style_index==0:
         dot_style = "*"
     elif dot_style_index==1:
@@ -1920,9 +1889,7 @@ def create_latex_string_coordinate_system(content, example, half_allowed, negati
     return content
 
 def create_latex_string_binomische_formeln(content, example, binoms_direction_index):
-    # print(example)
     if binoms_direction_index==3:
-        # print(example[0])
         aufgabe = example[0]
 
         for _, solution in enumerate(example[1]):
@@ -1932,7 +1899,6 @@ def create_latex_string_binomische_formeln(content, example, binoms_direction_in
         # for loesung in example[1]:
         #     aufgabe = aufgabe.replace("\\rule{1cm}{0.3pt}", f"\\antwort[\\rule{{1cm}}{{0.3pt}}]{{{loesung}}}",1)
         temp_content = f"\\task {aufgabe}\n\n"
-        # print(aufgabe)
 
     else:
         example_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", example[2])
@@ -1985,14 +1951,9 @@ def create_latex_worksheet(
         negative_allowed = set_of_examples['coordinate_system'][1]
         dot_style_index = set_of_examples['coordinate_system'][2]
         coordinates_direction_index = set_of_examples['coordinate_system'][3]
-        # if columns > 1:
-        #     content += "\\begin{{multicols}}{{{0}}}\n".format(columns)
-        # print(nummerierung)
-        # content += f"\\begin{{enumerate}}[{nummerierung}]\setlength\itemsep{{{item_spacing}cm}}\n"
+
         content += f"\\begin{{tasks}}[label={nummerierung},resume={fortlaufende_nummerierung}, item-indent=0pt]({columns})\n\n"
-        # if fortlaufende_nummerierung == True:
-        #     content += f"\setcounter{{enumi}}{{{enumi_counter}}}"
-        #     enumi_counter +=1
+
 
         list_of_examples = set_of_examples['list_of_examples']
         for example in list_of_examples:
@@ -2189,12 +2150,7 @@ def get_random_solution(self):
     thema = self.get_current_topic_wizard()
     # thema_index = self.total_list_of_topics_wizard.index(thema)
     shorten_topic = self.shorten_topic(thema)
-    # print(thema)
-    # print(self.total_list_of_topics_wizard)
-    # print(thema_index)
-    # if thema =
-    # thema = random.choice(list(self.dict_all_examples_wizard.keys()))
-    # thema = self.comboBox_themen_wizard.currentText()
+
 
     if shorten_topic == 'ari_pos_ste':
         minimum = self.combobox_zahlenbereich_2.currentIndex()
