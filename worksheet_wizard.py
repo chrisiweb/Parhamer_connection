@@ -88,6 +88,7 @@ dict_themen_wizard = {
         "Koordinatensystem" : [
             'self.widget_coordinatesystem_setting',
             'self.widget_coordinatesystem_points',
+            'self.widget_general_direction_CB',
         ]
     },
     "Terme": {
@@ -1807,21 +1808,25 @@ def create_latex_string_ganze_zahlen(content, example):
     content += temp_content
     return content
 
-def create_pstricks_code_dots(example, dot_style_index):
+def create_pstricks_code_dots(example, dot_style_index, coordinates_direction_index):
     print(example)
     if dot_style_index==0:
         dot_style = "*"
     elif dot_style_index==1:
         dot_style = "x"
 
+    if coordinates_direction_index==1:
+        color = ",linecolor=red"
+    else:
+        color = ""
     dict_dots = example[0]
     _string = ""
     for all in dict_dots:
-        _string += f"\psdots[dotstyle={dot_style}]({dict_dots[all][0]},{dict_dots[all][1]})\n\\rput[bl]({dict_dots[all][0]+0.1},{dict_dots[all][1]+0.1}){{${all}$}}\n"        
+        _string += f"\psdots[dotstyle={dot_style}{color}]({dict_dots[all][0]},{dict_dots[all][1]})\n\\rput[bl]({dict_dots[all][0]+0.1},{dict_dots[all][1]+0.1}){{${all}$}}\n"        
 
     return _string
 
-def minimal_coordinate_system(half_allowed, negative_allowed, pstricks_code_dots):
+def minimal_coordinate_system(half_allowed, negative_allowed, pstricks_code_dots, coordinates_direction_index):
     if half_allowed == True:
         multips_spacing = "0.5"
     else:
@@ -1851,7 +1856,8 @@ def minimal_coordinate_system(half_allowed, negative_allowed, pstricks_code_dots
             mulitps_num = "7"
         
 
-
+    if coordinates_direction_index == 1:
+        pstricks_code_dots = f"\\antwort{{{pstricks_code_dots}}}"        
 
     pstricks_code = f"""
 \psset{{xunit={xyunit}cm,yunit={xyunit}cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1pt,arrowsize=3pt 2,arrowinset=0.25}}
@@ -1866,33 +1872,38 @@ def minimal_coordinate_system(half_allowed, negative_allowed, pstricks_code_dots
     """
     return pstricks_code
 
-def create_latex_coordinates(example):
+def create_latex_coordinates(example, coordinates_direction_index):
     dict_dots = example[0]
 
     i = 0
     temp_string = ""
     for all in dict_dots:
         coordinates = dict_dots[all]
+        xcoord = str(coordinates[0]).replace('.',',')
+        ycoord = str(coordinates[1]).replace('.',',')
+        if coordinates_direction_index == 0:
+            xcoord = f'\\antwort[\\rule{{0.4cm}}{{0.3pt}}]{{{xcoord}}}'
+            ycoord = f'\\antwort[\\rule{{0.4cm}}{{0.3pt}}]{{{ycoord}}}'
+
         if i==0:
-            temp_string += f"${all} = ({str(coordinates[0]).replace('.',',')}\mid {str(coordinates[1]).replace('.',',')})$ &"
+            temp_string += f"${all} = ({xcoord}\mid {ycoord})$ &"
             i +=1
         elif i==1:
-            temp_string += f"${all} = ({str(coordinates[0]).replace('.',',')}\mid {str(coordinates[1]).replace('.',',')})$ \\\\"
+            temp_string += f"${all} = ({xcoord}\mid {ycoord})$ \\\\"
             i=0
 
     return temp_string
 
-def create_latex_string_coordinate_system(content, example, half_allowed, negative_allowed,dot_style_index):
-    pstricks_code_dots = create_pstricks_code_dots(example, dot_style_index)
-    pstricks_code = minimal_coordinate_system(half_allowed, negative_allowed, pstricks_code_dots)
-    latex_coordinates = create_latex_coordinates(example)
+def create_latex_string_coordinate_system(content, example, half_allowed, negative_allowed,dot_style_index, coordinates_direction_index):
+    pstricks_code_dots = create_pstricks_code_dots(example, dot_style_index, coordinates_direction_index)
+    pstricks_code = minimal_coordinate_system(half_allowed, negative_allowed, pstricks_code_dots, coordinates_direction_index)
+    latex_coordinates = create_latex_coordinates(example, coordinates_direction_index)
 
-    content += f"""\\task \n{pstricks_code}\n
-    \\begin{{center}}
-    \\begin{{tabular}}{{cc}}
-    {latex_coordinates}
-    \end{{tabular}}
-    \end{{center}}  
+    content += f"""\\task{pstricks_code}\n
+\centering\\renewcommand{{\\arraystretch}}{{1.2}}
+\\begin{{tabular}}{{ll}}
+{latex_coordinates}
+\end{{tabular}}\n\n  
     """
 
     # \\begin{{multicols}}{2}
@@ -1973,11 +1984,12 @@ def create_latex_worksheet(
         half_allowed = set_of_examples['coordinate_system'][0]
         negative_allowed = set_of_examples['coordinate_system'][1]
         dot_style_index = set_of_examples['coordinate_system'][2]
+        coordinates_direction_index = set_of_examples['coordinate_system'][3]
         # if columns > 1:
         #     content += "\\begin{{multicols}}{{{0}}}\n".format(columns)
         # print(nummerierung)
         # content += f"\\begin{{enumerate}}[{nummerierung}]\setlength\itemsep{{{item_spacing}cm}}\n"
-        content += f"\\begin{{tasks}}[label={nummerierung},resume={fortlaufende_nummerierung}]({columns})\n\n"
+        content += f"\\begin{{tasks}}[label={nummerierung},resume={fortlaufende_nummerierung}, item-indent=0pt]({columns})\n\n"
         # if fortlaufende_nummerierung == True:
         #     content += f"\setcounter{{enumi}}{{{enumi_counter}}}"
         #     enumi_counter +=1
@@ -2003,7 +2015,7 @@ def create_latex_worksheet(
                 shorten_topic == 'ari_neg_ver'):
                 content = create_latex_string_ganze_zahlen(content, example)
             elif shorten_topic == 'gru_koo':
-                content = create_latex_string_coordinate_system(content, example, half_allowed, negative_allowed,dot_style_index)
+                content = create_latex_string_coordinate_system(content, example, half_allowed, negative_allowed,dot_style_index, coordinates_direction_index)
             elif shorten_topic == 'ter_bin':
                 content = create_latex_string_binomische_formeln(content, example, binoms_direction_index)
 

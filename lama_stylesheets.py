@@ -3,7 +3,7 @@ from lama_colors import *
 
 
 
-StyleSheet_application = """
+StyleSheet_application = f"""
     QMenuBar::item:selected{{
         background-color: #2F4550;
         color: #F4F4F9; 
@@ -64,12 +64,12 @@ StyleSheet_application = """
 
     QTabBar QToolButton::left-arrow {{
         background-color: #F4F4F9;
-        image: url({0});        
+        image: url({get_icon_path("chevron-left.svg")});        
     }}
 
     QTabBar QToolButton::right-arrow {{
         background-color: #F4F4F9;
-        image: url({1});        
+        image: url({get_icon_path("chevron-right.svg")});        
     }}
 
 
@@ -109,15 +109,29 @@ StyleSheet_application = """
     }}
 
     QCheckBox::indicator:unchecked {{ 
-        image: url({2});
+        image: url({get_icon_path("square.svg")});
         width: 35px;
     }}
 
-
+    QCheckBox::indicator:unchecked:disabled{{
+        image: url({get_icon_path("square_disabled.svg")});
+        width: 35px;        
+    }}
+    
     QCheckBox::indicator:checked {{ 
-        image: url({3});
+        image: url({get_icon_path("check-square.svg")});
         width: 35px;
     }}
+
+    QCheckBox::indicator:checked:disabled{{
+        image: url({get_icon_path("check-square_disabled.svg")});
+        width: 35px;        
+    }}
+
+    QCheckBox:disabled {{
+        color: gray
+    }}
+
 
     #frameNummer {{
         border-color: #6E8784;
@@ -141,6 +155,7 @@ StyleSheet_application = """
         border-radius: 4px;
         margin-top: 0.5em;       
     }}*/
+
 
     #entry_suchbegriffe{{
         border-color: #6E8784;
@@ -207,15 +222,15 @@ StyleSheet_application = """
     }}
 
     QCalendarWidget QWidget#qt_calendar_prevmonth{{
-        qproperty-icon:url({4});
+        qproperty-icon:url({get_icon_path("arrow-left-circle.svg")});
     }}
 
     QCalendarWidget QWidget#qt_calendar_nextmonth{{
-        qproperty-icon:url({5});
+        qproperty-icon:url({get_icon_path("arrow-right-circle.svg")});
     }}
 
     QSplitter::handle {{
-        image: url({6});
+        image: url({get_icon_path("more-vertical.svg")});
     }}   
 
 
@@ -240,15 +255,7 @@ StyleSheet_application = """
         padding-bottom: 3px;  
     }}
 
-""".format(
-    get_icon_path("chevron-left.svg"),
-    get_icon_path("chevron-right.svg"),
-    get_icon_path("square.svg"),
-    get_icon_path("check-square.svg"),
-    get_icon_path("arrow-left-circle.svg"),
-    get_icon_path("arrow-right-circle.svg"),
-    get_icon_path("more-vertical.svg")
-    )
+"""
 
 
 StyleSheet_new_tab = "background-color: #F4F4F9; selection-background-color: #2F4550; selection-color: #F4F4F9"

@@ -3964,8 +3964,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         #"(a \xb7 x<sup>n</sup> + b \xb7 y<sup>m</sup>)<sup>2</sup>"
 
     def checkbox_binoms_a_state_changed(self):
-        self.checkbox_enable_disable_widget(self.checkbox_binoms_a, self.spinbox_binoms_a_min)
-        self.checkbox_enable_disable_widget(self.checkbox_binoms_a, self.spinbox_binoms_a_max)
+        self.checkbox_enable_disable_widget(self.checkbox_binoms_a, [self.spinbox_binoms_a_min, self.spinbox_binoms_a_max])
         self.binom_update_label()
 
     def checkbox_binoms_b_state_changed(self):
@@ -3973,8 +3972,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             warning_window('Es muss entweder "b" oder "y" ausgewählt sein.')
             self.checkbox_binoms_y.setChecked(True)
             return
-        self.checkbox_enable_disable_widget(self.checkbox_binoms_b, self.spinbox_binoms_b_min)
-        self.checkbox_enable_disable_widget(self.checkbox_binoms_b, self.spinbox_binoms_b_max)
+        self.checkbox_enable_disable_widget(self.checkbox_binoms_b, [self.spinbox_binoms_b_min, self.spinbox_binoms_b_max])
         self.binom_update_label()
 
 
@@ -3983,8 +3981,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             warning_window('Es muss entweder "b" oder "y" ausgewählt sein.')
             self.checkbox_binoms_b.setChecked(True)
             return
-        self.checkbox_enable_disable_widget(self.checkbox_binoms_y, self.spinbox_binoms_n_min)
-        self.checkbox_enable_disable_widget(self.checkbox_binoms_y, self.spinbox_binoms_n_max)
+        self.checkbox_enable_disable_widget(self.checkbox_binoms_y, [self.spinbox_binoms_n_min, self.spinbox_binoms_n_max])
         self.binom_update_label()
 
     def general_direction_changed(self):
@@ -4136,7 +4133,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def create_aufgabenbox_wizard(self, index, example, row, column):
         groupbox = create_new_groupbox(self.scrollAreaWidgetContents_wizard, "{}. Aufgabe".format(index+1))
         groupbox.setSizePolicy(SizePolicy_maximum_width)
-
+        # groupbox.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
+        
         self.gridLayout_scrollArea_wizard.addWidget(groupbox ,row,column,1,1)
 
         horizontalLayout = create_new_horizontallayout(groupbox)
@@ -4152,6 +4150,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         button_delete = create_new_button(groupbox, "", partial(self.delete_example, index), icon="trash-2.svg")
         button_delete.setSizePolicy(SizePolicy_fixed)
         horizontalLayout.addWidget(button_delete)
+
+
         # button_delete = create_new_button(groupbox, "Delete", still_to_define)
         # button_delete = create_standard_button(groupbox,
         #     "",
@@ -4765,14 +4765,16 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         except AttributeError:
             self.dict_all_examples_worksheet_wizard = {}
 
-        try:
-            coordinate_system_zwischenwerte = self.checkbox_coordinatesystem_zwischenwerte.isChecked()
-            coordinate_system_negative = self.checkbox_coordinatesystem_negative_numbers.isChecked()
-            coordinate_system_dotstyle_index = self.combobox_points.currentIndex()
-        except AttributeError:
-            coordinate_system_zwischenwerte = False
-            coordinate_system_negative = False
-            coordinate_system_dotstyle_index = 0
+        # try:
+        coordinate_system_zwischenwerte = self.checkbox_coordinatesystem_zwischenwerte.isChecked()
+        coordinate_system_negative = self.checkbox_coordinatesystem_negative_numbers.isChecked()
+        coordinate_system_dotstyle_index = self.combobox_points.currentIndex()
+        coordinate_direction_index = self.combobox_general_direction_CB.currentIndex()
+
+        # except AttributeError:
+        #     coordinate_system_zwischenwerte = False
+        #     coordinate_system_negative = False
+        #     coordinate_system_dotstyle_index = 0
             # self.dict_all_examples_worksheet_wizard[widget_worksheet] = {
             #     'shorten_topic' : shorten_topic,
             #     'instruction' : instruction,
@@ -4788,7 +4790,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             'ausrichtung': ausrichtung,
             'list_of_examples' : self.list_of_examples_wizard,
             'dummy_examples' : full_list_dummy_solutions,
-            'coordinate_system' : [coordinate_system_zwischenwerte, coordinate_system_negative, coordinate_system_dotstyle_index],
+            'coordinate_system' : [coordinate_system_zwischenwerte, coordinate_system_negative, coordinate_system_dotstyle_index, coordinate_direction_index],
         }
         self.list_of_examples_wizard = []
         self.current_single_instruction_wizard = None
@@ -6811,11 +6813,18 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.listWidget_fb.setEnabled(status)
 
     @report_exceptions
-    def checkbox_enable_disable_widget(self, checkbox, widget):
-        if checkbox.isChecked():
-            widget.setEnabled(True)
+    def checkbox_enable_disable_widget(self, checkbox, widgets):
+        if type(widgets) == list:
+            for all in widgets:
+                if checkbox.isChecked():
+                    all.setEnabled(True)
+                else:
+                    all.setEnabled(False)               
         else:
-            widget.setEnabled(False)
+            if checkbox.isChecked():
+                widgets.setEnabled(True)
+            else:
+                widgets.setEnabled(False)
 
     def pushButtonName_clicked(self):
         if self.pushButtonName_current_index==2:

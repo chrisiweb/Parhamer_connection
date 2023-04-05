@@ -689,6 +689,7 @@ def setup_stackSearch(self):
     self.filter_search = QtWidgets.QPushButton(self.frame_advanced_search)
     self.filter_search.setObjectName("filter_search")
     self.filter_search.setIcon(QtGui.QIcon(get_icon_path('filter.svg')))
+    
     filterMenu = QtWidgets.QMenu(self.frame_advanced_search)
     # ag = QtGui.QActionGroup(self.filter_search, exclusive=False)
 
@@ -1061,6 +1062,7 @@ def setup_stackSage(self):
 
     self.labelDate = create_new_label(self.widget_datum,"")
     self.labelDate.setPixmap(QtGui.QPixmap(get_icon_path("calendar.svg")))
+
     # self.label_lamaLogo.setFixedHeight(30)
     self.labelDate.setFixedSize(QtCore.QSize(15,15))
     self.labelDate.setScaledContents(True)
@@ -1073,8 +1075,7 @@ def setup_stackSage(self):
     self.dateEdit.setObjectName("dateEdit")
     self.horizontalLayout_frameDatum.addWidget(self.dateEdit)
 
-    self.checkBox_date.stateChanged.connect(lambda: self.checkbox_enable_disable_widget(self.checkBox_date, self.dateEdit))
-
+    self.checkBox_date.stateChanged.connect(lambda: self.checkbox_enable_disable_widget(self.checkBox_date, [self.labelDate,self.dateEdit]))
 
     self.gridLayout_SageMenu.addWidget(self.widget_datum, 1,0,1,1, QtCore.Qt.AlignLeft)
 
@@ -1120,8 +1121,8 @@ def setup_stackSage(self):
     self.horizontalLayout_widgetName.addWidget(self.pushButtonName)
     
 
-    self.checkBoxName.stateChanged.connect(lambda: self.checkbox_enable_disable_widget(self.checkBoxName, self.labelName))
-    self.checkBoxName.stateChanged.connect(lambda: self.checkbox_enable_disable_widget(self.checkBoxName, self.pushButtonName))
+    self.checkBoxName.stateChanged.connect(lambda: self.checkbox_enable_disable_widget(self.checkBoxName, [self.labelName, self.pushButtonName]))
+
 
     self.gridLayout_SageMenu.addWidget(self.widgetName, 2,0,1,1, QtCore.Qt.AlignLeft)
 
@@ -2734,6 +2735,22 @@ def setup_stackWizard(self):
     self.label_general_direction_2 = create_new_label(self.widget_general_direction, "1H 2Z 3E")
     self.horizontallayout_general_direction.addWidget(self.label_general_direction_2)  
 
+
+    self.widget_general_direction_CB = QtWidgets.QWidget(self.groupBox_zahlenbereich_wizard)
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.widget_general_direction_CB, 0,4,1,1)
+
+
+    self.horizontallayout_general_direction_CB = create_new_horizontallayout(self.widget_general_direction_CB)
+
+    self.label_general_direction_CB = create_new_label(self.widget_general_direction_CB, "Punkte")
+    self.horizontallayout_general_direction_CB.addWidget(self.label_general_direction_CB)
+
+    self.combobox_general_direction_CB = create_new_combobox(self.widget_general_direction_CB)
+    add_new_option( self.combobox_general_direction_CB, 0, "ablesen")
+    add_new_option( self.combobox_general_direction_CB, 1, "einzeichnen")
+    self.horizontallayout_general_direction_CB.addWidget(self.combobox_general_direction_CB)
+    self.widget_general_direction_CB.hide()
+
     self.gridLayout_zahlenbereich_wizard.setColumnStretch(5, 1)
 
     self.checkbox_negative_ergebnisse_wizard = create_new_checkbox(self.groupBox_zahlenbereich_wizard, "negative Ergebnisse erlauben")
@@ -3113,8 +3130,6 @@ def setup_stackWizard(self):
     self.gridlayout_binoms_set_exponents.addWidget(self.spinbox_binoms_n_max, 3,4,1,1)
 
     self.checkbox_binoms_y.stateChanged.connect(self.checkbox_binoms_y_state_changed)
-    # self.checkbox_binoms_y.stateChanged.connect(lambda: self.checkbox_enable_disable_widget(self.checkbox_binoms_y, self.spinbox_binoms_n_min))
-    # self.checkbox_binoms_y.stateChanged.connect(lambda: self.checkbox_enable_disable_widget(self.checkbox_binoms_y, self.spinbox_binoms_n_max))
 
     self.widget_binoms_set_variables_exponents.hide()
 
@@ -3215,7 +3230,7 @@ def setup_stackWizard(self):
     self.horizontallayout_coordinatesystem_points = create_new_horizontallayout(self.widget_coordinatesystem_points)
     # self.horizontallayout_coordinatesystem_points.setContentsMargins(0,0,0,0)
 
-    self.label_points = create_new_label(self.widget_coordinatesystem_points, "Punktdarstellung")
+    self.label_points = create_new_label(self.widget_coordinatesystem_points, "Punktdarstellung:")
     self.horizontallayout_coordinatesystem_points.addWidget(self.label_points)
     self.combobox_points = create_new_combobox(self.widget_coordinatesystem_points)
     add_new_option(self.combobox_points,0,"\u2b24")
@@ -3223,6 +3238,8 @@ def setup_stackWizard(self):
     self.horizontallayout_coordinatesystem_points.addWidget(self.combobox_points)
     self.horizontallayout_coordinatesystem_points.addStretch()
     self.widget_coordinatesystem_points.hide()
+
+
 
     ####################################################
     ######################################################
