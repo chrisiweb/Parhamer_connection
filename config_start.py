@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 
 #### Version number ###
-__version__ = "v4.2.1"
+__version__ = "v4.3.0"
 
 if sys.platform.startswith("win"):
     programdata = os.getenv('PROGRAMDATA')
