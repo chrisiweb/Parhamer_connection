@@ -3074,6 +3074,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 lama_table.update({"content": content}, doc_ids=[file_id])
                 try: 
                     content_englisch = self.temporary_save_edit_plainText_englisch
+                    if is_empty(content_englisch):
+                        content_englisch = None
                     lama_table.update({"content_translation": content_englisch}, doc_ids=[file_id])
                 except AttributeError:
                     pass
@@ -5419,7 +5421,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             list_all_files = self.list_alle_aufgaben_sage
             self.list_alle_aufgaben_sage = [list_all_files,[]]
 
-
         for list_index in [0,1]:
             if list_index == 0:
                 layout = self.verticalLayout_scrollArea_sage_typ1
@@ -5443,7 +5444,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 # layout.addWidget(neue_aufgaben_box)
 
                 self.add_image_path_to_list(aufgabe.replace(" (lokal)", ""))
-                self.progress.setValue(index)
+                self.progress_laoding_sage_value +=1
+                # self.progress_value_sage +=1
+                self.progress_laoding_sage.setValue(self.progress_laoding_sage_value)
 
 
         # self.verticalLayout_scrollArea_sage.addStretch()
@@ -5453,9 +5456,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         
         return list_aufgaben_errors
 
-     
+
     @report_exceptions
     def sage_load(self, external_file_loaded=False, autosave=False):
+        self.update_gui("widgets_sage")
         if external_file_loaded == False and autosave == False:
             try:
                 os.path.dirname(self.saved_file_path)
@@ -5486,7 +5490,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             critical_window("Die geöffnete *.lama-Datei ist fehlerhaft und kann nicht geladen werden.",
             "Für weitere Unterstützung kontaktieren Sie uns unter lama.helpme@gmail.com.")
             return
-        
+
+
         try:
             if self.chosen_program == loaded_file["data_gesamt"]["program"]:
                 if self.list_alle_aufgaben_sage !=  [[],[]]:
@@ -5503,7 +5508,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             )
             return
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        self.update_gui("widgets_sage")
+        
         self.dict_all_infos_for_file = self.load_file(self.saved_file_path)
 
 
@@ -5515,6 +5520,36 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.lineEdit_klasse_sage.setText(
             self.dict_all_infos_for_file["data_gesamt"]["Klasse"]
         )
+
+
+        
+        # self.progress_loading_sage = QtWidgets.QProgressDialog("Prüfung wird geladen ...", "",self.progress_value_sage,)
+        # self.progress_loading_sage.setWindowTitle("Lade...")
+        # self.progress_loading_sage.setWindowFlags(QtCore.Qt.WindowTitleHint)
+        # self.progress_loading_sage.setWindowIcon(QtGui.QIcon(logo_path))
+        # self.progress_loading_sage.setCancelButton(None)
+        # self.progress_loading_sage.setWindowModality(Qt.WindowModal)
+
+        self.progress_laoding_sage_value = 0
+        progress_maximum =  len(self.list_alle_aufgaben_sage[0])+len(self.list_alle_aufgaben_sage[1])
+        self.progress_laoding_sage = QtWidgets.QProgressDialog("Aufgabenliste wird geladen ...", "",self.progress_laoding_sage_value, progress_maximum)
+        self.progress_laoding_sage.setFixedSize(self.progress_laoding_sage.sizeHint())
+        self.progress_laoding_sage.setWindowTitle("Lade...")
+        self.progress_laoding_sage.setWindowFlags(QtCore.Qt.WindowTitleHint)
+        self.progress_laoding_sage.setWindowIcon(QtGui.QIcon(logo_path))
+        self.progress_laoding_sage.setCancelButton(None)
+        self.progress_laoding_sage.setWindowModality(Qt.WindowModal)
+        # 
+
+        # print(self.list_alle_aufgaben_sage)
+        # progress.setValue(progress_value)
+        # for i in range(10):
+        #     # print(i)
+        #     progress_value +=1
+        #     progress.setValue(progress_value)
+        #     print(progress_value)
+        #     time.sleep(0.5)
+        # progress.cancel()
 
         try:
             index = self.comboBox_pruefungstyp.findText(
@@ -5563,18 +5598,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
 
-        self.progress = QtWidgets.QProgressDialog("Prüfung wird geladen ...", "",0,len(self.list_alle_aufgaben_sage)-1)
-        self.progress.setWindowTitle("Lade...")
-        self.progress.setWindowFlags(QtCore.Qt.WindowTitleHint)
-        self.progress.setWindowIcon(QtGui.QIcon(logo_path))
-        self.progress.setCancelButton(None)
-        self.progress.setWindowModality(Qt.WindowModal)
-
 
         list_aufgaben_errors = self.sage_load_files()
 
-        self.progress.cancel()
-
+        self.progress_laoding_sage.cancel()
+        # progress.cancel()
 
 
         if not is_empty(list_aufgaben_errors):
@@ -7108,6 +7136,18 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         list_aufgaben_errors=[]
         list_duplicates = []
 
+
+        progress_value = 0
+        progress_maximum = len(self.import_list_sage)
+        progress = QtWidgets.QProgressDialog("Aufgabenliste wird geladen ...", "",progress_value, progress_maximum)
+        progress.setFixedSize(progress.sizeHint())
+        progress.setWindowTitle("Lade...")
+        progress.setWindowFlags(QtCore.Qt.WindowTitleHint)
+        progress.setWindowIcon(QtGui.QIcon(logo_path))
+        progress.setCancelButton(None)
+        progress.setWindowModality(Qt.WindowModal)
+
+        progress.setValue(progress_value)
         for index, aufgabe in enumerate(self.import_list_sage):
             aufgabe = aufgabe.upper()
 
@@ -7169,7 +7209,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             )
 
             layout.insertWidget(layout.count() - 1, neue_aufgaben_box)
-
+            progress_value +=1
+            progress.setValue(progress_value)
+        progress.cancel()
 
         if not is_empty(list_aufgaben_errors):
             str_error = ', '.join(list_aufgaben_errors)
@@ -7181,7 +7223,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             information_window(f"Folgende Aufgaben wurden bereits hinzugefügt und werden daher übersprungen:\n\n{str_duplicates}")
 
         num_imported_files = len(self.import_list_sage)-len(list_aufgaben_errors)-len(list_duplicates)
-        information_window(f"Insgesamt wurde {num_imported_files} Aufgaben erfolgreich importiert.")
+        information_window(f"Insgesamt wurde {num_imported_files} von {progress_maximum} Aufgaben erfolgreich importiert.")
 
     def delete_zeros_at_beginning(self, string):
         while string.startswith("0"):
@@ -8111,7 +8153,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.check_admin_entry()
 
         list_all_menubar = [self.menuSuche, self.menuSage, self.menuNeu, self.menuFeedback, self.menuOptionen ,self.menuDeveloper, self.menuHelp]
-        list_menubar_wizard = [self.menuWizard, self.menuOptionen ,self.menuHelp]
+        list_menubar_wizard = [self.menuWizard, self.menuOptionen, self.menuDeveloper, self.menuHelp]
 
         if chosen_gui == 'widgets_wizard':
             for all in list_all_menubar:
