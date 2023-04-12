@@ -89,6 +89,7 @@ def filter_items(self, table_lama, typ, list_mode, filter_string, line_entry, kl
                     return False    
             else:
                 string = filter_string
+                
             if (value.replace("-L","").startswith(string)) and (filter_number(value, line_entry)==True):
                 return True
             else:
