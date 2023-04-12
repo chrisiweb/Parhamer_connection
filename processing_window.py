@@ -56,6 +56,7 @@ class Ui_Dialog_processing(object):
             url_clickable = create_new_label(Dialog, "Buy me a coffee",clickable=True)
             url_clickable.setStyleSheet("color: #D3E0DF; text-decoration: underline;")
             url_clickable.clicked.connect(lambda: webbrowser.open("https://www.buymeacoffee.com/lama.schule", new=0, autoraise=True))
+            url_clickable.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             gridLayout.addWidget(url_clickable, 1,1,1,1, QtCore.Qt.AlignCenter)
         else:
             self.label.setText(worker_text)
