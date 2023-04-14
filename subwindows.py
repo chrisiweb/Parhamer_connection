@@ -260,14 +260,15 @@ class Ui_Dialog_choose_type(object):
 
 
         self.btn_worksheet = create_new_button(Dialog, "Worksheet Wizard", partial(self.choose_button_pressed, "wizard"), "file-text.svg")
-        self.btn_worksheet.setStyleSheet("QPushButton { text-align: left; padding-left: 8px; padding-right:8px}")
+        self.btn_worksheet.setFixedHeight(button_height)
+        self.btn_worksheet.setStyleSheet("QPushButton { text-align: left; padding-left: 8px}") #; padding-right:8px}
         # self.btn_worksheet.setObjectName(_fromUtf8("btn_worksheet"))
         # self.btn_lama.setText("LaMA (Oberstufe)")
         # self.btn_worksheet.setIcon(QIcon(logo_path))
         # self.btn_worksheet.setIconSize(QSize(120, 120))
         self.btn_worksheet.setShortcut("F3")
-        self.btn_worksheet.setSizePolicy(SizePolicy_maximum_width)
-        self.btn_worksheet.setFixedHeight(button_height)
+        # self.btn_worksheet.setSizePolicy(SizePolicy_maximum_width)
+        # self.btn_worksheet.setFixedHeight(button_height)
         # print(self.btn_worksheet.size())
         # self.btn_worksheet.setFixedSize(button_width,button_height)
         # self.btn_worksheet.setFixedSize(120, 120)
