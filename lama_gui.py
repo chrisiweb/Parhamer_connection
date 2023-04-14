@@ -1136,6 +1136,8 @@ def setup_stackSage(self):
     self.horizontalLayout_widgetklasse_sage.addWidget(self.labelKlasse_sage)
 
     self.lineEdit_klasse_sage = create_new_lineedit(self.widgetklasse_sage, "")
+    validator = QtGui.QRegExpValidator(QtCore.QRegExp('[^&_%]*'))
+    self.lineEdit_klasse_sage.setValidator(validator)
     self.horizontalLayout_widgetklasse_sage.addWidget(self.lineEdit_klasse_sage)
 
     self.gridLayout_SageMenu.addWidget(self.widgetklasse_sage, 0,1,1,1, QtCore.Qt.AlignLeft)
