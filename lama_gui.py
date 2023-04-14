@@ -3137,7 +3137,8 @@ def setup_stackWizard(self):
 
 
     self.label_binom_example = create_new_label(self.groupBox_zahlenbereich_wizard, "")
-    self.label_binom_example.setFont(QtGui.QFont("IBM Plex Sans", 12))
+
+    #self.label_binom_example.setFont(QtGui.QFont("IBM Plex Sans", 12))
     self.gridLayout_zahlenbereich_wizard.addWidget(self.label_binom_example, 0,1, 1,2, QtCore.Qt.AlignCenter)
 
     self.label_binom_example.hide()

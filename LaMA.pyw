@@ -8315,11 +8315,9 @@ if __name__ == "__main__":
     _id = QtGui.QFontDatabase.addApplicationFont("assets/fonts/IBM_Plex_Sans/IBMPlexSans-Regular.ttf")
     QtGui.QFontDatabase.applicationFontFamilies(_id)
     if sys.platform.startswith("darwin"):
-        font_size = 10
+        font = QtGui.QFont("Verdana")
     else:
-        font_size = 8
-
-    font = QtGui.QFont("IBM Plex Sans", font_size)
+        font = QtGui.QFont("IBM Plex Sans", 8)
     # QtGui.QFontDatabase.addApplicationFont("newfont.otf")   
     # font = QtGui.QFont("Disco Society - Personal Use", 10)
     app.setFont(font)
