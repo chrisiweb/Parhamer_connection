@@ -25,6 +25,10 @@ if sys.platform.startswith("win"):
     lama_notenschluessel_file = os.path.join(
                 os.getenv('LOCALAPPDATA'), "LaMA", "lama_notenschluessel.json"
             )
+    
+    # print(os.environ["ProgramW6432"])
+    
+    path_standard_pdf_reader = os.path.join(os.path.dirname(sys.argv[0]), "SumatraPDF-3.4.6-64.exe")
     # ## OLD VERSION!!
     # path_programm = os.path.dirname(sys.argv[0])
     # path_localappdata_lama = path_programm
@@ -78,7 +82,7 @@ elif sys.platform.startswith("darwin"):
                 Path.home(), "Library", "LaMA", "lama_notenschluessel.json"
             )
 
-
+    path_standard_pdf_reader = ""
 elif sys.platform.startswith("linux"):
     path_programm = os.path.join(os.path.expanduser('~'), ".LaMA")
 
@@ -97,7 +101,7 @@ elif sys.platform.startswith("linux"):
     lama_notenschluessel_file = os.path.join(
                 path_programm, "lama_notenschluessel.json"
             )
-
+    path_standard_pdf_reader = ""
 path_home = Path.home()
 
 lama_user_credentials = 'ghp_PwshmR'

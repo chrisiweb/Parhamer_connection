@@ -8,7 +8,7 @@ import json
 import subprocess
 
 
-from config_start import path_programm, path_localappdata_lama, lama_settings_file
+from config_start import path_programm, path_localappdata_lama, lama_settings_file, path_standard_pdf_reader
 from config import *
 # (
 #     config_file,
@@ -908,7 +908,8 @@ def open_pdf_file(folder_name, file_name):
             lama_settings = json.load(f)
         path_pdf_reader = '{}'.format(lama_settings['pdf_reader'])
     except (FileNotFoundError, KeyError):
-        path_pdf_reader = ""
+        path_pdf_reader = path_standard_pdf_reader
+
 
     file_path = os.path.join(folder_name, file_name)
 

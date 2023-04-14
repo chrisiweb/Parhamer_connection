@@ -185,118 +185,67 @@ class Ui_Dialog_choose_type(object):
             _translate("Titelplatt anpassen", "Programm auswählen", None)
         )
         Dialog.setWindowIcon(QIcon(logo_path))
-        # Dialog.setFixedSize(250,240)
+
         Dialog.setSizePolicy(SizePolicy_fixed)
-        # Dialog.setStyleSheet("QToolTip { color: white; background-color: rgb(47, 69, 80); border: 0px; }")
-        # Dialog.setSizePolicy(SizePolicy_fixed)
         verticalLayout = create_new_verticallayout(Dialog)
         verticalLayout.setContentsMargins(8, 8, 8, 30)
 
         button_height = 32
-        # self.gridLayout.setObjectName("gridLayout")
+
         
         label_logo = create_new_label(Dialog, "")
         logo = os.path.join(
             path_programm, "_database", "_config", "icon", "LaMA_logo_full.png"
         )
         label_logo.setPixmap(QPixmap(logo))
-        # label_logo.setFixedHeight(100)
-        # label_logo.setFixedWidth(100)
 
         label_logo.setFixedSize(QSize(screen_width*0.1,screen_height*0.07))
         label_logo.setScaledContents(True)
 
         verticalLayout.addWidget(label_logo, alignment=Qt.AlignCenter)
-        # label_logo.setSizePolicy(SizePolicy_expanding)
-        # label_logo.setAlignment(Qt.AlignCenter)
 
         verticalLayout.addStretch()
 
         self.btn_lama_cria = create_new_button(Dialog, "Unterstufe", partial(self.choose_button_pressed, "cria"), "database.svg")
-        # self.btn_lama_cria.setText("LaMA Cria (Unterstufe)")
-        # self.btn_lama_cria.setIcon(QIcon(logo_cria_button_path))
-        # self.btn_lama_cria.setIconSize(QSize(120, 120))
-        # self.btn_lama_cria.setFixedSize(120, 120)
-        # self.btn_lama_cria.setStyleSheet(
-        #     _fromUtf8("background-color: rgb(63, 169, 245);")
-        # )
+
         self.btn_lama_cria.setStyleSheet("QPushButton { text-align: left; padding-left: 8px}")
         self.btn_lama_cria.setAutoDefault(False)
         self.btn_lama_cria.setShortcut("F1")
         self.btn_lama_cria.setFixedHeight(button_height)
-        # self.btn_lama_cria.setFixedSize(button_width,button_height)
-        # self.btn_lama_cria.setSizePolicy(SizePolicy_maximum_width)
+
         verticalLayout.addWidget(self.btn_lama_cria, alignment=Qt.AlignCenter)
-        # self.label_lama_cria = QtWidgets.QLabel()
-        # self.label_lama_cria.setObjectName(_fromUtf8("label_lama_cria"))
-        # self.label_lama_cria.setText("LaMA Cria (Unterstufe)")
-        # self.gridLayout.addWidget(
-        #     self.label_lama_cria, 1, 0, 1, 1, Qt.AlignCenter
-        # )
-        # self.btn_lama_cria.setMaximumWidth(130)
-        # self.btn_lama_cria.clicked.connect(partial(self.choose_button_pressed, "cria"))
 
         self.btn_lama = create_new_button(Dialog, "Oberstufe", partial(self.choose_button_pressed, "lama"), "database.svg")
-        # self.btn_lama.setFixedSize(button_width,button_height)
-        # self.btn_lama.setSizePolicy(SizePolicy_minimum_width)
+
         self.btn_lama.setFixedHeight(button_height)
         self.btn_lama.setStyleSheet("QPushButton { text-align: left; padding-left: 8px}")
-        # self.btn_lama.setObjectName(_fromUtf8("btn_lama"))
-        # # self.btn_lama.setText("LaMA (Oberstufe)")
-        # self.btn_lama.setIcon(QIcon(logo_path))
-        # self.btn_lama.setIconSize(QSize(120, 120))
+
         self.btn_lama.setShortcut("F2")
-        # self.btn_lama.setFixedSize(120, 120)
         self.btn_lama.setAutoDefault(False)
         verticalLayout.addWidget(self.btn_lama ,alignment=Qt.AlignCenter)
-
-
-        # self.btn_lama.clicked.connect(partial(self.choose_button_pressed, "lama"))
-        # self.label_lama = QtWidgets.QLabel()
-        # self.label_lama.setObjectName(_fromUtf8("label_lama"))
-        # self.label_lama.setText("LaMA (Oberstufe)")
-        # self.gridLayout.addWidget(self.label_lama, 1, 1, 1, 1, Qt.AlignCenter)
 
 
 
         self.btn_worksheet = create_new_button(Dialog, "Worksheet Wizard", partial(self.choose_button_pressed, "wizard"), "file-text.svg")
         self.btn_worksheet.setFixedHeight(button_height)
         self.btn_worksheet.setStyleSheet("QPushButton { text-align: left; padding-left: 8px}") #; padding-right:8px}
-        # self.btn_worksheet.setObjectName(_fromUtf8("btn_worksheet"))
-        # self.btn_lama.setText("LaMA (Oberstufe)")
-        # self.btn_worksheet.setIcon(QIcon(logo_path))
-        # self.btn_worksheet.setIconSize(QSize(120, 120))
+
         self.btn_worksheet.setShortcut("F3")
-        # self.btn_worksheet.setSizePolicy(SizePolicy_maximum_width)
-        # self.btn_worksheet.setFixedHeight(button_height)
-        # print(self.btn_worksheet.size())
-        # self.btn_worksheet.setFixedSize(button_width,button_height)
-        # self.btn_worksheet.setFixedSize(120, 120)
         self.btn_worksheet.setAutoDefault(False)
         self.btn_worksheet.resize(self.btn_worksheet.sizeHint())
-        # self.btn_worksheet.setShortcut("F3")
+
         verticalLayout.addWidget(self.btn_worksheet, alignment=Qt.AlignCenter)
 
-
-        print(label_logo.width())
-        print(self.btn_worksheet.size().width())
         if label_logo.width()<self.btn_worksheet.size().width()+10:
             width = self.btn_worksheet.size().width()+10
         else:
             width = label_logo.width()
         self.btn_worksheet.setFixedWidth(width)
-        print(self.btn_worksheet.size().width())
         self.btn_lama.setFixedWidth(width)
         self.btn_lama_cria.setFixedWidth(width)
         Dialog.setFixedWidth(width+50)
         Dialog.setFixedHeight(260)
-        # Dialog.setFixedHeight(Dialog.height())
-        # print(maximum_width)
-        # self.btn_worksheet.clicked.connect(partial(self.choose_button_pressed, "wizard"))
-        # self.label_worksheet= QtWidgets.QLabel()
-        # self.label_worksheet.setObjectName(_fromUtf8("label_worksheet"))
-        # self.label_worksheet.setText("Worksheet Wizard")
-        # self.gridLayout.addWidget(self.label_worksheet, 1, 2, 1, 1, Qt.AlignCenter)
+
 
         
 
