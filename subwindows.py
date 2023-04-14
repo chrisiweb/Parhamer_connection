@@ -273,14 +273,15 @@ class Ui_Dialog_choose_type(object):
         # self.btn_worksheet.setFixedSize(button_width,button_height)
         # self.btn_worksheet.setFixedSize(120, 120)
         self.btn_worksheet.setAutoDefault(False)
+        self.btn_worksheet.resize(self.btn_worksheet.sizeHint())
         # self.btn_worksheet.setShortcut("F3")
         verticalLayout.addWidget(self.btn_worksheet, alignment=Qt.AlignCenter)
 
 
         print(label_logo.width())
         print(self.btn_worksheet.size().width())
-        if label_logo.width()<self.btn_worksheet.size().width():
-            width = self.btn_worksheet.size().width()
+        if label_logo.width()<self.btn_worksheet.size().width()+10:
+            width = self.btn_worksheet.size().width()+10
         else:
             width = label_logo.width()
         self.btn_worksheet.setFixedWidth(width)
