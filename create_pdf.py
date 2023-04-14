@@ -906,15 +906,21 @@ def open_pdf_file(folder_name, file_name):
     try:
         with open(lama_settings_file, "r", encoding="utf8") as f:
             lama_settings = json.load(f)
-        path_pdf_reader = '{}'.format(lama_settings['pdf_reader'])
+        if is_empty(lama_settings['pdf_reader']):
+            if os.path.isfile(path_standard_pdf_reader):
+                path_pdf_reader = path_standard_pdf_reader
+            else:
+                path_pdf_reader = ""
+        else:
+            path_pdf_reader = '{}'.format(lama_settings['pdf_reader'])
     except (FileNotFoundError, KeyError):
-        path_pdf_reader = path_standard_pdf_reader
-
+        if os.path.isfile(path_standard_pdf_reader):
+            path_pdf_reader = path_standard_pdf_reader
+        else:
+            path_pdf_reader = ""
 
     file_path = os.path.join(folder_name, file_name)
 
-    
-    # print(file_path)
     if sys.platform.startswith("linux"):
 
         file_path = file_path + ".pdf"
