@@ -190,7 +190,7 @@ class Ui_Dialog_choose_type(object):
         # Dialog.setStyleSheet("QToolTip { color: white; background-color: rgb(47, 69, 80); border: 0px; }")
         # Dialog.setSizePolicy(SizePolicy_fixed)
         verticalLayout = create_new_verticallayout(Dialog)
-        verticalLayout.setContentsMargins(8, 0, 8, 30)
+        verticalLayout.setContentsMargins(8, 8, 8, 30)
 
         button_height = 32
         # self.gridLayout.setObjectName("gridLayout")
