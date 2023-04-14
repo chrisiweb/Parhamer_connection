@@ -8170,6 +8170,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 else:
                     self.menuBar.removeAction(all.menuAction())
             for all in list_menubar_wizard:
+                if all == self.menuDeveloper and self.developer_mode_active == False:
+                    continue
                 self.menuBar.addAction(all.menuAction())
 
 
