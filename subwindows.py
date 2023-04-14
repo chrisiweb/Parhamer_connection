@@ -276,10 +276,17 @@ class Ui_Dialog_choose_type(object):
         verticalLayout.addWidget(self.btn_worksheet, alignment=Qt.AlignCenter)
 
 
-        self.btn_worksheet.setFixedWidth(label_logo.width())
-        self.btn_lama.setFixedWidth(label_logo.width())
-        self.btn_lama_cria.setFixedWidth(label_logo.width())
-        Dialog.setFixedWidth(label_logo.width()+50)
+        print(label_logo.width())
+        print(self.btn_worksheet.size().width())
+        if label_logo.width()<self.btn_worksheet.size().width():
+            width = self.btn_worksheet.size().width()
+        else:
+            width = label_logo.width()
+        self.btn_worksheet.setFixedWidth(width)
+        print(self.btn_worksheet.size().width())
+        self.btn_lama.setFixedWidth(width)
+        self.btn_lama_cria.setFixedWidth(width)
+        Dialog.setFixedWidth(width+50)
         Dialog.setFixedHeight(260)
         # Dialog.setFixedHeight(Dialog.height())
         # print(maximum_width)
