@@ -7924,8 +7924,16 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         QtWidgets.QApplication.restoreOverrideCursor()
 
     def reset_latex_file_to_start(self, filename_vorschau):
-        with open(filename_vorschau, "r", encoding="utf8") as vorschau:
-            text = vorschau.read()
+        try:
+            with open(filename_vorschau, "r", encoding="utf8") as vorschau:
+                text = vorschau.read()
+            
+        except UnicodeDecodeError as e:
+            with open(filename_vorschau, "r", encoding="utf8", errors='ignore') as vorschau:
+                text = vorschau.read()
+            warning_window('Es ist ein Problem aufgrund eines verwendenten Sonderzeichens aufgetreten. Die Datei kann aber dennoch angezeigt werden.',
+                           informative_text=f"Fehlermeldung:\n\n{e}\n\nVollständiger LaTeX Code:\n\n{text}")
+
         text = re.sub(r"random=.", "random=0", text)
         text = re.sub(r"Large Gruppe .", "Large Gruppe A", text)
 
