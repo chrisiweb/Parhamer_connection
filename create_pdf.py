@@ -906,7 +906,7 @@ def open_pdf_file(folder_name, file_name):
     try:
         with open(lama_settings_file, "r", encoding="utf8") as f:
             lama_settings = json.load(f)
-        print(path_standard_pdf_reader)
+        # print(path_standard_pdf_reader)
         if is_empty(lama_settings['pdf_reader']):
             if os.path.isfile(path_standard_pdf_reader):
                 path_pdf_reader = path_standard_pdf_reader
