@@ -167,9 +167,9 @@ def working_window(worker, text, *args, show_donation_notice=False):
 
     thread = QtCore.QThread(Dialog)
     # worker = Worker_RefreshDDB()
-    worker.finished.connect(Dialog.accept)
     worker.moveToThread(thread)
     thread.started.connect(partial(worker.task, *args))
+    worker.finished.connect(Dialog.accept)
     thread.start()
     thread.exit()
     Dialog.exec()

@@ -9,7 +9,7 @@ Create App for Mac
 	
 	pyinstaller -F LaMA.pyw --exclude-module tkinter
 
-	python3 -m PyInstaller -F LaMA.pyw
+	python3 -m PyInstaller -i icon_lama.icns -F LaMA.pyw
 
 
 Maybe working someday:

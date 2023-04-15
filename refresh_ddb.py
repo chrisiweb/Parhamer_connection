@@ -158,7 +158,7 @@ def refresh_ddb(self, auto_update=False):
 
     
 
-    elif auto_update == False:
+    elif auto_update == False or auto_update == 'mac':
         if self.reset_successfull == False:
             warning_window("Der neueste Stand der Datenbank konnte nicht heruntergeladen werden. Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.")
         else:           

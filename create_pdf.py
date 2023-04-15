@@ -935,16 +935,20 @@ def open_pdf_file(folder_name, file_name):
             ]
         )
     elif sys.platform.startswith("darwin"):
-        if os.path.exists(path_pdf_reader) == False:
-            if is_empty(path_pdf_reader)== False:
+        if is_empty(path_pdf_reader) == False:
+            print(False)
+            print(path_pdf_reader)
+            if os.path.exists(path_pdf_reader)== False:
                 warning_window("Der ausgewählte Pfad des Pdf-Readers zum Öffnen der Dateien ist fehlerhaft. Bitte korrigieren oder löschen Sie diesen.")
             
             subprocess.run(
-                ["open", "{0}.pdf".format(file_path)]
-            )
-        else:
-            subprocess.run(
                 ["open","-a","{}".format(path_pdf_reader), "{0}.pdf".format(file_path)]
+            )            
+
+        else:
+            print(True)
+            subprocess.run(
+                ["open", "{0}.pdf".format(file_path)]
             )
          
     else:
