@@ -1868,7 +1868,7 @@ def create_latex_string_coordinate_system(content, example, half_allowed, negati
     pstricks_code = minimal_coordinate_system(half_allowed, negative_allowed, pstricks_code_dots, coordinates_direction_index)
     latex_coordinates = create_latex_coordinates(example, coordinates_direction_index)
 
-    content += f"""\\task{pstricks_code}\n
+    content += f"""\\task\n{pstricks_code}\n
 \centering\\renewcommand{{\\arraystretch}}{{1.2}}
 \\begin{{tabular}}{{ll}}
 {latex_coordinates}
