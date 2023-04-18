@@ -3827,14 +3827,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.checkbox_enable_addition.hide()
         self.checkbox_enable_subtraktion.hide()
 
-        if shorten_topic == 'gru_koo':
+        if shorten_topic == 'geo_gru_koo':
             self.checkBox_show_nonogramm.setChecked(False)
             self.checkBox_show_nonogramm.setEnabled(False)
             self.widget_column_wizard.setEnabled(False)
         else:
             self.checkBox_show_nonogramm.setEnabled(True)
             self.widget_column_wizard.setEnabled(True)
-        if shorten_topic == 'ari_pos_ste':
+        if shorten_topic == 'ari_dar_ste':
             self.label_zahlenbereich_1_combobox.setText("Größter Stellenwert:")
             self.combobox_zahlenbereich_1.clear()
             for i, all in enumerate(list_stellenwerte[index_E+1:]):
@@ -3853,7 +3853,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # self.spinbox_zahlenbereich_minimum.setValue(1000)
             # self.spinbox_zahlenbereich_maximum.setRange(0,999999999)
             # self.spinbox_zahlenbereich_maximum.setValue(99999)
-        elif shorten_topic == "ari_pos_röm":
+        elif shorten_topic == "ari_dar_röm":
             self.label_zahlenbereich_1_combobox.setText("Größtes römisches Zeichen:")
             self.combobox_zahlenbereich_1.clear()
 
@@ -4208,14 +4208,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         maximum = self.spinbox_zahlenbereich_maximum.value()
         commas = self.spinbox_kommastellen_wizard.value()
         
-        if shorten_topic == 'ari_pos_ste':
+        if shorten_topic == 'ari_dar_ste':
             minimum = self.combobox_zahlenbereich_2.currentIndex()
             minimum_index = self.combobox_zahlenbereich_2_leq.currentIndex()
             maximum = self.combobox_zahlenbereich_1.currentIndex()
             maximum_index = self.combobox_zahlenbereich_1_leq.currentIndex()
             # smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
             new_example = create_single_example_stellenwert(minimum, minimum_index, maximum, maximum_index, self.general_direction_index)
-        elif shorten_topic=='ari_pos_röm':
+        elif shorten_topic=='ari_dar_röm':
             roman_max = self.combobox_zahlenbereich_1.currentText()
             maximum_index = self.combobox_zahlenbereich_1_leq.currentIndex()
             new_example = create_single_example_roman_numerals(roman_max, maximum_index, self.general_direction_index)
@@ -4280,7 +4280,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     show_brackets = True
                 new_example = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)
 
-        elif shorten_topic == 'gru_koo':
+        elif shorten_topic == 'geo_gru_koo':
             half_allowed = self.checkbox_coordinatesystem_zwischenwerte.isChecked()
             negative_allowed = self.checkbox_coordinatesystem_negative_numbers.isChecked()
             new_example = create_single_example_coordinate_system(half_allowed, negative_allowed)
@@ -4388,7 +4388,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         shorten_topic = self.shorten_topic(thema)
         examples = self.spinBox_number_wizard.value()
 
-        if shorten_topic == 'ari_pos_ste':
+        if shorten_topic == 'ari_dar_ste':
             minimum = self.combobox_zahlenbereich_2.currentIndex()
             minimum_index = self.combobox_zahlenbereich_2_leq.currentIndex()
             maximum = self.combobox_zahlenbereich_1.currentIndex()
@@ -4396,7 +4396,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             list_of_examples_wizard = create_list_of_examples_stellenwert(examples, minimum, minimum_index, maximum, maximum_index, self.general_direction_index)                        
         
-        elif shorten_topic == 'ari_pos_röm':
+        elif shorten_topic == 'ari_dar_röm':
             roman_max = self.combobox_zahlenbereich_1.currentText()
             maximum_index = self.combobox_zahlenbereich_1_leq.currentIndex()
             list_of_examples_wizard = create_list_of_examples_roman_numerals(examples, roman_max, maximum_index, self.general_direction_index)
@@ -4490,7 +4490,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 return []
             list_of_examples_wizard = create_list_of_examples_ganze_zahlen(typ, examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)        
 
-        elif shorten_topic == 'gru_koo':
+        elif shorten_topic == 'geo_gru_koo':
             half_allowed = self.checkbox_coordinatesystem_zwischenwerte.isChecked()
             negative_allowed = self.checkbox_coordinatesystem_negative_numbers.isChecked()
             list_of_examples_wizard = create_list_of_examples_coordinate_system(examples, half_allowed, negative_allowed)
@@ -4725,7 +4725,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         full_list_dummy_solutions = []
         list_dummy_solutions = []
-        if shorten_topic != 'gru_koo':
+        if shorten_topic != 'geo_gru_koo':
             i=0
             while i<10:
                 dummy_solution = get_random_solution(self)
@@ -4754,7 +4754,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # thema_index = self.total_list_of_topics_wizard.index(thema)
         shorten_topic = self.shorten_topic(thema)
 
-        if shorten_topic == 'gru_koo':
+        if shorten_topic == 'geo_gru_koo':
             if self.checkbox_coordinatesystem_negative_numbers.isChecked()==True:
                 columns = 2
             else:
@@ -4922,7 +4922,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 # thema_index = self.total_list_of_topics_wizard.index(thema)
                 shorten_topic = self.shorten_topic(thema)
 
-                if shorten_topic=='ter_bin'or shorten_topic=='ari_pos_ste':
+                if shorten_topic=='ter_bin'or shorten_topic=='ari_dar_ste':
                     columns = 2
                 else:
                     columns = 3

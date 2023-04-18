@@ -2400,8 +2400,8 @@ def setup_stackWizard(self):
     self.pushbutton_themen_wizard = QtWidgets.QPushButton(self.groupBox_topics)
     # print(list(dict_themen_wizard.values())[0][0])
     # self.pushbutton_themen_wizard.setText(dict_themen_wizard[list(dict_themen_wizard.values())[0][0]])
-    self.pushbutton_themen_wizard.setText("Arithmetik > Positive (Dezimal-)Zahlen > Stellenwerte")
-    self.chosen_topics_wizard = ["Arithmetik", "Positive (Dezimal-)Zahlen", "Stellenwerte"]
+    self.pushbutton_themen_wizard.setText("Arithmetik > Darstellung von Zahlen > Stellenwerte")
+    self.chosen_topics_wizard = ["Arithmetik", "Darstellung von Zahlen", "Stellenwerte"]
     self.horizontalLayout_groupBox_topics.addWidget(self.pushbutton_themen_wizard)
 
     self.menu_themen_wizard = QtWidgets.QMenu(self.groupBox_topics)
@@ -2627,8 +2627,49 @@ def setup_stackWizard(self):
     self.horizontalLayout_zahlenbereich_minimum.addWidget(self.spinbox_zahlenbereich_minimum)
 
 
+    self.widget_zahlenbereich_startingvalue = QtWidgets.QWidget(self.groupBox_zahlenbereich_wizard)
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.widget_zahlenbereich_startingvalue, 0,0,1,1)
+    self.widget_zahlenbereich_startingvalue.setSizePolicy(SizePolicy_fixed)
 
+    self.horizontalLayout_zahlenbereich_startingvalue = create_new_horizontallayout(self.widget_zahlenbereich_startingvalue)
 
+    self.label_zahlenbereich_startingvalue = create_new_label(self.widget_zahlenbereich_startingvalue, "Startwert:")
+    self.horizontalLayout_zahlenbereich_startingvalue.addWidget(self.label_zahlenbereich_startingvalue)
+
+    self.spinbox_zahlenbereich_startingvalue = QtWidgets.QDoubleSpinBox(self.widget_zahlenbereich_startingvalue)
+    self.spinbox_zahlenbereich_startingvalue.setValue(0)
+    self.spinbox_zahlenbereich_startingvalue.setDecimals(1)
+    self.horizontalLayout_zahlenbereich_startingvalue.addWidget(self.spinbox_zahlenbereich_startingvalue)
+    self.widget_zahlenbereich_startingvalue.hide()
+
+    self.widget_zahlenbereich_steps = QtWidgets.QWidget(self.groupBox_zahlenbereich_wizard)
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.widget_zahlenbereich_steps, 0,1,1,1)
+    self.widget_zahlenbereich_steps.setSizePolicy(SizePolicy_fixed)
+
+    self.horizontalLayout_zahlenbereich_steps = create_new_horizontallayout(self.widget_zahlenbereich_steps)
+
+    self.label_zahlenbereich_steps = create_new_label(self.widget_zahlenbereich_steps, "Schrittweite:")
+    self.horizontalLayout_zahlenbereich_steps.addWidget(self.label_zahlenbereich_steps)
+
+    self.spinbox_zahlenbereich_steps = QtWidgets.QDoubleSpinBox(self.widget_zahlenbereich_steps)
+    self.spinbox_zahlenbereich_steps.setValue(1)
+    self.spinbox_zahlenbereich_steps.setDecimals(1)
+    self.horizontalLayout_zahlenbereich_steps.addWidget(self.spinbox_zahlenbereich_steps)
+    self.widget_zahlenbereich_steps.hide()
+
+    self.widget_zahlenbereich_subticks = QtWidgets.QWidget(self.groupBox_zahlenbereich_wizard)
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.widget_zahlenbereich_subticks, 0,2,1,1)
+    self.widget_zahlenbereich_subticks.setSizePolicy(SizePolicy_fixed)
+
+    self.horizontalLayout_zahlenbereich_subticks = create_new_horizontallayout(self.widget_zahlenbereich_subticks)
+
+    self.label_zahlenbereich_subticks = create_new_label(self.widget_zahlenbereich_subticks, "Zwischenschritte:")
+    self.horizontalLayout_zahlenbereich_subticks.addWidget(self.label_zahlenbereich_subticks)
+
+    self.spinbox_zahlenbereich_subticks = create_new_spinbox(self.widget_zahlenbereich_subticks, value=1)
+    self.spinbox_zahlenbereich_subticks.setRange(0,10)
+    self.horizontalLayout_zahlenbereich_subticks.addWidget(self.spinbox_zahlenbereich_subticks)
+    self.widget_zahlenbereich_subticks.hide()        
 
     self.widget_zahlenbereich_maximum = QtWidgets.QWidget(self.groupBox_zahlenbereich_wizard)
     self.widget_zahlenbereich_maximum.setSizePolicy(SizePolicy_fixed)

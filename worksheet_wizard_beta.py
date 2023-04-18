@@ -292,22 +292,50 @@ def index_to_letter(index):
     return chr(ord('a') + index)
 
 
-dict_of_points = {}
-for i in range(5):
-    x = get_random_number(minimum, 5, half_allowed=True)
-    y = get_random_number(minimum, 5, half_allowed=True)
-    dict_of_points[index_to_letter(i).upper()]=[x,y]
 
-print(dict_of_points)
 
-_list =list(dict_of_points.values())
 
-print(_list)
+minimum = -8
+step = 10
+subticks = 2
+maximum = minimum+16*step
 
-_string = ""
-for all in dict_of_points:
-    if _string != "":
-        _string += ", "
-    _string += f"{all} = ({dict_of_points[all][0]}|{dict_of_points[all][1]})"
 
-print(_string)
+
+
+
+factor= subticks/step
+
+
+for i in range(20):
+    x = round(random.uniform(minimum, maximum) * factor) / factor
+    # x = random.randrange(minimum, maximum, step/subticks)
+    print(x)
+#     x = get_random_number(minimum, maximum)
+
+#     print(x)
+
+
+#     x = add_defined_decimal(x, step, subticks)
+
+#     print(x)
+
+# dict_of_points = {}
+# for i in range(5):
+#     x = get_random_number(minimum, 5, half_allowed=True)
+#     y = get_random_number(minimum, 5, half_allowed=True)
+#     dict_of_points[index_to_letter(i).upper()]=[x,y]
+
+# print(dict_of_points)
+
+# _list =list(dict_of_points.values())
+
+# print(_list)
+
+# _string = ""
+# for all in dict_of_points:
+#     if _string != "":
+#         _string += ", "
+#     _string += f"{all} = ({dict_of_points[all][0]}|{dict_of_points[all][1]})"
+
+# print(_string)

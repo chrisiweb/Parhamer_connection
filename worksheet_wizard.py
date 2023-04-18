@@ -18,7 +18,7 @@ from handle_exceptions import report_exceptions
 
 dict_themen_wizard = {
     "Arithmetik": {
-        "Positive (Dezimal-)Zahlen": {
+        "Darstellung von Zahlen": {
             "Stellenwerte" : [
                 'self.widget_zahlenbereich_1_combobox',
                 'self.widget_zahlenbereich_2_combobox',
@@ -28,6 +28,14 @@ dict_themen_wizard = {
               'self.widget_zahlenbereich_1_combobox',
               'self.widget_general_direction',  
             ],
+            "Zahlengerade": [
+                'self.widget_zahlenbereich_startingvalue',
+                'self.widget_zahlenbereich_steps',
+                'self.widget_zahlenbereich_subticks',
+                'self.widget_general_direction_CB',
+            ],           
+        },
+        "Positive (Dezimal-)Zahlen": {
             "Addition": [
                 'self.widget_ausrichtung_wizard',
                 'self.widget_zahlenbereich_minimum',
@@ -84,12 +92,14 @@ dict_themen_wizard = {
             ],
         },
         },
-    "Grundlagen der Geometrie": {
+    "Geometrie": {
+        "Grundlagen der Geometrie" : {
         "Koordinatensystem" : [
             'self.widget_coordinatesystem_setting',
             'self.widget_coordinatesystem_points',
             'self.widget_general_direction_CB',
-        ]
+        ],
+    },
     },
     "Terme": {
         "Binomische Formeln": [
@@ -102,71 +112,6 @@ dict_themen_wizard = {
     },
 }
 
-# dict_widgets_wizard = {
-#     'Arithmetik_Positive (Dezimal-)Zahlen_Addition' : [
-#         'self.widget_ausrichtung_wizard',
-#         'self.widget_zahlenbereich_minimum',
-#         'self.widget_zahlenbereich_maximum',
-#         'self.widget_kommastellen_wizard',
-#         'self.widgetZahlenbereich_anzahl',
-#         ],
-#     'Arithmetik_Positive (Dezimal-)Zahlen_Subtraktion' : [
-#         'self.widget_ausrichtung_wizard',
-#         'self.widget_zahlenbereich_minimum',
-#         'self.widget_zahlenbereich_maximum',
-#         'self.widget_kommastellen_wizard',
-#         'self.checkbox_negative_ergebnisse_wizard',
-#         # 'self.label_negative_ergebnisse_wizard', 
-#         ],
-#     'Arithmetik_Positive (Dezimal-)Zahlen_Multiplikation' : [
-#         'self.groupBox_first_number_wizard',
-#         'self.groupBox_second_number_wizard',
-#         'self.comboBox_solution_type_wizard',
-#     ],
-#     'Arithmetik_Positive (Dezimal-)Zahlen_Division' : [
-#         'self.groupBox_dividend_wizard',
-#         'self.groupBox_divisor_wizard',
-#         'self.groupBox_ergebnis_wizard',
-#         'self.comboBox_solution_type_wizard',
-#     ],
-#     'Arithmetik_Positive (Dezimal-)Zahlen_Verbindung der Grundrechnungsarten': [
-#         'self.widget_zahlenbereich_minimum',
-#         'self.widget_zahlenbereich_maximum',
-#         'self.widget_kommastellen_wizard',
-#         'self.widgetZahlenbereich_anzahl',
-#         'self.checkbox_allow_brackets_wizard',        
-#     ],
-#     'Arithmetik_Negative && Positive (Dezimal-)Zahlen_Addition && Subtraktion': [
-#         'self.widget_zahlenbereich_minimum',
-#         'self.widget_zahlenbereich_maximum',
-#         'self.widget_kommastellen_wizard',
-#         'self.widgetZahlenbereich_anzahl',
-#         'self.checkbox_allow_brackets_wizard',        
-#     ],
-#     'Arithmetik_Negative && Positive (Dezimal-)Zahlen_Multiplikation && Division': [
-#         'self.widget_zahlenbereich_minimum',
-#         'self.widget_zahlenbereich_maximum',
-#         'self.widget_kommastellen_wizard',
-#         'self.widgetZahlenbereich_anzahl',
-#         # 'self.checkbox_allow_brackets_wizard',        
-#     ],
-#     'Arithmetik_Negative && Positive (Dezimal-)Zahlen_Verbindung der Grundrechnungsarten': [
-#         'self.widget_zahlenbereich_minimum',
-#         'self.widget_zahlenbereich_maximum',
-#         'self.widget_kommastellen_wizard',
-#         'self.widgetZahlenbereich_anzahl',
-#         'self.checkbox_allow_brackets_wizard',        
-#     ],
-#     'Terme_Binomische Formeln': [
-#         'self.groupbox_binoms_types',
-#         'self.widget_binoms_set_variables_factors',
-#         'self.widget_binoms_set_variables_exponents',
-#         'self.label_binom_example',
-#         'self.widget_binom_further_settings',
-#     ],
-# }   
-
-# themen_worksheet_wizard = list(dict_widgets_wizard.keys())
 
 D = decimal.Decimal
 
@@ -1957,9 +1902,9 @@ def create_latex_worksheet(
 
         list_of_examples = set_of_examples['list_of_examples']
         for example in list_of_examples:
-            if shorten_topic == 'ari_pos_ste':
+            if shorten_topic == 'ari_dar_ste':
                 content = create_latex_string_stellenwert(content, example)
-            elif shorten_topic == 'ari_pos_röm':
+            elif shorten_topic == 'ari_dar_röm':
                 content = create_latex_string_roman_numerals(content, example)
             elif shorten_topic == 'ari_pos_add':
                 content = create_latex_string_addition(content, example, ausrichtung)
@@ -1975,7 +1920,7 @@ def create_latex_worksheet(
                 shorten_topic == 'ari_neg_mul' or 
                 shorten_topic == 'ari_neg_ver'):
                 content = create_latex_string_ganze_zahlen(content, example)
-            elif shorten_topic == 'gru_koo':
+            elif shorten_topic == 'geo_gru_koo':
                 content = create_latex_string_coordinate_system(content, example, half_allowed, negative_allowed,dot_style_index, coordinates_direction_index)
             elif shorten_topic == 'ter_bin':
                 content = create_latex_string_binomische_formeln(content, example, binoms_direction_index)
@@ -2152,7 +2097,7 @@ def get_random_solution(self):
     shorten_topic = self.shorten_topic(thema)
 
 
-    if shorten_topic == 'ari_pos_ste':
+    if shorten_topic == 'ari_dar_ste':
         minimum = self.combobox_zahlenbereich_2.currentIndex()
         minimum_index = self.combobox_zahlenbereich_2_leq.currentIndex()
         maximum = self.combobox_zahlenbereich_1.currentIndex()
@@ -2162,7 +2107,7 @@ def get_random_solution(self):
         # smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
         distract_result = create_single_example_stellenwert(minimum, minimum_index, maximum, maximum_index, self.general_direction_index) #
 
-    elif shorten_topic == 'ari_pos_röm':
+    elif shorten_topic == 'ari_dar_röm':
         roman_max = self.combobox_zahlenbereich_1.currentText()          
         maximum_index = self.combobox_zahlenbereich_1_leq.currentIndex()
 
@@ -2250,7 +2195,7 @@ def get_random_solution(self):
             typ = '+-*:'
             distract_result = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)
 
-    elif shorten_topic == 'gru_koo':
+    elif shorten_topic == 'geo_gru_koo':
         half_allowed = self.checkbox_coordinatesystem_zwischenwerte.isChecked()
         negative_allowed = self.checkbox_coordinatesystem_negative_numbers.isChecked()
         distract_result = create_single_example_coordinate_system(half_allowed, negative_allowed)
