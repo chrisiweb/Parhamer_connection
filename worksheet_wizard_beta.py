@@ -215,6 +215,9 @@ def choose_random_blanks(_list):
     return random.choice(possible_blanks)
 
 
+list_stellenwerte = ['ht', 'zt','t','h','z','E', 'Z', 'H', 'T', 'ZT', 'HT', 'M', 'ZM', 'HM', 'Md', 'ZMd', 'HMd', 'B', 'ZB', 'HB']
+index_E = 5
+
 def number_to_placevalue(number):
     list_digits = []
     list_decimals = []
@@ -267,10 +270,6 @@ def simplify_numbers(number, num_stellenwerte):
         return number
     
     probability = erwartungswert/num_stellenwerte
-    # print(num_stellenwerte)
-    # print(f"prb: {probability}")
-    # if probability>1:
-    #     probability=1
     str_new_number = []
     for i, all in enumerate(str_num):
         # print(random_switch(probability))
