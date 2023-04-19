@@ -353,8 +353,6 @@ def create_single_example_number_line(starting_value, steps, subticks):
 
     x = round(random.uniform(starting_value, maximum) * factor) / factor 
 
-    print(x) 
-
     list_of_points = []
 
     i=0
@@ -372,12 +370,7 @@ def create_single_example_number_line(starting_value, steps, subticks):
 
         _string += f"{all} = {list_of_points[i]}"
 
-    # _string = ""
-    # for all in list_of_points:
-    #     if _string != "":
-    #         _string += ", "
-    #     _string += f"{all} = ({dict_of_points[all][0]}|{dict_of_points[all][1]})"
-
+    _string = _string.replace(".",",")
     return [list_of_points, 0, _string]
 
 def create_single_example_addition(minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
@@ -1464,6 +1457,23 @@ def create_latex_string_roman_numerals(content, example):
 
     return content
 
+
+def create_latex_string_number_line(content, example, starting_value, steps, subticks):
+    print(example)
+    pstricks_code = f"""
+\psset{{xunit={1/steps}cm,yunit=1.0cm,dotstyle=x,dotsize=10pt 0,linewidth=1pt,arrowsize=3pt 2}}
+\\begin{{pspicture*}}({-steps/2},-1)({15*steps},2)
+\psaxes[yAxis=false,Dx={remove_exponent(D(steps))},Ox={remove_exponent(D(starting_value))}, ticksize=-5pt 0,subticks={subticks}]{{->}}(0,0)(0,0)({15*steps},2)
+\end{{pspicture*}}
+"""
+
+    content += f"\\task\n{pstricks_code}\n\n"
+#     \psdots(250.,0.)
+# \\rput(250,0.4){{$A$}}
+# \psdots(370.,0.)
+# \\rput(370,0.4){{$B$}}
+    return content
+
 def create_latex_string_addition(content, example, ausrichtung):
     summanden = example[0]
     
@@ -1935,6 +1945,12 @@ def create_latex_worksheet(
             content += f"\n\n{set_of_examples['instruction']}\n\n"
 
 
+
+        starting_value = set_of_examples['number_line'][0]
+        steps = set_of_examples['number_line'][1]
+        subticks = set_of_examples['number_line'][2]
+
+
         half_allowed = set_of_examples['coordinate_system'][0]
         negative_allowed = set_of_examples['coordinate_system'][1]
         dot_style_index = set_of_examples['coordinate_system'][2]
@@ -1949,6 +1965,8 @@ def create_latex_worksheet(
                 content = create_latex_string_stellenwert(content, example)
             elif shorten_topic == 'ari_dar_röm':
                 content = create_latex_string_roman_numerals(content, example)
+            elif shorten_topic == 'ari_dar_zah':
+                content = create_latex_string_number_line(content, example, starting_value, steps, subticks)
             elif shorten_topic == 'ari_pos_add':
                 content = create_latex_string_addition(content, example, ausrichtung)
             elif shorten_topic == 'ari_pos_sub':
@@ -2155,6 +2173,14 @@ def get_random_solution(self):
         maximum_index = self.combobox_zahlenbereich_1_leq.currentIndex()
 
         distract_result = create_single_example_roman_numerals(roman_max, maximum_index, self.general_direction_index)
+
+    elif shorten_topic == 'ari_dar_zah':
+        starting_value = self.spinbox_zahlenbereich_startingvalue.value()
+        steps = self.spinbox_zahlenbereich_steps.value()
+        subticks = self.spinbox_zahlenbereich_subticks.value()
+
+        distract_result = create_single_example_number_line(starting_value, steps, subticks)
+
     elif shorten_topic == 'ari_pos_add':
         minimum = self.spinbox_zahlenbereich_minimum.value()
         maximum = self.spinbox_zahlenbereich_maximum.value()

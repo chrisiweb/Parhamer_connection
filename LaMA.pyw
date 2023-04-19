@@ -3827,7 +3827,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.checkbox_enable_addition.hide()
         self.checkbox_enable_subtraktion.hide()
 
-        if shorten_topic == 'geo_gru_koo':
+        if shorten_topic == ('ari_dar_zah' or 'geo_gru_koo'):
             self.checkBox_show_nonogramm.setChecked(False)
             self.checkBox_show_nonogramm.setEnabled(False)
             self.widget_column_wizard.setEnabled(False)
@@ -3942,7 +3942,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def number_line_changed(self):
         starting_value = self.spinbox_zahlenbereich_startingvalue.value()
         steps = self.spinbox_zahlenbereich_steps.value()
-        maximum = int(starting_value+16*steps)
+        maximum = int(starting_value+14*steps)
 
         self.label_zahlenbereich_maximum_number_line.setText(f"bis {maximum}")
 
@@ -4225,6 +4225,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             roman_max = self.combobox_zahlenbereich_1.currentText()
             maximum_index = self.combobox_zahlenbereich_1_leq.currentIndex()
             new_example = create_single_example_roman_numerals(roman_max, maximum_index, self.general_direction_index)
+
+        elif shorten_topic == 'ari_dar_zah':
+            starting_value = self.spinbox_zahlenbereich_startingvalue.value()
+            steps = self.spinbox_zahlenbereich_steps.value()
+            subticks = self.spinbox_zahlenbereich_subticks.value()
+            new_example = create_single_example_number_line(starting_value, steps, subticks)
+
         elif shorten_topic=='ari_pos_add':
             anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
             smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
@@ -4739,7 +4746,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         full_list_dummy_solutions = []
         list_dummy_solutions = []
-        if shorten_topic != 'geo_gru_koo':
+        if shorten_topic != ('ari_dar_zah' or 'geo_gru_koo'):
             i=0
             while i<10:
                 dummy_solution = get_random_solution(self)
@@ -4773,6 +4780,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 columns = 2
             else:
                 columns = 3
+        elif shorten_topic == "ari_dar_zah":
+            columns = 1
         else:
             columns = self.spinBox_column_wizard.value()
 
@@ -4806,6 +4815,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             'ausrichtung': ausrichtung,
             'list_of_examples' : self.list_of_examples_wizard,
             'dummy_examples' : full_list_dummy_solutions,
+            'number_line' : [self.spinbox_zahlenbereich_startingvalue.value(), self.spinbox_zahlenbereich_steps.value(), self.spinbox_zahlenbereich_subticks.value()],
             'coordinate_system' : [coordinate_system_zwischenwerte, coordinate_system_negative, coordinate_system_dotstyle_index, coordinate_direction_index],
         }
         self.list_of_examples_wizard = []
