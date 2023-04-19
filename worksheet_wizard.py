@@ -347,6 +347,39 @@ def create_single_example_roman_numerals(roman_max, maximum_index, general_direc
         return [roman_number, number, _string]
 
 
+def create_single_example_number_line(starting_value, steps, subticks):
+    maximum = starting_value+16*steps
+    factor= subticks/steps
+
+    x = round(random.uniform(starting_value, maximum) * factor) / factor 
+
+    print(x) 
+
+    list_of_points = []
+
+    i=0
+    while i < 5:
+        x = round(random.uniform(starting_value, maximum) * factor) / factor
+        x= remove_exponent(D(x)) 
+        if x not in list_of_points:
+            list_of_points.append(x)
+            i+=1  
+
+    _string = ""
+    for i, all in enumerate(['A','B','C','D','E']):
+        if all != 'A':
+            _string += ", "
+
+        _string += f"{all} = {list_of_points[i]}"
+
+    # _string = ""
+    # for all in list_of_points:
+    #     if _string != "":
+    #         _string += ", "
+    #     _string += f"{all} = ({dict_of_points[all][0]}|{dict_of_points[all][1]})"
+
+    return [list_of_points, 0, _string]
+
 def create_single_example_addition(minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
     summanden = []
     set_commas=commas
@@ -1296,6 +1329,16 @@ def create_list_of_examples_roman_numerals(examples, roman_max, maximum_index, g
         list_of_examples.append(new_example)
 
     return list_of_examples
+
+
+def create_list_of_examples_number_line(examples, starting_value, steps, subticks):
+    list_of_examples = []
+
+    for _ in range(examples):
+        new_example = create_single_example_number_line(starting_value, steps, subticks)
+        list_of_examples.append(new_example)
+
+    return list_of_examples    
 
 def create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
     list_of_examples = []

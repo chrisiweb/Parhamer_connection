@@ -295,7 +295,7 @@ def index_to_letter(index):
 
 
 
-minimum = -8
+minimum = 0
 step = 10
 subticks = 2
 maximum = minimum+16*step
@@ -309,6 +309,7 @@ factor= subticks/step
 
 for i in range(20):
     x = round(random.uniform(minimum, maximum) * factor) / factor
+    x= remove_exponent(D(x))
     # x = random.randrange(minimum, maximum, step/subticks)
     print(x)
 #     x = get_random_number(minimum, maximum)

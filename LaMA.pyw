@@ -3939,6 +3939,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         for widget in list_of_widgets:
             eval(widget).show()
 
+    def number_line_changed(self):
+        starting_value = self.spinbox_zahlenbereich_startingvalue.value()
+        steps = self.spinbox_zahlenbereich_steps.value()
+        maximum = int(starting_value+16*steps)
+
+        self.label_zahlenbereich_maximum_number_line.setText(f"bis {maximum}")
 
     def worksheet_wizard_setting_changed(self):
         self.worksheet_wizard_changed=True
@@ -4400,6 +4406,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             roman_max = self.combobox_zahlenbereich_1.currentText()
             maximum_index = self.combobox_zahlenbereich_1_leq.currentIndex()
             list_of_examples_wizard = create_list_of_examples_roman_numerals(examples, roman_max, maximum_index, self.general_direction_index)
+        
+        elif shorten_topic == 'ari_dar_zah':
+            starting_value = self.spinbox_zahlenbereich_startingvalue.value()
+            steps = self.spinbox_zahlenbereich_steps.value()
+            subticks = self.spinbox_zahlenbereich_subticks.value()
+
+            list_of_examples_wizard = create_list_of_examples_number_line(examples, starting_value, steps, subticks)
+
         elif shorten_topic =='ari_pos_add':
             minimum = self.spinbox_zahlenbereich_minimum.value()
             maximum = self.spinbox_zahlenbereich_maximum.value()
@@ -8640,6 +8654,7 @@ if __name__ == "__main__":
         create_latex_worksheet,
         create_list_of_examples_stellenwert, create_single_example_stellenwert, list_stellenwerte, index_E,
         create_list_of_examples_roman_numerals, create_single_example_roman_numerals, dict_of_roman_max,
+        create_list_of_examples_number_line, create_single_example_number_line,
         create_list_of_examples_addition, create_single_example_addition,
         create_list_of_examples_subtraction, create_single_example_subtraction,
         create_list_of_examples_multiplication, create_single_example_multiplication,

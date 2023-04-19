@@ -2640,6 +2640,10 @@ def setup_stackWizard(self):
     self.spinbox_zahlenbereich_startingvalue.setValue(0)
     self.spinbox_zahlenbereich_startingvalue.setDecimals(1)
     self.horizontalLayout_zahlenbereich_startingvalue.addWidget(self.spinbox_zahlenbereich_startingvalue)
+
+    self.label_zahlenbereich_maximum_number_line = create_new_label(self.widget_zahlenbereich_startingvalue, "bis 16")
+    self.horizontalLayout_zahlenbereich_startingvalue.addWidget(self.label_zahlenbereich_maximum_number_line)
+
     self.widget_zahlenbereich_startingvalue.hide()
 
     self.widget_zahlenbereich_steps = QtWidgets.QWidget(self.groupBox_zahlenbereich_wizard)
@@ -2655,7 +2659,12 @@ def setup_stackWizard(self):
     self.spinbox_zahlenbereich_steps.setValue(1)
     self.spinbox_zahlenbereich_steps.setDecimals(1)
     self.horizontalLayout_zahlenbereich_steps.addWidget(self.spinbox_zahlenbereich_steps)
+
     self.widget_zahlenbereich_steps.hide()
+
+
+    self.spinbox_zahlenbereich_startingvalue.valueChanged.connect(lambda: self.number_line_changed())
+    self.spinbox_zahlenbereich_steps.valueChanged.connect(lambda: self.number_line_changed())
 
     self.widget_zahlenbereich_subticks = QtWidgets.QWidget(self.groupBox_zahlenbereich_wizard)
     self.gridLayout_zahlenbereich_wizard.addWidget(self.widget_zahlenbereich_subticks, 0,2,1,1)
