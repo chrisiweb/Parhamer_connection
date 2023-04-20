@@ -4746,7 +4746,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         full_list_dummy_solutions = []
         list_dummy_solutions = []
-        if shorten_topic != ('ari_dar_zah' or 'geo_gru_koo'):
+        if shorten_topic != 'ari_dar_zah' and shorten_topic != 'geo_gru_koo':
             i=0
             while i<10:
                 dummy_solution = get_random_solution(self)
@@ -4793,8 +4793,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # try:
         coordinate_system_zwischenwerte = self.checkbox_coordinatesystem_zwischenwerte.isChecked()
         coordinate_system_negative = self.checkbox_coordinatesystem_negative_numbers.isChecked()
-        coordinate_system_dotstyle_index = self.combobox_points.currentIndex()
-        coordinate_direction_index = self.combobox_general_direction_CB.currentIndex()
+        dotstyle_index = self.combobox_points.currentIndex()
+        direction_index = self.combobox_general_direction_CB.currentIndex()
 
         # except AttributeError:
         #     coordinate_system_zwischenwerte = False
@@ -4815,8 +4815,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             'ausrichtung': ausrichtung,
             'list_of_examples' : self.list_of_examples_wizard,
             'dummy_examples' : full_list_dummy_solutions,
+            'dotstyle_index' : dotstyle_index,
+            'direction_index' : direction_index,
             'number_line' : [self.spinbox_zahlenbereich_startingvalue.value(), self.spinbox_zahlenbereich_steps.value(), self.spinbox_zahlenbereich_subticks.value()],
-            'coordinate_system' : [coordinate_system_zwischenwerte, coordinate_system_negative, coordinate_system_dotstyle_index, coordinate_direction_index],
+            'coordinate_system' : [coordinate_system_zwischenwerte, coordinate_system_negative],
+
         }
         self.list_of_examples_wizard = []
         self.current_single_instruction_wizard = None
