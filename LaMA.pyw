@@ -3939,11 +3939,18 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         for widget in list_of_widgets:
             eval(widget).show()
 
+
+    def formatNumber(self, num):
+        if num % 1 == 0:
+            return int(num)
+        else:
+            return num
+        
     def number_line_changed(self):
         starting_value = self.spinbox_zahlenbereich_startingvalue.value()
         steps = self.spinbox_zahlenbereich_steps.value()
-        maximum = int(starting_value+14*steps)
-
+        maximum = round(starting_value+14*steps,3)
+        maximum = f"{maximum:g}".replace(".",",")
         self.label_zahlenbereich_maximum_number_line.setText(f"bis {maximum}")
 
     def worksheet_wizard_setting_changed(self):
@@ -8665,6 +8672,7 @@ if __name__ == "__main__":
         get_all_solution_pixels,
         get_max_pixels_nonogram,
         create_latex_worksheet,
+        remove_exponent, formatNumber,
         create_list_of_examples_stellenwert, create_single_example_stellenwert, list_stellenwerte, index_E,
         create_list_of_examples_roman_numerals, create_single_example_roman_numerals, dict_of_roman_max,
         create_list_of_examples_number_line, create_single_example_number_line,

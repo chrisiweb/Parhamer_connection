@@ -306,12 +306,17 @@ maximum = minimum+16*step
 
 factor= subticks/step
 
+starting_value = 0
+steps = 0.1
+maximum = round(starting_value+14*steps,2)
+print(maximum)
+print(maximum)
 
-for i in range(20):
-    x = round(random.uniform(minimum, maximum) * factor) / factor
-    x= remove_exponent(D(x))
-    # x = random.randrange(minimum, maximum, step/subticks)
-    print(x)
+# for i in range(20):
+#     x = round(random.uniform(minimum, maximum) * factor) / factor
+#     x= remove_exponent(D(x))
+#     # x = random.randrange(minimum, maximum, step/subticks)
+#     print(x)
 #     x = get_random_number(minimum, maximum)
 
 #     print(x)

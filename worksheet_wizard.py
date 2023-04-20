@@ -356,7 +356,8 @@ def create_single_example_number_line(starting_value, steps, subticks):
     list_of_points = []
     while i < 5:
         x = round(random.uniform(starting_value, maximum) * factor) / factor
-        x= float(remove_exponent(D(x)))
+        # x= float(remove_exponent(D(x)))
+        x = formatNumber(x)
         if x not in list_of_points:
             list_of_points.append(x)
             i+=1
@@ -371,7 +372,8 @@ def create_single_example_number_line(starting_value, steps, subticks):
     for all in dict_of_points:
         if _string != "":
             _string += ", "
-        _string += f"{all} = {dict_of_points[all][0]}"
+        value = str(dict_of_points[all][0]).replace(".",",")
+        _string += f"{all} = {value}"
 
     return [dict_of_points, 0, _string]
 
@@ -1459,16 +1461,51 @@ def create_latex_string_roman_numerals(content, example):
 
     return content
 
-
+def formatNumber(num):
+  if num % 1 == 0:
+    return int(num)
+  else:
+    return num
 
 def create_latex_string_number_line(content, example, starting_value, steps, subticks, dot_style_index, geometry_direction_index):
     print(example)
 
-    pstricks_code_dots = create_pstricks_code_dots(example, dot_style_index, geometry_direction_index, xlabel_padding=-0.1, ylabel_padding=0.2)
+    print(starting_value)
+    steps = formatNumber(steps)
+    if starting_value==0:
+        arrows = "->"
+        beginning_picture = starting_value-steps/2
+        ending_picture = starting_value+15*steps
+        beginning = starting_value
+        ending = starting_value+15*steps
+        Ox= None
+        string_Ox = ""
+    elif starting_value<0:
+        arrows = "<->"
+        beginning_picture = starting_value-steps/2
+        ending_picture = starting_value+15*steps
+        beginning = starting_value-steps/2
+        ending = starting_value+15*steps
+        Ox= None
+        string_Ox= ""
+    elif starting_value>0:
+        arrows = "->"
+        beginning_picture = -steps/2
+        ending_picture = 15*steps
+        beginning = 0
+        ending = ending_picture
+        Ox = starting_value
+        string_Ox= f",Ox={formatNumber(starting_value)}"
+
+    pstricks_code_dots = create_pstricks_code_dots(example, dot_style_index, geometry_direction_index, xlabel_padding=0, ylabel_padding=0.2, Ox=Ox)
+
+    if geometry_direction_index == 1:
+        pstricks_code_dots = f"\\antwort{{{pstricks_code_dots}}}" 
+
     pstricks_code = f"""
 \psset{{xunit={1/steps}cm,yunit=1.0cm,dotstyle=x,dotsize=6pt 0,linewidth=1pt,arrowsize=3pt 2}}
-\\begin{{pspicture*}}({-steps/2},-1)({15*steps},2)
-\psaxes[comma, yAxis=false,Dx={remove_exponent(D(steps))},Ox={remove_exponent(D(starting_value))}, ticksize=-5pt 0,subticks={subticks}]{{->}}(0,0)(0,0)({15*steps},2)
+\\begin{{pspicture*}}({beginning_picture},-1)({ending_picture},1)
+\psaxes[labelFontSize=\scriptstyle, comma, yAxis=false {string_Ox},Dx={steps},ticksize=-5pt 0,subticks={subticks}]{{{arrows}}}(0,0)({beginning},-1)({ending},1)
 {pstricks_code_dots}
 \end{{pspicture*}}
 """
@@ -1782,7 +1819,7 @@ def create_latex_string_ganze_zahlen(content, example):
     content += temp_content
     return content
 
-def create_pstricks_code_dots(example, dot_style_index, coordinates_direction_index, xlabel_padding = 0.1, ylabel_padding = 0.1):
+def create_pstricks_code_dots(example, dot_style_index, coordinates_direction_index, xlabel_padding = 0.1, ylabel_padding = 0.1, Ox=None):
     if dot_style_index==0:
         dot_style = "*"
     elif dot_style_index==1:
@@ -1795,10 +1832,15 @@ def create_pstricks_code_dots(example, dot_style_index, coordinates_direction_in
     dict_dots = example[0]
     _string = ""
 
+    if Ox != None:
+        xcorrection = Ox
+    else:
+        xcorrection = 0
+
     for all in dict_dots:
-        xcoord = float(dict_dots[all][0])+float(xlabel_padding)
+        xcoord = float(dict_dots[all][0])-float(xcorrection)+float(xlabel_padding)
         ycoord = float(dict_dots[all][1])+float(ylabel_padding)
-        _string += f"\psdots[dotstyle={dot_style}{color}]({dict_dots[all][0]},{dict_dots[all][1]})\n\\rput[bl]({xcoord},{ycoord}){{${all}$}}\n"        
+        _string += f"\psdots[dotstyle={dot_style}{color}]({dict_dots[all][0]-float(xcorrection)},{dict_dots[all][1]})\n\\rput[bl]({xcoord},{ycoord}){{${all}$}}\n"        
 
     return _string
 
