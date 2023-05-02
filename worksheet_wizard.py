@@ -28,13 +28,13 @@ dict_themen_wizard = {
               'self.widget_zahlenbereich_1_combobox',
               'self.widget_general_direction',  
             ],
-            "Zahlengerade": [
-                'self.widget_zahlenbereich_startingvalue',
-                'self.widget_zahlenbereich_steps',
-                'self.widget_zahlenbereich_subticks',
-                'self.widget_general_direction_CB',
-                'self.widget_coordinatesystem_points',
-            ],           
+            # "Zahlengerade": [
+            #     'self.widget_zahlenbereich_startingvalue',
+            #     'self.widget_zahlenbereich_steps',
+            #     'self.widget_zahlenbereich_subticks',
+            #     'self.widget_general_direction_CB',
+            #     'self.widget_coordinatesystem_points',
+            # ],           
         },
         "Positive (Dezimal-)Zahlen": {
             "Addition": [
