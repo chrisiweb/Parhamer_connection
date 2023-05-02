@@ -33,6 +33,7 @@ dict_themen_wizard = {
                 'self.widget_zahlenbereich_steps',
                 'self.widget_zahlenbereich_subticks',
                 'self.widget_general_direction_CB',
+                'self.widget_coordinatesystem_points',
             ],           
         },
         "Positive (Dezimal-)Zahlen": {
@@ -348,30 +349,33 @@ def create_single_example_roman_numerals(roman_max, maximum_index, general_direc
 
 
 def create_single_example_number_line(starting_value, steps, subticks):
-    maximum = starting_value+16*steps
+    maximum = starting_value+14*steps
     factor= subticks/steps
-
-    x = round(random.uniform(starting_value, maximum) * factor) / factor 
-
-    list_of_points = []
-
+    
     i=0
+    list_of_points = []
     while i < 5:
         x = round(random.uniform(starting_value, maximum) * factor) / factor
-        x= remove_exponent(D(x)) 
+        # x= float(remove_exponent(D(x)))
+        x = formatNumber(x)
         if x not in list_of_points:
             list_of_points.append(x)
-            i+=1  
+            i+=1
+
+    list_of_points = sorted(list_of_points, key=float)
+
+    dict_of_points = {}
+    for i, all in enumerate(list_of_points):
+        dict_of_points[index_to_letter(i).upper()]=(all,0)
 
     _string = ""
-    for i, all in enumerate(['A','B','C','D','E']):
-        if all != 'A':
+    for all in dict_of_points:
+        if _string != "":
             _string += ", "
+        value = str(dict_of_points[all][0]).replace(".",",")
+        _string += f"{all} = {value}"
 
-        _string += f"{all} = {list_of_points[i]}"
-
-    _string = _string.replace(".",",")
-    return [list_of_points, 0, _string]
+    return [dict_of_points, 0, _string]
 
 def create_single_example_addition(minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
     summanden = []
@@ -1457,13 +1461,52 @@ def create_latex_string_roman_numerals(content, example):
 
     return content
 
+def formatNumber(num):
+  if num % 1 == 0:
+    return int(num)
+  else:
+    return num
 
-def create_latex_string_number_line(content, example, starting_value, steps, subticks):
+def create_latex_string_number_line(content, example, starting_value, steps, subticks, dot_style_index, geometry_direction_index):
     print(example)
+
+    print(starting_value)
+    steps = formatNumber(steps)
+    if starting_value==0:
+        arrows = "->"
+        beginning_picture = starting_value-steps/2
+        ending_picture = starting_value+15*steps
+        beginning = starting_value
+        ending = starting_value+15*steps
+        Ox= None
+        string_Ox = ""
+    elif starting_value<0:
+        arrows = "<->"
+        beginning_picture = starting_value-steps/2
+        ending_picture = starting_value+15*steps
+        beginning = starting_value-steps/2
+        ending = starting_value+15*steps
+        Ox= None
+        string_Ox= ""
+    elif starting_value>0:
+        arrows = "->"
+        beginning_picture = -steps/2
+        ending_picture = 15*steps
+        beginning = 0
+        ending = ending_picture
+        Ox = starting_value
+        string_Ox= f",Ox={formatNumber(starting_value)}"
+
+    pstricks_code_dots = create_pstricks_code_dots(example, dot_style_index, geometry_direction_index, xlabel_padding=0, ylabel_padding=0.2, Ox=Ox)
+
+    if geometry_direction_index == 1:
+        pstricks_code_dots = f"\\antwort{{{pstricks_code_dots}}}" 
+
     pstricks_code = f"""
-\psset{{xunit={1/steps}cm,yunit=1.0cm,dotstyle=x,dotsize=10pt 0,linewidth=1pt,arrowsize=3pt 2}}
-\\begin{{pspicture*}}({-steps/2},-1)({15*steps},2)
-\psaxes[yAxis=false,Dx={remove_exponent(D(steps))},Ox={remove_exponent(D(starting_value))}, ticksize=-5pt 0,subticks={subticks}]{{->}}(0,0)(0,0)({15*steps},2)
+\psset{{xunit={1/steps}cm,yunit=1.0cm,dotstyle=x,dotsize=6pt 0,linewidth=1pt,arrowsize=3pt 2}}
+\\begin{{pspicture*}}({beginning_picture},-1)({ending_picture},1)
+\psaxes[labelFontSize=\scriptstyle, comma, yAxis=false {string_Ox},Dx={steps},ticksize=-5pt 0,subticks={subticks}]{{{arrows}}}(0,0)({beginning},-1)({ending},1)
+{pstricks_code_dots}
 \end{{pspicture*}}
 """
 
@@ -1776,7 +1819,7 @@ def create_latex_string_ganze_zahlen(content, example):
     content += temp_content
     return content
 
-def create_pstricks_code_dots(example, dot_style_index, coordinates_direction_index):
+def create_pstricks_code_dots(example, dot_style_index, coordinates_direction_index, xlabel_padding = 0.1, ylabel_padding = 0.1, Ox=None):
     if dot_style_index==0:
         dot_style = "*"
     elif dot_style_index==1:
@@ -1788,8 +1831,16 @@ def create_pstricks_code_dots(example, dot_style_index, coordinates_direction_in
         color = ""
     dict_dots = example[0]
     _string = ""
+
+    if Ox != None:
+        xcorrection = Ox
+    else:
+        xcorrection = 0
+
     for all in dict_dots:
-        _string += f"\psdots[dotstyle={dot_style}{color}]({dict_dots[all][0]},{dict_dots[all][1]})\n\\rput[bl]({dict_dots[all][0]+0.1},{dict_dots[all][1]+0.1}){{${all}$}}\n"        
+        xcoord = float(dict_dots[all][0])-float(xcorrection)+float(xlabel_padding)
+        ycoord = float(dict_dots[all][1])+float(ylabel_padding)
+        _string += f"\psdots[dotstyle={dot_style}{color}]({dict_dots[all][0]-float(xcorrection)},{dict_dots[all][1]})\n\\rput[bl]({xcoord},{ycoord}){{${all}$}}\n"        
 
     return _string
 
@@ -1953,8 +2004,8 @@ def create_latex_worksheet(
 
         half_allowed = set_of_examples['coordinate_system'][0]
         negative_allowed = set_of_examples['coordinate_system'][1]
-        dot_style_index = set_of_examples['coordinate_system'][2]
-        coordinates_direction_index = set_of_examples['coordinate_system'][3]
+        dot_style_index = set_of_examples['dotstyle_index']
+        geometry_direction_index = set_of_examples['direction_index']
 
         content += f"\\begin{{tasks}}[label={nummerierung},resume={fortlaufende_nummerierung}, item-indent=0pt]({columns})\n\n"
 
@@ -1966,7 +2017,7 @@ def create_latex_worksheet(
             elif shorten_topic == 'ari_dar_röm':
                 content = create_latex_string_roman_numerals(content, example)
             elif shorten_topic == 'ari_dar_zah':
-                content = create_latex_string_number_line(content, example, starting_value, steps, subticks)
+                content = create_latex_string_number_line(content, example, starting_value, steps, subticks, dot_style_index, geometry_direction_index)
             elif shorten_topic == 'ari_pos_add':
                 content = create_latex_string_addition(content, example, ausrichtung)
             elif shorten_topic == 'ari_pos_sub':
@@ -1982,7 +2033,7 @@ def create_latex_worksheet(
                 shorten_topic == 'ari_neg_ver'):
                 content = create_latex_string_ganze_zahlen(content, example)
             elif shorten_topic == 'geo_gru_koo':
-                content = create_latex_string_coordinate_system(content, example, half_allowed, negative_allowed,dot_style_index, coordinates_direction_index)
+                content = create_latex_string_coordinate_system(content, example, half_allowed, negative_allowed,dot_style_index, geometry_direction_index)
             elif shorten_topic == 'ter_bin':
                 content = create_latex_string_binomische_formeln(content, example, binoms_direction_index)
 

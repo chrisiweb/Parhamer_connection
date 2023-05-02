@@ -2659,7 +2659,7 @@ def setup_stackWizard(self):
     self.spinbox_zahlenbereich_steps = QtWidgets.QDoubleSpinBox(self.widget_zahlenbereich_steps)
     self.spinbox_zahlenbereich_steps.setRange(0.1,9999)
     self.spinbox_zahlenbereich_steps.setValue(1)
-    self.spinbox_zahlenbereich_steps.setDecimals(1)
+    self.spinbox_zahlenbereich_steps.setDecimals(2)
     self.horizontalLayout_zahlenbereich_steps.addWidget(self.spinbox_zahlenbereich_steps)
 
     self.widget_zahlenbereich_steps.hide()
