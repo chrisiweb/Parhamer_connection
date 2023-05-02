@@ -1972,6 +1972,7 @@ class Ui_Dialog_setup(object):
             'database' : 2,
             'display' : 0,
             'search_output': 0,
+            'halfpoints': False,
             'prozente': [87, 75, 61, 50],
             'notenschluessel': [False, False],
             'prozente_cria': [91, 80, 64, 50],
@@ -2170,12 +2171,11 @@ class Ui_Dialog_setup(object):
         verticallayout_tab_sage.addWidget(groupbox_autosave)
 
 
-
-
         if MainWindow.chosen_program == 'cria':
             string = 'Unterstufe'
             try:
                 self.lama_settings['prozente_cria']
+                halfpoints = 'halfpoints_cria'
                 key_prozente = 'prozente_cria'
                 key_notenschluessel = 'notenschluessel_cria'
             except KeyError:
@@ -2184,10 +2184,24 @@ class Ui_Dialog_setup(object):
         else:
             string = 'Oberstufe'
             key_prozente = 'prozente'
+            halfpoints = 'halfpoints'
             key_notenschluessel = 'notenschluessel'
+
+
+        
+        groupbox_halfpoints = create_new_groupbox(self.tab_sage, f"Punkte für Aufgaben ({string})")
+        horizontallayout_halfpoints = create_new_horizontallayout(groupbox_halfpoints)
+
+        
+        self.checkbox_halfpoints = create_new_checkbox(groupbox_halfpoints, "Halbe Punkte für Aufgaben erlauben", checked=self.lama_settings[halfpoints])
+        horizontallayout_halfpoints.addWidget(self.checkbox_halfpoints)
+
+        verticallayout_tab_sage.addWidget(groupbox_halfpoints)
+
 
         groupbox_prozent = create_new_groupbox(self.tab_sage, "Prozente Beurteilung ({})".format(string))
         gridlayout_prozente = create_new_gridlayout(groupbox_prozent)
+
 
 
         # self.combobox_notenschluessel_typ = create_new_combobox(groupbox_prozent)
@@ -2412,23 +2426,29 @@ class Ui_Dialog_setup(object):
         dict_['autosave'] = self.spinbox_autosave.value()
         dict_['quelle'] = self.lineedit_quelle.text()
         if chosen_program == 'cria':
+            key_halfpoints  = 'halfpoints_cria'
             key_prozente = 'prozente_cria'
             key_notenschluessel = 'notenschluessel_cria'
 
+            dict_['halfpoints'] = self.lama_settings['halfpoints']
             dict_['prozente'] = self.lama_settings['prozente']
             dict_['notenschluessel'] = self.lama_settings['notenschluessel']
 
         else:
+            key_halfpoints  = 'halfpoints'
             key_prozente = 'prozente'
             key_notenschluessel = 'notenschluessel'
 
             try: 
+                dict_['halfpoints_cria'] = self.lama_settings['halfpoints_cria']
                 dict_['prozente_cria'] = self.lama_settings['prozente_cria']
                 dict_['notenschluessel_cria'] = self.lama_settings['notenschluessel_cria']
             except KeyError:
+                dict_['halfpoints_cria'] = self.lama_settings['halfpoints']
                 dict_['prozente_cria'] = self.lama_settings['prozente']
                 dict_['notenschluessel_cria'] = self.lama_settings['notenschluessel']                
 
+        dict_[key_halfpoints] = self.checkbox_halfpoints.isChecked()
         dict_[key_prozente] = [self.spinbox_prozente_sgu.value(), self.spinbox_prozente_gu.value(), self.spinbox_prozente_be.value(), self.spinbox_prozente_ge.value()]
         dict_[key_notenschluessel] = [self.cb_ns_halbe_punkte.isChecked(), self.cb_ns_prozente.isChecked()]
 
