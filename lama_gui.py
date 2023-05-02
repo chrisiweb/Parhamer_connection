@@ -1176,14 +1176,36 @@ def setup_stackSage(self):
     # )
     # self.verticalLayout_default_pkt.setContentsMargins(0,0,0,0)
     # self.verticalLayout_default_pkt.setObjectName("verticalLayout_default_pkt")
+    if self.chosen_program == 'cria':
+        halfpoints = 'halfpoints_cria'
+    else:
+        halfpoints = 'halfpoints'
+    
+    try:
+        halfpoints_setting = self.lama_settings[halfpoints]
+    except KeyError:
+        halfpoints_setting = False
+
     self.spinBox_default_pkt = SpinBox_noWheel(self.widgetDefault_pkt)
-    # self.spinBox_default_pkt.setSizePolicy(SizePolicy_minimum_fixed)
+    self.doublespinBox_default_pkt = DoubleSpinBox_noWheel(self.widgetDefault_pkt)
+    self.doublespinBox_default_pkt.setSingleStep(0.5)
+    self.doublespinBox_default_pkt.setDecimals(1)
+    self.doublespinBox_default_pkt.setValue(1)
+    self.doublespinBox_default_pkt.setToolTip("0 = Punkte ausblenden")
+
+    if halfpoints_setting == False:
+        self.doublespinBox_default_pkt.hide()
+    elif halfpoints_setting == True:
+        self.spinBox_default_pkt.hide()
+
     self.spinBox_default_pkt.setValue(1)
     self.spinBox_default_pkt.setToolTip("0 = Punkte ausblenden")
     self.spinBox_default_pkt.setObjectName("spinBox_default_pkt")
     self.horizontalLayout_default_pkt.addWidget(self.spinBox_default_pkt)
+    self.horizontalLayout_default_pkt.addWidget(self.doublespinBox_default_pkt)
     # self.verticalLayout_default_pkt.addWidget(self.spinBox_default_pkt)
-    self.spinBox_default_pkt.valueChanged.connect(self.update_default_pkt)
+    self.spinBox_default_pkt.valueChanged.connect(partial(self.update_default_pkt, self.spinBox_default_pkt))
+    self.doublespinBox_default_pkt.valueChanged.connect(partial(self.update_default_pkt, self.doublespinBox_default_pkt))
     self.gridLayout_SageMenu.addWidget(self.widgetDefault_pkt,1,1,1,1)
 
     self.gridLayout_SageMenu.setColumnStretch(3,1)

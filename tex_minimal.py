@@ -79,12 +79,12 @@ def begin_beispiel(themen = None, punkte = 0, halbe_punkte = False):
         string = "[{}]".format(', '.join(themen))
     else:
         string = ""
-    return f"\\begin{{beispiel}}{string}{{{punkte}}}"
+    return f"\\begin{{beispiel}}{string}{{{punkte:g}}}"
 
 end_beispiel = "\n\end{beispiel}"
 
 def begin_beispiel_lang(punkte = 0):
-    return f"\\begin{{langesbeispiel}} \item[{punkte}]"
+    return f"\\begin{{langesbeispiel}} \item[{punkte:g}]"
 
 end_beispiel_lang = "\end{langesbeispiel}"
 

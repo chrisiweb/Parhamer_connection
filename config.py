@@ -75,6 +75,10 @@ class SpinBox_noWheel(QtWidgets.QSpinBox):
         event.ignore()
 
 
+class DoubleSpinBox_noWheel(QtWidgets.QDoubleSpinBox):
+    def wheelEvent(self, event):
+        event.ignore()
+
 class ClickLabel(QtWidgets.QLabel):
     clicked = QtCore.pyqtSignal()
 

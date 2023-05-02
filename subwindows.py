@@ -1975,6 +1975,7 @@ class Ui_Dialog_setup(object):
             'halfpoints': False,
             'prozente': [87, 75, 61, 50],
             'notenschluessel': [False, False],
+            'halfpoints_cria': False,
             'prozente_cria': [91, 80, 64, 50],
             'notenschluessel_cria': [False, False],
             'autosave' : 2,

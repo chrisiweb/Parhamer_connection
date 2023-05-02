@@ -1191,6 +1191,15 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
         self.temporary_save_edit_plainText_deutsch = ""
         self.temporary_save_edit_plainText_englisch = ""
 
+
+
+    def delete_all_examples_sage(self):
+        for i in reversed(range(self.verticalLayout_scrollArea_sage_typ1.count()+1)):
+            self.delete_widget(self.verticalLayout_scrollArea_sage_typ1, i)
+        for i in reversed(range(self.verticalLayout_scrollArea_sage_typ2.count()+1)):
+            self.delete_widget(self.verticalLayout_scrollArea_sage_typ2, i)
+        self.scrollAreaWidgetContents_typ2.hide()
+
     @report_exceptions
     def reset_sage(self, question_reset=True):
         if question_reset == True and (not is_empty(self.list_alle_aufgaben_sage[0]) or not is_empty(self.list_alle_aufgaben_sage[1])):
@@ -1207,6 +1216,7 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
         self.comboBox_pruefungstyp.setCurrentIndex(0)
         self.lineEdit_klasse_sage.setText("")
         self.spinBox_default_pkt.setValue(1)
+        self.doublespinBox_default_pkt.setValue(1)
         self.combobox_beurteilung.setCurrentIndex(0)
         # self.radioButton_notenschl.setChecked(True)
 
@@ -1257,6 +1267,8 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
         self.comboBox_kapitel.setCurrentIndex(0)
         self.comboBox_unterkapitel.setCurrentIndex(0)
         self.lineEdit_number.setText("")
+
+
         self.dict_all_infos_for_file = {
             "list_alle_aufgaben": [],
             # "dict_ausgleichspunkte": {},
@@ -1276,7 +1288,7 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
                     self.spinBox_4.value(),
                     self.spinBox_5.value(),
                 ],
-                "Typ1 Standard": self.spinBox_default_pkt.value(),
+                "Typ1 Standard": 1,
                 # "num_1": 0,
                 # "punkte_1": 0,
                 # "num_2": 0,
@@ -1298,11 +1310,8 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
         self.list_copy_images = []
 
 
-        for i in reversed(range(self.verticalLayout_scrollArea_sage_typ1.count()+1)):
-            self.delete_widget(self.verticalLayout_scrollArea_sage_typ1, i)
-        for i in reversed(range(self.verticalLayout_scrollArea_sage_typ2.count()+1)):
-            self.delete_widget(self.verticalLayout_scrollArea_sage_typ2, i)
-        self.scrollAreaWidgetContents_typ2.hide()    
+        self.delete_all_examples_sage()
+  
 
     @report_exceptions
     def change_program(self, program_change_to):
@@ -1559,7 +1568,30 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
             # if response == 1:
             #     self.lama_settings = ui.lama_settings
 
+    @report_exceptions
+    def reload_all_examples_sage(self, halfpoints_setting):
+        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        self.delete_all_examples_sage()
+        self.load_all_examples(progress_window=False)
+        if halfpoints_setting == False:
+            self.spinBox_default_pkt.show()
+            self.doublespinBox_default_pkt.hide()
+        elif halfpoints_setting == True:
+            self.spinBox_default_pkt.hide()
+            self.doublespinBox_default_pkt.show()
+        QtWidgets.QApplication.restoreOverrideCursor()
+
     def open_setup(self):
+        try:
+            if self.chosen_program == 'cria':
+                halfpoints = 'halfpoints_cria'
+            else:
+                halfpoints = 'halfpoints'
+
+            halfpoints_setting = self.lama_settings[halfpoints]
+        except KeyError:
+            halfpoints_setting = False
+
         Dialog = QtWidgets.QDialog(
             None,
             QtCore.Qt.WindowSystemMenuHint
@@ -1572,6 +1604,9 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
         response = Dialog.exec()
         if response == 1:
             self.lama_settings = ui.lama_settings
+            if self.lama_settings[halfpoints] != halfpoints_setting:
+                self.reload_all_examples_sage(self.lama_settings[halfpoints])
+
 
 
     def show_gk_catalogue(self):
@@ -5436,25 +5471,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.actionRestore_sage.setText("Backup")
             self.actionRestore_sage.setEnabled(False)
 
-    
-    def sage_load_files(self):
+    @report_exceptions
+    def load_all_examples(self, progress_window=True):
         list_aufgaben_errors = []
-
-        for i in reversed(range(0, self.verticalLayout_scrollArea_sage_typ1.count())):
-            self.delete_widget(self.verticalLayout_scrollArea_sage_typ1, i)
-
-        for i in reversed(range(0, self.verticalLayout_scrollArea_sage_typ2.count())):
-            self.delete_widget(self.verticalLayout_scrollArea_sage_typ2, i)
-        self.scrollAreaWidgetContents_typ2.hide()
-
-        if type(self.list_alle_aufgaben_sage[0]) != list:
-            warning_window(
-                "Die geöffnete *.lama-Datei ist veraltet. Die Datei kann daher möglicherweise nicht oder nur teilweise geladen werden.",
-                "Für nähere Infos kontaktieren Sie uns bitte unter lama.helpme@gmail.com",
-            )
-            list_all_files = self.list_alle_aufgaben_sage
-            self.list_alle_aufgaben_sage = [list_all_files,[]]
-
         for list_index in [0,1]:
             if list_index == 0:
                 layout = self.verticalLayout_scrollArea_sage_typ1
@@ -5478,10 +5497,32 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 # layout.addWidget(neue_aufgaben_box)
 
                 self.add_image_path_to_list(aufgabe.replace(" (lokal)", ""))
-                self.progress_laoding_sage_value +=1
-                # self.progress_value_sage +=1
-                self.progress_laoding_sage.setValue(self.progress_laoding_sage_value)
+                if progress_window == True:
+                    self.progress_laoding_sage_value +=1
+                    # self.progress_value_sage +=1
+                    self.progress_laoding_sage.setValue(self.progress_laoding_sage_value)
+        return list_aufgaben_errors
 
+    def sage_load_files(self):
+        list_aufgaben_errors = []
+
+        for i in reversed(range(0, self.verticalLayout_scrollArea_sage_typ1.count())):
+            self.delete_widget(self.verticalLayout_scrollArea_sage_typ1, i)
+
+        for i in reversed(range(0, self.verticalLayout_scrollArea_sage_typ2.count())):
+            self.delete_widget(self.verticalLayout_scrollArea_sage_typ2, i)
+        self.scrollAreaWidgetContents_typ2.hide()
+
+        if type(self.list_alle_aufgaben_sage[0]) != list:
+            warning_window(
+                "Die geöffnete *.lama-Datei ist veraltet. Die Datei kann daher möglicherweise nicht oder nur teilweise geladen werden.",
+                "Für nähere Infos kontaktieren Sie uns bitte unter lama.helpme@gmail.com",
+            )
+            list_all_files = self.list_alle_aufgaben_sage
+            self.list_alle_aufgaben_sage = [list_all_files,[]]
+
+
+        list_aufgaben_errors = self.load_all_examples()
 
         # self.verticalLayout_scrollArea_sage.addStretch()
 
@@ -5633,7 +5674,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
 
-        list_aufgaben_errors = self.sage_load_files()
+        list_aufgaben_errors = self.sage_load_files(progr)
 
         self.progress_laoding_sage.cancel()
         # progress.cancel()
@@ -5673,6 +5714,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.spinBox_default_pkt.setValue(
             self.dict_all_infos_for_file["data_gesamt"]["Typ1 Standard"]
         )
+        self.doublespinBox_default_pkt.setValue(
+            self.dict_all_infos_for_file["data_gesamt"]["Typ1 Standard"]
+        ) 
 
         for list_index in [0,1]:
             for aufgabe in self.list_alle_aufgaben_sage[list_index]:
@@ -6263,11 +6307,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         )
         self.no_saved_changes_sage = False
 
-    def update_default_pkt(self):
+    def update_default_pkt(self, spinbox_widget):
         for all in self.dict_variablen_punkte:
             if get_aufgabentyp(self.chosen_program, all) == 1:
                 self.dict_variablen_punkte[all].setValue(
-                    self.spinBox_default_pkt.value()
+                    spinbox_widget.value()
                 )
 
     def get_punkte_aufgabe_sage(self, aufgabe):
@@ -6403,10 +6447,24 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         except AttributeError:
             self.temp_info={}
 
+
+        try: 
+            if self.chosen_program == 'cria':
+                halfpoints = 'halfpoints_cria'
+            else:
+                halfpoints = 'halfpoints'
+            halfpoints_checked = self.lama_settings[halfpoints]
+        except KeyError:
+            halfpoints_checked = False
+
+
         if aufgabe in self.temp_info:
             punkte = self.temp_info[aufgabe][0]
         elif typ == 1:
-            punkte = self.spinBox_default_pkt.value()
+            if halfpoints_checked == False:
+                punkte = self.spinBox_default_pkt.value()
+            else:
+                punkte = self.doublespinBox_default_pkt.value()
         else:
             punkte = aufgabe_total["punkte"]
 
@@ -6416,7 +6474,15 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         horizontalLayout_groupbox_pkt.setObjectName(
             _fromUtf8("horizontalLayout_groupbox_pkt")
         )
-        spinbox_pkt = create_new_spinbox(groupbox_pkt)
+
+
+        if halfpoints_checked == False:
+            spinbox_pkt = create_new_spinbox(groupbox_pkt)
+        elif halfpoints_checked == True:
+            spinbox_pkt = QtWidgets.QDoubleSpinBox(groupbox_pkt)
+            spinbox_pkt.setSingleStep(0.5)
+            spinbox_pkt.setDecimals(1)
+
 
         spinbox_pkt.setValue(punkte)
         spinbox_pkt.valueChanged.connect(self.spinbox_pkt_changed)
@@ -7454,6 +7520,21 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         elif self.combobox_beurteilung.currentText() == "keine Auswahl":
             beurteilung = "none"
 
+
+        try: 
+            # if self.chosen_program == 'cria':
+            #     halfpoints = 'halfpoints_cria'
+            # else:
+            #     halfpoints = 'halfpoints'
+            halfpoints_checked = self.lama_settings['halfpoints']
+        except KeyError:
+            halfpoints_checked = False
+        
+        if halfpoints_checked == False:
+            typ1standard = self.spinBox_default_pkt.value()
+        else:
+            typ1standard = self.doublespinBox_default_pkt.value()
+        
         dict_data_gesamt = {
             "program": self.chosen_program,
             "#": self.spinBox_nummer.value(),
@@ -7480,7 +7561,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 self.lineedit_g2_upper_limit.text(),
                 self.lineedit_g2_lower_limit.text(),
             ],
-            "Typ1 Standard": self.spinBox_default_pkt.value(),
+            "Typ1 Standard": typ1standard,
             # "copy_images": self.list_copy_images,
         }
 
