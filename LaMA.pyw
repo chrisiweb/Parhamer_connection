@@ -1685,7 +1685,7 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
         if response == False:
             return
 
-        refresh_ddb(self)
+        refresh_ddb(self, auto_update=True)
 
         path_new_srdpmathematik_package = os.path.join(
             path_programm, "_database", "_config", "srdp-mathematik.sty"
