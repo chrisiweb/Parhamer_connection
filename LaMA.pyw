@@ -6465,6 +6465,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 punkte = self.spinBox_default_pkt.value()
             else:
                 punkte = self.doublespinBox_default_pkt.value()
+                
         else:
             punkte = aufgabe_total["punkte"]
 
@@ -6482,6 +6483,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             spinbox_pkt = QtWidgets.QDoubleSpinBox(groupbox_pkt)
             spinbox_pkt.setSingleStep(0.5)
             spinbox_pkt.setDecimals(1)
+
+            
 
 
         spinbox_pkt.setValue(punkte)
@@ -6504,6 +6507,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             horizontalLayout_groupbox_pkt.addWidget(checkbox_pkt)
             self.dict_variablen_punkte_halb[aufgabe] = checkbox_pkt
 
+
+        if halfpoints_checked == True and typ ==1:
+            def check_spinboxvalue(spinbox):
+                if spinbox.value()%1 == 0:
+                    checkbox_pkt.setEnabled(True)
+                else:
+                    checkbox_pkt.setEnabled(False)
+            spinbox_pkt.valueChanged.connect(lambda: check_spinboxvalue(spinbox_pkt))
         # if typ == 2:
         #     groupbox_pkt.setToolTip(
         #         "Die Punkte geben die Gesamtpunkte dieser Aufgabe an.\nEs müssen daher auch die Ausgleichspunkte berücksichtigt werden."
