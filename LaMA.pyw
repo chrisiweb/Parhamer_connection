@@ -6512,8 +6512,21 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             def check_spinboxvalue(spinbox):
                 if spinbox.value()%1 == 0:
                     checkbox_pkt.setEnabled(True)
+                    checkbox_pkt.setStyleSheet(f"""
+                        QCheckBox::indicator:checked:disabled{{
+                        image: url({get_icon_path("check-square_disabled.svg")});
+                        width: 35px;        
+                    }}""")
                 else:
                     checkbox_pkt.setEnabled(False)
+                    checkbox_pkt.setStyleSheet(f"""
+                        QCheckBox::indicator:checked:disabled{{
+                        image: url({get_icon_path("square_disabled.svg")});
+                        width: 35px;        
+                    }}""")
+
+
+
             spinbox_pkt.valueChanged.connect(lambda: check_spinboxvalue(spinbox_pkt))
         # if typ == 2:
         #     groupbox_pkt.setToolTip(
@@ -7638,8 +7651,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         punkte = self.get_punkte_aufgabe_sage(aufgabe)
 
-        halbe_punkte = self.get_punkte_halb_aufgabe_sage(aufgabe)
-
+        if punkte%1 == 0:
+            halbe_punkte = self.get_punkte_halb_aufgabe_sage(aufgabe)
+        else:
+            halbe_punkte = False
+            
         abstand = self.get_abstand_aufgabe_sage(aufgabe)
         if punkte == 0:
             begin = "\\begin{enumerate}\item[\\stepcounter{number}\\thenumber.]"
