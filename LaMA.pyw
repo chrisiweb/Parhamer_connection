@@ -8827,10 +8827,8 @@ if __name__ == "__main__":
     screen_resolution = app.desktop().screenGeometry()
     screen_width, screen_height = screen_resolution.width(), screen_resolution.height()
 
-    MainWindow.setGeometry(
-        30, 30, round(screen_width * 0.5), round(screen_height * 0.85)
-    )
-    MainWindow.move(30, 30)
+
+
     i = step_progressbar(i, "mainwindow")
 
     
@@ -8839,6 +8837,9 @@ if __name__ == "__main__":
     splash.finish(MainWindow)
     ui.setupUi(MainWindow)
 
+    MainWindow.move(30, 30)
+
+    MainWindow.resize(round(screen_width * 0.5), round(screen_height * 0.75))
     MainWindow.show()
 
     sys.exit(app.exec_())
