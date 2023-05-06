@@ -28,13 +28,13 @@ dict_themen_wizard = {
               'self.widget_zahlenbereich_1_combobox',
               'self.widget_general_direction',  
             ],
-            # "Zahlengerade": [
-            #     'self.widget_zahlenbereich_startingvalue',
-            #     'self.widget_zahlenbereich_steps',
-            #     'self.widget_zahlenbereich_subticks',
-            #     'self.widget_general_direction_CB',
-            #     'self.widget_coordinatesystem_points',
-            # ],           
+            "Zahlengerade": [
+                'self.widget_zahlenbereich_startingvalue',
+                'self.widget_zahlenbereich_steps',
+                'self.widget_zahlenbereich_subticks',
+                'self.widget_general_direction_CB',
+                'self.widget_coordinatesystem_points',
+            ],           
         },
         "Positive (Dezimal-)Zahlen": {
             "Addition": [
@@ -1502,6 +1502,7 @@ def create_latex_string_number_line(content, example, starting_value, steps, sub
     if geometry_direction_index == 1:
         pstricks_code_dots = f"\\antwort{{{pstricks_code_dots}}}" 
 
+    
     pstricks_code = f"""
 \psset{{xunit={1/steps}cm,yunit=1.0cm,dotstyle=x,dotsize=6pt 0,linewidth=1pt,arrowsize=3pt 2}}
 \\begin{{pspicture*}}({beginning_picture},-1)({ending_picture},1)
@@ -1510,7 +1511,19 @@ def create_latex_string_number_line(content, example, starting_value, steps, sub
 \end{{pspicture*}}
 """
 
-    content += f"\\task\n{pstricks_code}\n\n"
+    string_coordinates = ""
+    for i, all in enumerate(example[0]):
+        coordinates = example[0][all]
+        if i != 0:
+            string_coordinates += " \hfil "
+
+        if geometry_direction_index == 0:
+            string_coordinates += f"${all} = \\antwort[\\rule{{1cm}}{{0.3pt}}]{{{coordinates[0]}}}$"
+        else:
+            string_coordinates += f"${all} = {coordinates[0]}$"
+
+
+    content += f"\\task\n{pstricks_code}\n{string_coordinates}\n"
 #     \psdots(250.,0.)
 # \\rput(250,0.4){{$A$}}
 # \psdots(370.,0.)
