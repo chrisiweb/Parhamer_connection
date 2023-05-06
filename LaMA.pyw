@@ -1188,9 +1188,6 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
         self.cb_no_grade_tag.setChecked(False)
         self.button_language.setToolTip("Deutsch")
         self.button_language.setText("DE")
-        self.temporary_save_edit_plainText_deutsch = ""
-        self.temporary_save_edit_plainText_englisch = ""
-
 
 
     def delete_all_examples_sage(self):
@@ -2491,7 +2488,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.plainTextEdit.clear()
             self.button_language.setToolTip("Englisch")
             self.button_language.setText("EN")
-
             try: 
                 self.plainTextEdit.insertPlainText(self.temporary_save_edit_plainText_englisch)
             except AttributeError:
@@ -7655,7 +7651,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             halbe_punkte = self.get_punkte_halb_aufgabe_sage(aufgabe)
         else:
             halbe_punkte = False
-            
+
         abstand = self.get_abstand_aufgabe_sage(aufgabe)
         if punkte == 0:
             begin = "\\begin{enumerate}\item[\\stepcounter{number}\\thenumber.]"
