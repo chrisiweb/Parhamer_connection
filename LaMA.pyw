@@ -4625,7 +4625,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.list_of_examples_wizard = self.create_list_of_examples_wizard()
 
         self.reset_aufgabenboxes_wizard()
-
+        print('test')
 
         # if self.checkBox_show_nonogramm.isChecked():
         #     self.create_nonogramm_wizard()  
