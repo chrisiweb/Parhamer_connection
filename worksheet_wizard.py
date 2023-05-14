@@ -1504,7 +1504,7 @@ def create_latex_string_number_line(content, example, starting_value, steps, sub
     pstricks_code = f"""
 \psset{{xunit={1/steps}cm,yunit=1.0cm,dotstyle=x,dotsize=6pt 0,linewidth=1pt,arrowsize=3pt 2}}
 \\begin{{pspicture*}}({beginning_picture},-1)({ending_picture},1)
-\psaxes[labelFontSize=\scriptstyle, comma, yAxis=false {string_Ox},Dx={steps},ticksize=-5pt 0,subticks={subticks}, subtickcolor=black]{{{arrows}}}(0,0)({beginning},-1)({ending},1)
+\psaxes[labelFontSize=\scriptstyle, comma, yAxis=false {string_Ox},Dx={steps},ticksize=-5pt 0,subticks={subticks}]{{{arrows}}}(0,0)({beginning},-1)({ending},1)
 {pstricks_code_dots}
 \end{{pspicture*}}
 """
