@@ -808,7 +808,9 @@ def create_info_box(_file):
         klasse = _file['klasse'][-1]
     quelle = _file['quelle']
     if not is_empty(_file['bilder']):
-        bilder = "\\\\\nBilder: {}".format(_file['bilder'])
+        string_bilder = ", ".join(_file['bilder'])
+        string_bilder = string_bilder.replace("_","\_")
+        bilder = "\\\\\nBilder: {}".format(string_bilder)
     else:
         bilder = ""
 
