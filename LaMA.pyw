@@ -5562,7 +5562,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     @report_exceptions
     def sage_load(self, external_file_loaded=False, autosave=False):
-        self.update_gui("widgets_sage")
         if external_file_loaded == False and autosave == False:
             try:
                 os.path.dirname(self.saved_file_path)
@@ -5611,7 +5610,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             )
             return
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        
+        self.update_gui("widgets_sage")
         self.dict_all_infos_for_file = self.load_file(self.saved_file_path)
 
 
@@ -5780,7 +5779,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         )
 
         self.no_saved_changes_sage = True
-        
         QtWidgets.QApplication.restoreOverrideCursor()
 
     @report_exceptions
