@@ -5702,7 +5702,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
 
-        list_aufgaben_errors = self.sage_load_files(progr)
+        list_aufgaben_errors = self.sage_load_files()
 
         self.progress_laoding_sage.cancel()
         # progress.cancel()
