@@ -13,7 +13,7 @@ import sys
 #     reload_ddb = False
 reload_ddb = False
 
-show_popup = False
+show_popup = True
 
 
 from start_window import check_if_database_exists
@@ -407,9 +407,15 @@ class Ui_MainWindow(object):
 
     def show_popup_window(self, show_checkbox = True):
         rsp = custom_window("""
-<b>Augrund einer Änderung der Datenbank, muss diese neu heruntergeladen werden.</b><br><br><br>
+<b>Die neue Version von LaMA ({}) verwendet Befehle des aktuellsten "srdp-mathematik"-Pakets. Um die volle Funktionsfähigkeit von LaMA zu gewährleisten, sollte das LaTeX-Paket auf Ihrem Gerät manuell aktualisiert werden.</b><br><br><br>
 
-Sollten dabei Problem auftreten, melden Sie sich bitte unter: lama.helpme@gmail.com<br>
+Eine direkte Aktualisierung des "srdp-mathematik"-Pakets über LaMA kann via<br>
+
+<i>"Optionen -> Update ... -> srdp-mathematik.sty aktualisieren"</i><br>
+
+durchgeführt werden.<br><br>
+
+Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.com<br>
 """.format(__version__),
         titel="Update Information",
         show_checkbox=show_checkbox,
@@ -419,6 +425,13 @@ Sollten dabei Problem auftreten, melden Sie sich bitte unter: lama.helpme@gmail.
 
 
     ##### PREVIOUS MESSAGES
+#### Update DDB
+
+# <b>Augrund einer Änderung der Datenbank, muss diese neu heruntergeladen werden.</b><br><br><br>
+
+# Sollten dabei Problem auftreten, melden Sie sich bitte unter: lama.helpme@gmail.com<br>
+### Update srdp-package
+
 # <b>Die neue Version von LaMA ({}) verwendet Befehle des aktuellsten "srdp-mathematik"-Pakets. Um die volle Funktionsfähigkeit von LaMA zu gewährleisten, sollte das LaTeX-Paket auf Ihrem Gerät manuell aktualisiert werden.</b><br><br><br>
 
 # Eine direkte Aktualisierung des "srdp-mathematik"-Pakets über LaMA kann via<br>
