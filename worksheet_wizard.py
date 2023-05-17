@@ -28,13 +28,13 @@ dict_themen_wizard = {
               'self.widget_zahlenbereich_1_combobox',
               'self.widget_general_direction',  
             ],
-            # "Zahlengerade": [
-            #     'self.widget_zahlenbereich_startingvalue',
-            #     'self.widget_zahlenbereich_steps',
-            #     'self.widget_zahlenbereich_subticks',
-            #     'self.widget_general_direction_CB',
-            #     'self.widget_coordinatesystem_points',
-            # ],           
+            "Zahlengerade": [
+                'self.widget_zahlenbereich_startingvalue',
+                'self.widget_zahlenbereich_steps',
+                'self.widget_zahlenbereich_subticks',
+                'self.widget_general_direction_CB',
+                'self.widget_coordinatesystem_points',
+            ],           
         },
         "Positive (Dezimal-)Zahlen": {
             "Addition": [
@@ -363,7 +363,7 @@ def create_single_example_number_line(starting_value, steps, subticks):
             i+=1
 
     list_of_points = sorted(list_of_points, key=float)
-
+    # print(list_of_points)
     dict_of_points = {}
     for i, all in enumerate(list_of_points):
         dict_of_points[index_to_letter(i).upper()]=(all,0)
@@ -1468,9 +1468,6 @@ def formatNumber(num):
     return num
 
 def create_latex_string_number_line(content, example, starting_value, steps, subticks, dot_style_index, geometry_direction_index):
-    print(example)
-
-    print(starting_value)
     steps = formatNumber(steps)
     if starting_value==0:
         arrows = "->"
@@ -1497,20 +1494,35 @@ def create_latex_string_number_line(content, example, starting_value, steps, sub
         Ox = starting_value
         string_Ox= f",Ox={formatNumber(starting_value)}"
 
-    pstricks_code_dots = create_pstricks_code_dots(example, dot_style_index, geometry_direction_index, xlabel_padding=0, ylabel_padding=0.2, Ox=Ox)
+
+    pstricks_code_dots = create_pstricks_code_dots(example, dot_style_index, geometry_direction_index, xlabel_padding=-steps/10, ylabel_padding=0.2, Ox=Ox)
 
     if geometry_direction_index == 1:
         pstricks_code_dots = f"\\antwort{{{pstricks_code_dots}}}" 
 
+    
     pstricks_code = f"""
 \psset{{xunit={1/steps}cm,yunit=1.0cm,dotstyle=x,dotsize=6pt 0,linewidth=1pt,arrowsize=3pt 2}}
 \\begin{{pspicture*}}({beginning_picture},-1)({ending_picture},1)
-\psaxes[labelFontSize=\scriptstyle, comma, yAxis=false {string_Ox},Dx={steps},ticksize=-5pt 0,subticks={subticks}]{{{arrows}}}(0,0)({beginning},-1)({ending},1)
+\psaxes[labelFontSize=\scriptstyle, comma, yAxis=false {string_Ox},Dx={steps},ticksize=-5pt 0,subticks={subticks}, subtickcolor=black]{{{arrows}}}(0,0)({beginning},-1)({ending},1)
 {pstricks_code_dots}
 \end{{pspicture*}}
 """
 
-    content += f"\\task\n{pstricks_code}\n\n"
+    string_coordinates = ""
+    for i, all in enumerate(example[0]):
+        coordinates = example[0][all]
+        if i != 0:
+            string_coordinates += " \hfil "
+
+        x_coordinate = str(coordinates[0]).replace(".",",")
+        if geometry_direction_index == 0:
+            string_coordinates += f"${all} = \\antwort[\\rule{{1cm}}{{0.3pt}}]{{{x_coordinate}}}$"
+        else:
+            string_coordinates += f"${all} = {x_coordinate}$"
+
+
+    content += f"\\task\n{pstricks_code}\n{string_coordinates}\n"
 #     \psdots(250.,0.)
 # \\rput(250,0.4){{$A$}}
 # \psdots(370.,0.)

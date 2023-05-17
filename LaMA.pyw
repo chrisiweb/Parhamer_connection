@@ -3,7 +3,7 @@
 
 __lastupdate__ = "04/23"
 
-
+#minor change
 ##################
 import sys
 
@@ -4649,6 +4649,27 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.reset_aufgabenboxes_wizard()
         # self.dict_aufgaben_wizard[index].setText(new_example[-1])
 
+
+    def set_all_settings_wizard(self, _dict):
+        self.spinBox_number_wizard.setValue(len(_dict['list_of_examples']))
+        self.spinBox_column_wizard.setValue(_dict['spalten'])
+        if _dict['ausrichtung'] != None:
+            self.combobox_ausrichtung_wizard.setCurrentIndex(_dict['ausrichtung'])
+        if _dict['instruction'] != None:
+            self.current_single_instruction_wizard = _dict['instruction']
+            self.pushButton_single_instructions.setText("Arbeitsanweisung ändern")
+        else:
+            self.pushButton_single_instructions.setText("Arbeitsanweisung hinzufügen")
+
+        self.spinbox_zahlenbereich_startingvalue.setValue(_dict['number_line'][0])
+        self.spinbox_zahlenbereich_steps.setValue(_dict['number_line'][1])
+        self.spinbox_zahlenbereich_subticks.setValue(_dict['number_line'][2])
+        self.combobox_general_direction_CB.setCurrentIndex(_dict['direction_index'])
+        self.combobox_points.setCurrentIndex(_dict['dotstyle_index'])
+        self.checkbox_coordinatesystem_zwischenwerte.setChecked(_dict['coordinate_system'][0])
+        self.checkbox_coordinatesystem_negative_numbers.setChecked(_dict['coordinate_system'][1])
+             
+
     def edit_set_of_examples_wizard(self, widget, thema):
         self.pushButton_addto_worksheet_wizard.setEnabled(True)
         if not is_empty(self.list_of_examples_wizard):
@@ -4657,21 +4678,19 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 return
 
         self.list_of_examples_wizard = self.dict_all_examples_worksheet_wizard[widget]['list_of_examples']
-
+        print(self.dict_all_examples_worksheet_wizard[widget])
         self.reset_aufgabenboxes_wizard()
 
-        self.spinBox_number_wizard.setValue(len(self.list_of_examples_wizard))
+        self.set_all_settings_wizard(self.dict_all_examples_worksheet_wizard[widget])
+        
 
-        self.spinBox_column_wizard.setValue(self.dict_all_examples_worksheet_wizard[widget]['spalten'])
+        
 
-        if self.dict_all_examples_worksheet_wizard[widget]['ausrichtung'] != None:
-            self.combobox_ausrichtung_wizard.setCurrentIndex(self.dict_all_examples_worksheet_wizard[widget]['ausrichtung'])
 
-        if self.dict_all_examples_worksheet_wizard[widget]['instruction'] != None:
-            self.current_single_instruction_wizard = self.dict_all_examples_worksheet_wizard[widget]['instruction']
-            self.pushButton_single_instructions.setText("Arbeitsanweisung ändern")
-        else:
-            self.pushButton_single_instructions.setText("Arbeitsanweisung hinzufügen")
+
+
+
+
 
         _string = thema[0]
         for all in thema[1:]:
