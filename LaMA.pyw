@@ -1462,6 +1462,7 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
                 self.widgetName.show()
             # self.groupBox_ausgew_gk_cr.setTitle("Ausgewählte Grundkompetenzen")
             self.update_gui("widgets_search")
+
             self.combobox_beurteilung.insertItem(1,"Beurteilungsraster")
         elif program_change_to == 'wizard':
             # self.chosen_program = "wizard"
@@ -4638,7 +4639,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.list_of_examples_wizard = self.create_list_of_examples_wizard()
 
         self.reset_aufgabenboxes_wizard()
-        print('test')
 
         # if self.checkBox_show_nonogramm.isChecked():
         #     self.create_nonogramm_wizard()  
@@ -4691,7 +4691,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 return
 
         self.list_of_examples_wizard = self.dict_all_examples_worksheet_wizard[widget]['list_of_examples']
-        print(self.dict_all_examples_worksheet_wizard[widget])
+        # print(self.dict_all_examples_worksheet_wizard[widget])
         self.reset_aufgabenboxes_wizard()
 
         self.set_all_settings_wizard(self.dict_all_examples_worksheet_wizard[widget])
@@ -8289,6 +8289,21 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.stackMainWindow.minimumSizeHint()
         if self.chosen_program == "cria":
             chosen_gui = chosen_gui + "_cria"
+        elif self.chosen_program == 'lama':
+            try:
+                halfpoints_setting = self.lama_settings['halfpoints']
+            except KeyError:
+                halfpoints_setting = False
+            if halfpoints_setting == False:
+                self.spinBox_default_pkt.show()
+                self.doublespinBox_default_pkt.hide()
+            elif halfpoints_setting == True:
+                self.doublespinBox_default_pkt.show()
+                self.spinBox_default_pkt.hide()
+
+
+
+
 
         chosen_gui_list = eval(chosen_gui)
 

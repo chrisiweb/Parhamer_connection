@@ -173,22 +173,7 @@ def collect_suchbegriffe(self):
                         suchbegriffe['themen'].append(thema.upper())
 
 
-    if self.chosen_program == "cria":
-        # def sortTopics(item):
-        #     # print(item)
-        #     for index_1, klasse in enumerate(list_klassen):
-        #         # print(f"INDEX 1: {index_1}")
-        #         dict_klasse = eval("dict_{}".format(klasse))
-        #         for index_2, topic in enumerate(dict_klasse):
-        #             # print(index_2)
-        #             # print(dict_klasse[topic])
-
-        #             for index_3, subtopic in enumerate(dict_klasse[topic]):
-        #                 if item == f"{topic}.{subtopic}":
-        #                     # print('TRUE')
-        #                     return [index_1, index_2, index_3]
-          
-            
+    if self.chosen_program == "cria":       
 
         suchbegriffe['klasse'].append(None)
         for all in self.dict_chosen_topics.values():
@@ -197,7 +182,7 @@ def collect_suchbegriffe(self):
             if all[0] not in suchbegriffe['klasse']:
                 suchbegriffe['klasse'].append(all[0])
 
-        # print(suchbegriffe['themen'])
+
         suchbegriffe['themen'].sort(key=sortTopics)
             
 
@@ -292,7 +277,6 @@ def search_in_database(self,current_program, database,suchbegriffe):
     def lineedit_in_name(value):
         simplified_search = shorten_gk(suchbegriffe['erweiterte_suche'].lower())
         simplified_value = shorten_gk(value)
-        # print(short_gk)#
 
         _list= simplified_search.split("-")
         gk_search = _list[0]
@@ -938,8 +922,6 @@ def open_pdf_file(folder_name, file_name):
         )
     elif sys.platform.startswith("darwin"):
         if is_empty(path_pdf_reader) == False:
-            print(False)
-            print(path_pdf_reader)
             if os.path.exists(path_pdf_reader)== False:
                 warning_window("Der ausgewählte Pfad des Pdf-Readers zum Öffnen der Dateien ist fehlerhaft. Bitte korrigieren oder löschen Sie diesen.")
             
@@ -948,7 +930,6 @@ def open_pdf_file(folder_name, file_name):
             )            
 
         else:
-            print(True)
             subprocess.run(
                 ["open", "{0}.pdf".format(file_path)]
             )
@@ -1012,7 +993,6 @@ def create_pdf(path_file, index=0, maximum=0, typ=0):
         else:
             folder_name = head
 
-    # print("Pdf-Datei wird erstellt. Bitte warten...")
 
     latex_output_file = open(
         "{0}/Teildokument/temp.txt".format(path_localappdata_lama),
