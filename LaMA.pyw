@@ -517,42 +517,46 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
             titel="Keine LaTeX-Distribution gefunden")
             return
 
+        while True:
+            self.ui_erstellen = Ui_Dialog_erstellen()
+            self.ui_erstellen.setupUi(
+                self.Dialog,
+                self,
+                self.dict_all_infos_for_file,
+                dict_titlepage,
+                self.saved_file_path,
+                self.comboBox_pruefungstyp.currentText(),
+            )
+            rsp = self.Dialog.exec_()
 
-        self.ui_erstellen = Ui_Dialog_erstellen()
-        self.ui_erstellen.setupUi(
-            self.Dialog,
-            self,
-            self.dict_all_infos_for_file,
-            dict_titlepage,
-            self.saved_file_path,
-            self.comboBox_pruefungstyp.currentText(),
-        )
-        rsp = self.Dialog.exec_()
+            if rsp == QtWidgets.QDialog.Accepted:
+                single_file_index = self.ui_erstellen.single_file_index
 
-        if rsp == QtWidgets.QDialog.Accepted:
-            single_file_index = self.ui_erstellen.single_file_index
-
-            if self.ui_erstellen.pdf == False:
-                range_limit = 1
-            elif single_file_index != None:
-                range_limit = 2
-            else:
-                range_limit = (
-                    self.ui_erstellen.spinBox_sw_gruppen.value() * 2
-                )  # +1 to reset tex-file to random=0
-
-
-            filename_vorschau = self.get_saving_path()
-            if filename_vorschau == None:
-                return
-
-           
-            self.collect_all_infos_for_creating_file()
-
-            if self.ui_erstellen.lama == True:
-                self.sage_save(path_create_tex_file=filename_vorschau)
+                if self.ui_erstellen.pdf == False:
+                    range_limit = 1
+                elif single_file_index != None:
+                    range_limit = 2
+                else:
+                    range_limit = (
+                        self.ui_erstellen.spinBox_sw_gruppen.value() * 2
+                    )  # +1 to reset tex-file to random=0
 
 
+                filename_vorschau = self.get_saving_path()
+                if filename_vorschau == None:
+                    return
+
+            
+                self.collect_all_infos_for_creating_file()
+
+                if self.ui_erstellen.lama == True:
+                    try:
+                        self.sage_save(path_create_tex_file=filename_vorschau)
+                        break
+                    except PermissionError:
+                        critical_window("Sie verfügen nicht über die Berechtigungen zum Speichern in diesem Pfad. Bitte wählen Sie einen anderen Pfad zum Speichern der Schularbeit aus.")
+                else:
+                    break
             if (
                 is_empty(self.list_copy_images) #self.dict_all_infos_for_file["data_gesamt"]["copy_images"]
                 == False
