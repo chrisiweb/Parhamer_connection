@@ -84,7 +84,7 @@ def edit_content_hide_show_items(self, aufgabe, split_content, full_content):
 
 
 
-        # index_start=0
+        index_start=0
         for i, lines in enumerate(list_content):
             if line_start in lines.replace("\n","").replace("\t","").strip():
                 index_start=i
