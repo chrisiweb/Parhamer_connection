@@ -528,7 +528,7 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
             self.comboBox_pruefungstyp.currentText(),
         )
         rsp = self.Dialog.exec_()
-
+        
         if rsp == QtWidgets.QDialog.Accepted:
             single_file_index = self.ui_erstellen.single_file_index
 
@@ -542,10 +542,15 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
                 )  # +1 to reset tex-file to random=0
 
 
-            filename_vorschau = self.get_saving_path()
-            if filename_vorschau == None:
-                return
-
+            while True:
+                filename_vorschau = self.get_saving_path()
+                if filename_vorschau == None:
+                    return
+                
+                if os.access(os.path.dirname(filename_vorschau), os.W_OK)==False:
+                    critical_window('Sie verfügen nicht über die Berechtigung zum Speichern in diesem Pfad. Bitte wählen Sie einen anderen Pfad aus.')
+                else:
+                    break
            
             self.collect_all_infos_for_creating_file()
 
@@ -5782,12 +5787,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     @report_exceptions
     def sage_save(self, path_create_tex_file=False, autosave=False):  # path_file
+        
         if autosave == False:
             self.update_gui("widgets_sage")
         try:
             self.saved_file_path
         except AttributeError:
             self.saved_file_path = path_home
+
 
         if path_create_tex_file == False and autosave == False:
             path_backup_file = QtWidgets.QFileDialog.getSaveFileName(
@@ -5817,6 +5824,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         with open(save_file, "w+", encoding="utf8") as saved_file:
             json.dump(self.dict_all_infos_for_file, saved_file, ensure_ascii=False)
+
 
         if autosave == True:
             self.update_label_restore_action()
