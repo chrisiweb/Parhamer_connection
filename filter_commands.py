@@ -97,10 +97,10 @@ def filter_items(self, table_lama, typ, list_mode, filter_string, line_entry, kl
 
         try:     
             filtered_items = table_lama.search(_file_.name.test(string_included_lama))
-        except JSONDecodeError:
+        except (JSONDecodeError, TypeError) as e:
             critical_window("Es ist ein Fehler bei der Aufgabensuche aufgetreten. Es können daher nicht alle Aufgaben angezeigt werden. Bitte starten Sie die Suche erneut.",
             "Sollte der Fehler weiterhin bestehen, melden Sie sich bitte unter lama.helpme@gmail.com",
-            detailed_text=f'JSONDecodeError: File "filter_commands.py" in filter_items\n\nError occured in table:\n{table_lama}')
+            detailed_text=f'Error:{e}: File "filter_commands.py" in filter_items\n\nError occured in table:\n{table_lama}')
             
             filtered_items = []
   
