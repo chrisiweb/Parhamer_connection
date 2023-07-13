@@ -809,16 +809,20 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
     def check_for_update(self):
         try:
             link = (
+                # "https://raw.githubusercontent.com/chrisiweb/lama_latest_update/master/README.md"
                 "https://github.com/chrisiweb/lama_latest_update/blob/master/README.md"
             )
-
+            
             # r = requests.post('https://httpbin.org/post', data = {'key':'value'})
             # f = urlopen(link)
             # url_readme_version = f.read().decode("utf-8")
             readme_content = requests.get(link)
+
             latest_version = re.search(
-                "Aktuelle Version: \[(.+)\]", readme_content.text
+                "\[(v\d+.\d+.\d+)\]", readme_content.text
             ).group(1)
+
+
             if __version__ == latest_version:
                 return
         except Exception as e:

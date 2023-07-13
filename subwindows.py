@@ -761,10 +761,36 @@ class Ui_Dialog_titlepage(object):
         self.verticalLayout_gBtitlepage.addWidget(self.cb_titlepage_titel)
         self.cb_titlepage_titel.setChecked(dict_titlepage["titel"])
 
-        self.cb_titlepage_datum = QtWidgets.QCheckBox("Datum")
-        self.cb_titlepage_datum.setObjectName(_fromUtf8("cb_titlepage_datum"))
-        self.verticalLayout_gBtitlepage.addWidget(self.cb_titlepage_datum)
-        self.cb_titlepage_datum.setChecked(dict_titlepage["datum"])
+
+        self.widget_titlepage_datum = QtWidgets.QWidget(self.groupBox_titlepage)
+        # self.widget_titlepage_datum.setFrameShape(QtWidgets.QFrame.NoFrame)
+        horizontallayout_datum = create_new_horizontallayout(self.widget_titlepage_datum)
+        horizontallayout_datum.setContentsMargins(0, 0, 0, 0)
+        self.cb_titlepage_datum = create_new_checkbox(self.widget_titlepage_datum, "Datum", checked=dict_titlepage["datum"])
+        
+        horizontallayout_datum.addWidget(self.cb_titlepage_datum)
+
+        
+
+        self.combobox_titlepage_datum = create_new_combobox(self.widget_titlepage_datum)
+        add_new_option(self.combobox_titlepage_datum, 0, "fixieren")
+        add_new_option(self.combobox_titlepage_datum, 1, "leer")
+        horizontallayout_datum.addWidget(self.combobox_titlepage_datum)
+
+        try:
+            self.combobox_titlepage_datum.setCurrentIndex(dict_titlepage["datum_combobox"])
+        except KeyError:
+            self.combobox_titlepage_datum.setCurrentIndex(0)
+
+
+        def disable_combobox_datum():
+            self.combobox_titlepage_datum.setEnabled(self.cb_titlepage_datum.isChecked())
+            
+        disable_combobox_datum()
+        self.cb_titlepage_datum.stateChanged.connect(disable_combobox_datum)
+        horizontallayout_datum.addStretch()
+
+        self.verticalLayout_gBtitlepage.addWidget(self.widget_titlepage_datum)
 
         self.cb_titlepage_klasse = QtWidgets.QCheckBox("Klasse")
         self.cb_titlepage_klasse.setObjectName(_fromUtf8("cb_titlepage_klasse"))
@@ -839,7 +865,9 @@ class Ui_Dialog_titlepage(object):
         return dict_titlepage
 
     def save_titlepage(self, dict_titlepage):
-        for all in dict_titlepage.keys():
+        titlepage_settings = ["logo", "logo_path", "titel", "datum", "datum_combobox", "klasse", "name", "note", "unterschrift", "hide_all"]
+
+        for all in titlepage_settings:
             if all == "logo_path":
                 if self.cb_titlepage_logo.isChecked() and dict_titlepage[all] == False:
                     critical_window(
@@ -848,6 +876,10 @@ class Ui_Dialog_titlepage(object):
                     )
 
                     return
+                continue
+            
+            elif all == "datum_combobox":
+                dict_titlepage[all] = self.combobox_titlepage_datum.currentIndex()
                 continue
 
             checkbox = eval("self.cb_titlepage_{}".format(all))
