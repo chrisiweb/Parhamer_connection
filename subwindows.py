@@ -726,6 +726,15 @@ class Ui_Dialog_titlepage(object):
         )
         self.verticalLayout_titlepage.addWidget(self.groupBox_titlepage)
 
+
+        self.widget_individual_titlepage = QtWidgets.QWidget(Dialog)
+        horizontallayout_individual_titlepage = create_new_horizontallayout(self.widget_individual_titlepage)
+        horizontallayout_individual_titlepage.setContentsMargins(0, 0, 0, 0)
+
+
+        self.verticalLayout_titlepage.addWidget(self.widget_individual_titlepage)
+
+
         self.cb_titlepage_hide_all = QtWidgets.QCheckBox("Kein Titelblatt")
         self.cb_titlepage_hide_all.setObjectName(_fromUtf8("cb_titlepage_hide_all"))
         self.verticalLayout_titlepage.addWidget(self.cb_titlepage_hide_all)
@@ -773,7 +782,7 @@ class Ui_Dialog_titlepage(object):
         
 
         self.combobox_titlepage_datum = create_new_combobox(self.widget_titlepage_datum)
-        add_new_option(self.combobox_titlepage_datum, 0, "fixieren")
+        add_new_option(self.combobox_titlepage_datum, 0, "Kalender")
         add_new_option(self.combobox_titlepage_datum, 1, "leer")
         horizontallayout_datum.addWidget(self.combobox_titlepage_datum)
 
@@ -814,6 +823,20 @@ class Ui_Dialog_titlepage(object):
         self.verticalLayout_gBtitlepage.addWidget(self.cb_titlepage_unterschrift)
         self.cb_titlepage_unterschrift.setChecked(dict_titlepage["unterschrift"])
 
+
+        self.cb_individual_titlepage = create_new_checkbox(self.widget_individual_titlepage, "Indiduelles Titelblatt")
+        horizontallayout_individual_titlepage.addWidget(self.cb_individual_titlepage)
+
+        self.btn_individual_titlepage = create_new_button(self.widget_individual_titlepage, "", partial(self.open_individual_titlepage, dict_titlepage), icon="edit.svg")
+        horizontallayout_individual_titlepage.addWidget(self.btn_individual_titlepage)
+
+        horizontallayout_individual_titlepage.addStretch()
+
+        self.cb_individual_titlepage.stateChanged.connect(
+            self.cb_individual_titlepage_pressed
+        )
+
+
         self.buttonBox_titlepage = QtWidgets.QDialogButtonBox(self.Dialog)
         self.buttonBox_titlepage = QtWidgets.QDialogButtonBox(self.Dialog)
         self.buttonBox_titlepage.setStandardButtons(
@@ -837,11 +860,21 @@ class Ui_Dialog_titlepage(object):
 
         return dict_titlepage
 
+    def cb_individual_titlepage_pressed(self):
+        if self.cb_individual_titlepage.isChecked() == True:
+            self.groupBox_titlepage.setEnabled(False)
+        if self.cb_individual_titlepage.isChecked() == False:
+            self.groupBox_titlepage.setEnabled(True)        
+
     def cb_titlepage_hide_all_pressed(self):
         if self.cb_titlepage_hide_all.isChecked() == True:
+            self.widget_individual_titlepage.setEnabled(False)
             self.groupBox_titlepage.setEnabled(False)
         if self.cb_titlepage_hide_all.isChecked() == False:
-            self.groupBox_titlepage.setEnabled(True)
+            self.widget_individual_titlepage.setEnabled(True)
+            if self.cb_individual_titlepage.isChecked() == False:
+                self.groupBox_titlepage.setEnabled(True)
+            
 
     def btn_titlepage_logo_path_pressed(self, dict_titlepage):
         logo_titlepage_path = QtWidgets.QFileDialog.getOpenFileNames(
@@ -864,7 +897,80 @@ class Ui_Dialog_titlepage(object):
 
         return dict_titlepage
 
-    def save_titlepage(self, dict_titlepage):
+    def open_individual_titlepage(self, dict_titlepage):
+        Dialog = QtWidgets.QDialog(
+            None,
+            Qt.WindowSystemMenuHint
+            | Qt.WindowTitleHint
+            | Qt.WindowCloseButtonHint,
+        )
+
+        Dialog.setWindowTitle("Titelblatt bearbeiten")
+        Dialog.setWindowIcon(QIcon(logo_path)) 
+        Dialog.resize(700,500)
+
+
+        verticalLayout = create_new_verticallayout(Dialog)
+
+        widget_titel = QtWidgets.QWidget(Dialog)
+        verticalLayout.addWidget(widget_titel)
+        self.horizontallayout_titel = create_new_horizontallayout(widget_titel)
+        self.horizontallayout_titel.setContentsMargins(0,0,0,0)
+
+        self.plainTextEdit_instructions = QtWidgets.QPlainTextEdit()
+        # self.plainTextEdit_instructions.setPlainText(text)
+
+        dict_titlepage = self.get_dict_titlepage(dict_titlepage)
+        print(dict_titlepage)
+        standard_titlepage = """\\flushright
+\\begin{minipage}[t]{0.4\\textwidth} \\vspace{0pt}
+\includegraphics[width=1\\textwidth]{logo.eps}
+\end{minipage} \\ [1cm] 
+\\textsc{\Huge 1. Mathematikschularbeit}\\ [0.5cm] 
+
+\\vspace{0.8cm}
+
+\Large Datum: \\rule{8cm}{0.4pt}\\ [0.8cm] 
+
+\\textsc{\Large Klasse } \\ [1cm] 
+
+\Large Name: \\rule{8cm}{0.4pt} \\ [1cm]
+
+\Large Note: \\rule{8cm}{0.4pt} \\ [1cm]
+
+\Large Unterschrift: \\rule{8cm}{0.4pt} \\ [1cm]
+
+\\vspace{1cm}
+
+\\vfill
+
+\large\\beurteilung{0.91}{0.8}{0.64}{0.5}{ % Prozentschluessel
+T1={3}, % Punkte im Teil 1
+T2={0}, % Punkte im Teil 2
+}"""
+
+        self.plainTextEdit_instructions.setPlainText(standard_titlepage)
+
+        verticalLayout.addWidget(self.plainTextEdit_instructions)
+
+        buttonBox = QtWidgets.QDialogButtonBox(Dialog)
+        buttonBox.setStandardButtons(
+            QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel
+        )
+        verticalLayout.addWidget(buttonBox)
+
+        buttonCancel = buttonBox.button(QtWidgets.QDialogButtonBox.Cancel)
+        buttonCancel.setText("Abbrechen")
+        
+        
+        buttonBox.rejected.connect(Dialog.reject)
+        buttonBox.accepted.connect(Dialog.accept)
+
+        rsp = Dialog.exec()
+
+        print(rsp)
+
+    def get_dict_titlepage(self, dict_titlepage):
         titlepage_settings = ["logo", "logo_path", "titel", "datum", "datum_combobox", "klasse", "name", "note", "unterschrift", "hide_all"]
 
         for all in titlepage_settings:
@@ -887,6 +993,11 @@ class Ui_Dialog_titlepage(object):
                 dict_titlepage[all] = True
             else:
                 dict_titlepage[all] = False
+
+        return dict_titlepage
+    
+    def save_titlepage(self, dict_titlepage):
+        dict_titlepage = self.get_dict_titlepage(dict_titlepage)
         self.Dialog.reject()
         return dict_titlepage
 
@@ -896,6 +1007,7 @@ class Ui_Dialog_titlepage(object):
             "logo_path": False,
             "titel": True,
             "datum": True,
+            "datum_combobox": 0,
             "klasse": True,
             "name": True,
             "note": False,
@@ -905,10 +1017,48 @@ class Ui_Dialog_titlepage(object):
         for all in dict_titlepage.keys():
             if all == "logo_path":
                 continue
-            checkbox = eval("self.cb_titlepage_{}".format(all))
-            checkbox.setChecked(dict_titlepage[all])
+            elif all == "datum_combobox":
+                try:
+                    self.combobox_titlepage_datum.setCurrentIndex(dict_titlepage[all])
+                except KeyError:
+                    self.combobox_titlepage_datum.setCurrentIndex(0)
+            else:                
+                checkbox = eval("self.cb_titlepage_{}".format(all))
+                checkbox.setChecked(dict_titlepage[all])
 
         return dict_titlepage
+
+
+class Ui_Dialog_individual_titlepage(object):
+    def setupUi(self, Dialog, text):
+        Dialog.setWindowTitle("Titelblatt bearbeiten")
+        Dialog.setWindowIcon(QIcon(logo_path)) 
+        Dialog.resize(300,50)
+
+        verticalLayout = create_new_verticallayout(Dialog)
+
+        widget_titel = QtWidgets.QWidget(Dialog)
+        verticalLayout.addWidget(widget_titel)
+        self.horizontallayout_titel = create_new_horizontallayout(widget_titel)
+        self.horizontallayout_titel.setContentsMargins(0,0,0,0)
+
+        self.plainTextEdit_instructions = QtWidgets.QPlainTextEdit()
+        self.plainTextEdit_instructions.setPlainText(text)
+
+        verticalLayout.addWidget(self.plainTextEdit_instructions)
+
+        buttonBox = QtWidgets.QDialogButtonBox(Dialog)
+        buttonBox.setStandardButtons(
+            QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel
+        )
+        verticalLayout.addWidget(buttonBox)
+
+        buttonCancel = buttonBox.button(QtWidgets.QDialogButtonBox.Cancel)
+        buttonCancel.setText("Abbrechen")
+        
+        
+        buttonBox.rejected.connect(Dialog.reject)
+        buttonBox.accepted.connect(Dialog.accept)
 
 
 class Ui_Dialog_ausgleichspunkte(object):

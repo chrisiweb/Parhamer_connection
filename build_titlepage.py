@@ -247,7 +247,10 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
             title_header = ""
 
         if dict_titlepage["datum"] == True:
-            datum_text = "\\textsc{{\Large am {0}}}\\\ [1cm] \n\n".format(datum)
+            if dict_titlepage["datum_combobox"]==0:
+                datum_text = "\\textsc{{\Large am {0}}}\\\ [1cm] \n\n".format(datum)
+            elif dict_titlepage["datum_combobox"]==1:
+                datum_text = "\\vspace{0.8cm}\n\n\Large Datum: \\rule{8cm}{0.4pt}\\\ [0.8cm] \n\n"
         else:
             datum_text = ""
 
@@ -296,8 +299,8 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
                 
                 beurteilungsraster = (
                     f"\large\\beurteilung{zusatz}{{{gut}}}{{{befriedigend}}}{{{genuegend}}}{{{nichtgenuegend}}}{{ % Prozentschluessel\n"
-                    f"T1={{{pkt_typ1}}}, % Punkte im Teil 1\n"
-                    f"T2={{{pkt_typ2}}}, % Punkte im Teil 2\n}}\n\n"
+                    f"T1={{{round(pkt_typ1)}}}, % Punkte im Teil 1\n"
+                    f"T2={{{round(pkt_typ2)}}}, % Punkte im Teil 2\n}}\n\n"
                 )
 
 
@@ -315,8 +318,8 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
 
                 beurteilungsraster = (
                     f"\large\individualbeurteilung{{{sg_lower}}}{{{gu_upper}}}{{{gu_lower}}}{{{b_upper}}}{{{b_lower}}}{{{ge_upper}}}{{{ge_lower}}}{{ % Prozentschluessel\n"
-                    f"T1={{{pkt_typ1}}}, % Punkte im Teil 1\n"
-                    f"T2={{{pkt_typ2}}}, % Punkte im Teil 2\n}}\n\n"
+                    f"T1={{{round(pkt_typ1)}}}, % Punkte im Teil 1\n"
+                    f"T2={{{round(pkt_typ2)}}}, % Punkte im Teil 2\n}}\n\n"
                 )              
 
                 # with open(filename_vorschau, "a", encoding="utf8") as vorschau:
@@ -343,7 +346,7 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
             "{5}"
             "{6}"
             "{7}"
-            "\\vspace{{1cm}}\n\n{8}"
+            "\\vfill\n\n{8}"
             "\\end{{titlepage}}\n\n".format(
                 logo_input,
                 title_header,
