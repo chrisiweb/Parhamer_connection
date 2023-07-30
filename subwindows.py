@@ -60,6 +60,7 @@ from upload_database import action_push_database
 from tinydb import Query
 from git_sync import check_branches, git_reset_repo_to_origin, check_internet_connection
 from convert_image_to_eps import convert_image_to_eps
+from build_titlepage import prepare_individual_titlepage
 
 dict_gk = config_loader(config_file, "dict_gk")
 ag_beschreibung = config_loader(config_file, "ag_beschreibung")
@@ -182,7 +183,7 @@ class Ui_Dialog_choose_type(object):
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
         Dialog.setWindowTitle(
-            _translate("Titelplatt anpassen", "Programm auswählen", None)
+            _translate("Titelblatt anpassen", "Programm auswählen", None)
         )
         Dialog.setWindowIcon(QIcon(logo_path))
 
@@ -702,12 +703,12 @@ class Ui_Dialog_random_quiz(object):
 
 
 class Ui_Dialog_titlepage(object):
-    def setupUi(self, Dialog, dict_titlepage):
+    def setupUi(self, Dialog, dict_titlepage, MainWindow):
         
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
         Dialog.setWindowTitle(
-            _translate("Titelplatt anpassen", "Titelplatt anpassen", None)
+            _translate("Titelblatt anpassen", "Titelblatt anpassen", None)
         )
         # self.Dialog.resize(600, 400)
         # self.Dialog.setWindowIcon(QIcon(logo_path))
@@ -824,10 +825,10 @@ class Ui_Dialog_titlepage(object):
         self.cb_titlepage_unterschrift.setChecked(dict_titlepage["unterschrift"])
 
 
-        self.cb_individual_titlepage = create_new_checkbox(self.widget_individual_titlepage, "Indiduelles Titelblatt")
+        self.cb_individual_titlepage = create_new_checkbox(self.widget_individual_titlepage, "Individuelles Titelblatt")
         horizontallayout_individual_titlepage.addWidget(self.cb_individual_titlepage)
 
-        self.btn_individual_titlepage = create_new_button(self.widget_individual_titlepage, "", partial(self.open_individual_titlepage, dict_titlepage), icon="edit.svg")
+        self.btn_individual_titlepage = create_new_button(self.widget_individual_titlepage, "", partial(self.open_individual_titlepage, MainWindow), icon="edit.svg")
         horizontallayout_individual_titlepage.addWidget(self.btn_individual_titlepage)
 
         horizontallayout_individual_titlepage.addStretch()
@@ -897,7 +898,7 @@ class Ui_Dialog_titlepage(object):
 
         return dict_titlepage
 
-    def open_individual_titlepage(self, dict_titlepage):
+    def open_individual_titlepage(self, MainWindow):
         Dialog = QtWidgets.QDialog(
             None,
             Qt.WindowSystemMenuHint
@@ -920,44 +921,61 @@ class Ui_Dialog_titlepage(object):
         self.plainTextEdit_instructions = QtWidgets.QPlainTextEdit()
         # self.plainTextEdit_instructions.setPlainText(text)
 
-        dict_titlepage = self.get_dict_titlepage(dict_titlepage)
-        print(dict_titlepage)
+        # dict_titlepage = self.get_dict_titlepage(dict_titlepage)
+        # print(dict_titlepage)
+        # from build_titlepage import get_titlepage_vorschau()
         standard_titlepage = """\\flushright
-\\begin{minipage}[t]{0.4\\textwidth} \\vspace{0pt}
-\includegraphics[width=1\\textwidth]{logo.eps}
-\end{minipage} \\ [1cm] 
-\\textsc{\Huge 1. Mathematikschularbeit}\\ [0.5cm] 
+\\begin{minipage}[t]{0.4\\textwidth}
+[[LOGO]]
+\end{minipage} \\\\ [1cm] 
+\\textsc{\Huge [[TITEL]]}\\\\ [0.5cm] 
 
 \\vspace{0.8cm}
 
-\Large Datum: \\rule{8cm}{0.4pt}\\ [0.8cm] 
+\Large [[DATUM]]\\\\ [0.8cm] 
 
-\\textsc{\Large Klasse } \\ [1cm] 
+\\textsc{\Large Klasse [[KLASSE]]} \\\\ [1cm] 
 
-\Large Name: \\rule{8cm}{0.4pt} \\ [1cm]
+\Large Name: \\rule{8cm}{0.4pt} \\\\ [1cm]
 
-\Large Note: \\rule{8cm}{0.4pt} \\ [1cm]
+\Large Note: \\rule{8cm}{0.4pt} \\\\ [1cm]
 
-\Large Unterschrift: \\rule{8cm}{0.4pt} \\ [1cm]
+\Large Unterschrift: \\rule{8cm}{0.4pt} \\\\ [1cm]
 
 \\vspace{1cm}
 
 \\vfill
 
-\large\\beurteilung{0.91}{0.8}{0.64}{0.5}{ % Prozentschluessel
-T1={3}, % Punkte im Teil 1
-T2={0}, % Punkte im Teil 2
-}"""
+\large[[BEURTEILUNGSRASTER]]"""
 
         self.plainTextEdit_instructions.setPlainText(standard_titlepage)
-
         verticalLayout.addWidget(self.plainTextEdit_instructions)
 
-        buttonBox = QtWidgets.QDialogButtonBox(Dialog)
+
+        widget_buttons = QtWidgets.QWidget(Dialog)
+        verticalLayout.addWidget(widget_buttons)
+        horizontallayout_widget_buttons = create_new_horizontallayout(widget_buttons)
+        horizontallayout_widget_buttons.setContentsMargins(0,0,0,0)
+
+        self.button_preview = create_new_button(Dialog, "Vorschau", partial(self.button_preview_pressed, MainWindow), icon='eye.svg')
+        self.button_preview.setShortcut("Ctrl+Return")
+        self.button_preview.setToolTip("Strg+Enter")
+        horizontallayout_widget_buttons.addWidget(self.button_preview)
+
+        horizontallayout_widget_buttons.addStretch()
+
+        buttonBox = QtWidgets.QDialogButtonBox(widget_buttons)
         buttonBox.setStandardButtons(
             QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel
         )
-        verticalLayout.addWidget(buttonBox)
+        horizontallayout_widget_buttons.addWidget(buttonBox)
+
+
+
+        
+        # buttonPreview = buttonBox.button(QtWidgets.QDialogButtonBox.Open)
+        # buttonPreview.setText("Vorschau")
+        # buttonPreview.clicked.connect(still_to_define)
 
         buttonCancel = buttonBox.button(QtWidgets.QDialogButtonBox.Cancel)
         buttonCancel.setText("Abbrechen")
@@ -968,7 +986,23 @@ T2={0}, % Punkte im Teil 2
 
         rsp = Dialog.exec()
 
-        print(rsp)
+
+    def button_preview_pressed(self, MainWindow):
+        file_path = os.path.join(
+            path_localappdata_lama, "Teildokument", "preview.tex"
+            )
+        MainWindow.collect_all_infos_for_creating_file()
+        titlepage = prepare_individual_titlepage(self.plainTextEdit_instructions.toPlainText(), MainWindow)
+
+        print(titlepage)
+
+        rsp = create_tex(file_path, titlepage, pagebreak=None, solution="solution_off")
+
+        if rsp == True:
+            create_pdf("preview")
+        else:
+            critical_window("Die PDF Datei konnte nicht erstellt werden", detailed_text= rsp)
+
 
     def get_dict_titlepage(self, dict_titlepage):
         titlepage_settings = ["logo", "logo_path", "titel", "datum", "datum_combobox", "klasse", "name", "note", "unterschrift", "hide_all"]
@@ -1212,7 +1246,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         # if typ ==2:
         #     self.button_restore_default.hide()
 
-        self.button_save_edit = create_new_button(Dialog, "Änderung speichern", partial(self.button_save_edit_pressed_individual_changes, aufgabe, chosen_program, language))
+        self.button_save_edit = create_new_button(Dialog, "Änderung für alle übernehmen", partial(self.button_save_edit_pressed_individual_changes, aufgabe, chosen_program, language))
         self.button_save_edit.setIcon(QIcon(get_icon_path('save.svg')))
         self.button_save_edit.setSizePolicy(SizePolicy_fixed)
         self.gridlayout_titlepage.addWidget(self.button_save_edit, 3,2,1,1)

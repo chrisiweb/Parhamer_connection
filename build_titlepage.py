@@ -48,6 +48,130 @@ def get_datum(self):
 
     return datum_kurz, datum
 
+def prepare_individual_titlepage(titlepage, MainWindow):
+    data_gesamt = MainWindow.dict_all_infos_for_file["data_gesamt"]
+    print(data_gesamt)
+    if data_gesamt['program'] == "lama":
+        dict_titlepage = MainWindow.dict_titlepage
+    elif data_gesamt['program'] == "cria":
+        dict_titlepage = MainWindow.dict_titlepage_cria
+
+    print(dict_titlepage)
+
+    if dict_titlepage["logo"] == True:
+        try:
+            logo_name = os.path.basename(dict_titlepage["logo_path"])
+
+            logo_titlepage_path = os.path.join(path_localappdata_lama, "Teildokument", logo_name)
+
+            if os.path.isfile(logo_titlepage_path):
+                replace_logo_string =  f"\\includegraphics[width=1\\textwidth]{{{logo_name}}}"
+            else:
+                replace_logo_string =  "Pfad des Logos fehlt oder fehlerhaft!"
+        except TypeError:
+            replace_logo_string =  "Pfad des Logos fehlt oder fehlerhaft!"
+
+        titlepage = titlepage.replace("[[LOGO]]",replace_logo_string)
+
+    if data_gesamt["#"]==0:
+        number = ""
+    else:
+        number = f"{data_gesamt['#']}. "
+
+
+
+    if data_gesamt["Pruefungstyp"]== "Wiederholungsprüfung":
+            title_header = "\\textsc{{\\Huge Wiederholungsprüfung}} \\\ [0.5cm]"
+    elif (
+    data_gesamt["Pruefungstyp"]== "Schularbeit"or 
+    data_gesamt["Pruefungstyp"]== "Wiederholungsschularbeit" or 
+    data_gesamt["Pruefungstyp"]== "Nachschularbeit"
+    ):
+        title_header= "Mathematikschularbeit"
+        # if self.dict_all_infos_for_file["data_gesamt"]["#"]==0:
+        #     title_header = "\\textsc{{\\Huge Mathematikschularbeit}}"    
+        # else:    
+        #     title_header = "\\textsc{{\\Huge {0}. Mathematikschularbeit}}".format(
+        #         self.dict_all_infos_for_file["data_gesamt"]["#"]
+        #     )
+
+        if data_gesamt["Pruefungstyp"] == "Wiederholungsschularbeit":
+            add_on = "Wiederholung"
+        elif data_gesamt["Pruefungstyp"]== "Nachschularbeit":
+            add_on = "Nachschularbeit"
+        else:
+            add_on = None
+
+        if add_on != None:
+            title_header = title_header + f"\\\ [0.5cm] \\textsc{{\Large {add_on}}}"
+
+    else:
+        title_header = data_gesamt['Pruefungstyp']
+
+
+    titlepage = titlepage.replace("[[TITEL]]", f"{number}{title_header}")
+
+    if dict_titlepage["datum_combobox"]==0:
+        _, datum = get_datum(MainWindow)
+    elif dict_titlepage["datum_combobox"]==1:
+        datum = "\\rule{8cm}{0.4pt}"
+        
+    titlepage = titlepage.replace("[[DATUM]]", datum)
+
+    if is_empty(data_gesamt["Klasse"]):
+        klasse = ""
+    else:
+        klasse = data_gesamt["Klasse"].replace("_","\_")
+    
+    titlepage = titlepage.replace("[[KLASSE]]", klasse)
+
+
+    if data_gesamt["Beurteilung"] == "br":
+        pkt_typ1 = MainWindow.get_punkteverteilung()[1]
+        pkt_typ2 = MainWindow.get_punkteverteilung()[2]
+        if MainWindow.combobox_notenschluessel_typ.currentIndex() == 0:
+            notenschluessel = data_gesamt["Notenschluessel"]
+
+            if MainWindow.cb_ns_halbe_pkt.isChecked():
+                zusatz = "[1/2]"
+            else:
+                zusatz = ""
+
+
+            gut = notenschluessel[0] / 100
+            befriedigend = notenschluessel[1] / 100
+            genuegend = notenschluessel[2] / 100
+            nichtgenuegend = notenschluessel[3] / 100
+            
+            beurteilungsraster = (
+                f"\large\\beurteilung{zusatz}{{{gut}}}{{{befriedigend}}}{{{genuegend}}}{{{nichtgenuegend}}}{{ % Prozentschluessel\n"
+                f"T1={{{round(pkt_typ1)}}}, % Punkte im Teil 1\n"
+                f"T2={{{round(pkt_typ2)}}}, % Punkte im Teil 2\n}}\n\n"
+            )
+
+
+        elif MainWindow.combobox_notenschluessel_typ.currentIndex() == 1:
+            notenschluessel = data_gesamt["Notenschluessel_individual"]
+            sg_lower = notenschluessel[0]
+            gu_upper = notenschluessel[1]
+            gu_lower = notenschluessel[2]
+            b_upper = notenschluessel[3]
+            b_lower = notenschluessel[4]
+            ge_upper = notenschluessel[5]
+            ge_lower = notenschluessel[6]
+
+            beurteilungsraster = (
+                f"\large\individualbeurteilung{{{sg_lower}}}{{{gu_upper}}}{{{gu_lower}}}{{{b_upper}}}{{{b_lower}}}{{{ge_upper}}}{{{ge_lower}}}{{ % Prozentschluessel\n"
+                f"T1={{{round(pkt_typ1)}}}, % Punkte im Teil 1\n"
+                f"T2={{{round(pkt_typ2)}}}, % Punkte im Teil 2\n}}\n\n"
+            )              
+
+    else:
+        beurteilungsraster = ""
+
+    titlepage = titlepage.replace("[[BEURTEILUNGSRASTER]]", beurteilungsraster)
+    return titlepage
+
 
 def check_if_hide_all_exists(dict_titlepage):
     try:

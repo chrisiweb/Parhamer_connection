@@ -5847,7 +5847,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             | QtCore.Qt.WindowCloseButtonHint,
         )
         self.ui = Ui_Dialog_titlepage()
-        self.ui.setupUi(self.Dialog, dict_titlepage)
+
+        self.ui.setupUi(self.Dialog, dict_titlepage, MainWindow=self)
         # self.Dialog.show()
         self.Dialog.exec()
 

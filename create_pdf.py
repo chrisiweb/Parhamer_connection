@@ -650,17 +650,22 @@ def create_tex(
     content,
     punkte = 0,
     pagebreak = True,
+    solution="solution_on"
     ):
     try:
         with open(file_path, "w", encoding="utf8") as file:
-            file.write(tex_preamble())
+            file.write(tex_preamble(solution=solution))
             if pagebreak == True:
                 file.write(begin_beispiel_lang(punkte=punkte) + "\n")
+            elif pagebreak == None:
+                pass
             else:
                 file.write(begin_beispiel(punkte=punkte))
             file.write(content)
             if pagebreak == True:
                 file.write(end_beispiel_lang)
+            elif pagebreak == None:
+                pass
             else:
                 file.write(end_beispiel)
             
