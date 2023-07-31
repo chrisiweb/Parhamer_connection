@@ -9,7 +9,7 @@ import re
 import sys
 from pathlib import Path
 from functools import partial
-from config_start import path_programm,path_localappdata_lama, lama_settings_file, lama_developer_credentials, path_home, lama_notenschluessel_file
+from config_start import path_programm,path_localappdata_lama, lama_settings_file, lama_developer_credentials, path_home, lama_notenschluessel_file, lama_individual_titlepage, cria_individual_titlepage
 from config import (
     config_loader,
     dict_aufgabenformate,
@@ -924,7 +924,19 @@ class Ui_Dialog_titlepage(object):
         # dict_titlepage = self.get_dict_titlepage(dict_titlepage)
         # print(dict_titlepage)
         # from build_titlepage import get_titlepage_vorschau()
-        standard_titlepage = """\\flushright
+
+        if MainWindow.chosen_program == "lama":
+            individual_titlepage = lama_individual_titlepage
+        elif MainWindow.chosen_program == "cria":
+            individual_titlepage == cria_individual_titlepage
+
+        try:
+            with open(individual_titlepage, "r", encoding="utf8") as f:
+                string_titlepage = load(f)
+        except FileNotFoundError:
+            print("error")
+
+            string_titlepage = """\\flushright
 \\begin{minipage}[t]{0.4\\textwidth}
 [[LOGO]]
 \end{minipage} \\\\ [1cm] 
@@ -948,7 +960,7 @@ class Ui_Dialog_titlepage(object):
 
 \large[[BEURTEILUNGSRASTER]]"""
 
-        self.plainTextEdit_instructions.setPlainText(standard_titlepage)
+        self.plainTextEdit_instructions.setPlainText(string_titlepage)
         verticalLayout.addWidget(self.plainTextEdit_instructions)
 
 
@@ -986,6 +998,22 @@ class Ui_Dialog_titlepage(object):
 
         rsp = Dialog.exec()
 
+        if rsp == 1:
+            print(self.plainTextEdit_instructions.toPlainText())
+            print(MainWindow.chosen_program)
+
+            if MainWindow.chosen_program == "lama":
+                individual_titlepage = lama_individual_titlepage
+            elif MainWindow.chosen_program == "cria":
+                individual_titlepage == cria_individual_titlepage
+            
+            try:
+                with open(individual_titlepage, "w+", encoding="utf8") as f:
+                    dump(self.plainTextEdit_instructions.toPlainText(), f, ensure_ascii=False)
+            except FileNotFoundError:
+                os.makedirs(individual_titlepage)
+                with open(individual_titlepage, "w+", encoding="utf8") as f:
+                    dump(self.plainTextEdit_instructions.toPlainText(), f, ensure_ascii=False)
 
     def button_preview_pressed(self, MainWindow):
         file_path = os.path.join(
@@ -993,8 +1021,6 @@ class Ui_Dialog_titlepage(object):
             )
         MainWindow.collect_all_infos_for_creating_file()
         titlepage = prepare_individual_titlepage(self.plainTextEdit_instructions.toPlainText(), MainWindow)
-
-        print(titlepage)
 
         rsp = create_tex(file_path, titlepage, pagebreak=None, solution="solution_off")
 

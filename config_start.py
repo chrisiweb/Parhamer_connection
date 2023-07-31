@@ -21,7 +21,18 @@ if sys.platform.startswith("win"):
                 os.getenv('LOCALAPPDATA'), "LaMA", "lama_settings"
             )
 
-
+    lama_titlepage_save = os.path.join(
+                os.getenv('LOCALAPPDATA'), "LaMA", "lama_titlepage_save"
+            )
+    lama_individual_titlepage  = os.path.join(
+                os.getenv('LOCALAPPDATA'), "LaMA", "lama_individual_titlepage"
+            )
+    cria_titlepage_save  = os.path.join(
+                os.getenv('LOCALAPPDATA'), "LaMA", "cria_titlepage_save"
+            )
+    cria_individual_titlepage  = os.path.join(
+                os.getenv('LOCALAPPDATA'), "LaMA", "cria_individual_titlepage"
+            )
     lama_notenschluessel_file = os.path.join(
                 os.getenv('LOCALAPPDATA'), "LaMA", "lama_notenschluessel.json"
             )

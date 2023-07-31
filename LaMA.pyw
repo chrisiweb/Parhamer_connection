@@ -33,7 +33,9 @@ from config_start import (
     lama_settings_file,
     database,
     lama_developer_credentials,
-    lama_notenschluessel_file
+    lama_notenschluessel_file,
+    lama_titlepage_save,
+    cria_titlepage_save,
 )
 # from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QApplication
@@ -143,9 +145,9 @@ class Ui_MainWindow(object):
             self.lama_settings["display"] = 0
             self.display_mode = 0
 
-        self.dict_titlepage = check_format_titlepage_save("titlepage_save")
+        self.dict_titlepage = check_format_titlepage_save(lama_titlepage_save)
 
-        self.dict_titlepage_cria = check_format_titlepage_save("titlepage_save_cria")
+        self.dict_titlepage_cria = check_format_titlepage_save(cria_titlepage_save)
 
         path_teildokument = os.path.join(path_programm, "Teildokument")
         if not os.path.isdir(path_teildokument):
@@ -5860,9 +5862,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         if self.chosen_program == "lama":
             self.dict_titlepage = dict_titlepage
-            titlepage_save = os.path.join(
-                path_localappdata_lama, "Teildokument", "titlepage_save"
-            )
+            titlepage_save = lama_titlepage_save
+            # os.path.join(
+            #     path_localappdata_lama, "Teildokument", "titlepage_save"
+            # )
 
             if dict_titlepage['hide_all']==True:
                 self.combobox_beurteilung.model().item(1).setEnabled(False)
@@ -5878,15 +5881,16 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 # self.combobox_beurteilung.insertItem(1,"Beurteilungsraster")
         if self.chosen_program == "cria":
             self.dict_titlepage_cria = dict_titlepage
-            titlepage_save = os.path.join(
-                path_localappdata_lama, "Teildokument", "titlepage_save_cria"
-            )
+            titlepage_save = cria_titlepage_save
+            # os.path.join(
+            #     path_localappdata_lama, "Teildokument", "titlepage_save_cria"
+            # )
 
         try:
             with open(titlepage_save, "w+", encoding="utf8") as f:
                 json.dump(dict_titlepage, f, ensure_ascii=False)
         except FileNotFoundError:
-            os.makedirs(os.path.join(path_localappdata_lama, "Teildokument"))
+            os.makedirs(titlepage_save)
             with open(titlepage_save, "w+", encoding="utf8") as f:
                 json.dump(dict_titlepage, f, ensure_ascii=False)
 

@@ -22,16 +22,13 @@ def create_file_titlepage(titlepage_save):
     return titlepage
 
 
-def check_format_titlepage_save(filename):
-    path = os.path.join(path_localappdata_lama, "Teildokument", filename)
+def check_format_titlepage_save(filepath):
+    # path = os.path.join(path_localappdata_lama, "Teildokument", filename)
     try:
-        titlepage = create_file_titlepage(path)
+        titlepage = create_file_titlepage(filepath)
     except json.decoder.JSONDecodeError:
-        print(
-            'The file "{}" has an invalid format. The standard was restored!'.format(
-                filename
-            )
-        )
+        print(f'The file "{os.path.basename(filepath)}" has an invalid format. The standard was restored!')
+
         titlepage = {
             "logo": False,
             "logo_path": False,
@@ -44,7 +41,7 @@ def check_format_titlepage_save(filename):
             "unterschrift": False,
             "hide_all": False,
         }
-        with open(path, "w+", encoding="utf8") as f:
+        with open(filepath, "w+", encoding="utf8") as f:
             json.dump(titlepage, f, ensure_ascii=False)
 
     return titlepage
