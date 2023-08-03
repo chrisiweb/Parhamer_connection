@@ -5849,7 +5849,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             | QtCore.Qt.WindowCloseButtonHint,
         )
         self.ui = Ui_Dialog_titlepage()
-
         self.ui.setupUi(self.Dialog, dict_titlepage, MainWindow=self)
         # self.Dialog.show()
         self.Dialog.exec()
@@ -5863,6 +5862,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         if self.chosen_program == "lama":
             self.dict_titlepage = dict_titlepage
             titlepage_save = lama_titlepage_save
+            print(dict_titlepage)
             # os.path.join(
             #     path_localappdata_lama, "Teildokument", "titlepage_save"
             # )

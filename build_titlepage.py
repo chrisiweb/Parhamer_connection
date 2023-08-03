@@ -170,6 +170,7 @@ def prepare_individual_titlepage(titlepage, MainWindow):
         beurteilungsraster = ""
 
     titlepage = titlepage.replace("[[BEURTEILUNGSRASTER]]", beurteilungsraster)
+    titlepage = f"\\begin{{titlepage}}\n\n{titlepage}\\end{{titlepage}}\n\n"
     return titlepage
 
 
@@ -185,6 +186,7 @@ def check_if_hide_all_exists(dict_titlepage):
 
 
 def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
+    print(dict_titlepage)
     if self.checkBox_date.isChecked():
         datum_kurz, datum = get_datum(self)
     else:
@@ -295,6 +297,8 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
         return titlepage
 
     else:
+
+
         if dict_titlepage["logo"] == True:
             try:
                 logo_name = os.path.basename(dict_titlepage["logo_path"])

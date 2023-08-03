@@ -17,6 +17,7 @@ def create_file_titlepage(titlepage_save):
             "name": True,
             "note": False,
             "unterschrift": False,
+            "individual": False,
             "hide_all": False,
         }
     return titlepage
@@ -39,6 +40,7 @@ def check_format_titlepage_save(filepath):
             "name": True,
             "note": False,
             "unterschrift": False,
+            "individual": False,
             "hide_all": False,
         }
         with open(filepath, "w+", encoding="utf8") as f:

@@ -824,17 +824,23 @@ class Ui_Dialog_titlepage(object):
         self.verticalLayout_gBtitlepage.addWidget(self.cb_titlepage_unterschrift)
         self.cb_titlepage_unterschrift.setChecked(dict_titlepage["unterschrift"])
 
+        self.cb_titlepage_individual = create_new_checkbox(self.widget_individual_titlepage, "Individuelles Titelblatt")
+        horizontallayout_individual_titlepage.addWidget(self.cb_titlepage_individual)
 
-        self.cb_individual_titlepage = create_new_checkbox(self.widget_individual_titlepage, "Individuelles Titelblatt")
-        horizontallayout_individual_titlepage.addWidget(self.cb_individual_titlepage)
+        try:
+            self.cb_titlepage_individual.setChecked(dict_titlepage["individual"])
+            if dict_titlepage["indivdual"] == True:
+                self.groupBox_titlepage.setEnabled(False)
+        except KeyError:
+            dict_titlepage["individual"] = False
 
         self.btn_individual_titlepage = create_new_button(self.widget_individual_titlepage, "", partial(self.open_individual_titlepage, MainWindow), icon="edit.svg")
         horizontallayout_individual_titlepage.addWidget(self.btn_individual_titlepage)
 
         horizontallayout_individual_titlepage.addStretch()
 
-        self.cb_individual_titlepage.stateChanged.connect(
-            self.cb_individual_titlepage_pressed
+        self.cb_titlepage_individual.stateChanged.connect(
+            partial(self.cb_titlepage_individual_pressed, MainWindow)
         )
 
 
@@ -861,10 +867,18 @@ class Ui_Dialog_titlepage(object):
 
         return dict_titlepage
 
-    def cb_individual_titlepage_pressed(self):
-        if self.cb_individual_titlepage.isChecked() == True:
+    def cb_titlepage_individual_pressed(self, MainWindow):
+        if self.cb_titlepage_individual.isChecked() == True:
             self.groupBox_titlepage.setEnabled(False)
-        if self.cb_individual_titlepage.isChecked() == False:
+            if MainWindow.chosen_program == 'lama':
+                individual_titlepage = lama_individual_titlepage
+            elif MainWindow.chosen_program == 'cria':
+                individual_titlepage = cria_individual_titlepage
+
+            if not os.path.isfile(individual_titlepage):
+                self.open_individual_titlepage(MainWindow)
+
+        if self.cb_titlepage_individual.isChecked() == False:
             self.groupBox_titlepage.setEnabled(True)        
 
     def cb_titlepage_hide_all_pressed(self):
@@ -873,7 +887,7 @@ class Ui_Dialog_titlepage(object):
             self.groupBox_titlepage.setEnabled(False)
         if self.cb_titlepage_hide_all.isChecked() == False:
             self.widget_individual_titlepage.setEnabled(True)
-            if self.cb_individual_titlepage.isChecked() == False:
+            if self.cb_titlepage_individual.isChecked() == False:
                 self.groupBox_titlepage.setEnabled(True)
             
 
@@ -928,14 +942,12 @@ class Ui_Dialog_titlepage(object):
         if MainWindow.chosen_program == "lama":
             individual_titlepage = lama_individual_titlepage
         elif MainWindow.chosen_program == "cria":
-            individual_titlepage == cria_individual_titlepage
+            individual_titlepage = cria_individual_titlepage
 
         try:
             with open(individual_titlepage, "r", encoding="utf8") as f:
                 string_titlepage = load(f)
         except FileNotFoundError:
-            print("error")
-
             string_titlepage = """\\flushright
 \\begin{minipage}[t]{0.4\\textwidth}
 [[LOGO]]
@@ -998,15 +1010,12 @@ class Ui_Dialog_titlepage(object):
 
         rsp = Dialog.exec()
 
-        if rsp == 1:
-            print(self.plainTextEdit_instructions.toPlainText())
-            print(MainWindow.chosen_program)
+        if MainWindow.chosen_program == "lama":
+            individual_titlepage = lama_individual_titlepage
+        elif MainWindow.chosen_program == "cria":
+            individual_titlepage == cria_individual_titlepage
 
-            if MainWindow.chosen_program == "lama":
-                individual_titlepage = lama_individual_titlepage
-            elif MainWindow.chosen_program == "cria":
-                individual_titlepage == cria_individual_titlepage
-            
+        if rsp == 1:
             try:
                 with open(individual_titlepage, "w+", encoding="utf8") as f:
                     dump(self.plainTextEdit_instructions.toPlainText(), f, ensure_ascii=False)
@@ -1014,6 +1023,9 @@ class Ui_Dialog_titlepage(object):
                 os.makedirs(individual_titlepage)
                 with open(individual_titlepage, "w+", encoding="utf8") as f:
                     dump(self.plainTextEdit_instructions.toPlainText(), f, ensure_ascii=False)
+        elif rsp == 0 and not os.path.isfile(individual_titlepage):
+            self.cb_titlepage_individual.setChecked(False)
+        
 
     def button_preview_pressed(self, MainWindow):
         file_path = os.path.join(
@@ -1031,7 +1043,7 @@ class Ui_Dialog_titlepage(object):
 
 
     def get_dict_titlepage(self, dict_titlepage):
-        titlepage_settings = ["logo", "logo_path", "titel", "datum", "datum_combobox", "klasse", "name", "note", "unterschrift", "hide_all"]
+        titlepage_settings = ["logo", "logo_path", "titel", "datum", "datum_combobox", "klasse", "name", "note", "unterschrift", "individual", "hide_all"]
 
         for all in titlepage_settings:
             if all == "logo_path":
@@ -1048,11 +1060,14 @@ class Ui_Dialog_titlepage(object):
                 dict_titlepage[all] = self.combobox_titlepage_datum.currentIndex()
                 continue
 
+
             checkbox = eval("self.cb_titlepage_{}".format(all))
             if checkbox.isChecked():
                 dict_titlepage[all] = True
             else:
                 dict_titlepage[all] = False
+            # except AttributeError:
+            #     dict_titlepage[all] = False
 
         return dict_titlepage
     
@@ -1072,6 +1087,7 @@ class Ui_Dialog_titlepage(object):
             "name": True,
             "note": False,
             "unterschrift": False,
+            "individual": False,
             "hide_all": False,
         }
         for all in dict_titlepage.keys():
