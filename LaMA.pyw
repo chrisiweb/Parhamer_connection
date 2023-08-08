@@ -5841,7 +5841,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             dict_titlepage = self.dict_titlepage
         elif self.chosen_program == "cria":
             dict_titlepage = self.dict_titlepage_cria
-
+        
         self.Dialog = QtWidgets.QDialog(
             None,
             QtCore.Qt.WindowSystemMenuHint
@@ -7895,7 +7895,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         str_titlepage = get_titlepage_vorschau(
             self, dict_titlepage, ausgabetyp, maximum, gruppe
         )
+        print(str_titlepage)
 
+        
         if self.chosen_program == "lama" and (
             self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Schularbeit"
             or self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]

@@ -2,7 +2,7 @@ import os
 import datetime
 from datetime import date
 import json
-from config_start import path_programm, path_localappdata_lama
+from config_start import path_programm, path_localappdata_lama, lama_individual_titlepage, cria_individual_titlepage
 from config import is_empty
 from standard_dialog_windows import warning_window
 
@@ -111,12 +111,10 @@ def prepare_individual_titlepage(titlepage, MainWindow):
 
     titlepage = titlepage.replace("[[TITEL]]", f"{number}{title_header}")
 
-    if dict_titlepage["datum_combobox"]==0:
-        _, datum = get_datum(MainWindow)
-    elif dict_titlepage["datum_combobox"]==1:
-        datum = "\\rule{8cm}{0.4pt}"
-        
+
+    _, datum = get_datum(MainWindow)       
     titlepage = titlepage.replace("[[DATUM]]", datum)
+
 
     if is_empty(data_gesamt["Klasse"]):
         klasse = ""
@@ -298,6 +296,19 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
 
     else:
 
+        if dict_titlepage["individual"]==True:
+            if self.chosen_program == "lama":
+                individual_titlepage = lama_individual_titlepage
+            elif self.chosen_program == "cria":
+                individual_titlepage = cria_individual_titlepage
+
+
+            with open(individual_titlepage, "r", encoding="utf8") as f:
+                string_titlepage = json.load(f)
+
+            titlepage = prepare_individual_titlepage(string_titlepage, self) 
+
+            return titlepage           
 
         if dict_titlepage["logo"] == True:
             try:

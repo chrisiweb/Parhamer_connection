@@ -827,21 +827,24 @@ class Ui_Dialog_titlepage(object):
         self.cb_titlepage_individual = create_new_checkbox(self.widget_individual_titlepage, "Individuelles Titelblatt")
         horizontallayout_individual_titlepage.addWidget(self.cb_titlepage_individual)
 
+
         try:
             self.cb_titlepage_individual.setChecked(dict_titlepage["individual"])
-            if dict_titlepage["indivdual"] == True:
+            if self.cb_titlepage_individual.isChecked() == True:
                 self.groupBox_titlepage.setEnabled(False)
         except KeyError:
             dict_titlepage["individual"] = False
+
+        self.cb_titlepage_individual.stateChanged.connect(
+            partial(self.cb_titlepage_individual_pressed, MainWindow)
+        )
 
         self.btn_individual_titlepage = create_new_button(self.widget_individual_titlepage, "", partial(self.open_individual_titlepage, MainWindow), icon="edit.svg")
         horizontallayout_individual_titlepage.addWidget(self.btn_individual_titlepage)
 
         horizontallayout_individual_titlepage.addStretch()
 
-        self.cb_titlepage_individual.stateChanged.connect(
-            partial(self.cb_titlepage_individual_pressed, MainWindow)
-        )
+
 
 
         self.buttonBox_titlepage = QtWidgets.QDialogButtonBox(self.Dialog)
@@ -868,6 +871,7 @@ class Ui_Dialog_titlepage(object):
         return dict_titlepage
 
     def cb_titlepage_individual_pressed(self, MainWindow):
+        print(self.cb_titlepage_individual.isChecked())
         if self.cb_titlepage_individual.isChecked() == True:
             self.groupBox_titlepage.setEnabled(False)
             if MainWindow.chosen_program == 'lama':
@@ -877,6 +881,7 @@ class Ui_Dialog_titlepage(object):
 
             if not os.path.isfile(individual_titlepage):
                 self.open_individual_titlepage(MainWindow)
+
 
         if self.cb_titlepage_individual.isChecked() == False:
             self.groupBox_titlepage.setEnabled(True)        
@@ -1015,17 +1020,22 @@ class Ui_Dialog_titlepage(object):
         elif MainWindow.chosen_program == "cria":
             individual_titlepage == cria_individual_titlepage
 
-        if rsp == 1:
-            try:
-                with open(individual_titlepage, "w+", encoding="utf8") as f:
-                    dump(self.plainTextEdit_instructions.toPlainText(), f, ensure_ascii=False)
-            except FileNotFoundError:
-                os.makedirs(individual_titlepage)
-                with open(individual_titlepage, "w+", encoding="utf8") as f:
-                    dump(self.plainTextEdit_instructions.toPlainText(), f, ensure_ascii=False)
-        elif rsp == 0 and not os.path.isfile(individual_titlepage):
-            self.cb_titlepage_individual.setChecked(False)
         
+        try:
+            if rsp == 1:
+                with open(individual_titlepage, "w+", encoding="utf8") as f:
+                    dump(self.plainTextEdit_instructions.toPlainText(), f, ensure_ascii=False)
+            elif rsp == 0 and not os.path.isfile(individual_titlepage):
+                print('CHECK')
+                self.cb_titlepage_individual.setChecked(False)
+                with open(individual_titlepage, "w+", encoding="utf8") as f:
+                    dump(self.plainTextEdit_instructions.toPlainText(), f, ensure_ascii=False)
+        except FileNotFoundError:
+            os.makedirs(individual_titlepage)
+            with open(individual_titlepage, "w+", encoding="utf8") as f:
+                dump(self.plainTextEdit_instructions.toPlainText(), f, ensure_ascii=False)
+
+      
 
     def button_preview_pressed(self, MainWindow):
         file_path = os.path.join(
