@@ -718,6 +718,37 @@ class Ui_Dialog_titlepage(object):
         self.verticalLayout_titlepage = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout_titlepage.setObjectName("verticalLayout_titlepage")
 
+        self.widget_label_logo = QtWidgets.QWidget(Dialog)
+        self.verticalLayout_titlepage.addWidget(self.widget_label_logo)
+        horizontallayout_label_logo = create_new_horizontallayout(self.widget_label_logo)
+        horizontallayout_label_logo.setContentsMargins(0,0,0,0)
+
+        self.label_logo_1 = create_new_label(self.widget_label_logo, "Dateipfad Logo: ")
+        horizontallayout_label_logo.addWidget(self.label_logo_1)
+
+        self.label_logo_2 = create_new_label(self.widget_label_logo, "---")
+        horizontallayout_label_logo.addWidget(self.label_logo_2)
+
+        if dict_titlepage["logo_path"] != False:
+            logo_name = os.path.basename(dict_titlepage["logo_path"])
+            self.label_logo_2.setText(logo_name)
+
+        horizontallayout_label_logo.addStretch()
+
+
+        self.btn_titlepage_logo_path = create_new_button(self.widget_label_logo, "", partial(self.btn_titlepage_logo_path_pressed, dict_titlepage),
+                                                         icon = "folder.svg")
+        horizontallayout_label_logo.addWidget(self.btn_titlepage_logo_path)
+
+
+        # self.btn_titlepage_logo_path.setText("Durchsuchen")
+        # self.btn_titlepage_logo_path.setIcon(QIcon(get_icon_path('folder.svg')))
+        # self.btn_titlepage_logo_path.setMaximumWidth(130)
+        # self.btn_titlepage_logo_path.clicked.connect(
+            
+        # )
+
+
         self.groupBox_titlepage = QtWidgets.QGroupBox()
         self.groupBox_titlepage.setObjectName("groupBox_titlepage")
         self.verticalLayout_gBtitlepage = QtWidgets.QVBoxLayout(self.groupBox_titlepage)
@@ -749,22 +780,11 @@ class Ui_Dialog_titlepage(object):
 
         self.cb_titlepage_logo = QtWidgets.QCheckBox("Logo")
 
-        if dict_titlepage["logo_path"] != False:
-            logo_name = os.path.basename(dict_titlepage["logo_path"])
-            self.cb_titlepage_logo.setText("Logo ({})".format(logo_name))
+
         self.cb_titlepage_logo.setObjectName(_fromUtf8("cb_titlepage_logo"))
         self.verticalLayout_gBtitlepage.addWidget(self.cb_titlepage_logo)
         self.cb_titlepage_logo.setChecked(dict_titlepage["logo"])
 
-        self.btn_titlepage_logo_path = QtWidgets.QPushButton()
-        self.btn_titlepage_logo_path.setObjectName(_fromUtf8("btn_titlepage_logo_path"))
-        self.verticalLayout_gBtitlepage.addWidget(self.btn_titlepage_logo_path)
-        self.btn_titlepage_logo_path.setText("Durchsuchen")
-        self.btn_titlepage_logo_path.setIcon(QIcon(get_icon_path('folder.svg')))
-        self.btn_titlepage_logo_path.setMaximumWidth(130)
-        self.btn_titlepage_logo_path.clicked.connect(
-            partial(self.btn_titlepage_logo_path_pressed, dict_titlepage)
-        )
 
         self.cb_titlepage_titel = QtWidgets.QCheckBox("Titel")
         self.cb_titlepage_titel.setObjectName(_fromUtf8("cb_titlepage_titel"))
@@ -862,7 +882,7 @@ class Ui_Dialog_titlepage(object):
             partial(self.set_default_titlepage, dict_titlepage)
         )
         self.buttonBox_titlepage.accepted.connect(
-            partial(self.save_titlepage, dict_titlepage)
+            partial(self.save_titlepage, dict_titlepage, MainWindow.chosen_program)
         )
         # self.retranslateUi(self.Dialog)
 
@@ -905,7 +925,9 @@ class Ui_Dialog_titlepage(object):
 
         logo_name = os.path.basename(logo_titlepage_path[0][0])
 
-        self.cb_titlepage_logo.setText("Logo ({})".format(logo_name))
+        # self.cb_titlepage_logo.setText("Logo ({})".format(logo_name))
+        print(logo_name)
+        self.label_logo_2.setText(logo_name)
         dict_titlepage["logo_path"] = "{}".format(logo_titlepage_path[0][0])
         copy_logo_titlepage_path = os.path.join(
             path_localappdata_lama, "Teildokument", logo_name
@@ -1026,7 +1048,6 @@ class Ui_Dialog_titlepage(object):
                 with open(individual_titlepage, "w+", encoding="utf8") as f:
                     dump(self.plainTextEdit_instructions.toPlainText(), f, ensure_ascii=False)
             elif rsp == 0 and not os.path.isfile(individual_titlepage):
-                print('CHECK')
                 self.cb_titlepage_individual.setChecked(False)
                 with open(individual_titlepage, "w+", encoding="utf8") as f:
                     dump(self.plainTextEdit_instructions.toPlainText(), f, ensure_ascii=False)
@@ -1052,19 +1073,31 @@ class Ui_Dialog_titlepage(object):
             critical_window("Die PDF Datei konnte nicht erstellt werden", detailed_text= rsp)
 
 
-    def get_dict_titlepage(self, dict_titlepage):
+    def get_dict_titlepage(self, dict_titlepage, chosen_program):
         titlepage_settings = ["logo", "logo_path", "titel", "datum", "datum_combobox", "klasse", "name", "note", "unterschrift", "individual", "hide_all"]
-
         for all in titlepage_settings:
             if all == "logo_path":
                 if self.cb_titlepage_logo.isChecked() and dict_titlepage[all] == False:
-                    critical_window(
-                        "Bitte geben Sie den Dateipfad eines Logos an oder wählen Sie das Logo auf der Titelseite ab.",
-                        titel="Kein Logo ausgewählt",
-                    )
+                    warning_message = "Bitte geben Sie den Dateipfad eines Logos an oder wählen Sie das Logo auf der Titelseite ab."
+                elif self.cb_titlepage_individual.isChecked():
+                    if chosen_program == "lama":
+                        individual_titlepage = lama_individual_titlepage
+                    elif chosen_program == "cria":
+                        individual_titlepage = cria_individual_titlepage
 
-                    return
-                continue
+
+                    with open(individual_titlepage, "r", encoding="utf8") as f:
+                        string_titlepage = load(f)
+                    
+                    if string_titlepage.find("[[LOGO]]") == -1:
+                        continue
+                    warning_message = "Bitte geben Sie den Dateipfad eines Logos an oder entfernen Sie das Logo aus Ihrem Titelblatt."
+                else:
+                    continue
+
+                critical_window(warning_message, titel="Kein Logo ausgewählt")
+                return False
+
             
             elif all == "datum_combobox":
                 dict_titlepage[all] = self.combobox_titlepage_datum.currentIndex()
@@ -1081,9 +1114,10 @@ class Ui_Dialog_titlepage(object):
 
         return dict_titlepage
     
-    def save_titlepage(self, dict_titlepage):
-        dict_titlepage = self.get_dict_titlepage(dict_titlepage)
-        self.Dialog.reject()
+    def save_titlepage(self, dict_titlepage, chosen_program):
+        dict_titlepage = self.get_dict_titlepage(dict_titlepage, chosen_program)
+        if dict_titlepage != False:
+            self.Dialog.accept()
         return dict_titlepage
 
     def set_default_titlepage(self, dict_titlepage):

@@ -2,7 +2,7 @@ import os
 import datetime
 from datetime import date
 import json
-from config_start import path_programm, path_localappdata_lama, lama_individual_titlepage, cria_individual_titlepage
+from config_start import path_programm, path_localappdata_lama, lama_individual_titlepage, cria_individual_titlepage, lama_titlepage_save
 from config import is_empty
 from standard_dialog_windows import warning_window
 
@@ -177,8 +177,8 @@ def check_if_hide_all_exists(dict_titlepage):
         dict_titlepage["hide_all"]
     except KeyError:
         dict_titlepage["hide_all"] = False
-        titlepage_save = os.path.join(path_localappdata_lama, "Teildokument", "titlepage_save")
-        with open(titlepage_save, "w+", encoding="utf8") as f:
+ 
+        with open(lama_titlepage_save, "w+", encoding="utf8") as f:
             json.dump(dict_titlepage, f)
     return dict_titlepage
 
