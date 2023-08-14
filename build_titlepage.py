@@ -50,13 +50,11 @@ def get_datum(self):
 
 def prepare_individual_titlepage(titlepage, MainWindow):
     data_gesamt = MainWindow.dict_all_infos_for_file["data_gesamt"]
-    print(data_gesamt)
     if data_gesamt['program'] == "lama":
         dict_titlepage = MainWindow.dict_titlepage
     elif data_gesamt['program'] == "cria":
         dict_titlepage = MainWindow.dict_titlepage_cria
 
-    print(dict_titlepage)
 
     if dict_titlepage["logo"] == True:
         try:
@@ -184,7 +182,6 @@ def check_if_hide_all_exists(dict_titlepage):
 
 
 def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
-    print(dict_titlepage)
     if self.checkBox_date.isChecked():
         datum_kurz, datum = get_datum(self)
     else:
@@ -203,7 +200,6 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
         klasse = self.dict_all_infos_for_file["data_gesamt"]["Klasse"]
     
     klasse = klasse.replace("_","\_")
-    #print(klasse)
 
     if (
         self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
@@ -281,7 +277,6 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
 
         titlepage = f"{name}\\subsection{{{subsection} \\hfill {klasse} \\hfill {datum_kurz}}}"
 
-        # print(titlepage)
         # if self.dict_all_infos_for_file["data_gesamt"]["Beurteilung"] == "br":
 
         #     beurteilungsraster = (

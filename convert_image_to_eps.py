@@ -21,7 +21,7 @@ def convert_image_to_eps(image, quality_index):
     try:
         fig = Image.open(image)
 
-        if fig.mode in ("RGBA", "LA"):
+        if fig.mode in ("RGBA", "LA", "P", "PA"):
             fig = remove_transparency(fig)
             fig = fig.convert("RGB")
 

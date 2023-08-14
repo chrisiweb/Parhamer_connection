@@ -114,7 +114,6 @@ class Worker_UpdateDatabase(QObject):
     @pyqtSlot()
     def task(self):
         git_reset_repo_to_origin()
-        # print(Ui_MainWindow.reset_successfull)
         self.finished.emit()
 
 
@@ -571,7 +570,6 @@ class Ui_Dialog_variation(object):
         #         klasse = None
         #     else:
         #         klasse = list_klassen[self.comboBox_klassen_fb_cria.currentIndex()]
-        # print(klasse)
         return klasse
 
 
@@ -601,12 +599,10 @@ class Ui_Dialog_variation(object):
         _list_database = [_local_database, _database]
         if _database_addon != None:
             _list_database.append(_database_addon)
-        # print(_list_database)
-        # print(len(_list_database))
+
         all_filtered_items = []
-        # print(self.mode)
         for database in _list_database:
-            # print(database)
+
             if database == _database_addon and self.mode == 'creator':
                 continue
             elif self.MainWindow.developer_mode_active == False and self.mode != 'creator':
@@ -626,7 +622,6 @@ class Ui_Dialog_variation(object):
             
             all_filtered_items = all_filtered_items + filtered_items
         
-        # print(all_filtered_items)
         all_filtered_items.sort(key=lambda text: order_gesammeltedateien(text, typ, cria_plain_number_order=True))
 
         self.add_items_to_listwidget_creator(typ, all_filtered_items, local)
@@ -891,7 +886,6 @@ class Ui_Dialog_titlepage(object):
         return dict_titlepage
 
     def cb_titlepage_individual_pressed(self, MainWindow):
-        print(self.cb_titlepage_individual.isChecked())
         if self.cb_titlepage_individual.isChecked() == True:
             self.groupBox_titlepage.setEnabled(False)
             if MainWindow.chosen_program == 'lama':
@@ -926,7 +920,6 @@ class Ui_Dialog_titlepage(object):
         logo_name = os.path.basename(logo_titlepage_path[0][0])
 
         # self.cb_titlepage_logo.setText("Logo ({})".format(logo_name))
-        print(logo_name)
         self.label_logo_2.setText(logo_name)
         dict_titlepage["logo_path"] = "{}".format(logo_titlepage_path[0][0])
         copy_logo_titlepage_path = os.path.join(
@@ -963,7 +956,6 @@ class Ui_Dialog_titlepage(object):
         # self.plainTextEdit_instructions.setPlainText(text)
 
         # dict_titlepage = self.get_dict_titlepage(dict_titlepage)
-        # print(dict_titlepage)
         # from build_titlepage import get_titlepage_vorschau()
 
         if MainWindow.chosen_program == "lama":
@@ -1214,7 +1206,6 @@ class Ui_Dialog_ausgleichspunkte(object):
                 self.hide_show_items_split_text = None
             # self.list_sage_ausgleichspunkte_chosen = list_sage_ausgleichspunkte_chosen
             self.list_sage_hide_show_items_chosen = list_sage_hide_show_items_chosen
-            # print(sage_individual_change)
             # self.dict_widget_variables_ausgleichspunkte = {}
             self.dict_widget_variables_hide_show_items = {}
         else: 
@@ -1300,7 +1291,6 @@ class Ui_Dialog_ausgleichspunkte(object):
             key = 1
 
         if self.sage_individual_change[key] != None:
-            # print(self.sage_individual_change)
             self.plainTextEdit_content.insertPlainText(self.sage_individual_change[key])
             self.inital_content = self.sage_individual_change[key]
         else:
@@ -1891,8 +1881,7 @@ class Ui_Dialog_ausgleichspunkte(object):
                         self.list_sage_hide_show_items_chosen.append(index)
                 except KeyError:
                     pass
-
-            # print(self.list_sage_hide_show_items_chosen)               
+              
             if self.language == "DE":
                 index = 0
             elif self.language == "EN":
@@ -2297,7 +2286,6 @@ class Ui_Dialog_setup(object):
             self.lama_settings = standard_settings
 
         # Dialog.resize(500, 200)
-        # print(self.lama_settings)
         # self.beispieldaten_dateipfad_cria = MainWindow.beispieldaten_dateipfad_cria
         # self.beispieldaten_dateipfad_1 = MainWindow.beispieldaten_dateipfad_1
         # self.beispieldaten_dateipfad_2 = MainWindow.beispieldaten_dateipfad_2
@@ -3608,9 +3596,7 @@ class Ui_Dialog_edit_drafts(object):
                 self.lineedit_titel.setText(dict_aufgabe['titel'])
                 self.lineedit_quelle.setText(dict_aufgabe['quelle'])
 
-            # except TypeError:
-            #     print('error')
-            #     pass
+
 
 
 
@@ -3677,8 +3663,7 @@ class Ui_Dialog_edit_drafts(object):
 
     def remove_from_list(self):
         chosen_list = self.get_chosen_list()
-        # print(self.dict_widget_variables)
-        # print(chosen_list)
+
         for checkbox in self.dict_widget_variables.values():
             checkbox.setParent(None)
         self.gridLayout_items.removeItem(self.spacerItem)
@@ -4324,6 +4309,7 @@ class Ui_Dialog_Convert_To_Eps(object):
             if response != True:
                 break
         QtWidgets.QApplication.restoreOverrideCursor()
+
         if response == True:
             if len(item_list) == 1:
                 text = "wurde {} Datei".format(len(item_list))

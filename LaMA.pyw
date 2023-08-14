@@ -5862,7 +5862,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         if self.chosen_program == "lama":
             self.dict_titlepage = dict_titlepage
             titlepage_save = lama_titlepage_save
-            print(dict_titlepage)
+            # print(dict_titlepage)
             # os.path.join(
             #     path_localappdata_lama, "Teildokument", "titlepage_save"
             # )
@@ -7895,7 +7895,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         str_titlepage = get_titlepage_vorschau(
             self, dict_titlepage, ausgabetyp, maximum, gruppe
         )
-        print(str_titlepage)
+        # print(str_titlepage)
 
         
         if self.chosen_program == "lama" and (
