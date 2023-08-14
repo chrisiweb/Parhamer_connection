@@ -89,6 +89,19 @@ elif sys.platform.startswith("darwin"):
                 Path.home(), "Library", "LaMA", "lama_settings"
             )
 
+    lama_titlepage_save = os.path.join(
+                Path.home(), "Library", "LaMA", "lama_titlepage_save"
+            )
+    lama_individual_titlepage  = os.path.join(
+                Path.home(), "Library", "LaMA", "lama_individual_titlepage"
+            )
+    cria_titlepage_save  = os.path.join(
+                Path.home(), "Library", "LaMA", "cria_titlepage_save"
+            )
+    cria_individual_titlepage  = os.path.join(
+                Path.home(), "Library", "LaMA", "cria_individual_titlepage"
+            )
+
     lama_notenschluessel_file = os.path.join(
                 Path.home(), "Library", "LaMA", "lama_notenschluessel.json"
             )
