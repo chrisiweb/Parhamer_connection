@@ -13,7 +13,7 @@ import sys
 #     reload_ddb = False
 reload_ddb = False
 
-show_popup = True
+show_popup = False
 
 
 from start_window import check_if_database_exists
