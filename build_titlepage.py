@@ -59,7 +59,6 @@ def prepare_individual_titlepage(titlepage, dict_titlepage, MainWindow):
     # if dict_titlepage["logo"] == True:
     try:
         logo_name = os.path.basename(dict_titlepage["logo_path"])
-        print(logo_name)
         logo_titlepage_path = os.path.join(path_localappdata_lama, "Teildokument", logo_name)
 
         if os.path.isfile(logo_titlepage_path):

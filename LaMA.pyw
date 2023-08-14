@@ -3877,7 +3877,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # thema_index = self.total_list_of_topics_wizard.index(thema)
 
         shorten_topic = self.shorten_topic(thema)
-        # print(shorten_topic)
+
 
         self.checkbox_enable_addition.hide()
         self.checkbox_enable_subtraktion.hide()
@@ -4130,7 +4130,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             max.setValue(min.value()+10)
 
     def edit_single_instructions(self):
-        # print('yes')
         Dialog = QtWidgets.QDialog(
             None,
             QtCore.Qt.WindowSystemMenuHint
@@ -4701,7 +4700,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 return
 
         self.list_of_examples_wizard = self.dict_all_examples_worksheet_wizard[widget]['list_of_examples']
-        # print(self.dict_all_examples_worksheet_wizard[widget])
         self.reset_aufgabenboxes_wizard()
 
         self.set_all_settings_wizard(self.dict_all_examples_worksheet_wizard[widget])
@@ -5432,11 +5430,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.creator_file_mode = 'new'
         self.enable_widgets_editor(True)
 
-        # try:
-        #     print(self.chosen_variation)
-        # except AttributeError:
-        #     print('pass')
-        #     pass
+ 
         # self.suchfenster_reset()
         # self.reset_variation()
         # self.reset_edit_file()
@@ -5653,15 +5647,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.progress_laoding_sage.setWindowModality(Qt.WindowModal)
         # 
 
-        # print(self.list_alle_aufgaben_sage)
-        # progress.setValue(progress_value)
-        # for i in range(10):
-        #     # print(i)
-        #     progress_value +=1
-        #     progress.setValue(progress_value)
-        #     print(progress_value)
-        #     time.sleep(0.5)
-        # progress.cancel()
 
         try:
             index = self.comboBox_pruefungstyp.findText(
@@ -5862,7 +5847,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         if self.chosen_program == "lama":
             self.dict_titlepage = dict_titlepage
             titlepage_save = lama_titlepage_save
-            # print(dict_titlepage)
             # os.path.join(
             #     path_localappdata_lama, "Teildokument", "titlepage_save"
             # )
@@ -7895,7 +7879,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         str_titlepage, dict_titlepage = get_titlepage_vorschau(
             self, dict_titlepage, ausgabetyp, maximum, gruppe
         )
-        # print(str_titlepage)
 
         
         if self.chosen_program == "lama" and (

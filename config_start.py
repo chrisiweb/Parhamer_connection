@@ -37,7 +37,6 @@ if sys.platform.startswith("win"):
                 os.getenv('LOCALAPPDATA'), "LaMA", "lama_notenschluessel.json"
             )
     
-    # print(os.environ["ProgramW6432"])
     
     path_standard_pdf_reader = os.path.join(os.path.dirname(sys.argv[0]), "SumatraPDF-3.4.6-64.exe")
     # ## OLD VERSION!!
@@ -47,23 +46,14 @@ if sys.platform.startswith("win"):
     # everyone, domain, type = win32security.LookupAccountName ("", "Everyone")
     # admins, domain, type = win32security.LookupAccountName ("", "Administrators")
     # user, domain, type = win32security.LookupAccountName ("", win32api.GetUserName())
-    # print(win32api.GetUserName())
-    # print(admins)
-    # print(domain)
-    # print(type)
-    # # print(user)
-    # sd = win32security.GetFileSecurity(path_programm, win32security.DACL_SECURITY_INFORMATION)
+
 
     # # dacl = sd.GetSecurityDescriptorDacl()
     # dacl = win32security.ACL ()
     # # dacl.AddAccessAllowedAce (win32security.ACL_REVISION, con.FILE_GENERIC_READ, everyone)
     # # dacl.AddAccessAllowedAce (win32security.ACL_REVISION, con.FILE_GENERIC_READ | con.FILE_GENERIC_WRITE, user)
     # dacl.AddAccessAllowedAce (win32security.ACL_REVISION, con.FILE_ALL_ACCESS, None)
-    # # print(sd)
-    # dacl = sd.GetSecurityDescriptorDacl()
-    # # win32security.SetFileSecurity(path_programm, win32security.DACL_SECURITY_INFORMATION, sd)
-    # print(dacl)
-    # print('done')
+
 
 elif sys.platform.startswith("darwin"):
 # else:

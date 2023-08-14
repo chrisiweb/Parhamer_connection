@@ -363,7 +363,7 @@ def create_single_example_number_line(starting_value, steps, subticks):
             i+=1
 
     list_of_points = sorted(list_of_points, key=float)
-    # print(list_of_points)
+
     dict_of_points = {}
     for i, all in enumerate(list_of_points):
         dict_of_points[index_to_letter(i).upper()]=(all,0)

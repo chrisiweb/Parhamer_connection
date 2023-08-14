@@ -1100,7 +1100,6 @@ class Ui_Dialog_titlepage(object):
                     with open(individual_titlepage, "r", encoding="utf8") as f:
                         string_titlepage = load(f)
                     
-                    print(string_titlepage.find("[[LOGO]]"))
                     if string_titlepage.find("[[LOGO]]") == -1:
                         continue
                     elif self.dict_titlepage[all] == False:
