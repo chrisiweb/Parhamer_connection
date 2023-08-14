@@ -48,28 +48,28 @@ def get_datum(self):
 
     return datum_kurz, datum
 
-def prepare_individual_titlepage(titlepage, MainWindow):
+def prepare_individual_titlepage(titlepage, dict_titlepage, MainWindow):
     data_gesamt = MainWindow.dict_all_infos_for_file["data_gesamt"]
-    if data_gesamt['program'] == "lama":
-        dict_titlepage = MainWindow.dict_titlepage
-    elif data_gesamt['program'] == "cria":
-        dict_titlepage = MainWindow.dict_titlepage_cria
+    # if data_gesamt['program'] == "lama":
+    #     dict_titlepage = MainWindow.dict_titlepage
+    # elif data_gesamt['program'] == "cria":
+    #     dict_titlepage = MainWindow.dict_titlepage_cria
 
 
-    if dict_titlepage["logo"] == True:
-        try:
-            logo_name = os.path.basename(dict_titlepage["logo_path"])
+    # if dict_titlepage["logo"] == True:
+    try:
+        logo_name = os.path.basename(dict_titlepage["logo_path"])
+        print(logo_name)
+        logo_titlepage_path = os.path.join(path_localappdata_lama, "Teildokument", logo_name)
 
-            logo_titlepage_path = os.path.join(path_localappdata_lama, "Teildokument", logo_name)
-
-            if os.path.isfile(logo_titlepage_path):
-                replace_logo_string =  f"\\includegraphics[width=1\\textwidth]{{{logo_name}}}"
-            else:
-                replace_logo_string =  "Pfad des Logos fehlt oder fehlerhaft!"
-        except TypeError:
+        if os.path.isfile(logo_titlepage_path):
+            replace_logo_string =  f"\\includegraphics[width=1\\textwidth]{{{logo_name}}}"
+        else:
             replace_logo_string =  "Pfad des Logos fehlt oder fehlerhaft!"
+    except TypeError:
+        replace_logo_string =  "Pfad des Logos fehlt oder fehlerhaft!"
 
-        titlepage = titlepage.replace("[[LOGO]]",replace_logo_string)
+    titlepage = titlepage.replace("[[LOGO]]",replace_logo_string)
 
     if data_gesamt["#"]==0:
         number = ""
@@ -224,7 +224,7 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
                 "\\normalsize \\\ \\vspace{{\\baselineskip}} \n\n".format(self.dict_all_infos_for_file["data_gesamt"]["#"], gruppe_name, klasse,datum_kurz)
             )
 
-        return titlepage
+        return titlepage, dict_titlepage
 
     elif self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Übungsblatt":
         titlepage = "Übungsblatt"
@@ -233,7 +233,7 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
 
         titlepage = "\\subsection{{{0}}}".format(titlepage)
 
-        return titlepage
+        return titlepage, dict_titlepage
 
     # elif self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"] == "Quiz":
     #     titlepage = (
@@ -287,7 +287,7 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
         #     )
 
         #     titlepage = titlepage + beurteilungsraster
-        return titlepage
+        return titlepage, dict_titlepage
 
     else:
 
@@ -301,9 +301,9 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
             with open(individual_titlepage, "r", encoding="utf8") as f:
                 string_titlepage = json.load(f)
 
-            titlepage = prepare_individual_titlepage(string_titlepage, self) 
+            titlepage = prepare_individual_titlepage(string_titlepage, dict_titlepage, self) 
 
-            return titlepage           
+            return titlepage, dict_titlepage           
 
         if dict_titlepage["logo"] == True:
             try:
@@ -319,10 +319,12 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
                     )
                 else:
                     warning_window(
-                        "Das Logo konnte nicht gefunden werden.",
-                        "Bitte suchen Sie ein Logo unter: \n\nTitelblatt anpassen - Durchsuchen",
-                        "Kein Logo gefunden",
+                        "Das angegebene Logo wurde gelöscht und konnte nicht gefunden werden.",
+                        "Bitte suchen Sie das Logo erneut unter: Titelblatt - Durchsuchen\n\nDie PDF Datei kann jedoch trotzdem ausgegeben werden.",
+                        "Ausgewähltes Logo nicht gefunden",
                     )
+                    dict_titlepage["logo_path"]=False
+
                     logo_input = "\\null\\vspace{3cm}\n\n"
             except TypeError:
                 logo_input = "\\null\\vspace{3cm}\n\n"
@@ -494,5 +496,5 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
             )
         )
 
-        return titlepage
+        return titlepage, dict_titlepage
 

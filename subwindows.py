@@ -705,6 +705,7 @@ class Ui_Dialog_titlepage(object):
         Dialog.setWindowTitle(
             _translate("Titelblatt anpassen", "Titelblatt anpassen", None)
         )
+        self.dict_titlepage = dict_titlepage
         # self.Dialog.resize(600, 400)
         # self.Dialog.setWindowIcon(QIcon(logo_path))
         # Dialog.setObjectName("Dialog")
@@ -724,14 +725,20 @@ class Ui_Dialog_titlepage(object):
         self.label_logo_2 = create_new_label(self.widget_label_logo, "---")
         horizontallayout_label_logo.addWidget(self.label_logo_2)
 
-        if dict_titlepage["logo_path"] != False:
-            logo_name = os.path.basename(dict_titlepage["logo_path"])
+        if self.dict_titlepage["logo_path"] != False:
+            logo_name = os.path.basename(self.dict_titlepage["logo_path"])
             self.label_logo_2.setText(logo_name)
 
         horizontallayout_label_logo.addStretch()
 
 
-        self.btn_titlepage_logo_path = create_new_button(self.widget_label_logo, "", partial(self.btn_titlepage_logo_path_pressed, dict_titlepage),
+        self.btn_delete_logo_path = create_new_button(self.widget_label_logo, "", self.delete_logo_path_pressed, icon='trash-2.svg')
+        horizontallayout_label_logo.addWidget(self.btn_delete_logo_path)
+
+        if self.dict_titlepage["logo_path"] == False:
+            self.btn_delete_logo_path.setEnabled(False)
+
+        self.btn_titlepage_logo_path = create_new_button(self.widget_label_logo, "", self.btn_titlepage_logo_path_pressed,
                                                          icon = "folder.svg")
         horizontallayout_label_logo.addWidget(self.btn_titlepage_logo_path)
 
@@ -769,29 +776,29 @@ class Ui_Dialog_titlepage(object):
             self.cb_titlepage_hide_all_pressed
         )
         try:
-            self.cb_titlepage_hide_all.setChecked(dict_titlepage["hide_all"])
+            self.cb_titlepage_hide_all.setChecked(self.dict_titlepage["hide_all"])
         except KeyError:
-            dict_titlepage["hide_all"] = False
+            self.dict_titlepage["hide_all"] = False
 
         self.cb_titlepage_logo = QtWidgets.QCheckBox("Logo")
 
 
         self.cb_titlepage_logo.setObjectName(_fromUtf8("cb_titlepage_logo"))
         self.verticalLayout_gBtitlepage.addWidget(self.cb_titlepage_logo)
-        self.cb_titlepage_logo.setChecked(dict_titlepage["logo"])
+        self.cb_titlepage_logo.setChecked(self.dict_titlepage["logo"])
 
 
         self.cb_titlepage_titel = QtWidgets.QCheckBox("Titel")
         self.cb_titlepage_titel.setObjectName(_fromUtf8("cb_titlepage_titel"))
         self.verticalLayout_gBtitlepage.addWidget(self.cb_titlepage_titel)
-        self.cb_titlepage_titel.setChecked(dict_titlepage["titel"])
+        self.cb_titlepage_titel.setChecked(self.dict_titlepage["titel"])
 
 
         self.widget_titlepage_datum = QtWidgets.QWidget(self.groupBox_titlepage)
         # self.widget_titlepage_datum.setFrameShape(QtWidgets.QFrame.NoFrame)
         horizontallayout_datum = create_new_horizontallayout(self.widget_titlepage_datum)
         horizontallayout_datum.setContentsMargins(0, 0, 0, 0)
-        self.cb_titlepage_datum = create_new_checkbox(self.widget_titlepage_datum, "Datum", checked=dict_titlepage["datum"])
+        self.cb_titlepage_datum = create_new_checkbox(self.widget_titlepage_datum, "Datum", checked=self.dict_titlepage["datum"])
         
         horizontallayout_datum.addWidget(self.cb_titlepage_datum)
 
@@ -803,7 +810,7 @@ class Ui_Dialog_titlepage(object):
         horizontallayout_datum.addWidget(self.combobox_titlepage_datum)
 
         try:
-            self.combobox_titlepage_datum.setCurrentIndex(dict_titlepage["datum_combobox"])
+            self.combobox_titlepage_datum.setCurrentIndex(self.dict_titlepage["datum_combobox"])
         except KeyError:
             self.combobox_titlepage_datum.setCurrentIndex(0)
 
@@ -820,35 +827,35 @@ class Ui_Dialog_titlepage(object):
         self.cb_titlepage_klasse = QtWidgets.QCheckBox("Klasse")
         self.cb_titlepage_klasse.setObjectName(_fromUtf8("cb_titlepage_klasse"))
         self.verticalLayout_gBtitlepage.addWidget(self.cb_titlepage_klasse)
-        self.cb_titlepage_klasse.setChecked(dict_titlepage["klasse"])
+        self.cb_titlepage_klasse.setChecked(self.dict_titlepage["klasse"])
 
         self.cb_titlepage_name = QtWidgets.QCheckBox("Name")
         self.cb_titlepage_name.setObjectName(_fromUtf8("cb_titlepage_name"))
         self.verticalLayout_gBtitlepage.addWidget(self.cb_titlepage_name)
-        self.cb_titlepage_name.setChecked(dict_titlepage["name"])
+        self.cb_titlepage_name.setChecked(self.dict_titlepage["name"])
 
         self.cb_titlepage_note = QtWidgets.QCheckBox("Note")
         self.cb_titlepage_note.setObjectName(_fromUtf8("cb_titlepage_note"))
         self.verticalLayout_gBtitlepage.addWidget(self.cb_titlepage_note)
-        self.cb_titlepage_note.setChecked(dict_titlepage["note"])
+        self.cb_titlepage_note.setChecked(self.dict_titlepage["note"])
 
         self.cb_titlepage_unterschrift = QtWidgets.QCheckBox("Unterschrift")
         self.cb_titlepage_unterschrift.setObjectName(
             _fromUtf8("cb_titlepage_unterschrift")
         )
         self.verticalLayout_gBtitlepage.addWidget(self.cb_titlepage_unterschrift)
-        self.cb_titlepage_unterschrift.setChecked(dict_titlepage["unterschrift"])
+        self.cb_titlepage_unterschrift.setChecked(self.dict_titlepage["unterschrift"])
 
         self.cb_titlepage_individual = create_new_checkbox(self.widget_individual_titlepage, "Individuelles Titelblatt")
         horizontallayout_individual_titlepage.addWidget(self.cb_titlepage_individual)
 
 
         try:
-            self.cb_titlepage_individual.setChecked(dict_titlepage["individual"])
+            self.cb_titlepage_individual.setChecked(self.dict_titlepage["individual"])
             if self.cb_titlepage_individual.isChecked() == True:
                 self.groupBox_titlepage.setEnabled(False)
         except KeyError:
-            dict_titlepage["individual"] = False
+            self.dict_titlepage["individual"] = False
 
         self.cb_titlepage_individual.stateChanged.connect(
             partial(self.cb_titlepage_individual_pressed, MainWindow)
@@ -873,17 +880,16 @@ class Ui_Dialog_titlepage(object):
         buttonX = self.buttonBox_titlepage.button(QtWidgets.QDialogButtonBox.Cancel)
         buttonX.setText("Standard wiederherstellen")
         self.buttonBox_titlepage.setObjectName("buttonBox")
-        self.buttonBox_titlepage.rejected.connect(
-            partial(self.set_default_titlepage, dict_titlepage)
-        )
+        self.buttonBox_titlepage.rejected.connect(self.set_default_titlepage)
+
         self.buttonBox_titlepage.accepted.connect(
-            partial(self.save_titlepage, dict_titlepage, MainWindow.chosen_program)
+            partial(self.save_titlepage, MainWindow.chosen_program)
         )
         # self.retranslateUi(self.Dialog)
 
         self.verticalLayout_titlepage.addWidget(self.buttonBox_titlepage)
 
-        return dict_titlepage
+        return self.dict_titlepage
 
     def cb_titlepage_individual_pressed(self, MainWindow):
         if self.cb_titlepage_individual.isChecked() == True:
@@ -910,7 +916,17 @@ class Ui_Dialog_titlepage(object):
                 self.groupBox_titlepage.setEnabled(True)
             
 
-    def btn_titlepage_logo_path_pressed(self, dict_titlepage):
+    def delete_logo_path_pressed(self):
+        rsp = question_window("Sind Sie sicher, dass Sie das Logo entfernen möchten?")
+        
+        if rsp == False:
+            return
+        
+        self.dict_titlepage["logo_path"]=False
+        self.label_logo_2.setText("---")
+        self.btn_delete_logo_path.setEnabled(False)
+
+    def btn_titlepage_logo_path_pressed(self):
         logo_titlepage_path = QtWidgets.QFileDialog.getOpenFileNames(
             None, "Grafiken wählen", path_programm, "Grafiken (*.eps)"
         )
@@ -921,7 +937,8 @@ class Ui_Dialog_titlepage(object):
 
         # self.cb_titlepage_logo.setText("Logo ({})".format(logo_name))
         self.label_logo_2.setText(logo_name)
-        dict_titlepage["logo_path"] = "{}".format(logo_titlepage_path[0][0])
+        self.btn_delete_logo_path.setEnabled(True)
+        
         copy_logo_titlepage_path = os.path.join(
             path_localappdata_lama, "Teildokument", logo_name
         )
@@ -930,7 +947,8 @@ class Ui_Dialog_titlepage(object):
         except shutil.SameFileError:
             pass
 
-        return dict_titlepage
+        self.dict_titlepage["logo_path"] = "{}".format(copy_logo_titlepage_path)
+
 
     def open_individual_titlepage(self, MainWindow):
         Dialog = QtWidgets.QDialog(
@@ -1055,7 +1073,8 @@ class Ui_Dialog_titlepage(object):
             path_localappdata_lama, "Teildokument", "preview.tex"
             )
         MainWindow.collect_all_infos_for_creating_file()
-        titlepage = prepare_individual_titlepage(self.plainTextEdit_instructions.toPlainText(), MainWindow)
+
+        titlepage = prepare_individual_titlepage(self.plainTextEdit_instructions.toPlainText(), self.dict_titlepage, MainWindow)
 
         rsp = create_tex(file_path, titlepage, pagebreak=None, solution="solution_off")
 
@@ -1065,11 +1084,11 @@ class Ui_Dialog_titlepage(object):
             critical_window("Die PDF Datei konnte nicht erstellt werden", detailed_text= rsp)
 
 
-    def get_dict_titlepage(self, dict_titlepage, chosen_program):
+    def get_dict_titlepage(self, chosen_program):
         titlepage_settings = ["logo", "logo_path", "titel", "datum", "datum_combobox", "klasse", "name", "note", "unterschrift", "individual", "hide_all"]
         for all in titlepage_settings:
             if all == "logo_path":
-                if self.cb_titlepage_logo.isChecked() and dict_titlepage[all] == False:
+                if self.cb_titlepage_logo.isChecked() and self.dict_titlepage[all] == False:
                     warning_message = "Bitte geben Sie den Dateipfad eines Logos an oder wählen Sie das Logo auf der Titelseite ab."
                 elif self.cb_titlepage_individual.isChecked():
                     if chosen_program == "lama":
@@ -1081,9 +1100,13 @@ class Ui_Dialog_titlepage(object):
                     with open(individual_titlepage, "r", encoding="utf8") as f:
                         string_titlepage = load(f)
                     
+                    print(string_titlepage.find("[[LOGO]]"))
                     if string_titlepage.find("[[LOGO]]") == -1:
                         continue
-                    warning_message = "Bitte geben Sie den Dateipfad eines Logos an oder entfernen Sie das Logo aus Ihrem Titelblatt."
+                    elif self.dict_titlepage[all] == False:
+                        warning_message = "Bitte geben Sie den Dateipfad eines Logos an oder entfernen Sie das Logo aus Ihrem Titelblatt."
+                    else:
+                        continue
                 else:
                     continue
 
@@ -1092,28 +1115,28 @@ class Ui_Dialog_titlepage(object):
 
             
             elif all == "datum_combobox":
-                dict_titlepage[all] = self.combobox_titlepage_datum.currentIndex()
+                self.dict_titlepage[all] = self.combobox_titlepage_datum.currentIndex()
                 continue
 
 
             checkbox = eval("self.cb_titlepage_{}".format(all))
             if checkbox.isChecked():
-                dict_titlepage[all] = True
+                self.dict_titlepage[all] = True
             else:
-                dict_titlepage[all] = False
+                self.dict_titlepage[all] = False
             # except AttributeError:
             #     dict_titlepage[all] = False
 
-        return dict_titlepage
+        # return dict_titlepage
     
-    def save_titlepage(self, dict_titlepage, chosen_program):
-        dict_titlepage = self.get_dict_titlepage(dict_titlepage, chosen_program)
-        if dict_titlepage != False:
+    def save_titlepage(self, chosen_program):
+        rsp = self.get_dict_titlepage(chosen_program)
+        if rsp != False:
             self.Dialog.accept()
-        return dict_titlepage
 
-    def set_default_titlepage(self, dict_titlepage):
-        dict_titlepage = {
+
+    def set_default_titlepage(self):
+        self.dict_titlepage = {
             "logo": False,
             "logo_path": False,
             "titel": True,
@@ -1126,19 +1149,17 @@ class Ui_Dialog_titlepage(object):
             "individual": False,
             "hide_all": False,
         }
-        for all in dict_titlepage.keys():
+        for all in self.dict_titlepage.keys():
             if all == "logo_path":
                 continue
             elif all == "datum_combobox":
                 try:
-                    self.combobox_titlepage_datum.setCurrentIndex(dict_titlepage[all])
+                    self.combobox_titlepage_datum.setCurrentIndex(self.dict_titlepage[all])
                 except KeyError:
                     self.combobox_titlepage_datum.setCurrentIndex(0)
             else:                
                 checkbox = eval("self.cb_titlepage_{}".format(all))
-                checkbox.setChecked(dict_titlepage[all])
-
-        return dict_titlepage
+                checkbox.setChecked(self.dict_titlepage[all])
 
 
 class Ui_Dialog_individual_titlepage(object):

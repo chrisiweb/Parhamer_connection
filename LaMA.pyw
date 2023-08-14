@@ -7892,7 +7892,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         else:
             gruppe = 0
 
-        str_titlepage = get_titlepage_vorschau(
+        str_titlepage, dict_titlepage = get_titlepage_vorschau(
             self, dict_titlepage, ausgabetyp, maximum, gruppe
         )
         # print(str_titlepage)
@@ -7923,7 +7923,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             for group in range(self.ui_erstellen.spinBox_sw_gruppen.value() - 1):
                 self.create_body_of_tex_file(filename_vorschau, ausgabetyp)
 
-                str_titlepage = get_titlepage_vorschau(
+                str_titlepage, dict_titlepage = get_titlepage_vorschau(
                     self, dict_titlepage, ausgabetyp, maximum, group + 1
                 )
                 with open(filename_vorschau, "a", encoding="utf8") as vorschau:
@@ -8043,11 +8043,17 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                         self, dict_titlepage["logo_path"]
                     )
                     if success == False:
+                        QtWidgets.QApplication.restoreOverrideCursor()
                         warning_window(
-                            "Das Logo konnte nicht gefunden werden.",
-                            "Bitte suchen Sie ein Logo unter: \n\nTitelblatt anpassen - Durchsuchen",
-                            "Kein Logo ausgewählt",
+                            "Das angegebene Logo wurde gelöscht und konnte nicht gefunden werden.",
+                            "Bitte suchen Sie das Logo erneut unter: Titelblatt - Durchsuchen\n\nDie PDF Datei kann jedoch trotzdem ausgegeben werden.",
+                            "Ausgewähltes Logo nicht gefunden",
                         )
+                        if self.chosen_program == "lama":
+                            self.dict_titlepage["logo_path"] = False
+                        if self.chosen_program == "cria":
+                            self.dict_titlepage_cria["logo_path"] = False
+                        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
                 # if (
                 #     is_empty(self.dict_all_infos_for_file["data_gesamt"]["copy_images"])
