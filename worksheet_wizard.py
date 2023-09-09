@@ -2021,8 +2021,8 @@ def create_latex_worksheet(
 
         content += f"\\begin{{tasks}}[label={nummerierung},resume={fortlaufende_nummerierung}, item-indent=0pt]({columns})\n\n"
 
-
         list_of_examples = set_of_examples['list_of_examples']
+
         for example in list_of_examples:
             if shorten_topic == 'ari_dar_ste':
                 content = create_latex_string_stellenwert(content, example)
@@ -2039,7 +2039,7 @@ def create_latex_worksheet(
             elif shorten_topic == 'ari_pos_div':
                 content = create_latex_string_division(content, example, solution_type)
             elif (
-                shorten_topic == 'ari_pos_div' or 
+                shorten_topic == 'ari_pos_ver' or 
                 shorten_topic == 'ari_neg_add' or 
                 shorten_topic == 'ari_neg_mul' or 
                 shorten_topic == 'ari_neg_ver'):
