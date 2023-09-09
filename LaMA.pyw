@@ -5019,6 +5019,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.binoms_direction_index,
             )
 
+
         if self.checkBox_show_nonogramm.isChecked():
             try:
                 columns = self.number_columns_solution_wizard
