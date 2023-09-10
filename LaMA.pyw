@@ -4805,7 +4805,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # thema = self.comboBox_themen_wizard.currentText()
         anzahl = len(self.list_of_examples_wizard)
 
-        label_worksheet = create_new_label(self.scrollAreaWidgetContents_complete_worksheet_wizard, f"{thema[-1]} ({anzahl})", True)
+        label_worksheet = create_new_label(self.scrollAreaWidgetContents_complete_worksheet_wizard, f"{thema[-1].replace('&&','&')} ({anzahl})", True)
         horizontalLayout_worksheet.addWidget(label_worksheet)
 
         horizontalLayout_worksheet.addStretch()
