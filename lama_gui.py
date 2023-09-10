@@ -2547,13 +2547,28 @@ def setup_stackWizard(self):
     self.horizontalLayout_settings_addon_wizard = create_new_horizontallayout(self.widget_settings_addon_wizard)
     self.horizontalLayout_settings_addon_wizard.setContentsMargins(0,9,0,0)
 
+    def check_mode(self, changed_mode):
+        if self.checkbox_enable_addition.isChecked() == False and self.checkbox_enable_subtraktion.isChecked()==False:
+            warning_window('Es muss entweder Addition oder Subtraktion (oder beide) ausgwählt sein.')
+
+            if changed_mode == "+":
+                self.checkbox_enable_subtraktion.setChecked(True)
+            elif changed_mode == "-":
+                self.checkbox_enable_addition.setChecked(True)
+
+
+
+
     self.checkbox_enable_addition = create_new_checkbox(self.widget_settings_addon_wizard, "Addition", checked=True)
     self.horizontalLayout_settings_addon_wizard.addWidget(self.checkbox_enable_addition)
+    self.checkbox_enable_addition.stateChanged.connect(partial(check_mode,self, "+"))
     self.checkbox_enable_addition.hide()
 
     self.checkbox_enable_subtraktion = create_new_checkbox(self.widget_settings_addon_wizard, "Subtraktion", checked=True)
-    self.horizontalLayout_settings_addon_wizard.addWidget(self.checkbox_enable_subtraktion)  
+    self.horizontalLayout_settings_addon_wizard.addWidget(self.checkbox_enable_subtraktion)
+    self.checkbox_enable_subtraktion.stateChanged.connect(partial(check_mode,self, "-"))  
     self.checkbox_enable_subtraktion.hide()
+
 
 
     self.widget_single_instructions = QtWidgets.QWidget(self.widget_setting_wizard1)

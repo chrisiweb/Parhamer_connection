@@ -4343,8 +4343,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
             brackets_allowed = self.checkbox_allow_brackets_wizard.isChecked()
 
+            typ = self.get_wizard_type_ari(shorten_topic)
+
             if shorten_topic=='ari_neg_add':
-                new_example = create_single_example_ganze_zahlen_strich(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
+                new_example = create_single_example_ganze_zahlen_strich(typ, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
             elif shorten_topic=='ari_neg_mul':
                 new_example = create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
             elif shorten_topic=='ari_pos_ver' or shorten_topic=='ari_neg_ver':
@@ -4455,6 +4457,28 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         #     )
         # self.gridLayout_scrollArea_wizard.addWidget(pushButton_create_new_example ,row,column,1,1)
 
+    def get_wizard_type_ari(self, shorten_topic):
+        if shorten_topic=='ari_neg_add':
+            if self.checkbox_enable_addition.isChecked():
+                typ = "+"
+            else:
+                typ = ""
+            
+            if self.checkbox_enable_subtraktion.isChecked():
+                typ += "-"
+            
+
+        elif shorten_topic=='ari_neg_mul':
+            typ = '*:'
+        elif (
+            shorten_topic=='ari_pos_ver' or
+            shorten_topic=='ari_neg_ver'
+            ):
+
+            typ = '+-*:'
+        
+        return typ
+
     def create_list_of_examples_wizard(self):
         thema = self.get_current_topic_wizard()
         # thema_index = self.total_list_of_topics_wizard.index(thema)
@@ -4547,25 +4571,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             brackets_allowed = self.checkbox_allow_brackets_wizard.isChecked()
             show_brackets = True
 
-            if shorten_topic=='ari_neg_add':
-                if self.checkbox_enable_addition.isChecked():
-                    typ = "+"
-                else:
-                    typ = ""
-                
-                if self.checkbox_enable_subtraktion.isChecked():
-                    typ += "-"
-                
+            typ = self.get_wizard_type_ari(shorten_topic)
 
-            elif shorten_topic=='ari_neg_mul':
-                typ = '*:'
-            elif (
-                shorten_topic=='ari_pos_ver' or
-                shorten_topic=='ari_neg_ver'
-                ):
-                if shorten_topic=='ari_pos_ver':
-                    show_brackets = False
-                typ = '+-*:'
+            if shorten_topic=='ari_pos_ver':
+                show_brackets = False
 
             if minimum>maximum:
                 critical_window('Das Maximum muss größer als das Minimum sein.')
