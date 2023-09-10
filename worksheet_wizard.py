@@ -1341,9 +1341,21 @@ def create_list_of_examples_stellenwert(examples, minimum, minimum_index, maximu
 def create_list_of_examples_roman_numerals(examples, roman_max, maximum_index, general_direction_index):
     list_of_examples = []
 
-    for _ in range(examples):
+
+    i=0
+    max_limit_counter =0
+    while i<examples:
         new_example = create_single_example_roman_numerals(roman_max, maximum_index, general_direction_index)
-        list_of_examples.append(new_example)
+        duplicate = check_for_duplicate(new_example, list_of_examples)
+        
+        if duplicate == False:
+            list_of_examples.append(new_example)
+            i +=1
+        else:
+            max_limit_counter +=1
+            if max_limit_counter > 99:
+                list_of_examples.append(new_example)
+                i +=1
 
     return list_of_examples
 
@@ -1351,45 +1363,102 @@ def create_list_of_examples_roman_numerals(examples, roman_max, maximum_index, g
 def create_list_of_examples_number_line(examples, starting_value, steps, subticks):
     list_of_examples = []
 
-    for _ in range(examples):
+
+    i=0
+    max_limit_counter =0
+    while i<examples:
         new_example = create_single_example_number_line(starting_value, steps, subticks)
-        list_of_examples.append(new_example)
+        duplicate = check_for_duplicate(new_example, list_of_examples)
+        
+        if duplicate == False:
+            list_of_examples.append(new_example)
+            i +=1
+        else:
+            max_limit_counter +=1
+            if max_limit_counter > 99:
+                list_of_examples.append(new_example)
+                i +=1
 
     return list_of_examples    
 
 def create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
     list_of_examples = []
 
-    for _ in range(examples):
+    i=0
+    max_limit_counter =0
+    while i<examples:
         new_example = create_single_example_addition(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
-        list_of_examples.append(new_example)
+        duplicate = check_for_duplicate(new_example, list_of_examples)
+        
+        if duplicate == False:
+            list_of_examples.append(new_example)
+            i +=1
+        else:
+            max_limit_counter +=1
+            if max_limit_counter > 99:
+                list_of_examples.append(new_example)
+                i +=1
 
     return list_of_examples
 
 def create_list_of_examples_subtraction(examples, minimum, maximum, commas, negative_solutions_allowed, anzahl_subtrahenden,smaller_or_equal):
     list_of_examples = []
 
-    for _ in range(examples):
+
+    i=0
+    max_limit_counter =0
+    while i<examples:
         new_example = create_single_example_subtraction(minimum, maximum, commas, negative_solutions_allowed,anzahl_subtrahenden, smaller_or_equal)
-        list_of_examples.append(new_example)
+        duplicate = check_for_duplicate(new_example, list_of_examples)
+        
+        if duplicate == False:
+            list_of_examples.append(new_example)
+            i +=1
+        else:
+            max_limit_counter +=1
+            if max_limit_counter > 99:
+                list_of_examples.append(new_example)
+                i +=1
 
     return list_of_examples
 
 def create_list_of_examples_multiplication(examples, minimum_1, maximum_1, commas_1, smaller_or_equal_1, minimum_2, maximum_2, commas_2, smaller_or_equal_2):
     list_of_examples = []
 
-    for _ in range(examples):
+    i=0
+    max_limit_counter =0
+    while i<examples:
         new_example = create_single_example_multiplication(minimum_1, maximum_1, commas_1, smaller_or_equal_1,minimum_2, maximum_2, commas_2, smaller_or_equal_2)
-        list_of_examples.append(new_example)
+        duplicate = check_for_duplicate(new_example, list_of_examples)
+        
+        if duplicate == False:
+            list_of_examples.append(new_example)
+            i +=1
+        else:
+            max_limit_counter +=1
+            if max_limit_counter > 99:
+                list_of_examples.append(new_example)
+                i +=1
 
     return list_of_examples
 
 def create_list_of_examples_division(examples, minimum_1, maximum_1, minimum_2, maximum_2, commas_div, smaller_or_equal_div, commas_result, smaller_or_equal_result, output_type):
     list_of_examples = []
 
-    for _ in range(examples):
+    i=0
+    max_limit_counter =0
+    while i<examples:
         new_example = create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div, smaller_or_equal_div, commas_result,smaller_or_equal_result, output_type)
-        list_of_examples.append(new_example)
+        duplicate = check_for_duplicate(new_example, list_of_examples)
+        
+        if duplicate == False:
+            list_of_examples.append(new_example)
+            i +=1
+        else:
+            max_limit_counter +=1
+            if max_limit_counter > 99:
+                list_of_examples.append(new_example)
+                i +=1
 
     return list_of_examples
 
@@ -1397,32 +1466,69 @@ def create_list_of_examples_division(examples, minimum_1, maximum_1, minimum_2, 
 def create_list_of_examples_ganze_zahlen(typ, examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets):
     list_of_examples = []
 
-    for _ in range(examples):
+
+    i=0
+    max_limit_counter =0
+    while i<examples:
         if typ == '+' or typ == '-' or typ == '+-':
             new_example = create_single_example_ganze_zahlen_strich(typ, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
         elif typ == '*:':
             new_example = create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
         elif typ == '+-*:': 
             new_example = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)
-        list_of_examples.append(new_example)
+
+        duplicate = check_for_duplicate(new_example, list_of_examples)
+        
+        if duplicate == False:
+            list_of_examples.append(new_example)
+            i +=1
+        else:
+            max_limit_counter +=1
+            if max_limit_counter > 99:
+                list_of_examples.append(new_example)
+                i +=1
+
 
     return list_of_examples
 
 def create_list_of_examples_coordinate_system(examples, half_allowed, negative_allowed):
     list_of_examples = []
 
-    for _ in range(examples):
+    i=0
+    max_limit_counter =0
+    while i<examples:
         new_example = create_single_example_coordinate_system(half_allowed, negative_allowed)
-        list_of_examples.append(new_example)
+        duplicate = check_for_duplicate(new_example, list_of_examples)
+        
+        if duplicate == False:
+            list_of_examples.append(new_example)
+            i +=1
+        else:
+            max_limit_counter +=1
+            if max_limit_counter > 99:
+                list_of_examples.append(new_example)
+                i +=1
 
     return list_of_examples
 
 def create_list_of_examples_binomische_formeln(examples, binomials_types, a,b,x,y, exponent, binoms_direction_index, fractions_allowed, variable_1, variable_2):
     list_of_examples = []
 
-    for _ in range(examples):
+    i=0
+    max_limit_counter =0
+    while i<examples:
         new_example = create_single_example_binomische_formeln(binomials_types, a,b,x,y, exponent, binoms_direction_index, fractions_allowed, variable_1, variable_2)
-        list_of_examples.append(new_example)
+        duplicate = check_for_duplicate(new_example, list_of_examples)
+        
+        if duplicate == False:
+            list_of_examples.append(new_example)
+            i +=1
+        else:
+            max_limit_counter +=1
+            if max_limit_counter > 99:
+                list_of_examples.append(new_example)
+                i +=1
+
 
     return list_of_examples
 
