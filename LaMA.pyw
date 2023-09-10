@@ -4826,15 +4826,32 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         widget_worksheet.setToolTip(tooltip_str)
 
 
-        list_solutions =  []
-        for all in self.list_of_examples_wizard:
-            list_solutions.append(all[-2])
-
-
         full_list_dummy_solutions = []
-        list_dummy_solutions = []
+        
         if shorten_topic != 'ari_dar_zah' and shorten_topic != 'geo_gru_koo':
+            list_solutions =  []
+            for all in self.list_of_examples_wizard:
+                list_solutions.append(all[-2])
+
+
+            
+            list_dummy_solutions = []
+            
+            try:
+                self.dict_all_examples_worksheet_wizard
+            except AttributeError:
+                self.dict_all_examples_worksheet_wizard = {}
+            for all in self.dict_all_examples_worksheet_wizard:
+                temp_list_examples = self.dict_all_examples_worksheet_wizard[all]['list_of_examples']
+                temp_list_solutions = self.dict_all_examples_worksheet_wizard[all]['dummy_examples']
+                for example in temp_list_examples:
+                    list_solutions.append(example[-2])
+                for dummy_solution in temp_list_solutions:
+                    list_dummy_solutions.append(dummy_solution[-2])
+
+
             i=0
+            max_limit_counter =0
             while i<10:
                 dummy_solution = get_random_solution(self)
     
@@ -4842,8 +4859,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     full_list_dummy_solutions.append(dummy_solution)
                     list_dummy_solutions.append(dummy_solution[-2])
                     i+=1
-
-
+                else:
+                    max_limit_counter +=1
+                    if max_limit_counter > 99:
+                        break
 
         if shorten_topic=='ari_pos_add' or shorten_topic=='ari_pos_sub':
             ausrichtung = self.combobox_ausrichtung_wizard.currentIndex()
@@ -4872,10 +4891,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         else:
             columns = self.spinBox_column_wizard.value()
 
-        try:
-            self.dict_all_examples_worksheet_wizard
-        except AttributeError:
-            self.dict_all_examples_worksheet_wizard = {}
 
         # try:
         coordinate_system_zwischenwerte = self.checkbox_coordinatesystem_zwischenwerte.isChecked()
@@ -4908,6 +4923,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             'coordinate_system' : [coordinate_system_zwischenwerte, coordinate_system_negative],
 
         }
+
         self.list_of_examples_wizard = []
         self.current_single_instruction_wizard = None
         self.pushButton_single_instructions.setText("Arbeitsanweisung hinzufügen")

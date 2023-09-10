@@ -1307,13 +1307,33 @@ def get_random_fraction(min, max):
 
     return Fraction("{0}/{1}".format(numerator, abs(denominator)))
 
+def check_for_duplicate(new_example, list_of_examples):
+    list_of_solutions = []
+    for all in list_of_examples:
+        list_of_solutions.append(all[-2])
+
+    if new_example[-2] in list_of_solutions:
+        return True
+    else:
+        return False
 
 def create_list_of_examples_stellenwert(examples, minimum, minimum_index, maximum, maximum_index, general_direction_index):
     list_of_examples = []
 
-    for _ in range(examples):
+    i=0
+    max_limit_counter =0
+    while i<examples:
         new_example = create_single_example_stellenwert(minimum, minimum_index, maximum, maximum_index, general_direction_index)
-        list_of_examples.append(new_example)
+        duplicate = check_for_duplicate(new_example, list_of_examples)
+        
+        if duplicate == False:
+            list_of_examples.append(new_example)
+            i +=1
+        else:
+            max_limit_counter +=1
+            if max_limit_counter > 99:
+                list_of_examples.append(new_example)
+                i +=1
 
     return list_of_examples     
 
