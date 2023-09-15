@@ -566,6 +566,7 @@ def create_division_pair(factor_1, factor_2, show_brackets = True):
     return "{}:{}".format(add_summand(dividend, show_brackets), add_summand(factor_1, show_brackets))
 
 def calculate_solution(string, set_commas):
+    print(string)
     exact_solution = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
     rounded_solution = round(exact_solution, 2)
 
@@ -618,8 +619,12 @@ def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_su
             
 
         #######
-        #     
-        num = get_random_number(minimum, maximum, commas, zero_allowed=25, force_decimals=force_decimals)
+        # 
+        if anzahl_summanden==2:
+            zero = False
+        else:
+            zero = 25    
+        num = get_random_number(minimum, maximum, commas, zero_allowed=zero, force_decimals=force_decimals)
         factors.append(num)
         
         if test_commas !=0:
@@ -675,7 +680,7 @@ def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_su
 
             string += add_summand(new_number)
 
-
+   
     solution = calculate_solution(string, set_commas)
     if solution == False:
         factors, solution, string = repair_decimals(factors, solution, string, set_commas, minimum, maximum)
