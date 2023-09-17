@@ -4515,7 +4515,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             if minimum>maximum:
                 critical_window('Das Maximum muss größer als das Minimum sein.')
                 return
-            list_of_examples_wizard = create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, self.general_direction_index)
+            list_of_examples_wizard = create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal) #, self.general_direction_index
 
         elif shorten_topic=='ari_pos_sub':
             minimum = self.spinbox_zahlenbereich_minimum.value()

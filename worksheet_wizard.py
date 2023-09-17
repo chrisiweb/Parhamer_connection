@@ -566,7 +566,6 @@ def create_division_pair(factor_1, factor_2, show_brackets = True):
     return "{}:{}".format(add_summand(dividend, show_brackets), add_summand(factor_1, show_brackets))
 
 def calculate_solution(string, set_commas):
-    print(string)
     exact_solution = eval(string.replace('[','(').replace(']',')').replace('\xb7','*').replace(':','/'))
     rounded_solution = round(exact_solution, 2)
 
