@@ -4827,7 +4827,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
         full_list_dummy_solutions = []
-        
+
+
+        try:
+            self.dict_all_examples_worksheet_wizard
+        except AttributeError:
+            self.dict_all_examples_worksheet_wizard = {}
+
         if shorten_topic != 'ari_dar_zah' and shorten_topic != 'geo_gru_koo':
             list_solutions =  []
             for all in self.list_of_examples_wizard:
@@ -4837,10 +4843,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             
             list_dummy_solutions = []
             
-            try:
-                self.dict_all_examples_worksheet_wizard
-            except AttributeError:
-                self.dict_all_examples_worksheet_wizard = {}
+
             for all in self.dict_all_examples_worksheet_wizard:
                 temp_list_examples = self.dict_all_examples_worksheet_wizard[all]['list_of_examples']
                 temp_list_solutions = self.dict_all_examples_worksheet_wizard[all]['dummy_examples']
