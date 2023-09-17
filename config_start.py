@@ -57,21 +57,21 @@ if sys.platform.startswith("win"):
 
 elif sys.platform.startswith("darwin"):
 # else:
-    # path_programm=os.path.dirname(sys.argv[0])
-    # if path_programm == "":
-    #     path_programm = "."
+    path_programm=os.path.dirname(sys.argv[0])
+    if path_programm == "":
+        path_programm = "."
     
-    #path_programm = os.path.join(path_programm, "LaMA_programdata")
-    path_programm = os.path.join(Path.home(), "Library", "LaMA","LaMA_programdata")
+    path_programm = os.path.join(path_programm, "LaMA_programdata")
+    # path_programm = os.path.join(Path.home(), "Library", "LaMA","LaMA_programdata")
     if not os.path.isdir(path_programm):
-        os.makedirs(path_programm)
+        os.mkdir(path_programm)
 
     path_localappdata_lama = path_programm
 
 
     path_lama_developer_credentials = os.path.join(Path.home(), "Library", "LaMA","credentials")
     if not os.path.isdir(path_lama_developer_credentials):
-        os.mkdir(path_lama_developer_credentials)
+        os.makedirs(path_lama_developer_credentials)
         
     lama_developer_credentials = os.path.join(path_lama_developer_credentials, "developer_credentials.txt")
 
