@@ -1579,6 +1579,12 @@ class Ui_Dialog_ausgleichspunkte(object):
 
         update_data(aufgabe, typ, entry_key, new_content)
 
+
+        if re.search("\\\\variation\{.*\}\{.*\}", new_content)!=None:
+            update_data(aufgabe, typ, 'gruppe', True)
+        else:
+            update_data(aufgabe, typ, 'gruppe', False)
+
         QtWidgets.QApplication.restoreOverrideCursor()
 
         chosen_ddb = ["_database.json"]    

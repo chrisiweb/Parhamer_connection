@@ -6631,8 +6631,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         gridLayout_gB.addWidget(button_translation, 0, 4, 1, 1)
 
         af = aufgabe_total["af"]
-        if  af == 'oa' or af == 'ta' or af == 'ko' or typ==2:
 
+        if  af == 'oa' or af == 'ta' or af == 'ko' or typ==2:
             button_AB = QtWidgets.QPushButton(new_groupbox)
             button_AB.setCheckable(True)
             gridLayout_gB.addWidget(button_AB, 1, 4, 1, 1)
@@ -6968,7 +6968,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         )
 
         Dialog.exec_()
-
+        
         if ui.sage_individual_change == [None, None] and aufgabe in self.dict_sage_individual_change:
             self.dict_sage_individual_change.pop(aufgabe)
         else:
@@ -8108,7 +8108,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                         "Zugriff verweigert")
                         QtWidgets.QApplication.restoreOverrideCursor()
                         return False
-
+                    except FileNotFoundError:
+                        critical_window(f'Es ist ein Fehler bei der Erstellung der Datei "{os.path.basename(new_filename)}" aufgetreten. Bitte versuchen Sie es erneut.',
+                        "Sollte der Fehler weiterhin bestehen, melden Sie uns diesen bitte über die Fehler&Feedback-Funktion",
+                        "Fehler bei der Erstellung")
+                        QtWidgets.QApplication.restoreOverrideCursor()
+                        return False
 
                 elif index % 2 == 0:
                     new_filename = name + "_Loesung.pdf"
@@ -8119,6 +8124,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                         critical_window(f'Die Datei "{os.path.basename(new_filename)}" konnte nicht gespeichert werden, da diese Datei bereits exisitiert und geöffnet ist.',
                         "Bitte schließen sie die pdf-Datei oder speichern sie die Datei unter einem anderen Namen.",
                         "Zugriff verweigert")
+                        QtWidgets.QApplication.restoreOverrideCursor()
+                        return False
+                    except FileNotFoundError:
+                        critical_window(f'Es ist ein Fehler bei der Erstellung der Datei "{os.path.basename(new_filename)}" aufgetreten. Bitte versuchen Sie es erneut.',
+                        "Sollte der Fehler weiterhin bestehen, melden Sie uns diesen bitte über die Fehler&Feedback-Funktion",
+                        "Fehler bei der Erstellung")
                         QtWidgets.QApplication.restoreOverrideCursor()
                         return False
 
