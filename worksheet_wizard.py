@@ -1250,7 +1250,7 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
         #     solution_string = f"{solution_string} = {binom_string}"
         # else:
         #     solution_string = string
-
+        
         split_string = split_binomial_expression(string)
         random_blanks = choose_random_blanks(split_string)
 
@@ -1259,7 +1259,6 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
             string = string.replace(split_string[i], "_", 1)
             solution_string.append(split_string[i])
 
-        
         if choice == 0:
             binom_string = string
 
@@ -1281,12 +1280,22 @@ def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_
 
     binom_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", binom_string)
     binom_string = binom_string.replace('\xb7', '\cdot ')
+    
 
     return [f"${binom_string}$",solution_string, string]
 
 def split_binomial_expression(expression):
-    pattern = r'([0-9/a-z]+\^\d+|\d*(?:/\d)*[a-z]+|^\^\d+(?:/\d)*[a-z]*)'
-    return re.findall(pattern, expression)
+    pattern = r'[+\-()=]'
+    segments = re.split(pattern, expression)
+    segments = [segment.strip() for segment in segments if segment.strip()]
+
+    filtered_segments = [x for x in segments if not re.fullmatch(r'\^\d+', x)]
+    
+    # pattern = r'([0-9/a-z]+\^\d+ [+-]|\d*(?:/\d)*[a-z]+ [+-]|^\^\d+(?:/\d)*[a-z]*)'
+
+    # result = re.findall(pattern, expression)
+
+    return filtered_segments
 
 def choose_random_blanks(_list):
     if len(_list)==5:
@@ -2087,6 +2096,7 @@ def create_latex_string_binomische_formeln(content, example, binoms_direction_in
             aufgabe = aufgabe.replace('\\rule{1cm}{0.3pt}', f'\\antwort[RULE]{{{solution}}}', 1)
 
         aufgabe = aufgabe.replace("RULE", "\\rule{1cm}{0.3pt}")
+        aufgabe = re.sub("\^([0-9][0-9]+)",r"^{\1}", aufgabe)
         # for loesung in example[1]:
         #     aufgabe = aufgabe.replace("\\rule{1cm}{0.3pt}", f"\\antwort[\\rule{{1cm}}{{0.3pt}}]{{{loesung}}}",1)
         temp_content = f"\\task {aufgabe}\n\n"
