@@ -7328,6 +7328,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         progress.setValue(progress_value)
         for index, aufgabe in enumerate(self.import_list_sage):
+            progress_value +=1
+            progress.setValue(progress_value)
             aufgabe = aufgabe.upper()
 
             typ = get_aufgabentyp(self.chosen_program, aufgabe.replace('I.',''))
@@ -7335,9 +7337,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             if typ == 1:
                 layout = self.verticalLayout_scrollArea_sage_typ1
                 try:
+                    aufgabe = aufgabe.replace("-L","")
+                    aufgabe = aufgabe.replace("-R", "")
                     gk, num = aufgabe.split('-')
                 except ValueError:
-                    return aufgabe
+                    list_aufgaben_errors.append(aufgabe)
+                    continue
 
                 gk = shorten_gk(gk)
                 
@@ -7388,8 +7393,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             )
 
             layout.insertWidget(layout.count() - 1, neue_aufgaben_box)
-            progress_value +=1
-            progress.setValue(progress_value)
+
         progress.cancel()
 
         if not is_empty(list_aufgaben_errors):
