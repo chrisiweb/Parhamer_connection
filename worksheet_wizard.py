@@ -351,13 +351,20 @@ def create_single_example_roman_numerals(roman_max, maximum_index, general_direc
 def create_single_example_number_line(starting_value, steps, subticks):
     maximum = starting_value+14*steps
     factor= subticks/steps
-    
     i=0
     list_of_points = []
     while i < 5:
-        x = round(random.uniform(starting_value, maximum) * factor) / factor
+        random_decimal = random.uniform(starting_value, maximum)
+        x = round(random_decimal* factor) / factor
         # x= float(remove_exponent(D(x)))
         x = formatNumber(x)
+
+        # print(x)
+
+        numerator, denominator = D(x).as_integer_ratio()
+        # print(f"Bruch: {numerator}/{denominator}")
+        # print(f"{round(random_decimal * factor)}/{factor}")
+
         if x not in list_of_points:
             list_of_points.append(x)
             i+=1
@@ -2380,7 +2387,7 @@ def get_random_solution(self):
     elif shorten_topic == 'ari_dar_zah':
         starting_value = self.spinbox_zahlenbereich_startingvalue.value()
         steps = self.spinbox_zahlenbereich_steps.value()
-        subticks = self.spinbox_zahlenbereich_subticks.value()
+        subticks = self.spinbox_zahlenbereich_subticks.value()+1
 
         distract_result = create_single_example_number_line(starting_value, steps, subticks)
 

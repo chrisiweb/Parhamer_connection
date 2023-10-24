@@ -4290,7 +4290,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         elif shorten_topic == 'ari_dar_zah':
             starting_value = self.spinbox_zahlenbereich_startingvalue.value()
             steps = self.spinbox_zahlenbereich_steps.value()
-            subticks = self.spinbox_zahlenbereich_subticks.value()
+            subticks = self.spinbox_zahlenbereich_subticks.value()+1
             new_example = create_single_example_number_line(starting_value, steps, subticks)
 
         elif shorten_topic=='ari_pos_add':
@@ -4502,7 +4502,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         elif shorten_topic == 'ari_dar_zah':
             starting_value = self.spinbox_zahlenbereich_startingvalue.value()
             steps = self.spinbox_zahlenbereich_steps.value()
-            subticks = self.spinbox_zahlenbereich_subticks.value()
+            subticks = self.spinbox_zahlenbereich_subticks.value()+1
 
             list_of_examples_wizard = create_list_of_examples_number_line(examples, starting_value, steps, subticks)
 
@@ -4922,7 +4922,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             'dummy_examples' : full_list_dummy_solutions,
             'dotstyle_index' : dotstyle_index,
             'direction_index' : direction_index,
-            'number_line' : [self.spinbox_zahlenbereich_startingvalue.value(), self.spinbox_zahlenbereich_steps.value(), self.spinbox_zahlenbereich_subticks.value()],
+            'number_line' : [self.spinbox_zahlenbereich_startingvalue.value(), self.spinbox_zahlenbereich_steps.value(), self.spinbox_zahlenbereich_subticks.value()+1],
             'coordinate_system' : [coordinate_system_zwischenwerte, coordinate_system_negative],
 
         }
