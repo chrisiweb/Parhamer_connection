@@ -356,14 +356,25 @@ def create_single_example_number_line(starting_value, steps, subticks):
     while i < 5:
         random_decimal = random.uniform(starting_value, maximum)
         x = round(random_decimal* factor) / factor
-        # x= float(remove_exponent(D(x)))
+        x= float(remove_exponent(D(x)))
         x = formatNumber(x)
 
         # print(x)
+        # if D(x).as_tuple().exponent<-2:
+        #     num = round(random_decimal * factor)
+        #     dem = round(factor)
 
-        numerator, denominator = D(x).as_integer_ratio()
+        #     a= num // dem
+        #     b= num % dem
+
+        #     x_string= f"{a} {b}/{dem}"
+
+        # numerator, denominator = D(x).as_integer_ratio()
         # print(f"Bruch: {numerator}/{denominator}")
-        # print(f"{round(random_decimal * factor)}/{factor}")
+        # print(f"{round(random_decimal * factor)}/{round(factor)}")
+
+
+        # print(f"{a} {b}/{dem}")
 
         if x not in list_of_points:
             list_of_points.append(x)
