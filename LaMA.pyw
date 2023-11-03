@@ -3878,11 +3878,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         shorten_topic = self.shorten_topic(thema)
 
-
         self.checkbox_enable_addition.hide()
         self.checkbox_enable_subtraktion.hide()
 
-        if shorten_topic == ('ari_dar_zah' or 'geo_gru_koo'):
+        if shorten_topic == 'ari_dar_zah' or shorten_topic == 'geo_gru_koo':
             self.checkBox_show_nonogramm.setChecked(False)
             self.checkBox_show_nonogramm.setEnabled(False)
             self.widget_column_wizard.setEnabled(False)
