@@ -1425,6 +1425,8 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
             self.groupBox_ausgew_gk_cr.setTitle("Ausgewählte Themen")
 
             self.update_gui("widgets_search")
+            # beurteilung_view = self.combobox_beurteilung.view()
+            # beurteilung_view.setRowHidden(1, True)
             self.combobox_beurteilung.removeItem(self.combobox_beurteilung.findText("Beurteilungsraster"))
 
             # self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
@@ -7601,7 +7603,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             beurteilung = "br"
         elif self.combobox_beurteilung.currentText() == "keine Auswahl":
             beurteilung = "none"
-
+        print(self.combobox_beurteilung.currentText())
 
         try: 
             # if self.chosen_program == 'cria':
