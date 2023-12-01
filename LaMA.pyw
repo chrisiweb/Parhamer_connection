@@ -3887,9 +3887,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.checkBox_show_nonogramm.setChecked(False)
             self.checkBox_show_nonogramm.setEnabled(False)
             self.widget_column_wizard.setEnabled(False)
+            self.spinbox_zahlenbereich_startingvalue.setDecimals(0)
         else:
             self.checkBox_show_nonogramm.setEnabled(True)
             self.widget_column_wizard.setEnabled(True)
+            self.spinbox_zahlenbereich_startingvalue.setDecimals(1)
         if shorten_topic == 'ari_dar_ste':
             self.label_zahlenbereich_1_combobox.setText("Größter Stellenwert:")
             self.combobox_zahlenbereich_1.clear()

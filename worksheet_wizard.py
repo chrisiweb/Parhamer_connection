@@ -1665,7 +1665,8 @@ def create_latex_string_number_line(content, example, starting_value, steps, sub
 {pstricks_code_dots}
 \end{{pspicture*}}
 """
-
+    print(pstricks_code)
+    
     string_coordinates = ""
     for i, all in enumerate(example[0]):
         coordinates = example[0][all]
