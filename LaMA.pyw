@@ -8115,7 +8115,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                         QtWidgets.QApplication.restoreOverrideCursor()
                         return False
                     except FileNotFoundError:
-                        critical_window(f'Es ist ein Fehler bei der Erstellung der Datei "{os.path.basename(new_filename)}" aufgetreten. Bitte versuchen Sie es erneut.',
+                        critical_window(f'Es ist ein Fehler bei der Erstellung der Datei "{os.path.basename(new_filename)}" aufgetreten. Bitte versuchen Sie es erneut oder an einem anderen Speicherort.',
                         "Sollte der Fehler weiterhin bestehen, melden Sie uns diesen bitte über die Fehler&Feedback-Funktion",
                         "Fehler bei der Erstellung")
                         QtWidgets.QApplication.restoreOverrideCursor()
@@ -8133,7 +8133,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                         QtWidgets.QApplication.restoreOverrideCursor()
                         return False
                     except FileNotFoundError:
-                        critical_window(f'Es ist ein Fehler bei der Erstellung der Datei "{os.path.basename(new_filename)}" aufgetreten. Bitte versuchen Sie es erneut.',
+                        critical_window(f'Es ist ein Fehler bei der Erstellung der Datei "{os.path.basename(new_filename)}" aufgetreten. Bitte versuchen Sie es erneut oder an einem anderen Speicherort.',
                         "Sollte der Fehler weiterhin bestehen, melden Sie uns diesen bitte über die Fehler&Feedback-Funktion",
                         "Fehler bei der Erstellung")
                         QtWidgets.QApplication.restoreOverrideCursor()
