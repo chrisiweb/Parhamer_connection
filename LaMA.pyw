@@ -7601,9 +7601,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             beurteilung = "ns"
         elif self.combobox_beurteilung.currentText() == "Beurteilungsraster":
             beurteilung = "br"
-        elif self.combobox_beurteilung.currentText() == "keine Auswahl":
+        else: #elif self.combobox_beurteilung.currentText() == "keine Auswahl":
             beurteilung = "none"
-        print(self.combobox_beurteilung.currentText())
+
 
         try: 
             # if self.chosen_program == 'cria':
