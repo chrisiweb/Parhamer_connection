@@ -2084,8 +2084,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                                     gk.split(" ")[0].replace("-L", "")
                                 )
                             self.dict_widget_variables[checkbox_gk].setChecked(True)
-                        except ValueError:
-                            warning_window(f"Die geöffnete Aufgabe {aufgabe} ist fehlerhaft!", "Bitte melden Sie dies unter lama.helpme@gmail.com, damit der Fehler behoebn werden kann. Vielen Dank!")
+                        except (ValueError, KeyError) as error:
+                            warning_window(f"Die geöffnete Aufgabe {aufgabe} ist fehlerhaft!", "Bitte melden Sie dies unter lama.helpme@gmail.com, damit der Fehler behoebn werden kann. Vielen Dank!", informative_text=f"Fehlermeldung:\n\n{error}")
 
                     
                 # self.tab_widget_gk_cr.setCurrentIndex(index)
