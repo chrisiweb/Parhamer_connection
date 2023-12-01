@@ -7769,6 +7769,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 aufgabentext = "content_translation"
             full_content = aufgabe_total[aufgabentext]
             split_content = self.split_content(aufgabe, aufgabe_total[aufgabentext])
+
             split_content = prepare_content_for_hide_show_items(split_content)
 
             content = edit_content_hide_show_items(
