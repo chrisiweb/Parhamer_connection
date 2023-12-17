@@ -8160,7 +8160,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         text = re.sub(r"random=.", "random=0", text)
         text = re.sub(r"Large Gruppe .", "Large Gruppe A", text)
 
-        text = re.sub(r"solution_off", "solution_on", text)
+        # text = re.sub(r"solution_off", "solution_on", text)
 
         with open(filename_vorschau, "w", encoding="utf8") as vorschau:
             vorschau.write(text)
