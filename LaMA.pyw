@@ -1425,6 +1425,8 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
             self.groupBox_ausgew_gk_cr.setTitle("Ausgewählte Themen")
 
             self.update_gui("widgets_search")
+            # beurteilung_view = self.combobox_beurteilung.view()
+            # beurteilung_view.setRowHidden(1, True)
             self.combobox_beurteilung.removeItem(self.combobox_beurteilung.findText("Beurteilungsraster"))
 
             # self.beispieldaten_dateipfad_cria = self.define_beispieldaten_dateipfad(
@@ -2082,8 +2084,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                                     gk.split(" ")[0].replace("-L", "")
                                 )
                             self.dict_widget_variables[checkbox_gk].setChecked(True)
-                        except ValueError:
-                            warning_window(f"Die geöffnete Aufgabe {aufgabe} ist fehlerhaft!", "Bitte melden Sie dies unter lama.helpme@gmail.com, damit der Fehler behoebn werden kann. Vielen Dank!")
+                        except (ValueError, KeyError) as error:
+                            warning_window(f"Die geöffnete Aufgabe {aufgabe} ist fehlerhaft!", "Bitte melden Sie dies unter lama.helpme@gmail.com, damit der Fehler behoebn werden kann. Vielen Dank!", informative_text=f"Fehlermeldung:\n\n{error}")
 
                     
                 # self.tab_widget_gk_cr.setCurrentIndex(index)
@@ -3878,17 +3880,18 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         shorten_topic = self.shorten_topic(thema)
 
-
         self.checkbox_enable_addition.hide()
         self.checkbox_enable_subtraktion.hide()
 
-        if shorten_topic == ('ari_dar_zah' or 'geo_gru_koo'):
+        if shorten_topic == 'ari_dar_zah' or shorten_topic == 'geo_gru_koo':
             self.checkBox_show_nonogramm.setChecked(False)
             self.checkBox_show_nonogramm.setEnabled(False)
             self.widget_column_wizard.setEnabled(False)
+            self.spinbox_zahlenbereich_startingvalue.setDecimals(0)
         else:
             self.checkBox_show_nonogramm.setEnabled(True)
             self.widget_column_wizard.setEnabled(True)
+            self.spinbox_zahlenbereich_startingvalue.setDecimals(1)
         if shorten_topic == 'ari_dar_ste':
             self.label_zahlenbereich_1_combobox.setText("Größter Stellenwert:")
             self.combobox_zahlenbereich_1.clear()
@@ -7601,7 +7604,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             beurteilung = "ns"
         elif self.combobox_beurteilung.currentText() == "Beurteilungsraster":
             beurteilung = "br"
-        elif self.combobox_beurteilung.currentText() == "keine Auswahl":
+        else: #elif self.combobox_beurteilung.currentText() == "keine Auswahl":
             beurteilung = "none"
 
 
@@ -7769,6 +7772,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 aufgabentext = "content_translation"
             full_content = aufgabe_total[aufgabentext]
             split_content = self.split_content(aufgabe, aufgabe_total[aufgabentext])
+
             split_content = prepare_content_for_hide_show_items(split_content)
 
             content = edit_content_hide_show_items(
@@ -8114,7 +8118,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                         QtWidgets.QApplication.restoreOverrideCursor()
                         return False
                     except FileNotFoundError:
-                        critical_window(f'Es ist ein Fehler bei der Erstellung der Datei "{os.path.basename(new_filename)}" aufgetreten. Bitte versuchen Sie es erneut.',
+                        critical_window(f'Es ist ein Fehler bei der Erstellung der Datei "{os.path.basename(new_filename)}" aufgetreten. Bitte versuchen Sie es erneut oder an einem anderen Speicherort.',
                         "Sollte der Fehler weiterhin bestehen, melden Sie uns diesen bitte über die Fehler&Feedback-Funktion",
                         "Fehler bei der Erstellung")
                         QtWidgets.QApplication.restoreOverrideCursor()
@@ -8132,7 +8136,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                         QtWidgets.QApplication.restoreOverrideCursor()
                         return False
                     except FileNotFoundError:
-                        critical_window(f'Es ist ein Fehler bei der Erstellung der Datei "{os.path.basename(new_filename)}" aufgetreten. Bitte versuchen Sie es erneut.',
+                        critical_window(f'Es ist ein Fehler bei der Erstellung der Datei "{os.path.basename(new_filename)}" aufgetreten. Bitte versuchen Sie es erneut oder an einem anderen Speicherort.',
                         "Sollte der Fehler weiterhin bestehen, melden Sie uns diesen bitte über die Fehler&Feedback-Funktion",
                         "Fehler bei der Erstellung")
                         QtWidgets.QApplication.restoreOverrideCursor()
@@ -8157,7 +8161,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         text = re.sub(r"random=.", "random=0", text)
         text = re.sub(r"Large Gruppe .", "Large Gruppe A", text)
 
-        text = re.sub(r"solution_off", "solution_on", text)
+        # text = re.sub(r"solution_off", "solution_on", text)
 
         with open(filename_vorschau, "w", encoding="utf8") as vorschau:
             vorschau.write(text)

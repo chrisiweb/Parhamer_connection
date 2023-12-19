@@ -79,9 +79,8 @@ def edit_content_hide_show_items(self, aufgabe, split_content, full_content):
         for x in reversed(_list_to_remove):
             if x.isspace() == False and len(x)!=0:
                 line_end = x.split("\\")[0].strip()
-                line_end = line_end.replace("\n","").replace("\t","")
+                line_end = line_end.replace("\n","").replace("\t","").replace("[...] GRAFIK [...]","")
                 break
-
 
 
         index_start=0
@@ -95,11 +94,12 @@ def edit_content_hide_show_items(self, aufgabe, split_content, full_content):
                 index_end=index_start+i
                 break
 
-
+    try:        
         del list_content[index_start:index_end+1]
-    # except UnboundLocalError:
-    #     critical_window("Beim automatisierten Ausblenden von einem oder mehreren Aufgabenstellungen in Aufgabe {} ist ein Fehler aufgetreten.".format(aufgabe),
-    #     "Die PDF Datei wird ohne Ausblenden erstellt.")
+    except UnboundLocalError:
+        critical_window("Beim automatisierten Ausblenden von einem oder mehreren Aufgabenstellungen in Aufgabe {} ist ein Fehler aufgetreten.".format(aufgabe),
+        "Die PDF Datei wird ohne Ausblenden erstellt.")
+        
 
     content = ""
     for i, line in enumerate(list_content):
