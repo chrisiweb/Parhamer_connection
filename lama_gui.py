@@ -3329,6 +3329,9 @@ def setup_stackWizard(self):
     add_new_option(self.combobox_points,1,"\u2a09")
     self.horizontallayout_coordinatesystem_points.addWidget(self.combobox_points)
     self.combobox_decimal_fraction = create_new_combobox(self.widget_coordinatesystem_points)
+    ## not ready yet!##
+    self.combobox_decimal_fraction.hide()
+    ####
     add_new_option(self.combobox_decimal_fraction, 0, "Dezimalzahlen")
     add_new_option(self.combobox_decimal_fraction, 1, "Brüche")
     self.horizontallayout_coordinatesystem_points.addWidget(self.combobox_decimal_fraction)

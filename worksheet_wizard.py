@@ -397,7 +397,7 @@ def create_single_example_number_line(starting_value, steps, subticks, setting_d
             _string += ", "
         value = str(dict_of_points[all][0]).replace(".",",")
         _string += f"{all} = {value}"
-    print([dict_of_points, 0, _string])
+    # print([dict_of_points, 0, _string])
     return [dict_of_points, 0, _string]
 
 def create_single_example_addition(minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
@@ -1631,7 +1631,7 @@ def formatNumber(num):
 
 def create_latex_string_number_line(content, example, starting_value, steps, subticks, dot_style_index, geometry_direction_index):
     steps = formatNumber(steps)
-    print(example)
+    # print(example)
     if starting_value==0:
         arrows = "->"
         beginning_picture = starting_value-steps/2
@@ -1671,7 +1671,7 @@ def create_latex_string_number_line(content, example, starting_value, steps, sub
 {pstricks_code_dots}
 \end{{pspicture*}}
 """
-    print(pstricks_code)
+    # print(pstricks_code)
     
     string_coordinates = ""
     for i, all in enumerate(example[0]):
