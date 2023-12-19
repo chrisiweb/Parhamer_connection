@@ -348,16 +348,21 @@ def create_single_example_roman_numerals(roman_max, maximum_index, general_direc
         return [roman_number, number, _string]
 
 
-def create_single_example_number_line(starting_value, steps, subticks):
+def create_single_example_number_line(starting_value, steps, subticks, setting_decimal_fraction):
     maximum = starting_value+14*steps
     factor= subticks/steps
     i=0
     list_of_points = []
+    temp_dict_fraction = {}
     while i < 5:
         random_decimal = random.uniform(starting_value, maximum)
         x = round(random_decimal* factor) / factor
         x= float(remove_exponent(D(x)))
         x = formatNumber(x)
+        if setting_decimal_fraction == 1:
+            num = round(random_decimal * factor)
+            dem = round(factor) 
+            temp_dict_fraction[x]=[num, dem]      
 
         # print(x)
         # if D(x).as_tuple().exponent<-2:
@@ -392,7 +397,7 @@ def create_single_example_number_line(starting_value, steps, subticks):
             _string += ", "
         value = str(dict_of_points[all][0]).replace(".",",")
         _string += f"{all} = {value}"
-
+    print([dict_of_points, 0, _string])
     return [dict_of_points, 0, _string]
 
 def create_single_example_addition(minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
@@ -1391,14 +1396,14 @@ def create_list_of_examples_roman_numerals(examples, roman_max, maximum_index, g
     return list_of_examples
 
 
-def create_list_of_examples_number_line(examples, starting_value, steps, subticks):
+def create_list_of_examples_number_line(examples, starting_value, steps, subticks, setting_decimal_fraction):
     list_of_examples = []
 
 
     i=0
     max_limit_counter =0
     while i<examples:
-        new_example = create_single_example_number_line(starting_value, steps, subticks)
+        new_example = create_single_example_number_line(starting_value, steps, subticks,setting_decimal_fraction)
         duplicate = check_for_duplicate(new_example, list_of_examples)
         
         if duplicate == False:
@@ -1626,6 +1631,7 @@ def formatNumber(num):
 
 def create_latex_string_number_line(content, example, starting_value, steps, subticks, dot_style_index, geometry_direction_index):
     steps = formatNumber(steps)
+    print(example)
     if starting_value==0:
         arrows = "->"
         beginning_picture = starting_value-steps/2

@@ -4503,8 +4503,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             starting_value = self.spinbox_zahlenbereich_startingvalue.value()
             steps = self.spinbox_zahlenbereich_steps.value()
             subticks = self.spinbox_zahlenbereich_subticks.value()+1
+            setting_decimal_fraction =  self.combobox_decimal_fraction.currentIndex()
 
-            list_of_examples_wizard = create_list_of_examples_number_line(examples, starting_value, steps, subticks)
+            list_of_examples_wizard = create_list_of_examples_number_line(examples, starting_value, steps, subticks, setting_decimal_fraction)
 
         elif shorten_topic =='ari_pos_add':
             minimum = self.spinbox_zahlenbereich_minimum.value()
