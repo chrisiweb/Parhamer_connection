@@ -45,7 +45,7 @@ def order_gesammeltedateien(text, typ, cria_plain_number_order=False):
     _list = []
     if typ == 'lama_1':
         for i, gk  in enumerate(dict_gk.values()):
-            if gk in name:
+            if gk.replace("-L","") in name.replace("-L",""):
                 _list.append(i)
                 num = name.split(" - ")[-1]
         for i, thema in enumerate(zusatzthemen_beschreibung.keys()):
