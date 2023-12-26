@@ -1921,6 +1921,35 @@ class Ui_Dialog_ausgleichspunkte(object):
 
         self.Dialog.reject()
 
+class Ui_Dialog_erstellen_developer(QtWidgets.QDialog):
+    def setupUi(self, Dialog):
+        # Dialog.resize(200, 208)
+        Dialog.setWindowIcon(QIcon(logo_path))
+        Dialog.setWindowTitle("Gruppen erstellen")
+
+        verticallayout = create_new_verticallayout(Dialog)
+
+        self.groupBox_gruppen = create_new_groupbox(Dialog, "Anzahl der Gruppen:")
+        horizontallayout = create_new_horizontallayout(self.groupBox_gruppen)
+        self.spinBox_gruppen = QtWidgets.QSpinBox(self.groupBox_gruppen)
+        self.spinBox_gruppen.setMinimum(1)
+        self.spinBox_gruppen.setMaximum(5)
+        horizontallayout.addWidget(self.spinBox_gruppen)
+
+        verticallayout.addWidget(self.groupBox_gruppen)
+      
+        buttonBox = QtWidgets.QDialogButtonBox(Dialog)
+
+        buttonBox.setStandardButtons(
+            QtWidgets.QDialogButtonBox.Save
+        )
+        buttonSave = buttonBox.button(QtWidgets.QDialogButtonBox.Save)
+        buttonSave.setText("Gruppen erstellen")
+        buttonSave.clicked.connect(lambda: Dialog.accept())
+        
+        verticallayout.addWidget(buttonBox)
+
+        
 
 class Ui_Dialog_erstellen(QtWidgets.QDialog):
     def setupUi(

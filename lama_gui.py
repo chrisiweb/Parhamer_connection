@@ -78,18 +78,25 @@ def setup_MenuBar(self):
         self.push_full_database,
     )
 
-    self.actionPush_Database = add_action(
+    self.actionCheck_drafts = add_action(
         MainWindow,
         self.menuDeveloper,
         "Entwürfe prüfen",
         self.draft_control,
     )
 
-    self.actionPush_Database = add_action(
+    self.actionCreate_bugreport = add_action(
         MainWindow,
         self.menuDeveloper,
         "Fehlerbericht erstellen",
         self.database_clean_up,
+    )
+
+    self.actionCreate_groups_developer = add_action(
+        MainWindow,
+        self.menuDeveloper,
+        "Gruppen erstellen...",
+        self.create_groups_developer,
     )
 
     self.menuDatei.addSeparator()

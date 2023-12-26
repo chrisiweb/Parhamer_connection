@@ -498,6 +498,116 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         return filename_vorschau
 
     @report_exceptions
+    def open_dialogwindow_erstellen_developer(self, latex_file_path):
+        Dialog = QtWidgets.QDialog(
+                    None,
+                    QtCore.Qt.WindowSystemMenuHint
+                    | QtCore.Qt.WindowTitleHint
+                    | QtCore.Qt.WindowCloseButtonHint,
+                )
+
+        ui_erstellen_developer = Ui_Dialog_erstellen_developer()
+        ui_erstellen_developer.setupUi(Dialog)
+        
+        rsp = Dialog.exec_()
+        
+        if rsp == 0:
+            return
+
+
+        range_limit = ui_erstellen_developer.spinBox_gruppen.value() * 2
+
+        name, _ = os.path.splitext(latex_file_path)
+        # print(name)
+
+        self.dict_gruppen = {0: "A", 1: "B", 2: "C", 3: "D", 4: "E", 5: "F"}
+
+        with open(latex_file_path, "r", encoding="utf8") as latex_code:
+                latex_code = latex_code.read()
+    
+
+        for index in range(range_limit):
+            
+            if index %2==0:
+                latex_code = re.sub(r"solution_off", "solution_on", latex_code)
+                if range_limit > 2:
+                    latex_code = re.sub(r"random=.", f"random={int(index/2)}", latex_code)
+            else:
+                latex_code = re.sub(r"solution_on", "solution_off", latex_code)
+
+            with open(latex_file_path, "w+", encoding="utf8") as latex_file:
+                latex_file.write(latex_code)
+
+            # create_pdf(name, index, range_limit)
+
+            
+
+            if range_limit > 2:
+                create_pdf(name, index, range_limit)
+                temp_filename = name + ".pdf"
+                
+                if index % 2 == 0:
+                    new_filename = name + "_{}_Loesung.pdf".format(
+                        self.dict_gruppen[int(index / 2)]
+                    )
+                else:
+                    new_filename = name + "_{}.pdf".format(
+                        self.dict_gruppen[int(index / 2)]
+                    )
+
+                try:
+                    shutil.move(temp_filename, new_filename)
+                except PermissionError:
+                    QtWidgets.QApplication.restoreOverrideCursor()
+                    critical_window(f'Die Datei "{os.path.basename(new_filename)}" konnte nicht gespeichert werden, da diese Datei bereits exisitiert und geöffnet ist.',
+                    "Bitte schließen sie die pdf-Datei oder speichern sie die Datei unter einem anderen Namen.",
+                    "Zugriff verweigert")
+                    return False
+
+            else:
+
+                create_pdf(name, index, 2)
+
+                temp_filename = name + ".pdf"
+                if index % 2 == 0:
+                    new_filename = name + "_Loesung.pdf"
+
+                    try:
+                        shutil.move(temp_filename, new_filename)
+                    except PermissionError:
+                        QtWidgets.QApplication.restoreOverrideCursor()
+                        critical_window(f'Die Datei "{os.path.basename(new_filename)}" konnte nicht gespeichert werden, da diese Datei bereits exisitiert und geöffnet ist.',
+                        "Bitte schließen sie die pdf-Datei oder speichern sie die Datei unter einem anderen Namen.",
+                        "Zugriff verweigert")
+                        return False
+            
+            # rsp = self.pushButton_vorschau_pressed(
+            #     "schularbeit",
+            #     index,
+            #     self.ui_erstellen.spinBox_sw_gruppen.value() * 2,
+            #     self.ui_erstellen.pdf,
+            #     self.ui_erstellen.show_pagenumber,
+            #     single_file_index,
+            #     filename_vorschau = filename_vorschau,
+            # )
+
+            # # if rsp == False:
+            # #     return
+
+            # if single_file_index != None:
+            #     single_file_index += 1
+
+        if sys.platform.startswith("linux"):
+            file_path = os.path.dirname(self.saved_file_path)
+            subprocess.Popen('xdg-open "{}"'.format(file_path), shell=True)
+        elif sys.platform.startswith("darwin"):
+            file_path = os.path.dirname(self.saved_file_path)
+            subprocess.Popen('open "{}"'.format(file_path), shell=True)
+        else:
+            file_path = os.path.dirname(self.saved_file_path).replace("/", "\\")
+            subprocess.Popen('explorer "{}"'.format(file_path))
+
+    @report_exceptions
     def open_dialogwindow_erstellen(
         self,
         dict_titlepage,
@@ -5428,6 +5538,29 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         QtWidgets.QApplication.restoreOverrideCursor()
 
+    def create_groups_developer(self):
+        # still_to_define()
+        try:
+            os.path.dirname(self.saved_file_path)
+        except AttributeError:
+            self.saved_file_path = path_home
+
+        latex_file_path = QtWidgets.QFileDialog.getOpenFileName(
+                None,
+                "Öffnen",
+                os.path.dirname(self.saved_file_path),
+                "LaTeX Datei (*.tex);; Alle Dateien (*.*)",
+            )
+
+        if latex_file_path[0] == "":
+                return
+
+        self.saved_file_path = latex_file_path[0]
+
+        print(latex_file_path)
+        self.open_dialogwindow_erstellen_developer(latex_file_path[0])
+        # self.pushButton_edit_pressed()
+
 
     def enable_widgets_editor(self, enabled):
         self.groupBox_ausgew_gk_cr.setEnabled(enabled)
@@ -8760,6 +8893,9 @@ if __name__ == "__main__":
 
     i = step_progressbar(i, "subwindows")
     from subwindows import Ui_Dialog_erstellen
+
+    i = step_progressbar(i, "subwindows")
+    from subwindows import Ui_Dialog_erstellen_developer
 
     i = step_progressbar(i, "subwindows")
     from subwindows import Ui_Dialog_speichern
