@@ -5,7 +5,7 @@ from config import is_empty
 
 
 from sympy import symbols, init_printing, expand, simplify, apart, Rational
-# from sympy import *
+from sympy import *
 from fractions import Fraction
 
 
@@ -388,6 +388,10 @@ def expand_powers(powers):
 print(expand_powers(['2^2', '5^3', '7^5']))
 # factor= subticks/step
 
+
+print(gcd(6,9))
+print(lcm(3,17))
+print(lcm_list([3,5,6]))
 # starting_value = 0
 # steps = 0.1
 # maximum = round(starting_value+14*steps,2)
