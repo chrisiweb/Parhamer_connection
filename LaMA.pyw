@@ -535,6 +535,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             else:
                 latex_code = re.sub(r"solution_on", "solution_off", latex_code)
 
+
             with open(latex_file_path, "w+", encoding="utf8") as latex_file:
                 latex_file.write(latex_code)
 
@@ -1379,6 +1380,8 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
         self.lineedit_g2_upper_limit.clear()
         self.lineedit_g2_lower_limit.clear()
 
+        
+
         try:
             if self.chosen_program == 'cria':
                 key = "notenschluessel_cria"
@@ -1390,14 +1393,19 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
             self.cb_ns_halbe_pkt.setChecked(False)
             self.cb_ns_prozent.setChecked(False)
 
+        
         self.comboBox_at_sage.setCurrentIndex(0)
-        self.comboBox_gk.setCurrentIndex(0)
+        # WORKING
+        self.comboBox_gk.setCurrentIndex(0) #choose Program Wizard Problem
         self.comboBox_gk_num.setCurrentIndex(0)
         self.comboBox_klassen.setCurrentIndex(0)
+
+        
         self.comboBox_kapitel.setCurrentIndex(0)
         self.comboBox_unterkapitel.setCurrentIndex(0)
         self.lineEdit_number.setText("")
 
+        
 
         self.dict_all_infos_for_file = {
             "list_alle_aufgaben": [],
@@ -1428,6 +1436,7 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
             },
         }
 
+    
         self.list_alle_aufgaben_sage = [[],[]]
         # self.dict_alle_aufgaben_sage = {}
         # self.dict_variablen_label = {}

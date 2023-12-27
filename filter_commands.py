@@ -4,6 +4,7 @@ from tinydb import Query
 from sort_items import order_gesammeltedateien
 from json.decoder import JSONDecodeError
 from standard_dialog_windows import critical_window
+from refresh_ddb import refresh_ddb
 
 
 
@@ -95,14 +96,22 @@ def filter_items(self, table_lama, typ, list_mode, filter_string, line_entry, kl
             else:
                 return False
 
-        try:     
+        try: 
             filtered_items = table_lama.search(_file_.name.test(string_included_lama))
-        except (JSONDecodeError, TypeError) as e:
-            critical_window("Es ist ein Fehler bei der Aufgabensuche aufgetreten. Es können daher nicht alle Aufgaben angezeigt werden. Bitte starten Sie die Suche erneut.",
-            "Sollte der Fehler weiterhin bestehen, melden Sie sich bitte unter lama.helpme@gmail.com",
-            detailed_text=f'Error:{e}: File "filter_commands.py" in filter_items\n\nError occured in table:\n{table_lama}')
+
             
+        except TypeError as e:
             filtered_items = []
+        except JSONDecodeError as e:
+            refresh_ddb(self, auto_update=True)
+            try:
+                filtered_items = table_lama.search(_file_.name.test(string_included_lama))
+            except JSONDecodeError as e:    
+                critical_window("Es ist ein Fehler bei der Aufgabensuche aufgetreten. Es können daher nicht alle Aufgaben angezeigt werden. Bitte starten Sie die Suche erneut.",
+                "Sollte der Fehler weiterhin bestehen, melden Sie sich bitte unter lama.helpme@gmail.com",
+                detailed_text=f'Error:{e}: File "filter_commands.py" in filter_items\n\nError occured in table:\n{table_lama}')
+                
+                filtered_items = []
   
     elif typ == "cria":
 
@@ -119,18 +128,55 @@ def filter_items(self, table_lama, typ, list_mode, filter_string, line_entry, kl
 
 
         if klasse == None:
-            filtered_items = table_lama.search(
-                (_file_.themen.test(themen_included_cria))
-                & (_file_.name.test(string_included_cria))
-            )
+            try:
+                filtered_items = table_lama.search(
+                    (_file_.themen.test(themen_included_cria))
+                    & (_file_.name.test(string_included_cria))
+                )
+            except TypeError as e:
+                filtered_items = [] 
+            except JSONDecodeError as e:
+                refresh_ddb(self, auto_update=True)
+                try:
+                    filtered_items = table_lama.search(
+                        (_file_.themen.test(themen_included_cria))
+                        & (_file_.name.test(string_included_cria))
+                    )
+                except JSONDecodeError as e:
+                    critical_window("Es ist ein Fehler bei der Aufgabensuche aufgetreten. Es können daher nicht alle Aufgaben angezeigt werden. Bitte starten Sie die Suche erneut.",
+                    "Sollte der Fehler weiterhin bestehen, melden Sie sich bitte unter lama.helpme@gmail.com",
+                    detailed_text=f'Error:{e}: File "filter_commands.py" in filter_items\n\nError occured in table:\n{table_lama}')
+                    
+                    filtered_items = []                  
+
         else:
-            filtered_items = table_lama.search(
-                (_file_.klasse == klasse)
-                & (_file_.themen.test(themen_included_cria))
-                & (_file_.name.test(string_included_cria))
-            )
+            try:
+                filtered_items = table_lama.search(
+                    (_file_.klasse == klasse)
+                    & (_file_.themen.test(themen_included_cria))
+                    & (_file_.name.test(string_included_cria))
+                )
+            except TypeError as e:
+                    filtered_items = [] 
+
+            except JSONDecodeError as e:
+                refresh_ddb(self, auto_update=True)
+                try:
+                    filtered_items = table_lama.search(
+                    (_file_.klasse == klasse)
+                    & (_file_.themen.test(themen_included_cria))
+                    & (_file_.name.test(string_included_cria))
+                    )                    
+                except JSONDecodeError as e:
+                    critical_window("Es ist ein Fehler bei der Aufgabensuche aufgetreten. Es können daher nicht alle Aufgaben angezeigt werden. Bitte starten Sie die Suche erneut.",
+                    "Sollte der Fehler weiterhin bestehen, melden Sie sich bitte unter lama.helpme@gmail.com",
+                    detailed_text=f'Error:{e}: File "filter_commands.py" in filter_items\n\nError occured in table:\n{table_lama}')
+                    
+                    filtered_items = [] 
 
     filtered_items.sort(key=lambda text: order_gesammeltedateien(text, typ, cria_plain_number_order=True))
+
+    
     #print(filter_items)
     return filtered_items
 
