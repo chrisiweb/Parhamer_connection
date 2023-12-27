@@ -1395,8 +1395,7 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
 
         
         self.comboBox_at_sage.setCurrentIndex(0)
-        # WORKING
-        self.comboBox_gk.setCurrentIndex(0) #choose Program Wizard Problem
+        self.comboBox_gk.setCurrentIndex(0)
         self.comboBox_gk_num.setCurrentIndex(0)
         self.comboBox_klassen.setCurrentIndex(0)
 
@@ -4044,7 +4043,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             self.label_general_direction_1.setText("Zahl")
             self.label_general_direction_2.setText("Römische Zahl")           
-
+        elif shorten_topic == "ari_dar_pri":
+            self.spinbox_zahlenbereich_minimum.setValue(500)
+            self.spinbox_zahlenbereich_maximum.setValue(1000)
+            self.spinbox_maximum_prime.setValue(13)
         elif shorten_topic=='ari_pos_add' or shorten_topic=='ari_pos_sub':
             self.spinbox_zahlenbereich_minimum.setRange(0,999999999)
             self.spinbox_zahlenbereich_minimum.setValue(100)
@@ -4415,6 +4417,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             subticks = self.spinbox_zahlenbereich_subticks.value()+1
             new_example = create_single_example_number_line(starting_value, steps, subticks)
 
+        elif shorten_topic == 'ari_dar_pri':
+            minimum = self.spinbox_zahlenbereich_minimum.value()
+            maximum = self.spinbox_zahlenbereich_maximum.value()
+            maximum_prime = self.spinbox_maximum_prime.value()
+            display_as_powers = self.checkbox_prime_powers.isChecked()
+            new_example = create_single_example_primenumbers(minimum, maximum, maximum_prime, display_as_powers)
+
         elif shorten_topic=='ari_pos_add':
             anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
             smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
@@ -4628,6 +4637,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             setting_decimal_fraction =  self.combobox_decimal_fraction.currentIndex()
 
             list_of_examples_wizard = create_list_of_examples_number_line(examples, starting_value, steps, subticks, setting_decimal_fraction)
+
+        elif shorten_topic == 'ari_dar_pri':
+            minimum = self.spinbox_zahlenbereich_minimum.value()
+            maximum = self.spinbox_zahlenbereich_maximum.value()
+            maximum_prime = self.spinbox_maximum_prime.value()
+            display_as_powers = self.checkbox_prime_powers.isChecked()
+            list_of_examples_wizard = create_list_of_examples_primenumbers(examples, minimum, maximum, maximum_prime, display_as_powers)
 
         elif shorten_topic =='ari_pos_add':
             minimum = self.spinbox_zahlenbereich_minimum.value()
@@ -9026,6 +9042,7 @@ if __name__ == "__main__":
         create_list_of_examples_stellenwert, create_single_example_stellenwert, list_stellenwerte, index_E,
         create_list_of_examples_roman_numerals, create_single_example_roman_numerals, dict_of_roman_max,
         create_list_of_examples_number_line, create_single_example_number_line,
+        create_list_of_examples_primenumbers, create_single_example_primenumbers,
         create_list_of_examples_addition, create_single_example_addition,
         create_list_of_examples_subtraction, create_single_example_subtraction,
         create_list_of_examples_multiplication, create_single_example_multiplication,

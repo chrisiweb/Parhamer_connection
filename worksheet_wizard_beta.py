@@ -122,6 +122,8 @@ summanden = []
 set_commas=commas
 temp_maximum = maximum
 
+
+
 def add_summand(s, show_brackets=True):
     if s==0 or show_brackets == False:
         return "{}".format(s)
@@ -292,26 +294,97 @@ def index_to_letter(index):
     return chr(ord('a') + index)
 
 
+def primfaktorzerlegung(n):
+    faktoren = []
+    teiler = 2
+
+    while teiler <= n:
+        if n % teiler == 0:
+            faktoren.append(teiler)
+            n = n // teiler
+        else:
+            teiler += 1
+
+    return faktoren
 
 
-
-minimum = 0
+minimum = 500
 step = 10
 subticks = 2
-maximum = minimum+16*step
+maximum = 1000
+
+def get_list_of_primenumbers(maximum):
+    primes = []
+    is_prime = [True] * (maximum + 1)
+    is_prime[0] = is_prime[1] = False
+
+    for number in range(2, int(maximum**0.5) + 1):
+        if is_prime[number]:
+            primes.append(number)
+            for multiple in range(number * number, maximum + 1, number):
+                is_prime[multiple] = False
+
+    for number in range(int(maximum**0.5) + 1, maximum + 1):
+        if is_prime[number]:
+            primes.append(number)
+
+    return primes
+
+def create_number_from_primes(list_of_primenumbers, minimum, maximum):
+    product = 1
+    list_of_products = []
+    while True:
+        x = random.choice(list_of_primenumbers)
+        temp_product = product * x
+        if temp_product > maximum:
+            if product > minimum:
+                list_of_products.sort()
+                return product, list_of_products
+            else:
+                continue
+        else: 
+            product = temp_product
+            list_of_products.append(x)
+
+        if product > minimum:
+            list_of_products.sort()
+            return product, list_of_products
+
+def convert_to_powers(list_of_factors):
+    dict_of_occurences = {}
+    for all in list_of_factors:
+        dict_of_occurences[all]=list_of_factors.count(all)
+
+    list_of_factors_powers = []
+    for all in dict_of_occurences.keys():
+        if dict_of_occurences[all]>1:
+            list_of_factors_powers.append(f"{all}^{dict_of_occurences[all]}")
+        else:
+            list_of_factors_powers.append(str(all))
+
+    return list_of_factors_powers
+
+list_of_primenumbers = get_list_of_primenumbers(13)
+
+product, list_of_factors = create_number_from_primes(list_of_primenumbers,minimum,maximum)
+
+print(product)
+print(list_of_factors)
+list_of_factors_powers = convert_to_powers(list_of_factors)
+
+print(list_of_factors_powers)
 
 
+# factor= subticks/step
+
+# starting_value = 0
+# steps = 0.1
+# maximum = round(starting_value+14*steps,2)
+# print(maximum)
+# print(maximum)
 
 
-
-factor= subticks/step
-
-starting_value = 0
-steps = 0.1
-maximum = round(starting_value+14*steps,2)
-print(maximum)
-print(maximum)
-
+# print(primfaktorzerlegung(46456314))
 # for i in range(20):
 #     x = round(random.uniform(minimum, maximum) * factor) / factor
 #     x= remove_exponent(D(x))

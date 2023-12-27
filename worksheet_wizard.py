@@ -34,7 +34,15 @@ dict_themen_wizard = {
                 'self.widget_zahlenbereich_subticks',
                 'self.widget_general_direction_CB',
                 'self.widget_coordinatesystem_points',
-            ],           
+            ],
+            "Primfaktorenzerlegung": [
+                'self.widget_zahlenbereich_minimum',
+                'self.widget_zahlenbereich_maximum',
+                'self.widget_setting_prime',
+                'self.comboBox_solution_type_wizard',
+
+            ],
+
         },
         "Positive (Dezimal-)Zahlen": {
             "Addition": [
@@ -399,6 +407,70 @@ def create_single_example_number_line(starting_value, steps, subticks, setting_d
         _string += f"{all} = {value}"
     # print([dict_of_points, 0, _string])
     return [dict_of_points, 0, _string]
+
+def get_list_of_primenumbers(maximum):
+    primes = []
+    is_prime = [True] * (maximum + 1)
+    is_prime[0] = is_prime[1] = False
+
+    for number in range(2, int(maximum**0.5) + 1):
+        if is_prime[number]:
+            primes.append(number)
+            for multiple in range(number * number, maximum + 1, number):
+                is_prime[multiple] = False
+
+    for number in range(int(maximum**0.5) + 1, maximum + 1):
+        if is_prime[number]:
+            primes.append(number)
+
+    return primes
+
+def create_number_from_primes(list_of_primenumbers, minimum, maximum):
+    product = 1
+    list_of_products = []
+    while True:
+        x = random.choice(list_of_primenumbers)
+        temp_product = product * x
+        if temp_product > maximum:
+            if product > minimum:
+                list_of_products.sort()
+                return product, list_of_products
+            else:
+                continue
+        else: 
+            product = temp_product
+            list_of_products.append(x)
+
+        if product > minimum:
+            list_of_products.sort()
+            return product, list_of_products
+        
+def convert_to_powers(list_of_factors):
+    dict_of_occurences = {}
+    for all in list_of_factors:
+        dict_of_occurences[all]=list_of_factors.count(all)
+
+    list_of_factors_powers = []
+    for all in dict_of_occurences.keys():
+        if dict_of_occurences[all]>1:
+            list_of_factors_powers.append(f"{all}^{dict_of_occurences[all]}")
+        else:
+            list_of_factors_powers.append(str(all))
+
+    return list_of_factors_powers
+
+def create_single_example_primenumbers(minimum, maximum, maximum_prime, display_as_powers):
+    list_of_primenumbers = get_list_of_primenumbers(maximum_prime)
+
+    product, list_of_factors = create_number_from_primes(list_of_primenumbers,minimum,maximum)
+
+    if display_as_powers == True:
+        list_of_factors = convert_to_powers(list_of_factors)
+
+    string_product = '\xb7'.join(str(x) for x in list_of_factors)
+    _string = f"{product} = {string_product}"
+    
+    return [product, list_of_factors, _string]
 
 def create_single_example_addition(minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
     summanden = []
@@ -1353,6 +1425,7 @@ def check_for_duplicate(new_example, list_of_examples):
     else:
         return False
 
+
 def create_list_of_examples_stellenwert(examples, minimum, minimum_index, maximum, maximum_index, general_direction_index):
     list_of_examples = []
 
@@ -1416,6 +1489,26 @@ def create_list_of_examples_number_line(examples, starting_value, steps, subtick
                 i +=1
 
     return list_of_examples    
+
+def create_list_of_examples_primenumbers(examples, minimum, maximum, maximum_prime, display_as_powers):
+    list_of_examples = []
+
+    i=0
+    max_limit_counter =0
+    while i<examples:
+        new_example = create_single_example_primenumbers(minimum, maximum, maximum_prime, display_as_powers)
+        duplicate = check_for_duplicate(new_example, list_of_examples)
+        
+        if duplicate == False:
+            list_of_examples.append(new_example)
+            i +=1
+        else:
+            max_limit_counter +=1
+            if max_limit_counter > 99:
+                list_of_examples.append(new_example)
+                i +=1
+
+    return list_of_examples
 
 def create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
     list_of_examples = []
@@ -2408,6 +2501,14 @@ def get_random_solution(self):
         subticks = self.spinbox_zahlenbereich_subticks.value()+1
 
         distract_result = create_single_example_number_line(starting_value, steps, subticks)
+
+    elif shorten_topic == 'ari_dar_pri':
+        minimum = self.spinbox_zahlenbereich_minimum.value()
+        maximum = self.spinbox_zahlenbereich_maximum.value()
+        maximum_prime = self.spinbox_maximum_prime.value()
+        display_as_powers = self.checkbox_prime_powers.isChecked()
+
+        distract_result = create_single_example_primenumbers(minimum, maximum, maximum_prime, display_as_powers)
 
     elif shorten_topic == 'ari_pos_add':
         minimum = self.spinbox_zahlenbereich_minimum.value()

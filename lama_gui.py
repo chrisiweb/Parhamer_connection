@@ -2814,6 +2814,19 @@ def setup_stackWizard(self):
 
     self.widget_kommastellen_wizard.hide()
 
+    self.widget_setting_prime = QtWidgets.QWidget(self.groupBox_zahlenbereich_wizard)
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.widget_setting_prime, 0,3,1,1)
+    self.horizontalLayout_setting_prime = create_new_horizontallayout(self.widget_setting_prime)
+    self.label_maximum_prime = create_new_label(self.widget_setting_prime, "Höchste Primzahl:")
+    self.horizontalLayout_setting_prime.addWidget(self.label_maximum_prime)
+    self.spinbox_maximum_prime = create_new_spinbox(self.widget_setting_prime, value=13)
+    self.horizontalLayout_setting_prime.addWidget(self.spinbox_maximum_prime)
+
+    self.checkbox_prime_powers = create_new_checkbox(self.widget_setting_prime, "als Potenzen darstellen", True)
+    self.horizontalLayout_setting_prime.addWidget(self.checkbox_prime_powers)
+
+    self.widget_setting_prime.hide()
+
     self.widget_general_direction = QtWidgets.QWidget(self.groupBox_zahlenbereich_wizard)
     self.gridLayout_zahlenbereich_wizard.addWidget(self.widget_general_direction, 0,4,1,1)
     # self.verticallayout_binom_further_settings.addWidget(self.widget_binoms_direction)
