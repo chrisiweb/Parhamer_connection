@@ -5062,7 +5062,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             'dotstyle_index' : dotstyle_index,
             'direction_index' : direction_index,
             'number_line' : [self.spinbox_zahlenbereich_startingvalue.value(), self.spinbox_zahlenbereich_steps.value(), self.spinbox_zahlenbereich_subticks.value()+1],
+            'primefactors' : [self.checkbox_prime_powers.isChecked()],
             'coordinate_system' : [coordinate_system_zwischenwerte, coordinate_system_negative],
+
 
         }
 
@@ -5174,7 +5176,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         
 
         # total_number_of_examples = self.get_total_number_of_examples_wizard()
-
+        solution_type = self.comboBox_solution_type_wizard.currentIndex()
         content = create_latex_worksheet(
             order_of_examples,
             self.dict_all_examples_worksheet_wizard,
@@ -5182,7 +5184,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             arbeitsanweisung,
             fortlaufende_nummerierung, 
             nummerierung,
-            self.comboBox_solution_type_wizard.currentIndex(),
+            solution_type,
             self.binoms_direction_index,
             )
 
@@ -5195,7 +5197,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 # thema_index = self.total_list_of_topics_wizard.index(thema)
                 shorten_topic = self.shorten_topic(thema)
 
-                if shorten_topic=='ter_bin'or shorten_topic=='ari_dar_ste':
+                if shorten_topic=='ter_bin'or shorten_topic=='ari_dar_ste' or shorten_topic == "ari_dar_pri":
                     columns = 2
                 else:
                     columns = 3

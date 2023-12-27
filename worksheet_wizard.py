@@ -465,12 +465,16 @@ def create_single_example_primenumbers(minimum, maximum, maximum_prime, display_
     product, list_of_factors = create_number_from_primes(list_of_primenumbers,minimum,maximum)
 
     if display_as_powers == True:
-        list_of_factors = convert_to_powers(list_of_factors)
+        string_list_of_factors = convert_to_powers(list_of_factors)
+    else:
+        string_list_of_factors = list_of_factors
 
-    string_product = '\xb7'.join(str(x) for x in list_of_factors)
+    solution = '\cdot '.join(str(x) for x in string_list_of_factors)
+    solution = f"${solution}$"
+    string_product = '\xb7'.join(str(x) for x in string_list_of_factors)
     _string = f"{product} = {string_product}"
     
-    return [product, list_of_factors, _string]
+    return [product, solution, _string]
 
 def create_single_example_addition(minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
     summanden = []
@@ -1786,6 +1790,38 @@ def create_latex_string_number_line(content, example, starting_value, steps, sub
 # \\rput(370,0.4){{$B$}}
     return content
 
+def expand_powers(powers):
+    result = []
+    for all in powers:
+        x = all.split("^")
+        if len(x)==1:
+            result.append(x[0])
+        else:
+            result.extend(x[0] for i in range(int(x[1])))
+    return result
+
+def create_latex_string_primenumbers(content, example, solution_type, powers_enabled):
+
+    solution = example[1].replace("$","")
+    content += f"\\task ${example[0]} = "
+
+    content += f'\\antwort{{{solution}}}$'
+    
+    if solution_type == 1:
+        list_of_factors = solution.split("\cdot")
+        if powers_enabled == True:
+            list_of_factors = expand_powers(list_of_factors)
+
+        content += "\n\n \\antwort{{$\\begin{array}{c|c}\n"
+        value = example[0]
+        for primefactor in list_of_factors:
+            content+= f"{value} & {primefactor} \\\\ \n"
+            value = int(value/int(primefactor))
+        
+        content += "\\end{array}$}}\n"
+        
+    return content
+
 def create_latex_string_addition(content, example, ausrichtung):
     summanden = example[0]
     
@@ -2271,6 +2307,7 @@ def create_latex_worksheet(
         steps = set_of_examples['number_line'][1]
         subticks = set_of_examples['number_line'][2]
 
+        powers_enabled = set_of_examples['primefactors'][0]
 
         half_allowed = set_of_examples['coordinate_system'][0]
         negative_allowed = set_of_examples['coordinate_system'][1]
@@ -2288,6 +2325,8 @@ def create_latex_worksheet(
                 content = create_latex_string_roman_numerals(content, example)
             elif shorten_topic == 'ari_dar_zah':
                 content = create_latex_string_number_line(content, example, starting_value, steps, subticks, dot_style_index, geometry_direction_index)
+            elif shorten_topic == 'ari_dar_pri':
+                content = create_latex_string_primenumbers(content, example, solution_type, powers_enabled)
             elif shorten_topic == 'ari_pos_add':
                 content = create_latex_string_addition(content, example, ausrichtung)
             elif shorten_topic == 'ari_pos_sub':

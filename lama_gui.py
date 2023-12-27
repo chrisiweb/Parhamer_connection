@@ -2822,7 +2822,7 @@ def setup_stackWizard(self):
     self.spinbox_maximum_prime = create_new_spinbox(self.widget_setting_prime, value=13)
     self.horizontalLayout_setting_prime.addWidget(self.spinbox_maximum_prime)
 
-    self.checkbox_prime_powers = create_new_checkbox(self.widget_setting_prime, "als Potenzen darstellen", True)
+    self.checkbox_prime_powers = create_new_checkbox(self.widget_setting_prime, "als Potenzen darstellen")
     self.horizontalLayout_setting_prime.addWidget(self.checkbox_prime_powers)
 
     self.widget_setting_prime.hide()

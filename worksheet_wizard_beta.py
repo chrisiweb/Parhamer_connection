@@ -368,13 +368,24 @@ list_of_primenumbers = get_list_of_primenumbers(13)
 
 product, list_of_factors = create_number_from_primes(list_of_primenumbers,minimum,maximum)
 
-print(product)
-print(list_of_factors)
-list_of_factors_powers = convert_to_powers(list_of_factors)
+# print(product)
+# print(list_of_factors)
+# list_of_factors_powers = convert_to_powers(list_of_factors)
 
-print(list_of_factors_powers)
+# print(list_of_factors_powers)
 
 
+def expand_powers(powers):
+    result = []
+    for all in powers:
+        x = all.split("^")
+        if len(x)==1:
+            result.append(x[0])
+        else:
+            result.extend(x[0] for i in range(int(x[1])))
+    return result
+
+print(expand_powers(['2^2', '5^3', '7^5']))
 # factor= subticks/step
 
 # starting_value = 0
