@@ -308,11 +308,6 @@ def primfaktorzerlegung(n):
     return faktoren
 
 
-minimum = 500
-step = 10
-subticks = 2
-maximum = 1000
-
 def get_list_of_primenumbers(maximum):
     primes = []
     is_prime = [True] * (maximum + 1)
@@ -364,17 +359,6 @@ def convert_to_powers(list_of_factors):
 
     return list_of_factors_powers
 
-list_of_primenumbers = get_list_of_primenumbers(13)
-
-product, list_of_factors = create_number_from_primes(list_of_primenumbers,minimum,maximum)
-
-# print(product)
-# print(list_of_factors)
-# list_of_factors_powers = convert_to_powers(list_of_factors)
-
-# print(list_of_factors_powers)
-
-
 def expand_powers(powers):
     result = []
     for all in powers:
@@ -385,13 +369,73 @@ def expand_powers(powers):
             result.extend(x[0] for i in range(int(x[1])))
     return result
 
-print(expand_powers(['2^2', '5^3', '7^5']))
+
+minimum = 20
+maximum = 500
+anzahl = 2
+
+ggt = get_random_number(1,minimum)
+
+
+list_of_primenumbers_50 = [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47]
+list_of_numbers = []
+a=ggt
+for i in range(anzahl):
+    index=0
+    while True:
+        index +=1
+        if index == 5:
+            break
+        print(f"ggT:{ggt}")
+        x = random.choice(list_of_primenumbers_50)
+        temp_a = a * x
+        print(f"{temp_a} = {a}*{x}")
+        print(temp_a)
+        if minimum<= temp_a <= maximum:
+            if temp_a not in list_of_numbers:
+                list_of_numbers.append(temp_a)
+                break
+            else:
+                continue
+        elif temp_a<minimum:
+            a=temp_a
+            continue
+        elif temp_a>maximum:
+            if a != 
+
+
+        # if temp_a<minimum:
+        #     print('a')
+        #     a=temp_a
+        #     list_of_primenumbers_50.remove(x)
+        # elif temp_a>maximum:
+        #     if a not in list_of_numbers:
+        #         print('b')
+        #         list_of_numbers.append(a)
+        #         break
+        #     else:
+        #         print('c')
+        #         continue
+        # else:
+        #     if a not in list_of_numbers:
+        #         print('d')
+        #         a=temp_a
+        #         list_of_primenumbers_50.remove(x)
+        #         list_of_numbers.append(a)
+        #         break
+        #     else:
+        #         print('e')
+        #         continue
+
+print(list_of_numbers)
+
+
 # factor= subticks/step
 
 
-print(gcd(6,9))
-print(lcm(3,17))
-print(lcm_list([3,5,6]))
+# print(gcd(6,9))
+# print(lcm(3,17))
+# print(lcm_list([3,17]))
 # starting_value = 0
 # steps = 0.1
 # maximum = round(starting_value+14*steps,2)

@@ -4043,10 +4043,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             self.label_general_direction_1.setText("Zahl")
             self.label_general_direction_2.setText("Römische Zahl")           
-        elif shorten_topic == "ari_dar_pri":
+        elif shorten_topic == "ari_tei_pri":
             self.spinbox_zahlenbereich_minimum.setValue(500)
             self.spinbox_zahlenbereich_maximum.setValue(1000)
             self.spinbox_maximum_prime.setValue(13)
+        elif shorten_topic == 'ari_tei_ggt':
+            self.label_zahlenbereich_anzahl_wizard.setText("Zahlen:")
+            self.spinbox_zahlenbereich_minimum.setValue(20)
+            self.spinbox_zahlenbereich_maximum.setValue(200)
         elif shorten_topic=='ari_pos_add' or shorten_topic=='ari_pos_sub':
             self.spinbox_zahlenbereich_minimum.setRange(0,999999999)
             self.spinbox_zahlenbereich_minimum.setValue(100)
@@ -4417,7 +4421,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             subticks = self.spinbox_zahlenbereich_subticks.value()+1
             new_example = create_single_example_number_line(starting_value, steps, subticks)
 
-        elif shorten_topic == 'ari_dar_pri':
+        elif shorten_topic == 'ari_tei_pri':
             minimum = self.spinbox_zahlenbereich_minimum.value()
             maximum = self.spinbox_zahlenbereich_maximum.value()
             maximum_prime = self.spinbox_maximum_prime.value()
@@ -4638,12 +4642,21 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             list_of_examples_wizard = create_list_of_examples_number_line(examples, starting_value, steps, subticks, setting_decimal_fraction)
 
-        elif shorten_topic == 'ari_dar_pri':
+        elif shorten_topic == 'ari_tei_pri':
             minimum = self.spinbox_zahlenbereich_minimum.value()
             maximum = self.spinbox_zahlenbereich_maximum.value()
             maximum_prime = self.spinbox_maximum_prime.value()
             display_as_powers = self.checkbox_prime_powers.isChecked()
             list_of_examples_wizard = create_list_of_examples_primenumbers(examples, minimum, maximum, maximum_prime, display_as_powers)
+
+        elif shorten_topic == 'ari_tei_ggt':
+            anzahl_zahlen = self.spinBox_zahlenbereich_anzahl_wizard.value()
+            minimum = self.spinbox_zahlenbereich_minimum.value()
+            maximum = self.spinbox_zahlenbereich_maximum.value()
+            ggt_1_checked = self.checkbox_ggT_1.isChecked()
+
+            list_of_examples_wizard = create_list_of_examples_ggt(examples, anzahl_zahlen, minimum, maximum, ggt_1_checked)
+            
 
         elif shorten_topic =='ari_pos_add':
             minimum = self.spinbox_zahlenbereich_minimum.value()
@@ -5064,8 +5077,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             'number_line' : [self.spinbox_zahlenbereich_startingvalue.value(), self.spinbox_zahlenbereich_steps.value(), self.spinbox_zahlenbereich_subticks.value()+1],
             'primefactors' : [self.checkbox_prime_powers.isChecked()],
             'coordinate_system' : [coordinate_system_zwischenwerte, coordinate_system_negative],
-
-
         }
 
         self.list_of_examples_wizard = []
@@ -5197,7 +5208,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 # thema_index = self.total_list_of_topics_wizard.index(thema)
                 shorten_topic = self.shorten_topic(thema)
 
-                if shorten_topic=='ter_bin'or shorten_topic=='ari_dar_ste' or shorten_topic == "ari_dar_pri":
+                if shorten_topic=='ter_bin'or shorten_topic=='ari_dar_ste' or shorten_topic == "ari_tei_pri":
                     columns = 2
                 else:
                     columns = 3
@@ -9045,6 +9056,7 @@ if __name__ == "__main__":
         create_list_of_examples_roman_numerals, create_single_example_roman_numerals, dict_of_roman_max,
         create_list_of_examples_number_line, create_single_example_number_line,
         create_list_of_examples_primenumbers, create_single_example_primenumbers,
+        create_list_of_examples_ggt,
         create_list_of_examples_addition, create_single_example_addition,
         create_list_of_examples_subtraction, create_single_example_subtraction,
         create_list_of_examples_multiplication, create_single_example_multiplication,

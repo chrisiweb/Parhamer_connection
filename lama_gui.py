@@ -2827,6 +2827,14 @@ def setup_stackWizard(self):
 
     self.widget_setting_prime.hide()
 
+    self.widget_setting_ggt = QtWidgets.QWidget(self.groupBox_zahlenbereich_wizard)
+    self.gridLayout_zahlenbereich_wizard.addWidget(self.widget_setting_ggt, 0,3,1,1)
+    self.horizontalLayout_setting_ggt = create_new_horizontallayout(self.widget_setting_ggt)
+    self.checkbox_ggT_1 = create_new_checkbox(self.widget_setting_ggt, "ggT=1 erlauben",True)
+    self.horizontalLayout_setting_ggt.addWidget(self.checkbox_ggT_1)
+
+
+
     self.widget_general_direction = QtWidgets.QWidget(self.groupBox_zahlenbereich_wizard)
     self.gridLayout_zahlenbereich_wizard.addWidget(self.widget_general_direction, 0,4,1,1)
     # self.verticallayout_binom_further_settings.addWidget(self.widget_binoms_direction)

@@ -7,7 +7,7 @@ from config import is_empty
 # from config_start import path_localappdata_lama, path_programm
 import decimal
 import re
-from sympy import symbols
+from sympy import symbols, gcd_list, lcm_list
 
 from create_nonograms import nonogramm_empty, all_nonogramms, list_all_pixels
 from fractions import Fraction
@@ -35,6 +35,8 @@ dict_themen_wizard = {
                 'self.widget_general_direction_CB',
                 'self.widget_coordinatesystem_points',
             ],
+        },
+        "Teiler && Vielfache":{
             "Primfaktorenzerlegung": [
                 'self.widget_zahlenbereich_minimum',
                 'self.widget_zahlenbereich_maximum',
@@ -42,7 +44,12 @@ dict_themen_wizard = {
                 'self.comboBox_solution_type_wizard',
 
             ],
-
+            "ggT": [
+                'self.widgetZahlenbereich_anzahl',
+                'self.widget_zahlenbereich_minimum',
+                'self.widget_zahlenbereich_maximum',
+                'self.widget_setting_ggt',                
+            ]        
         },
         "Positive (Dezimal-)Zahlen": {
             "Addition": [
@@ -121,6 +128,13 @@ dict_themen_wizard = {
     },
 }
 
+
+# STEPS FOR NEW TOPIC
+#
+# 1. Widgets erstellen -> lama_gui.py
+# 2. Notwendige Widgets zur Liste hinzufügen -> worksheet_wizard.py
+# 3. Aufgabe berechnen definieren: self.create_list_of_examples_wizard (LaMa.pyw)
+# 4. create_list_of_examples_... in worksheet_wizard.py erstellen
 
 D = decimal.Decimal
 
@@ -475,6 +489,25 @@ def create_single_example_primenumbers(minimum, maximum, maximum_prime, display_
     _string = f"{product} = {string_product}"
     
     return [product, solution, _string]
+
+def create_single_example_ggt(anzahl_zahlen, minimum, maximum, ggt_1_checked):
+    list_of_numbers = []
+    while True:
+        x = get_random_number(minimum, maximum)
+        if x not in list_of_numbers:
+            list_of_numbers.append(x)
+        
+        if len(list_of_numbers)==anzahl_zahlen:
+            break
+    
+    # print(list_of_numbers)
+
+    ggt = gcd_list(list_of_numbers)
+
+    joined_numbers = ', '.join(str(x) for x in list_of_numbers)
+    _string = f"ggT({joined_numbers}) =  {ggt}"
+    return [list_of_numbers,ggt,_string]
+        
 
 def create_single_example_addition(minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
     summanden = []
@@ -1423,6 +1456,7 @@ def check_for_duplicate(new_example, list_of_examples):
     list_of_solutions = []
     for all in list_of_examples:
         list_of_solutions.append(all[-2])
+    print(list_of_solutions)
 
     if new_example[-2] in list_of_solutions:
         return True
@@ -1513,6 +1547,27 @@ def create_list_of_examples_primenumbers(examples, minimum, maximum, maximum_pri
                 i +=1
 
     return list_of_examples
+
+def create_list_of_examples_ggt(examples, anzahl_zahlen, minimum, maximum, ggt_1_checked):
+    list_of_examples = []
+
+    i=0
+    max_limit_counter =0
+    while i<examples:
+        new_example = create_single_example_ggt(anzahl_zahlen, minimum, maximum, ggt_1_checked)
+        duplicate = check_for_duplicate(new_example, list_of_examples)
+        
+        if duplicate == False:
+            list_of_examples.append(new_example)
+            i +=1
+        else:
+            max_limit_counter +=1
+            if max_limit_counter > 99:
+                print('max reached')
+                list_of_examples.append(new_example)
+                i +=1
+
+    return list_of_examples    
 
 def create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
     list_of_examples = []
@@ -2325,7 +2380,7 @@ def create_latex_worksheet(
                 content = create_latex_string_roman_numerals(content, example)
             elif shorten_topic == 'ari_dar_zah':
                 content = create_latex_string_number_line(content, example, starting_value, steps, subticks, dot_style_index, geometry_direction_index)
-            elif shorten_topic == 'ari_dar_pri':
+            elif shorten_topic == 'ari_tei_pri':
                 content = create_latex_string_primenumbers(content, example, solution_type, powers_enabled)
             elif shorten_topic == 'ari_pos_add':
                 content = create_latex_string_addition(content, example, ausrichtung)
@@ -2541,7 +2596,7 @@ def get_random_solution(self):
 
         distract_result = create_single_example_number_line(starting_value, steps, subticks)
 
-    elif shorten_topic == 'ari_dar_pri':
+    elif shorten_topic == 'ari_tei_pri':
         minimum = self.spinbox_zahlenbereich_minimum.value()
         maximum = self.spinbox_zahlenbereich_maximum.value()
         maximum_prime = self.spinbox_maximum_prime.value()
