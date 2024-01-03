@@ -136,6 +136,39 @@ dict_themen_wizard = {
 # 3. Aufgabe berechnen definieren: self.create_list_of_examples_wizard (LaMa.pyw)
 # 4. create_list_of_examples_... in worksheet_wizard.py erstellen
 
+
+dict_wizard_variables = {
+    'examples' : 'self.spinBox_number_wizard.value()',
+    'anzahl_zahlen' : 'self.spinBox_zahlenbereich_anzahl_wizard.value()',
+    'minimum_combobox': 'self.combobox_zahlenbereich_2.currentIndex()',
+    'minimum_spinbox' : 'self.spinbox_zahlenbereich_minimum.value()',
+    'minimum_spinbox_1' : 'self.spinBox_first_number_min.value()',
+    'minimum_spinbox_2' : 'self.spinBox_second_number_min.value()',
+    'minimum_index' : 'self.combobox_zahlenbereich_2_leq.currentIndex()',
+    'maximum_combobox' : 'self.combobox_zahlenbereich_1.currentIndex()',
+    'maximum_spinbox' : 'self.spinbox_zahlenbereich_maximum.value()',
+    'maximum_spinbox_1' : 'self.spinBox_first_number_max.value()',
+    'maximum_spinbox_2' : 'self.spinBox_second_number_max.value()',
+    'maximum_index' : 'self.combobox_zahlenbereich_1_leq.currentIndex()',
+    'general_direction_index' : 'self.pushbutton_general_direction',
+    'starting_value' : 'self.spinbox_zahlenbereich_startingvalue.value()',
+    'starting_value' : 'self.spinbox_zahlenbereich_startingvalue.value()',
+    'steps' : 'self.spinbox_zahlenbereich_steps.value()',
+    'subticks' :  'self.spinbox_zahlenbereich_subticks.value()+1',
+    'setting_decimal_fraction' : 'self.combobox_decimal_fraction.currentIndex()', 
+    'maximum_prime' :  'self.spinbox_maximum_prime.value()',
+    'display_as_powers' : 'self.checkbox_prime_powers.isChecked()',
+    'ggt_1_checked' :  'self.checkbox_ggT_1.isChecked()',
+    'commas' : 'self.spinbox_kommastellen_wizard.value()',
+    'commas_1' : 'self.spinBox_first_number_decimal.value()',
+    'commas_2' : 'self.spinBox_second_number_decimal.value()',
+    'smaller_or_equal' : 'self.combobox_kommastellen_wizard.currentIndex()',
+    'smaller_or_equal_1' : 'self.combobox_first_number_decimal.currentIndex()',
+    'smaller_or_equal_2' : 'self.combobox_second_number_decimal.currentIndex()',
+    'negative_solutions_allowed' : 'self.checkbox_negative_ergebnisse_wizard.isChecked()',
+}
+dict_wizard_variables_latex = {}
+
 D = decimal.Decimal
 
 def get_random_number(min, max, decimal=0, zero_allowed=False, force_decimals=False, half_allowed = False): #
@@ -308,12 +341,13 @@ def roman_to_int(input):
 
 dict_of_roman_max = {'I':3, 'V': 8, 'X':39, 'L':89, 'C':399, 'D':899, 'M':3999}
 
+def create_single_example_stellenwert(dict_all_settings): #minimum, minimum_index, maximum, maximum_index, general_direction_index
+    minimum = dict_all_settings['minimum_combobox']
+    minimum_index = dict_all_settings['minimum_index']
+    maximum = dict_all_settings['maximum_combobox']
+    maximum_index = dict_all_settings['maximum_index']
+    general_direction_index = dict_all_settings['general_direction_index']
 
-
-def create_single_example_stellenwert(minimum, minimum_index, maximum, maximum_index, general_direction_index):
-    # set_commas=commas
-    # if smaller_or_equal == 1:
-    #     commas = random.randint(0,set_commas) 
 
     maximum = maximum+2
 
@@ -347,7 +381,10 @@ def create_single_example_stellenwert(minimum, minimum_index, maximum, maximum_i
     
 
 
-def create_single_example_roman_numerals(roman_max, maximum_index, general_direction_index):
+def create_single_example_roman_numerals(dict_all_settings):
+    roman_max = dict_all_settings['maximum_combobox']
+    maximum_index =  dict_all_settings['maximum_index']
+    general_direction_index = dict_all_settings['general_direction_index']
     if maximum_index == 1:
         number = get_random_number(10, dict_of_roman_max[roman_max])
     else:
@@ -370,7 +407,12 @@ def create_single_example_roman_numerals(roman_max, maximum_index, general_direc
         return [roman_number, number, _string]
 
 
-def create_single_example_number_line(starting_value, steps, subticks, setting_decimal_fraction):
+def create_single_example_number_line(dict_all_settings): #starting_value, steps, subticks, setting_decimal_fraction
+    starting_value = dict_all_settings['starting_value']
+    steps = dict_all_settings['steps']
+    subticks = dict_all_settings['subticks']
+    setting_decimal_fraction = dict_all_settings['setting_decmial_fraction']
+
     maximum = starting_value+14*steps
     factor= subticks/steps
     i=0
@@ -473,7 +515,12 @@ def convert_to_powers(list_of_factors):
 
     return list_of_factors_powers
 
-def create_single_example_primenumbers(minimum, maximum, maximum_prime, display_as_powers):
+def create_single_example_primenumbers(dict_all_settings):
+    minimum = dict_all_settings['minimum_spinbox']
+    maximum = dict_all_settings['maximum_spinbox']
+    maximum_prime = dict_all_settings['maximum_prime']
+    display_as_powers = dict_all_settings['display_as_powers']
+    
     list_of_primenumbers = get_list_of_primenumbers(maximum_prime)
 
     product, list_of_factors = create_number_from_primes(list_of_primenumbers,minimum,maximum)
@@ -490,7 +537,12 @@ def create_single_example_primenumbers(minimum, maximum, maximum_prime, display_
     
     return [product, solution, _string]
 
-def create_single_example_ggt(anzahl_zahlen, minimum, maximum, ggt_1_checked):
+def create_single_example_ggt(dict_all_settings): #anzahl_zahlen, minimum, maximum, ggt_1_checked
+    anzahl_zahlen = dict_all_settings['anzahl_zahlen']
+    minimum = dict_all_settings['minimum_spinbox']
+    maximum = dict_all_settings['maximum_spinbox']
+    ggt_1_checked = dict_all_settings['ggt_1_checked']
+
     list_of_numbers = []
     while True:
         x = get_random_number(minimum, maximum)
@@ -509,7 +561,13 @@ def create_single_example_ggt(anzahl_zahlen, minimum, maximum, ggt_1_checked):
     return [list_of_numbers,ggt,_string]
         
 
-def create_single_example_addition(minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
+def create_single_example_addition(dict_all_settings):
+    minimum = dict_all_settings['minimum_spinbox']
+    maximum = dict_all_settings['maximum_spinbox']
+    commas = dict_all_settings['commas']
+    anzahl_summanden = dict_all_settings['anzahl_zahlen']
+    smaller_or_equal = dict_all_settings['smaller_or_equal']
+
     summanden = []
     set_commas=commas
     for _ in range(anzahl_summanden):
@@ -530,7 +588,14 @@ def create_single_example_addition(minimum, maximum, commas, anzahl_summanden, s
 
     return [summanden,solution, string]
 
-def create_single_example_subtraction(minimum, maximum, commas, negative_solutions_allowed,anzahl_subtrahenden, smaller_or_equal):
+def create_single_example_subtraction(dict_all_settings):
+    minimum = dict_all_settings['minimum_spinbox']
+    maximum = dict_all_settings['maximum_spinbox']
+    commas = dict_all_settings['commas']
+    negative_solutions_allowed = dict_all_settings['negative_solutions_allowed']
+    anzahl_subtrahenden = dict_all_settings['anzahl_zahlen']
+    smaller_or_equal = dict_all_settings['smaller_or_equal']
+
     subtrahenden = []
     set_commas=commas
 
@@ -565,16 +630,19 @@ def create_single_example_subtraction(minimum, maximum, commas, negative_solutio
     string += " = {}".format(str(solution).replace(".",","))
 
     return [subtrahenden,solution, string]
-    # if smaller_or_equal == 1:
-    #     commas = random.randint(0,set_commas) 
-    # y= get_random_number(minimum,maximum, commas)
-    # if x-y<0 and negative_solutions_allowed== False:
-    #     x, y = y, x
-    # solution = x-y
-    # string = "{0} - {1} = {2}".format(str(x).replace(".",","),str(y).replace(".",","),str(solution).replace(".",","))   
-    # return [x,y,solution, string]
 
-def create_single_example_multiplication(minimum_1, maximum_1, commas_1, smaller_or_equal_1 ,minimum_2, maximum_2, commas_2, smaller_or_equal_2):
+
+def create_single_example_multiplication(dict_all_settings): #minimum_1, maximum_1, commas_1, smaller_or_equal_1 ,minimum_2, maximum_2, commas_2, smaller_or_equal_2
+    minimum_1 = dict_all_settings['minimum_spinbox_1']
+    maximum_1 = dict_all_settings['maximum_spinbox_1']
+    commas_1 = dict_all_settings['commas_1']
+    smaller_or_equal_1 = dict_all_settings['smaller_or_equal_1']
+    minimum_2 = dict_all_settings['minimum_spinbox_2']
+    maximum_2 = dict_all_settings['maximum_spinbox_2']
+    commas_2 = dict_all_settings['commas_2']
+    smaller_or_equal_2 = dict_all_settings['smaller_or_equal_2']
+
+
     if smaller_or_equal_1 == 1:
         set_commas=commas_1
         commas_1 = random.randint(0,set_commas)
@@ -1463,14 +1531,13 @@ def check_for_duplicate(new_example, list_of_examples):
     else:
         return False
 
-
-def create_list_of_examples_stellenwert(examples, minimum, minimum_index, maximum, maximum_index, general_direction_index):
+def create_list_of_examples_all_topics(spec_function, dict_all_settings): #spec_function, 
     list_of_examples = []
 
     i=0
     max_limit_counter =0
-    while i<examples:
-        new_example = create_single_example_stellenwert(minimum, minimum_index, maximum, maximum_index, general_direction_index)
+    while i<dict_all_settings['examples']:
+        new_example = spec_function(dict_all_settings) # minimum, minimum_index, maximum, maximum_index, general_direction_index
         duplicate = check_for_duplicate(new_example, list_of_examples)
         
         if duplicate == False:
@@ -1482,71 +1549,90 @@ def create_list_of_examples_stellenwert(examples, minimum, minimum_index, maximu
                 list_of_examples.append(new_example)
                 i +=1
 
-    return list_of_examples     
+    return list_of_examples 
+# def create_list_of_examples_stellenwert(examples, minimum, minimum_index, maximum, maximum_index, general_direction_index):
+#     list_of_examples = []
 
-
-def create_list_of_examples_roman_numerals(examples, roman_max, maximum_index, general_direction_index):
-    list_of_examples = []
-
-
-    i=0
-    max_limit_counter =0
-    while i<examples:
-        new_example = create_single_example_roman_numerals(roman_max, maximum_index, general_direction_index)
-        duplicate = check_for_duplicate(new_example, list_of_examples)
+#     i=0
+#     max_limit_counter =0
+#     while i<examples:
+#         new_example = create_single_example_stellenwert(minimum, minimum_index, maximum, maximum_index, general_direction_index)
+#         duplicate = check_for_duplicate(new_example, list_of_examples)
         
-        if duplicate == False:
-            list_of_examples.append(new_example)
-            i +=1
-        else:
-            max_limit_counter +=1
-            if max_limit_counter > 99:
-                list_of_examples.append(new_example)
-                i +=1
+#         if duplicate == False:
+#             list_of_examples.append(new_example)
+#             i +=1
+#         else:
+#             max_limit_counter +=1
+#             if max_limit_counter > 99:
+#                 list_of_examples.append(new_example)
+#                 i +=1
 
-    return list_of_examples
-
-
-def create_list_of_examples_number_line(examples, starting_value, steps, subticks, setting_decimal_fraction):
-    list_of_examples = []
+#     return list_of_examples     
 
 
-    i=0
-    max_limit_counter =0
-    while i<examples:
-        new_example = create_single_example_number_line(starting_value, steps, subticks,setting_decimal_fraction)
-        duplicate = check_for_duplicate(new_example, list_of_examples)
+# def create_list_of_examples_roman_numerals(examples, roman_max, maximum_index, general_direction_index):
+#     list_of_examples = []
+
+
+#     i=0
+#     max_limit_counter =0
+#     while i<examples:
+#         new_example = create_single_example_roman_numerals(roman_max, maximum_index, general_direction_index)
+#         duplicate = check_for_duplicate(new_example, list_of_examples)
         
-        if duplicate == False:
-            list_of_examples.append(new_example)
-            i +=1
-        else:
-            max_limit_counter +=1
-            if max_limit_counter > 99:
-                list_of_examples.append(new_example)
-                i +=1
+#         if duplicate == False:
+#             list_of_examples.append(new_example)
+#             i +=1
+#         else:
+#             max_limit_counter +=1
+#             if max_limit_counter > 99:
+#                 list_of_examples.append(new_example)
+#                 i +=1
 
-    return list_of_examples    
+#     return list_of_examples
 
-def create_list_of_examples_primenumbers(examples, minimum, maximum, maximum_prime, display_as_powers):
-    list_of_examples = []
 
-    i=0
-    max_limit_counter =0
-    while i<examples:
-        new_example = create_single_example_primenumbers(minimum, maximum, maximum_prime, display_as_powers)
-        duplicate = check_for_duplicate(new_example, list_of_examples)
+# def create_list_of_examples_number_line(examples, starting_value, steps, subticks, setting_decimal_fraction):
+#     list_of_examples = []
+
+
+#     i=0
+#     max_limit_counter =0
+#     while i<examples:
+#         new_example = create_single_example_number_line(starting_value, steps, subticks,setting_decimal_fraction)
+#         duplicate = check_for_duplicate(new_example, list_of_examples)
         
-        if duplicate == False:
-            list_of_examples.append(new_example)
-            i +=1
-        else:
-            max_limit_counter +=1
-            if max_limit_counter > 99:
-                list_of_examples.append(new_example)
-                i +=1
+#         if duplicate == False:
+#             list_of_examples.append(new_example)
+#             i +=1
+#         else:
+#             max_limit_counter +=1
+#             if max_limit_counter > 99:
+#                 list_of_examples.append(new_example)
+#                 i +=1
 
-    return list_of_examples
+#     return list_of_examples    
+
+# def create_list_of_examples_primenumbers(dict_all_settings):
+#     list_of_examples = []
+
+#     i=0
+#     max_limit_counter =0
+#     while i<examples:
+#         new_example = create_single_example_primenumbers(minimum, maximum, maximum_prime, display_as_powers)
+#         duplicate = check_for_duplicate(new_example, list_of_examples)
+        
+#         if duplicate == False:
+#             list_of_examples.append(new_example)
+#             i +=1
+#         else:
+#             max_limit_counter +=1
+#             if max_limit_counter > 99:
+#                 list_of_examples.append(new_example)
+#                 i +=1
+
+#     return list_of_examples
 
 def create_list_of_examples_ggt(examples, anzahl_zahlen, minimum, maximum, ggt_1_checked):
     list_of_examples = []
