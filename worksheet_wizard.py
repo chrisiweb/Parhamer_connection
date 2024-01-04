@@ -144,11 +144,15 @@ dict_wizard_variables = {
     'minimum_spinbox' : 'self.spinbox_zahlenbereich_minimum.value()',
     'minimum_spinbox_1' : 'self.spinBox_first_number_min.value()',
     'minimum_spinbox_2' : 'self.spinBox_second_number_min.value()',
+    'minimum_division_1' :  'self.spinbox_dividend_min_wizard.value()',
+    'minimum_division_2' :  'self.spinbox_divisor_min_wizard.value()',
     'minimum_index' : 'self.combobox_zahlenbereich_2_leq.currentIndex()',
     'maximum_combobox' : 'self.combobox_zahlenbereich_1.currentIndex()',
     'maximum_spinbox' : 'self.spinbox_zahlenbereich_maximum.value()',
     'maximum_spinbox_1' : 'self.spinBox_first_number_max.value()',
     'maximum_spinbox_2' : 'self.spinBox_second_number_max.value()',
+    'maximum_division_1' :  'self.spinbox_dividend_max_wizard.value()',
+    'maximum_division_2' :  'self.spinbox_divisor_max_wizard.value()',
     'maximum_index' : 'self.combobox_zahlenbereich_1_leq.currentIndex()',
     'general_direction_index' : 'self.pushbutton_general_direction',
     'starting_value' : 'self.spinbox_zahlenbereich_startingvalue.value()',
@@ -166,6 +170,36 @@ dict_wizard_variables = {
     'smaller_or_equal_1' : 'self.combobox_first_number_decimal.currentIndex()',
     'smaller_or_equal_2' : 'self.combobox_second_number_decimal.currentIndex()',
     'negative_solutions_allowed' : 'self.checkbox_negative_ergebnisse_wizard.isChecked()',
+    'commas_div' :  'self.spinBox_divisor_kommastellen_wizard.value()',
+    'smaller_or_equal_div' : 'self.combobox_divisor_kommastelle_wizard.currentIndex()',
+    'commas_result_div' : 'self.spinbox_ergebnis_kommastellen_wizard.value()',
+    'smaller_or_equal_result' : 'self.combobox_ergebnis_kommastellen_wizard.currentIndex()',
+    'output_type_division' : 'self.combobox_dividend_wizard',
+    'brackets_allowed' : 'self.checkbox_allow_brackets_wizard.isChecked()',
+    'enable_addition' : 'self.checkbox_enable_addition.isChecked()',
+    'enable_subtraction' : 'self.checkbox_enable_subtraktion.isChecked()',
+    'half_allowed_coord' :  'self.checkbox_coordinatesystem_zwischenwerte.isChecked()',
+    'negative_allowed_coord' : 'self.checkbox_coordinatesystem_negative_numbers.isChecked()',
+    'binomials_type_1' : 'self.cb_binoms_1.isChecked()',
+    'binomials_type_2' : 'self.cb_binoms_2.isChecked()',
+    'binomials_type_3' : 'self.cb_binoms_3.isChecked()',
+    'binomials_checkbox_a' : 'self.checkbox_binoms_a.isChecked()',
+    'binomials_checkbox_b' : 'self.checkbox_binoms_b.isChecked()',
+    'binomials_checkbox_y' : 'self.checkbox_binoms_y.isChecked()',
+    'binomials_minimum_a' : 'self.spinbox_binoms_a_min.value()',
+    'binomials_maximum_a' : 'self.spinbox_binoms_a_max.value()',
+    'binomials_minimum_b' : 'self.spinbox_binoms_b_min.value()',
+    'binomials_maximum_b' : 'self.spinbox_binoms_b_max.value()',
+    'binomials_minimum_m' : 'self.spinbox_binoms_m_min.value()',
+    'binomials_maximum_m' : 'self.spinbox_binoms_m_max.value()',
+    'binomials_minimum_n' : 'self.spinbox_binoms_n_min.value()',
+    'binomials_maximum_n' : 'self.spinbox_binoms_n_max.value()',
+    'binomials_fractions_allowed' : 'self.checkbox_binoms_enable_fraction.isChecked()',
+    'binomials_exponent' : 'self.spinbox_binoms_exponent.value()',
+    'binomials_variable_1' : 'self.combobox_choose_variables_1.currentText()',
+    'binomials_variable_2' : 'self.combobox_choose_variables_2.currentText()',
+    'binomials_direction_index' : 'self.pushbutton_binoms_direction',
+
 }
 dict_wizard_variables_latex = {}
 
@@ -660,14 +694,24 @@ def get_quotient_with_rest(dividend,divisor):
     
     return "{}\nR {}".format(int(dividend//divisor), dividend%divisor) 
 
-def create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div, smaller_or_equal_div, commas_result, smaller_or_equal_result, output_type):
+def create_single_example_division(dict_all_settings):
+    minimum_1 = dict_all_settings['minimum_division_1']
+    maximum_1 = dict_all_settings['maximum_division_1']
+    minimum_2 = dict_all_settings['minimum_division_2']
+    maximum_2 = dict_all_settings['maximum_division_2']
+    commas_div = dict_all_settings['commas_div']
+    smaller_or_equal_div = dict_all_settings['smaller_or_equal_div']
+    commas_result = dict_all_settings['commas_result']
+    smaller_or_equal_result = dict_all_settings['smaller_or_equal_result']
+    output_type_division = dict_all_settings['output_type_division']
+
     if smaller_or_equal_div == 1:
         set_commas_div=commas_div
         commas_div = random.randint(0,set_commas_div)
     
     divisor = get_random_number(minimum_2, maximum_2, commas_div)
 
-    if output_type == 1:  
+    if output_type_division == 1:  
         dividend = get_random_number(minimum_1, maximum_1)
         result = str(get_quotient_with_rest(dividend, divisor))
 
@@ -675,7 +719,7 @@ def create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, c
         result_min = ceil(minimum_1/divisor)
         result_max = floor(maximum_1/divisor)
 
-        if output_type == 0:
+        if output_type_division == 0:
             commas_result = 0
         else:
             if smaller_or_equal_result == 1:
@@ -706,10 +750,20 @@ def random_switch(p=50):
 def random_choice_except(_list, exception):
     return random.choice([x for x in _list if x != exception])
 
-def create_single_example_ganze_zahlen_strich(typ, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed):
+def create_single_example_ganze_zahlen_strich(dict_all_settings):
+    anzahl_zahlen = dict_all_settings['anzahl_zahlen']
+    minimum = dict_all_settings['minimum_spinbox']
+    maximum = dict_all_settings['maximum_spinbox']
+    commas = dict_all_settings['commas']
+    smaller_or_equal = dict_all_settings['smaller_or_equal']
+    brackets_allowed = dict_all_settings['brackets_allowed']
+    enable_addition = dict_all_settings['enable_addition']
+    enable_subtraction = dict_all_settings['enable_subtraction']
+
+    #typ, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed
     summanden = []
     set_commas=commas
-    for _ in range(anzahl_summanden):
+    for _ in range(anzahl_zahlen):
         if smaller_or_equal == 1:
             commas = random.randint(0,set_commas) 
         num = 0
@@ -719,12 +773,17 @@ def create_single_example_ganze_zahlen_strich(typ, minimum, maximum, commas, anz
     
     string  = add_summand(summanden[0])
 
-    if typ == "+":
-        operators =  ['+']
-    elif typ == "-":
-        operators =  ['-']
-    elif typ == "+-":
-        operators = ['+', '-']
+    operators = []
+    if enable_addition==True:
+        operators.append('+')
+    if enable_subtraction == True:
+        operators.append('-')
+    # if typ == "+":
+    #     operators =  ['+']
+    # elif typ == "-":
+    #     operators =  ['-']
+    # elif typ == "+-":
+    #     operators = ['+', '-']
         
     bracket_open = False
     waiter = False
@@ -802,14 +861,21 @@ def check_decimals(string, number, set_commas, factors):
 def remove_exponent(d):
     return d.quantize(D(1)) if d == d.to_integral() else d.normalize()
 
-def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_summanden, smaller_or_equal):
+def create_single_example_ganze_zahlen_punkt(dict_all_settings):
+    #minimum, maximum, commas, anzahl_summanden, smaller_or_equal
+    anzahl_zahlen = dict_all_settings['anzahl_zahlen']
+    minimum = dict_all_settings['minimum_spinbox']
+    maximum = dict_all_settings['maximum_spinbox']
+    commas = dict_all_settings['commas']
+    smaller_or_equal = dict_all_settings['smaller_or_equal']
+
     factors = []
     set_commas=commas
 
 
     test_commas = commas
-    for i in range(anzahl_summanden):
-        if smaller_or_equal == 1 and i+1 == anzahl_summanden:
+    for i in range(anzahl_zahlen):
+        if smaller_or_equal == 1 and i+1 == anzahl_zahlen:
             commas = test_commas
             force_decimals = True
         else:
@@ -819,7 +885,7 @@ def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_su
 
         #######
         # 
-        if anzahl_summanden==2:
+        if anzahl_zahlen==2:
             zero = False
         else:
             zero = 25    
@@ -856,7 +922,7 @@ def create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_su
                     division_pair = get_random_number(minimum, maximum, commas)
                 
                 string = create_division_pair(division_pair, all)
-                if anzahl_summanden > 2:
+                if anzahl_zahlen > 2:
                     string = "[" + string + "]"
 
                 
@@ -1114,7 +1180,20 @@ def avoid_futile_brackets(string):
 
     return string
 
-def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets):
+def create_single_example_ganze_zahlen_grundrechnungsarten(dict_all_settings):
+    #minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets
+    shorten_topic = dict_all_settings['dict_all_settings']
+    if shorten_topic == 'ari_pos_ver':
+        show_brackets = False
+    else:
+        show_brackets = True
+    anzahl_summanden = dict_all_settings['anzahl_zahlen']
+    minimum = dict_all_settings['minimum_spinbox']
+    maximum = dict_all_settings['maximum_spinbox']
+    commas = dict_all_settings['commas']
+    smaller_or_equal = dict_all_settings['smaller_or_equal']
+    brackets_allowed = dict_all_settings['brackets_allowed']
+
     numbers = []
     set_commas=commas
     for _ in range(anzahl_summanden):
@@ -1265,7 +1344,10 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, com
 def index_to_letter(index):
     return chr(ord('a') + index)
 
-def create_single_example_coordinate_system(half_allowed, negative_allowed):
+def create_single_example_coordinate_system(dict_all_settings):
+    #half_allowed, negative_allowed
+    half_allowed = dict_all_settings['half_allowed_coord']
+    negative_allowed = dict_all_settings['negative_allowed_coord']
     if negative_allowed == True:
         minimum = -5
     else:
@@ -1309,44 +1391,63 @@ def convert_to_fractions(string):
     
     return string
 
-def create_single_example_binomische_formeln(binomials_types, coef_a,coef_b,exp_x,exp_y, exponent, binoms_direction_index, fractions_allowed, variable_1, variable_2):
+def create_single_example_binomische_formeln(dict_all_settings):
+    #, coef_a,coef_b,exp_x,exp_y, exponent, binoms_direction_index, fractions_allowed, variable_1, variable_2
+    binomials_types = [dict_all_settings['binomials_type_1'], dict_all_settings['binomials_type_2'], dict_all_settings['binomials_type_3']]
+    coef_a_checked = dict_all_settings['binomials_checkbox_a']
+    coef_a_min = dict_all_settings['binomials_minimum_a']
+    coef_a_max = dict_all_settings['binomials_maximum_a']
+    coef_b_checked = dict_all_settings['binomials_checkbox_b']
+    coef_b_min = dict_all_settings['binomials_minimum_b']
+    coef_b_max = dict_all_settings['binomials_maximum_b']
+    expo_m_min = dict_all_settings['binomials_minimum_m']
+    expo_m_max = dict_all_settings['binomials_maximum_m']
+    expo_y_checked = dict_all_settings['binomials_checkbox_y']
+    expo_n_min = dict_all_settings['binomials_minimum_n']
+    expo_n_max = dict_all_settings['binomials_maximum_n']
+    fractions_allowed = dict_all_settings['binomials_fractions_allowed']
+    exponent = dict_all_settings['binomials_exponent']
+    binoms_direction_index = dict_all_settings['binomials_direction_index']
+    variable_1 = dict_all_settings['binomials_variable_1']
+    variable_2 = dict_all_settings['binomials_variable_2']
+
     A, B = symbols("{} {}".format("A", "B"))
 
     if fractions_allowed == True:
-        if coef_a == False:
+        if coef_a_checked == False:
             coef_1 = 1
         else:
-            coef_1 = get_random_fraction(coef_a[0],coef_a[1])
+            coef_1 = get_random_fraction(coef_a_min,coef_a_max)
         
-        if coef_b == False:
+        if coef_b_checked == False:
             coef_2 = 1
         else:
-            coef_2 = get_random_fraction(coef_b[0],coef_b[1])
+            coef_2 = get_random_fraction(coef_b_min,coef_b_max)
     else:
-        if coef_a == False:
+        if coef_a_checked == False:
             coef_1 = 1
         else:
-            coef_1 = get_random_number(coef_a[0],coef_a[1])
+            coef_1 = get_random_number(coef_a_min,coef_a_max)
         
-        if coef_b == False:
+        if coef_b_checked == False:
             coef_2 = 1
         else:
-            coef_2 = get_random_number(coef_b[0],coef_b[1])
+            coef_2 = get_random_number(coef_b_min,coef_b_max)
 
 
-    if exp_x == [0,0]:
-        exponent_x = 0
-    else:    
-        exponent_x = get_random_number(exp_x[0],exp_x[1])
+    # if exp_x == [0,0]:
+    #     exponent_x = 0
+    # else:    
+    exponent_x = get_random_number(expo_m_min,expo_m_max)
     if exponent_x ==1:
         exponent_x = ""
     else:
         exponent_x = f"**{exponent_x}"
 
-    if exp_y == False:
+    if expo_y_checked == False:
         exponent_y = 0
     else:
-        exponent_y = get_random_number(exp_y[0],exp_y[1])
+        exponent_y = get_random_number(expo_n_min,expo_n_max)
     if exponent_y ==1:
         exponent_y = ""
     else:
