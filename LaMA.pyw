@@ -4392,150 +4392,150 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         #     index +=1
 
     
-    def create_single_example_wizard(self):
-        # thema = self.comboBox_themen_wizard.currentText()
-        thema = self.get_current_topic_wizard()
-        # thema_index = self.total_list_of_topics_wizard.index(thema)
+    # def create_single_example_wizard(self):
+    #     # thema = self.comboBox_themen_wizard.currentText()
+    #     thema = self.get_current_topic_wizard()
+    #     # thema_index = self.total_list_of_topics_wizard.index(thema)
 
-        shorten_topic = self.shorten_topic(thema)
+    #     shorten_topic = self.shorten_topic(thema)
 
-        minimum = self.spinbox_zahlenbereich_minimum.value()
-        maximum = self.spinbox_zahlenbereich_maximum.value()
-        commas = self.spinbox_kommastellen_wizard.value()
+    #     minimum = self.spinbox_zahlenbereich_minimum.value()
+    #     maximum = self.spinbox_zahlenbereich_maximum.value()
+    #     commas = self.spinbox_kommastellen_wizard.value()
         
-        if shorten_topic == 'ari_dar_ste':
-            minimum = self.combobox_zahlenbereich_2.currentIndex()
-            minimum_index = self.combobox_zahlenbereich_2_leq.currentIndex()
-            maximum = self.combobox_zahlenbereich_1.currentIndex()
-            maximum_index = self.combobox_zahlenbereich_1_leq.currentIndex()
-            # smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
-            new_example = create_single_example_stellenwert(minimum, minimum_index, maximum, maximum_index, self.general_direction_index)
-        elif shorten_topic=='ari_dar_röm':
-            roman_max = self.combobox_zahlenbereich_1.currentText()
-            maximum_index = self.combobox_zahlenbereich_1_leq.currentIndex()
-            new_example = create_single_example_roman_numerals(roman_max, maximum_index, self.general_direction_index)
+    #     if shorten_topic == 'ari_dar_ste':
+    #         minimum = self.combobox_zahlenbereich_2.currentIndex()
+    #         minimum_index = self.combobox_zahlenbereich_2_leq.currentIndex()
+    #         maximum = self.combobox_zahlenbereich_1.currentIndex()
+    #         maximum_index = self.combobox_zahlenbereich_1_leq.currentIndex()
+    #         # smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
+    #         new_example = create_single_example_stellenwert(minimum, minimum_index, maximum, maximum_index, self.general_direction_index)
+    #     elif shorten_topic=='ari_dar_röm':
+    #         roman_max = self.combobox_zahlenbereich_1.currentText()
+    #         maximum_index = self.combobox_zahlenbereich_1_leq.currentIndex()
+    #         new_example = create_single_example_roman_numerals(roman_max, maximum_index, self.general_direction_index)
 
-        elif shorten_topic == 'ari_dar_zah':
-            starting_value = self.spinbox_zahlenbereich_startingvalue.value()
-            steps = self.spinbox_zahlenbereich_steps.value()
-            subticks = self.spinbox_zahlenbereich_subticks.value()+1
-            new_example = create_single_example_number_line(starting_value, steps, subticks)
+    #     elif shorten_topic == 'ari_dar_zah':
+    #         starting_value = self.spinbox_zahlenbereich_startingvalue.value()
+    #         steps = self.spinbox_zahlenbereich_steps.value()
+    #         subticks = self.spinbox_zahlenbereich_subticks.value()+1
+    #         new_example = create_single_example_number_line(starting_value, steps, subticks)
 
-        elif shorten_topic == 'ari_tei_pri':
-            minimum = self.spinbox_zahlenbereich_minimum.value()
-            maximum = self.spinbox_zahlenbereich_maximum.value()
-            maximum_prime = self.spinbox_maximum_prime.value()
-            display_as_powers = self.checkbox_prime_powers.isChecked()
-            new_example = create_single_example_primenumbers(minimum, maximum, maximum_prime, display_as_powers)
+    #     elif shorten_topic == 'ari_tei_pri':
+    #         minimum = self.spinbox_zahlenbereich_minimum.value()
+    #         maximum = self.spinbox_zahlenbereich_maximum.value()
+    #         maximum_prime = self.spinbox_maximum_prime.value()
+    #         display_as_powers = self.checkbox_prime_powers.isChecked()
+    #         new_example = create_single_example_primenumbers(minimum, maximum, maximum_prime, display_as_powers)
 
-        elif shorten_topic=='ari_pos_add':
-            anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
-            smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
-            new_example = create_single_example_addition(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
-        elif shorten_topic=='ari_pos_sub':
-            anzahl_subtrahenden = self.spinBox_zahlenbereich_anzahl_wizard.value()
-            smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
-            new_example = create_single_example_subtraction(minimum, maximum, commas, self.checkbox_negative_ergebnisse_wizard.isChecked(),anzahl_subtrahenden ,smaller_or_equal)
-        elif shorten_topic=='ari_pos_mul':
-            minimum_1 = self.spinBox_first_number_min.value()
-            maximum_1 = self.spinBox_first_number_max.value()
-            commas_1 = self.spinBox_first_number_decimal.value()
-            smaller_or_equal_1 = self.combobox_first_number_decimal.currentIndex()
-            minimum_2 = self.spinBox_second_number_min.value()
-            maximum_2 = self.spinBox_second_number_max.value()
-            commas_2 = self.spinBox_second_number_decimal.value()
-            smaller_or_equal_2 = self.combobox_second_number_decimal.currentIndex()
-            new_example = create_single_example_multiplication(minimum_1, maximum_1, commas_1, smaller_or_equal_1,minimum_2, maximum_2, commas_2, smaller_or_equal_2)
-        elif shorten_topic=='ari_pos_div':
-            minimum_1 = self.spinbox_dividend_min_wizard.value()
-            maximum_1 = self.spinbox_dividend_max_wizard.value()
-            minimum_2 = self.spinbox_divisor_min_wizard.value()
-            maximum_2 = self.spinbox_divisor_max_wizard.value()
-            commas_div = self.spinBox_divisor_kommastellen_wizard.value()
-            commas_result = self.spinbox_ergebnis_kommastellen_wizard.value()
-            smaller_or_equal_div = self.combobox_divisor_kommastelle_wizard.currentIndex()
-            smaller_or_equal_result = self.combobox_ergebnis_kommastellen_wizard.currentIndex()
+    #     elif shorten_topic=='ari_pos_add':
+    #         anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
+    #         smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
+    #         new_example = create_single_example_addition(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
+    #     elif shorten_topic=='ari_pos_sub':
+    #         anzahl_subtrahenden = self.spinBox_zahlenbereich_anzahl_wizard.value()
+    #         smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
+    #         new_example = create_single_example_subtraction(minimum, maximum, commas, self.checkbox_negative_ergebnisse_wizard.isChecked(),anzahl_subtrahenden ,smaller_or_equal)
+    #     elif shorten_topic=='ari_pos_mul':
+    #         minimum_1 = self.spinBox_first_number_min.value()
+    #         maximum_1 = self.spinBox_first_number_max.value()
+    #         commas_1 = self.spinBox_first_number_decimal.value()
+    #         smaller_or_equal_1 = self.combobox_first_number_decimal.currentIndex()
+    #         minimum_2 = self.spinBox_second_number_min.value()
+    #         maximum_2 = self.spinBox_second_number_max.value()
+    #         commas_2 = self.spinBox_second_number_decimal.value()
+    #         smaller_or_equal_2 = self.combobox_second_number_decimal.currentIndex()
+    #         new_example = create_single_example_multiplication(minimum_1, maximum_1, commas_1, smaller_or_equal_1,minimum_2, maximum_2, commas_2, smaller_or_equal_2)
+    #     elif shorten_topic=='ari_pos_div':
+    #         minimum_1 = self.spinbox_dividend_min_wizard.value()
+    #         maximum_1 = self.spinbox_dividend_max_wizard.value()
+    #         minimum_2 = self.spinbox_divisor_min_wizard.value()
+    #         maximum_2 = self.spinbox_divisor_max_wizard.value()
+    #         commas_div = self.spinBox_divisor_kommastellen_wizard.value()
+    #         commas_result = self.spinbox_ergebnis_kommastellen_wizard.value()
+    #         smaller_or_equal_div = self.combobox_divisor_kommastelle_wizard.currentIndex()
+    #         smaller_or_equal_result = self.combobox_ergebnis_kommastellen_wizard.currentIndex()
 
 
-            if self.combobox_dividend_wizard.currentIndex()==1:
-                output_type = 2    
-            elif self.radioButton_division_ohne_rest.isChecked():
-                output_type = 0
-            elif self.radioButton_division_rest.isChecked():
-                output_type = 1
+    #         if self.combobox_dividend_wizard.currentIndex()==1:
+    #             output_type = 2    
+    #         elif self.radioButton_division_ohne_rest.isChecked():
+    #             output_type = 0
+    #         elif self.radioButton_division_rest.isChecked():
+    #             output_type = 1
 
-            new_example = create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div, smaller_or_equal_div, commas_result, smaller_or_equal_result, output_type)
+    #         new_example = create_single_example_division(minimum_1, maximum_1, minimum_2, maximum_2, commas_div, smaller_or_equal_div, commas_result, smaller_or_equal_result, output_type)
 
-        elif (shorten_topic=='ari_pos_ver' or 
-              shorten_topic=='ari_neg_add' or 
-              shorten_topic=='ari_neg_mul' or 
-              shorten_topic=='ari_neg_ver'
-              ):
-            minimum = self.spinbox_zahlenbereich_minimum.value()
-            maximum = self.spinbox_zahlenbereich_maximum.value()
-            commas = self.spinbox_kommastellen_wizard.value()
-            smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
-            anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
-            brackets_allowed = self.checkbox_allow_brackets_wizard.isChecked()
+    #     elif (shorten_topic=='ari_pos_ver' or 
+    #           shorten_topic=='ari_neg_add' or 
+    #           shorten_topic=='ari_neg_mul' or 
+    #           shorten_topic=='ari_neg_ver'
+    #           ):
+    #         minimum = self.spinbox_zahlenbereich_minimum.value()
+    #         maximum = self.spinbox_zahlenbereich_maximum.value()
+    #         commas = self.spinbox_kommastellen_wizard.value()
+    #         smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
+    #         anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
+    #         brackets_allowed = self.checkbox_allow_brackets_wizard.isChecked()
 
-            typ = self.get_wizard_type_ari(shorten_topic)
+    #         typ = self.get_wizard_type_ari(shorten_topic)
 
-            if shorten_topic=='ari_neg_add':
-                new_example = create_single_example_ganze_zahlen_strich(typ, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
-            elif shorten_topic=='ari_neg_mul':
-                new_example = create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
-            elif shorten_topic=='ari_pos_ver' or shorten_topic=='ari_neg_ver':
-                if shorten_topic=='ari_pos_ver':
-                    show_brackets = False
-                else:
-                    show_brackets = True
-                new_example = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)
+    #         if shorten_topic=='ari_neg_add':
+    #             new_example = create_single_example_ganze_zahlen_strich(typ, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed)
+    #         elif shorten_topic=='ari_neg_mul':
+    #             new_example = create_single_example_ganze_zahlen_punkt(minimum, maximum, commas, anzahl_summanden, smaller_or_equal)
+    #         elif shorten_topic=='ari_pos_ver' or shorten_topic=='ari_neg_ver':
+    #             if shorten_topic=='ari_pos_ver':
+    #                 show_brackets = False
+    #             else:
+    #                 show_brackets = True
+    #             new_example = create_single_example_ganze_zahlen_grundrechnungsarten(minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets)
 
-        elif shorten_topic == 'geo_gru_koo':
-            half_allowed = self.checkbox_coordinatesystem_zwischenwerte.isChecked()
-            negative_allowed = self.checkbox_coordinatesystem_negative_numbers.isChecked()
-            new_example = create_single_example_coordinate_system(half_allowed, negative_allowed)
+    #     elif shorten_topic == 'geo_gru_koo':
+    #         half_allowed = self.checkbox_coordinatesystem_zwischenwerte.isChecked()
+    #         negative_allowed = self.checkbox_coordinatesystem_negative_numbers.isChecked()
+    #         new_example = create_single_example_coordinate_system(half_allowed, negative_allowed)
 
-        elif shorten_topic=='ter_bin':
-            binomials_types = [self.cb_binoms_1.isChecked(), self.cb_binoms_2.isChecked(), self.cb_binoms_3.isChecked()]
-            if binomials_types == [False, False, False]:
-                warning_window("Es muss mindestens eine der Typen der binomischen Formeln ausgewählt werden.")
-                return
+    #     elif shorten_topic=='ter_bin':
+    #         binomials_types = [self.cb_binoms_1.isChecked(), self.cb_binoms_2.isChecked(), self.cb_binoms_3.isChecked()]
+    #         if binomials_types == [False, False, False]:
+    #             warning_window("Es muss mindestens eine der Typen der binomischen Formeln ausgewählt werden.")
+    #             return
 
-            if self.checkbox_binoms_a.isChecked():
-                a = [self.spinbox_binoms_a_min.value(), self.spinbox_binoms_a_max.value()]
-                if a == [0,0]:
-                    warning_window('Der Koeffizient "a" darf nicht gleich 0 sein.')
-                    return
-            else:
-                a = False
+    #         if self.checkbox_binoms_a.isChecked():
+    #             a = [self.spinbox_binoms_a_min.value(), self.spinbox_binoms_a_max.value()]
+    #             if a == [0,0]:
+    #                 warning_window('Der Koeffizient "a" darf nicht gleich 0 sein.')
+    #                 return
+    #         else:
+    #             a = False
             
-            if self.checkbox_binoms_b.isChecked(): 
-                b = [self.spinbox_binoms_b_min.value(), self.spinbox_binoms_b_max.value()]
-                if b == [0,0]:
-                    warning_window('Der Koeffizient "b" darf nicht gleich 0 sein.')
-                    return
-            else:
-                b = False 
+    #         if self.checkbox_binoms_b.isChecked(): 
+    #             b = [self.spinbox_binoms_b_min.value(), self.spinbox_binoms_b_max.value()]
+    #             if b == [0,0]:
+    #                 warning_window('Der Koeffizient "b" darf nicht gleich 0 sein.')
+    #                 return
+    #         else:
+    #             b = False 
 
-            x = [self.spinbox_binoms_m_min.value(), self.spinbox_binoms_m_max.value()]
+    #         x = [self.spinbox_binoms_m_min.value(), self.spinbox_binoms_m_max.value()]
 
-            if self.checkbox_binoms_y.isChecked():
-                y = [self.spinbox_binoms_n_min.value(), self.spinbox_binoms_n_max.value()]
-            else:
-                y = False
+    #         if self.checkbox_binoms_y.isChecked():
+    #             y = [self.spinbox_binoms_n_min.value(), self.spinbox_binoms_n_max.value()]
+    #         else:
+    #             y = False
 
-            fractions_allowed = self.checkbox_binoms_enable_fraction.isChecked()
-            exponent = self.spinbox_binoms_exponent.value()
-            variable_1 = self.combobox_choose_variables_1.currentText()
-            variable_2 = self.combobox_choose_variables_2.currentText()
-            new_example = create_single_example_binomische_formeln(binomials_types, a,b,x,y,exponent, self.binoms_direction_index, fractions_allowed, variable_1, variable_2)         
+    #         fractions_allowed = self.checkbox_binoms_enable_fraction.isChecked()
+    #         exponent = self.spinbox_binoms_exponent.value()
+    #         variable_1 = self.combobox_choose_variables_1.currentText()
+    #         variable_2 = self.combobox_choose_variables_2.currentText()
+    #         new_example = create_single_example_binomische_formeln(binomials_types, a,b,x,y,exponent, self.binoms_direction_index, fractions_allowed, variable_1, variable_2)         
 
-        return new_example
+    #     return new_example
 
     @report_exceptions
     def reload_example(self, index):  
-        new_example = self.create_single_example_wizard()
+        new_example = self.create_all_examples_wizard(single_example=True)
         # result = self.list_of_examples_wizard[index][-2]
 
         # if self.checkBox_show_nonogramm.isChecked():
@@ -4645,12 +4645,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # widget = eval(str_widget)
 
 
-    def create_list_of_examples_wizard(self):
+    def create_all_examples_wizard(self, single_example=False):
         thema = self.get_current_topic_wizard()
         # thema_index = self.total_list_of_topics_wizard.index(thema)
 
         shorten_topic = self.shorten_topic(thema)
-        examples = self.spinBox_number_wizard.value()
+        # examples = self.spinBox_number_wizard.value()
 
         minimum = self.spinbox_zahlenbereich_minimum.value()
         maximum = self.spinbox_zahlenbereich_maximum.value()
@@ -4668,13 +4668,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # maximum = self.combobox_zahlenbereich_1.currentIndex()
             # maximum_index = self.combobox_zahlenbereich_1_leq.currentIndex()
 
-            list_of_examples_wizard = create_list_of_examples_all_topics(create_single_example_stellenwert, dict_all_settings)
+            all_examples_wizard = create_examples_all_topics(create_single_example_stellenwert, dict_all_settings, single_example)
             # list_of_examples_wizard = create_list_of_examples_stellenwert(examples, minimum, minimum_index, maximum, maximum_index, self.general_direction_index)                        
         
         elif shorten_topic == 'ari_dar_röm':
             # roman_max = self.combobox_zahlenbereich_1.currentText()
             # maximum_index = self.combobox_zahlenbereich_1_leq.currentIndex()
-            list_of_examples_wizard = create_list_of_examples_all_topics(create_single_example_roman_numerals, dict_all_settings)
+            all_examples_wizard = create_examples_all_topics(create_single_example_roman_numerals, dict_all_settings, single_example)
             # list_of_examples_wizard = create_list_of_examples_roman_numerals(examples, roman_max, maximum_index, self.general_direction_index)
         
         elif shorten_topic == 'ari_dar_zah':
@@ -4682,7 +4682,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # steps = self.spinbox_zahlenbereich_steps.value()
             # subticks = self.spinbox_zahlenbereich_subticks.value()+1
             # setting_decimal_fraction =  self.combobox_decimal_fraction.currentIndex()
-            list_of_examples_wizard = create_list_of_examples_all_topics(create_single_example_number_line, dict_all_settings)    
+            all_examples_wizard = create_examples_all_topics(create_single_example_number_line, dict_all_settings, single_example)    
             # list_of_examples_wizard = create_list_of_examples_number_line(examples, starting_value, steps, subticks, setting_decimal_fraction)
 
         elif shorten_topic == 'ari_tei_pri':
@@ -4690,7 +4690,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # maximum = self.spinbox_zahlenbereich_maximum.value()
             # maximum_prime = self.spinbox_maximum_prime.value()
             # display_as_powers = self.checkbox_prime_powers.isChecked()
-            list_of_examples_wizard = create_list_of_examples_all_topics(create_single_example_primenumbers, dict_all_settings)   
+            all_examples_wizard = create_examples_all_topics(create_single_example_primenumbers, dict_all_settings, single_example)   
             # list_of_examples_wizard = create_list_of_examples_primenumbers(examples, minimum, maximum, maximum_prime, display_as_powers)
 
         elif shorten_topic == 'ari_tei_ggt':
@@ -4699,13 +4699,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # maximum = self.spinbox_zahlenbereich_maximum.value()
             # ggt_1_checked = self.checkbox_ggT_1.isChecked()
 
-            list_of_examples_wizard = create_list_of_examples_all_topics(create_single_example_ggt, dict_all_settings) 
+            all_examples_wizard = create_examples_all_topics(create_single_example_ggt, dict_all_settings, single_example) 
             # list_of_examples_wizard = create_list_of_examples_ggt(examples, anzahl_zahlen, minimum, maximum, ggt_1_checked)
             
 
         elif shorten_topic =='ari_pos_add':
-            minimum = self.spinbox_zahlenbereich_minimum.value()
-            maximum = self.spinbox_zahlenbereich_maximum.value()
+            # minimum = self.spinbox_zahlenbereich_minimum.value()
+            # maximum = self.spinbox_zahlenbereich_maximum.value()
             # commas = self.spinbox_kommastellen_wizard.value()
             # smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
             # anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
@@ -4713,19 +4713,19 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             #     critical_window('Das Maximum muss größer als das Minimum sein.')
             #     return
 
-            list_of_examples_wizard = create_list_of_examples_all_topics(create_single_example_addition, dict_all_settings) 
+            all_examples_wizard = create_examples_all_topics(create_single_example_addition, dict_all_settings, single_example) 
             # list_of_examples_wizard = create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal) #, self.general_direction_index
 
         elif shorten_topic=='ari_pos_sub':
-            minimum = self.spinbox_zahlenbereich_minimum.value()
-            maximum = self.spinbox_zahlenbereich_maximum.value()
+            # minimum = self.spinbox_zahlenbereich_minimum.value()
+            # maximum = self.spinbox_zahlenbereich_maximum.value()
             # commas = self.spinbox_kommastellen_wizard.value()
             # anzahl_subtrahenden = self.spinBox_zahlenbereich_anzahl_wizard.value()
             # smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
             # if minimum>maximum:
             #     warning_window('Das Maximum muss größer als das Minimum sein.')
             #     return
-            list_of_examples_wizard = create_list_of_examples_all_topics(create_single_example_subtraction, dict_all_settings) 
+            all_examples_wizard = create_examples_all_topics(create_single_example_subtraction, dict_all_settings, single_example) 
             # list_of_examples_wizard = create_list_of_examples_subtraction(examples, minimum, maximum, commas, self.checkbox_negative_ergebnisse_wizard.isChecked(), anzahl_subtrahenden,smaller_or_equal)
         
         elif shorten_topic=='ari_pos_mul':
@@ -4738,7 +4738,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # commas_2 = self.spinBox_second_number_decimal.value()
             # smaller_or_equal_2 = self.combobox_second_number_decimal.currentIndex()
 
-            list_of_examples_wizard = create_list_of_examples_all_topics(create_single_example_multiplication, dict_all_settings) 
+            all_examples_wizard = create_examples_all_topics(create_single_example_multiplication, dict_all_settings, single_example) 
             # list_of_examples_wizard = create_list_of_examples_multiplication(examples, minimum_1, maximum_1, commas_1, smaller_or_equal_1 ,minimum_2, maximum_2, commas_2, smaller_or_equal_2)
 
         elif shorten_topic=='ari_pos_div':
@@ -4756,17 +4756,17 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             #     output_type = 0
             # elif self.radioButton_division_rest.isChecked():
             #     output_type = 1           
-            list_of_examples_wizard = create_list_of_examples_all_topics(create_single_example_division, dict_all_settings)
+            all_examples_wizard = create_examples_all_topics(create_single_example_division, dict_all_settings, single_example)
             # list_of_examples_wizard = create_list_of_examples_division(examples, minimum_1, maximum_1, minimum_2, maximum_2, commas_div, smaller_or_equal_div,commas_result,smaller_or_equal_result, output_type)  
 
         elif shorten_topic=='ari_pos_ver' or shorten_topic=='ari_neg_ver':
-            list_of_examples_wizard = create_list_of_examples_all_topics(create_single_example_ganze_zahlen_grundrechnungsarten, dict_all_settings)
+            all_examples_wizard = create_examples_all_topics(create_single_example_ganze_zahlen_grundrechnungsarten, dict_all_settings, single_example)
         
         elif shorten_topic=='ari_neg_add':
-            list_of_examples_wizard = create_list_of_examples_all_topics(create_single_example_ganze_zahlen_strich, dict_all_settings)
+            all_examples_wizard = create_examples_all_topics(create_single_example_ganze_zahlen_strich, dict_all_settings, single_example)
         
         elif shorten_topic=='ari_neg_mul':
-            list_of_examples_wizard = create_list_of_examples_all_topics(create_single_example_ganze_zahlen_punkt, dict_all_settings)
+            all_examples_wizard = create_examples_all_topics(create_single_example_ganze_zahlen_punkt, dict_all_settings, single_example)
         # elif (
         #     # shorten_topic=='ari_pos_ver' or 
         #     # shorten_topic=='ari_neg_add' or 
@@ -4794,7 +4794,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         elif shorten_topic == 'geo_gru_koo':
             # half_allowed = self.checkbox_coordinatesystem_zwischenwerte.isChecked()
             # negative_allowed = self.checkbox_coordinatesystem_negative_numbers.isChecked()
-            list_of_examples_wizard = create_list_of_examples_all_topics(create_single_example_coordinate_system, dict_all_settings)
+            all_examples_wizard = create_examples_all_topics(create_single_example_coordinate_system, dict_all_settings, single_example)
             # list_of_examples_wizard = create_list_of_examples_coordinate_system(examples, half_allowed, negative_allowed)
 
         elif shorten_topic=='ter_bin':
@@ -4816,12 +4816,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     warning_window('Der Koeffizient "b" darf nicht gleich 0 sein.')
                     return
 
-            x = [self.spinbox_binoms_m_min.value(), self.spinbox_binoms_m_max.value()]
+            # x = [self.spinbox_binoms_m_min.value(), self.spinbox_binoms_m_max.value()]
 
 
 
-            if self.checkbox_binoms_y.isChecked():
-                y = [self.spinbox_binoms_n_min.value(), self.spinbox_binoms_n_max.value()]
+            # if self.checkbox_binoms_y.isChecked():
+            #     y = [self.spinbox_binoms_n_min.value(), self.spinbox_binoms_n_max.value()]
             # else:
             #     y = False
 
@@ -4829,10 +4829,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # exponent = self.spinbox_binoms_exponent.value()
             # variable_1 = self.combobox_choose_variables_1.currentText()
             # variable_2 = self.combobox_choose_variables_2.currentText()
-            list_of_examples_wizard = create_list_of_examples_all_topics(create_single_example_binomische_formeln, dict_all_settings)
+            all_examples_wizard = create_examples_all_topics(create_single_example_binomische_formeln, dict_all_settings, single_example)
             # list_of_examples_wizard = create_list_of_examples_binomische_formeln(examples, binomials_types, a,b,x,y, exponent, self.binoms_direction_index, fractions_allowed, variable_1, variable_2)
 
-        return list_of_examples_wizard
+        return all_examples_wizard
 
     def get_all_examples_wizard(self):
         list_of_examples = []
@@ -4862,7 +4862,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # self.worksheet_wizard_changed = False
 
         # self.dict_all_examples_wizard = {}
-        self.list_of_examples_wizard = self.create_list_of_examples_wizard()
+        self.list_of_examples_wizard = self.create_all_examples_wizard()
 
         self.reset_aufgabenboxes_wizard()
 
@@ -4878,7 +4878,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     @report_exceptions
     def add_single_example_wizard(self):
         self.pushButton_addto_worksheet_wizard.setEnabled(True)
-        new_example = self.create_single_example_wizard()
+        new_example = self.create_all_examples_wizard(single_example=True)
 
         try:
             self.list_of_examples_wizard.append(new_example)
@@ -5064,7 +5064,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             i=0
             max_limit_counter =0
             while i<10:
-                dummy_solution = get_random_solution(self)
+                dummy_solution = self.create_all_examples_wizard(single_example=True) #get_random_solution(self)
     
                 if dummy_solution[-2] not in list_solutions and dummy_solution[-2] not in list_dummy_solutions:
                     full_list_dummy_solutions.append(dummy_solution)
@@ -9102,31 +9102,27 @@ if __name__ == "__main__":
 
     i = step_progressbar(i, "worksheet_wizard")
     from worksheet_wizard import (
-        # dict_widgets_wizard, themen_worksheet_wizard,
         dict_themen_wizard,
-        dict_wizard_variables, dict_wizard_variables_latex,
-        create_list_of_examples_all_topics,
+        dict_wizard_variables,
+        create_examples_all_topics,
         get_all_solution_pixels,
         get_max_pixels_nonogram,
         create_latex_worksheet,
-        remove_exponent, formatNumber,
         create_single_example_stellenwert, list_stellenwerte, index_E,
         create_single_example_roman_numerals, dict_of_roman_max,
         create_single_example_number_line,
         create_single_example_primenumbers,
-        create_list_of_examples_ggt, create_single_example_ggt,
-        create_list_of_examples_addition, create_single_example_addition,
-        create_list_of_examples_subtraction, create_single_example_subtraction,
-        create_list_of_examples_multiplication, create_single_example_multiplication,
-        create_list_of_examples_division, create_single_example_division,
-        create_list_of_examples_ganze_zahlen,
+        create_single_example_ggt,
+        create_single_example_addition,
+        create_single_example_subtraction,
+        create_single_example_multiplication,
+        create_single_example_division,
         create_single_example_ganze_zahlen_strich,
         create_single_example_ganze_zahlen_punkt,
         create_single_example_ganze_zahlen_grundrechnungsarten,
-        create_list_of_examples_coordinate_system, create_single_example_coordinate_system,
+        create_single_example_coordinate_system,
         create_single_example_binomische_formeln,
-        create_list_of_examples_binomische_formeln,
-        create_nonogramm, create_coordinates, get_random_solution,list_all_pixels, all_nonogramms, show_all_nonogramms
+        create_nonogramm, create_coordinates, all_nonogramms
     )
 
     i = step_progressbar(i, "tex_minimal")

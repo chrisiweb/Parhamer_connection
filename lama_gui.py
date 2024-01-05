@@ -16,6 +16,7 @@ from create_new_widgets import (
     add_new_option,
     add_new_tab,
     DragDropWidget,
+    PrimenumberSpinBox,
     )
 from predefined_size_policy import SizePolicy_fixed_height, SizePolicy_fixed, SizePolicy_minimum, SizePolicy_minimum_fixed, SizePolicy_maximum_height, SizePolicy_maximum_width, SizePolicy_minimum_height, SizePolicy_expanding, SizePolicy_maximum
 from config import *
@@ -2819,7 +2820,9 @@ def setup_stackWizard(self):
     self.horizontalLayout_setting_prime = create_new_horizontallayout(self.widget_setting_prime)
     self.label_maximum_prime = create_new_label(self.widget_setting_prime, "Höchste Primzahl:")
     self.horizontalLayout_setting_prime.addWidget(self.label_maximum_prime)
-    self.spinbox_maximum_prime = create_new_spinbox(self.widget_setting_prime, value=13)
+    self.spinbox_maximum_prime = PrimenumberSpinBox(self.widget_setting_prime)
+    self.spinbox_maximum_prime.setValue(13)
+    # self.spinbox_maximum_prime = create_new_spinbox(self.widget_setting_prime, value=13)
     self.horizontalLayout_setting_prime.addWidget(self.spinbox_maximum_prime)
 
     self.checkbox_prime_powers = create_new_checkbox(self.widget_setting_prime, "als Potenzen darstellen")
