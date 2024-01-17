@@ -10,11 +10,13 @@ class Worker_PushDatabase(QtCore.QObject):
 
     @QtCore.pyqtSlot()
     def task(self, ui, admin, file_list, message, worker_text):
-        # try:
-        self.changes_found = git_push_to_origin(ui, admin, file_list, message, worker_text)
-        # except Exception as e:
-        #     print('Fehler: {}'.format(e))
-        #     self.changes_found = 'error'
+        try:
+            self.changes_found = git_push_to_origin(ui, admin, file_list, message, worker_text)
+
+        except Exception as e:
+            print('Fehler: {}'.format(e))
+            critical_window(f'Fehler: {e}')
+            self.changes_found = 'error'
 
         self.finished.emit()
 
