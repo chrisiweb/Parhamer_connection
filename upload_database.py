@@ -13,10 +13,10 @@ class Worker_PushDatabase(QtCore.QObject):
         try:
             self.changes_found = git_push_to_origin(ui, admin, file_list, message, worker_text)
 
-        except Exception as e:
-            print('Fehler: {}'.format(e))
-            critical_window(f'Fehler: {e}')
-            self.changes_found = 'error'
+        except Exception as error:
+            print('Fehler: {}'.format(error))
+            critical_window(f'Fehler: {error}')
+            self.changes_found = error
 
         self.finished.emit()
 
@@ -46,9 +46,10 @@ def action_push_database(admin, file_list, message = None, worker_text = "Aufgab
     QtWidgets.QApplication.restoreOverrideCursor()
     if worker.changes_found == False:
         information_window("Es wurden keine Änderungen gefunden.")
-    elif worker.changes_found == "error":
+    else:
         critical_window(
-            "Es ist ein Fehler aufgetreten. Die Datenbank konnte nicht hochgeladen werden. Bitte versuchen Sie es später erneut."
+            "Es ist ein Fehler aufgetreten. Die Datenbank konnte nicht hochgeladen werden. Bitte versuchen Sie es später erneut.",
+            detailed_text=worker.changes_found
         )
         return False
     # elif admin == True:
