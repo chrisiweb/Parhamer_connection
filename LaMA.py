@@ -3703,6 +3703,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             abstand,
         )
         QtWidgets.QApplication.restoreOverrideCursor()
+        print(rsp)
         if rsp == False:
             critical_window(
                 "Beim Synchronisieren ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass eine Internetverbindung beseteht und versuchen Sie es erneut."
