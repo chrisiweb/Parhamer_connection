@@ -42,10 +42,9 @@ def action_push_database(admin, file_list, message = None, worker_text = "Aufgab
     thread.exit()
     Dialog.exec()
     QtWidgets.QApplication.restoreOverrideCursor()
-    print(worker.changes_found)
     if worker.changes_found == False:
         information_window("Es wurden keine Änderungen gefunden.")
-    else:
+    elif worker.changes_found != True:
         critical_window(f"{worker.changes_found}"
             )#"Es ist ein Fehler aufgetreten. Die Datenbank konnte nicht hochgeladen werden. Bitte versuchen Sie es später erneut."
         return False

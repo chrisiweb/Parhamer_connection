@@ -223,7 +223,12 @@ def git_push_to_origin(ui, admin, file_list, message, worker_text):
 
         porcelain.commit(repo, message="New Update ({0}) - {1}".format(mode, message))
         ui.label.setText("{} (84%)".format(worker_text))
-        porcelain.push(repo,"https://lama-user:{}@github.com/chrisiweb/lama_latest_update.git".format(access_token),"master")
+        while True:
+            try:
+                porcelain.push(repo,"https://lama-user:{}@github.com/chrisiweb/lama_latest_update.git".format(access_token),"master")
+                break
+            except Exception as e:
+                print(e)
         ui.label.setText("{} (100%)".format(worker_text))        
 
         return True
