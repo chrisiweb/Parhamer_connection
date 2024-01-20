@@ -45,8 +45,9 @@ def action_push_database(admin, file_list, message = None, worker_text = "Aufgab
     if worker.changes_found == False:
         information_window("Es wurden keine Änderungen gefunden.")
     elif worker.changes_found != True:
-        critical_window(f"{worker.changes_found}"
-            )#"Es ist ein Fehler aufgetreten. Die Datenbank konnte nicht hochgeladen werden. Bitte versuchen Sie es später erneut."
+        critical_window("Es ist ein Fehler aufgetreten. Die Datenbank konnte nicht hochgeladen werden. Bitte versuchen Sie es später erneut.",
+                        detailed_text= f"Fehlerbericht: {worker.changes_found}"
+            )
         return False
     # elif admin == True:
     #     information_window("Die Datenbank wurde erfolgreich hochgeladen.")
