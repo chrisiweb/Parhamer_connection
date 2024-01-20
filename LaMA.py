@@ -5585,7 +5585,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         self.saved_file_path = latex_file_path[0]
 
-        print(latex_file_path)
+        # print(latex_file_path)
         self.open_dialogwindow_erstellen_developer(latex_file_path[0])
         # self.pushButton_edit_pressed()
 
