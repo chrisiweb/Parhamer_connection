@@ -223,7 +223,7 @@ def git_push_to_origin(ui, admin, file_list, message, worker_text):
         i = 0
         while True:
             try:
-                porcelain.push(repo,"https://lama-user:{}@github.com/chrisiweb/lama_latest_update.git".format(access_token),"master")
+                porcelain.push(repo,"https://lama-user:{}@github.com/chrisiweb/lama_latest_update.git".format(access_token),"master", force=True)
                 break
             except Exception as e:
                 print(e)

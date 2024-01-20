@@ -3744,8 +3744,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 name = os.path.join("Bilder", image)
                 file_list.append(name)
 
-            action_push_database(False, file_list, message="Neu: {}".format(name))
-
+            response = action_push_database(False, file_list, message="Neu: {}".format(name))
+            if response == False:
+                return
         information_window(text, "", window_title, information)
 
         self.suchfenster_reset()

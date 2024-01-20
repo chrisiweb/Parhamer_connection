@@ -3772,13 +3772,14 @@ class Ui_Dialog_edit_drafts(object):
 
 
         chosen_ddb = ["_database.json"]    
-        action_push_database(True, 
+        response = action_push_database(True, 
         chosen_ddb,
         message="Entwürfe geprüft ({})".format(", ".join(chosen_list)),
         worker_text="Entwürfe werden in die Datenbank verschoben ..."
         )
 
-
+        if response == False:
+            return
         information_window("Die Aufgaben\n{}\nwurden erfolgreich gespeichert.".format("\n".join(chosen_list)))
 
 
@@ -3809,12 +3810,14 @@ class Ui_Dialog_edit_drafts(object):
         self.remove_from_list()
 
         chosen_ddb = ["_database.json"]    
-        action_push_database(True, 
+        response = action_push_database(True, 
         chosen_ddb,
         message="Entwürfe gelöscht ({})".format(", ".join(chosen_list)),
         worker_text="Entwürfe werden gelöscht ..."
         ) 
-
+        if response == False:
+            return
+        
         information_window("Die Aufgaben\n{}\nwurden erfolgreich gelöscht.".format("\n".join(chosen_list)))
 
 
