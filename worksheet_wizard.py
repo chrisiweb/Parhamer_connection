@@ -374,12 +374,12 @@ def roman_to_int(input):
 
 dict_of_roman_max = {'I':3, 'V': 8, 'X':39, 'L':89, 'C':399, 'D':899, 'M':3999}
 
-def create_single_example_stellenwert(dict_all_settings): #minimum, minimum_index, maximum, maximum_index, general_direction_index
-    minimum = dict_all_settings['minimum_combobox']
-    minimum_index = dict_all_settings['minimum_index']
-    maximum = dict_all_settings['maximum_combobox']
-    maximum_index = dict_all_settings['maximum_index']
-    general_direction_index = dict_all_settings['general_direction_index']
+def create_single_example_stellenwert(dict_all_settings_wizard): #minimum, minimum_index, maximum, maximum_index, general_direction_index
+    minimum = dict_all_settings_wizard['minimum_combobox']
+    minimum_index = dict_all_settings_wizard['minimum_index']
+    maximum = dict_all_settings_wizard['maximum_combobox']
+    maximum_index = dict_all_settings_wizard['maximum_index']
+    general_direction_index = dict_all_settings_wizard['general_direction_index']
 
 
     maximum = maximum+2
@@ -414,10 +414,10 @@ def create_single_example_stellenwert(dict_all_settings): #minimum, minimum_inde
     
 
 
-def create_single_example_roman_numerals(dict_all_settings):
-    roman_max = dict_all_settings['maximum_combobox']
-    maximum_index =  dict_all_settings['maximum_index']
-    general_direction_index = dict_all_settings['general_direction_index']
+def create_single_example_roman_numerals(dict_all_settings_wizard):
+    roman_max = dict_all_settings_wizard['maximum_combobox']
+    maximum_index =  dict_all_settings_wizard['maximum_index']
+    general_direction_index = dict_all_settings_wizard['general_direction_index']
     if maximum_index == 1:
         number = get_random_number(10, dict_of_roman_max[roman_max])
     else:
@@ -440,11 +440,11 @@ def create_single_example_roman_numerals(dict_all_settings):
         return [roman_number, number, _string]
 
 
-def create_single_example_number_line(dict_all_settings): #starting_value, steps, subticks, setting_decimal_fraction
-    starting_value = dict_all_settings['starting_value']
-    steps = dict_all_settings['steps']
-    subticks = dict_all_settings['subticks']
-    setting_decimal_fraction = dict_all_settings['setting_decmial_fraction']
+def create_single_example_number_line(dict_all_settings_wizard): #starting_value, steps, subticks, setting_decimal_fraction
+    starting_value = dict_all_settings_wizard['starting_value']
+    steps = dict_all_settings_wizard['steps']
+    subticks = dict_all_settings_wizard['subticks']
+    setting_decimal_fraction = dict_all_settings_wizard['setting_decmial_fraction']
 
     maximum = starting_value+14*steps
     factor= subticks/steps
@@ -461,22 +461,7 @@ def create_single_example_number_line(dict_all_settings): #starting_value, steps
             dem = round(factor) 
             temp_dict_fraction[x]=[num, dem]      
 
-        # print(x)
-        # if D(x).as_tuple().exponent<-2:
-        #     num = round(random_decimal * factor)
-        #     dem = round(factor)
 
-        #     a= num // dem
-        #     b= num % dem
-
-        #     x_string= f"{a} {b}/{dem}"
-
-        # numerator, denominator = D(x).as_integer_ratio()
-        # print(f"Bruch: {numerator}/{denominator}")
-        # print(f"{round(random_decimal * factor)}/{round(factor)}")
-
-
-        # print(f"{a} {b}/{dem}")
 
         if x not in list_of_points:
             list_of_points.append(x)
@@ -548,11 +533,11 @@ def convert_to_powers(list_of_factors):
 
     return list_of_factors_powers
 
-def create_single_example_primenumbers(dict_all_settings):
-    minimum = dict_all_settings['minimum_spinbox']
-    maximum = dict_all_settings['maximum_spinbox']
-    maximum_prime = dict_all_settings['maximum_prime']
-    display_as_powers = dict_all_settings['display_as_powers']
+def create_single_example_primenumbers(dict_all_settings_wizard):
+    minimum = dict_all_settings_wizard['minimum_spinbox']
+    maximum = dict_all_settings_wizard['maximum_spinbox']
+    maximum_prime = dict_all_settings_wizard['maximum_prime']
+    display_as_powers = dict_all_settings_wizard['display_as_powers']
     
     list_of_primenumbers = get_list_of_primenumbers(maximum_prime)
 
@@ -570,11 +555,12 @@ def create_single_example_primenumbers(dict_all_settings):
     
     return [product, solution, _string]
 
-def create_single_example_ggt(dict_all_settings): #anzahl_zahlen, minimum, maximum, ggt_1_checked
-    anzahl_zahlen = dict_all_settings['anzahl_zahlen']
-    minimum = dict_all_settings['minimum_spinbox']
-    maximum = dict_all_settings['maximum_spinbox']
-    ggt_1_checked = dict_all_settings['ggt_1_checked']
+def create_single_example_ggt(dict_all_settings_wizard): #anzahl_zahlen, minimum, maximum, ggt_1_checked
+    print(dict_all_settings_wizard)
+    anzahl_zahlen = dict_all_settings_wizard['anzahl_zahlen']
+    minimum = dict_all_settings_wizard['minimum_spinbox']
+    maximum = dict_all_settings_wizard['maximum_spinbox']
+    ggt_1_checked = dict_all_settings_wizard['ggt_1_checked']
 
     list_of_numbers = []
     while True:
@@ -594,12 +580,12 @@ def create_single_example_ggt(dict_all_settings): #anzahl_zahlen, minimum, maxim
     return [list_of_numbers,ggt,_string]
         
 
-def create_single_example_addition(dict_all_settings):
-    minimum = dict_all_settings['minimum_spinbox']
-    maximum = dict_all_settings['maximum_spinbox']
-    commas = dict_all_settings['commas']
-    anzahl_summanden = dict_all_settings['anzahl_zahlen']
-    smaller_or_equal = dict_all_settings['smaller_or_equal']
+def create_single_example_addition(dict_all_settings_wizard_wizard):
+    minimum = dict_all_settings_wizard_wizard['minimum_spinbox']
+    maximum = dict_all_settings_wizard_wizard['maximum_spinbox']
+    commas = dict_all_settings_wizard_wizard['commas']
+    anzahl_summanden = dict_all_settings_wizard_wizard['anzahl_zahlen']
+    smaller_or_equal = dict_all_settings_wizard_wizard['smaller_or_equal']
 
     summanden = []
     set_commas=commas
@@ -621,13 +607,13 @@ def create_single_example_addition(dict_all_settings):
 
     return [summanden,solution, string]
 
-def create_single_example_subtraction(dict_all_settings):
-    minimum = dict_all_settings['minimum_spinbox']
-    maximum = dict_all_settings['maximum_spinbox']
-    commas = dict_all_settings['commas']
-    negative_solutions_allowed = dict_all_settings['negative_solutions_allowed']
-    anzahl_subtrahenden = dict_all_settings['anzahl_zahlen']
-    smaller_or_equal = dict_all_settings['smaller_or_equal']
+def create_single_example_subtraction(dict_all_settings_wizard_wizard):
+    minimum = dict_all_settings_wizard_wizard['minimum_spinbox']
+    maximum = dict_all_settings_wizard_wizard['maximum_spinbox']
+    commas = dict_all_settings_wizard['commas']
+    negative_solutions_allowed = dict_all_settings_wizard['negative_solutions_allowed']
+    anzahl_subtrahenden = dict_all_settings_wizard['anzahl_zahlen']
+    smaller_or_equal = dict_all_settings_wizard['smaller_or_equal']
 
     subtrahenden = []
     set_commas=commas
@@ -665,15 +651,15 @@ def create_single_example_subtraction(dict_all_settings):
     return [subtrahenden,solution, string]
 
 
-def create_single_example_multiplication(dict_all_settings): #minimum_1, maximum_1, commas_1, smaller_or_equal_1 ,minimum_2, maximum_2, commas_2, smaller_or_equal_2
-    minimum_1 = dict_all_settings['minimum_spinbox_1']
-    maximum_1 = dict_all_settings['maximum_spinbox_1']
-    commas_1 = dict_all_settings['commas_1']
-    smaller_or_equal_1 = dict_all_settings['smaller_or_equal_1']
-    minimum_2 = dict_all_settings['minimum_spinbox_2']
-    maximum_2 = dict_all_settings['maximum_spinbox_2']
-    commas_2 = dict_all_settings['commas_2']
-    smaller_or_equal_2 = dict_all_settings['smaller_or_equal_2']
+def create_single_example_multiplication(dict_all_settings_wizard): #minimum_1, maximum_1, commas_1, smaller_or_equal_1 ,minimum_2, maximum_2, commas_2, smaller_or_equal_2
+    minimum_1 = dict_all_settings_wizard['minimum_spinbox_1']
+    maximum_1 = dict_all_settings_wizard['maximum_spinbox_1']
+    commas_1 = dict_all_settings_wizard['commas_1']
+    smaller_or_equal_1 = dict_all_settings_wizard['smaller_or_equal_1']
+    minimum_2 = dict_all_settings_wizard['minimum_spinbox_2']
+    maximum_2 = dict_all_settings_wizard['maximum_spinbox_2']
+    commas_2 = dict_all_settings_wizard['commas_2']
+    smaller_or_equal_2 = dict_all_settings_wizard['smaller_or_equal_2']
 
 
     if smaller_or_equal_1 == 1:
@@ -693,16 +679,16 @@ def get_quotient_with_rest(dividend,divisor):
     
     return "{}\nR {}".format(int(dividend//divisor), dividend%divisor) 
 
-def create_single_example_division(dict_all_settings):
-    minimum_1 = dict_all_settings['minimum_division_1']
-    maximum_1 = dict_all_settings['maximum_division_1']
-    minimum_2 = dict_all_settings['minimum_division_2']
-    maximum_2 = dict_all_settings['maximum_division_2']
-    commas_div = dict_all_settings['commas_div']
-    smaller_or_equal_div = dict_all_settings['smaller_or_equal_div']
-    commas_result = dict_all_settings['commas_result']
-    smaller_or_equal_result = dict_all_settings['smaller_or_equal_result']
-    output_type_division = dict_all_settings['output_type_division']
+def create_single_example_division(dict_all_settings_wizard):
+    minimum_1 = dict_all_settings_wizard['minimum_division_1']
+    maximum_1 = dict_all_settings_wizard['maximum_division_1']
+    minimum_2 = dict_all_settings_wizard['minimum_division_2']
+    maximum_2 = dict_all_settings_wizard['maximum_division_2']
+    commas_div = dict_all_settings_wizard['commas_div']
+    smaller_or_equal_div = dict_all_settings_wizard['smaller_or_equal_div']
+    commas_result = dict_all_settings_wizard['commas_result']
+    smaller_or_equal_result = dict_all_settings_wizard['smaller_or_equal_result']
+    output_type_division = dict_all_settings_wizard['output_type_division']
 
     if smaller_or_equal_div == 1:
         set_commas_div=commas_div
@@ -749,15 +735,15 @@ def random_switch(p=50):
 def random_choice_except(_list, exception):
     return random.choice([x for x in _list if x != exception])
 
-def create_single_example_ganze_zahlen_strich(dict_all_settings):
-    anzahl_zahlen = dict_all_settings['anzahl_zahlen']
-    minimum = dict_all_settings['minimum_spinbox']
-    maximum = dict_all_settings['maximum_spinbox']
-    commas = dict_all_settings['commas']
-    smaller_or_equal = dict_all_settings['smaller_or_equal']
-    brackets_allowed = dict_all_settings['brackets_allowed']
-    enable_addition = dict_all_settings['enable_addition']
-    enable_subtraction = dict_all_settings['enable_subtraction']
+def create_single_example_ganze_zahlen_strich(dict_all_settings_wizard):
+    anzahl_zahlen = dict_all_settings_wizard['anzahl_zahlen']
+    minimum = dict_all_settings_wizard['minimum_spinbox']
+    maximum = dict_all_settings_wizard['maximum_spinbox']
+    commas = dict_all_settings_wizard['commas']
+    smaller_or_equal = dict_all_settings_wizard['smaller_or_equal']
+    brackets_allowed = dict_all_settings_wizard['brackets_allowed']
+    enable_addition = dict_all_settings_wizard['enable_addition']
+    enable_subtraction = dict_all_settings_wizard['enable_subtraction']
 
     #typ, minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed
     summanden = []
@@ -860,13 +846,13 @@ def check_decimals(string, number, set_commas, factors):
 def remove_exponent(d):
     return d.quantize(D(1)) if d == d.to_integral() else d.normalize()
 
-def create_single_example_ganze_zahlen_punkt(dict_all_settings):
+def create_single_example_ganze_zahlen_punkt(dict_all_settings_wizard):
     #minimum, maximum, commas, anzahl_summanden, smaller_or_equal
-    anzahl_zahlen = dict_all_settings['anzahl_zahlen']
-    minimum = dict_all_settings['minimum_spinbox']
-    maximum = dict_all_settings['maximum_spinbox']
-    commas = dict_all_settings['commas']
-    smaller_or_equal = dict_all_settings['smaller_or_equal']
+    anzahl_zahlen = dict_all_settings_wizard['anzahl_zahlen']
+    minimum = dict_all_settings_wizard['minimum_spinbox']
+    maximum = dict_all_settings_wizard['maximum_spinbox']
+    commas = dict_all_settings_wizard['commas']
+    smaller_or_equal = dict_all_settings_wizard['smaller_or_equal']
 
     factors = []
     set_commas=commas
@@ -1179,19 +1165,19 @@ def avoid_futile_brackets(string):
 
     return string
 
-def create_single_example_ganze_zahlen_grundrechnungsarten(dict_all_settings):
+def create_single_example_ganze_zahlen_grundrechnungsarten(dict_all_settings_wizard):
     #minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets
-    shorten_topic = dict_all_settings['dict_all_settings']
+    shorten_topic = dict_all_settings_wizard['dict_all_settings_wizard']
     if shorten_topic == 'ari_pos_ver':
         show_brackets = False
     else:
         show_brackets = True
-    anzahl_summanden = dict_all_settings['anzahl_zahlen']
-    minimum = dict_all_settings['minimum_spinbox']
-    maximum = dict_all_settings['maximum_spinbox']
-    commas = dict_all_settings['commas']
-    smaller_or_equal = dict_all_settings['smaller_or_equal']
-    brackets_allowed = dict_all_settings['brackets_allowed']
+    anzahl_summanden = dict_all_settings_wizard['anzahl_zahlen']
+    minimum = dict_all_settings_wizard['minimum_spinbox']
+    maximum = dict_all_settings_wizard['maximum_spinbox']
+    commas = dict_all_settings_wizard['commas']
+    smaller_or_equal = dict_all_settings_wizard['smaller_or_equal']
+    brackets_allowed = dict_all_settings_wizard['brackets_allowed']
 
     numbers = []
     set_commas=commas
@@ -1343,10 +1329,10 @@ def create_single_example_ganze_zahlen_grundrechnungsarten(dict_all_settings):
 def index_to_letter(index):
     return chr(ord('a') + index)
 
-def create_single_example_coordinate_system(dict_all_settings):
+def create_single_example_coordinate_system(dict_all_settings_wizard):
     #half_allowed, negative_allowed
-    half_allowed = dict_all_settings['half_allowed_coord']
-    negative_allowed = dict_all_settings['negative_allowed_coord']
+    half_allowed = dict_all_settings_wizard['half_allowed_coord']
+    negative_allowed = dict_all_settings_wizard['negative_allowed_coord']
     if negative_allowed == True:
         minimum = -5
     else:
@@ -1390,25 +1376,25 @@ def convert_to_fractions(string):
     
     return string
 
-def create_single_example_binomische_formeln(dict_all_settings):
+def create_single_example_binomische_formeln(dict_all_settings_wizard):
     #, coef_a,coef_b,exp_x,exp_y, exponent, binoms_direction_index, fractions_allowed, variable_1, variable_2
-    binomials_types = [dict_all_settings['binomials_type_1'], dict_all_settings['binomials_type_2'], dict_all_settings['binomials_type_3']]
-    coef_a_checked = dict_all_settings['binomials_checkbox_a']
-    coef_a_min = dict_all_settings['binomials_minimum_a']
-    coef_a_max = dict_all_settings['binomials_maximum_a']
-    coef_b_checked = dict_all_settings['binomials_checkbox_b']
-    coef_b_min = dict_all_settings['binomials_minimum_b']
-    coef_b_max = dict_all_settings['binomials_maximum_b']
-    expo_m_min = dict_all_settings['binomials_minimum_m']
-    expo_m_max = dict_all_settings['binomials_maximum_m']
-    expo_y_checked = dict_all_settings['binomials_checkbox_y']
-    expo_n_min = dict_all_settings['binomials_minimum_n']
-    expo_n_max = dict_all_settings['binomials_maximum_n']
-    fractions_allowed = dict_all_settings['binomials_fractions_allowed']
-    exponent = dict_all_settings['binomials_exponent']
-    binoms_direction_index = dict_all_settings['binomials_direction_index']
-    variable_1 = dict_all_settings['binomials_variable_1']
-    variable_2 = dict_all_settings['binomials_variable_2']
+    binomials_types = [dict_all_settings_wizard['binomials_type_1'], dict_all_settings_wizard['binomials_type_2'], dict_all_settings_wizard['binomials_type_3']]
+    coef_a_checked = dict_all_settings_wizard['binomials_checkbox_a']
+    coef_a_min = dict_all_settings_wizard['binomials_minimum_a']
+    coef_a_max = dict_all_settings_wizard['binomials_maximum_a']
+    coef_b_checked = dict_all_settings_wizard['binomials_checkbox_b']
+    coef_b_min = dict_all_settings_wizard['binomials_minimum_b']
+    coef_b_max = dict_all_settings_wizard['binomials_maximum_b']
+    expo_m_min = dict_all_settings_wizard['binomials_minimum_m']
+    expo_m_max = dict_all_settings_wizard['binomials_maximum_m']
+    expo_y_checked = dict_all_settings_wizard['binomials_checkbox_y']
+    expo_n_min = dict_all_settings_wizard['binomials_minimum_n']
+    expo_n_max = dict_all_settings_wizard['binomials_maximum_n']
+    fractions_allowed = dict_all_settings_wizard['binomials_fractions_allowed']
+    exponent = dict_all_settings_wizard['binomials_exponent']
+    binoms_direction_index = dict_all_settings_wizard['binomials_direction_index']
+    variable_1 = dict_all_settings_wizard['binomials_variable_1']
+    variable_2 = dict_all_settings_wizard['binomials_variable_2']
 
     A, B = symbols("{} {}".format("A", "B"))
 
@@ -1624,23 +1610,23 @@ def check_for_duplicate(new_example, list_of_examples):
     list_of_solutions = []
     for all in list_of_examples:
         list_of_solutions.append(all[-2])
-    print(list_of_solutions)
+    # print(list_of_solutions)
 
     if new_example[-2] in list_of_solutions:
         return True
     else:
         return False
 
-def create_examples_all_topics(spec_function, dict_all_settings, single_example=False): #spec_function, 
+def create_examples_all_topics(spec_function, dict_all_settings_wizard, single_example=False): #spec_function, 
     if single_example == True:
-        new_example = spec_function(dict_all_settings)
+        new_example = spec_function(dict_all_settings_wizard)
         return new_example   
     list_of_examples = []
 
     i=0
     max_limit_counter =0
-    while i<dict_all_settings['examples']:
-        new_example = spec_function(dict_all_settings) # minimum, minimum_index, maximum, maximum_index, general_direction_index
+    while i<dict_all_settings_wizard['examples']:
+        new_example = spec_function(dict_all_settings_wizard) # minimum, minimum_index, maximum, maximum_index, general_direction_index
         duplicate = check_for_duplicate(new_example, list_of_examples)
         
         if duplicate == False:
@@ -1719,7 +1705,7 @@ def create_examples_all_topics(spec_function, dict_all_settings, single_example=
 
 #     return list_of_examples    
 
-# def create_list_of_examples_primenumbers(dict_all_settings):
+# def create_list_of_examples_primenumbers(dict_all_settings_wizard):
 #     list_of_examples = []
 
 #     i=0
@@ -2563,7 +2549,7 @@ def create_latex_worksheet(
         content += f"\\begin{{tasks}}[label={nummerierung},resume={fortlaufende_nummerierung}, item-indent=0pt]({columns})\n\n"
 
         list_of_examples = set_of_examples['list_of_examples']
-
+        # print(shorten_topic)
         for example in list_of_examples:
             if shorten_topic == 'ari_dar_ste':
                 content = create_latex_string_stellenwert(content, example)
@@ -2573,6 +2559,8 @@ def create_latex_worksheet(
                 content = create_latex_string_number_line(content, example, starting_value, steps, subticks, dot_style_index, geometry_direction_index)
             elif shorten_topic == 'ari_tei_pri':
                 content = create_latex_string_primenumbers(content, example, solution_type, powers_enabled)
+            # elif shorten_topic == 'ari_tei_ggt':
+            #     content = create_latex_string_primenumbers(content, example, solution_type, powers_enabled)
             elif shorten_topic == 'ari_pos_add':
                 content = create_latex_string_addition(content, example, ausrichtung)
             elif shorten_topic == 'ari_pos_sub':
@@ -2763,9 +2751,9 @@ def create_coordinates(solution_pixels, dict_all_examples):
 #     # thema_index = self.total_list_of_topics_wizard.index(thema)
 #     shorten_topic = self.shorten_topic(thema)
 
-#     dict_all_settings = self.get_all_settings_wizard(shorten_topic)
+#     dict_all_settings_wizard = self.get_all_settings_wizard(shorten_topic)
 
-#     print(dict_all_settings)
+#     print(dict_all_settings_wizard)
 
 #     if shorten_topic == 'ari_dar_ste':
 #         # minimum = self.combobox_zahlenbereich_2.currentIndex()
@@ -2775,20 +2763,20 @@ def create_coordinates(solution_pixels, dict_all_examples):
 
 #         # commas = self.spinbox_kommastellen_wizard.value()
 #         # smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
-#         distract_result = create_single_example_stellenwert(dict_all_settings) #
+#         distract_result = create_single_example_stellenwert(dict_all_settings_wizard) #
 
 #     elif shorten_topic == 'ari_dar_röm':
 #         # roman_max = self.combobox_zahlenbereich_1.currentText()          
 #         # maximum_index = self.combobox_zahlenbereich_1_leq.currentIndex()
 
-#         distract_result = create_single_example_roman_numerals(dict_all_settings)
+#         distract_result = create_single_example_roman_numerals(dict_all_settings_wizard)
 
 #     elif shorten_topic == 'ari_dar_zah':
 #         # starting_value = self.spinbox_zahlenbereich_startingvalue.value()
 #         # steps = self.spinbox_zahlenbereich_steps.value()
 #         # subticks = self.spinbox_zahlenbereich_subticks.value()+1
 
-#         distract_result = create_single_example_number_line(dict_all_settings)
+#         distract_result = create_single_example_number_line(dict_all_settings_wizard)
 
 #     elif shorten_topic == 'ari_tei_pri':
 #         # minimum = self.spinbox_zahlenbereich_minimum.value()
@@ -2796,7 +2784,7 @@ def create_coordinates(solution_pixels, dict_all_examples):
 #         # maximum_prime = self.spinbox_maximum_prime.value()
 #         # display_as_powers = self.checkbox_prime_powers.isChecked()
 
-#         distract_result = create_single_example_primenumbers(dict_all_settings)
+#         distract_result = create_single_example_primenumbers(dict_all_settings_wizard)
 
 #     elif shorten_topic == 'ari_pos_add':
 #         # minimum = self.spinbox_zahlenbereich_minimum.value()
@@ -2804,7 +2792,7 @@ def create_coordinates(solution_pixels, dict_all_examples):
 #         # commas = self.spinbox_kommastellen_wizard.value()
 #         # anzahl_summanden = self.spinBox_zahlenbereich_anzahl_wizard.value()
 #         # smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
-#         distract_result = create_single_example_addition(dict_all_settings)
+#         distract_result = create_single_example_addition(dict_all_settings_wizard)
 
 
 #     elif shorten_topic == 'ari_pos_sub':
@@ -2813,7 +2801,7 @@ def create_coordinates(solution_pixels, dict_all_examples):
 #         # commas = self.spinbox_kommastellen_wizard.value()
 #         # smaller_or_equal = self.combobox_kommastellen_wizard.currentIndex()
 #         # anzahl_subtrahenden = self.spinBox_zahlenbereich_anzahl_wizard.value()
-#         distract_result = create_single_example_subtraction(dict_all_settings)
+#         distract_result = create_single_example_subtraction(dict_all_settings_wizard)
 
     
 #     elif shorten_topic == 'ari_pos_mul':
@@ -2825,7 +2813,7 @@ def create_coordinates(solution_pixels, dict_all_examples):
 #         # maximum_2 = self.spinBox_second_number_max.value()
 #         # commas_2 = self.spinBox_second_number_decimal.value()
 #         # smaller_or_equal_2 = self.combobox_second_number_decimal.currentIndex()
-#         distract_result = create_single_example_multiplication(dict_all_settings)
+#         distract_result = create_single_example_multiplication(dict_all_settings_wizard)
 
 
 #     elif shorten_topic == 'ari_pos_div':
@@ -2843,7 +2831,7 @@ def create_coordinates(solution_pixels, dict_all_examples):
 #         #     output_type = 0
 #         # elif self.radioButton_division_rest.isChecked():
 #         #     output_type = 1       
-#         distract_result = create_single_example_division(dict_all_settings)
+#         distract_result = create_single_example_division(dict_all_settings_wizard)
 
 
 #     elif (

@@ -400,8 +400,8 @@ for i in range(anzahl):
         elif temp_a<minimum:
             a=temp_a
             continue
-        elif temp_a>maximum:
-            if a != 
+        # elif temp_a>maximum:
+        #     if a != 
 
 
         # if temp_a<minimum:

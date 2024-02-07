@@ -4658,9 +4658,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             critical_window('Das Maximum muss größer als das Minimum sein.')
             return
        
-        dict_all_settings = self.get_all_settings_wizard(shorten_topic)
+        dict_all_settings_wizard = self.get_all_settings_wizard(shorten_topic)
 
-        print(dict_all_settings)
+        # print(dict_all_settings)
 
         if shorten_topic == 'ari_dar_ste':
             # minimum = self.combobox_zahlenbereich_2.currentIndex()
@@ -4668,13 +4668,13 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # maximum = self.combobox_zahlenbereich_1.currentIndex()
             # maximum_index = self.combobox_zahlenbereich_1_leq.currentIndex()
 
-            all_examples_wizard = create_examples_all_topics(create_single_example_stellenwert, dict_all_settings, single_example)
+            all_examples_wizard = create_examples_all_topics(create_single_example_stellenwert, dict_all_settings_wizard, single_example)
             # list_of_examples_wizard = create_list_of_examples_stellenwert(examples, minimum, minimum_index, maximum, maximum_index, self.general_direction_index)                        
         
         elif shorten_topic == 'ari_dar_röm':
             # roman_max = self.combobox_zahlenbereich_1.currentText()
             # maximum_index = self.combobox_zahlenbereich_1_leq.currentIndex()
-            all_examples_wizard = create_examples_all_topics(create_single_example_roman_numerals, dict_all_settings, single_example)
+            all_examples_wizard = create_examples_all_topics(create_single_example_roman_numerals, dict_all_settings_wizard, single_example)
             # list_of_examples_wizard = create_list_of_examples_roman_numerals(examples, roman_max, maximum_index, self.general_direction_index)
         
         elif shorten_topic == 'ari_dar_zah':
@@ -4682,7 +4682,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # steps = self.spinbox_zahlenbereich_steps.value()
             # subticks = self.spinbox_zahlenbereich_subticks.value()+1
             # setting_decimal_fraction =  self.combobox_decimal_fraction.currentIndex()
-            all_examples_wizard = create_examples_all_topics(create_single_example_number_line, dict_all_settings, single_example)    
+            all_examples_wizard = create_examples_all_topics(create_single_example_number_line, dict_all_settings_wizard, single_example)    
             # list_of_examples_wizard = create_list_of_examples_number_line(examples, starting_value, steps, subticks, setting_decimal_fraction)
 
         elif shorten_topic == 'ari_tei_pri':
@@ -4690,7 +4690,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # maximum = self.spinbox_zahlenbereich_maximum.value()
             # maximum_prime = self.spinbox_maximum_prime.value()
             # display_as_powers = self.checkbox_prime_powers.isChecked()
-            all_examples_wizard = create_examples_all_topics(create_single_example_primenumbers, dict_all_settings, single_example)   
+            all_examples_wizard = create_examples_all_topics(create_single_example_primenumbers, dict_all_settings_wizard, single_example)   
             # list_of_examples_wizard = create_list_of_examples_primenumbers(examples, minimum, maximum, maximum_prime, display_as_powers)
 
         elif shorten_topic == 'ari_tei_ggt':
@@ -4699,7 +4699,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # maximum = self.spinbox_zahlenbereich_maximum.value()
             # ggt_1_checked = self.checkbox_ggT_1.isChecked()
 
-            all_examples_wizard = create_examples_all_topics(create_single_example_ggt, dict_all_settings, single_example) 
+            all_examples_wizard = create_examples_all_topics(create_single_example_ggt, dict_all_settings_wizard, single_example) 
             # list_of_examples_wizard = create_list_of_examples_ggt(examples, anzahl_zahlen, minimum, maximum, ggt_1_checked)
             
 
@@ -4713,7 +4713,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             #     critical_window('Das Maximum muss größer als das Minimum sein.')
             #     return
 
-            all_examples_wizard = create_examples_all_topics(create_single_example_addition, dict_all_settings, single_example) 
+            all_examples_wizard = create_examples_all_topics(create_single_example_addition, dict_all_settings_wizard, single_example) 
             # list_of_examples_wizard = create_list_of_examples_addition(examples, minimum, maximum, commas, anzahl_summanden, smaller_or_equal) #, self.general_direction_index
 
         elif shorten_topic=='ari_pos_sub':
@@ -4725,7 +4725,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # if minimum>maximum:
             #     warning_window('Das Maximum muss größer als das Minimum sein.')
             #     return
-            all_examples_wizard = create_examples_all_topics(create_single_example_subtraction, dict_all_settings, single_example) 
+            all_examples_wizard = create_examples_all_topics(create_single_example_subtraction, dict_all_settings_wizard, single_example) 
             # list_of_examples_wizard = create_list_of_examples_subtraction(examples, minimum, maximum, commas, self.checkbox_negative_ergebnisse_wizard.isChecked(), anzahl_subtrahenden,smaller_or_equal)
         
         elif shorten_topic=='ari_pos_mul':
@@ -4738,7 +4738,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # commas_2 = self.spinBox_second_number_decimal.value()
             # smaller_or_equal_2 = self.combobox_second_number_decimal.currentIndex()
 
-            all_examples_wizard = create_examples_all_topics(create_single_example_multiplication, dict_all_settings, single_example) 
+            all_examples_wizard = create_examples_all_topics(create_single_example_multiplication, dict_all_settings_wizard, single_example) 
             # list_of_examples_wizard = create_list_of_examples_multiplication(examples, minimum_1, maximum_1, commas_1, smaller_or_equal_1 ,minimum_2, maximum_2, commas_2, smaller_or_equal_2)
 
         elif shorten_topic=='ari_pos_div':
@@ -4756,17 +4756,17 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             #     output_type = 0
             # elif self.radioButton_division_rest.isChecked():
             #     output_type = 1           
-            all_examples_wizard = create_examples_all_topics(create_single_example_division, dict_all_settings, single_example)
+            all_examples_wizard = create_examples_all_topics(create_single_example_division, dict_all_settings_wizard, single_example)
             # list_of_examples_wizard = create_list_of_examples_division(examples, minimum_1, maximum_1, minimum_2, maximum_2, commas_div, smaller_or_equal_div,commas_result,smaller_or_equal_result, output_type)  
 
         elif shorten_topic=='ari_pos_ver' or shorten_topic=='ari_neg_ver':
-            all_examples_wizard = create_examples_all_topics(create_single_example_ganze_zahlen_grundrechnungsarten, dict_all_settings, single_example)
+            all_examples_wizard = create_examples_all_topics(create_single_example_ganze_zahlen_grundrechnungsarten, dict_all_settings_wizard, single_example)
         
         elif shorten_topic=='ari_neg_add':
-            all_examples_wizard = create_examples_all_topics(create_single_example_ganze_zahlen_strich, dict_all_settings, single_example)
+            all_examples_wizard = create_examples_all_topics(create_single_example_ganze_zahlen_strich, dict_all_settings_wizard, single_example)
         
         elif shorten_topic=='ari_neg_mul':
-            all_examples_wizard = create_examples_all_topics(create_single_example_ganze_zahlen_punkt, dict_all_settings, single_example)
+            all_examples_wizard = create_examples_all_topics(create_single_example_ganze_zahlen_punkt, dict_all_settings_wizard, single_example)
         # elif (
         #     # shorten_topic=='ari_pos_ver' or 
         #     # shorten_topic=='ari_neg_add' or 
@@ -4794,7 +4794,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         elif shorten_topic == 'geo_gru_koo':
             # half_allowed = self.checkbox_coordinatesystem_zwischenwerte.isChecked()
             # negative_allowed = self.checkbox_coordinatesystem_negative_numbers.isChecked()
-            all_examples_wizard = create_examples_all_topics(create_single_example_coordinate_system, dict_all_settings, single_example)
+            all_examples_wizard = create_examples_all_topics(create_single_example_coordinate_system, dict_all_settings_wizard, single_example)
             # list_of_examples_wizard = create_list_of_examples_coordinate_system(examples, half_allowed, negative_allowed)
 
         elif shorten_topic=='ter_bin':
@@ -4829,7 +4829,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # exponent = self.spinbox_binoms_exponent.value()
             # variable_1 = self.combobox_choose_variables_1.currentText()
             # variable_2 = self.combobox_choose_variables_2.currentText()
-            all_examples_wizard = create_examples_all_topics(create_single_example_binomische_formeln, dict_all_settings, single_example)
+            all_examples_wizard = create_examples_all_topics(create_single_example_binomische_formeln, dict_all_settings_wizard, single_example)
             # list_of_examples_wizard = create_list_of_examples_binomische_formeln(examples, binomials_types, a,b,x,y, exponent, self.binoms_direction_index, fractions_allowed, variable_1, variable_2)
 
         return all_examples_wizard
@@ -5651,7 +5651,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         self.saved_file_path = latex_file_path[0]
 
-        print(latex_file_path)
+        # print(latex_file_path)
         self.open_dialogwindow_erstellen_developer(latex_file_path[0])
         # self.pushButton_edit_pressed()
 
