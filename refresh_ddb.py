@@ -51,7 +51,7 @@ class Worker_RefreshDDB(QtCore.QObject):
         Ui_MainWindow.missing_images_addon = []
         if _database_addon != None:
             try:
-                download_link = 'https://www.dropbox.com/s/nezphxdbqip46cu/_database_addon.json?dl=1'
+                download_link = 'https://www.dropbox.com/scl/fi/cw0hfmmo5rjzssiasszha/_database_addon.json?rlkey=cl8d6cczi5ciot9ufr5ii9486&dl=1' #'https://www.dropbox.com/s/nezphxdbqip46cu/_database_addon.json?dl=1'
 
                 saving_path = os.path.join(database, "_database_addon.json")
                     
