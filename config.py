@@ -129,6 +129,11 @@ def split_section(section, chosen_program):
 def still_to_define():
     print('still to define')
 
+
+def check_if_widget_is_visible(widget):
+    return widget.isVisible()
+
+
 ag_beschreibung = config_loader(config_file, "ag_beschreibung")
 an_beschreibung = config_loader(config_file, "an_beschreibung")
 fa_beschreibung = config_loader(config_file, "fa_beschreibung")

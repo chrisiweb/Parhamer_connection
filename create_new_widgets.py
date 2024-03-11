@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QDrag, QPixmap, QIcon, QCursor
-from PyQt5.QtCore import Qt, QMimeData, QSize
+from PyQt5.QtCore import Qt, QMimeData, QSize, pyqtSignal
 from config import SpinBox_noWheel, ClickLabel
 from translate import _fromUtf8, _translate
 from predefined_size_policy import SizePolicy_fixed
@@ -147,6 +147,35 @@ class DragDropWidget(QtWidgets.QWidget):
     # def add_item(self, item):
     #     self.MainWindow.verticalLayout_scrollArea_sage_typ1.insertWidget(self.MainWindow.verticalLayout_scrollArea_sage_typ1.count() - 1, item)
 
+class PrimenumberSpinBox(QtWidgets.QSpinBox):
+    # Replaces the valueChanged signal
+    newValueChanged = pyqtSignal(int)
+
+    def __init__(self, parent=None):
+        super(PrimenumberSpinBox, self).__init__(parent=parent)
+
+        
+        self.valueChanged.connect(self.onValueChanged)
+        # self.newValueChanged.connect(self.slot)
+
+    def onValueChanged(self, i):
+        list_of_primenumbers = [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97]
+
+        current_value = self.value()
+        if current_value in list_of_primenumbers:
+            index = list_of_primenumbers.index(current_value)
+            self.setValue(list_of_primenumbers[index])
+            return
+        else:
+            while True:
+                if current_value >= list_of_primenumbers[-1]:
+                    self.setValue(list_of_primenumbers[-1])
+                    return    
+                current_value += 1
+                if current_value in list_of_primenumbers:
+                    index = list_of_primenumbers.index(current_value)
+                    self.setValue(list_of_primenumbers[index])
+                    return
 
 def add_action(parent, menu, text, command):
     new_action = QtWidgets.QAction(parent)
