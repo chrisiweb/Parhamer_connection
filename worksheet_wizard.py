@@ -44,12 +44,12 @@ dict_themen_wizard = {
                 'self.comboBox_solution_type_wizard',
 
             ],
-            "ggT": [
-                'self.widgetZahlenbereich_anzahl',
-                'self.widget_zahlenbereich_minimum',
-                'self.widget_zahlenbereich_maximum',
-                'self.widget_setting_ggt',                
-            ]        
+            # "ggT": [
+            #     'self.widgetZahlenbereich_anzahl',
+            #     'self.widget_zahlenbereich_minimum',
+            #     'self.widget_zahlenbereich_maximum',
+            #     'self.widget_setting_ggt',                
+            # ]        funktioniert noch nicht
         },
         "Positive (Dezimal-)Zahlen": {
             "Addition": [
@@ -627,10 +627,12 @@ def create_single_example_subtraction(dict_all_settings_wizard):
     negative_solutions_allowed = dict_all_settings_wizard['negative_solutions_allowed']
     anzahl_subtrahenden = dict_all_settings_wizard['anzahl_zahlen']
     smaller_or_equal = dict_all_settings_wizard['smaller_or_equal']
-
+    print(dict_all_settings_wizard)
+    print(maximum)
+    print(anzahl_subtrahenden)
     subtrahenden = []
     set_commas=commas
-
+    print(negative_solutions_allowed)
     if negative_solutions_allowed == False:
         subtrahenden_maximum = maximum/anzahl_subtrahenden
     else:

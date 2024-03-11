@@ -2835,6 +2835,7 @@ def setup_stackWizard(self):
     self.horizontalLayout_setting_ggt = create_new_horizontallayout(self.widget_setting_ggt)
     self.checkbox_ggT_1 = create_new_checkbox(self.widget_setting_ggt, "ggT=1 erlauben",True)
     self.horizontalLayout_setting_ggt.addWidget(self.checkbox_ggT_1)
+    self.widget_setting_ggt.hide()
 
 
 
