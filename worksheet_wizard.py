@@ -628,42 +628,36 @@ def create_single_example_subtraction(dict_all_settings_wizard):
     anzahl_subtrahenden = dict_all_settings_wizard['anzahl_zahlen']
     smaller_or_equal = dict_all_settings_wizard['smaller_or_equal']
     print(dict_all_settings_wizard)
-    print(maximum)
-    print(anzahl_subtrahenden)
-    subtrahenden = []
+
     set_commas=commas
     print(negative_solutions_allowed)
-    if negative_solutions_allowed == False:
-        subtrahenden_maximum = maximum/anzahl_subtrahenden
-    else:
-        subtrahenden_maximum = maximum
+    # if negative_solutions_allowed == False:
+    #     subtrahenden_maximum = maximum/anzahl_subtrahenden
+    # else:
+    #     subtrahenden_maximum = maximum
 
-    for _ in range(anzahl_subtrahenden):
-        if smaller_or_equal == 1:
-            commas = random.randint(0,set_commas)
-        num = get_random_number(minimum, subtrahenden_maximum, commas)
-        subtrahenden.append(num) 
+    # for _ in range(anzahl_subtrahenden):
+    if smaller_or_equal == 1:
+        commas = random.randint(0,set_commas)
+    subtrahend = get_random_number(minimum, maximum, commas)
 
     if smaller_or_equal == 1:
         commas = random.randint(0,set_commas)
+    
     if negative_solutions_allowed == False:   
-        minuend = get_random_number(ceil(sum(subtrahenden)), maximum, commas)
+        minuend = get_random_number(ceil(subtrahend), maximum, commas)
     else:
         minuend = get_random_number(minimum, maximum, commas)
 
-    subtrahenden.insert(0, minuend)
-    
-    solution = reduce(lambda x,y: x-y, subtrahenden)
 
-    string = str(subtrahenden[0]).replace(".",",")
+    solution = minuend-subtrahend
+
+    string = str(minuend).replace(".",",")
+
+    string = f"{minuend} - {subtrahend} = {solution}".replace(".",",")    
 
 
-    for x in subtrahenden[1:]:
-        string += " - {}".format(str(x).replace(".",","))
-    
-    string += " = {}".format(str(solution).replace(".",","))
-
-    return [subtrahenden,solution, string]
+    return [[minuend, subtrahend],solution, string]
 
 
 def create_single_example_multiplication(dict_all_settings_wizard): #minimum_1, maximum_1, commas_1, smaller_or_equal_1 ,minimum_2, maximum_2, commas_2, smaller_or_equal_2
@@ -2959,7 +2953,7 @@ def create_nonogramm(nonogram, coordinates_nonogramm, spalten=3):
         # elif coordinates_nonogramm[all][0] == False:
         #     result = result
         
-        content += "\item[\\fbox{{\parbox{{15pt}}{{\centering {0}}}}}] {1}\n".format(all, result)
+        content += f"\item[\\fbox{{\parbox{{15pt}}{{\centering {all}}}}}] {result}\n".replace(".",",") 
     # for all in list_coordinates:
 #         result = coordinates_nonogramm[all]
 #         if result == True:
