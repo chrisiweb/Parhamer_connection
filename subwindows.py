@@ -181,9 +181,7 @@ class Ui_Dialog_choose_type(object):
     def setupUi(self, Dialog, screen_width, screen_height):
         self.Dialog = Dialog
         self.Dialog.setObjectName("Dialog")
-        Dialog.setWindowTitle(
-            _translate("Titelblatt anpassen", "Programm auswählen", None)
-        )
+        Dialog.setWindowTitle("Programm auswählen")
         Dialog.setWindowIcon(QIcon(logo_path))
 
         Dialog.setSizePolicy(SizePolicy_fixed)

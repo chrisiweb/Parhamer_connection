@@ -1065,7 +1065,13 @@ def setup_stackSage(self):
                 width: 35px;
             }}""")
     self.horizontalLayout_frameDatum.addWidget(self.checkBox_date)
-    self.checkBox_date.hide()
+
+    if self.chosen_program == 'lama' and self.dict_titlepage['hide_all'] == False:
+        self.checkBox_date.hide()
+    elif self.chosen_program == 'cria' and self.dict_titlepage_cria['hide_all'] == False:
+        self.checkBox_date.hide()
+    else:
+        self.checkBox_date.show()
 
 
     self.labelDate = create_new_label(self.widget_datum,"")

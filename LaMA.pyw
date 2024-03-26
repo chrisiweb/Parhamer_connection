@@ -6103,8 +6103,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         if dict_titlepage['hide_all'] == True:
             self.widgetName.show()
+            self.checkBox_date.show()
         else:
             self.widgetName.hide()
+            self.checkBox_date.hide()
 
         if self.chosen_program == "lama":
             self.dict_titlepage = dict_titlepage
