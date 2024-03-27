@@ -1086,7 +1086,7 @@ class Ui_Dialog_titlepage(object):
         titlepage_settings = ["logo", "logo_path", "titel", "datum", "datum_combobox", "klasse", "name", "note", "unterschrift", "individual", "hide_all"]
         for all in titlepage_settings:
             if all == "logo_path":
-                if self.cb_titlepage_logo.isChecked() and self.dict_titlepage[all] == False:
+                if self.cb_titlepage_logo.isChecked() and self.dict_titlepage[all] == False and self.cb_titlepage_hide_all.isChecked()==False:
                     warning_message = "Bitte geben Sie den Dateipfad eines Logos an oder wählen Sie das Logo auf der Titelseite ab."
                 elif self.cb_titlepage_individual.isChecked():
                     if chosen_program == "lama":
