@@ -1549,6 +1549,10 @@ def create_single_example_binomische_formeln(dict_all_settings_wizard):
         split_string = split_binomial_expression(string)
         random_blanks = choose_random_blanks(split_string)
 
+        print(split_string)
+        print(random_blanks)
+
+        
         solution_string = []
         for i in random_blanks:
             string = string.replace(split_string[i], "_", 1)
@@ -1559,10 +1563,17 @@ def create_single_example_binomische_formeln(dict_all_settings_wizard):
 
 
         elif choice == 1:
-            split_string = string.split(" = ")
+            split_equation = string.split(" = ")
 
-            string = f"{split_string[1]} = {split_string[0]}"
+            string = f"{split_equation[1]} = {split_equation[0]}"
             binom_string = string
+
+            if len(split_string)==5:
+                first_element = solution_string.pop(0)
+                solution_string.append(first_element)
+
+            elif len(split_string)==6:
+                solution_string.insert(0, solution_string.pop())
 
         binom_string = binom_string.replace("_","\\rule{1cm}{0.3pt}")
 
@@ -2484,7 +2495,7 @@ def create_latex_string_coordinate_system(content, example, half_allowed, negati
     return content
 
 def create_latex_string_binomische_formeln(content, example, binoms_direction_index):
-    print(binoms_direction_index)
+    print(example)
     if binoms_direction_index==3:
         aufgabe = example[0]
 
