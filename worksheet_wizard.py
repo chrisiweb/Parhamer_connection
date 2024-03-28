@@ -2484,6 +2484,7 @@ def create_latex_string_coordinate_system(content, example, half_allowed, negati
     return content
 
 def create_latex_string_binomische_formeln(content, example, binoms_direction_index):
+    print(binoms_direction_index)
     if binoms_direction_index==3:
         aufgabe = example[0]
 
@@ -2519,8 +2520,8 @@ def create_latex_worksheet(
     fortlaufende_nummerierung,
     nummerierung,
     solution_type,
-    binoms_direction_index,
     ):
+
     if titel != False:
         content = "\section{{{0}}}\n\n".format(titel.replace('&', '\&'))
     else:
@@ -2532,12 +2533,14 @@ def create_latex_worksheet(
         content += arbeitsanweisung
 
     for widget in order_of_examples:
-        set_of_examples = dict_of_examples[widget] 
+        set_of_examples = dict_of_examples[widget]
+
     # for all in dict_of_examples.values():
         # index = set_of_examples['thema_index']
         shorten_topic = set_of_examples['shorten_topic']
         ausrichtung = set_of_examples['ausrichtung']
         columns = set_of_examples['spalten']
+        binoms_direction_index=set_of_examples['binom_direction_index']
         
         if set_of_examples['instruction'] != None:
             content += f"\n\n{set_of_examples['instruction']}\n\n"

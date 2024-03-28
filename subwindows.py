@@ -1931,10 +1931,21 @@ class Ui_Dialog_erstellen_developer(QtWidgets.QDialog):
         horizontallayout = create_new_horizontallayout(self.groupBox_gruppen)
         self.spinBox_gruppen = QtWidgets.QSpinBox(self.groupBox_gruppen)
         self.spinBox_gruppen.setMinimum(1)
+        self.spinBox_gruppen.setValue(2)
         self.spinBox_gruppen.setMaximum(5)
         horizontallayout.addWidget(self.spinBox_gruppen)
 
         verticallayout.addWidget(self.groupBox_gruppen)
+
+        # self.groupBox_gruppen_mode = create_new_groupbox(Dialog, "Darstellung")
+        # horizontallayout_mode = create_new_horizontallayout(self.groupBox_gruppen_mode)
+        # self.combobox_gruppen_mode = create_new_combobox(self.groupBox_gruppen_mode)
+        # add_new_option(self.combobox_gruppen_mode, 0, "sichtbar")
+        # add_new_option(self.combobox_gruppen_mode, 1, "versteckt")
+
+        # horizontallayout_mode.addWidget(self.combobox_gruppen_mode)
+
+        # verticallayout.addWidget(self.groupBox_gruppen_mode)
       
         buttonBox = QtWidgets.QDialogButtonBox(Dialog)
 

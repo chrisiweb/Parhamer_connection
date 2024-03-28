@@ -2,12 +2,12 @@ from PyQt5 import QtCore, QtWidgets, QtGui
 import os
 import datetime
 from config_start import database, path_programm
-from config import config_file, config_loader, is_empty
+from config import config_file, config_loader, is_empty, get_icon_path
 from processing_window import working_window
 from database_commands import _database_addon
 from standard_dialog_windows import question_window
 from git_sync import git_reset_repo_to_origin, check_for_changes, check_internet_connection
-from standard_dialog_windows import warning_window, information_window, question_window, critical_window
+from standard_dialog_windows import warning_window, information_window, question_window, critical_window, custom_window
 import urllib.request
 import urllib.error
 import requests
@@ -108,9 +108,17 @@ def refresh_ddb(self, auto_update=False):
 
     if check_internet_connection()==False:
         # QtWidgets.QApplication.restoreOverrideCursor()
-        critical_window(
-            "Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.",
-            titel="Keine Internetverbindung")
+        
+        custom_window(
+            "Die Datenbank konnte nicht aktualisiert werden.",
+            "Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es später erneut.",
+            titel="Keine Internetverbindung",
+            logo=get_icon_path('wifi-off.svg'),
+            logo_size=80)
+        # critical_window(
+        #     "Die Datenbank konnte nicht aktualisiert werden.",
+        #     "Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es später erneut.",
+        #     titel="Keine Internetverbindung")
         return
 
     if self.developer_mode_active == True:        

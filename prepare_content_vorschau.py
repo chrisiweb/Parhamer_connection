@@ -155,6 +155,7 @@ def copy_included_images(self, image):
     path_bilder = [
         "Bilder",
         "Bilder_addon",
+        "Bilder_local",
     ]
 
     for folder in path_bilder:

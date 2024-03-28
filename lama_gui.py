@@ -93,13 +93,6 @@ def setup_MenuBar(self):
         self.database_clean_up,
     )
 
-    self.actionCreate_groups_developer = add_action(
-        MainWindow,
-        self.menuDeveloper,
-        "Gruppen erstellen...",
-        self.create_groups_developer,
-    )
-
     self.menuDatei.addSeparator()
 
     self.actionBild_convert_image_eps = add_action(
@@ -190,6 +183,15 @@ def setup_MenuBar(self):
         MainWindow, self.menuSage, "Reset Prüfung", partial(self.reset_sage, True)
     )
     self.actionReset_sage.setEnabled(False)
+
+    self.menuSage.addSeparator()
+
+    self.actionCreate_groups_developer = add_action(
+    MainWindow,
+    self.menuSage,
+    "Gruppen aus LaTeX Datei erstellen",
+    self.create_groups_developer,
+    )
     # self.actionReset_sage.setVisible(False)
 
     self.actionNeu = add_action(

@@ -92,6 +92,7 @@ def custom_window(
     titel="LaMA - LaTeX Mathematik Assistent",
     detailed_text="",
     logo=logo_path,
+    logo_size=110,
     set_width=None,
     show_checkbox = False,
 ):
@@ -101,7 +102,7 @@ def custom_window(
     if logo != False:
         pixmap = QPixmap(logo)
 
-        msg.setIconPixmap(pixmap.scaled(110, 110, Qt.KeepAspectRatio))
+        msg.setIconPixmap(pixmap.scaled(logo_size, logo_size, Qt.KeepAspectRatio))
         msg.setWindowIcon(QIcon(logo_path))
     msg.setText(text)
     msg.setInformativeText(informative_text)

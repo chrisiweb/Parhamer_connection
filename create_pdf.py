@@ -985,7 +985,7 @@ def delete_unneeded_files(folder_name, file_name):
     try_to_delete_file("{0}.ps".format(file_path))
 
 
-def create_pdf(path_file, index=0, maximum=0, typ=0):
+def create_pdf(path_file, index=0, maximum=0, typ=0, show_latex_error_warning=True):
     # QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
     if path_file == "Teildokument":
         folder_name = "{0}/Teildokument".format(path_programm)
@@ -1035,17 +1035,26 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
 
     if errors_latex_output != False:
         QApplication.restoreOverrideCursor()
-        response = question_window(
-            "Es ist ein Fehler beim Erstellen der PDF-Datei aufgetreten. Dadurch konnte die PDF-Datei nicht vollständig erzeugt werden.\n\n"
-            + "Dies kann viele unterschiedliche Ursachen haben (siehe Details).\n\n"
-            + 'Durch das Aktualisieren der Datenbank (F5) oder des srdp-mathematik-Pakets\n(-> Optionen -> Update... -> "srdp-mathematik.sty" aktualisieren)\nkönnen jedoch die meisten dieser Fehler behoben werden.\n\n'
-            + "Sollte der Fehler weiterhin bestehen, bitte kontaktieren Sie uns unter lama.helpme@gmail.com",
-            "Wollen Sie die fehlerhafte PDF-Datei dennoch anzeigen?",
-            "Fehler beim Erstellen der PDF-Datei",
-            "Log-Datei:\n" + "".join(errors_latex_output),
-        )
-        if response == False:
-            return
+        if show_latex_error_warning==False:
+            critical_window(
+                "Aufgrund eines Fehlers in der LaTeX-Datei konnte das PDF nicht korrekt erstellt werden.\n\n"
+                + "Dies kann viele unterschiedliche Ursachen haben (siehe Details).\n\n"
+                + "Sollte der Fehler weiterhin bestehen, bitte kontaktieren Sie uns unter lama.helpme@gmail.com",
+                titel="Fehler beim Erstellen der PDF-Datei",
+                detailed_text= "Log-Datei:\n" + "".join(errors_latex_output)
+            ) 
+        elif show_latex_error_warning==True:
+            response = question_window(
+                "Aufgrund eines Fehlers in der LaTeX-Datei konnte das PDF nicht korrekt erstellt werden.\n\n"
+                + "Dies kann viele unterschiedliche Ursachen haben (siehe Details).\n\n"
+                + 'Durch das Aktualisieren der Datenbank (F5) oder des srdp-mathematik-Pakets\n(-> Optionen -> Update... -> "srdp-mathematik.sty" aktualisieren)\nkönnen jedoch die meisten dieser Fehler behoben werden.\n\n'
+                + "Sollte der Fehler weiterhin bestehen, bitte kontaktieren Sie uns unter lama.helpme@gmail.com",
+                "Wollen Sie die fehlerhafte PDF-Datei dennoch anzeigen?",
+                "Fehler beim Erstellen der PDF-Datei",
+                "Log-Datei:\n" + "".join(errors_latex_output),
+            )
+            if response == False:
+                return
 
 
     if file_name == "Schularbeit_Vorschau" or file_name.startswith("Teildokument") or file_name == "preview"  or file_name == "worksheet":

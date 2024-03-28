@@ -661,7 +661,7 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
                     return
                 
                 if os.access(os.path.dirname(filename_vorschau), os.W_OK)==False:
-                    critical_window('Sie verfügen nicht über die Berechtigung zum Speichern in diesem Pfad. Bitte wählen Sie einen anderen Pfad aus.')
+                    critical_window('Sie verfügen nicht über die Berechtigung zum Speichern in diesem Pfad. Bitte wählen Sie einen anderen Dateipfad aus.')
                 else:
                     break
            
@@ -5132,6 +5132,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             'dummy_examples' : full_list_dummy_solutions,
             'dotstyle_index' : dotstyle_index,
             'direction_index' : direction_index,
+            'binom_direction_index': self.binoms_direction_index,
             'number_line' : [self.spinbox_zahlenbereich_startingvalue.value(), self.spinbox_zahlenbereich_steps.value(), self.spinbox_zahlenbereich_subticks.value()+1],
             'primefactors' : [self.checkbox_prime_powers.isChecked()],
             'coordinate_system' : [coordinate_system_zwischenwerte, coordinate_system_negative],
@@ -5254,7 +5255,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             fortlaufende_nummerierung, 
             nummerierung,
             solution_type,
-            self.binoms_direction_index,
             )
 
 
@@ -8326,7 +8326,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             name, extension = os.path.splitext(filename_vorschau)
 
             if pdf == True:
-                pdf_created = create_pdf(name, index, maximum)
+                if index == 0:
+                    show_warning = False
+                else:
+                    show_warning = None
+                create_pdf(name, index, maximum, show_latex_error_warning=show_warning)
 
                 temp_filename = name + ".pdf"
 

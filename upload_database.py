@@ -22,7 +22,7 @@ class Worker_PushDatabase(QtCore.QObject):
 def action_push_database(admin, file_list, message = None, worker_text = "Aufgabe wird hochgeladen ..."):
     QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
     if check_internet_connection() == False:
-        critical_window("Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es erneut.",
+        critical_window("Beim Hochladen ist ein Fehler aufgetreten.","Stellen Sie sicher, dass eine Verbindung zum Internet besteht und versuchen Sie es später erneut.",
         titel="Keine Internetverbindung",
         )
         QtWidgets.QApplication.restoreOverrideCursor()
