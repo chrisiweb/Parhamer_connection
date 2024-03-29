@@ -1937,16 +1937,30 @@ class Ui_Dialog_erstellen_developer(QtWidgets.QDialog):
 
         verticallayout.addWidget(self.groupBox_gruppen)
 
-        # self.groupBox_gruppen_mode = create_new_groupbox(Dialog, "Darstellung")
-        # horizontallayout_mode = create_new_horizontallayout(self.groupBox_gruppen_mode)
-        # self.combobox_gruppen_mode = create_new_combobox(self.groupBox_gruppen_mode)
-        # add_new_option(self.combobox_gruppen_mode, 0, "sichtbar")
-        # add_new_option(self.combobox_gruppen_mode, 1, "versteckt")
+        self.groupBox_gruppen_mode = create_new_groupbox(Dialog, "Darstellung")
+        verticallayout_mode = create_new_verticallayout(self.groupBox_gruppen_mode)
+        self.combobox_gruppen_mode = create_new_combobox(self.groupBox_gruppen_mode)
+        add_new_option(self.combobox_gruppen_mode, 0, "sichtbar")
+        add_new_option(self.combobox_gruppen_mode, 1, "versteckt")
 
-        # horizontallayout_mode.addWidget(self.combobox_gruppen_mode)
+        verticallayout_mode.addWidget(self.combobox_gruppen_mode)
 
-        # verticallayout.addWidget(self.groupBox_gruppen_mode)
+        self.infos = [
+            "Der Befehl '\Gruppe' muss im LaTeX-Dokument an einer beliebigen Stelle eingebunden sein.",
+            "Die Gruppen können durch Punkte im rechten oberen Eck der ersten Seite unterschieden werden."
+        ]
+        def combobox_gruppen_mode_changed():
+            index = self.combobox_gruppen_mode.currentIndex()
+            self.label_info_gruppen_mode.setText(f"Info: {self.infos[index]}")
+        self.combobox_gruppen_mode.currentIndexChanged.connect(lambda: combobox_gruppen_mode_changed())
+    
+        self.label_info_gruppen_mode = create_new_label(self.groupBox_gruppen_mode, f"Info: {self.infos[0]}", wordwrap=True)
+        self.label_info_gruppen_mode.setStyleSheet("color: #C62E65")
+        verticallayout_mode.addWidget(self.label_info_gruppen_mode)
+        verticallayout.addWidget(self.groupBox_gruppen_mode)
       
+
+
         buttonBox = QtWidgets.QDialogButtonBox(Dialog)
 
         buttonBox.setStandardButtons(

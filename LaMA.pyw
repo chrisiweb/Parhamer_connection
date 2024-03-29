@@ -516,6 +516,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
 
 
         range_limit = ui_erstellen_developer.spinBox_gruppen.value() * 2
+        group_mode = ui_erstellen_developer.combobox_gruppen_mode.currentIndex()
 
         name, _ = os.path.splitext(latex_file_path)
         # print(name)
@@ -526,8 +527,17 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
                 latex_code = latex_code.read()
     
 
-        for index in range(range_limit):
+        if group_mode == 0:
+            if latex_code.find("\Gruppe") == -1:
+                critical_window("Der Befehl '\Gruppe' muss im LaTeX-Dokument an einer beliebigen Stelle eingebunden sein.")
+                return
+        elif group_mode == 1:
+            if latex_code.find("\\begin{titlepage}") == -1:
+                latex_code = latex_code.replace("\\begin{document}","\\begin{document}\hiddengroup")
+            else:
+                latex_code = latex_code.replace("\\begin{titlepage}","\\begin{titlepage}\hiddengroup")
             
+        for index in range(range_limit):
             if index %2==0:
                 latex_code = re.sub(r"solution_off", "solution_on", latex_code)
                 if range_limit > 2:
