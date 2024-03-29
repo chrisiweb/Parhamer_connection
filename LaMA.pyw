@@ -519,7 +519,6 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
         group_mode = ui_erstellen_developer.combobox_gruppen_mode.currentIndex()
 
         name, _ = os.path.splitext(latex_file_path)
-        # print(name)
 
         self.dict_gruppen = {0: "A", 1: "B", 2: "C", 3: "D", 4: "E", 5: "F"}
 
@@ -679,7 +678,6 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
 
             if self.ui_erstellen.lama == True:
                 self.sage_save(path_create_tex_file=filename_vorschau)
-
 
             if (
                 is_empty(self.list_copy_images) #self.dict_all_infos_for_file["data_gesamt"]["copy_images"]
@@ -3713,7 +3711,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             abstand,
         )
         QtWidgets.QApplication.restoreOverrideCursor()
-        print(rsp)
+
         if rsp == False:
             critical_window(
                 "Beim Synchronisieren ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass eine Internetverbindung beseteht und versuchen Sie es erneut."
@@ -4672,7 +4670,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
        
         dict_all_settings_wizard = self.get_all_settings_wizard(shorten_topic)
 
-        # print(dict_all_settings)
 
         if shorten_topic == 'ari_dar_ste':
             # minimum = self.combobox_zahlenbereich_2.currentIndex()
@@ -5663,7 +5660,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         self.saved_file_path = latex_file_path[0]
 
-        # print(latex_file_path)
         self.open_dialogwindow_erstellen_developer(latex_file_path[0])
         # self.pushButton_edit_pressed()
 
@@ -6441,7 +6437,17 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         else:
             self.erase_aufgabe(aufgabe)
-            self.build_aufgaben_schularbeit(self.list_alle_aufgaben_sage[list_index][index])
+            self.build_aufgaben_schularbeit(self.list_alle_aufgaben_sage[list_index][index], delete=True)
+
+        aufgabe_total = get_aufgabe_total(aufgabe, typ)
+
+        if not is_empty(aufgabe_total["bilder"]):
+            for image in aufgabe_total["bilder"]:
+                self.list_copy_images.remove(image)
+    
+
+        # for image in aufgabe_total["bilder"]:
+        #     self.list_copy_images.append(image)
 
         if is_empty(self.list_alle_aufgaben_sage[1]):
             self.scrollAreaWidgetContents_typ2.hide() 
@@ -7089,7 +7095,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         #         self.list_copy_images.append(image)
 
     @report_exceptions
-    def build_aufgaben_schularbeit(self, aufgabe):
+    def build_aufgaben_schularbeit(self, aufgabe, delete=False):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
         # try:
@@ -7151,7 +7157,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         # )
         # self.gridLayout_8.addItem(self.spacerItem, index_item + 1, 0, 1, 1)
 
-        self.add_image_path_to_list(aufgabe.replace(" (lokal)", ""))
+        if delete != True:
+            self.add_image_path_to_list(aufgabe.replace(" (lokal)", ""))
+
+            
 
         self.update_punkte()
 
@@ -7632,7 +7641,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     list_duplicates.append(aufgabe)
                     continue
             
-            
+            self.add_image_path_to_list(aufgabe.replace(" (lokal)", ""))
             neue_aufgaben_box = self.create_neue_aufgaben_box(
                 aufgaben_nummer, aufgabe, aufgabe_total
             )

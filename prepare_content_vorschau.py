@@ -166,5 +166,6 @@ def copy_included_images(self, image):
                 os.path.dirname(self.chosen_path_schularbeit_erstellen[0]), image
             )
             shutil.copy(path_image, saving_path)
+            print(f"DONE {path_image}")
             break
     return
