@@ -1167,16 +1167,31 @@ def avoid_futile_brackets(string):
     for index in reversed(index_list_to_pop):
         character_list.pop(index)
 
+    bracket_open = False
     
     string = "".join(character_list)
+    x = re.findall(r'\([0-9]+[:\xb7][0-9]+\)', string)
 
+    for all in x:
+        start = string.index(all)
+        end = start + len(all)
+
+        if end == len(string):
+            following_operation = True
+        elif string[end]!='\xb7':
+            following_operation = True
+        else:
+            following_operation = False
+
+        if string[start-1] != '\xb7' and following_operation==True:
+            string = string.replace(all, all[1:-1])
 
 
     return string
 
 def create_single_example_ganze_zahlen_grundrechnungsarten(dict_all_settings_wizard):
     #minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets
-    shorten_topic = dict_all_settings_wizard['dict_all_settings_wizard']
+    shorten_topic = dict_all_settings_wizard['shorten_topic']
     if shorten_topic == 'ari_pos_ver':
         show_brackets = False
     else:
