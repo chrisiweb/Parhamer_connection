@@ -1170,7 +1170,7 @@ def avoid_futile_brackets(string):
     bracket_open = False
     
     string = "".join(character_list)
-    x = re.findall(r'\([0-9]+[:\xb7][0-9]+\)', string)
+    x = re.findall(r'\([0-9]+[:\xb7][0-9]+\)', string) ## eventuell auch eckigen klammern?? [\(\[] usw.
 
     for all in x:
         start = string.index(all)
