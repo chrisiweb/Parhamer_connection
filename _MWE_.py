@@ -75,8 +75,8 @@
 
 import re
 
-string = "3+(96:12)+(11:12)\xb73"
-x = re.findall(r'\([0-9]+:[0-9]+\)', string)
+string = "[(-18):(-3)]\xb7[(-12):(+6)]+[(-3)+(+2)]-(+1)"
+x = re.findall(r'\([0-9]+[:\xb7][0-9]+\)', string)
 
 print(x)
 

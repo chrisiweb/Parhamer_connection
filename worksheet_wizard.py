@@ -1135,44 +1135,11 @@ def prevent_double_multiplication(string):
 
     return string
 
-
-def avoid_futile_brackets(string):
-    character_list = [x for x in string]
-
-    operations_strich = ["+", "-"]
-    bracket_open = False
-    index_list_to_pop = []
-
-    for i, all in enumerate(character_list):
-        if bracket_open == False:
-            if all == "[" and i==0:
-                bracket_open = True
-                starting_index = i            
-            elif all == "[" and character_list[i-1] in operations_strich:
-                bracket_open = True
-                starting_index = i
-        elif bracket_open == True:
-            try:
-                following_operation = character_list[i+1]
-            except IndexError:
-                following_operation = "+"
-            if all == "]" and following_operation in operations_strich:
-                index_list_to_pop.append(starting_index)
-                index_list_to_pop.append(i)
-                bracket_open = False
-            elif all == "]":
-                bracket_open = False  
+def delete_brackets(string, _list):
+    if is_empty(_list):
+        return string
     
-
-    for index in reversed(index_list_to_pop):
-        character_list.pop(index)
-
-    bracket_open = False
-    
-    string = "".join(character_list)
-    x = re.findall(r'\([0-9]+[:\xb7][0-9]+\)', string) ## eventuell auch eckigen klammern?? [\(\[] usw.
-
-    for all in x:
+    for all in _list:
         start = string.index(all)
         end = start + len(all)
 
@@ -1185,9 +1152,55 @@ def avoid_futile_brackets(string):
 
         if string[start-1] != '\xb7' and following_operation==True:
             string = string.replace(all, all[1:-1])
+    return string
+
+def avoid_futile_brackets(string):
+    _list = re.findall(r'\([0-9]+[:\xb7][0-9]+\)', string) ## eventuell auch eckigen klammern?? [\(\[] usw.
+    
+    string = delete_brackets(string, _list)
+
+    _list = re.findall(r'\[\([+-][0-9]+\)[:\xb7]\([+-][0-9]+\)\]', string) ## eventuell auch eckigen klammern?? [\(\[] usw.
+
+    string = delete_brackets(string, _list)
 
 
     return string
+    # character_list = [x for x in string] #eliminates brackets which change result
+    # print(string)
+    # operations_strich = ["+", "-"]
+    # bracket_open = False
+    # index_list_to_pop = []
+
+    # for i, all in enumerate(character_list):
+    #     if bracket_open == False:
+    #         if all == "[" and i==0:
+    #             bracket_open = True
+    #             starting_index = i            
+    #         elif all == "[" and character_list[i-1] in operations_strich:
+    #             bracket_open = True
+    #             starting_index = i
+    #     elif bracket_open == True:
+    #         try:
+    #             following_operation = character_list[i+1]
+    #         except IndexError:
+    #             following_operation = "+"
+    #         if all == "]" and following_operation in operations_strich:
+    #             index_list_to_pop.append(starting_index)
+    #             index_list_to_pop.append(i)
+    #             bracket_open = False
+    #         elif all == "]":
+    #             bracket_open = False  
+    
+
+    # for index in reversed(index_list_to_pop):
+    #     character_list.pop(index)
+
+    # bracket_open = False
+    
+    
+    # string = "".join(character_list)
+    # print(f"1: {string}")
+
 
 def create_single_example_ganze_zahlen_grundrechnungsarten(dict_all_settings_wizard):
     #minimum, maximum, commas, anzahl_summanden, smaller_or_equal, brackets_allowed, show_brackets
