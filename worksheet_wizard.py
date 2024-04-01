@@ -627,10 +627,10 @@ def create_single_example_subtraction(dict_all_settings_wizard):
     negative_solutions_allowed = dict_all_settings_wizard['negative_solutions_allowed']
     anzahl_subtrahenden = dict_all_settings_wizard['anzahl_zahlen']
     smaller_or_equal = dict_all_settings_wizard['smaller_or_equal']
-    print(dict_all_settings_wizard)
+
 
     set_commas=commas
-    print(negative_solutions_allowed)
+
     # if negative_solutions_allowed == False:
     #     subtrahenden_maximum = maximum/anzahl_subtrahenden
     # else:
@@ -1577,8 +1577,8 @@ def create_single_example_binomische_formeln(dict_all_settings_wizard):
         split_string = split_binomial_expression(string)
         random_blanks = choose_random_blanks(split_string)
 
-        print(split_string)
-        print(random_blanks)
+        # print(split_string)
+        # print(random_blanks)
 
         
         solution_string = []
@@ -2523,7 +2523,7 @@ def create_latex_string_coordinate_system(content, example, half_allowed, negati
     return content
 
 def create_latex_string_binomische_formeln(content, example, binoms_direction_index):
-    print(example)
+    # print(example)
     if binoms_direction_index==3:
         aufgabe = example[0]
 
