@@ -136,7 +136,6 @@ dict_themen_wizard = {
 # 3. Aufgabe berechnen definieren: self.create_list_of_examples_wizard (LaMa.pyw)
 # 4. create_list_of_examples_... in worksheet_wizard.py erstellen
 
-
 dict_wizard_variables = {
     'examples' : 'self.spinBox_number_wizard.value()',
     'anzahl_zahlen' : 'self.spinBox_zahlenbereich_anzahl_wizard.value()',
@@ -148,6 +147,7 @@ dict_wizard_variables = {
     'minimum_division_2' :  'self.spinbox_divisor_min_wizard.value()',
     'minimum_index' : 'self.combobox_zahlenbereich_2_leq.currentIndex()',
     'maximum_combobox' : 'self.combobox_zahlenbereich_1.currentIndex()',
+    'maximum_combobox_roman' : 'self.combobox_zahlenbereich_1.currentText()',
     'maximum_spinbox' : 'self.spinbox_zahlenbereich_maximum.value()',
     'maximum_spinbox_1' : 'self.spinBox_first_number_max.value()',
     'maximum_spinbox_2' : 'self.spinBox_second_number_max.value()',
@@ -415,9 +415,10 @@ def create_single_example_stellenwert(dict_all_settings_wizard): #minimum, minim
 
 
 def create_single_example_roman_numerals(dict_all_settings_wizard):
-    roman_max = dict_all_settings_wizard['maximum_combobox']
+    roman_max = dict_all_settings_wizard['maximum_combobox_roman']
     maximum_index =  dict_all_settings_wizard['maximum_index']
     general_direction_index = dict_all_settings_wizard['general_direction_index']
+    
     if maximum_index == 1:
         number = get_random_number(10, dict_of_roman_max[roman_max])
     else:
@@ -444,7 +445,7 @@ def create_single_example_number_line(dict_all_settings_wizard): #starting_value
     starting_value = dict_all_settings_wizard['starting_value']
     steps = dict_all_settings_wizard['steps']
     subticks = dict_all_settings_wizard['subticks']
-    setting_decimal_fraction = dict_all_settings_wizard['setting_decmial_fraction']
+    setting_decimal_fraction = dict_all_settings_wizard['setting_decimal_fraction']
 
     maximum = starting_value+14*steps
     factor= subticks/steps
@@ -695,9 +696,12 @@ def create_single_example_division(dict_all_settings_wizard):
     maximum_2 = dict_all_settings_wizard['maximum_division_2']
     commas_div = dict_all_settings_wizard['commas_div']
     smaller_or_equal_div = dict_all_settings_wizard['smaller_or_equal_div']
-    commas_result = dict_all_settings_wizard['commas_result']
+    commas_result = dict_all_settings_wizard['commas_result_div']
     smaller_or_equal_result = dict_all_settings_wizard['smaller_or_equal_result']
     output_type_division = dict_all_settings_wizard['output_type_division']
+
+    if commas_div == None:
+        commas_div=0
 
     if smaller_or_equal_div == 1:
         set_commas_div=commas_div
