@@ -2601,7 +2601,13 @@ def create_latex_worksheet(
         dot_style_index = set_of_examples['dotstyle_index']
         geometry_direction_index = set_of_examples['direction_index']
 
-        content += f"\\begin{{tasks}}[label={nummerierung},resume={fortlaufende_nummerierung}, item-indent=0pt]({columns})\n\n"
+        if nummerierung == "(\\roman*)":
+            label_offset = "label-offset=1em"
+        elif nummerierung=="(\\Roman*)":
+            label_offset = "label-offset=1.8em"
+        else:
+            label_offset = ""
+        content += f"\\begin{{tasks}}[label={nummerierung},resume={fortlaufende_nummerierung}, item-indent=0pt,{label_offset}]({columns})\n\n"
 
         list_of_examples = set_of_examples['list_of_examples']
         # print(shorten_topic)

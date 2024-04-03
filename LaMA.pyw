@@ -2098,6 +2098,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.widgetklasse_sage.setToolTip("Klasse")
             self.pushButton_titlepage.setEnabled(False)
             self.comboBox_at_sage.setEnabled(True)
+            self.widgetName.hide()
             self.pushButton_titlepage.setText("Titelblatt anpassen")
         elif self.comboBox_pruefungstyp.currentText() == "Übungsblatt":
             self.combobox_beurteilung.setEnabled(False)
@@ -2111,6 +2112,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.widgetNummer.setEnabled(False)
             self.spinBox_nummer_setvalue = self.spinBox_nummer.value()
             self.spinBox_nummer.setValue(0)
+            self.widgetName.hide()
             self.labelKlasse_sage.setPixmap(QPixmap(get_icon_path("edit-3.svg")))
             self.widgetklasse_sage.setToolTip("Überschrift")
             # self.groupBox_klasse_sage.setTitle("Überschrift")
@@ -2123,6 +2125,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.pushButton_titlepage.setText("Titelblatt anpassen")
             self.labelKlasse_sage.setPixmap(QPixmap(get_icon_path("users.svg")))
             self.widgetklasse_sage.setToolTip("Klasse")
+            if self.chosen_program == "lama":
+                dict_titlepage = self.dict_titlepage
+            elif self.chosen_program == "cria":
+                dict_titlepage = self.dict_titlepage_cria
+            if dict_titlepage['hide_all'] == True:
+                self.widgetName.show()
+            else:
+                self.widgetName.hide()
             # self.groupBox_klasse_sage.setTitle("Klasse")
             if self.comboBox_pruefungstyp.currentText() == "Benutzerdefiniert":
                 self.comboBox_pruefungstyp.setEditable(True)
@@ -5171,10 +5181,16 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         # print(self.dict_all_examples_worksheet_wizard)
         for all in self.dict_all_examples_worksheet_wizard.values():
-            if self.combobox_nummerierung_wizard.currentText() == "(a)" and len(all['list_of_examples'])>26:
+            if (self.combobox_nummerierung_wizard.currentText() == "(a)" or self.combobox_nummerierung_wizard.currentText() == "(A)") and len(all['list_of_examples'])>26:
                 warning_window("Bei der Nummerierung (a) und (A) können maximal 26 Aufgaben pro Aufgabenpaket verwendet werden.",
                 "Bitte ändern Sie die Beschriftung.")
                 return
+            elif (self.combobox_nummerierung_wizard.currentText() == "(i)" or self.combobox_nummerierung_wizard.currentText() == "(I)") and len(all['list_of_examples'])>26:
+                if self.get_total_number_of_examples_wizard()>25:
+                    warning_window(
+                        "Bei der Nummerierung (i) und (I) können maximal 25 Aufgaben pro Aufgabenpaket verwendet werden.",
+                        "Bitte ändern Sie die Beschriftung."
+                    )
             for item in all['list_of_examples']:
                 total_list_of_examples.append(item)
 
@@ -5318,7 +5334,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     "Bei der Nummerierung (a) und (A) können insgesamt maximal 26 Aufgaben verwendet werden.",
                     "Bitte ändern Sie die Beschriftung oder deaktivieren Sie die fortlaufende Nummerierung."
                 )
-                return   
+                return
+        elif (self.combobox_nummerierung_wizard.currentText() == "(i)" or self.combobox_nummerierung_wizard.currentText() == "(I)") and fortlaufende_nummerierung == True:
+            if self.get_total_number_of_examples_wizard()>25:
+                warning_window(
+                    "Bei der Nummerierung (i) und (I) können insgesamt maximal 25 Aufgaben verwendet werden.",
+                    "Bitte ändern Sie die Beschriftung oder deaktivieren Sie die fortlaufende Nummerierung."
+                )
+                return  
 
 
 
