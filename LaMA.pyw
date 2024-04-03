@@ -5197,9 +5197,20 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
         if self.checkBox_show_nonogramm.isChecked():
+            # maximum = get_max_pixels_nonogram()
+            # if len(total_list_of_examples) > maximum:
+            #     warning_window(f"Für die Gesamtanzahl der Aufgaben kann existiert kein Nonogramm mehr (Maximalanzahl: {maximum})",
+            #                    "Die Selbstrkontrolle wird daher deaktiviert.")
+            #     self.checkBox_show_nonogramm.setChecked(False)
+            # else:
             if self.combobox_nonogramm_wizard.currentIndex()==0:
                 try:
                     nonogram = self.nonogram_wizard
+
+                    if len(total_list_of_examples) > len(all_nonogramms[nonogram]):
+                        nonogram = self.rechose_nonogramm(total_list_of_examples, nonogram)
+                        
+                    self.nonogram_wizard = nonogram
                 except AttributeError:
                     nonogram = random.choice(list(all_nonogramms.keys()))
 
