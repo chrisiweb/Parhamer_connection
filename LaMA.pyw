@@ -5169,6 +5169,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         except AttributeError:
             fortlaufende_nummerierung = True
 
+        # print(self.dict_all_examples_worksheet_wizard)
         for all in self.dict_all_examples_worksheet_wizard.values():
             if self.combobox_nummerierung_wizard.currentText() == "(a)" and len(all['list_of_examples'])>26:
                 warning_window("Bei der Nummerierung (a) und (A) können maximal 26 Aufgaben pro Aufgabenpaket verwendet werden.",

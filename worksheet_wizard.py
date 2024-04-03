@@ -404,12 +404,12 @@ def create_single_example_stellenwert(dict_all_settings_wizard): #minimum, minim
     if index == 0:
         _string = f"{number} = {string_stellenwert}".replace(".",",")
         _string = _string.replace("*",'.')
-        number = number.replace("*",'.')
+        # number = number.replace("*",'.')
         return [number, string_stellenwert, _string]
     elif index == 2:
         _string = f"{string_stellenwert} = {number}".replace(".",",")
         _string = _string.replace("*",'.')
-        number = number.replace("*",'.')
+        # number = number.replace("*",'.')
         return [string_stellenwert,number, _string]
     
 
@@ -2998,8 +2998,8 @@ def create_nonogramm(nonogram, coordinates_nonogramm, spalten=3):
         
         # elif coordinates_nonogramm[all][0] == False:
         #     result = result
-        
-        content += f"\item[\\fbox{{\parbox{{15pt}}{{\centering {all}}}}}] {result}\n".replace(".",",") 
+
+        content += f"\item[\\fbox{{\parbox{{15pt}}{{\centering {all}}}}}] {result}\n".replace(".",",").replace("*","\,")
     # for all in list_coordinates:
 #         result = coordinates_nonogramm[all]
 #         if result == True:
