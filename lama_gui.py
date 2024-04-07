@@ -2731,7 +2731,7 @@ def setup_stackWizard(self):
     self.horizontalLayout_zahlenbereich_subticks.addWidget(self.label_zahlenbereich_subticks)
 
     self.spinbox_zahlenbereich_subticks = create_new_spinbox(self.widget_zahlenbereich_subticks, value=1)
-    self.spinbox_zahlenbereich_subticks.setRange(0,10)
+    self.spinbox_zahlenbereich_subticks.setRange(0,9)
     self.horizontalLayout_zahlenbereich_subticks.addWidget(self.spinbox_zahlenbereich_subticks)
     self.widget_zahlenbereich_subticks.hide()        
 

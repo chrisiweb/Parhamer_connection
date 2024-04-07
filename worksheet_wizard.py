@@ -457,10 +457,20 @@ def create_single_example_number_line(dict_all_settings_wizard): #starting_value
         x = round(random_decimal* factor) / factor
         x= float(remove_exponent(D(x)))
         x = formatNumber(x)
-        if setting_decimal_fraction == 1:
-            num = round(random_decimal * factor)
-            dem = round(factor) 
-            temp_dict_fraction[x]=[num, dem]      
+
+        if get_number_of_decimals(x)>3:
+            num = round(random_decimal*factor)
+            dem = round(factor)
+            x = Fraction(num, dem)
+
+
+
+
+        ### possible, if CB for fraction is enabeled
+        # if setting_decimal_fraction == 1:
+        #     num = round(random_decimal * factor)
+        #     dem = round(factor) 
+        #     temp_dict_fraction[x]=[num, dem]      
 
 
 
@@ -478,9 +488,23 @@ def create_single_example_number_line(dict_all_settings_wizard): #starting_value
     for all in dict_of_points:
         if _string != "":
             _string += ", "
-        value = str(dict_of_points[all][0]).replace(".",",")
+        if isinstance(dict_of_points[all][0], float):
+            value = str(dict_of_points[all][0]).replace(".",",") 
+        else:
+            num = dict_of_points[all][0].numerator
+            dem = dict_of_points[all][0].denominator
+            if round(num//dem) == 0:
+                str_integer = ""
+            else:
+                str_integer = f"{round(num//dem)} "
+            
+            if round(num % dem) == 0:
+                str_num = ""
+            else:
+                str_num = f"{round(num % dem)}/{round(dem)}"
+            value = f"{str_integer}{str_num}"
+        # value = str(dict_of_points[all][0]).replace(".",",")
         _string += f"{all} = {value}"
-    # print([dict_of_points, 0, _string])
     return [dict_of_points, 0, _string]
 
 def get_list_of_primenumbers(maximum):
@@ -516,9 +540,6 @@ def create_number_from_primes(list_of_primenumbers, minimum, maximum):
             product = temp_product
             list_of_products.append(x)
 
-        # if product > minimum:
-        #     print(5)
-        #     continue
 
         
 def convert_to_powers(list_of_factors):
@@ -554,14 +575,10 @@ def create_single_example_primenumbers(dict_all_settings_wizard):
     string_product = '\xb7'.join(str(x) for x in string_list_of_factors)
     _string = f"{product} = {string_product}"
     
-    print(product)
-    print(solution)
-    print(_string)
-    
+   
     return [product, solution, _string]
 
 def create_single_example_ggt(dict_all_settings_wizard): #anzahl_zahlen, minimum, maximum, ggt_1_checked
-    # print(dict_all_settings_wizard)
     anzahl_zahlen = dict_all_settings_wizard['anzahl_zahlen']
     minimum = dict_all_settings_wizard['minimum_spinbox']
     maximum = dict_all_settings_wizard['maximum_spinbox']
@@ -594,7 +611,6 @@ def create_single_example_ggt(dict_all_settings_wizard): #anzahl_zahlen, minimum
 
     joined_numbers = ', '.join(str(x) for x in list_of_numbers)
     _string = f"ggT({joined_numbers}) =  {ggt}"
-    print([list_of_numbers,ggt,_string])
     return [list_of_numbers,ggt,_string]
         
 
@@ -1174,7 +1190,6 @@ def avoid_futile_brackets(string):
 
     return string
     # character_list = [x for x in string] #eliminates brackets which change result
-    # print(string)
     # operations_strich = ["+", "-"]
     # bracket_open = False
     # index_list_to_pop = []
@@ -1207,7 +1222,7 @@ def avoid_futile_brackets(string):
     
     
     # string = "".join(character_list)
-    # print(f"1: {string}")
+
 
 
 def create_single_example_ganze_zahlen_grundrechnungsarten(dict_all_settings_wizard):
@@ -1585,10 +1600,7 @@ def create_single_example_binomische_formeln(dict_all_settings_wizard):
         split_string = split_binomial_expression(string)
         random_blanks = choose_random_blanks(split_string)
 
-        # print(split_string)
-        # print(random_blanks)
-
-        
+         
         solution_string = []
         for i in random_blanks:
             string = string.replace(split_string[i], "_", 1)
@@ -1666,7 +1678,7 @@ def check_for_duplicate(new_example, list_of_examples):
     list_of_solutions = []
     for all in list_of_examples:
         list_of_solutions.append(all[-2])
-    # print(list_of_solutions)
+
 
     if new_example[-2] in list_of_solutions:
         return True
@@ -1796,7 +1808,6 @@ def create_examples_all_topics(spec_function, dict_all_settings_wizard, single_e
 #         else:
 #             max_limit_counter +=1
 #             if max_limit_counter > 99:
-#                 print('max reached')
 #                 list_of_examples.append(new_example)
 #                 i +=1
 
@@ -2016,7 +2027,6 @@ def formatNumber(num):
 
 def create_latex_string_number_line(content, example, starting_value, steps, subticks, dot_style_index, geometry_direction_index):
     steps = formatNumber(steps)
-    # print(example)
     if starting_value==0:
         arrows = "->"
         beginning_picture = starting_value-steps/2
@@ -2056,7 +2066,7 @@ def create_latex_string_number_line(content, example, starting_value, steps, sub
 {pstricks_code_dots}
 \end{{pspicture*}}
 """
-    # print(pstricks_code)
+
     
     string_coordinates = ""
     for i, all in enumerate(example[0]):
@@ -2064,7 +2074,23 @@ def create_latex_string_number_line(content, example, starting_value, steps, sub
         if i != 0:
             string_coordinates += " \hfil "
 
-        x_coordinate = str(coordinates[0]).replace(".",",")
+
+        if isinstance(coordinates[0], float):
+            x_coordinate = str(coordinates[0]).replace(".",",")
+        else:
+            num = coordinates[0].numerator
+            dem = coordinates[0].denominator
+
+            if round(num//dem) == 0:
+                str_integer = ""
+            else:
+                str_integer = round(num//dem)
+            if round(num % dem) == 0:
+                str_num = ""
+            else:
+                str_num = f"\\frac{{{round(num % dem)}}}{{{round(dem)}}}"
+            x_coordinate = f"{str_integer} {str_num}"
+            
         if geometry_direction_index == 0:
             string_coordinates += f"${all} = \\antwort[\\rule{{1cm}}{{0.3pt}}]{{{x_coordinate}}}$"
         else:
@@ -2531,7 +2557,6 @@ def create_latex_string_coordinate_system(content, example, half_allowed, negati
     return content
 
 def create_latex_string_binomische_formeln(content, example, binoms_direction_index):
-    # print(example)
     if binoms_direction_index==3:
         aufgabe = example[0]
 
@@ -2614,7 +2639,6 @@ def create_latex_worksheet(
         content += f"\\begin{{tasks}}[label={nummerierung},resume={fortlaufende_nummerierung}, item-indent=0pt,{label_offset}]({columns})\n\n"
 
         list_of_examples = set_of_examples['list_of_examples']
-        # print(shorten_topic)
         for example in list_of_examples:
             if shorten_topic == 'ari_dar_ste':
                 content = create_latex_string_stellenwert(content, example)
