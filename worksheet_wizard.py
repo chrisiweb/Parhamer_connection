@@ -815,7 +815,7 @@ def create_single_example_ganze_zahlen_strich(dict_all_settings_wizard):
             string +=']'
         
     solution = eval(string.replace('[','(').replace(']',')'))
-    solution = D("{:.{prec}f}".format(solution, prec=set_commas))
+    solution = D("{:.{prec}f}".format(solution, prec=set_commas)).normalize()
 
     string = "{0} = {1}".format(str(string).replace(".",","), str(solution).replace(".",","))
 
