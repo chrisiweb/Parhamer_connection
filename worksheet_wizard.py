@@ -516,9 +516,10 @@ def create_number_from_primes(list_of_primenumbers, minimum, maximum):
             product = temp_product
             list_of_products.append(x)
 
-        if product > minimum:
-            list_of_products.sort()
-            return product, list_of_products
+        # if product > minimum:
+        #     print(5)
+        #     continue
+
         
 def convert_to_powers(list_of_factors):
     dict_of_occurences = {}
@@ -541,7 +542,6 @@ def create_single_example_primenumbers(dict_all_settings_wizard):
     display_as_powers = dict_all_settings_wizard['display_as_powers']
     
     list_of_primenumbers = get_list_of_primenumbers(maximum_prime)
-
     product, list_of_factors = create_number_from_primes(list_of_primenumbers,minimum,maximum)
 
     if display_as_powers == True:
@@ -553,6 +553,10 @@ def create_single_example_primenumbers(dict_all_settings_wizard):
     solution = f"${solution}$"
     string_product = '\xb7'.join(str(x) for x in string_list_of_factors)
     _string = f"{product} = {string_product}"
+    
+    print(product)
+    print(solution)
+    print(_string)
     
     return [product, solution, _string]
 
