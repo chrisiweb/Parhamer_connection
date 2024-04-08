@@ -34,6 +34,7 @@ dict_themen_wizard = {
                 'self.widget_zahlenbereich_subticks',
                 'self.widget_general_direction_CB',
                 'self.widget_coordinatesystem_points',
+                'self.widget_numberline_fraction',
             ],
         },
         "Teiler && Vielfache":{
@@ -445,8 +446,8 @@ def create_single_example_number_line(dict_all_settings_wizard): #starting_value
     starting_value = dict_all_settings_wizard['starting_value']
     steps = dict_all_settings_wizard['steps']
     subticks = dict_all_settings_wizard['subticks']
-    setting_decimal_fraction = dict_all_settings_wizard['setting_decimal_fraction']
-
+    setting_decimal_fraction = dict_all_settings_wizard['setting_decimal_fraction'] #0 & 1
+    
     maximum = starting_value+14*steps
     factor= subticks/steps
     i=0
@@ -458,10 +459,13 @@ def create_single_example_number_line(dict_all_settings_wizard): #starting_value
         x= float(remove_exponent(D(x)))
         x = formatNumber(x)
 
-        if get_number_of_decimals(x)>3:
+        # :
+        if setting_decimal_fraction == 1:
             num = round(random_decimal*factor)
             dem = round(factor)
             x = Fraction(num, dem)
+        elif get_number_of_decimals(x)>3:
+            x = round(x, 3)
 
 
 
@@ -491,8 +495,11 @@ def create_single_example_number_line(dict_all_settings_wizard): #starting_value
         if isinstance(dict_of_points[all][0], float):
             value = str(dict_of_points[all][0]).replace(".",",") 
         else:
+
             num = dict_of_points[all][0].numerator
             dem = dict_of_points[all][0].denominator
+
+
             if round(num//dem) == 0:
                 str_integer = ""
             else:
@@ -502,6 +509,11 @@ def create_single_example_number_line(dict_all_settings_wizard): #starting_value
                 str_num = ""
             else:
                 str_num = f"{round(num % dem)}/{round(dem)}"
+
+            if round(num//dem) == 0 and round(num % dem) == 0:
+                str_integer = 0
+                str_num = ""
+                
             value = f"{str_integer}{str_num}"
         # value = str(dict_of_points[all][0]).replace(".",",")
         _string += f"{all} = {value}"
