@@ -531,10 +531,11 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
                 critical_window("Der Befehl '\Gruppe' muss im LaTeX-Dokument an einer beliebigen Stelle eingebunden sein.")
                 return
         elif group_mode == 1:
-            if latex_code.find("\\begin{titlepage}") == -1:
-                latex_code = latex_code.replace("\\begin{document}","\\begin{document}\hiddengroup")
-            else:
-                latex_code = latex_code.replace("\\begin{titlepage}","\\begin{titlepage}\hiddengroup")
+            if latex_code.find("\hiddengroup") == -1:
+                if latex_code.find("\\begin{titlepage}") == -1:
+                    latex_code = latex_code.replace("\\begin{document}","\\begin{document}\hiddengroup")
+                else:
+                    latex_code = latex_code.replace("\\begin{titlepage}","\\begin{titlepage}\hiddengroup")
             
         for index in range(range_limit):
             if index %2==0:
