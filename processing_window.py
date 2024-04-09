@@ -50,7 +50,7 @@ class Ui_Dialog_processing(object):
         self.label.setObjectName("label")
 
         if show_donation_notice==True:
-            worker_text += "<font size='-1'><br><br><br>Du bist zufrieden mit LaMA? Wir freuen uns über jede kleine Spende</font>"
+            worker_text += "<font size='-1'><br><br><br>Du bist zufrieden mit LaMA? Wir freuen uns über jede kleine Spende!</font>"
             self.label.setText(worker_text)
             self.label.setStyleSheet("padding: 20px 20px 0px 20px")
             url_clickable = create_new_label(Dialog, "Buy me a coffee",clickable=True)

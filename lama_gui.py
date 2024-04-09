@@ -2436,7 +2436,6 @@ def setup_stackWizard(self):
     self.comboBox_themen_wizard.hide()
 
     self.pushbutton_themen_wizard = QtWidgets.QPushButton(self.groupBox_topics)
-    # print(list(dict_themen_wizard.values())[0][0])
     # self.pushbutton_themen_wizard.setText(dict_themen_wizard[list(dict_themen_wizard.values())[0][0]])
     self.pushbutton_themen_wizard.setText("Arithmetik > Darstellung von Zahlen > Stellenwerte")
     self.chosen_topics_wizard = ["Arithmetik", "Darstellung von Zahlen", "Stellenwerte"]
@@ -2455,7 +2454,7 @@ def setup_stackWizard(self):
     #     button_text = self.pushbutton_themen_wizard.text()
     #     x = button_text.split(" \u2b9e ")
     #     self.chosen_topic_wizard = x
-    #     print(self.chosen_topic_wizard)
+
 
     self.total_list_of_widgets_wizard = []
     self.total_list_of_topics_wizard = []
@@ -2483,9 +2482,7 @@ def setup_stackWizard(self):
                         for all in level_2_values:
                             if all not in self.total_list_of_widgets_wizard:
                                 self.total_list_of_widgets_wizard.append(all)                                      
-            # print(level_1_values)
         # for subtopic in subtopics:
-        #     print(subtopic)
         #     subsubtopics = subtopics[subtopic]
             # if type(subsubtopics)==dict:
             #     subsubmenu = submenu.addMenu(str(subtopic))
@@ -2799,8 +2796,6 @@ def setup_stackWizard(self):
     for i, all in enumerate(reversed(list_stellenwerte[:index_E+1])):
         add_new_option(self.combobox_zahlenbereich_2, i, all)
 
-    # self.combobox_zahlenbereich_2.currentIndexChanged.connect(lambda: print(self.combobox_zahlenbereich_2.currentIndex()))
-    # self.combobox_zahlenbereich_1.currentIndexChanged.connect(lambda: print(self.combobox_zahlenbereich_1.currentIndex()))
 
     self.widget_kommastellen_wizard = QtWidgets.QWidget(self.groupBox_zahlenbereich_wizard)
     self.widget_kommastellen_wizard.setSizePolicy(SizePolicy_fixed)

@@ -43,15 +43,7 @@ class DragDropWidget(QtWidgets.QWidget):
         self.setAcceptDrops(True)
 
 
-    # def mouseMoveEvent(self, e):
-    #     print(f"widget size: {self.size()}")
-    #     print(f"widget position: {self.pos()}")
-    #     print(f"mouse position: {e.pos()}")
 
-    # def dragLeaveEvent(self, event):
-    #     # self.MainWindow.groupBox_sage.setCursor(Qt.ForbiddenCursor)
-    #     # QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(Qt.ForbiddenCursor))
-    #     print('ERROR')
 
     # # def cursorInWidget(self):
     # #     cursorPos = QtGui.QCursor.pos()
@@ -119,8 +111,6 @@ class DragDropWidget(QtWidgets.QWidget):
         if drop_here == False:
             index = n
 
-        # print(index)
-        # self.MainWindow.verticalLayout_scrollArea_sage_typ1.insertWidget(index, widget)
 
         if index < 0:
             index=0   
