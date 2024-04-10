@@ -7168,6 +7168,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             
 
             aufgabe_total = get_aufgabe_total(item.replace(" (lokal)", ""), temp_typ)
+
             neue_aufgaben_box = self.create_neue_aufgaben_box(
                 index_item, item, aufgabe_total
             )
@@ -7460,6 +7461,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def nummer_clicked(self, item):
         aufgabe = item.text().replace(" (lokal)", "")
 
+        
         # if self.chosen_program == "cria":
         # klasse = self.get_klasse("sage")
         # aufgabe = klasse + "." + aufgabe
@@ -7469,6 +7471,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         else:
             list_index = 0
 
+        if get_aufgabe_total(aufgabe, typ) == None:
+            critical_window(f'Die Aufgabe {aufgabe} konnte nicht hinzugefügt werden!', 'Bitte versuchen Sie es erneut, oder melden Sie die fehlerhafte Aufgabe unter lama.helpme@gmail.com, sollte der Fehler weiterhin bestehen.')
+            return
         if aufgabe in self.list_alle_aufgaben_sage[list_index]:
             return
 
