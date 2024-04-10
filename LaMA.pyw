@@ -7469,6 +7469,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         else:
             list_index = 0
 
+        if get_aufgabe_total(aufgabe, typ) == None:
+            critical_window(f'Die Aufgabe {aufgabe} konnte nicht hinzugefügt werden!', 'Bitte versuchen Sie es erneut, oder melden Sie die fehlerhafte Aufgabe unter lama.helpme@gmail.com, sollte der Fehler weiterhin bestehen.')
+            return
         if aufgabe in self.list_alle_aufgaben_sage[list_index]:
             return
 
