@@ -6103,7 +6103,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             self.collect_all_infos_for_creating_file()
             save_file = path_backup_file[0]
-            return
 
         elif autosave != False:
             save_file = autosave
