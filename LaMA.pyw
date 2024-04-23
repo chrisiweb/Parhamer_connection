@@ -2501,13 +2501,17 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         msg.setText("Möchten Sie eine neue Grafik hinzufügen oder die Aufgabe mit einer bereits vorhandenen Grafik verknüpfen?")
         # msg.setInformativeText('Möchten Sie das neue Update installieren?')
         msg.setWindowTitle("Grafik hinzufügen")
-        msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No | QtWidgets.QMessageBox.Cancel)
+        if self.developer_mode_active == True:
+            msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No | QtWidgets.QMessageBox.Cancel)
+        else:
+            msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.Cancel)
         button_new = msg.button(QtWidgets.QMessageBox.Yes)
         button_new.setText("Neue Grafik hinzufügen")
         button_new.setIcon(QtGui.QIcon(get_icon_path('image.svg')))
-        button_existing = msg.button(QtWidgets.QMessageBox.No)
-        button_existing.setText("Vorhande Grafik verknüpfen")
-        button_existing.setIcon(QtGui.QIcon(get_icon_path('link.svg')))
+        if self.developer_mode_active == True:
+            button_existing = msg.button(QtWidgets.QMessageBox.No)
+            button_existing.setText("Vorhande Grafik verknüpfen")
+            button_existing.setIcon(QtGui.QIcon(get_icon_path('link.svg')))
         button_cancel = msg.button(QtWidgets.QMessageBox.Cancel)
         button_cancel.setText("Abbrechen")
         response = msg.exec_()
@@ -2533,14 +2537,14 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 self.saved_file_path = path_home
             open_path = os.path.dirname(self.saved_file_path)
         elif mode == 'existing':
-            if self.developer_mode_active == True:
-                open_path = os.path.join(path_database, 'Bilder')
-            else:
-                if os.path.isdir(os.path.join(path_database, 'Bilder_local')) == False:
-                    critical_window("Es konnten keine lokal gespeicherten Grafiken gefunden werden.")
-                    return
-                else:
-                    open_path = os.path.join(path_database, 'Bilder_local')
+            # if self.developer_mode_active == True:
+            open_path = os.path.join(path_database, 'Bilder')
+            # else:
+            #     if os.path.isdir(os.path.join(path_database, 'Bilder_local')) == False:
+            #         critical_window("Es konnten keine lokal gespeicherten Grafiken gefunden werden.")
+            #         return
+            #     else:
+            #         open_path = os.path.join(path_database, 'Bilder_local')
         list_filename = QtWidgets.QFileDialog.getOpenFileNames(
             None,
             "Grafiken wählen",
@@ -2857,7 +2861,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         return path
 
-    def get_parent_folder(self, typ_save):
+    def get_parent_folder(self):
         list_path = [path_programm]
 
         # if self.local_save == True:
@@ -3323,6 +3327,28 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             pagebreak = False
         else:
             pagebreak = True
+
+        if not is_empty(self.dict_picture_path):
+            for image in self.dict_picture_path:
+                image_path = self.dict_picture_path[image]
+
+                if image_path == "no_copy":
+                    list_path = self.get_parent_folder()
+
+                    
+                    list_path.append("Bilder")
+                    list_path.append(image)
+                    file_path = self.create_path_from_list(list_path)
+                    
+                    if os.path.isfile(file_path)==True:
+                        image_path = file_path
+                    else:
+                        critical_window(f"Die ausgewählte Grafik {image} wurde nicht in der Gemeinschaftsdatenbank gefunden und konnte daher nicht verknüpft werden.", "Bitte fügen Sie die gewünschte Grafik neu hinzu.")
+                        return
+
+                content = content.replace(image, image_path)
+
+
         rsp = create_tex(file_path, content, punkte = self.spinBox_punkte.value(), pagebreak=pagebreak)
 
         if rsp == True:
@@ -3599,7 +3625,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
 
-        list_path = self.get_parent_folder(typ_save)
+        list_path = self.get_parent_folder()
 
         if typ_save[0] == "local":
             list_path.append("Bilder_local")
