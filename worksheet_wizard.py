@@ -455,7 +455,10 @@ def create_single_example_number_line(dict_all_settings_wizard): #starting_value
     list_of_points = []
     temp_dict_fraction = {}
     while i < 5:
+        print(f"start:{starting_value}")
+        print(f"maximum: {maximum}")
         random_decimal = random.uniform(starting_value, maximum)
+        print(f"random_decimal: {random_decimal}")
         x = round(random_decimal* factor) / factor
         x= float(remove_exponent(D(x)))
         x = formatNumber(x)
@@ -464,7 +467,14 @@ def create_single_example_number_line(dict_all_settings_wizard): #starting_value
         if setting_decimal_fraction == 1:
             num = round(random_decimal*factor)
             dem = round(factor)
-            x = Fraction(num, dem)
+            print(num)
+            print(dem)
+            try:
+                x = Fraction(num, dem)
+            except ZeroDivisionError:
+                print('error')
+                i+=1
+                continue
         elif get_number_of_decimals(x)>3:
             x = round(x, 3)
 
@@ -2089,22 +2099,29 @@ def create_latex_string_number_line(content, example, starting_value, steps, sub
         if i != 0:
             string_coordinates += " \hfil "
 
-
-        if isinstance(coordinates[0], float):
+        print(coordinates[0])
+        print(type(coordinates[0]))
+        if isinstance(coordinates[0], int):
+            x_coordinate = str(coordinates[0])
+        elif isinstance(coordinates[0], float):
             x_coordinate = str(coordinates[0]).replace(".",",")
         else:
             num = coordinates[0].numerator
             dem = coordinates[0].denominator
-
-            if round(num//dem) == 0:
-                str_integer = ""
+            print(num)
+            print(dem)
+            if num == 0 and dem == 1:
+                x_coordinate = "0"
             else:
-                str_integer = round(num//dem)
-            if round(num % dem) == 0:
-                str_num = ""
-            else:
-                str_num = f"\\frac{{{round(num % dem)}}}{{{round(dem)}}}"
-            x_coordinate = f"{str_integer} {str_num}"
+                if round(num//dem) == 0:
+                    str_integer = ""
+                else:
+                    str_integer = round(num//dem)
+                if round(num % dem) == 0:
+                    str_num = ""
+                else:
+                    str_num = f"\\frac{{{round(num % dem)}}}{{{round(dem)}}}"
+                x_coordinate = f"{str_integer} {str_num}"
             
         if geometry_direction_index == 0:
             string_coordinates += f"${all} = \\antwort[\\rule{{1cm}}{{0.3pt}}]{{{x_coordinate}}}$"
