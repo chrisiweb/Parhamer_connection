@@ -45,12 +45,13 @@ dict_themen_wizard = {
                 'self.comboBox_solution_type_wizard',
 
             ],
-            # "ggT": [
-            #     'self.widgetZahlenbereich_anzahl',
-            #     'self.widget_zahlenbereich_minimum',
-            #     'self.widget_zahlenbereich_maximum',
-            #     'self.widget_setting_ggt',                
-            # ]        funktioniert noch nicht
+            "ggT": [
+                'self.widgetZahlenbereich_anzahl',
+                'self.widget_zahlenbereich_minimum',
+                'self.widget_zahlenbereich_maximum',
+                'self.widget_setting_ggt',
+                'self.comboBox_solution_type_wizard',                
+            ]       # funktioniert noch nicht
         },
         "Positive (Dezimal-)Zahlen": {
             "Addition": [
@@ -590,6 +591,8 @@ def create_single_example_primenumbers(dict_all_settings_wizard):
    
     return [product, solution, _string]
 
+
+
 def create_single_example_ggt(dict_all_settings_wizard): #anzahl_zahlen, minimum, maximum, ggt_1_checked
     anzahl_zahlen = dict_all_settings_wizard['anzahl_zahlen']
     minimum = dict_all_settings_wizard['minimum_spinbox']
@@ -622,7 +625,7 @@ def create_single_example_ggt(dict_all_settings_wizard): #anzahl_zahlen, minimum
             break
 
     joined_numbers = ', '.join(str(x) for x in list_of_numbers)
-    _string = f"ggT({joined_numbers}) =  {ggt}"
+    _string = f"ggT({joined_numbers}) = {ggt}"
     return [list_of_numbers,ggt,_string]
         
 
@@ -2148,6 +2151,56 @@ def create_latex_string_primenumbers(content, example, solution_type, powers_ena
         
     return content
 
+def primfaktorzerlegung(n):
+    faktoren = []
+    teiler = 2
+
+    while teiler <= n:
+        if n % teiler == 0:
+            faktoren.append(teiler)
+            n = n // teiler
+        else:
+            teiler += 1
+
+    return faktoren
+
+def create_latex_string_ggt(content, example, solution_type):
+ 
+    string = example[-1]
+    x,y = string.split(" = ")    
+
+    x = x.replace('ggT', '\\text{ggT}')
+
+    str_pfz_y = ""
+    if solution_type == 1:
+        pfz_y = convert_to_powers(primfaktorzerlegung(example[1]))
+
+        if len(pfz_y)>0:
+            if len(pfz_y)>1 or pfz_y[0].isdigit()==False:
+                str_pfz_y = " \cdot ".join(pfz_y)
+                str_pfz_y += " = "
+
+    content += f"\\task ${x} = \\antwort{{{str_pfz_y}{y}}}$\n\n"
+
+    if solution_type == 1:
+
+        for all in example[0]:
+            a = all
+            # b= example[0][1]
+            pfz_a = convert_to_powers(primfaktorzerlegung(a))
+            str_pfz_a = " \cdot ".join(pfz_a)
+            # pfz_b = convert_to_powers(primfaktorzerlegung(b))
+            # str_pfz_b = " \cdot ".join(pfz_b)
+            content += f"$\\antwort{{{a} = {str_pfz_a}}}$\n\n"
+            # content += f"$\\antwort{{{b} = {str_pfz_b}}}$\n\n"
+        # print(pfz_a)
+        # print(pfz_b)
+        # print(convert_to_powers(pfz_a))
+        # print(convert_to_powers(pfz_b))
+
+
+    return content
+
 def create_latex_string_addition(content, example, ausrichtung):
     summanden = example[0]
     
@@ -2660,8 +2713,8 @@ def create_latex_worksheet(
                 content = create_latex_string_number_line(content, example, starting_value, steps, subticks, dot_style_index, geometry_direction_index)
             elif shorten_topic == 'ari_tei_pri':
                 content = create_latex_string_primenumbers(content, example, solution_type, powers_enabled)
-            # elif shorten_topic == 'ari_tei_ggt':
-            #     content = create_latex_string_primenumbers(content, example, solution_type, powers_enabled)
+            elif shorten_topic == 'ari_tei_ggt':
+                content = create_latex_string_ggt(content, example, solution_type)
             elif shorten_topic == 'ari_pos_add':
                 content = create_latex_string_addition(content, example, ausrichtung)
             elif shorten_topic == 'ari_pos_sub':
