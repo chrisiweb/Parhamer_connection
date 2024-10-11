@@ -1660,7 +1660,7 @@ def create_single_example_binomische_formeln(dict_all_settings_wizard):
     binom_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", binom_string)
     binom_string = binom_string.replace('\xb7', '\cdot ')
     
-
+    print([f"${binom_string}$",solution_string, string])
     return [f"${binom_string}$",solution_string, string]
 
 def split_binomial_expression(expression):
@@ -2660,7 +2660,6 @@ def create_latex_string_binomische_formeln(content, example, binoms_direction_in
         temp_content = f"\\task ${aufgabe} = \\antwort{{{loesung}}}$\n\n"
 
     temp_content = temp_content.replace('\xb7', '\cdot ')
-
     content += temp_content
 
     return content
@@ -2881,6 +2880,7 @@ def collect_dummy_solutions(dict_all_examples):
 
 def create_coordinates(solution_pixels, dict_all_examples):
     list_dummy_solutions = collect_dummy_solutions(dict_all_examples)
+
     for all in list_dummy_solutions:
         while True:
             distract_pixel = random.choice(list_all_pixels)
@@ -3101,6 +3101,7 @@ def create_nonogramm(nonogram, coordinates_nonogramm, spalten=3):
 
 
     for all in coordinates_nonogramm:
+        print(coordinates_nonogramm[all])
         if coordinates_nonogramm[all][1] == None:
             continue
         elif type(coordinates_nonogramm[all][1])==list:
