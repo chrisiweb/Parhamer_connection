@@ -1650,9 +1650,19 @@ def create_single_example_binomische_formeln(dict_all_settings_wizard):
 
         binom_string = binom_string.replace("_","\\rule{1cm}{0.3pt}")
 
+        print(solution_string)
+        solution_string = [re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", all) for all in solution_string]
+        solution_string = [all.replace('\xb7', '\cdot ') for all in solution_string]
+        solution_string = [re.sub(r'(\^)(\d{2,})', r'^{\2}', all) for all in solution_string]
+        # for all in solution_string:
+        #     print(all)
+        #     all = re.sub(r'(\^)(\d{2,})', r'^{\2}', all)
+        print(solution_string)    
+
     else:
         solution_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", solution_string)
         solution_string = solution_string.replace('\xb7', '\cdot ')
+        solution_string = re.sub(r'(\^)(\d{2,})', r'^{\2}', solution_string)
         solution_string  = f"${solution_string}$"
 
 
@@ -3101,7 +3111,6 @@ def create_nonogramm(nonogram, coordinates_nonogramm, spalten=3):
 
 
     for all in coordinates_nonogramm:
-        print(coordinates_nonogramm[all])
         if coordinates_nonogramm[all][1] == None:
             continue
         elif type(coordinates_nonogramm[all][1])==list:
