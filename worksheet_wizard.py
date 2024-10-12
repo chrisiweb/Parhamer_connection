@@ -455,10 +455,10 @@ def create_single_example_number_line(dict_all_settings_wizard): #starting_value
     list_of_points = []
     temp_dict_fraction = {}
     while i < 5:
-        print(f"start:{starting_value}")
-        print(f"maximum: {maximum}")
+        # print(f"start:{starting_value}")
+        # print(f"maximum: {maximum}")
         random_decimal = random.uniform(starting_value, maximum)
-        print(f"random_decimal: {random_decimal}")
+        # print(f"random_decimal: {random_decimal}")
         x = round(random_decimal* factor) / factor
         x= float(remove_exponent(D(x)))
         x = formatNumber(x)
@@ -467,12 +467,12 @@ def create_single_example_number_line(dict_all_settings_wizard): #starting_value
         if setting_decimal_fraction == 1:
             num = round(random_decimal*factor)
             dem = round(factor)
-            print(num)
-            print(dem)
+            # print(num)
+            # print(dem)
             try:
                 x = Fraction(num, dem)
             except ZeroDivisionError:
-                print('error')
+                # print('error')
                 i+=1
                 continue
         elif get_number_of_decimals(x)>3:
@@ -1650,14 +1650,9 @@ def create_single_example_binomische_formeln(dict_all_settings_wizard):
 
         binom_string = binom_string.replace("_","\\rule{1cm}{0.3pt}")
 
-        print(solution_string)
         solution_string = [re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", all) for all in solution_string]
         solution_string = [all.replace('\xb7', '\cdot ') for all in solution_string]
         solution_string = [re.sub(r'(\^)(\d{2,})', r'^{\2}', all) for all in solution_string]
-        # for all in solution_string:
-        #     print(all)
-        #     all = re.sub(r'(\^)(\d{2,})', r'^{\2}', all)
-        print(solution_string)    
 
     else:
         solution_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", solution_string)
@@ -1670,7 +1665,7 @@ def create_single_example_binomische_formeln(dict_all_settings_wizard):
     binom_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", binom_string)
     binom_string = binom_string.replace('\xb7', '\cdot ')
     
-    print([f"${binom_string}$",solution_string, string])
+    # print([f"${binom_string}$",solution_string, string])
     return [f"${binom_string}$",solution_string, string]
 
 def split_binomial_expression(expression):
@@ -2109,8 +2104,8 @@ def create_latex_string_number_line(content, example, starting_value, steps, sub
         if i != 0:
             string_coordinates += " \hfil "
 
-        print(coordinates[0])
-        print(type(coordinates[0]))
+        # print(coordinates[0])
+        # print(type(coordinates[0]))
         if isinstance(coordinates[0], int):
             x_coordinate = str(coordinates[0])
         elif isinstance(coordinates[0], float):
@@ -2118,8 +2113,8 @@ def create_latex_string_number_line(content, example, starting_value, steps, sub
         else:
             num = coordinates[0].numerator
             dem = coordinates[0].denominator
-            print(num)
-            print(dem)
+            # print(num)
+            # print(dem)
             if num == 0 and dem == 1:
                 x_coordinate = "0"
             else:
