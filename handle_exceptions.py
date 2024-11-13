@@ -11,6 +11,11 @@ def report_exceptions(f):
         try:
             f(*args, **kwargs)
         except Exception as e:
+            # #Iterate over all args, convert them to str, and join them
+            # args_str = ','.join(map(str,args))
+
+            # #Iterater over all kwargs, convert them into k=v and join them
+            # kwargs_str = ','.join('{}={}'.format(k,v) for k,v in kwargs.items())
             import traceback
             QtWidgets.QApplication.restoreOverrideCursor()
             rsp = critical_window("LaMA wurde unerwartet beendet.",
@@ -58,9 +63,23 @@ def report_exceptions(f):
                     
 
                 try:
-                    content = "Subject: LaMA Absturzbericht\n\nProblembeschreibung:\n\n{0}\n\nLaMA Version: {1}\nBetriebssystem: {2}".format(
-                        traceback.format_exc(), __version__, sys.platform, 
-                    )
+                    content = f"""Subject: LaMA Absturzbericht
+Problembeschreibung:
+
+{traceback.format_exc()}
+
+LaMA Version: {__version__}
+Betriebssystem: {sys.platform}
+
+Weiter Infos:
+*args:
+
+{args}
+
+**kwargs:
+
+{kwargs}
+"""
                     server = SMTP_SSL("smtp.gmail.com", 465)
                     server.ehlo()
                     server.login(gmail_user, gmail_password)

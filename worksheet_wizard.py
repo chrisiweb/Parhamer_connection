@@ -550,9 +550,15 @@ def get_list_of_primenumbers(maximum):
 def create_number_from_primes(list_of_primenumbers, minimum, maximum):
     product = 1
     list_of_products = []
+    print(list_of_primenumbers)
+    i=0
     while True:
+        i+=1
         x = random.choice(list_of_primenumbers)
+        print(x)
         temp_product = product * x
+        if i==15:
+            break
         if temp_product > maximum:
             if product > minimum:
                 list_of_products.sort()
@@ -562,6 +568,7 @@ def create_number_from_primes(list_of_primenumbers, minimum, maximum):
         else: 
             product = temp_product
             list_of_products.append(x)
+
 
 
         

@@ -6682,7 +6682,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 )
 
     def get_punkte_aufgabe_sage(self, aufgabe):
-        return self.dict_variablen_punkte[aufgabe].value()
+        try:
+            return self.dict_variablen_punkte[aufgabe].value()
+        except KeyError:
+            return 0
 
     def get_abstand_aufgabe_sage(self, aufgabe):
         try:
@@ -6692,10 +6695,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     def get_punkte_halb_aufgabe_sage(self, aufgabe):
         typ = get_aufgabentyp(self.chosen_program, aufgabe)
+
         if typ == 1:
             return self.dict_variablen_punkte_halb[aufgabe].isChecked()
         else:
             return False
+        
 
 
 
