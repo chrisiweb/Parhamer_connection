@@ -40,7 +40,7 @@ from config_start import (
 # from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QApplication
 
-from distutils.spawn import find_executable
+# from distutils.spawn import find_executable
 
 # from tinydb import Query
 
@@ -630,7 +630,7 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
             | QtCore.Qt.WindowCloseButtonHint,
         )
 
-        if not find_executable('latex'):
+        if not shutil.which('latex'):
             link = "https://mylama.github.io/lama/downloads.html"
             critical_window("""<h4>Die PDF-Datei konnte nicht erstellt werden, da keine LaTeX-Distribution auf dem Computer gefunden wurde.</h4>
 
@@ -4005,7 +4005,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.combobox_fontsize_wizard.setCurrentIndex(4)
         self.combobox_nummerierung_wizard.setCurrentIndex(0)
         self.combobox_ausrichtung_wizard.setCurrentIndex(0)
-        self.checkBox_show_nonogramm.setChecked(True)
+        # self.checkBox_show_nonogramm.setChecked(True)
         self.combobox_nonogramm_wizard.setCurrentIndex(0)
         
         for i in reversed(range(self.gridLayout_scrollArea_wizard.count())): 

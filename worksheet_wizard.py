@@ -600,7 +600,7 @@ def create_single_example_primenumbers(dict_all_settings_wizard):
     else:
         string_list_of_factors = list_of_factors
 
-    solution = '\cdot '.join(str(x) for x in string_list_of_factors)
+    solution = r'\cdot '.join(str(x) for x in string_list_of_factors)
     solution = f"${solution}$"
     string_product = '\xb7'.join(str(x) for x in string_list_of_factors)
     _string = f"{product} = {string_product}"
@@ -861,9 +861,10 @@ def create_single_example_ganze_zahlen_strich(dict_all_settings_wizard):
 
         else:
             string +=']'
-        
+  
     solution = eval(string.replace('[','(').replace(']',')'))
-    solution = D("{:.{prec}f}".format(solution, prec=set_commas)).normalize()
+    if set_commas>0:
+        solution = D("{:.{prec}f}".format(solution, prec=set_commas)).normalize()
 
     string = "{0} = {1}".format(str(string).replace(".",","), str(solution).replace(".",","))
 
@@ -1547,7 +1548,7 @@ def create_single_example_binomische_formeln(dict_all_settings_wizard):
    
     random_choice = random.choice(binome)
 
-    random_choice = re.sub("\*[AB]\*\*0", "", random_choice)
+    random_choice = re.sub(r"\*[AB]\*\*0", "", random_choice)
 
 
     binom = eval(random_choice)
@@ -1582,7 +1583,7 @@ def create_single_example_binomische_formeln(dict_all_settings_wizard):
     solution_string = solution.replace("**", "^")
 
     if fractions_allowed==True:
-        solution_string = re.sub('([AB])\*([AB])', r"\1\2", solution_string)
+        solution_string = re.sub(r'([AB])\*([AB])', r"\1\2", solution_string)
         solution_string = solution_string.replace("*", "\xb7")
     else:
         solution_string = solution_string.replace("*", "")
@@ -1593,7 +1594,7 @@ def create_single_example_binomische_formeln(dict_all_settings_wizard):
     binom_string = random_choice.replace("**", "^")
 
     if fractions_allowed==True:
-        binom_string = re.sub('([AB])\*([AB])', r"\1\2", binom_string)
+        binom_string = re.sub(r'([AB])\*([AB])', r"\1\2", binom_string)
         binom_string = binom_string.replace("*", "\xb7")
     else:
         binom_string = binom_string.replace("*", "")
@@ -1601,9 +1602,9 @@ def create_single_example_binomische_formeln(dict_all_settings_wizard):
     binom_string = binom_string.replace("B", variable_choices[1])
 
 
-    binom_string = re.sub('([^0-9])1\xb7([^0-9\)/])', r"\1\2",binom_string)
-    binom_string = re.sub('([^0-9])1([^0-9\)/])', r"\1\2",binom_string)
-    binom_string = re.sub('([^0-9])\xb7([^0-9])', r"\1\2",binom_string)
+    binom_string = re.sub(r'([^0-9])1\xb7([^0-9\)/])', r"\1\2",binom_string)
+    binom_string = re.sub(r'([^0-9])1([^0-9\)/])', r"\1\2",binom_string)
+    binom_string = re.sub(r'([^0-9])\xb7([^0-9])', r"\1\2",binom_string)
     binom_string = binom_string.replace("+-", "-")
     binom_string = binom_string.replace("--", "+")
 
@@ -1658,19 +1659,19 @@ def create_single_example_binomische_formeln(dict_all_settings_wizard):
         binom_string = binom_string.replace("_","\\rule{1cm}{0.3pt}")
 
         solution_string = [re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", all) for all in solution_string]
-        solution_string = [all.replace('\xb7', '\cdot ') for all in solution_string]
+        solution_string = [all.replace('\xb7', r'\cdot ') for all in solution_string]
         solution_string = [re.sub(r'(\^)(\d{2,})', r'^{\2}', all) for all in solution_string]
 
     else:
         solution_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", solution_string)
-        solution_string = solution_string.replace('\xb7', '\cdot ')
+        solution_string = solution_string.replace('\xb7', r'\cdot ')
         solution_string = re.sub(r'(\^)(\d{2,})', r'^{\2}', solution_string)
         solution_string  = f"${solution_string}$"
 
 
 
     binom_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", binom_string)
-    binom_string = binom_string.replace('\xb7', '\cdot ')
+    binom_string = binom_string.replace('\xb7', r'\cdot ')
     
     # print([f"${binom_string}$",solution_string, string])
     return [f"${binom_string}$",solution_string, string]
@@ -2043,8 +2044,8 @@ def create_latex_string_stellenwert(content, example):
 
     _string = _string.split(" = ")
 
-    string_0 = _string[0].replace(".","\,")
-    string_1 = _string[1].replace(".","\,")
+    string_0 = _string[0].replace(".",r"\,")
+    string_1 = _string[1].replace(".",r"\,")
     content += f"\\task {string_0} = \\antwort{{{string_1}}}"
 
     return content
@@ -2067,23 +2068,23 @@ def create_latex_string_number_line(content, example, starting_value, steps, sub
     if starting_value==0:
         arrows = "->"
         beginning_picture = starting_value-steps/2
-        ending_picture = starting_value+15*steps
+        ending_picture = starting_value+15*steps-0.5
         beginning = starting_value
-        ending = starting_value+15*steps
+        ending = starting_value+15*steps-0.5
         Ox= None
         string_Ox = ""
     elif starting_value<0:
         arrows = "<->"
         beginning_picture = starting_value-steps/2
-        ending_picture = starting_value+15*steps
+        ending_picture = starting_value+15*steps-0.5
         beginning = starting_value-steps/2
-        ending = starting_value+15*steps
+        ending = starting_value+15*steps-0.5
         Ox= None
         string_Ox= ""
     elif starting_value>0:
         arrows = "->"
         beginning_picture = -steps/2
-        ending_picture = 15*steps
+        ending_picture = 15*steps-0.5
         beginning = 0
         ending = ending_picture
         Ox = starting_value
@@ -2096,9 +2097,9 @@ def create_latex_string_number_line(content, example, starting_value, steps, sub
         pstricks_code_dots = f"\\antwort{{{pstricks_code_dots}}}" 
 
     
-    pstricks_code = f"""
+    pstricks_code = fr"""
 \psset{{xunit={1/steps}cm,yunit=1.0cm,dotstyle=x,dotsize=6pt 0,linewidth=1pt,arrowsize=3pt 2}}
-\\begin{{pspicture*}}({beginning_picture},-1)({ending_picture},1)
+\begin{{pspicture*}}({beginning_picture},-1)({ending_picture},1)
 \psaxes[labelFontSize=\scriptstyle, comma, yAxis=false {string_Ox},Dx={steps},ticksize=-5pt 0,subticks={subticks}, subtickcolor=black]{{{arrows}}}(0,0)({beginning},-1)({ending},1)
 {pstricks_code_dots}
 \end{{pspicture*}}
@@ -2109,7 +2110,7 @@ def create_latex_string_number_line(content, example, starting_value, steps, sub
     for i, all in enumerate(example[0]):
         coordinates = example[0][all]
         if i != 0:
-            string_coordinates += " \hfil "
+            string_coordinates += r" \hfil "
 
         # print(coordinates[0])
         # print(type(coordinates[0]))
@@ -2166,7 +2167,7 @@ def create_latex_string_primenumbers(content, example, solution_type, powers_ena
     content += f'\\antwort{{{solution}}}$'
     
     if solution_type == 1:
-        list_of_factors = solution.split("\cdot")
+        list_of_factors = solution.split(r"\cdot")
         if powers_enabled == True:
             list_of_factors = expand_powers(list_of_factors)
 
@@ -2217,7 +2218,7 @@ def create_latex_string_ggt(content, example, solution_type):
             a = all
             # b= example[0][1]
             pfz_a = convert_to_powers(primfaktorzerlegung(a))
-            str_pfz_a = " \cdot ".join(pfz_a)
+            str_pfz_a = r" \cdot ".join(pfz_a)
             # pfz_b = convert_to_powers(primfaktorzerlegung(b))
             # str_pfz_b = " \cdot ".join(pfz_b)
             content += f"$\\antwort{{{a} = {str_pfz_a}}}$\n\n"
@@ -2250,7 +2251,7 @@ def create_latex_string_addition(content, example, ausrichtung):
                 else:
                     phantom = "0"*(max_decimal-decimals)
                 
-                phantom = "\hphantom{{{0}}}".format(phantom)
+                phantom = r"\hphantom{{{0}}}".format(phantom)
             else:
                 phantom = ""
 
