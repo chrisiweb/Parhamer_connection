@@ -527,15 +527,15 @@ Sollte dies nicht möglich sein, melden Sie sich bitte unter: lama.helpme@gmail.
     
 
         if group_mode == 0:
-            if latex_code.find("\Gruppe") == -1:
-                critical_window("Der Befehl '\Gruppe' muss im LaTeX-Dokument an einer beliebigen Stelle eingebunden sein.")
+            if latex_code.find("\\Gruppe") == -1:
+                critical_window("Der Befehl '\\Gruppe' muss im LaTeX-Dokument an einer beliebigen Stelle eingebunden sein.")
                 return
         elif group_mode == 1:
-            if latex_code.find("\hiddengroup") == -1:
+            if latex_code.find("\\hiddengroup") == -1:
                 if latex_code.find("\\begin{titlepage}") == -1:
-                    latex_code = latex_code.replace("\\begin{document}","\\begin{document}\hiddengroup")
+                    latex_code = latex_code.replace("\\begin{document}","\\begin{document}\\hiddengroup")
                 else:
-                    latex_code = latex_code.replace("\\begin{titlepage}","\\begin{titlepage}\hiddengroup")
+                    latex_code = latex_code.replace("\\begin{titlepage}","\\begin{titlepage}\\hiddengroup")
             
         for index in range(range_limit):
             if index %2==0:
@@ -941,7 +941,7 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
             readme_content = requests.get(link)
 
             latest_version = re.search(
-                "\[(v\d+.\d+.\d+)\]", readme_content.text
+                r"\[(v\d+.\d+.\d+)\]", readme_content.text
             ).group(1)
 
 
@@ -1957,7 +1957,7 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
             color = "rgb(88, 111, 124)"
         else:
             color = "rgb(47, 69, 80)"
-        custom_window("""
+        custom_window(r"""
 Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu finanzieren.<br><br>
 
 <b>Unser Projekt ist und bleibt kostenlos und wir versuchen es auch weiterhin stetig zu verbessern und aktualisieren. Sie dient lediglich als kleine Anerkennung unserer Arbeit.</b><br>
@@ -2679,7 +2679,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             # 
     def get_number_of_included_images(self):
-        num = self.plainTextEdit.toPlainText().count("\includegraphics")
+        num = self.plainTextEdit.toPlainText().count("\\includegraphics")
         return num
 
     def check_included_attached_image_ratio(self):
@@ -2891,7 +2891,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         _file_ = Query()
 
         if self.chosen_variation != None:
-            pattern = "{}\[.*\]".format(self.chosen_variation)
+            pattern = fr"{self.chosen_variation}\[.*\]"
             all_files = table_lama.search(_file_.name.matches(pattern))
         elif typ == 1:
             all_files = table_lama.search(_file_.name.matches(themen_auswahl))
@@ -2913,7 +2913,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             if self.chosen_variation == None:
                 num = int(num.split("[")[0])
             else:
-                num = re.search("\[(.*)\]", num)
+                num = re.search(r"\[(.*)\]", num)
                 num = int(num.group(1))
 
             if num > max_integer:
@@ -3077,7 +3077,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         return string
 
     def exisiting_variations_AB(self, content):
-        rsp = re.search("\\\\variation\{.*\}\{.*\}", content)
+        rsp = re.search(r"\\variation\{.*\}\{.*\}", content)
         if rsp == None:
             return False
         else:
@@ -5247,7 +5247,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     self.nonogram_wizard = nonogram
             else:
                 nonogram = self.combobox_nonogramm_wizard.currentText()
-                nonogram = re.split(" \([0-9]+\)", nonogram)[0].lower()
+                nonogram = re.split(r" \([0-9]+\)", nonogram)[0].lower()
                 try:
                     del self.nonogram_wizard
                 except AttributeError:
@@ -7995,7 +7995,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 return False
 
     def replace_group_variation_aufgabe(self, content):
-        _list = re.findall("\\\\variation\{.*\}\{.*\}", content)
+        _list = re.findall(r"\\variation\{.*\}\{.*\}", content)
 
         for all in _list:
             open_count=0
@@ -8013,7 +8013,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             replacement_string = all[start_index+2:-1].replace("\\", "\\\\")
 
-            content = re.sub("\\\\variation\{.*\}\{.*\}", replacement_string, content)
+            content = re.sub(r"\\variation\{.*\}\{.*\}", replacement_string, content)
 
 
 
@@ -8042,8 +8042,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         abstand = self.get_abstand_aufgabe_sage(aufgabe)
         if punkte == 0:
-            begin = "\\begin{enumerate}\item[\\stepcounter{number}\\thenumber.]"
-            end = "\end{enumerate}"
+            begin = "\\begin{enumerate}\\item[\\stepcounter{number}\\thenumber.]"
+            end = "\\end{enumerate}"
         elif aufgabe_total["pagebreak"] == False:
             begin = begin_beispiel(aufgabe_total["themen"], punkte, halbe_punkte)
             end = end_beispiel
@@ -8129,12 +8129,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         with open(filename_vorschau, "a+", encoding="utf8") as vorschau:
             vorschau.write(header)
             if show_group_B == True:
-                vorschau.write("\setcounter{Zufall}{1}")    
+                vorschau.write(r"\setcounter{Zufall}{1}")    
             vorschau.write(begin)
             vorschau.write(content)
             vorschau.write(end)
             if show_group_B == True:
-                vorschau.write("\setcounter{Zufall}{0}")
+                vorschau.write(r"\setcounter{Zufall}{0}")
             vorschau.write(vspace)
             vorschau.write("\n\n")
 
@@ -8272,7 +8272,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     vorschau.write("\n\n")
                     vorschau.write("\\newpage\n")
                     vorschau.write(
-                        "\setcounter{{Zufall}}{{{0}}}\setcounter{{number}}{{0}}\setcounter{{page}}{{1}}\n\n".format(
+                        "\\setcounter{{Zufall}}{{{0}}}\\setcounter{{number}}{{0}}\\setcounter{{page}}{{1}}\n\n".format(
                             group + 1
                         )
                     )
@@ -8364,7 +8364,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
                     with open(filename_vorschau, "a", encoding="utf8") as vorschau:
                         vorschau.write(
-                            f"\n\n\\null\individualnotenschluessel{zusatz}{{{sg_lower}}}{{{gu_upper}}}{{{gu_lower}}}{{{b_upper}}}{{{b_lower}}}{{{ge_upper}}}{{{ge_lower}}}"
+                            f"\n\n\\null\\individualnotenschluessel{zusatz}{{{sg_lower}}}{{{gu_upper}}}{{{gu_lower}}}{{{b_upper}}}{{{b_lower}}}{{{ge_upper}}}{{{ge_lower}}}"
                         )
 
         with open(filename_vorschau, "a", encoding="utf8") as vorschau:

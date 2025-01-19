@@ -197,7 +197,7 @@ class Ui_Dialog_choose_type(object):
         )
         label_logo.setPixmap(QPixmap(logo))
 
-        label_logo.setFixedSize(QSize(screen_width*0.1,screen_height*0.07))
+        label_logo.setFixedSize(QSize(int(screen_width*0.1),int(screen_height*0.07)))
         label_logo.setScaledContents(True)
 
         verticalLayout.addWidget(label_logo, alignment=Qt.AlignCenter)
