@@ -2087,8 +2087,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
 
         self.spinBox_nummer.setValue(self.spinBox_nummer_setvalue)
-        self.checkBox_date.hide()
-        self.checkBox_date.setChecked(True)
+        # self.checkBox_date.hide()
+        # self.checkBox_date.setChecked(True)
 
         if self.comboBox_pruefungstyp.currentText() == "Grundkompetenzcheck":
             self.combobox_beurteilung.setEnabled(False)
@@ -2141,7 +2141,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 self.spinBox_nummer_setvalue = self.spinBox_nummer.value()
                 self.spinBox_nummer.setValue(0)
                 self.widgetNummer.setEnabled(False)
-                self.checkBox_date.show()
+                # self.checkBox_date.show()
                 # self.spinBox_nummer.setEnabled(False)
 
     ############################################################################
@@ -6169,12 +6169,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.Dialog.exec()
 
 
-        if dict_titlepage['hide_all'] == True:
-            self.widgetName.show()
-            self.checkBox_date.show()
-        else:
-            self.widgetName.hide()
-            self.checkBox_date.hide()
+        # if dict_titlepage['hide_all'] == True:
+        #     self.widgetName.show()
+        #     self.checkBox_date.show()
+        # else:
+        #     self.widgetName.hide()
+        #     self.checkBox_date.hide()
 
         if self.chosen_program == "lama":
             self.dict_titlepage = dict_titlepage

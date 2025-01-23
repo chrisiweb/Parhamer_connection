@@ -181,11 +181,11 @@ def check_if_hide_all_exists(dict_titlepage):
 
 
 def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
-    if self.checkBox_date.isChecked():
-        datum_kurz, datum = get_datum(self)
-    else:
-        datum_kurz = ""
-        datum = ""
+    # if self.checkBox_date.isChecked():
+    datum_kurz, datum = get_datum(self)
+    # else:
+    #     datum_kurz = ""
+    #     datum = ""
 
     dict_titlepage = check_if_hide_all_exists(dict_titlepage)
 

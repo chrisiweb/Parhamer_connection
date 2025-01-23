@@ -1050,30 +1050,30 @@ def setup_stackSage(self):
     self.horizontalLayout_frameDatum = create_new_horizontallayout(self.widget_datum)
     self.horizontalLayout_frameDatum.setContentsMargins(0,0,0,0)
 
-    self.checkBox_date = create_new_checkbox(self.widget_datum, " ", checked = True)
-    self.checkBox_date.setStyleSheet(f"""
-            QCheckBox {{
-                spacing: -5px;
-                padding-top: 2px;
-            }}
+    # self.checkBox_date = create_new_checkbox(self.widget_datum, " ", checked = True)
+    # self.checkBox_date.setStyleSheet(f"""
+    #         QCheckBox {{
+    #             spacing: -5px;
+    #             padding-top: 2px;
+    #         }}
 
-            QCheckBox::indicator:unchecked {{ 
-                image: url({get_icon_path("square.svg")});
-                width: 35px;
-            }}
+    #         QCheckBox::indicator:unchecked {{ 
+    #             image: url({get_icon_path("square.svg")});
+    #             width: 35px;
+    #         }}
 
-            QCheckBox::indicator:checked {{ 
-                image: url({get_icon_path("check-square.svg")});
-                width: 35px;
-            }}""")
-    self.horizontalLayout_frameDatum.addWidget(self.checkBox_date)
+    #         QCheckBox::indicator:checked {{ 
+    #             image: url({get_icon_path("check-square.svg")});
+    #             width: 35px;
+    #         }}""")
+    # self.horizontalLayout_frameDatum.addWidget(self.checkBox_date)
 
-    if self.chosen_program == 'lama' and self.dict_titlepage['hide_all'] == False:
-        self.checkBox_date.hide()
-    elif self.chosen_program == 'cria' and self.dict_titlepage_cria['hide_all'] == False:
-        self.checkBox_date.hide()
-    else:
-        self.checkBox_date.show()
+    # if self.chosen_program == 'lama' and self.dict_titlepage['hide_all'] == False:
+    #     self.checkBox_date.hide()
+    # elif self.chosen_program == 'cria' and self.dict_titlepage_cria['hide_all'] == False:
+    #     self.checkBox_date.hide()
+    # else:
+    #     self.checkBox_date.show()
 
 
     self.labelDate = create_new_label(self.widget_datum,"")
@@ -1091,7 +1091,7 @@ def setup_stackSage(self):
     self.dateEdit.setObjectName("dateEdit")
     self.horizontalLayout_frameDatum.addWidget(self.dateEdit)
 
-    self.checkBox_date.stateChanged.connect(lambda: self.checkbox_enable_disable_widget(self.checkBox_date, [self.labelDate,self.dateEdit]))
+    # self.checkBox_date.stateChanged.connect(lambda: self.checkbox_enable_disable_widget(self.checkBox_date, [self.labelDate,self.dateEdit]))
 
     self.gridLayout_SageMenu.addWidget(self.widget_datum, 1,0,1,1, QtCore.Qt.AlignLeft)
 
