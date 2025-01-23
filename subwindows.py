@@ -986,26 +986,26 @@ class Ui_Dialog_titlepage(object):
             string_titlepage = """\\flushright
 \\begin{minipage}[t]{0.4\\textwidth}
 [[LOGO]]
-\end{minipage} \\\\ [1cm] 
-\\textsc{\Huge [[TITEL]]}\\\\ [0.5cm] 
+\\end{minipage} \\\\ [1cm] 
+\\textsc{\\Huge [[TITEL]]}\\\\ [0.5cm] 
 
 \\vspace{0.8cm}
 
-\Large [[DATUM]]\\\\ [0.8cm] 
+\\Large [[DATUM]]\\\\ [0.8cm] 
 
-\\textsc{\Large Klasse [[KLASSE]]} \\\\ [1cm] 
+\\textsc{\\Large Klasse [[KLASSE]]} \\\\ [1cm] 
 
-\Large Name: \\rule{8cm}{0.4pt} \\\\ [1cm]
+\\Large Name: \\rule{8cm}{0.4pt} \\\\ [1cm]
 
-\Large Note: \\rule{8cm}{0.4pt} \\\\ [1cm]
+\\Large Note: \\rule{8cm}{0.4pt} \\\\ [1cm]
 
-\Large Unterschrift: \\rule{8cm}{0.4pt} \\\\ [1cm]
+\\Large Unterschrift: \\rule{8cm}{0.4pt} \\\\ [1cm]
 
 \\vspace{1cm}
 
 \\vfill
 
-\large[[BEURTEILUNGSRASTER]]"""
+\\large[[BEURTEILUNGSRASTER]]"""
 
         self.plainTextEdit_instructions.setPlainText(string_titlepage)
         verticalLayout.addWidget(self.plainTextEdit_instructions)
@@ -1578,7 +1578,7 @@ class Ui_Dialog_ausgleichspunkte(object):
         update_data(aufgabe, typ, entry_key, new_content)
 
 
-        if re.search("\\\\variation\{.*\}\{.*\}", new_content)!=None:
+        if re.search(r"\\variation\{.*\}\{.*\}", new_content)!=None:
             update_data(aufgabe, typ, 'gruppe', True)
         else:
             update_data(aufgabe, typ, 'gruppe', False)
@@ -1946,7 +1946,7 @@ class Ui_Dialog_erstellen_developer(QtWidgets.QDialog):
         verticallayout_mode.addWidget(self.combobox_gruppen_mode)
 
         self.infos = [
-            "Der Befehl '\Gruppe' muss im LaTeX-Dokument an einer beliebigen Stelle eingebunden sein.",
+            r"Der Befehl '\Gruppe' muss im LaTeX-Dokument an einer beliebigen Stelle eingebunden sein.",
             "Die Gruppen können durch Punkte im rechten oberen Eck der ersten Seite unterschieden werden."
         ]
         def combobox_gruppen_mode_changed():
@@ -2916,7 +2916,7 @@ class Ui_Dialog_set_individual_ns(QtWidgets.QDialog):
         self.combobox_ns.setEditable(True)
         self.combobox_ns.currentIndexChanged.connect(lambda: self.combobox_ns_index_changed())
 
-        regexp = QRegExp("[0-9,;/\.]*")
+        regexp = QRegExp(r"[0-9,;/\.]*")
         validator = QRegExpValidator(regexp)
 
         widget_ns = QtWidgets.QWidget(Dialog)
@@ -3649,7 +3649,7 @@ class Ui_Dialog_edit_drafts(object):
             # try:
             if dict_aufgabe != None:
                 self.label_themen.setText(str(dict_aufgabe['themen']))
-                if re.search("\[.*\]", self.comboBox.currentText()) != None and self.typ == 'lama_1':
+                if re.search(r"\[.*\]", self.comboBox.currentText()) != None and self.typ == 'lama_1':
                     self.pushButton_themen.setEnabled(False)
                 else:
                     self.pushButton_themen.setEnabled(True)
@@ -3722,7 +3722,7 @@ class Ui_Dialog_edit_drafts(object):
         content = ""
         for name in chosen_list:
             dict_aufgabe = self.get_dict_aufgabe(name)
-            content = content + "\subsubsection{{{0}}}\n".format(name)
+            content = content + "\\subsubsection{{{0}}}\n".format(name)
             if dict_aufgabe['pagebreak'] == False:
                 begin =  tex_minimal.begin_beispiel() + "\n"
                 end = tex_minimal.end_beispiel
