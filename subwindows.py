@@ -1992,12 +1992,11 @@ class Ui_Dialog_erstellen(QtWidgets.QDialog):
         self.pkt_gesamt = Ui_MainWindow.get_punkteverteilung()[0]
         self.pkt_typ1 = Ui_MainWindow.get_punkteverteilung()[1]
         self.pkt_typ2 = Ui_MainWindow.get_punkteverteilung()[2]
-        self.num_gesamt = len(
-            Ui_MainWindow.dict_all_infos_for_file["list_alle_aufgaben"]
-        )
+
         self.num_typ1 = Ui_MainWindow.get_aufgabenverteilung()[0]
         self.num_typ2 = Ui_MainWindow.get_aufgabenverteilung()[1]
 
+        self.num_gesamt = self.num_typ1 + self.num_typ2
         # self.pkt_ausgleich = Ui_MainWindow.get_number_ausgleichspunkte_gesamt()
 
         # self.dict_list_input_examples["data_gesamt"]
