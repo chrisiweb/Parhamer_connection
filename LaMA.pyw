@@ -3319,7 +3319,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.suchfenster_reset(True)
         self.reset_edit_file()
 
-
+    @report_exceptions
     def button_vorschau_edit_pressed(self):
         content = self.plainTextEdit.toPlainText()
         file_path = os.path.join(path_localappdata_lama, "Teildokument", "preview.tex")
@@ -3345,8 +3345,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                     else:
                         critical_window(f"Die ausgewählte Grafik {image} wurde nicht in der Gemeinschaftsdatenbank gefunden und konnte daher nicht verknüpft werden.", "Bitte fügen Sie die gewünschte Grafik neu hinzu.")
                         return
-
-                content = content.replace(image, image_path)
+                
+                if image_path != None:
+                    content = content.replace(image, image_path)
 
 
         rsp = create_tex(file_path, content, punkte = self.spinBox_punkte.value(), pagebreak=pagebreak)
