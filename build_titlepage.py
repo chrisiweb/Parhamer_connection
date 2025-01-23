@@ -78,7 +78,7 @@ def prepare_individual_titlepage(titlepage, dict_titlepage, MainWindow):
 
 
     if data_gesamt["Pruefungstyp"]== "Wiederholungsprüfung":
-            title_header = "\\textsc{{\\Huge Wiederholungsprüfung}} \\\ [0.5cm]"
+            title_header = r"\textsc{\Huge Wiederholungsprüfung} \\ [0.5cm]"
     elif (
     data_gesamt["Pruefungstyp"]== "Schularbeit"or 
     data_gesamt["Pruefungstyp"]== "Wiederholungsschularbeit" or 
@@ -337,7 +337,7 @@ def get_titlepage_vorschau(self, dict_titlepage, ausgabetyp, maximum, gruppe):
                 self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
                 == "Wiederholungsprüfung"
             ):
-                title_header = "\\textsc{{\\Huge Wiederholungsprüfung}} \\\ [0.5cm]"
+                title_header = r"\textsc{\Huge Wiederholungsprüfung} \\ [0.5cm]"
             elif (
                 self.dict_all_infos_for_file["data_gesamt"]["Pruefungstyp"]
                 == "Schularbeit"
