@@ -1313,6 +1313,16 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
         if variation == False:
             self.plainTextEdit.setPlainText(_translate("MainWindow", "", None))
 
+        try:
+            del self.temporary_save_edit_plainText_deutsch
+        except AttributeError:
+            pass
+        try:
+            del self.temporary_save_edit_plainText_englisch
+        except AttributeError:
+            pass
+                
+
         if self.chosen_gui == "widgets_edit":
             self.enable_widgets_editor(False)
             self.button_choose_file.setText("Aufgabe suchen...")
