@@ -6572,13 +6572,22 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         for all in self.dict_variablen_punkte:
             typ = get_aufgabentyp(self.chosen_program, all)
             if typ == None:
-                gesamtpunkte += self.dict_variablen_punkte[all].value()
+                try:
+                    gesamtpunkte += self.dict_variablen_punkte[all].value()
+                except RuntimeError:
+                    pass
             elif typ == 1:
-                pkt_typ1 += self.dict_variablen_punkte[all].value()
-                gesamtpunkte += self.dict_variablen_punkte[all].value()
+                try:
+                    pkt_typ1 += self.dict_variablen_punkte[all].value()
+                    gesamtpunkte += self.dict_variablen_punkte[all].value()
+                except RuntimeError:
+                    pass
             elif typ == 2:
-                pkt_typ2 += self.dict_variablen_punkte[all].value()
-                gesamtpunkte += self.dict_variablen_punkte[all].value()
+                try:
+                    pkt_typ2 += self.dict_variablen_punkte[all].value()
+                    gesamtpunkte += self.dict_variablen_punkte[all].value()
+                except RuntimeError:
+                    pass
 
         return [gesamtpunkte, pkt_typ1, pkt_typ2]
 
