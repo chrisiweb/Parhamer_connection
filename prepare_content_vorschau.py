@@ -117,7 +117,10 @@ def edit_content_hide_show_items(self, aufgabe, split_content, full_content):
 
 
 def copy_logo_to_target_path(self, logo_path):
-    logo_name = os.path.basename(logo_path)
+    try:
+        logo_name = os.path.basename(logo_path)
+    except TypeError:
+        return False
     logo_titlepage_path = os.path.join(path_localappdata_lama, "Teildokument",logo_name)
     if os.path.isfile(logo_titlepage_path):
         shutil.copy(

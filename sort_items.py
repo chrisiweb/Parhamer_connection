@@ -86,6 +86,9 @@ def order_gesammeltedateien(text, typ, cria_plain_number_order=False):
     elif typ == 'lama_2':
         num = name
 
+    else:
+        num = name
+
 
 
     if 'l.' in text['name']:
