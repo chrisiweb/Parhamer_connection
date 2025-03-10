@@ -1769,8 +1769,6 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
 
 
     def send_service_file(self):
-        folder_path_database = os.path.join(path_programm, "_database")
-        print(folder_path_database)
         Dialog = QtWidgets.QDialog(
                     None,
                     QtCore.Qt.WindowSystemMenuHint
@@ -1778,8 +1776,8 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
                     | QtCore.Qt.WindowCloseButtonHint,
                 )
         Dialog.setWindowIcon(QIcon(logo_path))
-        # Dialog.resize(300, 200)
-        Dialog.setWindowTitle("Servicedatei senden")
+        Dialog.setFixedWidth(400)
+        Dialog.setWindowTitle("Servicedateien senden")
 
         verticallayout = create_new_verticallayout(Dialog)
         # header = create_new_label(Dialog, "Dateien senden:",)
@@ -1813,41 +1811,7 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
         line_edit_email = create_new_lineedit(groupbox_contact)
         verticallayout_contact.addWidget(line_edit_email)
 
-
-        # self.groupBox_gruppen = create_new_groupbox(Dialog, "Anzahl der Gruppen:")
-        # horizontallayout = create_new_horizontallayout(self.groupBox_gruppen)
-        # self.spinBox_gruppen = QtWidgets.QSpinBox(self.groupBox_gruppen)
-        # self.spinBox_gruppen.setMinimum(1)
-        # self.spinBox_gruppen.setValue(2)
-        # self.spinBox_gruppen.setMaximum(5)
-        # horizontallayout.addWidget(self.spinBox_gruppen)
-
-        # verticallayout.addWidget(self.groupBox_gruppen)
-
-        # self.groupBox_gruppen_mode = create_new_groupbox(Dialog, "Darstellung")
-        # verticallayout_mode = create_new_verticallayout(self.groupBox_gruppen_mode)
-        # self.combobox_gruppen_mode = create_new_combobox(self.groupBox_gruppen_mode)
-        # add_new_option(self.combobox_gruppen_mode, 0, "sichtbar")
-        # add_new_option(self.combobox_gruppen_mode, 1, "versteckt")
-
-        # verticallayout_mode.addWidget(self.combobox_gruppen_mode)
-
-        # self.infos = [
-        #     r"Der Befehl '\Gruppe' muss im LaTeX-Dokument an einer beliebigen Stelle eingebunden sein.",
-        #     "Die Gruppen können durch Punkte im rechten oberen Eck der ersten Seite unterschieden werden."
-        # ]
-        # def combobox_gruppen_mode_changed():
-        #     index = self.combobox_gruppen_mode.currentIndex()
-        #     self.label_info_gruppen_mode.setText(f"Info: {self.infos[index]}")
-        # self.combobox_gruppen_mode.currentIndexChanged.connect(lambda: combobox_gruppen_mode_changed())
-    
-        # self.label_info_gruppen_mode = create_new_label(self.groupBox_gruppen_mode, f"Info: {self.infos[0]}", wordwrap=True)
-        # self.label_info_gruppen_mode.setStyleSheet("color: #C62E65")
-        # verticallayout_mode.addWidget(self.label_info_gruppen_mode)
-        # verticallayout.addWidget(self.groupBox_gruppen_mode)
-      
-
-
+   
         buttonBox = QtWidgets.QDialogButtonBox(Dialog)
 
         buttonBox.setStandardButtons(
@@ -1859,11 +1823,114 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
         buttonCancel.setText("Abbrechen")
 
         verticallayout.addWidget(buttonBox)
-        # buttonSave.clicked.connect(lambda: Dialog.accept())
-        
-        # verticallayout.addWidget(buttonBox)
+        buttonSend.clicked.connect(lambda: Dialog.accept())
+        buttonCancel.clicked.connect(lambda: Dialog.reject())
+
 
         rsp = Dialog.exec()
+        
+        if rsp == 0:
+            return
+
+        folder_path_database = os.path.join(path_programm, "_database")
+        print(folder_path_database)
+        
+#             rsp = critical_window("LaMA wurde unerwartet beendet.",
+#             "Beim Ausführen des Programms ist ein Fehler aufgetreten und es musste daher geschlossen werden.\n\nDurch das Senden des Fehlerberichts, wird der Fehler an das LaMA-Team weitergeleitet. Programmfehler können dadurch schneller behoben werden.",
+#             detailed_text=traceback.format_exc(),
+#             titel="Programmfehler",
+#             sendbutton=True,
+#             OKButton_text="LaMA beenden",
+#             set_width=350)
+#             # QtWidgets.QApplication.setOverrideCursor(
+#             #     QtGui.QCursor(QtCore.Qt.WaitCursor)
+#             # )
+#             if rsp == True:
+#                 gmail_user = "lamabugfix@gmail.com"
+#                 try:
+#                     fbpassword_path = os.path.join(path_programm, "_database", "_config")
+#                     fbpassword_file = os.path.join(fbpassword_path, "c2skuwwtgh.txt")
+#                     file = open(fbpassword_file, "r")
+#                     fbpassword_check = []
+#                     fbpassword_check.append(file.read().replace(" ", "").replace("\n", ""))
+#                     gmail_password = fbpassword_check[0]
+
+#                 except FileNotFoundError:
+#                     pass
+#                     QtWidgets.QApplication.restoreOverrideCursor()
+#                     pw_msg = QtWidgets.QInputDialog(
+#                         None,
+#                         QtCore.Qt.WindowSystemMenuHint
+#                         | QtCore.Qt.WindowTitleHint
+#                         | QtCore.Qt.WindowCloseButtonHint,
+#                     )
+#                     pw_msg.setInputMode(QtWidgets.QInputDialog.TextInput)
+#                     pw_msg.setWindowTitle("Passworteingabe nötig")
+#                     pw_msg.setLabelText("Passwort:")
+#                     pw_msg.setCancelButtonText("Abbrechen")
+#                     pw_msg.setWindowIcon(QtGui.QIcon(logo_path))
+#                     if pw_msg.exec_() == QtWidgets.QDialog.Accepted:
+#                         gmail_password = pw_msg.textValue()
+#                         QtWidgets.QApplication.setOverrideCursor(
+#                             QtGui.QCursor(QtCore.Qt.WaitCursor)
+#                         )
+#                     else:
+#                         critical_window("Der Fehlerbericht konnte leider nicht gesendet werden.",
+#                         titel="Fehler beim Senden")
+                    
+
+#                 try:
+#                     content = f"""Subject: LaMA Absturzbericht
+# Problembeschreibung:
+
+# {traceback.format_exc()}
+
+# LaMA Version: {__version__}
+# Betriebssystem: {sys.platform}
+
+# Weiter Infos:
+# *args:
+
+# {args}
+
+# **kwargs:
+
+# {kwargs}
+# """
+#                     server = SMTP_SSL("smtp.gmail.com", 465)
+#                     server.ehlo()
+#                     server.login(gmail_user, gmail_password)
+#                     server.sendmail(
+#                         "lamabugfix@gmail.com", "lama.helpme@gmail.com", content.encode("utf8")
+#                     )
+#                     server.close()
+
+#                     QtWidgets.QApplication.restoreOverrideCursor()
+
+#                     custom_window(
+#                         "Der Fehlerbericht wurde erfolgreich gesendet!",
+#                     "Vielen Dank für die Mithilfe, LaMA zu verbessern.",
+#                     titel = "Fehlerbericht gesendet",
+#                     set_width=300)
+
+
+#                 except:
+#                     QtWidgets.QApplication.restoreOverrideCursor()
+
+#                     if "smtplib.SMTPAuthenticationError" in str(sys.exc_info()[0]):
+#                         text = (
+#                             "Bitte kontaktieren Sie den Support unter:\nlama.helpme@gmail.com"
+#                         )
+
+#                     else:
+#                         text = "Überprüfen Sie Ihre Internetverbindung oder kontaktieren Sie den Support für nähere Informationen unter:\nlama.helpme@gmail.com"
+
+#                     critical_window(
+#                         "Der Fehlerbericht konnte leider nicht gesendet werden.",
+#                         titel="Fehler beim Senden",
+#                         detailed_text="Fehlermeldung:\n" + str(sys.exc_info()),
+#                     )
+
 
     def show_gk_catalogue(self):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
