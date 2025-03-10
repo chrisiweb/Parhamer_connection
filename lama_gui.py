@@ -241,6 +241,8 @@ def setup_MenuBar(self):
 
     self.menuOptionen.addAction(self.menuUpdate.menuAction())
 
+    self.actionServicefile = add_action(MainWindow, self.menuOptionen, "Servicedatei senden ...", self.send_service_file)
+
     self.actionGKcatalogue = add_action(MainWindow, self.menuHelp, "Grundkompetenzkatalog anzeigen", self.show_gk_catalogue)
 
     self.actionShowPopupWindow = add_action(

@@ -1768,6 +1768,102 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
                 self.reload_all_examples_sage(self.lama_settings[halfpoints])
 
 
+    def send_service_file(self):
+        folder_path_database = os.path.join(path_programm, "_database")
+        print(folder_path_database)
+        Dialog = QtWidgets.QDialog(
+                    None,
+                    QtCore.Qt.WindowSystemMenuHint
+                    | QtCore.Qt.WindowTitleHint
+                    | QtCore.Qt.WindowCloseButtonHint,
+                )
+        Dialog.setWindowIcon(QIcon(logo_path))
+        # Dialog.resize(300, 200)
+        Dialog.setWindowTitle("Servicedatei senden")
+
+        verticallayout = create_new_verticallayout(Dialog)
+        # header = create_new_label(Dialog, "Dateien senden:",)
+
+        groupbox_sendfiles = create_new_groupbox(Dialog, "Dateien senden")
+        verticallayout.addWidget(groupbox_sendfiles)
+        verticallayout_groupbox = create_new_verticallayout(groupbox_sendfiles)
+        # verticallayout.addWidget(header)
+
+        checkbox_t1 = create_new_checkbox(Dialog, "Teildokument Typ1", True)
+        verticallayout_groupbox.addWidget(checkbox_t1)
+        checkbox_t2 = create_new_checkbox(Dialog, "Teildokument Typ2", True)
+        verticallayout_groupbox.addWidget(checkbox_t2)
+        checkbox_cria = create_new_checkbox(Dialog, "Teildokument Unterstufe", True)
+        verticallayout_groupbox.addWidget(checkbox_cria)
+        checkbox_SA = create_new_checkbox(Dialog, "Schularbeit Vorschau", True)
+        verticallayout_groupbox.addWidget(checkbox_SA)
+        checkbox_worksheet = create_new_checkbox(Dialog, "Worksheet", True)
+        verticallayout_groupbox.addWidget(checkbox_worksheet)
+        checkbox_preview = create_new_checkbox(Dialog, "Vorschau Datei", True)
+        verticallayout_groupbox.addWidget(checkbox_preview)
+        checkbox_temp = create_new_checkbox(Dialog, "temp.txt", True)
+        verticallayout_groupbox.addWidget(checkbox_temp)
+        checkbox_titlepage = create_new_checkbox(Dialog, "Titelblatt Einstellungen", True)
+        verticallayout_groupbox.addWidget(checkbox_titlepage)
+
+        groupbox_contact = create_new_groupbox(Dialog, "E-Mail Adresse")
+        verticallayout.addWidget(groupbox_contact)
+
+        verticallayout_contact = create_new_verticallayout(groupbox_contact)
+        line_edit_email = create_new_lineedit(groupbox_contact)
+        verticallayout_contact.addWidget(line_edit_email)
+
+
+        # self.groupBox_gruppen = create_new_groupbox(Dialog, "Anzahl der Gruppen:")
+        # horizontallayout = create_new_horizontallayout(self.groupBox_gruppen)
+        # self.spinBox_gruppen = QtWidgets.QSpinBox(self.groupBox_gruppen)
+        # self.spinBox_gruppen.setMinimum(1)
+        # self.spinBox_gruppen.setValue(2)
+        # self.spinBox_gruppen.setMaximum(5)
+        # horizontallayout.addWidget(self.spinBox_gruppen)
+
+        # verticallayout.addWidget(self.groupBox_gruppen)
+
+        # self.groupBox_gruppen_mode = create_new_groupbox(Dialog, "Darstellung")
+        # verticallayout_mode = create_new_verticallayout(self.groupBox_gruppen_mode)
+        # self.combobox_gruppen_mode = create_new_combobox(self.groupBox_gruppen_mode)
+        # add_new_option(self.combobox_gruppen_mode, 0, "sichtbar")
+        # add_new_option(self.combobox_gruppen_mode, 1, "versteckt")
+
+        # verticallayout_mode.addWidget(self.combobox_gruppen_mode)
+
+        # self.infos = [
+        #     r"Der Befehl '\Gruppe' muss im LaTeX-Dokument an einer beliebigen Stelle eingebunden sein.",
+        #     "Die Gruppen können durch Punkte im rechten oberen Eck der ersten Seite unterschieden werden."
+        # ]
+        # def combobox_gruppen_mode_changed():
+        #     index = self.combobox_gruppen_mode.currentIndex()
+        #     self.label_info_gruppen_mode.setText(f"Info: {self.infos[index]}")
+        # self.combobox_gruppen_mode.currentIndexChanged.connect(lambda: combobox_gruppen_mode_changed())
+    
+        # self.label_info_gruppen_mode = create_new_label(self.groupBox_gruppen_mode, f"Info: {self.infos[0]}", wordwrap=True)
+        # self.label_info_gruppen_mode.setStyleSheet("color: #C62E65")
+        # verticallayout_mode.addWidget(self.label_info_gruppen_mode)
+        # verticallayout.addWidget(self.groupBox_gruppen_mode)
+      
+
+
+        buttonBox = QtWidgets.QDialogButtonBox(Dialog)
+
+        buttonBox.setStandardButtons(
+            QtWidgets.QDialogButtonBox.Ok|QtWidgets.QDialogButtonBox.Cancel
+        )
+        buttonSend = buttonBox.button(QtWidgets.QDialogButtonBox.Ok)
+        buttonCancel = buttonBox.button(QtWidgets.QDialogButtonBox.Cancel)
+        buttonSend.setText("Servicedatei senden")
+        buttonCancel.setText("Abbrechen")
+
+        verticallayout.addWidget(buttonBox)
+        # buttonSave.clicked.connect(lambda: Dialog.accept())
+        
+        # verticallayout.addWidget(buttonBox)
+
+        rsp = Dialog.exec()
 
     def show_gk_catalogue(self):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
