@@ -1804,10 +1804,17 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
         checkbox_titlepage = create_new_checkbox(Dialog, "Titelblatt Einstellungen", True)
         verticallayout_groupbox.addWidget(checkbox_titlepage)
 
-        groupbox_contact = create_new_groupbox(Dialog, "E-Mail Adresse")
+
+        groupbox_contact = create_new_groupbox(Dialog, "Kontaktdaten")
         verticallayout.addWidget(groupbox_contact)
 
         verticallayout_contact = create_new_verticallayout(groupbox_contact)
+        label_name = create_new_label(groupbox_contact, "Name:")
+        verticallayout_contact.addWidget(label_name)
+        line_edit_name = create_new_lineedit(groupbox_contact)
+        verticallayout_contact.addWidget(line_edit_name)
+        label_email = create_new_label(groupbox_contact, "E-Mail:")
+        verticallayout_contact.addWidget(label_email)
         line_edit_email = create_new_lineedit(groupbox_contact)
         verticallayout_contact.addWidget(line_edit_email)
 
@@ -1823,7 +1830,16 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
         buttonCancel.setText("Abbrechen")
 
         verticallayout.addWidget(buttonBox)
-        buttonSend.clicked.connect(lambda: Dialog.accept())
+
+        def send_files():
+            if is_empty(line_edit_name.text()) or is_empty(line_edit_email.text()):
+                information_window("Für notwendige Rückfragen müssen beim Senden der Servicedateien die Kontaktdaten angegeben werden.")
+            else:
+                Dialog.accept()
+
+        buttonSend.clicked.connect(send_files)
+
+
         buttonCancel.clicked.connect(lambda: Dialog.reject())
 
 
@@ -1832,104 +1848,103 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
         if rsp == 0:
             return
 
-        folder_path_database = os.path.join(path_programm, "_database")
-        print(folder_path_database)
-        
-#             rsp = critical_window("LaMA wurde unerwartet beendet.",
-#             "Beim Ausführen des Programms ist ein Fehler aufgetreten und es musste daher geschlossen werden.\n\nDurch das Senden des Fehlerberichts, wird der Fehler an das LaMA-Team weitergeleitet. Programmfehler können dadurch schneller behoben werden.",
-#             detailed_text=traceback.format_exc(),
-#             titel="Programmfehler",
-#             sendbutton=True,
-#             OKButton_text="LaMA beenden",
-#             set_width=350)
-#             # QtWidgets.QApplication.setOverrideCursor(
-#             #     QtGui.QCursor(QtCore.Qt.WaitCursor)
-#             # )
-#             if rsp == True:
-#                 gmail_user = "lamabugfix@gmail.com"
-#                 try:
-#                     fbpassword_path = os.path.join(path_programm, "_database", "_config")
-#                     fbpassword_file = os.path.join(fbpassword_path, "c2skuwwtgh.txt")
-#                     file = open(fbpassword_file, "r")
-#                     fbpassword_check = []
-#                     fbpassword_check.append(file.read().replace(" ", "").replace("\n", ""))
-#                     gmail_password = fbpassword_check[0]
+        # folder_path_database = os.path.join(path_programm, "_database")
+        # print(folder_path_database)
 
-#                 except FileNotFoundError:
-#                     pass
-#                     QtWidgets.QApplication.restoreOverrideCursor()
-#                     pw_msg = QtWidgets.QInputDialog(
-#                         None,
-#                         QtCore.Qt.WindowSystemMenuHint
-#                         | QtCore.Qt.WindowTitleHint
-#                         | QtCore.Qt.WindowCloseButtonHint,
-#                     )
-#                     pw_msg.setInputMode(QtWidgets.QInputDialog.TextInput)
-#                     pw_msg.setWindowTitle("Passworteingabe nötig")
-#                     pw_msg.setLabelText("Passwort:")
-#                     pw_msg.setCancelButtonText("Abbrechen")
-#                     pw_msg.setWindowIcon(QtGui.QIcon(logo_path))
-#                     if pw_msg.exec_() == QtWidgets.QDialog.Accepted:
-#                         gmail_password = pw_msg.textValue()
-#                         QtWidgets.QApplication.setOverrideCursor(
-#                             QtGui.QCursor(QtCore.Qt.WaitCursor)
-#                         )
-#                     else:
-#                         critical_window("Der Fehlerbericht konnte leider nicht gesendet werden.",
-#                         titel="Fehler beim Senden")
+        dict_sendfiles = {
+            'td_1' : checkbox_t1.isChecked(),
+            'td_2' : checkbox_t2.isChecked(),
+            'td_cria' : checkbox_cria.isChecked(),
+            'sa_preview' : checkbox_SA.isChecked(),
+            'worksheet' : checkbox_worksheet.isChecked(),
+            'preview' : checkbox_preview.isChecked(),
+            'temp':checkbox_temp.isChecked(),
+            'titlepage':checkbox_titlepage.isChecked(),
+            'name': line_edit_name.text(),
+            'email': line_edit_email.text(),
+        }
+
+        print(dict_sendfiles)
+
+
+        gmail_user = "lamabugfix@gmail.com"
+        from smtplib import SMTP_SSL
+        try:
+            
+            fbpassword_path = os.path.join(path_programm, "_database", "_config")
+            fbpassword_file = os.path.join(fbpassword_path, "c2skuwwtgh.txt")
+            file = open(fbpassword_file, "r")
+            fbpassword_check = []
+            fbpassword_check.append(file.read().replace(" ", "").replace("\n", ""))
+            gmail_password = fbpassword_check[0]
+
+        except FileNotFoundError:
+            pass
+            QtWidgets.QApplication.restoreOverrideCursor()
+            pw_msg = QtWidgets.QInputDialog(
+                None,
+                QtCore.Qt.WindowSystemMenuHint
+                | QtCore.Qt.WindowTitleHint
+                | QtCore.Qt.WindowCloseButtonHint,
+            )
+            pw_msg.setInputMode(QtWidgets.QInputDialog.TextInput)
+            pw_msg.setWindowTitle("Passworteingabe nötig")
+            pw_msg.setLabelText("Passwort:")
+            pw_msg.setCancelButtonText("Abbrechen")
+            pw_msg.setWindowIcon(QtGui.QIcon(logo_path))
+            if pw_msg.exec_() == QtWidgets.QDialog.Accepted:
+                gmail_password = pw_msg.textValue()
+                QtWidgets.QApplication.setOverrideCursor(
+                    QtGui.QCursor(QtCore.Qt.WaitCursor)
+                )
+            else:
+                critical_window("Die Servicedateien konnten leider nicht gesendet werden.",
+                titel="Fehler beim Senden")
                     
 
-#                 try:
-#                     content = f"""Subject: LaMA Absturzbericht
-# Problembeschreibung:
+        try:
+            content = f"""Subject: LaMA Service Dateien
+Kontakt: 
+Name: {send_files['name']}
+E-Mail: {send_files['email']}
 
-# {traceback.format_exc()}
+LaMA Version: {__version__}
+Betriebssystem: {sys.platform}
 
-# LaMA Version: {__version__}
-# Betriebssystem: {sys.platform}
+"""
+            server = SMTP_SSL("smtp.gmail.com", 465)
+            server.ehlo()
+            server.login(gmail_user, gmail_password)
+            server.sendmail(
+                "lamabugfix@gmail.com", "lama.helpme@gmail.com", content.encode("utf8")
+            )
+            server.close()
 
-# Weiter Infos:
-# *args:
+            QtWidgets.QApplication.restoreOverrideCursor()
 
-# {args}
-
-# **kwargs:
-
-# {kwargs}
-# """
-#                     server = SMTP_SSL("smtp.gmail.com", 465)
-#                     server.ehlo()
-#                     server.login(gmail_user, gmail_password)
-#                     server.sendmail(
-#                         "lamabugfix@gmail.com", "lama.helpme@gmail.com", content.encode("utf8")
-#                     )
-#                     server.close()
-
-#                     QtWidgets.QApplication.restoreOverrideCursor()
-
-#                     custom_window(
-#                         "Der Fehlerbericht wurde erfolgreich gesendet!",
-#                     "Vielen Dank für die Mithilfe, LaMA zu verbessern.",
-#                     titel = "Fehlerbericht gesendet",
-#                     set_width=300)
+            custom_window(
+                "Der Fehlerbericht wurde erfolgreich gesendet!",
+            "Vielen Dank für die Mithilfe, LaMA zu verbessern.",
+            titel = "Fehlerbericht gesendet",
+            set_width=300)
 
 
-#                 except:
-#                     QtWidgets.QApplication.restoreOverrideCursor()
+        except:
+            QtWidgets.QApplication.restoreOverrideCursor()
 
-#                     if "smtplib.SMTPAuthenticationError" in str(sys.exc_info()[0]):
-#                         text = (
-#                             "Bitte kontaktieren Sie den Support unter:\nlama.helpme@gmail.com"
-#                         )
+            if "smtplib.SMTPAuthenticationError" in str(sys.exc_info()[0]):
+                text = (
+                    "Bitte kontaktieren Sie den Support unter:\nlama.helpme@gmail.com"
+                )
 
-#                     else:
-#                         text = "Überprüfen Sie Ihre Internetverbindung oder kontaktieren Sie den Support für nähere Informationen unter:\nlama.helpme@gmail.com"
+            else:
+                text = "Überprüfen Sie Ihre Internetverbindung oder kontaktieren Sie den Support für nähere Informationen unter:\nlama.helpme@gmail.com"
 
-#                     critical_window(
-#                         "Der Fehlerbericht konnte leider nicht gesendet werden.",
-#                         titel="Fehler beim Senden",
-#                         detailed_text="Fehlermeldung:\n" + str(sys.exc_info()),
-#                     )
+            critical_window(
+                "Der Fehlerbericht konnte leider nicht gesendet werden.",
+                titel="Fehler beim Senden",
+                detailed_text="Fehlermeldung:\n" + str(sys.exc_info()),
+            )
 
 
     def show_gk_catalogue(self):
