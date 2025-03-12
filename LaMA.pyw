@@ -1923,10 +1923,7 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
                     if all == "temp":
                         file_name = os.path.join(path_teildokument, "temp.txt")
                         if os.path.isfile(file_name):
-                            print('exists')
                             list_send_files.append(file_name)
-                        else:
-                            print('does not exist')
                     else:
                         file_name = os.path.join(path_teildokument, f"{all}.tex")
                         if os.path.isfile(file_name):

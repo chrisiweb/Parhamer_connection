@@ -43,6 +43,7 @@ def order_gesammeltedateien(text, typ, cria_plain_number_order=False):
     # ###### typ_1 working
     # if re.match
     _list = []
+    num=name
     if typ == 'lama_1':
         for i, gk  in enumerate(dict_gk.values()):
             if gk.replace("-L","") in name.replace("-L",""):
@@ -86,8 +87,6 @@ def order_gesammeltedateien(text, typ, cria_plain_number_order=False):
     elif typ == 'lama_2':
         num = name
 
-    else:
-        num = name
 
 
 
