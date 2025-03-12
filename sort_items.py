@@ -9,21 +9,21 @@ def atoi(text):
 
 
 def natural_keys(text):
-    return [atoi(c) for c in re.split("(\d+)", text)]
+    return [atoi(c) for c in re.split(r"(\d+)", text)]
 
 
 def get_typ(string):
     if re.match("[A-Z]", string):
         return 'lama_1'
-    elif re.match("k[0-9]\.", string):
+    elif re.match(r"k[0-9]\.", string):
         return 'cria'
     else:
         return 'lama_2'
     
 
 def sort_variation(num, _list):
-    if re.match("[0-9]+\[.+\]", str(num)):
-        split_number = re.split("\[|\]", num)
+    if re.match(r"[0-9]+\[.+\]", str(num)):
+        split_number = re.split(r"\[|\]", num)
         _list.append(int(split_number[0]))
         _list.append(int(split_number[1]))
     else:
@@ -127,8 +127,8 @@ def cria_order(text):
     try:
         number = text.split(" - ")[2]
         number = number.replace("i.","")
-        if re.match("[0-9]+\[.+\]", number):
-            split_number = re.split("\[|\]", number)
+        if re.match(r"[0-9]+\[.+\]", number):
+            split_number = re.split(r"\[|\]", number)
             list_.append(int(split_number[0]))
             list_.append(int(split_number[1]))
         else:

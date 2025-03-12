@@ -1801,6 +1801,8 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
         verticallayout_groupbox.addWidget(checkbox_preview)
         checkbox_temp = create_new_checkbox(Dialog, "temp.txt", True)
         verticallayout_groupbox.addWidget(checkbox_temp)
+        checkbox_local_ddb = create_new_checkbox(Dialog, "Lokale Datenbank", True)
+        verticallayout_groupbox.addWidget(checkbox_local_ddb)
         # checkbox_titlepage = create_new_checkbox(Dialog, "Titelblatt Einstellungen", True)
         # verticallayout_groupbox.addWidget(checkbox_titlepage)
 
@@ -1860,6 +1862,7 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
             'worksheet' : checkbox_worksheet.isChecked(),
             'preview' : checkbox_preview.isChecked(),
             'temp':checkbox_temp.isChecked(),
+            '_local_database':checkbox_local_ddb.isChecked(),            
             'name': line_edit_name.text(),
             'email': line_edit_email.text(),
         }
@@ -1922,6 +1925,10 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
                 if dict_sendfiles[all] == True:
                     if all == "temp":
                         file_name = os.path.join(path_teildokument, "temp.txt")
+                        if os.path.isfile(file_name):
+                            list_send_files.append(file_name)
+                    elif all == "_local_database":
+                        file_name = os.path.join(path_programm, "_database", "_local_database.json")
                         if os.path.isfile(file_name):
                             list_send_files.append(file_name)
                     else:
