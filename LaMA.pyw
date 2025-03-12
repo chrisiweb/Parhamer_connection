@@ -1801,8 +1801,8 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
         verticallayout_groupbox.addWidget(checkbox_preview)
         checkbox_temp = create_new_checkbox(Dialog, "temp.txt", True)
         verticallayout_groupbox.addWidget(checkbox_temp)
-        checkbox_titlepage = create_new_checkbox(Dialog, "Titelblatt Einstellungen", True)
-        verticallayout_groupbox.addWidget(checkbox_titlepage)
+        # checkbox_titlepage = create_new_checkbox(Dialog, "Titelblatt Einstellungen", True)
+        # verticallayout_groupbox.addWidget(checkbox_titlepage)
 
 
         groupbox_contact = create_new_groupbox(Dialog, "Kontaktdaten")
@@ -1831,13 +1831,13 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
 
         verticallayout.addWidget(buttonBox)
 
-        def send_files():
+        def check_contact():
             if is_empty(line_edit_name.text()) or is_empty(line_edit_email.text()):
                 information_window("Für notwendige Rückfragen müssen beim Senden der Servicedateien die Kontaktdaten angegeben werden.")
             else:
                 Dialog.accept()
 
-        buttonSend.clicked.connect(send_files)
+        buttonSend.clicked.connect(check_contact)
 
 
         buttonCancel.clicked.connect(lambda: Dialog.reject())
@@ -1850,8 +1850,7 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
             return
 
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        # folder_path_database = os.path.join(path_programm, "_database")
-        # print(folder_path_database)
+
 
         dict_sendfiles = {
             'Teildokument_1' : checkbox_t1.isChecked(),
@@ -1865,10 +1864,6 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
             'email': line_edit_email.text(),
         }
 
-        print(dict_sendfiles)
-
-
-        gmail_user = "lamabugfix@gmail.com"
         from smtplib import SMTP_SSL
         from email.mime.multipart import MIMEMultipart
         from email.mime.text import MIMEText
@@ -1906,120 +1901,97 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
                 titel="Fehler beim Senden")
                     
 
-        # try:
-
-        # subject = "LaMA Service Dateien"
-        body = f"KONTAKT:\nNAME: {dict_sendfiles['name']}\nE-MAIL: {dict_sendfiles['email']}\n\nLaMA Version: {__version__}\n\nBetriebssystem: {sys.platform}"
-        # body = "test"
-        sender_email = "lamabugfix@gmail.com"
-        recipient_email = "lama.helpme@gmail.com"
-        # smtp_server = "smtp.gmail.com"
-        # smtp_port = 465
-        path_to_file = fbpassword_file
-
-
-        message = MIMEMultipart()
-        message['Subject'] = "LaMA Service Dateien"
-        message['From'] = sender_email
-        message['To'] = recipient_email
-        body_part = MIMEText(body)
-        message.attach(body_part)
+        try:
+            body = f"KONTAKT:\nNAME: {dict_sendfiles['name']}\nE-MAIL: {dict_sendfiles['email']}\n\nLaMA Version: {__version__}\n\nBetriebssystem: {sys.platform}"
+            sender_email = "lamabugfix@gmail.com"
+            recipient_email = "lama.helpme@gmail.com"
 
 
 
+            message = MIMEMultipart()
+            message['Subject'] = "LaMA Service Dateien"
+            message['From'] = sender_email
+            message['To'] = recipient_email
+            body_part = MIMEText(body)
+            message.attach(body_part)
+            
 
-
-        # ####
-        # self.progress_cleanup_value += 1
-        # self.progress_cleanup.setValue(self.progress_cleanup_value)
-
-        
-
-        list_send_files = []
-        for all in dict_sendfiles:
-            path_teildokument = os.path.join(path_programm, "Teildokument")
-            if dict_sendfiles[all] == True:
-                if all == "temp":
-                    file_name = os.path.join(path_teildokument, "temp.txt")
-                    if os.path.isfile(file_name):
-                        list_send_files.append(file_name)
+            list_send_files = []
+            for all in dict_sendfiles:
+                path_teildokument = os.path.join(path_programm, "Teildokument")
+                if dict_sendfiles[all] == True:
+                    if all == "temp":
+                        file_name = os.path.join(path_teildokument, "temp.txt")
+                        if os.path.isfile(file_name):
+                            print('exists')
+                            list_send_files.append(file_name)
+                        else:
+                            print('does not exist')
                     else:
-                        print('does not exist')
-                else:
-                    file_name = os.path.join(path_teildokument, f"{all}.tex")
-                    if os.path.isfile(file_name):
-                        list_send_files.append(file_name)
-                    file_name = os.path.join(path_teildokument, f"{all}.pdf")
-                    if os.path.isfile(file_name):
-                        list_send_files.append(file_name)                                        
-                
-        progress_value = 0
-        progress = QtWidgets.QProgressDialog("Systemdateien werden gesendet ...", "",progress_value,100)
-        progress.setFixedSize(progress.sizeHint())
-        progress.setWindowTitle("Sende...")
-        progress.setWindowFlags(QtCore.Qt.WindowTitleHint)
-        progress.setWindowIcon(QtGui.QIcon(logo_path))
-        progress.setCancelButton(None)
-        progress.setWindowModality(Qt.WindowModal)
+                        file_name = os.path.join(path_teildokument, f"{all}.tex")
+                        if os.path.isfile(file_name):
+                            list_send_files.append(file_name)
+                        file_name = os.path.join(path_teildokument, f"{all}.pdf")
+                        if os.path.isfile(file_name):
+                            list_send_files.append(file_name)                                        
+  
+            progress_value = 0
+            progress = QtWidgets.QProgressDialog("Systemdateien werden gesendet ...", "",progress_value,100)
+            progress.setFixedSize(progress.sizeHint())
+            progress.setWindowTitle("Sende...")
+            progress.setWindowFlags(QtCore.Qt.WindowTitleHint)
+            progress.setWindowIcon(QtGui.QIcon(logo_path))
+            progress.setCancelButton(None)
+            progress.setWindowModality(Qt.WindowModal)
 
-        for i in range(10):
-            progress_value += 1
-            progress.setValue(progress_value)
-            time.sleep(0.2)
-          
+            time.sleep(1)
 
-        
+            for all in list_send_files:
+                progress_value += 1
+                progress.setValue(progress_value)
+                with open(all, 'rb') as file:
+                    message.attach(MIMEApplication(file.read(), Name=os.path.basename(all)))
+                time.sleep(0.05)
 
-        for all in list_send_files:
-            progress_value += 1
-            progress.setValue(progress_value)
-            progress.show()
-            with open(all, 'rb') as file:
-                message.attach(MIMEApplication(file.read(), Name=os.path.basename(all)))
-        # with open(path_to_file, 'rb') as file:
-        #     message.attach(MIMEApplication(file.read(), Name='test.txt'))
-
-
-        with SMTP_SSL("smtp.gmail.com", 465) as server:
-            progress_value += 1
-            progress.setValue(progress_value)
-            server.login(sender_email, gmail_password)
-            progress_value += 1
-            progress.setValue(progress_value)
-            server.sendmail(sender_email, recipient_email, message.as_string())
-            progress_value += 1
-            progress.setValue(progress_value)
-        # server.ehlo()
-        # server.login(gmail_user, gmail_password)
-        # server.sendmail(
-        #     "lamabugfix@gmail.com", "lama.helpme@gmail.com", content.encode("utf8")
-        # )
-        # server.close()
-        progress.cancel()
-        QtWidgets.QApplication.restoreOverrideCursor()
-
-        custom_window(
-            "Die Servicedateien wurde erfolgreich gesendet!",
-        titel = "Fehlerbericht gesendet",
-        set_width=300)
+                    
+            with SMTP_SSL("smtp.gmail.com", 465) as server:
+                progress_value += 30
+                progress.setValue(progress_value)
+                server.login(sender_email, gmail_password)
+                progress_value += 30
+                progress.setValue(progress_value)
+                progress.setLabelText("Sende Servicedateien ...")
+                QApplication.processEvents()
+                server.sendmail(sender_email, recipient_email, message.as_string())
+                progress_value += 20
+                progress.setValue(progress_value)
 
 
-        # except:
-        #     QtWidgets.QApplication.restoreOverrideCursor()
+            progress.cancel()
+            QtWidgets.QApplication.restoreOverrideCursor()
 
-        #     if "smtplib.SMTPAuthenticationError" in str(sys.exc_info()[0]):
-        #         text = (
-        #             "Bitte kontaktieren Sie den Support unter:\nlama.helpme@gmail.com"
-        #         )
+            custom_window(
+                "Die Servicedateien wurde erfolgreich gesendet!",
+            titel = "Fehlerbericht gesendet",
+            set_width=300)
 
-        #     else:
-        #         text = "Überprüfen Sie Ihre Internetverbindung oder kontaktieren Sie den Support für nähere Informationen unter:\nlama.helpme@gmail.com"
 
-        #     critical_window(
-        #         "Die Servicedateien konnte nicht gesendet werden.",
-        #         titel="Fehler beim Senden",
-        #         detailed_text="Fehlermeldung:\n" + str(sys.exc_info()),
-        #     )
+        except:
+            QtWidgets.QApplication.restoreOverrideCursor()
+
+            if "smtplib.SMTPAuthenticationError" in str(sys.exc_info()[0]):
+                text = (
+                    "Bitte kontaktieren Sie den Support unter:\nlama.helpme@gmail.com"
+                )
+
+            else:
+                text = "Überprüfen Sie Ihre Internetverbindung oder kontaktieren Sie den Support für nähere Informationen unter:\nlama.helpme@gmail.com"
+
+            critical_window(
+                "Die Servicedateien konnte nicht gesendet werden.",
+                titel="Fehler beim Senden",
+                detailed_text="Fehlermeldung:\n" + str(sys.exc_info()),
+            )
 
 
     def show_gk_catalogue(self):
