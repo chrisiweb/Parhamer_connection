@@ -71,7 +71,7 @@ Problembeschreibung:
 LaMA Version: {__version__}
 Betriebssystem: {sys.platform}
 
-Weiter Infos:
+Weitere Infos:
 *args:
 
 {args}
@@ -79,6 +79,7 @@ Weiter Infos:
 **kwargs:
 
 {kwargs}
+
 """
                     server = SMTP_SSL("smtp.gmail.com", 465)
                     server.ehlo()
