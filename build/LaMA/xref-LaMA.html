@@ -38,7 +38,9 @@ imports:
  &#8226;   <a href="#create_pdf">create_pdf</a>
  &#8226;   <a href="#database_commands">database_commands</a>
  &#8226;   <a href="#datetime">datetime</a>
- &#8226;   <a href="#distutils.spawn">distutils.spawn</a>
+ &#8226;   <a href="#email.mime.application">email.mime.application</a>
+ &#8226;   <a href="#email.mime.multipart">email.mime.multipart</a>
+ &#8226;   <a href="#email.mime.text">email.mime.text</a>
  &#8226;   <a href="#encodings">encodings</a>
  &#8226;   <a href="#encodings.aliases">encodings.aliases</a>
  &#8226;   <a href="#encodings.ascii">encodings.ascii</a>
@@ -6690,8 +6692,7 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#LaMA.pyw">LaMA.pyw</a>
- &#8226;   <a href="#create_pdf">create_pdf</a>
+    <a href="#create_pdf">create_pdf</a>
 
   </div>
 
@@ -7721,6 +7722,10 @@ imported by:
  &#8226;   <a href="#email.headerregistry">email.headerregistry</a>
  &#8226;   <a href="#email.iterators">email.iterators</a>
  &#8226;   <a href="#email.message">email.message</a>
+ &#8226;   <a href="#email.mime">email.mime</a>
+ &#8226;   <a href="#email.mime.application">email.mime.application</a>
+ &#8226;   <a href="#email.mime.base">email.mime.base</a>
+ &#8226;   <a href="#email.mime.nonmultipart">email.mime.nonmultipart</a>
  &#8226;   <a href="#email.parser">email.parser</a>
  &#8226;   <a href="#email.policy">email.policy</a>
  &#8226;   <a href="#email.quoprimime">email.quoprimime</a>
@@ -7862,6 +7867,7 @@ imported by:
  &#8226;   <a href="#email.contentmanager">email.contentmanager</a>
  &#8226;   <a href="#email.header">email.header</a>
  &#8226;   <a href="#email.message">email.message</a>
+ &#8226;   <a href="#email.mime.text">email.mime.text</a>
  &#8226;   <a href="#email.utils">email.utils</a>
 
   </div>
@@ -7902,6 +7908,7 @@ imports:
   <div class="import">
 imported by:
     <a href="#email.charset">email.charset</a>
+ &#8226;   <a href="#email.mime.application">email.mime.application</a>
 
   </div>
 
@@ -7926,6 +7933,7 @@ imported by:
  &#8226;   <a href="#email.header">email.header</a>
  &#8226;   <a href="#email.headerregistry">email.headerregistry</a>
  &#8226;   <a href="#email.message">email.message</a>
+ &#8226;   <a href="#email.mime.nonmultipart">email.mime.nonmultipart</a>
  &#8226;   <a href="#urllib3.util.response">urllib3.util.response</a>
 
   </div>
@@ -8063,10 +8071,125 @@ imports:
 imported by:
     <a href="#email.contentmanager">email.contentmanager</a>
  &#8226;   <a href="#email.feedparser">email.feedparser</a>
+ &#8226;   <a href="#email.mime.base">email.mime.base</a>
  &#8226;   <a href="#email.policy">email.policy</a>
  &#8226;   <a href="#http.client">http.client</a>
  &#8226;   <a href="#pydoc">pydoc</a>
  &#8226;   <a href="#smtplib">smtplib</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="email.mime"></a>
+  <a target="code" href="/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/email/mime/__init__.py" type="text/plain"><tt>email.mime</tt></a>
+<span class="moduletype">Package</span>  <div class="import">
+imports:
+    <a href="#email">email</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#email.mime.application">email.mime.application</a>
+ &#8226;   <a href="#email.mime.base">email.mime.base</a>
+ &#8226;   <a href="#email.mime.multipart">email.mime.multipart</a>
+ &#8226;   <a href="#email.mime.nonmultipart">email.mime.nonmultipart</a>
+ &#8226;   <a href="#email.mime.text">email.mime.text</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="email.mime.application"></a>
+  <a target="code" href="/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/email/mime/application.py" type="text/plain"><tt>email.mime.application</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#email">email</a>
+ &#8226;   <a href="#email.encoders">email.encoders</a>
+ &#8226;   <a href="#email.mime">email.mime</a>
+ &#8226;   <a href="#email.mime.nonmultipart">email.mime.nonmultipart</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#LaMA.pyw">LaMA.pyw</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="email.mime.base"></a>
+  <a target="code" href="/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/email/mime/base.py" type="text/plain"><tt>email.mime.base</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#email">email</a>
+ &#8226;   <a href="#email.message">email.message</a>
+ &#8226;   <a href="#email.mime">email.mime</a>
+ &#8226;   <a href="#email.policy">email.policy</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#email.mime.multipart">email.mime.multipart</a>
+ &#8226;   <a href="#email.mime.nonmultipart">email.mime.nonmultipart</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="email.mime.multipart"></a>
+  <a target="code" href="/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/email/mime/multipart.py" type="text/plain"><tt>email.mime.multipart</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#email.mime">email.mime</a>
+ &#8226;   <a href="#email.mime.base">email.mime.base</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#LaMA.pyw">LaMA.pyw</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="email.mime.nonmultipart"></a>
+  <a target="code" href="/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/email/mime/nonmultipart.py" type="text/plain"><tt>email.mime.nonmultipart</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#email">email</a>
+ &#8226;   <a href="#email.errors">email.errors</a>
+ &#8226;   <a href="#email.mime">email.mime</a>
+ &#8226;   <a href="#email.mime.base">email.mime.base</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#email.mime.application">email.mime.application</a>
+ &#8226;   <a href="#email.mime.text">email.mime.text</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="email.mime.text"></a>
+  <a target="code" href="/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/email/mime/text.py" type="text/plain"><tt>email.mime.text</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#email.charset">email.charset</a>
+ &#8226;   <a href="#email.mime">email.mime</a>
+ &#8226;   <a href="#email.mime.nonmultipart">email.mime.nonmultipart</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#LaMA.pyw">LaMA.pyw</a>
 
   </div>
 
@@ -8111,6 +8234,7 @@ imports:
   <div class="import">
 imported by:
     <a href="#email.message">email.message</a>
+ &#8226;   <a href="#email.mime.base">email.mime.base</a>
 
   </div>
 
