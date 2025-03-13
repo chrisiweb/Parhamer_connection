@@ -1867,6 +1867,7 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
             'email': line_edit_email.text(),
         }
 
+
         from smtplib import SMTP_SSL
         from email.mime.multipart import MIMEMultipart
         from email.mime.text import MIMEText
@@ -1919,9 +1920,12 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
             message.attach(body_part)
             
 
+            path_teildokument = os.path.join(path_programm, "Teildokument")
+
+            
             list_send_files = []
             for all in dict_sendfiles:
-                path_teildokument = os.path.join(path_programm, "Teildokument")
+                
                 if dict_sendfiles[all] == True:
                     if all == "temp":
                         file_name = os.path.join(path_teildokument, "temp.txt")
@@ -1931,6 +1935,19 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
                         file_name = os.path.join(path_programm, "_database", "_local_database.json")
                         if os.path.isfile(file_name):
                             list_send_files.append(file_name)
+
+                        list_local_images = []
+                        path_local_images = os.path.join(path_programm, "_database", "Bilder_local")
+                        if os.path.isdir(path_local_images):
+                            list_local_images = os.listdir(path_local_images)
+
+                            file_list_local_images = os.path.join(path_teildokument, "list_local_images.txt")
+
+                            with open(file_list_local_images, 'w') as f:
+                                for all in list_local_images:
+                                    f.write(f"{all}\n")
+                            list_send_files.append(file_list_local_images)
+
                     else:
                         file_name = os.path.join(path_teildokument, f"{all}.tex")
                         if os.path.isfile(file_name):
@@ -1939,6 +1956,7 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
                         if os.path.isfile(file_name):
                             list_send_files.append(file_name)                                        
   
+
             progress_value = 0
             progress = QtWidgets.QProgressDialog("Systemdateien werden gesendet ...", "",progress_value,100)
             progress.setFixedSize(progress.sizeHint())
