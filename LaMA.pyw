@@ -2277,14 +2277,21 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             name_start = "checkbox_search_{}_".format(typ)
         # if typ == "themen":
         #     name_start = name_start + klasse + "_"
-        first_element = name_start + list(chosen_dictionary.keys())[0]
+        if list(chosen_dictionary.values())[0] == "---":
+            first_element = name_start + list(chosen_dictionary.keys())[1]  
+        else:  
+            first_element = name_start + list(chosen_dictionary.keys())[0]
 
         if self.dict_widget_variables[first_element].isChecked() == False:
             for all in chosen_dictionary:
+                if chosen_dictionary[all] == "---":
+                    continue
                 name = name_start + all
                 self.dict_widget_variables[name].setChecked(True)
         else:
             for all in chosen_dictionary:
+                if chosen_dictionary[all] == "---":
+                    continue
                 name = name_start + all
                 self.dict_widget_variables[name].setChecked(False)
 
