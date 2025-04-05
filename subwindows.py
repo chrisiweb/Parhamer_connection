@@ -447,6 +447,8 @@ class Ui_Dialog_variation(object):
         if self.comboBox_gk.currentText() == "Zusatzthemen":
             #     x = eval("%s_beschreibung" % self.comboBox_gk.currentText().lower())
             for all in zusatzthemen_beschreibung:
+                if zusatzthemen_beschreibung[all] == "---":
+                    continue
                 label = zusatzthemen_beschreibung[all] + " (" + all + ")"
                 self.comboBox_gk_num.addItem(label)
         else:

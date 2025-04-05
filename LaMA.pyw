@@ -752,6 +752,11 @@ Sollte das Problem weiterhin bestehen, melden Sie sich bitte unter lama.helpme@g
         row = 0
 
         for thema in dict_klasse:
+            if dict_klasse[thema] == "---":
+                new_label = create_new_label(parent, thema)
+                layout.addWidget(new_label, row)
+                row +=1
+                continue
             new_checkbox = create_new_checkbox(parent, dict_klasse[thema])
             new_checkbox.stateChanged.connect(
                 partial(self.checkbox_checked, mode, "themen")
@@ -7689,6 +7694,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             if self.comboBox_gk.currentText() == "Zusatzthemen":
                 #     x = eval("%s_beschreibung" % self.comboBox_gk.currentText().lower())
                 for all in zusatzthemen_beschreibung:
+                    if zusatzthemen_beschreibung[all] == "---":
+                        continue
                     label = zusatzthemen_beschreibung[all] + " (" + all + ")"
                     self.comboBox_gk_num.addItem(label)
             else:
@@ -7708,6 +7715,8 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             #         self.comboBox_fb_num.addItem(all.upper())
             if self.comboBox_fb.currentText() == "Zusatzthemen":
                 for all in zusatzthemen_beschreibung:
+                    if zusatzthemen_beschreibung[all] == "---":
+                        continue
                     label = zusatzthemen_beschreibung[all] + " (" + all + ")"
                     self.comboBox_fb_num.addItem(label)
             else:
