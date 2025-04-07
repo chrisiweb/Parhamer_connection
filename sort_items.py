@@ -30,7 +30,7 @@ def sort_variation(num, _list):
         try:
             _list.append(int(num))
         except ValueError: #prevent Value Errors, if num is no number!
-            print('Value Error: in sort_items.py - def sort_variation')
+            #print('Value Error: in sort_items.py - def sort_variation')
             _list.append(0)
     return _list
 
