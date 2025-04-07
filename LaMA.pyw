@@ -7471,17 +7471,22 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             halbe_punkte = self.get_punkte_halb_aufgabe_sage(all)
             self.temp_info[all] = [self.dict_variablen_punkte[all].value(), halbe_punkte, self.dict_variablen_abstand[all].value(), self.dict_variablen_translation[all], self.dict_variablen_AB[all]]
 
-
         for i in reversed(range(start_value, layout.count()+1)):
             self.delete_widget(layout, i)
 
+        list_of_defect_items = []
         for item in self.list_alle_aufgaben_sage[list_index][start_value:]:
             temp_typ = get_aufgabentyp(self.chosen_program, item)
             index_item = self.list_alle_aufgaben_sage[list_index].index(item)
             
 
             aufgabe_total = get_aufgabe_total(item.replace(" (lokal)", ""), temp_typ)
-
+  
+            if aufgabe_total == None:
+                QtWidgets.QApplication.restoreOverrideCursor()
+                list_of_defect_items.append(item)
+                warning_window(f"Es ist ein Fehler beim Hinzufügen der Aufgabe {item} aufgetreten.", "Bitte versuchen Sie es erneut oder kontaktieren Sie uns unter unter lama.helpme@gmail.com.")
+                continue
             neue_aufgaben_box = self.create_neue_aufgaben_box(
                 index_item, item, aufgabe_total
             )
@@ -7493,7 +7498,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # else:
             #     layout.insertWidget(layout.count(), neue_aufgaben_box)
             index_item + 1
-
 
         if typ == 1 and not is_empty(self.list_alle_aufgaben_sage[1]):
             num_typ1, _=self.get_aufgabenverteilung()
@@ -7510,7 +7514,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         if delete != True:
             self.add_image_path_to_list(aufgabe.replace(" (lokal)", ""))
 
-            
+        if not is_empty(list_of_defect_items):
+            for all in list_of_defect_items:
+                self.list_alle_aufgaben_sage[list_index].remove(all)            
 
         self.update_punkte()
 
