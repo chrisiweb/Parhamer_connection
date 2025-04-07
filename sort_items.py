@@ -27,8 +27,11 @@ def sort_variation(num, _list):
         _list.append(int(split_number[0]))
         _list.append(int(split_number[1]))
     else:
-        _list.append(int(num))
-    
+        try:
+            _list.append(int(num))
+        except ValueError: #prevent Value Errors, if num is no number!
+            print('Value Error: in sort_items.py - def sort_variation')
+            _list.append(0)
     return _list
 
 def order_gesammeltedateien(text, typ, cria_plain_number_order=False):

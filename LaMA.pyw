@@ -6976,7 +6976,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         typ = get_aufgabentyp(self.chosen_program, aufgabe)
 
         if typ == 1:
-            return self.dict_variablen_punkte_halb[aufgabe].isChecked()
+            try:
+                return self.dict_variablen_punkte_halb[aufgabe].isChecked()
+            except KeyError:
+                print('Key Error: in def get_punkte_halb_aufgabe_sage')
+                return False
         else:
             return False
         
