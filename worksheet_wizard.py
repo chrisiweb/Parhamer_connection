@@ -51,6 +51,12 @@ dict_themen_wizard = {
                 'self.widget_zahlenbereich_maximum',
                 'self.widget_setting_ggt',
                 'self.comboBox_solution_type_wizard',                
+            ],       # funktioniert noch nicht
+            "kgV": [
+                'self.widgetZahlenbereich_anzahl',
+                'self.widget_zahlenbereich_minimum',
+                'self.widget_zahlenbereich_maximum',
+                'self.comboBox_solution_type_wizard',                
             ]       # funktioniert noch nicht
         },
         "Positive (Dezimal-)Zahlen": {
@@ -558,7 +564,11 @@ def create_number_from_primes(list_of_primenumbers, minimum, maximum):
         print(x)
         temp_product = product * x
         if i==15:
-            break
+            product = 1
+            list_of_products = []
+            i=0
+            print('restart')
+            continue
         if temp_product > maximum:
             if product > minimum:
                 list_of_products.sort()
@@ -591,7 +601,7 @@ def create_single_example_primenumbers(dict_all_settings_wizard):
     maximum = dict_all_settings_wizard['maximum_spinbox']
     maximum_prime = dict_all_settings_wizard['maximum_prime']
     display_as_powers = dict_all_settings_wizard['display_as_powers']
-    
+      
     list_of_primenumbers = get_list_of_primenumbers(maximum_prime)
     product, list_of_factors = create_number_from_primes(list_of_primenumbers,minimum,maximum)
 
