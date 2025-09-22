@@ -4364,7 +4364,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.spinbox_zahlenbereich_minimum.setValue(500)
             self.spinbox_zahlenbereich_maximum.setValue(1000)
             self.spinbox_maximum_prime.setValue(13)
-        elif shorten_topic == 'ari_tei_ggt':
+        elif shorten_topic == 'ari_tei_ggt' or shorten_topic == "ari_tei_kgv":
             self.label_zahlenbereich_anzahl_wizard.setText("Zahlen:")
             self.spinbox_zahlenbereich_minimum.setValue(20)
             self.spinbox_zahlenbereich_maximum.setValue(200)
@@ -5017,7 +5017,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             all_examples_wizard = create_examples_all_topics(create_single_example_ggt, dict_all_settings_wizard, single_example) 
             # list_of_examples_wizard = create_list_of_examples_ggt(examples, anzahl_zahlen, minimum, maximum, ggt_1_checked)
-            
+
+        elif shorten_topic == 'ari_tei_kgv':
+            all_examples_wizard = create_examples_all_topics(create_single_example_kgv, dict_all_settings_wizard, single_example)           
 
         elif shorten_topic =='ari_pos_add':
             # minimum = self.spinbox_zahlenbereich_minimum.value()
@@ -9504,6 +9506,7 @@ if __name__ == "__main__":
         create_single_example_number_line,
         create_single_example_primenumbers,
         create_single_example_ggt,
+        create_single_example_kgv,
         create_single_example_addition,
         create_single_example_subtraction,
         create_single_example_multiplication,

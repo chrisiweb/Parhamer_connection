@@ -556,18 +556,15 @@ def get_list_of_primenumbers(maximum):
 def create_number_from_primes(list_of_primenumbers, minimum, maximum):
     product = 1
     list_of_products = []
-    print(list_of_primenumbers)
     i=0
     while True:
         i+=1
         x = random.choice(list_of_primenumbers)
-        print(x)
         temp_product = product * x
         if i==15:
             product = 1
             list_of_products = []
             i=0
-            print('restart')
             continue
         if temp_product > maximum:
             if product > minimum:
@@ -654,7 +651,53 @@ def create_single_example_ggt(dict_all_settings_wizard): #anzahl_zahlen, minimum
     joined_numbers = ', '.join(str(x) for x in list_of_numbers)
     _string = f"ggT({joined_numbers}) = {ggt}"
     return [list_of_numbers,ggt,_string]
+
+def create_single_example_kgv(dict_all_settings_wizard):
+    print('kgv define')
+    anzahl_zahlen = dict_all_settings_wizard['anzahl_zahlen']
+    minimum = dict_all_settings_wizard['minimum_spinbox']
+    maximum = dict_all_settings_wizard['maximum_spinbox']
+
+    list_of_numbers = []
+
+    while True:
+        x = get_random_number(minimum, maximum)
+        if x not in list_of_numbers:
+            list_of_numbers.append(x)
         
+        if len(list_of_numbers)==anzahl_zahlen:
+            break
+
+    kgv = lcm_list(list_of_numbers)
+
+    print(kgv)
+    # while True:
+    #     while True:
+    #         x = get_random_number(minimum, maximum)
+    #         if x not in list_of_numbers:
+    #             list_of_numbers.append(x)
+            
+    #         if len(list_of_numbers)==anzahl_zahlen:
+    #             break
+
+    #     ggt = gcd_list(list_of_numbers)
+
+    #     if ggt == 1:
+    #         if ggt_1_checked == False:
+    #             list_of_numbers = []
+    #             continue
+    #         elif random_switch(90):
+    #             list_of_numbers = []
+    #             continue
+    #         else:
+    #             break
+    #     else:
+    #         break
+    ggt = 1
+    _string = "..."
+    # joined_numbers = ', '.join(str(x) for x in list_of_numbers)
+    # _string = f"ggT({joined_numbers}) = {ggt}"
+    return [list_of_numbers,ggt,_string]       
 
 def create_single_example_addition(dict_all_settings_wizard_wizard):
     minimum = dict_all_settings_wizard_wizard['minimum_spinbox']
