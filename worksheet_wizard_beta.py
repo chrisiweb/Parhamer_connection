@@ -164,11 +164,11 @@ def extract_parts_of_binom(string):
     _list = string.split("=")
     split_list = []
     for string in _list:
-        x= re.split('\(|\)|\+|-|=', string)
+        x= re.split('\\(|\\)|\\+|-|=', string)
         x = [item.strip() for item in x]
         
         for all in x[:]:
-            if re.fullmatch(' *\^[0-9] *', all) != None:
+            if re.fullmatch(' *\\^[0-9] *', all) != None:
                 x.remove(all)
             elif is_empty(all):
                 x.remove(all) 
@@ -370,64 +370,92 @@ def expand_powers(powers):
     return result
 
 
-minimum = 20
-maximum = 500
-anzahl = 2
 
-ggt = get_random_number(1,minimum)
+anzahl_zahlen = 2
+minimum = 2
+maximum = 50
 
-
-list_of_primenumbers_50 = [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47]
 list_of_numbers = []
-a=ggt
-for i in range(anzahl):
-    index=0
-    while True:
-        index +=1
-        if index == 5:
-            break
-        print(f"ggT:{ggt}")
-        x = random.choice(list_of_primenumbers_50)
-        temp_a = a * x
-        print(f"{temp_a} = {a}*{x}")
-        print(temp_a)
-        if minimum<= temp_a <= maximum:
-            if temp_a not in list_of_numbers:
-                list_of_numbers.append(temp_a)
-                break
-            else:
-                continue
-        elif temp_a<minimum:
-            a=temp_a
-            continue
-        # elif temp_a>maximum:
-        #     if a != 
 
+x= get_list_of_primenumbers(50)
+print(x)
 
-        # if temp_a<minimum:
-        #     print('a')
-        #     a=temp_a
-        #     list_of_primenumbers_50.remove(x)
-        # elif temp_a>maximum:
-        #     if a not in list_of_numbers:
-        #         print('b')
-        #         list_of_numbers.append(a)
-        #         break
-        #     else:
-        #         print('c')
-        #         continue
-        # else:
-        #     if a not in list_of_numbers:
-        #         print('d')
-        #         a=temp_a
-        #         list_of_primenumbers_50.remove(x)
-        #         list_of_numbers.append(a)
-        #         break
-        #     else:
-        #         print('e')
-        #         continue
+while True:
+    x = get_random_number(minimum, maximum)
+    if x not in list_of_numbers:
+        list_of_numbers.append(x)
+    
+    if len(list_of_numbers)==anzahl_zahlen:
+        break
+
+kgv = lcm_list(list_of_numbers)
 
 print(list_of_numbers)
+print(kgv)
+
+res=1
+for i in list_of_numbers:
+    res = res * i
+if res == kgv:
+    
+# minimum = 20
+# maximum = 500
+# anzahl = 2
+
+# ggt = get_random_number(1,minimum)
+
+
+# list_of_primenumbers_50 = [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47]
+# list_of_numbers = []
+# a=ggt
+# for i in range(anzahl):
+#     index=0
+#     while True:
+#         index +=1
+#         if index == 5:
+#             break
+#         print(f"ggT:{ggt}")
+#         x = random.choice(list_of_primenumbers_50)
+#         temp_a = a * x
+#         print(f"{temp_a} = {a}*{x}")
+#         print(temp_a)
+#         if minimum<= temp_a <= maximum:
+#             if temp_a not in list_of_numbers:
+#                 list_of_numbers.append(temp_a)
+#                 break
+#             else:
+#                 continue
+#         elif temp_a<minimum:
+#             a=temp_a
+#             continue
+#         # elif temp_a>maximum:
+#         #     if a != 
+
+
+#         # if temp_a<minimum:
+#         #     print('a')
+#         #     a=temp_a
+#         #     list_of_primenumbers_50.remove(x)
+#         # elif temp_a>maximum:
+#         #     if a not in list_of_numbers:
+#         #         print('b')
+#         #         list_of_numbers.append(a)
+#         #         break
+#         #     else:
+#         #         print('c')
+#         #         continue
+#         # else:
+#         #     if a not in list_of_numbers:
+#         #         print('d')
+#         #         a=temp_a
+#         #         list_of_primenumbers_50.remove(x)
+#         #         list_of_numbers.append(a)
+#         #         break
+#         #     else:
+#         #         print('e')
+#         #         continue
+
+# print(list_of_numbers)
 
 
 # factor= subticks/step
