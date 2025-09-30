@@ -672,7 +672,7 @@ def create_single_example_kgv(dict_all_settings_wizard):
         number = 1
         loop = 0
         while loop<2:
-            if random_switch(60):
+            if random_switch(50):
                 temp_primenumber = random.choice(primefactors_first_number)
             else:
                 temp_primenumber = random.choice(list_of_primenumbers)
@@ -2278,10 +2278,6 @@ def create_latex_string_ggt(content, example, solution_type):
     return content
 
 def create_latex_string_kgv(content, example, solution_type):
-    # print(content)
-    # print(example)
-    # print(solution_type)
-    # return ""
     string = example[-1]
     x,y = string.split(" = ")    
 
@@ -2302,11 +2298,8 @@ def create_latex_string_kgv(content, example, solution_type):
 
         for all in example[0]:
             a = all
-            # b= example[0][1]
             pfz_a = convert_to_powers(primfaktorzerlegung(a))
             str_pfz_a = r" \cdot ".join(pfz_a)
-            # pfz_b = convert_to_powers(primfaktorzerlegung(b))
-            # str_pfz_b = " \cdot ".join(pfz_b)
             content += f"$\\antwort{{{a} = {str_pfz_a}}}$\n\n"
 
     return content
