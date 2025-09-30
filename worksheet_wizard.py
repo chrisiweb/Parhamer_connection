@@ -12,6 +12,7 @@ from sympy import symbols, gcd_list, lcm_list
 from create_nonograms import nonogramm_empty, all_nonogramms, list_all_pixels
 from fractions import Fraction
 from handle_exceptions import report_exceptions
+from standard_dialog_windows import warning_window
 # import subprocess
 # from tex_minimal import tex_preamble, tex_end
 # from create_pdf import create_pdf, open_pdf_file, build_pdf_file
@@ -671,6 +672,8 @@ def create_single_example_kgv(dict_all_settings_wizard):
     for _ in range(anzahl_zahlen-1):
         number = 1
         loop = 0
+        
+        control_loop=0
         while loop<2:
             if random_switch(50):
                 temp_primenumber = random.choice(primefactors_first_number)
@@ -678,8 +681,13 @@ def create_single_example_kgv(dict_all_settings_wizard):
                 temp_primenumber = random.choice(list_of_primenumbers)
             if number*temp_primenumber <= maximum and (number*temp_primenumber not in list_of_numbers):
                 number = number*temp_primenumber
-            else:
+            elif number>=minimum:
                 loop+=1
+            else:
+                control_loop+=1
+                if control_loop > 100:
+                    warning_window("Es konnten nicht genug passende Aufgaben gefunden werden.", "Wählen Sie einen größeren Bereich zwischen Minimum und Maximum.")
+                    return False
         list_of_numbers.append(number)
 
     random.shuffle(list_of_numbers)
@@ -1779,6 +1787,8 @@ def create_examples_all_topics(spec_function, dict_all_settings_wizard, single_e
     max_limit_counter =0
     while i<dict_all_settings_wizard['examples']:
         new_example = spec_function(dict_all_settings_wizard) # minimum, minimum_index, maximum, maximum_index, general_direction_index
+        if new_example == False:
+            return False
         duplicate = check_for_duplicate(new_example, list_of_examples)
         
         if duplicate == False:
@@ -2279,9 +2289,8 @@ def create_latex_string_ggt(content, example, solution_type):
 
 def create_latex_string_kgv(content, example, solution_type):
     string = example[-1]
-    x,y = string.split(" = ")    
-
-    x = x.replace('kgv', '\\text{kgV}')
+    x,y = string.split(" = ")
+    x = x.replace('kgV', '\\text{kgV}')
 
     str_pfz_y = ""
     if solution_type == 1:

@@ -4317,7 +4317,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         self.checkbox_enable_addition.hide()
         self.checkbox_enable_subtraktion.hide()
-
+        self.spinbox_zahlenbereich_maximum.setMinimum(1)
         if shorten_topic == 'ari_dar_zah' or shorten_topic == 'geo_gru_koo':
             self.checkBox_show_nonogramm.setChecked(False)
             self.checkBox_show_nonogramm.setEnabled(False)
@@ -4371,6 +4371,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 self.spinbox_zahlenbereich_maximum.setValue(200)
             elif shorten_topic == "ari_tei_kgv":
                 self.spinbox_zahlenbereich_maximum.setValue(100)
+                self.spinbox_zahlenbereich_maximum.setMinimum(20)
+                # self.spinbox_zahlenbereich_minimum.setRange()
+
         elif shorten_topic=='ari_pos_add' or shorten_topic=='ari_pos_sub':
             self.spinbox_zahlenbereich_minimum.setRange(0,999999999)
             self.spinbox_zahlenbereich_minimum.setValue(100)
@@ -4856,6 +4859,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     @report_exceptions
     def reload_example(self, index):  
         new_example = self.create_all_examples_wizard(single_example=True)
+        if new_example == False:
+            print('error')
+            return
         # result = self.list_of_examples_wizard[index][-2]
 
         # if self.checkBox_show_nonogramm.isChecked():
@@ -5023,7 +5029,6 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
         elif shorten_topic == 'ari_tei_kgv':
             all_examples_wizard = create_examples_all_topics(create_single_example_kgv, dict_all_settings_wizard, single_example)           
-
         elif shorten_topic =='ari_pos_add':
             # minimum = self.spinbox_zahlenbereich_minimum.value()
             # maximum = self.spinbox_zahlenbereich_maximum.value()
@@ -5152,7 +5157,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             # variable_2 = self.combobox_choose_variables_2.currentText()
             all_examples_wizard = create_examples_all_topics(create_single_example_binomische_formeln, dict_all_settings_wizard, single_example)
             # list_of_examples_wizard = create_list_of_examples_binomische_formeln(examples, binomials_types, a,b,x,y, exponent, self.binoms_direction_index, fractions_allowed, variable_1, variable_2)
-
+    
         return all_examples_wizard
 
     def get_all_examples_wizard(self):
@@ -5177,14 +5182,17 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     @report_exceptions
     def create_new_worksheet_wizard_pressed(self):
-        self.pushButton_addto_worksheet_wizard.setEnabled(True)
-        self.worksheet_edited = True
-
         # self.worksheet_wizard_changed = False
 
         # self.dict_all_examples_wizard = {}
-        self.list_of_examples_wizard = self.create_all_examples_wizard()
-
+        _temp = self.create_all_examples_wizard()
+        if _temp == False:
+            print('error')
+            return
+        else:
+            self.pushButton_addto_worksheet_wizard.setEnabled(True)
+            self.worksheet_edited = True
+            self.list_of_examples_wizard = self.create_all_examples_wizard()
         self.reset_aufgabenboxes_wizard()
 
         # if self.checkBox_show_nonogramm.isChecked():
@@ -5198,9 +5206,11 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     @report_exceptions
     def add_single_example_wizard(self):
+        if new_example == False:
+            print('error')
+            return
         self.pushButton_addto_worksheet_wizard.setEnabled(True)
         new_example = self.create_all_examples_wizard(single_example=True)
-
         try:
             self.list_of_examples_wizard.append(new_example)
         except AttributeError:
@@ -5233,7 +5243,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     def edit_set_of_examples_wizard(self, widget, thema):
         self.pushButton_addto_worksheet_wizard.setEnabled(True)
         if not is_empty(self.list_of_examples_wizard):
-            rsp = question_window("Es befinden sich nicht gespeicherte Aufgaben im Bearbeitungsbereich. Sind Sie sicher, dass Sie diese unwiderruflich läschen möchten?")
+            rsp = question_window("Es befinden sich nicht gespeicherte Aufgaben im Bearbeitungsbereich. Sind Sie sicher, dass Sie diese unwiderruflich löschen möchten?")
             if rsp == False:
                 return
 
@@ -5386,7 +5396,9 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             max_limit_counter =0
             while i<10:
                 dummy_solution = self.create_all_examples_wizard(single_example=True) #get_random_solution(self)
-    
+                if dummy_solution == False:
+                    print('error')
+                    return
                 if dummy_solution[-2] not in list_solutions and dummy_solution[-2] not in list_dummy_solutions:
                     full_list_dummy_solutions.append(dummy_solution)
                     list_dummy_solutions.append(dummy_solution[-2])
