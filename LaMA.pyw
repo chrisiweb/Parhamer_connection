@@ -4367,7 +4367,10 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         elif shorten_topic == 'ari_tei_ggt' or shorten_topic == "ari_tei_kgv":
             self.label_zahlenbereich_anzahl_wizard.setText("Zahlen:")
             self.spinbox_zahlenbereich_minimum.setValue(20)
-            self.spinbox_zahlenbereich_maximum.setValue(200)
+            if shorten_topic == 'ari_tei_ggt':
+                self.spinbox_zahlenbereich_maximum.setValue(200)
+            elif shorten_topic == "ari_tei_kgv":
+                self.spinbox_zahlenbereich_maximum.setValue(100)
         elif shorten_topic=='ari_pos_add' or shorten_topic=='ari_pos_sub':
             self.spinbox_zahlenbereich_minimum.setRange(0,999999999)
             self.spinbox_zahlenbereich_minimum.setValue(100)

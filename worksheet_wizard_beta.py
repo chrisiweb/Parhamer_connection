@@ -373,71 +373,95 @@ def expand_powers(powers):
 
 anzahl_zahlen = 3
 minimum = 2
-maximum = 100
+maximum = 80
 
 list_of_numbers = []
 
-x= get_list_of_primenumbers(50)
+list_of_primenumbers= get_list_of_primenumbers(30)
 # print(x)
 
 list_of_numbers = []
 while True:
     x = get_random_number(minimum, maximum)
 
-    if len(primfaktorzerlegung(x))!=1:
+    if len(primfaktorzerlegung(x))>2:
         list_of_numbers.append(x)
         break
 
 first_number = list_of_numbers[0]
 primefactors_first_number = primfaktorzerlegung(first_number)
-j=0
-common_primenumber = 1
-processing = True
-while processing == True:
-    x = get_random_number(minimum, maximum)
-    primefaktoren = primfaktorzerlegung(x)
 
+print(first_number)
+print(primefactors_first_number)
 
-    # print(primefactors_first_number)
-    # print(primefaktoren)
-    # print(f"random: {random_switch(10)}")
-    # if common_primenumber == 1:
-    for i in primefactors_first_number:
-        if random_switch(98) or anzahl_zahlen>2:
-            if i in primefaktoren and x not in list_of_numbers:
-                list_of_numbers.append(x)
-                common_primenumber = i
-                if len(list_of_numbers)==anzahl_zahlen:
-                    processing = False
-                    break
-        elif x not in list_of_numbers:
-            list_of_numbers.append(x)
-            if len(list_of_numbers)==anzahl_zahlen:
-                processing = False
-                break  
-print(f"common: {common_primenumber}")             
-if anzahl_zahlen>2:
-    processing = True
-    while processing == True:
-        x = get_random_number(minimum, maximum)
-        primefaktoren = primfaktorzerlegung(x)
-        if random_switch(98):
-            if common_primenumber in primefaktoren:
-                if x not in list_of_numbers:
-                    list_of_numbers.append(x)
-        elif x not in list_of_numbers:
-            list_of_numbers.append(x)     
-        if len(list_of_numbers)==anzahl_zahlen:
-            processing = False
-
-
-
-
+for i in range(anzahl_zahlen-1):
+    print(f"index: {i}")
+    number = 1
+    loop = 0
+    while loop<2:
+        if random_switch(60):
+            temp_primenumber = random.choice(primefactors_first_number)
+        else:
+            temp_primenumber = random.choice(list_of_primenumbers)
+        if number*temp_primenumber <= maximum and (number*temp_primenumber not in list_of_numbers):
+            number = number*temp_primenumber
+        else:
+            loop+=1
+    list_of_numbers.append(number)
 print(list_of_numbers)
 for all in list_of_numbers:
     print(primfaktorzerlegung(all))
 kgv = lcm_list(list_of_numbers)
-print(kgv)                
+print(kgv)
+    
+# j=0
+# common_primenumber = 1
+# processing = True
+# while processing == True:
+#     x = get_random_number(minimum, maximum)
+#     primefaktoren = primfaktorzerlegung(x)
+
+
+#     # print(primefactors_first_number)
+#     # print(primefaktoren)
+#     # print(f"random: {random_switch(10)}")
+#     # if common_primenumber == 1:
+#     for i in primefactors_first_number:
+#         if random_switch(98) or anzahl_zahlen>2:
+#             if i in primefaktoren and x not in list_of_numbers:
+#                 list_of_numbers.append(x)
+#                 common_primenumber = i
+#                 if len(list_of_numbers)==anzahl_zahlen:
+#                     processing = False
+#                     break
+#         elif x not in list_of_numbers:
+#             list_of_numbers.append(x)
+#             if len(list_of_numbers)==anzahl_zahlen:
+#                 processing = False
+#                 break  
+# print(f"common: {common_primenumber}")             
+# if anzahl_zahlen>2:
+#     processing = True
+#     while processing == True:
+#         x = get_random_number(minimum, maximum)
+#         primefaktoren = primfaktorzerlegung(x)
+#         if random_switch(98):
+#             if common_primenumber in primefaktoren:
+#                 if x not in list_of_numbers:
+#                     list_of_numbers.append(x)
+#         elif x not in list_of_numbers:
+#             list_of_numbers.append(x)     
+#         if len(list_of_numbers)==anzahl_zahlen:
+#             processing = False
+
+
+
+
+# print(list_of_numbers)
+# for all in list_of_numbers:
+#     print(primfaktorzerlegung(all))
+# kgv = lcm_list(list_of_numbers)
+# print(kgv)                
     # else:
     #     while True:
     #         x = get_random_number(minimum, maximum)
