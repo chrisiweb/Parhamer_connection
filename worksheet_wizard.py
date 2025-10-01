@@ -12,6 +12,7 @@ from sympy import symbols, gcd_list, lcm_list
 from create_nonograms import nonogramm_empty, all_nonogramms, list_all_pixels
 from fractions import Fraction
 from handle_exceptions import report_exceptions
+from standard_dialog_windows import warning_window
 # import subprocess
 # from tex_minimal import tex_preamble, tex_end
 # from create_pdf import create_pdf, open_pdf_file, build_pdf_file
@@ -50,6 +51,12 @@ dict_themen_wizard = {
                 'self.widget_zahlenbereich_minimum',
                 'self.widget_zahlenbereich_maximum',
                 'self.widget_setting_ggt',
+                'self.comboBox_solution_type_wizard',                
+            ],       # funktioniert noch nicht
+            "kgV": [
+                'self.widgetZahlenbereich_anzahl',
+                'self.widget_zahlenbereich_minimum',
+                'self.widget_zahlenbereich_maximum',
                 'self.comboBox_solution_type_wizard',                
             ]       # funktioniert noch nicht
         },
@@ -550,15 +557,16 @@ def get_list_of_primenumbers(maximum):
 def create_number_from_primes(list_of_primenumbers, minimum, maximum):
     product = 1
     list_of_products = []
-    print(list_of_primenumbers)
     i=0
     while True:
         i+=1
         x = random.choice(list_of_primenumbers)
-        print(x)
         temp_product = product * x
         if i==15:
-            break
+            product = 1
+            list_of_products = []
+            i=0
+            continue
         if temp_product > maximum:
             if product > minimum:
                 list_of_products.sort()
@@ -591,7 +599,7 @@ def create_single_example_primenumbers(dict_all_settings_wizard):
     maximum = dict_all_settings_wizard['maximum_spinbox']
     maximum_prime = dict_all_settings_wizard['maximum_prime']
     display_as_powers = dict_all_settings_wizard['display_as_powers']
-    
+      
     list_of_primenumbers = get_list_of_primenumbers(maximum_prime)
     product, list_of_factors = create_number_from_primes(list_of_primenumbers,minimum,maximum)
 
@@ -644,7 +652,53 @@ def create_single_example_ggt(dict_all_settings_wizard): #anzahl_zahlen, minimum
     joined_numbers = ', '.join(str(x) for x in list_of_numbers)
     _string = f"ggT({joined_numbers}) = {ggt}"
     return [list_of_numbers,ggt,_string]
+
+def create_single_example_kgv(dict_all_settings_wizard):
+    anzahl_zahlen = dict_all_settings_wizard['anzahl_zahlen']
+    minimum = dict_all_settings_wizard['minimum_spinbox']
+    maximum = dict_all_settings_wizard['maximum_spinbox']
+    list_of_primenumbers= get_list_of_primenumbers(13)
+    list_of_numbers = []
+    while True:
+        x = get_random_number(minimum, maximum)
+
+        if len(primfaktorzerlegung(x))>2:
+            list_of_numbers.append(x)
+            break
+
+    first_number = list_of_numbers[0]
+    primefactors_first_number = primfaktorzerlegung(first_number)
+
+    for _ in range(anzahl_zahlen-1):
+        number = 1
+        loop = 0
         
+        control_loop=0
+        while loop<2:
+            if random_switch(50):
+                temp_primenumber = random.choice(primefactors_first_number)
+            else:
+                temp_primenumber = random.choice(list_of_primenumbers)
+            if number*temp_primenumber <= maximum and (number*temp_primenumber not in list_of_numbers):
+                number = number*temp_primenumber
+            elif number>=minimum:
+                loop+=1
+            else:
+                control_loop+=1
+                if control_loop > 100:
+                    warning_window("Es konnten nicht genug passende Aufgaben gefunden werden.", "Wählen Sie einen größeren Bereich zwischen Minimum und Maximum.")
+                    return False
+        list_of_numbers.append(number)
+
+    random.shuffle(list_of_numbers)
+    # for all in list_of_numbers:
+    #     print(primfaktorzerlegung(all))
+    kgv = lcm_list(list_of_numbers)
+    
+    joined_numbers = ', '.join(str(x) for x in list_of_numbers)
+    _string = f"kgV({joined_numbers}) = {kgv}"
+
+    return [list_of_numbers,kgv,_string]       
 
 def create_single_example_addition(dict_all_settings_wizard_wizard):
     minimum = dict_all_settings_wizard_wizard['minimum_spinbox']
@@ -1733,6 +1787,8 @@ def create_examples_all_topics(spec_function, dict_all_settings_wizard, single_e
     max_limit_counter =0
     while i<dict_all_settings_wizard['examples']:
         new_example = spec_function(dict_all_settings_wizard) # minimum, minimum_index, maximum, maximum_index, general_direction_index
+        if new_example == False:
+            return False
         duplicate = check_for_duplicate(new_example, list_of_examples)
         
         if duplicate == False:
@@ -2207,7 +2263,7 @@ def create_latex_string_ggt(content, example, solution_type):
 
         if len(pfz_y)>0:
             if len(pfz_y)>1 or pfz_y[0].isdigit()==False:
-                str_pfz_y = " \cdot ".join(pfz_y)
+                str_pfz_y = " \\cdot ".join(pfz_y)
                 str_pfz_y += " = "
 
     content += f"\\task ${x} = \\antwort{{{str_pfz_y}{y}}}$\n\n"
@@ -2230,6 +2286,33 @@ def create_latex_string_ggt(content, example, solution_type):
 
 
     return content
+
+def create_latex_string_kgv(content, example, solution_type):
+    string = example[-1]
+    x,y = string.split(" = ")
+    x = x.replace('kgV', '\\text{kgV}')
+
+    str_pfz_y = ""
+    if solution_type == 1:
+        pfz_y = convert_to_powers(primfaktorzerlegung(example[1]))
+
+        if len(pfz_y)>0:
+            if len(pfz_y)>1 or pfz_y[0].isdigit()==False:
+                str_pfz_y = " \\cdot ".join(pfz_y)
+                str_pfz_y += " = "
+
+    content += f"\\task ${x} = \\antwort{{{str_pfz_y}{y}}}$\n\n"
+
+    if solution_type == 1:
+
+        for all in example[0]:
+            a = all
+            pfz_a = convert_to_powers(primfaktorzerlegung(a))
+            str_pfz_a = r" \cdot ".join(pfz_a)
+            content += f"$\\antwort{{{a} = {str_pfz_a}}}$\n\n"
+
+    return content
+
 
 def create_latex_string_addition(content, example, ausrichtung):
     summanden = example[0]
@@ -2258,8 +2341,8 @@ def create_latex_string_addition(content, example, ausrichtung):
 
             content += "& ${0}{1}$ \\\\ \n".format(str(all).replace(".",","), phantom)
 
-        content += """\hline&\\antwort{{${0}$}}
-        \end{{tabular}}\n""".format(str(example[-2]).replace(".",","))
+        content += """\\hline&\\antwort{{${0}$}}
+        \\end{{tabular}}\n""".format(str(example[-2]).replace(".",","))
         # .format(str(example[0]).replace(".",","),str(example[1]).replace(".",","),str(example[2]).replace(".",","))
     elif ausrichtung == 1:
         content += "\\task ${0}".format(str(summanden[0]).replace(".",","))
@@ -2286,7 +2369,7 @@ def create_latex_string_subtraction(content, example, ausrichtung):
                     phantom = "," + "0"*diff
                 else:
                     phantom = "0"*diff
-                phantom_2 = "\hphantom{{{0}}}".format(phantom)
+                phantom_2 = "\\hphantom{{{0}}}".format(phantom)
                 phantom_1 = ""
             elif decimal_2>decimal_1:
                 diff = decimal_2-decimal_1
@@ -2294,16 +2377,16 @@ def create_latex_string_subtraction(content, example, ausrichtung):
                     phantom = "," + "0"*diff
                 else:
                     phantom = "0"*diff
-                phantom_1 = "\hphantom{{{0}}}".format(phantom)
+                phantom_1 = "\\hphantom{{{0}}}".format(phantom)
                 phantom_2 = ""
             
 
         content += """
         \\task \\begin{{tabular}}[t]{{rr}}
         & ${0}{3}$ \\\\
-        & $-{1}{4}$ \\\\ \hline
+        & $-{1}{4}$ \\\\ \\hline
         &\\antwort{{${2}$}}
-        \end{{tabular}}\n
+        \\end{{tabular}}\n
         """.format(str(subtrahenden[0]).replace(".",","), str(subtrahenden[1]).replace(".",","),str(example[-2]).replace(".",","), phantom_1, phantom_2)
     elif ausrichtung == 1:
         content += "\\task ${0}".format(str(subtrahenden[0]).replace(".",","))
@@ -2324,17 +2407,17 @@ def create_single_line_multiplication(factor_1, digit, i, is_integer):
     if get_number_of_digits(subresult) > factor_digit_length:
         dif = get_number_of_digits(subresult)-factor_digit_length
         if i == 0:
-            hspace = dif*'\hspace{-0.5em}'
+            hspace = dif*'\\hspace{-0.5em}'
         elif dif > i:
-            hspace = (dif-i)*'\hspace{-0.5em}'
+            hspace = (dif-i)*'\\hspace{-0.5em}'
         else:
-            hspace = (i-dif)*'\enspace'
+            hspace = (i-dif)*'\\enspace'
     else:
         dif = factor_digit_length-get_number_of_digits(subresult)  
-        hspace = (i+dif)*'\enspace'
+        hspace = (i+dif)*'\\enspace'
 
     if is_integer==False:
-        hspace += "\,"
+        hspace += "\\,"
     string = '\\antwortzeile {0} {1} \\\\\n'.format(hspace, str(subresult))
     return string
 
@@ -2354,7 +2437,7 @@ def create_latex_string_multiplication(content, example, solution_type):
     
     content += """
 \\task $\\begin{{array}}[t]{{l}}
-{0} \cdot {1} \\\\ \hline
+{0} \\cdot {1} \\\\ \\hline
 """.format(str(factor_1).replace('.',','),str(factor_2).replace('.',','))
 
     result = factor_1*factor_2
@@ -2369,17 +2452,17 @@ def create_latex_string_multiplication(content, example, solution_type):
         if get_number_of_digits(result) > factor_digit_length:
             dif = get_number_of_digits(result)-factor_digit_length
             if dif > num:
-                hspace = (dif-num)*'\hspace{-0.5em}'
+                hspace = (dif-num)*'\\hspace{-0.5em}'
             else:
-                hspace = (num-dif)*'\enspace'
+                hspace = (num-dif)*'\\enspace'
         else:
             dif = factor_digit_length-get_number_of_digits(result)  
-            hspace = (num+dif)*'\enspace'
+            hspace = (num+dif)*'\\enspace'
 
-        content += '\hline\n\\antwortzeile {0} {1}\\\\\n'.format(hspace, str(result).replace('.',','))
+        content += '\\hline\n\\antwortzeile {0} {1}\\\\\n'.format(hspace, str(result).replace('.',','))
     else:
         content += '\\antwortzeile {0}\\\\\n'.format(str(result).replace('.',','))
-    content += "\end{array}$\n\\antwort[\\vspace{2cm}]{}\n\n"
+    content += "\\end{array}$\n\\antwort[\\vspace{2cm}]{}\n\n"
 
 
     # content += """
@@ -2437,7 +2520,7 @@ def get_temp_solution_division(dividend, divisor, solution):
                 else:
                     end_index +=1
                     next_digit = str(dividend)[end_index]
-                    next_digit_string = f"\;{next_digit}"       
+                    next_digit_string = f"\\;{next_digit}"       
             except IndexError:
                 next_digit = "0"
                 next_digit_string = next_digit
@@ -2503,7 +2586,7 @@ def create_latex_string_division(content, example, solution_type):
             if i == len(list_temp_solutions)-1:
                 rest = "R"
                         
-            hspace = multiplier*'\enspace'
+            hspace = multiplier*'\\enspace'
             if komma == True:
                 hspace += "\\;"
             if "\\;" in all[1]:
@@ -2513,7 +2596,7 @@ def create_latex_string_division(content, example, solution_type):
             content += f"\\antwortzeile {hspace} {all[0]}{all[1]}{rest} \\\\ \n"
             previous_num_of_digits = num_of_digits 
 
-        content += "\end{array}$\n\n"
+        content += "\\end{array}$\n\n"
 
 
     else:
@@ -2529,7 +2612,7 @@ def create_latex_string_ganze_zahlen(content, example):
     x,y = equation.split(" = ")
     
     temp_content = "\\task ${0} = \\antwort{{{1}}}$\n\n".format(x.replace(".",","),y.replace(".",","))
-    temp_content = temp_content.replace('\xb7', '\cdot')
+    temp_content = temp_content.replace('\xb7', '\\cdot')
     content += temp_content
     return content
 
@@ -2554,7 +2637,7 @@ def create_pstricks_code_dots(example, dot_style_index, coordinates_direction_in
     for all in dict_dots:
         xcoord = float(dict_dots[all][0])-float(xcorrection)+float(xlabel_padding)
         ycoord = float(dict_dots[all][1])+float(ylabel_padding)
-        _string += f"\psdots[dotstyle={dot_style}{color}]({dict_dots[all][0]-float(xcorrection)},{dict_dots[all][1]})\n\\rput[bl]({xcoord},{ycoord}){{${all}$}}\n"        
+        _string += f"\\psdots[dotstyle={dot_style}{color}]({dict_dots[all][0]-float(xcorrection)},{dict_dots[all][1]})\n\\rput[bl]({xcoord},{ycoord}){{${all}$}}\n"        
 
     return _string
 
@@ -2592,15 +2675,15 @@ def minimal_coordinate_system(half_allowed, negative_allowed, pstricks_code_dots
         pstricks_code_dots = f"\\antwort{{{pstricks_code_dots}}}"        
 
     pstricks_code = f"""
-\psset{{xunit={xyunit}cm,yunit={xyunit}cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1pt,arrowsize=3pt 2,arrowinset=0.25}}
+\\psset{{xunit={xyunit}cm,yunit={xyunit}cm,algebraic=true,dimen=middle,dotstyle=o,dotsize=5pt 0,linewidth=1pt,arrowsize=3pt 2,arrowinset=0.25}}
 \\begin{{pspicture*}}({pspicture_min},{pspicture_min})(5.5,5.5)
-\multips(0,{mulitps_1})(0,{multips_spacing}){{{mulitps_num}}}{{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=darkgray]{{c-c}}({mulitps_2},0)(5.4,0)}}
-\multips({mulitps_1},0)({multips_spacing},0){{{mulitps_num}}}{{\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=darkgray]{{c-c}}(0,{mulitps_2})(0,5.4)}}
-\psaxes[labelFontSize=\scriptstyle,xAxis=true,yAxis=true,Dx=1,Dy=1,ticksize=-2pt 0,subticks=0, showorigin={showorigin}]{{->}}(0,0)({mulitps_2},{mulitps_2})(5.5,5.5)[$x$,140] [$y$,-40]
+\\multips(0,{mulitps_1})(0,{multips_spacing}){{{mulitps_num}}}{{\\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=darkgray]{{c-c}}({mulitps_2},0)(5.4,0)}}
+\\multips({mulitps_1},0)({multips_spacing},0){{{mulitps_num}}}{{\\psline[linestyle=dashed,linecap=1,dash=1.5pt 1.5pt,linewidth=0.4pt,linecolor=darkgray]{{c-c}}(0,{mulitps_2})(0,5.4)}}
+\\psaxes[labelFontSize=\\scriptstyle,xAxis=true,yAxis=true,Dx=1,Dy=1,ticksize=-2pt 0,subticks=0, showorigin={showorigin}]{{->}}(0,0)({mulitps_2},{mulitps_2})(5.5,5.5)[$x$,140] [$y$,-40]
 \\begin{{scriptsize}}
 {pstricks_code_dots}
-\end{{scriptsize}}
-\end{{pspicture*}}
+\\end{{scriptsize}}
+\\end{{pspicture*}}
     """
     return pstricks_code
 
@@ -2618,10 +2701,10 @@ def create_latex_coordinates(example, coordinates_direction_index):
             ycoord = f'\\antwort[\\rule{{0.4cm}}{{0.3pt}}]{{{ycoord}}}'
 
         if i==0:
-            temp_string += f"${all} = ({xcoord}\mid {ycoord})$ &"
+            temp_string += f"${all} = ({xcoord}\\mid {ycoord})$ &"
             i +=1
         elif i==1:
-            temp_string += f"${all} = ({xcoord}\mid {ycoord})$ \\\\"
+            temp_string += f"${all} = ({xcoord}\\mid {ycoord})$ \\\\"
             i=0
 
     return temp_string
@@ -2632,10 +2715,10 @@ def create_latex_string_coordinate_system(content, example, half_allowed, negati
     latex_coordinates = create_latex_coordinates(example, coordinates_direction_index)
 
     content += f"""\\task\n{pstricks_code}\n
-\centering\\renewcommand{{\\arraystretch}}{{1.2}}
+\\centering\\renewcommand{{\\arraystretch}}{{1.2}}
 \\begin{{tabular}}{{ll}}
 {latex_coordinates}
-\end{{tabular}}\n\n  
+\\end{{tabular}}\n\n  
     """
 
     # \\begin{{multicols}}{2}
@@ -2659,20 +2742,20 @@ def create_latex_string_binomische_formeln(content, example, binoms_direction_in
             aufgabe = aufgabe.replace('\\rule{1cm}{0.3pt}', f'\\antwort[RULE]{{{solution}}}', 1)
 
         aufgabe = aufgabe.replace("RULE", "\\rule{1cm}{0.3pt}")
-        aufgabe = re.sub("\^([0-9][0-9]+)",r"^{\1}", aufgabe)
+        aufgabe = re.sub("\\^([0-9][0-9]+)",r"^{\1}", aufgabe)
         # for loesung in example[1]:
         #     aufgabe = aufgabe.replace("\\rule{1cm}{0.3pt}", f"\\antwort[\\rule{{1cm}}{{0.3pt}}]{{{loesung}}}",1)
         temp_content = f"\\task {aufgabe}\n\n"
 
     else:
         example_string = re.sub("([0-9]+)/([0-9]+)",r"\\frac{\1}{\2}", example[2])
-        example_string = re.sub("\^([0-9][0-9]+)",r"^{\1}", example_string)
+        example_string = re.sub("\\^([0-9][0-9]+)",r"^{\1}", example_string)
 
         aufgabe, loesung = example_string.split(" = ")
 
         temp_content = f"\\task ${aufgabe} = \\antwort{{{loesung}}}$\n\n"
 
-    temp_content = temp_content.replace('\xb7', '\cdot ')
+    temp_content = temp_content.replace('\xb7', '\\cdot ')
     content += temp_content
 
     return content
@@ -2689,7 +2772,7 @@ def create_latex_worksheet(
     ):
 
     if titel != False:
-        content = "\section{{{0}}}\n\n".format(titel.replace('&', '\&'))
+        content = "\\section{{{0}}}\n\n".format(titel.replace('&', '\\&'))
     else:
         content = ""
 
@@ -2744,6 +2827,8 @@ def create_latex_worksheet(
                 content = create_latex_string_primenumbers(content, example, solution_type, powers_enabled)
             elif shorten_topic == 'ari_tei_ggt':
                 content = create_latex_string_ggt(content, example, solution_type)
+            elif shorten_topic == 'ari_tei_kgv':
+                content = create_latex_string_kgv(content, example, solution_type)
             elif shorten_topic == 'ari_pos_add':
                 content = create_latex_string_addition(content, example, ausrichtung)
             elif shorten_topic == 'ari_pos_sub':
@@ -2763,7 +2848,7 @@ def create_latex_worksheet(
             elif shorten_topic == 'ter_bin':
                 content = create_latex_string_binomische_formeln(content, example, binoms_direction_index)
 
-        content += "\end{tasks}\n"
+        content += "\\end{tasks}\n"
 
         # if columns > 1:
         #     content += "\end{multicols}\n"
@@ -2774,25 +2859,25 @@ def create_latex_worksheet(
 
 
 
-    for example in list_of_examples:
-        if index == 0:
-            content = create_latex_string_addition(content, example, ausrichtung)
-        elif index == 1:
-            content = create_latex_string_subtraction(content, example, ausrichtung)
-        elif index == 2:
-            content = create_latex_string_multiplication(content, example, solution_type)
-        elif index == 3:
-            content = create_latex_string_division(content, example)
-        elif index == 4 or index == 5 or index == 6 or index ==7:
-            content = create_latex_string_ganze_zahlen(content, example)
+    # for example in list_of_examples:
+    #     if index == 0:
+    #         content = create_latex_string_addition(content, example, ausrichtung)
+    #     elif index == 1:
+    #         content = create_latex_string_subtraction(content, example, ausrichtung)
+    #     elif index == 2:
+    #         content = create_latex_string_multiplication(content, example, solution_type)
+    #     elif index == 3:
+    #         content = create_latex_string_division(content, example)
+    #     elif index == 4 or index == 5 or index == 6 or index ==7:
+    #         content = create_latex_string_ganze_zahlen(content, example)
 
 
-    content += "\end{enumerate}"
+    # content += "\end{enumerate}"
 
-    if columns > 1:
-        content += "\end{multicols}"
+    # if columns > 1:
+    #     content += "\end{multicols}"
 
-    return content
+    # return content
 
 
 def get_all_pixels(content):
@@ -2838,9 +2923,9 @@ def replace_correct_pixels(content, coordinates_nonogramm):
             if coordinates_nonogramm[pixel][0] == False:
                 content = content.replace(pixel, "")
             elif coordinates_nonogramm[pixel][0] == True and coordinates_nonogramm[pixel][1] == None:
-                content = content.replace(pixel, "\cellcolor{black}")
+                content = content.replace(pixel, "\\cellcolor{black}")
             else:
-                content = content.replace(pixel, "\ifthenelse{\\theAntworten=1}{\cellcolor{black}{}}{}")          
+                content = content.replace(pixel, "\\ifthenelse{\\theAntworten=1}{\\cellcolor{black}{}}{}")          
         else:
             content = content.replace(pixel, "")
 
@@ -3093,16 +3178,16 @@ def create_nonogramm(nonogram, coordinates_nonogramm, spalten=3):
 
     if spalten > 1:
         begin_multicols = f"\\begin{{multicols}}{{{spalten}}}"
-        end_multicols = "\end{multicols}"
+        end_multicols = "\\end{multicols}"
     else:
         begin_multicols = ""
         end_multicols = ""
 
-    nonogram_name = nonogram.split("_")[0].replace("&","\&").title()
-    content = f"""\n\\vfill\n\\fontsize{{12}}{{14}}\selectfont
-    \meinlr{{{nonogramm_empty}
+    nonogram_name = nonogram.split("_")[0].replace("&","\\&").title()
+    content = f"""\n\\vfill\n\\fontsize{{12}}{{14}}\\selectfont
+    \\meinlr{{{nonogramm_empty}
 
-    \\antwort{{{nonogram_name}}}}}{{\scriptsize
+    \\antwort{{{nonogram_name}}}}}{{\\scriptsize
     {begin_multicols}
     \\begin{{enumerate}}"""
 
@@ -3128,7 +3213,7 @@ def create_nonogramm(nonogram, coordinates_nonogramm, spalten=3):
         # elif coordinates_nonogramm[all][0] == False:
         #     result = result
 
-        content += f"\item[\\fbox{{\parbox{{15pt}}{{\centering {all}}}}}] {result}\n".replace(".",",").replace("*","\,")
+        content += f"\\item[\\fbox{{\\parbox{{15pt}}{{\\centering {all}}}}}] {result}\n".replace(".",",").replace("*","\\,")
     # for all in list_coordinates:
 #         result = coordinates_nonogramm[all]
 #         if result == True:
@@ -3145,7 +3230,7 @@ def create_nonogramm(nonogram, coordinates_nonogramm, spalten=3):
 #         content += "\item[\\fbox{{\parbox{{15pt}}{{\centering {0}}}}}] {1}\n".format(all, result)
         
     content += f"""
-    \end{{enumerate}}
+    \\end{{enumerate}}
     {end_multicols}}}"""
     return content
 
@@ -3162,7 +3247,7 @@ def show_all_nonogramms():
             solution_pixels[pixel] = True      
 
 
-        content += """\n\\vfil\n\\fontsize{{12}}{{14}}\selectfont
+        content += """\n\\vfil\n\\fontsize{{12}}{{14}}\\selectfont
     {0}:
     
     {1}""".format(nonogramm.split("_")[0].capitalize(), nonogramm_empty)
