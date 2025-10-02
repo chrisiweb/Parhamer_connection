@@ -5206,11 +5206,12 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
     @report_exceptions
     def add_single_example_wizard(self):
+        new_example = self.create_all_examples_wizard(single_example=True)
         if new_example == False:
             print('error')
             return
         self.pushButton_addto_worksheet_wizard.setEnabled(True)
-        new_example = self.create_all_examples_wizard(single_example=True)
+        
         try:
             self.list_of_examples_wizard.append(new_example)
         except AttributeError:
@@ -5611,16 +5612,21 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             try:
                 columns = self.number_columns_solution_wizard
             except AttributeError:
-                thema = self.get_current_topic_wizard()
+                # thema = self.get_current_topic_wizard()
                 # thema_index = self.total_list_of_topics_wizard.index(thema)
-                shorten_topic = self.shorten_topic(thema)
+                # shorten_topic = self.shorten_topic(thema)
 
-                if shorten_topic=='ter_bin'or shorten_topic=='ari_dar_ste' or shorten_topic == "ari_tei_pri":
-                    columns = 2
-                else:
-                    columns = 3
-                    
-            content += create_nonogramm(nonogram, all_shuffeled_coordinates, spalten=columns)
+                # if shorten_topic=='ter_bin'or shorten_topic=='ari_dar_ste' or shorten_topic == "ari_tei_pri":
+                #     columns = 2
+                # else:
+                columns = 3
+
+            try:
+                size_solution_index = self.size_solution_index_wizard
+            except AttributeError:
+                size_solution_index = 0
+
+            content += create_nonogramm(nonogram, all_shuffeled_coordinates, columns, size_solution_index)
 
         return content
 
@@ -5756,22 +5762,25 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         try:
             columns = self.number_columns_solution_wizard
         except AttributeError:
-            thema = self.get_current_topic_wizard()
+            # thema = self.get_current_topic_wizard()
             # thema_index = self.total_list_of_topics_wizard.index(thema)
-            shorten_topic = self.shorten_topic(thema)
+            # shorten_topic = self.shorten_topic(thema)
 
-            if shorten_topic=='ter_bin':
-                columns = 2
-            else:
-                columns = 3
+            # if shorten_topic=='ter_bin':
+            #     columns = 2
+            # else:
+            columns = 3
 
-
+        try: 
+            size_solution_index = self.size_solution_index_wizard
+        except AttributeError:
+            size_solution_index = 0
         try:
             item_spacing = self.item_spacing_wizard
         except AttributeError:
             item_spacing = 0.5
 
-        ui.setupUi(Dialog, text, show_titel ,show_instructions,fortlaufende_nummerierung ,show_pagenumbers, columns, item_spacing)
+        ui.setupUi(Dialog, text, show_titel ,show_instructions,fortlaufende_nummerierung ,show_pagenumbers, columns, size_solution_index, item_spacing)
 
         rsp = Dialog.exec()
         if rsp == QtWidgets.QDialog.Accepted:
@@ -5784,6 +5793,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
                 self.titel_worksheet_wizard = False
             self.fortlaufende_nummerierung = ui.checkbox_fortlaufende_nummerierung.isChecked()
             self.number_columns_solution_wizard = ui.spinbox_number_columns.value()
+            self.size_solution_index_wizard = ui.combobox_size_solution.currentIndex()
             self.item_spacing_wizard = ui.spinbox_item_spacing.value()
 
     def save_worksheet_wizard(self):
