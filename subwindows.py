@@ -4524,7 +4524,7 @@ class Ui_Dialog_edit_single_instructions(object):
 
 
 class Ui_Dialog_edit_worksheet_instructions(object):
-    def setupUi(self, Dialog, text, show_titel, show_instructions,fortlaufende_nummerierung , show_pagenumbers, columns, item_spacing):
+    def setupUi(self, Dialog, text, show_titel, show_instructions,fortlaufende_nummerierung , show_pagenumbers, columns,size_solution_index, item_spacing):
         # self.MainWindow = MainWindow
         # self.Dialog = Dialog
         # self.Dialog.setObjectName("Dialog")
@@ -4573,25 +4573,6 @@ class Ui_Dialog_edit_worksheet_instructions(object):
         self.checkBox_show_pagenumbers = create_new_checkbox(Dialog, "Seitennummerierung anzeigen", show_pagenumbers)
         verticalLayout.addWidget(self.checkBox_show_pagenumbers)
 
-        self.widget_number_columns_solution = QtWidgets.QWidget(Dialog)
-        verticalLayout.addWidget(self.widget_number_columns_solution)
-        horizontallayout_number_columns = create_new_horizontallayout(self.widget_number_columns_solution)
-        horizontallayout_number_columns.setContentsMargins(0,0,0,0)
-
-        label_number_columns = create_new_label(self.widget_number_columns_solution, "Lösungen: Spaltenanzahl")
-        horizontallayout_number_columns.addWidget(label_number_columns)
-
-        # label_number_columns_icon = create_new_label(self.widget_number_columns_solution, " ")
-        # label_number_columns_icon.setPixmap(QPixmap(get_icon_path("columns.svg")))
-        # label_number_columns_icon.setFixedSize(QSize(20,20))
-        # label_number_columns_icon.setScaledContents(True)
-        # horizontallayout_number_columns.addWidget(label_number_columns_icon)
-
-        self.spinbox_number_columns = create_new_spinbox(self.widget_number_columns_solution, columns)
-        self.spinbox_number_columns.setRange(1,5)
-        horizontallayout_number_columns.addWidget(self.spinbox_number_columns)
-
-        horizontallayout_number_columns.addStretch()
 
         widget_item_spacing = QtWidgets.QWidget(Dialog)
         verticalLayout.addWidget(widget_item_spacing)
@@ -4603,10 +4584,47 @@ class Ui_Dialog_edit_worksheet_instructions(object):
 
         self.spinbox_item_spacing = QtWidgets.QDoubleSpinBox(widget_item_spacing)
         self.spinbox_item_spacing.setValue(item_spacing)
+        self.spinbox_item_spacing.setSingleStep(0.5)
         self.spinbox_item_spacing.setSuffix(" cm")
         horizontallayout_item_spacing.addWidget(self.spinbox_item_spacing)
 
         horizontallayout_item_spacing.addStretch()
+
+
+        self.groupbox_solution = create_new_groupbox(Dialog, "Lösungen")
+        verticalLayout.addWidget(self.groupbox_solution)
+        horizontallayout_solution = create_new_horizontallayout(self.groupbox_solution)
+        # horizontallayout_number_columns.setContentsMargins(0,0,0,0)
+
+        self.widget_columns_solution = QtWidgets.QWidget(self.groupbox_solution)
+        horizontallayout_solution.addWidget(self.widget_columns_solution)
+        horizontallayout_number_columns = create_new_horizontallayout(self.widget_columns_solution)
+        horizontallayout_number_columns.setContentsMargins(0,0,0,0)
+
+        label_number_columns = create_new_label(self.widget_columns_solution, "Spaltenanzahl:")
+        horizontallayout_number_columns.addWidget(label_number_columns)
+
+        self.spinbox_number_columns = create_new_spinbox(self.widget_columns_solution, columns)
+        self.spinbox_number_columns.setRange(1,5)
+        horizontallayout_number_columns.addWidget(self.spinbox_number_columns)
+        horizontallayout_number_columns.addStretch()
+
+        self.widget_size_solution = QtWidgets.QWidget(self.groupbox_solution)
+        horizontallayout_solution.addWidget(self.widget_size_solution)
+
+        horizontallayout_size_solution = create_new_horizontallayout(self.widget_size_solution)
+        horizontallayout_size_solution.setContentsMargins(0,0,0,0)
+
+        label_size_solution = create_new_label(self.widget_size_solution, "Schriftgröße:")
+        horizontallayout_size_solution.addWidget(label_size_solution)
+
+        self.combobox_size_solution = create_new_combobox(self.widget_size_solution)
+        horizontallayout_size_solution.addWidget(self.combobox_size_solution)
+
+        for i, all in enumerate(["5pt","7pt","8pt", "9pt", "10pt", "12pt"]): 
+            add_new_option(self.combobox_size_solution, i, all)
+
+        self.combobox_size_solution.setCurrentIndex(size_solution_index)
 
         buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         buttonBox.setStandardButtons(

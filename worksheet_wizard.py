@@ -3174,20 +3174,22 @@ def create_coordinates(solution_pixels, dict_all_examples):
 #         distract_result = create_single_example_binomische_formeln(binomials_types, a,b,x,y, exponent, self.binoms_direction_index, fractions_allowed, variable_1, variable_2)
 #     return distract_result
 
-def create_nonogramm(nonogram, coordinates_nonogramm, spalten=3):
+def create_nonogramm(nonogram, coordinates_nonogramm, columns, size_solution_index):
 
-    if spalten > 1:
-        begin_multicols = f"\\begin{{multicols}}{{{spalten}}}"
+    if columns > 1:
+        begin_multicols = f"\\begin{{multicols}}{{{columns}}}"
         end_multicols = "\\end{multicols}"
     else:
         begin_multicols = ""
         end_multicols = ""
 
+    list_size = ["\\tiny", "\\scriptsize", "\\footnotesize", "\\small", "\\normalsize", "\\large"]
+
     nonogram_name = nonogram.split("_")[0].replace("&","\\&").title()
     content = f"""\n\\vfill\n\\fontsize{{12}}{{14}}\\selectfont
-    \\meinlr{{{nonogramm_empty}
+    \\meinlr[-0.05]{{{nonogramm_empty}
 
-    \\antwort{{{nonogram_name}}}}}{{\\scriptsize
+    \\antwort{{{nonogram_name}}}}}{{{list_size[size_solution_index]}
     {begin_multicols}
     \\begin{{enumerate}}"""
 
