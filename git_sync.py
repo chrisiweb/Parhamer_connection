@@ -6,6 +6,7 @@ import stat
 import posixpath
 from urllib3.exceptions import MaxRetryError, ProtocolError
 import socket
+import time
 
 
 
@@ -51,6 +52,7 @@ def resolve_divergence():
     origin = os.path.join(database, '.git', 'refs', 'remotes', 'origin', 'master')
     shutil.copyfile(origin, head)
 
+
 def git_reset_repo_to_origin():
     try:
         repo = porcelain.Repo(database)
@@ -88,6 +90,11 @@ def git_reset_repo_to_origin():
 
         return True
 
+    except PermissionError as e:
+        print(f"Error: {e.filename}")
+        print("Permission Error")
+        return False
+    
     except MaxRetryError:
         print('MaxRetryError')
         return False

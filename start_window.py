@@ -1,10 +1,11 @@
 import sys
 import os
-from config_start import database
+from config_start import database, path_programm
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, Qt, QThread
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QLabel, QGridLayout, QDialogButtonBox, QDialog, QMessageBox
 from waitingspinnerwidget import QtWaitingSpinner
 from git_sync import git_clone_repo
+import shutil
 # from standard_dialog_windows import information_window, critical_window
 
 
@@ -220,6 +221,20 @@ def check_if_database_exists(reload_ddb = False):
     config_file = os.path.join(database, "_config", "config.yml")
 
     if not os.path.isfile(config_file):
+        if sys.platform.startswith("win"):
+            programdata = os.getenv('PROGRAMDATA')
+            database_old = os.path.join(programdata, "LaMA", "_database")
+            config_file_old = os.path.join(database_old, "_config", "config.yml")
+
+            if os.path.isfile(config_file_old):
+                shutil.move(database_old, database)
+                teildokument_old = os.path.join(programdata, "LaMA", "Teildokument")
+                shutil.move(teildokument_old, os.path.join(path_programm, "Teildokument"))
+                return
+            else:
+                return        
+
+
         app = QApplication(sys.argv)
 
         Dialog = QDialog(

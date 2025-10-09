@@ -7,7 +7,7 @@ __version__ = "v4.7.0"
 
 
 if sys.platform.startswith("win"):
-    programdata = os.getenv('PROGRAMDATA')
+    programdata = os.getenv('LOCALAPPDATA')
     path_programm = os.path.join(programdata, "LaMA")
     if not os.path.isdir(path_programm):
         os.mkdir(path_programm)
