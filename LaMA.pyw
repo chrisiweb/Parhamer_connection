@@ -4335,7 +4335,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
 
             self.combobox_zahlenbereich_1.setCurrentIndex(5)
 
-            self.label_zahlenbereich_1_combobox.setText("Kleinster Stellenwert:")
+            self.label_zahlenbereich_2_combobox.setText("Kleinster Stellenwert:")
             self.combobox_zahlenbereich_2.clear()
             for i, all in enumerate(reversed(list_stellenwerte[:index_E+1])):
                 add_new_option(self.combobox_zahlenbereich_2, i, all)
