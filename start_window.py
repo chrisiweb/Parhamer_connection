@@ -217,7 +217,7 @@ class Ui_StartWindow(object):
         self.StartWindow.accept()
 
 
-def check_if_database_exists(reload_ddb = False):  
+def check_if_database_exists(reload_ddb = False):
     config_file = os.path.join(database, "_config", "config.yml")
 
     if not os.path.isfile(config_file):
@@ -230,9 +230,9 @@ def check_if_database_exists(reload_ddb = False):
                 shutil.move(database_old, database)
                 teildokument_old = os.path.join(programdata, "LaMA", "Teildokument")
                 shutil.move(teildokument_old, os.path.join(path_programm, "Teildokument"))
-                return
-            else:
-                return        
+                if os.path.isfile(config_file):
+                    return
+      
 
 
         app = QApplication(sys.argv)
