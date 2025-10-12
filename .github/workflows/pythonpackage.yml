@@ -10,7 +10,7 @@ jobs:
       max-parallel: 2
       matrix:
         python-version: [3.13]
-        os: [windows-latest] #, macos-11, ubuntu-latest, windows-latest, macOS-latest
+        os: [windows-latest, macOS-latest] #, macos-11, ubuntu-latest, windows-latest, macOS-latest
 
     steps:
     - uses: actions/checkout@v3
@@ -33,7 +33,7 @@ jobs:
     - name: Build with pyinstaller
       if: matrix.os != 'windows-latest'
       run: |  
-        pyinstaller -F LaMA.pyw --exclude-module tkinter
+        pyinstaller -i icon_lama.icns -F LaMA.pyw
     - name: Build with pyinstaller Windows
       if: matrix.os == 'windows-latest'
       run: |  
