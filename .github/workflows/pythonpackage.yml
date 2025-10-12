@@ -33,7 +33,7 @@ jobs:
     - name: Build with pyinstaller
       if: matrix.os != 'windows-latest'
       run: |  
-        pyinstaller -i icon_lama.icns -F LaMA.pyw
+        pyinstaller -i lama.icns -F LaMA.pyw
     - name: Build with pyinstaller Windows
       if: matrix.os == 'windows-latest'
       run: |  
