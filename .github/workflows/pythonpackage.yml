@@ -25,7 +25,7 @@ jobs:
         pip install pyqt5
         pip install pyyaml
         pip install pillow
-        pip install dulwich
+        pip install dulwich==0.24.1
         pip install bcrypt
         pip install tinydb
         pip install requests
