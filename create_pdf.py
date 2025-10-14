@@ -8,7 +8,7 @@ import json
 import subprocess
 
 
-from config_start import path_programm, path_localappdata_lama, lama_settings_file, path_standard_pdf_reader
+from config_start import path_programm, path_localappdata_lama, lama_settings_file, path_standard_pdf_reader, path_home
 from config import *
 # (
 #     config_file,
@@ -512,6 +512,12 @@ def prepare_tex_for_pdf(self):
     if os.path.isfile(copy_path_srdp_pkg):
         pass
     else:
+        if sys.platform.startswith("darwin"):
+            path_srdp_pkg_mac = os.path.join(path_home, "Library", "texmf", "tex", "latex", "srdp-mathematik.sty")
+            if os.path.isfile(path_srdp_pkg_mac):
+                shutil.copy2(path_srdp_pkg_mac, copy_path_srdp_pkg)
+            else:
+                shutil.copy2(path_srdp_pkg, copy_path_srdp_pkg)                  
         shutil.copy2(path_srdp_pkg, copy_path_srdp_pkg)
 
     ########################################################
