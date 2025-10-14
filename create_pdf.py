@@ -517,8 +517,9 @@ def prepare_tex_for_pdf(self):
             if os.path.isfile(path_srdp_pkg_mac):
                 shutil.copy2(path_srdp_pkg_mac, copy_path_srdp_pkg)
             else:
-                shutil.copy2(path_srdp_pkg, copy_path_srdp_pkg)                  
-        shutil.copy2(path_srdp_pkg, copy_path_srdp_pkg)
+                shutil.copy2(path_srdp_pkg, copy_path_srdp_pkg)
+        else:                  
+            shutil.copy2(path_srdp_pkg, copy_path_srdp_pkg)
 
     ########################################################
 
