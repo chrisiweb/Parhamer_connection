@@ -6,7 +6,7 @@ import stat
 import posixpath
 from urllib3.exceptions import MaxRetryError, ProtocolError
 import socket
-import time
+from standard_dialog_windows import critical_window
 
 
 
@@ -91,17 +91,16 @@ def git_reset_repo_to_origin():
         return True
 
     except PermissionError as e:
-        print(f"Error: {e.filename}")
-        print("Permission Error")
-        return False
+        print('PermissionError')
+        return e
     
-    except MaxRetryError:
+    except MaxRetryError as e:
         print('MaxRetryError')
-        return False
+        return e
 
-    except ProtocolError:
+    except ProtocolError as e:
         print('ProtocolError')
-        return False
+        return e
 
 
 
