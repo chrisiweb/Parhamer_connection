@@ -6321,6 +6321,16 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             self.dict_sage_individual_change = {}
 
 
+        if isinstance(list(self.dict_all_infos_for_file["dict_alle_aufgaben_pkt_abstand"].values())[0][0], int): #Check of points of examples are int or float (halfpoints)
+            point_settings_loadedfile = False
+        else:
+            point_settings_loadedfile = True
+
+        if loaded_file["data_gesamt"]["program"]=='cria':
+            self.lama_settings['halfpoints_cria']=point_settings_loadedfile
+        else:
+            self.lama_settings['halfpoints']=point_settings_loadedfile
+
 
 
         list_aufgaben_errors = self.sage_load_files()
@@ -6360,12 +6370,23 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         self.update_punkte()
 
 
-        self.spinBox_default_pkt.setValue(
-            self.dict_all_infos_for_file["data_gesamt"]["Typ1 Standard"]
-        )
-        self.doublespinBox_default_pkt.setValue(
-            self.dict_all_infos_for_file["data_gesamt"]["Typ1 Standard"]
-        ) 
+        if self.lama_settings['halfpoints']==False:
+            self.spinBox_default_pkt.setValue(
+                self.dict_all_infos_for_file["data_gesamt"]["Typ1 Standard"]
+            )
+        else:
+            self.doublespinBox_default_pkt.setValue(
+                self.dict_all_infos_for_file["data_gesamt"]["Typ1 Standard"]
+            )
+        # try:
+        #     print(self.dict_all_infos_for_file["data_gesamt"]["Typ1 Standard"])
+        #     self.spinBox_default_pkt.setValue(
+        #         self.dict_all_infos_for_file["data_gesamt"]["Typ1 Standard"]
+        #     )
+        # except TypeError:
+        #     self.doublespinBox_default_pkt.setValue(
+        #         self.dict_all_infos_for_file["data_gesamt"]["Typ1 Standard"]
+        #     ) 
 
         for list_index in [0,1]:
             for aufgabe in self.list_alle_aufgaben_sage[list_index]:
@@ -6953,6 +6974,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
     #     self.label_typ1_pkt.setText("Punkte Typ 1: {}".format(punkteverteilung[1]))
     #     self.label_typ2_pkt.setText("Punkte Typ 2: {0}".format(punkteverteilung[2]))
 
+    # @report_exceptions
     def update_punkte(self):
         gesamtpunkte = self.get_punkteverteilung()[0]
         num_typ1, num_typ2 = self.get_aufgabenverteilung()
@@ -6980,12 +7002,16 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
         )
         self.no_saved_changes_sage = False
 
+    # @report_exceptions
     def update_default_pkt(self, spinbox_widget):
         for all in self.dict_variablen_punkte:
             if get_aufgabentyp(self.chosen_program, all) == 1:
-                self.dict_variablen_punkte[all].setValue(
-                    spinbox_widget.value()
-                )
+                try:
+                    self.dict_variablen_punkte[all].setValue(
+                        spinbox_widget.value()
+                    )
+                except TypeError:
+                    pass
 
     def get_punkte_aufgabe_sage(self, aufgabe):
         try:
@@ -7158,7 +7184,7 @@ Eine kleinen Spende für unsere Kaffeekassa wird nicht benötigt, um LaMA zu fin
             _fromUtf8("horizontalLayout_groupbox_pkt")
         )
 
-
+        
         if halfpoints_checked == False:
             spinbox_pkt = create_new_spinbox(groupbox_pkt)
         elif halfpoints_checked == True:
