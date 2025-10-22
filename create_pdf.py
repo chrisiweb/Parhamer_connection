@@ -8,7 +8,7 @@ import json
 import subprocess
 
 
-from config_start import path_programm, path_localappdata_lama, lama_settings_file, path_standard_pdf_reader, path_home
+from config_start import path_programm, path_localappdata_lama, lama_settings_file, path_standard_pdf_reader, path_home, path_compiler
 from config import *
 # (
 #     config_file,
@@ -101,7 +101,7 @@ def get_number_of_variations(file_name, gesammeltedateien):
     counter = 0
 
     for all in gesammeltedateien:
-        if re.search("{}\[.+\]".format(file_name), all['name']) != None:
+        if re.search("{}\\[.+\\]".format(file_name), all['name']) != None:
             counter +=1
 
     return counter
@@ -647,7 +647,7 @@ def get_output_size(gesammeltedateien, variation, spezielle_suche, language_inde
     return number
 
 def check_if_variation(name):
-    if re.match(".*\[.+\]", name):
+    if re.match(".*\\[.+\\]", name):
         return True
     else:
         return False
@@ -715,7 +715,7 @@ def construct_tex_file(file_name, gesammeltedateien, current_program, solutions,
 
             try: 
                 if all['content_translation'] != None and language_index==0:
-                    language = " \\flagUK\ "
+                    language = " \\flagUK\\ "
                 else:
                     language = ""
             except KeyError:
@@ -723,21 +723,21 @@ def construct_tex_file(file_name, gesammeltedateien, current_program, solutions,
 
             # print(f"{all['name']} : {language}")
 
-            file.write("\smallskip\\begin{minipage}{1\\textwidth}\n")
+            file.write("\\smallskip\\begin{minipage}{1\\textwidth}\n")
             green = "green!40!black!60!"
 
             if variation == True:
                 if check_if_variation(all['name']) == True and not is_empty(language):
-                    file.write("{0}\color{{{1}}}\\vspace{{-0.5cm}}\n\n".format(language, green))
+                    file.write("{0}\\color{{{1}}}\\vspace{{-0.5cm}}\n\n".format(language, green))
                 elif check_if_variation(all['name']) == True:
-                    file.write("{0}\color{{{1}}}\n".format(language, green))
+                    file.write("{0}\\color{{{1}}}\n".format(language, green))
                 elif not is_empty(language):
                     file.write(f"{language}\\vspace{{-0.5cm}}\n\n")
             elif spezielle_suche == False:
                 number_of_variations = get_number_of_variations(all['name'], gesammeltedateien)
 
                 if number_of_variations != 0:
-                    file.write("{2}{{\color{{{0}}}{{\\fbox{{Anzahl weiterer Variationen dieser Aufgabe: {1}}}}}}}\\vspace{{-0.5cm}}\n\n".format(green, number_of_variations, language))
+                    file.write("{2}{{\\color{{{0}}}{{\\fbox{{Anzahl weiterer Variationen dieser Aufgabe: {1}}}}}}}\\vspace{{-0.5cm}}\n\n".format(green, number_of_variations, language))
                 elif not is_empty(language):
                     file.write(f"{language}\\vspace{{-0.5cm}}\n\n")
             elif not is_empty(language):
@@ -748,8 +748,8 @@ def construct_tex_file(file_name, gesammeltedateien, current_program, solutions,
             else:
                 section = "subsection"
 
-            file.write('\{0}{{{1}{2} - {3}{4}}}\smallskip\n\n'.format(section, draft, all['name'], all['titel'], add_on))
-            file.write('\end{minipage}\n\n')
+            file.write('\\{0}{{{1}{2} - {3}{4}}}\\smallskip\n\n'.format(section, draft, all['name'], all['titel'], add_on))
+            file.write('\\end{minipage}\n\n')
 
             if language_index == 0:
                 content = all['content']
@@ -779,7 +779,7 @@ def construct_tex_file(file_name, gesammeltedateien, current_program, solutions,
             file.write(info_box)
             file.write("\n")
             if search_output_index == 0:
-                file.write("\hrulefill")
+                file.write("\\hrulefill")
             elif search_output_index == 1:
                 file.write("\\newpage")
             file.write("\n\n")
@@ -805,13 +805,13 @@ def create_info_box(_file):
     quelle = _file['quelle']
     if not is_empty(_file['bilder']):
         string_bilder = ", ".join(_file['bilder'])
-        string_bilder = string_bilder.replace("_","\_")
+        string_bilder = string_bilder.replace("_","\\_")
         bilder = "\\\\\nBilder: {}".format(string_bilder)
     else:
         bilder = ""
 
     info_box = """
-\info{{\\fbox{{\\begin{{minipage}}{{0.98\\textwidth}}
+\\info{{\\fbox{{\\begin{{minipage}}{{0.98\\textwidth}}
 Titel: {0}\\\\
 Grundkompetenz(en): {1}\\\\
 {2}
@@ -869,14 +869,25 @@ def build_pdf_file(ui, folder_name, file_name, latex_output_file):
         else:
             drive = ""
 
-        if is_empty(drive):
-            terminal_command = 'cd "{0}" & latex -interaction=nonstopmode --synctex=-1 "{1}.tex" & latex -interaction=nonstopmode --synctex=-1 "{1}.tex" & dvips "{1}.dvi" & ps2pdf -dNOSAFER -dALLOWPSTRANSPARENCY "{1}.ps"'.format(
-                folder_name, file_name
-            )
+        if os.path.isfile(os.path.join(path_compiler, "latex.exe")):
+            latex = os.path.join(path_compiler, "latex.exe")
         else:
-            terminal_command = '{0} & cd "{1}" & latex -interaction=nonstopmode --synctex=-1 "{2}.tex" & latex -interaction=nonstopmode --synctex=-1 "{2}.tex" & dvips "{2}.dvi" & ps2pdf -dNOSAFER -dALLOWPSTRANSPARENCY "{2}.ps"'.format(
-                drive, folder_name, file_name
-            )
+            latex = "latex"
+
+        if os.path.isfile(os.path.join(path_compiler, "dvips.exe")):
+            dvips = os.path.join(path_compiler, "dvips.exe")
+        else:
+            dvips = "dvips"
+
+        if os.path.isfile(os.path.join(path_compiler, "ps2pdf.exe")):
+            ps2pdf = os.path.join(path_compiler, "ps2pdf.exe")
+        else:
+            ps2pdf = "ps2pdf"
+
+        if is_empty(drive):
+            terminal_command = f'cd "{folder_name}" & {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & {dvips} "{file_name}.dvi" & {ps2pdf} -dNOSAFER -dALLOWPSTRANSPARENCY "{file_name}.ps"'
+        else:
+            terminal_command = f'{drive} & cd "{folder_name}" & {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" & {dvips} "{file_name}.dvi" & {ps2pdf} -dNOSAFER -dALLOWPSTRANSPARENCY "{file_name}.ps"'
 
 
         process = subprocess.Popen(
@@ -916,7 +927,6 @@ def open_pdf_file(folder_name, file_name):
             path_pdf_reader = path_standard_pdf_reader
         else:
             path_pdf_reader = ""
-
     file_path = os.path.join(folder_name, file_name)
 
     if sys.platform.startswith("linux"):
