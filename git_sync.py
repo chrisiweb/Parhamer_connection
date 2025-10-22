@@ -6,7 +6,6 @@ import stat
 import posixpath
 from urllib3.exceptions import MaxRetryError, ProtocolError
 import socket
-from standard_dialog_windows import critical_window
 
 
 
