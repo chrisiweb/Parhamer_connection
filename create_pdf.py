@@ -843,19 +843,16 @@ def extract_error_from_output(latex_output):
 
 def build_pdf_file(ui, folder_name, file_name, latex_output_file):
     if sys.platform.startswith("linux") or sys.platform.startswith("darwin"):
+        print(os.path.dirname(os.path.realpath(__file__)))
+        latex = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'portable', 'tinytex', 'bin', 'universal-darwin', 'latex')
+        dvips = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'portable', 'tinytex', 'bin', 'universal-darwin', 'dvips')
         if "Teildokument" in file_name:
-            terminal_command = 'cd "{0}" ; latex -interaction=nonstopmode --synctex=-1 "{1}.tex" ; latex -interaction=nonstopmode --synctex=-1 "{1}.tex" ; dvips "{1}.dvi" ; ps2pdf -dNOSAFER -dALLOWPSTRANSPARENCY "{1}.ps"'.format(
-                folder_name, file_name
-            )        
+            terminal_command = f'cd "{folder_name}" ; {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" ; {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" ; dvips "{file_name}.dvi" ; ps2pdf -dNOSAFER -dALLOWPSTRANSPARENCY "{file_name}.ps"'      
         else:
-            terminal_command = 'cd "{0}" ; latex -interaction=nonstopmode --synctex=-1 "{1}.tex" ; latex -interaction=nonstopmode --synctex=-1 "{1}.tex" ; dvips "{1}.dvi" ; ps2pdf -dNOSAFER -dALLOWPSTRANSPARENCY "{1}.ps"'.format(
-                folder_name, file_name
-            )
+            terminal_command = f'cd "{folder_name}" ; {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" ; {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" ; dvips "{file_name}.dvi" ; ps2pdf -dNOSAFER -dALLOWPSTRANSPARENCY "{file_name}.ps"'
          
         process = subprocess.Popen(
-            'cd "{0}" ; latex -interaction=nonstopmode --synctex=-1 "{1}.tex" ; latex -interaction=nonstopmode --synctex=-1 "{1}.tex" ; dvips "{1}.dvi" ; ps2pdf -dNOSAFER -dALLOWPSTRANSPARENCY "{1}.ps"'.format(
-                folder_name, file_name
-            ),
+            f'cd "{folder_name}" ; {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" ; {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" ; dvips "{file_name}.dvi" ; ps2pdf -dNOSAFER -dALLOWPSTRANSPARENCY "{file_name}.ps"',
             stdout=subprocess.PIPE,
             shell=True,
         )
