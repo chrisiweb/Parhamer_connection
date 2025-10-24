@@ -817,7 +817,7 @@ Grundkompetenz(en): {1}\\\\
 {2}
 Klasse: {3}\\\\
 Quelle: {4}{5}
-\end{{minipage}}}}}}
+\\end{{minipage}}}}}}
 """.format(titel, gk, af, klasse, quelle, bilder)
 
     return info_box
@@ -843,10 +843,13 @@ def extract_error_from_output(latex_output):
 
 def build_pdf_file(ui, folder_name, file_name, latex_output_file):
     if sys.platform.startswith("linux") or sys.platform.startswith("darwin"):
-        print(os.path.dirname(os.path.realpath(__file__)))
-        latex = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'portable', 'tinytex', 'bin', 'universal-darwin', 'latex')
-        dvips = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'portable', 'tinytex', 'bin', 'universal-darwin', 'dvips')
-        ps2pdf = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'portable', 'ghostscript', 'lib', 'ps2pdf')
+        print(os.path.dirname(sys.argv[0]))
+        lama_path = os.path.dirname(sys.argv[0])
+        if lama_path == "":
+            lama_path = "."
+        latex = os.path.join(lama_path, 'portable', 'tinytex', 'bin', 'universal-darwin', 'latex')
+        dvips = os.path.join(lama_path, 'portable', 'tinytex', 'bin', 'universal-darwin', 'dvips')
+        ps2pdf = os.path.join(lama_path, 'portable', 'ghostscript', 'lib', 'ps2pdf')
         if "Teildokument" in file_name:
             terminal_command = f'cd "{folder_name}" ; {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" ; {latex} -interaction=nonstopmode --synctex=-1 "{file_name}.tex" ; {dvips} "{file_name}.dvi" ; {ps2pdf} -dNOSAFER -dALLOWPSTRANSPARENCY "{file_name}.ps"'      
         else:
@@ -872,9 +875,9 @@ def build_pdf_file(ui, folder_name, file_name, latex_output_file):
         # else:
         #     latex = "latex"
 
-        latex = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'portable', 'tinytex', 'bin', 'windows', 'latex.exe')
-        dvips = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'portable', 'tinytex', 'bin', 'windows', 'dvips.exe')
-        ps2pdf = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'portable', 'ghostscript', 'lib', 'ps2pdf.bat')
+        latex = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'tinytex', 'bin', 'windows', 'latex.exe')
+        dvips = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'tinytex', 'bin', 'windows', 'dvips.exe')
+        ps2pdf = os.path.join(os.path.dirname(sys.argv[0]), 'portable', 'ghostscript', 'lib', 'ps2pdf.bat')
         # if os.path.isfile(os.path.join(path_compiler, "dvips.exe")):
         #     dvips = os.path.join(path_compiler, "dvips.exe")
         # else:
